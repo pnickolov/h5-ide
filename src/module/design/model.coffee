@@ -2,7 +2,7 @@
 #  View Mode for design
 #############################
 
-define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_service', 'ami_service', 'i18n!nls/lang.js', 'underscore', 'backbone' ], ( MC, ide_event, constant, app_model, stack_model, instance_service, ami_service, lang, _) ->
+define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_service', 'ami_service', 'i18n!nls/lang.js', 'underscore', 'backbone' ], ( Design, MC, ide_event, constant, app_model, stack_model, instance_service, ami_service, lang, _) ->
 
     #private
     DesignModel = Backbone.Model.extend {
@@ -37,8 +37,14 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
 
                 else
                     #TO-DO
+
                 #
-                ide_event.trigger ide_event.SWITCH_MAIN if app_id == MC.canvas_data.id
+
+                # old design flow
+                #ide_event.trigger ide_event.SWITCH_MAIN if app_id == MC.canvas_data.id
+
+                # new design flow
+                ide_event.trigger ide_event.SWITCH_MAIN if app_id == MC.forge.other.canvasData.get( 'id' )
 
                 null
 
@@ -49,9 +55,19 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
                 app_id = result.param[4][0]
 
                 # update canvas_data when on current tab
-                if app_id == MC.canvas_data.id
+
+                # old design flow
+                #if app_id == MC.canvas_data.id
+
+                # new design flow
+                if app_id == MC.forge.other.canvasData.get( 'id' )
+
+                    # set data
                     @setCanvasData result.resolved_data[ 0 ]
                     @setOriginData result.resolved_data[ 0 ]
+
+                    # save design_model
+                    MC.forge.other.canvasData.save MC.forge.other.canvasData.data(true)
 
                 # update MC.Tab[app_id]
                 else
@@ -81,15 +97,15 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
         #  tab
         #############################
 
-        addTab : ( tab_id, snapshot, data, property, property_panel, origin_data, origin_ta_valid ) ->
-            console.log 'add'
+        addTab : ( tab_id, snapshot, design_model, data, origin_data, property_panel, origin_ta_valid ) ->
+            console.log 'addTab'
 
             MC.tab[ tab_id ] =
                 'snapshot'        : snapshot
+                'design_model'    : design_model
                 'data'            : data
-                'property'        : property
-                'property_panel'  : property_panel
                 'origin_data'     : origin_data
+                'property_panel'  : property_panel
                 'origin_ta_valid' : origin_ta_valid
 
             null
@@ -120,18 +136,26 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
             ide_event.trigger ide_event.SWITCH_WAITING_BAR
             #
             @set 'snapshot',      MC.tab[ tab_id ].snapshot
+            @setDesignModel       $.extend true, {}, MC.tab[ tab_id ].design_model
             @setCanvasData        MC.tab[ tab_id ].data
             @setOriginData        MC.tab[ tab_id ].origin_data
-            @setCanvasProperty    MC.tab[ tab_id ].property
             @setCurrentResource   MC.tab[ tab_id ].origin_resource if MC.tab[ tab_id ].origin_resource
-            @setTAValidation      MC.tab[ tab_id ].origin_ta_valid
             @setPropertyPanel     MC.tab[ tab_id ].property_panel
+            @setTAValidation      MC.tab[ tab_id ].origin_ta_valid
             #
             null
 
         updateAppTabDate : ( data, tab_id ) ->
             console.log 'updateAppTabDate'
-            MC.tab[ tab_id ].data = $.extend( true, {}, data ) if MC.tab[ tab_id ]
+
+            if MC.tab[ tab_id ]
+
+                # set data
+                MC.tab[ tab_id ].data = $.extend( true, {}, data )
+
+                # set Design
+                MC.tab[ tab_id ].design_model.save data
+
             null
 
         updateAppTabOriginDate : ( data, tab_id ) ->
@@ -141,22 +165,24 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
 
         setCanvasData : ( data ) ->
             console.log 'setCanvasData'
-            MC.canvas_data = $.extend true, {}, data
+
+            # old design flow
+            #MC.canvas_data = $.extend true, {}, data
+
+            # new design flow
+            MC.forge.other.canvasData.init data
+
             null
 
         getCanvasData : () ->
             console.log 'getCanvasData'
             #MC.canvas_data
-            $.extend true, {}, MC.canvas_data
 
-        setCanvasProperty : ( property ) ->
-            console.log 'setCanvasProperty'
-            MC.canvas_property = property
-            null
+            # old design flow
+            #$.extend true, {}, MC.canvas_data
 
-        getCanvasProperty : () ->
-            console.log 'getCanvasProperty'
-            MC.canvas_property
+            # new design flow
+            MC.forge.other.canvasData.data()
 
         setPropertyPanel : ( property_panel ) ->
             console.log 'setPropertyPanel'
@@ -165,12 +191,23 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
 
         setOriginData : ( data ) ->
             console.log 'setOriginData'
-            MC.data.origin_canvas_data = $.extend true, {}, data
+
+            # old design flow
+            #MC.data.origin_canvas_data = $.extend true, {}, data
+
+            # new design flow
+            MC.forge.other.canvasData.origin data
+
             null
 
         getOriginData :  ->
             console.log 'getOriginData'
-            $.extend true, {}, MC.data.origin_canvas_data
+
+            # old design flow
+            #$.extend true, {}, MC.data.origin_canvas_data
+
+            # new design flow
+            MC.forge.other.canvasData.origin()
 
         setTAValidation : ( data ) ->
             console.log 'setTAValidation'
@@ -187,6 +224,15 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
             MC.tab[ tab_id ].origin_resource = $.extend true, {}, data if MC.tab[ tab_id ]
             null
 
+        setDesignModel : ( design ) ->
+            console.log 'setDesignModel'
+            design.use()
+            null
+
+        getDesignModel : () ->
+            console.log 'getDesignModel'
+            Design.instance()
+
         #saveProcessTab : ( tab_id ) ->
         #    console.log 'saveProcessTab'
         #    if !MC.tab[ tab_id ] then MC.tab[ tab_id ] = $.extend true, {}, MC.process[ tab_id ]
@@ -197,28 +243,24 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
         #############################
 
         describeInstancesOfASG : (region) ->
+            console.log 'describeInstancesOfASG', region
 
-            comp_layout   = MC.canvas.data.get('layout.component.group')
-            comp_data     = MC.canvas.data.get('component')
             instance_ids = []
 
-
             try
-                #find ASG in comp_layout
-                _.map comp_layout, ( value, id ) ->
 
-                    if value.type == constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+                asg_list = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group ).allObjects()
 
-                        asg_arn         = if comp_data[id] then comp_data[id].resource.AutoScalingGroupARN else null
-                        asg_res          = if asg_arn then MC.data.resource_list[region][asg_arn] else null
-                        instance_memeber = if asg_res and asg_res.Instances then asg_res.Instances.member else null
+                for asg in asg_list
 
-                        #find instance in ASG
-                        if instance_memeber
-                            _.map instance_memeber, (ins, i) ->
-                                instance_ids.push ins.InstanceId
-                                null
-                    null
+                    asg_arn = asg.get( "appId" )
+                    asg_res = MC.data.resource_list[region][asg_arn]
+
+                    instance_memeber = if asg_res and asg_res.Instances then asg_res.Instances.member else null
+
+                    #find instance in ASG
+                    for ins in instance_memeber || []
+                        instance_ids.push ins.InstanceId
 
                 ######
                 src = {}
@@ -253,32 +295,25 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
 
         getAppResourcesService : ( region, app_id )->
             console.log 'getAppResourcesService', region, app_id
-            #me = this
-            #current_tab = ''
-
-            #app_name = MC.forge.app.getNameById app_id
-            #notification 'info', sprintf lang.ide.TOOL_MSG_INFO_APP_REFRESH_START, app_name
-
             app_model.resource { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, app_id
 
         getAllNotExistAmiInStack : ( region, tab_id )->
-
-            ide_event.trigger ide_event.SWITCH_WAITING_BAR, null, true
+            console.log 'getAllNotExistAmiInStack', region, tab_id
 
             me = this
 
             ami_list = []
 
-            _.each MC.canvas_data.component, (compObj) ->
+            amiArray = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance ).allObjects()
+            amiArray = amiArray.concat Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration ).allObjects()
 
-                if compObj.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance  or compObj.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
-                    imageId = compObj.resource.ImageId
-                    if imageId and !MC.data.dict_ami[imageId]
-                        ami_list.push imageId
+            for ami in amiArray
+                imageId = ami.get("imageId")
+                if not MC.data.dict_ami[ imageId ]
+                    ami_list.push( imageId )
 
-                null
             if ami_list.length
-                stack_model.get_not_exist_ami { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, ami_list
+                stack_model.get_not_exist_ami { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, _.uniq( ami_list )
 
         returnAppState : ( type, state ) ->
             console.log 'returnAppState', type, state
@@ -303,32 +338,55 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
             resource_source = result.resolved_data
 
             if resource_source
+
                 #clear old app data in MC.data.resource_list
-                MC.forge.app.clearResourceInCache MC.canvas_data
+
+                # old design flow
+                #MC.forge.app.clearResourceInCache MC.canvas_data
+
+                # new design flow
+                Design.instance().clearResourceInCache()
+
                 #cache new app data
                 MC.aws.aws.cacheResource resource_source, region, false
                 #
                 @describeInstancesOfASG region
 
+            # old design flow +++++++++++++++++++++++++++
             #update instance icon of app
-            MC.aws.instance.updateStateIcon app_id
-            MC.aws.asg.updateASGCount app_id
-            MC.aws.eni.updateServerGroupState app_id
+            #MC.aws.instance.updateStateIcon app_id
+            #MC.aws.asg.updateASGCount app_id
+            #MC.aws.eni.updateServerGroupState app_id
             #update deleted resource style
-            MC.forge.app.updateDeletedResourceState MC.canvas_data
+            #MC.forge.app.updateDeletedResourceState MC.canvas_data
+            # old design flow +++++++++++++++++++++++++++
+
+            # new design flow
+            Design.instance().trigger Design.EVENT.AwsResourceUpdated
 
             #re-draw connection
-            MC.canvas_data.layout.connection = {}
-            MC.canvas.initLine()
-            MC.canvas.reDrawSgLine()
+
+            # old design flow
+            #MC.canvas_data.layout.connection = {}
+
+            # new design flow
+            MC.forge.other.canvasData.set 'layout', 'connection' : {}
+
+            #MC.canvas.initLine()
+            #MC.canvas.reDrawSgLine()
 
             #update property panel
-            uid = MC.canvas_property.selected_node[0]
+            uid = $canvas.selected_node()[0]
             if uid
                 MC.canvas.select uid
 
             # re-set origin_data
-            @setOriginData MC.canvas_data
+
+            # old design flow
+            #@setOriginData MC.canvas_data
+
+            # new design flow
+            @setOriginData MC.forge.other.canvasData.data()
 
             # delete current origin_resource
             MC.tab[ app_id ].origin_resource = null if MC.tab and MC.tab[ app_id ] and MC.tab[ app_id ].origin_resource

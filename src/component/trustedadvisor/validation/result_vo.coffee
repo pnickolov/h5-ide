@@ -1,5 +1,5 @@
 
-define [ 'event', 'MC', 'underscore' ], ( ide_event, MC ) ->
+define [ 'event', 'MC', 'Design', 'underscore' ], ( ide_event, MC, Design ) ->
 
 	########## Polyfill ##########
 
@@ -94,6 +94,7 @@ define [ 'event', 'MC', 'underscore' ], ( ide_event, MC ) ->
 
 	reset = () ->
 		MC.ta.list = []
+		MC.canvas_data = Design.instance().serialize()
 
 
 	result = () ->

@@ -1,4 +1,5 @@
-<header class="modal-header sg-rule-create-h"><h3>Create Security Group Rule</h3><i class="modal-close">&times;</i></header>
+<header class="modal-header sg-rule-create-h"><h3>Create Security Group Rule</h3><i class="btn-modal-close">&times;</i></header>
+
 
 <article class="modal-body" id="sg-rule-create-modal" data-bind="true">
   <section class="sg-rule-create-add-wrap">
@@ -6,12 +7,12 @@
     <section class="sg-node-wrap clearfix">
       <label>Allow</label>
 
-      {{#if sg_detail.[0].sg.length}}
+      {{#if owner.length}}
 
       <div class="selectbox" id="sg-create-sg-out">
-        <div class="selection"><span class="sg-create-sg-color" style="background:{{sg_detail.[0].sg.[0].color}}"></span>{{sg_detail.[0].sg.[0].name}}</div>
+        <div class="selection"><span class="sg-create-sg-color" style="background:{{owner.[0].color}}"></span>{{owner.[0].name}}</div>
         <ul class="dropdown">
-          {{#each sg_detail.[0].sg}}
+          {{#each owner}}
             <li class="item {{#unless @index}}selected{{/unless}}" data-id="{{uid}}">
               <span class="sg-create-sg-color" style="background:{{color}}"></span>
               {{name}}
@@ -23,29 +24,29 @@
       <div class="selectbox" id="sg-create-direction">
         <div class="selection">initiate traffic to</div>
         <ul class="dropdown">
-          <li class="item selected" data-id="out">initiate traffic to</li>
-          <li class="item" data-id="in">accept traffic from</li>
-          <li class="item" data-id="both">have 2-way traffic with</li>
+          <li class="item selected" data-id="outbound">initiate traffic to</li>
+          <li class="item" data-id="inbound">accept traffic from</li>
+          <li class="item" data-id="biway">have 2-way traffic with</li>
         </ul>
       </div>
 
       {{else}}
 
       <div id="sg-create-sg-out">
-        <div class="sg-create-selection">{{sg_detail.[0].name}}</div>
+        <div class="sg-create-selection selected" data-id="{{owner.uid}}">{{owner.name}}</div>
       </div>
 
       <div id="sg-create-direction">
-        <div class="sg-create-selection selected" data-id="out">initiate traffic to</div>
+        <div class="sg-create-selection selected" data-id="outbound">initiate traffic to</div>
       </div>
 
       {{/if}}
 
       <div class="selectbox" id="sg-create-sg-in">
-        <div class="selection truncate"><span class="sg-create-sg-color" style="background:{{sg_detail.[1].sg.[0].color}}"></span>{{sg_detail.[1].sg.[0].name}}</div>
+        <div class="selection truncate"><span class="sg-create-sg-color" style="background:{{relation.[0].color}}"></span>{{relation.[0].name}}</div>
         <ul class="dropdown">
-          {{#each sg_detail.[1].sg}}
-            <li class="item truncate {{#unless @index}}selected{{/unless}}" data-id="{{uid}}" title="{{name}}">
+          {{#each relation}}
+            <li class="item truncate {{#unless @index}}selected{{/unless}}" data-id="{{uid}}">
               <span class="sg-create-sg-color" style="background:{{color}}"></span>
               {{name}}
             </li>
@@ -55,8 +56,8 @@
     </section>
 
     <p class="clearfix mgt10">
-      <label for="" class="sg-create-proto-label">Destination Protocol</label>
-      <label for="" class="sg-create-proto-label-port">Port</label>
+      <label class="sg-create-proto-label">Destination Protocol</label>
+      <label class="sg-create-proto-label-port">Port</label>
     </p>
 
     <section class="clearfix sg-proto-option-wrap">
@@ -66,10 +67,10 @@
           <li class="selected item" data-id="tcp">TCP</li>
           <li class="item" data-id="udp">UDP</li>
           <li class="item" data-id="icmp">ICMP</li>
-          {{#if isnt_classic}}
+          {{#unless isClassic}}
           <li class="item" data-id="custom">Custom</li>
           <li class="item" data-id="all">All</li>
-          {{/if}}
+          {{/unless}}
         </ul>
       </div>
 
@@ -87,7 +88,7 @@
               <div class="selection">Echo Reply(0)</div>
               <div class="dropdown scroll-wrap scrollbar-auto-hide context-wrap" style="height:300px;">
                 <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-                <ul tabindex="-1">
+                <ul tabindex="-1" class="scroll-content">
                   <li class="item selected" data-id="0">Echo Reply(0)</li>
                   <li class="item" data-id="3">Destination Unreachable(3) ...</li>
                   <li class="item" data-id="4">Source Quench(4)</li>
@@ -121,23 +122,26 @@
             </div>
             <div class="selectbox sg-proto-input-sub" id="sg-proto-input-sub-3">
               <div class="selection">All(-1)</div>
-              <ul class="dropdown" tabindex="-1">
-                <li class="item selected" data-id="-1">All(-1)</li>
-                <li class="item" data-id="0">destination network unreachable(0)</li>
-                <li class="item" data-id="1">destination host unreachable(1)</li>
-                <li class="item" data-id="2">destination protocol unreachable(2)</li>
-                <li class="item" data-id="3">destination port unreachable(3)</li>
-                <li class="item" data-id="4">fragmentation required and DF flag set(4)</li>
-                <li class="item" data-id="5">source route failed(5)</li>
-                <li class="item" data-id="6">destination network unknown(6)</li>
-                <li class="item" data-id="7">destination host unknown(7)</li>
-                <li class="item" data-id="8">source host isolated(8)</li>
-                <li class="item" data-id="9">network administratively prohibited(9)</li>
-                <li class="item" data-id="10">host administratively prohibited(10)</li>
-                <li class="item" data-id="11">network unreachable for TOS(11)</li>
-                <li class="item" data-id="12">host unreachable for TOS(12)</li>
-                <li class="item" data-id="13">communication administratively prohibited(13)</li>
-              </ul>
+              <div class="dropdown scroll-wrap scrollbar-auto-hide context-wrap" style="height:300px;">
+                <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+                <ul class="scroll-content" tabindex="-1">
+                  <li class="item selected" data-id="-1">All(-1)</li>
+                  <li class="item" data-id="0">destination network unreachable(0)</li>
+                  <li class="item" data-id="1">destination host unreachable(1)</li>
+                  <li class="item" data-id="2">destination protocol unreachable(2)</li>
+                  <li class="item" data-id="3">destination port unreachable(3)</li>
+                  <li class="item" data-id="4">fragmentation required and DF flag set(4)</li>
+                  <li class="item" data-id="5">source route failed(5)</li>
+                  <li class="item" data-id="6">destination network unknown(6)</li>
+                  <li class="item" data-id="7">destination host unknown(7)</li>
+                  <li class="item" data-id="8">source host isolated(8)</li>
+                  <li class="item" data-id="9">network administratively prohibited(9)</li>
+                  <li class="item" data-id="10">host administratively prohibited(10)</li>
+                  <li class="item" data-id="11">network unreachable for TOS(11)</li>
+                  <li class="item" data-id="12">host unreachable for TOS(12)</li>
+                  <li class="item" data-id="13">communication administratively prohibited(13)</li>
+                </ul>
+              </div>
             </div>
             <div class="selectbox sg-proto-input-sub" id="sg-proto-input-sub-5">
               <div class="selection">All(-1)</div>
@@ -169,13 +173,13 @@
           </section>
 
 
-    {{#if isnt_classic}}
+    {{#unless isClassic}}
           <section class="sg-proto-input" id="sg-proto-ipt-custom">
-            <input class="input" type="text" name="protocol-custom-ranged" value="1" min="1" max="255" required="" data-ignore="true" data-ignore-regexp="^[0-9]*$" data-required="true">
+            <input class="input" type="text" name="protocol-custom-ranged" value="1" min="1" max="255" data-ignore="true" data-ignore-regexp="^[0-9]*$" data-required="true">
           </section>
 
           <section class="sg-proto-input" id="sg-proto-ipt-all">Port Range: 0-65535</section>
-    {{/if}}
+    {{/unless}}
       </div>
     </section>
     <button class="btn btn-blue sg-rule-create-add">Add Rule</button>
@@ -187,11 +191,17 @@
       <p id="sg-rule-self-ref" class="hide"><i class="icon-info icon-label"></i>You have created a rule referencing its own security group. This rule will not be visualized as the blue connection lines.</p>
     </div>
     <button class="btn btn-silver sg-rule-create-readd">Create another rule</button>
-    <button class="btn btn-silver modal-close">Close</button>
+    <button class="btn btn-silver btn-modal-close">Close</button>
   </section>
 </article>
-<aside class="sg-rule-create-sidebar"></aside>
-<!-- <section class="modal-footer">
-      <button class="btn btn-blue sg-rule-create-add">Add Rule</button>
-      <button class="btn btn-silver modal-close">Close</button>
-</section> -->
+
+
+<aside class="sg-rule-create-sidebar">
+  <div class="sidebar-wrap">
+  <header class="sg-create-sb-h">Related Rule<span class="num-wrap" id="sgRuleCreateCount">({{ruleCount}})</span></header>
+  <section class="scroll-wrap scrollbar-auto-hide" style="max-height:358px">
+      <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+      <div class="scroll-content sg-create-rule-list" id="sgRuleCreateSidebar"></div>
+  </section>
+</div>
+</aside>

@@ -2,50 +2,58 @@
 #  View Mode for design/property/volume
 #############################
 
-define [ '../base/model' ], ( PropertyModel ) ->
+define [ '../base/model', 'Design' ], ( PropertyModel, Design ) ->
 
     VolumeAppModel = PropertyModel.extend {
 
-        init : ( volume_uid )->
+        init : ( uid )->
 
           me = this
 
-          myVolumeComponent = MC.canvas_data.component[ volume_uid ]
+          myVolumeComponent = Design.instance().component( uid )
 
-          appData = MC.data.resource_list[ MC.canvas_data.region ]
+          if myVolumeComponent
+            appId = myVolumeComponent.get("appId")
 
-          if volume_uid.indexOf('_') > 0
-
-                tmp = volume_uid.split('_')
-
-                realuid = tmp[0]
-
-                device_name = tmp[2]
-
-                lc_comp = MC.canvas_data.component[realuid]
-
-                lc_block_device = MC.data.resource_list[MC.canvas_data.region][lc_comp.resource.LaunchConfigurationARN].BlockDeviceMappings.member
-
-                $.each lc_block_device, ( i, block ) ->
-
-                  if block.DeviceName.indexOf(device_name) >=0
-
-                        volume_detail = $.extend true, {}, block
-
-                        volume_detail.uid = volume_uid
-
-                        volume_detail.isLC = true
-
-                        volume_detail.name = "Volume of " + lc_comp.name
-
-                        me.set volume_detail
-
-                        return false
           else
+            appId = uid
 
-            volume = $.extend true, {}, appData[ myVolumeComponent.resource.VolumeId ]
-            volume.name = myVolumeComponent.name
-            volume.IOPS = myVolumeComponent.resource.Iops
+          # appData = MC.data.resource_list[ Design.instance().region() ]
+          # if uid.indexOf('_') > 0
+
+          #       tmp = uid.split('_')
+
+          #       realuid = tmp[0]
+
+          #       device_name = tmp[2]
+
+          #       lc_comp = Design.instance().component( uid )
+
+          #       lc_block_device = MC.data.resource_list[ Design.instance().region() ][ lc_comp.get 'appId' ].BlockDeviceMappings.member
+
+          #       $.each lc_block_device, ( i, block ) ->
+
+          #         if block.DeviceName.indexOf(device_name) >=0
+
+          #               volume_detail = $.extend true, {}, block
+
+          #               volume_detail.uid = uid
+
+          #               volume_detail.isLC = true
+
+          #               volume_detail.name = "Volume of " + lc_comp.get 'name'
+
+          #               me.set volume_detail
+
+          #               return false
+          # else
+            #find volume in resource_list
+
+          volume = MC.data.resource_list[Design.instance().region()][ appId ]
+          if volume
+            vol_data = volume.attachmentSet.item[0]
+            volume.name = vol_data.device
+            volume.IOPS = vol_data.iops
             volume.isLC = false
 
           this.set volume

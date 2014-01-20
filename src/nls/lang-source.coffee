@@ -2151,6 +2151,10 @@ module.exports =
       en: "Seconds"
       zh: "秒"
 
+    PROP_ASG_UNIT_MINS:
+      en: "Minutes"
+      zh: "分"
+
     PROP_ASG_HEALTH_CHECK_TYPE:
       en: "Health Check Type"
       zh: "健康度检查类型"
@@ -2312,8 +2316,8 @@ module.exports =
       zh: "周期"
 
     PROP_ASG_ADD_POLICY_SECONDS:
-      en: "seconds, enter ALARM state."
-      zh: "秒时，进入警报状态"
+      en: "minutes, enter ALARM state."
+      zh: "分时，进入警报状态"
 
     PROP_ASG_ADD_POLICY_START_SCALING:
       en: "Start scaling activity when in"
@@ -2426,6 +2430,10 @@ module.exports =
     PROP_RT_TARGET:
       en: "Target"
       zh: "路由对象"
+
+    PROP_RT_LOCAL:
+      en: "local"
+      zh: "本地"
 
     PROP_RT_DESTINATION:
       en: "Destination"
@@ -2688,7 +2696,7 @@ module.exports =
       zh: "正在连接AWS账号"
 
     HEAD_TIP_AWS_ACCOUNT_ID:
-      en: "Your AWS account number is shown in the upper-left area of your browser window when you're logged into your AWS Account. e.g., 123456789000"
+      en: "Your AWS account number is shown in the upper-left area of your browser window when you are logged into your AWS Account. e.g., 123456789000"
       zh: "当您登陆到您的AWS账号时，您的AWS账号编号将显示在您浏览器窗口的左上角区域。 比如123456789000"
 
     HEAD_TIP_ACCOUNT_ACCESS_KEY:
@@ -3477,7 +3485,7 @@ module.exports =
       en: "Security Group <span class='validation-tag tag-sg'>%s</span> has outbound rule towards <span class='validation-tag tag-ip'>0.0.0.0/0</span>. Suggest to change to more specific range."
       zh: ""
     TA_MSG_ERROR_RESOURCE_ASSOCIATED_SG_EXCEED_LIMIT:
-      en: "%s <span class='validation-tag tag-%s'>%s</span>'s associated Security Group count exceed max %s limit."
+      en: "%s <span class='validation-tag tag-%s'>%s</span>'s associated Security Group exceed max %s limit."
       zh: ""
 
     # ASG
@@ -3529,9 +3537,6 @@ module.exports =
       zh:""
     TA_MSG_ERROR_STACK_FORMAT_VALID_FAILED:
       en:"Resource %s has format problem, %s."
-      zh:""
-    TA_MSG_ERROR_ASG_HAS_NO_LAUNCH_CONFIG:
-      en:"Auto Scaling Group <span class='validation-tag tag-asg'>%s</span> has no launch configuration."
       zh:""
     TA_MSG_ERROR_STACK_HAVE_NOT_EXIST_AMI:
       en:"%s <span class='validation-tag tag-%s'>%s</span>'s AMI <span class='validation-tag tag-ami'>%s</span> is not available any more. Please use another AMI by creating new instance."

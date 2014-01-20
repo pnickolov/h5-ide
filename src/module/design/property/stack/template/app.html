@@ -2,22 +2,23 @@
 
 	<dl class="dl-horizontal dl-region-type property-control-group">
 		<dt><label>{{ i18n "PROP_STACK_LBL_REGION" }}</label></dt>
-		<dd>{{property_detail.region}}</dd>
+		<dd>{{region}}</dd>
 		<dt><label>{{ i18n "PROP_STACK_LBL_TYPE" }}</label></dt>
-		<dd>{{property_detail.type}}</dd>
-        {{#if property_detail.usage}}
-            <dt><label>{{ i18n "PROP_STACK_LBL_USAGE" }}</label></dt>
-            <dd style="text-transform: capitalize">{{property_detail.usage}}</dd>
-        {{/if}}
+		<dd>{{type}}</dd>
+    {{#if usage}}
+        <dt><label>{{ i18n "PROP_STACK_LBL_USAGE" }}</label></dt>
+        <dd style="text-transform: capitalize">{{usage}}</dd>
+    {{/if}}
 	</dl>
 
 	<div class="option-group-head">{{ i18n "PROP_STACK_TIT_SG" }}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
 	<div class="option-group sg-group"></div>
 
-	{{#if property_detail.is_vpc}}
-	<div class="option-group-head">{{ i18n "PROP_STACK_TIT_ACL" }}<span class="property-head-num-wrap">({{#if network_acl}}{{network_acl.length}}{{else}}0{{/if}})</span></div>
-	<div class="option-group stack-property-acl-list"></div>
-	{{/if}}
+  {{#if networkAcls}}
+  <div class="option-group-head pos-r">{{ i18n "PROP_STACK_TIT_ACL" }}<span class="property-head-num-wrap">({{networkAcls.length}})</span>
+  </div>
+  <div class="option-group"><ul class="acl-sg-info-list acl-info-list property-list" id="stack-property-acl-list"></ul></div>
+  {{/if}}
 
 	<div class="option-group-head">{{ i18n "PROP_STACK_TIT_SNS" }}<span class="property-head-num-wrap">({{#if subscription}}{{subscription.length}}{{else}}0{{/if}})</span></div>
 	<div class="option-group">
@@ -37,7 +38,7 @@
 	    <li>
 	    	<dl class="dl-horizontal dl-region-type">
 	        <dt><label>Protocol</label></dt><dd class="protocol">{{protocol}}</dd>
-	        <dt><label>Endpoint</label></dt><dd class="endpoint">{{endpoint}}</dd>
+	        <dt><label>Endpoint</label></dt><dd class="endpoint truncate">{{endpoint}}</dd>
         </dl>
 	    </li>
     {{/each}}
@@ -49,38 +50,26 @@
 		{{/if}}
 	</div>
 
-	<div class="option-group-head expand">
-		{{ i18n "PROP_STACK_TIT_COST_ESTIMATION" }}
-		<span class="cost-counter right">{{#if total_fee}} ${{total_fee}}/{{ i18n "PROP_STACK_LBL_COST_CYCLE" }} {{/if}}</span>
-	</div>
+	<div class="option-group-head">
+    {{ i18n "PROP_STACK_TIT_COST_ESTIMATION" }}
+    <span class="cost-counter right">{{#if totalFee}}${{totalFee}}/{{{ i18n "PROP_STACK_LBL_COST_CYCLE" }}} {{/if}}</span>
+  </div>
 	<div class="option-group">
-		<table class="table cost-estimation-table">
-			<thead>
-				<tr>
-					<th style="">{{ i18n "PROP_STACK_COST_COL_RESOURCE" }}</th>
-					<th style="">{{ i18n "PROP_STACK_COST_COL_SIZE_TYPE" }}</th>
-					<th style="">{{ i18n "PROP_STACK_COST_COL_FEE" }}</th>
-				</tr>
-			</thead>
+    <table class="table cost-estimation-table">
+      <thead> <tr>
+          <th>{{ i18n "PROP_STACK_COST_COL_RESOURCE" }}</th>
+          <th style="min-width:70px;">{{ i18n "PROP_STACK_COST_COL_SIZE_TYPE" }}</th>
+          <th style="min-width:60px;">{{ i18n "PROP_STACK_COST_COL_FEE" }}</th>
+      </tr> </thead>
+      <tbody> {{#each costList}}
+        <tr> <td>{{resource}}</td> <td>{{type}}</td> <td>{{formatedFee}}</td> </tr>
+      {{/each}} </tbody>
 
-			<tbody>
-				{{#each cost_list}}
-				<tr>
-					<td>{{resource}}</td>
-                    {{#if size}}
-                    <td>{{size}}</td>
-                    {{else}}
-                    <td>{{type}}</td>
-                    {{/if}}
-					<td>{{fee}} {{unit}}</td>
-				</tr>
-				{{/each}}
-			</tbody>
-		</table>
-		<div class="property-control-group tac">
-			<a target="_blank" href="http://aws.amazon.com/ec2/pricing/" class="goto-outsite tac" target="_blank">AWS EC2 Pricing</a>
-		</div>
-	</div>
+    </table>
+    <div class="property-control-group tac">
+      <a target="_blank" href="http://aws.amazon.com/ec2/pricing/" class="goto-outsite tac" target="_blank">AWS EC2 Pricing</a>
+    </div>
+  </div>
 </article>
 
 

@@ -56,6 +56,9 @@ require.config {
 		#forge handle
 		'forge_handle'    : 'lib/forge/main'
 
+		'Design'          : 'module/design/framework/Design'
+		'CanvasManager'   : 'module/design/framework/canvasview/CanvasManager'
+
 	shim                  :
 
 		'jquery'          :

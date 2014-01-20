@@ -1,8 +1,5 @@
 
-// [ Warning!!!! ] DEAD CODE
-// This source code is dead. listen() / ready() / connect() seems like doing nothing.
-// But it pollutes the window object. Which makes it un-removable !!!!
-// Dom Ready
+define( ['jquery', 'MC.canvas', 'MC.canvas.constant', 'canvon'], function() {
 var listen = function ()
 {
 	var canvas_state = MC.canvas.getState(),
@@ -13,13 +10,13 @@ var listen = function ()
 
 	canvas_container
 		.off(name_space)
-		.removeClass('canvas_state_app canvas_state_appedit canvas_state_stack canvas_canvas_state_appview');
+		.removeClass('canvas_state_app canvas_state_appedit canvas_state_stack canvas_state_appview');
 
 	if (canvas_state === 'app')
 	{
 		canvas_container
 			.addClass('canvas_state_' + canvas_state)
-			.on('mousedown' + name_space, '.instance-volume, .instanceList-item-volume', MC.canvas.volume.show)
+			.on('mousedown' + name_space, '.instance-volume, .instanceList-item-volume, .asgList-item-volume', MC.canvas.volume.show)
 			.on('click' + name_space, '.line', MC.canvas.event.selectLine)
 			.on('mousedown' + name_space, MC.canvas.event.clearSelected)
 			.on('mousedown' + name_space, '#svg_canvas', MC.canvas.event.clickBlank)
@@ -36,7 +33,7 @@ var listen = function ()
 	{
 		canvas_container
 			.addClass('canvas_state_' + canvas_state)
-			.on('mousedown' + name_space, '.instance-volume, .instanceList-item-volume', MC.canvas.volume.show)
+			.on('mousedown' + name_space, '.instance-volume, .instanceList-item-volume, .asgList-item-volume', MC.canvas.volume.show)
 			.on('mousedown' + name_space, '.port', MC.canvas.event.appDrawConnection)
 			.on('mousedown' + name_space, '.dragable', MC.canvas.event.dragable.mousedown)
 			.on('mousedown' + name_space, '.group-resizer', MC.canvas.event.groupResize.mousedown)
@@ -101,7 +98,6 @@ var connect = function ()
 
 };
 
-define( ['jquery'], function() {
 	return {
 		'listen'     : listen,
 		'canvas_initialize' : canvas_initialize,

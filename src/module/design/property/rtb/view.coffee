@@ -17,64 +17,44 @@ define [ '../base/view', 'text!./template/stack.html' ], ( PropertyView, templat
             'click #set-main-rt'              : 'setMainRT'
             'change .propagation'             : 'changePropagation'
 
-            "focus .ip-main-input"      : 'onFocusCIDR'
-            "keypress .ip-main-input"   : 'onPressCIDR'
-            "blur .ip-main-input"       : 'onBlurCIDR'
+            "focus .ipt-wrapper .input"      : 'onFocusCIDR'
+            "keypress .ipt-wrapper .input"   : 'onPressCIDR'
+            "blur .ipt-wrapper .input"       : 'onBlurCIDR'
 
         render     : () ->
             @$el.html template @model.attributes
-
-            # find empty inputbox and focus
-            me = this
-            inputElemAry = $('.ip-main-input')
-            haveZeroItem = false
-            _.each inputElemAry, (inputElem, inputIdx) ->
-                inputValue = $(inputElem).val()
-                # if (inputValue.indexOf('/0') isnt -1 and inputIdx > 1)
-                if haveZeroItem and inputValue.indexOf('/0') isnt -1
-                    $(inputElem).val('')
-                    inputValue = ''
-                if !inputValue
-                    MC.aws.aws.disabledAllOperabilityArea(true)
-                    me.forceShow()
-                    $(inputElem).focus()
-                if inputValue.indexOf('/0') isnt -1
-                    haveZeroItem = true
-                null
-
             @model.attributes.title
 
         processParsley: ( event ) ->
             $( event.currentTarget )
             .find( 'input' )
             .last()
+            .focus()
             .removeClass( 'parsley-validated' )
             .removeClass( 'parsley-error' )
             .next( '.parsley-error-list' )
             .remove()
+            null
 
 
         beforeRemoveIp : ( event ) ->
-            vals = 0
-            $("#property-rtb-ips input").each ()->
-                v = $(this).val()
-                if v
-                    ++vals
+
+            $nonEmptyInputs = $( event.currentTarget ).find("input").filter ()->
+                this.value.length
 
             # If we only have valid item and user is trying to remove it.
             # prevent deletion
-            if vals <= 1 and event.value
+            if $nonEmptyInputs.length <= 1 and event.value
                 return false
 
             null
 
         removeIp : ( event ) ->
+            $target = $(event.currentTarget)
 
-            data = event.target.dataset
+            newIps  = _.map $target.find("input"), ( input )-> input.value
 
-            children = event.target.children
-
-            @model.setRoutes data, children
+            @model.setRoutes $target.attr("data-ref"), _.uniq( newIps )
             null
 
         changeName : ( event ) ->
@@ -82,9 +62,7 @@ define [ '../base/view', 'text!./template/stack.html' ], ( PropertyView, templat
             target = $ event.currentTarget
             name = target.val()
 
-            MC.validate.preventDupname target, @model.get('uid'), name, 'Route Table'
-
-            if target.parsley 'validate'
+            if @checkDupName( target, "Route Table" )
                 @model.setName name
                 @setTitle name
 
@@ -94,96 +72,80 @@ define [ '../base/view', 'text!./template/stack.html' ], ( PropertyView, templat
             null
 
         changePropagation : ( event ) ->
-            @model.setPropagation event.target.dataset.uid
+            @model.setPropagation $( event.target ).is(":checked")
             null
 
         onPressCIDR : ( event ) ->
-
             if (event.keyCode is 13)
                 $(event.currentTarget).blur()
 
         onFocusCIDR : ( event ) ->
-
-            MC.aws.aws.disabledAllOperabilityArea(true)
+            @disabledAllOperabilityArea(true)
             null
 
         onBlurCIDR : ( event ) ->
 
             inputElem = $(event.currentTarget)
             inputValue = inputElem.val()
+            parentElem = inputElem.closest(".multi-input")
 
-            parentElem = inputElem.parents('.multi-input')
-            gwType = parentElem.attr('data-type')
-            gwUIDRef = parentElem.attr('data-ref')
-            gwUID = gwUIDRef.slice(1).split('.')[0]
+            dataRef = parentElem.attr("data-ref")
 
-            allCidrAry = []
-            repeatFlag = false
-            allZeroCidrCount = 0
-            allCidrInputElemAry = inputElem.parents('.option-group').find('.ip-main-input')
-            _.each allCidrInputElemAry, (inputElem) ->
-                cidrValue = $(inputElem).val()
-                if cidrValue.indexOf('/0') isnt -1
-                    allZeroCidrCount++
-                if !((inputValue.indexOf('/0') isnt -1) and ($(inputElem).parent('.ipt-wrapper').index() is 0))
-                    if cidrValue isnt inputValue
-                        allCidrAry.push(cidrValue)
-                    else
-                        if repeatFlag then allCidrAry.push(cidrValue)
-                        if !repeatFlag then repeatFlag = true
+            ips = []
+            parentElem.find("input").each ()->
+                if this isnt event.currentTarget and this.value
+                    ips.push this.value
                 null
 
-            haveError = true
+            allCidrAry = _.uniq( ips )
+            parentElem.closest("li").siblings().each ()->
+                otherGroupIps = []
+                $(this).find("input").each ()->
+                    if this.value then otherGroupIps.push this.value
+                    null
+                allCidrAry = allCidrAry.concat _.uniq( otherGroupIps )
+                null
+
+
             if !inputValue
-                mainContent = 'CIDR block is required.'
-                descContent = 'Please provide a IP ranges for this route.'
+                if inputElem.closest('.multi-ipt-row').siblings().length == 0
+                    mainContent = 'CIDR block is required.'
+                    descContent = 'Please provide a IP ranges for this route.'
             else if !MC.validate 'cidr', inputValue
-                mainContent = inputValue + ' is not a valid form of CIDR block.'
+                mainContent = "#{inputValue} is not a valid form of CIDR block."
                 descContent = 'Please provide a valid IP range. For example, 10.0.0.1/24.'
-            else if (!MC.aws.rtb.isNotCIDRConflict(inputValue, allCidrAry) or allZeroCidrCount > 1)
-                mainContent = inputValue + ' conflicts with other route.'
-                descContent = 'Please choose a CIDR block not conflicting with existing route.'
-            else
-                haveError = false
+            # Right now we do not check if "0.0.0.0/0" conflicts with other cidr
+            else if inputValue isnt "0.0.0.0/0"
+                for cidr in allCidrAry
+                    if cidr isnt "0.0.0.0/0" and MC.aws.subnet.isSubnetConflict( inputValue, cidr )
+                        mainContent = "#{inputValue} conflicts with other route."
+                        descContent = 'Please choose a CIDR block not conflicting with existing route.'
+                        break
 
-            if haveError
-                brotherElemAry = inputElem.parents('.multi-ipt-row').prev('.multi-ipt-row')
-                if brotherElemAry.length isnt 0
-                    MC.aws.aws.disabledAllOperabilityArea(false)
-                    # return
+            if not mainContent
+                if inputValue then ips.push inputValue
 
-                dialog_template = MC.template.setupCIDRConfirm {
-                    remove_content : 'Remove Route',
-                    main_content : mainContent,
-                    desc_content : descContent
-                }
-                modal dialog_template, false, () ->
+                @model.setRoutes dataRef, _.uniq( ips )
+                @disabledAllOperabilityArea(false)
+                return
 
-                    $('.modal-close').click () ->
-                        inputElem.focus()
+            dialog_template = MC.template.setupCIDRConfirm {
+                remove_content : 'Remove Route'
+                main_content : mainContent
+                desc_content : descContent
+            }
 
-                    $('#cidr-remove').click () ->
-                        connectionAry = MC.canvas_data.layout.component.node[gwUID].connection
-                        connectionObj = null
-                        _.each connectionAry, (conObj) ->
-                            if conObj.port in ['eni-rtb', 'igw-tgt', 'vgw-tgt', 'instance-rtb']
-                                connectionObj = conObj
-                            null
-                        if connectionObj
-                            lineUID = connectionObj.line
-                            rtUID = connectionObj.target
-                            $("#svg_canvas").trigger("CANVAS_OBJECT_DELETE", {
-                                'id': lineUID,
-                                'type': 'line'
-                            })
-                        MC.aws.aws.disabledAllOperabilityArea(false)
-                        modal.close()
-            else
-                data = event.target.parentNode.parentNode.parentNode.dataset
-                children = event.target.parentNode.parentNode.parentNode.children
+            that = this
+            modal dialog_template, false, () ->
 
-                @model.setRoutes data, children
-                MC.aws.aws.disabledAllOperabilityArea(false)
+                $('.modal-close').click () -> inputElem.focus()
+
+                $('#cidr-remove').click () ->
+                    $canvas.clearSelected()
+                    Design.instance().component( dataRef ).remove()
+                    that.disabledAllOperabilityArea(false)
+                    modal.close()
+
 
             null
 

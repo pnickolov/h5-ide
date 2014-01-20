@@ -60,7 +60,7 @@ var multiinputbox;
 
     $wrapper.trigger( event )
     if ( event.isDefaultPrevented() )
-      return
+      return false;
 
     $target.remove();
     $wrapper.trigger("REMOVE_ROW", value );

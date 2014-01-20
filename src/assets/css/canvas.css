@@ -24,6 +24,30 @@
 	background: #fff url('../images/ide/grid_x1.png');
 }
 
+#canvas_body.zoomlevel_1_2 { background-image : url('../images/ide/grid_x1.2.png'); }
+#canvas_body.zoomlevel_1_4 { background-image : url('../images/ide/grid_x1.4.png'); }
+#canvas_body.zoomlevel_1_6 { background-image : url('../images/ide/grid_x1.6.png'); }
+
+
+@media (-webkit-min-device-pixel-ratio: 2), (min--moz-device-pixel-ratio: 2), (-o-min-device-pixel-ratio: 2 / 1), (min-device-pixel-ratio: 2) {
+	#canvas_body {
+		background-image : url('../images/ide/grid_x1@2x.png');
+		background-size  : 80px 80px;
+	}
+	#canvas_body.zoomlevel_1_2 {
+		background-image : url('../images/ide/grid_x1.2@2x.png');
+		background-size  : 64px 64px;
+	}
+	#canvas_body.zoomlevel_1_4 {
+		background-image : url('../images/ide/grid_x1.4@2x.png');
+		background-size  : 48px 48px;
+	}
+	#canvas_body.zoomlevel_1_6 {
+		background-image : url('../images/ide/grid_x1.6@2x.png');
+		background-size  : 32px 32px;
+	}
+}
+
 /*.canvas-view-sg .line-sg,
 .canvas-view-sg .port-instance-sg {
 	visibility: visible;
@@ -84,43 +108,6 @@
 
 #svg_resizer_width_shrink {
 	top: 45px;
-}
-
-#screenshot_canvas_body {
-	padding: 10px;
-	background: #FFF url('../images/ide/grid_x1.png');
-	min-width: 800px;
-	min-height: 600px;
-}
-
-#screenshot_canvas_header {
-	border-top: 4px solid #c16aa2;
-	background-color: #272127;
-	height: 50px;
-	padding: 0 10px;
-	position: relative;
-	min-width: 800px;
-}
-
-#screenshot_canvas_header img {
-	margin: 8px 10px 0 0;
-	height: 30px;
-	position: absolute;
-	left: 10px;
-}
-
-#screenshot_info {
-	position: absolute;
-	right: 10px;
-	top: 8px;
-	color: #f3f3f3;
-	font-size: 12px;
-	text-align: right;
-}
-
-#canvas_copy {
-	width: 100%;
-	height: 100%;
 }
 
 #svg_canvas {
@@ -325,11 +312,23 @@
 }
 
 .line-elb-sg {
+	-webkit-transform: translate(0,0);
+	-moz-transform: translate(0,0);
+	transform: translate(0,0);
 	stroke: #0973f6;
 }
 
 .line-elb-sg.view-hover {
+	-webkit-transform: translate(0.5px,0.5px);
+	-moz-transform: translate(0.5px,0.5px);
+	transform: translate(0.5px,0.5px);
 	stroke-width: 3px;
+}
+
+.line-elb-sg.selected {
+	-webkit-transform: translate(0,0);
+	-moz-transform: translate(0,0);
+	transform: translate(0,0);
 }
 
 .line-rtb-target {
@@ -447,11 +446,10 @@
 
 #svg_canvas .deleted.selected .node-label-name-bg {
 	fill: rgb(243, 98, 98);
-		fill-opacity: 0.3;
+	fill-opacity: 0.3;
 }
 
-.deleted .eni-number-bg,
-.deleted .instance-number-bg {
+.deleted .server-number-bg {
 	fill: red;
 }
 
@@ -469,59 +467,58 @@
 	shape-rendering:crispEdges;
 }*/
 
-.group-vpc {
-	fill: rgba(250, 250, 250, 0.05);
-	stroke: #dcdcdc;
-	stroke-linejoin: round;
-	stroke-dasharray: none;
-	stroke-width: 4;
+.AWS-VPC-VPC .group {
+	fill:rgba(250, 250, 250, 0.05);
+	stroke:#dcdcdc;
+	stroke-linejoin:round;
+	stroke-dasharray:none;
+	stroke-width:4;
 }
 
-.webkit .group-vpc,
-.webkit .group-az,
-.webkit .group-subnet {
+.webkit .AWS-VPC-VPC .group,
+.webkit .AWS-EC2-AvailabilityZone .group,
+.webkit .AWS-VPC-Subnet .group {
 	-webkit-transform: translate(0,0);
 	        transform: translate(0,0);
 }
 
-#svg_canvas .AWS-VPC-VPC.selected .group-vpc,
-#svg_canvas .AWS-EC2-AvailabilityZone.selected .group-az,
-#svg_canvas .AWS-VPC-Subnet.selected .group-subnet {
+#svg_canvas .AWS-VPC-VPC.selected .group,
+#svg_canvas .AWS-EC2-AvailabilityZone.selected .group,
+#svg_canvas .AWS-VPC-Subnet.selected .group {
 	shape-rendering:crispEdges;
 }
 
-.firefox .group-vpc,
-.firefox .group-az,
-.firefox .group-subnet {
+.firefox .AWS-VPC-VPC .group,
+.firefox .AWS-EC2-AvailabilityZone .group,
+.firefox .AWS-VPC-Subnet .group {
 	-webkit-transform: translate(0,0);
 	        transform: translate(0,0);
 }
 
-#svg_canvas .firefox .AWS-VPC-VPC.selected .group-vpc,
-#svg_canvas .firefox .AWS-EC2-AvailabilityZone.selected .group-az,
-#svg_canvas .firefox .AWS-VPC-Subnet.selected .group-subnet {
+.firefox #svg_canvas .AWS-VPC-VPC.selected .group,
+.firefox #svg_canvas .AWS-EC2-AvailabilityZone.selected .group,
+.firefox #svg_canvas .AWS-VPC-Subnet.selected .group {
 	shape-rendering:auto;
 }
 
-#svg_canvas .webkit .AWS-VPC-VPC.selected .group-vpc,
-#svg_canvas .webkit .AWS-EC2-AvailabilityZone.selected .group-az,
-#svg_canvas .webkit .AWS-VPC-Subnet.selected .group-subnet {
+.webkit #svg_canvas .AWS-VPC-VPC.selected .group,
+.webkit #svg_canvas .AWS-EC2-AvailabilityZone.selected .group,
+.webkit #svg_canvas .AWS-VPC-Subnet.selected .group {
 	shape-rendering:auto;
 	-webkit-transform: translate(0.5px, 0.5px);
 	        transform: translate(0.5px, 0.5px);
 }
 
-.AWS-VPC-VPC:hover .group-vpc,
-.node-dragging .dropable-group .group-vpc {
+.AWS-VPC-VPC:hover .group,
+.node-dragging .dropable-group .AWS-VPC-VPC .group {
 	stroke: #C6C4C4;
 }
 
-.node-dragging .match-dropable-group .group-vpc {
-	/*stroke: #659FFF;*/
+.node-dragging .match-dropable-group .AWS-VPC-VPC .group {
 	stroke-width: 6;
 }
 
-#svg_canvas .AWS-VPC-VPC.selected .group-vpc {
+#svg_canvas .AWS-VPC-VPC.selected .group {
 	stroke: #C6C4C4;
 	fill: rgba(255, 255, 255, 0);
 	stroke-width: 5;
@@ -531,7 +528,7 @@
 	fill: #aaa;
 }
 
-.group-az {
+.AWS-EC2-AvailabilityZone .group {
 	fill: rgba(252, 190, 23, 0.02);
 	stroke: #f9be76;
 	stroke-linejoin: round;
@@ -539,17 +536,17 @@
 	stroke-width: 2;
 }
 
-.AWS-EC2-AvailabilityZone:hover .group-az,
-.node-dragging .dropable-group .group-az {
+.AWS-EC2-AvailabilityZone:hover .group,
+.node-dragging .dropable-group .AWS-EC2-AvailabilityZone .group {
 	stroke: #F69722;
 }
 
-.node-dragging .match-dropable-group .group-az {
+.node-dragging .match-dropable-group .AWS-EC2-AvailabilityZone .group {
 	/*stroke: #659FFF;*/
 	stroke-width: 4;
 }
 
-#svg_canvas .AWS-EC2-AvailabilityZone.selected .group-az {
+#svg_canvas .AWS-EC2-AvailabilityZone.selected .group {
 	stroke: #f7941d;
 	/*fill: rgba(255, 255, 255, 0);*/
 	stroke-width: 3;
@@ -559,7 +556,7 @@
 	fill: #F69722;
 }
 
-.group-subnet {
+.AWS-VPC-Subnet .group {
 	fill: rgba(224, 224, 224, 0.05);
 	stroke: #dbd7d7;
 	stroke-linejoin: round;
@@ -567,17 +564,17 @@
 	stroke-width: 2;
 }
 
-.AWS-VPC-Subnet:hover .group-subnet,
-.node-dragging .dropable-group .group-subnet {
+.AWS-VPC-Subnet:hover .group,
+.node-dragging .dropable-group .AWS-VPC-Subnet .group {
 	stroke: #C6C4C4;
 }
 
-.node-dragging .match-dropable-group .group-subnet {
+.node-dragging .match-dropable-group .AWS-VPC-Subnet .group {
 	/*stroke: #659FFF;*/
 	stroke-width: 4;
 }
 
-#svg_canvas .AWS-VPC-Subnet.selected .group-subnet {
+#svg_canvas .AWS-VPC-Subnet.selected .group {
 	stroke: #C6C4C4;
 	fill: rgba(255, 255, 255, 0);
 	stroke-width: 3;
@@ -596,8 +593,8 @@
 }
 
 .asg-title {
-	fill: #83CBF9;
-	stroke: #83CBF9;
+	fill   : #83CBF9;
+	stroke : none;
 }
 
 /*.asg-title:hover {
@@ -623,7 +620,6 @@
 
 #svg_canvas .AWS-AutoScaling-Group.selected .asg-title {
 	fill: #049CDD;
-	stroke: #049CDD;
 }
 
 .AWS-AutoScaling-Group .group-label {
@@ -657,21 +653,15 @@
 
 /*scale area style*/
 
-.match-dropable-group .group-resizer {
+.match-dropable-group .resizer-wrap {
 	display: none;
 }
 
-.group-resizer {
-	fill-opacity: 0;
+.resizer-wrap {
+	fill-opacity:0;
 }
 
-.node-dragging .dropable-group .group-resizer {
-	fill-opacity: 1;
-	fill: rgba(252, 190, 23, 0.15);
-}
-
-.node-dragging .dropable-group .group-resizer {
-	fill-opacity: 1;
+.node-dragging .dropable-group .resizer-wrap {
 	fill: rgba(238, 238, 238, 0.5);
 }
 
@@ -716,7 +706,7 @@
 .resizer-bottom:hover,
 .resizer-bottomleft:hover,
 .resizer-bottomright:hover {
-	fill-opacity: 1;
+	fill-opacity:1;
 	fill: rgba(200, 200, 200, 0.12);
 }
 
@@ -847,21 +837,19 @@
 	display: none;
 }
 
-.canvas_state_app .instance-number-bg {
+.canvas_state_app .server-number-bg {
 	cursor: pointer;
 }
 
-.canvas_state_appedit .instance-number-bg,
-.canvas_state_appedit .eni-number-bg {
+.canvas_state_appedit .server-number-bg {
 	fill: #C4C4C4;
 }
 
-.canvas_state_appedit .instance-number {
+.canvas_state_appedit .server-number {
 	font-weight: normal;
 }
 
-.canvas_state_app .instance-number,
-.canvas_state_app .eni-number {
+.canvas_state_app .server-number{
 	text-decoration: underline;
 	cursor: pointer;
 }
@@ -1025,6 +1013,7 @@
 }
 
 .node-sg-color-border {
+	fill:none;
 	stroke: white;
 	stroke-width: 0px;
 }
@@ -1051,25 +1040,13 @@
 }
 
 
-.instance-number-bg {
+.server-number-bg {
 	stroke-width:0;
 	fill:#439beb;
 	opacity: 1;
 }
 
-.instance-number {
-	font-weight: bold;
-	fill: white;
-	font-size: 12px;
-}
-
-.eni-number-bg {
-	stroke-width:0;
-	fill:#439beb;
-	opacity: 1;
-}
-
-.eni-number {
+.server-number {
 	font-weight: bold;
 	fill: white;
 	font-size: 12px;
@@ -1086,13 +1063,8 @@
 }
 
 .sg-color-header {
-	margin-top: 19px;
+	margin-top: 18px;
 }
-
-/*.sg-color-rule-header {
-	margin-left: 10px;
-	margin-top: 10px;
-}*/
 
 /* instance state */
 .instance-state {

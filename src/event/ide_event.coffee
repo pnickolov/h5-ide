@@ -34,7 +34,9 @@ define [ 'underscore', 'backbone' ], () ->
 
         #
         OPEN_DESIGN            : 'OPEN_DESIGN'
+        OPEN_SUB_DESIGN        : 'OPEN_SUB_DESIGN'
         OPEN_PROPERTY          : 'OPEN_PROPERTY'
+        FORCE_OPEN_PROPERTY    : "FORCE_OPEN_PROPERTY"
         RELOAD_AZ              : 'RELOAD_AZ'
         #OPEN_TOOLBAR          : 'OPEN_TOOLBAR'
 
@@ -101,11 +103,8 @@ define [ 'underscore', 'backbone' ], () ->
         #APPEDIT_UPDATE_ERROR  : 'APPEDIT_UPDATE_ERROR'
 
         # User Input Change Event
-        NEED_IGW               : 'NEED_IGW'
         ENABLE_RESOURCE_ITEM   : 'ENABLE_RESOURCE_ITEM'
         DISABLE_RESOURCE_ITEM  : 'DISABLE_RESOURCE_ITEM'
-
-        DELETE_COMPONENT       : 'DELETE_COMPONENT'
 
         # property
         SHOW_PROPERTY_PANEL    : 'SHOW_PROPERTY_PANEL'

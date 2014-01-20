@@ -4,13 +4,6 @@
 
 define [ '../base/main', './model', './view' ], ( PropertyModule, model, view ) ->
 
-    # Because the model and view is shared between different property modes
-    # Wire up the view and model here.
-    view.on 'NAME_CHANGE', ( value ) ->
-        model.setSGName value
-        MC.aws.sg.updateSGColorLabel( PropertyModule.activeModule().uid )
-        null
-
     SgModule = PropertyModule.extend {
 
         subPanelID : "SG"

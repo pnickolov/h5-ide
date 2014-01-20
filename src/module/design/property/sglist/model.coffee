@@ -2,252 +2,150 @@
 #  View Mode for design/property/instance
 #############################
 
-define [ 'lib/forge/app' ], ( forge_app ) ->
+define [ "Design", "constant", 'lib/forge/app' ], ( Design, constant, forge_app ) ->
 
 	SGListModel = Backbone.Model.extend {
 
-		defaults :
-			'show_sg_check' : true
-
-		_getSGRefNum : (sgUID) ->
-			refNum = 0
-			sgAry = []
-			_.each MC.canvas_data.component, (comp, uid) ->
-				compType = comp.type
-				if compType is 'AWS.ELB' or compType is 'AWS.AutoScaling.LaunchConfiguration'
-					sgAry = sgAry.concat comp.resource.SecurityGroups
-
-				if compType is 'AWS.EC2.Instance' and MC.canvas_data.platform is MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
-					sgAry = sgAry.concat comp.resource.SecurityGroupId
-
-				if compType is 'AWS.VPC.NetworkInterface'
-					_sgAry = []
-					_.each comp.resource.GroupSet, (sgObj) ->
-						_sgAry.push sgObj.GroupId
-						null
-					sgAry = sgAry.concat _sgAry
-				null
-
-			_.each sgAry, (value) ->
-				refSGUID = value.slice(1).split('.')[0]
-				if refSGUID is sgUID
-					refNum++
-				null
-
-			return refNum
-
 		getSGInfoList : ->
 
+			design       = Design.instance()
 			parent_model = @parent_model
-			if !parent_model or !parent_model.getSGList
-				return
 
-
-			isELBParent   = parent_model.get 'is_elb'
-			isStackParent = parent_model.get 'is_stack'
-
-			current_tab_type = MC.canvas.getState()
-			if current_tab_type is 'app' or current_tab_type is 'appview'
+			readonly = false
+			if design.modeIsApp() or design.modeIsAppView()
 				readonly = true
-			else if current_tab_type is 'appedit'
+			else if design.modeIsAppEdit()
 				if parent_model.isSGListReadOnly
 					readonly = parent_model.isSGListReadOnly()
-				else
-					readonly = false
+
+			resource_id = parent_model.get("uid")
+			resource = design.component( resource_id )
+
+			if resource
+				isELBParent   = resource.type is constant.AWS_RESOURCE_TYPE.AWS_ELB
+				isStackParent = false
+				resource_id   = resource.id
 			else
-				readonly = false
+				isELBParent   = false
+				isStackParent = true
+				resource_id   = ""
 
-			parentSGList  = parent_model.getSGList()
-			allElbSGAry   = MC.aws.elb.getAllElbSGUID()
-			allSGUIDAry   = []
-			displaySGAry  = []
-			allElbSGMap   = {}
+			sg_list  = []
 
-			for uid in allElbSGAry
-				allElbSGMap[ uid ] = true
+			enabledSG    = {}
+			enabledSGArr = []
 
-			for uid, comp of MC.canvas_data.component
-				if comp.type isnt 'AWS.EC2.SecurityGroup'
+			SgAssoModel = Design.modelClassForType( "SgAsso" )
+
+			## ## ## Get All SG
+			for sg in Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup ).allObjects()
+				# Ignore ElbSG if the property panel is not stack/elb
+				if sg.isElbSg() and not ( isELBParent or isStackParent )
 					continue
-				if isELBParent or isStackParent or not allElbSGMap.hasOwnProperty( uid )
-					allSGUIDAry.push uid
 
-			sg_full        = { full : false }
-			enabledSGCount = 0
-			defaultSG      = null
-
-			for uid in allSGUIDAry
-
-				sgComp = MC.canvas_data.component[uid]
-				sgCompRes = sgComp.resource
-
-				sgIpPermissionsLength = sgCompRes.IpPermissions.length
-				sgIpPermissionsEgressLength = if sgCompRes.IpPermissionsEgress then sgCompRes.IpPermissionsEgress.length else 0
-
-				sgChecked = uid in parentSGList
-				if sgChecked
-					++enabledSGCount
+				sgChecked = !!SgAssoModel.findExisting( sg, resource )
 
 				needShow = isStackParent or ( not readonly ) or sgChecked
-
 				if not needShow
 					continue
 
-				isDefault = sgComp.name is 'DefaultSG'
-				deletable = not ( readonly or isStackParent or isDefault or forge_app.existing_app_resource( uid ) )
-				isElbSG = MC.aws.elb.isELBDefaultSG(uid)
-				if isElbSG
+				if sg.isElbSg() or sg.isDefault() or readonly or isStackParent or resource.get("appId")
 					deletable = false
+				else
+					deletable = true
 
-				# need to display
-				sgDisplayObj =
-					sgUID       : uid
-					sgName      : sgComp.name
-					sgDesc      : sgCompRes.GroupDescription
-					sgRuleNum   : sgIpPermissionsLength + sgIpPermissionsEgressLength
-					sgMemberNum : @_getSGRefNum uid
-					sgChecked   : sgChecked
-					sgHideCheck : readonly or isStackParent
-					sgIsDefault : isDefault
-					sgFull      : sg_full
-					sgColor     : MC.aws.sg.getSGColor uid
-					readonly    : readonly
+				assos = sg.connections( "SgAsso" )
+				# SgAsso is a connection to represent SG <=> Resource
+				# See what SG is used by this resource
+				for asso in assos
+					if asso.connectsTo( resource_id )
+						enabledSG[ sg.id ] = true
+						enabledSGArr.push sg
+						break
+
+				sg_list.push {
+					uid         : sg.id
+					color       : sg.color
+					name        : sg.get("name")
+					desc        : sg.get("description")
+					ruleCount   : sg.ruleCount()
+					memberCount : assos.length
+					hideCheck   : readonly or isStackParent
 					deletable   : deletable
-
-				if sgDisplayObj.sgIsDefault
-					defaultSG = sgDisplayObj
-				else
-					displaySGAry.push sgDisplayObj
-
-			#move DefaultSG to the first
-			if defaultSG
-				displaySGAry.unshift defaultSG
-
-			# if MC.canvas_data.platform != "ec2-classic" && enabledSGCount >= 5
-				# In VPC, user can only select 5 SG
-				# sg_full.full = true
-
-			@set 'is_stack_sg', isStackParent
-			@set 'only_one_sg', enabledSGCount is 1
-			@set 'sg_list',     displaySGAry
-			@set 'sg_length',   if isStackParent then displaySGAry.length else enabledSGCount
-			@set 'readonly',    readonly
-			null
+					used        : enabledSG[ sg.id ]
+				}
 
 
-		getRuleInfoList : ->
-
-			parent_model = @parent_model
-			if (not parent_model) or (not parent_model.getSGList)
-				return
-
-			parentSGList = parent_model.getSGList()
-			components   = MC.canvas_data.component
-
+			## ## ## Get All Rules
+			# SgRuleSet is a connection to represent SG <=> SG
 			sgRuleAry = []
-
-			for uid in parentSGList
-				if not components[uid]
-					continue
-
-				sgComp             = $.extend true, {}, components[uid]
-				sgCompRes          = sgComp.resource
-				sgIpPermissionsAry = sgCompRes.IpPermissions
-
-				for value in sgIpPermissionsAry
-					value.Direction = 'inbound'
-					if value.ToPort is value.FromPort
-						value.display_port = value.ToPort
-					else
-						partType = if value.IpProtocol is 'icmp' then '/' else '-'
-						value.display_port = value.FromPort + partType + value.ToPort
-
-					if value.IpRanges[0] is '@'
-						ipRangeUid = MC.extractID( value.IpRanges )
-						if components[ ipRangeUid ]
-							value.IpRanges = components[ ipRangeUid ].name
-							value.sgColor = MC.aws.sg.getSGColor(ipRangeUid)
-
-					if value.IpProtocol not in ['tcp', 'udp', 'icmp']
-
-						if value.IpProtocol in [-1, '-1']
-
-							value.IpProtocol = "all"
-							value.FromPort = 0
-							value.ToPort = 65535
-							value.display_port = '0-65535'
-
-						else
-							value.IpProtocol = "#{value.IpProtocol}"
+			for usedSG in enabledSGArr
+				ruleSets = usedSG.connections( "SgRuleSet" )
+				for ruleset in ruleSets
+ 					sgRuleAry = sgRuleAry.concat( ruleset.toPlainObjects( usedSG.id ) )
 
 
-				if sgCompRes.IpPermissionsEgress
+			SgRuleSetModel = Design.modelClassForType( "SgRuleSet" )
 
-					sgIpPermissionsEgressAry = sgCompRes.IpPermissionsEgress
+			# Set
+			@set {
+				is_stack_sg  : isStackParent
+				only_one_sg  : enabledSGArr.length is 1
+				sg_list      : sg_list
+				sg_length    : if isStackParent then sg_list.length else enabledSGArr.length
+				readonly     : readonly
+				# Remove duplicate rules
+				sg_rule_list : SgRuleSetModel.getPlainObjFromRuleSets( sgRuleAry )
+			}
 
-					for value in sgIpPermissionsEgressAry
-						value.Direction = 'outbound'
-						if value.ToPort is value.FromPort
-							value.display_port = value.ToPort
-						else
-							partType = if value.IpProtocol is 'icmp' then '/' else '-'
-							value.display_port = value.FromPort + partType + value.ToPort
-
-						if value.IpRanges.slice(0,1) is '@'
-
-							sgUID = MC.extractID(value.IpRanges)
-							value.sgColor = MC.aws.sg.getSGColor(sgUID)
-							value.IpRanges = components[sgUID].name
-
-						if value.IpProtocol not in ['tcp', 'udp', 'icmp']
-
-							if value.IpProtocol in [-1, '-1']
-
-								value.IpProtocol = "all"
-								value.FromPort = 0
-								value.ToPort = 65535
-								value.display_port = '0-65535'
-
-							else
-								value.IpProtocol = "#{value.IpProtocol}"
-
-					sgIpPermissionsAry = sgIpPermissionsAry.concat sgIpPermissionsEgressAry
-
-				sgRuleAry = sgRuleAry.concat sgIpPermissionsAry
-
-			# reduce repeat
-			ruleExistMap = {}
-			newSGRuleAry = _.filter sgRuleAry, (sgRuleObj) ->
-				key = sgRuleObj.Direction + sgRuleObj.FromPort + sgRuleObj.ToPort + sgRuleObj.IpProtocol + sgRuleObj.IpRanges + sgRuleObj.Groups
-				if ruleExistMap[key]
-					return false
-				else
-					ruleExistMap[key] = true
-					return true
-
-			@set 'sg_rule_list', newSGRuleAry
-
+			@sortSGList()
+			@sortSGRule()
 			null
 
-		assignSGToComp : (sgUID, sgChecked) ->
-
-			parent_model = @parent_model
-
-			if sgChecked
-				if parent_model.assignSGToComp
-					parent_model.assignSGToComp sgUID
-			else
-				if parent_model.unAssignSGToComp
-					parent_model.unAssignSGToComp sgUID
-
-			#update sg color label
-			MC.aws.sg.updateSGColorLabel parent_model.get('uid')
+		sortSGList : ()->
+			@attributes.sg_list = @attributes.sg_list.sort ( a_sg, b_sg )->
+				if a_sg.name is "DefaultSG" then return -1
+				if b_sg.name is "DefaultSG" then return 1
+				if a_sg.name <  b_sg.name   then return -1
+				if a_sg.name == b_sg.name   then return 0
+				if a_sg.name >  b_sg.name   then return 1
+			@attributes.sg_list
 
 
-		deleteSGFromComp : (sgUID) ->
-			MC.aws.sg.deleteRefInAllComp(sgUID)
-			delete MC.canvas_data.component[sgUID]
+		sortSGRule : ( key )->
+			sgRuleList = _.sortBy @attributes.sg_rule_list, ( key or "direction" )
+			@set "sg_rule_list", sgRuleList
 			null
+
+		assignSG : ( sgUID, sgChecked ) ->
+
+			SgAsso = Design.modelClassForType( "SgAsso" )
+			design = Design.instance()
+
+			uid = @parent_model.get("uid")
+
+			console.assert( uid, "Resource not found when assigning SG" )
+
+			# If an old SgAsso is created, new will return that old SgAsso
+			asso = new SgAsso( design.component( uid ), design.component( sgUID ) )
+
+			if sgChecked is false
+				asso.remove()
+			null
+
+		deleteSG : (sgUID) ->
+			Design.instance().component( sgUID ).remove()
+			null
+
+		createNewSG : ()->
+			SgModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup )
+			model = new SgModel()
+			component = Design.instance().component( @parent_model.get("uid") )
+			if component
+				SgAsso = Design.modelClassForType("SgAsso")
+				new SgAsso( model, component )
+			model.id
+
 	}
 
 	new SGListModel()

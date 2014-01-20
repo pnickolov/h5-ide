@@ -232,10 +232,6 @@ define [ 'event',
                 # hide
                 $panel.addClass  'hiden'
                 $canvas.addClass 'left-hiden'
-
-            console.log '$item.attr("class")   = ' + $item.attr   'class'
-            console.log '$panel.attr("class")  = ' + $panel.attr  'class'
-            console.log '$canvas.attr("class") = ' + $canvas.attr 'class'
             null
 
         updateResourceState : ( type ) ->
@@ -280,14 +276,18 @@ define [ 'event',
         quickstartAmiRender : () ->
             console.log 'quickstartAmiRender'
             console.log this.model.attributes.quickstart_ami
-            return if !this.model.attributes.quickstart_ami
+            if !this.model.attributes.quickstart_ami
+                $( '.quickstart-ami-list' ).html ''
+                return
             $( '.quickstart-ami-list' ).html this.quickstart_ami_tmpl this.model.attributes
             null
 
         myAmiRender : () ->
             console.log 'myAmiRender'
             console.log this.model.attributes.my_ami
-            return if !this.model.attributes.my_ami
+            if !@model.attributes.my_ami or _.isNumber @model.attributes.my_ami
+                $( '.my-ami-list' ).html ''
+                return
             $( '.my-ami-list' ).html this.my_ami_tmpl this.model.attributes
             null
 
@@ -398,7 +398,11 @@ define [ 'event',
 
             if not current_platform
 
-                current_platform = MC.canvas_data.platform
+                # old design flow
+                #current_platform = MC.canvas_data.platform
+
+                # new design flow
+                current_platform = MC.forge.other.canvasData.get 'platform'
 
             if current_platform == MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
 
@@ -453,7 +457,11 @@ define [ 'event',
             else if $('#filter-ami-EBS-Instance').find('.active').length is 2
                 rootDeviceType = null
 
-            me.trigger 'LOADING_COMMUNITY_AMI' , MC.canvas_data.region, name, platform, isPublic, architecture, rootDeviceType, null, pageNum
+            # old design flow
+            #me.trigger 'LOADING_COMMUNITY_AMI' , MC.canvas_data.region, name, platform, isPublic, architecture, rootDeviceType, null, pageNum
+
+            # new design flow
+            me.trigger 'LOADING_COMMUNITY_AMI' , MC.forge.other.canvasData.get( 'region' ), name, platform, isPublic, architecture, rootDeviceType, null, pageNum
 
             #event.data.trigger 'LOADING_COMMUNITY_AMI', event.data.region, pageNum
 

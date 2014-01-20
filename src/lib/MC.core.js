@@ -307,6 +307,8 @@ var MC = {
 
 	extractID: function (uid)
 	{
+		if (!uid) { return ""; }
+
 		var result = MC._extractIDRegex.exec(uid);
 
 		return result ? result[1] : uid;
@@ -510,6 +512,13 @@ var MC = {
 		{
 			return (letter + '').toUpperCase();
 		});
+	},
+
+	getBoolean: function (string)
+	{
+		if ( string === "true"  || string === "True" )  return true;
+		if ( string === "false" || string === "False" ) return false;
+		return !!string;
 	}
 };
 
@@ -675,16 +684,16 @@ var returnTrue = function () {return true},
 					{
 						content = node.textContent.trim();
 
-						// switch (content)
-						// {
-						// 	case 'true':
-						// 		content = true;
-						// 		break;
+						switch (content.toLowerCase())
+						{
+							case 'true':
+								content = true;
+								break;
 
-						// 	case 'false':
-						// 		content = false;
-						// 		break;
-						// }
+							case 'false':
+								content = false;
+								break;
+						}
 
 						if (result[ node.nodeName ] instanceof Array)
 						{

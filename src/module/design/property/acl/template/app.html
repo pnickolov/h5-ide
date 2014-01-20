@@ -31,20 +31,24 @@
 
     <ul class="property-list acl-rule-list" id="acl-rule-list" >
       {{#each component.entrySet.item}}
-        <li rule-num="{{ruleAction}}" rule-engress="{{egress}}">
-          <div class="tooltip acl-rule-number" data-id="{{ruleNumber}}" data-tooltip='{{ i18n "PROP_ACL_TIP_RULE_NUMBER" }}'>{{ruleNumber}}</div>
-          <div class="acl-rule-details">
-            <div class="rule-list-row">
-              <div href="#" class="acl-rule-allow-cb tooltip acl-rule-action icon-{{ruleAction}}" data-id="{{ruleAction}}" data-tooltip='{{#ifCond ruleAction "deny"}}{{{ i18n "PROP_ACL_TIP_ACTION_DENY" }}}{{else}}{{{ i18n "PROP_ACL_TIP_ACTION_ALLOW" }}}{{/ifCond}}'></div>
-              <div class="acl-rule-direction {{#if egress}}acl-rule-outbound icon-outbound {{else}}acl-rule-inbound icon-inbound{{/if}} tooltip" data-tooltip='{{#if egress}}{{{ i18n "PROP_ACL_TIP_OUTBOUND" }}}{{else}}{{{ i18n "PROP_ACL_TIP_INBOUND" }}}{{/if}}' data-id="{{egress}}"></div>
-              <div class="acl-rule-reference tooltip" data-tooltip='{{ i18n "PROP_ACL_TIP_CIDR_BLOCK" }}' data-id="{{cidrBlock}}">{{cidrBlock}}</div>
-            </div>
-            <div class="rule-list-row">
-              <span class="rule-protocol acl-rule-protocol tooltip" data-tooltip='{{ i18n "PROP_ACL_TIP_PROTOCOL" }}' data-id="{{protocol}}">{{protocolName}}({{protocol}})</span>
-              <div class="acl-rule-port tooltip" data-tooltip='{{ i18n "PROP_ACL_TIP_PORT" }}'>{{dispPort}}</div>
-            </div>
+      <li rule-num="{{ruleAction}}" rule-engress="{{egress}}">
+        <div class="acl-rule-number" data-id="{{ruleNumber}}"><span class="tooltip" data-tooltip='{{ i18n "PROP_ACL_TIP_RULE_NUMBER" }}'>{{ruleNumber}}</span></div>
+
+        <div class="acl-rule-details">
+          <div class="rule-list-row">
+            <div class="acl-rule-allow-cb tooltip acl-rule-action icon-{{ruleAction}}" data-id="{{ruleAction}}" data-tooltip='{{#ifCond ruleAction "deny"}}{{{ i18n "PROP_ACL_TIP_ACTION_DENY" }}}{{else}}{{{ i18n "PROP_ACL_TIP_ACTION_ALLOW" }}}{{/ifCond}}'></div>
+
+            {{#if egress}}<span class="acl-rule-direction acl-rule-outbound icon-outbound tooltip" data-tooltip='{{{ i18n "PROP_ACL_TIP_OUTBOUND" }}}' data-id="{{egress}}"></span>
+            {{else}}<span class="acl-rule-direction acl-rule-inbound icon-inbound tooltip" data-tooltip='{{{ i18n "PROP_ACL_TIP_INBOUND" }}}' data-id="{{egress}}"></span>
+            {{/if}}
+            <span class="acl-rule-reference tooltip" data-tooltip='{{ i18n "PROP_ACL_TIP_CIDR_BLOCK" }}' data-id="{{cidrBlock}}">{{cidrBlock}}</span>
           </div>
-        </li>
+          <div class="rule-list-row">
+            <div><span class="rule-protocol acl-rule-protocol tooltip" data-tooltip='{{ i18n "PROP_ACL_TIP_PROTOCOL" }}' data-id="{{protocol}}">{{protocolName}}({{protocol}})</span></div>
+            <div class="acl-rule-port tooltip" data-tooltip='{{ i18n "PROP_ACL_TIP_PORT" }}'>{{dispPort}}</div>
+          </div>
+        </div>
+      </li>
       {{/each}}
     </ul>
   </article>

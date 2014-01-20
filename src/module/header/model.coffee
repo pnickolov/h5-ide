@@ -58,7 +58,12 @@ define [ 'backbone', 'jquery', 'underscore',
             same_req++ for i in info_list when i.id == item.id
 
             # check whether on current tab
-            if in_dashboard or item.rid != MC.canvas_data.id
+
+            # old design flow
+            #if in_dashboard or item.rid != MC.canvas_data.id
+
+            # new design flow
+            if in_dashboard or item.rid != MC.forge.other.canvasData.get( 'id' )
                 item.is_readed = false
                 if same_req == 0 or unread_num == 0
                     @set 'unread_num', unread_num + 1
@@ -151,7 +156,12 @@ define [ 'backbone', 'jquery', 'underscore',
 
             if not flag and unread_num > 0 # in tab and update unread number when on the updating tab
                 for info in info_list
-                    if info.rid == MC.canvas_data.id and not info.is_readed
+
+                    # old design flow
+                    #if info.rid == MC.canvas_data.id and not info.is_readed
+
+                    # new design flow
+                    if info.rid == MC.forge.other.canvasData.get( 'id' ) and not info.is_readed
                         info.is_readed = true
 
                         @set 'unread_num', unread_num - 1

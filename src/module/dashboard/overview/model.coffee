@@ -844,6 +844,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
 
                 null
 
+
             if parse_sub_info
                 parse_sub_info = '"sub_info":[' + parse_sub_info
                 parse_sub_info = parse_sub_info.substring 0, parse_sub_info.length - 2
@@ -925,14 +926,14 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
 
                     if value != null
 
-                        if $.type(value) == 'string'
+                        if _.isString( value ) or _.isBoolean( value )
 
                             tmp.push ( '\\"<dt>' + key + ': </dt><dd>' + value + '</dd>\\"')
 
                         else
                             tmp.push me._genBubble value, title, false
 
-                parse_sub_info = tmp.join(', ')
+                parse_sub_info = tmp.join(',')
 
                 if entry
 
@@ -975,7 +976,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
 
                     if value != null
 
-                        if $.type(value) == 'string'
+                        if _.isString( value ) or _.isBoolean( value )
 
                             is_str = true
 
@@ -1064,6 +1065,9 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
             me = @
             console.log 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN'
 
+            # 500
+            MC.forge.other.verify500 result
+
             region_classic_vpc_result = []
 
             if !result.is_error
@@ -1106,8 +1110,10 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                 null
 
             else
+
                 # check whether invalid session
                 if result.return_code isnt constant.RETURN_CODE.E_SESSION && result.return_code isnt constant.RETURN_CODE.E_BUSY
+
                     #MC.forge.cookie.setCookieByName 'has_cred', false
                     forge_handle.cookie.setCred false
                     ide_event.trigger ide_event.UPDATE_AWS_CREDENTIAL

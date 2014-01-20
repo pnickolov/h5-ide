@@ -2,51 +2,27 @@
 #  View Mode for design/property/cgw
 #############################
 
-define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
+define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, constant ) ->
 
     CGWModel = PropertyModel.extend {
 
-        defaults :
-            uid  : null
-            name : null
-            BGP  : null
-            ip   : null
-
         init : ( uid ) ->
-            cgw_component = MC.canvas_data.component[ uid ]
+            cgw = Design.instance().component( uid )
 
-            obj =
-                uid  : uid
-                name : cgw_component.name
-                BGP  : cgw_component.resource.BgpAsn
-                ip   : cgw_component.resource.IpAddress
-
-            this.set obj
-
-            null
-
-        setName : ( name ) ->
-            MC.canvas_data.component[ this.attributes.uid ].name = name
+            @set {
+                uid     : uid
+                name    : cgw.get("name")
+                BGP     : cgw.get("bgpAsn")
+                ip      : cgw.get("ip")
+            }
             null
 
         setIP   : ( ip ) ->
-            MC.canvas_data.component[ this.attributes.uid ].resource.IpAddress = ip
+            Design.instance().component( @get("uid") ).set("ip", ip)
             null
 
         setBGP  : ( bgp ) ->
-
-            uid = this.attributes.uid
-            MC.canvas_data.component[uid].resource.BgpAsn = bgp
-
-            # The CGW is dynamic. clear all ips of vpn connection
-            if bgp
-                for key, comp of MC.canvas_data.component
-                    if comp.type isnt constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNConnection
-                        continue
-
-                    if comp.resource.CustomerGatewayId and comp.resource.CustomerGatewayId.indexOf( uid ) isnt -1
-                        comp.resource.Routes = []
-
+            Design.instance().component( @get("uid") ).set("bgpAsn", bgp)
             null
     }
 

@@ -149,14 +149,16 @@ var selectbox = {
         if ( event.isDefaultPrevented() )
             return
 
+        var id = event.id || newValue;
+
         // Add Entry to Dropdown List
         $selectbox.find(".selection").html( newValue );
         var $lastSelection = $selectbox.find(".dropdown")
                                        .find(".selected").removeClass("selected");
-        $lastSelection.parent().append('<li class="item selected" data-id="' + newValue + '">' + newValue + '</li>');
+        $lastSelection.parent().append('<li class="item selected" data-id="' + id + '">' + newValue + '</li>');
 
         $selectbox.trigger("EDIT_FINISHED")
-                  .trigger("OPTION_CHANGE", newValue)
+                  .trigger("OPTION_CHANGE", id)
                   .removeClass("open");
     }
 

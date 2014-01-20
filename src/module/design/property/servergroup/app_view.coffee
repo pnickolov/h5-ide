@@ -21,9 +21,9 @@ define [ '../base/view',
             'OPTION_CHANGE #instance-type-select'     : "instanceTypeSelect"
             'change #property-instance-ebs-optimized' : 'ebsOptimizedSelect'
 
-            'click .toggle-eip'                         : 'setEIP'
-            'click #instance-ip-add'                    : "addIP"
-            'click #property-network-list .icon-remove' : "removeIP"
+            'click .toggle-eip'                         : 'setEip'
+            'click #instance-ip-add'                    : "addIp"
+            'click #property-network-list .icon-remove' : "removeIp"
             'change .input-ip'                          : 'syncIPList'
 
 
@@ -69,14 +69,14 @@ define [ '../base/view',
 
         instanceTypeSelect  : instance_view.instanceTypeSelect
 
-        addIP               : instance_view.addIP
-        removeIP            : instance_view.removeIP
-        setEIP              : instance_view.setEIP
+        addIP               : instance_view.addIp
+        removeIP            : instance_view.removeIp
+        setEIP              : instance_view.setEip
         syncIPList          : instance_view.syncIPList
         refreshIPList       : instance_view.refreshIPList
         updateIPAddBtnState : instance_view.updateIPAddBtnState
         setEditableIP       : instance_view.setEditableIP
-        validateIPList      : instance_view.validateIPList
+        validateIpItem      : instance_view.validateIpItem
 
 
     }

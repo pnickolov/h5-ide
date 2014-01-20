@@ -3,15 +3,15 @@ define [ 'MC' ], ( MC) ->
 	#get valid deviceName for Volume
 	getDeviceName = (uid,volume_id) ->
 
-		comp_data 	= MC.canvas.data.get("component")[uid]
-		region 		= MC.canvas.data.get("region")
+		comp_data 	= Design.instance().serialize()["component"][uid]
+		region 		= Design.instance().region()
 		image_id 	= (if comp_data then comp_data.resource.ImageId else "")
-		ami_info 	= (if MC.data.config[region].ami then MC.data.config[region].ami[image_id] else null)
+		ami_info 	= (if (MC.data.config[region].ami and MC.data.config[region].ami[image_id]) then MC.data.config[region].ami[image_id] else MC.data.dict_ami[image_id])
 		device_list	= []
 		device_name = null #result
 
 		#check deviceName
-		if ami_info and ami_info.virtualizationType != 'hvm'
+		if ami_info and ami_info.osType != 'windows'
 			#linux
 			device_list = 'f g h i j k l m n o p q r s t u v w x y z'.split(' ')
 
@@ -52,7 +52,7 @@ define [ 'MC' ], ( MC) ->
 
 		else
 
-			if ami_info.virtualizationType isnt "hvm"
+			if ami_info.osType isnt "windows"
 			  device_name = "/dev/sd" + device_list[0]
 			else
 			  device_name = "xvd" + device_list[0]

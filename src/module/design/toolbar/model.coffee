@@ -56,14 +56,18 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     #     stack_id: data.id
 
                     #update initial data
-                    MC.canvas_property.original_json = JSON.stringify( data )
-
                     ide_event.trigger ide_event.UPDATE_STACK_LIST, 'SAVE_STACK', [id]
 
                     #update key
                     key = result.resolved_data.key
-                    if key isnt MC.canvas_data.key
-                        MC.canvas_data.key = key
+
+                    # old design flow
+                    #if key isnt MC.canvas_data.key
+                    #    MC.canvas_data.key = key
+
+                    # new design flow
+                    if key isnt MC.forge.other.canvasData.get( 'key' )
+                        MC.forge.other.canvasData.set 'key', key
                         data.key = key
 
                     #call save png
@@ -98,40 +102,47 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     console.log 'create stack successfully'
 
                     new_id = result.resolved_data.id
-                    key = result.resolved_data.key
+                    key    = result.resolved_data.key
 
-                    # track
-                    # analytics.track "Saved Stack",
-                    #     stack_name: data.name,
-                    #     stack_region: data.region,
-                    #     stack_id: new_id
+                    # old design flow
+                    #MC.data.origin_canvas_data = $.extend true, {}, MC.canvas_data
 
-                    #temp
-                    MC.canvas_data.id = new_id
-                    MC.canvas_data.key = key
-                    #
-                    MC.data.origin_canvas_data = $.extend true, {}, MC.canvas_data
+                    # new design flow
 
-                    #update initial data
-                    MC.canvas_property.original_json = JSON.stringify( data )
+                    # set new id and key
+                    MC.forge.other.canvasData.set 'id',  new_id
+                    MC.forge.other.canvasData.set 'key', key
+
+                    # get data
+                    data = MC.forge.other.canvasData.data()
+
+                    # set origin
+                    MC.forge.other.canvasData.origin data
 
                     me.trigger 'TOOLBAR_HANDLE_SUCCESS', 'CREATE_STACK', name
-
                     ide_event.trigger ide_event.UPDATE_STACK_LIST, 'NEW_STACK', [new_id]
-
                     ide_event.trigger ide_event.UPDATE_DESIGN_TAB, new_id, name + ' - stack'
-
                     ide_event.trigger ide_event.UPDATE_STATUS_BAR_SAVE_TIME
 
                     MC.data.stack_list[region].push {'id':new_id, 'name':name}
 
                     #call save png
                     _.delay () ->
-                        me.savePNG true, MC.canvas_data
+
+                        # old design flow
+                        #me.savePNG true, MC.canvas_data
+
+                        # new design flow
+                        me.savePNG true, data
                     , 500
 
                     #set toolbar flag
-                    me.setFlag id, 'CREATE_STACK', MC.canvas_data
+
+                    # old design flow
+                    #me.setFlag id, 'CREATE_STACK', MC.canvas_data
+
+                    # new design flow
+                    me.setFlag id, 'CREATE_STACK', data
 
                     new_id
 
@@ -225,7 +236,12 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
                 region  = result.param[3]
                 id      = result.param[4]
-                name    = MC.canvas_data.name
+
+                # old design flow
+                #name    = MC.canvas_data.name
+
+                # new design flow
+                name    = MC.forge.other.canvasData.get 'name'
 
                 cf_data = me.get 'cf_data'
                 if not cf_data
@@ -297,7 +313,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                 else    # force terminating the app
                     if !result.is_error      # success
                         me.setFlag id, 'TERMINATED_APP', region
-                        ide_event.trigger ide_event.TERMINATED_APP, name, id
+                        #ide_event.trigger ide_event.TERMINATED_APP, name, id
+                        ide_event.trigger ide_event.CLOSE_DESIGN_TAB, id
 
                         # remove the app name from app_list
                         if name in MC.data.app_list[region]
@@ -355,13 +372,29 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
         setFlag : (id, flag, value) ->
             me = this
 
+            # new design flow
+            name  = MC.forge.other.canvasData.get 'name'
+            state = MC.forge.other.canvasData.get 'state'
+
             if flag is 'NEW_STACK'
-                item_state_map[id] = {'name':MC.canvas_data.name, 'is_run':true, 'is_duplicate':false, 'is_delete':false, 'is_zoomin':false, 'is_zoomout':true}
+
+                # old design flow
+                #item_state_map[id] = {'name':MC.canvas_data.name, 'is_run':true, 'is_duplicate':false, 'is_delete':false, 'is_zoomin':false, 'is_zoomout':true}
+
+                # new design flow
+                item_state_map[id] = {'name': name, 'is_run':true, 'is_duplicate':false, 'is_delete':false, 'is_zoomin':false, 'is_zoomout':true}
+
                 is_tab = true
 
             else if flag is 'OPEN_STACK'
                 id = id.resolved_data[0].id
-                item_state_map[id] = {'name':MC.canvas_data.name, 'is_run':true, 'is_duplicate':true, 'is_delete':true, 'is_zoomin':false, 'is_zoomout':true}
+
+                # old design flow
+                #item_state_map[id] = {'name':MC.canvas_data.name, 'is_run':true, 'is_duplicate':true, 'is_delete':true, 'is_zoomin':false, 'is_zoomout':true}
+
+                # new design flow
+                item_state_map[id] = {'name':name, 'is_run':true, 'is_duplicate':true, 'is_delete':true, 'is_zoomin':false, 'is_zoomout':true}
+
                 is_tab = true
 
             else if flag is 'SAVE_STACK'
@@ -393,26 +426,48 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                 is_running = false
                 is_pending = false
 
-                if MC.canvas_data.state == constant.APP_STATE.APP_STATE_STOPPED
+                # old design flow
+                #if MC.canvas_data.state == constant.APP_STATE.APP_STATE_STOPPED
+                #    is_running = false
+                #else if MC.canvas_data.state == constant.APP_STATE.APP_STATE_RUNNING
+                #    is_running = true
+
+                # new design flow
+                if state == constant.APP_STATE.APP_STATE_STOPPED
                     is_running = false
-                else if MC.canvas_data.state == constant.APP_STATE.APP_STATE_RUNNING
+                else if state == constant.APP_STATE.APP_STATE_RUNNING
                     is_running = true
                 else
                     is_running = false
                     is_pending = true
 
                 id = id.resolved_data[0].id
+
                 item_state_map[id] = {
-                    'name'                  : MC.canvas_data.name,
-                    'state'                 : MC.canvas_data.state,
+
+                    # old design flow
+                    #'name'                  : MC.canvas_data.name,
+                    #'state'                 : MC.canvas_data.state,
+
+                    # new design flow
+                    'name'                  : name,
+                    'state'                 : state,
+
                     'is_running'            : is_running,
                     'is_pending'            : is_pending,
                     'is_zoomin'             : false,
                     'is_zoomout'            : true,
                     'is_app_updating'       : false,
-                    'has_instance_store_ami': me.isInstanceStore(MC.canvas_data),
-                    'is_asg'                : me.isAutoScaling(MC.canvas_data),
-                    'is_production'         : if MC.canvas_data.usage isnt 'production' then false else true
+
+                    # old design flow
+                    #'has_instance_store_ami': me.isInstanceStore(MC.canvas_data),
+                    #'is_asg'                : me.isAutoScaling(MC.canvas_data),
+                    #'is_production'         : if MC.canvas_data.usage isnt 'production' then false else true
+
+                    # new design flow
+                    'has_instance_store_ami': me.isInstanceStore(),
+                    'is_asg'                : me.isAutoScaling(),
+                    'is_production'         : if MC.forge.other.canvasData.get( 'usage' ) isnt 'production' then false else true
                 }
 
                 is_tab = true
@@ -461,7 +516,12 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                 if id of item_state_map
                     item_state_map[id].is_app_updating = value
 
-            if id == MC.canvas_data.id and is_tab
+
+            # old design flow
+            #if id == MC.canvas_data.id and is_tab
+
+            # new design flow
+            if id == MC.forge.other.canvasData.get( 'id' ) and is_tab
                 me.set 'item_flags', item_state_map[id]
 
                 if id.indexOf('app-') == 0
@@ -475,7 +535,12 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             is_tab = flag
 
             if flag
-                id = MC.canvas_data.id
+
+                # old design flow
+                #id = MC.canvas_data.id
+
+                # new design flow
+                id = MC.forge.other.canvasData.get 'id'
 
                 rid = k for k,v of item_state_map when id == k
 
@@ -496,13 +561,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             region  = data.region
             id      = data.id
             name    = data.name
-
-            #check whether data change
-            ori_data = MC.canvas_property.original_json
-            new_data = JSON.stringify(data)
-            if ori_data == new_data
-                me.trigger 'TOOLBAR_HANDLE_SUCCESS', 'SAVE_STACK', name
-                return
 
             if id.indexOf('stack-', 0) == 0   #save
                 stack_model.save_stack { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, data
@@ -545,34 +603,48 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             null
 
         updateApp : ( is_update )->
-            @setFlag MC.canvas_data.id, 'UPDATE_APP', is_update
+
+            # old design flow
+            #@setFlag MC.canvas_data.id, 'UPDATE_APP', is_update
+
+            # new design flow
+            @setFlag MC.forge.other.canvasData.get( 'id' ), 'UPDATE_APP', is_update
+
             null
 
         #zoomin
         zoomIn : () ->
             me = this
 
-            if MC.canvas_property.SCALE_RATIO > 1
+            if $canvas.scale() > 1
                 MC.canvas.zoomIn()
 
             flag = true
-            if MC.canvas_property.SCALE_RATIO <= 1
+            if $canvas.scale() <= 1
                 flag = false
 
-            me.setFlag MC.canvas_data.id, 'ZOOMIN_STACK', flag
+            # old design flow
+            #me.setFlag MC.canvas_data.id, 'ZOOMIN_STACK', flag
+
+            # new design flow
+            me.setFlag MC.forge.other.canvasData.get( 'id' ), 'ZOOMIN_STACK', flag
 
         #zoomout
         zoomOut : () ->
             me = this
 
-            if MC.canvas_property.SCALE_RATIO < 1.6
+            if $canvas.scale() < 1.6
                 MC.canvas.zoomOut()
 
             flag = true
-            if MC.canvas_property.SCALE_RATIO >= 1.6
+            if $canvas.scale() >= 1.6
                 flag = false
 
-            me.setFlag MC.canvas_data.id, 'ZOOMOUT_STACK', flag
+            # old design flow
+            #me.setFlag MC.canvas_data.id, 'ZOOMOUT_STACK', flag
+
+            # new design flow
+            me.setFlag MC.forge.other.canvasData.get( 'id' ), 'ZOOMOUT_STACK', flag
 
         savePNG : (is_thumbnail, data) ->
             console.log 'savePNG, is_thumbnail = ' + is_thumbnail
@@ -595,7 +667,13 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                 else
                     #window.removeEventListener 'message', callback
             window.addEventListener 'message', callback
-            json_data = if MC.data.current_tab_id.split( '-' )[0] is 'app' then JSON.stringify(MC.forge.stack.compactServerGroup( MC.canvas_data )) else JSON.stringify(data)
+
+            # old design flow
+            #json_data = if MC.data.current_tab_id.split( '-' )[0] is 'app' then JSON.stringify(MC.forge.stack.compactServerGroup( MC.canvas_data )) else JSON.stringify(data)
+
+            # new design flow
+            #json_data = if MC.data.current_tab_id.split( '-' )[0] is 'app' then JSON.stringify(MC.forge.stack.compactServerGroup( MC.forge.other.canvasData.data() )) else JSON.stringify(data)
+            json_data = JSON.stringify data
             #
             phantom_data =
                 'origin_host': window.location.origin,
@@ -626,23 +704,30 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             MC.canvas.exportPNG $("#svg_canvas"), {
                 isExport   : true
                 createBlob : true
-                name       : MC.canvas_data.name
-                id         : MC.canvas_data.id
+
+                # old design flow
+                #name       : MC.canvas_data.name
+                #id         : MC.canvas_data.id
+
+                # new design flow
+                name       : MC.forge.other.canvasData.get( 'name' )
+                id         : MC.forge.other.canvasData.get( 'id' )
+
                 onFinish : ( data ) ->
-                    if ( data.id is MC.canvas_data.id )
+
+                    # old design flow
+                    #if ( data.id is MC.canvas_data.id )
+
+                    # new design flow
+                    if ( data.id is MC.forge.other.canvasData.get( 'id' ) )
                         me.trigger 'SAVE_PNG_COMPLETE', data.image, data.id, data.blob
             }
             null
 
         isChanged : (data) ->
-            #check if there are changes
-            ori_data = MC.canvas_property.original_json
-            new_data = JSON.stringify( data )
-
-            if ori_data != new_data
-                return true
-            else
-                return false
+            # Original version of isChanged() is a pointer comparation
+            # Meaning that most of the time, it's consider to be changed.
+            return true
 
         startApp : (region, id, name) ->
             me = this
@@ -688,7 +773,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             me = this
 
             if flag isnt 'RUN_STACK'
-                me.setFlag id, 'PENDING_APP', region
+            #    me.setFlag id, 'PENDING_APP', region
+                ide_event.trigger ide_event.UPDATE_DESIGN_TAB_ICON, 'pending', id
 
             if !result.is_error
 
@@ -712,13 +798,27 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
                 #me.trigger 'TOOLBAR_REQUEST_FAILED', flag, name
 
-                if flag isnt 'RUN_STACK'
-                    me.setFlag id, 'STOPPED_APP', region
-
-                else
+                if flag is 'RUN_STACK'
+                #    me.setFlag id, 'STOPPED_APP', region
+                #
+                #else
                     # remove the app name from app_list
                     if name in MC.data.app_list[region]
                         MC.data.app_list[region].splice MC.data.app_list[region].indexOf(name), 1
+
+                # push UPDATE_APP_STATE
+                if item_state_map[id].is_running is true
+                    state = constant.APP_STATE.APP_STATE_RUNNING
+                    icon  = 'running'
+                else
+                    state = constant.APP_STATE.APP_STATE_STOPPED
+                    icon  = 'stopped'
+                ide_event.trigger ide_event.UPDATE_APP_STATE, state, id
+
+                ide_event.trigger ide_event.UPDATE_DESIGN_TAB_ICON, icon, id
+
+                # push UPDATE_APP_LIST
+                ide_event.trigger ide_event.UPDATE_APP_LIST, null, [ id ]
 
         #reqHandle : (flag, id, name, req, dag) ->
         reqHandle : (idx, dag) ->
@@ -807,8 +907,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                                     $('#modal-cancel').click () ->
                                         me.setFlag id, 'STOPPED_APP', region
 
-                            else
-                                me.setFlag id, 'STOPPED_APP', region
+                            #else
+                            #    me.setFlag id, 'STOPPED_APP', region
 
                         when constant.OPS_STATE.OPS_STATE_DONE
 
@@ -868,7 +968,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                             app_list.push item.id
 
                         if app_list
-                            ide_event.trigger ide_event.UPDATE_APP_LIST, flag, app_list
+                            if flag isnt 'RUN_STACK'
+                                ide_event.trigger ide_event.UPDATE_APP_LIST, flag, app_list
                         else
                             ide_event.trigger ide_event.UPDATE_APP_LIST
 
@@ -938,7 +1039,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     console.log 'not support request state:' + req_state
 
             if state
-                console.log 'UPDATE_APP_STATE, state:' + state + ', data:' + data
+                console.log 'toolbar:UPDATE_APP_STATE', state, data
 
                 # set flag
                 data.flag_list.flag = flag
@@ -976,14 +1077,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                             #ide_event.trigger ide_event.APPEDIT_2_APP, tab_name
                             console.log 'app update failed'
 
-        isInstanceStore : (data) ->
-
-            is_instance_store = false
-
-            if 'property' of data and 'stoppable' of data.property and data.property.stoppable == false
-                is_instance_store = true
-
-            is_instance_store
+        isInstanceStore : () -> !Design.instance().isStoppable()
 
         saveAppThumbnail  :   (flag, region, app_name, app_id) ->
             me = this
@@ -1005,7 +1099,13 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
         convertCloudformation : () ->
             me = this
 
-            stack_model.export_cloudformation { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), MC.canvas_data.region, MC.canvas_data.id
+            # old design flow
+            #stack_model.export_cloudformation { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), MC.canvas_data.region, MC.canvas_data.id
+
+            # new design flow
+            id     = MC.forge.other.canvasData.get( 'id' )
+            region = MC.forge.other.canvasData.get( 'region' )
+            stack_model.export_cloudformation { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id
             # stack_service.export_cloudformation {sender:me}, $.cookie( 'usercode' ), $.cookie( 'session_id' ), MC.canvas_data.region, MC.canvas_data.id, ( forge_result ) ->
 
             #     if !forge_result.is_error
@@ -1019,17 +1119,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
             #         console.log 'stack.export_cloudformation failed, error is ' + forge_result.error_message
 
-        isAutoScaling : (data) ->
-
-            is_asg = false
-
-            for uid of data.component
-                item = data.component[uid]
-                if item.type is 'AWS.AutoScaling.Group'
-                    is_asg = true
-
-            is_asg
-
+        isAutoScaling : () ->
+            !!Design.modelClassForType( "AWS.AutoScaling.Group" ).allObjects().length
     }
 
     model = new ToolbarModel()

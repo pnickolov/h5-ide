@@ -6,7 +6,8 @@ define [ '../base/model',
 	'../instance/model'
 	'constant',
 	'i18n!nls/lang.js'
-], ( PropertyModel, instance_model, constant, lang ) ->
+	'Design'
+], ( PropertyModel, instance_model, constant, lang, Design ) ->
 
 	ServerGroupModel = PropertyModel.extend {
 
@@ -15,11 +16,11 @@ define [ '../base/model',
 			@set 'uid', uid
 			@set 'readOnly', not @isAppEdit
 
-			myInstanceComponent = MC.canvas_data.component[ uid ]
+			myInstanceComponent = Design.instance().component( uid )
 
 			# Find out AMI
-			ami_id = myInstanceComponent.resource.ImageId
-			ami    = MC.data.dict_ami[ ami_id ] || MC.canvas_data.layout.component.node[ uid ]
+			ami_id = myInstanceComponent.get("imageId")
+			ami    = myInstanceComponent.getAmi() or myInstanceComponent.get("cachedAmi")
 
 			if ami
 				@set 'ami', {
@@ -33,135 +34,93 @@ define [ '../base/model',
 				notification 'warning', sprintf lang.ide.PROP_MSG_ERR_AMI_NOT_FOUND, ami_id
 
 			# Find out Instance Type
-			tenancy = myInstanceComponent.resource.Placement.Tenancy isnt 'dedicated'
-			instance_type_list = @getInstanceTypeList( ami, tenancy, myInstanceComponent.resource.InstanceType )
+			tenancy = myInstanceComponent.get 'tenancy' isnt 'dedicated'
 
 			# Ebs Optimized
-			@set 'instance_type', instance_type_list
-			@set 'ebs_optimized', "" + myInstanceComponent.resource.EbsOptimized is "true"
+			@set 'instance_type', myInstanceComponent.getInstanceTypeList()
+			@set 'ebs_optimized', "" + myInstanceComponent.get 'EbsOptimized' is "true"
 			@set 'can_set_ebs',   MC.aws.instance.canSetEbsOptimized myInstanceComponent
+			routeCount = myInstanceComponent.connectionTargets( 'RTB_Route' ).length
+
+			if routeCount
+				@set 'number_disable', true
 
 
-			# If the ami is linked to route table, cannot set server group
-			for comp_uid, comp of MC.canvas_data.component
-				if comp.type isnt constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
-					continue
-
-				found = false
-				for route in comp.resource.RouteSet
-					if route.InstanceId.indexOf( uid ) isnt -1
-						@set 'number_disable', true
-						found = true
-						break
-				if found
-					break
-
-
-			@set 'number', myInstanceComponent.number
-			@set 'name',   myInstanceComponent.serverGroupName
+			@set 'number', myInstanceComponent.get 'count'
+			@set 'name',   myInstanceComponent.get 'name'
 
 			@getGroupList()
 			@getEni()
 			null
 
-		getInstanceTypeList : ( ami, tenancy, current_instance_type ) ->
-			list = MC.aws.ami.getInstanceType( ami )
-
-			if list.length
-				list =_.map list, ( value ) ->
-					main     : constant.INSTANCE_TYPE[value][0]
-					ecu      : constant.INSTANCE_TYPE[value][1]
-					core     : constant.INSTANCE_TYPE[value][2]
-					mem      : constant.INSTANCE_TYPE[value][3]
-					name     : value
-					selected : current_instance_type is value
-					hide     : not tenancy and value is "t1.micro"
-				return list
-			else
-				return []
-
-			null
-
 		setCount : ( count ) ->
 			uid = @get( 'uid' )
-			MC.canvas_data.component[ uid ].number = count
+			Design.instance().component( uid ).setCount  count
 
 			@getGroupList()
 
-			# Update canvas's Instance and Eni count
-			MC.aws.instance.updateCount( uid, count )
 			null
 
 		getGroupList : ()->
 
 			uid = @get( 'uid' )
 
-			component   = MC.canvas_data.component[ uid ]
-			app_data    = MC.data.resource_list[ MC.canvas_data.region ]
+			comp          = Design.instance().component( uid )
+			resource_list = MC.data.resource_list[ Design.instance().region() ]
+			appData       = resource_list[ comp.get("appId") ]
+			name          = comp.get("name")
 
-			if "" + component.number is "1"
-				instance_id = component.resource.InstanceId
-				instance    = app_data[ instance_id ]
-				if not instance
-					@set "group",  {
-						id         : instance_id
-						isPending  : true
-						state      : "Unknown"
-					}
-					return
-				else
-					@set "group", {
-						id         : instance_id
-						state      : MC.capitalize instance.instanceState.name
-						launchTime : instance.launchTime
-					}
+			group = [{
+				appId      : comp.get("appId")
+				name       : name + "-0"
+				status     : if appData then appData.instanceState.name else "Unknown"
+				launchTime : if appData then appData.launchTime else ""
+			}]
+
+			count = comp.get("count")
+
+			if comp.groupMembers().length > count - 1
+				members = comp.groupMembers().slice(0, count - 1)
 			else
-				old_components   = MC.data.origin_canvas_data.component
-				old_server_count = old_components[ uid ].number
-				groupname_prefix = component.serverGroupName + "-"
+				members = comp.groupMembers()
 
-				group = []
+			for member, index in members
+				# There might be many objects in members.
+				# But they might not be real. Because they might not have appId
+				group.push {
+					name   : name + "-" + (index+1)
+					appId  : member.appId
+					status : if resource_list[ member.appId ] then resource_list[ member.appId ].instanceState.name else "Unknown"
+					isNew  : not member.appId
+					isOld  : member.appId and ( index + 1 >= count )
+				}
 
-				for old_uid, old_comp of old_components
-					if old_comp.serverGroupUid is uid
-						# This is our server group member.
-						# It might need to be removed
-						instance = app_data[ old_comp.resource.InstanceId ]
-						group.push {
-							name  : old_comp.name
-							id    : old_comp.resource.InstanceId
-							idx   : parseInt( old_comp.name.replace( groupname_prefix, "" ), 10 )
-							state : if instance then MC.capitalize(instance.instanceState.name) else "Unknown"
-						}
+			while group.length < count
+				group.push {
+					name   : name + "-" + group.length
+					isNew  : true
+					status : "Unknown"
+				}
 
-				group = _.sortBy group, "idx"
+			existingLength = 0
+			for eni, idx in comp.groupMembers()
+				if eni.appId
+					existingLength = idx + 1
+				else
+					break
+			existingLength += 1
 
-				if component.number != old_server_count
-					group.increment = component.number - old_server_count
-					if group.increment > 0
-						group.increment = "+" + group.increment
+			if group.length > 1
+				@set 'group', group
 
-					if component.number < old_server_count
-						for idx in [component.number..old_server_count-1]
-							group[ idx ].isOld = true
-
-					else
-						for idx in [old_server_count..component.number-1]
-							group.push {
-								name  : groupname_prefix + idx
-								isNew : true
-								state : "Unknown"
-							}
-
-						attr = if component.number < old_server_count then "isOld" else "isNew"
-
-				@set "group", group
+				if existingLength > count
+					group.increment = "-" + ( existingLength - count )
+				else if existingLength < count
+					group.increment = "+" + ( count - existingLength )
+			else
+				@set 'group', group[0]
 			null
 
-
-		getSGList        : instance_model.getSGList
-		assignSGToComp   : instance_model.assignSGToComp
-		unAssignSGToComp : instance_model.unAssignSGToComp
 
 		getEni : instance_model.getEni
 
@@ -169,11 +128,12 @@ define [ '../base/model',
 		canSetInstanceType : instance_model.canSetInstanceType
 		setInstanceType    : instance_model.setInstanceType
 
-		addIP     : instance_model.addIP
-		removeIP  : instance_model.removeIP
-		attachEIP : instance_model.attachEIP
+		setIp     : instance_model.setIp
 		canAddIP  : instance_model.canAddIP
-		setIPList : instance_model.setIPList
+		isValidIp : instance_model.isValidIp
+		addIp     : instance_model.addIp
+		removeIp  : instance_model.removeIp
+		attachEip : instance_model.attachEip
 	}
 
 	new ServerGroupModel()

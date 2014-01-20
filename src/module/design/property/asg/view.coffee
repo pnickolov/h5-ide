@@ -51,9 +51,7 @@ define [ '../base/view',
 
         events   :
             "click #property-asg-term-edit"                : "showTermPolicy"
-            "click #property-asg-sns input[type=checkbox]" : "updateSNSOption"
-            "change #property-asg-endpoint"                : "updateSNSOption"
-            "OPTION_CHANGE #property-asg-sns-more"         : "updateSNSInput"
+            "click #property-asg-sns input[type=checkbox]" : "setNotification"
             "change #property-asg-elb"                     : "setHealthyCheckELBType"
             "change #property-asg-ec2"                     : "setHealthyCheckEC2Type"
             "change #property-asg-name"                    : "setASGName"
@@ -68,25 +66,20 @@ define [ '../base/view',
 
 
         render     : () ->
-            console.log 'property:asg render'
-            data = this.model.attributes
+            data = @model.toJSON()
 
-            if data.asg
+            for p in data.policies
+                p.alarmData.metricName = metricMap[ p.alarmData.metricName ]
+                p.unit   = unitMap[ p.alarmData.metricName ]
+                p.adjustmentType = adjustMap[ p.adjustmentType ]
 
-                data = $.extend true, {}, this.model.attributes
+            data.term_policy_brief = data.terminationPolicies.join(" > ")
 
-                policies = []
-                for uid, policy of data.policies
-                    policy.metric     = metricMap[ policy.metric ]
-                    policy.adjusttype = adjustMap[ policy.adjusttype ]
-                    policy.unit       = unitMap[ policy.metric ]
-                    policies.push policy
-
-                data.term_policy_brief = data.asg.TerminationPolicies.join(" > ")
+            data.can_add_policy = data.policies.length < 25
 
             @$el.html template data
 
-            @model.attributes.asg.AutoScalingGroupName
+            data.name
 
         setASGCoolDown : ( event ) ->
             @model.setASGCoolDown event.target.value
@@ -94,12 +87,10 @@ define [ '../base/view',
         setASGName : ( event ) ->
             target = $ event.currentTarget
             name = target.val()
-            id = @model.get 'uid'
 
-            MC.validate.preventDupname target, id, name, 'ASG'
-
-            if target.parsley 'validate'
-                @model.setASGName event.target.value
+            if @checkDupName( target, "ASG" )
+                @model.setName name
+                @setTitle name
 
         setSizeGroup: ( event ) ->
             $min        = @$el.find '#property-asg-min'
@@ -133,12 +124,10 @@ define [ '../base/view',
             @model.setHealthCheckGrace event.target.value
 
         showTermPolicy : () ->
-            policies = this.model.attributes.asg.TerminationPolicies
-
             data    = []
             checked = {}
 
-            for policy in policies
+            for policy in @model.get("terminationPolicies")
                 if policy is "Default"
                     data.useDefault = true
                 else
@@ -178,18 +167,14 @@ define [ '../base/view',
 
             $("#property-term-list .list-name").each ()->
                 $this = $(this)
-                data.push {
-                    name    : $this.text()
-                    checked : $this.closest("li").hasClass("enabled")
-                }
+                if $this.closest("li").hasClass("enabled")
+                    data.push $this.text()
                 null
 
-            data.push {
-               name : "Default"
-               checked : $("#property-asg-term-def").is(":checked")
-            }
+            if $("#property-asg-term-def").is(":checked")
+                data.push "Default"
 
-            console.log "Finish editing termination policy", data
+            $(".termination-policy-brief").text( data.join(" > ") )
 
             @model.setTerminatePolicy data
 
@@ -204,12 +189,13 @@ define [ '../base/view',
 
         updateScalingPolicy : ( data ) ->
             # Add or update the policy
-            metric     = metricMap[ data.metric ]
-            adjusttype = adjustMap[ data.adjusttype ]
-            unit       = unitMap[ data.metric ] || ""
+            metric     = metricMap[ data.alarmData.metricName ]
+            adjusttype = adjustMap[ data.adjustmentType ]
+            unit       = unitMap[ data.alarmData.metricName ] || ""
 
             if not data.uid
-                throw new Error "Cannot find scaling policy uid"
+                console.error "Cannot find scaling policy uid"
+                return
 
             $policies = $("#property-asg-policies")
             $li = $policies.children("[data-uid='#{data.uid}']")
@@ -219,42 +205,41 @@ define [ '../base/view',
 
                 # Check if we have 25 policy already.
                 # There's a template item inside the ul, so the length shoud be 26
-                if $("#property-asg-policies").children().length is 26
-                    $("#property-asg-policy-add").addClass("tooltip disabled")
+                $("#property-asg-policy-add").toggleClass("tooltip disabled", $("#property-asg-policies").children().length >= 26)
 
 
             $li.find(".name").html data.name
             $li.find(".asg-p-metric").html  metric
-            $li.find(".asg-p-eval").html    data.evaluation + " " + data.threshold + unit
-            $li.find(".asg-p-periods").html data.periods + "x" + data.second + "s"
-            $li.find(".asg-p-trigger").html( data.trigger ).attr("class", "asg-p-trigger asg-p-tag asg-p-trigger-" + data.trigger )
-            $li.find(".asg-p-adjust").html  data.adjustment + " " + data.adjusttype
+            $li.find(".asg-p-eval").html    data.alarmData.comparisonOperator + " " + data.alarmData.threshold + unit
+            $li.find(".asg-p-periods").html data.alarmData.evaluationPeriods + "x" + Math.round( data.alarmData.period / 60 ) + "m"
+            $li.find(".asg-p-trigger").html( data.state ).attr("class", "asg-p-trigger asg-p-tag asg-p-trigger-" + data.state )
+            $li.find(".asg-p-adjust").html  data.adjustment + " " + data.adjustmentType
 
         editScalingPolicy : ( event ) ->
 
             uid = $( event.currentTarget ).closest("li").data("uid")
 
-            data = $.extend true, {}, this.model.attributes.policies[ uid ]
+            data = @model.getPolicy(uid)
 
-            data.uid            = uid
-            data.title          = lang.ide.PROP_ASG_ADD_POLICY_TITLE_EDIT
+            data.uid   = uid
+            data.title = lang.ide.PROP_ASG_ADD_POLICY_TITLE_EDIT
 
-            this.showScalingPolicy( data )
+            @showScalingPolicy( data )
 
             selectMap =
-                metric     : "metric"
-                evaluation : "eval"
-                trigger    : "trigger"
-                adjusttype : "adjust-type"
-                statistics : "statistics"
+                metric        : data.alarmData.metricName
+                eval          : data.alarmData.comparisonOperator
+                trigger       : data.state
+                "adjust-type" : data.adjustmentType
+                statistics    : data.alarmData.statistic
 
             for key, value of selectMap
-                $selectbox = $("#asg-policy-#{value}")
+                $selectbox = $("#asg-policy-#{key}")
                 $selected  = null
 
                 for item in $selectbox.find(".item")
                     $item = $(item)
-                    if $item.data("id") is data[key]
+                    if $item.data("id") is value
                         $selected = $item
                         break
 
@@ -268,7 +253,7 @@ define [ '../base/view',
             if $( event.currentTarget ).hasClass "disabled"
                 return false
 
-            this.showScalingPolicy()
+            @showScalingPolicy()
             false
 
 
@@ -276,21 +261,24 @@ define [ '../base/view',
             if !data
                 data =
                     title   : lang.ide.PROP_ASG_ADD_POLICY_TITLE_ADD
-                    second  : 300
-                    periods : 2
-                    step    : 1
-                    name    : this.model.defaultScalingPolicyName()
+                    name    : @model.defaultScalingPolicyName()
+                    minAdjustStep : 1
+                    alarmData : {
+                        evaluationPeriods : 2
+                        period : 5
+                    }
 
-            data.noSNS = not this.model.attributes.has_sns_topic
+            data.noSNS = not this.model.attributes.has_sns_sub
             data.detail_monitor = this.model.attributes.detail_monitor
 
             modal policy_template(data), true
 
             self = this
             $("#property-asg-policy-done").on "click", ()->
-                result = self.onPolicyDone()
+                result = $("#asg-termination-policy").parsley("validate")
                 if result is false
                     return false
+                self.onPolicyDone()
                 modal.close()
 
             $("#asg-policy-name").parsley 'custom', ( name ) ->
@@ -377,52 +365,46 @@ define [ '../base/view',
 
         onPolicyDone : () ->
 
-            result = $("#asg-termination-policy").parsley("validate")
-            if not result
-                return false
-
             data =
-                name       : $("#asg-policy-name").val()
-                metric     : $("#asg-policy-metric .selected").data("id")
-                evaluation : $("#asg-policy-eval .selected").data("id")
-                threshold  : $("#asg-policy-threshold").val()
-                periods    : $("#asg-policy-periods").val()
-                second     : $("#asg-policy-second").val()
-                trigger    : $("#asg-policy-trigger .selected").data("id")
-                adjusttype : $("#asg-policy-adjust-type .selected").data("id")
-                adjustment : $("#asg-policy-adjust").val()
-                statistics : $("#asg-policy-statistics .selected").data("id")
-                cooldown   : $("#asg-policy-cooldown").val()
-                step       : $("#asg-policy-step").val()
-                notify     : $("#asg-policy-notify").is(":checked")
-                uid        : $("#property-asg-policy").data("uid")
+                uid              : $("#property-asg-policy").data("uid")
+                name             : $("#asg-policy-name").val()
+                cooldown         : $("#asg-policy-cooldown").val() * 60
+                minAdjustStep    : $("#asg-policy-step").val()
+                adjustment       : $("#asg-policy-adjust").val()
+                adjustmentType   : $("#asg-policy-adjust-type .selected").data("id")
+                state            : $("#asg-policy-trigger .selected").data("id")
+                sendNotification : $("#asg-policy-notify").is(":checked")
 
-            console.log "Finish Editing Policy : ", data
+                alarmData : {
+                    metricName         : $("#asg-policy-metric .selected").data("id")
+                    comparisonOperator : $("#asg-policy-eval .selected").data("id")
+                    period             : $("#asg-policy-second").val() * 60
+                    evaluationPeriods  : $("#asg-policy-periods").val()
+                    statistic          : $("#asg-policy-statistics .selected").data("id")
+                    threshold          : $("#asg-policy-threshold").val()
+                }
 
             @model.setPolicy data
-
-            this.updateScalingPolicy data
+            @updateScalingPolicy data
             null
 
-        updateSNSOption : () ->
-            checkArray = []
+        setNotification : () ->
+            checkMap = {}
             hasChecked = false
             $("#property-asg-sns input[type = checkbox]").each ()->
                 checked = $(this).is(":checked")
-                checkArray.push checked
-                if checked
-                    hasChecked = true
+                checkMap[ $(this).attr("data-key") ] = checked
+
+                if checked then hasChecked = true
 
                 null
 
-            noSNS = true
-
-            if noSNS and hasChecked
+            if hasChecked
                 $("#property-asg-sns-info").show()
             else
                 $("#property-asg-sns-info").hide()
 
-            @model.setSNSOption checkArray
+            @model.setNotification checkMap
 
         setHealthyCheckELBType :( event ) ->
             @model.setHealthCheckType 'ELB'

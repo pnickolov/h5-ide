@@ -7,8 +7,9 @@ define [ '../base/main',
          './view',
          './app_view',
          '../sglist/main',
-         'event'
-], ( PropertyModule, model, view, app_view, sglist_main, ide_event ) ->
+         'event',
+         "Design"
+], ( PropertyModule, model, view, app_view, sglist_main, ide_event, Design ) ->
 
     # Listen shared view events here
     app_view.on 'OPEN_ACL', ( uid ) ->
@@ -20,27 +21,21 @@ define [ '../base/main',
     ideEvents = {}
 
     ideEvents[ ide_event.RESOURCE_QUICKSTART_READY ] = ()->
-        @model.getCost()
-        @renderPropertyPanel()
-        null
-
-    ideEvents[ ide_event.UPDATE_STACK_LIST ] = ( flag )->
-        if flag is 'NEW_STACK'
-            @model.init()
-            @renderPropertyPanel()
+        ide_event.trigger ide_event.OPEN_PROPERTY
         null
 
     StackModule = PropertyModule.extend {
 
         ideEvents : ideEvents
 
-        handleTypes : ""
+        handleTypes : [ "Stack", "default" ]
 
         onUnloadSubPanel : ( id )->
 
             sglist_main.onUnloadSubPanel id
 
             if id is "ACL"
+                @model.getNetworkACL()
                 @view.refreshACLList()
 
         ### # # # # # # # # # # # #
@@ -53,8 +48,9 @@ define [ '../base/main',
             me = @
 
             @view.on 'STACK_NAME_CHANGED', ( name ) ->
-                MC.canvas_data.name = name
-                ide_event.trigger ide_event.UPDATE_DESIGN_TAB, MC.canvas_data.id, name + ' - stack'
+                design = Design.instance()
+                design.set("name", name)
+                ide_event.trigger ide_event.UPDATE_DESIGN_TAB, design.get("id"), name + ' - stack'
                 null
 
             @view.on 'OPEN_ACL', ( uid ) ->
@@ -100,12 +96,6 @@ define [ '../base/main',
         afterLoadAppEdit : () ->
             sglist_main.loadModule @model
             null
-
-
-        renderPropertyPanel : () ->
-            @model.getProperty()
-            @view.render()
-            sglist_main.loadModule @model
     }
 
     null

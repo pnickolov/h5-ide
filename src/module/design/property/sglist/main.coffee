@@ -8,14 +8,6 @@ define [ '../base/main',
          'event'
 ], ( PropertyModel, model, view, ide_event ) ->
 
-    view.on 'ASSIGN_SG_TOCOMP', (sgUID, sgChecked) ->
-        model.assignSGToComp sgUID, sgChecked
-        ide_event.trigger ide_event.REDRAW_SG_LINE
-
-    view.on 'DELETE_SG_FROM_COMP', (sgUID) ->
-        model.deleteSGFromComp sgUID
-        ide_event.trigger ide_event.REDRAW_SG_LINE
-
     view.on 'OPEN_SG', (sgUID) ->
         PropertyModel.loadSubPanel "SG", sgUID
         null

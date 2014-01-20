@@ -161,19 +161,35 @@ define [ 'event',
             #            null
 
             # when current tab not 'dashboard' 'appview' 'process' and MC.canvas_data not {} MC.data.origin_canvas_data not {}
-            if not _.isEmpty( MC.canvas_data ) and not _.isEmpty( MC.data.origin_canvas_data ) and Tabbar.current not in [ 'dashboard', 'appview', 'process' ]
 
-                data        = $.extend true, {}, MC.canvas_data
-                origin_data = $.extend true, {}, MC.data.origin_canvas_data
+            # old design flow
+            #if not _.isEmpty( MC.canvas_data ) and not _.isEmpty( MC.data.origin_canvas_data ) and Tabbar.current not in [ 'dashboard', 'appview', 'process' ]
 
-                if _.isEqual data, origin_data
+            # new design flow
+            if not _.isEmpty( MC.forge.other.canvasData.data() ) and not _.isEmpty( MC.forge.other.canvasData.origin() ) and Tabbar.current not in [ 'dashboard', 'appview', 'process' ]
+
+                # old design flow +++++++++++++++++++++++++++
+                #data        = $.extend true, {}, MC.canvas_data
+                #origin_data = $.extend true, {}, MC.data.origin_canvas_data
+
+                #if _.isEqual data, origin_data
+                # old design flow +++++++++++++++++++++++++++
+
+                # new design flow
+                if not MC.forge.other.canvasData.isModified()
+
                     #has_refresh = true
                     console.log 'current equal #1'
                 else
                     has_refresh = false
 
                 # set current tab id
-                checked_tab_id = MC.canvas_data.id
+
+                # old design flow
+                #checked_tab_id = MC.canvas_data.id
+
+                # new design flow
+                checked_tab_id = MC.forge.other.canvasData.get 'id'
 
             else
                 #has_refresh = true

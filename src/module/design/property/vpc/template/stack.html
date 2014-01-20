@@ -4,13 +4,13 @@
     <section class="property-control-group clearfix">
       <label class="left" for="property-vpc-name">{{ i18n "PROP_VPC_DETAIL_LBL_NAME" }}</label>
       <span class="required-input right">{{ i18n "PROP_LBL_REQUIRED" }}</span>
-      <input class="input vpc-name" type="text" value="{{component.name}}" id="property-vpc-name" maxlength="255" data-ignore="true" data-required-rollback="true"/>
+      <input class="input vpc-name" type="text" value="{{name}}" id="property-vpc-name" maxlength="255" data-ignore="true" data-required-rollback="true"/>
     </section>
 
     <section class="property-control-group clearfix">
       <label class="left" for="property-cidr-block">{{ i18n "PROP_VPC_DETAIL_LBL_CIDR_BLOCK" }}</label>
       <span class="required-input right">{{ i18n "PROP_LBL_REQUIRED" }}</span>
-      <input class="input cidr-block tooltip" type="text" value="{{component.resource.CidrBlock}}" id="property-cidr-block" data-tooltip="e.g. 10.0.0.0/16" maxlength="255" data-ignore="true" data-required-rollback="true" data-trigger="change" data-type="awsCidr"/>
+      <input class="input cidr-block tooltip" type="text" value="{{cidr}}" id="property-cidr-block" data-tooltip="e.g. 10.0.0.0/16" maxlength="255" data-ignore="true" data-required-rollback="true" data-trigger="change" data-type="awsCidr"/>
     </section>
 
     <section class="property-control-group">
@@ -19,7 +19,7 @@
         <div class="selection">{{#if defaultTenancy}}{{{ i18n "PROP_VPC_DETAIL_TENANCY_LBL_DEFAULT" }}}{{else}}Dedicated{{/if}}</div>
         <ul class="dropdown" tabindex="-1">
           <li class="item{{#if defaultTenancy}} selected{{/if}}" data-id="default">{{ i18n "PROP_VPC_DETAIL_TENANCY_LBL_DEFAULT" }}</li>
-          <li class="item{{#if defaultTenancy}}{{else}} selected{{/if}}" data-id="dedicated">{{ i18n "PROP_VPC_DETAIL_TENANCY_LBL_DEDICATED" }}</li>
+          <li class="item{{#unless defaultTenancy}} selected{{/unless}}" data-id="dedicated">{{ i18n "PROP_VPC_DETAIL_TENANCY_LBL_DEDICATED" }}</li>
         </ul>
       </div>
       <div id="desc-dedicated" class="property-info">Selecting 'Dedicated' forces all instances launched into this VPC to run on single-tenant hardware. <a target="_blank" href="http://aws.amazon.com/dedicated-instances/">Additional charges will apply.</a></div>
@@ -80,13 +80,13 @@
         <label>{{ i18n "PROP_VPC_DHCP_SPECIFIED_LBL_DOMAIN_NAME_SERVER" }}</label>
         <div>
           <div class="checkbox left">
-            <input id="property-amazon-dns" {{#if dhcp.useAmazonDns}}checked="checked"{{/if}}type="checkbox">
+            <input id="property-amazon-dns" {{#if dhcp.amazonDNS}}checked="checked"{{/if}}type="checkbox">
             <label for="property-amazon-dns"></label>
           </div>
           <label for="property-amazon-dns">{{ i18n "PROP_VPC_DHCP_SPECIFIED_LBL_AMZN_PROVIDED_DNS" }}</label>
         </div>
 
-        <div id="property-domain-server" class="multi-input" data-max-row="{{#if dhcp.useAmazonDns}}3{{else}}4{{/if}}">
+        <div id="property-domain-server" class="multi-input" data-max-row="{{#if dhcp.amazonDNS}}3{{else}}4{{/if}}">
           {{#each dhcp.domainServers}}
           <div class="multi-ipt-row">
             <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
@@ -129,7 +129,7 @@
           {{else}}
           <div class="multi-ipt-row">
             <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
-            <span class="ipt-wrapper"><input class="input tooltip" data-tooltip="Enter up to 4 NTP server IP addresses" type="text" maxlength="255" data-type="ipv4" data-ignore="true"></span>
+            <span class="ipt-wrapper"><input class="input tooltip" data-tooltip="Enter up to 4 NetBIOS server IP addresses" type="text" maxlength="255" data-type="ipv4" data-ignore="true"></span>
           </div>
           {{/each}}
         </div>
@@ -138,7 +138,7 @@
       <div class="property-control-group">
         <label>{{ i18n "PROP_VPC_DHCP_SPECIFIED_LBL_NETBIOS_NODE_TYPE" }}</label>
         <div class="selectbox selectbox-mega" id="property-netbios-type">
-          <div class="selection tooltip" data-tooltip="Select NetBOIS Node Type. We recommend 2. (Broadcast and multicast are currently not supported by AWS.)">{{#if dhcp.netbiosType}}{{dhcp.netbiosType}}{{else}}{{{ i18n "PROP_VPC_DHCP_SPECIFIED_LBL_NETBIOS_NODE_TYPE_NOT_SPECIFIED" }}}{{/if}}</div>
+          <div class="selection tooltip" data-tooltip="Select NetBIOS Node Type. We recommend 2. (Broadcast and multicast are currently not supported by AWS.)">{{#unless dhcp.netbiosType}}{{{ i18n "PROP_VPC_DHCP_SPECIFIED_LBL_NETBIOS_NODE_TYPE_NOT_SPECIFIED" }}}{{/unless}}</div>
           <ul class="dropdown" tabindex="-1">
             {{#each dhcp.netbiosTypes}}
             <li class="item{{#if selected}} selected{{/if}}" data-id="{{id}}">{{value}}</li>

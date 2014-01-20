@@ -3,7 +3,7 @@
 #  Base Class for Model of Property Module
 ####################################
 
-define [ 'backbone' ], ( Backbone )->
+define [ 'backbone', 'Design' ], ( Backbone, Design )->
 
     ###
 
@@ -15,9 +15,30 @@ define [ 'backbone' ], ( Backbone )->
 
     PropertyModel = Backbone.Model.extend {
 
-      init : () ->
-        null
+        init : () ->
+            null
 
+        setName : ( name )->
+            id = @get("uid")
+            console.assert( id, "This property model doesn't have an id" )
+
+            Design.instance().component( id ).setName( name )
+            @set "name", name
+            null
+
+
+        isNameDup : ( newName )->
+
+            id = @get("uid")
+            console.assert( id, "This property model doesn't have an id" )
+
+            comp = Design.instance().component( id )
+
+            if comp.get("name") is newName
+                return false
+
+            _.some Design.modelClassForType( comp.type ).allObjects(), ( obj )->
+                obj.get("name") is newName
     }
 
     PropertyModel

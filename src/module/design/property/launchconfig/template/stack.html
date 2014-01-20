@@ -14,13 +14,14 @@
 				<div class="property-ami-label" {{#if instance_ami.unavailable}}style="color:red;"{{/if}}>{{instance_ami.name}}</div>
 			</div>
 		</section>
+		{{#if instance_type.length}}
 		<section class="property-control-group">
 			<label class="left">{{i18n "PROP_INSTANCE_TYPE"}}</label>
 			<div class="selectbox selectbox-mega" id="instance-type-select">
 				<div class="selection"></div>
 				<ul class="dropdown">
 					{{#each instance_type}}
-					<li class="{{#if selected}}selected {{/if}}tooltip item" tabindex="-1" data-tooltip="{{main}}" data-id="{{name}}">
+					<li class="{{#if selected}}selected {{/if}}tooltip item" data-tooltip="{{main}}" data-id="{{name}}">
 						<div class="main  truncate">{{main}}</div>
 						<div class="sub"><span>{{ecu}}</span> <span>{{core}}</span> <span>{{mem}}</span></div>
 					</li>
@@ -28,6 +29,7 @@
 				</ul>
 			</div>
 		</section>
+		{{/if}}
 		<section class="property-control-group {{#unless can_set_ebs}}hide{{/unless}}">
 			<div class="checkbox">
 				{{#if ebsOptimized}}
@@ -37,7 +39,7 @@
 				{{/if}}
 				<label for="property-instance-ebs-optimized"></label>
 			</div>
-			<label for="property-instance-ebs-optimized" >EBS Optimized</label>
+			<label for="property-instance-ebs-optimized">EBS Optimized</label>
 		</section>
 		<section class="property-control-group">
 			<label class="left">{{i18n "PROP_INSTANCE_KEY_PAIR"}}</label>
@@ -48,7 +50,7 @@
 					<div class="scroll-content">
 						<ul tabindex="-1">
 							{{#each keypair}}
-							<li class="item{{#if selected}} selected{{/if}}" data-id="{{name}}" data-using="{{using}}">{{name}}
+							<li class="item{{#if selected}} selected{{/if}}" data-id="{{id}}" data-using="{{using}}">{{name}}
 							{{#if @index}}<span class="icon-remove"></span>{{/if}}
 							</li>
 							{{/each}}
@@ -70,7 +72,7 @@
 		{{#if displayAssociatePublicIp}}
 			<section class="property-control-group">
 				<div class="checkbox">
-					<input id="property-instance-public-ip" type="checkbox" {{#if AssociatePublicIpAddress}}checked="checked" {{/if}} value="None" name="property-instance-public-ip" />
+					<input id="property-instance-public-ip" type="checkbox" {{#if publicIp}}checked="checked"{{/if}} value="None" name="property-instance-public-ip" />
 					<label for="property-instance-public-ip"></label>
 				</div>
 				<label for="property-instance-public-ip">{{ i18n "PROP_INSTANCE_ENI_AUTO_PUBLIC_IP" }}</label>
@@ -96,5 +98,5 @@
 	</div>
 
 	<div class="option-group-head">{{i18n "PROP_INSTANCE_SG_DETAIL"}}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
-  <div class="option-group sg-group">Loading...</div>
+  <div class="option-group sg-group"></div>
 </article>

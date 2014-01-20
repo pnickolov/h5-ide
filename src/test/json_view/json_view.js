@@ -29,6 +29,7 @@ define(['jquery', 'event', 'underscore'], function($, ide_event, _){
 	}
 
 	ide_event.onLongListen(ide_event.OPEN_PROPERTY, function(type, comp_uid){
+		return;
 		var comp_data = MC.canvas_data.component,
 			comp_layout = MC.canvas_data.layout.component,
 			span_radio = $("#span_radio",document.getElementById("json_view_frame").contentWindow.document),
@@ -98,15 +99,15 @@ define(['jquery', 'event', 'underscore'], function($, ide_event, _){
 				});
 				jsonViewFrame[0].contentWindow.postMessage(JSON.stringify(invisibleComp), '*');
 			}
-  
+
   }
 
   window.addEventListener( 'message', function( event ) {
     if ( event.data.jsonType ) {
       showStackorInvisible( event.data.jsonType );
     }
-    
-  
+
+
   }, false);
 
 

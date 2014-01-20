@@ -2,39 +2,32 @@
 #  View Mode for design/property/cgw
 #############################
 
-define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
+define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, constant ) ->
 
-    ConnectionModel = PropertyModel.extend {
+  ConnectionModel = PropertyModel.extend {
 
-        init : ( uid ) ->
+    init : ( uid ) ->
 
-            line_option = MC.canvas.lineTarget uid
+      cn = Design.instance().component( uid )
+      if not cn then return false
 
-            if line_option.length != 2
-                return false
+      if cn.type is "EniAttachment"
+        attr =
+          name : "Instance-ENI Attachment"
+          eniAsso : {
+            instance : cn.getTarget( constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance  ).get("name")
+            eni      : cn.getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface ).get("name")
+          }
 
-            portMap = {}
-            portMap[ line_option[0].port ] = line_option[0].uid
-            portMap[ line_option[1].port ] = line_option[1].uid
+      else if cn.type is "ElbSubnetAsso"
+        attr =
+          name : "Load Balancer-Subnet Association"
+          subnetAsso : {
+            elb : cn.getTarget( constant.AWS_RESOURCE_TYPE.AWS_ELB ).get("name")
+            subnet : cn.getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet  ).get("name")
+          }
 
-            components = MC.canvas_data.component
+      @set attr
+  }
 
-            # If the line is Eni <=> Instance
-            if portMap["eni-attach"] and portMap["instance-attach"]
-                asso = {
-                    eni : components[ portMap['eni-attach'] ].serverGroupName
-                    instance : components[ portMap['instance-attach'] ].serverGroupName
-                }
-                @set "eniAsso", asso
-                @set "name", "Instance-ENI Attachment"
-            else if portMap["elb-assoc"] and portMap["subnet-assoc-in"]
-                asso = {
-                    elb : components[ portMap['elb-assoc'] ].name
-                    subnet : components[ portMap['subnet-assoc-in'] ].name
-                }
-                @set "subnetAsso", asso
-                @set "name", "Load Balancer-Subnet Association"
-            null
-    }
-
-    new ConnectionModel()
+  new ConnectionModel()

@@ -45,6 +45,8 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 
 	getInstanceType = ( ami ) ->
 
+		if not ami then return []
+
 		try
 			region = MC.canvas_data.region
 			instance_type = MC.data.instance_type[region]
@@ -70,7 +72,7 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 
 				currentTypeData = currentTypeData[key]
 			else
-				if ami.virtualizationType == 'hvm'
+				if ami.osType == 'windows'
 					currentTypeData = currentTypeData.windows
 				else
 					currentTypeData = currentTypeData.linux

@@ -11,14 +11,12 @@ define [ '../base/view', 'text!./template/stack.html' ], ( PropertyView, templat
         events   :
             'OPTION_CHANGE #az-quick-select' : "azSelect"
 
-        render     : () ->
-            console.log 'property:az render', this.model.attributes
-
+        render   : () ->
             @$el.html template @model.attributes
             "Availability Zone"
 
-        azSelect   : ( event, newAZName ) ->
-            this.trigger "SELECT_AZ", $("#az-quick-select").attr("component"), newAZName
+        azSelect : ( event, newAZName ) ->
+            this.trigger "SELECT_AZ", newAZName
     }
 
     new AZView()

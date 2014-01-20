@@ -19,9 +19,8 @@ define [ 'jquery',
             view.render()
 
             #listen OPEN_DESIGN
-            ide_event.onLongListen ide_event.OPEN_DESIGN, ( region_name, type, current_platform, tab_name, tab_id ) ->
-                console.log 'toolbar:OPEN_DESIGN, region_name = ' + region_name + ', type = ' + type
-                console.log MC.canvas_data
+            ide_event.onLongListen ide_event.OPEN_SUB_DESIGN, ( region_name, type, current_platform, tab_name, tab_id ) ->
+                console.log 'toolbar:OPEN_SUB_DESIGN, region_name = ' + region_name + ', type = ' + type
                 #
                 model.setFlag tab_id, type
                 #
@@ -46,7 +45,7 @@ define [ 'jquery',
 
             ide_event.onLongListen ide_event.SWITCH_TAB, () ->
                 setTimeout () ->
-                    console.log 'SWITCH_TAB toolbar id:' + MC.canvas_data.id
+                    console.log 'SWITCH_TAB toolbar id:' + MC.forge.other.canvasData.get 'id'
                     model.setTabFlag(true)
                 , 500
 
@@ -55,19 +54,20 @@ define [ 'jquery',
                 console.log ide_event.SAVE_STACK
 
                 try
-                    #expand components
-                    MC.canvas_data = MC.forge.stack.expandServerGroup MC.canvas_data
-                    #save stack
-                    model.saveStack MC.canvas.layout.save()
-                    #compact and update canvas
-                    MC.canvas_data = MC.forge.stack.compactServerGroup MC.canvas_data
-                    #
-                    MC.data.origin_canvas_data = $.extend true, {}, MC.canvas_data
+
+                    # save Design
+                    MC.forge.other.canvasData.save   data
+
+                    # save origin_data
+                    MC.forge.other.canvasData.origin data
+
+                    # save db
+                    model.saveStack                  data
+
                 catch err
                     msg = sprintf lang.ide.TOOL_MSG_ERR_SAVE_FAILED, data.name
                     view.notify 'error', msg
 
-                #model.saveStack(data)
                 null
 
             #duplicate
@@ -116,7 +116,7 @@ define [ 'jquery',
                 console.log 'design_toolbar APP_2_APPEDIT'
 
                 if _.isObject data
-                    data = MC.forge.stack.expandServerGroup data
+                    #data = MC.forge.stack.expandServerGroup data
                     model.saveApp(data)
                 else
                     console.log 'current is not object, data is ' + data
@@ -171,7 +171,12 @@ define [ 'jquery',
                         if (flag is "SAVE_STACK" or flag is "CREATE_STACK")
                             # run stack
                             if $('#modal-run-stack')[0] isnt undefined
-                                data = $.extend true, {}, MC.canvas_data
+
+                                # old design flow
+                                #data = $.extend true, {}, MC.canvas_data
+
+                                # new design flow
+                                data  = MC.forge.other.canvasData.data()
 
                                 app_name = $('.modal-input-value').val()
                                 # set app name
@@ -183,7 +188,13 @@ define [ 'jquery',
                                     data.usage = usage
 
                                 model.runStack data
-                                MC.data.app_list[MC.canvas_data.region].push app_name
+
+                                # old design flow
+                                #MC.data.app_list[MC.canvas_data.region].push app_name
+
+                                # new design flow
+                                region = MC.forge.other.canvasData.get 'region'
+                                MC.data.app_list[ region ].push app_name
 
                                 modal.close()
 

@@ -69,7 +69,7 @@ define [ 'MC', 'event',
                 is_style3: null
 
             #restore line style
-            switch MC.canvas_property.LINE_STYLE
+            switch $canvas.lineStyle()
 
                 when 0
                     lines.is_style0 = true
@@ -136,12 +136,23 @@ define [ 'MC', 'event',
 
             else
                 # set app name
-                $('.modal-input-value').val MC.canvas_data.name
+
+                # old design flow
+                #$('.modal-input-value').val MC.canvas_data.name
+
+                # new design flow
+                $('.modal-input-value').val MC.forge.other.canvasData.get 'name'
 
                 # set total fee
-                copy_data = $.extend( true, {}, MC.canvas_data )
-                cost = MC.aws.aws.getCost MC.forge.stack.compactServerGroup(copy_data)
-                $('#label-total-fee').find("b").text("$#{cost.total_fee}")
+
+                # old design flow
+                #copy_data = $.extend( true, {}, MC.canvas_data )
+                #cost = MC.aws.aws.getCost MC.forge.stack.compactServerGroup(copy_data)
+
+                # new design flow
+                cost = Design.instance().getCost()
+
+                $('#label-total-fee').find("b").text("$#{cost.totalFee}")
 
                 #
                 #$( '#modal-run-stack' ).find( 'summary' ).after MC.template.validationDialog()
@@ -166,7 +177,11 @@ define [ 'MC', 'event',
                         notification 'warning', lang.ide.PROP_MSG_WARN_INVALID_APP_NAME
                         return
 
-                    process_tab_name = 'process-' + MC.canvas_data.region + '-' + app_name
+                    # old design flow
+                    #process_tab_name = 'process-' + MC.canvas_data.region + '-' + app_name
+
+                    # new design flow
+                    process_tab_name = 'process-' + MC.forge.other.canvasData.get( 'region' ) + '-' + app_name
 
                     # delete F5 old process
                     obj = MC.forge.other.getProcess process_tab_name
@@ -182,15 +197,24 @@ define [ 'MC', 'event',
                     $('#btn-confirm').attr 'disabled', true
                     $('.modal-close').attr 'disabled', true
 
-                    ide_event.trigger ide_event.SAVE_STACK, MC.canvas_data
+                    # old design flow
+                    #ide_event.trigger ide_event.SAVE_STACK, MC.canvas_data
+
+                    # new design flow
+                    ide_event.trigger ide_event.SAVE_STACK, MC.forge.other.canvasData.data()
 
             true
 
         clickSaveIcon : ->
             console.log 'clickSaveIcon'
 
-            name = MC.canvas_data.name
-            id = MC.canvas_data.id
+            # old design flow
+            #name = MC.canvas_data.name
+            #id = MC.canvas_data.id
+
+            # new design flow
+            name = MC.forge.other.canvasData.get 'name'
+            id   = MC.forge.other.canvasData.get 'id'
 
             if not name
                 notification 'warning', lang.ide.PROP_MSG_WARN_NO_STACK_NAME
@@ -213,35 +237,61 @@ define [ 'MC', 'event',
                     if MC.aws.aws.checkStackName id, new_name
                         modal.close()
 
-                        MC.canvas_data.name = new_name
+                        # old design flow
+                        #MC.canvas_data.name = new_name
 
+                        # new design flow
+                        MC.forge.other.canvasData.set 'name', new_name
+
+                        # old design flow +++++++++++++++++++++++++++
                         # #expand components
                         # MC.canvas_data = MC.forge.stack.expandServerGroup MC.canvas_data
                         # #save stack
                         # ide_event.trigger ide_event.SAVE_STACK, MC.canvas.layout.save()
                         # #compact and update canvas
                         # MC.canvas_data = MC.forge.stack.compactServerGroup json_data
+                        # old design flow +++++++++++++++++++++++++++
 
-                        ide_event.trigger ide_event.SAVE_STACK, MC.canvas_data
+                        # old design flow
+                        #ide_event.trigger ide_event.SAVE_STACK, MC.canvas_data
+
+                        # new design flow
+                        ide_event.trigger ide_event.SAVE_STACK, MC.forge.other.canvasData.data()
 
                         true
 
             else
-                MC.canvas_data.name = name
 
+                # old design flow
+                #MC.canvas_data.name = name
+
+                # new design flow
+                MC.forge.other.canvasData.set 'name', name
+
+                # old design flow +++++++++++++++++++++++++++
                 # #expand components
                 # MC.canvas_data = MC.forge.stack.expandServerGroup MC.canvas_data
                 # #save stack
                 # ide_event.trigger ide_event.SAVE_STACK, MC.canvas.layout.save()
                 # #compact and update canvas
                 # MC.canvas_data = MC.forge.stack.compactServerGroup MC.canvas_data
+                # old design flow +++++++++++++++++++++++++++
 
-                ide_event.trigger ide_event.SAVE_STACK, MC.canvas_data
+                # old design flow
+                #ide_event.trigger ide_event.SAVE_STACK, MC.canvas_data
+
+                # new design flow
+                ide_event.trigger ide_event.SAVE_STACK, MC.forge.other.canvasData.data()
 
             true
 
         clickDuplicateIcon : (event) ->
-            name     = MC.canvas_data.name
+
+            # old design flow
+            #name     = MC.canvas_data.name
+
+            # new design flow
+            name      = MC.forge.other.canvasData.get 'name'
 
             # set default name
             new_name = MC.aws.aws.getDuplicateName(name)
@@ -261,20 +311,28 @@ define [ 'MC', 'event',
                 else
                     modal.close()
 
-                    region  = MC.canvas_data.region
-                    id      = MC.canvas_data.id
-                    name    = MC.canvas_data.name
+                    # old design flow +++++++++++++++++++++++++++
+                    #region  = MC.canvas_data.region
+                    #id      = MC.canvas_data.id
+                    #name    = MC.canvas_data.name
 
-                    # check change and save stack
-                    # ori_data = MC.canvas_property.original_json
-                    # new_data = JSON.stringify( MC.canvas.layout.save() )
-                    # if ori_data != new_data or id.indexOf('stack-') isnt 0
-                    #     #ide_event.trigger ide_event.SAVE_STACK, MC.canvas.layout.save()
-                    ide_event.trigger ide_event.SAVE_STACK, MC.canvas_data
+                    #ide_event.trigger ide_event.SAVE_STACK, MC.canvas_data
+
+                    #setTimeout () ->
+                    #    ide_event.trigger ide_event.DUPLICATE_STACK, MC.canvas_data.region, MC.canvas_data.id, new_name, MC.canvas_data.name
+                    #, 500
+                    # old design flow +++++++++++++++++++++++++++
+
+                    # new design flow +++++++++++++++++++++++++++
+                    ide_event.trigger ide_event.SAVE_STACK, MC.forge.other.canvasData.data()
 
                     setTimeout () ->
-                        ide_event.trigger ide_event.DUPLICATE_STACK, MC.canvas_data.region, MC.canvas_data.id, new_name, MC.canvas_data.name
+                        region  = MC.forge.other.canvasData.get 'region'
+                        id      = MC.forge.other.canvasData.get 'id'
+                        name    = MC.forge.other.canvasData.get 'name'
+                        ide_event.trigger ide_event.DUPLICATE_STACK, region, id, new_name, name
                     , 500
+                    # new design flow +++++++++++++++++++++++++++
 
             true
 
@@ -286,12 +344,23 @@ define [ 'MC', 'event',
                 console.log 'clickDeleteIcon'
                 modal.close()
 
-                ide_event.trigger ide_event.DELETE_STACK, MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
+                # old design flow
+                #ide_event.trigger ide_event.DELETE_STACK, MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
+
+                # new design flow
+                region  = MC.forge.other.canvasData.get 'region'
+                id      = MC.forge.other.canvasData.get 'id'
+                name    = MC.forge.other.canvasData.get 'name'
+                ide_event.trigger ide_event.DELETE_STACK, region, id, name
 
         clickNewStackIcon : ->
             console.log 'clickNewStackIcon'
-            #ide_event.trigger ide_event.ADD_STACK_TAB, MC.canvas_data.region
-            ide_event.trigger ide_event.OPEN_DESIGN_TAB, 'NEW_STACK', null, MC.canvas_data.region, null
+
+            # old design flow
+            #ide_event.trigger ide_event.OPEN_DESIGN_TAB, 'NEW_STACK', null, MC.canvas_data.region, null
+
+            # new design flow
+            ide_event.trigger ide_event.OPEN_DESIGN_TAB, 'NEW_STACK', null, MC.forge.other.canvasData.get( 'region' ), null
 
         clickZoomInIcon : ( event ) ->
             console.log 'clickZoomInIcon'
@@ -328,7 +397,11 @@ define [ 'MC', 'event',
         clickExportPngIcon : ->
             modal MC.template.exportPNG { 'title' : 'Export PNG', 'confirm' : 'Download' , 'color' : 'blue' }, false
 
-            $("#modal-wrap").data("uid", MC.canvas_data.id).find("#btn-confirm").hide()
+            # old design flow
+            #$("#modal-wrap").data("uid", MC.canvas_data.id).find("#btn-confirm").hide()
+
+            # new design flow
+            $("#modal-wrap").data("uid", MC.forge.other.canvasData.get( 'id' )).find("#btn-confirm").hide()
             $("#modal-wrap").find(".modal-body").css({padding:"12px 20px", "max-height":"420px",overflow:"hidden",background:"none"})
 
             this.trigger 'TOOLBAR_EXPORT_PNG_CLICK'
@@ -340,7 +413,12 @@ define [ 'MC', 'event',
             #this.trigger 'TOOLBAR_EXPORT_MENU_CLICK'
             $( '#btn-confirm' ).attr {
                 'href'      : "data://text/plain;, " + file_content,
-                'download'  : MC.canvas_data.name + '.json',
+
+                # old design flow
+                #'download'  : MC.canvas_data.name + '.json',
+
+                # new design flow
+                'download'  : MC.forge.other.canvasData.get( 'name' ) + '.json',
             }
             $( '#json-content' ).val file_content
 
@@ -353,14 +431,27 @@ define [ 'MC', 'event',
             if $("#modal-wrap").data("uid") isnt uid
                 return
 
+            # new design flow
+            name = MC.forge.other.canvasData.get( 'name' )
+
             if not blob
                 $("#modal-wrap").find("#btn-confirm").show().attr({
                     'href'     : base64_image
-                    'download' : MC.canvas_data.name + '.png'
+
+                    # old design flow
+                    #'download' : MC.canvas_data.name + '.png'
+
+                    # new design flow
+                    'download' : name + '.png'
                 })
             else
                 $("#modal-wrap").find("#btn-confirm").show().click ()->
-                    download( blob, MC.canvas_data.name + ".png" )
+
+                    # old design flow
+                    #download( blob, MC.canvas_data.name + ".png" )
+
+                    # new design flow
+                    download( blob, name + ".png" )
 
             $( '.modal-body' ).html( "<img style='max-height:100%;display:inline-block' src='#{base64_image}' />" ).css({
                 "background":"none"
@@ -375,11 +466,11 @@ define [ 'MC', 'event',
         #for debug
         clickOpenJSONDiff : ->
             #
-            a = MC.canvas_property.original_json.split('"').join('\\"')
-            b = JSON.stringify(MC.canvas_data).split('"').join('\\"')
-            param = '{"d":{"a":"'+a+'","b":"'+b+'"}}'
-            #
-            window.open 'test/jsondiff/jsondiff.htm#' + encodeURIComponent(param)
+            # a = MC.canvas_property.original_json.split('"').join('\\"')
+            # b = JSON.stringify(MC.canvas_data).split('"').join('\\"')
+            # param = '{"d":{"a":"'+a+'","b":"'+b+'"}}'
+            # #
+            # window.open 'test/jsondiff/jsondiff.htm#' + encodeURIComponent(param)
             null
 
         clickOpenJSONView : ->
@@ -391,7 +482,11 @@ define [ 'MC', 'event',
             console.log 'clickConvertCloudFormation'
             me = this
 
-            ide_event.trigger ide_event.SAVE_STACK, MC.canvas_data
+            # old design flow
+            #ide_event.trigger ide_event.SAVE_STACK, MC.canvas_data
+
+            # new design flow
+            ide_event.trigger ide_event.SAVE_STACK, MC.forge.other.canvasData.data()
 
             null
 
@@ -407,7 +502,12 @@ define [ 'MC', 'event',
                 file_content = JSON.stringify cf_json
                 $( '#tpl-download' ).attr {
                     'href'      : "data://application/json;," + file_content,
-                    'download'  : MC.canvas_data.name + '.json',
+
+                    # old design flow
+                    #'download'  : MC.canvas_data.name + '.json',
+
+                    # new design flow
+                    'download'  : MC.forge.other.canvasData.get( 'name' ) + '.json',
                 }
                 $('#tpl-download').on 'click', { target : this }, (event) ->
                     console.log 'clickExportJSONIcon'
@@ -431,7 +531,16 @@ define [ 'MC', 'event',
             else
                 target = $( '#main-toolbar' )
                 $('#btn-confirm').on 'click', { target : this }, (event) ->
-                    ide_event.trigger ide_event.STOP_APP, MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
+
+                    # old design flow
+                    #ide_event.trigger ide_event.STOP_APP, MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
+
+                    # new design flow
+                    region  = MC.forge.other.canvasData.get 'region'
+                    id      = MC.forge.other.canvasData.get 'id'
+                    name    = MC.forge.other.canvasData.get 'name'
+                    ide_event.trigger ide_event.STOP_APP, region, id, name
+
                     modal.close()
 
         clickStartApp : (event) ->
@@ -447,8 +556,15 @@ define [ 'MC', 'event',
             else
                 target = $( '#main-toolbar' )
                 $('#btn-confirm').on 'click', { target : this }, (event) ->
-                    #me.trigger 'TOOLBAR_START_CLICK', MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
-                    ide_event.trigger ide_event.START_APP, MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
+
+                    # old design flow
+                    #ide_event.trigger ide_event.START_APP, MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
+
+                    # new design flow
+                    region  = MC.forge.other.canvasData.get 'region'
+                    id      = MC.forge.other.canvasData.get 'id'
+                    name    = MC.forge.other.canvasData.get 'name'
+                    ide_event.trigger ide_event.START_APP, region, id, name
                     modal.close()
 
         clickTerminateApp : (event) ->
@@ -465,34 +581,43 @@ define [ 'MC', 'event',
             else
                 target = $( '#main-toolbar' )
                 $('#btn-confirm').on 'click', { target : this }, (event) ->
-                    #me.trigger 'TOOLBAR_TERMINATE_CLICK', MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
-                    ide_event.trigger ide_event.TERMINATE_APP, MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
+
+                    # old design flow
+                    #ide_event.trigger ide_event.TERMINATE_APP, MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
+
+                    # new design flow
+                    region  = MC.forge.other.canvasData.get 'region'
+                    id      = MC.forge.other.canvasData.get 'id'
+                    name    = MC.forge.other.canvasData.get 'name'
+                    ide_event.trigger ide_event.TERMINATE_APP, region, id, name
+
                     modal.close()
 
 
         clickLineStyleStraight  : (event) ->
-            MC.canvas_property.LINE_STYLE = 0
-            ide_event.trigger ide_event.REDRAW_SG_LINE
+            $canvas.lineStyle( 0 )
             null
 
         clickLineStyleElbow     : (event) ->
-            MC.canvas_property.LINE_STYLE = 1
-            ide_event.trigger ide_event.REDRAW_SG_LINE
+            $canvas.lineStyle( 1 )
             null
 
         clickLineStyleBezierQ   : (event) ->
-            MC.canvas_property.LINE_STYLE = 2
-            ide_event.trigger ide_event.REDRAW_SG_LINE
+            $canvas.lineStyle( 2 )
             null
 
         clickLineStyleBezierQT  : (event) ->
-            MC.canvas_property.LINE_STYLE = 3
-            ide_event.trigger ide_event.REDRAW_SG_LINE
+            $canvas.lineStyle( 3 )
             null
 
         clickRefreshApp         : (event) ->
             console.log 'toolbar clickRefreshApp'
-            ide_event.trigger ide_event.UPDATE_APP_RESOURCE, MC.canvas_data.region, MC.canvas_data.id
+
+            # old design flow
+            #ide_event.trigger ide_event.UPDATE_APP_RESOURCE, MC.canvas_data.region, MC.canvas_data.id
+
+            # new design flow
+            ide_event.trigger ide_event.UPDATE_APP_RESOURCE, MC.forge.other.canvasData.get( 'region' ), MC.forge.other.canvasData.get( 'id' )
 
         #############################
         #  app edit
@@ -510,14 +635,22 @@ define [ 'MC', 'event',
             # 3. Toggle Toolbar Button
             @trigger "UPDATE_APP", true
 
-            MC.aws.eni.markAutoAssginFalse()
             MC.canvas.event.clearList()
 
             # 4. Trigger OPEN_PROPERTY
             ide_event.trigger ide_event.OPEN_PROPERTY
 
             # 5. Create backup point
-            MC.data.origin_canvas_data = $.extend true, {}, MC.canvas_data
+
+            # old design flow
+            #MC.data.origin_canvas_data = $.extend true, {}, MC.canvas_data
+
+            # new design flow
+            MC.forge.other.canvasData.origin MC.forge.other.canvasData.data()
+
+            # 6. set Design mode
+            Design.instance().setMode Design.MODE.AppEdit
+
             null
 
         clickSaveEditApp : (event)->
@@ -533,20 +666,36 @@ define [ 'MC', 'event',
 
             else
                 # check changes
-                diff_data = MC.aws.aws.getChanges(MC.canvas_data, MC.data.origin_canvas_data)
 
-                if diff_data.isChanged
+                # old design flow
+                #diff_data = MC.aws.aws.getChanges(MC.canvas_data, MC.data.origin_canvas_data)
+                #if diff_data.isChanged
+
+                # new design flow
+                diff_data = MC.aws.aws.getChanges MC.forge.other.canvasData.data(), MC.forge.other.canvasData.origin()
+
+                if MC.forge.other.canvasData.isModified()
 
                     state    = null
                     platform = 'vpc'
                     info     = lang.ide.TOOL_POP_BODY_APP_UPDATE_VPC
 
                     # set state
-                    if MC.canvas_data.state is constant.APP_STATE.APP_STATE_RUNNING
+
+                    # old design flow
+                    #if MC.canvas_data.state is constant.APP_STATE.APP_STATE_RUNNING
+
+                    # new design flow
+                    if MC.forge.other.canvasData.get( 'state' ) is constant.APP_STATE.APP_STATE_RUNNING
                         state = constant.APP_STATE.APP_STATE_RUNNING
 
                     # set platform and info
-                    if MC.canvas_data.platform is "ec2-classic"
+
+                    # old design flow
+                    #if MC.canvas_data.platform is "ec2-classic"
+
+                    # new design flow
+                    if MC.forge.other.canvasData.get( 'platform' ) is "ec2-classic"
                         platform = 'ec2'
                         info = lang.ide.TOOL_POP_BODY_APP_UPDATE_EC2
 
@@ -569,10 +718,15 @@ define [ 'MC', 'event',
         clickCancelEditApp : ->
             console.log 'clickCancelEditApp'
 
-            data        = $.extend true, {}, MC.canvas_data
-            origin_data = $.extend true, {}, MC.data.origin_canvas_data
+            # old design flow +++++++++++++++++++++++++++
+            #data        = $.extend true, {}, MC.canvas_data
+            #origin_data = $.extend true, {}, MC.data.origin_canvas_data
 
-            if _.isEqual( data, origin_data )
+            #if _.isEqual( data, origin_data )
+            # old design flow +++++++++++++++++++++++++++
+
+            # new design flow
+            if not MC.forge.other.canvasData.isModified()
                 @appedit2App()
             else
                 modal MC.template.cancelAppEdit2App(), true
@@ -609,6 +763,12 @@ define [ 'MC', 'event',
             # 8. Hide status bar validation
             ide_event.trigger ide_event.HIDE_STATUS_BAR
 
+            # 9. set Design mode
+            Design.instance().setMode Design.MODE.App
+
+            # 10. re push AwsResourceUpdated
+            Design.instance().trigger Design.EVENT.AwsResourceUpdated
+
             null
 
         saveSuccess2App : ( tab_id, region ) ->
@@ -629,7 +789,12 @@ define [ 'MC', 'event',
             console.log 'appUpdating'
 
             # 1. event.data.trigger 'xxxxx'
-            event.data.trigger 'APP_UPDATING', MC.canvas_data
+
+            # old design flow
+            #event.data.trigger 'APP_UPDATING', MC.canvas_data
+
+            # new design flow
+            event.data.trigger 'APP_UPDATING', MC.forge.other.canvasData.data()
 
             # 2. close modal
             modal.close()

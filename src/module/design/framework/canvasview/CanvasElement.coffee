@@ -231,7 +231,7 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
     if parentId is "canvas" then parentId = ""
 
     oldPid = @model.parent()
-    if oldPid then oldPid = oldPid.id else null
+    oldPid = if oldPid then oldPid.id else ""
 
     if oldPid is parentId
       execCB.call( this )

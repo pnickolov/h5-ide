@@ -395,7 +395,7 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
   }, {
 
     allObjects : ()->
-      console.warn "ResourceModel.allObjects() is deprecated. Please use this.getAllObjects(awsType) instead."
+      # console.warn "ResourceModel.allObjects() is deprecated. Please use this.getAllObjects(awsType) instead."
       Design.instance().classCacheForCid( this.prototype.classId ).slice(0)
 
     deserialize : ()->

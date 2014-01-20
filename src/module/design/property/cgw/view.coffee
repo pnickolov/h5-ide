@@ -28,6 +28,10 @@ define [ '../base/view', 'text!./template/stack.html', 'event', 'constant', "Des
         onChangeBGP : ( event ) ->
             $target = $ event.currentTarget
             region = Design.instance().region()
+            if not $target.val()
+                @model.setBGP ""
+                return
+
             $target.parsley 'custom', ( val ) ->
                 val = + val
                 if val < 1 or val > 65534
@@ -39,6 +43,7 @@ define [ '../base/view', 'text!./template/stack.html', 'event', 'constant', "Des
 
             if $target.parsley 'validate'
                 @model.setBGP $target.val()
+            null
 
         onChangeName : ( event ) ->
             target = $ event.currentTarget

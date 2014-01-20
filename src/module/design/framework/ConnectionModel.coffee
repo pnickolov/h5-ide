@@ -211,6 +211,8 @@ define [ "./ResourceModel", "Design", "CanvasManager", "./canvasview/CanvasEleme
       return ConnectionModel.__super__.isRemoved.call( this )
 
     getCanvasView : ()->
+      if not @isVisual() then return null
+
       if @__view is undefined
         @__view = CanvasElement.createView( "Line", @ )
       @__view
@@ -220,7 +222,7 @@ define [ "./ResourceModel", "Design", "CanvasManager", "./canvasview/CanvasEleme
       !!@portDefs
 
     draw : ( isCreate )->
-      if not @isVisual() or not Design.instance().shouldDraw() then return
+      if not Design.instance().shouldDraw() then return
       v = @getCanvasView()
       if v
         v.draw( isCreate is true )

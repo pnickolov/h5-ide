@@ -36,10 +36,14 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
 
   CanvasElement.createView = ( type, model )->
     CEC = CanvasElementConstructors[ type ]
-    if CEC
-      new CEC( model )
-    else
-      null
+    if not CEC
+      CEC = CanvasElement
+      m = {
+        type : "Unknown"
+        id   : model
+      }
+
+    new CEC( m or model )
 
 
   ###
@@ -191,6 +195,8 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
     null
 
   CanvasElement.prototype.select = ()->
+    if @type is "Unknown" then return
+
     @doSelect( @type, @id, @id )
     true
 

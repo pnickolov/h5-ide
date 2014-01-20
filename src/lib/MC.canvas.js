@@ -2060,9 +2060,9 @@ MC.canvas.volume = {
 			bubble_target_id = bubble_box.data('target-id');
 
 			MC.canvas.volume.close();
-			MC.canvas.event.clearSelected();
+			// MC.canvas.event.clearSelected();
 
-			$canvas(target_uid).select();
+			// $canvas(target_uid).select();
 
 			if (target_uid !== bubble_target_id)
 			{

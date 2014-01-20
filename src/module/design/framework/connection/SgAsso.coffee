@@ -21,6 +21,9 @@ define [ "constant", "../ConnectionModel", "CanvasManager", "Design" ], ( consta
       @on "destroy", @updateLabel
       null
 
+    # Return false, so that ConnectionModel will not create an line for us.
+    isVisual : ()-> false
+
     sortedSgList : ()->
 
       resource = @getOtherTarget( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup )

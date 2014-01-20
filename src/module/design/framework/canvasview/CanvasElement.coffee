@@ -328,7 +328,9 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
   ###
   # Helper functions for rendering and for model
   ###
-  CanvasElement.prototype.portPosition = ( portName )-> this.portPosMap[ portName ]
+  CanvasElement.prototype.portPosition = ( portName )->
+    if this.portPosMap then this.portPosMap[ portName ] else null
+
   CanvasElement.prototype.initNode = ( node, x, y )->
     CanvasManager.position node, x, y
 
@@ -336,9 +338,10 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
     for child in node.children || node.childNodes
       if child.tagName is "PATH" or child.tagName is "path"
         name = child.getAttribute("data-alias") or child.getAttribute("data-name")
-        if name and this.portPosMap
-          pos = this.portPosMap[ name ]
-          CanvasManager.setPoisition( child, pos[0] / 10, pos[1] / 10 )
+        if name
+          pos = @portPosition( name )
+          if pos
+            CanvasManager.setPoisition( child, pos[0] / 10, pos[1] / 10 )
     null
 
   CanvasElement.prototype.createNode = ( option )->

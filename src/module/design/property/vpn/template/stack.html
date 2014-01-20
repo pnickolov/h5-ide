@@ -28,7 +28,7 @@
       <tbody>
         {{#each vgwTelemetry.item}}
           <tr>
-            <td><i class="status status-{{stateColor}} icon-label tooltip" data-tooltip="{{status}} since {{lastStatusChange}} because {{statusMessage}}"></i>{{index}}</td>
+            <td><i class="status status-{{stateColor}} icon-label tooltip" data-tooltip="{{status}} since {{lastStatusChange}}{{#if statusMessage}}because {{statusMessage}}{{/if}}"></i>{{index}}</td>
             <td>{{outsideIpAddress}}</td>
           </tr>
         {{/each}}

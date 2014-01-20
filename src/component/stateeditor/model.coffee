@@ -148,8 +148,12 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 			allCompData = Design.instance().serialize().component
 			that.set('allCompData', allCompData)
 
-			oldRef = that.replaceParaNameToUID(originOldRef)
-			newRef = that.replaceParaNameToUID(originNewRef)
+			newOldStateIdRefMap = {}
+			_.each newOldStateIdMap, (value, key) ->
+				newKey = that.replaceParaNameToUID(key)
+				newValue = that.replaceParaNameToUID(value)
+				newOldStateIdRefMap[newKey] = newValue
+				null
 
 			allCompData = that.get('allCompData')
 			moduleCMDMap = that.get('moduleCMDMap')
@@ -170,8 +174,8 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 							paraType = paraModelObj[paraName]['type']
 							if paraType is 'state'
 								newParaValue = _.map paraValue, (stateRef) ->
-									if newOldStateIdMap[stateRef]
-										return newOldStateIdMap[stateRef]
+									if newOldStateIdRefMap[stateRef]
+										return newOldStateIdRefMap[stateRef]
 									return stateRef
 								paraObj[paraName] = newParaValue
 							null

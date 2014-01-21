@@ -45,9 +45,6 @@ define [ "Design" ], ( Design )->
     canvas_data.layout    = d.__backingStore.layout
     canvas_data.name      = d.__backingStore.name
 
-    a = JSON.stringify( canvas_data )
-    b = JSON.stringify( Design.instance().serialize() )
-
     require ["test/jsonviewer/JsonViewer"], ( JsonViewer )->
       JsonViewer.showDiffDialog( canvas_data, Design.instance().serialize() )
     null
@@ -63,8 +60,9 @@ define [ "Design" ], ( Design )->
   Design.debug.view = ( e )->
     if e and e.preventDefault then e.preventDefault()
 
-    data = JSON.stringify( Design.instance().serialize() )
+    data = Design.instance().serialize()
     require ["test/jsonviewer/JsonViewer"], ( JsonViewer )->
+      JsonViewer.showViewDialog( data )
     null
 
   window.D  = Design

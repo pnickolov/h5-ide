@@ -207,6 +207,8 @@ body {
 
 .modal-sidebar-toggle li  {
 	border-left: 1px solid #303030;
+	line-height: 52px;
+	text-align: center;
 }
 
 .modal-sidebar-toggle li:last-child {
@@ -222,12 +224,6 @@ body {
 .modal-sidebar-toggle li:hover {
 	background: rgba(0,0,0,.1);
 	color: #eee;
-}
-
-.state-desc-toggle.icon-info {
-	font-size: 24px;
-	line-height: 52px;
-	text-align: center;
 }
 
 /*#state-editor-model .modal-toolbar li {
@@ -342,6 +338,10 @@ body {
 	height: 150px !important;
 	line-height: 20px;
 	overflow: auto;
+}
+
+#state-editor .editable-area.text.ace_focus {
+	background: rgba(0,0,0,.01);
 }
 
 /* *************************************** parameter */

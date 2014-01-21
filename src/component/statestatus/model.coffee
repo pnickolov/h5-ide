@@ -80,13 +80,16 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
                     extend.parent = component.parent.name
                     extend.name = resId
 
+                extend.uid = component.parent.uid
+
             else if component.self
                 extend.name = component.self.name
+                extend.uid = component.self.uid
 
             extend
 
 
-        __getUidByResId: (resId) ->
+        __getUidByResId: ( resId ) ->
 
             asgNameUIDMap = {}
             instanceIdASGNameMap = {}

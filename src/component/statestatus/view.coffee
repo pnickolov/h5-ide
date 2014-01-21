@@ -36,12 +36,19 @@ define [ 'event'
                 className: 'state-status-item'
                 template: parent.template.item
 
+
                 initialize: () ->
                     @listenTo @model, 'change', @render
 
                 render: () ->
                     @$el.html @template @model.toJSON()
                     @
+
+                events:
+                    'click .icon-btn': openStateEditor
+
+                openStateEditor: ->
+                    ide_event.trigger ide_event.OPEN_STATE_EDITOR, @model.get 'uid'
 
         render: () ->
 

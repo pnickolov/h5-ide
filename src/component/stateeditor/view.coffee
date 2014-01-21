@@ -56,7 +56,8 @@ define [ 'event',
             # show modal
             modal that.editorModalTpl({
                 res_name: that.resName,
-                supported_platform: that.supportedPlatform
+                supported_platform: that.supportedPlatform,
+                current_state: that.currentState
             }), false
 
             # setTimeout(() ->
@@ -85,11 +86,9 @@ define [ 'event',
 
             that.initResSelect()
 
-            currentState = that.model.get('currentState')
-
             # refresh state log
             $resSelectElem = that.$editorModal.find('.state-editor-res-select')
-            if currentState is 'stack'
+            if that.currentState is 'stack'
                 $resSelectElem.hide()
             else
                 that.onResSelectChange({
@@ -99,7 +98,7 @@ define [ 'event',
             if that.isShowLogPanel
                 that.showLogPanel()
             
-            if currentState is 'stack'
+            if that.currentState is 'stack'
                 $logPanelToggle = that.$editorModal.find('.state-log-toggle')
                 $logPanelToggle.hide()
 
@@ -124,21 +123,23 @@ define [ 'event',
             that.resName = that.model.getResName()
             that.supportedPlatform = that.model.get('supportedPlatform')
 
-            currentState = that.model.get('currentState')
+            that.currentState = that.model.get('currentState')
             currentAppState = that.model.get('currentAppState')
 
-            if currentState is 'app'
+            that.resAttrRegexStr = that.model.get('resAttrRegexStr')
+
+            if that.currentState is 'app'
                 that.readOnlyMode = true
                 that.isShowLogPanel = true
 
-            if currentState is 'appedit'
+            if that.currentState is 'appedit'
                 that.readOnlyMode = false
                 that.isShowLogPanel = true
                 if that.groupResSelectData and that.groupResSelectData.length
                     if not that.groupResSelectData[0].res_id
                         that.isShowLogPanel = false
 
-            else if currentState is 'stack'
+            else if that.currentState is 'stack'
                 that.readOnlyMode = false
                 that.isShowLogPanel = false
 
@@ -757,7 +758,7 @@ define [ 'event',
                     # remove other item view
                     _.each $stateItemList, (otherStateItem) ->
                         $otherStateItem = $(otherStateItem)
-                        if not $stateItem.is($otherStateItem) and not $stateItem.hasClass('view')
+                        if not $stateItem.is($otherStateItem) and not $otherStateItem.hasClass('view')
                             that.refreshStateView($otherStateItem)
                         null
 
@@ -801,9 +802,14 @@ define [ 'event',
             $cmdValueItem = $newStateItem.find('.command-value')
             that.bindCommandEvent($cmdValueItem)
 
-
             $stateItemList = that.$stateList.find('.state-item')
             $stateItemList.addClass('view')
+
+            _.each $stateItemList, (otherStateItem) ->
+                $otherStateItem = $(otherStateItem)
+                if not $newStateItem.is($otherStateItem) and not $otherStateItem.hasClass('view')
+                    that.refreshStateView($otherStateItem)
+                null
 
             $newStateItem.removeClass('view')
             $cmdValueItem.focus()
@@ -839,6 +845,12 @@ define [ 'event',
 
             $stateItemList = that.$stateList.find('.state-item')
             $stateItemList.addClass('view')
+
+            _.each $stateItemList, (otherStateItem) ->
+                $otherStateItem = $(otherStateItem)
+                if not $newStateItem.is($otherStateItem) and not $otherStateItem.hasClass('view')
+                    that.refreshStateView($otherStateItem)
+                null
 
             $newStateItem.removeClass('view')
             $cmdValueItem.focus()
@@ -1285,6 +1297,10 @@ define [ 'event',
             if not editorElem then return
 
             $editorElem = $(editorElem)
+
+            if $editorElem.data('editor')
+                return
+
             editor = ace.edit(editorElem)
             $editorElem.data('editor', editor)
 
@@ -1318,7 +1334,10 @@ define [ 'event',
 
             tk = new that.Tokenizer({
                 'start': [{
-                    token: 'string',
+                    token: 'res_ref_correct',
+                    regex: that.resAttrRegexStr
+                }, {
+                    token: 'res_ref',
                     regex: '@\\{(\\w|\\-)+(\\.(\\w+(\\[\\d+\\])*))+\\}'
                 }]
             })

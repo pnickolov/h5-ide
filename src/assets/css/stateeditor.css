@@ -531,7 +531,7 @@ body {
 #state-editor .state-toolbar {
 	float: none;
 	position: relative;
-	overflow: auto;
+	overflow: hidden;
 	padding-left: 25px;
 	cursor: pointer;
 	background: #fcfcfc;
@@ -831,6 +831,10 @@ body {
 }
 
 /* source highlight */
-#state-editor-model .editable-area span.ace_string {
+#state-editor-model .editable-area span.ace_res_ref {
+	color: #f00;
+}
+
+#state-editor-model .editable-area span.ace_res_ref_correct {
 	color: #00f;
 }

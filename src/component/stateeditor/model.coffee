@@ -90,6 +90,7 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 
 			that.genStateRefList(allCompData)
 			that.genAttrRefList(allCompData)
+			that.genAttrRefRegexList()
 
 			# for view
 			that.set('cmdParaMap', cmdParaMap)
@@ -341,6 +342,17 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 					value: "{#{autoCompObj.name}}"
 				}
 			that.set('resAttrDataAry', resAttrDataAry)
+
+		genAttrRefRegexList: () ->
+
+			that = this
+			attrRefRegexList = []
+			resAttrDataAry = that.get('resAttrDataAry')
+			attrRefRegexList = _.map resAttrDataAry, (refObj) ->
+				regStr = refObj.name.replace('{', '\\{').replace('}', '\\}').replace('.', '\\.')
+				return '@' + regStr
+			resAttrRegexStr = attrRefRegexList.join('|')
+			that.set('resAttrRegexStr', resAttrRegexStr)
 
 		replaceParaUIDToName: (paraValue) ->
 

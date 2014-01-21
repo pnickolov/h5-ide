@@ -4632,9 +4632,9 @@ MC.canvas.event.nodeState = function (id)
 			stateNum = stateAry.length;
 		}
 
-		// if ((canvas_status === 'app') && !stateNum) {
-		// 	return;
-		// }
+		if ((canvas_status === 'app') && !stateNum) {
+			return;
+		}
 
 		$('#canvas_container').append( MC.template.nodeState({
 			state_num: stateNum

@@ -35,7 +35,7 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 				moduleData = moduleDataObj.windows
 
 			moduleData = _.extend(moduleData, moduleDataObj.common)
-			moduleData = _.extend(moduleData, moduleDataObj.internal)
+			moduleData = _.extend(moduleData, moduleDataObj.general)
 
 			# generate module autocomplete data
 			cmdAry = []

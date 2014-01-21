@@ -45,10 +45,11 @@ define [ 'event'
                     @
 
                 events:
-                    'click .icon-btn': 'openStateEditor'
+                    'click .state-status-item-detail': 'openStateEditor'
 
                 openStateEditor: ->
                     ide_event.trigger ide_event.OPEN_STATE_EDITOR, @model.get 'uid'
+                    null
 
         render: () ->
 
@@ -81,7 +82,7 @@ define [ 'event'
         renderAllItem: () ->
             items = @items
             # test
-            appStoped = Design.instance().getState() is 'Stopped'
+            appStoped = Design.instance().get( 'state' ) is 'Stopped'
 
             if appStoped
                 @renderPending()

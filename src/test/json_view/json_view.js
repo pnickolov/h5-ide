@@ -1,4 +1,4 @@
-define(['jquery', 'event', 'underscore'], function($, ide_event, _){
+define( [ 'jquery', 'event', 'underscore', 'Design' ], function( $, ide_event, _, Design ) {
 
 	var visibleCompList = [
 		"AWS.EC2.AvailabilityZone",
@@ -29,7 +29,10 @@ define(['jquery', 'event', 'underscore'], function($, ide_event, _){
 	}
 
 	ide_event.onLongListen(ide_event.OPEN_PROPERTY, function(type, comp_uid){
-		return;
+
+		MC = MC || {}
+		MC.canvas_data = Design.instance().serialize()
+
 		var comp_data = MC.canvas_data.component,
 			comp_layout = MC.canvas_data.layout.component,
 			span_radio = $("#span_radio",document.getElementById("json_view_frame").contentWindow.document),

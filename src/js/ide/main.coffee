@@ -4,10 +4,6 @@
 
 require [ 'domReady', 'router' ], ( domReady, router ) ->
 
-	### env:dev ###
-	require [ 'test/json_view/json_view' ]
-	### env:dev:end ###
-
 	### env:prod ###
 	if window.location.protocol is 'http:' and window.location.hostname isnt 'localhost'
 		currentLocation = window.location.toString()

@@ -76,6 +76,9 @@ define ["text!./template.html", "./JsonDiffLib" ], ( template, jsond )->
         null
 
       null
+
+    showViewDialog : ( canvas_data )->
+      null
   }
 
 

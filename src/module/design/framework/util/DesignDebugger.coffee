@@ -48,16 +48,8 @@ define [ "Design" ], ( Design )->
     a = JSON.stringify( canvas_data )
     b = JSON.stringify( Design.instance().serialize() )
 
-    require ["test/jsondiff/JsonDiff"], ( JsonDiff )->
-      JsonDiff.showDiffDialog( canvas_data, Design.instance().serialize() )
-
-    # a = JSON.stringify( canvas_data ).replace(/"/g, '\\"')
-    # b = JSON.stringify( Design.instance().serialize() ).replace(/"/g, '\\"')
-
-    # param = '{"d":{"a":"'+a+'","b":"'+b+'"}}'
-    # #
-    # window.open 'test/jsondiff/index.htm#' + encodeURIComponent(param)
-    # if e and e.preventDefault then e.preventDefault()
+    require ["test/jsonviewer/JsonViewer"], ( JsonViewer )->
+      JsonViewer.showDiffDialog( canvas_data, Design.instance().serialize() )
     null
 
   Design.debug.json = ( notToString )->
@@ -70,9 +62,13 @@ define [ "Design" ], ( Design )->
 
   Design.debug.view = ( e )->
     if e and e.preventDefault then e.preventDefault()
+
+    data = JSON.stringify( Design.instance().serialize() )
+    require ["test/jsonviewer/JsonViewer"], ( JsonViewer )->
     null
 
   window.D  = Design
   window.ds = ()-> Design.debug.json( true )
 
   ### env:dev:end ###
+  null

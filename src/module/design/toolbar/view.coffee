@@ -23,10 +23,6 @@ define [ 'MC', 'event',
         el         : document
 
         events     :
-            ### env:dev ###
-            'click #toolbar-jsondiff'       : 'clickOpenJSONDiff'
-            ### env:dev:end ###
-
             #line style
             'click #toolbar-straight'       : 'clickLineStyleStraight'
             'click #toolbar-elbow'          : 'clickLineStyleElbow'
@@ -460,11 +456,6 @@ define [ 'MC', 'event',
             _.delay ()->
                 modal.position()
             , 50
-            null
-
-        #for debug
-        clickOpenJSONDiff : ->
-            Design.debug.diff()
             null
 
         #request cloudformation

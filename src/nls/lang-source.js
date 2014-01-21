@@ -3488,7 +3488,7 @@ module.exports = {
       zh: ""
     },
     TA_MSG_ERROR_RESOURCE_ASSOCIATED_SG_EXCEED_LIMIT: {
-      en: "%s <span class='validation-tag tag-%s'>%s</span>'s associated Security Group count exceed max %s limit.",
+      en: "%s <span class='validation-tag tag-%s'>%s</span>'s associated Security Group exceed max %s limit.",
       zh: ""
     },
     TA_MSG_ERROR_ASG_HAS_NO_LAUNCH_CONFIG: {

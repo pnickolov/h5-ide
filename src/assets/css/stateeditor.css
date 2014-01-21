@@ -344,6 +344,12 @@ body {
 	background: rgba(0,0,0,.01);
 }
 
+/* app view */
+
+#state-editor-model.se-model-app #state-editor .editable-area {
+	border-bottom: 1px solid transparent;
+}
+
 /* *************************************** parameter */
 
 #state-editor .command-value {

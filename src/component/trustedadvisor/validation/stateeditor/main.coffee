@@ -53,7 +53,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo' ], ( constant, MC,
             refs = _findReference obj
 
             for ref in refs
-                component = Design.instance().component( ref.uid )
+                component = MC.canvas_data.component[ ref.uid ]
                 if not component
                     if data
                         tip = _getCompTip data.type, data.name, data.stateId, ref.ref
@@ -70,14 +70,14 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo' ], ( constant, MC,
         errs
 
     isStateValid = ( uid ) ->
-        component = Design.instance().component( uid )
+        component = MC.canvas_data.component[ uid ]
 
-        states = component.get 'state'
+        states = component.state
 
         data =
             uid     : uid
-            type    : component.get 'type'
-            name    : component.get 'name'
+            type    : component.type
+            name    : component.name
             stateId : null
 
         errs = []

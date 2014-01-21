@@ -34,7 +34,8 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 			else if osPlatform is 'windows'
 				moduleData = moduleDataObj.windows
 
-			moduleData = _.extend(moduleData, moduleDataObj.general)
+			moduleData = _.extend(moduleData, moduleDataObj.common)
+			moduleData = _.extend(moduleData, moduleDataObj.internal)
 
 			# generate module autocomplete data
 			cmdAry = []

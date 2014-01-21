@@ -1590,7 +1590,7 @@ exports.retrieveFollowingIdentifier = function(text, pos, regex) {
 ace.define('ace/autocomplete/text_completer', ['require', 'exports', 'module' , 'ace/range'], function(require, exports, module) {
     var Range = require("ace/range").Range;
     
-    var splitRegex = /[^a-zA-Z_0-9\ \$\-]+/;
+    var splitRegex = /[^a-zA-Z_0-9\$\-]+/;
 
     function getWordIndex(doc, pos) {
         var textBefore = doc.getTextRange(Range.fromPoints({row: 0, column:0}, pos));

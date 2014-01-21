@@ -70,16 +70,7 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 
 				# sort parameter array
 				cmdAllParaAry = cmdParaMap[cmdName]
-				cmdParaMap[cmdName] = cmdAllParaAry.sort (paraObj1, paraObj2) ->
-
-					if paraObj1.required and not paraObj2.required
-						return false
-
-					if paraObj1.required is paraObj2.required and paraObj1.required is false
-						if paraObj1.name < paraObj2.name
-							return false
-
-					return true
+				cmdParaMap[cmdName] = that.sortParaList(cmdAllParaAry, 'name')
 				null
 
 			cmdAry = cmdAry.sort (val1, val2) ->
@@ -113,6 +104,24 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 
 			if MC.canvas_data.state is 'Stoped'
 				that.set('currentAppState', 'stoped')
+
+		sortParaList: (cmdAllParaAry, paraName) ->
+
+			newCMDAllParaAry = cmdAllParaAry.sort (paraObj1, paraObj2) ->
+
+				if paraObj1.required is paraObj2.required
+					if paraObj1[paraName] < paraObj2[paraName]
+						return -1
+					else
+						return 1
+
+				if paraObj1.required
+					return -1
+
+				if paraObj2.required
+					return 1
+
+			return newCMDAllParaAry
 
 		getResPlatformInfo: () ->
 

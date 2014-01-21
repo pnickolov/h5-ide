@@ -25,6 +25,7 @@ define [ 'event',
             'blur .command-value': 'onCommandInputBlur'
 
             'focus .editable-area': 'onFocusInput'
+            'blur .editable-area': 'onBlurInput'
             # 'click .state-toolbar .state-id': 'onStateIdClick'
             'click .state-toolbar': 'onStateToolbarClick'
             'click .state-toolbar .state-add': 'onStateAddClick'
@@ -735,6 +736,16 @@ define [ 'event',
             if cmdName and currentDescCMDName isnt cmdName
                 that.refreshDescription(cmdName)
 
+        onBlurInput: (event) ->
+
+            that = this
+
+            $currentInput = $(event.currentTarget)
+
+            editor =  $currentInput.data('editor')
+
+            if editor then editor.clearSelection()
+
         onStateToolbarClick: (event) ->
 
             that = this
@@ -1128,16 +1139,7 @@ define [ 'event',
 
                     paraListAry = stateRenderObj.parameter_list
 
-                    stateRenderObj.parameter_list = paraListAry.sort((paraObj1, paraObj2) ->
-                        if paraObj1.required and not paraObj2.required
-                            return false
-
-                        if paraObj1.required is paraObj2.required and paraObj1.required is false
-                            if paraObj1.para_name < paraObj2.para_name
-                                return false
-
-                        return true
-                    )
+                    stateRenderObj.parameter_list = that.model.sortParaList(paraListAry, 'para_name')
 
                     null
 

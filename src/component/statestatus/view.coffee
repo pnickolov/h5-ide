@@ -45,7 +45,7 @@ define [ 'event'
                     @
 
                 events:
-                    'click .icon-btn': openStateEditor
+                    'click .icon-btn': 'openStateEditor'
 
                 openStateEditor: ->
                     ide_event.trigger ide_event.OPEN_STATE_EDITOR, @model.get 'uid'

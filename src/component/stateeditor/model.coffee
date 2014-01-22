@@ -155,9 +155,8 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 
 			that = this
 
-			# update
-			allCompData = Design.instance().serialize().component
-			that.set('allCompData', allCompData)
+			allInstanceModel =  Design.modelClassForType(constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance).allObjects()
+			allLCModel =  Design.modelClassForType(constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration).allObjects()
 
 			newOldStateIdRefMap = {}
 			_.each newOldStateIdMap, (value, key) ->
@@ -166,13 +165,13 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 				newOldStateIdRefMap[newKey] = newValue
 				null
 
-			allCompData = that.get('allCompData')
 			moduleCMDMap = that.get('moduleCMDMap')
 			cmdParaObjMap = that.get('cmdParaObjMap')
-			_.each allCompData, (compObj) ->
-				stateObj = compObj.state
-				compUID = compObj.uid
-				resModel = Design.instance().component(compUID)
+
+			dealFunc = (resModel) ->
+
+				stateObj = resModel.getStateData()
+				compUID = resModel.id
 				if stateObj and stateObj.length > 0
 					_.each stateObj, (stateItemObj) ->
 						paraObj = stateItemObj.parameter
@@ -193,6 +192,10 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 						null
 					resModel.setStateData(stateObj)
 				null
+
+			_.each allInstanceModel, dealFunc
+			_.each allLCModel, dealFunc
+
 			null
 
 		setStateData: (stateData) ->
@@ -454,9 +457,7 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 
 						that.set('stateLogDataAry', logAry)
 
-						if callback
-
-							callback()
+				if callback then callback()
 
 		getCurrentResUID: () ->
 

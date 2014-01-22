@@ -67,13 +67,13 @@ define [ 'aws_model', 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( 
             @set 'resource_list', $.extend true, {}, resources
 
             # set global resource list
-            MC.forge.other.addUnmanaged $.extend true, {}, resources
+            MC.common.other.addUnmanaged $.extend true, {}, resources
 
         getStatResourceService : ->
             console.log 'getStatResourceService'
 
             # get resource list by cache
-            obj = MC.forge.other.listUnmanaged()
+            obj = MC.common.other.listUnmanaged()
 
             if not _.isEmpty obj
 

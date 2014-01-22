@@ -220,7 +220,8 @@
         'region': region,
         'type': type,
         'state': state,
-        'create_time': new Date()
+        'create_time': '',
+        'origin_time': new Date()
       };
     };
     delCacheMap = function(id) {

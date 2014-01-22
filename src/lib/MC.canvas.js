@@ -6073,6 +6073,77 @@ MC.canvas.analysis = function ( data )
 	return true;
 };
 
+MC.canvas.benchmark = function (count)
+{
+	var NODE_MARGIN_LEFT = 2,
+		NODE_MARGIN_TOP = 2,
+		NODE_START_LEFT = 8,
+		NODE_START_TOP = 8,
+		GROUP_INNER_PADDING = 2;
+
+	var max_child_column = Math.ceil( Math.sqrt( count ) ),
+		max_child_row = count === 0 ? 0 : Math.ceil( count / max_child_column ),
+		scale_ratio = $canvas.scale(),
+		column_index = 0,
+		row_index = 0,
+		i = 0;
+
+	var AZ_id = $canvas.add("AWS.EC2.AvailabilityZone", {"name": "us-east-1a"}, {'x': 5, 'y': 5});
+
+	for (; i < count; i++)
+	{
+		if (column_index >= max_child_column)
+		{
+			column_index = 0;
+			row_index++;
+		}
+
+		$canvas.add(
+			"AWS.EC2.Instance",
+			{
+				"imageId": "ami-cde4bca4",
+				"cachedAmi" : {
+					"osType": "amazon",
+					"architecture": "i386",
+					"rootDeviceType": "ebs"
+				},
+				"groupUId": AZ_id
+			},
+			{
+				'x': NODE_START_LEFT + column_index * 9 + (column_index * NODE_MARGIN_LEFT) + GROUP_INNER_PADDING,
+				'y': NODE_START_TOP + row_index * 9 + (row_index * NODE_MARGIN_TOP) + GROUP_INNER_PADDING
+			}
+		);
+
+		column_index++;
+	}
+
+	$canvas(AZ_id).size((max_child_column * (9 + NODE_MARGIN_LEFT)) + 8, (max_child_row * (9 + NODE_MARGIN_TOP)) + 8);
+	MC.canvas.updateResizer($('#' + AZ_id)[0], (max_child_column * (9 + NODE_MARGIN_LEFT)) + 8, (max_child_row * (9 + NODE_MARGIN_TOP)) + 8);
+
+	canvas_size = [
+		(max_child_column * (9 + NODE_MARGIN_LEFT)) + 50,
+		(max_child_row * (9 + NODE_MARGIN_TOP)) + 50
+	];
+
+	$('#svg_canvas').attr({
+		'width': canvas_size[0] * MC.canvas.GRID_WIDTH / scale_ratio,
+		'height': canvas_size[1] * MC.canvas.GRID_HEIGHT / scale_ratio
+	});
+
+	$('#canvas_container, #canvas_body').css({
+		'width': canvas_size[0] * MC.canvas.GRID_WIDTH / scale_ratio,
+		'height': canvas_size[1] * MC.canvas.GRID_HEIGHT / scale_ratio
+	});
+
+	$canvas.size(canvas_size[0], canvas_size[1]);
+
+	// $.each(normal_instance, function (i, item)
+	// {
+	// 	item.coordinate[0] += left_padding;
+	// });
+};
+
 /* Blob.js
  * A Blob implementation.
  * 2013-06-20

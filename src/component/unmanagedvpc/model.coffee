@@ -30,7 +30,7 @@ define [ 'aws_model', 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( 
                 #    null
 
                 # test
-                result.return_code = -1
+                #result.return_code = -1
 
                 if result and result.return_code is 0
                     console.log 'import succcess'
@@ -50,7 +50,7 @@ define [ 'aws_model', 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( 
             resources = @createResources result
 
             # set vo
-            #@set 'resource_list', $.extend true, {}, resources
+            @set 'resource_list', $.extend true, {}, resources
 
             # set global resource list
             MC.forge.other.addUnmanaged $.extend true, {}, resources

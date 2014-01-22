@@ -14,6 +14,7 @@ define [ 'event',
         events      :
             'closed'                             : 'closedPopup'
             'click .unmanaged-VPC-resource-item' : 'resourceItemClickEvent'
+            'click #btn-vpc-reload'              : 'reloadVPCsEvent'
 
         initialize  : ->
 
@@ -228,6 +229,10 @@ define [ 'event',
               console.log 'current found error ' + error
 
             null
+
+        reloadVPCsEvent : ->
+            console.log 'reloadVPCsEvent'
+            @trigger 'RELOAD_EVENT'
 
     }
 

@@ -33,6 +33,10 @@ define [ 'jquery', 'event' ], ( $, ide_event ) ->
             view.on 'CLOSE_POPUP', () ->
                 unLoadModule view, model
 
+            view.on 'RELOAD_EVENT', () ->
+                model.set 'resource_list', null
+                model.getStatResourceService()
+
             # render
             view.render()
 

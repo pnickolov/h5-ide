@@ -2,7 +2,7 @@
 #  View Mode for component/trustedadvisor
 #############################
 
-define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
+define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
 
     StateStatusModel = Backbone.Model.extend
 
@@ -37,7 +37,7 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
 
         __dispose: ( stateList ) ->
             collection = new Backbone.Collection()
-
+            console.log stateList
             if not _.isArray stateList
                 stateList = [ stateList ]
 
@@ -45,10 +45,15 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
 
                 for status in state.statuses
 
-                    if status.result isnt 'failure'
-                        continue
-                    if state.app_id isnt MC.canvas_data.id
-                        continue
+                    # Show failed only
+                    #if status.result isnt 'failure'
+                    #    continue
+                    # Show current app only
+                    #if state.app_id isnt Design.instance().get( 'id' )
+                    #    continue
+
+                    # test
+                    state.res_id = 'i-a271b0bc'
 
                     data =
                         id      : @__genId state.res_id, status.state_id
@@ -68,77 +73,59 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
 
         __extendComponent: ( resId ) ->
             extend = {}
-            component = @__getUidByResId resId
+            component = @__getResource resId
 
             # ServerGroup or ASG
             if component.parent
                 # ServerGroup
                 if component.self
-                    extend.name = component.self.name
+                    extend.name = component.self.get 'name'
                 # ASG
                 else
-                    extend.parent = component.parent.name
+                    extend.parent = component.parent.get 'name'
                     extend.name = resId
 
-                extend.uid = component.parent.uid
+                extend.uid = component.parent.id
 
             else if component.self
-                extend.name = component.self.name
-                extend.uid = component.self.uid
+                extend.name = component.self.get 'name'
+                extend.uid = component.self.id
 
             extend
 
 
-        __getUidByResId: ( resId ) ->
+        __getResource: ( resId ) ->
+            result =
+                parent: null
+                self: null
 
-            asgNameUIDMap = {}
-            instanceIdASGNameMap = {}
-            $.each MC.canvas_data.component, (idx, compObj) ->
+            Design.instance().eachComponent ( component ) ->
+                groupMembers = component.groupMembers and component.groupMembers()
+                resourceInList = MC.data.resource_list[ Design.instance().region() ]
+                if result.parent or result.self
+                    null
+                if component.get( 'appId' ) is resId
+                    # ServerGroup
+                    if groupMembers and groupMembers.length
+                        result.parent = component
+                        result.self = new Backbone.Model 'name': "#{component.get 'name'}-0"
+                    # Instance
+                    else
+                        result.self = component
+                    null
+                # ServerGroup
+                else if groupMembers and resId in _.pluck( groupMembers, 'appId' )
+                    if component.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+                        result.parent = component.parent()
+                    else
+                        result.parent = component
+                        for index, member of groupMembers
+                            if member.appId is resId
+                                result.self = new Backbone.Model 'name': "#{component.get 'name'}-#{+index + 1}"
+                                break
+                    null
 
-                asgName = compObj.resource.AutoScalingGroupName
-                compType = compObj.type
-                compUID = compObj.uid
-
-                if compType is 'AWS.AutoScaling.Group'
-                    asgNameUIDMap[asgName] = compUID
-
-            instanceIdASGUIDMap = {}
-            $.each MC.data.resource_list[MC.canvas_data.region], (idx, resObj) ->
-                if resObj and resObj.AutoScalingGroupName and resObj.Instances
-                    $.each resObj.Instances.member, (idx, instanceObj) ->
-                        instanceId = instanceObj.InstanceId
-                        asgUID = asgNameUIDMap[resObj.AutoScalingGroupName]
-                        instanceIdASGNameMap[instanceId] = asgUID
-
-            resUID = ''
-            parentComp = null
-            selfComp = null
-            compAry = _.keys(MC.canvas_data.component)
-            loopCount = 0
-            $.each MC.canvas_data.component, (idx, compObj) ->
-
-                compType = compObj.type
-                compUID = compObj.uid
-                groupUID = compObj.serverGroupUid
-
-                if compType is 'AWS.EC2.Instance'
-                    instanceId = compObj.resource.InstanceId
-                    if instanceId is resId
-                        resUID = compUID
-                        if groupUID and groupUID isnt compUID
-                            parentComp = MC.canvas_data.component[groupUID]
-                        selfComp = compObj
-                        return false
-
-                if (loopCount is compAry.length - 1) and not resUID
-                    asgUID = instanceIdASGNameMap[resId]
-                    if asgUID
-                        parentComp = MC.canvas_data.component[asgUID]
-
-                loopCount++
-
-            parent: parentComp,
-            self  : selfComp
+            result
 
         listenStateStatusUpdate: ( type, newDoc , oldDoc ) ->
             collection = @__dispose newDoc

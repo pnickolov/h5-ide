@@ -402,7 +402,7 @@ define [ 'event',
                 #current_platform = MC.canvas_data.platform
 
                 # new design flow
-                current_platform = MC.forge.other.canvasData.get 'platform'
+                current_platform = MC.common.other.canvasData.get 'platform'
 
             if current_platform == MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
 
@@ -461,7 +461,7 @@ define [ 'event',
             #me.trigger 'LOADING_COMMUNITY_AMI' , MC.canvas_data.region, name, platform, isPublic, architecture, rootDeviceType, null, pageNum
 
             # new design flow
-            me.trigger 'LOADING_COMMUNITY_AMI' , MC.forge.other.canvasData.get( 'region' ), name, platform, isPublic, architecture, rootDeviceType, null, pageNum
+            me.trigger 'LOADING_COMMUNITY_AMI' , MC.common.other.canvasData.get( 'region' ), name, platform, isPublic, architecture, rootDeviceType, null, pageNum
 
             #event.data.trigger 'LOADING_COMMUNITY_AMI', event.data.region, pageNum
 

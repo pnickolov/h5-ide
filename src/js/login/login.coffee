@@ -46,8 +46,8 @@ define [ 'jquery', 'handlebars',
 		 'MC', 'session_model',
 		 'i18n!nls/lang.js',
 		 'text!./js/login/template.html',
-		 'forge_handle', 'crypto'
-], ( $, Handlebars, MC, session_model, lang, template, forge_handle ) ->
+		 'common_handle', 'crypto'
+], ( $, Handlebars, MC, session_model, lang, template, common_handle ) ->
 
 
 	#setMadeiracloudIDESessionID = ( result ) ->
@@ -102,7 +102,7 @@ define [ 'jquery', 'handlebars',
 		session_model.once 'SESSION_LOGIN_RETURN', ( forge_result ) ->
 
 			# 500
-			MC.forge.other.verify500 forge_result
+			MC.common.other.verify500 forge_result
 
 			if !forge_result.is_error
 				#login succeed
@@ -110,18 +110,18 @@ define [ 'jquery', 'handlebars',
 				result = forge_result.resolved_data
 
 				#clear old cookie
-				forge_handle.cookie.deleteCookie()
+				common_handle.cookie.deleteCookie()
 
 				#set cookies
-				forge_handle.cookie.setCookie result
+				common_handle.cookie.setCookie result
 
 				#set madeiracloud_ide_session_id
 				#setMadeiracloudIDESessionID result
-				forge_handle.cookie.setIDECookie result
+				common_handle.cookie.setIDECookie result
 
 				#set email
-				localStorage.setItem 'email',     MC.base64Decode( forge_handle.cookie.getCookieByName( 'email' ))
-				localStorage.setItem 'user_name', forge_handle.cookie.getCookieByName( 'username' )
+				localStorage.setItem 'email',     MC.base64Decode( common_handle.cookie.getCookieByName( 'email' ))
+				localStorage.setItem 'user_name', common_handle.cookie.getCookieByName( 'username' )
 				intercom_sercure_mode_hash = () ->
 					intercom_api_secret = '4tGsMJzq_2gJmwGDQgtP2En1rFlZEvBhWQWEOTKE'
 					hash = CryptoJS.HmacSHA256( MC.base64Decode($.cookie('email')), intercom_api_secret )

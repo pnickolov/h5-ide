@@ -42,7 +42,7 @@ define [ 'aws_model', 'ami_model'
                     vpc_id = result.param[4][ constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC ].id[0]
 
                     # set cacheMap data
-                    obj = MC.forge.other.setCacheMap vpc_id, result, null, null
+                    obj = MC.common.other.setCacheMap vpc_id, result, null, null
 
                     # set ami_ids
                     ami_ids = MC.forge.app.getAmis result.resolved_data[0]
@@ -68,12 +68,12 @@ define [ 'aws_model', 'ami_model'
                     vpc_id = result.param[4][ constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC ].id[0]
 
                     # set cacheMap state 'ERROR'
-                    obj = MC.forge.other.setCacheMap vpc_id, null, 'ERROR', null, null
+                    obj = MC.common.other.setCacheMap vpc_id, null, 'ERROR', null, null
 
                     if not result.is_error and _.isEmpty result.resolved_data
 
                         # delete this vpc by delUnmanaged
-                        MC.forge.other.delUnmanaged vpc_id
+                        MC.common.other.delUnmanaged vpc_id
 
                         # set error message
                         error_message = 'VPC does not exist.'
@@ -84,7 +84,7 @@ define [ 'aws_model', 'ami_model'
                         error_message = result.error_message
 
                     # get this tab id and close this tab
-                    obj = MC.forge.other.searchCacheMap { key : 'origin_id', value : vpc_id }
+                    obj = MC.common.other.searchCacheMap { key : 'origin_id', value : vpc_id }
                     if obj and obj.id
                         ide_event.trigger ide_event.CLOSE_DESIGN_TAB, obj.id
 
@@ -112,7 +112,7 @@ define [ 'aws_model', 'ami_model'
                     console.log 'EC2_AMI_DESC_IMAGES_RETURN, current_tab_id', current_tab_id
 
                     # get origin_id
-                    origin_obj = MC.forge.other.getCacheMap current_tab_id
+                    origin_obj = MC.common.other.getCacheMap current_tab_id
 
                     # set FINISH by cacheMap
                     @setCacheMapDataFlg origin_obj
@@ -123,11 +123,11 @@ define [ 'aws_model', 'ami_model'
             setInterval ( ->
 
                 # when current tab not appview return
-                if MC.forge.other.processType( MC.data.current_tab_id ) isnt 'appview'
+                if MC.common.other.processType( MC.data.current_tab_id ) isnt 'appview'
                     return
 
                 # get obj
-                obj = MC.forge.other.getCacheMap MC.data.current_tab_id
+                obj = MC.common.other.getCacheMap MC.data.current_tab_id
 
                 # return obj when undefined
                 if not obj
@@ -145,7 +145,7 @@ define [ 'aws_model', 'ami_model'
                 if MC.timestamp( t1, t2, 's' ) > 10
 
                     # set create_time is 'timeout'
-                    MC.forge.other.setCacheMap obj.origin_id, null, null, null, 'timeout'
+                    MC.common.other.setCacheMap obj.origin_id, null, null, null, 'timeout'
 
                     # set timeout
                     me.set 'timeout_obj', { 'id' : obj.id, 'is_show' : true }
@@ -236,7 +236,7 @@ define [ 'aws_model', 'ami_model'
             else if state is 'OLD_PROCESS'
 
                 # get obj
-                obj = MC.forge.other.getCacheMap tab_id
+                obj = MC.common.other.getCacheMap tab_id
 
                 # when create_time is 'timeout' show tip
                 if obj and obj.create_time is 'timeout'
@@ -254,7 +254,7 @@ define [ 'aws_model', 'ami_model'
             if state is 'OPEN_PROCESS'
 
                 # get resources
-                resources = MC.forge.other.getUnmanagedVpc vpc_id
+                resources = MC.common.other.getUnmanagedVpc vpc_id
 
                 # delete resource.origin
                 if resources and resources.origin
@@ -264,11 +264,11 @@ define [ 'aws_model', 'ami_model'
                 aws_model.resource { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, resources, 'vpc', 1
 
                 # set state 'OLD'
-                MC.forge.other.setCacheMap vpc_id, null, 'OLD', null
+                MC.common.other.setCacheMap vpc_id, null, 'OLD', null
 
             else if state is 'OLD_PROCESS'
                 # get obj
-                obj = MC.forge.other.searchCacheMap { key : 'origin_id', value : vpc_id }
+                obj = MC.common.other.searchCacheMap { key : 'origin_id', value : vpc_id }
 
                 if obj and obj.data and obj.state is 'FINISH'
 
@@ -299,10 +299,10 @@ define [ 'aws_model', 'ami_model'
             console.log 'setCacheMapDataFlg', data
 
             # set 'FINISH' and 'appview' flag by vpc( origin_id )
-            obj = MC.forge.other.setCacheMap data.origin_id, null, 'FINISH', null
+            obj = MC.common.other.setCacheMap data.origin_id, null, 'FINISH', null
 
             # when current tab reload app view
-            if MC.forge.other.isCurrentTab obj.id
+            if MC.common.other.isCurrentTab obj.id
                 @reloadAppView obj
 
             null
@@ -311,7 +311,7 @@ define [ 'aws_model', 'ami_model'
             console.log 'reloadAppView', obj
 
             # set 'appview' flag by vpc( origin_id )
-            MC.forge.other.setCacheMap obj.origin_id, null, null, 'appview'
+            MC.common.other.setCacheMap obj.origin_id, null, null, 'appview'
 
             # set appview id
             appview_id = 'appview-' + obj.uid

@@ -54,10 +54,7 @@ require.config {
 		'result_vo'       : 'service/result_vo'
 
 		#forge handle
-		'forge_handle'    : 'lib/forge/main'
-
-		'Design'          : 'module/design/framework/Design'
-		'CanvasManager'   : 'module/design/framework/canvasview/CanvasManager'
+		'common_handle'    : 'lib/common/main'
 
 	shim                  :
 

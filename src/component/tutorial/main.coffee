@@ -17,7 +17,7 @@ define [ 'jquery', 'event',
             model = new Model()
 
             #
-            model.updateAccountService()  if MC.forge.cookie.getCookieByName( 'state' ) is '3'
+            model.updateAccountService()  if MC.common.cookie.getCookieByName( 'state' ) is '3'
 
             #view
             view.model    = model

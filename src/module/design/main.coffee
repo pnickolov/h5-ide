@@ -136,7 +136,7 @@ define [ 'i18n!nls/lang.js', 'constant', './module/design/framework/test' ], ( l
                                 if type is 'OLD_APP'
                                     ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, 'UPDATING_SUCCESS', tab_id
                                 else
-                                    MC.forge.other.deleteProcess tab_id
+                                    MC.common.other.deleteProcess tab_id
 
                             # changed done
                             else if MC.data.process[ tab_id ].flag_list.is_done
@@ -162,7 +162,7 @@ define [ 'i18n!nls/lang.js', 'constant', './module/design/framework/test' ], ( l
                         else
 
                             # F5 ide restore overlay
-                            state = MC.forge.other.filterProcess tab_id
+                            state = MC.common.other.filterProcess tab_id
                             if state
                                 ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, state, tab_id
                             else
@@ -191,7 +191,7 @@ define [ 'i18n!nls/lang.js', 'constant', './module/design/framework/test' ], ( l
                 #MC.data.process[ id ].state = type if MC.data.process and MC.data.process[ id ]
 
                 # set MC.data.process when MC.data.process is {} return
-                if _.isEmpty MC.forge.other.initDataProcess id, type, MC.process
+                if _.isEmpty MC.common.other.initDataProcess id, type, MC.process
                     return
 
                 # not current tab return
@@ -209,7 +209,7 @@ define [ 'i18n!nls/lang.js', 'constant', './module/design/framework/test' ], ( l
                     # update icon
                     # temp
                     _.delay ()->
-                        obj = MC.forge.other.searchStackAppById id
+                        obj = MC.common.other.searchStackAppById id
                         if obj and obj.state
                             ide_event.trigger ide_event.UPDATE_DESIGN_TAB_ICON, obj.state, id
                     , 500

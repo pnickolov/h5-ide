@@ -44,7 +44,7 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
                 #ide_event.trigger ide_event.SWITCH_MAIN if app_id == MC.canvas_data.id
 
                 # new design flow
-                ide_event.trigger ide_event.SWITCH_MAIN if app_id == MC.forge.other.canvasData.get( 'id' )
+                ide_event.trigger ide_event.SWITCH_MAIN if app_id == MC.common.other.canvasData.get( 'id' )
 
                 null
 
@@ -60,14 +60,14 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
                 #if app_id == MC.canvas_data.id
 
                 # new design flow
-                if app_id == MC.forge.other.canvasData.get( 'id' )
+                if app_id == MC.common.other.canvasData.get( 'id' )
 
                     # set data
                     @setCanvasData result.resolved_data[ 0 ]
                     @setOriginData result.resolved_data[ 0 ]
 
                     # save design_model
-                    MC.forge.other.canvasData.save MC.forge.other.canvasData.data(true)
+                    MC.common.other.canvasData.save MC.common.other.canvasData.data(true)
 
                 # update MC.Tab[app_id]
                 else
@@ -118,13 +118,13 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
             console.log MC.tab
 
             # delete MC.process and MC.data.process
-            MC.forge.other.deleteProcess tab_id if MC.process[ tab_id ] and tab_id.split('-')[0] is 'process'
+            MC.common.other.deleteProcess tab_id if MC.process[ tab_id ] and tab_id.split('-')[0] is 'process'
             console.log MC.process
 
             # delete appview
-            obj = MC.forge.other.getCacheMap tab_id
+            obj = MC.common.other.getCacheMap tab_id
             if obj and obj.state is 'ERROR' or tab_id.split('-')[0] is 'appview'
-                MC.forge.other.delCacheMap tab_id
+                MC.common.other.delCacheMap tab_id
 
             null
 
@@ -170,7 +170,7 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
             #MC.canvas_data = $.extend true, {}, data
 
             # new design flow
-            MC.forge.other.canvasData.init data
+            MC.common.other.canvasData.init data
 
             null
 
@@ -182,7 +182,7 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
             #$.extend true, {}, MC.canvas_data
 
             # new design flow
-            MC.forge.other.canvasData.data()
+            MC.common.other.canvasData.data()
 
         setPropertyPanel : ( property_panel ) ->
             console.log 'setPropertyPanel'
@@ -196,7 +196,7 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
             #MC.data.origin_canvas_data = $.extend true, {}, data
 
             # new design flow
-            MC.forge.other.canvasData.origin data
+            MC.common.other.canvasData.origin data
 
             null
 
@@ -207,7 +207,7 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
             #$.extend true, {}, MC.data.origin_canvas_data
 
             # new design flow
-            MC.forge.other.canvasData.origin()
+            MC.common.other.canvasData.origin()
 
         setTAValidation : ( data ) ->
             console.log 'setTAValidation'
@@ -370,7 +370,7 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
             #MC.canvas_data.layout.connection = {}
 
             # new design flow
-            MC.forge.other.canvasData.set 'layout', 'connection' : {}
+            MC.common.other.canvasData.set 'layout', 'connection' : {}
 
             #MC.canvas.initLine()
             #MC.canvas.reDrawSgLine()
@@ -386,7 +386,7 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
             #@setOriginData MC.canvas_data
 
             # new design flow
-            @setOriginData MC.forge.other.canvasData.data()
+            @setOriginData MC.common.other.canvasData.data()
 
             # delete current origin_resource
             MC.tab[ app_id ].origin_resource = null if MC.tab and MC.tab[ app_id ] and MC.tab[ app_id ].origin_resource

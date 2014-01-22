@@ -70,7 +70,7 @@ define [ 'event', 'i18n!nls/lang.js',
             scrollbar.scrollTo( $( '#global-region-wrap' ), { 'top': scrollTo } )
 
         hasCredential: ->
-            MC.forge.cookie.getCookieByName('has_cred') is 'true'
+            MC.common.cookie.getCookieByName('has_cred') is 'true'
 
         accountIsDemo: ->
             $.cookie('account_id') is 'demo_account'
@@ -291,11 +291,11 @@ define [ 'event', 'i18n!nls/lang.js',
             $topButton.removeClass( 'disabled' ).addClass 'js-toggle-dropdown'
 
             # $.cookie('account_id') isnt 'demo_account' remvoe disable
-            if MC.forge.cookie.getCookieByName( 'account_id' ) isnt 'demo_account'
+            if MC.common.cookie.getCookieByName( 'account_id' ) isnt 'demo_account'
                 $( '#global-region-visualize-VPC' ).removeClass 'disabled'
 
             # when is_invitated cookie not true hide
-            if MC.forge.cookie.getCookieByName( 'is_invitated' ) in [ 'true', true ]
+            if MC.common.cookie.getCookieByName( 'is_invitated' ) in [ 'true', true ]
                 $( '#global-region-visualize-VPC' ).show()
             else
                 $( '#global-region-visualize-VPC' ).hide()
@@ -486,7 +486,7 @@ define [ 'event', 'i18n!nls/lang.js',
             name    = $(event.currentTarget).attr('name')
 
             # check credential
-            if MC.forge.cookie.getCookieByName('has_cred') isnt 'true'
+            if MC.common.cookie.getCookieByName('has_cred') isnt 'true'
                 modal.close()
                 console.log 'show credential setting dialog'
                 require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
@@ -506,7 +506,7 @@ define [ 'event', 'i18n!nls/lang.js',
             name    = $(event.currentTarget).attr('name')
 
             # check credential
-            if MC.forge.cookie.getCookieByName('has_cred') isnt 'true'
+            if MC.common.cookie.getCookieByName('has_cred') isnt 'true'
                 modal.close()
                 console.log 'show credential setting dialog'
                 require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
@@ -526,7 +526,7 @@ define [ 'event', 'i18n!nls/lang.js',
             name    = $(event.currentTarget).attr('name')
 
             # check credential
-            if MC.forge.cookie.getCookieByName('has_cred') isnt 'true'
+            if MC.common.cookie.getCookieByName('has_cred') isnt 'true'
                 modal.close()
                 console.log 'show credential setting dialog'
                 require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
@@ -555,7 +555,7 @@ define [ 'event', 'i18n!nls/lang.js',
             console.log 'unmanagedVPCClick'
 
             # when is_invitated cookie is true can click
-            if MC.forge.cookie.getCookieByName( 'is_invitated' ) in [ 'true', true ] and MC.forge.cookie.getCookieByName( 'account_id' ) isnt 'demo_account'
+            if MC.common.cookie.getCookieByName( 'is_invitated' ) in [ 'true', true ] and MC.common.cookie.getCookieByName( 'account_id' ) isnt 'demo_account'
 
                 # load unmanagedvpc
                 unmanagedvpc.loadModule()

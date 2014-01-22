@@ -2,9 +2,9 @@
 #  View Mode for component/session
 #############################
 
-define [ 'session_model', 'forge_handle'
+define [ 'session_model', 'common_handle'
 		 'backbone', 'jquery', 'underscore', 'MC'
-], ( session_model, forge_handle ) ->
+], ( session_model, common_handle ) ->
 
 	SessionModel = Backbone.Model.extend {
 
@@ -25,11 +25,11 @@ define [ 'session_model', 'forge_handle'
 					result = forge_result.resolved_data
 
 					#set cookie
-					forge_handle.cookie.setCookie result
+					common_handle.cookie.setCookie result
 
 					#set madeiracloud_ide_session_id
 					#@_setMadeiracloudIDESessionID result
-					forge_handle.cookie.setIDECookie result
+					common_handle.cookie.setIDECookie result
 
 					me.trigger 'RE_LOGIN_SCUCCCESS'
 

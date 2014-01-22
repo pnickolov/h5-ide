@@ -89,7 +89,7 @@ define [ 'jquery', 'event', 'base_main',
                 model.set 'stack_region_name', view.temp_region_name
                 model.set 'current_platform', platform
 
-                if MC.data.untitled is 0 and MC.forge.cookie.getCookieByName( 'state' ) is '3'
+                if MC.data.untitled is 0 and MC.common.cookie.getCookieByName( 'state' ) is '3'
                     require [ 'component/tutorial/main' ], ( tutorial_main ) -> tutorial_main.loadModule()
 
                 # check repeat stack name
@@ -117,9 +117,9 @@ define [ 'jquery', 'event', 'base_main',
                 ide_event.trigger ide_event.SWITCH_PROCESS, 'OPEN_PROCESS', tab_id
 
                 # check process type
-                if MC.forge.other.processType( tab_id ) is 'appview'
+                if MC.common.other.processType( tab_id ) is 'appview'
                     icon = 'visualization'
-                else if MC.forge.other.processType( tab_id ) is 'process'
+                else if MC.common.other.processType( tab_id ) is 'process'
                     icon = 'pending'
 
                 ide_event.trigger ide_event.UPDATE_DESIGN_TAB_ICON, icon, tab_id
@@ -194,7 +194,7 @@ define [ 'jquery', 'event', 'base_main',
                     console.log result
 
                     # check result valid
-                    if MC.forge.other.isResultRight( result ) is true
+                    if MC.common.other.isResultRight( result ) is true
                         ide_event.trigger ide_event.SWITCH_TAB, 'OPEN_APP', tab_id, result.resolved_data[0].region, result, result.resolved_data[0].platform
                         ide_event.trigger ide_event.UPDATE_DESIGN_TAB_ICON, result.resolved_data[0].state, tab_id
 
@@ -231,7 +231,7 @@ define [ 'jquery', 'event', 'base_main',
                 model.set 'stack_region_name', region_name
                 Tabbar.open stack_id.toLowerCase(), tab_name + ' - stack'
                 #
-                if _.contains( MC.data.demo_stack_list, tab_name ) and MC.forge.cookie.getCookieByName( 'state' ) is '3'
+                if _.contains( MC.data.demo_stack_list, tab_name ) and MC.common.cookie.getCookieByName( 'state' ) is '3'
                     require [ 'component/tutorial/main' ], ( tutorial_main ) -> tutorial_main.loadModule()
                 null
 
@@ -250,7 +250,7 @@ define [ 'jquery', 'event', 'base_main',
 
                     # set process name
                     process_name = 'process-' + region + '-' + tab_name
-                    MC.forge.other.addProcess process_name, { 'tab_id' : tab_id, 'app_name' : tab_name, 'region' : region, 'flag_list' : { 'is_pending' : true } }
+                    MC.common.other.addProcess process_name, { 'tab_id' : tab_id, 'app_name' : tab_name, 'region' : region, 'flag_list' : { 'is_pending' : true } }
 
                     # add process tab
                     Tabbar.add process_name, tab_name + ' - app'
@@ -258,7 +258,7 @@ define [ 'jquery', 'event', 'base_main',
                 else if type is 'appview'
 
                     # search tab id by searchCacheMap
-                    obj = MC.forge.other.searchCacheMap { key : 'origin_id', value : tab_id  }
+                    obj = MC.common.other.searchCacheMap { key : 'origin_id', value : tab_id  }
 
                     if not _.isEmpty obj
 
@@ -268,13 +268,13 @@ define [ 'jquery', 'event', 'base_main',
                     else
 
                         # create uid
-                        uid       = MC.forge.other.createUID()
+                        uid       = MC.common.other.createUID()
 
                         # create appview id
                         appview_id = 'process-' + uid
 
                         # add id to cache id map
-                        MC.forge.other.addCacheMap uid, appview_id, tab_id, region, 'process'
+                        MC.common.other.addCacheMap uid, appview_id, tab_id, region, 'process'
 
                     # add appview tab
                     Tabbar.open appview_id, tab_name + ' - visualization'
@@ -304,7 +304,7 @@ define [ 'jquery', 'event', 'base_main',
                 console.log 'OPEN_APPVIEW_TAB ' + ' tab_name = ' + tab_name + ', region_name = ' + region_name + ', tab_id = ' + tab_id
 
                 # get obj
-                obj = MC.forge.other.searchCacheMap { key : 'origin_id', value : tab_name }
+                obj = MC.common.other.searchCacheMap { key : 'origin_id', value : tab_name }
 
                 console.log obj
 
@@ -352,7 +352,7 @@ define [ 'jquery', 'event', 'base_main',
                 console.log 'UPDATE_DESIGN_TAB, tab_id = ' + tab_id + ', tab_name = ' + tab_name
 
                 # set current tab id
-                MC.forge.other.setCurrentTabId tab_id
+                MC.common.other.setCurrentTabId tab_id
 
                 # get origin tab id and reset tab_id and tab_name
                 original_tab_id = view.updateCurrentTab tab_id, tab_name
@@ -406,7 +406,7 @@ define [ 'jquery', 'event', 'base_main',
                     ide_event.trigger ide_event.CLOSE_DESIGN_TAB, tab_id
 
                     # delete MC.process
-                    MC.forge.other.deleteProcess tab_id
+                    MC.common.other.deleteProcess tab_id
 
                 null
 

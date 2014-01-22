@@ -20,8 +20,6 @@ define [ "constant", "../ConnectionModel", "i18n!nls/lang.js" ], ( constant, Con
           sgline.remove()
           break
 
-      @on "destroy", @tryReconnect
-
       # Calc the new index of this EniAttachment.
       if attributes and attributes.index
         # The EniAttachment has a specified index ( This happens when the Eni is deserializing )
@@ -56,17 +54,7 @@ define [ "constant", "../ConnectionModel", "i18n!nls/lang.js" ], ( constant, Con
 
       null
 
-    tryReconnect : ()->
-      # When remove attachment, see if we need to connect sgline between eni and ami
-      ami = @getTarget constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
-      eni = @getTarget constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
-      if ami and eni
-        SgModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup )
-        SgModel.tryDrawLine( ami, eni )
-
-      null
-
-    remove : ()->
+    remove : ( reason )->
       # When this EniAttachment is removed, we need to update all the Eni's name.
       attachments = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance ).connections("EniAttachment")
 
@@ -77,6 +65,14 @@ define [ "constant", "../ConnectionModel", "i18n!nls/lang.js" ], ( constant, Con
         attach.getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface ).updateName()
         ++startIdx
 
+      if not reason
+        # If reason is falsy, it means the line is delected by user
+        # Then we should update try to connect sgline between eni and ami
+        ami = @getTarget constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+        eni = @getTarget constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+        if ami and eni
+          SgModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup )
+          SgModel.tryDrawLine( ami, eni )
       null
 
     portDefs :

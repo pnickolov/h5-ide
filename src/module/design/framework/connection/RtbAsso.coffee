@@ -14,9 +14,8 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
         name : "subnet-assoc-out"
         type : constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
       port2 :
-        name      : "rtb-src"
-        direction : "vertical"
-        type      : constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
+        name : "rtb-src"
+        type : constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
 
     initialize : ()->
       for asso in @getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet ).connections( "RTB_Asso" )

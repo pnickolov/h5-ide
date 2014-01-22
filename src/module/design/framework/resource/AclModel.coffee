@@ -82,6 +82,7 @@ define [ "../ComplexResModel", "../ConnectionModel", "constant" ], ( ComplexResM
         }]
       }
 
+    isVisual  : ()-> false
     isDefault : ()-> @attributes.name is "DefaultACL"
 
     remove : ()->

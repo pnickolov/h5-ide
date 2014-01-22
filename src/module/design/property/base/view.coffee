@@ -57,7 +57,7 @@ define [ 'constant',
 
         disabledAllOperabilityArea : ( disabled ) ->
             if disabled
-                if $("resource-panel").children(".disabled-event-layout").length
+                if $("#resource-panel").children(".disabled-event-layout").length
                     return
                 divTmpl = '<div class="disabled-event-layout"></div>'
                 $('#resource-panel').append(divTmpl)

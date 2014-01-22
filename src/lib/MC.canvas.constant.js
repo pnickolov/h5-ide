@@ -135,8 +135,11 @@ var constant_data = {
 	//LINE_STROKE_WIDTH: 2,
 
 	//constant for MC.canvas.add
-	PATH_D_PORT  : "M8 5.5l-6 -5.5l-2 0 l0 11 l2 0z", //triangle
-	PATH_D_PORT2 : "M0 5.5l5.5 -5.5l5.5 5.5 l-5.5 5.5z", //diamond
+	PATH_PORT_LEFT    : "M-8 0.5l6 -5.5l2 0 l0 11 l-2 0z", // ◀
+	PATH_PORT_TOP     : "M0.5 0l5.5 0l0 -2l-5.5 -6l-5.5 6l0 2z", // ▲
+	PATH_PORT_RIGHT   : "M8 0.5l-6 -5.5l-2 0 l0 11 l2 0z", // ▶
+	PATH_PORT_BOTTOM  : "M0.5 0l5.5 0l0 2l-5.5 6l-5.5 -6l0 -2z", // ▼
+	PATH_PORT_DIAMOND : "M-5 0.5l5.5 -5.5l5.5 5.5 l-5.5 5.5z", // ◆
 
 	PATH_ASG_TITLE: "M0 21l0 -16a5 5 0 0 1 5 -5l121 0a5 5 0 0 1 5 5l0 16z",
 

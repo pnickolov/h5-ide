@@ -2,10 +2,9 @@
 define [ "constant",
          "Design",
          "../GroupModel",
-         "CanvasManager",
          "../connection/RtbAsso",
          "i18n!nls/lang.js"
-], ( constant, Design, GroupModel, CanvasManager, RtbAsso, lang )->
+], ( constant, Design, GroupModel, RtbAsso, lang )->
 
   Model = GroupModel.extend {
 
@@ -174,46 +173,6 @@ define [ "constant",
 
       vpcCIDRIPStrAry[2] = String(resultSubnetNum)
       vpcCIDRIPStrAry.join('.') + '/24'
-
-    draw : ( isCreate )->
-
-      label = "#{@get('name')} (#{ @get('cidr')})"
-
-      if isCreate
-        node = @createNode( label )
-
-        portX = @width()  * MC.canvas.GRID_WIDTH + 4
-        portY = @height() * MC.canvas.GRID_HEIGHT / 2 - 5
-
-        node.append( Canvon.path( MC.canvas.PATH_D_PORT ).attr({
-          'class'      : 'port port-gray port-subnet-assoc-in'
-          'id'         : @id + '_port-subnet-assoc-in'
-          'transform'  : 'translate(-12, ' + portY + ')' # port poition
-          'data-angle' : MC.canvas.PORT_LEFT_ANGLE # port angle
-          'data-name'     : 'subnet-assoc-in'
-          'data-position' : 'left'
-          'data-type'     : 'association'
-          'data-direction': 'in'
-        }) )
-
-        node.append( Canvon.path( MC.canvas.PATH_D_PORT ).attr({
-          'class'      : 'port port-gray port-subnet-assoc-out'
-          'id'         : @id + '_port-subnet-assoc-out'
-          'transform'  : 'translate(' + portX + ', ' + portY + ')'
-          'data-angle' : MC.canvas.PORT_RIGHT_ANGLE
-          'data-name'     : 'subnet-assoc-out'
-          'data-position' : 'right'
-          'data-type'     : 'association'
-          'data-direction': 'out'
-        }) )
-
-        $('#subnet_layer').append node
-
-        # Move the group to right place
-        CanvasManager.position node, @x(), @y()
-
-      else
-        CanvasManager.update( $( document.getElementById( @id ) ).children("text"), label )
 
     serialize : ()->
 

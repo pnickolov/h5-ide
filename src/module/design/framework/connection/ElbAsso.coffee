@@ -89,27 +89,24 @@ define [ "constant", "../ConnectionModel", "i18n!nls/lang.js", "Design", "compon
           name : "elb-sg-out"
           type : constant.AWS_RESOURCE_TYPE.AWS_ELB
         port2 :
-          name      : "instance-sg"
-          direction : "horizontal"
-          type      : constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+          name : "instance-sg"
+          type : constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
       }
       {
         port1 :
           name : "elb-sg-out"
           type : constant.AWS_RESOURCE_TYPE.AWS_ELB
         port2 :
-          name      : "launchconfig-sg"
-          direction : "horizontal"
-          type      : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+          name : "launchconfig-sg"
+          type : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
       }
       {
         port1 :
           name : "elb-sg-out"
           type : constant.AWS_RESOURCE_TYPE.AWS_ELB
         port2 :
-          name      : "launchconfig-sg"
-          direction : "horizontal"
-          type      : "ExpandedAsg"
+          name : "launchconfig-sg"
+          type : "ExpandedAsg"
       }
     ]
 

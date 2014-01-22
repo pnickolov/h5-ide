@@ -194,6 +194,7 @@
           , awsCidr:   "This value should be a valid CIDR and the netmask ('16') must be between 16 and 28."
           , awsName:   "This value should be a valid AWS name."
           , domain:    "This value should be a valid domain."
+          , ascii:     "This value should be a valid ascii."
 
         }
       , notnull:        "This value should not be null."
@@ -316,6 +317,10 @@
 
           case 'domain':
            regExp = /^([a-zA-Z0-9-\u4e00-\u9fa5]+\.)+([a-zA-Z-\u4e00-\u9fa5]+)$/;
+           break;
+
+          case 'ascii':
+           regExp = /^[\x00-\x7F]+$/;
            break;
 
           case 'usPhone':

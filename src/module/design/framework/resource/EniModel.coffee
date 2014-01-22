@@ -1,5 +1,5 @@
 
-define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso", "../connection/EniAttachment", "constant", 'i18n!nls/lang.js' ], ( ComplexResModel, CanvasManager, Design, SgAsso, EniAttachment, constant, lang )->
+define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/EniAttachment", "constant", 'i18n!nls/lang.js' ], ( ComplexResModel, Design, SgAsso, EniAttachment, constant, lang )->
 
   ###
   IpObject is used to represent an ip in Eni
@@ -324,133 +324,6 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
         @draw()
       null
 
-    iconUrl : ()->
-      if @connections( "EniAttachment" ).length
-        state = "attached"
-      else
-        state = "unattached"
-
-      "ide/icon/eni-canvas-#{state}.png"
-
-    draw : ( isCreate )->
-
-      if @embedInstance()
-        # Do nothing if this is embed eni, a.k.a the internal eni of an Instance
-        return
-
-      if isCreate
-
-        design = Design.instance()
-
-        # Call parent's createNode to do basic creation
-        node = @createNode({
-          image   : @iconUrl()
-          imageX  : 16
-          imageY  : 15
-          imageW  : 59
-          imageH  : 49
-          label   : @get("name")
-          labelBg : true
-          sg      : true
-        })
-
-        node.append(
-          Canvon.image( "", 44,37,12,14 ).attr({
-            'id': @id + "_eip_status"
-            'class':'eip-status tooltip'
-          }),
-
-          # Left Port
-          Canvon.path(MC.canvas.PATH_D_PORT2).attr({
-            'id'         : @id + '_port-eni-sg-left'
-            'class'      : 'port port-blue port-eni-sg port-eni-sg-left'
-            'transform'  : 'translate(5, 15)' + MC.canvas.PORT_RIGHT_ROTATE
-            'data-angle' : MC.canvas.PORT_LEFT_ANGLE
-            'data-name'     : 'eni-sg'
-            'data-position' : 'left'
-            'data-type'     : 'sg'
-            'data-direction': "in"
-          }),
-
-          # Left port
-          Canvon.path(MC.canvas.PATH_D_PORT).attr({
-            'id'         : @id + '_port-eni-attach'
-            'class'      : 'port port-green port-eni-attach'
-            'transform'  : 'translate(8, 45)' + MC.canvas.PORT_RIGHT_ROTATE
-            'data-angle' : MC.canvas.PORT_LEFT_ANGLE
-            'data-name'     : 'eni-attach'
-            'data-position' : 'left'
-            'data-type'     : 'attachment'
-            'data-direction': "in"
-          }),
-
-          # Right port
-          Canvon.path(MC.canvas.PATH_D_PORT2).attr({
-            'id'         : @id + '_port-eni-sg-right'
-            'class'      : 'port port-blue port-eni-sg port-eni-sg-right'
-            'transform'  : 'translate(75, 15)' + MC.canvas.PORT_RIGHT_ROTATE
-            'data-angle' : MC.canvas.PORT_RIGHT_ANGLE
-            'data-name'     : 'eni-sg'
-            'data-position' : 'right'
-            'data-type'     : 'sg'
-            'data-direction': 'out'
-          }),
-
-          # Top port(blue)
-          Canvon.path(MC.canvas.PATH_D_PORT).attr({
-            'id'         : @id + '_port-eni-rtb'
-            'class'      : 'port port-blue port-eni-rtb'
-            'transform'  : 'translate(42, -1)' + MC.canvas.PORT_UP_ROTATE
-            'data-angle' : MC.canvas.PORT_UP_ANGLE
-            'data-name'     : 'eni-rtb'
-            'data-position' : 'top'
-            'data-type'     : 'sg'
-            'data-direction': 'in'
-          }),
-
-          Canvon.group().append(
-            Canvon.rectangle(36, 1, 20, 16).attr({'class':'server-number-bg','rx':4,'ry':4}),
-            Canvon.text(46, 13, "0").attr({'class':'node-label server-number'})
-          ).attr({
-            'class'   : 'eni-number-group'
-            'display' : "none"
-          })
-
-        )
-
-        # Move the node to right place
-        $("#node_layer").append node
-        CanvasManager.position node, @x(), @y()
-
-      else
-        node = $( document.getElementById( @id ) )
-        # Update label
-        CanvasManager.update node.children(".node-label"), @get("name")
-
-        # Update Image
-        CanvasManager.update node.children("image:not(.eip-status)"), @iconUrl(), "href"
-
-      # Update SeverGroup Count
-      count = @serverGroupCount()
-
-      numberGroup = node.children(".eni-number-group")
-      if count > 1
-        CanvasManager.toggle node.children(".port-eni-rtb"), false
-        CanvasManager.toggle numberGroup, true
-        CanvasManager.update numberGroup.children("text"), count
-      else
-        CanvasManager.toggle node.children(".port-eni-rtb"), true
-        CanvasManager.toggle numberGroup, false
-
-      # Update EIP
-      CanvasManager.updateEip node.children(".eip-status"), @
-
-      # Update Resource State in app view
-      if not Design.instance().modeIsStack() and @.get("appId")
-        @updateState()
-
-      null
-
     ensureEnoughMember : ()->
       instance = @attachedInstance()
       if not instance then return
@@ -501,6 +374,8 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
       # But we also need to fill in IP/EIP data of ServerGroup Member Enis.
       for ipObj, idx in @get("ips")
 
+        hasEip = ipObj.hasEip
+
         ipObj = memberData.ips[ idx ]
         if servergroupOption.number > 1
           autoAssign = true
@@ -521,7 +396,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
             AllocationID      : ""
         }
 
-        if ipObj.hasEip
+        if hasEip
           # Create Eip Component
           eip = ipObj.eipData
 

@@ -1,5 +1,5 @@
 
-define [ "../ComplexResModel", "CanvasManager", "./VpcModel", "Design", "constant", "i18n!nls/lang.js" ], ( ComplexResModel, CanvasManager, VpcModel, Design, constant, lang )->
+define [ "../ComplexResModel", "./VpcModel", "Design", "constant", "i18n!nls/lang.js" ], ( ComplexResModel, VpcModel, Design, constant, lang )->
 
   Model = ComplexResModel.extend {
 
@@ -31,48 +31,6 @@ define [ "../ComplexResModel", "CanvasManager", "./VpcModel", "Design", "constan
         return { error : lang.ide.CVS_CFM_DEL_IGW }
 
       true
-
-    draw : ( isCreate )->
-
-      if isCreate
-
-        design = Design.instance()
-
-        # Call parent's createNode to do basic creation
-        node = @createNode({
-          image   : "ide/icon/igw-canvas.png"
-          imageX  : 10
-          imageY  : 16
-          imageW  : 60
-          imageH  : 46
-          label   : @get("name")
-        })
-
-        node.append(
-          # Port
-          Canvon.path(MC.canvas.PATH_D_PORT).attr({
-            'id'         : @id + '_port-igw-tgt'
-            'class'      : 'port port-blue port-igw-tgt'
-            'transform'  : 'translate(70, 30)' + MC.canvas.PORT_LEFT_ROTATE
-            'data-angle' : MC.canvas.PORT_RIGHT_ANGLE
-            'data-name'     : 'igw-tgt'
-            'data-position' : 'right'
-            'data-type'     : 'sg'
-            'data-direction': 'in'
-          })
-        )
-
-        # Move the node to right place
-        $("#node_layer").append node
-        CanvasManager.position node, @x(), @y()
-
-
-      # Update Resource State in app view
-      if not Design.instance().modeIsStack() and @.get("appId")
-        @updateState()
-
-      null
-
 
     serialize : ()->
 

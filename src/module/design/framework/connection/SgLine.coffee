@@ -89,7 +89,9 @@ define [ "constant", "../ConnectionModel", "../ResourceModel", "component/sgrule
 
     # This method is used by Asg to remove its expanded asg's sgline.
     silentRemove : ()->
-      CanvasManager.remove( document.getElementById( @id ) )
+      v = @__view
+      if v then v.detach()
+
       ResourceModel.remove.apply( this, arguments )
       null
 
@@ -106,144 +108,121 @@ define [ "constant", "../ConnectionModel", "../ResourceModel", "component/sgrule
       # Instance
       {
         port1 :
-          name      : "instance-sg"
-          direction : "horizontal"
-          type      : constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+          name : "instance-sg"
+          type : constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
         port2 :
-          name      : "instance-sg"
-          direction : "horizontal"
-          type      : constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+          name : "instance-sg"
+          type : constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
       }
       {
         port1 :
-          name      : "instance-sg"
-          direction : "horizontal"
-          type      : constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+          name : "instance-sg"
+          type : constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
         port2 :
-          name      : "eni-sg"
-          direction : "horizontal"
-          type      : constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+          name : "eni-sg"
+          type : constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
       }
       {
         port1 :
-          name      : "instance-sg"
-          direction : "horizontal"
-          type      : constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+          name : "instance-sg"
+          type : constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
         port2 :
-          name      : "launchconfig-sg"
-          direction : "horizontal"
-          type      : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+          name : "launchconfig-sg"
+          type : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
       }
       {
         port1 :
-          name      : "instance-sg"
-          direction : "horizontal"
-          type      : constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+          name : "instance-sg"
+          type : constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
         port2 :
-          name      : "launchconfig-sg"
-          direction : "horizontal"
-          type      : "ExpandedAsg"
+          name : "launchconfig-sg"
+          type : "ExpandedAsg"
       }
       {
         port1 :
-          name      : "instance-sg"
-          direction : "horizontal"
-          type      : constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+          name : "instance-sg"
+          type : constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
         port2 :
-          name      : "elb-sg-in"
-          type      : constant.AWS_RESOURCE_TYPE.AWS_ELB
+          name : "elb-sg-in"
+          type : constant.AWS_RESOURCE_TYPE.AWS_ELB
       }
 
       # Eni
       {
         port1 :
-          name      : "eni-sg"
-          direction : "horizontal"
-          type      : constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+          name : "eni-sg"
+          type : constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
         port2 :
-          name      : "eni-sg"
-          direction : "horizontal"
-          type      : constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+          name : "eni-sg"
+          type : constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
       }
       {
         port1 :
-          name      : "launchconfig-sg"
-          direction : "horizontal"
-          type      : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+          name : "launchconfig-sg"
+          type : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
         port2 :
-          name      : "eni-sg"
-          direction : "horizontal"
-          type      : constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+          name : "eni-sg"
+          type : constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
       }
       {
         port1 :
-          name      : "launchconfig-sg"
-          direction : "horizontal"
-          type      : "ExpandedAsg"
+          name : "launchconfig-sg"
+          type : "ExpandedAsg"
         port2 :
-          name      : "eni-sg"
-          direction : "horizontal"
-          type      : constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+          name : "eni-sg"
+          type : constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
       }
       {
         port1 :
-          name      : "elb-sg-in"
-          type      : constant.AWS_RESOURCE_TYPE.AWS_ELB
+          name : "elb-sg-in"
+          type : constant.AWS_RESOURCE_TYPE.AWS_ELB
         port2 :
-          name      : "eni-sg"
-          direction : "horizontal"
-          type      : constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+          name : "eni-sg"
+          type : constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
       }
 
       # LC
       {
         port1 :
-          name      : "launchconfig-sg"
-          direction : "horizontal"
-          type      : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+          name : "launchconfig-sg"
+          type : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
         port2 :
-          name      : "launchconfig-sg"
-          direction : "horizontal"
-          type      : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+          name : "launchconfig-sg"
+          type : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
       }
       {
         port1 :
-          name      : "launchconfig-sg"
-          direction : "horizontal"
-          type      : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+          name : "launchconfig-sg"
+          type : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
         port2 :
-          name      : "launchconfig-sg"
-          direction : "horizontal"
-          type      : "ExpandedAsg"
+          name : "launchconfig-sg"
+          type : "ExpandedAsg"
       }
       {
         port1 :
-          name      : "launchconfig-sg"
-          direction : "horizontal"
-          type      : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+          name : "launchconfig-sg"
+          type : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
         port2 :
-          name      : "elb-sg-in"
-          type      : constant.AWS_RESOURCE_TYPE.AWS_ELB
+          name : "elb-sg-in"
+          type : constant.AWS_RESOURCE_TYPE.AWS_ELB
       }
 
       # Elb
       {
         port1 :
-          name      : "launchconfig-sg"
-          direction : "horizontal"
-          type      : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+          name : "launchconfig-sg"
+          type : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
         port2 :
-          name      : "elb-sg-in"
-          type      : constant.AWS_RESOURCE_TYPE.AWS_ELB
+          name : "elb-sg-in"
+          type : constant.AWS_RESOURCE_TYPE.AWS_ELB
       }
       {
         port1 :
-          name      : "launchconfig-sg"
-          direction : "horizontal"
-          type      : "ExpandedAsg"
+          name : "launchconfig-sg"
+          type : "ExpandedAsg"
         port2 :
-          name      : "elb-sg-in"
-          type      : constant.AWS_RESOURCE_TYPE.AWS_ELB
+          name : "elb-sg-in"
+          type : constant.AWS_RESOURCE_TYPE.AWS_ELB
       }
     ]
   }, {

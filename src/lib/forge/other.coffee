@@ -176,7 +176,8 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 	#	region      : <region_name>
 	#	type        : <'process', 'appview'>
 	#	state       : <'OPEN', 'OLD', 'FINISH', 'ERROR'>
-	#   create_time : <new Date(), 'timeout'>
+	#   create_time : <new Date(), 'timeout', 'overtime'>
+	#   origin_time : <new Date()>
 
 	cacheIDMap = {}
 
@@ -195,6 +196,7 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 			'type'        : type
 			'state'       : state
 			'create_time' : new Date()
+			'origin_time' : new Date()
 
 	delCacheMap = ( id ) ->
 		console.log 'delCacheMap', id

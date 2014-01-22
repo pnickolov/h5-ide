@@ -19,7 +19,7 @@ define [ 'aws_model', 'ami_model'
             'current_tab_id'    : null
 
             # when timeout, set timeout_obj
-            # id : { id : null, is_show : false }
+            # id : { id : null, timeout : false, overtime : false }
             'timeout_obj'       : {}
 
         initialize  : ->
@@ -133,12 +133,12 @@ define [ 'aws_model', 'ami_model'
                 if not obj
                     return
 
-                # when create_time is 'timeout' or state is 'FINISH' return
-                if obj.create_time is 'timeout' or obj.state is 'FINISH'
+                # when create_time is 'overtime' or state is 'FINISH' return
+                if obj.create_time is 'overtime' or obj.state is 'FINISH'
                     return
 
                 # set T1 and T2
-                t1 = obj.create_time
+                t1 = obj.origin_time
                 t2 = new Date()
 
                 # timestamp
@@ -148,7 +148,16 @@ define [ 'aws_model', 'ami_model'
                     MC.forge.other.setCacheMap obj.origin_id, null, null, null, 'timeout'
 
                     # set timeout
-                    me.set 'timeout_obj', { 'id' : obj.id, 'is_show' : true }
+                    me.set 'timeout_obj', { 'id' : obj.id, 'timeout' : true, 'overtime' : false }
+
+                # time out
+                if MC.timestamp( t1, t2, 's' ) > 15
+
+                    # set create_time is 'overtime'
+                    MC.forge.other.setCacheMap obj.origin_id, null, null, null, 'overtime'
+
+                    # set timeout
+                    me.set 'timeout_obj', { 'id' : obj.id, 'timeout' : true, 'overtime' : true }
 
             ), 1000
 
@@ -228,7 +237,7 @@ define [ 'aws_model', 'ami_model'
             console.log 'getTimestamp', state, tab_id
 
             if state is 'OPEN_PROCESS'
-                @set 'timeout_obj', { id : tab_id, is_show : false }
+                @set 'timeout_obj', { 'id' : tab_id, 'timeout' : false, 'overtime' : false }
 
             else if state is 'OLD_PROCESS'
 
@@ -237,11 +246,15 @@ define [ 'aws_model', 'ami_model'
 
                 # when create_time is 'timeout' show tip
                 if obj and obj.create_time is 'timeout'
-                    @set 'timeout_obj', { id : tab_id, is_show : true }
+                    @set 'timeout_obj', { 'id' : tab_id, 'timeout' : true, 'overtime' : false }
 
-                # when create_time isnt 'timeout' hide tip
-                else if obj and obj.create_time isnt 'timeout'
-                    @set 'timeout_obj', { id : tab_id, is_show : false }
+                # when create_time is 'overtime' show tip
+                if obj and obj.create_time is 'overtime'
+                    @set 'timeout_obj', { 'id' : tab_id, 'timeout' : true, 'overtime' : true }
+
+                # when create_time isnt 'timeout' or 'overtime' hide tip
+                else if obj and obj.create_time isnt [ 'timeout', 'overtime' ]
+                    @set 'timeout_obj', { 'id' : tab_id, 'timeout' : false, 'overtime' : false }
 
             null
 
@@ -258,7 +271,7 @@ define [ 'aws_model', 'ami_model'
                     delete resources.origin
 
                 # call api
-                aws_model.resource { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, resources, 'vpc', 1
+                #aws_model.resource { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, resources, 'vpc', 1
 
                 # set state 'OLD'
                 MC.forge.other.setCacheMap vpc_id, null, 'OLD', null

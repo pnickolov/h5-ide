@@ -34,8 +34,7 @@ define [ 'jquery', 'event' ], ( $, ide_event ) ->
                 unLoadModule view, model
 
             view.on 'RELOAD_EVENT', () ->
-                model.set 'resource_list', null
-                model.getStatResourceService()
+                model.reload()
 
             # render
             view.render()

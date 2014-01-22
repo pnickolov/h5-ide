@@ -33,6 +33,9 @@ define [ 'jquery', 'event' ], ( $, ide_event ) ->
             view.on 'CLOSE_POPUP', () ->
                 unLoadModule view, model
 
+            view.on 'RELOAD_EVENT', () ->
+                model.reload()
+
             # render
             view.render()
 

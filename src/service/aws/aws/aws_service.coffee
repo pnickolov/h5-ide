@@ -244,7 +244,8 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
 				aws_result.resolved_data = resolved_data
 
 			catch error
-				console.log error
+				console.log 'aws service error', error
+				console.log result, return_code, param
 
 				if addition is 'vpc'
 					aws_result.is_error = true

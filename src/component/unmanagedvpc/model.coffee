@@ -9,33 +9,51 @@ define [ 'aws_model', 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( 
         defaults :
             'resource_list'    : null
 
+        delay    : null
+
         initialize : ->
 
             me = this
 
+            # count time out
+            @setTimeout()
+
+            # api callback
             @on 'AWS_RESOURCE_RETURN', ( result ) ->
                 console.log 'AWS_RESOURCE_RETURN', result
 
-                #if result and not result.is_error and result.resolved_data
-                #
-                #    # create resoruces
-                #    resources = me.createResources result.resolved_data
-                #
-                #    # set vo
-                #    me.set 'resource_list', $.extend true, {}, resources
-                #
-                #    # set global resource list
-                #    MC.forge.other.addUnmanaged $.extend true, {}, resources
-                #
-                #    null
+                # test
+                #result.return_code = -1
 
                 if result and result.return_code is 0
                     console.log 'import succcess'
                 else
                     console.log 'import error'
+                    @set 'resource_list', 'service_error'
+
+        reload : ->
+            console.log 'reload'
+
+            @set 'resource_list', null
+            @setTimeout()
+            @getStatResourceService()
+
+        setTimeout : ->
+            console.log 'setTimeout'
+
+            me = this
+
+            @delay = setTimeout () ->
+                console.log 'resource import setTimeout'
+                me.set 'resource_list', 'service_error'
+            , 1000 * 60 * 10
 
         getResource : ( result ) ->
             console.log 'getResource', result
+
+            # clear time out
+            if @delay
+                clearTimeout @delay
 
             # delete unnecessary item
             delete result[ '_id'       ]

@@ -182,6 +182,7 @@ define [ 'MC', 'event', 'handlebars'
 			websocket.sub "request", $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, subRequestReady, subScriptionError
 			websocket.sub "stack",   $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null, null
 			websocket.sub "app",     $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null, null
+			websocket.sub "imports", $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null, null
 		subScoket()
 
 		#set MC.data.websocket

@@ -51,9 +51,10 @@ require.config {
 
 		'forge_handle'    : 'lib/forge/main'
 
-		'Design'          : 'module/design/framework/Design'
-		'CanvasManager'   : 'module/design/framework/canvasview/CanvasManager'
-		'event'           : 'event/ide_event'
+		'Design'             : 'module/design/framework/Design'
+		'CanvasManager'      : 'module/design/framework/canvasview/CanvasManager'
+		'event'              : 'event/ide_event'
+		'MC.canvas.constant' : "lib/MC.canvas.constant",
 
 	shim                  :
 

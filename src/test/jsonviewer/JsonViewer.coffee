@@ -17,7 +17,7 @@ define ["text!./diff.html", "text!./view.html", "./JsonDiffLib", "./jqUi" ], ( t
       $("#diffTextarea1").val(JSON.stringify(json1))
       $("#diffTextarea2").val(JSON.stringify(json2))
 
-      jsond.compare( json1, json2, "root", $("#jsondiffContainer")[0] )
+      jsond.compare( json1, json2, "CanvasData", $("#jsondiffContainer")[0] )
 
       $("#modal-box").on "click", "ul", ( e )->
         if e.target.tagName and e.target.tagName.toUpperCase() is "UL"
@@ -62,7 +62,7 @@ define ["text!./diff.html", "text!./view.html", "./JsonDiffLib", "./jqUi" ], ( t
           $("#jsondiffContainer").find(".changed, .added, .removed").each ( idx, el )->
             p = $(el).parent()
             while p.attr("id") isnt "jsondiffContainer"
-              p.toggleClass("hasChanges", true)
+              p.toggleClass("hasChanges", true).removeClass("closed")
               p = p.parent()
             null
 
@@ -70,6 +70,8 @@ define ["text!./diff.html", "text!./view.html", "./JsonDiffLib", "./jqUi" ], ( t
           $("#jsondiffContainer").removeClass("changesOnly")
 
         null
+
+      showChangesOnly()
 
       $("#diffChangesOnly").on "change", (e)->
         showChangesOnly()
@@ -92,6 +94,8 @@ define ["text!./diff.html", "text!./view.html", "./JsonDiffLib", "./jqUi" ], ( t
       jsond.compare( component, component, "components", $("#jsonCompContainer").empty()[0] )
       jsond.compare( layout, layout, "layouts", $("#jsonLayoutContainer").empty()[0] )
 
+      $("#jsonCompContainer, #jsonAttrContainer, #jsonLayoutContainer").children().removeClass("closed");
+
       $("#jsonViewer").on "click", "ul", ( e )->
         if e.target.tagName and e.target.tagName.toUpperCase() is "UL"
           $(e.target).toggleClass("closed")
@@ -100,10 +104,16 @@ define ["text!./diff.html", "text!./view.html", "./JsonDiffLib", "./jqUi" ], ( t
       $("#jsonViewer").on "dblclick", ".modal-header", ()->
         $wrap = $("#diffWrap")
         if $wrap.is(":hidden")
-          $("#jsonViewer").css({"height": $("#jsonViewer").attr("data-height") || "70%" })
+          $("#jsonViewer").css({
+            "height" : $("#jsonViewer").attr("data-height") || "70%"
+            "width"  : $("#jsonViewer").attr("data-width")  || "50%"
+          })
           $wrap.show()
         else
-          $("#jsonViewer").attr({"data-height": $("#jsonViewer").height()}).css({"height":"auto"})
+          $("#jsonViewer").attr({
+            "data-height" : $("#jsonViewer").height()
+            "data-width"  : $("#jsonViewer").width()
+          }).css({"height":"auto","width":"150px"})
           $wrap.hide()
         null
 

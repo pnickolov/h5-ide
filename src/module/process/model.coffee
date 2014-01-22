@@ -271,7 +271,7 @@ define [ 'aws_model', 'ami_model'
                     delete resources.origin
 
                 # call api
-                #aws_model.resource { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, resources, 'vpc', 1
+                aws_model.resource { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, resources, 'vpc', 1
 
                 # set state 'OLD'
                 MC.forge.other.setCacheMap vpc_id, null, 'OLD', null

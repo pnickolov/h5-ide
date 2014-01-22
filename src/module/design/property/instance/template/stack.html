@@ -116,10 +116,10 @@
 
 	{{#if eni_display}}
 	<div class="option-group-head">{{ i18n "PROP_INSTANCE_ENI_DETAIL" }}</div>
-	<div class="option-group">
+	<div class="option-group" data-bind="true">
 		<section class="property-control-group">
 			<label class="left" for="property-instance-ni-description">{{ i18n "PROP_INSTANCE_ENI_DESC" }}</label>
-			<textarea id="property-instance-ni-description">{{eni_display.description}}</textarea>
+			<textarea id="property-instance-ni-description" data-type="ascii" data-ignore="true">{{eni_display.description}}</textarea>
 		</section>
 		<section class="property-control-group">
 			<div class="checkbox">

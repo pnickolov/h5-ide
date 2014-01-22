@@ -55,6 +55,8 @@ require.config {
 		'CanvasManager'   : 'module/design/framework/canvasview/CanvasManager'
 		'event'           : 'event/ide_event'
 
+		'MC.canvas.constant' : 'lib/MC.canvas.constant'
+
 	shim                  :
 
 		'jquery'          :

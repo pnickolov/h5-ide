@@ -135,9 +135,9 @@ define [ 'Design', 'event', 'text!./module/design/template.html', 'constant', 'i
 
                 for status in state.statuses
                     if status.result is 'success'
-                        succeed ++
+                        succeed++
                     else if status.result is 'failed'
-                        failed ++
+                        failed++
 
             $stateBar = $ '.statusbar-btn'
             $stateBar

@@ -94,7 +94,7 @@ define [ 'lib/forge/app' ], ( forge_app ) ->
 					continue
 
 				isDefault = sgComp.name is 'DefaultSG'
-				deletable = not ( readonly or isStackParent or isDefault or forge_app.existing_app_resource( uid ) )
+				deletable = not ( readonly or isDefault or forge_app.existing_app_resource( uid ) )
 				isElbSG = MC.aws.elb.isELBDefaultSG(uid)
 				if isElbSG
 					deletable = false

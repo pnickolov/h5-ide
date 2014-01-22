@@ -6079,9 +6079,9 @@ MC.canvas.benchmark = function (count)
 		NODE_MARGIN_TOP = 2,
 		NODE_START_LEFT = 8,
 		NODE_START_TOP = 8,
-		GROUP_INNER_PADDING = 2;
+		GROUP_INNER_PADDING = 2,
 
-	var max_child_column = Math.ceil( Math.sqrt( count ) ),
+		max_child_column = Math.ceil( Math.sqrt( count ) ),
 		max_child_row = count === 0 ? 0 : Math.ceil( count / max_child_column ),
 		scale_ratio = $canvas.scale(),
 		column_index = 0,
@@ -6137,11 +6137,6 @@ MC.canvas.benchmark = function (count)
 	});
 
 	$canvas.size(canvas_size[0], canvas_size[1]);
-
-	// $.each(normal_instance, function (i, item)
-	// {
-	// 	item.coordinate[0] += left_padding;
-	// });
 };
 
 /* Blob.js

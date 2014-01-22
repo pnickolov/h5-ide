@@ -682,7 +682,6 @@
 
           // Handle Chinese
           var keydownHandler = function(e) {
-
             if ( e.which === 229 ) {
               var origin = $( this ).val();
               var delayHandler = delayHandlerFactory( origin, this, 1 );
@@ -700,7 +699,6 @@
 
           // Handle keypress( main )
           var ignoreHandler = function(e) {
-            console.log( e.which, String.fromCharCode( e.which ));
 
             var inputChar, isLegal;
             // control key green light

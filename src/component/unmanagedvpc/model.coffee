@@ -16,18 +16,27 @@ define [ 'aws_model', 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( 
             @on 'AWS_RESOURCE_RETURN', ( result ) ->
                 console.log 'AWS_RESOURCE_RETURN', result
 
-                if result and not result.is_error and result.resolved_data
+                #if result and not result.is_error and result.resolved_data
+                #
+                #    # create resoruces
+                #    resources = me.createResources result.resolved_data
+                #
+                #    # set vo
+                #    me.set 'resource_list', $.extend true, {}, resources
+                #
+                #    # set global resource list
+                #    MC.forge.other.addUnmanaged $.extend true, {}, resources
+                #
+                #    null
 
-                    # create resoruces
-                    resources = me.createResources result.resolved_data
+                if result and result.return_code is 0
+                    # TO DO
+                    console.log 'to do'
+                else
+                    console.log 'to do'
 
-                    # set vo
-                    me.set 'resource_list', $.extend true, {}, resources
-
-                    # set global resource list
-                    MC.forge.other.addUnmanaged $.extend true, {}, resources
-
-                    null
+        getResource : ( idx, dag ) ->
+            console.log 'getResource', idx, dag
 
         getStatResourceService : ->
             console.log 'getStatResourceService'

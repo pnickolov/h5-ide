@@ -342,15 +342,35 @@ define [ 'MC', 'event', 'handlebars'
 			MC.data.websocket.collection.request.find().fetch()
 			query = MC.data.websocket.collection.request.find()
 			handle = query.observeChanges {
-                        added   : (idx, dag) ->
-                        	ide_event.trigger ide_event.UPDATE_REQUEST_ITEM, idx, dag
+				added   : (idx, dag) ->
+					ide_event.trigger ide_event.UPDATE_REQUEST_ITEM, idx, dag
 
-                        changed : (idx, dag) ->
-                        	ide_event.trigger ide_event.UPDATE_REQUEST_ITEM, idx, dag
+				changed : (idx, dag) ->
+					ide_event.trigger ide_event.UPDATE_REQUEST_ITEM, idx, dag
 			}
 
 			null
 
 		listenRequestList()
+
+		###########################
+		#listen to the import list
+		###########################
+		listenImportList = () ->
+			console.log 'listen to import list'
+
+			MC.data.websocket.collection.imports.find().fetch()
+			query = MC.data.websocket.collection.imports.find()
+			handle = query.observeChanges {
+				added    : (idx, dag) ->
+					ide_event.trigger ide_event.UPDATE_IMPORT_ITEM, idx, dag
+
+				changed : (idx, dag) ->
+					ide_event.trigger ide_event.UPDATE_IMPORT_ITEM, idx, dag
+			}
+
+			null
+
+		listenImportList()
 
 		null

@@ -841,11 +841,11 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 
                 if comp.type is "AWS.AutoScaling.Group"
 
-                    key[comp.resource.AutoScalingGroupName] = "@#{uid}.resource.AutoScalingGroupName"
+                    key[comp.resource.AutoScalingGroupName + '-asg'] = "@#{uid}.resource.AutoScalingGroupName"
 
                 if comp.type is "AWS.AutoScaling.LaunchConfiguration"
 
-                    key[comp.resource.LaunchConfigurationName] = "@#{uid}.resource.LaunchConfigurationName"
+                    key[comp.resource.LaunchConfigurationName + '-lc'] = "@#{uid}.resource.LaunchConfigurationName"
 
                 if comp.type is 'AWS.VPC.NetworkInterface'
 
@@ -869,9 +869,23 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 
                 for k, v of obj
 
-                    if typeof(v) is 'string' and reference[v] and k not in [except_key, 'name']
+                    if typeof(v) is 'string'
 
-                        obj[k] = reference[v]
+                        if k is 'LaunchConfigurationName'
+
+                            if reference[v + '-lc'] and k not in [except_key, 'name']
+
+                                obj[k] = reference[v + '-lc']
+
+                        else if k is 'AutoScalingGroupName'
+
+                            if reference[v + '-asg'] and k not in [except_key, 'name']
+
+                                obj[k] = reference[v + '-asg']
+
+                        else if reference[v] and k not in [except_key, 'name']
+
+                            obj[k] = reference[v]
 
                     if typeof(v) is 'object'
 

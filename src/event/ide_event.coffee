@@ -152,6 +152,7 @@ define [ 'underscore', 'backbone' ], () ->
         RECONNECT_WEBSOCKET            : 'RECONNECT_WEBSOCKET'
         WS_COLLECTION_READY_REQUEST    : 'WS_COLLECTION_READY_REQUEST'
         UPDATE_REQUEST_ITEM            : 'UPDATE_REQUEST_ITEM'
+        UPDATE_IMPORT_ITEM             : 'UPDATE_IMPORT_ITEM'
 
         #quickstart data ready
         RESOURCE_QUICKSTART_READY      : 'RESOURCE_QUICKSTART_READY'

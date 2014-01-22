@@ -1616,7 +1616,8 @@ define [ 'event',
             $stateItemList = that.$stateList.find('.state-item')
 
             _.each $stateItemList, (stateItem) ->
-                
+
+                $stateItem = $(stateItem)
                 stateId = $stateItem.attr('data-id')
                 $statusIcon = $stateItem.find('.state-status-icon')
                 $statusIcon.removeClass('success').removeClass('failure')

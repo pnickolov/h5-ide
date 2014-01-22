@@ -2,7 +2,7 @@
 #  View(UI logic) for design
 #############################
 
-define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/lang.js', 'state_status', 'backbone', 'jquery', 'handlebars' ], ( ide_event, template, constant, lang, stateStatusMain ) ->
+define [ 'Design', 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/lang.js', 'state_status', 'backbone', 'jquery', 'handlebars' ], ( Design, ide_event, template, constant, lang, stateStatusMain ) ->
 
     DesignView = Backbone.View.extend {
 
@@ -129,16 +129,15 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/la
                 stateList = [ stateList ]
 
             for state in stateList
-                ### develop
-                if state.app_id isnt MC.canvas_data.id
+                # Show current app only
+                if state.app_id isnt Design.instance().get( 'id' )
                     continue
-                ###
 
                 for status in state.statuses
                     if status.result is 'success'
-                        succeed++
+                        succeed ++
                     else if status.result is 'failed'
-                        failed++
+                        failed ++
 
             $stateBar = $ '.statusbar-btn'
             $stateBar

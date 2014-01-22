@@ -49,11 +49,11 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
                     #if status.result isnt 'failure'
                     #    continue
                     # Show current app only
-                    #if state.app_id isnt Design.instance().get( 'id' )
-                    #    continue
+                    if state.app_id isnt Design.instance().get( 'id' )
+                        continue
 
                     # test
-                    state.res_id = 'i-a271b0bc'
+                    #state.res_id = 'i-a271b0bc'
 
                     data =
                         id      : @__genId state.res_id, status.state_id

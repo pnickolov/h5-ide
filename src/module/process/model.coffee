@@ -151,7 +151,7 @@ define [ 'aws_model', 'ami_model'
                     me.set 'timeout_obj', { 'id' : obj.id, 'timeout' : true, 'overtime' : false }
 
                 # time out
-                if MC.timestamp( t1, t2, 's' ) > 15
+                if MC.timestamp( t1, t2, 'm' ) > 10
 
                     # set create_time is 'overtime'
                     MC.forge.other.setCacheMap obj.origin_id, null, null, null, 'overtime'

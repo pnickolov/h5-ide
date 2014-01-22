@@ -1494,11 +1494,11 @@ define [ 'event',
             stateLogViewAry = []
             stateStatusMap = {}
             _.each stateLogDataAry, (logObj) ->
-                utcTimeStr = (new Date(logObj.time)).toUTCString()
+                timeStr = MC.dateFormat(new Date(logObj.time), 'yyyy-MM-dd hh:mm:ss')
                 stateStatus = logObj.result
                 stateLogViewAry.push({
                     state_id: "State #{logObj.state_id}",
-                    log_time: utcTimeStr,
+                    log_time: timeStr,
                     state_status: stateStatus,
                     stdout: logObj.stdout,
                     stderr: logObj.stderr

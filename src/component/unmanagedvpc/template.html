@@ -12,6 +12,11 @@
 			<div class="loading-spinner"></div>
 			{{/unless}}
 
+			{{#is_service_error resource_list }}
+			<div class="unmanaged-vpc-empty">Loading VPC has failed.</div>
+			<button class="btn btn-silver" id="btn-changedfail">Retry</button>
+			{{/is_service_error }}
+
 			{{#is_unmanaged resource_list }}
 			<div class="unmanaged-vpc-empty">There is no unmanaged VPC to visualize.</div>
 			{{/is_unmanaged }}

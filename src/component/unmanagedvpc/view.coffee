@@ -17,6 +17,20 @@ define [ 'event',
 
         initialize  : ->
 
+            # is service error
+            Handlebars.registerHelper 'is_service_error', ( value, options ) ->
+
+                # is string
+                if _.isString value
+
+                    # is 'service_error'
+                    if value is 'service_error'
+                        options.fn this
+                    else
+                        options.inverse this
+                else
+                    options.inverse this
+
             # is no unmanaged
             Handlebars.registerHelper 'is_unmanaged', ( value, options ) ->
 

@@ -31,16 +31,7 @@
 </section>
 
 <section class="toolbar-btn-group">
-  <div class="selectbox btn-toolbar">
-    <a class="selection tooltip icon-send" data-tooltip='{{ i18n "TOOL_EXPORT" }}' id="toolbar-export"></a>
-    <ul class="dropdown" tabindex="-1">
-      <li id="toolbar-export-png"><i class="icon-export-png"></i>{{ i18n "TOOL_EXPORT_AS_PNG" }}</li>
-      <!-- env:dev -->
-      <li><a href="javascript:D.debug.diff();" style="color:#333;display:block;">Open JSON Diff</a></li>
-      <li><a href="http://jsonviewer.stack.hu/" style="color:#333;display:block;" target="_blank">Open JSON View</a></li>
-      <!-- env:dev:end -->
-    </ul>
-  </div>
+  <a class="btn-toolbar icon-export-png tooltip" id="toolbar-export-png" data-tooltip='{{ i18n "TOOL_EXPORT_AS_PNG" }}'></a>
 </section>
 
 <!-- line style -->
@@ -59,3 +50,10 @@
 <section class="toolbar-btn-group">
   <a href="javascript:void(0)" class="btn-toolbar tooltip icon-refresh" data-tooltip='Refresh Reources' id="btn-app-refresh"></a>
 </section>
+
+<!-- env:dev -->
+<section class="toolbar-btn-group">
+  <a href="javascript:D.debug.diff();" class="btn-toolbar tooltip icon-toolbar-diff" data-tooltip="JSON Diff"></a>
+  <a href="javascript:D.debug.view();" class="btn-toolbar tooltip icon-toolbar-cloudformation" data-tooltip="JSON View"></a>
+</section>
+<!-- env:dev:end -->

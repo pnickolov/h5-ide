@@ -49,7 +49,7 @@ define [ "Design", "constant", 'lib/forge/app' ], ( Design, constant, forge_app 
 				if not needShow
 					continue
 
-				if sg.isElbSg() or sg.isDefault() or readonly or isStackParent or resource.get("appId")
+				if sg.isElbSg() or sg.isDefault() or readonly or sg.get("appId")
 					deletable = false
 				else
 					deletable = true

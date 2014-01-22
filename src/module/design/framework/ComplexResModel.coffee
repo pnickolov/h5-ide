@@ -127,7 +127,7 @@ define [ "Design", "CanvasManager", "./ResourceModel", "constant", "./canvasview
     isVisual : ()-> true
 
     getCanvasView : ()->
-      if @__view is undefined
+      if @__view is undefined and @isVisual()
         @__view = CanvasElement.createView( @type, @ )
         ### env:dev ###
         if not @__view

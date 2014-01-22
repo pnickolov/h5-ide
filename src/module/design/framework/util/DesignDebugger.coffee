@@ -35,7 +35,7 @@ define [ "Design" ], ( Design )->
   Design.debug.selectedComp = ()->
     Design.instance().component( $("#svg_canvas").find(".selected").attr("id") )
 
-  Design.debug.diff = ()->
+  Design.debug.diff = ( e )->
 
     d = Design.instance()
 
@@ -45,12 +45,8 @@ define [ "Design" ], ( Design )->
     canvas_data.layout    = d.__backingStore.layout
     canvas_data.name      = d.__backingStore.name
 
-    a = JSON.stringify( canvas_data ).replace(/"/g, '\\"')
-    b = JSON.stringify( Design.instance().serialize() ).replace(/"/g, '\\"')
-
-    param = '{"d":{"a":"'+a+'","b":"'+b+'"}}'
-    #
-    window.open 'test/jsondiff/index.htm#' + encodeURIComponent(param)
+    require ["test/jsonviewer/JsonViewer"], ( JsonViewer )->
+      JsonViewer.showDiffDialog( canvas_data, Design.instance().serialize() )
     null
 
   Design.debug.json = ( notToString )->
@@ -61,8 +57,17 @@ define [ "Design" ], ( Design )->
       console.log( data )
     null
 
+  Design.debug.view = ( e )->
+    if e and e.preventDefault then e.preventDefault()
+
+    data = Design.instance().serialize()
+    require ["test/jsonviewer/JsonViewer"], ( JsonViewer )->
+      JsonViewer.showViewDialog( data )
+    null
+
   window.D  = Design
   window.ds = ()-> Design.debug.json( true )
   null
 
   ### env:dev:end ###
+  null

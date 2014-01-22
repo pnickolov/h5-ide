@@ -3,10 +3,10 @@
 #############################
 
 define [ 'aws_model', 'ami_model'
-         'event', 'constant',
+         'event', 'constant', 'forge_handle'
          'UI.notification',
          'backbone', 'jquery', 'underscore'
-], ( aws_model, ami_model, ide_event, constant ) ->
+], ( aws_model, ami_model, ide_event, constant, forge_handle ) ->
 
     ProcessModel = Backbone.Model.extend {
 

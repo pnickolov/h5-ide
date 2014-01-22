@@ -32,7 +32,7 @@ define [ 'jquery', 'event',
             if state is 'welcome'
                 ture_template = welcome_tmpl
                 view.state    = 'welcome'
-                model.updateAccountService() if MC.forge.cookie.getCookieByName( 'state' ) is '1'
+                model.updateAccountService() if MC.common.cookie.getCookieByName( 'state' ) is '1'
             else
                 ture_template = template
                 view.state    = 'credential'
@@ -42,7 +42,7 @@ define [ 'jquery', 'event',
 
             if state is 'welcome'
                 view.showSetting('credential')
-            else if MC.forge.cookie.getCookieByName('has_cred') is 'true'
+            else if MC.common.cookie.getCookieByName('has_cred') is 'true'
                 # show account setting tab
                 view.showSetting('account')
             else
@@ -100,7 +100,7 @@ define [ 'jquery', 'event',
                     view.notify 'info', lang.ide.HEAD_MSG_INFO_UPDATE_EMAIL
 
                     # update cookie
-                    MC.forge.cookie.setCookieByName 'email', MC.base64Encode(attributes['email'])
+                    MC.common.cookie.setCookieByName 'email', MC.base64Encode(attributes['email'])
 
                     view.showSetting('account')
 

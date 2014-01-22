@@ -968,6 +968,59 @@ var API_DATA_LIST = {
           }
         }
       }
+    },
+    "State" : {
+      "module" : {
+        "method"  : "/state:module",
+        "param"   : {
+          "username" : {
+            "type"   : "String",
+            "value"  : "null"
+          },
+          "session_id" : {
+            "type"   : "String",
+            "value"  : "null"
+          }
+        }
+      },
+      "status" : {
+        "method"  : "/state:status",
+        "param"   : {
+          "username" : {
+            "type"   : "String",
+            "value"  : "null"
+          },
+          "session_id" : {
+            "type"   : "String",
+            "value"  : "null"
+          },
+          "app_id" : {
+            "type"   : "String",
+            "value"  : "null"
+          }
+        }
+      },
+      "log" : {
+        "method"  : "/state:log",
+        "param"   : {
+          "username" : {
+            "type"   : "String",
+            "value"  : "null"
+          },
+          "session_id" : {
+            "type"   : "String",
+            "value"  : "null"
+          },
+          "app_id" : {
+            "type"   : "String",
+            "value"  : "null"
+          },
+          "res_id" : {
+            "type"   : "String",
+            "value"  : "null"
+          }
+        }
+      }
     }
   },
   "AutoScaling" : {
@@ -1439,6 +1492,19 @@ var API_DATA_LIST = {
             "value"  : "null"
           },
           "resources" : {
+            "type"   : "String",
+            "value"  : "null"
+          }
+        }
+      },
+      "property" : {
+        "method"  : "/aws:property",
+        "param"   : {
+          "username" : {
+            "type"   : "String",
+            "value"  : "null"
+          },
+          "session_id" : {
             "type"   : "String",
             "value"  : "null"
           }

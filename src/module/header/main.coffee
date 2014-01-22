@@ -72,7 +72,7 @@ define [ 'event',
             ide_event.onLongListen ide_event.SWITCH_TAB, () ->
                 #temp
                 setTimeout () ->
-                    console.log 'SWITCH_TAB header id:' + MC.forge.other.canvasData.get 'id'
+                    console.log 'SWITCH_TAB header id:' + MC.common.other.canvasData.get 'id'
                     model.setFlag(false)
                     view.updateNotification()
                 , 500
@@ -85,7 +85,7 @@ define [ 'event',
             ide_event.onLongListen ide_event.UPDATE_AWS_CREDENTIAL, () ->
                 console.log 'UPDATE_AWS_CREDENTIAL'
 
-                model.set 'has_cred', (MC.forge.cookie.getCookieByName('has_cred') is 'true')
+                model.set 'has_cred', (MC.common.cookie.getCookieByName('has_cred') is 'true')
                 view.update()
 
             view.on 'DROPDOWN_MENU_CLOSED', () ->

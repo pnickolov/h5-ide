@@ -3,7 +3,7 @@
 #############################
 
 define [ 'backbone', 'jquery', 'underscore',
-         'session_model', 'constant', 'event', 'forge_handle' ], ( Backbone, $, _, session_model, constant, ide_event, forge_handle ) ->
+         'session_model', 'constant', 'event', 'common_handle' ], ( Backbone, $, _, session_model, constant, ide_event, common_handle ) ->
 
     #ws = MC.data.websocket
 
@@ -27,7 +27,7 @@ define [ 'backbone', 'jquery', 'underscore',
 
                     result = forge_result.resolved_data
 
-                forge_handle.cookie.deleteCookie()
+                common_handle.cookie.deleteCookie()
 
                 #SSO
                 $.cookie 'madeiracloud_ide_session_id', null, { expires: 0 }
@@ -63,7 +63,7 @@ define [ 'backbone', 'jquery', 'underscore',
             #if in_dashboard or item.rid != MC.canvas_data.id
 
             # new design flow
-            if in_dashboard or item.rid != MC.forge.other.canvasData.get( 'id' )
+            if in_dashboard or item.rid != MC.common.other.canvasData.get( 'id' )
                 item.is_readed = false
                 if same_req == 0 or unread_num == 0
                     @set 'unread_num', unread_num + 1
@@ -161,7 +161,7 @@ define [ 'backbone', 'jquery', 'underscore',
                     #if info.rid == MC.canvas_data.id and not info.is_readed
 
                     # new design flow
-                    if info.rid == MC.forge.other.canvasData.get( 'id' ) and not info.is_readed
+                    if info.rid == MC.common.other.canvasData.get( 'id' ) and not info.is_readed
                         info.is_readed = true
 
                         @set 'unread_num', unread_num - 1

@@ -4,9 +4,9 @@
 
 define [ 'event',
          'i18n!nls/lang.js',
-         'forge_handle',
+         'common_handle',
          'UI.notification',
-         'backbone', 'jquery', 'handlebars', 'underscore' ], ( ide_event, lang, forge_handle ) ->
+         'backbone', 'jquery', 'handlebars', 'underscore' ], ( ide_event, lang, common_handle ) ->
 
     MainView = Backbone.View.extend {
 
@@ -126,7 +126,7 @@ define [ 'event',
                 return
 
             # when not cookie userid
-            if !forge_handle.cookie.getCookieByName( 'userid' )
+            if !common_handle.cookie.getCookieByName( 'userid' )
                 return
 
             #return if MC.data.current_tab_id in [ 'dashboard', undefined ]
@@ -166,7 +166,7 @@ define [ 'event',
             #if not _.isEmpty( MC.canvas_data ) and not _.isEmpty( MC.data.origin_canvas_data ) and Tabbar.current not in [ 'dashboard', 'appview', 'process' ]
 
             # new design flow
-            if not _.isEmpty( MC.forge.other.canvasData.data() ) and not _.isEmpty( MC.forge.other.canvasData.origin() ) and Tabbar.current not in [ 'dashboard', 'appview', 'process' ]
+            if not _.isEmpty( MC.common.other.canvasData.data() ) and not _.isEmpty( MC.common.other.canvasData.origin() ) and Tabbar.current not in [ 'dashboard', 'appview', 'process' ]
 
                 # old design flow +++++++++++++++++++++++++++
                 #data        = $.extend true, {}, MC.canvas_data
@@ -176,7 +176,7 @@ define [ 'event',
                 # old design flow +++++++++++++++++++++++++++
 
                 # new design flow
-                if not MC.forge.other.canvasData.isModified()
+                if not MC.common.other.canvasData.isModified()
 
                     #has_refresh = true
                     console.log 'current equal #1'
@@ -189,7 +189,7 @@ define [ 'event',
                 #checked_tab_id = MC.canvas_data.id
 
                 # new design flow
-                checked_tab_id = MC.forge.other.canvasData.get 'id'
+                checked_tab_id = MC.common.other.canvasData.get 'id'
 
             else
                 #has_refresh = true

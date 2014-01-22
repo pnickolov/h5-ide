@@ -19,8 +19,8 @@ define [ 'account_model', 'backbone', 'jquery', 'underscore', 'MC' ], ( account_
 
                     if attributes.state is '2'
                         #
-                        MC.forge.cookie.setCookieByName 'state', attributes.state
-                        MC.forge.cookie.setIDECookie $.cookie()
+                        MC.common.cookie.setCookieByName 'state', attributes.state
+                        MC.common.cookie.setIDECookie $.cookie()
                 else
 
 

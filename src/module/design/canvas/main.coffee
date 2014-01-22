@@ -25,7 +25,7 @@ define [ 'event', 'i18n!nls/lang.js', 'constant' ], ( ide_event, lang, constant 
 
                 #### added by song, if the stack/app too old, unable to open ###
                 if type in [ 'OPEN_STACK', 'OPEN_APP' ]
-                    if MC.forge.other.canvasData.get 'bad'
+                    if MC.common.other.canvasData.get 'bad'
                         notification 'error', lang.ide.IDE_MSG_ERR_OPEN_OLD_STACK_APP_TAB, true
                         ide_event.trigger ide_event.SWITCH_MAIN
                         ide_event.trigger ide_event.CLOSE_DESIGN_TAB, tab_name if tab_name
@@ -36,11 +36,11 @@ define [ 'event', 'i18n!nls/lang.js', 'constant' ], ( ide_event, lang, constant 
                 if type is 'NEW_STACK'
 
                     # create MC.canvas_data
-                    MC.forge.other.canvasData.initSet 'id'       , result
-                    MC.forge.other.canvasData.initSet 'name'     , tab_name
-                    MC.forge.other.canvasData.initSet 'region'   , region_name
-                    MC.forge.other.canvasData.initSet 'platform' , current_platform
-                    MC.forge.other.canvasData.initSet 'version'  , '2013-09-04'
+                    MC.common.other.canvasData.initSet 'id'       , result
+                    MC.common.other.canvasData.initSet 'name'     , tab_name
+                    MC.common.other.canvasData.initSet 'region'   , region_name
+                    MC.common.other.canvasData.initSet 'platform' , current_platform
+                    MC.common.other.canvasData.initSet 'version'  , '2013-09-04'
 
                     # platform is classic
                     if current_platform is Design.TYPE.Classic or current_platform is Design.TYPE.DefaultVpc
@@ -52,8 +52,8 @@ define [ 'event', 'i18n!nls/lang.js', 'constant' ], ( ide_event, lang, constant 
                         component = $.extend true, {}, MC.canvas.DESIGN_INIT_DATA_VPC
                         layout    = MC.canvas.DESIGN_INIT_LAYOUT_VPC
 
-                    MC.forge.other.canvasData.initSet 'component', component
-                    MC.forge.other.canvasData.initSet 'layout'   , layout
+                    MC.common.other.canvasData.initSet 'component', component
+                    MC.common.other.canvasData.initSet 'layout'   , layout
 
                 # init options
                 options =
@@ -63,7 +63,7 @@ define [ 'event', 'i18n!nls/lang.js', 'constant' ], ( ide_event, lang, constant 
                 if Tabbar.current is 'appview'
 
                     # set MC.canvas_data
-                    MC.forge.other.canvasData.init result.resolved_data[0]
+                    MC.common.other.canvasData.init result.resolved_data[0]
 
                     # set autoFinish = false
                     options.autoFinish = false
@@ -72,7 +72,7 @@ define [ 'event', 'i18n!nls/lang.js', 'constant' ], ( ide_event, lang, constant 
                     MC.canvas.layout.init()
 
                     # create Design object
-                    dd = new Design MC.forge.other.canvasData.data(true), options
+                    dd = new Design MC.common.other.canvasData.data(true), options
                     console.log 'new Design Create Complete'
 
                     # set analysis
@@ -88,11 +88,11 @@ define [ 'event', 'i18n!nls/lang.js', 'constant' ], ( ide_event, lang, constant 
                     MC.canvas.layout.init()
 
                     # create Design object
-                    new Design MC.forge.other.canvasData.data(true), options
+                    new Design MC.common.other.canvasData.data(true), options
                     console.log 'new Design Create Complete'
 
                     # old design flow
-                    MC.forge.other.canvasData.origin MC.forge.other.canvasData.data()
+                    MC.common.other.canvasData.origin MC.common.other.canvasData.data()
 
                     # init ta
                     MC.ta.list = []
@@ -117,11 +117,11 @@ define [ 'event', 'i18n!nls/lang.js', 'constant' ], ( ide_event, lang, constant 
                 MC.canvas.layout.init()
 
                 # create Design object
-                new Design( MC.forge.other.canvasData.origin(), options )
+                new Design( MC.common.other.canvasData.origin(), options )
                 console.log 'new Design Create Complete'
 
                 # new design flow
-                MC.forge.other.canvasData.origin MC.forge.other.canvasData.data()
+                MC.common.other.canvasData.origin MC.common.other.canvasData.data()
 
                 null
 
@@ -132,7 +132,7 @@ define [ 'event', 'i18n!nls/lang.js', 'constant' ], ( ide_event, lang, constant 
                 if type in [ constant.APP_STATE.APP_STATE_STARTING, constant.APP_STATE.APP_STATE_STOPPING, constant.APP_STATE.APP_STATE_TERMINATING, constant.APP_STATE.APP_STATE_UPDATING ]
 
                     if MC.data.current_tab_id is id
-                        MC.forge.other.canvasData.set 'state', type
+                        MC.common.other.canvasData.set 'state', type
                     else
                         # TO DO
 

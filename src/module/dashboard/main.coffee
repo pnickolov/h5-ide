@@ -16,7 +16,7 @@ define [ 'jquery', 'event', 'MC', 'base_main', 'vpc_model' ], ( $, ide_event, MC
 
     Helper =
         hasCredential: ->
-            MC.forge.cookie.getCookieByName('has_cred') is 'true'
+            MC.common.cookie.getCookieByName('has_cred') is 'true'
 
         accountIsDemo: ->
             $.cookie('account_id') is 'demo_account'
@@ -103,7 +103,7 @@ define [ 'jquery', 'event', 'MC', 'base_main', 'vpc_model' ], ( $, ide_event, MC
                     MC.data.config[r] = {} for r in constant.REGION_KEYS
 
                     # init unmanaged_resource_list
-                    MC.forge.other.initUnmanaged()
+                    MC.common.other.initUnmanaged()
 
                     null
 
@@ -136,11 +136,11 @@ define [ 'jquery', 'event', 'MC', 'base_main', 'vpc_model' ], ( $, ide_event, MC
                 console.log 'UPDATE_DASHBOARD'
                 view.reloadResource( null,false ) if view  #skip_load=false, do loading resource
 
-            if MC.forge.cookie.getCookieByName('state') is '1' # new account show welcome dialog
+            if MC.common.cookie.getCookieByName('state') is '1' # new account show welcome dialog
                 view.showCredential 'welcome'
                 #
-                #MC.forge.cookie.setCookieByName 'state', false
-                #MC.forge.cookie.setIDECookie $.cookie()
+                #MC.common.cookie.setCookieByName 'state', false
+                #MC.common.cookie.setIDECookie $.cookie()
 
             #model
             model.describeAccountAttributesService()
@@ -199,7 +199,7 @@ define [ 'jquery', 'event', 'MC', 'base_main', 'vpc_model' ], ( $, ide_event, MC
                 ide_event.trigger ide_event.UPDATE_APP_LIST
 
                 # clear cache
-                MC.forge.other.initUnmanaged()
+                MC.common.other.initUnmanaged()
 
                 null
 

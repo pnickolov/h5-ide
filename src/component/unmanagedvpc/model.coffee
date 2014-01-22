@@ -30,13 +30,26 @@ define [ 'aws_model', 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( 
                 #    null
 
                 if result and result.return_code is 0
-                    # TO DO
-                    console.log 'to do'
+                    console.log 'import succcess'
                 else
-                    console.log 'to do'
+                    console.log 'import error'
 
-        getResource : ( idx, dag ) ->
-            console.log 'getResource', idx, dag
+        getResource : ( result ) ->
+            console.log 'getResource', result
+
+            # delete unnecessary item
+            delete result[ '_id'       ]
+            delete result[ 'timestamp' ]
+            delete result[ 'username'  ]
+
+            # create resoruces
+            resources = @createResources result
+
+            # set vo
+            @set 'resource_list', $.extend true, {}, resources
+
+            # set global resource list
+            MC.forge.other.addUnmanaged $.extend true, {}, resources
 
         getStatResourceService : ->
             console.log 'getStatResourceService'
@@ -90,6 +103,13 @@ define [ 'aws_model', 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( 
 
                     vpcs = {}
                     _.each obj, ( vpc_obj, vpc_id ) ->
+
+                        new_vpc_obj = {}
+                        _.each vpc_obj, ( value, key ) ->
+                            new_key = key.replace /\|/igm, '.'
+                            new_vpc_obj[ new_key ] = value
+                        vpc_obj = new_vpc_obj
+
                         # filter default vpc
                         if vpc_id isnt MC.data.account_attribute[region]['default_vpc']
 

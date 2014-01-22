@@ -22,9 +22,9 @@ define [ 'jquery', 'event' ], ( $, ide_event ) ->
                 view.render()
 
             # UPDATE_IMPORT_ITEM
-            ide_event.onLongListen ide_event.UPDATE_IMPORT_ITEM, ( idx, dag ) ->
+            ide_event.onLongListen ide_event.UPDATE_IMPORT_ITEM, ( idx ) ->
                 console.log 'UPDATE_IMPORT_ITEM'
-                model.getResource idx, dag
+                model.getResource idx
 
             # invoke api
             model.getStatResourceService()

@@ -362,12 +362,12 @@ define [ 'MC', 'event', 'handlebars'
 
 			MC.data.websocket.collection.imports.find().fetch()
 			query = MC.data.websocket.collection.imports.find()
-			handle = query.observeChanges {
+			handle = query.observe {
 				added    : (idx, dag) ->
-					ide_event.trigger ide_event.UPDATE_IMPORT_ITEM, idx, dag
+					ide_event.trigger ide_event.UPDATE_IMPORT_ITEM, idx
 
 				changed : (idx, dag) ->
-					ide_event.trigger ide_event.UPDATE_IMPORT_ITEM, idx, dag
+					ide_event.trigger ide_event.UPDATE_IMPORT_ITEM, idx
 			}
 
 			null

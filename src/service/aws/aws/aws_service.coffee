@@ -244,7 +244,8 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
 				aws_result.resolved_data = resolved_data
 
 			catch error
-				console.log error
+				console.log 'aws service error', error
+				console.log result, return_code, param
 
 				if addition is 'vpc'
 					aws_result.is_error = true
@@ -412,6 +413,25 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
 
 							vpc_id = resource_comp[0].vpcId
 
+						if resource_type is 'DescribeLaunchConfigurations'
+
+							for comp in resource_comp
+
+								remove_index = []
+
+								if comp.BlockDeviceMappings
+
+									for idx, device of comp.BlockDeviceMappings.member
+
+										if not device.Ebs
+
+											remove_index.push idx
+
+								remove_index = remove_index.sort().reverse()
+
+								for i in remove_index
+
+									comp.BlockDeviceMappings.member.splice(i, 1)
 						#collect ignore asg instance
 						if resource_type is 'DescribeAutoScalingGroups'
 							for asg in resource_comp

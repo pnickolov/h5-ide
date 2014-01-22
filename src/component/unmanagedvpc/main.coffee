@@ -21,12 +21,20 @@ define [ 'jquery', 'event' ], ( $, ide_event ) ->
                 console.log 'change:resource_list', model.get 'resource_list'
                 view.render()
 
+            # UPDATE_IMPORT_ITEM
+            ide_event.onLongListen ide_event.UPDATE_IMPORT_ITEM, ( idx ) ->
+                console.log 'UPDATE_IMPORT_ITEM'
+                model.getResource idx
+
             # invoke api
             model.getStatResourceService()
 
             # listen
             view.on 'CLOSE_POPUP', () ->
                 unLoadModule view, model
+
+            view.on 'RELOAD_EVENT', () ->
+                model.reload()
 
             # render
             view.render()
@@ -39,7 +47,8 @@ define [ 'jquery', 'event' ], ( $, ide_event ) ->
         #
         view  = null
         model = null
-        #ide_event.offListen ide_event.<EVENT_TYPE>
+        #
+        ide_event.offListen ide_event.UPDATE_IMPORT_ITEM
         #ide_event.offListen ide_event.<EVENT_TYPE>, <function name>
 
     #public

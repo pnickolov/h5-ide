@@ -182,6 +182,7 @@ define [ 'MC', 'event', 'handlebars'
 			websocket.sub "request", $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, subRequestReady, subScriptionError
 			websocket.sub "stack",   $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null, null
 			websocket.sub "app",     $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null, null
+			websocket.sub "imports", $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null, null
 		subScoket()
 
 		#set MC.data.websocket
@@ -342,15 +343,35 @@ define [ 'MC', 'event', 'handlebars'
 			MC.data.websocket.collection.request.find().fetch()
 			query = MC.data.websocket.collection.request.find()
 			handle = query.observeChanges {
-                        added   : (idx, dag) ->
-                        	ide_event.trigger ide_event.UPDATE_REQUEST_ITEM, idx, dag
+				added   : (idx, dag) ->
+					ide_event.trigger ide_event.UPDATE_REQUEST_ITEM, idx, dag
 
-                        changed : (idx, dag) ->
-                        	ide_event.trigger ide_event.UPDATE_REQUEST_ITEM, idx, dag
+				changed : (idx, dag) ->
+					ide_event.trigger ide_event.UPDATE_REQUEST_ITEM, idx, dag
 			}
 
 			null
 
 		listenRequestList()
+
+		###########################
+		#listen to the import list
+		###########################
+		listenImportList = () ->
+			console.log 'listen to import list'
+
+			MC.data.websocket.collection.imports.find().fetch()
+			query = MC.data.websocket.collection.imports.find()
+			handle = query.observe {
+				added    : (idx, dag) ->
+					ide_event.trigger ide_event.UPDATE_IMPORT_ITEM, idx
+
+				changed : (idx, dag) ->
+					ide_event.trigger ide_event.UPDATE_IMPORT_ITEM, idx
+			}
+
+			null
+
+		listenImportList()
 
 		null

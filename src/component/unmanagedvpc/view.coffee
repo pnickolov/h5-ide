@@ -14,8 +14,23 @@ define [ 'event',
         events      :
             'closed'                             : 'closedPopup'
             'click .unmanaged-VPC-resource-item' : 'resourceItemClickEvent'
+            'click #btn-vpc-reload'              : 'reloadVPCsEvent'
 
         initialize  : ->
+
+            # is service error
+            Handlebars.registerHelper 'is_service_error', ( value, options ) ->
+
+                # is string
+                if _.isString value
+
+                    # is 'service_error'
+                    if value is 'service_error'
+                        options.fn this
+                    else
+                        options.inverse this
+                else
+                    options.inverse this
 
             # is no unmanaged
             Handlebars.registerHelper 'is_unmanaged', ( value, options ) ->
@@ -214,6 +229,10 @@ define [ 'event',
               console.log 'current found error ' + error
 
             null
+
+        reloadVPCsEvent : ->
+            console.log 'reloadVPCsEvent'
+            @trigger 'RELOAD_EVENT'
 
     }
 

@@ -47,6 +47,25 @@
       return (iCaretPos);
 
     },
+    setCaretPosition: function( elem, caretPos ) {
+      if ( elem instanceof $ )
+        elem = elem.get( 0 );
+
+      if (elem != null) {
+          if(elem.createTextRange) {
+              var range = elem.createTextRange();
+              range.move('character', caretPos);
+              range.select();
+          } else {
+            if(elem.selectionStart) {
+                elem.focus();
+                elem.setSelectionRange(caretPos, caretPos);
+            } else {
+                elem.focus();
+            }
+          }
+      }
+    },
 
     prefixMatch : function(regex, input, pattern){
       pattern = pattern || '';
@@ -626,6 +645,8 @@
 
           regExp = regExp || this.$element.data('ignore-regexp') || regMap[ vlidateType ] || '^[0-9a-zA-Z]+[0-9a-zA-Z-]*$';
 
+          var symbols = [ ['。', '.'], ['、', '/'] ];
+
           var wholeReg = this.options.regexp;
           // delay handler function
           var delayHandlerFactory = function(origin, context, times) {
@@ -661,6 +682,7 @@
 
           // Handle Chinese
           var keydownHandler = function(e) {
+
             if ( e.which === 229 ) {
               var origin = $( this ).val();
               var delayHandler = delayHandlerFactory( origin, this, 1 );
@@ -669,21 +691,45 @@
             }
           };
 
+          var transformSymbol = function(charStr) {
+            for ( var i=0; i<symbols.length; i++ ) {
+              if ( symbols[ i ][ 0 ] === charStr )
+                return symbols[ i ][ 1 ];
+            }
+          }
+
           // Handle keypress( main )
           var ignoreHandler = function(e) {
+            console.log( e.which, String.fromCharCode( e.which ));
+
             var inputChar, isLegal;
             // control key green light
             if (e.which in controlCodeList) return true;
 
             inputChar = String.fromCharCode( e.which );
+
+            var transform = transformSymbol( inputChar )
+
+            if ( transform ) {
+              inputChar = transform;
+            }
+
             var valueArray = this.value.split( '' );
             var pos = Util.getCaretPosition( this );
             valueArray.splice( pos, 0, inputChar );
+
+
 
             var newValue = valueArray.join( '' );
             isLegal = new RegExp( regExp, "i" ).test(newValue);
 
             if ( !isLegal ) return false;
+            if ( transform ) {
+              this.value = newValue;
+              Util.setCaretPosition( this, pos + 1 );
+              return false;
+            }
+
           };
 
           this.$element.on( 'keypress', ignoreHandler );

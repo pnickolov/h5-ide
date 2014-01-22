@@ -844,3 +844,20 @@ body {
 #state-editor-model .editable-area span.ace_res_ref_correct {
 	color: #00f;
 }
+
+#state-editor-model .state-status-icon {
+	width: 9px;
+	height: 9px;
+	border-radius: 50%;
+	display:none;
+}
+
+#state-editor-model .state-status-icon.success {
+	display: inline-block;
+	background-color: green;
+}
+
+#state-editor-model .state-status-icon.failure {
+	display: inline-block;
+	background-color: red;
+}

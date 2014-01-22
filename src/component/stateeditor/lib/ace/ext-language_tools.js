@@ -189,7 +189,7 @@ var SnippetManager = function() {
                     return [stack.length ? stack.shift() : val];
                 }},
                 {regex: /\$(?:\d+|\w+)/, onMatch: TabstopToken},
-                {regex: /\$\{[\d\ A-Z_a-z]+/, onMatch: function(str, state, stack) {
+                {regex: /\$\{[\dA-Z_a-z]+/, onMatch: function(str, state, stack) {
                     var t = TabstopToken(str.substr(1), state, stack);
                     stack.unshift(t[0]);
                     return t;
@@ -1559,7 +1559,7 @@ exports.parForEach = function(array, fn, callback) {
     }
 }
 
-var ID_REGEX = /[a-zA-Z\ _0-9\$-]/;
+var ID_REGEX = /[a-zA-Z\ \.\{\}\_0-9\$-]/;
 
 exports.retrievePrecedingIdentifier = function(text, pos, regex) {
     regex = regex || ID_REGEX;

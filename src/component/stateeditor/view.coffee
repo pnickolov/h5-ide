@@ -1358,8 +1358,12 @@ define [ 'event',
                         that.setEditorCompleter(thatEditor, hintDataAryMap['at'])
                         thatEditor.execCommand("startAutocomplete")
 
-                if e.command.name in ["backspace"] and hintDataAryMap['focus']
+                if e.command.name is "backspace" and hintDataAryMap['focus']
                     that.setEditorCompleter(thatEditor, hintDataAryMap['focus'])
+                    thatEditor.execCommand("startAutocomplete")
+
+                if e.command.name is "backspace" and hintDataAryMap['at'] and currentValue
+                    that.setEditorCompleter(thatEditor, hintDataAryMap['at'])
                     thatEditor.execCommand("startAutocomplete")
 
                 if e.command.name is "autocomplete_confirm"
@@ -1488,6 +1492,7 @@ define [ 'event',
                 that.showLogListLoading(false, true)
 
             stateLogViewAry = []
+            stateStatusMap = {}
             _.each stateLogDataAry, (logObj) ->
                 utcTimeStr = (new Date(logObj.time)).toUTCString()
                 stateStatus = logObj.result
@@ -1498,11 +1503,14 @@ define [ 'event',
                     stdout: logObj.stdout,
                     stderr: logObj.stderr
                 })
+                stateStatusMap[logObj.state_id] = stateStatus
                 null
 
             renderHTML = that.stateLogItemTpl({
                 state_logs: stateLogViewAry
             })
+
+            that.refreshStateItemStatus(stateStatusMap)
 
             that.$stateLogList.html(renderHTML)
 
@@ -1528,7 +1536,7 @@ define [ 'event',
             $saveCancelBtn.hide()
 
             $closeBtn = that.$editorModal.find('.state-close')
-            $closeBtn.show()
+            $closeBtn.css('display', 'inline-block')
 
         showLogListLoading: (loadShow, infoShow) ->
 
@@ -1601,6 +1609,23 @@ define [ 'event',
                     that.refreshParaList($paraListElem, currentValue)
                     that.refreshStateView($stateItem)
 
+        refreshStateItemStatus: (stateStatusMap) ->
+
+            that = this
+
+            $stateItemList = that.$stateList.find('.state-item')
+
+            _.each $stateItemList, (stateItem) ->
+                
+                stateId = $stateItem.attr('data-id')
+                $statusIcon = $stateItem.find('.state-status-icon')
+                $statusIcon.removeClass('success').removeClass('failure')
+                stateStatus = stateStatusMap[stateId]
+                if stateStatus is 'success'
+                    $statusIcon.addClass('success')
+                else if stateStatus is 'failure'
+                    $statusIcon.addClass('failure')
+                null
     }
 
     return StateEditorView

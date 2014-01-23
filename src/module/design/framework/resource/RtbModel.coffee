@@ -150,7 +150,9 @@ define [ "../ComplexResModel", "Design", "../connection/Route", "../connection/R
       rtb = resolve( data.uid )
 
       # A fix for subnet
-      resolve( layout_data.groupUId ).addChild( rtb )
+      vpc = resolve( layout_data.groupUId )
+      if not vpc then vpc = VpcModel.theVPC()
+      vpc.addChild( rtb )
       null
 
     postDeserialize : ( data, layout_data )->

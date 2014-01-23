@@ -19,6 +19,7 @@ define [ '../base/view',
 
             'click #stack-property-new-acl'        : 'createAcl'
             'click #stack-property-acl-list .edit' : 'openAcl'
+            'click .sg-list-delete-btn'            : 'deleteAcl'
 
             'click #property-sub-list .icon-edit' : 'editSNS'
             'click #property-sub-list .icon-del'  : 'delSNS'
@@ -225,6 +226,31 @@ define [ '../base/view',
                     self.saveSNS data
 
                 null
+
+        deleteAcl : (event) ->
+
+            $target  = $( event.currentTarget )
+            assoCont = parseInt $target.attr('data-count'), 10
+            aclUID   = $target.closest("li").attr('data-uid')
+
+            # show dialog to confirm that delete acl
+            if assoCont
+                that    = this
+                aclName = $target.attr('data-name')
+
+                dialog_template = MC.template.modalDeleteSGOrACL {
+                    title : 'Delete Network ACL'
+                    main_content : "Are you sure you want to delete #{aclName}?"
+                    desc_content : "Subnets associated with #{aclName} will use DefaultACL."
+                }
+                modal dialog_template, false, () ->
+                    $('#modal-confirm-delete').click () ->
+                        that.model.removeAcl( aclUID )
+                        that.refreshACLList()
+                        modal.close()
+            else
+                @model.removeAcl( aclUID )
+                @refreshACLList()
     }
 
     new StackView()

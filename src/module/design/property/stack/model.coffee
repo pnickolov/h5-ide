@@ -125,6 +125,7 @@ define ['../base/model', 'constant', "Design" ], ( PropertyModel, constant, Desi
           name        : acl.get("name")
           rule        : acl.getRuleCount()
           association : acl.getAssoCount()
+          deletable   : Design.instance().modeIsStack() and not acl.isDefault()
         }
 
         if acl.isDefault()
@@ -138,6 +139,11 @@ define ['../base/model', 'constant', "Design" ], ( PropertyModel, constant, Desi
         networkAcls.splice( 0, 0, defaultACL )
 
       @set "networkAcls", networkAcls
+      null
+
+    removeAcl : ( acl_uid )->
+      Design.instance().component( acl_uid ).remove()
+      @getNetworkACL()
       null
   }
 

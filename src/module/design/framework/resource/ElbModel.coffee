@@ -45,9 +45,6 @@ define [ "Design",
     newNameTmpl : "load-balancer-"
 
     initialize : ( attr, option )->
-      vpc = VpcModel.theVPC()
-      if vpc then vpc.addChild( @ )
-
       @draw(true)
 
       if option.createByUser and not Design.instance().typeIsClassic()
@@ -319,9 +316,10 @@ define [ "Design",
 
       # Handle Elb
       attr =
-        id    : data.uid
-        name  : data.name
-        appId : data.resource.LoadBalancerName
+        id     : data.uid
+        name   : data.name
+        appId  : data.resource.LoadBalancerName
+        parent : resolve( layout_data.groupUId )
 
         internal  : data.resource.Scheme is 'internal'
         crossZone : !!data.resource.CrossZoneLoadBalancing

@@ -13,7 +13,8 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
     @type     = model.type
 
     if model.parent
-      @parentId = model.parent().id
+      @parentId = model.parent()
+      @parentId = if @parentId then @parentId.id else ""
     else
       @parentId = ""
 

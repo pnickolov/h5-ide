@@ -13,8 +13,6 @@ define [ "../ComplexResModel", "./VpcModel", "Design", "constant" ], ( ComplexRe
     type : constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway
 
     initialize : ()->
-      VpcModel.theVPC().addChild( this )
-
       @draw(true)
       null
 
@@ -50,9 +48,10 @@ define [ "../ComplexResModel", "./VpcModel", "Design", "constant" ], ( ComplexRe
 
       new Model({
 
-        id    : data.uid
-        name  : data.name
-        appId : data.resource.VpnGatewayId
+        id     : data.uid
+        name   : data.name
+        appId  : data.resource.VpnGatewayId
+        parent : resolve( layout_data.groupUId )
 
         x : layout_data.coordinate[0]
         y : layout_data.coordinate[1]

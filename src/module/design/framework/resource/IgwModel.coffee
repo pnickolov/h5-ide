@@ -13,8 +13,6 @@ define [ "../ComplexResModel", "./VpcModel", "Design", "constant", "i18n!nls/lan
     type : constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway
 
     initialize : ()->
-      VpcModel.theVPC().addChild( this )
-
       @draw(true)
       null
 
@@ -82,9 +80,10 @@ define [ "../ComplexResModel", "./VpcModel", "Design", "constant", "i18n!nls/lan
 
       new Model({
 
-        id    : data.uid
-        name  : data.name
-        appId : data.resource.InternetGatewayId
+        id     : data.uid
+        name   : data.name
+        appId  : data.resource.InternetGatewayId
+        parent : resolve( layout_data.groupUId )
 
         x : layout_data.coordinate[0]
         y : layout_data.coordinate[1]

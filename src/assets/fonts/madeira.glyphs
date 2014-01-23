@@ -1,7 +1,4 @@
 {
-DisplayStrings = (
-""
-);
 copyright = MedeiraCloud;
 date = "2013-08-14 04:12:41 +0000";
 familyName = "MadeiraIcon";
@@ -4856,6 +4853,103 @@ width = 960;
 }
 );
 unicode = F14B;
+},
+{
+glyphname = uniF14C;
+lastChange = "2014-01-23 16:20:50 +0800";
+layers = (
+{
+layerId = "EAE21ECE-B6C3-4A45-AE76-37E4E2404B22";
+name = Regular;
+paths = (
+{
+closed = 1;
+nodes = (
+"4 60 LINE SMOOTH",
+"4 -39 OFFCURVE",
+"85 -120 OFFCURVE",
+"184 -120 CURVE SMOOTH",
+"784 -120 LINE SMOOTH",
+"883 -120 OFFCURVE",
+"964 -39 OFFCURVE",
+"964 60 CURVE SMOOTH",
+"964 660 LINE SMOOTH",
+"964 759 OFFCURVE",
+"883 840 OFFCURVE",
+"784 840 CURVE SMOOTH",
+"184 840 LINE SMOOTH",
+"85 840 OFFCURVE",
+"4 759 OFFCURVE",
+"4 660 CURVE SMOOTH"
+);
+},
+{
+closed = 1;
+nodes = (
+"124 600 LINE",
+"844 600 LINE",
+"844 60 LINE SMOOTH",
+"844 27 OFFCURVE",
+"817 0 OFFCURVE",
+"784 0 CURVE SMOOTH",
+"184 0 LINE SMOOTH",
+"151 0 OFFCURVE",
+"124 27 OFFCURVE",
+"124 60 CURVE SMOOTH"
+);
+},
+{
+closed = 1;
+nodes = (
+"130 690 OFFCURVE",
+"124 704 OFFCURVE",
+"124 720 CURVE SMOOTH",
+"124 753 OFFCURVE",
+"151 780 OFFCURVE",
+"184 780 CURVE SMOOTH",
+"217 780 OFFCURVE",
+"244 753 OFFCURVE",
+"244 720 CURVE SMOOTH",
+"244 687 OFFCURVE",
+"217 660 OFFCURVE",
+"184 660 CURVE SMOOTH",
+"168 660 OFFCURVE",
+"154 666 OFFCURVE",
+"142 678 CURVE SMOOTH"
+);
+},
+{
+closed = 1;
+nodes = (
+"240 420 LINE",
+"720 420 LINE",
+"720 480 LINE",
+"240 480 LINE"
+);
+},
+{
+closed = 1;
+nodes = (
+"240 300 LINE",
+"600 300 LINE",
+"600 360 LINE",
+"240 360 LINE"
+);
+},
+{
+closed = 1;
+nodes = (
+"240 180 LINE",
+"720 180 LINE",
+"720 240 LINE",
+"240 240 LINE"
+);
+}
+);
+width = 960;
+}
+);
+unicode = F14C;
 }
 );
 gridLength = 60;

@@ -70,7 +70,8 @@
 .icon-apply-app,
 .icon-visualize,
 .icon-desc,
-.icon-log
+.icon-log,
+.icon-syslog
 {
 	font : 16px/1em "MCIcon";
 	font-weight : normal;
@@ -137,3 +138,4 @@
 .icon-visualize:before {content:"\F149";}
 .icon-log:before {content:"\F14A";}
 .icon-desc:before {content:"\F14B";}
+.icon-syslog:before {content:"\F14C";}

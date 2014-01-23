@@ -98,7 +98,7 @@ define [ 'event',
 
             if that.isShowLogPanel
                 that.showLogPanel()
-            
+
             if that.currentState is 'stack'
                 $logPanelToggle = that.$editorModal.find('.state-log-toggle')
                 $logPanelToggle.hide()
@@ -203,7 +203,7 @@ define [ 'event',
                 resSelectHTML = that.stateResSelectTpl({
                     res_selects: that.groupResSelectData
                 })
-                
+
                 $resSelect.html(resSelectHTML)
 
                 if that.groupResSelectData.length is 1
@@ -830,7 +830,7 @@ define [ 'event',
         onStateItemAddClick: (event) ->
 
             that = this
-            
+
             $stateItem = that.$stateList.find('.state-item:last')
 
             newStateId = 1
@@ -922,10 +922,9 @@ define [ 'event',
             result
 
         saveStateData: () ->
-            ### validate will be done later
             if not @submitValidate()
                 return false
-            ###
+
             that = this
 
             $stateItemList = that.$stateList.find('.state-item')
@@ -1375,7 +1374,7 @@ define [ 'event',
                         originCMDName = $stateItem.attr('data-command')
 
                         if originCMDName isnt value
-                            
+
                             $stateItem.attr('data-command', value)
                             that.refreshDescription(value)
                             $paraListElem = $stateItem.find('.parameter-list')
@@ -1417,12 +1416,12 @@ define [ 'event',
             #$stateToolbar = $stateItem.prev '.state-toolbar'
 
             if $input.hasClass 'command-value'
-                represent = $stateItem.find '.state-toolbar .command-view-value'
+                represent = $stateItem.find '.state-view .command-view-value'
             else
                 $paraItem = $input.closest('.parameter-item')
                 paramName = $paraItem.data('paraName')
 
-                represent = $stateItem.find ".state-toolbar [data-para-#{paramName}]"
+                represent = $stateItem.find ".state-view [data-para-name='#{paramName}']"
 
             represent
 
@@ -1461,6 +1460,8 @@ define [ 'event',
                     paramName: paramName
                     constraint: constraint
                     dataMap: that.cmdParaObjMap
+                    refList: that.model.genAttrRefList()
+
 
             retVal
 

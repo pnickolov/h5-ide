@@ -140,7 +140,7 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 				osType = imageObj.osType
 
 				linuxDistroRange = ['centos', 'redhat',  'rhel', 'ubuntu', 'debian', 'fedora', 'gentoo', 'opensuse', 'suse', 'sles', 'amazon', 'amaz', 'linux-other']
-				
+
 				if osType is 'windows'
 					osPlatform = 'windows'
 				else if osType in linuxDistroRange
@@ -270,6 +270,7 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 
 		genAttrRefList: (allCompData) ->
 
+			allCompData = allCompData or @get('allCompData')
 			that = this
 
 			autoCompList = []
@@ -419,7 +420,7 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 
 			allCompData = that.get('allCompData')
 
-			refRegex = /@\{(\w|\-)+(\.(\w+(\[\d+\])*))+\}/g
+			refRegex = constant.REGEXP.stateEditorOriginReference
 			refMatchAry = paraValue.match(refRegex)
 
 			newParaValue = paraValue

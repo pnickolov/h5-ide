@@ -2,7 +2,7 @@
 #  View Mode for component/stateeditor
 #############################
 
-define [ 'validation', 'constant', 'i18n!nls/lang.js', 'jquery', 'underscore', 'MC', 'UI.errortip' ], ( validationTA, constant, lang ) ->
+define [ 'Design', 'validation', 'constant', 'i18n!nls/lang.js', 'jquery', 'underscore', 'MC', 'UI.errortip' ], ( Design, validationTA, constant, lang ) ->
 
     TA = validationTA.state
 
@@ -101,7 +101,7 @@ define [ 'validation', 'constant', 'i18n!nls/lang.js', 'jquery', 'underscore', '
                     continue
 
             if names
-                names.slice 0, -2
+                names = names.slice 0, -2
                 return "Reference #{names} don't exist."
 
             null
@@ -144,7 +144,9 @@ define [ 'validation', 'constant', 'i18n!nls/lang.js', 'jquery', 'underscore', '
             $.trim val
 
         nameExist: ( name ) ->
-            for uid, component of MC.canvas_data.component
+            allCompData = Design.instance().serialize().component
+
+            for uid, component of allCompData
                 if component.name is name
                     return true
             false

@@ -207,7 +207,7 @@ MC.canvas = {
 	{
 		var canvas_size = $canvas.size(),
 			$canvas_body = $('#canvas_body'),
-		  newClass = "",
+			newClass = "",
 			scale_ratio = $canvas.scale();
 
 		if (scale_ratio > 1)
@@ -238,14 +238,16 @@ MC.canvas = {
 				.removeClass('canvas_zoomed');
 		}
 
+		MC.canvas.event.clearSelected();
+
 		return true;
 	},
 
 	zoomOut: function ()
 	{
 		var canvas_size = $canvas.size(),
-		  $canvas_body = $('#canvas_body'),
-		  newClass = "",
+			$canvas_body = $('#canvas_body'),
+			newClass = "",
 			scale_ratio = $canvas.scale();
 
 		if (scale_ratio < 1.6)
@@ -272,6 +274,8 @@ MC.canvas = {
 
 		$('#canvas_body')
 			.addClass('canvas_zoomed');
+
+		MC.canvas.event.clearSelected();
 
 		return true;
 	},

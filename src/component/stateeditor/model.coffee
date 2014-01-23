@@ -111,10 +111,10 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 
 				if paraObj1.required is paraObj2.required
 					return 0
-					# if paraObj1[paraName] < paraObj2[paraName]
-					# 	return -1
-					# else
-					# 	return 1
+					if paraObj1[paraName] < paraObj2[paraName]
+						return -1
+					else
+						return 1
 
 				if paraObj1.required
 					return -1
@@ -447,12 +447,22 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 				null
 			return resultUID
 
-		genStateLogData: (res_id, callback) ->
+		getResState: (resId) ->
+
+			that = this
+			currentRegion = MC.canvas_data.region
+			resObj = MC.data.resource_list[currentRegion][resId]
+			resState = 'unknown'
+			if resObj and resObj.instanceState and resObj.instanceState.name
+				resState = resObj.instanceState.name
+			that.set('resState', resState)
+			null
+
+		genStateLogData: (resId, callback) ->
 
 			that = this
 
 			appId = MC.canvas_data.id
-			resId = res_id
 
 			if not (appId and resId)
 
@@ -460,8 +470,21 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 				callback()
 				return
 
+			resModel = that.get('resModel')
+			stateDataAry = resModel.getStateData()
+
+			stateIdNumMap = {}
+			originStatusDataAry = _.map stateDataAry, (stateObj, idx) ->
+				stateIdNumMap[stateObj.stateid] = idx
+				return {
+					state_id: stateObj.stateid,
+					result: 'pending'
+				}
+			agentStatus = 'unknown'
+
 			state_model.log { sender : that }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), appId, resId
 
+			that.off('STATE_LOG_RETURN')
 			that.on 'STATE_LOG_RETURN', ( result ) ->
 
 				if !result.is_error
@@ -472,14 +495,26 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 
 						statusObj = statusDataAry[0]
 
+						if statusObj.agent_status
+							agentStatus = statusObj.agent_status
+
 						logAry = statusObj.statuses
 
-						if not (logAry and _.isArray(logAry))
-							logAry = []
+						if logAry and _.isArray(logAry)
+							_.each logAry, (logObj) ->
+								stateNum = stateIdNumMap[logObj.state_id]
+								if _.isNumber(stateNum)
+									originStatusDataAry[stateNum] = logObj
 
-						that.set('stateLogDataAry', logAry)
+						originStatusDataAry.unshift({
+							state_id: 'Agent',
+							result: agentStatus
+						})
 
-				if callback then callback()
+					that.set('stateLogDataAry', originStatusDataAry)
+					that.set('agentStatus', agentStatus)
+
+					if callback then callback()
 
 		getCurrentResUID: () ->
 

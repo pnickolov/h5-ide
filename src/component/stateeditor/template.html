@@ -184,6 +184,7 @@
 		<div id="state-description" data-command=""></div>
 		<div id="state-log" data-state-id="">
 			<ul class="state-log-list">
+				{{> state-template-log-instance-item}}
 				{{> state-template-log-item}}
 			</ul>
 			<div class="state-log-loading">Loading...</div>
@@ -217,12 +218,20 @@
 	<li class="state-log-item">
 		<div class="state-log-item-header">
 			<div class="state-log-item-name">{{state_id}}</div>
-			<div class="state-log-item-time">{{log_time}}</div>
+			{{#if log_time}}<div class="state-log-item-time">{{log_time}}</div>{{/if}}
 			<div class="state-log-item-status {{state_status}}">{{state_status}}</div>
 		</div>
-		<div class="state-log-item-detail">{{nl2br stdout}}</div>
-		<div class="state-log-item-detail">{{nl2br stderr}}</div>
+		{{#if stdout}}<div class="state-log-item-detail">{{nl2br stdout}}</div>{{/if}}
+		{{#if stderr}}<div class="state-log-item-detail">{{nl2br stderr}}</div>{{/if}}
 	</li>
 {{/each}}
+
+<!-- state-template-log-instance-item -->
+<li class="state-log-item">
+	<div class="state-log-item-header">
+		<div class="state-log-item-name">Instance</div>
+		<div class="state-log-item-status">{{#if res_status}}{{res_status}}{{else}}unknown{{/if}}</div>
+	</div>
+</li>
 
 <!-- template end -->

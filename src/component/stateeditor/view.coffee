@@ -166,6 +166,7 @@ define [ 'event',
             paraDictItemHTML = htmlMap['state-template-para-dict-item']
             paraArrayItemHTML = htmlMap['state-template-para-array-item']
             stateLogItemHTML = htmlMap['state-template-log-item']
+            stateLogInstanceItemHTML = htmlMap['state-template-log-instance-item']
             stateResSelectHTML = htmlMap['state-template-res-select']
             paraCompleteItemHTML = '<li data-value="${atwho-at}${name}">${name}</li>'
 
@@ -176,6 +177,7 @@ define [ 'event',
             Handlebars.registerPartial('state-template-para-dict-item', paraDictItemHTML)
             Handlebars.registerPartial('state-template-para-array-item', paraArrayItemHTML)
             Handlebars.registerPartial('state-template-log-item', stateLogItemHTML)
+            Handlebars.registerPartial('state-template-log-instance-item', stateLogInstanceItemHTML)
             Handlebars.registerPartial('state-template-res-select', stateResSelectHTML)
 
             # Handlebars helper
@@ -190,6 +192,7 @@ define [ 'event',
             this.paraDictListTpl = Handlebars.compile(paraDictItemHTML)
             this.paraArrayListTpl = Handlebars.compile(paraArrayItemHTML)
             this.stateLogItemTpl = Handlebars.compile(stateLogItemHTML)
+            this.stateLogInstanceItemTpl = Handlebars.compile(stateLogInstanceItemHTML)
             this.stateResSelectTpl = Handlebars.compile(stateResSelectHTML)
 
         initResSelect: () ->
@@ -1362,7 +1365,7 @@ define [ 'event',
                     thatEditor.execCommand("startAutocomplete")
 
                 if e.command.name is "backspace" and hintDataAryMap['at'] and currentValue
-                    currentLineContent = editor.getSession().getLine(editor.getCursorPosition().row)
+                    currentLineContent = thatEditor.getSession().getLine(thatEditor.getCursorPosition().row)
                     if currentLineContent.indexOf('@') >= 0
                         that.setEditorCompleter(thatEditor, hintDataAryMap['at'])
                         thatEditor.execCommand("startAutocomplete")
@@ -1497,7 +1500,9 @@ define [ 'event',
             stateLogViewAry = []
             stateStatusMap = {}
             _.each stateLogDataAry, (logObj) ->
-                timeStr = MC.dateFormat(new Date(logObj.time), 'yyyy-MM-dd hh:mm:ss')
+                timeStr = null
+                if logObj.time
+                    timeStr = MC.dateFormat(new Date(logObj.time), 'yyyy-MM-dd hh:mm:ss')
                 stateStatus = logObj.result
                 stateLogViewAry.push({
                     state_id: "State #{logObj.state_id}",
@@ -1515,7 +1520,7 @@ define [ 'event',
 
             that.refreshStateItemStatus(stateStatusMap)
 
-            that.$stateLogList.html(renderHTML)
+            that.$stateLogList.append(renderHTML)
 
         setEditorReadOnlyMode: () ->
 
@@ -1574,7 +1579,14 @@ define [ 'event',
             selectedResId = $(event.target).find('.selected').attr('data-id')
 
             # refresh state log
-            that.showLogListLoading(true)
+            # that.showLogListLoading(true)
+
+            that.model.getResState(selectedResId)
+            resState = that.model.get('resState')
+            
+            that.$stateLogList.empty().html(that.stateLogInstanceItemTpl({
+                res_status: resState
+            }))
             that.model.genStateLogData(selectedResId, () ->
                 that.refreshStateLogList()
                 that.showLogListLoading(false)

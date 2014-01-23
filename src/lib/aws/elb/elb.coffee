@@ -32,24 +32,35 @@ define [ 'constant', 'MC' ], ( constant, MC ) ->
 		# create elb default sg
 
 		if MC.aws.vpc.getVPCUID() or defaultVPC
-			sgComp = $.extend(true, {}, MC.canvas.SG_JSON.data)
-			sgComp.uid = MC.guid()
-			sgComp.name = newELBName + '-sg'
-			sgComp.resource.GroupDescription = 'Automatically created SG for load-balancer'
-			sgComp.resource.GroupName = sgComp.name
+			
+			newSGName = newELBName + '-sg'
+			
+			createELBSG = true
+			_.each MC.canvas_data.component, (compObj) ->
+				if compObj.type is 'AWS.EC2.SecurityGroup' and newSGName is compObj.name
+					createELBSG = false
+				null
 
-			if vpcUIDRef then sgComp.resource.VpcId = vpcUIDRef
+			if createELBSG
+				
+				sgComp = $.extend(true, {}, MC.canvas.SG_JSON.data)
+				sgComp.uid = MC.guid()
+				sgComp.name = newSGName
+				sgComp.resource.GroupDescription = 'Automatically created SG for load-balancer'
+				sgComp.resource.GroupName = sgComp.name
 
-			MC.canvas_data.component[sgComp.uid] = sgComp
+				if vpcUIDRef then sgComp.resource.VpcId = vpcUIDRef
 
-			sgRef = '@' + sgComp.uid + '.resource.GroupId'
-			MC.canvas_data.component[uid].resource.SecurityGroups = [sgRef]
+				MC.canvas_data.component[sgComp.uid] = sgComp
 
-			# add rule to default sg
-			MC.aws.elb.updateRuleToElbSG uid
+				sgRef = '@' + sgComp.uid + '.resource.GroupId'
+				MC.canvas_data.component[uid].resource.SecurityGroups = [sgRef]
 
-			#add sg to MC.canvas_property.sg_list
-			MC.aws.sg.addSGToProperty sgComp
+				# add rule to default sg
+				MC.aws.elb.updateRuleToElbSG uid
+
+				#add sg to MC.canvas_property.sg_list
+				MC.aws.sg.addSGToProperty sgComp
 
 		null
 

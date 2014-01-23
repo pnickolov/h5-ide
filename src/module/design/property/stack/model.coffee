@@ -16,8 +16,10 @@ define ['../base/model', 'constant'], ( PropertyModel, constant ) ->
             @getCost( true )
 
             if @isApp
+                @set "stack_state", false
                 @getAppSubscription()
             else
+                @set "stack_state", true
                 @getSubscription()
 
             @getProperty()

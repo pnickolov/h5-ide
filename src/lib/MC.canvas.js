@@ -1508,6 +1508,8 @@ MC.canvas = {
 	{
 		$(node).remove();
 
+		MC.canvas.event.nodeStateRemove(node.id);
+
 		return true;
 	},
 
@@ -2843,7 +2845,10 @@ MC.canvas.event.dragable = {
 				$canvas(target_id).select();
 				MC.canvas.volume.close();
 
-				MC.canvas.event.nodeState(target_id);
+				if (target_item.type === 'AWS.EC2.Instance')
+				{
+					MC.canvas.event.nodeState(target_id);
+				}
 			}
 		}
 		else
@@ -3742,6 +3747,11 @@ MC.canvas.event.siderbarDrag = {
 							if (new_node_id)
 							{
 								MC.canvas.select(new_node_id);
+
+								if (target_type === 'AWS.EC2.Instance')
+								{
+									MC.canvas.event.nodeState(new_node_id);
+								}
 							}
 						}
 						else
@@ -4658,6 +4668,18 @@ MC.canvas.event.nodeStatePopup = function (event)
 	$canvas.trigger("STATE_ICON_CLICKED", $(this).data('id'));
 
 	return false;
+};
+
+MC.canvas.event.nodeStateRemove = function (id)
+{
+	var node_state = $('#node-state-wrap');
+
+	if (node_state.data('id') === id)
+	{
+		node_state.remove();
+	}
+
+	return true;
 };
 
 MC.canvas.keypressed = [];

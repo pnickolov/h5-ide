@@ -301,49 +301,52 @@ define [ 'constant', 'MC' ], ( constant, MC ) ->
 		listenerAry = _.uniq listenerAry
 
 		elbDefaultSG = MC.aws.elb.getElbDefaultSG elbUID
-		elbDefaultSGUID = elbDefaultSG.uid
-		elbDefaultSGInboundRuleAry = elbDefaultSG.resource.IpPermissions
 
-		# add rule to sg
-		_.each listenerAry, (listenerObj) ->
-			addListenerToRule = true
-			removeListenerToRule = true
-			_.each elbDefaultSGInboundRuleAry, (ruleObj) ->
-				protocol = 'tcp' #ruleObj.IpProtocol
-				port = ruleObj.FromPort
-				if listenerObj.protocol is protocol and listenerObj.port is port
-					addListenerToRule = false
-					return
-				null
+		if elbDefaultSG
 
-			if addListenerToRule
-				elbDefaultSGInboundRuleAry.push {
-					FromPort: listenerObj.port,
-					ToPort: listenerObj.port,
-					IpProtocol: listenerObj.protocol,
-					IpRanges: '0.0.0.0/0',
-					Groups: [{
-						GroupId: '',
-						GroupName: '',
-						UserId: ''
-					}]
-				}
+			elbDefaultSGUID = elbDefaultSG.uid
+			elbDefaultSGInboundRuleAry = elbDefaultSG.resource.IpPermissions
 
-			null
-
-		# remove rule from sg
-		elbDefaultSGInboundRuleAry = _.filter elbDefaultSGInboundRuleAry, (ruleObj) ->
-			protocol = ruleObj.IpProtocol
-			port = ruleObj.FromPort
-			isInListener = false
+			# add rule to sg
 			_.each listenerAry, (listenerObj) ->
-				if listenerObj.protocol is protocol and listenerObj.port is port
-					isInListener = true
+				addListenerToRule = true
+				removeListenerToRule = true
+				_.each elbDefaultSGInboundRuleAry, (ruleObj) ->
+					protocol = 'tcp' #ruleObj.IpProtocol
+					port = ruleObj.FromPort
+					if listenerObj.protocol is protocol and listenerObj.port is port
+						addListenerToRule = false
+						return
+					null
+
+				if addListenerToRule
+					elbDefaultSGInboundRuleAry.push {
+						FromPort: listenerObj.port,
+						ToPort: listenerObj.port,
+						IpProtocol: listenerObj.protocol,
+						IpRanges: '0.0.0.0/0',
+						Groups: [{
+							GroupId: '',
+							GroupName: '',
+							UserId: ''
+						}]
+					}
+
 				null
-			return isInListener
+
+			# remove rule from sg
+			elbDefaultSGInboundRuleAry = _.filter elbDefaultSGInboundRuleAry, (ruleObj) ->
+				protocol = ruleObj.IpProtocol
+				port = ruleObj.FromPort
+				isInListener = false
+				_.each listenerAry, (listenerObj) ->
+					if listenerObj.protocol is protocol and listenerObj.port is port
+						isInListener = true
+					null
+				return isInListener
 
 
-		MC.canvas_data.component[elbDefaultSGUID].resource.IpPermissions = elbDefaultSGInboundRuleAry
+			MC.canvas_data.component[elbDefaultSGUID].resource.IpPermissions = elbDefaultSGInboundRuleAry
 
 	getElbDefaultSG = (elbUID) ->
 

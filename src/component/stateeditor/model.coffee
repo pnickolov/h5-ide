@@ -110,10 +110,11 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 			newCMDAllParaAry = cmdAllParaAry.sort (paraObj1, paraObj2) ->
 
 				if paraObj1.required is paraObj2.required
-					if paraObj1[paraName] < paraObj2[paraName]
-						return -1
-					else
-						return 1
+					return 0
+					# if paraObj1[paraName] < paraObj2[paraName]
+					# 	return -1
+					# else
+					# 	return 1
 
 				if paraObj1.required
 					return -1
@@ -221,10 +222,15 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 		getResName: () ->
 
 			that = this
+			resName = ''
 			compData = that.get('compData')
 			if compData and compData.name
-				return compData.name
-			return ''
+				resName = compData.name
+			if compData.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+				if compData.serverGroupUid is compData.uid
+					if compData.serverGroupName
+						resName = compData.serverGroupName
+			return resName
 
 		genStateRefList: (allCompData) ->
 
@@ -278,9 +284,18 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 				compUID = compData.uid
 				compType = compData.type
 
+				if compType is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+					if compData.serverGroupUid isnt compUID
+						return
+					else
+						if compData.serverGroupName
+							compName = compData.serverGroupName
+
 				# replace instance default eni name to instance name
 				if compType is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
 					if compData.resource.Attachment.DeviceIndex in ['0', 0]
+						return
+					if compData.serverGroupUid isnt compUID
 						return
 						# instanceRef = compData.resource.Attachment.InstanceId
 						# if instanceRef
@@ -348,6 +363,12 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 						null
 
 				null
+
+			# sort autoCompList
+			autoCompList = autoCompList.sort((obj1, obj2) ->
+				if obj1.name < obj2.name then return -1
+				if obj1.name > obj2.name then return 1
+			)
 
 			resAttrDataAry = _.map autoCompList, (autoCompObj) ->
 				return {

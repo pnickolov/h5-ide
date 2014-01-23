@@ -1363,8 +1363,10 @@ define [ 'event',
                     thatEditor.execCommand("startAutocomplete")
 
                 if e.command.name is "backspace" and hintDataAryMap['at'] and currentValue
-                    that.setEditorCompleter(thatEditor, hintDataAryMap['at'])
-                    thatEditor.execCommand("startAutocomplete")
+                    currentLineContent = editor.getSession().getLine(editor.getCursorPosition().row)
+                    if currentLineContent.indexOf('@') >= 0
+                        that.setEditorCompleter(thatEditor, hintDataAryMap['at'])
+                        thatEditor.execCommand("startAutocomplete")
 
                 if e.command.name is "autocomplete_confirm"
                     if $editorElem.hasClass('command-value')

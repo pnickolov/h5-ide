@@ -27,7 +27,6 @@ define [ 'Design',
          "./util/deserializeVisitor/JsonFixer",
          "./util/deserializeVisitor/EipMerge",
          "./util/deserializeVisitor/FixOldStack",
-         "./util/serializeVisitor/ThumbnailShim",
          "./util/serializeVisitor/EniIpVisitor",
 
          "./canvasview/CeLine"

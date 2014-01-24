@@ -2399,7 +2399,7 @@ a {
 
 	.region-resource-thumbnail {
 		width  : 195px;
-		height : 137px;
+		height : 129px;
 
 		background-size: 193 auto;
 	}
@@ -7213,3 +7213,15 @@ summary:focus {
 	cursor: pointer;
 }
 
+/* Instance system log modal */
+#modal-instance-sys-log .instance-sys-log-content {
+	height: 500px;
+	overflow: auto;
+	background-color: #000;
+	display: none;
+}
+
+#modal-instance-sys-log .instance-sys-log-content::selection {
+	background: #4495d3;
+	color: #fcfcfc;
+}

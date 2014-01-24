@@ -10,6 +10,7 @@ define [ '../base/view', 'text!./template/app.html', 'i18n!nls/lang.js' ], ( Pro
         events   :
             "click #property-app-keypair" : "downloadKeypair"
             "click #property-app-ami" : "openAmiPanel"
+            "click .icon-syslog" : "openSysLogModal"
 
         kpModalClosed : false
 
@@ -116,6 +117,33 @@ define [ '../base/view', 'text!./template/app.html', 'i18n!nls/lang.js' ], ( Pro
 
             null
 
+        openSysLogModal : () ->
+
+            instanceId = @model.get('instanceId')
+            @model.loadSysLogData(instanceId)
+
+            modal MC.template.modalInstanceSysLog {
+                instance_id: instanceId,
+                res_name: 'pp',
+                log_content: ''
+            }, true
+
+            return false
+
+        refreshSysLog : (result) ->
+
+            logContent = MC.base64Decode(result.output)
+            $contentElem = $('#modal-instance-sys-log .instance-sys-log-content')
+
+            logContentTpl = Handlebars.compile('{{nl2br content}}')
+            logContentHTML = logContentTpl({
+                content: logContent
+            })
+            $contentElem.html(logContentHTML)
+
+            $('#modal-instance-sys-log .instance-sys-log-loading').hide()
+            $contentElem.show()
+            modal.position()
 
     }
 

@@ -132,6 +132,12 @@ define [ '../base/model',
 
                 null
 
+            @on 'EC2_INS_GET_CONSOLE_OUTPUT_RETURN', (result) ->
+
+                if !result.is_error
+                    console.log(result.resolved_data)
+
+                me.trigger "SYS_LOG_RETURNED", result.resolved_data
 
         init : ( instance_id )->
 
@@ -280,6 +286,10 @@ define [ '../base/model',
             @set "multi_enis", instance.connections("EniAttachment").length > 0
             null
 
+        loadSysLogData : (instanceId) ->
+            me = this
+            currentRegion = MC.canvas_data.region
+            instance_model.GetConsoleOutput {sender: me}, $.cookie('usercode'), $.cookie('session_id'), currentRegion, instanceId
     }
 
     new AppInstanceModel()

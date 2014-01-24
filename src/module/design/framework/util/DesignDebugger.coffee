@@ -57,6 +57,21 @@ define [ "Design" ], ( Design )->
       console.log( data )
     null
 
+  Design.debug.export = ()->
+    filename = 'CanvasData.json'
+    data     = Design.debug.json()
+
+    blob = new Blob([data], {type: 'text/json'})
+    e    = document.createEvent('MouseEvents')
+    a    = document.createElement('a')
+
+    a.download = filename
+    a.href = window.URL.createObjectURL(blob)
+    a.dataset.downloadurl =  ['text/json', a.download, a.href].join(':')
+    e.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null)
+    a.dispatchEvent(e)
+    null
+
   Design.debug.view = ( e )->
     if e and e.preventDefault then e.preventDefault()
 
@@ -65,8 +80,9 @@ define [ "Design" ], ( Design )->
       JsonViewer.showViewDialog( data )
     null
 
-  window.D  = Design
-  window.ds = ()-> Design.debug.json( true )
+  window.D   = Design
+  window.dd  = Design.debug
+  window.dds = ()-> Design.debug.json( true )
   null
 
   ### env:dev:end ###

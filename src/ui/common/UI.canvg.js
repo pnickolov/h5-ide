@@ -396,9 +396,15 @@ function RGBColor(color_string)
         svg.Property.prototype.addOpacity = function(opacity) {
           var newValue = this.value;
           if (opacity != null && opacity != '' && typeof(this.value)=='string') { // can only add opacity to colors, not patterns
-            var color = new RGBColor(this.value);
-            if (color.ok) {
-              newValue = 'rgba(' + color.r + ', ' + color.g + ', ' + color.b + ', ' + opacity + ')';
+            if (this.value.indexOf("rgba(") != -1 ) {
+              color = this.value.split(",")
+              color[3] = parseFloat( color[3] ) * opacity
+              newValue = color.join(",") + ")"
+            } else {
+              var color = new RGBColor(this.value);
+              if (color.ok) {
+                newValue = 'rgba(' + color.r + ', ' + color.g + ', ' + color.b + ', ' + opacity + ')';
+              }
             }
           }
           return new svg.Property(this.name, newValue);
@@ -1015,10 +1021,14 @@ function RGBColor(color_string)
           if (fillStyle.value == 'currentColor') fillStyle.value = this.style('color').value;
           ctx.fillStyle = (fillStyle.value == 'none' ? 'rgba(0,0,0,0)' : fillStyle.value);
         }
-        if (this.style('fill-opacity').hasValue()) {
-          var fillStyle = new svg.Property('fill', ctx.fillStyle);
-          fillStyle = fillStyle.addOpacity(this.style('fill-opacity').value);
-          ctx.fillStyle = fillStyle.value;
+
+        fillOpacity = this.style('fill-opacity')
+        if (fillOpacity.hasValue()) {
+          if ( fillOpacity.value + "" != "1" ) {
+            var fillStyle = new svg.Property('fill', ctx.fillStyle);
+            fillStyle = fillStyle.addOpacity(fillOpacity.value);
+            ctx.fillStyle = fillStyle.value;
+          }
         }
 
         // stroke
@@ -2757,23 +2767,27 @@ function RGBColor(color_string)
       svg.imageLoadedCount = 0;
       svg.checkImageID     = null;
 
-      svg.onImageLoaded = function() {
-          ++svg.imageLoadedCount;
+      if ( svg.Images.length ) {
+        svg.onImageLoaded = function() {
+            ++svg.imageLoadedCount;
 
-          if ( svg.checkImageID ) {
-              clearTimeout( svg.checkImageID );
-              svg.checkImageID = null;
-          }
+            if ( svg.checkImageID ) {
+                clearTimeout( svg.checkImageID );
+                svg.checkImageID = null;
+            }
 
-          if ( svg.imageLoadedCount >= svg.Images.length ) {
-              draw();
-          } else {
-              svg.checkImageID = setTimeout(draw, 800);
-          }
-      };
+            if ( svg.imageLoadedCount >= svg.Images.length ) {
+                draw();
+            } else {
+                svg.checkImageID = setTimeout(draw, 800);
+            }
+        };
+      } else {
+        svg.onImageLoaded = function() {}
+        draw();
+      }
+
     }
-
-
 
     return svg;
   }

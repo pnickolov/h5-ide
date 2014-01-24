@@ -172,7 +172,7 @@ require [ 'jquery', 'domReady', 'MC',
             ide_event.onLongListen ide_event.UPDATE_AWS_CREDENTIAL, () ->
                 console.log 'dashboard_region:UPDATE_AWS_CREDENTIAL'
 
-                if MC.forge.cookie.getCookieByName('has_cred') is 'true'   # update aws resource
+                if MC.common.cookie.getCookieByName('has_cred') is 'true'   # update aws resource
                     model.describeAWSResourcesService()
                 else    # set aws credential
                     require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()

@@ -26,8 +26,8 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model',
 
                     if attributes.state is '3'
                         #
-                        MC.forge.cookie.setCookieByName 'state', attributes.state
-                        MC.forge.cookie.setIDECookie $.cookie()
+                        MC.common.cookie.setCookieByName 'state', attributes.state
+                        MC.common.cookie.setIDECookie $.cookie()
                 else
 
                     me.trigger 'UPDATE_ACCOUNT_ATTRIBUTES_FAILED', attributes
@@ -61,9 +61,9 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model',
                         me.set 'is_authenticated', true
                         me.set 'account_id', result.resolved_data
                         #
-                        MC.forge.cookie.setCookieByName 'account_id', result.resolved_data
-                        MC.forge.cookie.setCookieByName 'has_cred',   true
-                        MC.forge.cookie.setIDECookie $.cookie()
+                        MC.common.cookie.setCookieByName 'account_id', result.resolved_data
+                        MC.common.cookie.setCookieByName 'has_cred',   true
+                        MC.common.cookie.setIDECookie $.cookie()
                         #
                         me.trigger 'REFRESH_AWS_CREDENTIAL'
 
@@ -77,12 +77,12 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model',
 
             #
             flag = false
-            if MC.forge.cookie.getCookieByName('has_cred') is 'true'
+            if MC.common.cookie.getCookieByName('has_cred') is 'true'
                 flag = true
             me.set 'is_authenticated', flag
 
-            if MC.forge.cookie.getCookieByName('account_id')
-                me.set 'account_id', MC.forge.cookie.getCookieByName('account_id')
+            if MC.common.cookie.getCookieByName('account_id')
+                me.set 'account_id', MC.common.cookie.getCookieByName('account_id')
 
         awsAuthenticate : (access_key, secret_key, account_id) ->
             me = this
@@ -105,9 +105,9 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model',
 
                         if !result.is_error
                             me.set 'is_authenticated', true
-                            MC.forge.cookie.setCookieByName 'has_cred',   true
-                            MC.forge.cookie.setCookieByName 'account_id', account_id
-                            MC.forge.cookie.setIDECookie $.cookie()
+                            MC.common.cookie.setCookieByName 'has_cred',   true
+                            MC.common.cookie.setCookieByName 'account_id', account_id
+                            MC.common.cookie.setIDECookie $.cookie()
 
                             # update account attributes
                             regionAttrSet = result.resolved_data
@@ -139,7 +139,7 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model',
                 else
 
                     me.set 'is_authenticated', false
-                    MC.forge.cookie.setCookieByName 'has_cred', false
+                    MC.common.cookie.setCookieByName 'has_cred', false
 
                     me.set 'account_id', account_id
 

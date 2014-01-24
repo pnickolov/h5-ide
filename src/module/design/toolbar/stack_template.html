@@ -37,10 +37,6 @@
 		<ul class="dropdown" tabindex="-1">
 			<li id="toolbar-export-png"><i class="icon-export-png"></i>{{ i18n "TOOL_EXPORT_AS_PNG" }}</li>
 			<li class="modal" id="toolbar-convert-cf" data-modal-template="modalDownloadCloudFormationTpl" data-modal-data='{"title":"{{{ i18n "TOOL_POP_TIT_EXPORT_AS_JSON" }}}", "body":"{{{ i18n "TOOL_POP_BODY_EXPORT_AS_JSON" }}}", "confirm":"{{{ i18n "TOOL_POP_BTN_DOWNLOAD" }}}", "color":"blue", "download":"{{json_file}}", "filecontent":"{{json_content}}" }' data-modal-dismiss=True><i class="icon-toolbar-cloudformation"></i>Convert to CloudFormation Format</li>
-			<!-- env:dev -->
-			<li><a href="javascript:D.debug.diff();" style="color:#333;display:block;">Open JSON Diff</a></li>
-			<li><a href="http://jsonviewer.stack.hu/" style="color:#333;display:block;" target="_blank">Open JSON View</a></li>
-			<!-- env:dev:end -->
 		</ul>
 	</div>
 </section>
@@ -57,3 +53,10 @@
 		</ul>
 	</div>
 </section>
+
+<!-- env:dev -->
+<section class="toolbar-btn-group">
+  <a href="javascript:D.debug.diff();" class="btn-toolbar tooltip icon-toolbar-diff" data-tooltip="JSON Diff"></a>
+  <a href="javascript:D.debug.view();" class="btn-toolbar tooltip icon-toolbar-cloudformation" data-tooltip="JSON View"></a>
+</section>
+<!-- env:dev:end -->

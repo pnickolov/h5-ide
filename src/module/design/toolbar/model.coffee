@@ -66,8 +66,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     #    MC.canvas_data.key = key
 
                     # new design flow
-                    if key isnt MC.forge.other.canvasData.get( 'key' )
-                        MC.forge.other.canvasData.set 'key', key
+                    if key isnt MC.common.other.canvasData.get( 'key' )
+                        MC.common.other.canvasData.set 'key', key
                         data.key = key
 
                     #call save png
@@ -110,14 +110,14 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     # new design flow
 
                     # set new id and key
-                    MC.forge.other.canvasData.set 'id',  new_id
-                    MC.forge.other.canvasData.set 'key', key
+                    MC.common.other.canvasData.set 'id',  new_id
+                    MC.common.other.canvasData.set 'key', key
 
                     # get data
-                    data = MC.forge.other.canvasData.data()
+                    data = MC.common.other.canvasData.data()
 
                     # set origin
-                    MC.forge.other.canvasData.origin data
+                    MC.common.other.canvasData.origin data
 
                     me.trigger 'TOOLBAR_HANDLE_SUCCESS', 'CREATE_STACK', name
                     ide_event.trigger ide_event.UPDATE_STACK_LIST, 'NEW_STACK', [new_id]
@@ -241,7 +241,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                 #name    = MC.canvas_data.name
 
                 # new design flow
-                name    = MC.forge.other.canvasData.get 'name'
+                name    = MC.common.other.canvasData.get 'name'
 
                 cf_data = me.get 'cf_data'
                 if not cf_data
@@ -373,8 +373,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             me = this
 
             # new design flow
-            name  = MC.forge.other.canvasData.get 'name'
-            state = MC.forge.other.canvasData.get 'state'
+            name  = MC.common.other.canvasData.get 'name'
+            state = MC.common.other.canvasData.get 'state'
 
             if flag is 'NEW_STACK'
 
@@ -467,7 +467,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     # new design flow
                     'has_instance_store_ami': me.isInstanceStore(),
                     'is_asg'                : me.isAutoScaling(),
-                    'is_production'         : if MC.forge.other.canvasData.get( 'usage' ) isnt 'production' then false else true
+                    'is_production'         : if MC.common.other.canvasData.get( 'usage' ) isnt 'production' then false else true
                 }
 
                 is_tab = true
@@ -521,7 +521,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             #if id == MC.canvas_data.id and is_tab
 
             # new design flow
-            if id == MC.forge.other.canvasData.get( 'id' ) and is_tab
+            if id == MC.common.other.canvasData.get( 'id' ) and is_tab
                 me.set 'item_flags', item_state_map[id]
 
                 if id.indexOf('app-') == 0
@@ -540,7 +540,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                 #id = MC.canvas_data.id
 
                 # new design flow
-                id = MC.forge.other.canvasData.get 'id'
+                id = MC.common.other.canvasData.get 'id'
 
                 rid = k for k,v of item_state_map when id == k
 
@@ -608,7 +608,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             #@setFlag MC.canvas_data.id, 'UPDATE_APP', is_update
 
             # new design flow
-            @setFlag MC.forge.other.canvasData.get( 'id' ), 'UPDATE_APP', is_update
+            @setFlag MC.common.other.canvasData.get( 'id' ), 'UPDATE_APP', is_update
 
             null
 
@@ -627,7 +627,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             #me.setFlag MC.canvas_data.id, 'ZOOMIN_STACK', flag
 
             # new design flow
-            me.setFlag MC.forge.other.canvasData.get( 'id' ), 'ZOOMIN_STACK', flag
+            me.setFlag MC.common.other.canvasData.get( 'id' ), 'ZOOMIN_STACK', flag
 
         #zoomout
         zoomOut : () ->
@@ -644,7 +644,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             #me.setFlag MC.canvas_data.id, 'ZOOMOUT_STACK', flag
 
             # new design flow
-            me.setFlag MC.forge.other.canvasData.get( 'id' ), 'ZOOMOUT_STACK', flag
+            me.setFlag MC.common.other.canvasData.get( 'id' ), 'ZOOMOUT_STACK', flag
 
         savePNG : (is_thumbnail, data) ->
             console.log 'savePNG, is_thumbnail = ' + is_thumbnail
@@ -672,7 +672,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             #json_data = if MC.data.current_tab_id.split( '-' )[0] is 'app' then JSON.stringify(MC.forge.stack.compactServerGroup( MC.canvas_data )) else JSON.stringify(data)
 
             # new design flow
-            #json_data = if MC.data.current_tab_id.split( '-' )[0] is 'app' then JSON.stringify(MC.forge.stack.compactServerGroup( MC.forge.other.canvasData.data() )) else JSON.stringify(data)
+            #json_data = if MC.data.current_tab_id.split( '-' )[0] is 'app' then JSON.stringify(MC.forge.stack.compactServerGroup( MC.common.other.canvasData.data() )) else JSON.stringify(data)
             json_data = JSON.stringify data
             #
             phantom_data =
@@ -710,8 +710,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                 #id         : MC.canvas_data.id
 
                 # new design flow
-                name       : MC.forge.other.canvasData.get( 'name' )
-                id         : MC.forge.other.canvasData.get( 'id' )
+                name       : MC.common.other.canvasData.get( 'name' )
+                id         : MC.common.other.canvasData.get( 'id' )
 
                 onFinish : ( data ) ->
 
@@ -719,7 +719,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     #if ( data.id is MC.canvas_data.id )
 
                     # new design flow
-                    if ( data.id is MC.forge.other.canvasData.get( 'id' ) )
+                    if ( data.id is MC.common.other.canvasData.get( 'id' ) )
                         me.trigger 'SAVE_PNG_COMPLETE', data.image, data.id, data.blob
             }
             null
@@ -1103,8 +1103,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             #stack_model.export_cloudformation { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), MC.canvas_data.region, MC.canvas_data.id
 
             # new design flow
-            id     = MC.forge.other.canvasData.get( 'id' )
-            region = MC.forge.other.canvasData.get( 'region' )
+            id     = MC.common.other.canvasData.get( 'id' )
+            region = MC.common.other.canvasData.get( 'region' )
             stack_model.export_cloudformation { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id
             # stack_service.export_cloudformation {sender:me}, $.cookie( 'usercode' ), $.cookie( 'session_id' ), MC.canvas_data.region, MC.canvas_data.id, ( forge_result ) ->
 

@@ -46,6 +46,8 @@ define ['Meteor', 'underscore'], ( Meteor, _ ) ->
 				'app'				:	new Meteor.Collection "app"
 
 				'status'			:	new Meteor.Collection "status"
+				
+				'imports'			:	new Meteor.Collection "imports"
 
 			}
 

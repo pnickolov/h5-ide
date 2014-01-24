@@ -49,10 +49,8 @@ require.config {
 		#login
 		'login'           : 'js/login/login'
 
-		'forge_handle'    : 'lib/forge/main'
+		'common_handle'    : 'lib/common/main'
 
-		'Design'          : 'module/design/framework/Design'
-		'CanvasManager'   : 'module/design/framework/canvasview/CanvasManager'
 		'event'           : 'event/ide_event'
 
 		'MC.canvas.constant' : 'lib/MC.canvas.constant'
@@ -75,9 +73,6 @@ require.config {
 		'MC'              :
 			deps          : [ 'jquery', 'constant' ]
 			exports       : 'MC'
-
-		'forge_handle'    :
-			deps          : [ 'Design' ]
 
 		'main'            :
 			deps          : [ 'jquery' ]

@@ -223,7 +223,7 @@ define [ 'Design', 'event', 'text!./module/design/template.html', 'constant', 'i
                 # open tab fail( includ app and stack )
                 if state is 'OPEN_TAB_FAIL'
 
-                    obj = MC.forge.other.searchStackAppById MC.data.current_tab_id
+                    obj = MC.common.other.searchStackAppById MC.data.current_tab_id
                     #
                     if Tabbar.current is 'new'
                         event_type = 'RELOAD_NEW_STACK'
@@ -256,7 +256,7 @@ define [ 'Design', 'event', 'text!./module/design/template.html', 'constant', 'i
                         # delete MC.process and MC.data.process
                         # delete MC.process[ MC.data.current_tab_id ]
                         # delete MC.data.process[ MC.data.current_tab_id ]
-                        # MC.forge.other.deleteProcess MC.data.current_tab_id
+                        # MC.common.other.deleteProcess MC.data.current_tab_id
 
                         null
 
@@ -305,7 +305,7 @@ define [ 'Design', 'event', 'text!./module/design/template.html', 'constant', 'i
             # 3. delete MC.process and MC.data.process
             # delete MC.process[ MC.data.current_tab_id ]
             # delete MC.data.process[ MC.data.current_tab_id ]
-            MC.forge.other.deleteProcess MC.data.current_tab_id
+            MC.common.other.deleteProcess MC.data.current_tab_id
 
             null
 

@@ -2,7 +2,7 @@
 #  View Mode for register
 #############################
 
-define [ 'MC', 'event', 'account_model', 'session_model', 'forge_handle', 'crypto' ], ( MC, ide_event, account_model, session_model, forge_handle ) ->
+define [ 'MC', 'event', 'account_model', 'session_model', 'common_handle', 'crypto' ], ( MC, ide_event, account_model, session_model, common_handle ) ->
 
     #private
     RegisterModel = Backbone.Model.extend {
@@ -57,15 +57,15 @@ define [ 'MC', 'event', 'account_model', 'session_model', 'forge_handle', 'crypt
                     #result = forge_result.resolved_data
 
                     #
-                    #forge_handle.cookie.deleteCookie()
+                    #common_handle.cookie.deleteCookie()
 
                     #set cookies
-                    #forge_handle.cookie.setCookie result
+                    #common_handle.cookie.setCookie result
 
                     #set madeiracloud_ide_session_id
                     #result.new_account = true
-                    #forge_handle.cookie.setCookie result
-                    #forge_handle.cookie.setIDECookie result
+                    #common_handle.cookie.setCookie result
+                    #common_handle.cookie.setIDECookie result
                     #
                     sessionStorage.setItem 'username', forge_result.param[ 1 ]
                     sessionStorage.setItem 'password', forge_result.param[ 2 ]
@@ -101,17 +101,17 @@ define [ 'MC', 'event', 'account_model', 'session_model', 'forge_handle', 'crypt
                     result = forge_result.resolved_data
 
                     #clear old cookie
-                    forge_handle.cookie.deleteCookie()
+                    common_handle.cookie.deleteCookie()
 
                     #set cookies
-                    forge_handle.cookie.setCookie result
+                    common_handle.cookie.setCookie result
 
                     #set madeiracloud_ide_session_id
-                    forge_handle.cookie.setIDECookie result
+                    common_handle.cookie.setIDECookie result
 
                     #set email
-                    localStorage.setItem 'email',     MC.base64Decode( forge_handle.cookie.getCookieByName( 'email' ))
-                    localStorage.setItem 'user_name', forge_handle.cookie.getCookieByName( 'username' )
+                    localStorage.setItem 'email',     MC.base64Decode( common_handle.cookie.getCookieByName( 'email' ))
+                    localStorage.setItem 'user_name', common_handle.cookie.getCookieByName( 'username' )
                     intercom_sercure_mode_hash = () ->
                         intercom_api_secret = '4tGsMJzq_2gJmwGDQgtP2En1rFlZEvBhWQWEOTKE'
                         hash = CryptoJS.HmacSHA256( MC.base64Decode($.cookie('email')), intercom_api_secret )

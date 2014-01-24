@@ -7189,6 +7189,11 @@ summary:focus {
 	color: #aaa;
 }
 
+#btn-vpc-reload {
+	display: block;
+	margin: 20px auto;
+}
+
 #process-body .long-lag-message {
 	width: 480px;
 	margin: 0 auto;

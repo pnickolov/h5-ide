@@ -10,11 +10,11 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'MC', 'aws_handle', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_service'
+define [ 'MC', 'common_handle', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_service'
 		 'keypair_service', 'securitygroup_service', 'elb_service', 'iam_service', 'acl_service'
 		 'customergateway_service', 'dhcp_service', 'eni_service', 'internetgateway_service', 'routetable_service'
 		 'autoscaling_service', 'cloudwatch_service', 'sns_service',
-		 'subnet_service', 'vpc_service', 'vpn_service', 'vpngateway_service', 'ec2_service', 'ami_service' ], (MC, aws_handle, result_vo, constant, ebs_service, eip_service, instance_service
+		 'subnet_service', 'vpc_service', 'vpn_service', 'vpngateway_service', 'ec2_service', 'ami_service' ], (MC, common_handle, result_vo, constant, ebs_service, eip_service, instance_service
 		 keypair_service, securitygroup_service, elb_service, iam_service, acl_service
 		 customergateway_service, dhcp_service, eni_service, internetgateway_service, routetable_service,
 		 autoscaling_service, cloudwatch_service, sns_service,
@@ -244,7 +244,8 @@ define [ 'MC', 'aws_handle', 'result_vo', 'constant', 'ebs_service', 'eip_servic
 				aws_result.resolved_data = resolved_data
 
 			catch error
-				console.log error
+				console.log 'aws service error', error
+				console.log result, return_code, param
 
 				if addition is 'vpc'
 					aws_result.is_error = true
@@ -318,35 +319,35 @@ define [ 'MC', 'aws_handle', 'result_vo', 'constant', 'ebs_service', 'eip_servic
 
 
 	vpc_resource_map = {
-		#"DescribeImagesResponse"               :  if MC.aws then MC.aws.convert.resolveDescribeImagesResult else {}
-		"DescribeAvailabilityZones"    :   if MC.aws then MC.aws.convert.convertAZ else {}
-		"DescribeVolumes"              :   if MC.aws then MC.aws.convert.convertVolume else {}
-		#"DescribeSnapshots"            :  if MC.aws then  ebs_service.resolveDescribeSnapshotsResult else {}
-		"DescribeAddresses"            :   if MC.aws then MC.aws.convert.convertEIP else {}
-		"DescribeInstances"            :   if MC.aws then MC.aws.convert.convertInstance else {}
-		"DescribeKeyPairs"             :   if MC.aws then MC.aws.convert.convertKP else {}
-		"DescribeSecurityGroups"       :   if MC.aws then MC.aws.convert.convertSGGroup else {}
-		"DescribeLoadBalancers"        :   if MC.aws then MC.aws.convert.convertELB else {}
-		"DescribeNetworkAcls"          :   if MC.aws then MC.aws.convert.convertACL else {}
-		"DescribeCustomerGateways"     :   if MC.aws then MC.aws.convert.convertCGW else {}
-		"DescribeDhcpOptions"          :   if MC.aws then MC.aws.convert.convertDHCP else {}
-		"DescribeNetworkInterfaces"    :   if MC.aws then MC.aws.convert.convertEni else {}
-		"DescribeInternetGateways"     :   if MC.aws then MC.aws.convert.convertIGW else {}
-		"DescribeRouteTables"          :   if MC.aws then MC.aws.convert.convertRTB else {}
-		"DescribeSubnets"              :   if MC.aws then MC.aws.convert.convertSubnet else {}
-		"DescribeVpcs"                 :   if MC.aws then MC.aws.convert.convertVPC else {}
-		"DescribeVpnConnections"       :   if MC.aws then MC.aws.convert.convertVPN else {}
-		"DescribeVpnGateways"          :   if MC.aws then MC.aws.convert.convertVGW else {}
+		#"DescribeImagesResponse"               :  if MC.common then MC.common.convert.resolveDescribeImagesResult else {}
+		"DescribeAvailabilityZones"    :   if MC.common then MC.common.convert.convertAZ else {}
+		"DescribeVolumes"              :   if MC.common then MC.common.convert.convertVolume else {}
+		#"DescribeSnapshots"            :  if MC.common then  ebs_service.resolveDescribeSnapshotsResult else {}
+		"DescribeAddresses"            :   if MC.common then MC.common.convert.convertEIP else {}
+		"DescribeInstances"            :   if MC.common then MC.common.convert.convertInstance else {}
+		"DescribeKeyPairs"             :   if MC.common then MC.common.convert.convertKP else {}
+		"DescribeSecurityGroups"       :   if MC.common then MC.common.convert.convertSGGroup else {}
+		"DescribeLoadBalancers"        :   if MC.common then MC.common.convert.convertELB else {}
+		"DescribeNetworkAcls"          :   if MC.common then MC.common.convert.convertACL else {}
+		"DescribeCustomerGateways"     :   if MC.common then MC.common.convert.convertCGW else {}
+		"DescribeDhcpOptions"          :   if MC.common then MC.common.convert.convertDHCP else {}
+		"DescribeNetworkInterfaces"    :   if MC.common then MC.common.convert.convertEni else {}
+		"DescribeInternetGateways"     :   if MC.common then MC.common.convert.convertIGW else {}
+		"DescribeRouteTables"          :   if MC.common then MC.common.convert.convertRTB else {}
+		"DescribeSubnets"              :   if MC.common then MC.common.convert.convertSubnet else {}
+		"DescribeVpcs"                 :   if MC.common then MC.common.convert.convertVPC else {}
+		"DescribeVpnConnections"       :   if MC.common then MC.common.convert.convertVPN else {}
+		"DescribeVpnGateways"          :   if MC.common then MC.common.convert.convertVGW else {}
 		#
-		"DescribeAutoScalingGroups"            :   if MC.aws then MC.aws.convert.convertASG else {}
-		"DescribeLaunchConfigurations"         :   if MC.aws then MC.aws.convert.convertLC else {}
-		"DescribeNotificationConfigurations"   :   if MC.aws then MC.aws.convert.convertNC else {}
-		"DescribePolicies"                     :   if MC.aws then MC.aws.convert.convertScalingPolicy else {}
-		#"DescribeScheduledActionsResponse"             :   if MC.aws then autoscaling_service.resolveDescribeScheduledActionsResult else {}
-		#"DescribeScalingActivitiesResponse"            :   if MC.aws then autoscaling_service.resolveDescribeScalingActivitiesResult else {}
-		#"DescribeAlarmsResponse"                       :   if MC.aws then cloudwatch_service.resolveDescribeAlarmsResult else {}
-		#"ListSubscriptionsResponse"                    :   if MC.aws then sns_service.resolveListSubscriptionsResult else {}
-		#"ListTopicsResponse"                           :   if MC.aws then sns_service.resolveListTopicsResult else {}
+		"DescribeAutoScalingGroups"            :   if MC.common then MC.common.convert.convertASG else {}
+		"DescribeLaunchConfigurations"         :   if MC.common then MC.common.convert.convertLC else {}
+		"DescribeNotificationConfigurations"   :   if MC.common then MC.common.convert.convertNC else {}
+		"DescribePolicies"                     :   if MC.common then MC.common.convert.convertScalingPolicy else {}
+		#"DescribeScheduledActionsResponse"             :   if MC.common then autoscaling_service.resolveDescribeScheduledActionsResult else {}
+		#"DescribeScalingActivitiesResponse"            :   if MC.common then autoscaling_service.resolveDescribeScalingActivitiesResult else {}
+		#"DescribeAlarmsResponse"                       :   if MC.common then cloudwatch_service.resolveDescribeAlarmsResult else {}
+		#"ListSubscriptionsResponse"                    :   if MC.common then sns_service.resolveListSubscriptionsResult else {}
+		#"ListTopicsResponse"                           :   if MC.common then sns_service.resolveListTopicsResult else {}
 
 	}
 
@@ -412,6 +413,25 @@ define [ 'MC', 'aws_handle', 'result_vo', 'constant', 'ebs_service', 'eip_servic
 
 							vpc_id = resource_comp[0].vpcId
 
+						if resource_type is 'DescribeLaunchConfigurations'
+
+							for comp in resource_comp
+
+								remove_index = []
+
+								if comp.BlockDeviceMappings
+
+									for idx, device of comp.BlockDeviceMappings.member
+
+										if not device.Ebs
+
+											remove_index.push idx
+
+								remove_index = remove_index.sort().reverse()
+
+								for i in remove_index
+
+									comp.BlockDeviceMappings.member.splice(i, 1)
 						#collect ignore asg instance
 						if resource_type is 'DescribeAutoScalingGroups'
 							for asg in resource_comp

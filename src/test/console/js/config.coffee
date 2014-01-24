@@ -22,6 +22,8 @@ require.config {
         #result_vo
         'result_vo'         : 'service/result_vo'
 
+        'common_handle'         : 'lib/common/main'
+
         #service
         'session_service'   : 'service/session/session_service'
 

@@ -45,7 +45,7 @@ define [ 'jquery',
 
             ide_event.onLongListen ide_event.SWITCH_TAB, () ->
                 setTimeout () ->
-                    console.log 'SWITCH_TAB toolbar id:' + MC.forge.other.canvasData.get 'id'
+                    console.log 'SWITCH_TAB toolbar id:' + MC.common.other.canvasData.get 'id'
                     model.setTabFlag(true)
                 , 500
 
@@ -56,10 +56,10 @@ define [ 'jquery',
                 try
 
                     # save Design
-                    MC.forge.other.canvasData.save   data
+                    MC.common.other.canvasData.save   data
 
                     # save origin_data
-                    MC.forge.other.canvasData.origin data
+                    MC.common.other.canvasData.origin data
 
                     # save db
                     model.saveStack                  data
@@ -176,7 +176,7 @@ define [ 'jquery',
                                 #data = $.extend true, {}, MC.canvas_data
 
                                 # new design flow
-                                data  = MC.forge.other.canvasData.data()
+                                data  = MC.common.other.canvasData.data()
 
                                 app_name = $('.modal-input-value').val()
                                 # set app name
@@ -193,7 +193,7 @@ define [ 'jquery',
                                 #MC.data.app_list[MC.canvas_data.region].push app_name
 
                                 # new design flow
-                                region = MC.forge.other.canvasData.get 'region'
+                                region = MC.common.other.canvasData.get 'region'
                                 MC.data.app_list[ region ].push app_name
 
                                 modal.close()

@@ -55,7 +55,7 @@
 .icon-success,
 .icon-time,
 .icon-sort,
-.icon-detail, 
+.icon-detail,
 .ipt-controls > .icon-del:before,
 .ipt-controls > .icon-add:before,
 .icon-line-shape,
@@ -69,6 +69,7 @@
 .icon-cancel-update-app,
 .icon-apply-app,
 .icon-visualize,
+.icon-toolbar-diff,
 .icon-desc,
 .icon-log,
 .icon-syslog
@@ -136,6 +137,7 @@
 .icon-toolbar-cloudformation:before {content:"\F147";}
 .icon-update-app:before {content:"\F148";}
 .icon-visualize:before {content:"\F149";}
+.icon-toolbar-diff:before {content:"\F150";}
 .icon-log:before {content:"\F14A";}
 .icon-desc:before {content:"\F14B";}
 .icon-syslog:before {content:"\F14C";}

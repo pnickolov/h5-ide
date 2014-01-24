@@ -88,7 +88,7 @@ define [ 'jquery',
             ide_event.onLongListen ide_event.UPDATE_AWS_CREDENTIAL, () ->
                 console.log 'navigation:UPDATE_AWS_CREDENTIAL'
                 #call
-                model.describeRegionsService() if MC.forge.cookie.getCookieByName('has_cred') is 'true'
+                model.describeRegionsService() if MC.common.cookie.getCookieByName('has_cred') is 'true'
 
             ide_event.onLongListen ide_event.UPDATE_APP_STATE, ( type, id ) ->
                 console.log 'navigation:UPDATE_APP_STATE', type, id

@@ -9,31 +9,71 @@ define [ 'aws_model', 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( 
         defaults :
             'resource_list'    : null
 
+        delay    : null
+
         initialize : ->
 
             me = this
 
+            # count time out
+            @setTimeout()
+
+            # api callback
             @on 'AWS_RESOURCE_RETURN', ( result ) ->
                 console.log 'AWS_RESOURCE_RETURN', result
 
-                if result and not result.is_error and result.resolved_data
+                # test
+                #result.return_code = -1
 
-                    # create resoruces
-                    resources = me.createResources result.resolved_data
+                if result and result.return_code is 0
+                    console.log 'import succcess'
+                else
+                    console.log 'import error'
+                    @set 'resource_list', 'service_error'
 
-                    # set vo
-                    me.set 'resource_list', $.extend true, {}, resources
+        reload : ->
+            console.log 'reload'
 
-                    # set global resource list
-                    MC.forge.other.addUnmanaged $.extend true, {}, resources
+            @set 'resource_list', null
+            @setTimeout()
+            @getStatResourceService()
 
-                    null
+        setTimeout : ->
+            console.log 'setTimeout'
+
+            me = this
+
+            @delay = setTimeout () ->
+                console.log 'resource import setTimeout'
+                me.set 'resource_list', 'service_error'
+            , 1000 * 60 * 10
+
+        getResource : ( result ) ->
+            console.log 'getResource', result
+
+            # clear time out
+            if @delay
+                clearTimeout @delay
+
+            # delete unnecessary item
+            delete result[ '_id'       ]
+            delete result[ 'timestamp' ]
+            delete result[ 'username'  ]
+
+            # create resoruces
+            resources = @createResources result
+
+            # set vo
+            @set 'resource_list', $.extend true, {}, resources
+
+            # set global resource list
+            MC.common.other.addUnmanaged $.extend true, {}, resources
 
         getStatResourceService : ->
             console.log 'getStatResourceService'
 
             # get resource list by cache
-            obj = MC.forge.other.listUnmanaged()
+            obj = MC.common.other.listUnmanaged()
 
             if not _.isEmpty obj
 
@@ -81,6 +121,13 @@ define [ 'aws_model', 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( 
 
                     vpcs = {}
                     _.each obj, ( vpc_obj, vpc_id ) ->
+
+                        new_vpc_obj = {}
+                        _.each vpc_obj, ( value, key ) ->
+                            new_key = key.replace /\|/igm, '.'
+                            new_vpc_obj[ new_key ] = value
+                        vpc_obj = new_vpc_obj
+
                         # filter default vpc
                         if vpc_id isnt MC.data.account_attribute[region]['default_vpc']
 

@@ -8,8 +8,8 @@ define [ 'MC', 'event', 'handlebars'
 		 'header', 'navigation', 'tabbar', 'dashboard', 'design_module', 'process',
 		 'WS', 'constant',
 		 'base_model',
-		 'forge_handle', 'validation', 'aws_handle'
-], ( MC, ide_event, Handlebars, lang, view, canvas_layout, header, navigation, tabbar, dashboard, design, process, WS, constant, base_model, forge_handle, validation ) ->
+		 'common_handle', 'validation', 'aws_handle'
+], ( MC, ide_event, Handlebars, lang, view, canvas_layout, header, navigation, tabbar, dashboard, design, process, WS, constant, base_model, common_handle, validation ) ->
 
 	console.info canvas_layout
 
@@ -55,20 +55,20 @@ define [ 'MC', 'event', 'handlebars'
 		#############################
 
 		#clear path=/v2 cookie(patch)
-		#forge_handle.cookie.clearV2Cookie '/v2'
-		#forge_handle.cookie.clearV2Cookie '/v2/'
+		#common_handle.cookie.clearV2Cookie '/v2'
+		#common_handle.cookie.clearV2Cookie '/v2/'
 
-		if forge_handle.cookie.getIDECookie()
-			forge_handle.cookie.setCookie forge_handle.cookie.getIDECookie()
+		if common_handle.cookie.getIDECookie()
+			common_handle.cookie.setCookie common_handle.cookie.getIDECookie()
 		else
-			if !forge_handle.cookie.checkAllCookie()
+			if !common_handle.cookie.checkAllCookie()
 				#user session not exist, go to login page
 
                 window.location.href = "login.html"
 
 
 		#clear cookie in 'ide.madeiracloud.com'
-		forge_handle.cookie.clearInvalidCookie()
+		common_handle.cookie.clearInvalidCookie()
 
 		#############################
 		#  initialize MC.data
@@ -186,6 +186,7 @@ define [ 'MC', 'event', 'handlebars'
 			websocket.sub "stack",   $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null, null
 			websocket.sub "app",     $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null, null
 			websocket.sub "status",  $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null, null
+			websocket.sub "imports", $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null, null
 		subScoket()
 
 		#set MC.data.websocket
@@ -288,8 +289,8 @@ define [ 'MC', 'event', 'handlebars'
 		# analytics.track('Loaded IDE', { })
 
 		#intercom
-		#window.intercomSettings.email      = MC.base64Decode( forge_handle.cookie.getCookieByName( 'email' ))
-		#window.intercomSettings.username   = forge_handle.cookie.getCookieByName( 'username' )
+		#window.intercomSettings.email      = MC.base64Decode( common_handle.cookie.getCookieByName( 'email' ))
+		#window.intercomSettings.username   = common_handle.cookie.getCookieByName( 'username' )
 		#window.intercomSettings.created_at = MC.dateFormat( new Date(), 'hh:mm MM-dd-yyyy' )
 		#intercom_sercure_mode_hash         = () ->
 		#	intercom_api_secret = '4tGsMJzq_2gJmwGDQgtP2En1rFlZEvBhWQWEOTKE'
@@ -334,7 +335,7 @@ define [ 'MC', 'event', 'handlebars'
 					if error.error_message != "0"
 						notification 'warning', error.error_message
 				else
-					notification 'error', lang.service[ label ], false if lang.service[ label ] and MC.forge.cookie.getCookieByName('has_cred') is 'true'
+					notification 'error', lang.service[ label ], false if lang.service[ label ] and MC.common.cookie.getCookieByName('has_cred') is 'true'
 
 
 		###########################
@@ -346,15 +347,35 @@ define [ 'MC', 'event', 'handlebars'
 			MC.data.websocket.collection.request.find().fetch()
 			query = MC.data.websocket.collection.request.find()
 			handle = query.observeChanges {
-                        added   : (idx, dag) ->
-                        	ide_event.trigger ide_event.UPDATE_REQUEST_ITEM, idx, dag
+				added   : (idx, dag) ->
+					ide_event.trigger ide_event.UPDATE_REQUEST_ITEM, idx, dag
 
-                        changed : (idx, dag) ->
-                        	ide_event.trigger ide_event.UPDATE_REQUEST_ITEM, idx, dag
+				changed : (idx, dag) ->
+					ide_event.trigger ide_event.UPDATE_REQUEST_ITEM, idx, dag
 			}
 
 			null
 
 		listenRequestList()
+
+		###########################
+		#listen to the import list
+		###########################
+		listenImportList = () ->
+			console.log 'listen to import list'
+
+			MC.data.websocket.collection.imports.find().fetch()
+			query = MC.data.websocket.collection.imports.find()
+			handle = query.observe {
+				addedâ€‚â€ : (idx, dag) ->
+					ide_event.trigger ide_event.UPDATE_IMPORT_ITEM, idx
+
+				changed : (idx, dag) ->
+					ide_event.trigger ide_event.UPDATE_IMPORT_ITEM, idx
+			}
+
+			null
+
+		listenImportList()
 
 		null

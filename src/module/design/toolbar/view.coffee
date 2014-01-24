@@ -23,10 +23,6 @@ define [ 'MC', 'event',
         el         : document
 
         events     :
-            ### env:dev ###
-            'click #toolbar-jsondiff'       : 'clickOpenJSONDiff'
-            ### env:dev:end ###
-
             #line style
             'click #toolbar-straight'       : 'clickLineStyleStraight'
             'click #toolbar-elbow'          : 'clickLineStyleElbow'
@@ -128,7 +124,7 @@ define [ 'MC', 'event',
             me = this
             event.preventDefault()
             # check credential
-            if MC.forge.cookie.getCookieByName('has_cred') isnt 'true'
+            if MC.common.cookie.getCookieByName('has_cred') isnt 'true'
                 modal.close()
                 console.log 'show credential setting dialog'
                 require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
@@ -140,7 +136,7 @@ define [ 'MC', 'event',
                 #$('.modal-input-value').val MC.canvas_data.name
 
                 # new design flow
-                $('.modal-input-value').val MC.forge.other.canvasData.get 'name'
+                $('.modal-input-value').val MC.common.other.canvasData.get 'name'
 
                 # set total fee
 
@@ -180,12 +176,12 @@ define [ 'MC', 'event',
                     #process_tab_name = 'process-' + MC.canvas_data.region + '-' + app_name
 
                     # new design flow
-                    process_tab_name = 'process-' + MC.forge.other.canvasData.get( 'region' ) + '-' + app_name
+                    process_tab_name = 'process-' + MC.common.other.canvasData.get( 'region' ) + '-' + app_name
 
                     # delete F5 old process
-                    obj = MC.forge.other.getProcess process_tab_name
+                    obj = MC.common.other.getProcess process_tab_name
                     if obj and obj.flag_list and obj.flag_list.is_failed is true and obj.flag_list.flag is 'RUN_STACK'
-                        MC.forge.other.deleteProcess process_tab_name
+                        MC.common.other.deleteProcess process_tab_name
 
                     # repeat with app list or tab name(some run failed app tabs)
                     if (not MC.aws.aws.checkAppName app_name) or (_.contains(_.keys(MC.process), process_tab_name))
@@ -200,7 +196,7 @@ define [ 'MC', 'event',
                     #ide_event.trigger ide_event.SAVE_STACK, MC.canvas_data
 
                     # new design flow
-                    ide_event.trigger ide_event.SAVE_STACK, MC.forge.other.canvasData.data()
+                    ide_event.trigger ide_event.SAVE_STACK, MC.common.other.canvasData.data()
 
             true
 
@@ -212,8 +208,8 @@ define [ 'MC', 'event',
             #id = MC.canvas_data.id
 
             # new design flow
-            name = MC.forge.other.canvasData.get 'name'
-            id   = MC.forge.other.canvasData.get 'id'
+            name = MC.common.other.canvasData.get 'name'
+            id   = MC.common.other.canvasData.get 'id'
 
             if not name
                 notification 'warning', lang.ide.PROP_MSG_WARN_NO_STACK_NAME
@@ -240,7 +236,7 @@ define [ 'MC', 'event',
                         #MC.canvas_data.name = new_name
 
                         # new design flow
-                        MC.forge.other.canvasData.set 'name', new_name
+                        MC.common.other.canvasData.set 'name', new_name
 
                         # old design flow +++++++++++++++++++++++++++
                         # #expand components
@@ -255,7 +251,7 @@ define [ 'MC', 'event',
                         #ide_event.trigger ide_event.SAVE_STACK, MC.canvas_data
 
                         # new design flow
-                        ide_event.trigger ide_event.SAVE_STACK, MC.forge.other.canvasData.data()
+                        ide_event.trigger ide_event.SAVE_STACK, MC.common.other.canvasData.data()
 
                         true
 
@@ -265,7 +261,7 @@ define [ 'MC', 'event',
                 #MC.canvas_data.name = name
 
                 # new design flow
-                MC.forge.other.canvasData.set 'name', name
+                MC.common.other.canvasData.set 'name', name
 
                 # old design flow +++++++++++++++++++++++++++
                 # #expand components
@@ -280,7 +276,7 @@ define [ 'MC', 'event',
                 #ide_event.trigger ide_event.SAVE_STACK, MC.canvas_data
 
                 # new design flow
-                ide_event.trigger ide_event.SAVE_STACK, MC.forge.other.canvasData.data()
+                ide_event.trigger ide_event.SAVE_STACK, MC.common.other.canvasData.data()
 
             true
 
@@ -290,7 +286,7 @@ define [ 'MC', 'event',
             #name     = MC.canvas_data.name
 
             # new design flow
-            name      = MC.forge.other.canvasData.get 'name'
+            name      = MC.common.other.canvasData.get 'name'
 
             # set default name
             new_name = MC.aws.aws.getDuplicateName(name)
@@ -323,12 +319,12 @@ define [ 'MC', 'event',
                     # old design flow +++++++++++++++++++++++++++
 
                     # new design flow +++++++++++++++++++++++++++
-                    ide_event.trigger ide_event.SAVE_STACK, MC.forge.other.canvasData.data()
+                    ide_event.trigger ide_event.SAVE_STACK, MC.common.other.canvasData.data()
 
                     setTimeout () ->
-                        region  = MC.forge.other.canvasData.get 'region'
-                        id      = MC.forge.other.canvasData.get 'id'
-                        name    = MC.forge.other.canvasData.get 'name'
+                        region  = MC.common.other.canvasData.get 'region'
+                        id      = MC.common.other.canvasData.get 'id'
+                        name    = MC.common.other.canvasData.get 'name'
                         ide_event.trigger ide_event.DUPLICATE_STACK, region, id, new_name, name
                     , 500
                     # new design flow +++++++++++++++++++++++++++
@@ -347,9 +343,9 @@ define [ 'MC', 'event',
                 #ide_event.trigger ide_event.DELETE_STACK, MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
 
                 # new design flow
-                region  = MC.forge.other.canvasData.get 'region'
-                id      = MC.forge.other.canvasData.get 'id'
-                name    = MC.forge.other.canvasData.get 'name'
+                region  = MC.common.other.canvasData.get 'region'
+                id      = MC.common.other.canvasData.get 'id'
+                name    = MC.common.other.canvasData.get 'name'
                 ide_event.trigger ide_event.DELETE_STACK, region, id, name
 
         clickNewStackIcon : ->
@@ -359,7 +355,7 @@ define [ 'MC', 'event',
             #ide_event.trigger ide_event.OPEN_DESIGN_TAB, 'NEW_STACK', null, MC.canvas_data.region, null
 
             # new design flow
-            ide_event.trigger ide_event.OPEN_DESIGN_TAB, 'NEW_STACK', null, MC.forge.other.canvasData.get( 'region' ), null
+            ide_event.trigger ide_event.OPEN_DESIGN_TAB, 'NEW_STACK', null, MC.common.other.canvasData.get( 'region' ), null
 
         clickZoomInIcon : ( event ) ->
             console.log 'clickZoomInIcon'
@@ -400,7 +396,7 @@ define [ 'MC', 'event',
             #$("#modal-wrap").data("uid", MC.canvas_data.id).find("#btn-confirm").hide()
 
             # new design flow
-            $("#modal-wrap").data("uid", MC.forge.other.canvasData.get( 'id' )).find("#btn-confirm").hide()
+            $("#modal-wrap").data("uid", MC.common.other.canvasData.get( 'id' )).find("#btn-confirm").hide()
             $("#modal-wrap").find(".modal-body").css({padding:"12px 20px", "max-height":"420px",overflow:"hidden",background:"none"})
 
             this.trigger 'TOOLBAR_EXPORT_PNG_CLICK'
@@ -417,7 +413,7 @@ define [ 'MC', 'event',
                 #'download'  : MC.canvas_data.name + '.json',
 
                 # new design flow
-                'download'  : MC.forge.other.canvasData.get( 'name' ) + '.json',
+                'download'  : MC.common.other.canvasData.get( 'name' ) + '.json',
             }
             $( '#json-content' ).val file_content
 
@@ -431,7 +427,7 @@ define [ 'MC', 'event',
                 return
 
             # new design flow
-            name = MC.forge.other.canvasData.get( 'name' )
+            name = MC.common.other.canvasData.get( 'name' )
 
             if not blob
                 $("#modal-wrap").find("#btn-confirm").show().attr({
@@ -462,11 +458,6 @@ define [ 'MC', 'event',
             , 50
             null
 
-        #for debug
-        clickOpenJSONDiff : ->
-            Design.debug.diff()
-            null
-
         #request cloudformation
         clickConvertCloudFormation : ->
             console.log 'clickConvertCloudFormation'
@@ -476,7 +467,7 @@ define [ 'MC', 'event',
             #ide_event.trigger ide_event.SAVE_STACK, MC.canvas_data
 
             # new design flow
-            ide_event.trigger ide_event.SAVE_STACK, MC.forge.other.canvasData.data()
+            ide_event.trigger ide_event.SAVE_STACK, MC.common.other.canvasData.data()
 
             null
 
@@ -497,7 +488,7 @@ define [ 'MC', 'event',
                     #'download'  : MC.canvas_data.name + '.json',
 
                     # new design flow
-                    'download'  : MC.forge.other.canvasData.get( 'name' ) + '.json',
+                    'download'  : MC.common.other.canvasData.get( 'name' ) + '.json',
                 }
                 $('#tpl-download').on 'click', { target : this }, (event) ->
                     console.log 'clickExportJSONIcon'
@@ -513,7 +504,7 @@ define [ 'MC', 'event',
             console.log 'click stop app'
 
             # check credential
-            if MC.forge.cookie.getCookieByName('has_cred') isnt 'true'
+            if MC.common.cookie.getCookieByName('has_cred') isnt 'true'
                 modal.close()
                 console.log 'show credential setting dialog'
                 require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
@@ -526,9 +517,9 @@ define [ 'MC', 'event',
                     #ide_event.trigger ide_event.STOP_APP, MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
 
                     # new design flow
-                    region  = MC.forge.other.canvasData.get 'region'
-                    id      = MC.forge.other.canvasData.get 'id'
-                    name    = MC.forge.other.canvasData.get 'name'
+                    region  = MC.common.other.canvasData.get 'region'
+                    id      = MC.common.other.canvasData.get 'id'
+                    name    = MC.common.other.canvasData.get 'name'
                     ide_event.trigger ide_event.STOP_APP, region, id, name
 
                     modal.close()
@@ -538,7 +529,7 @@ define [ 'MC', 'event',
             console.log 'click run app'
 
             # check credential
-            if MC.forge.cookie.getCookieByName('has_cred') isnt 'true'
+            if MC.common.cookie.getCookieByName('has_cred') isnt 'true'
                 modal.close()
                 console.log 'show credential setting dialog'
                 require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
@@ -551,9 +542,9 @@ define [ 'MC', 'event',
                     #ide_event.trigger ide_event.START_APP, MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
 
                     # new design flow
-                    region  = MC.forge.other.canvasData.get 'region'
-                    id      = MC.forge.other.canvasData.get 'id'
-                    name    = MC.forge.other.canvasData.get 'name'
+                    region  = MC.common.other.canvasData.get 'region'
+                    id      = MC.common.other.canvasData.get 'id'
+                    name    = MC.common.other.canvasData.get 'name'
                     ide_event.trigger ide_event.START_APP, region, id, name
                     modal.close()
 
@@ -563,7 +554,7 @@ define [ 'MC', 'event',
             console.log 'click terminate app'
 
             # check credential
-            if MC.forge.cookie.getCookieByName('has_cred') isnt 'true'
+            if MC.common.cookie.getCookieByName('has_cred') isnt 'true'
                 modal.close()
                 console.log 'show credential setting dialog'
                 require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
@@ -576,9 +567,9 @@ define [ 'MC', 'event',
                     #ide_event.trigger ide_event.TERMINATE_APP, MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
 
                     # new design flow
-                    region  = MC.forge.other.canvasData.get 'region'
-                    id      = MC.forge.other.canvasData.get 'id'
-                    name    = MC.forge.other.canvasData.get 'name'
+                    region  = MC.common.other.canvasData.get 'region'
+                    id      = MC.common.other.canvasData.get 'id'
+                    name    = MC.common.other.canvasData.get 'name'
                     ide_event.trigger ide_event.TERMINATE_APP, region, id, name
 
                     modal.close()
@@ -607,7 +598,7 @@ define [ 'MC', 'event',
             #ide_event.trigger ide_event.UPDATE_APP_RESOURCE, MC.canvas_data.region, MC.canvas_data.id
 
             # new design flow
-            ide_event.trigger ide_event.UPDATE_APP_RESOURCE, MC.forge.other.canvasData.get( 'region' ), MC.forge.other.canvasData.get( 'id' )
+            ide_event.trigger ide_event.UPDATE_APP_RESOURCE, MC.common.other.canvasData.get( 'region' ), MC.common.other.canvasData.get( 'id' )
 
         #############################
         #  app edit
@@ -636,7 +627,7 @@ define [ 'MC', 'event',
             #MC.data.origin_canvas_data = $.extend true, {}, MC.canvas_data
 
             # new design flow
-            MC.forge.other.canvasData.origin MC.forge.other.canvasData.data()
+            MC.common.other.canvasData.origin MC.common.other.canvasData.data()
 
             # 6. set Design mode
             Design.instance().setMode Design.MODE.AppEdit
@@ -649,7 +640,7 @@ define [ 'MC', 'event',
 
             # 1. Send save request
             # check credential
-            if MC.forge.cookie.getCookieByName('has_cred') isnt 'true'
+            if MC.common.cookie.getCookieByName('has_cred') isnt 'true'
                 modal.close()
                 console.log 'show credential setting dialog'
                 require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
@@ -662,9 +653,9 @@ define [ 'MC', 'event',
                 #if diff_data.isChanged
 
                 # new design flow
-                diff_data = MC.aws.aws.getChanges MC.forge.other.canvasData.data(), MC.forge.other.canvasData.origin()
+                diff_data = MC.aws.aws.getChanges MC.common.other.canvasData.data(), MC.common.other.canvasData.origin()
 
-                if MC.forge.other.canvasData.isModified()
+                if MC.common.other.canvasData.isModified()
 
                     state    = null
                     platform = 'vpc'
@@ -676,7 +667,7 @@ define [ 'MC', 'event',
                     #if MC.canvas_data.state is constant.APP_STATE.APP_STATE_RUNNING
 
                     # new design flow
-                    if MC.forge.other.canvasData.get( 'state' ) is constant.APP_STATE.APP_STATE_RUNNING
+                    if MC.common.other.canvasData.get( 'state' ) is constant.APP_STATE.APP_STATE_RUNNING
                         state = constant.APP_STATE.APP_STATE_RUNNING
 
                     # set platform and info
@@ -685,7 +676,7 @@ define [ 'MC', 'event',
                     #if MC.canvas_data.platform is "ec2-classic"
 
                     # new design flow
-                    if MC.forge.other.canvasData.get( 'platform' ) is "ec2-classic"
+                    if MC.common.other.canvasData.get( 'platform' ) is "ec2-classic"
                         platform = 'ec2'
                         info = lang.ide.TOOL_POP_BODY_APP_UPDATE_EC2
 
@@ -716,7 +707,7 @@ define [ 'MC', 'event',
             # old design flow +++++++++++++++++++++++++++
 
             # new design flow
-            if not MC.forge.other.canvasData.isModified()
+            if not MC.common.other.canvasData.isModified()
                 @appedit2App()
             else
                 modal MC.template.cancelAppEdit2App(), true
@@ -745,7 +736,7 @@ define [ 'MC', 'event',
             # 6. delete MC.process and MC.data.process
             # delete MC.process[ MC.data.current_tab_id ]
             # delete MC.data.process[ MC.data.current_tab_id ]
-            # MC.forge.other.deleteProcess MC.data.current_tab_id
+            # MC.common.other.deleteProcess MC.data.current_tab_id
 
             # 7. Hide Resource Panel and call canvas_layout.listen()
             ide_event.trigger ide_event.UPDATE_RESOURCE_STATE, 'hide'
@@ -771,7 +762,7 @@ define [ 'MC', 'event',
             ide_event.trigger ide_event.OPEN_DESIGN_TAB, 'RELOAD_APP', null, region, tab_id
 
             # 3. delete MC.process and MC.data.process
-            MC.forge.other.deleteProcess MC.data.current_tab_id
+            MC.common.other.deleteProcess MC.data.current_tab_id
 
             null
 
@@ -784,7 +775,7 @@ define [ 'MC', 'event',
             #event.data.trigger 'APP_UPDATING', MC.canvas_data
 
             # new design flow
-            event.data.trigger 'APP_UPDATING', MC.forge.other.canvasData.data()
+            event.data.trigger 'APP_UPDATING', MC.common.other.canvasData.data()
 
             # 2. close modal
             modal.close()

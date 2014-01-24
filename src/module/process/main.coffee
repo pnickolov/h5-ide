@@ -27,12 +27,12 @@ define [ 'event' ], ( ide_event ) ->
                 console.log 'process:SWITCH_PROCESS', state, tab_id
 
                 # get type
-                type = MC.forge.other.processType tab_id
+                type = MC.common.other.processType tab_id
 
                 # call model method
                 switch type
                     when 'appview'
-                        obj = MC.forge.other.getCacheMap tab_id
+                        obj = MC.common.other.getCacheMap tab_id
                         model.getVpcResourceService obj.region, obj.origin_id, state
                         model.getTimestamp state, tab_id
                     when 'process'

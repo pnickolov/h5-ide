@@ -1509,6 +1509,19 @@ var API_DATA_LIST = {
             "value"  : "null"
           }
         }
+      },
+      "property" : {
+        "method"  : "/aws:property",
+        "param"   : {
+          "username" : {
+            "type"   : "String",
+            "value"  : "null"
+          },
+          "session_id" : {
+            "type"   : "String",
+            "value"  : "null"
+          }
+        }
       }
     }
   },

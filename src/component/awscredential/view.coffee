@@ -58,7 +58,7 @@ define [ 'event',
 
         onClose : ->
             console.log 'account_setting_tab onClose'
-            if MC.forge.cookie.getCookieByName('has_cred') isnt 'true'
+            if MC.common.cookie.getCookieByName('has_cred') isnt 'true'
                 # reset key
                 @trigger 'CANCAL_CREDENTIAL'
 
@@ -86,7 +86,7 @@ define [ 'event',
             console.log 'account_setting_tab onSubmit'
 
             if $( '#awscredentials-skip' ).attr( 'data-type' ) in [ 'back', 'done' ]
-                if MC.forge.cookie.getCookieByName('has_cred') isnt 'true'
+                if MC.common.cookie.getCookieByName('has_cred') isnt 'true'
                     # reset key
                     @trigger 'CANCAL_CREDENTIAL'
 
@@ -107,7 +107,7 @@ define [ 'event',
             access_key = $('#aws-credential-access-key').val().trim()
             secret_key = $('#aws-credential-secret-key').val().trim()
 
-            if MC.forge.cookie.getCookieByName( 'account_id' ) is 'demo_account' and $('#aws-credential-account-id').val().trim() is 'demo_account'
+            if MC.common.cookie.getCookieByName( 'account_id' ) is 'demo_account' and $('#aws-credential-account-id').val().trim() is 'demo_account'
                 notification 'error', lang.ide.HEAD_MSG_ERR_INVALID_SAME_ID
                 return
 
@@ -140,7 +140,7 @@ define [ 'event',
             me = this
 
             # reset key
-            if MC.forge.cookie.getCookieByName('has_cred') isnt 'true'
+            if MC.common.cookie.getCookieByName('has_cred') isnt 'true'
 
                 if $('#AWSCredentials-remove-wrap').attr('data-type') is 'remove'
 
@@ -317,7 +317,7 @@ define [ 'event',
                 $( '#awscredentials-submit' ).text lang.ide.HEAD_BTN_SUBMIT
                 #
                 $( '#AWSCredential-form' ).find( 'ul' ).html Handlebars.compile( form_tmpl )
-                $( '#AWSCredential-welcome').text sprintf lang.ide.HEAD_INFO_WELCOME, MC.forge.cookie.getCookieByName( 'username' )
+                $( '#AWSCredential-welcome').text sprintf lang.ide.HEAD_INFO_WELCOME, MC.common.cookie.getCookieByName( 'username' )
                 $( '#AWSCredential-info').find('p').text lang.ide.HEAD_INFO_PROVIDE_CREDENTIAL2
                 $( '#AWSCredential-welcome-img').show()
                 $( '#AWSCredential-form').find('h4').show()
@@ -399,7 +399,7 @@ define [ 'event',
                     if @state is 'credential'
                         $('#AWSCredential-info').find('p').text lang.ide.HEAD_INFO_PROVIDE_CREDENTIAL3
                     else if @state is 'welcome'
-                        welcome_string = sprintf lang.ide.HEAD_INFO_WELCOME, MC.forge.cookie.getCookieByName( 'username' )
+                        welcome_string = sprintf lang.ide.HEAD_INFO_WELCOME, MC.common.cookie.getCookieByName( 'username' )
                         $('#AWSCredential-welcome').text welcome_string
                         $('#AWSCredential-info').find('p').text  lang.ide.HEAD_INFO_PROVIDE_CREDENTIAL2
 
@@ -457,7 +457,7 @@ define [ 'event',
 
                 else if flag is 'in_update'
 
-                    $('#awscredentials-remove').hide() if MC.forge.cookie.getCookieByName( 'account_id' ) is 'demo_account'
+                    $('#awscredentials-remove').hide() if MC.common.cookie.getCookieByName( 'account_id' ) is 'demo_account'
 
                     $('#AWSCredentials-submiting').hide()
                     $('#AWSCredentials-update').hide()

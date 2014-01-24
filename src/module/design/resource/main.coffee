@@ -65,7 +65,7 @@ define [ 'jquery',
                 if type.split('_')[0] is 'OLD'
 
                     # get object
-                    obj = MC.forge.other.searchStackAppById tab_id
+                    obj = MC.common.other.searchStackAppById tab_id
 
                     # set region
                     region_name = obj.region if obj
@@ -131,7 +131,7 @@ define [ 'jquery',
 
                 return if model.get( 'check_required_service_count' ) is -1
 
-                if MC.forge.cookie.getCookieByName('has_cred') is 'false' and model.get( 'check_required_service_count' ) is 1    # not set credential then use quickstart data
+                if MC.common.cookie.getCookieByName('has_cred') is 'false' and model.get( 'check_required_service_count' ) is 1    # not set credential then use quickstart data
                     console.log 'not set credential and described quickstart service'
                     ide_event.trigger ide_event.SWITCH_MAIN if MC.data.current_tab_type isnt 'OPEN_APP'
                     model.service_count = 0

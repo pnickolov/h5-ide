@@ -71,9 +71,7 @@ define [ "component/thumbnail/ThumbUtil", 'MC', 'backbone', 'jquery', 'underscor
                         data.key = key
 
                     #call save png
-                    _.delay () ->
-                        me.savePNG true, data
-                    , 500
+                    me.savePNG id
 
                     #set toolbar flag
                     me.setFlag id, 'SAVE_STACK', name
@@ -127,21 +125,7 @@ define [ "component/thumbnail/ThumbUtil", 'MC', 'backbone', 'jquery', 'underscor
                     MC.data.stack_list[region].push {'id':new_id, 'name':name}
 
                     #call save png
-                    _.delay () ->
-
-                        # old design flow
-                        #me.savePNG true, MC.canvas_data
-
-                        # new design flow
-                        me.savePNG true, data
-                    , 500
-
-                    #set toolbar flag
-
-                    # old design flow
-                    #me.setFlag id, 'CREATE_STACK', MC.canvas_data
-
-                    # new design flow
+                    me.savePNG new_id
                     me.setFlag id, 'CREATE_STACK', data
 
                     new_id
@@ -367,7 +351,7 @@ define [ "component/thumbnail/ThumbUtil", 'MC', 'backbone', 'jquery', 'underscor
                     data.key = result.resolved_data
                     data.id  = app_id
 
-                    me.savePNG true, data
+                    me.savePNG app_id
 
         setFlag : (id, flag, value) ->
             me = this
@@ -580,6 +564,9 @@ define [ "component/thumbnail/ThumbUtil", 'MC', 'backbone', 'jquery', 'underscor
 
             stack_model.remove { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, name
 
+            ThumbUtil.remove( id )
+            null
+
         #run
         runStack : (data) ->
             me = this
@@ -646,57 +633,9 @@ define [ "component/thumbnail/ThumbUtil", 'MC', 'backbone', 'jquery', 'underscor
             # new design flow
             me.setFlag MC.forge.other.canvasData.get( 'id' ), 'ZOOMOUT_STACK', flag
 
-        savePNG : (is_thumbnail, data) ->
-            console.log 'savePNG, is_thumbnail = ' + is_thumbnail
-            me = this
-            #
-            callback = ( result ) ->
-                console.log 'phantom callback'
-                console.log result.data.host
-                return if result.data.host isnt MC_HOST.replace( 'http://', '' ).replace( 'https://', '' ).replace( '/', '' )
-                if result.data.res.status is 'success'
-                    if result.data.res.thumbnail is 'true'
-                        console.log 's3 url = ' + result.data.res.result
-                        window.removeEventListener 'message', callback
-
-                        #push event
-                        ide_event.trigger ide_event.UPDATE_REGION_THUMBNAIL, result.data.res.result, result.data.res.id
-                    else
-                        me.trigger 'SAVE_PNG_COMPLETE', result.data.res.result
-                        window.removeEventListener 'message', callback
-                else
-                    #window.removeEventListener 'message', callback
-            window.addEventListener 'message', callback
-
-            # old design flow
-            #json_data = if MC.data.current_tab_id.split( '-' )[0] is 'app' then JSON.stringify(MC.forge.stack.compactServerGroup( MC.canvas_data )) else JSON.stringify(data)
-
-            # new design flow
-            #json_data = if MC.data.current_tab_id.split( '-' )[0] is 'app' then JSON.stringify(MC.forge.stack.compactServerGroup( MC.forge.other.canvasData.data() )) else JSON.stringify(data)
-            json_data = JSON.stringify data
-            #
-            phantom_data =
-                'origin_host': window.location.origin,
-                'usercode'   : $.cookie( 'usercode'   ),
-                'session_id' : $.cookie( 'session_id' ),
-                'thumbnail'  : is_thumbnail,
-                'json_data'  : json_data,
-                'stack_id'   : data.id
-                'url'        : data.key
-                'create_date': MC.dateFormat new Date(), 'hh:mm MM-dd-yyyy'
-            #
-            console.log 'phantom_data'
-            console.log phantom_data
-            sendMessage = ->
-                $( '#phantom-frame' )[0].contentWindow.postMessage phantom_data, MC.SAVEPNG_URL
-            if $( '#phantom-frame' )[0] is undefined
-                $('#phantom-frame')[0].onload = () ->
-                    sendMessage()
-                    null
-            else
-                sendMessage()
-            #
-            me.trigger 'SAVE_PNG_COMPLETE', null if !is_thumbnail
+        savePNG : ( id ) ->
+            ThumbUtil.save( id, $("#svg_canvas") )
+            # ThumbUtil.save( id, $("#canvas_body").html(), $("#svg_canvas")[0].getBBox() )
             null
 
         generatePNG : () ->
@@ -708,7 +647,7 @@ define [ "component/thumbnail/ThumbUtil", 'MC', 'backbone', 'jquery', 'underscor
 
                 onFinish : ( data ) =>
                     if ( data.id is Design.instance().get("id") )
-                        @trigger 'SAVE_PNG_COMPLETE', data.image, data.id, data.blob
+                        @trigger 'EXPORT_PNG', data.image, data.id, data.blob
             }
             null
 
@@ -740,6 +679,9 @@ define [ "component/thumbnail/ThumbUtil", 'MC', 'backbone', 'jquery', 'underscor
 
             item = {'region':region, 'name':name, 'id':id, 'flag_list':{'is_pending':true}}
             me.updateAppState(constant.OPS_STATE.OPS_STATE_INPROCESS, "TERMINATE_APP", item)
+
+            ThumbUtil.remove(id)
+            null
 
         saveApp : (data) ->
             me = this
@@ -1080,7 +1022,7 @@ define [ "component/thumbnail/ThumbUtil", 'MC', 'backbone', 'jquery', 'underscor
                         app_model.getKey { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, app_id, app_name
 
                     else
-                        me.savePNG true, data
+                        me.savePNG app_id
 
             null
 

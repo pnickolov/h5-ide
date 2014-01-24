@@ -108,8 +108,7 @@ define [ 'jquery',
             view.on 'CONVERT_CLOUDFORMATION', () ->
                 model.convertCloudformation()
 
-            model.on 'SAVE_PNG_COMPLETE', ( base64_image, uid, blob ) ->
-                console.warn 'SAVE_PNG_COMPLETE'
+            model.on 'EXPORT_PNG', ( base64_image, uid, blob ) ->
                 view.exportPNG base64_image, uid, blob
 
             view.on 'APP_UPDATING', ( data ) ->

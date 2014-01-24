@@ -39,7 +39,6 @@ define [ 'MC', 'event',
             'click .icon-undo'              : 'clickUndoIcon'
             'click .icon-redo'              : 'clickRedoIcon'
             'click #toolbar-export-png'     : 'clickExportPngIcon'
-            'click #toolbar-export-json'    : 'clickExportJSONIcon'
             'click #toolbar-stop-app'       : 'clickStopApp'
             'click #toolbar-start-app'      : 'clickStartApp'
             'click #toolbar-terminate-app'  : 'clickTerminateApp'
@@ -97,10 +96,7 @@ define [ 'MC', 'event',
             #
             ide_event.trigger ide_event.DESIGN_SUB_COMPLETE
             #
-
-            # add by song
-            if !$('#phantom-frame')[0]
-                $( document.body ).append '<iframe id="phantom-frame" src="' + MC.SAVEPNG_URL + 'proxy.html" style="display:none;"></iframe>'
+            null
 
         listen     : ->
             # app update event

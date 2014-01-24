@@ -5,10 +5,11 @@
 define [ 'event', 'i18n!nls/lang.js',
          'text!./module/dashboard/overview/template.html',
          'text!./module/dashboard/overview/template_data.html',
+         "component/thumbnail/ThumbUtil"
          'constant',
          'unmanagedvpc',
          'backbone', 'jquery', 'handlebars', 'MC.ide.template', 'UI.scrollbar'
-], ( ide_event, lang, overview_tmpl, overview_tmpl_data, constant, unmanagedvpc ) ->
+], ( ide_event, lang, overview_tmpl, overview_tmpl_data, ThumbUtil, constant, unmanagedvpc ) ->
 
     current_region = null
 
@@ -218,6 +219,18 @@ define [ 'event', 'i18n!nls/lang.js',
             @regionAppStackRendered = true
             tab = 'stack' if not tab
             context = _.extend {}, @model.toJSON()
+
+            for i in context.cur_stack_list || []
+                i.url = ThumbUtil.fetch( i.id )
+                if not i.url
+                    i.url = "https://madeiracloudthumbnails-dev.s3.amazonaws.com/#{i.code}?time=#{i.update_time}"
+
+            for i in context.cur_app_list || []
+                i.url = ThumbUtil.fetch( i.id )
+                if not i.url
+                    i.url = "https://madeiracloudthumbnails-dev.s3.amazonaws.com/#{i.code}?time=#{i.update_time}"
+
+
             context[ tab ] = true
             tmpl = @region_app_stack context
             $( this.el )

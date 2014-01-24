@@ -2767,23 +2767,27 @@ function RGBColor(color_string)
       svg.imageLoadedCount = 0;
       svg.checkImageID     = null;
 
-      svg.onImageLoaded = function() {
-          ++svg.imageLoadedCount;
+      if ( svg.Images.length ) {
+        svg.onImageLoaded = function() {
+            ++svg.imageLoadedCount;
 
-          if ( svg.checkImageID ) {
-              clearTimeout( svg.checkImageID );
-              svg.checkImageID = null;
-          }
+            if ( svg.checkImageID ) {
+                clearTimeout( svg.checkImageID );
+                svg.checkImageID = null;
+            }
 
-          if ( svg.imageLoadedCount >= svg.Images.length ) {
-              draw();
-          } else {
-              svg.checkImageID = setTimeout(draw, 800);
-          }
-      };
+            if ( svg.imageLoadedCount >= svg.Images.length ) {
+                draw();
+            } else {
+                svg.checkImageID = setTimeout(draw, 800);
+            }
+        };
+      } else {
+        svg.onImageLoaded = function() {}
+        draw();
+      }
+
     }
-
-
 
     return svg;
   }

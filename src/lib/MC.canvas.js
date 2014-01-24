@@ -3110,7 +3110,7 @@ MC.canvas.asgList = {
 				 , "stopping"      : "yellow"
 				 , "shutting-down" : "yellow"
 				 , "running"       : "green"
-				 , "stopped"       : "orange"
+				 , "stopped"       : "red"
 				 , "terminated"    : "red"
 				 , "unknown"       : "grey"
 			};
@@ -3236,7 +3236,7 @@ MC.canvas.instanceList = {
 				 , "stopping"      : "yellow"
 				 , "shutting-down" : "yellow"
 				 , "running"       : "green"
-				 , "stopped"       : "orange"
+				 , "stopped"       : "red"
 				 , "terminated"    : "red"
 				 , "unknown"       : "grey"
 			};

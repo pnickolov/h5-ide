@@ -20,10 +20,6 @@ define [ 'event',
             # Handlebar helper
             ##########################
 
-            Handlebars.registerHelper 'ifCond', ( v1, v2, options ) ->
-                return options.fn this if v1 is v2
-                return options.inverse this
-
             Handlebars.registerHelper 'emptyStr', ( v1 ) ->
                 if v1 in [ '', undefined, null ]
                     '-'

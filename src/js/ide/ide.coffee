@@ -261,12 +261,22 @@ define [ 'MC', 'event', 'handlebars'
 		#	console.log 'RESOURCE_COMPLETE'
 
 		#############################
-		#  i18n
+		# Handlebars helper
 		#############################
 
-		#i18n
+		# i18n
 		Handlebars.registerHelper 'i18n', ( text ) ->
 			new Handlebars.SafeString lang.ide[ text ]
+
+		# nl2br
+		Handlebars.registerHelper 'nl2br', (text) ->
+			nl2br = (text + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + '<br>' + '$2')
+			return new Handlebars.SafeString(nl2br)
+
+		# if equal
+		Handlebars.registerHelper 'ifCond', ( v1, v2, options ) ->
+			return options.fn this if v1 is v2
+			return options.inverse this
 
 		#############################
 		#  analytics

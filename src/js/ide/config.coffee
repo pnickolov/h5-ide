@@ -281,7 +281,7 @@ require.config {
 			deps       : [ 'MC', 'jquery', 'underscore' ]
 
 		'MC.canvas'    :
-			deps       : [ 'MC', 'canvon', 'UI.canvg' ]
+			deps       : [ 'MC', 'canvon' ]
 
 		'MC.canvas.constant':
 			deps       : [ 'MC.canvas' ]

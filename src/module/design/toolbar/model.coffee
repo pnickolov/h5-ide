@@ -2,7 +2,7 @@
 #  View Mode for design/toolbar module
 #############################
 
-define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'stack_model', 'app_model', 'constant' ], (MC, Backbone, $, _, ide_event, stack_service, stack_model, app_model, constant) ->
+define [ "component/thumbnail/ThumbUtil", 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'stack_model', 'app_model', 'constant' ], (ThumbUtil, MC, Backbone, $, _, ide_event, stack_service, stack_model, app_model, constant) ->
 
     #item state map
     # {app_id:{'name':name, 'state':state, 'is_running':true|false, 'is_pending':true|false, 'is_use_ami':true|false},
@@ -700,27 +700,15 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             null
 
         generatePNG : () ->
-            me = this
-            MC.canvas.exportPNG $("#svg_canvas"), {
+            ThumbUtil.exportPNG $("#svg_canvas"), {
                 isExport   : true
                 createBlob : true
+                name       : Design.instance().get("name")
+                id         : Design.instance().get("id")
 
-                # old design flow
-                #name       : MC.canvas_data.name
-                #id         : MC.canvas_data.id
-
-                # new design flow
-                name       : MC.forge.other.canvasData.get( 'name' )
-                id         : MC.forge.other.canvasData.get( 'id' )
-
-                onFinish : ( data ) ->
-
-                    # old design flow
-                    #if ( data.id is MC.canvas_data.id )
-
-                    # new design flow
-                    if ( data.id is MC.forge.other.canvasData.get( 'id' ) )
-                        me.trigger 'SAVE_PNG_COMPLETE', data.image, data.id, data.blob
+                onFinish : ( data ) =>
+                    if ( data.id is Design.instance().get("id") )
+                        @trigger 'SAVE_PNG_COMPLETE', data.image, data.id, data.blob
             }
             null
 

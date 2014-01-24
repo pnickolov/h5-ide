@@ -60,18 +60,6 @@ module.exports = {
         ]
     },
 
-    exportpng_require_path: {
-        src: [ '<%= release %>/lib/MC.canvas.js' ],
-        actions: [
-            {
-                name: 'temp replace require path',
-                search: 'text!/assets/css/canvas_trim.css',
-                replace: 'text!./assets/css/canvas_trim.css',
-                flags: 'g'
-            }
-        ]
-    },
-
     intercome: {
         src: [ '<%= release %>/ide.html' ],
         actions: [

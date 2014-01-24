@@ -281,11 +281,11 @@ define ['UI.canvg', 'UI.download'], ()->
 
   cleanupThumbnail = ()->
     validId = {}
-    for region in MC.data.app_list
+    for id, region of MC.data.app_list
       for app in region
         validId[ app.id ] = true
 
-    for region in MC.data.stack_list
+    for id, region of MC.data.stack_list
       for app in region
         validId[ app.id ] = true
 
@@ -301,9 +301,13 @@ define ['UI.canvg', 'UI.download'], ()->
         removeArray.push id
 
     if removeArray.length
-      localStorage.setItem "thumbnails", keepArray.join(",") + ","
+      if keepArray.length
+        c = keepArray.join(",") + ","
+
+      localStorage.setItem "thumbnails", c || ""
       for id in removeArray
         localStorage.removeItem "tn/#{id}"
+      console.debug "Cleaning up unused thumbnails:", removeArray
     null
 
   {

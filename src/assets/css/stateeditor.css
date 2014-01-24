@@ -640,6 +640,10 @@ body {
 	color: #ec3c38;
 }
 
+#state-editor .state-view .parsley-error {
+	height: 28px;
+}
+
 /* *************************************** state sortable */
 
 #state-editor .state-placeholder {

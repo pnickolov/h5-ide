@@ -15,12 +15,6 @@ define [ "../ComplexResModel", "Design", "../connection/Route", "../connection/R
     newNameTmpl : "RT-"
 
     initialize : ()->
-      # Add RouteTable to CurrentVPC
-      # When deserializing() the VPC might not be available.
-      vpc = VpcModel.theVPC()
-      if vpc
-        vpc.addChild( @ )
-
       @draw(true)
       null
 
@@ -142,7 +136,6 @@ define [ "../ComplexResModel", "Design", "../connection/Route", "../connection/R
         main : !!asso_main
         x    : layout_data.coordinate[0]
         y    : layout_data.coordinate[1]
-
       })
 
       # When creating a new VPC stack, the data has no id.
@@ -157,8 +150,9 @@ define [ "../ComplexResModel", "Design", "../connection/Route", "../connection/R
       rtb = resolve( data.uid )
 
       # A fix for subnet
-      if not rtb.parent()
-        VpcModel.theVPC().addChild( rtb )
+      vpc = resolve( layout_data.groupUId )
+      if not vpc then vpc = VpcModel.theVPC()
+      vpc.addChild( rtb )
       null
 
     postDeserialize : ( data, layout_data )->

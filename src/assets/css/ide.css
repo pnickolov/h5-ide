@@ -2047,7 +2047,8 @@ a {
 	max-width     : inherit;
 	height        : 145px;
 	border        : 1px solid #55626e;
-	border-radius : 4px;
+	border-bottom : none;
+	border-radius : 5px 5px 0 0;
 	width         : 100%;
 	background    : #fff;
 
@@ -3682,10 +3683,11 @@ a.sidebar-hider {
 }
 
 .property-control-group label {
-	color         : #999;
-	font-size     : 13px;
-	margin-bottom : 4px;
-	cursor: pointer;
+	color     : #999;
+	font-size : 13px;
+	height    : 20px;
+	cursor    : pointer;
+	display   : inline-block;
 }
 
 .property-control-group .input {

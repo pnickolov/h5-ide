@@ -216,7 +216,7 @@
                             <a href="javascript:void(0)" class="region-resource-list-item">
                                 {{#if usage}}<i class="icon-app-type-{{usage}}"></i>{{/if}}
                                 <div class="region-resource-thumbnail app-thumbnail">
-                                    <img width="220" data-id="{{id}}" src="https://madeiracloudthumbnails-dev.s3.amazonaws.com/{{code}}?time={{update_time}}"/>
+                                    <img width="220" data-id="{{id}}" src="{{url}}"/>
                                 </div>
                                 <div class="region-resource-info">
                                     <span class="region-resource-item-name truncate">{{name}}</span>
@@ -263,7 +263,7 @@
                         <li>
                             <a href="javascript:void(0)" class="region-resource-list-item">
                                 <div class="region-resource-thumbnail">
-                                    <img width="220" data-id="{{id}}" src="{{#if code}}https://madeiracloudthumbnails-dev.s3.amazonaws.com/{{code}}?time={{update_time}}{{else}}https://madeiracloudthumbnails-dev.s3.amazonaws.com/{{name}}{{/if}}"/>
+                                    <img width="220" data-id="{{id}}" src="{{url}}"/>
                                 </div>
                                 <div class="region-resource-info">
                                     <span class="region-resource-item-name truncate">{{name}}</span>

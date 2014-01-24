@@ -12,10 +12,6 @@ define [ "../GroupModel", "./VpcModel", "constant", "i18n!nls/lang.js" ], ( Grou
       height : 21
 
     initialize : ( attribute, option )->
-      vpc = VpcModel.theVPC()
-      if vpc
-        vpc.addChild( @ )
-
       if option.createByUser and Design.instance().typeIsVpc()
         SubnetModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet )
         m = new SubnetModel( { x : @x() + 2, y : @y() + 2, parent : this } )
@@ -77,6 +73,8 @@ define [ "../GroupModel", "./VpcModel", "constant", "i18n!nls/lang.js" ], ( Grou
       new Model({
         id    : data.uid
         name  : data.name
+
+        parent : resolve( layout_data.groupUId )
 
         x      : layout_data.coordinate[0]
         y      : layout_data.coordinate[1]

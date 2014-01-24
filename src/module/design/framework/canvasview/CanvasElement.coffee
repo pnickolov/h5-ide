@@ -8,9 +8,15 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
   # Canvas interface of CanvasElement
   ###
   CanvasElement = ( model )->
-    @id    = model.id
-    @model = model
-    @type  = model.type
+    @id       = model.id
+    @model    = model
+    @type     = model.type
+
+    if model.parent
+      @parentId = model.parent()
+      @parentId = if @parentId then @parentId.id else ""
+    else
+      @parentId = ""
 
     if model.node_group is true
       @nodeType = "group"

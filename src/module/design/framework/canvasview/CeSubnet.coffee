@@ -16,7 +16,7 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
     if portName is "subnet-assoc-in"
       [ -12, portY, MC.canvas.PORT_LEFT_ANGLE ]
     else
-      [ m.width()  * MC.canvas.GRID_WIDTH + 4, portY, MC.canvas.PORT_RIGHT_ANGLE ]
+      [ m.width() * MC.canvas.GRID_WIDTH + 10, portY, MC.canvas.PORT_RIGHT_ANGLE ]
 
 
   ChildElementProto.draw = ( isCreate )->
@@ -36,7 +36,9 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
         'data-direction': 'in'
       }) )
 
-      node.append( Canvon.path( MC.canvas.PATH_PORT_RIGHT ).attr({
+      # Offset the port, because line layer is on top of group layer.
+      # Which requiring subnet's right port to be different than the others
+      node.append( Canvon.path( "M2 0.5l-6 -5.5l-2 0 l0 11 l2 0z" ).attr({
         'class'      : 'port port-gray port-subnet-assoc-out'
         'data-name'     : 'subnet-assoc-out'
         'data-position' : 'right'

@@ -125,7 +125,7 @@ define [ "component/thumbnail/ThumbUtil", 'MC', 'backbone', 'jquery', 'underscor
                     MC.data.stack_list[region].push {'id':new_id, 'name':name}
 
                     #call save png
-                    me.savePNG new_id
+                    me.savePNG new_id, 'new'
                     me.setFlag id, 'CREATE_STACK', data
 
                     new_id
@@ -351,7 +351,7 @@ define [ "component/thumbnail/ThumbUtil", 'MC', 'backbone', 'jquery', 'underscor
                     data.key = result.resolved_data
                     data.id  = app_id
 
-                    me.savePNG app_id
+                    me.savePNG app_id, 'new'
 
         setFlag : (id, flag, value) ->
             me = this
@@ -633,9 +633,14 @@ define [ "component/thumbnail/ThumbUtil", 'MC', 'backbone', 'jquery', 'underscor
             # new design flow
             me.setFlag MC.common.other.canvasData.get( 'id' ), 'ZOOMOUT_STACK', flag
 
-        savePNG : ( id ) ->
-            ThumbUtil.save( id, $("#svg_canvas") )
-            # ThumbUtil.save( id, $("#canvas_body").html(), $("#svg_canvas")[0].getBBox() )
+        # when type is 'new' include 'NEW_STACK' 'RUN_STACK' 'APP_UPDATE'
+        savePNG : ( id, type ) ->
+            console.log 'savePNG', id, type
+
+            if type is 'new'
+                ThumbUtil.save id, $("#canvas_body").html(), $("#svg_canvas")[0].getBBox()
+            else
+                ThumbUtil.save id, $("#svg_canvas")
             null
 
         generatePNG : () ->
@@ -915,7 +920,12 @@ define [ "component/thumbnail/ThumbUtil", 'MC', 'backbone', 'jquery', 'underscor
                         # save png
                         if req.state is constant.OPS_STATE.OPS_STATE_DONE
                             if flag is 'RUN_STACK' or flag is 'UPDATE_APP'
-                                me.saveAppThumbnail flag, region, name, item.id
+
+                                # new local thumbnail
+                                me.savePNG item.id, 'new'
+
+                                # old thumbnail
+                                #me.saveAppThumbnail flag, region, name, item.id
 
                         # remove request from req_map
                         delete req_map[req_id]

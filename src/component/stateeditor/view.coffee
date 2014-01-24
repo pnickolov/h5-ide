@@ -180,12 +180,6 @@ define [ 'event',
             Handlebars.registerPartial('state-template-log-instance-item', stateLogInstanceItemHTML)
             Handlebars.registerPartial('state-template-res-select', stateResSelectHTML)
 
-            # Handlebars helper
-            Handlebars.registerHelper('nl2br', (text) ->
-                nl2br = (text + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + '<br>' + '$2')
-                return new Handlebars.SafeString(nl2br)
-            )
-
             this.editorModalTpl = Handlebars.compile(editorModalHTML)
             this.paraListTpl = Handlebars.compile(paraListHTML)
             this.paraViewListTpl = Handlebars.compile(paraViewListHTML)
@@ -1191,11 +1185,14 @@ define [ 'event',
                     if changeAry.length
                         ide_event.trigger 'STATE_EDITOR_DATA_UPDATE', changeObj
 
+                that.unloadEditor()
+
                 that.closedPopup()
 
         onStateCancelClick: (event) ->
 
             that = this
+            that.unloadEditor()
             that.closedPopup()
 
         onParaRemoveClick: (event) ->
@@ -1645,6 +1642,21 @@ define [ 'event',
                 else if stateStatus is 'failure'
                     $statusIcon.addClass('failure')
                 null
+
+        unloadEditor: () ->
+
+            that = this
+
+            $editAreaList = that.$stateList.find('.editable-area')
+
+            _.each $editAreaList, (editArea) ->
+                $editArea = $(editArea)
+                editor = $editArea.data('editor')
+                if editor then editor.destroy()
+                null
+
+            $aceAutoCompList = $('.ace_editor.ace_autocomplete')
+            $aceAutoCompList.remove()
     }
 
     return StateEditorView

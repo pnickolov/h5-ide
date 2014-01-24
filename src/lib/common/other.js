@@ -1,6 +1,6 @@
 (function() {
   define(['MC', 'constant', 'jquery', 'underscore'], function(MC, constant) {
-    var addCacheMap, addProcess, addUnmanaged, addUnmanagedVpc, cacheIDMap, canvasData, createUID, delCacheMap, delUnmanaged, deleteProcess, filterProcess, getCacheMap, getProcess, getUnmanagedVpc, initDataProcess, initUnmanaged, isCurrentTab, isResultRight, listCacheMap, listUnmanaged, listUnmanagedVpc, processType, searchCacheMap, searchStackAppById, setCacheMap, setCurrentTabId, unmanaged_resource_list, unmanaged_vpc_list, verify500;
+    var addCacheMap, addProcess, addSEList, addSENameUIDList, addUnmanaged, addUnmanagedVpc, cacheIDMap, canvasData, convertUID, createUID, delCacheMap, delUnmanaged, deleteProcess, filterProcess, filterStateData, getCacheMap, getProcess, getUnmanagedVpc, initDataProcess, initSEList, initSENameUIDList, initUnmanaged, isCurrentTab, isResultRight, listCacheMap, listSE, listSENameUID, listUnmanaged, listUnmanagedVpc, processType, searchCacheMap, searchStackAppById, setCacheMap, setCurrentTabId, state_editor_list, state_editor_name_list, unmanaged_resource_list, unmanaged_vpc_list, verify500;
     canvasData = {
       init: function(data) {
         console.log('canvasData:init');
@@ -319,6 +319,100 @@
       console.log('listUnmanagedVpc');
       return unmanaged_vpc_list;
     };
+    state_editor_list = [];
+    initSEList = function() {
+      return state_editor_list = [];
+    };
+    listSE = function() {
+      return state_editor_list;
+    };
+    addSEList = function(data) {
+      var comp_list;
+      console.log('addSEList', data);
+      if (data && data.component) {
+        addSENameUIDList(data);
+        comp_list = _.values(data.component);
+        if (comp_list && !_.isEmpty(comp_list) && _.isArray(comp_list)) {
+          initSEList();
+          _.each(comp_list, function(component) {
+            var key_list, name;
+            name = component.name;
+            key_list = _.keys(component.resource);
+            if (key_list && !_.isEmpty(key_list) && _.isArray(key_list) && !_.isEmpty(component.name)) {
+              return _.each(key_list, function(item) {
+                var str;
+                str = '{' + name + '.' + item + '}';
+                return state_editor_list.push({
+                  'name': str,
+                  'value': str
+                });
+              });
+            }
+          });
+        }
+      }
+      console.log('state_editor_list', state_editor_list);
+      MC.storage.set('state_editor_list', state_editor_list);
+      return state_editor_list;
+    };
+    state_editor_name_list = {};
+    initSENameUIDList = function() {
+      return state_editor_name_list = {};
+    };
+    listSENameUID = function() {
+      return state_editor_name_list;
+    };
+    addSENameUIDList = function(data) {
+      console.log('addSENameUIDList', data);
+      if (data && data.component) {
+        initSENameUIDList();
+        _.each(data.component, function(item) {
+          return state_editor_name_list[item.name] = {
+            uid: item.uid,
+            type: item.type
+          };
+        });
+      }
+      console.log('state_editor_name_list', state_editor_name_list);
+      MC.storage.set('state_editor_name_list', state_editor_name_list);
+      return state_editor_name_list;
+    };
+    filterStateData = function(data) {
+      var filter_data, reg;
+      console.log('filterStateData', data);
+      filter_data = $.extend(true, {}, data);
+      reg = /[^@{][-\w\.]+[}]/igm;
+      _.each(filter_data, function(item) {
+        return item.parameter.verify_gpg = item.parameter.verify_gpg.replace(reg, function($0) {
+          var obj, split_arr;
+          console.log('sfasdfasdf', $0);
+          split_arr = $0.split('.');
+          obj = state_editor_name_list[split_arr[0]];
+          if (obj && obj.uid && split_arr.length > 1) {
+            return obj.uid + '.' + split_arr[1];
+          } else {
+            return $0;
+          }
+        });
+      });
+      return filter_data;
+    };
+    convertUID = function(str) {
+      var new_str, reg;
+      console.log('convertUID', str);
+      reg = /[^@{][-\w\.]+[}]/igm;
+      new_str = str.replace(reg, function($0) {
+        var obj, split_arr;
+        split_arr = $0.split('.');
+        obj = state_editor_name_list[split_arr[0]];
+        if (obj && obj.uid && split_arr.length > 1) {
+          return obj.uid + '.' + split_arr[1];
+        } else {
+          return $0;
+        }
+      });
+      return new_str;
+    };
     return {
       canvasData: canvasData,
       isCurrentTab: isCurrentTab,
@@ -345,7 +439,15 @@
       delUnmanaged: delUnmanaged,
       addUnmanagedVpc: addUnmanagedVpc,
       getUnmanagedVpc: getUnmanagedVpc,
-      listUnmanagedVpc: listUnmanagedVpc
+      listUnmanagedVpc: listUnmanagedVpc,
+      initSEList: initSEList,
+      listSE: listSE,
+      addSEList: addSEList,
+      initSENameUIDList: initSENameUIDList,
+      listSENameUID: listSENameUID,
+      addSENameUIDList: addSENameUIDList,
+      filterStateData: filterStateData,
+      convertUID: convertUID
     };
   });
 

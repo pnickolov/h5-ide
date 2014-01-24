@@ -347,7 +347,7 @@ define [ 'MC', 'event', 'handlebars'
 			MC.data.websocket.collection.request.find().fetch()
 			query = MC.data.websocket.collection.request.find()
 			handle = query.observeChanges {
-				added   : (idx, dag) ->
+				added : (idx, dag) ->
 					ide_event.trigger ide_event.UPDATE_REQUEST_ITEM, idx, dag
 
 				changed : (idx, dag) ->
@@ -367,7 +367,7 @@ define [ 'MC', 'event', 'handlebars'
 			MC.data.websocket.collection.imports.find().fetch()
 			query = MC.data.websocket.collection.imports.find()
 			handle = query.observe {
-				addedâ€‚â€ : (idx, dag) ->
+				added : (idx, dag) ->
 					ide_event.trigger ide_event.UPDATE_IMPORT_ITEM, idx
 
 				changed : (idx, dag) ->

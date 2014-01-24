@@ -155,7 +155,7 @@ define [ 'event',
             htmlMap = {}
             _.each tplHTMLAry, (tplHTML) ->
                 commentHead = tplHTML.split('\n')[0]
-                tplType = commentHead.replace(/(<!-- )|( -->)/g, '')
+                tplType = commentHead.replace(/(<!-- )|( -->)|\n/g, '')
                 htmlMap[tplType] = tplHTML
                 null
 

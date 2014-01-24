@@ -25,7 +25,7 @@ define [ 'constant', 'event', 'ta_conf', './validation/main', './validation/resu
         filename = filename.toLowerCase()
         filename
 
-    _pushResult = ( result, method, filename, uid) ->
+    _pushResult = ( result, method, filename, uid ) ->
         resultVO.set "#{filename}.#{method}", result, uid
 
     _syncStart = () ->

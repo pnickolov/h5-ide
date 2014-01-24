@@ -1207,7 +1207,7 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				//set deviceName
 				device_name = null;
-				if (ami_info.virtualizationType !== 'hvm')
+				if (ami_info.osType !== 'windows')
 				{
 					device_name = ['f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
 				}
@@ -1248,7 +1248,7 @@ MC.canvas.add = function (flag, option, coordinate)
 						return null;
 					}
 
-					if (ami_info.virtualizationType !== 'hvm') {
+					if (ami_info.osType !== 'windows') {
 						option.name = '/dev/sd' + device_name[0];
 					} else {
 						option.name = 'xvd' + device_name[0];
@@ -1296,7 +1296,7 @@ MC.canvas.add = function (flag, option, coordinate)
 						return null;
 					}
 
-					if (ami_info.virtualizationType !== 'hvm') {
+					if (ami_info.osType !== 'windows') {
 						option.name = '/dev/sd' + device_name[0];
 					} else {
 						option.name = 'xvd' + device_name[0];

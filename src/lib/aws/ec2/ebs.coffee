@@ -11,7 +11,7 @@ define [ 'MC' ], ( MC) ->
 		device_name = null #result
 
 		#check deviceName
-		if ami_info and ami_info.virtualizationType != 'hvm'
+		if ami_info and ami_info.osType != 'windows'
 			#linux
 			device_list = 'f g h i j k l m n o p q r s t u v w x y z'.split(' ')
 
@@ -52,7 +52,7 @@ define [ 'MC' ], ( MC) ->
 
 		else
 
-			if ami_info.virtualizationType isnt "hvm"
+			if ami_info.osType isnt "windows"
 			  device_name = "/dev/sd" + device_list[0]
 			else
 			  device_name = "xvd" + device_list[0]

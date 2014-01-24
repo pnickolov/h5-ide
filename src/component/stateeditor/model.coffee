@@ -506,10 +506,10 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 								if _.isNumber(stateNum)
 									originStatusDataAry[stateNum] = logObj
 
-						originStatusDataAry.unshift({
-							state_id: 'Agent',
-							result: agentStatus
-						})
+					originStatusDataAry.unshift({
+						state_id: 'Agent',
+						result: agentStatus
+					})
 
 					that.set('stateLogDataAry', originStatusDataAry)
 					that.set('agentStatus', agentStatus)

@@ -1504,8 +1504,11 @@ define [ 'event',
                 if logObj.time
                     timeStr = MC.dateFormat(new Date(logObj.time), 'yyyy-MM-dd hh:mm:ss')
                 stateStatus = logObj.result
+                stateId = "#{logObj.state_id}"
+                if logObj.state_id isnt 'Agent'
+                    stateId = "State #{stateId}"
                 stateLogViewAry.push({
-                    state_id: "State #{logObj.state_id}",
+                    state_id: stateId,
                     log_time: timeStr,
                     state_status: stateStatus,
                     stdout: logObj.stdout,

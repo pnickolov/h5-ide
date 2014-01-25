@@ -5,7 +5,7 @@ define [ 'constant', 'MC', 'i18n!nls/lang.js' ], ( constant, MC, lang ) ->
 
     __componentTipMap =
         'AWS.EC2.Instance': lang.ide.TA_MSG_ERROR_STATE_EDITOR_INEXISTENT_INSTANCE
-        'AWS.AutoScaling.Group': lang.ide.TA_MSG_ERROR_STATE_EDITOR_INEXISTENT_ASG
+        'AWS.AutoScaling.LaunchConfiguration': lang.ide.TA_MSG_ERROR_STATE_EDITOR_INEXISTENT_ASG
 
     __getCompTip = ( compType, str1, str2, str100 ) ->
         tip = __componentTipMap[ arguments[ 0 ] ]
@@ -15,11 +15,11 @@ define [ 'constant', 'MC', 'i18n!nls/lang.js' ], ( constant, MC, lang ) ->
         sprintf.apply @, arguments
 
 
-    __buildTAErr = ( tip ) ->
+    __buildTAErr = ( tip, stateId ) ->
 
         level   : constant.TA.ERROR
         info    : tip
-        uid     : 'refinexsit'
+        uid     : "refinexsit:#{stateId}"
 
     # return  Array
     __findReference = ( str ) ->
@@ -59,7 +59,7 @@ define [ 'constant', 'MC', 'i18n!nls/lang.js' ], ( constant, MC, lang ) ->
 
         if inexistCount
             tip = __getCompTip data.type, data.name, data.stateId, inexistCount
-            TAError = __buildTAErr tip
+            TAError = __buildTAErr tip, data.stateId
 
         TAError
 

@@ -2671,7 +2671,7 @@ MC.canvas.nodeState = {
 			var resModel = Design.instance().component(id);
 			var stateAry = resModel.getStateData();
 			var stateNum = 0;
-			
+
 			if (stateAry && _.isArray(stateAry)) {
 				stateNum = stateAry.length;
 			}
@@ -2718,7 +2718,10 @@ MC.canvas.nodeState = {
 	{
 		event.stopImmediatePropagation();
 
-		$canvas.trigger("STATE_ICON_CLICKED", $(this).data('id'));
+		if (event.which === 1)
+		{
+			$canvas.trigger("STATE_ICON_CLICKED", $(this).data('id'));
+		}
 
 		return false;
 	},
@@ -5021,6 +5024,14 @@ MC.canvas.event.keyEvent = function (event)
 				target_item.position(coordinate.x, coordinate.y);
 
 				target_item.reConnect();
+			}
+
+			if (
+				target_type === 'AWS.EC2.Instance' &&
+				$('#node-state-wrap').data('id') === target_id
+			)
+			{
+				MC.canvas.nodeState.position(target_id);
 			}
 
 			return false;

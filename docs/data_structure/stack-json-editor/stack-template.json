@@ -141,7 +141,7 @@
           }
         ],
         "IpPermissionsEgress": [],
-        "#GroupDescription": "Not necessary",
+        "#GroupDescription": "Not required",
         "#OwnerId": "Not necessary"
       }
     },
@@ -273,32 +273,32 @@
         "BackendServerDescriptions": [
           {
             "?InstantPort": "INT, [0, 65535], not required",
-            "?PoliciyNames": "Not necessary"
+            "?PoliciyNames": "Not required"
           }
         ],
-        "?DNSName": "Not necessary",
+        "DNSName": "Not required",
         "?Policies": {
           "LBCookieStickinessPolicies": [
             {
-              "PolicyName": "Not necessary",
+              "PolicyName": "Not required",
               "CookieExpirationPeriod": "Not necessary"
             }
           ],
           "AppCookieStickinessPolicies": [
             {
-              "PolicyName": "Not necessary",
-              "CookieName": "Not necessary"
+              "PolicyName": "Not required",
+              "CookieName": "Not required"
             }
           ],
           "OtherPolicies": [
             {
-              "PolicyName": "Not necessary",
-              "PolicyTypeName": "Not necessary",
+              "PolicyName": "Not required",
+              "PolicyTypeName": "Not required",
               "PolicyAttributes": {
-                "AttributeName": "Not necessary",
-                "AttributeValue": "Not necessary"
+                "AttributeName": "Not required",
+                "AttributeValue": "Not required"
               },
-              "LoadBalancerName": "Not necessary"
+              "LoadBalancerName": "Not required"
             }
           ]
         },
@@ -317,14 +317,14 @@
       "name": "regex name, STRING, '^\\w+[A-Za-z0-9-]*$', not required, example:'aaa'",
       "uid": "regex UID, STRING, '^\\w{8}-\\w{4}-\\w{4}-\\w{4}-\\w{12}$', required, same to $SERVER-CERTIFICATE0",
       "resource": {
-        "PrivateKey": "Not necessary, example:-----BEGIN RSA PRIVATE KEY-----\n...\n-----END RSA PRIVATE KEY-----",
-        "CertificateBody": "Not necessary, example:-----BEGIN CERTIFICATE-----\n...\n-----END CERTIFICATE-----",
-        "CertificateChain": "Not necessary",
-        "?ServerCertificateMetadata": {
-          "Arn": "Not necessary",
-          "ServerCertificateId": "Not necessary",
-          "ServerCertificateName": "Not necessary, example:aaa",
-          "Path": "Not necessary",
+        "PrivateKey": "required, example:-----BEGIN RSA PRIVATE KEY-----\n...\n-----END RSA PRIVATE KEY-----",
+        "CertificateBody": "required, example:-----BEGIN CERTIFICATE-----\n...\n-----END CERTIFICATE-----",
+        "CertificateChain": "Not required",
+        "ServerCertificateMetadata": {
+          "Arn": "Not required",
+          "ServerCertificateId": "Not required",
+          "ServerCertificateName": "Not required, example:aaa",
+          "Path": "Not required",
           "UploadDate": "Not necessary"
         }
       }
@@ -598,8 +598,8 @@
         "MaxSize": "INT, [0, 65534], required, example:2",
         "VPCZoneIdentifier": "reference, STRING, @xxxx.resource.xxxx, required for VPC, example:'@$SUBNET0.resource.SubnetId,@$SUBNET1.resource.SubnetId'",
         "AvailabilityZones": [
-          "?Not necessary, reference, STRING, @xxxx.resource.xxxx, example:@AZ.resource.ZoneName",
-          "?Not necessary, reference, STRING, @xxxx.resource.xxxx, example:@AZ.resource.ZoneName"
+          "Not required, reference, STRING, @xxxx.resource.xxxx, example:@AZ.resource.ZoneName",
+          "Not required, reference, STRING, @xxxx.resource.xxxx, example:@AZ.resource.ZoneName"
         ],
         "LoadBalancerNames": [
           "reference,　not required, example:@$ELB0.resource.LoadBalancerName"
@@ -656,7 +656,7 @@
           }
         ],
         "IamInstanceProfile": "Not necessary",
-        "UserData": "Not necessary",
+        "UserData": "Not required",
         "SpotPrice": "Not necessary",
         "#CreatedTime": "Not necessary",
         "#KernelId": "Not necessary",
@@ -685,16 +685,16 @@
         "ComparisonOperator": "STRING, [<=|<|>|>=], not required, example:>=",
         "OKAction : ?reference, not required": [],
         "InsufficientDataActions: ?reference, not required": [],
-        "Unit": "Not necessary",
+        "Unit": "Not required",
         "StateValue": "Not necessary",
         "StateUpdateTimestamp": "Not necessary",
-        "ActionEnabled": "Not necessary",
+        "ActionEnabled": "Not required",
         "StateReason": "Not necessary",
         "StateReasonData": "Not necessary",
-        "AlarmDescription": "Not necessary",
+        "AlarmDescription": "Not required",
         "AlarmConfigurationUpdatedTimestamp": "Not necessary",
         "AlarmActions": [
-          "?Not necessary, STRING, @xxxx.resource.xxxx, example:@$SCALING-POLICY0.resource.PolicyARN"
+          "Not required, STRING, @xxxx.resource.xxxx, example:@$SCALING-POLICY0.resource.PolicyARN"
         ]
       }
     },

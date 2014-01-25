@@ -59,7 +59,8 @@ define [ 'event', 'MC', 'Design', 'underscore' ], ( ide_event, MC, Design ) ->
 
 		if _.isArray result
 			_.each result, ( r ) ->
-				set key, r, r.uid
+				if r
+					set key, r, r.uid
 
 		if result
 			if not _exist k

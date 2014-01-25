@@ -1512,8 +1512,6 @@ MC.canvas = {
 	{
 		$(node).remove();
 
-		//MC.canvas.event.nodeStateRemove(node.id);
-
 		return true;
 	},
 
@@ -2651,6 +2649,93 @@ MC.canvas.eniList = {
 	}
 };
 
+MC.canvas.nodeState = {
+	show: function (id)
+	{
+		var canvas_status = MC.canvas.getState(),
+			target_type = $canvas(id).type;
+
+		if (
+			(
+				canvas_status === 'stack' ||
+				canvas_status === 'app' ||
+				canvas_status === 'appedit'
+			)
+			&&
+			(
+				target_type === 'AWS.EC2.Instance' ||
+				target_type === 'AWS.AutoScaling.LaunchConfiguration'
+			)
+		)
+		{
+			var resModel = Design.instance().component(id);
+			var stateAry = resModel.getStateData();
+			var stateNum = 0;
+			
+			if (stateAry && _.isArray(stateAry)) {
+				stateNum = stateAry.length;
+			}
+
+			if ((canvas_status === 'app') && !stateNum)
+			{
+				return;
+			}
+
+			$('#canvas_container').append(MC.template.nodeState({
+				state_num: stateNum
+			}));
+
+			MC.canvas.nodeState.updateNumber(stateNum);
+
+			MC.canvas.nodeState.position(id);
+		}
+	},
+
+	updateNumber: function (num)
+	{
+		$('#node-state-number').text(num);
+
+		return false;
+	},
+
+	position: function (id)
+	{
+		var target = $('#' + id),
+			offset = target[0].getBoundingClientRect(),
+			canvas_offset = $('#svg_canvas').offset();
+
+		$('#node-state-wrap')
+			.css({
+				'left': offset.left - canvas_offset.left + offset.width + 5,
+				'top': offset.top - canvas_offset.top
+			})
+			.attr('data-id', id);
+
+		return true;
+	},
+
+	popup: function (event)
+	{
+		event.stopImmediatePropagation();
+
+		$canvas.trigger("STATE_ICON_CLICKED", $(this).data('id'));
+
+		return false;
+	},
+
+	remove: function (id)
+	{
+		var node_state = $('#node-state-wrap');
+
+		if (node_state.data('id') === id)
+		{
+			node_state.remove();
+		}
+
+		return true;
+	}
+};
+
 MC.canvas.event = {};
 
 // Double click event simulation
@@ -2725,7 +2810,7 @@ MC.canvas.event.dragable = {
 					MC.canvas.event.clearSelected();
 
 					$canvas(this.id).select();
-					MC.canvas.event.nodeState(this.id);
+					MC.canvas.nodeState.show(this.id);
 				}
 
 				return false;
@@ -2915,7 +3000,7 @@ MC.canvas.event.dragable = {
 
 				if (target_item.type === 'AWS.EC2.Instance')
 				{
-					MC.canvas.event.nodeState(target_id);
+					MC.canvas.nodeState.show(target_id);
 				}
 			}
 		}
@@ -3178,7 +3263,7 @@ MC.canvas.event.dragable = {
 			}
 
 			$canvas(target_id).select();
-			MC.canvas.event.nodeState(target_id);
+			MC.canvas.nodeState.show(target_id);
 		}
 
 		event_data.shadow.remove();
@@ -3818,7 +3903,7 @@ MC.canvas.event.siderbarDrag = {
 
 								if (target_type === 'AWS.EC2.Instance')
 								{
-									MC.canvas.event.nodeState(new_node_id);
+									MC.canvas.nodeState.show(new_node_id);
 								}
 							}
 						}
@@ -4579,7 +4664,7 @@ MC.canvas.event.selectNode = function (event)
 		MC.canvas.event.clearSelected();
 
 		$canvas(this.id).select();
-		MC.canvas.event.nodeState(this.id);
+		MC.canvas.nodeState.show(this.id);
 	}
 
 	return false;
@@ -4677,74 +4762,6 @@ MC.canvas.event.clickBlank = function (event)
 	{
 		//dispatch event when click blank area in canvas
 		$canvas.trigger("CANVAS_NODE_SELECTED", "");
-	}
-
-	return true;
-};
-
-MC.canvas.event.nodeState = function (id)
-{
-	var canvas_status = MC.canvas.getState(),
-		target = $('#' + id),
-		target_type = target.data('class'),
-		offset = target[0].getBoundingClientRect(),
-		canvas_offset = $('#svg_canvas').offset();
-
-	if (
-		(
-			canvas_status === 'stack' ||
-			canvas_status === 'app' ||
-			canvas_status === 'appedit'
-		)
-		&&
-		(
-			target_type === 'AWS.EC2.Instance' ||
-			target_type === 'AWS.AutoScaling.LaunchConfiguration'
-		)
-	)
-	{
-		var resModel = Design.instance().component(id);
-		var stateAry = resModel.getStateData();
-		var stateNum = 0;
-		if (stateAry && _.isArray(stateAry)) {
-			stateNum = stateAry.length;
-		}
-
-		if ((canvas_status === 'app') && !stateNum) {
-			return;
-		}
-
-		$('#canvas_container').append( MC.template.nodeState({
-			state_num: stateNum
-		}) );
-
-		$('#node-state-number').text(stateNum);
-
-		$('#node-state-wrap')
-			.css({
-				'left': offset.left - canvas_offset.left + offset.width + 5,
-				'top': offset.top - canvas_offset.top
-			})
-			.attr('data-id', id);
-	}
-};
-
-MC.canvas.event.nodeStatePopup = function (event)
-{
-	event.stopImmediatePropagation();
-
-	$canvas.trigger("STATE_ICON_CLICKED", $(this).data('id'));
-
-	return false;
-};
-
-MC.canvas.event.nodeStateRemove = function (id)
-{
-	var node_state = $('#node-state-wrap');
-
-	if (node_state.data('id') === id)
-	{
-		node_state.remove();
 	}
 
 	return true;

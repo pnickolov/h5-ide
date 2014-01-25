@@ -55,11 +55,14 @@ define [ "component/thumbnail/ThumbUtil", 'MC', 'backbone', 'jquery', 'underscor
                     #     stack_region: data.region,
                     #     stack_id: data.id
 
-                    #call save png
+                    # local thumbnail
+                    # OPEN_STACK
                     me.savePNG id
 
                     #update initial data
-                    ide_event.trigger ide_event.UPDATE_STACK_LIST, 'SAVE_STACK', [id]
+                    _.delay () ->
+                        ide_event.trigger ide_event.UPDATE_STACK_LIST, 'SAVE_STACK', [id]
+                    , 500
 
                     #update key
                     key = result.resolved_data.key
@@ -117,11 +120,14 @@ define [ "component/thumbnail/ThumbUtil", 'MC', 'backbone', 'jquery', 'underscor
                     # set origin
                     MC.common.other.canvasData.origin data
 
-                    #call save png
+                    # local thumbnail
+                    # NEW_STACK
                     me.savePNG new_id, 'new', old_id
 
                     me.trigger 'TOOLBAR_HANDLE_SUCCESS', 'CREATE_STACK', name
-                    ide_event.trigger ide_event.UPDATE_STACK_LIST, 'NEW_STACK', [new_id]
+                    _.delay () ->
+                        ide_event.trigger ide_event.UPDATE_STACK_LIST, 'NEW_STACK', [new_id]
+                    , 500
                     ide_event.trigger ide_event.UPDATE_DESIGN_TAB, new_id, name + ' - stack'
                     ide_event.trigger ide_event.UPDATE_STATUS_BAR_SAVE_TIME
 
@@ -155,7 +161,8 @@ define [ "component/thumbnail/ThumbUtil", 'MC', 'backbone', 'jquery', 'underscor
                     #key = result.resolved_data.key
                     #ide_event.trigger ide_event.UPDATE_REGION_THUMBNAIL, key, new_id
 
-                    # new save png
+                    # local thumbnail
+                    # SAVE_AS
                     me.savePNG new_id, 'new', id
 
                     #trigger event
@@ -354,7 +361,9 @@ define [ "component/thumbnail/ThumbUtil", 'MC', 'backbone', 'jquery', 'underscor
                     data.key = result.resolved_data
                     data.id  = app_id
 
-                    me.savePNG app_id, 'new'
+                    #me.savePNG app_id, 'new'
+
+                    null
 
         setFlag : (id, flag, value) ->
             me = this
@@ -556,21 +565,21 @@ define [ "component/thumbnail/ThumbUtil", 'MC', 'backbone', 'jquery', 'underscor
             # NEW_STACK
             else
 
-                # call api
-                stack_model.create { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, data
-
                 # add current canvas and svg to cacheThumb
                 MC.common.other.addCacheThumb id, $("#canvas_body").html(), $("#svg_canvas")[0].getBBox()
+
+                # call api
+                stack_model.create { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, data
 
         #duplicate
         duplicateStack : (region, id, new_name, name) ->
             console.log 'duplicateStack', region, id, new_name, name
             me = this
 
-            stack_model.save_as { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, new_name, name
-
             # add current canvas and svg to cacheThumb
             MC.common.other.addCacheThumb id, $("#canvas_body").html(), $("#svg_canvas")[0].getBBox()
+
+            stack_model.save_as { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, new_name, name
 
         #delete
         deleteStack : (region, id, name) ->
@@ -652,6 +661,7 @@ define [ "component/thumbnail/ThumbUtil", 'MC', 'backbone', 'jquery', 'underscor
 
         # when type is 'new' include 'NEW_STACK' 'RUN_STACK' 'APP_UPDATE'
         # when type is 'new' old_id is 'new-xxxx'
+        # when type isnt 'new' include 'OPEN_STACK'
         savePNG : ( id, type, old_id ) ->
             console.log 'savePNG', id, type, old_id
 
@@ -721,6 +731,9 @@ define [ "component/thumbnail/ThumbUtil", 'MC', 'backbone', 'jquery', 'underscor
             region  = data.region
             id      = data.id
             name    = data.name
+
+            # loacl thumbnail
+            MC.common.other.addCacheThumb id, $("#canvas_body").html(), $("#svg_canvas")[0].getBBox()
 
             app_model.update { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, data, id
 
@@ -924,6 +937,18 @@ define [ "component/thumbnail/ThumbUtil", 'MC', 'backbone', 'jquery', 'underscor
 
                     # update app list, region aws resource and notification
                     if req.state is constant.OPS_STATE.OPS_STATE_DONE or req.state is constant.OPS_STATE.OPS_STATE_FAILED
+
+                        # save png
+                        if req.state is constant.OPS_STATE.OPS_STATE_DONE
+                            if flag is 'UPDATE_APP'
+
+                                # new local thumbnail
+                                # APP_UPDATE
+                                me.savePNG item.id, 'new', item.id
+
+                                # old thumbnail
+                                #me.saveAppThumbnail flag, region, name, item.id
+
                         # update app list
                         app_list = []
                         if item.id.indexOf('app-') == 0
@@ -943,16 +968,6 @@ define [ "component/thumbnail/ThumbUtil", 'MC', 'backbone', 'jquery', 'underscor
                             me.trigger 'TOOLBAR_HANDLE_SUCCESS', flag, name
                         else if req.state is constant.OPS_STATE.OPS_STATE_FAILED
                             me.trigger 'TOOLBAR_HANDLE_FAILED', flag, name
-
-                        # save png
-                        if req.state is constant.OPS_STATE.OPS_STATE_DONE
-                            if flag is 'RUN_STACK' or flag is 'UPDATE_APP'
-
-                                # new local thumbnail
-                                me.savePNG item.id, 'new'
-
-                                # old thumbnail
-                                #me.saveAppThumbnail flag, region, name, item.id
 
                         # remove request from req_map
                         delete req_map[req_id]
@@ -1020,7 +1035,8 @@ define [ "component/thumbnail/ThumbUtil", 'MC', 'backbone', 'jquery', 'underscor
                 # push event
                 if flag is 'RUN_STACK'
 
-                    # new savePNG
+                    # local thumbnail
+                    # RUN_STACK
                     if data and data.flag_list and data.flag_list.is_done in [ true, 'true' ] and data.flag_list.app_id
 
                         me.savePNG data.flag_list.app_id, 'new', tab_name
@@ -1053,22 +1069,22 @@ define [ "component/thumbnail/ThumbUtil", 'MC', 'backbone', 'jquery', 'underscor
 
         isInstanceStore : () -> !Design.instance().isStoppable()
 
-        saveAppThumbnail  :   (flag, region, app_name, app_id) ->
-            me = this
-
-            idx = 'process-' + region + '-' + app_name
-            if idx of process_data_map
-                data = $.extend(true, {}, process_data_map[idx])
-
-                if data
-                    if flag is 'RUN_STACK'
-                        # generate s3 key
-                        app_model.getKey { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, app_id, app_name
-
-                    else
-                        me.savePNG app_id
-
-            null
+        #saveAppThumbnail  :   (flag, region, app_name, app_id) ->
+        #    me = this
+        #
+        #    idx = 'process-' + region + '-' + app_name
+        #    if idx of process_data_map
+        #        data = $.extend(true, {}, process_data_map[idx])
+        #
+        #        if data
+        #            if flag is 'RUN_STACK'
+        #                # generate s3 key
+        #                app_model.getKey { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, app_id, app_name
+        #
+        #            else
+        #                me.savePNG app_id
+        #
+        #    null
 
         convertCloudformation : () ->
             me = this

@@ -85,14 +85,6 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
 
     #     return false
 
-    iconUrl : ()->
-      ami = MC.data.dict_ami[ @get 'imageId' ] || @get("cachedAmi")
-
-      if not ami
-        return "ide/ami/ami-not-available.png"
-      else
-        return "ide/ami/" + ami.osType + "." + ami.architecture + "." + ami.rootDeviceType + ".png"
-
     connect : ( cn )->
       if @parent()
         if cn.type is "ElbAmiAsso"

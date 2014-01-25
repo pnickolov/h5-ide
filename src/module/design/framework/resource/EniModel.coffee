@@ -439,9 +439,9 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
       if parent.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
         subnetId = parent.createRef( "SubnetId" )
         vpcId    = parent.parent().parent().createRef( "VpcId" )
-        az       = parent.parent().get("name")
+        az       = parent.parent()
       else
-        az = parent.get("name")
+        az = parent
 
 
       component =
@@ -457,7 +457,7 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
           Description        : @get("description")
           NetworkInterfaceId : memberData.appId
 
-          AvailabilityZone : az
+          AvailabilityZone : az.createRef()
           VpcId            : parent.getVpcRef()
           SubnetId         : parent.getSubnetRef()
 

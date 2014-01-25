@@ -1,7 +1,7 @@
 define [ 'MC',
 		'lib/common/cookie',
 		'lib/common/other',
-		'lib/aws/convert',
+		'lib/common/convert',
 ], ( MC, cookie, other, convert_handler ) ->
 
 	MC.common = {

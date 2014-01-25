@@ -388,18 +388,13 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
       null
 
     generateJSON : ()->
-      azName  = ""
       tenancy = @get("tenancy")
 
       p = @parent()
       if p.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
-        azName   = p.parent().get("name")
         vpc      = p.parent().parent()
         if not vpc.isDefaultTenancy()
           tenancy = "dedicated"
-
-      else
-        azName = p.get("name")
 
       kp = @connectionTargets( "KeypairUsage" )[0]
       kp = if kp then kp.createRef( "KeyName" ) else ""
@@ -436,7 +431,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
           Placement : {
             GroupName : ""
             Tenancy : if tenancy is "dedicated" then "dedicated" else ""
-            AvailabilityZone : azName
+            AvailabilityZone : @getAvailabilityZone().createRef()
           }
           InstanceId            : @get("appId")
           ImageId               : @get("imageId")

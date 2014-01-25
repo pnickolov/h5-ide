@@ -30,6 +30,8 @@ define [ "../GroupModel", "./VpcModel", "constant", "i18n!nls/lang.js" ], ( Grou
         return sprintf lang.ide.CVS_CFM_DEL_GROUP, @get("name")
       true
 
+    createRef : ()-> Model.__super__.createRef( "ZoneName", true, @id )
+
     isCidrEnoughForIps : ( cidr )->
 
       if not cidr
@@ -54,17 +56,26 @@ define [ "../GroupModel", "./VpcModel", "constant", "i18n!nls/lang.js" ], ( Grou
       maxIpCount >= ipCount
 
     serialize : ()->
+      n = @get("name")
+
       layout =
         size       : [ @width(), @height() ]
         coordinate : [ @x(), @y() ]
-        type       : @type
-        name       : @get("name")
+        name       : n
         uid        : @id
 
       if @parent()
         layout.groupUId = @parent().id
 
-      { layout : layout }
+      component =
+        uid  : @id
+        name : n
+        type : @type
+        resource :
+          ZoneName : n
+          RegionName : n.substring(0, n.length-1)
+
+      { layout : layout, component : component }
 
   }, {
     handleTypes : constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone

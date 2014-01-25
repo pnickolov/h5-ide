@@ -188,7 +188,7 @@ define [ "constant",
         uid  : @id
         resource :
           AvailableIpAddressCount : ""
-          AvailabilityZone : @parent().get("name")
+          AvailabilityZone : @parent().createRef()
           VpcId            : @parent().parent().createRef( "VpcId" )
           SubnetId         : @get("appId")
           CidrBlock        : @get("cidr")

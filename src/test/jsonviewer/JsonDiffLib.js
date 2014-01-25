@@ -14,9 +14,10 @@ define([], function(){
 
     if ( value.uid ) {
       c = Design.instance().component( value.uid );
-      if (c) value = c;
+      if (c)
+        value = c;
     }
-    if ( value.type && value.type.indexOf("AWS.") === 0 ) {
+    if ( value.type ) {
       return value.type.replace("AWS.", "").replace("EC2.","").replace("VPC.","").replace("AutoScaling.LaunchConfiguration", "LC");
     } else {
       if ( isArray(value) ) {

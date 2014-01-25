@@ -3,7 +3,9 @@ define [ "Design"], ( Design )->
 
   # JsonFixer is an util function to normalize JSON before the JSON gets deserilized.
 
-  Design.registerDeserializeVisitor ( data, layout_data )->
+  Design.registerDeserializeVisitor ( data, layout_data, version )->
+
+    if version >= "2014-01-25" then return
 
     azMap = {}
     azArr = []

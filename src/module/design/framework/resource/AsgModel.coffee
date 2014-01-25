@@ -135,8 +135,8 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
 
     serialize : ()->
       layout =
-        uid  : @id
-        type : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+        uid        : @id
+        type       : "ExpandedAsg"
         groupUId   : @parent().id
         originalId : @get("originalAsg").id
         coordinate : [ @x(), @y() ]
@@ -388,10 +388,10 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
       subnets = _.uniq subnets
 
       if @parent().type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
-        azs = _.uniq( _.map subnets, (sb)-> sb.parent().get("name") )
+        azs = _.uniq( _.map subnets, (sb)-> sb.parent().createRef() )
         subnets = _.map subnets, (sb)-> sb.createRef( "SubnetId" )
       else
-        azs = _.uniq( _.map subnets, (az)-> az.get("name") )
+        azs = _.uniq( _.map subnets, (az)-> az.createRef() )
         newSubnets = []
         for sb in subnets
           sbRef = sb.getSubnetRef()

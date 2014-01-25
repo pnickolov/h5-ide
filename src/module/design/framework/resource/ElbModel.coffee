@@ -183,7 +183,7 @@ define [ "Design",
     getAvailabilityZones : ()->
       if Design.instance().typeIsVpc()
         azs = _.map @connectionTargets("ElbSubnetAsso"), ( subnet )->
-          subnet.parent().get("name")
+          subnet.parent().createRef()
 
         return _.uniq azs
       else

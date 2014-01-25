@@ -171,6 +171,12 @@ define ["event", "text!./diff.html", "text!./view.html", "./JsonDiffLib", "./jqU
 
 
     showViewDialog : ( canvas_data )->
+
+      if $("#jsonViewer").length
+        $("#diffWrap").hide()
+        $("#jsonViewer .modal-header").dblclick()
+        return null
+
       $( tplView() ).appendTo( "body" ).resizable().draggable({handle:".modal-header"})
 
       updateViewDialog( canvas_data )
@@ -186,13 +192,14 @@ define ["event", "text!./diff.html", "text!./view.html", "./JsonDiffLib", "./jqU
           $("#jsonViewer").css({
             "height" : $("#jsonViewer").attr("data-height") || "70%"
             "width"  : $("#jsonViewer").attr("data-width")  || "50%"
+            "min-width" : "540px"
           })
           $wrap.show()
         else
           $("#jsonViewer").attr({
             "data-height" : $("#jsonViewer").height()
             "data-width"  : $("#jsonViewer").width()
-          }).css({"height":"auto","width":"150px"})
+          }).css({"height":"auto","width":"150px","min-width":"150px"})
           $wrap.hide()
         null
 

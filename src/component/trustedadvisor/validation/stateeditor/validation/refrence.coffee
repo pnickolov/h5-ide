@@ -15,11 +15,11 @@ define [ 'constant', 'MC', 'i18n!nls/lang.js' ], ( constant, MC, lang ) ->
         sprintf.apply @, arguments
 
 
-    __buildTAErr = ( tip, uid, refUid ) ->
+    __buildTAErr = ( tip ) ->
 
         level   : constant.TA.ERROR
         info    : tip
-        uid     : refUid
+        uid     : 'refinexsit'
 
     # return  Array
     __findReference = ( str ) ->
@@ -32,8 +32,8 @@ define [ 'constant', 'MC', 'i18n!nls/lang.js' ], ( constant, MC, lang ) ->
         ret
 
     ########## Public Method ##########
-    checkRefExist = ( obj, data ) ->
-        errs = []
+    __countInexistentRef = ( obj, data ) ->
+        count = 0
 
         if _.isString obj
             if obj.length is 0
@@ -44,19 +44,24 @@ define [ 'constant', 'MC', 'i18n!nls/lang.js' ], ( constant, MC, lang ) ->
             for ref in refs
                 component = MC.canvas_data.component[ ref.uid ]
                 if not component
-                    if data
-                        tip = __getCompTip data.type, data.name, data.stateId, ref.ref
-                        TAError = __buildTAErr tip, data.uid, ref.uid
-
-                        errs.push TAError
-                    else
-                        errs.push 'error'
+                    count++
 
         else
             for key, value of obj
-                errs = errs.concat checkRefExist value, data
+                count += __countInexistentRef value, data
 
-        errs
+        count
+
+
+    checkRefExist = ( obj, data ) ->
+        inexistCount = __countInexistentRef obj, data
+        TAError = null
+
+        if inexistCount
+            tip = __getCompTip data.type, data.name, data.stateId, inexistCount
+            TAError = __buildTAErr tip
+
+        TAError
 
 
     checkRefExist

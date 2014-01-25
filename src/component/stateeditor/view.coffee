@@ -72,7 +72,7 @@ define [ 'event',
             # hide autocomplete when click document
             $(document).on('mousedown', that.onDocumentMouseDown)
             $('#state-editor').on('scroll', () ->
-                $('.atwho-view').hide()
+                $('.ace_editor.ace_autocomplete').hide()
             )
 
             stateObj = that.loadStateData(that.originCompStateData)
@@ -779,6 +779,13 @@ define [ 'event',
                     if cmdName
                         that.refreshDescription(cmdName)
 
+                    $cmdValueItem = $stateItem.find('.command-value')
+                    cmdEditor = $cmdValueItem.data('editor')
+                    if cmdEditor
+                        setTimeout(() ->
+                            cmdEditor.focus()
+                        , 0)
+
                     if that.readOnlyMode
                         that.setEditorReadOnlyMode()
 
@@ -821,7 +828,11 @@ define [ 'event',
                 null
 
             $newStateItem.removeClass('view')
-            $cmdValueItem.focus()
+            cmdEditor = $cmdValueItem.data('editor')
+            if cmdEditor
+                setTimeout(() ->
+                    cmdEditor.focus()
+                , 0)
 
             that.refreshStateId()
 
@@ -851,7 +862,6 @@ define [ 'event',
             $cmdValueItem = $newStateItem.find('.command-value')
             that.bindCommandEvent($cmdValueItem)
 
-
             $stateItemList = that.$stateList.find('.state-item')
             $stateItemList.addClass('view')
 
@@ -862,7 +872,11 @@ define [ 'event',
                 null
 
             $newStateItem.removeClass('view')
-            $cmdValueItem.focus()
+            cmdEditor = $cmdValueItem.data('editor')
+            if cmdEditor
+                setTimeout(() ->
+                    cmdEditor.focus()
+                , 0)
 
             that.refreshStateId()
 

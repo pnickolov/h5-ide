@@ -405,10 +405,14 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 
 				uidMatchAry = refMatchStr.match(/[A-Z0-9]{8}-([A-Z0-9]{4}-){3}[A-Z0-9]{12}/)
 				resUID = uidMatchAry[0]
+
 				if allCompData[resUID]
 					resName = allCompData[resUID].name
-					newRefStr = refMatchStr.replace(resUID, resName)
-					newParaValue = newParaValue.replace(refMatchStr, newRefStr)
+				else
+					resName = 'unknown'
+				
+				newRefStr = refMatchStr.replace(resUID, resName)
+				newParaValue = newParaValue.replace(refMatchStr, newRefStr)
 
 				null
 

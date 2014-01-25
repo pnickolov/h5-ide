@@ -177,7 +177,8 @@
 
       var errorList = $( errorsWrapper )
                           .attr( 'id', hash )
-                          .addClass( errorListClass );
+                          .addClass( errorListClass )
+                          .data( 'uid', ( Math.random() + '' ).substring( 2 ) + $.now() );
 
       var content = $( errorElem ).html( message );
       errorList.append( content );

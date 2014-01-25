@@ -516,6 +516,28 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 
 		new_str
 
+	#############################
+	#  local thumbnail
+	#############################
+
+	# cacheThumb[ tab_id ] =
+	#	canvas       : <$("#canvas_body").html()>
+	#	svg          : <$("#svg_canvas")[0].getBBox()>
+
+	cacheThumb = {}
+
+	addCacheThumb = ( id, canvas, svg ) ->
+		console.log 'addCacheThumb', id, canvas, svg
+
+		cacheThumb[ id ] =
+			canvas : canvas
+			svg    : svg
+
+	getCacheThumb = ( id ) ->
+		cacheThumb[ id ]
+
+	delCacheThumb = ( id ) ->
+		delete cacheThumb[ id ]
 
 	#public
 	canvasData         : canvasData
@@ -558,3 +580,7 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 	addSENameUIDList   : addSENameUIDList
 	filterStateData    : filterStateData
 	convertUID         : convertUID
+
+	addCacheThumb      : addCacheThumb
+	getCacheThumb      : getCacheThumb
+	delCacheThumb      : delCacheThumb

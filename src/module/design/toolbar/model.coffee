@@ -55,6 +55,9 @@ define [ "component/thumbnail/ThumbUtil", 'MC', 'backbone', 'jquery', 'underscor
                     #     stack_region: data.region,
                     #     stack_id: data.id
 
+                    #call save png
+                    me.savePNG id
+
                     #update initial data
                     ide_event.trigger ide_event.UPDATE_STACK_LIST, 'SAVE_STACK', [id]
 
@@ -69,9 +72,6 @@ define [ "component/thumbnail/ThumbUtil", 'MC', 'backbone', 'jquery', 'underscor
                     if key isnt MC.common.other.canvasData.get( 'key' )
                         MC.common.other.canvasData.set 'key', key
                         data.key = key
-
-                    #call save png
-                    me.savePNG id
 
                     #set toolbar flag
                     me.setFlag id, 'SAVE_STACK', name
@@ -92,7 +92,7 @@ define [ "component/thumbnail/ThumbUtil", 'MC', 'backbone', 'jquery', 'underscor
 
                 region  = result.param[3]
                 data    = result.param[4]
-                id      = data.id
+                old_id  = data.id
 
                 name    = data.name
 
@@ -117,16 +117,16 @@ define [ "component/thumbnail/ThumbUtil", 'MC', 'backbone', 'jquery', 'underscor
                     # set origin
                     MC.common.other.canvasData.origin data
 
+                    #call save png
+                    me.savePNG new_id, 'new', old_id
+
                     me.trigger 'TOOLBAR_HANDLE_SUCCESS', 'CREATE_STACK', name
                     ide_event.trigger ide_event.UPDATE_STACK_LIST, 'NEW_STACK', [new_id]
                     ide_event.trigger ide_event.UPDATE_DESIGN_TAB, new_id, name + ' - stack'
                     ide_event.trigger ide_event.UPDATE_STATUS_BAR_SAVE_TIME
 
                     MC.data.stack_list[region].push {'id':new_id, 'name':name}
-
-                    #call save png
-                    me.savePNG new_id, 'new'
-                    me.setFlag id, 'CREATE_STACK', data
+                    me.setFlag old_id, 'CREATE_STACK', data
 
                     new_id
 
@@ -151,9 +151,12 @@ define [ "component/thumbnail/ThumbUtil", 'MC', 'backbone', 'jquery', 'underscor
                     new_id = result.resolved_data.id
                     MC.data.stack_list[region].push {'id':new_id, 'name':new_name}
 
-                    #save png
-                    key = result.resolved_data.key
-                    ide_event.trigger ide_event.UPDATE_REGION_THUMBNAIL, key, new_id
+                    # old save png
+                    #key = result.resolved_data.key
+                    #ide_event.trigger ide_event.UPDATE_REGION_THUMBNAIL, key, new_id
+
+                    # new save png
+                    me.savePNG new_id, 'new', id
 
                     #trigger event
                     me.trigger 'TOOLBAR_HANDLE_SUCCESS', 'DUPLICATE_STACK', name
@@ -546,17 +549,28 @@ define [ "component/thumbnail/ThumbUtil", 'MC', 'backbone', 'jquery', 'underscor
             id      = data.id
             name    = data.name
 
-            if id.indexOf('stack-', 0) == 0   #save
+            # OPEN_STACK
+            if id.indexOf('stack-', 0) == 0
                 stack_model.save_stack { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, data
 
-            else    #new
+            # NEW_STACK
+            else
+
+                # call api
                 stack_model.create { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, data
+
+                # add current canvas and svg to cacheThumb
+                MC.common.other.addCacheThumb id, $("#canvas_body").html(), $("#svg_canvas")[0].getBBox()
 
         #duplicate
         duplicateStack : (region, id, new_name, name) ->
+            console.log 'duplicateStack', region, id, new_name, name
             me = this
 
             stack_model.save_as { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, new_name, name
+
+            # add current canvas and svg to cacheThumb
+            MC.common.other.addCacheThumb id, $("#canvas_body").html(), $("#svg_canvas")[0].getBBox()
 
         #delete
         deleteStack : (region, id, name) ->
@@ -634,13 +648,23 @@ define [ "component/thumbnail/ThumbUtil", 'MC', 'backbone', 'jquery', 'underscor
             me.setFlag MC.common.other.canvasData.get( 'id' ), 'ZOOMOUT_STACK', flag
 
         # when type is 'new' include 'NEW_STACK' 'RUN_STACK' 'APP_UPDATE'
-        savePNG : ( id, type ) ->
-            console.log 'savePNG', id, type
+        # when type is 'new' old_id is 'new-xxxx'
+        savePNG : ( id, type, old_id ) ->
+            console.log 'savePNG', id, type, old_id
 
             if type is 'new'
-                ThumbUtil.save id, $("#canvas_body").html(), $("#svg_canvas")[0].getBBox()
+
+                # get cache thumb
+                obj = MC.common.other.getCacheThumb old_id
+
+                # call ThumbUtil.save
+                if obj and obj.canvas and obj.svg
+                    ThumbUtil.save id, obj.canvas, obj.svg
+
+            # OPEN_STACK
             else
                 ThumbUtil.save id, $("#svg_canvas")
+
             null
 
         generatePNG : () ->

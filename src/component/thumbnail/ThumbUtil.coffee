@@ -9,6 +9,8 @@ define ['UI.canvg', 'UI.download'], ()->
     cHeight = ctx.canvas.clientHeight || ctx.canvas.height
 
     orgFS = ctx.fillStyle
+    ctx.fillStyle = "#FFFFFF"
+    ctx.fillRect( 0, 54, cWidth, cHeight - 54 )
     ctx.fillStyle = ctx.createPattern(GridBackground, "repeat")
     ctx.fillRect( 0, 54, cWidth, cHeight - 54 )
     ctx.fillStyle = orgFS
@@ -29,6 +31,8 @@ define ['UI.canvg', 'UI.download'], ()->
     ctx.canvas.height = 144
 
     ctx.scale ratio, ratio
+    ctx.fillStyle = "#FFFFFF"
+    ctx.fillRect 0, 0, cWidth, cHeight
     ctx.fillStyle = ctx.createPattern(GridBackground, "repeat")
     ctx.fillRect 0, 0, cWidth, cHeight
     null

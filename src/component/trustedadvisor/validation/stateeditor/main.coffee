@@ -2,7 +2,7 @@ define [ './register', 'constant', 'MC','i18n!nls/lang.js' , '../result_vo' ], (
 
 
     __modifyUid = ( result, index ) ->
-        for r in result
+        for r in result or []
             r.uid = "#{index}:#{r.uid}"
         result
 

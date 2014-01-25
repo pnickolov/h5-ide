@@ -15,11 +15,11 @@ define [ 'constant', 'MC', 'i18n!nls/lang.js' ], ( constant, MC, lang ) ->
         sprintf.apply @, arguments
 
 
-    __buildTAErr = ( tip ) ->
+    __buildTAErr = ( tip, stateId ) ->
 
         level   : constant.TA.ERROR
         info    : tip
-        uid     : 'refinexsit'
+        uid     : "refinexsit:#{stateId}"
 
     # return  Array
     __findReference = ( str ) ->
@@ -59,7 +59,7 @@ define [ 'constant', 'MC', 'i18n!nls/lang.js' ], ( constant, MC, lang ) ->
 
         if inexistCount
             tip = __getCompTip data.type, data.name, data.stateId, inexistCount
-            TAError = __buildTAErr tip
+            TAError = __buildTAErr tip, data.stateId
 
         TAError
 

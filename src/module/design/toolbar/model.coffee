@@ -601,6 +601,9 @@ define [ "component/thumbnail/ThumbUtil", 'MC', 'backbone', 'jquery', 'underscor
             idx = 'process-' + region + '-' + app_name
             process_data_map[idx] = data
 
+            # local thumbnail
+            MC.common.other.addCacheThumb idx, $("#canvas_body").html(), $("#svg_canvas")[0].getBBox()
+
             null
 
         updateApp : ( is_update )->
@@ -1016,6 +1019,13 @@ define [ "component/thumbnail/ThumbUtil", 'MC', 'backbone', 'jquery', 'underscor
 
                 # push event
                 if flag is 'RUN_STACK'
+
+                    # new savePNG
+                    if data and data.flag_list and data.flag_list.is_done in [ true, 'true' ] and data.flag_list.app_id
+
+                        me.savePNG data.flag_list.app_id, 'new', tab_name
+
+                    # update process
                     ide_event.trigger ide_event.UPDATE_PROCESS, tab_name
 
                 else

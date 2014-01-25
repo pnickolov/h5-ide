@@ -527,7 +527,7 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 	cacheThumb = {}
 
 	addCacheThumb = ( id, canvas, svg ) ->
-		console.log 'addCacheThumb', id, canvas, svg
+		console.log 'addCacheThumb', id
 
 		cacheThumb[ id ] =
 			canvas : canvas

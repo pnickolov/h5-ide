@@ -415,7 +415,7 @@
     };
     cacheThumb = {};
     addCacheThumb = function(id, canvas, svg) {
-      console.log('addCacheThumb', id, canvas, svg);
+      console.log('addCacheThumb', id);
       return cacheThumb[id] = {
         canvas: canvas,
         svg: svg

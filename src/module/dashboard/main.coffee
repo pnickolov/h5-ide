@@ -2,12 +2,15 @@
 #  Controller for dashboard module
 ####################################
 
-define [ 'jquery', 'event', 'MC', 'base_main', 'vpc_model' ], ( $, ide_event, MC, base_main, vpc_model ) ->
+define [ "component/thumbnail/ThumbUtil", 'jquery', 'event', 'MC', 'base_main', 'vpc_model' ], ( ThumbUtil, $, ide_event, MC, base_main, vpc_model ) ->
 
     current_region = null
     overview_app    = null
     overview_stack  = null
     should_update_overview = false
+
+    stackListGot = false
+    appListGot   = false
 
     #private
     initialize = ->
@@ -155,6 +158,12 @@ define [ 'jquery', 'event', 'MC', 'base_main', 'vpc_model' ], ( $, ide_event, MC
                 view.renderMapResult()
                 model.getItemList 'app', current_region, overview_app
 
+
+                if stackListGot
+                    ThumbUtil.cleanup()
+                    stackListGot = false
+                else
+                    appListGot = true
                 null
 
             ide_event.onLongListen 'RESULT_STACK_LIST', ( result ) ->
@@ -168,6 +177,12 @@ define [ 'jquery', 'event', 'MC', 'base_main', 'vpc_model' ], ( $, ide_event, MC
 
                 model.getItemList 'stack', current_region, overview_stack
 
+
+                if appListGot
+                    ThumbUtil.cleanup()
+                    appListGot = false
+                else
+                    stackListGot = true
                 null
 
             ide_event.onLongListen ide_event.NAVIGATION_TO_DASHBOARD_REGION, ( result ) ->

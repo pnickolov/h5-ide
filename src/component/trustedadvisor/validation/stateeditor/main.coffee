@@ -14,7 +14,7 @@ define [ './register', 'constant', 'MC','i18n!nls/lang.js' , '../result_vo' ], (
             result = validator( state, data )
             result = __modifyUid result, index
 
-            results = result.concat result
+            results = results.concat result
 
         results
 

@@ -268,9 +268,6 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
             @on 'AWS_RESOURCE_RETURN', @awsReturnHandler
             @on 'APP_INFO_RETURN', @appInfoHandler
 
-            @on 'STACK_LST_RETURN', @stackReturnHandler
-            @on 'APP_LST_RETURN', @appReturnHandler
-
             #listen VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN
             vpc_model.on 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN', @vpcAccountAttrsReturnHandler, @
 

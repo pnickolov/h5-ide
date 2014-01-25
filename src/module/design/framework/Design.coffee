@@ -1,5 +1,13 @@
 define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( constant, CanvasAdaptor ) ->
 
+  PropertyDefination =
+    policy : { ha : "" }
+    lease  : { action: "", length: null, due: null }
+    schedule :
+      stop   : { run: null, when: null, during: null },
+      backup : { when : null, day : null },
+      start  : { when : null }
+
   ###
     -------------------------------
      Design is the main controller of the framework. It handles the input / ouput of the Application ( a.k.a the DesignCanvas ).
@@ -427,7 +435,7 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
 
     # Seems like some other place have call Design.instance().set("layout")
     # So we assign component/layout at last
-    data = $.extend( { property : {} }, @attributes )
+    data = $.extend( {}, @attributes )
     data.component = component_data
     data.layout    = layout_data
 
@@ -445,7 +453,7 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
     # 1. save $canvas's size to layout
     data.layout.size = @canvas.sizeAry
     # 2. save stoppable to property
-    data.property.stoppable = @isStoppable()
+    data.property = $.extend { stoppable : @isStoppable() }, PropertyDefination
 
     data.version = "2014-01-15"
 

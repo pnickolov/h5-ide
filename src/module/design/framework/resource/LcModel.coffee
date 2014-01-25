@@ -74,6 +74,17 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
 
       null
 
+    # isRemovable : ()->
+    #  state = @get("state")
+    #  if state isnt undefined and state.length > 0
+    #     that = @
+    #     modal MC.template.NodeStateRemoveConfirmation(name: @get("name")), false, ->
+    #       $("#btn-confirm").click ->
+    #         that.remove()
+    #       return false
+
+    #     return false
+
     iconUrl : ()->
       ami = MC.data.dict_ami[ @get 'imageId' ] || @get("cachedAmi")
 

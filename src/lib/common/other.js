@@ -1,6 +1,6 @@
 (function() {
   define(['MC', 'constant', 'jquery', 'underscore'], function(MC, constant) {
-    var addCacheMap, addProcess, addSEList, addSENameUIDList, addUnmanaged, addUnmanagedVpc, cacheIDMap, canvasData, convertUID, createUID, delCacheMap, delUnmanaged, deleteProcess, filterProcess, filterStateData, getCacheMap, getProcess, getUnmanagedVpc, initDataProcess, initSEList, initSENameUIDList, initUnmanaged, isCurrentTab, isResultRight, listCacheMap, listSE, listSENameUID, listUnmanaged, listUnmanagedVpc, processType, searchCacheMap, searchStackAppById, setCacheMap, setCurrentTabId, state_editor_list, state_editor_name_list, unmanaged_resource_list, unmanaged_vpc_list, verify500;
+    var addCacheMap, addCacheThumb, addProcess, addSEList, addSENameUIDList, addUnmanaged, addUnmanagedVpc, cacheIDMap, cacheThumb, canvasData, convertUID, createUID, delCacheMap, delCacheThumb, delUnmanaged, deleteProcess, filterProcess, filterStateData, getCacheMap, getCacheThumb, getProcess, getUnmanagedVpc, initDataProcess, initSEList, initSENameUIDList, initUnmanaged, isCurrentTab, isResultRight, listCacheMap, listSE, listSENameUID, listUnmanaged, listUnmanagedVpc, processType, searchCacheMap, searchStackAppById, setCacheMap, setCurrentTabId, state_editor_list, state_editor_name_list, unmanaged_resource_list, unmanaged_vpc_list, verify500;
     canvasData = {
       init: function(data) {
         console.log('canvasData:init');
@@ -413,6 +413,20 @@
       });
       return new_str;
     };
+    cacheThumb = {};
+    addCacheThumb = function(id, canvas, svg) {
+      console.log('addCacheThumb', id);
+      return cacheThumb[id] = {
+        canvas: canvas,
+        svg: svg
+      };
+    };
+    getCacheThumb = function(id) {
+      return cacheThumb[id];
+    };
+    delCacheThumb = function(id) {
+      return delete cacheThumb[id];
+    };
     return {
       canvasData: canvasData,
       isCurrentTab: isCurrentTab,
@@ -447,7 +461,10 @@
       listSENameUID: listSENameUID,
       addSENameUIDList: addSENameUIDList,
       filterStateData: filterStateData,
-      convertUID: convertUID
+      convertUID: convertUID,
+      addCacheThumb: addCacheThumb,
+      getCacheThumb: getCacheThumb,
+      delCacheThumb: delCacheThumb
     };
   });
 

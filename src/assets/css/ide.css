@@ -7062,6 +7062,20 @@ summary:focus {
 	width: 351px;
 }
 
+/* Node state remove confirmation */
+#node-state-remove-confirm-wrap {
+	padding: 20px 25px 5px;
+}
+
+#node-state-remove-confirm-wrap h4 {
+	color: #666;
+}
+
+#node-state-remove-confirm-wrap p {
+	font-size: 14px;
+	margin-top: 10px;
+	color: #999;
+}
 
 /*unmanaged-VPC-modal*/
 #unmanaged-VPC-modal-body {

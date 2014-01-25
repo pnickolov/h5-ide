@@ -3547,10 +3547,11 @@ module.exports =
 
     # State Editor
     TA_MSG_ERROR_STATE_EDITOR_INEXISTENT_INSTANCE:
-      en: "Instance <span class='validation-tag tag-instance'>%s</span> state %s has referenced an inexistent component %s."
+      en: "Instance <span class='validation-tag tag-instance'>%s</span> state %s has referenced %s inexistent component(s)."
       zh: ""
+
     TA_MSG_ERROR_STATE_EDITOR_INEXISTENT_ASG:
-      en: "Auto Scaling Group <span class='validation-tag tag-asg'>%s</span> state %s has referenced an inexistent component %s."
+      en: "Auto Scaling Group <span class='validation-tag tag-asg'>%s</span> state %s has referenced %s inexistent component(s)."
       zh: ""
 
 

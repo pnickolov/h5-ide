@@ -642,6 +642,7 @@ body {
 
 #state-editor .state-view .parsley-error {
 	height: 28px;
+	min-width: 20px;
 }
 
 /* *************************************** state sortable */

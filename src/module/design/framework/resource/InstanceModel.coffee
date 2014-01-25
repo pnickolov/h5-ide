@@ -349,15 +349,9 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
     isRemovable : ()->
       state = @get("state")
       if state isnt undefined and state.length > 0
-        that = @
-        modal MC.template.NodeStateRemoveConfirmation(name: @get("name")), false, ->
-          $("#btn-confirm").click ->
-            that.remove()
-          return false
+        return MC.template.NodeStateRemoveConfirmation(name: @get("name"))
 
-        return false
-
-      return true
+      true
 
     setEmbedEni : ( eni )->
       this.__mainEni = eni

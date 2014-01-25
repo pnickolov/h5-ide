@@ -46,7 +46,12 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
         new SgAsso( defaultSg, this )
       null
 
-    isRemovable : ()-> { error : lang.ide.CVS_MSG_ERR_DEL_LC }
+    isRemovable : ()->
+      # state = @get("state")
+      # if state isnt undefined and state.length > 0
+      #   return MC.template.NodeStateRemoveConfirmation(name: @get("name"))
+      { error : lang.ide.CVS_MSG_ERR_DEL_LC }
+
     isDefaultTenancy : ()-> true
 
     # Use by CanvasElement
@@ -73,17 +78,6 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
         v.remove()
 
       null
-
-    # isRemovable : ()->
-    #  state = @get("state")
-    #  if state isnt undefined and state.length > 0
-    #     that = @
-    #     modal MC.template.NodeStateRemoveConfirmation(name: @get("name")), false, ->
-    #       $("#btn-confirm").click ->
-    #         that.remove()
-    #       return false
-
-    #     return false
 
     connect : ( cn )->
       if @parent()

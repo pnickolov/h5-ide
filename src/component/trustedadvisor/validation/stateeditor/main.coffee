@@ -1,9 +1,12 @@
 define [ './register', 'constant', 'MC','i18n!nls/lang.js' , '../result_vo' ], ( validators, constant, MC, lang, resultVO ) ->
 
 
-    __modifyUid = ( result, index ) ->
-        for r in result or []
-            r.uid = "#{index}:#{r.uid}"
+    __modifyUid = ( result, uid, index ) ->
+        if not _.isArray result
+            result = [ result ]
+
+        for r in result
+            r.uid = "#{uid}:#{index}:#{r.uid}"
         result
 
     # Main Check
@@ -12,7 +15,7 @@ define [ './register', 'constant', 'MC','i18n!nls/lang.js' , '../result_vo' ], (
 
         for index, validator of validators
             result = validator( state, data )
-            result = __modifyUid result, index
+            result = __modifyUid result, data.uid, index
 
             results = results.concat result
 

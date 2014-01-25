@@ -1512,7 +1512,7 @@ MC.canvas = {
 	{
 		$(node).remove();
 
-		MC.canvas.event.nodeStateRemove(node.id);
+		//MC.canvas.event.nodeStateRemove(node.id);
 
 		return true;
 	},

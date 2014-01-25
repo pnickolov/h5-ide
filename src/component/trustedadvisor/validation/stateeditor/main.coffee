@@ -2,11 +2,13 @@ define [ './register', 'constant', 'MC','i18n!nls/lang.js' , '../result_vo' ], (
 
 
     __modifyUid = ( result, uid, index ) ->
-        if not _.isArray result
-            result = [ result ]
+        if result
+            if not _.isArray result
+                result = [ result ]
 
-        for r in result
-            r.uid = "#{uid}:#{index}:#{r.uid}"
+            for r in result or []
+                r.uid = "#{uid}:#{index}:#{r.uid}"
+
         result
 
     # Main Check

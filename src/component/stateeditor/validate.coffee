@@ -92,17 +92,16 @@ define [ 'Design', 'validation', 'constant', 'i18n!nls/lang.js', 'jquery', 'unde
 
         componentExist: ( val ) ->
             refs = Helper.getRefName val
+            inexsitCount = 0
 
-            names = ""
 
             for ref in refs
                 if not Helper.nameExist ref.name
-                    names = names + ref.name + ", "
-                    continue
+                    inexsitCount++
 
-            if names
-                names = names.slice 0, -2
-                return "Reference #{names} don't exist."
+
+            if inexsitCount
+                return "Reference 'unknown' doesn't exist."
 
             null
 

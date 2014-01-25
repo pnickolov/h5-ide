@@ -2906,7 +2906,7 @@ Node.prototype.updateDom = function (options) {
 	  {//not required property
 		domField.innerHTML = '<font color="blue" style="font-weight: bold;">' + field + '</font>';
 	  }
-	  else if (this.value.indexOf("Not necessary")!=-1)
+	  else if (this.value.indexOf("not necessary")!=-1)
 	  {//not necessary property
 		domField.innerHTML = '<font color="grey" style="font-weight: bold;">' + field + '</font>';
 	  }

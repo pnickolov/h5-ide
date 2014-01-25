@@ -60,7 +60,7 @@
       "number": "instance number in server group, INT(>=1), required",
       "serverGroupUid": "server group uid, STRING, required, UID",
       "serverGroupName": "server group name, STRING, required, regex, ^\\w+[A-Za-z0-9-]*$, eg:host1",
-      "#state": "Not necessary",
+      "state": "state data for visualops, ARRAY, default []",
       "resource": {
         "InstanceId": "regex instance id(filled by RW), STRING, 'i-\\w{8}', not required",
         "ImageId": "regex ami id, STRING, 'ami-\\w{8}', required",
@@ -72,7 +72,7 @@
         "Placement": {
           "AvailabilityZone": "reference, STRING, @xxxx.resource.xxxx, required, example:@$AZ0.resource.ZoneName",
           "Tenancy": "The tenancy of the instance(for vpc), STRING, [dedicated|*default], not required",
-          "#GroupName": "Not necessary"
+          "#GroupName": "not necessary"
         },
         "EbsOptimized": "BOOLEAN, [true|*false], not required",
         "NetworkInterface": [],
@@ -90,12 +90,12 @@
           "reference, STRING, @xxxx.resource.xxxx, required for classic mode, example:@$DEFAULT-SG.resource.GroupName"
         ],
         "DisableApiTermination": "BOOLEAN, [true|*false]",
-        "ShutdownBehavior": "Not necessary, [*terminate|stop], see instanceInitiatedShutdownBehavior",
-        "#PrivateIpAddress": "Not necessary",
-        "#KernelId": "Not necessary",
-        "#RamdiskId": "Not necessary"
+        "#ShutdownBehavior": "not necessary, [*terminate|stop], see instanceInitiatedShutdownBehavior",
+        "#PrivateIpAddress": "not necessary",
+        "#KernelId": "not necessary",
+        "#RamdiskId": "not necessary"
       },
-      "software: Not necessary": {}
+      "#software - not necessary": {}
     },
     "$VOLUME0": {
       "type": "Component type, STRING, [AWS.EC2.EBS.Volume], required",
@@ -112,15 +112,15 @@
         "VolumeType": "STRING, [*standard|io1], required",
         "Iops": "INT, [100,2000], required when VolumeType is 'io1'",
         "SnapshotId": "regex snapshot id,'snap-\\w{8}', required when volume create from a snapshot",
-        "#CreateTime": "Not necessary",
-        "#Status": "Not necessary",
+        "#CreateTime": "not necessary",
+        "#Status": "not necessary",
         "AttachmentSet": {
           "#VolumeId": "regex volume id,'vol-\\w{8}', not required, example:@$VOLUME0.resource.VolumeId",
           "Device": "required, example:/dev/sdf",
           "InstanceId": "reference, STRING, @xxxx.resource.xxxx, required, example:@$INSTANCE0.resource.InstanceId",
-          "?DeleteOnTermination": "Not necessary,[*true,false]",
-          "#AttachTime": "Not necessary",
-          "#Status": "Not necessary"
+          "#DeleteOnTermination": "not necessary,[*true,false]",
+          "#AttachTime": "not necessary",
+          "#Status": "not necessary"
         }
       }
     },
@@ -141,8 +141,8 @@
           }
         ],
         "IpPermissionsEgress": [],
-        "#GroupDescription": "Not required",
-        "#OwnerId": "Not necessary"
+        "GroupDescription": "not required",
+        "#OwnerId": "not necessary"
       }
     },
     "$DEFAULT-KP": {
@@ -165,9 +165,9 @@
         "PrivateIpAddress": "reference eni private ip, STRING, @xxxx.resource.xxxx, not required, example:@ENI0.resource.PrivateIpAddressSet.0.PrivateIpAddress",
         "Domain": "STRING, [vpc|standard], not required, example:vpc",
         "AllocationId": "regex AllocationId, STRING, 'eipalloc-\\w{8}', not required",
-        "#AssociationId": "Not necessary",
-        "#NetworkInterfaceOwnerId": "Not necessary",
-        "#AllowReassociation": "Not necessary"
+        "#AssociationId": "not necessary",
+        "#NetworkInterfaceOwnerId": "not necessary",
+        "#AllowReassociation": "not necessary"
       }
     },
     "$ENI0": {
@@ -202,29 +202,29 @@
             "Primary": "BOOLEAN, [*true|false], required",
             "AutoAssign": "BOOLEAN, [*true|false], not required",
             "PrivateIpAddress": "regex IP, STRING, '\\d+\\.\\d+\\.\\d+\\.\\d+', not required, example:10.0.0.4",
-            "?Association": {
-              "InstanceId": "Not necessary",
-              "AssociationID": "Not necessary",
-              "PublicDnsName": "Not necessary",
-              "IpOwnerId": "Not necessary",
-              "PublicIp": "Not necessary",
-              "AllocationID": "Not necessary"
+            "#Association - not necessary": {
+              "InstanceId": "not necessary",
+              "AssociationID": "not necessary",
+              "PublicDnsName": "not necessary",
+              "IpOwnerId": "not necessary",
+              "PublicIp": "not necessary",
+              "AllocationID": "not necessary"
             }
           }
         ],
         "Attachment": {
           "DeviceIndex": "INT, [0, 32], required, example:0",
           "InstanceId": "reference, STRING, @xxxx.resource.xxxx, required, example:@$INSTANCE0.resource.InstanceId",
-          "?AttachmentId": "Not necessary",
-          "#AttachTime": "Not necessary"
+          "#AttachmentId": "not necessary",
+          "#AttachTime": "not necessary"
         },
-        "#PrivateDnsName": "Not necessary",
-        "Description": "Not necessary",
-        "#MacAddress": "Not necessary",
-        "#RequestManaged": "Not necessary",
-        "#RequestId": "Not necessary",
-        "#OwnerId": "Not necessary",
-        "#Status": "Not necessary"
+        "#PrivateDnsName": "not necessary",
+        "#Description": "not necessary",
+        "#MacAddress": "not necessary",
+        "#RequestManaged": "not necessary",
+        "#RequestId": "not necessary",
+        "#OwnerId": "not necessary",
+        "#Status": "not necessary"
       }
     },
     "$ELB0": {
@@ -260,7 +260,7 @@
               "LoadBalancerPort": "INT, [0, 65535], required, example:443",
               "SSLCertificateId": "reference, STRING, required for HTTPS and SSL, example:@SERVER-CERTIFICATE.resource.ServerCertificateMetadata.Arn"
             },
-            "#PolicyNames": "Not necessary"
+            "#PolicyNames": "not necessary"
           }
         ],
         "HealthCheck": {
@@ -272,44 +272,44 @@
         },
         "BackendServerDescriptions": [
           {
-            "?InstantPort": "INT, [0, 65535], not required",
-            "?PoliciyNames": "Not required"
+            "InstantPort": "INT, [0, 65535], not required",
+            "PoliciyNames": "not required"
           }
         ],
-        "DNSName": "Not required",
-        "?Policies": {
+        "DNSName": "not required",
+        "Policies": {
           "LBCookieStickinessPolicies": [
             {
-              "PolicyName": "Not required",
-              "CookieExpirationPeriod": "Not necessary"
+              "PolicyName": "not required",
+              "#CookieExpirationPeriod": "not necessary"
             }
           ],
           "AppCookieStickinessPolicies": [
             {
-              "PolicyName": "Not required",
-              "CookieName": "Not required"
+              "PolicyName": "not required",
+              "CookieName": "not required"
             }
           ],
           "OtherPolicies": [
             {
-              "PolicyName": "Not required",
-              "PolicyTypeName": "Not required",
+              "PolicyName": "not required",
+              "PolicyTypeName": "not required",
               "PolicyAttributes": {
-                "AttributeName": "Not required",
-                "AttributeValue": "Not required"
+                "AttributeName": "not required",
+                "AttributeValue": "not required"
               },
-              "LoadBalancerName": "Not required"
+              "LoadBalancerName": "not required"
             }
           ]
         },
         "LoadBalancerName": "regex name, STRING, '^\\w+[A-Za-z0-9-]*$', required, example:load-balancer-1",
-        "?SourceSecurityGroup": {
-          "OwnerAlias": "Not necessary",
-          "GroupName": "Not necessary"
+        "#SourceSecurityGroup - not necessary": {
+          "OwnerAlias": "not necessary",
+          "GroupName": "not necessary"
         },
-        "#CanonicalHostedZoneNameID": "Not necessary",
-        "#CanonicalHostedZoneName": "Not necessary",
-        "#CreatedTime": "Not necessary"
+        "#CanonicalHostedZoneNameID": "not necessary",
+        "#CanonicalHostedZoneName": "not necessary",
+        "#CreatedTime": "not necessary"
       }
     },
     "$SERVER-CERTIFICATE0": {
@@ -319,13 +319,13 @@
       "resource": {
         "PrivateKey": "required, example:-----BEGIN RSA PRIVATE KEY-----\n...\n-----END RSA PRIVATE KEY-----",
         "CertificateBody": "required, example:-----BEGIN CERTIFICATE-----\n...\n-----END CERTIFICATE-----",
-        "CertificateChain": "Not required",
+        "CertificateChain": "not required",
         "ServerCertificateMetadata": {
-          "Arn": "Not required",
-          "ServerCertificateId": "Not required",
-          "ServerCertificateName": "Not required, example:aaa",
-          "Path": "Not required",
-          "UploadDate": "Not necessary"
+          "Arn": "not required",
+          "ServerCertificateId": "not required",
+          "ServerCertificateName": "not required, example:aaa",
+          "Path": "not required",
+          "#UploadDate": "not necessary"
         }
       }
     },
@@ -340,8 +340,8 @@
         "EnableDnsHostnames": "BOOLEAN, [true|*false], not required",
         "DhcpOptionsId": "reference or [default], STRING, @xxxx.resource.xxxx, required, example:@$DHCP.resource.DhcpOptionsId",
         "CidrBlock": "regex IP range, STRING, '\\d+\\.\\d+\\.\\d+\\.\\d+/\\d+', required, example:10.0.0.0/16",
-        "?IsDefault": "Not necessary, BOOLEAN [true,*false]",
-        "#State": "Not necessary"
+        "#IsDefault": "not necessary, BOOLEAN [true,*false]",
+        "#State": "not necessary"
       }
     },
     "$DHCP": {
@@ -395,7 +395,7 @@
         "InternetGatewayId": "regex IGW id(filled by RW), STRING, 'igw-\\w{8}', not required",
         "AttachmentSet": [
           {
-            "#State": "Not necessary, STRING, example:'available'",
+            "#State": "not necessary, STRING, example:'available'",
             "VpcId": "reference, STRING, @xxxx.resource.xxxx, required, example:@$VPC.resource.VpcId"
           }
         ]
@@ -407,13 +407,13 @@
       "uid": "regex UID, STRING, '^\\w{8}-\\w{4}-\\w{4}-\\w{4}-\\w{12}$', required, same to $VGW",
       "resource": {
         "VpnGatewayId": "regex VGW id(filled by RW), STRING, 'vgw-\\w{8}', not required",
-        "#State": "Not necessary, STRING, example:'available'",
+        "#State": "not necessary, STRING, example:'available'",
         "AvailabilityZone": "reference, STRING, @xxxx.resource.xxxx, not required, example:@AZ.resource.ZoneName",
         "Type": "STRING, [ipsec.1], not required, example:ipsec.1",
         "Attachments": [
           {
             "VpcId": "reference, STRING, @xxxx.resource.xxxx, required, example:@$VPC.resource.VpcId",
-            "#State": "Not necessary, example:'attached'"
+            "#State": "not necessary, example:'attached'"
           }
         ]
       }
@@ -427,8 +427,8 @@
         "VpcId": "reference, STRING, @xxxx.resource.xxxx, required, example:@$VPC.resource.VpcId",
         "AvailabilityZone": "reference, STRING, @xxxx.resource.xxxx, required, example:@AZ.resource.ZoneName",
         "CidrBlock": "regex IP range, STRING, '\\d+\\.\\d+\\.\\d+\\.\\d+/\\d+', required, example:'10.0.0.0/24'",
-        "#AvailableIpAddressCount": "Not necessary",
-        "#State": "Not necessary"
+        "#AvailableIpAddressCount": "not necessary",
+        "#State": "not necessary"
       }
     },
     "$ROUTETABLE0": {
@@ -448,8 +448,8 @@
             "InstanceId": "STRING, '' when GatewayId is 'default'",
             "NetworkInterfaceId": "STRING, '' when GatewayId is 'default'",
             "GatewayId": "the default item, STRING, [local], required",
-            "#State": "?Not necessary, example:'active'",
-            "#InstanceOwnerId": "Not necessary"
+            "#State": "not necessary, example:'active'",
+            "#InstanceOwnerId": "not necessary"
           },
           {
             "Origin": "STRING, '' when route to instance",
@@ -457,8 +457,8 @@
             "InstanceId": "reference, STRING, @xxxx.resource.xxxx, required, example:@$INSTANCE0.resource.InstanceId",
             "NetworkInterfaceId": "STRING, '' when route to instance",
             "GatewayId": "STRING, '' when route to instance",
-            "#State": "Not necessary",
-            "#InstanceOwnerId": "Not necessary"
+            "#State": "not necessary",
+            "#InstanceOwnerId": "not necessary"
           },
           {
             "Origin": "STRING, '' when route to IGW/VGW",
@@ -466,8 +466,8 @@
             "InstanceId": "STRING, '' when route to IGW/VGW",
             "NetworkInterfaceId": "STRING, '' when route to IGW/VGW",
             "GatewayId": "reference, STRING, @xxxx.resource.xxxx,or  Valid value,'local', not required, example:@$IGW.resource.InternetGatewayId",
-            "#State": "Not necessary",
-            "# InstanceOwnerId": "Not necessary"
+            "#State": "not necessary",
+            "#InstanceOwnerId": "not necessary"
           },
           {
             "Origin": "STRING, '' when route to ENI",
@@ -475,16 +475,16 @@
             "InstanceId": "STRING, '' when route to ENI",
             "NetworkInterfaceId": "reference, STRING, @xxxx.resource.xxxx, not required, example:@$ENI1.resource.NetworkInterfaceId",
             "GatewayId": "STRING, '' when route to ENI",
-            "#State": "Not necessary",
-            "#InstanceOwnerId": "Not necessary"
+            "#State": "not necessary",
+            "#InstanceOwnerId": "not necessary"
           }
         ],
         "AssociationSet": [
           {
             "Main": "BOOLEAN, [true|false], not required, example:true",
             "SubnetId": "reference to subnet id or empty, STRING, @xxxx.resource.xxxx, required when Main is false",
-            "#RouteTableId": "Not necessary",
-            "#RouteTableAssociationId": "Not necessary"
+            "#RouteTableId": "not necessary",
+            "#RouteTableAssociationId": "not necessary"
           }
         ]
       }
@@ -497,7 +497,7 @@
         "NetworkAclId": "regex ACL(filled by RW), STRING, 'acl-\\w{8}', not required",
         "VpcId": "reference, STRING, @xxxx.resource.xxxx, required, example:@$VPC.resource.VpcId",
         "Default": "BOOLEAN, [true|false], required",
-        "RouteTableId": "?",
+        "#RouteTableId": "Not Necessary",
         "EntrySet": [
           {
             "IcmpTypeCode": {
@@ -534,12 +534,12 @@
           {
             "SubnetId": "reference, STRING, @xxxx.resource.xxxx, required, example:@$SUBNET0.resource.SubnetId",
             "NetworkAclAssociationId": "regex acl assoc id(filled by RW), STRING, 'aclassoc-\\w{8}', not required",
-            "#NetworkAclId": "Not necessary"
+            "#NetworkAclId": "not necessary"
           },
           {
             "SubnetId": "reference, STRING, @xxxx.resource.xxxx, required, example:@$SUBNET1.resource.SubnetId",
             "NetworkAclAssociationId": "regex acl assoc id(filled by RW), STRING, 'aclassoc-\\w{8}', not required",
-            "NetworkAclId": "Not necessary"
+            "#NetworkAclId": "not necessary"
           }
         ]
       }
@@ -555,23 +555,23 @@
         "Routes": [
           {
             "DestinationCidrBlock": "regex IP range,'\\d+\\.\\d+\\.\\d+\\.\\d+/\\d+', required, example:'192.168.1.0/24'",
-            "Source": "Not necessary",
-            "#State": "Not necessary"
+            "#Source": "not necessary",
+            "#State": "not necessary"
           }
         ],
-        "VgwTelemetry": {
-          "LastStatusChange": "Not necessary",
-          "AcceptRouteCount": "Not necessary",
-          "OutsideIpAddress": "Not necessary",
-          "StatusMessage": "Not necessary",
-          "Status": "Not necessary"
+        "#VgwTelemetry - not necessary": {
+          "LastStatusChange": "not necessary",
+          "AcceptRouteCount": "not necessary",
+          "OutsideIpAddress": "not necessary",
+          "StatusMessage": "not necessary",
+          "Status": "not necessary"
         },
         "Type": "STRING, [ipsec.1], not required, example:ipsec.1",
         "Options": {
           "StaticRoutesOnly": "BOOLEAN, [*true|false], required"
         },
-        "#State": "Not necessary",
-        "#CustomerGatewayConfiguration": "Not necessary"
+        "#State": "not necessary",
+        "#CustomerGatewayConfiguration": "not necessary"
       }
     },
     "$CGW0": {
@@ -583,7 +583,7 @@
         "IpAddress": "regex IP,'\\d+\\.\\d+\\.\\d+\\.\\d+', required, example:'211.98.26.10'",
         "Type": "STRING, [ipsec.1], not required, example:ipsec.1",
         "BgpAsn": "INT, [1, 4294967295], not required",
-        "#State": "Not necessary, exmaple:'available'"
+        "#State": "not necessary, exmaple:'available'"
       }
     },
     "$ASG0": {
@@ -592,20 +592,20 @@
       "uid": "regex UID, STRING, '^\\w{8}-\\w{4}-\\w{4}-\\w{4}-\\w{12}$', required, same to $ASG0",
       "resource": {
         "AutoScalingGroupARN": "regex ARN(filled by RW), STRING, '^arn:aws:\\w+:[a-zA-Z0-9-]*:[0-9]*:', not required",
-        "AutoScalingGroupName": "?regex name, STRING, '^\\w+[A-Za-z0-9-]*$, required', example:'asg1'",
+        "AutoScalingGroupName": "regex name, STRING, '^\\w+[A-Za-z0-9-]*$, required', example:'asg1'",
         "LaunchConfigurationName": "reference, required, example:@$LAUNCH-CONFIGURATION0.resource.LaunchConfigurationName",
         "MinSize": "INT, [0, 65534], required, example:1",
         "MaxSize": "INT, [0, 65534], required, example:2",
         "VPCZoneIdentifier": "reference, STRING, @xxxx.resource.xxxx, required for VPC, example:'@$SUBNET0.resource.SubnetId,@$SUBNET1.resource.SubnetId'",
         "AvailabilityZones": [
-          "Not required, reference, STRING, @xxxx.resource.xxxx, example:@AZ.resource.ZoneName",
-          "Not required, reference, STRING, @xxxx.resource.xxxx, example:@AZ.resource.ZoneName"
+          "not required, reference, STRING, @xxxx.resource.xxxx, example:@AZ.resource.ZoneName",
+          "not required, reference, STRING, @xxxx.resource.xxxx, example:@AZ.resource.ZoneName"
         ],
         "LoadBalancerNames": [
           "reference,　not required, example:@$ELB0.resource.LoadBalancerName"
         ],
-        "Instances ?": [],
-        "InstanceId": "?",
+        "#Instances - not necessary": [],
+        "#InstanceId": "not necessary",
         "TerminationPolicies": [
           "['OldestInstance', 'NewestInstance', 'OldestLaunchConfiguration', 'ClosestToNextInstanceHour', 'Default'], not required, example:'Default'"
         ],
@@ -613,29 +613,30 @@
         "HealthCheckType": "STRING, [EC2|ELB], not required, example:'EC2'",
         "DesiredCapacity": "INT, [0, 65534], not required, example:1",
         "DefaultCooldown": "INT, [0, 86400], not required, example:300",
-        "SuspendedProcesses": [
-          {
-            "ProcessName": "Not necessary",
-            "SuspensionReason": "Not necessary"
-          }
-        ],
-        "EnabledMetrics": [
-          {
-            "Metric": "Not necessary",
-            "Granularity": "Not necessary"
-          }
-        ],
-        "#Status": "Not necessary",
-        "PlacementGroup": "Not necessary",
-        "#CreatedTime": "Not necessary",
         "ShouldDecrementDesiredCapacity": "",
-        "Tags": "?"
+        "#SuspendedProcesses - not necessary": [
+          {
+            "ProcessName": "not necessary",
+            "SuspensionReason": "not necessary"
+          }
+        ],
+        "#EnabledMetrics": [
+          {
+            "Metric": "not necessary",
+            "Granularity": "not necessary"
+          }
+        ],
+        "#Status": "not necessary",
+        "#PlacementGroup": "not necessary",
+        "#CreatedTime": "not necessary",
+        "#Tags": "not necessary"
       }
     },
     "$LAUNCH-CONFIGURATION0": {
       "type": "Component type, STRING, [AWS.AutoScaling.LaunchConfiguration], required",
       "name": "regex name, STRING, '^\\w+[A-Za-z0-9-]*$, required', example:'launch-config-1'",
       "uid": "regex UID, STRING, '^\\w{8}-\\w{4}-\\w{4}-\\w{4}-\\w{12}$', required, same to $LAUNCH-CONFIGURATION0",
+      "state": "state data for visualops, ARRAY, default []",
       "resource": {
         "LaunchConfigurationARN": "regex LC(filled by RW), STRING, '^arn:aws:\\w+:[a-zA-Z0-9-]*:[0-9]*:', not required",
         "LaunchConfigurationName": "regex name, STRING, '^\\w+[A-Za-z0-9-]*$', required, example：launch-config-1",
@@ -651,16 +652,16 @@
           {
             "DeviceName": "required, example:'/dev/sdf'",
             "Ebs": {
-              "VolumeSize": "?required, example:1"
+              "VolumeSize": "required, example:1"
             }
           }
         ],
-        "IamInstanceProfile": "Not necessary",
-        "UserData": "Not required",
-        "SpotPrice": "Not necessary",
-        "#CreatedTime": "Not necessary",
-        "#KernelId": "Not necessary",
-        "#RamdiskId": "Not necessary"
+        "UserData": "not required",
+        "#IamInstanceProfile": "not necessary",
+        "#SpotPrice": "not necessary",
+        "#CreatedTime": "not necessary",
+        "#KernelId": "not necessary",
+        "#RamdiskId": "not necessary"
       }
     },
     "$CLOUD-WATCH0": {
@@ -668,12 +669,12 @@
       "name": "regex name, STRING, '^\\w+[A-Za-z0-9-]*$', not required, example:'asg1-policy-1-alarm'",
       "uid": "regex UID, STRING, '^\\w{8}-\\w{4}-\\w{4}-\\w{4}-\\w{12}$', required, same to $CLOUD-WATCH0",
       "resource": {
-        "AlarmArn": "regex ARN(?filled by RW), STRING, not required",
+        "AlarmArn": "regex ARN(filled by RW), STRING, not required",
         "AlarmName": "regex name, STRING, '^\\w+[A-Za-z0-9-]*$', required, example:asg1-policy-1-alarm",
         "EvaluationPeriods": "INT, [1, 86400], not required, example:2",
         "Namespace": "STRING, [AWS/AutoScaling|AWS/EC2|AWS/ELB], required, example:AWS/AutoScaling",
         "MetricName": "regex name, STRING, [CPUUtilization|DiskReadBytes|DiskReadOps|DiskWriteBytes|DiskWriteOps|NetworkIn|NetworkOut|StatusCheckFailed|StatusCheckFailed_Instance|StatusCheckFailed_System], required, example:CPUUtilization",
-        "Threshold": "?corresponding value, example:int, required, example:1",
+        "Threshold": "corresponding value, example:int, required, example:1",
         "Statistic": "STRING, [Average|SampleCount|Sum|Minimum|Maximum], required, example:Average",
         "Dimensions": [
           {
@@ -683,18 +684,18 @@
         ],
         "Period": "INT, [1, 86400], not required, example:300",
         "ComparisonOperator": "STRING, [<=|<|>|>=], not required, example:>=",
-        "OKAction : ?reference, not required": [],
-        "InsufficientDataActions: ?reference, not required": [],
-        "Unit": "Not required",
-        "StateValue": "Not necessary",
-        "StateUpdateTimestamp": "Not necessary",
-        "ActionEnabled": "Not required",
-        "StateReason": "Not necessary",
-        "StateReasonData": "Not necessary",
-        "AlarmDescription": "Not required",
-        "AlarmConfigurationUpdatedTimestamp": "Not necessary",
+        "OKAction : reference, not required": [],
+        "InsufficientDataActions: reference, not required": [],
+        "Unit": "not required",
+        "ActionEnabled": "not required",
+        "AlarmDescription": "not required",
+        "#StateValue": "not necessary",
+        "#StateUpdateTimestamp": "not necessary",
+        "#StateReason": "not necessary",
+        "#StateReasonData": "not necessary",
+        "#AlarmConfigurationUpdatedTimestamp": "not necessary",
         "AlarmActions": [
-          "Not required, STRING, @xxxx.resource.xxxx, example:@$SCALING-POLICY0.resource.PolicyARN"
+          "not required, STRING, @xxxx.resource.xxxx, example:@$SCALING-POLICY0.resource.PolicyARN"
         ]
       }
     },
@@ -703,14 +704,14 @@
       "name": "regex name, STRING, '^\\w+[A-Za-z0-9-]*$, required', example:'asg1-policy-1'",
       "uid": "regex UID, STRING, '^\\w{8}-\\w{4}-\\w{4}-\\w{4}-\\w{12}$', required, same to $SCALING-POLICY0",
       "resource": {
-        "PolicyARN": "regex ARN(?filled by RW), STRING, not required",
+        "PolicyARN": "regex ARN(filled by RW), STRING, not required",
         "PolicyName": "regex name, STRING, '^\\w+[A-Za-z0-9-]*$, required', example:asg1-policy-1",
         "AutoScalingGroupName": "reference, STRING, @xxxx.resource.xxxx, required, example:@$ASG0.resource.AutoScalingGroupName",
         "ScalingAdjustment": "INT, [-65534, 65534], required, example:1",
         "AdjustmentType": "STRING, [ChangeInCapacity|ExactCapacity|PercentChangeInCapacity], required, example:ChangeInCapacity",
         "MinAdjustmentStep": "INT, [-65534, 65534], not required",
         "Cooldown": "INT, [0, 86400], not required",
-        "Alarms ?": [
+        "#Alarms": [
           {
             "AlarmName": "",
             "AlarmARN": ""
@@ -720,7 +721,7 @@
     },
     "$NOTIFICATION-CONFIGURATION0": {
       "type": "Component type, STRING, [AWS.AutoScaling.NotificationConfiguration], required",
-      "name": "?regex name, STRING, '^\\w+[A-Za-z0-9-]*$', not required",
+      "name": "regex name, STRING, '^\\w+[A-Za-z0-9-]*$', not required",
       "uid": "regex UID, STRING, '^\\w{8}-\\w{4}-\\w{4}-\\w{4}-\\w{12}$', required, same to $NOTIFICATION-CONFIGURATION0",
       "resource": {
         "TopicARN": "reference, STRING, @xxxx.resource.xxxx, required, example:@$TOPIC.resource.TopicArn",
@@ -735,11 +736,11 @@
       "name": "regex name, STRING, '^\\w+[A-Za-z0-9-]*$', not required, example:sns-topic",
       "uid": "regex uid, same to $TOPIC",
       "resource": {
-        "TopicArn": "regex ARN(?filled by RW), STRING, not required",
+        "TopicArn": "regex ARN(filled by RW), STRING, not required",
         "Name": "regex name, required, example:sns-topic",
-        "DisplayName": "?regex name, required, example:sns-topic",
-        "Policy": "?Not necessary",
-        "DeliveryPolicy": "?Not necessary"
+        "DisplayName": "regex name, required, example:sns-topic",
+        "#Policy": "not necessary",
+        "#DeliveryPolicy": "not necessary"
       }
     },
     "$SUBSCRIPTION0": {
@@ -747,11 +748,11 @@
       "name": "regex name, STRING, '^\\w+[A-Za-z0-9-]*$', not required",
       "uid": "regex uid, required, same to $SUBSCRIPTION1",
       "resource": {
-        "SubscriptionArn": "regex ARN(?filled by RW), STRING, not required",
+        "SubscriptionArn": "regex ARN(filled by RW), STRING, not required",
         "TopicArn": "referenceTopicArn, required, example:@$TOPIC.resource.TopicArn",
         "Protocol": "STRING, [https|http|sms|email|email-json], required, example:email",
         "Endpoint": "STRING, required, example:xjimmyshcn@gmail.com",
-        "DeliveryPolicy": "?Not necessary"
+        "#DeliveryPolicy": "not necessary"
       }
     },
     "$EC2-TAG": {

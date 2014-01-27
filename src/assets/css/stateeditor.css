@@ -818,3 +818,11 @@
 	display: inline-block;
 	background-color: red;
 }
+
+#state-editor-model.se-model-app #state-editor .parameter-item.disabled {
+	display: none;
+}
+
+#state-editor-model.se-model-app #state-editor .parameter-item .text {
+	height: 35px !important;
+}

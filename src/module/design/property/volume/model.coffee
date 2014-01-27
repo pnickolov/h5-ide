@@ -82,9 +82,8 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
             @set 'uid', uid
             null
 
-        setDeviceName : ( name ) ->
+        getVolume : ( components ) ->
 
-            components = MC.canvas_data.component
             uid        = @get "uid"
 
             if not components[ uid ]
@@ -98,26 +97,49 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
                     if block.DeviceName.indexOf( device_name ) is -1
                         continue
 
-                    if block.DeviceName[0] != '/'
-                        block.DeviceName = 'xvd' + name
-                        newId = "#{realuid}_volume_xvd#{name}"
-
-                    else
-                        block.DeviceName = '/dev/' + name
-                        newId = "#{realuid}_volume_#{name}"
-
-                    MC.canvas.update uid, 'text', "volume_name", block.DeviceName
-                    MC.canvas.update realuid, 'id', "volume_#{device_name}", newId
-                    @attributes.volume_detail.name     = block.DeviceName
-                    @attributes.volume_detail.editName = name
-
-                    @set 'uid', newId
+                    volume = block
 
                     break
 
             else
                 #instance
-                volume_comp = components[ uid ]
+                volume = components[ uid ]
+
+            volume
+
+        setDeviceName : ( name ) ->
+
+            components = MC.canvas_data.component
+            uid        = @get "uid"
+
+            volume = @getVolume( components )
+            if !volume
+                console.error "[setDeviceName]not found volume of uid: " + uid
+                return null
+
+            if not components[ uid ]
+                #lc
+                block = volume
+
+                if block.DeviceName[0] != '/'
+                    block.DeviceName = 'xvd' + name
+                    newId = "#{realuid}_volume_xvd#{name}"
+
+                else
+                    block.DeviceName = '/dev/' + name
+                    newId = "#{realuid}_volume_#{name}"
+
+                MC.canvas.update uid, 'text', "volume_name", block.DeviceName
+                MC.canvas.update realuid, 'id', "volume_#{device_name}", newId
+                @attributes.volume_detail.name     = block.DeviceName
+                @attributes.volume_detail.editName = name
+
+                @set 'uid', newId
+
+            else
+                #instance
+
+                volume_comp = volume
 
                 if volume_comp.resource.AttachmentSet.Device[0] != '/'
                     device_name = 'xvd' + name
@@ -141,26 +163,22 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
             components = MC.canvas_data.component
             uid        = @get "uid"
 
+            volume = @getVolume( components )
+            if !volume
+                console.error "[setVolumeSize]not found volume of uid: " + uid
+                return null
+
             if not components[ uid ]
                 #lc
-                realuid     = uid.split('_')
-                device_name = realuid[2]
-                realuid     = realuid[0]
-
-                for block in components[realuid].resource.BlockDeviceMapping
-
-                    if block.DeviceName.indexOf(device_name) >= 0
-
-                        if block.DeviceName[0] != '/'
-                            block.Ebs.VolumeSize = value
-                        else
-                            block.Ebs.VolumeSize = value
-
-                        break
+                block = volume
+                if block.DeviceName[0] != '/'
+                    block.Ebs.VolumeSize = value
+                else
+                    block.Ebs.VolumeSize = value
 
             else
                 #instance
-                components[ uid ].resource.Size = value
+                volume.resource.Size = value
 
             null
 
@@ -169,25 +187,20 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
             components = MC.canvas_data.component
             uid        = @get "uid"
 
+            volume = @getVolume( components )
+            if !volume
+                console.error "[setVolumeTypeStandard]not found volume of uid: " + uid
+                return null
+
             if not components[ uid ]
                 #lc
-                realuid     = uid.split('_')
-                device_name = realuid[2]
-                realuid     = realuid[0]
-
-                for block in components[realuid].resource.BlockDeviceMapping
-
-                    if block.DeviceName.indexOf( device_name ) is -1
-                        continue
-
-                    block.Ebs.VolumeType = 'standard'
-                    block.Ebs.Iops       = ''
-
-                    break
+                block = volume
+                block.Ebs.VolumeType = 'standard'
+                block.Ebs.Iops       = ''
 
             else
                 #instace
-                volume_comp = components[ uid ]
+                volume_comp = volume
                 comp_res = volume_comp.resource
                 comp_res.VolumeType = 'standard'
                 comp_res.Iops = ''
@@ -200,30 +213,21 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
             components = MC.canvas_data.component
             uid        = @get "uid"
 
+            volume = @getVolume( components )
+            if !volume
+                console.error "[setVolumeTypeIops]not found volume of uid: " + uid
+                return null
+
             if not components[ uid ]
                 #lc
-                realuid     = uid.split('_')
-                device_name = realuid[2]
-                realuid     = realuid[0]
-
-                for block in components[realuid].resource.BlockDeviceMapping
-
-                    if block.DeviceName.indexOf( device_name ) is -1
-                        continue
-
-                    block.Ebs.VolumeType = 'io1'
-                    block.Ebs.Iops       = value
-
-                    break
+                block = volume
+                block.Ebs.VolumeType = 'io1'
+                block.Ebs.Iops       = value
 
             else
                 #instace
-
-                uid = @get "uid"
-                comp_res = MC.canvas_data.component[uid].resource
-
-                comp_res.VolumeType = 'io1'
-                comp_res.Iops = value
+                volume.VolumeType = 'io1'
+                volume.Iops = value
 
             null
 
@@ -233,24 +237,19 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
             components = MC.canvas_data.component
             uid        = @get "uid"
 
+            volume = @getVolume( components )
+            if !volume
+                console.error "[setVolumeIops]not found volume of uid: " + uid
+                return null
+
             if not components[ uid ]
                 #lc
-                realuid     = uid.split('_')
-                device_name = realuid[2]
-                realuid     = realuid[0]
-
-                for block in components[realuid].resource.BlockDeviceMapping
-
-                    if block.DeviceName.indexOf( device_name ) is -1
-                        continue
-
-                    block.Ebs.Iops       = value
-
-                    break
+                block = volume
+                block.Ebs.Iops = value
 
             else
                 #instace
-                MC.canvas_data.component[uid].resource.Iops = value
+                volume.resource.Iops = value
 
             null
 

@@ -17,7 +17,7 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
             components = MC.canvas_data.component
 
             if not components[ uid ]
-
+                #lc
                 realuid     = uid.split('_')
                 device_name = realuid[2]
                 realuid     = realuid[0]
@@ -30,6 +30,8 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
                     volume_detail =
                         isWin       : block.DeviceName[0] != '/'
                         isLC        : true
+                        isStandard  : block.Ebs.VolumeType is 'standard'
+                        iops        : block.Ebs.Iops
                         volume_size : block.Ebs.VolumeSize
                         snapshot_id : block.Ebs.SnapshotId
                         name        : block.DeviceName
@@ -43,7 +45,7 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
                     break
 
             else
-
+                #instance
                 res = components[ uid ].resource
 
                 volume_detail =
@@ -86,7 +88,7 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
             uid        = @get "uid"
 
             if not components[ uid ]
-
+                #lc
                 realuid     = uid.split('_')
                 device_name = realuid[2]
                 realuid     = realuid[0]
@@ -114,7 +116,7 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
                     break
 
             else
-
+                #instance
                 volume_comp = components[ uid ]
 
                 if volume_comp.resource.AttachmentSet.Device[0] != '/'
@@ -140,7 +142,7 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
             uid        = @get "uid"
 
             if not components[ uid ]
-
+                #lc
                 realuid     = uid.split('_')
                 device_name = realuid[2]
                 realuid     = realuid[0]
@@ -157,36 +159,101 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
                         break
 
             else
+                #instance
                 components[ uid ].resource.Size = value
 
             null
 
         setVolumeTypeStandard : () ->
 
-            uid = @get "uid"
-            comp_res = MC.canvas_data.component[uid].resource
+            components = MC.canvas_data.component
+            uid        = @get "uid"
 
-            comp_res.VolumeType = 'standard'
-            comp_res.Iops = ''
+            if not components[ uid ]
+                #lc
+                realuid     = uid.split('_')
+                device_name = realuid[2]
+                realuid     = realuid[0]
+
+                for block in components[realuid].resource.BlockDeviceMapping
+
+                    if block.DeviceName.indexOf( device_name ) is -1
+                        continue
+
+                    block.Ebs.VolumeType = 'standard'
+                    block.Ebs.Iops       = ''
+
+                    break
+
+            else
+                #instace
+                volume_comp = components[ uid ]
+                comp_res = volume_comp.resource
+                comp_res.VolumeType = 'standard'
+                comp_res.Iops = ''
 
             null
+
 
         setVolumeTypeIops : ( value ) ->
 
-            uid = @get "uid"
-            comp_res = MC.canvas_data.component[uid].resource
+            components = MC.canvas_data.component
+            uid        = @get "uid"
 
-            comp_res.VolumeType = 'io1'
-            comp_res.Iops = value
+            if not components[ uid ]
+                #lc
+                realuid     = uid.split('_')
+                device_name = realuid[2]
+                realuid     = realuid[0]
+
+                for block in components[realuid].resource.BlockDeviceMapping
+
+                    if block.DeviceName.indexOf( device_name ) is -1
+                        continue
+
+                    block.Ebs.VolumeType = 'io1'
+                    block.Ebs.Iops       = value
+
+                    break
+
+            else
+                #instace
+
+                uid = @get "uid"
+                comp_res = MC.canvas_data.component[uid].resource
+
+                comp_res.VolumeType = 'io1'
+                comp_res.Iops = value
 
             null
+
 
         setVolumeIops : ( value )->
 
-            uid = @get "uid"
-            MC.canvas_data.component[uid].resource.Iops = value
+            components = MC.canvas_data.component
+            uid        = @get "uid"
+
+            if not components[ uid ]
+                #lc
+                realuid     = uid.split('_')
+                device_name = realuid[2]
+                realuid     = realuid[0]
+
+                for block in components[realuid].resource.BlockDeviceMapping
+
+                    if block.DeviceName.indexOf( device_name ) is -1
+                        continue
+
+                    block.Ebs.Iops       = value
+
+                    break
+
+            else
+                #instace
+                MC.canvas_data.component[uid].resource.Iops = value
 
             null
+
 
         isDuplicate : ( name ) ->
 

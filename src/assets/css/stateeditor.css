@@ -184,10 +184,24 @@
 }
 
 /* *************************************** ace editor */
+@-webkit-keyframes cursor-blink {
+	from, to {
+		border-color: transparent;
+	}
+	50% {
+		border-color: black;
+	}
+}
+
+.ace_cursor {
+	-webkit-animation: 1s cursor-blink step-end infinite;
+	border-left: 10px solid black;
+}
 
 #state-editor .ace_hidden-cursors {
     opacity: 0;
 }
+
 #state-editor .ace_content {
     padding-top: 3px;
 }

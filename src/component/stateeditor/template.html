@@ -1,6 +1,6 @@
 <!-- state-template-state-list -->
 {{#each state_list}}
-	<div class="state-item view" data-command="{{cmd_value}}" data-id="{{state_id}}">
+	<li class="state-item view" data-command="{{cmd_value}}" data-id="{{state_id}}">
 		<div class="state-toolbar">
 			<div class="state-remove icon-remove"></div>
 			<div class="state-add">+</div>
@@ -20,7 +20,7 @@
 				{{> state-template-para-list}}
 			</div>
 		</div>
-	</div>
+	</li>
 {{/each}}
 
 <!-- state-template-para-list -->
@@ -178,7 +178,7 @@
 	<div id="state-editor-body" class="scroll-content modal-body clearfix">
 		<div id="state-editor" spellcheck="false">
 			{{#unless supported_platform}}<div class="state-warning">The AMI's distro cannot be recognised. Some commands may not apply to this AMI.</div>{{/unless}}
-			<div class="state-list"></div>
+			<ol class="state-list"></ol>
 			<div class="state-item-add">+ Add New State...</div>
 		</div>
 		<div id="state-description" data-command=""></div>

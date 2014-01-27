@@ -40,7 +40,7 @@
 }
 
 #state-editor .state-edit {
-	width: 500px;
+	border-bottom: 1px solid #eee;
 }
 
 #state-description, #state-log {
@@ -183,6 +183,23 @@
 	line-height: 19px;
 }
 
+.state-list {
+	position: relative;
+	counter-reset: list-counter;
+}
+
+.state-list li:before {
+	content: counter(list-counter);
+	counter-increment: list-counter;
+	position: absolute;
+	z-index: 80;
+	display: block;
+	border-right: 1px solid #ddd;
+	padding: 11px;
+	color: #666;
+	font-family: Lucida Console;
+}
+
 /* *************************************** ace editor */
 @-webkit-keyframes cursor-blink {
 	from, to {
@@ -193,9 +210,40 @@
 	}
 }
 
+@-moz-keyframes cursor-blink {
+	from, to {
+		border-color: transparent;
+	}
+	50% {
+		border-color: black;
+	}
+}
+
+@-ms-keyframes cursor-blink {
+	from, to {
+		border-color: transparent;
+	}
+	50% {
+		border-color: black;
+	}
+}
+
+@keyframes cursor-blink {
+	from, to {
+		border-color: transparent;
+	}
+	50% {
+		border-color: black;
+	}
+}
+
 .ace_cursor {
-	-webkit-animation: 1s cursor-blink step-end infinite;
 	border-left: 10px solid black;
+
+	-webkit-animation: 1s cursor-blink step-end infinite;
+	-moz-animation: 1s cursor-blink step-end infinite;
+	-ms-animation: 1s cursor-blink step-end infinite;
+	animation: 1s cursor-blink step-end infinite;
 }
 
 #state-editor .ace_hidden-cursors {
@@ -425,6 +473,9 @@
 #state-editor .state-item.view .state-view {
 	display: block;
 	font-size: 12px;
+	position: absolute;
+	top: 12px;
+	left: 64px;
 }
 
 #state-editor .command-view-value {
@@ -471,23 +522,17 @@
 }
 
 /* *************************************** state toolbar */
-
-
 #state-editor .state-item {
 	overflow: auto;
-	float: none;
 }
 
 #state-editor .state-toolbar {
-	float: none;
 	position: relative;
 	overflow: hidden;
-	padding-left: 25px;
 	cursor: pointer;
 	background: #fcfcfc;
 	border-bottom: 1px solid #eee;
-	line-height: 30px;
-	height: 30px;
+	height: 35px;
 }
 
 #state-editor .state-toolbar:hover {
@@ -533,13 +578,13 @@
 }*/
 
 #state-editor .state-drag {
-	float: left;
-	margin-right: 15px;
+	left: 38px;
+	top: 9px;
 	width: 20px;
 	height: 30px;
-	line-height: 30px;
-	cursor: pointer;
+	cursor: move;
 	color: #aaa;
+	position: absolute;
 }
 
 #state-editor .state-add {
@@ -563,15 +608,14 @@
 }
 
 #state-editor .state-remove {
+	position: absolute;
 	display: none;
-	margin-top: 8px;
-	margin-right: 10px;
 	width: 16px;
 	height: 16px;
+	right: 10px;
+	top: 12px;
 	text-align: center;
-	line-height: 16px;
 	cursor: pointer;
-	float: right;
 	color: #aaa;
 }
 

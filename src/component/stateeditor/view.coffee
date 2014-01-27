@@ -1369,17 +1369,17 @@ define [ 'event',
 
                 if e.command.name is "insertstring"
                     if /^@$/.test(e.args) and hintDataAryMap['at']
-                        that.setEditorCompleter(thatEditor, hintDataAryMap['at'])
+                        that.setEditorCompleter(thatEditor, hintDataAryMap['at'], 'reference')
                         thatEditor.execCommand("startAutocomplete")
 
                 if e.command.name is "backspace" and hintDataAryMap['focus']
-                    that.setEditorCompleter(thatEditor, hintDataAryMap['focus'])
+                    that.setEditorCompleter(thatEditor, hintDataAryMap['focus'], 'command')
                     thatEditor.execCommand("startAutocomplete")
 
                 if e.command.name is "backspace" and hintDataAryMap['at'] and currentValue
                     currentLineContent = thatEditor.getSession().getLine(thatEditor.getCursorPosition().row)
                     if currentLineContent.indexOf('@') >= 0
-                        that.setEditorCompleter(thatEditor, hintDataAryMap['at'])
+                        that.setEditorCompleter(thatEditor, hintDataAryMap['at'], 'reference')
                         thatEditor.execCommand("startAutocomplete")
 
                 if e.command.name is "autocomplete_confirm"
@@ -1402,11 +1402,11 @@ define [ 'event',
                 hintDataAryMap = thatEditor.hintObj
                 currentValue = thatEditor.getValue()
                 if not currentValue and hintDataAryMap['focus']
-                    that.setEditorCompleter(thatEditor, hintDataAryMap['focus'])
+                    that.setEditorCompleter(thatEditor, hintDataAryMap['focus'], 'command')
                     thatEditor.execCommand("startAutocomplete")
             )
 
-        setEditorCompleter: (editor, dataAry) ->
+        setEditorCompleter: (editor, dataAry, metaType) ->
 
             editor.completers = [{
                 getCompletions: (editor, session, pos, prefix, callback) ->
@@ -1416,7 +1416,7 @@ define [ 'event',
                                 name: ea.name,
                                 value: ea.value,
                                 score: ea.value,
-                                meta: "command"
+                                meta: metaType
                             }
                         ))
                     else

@@ -2594,12 +2594,12 @@ MC.canvas.volume = {
 							'volume_id': volume_id,
 							'name': item.deviceName,
 							'size': comp_vol ? comp_vol.size : '-',
-							'snapshotId': item.ebs.snapshotId,
+							'snapshotId': comp_vol ? comp_vol.snapshotId : '-',
 							'json': JSON.stringify({
 								'instance_id': node_uid,
 								'id': volume_id,
 								'name': item.deviceName,
-								'snapshotId': item.ebs.snapshotId,
+								'snapshotId': comp_vol ? comp_vol.snapshotId : '-',
 								'volumeSize': comp_vol ? comp_vol.size : '-'
 							})
 						});

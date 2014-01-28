@@ -2552,6 +2552,7 @@ MC.canvas.volume = {
 
 					var instance_data = MC.data.resource_list[MC.canvas_data.region][node_uid],
 						root_devName  = '',
+						volume_len    = 0,
 						ami_info      = null;
 
 					if (instance_data)
@@ -2566,11 +2567,20 @@ MC.canvas.volume = {
 					//volume in asg
 					$.each(node_volume_data, function (index, item)
 					{
+						if (!item)
+						{
+							return true;
+						}
 
 						volume_id = item.ebs.volumeId;
 						if (item.deviceName === root_devName )
 						{
+							delete node_volume_data[index];
 							return true;
+						}
+						else
+						{
+							volume_len++;
 						}
 
 						if (MC.forge && MC.forge.app && MC.forge.app.getResourceById)
@@ -2590,10 +2600,11 @@ MC.canvas.volume = {
 								'id': volume_id,
 								'name': item.deviceName,
 								'snapshotId': item.ebs.snapshotId,
-								'volumeSize': comp_vol.size
+								'volumeSize': comp_vol ? comp_vol.size : '-'
 							})
 						});
-					});					
+					});
+
 				}
 				else
 				{
@@ -2625,11 +2636,12 @@ MC.canvas.volume = {
 							})
 						});
 					});
+					volume_len = node_volume_data.length;
 				}
 					
 			}
 
-			data.volumeLength = node_volume_data.length;
+			data.volumeLength = volume_len;
 
 			$('#volume-bubble-content').html(
 				MC.template.instanceVolume( data )

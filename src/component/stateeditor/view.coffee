@@ -230,8 +230,8 @@ define [ 'event',
             dragsort.init({
                 dragStart: () ->
                     $stateItem = this
-                    $stateItemList = that.$stateList.find('.state-item')
-                    $stateItemList.addClass('view')
+                    # $stateItemList = that.$stateList.find('.state-item')
+                    $stateItem.addClass('view')
                     return true
                 dragEnd: () ->
                     $stateItem = this
@@ -996,7 +996,7 @@ define [ 'event',
                     return
 
                 stateItemObj = {
-                    stateid: stateId,
+                    id: stateId,
                     module: moduleObj.module,
                     parameter: {}
                 }
@@ -1106,7 +1106,7 @@ define [ 'event',
                 paraModelObj = that.cmdParaObjMap[cmdName]
 
                 paraListObj = state.parameter
-                stateId = state.stateid
+                stateId = state.id
 
                 stateRenderObj = {
                     state_id: stateId,
@@ -1231,7 +1231,7 @@ define [ 'event',
                         originStateObjStr = JSON.stringify(stateObj)
                         currentStateObjStr = JSON.stringify(otherCompareStateData[idx])
                         if originStateObjStr isnt currentStateObjStr
-                            changeAry.push(stateObj.stateid)
+                            changeAry.push(stateObj.id)
                         null
 
                     resUID = that.model.getCurrentResUID()

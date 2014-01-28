@@ -421,7 +421,7 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 					resName = allCompData[resUID].name
 					if compData.state and _.isArray compData.state
 						_.each compData.state, (stateObj, idx) ->
-							if stateObj.stateid is stateUID
+							if stateObj.id is stateUID
 								stateNum = idx + 1
 							null
 
@@ -452,7 +452,7 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 				if resUID and _.isNumber(stateNum)
 					compData = allCompData[resUID]
 					if compData.state and _.isArray(compData.state) and compData.state[stateNum - 1]
-						stateUID = compData.state[stateNum - 1].stateid
+						stateUID = compData.state[stateNum - 1].id
 
 				if resUID and stateUID
 					newUIDStr = refMatchStr.replace(resName, resUID).replace('.state.' + stateNum, '.state.' + stateUID)
@@ -550,9 +550,9 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 
 			stateIdNumMap = {}
 			originStatusDataAry = _.map stateDataAry, (stateObj, idx) ->
-				stateIdNumMap[stateObj.stateid] = idx
+				stateIdNumMap[stateObj.id] = idx
 				return {
-					state_id: stateObj.stateid,
+					state_id: stateObj.id,
 					result: 'pending'
 				}
 			agentStatus = 'unknown'

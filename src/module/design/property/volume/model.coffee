@@ -195,12 +195,12 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
                 #lc
                 block = volume
                 block.Ebs.VolumeType = 'standard'
-                delete block.Ebs.Iops
+                delete block.Ebs.Iops #needn't for lc
 
             else
                 #instace
                 volume.resource.VolumeType = 'standard'
-                delete volume.resource.Iops
+                volume.resource.Iops       = '' #need for instance
 
             null
 

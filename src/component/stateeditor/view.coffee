@@ -227,7 +227,8 @@ define [ 'event',
                 dragBetween: true,
                 placeHolderTemplate: '<div class="state-item state-placeholder"></div>',
                 dragEnd: () ->
-                    that.refreshStateId()
+                    # that.refreshStateId()
+                    null
             })
 
         refreshStateList: (stateListObj) ->
@@ -571,19 +572,19 @@ define [ 'event',
 
             that.bindParaListEvent($paraListElem, currentCMD)
 
-        refreshStateId: () ->
+        # refreshStateId: () ->
 
-            that = this
+        #     that = this
 
-            $stateItemList = that.$stateList.find('.state-item')
+        #     $stateItemList = that.$stateList.find('.state-item')
 
-            _.each $stateItemList, (stateItem, idx) ->
+        #     _.each $stateItemList, (stateItem, idx) ->
 
-                currentStateId = idx + 1
-                $stateItem = $(stateItem)
-                $stateItem.find('.state-id').text(currentStateId)
+        #         currentStateId = idx + 1
+        #         $stateItem = $(stateItem)
+        #         $stateItem.find('.state-id').text(currentStateId)
 
-                null
+        #         null
 
         getParaObj: ($inputElem) ->
 
@@ -850,8 +851,6 @@ define [ 'event',
             newStateIdShow = 1
 
             if $stateItem.length
-
-                stateIdStr = $stateItem.find('.state-id').text()
                 newStateIdShow = $stateItem.index() + 2
 
             newStateId = that.genStateUID()
@@ -884,7 +883,7 @@ define [ 'event',
                     cmdEditor.focus()
                 , 0)
 
-            that.refreshStateId()
+            # that.refreshStateId()
 
         onStateRemoveClick: (event) ->
 
@@ -895,7 +894,7 @@ define [ 'event',
 
             $stateItem.remove()
 
-            that.refreshStateId()
+            # that.refreshStateId()
 
         submitValidate: ( element ) ->
 

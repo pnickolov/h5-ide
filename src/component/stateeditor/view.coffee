@@ -28,7 +28,7 @@ define [ 'event',
             'blur .editable-area': 'onBlurInput'
             # 'click .state-toolbar .state-id': 'onStateIdClick'
             'click .state-toolbar': 'onStateToolbarClick'
-            'click .state-toolbar .state-add': 'onStateAddClick'
+            # 'click .state-toolbar .state-add': 'onStateAddClick'
             'click .state-toolbar .state-remove': 'onStateRemoveClick'
             'click .state-save': 'onStateSaveClick'
             'click .state-cancel': 'onStateCancelClick'
@@ -190,6 +190,10 @@ define [ 'event',
             this.stateLogInstanceItemTpl = Handlebars.compile(stateLogInstanceItemHTML)
             this.stateResSelectTpl = Handlebars.compile(stateResSelectHTML)
 
+        genStateUID: () ->
+
+            return 'state-' + MC.guid()
+
         initResSelect: () ->
 
             that = this
@@ -234,7 +238,8 @@ define [ 'event',
 
                 stateListObj = {
                     state_list: [{
-                        state_id: 1,
+                        state_id: that.genStateUID(),
+                        state_id_show: '1',
                         cmd_value: ''
                     }]
                 }
@@ -793,48 +798,48 @@ define [ 'event',
                     that.refreshStateView($stateItem)
                     $stateItem.addClass('view')
 
-        onStateAddClick: (event) ->
+        # onStateAddClick: (event) ->
 
-            that = this
+        #     that = this
 
-            $currentElem = $(event.currentTarget)
-            $stateItem = $currentElem.parents('.state-item')
+        #     $currentElem = $(event.currentTarget)
+        #     $stateItem = $currentElem.parents('.state-item')
 
-            stateIdStr = $stateItem.find('.state-id').text()
-            stateId = Number(stateIdStr)
+        #     stateIdStr = $stateItem.find('.state-id').text()
+        #     stateId = Number(stateIdStr)
 
-            newStateId = ++stateId
+        #     newStateId = ++stateId
 
-            newStateHTML = that.stateListTpl({
-                state_list: [{
-                    state_id_show: newStateId
-                }]
-            })
+        #     newStateHTML = that.stateListTpl({
+        #         state_list: [{
+        #             state_id_show: newStateId
+        #         }]
+        #     })
 
-            $stateItem.after(newStateHTML)
+        #     $stateItem.after(newStateHTML)
 
-            $newStateItem = $stateItem.next()
+        #     $newStateItem = $stateItem.next()
 
-            $cmdValueItem = $newStateItem.find('.command-value')
-            that.bindCommandEvent($cmdValueItem)
+        #     $cmdValueItem = $newStateItem.find('.command-value')
+        #     that.bindCommandEvent($cmdValueItem)
 
-            $stateItemList = that.$stateList.find('.state-item')
-            $stateItemList.addClass('view')
+        #     $stateItemList = that.$stateList.find('.state-item')
+        #     $stateItemList.addClass('view')
 
-            _.each $stateItemList, (otherStateItem) ->
-                $otherStateItem = $(otherStateItem)
-                if not $newStateItem.is($otherStateItem) and not $otherStateItem.hasClass('view')
-                    that.refreshStateView($otherStateItem)
-                null
+        #     _.each $stateItemList, (otherStateItem) ->
+        #         $otherStateItem = $(otherStateItem)
+        #         if not $newStateItem.is($otherStateItem) and not $otherStateItem.hasClass('view')
+        #             that.refreshStateView($otherStateItem)
+        #         null
 
-            $newStateItem.removeClass('view')
-            cmdEditor = $cmdValueItem.data('editor')
-            if cmdEditor
-                setTimeout(() ->
-                    cmdEditor.focus()
-                , 0)
+        #     $newStateItem.removeClass('view')
+        #     cmdEditor = $cmdValueItem.data('editor')
+        #     if cmdEditor
+        #         setTimeout(() ->
+        #             cmdEditor.focus()
+        #         , 0)
 
-            that.refreshStateId()
+        #     that.refreshStateId()
 
         onStateItemAddClick: (event) ->
 
@@ -842,18 +847,19 @@ define [ 'event',
 
             $stateItem = that.$stateList.find('.state-item:last')
 
-            newStateId = 1
+            newStateIdShow = 1
 
             if $stateItem.length
 
                 stateIdStr = $stateItem.find('.state-id').text()
-                stateId = Number(stateIdStr)
+                newStateIdShow = $stateItem.index() + 2
 
-                newStateId = ++stateId
+            newStateId = that.genStateUID()
 
             newStateHTML = that.stateListTpl({
                 state_list: [{
-                    state_id_show: newStateId
+                    state_id: newStateId,
+                    state_id_show: newStateIdShow
                 }]
             })
 
@@ -934,6 +940,7 @@ define [ 'event',
             result
 
         saveStateData: () ->
+            
             if not @submitValidate()
                 return false
 
@@ -943,22 +950,22 @@ define [ 'event',
 
             stateObjAry = []
 
-            newOldStateIdMap = {}
+            # newOldStateIdMap = {}
 
             _.each $stateItemList, (stateItem, idx) ->
 
                 $stateItem = $(stateItem)
 
                 cmdName = $stateItem.attr('data-command')
+                stateId = $stateItem.attr('data-id')
 
-                # stateId = $stateItem.find('data-id')
                 # for state item sort
-                newStateId = $stateItem.find('.state-id').text()
-                oldStateId = $stateItem.attr('data-id')
-                if oldStateId and newStateId isnt oldStateId
-                    oldStateIdRef = "@{#{that.resName}.state.#{oldStateId}}"
-                    newStateIdRef = "@{#{that.resName}.state.#{newStateId}}"
-                    newOldStateIdMap[oldStateIdRef] = newStateIdRef
+                # newStateId = $stateItem.find('.state-id').text()
+                # oldStateId = $stateItem.attr('data-id')
+                # if oldStateId and newStateId isnt oldStateId
+                #     oldStateIdRef = "@{#{that.resName}.state.#{oldStateId}}"
+                #     newStateIdRef = "@{#{that.resName}.state.#{newStateId}}"
+                #     newOldStateIdMap[oldStateIdRef] = newStateIdRef
 
                 moduleObj = that.cmdModuleMap[cmdName]
 
@@ -967,7 +974,7 @@ define [ 'event',
                     return
 
                 stateItemObj = {
-                    stateid: String(idx + 1),
+                    stateid: stateId,
                     module: moduleObj.module,
                     parameter: {}
                 }
@@ -1029,6 +1036,7 @@ define [ 'event',
                     else if $paraItem.hasClass('array') or $paraItem.hasClass('state')
 
                         $arrayItemList = $paraItem.find('.parameter-value')
+                        isStateParaItem = $paraItem.hasClass('state')
                         arrayObj = []
 
                         _.each $arrayItemList, (arrayItem) ->
@@ -1037,7 +1045,12 @@ define [ 'event',
                             arrayValue = that.getPlainText($arrayItem)
 
                             if arrayValue
-                                arrayValue = that.model.replaceParaNameToUID(arrayValue)
+
+                                if isStateParaItem
+                                    arrayValue = that.model.replaceStateNameToUID(arrayValue)
+                                else
+                                    arrayValue = that.model.replaceParaNameToUID(arrayValue)
+
                                 arrayObj.push(arrayValue)
 
                             null
@@ -1053,7 +1066,7 @@ define [ 'event',
                 null
 
             # update all state id ref
-            that.updateStateIdBySort(newOldStateIdMap)
+            # that.updateStateIdBySort(newOldStateIdMap)
 
             return stateObjAry
 
@@ -1075,6 +1088,7 @@ define [ 'event',
 
                 stateRenderObj = {
                     state_id: stateId,
+                    state_id_show: idx + 1,
                     cmd_value: cmdName,
                     parameter_list: []
                 }
@@ -1137,7 +1151,12 @@ define [ 'event',
 
                         renderParaValue = []
                         _.each paraValue, (paraValueStr) ->
-                            paraValueStr = that.model.replaceParaUIDToName(paraValueStr)
+
+                            if paraModelType is 'state'
+                                paraValueStr = that.model.replaceStateUIDToName(paraValueStr)
+                            else
+                                paraValueStr = that.model.replaceParaUIDToName(paraValueStr)
+                                
                             renderParaValue.push(paraValueStr)
                             null
 
@@ -1173,6 +1192,8 @@ define [ 'event',
                 compareStateData = null
                 otherCompareStateData = null
 
+                # compare state data
+                # when data change, trigger data update event
                 if that.originCompStateData and stateData
 
                     if that.originCompStateData.length > stateData.length
@@ -1567,14 +1588,12 @@ define [ 'event',
 
             $logPanel = $('#state-log')
             $loadText = $logPanel.find('.state-log-loading')
-            $logList = $logPanel.find('.state-log-list')
             $logInfo = $logPanel.find('.state-log-info')
 
             if loadShow
 
                 $loadText.show()
                 $logInfo.hide()
-                $logList.hide()
 
             else
 
@@ -1582,10 +1601,8 @@ define [ 'event',
 
                 if infoShow
                     $logInfo.show()
-                    $logList.hide()
                 else
                     $logInfo.hide()
-                    $logList.show()
 
         onResSelectChange: (event) ->
 
@@ -1594,7 +1611,7 @@ define [ 'event',
             selectedResId = $(event.target).find('.selected').attr('data-id')
 
             # refresh state log
-            # that.showLogListLoading(true)
+            that.showLogListLoading(true)
 
             that.model.getResState(selectedResId)
             resState = that.model.get('resState')

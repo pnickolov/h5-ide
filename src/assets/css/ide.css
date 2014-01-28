@@ -7238,3 +7238,9 @@ summary:focus {
 	background: #4495d3;
 	color: #fcfcfc;
 }
+
+#modal-instance-sys-log .instance-sys-log-info {
+	margin-top: 43px;
+	text-align: center;
+	display: none;
+}

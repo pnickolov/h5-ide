@@ -1320,10 +1320,11 @@ Following rule(s) will be deleted from its(their) security group:</div>
 
 <!-- modalInstanceSysLog -->
 <div id="modal-instance-sys-log" style="width: 900px;">
-	<div class="modal-header"><h3>System Log: {{instance_id}} ({{res_name}})</h3><i class="modal-close">&times;</i> </div>
+	<div class="modal-header"><h3>System Log: {{instance_id}}</h3><i class="modal-close">&times;</i> </div>
 	<div class="modal-body">
 		<section class="instance-sys-log-loading loading-spinner"></section>
 		<div class="instance-sys-log-content">{{log_content}}</div>
+		<div class="instance-sys-log-info modal-text-minor">System log is not ready yet. Please try in a short while.</div>
 	</div>
 	<div class="modal-footer">
 		<button id="modal-instance-sys-log-cancel" class="btn modal-close btn-silver">Close</button>

@@ -124,7 +124,6 @@ define [ '../base/view', 'text!./template/app.html', 'i18n!nls/lang.js' ], ( Pro
 
             modal MC.template.modalInstanceSysLog {
                 instance_id: instanceId,
-                res_name: 'pp',
                 log_content: ''
             }, true
 
@@ -132,17 +131,24 @@ define [ '../base/view', 'text!./template/app.html', 'i18n!nls/lang.js' ], ( Pro
 
         refreshSysLog : (result) ->
 
-            logContent = MC.base64Decode(result.output)
-            $contentElem = $('#modal-instance-sys-log .instance-sys-log-content')
-
-            logContentTpl = Handlebars.compile('{{nl2br content}}')
-            logContentHTML = logContentTpl({
-                content: logContent
-            })
-            $contentElem.html(logContentHTML)
-
             $('#modal-instance-sys-log .instance-sys-log-loading').hide()
-            $contentElem.show()
+
+            if result and result.output
+
+                logContent = MC.base64Decode(result.output)
+                $contentElem = $('#modal-instance-sys-log .instance-sys-log-content')
+
+                logContentTpl = Handlebars.compile('{{nl2br content}}')
+                logContentHTML = logContentTpl({
+                    content: logContent
+                })
+                $contentElem.html(logContentHTML)
+                $contentElem.show()
+
+            else
+
+                $('#modal-instance-sys-log .instance-sys-log-info').show()
+                
             modal.position()
 
     }

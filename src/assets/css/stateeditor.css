@@ -694,7 +694,7 @@
 
 #state-log .state-log-loading {
 	text-align: center;
-	margin-top: 235px;
+	margin-top: 200px;
 	display: none;
 }
 
@@ -869,4 +869,8 @@
 
 #state-editor-model.se-model-app #state-editor .parameter-item .text {
 	height: 35px !important;
+}
+
+#state-editor-model.se-model-app #state-editor .ace_cursor-layer {
+	display: none;
 }

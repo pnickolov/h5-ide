@@ -383,11 +383,82 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 			that = this
 			attrRefRegexList = []
 			resAttrDataAry = that.get('resAttrDataAry')
-			attrRefRegexList = _.map resAttrDataAry, (refObj) ->
+			resStateDataAry = that.get('resStateDataAry')
+			if not resAttrDataAry then resAttrDataAry = []
+			refAry = resAttrDataAry.concat(resStateDataAry)
+			attrRefRegexList = _.map refAry, (refObj) ->
 				regStr = refObj.name.replace('{', '\\{').replace('}', '\\}').replace('.', '\\.')
 				return '@' + regStr
 			resAttrRegexStr = attrRefRegexList.join('|')
 			that.set('resAttrRegexStr', resAttrRegexStr)
+
+		# @{uuid.state.state-uuid}
+		replaceStateUIDToName: (paraValue) ->
+
+			that = this
+
+			allCompData = that.get('allCompData')
+
+			refRegex = /@\{([A-Z0-9]{8}-([A-Z0-9]{4}-){3}[A-Z0-9]{12})\.state\.state-([A-Z0-9]{8}-([A-Z0-9]{4}-){3}[A-Z0-9]{12})\}/g
+			uidRegex = /[A-Z0-9]{8}-([A-Z0-9]{4}-){3}[A-Z0-9]{12}/g
+			refMatchAry = paraValue.match(refRegex)
+
+			newParaValue = paraValue
+
+			if refMatchAry and refMatchAry.length
+
+				refMatchStr = refMatchAry[0]
+				uidMatchAry = refMatchStr.match(uidRegex)
+				resUID = uidMatchAry[0]
+				stateUID = 'state-' + uidMatchAry[1]
+
+				compData = allCompData[resUID]
+				resName = 'unknown'
+				stateNum = 'unknown'
+
+				if compData
+					stateNumMap = {}
+					resName = allCompData[resUID].name
+					if compData.state and _.isArray compData.state
+						_.each compData.state, (stateObj, idx) ->
+							if stateObj.stateid is stateUID
+								stateNum = idx + 1
+							null
+
+				newRefStr = refMatchStr.replace(resUID, resName).replace(stateUID, stateNum)
+				newParaValue = newParaValue.replace(refMatchStr, newRefStr)
+
+			return newParaValue
+
+		replaceStateNameToUID: (paraValue) ->
+
+			that = this
+
+			allCompData = that.get('allCompData')
+
+			refRegex = /@\{([\w-]+)\.state\.\d+\}/g
+			refMatchAry = paraValue.match(refRegex)
+
+			newParaValue = paraValue
+
+			if refMatchAry and refMatchAry.length
+
+				refMatchStr = refMatchAry[0]
+				resName = refMatchStr.replace('@{', '').split('.')[0]
+				resUID = that.getUIDByResName(resName)
+				stateNum = Number(refMatchStr.replace('}', '').split('.')[2])
+				stateUID = ''
+
+				if resUID and _.isNumber(stateNum)
+					compData = allCompData[resUID]
+					if compData.state and _.isArray(compData.state) and compData.state[stateNum - 1]
+						stateUID = compData.state[stateNum - 1].stateid
+
+				if resUID and stateUID
+					newUIDStr = refMatchStr.replace(resName, resUID).replace('.state.' + stateNum, '.state.' + stateUID)
+					newParaValue = newParaValue.replace(refMatchStr, newUIDStr)
+
+			return newParaValue
 
 		replaceParaUIDToName: (paraValue) ->
 
@@ -403,7 +474,7 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 
 			_.each refMatchAry, (refMatchStr) ->
 
-				uidMatchAry = refMatchStr.match(/[A-Z0-9]{8}-([A-Z0-9]{4}-){3}[A-Z0-9]{12}/)
+				uidMatchAry = refMatchStr.match(uidRegex)
 				resUID = uidMatchAry[0]
 
 				if allCompData[resUID]
@@ -486,7 +557,7 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 				}
 			agentStatus = 'unknown'
 
-			state_model.log { sender : that }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), appId, resId
+			state_model.log {sender: that}, $.cookie('usercode'), $.cookie('session_id'), appId, resId
 
 			that.off('STATE_LOG_RETURN')
 			that.on 'STATE_LOG_RETURN', ( result ) ->

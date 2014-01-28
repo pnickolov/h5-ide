@@ -419,14 +419,14 @@ var dragsort = {
 	{
 		var top = event.pageY - event.data.offset_top - event.data.state_offset_top,
 			state_offset_top = event.data.state_offset_top,
-			index = Math.round(top / event.data.item_height) + 1,
+			index = Math.round((top - event.data.offset_top) / event.data.item_height) + 1,
 			length = event.data.state_list.length;
 
 		if (index > 0)
 		{
 			if (index >= length)
 			{
-				event.data.state_list.eq(length - 1).after(event.data.target);
+				$('.state-list').append(event.data.target);
 			}
 			else
 			{

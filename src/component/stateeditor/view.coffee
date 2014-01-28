@@ -144,9 +144,6 @@ define [ 'event',
                 that.readOnlyMode = false
                 that.isShowLogPanel = false
 
-            if currentAppState is 'stoped'
-                alert(1)
-
         compileTpl: () ->
 
             # generate template
@@ -232,10 +229,12 @@ define [ 'event',
             
             dragsort.init({
                 dragStart: () ->
-
+                    $stateItem = this
+                    $stateItemList = that.$stateList.find('.state-item')
+                    $stateItemList.addClass('view')
                     return true
-
                 dragEnd: () ->
+                    $stateItem = this
                     that.refreshLogItemNum()
                     null
             })

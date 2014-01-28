@@ -372,7 +372,7 @@
 var dragsort = {
 	init: function (option)
 	{
-		$('#state-editor').on('mousedown', '.state-drag', {'option': options}, dragsort.mousedown);
+		$('#state-editor').on('mousedown', '.state-drag', {'option': option}, dragsort.mousedown);
 	},
 
 	mousedown: function (event)
@@ -387,7 +387,7 @@ var dragsort = {
 
 			if (event.data.option.dragStart)
 			{
-				event.data.option.dragStart.call(this, event);
+				event.data.option.dragStart.call(target, event);
 			}
 
 			target.css('visibility', 'hidden');
@@ -447,7 +447,7 @@ var dragsort = {
 	{
 		if (event.data.option.dragEnd)
 		{
-			event.data.option.dragEnd.call(this, event);
+			event.data.option.dragEnd.call(event.data.target, event);
 		}
 
 		event.data.target.css('visibility', 'visible');

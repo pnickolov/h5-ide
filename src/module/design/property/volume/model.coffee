@@ -107,6 +107,8 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
 
             volume
 
+
+
         setDeviceName : ( name ) ->
 
             components = MC.canvas_data.component
@@ -245,11 +247,13 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
             if not components[ uid ]
                 #lc
                 block = volume
-                block.Ebs.Iops = value
+                block.Ebs.VolumeType = "io1"
+                block.Ebs.Iops       = value
 
             else
                 #instace
-                volume.resource.Iops = value
+                volume.resource.VolumeType = "io1"
+                volume.resource.Iops       = value
 
             null
 

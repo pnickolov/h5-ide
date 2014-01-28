@@ -19,7 +19,7 @@ var listen = function ()
 	{
 		canvas_container
 			.addClass('canvas_state_' + canvas_state)
-			.on('mousedown' + name_space, '.instance-volume, .instanceList-item-volume', MC.canvas.volume.show)
+			.on('mousedown' + name_space, '.instance-volume, .instanceList-item-volume, .asgList-item-volume', MC.canvas.volume.show)
 			.on('click' + name_space, '.line', MC.canvas.event.selectLine)
 			.on('mousedown' + name_space, MC.canvas.event.clearSelected)
 			.on('mousedown' + name_space, '#svg_canvas', MC.canvas.event.clickBlank)
@@ -36,7 +36,7 @@ var listen = function ()
 	{
 		canvas_container
 			.addClass('canvas_state_' + canvas_state)
-			.on('mousedown' + name_space, '.instance-volume, .instanceList-item-volume', MC.canvas.volume.show)
+			.on('mousedown' + name_space, '.instance-volume, .instanceList-item-volume, .asgList-item-volume', MC.canvas.volume.show)
 			.on('mousedown' + name_space, '.port', MC.canvas.event.appDrawConnection)
 			.on('mousedown' + name_space, '.dragable', MC.canvas.event.dragable.mousedown)
 			.on('mousedown' + name_space, '.group-resizer', MC.canvas.event.groupResize.mousedown)

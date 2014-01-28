@@ -2,24 +2,34 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 	getVolumeList = ( instance_id ) ->
 
-		instance_layout_volume_list = null
-
-		index = 0
-
-		if MC.canvas_data.layout.component.node[instance_id]
-
-			instance_layout_volume_list = MC.canvas_data.layout.component.node[instance_id].volumeList
-
-		else
-			instance_layout_volume_list = MC.canvas_data.layout.component.node[MC.canvas_data.component[instance_id].serverGroupUid].volumeList
-
-			index = MC.canvas_data.component[instance_id].index
-
 		volume_list = []
 
-		for main_vol, vol_list of instance_layout_volume_list
+		if instance_id.indexOf("i-")==0
+			#instance id
+			instance_data = MC.data.resource_list[MC.canvas_data.region][instance_id]
+			if instance_data
+				for k,v of instance_data.blockDeviceMapping.item
+					volume_list.push v
 
-			volume_list.push vol_list[index]
+		else
+
+			instance_layout_volume_list = null
+
+			index = 0
+
+			if MC.canvas_data.layout.component.node[instance_id]
+				#instance
+				instance_layout_volume_list = MC.canvas_data.layout.component.node[instance_id].volumeList
+
+			else
+				#servergroup
+				instance_layout_volume_list = MC.canvas_data.layout.component.node[MC.canvas_data.component[instance_id].serverGroupUid].volumeList
+
+				index = MC.canvas_data.component[instance_id].index
+
+			for main_vol, vol_list of instance_layout_volume_list
+
+				volume_list.push vol_list[index]
 
 		volume_list
 

@@ -20,6 +20,14 @@ define [ "../base/main",
                 me.model.setVolumeSize value
                 MC.canvas.update model.attributes.uid, "text", "volume_size", value + "GB"
 
+                #patch: update volumeSize in dom
+                vol_data = $("#" + model.attributes.uid ).data("json")
+                vol_data.volumeSize = value
+                $("#" + model.attributes.uid ).attr( "data-json", JSON.stringify(vol_data) )
+
+                null
+
+
             @model.once 'REFRESH_PANEL', ()->
                 me.view.render()
 

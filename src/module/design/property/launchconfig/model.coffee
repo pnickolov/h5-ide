@@ -12,6 +12,15 @@ define [ '../base/model', 'keypair_model', 'constant' ], ( PropertyModel, keypai
     "m3.xlarge"  : true
     "m3.2xlarge" : true
     "c1.xlarge"  : true
+    #append
+    "c3.2xlarge" : true
+    "c3.4xlarge" : true
+    "c3.xlarge"  : true
+    "g2.2xlarge" : true
+    "i2.2xlarge" : true
+    "i2.4xlarge" : true
+    "i2.xlarge"  : true
+
 
   LaunchConfigModel = PropertyModel.extend {
 
@@ -88,7 +97,8 @@ define [ '../base/model', 'keypair_model', 'constant' ], ( PropertyModel, keypai
 
       component.resource.InstanceType = value
 
-      has_ebs = EbsMap.hasOwnProperty value
+      has_ebs = MC.aws.instance.canSetEbsOptimized component
+
       if not has_ebs
         component.resource.EbsOptimized = "false"
 

@@ -1,3 +1,13 @@
+/*
+#**********************************************************
+#* Filename: UI.parsley
+#* Creator: Tim
+#* Description: UI.parsley
+#* Date: 20130813
+# **********************************************************
+# (c) Copyright 2013 Madeiracloud  All Rights Reserved
+# **********************************************************
+*/
 !function($) {
 
   var Util = {

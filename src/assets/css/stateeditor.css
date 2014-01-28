@@ -32,6 +32,8 @@
 	background: #fff;
 	font-family: "OxygenMono", "Lucida Console", "Monaco", monospace;
 	font-size: 13px;
+	overflow: hidden;
+	position: relative;
 }
 
 #state-editor.full {
@@ -195,9 +197,17 @@
 	z-index: 80;
 	display: block;
 	border-right: 1px solid #ddd;
-	padding: 11px;
+	padding: 11px 0;
+	text-align: center;
 	color: #666;
 	font-family: Lucida Console;
+	width: 32px;
+	background: #fafafa;
+	box-shadow: 1px 1px 1px rgba(0,0,0,0.05);
+}
+
+.state-list .state-placeholder:before {
+	display: none;
 }
 
 /* *************************************** ace editor */
@@ -343,6 +353,15 @@
 }
 
 /* *************************************** parameter */
+#state-shadow-item {
+	width: 655px;
+	height: 30px;
+	border: 1px solid #ccc;
+	border-radius: 2px;
+	background: #fff;
+	position: absolute;
+	z-index: 80;
+}
 
 #state-editor .command-value {
 	float: left;
@@ -353,11 +372,7 @@
 }
 
 #state-editor .parameter-list {
-	float: left;
 	overflow: auto;
-	width: 100%;
-	max-width: 500px;
-	display: inline;
 	margin-left: 69px;
 }
 

@@ -221,11 +221,20 @@ define [ 'event',
             that = this
 
             # state item sortable
-            that.$stateList.dragsort({
-                itemSelector: '.state-item',
-                dragSelector: '.state-drag',
-                dragBetween: true,
-                placeHolderTemplate: '<div class="state-item state-placeholder"></div>',
+            # that.$stateList.dragsort({
+            #     itemSelector: '.state-item',
+            #     dragSelector: '.state-drag',
+            #     dragBetween: true,
+            #     placeHolderTemplate: '<div class="state-item state-placeholder"></div>',
+            #     dragEnd: () ->
+            #         that.refreshStateId()
+            # })
+            
+            dragsort.init({
+                dragStart: () ->
+
+                    return true
+
                 dragEnd: () ->
                     that.refreshLogItemNum()
                     null

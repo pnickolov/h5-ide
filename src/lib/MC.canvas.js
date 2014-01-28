@@ -2503,7 +2503,7 @@ MC.canvas.volume = {
 				canvas_offset = canvas_container.offset(),
 				component_data = MC.canvas.data.get('component'),
 				node_uid    = node.id.replace(/_[0-9]*$/ig, ''),
-				target_data = component_data[ node_uid ],
+				target_data = target.hasClass('asgList-item') ? MC.data.resource_list[ MC.canvas_data.region ][ node_uid ] : component_data[ node_uid ],
 				data = {'list': []},
 				coordinate = {},
 				is_deleted = '',
@@ -2518,7 +2518,7 @@ MC.canvas.volume = {
 			canvas_container.append('<div id="volume-bubble-box"><div class="arrow"></div><div id="volume-bubble-content"></div></div>');
 			bubble_box = $('#volume-bubble-box');
 
-			if (target_data.type === 'AWS.AutoScaling.LaunchConfiguration')
+			if (target_data && target_data.type === 'AWS.AutoScaling.LaunchConfiguration')
 			{
 				node_volume_data = target_data.resource.BlockDeviceMapping;
 
@@ -2547,32 +2547,86 @@ MC.canvas.volume = {
 					MC.forge.stack.getVolumeList(node_uid) :
 					target_data.resource.BlockDeviceMapping;
 
-				$.each(node_volume_data, function (index, item)
+				if ( target.hasClass('asgList-item') )
 				{
-					volume_id = item.replace('#', '');
-					volume_data = component_data[ volume_id ];
 
-					if (MC.forge && MC.forge.app && MC.forge.app.getResourceById)
+					var instance_data = MC.data.resource_list[MC.canvas_data.region][node_uid],
+						root_devName  = '',
+						ami_info      = null;
+
+					if (instance_data)
 					{
-						comp_vol = MC.forge.app.getResourceById(volume_id);
-						is_deleted = (comp_vol === null ? ' deleted' : '');
+						ami_info = MC.data.dict_ami[instance_data.imageId];
+						if (ami_info)
+						{
+							root_devName = ami_info.rootDeviceName;
+						}
 					}
 
-					data.list.push({
-						'is_deleted' : is_deleted,
-						'volume_id': volume_id,
-						'name': volume_data.name,
-						'size': volume_data.resource.Size,
-						'snapshotId': volume_data.resource.SnapshotId,
-						'json': JSON.stringify({
-							'instance_id': node_uid,
-							'id': volume_id,
+					//volume in asg
+					$.each(node_volume_data, function (index, item)
+					{
+
+						volume_id = item.ebs.volumeId;
+						if (item.deviceName === root_devName )
+						{
+							return true;
+						}
+
+						if (MC.forge && MC.forge.app && MC.forge.app.getResourceById)
+						{
+							comp_vol = MC.data.resource_list[ MC.canvas_data.region ][volume_id];
+							is_deleted = (comp_vol === null ? ' deleted' : '');
+						}
+
+						data.list.push({
+							'is_deleted' : is_deleted,
+							'volume_id': volume_id,
+							'name': item.deviceName,
+							'size': comp_vol ? comp_vol.size : '-',
+							'snapshotId': item.ebs.snapshotId,
+							'json': JSON.stringify({
+								'instance_id': node_uid,
+								'id': volume_id,
+								'name': item.deviceName,
+								'snapshotId': item.ebs.snapshotId,
+								'volumeSize': comp_vol.size
+							})
+						});
+					});					
+				}
+				else
+				{
+					//volume in instance
+					$.each(node_volume_data, function (index, item)
+					{
+
+						volume_id = item.replace('#', '');
+						volume_data = component_data[ volume_id ];
+
+						if (MC.forge && MC.forge.app && MC.forge.app.getResourceById)
+						{
+							comp_vol = MC.forge.app.getResourceById(volume_id);
+							is_deleted = (comp_vol === null ? ' deleted' : '');
+						}
+
+						data.list.push({
+							'is_deleted' : is_deleted,
+							'volume_id': volume_id,
 							'name': volume_data.name,
+							'size': volume_data.resource.Size,
 							'snapshotId': volume_data.resource.SnapshotId,
-							'volumeSize': volume_data.resource.Size
-						})
+							'json': JSON.stringify({
+								'instance_id': node_uid,
+								'id': volume_id,
+								'name': volume_data.name,
+								'snapshotId': volume_data.resource.SnapshotId,
+								'volumeSize': volume_data.resource.Size
+							})
+						});
 					});
-				});
+				}
+					
 			}
 
 			data.volumeLength = node_volume_data.length;
@@ -2619,7 +2673,8 @@ MC.canvas.volume = {
 			{
 				if (
 					$('#' + target_id + '_instance-number').text() * 1 === 1 ||
-					target.hasClass('instanceList-item-volume')
+					target.hasClass('instanceList-item-volume') ||
+					target.hasClass('asgList-item-volume')
 				)
 				{
 					MC.canvas.volume.bubble(

@@ -91,10 +91,24 @@ define [ 'event',
 
 			# We cannot format the type for "component" / "line", then do not refresh the property panel
 			if type is null
-				return
 
-			# Tell `PropertyBaseModule` to load corresponding property panel.
-			tab_type = getTabType( uid )
+				#patch for volume in asg
+				if uid.indexOf("vol-") is 0
+					type = "AWS.EC2.EBS.Volume"
+					tab_type = MC.canvas.getState()
+					if tab_type is "app" or tab_type is "appview" # Quick mod, appview map to app
+						tab_type = PropertyBaseModule.TYPE.App
+					else if tab_type is "stack"
+						return null
+					else
+						tab_type = PropertyBaseModule.TYPE.AppEdit
+				else
+					#other
+					return null
+
+			else
+				# Tell `PropertyBaseModule` to load corresponding property panel.
+				tab_type = getTabType( uid )
 
 			try
 				PropertyBaseModule.load type, uid, tab_type

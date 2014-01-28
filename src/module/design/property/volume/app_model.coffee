@@ -44,15 +44,22 @@ define [ '../base/model' ], ( PropertyModel ) ->
 
                         #append for volume of lc
                         volume_detail.size       = block.Ebs.VolumeSize
-                        volume_detail.volumeType = if block.Ebs.VolumeType then block.Ebs.VolumeType else '-'
-                        volume_detail.IOPS       = if block.Ebs.Iops       then block.Ebs.Iops       else '-'
-                        volume_detail.snapshotId = if block.Ebs.SnapshotId then block.Ebs.SnapshotId else '-'
+                        volume_detail.volumeType = block.Ebs.VolumeType
+                        volume_detail.IOPS       = block.Ebs.Iops
+                        volume_detail.snapshotId = block.Ebs.SnapshotId
 
                         me.set volume_detail
 
                         return false
+          else if volume_uid.indexOf("vol-") is 0
+            #volume in asg
+            if appData[ volume_uid ]
+              volume = $.extend true, {}, appData[ volume_uid ]
+              volume.name = volume.attachmentSet.item[0].device
+              volume.IOPS = volume.iops
+              volume.isLC = false
           else
-
+            #volume in instance
             volume = $.extend true, {}, appData[ myVolumeComponent.resource.VolumeId ]
             volume.name = myVolumeComponent.name
             volume.IOPS = myVolumeComponent.resource.Iops

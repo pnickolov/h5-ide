@@ -130,7 +130,7 @@ define ["event", "text!./diff.html", "text!./view.html", "./JsonDiffLib", "./jqU
         false
 
       $("#diffTextarea1, #diffTextarea2").on "focus", ()->
-        $(this).select()
+        setTimeout (()=>$(this).select()), 10
         null
 
       $("#diffSwap").on "click", ()->
@@ -179,6 +179,11 @@ define ["event", "text!./diff.html", "text!./view.html", "./JsonDiffLib", "./jqU
 
       $( tplView() ).appendTo( "body" ).resizable().draggable({handle:".modal-header"})
 
+      w = localStorage.getItem "debug/jsonViewW"
+      h = localStorage.getItem "debug/jsonViewH"
+      if w and h
+        $("#jsonViewer").width(w).height(h)
+
       updateViewDialog( canvas_data )
 
       $("#jsonViewer").on "click", "ul", ( e )->
@@ -204,6 +209,8 @@ define ["event", "text!./diff.html", "text!./view.html", "./JsonDiffLib", "./jqU
         null
 
       $("#jsonViewer").on "click", ".modal-close", ()->
+        localStorage.setItem "debug/jsonViewW", $("#jsonViewer").width()
+        localStorage.setItem "debug/jsonViewH", $("#jsonViewer").height()
         $("#jsonViewer").remove()
         null
 

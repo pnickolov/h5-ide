@@ -2757,11 +2757,39 @@ MC.canvas.volume = {
 				volume_id = $('#instance_volume_list').find('.selected').attr('id'),
 				volumeList;
 
-			target_volume_data.splice(
-				target_volume_data.indexOf(
-					'#' + volume_id
-				), 1
-			);
+			if (!volume_id)
+			{
+				return false;
+			}
+
+			if (target_node.data('class') === 'AWS.AutoScaling.LaunchConfiguration')
+			{
+				var rvolume = /volume_([a-zA-Z]{3,4})/ig,
+					volume_match = rvolume.exec(volume_id),
+					volume_name = volume_match[1],
+					target_index;
+
+				$.each(target_volume_data, function (i, item)
+				{
+					if (item.DeviceName.indexOf(volume_name) !== -1)
+					{
+						target_index = i;
+					}
+				});
+
+				if ( target_index !== undefined )
+				{
+					target_volume_data.splice(target_index, 1);
+				}
+			}
+			else
+			{
+				target_volume_data.splice(
+					target_volume_data.indexOf(
+						'#' + volume_id
+					), 1
+				);
+			}
 
 			$('#instance_volume_number, #' + target_id + '_volume_number').text(target_volume_data.length);
 

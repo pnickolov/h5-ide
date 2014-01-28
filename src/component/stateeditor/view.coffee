@@ -14,12 +14,12 @@ define [ 'event',
         events      :
 
             'closed': 'closedPopup'
-            'keyup .parameter-item.dict .parameter-value': 'onDictInputChange'
+            'keydown .parameter-item.dict .parameter-value': 'onDictInputChange'
             'blur .parameter-item.dict .parameter-value': 'onDictInputBlur'
 
-            'keyup .parameter-item.array .parameter-value': 'onArrayInputChange'
+            'keydown .parameter-item.array .parameter-value': 'onArrayInputChange'
             'blur .parameter-item.array .parameter-value': 'onArrayInputBlur'
-            'keyup .parameter-item.state .parameter-value': 'onArrayInputChange'
+            'keydown .parameter-item.state .parameter-value': 'onArrayInputChange'
             'blur .parameter-item.state .parameter-value': 'onArrayInputBlur'
 
             'blur .command-value': 'onCommandInputBlur'
@@ -40,7 +40,7 @@ define [ 'event',
 
             'OPTION_CHANGE .state-editor-res-select': 'onResSelectChange'
 
-            'keyup .parameter-item.optional .parameter-value': 'onOptionalParaItemChange'
+            'keydown .parameter-item.optional .parameter-value': 'onOptionalParaItemChange'
 
         initialize: () ->
 
@@ -227,7 +227,7 @@ define [ 'event',
                 dragBetween: true,
                 placeHolderTemplate: '<div class="state-item state-placeholder"></div>',
                 dragEnd: () ->
-                    # that.refreshStateId()
+                    that.refreshLogItemNum()
                     null
             })
 
@@ -730,6 +730,21 @@ define [ 'event',
                     defaultValue = String(paraObj.default)
                     if not currentValue and defaultValue and not $currentInput.hasClass('key')
                         that.setPlainText($currentInput, defaultValue)
+                        $paraItem = $currentInput.parents('.parameter-item')
+                        $paraItem.removeClass('disabled')
+
+                        # auto add new para item
+                        # if $currentInput.hasClass('parameter-value')
+
+                        #     $paraItem = $currentInput.parents('.parameter-item')
+                        #     if $paraItem.hasClass('dict')
+                        #         that.onDictInputChange({
+                        #             currentTarget: $currentInput[0]
+                        #         })
+                        #     else if $paraItem.hasClass('array') or $paraItem.hasClass('state')
+                        #         that.onArrayInputChange({
+                        #             currentTarget: $currentInput[0]
+                        #         })
 
             # refresh module description
 
@@ -883,7 +898,7 @@ define [ 'event',
                     cmdEditor.focus()
                 , 0)
 
-            # that.refreshStateId()
+            that.refreshLogItemNum()
 
         onStateRemoveClick: (event) ->
 
@@ -894,7 +909,7 @@ define [ 'event',
 
             $stateItem.remove()
 
-            # that.refreshStateId()
+            that.refreshLogItemNum()
 
         submitValidate: ( element ) ->
 
@@ -1403,7 +1418,9 @@ define [ 'event',
                         thatEditor.execCommand("startAutocomplete")
 
                 if e.command.name is "autocomplete_confirm"
+
                     if $editorElem.hasClass('command-value')
+
                         value = e.args
                         $stateItem = $editorElem.parents('.state-item')
                         originCMDName = $stateItem.attr('data-command')
@@ -1415,6 +1432,18 @@ define [ 'event',
                             $paraListElem = $stateItem.find('.parameter-list')
                             that.refreshParaList($paraListElem, value)
                             that.refreshStateView($stateItem)
+
+                    else if $editorElem.hasClass('parameter-value')
+
+                        $paraItem = $editorElem.parents('.parameter-item')
+                        if $paraItem.hasClass('dict')
+                            that.onDictInputChange({
+                                currentTarget: $editorElem[0]
+                            })
+                        else if $paraItem.hasClass('array') or $paraItem.hasClass('state')
+                            that.onArrayInputChange({
+                                currentTarget: $editorElem[0]
+                            })
             )
 
             editor.on("focus", (e, thatEditor) ->
@@ -1531,22 +1560,27 @@ define [ 'event',
 
             stateLogViewAry = []
             stateStatusMap = {}
-            _.each stateLogDataAry, (logObj) ->
+            _.each stateLogDataAry, (logObj, idx) ->
                 timeStr = null
                 if logObj.time
                     timeStr = MC.dateFormat(new Date(logObj.time), 'yyyy-MM-dd hh:mm:ss')
                 stateStatus = logObj.result
                 stateId = "#{logObj.state_id}"
+                stateNum = ''
                 if logObj.state_id isnt 'Agent'
                     stateId = "State #{stateId}"
+                    stateStatusMap[logObj.state_id] = stateStatus
+                else
+                    stateNum = logObj.state_id
+
                 stateLogViewAry.push({
-                    state_id: stateId,
+                    state_id: logObj.state_id,
+                    state_num: stateNum,
                     log_time: timeStr,
                     state_status: stateStatus,
                     stdout: logObj.stdout,
                     stderr: logObj.stderr
                 })
-                stateStatusMap[logObj.state_id] = stateStatus
                 null
 
             renderHTML = that.stateLogItemTpl({
@@ -1554,8 +1588,8 @@ define [ 'event',
             })
 
             that.refreshStateItemStatus(stateStatusMap)
-
             that.$stateLogList.append(renderHTML)
+            that.refreshLogItemNum()
 
         setEditorReadOnlyMode: () ->
 
@@ -1672,6 +1706,39 @@ define [ 'event',
                     $statusIcon.addClass('success')
                 else if stateStatus is 'failure'
                     $statusIcon.addClass('failure')
+                null
+
+        refreshLogItemNum: () ->
+
+            that = this
+
+            if that.currentState is 'stack'
+                return
+
+            stateIdNumMap = {}
+            $stateItemList = that.$stateList.find('.state-item')
+            _.each $stateItemList, (stateItem, idx) ->
+                $stateItem = $(stateItem)
+                stateId = $stateItem.attr('data-id')
+                stateIdNumMap[stateId] = idx + 1
+                null
+
+            $logItemList = that.$stateLogList.find('.state-log-item')
+
+            _.each $logItemList, (logItem, idx) ->
+
+                if idx >= 2
+
+                    $logItem = $(logItem)
+                    stateId = $logItem.attr('data-state-id')
+
+                    stateNum = stateIdNumMap[stateId]
+
+                    stateNumStr = 'unknown'
+                    if stateNum then stateNumStr = stateNum
+                    
+                    $logItem.find('.state-log-item-name').text('State ' + stateNumStr)
+
                 null
 
         unloadEditor: () ->

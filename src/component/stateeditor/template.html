@@ -214,9 +214,9 @@
 
 <!-- state-template-log-item -->
 {{#each state_logs}}
-	<li class="state-log-item">
+	<li class="state-log-item" data-state-id="{{state_id}}">
 		<div class="state-log-item-header">
-			<div class="state-log-item-name">{{state_id}}</div>
+			<div class="state-log-item-name">{{#if state_num}}{{state_num}}{{/if}}</div>
 			{{#if log_time}}<div class="state-log-item-time">{{log_time}}</div>{{/if}}
 			<div class="state-log-item-status {{state_status}}">{{state_status}}</div>
 		</div>

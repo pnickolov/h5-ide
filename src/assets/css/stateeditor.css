@@ -702,6 +702,10 @@
 	font-weight: bold;
 }
 
+#state-log .state-log-list li {
+	border-bottom: 1px #333 solid;
+}
+
 .state-bottom {
 	border-top: 1px solid #cfcfcf;
 	background: #eee;
@@ -847,10 +851,14 @@
 	height: 9px;
 	border-radius: 50%;
 	display:none;
-	margin-left: 5px;
+	margin-left: 43px;
 	margin-right: 10px;
-	margin-top: 10px;
+	margin-top: 12px;
 	float: left;
+}
+
+#state-editor-model.se-model-appedit .state-status-icon {
+	margin-left: 34px;
 }
 
 #state-editor-model .state-status-icon.success {

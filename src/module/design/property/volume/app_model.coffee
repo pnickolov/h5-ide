@@ -24,6 +24,10 @@ define [ '../base/model' ], ( PropertyModel ) ->
 
                 lc_comp = MC.canvas_data.component[realuid]
 
+                if ! MC.data.resource_list[MC.canvas_data.region][lc_comp.resource.LaunchConfigurationARN]
+                  console.warn "not found lc data in resource_list"
+                  return null
+
                 lc_block_device = MC.data.resource_list[MC.canvas_data.region][lc_comp.resource.LaunchConfigurationARN].BlockDeviceMappings.member
 
                 $.each lc_block_device, ( i, block ) ->
@@ -37,6 +41,12 @@ define [ '../base/model' ], ( PropertyModel ) ->
                         volume_detail.isLC = true
 
                         volume_detail.name = "Volume of " + lc_comp.name
+
+                        #append for volume of lc
+                        volume_detail.size       = block.Ebs.VolumeSize
+                        volume_detail.volumeType = if block.Ebs.VolumeType then block.Ebs.VolumeType else '-'
+                        volume_detail.IOPS       = if block.Ebs.Iops       then block.Ebs.Iops       else '-'
+                        volume_detail.snapshotId = if block.Ebs.SnapshotId then block.Ebs.SnapshotId else '-'
 
                         me.set volume_detail
 

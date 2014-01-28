@@ -1,11 +1,24 @@
 <article class="property-app">
 {{#if isLC}}
-    <dl class="dl-vertical">
+  <dl class="dl-vertical">
     <dt>{{i18n "PROP_VOLUME_DEVICE_NAME"}}</dt>
     <dd>{{emptyStr DeviceName}}</dd>
     <dt>{{i18n "PROP_VOLUME_SIZE"}}</dt>
     <dd>{{emptyStr Ebs.VolumeSize}} GB</dd>
   </dl>
+  <dl class="dl-vertical">
+    <dt>{{i18n "PROP_VOLUME_TYPE"}}</dt>
+    <dd>{{emptyStr volumeType}}</dd>
+    {{#if snapshotId}}
+    <dt>{{i18n "PROP_VOLUME_SNAPSHOT_ID"}}</dt>
+    <dd>{{snapshotId}}</dd>
+    {{/if}}
+    {{#if IOPS}}
+    <dt>IOPS</dt>
+    <dd>{{IOPS}}</dd>
+    {{/if}}
+  </dl>
+
 {{else}}
   <dl class="dl-vertical">
     <dt>{{i18n "PROP_VOLUME_ID"}}</dt>

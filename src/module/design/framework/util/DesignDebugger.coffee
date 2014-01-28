@@ -35,6 +35,14 @@ define [ "Design" ], ( Design )->
   Design.debug.selectedComp = ()->
     Design.instance().component( $("#svg_canvas").find(".selected").attr("id") )
 
+  Design.debug.selectedCompState = ()->
+    comp = Design.instance().component( $("#svg_canvas").find(".selected").attr("id") ).serialize()[1]
+    if comp and comp.component and comp.component.state
+      JSON.stringify(comp.component.state)
+    else
+      "no state for selected component"
+
+
   Design.debug.diff = ( e )->
 
     d = Design.instance()

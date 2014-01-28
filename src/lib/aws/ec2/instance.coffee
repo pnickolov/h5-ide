@@ -8,6 +8,14 @@ define [ 'constant', 'MC' ], ( constant, MC ) ->
 		"m3.xlarge"  : true
 		"m3.2xlarge" : true
 		"c1.xlarge"  : true
+		"c3.xlarge"   : true
+		"c3.2xlarge"  : true
+		"c3.4xlarge"  : true
+		"g2.2xlarge"  : true
+		"i2.xlarge"   : true
+		"i2.2xlarge"  : true
+		"i2.4xlarge"  : true
+
 
 	updateCount = ( uid, count ) ->
 

@@ -1305,16 +1305,12 @@ MC.canvas.add = function (flag, option, coordinate)
 					component_data = $.extend(true, {}, MC.canvas.ASL_VOL_JSON);
 					component_data.DeviceName = option.name;
 					component_data.Ebs.VolumeSize = option.volumeSize;
-					//append iops support
-					component_data.Ebs.SnapshotId = option.snapshotId;
-					component_data.Ebs.VolumeType = "standard";
-					component_data.Ebs.Iops       = "";
-
-
 					if (option.snapshotId)
 					{
 						component_data.Ebs.SnapshotId = option.snapshotId;
 					}
+					//append volumeType support
+					component_data.Ebs.VolumeType = "standard";
 
 				}
 

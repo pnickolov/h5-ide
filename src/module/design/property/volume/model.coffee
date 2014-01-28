@@ -173,10 +173,7 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
             if not components[ uid ]
                 #lc
                 block = volume
-                if block.DeviceName[0] != '/'
-                    block.Ebs.VolumeSize = value
-                else
-                    block.Ebs.VolumeSize = value
+                block.Ebs.VolumeSize = value
 
             else
                 #instance
@@ -198,14 +195,12 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
                 #lc
                 block = volume
                 block.Ebs.VolumeType = 'standard'
-                block.Ebs.Iops       = ''
+                delete block.Ebs.Iops
 
             else
                 #instace
-                volume_comp = volume
-                comp_res = volume_comp.resource
-                comp_res.VolumeType = 'standard'
-                comp_res.Iops = ''
+                volume.resource.VolumeType = 'standard'
+                delete volume.resource.Iops
 
             null
 
@@ -228,8 +223,8 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
 
             else
                 #instace
-                volume.VolumeType = 'io1'
-                volume.Iops = value
+                volume.resource.VolumeType = 'io1'
+                volume.resource.Iops       = value
 
             null
 

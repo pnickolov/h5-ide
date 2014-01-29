@@ -38,7 +38,7 @@ define [ "Design" ], ( Design )->
   Design.debug.selectedCompState = ()->
     comp = Design.instance().component( $("#svg_canvas").find(".selected").attr("id") ).serialize()[1]
     if comp and comp.component and comp.component.state
-      JSON.stringify(comp.component.state)
+      '{\n\t"component": {\n\t\t"init" : {\n\t\t\t"state": ' + JSON.stringify(comp.component.state) + '\n\t\t}\n\t}\n}\n'
     else
       "no state for selected component"
 

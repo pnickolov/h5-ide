@@ -1,0 +1,1278 @@
+{
+  "windows": [
+    
+  ],
+  "linux": {
+    "vg": {
+      "parameter": {
+        "allocation policy": {
+          "required": false,
+          "type": "line",
+          "option": [
+            "anywhere",
+            "contiguous",
+            "cling",
+            "inherit",
+            "normal"
+          ]
+        },
+        "max PV number": {
+          "required": false,
+          "type": "line"
+        },
+        "metadata type": {
+          "default": "lvm2",
+          "required": false,
+          "type": "line",
+          "option": [
+            "lvm1",
+            "lvm2"
+          ]
+        },
+        "tag": {
+          "required": false,
+          "type": "line"
+        },
+        "clustered": {
+          "default": true,
+          "required": false,
+          "type": "bool"
+        },
+        "path": {
+          "required": true,
+          "type": "array"
+        },
+        "metadata copies": {
+          "required": false,
+          "type": "line",
+          "option": [
+            "unmanaged",
+            "all"
+          ]
+        },
+        "name": {
+          "required": true,
+          "type": "line"
+        },
+        "max LV number": {
+          "required": false,
+          "type": "line"
+        },
+        "autobackup": {
+          "default": false,
+          "required": false,
+          "type": "bool"
+        },
+        "PE size": {
+          "default": "4m",
+          "required": false,
+          "type": "line"
+        }
+      },
+      "reference": {
+        "en": "\n### Description\n\tmanage LVM volume group (VG)\n\t\n### Parameters\n\n\n*   **name** (*required*): the VG name\n\n*   **path** (*required*): a list of block special devices\n\n\t\tExample:\n\t\t\t\/dev\/sdk1, \/dev\/sdl1\n\n*   **clustered** (*optional*): whether to enable the clustered locking on the VG, by default ***True***\n\n\t\tNote:\n\t\t\tIf the new VG is shared with other nodes in the cluster, need to enable this option\n\t\t\tIf the new VG contains only local disks that are not visible on the other nodes, this option must be turned off\n\t\t\tIf the cluster infrastructure is unavailable on a particular node at a particular time, you may still be able to \n\t\t\tuse such VGs\n\n*   **max LV number** (*optional*): specify the maximum number of LVs allowed in this VG\n\n\t\tNote:\n\t\t\tFor VGs with  metadata in lvm1 format, the limit and default value is 255\n\t\t\tIf the metadata uses lvm2 format, the default value is 0 which removes this restriction: there is then no limit\n\n*   **max PV number** (*optional*): specify the maximum number of PVs that can belong to this VG\n\n\t\tNote:\n\t\t\tFor VGs with metadata in lvm1 format, the limit and default value is 255\n\t\t\tIf the metadata uses lvm2 format, the value 0 removes this restriction: there is then no limit\n\n\n*   **max PV number** (*optional*): specify the maximum number of PVs that can belong to this VG\n\n\t\tNote:\n\t\t\tFor VGs with metadata in lvm1 format, the limit and default value is 255\n\t\t\tIf the metadata uses lvm2 format, the value 0 removes this restriction: there is then no limit\n\n*   **metadata type** (*optional*): specify which type of on-disk metadata to use, by default ***lvm2***\n\n\t\tExample:\n\t\t\tlvm1, lvm2, 1, 2\n\n\t\tNote:\n\t\t\tlvm1 or lvm2 can be abbreviated to 1 or 2 respectively. The default (lvm2) can be changed by setting format\n\t\t\tin the global section of the config file.\n\n*   **metadata copies** (*optional*): specify the desired number of metadata copies in the VG\n\n\t\tExample:\n\t\t\tunmanaged, all\n\n\t\tNote:\n\t\t\tIf set to a non-zero value, LVM will automatically manage the 'metadata ignore' option on the PVs (see pvcreate(8) or pvchange --metadataignore) in order to achieve the copies of metadata. If set to unmanaged, LVM will not automatically manage the 'metadata ignore' option. If set to all, LVM will first clear all of the 'metadata ignore' option on all metadata areas in the VG, then set the value to unmanaged. This option is useful for VGs containing large numbers of PVs   with metadata  as  it may be used to minimize metadata read and write overhead.  The default value is unmanaged\n\n\n\n*   **PE size** (*optional*): specify the physical extent size on PVs of this VG\n\n\t\tExample:\n\t\t\tbBsSkKmMgGtTpPeE\n\n\t\tNote:\n\t\t\tA size suffix (k for kilobytes up to t for terabytes) is optional, megabytes is the default if no suffix is present. The default is 4 MiB and it must be at least 1 KiB and a power of 2.\n\n\t\t\t  Once  this  value  has  been  set,  it is difficult to change it\n\t\t\t  without recreating the volume group which would involve  backing\n\t\t\t  up  and  restoring  data on any logical volumes.  However, if no\n\t\t\t  extents need moving for the  new  value  to  apply,  it  can  be\n\t\t\t  altered using vgchange -s.\n\n\t\t\t  If  the volume group metadata uses lvm1 format, extents can vary\n\t\t\t  in size from 8KiB to 16GiB and there is a limit of 65534 extents\n\t\t\t  in each logical volume.  The default of 4 MiB leads to a maximum\n\t\t\t  logical volume size of around 256GiB.\n\n\t\t\t  If the volume group metadata uses lvm2 format those restrictions\n\t\t\t  do  not  apply,  but  having a large number of extents will slow\n\t\t\t  down the tools but have no impact  on  I\/O  performance  to  the\n\t\t\t  logical volume.  The smallest PE is 1KiB\n\n\t\t\t  The 2.4 kernel has a limitation of 2TiB per block device.\n\n*   **autobackup** (*optional*): whether to  metadata should be backed up automatically after a change, by default ***True***\n\n\t\tNote:\n\t\t\tYou are strongly advised not to  disable  this! See vgcfgbackup(8)\n\n*   **tag** (*optional*): add the tag to this VG \n\n\t\tNote:\n\t\t\tA tag is a\n\t\t\t  word that can be used to group LVM2 objects  of  the  same  type\n\t\t\t  together.  Tags can be given on the command line in place of PV,\n\t\t\t  VG or LV arguments.  Tags should be prefixed  with  @  to  avoid\n\t\t\t  ambiguity.   Each  tag  is  expanded  by  replacing  it with all\n\t\t\t  objects possessing that tag which are of the  type  expected  by\n\t\t\t  its  position  on  the  command line.  PVs can only possess tags\n\t\t\t  while they are part of a Volume Group: PV tags are discarded  if\n\t\t\t  the  PV  is  removed  from the VG.  As an example, you could tag\n\t\t\t  some LVs as database and others as userdata  and  then  activate\n\t\t\t  the  database  ones  with  lvchange  -ay @database.  Objects can\n\t\t\t  possess  multiple  tags  simultaneously.   Only  the  new   LVM2\n\t\t\t  metadata   format  supports  tagging:  objects  using  the  LVM1\n\t\t\t  metadata format cannot be tagged because the on-disk format does\n\t\t\t  not support it.  Characters allowed in tags are: A-Z a-z 0-9 _ +\n\t\t\t  . - and as of version 2.02.78 the following characters are  also\n\t\t\t  accepted: \/ = ! : # &\n\n*   **allocation policy** (*optional*): specify the allocation policy\n\n\t\tExample:\n\t\t\tcontiguous,  cling,  normal, anywhere or inherit\n\n\t\tNote:\n\t\t\tWhen a command needs to allocate  Physical\n\t\t\t  Extents  from  the  Volume Group, the allocation policy controls\n\t\t\t  how they are chosen.  Each Volume Group and Logical  Volume  has\n\t\t\t  an allocation policy defined.  The default for a Volume Group is\n\t\t\t  normal which applies common-sense  rules  such  as  not  placing\n\t\t\t  parallel stripes on the same Physical Volume.  The default for a\n\t\t\t  Logical Volume is inherit which applies the same policy  as  for\n\t\t\t  the   Volume   Group.   These  policies  can  be  changed  using\n\t\t\t  lvchange(8) and vgchange(8) or overridden on the command line of\n\t\t\t  any  command  that  performs  allocation.  The contiguous policy\n\t\t\t  requires  that  new  Physical  Extents  be  placed  adjacent  to\n\t\t\t  existing Physical Extents.  The cling policy places new Physical\n\t\t\t  Extents on the same Physical Volume as existing Physical Extents\n\t\t\t  in  the  same  stripe  of  the  Logical  Volume.   If  there are\n\t\t\t  sufficient  free  Physical  Extents  to  satisfy  an  allocation\n\t\t\t  request  but  normal  doesn't  use them, anywhere will - even if\n\t\t\t  that reduces performance by placing  two  stripes  on  the  same\n\t\t\t  Physical Volume.\n\t\t\t\t\t",
+        "cn": ""
+      },
+      "module": "linux.lvm.vg",
+      "distro": null
+    },
+    "cron": {
+      "parameter": {
+        "username": {
+          "required": true,
+          "type": "line"
+        },
+        "hour": {
+          "required": false,
+          "type": "line",
+          "option": [
+            "*"
+          ]
+        },
+        "cmd": {
+          "required": true,
+          "type": "line"
+        },
+        "day of week": {
+          "required": false,
+          "type": "line",
+          "option": [
+            "*"
+          ]
+        },
+        "month": {
+          "required": false,
+          "type": "line",
+          "option": [
+            "*"
+          ]
+        },
+        "day of month": {
+          "required": false,
+          "type": "line",
+          "option": [
+            "*"
+          ]
+        },
+        "minute": {
+          "required": false,
+          "type": "line",
+          "option": [
+            "*"
+          ]
+        }
+      },
+      "reference": {
+        "en": "\n### Description\n\tmanage the cron jobs\n\t\n### Parameters\n\n*   **username** (*optional*): the user to execute the cron job\n\t\tnote:\n\t\t\tif blank, use will use root by default\n\n*   **cmd** (*required*): the command to execute\n\t\texample:\n\t\t\tcat \/proc\/meminfo >> \/tmp\/meminfo\n\n*   **minute** (*optional*): 0 - 59\n\n*   **hour** (*optional*): 0 - 23 (must be a valid day if a month is specified)\n\n*   **day of month** (*optional*): 1 - 31\n\n*   **month** (*optional*): 1 - 12\n\n*   **day of week** (*optional*): 0 - 7, sunday is represented by 0 or 7, monday by 1\n\t\t\t\t\t",
+        "cn": ""
+      },
+      "module": "linux.cron",
+      "distro": null
+    },
+    "sysvinit": {
+      "parameter": {
+        "watch": {
+          "required": false,
+          "type": "array"
+        },
+        "name": {
+          "required": true,
+          "type": "line"
+        }
+      },
+      "reference": {
+        "en": "\n### Description\n\tmanage the SysV service\n\t\n### Parameters\n\n*   **name** (*required*): the service name\n\t\texample:\n\t\t\thttpd\n\n*   **watch** (*optional*): watch a list of files or directories, restart the service if any of them is modified\n\t\texample:\n\t\t\t\/etc\/nginx\/nginx.conf, \/etc\/my.cnf\n\t\t\t\t\t",
+        "cn": ""
+      },
+      "module": "linux.sysvinit",
+      "distro": [
+        "amazon",
+        "redhat",
+        "centos"
+      ]
+    },
+    "file": {
+      "parameter": {
+        "absent": {
+          "default": false,
+          "required": false,
+          "type": "bool"
+        },
+        "group": {
+          "required": false,
+          "type": "line"
+        },
+        "content": {
+          "required": true,
+          "type": "text"
+        },
+        "user": {
+          "required": true,
+          "type": "line"
+        },
+        "path": {
+          "required": true,
+          "type": "line"
+        },
+        "mode": {
+          "default": "0755",
+          "required": true,
+          "type": "line"
+        }
+      },
+      "reference": {
+        "en": "\n### Description\n\tmanage the specified file\n\n### Parameters\n\n*   **path** (*required*): the file path\n\t\texample:\n\t\t\t\/root\/.ssh\/known_hosts\n\n\t\tnote:\n\t\t\tThis state ensures the specifed file is present with correposnding attributes and content. If the directory is present, its attributes will be left unchanged, otherwise it will be created with the same attributed of the specified file itself.\n \n* **user** (*optional*): the user name of the file owner\n\t\texample:\n\t\t\troot\n\t\n\t\tnote:\n\t\t\tIf specified, the file owner will be set to this user. Otherwise, the result depends on whether the file exists. If so, the file owner will be left unchanged. If not, the file will be created under the user name of which the Madeira agent runs.\n\n* **group** (*optional*): the group name of the file owner\n\t\texample:\n\t\t\troot\n\t\n\t\tnote:\n\t\t\tIf specified, the file will be set to this group. Otherwise, the result depends on whether the file exists. If so, the file group will be left unchanged. If not, the file will be created under the group of which the Madeira agent runs.\n\n* **mode** (*optional*): the directory mode\n\t\texample:\n\t\t\t0755\n\t\n\t\tnote:\n\t\t\tIf specified, the file will be set to this mode. Otherwise, the result depends on whether the file exists. If so, the file mode will be left unchanged. If not, the file will be created with the default mode 0755\n\n* **content** (*required*): the file content\n\t\tnote:\n\t\t\tIf the specified file exists, the file will be reset, otherwise the file will be created with this content\n\n* **absent** (*optional*): ensure the directory is absent, by default ***False***\n\t\tnote:\n\t\t\tIf True, all other parameters are ignored\n\t\t\t\t\t",
+        "cn": ""
+      },
+      "module": "linux.file",
+      "distro": null
+    },
+    "timezone": {
+      "parameter": {
+        "use_utc": {
+          "default": true,
+          "required": false,
+          "type": "bool"
+        },
+        "name": {
+          "required": true,
+          "type": "line"
+        }
+      },
+      "reference": {
+        "en": "\n### Description\n\tmanage the timezone\n\t\n### Parameters\n\n*   **name** (*required*): the timezone name\n\t\t   Pacific\/Tahiti\n\n*   **use_utc** (*optional*): whether to use UTC for the hardware clock, by default ***True***\n\t\t\t\t\t",
+        "cn": ""
+      },
+      "module": "linux.timezone",
+      "distro": null
+    },
+    "systemd": {
+      "parameter": {
+        "watch": {
+          "required": false,
+          "type": "array"
+        },
+        "name": {
+          "required": true,
+          "type": "line"
+        }
+      },
+      "reference": {
+        "en": "\n### Description\n\tmanage the systemd service\n\t\n### Parameters\n\n*   **name** (*required*): the service name\n\t\texample:\n\t\t\thttpd\n\n*   **watch** (*optional*): watch a list of files or directories, restart the service if any of them is modified\n\t\texample:\n\t\t\t\/etc\/nginx\/nginx.conf, \/etc\/my.cnf\n\t\t\t\t\t",
+        "cn": ""
+      },
+      "module": "linux.systemd",
+      "distro": [
+        "amazon",
+        "redhat",
+        "centos",
+        "debian",
+        "ubuntu"
+      ]
+    },
+    "group": {
+      "parameter": {
+        "groupname": {
+          "required": true,
+          "type": "line"
+        },
+        "gid": {
+          "required": false,
+          "type": "line"
+        },
+        "system": {
+          "default": false,
+          "required": false,
+          "type": "bool"
+        }
+      },
+      "reference": {
+        "en": "\n### Description\n\tmanage the group\n\t\n### Parameters\n\n*   **groupname** (*required*): the group name\n\n*   **gid** (*optional*): the group id\n\n*   **system** (*optional*): whether this is a system group, by default *False*\n\t\t\t\t\t",
+        "cn": ""
+      },
+      "module": "linux.group",
+      "distro": null
+    },
+    "apt repo": {
+      "parameter": {
+        "content": {
+          "required": true,
+          "type": "line"
+        },
+        "name": {
+          "required": true,
+          "type": "line"
+        }
+      },
+      "reference": {
+        "en": "\n### Description\n\tensure the specified APT repository is present and enabled\n\n### Parameters\n\n*   **name** (*required*): the repository name\n\t\tmain\n\n* **content** (*required*): the content of the repository configuration file\n\t\n\t\tdeb http:\/\/extras.ubuntu.com\/ubuntu precise main\n\t\t\t\t\t",
+        "cn": ""
+      },
+      "module": "linux.apt.repo",
+      "distro": [
+        "debian",
+        "ubuntu"
+      ]
+    },
+    "hostname": {
+      "parameter": {
+        "hostname": {
+          "required": true,
+          "type": "line"
+        }
+      },
+      "reference": {
+        "en": "\n### Description\n\tmanage the host's hostname\n### Parameters\n\n*   **hostname** (*required*): the hostname\n\t\t\t\t\t",
+        "cn": ""
+      },
+      "module": "linux.hostname",
+      "distro": null
+    },
+    "lv": {
+      "parameter": {
+        "discards": {
+          "default": "passdown",
+          "required": false,
+          "type": "line",
+          "option": [
+            "ignore",
+            "nopassdown",
+            "passdown"
+          ]
+        },
+        "stripe size": {
+          "required": false,
+          "type": "line"
+        },
+        "contiguous": {
+          "default": false,
+          "required": false,
+          "type": "bool"
+        },
+        "zero": {
+          "default": true,
+          "required": false,
+          "type": "bool"
+        },
+        "tag": {
+          "required": false,
+          "type": "line"
+        },
+        "readahead": {
+          "required": false,
+          "type": "line",
+          "option": [
+            "ReadAheadSectors",
+            "auto",
+            "none"
+          ]
+        },
+        "allocation policy": {
+          "required": false,
+          "type": "line",
+          "option": [
+            "anywhere",
+            "contiguous",
+            "cling",
+            "inherit",
+            "normal"
+          ]
+        },
+        "chunk size": {
+          "required": false,
+          "type": "line"
+        },
+        "ignore monitoring": {
+          "default": true,
+          "required": false,
+          "type": "bool"
+        },
+        "monitor": {
+          "default": false,
+          "required": false,
+          "type": "bool"
+        },
+        "virtual size": {
+          "required": false,
+          "type": "line"
+        },
+        "stripe number": {
+          "required": false,
+          "type": "line"
+        },
+        "pool metadata size": {
+          "required": false,
+          "type": "line"
+        },
+        "type": {
+          "required": false,
+          "type": "line",
+          "option": [
+            "raid1",
+            "raid4",
+            "raid5",
+            "raid6"
+          ]
+        },
+        "autobackup": {
+          "default": false,
+          "required": false,
+          "type": "bool"
+        },
+        "available": {
+          "required": false,
+          "type": "line",
+          "option": [
+            "y",
+            "ay",
+            "n",
+            "ey",
+            "en",
+            "ly",
+            "ln"
+          ]
+        },
+        "permission": {
+          "required": false,
+          "type": "line",
+          "option": [
+            "r",
+            "rw"
+          ]
+        },
+        "no udev sync": {
+          "default": false,
+          "required": false,
+          "type": "bool"
+        },
+        "thinpool": {
+          "required": false,
+          "type": "line"
+        },
+        "path": {
+          "required": true,
+          "type": "array"
+        },
+        "region size": {
+          "required": false,
+          "type": "line"
+        },
+        "LE number": {
+          "required": false,
+          "type": "line"
+        },
+        "name": {
+          "required": false,
+          "type": "line"
+        },
+        "persistent": {
+          "default": false,
+          "required": false,
+          "type": "bool"
+        },
+        "LE size": {
+          "required": false,
+          "type": "line"
+        },
+        "mirror number": {
+          "required": false,
+          "type": "line"
+        },
+        "snapshot": {
+          "required": false,
+          "type": "line"
+        },
+        "minor number": {
+          "required": false,
+          "type": "line"
+        }
+      },
+      "reference": {
+        "en": "\n### Description\n\tmanage LVM logical volume (LV)\n\t\n### Parameters\n\n*   **path** (*required*): a list of block special devices\n\n\t\tExample:\n\t\t\t\/dev\/sdk1, \/dev\/sdl1\n\n\t\tNote:\n\t\tVolumeGroup{Name|Path}[\/ThinPoolLogicalVolumeName]\n\t   [PhysicalVolumePath[:PE[-PE]]...]\n\n*   **name** (*optional*): specify the name of the new LV\n\n\t\tNote:\n\t\t\tWithout this option a default names of \"lvol#\" will be generated where # is the LVM internal number of the logical volume\n\n*   **available** (*optional*): specify the name of the new LV\n\n\t\tExample:\n\t\t\ty, ay, n, ey, en, ly, ln\n\n\t\tNote:\n\t\t\tControls  the  availability of the Logical Volumes for immediate\n\t\t\t  use after the command finishes running.  By default, new Logical\n\t\t\t  Volumes are activated (-ay).  If it is possible technically, -an\n\t\t\t  will leave the new Logical Volume  inactive.  But  for  example,\n\t\t\t  snapshots  can only be created in the active state so -an cannot\n\t\t\t  be used with --snapshot.  Normally the --zero n argument has  to\n\t\t\t  be  supplied  too  because  zeroing (the default behaviour) also\n\t\t\t  requires activation.  If autoactivation option is  used  (-aay),\n\t\t\t  the  logical  volume  is activated only if it matches an item in\n\t\t\t  the activation\/auto_activation_volume_list set in lvm.conf.  For\n\t\t\t  autoactivated logical volumes, --zero n is always assumed and it\n\t\t\t  can't be overridden. If clustered locking is enabled, -aey  will\n\t\t\t  activate  exclusively on one node and -aly will activate only on\n\t\t\t  the local node.\n\n*   **chunk size** (*optional*): speicy the size of chunk for snapshot and thin pool LV\n\n\t\tNote:\n\t\t\tFor  snapshots  the  value must be power of 2 between\n\t\t\t  4KiB and 512KiB and the default value is 4.  For thin pools  the\n\t\t\t  value must be between 64KiB and 1048576KiB and the default value\n\t\t\t  starts with 64 and scales up  to  fit  the  pool  metadata  size\n\t\t\t  within  128MB, if the poolmetadata size is not specified.  Older\n\t\t\t  dm thin pool target version (<1.4)  requires  the  value  to  be\n\t\t\t  power  of  2.   The newer version requires to be the multiple of\n\t\t\t  64KiB, however discard is not  supported  for  non  power  of  2\n\t\t\t  values.  Default unit is in kilobytes.\n\n\n*   **contiguous** (*optional*): set or reset the contiguous allocation policy for LVs, by default ***False***\n\n\t\tNote:\n\t\t\tDefault is no contiguous allocation  based  on  a  next\n\t\t\t  free principle.\n\n*   **discards** (*optional*): specify the discards behavior, by default ***passdown***\n\n\t\tExample:\n\t\t\tignore, nopassdown, passdown\n\t\t\t  \n\n*   **stripe number** (*optional*): specify the number of stripes\n\n\t\tNote:\n\t\t\tThis is equal to the number of physical volumes to scatter the logical volume\n\n*   **stripe size** (*optional*): specify the  number  of  kilobytes  for  the  granularity  of  the stripes.\n\n\t\tNote:\n\t\t\t  size must be 2^n (n = 2 to 9) for metadata in LVM1 format.\n\t\t\t  For metadata in LVM2 format, the stripe size  may  be  a  larger\n\t\t\t  power of 2 but must not exceed the physical extent size\n\n\n*   **LE number** (*optional*): specify the  number  of  logical  extents to allocate for the new LV\n\n\t\tNote:\n\t\t\tThe  number  can  also  be  expressed  as   a\n\t\t\t  percentage  of  the  total  space  in  the Volume Group with the\n\t\t\t  suffix %VG, as a percentage of the remaining free space  in  the\n\t\t\t  Volume  Group  with  the  suffix  %FREE,  as a percentage of the\n\t\t\t  remaining free space for the  specified  PhysicalVolume(s)  with\n\t\t\t  the  suffix  %PVS,  or  (for  a snapshot) as a percentage of the\n\t\t\t  total space  in  the  Origin  Logical  Volume  with  the  suffix\n\t\t\t  %ORIGIN\n\n*   **LV size** (*optional*): specify the  size to allocate for the new LV\n\n\t\tNote:\n\t\t\tA size suffix of K for kilobytes, M for megabytes, G for  gigabytes,  T\n\t\t\t  for terabytes, P for petabytes or E for exabytes is optional.\n\t\t\t  Default unit is megabytes\n\n*   **minor number** (*optional*): specify the minor number\n\n*   **persistent** (*optional*): whether to make the minor number specified persistent, by default ***False***\n\n\t\tNote:\n\t\t\tSet to y to \n\n*   **mirror number** (*optional*): Create a mirrored LV with this number of copies\n\n\t\tNote:\n\t\t\t  For example, specifying \"-m 1\" would result in a  mirror  with  two-\n\t\t\t  sides; that is, a linear volume plus one copy.\n\n\t\t\t  Specifying   the  optional  argument  --nosync  will  cause  the\n\t\t\t  creation of the mirror to skip  the  initial  resynchronization.\n\t\t\t  Any  data  written afterwards will be mirrored, but the original\n\t\t\t  contents will not be copied.  This  is  useful  for  skipping  a\n\t\t\t  potentially long and resource intensive initial sync of an empty\n\t\t\t  device.\n\n\t\t\t  The optional argument --mirrorlog specifies the type of  log  to\n\t\t\t  be  used.  The default is disk, which is persistent and requires\n\t\t\t  a small amount of storage space, usually on  a  separate  device\n\t\t\t  from  the  data  being mirrored.  Using core means the mirror is\n\t\t\t  regenerated by copying the data from the first device again each\n\t\t\t  time  the  device is activated, for example, after every reboot.\n\t\t\t  Using \"mirrored\" will create a persistent  log  that  is  itself\n\t\t\t  mirrored.\n\n\t\t\t  The  optional  argument  --corelog  is equivalent to --mirrorlog\n\t\t\t  core\n\n*   **no udev sync** (*optional*): whether to disable udev synchronisation, by default ***False***\n\n\t\tNote:\n\t\t\tThe  process  will not wait for\n\t\t\t  notification from udev.  It will continue  irrespective  of  any\n\t\t\t  possible udev processing in the background.  You should only use\n\t\t\t  this if udev is not running or has rules that ignore the devices\n\t\t\t  LVM2 creates\n\n*   **monitor** (*optional*): whether to monitor a mirrored or snapshot LV with dmeventd, if it is installed, by default ***False***\n\n\t\tNote:\n\t\t\tIf  a  device  used  by  a\n\t\t\t  monitored  mirror  reports  an I\/O error, the failure is handled\n\t\t\t  according        to        mirror_image_fault_policy         and\n\t\t\t  mirror_log_fault_policy set in lvm.conf\n\n*   **ignore monitoring** (*optional*): make no attempt to interact with dmeventd unless ***monitor*** is ***True*** ,by default ***False***\n\n*   **permission** (*optional*): specify the access permissions to read only or read and write, by default ***RW***\n\n\t\tExample:\n\t\t\tr, rw\n\n*   **pool metadata size** (*optional*): specify the size of thin pool's metadata LV\n\n\t\tNote:\n\t\t\tSupported value  is  in  range  between  2MiB and 16GiB.  Default value is\n\t\t\t  (Pool_LV_size \/ Pool_LV_chunk_size  *  64b).   Default  unit  is\n\t\t\t  megabytes.\n\n*   **region size** (*optional*):\n\n\t\tNote:\n\t\t\t A  mirror  is divided into regions of this size (in MB), and the\n\t\t\t  mirror log uses this granularity to track which regions  are  in\n\t\t\t  sync.\n\n*   **readahead** (*optional*): set read ahead sector count of this LV\n\n\t\tExample:\n\t\t\tReadAheadSectors, auto, none\n\n\t\tNote:\n\t\t\t  For volume groups with metadata in  lvm1  format,  this  must  be  a  value\n\t\t\t  between 2 and 120.  The default value is \"auto\" which allows the\n\t\t\t  kernel to choose a  suitable  value  automatically.   \"None\"  is\n\t\t\t  equivalent to specifying zero.\n\n*   **snapshot** (*optional*): create  a snapshot logical volume (or snapshot) for an existing, so  called  original  logical  volume  (or  origin)\n\n\t\tNote:\n\t\t\tSnapshots\n\t\t\t  provide a 'frozen image' of the contents of the origin while the\n\t\t\t  origin can still be updated. They enable consistent backups  and\n\t\t\t  online   recovery   of   removed\/overwritten  data\/files.   Thin\n\t\t\t  snapshot is created when the origin is a  thin  volume  and  the\n\t\t\t  size  is  not specified. Thin snapshot shares same blocks within\n\t\t\t  the thin pool volume.  The snapshot with the specified size does\n\t\t\t  not need the same amount of storage the origin has. In a typical\n\t\t\t  scenario, 15-20% might be enough.  In case the snapshot runs out\n\t\t\t  of  storage, use lvextend(8) to grow it. Shrinking a snapshot is\n\t\t\t  supported by  lvreduce(8)  as  well.  Run  lvdisplay(8)  on  the\n\t\t\t  snapshot  in  order  to  check how much data is allocated to it.\n\t\t\t  Note that a small amount  of  the  space  you  allocate  to  the\n\t\t\t  snapshot  is  used to track the locations of the chunks of data,\n\t\t\t  so you should allocate slightly more  space  than  you  actually\n\t\t\t  need  and monitor the rate at which the snapshot data is growing\n\t\t\t  so you can avoid running out of space\n\n*   **thinpool** (*optional*): Creates thin pool or thin logical volume  or  both\n\n\t\tExample:\n\t\t\tReadAheadSectors, auto, none\n\n\t\tNote:\n\t\t\t.   Specifying\n\t\t\t  the optional argument --size will cause the creation of the thin\n\t\t\t  pool  logical  volume.    Specifying   the   optional   argument\n\t\t\t  --virtualsize will cause the creation of the thin logical volume\n\t\t\t  from given thin pool volume.   Specifying  both  arguments  will\n\t\t\t  cause  the creation of both thin pool and thin volume using this\n\t\t\t  pool.   Requires  device   mapper   kernel   driver   for   thin\n\t\t\t  provisioning from kernel 3.2 or newer\n\n*   **type** (*optional*): Create  a  logical  volume  that uses the specified segment type, (e.g. \"raid5\", \"mirror\", \"snapshot\", \"thin\", \"thin-pool\")\n\n\t\tNote:\n\t\t\tMany segment  types  have a commandline switch alias that will enable\n\t\t\t  their use (-s is an alias for --type snapshot).   However,  this\n\t\t\t  argument  must be used when no existing commandline switch alias\n\t\t\t  is available for the desired type, as is the  case  with  error,\n\t\t\t  zero, raid1, raid4, raid5 or raid6\n\n*   **virtual size** (*optional*): Create  a  sparse  device  of  the given size (in MB by default) using a snapshot or thinly provisioned device when thin pool  is specified.  \n\n\t\tNote:\n\t\t\tAnything written to the device will be returned when\n\t\t\t  reading from it.  Reading from other areas of  the  device  will\n\t\t\t  return  blocks  of  zeros.   Virtual  snapshot is implemented by\n\t\t\t  creating a hidden virtual device of the requested size using the\n\t\t\t  zero target.  A suffix of _vorigin is used for this device.\n\n\n*   **zero** (*optional*): whether to set zero of the  first  KB of data in the new LV, by default ***True***\n\n\t\tNote:\n\t\t\t  Volume will not be zeroed if read only flag is set.\n\t\t\t  Snapshot volumes are zeroed always.\n\n*   **zero** (*optional*): whether to set zero of the  first  KB of data in the new LV, by default ***True***\n\n\t\tNote:\n\t\t\t  Volume will not be zeroed if read only flag is set.\n\t\t\t  Snapshot volumes are zeroed always.\n\n*   **autobackup** (*optional*): whether to  metadata should be backed up automatically after a change, by default ***True***\n\n\t\tNote:\n\t\t\tYou are strongly advised not to  disable  this! See vgcfgbackup(8)\n\n*   **tag** (*optional*): add the tag to this VG \n\n\t\tNote:\n\t\t\tA tag is a\n\t\t\t  word that can be used to group LVM2 objects  of  the  same  type\n\t\t\t  together.  Tags can be given on the command line in place of PV,\n\t\t\t  VG or LV arguments.  Tags should be prefixed  with  @  to  avoid\n\t\t\t  ambiguity.   Each  tag  is  expanded  by  replacing  it with all\n\t\t\t  objects possessing that tag which are of the  type  expected  by\n\t\t\t  its  position  on  the  command line.  PVs can only possess tags\n\t\t\t  while they are part of a Volume Group: PV tags are discarded  if\n\t\t\t  the  PV  is  removed  from the VG.  As an example, you could tag\n\t\t\t  some LVs as database and others as userdata  and  then  activate\n\t\t\t  the  database  ones  with  lvchange  -ay @database.  Objects can\n\t\t\t  possess  multiple  tags  simultaneously.   Only  the  new   LVM2\n\t\t\t  metadata   format  supports  tagging:  objects  using  the  LVM1\n\t\t\t  metadata format cannot be tagged because the on-disk format does\n\t\t\t  not support it.  Characters allowed in tags are: A-Z a-z 0-9 _ +\n\t\t\t  . - and as of version 2.02.78 the following characters are  also\n\t\t\t  accepted: \/ = ! : # &\n\n*   **allocation policy** (*optional*): specify the allocation policy\n\n\t\tExample:\n\t\t\tcontiguous,  cling,  normal, anywhere or inherit\n\n\t\tNote:\n\t\t\tWhen a command needs to allocate  Physical\n\t\t\t  Extents  from  the  Volume Group, the allocation policy controls\n\t\t\t  how they are chosen.  Each Volume Group and Logical  Volume  has\n\t\t\t  an allocation policy defined.  The default for a Volume Group is\n\t\t\t  normal which applies common-sense  rules  such  as  not  placing\n\t\t\t  parallel stripes on the same Physical Volume.  The default for a\n\t\t\t  Logical Volume is inherit which applies the same policy  as  for\n\t\t\t  the   Volume   Group.   These  policies  can  be  changed  using\n\t\t\t  lvchange(8) and vgchange(8) or overridden on the command line of\n\t\t\t  any  command  that  performs  allocation.  The contiguous policy\n\t\t\t  requires  that  new  Physical  Extents  be  placed  adjacent  to\n\t\t\t  existing Physical Extents.  The cling policy places new Physical\n\t\t\t  Extents on the same Physical Volume as existing Physical Extents\n\t\t\t  in  the  same  stripe  of  the  Logical  Volume.   If  there are\n\t\t\t  sufficient  free  Physical  Extents  to  satisfy  an  allocation\n\t\t\t  request  but  normal  doesn't  use them, anywhere will - even if\n\t\t\t  that reduces performance by placing  two  stripes  on  the  same\n\t\t\t  Physical Volume\n\t\t\t\t\t",
+        "cn": ""
+      },
+      "module": "linux.lvm.lv",
+      "distro": null
+    },
+    "yum repo": {
+      "parameter": {
+        "content": {
+          "required": true,
+          "type": "line"
+        },
+        "name": {
+          "required": true,
+          "type": "line"
+        }
+      },
+      "reference": {
+        "en": "\n### Description\n\tensure rpm packages are installed\n\n### Parameters\n\n*   **name** (*required*): the repo name\n\t\t   epel\n \n* **content** (*required*): the content of the repo configuration file \n\t\t[10gen]\n\t\tname=10gen Repository\n\t\tbaseurl=http:\/\/downloads-distro.mongodb.org\/repo\/redhat\/os\/i686\n\t\tgpgcheck=0\n\t\tenabled=1\n\t\t\t\t\t",
+        "cn": ""
+      },
+      "module": "linux.yum.repo",
+      "distro": [
+        "amazon",
+        "redhat",
+        "centos"
+      ]
+    },
+    "zypper package": {
+      "parameter": {
+        "verify_gpg": {
+          "default": true,
+          "required": false,
+          "type": "bool"
+        },
+        "fromrepo": {
+          "required": false,
+          "type": "line"
+        },
+        "name": {
+          "default": "",
+          "required": true,
+          "type": "dict",
+          "value": [
+            "latest",
+            "removed"
+          ]
+        }
+      },
+      "reference": {
+        "en": "\n### Description\n\tinstall and remove rpm package with zypper\n\n### Parameters\n\n*   **name** (*required*): the package names and versions. You can specify multiple pakages. The following values can be used for package version:\n\t- <***empty***> (*default*): ensure the package is present. If not, will install the latest version available of all APT repos on                   \n\t- <***version***>: ensure the package is present, with the version specified. If the version in unavailable of all APT repos on the host, the state will fail\n\t- **latest**: ensure the package is present with the latest version. If a newer version is available of all APT repos on the host, will do a auto-upgrade\n\t- **removed**: ensure the package is absent\n\t- **purged**: ensure the package is absent, and also delete all related configuration data of the package\n \n\n* **fromrepo** (*optional*): an repo name, which you want to use for installing the packages\n\t\tepel\n\t\n* **verify_gpg** (*optional*): verify the package's GPG siganature, by default ***True***\n\t\t\t\t\t",
+        "cn": ""
+      },
+      "module": "linux.zypper.package",
+      "distro": [
+        "opensuse",
+        "suse"
+      ]
+    },
+    "yum package": {
+      "parameter": {
+        "verify_gpg": {
+          "default": true,
+          "required": false,
+          "type": "bool"
+        },
+        "disablerepo": {
+          "required": false,
+          "type": "line"
+        },
+        "fromrepo": {
+          "required": false,
+          "type": "line"
+        },
+        "name": {
+          "default": "",
+          "required": true,
+          "type": "dict",
+          "value": [
+            "latest",
+            "removed"
+          ]
+        },
+        "enablerepo": {
+          "required": false,
+          "type": "line"
+        }
+      },
+      "reference": {
+        "en": "\n### Description\n\tinstall or remove rpm packages with yum\n\n### Parameters\n\n*   **name** (*required*): the package names and versions. You can specify multiple pakages. The following values can be used for package version:\n\t- <***empty***> (*default*): ensure the package is present. If not, will install the latest version available of all APT repos on                   \n\t- <***version***>: ensure the package is present, with the version specified. If the version in unavailable of all APT repos on the host, the state will fail\n\t- **latest**: ensure the package is present with the latest version. If a newer version is available of all APT repos on the host, will do a auto-upgrade\n\t- **removed**: ensure the package is absent\n\t- **purged**: ensure the package is absent, and also delete all related configuration data of the package\n\n* **fromrepo** (*optional*): an repo name, which you want to use for installing the packages\n\t\tepel\n\n* **enablerepo** (*optional*): a disabled repo name, which you want to enable for installing the packages\n\t\tepel\n\n* **disablerepo** (*optional*): an enabled repo name, which you want to disable for installing the packages\n\t\tepel\n\t\n* **verify_gpg** (*optional*): verify the package's GPG siganature, by default ***True***\n\t\t\t\t\t",
+        "cn": ""
+      },
+      "module": "linux.yum.package",
+      "distro": [
+        "amazon",
+        "redhat",
+        "centos"
+      ]
+    },
+    "fs": {
+      "parameter": {
+        "force": {
+          "default": true,
+          "required": false,
+          "type": "bool"
+        },
+        "opts": {
+          "required": false,
+          "type": "line"
+        },
+        "dev": {
+          "required": true,
+          "type": "line"
+        },
+        "filesystem": {
+          "required": true,
+          "type": "line",
+          "option": [
+            "ext2",
+            "ext3",
+            "ext4",
+            "btrfs",
+            "reiserfs",
+            "xfs",
+            "zfs"
+          ]
+        }
+      },
+      "reference": {
+        "en": "\n### Description\n\tmanage the filesystem\n\t\n### Parameters\n\n*   **dev** (*required*): the device name\n\t\texample:\n\t\t\t\/dev\/sda1\n\n*   **filesystem** (*required*): the filesystem type of the device    \n\n*   **force** (*optional*): forcefully create the new filesystem, even if there is already one on the specified device, by default *False*\n\n*   **opts** (*optional*): additional options for creating the filesystem, see *MKE2FS(8)*\n\t\t\texample:\n\t\t\t\t-O journal_dev [ -b block-size ] [ -L volume-label ] [ -n ] [ -q ] [ -v ]  external-journal [ blocks-count ]\n\t\t\t\t\t",
+        "cn": ""
+      },
+      "module": "linux.fs",
+      "distro": null
+    },
+    "supervisord": {
+      "parameter": {
+        "config": {
+          "required": true,
+          "type": "line"
+        },
+        "watch": {
+          "required": false,
+          "type": "array"
+        },
+        "name": {
+          "required": true,
+          "type": "line"
+        }
+      },
+      "reference": {
+        "en": "\n### Description\n\tmanage the Supervisord service\n\t\n### Parameters\n\n*   **name** (*required*): the service name\n\t\texample:\n\t\t\thttpd\n\n*   **config** (*required*): the path of supervisord configuration file\n\t\texample:\n\t\t\t\/etc\/supervisord\n\n\t\tnote:\n\t\t\tWhen this file is modified, supervisord will be restarted, which causes all managed services restarted\n\n*   **watch** (*optional*): watch a list of files or directories, restart the service if any of them is modified\n\t\texample:\n\t\t\t\/etc\/nginx\/nginx.conf, \/etc\/my.cnf\n\t\t\t\t\t",
+        "cn": ""
+      },
+      "module": "linux.supervisord",
+      "distro": null
+    },
+    "upstart": {
+      "parameter": {
+        "watch": {
+          "required": false,
+          "type": "array"
+        },
+        "name": {
+          "required": true,
+          "type": "line"
+        }
+      },
+      "reference": {
+        "en": "\n### Description\n\tmanage the Upstart service\n\t\n### Parameters\n\n*   **name** (*required*): the service name\n\t\texample:\n\t\t\thttpd\n\n*   **watch** (*optional*): watch a list of files or directories, restart the service if any of them is modified\n\t\texample:\n\t\t\t\/etc\/nginx\/nginx.conf, \/etc\/my.cnf\n\t\t\t\t\t",
+        "cn": ""
+      },
+      "module": "linux.upstart",
+      "distro": [
+        "debian",
+        "ubuntu",
+        "amazon",
+        "redhat",
+        "centos"
+      ]
+    },
+    "symlink": {
+      "parameter": {
+        "absent": {
+          "default": false,
+          "required": false,
+          "type": "bool"
+        },
+        "group": {
+          "required": false,
+          "type": "line"
+        },
+        "target": {
+          "required": true,
+          "type": "line"
+        },
+        "source": {
+          "required": true,
+          "type": "line"
+        },
+        "mode": {
+          "default": "0755",
+          "required": true,
+          "type": "line"
+        },
+        "user": {
+          "required": true,
+          "type": "line"
+        }
+      },
+      "reference": {
+        "en": "\n### Description\n\tmanage a symlink\n\n### Parameters\n\n*   **source** (*required*): the path to link to\n\t\texample:\n\t\t\t\/data\/\n \n* **target** (*required*): the path to the symlink\n\t\texample:\n\t\t\t\/mnt\/data\/\n\t\n\t\tnote:\n\t\t\tIf the target's parent path does not exist, this state will fail.\n\n* **user** (*optional*): the user name of the file owner\n\t\texample:\n\t\t\troot\n\t\n\t\tnote:\n\t\t\tIf specified, the file owner will be set to this user. Otherwise, the result depends on whether the file exists. If so, the file owner will be left unchanged. If not, the file will be created under the user name of which the Madeira agent runs.\n\n* **group** (*optional*): the group name of the file owner\n\t\texample:\n\t\t\troot\n\t\n\t\tnote:\n\t\t\tIf specified, the file will be set to this group. Otherwise, the result depends on whether the file exists. If so, the file group will be left unchanged. If not, the file will be created under the group of which the Madeira agent runs.\n\n* **mode** (*optional*): the directory mode\n\t\texample:\n\t\t\t0755\n\t\n\t\tnote:\n\t\t\tIf specified, the file will be set to this mode. Otherwise, the result depends on whether the file exists. If so, the file mode will be left unchanged. If not, the file will be created with the default mode 0755\n\n* **absent** (*optional*): ensure the directory is absent, by default ***False***\n\t\tnote:\n\t\t\tIf True, all other parameters are ignored\n\t\t\t\t\t",
+        "cn": ""
+      },
+      "module": "linux.symlink",
+      "distro": null
+    },
+    "user": {
+      "parameter": {
+        "username": {
+          "required": true,
+          "type": "line"
+        },
+        "gid": {
+          "required": false,
+          "type": "line"
+        },
+        "uid": {
+          "required": false,
+          "type": "line"
+        },
+        "groups": {
+          "required": false,
+          "type": "array"
+        },
+        "home": {
+          "default": "\/home\/$username",
+          "required": false,
+          "type": "line"
+        },
+        "fullname": {
+          "required": false,
+          "type": "line"
+        },
+        "password": {
+          "required": true,
+          "type": "line"
+        },
+        "nologin": {
+          "default": false,
+          "required": false,
+          "type": "bool"
+        }
+      },
+      "reference": {
+        "en": "\n### Description\n\tmanage the user\n\t\n### Parameters\n\n*   **username** (*required*): the user name\n\n*   **password** (*required*): the encrypted value of the password\n\t\tnote:\n\t\t\tuse \"openssl passwd -salt <salt> -1 <plaintext>\" to generate the passworld hash\n\n*   **fullname** (*optional*): the full name of the user\n\n*   **uid** (*optional*): the user id\n\n*   **gid** (*optional*): the group id\n\n*   **home** (*optional*): the home directory of the user\n\t\tnote:\n\t\t\tif the directory already exists, the user and group of the directory will be set to this user; otherwise, the directory (and its parent directories) will be created, with the user and group of the user.\n\n*   **nologin** (*optional*): whether to allow user to login, by default *False*\n\n*   **groups** (*optional*): a list of groups of the user\n\t\tnote:\n\t\t\tif pass in an empty list, all groups of the user will be removed except the defaut one\n\t\t\t\t\t",
+        "cn": ""
+      },
+      "module": "linux.user",
+      "distro": null
+    },
+    "pv": {
+      "parameter": {
+        "data alignment offset": {
+          "required": false,
+          "type": "line"
+        },
+        "force": {
+          "default": false,
+          "required": false,
+          "type": "bool"
+        },
+        "norestorefile": {
+          "default": true,
+          "required": false,
+          "type": "bool"
+        },
+        "metadata type": {
+          "default": "lvm2",
+          "required": false,
+          "type": "line",
+          "option": [
+            "lvm1",
+            "lvm2"
+          ]
+        },
+        "zero": {
+          "default": true,
+          "required": false,
+          "type": "bool"
+        },
+        "metadata ignore": {
+          "required": false,
+          "type": "bool",
+          "dfault": false
+        },
+        "path": {
+          "required": true,
+          "type": "array"
+        },
+        "metadata copies": {
+          "required": false,
+          "type": "line",
+          "option": [
+            "0",
+            "1",
+            "2"
+          ]
+        },
+        "uuid": {
+          "required": false,
+          "type": "line"
+        },
+        "label sector": {
+          "default": "LVM2",
+          "required": false,
+          "type": "line"
+        },
+        "metadata size": {
+          "required": false,
+          "type": "line"
+        },
+        "data alignment": {
+          "required": false,
+          "type": "line"
+        },
+        "restorefile": {
+          "required": false,
+          "type": "line"
+        },
+        "PV size": {
+          "required": false,
+          "type": "line"
+        }
+      },
+      "reference": {
+        "en": "\n### Description\n\tmanage LVM physical volume (PV)\n\t\n### Parameters\n\n*   **path** (*required*): the path of the device or partition\n\n\t\tExample:\n\t\t\t\/dev\/sdc4, \/dev\/sde\n\n*   **force** (*optional*): force to create the PV without any confirmation, by default ***False***\n\n\t\tNote:\n\t\t\tYou can not recreate (reinitialize) a PV belonging to an existing volume group. \n\n\n*   **uuid** (*optional*): specify the uuid for the device\n\n\t\tNote:\n\t\t\tWithout this option, a random uuid will be generated. All of your PVs must have unique uuids. You need to use\n\t\t\tthis option before restoring a backup of LVM metadata onto a replacement device - see vgcfgrestore(8). As such, \n\t\t\tuse of ***restore file is compulsory unless the norestorefile is used.\n\n\n*   **zero** (*optional*): whether or the first 4 sectors (2048 bytes) of the device should be wiped, by default ***True***\n\n\t\tNote:\n\t\t\tIf this option is not given, the default is to wipe these sectors unless either or both of the --restorefile or\n\t\t\t--uuid options were specified.\n\n*   **data alignment** (*optional*): align the start of the data to a multiple of this number\n\n\t\tNote:\n\t\t\tYou should also specify an appropriate \"PV size\" when creating the Volume Group (VG).\n\t\t\tTo  see the location of the first Physical Extent of an existing\n\t\t\tPhysical Volume use pvs -o +pe_start .  It will be a multiple of\n\t\t\tthe  requested  alignment.   In  addition  it  may be shifted by\n\t\t\talignment_offset   from   data_alignment_offset_detection    (if\n\t\t\tenabled in lvm.conf(5)) or --dataalignmentoffset.\n\n*   **data alignment offset** (*optional*): shift the start of the data area by this additional number\n\n*   **metadata size** (*optional*): the approximate amount of space to be set aside for each metadata area\n\n\t\tNote:\n\t\t\tThe size you specify may get rounded\n\n*   **metadata type** (*optional*): specify which type of on-disk metadata to use, by default ***lvm2***\n\n\t\tExample:\n\t\t\tlvm1, lvm2, 1, 2\n\n\t\tNote:\n\t\t\tlvm1 or lvm2 can be abbreviated to 1 or 2 respectively. The default (lvm2) can be changed by setting format\n\t\t\tin the global section of the config file.\n\n*   **metadata copies** (*optional*): the number of metadata areas to set aside on each PV\n\n\t\tExample:\n\t\t\tCurrently this  can  be  0, 1 or 2\n\n\t\tNote:\n\t\t\tIf set to 2, two copies of the volume group metadata are held on the PV, one at the front  of  the  PV\n\t\t\tand one at the end.  If set to 1 (the default), one copy is kept\n\t\t\tat the front of the PV (starting in the 5th sector).  If set  to\n\t\t\t0,  no  copies  are kept on this PV - you might wish to use this\n\t\t\twith VGs containing large numbers of PVs.  But if  you  do  this\n\t\t\tand  then  later  use vgsplit(8) you must ensure that each VG is\n\t\t\tstill going to have a suitable number of copies of the  metadata\n\t\t\tafter the split!\n\n\n*   **metadata ignore** (*optional*): whether to ignore metadata areas on this PV, by default ***False***\n\n\t\tNote:\n\t\t\tThis setting can be changed with pvchange.   If\n\t\t\tmetadata  areas  on  a physical volume are ignored, LVM will not\n\t\t\tstore metadata in the metadata areas present  on  this  Physical\n\t\t\tVolume.   Metadata  areas  cannot  be  created or extended after\n\t\t\tLogical Volumes have been allocated on the device. If you do not\n\t\t\twant  to  store metadata on this device, it is still wise always\n\t\t\tto allocate a metadata area in case you need it  in  the  future\n\t\t\tand to use this option to instruct LVM2 to ignore it.\n\n\n*   **restore file** (*optional*):\n\n\t\tNote:\n\t\t\tIn conjunction with \"uuid\", this extracts the location and size\n\t\t\tof the data on the PV from the file  (produced  by  vgcfgbackup)\n\t\t\tand  ensures  that  the  metadata  that  the program produces is\n\t\t\tconsistent with the contents  of  the  file  i.e.  the  physical\n\t\t\textents will be in the same place and not get overwritten by new\n\t\t\tmetadata.  This provides a mechanism  to  upgrade  the  metadata\n\t\t\tformat  or to add\/remove metadata areas. Use with care. See also\n\t\t\tvgconvert(8).\n\n*   **no restore file** (*optional*):\n\n\t\tNote:\n\t\t\tIn conjunction with \"uuid\", this allows a uuid to  be  specified\n\t\t\twithout  also  requiring  that  a  backup  of  the  metadata  be\n\t\t\tprovided.\n\n*   **label sector** (*optional*):\n\n\t\tNote:\n\t\t\tBy default the PV is labelled with an  LVM2  identifier  in  its\n\t\t\tsecond  sector (sector 1).  This lets you use a different sector\n\t\t\tnear the start of the disk (between 0  and  3  inclusive  -  see\n\t\t\tLABEL_SCAN_SECTORS in the source).  Use with care.\n\n*   **PV size** (*optional*):\n\n\t\tNote:\n\t\t\tOverrides  the  automatically-detected size of the PV, use with care\n\t\t\t\t\t",
+        "cn": ""
+      },
+      "module": "linux.lvm.pv",
+      "distro": null
+    },
+    "mount": {
+      "parameter": {
+        "dump": {
+          "default": "0",
+          "required": false,
+          "type": "line"
+        },
+        "passno": {
+          "default": "0",
+          "required": false,
+          "type": "line"
+        },
+        "dev": {
+          "required": true,
+          "type": "line",
+          "option": [
+            "ext2",
+            "ext3",
+            "ext4",
+            "btrfs",
+            "iso9660",
+            "ntfs",
+            "reiserfs",
+            "xfs",
+            "zfs"
+          ]
+        },
+        "filesystem": {
+          "required": true,
+          "type": "line"
+        },
+        "path": {
+          "required": true,
+          "type": "line"
+        },
+        "opts": {
+          "required": false,
+          "type": "line"
+        }
+      },
+      "reference": {
+        "en": "\n### Description\n\tmanage the mount points in \/etc\/fstab\n\t\n### Parameters\n\n*   **path** (*required*): the path of the mount point\n\n*   **dev** (*required*): the device name\n\n*   **filesystem** (*required*): the file system type of the device\n\n*   **dump** (*optional*): the dump value in \/etc\/fstab, see *fstab(8)*\n\n*   **passno** (*optional*): the pass value in \/etc\/fstab, see *fstab(8)*\n\n*   **opts** (*optional*): a list of options for \/etc\/fstab\n\t\t\texample:\n\t\t\t\tnoatime\n\t\t\t\t\t",
+        "cn": ""
+      },
+      "module": "linux.mount",
+      "distro": null
+    },
+    "cmd": {
+      "parameter": {
+        "bin": {
+          "default": "bin\/sh",
+          "required": false,
+          "type": "line",
+          "option": ""
+        },
+        "with_path": {
+          "required": false,
+          "type": "line"
+        },
+        "group": {
+          "required": false,
+          "type": "line"
+        },
+        "user": {
+          "required": false,
+          "type": "line"
+        },
+        "timeout": {
+          "default": 600,
+          "required": true,
+          "type": "line"
+        },
+        "env": {
+          "required": false,
+          "type": "dict"
+        },
+        "without_path": {
+          "required": false,
+          "type": "line"
+        },
+        "cmd": {
+          "required": true,
+          "type": "line"
+        },
+        "cwd": {
+          "default": "\/madeira\/tmp\/",
+          "required": false,
+          "type": "line"
+        }
+      },
+      "reference": {
+        "en": "\n### Description\n\texecute a shell command\n\t\n### Parameters\n\n*   **cmd** (*required*): the command to execute\n\t\texample:\n\t\t\tfind . -name *.pyc | xargs rm\n\n*   **cwd** (*optional*): the current working directory to execute the command, be default *\/madeira\/tmp\/*\n\n*   **user** (*optional*): the user to execute the command, be default the user which the agent runs as\n\n*   **group** (*optional*): the group to execute the command, be default the group which the agent runs as\n\n*   **env** (*optional*): environment variables for the command\n\n*   **timeout** (*optional*): command timeout, by default *600* (in seconds)\n\t\tnote:\n\t\t\tBy default, a command will be terminated and taken \"failed\" if not finishe in 600 seconds. However you can change with    this option.\n\n*   **with_path** (*optional*): the command will not run if the specified path exists\n\n*   **without_path** (*optional*): the command will not run if the specified path does not exist\n\t\t\t\t\t",
+        "cn": ""
+      },
+      "module": "linux.cmd",
+      "distro": null
+    },
+    "apt pkg": {
+      "parameter": {
+        "debconf": {
+          "required": false,
+          "type": "line"
+        },
+        "verify_gpg": {
+          "default": false,
+          "required": false,
+          "type": "bool"
+        },
+        "fromrepo": {
+          "required": false,
+          "type": "line"
+        },
+        "name": {
+          "default": "",
+          "required": true,
+          "type": "dict",
+          "option": [
+            "latest",
+            "removed",
+            "purged"
+          ]
+        }
+      },
+      "reference": {
+        "en": "\n### Description\n ensure APT-based packages installed or removed (with the specified version)\n\n### Parameters\n\n*   **name** (*required*): the package names and versions. You can specify multiple pakages. The following values can be used for package version:\n\t- <***empty***> (*default*): ensure the package is present. If not, will install the latest version available of all APT repos on                   \n\t- <***version***>: ensure the package is present, with the version specified. If the version in unavailable of all APT repos on the host, the state will fail\n\t- **latest**: ensure the package is present with the latest version. If a newer version is available of all APT repos on the host, will do a auto-upgrade\n\t- **removed**: ensure the package is absent\n\t- **purged**: ensure the package is absent, and also delete all related configuration data of the package\n\n\n* **repo** (*optional*): the APT repo name, which you want to use for installing the packages\n\t\tmain\n\n* **debconf** (*optional*):\n\t\t\/etc\/apt\/deb.conf\n\t\n* **verify_gpg** (*optional*): verify the package's GPG siganature, by default ***True***\n\t\t\t\t\t",
+        "cn": ""
+      },
+      "module": "linux.apt.package",
+      "distro": [
+        "debian",
+        "ubuntu"
+      ]
+    },
+    "zypper repo": {
+      "parameter": {
+        "url": {
+          "required": true,
+          "type": "line"
+        },
+        "name": {
+          "required": true,
+          "type": "line"
+        }
+      },
+      "reference": {
+        "en": "\n### Description\n\tensure a zypper is present and enabled\n\n### Parameters\n\n*   **name** (*required*): the repo name\n\t\t   packman\n \n\n* **url** (*required*): the repo url\n\t\thttp:\/\/ftp.gwdg.de\/pub\/linux\/packman\/suse\/13.1\/\n\t\t\t\t\t",
+        "cn": ""
+      },
+      "module": "linux.zypper.repo",
+      "distro": [
+        "opensuse",
+        "suse"
+      ]
+    },
+    "hosts": {
+      "parameter": {
+        "ip": {
+          "required": true,
+          "type": "line"
+        },
+        "hostnames": {
+          "required": true,
+          "type": "array"
+        }
+      },
+      "reference": {
+        "en": "\n### Description\n\tmanage \/etc\/hosts\n\t\n### Parameters\n\n*   **ip** (*required*): the IP address\n\n*   **hostnames** (*required*): a list of hostnames\n\t\texample:\n\t\t\tweb, web.example.com\n\t\t\t\t\t",
+        "cn": ""
+      },
+      "module": "linux.hosts",
+      "distro": null
+    },
+    "dir": {
+      "parameter": {
+        "absent": {
+          "default": false,
+          "required": false,
+          "type": "bool"
+        },
+        "group": {
+          "required": false,
+          "type": "line"
+        },
+        "recursive": {
+          "default": true,
+          "required": false,
+          "type": "bool"
+        },
+        "user": {
+          "required": false,
+          "type": "line"
+        },
+        "path": {
+          "required": true,
+          "type": "line"
+        },
+        "mode": {
+          "default": "0755",
+          "required": false,
+          "type": "line"
+        }
+      },
+      "reference": {
+        "en": "\n### Description\n\tmanage the specified directory\n\n### Parameters\n\n*   **path** (*required*): the directory path\n\t\texample:\n\t\t\t\/var\/www\/html\n\n\t\tnote:\n\t\t\tThis state ensures the specifed directory is present with correposnding attributes. If the parent directory is present, its attributes will be left unchanged, otherwise it will be created with the same attributed of the specified directory itself.\n \n* **user** (*optional*): the user name of the directory owner\n\t\texample:\n\t\t\troot\n\t\n\t\tnote:\n\t\t\tIf specified, the directory owner will be set to this user. Otherwise, the result depends on whether the directory exists. If so, the directory owner will be left unchanged. If not, the directory will be created under the user name of which the Madeira agent runs.\n\n* **group** (*optional*): the group name of the directory owner\n\t\texample:\n\t\t\troot\n\t\n\t\tnote:\n\t\t\tIf specified, the directory will be set to this group. Otherwise, the result depends on whether the directory exists. If so, the directory group will be left unchanged. If not, the directory will be created under the group of which the Madeira agent runs.\n\n* **mode** (*optional*): the directory mode\n\t\texample:\n\t\t\t0755\n\t\n\t\tnote:\n\t\t\tIf specified, the directory will be set to this mode. Otherwise, the result depends on whether the directory exists. If so, the directory mode will be left unchanged. If not, the directory will be created with the default mode 0755\n\n* **recursive** (*optional*): whehther to recursively set attributes of all sub-directories under *path*, by default ***True***\n\n* **absent** (*optional*): ensure the directory is absent, by default ***False***\n\t\tnote:\n\t\t\tIf True, all other parameters are ignored\n\t\t\t\t\t",
+        "cn": ""
+      },
+      "module": "linux.dir",
+      "distro": null
+    }
+  },
+  "common": {
+    "npm": {
+      "parameter": {
+        "name": {
+          "default": "",
+          "required": true,
+          "type": "dict",
+          "value": [
+            "latest",
+            "removed"
+          ]
+        }
+      },
+      "reference": {
+        "en": "\n### Description\n\tensure node.js packages are installed\n\n### Parameters\n\n*   **name** (*required*): the package names and versions. You can specify multiple pakages. The following values can be used for package version:\n\t- <***empty***> (*default*): ensure the package is present. If not, will install the latest version available of all APT repos on                   \n\t- <***version***>: ensure the package is present, with the version specified. If the version in unavailable of all APT repos on the host, the state will fail\n\t- **latest**: ensure the package is present with the latest version. If a newer version is available of all APT repos on the host, will do a auto-upgrade\n\t- **removed**: ensure the package is absent\n\t\t\t\t\t",
+        "cn": ""
+      },
+      "module": "common.npm.package",
+      "distro": null
+    },
+    "svn": {
+      "parameter": {
+        "username": {
+          "required": false,
+          "type": "line"
+        },
+        "force": {
+          "default": false,
+          "required": false,
+          "type": "bool"
+        },
+        "group": {
+          "required": false,
+          "type": "line"
+        },
+        "user": {
+          "required": false,
+          "type": "line"
+        },
+        "branch": {
+          "default": "master",
+          "required": true,
+          "type": "line"
+        },
+        "path": {
+          "required": true,
+          "type": "line"
+        },
+        "mode": {
+          "default": "0755",
+          "required": false,
+          "type": "line"
+        },
+        "password": {
+          "required": false,
+          "type": "line"
+        },
+        "uri": {
+          "required": true,
+          "type": "line"
+        },
+        "revision": {
+          "default": "",
+          "required": true,
+          "type": "line"
+        }
+      },
+      "reference": {
+        "en": "\n### Description\n\tmanage the hg repo\n\t\n### Parameters\n\n*   **repo** (*required*): the hg repository uri\n\t\texample:\n\t\t\tlocal - file:\/\/\/path\/to\/repo\n\t\t\thttp - http:\/\/example.com\/path\/to\/repo\n\t\t\thttps - https:\/\/example.com\/path\/to\/repo\n\t\t\tsvn - svn:\/\/example.com\/path\/to\/repo\n\t\t\tsvn+ssh - svn+ssh:\/\/user@example.com\/path\/to\/repo\n\n* **branch** (*optional*): the branch to checkout\n\t\texample:\n\t\t\tmaster\n\t\n\t\tnote:\n\t\t\tWhen using <branch>, the local repo will be kept synchronized with the latest commit of the specified branch.\n\t\t\tDo NOT use <branch> and <version> at the same time\n\n* **revision** (*optional*): the version to checkout\n\t\texample:\n\t\t\ttag name - release-1.0\n\t\t\tchangeset - 8b1e0f7e499f9af07eed5ba6a3fc5490e72631b6\n\t\n\t\tnote:\n\t\t\tWhen using <version>, the local repo will remain the specified tag or commit.\n\t\t\tDo NOT use <branch> and <version> at the same time\n\n* **username** (*optional*): the username of the svn server\n\n* **password** (*optional*): the password of the svn user\n\n* **path** (*required* ): the path to checkout the repo\n\t\texample:\n\t\t\t\/var\/www\/mysite\/\n\n* **user** (*optional*): the user name of the file owner\n\t\texample:\n\t\t\troot\n\t\n\t\tnote:\n\t\t\tIf specified, the file owner will be set to this user. Otherwise, the result depends on whether the file exists. If so, the file owner will be left unchanged. If not, the file will be created under the user name of which the Madeira agent runs.\n\n* **group** (*optional*): the group name of the file owner\n\t\texample:\n\t\t\troot\n\t\n\t\tnote:\n\t\t\tIf specified, the file will be set to this group. Otherwise, the result depends on whether the file exists. If so, the file group will be left unchanged. If not, the file will be created under the group of which the Madeira agent runs.\n\n* **mode** (*optional*): the directory mode\n\t\texample:\n\t\t\t0755\n\t\n\t\tnote:\n\t\t\tIf specified, the file will be set to this mode. Otherwise, the result depends on whether the file exists. If so, the file mode will be left unchanged. If not, the file will be created with the default mode 0755\n\n* **force** (*optional*): force the checkout even if there is conflict, by default ***False***\n\t\t\t\t\t",
+        "cn": ""
+      },
+      "module": "common.svn",
+      "distro": null
+    },
+    "git": {
+      "parameter": {
+        "repo": {
+          "required": true,
+          "type": "line"
+        },
+        "force": {
+          "default": false,
+          "required": false,
+          "type": "bool"
+        },
+        "version": {
+          "default": "",
+          "required": false,
+          "type": "line"
+        },
+        "group": {
+          "required": false,
+          "type": "line"
+        },
+        "user": {
+          "required": false,
+          "type": "line"
+        },
+        "branch": {
+          "default": "master",
+          "required": false,
+          "type": "line"
+        },
+        "path": {
+          "required": true,
+          "type": "line"
+        },
+        "ssh_key": {
+          "required": false,
+          "type": "line"
+        },
+        "mode": {
+          "default": "0755",
+          "required": false,
+          "type": "line"
+        }
+      },
+      "reference": {
+        "en": "\n### Description\n\tmanage the git repo\n\t\n### Parameters\n\n*   **repo** (*required*): the git repository uri\n\t\texample:\n\t\t\tlocal - \/opt\/git\/project.git or file:\/\/\/opt\/git\/project.git\n\t\t\tssh - ssh:\/\/user@server\/project.git\n\t\t\thttp\/https - https:\/\/example.com\/gitproject.git\n\t\t\tgit - git:\/\/example.com\/gitproject.git\n\n* **branch** (*optional*): the branch to checkout\n\t\texample:\n\t\t\tmaster\n\t\n\t\tnote:\n\t\t\tWhen using <branch>, the local repo will be kept synchronized with the latest commit of the specified branch.\n\t\t\tDo NOT use <branch> and <version> at the same time\n\n* **version** (*optional*): the version to checkout\n\t\texample:\n\t\t\ttag name - release-1.0\n\t\t\tcommit id - 8b1e0f7e499f9af07eed5ba6a3fc5490e72631b6\n\t\n\t\tnote:\n\t\t\tWhen using <version>, the local repo will remain the specified tag or commit.\n\t\t\tDo NOT use <branch> and <version> at the same time\n\n* **ssh_key** (*optional*): the path of the ssh keypair file\n\t\texample:\n\t\t\t\/root\/.ssh\/id_rsa\n\n* **path** (*required* ): the path to clone the repo\n\t\texample:\n\t\t\t\/var\/www\/mysite\/\n\n* **user** (*optional*): the user name of the file owner\n\t\texample:\n\t\t\troot\n\t\n\t\tnote:\n\t\t\tIf specified, the file owner will be set to this user. Otherwise, the result depends on whether the file exists. If so, the file owner will be left unchanged. If not, the file will be created under the user name of which the Madeira agent runs.\n\n* **group** (*optional*): the group name of the file owner\n\t\texample:\n\t\t\troot\n\t\n\t\tnote:\n\t\t\tIf specified, the file will be set to this group. Otherwise, the result depends on whether the file exists. If so, the file group will be left unchanged. If not, the file will be created under the group of which the Madeira agent runs.\n\n* **mode** (*optional*): the directory mode\n\t\texample:\n\t\t\t0755\n\t\n\t\tnote:\n\t\t\tIf specified, the file will be set to this mode. Otherwise, the result depends on whether the file exists. If so, the file mode will be left unchanged. If not, the file will be created with the default mode 0755\n\n* **force** (*optional*): force the checkout even if there is conflict, by default ***False***\n\t\t\t\t\t",
+        "cn": ""
+      },
+      "module": "common.git",
+      "distro": null
+    },
+    "pip": {
+      "parameter": {
+        "name": {
+          "default": "",
+          "required": true,
+          "type": "dict",
+          "value": [
+            "latest",
+            "removed"
+          ]
+        }
+      },
+      "reference": {
+        "en": "\n### Description\n\tensure pip packages are installed\n\n### Parameters\n\n*   **name** (*required*): the package names and versions. You can specify multiple pakages. The following values can be used for package version:\n\t- <***empty***> (*default*): ensure the package is present. If not, will install the latest version available of all APT repos on                   \n\t- <***version***>: ensure the package is present, with the version specified. If the version in unavailable of all APT repos on the host, the state will fail\n\t- **latest**: ensure the package is present with the latest version. If a newer version is available of all APT repos on the host, will do a auto-upgrade\n\t- **removed**: ensure the package is absent\n\t\t\t\t\t",
+        "cn": ""
+      },
+      "module": "common.pip.package",
+      "distro": null
+    },
+    "virtualenv": {
+      "parameter": {
+        "system-site-packages": {
+          "default": true,
+          "required": false,
+          "type": "bool"
+        },
+        "no-setuptools": {
+          "default": false,
+          "required": false,
+          "type": "bool"
+        },
+        "always-copy": {
+          "default": false,
+          "required": false,
+          "type": "bool"
+        },
+        "no-pip": {
+          "default": false,
+          "required": false,
+          "type": "bool"
+        },
+        "python": {
+          "required": false,
+          "type": "line"
+        },
+        "path": {
+          "required": true,
+          "type": "line"
+        },
+        "unzip-setuptools": {
+          "default": false,
+          "required": false,
+          "type": "bool"
+        },
+        "extra-search-dir": {
+          "required": false,
+          "type": "array"
+        }
+      },
+      "reference": {
+        "en": "\n### Description\n\tmanage python virtualenv\n\t\n### Parameters\n\n*   **path** (*required*): the project path\n\t\t   Pacific\/Tahiti\n\n*   **python** (*optional*): the python interpreter to use\n\t\t\n\t\tNote:\n\t\t\tpython2.5 will use the python2.5 interpreter to create the new environment.\n\t\t\tThe default is the interpreter that virtualenv was installed with\n\n\n*   **system-site-packages** (*optional*): whether to give the virtual environment access to the global site-packages, by default ***True***\n\n*   **always-copy** (*optional*): whether to always copy files rather than symlinking, by default ***False***\n\n*   **unzip-setuptools** (*optional*): whether to always copy files rather than symlinking, by default ***False***\n\n*   **no-setuptool** (*optional*): whether to install setuptools (or pip) in the new virtualenv, by default ***True***\n\n*   **no-pip** (*optional*): whether to install pip in the new virtualenv, by default ***True***\n\n*   **extra-search-dir** (*optional*): whether to always copy files rather than symlinking., by default ***False***\n\n*   **always-copy** (*optional*): the directories to look for setuptools\/pip distributions in\n\t\t\t\t\t",
+        "cn": ""
+      },
+      "module": "common.virtualenv",
+      "distro": null
+    },
+    "hg": {
+      "parameter": {
+        "repo": {
+          "required": true,
+          "type": "line"
+        },
+        "force": {
+          "default": false,
+          "required": false,
+          "type": "bool"
+        },
+        "group": {
+          "required": false,
+          "type": "line"
+        },
+        "user": {
+          "required": false,
+          "type": "line"
+        },
+        "branch": {
+          "default": "default",
+          "required": true,
+          "type": "line"
+        },
+        "path": {
+          "required": true,
+          "type": "line"
+        },
+        "mode": {
+          "default": "0755",
+          "required": false,
+          "type": "line"
+        },
+        "ssh_key": {
+          "required": false,
+          "type": "line"
+        },
+        "revision": {
+          "default": "",
+          "required": true,
+          "type": "line"
+        }
+      },
+      "reference": {
+        "en": "\n### Description\n\tmanage the hg repo\n\t\n### Parameters\n\n*   **repo** (*required*): the hg repository uri\n\t\texample:\n\t\t\tlocal - \/path\/to\/repo\n\t\t\tssh - ssh:\/\/user@server\/path\/to\/repo\n\t\t\thttp\/https - https:\/\/example.com\/path\/to\/repo\n\n* **branch** (*optional*): the branch to checkout\n\t\texample:\n\t\t\tdefault\n\t\n\t\tnote:\n\t\t\tWhen using <branch>, the local repo will be kept synchronized with the latest commit of the specified branch.\n\t\t\tDo NOT use <branch> and <version> at the same time\n\n* **revision** (*optional*): the version to checkout\n\t\texample:\n\t\t\ttag name - release-1.0\n\t\t\tchangeset - 8b1e0f7e499f9af07eed5ba6a3fc5490e72631b6\n\t\n\t\tnote:\n\t\t\tWhen using <version>, the local repo will remain the specified tag or commit.\n\t\t\tDo NOT use <branch> and <version> at the same time\n\n* **ssh_key** (*optional*): the path of the ssh keypair file\n\t\texample:\n\t\t\t\/root\/.ssh\/id_rsa\n\n* **path** (*required* ): the path to clone the repo\n\t\texample:\n\t\t\t\/var\/www\/mysite\/\n\n* **user** (*optional*): the user name of the file owner\n\t\texample:\n\t\t\troot\n\t\n\t\tnote:\n\t\t\tIf specified, the file owner will be set to this user. Otherwise, the result depends on whether the file exists. If so, the file owner will be left unchanged. If not, the file will be created under the user name of which the Madeira agent runs.\n\n* **group** (*optional*): the group name of the file owner\n\t\texample:\n\t\t\troot\n\t\n\t\tnote:\n\t\t\tIf specified, the file will be set to this group. Otherwise, the result depends on whether the file exists. If so, the file group will be left unchanged. If not, the file will be created under the group of which the Madeira agent runs.\n\n* **mode** (*optional*): the directory mode\n\t\texample:\n\t\t\t0755\n\t\n\t\tnote:\n\t\t\tIf specified, the file will be set to this mode. Otherwise, the result depends on whether the file exists. If so, the file mode will be left unchanged. If not, the file will be created with the default mode 0755\n\n* **force** (*optional*): force the checkout even if there is conflict, by default ***False***\n\t\t\t\t\t",
+        "cn": ""
+      },
+      "module": "common.hg",
+      "distro": null
+    },
+    "gem": {
+      "parameter": {
+        "name": {
+          "default": "",
+          "required": true,
+          "type": "dict",
+          "option": [
+            "latest",
+            "removed"
+          ]
+        }
+      },
+      "reference": {
+        "en": "\n### Description\n\tensure ruby gems are installed\n\n### Parameters\n\n*   **name** (*required*): the package names and versions. You can specify multiple pakages. The following values can be used for package version:\n\t- <***empty***> (*default*): ensure the package is present. If not, will install the latest version available of all APT repos on                   \n\t- <***version***>: ensure the package is present, with the version specified. If the version in unavailable of all APT repos on the host, the state will fail\n\t- **latest**: ensure the package is present with the latest version. If a newer version is available of all APT repos on the host, will do a auto-upgrade\n\t- **removed**: ensure the package is absent\n\t\t\t\t\t",
+        "cn": ""
+      },
+      "module": "common.gem.package",
+      "distro": null
+    }
+  },
+  "general": {
+    "wait": {
+      "parameter": {
+        "state": {
+          "required": true,
+          "type": "state"
+        }
+      },
+      "reference": {
+        "en": "\n### Description\n\twait for remote state(s) to complete, if anyone is not done yet, it will cause the host to block on the waiting.\n\t\n### Parameters\n\n*   **state** (*required*): one or multiple remote states to be waited\n\t\texample:\n\t\t\tsingle - @hostname.state_id\n\t\t\tbarrier - @host1.state_1, @host2.state_2\n\t\t\t\t\t",
+        "cn": ""
+      },
+      "module": "general.wait"
+    }
+  }
+}

@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>JSON Viewer</title>
+  <link rel="stylesheet" type="text/css" href="assets/jsoneditor-min.css">
+  <script type="text/javascript" src="lib/jsoneditor-min.js"></script>
+
+	<script type="text/javascript" src='lib/jquery.min.js' ></script>
+	<script type="text/javascript" src='lib/MC.core.js' ></script>
+
+
+  <style type="text/css">
+    body {
+      font: 11pt arial;
+    }
+    #treeEditor {
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+<div id="result"></div>
+<div id="treeEditor"></div>
+
+
+<script type="text/javascript" >
+
+  var container = document.getElementById('treeEditor');
+
+  var filename = "state-module.json";
+
+$(document).ready(function(){
+	$.getJSON(filename,function(json){
+
+		var options = {
+			mode: 'view'
+		};
+
+		var editor = new jsoneditor.JSONEditor(container, options, json);
+		$("#result").text("load json data from '"+filename+"' finish!");
+	});
+});
+ 
+
+  
+</script>
+
+
+</body>
+</html>

@@ -2236,7 +2236,7 @@ module.exports =
       zh: "终止实例失败"
 
     PROP_ASG_LBL_VALIDATE_SNS:
-      en: "Validating a configuraed SNS Topic"
+      en: "Validating a configured SNS Topic"
       zh: "验证SNS主题"
 
     PROP_ASG_MSG_NO_NOTIFICATION_WARN:

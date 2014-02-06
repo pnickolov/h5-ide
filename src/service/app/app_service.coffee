@@ -385,13 +385,19 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
 
         for node in result
 
-            action_name = ($.parseXML node).documentElement.localName
+            try
+                action_name = ($.parseXML node).documentElement.localName
 
-            dict_name = action_name.replace /Response/i, ""
+                dict_name = action_name.replace /Response/i, ""
 
-            dict[dict_name] = [] if dict[dict_name]?
+                dict[dict_name] = [] if dict[dict_name]?
 
-            dict[dict_name] = responses[action_name] [null, node]
+                dict[dict_name] = responses[action_name] [null, node]
+
+            catch error
+                console.warn "[error]resourceMap" + action_name
+                console.warn $.parseXML node
+                continue
 
         dict
 

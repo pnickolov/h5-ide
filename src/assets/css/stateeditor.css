@@ -32,7 +32,6 @@
 	background: #fff;
 	font-family: "OxygenMono", "Lucida Console", "Monaco", monospace;
 	font-size: 13px;
-	overflow: hidden;
 	position: relative;
 }
 
@@ -76,7 +75,7 @@
 	background-color: #a4a4a4;
 }
 
-#state-editor ::selection {
+#state-editor::selection {
 	background: rgba(0, 6, 141, 0.4);
 	color: #fcfcfc;
 }

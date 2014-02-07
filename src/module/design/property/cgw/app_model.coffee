@@ -26,7 +26,7 @@ define [ '../base/model', 'Design', 'constant' ], ( PropertyModel, Design, const
           allVpn = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNConnection ).allObjects()
 
           for vpn in allVpn
-            if vpn.get 'CustomerGatewayId' is "@#{uid}.resource.CustomerGatewayId"
+            if vpn.get 'CustomerGatewayId' is MC.aws.aws.genResRef(uid, 'resource.CustomerGatewayId')
               vpn_id = vpn.get 'VpnConnectionId'
               return
 

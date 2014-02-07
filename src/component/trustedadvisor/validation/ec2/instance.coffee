@@ -9,7 +9,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 		haveProvisionedVolume = false
 		instanceUIDRef = lsgName = amiId = null
 		if instanceComp
-			instanceUIDRef = '@' + instanceUID + '.resource.InstanceId'
+			instanceUIDRef = MC.aws.aws.genResRef(instanceUID, 'resource.InstanceId')
 		else
 			lsgName = instanceComp.resource.LaunchConfigurationName
 			amiId = instanceComp.resource.ImageId
@@ -130,7 +130,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 	isConnectRoutTableButNoEIP = ( uid ) ->
         components = MC.canvas_data.component
         instance = components[ uid ]
-        instanceId = "@#{uid}.resource.InstanceId"
+        instanceId = MC.aws.aws.genResRef(uid, 'resource.InstanceId')
         RTB = ''
 
         isConnectRTB = _.some components, ( component ) ->

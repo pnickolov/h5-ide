@@ -288,10 +288,11 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
       if not id then return ""
 
       if isResourceNS isnt false
-        "@{#{id}.resource.#{refName}}"
+        MC.aws.aws.genResRef(id, "resource.#{refName}")
+        # "@#{id}.resource.#{refName}"
       else
-        "@{#{id}.#{refName}}"
-
+        MC.aws.aws.genResRef(id, "#{refName}")
+        # "@#{id}.#{refName}"
 
     listenTo : ( other, event, callback )->
       # Override Backbone.Events.listenTo.

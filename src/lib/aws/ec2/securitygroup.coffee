@@ -64,7 +64,7 @@ define [ 'i18n!nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 					else
 						return true
 				if sgAry.length is 0
-					sgAry.push('@' + defaultSGUID + '.resource.GroupId')
+					sgAry.push(MC.aws.aws.genResRef(defaultSGUID, 'resource.GroupId'))
 				MC.canvas_data.component[compUID].resource.SecurityGroups = sgAry
 
 				#update sg color label
@@ -84,8 +84,8 @@ define [ 'i18n!nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 							return true
 					if eniSgAry.length is 0
 						eniSgAry.push({
-							'GroupId': '@' + defaultSGUID + '.resource.GroupId',
-							'GroupName': '@' + defaultSGUID + '.resource.GroupName'
+							'GroupId': MC.aws.aws.genResRef(defaultSGUID, 'resource.GroupId'),
+							'GroupName': MC.aws.aws.genResRef(defaultSGUID, 'resource.GroupName')
 						})
 					MC.canvas_data.component[eniComp.uid].resource.GroupSet = eniSgAry
 
@@ -99,7 +99,7 @@ define [ 'i18n!nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 						else
 							return true
 					if sgAry.length is 0
-						sgAry.push('@' + defaultSGUID + '.resource.GroupId')
+						sgAry.push(MC.aws.aws.genResRef(defaultSGUID, 'resource.GroupId'))
 
 					sgNameAry = comp.resource.SecurityGroup
 					sgNameAry = _.filter sgNameAry, (value) ->
@@ -109,7 +109,7 @@ define [ 'i18n!nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 						else
 							return true
 					if sgNameAry.length is 0
-						sgNameAry.push('@' + defaultSGUID + '.resource.GroupName')
+						sgNameAry.push(MC.aws.aws.genResRef(defaultSGUID, 'resource.GroupName'))
 
 					MC.canvas_data.component[compUID].resource.SecurityGroupId = sgAry
 					MC.canvas_data.component[compUID].resource.SecurityGroup = sgNameAry
@@ -127,8 +127,8 @@ define [ 'i18n!nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 						return true
 				if sgAry.length is 0
 					sgAry.push({
-						'GroupId': '@' + defaultSGUID + '.resource.GroupId',
-						'GroupName': '@' + defaultSGUID + '.resource.GroupName'
+						'GroupId': MC.aws.aws.genResRef(defaultSGUID, 'resource.GroupId'),
+						'GroupName': MC.aws.aws.genResRef(defaultSGUID, 'resource.GroupName')
 					})
 				MC.canvas_data.component[compUID].resource.GroupSet = sgAry
 
@@ -138,7 +138,7 @@ define [ 'i18n!nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 			# remove all ref rule in all sg
 			if compType is 'AWS.EC2.SecurityGroup'
 
-				sgRuleRef = '@' + sgUID + '.resource.GroupId'
+				MC.aws.aws.genResRef(sgUID, 'resource.GroupId')
 
 				sgInboundRuleAry = comp.resource.IpPermissions
 				sgOutboundRuleAry = comp.resource.IpPermissionsEgress
@@ -337,7 +337,7 @@ define [ 'i18n!nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 		component_data.resource.GroupName = sg_name
 		vpcUID = MC.aws.vpc.getVPCUID()
 		if vpcUID
-			component_data.resource.VpcId = '@' + vpcUID + '.resource.VpcId'
+			component_data.resource.VpcId = MC.aws.aws.genResRef(vpcUID, 'resource.VpcId')
 		component_data.resource.GroupDescription = lang.ide.PROP_TEXT_CUSTOM_SG_DESC
 
 		component_data.resource.IpPermissions = []

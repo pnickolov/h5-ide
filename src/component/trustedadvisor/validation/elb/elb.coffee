@@ -37,7 +37,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 
 		# asg attached number
 		attachedASGNum = 0
-		elbNameRef = '@' + elbUID + '.resource.LoadBalancerName'
+		elbNameRef = MC.aws.aws.genResRef(elbUID, 'resource.LoadBalancerName')
 		_.each MC.canvas_data.component, (compObj) ->
 			compType = compObj.type
 			if compType is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
@@ -109,7 +109,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 
 	# 	# get attached asg array
 	# 	attachedASGAry = []
-	# 	elbNameRef = '@' + elbUID + '.resource.LoadBalancerName'
+	# 	elbNameRef = MC.aws.aws.genResRef(elbUID, 'resource.LoadBalancerName')
 	# 	_.each MC.canvas_data.component, (compObj) ->
 	# 		compType = compObj.type
 	# 		if compType is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group

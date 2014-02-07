@@ -239,7 +239,7 @@ define [ 'MC', 'jquery' ], ( MC, $ ) ->
 		_.each MC.canvas_data.component, (compObj) ->
 			if compObj.type is 'AWS.VPC.NetworkInterface' and
 			compObj.resource.Attachment.DeviceIndex is '0' and
-			compObj.resource.Attachment.InstanceId is ('@' + instanceUID + '.resource.InstanceId')
+			compObj.resource.Attachment.InstanceId is (MC.aws.aws.genResRef(instanceUID, 'resource.InstanceId'))
 				eniComp = compObj
 				return
 			null
@@ -283,7 +283,7 @@ define [ 'MC', 'jquery' ], ( MC, $ ) ->
 		if defaultVPC
 			azName = subnetUidOrAZ
 		else
-			subnetRef = '@' + subnetUidOrAZ + '.resource.SubnetId'
+			subnetRef = MC.aws.aws.genResRef(subnetUidOrAZ, 'resource.SubnetId')
 
 		_.each MC.canvas_data.component, (compObj) ->
 			if compObj.type is 'AWS.VPC.NetworkInterface'
@@ -388,7 +388,7 @@ define [ 'MC', 'jquery' ], ( MC, $ ) ->
 
 	updateAllInstanceENIIPToAutoAssign = (instanceUID) ->
 
-		instanceUIDRef = '@' + instanceUID + '.resource.InstanceId'
+		instanceUIDRef = MC.aws.aws.genResRef(instanceUID, 'resource.InstanceId')
 		_.each MC.canvas_data.component, (compObj) ->
 			if compObj.type is 'AWS.VPC.NetworkInterface'
 				if compObj.resource.Attachment.InstanceId is instanceUIDRef

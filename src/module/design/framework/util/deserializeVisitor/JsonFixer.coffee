@@ -20,7 +20,7 @@ define [ "Design"], ( Design )->
           name : comp.name
         }
 
-        azMap[ comp.name ] = "@#{uid}.name"
+        azMap[ comp.name ] = MC.aws.aws.genResRef(uid, 'name')
 
       # Generate Component for expanded Asg
       else if comp.type is "AWS.AutoScaling.Group"

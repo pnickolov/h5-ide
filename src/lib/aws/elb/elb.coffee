@@ -53,7 +53,7 @@ define [ 'constant', 'MC' ], ( constant, MC ) ->
 
 				MC.canvas_data.component[sgComp.uid] = sgComp
 
-				sgRef = '@' + sgComp.uid + '.resource.GroupId'
+				sgRef = MC.aws.aws.genResRef(sgComp.uid, 'resource.GroupId')
 				MC.canvas_data.component[uid].resource.SecurityGroups = [sgRef]
 
 				# add rule to default sg
@@ -86,7 +86,7 @@ define [ 'constant', 'MC' ], ( constant, MC ) ->
 		currentInstanceAZ = instanceComp.resource.Placement.AvailabilityZone
 
 		instanceUID = instanceComp.uid
-		instanceRef = '@' + instanceUID + '.resource.InstanceId'
+		instanceRef = MC.aws.aws.genResRef(instanceUID, 'resource.InstanceId')
 
 		elbInstanceAry = elbComp.resource.Instances
 		elbInstanceAryLength = elbInstanceAry.length
@@ -115,7 +115,7 @@ define [ 'constant', 'MC' ], ( constant, MC ) ->
 			MC.canvas_data.component[elbUID].resource.AvailabilityZones.push(currentInstanceAZ)
 
 		# If current AZ has no subnet connects to the elb. connect the subnet to elb
-		subnet_uid = "@" + subnet_uid + ".resource.SubnetId"
+		subnet_uid = MC.aws.aws.genResRef(subnet_uid, 'resource.SubnetId')
 
 		for subnet, i in elbComp.resource.Subnets
 			linkedSubnetID = MC.extractID( subnet )
@@ -136,7 +136,7 @@ define [ 'constant', 'MC' ], ( constant, MC ) ->
 		instanceComp = MC.canvas_data.component[instanceUID]
 
 		instanceUID = instanceComp.uid
-		instanceRef = '@' + instanceUID + '.resource.InstanceId'
+		instanceRef = MC.aws.aws.genResRef(instanceUID, 'resource.InstanceId')
 
 		elbInstanceAry = elbComp.resource.Instances
 		elbInstanceAryLength = elbInstanceAry.length
@@ -168,7 +168,7 @@ define [ 'constant', 'MC' ], ( constant, MC ) ->
 
 		newSubnetAZ   = MC.canvas_data.component[ subnet_uid ].resource.AvailabilityZone
 
-		subnet_uid = "@" + subnet_uid + ".resource.SubnetId"
+		subnet_uid = MC.aws.aws.genResRef(subnet_uid, 'resource.SubnetId')
 
 		for subnet, i in elb.resource.Subnets
 			linkedSubnetID = MC.extractID( subnet )
@@ -223,7 +223,7 @@ define [ 'constant', 'MC' ], ( constant, MC ) ->
 
 		# Insert ELB Uid into ASG component
 		if asg.resource.LoadBalancerNames.join(" ").indexOf( elb_uid ) is -1
-			asg.resource.LoadBalancerNames.push "@#{elb_uid}.resource.LoadBalancerName"
+			asg.resource.LoadBalancerNames.push MC.aws.aws.genResRef(elb_uid, 'resource.LoadBalancerName')
 
 
 		elb_res = components[ elb_uid ].resource
@@ -267,7 +267,7 @@ define [ 'constant', 'MC' ], ( constant, MC ) ->
 				elb_res.AvailabilityZones.push az
 				if linkedSubnets.indexOf( sb ) is -1
 					subnets.push sb
-					elb_res.Subnets.push "@#{sb}.resource.SubnetId"
+					elb_res.Subnets.push MC.aws.aws.genResRef(sb, 'resource.SubnetId')
 
 
 		# Returns subnets that should linked to the elb
@@ -275,7 +275,7 @@ define [ 'constant', 'MC' ], ( constant, MC ) ->
 
 	removeASGFromELB = ( elb_uid, asg_uid ) ->
 		asg = MC.canvas_data.component[ asg_uid ]
-		names = asg.resource.LoadBalancerNames.join(" ").replace("@#{elb_uid}.resource.LoadBalancerName", "")
+		names = asg.resource.LoadBalancerNames.join(" ").replace(MC.aws.aws.genResRef(elb_uid, 'resource.LoadBalancerName'), "")
 		asg.resource.LoadBalancerNames = if names.length is 0 then [] else names.split(" ")
 
 		null
@@ -400,7 +400,7 @@ define [ 'constant', 'MC' ], ( constant, MC ) ->
 
 	removeAllELBForInstance = (instanceUID) ->
 
-		originInstanceUIDRef = '@' + instanceUID + '.resource.InstanceId'
+		originInstanceUIDRef = MC.aws.aws.genResRef(instanceUID, 'resource.InstanceId')
 		_.each MC.canvas_data.component, (compObj) ->
 			compType = compObj.type
 			if compType is 'AWS.ELB'

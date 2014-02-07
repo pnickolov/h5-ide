@@ -36,14 +36,14 @@ define [ 'MC' ], ( MC ) ->
 		addToAssociation = true
 		_.each aclComp.resource.AssociationSet, (associationObj) ->
 			subnetUIDRef = associationObj.SubnetId
-			originSubnetUIDRef = '@' + subnetUID + '.resource.SubnetId'
+			originSubnetUIDRef = MC.aws.aws.genResRef(subnetUID, 'resource.SubnetId')
 			if subnetUIDRef is originSubnetUIDRef
 				addToAssociation = false
 				return false
 
 		if addToAssociation
 			MC.canvas_data.component[aclUID].resource.AssociationSet.push({
-				SubnetId: '@' + subnetUID + '.resource.SubnetId',
+				SubnetId: MC.aws.aws.genResRef(subnetUID, 'resource.SubnetId'),
 				NetworkAclAssociationId: '',
 				NetworkAclId: ''
 			})
@@ -56,7 +56,7 @@ define [ 'MC' ], ( MC ) ->
 
 		newAssociationSet = _.filter aclComp.resource.AssociationSet, (associationObj) ->
 			subnetUIDRef = associationObj.SubnetId
-			originSubnetUIDRef = '@' + subnetUID + '.resource.SubnetId'
+			originSubnetUIDRef = MC.aws.aws.genResRef(subnetUID, 'resource.SubnetId')
 			if subnetUIDRef is originSubnetUIDRef
 				return false
 			else

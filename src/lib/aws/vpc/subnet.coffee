@@ -222,7 +222,7 @@ define [ 'MC', 'constant', 'i18n!nls/lang.js' ], ( MC, constant, lang ) ->
 		else
 			subnetComp = MC.canvas_data.component[subnetUidOrAZ]
 			if !subnetComp then return
-			subnetRef = '@' + subnetComp.uid + '.resource.SubnetId'
+			subnetRef = MC.aws.aws.genResRef(subnetComp.uid, 'resource.SubnetId')
 			if notForce
 				filterAry = MC.aws.eni.getAllNoAutoAssignIPInCIDR(subnetRef)
 			subnetCIDR = subnetComp.resource.CidrBlock
@@ -293,7 +293,7 @@ define [ 'MC', 'constant', 'i18n!nls/lang.js' ], ( MC, constant, lang ) ->
 		return true
 
 	isConnectToELB = (subnetUID) ->
-		subnetInELB =  "@#{subnetUID}.resource.SubnetId"
+		subnetInELB =  MC.aws.aws.genResRef(subnetUID, 'resource.SubnetId')
 		_.some MC.canvas_data.component, ( component, id ) ->
 			component.type is 'AWS.ELB' and _.contains component.resource.Subnets, subnetInELB
 

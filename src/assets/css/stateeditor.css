@@ -25,7 +25,7 @@
 #state-editor {
 	/*padding: 20px;*/
 	height: 460px;
-	overflow-y: scroll;
+	overflow-y: auto;
 	width: 655px;
 	float: left;
 	height: 500px;
@@ -45,11 +45,12 @@
 }
 
 #state-description, #state-log {
-	width: 225px;
+	border-left: 1px solid #ccc;
+	width: 224px;
 	height: 480px;
 	float: left;
 	overflow-x: hidden;
-	overflow-y: scroll;
+	overflow-y: auto;
 	padding: 10px;
 	font-family: "OxygenMono", "Lucida Console", "Monaco", monospace;
 	font-size: 12px;

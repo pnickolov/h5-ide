@@ -41,7 +41,7 @@
 }
 
 #state-editor .state-edit {
-	border-bottom: 1px solid #eee;
+	/*border-bottom: 1px solid #eee;*/
 }
 
 #state-description, #state-log {

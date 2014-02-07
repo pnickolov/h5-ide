@@ -122,9 +122,7 @@ define ['UI.canvg', 'UI.download'], ()->
     if data.isExport
 
       # In IE, XMLSerializer will change xlink:href to href
-      if Href is undefined
-        Href = if svg.indexOf("xlink:href") is -1 then "href" else "xlink:href"
-
+      Href = (if svg.indexOf("xlink:href") is -1 then "href" else "xlink:href")  if Href is undefined
       time = ""
       name = ""
       if data.drawInfo isnt false

@@ -66,7 +66,7 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
     updateName : ()->
       oldName = @attributes.name
 
-      instance = @embedInstance()
+      instance = @__embedInstance
       if instance
         @attributes.name = "eni0"
       else
@@ -100,7 +100,7 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
     isVisual : ()-> !@__embedInstance
     embedInstance : ()-> @__embedInstance
     attachedInstance : ()->
-      instance = @embedInstance()
+      instance = @__embedInstance
       if not instance
         target = @connectionTargets( "EniAttachment" )
         if target.length then instance = target[0]
@@ -146,7 +146,7 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
       @get("ips").some ( ip )-> ip.hasEip
 
     subnetCidr : ()->
-      parent = @parent() or @embedInstance().parent()
+      parent = @parent() or @__embedInstance.parent()
 
       if parent.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
         cidr = parent.get("cidr")
@@ -267,8 +267,8 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
         ipObj.hasEip = hasEip
 
         if idx is 0
-          if @embedInstance()
-            @embedInstance().draw()
+          if @__embedInstance
+            @__embedInstance.draw()
           else
             @draw()
 
@@ -295,7 +295,7 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
       if ips.length >= maxIp
         return sprintf( lang.ide.PROP_MSG_WARN_ENI_IP_EXTEND, instance.get("instanceType"), maxIp )
 
-      subent = if @embedInstance() then @embedInstance().parent() else @parent()
+      subent = if @__embedInstance then @__embedInstance.parent() else @parent()
 
       result = true
       # Add an fake item to see if there's an error in subnet
@@ -419,7 +419,7 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
       ips[0].Primary = true
 
 
-      sgTarget = if @embedInstance() then @embedInstance() else @
+      sgTarget = if @__embedInstance then @__embedInstance else @
 
       securitygroups = _.map sgTarget.connectionTargets("SgAsso"), ( sg )->
         {
@@ -431,8 +431,8 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
 
       az = ""
 
-      if @embedInstance()
-        parent = @embedInstance().parent()
+      if @__embedInstance
+        parent = @__embedInstance.parent()
       else
         parent = @parent()
 
@@ -492,7 +492,7 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
 
       # Here, we only serialize layout
       res = null
-      if not @embedInstance()
+      if not @__embedInstance
         layout =
           coordinate : [ @x(), @y() ]
           uid        : @id

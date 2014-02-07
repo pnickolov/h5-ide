@@ -10,12 +10,12 @@ var listen = function ()
 
 	canvas_container
 		.off(name_space)
-		.removeClass('canvas_state_app canvas_state_appedit canvas_state_stack canvas_state_appview');
+		.removeClass('canvas_state_app canvas_state_appedit canvas_state_stack canvas_state_appview')
+		.addClass('canvas_state_' + canvas_state);
 
 	if (canvas_state === 'app')
 	{
 		canvas_container
-			.addClass('canvas_state_' + canvas_state)
 			.on('mousedown' + name_space, '.instance-volume, .instanceList-item-volume, .asgList-item-volume', MC.canvas.volume.show)
 			.on('click' + name_space, '.line', MC.canvas.event.selectLine)
 			.on('mousedown' + name_space, MC.canvas.event.clearSelected)
@@ -33,7 +33,6 @@ var listen = function ()
 	if (canvas_state === 'appedit')
 	{
 		canvas_container
-			.addClass('canvas_state_' + canvas_state)
 			.on('mousedown' + name_space, '.instance-volume, .instanceList-item-volume, .asgList-item-volume', MC.canvas.volume.show)
 			.on('mousedown' + name_space, '.port', MC.canvas.event.appDrawConnection)
 			.on('mousedown' + name_space, '.dragable', MC.canvas.event.dragable.mousedown)
@@ -50,7 +49,6 @@ var listen = function ()
 	if (canvas_state === 'stack')
 	{
 		canvas_container
-			.addClass('canvas_state_' + canvas_state)
 			.on('mousedown' + name_space, '.port', MC.canvas.event.drawConnection.mousedown)
 			.on('mousedown' + name_space, '.dragable', MC.canvas.event.dragable.mousedown)
 			.on('mousedown' + name_space, '.group-resizer', MC.canvas.event.groupResize.mousedown)
@@ -66,7 +64,6 @@ var listen = function ()
 	if (canvas_state === 'appview')
 	{
 		canvas_container
-			.addClass('canvas_state_' + canvas_state)
 			.on('mousedown' + name_space, '.dragable', MC.canvas.event.dragable.mousedown)
 			.on('mousedown' + name_space, '.group-resizer', MC.canvas.event.groupResize.mousedown)
 			.on('mouseenter'  + name_space + ' mouseleave'  + name_space, '.node', MC.canvas.event.nodeHover)

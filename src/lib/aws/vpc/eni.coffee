@@ -186,7 +186,7 @@ define [ 'MC', 'jquery' ], ( MC, $ ) ->
 			subnetObj = MC.aws.vpc.getAZSubnetForDefaultVPC(azName)
 			subnetCidr = subnetObj.cidrBlock
 		else
-			subnetId = subnetUIDRef.slice(1).split('.')[0]
+			subnetId = MC.extractID(subnetUIDRef)
 			subnetComp = MC.canvas_data.component[subnetId]
 			subnetCidr = subnetComp.resource.CidrBlock
 
@@ -268,7 +268,7 @@ define [ 'MC', 'jquery' ], ( MC, $ ) ->
 
 		eniComp = MC.canvas_data.component[eniUID]
 		subnetUIDRef = eniComp.resource.SubnetId
-		subnetUID = subnetUIDRef.slice(1).split('.')[0]
+		subnetUID = MC.extractID(subnetUIDRef)
 		return MC.canvas_data.component[subnetUID]
 
 	getSubnetNeedIPCount = (subnetUidOrAZ) ->
@@ -306,7 +306,7 @@ define [ 'MC', 'jquery' ], ( MC, $ ) ->
 		if eniComp.type is 'AWS.VPC.NetworkInterface'
 			instanceUIDRef = eniComp.resource.Attachment.InstanceId
 			if !instanceUIDRef then return 0
-			instanceUID = instanceUIDRef.split('.')[0].slice(1)
+			instanceUID = MC.extractID(instanceUIDRef)
 		else
 			instanceUID = eniOrInstanceUID
 		instanceComp = MC.canvas_data.component[instanceUID]
@@ -354,7 +354,7 @@ define [ 'MC', 'jquery' ], ( MC, $ ) ->
 			if compObj.type is 'AWS.VPC.NetworkInterface'
 				instanceUIDRef = compObj.resource.Attachment.InstanceId
 				if !instanceUIDRef then return
-				eniInstanceUID = instanceUIDRef.split('.')[0].slice(1)
+				eniInstanceUID = MC.extractID(instanceUIDRef)
 				if eniInstanceUID is instanceUID
 					MC.aws.eni.reduceIPNumByInstanceType(compObj.uid)
 			null
@@ -472,15 +472,7 @@ define [ 'MC', 'jquery' ], ( MC, $ ) ->
 
 	getInstanceIdOfENI = ( comp_eni ) ->
 
-		instanceId = ''
-		tmpAry = comp_eni.resource.Attachment.InstanceId.split('.')
-
-		if tmpAry.length>0
-			instanceId = tmpAry[0].substr(1)
-
-		#return
-		instanceId
-
+		return MC.extractID(comp_eni.resource.Attachment.InstanceId)
 
 	updateServerGroupState = ( app_id, server_group_uid ) ->
 

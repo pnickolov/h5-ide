@@ -787,7 +787,7 @@ define [ 'event',
             #         $stateToolbarElem.hasClass('state-add') or
             #         $stateToolbarElem.hasClass('state-remove'))
 
-            this.deselectStateItem()
+            that.deselectStateItem()
 
             $stateItem = $stateToolbarElem.parents('.state-item')
 
@@ -831,7 +831,9 @@ define [ 'event',
                 $stateItem.addClass('view')
 
         deselectStateItem: () ->
-            $('.state-list').find('.selected').removeClass('selected')
+
+            that = this
+            that.$stateList.find('.selected').removeClass('selected')
             null
 
         # onStateAddClick: (event) ->
@@ -903,13 +905,14 @@ define [ 'event',
             that.bindCommandEvent($cmdValueItem)
 
             $stateItemList = that.$stateList.find('.state-item')
-            $stateItemList.addClass('view')
 
             _.each $stateItemList, (otherStateItem) ->
                 $otherStateItem = $(otherStateItem)
                 if not $newStateItem.is($otherStateItem) and not $otherStateItem.hasClass('view')
                     that.refreshStateView($otherStateItem)
                 null
+
+            $stateItemList.addClass('view')
 
             $newStateItem.removeClass('view')
             cmdEditor = $cmdValueItem.data('editor')

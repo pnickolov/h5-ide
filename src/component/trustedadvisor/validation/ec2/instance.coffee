@@ -63,12 +63,12 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 				_.each MC.canvas_data.component, (compObj) ->
 					if compObj.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
 						associatedInstanceRef = compObj.resource.Attachment.InstanceId
-						associatedInstanceUID = associatedInstanceRef.split('.')[0].slice(1)
+						associatedInstanceUID = MC.extractID(associatedInstanceRef)
 						if associatedInstanceUID is instanceUID
 							eniSGAry = compObj.resource.GroupSet
 							_.each eniSGAry, (sgObj) ->
 								eniSGUIDRef = sgObj.GroupId
-								eniSGUID = eniSGUIDRef.split('.')[0].slice(1)
+								eniSGUID = MC.extractID(eniSGUIDRef)
 								if !(eniSGUID in sgUIDAry)
 									sgUIDAry.push(eniSGUID)
 								null
@@ -77,7 +77,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 				# get all LSG's sg
 				lsgSGAry = instanceComp.resource.SecurityGroups
 				_.each lsgSGAry, (sgRef) ->
-					sgUID = sgRef.split('.')[0].slice(1)
+					sgUID = MC.extractID(sgRef)
 					if !(sgUID in sgUIDAry)
 						sgUIDAry.push(sgUID)
 					null
@@ -105,7 +105,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 			else
 				instanceSGAry = instanceComp.resource.SecurityGroups
 			_.each instanceSGAry, (sgRef) ->
-				sgUID = sgRef.split('.')[0].slice(1)
+				sgUID = MC.extractID(sgRef)
 				if !(sgUID in sgUIDAry)
 					sgUIDAry.push(sgUID)
 				null

@@ -424,7 +424,7 @@ define [ 'constant', 'MC' ], ( constant, MC ) ->
 
 		haveAssociate = false
 		_.each elbInstances, (instanceObj) ->
-			instanceUID = instanceObj.InstanceId.slice(1).split('.')[0]
+			instanceUID = MC.extractID(instanceObj.InstanceId)
 			instanceComp = MC.canvas_data.component[instanceUID]
 			instanceAZ = instanceComp.resource.Placement.AvailabilityZone
 			if instanceAZ is azName
@@ -440,7 +440,7 @@ define [ 'constant', 'MC' ], ( constant, MC ) ->
 
 		_.each elbInstances, (instanceRefObj) ->
 			instanceRef = instanceRefObj.InstanceId
-			instanceUID = instanceRef.slice(1).split('.')[0]
+			instanceUID = MC.extractID(instanceRef)
 			instanceAZName = MC.canvas_data.component[instanceUID].resource.Placement.AvailabilityZone
 			if !(instanceAZName in azNameAry)
 				azNameAry.push(instanceAZName)

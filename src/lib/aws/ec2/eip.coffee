@@ -34,7 +34,7 @@ define [ 'constant', 'MC' ], ( constant, MC ) ->
 				instanceUIDRef = compObj.resource.InstanceId
 				currentInstanceUID = ''
 				if instanceUIDRef
-					currentInstanceUID = instanceUIDRef.split('.')[0].slice(1)
+					currentInstanceUID = MC.extractID(instanceUIDRef)
 					if currentInstanceUID is instanceUID
 						result = true
 			null

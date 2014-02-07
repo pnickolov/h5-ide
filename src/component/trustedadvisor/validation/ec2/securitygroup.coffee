@@ -242,7 +242,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 				if comp.resource.Attachment.DeviceIndex in [0, '0']
 					instanceUIDRef = comp.resource.Attachment.InstanceId
 					if instanceUIDRef
-						instanceUID = instanceUIDRef.split('.')[0].slice(1)
+						instanceUID = MC.extractID(instanceUIDRef)
 						instanceComp = MC.canvas_data.component[instanceUID]
 						if instanceComp
 							instanceName = instanceComp.name

@@ -102,7 +102,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 		asgComp = MC.canvas_data.component[targetAsgUID]
 		attachedELBAry = asgComp.resource.LoadBalancerNames
 		_.each attachedELBAry, (elbUIDRef) ->
-			elbUID = elbUIDRef.split('.')[0].slice(1)
+			elbUID = MC.extractID(elbUIDRef)
 			elbComp = MC.canvas_data.component[elbUID]
 
 			# update AZ field

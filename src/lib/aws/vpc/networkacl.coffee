@@ -80,7 +80,7 @@ define [ 'MC' ], ( MC ) ->
 
 		_.each aclComp.resource.AssociationSet, (associationObj) ->
 			subnetUIDRef = associationObj.SubnetId
-			subnetUID = subnetUIDRef.split('.')[0].slice(1)
+			subnetUID = MC.extractID(subnetUIDRef)
 			MC.aws.acl.addAssociationToACL(subnetUID, defaultACLUID)
 			null
 

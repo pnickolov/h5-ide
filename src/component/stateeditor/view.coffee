@@ -47,7 +47,7 @@ define [ 'event',
             this.compileTpl()
             this.initData()
 
-            $(document).on 'keydown', this.keyEvent
+            $(document).on 'keydown', {target: this}, this.keyEvent
 
         closedPopup: () ->
             @trigger 'CLOSE_POPUP'
@@ -880,6 +880,12 @@ define [ 'event',
         #     that.refreshStateId()
 
         onStateItemAddClick: (event) ->
+
+            that = this
+
+            that.addStateItem.call this, event
+
+        addStateItem: (event) ->
 
             that = this
 
@@ -1779,15 +1785,18 @@ define [ 'event',
             $aceAutoCompList.remove()
 
         keyEvent: (event) ->
-
-            that = this
+            that = event.data.target
             keyCode = event.which
 
-            # Ctrl + delete/backspace
+            # Remove state item [Ctrl + delete/backspace]
             if event.ctrlKey and (keyCode is 46 or keyCode is 8)
                 $('.state-list').find('.selected').remove()
                 return false
 
+            # Add state item [Ctrl + +]
+            if event.ctrlKey and keyCode is 187
+                that.addStateItem.call(that, event)
+                return false
             # return false
     }
 

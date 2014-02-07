@@ -1779,7 +1779,14 @@ define [ 'event',
             $aceAutoCompList.remove()
 
         keyEvent: (event) ->
-            # console.info event.which
+
+            that = this
+            keyCode = event.which
+
+            # Ctrl + delete/backspace
+            if event.ctrlKey and (keyCode is 46 or keyCode is 8)
+                $('.state-list').find('.selected').remove()
+                return false
 
             # return false
     }

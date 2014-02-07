@@ -47,8 +47,11 @@ define [ 'event',
             this.compileTpl()
             this.initData()
 
+            $(document).on 'keydown', this.keyEvent
+
         closedPopup: () ->
             @trigger 'CLOSE_POPUP'
+            $(document).off 'keydown', this.keyEvent
 
         render: () ->
 
@@ -1355,7 +1358,6 @@ define [ 'event',
                     null
 
         initCodeEditor: (editorElem, hintObj) ->
-
             that = this
 
             # if that.readOnlyMode
@@ -1771,6 +1773,11 @@ define [ 'event',
 
             $aceAutoCompList = $('.ace_editor.ace_autocomplete')
             $aceAutoCompList.remove()
+
+        keyEvent: (event) ->
+            # console.info event.which
+
+            # return false
     }
 
     return StateEditorView

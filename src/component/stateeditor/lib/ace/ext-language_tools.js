@@ -976,6 +976,7 @@ var Autocomplete = function() {
 
         var renderer = editor.renderer;
         if (!keepPopupPosition) {
+            this.popup.setRow(0);
             this.popup.setFontSize(editor.getFontSize());
 
             var lineHeight = renderer.layerConfig.lineHeight;
@@ -985,9 +986,7 @@ var Autocomplete = function() {
             
             var rect = editor.container.getBoundingClientRect();
             pos.top += rect.top + 8 - renderer.layerConfig.offset;
-            pos.left += rect.left;
-            // pos.left = $('.ace_focus .ace_text-input').offset().left
-            // pos.left += renderer.$gutterLayer.gutterWidth;
+            pos.left += rect.left - editor.renderer.scrollLeft
 
             this.popup.show(pos, lineHeight);
         }
@@ -1468,6 +1467,7 @@ var AcePopup = function(parentNode) {
     popup.show = function(pos, lineHeight, topdownOnly) {
         var el = this.container;
         var screenHeight = window.innerHeight;
+        var screenWidth = window.innerWidth;
         var renderer = this.renderer;
         var maxH = renderer.$maxLines * lineHeight * 1.4;
         var top = pos.top + this.$borderSize;
@@ -1482,9 +1482,14 @@ var AcePopup = function(parentNode) {
             popup.isTopdown = true;
         }
 
-        el.style.left = pos.left + "px";
+        // el.style.left = pos.left + "px";
         el.style.display = "";
         this.renderer.$textLayer.checkForSizeChanges();
+
+        var left = pos.left;
+        if (left + el.offsetWidth > screenWidth)
+            left = screenWidth - el.offsetWidth;
+        el.style.left = left + "px";
 
         this._signal("show");
         lastMouseEvent = null;

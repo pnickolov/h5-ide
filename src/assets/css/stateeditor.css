@@ -353,10 +353,10 @@
 
 /* *************************************** parameter */
 #state-shadow-item {
-	width: 655px;
+	width: 645px;
 	height: 30px;
-	border: 1px solid #ccc;
-	border-radius: 2px;
+	border-top: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
 	background: #fff;
 	position: absolute;
 	z-index: 80;

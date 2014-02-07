@@ -787,7 +787,7 @@ define [ 'event',
             #         $stateToolbarElem.hasClass('state-add') or
             #         $stateToolbarElem.hasClass('state-remove'))
 
-            that.deselectStateItem()
+            that.clearSelectedItem()
 
             $stateItem = $stateToolbarElem.parents('.state-item')
 
@@ -830,7 +830,7 @@ define [ 'event',
                 that.refreshStateView($stateItem)
                 $stateItem.addClass('view')
 
-        deselectStateItem: () ->
+        clearSelectedItem: () ->
 
             that = this
             that.$stateList.find('.selected').removeClass('selected')

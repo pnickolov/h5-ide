@@ -781,54 +781,54 @@ define [ 'event',
 
             that = this
 
-            $stateToolbarElem = $(event.target)
+            $stateToolbarElem = $(event.currentTarget)
 
-            if not ($stateToolbarElem.hasClass('state-drag') or
-                    $stateToolbarElem.hasClass('state-add') or
-                    $stateToolbarElem.hasClass('state-remove'))
+            # if not ($stateToolbarElem.hasClass('state-drag') or
+            #         $stateToolbarElem.hasClass('state-add') or
+            #         $stateToolbarElem.hasClass('state-remove'))
 
-                this.deselectStateItem()
+            this.deselectStateItem()
 
-                $stateItem = $stateToolbarElem.parents('.state-item')
+            $stateItem = $stateToolbarElem.parents('.state-item')
 
-                $stateItemList = that.$stateList.find('.state-item')
+            $stateItemList = that.$stateList.find('.state-item')
 
-                if $stateItem.hasClass('view')
+            if $stateItem.hasClass('view')
 
-                    currentCMD = $stateItem.attr('data-command')
-                    $paraListItem = $stateItem.find('.parameter-list')
-                    that.bindParaListEvent($paraListItem, currentCMD)
+                currentCMD = $stateItem.attr('data-command')
+                $paraListItem = $stateItem.find('.parameter-list')
+                that.bindParaListEvent($paraListItem, currentCMD)
 
-                    # remove other item view
-                    _.each $stateItemList, (otherStateItem) ->
-                        $otherStateItem = $(otherStateItem)
-                        if not $stateItem.is($otherStateItem) and not $otherStateItem.hasClass('view')
-                            that.refreshStateView($otherStateItem)
-                        null
+                # remove other item view
+                _.each $stateItemList, (otherStateItem) ->
+                    $otherStateItem = $(otherStateItem)
+                    if not $stateItem.is($otherStateItem) and not $otherStateItem.hasClass('view')
+                        that.refreshStateView($otherStateItem)
+                    null
 
-                    $stateItemList.addClass('view')
-                    $stateItem.removeClass('view')
+                $stateItemList.addClass('view')
+                $stateItem.removeClass('view')
 
-                    # refresh description
-                    cmdName = $stateItem.attr('data-command')
-                    if cmdName
-                        that.refreshDescription(cmdName)
+                # refresh description
+                cmdName = $stateItem.attr('data-command')
+                if cmdName
+                    that.refreshDescription(cmdName)
 
-                    $cmdValueItem = $stateItem.find('.command-value')
-                    cmdEditor = $cmdValueItem.data('editor')
-                    if cmdEditor
-                        setTimeout(() ->
-                            cmdEditor.focus()
-                        , 0)
+                $cmdValueItem = $stateItem.find('.command-value')
+                cmdEditor = $cmdValueItem.data('editor')
+                if cmdEditor
+                    setTimeout(() ->
+                        cmdEditor.focus()
+                    , 0)
 
-                    if that.readOnlyMode
-                        that.setEditorReadOnlyMode()
+                if that.readOnlyMode
+                    that.setEditorReadOnlyMode()
 
-                    $stateItem.addClass('selected')
+                $stateItem.addClass('selected')
 
-                else
-                    that.refreshStateView($stateItem)
-                    $stateItem.addClass('view')
+            else
+                that.refreshStateView($stateItem)
+                $stateItem.addClass('view')
 
         deselectStateItem: () ->
             $('.state-list').find('.selected').removeClass('selected')

@@ -2,7 +2,7 @@
 #  View Mode for design/property/vpn
 #############################
 
-define [ '../base/model' ], ( PropertyModel ) ->
+define [ '../base/model', 'event' ], ( PropertyModel, ide_event ) ->
 
     VPNModel = PropertyModel.extend {
 
@@ -19,7 +19,11 @@ define [ '../base/model' ], ( PropertyModel ) ->
             vgw_uid = line_option_map[ 'vgw-vpn' ]
 
             if @isApp
-                @getAppData cgw_uid, vgw_uid
+                existed = @getAppData cgw_uid, vgw_uid
+                if !existed
+                    @set 'is_missing', true
+                else
+                    @set 'is_missing', false
 
             else if cgw_uid and vgw_uid
                 vpn_detail.is_dynamic = if !!MC.canvas_data.component[cgw_uid].resource.BgpAsn then true else false
@@ -91,6 +95,11 @@ define [ '../base/model' ], ( PropertyModel ) ->
             # get vpn
             appData = MC.data.resource_list[ MC.canvas_data.region ]
 
+            #vpn connection not exist
+            if !appData[ vpn_id ]
+                ide_event.trigger(ide_event.OPEN_PROPERTY, 'missing_resource', vpn_id)
+                return false
+
             vpn = _.extend {}, appData[ vpn_id ]
 
             # # JSON detail
@@ -119,6 +128,8 @@ define [ '../base/model' ], ( PropertyModel ) ->
 
             vpn.isApp = @isApp
             @set vpn
+
+            return true
     }
 
     new VPNModel()

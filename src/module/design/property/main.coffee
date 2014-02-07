@@ -87,7 +87,8 @@ define [ 'event',
 			# If type is "component", type should be changed to `constant.AWS_RESOURCE_TYPE`
 			# If type is "line", type should be changed to `PORTATYPE>PORTBTYPE`
 
-			type = getComponentType( type, uid )
+			if type isnt 'missing_resource' # 'missing_resource' is for vpn connection is not existed
+				type = getComponentType( type, uid )
 
 			# We cannot format the type for "component" / "line", then do not refresh the property panel
 			if type is null
@@ -112,7 +113,8 @@ define [ 'event',
 
 			try
 				PropertyBaseModule.load type, uid, tab_type
-				view.afterLoad()
+				if type isnt 'missing_resource'
+					view.afterLoad()
 			catch error
 				### env:dev ###
 				throw error

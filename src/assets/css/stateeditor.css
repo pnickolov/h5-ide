@@ -197,13 +197,18 @@
 	z-index: 80;
 	display: block;
 	border-right: 1px solid #ddd;
+	border-left: 2px solid #fafafa;
 	padding: 11px 0;
 	text-align: center;
 	color: #666;
 	font-family: Lucida Console;
-	width: 32px;
+	width: 30px;
 	background: #fafafa;
 	box-shadow: 1px 1px 1px rgba(0,0,0,0.05);
+}
+
+.state-list .selected:before {
+	border-left: 2px solid rgb(255, 122, 0);
 }
 
 .state-list .state-placeholder:before {

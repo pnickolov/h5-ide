@@ -783,6 +783,8 @@ define [ 'event',
                     $stateToolbarElem.hasClass('state-add') or
                     $stateToolbarElem.hasClass('state-remove'))
 
+                this.deselectStateItem()
+
                 $stateItem = $stateToolbarElem.parents('.state-item')
 
                 $stateItemList = that.$stateList.find('.state-item')
@@ -818,9 +820,15 @@ define [ 'event',
                     if that.readOnlyMode
                         that.setEditorReadOnlyMode()
 
+                    $stateItem.addClass('selected')
+
                 else
                     that.refreshStateView($stateItem)
                     $stateItem.addClass('view')
+
+        deselectStateItem: () ->
+            $('.state-list').find('.selected').removeClass('selected')
+            null
 
         # onStateAddClick: (event) ->
 

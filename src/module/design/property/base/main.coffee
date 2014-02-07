@@ -327,7 +327,10 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
         if property.subPanelID
             property.view._loadAsSub( property.subPanelID )
         else
-            property.view._load()
+            isMissing = property.model.get('is_missing')
+            if !isMissing
+            #is_missing not exist or is_missing is false
+                property.view._load()
 
         # 7. After load callback.
         procName = "afterLoad#{property.type}"

@@ -288,9 +288,9 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
       if not id then return ""
 
       if isResourceNS isnt false
-        "@#{id}.resource.#{refName}"
+        "@{#{id}.resource.#{refName}}"
       else
-        "@#{id}.#{refName}"
+        "@{#{id}.#{refName}}"
 
 
     listenTo : ( other, event, callback )->

@@ -540,7 +540,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
                     size = 1
                     asg_uid = if item.resource.Dimensions.length>0 then item.resource.Dimensions[0].value
                     if asg_uid
-                        asg = data.component[asg_uid.split('.')[0].substr(1)]
+                        asg = data.component[MC.extractID(asg_uid)]
                         size = if asg.resource.DesiredCapacity and is_app then asg.resource.DesiredCapacity else asg.resource.MinSize
                         cost_list.push {'resource' : name, 'type' : 'CloudWatch', 'count' : size, 'fee' : cw_fee/7, 'unit' : '/mo'}
 

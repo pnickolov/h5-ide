@@ -11,7 +11,7 @@ define [ 'i18n!nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 			if compType is 'AWS.ELB' or compType is 'AWS.AutoScaling.LaunchConfiguration'
 				sgAry = comp.resource.SecurityGroups
 				sgAry = _.map sgAry, (value) ->
-					refSGUID = value.slice(1).split('.')[0]
+					refSGUID = MC.extractID(value)
 					return refSGUID
 				if sgUID in sgAry
 					refCompAry.push comp
@@ -19,7 +19,7 @@ define [ 'i18n!nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 			if compType is 'AWS.EC2.Instance'
 				sgAry = comp.resource.SecurityGroupId
 				sgAry = _.map sgAry, (value) ->
-					refSGUID = value.slice(1).split('.')[0]
+					refSGUID = MC.extractID(value)
 					return refSGUID
 				if sgUID in sgAry
 					refCompAry.push comp
@@ -32,7 +32,7 @@ define [ 'i18n!nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 
 				sgAry = _sgAry
 				sgAry = _.map sgAry, (value) ->
-					refSGUID = value.slice(1).split('.')[0]
+					refSGUID = MC.extractID(value)
 					return refSGUID
 
 				if sgUID in sgAry
@@ -58,7 +58,7 @@ define [ 'i18n!nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 			if compType is 'AWS.ELB' or compType is 'AWS.AutoScaling.LaunchConfiguration'
 				sgAry = comp.resource.SecurityGroups
 				sgAry = _.filter sgAry, (value) ->
-					refSGUID = value.slice(1).split('.')[0]
+					refSGUID = MC.extractID(value)
 					if sgUID is refSGUID
 						return false
 					else
@@ -77,7 +77,7 @@ define [ 'i18n!nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 				if eniComp
 					eniSgAry = eniComp.resource.GroupSet
 					eniSgAry = _.filter eniSgAry, (sgObj) ->
-						refSGUID = sgObj.GroupId.slice(1).split('.')[0]
+						refSGUID = MC.extractID(sgObj.GroupId)
 						if sgUID is refSGUID
 							return false
 						else
@@ -93,7 +93,7 @@ define [ 'i18n!nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 				if !eniComp
 					sgAry = comp.resource.SecurityGroupId
 					sgAry = _.filter sgAry, (value) ->
-						refSGUID = value.slice(1).split('.')[0]
+						refSGUID = MC.extractID(value)
 						if sgUID is refSGUID
 							return false
 						else
@@ -103,7 +103,7 @@ define [ 'i18n!nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 
 					sgNameAry = comp.resource.SecurityGroup
 					sgNameAry = _.filter sgNameAry, (value) ->
-						refSGUID = value.slice(1).split('.')[0]
+						refSGUID = MC.extractID(value)
 						if sgUID is refSGUID
 							return false
 						else
@@ -120,7 +120,7 @@ define [ 'i18n!nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 			if compType is 'AWS.VPC.NetworkInterface'
 				sgAry = comp.resource.GroupSet
 				sgAry = _.filter sgAry, (sgObj) ->
-					refSGUID = sgObj.GroupId.slice(1).split('.')[0]
+					refSGUID = MC.extractID(sgObj.GroupId)
 					if sgUID is refSGUID
 						return false
 					else
@@ -280,7 +280,7 @@ define [ 'i18n!nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 
 						side_sg.name = MC.canvas_data.component[connection_obj.uid].name
 
-						side_sg.sg = ({uid:sg.split('.')[0][1...],name:MC.canvas_data.component[sg.split('.')[0][1...]].name, color:MC.aws.sg.getSGColor(sg.split('.')[0][1...])} for sg in MC.canvas_data.component[connection_obj.uid].resource.SecurityGroupId)
+						side_sg.sg = ({uid:MC.extractID(sg),name:MC.canvas_data.component[MC.extractID(sg)].name, color:MC.aws.sg.getSGColor(MC.extractID(sg))} for sg in MC.canvas_data.component[connection_obj.uid].resource.SecurityGroupId)
 
 						both_side.push side_sg
 
@@ -288,13 +288,13 @@ define [ 'i18n!nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 
 						$.each MC.canvas_data.component, ( comp_uid, comp ) ->
 
-							if comp.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and (comp.resource.Attachment.InstanceId.split ".")[0][1...] == connection_obj.uid and comp.resource.Attachment.DeviceIndex == '0'
+							if comp.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and MC.extractID(comp.resource.Attachment.InstanceId) == connection_obj.uid and comp.resource.Attachment.DeviceIndex == '0'
 
 								side_sg = {}
 
 								side_sg.name = MC.canvas_data.component[connection_obj.uid].name
 
-								side_sg.sg = ({name:MC.canvas_data.component[sg.GroupId.split('.')[0][1...]].name, uid:sg.GroupId.split('.')[0][1...], color:MC.aws.sg.getSGColor(sg.GroupId.split('.')[0][1...])} for sg in comp.resource.GroupSet)
+								side_sg.sg = ({name:MC.canvas_data.component[MC.extractID(sg)].name, uid:MC.extractID(sg.GroupId), color:MC.aws.sg.getSGColor(MC.extractID(sg.GroupId))} for sg in comp.resource.GroupSet)
 
 								both_side.push side_sg
 
@@ -306,7 +306,7 @@ define [ 'i18n!nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 
 					side_sg.name = MC.canvas_data.component[connection_obj.uid].name
 
-					side_sg.sg = ({uid:sg.GroupId.split('.')[0][1...],name:MC.canvas_data.component[sg.GroupId.split('.')[0][1...]].name, color:MC.aws.sg.getSGColor(sg.GroupId.split('.')[0][1...])} for sg in MC.canvas_data.component[connection_obj.uid].resource.GroupSet)
+					side_sg.sg = ({uid:MC.extractID(sg),name:MC.canvas_data.component[MC.extractID(sg.GroupId)].name, color:MC.aws.sg.getSGColor(MC.extractID(sg.GroupId))} for sg in MC.canvas_data.component[connection_obj.uid].resource.GroupSet)
 
 					both_side.push side_sg
 
@@ -316,7 +316,7 @@ define [ 'i18n!nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 
 					side_sg.name = MC.canvas_data.component[connection_obj.uid].name
 
-					side_sg.sg = ({uid:sg.split('.')[0][1...],name:MC.canvas_data.component[sg.split('.')[0][1...]].name, color:MC.aws.sg.getSGColor(sg.split('.')[0][1...])} for sg in MC.canvas_data.component[connection_obj.uid].resource.SecurityGroups)
+					side_sg.sg = ({uid:MC.extractID(sg),name:MC.canvas_data.component[MC.extractID(sg)].name, color:MC.aws.sg.getSGColor(MC.extractID(sg))} for sg in MC.canvas_data.component[connection_obj.uid].resource.SecurityGroups)
 
 					both_side.push side_sg
 
@@ -495,7 +495,7 @@ define [ 'i18n!nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 		newMemberAry = _.map memberAry, (compObj) ->
 			if compObj.type is 'AWS.VPC.NetworkInterface' and compObj.name is 'eni0'
 				instanceRef = compObj.resource.Attachment.InstanceId
-				instanceUID = instanceRef.split('.')[0].slice(1)
+				instanceUID = MC.extractID(instanceRef)
 				instanceComp = MC.canvas_data.component[instanceUID]
 				return instanceComp
 			else

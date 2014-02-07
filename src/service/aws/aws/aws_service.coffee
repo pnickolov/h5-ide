@@ -493,7 +493,7 @@ define [ 'MC', 'common_handle', 'result_vo', 'constant', 'ebs_service', 'eip_ser
 
 		ref_key = ref_res[1]
 
-		vpc_uid = ref_key[vpc_id].split('.')[0].slice(1)
+		vpc_uid = MC.extractID(ref_key[vpc_id])
 
 		for uid, c of app_json.component
 
@@ -514,7 +514,7 @@ define [ 'MC', 'common_handle', 'result_vo', 'constant', 'ebs_service', 'eip_ser
 
 					when 'AWS.VPC.NetworkInterface'
 
-						layout.groupUId = c.resource.SubnetId.split('.')[0].slice(1)
+						layout.groupUId = MC.extractID(c.resource.SubnetId)
 
 						if c.resource.Attachment and c.resource.Attachment.DeviceIndex not in ['0', 0]
 
@@ -536,10 +536,10 @@ define [ 'MC', 'common_handle', 'result_vo', 'constant', 'ebs_service', 'eip_ser
 
 								if subnet[0] isnt "@"
 
-									subnets.push ref_key[subnet].split('.')[0].slice(1)
+									subnets.push MC.extractID(ref_key[subnet])
 
 								else
-									subnets.push subnet.split('.')[0].slice(1)
+									subnets.push MC.extractID(subnet)
 
 							c.resource.VPCZoneIdentifier = subnets.join(',')
 
@@ -547,7 +547,7 @@ define [ 'MC', 'common_handle', 'result_vo', 'constant', 'ebs_service', 'eip_ser
 
 						for uid_tmp, comp_tmp of app_json.component
 
-							if comp_tmp.type is 'AWS.AutoScaling.LaunchConfiguration' and uid_tmp is c.resource.LaunchConfigurationName.split('.')[0].slice(1)
+							if comp_tmp.type is 'AWS.AutoScaling.LaunchConfiguration' and uid_tmp is MC.extractID(c.resource.LaunchConfigurationName)
 
 								if app_json.layout.component.node[uid_tmp].groupUId
 
@@ -588,7 +588,7 @@ define [ 'MC', 'common_handle', 'result_vo', 'constant', 'ebs_service', 'eip_ser
 
 								else
 
-									originalId = zone.split('.')[0].slice(1)
+									originalId = MC.extractID(zone)
 
 								extend_asg_uid = c.uid
 							else
@@ -603,7 +603,7 @@ define [ 'MC', 'common_handle', 'result_vo', 'constant', 'ebs_service', 'eip_ser
 
 							else
 
-								extend_asg.groupUId = zone.split('.')[0].slice(1)
+								extend_asg.groupUId = MC.extractID(zone)
 
 							app_json.layout.component.group[extend_asg_uid] = extend_asg
 
@@ -614,18 +614,18 @@ define [ 'MC', 'common_handle', 'result_vo', 'constant', 'ebs_service', 'eip_ser
 
 						if c.resource.SubnetId
 
-							layout.groupUId = c.resource.SubnetId.split('.')[0].slice(1)
+							layout.groupUId = MC.extractID(c.resource.SubnetId)
 
 						else
 
-							layout.groupUId = c.resource.Placement.AvailabilityZone.split('.')[0].slice(1)
+							layout.groupUId = MC.extractID(c.resource.Placement.AvailabilityZone)
 
 
 						# collect volume
 
 						for uid_tmp, comp_tmp of app_json.component
 
-							if comp_tmp.type is "AWS.EC2.EBS.Volume" and comp_tmp.resource.AttachmentSet and comp_tmp.resource.AttachmentSet.InstanceId and comp_tmp.resource.AttachmentSet.InstanceId.split('.')[0].slice(1) is c.uid
+							if comp_tmp.type is "AWS.EC2.EBS.Volume" and comp_tmp.resource.AttachmentSet and comp_tmp.resource.AttachmentSet.InstanceId and MC.extractID(comp_tmp.resource.AttachmentSet.InstanceId) is c.uid
 
 								layout.volumeList[uid_tmp] = [uid_tmp]
 
@@ -649,7 +649,7 @@ define [ 'MC', 'common_handle', 'result_vo', 'constant', 'ebs_service', 'eip_ser
 
 					when "AWS.VPC.Subnet"
 
-						layout.groupUId = c.resource.AvailabilityZone.split('.')[0].slice(1)
+						layout.groupUId = MC.extractID(c.resource.AvailabilityZone)
 
 						app_json.layout.component.group[c.uid] = layout
 

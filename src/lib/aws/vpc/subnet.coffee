@@ -100,7 +100,7 @@ define [ 'MC', 'constant', 'i18n!nls/lang.js' ], ( MC, constant, lang ) ->
 		isHaveConflict = false
 		_.each MC.canvas_data.component, (compObj) ->
 			if compObj.type is 'AWS.VPC.Subnet'
-				subnetVPCUID = compObj.resource.VpcId.split('.')[0].slice(1)
+				subnetVPCUID = MC.extractID(compObj.resource.VpcId)
 				currentSubnetUID = compObj.uid
 				currentSubnetCIDR = compObj.resource.CidrBlock
 				if subnetVPCUID is vpcUID and subnetUID isnt currentSubnetUID
@@ -192,7 +192,7 @@ define [ 'MC', 'constant', 'i18n!nls/lang.js' ], ( MC, constant, lang ) ->
 	getVPC = (subnetUID) ->
 
 		subnetComp = MC.canvas_data.component[subnetUID]
-		vpcUID = subnetComp.resource.VpcId.slice(1).split('.')[0]
+		vpcUID = MC.extractID(subnetComp.resource.VpcId)
 		if vpcUID
 			return MC.canvas_data.component[vpcUID]
 		else

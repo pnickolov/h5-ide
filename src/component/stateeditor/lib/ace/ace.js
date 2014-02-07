@@ -2306,8 +2306,10 @@ var Editor = function(renderer, session) {
 
         // single line editor limit
         if (this.getOption('singleLine')) {
-            var lines = text.split(/\r\n|\r|\n/);
-            text = lines[0];
+            if (text && text.split) {
+                var lines = text.split(/\r\n|\r|\n/);
+                text = lines[0];
+            }
         }
 
         var session = this.session;
@@ -3981,7 +3983,7 @@ var MouseHandler = function(editor) {
 
     new DefaultHandlers(this);
     new DefaultGutterHandler(this);
-    new DragdropHandler(this);
+    // new DragdropHandler(this);
 
     var mouseTarget = editor.renderer.getMouseEventTarget();
     event.addListener(mouseTarget, "click", this.onMouseEvent.bind(this, "click"));
@@ -14948,7 +14950,7 @@ var Cursor = function(parentEl) {
         if (this.smoothBlinking)
             dom.removeCssClass(this.element, "ace_smooth-blinking");
         for (var i = this.cursors.length; i--; )
-            // this.cursors[i].style.opacity = "";
+            this.cursors[i].style.opacity = "";
 
         if (!this.isBlinking || !this.blinkInterval || !this.isVisible)
             return;
@@ -14961,14 +14963,14 @@ var Cursor = function(parentEl) {
         var blink = function(){
             this.timeoutId = setTimeout(function() {
                 for (var i = this.cursors.length; i--; ) {
-                    // this.cursors[i].style.opacity = 0;
+                    this.cursors[i].style.opacity = 0;
                 }
             }.bind(this), 0.6 * this.blinkInterval);
         }.bind(this);
 
         this.intervalId = setInterval(function() {
             for (var i = this.cursors.length; i--; ) {
-                // this.cursors[i].style.opacity = "";
+                this.cursors[i].style.opacity = "";
             }
             blink();
         }.bind(this), this.blinkInterval);

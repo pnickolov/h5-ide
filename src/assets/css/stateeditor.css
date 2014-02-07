@@ -252,14 +252,13 @@
 	}
 }
 
-.ace_cursor {
+/*.ace_cursor {
 	border-left: 10px solid black;
-
 	-webkit-animation: 1s cursor-blink step-end infinite;
 	-moz-animation: 1s cursor-blink step-end infinite;
 	-ms-animation: 1s cursor-blink step-end infinite;
 	animation: 1s cursor-blink step-end infinite;
-}
+}*/
 
 #state-editor .ace_hidden-cursors {
     opacity: 0;

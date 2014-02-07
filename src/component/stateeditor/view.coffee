@@ -249,11 +249,12 @@ define [ 'event',
             if not (stateListObj and stateListObj.state_list.length)
 
                 stateListObj = {
-                    state_list: [{
-                        state_id: that.genStateUID(),
-                        state_id_show: '1',
-                        cmd_value: ''
-                    }]
+                    state_list: []
+                    # state_list: [{
+                    #     state_id: that.genStateUID(),
+                    #     state_id_show: '1',
+                    #     cmd_value: ''
+                    # }]
                 }
 
             that.$stateList.html(this.stateListTpl(stateListObj))

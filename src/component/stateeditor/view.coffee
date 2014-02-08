@@ -791,44 +791,89 @@ define [ 'event',
 
             $stateItem = $stateToolbarElem.parents('.state-item')
 
-            $stateItemList = that.$stateList.find('.state-item')
+            # $stateItemList = that.$stateList.find('.state-item')
 
             if $stateItem.hasClass('view')
+                that.expandItem.call this, $stateItem
+                # currentCMD = $stateItem.attr('data-command')
+                # $paraListItem = $stateItem.find('.parameter-list')
+                # that.bindParaListEvent($paraListItem, currentCMD)
 
-                currentCMD = $stateItem.attr('data-command')
-                $paraListItem = $stateItem.find('.parameter-list')
-                that.bindParaListEvent($paraListItem, currentCMD)
+                # # remove other item view
+                # _.each $stateItemList, (otherStateItem) ->
+                #     $otherStateItem = $(otherStateItem)
+                #     if not $stateItem.is($otherStateItem) and not $otherStateItem.hasClass('view')
+                #         that.refreshStateView($otherStateItem)
+                #     null
 
-                # remove other item view
-                _.each $stateItemList, (otherStateItem) ->
-                    $otherStateItem = $(otherStateItem)
-                    if not $stateItem.is($otherStateItem) and not $otherStateItem.hasClass('view')
-                        that.refreshStateView($otherStateItem)
-                    null
+                # $stateItemList.addClass('view')
+                # $stateItem.removeClass('view')
 
-                $stateItemList.addClass('view')
-                $stateItem.removeClass('view')
+                # # refresh description
+                # cmdName = $stateItem.attr('data-command')
+                # if cmdName
+                #     that.refreshDescription(cmdName)
 
-                # refresh description
-                cmdName = $stateItem.attr('data-command')
-                if cmdName
-                    that.refreshDescription(cmdName)
+                # $cmdValueItem = $stateItem.find('.command-value')
+                # cmdEditor = $cmdValueItem.data('editor')
+                # if cmdEditor
+                #     setTimeout(() ->
+                #         cmdEditor.focus()
+                #     , 0)
 
-                $cmdValueItem = $stateItem.find('.command-value')
-                cmdEditor = $cmdValueItem.data('editor')
-                if cmdEditor
-                    setTimeout(() ->
-                        cmdEditor.focus()
-                    , 0)
+                # if that.readOnlyMode
+                #     that.setEditorReadOnlyMode()
 
-                if that.readOnlyMode
-                    that.setEditorReadOnlyMode()
-
-                $stateItem.addClass('selected')
+                # $stateItem.addClass('selected')
 
             else
-                that.refreshStateView($stateItem)
-                $stateItem.addClass('view')
+                that.collapseItem.call this, $stateItem
+                # that.refreshStateView($stateItem)
+                # $stateItem.addClass('view')
+
+        expandItem: ($stateItem) ->
+
+            that = this
+
+            $stateItemList = that.$stateList.find('.state-item')
+
+            currentCMD = $stateItem.attr('data-command')
+            $paraListItem = $stateItem.find('.parameter-list')
+            that.bindParaListEvent($paraListItem, currentCMD)
+
+            # remove other item view
+            _.each $stateItemList, (otherStateItem) ->
+                $otherStateItem = $(otherStateItem)
+                if not $stateItem.is($otherStateItem) and not $otherStateItem.hasClass('view')
+                    that.refreshStateView($otherStateItem)
+                null
+
+            $stateItemList.addClass('view')
+            $stateItem.removeClass('view')
+
+            # refresh description
+            cmdName = $stateItem.attr('data-command')
+            if cmdName
+                that.refreshDescription(cmdName)
+
+            $cmdValueItem = $stateItem.find('.command-value')
+            cmdEditor = $cmdValueItem.data('editor')
+            if cmdEditor
+                setTimeout(() ->
+                    cmdEditor.focus()
+                , 0)
+
+            if that.readOnlyMode
+                that.setEditorReadOnlyMode()
+
+            $stateItem.addClass('selected')
+
+        collapseItem: ($stateItem) ->
+
+            that = this
+
+            that.refreshStateView($stateItem)
+            $stateItem.addClass('view')
 
         clearSelectedItem: () ->
 
@@ -1797,7 +1842,16 @@ define [ 'event',
             if event.ctrlKey and keyCode is 187
                 that.addStateItem.call(that, event)
                 return false
-            # return false
+
+            # Expand state item [Ctrl + down]
+            if event.ctrlKey and keyCode is 38
+                that.expandItem.call(that, $('.state-list').find('.selected'))
+                return false
+
+            # Expand state item [Ctrl + up]
+            if event.ctrlKey and keyCode is 37
+                that.collapseItem.call(that, $('.state-list').find('.selected'))
+                return false
     }
 
     return StateEditorView

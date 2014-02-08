@@ -1849,7 +1849,7 @@ define [ 'event',
                 return false
 
             # Expand state item [Ctrl + up]
-            if event.ctrlKey and keyCode is 37
+            if event.ctrlKey and keyCode is 40
                 that.collapseItem.call(that, $('.state-list').find('.selected'))
                 return false
     }

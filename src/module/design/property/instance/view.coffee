@@ -70,7 +70,7 @@ define [ '../base/view',
                 val = +target.val()
                 @model.setCount val
                 $(".property-instance-name-wrap").toggleClass("single", val == 1)
-                $("#property-instance-name-count").text val
+                $("#property-instance-name-count").text val-1
                 @setEditableIP val == 1
 
         setEditableIP : ( enable ) ->

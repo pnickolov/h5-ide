@@ -190,21 +190,29 @@
 	counter-reset: list-counter;
 }
 
+.state-list:after {
+	position: absolute;
+	width: 32px;
+	height: 100%;
+	content: "";
+	top: 0;
+	left: 0;
+	background: rgba(0,0,0,.02);
+	border-right: 1px solid #e0e0e0;
+}
+
 .state-list li:before {
 	content: counter(list-counter);
 	counter-increment: list-counter;
 	position: absolute;
 	z-index: 80;
 	display: block;
-	border-right: 1px solid #ddd;
-	border-left: 2px solid #fafafa;
-	padding: 11px 0;
+	border-left: 2px solid transparent;
+	padding: 9px 0;
 	text-align: center;
 	color: #666;
-	font-family: Lucida Console;
+	/*font-family: Lucida Console;*/
 	width: 30px;
-	background: #fafafa;
-	box-shadow: 1px 1px 1px rgba(0,0,0,0.05);
 }
 
 .state-list .selected:before {
@@ -492,9 +500,9 @@
 #state-editor .state-item.view .state-view {
 	display: block;
 	font-size: 12px;
-	position: absolute;
-	top: 12px;
+	position: relative;
 	left: 64px;
+	margin-right: 100px;
 }
 
 #state-editor .command-view-value {
@@ -551,7 +559,8 @@
 	cursor: pointer;
 	background: #fcfcfc;
 	border-bottom: 1px solid #eee;
-	height: 35px;
+	min-height: 15px;
+	padding: 10px 0;
 }
 
 #state-editor .state-toolbar:hover {
@@ -568,14 +577,14 @@
 
 #state-editor .state-item-add {
 	cursor: pointer;
-	background-color: #eee;
 	line-height: 45px;
 	height: 45px;
 	text-align: center;
 }
 
 #state-editor .state-item-add:hover {
-	background-color: #ddd;
+	color: #666;
+	text-decoration: underline;
 }
 
 #state-editor .state-id {

@@ -3941,7 +3941,7 @@ a.sidebar-hider {
 	padding       : 5px;
 	height        : 30px;
 	box-shadow    : 0 2px 5px 0 rgba(0,0,0,.1);
-	border-bottom : 1px solid #383838;
+	border-bottom : 1px solid #2a2a2a;
 }
 
 .sg-info-list-tab li {
@@ -3992,6 +3992,7 @@ a.sidebar-hider {
 	transition         : background .2s;
 }
 
+
 .property-list li:hover {
 	background : #494949;
 }
@@ -4010,9 +4011,17 @@ a.sidebar-hider {
 
 .acl-sg-info-list > li {
 	height  : 52px;
-	padding : 10px 0 10px 10px;
+	padding : 8px 0 16px 10px;
 	width   : auto;
 	position: relative;
+}
+
+.acl-sg-info-list.property-list {
+	border-top: none;
+}
+
+.acl-sg-info-list.property-list li:last-child {
+	border-bottom: none;
 }
 
 .acl-info-list > li {
@@ -4050,15 +4059,15 @@ a.sidebar-hider {
 }
 .acl-sg-info-list .col3 {
 	float        : right;
-	margin-top   : -10px;
+	margin-top   : -8px;
 	position     : relative;
 
 	text-align : center;
 
 	cursor      : pointer;
 	width       : 40px;
-	height      : 72px;
-	line-height : 72px;
+	height      : 76px;
+	line-height : 76px;
 
 
 	-webkit-transition : background .2s;

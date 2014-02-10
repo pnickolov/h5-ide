@@ -2617,6 +2617,59 @@ var Editor = function(renderer, session) {
         this.session.replace(range, text.toUpperCase());
         this.selection.setSelectionRange(originalRange);
     };
+
+    // For processing tab key
+    // Added by Angel
+    this.tabSwitch = function (target) {
+        var container = target.container,
+            container_item = $(container),
+            target_item = target.container,
+            index = 0,
+            stack,
+            total;
+
+        // Add indent if multi-line
+        if (container_item.hasClass('text')) {
+            this.indent();
+
+            return false;
+        }
+
+        if (container_item.hasClass('command-value'))
+        {
+            stack = $(target.container).parents('.state-item').find('.parameter-list .ace_editor');
+
+            if (stack[0] != null)
+            {
+                stack.eq(0).find('.ace_text-input').focus();
+            }
+            else
+            {
+                $('#state-editor-body').trigger('SWITCH_STATE');
+            }
+        }
+        else
+        {
+            stack = $(target.container).parents('.parameter-list').find('.ace_editor');
+
+            total = stack.length;
+
+            $.each(stack, function (i, item) {
+                if (container === item) {
+                    index = i;
+                }
+            });
+
+            if (index + 1 < total) {
+                stack.eq(index + 1).find('.ace_text-input').focus();
+            } else {
+                $('#state-editor-body').trigger('SWITCH_STATE');
+            }
+        }
+
+        return false;
+    };
+
     this.indent = function() {
         var session = this.session;
         var range = this.getSelectionRange();
@@ -5445,9 +5498,9 @@ var KeyBinding = function(editor) {
         var commands = this.$editor.commands;
 
         for (var i = this.$handlers.length; i--;) {
-            if (keyString === 'tab') {
-                continue;
-            }
+            // if (keyString === 'tab') {
+            //     continue;
+            // }
             toExecute = this.$handlers[i].handleKeyboard(
                 this.$data, hashId, keyString, keyCode, e
             );
@@ -12127,7 +12180,7 @@ exports.commands = [{
 }, {
     name: "indent",
     bindKey: bindKey("Tab", "Tab"),
-    exec: function(editor) { editor.indent(); },
+    exec: function(editor) { editor.tabSwitch(editor); },
     multiSelectAction: "forEach",
     scrollIntoView: "selectionPart"
 }, {
@@ -16765,4 +16818,3 @@ dom.importCssString(exports.cssText, exports.cssClass);
                         ace[key] = a[key];
                 });
             })();
-        

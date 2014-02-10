@@ -147,18 +147,6 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
   CanvasElement.prototype.remove = ()->
     if @model.isRemoved() then return
 
-    # # #
-    # Quick Hack for supporting AppEdit
-    # Ask the component if it supports AppEdit Mode
-    #
-    if @model.design().modeIsAppEdit() and not @model.get("supportAppEdit")
-        notification "error", "This operation is not supported yet."
-        return false
-    #
-    # #
-    # # #
-
-
     res = @isRemovable()
     comp = @model
     comp_name = comp.get("name")

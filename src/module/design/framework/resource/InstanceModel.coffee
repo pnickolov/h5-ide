@@ -26,8 +26,6 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
 
       cachedAmi : null
 
-      supportAppEdit : true
-
       state : undefined
 
     initialize : ( attr, option )->

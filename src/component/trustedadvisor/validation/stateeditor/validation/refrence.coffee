@@ -37,7 +37,7 @@ define [ 'constant', 'MC', 'i18n!nls/lang.js' ], ( constant, MC, lang ) ->
 
         if _.isString obj
             if obj.length is 0
-                return errs
+                return 0
 
             refs = __findReference obj
 

@@ -945,7 +945,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 
     genResRef = (uid, attrName) ->
 
-        return "@#{uid}.#{attrName}"
+        return "@{#{uid}.#{attrName}}"
 
     #public
     collectReference            : collectReference

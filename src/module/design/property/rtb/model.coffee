@@ -71,8 +71,8 @@ define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, const
       component = Design.instance().component( @get("uid") )
 
       # Only one vgw will be in a stack. So, RTB can only connects to one VPN
-      if cn.setPropagate
-        cn.setPropagate propagate
+      if component.setPropagate
+        component.setPropagate propagate
       else if component.connections
         cn = _.find component.connections(), ( cn )->
           cn.getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway ) isnt null

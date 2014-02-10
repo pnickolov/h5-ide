@@ -923,6 +923,8 @@ define [ 'event',
 
             $newStateItem = $(newStateHTML).appendTo(that.$stateList)
 
+            that.clearSelectedItem()
+
             $cmdValueItem = $newStateItem.find('.command-value')
             that.bindCommandEvent($cmdValueItem)
 
@@ -942,6 +944,8 @@ define [ 'event',
                 setTimeout(() ->
                     cmdEditor.focus()
                 , 0)
+
+            $newStateItem.addClass('selected')
 
             that.refreshLogItemNum()
 

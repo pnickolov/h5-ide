@@ -251,8 +251,8 @@ define [ 'event',
                 stateListObj = {
                     state_list: []
                     # state_list: [{
-                    #     state_id: that.genStateUID(),
-                    #     state_id_show: '1',
+                    #     id: that.genStateUID(),
+                    #     id_show: '1',
                     #     cmd_value: ''
                     # }]
                 }
@@ -895,7 +895,7 @@ define [ 'event',
 
         #     newStateHTML = that.stateListTpl({
         #         state_list: [{
-        #             state_id_show: newStateId
+        #             id_show: newStateId
         #         }]
         #     })
 
@@ -945,8 +945,8 @@ define [ 'event',
 
             newStateHTML = that.stateListTpl({
                 state_list: [{
-                    state_id: newStateId,
-                    state_id_show: newStateIdShow
+                    id: newStateId,
+                    id_show: newStateIdShow
                 }]
             })
 
@@ -1175,8 +1175,8 @@ define [ 'event',
                 stateId = state.id
 
                 stateRenderObj = {
-                    state_id: stateId,
-                    state_id_show: idx + 1,
+                    id: stateId,
+                    id_show: idx + 1,
                     cmd_value: cmdName,
                     parameter_list: []
                 }
@@ -1404,7 +1404,7 @@ define [ 'event',
             $currentElem = $(event.target)
             $parentElem = $currentElem.parents('.editable-area')
 
-            if not $parentElem.length and not $currentElem.hasClass('editable-area')
+            if not $parentElem.length and not $currentElem.hasClass('editable-area') and not $currentElem.hasClass('ace_scrollbar')
                 $allEditableArea = $('.editable-area')
                 _.each $allEditableArea, (editableArea) ->
                     $editableArea = $(editableArea)
@@ -1413,6 +1413,9 @@ define [ 'event',
                     null
 
         initCodeEditor: (editorElem, hintObj) ->
+
+            console.time('init editor')
+
             that = this
 
             # if that.readOnlyMode
@@ -1425,7 +1428,10 @@ define [ 'event',
             if $editorElem.data('editor')
                 return
 
+            console.time('init core')
             editor = ace.edit(editorElem)
+            console.timeEnd('init core')
+
             $editorElem.data('editor', editor)
 
             editor.hintObj = hintObj
@@ -1527,6 +1533,8 @@ define [ 'event',
                     that.setEditorCompleter(thatEditor, hintDataAryMap['focus'], 'command')
                     thatEditor.execCommand("startAutocomplete")
             )
+
+            console.timeEnd('init editor')
 
         setEditorCompleter: (editor, dataAry, metaType) ->
 
@@ -1638,16 +1646,16 @@ define [ 'event',
                 if logObj.time
                     timeStr = MC.dateFormat(new Date(logObj.time), 'yyyy-MM-dd hh:mm:ss')
                 stateStatus = logObj.result
-                stateId = "#{logObj.state_id}"
+                stateId = "#{logObj.id}"
                 stateNum = ''
-                if logObj.state_id isnt 'Agent'
+                if logObj.id isnt 'Agent'
                     stateId = "State #{stateId}"
-                    stateStatusMap[logObj.state_id] = stateStatus
+                    stateStatusMap[logObj.id] = stateStatus
                 else
-                    stateNum = logObj.state_id
+                    stateNum = logObj.id
 
                 stateLogViewAry.push({
-                    state_id: logObj.state_id,
+                    id: logObj.id,
                     state_num: stateNum,
                     log_time: timeStr,
                     state_status: stateStatus,

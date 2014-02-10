@@ -1,6 +1,6 @@
 <!-- state-template-state-list -->
 {{#each state_list}}
-	<li class="state-item view" data-command="{{cmd_value}}" data-id="{{state_id}}">
+	<li class="state-item view" data-command="{{cmd_value}}" data-id="{{id}}">
 		<div class="state-toolbar">
 			<div class="state-remove icon-remove"></div>
 			<div class="state-add">+</div>
@@ -214,7 +214,7 @@
 
 <!-- state-template-log-item -->
 {{#each state_logs}}
-	<li class="state-log-item" data-state-id="{{state_id}}">
+	<li class="state-log-item" data-state-id="{{id}}">
 		<div class="state-log-item-header">
 			<div class="state-log-item-name">{{#if state_num}}{{state_num}}{{/if}}</div>
 			{{#if log_time}}<div class="state-log-item-time">{{log_time}}</div>{{/if}}

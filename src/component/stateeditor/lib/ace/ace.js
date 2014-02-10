@@ -1746,17 +1746,17 @@ var Editor = function(renderer, session) {
     this.renderer.textarea = this.textInput.getElement();
     this.keyBinding = new KeyBinding(this);
     this.$mouseHandler = new MouseHandler(this);
-    new FoldHandler(this);
+    // new FoldHandler(this);
 
     this.$blockScrolling = 0;
-    this.$search = new Search().set({
-        wrap: true
-    });
+    // this.$search = new Search().set({
+    //     wrap: true
+    // });
 
     this.$historyTracker = this.$historyTracker.bind(this);
     this.commands.on("exec", this.$historyTracker);
 
-    this.$initOperationListeners();
+    // this.$initOperationListeners();
     
     this._$emitInputEvent = lang.delayedCall(function() {
         this._signal("input", {});

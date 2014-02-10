@@ -552,7 +552,7 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 			originStatusDataAry = _.map stateDataAry, (stateObj, idx) ->
 				stateIdNumMap[stateObj.id] = idx
 				return {
-					state_id: stateObj.id,
+					id: stateObj.id,
 					result: 'pending'
 				}
 			agentStatus = 'unknown'
@@ -577,12 +577,12 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 
 						if logAry and _.isArray(logAry)
 							_.each logAry, (logObj) ->
-								stateNum = stateIdNumMap[logObj.state_id]
+								stateNum = stateIdNumMap[logObj.id]
 								if _.isNumber(stateNum)
 									originStatusDataAry[stateNum] = logObj
 
 					originStatusDataAry.unshift({
-						state_id: 'Agent',
+						id: 'Agent',
 						result: agentStatus
 					})
 

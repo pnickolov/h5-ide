@@ -2705,6 +2705,14 @@ var Editor = function(renderer, session) {
         }
     };
 
+    this.removeState = function () {
+        if (container_item.hasClass('command-value')) {
+            $('.state-list').find('.selected').remove();
+        }
+
+        return false;
+    },
+
     this.indent = function() {
         var session = this.session;
         var range = this.getSelectionRange();
@@ -12197,14 +12205,19 @@ exports.commands = [{
     exec: function(editor) { editor.removeToLineEnd(); },
     multiSelectAction: "forEach"
 }, {
-    name: "removewordleft",
-    bindKey: bindKey("Ctrl-Backspace", "Alt-Backspace|Ctrl-Alt-Backspace"),
-    exec: function(editor) { editor.removeWordLeft(); },
-    multiSelectAction: "forEach"
-}, {
-    name: "removewordright",
-    bindKey: bindKey("Ctrl-Delete", "Alt-Delete"),
-    exec: function(editor) { editor.removeWordRight(); },
+//     name: "removewordleft",
+//     bindKey: bindKey("Ctrl-Backspace", "Alt-Backspace|Ctrl-Alt-Backspace"),
+//     exec: function(editor) { editor.removeWordLeft(); },
+//     multiSelectAction: "forEach"
+// }, {
+//     name: "removewordright",
+//     bindKey: bindKey("Ctrl-Delete", "Alt-Delete"),
+//     exec: function(editor) { editor.removeWordRight(); },
+//     multiSelectAction: "forEach"
+
+    name: "removestate",
+    bindKey: bindKey("Ctrl-Delete", "Ctrl-Backspace"),
+    exec: function(editor) { editor.removeState(); },
     multiSelectAction: "forEach"
 }, {
     name: "outdent",

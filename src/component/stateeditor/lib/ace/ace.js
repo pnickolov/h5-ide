@@ -2678,9 +2678,9 @@ var Editor = function(renderer, session) {
             stack,
             total;
 
-        // Add indent if multi-line
+        // For multi-line
         if (container_item.hasClass('text')) {
-            this.indent();
+            this.blockOutdent();
 
             return false;
         }

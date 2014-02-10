@@ -17,10 +17,6 @@ define [ "../ComplexResModel", "Design", "constant" ], ( ComplexResModel, Design
     isDynamic : ()-> !!@get("bgpAsn")
 
     serialize : ()->
-      layout =
-        uid        : @id
-        coordinate : [ @x(), @y() ]
-
       component =
         name : @get("name")
         type : @type
@@ -32,7 +28,7 @@ define [ "../ComplexResModel", "Design", "constant" ], ( ComplexResModel, Design
           Type              : "ipsec.1"
           IpAddress         : @get("ip")
 
-      { component : component, layout : layout }
+      { component : component, layout : @generateLayout() }
 
   }, {
 

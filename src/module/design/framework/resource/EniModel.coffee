@@ -493,10 +493,7 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
       # Here, we only serialize layout
       res = null
       if not @__embedInstance
-        layout =
-          coordinate : [ @x(), @y() ]
-          uid        : @id
-          groupUId   : @parent().id
+        layout = @generateLayout()
 
         if res is null then res = {}
         res.layout = layout

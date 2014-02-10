@@ -107,13 +107,7 @@ define [ "../ComplexResModel", "Design", "../connection/Route", "../connection/R
           RouteTableAssociationId : ""
         }
 
-      layout =
-        size       : [ @width(), @height() ]
-        coordinate : [ @x(), @y() ]
-        uid        : @id
-        groupUId   : @parent().id
-
-      { component : component, layout : layout }
+      { component : component, layout : @generateLayout() }
 
   }, {
 

@@ -489,10 +489,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
       allResourceArray = []
 
       ami    = @getAmi() || @get("cachedAmi")
-      layout =
-        coordinate : [ @x(), @y() ]
-        uid        : @id
-        groupUId   : @parent().id
+      layout = @generateLayout()
       if ami
         layout.osType         = ami.osType
         layout.architecture   = ami.architecture

@@ -285,6 +285,16 @@ define [ "Design", "CanvasManager", "./ResourceModel", "constant", "./canvasview
 
       return if p then p.createRef( "VpcId" ) else ""
 
+    generateLayout : ()->
+      layout =
+        coordinate : [ @x(), @y() ]
+        uid        : @id
+
+      if @parent()
+        layout.groupUId = @parent().id
+
+      layout
+
     parent : ()-> @attributes.__parent || null
     x      : ()-> @attributes.x || 0
     y      : ()-> @attributes.y || 0

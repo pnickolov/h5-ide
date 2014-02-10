@@ -134,12 +134,9 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
       null
 
     serialize : ()->
-      layout =
-        uid        : @id
-        type       : "ExpandedAsg"
-        groupUId   : @parent().id
-        originalId : @get("originalAsg").id
-        coordinate : [ @x(), @y() ]
+      layout = @generateLayout()
+      layout.type = "ExpandedAsg"
+      layout.originalId = @get("originalAsg").id
 
       { layout : layout }
 
@@ -375,13 +372,6 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
       azs
 
     serialize : ()->
-      layout =
-        uid  : @id
-        type : @type
-        groupUId   : @parent().id
-        originalId : ""
-        coordinate : [ @x(), @y() ]
-
       subnets = [ @parent() ]
       for expand in @get("expandedList")
         subnets.push expand.parent()
@@ -439,7 +429,7 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
           Status      : ""
           Tags        : ""
 
-      { component : component, layout : layout }
+      { component : component, layout : @generateLayout() }
 
   }, {
 

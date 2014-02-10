@@ -176,12 +176,6 @@ define [ "constant",
 
     serialize : ()->
 
-      layout =
-        size       : [ @width(), @height() ]
-        coordinate : [ @x(), @y() ]
-        uid        : @id
-        groupUId   : @parent().id
-
       component =
         name : @get("name")
         type : @type
@@ -195,7 +189,7 @@ define [ "constant",
           #reserved
           State            : ""
 
-      { component : component, layout : layout }
+      { component : component, layout : @generateLayout() }
 
   }, {
 

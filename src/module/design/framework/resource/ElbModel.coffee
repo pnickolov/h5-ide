@@ -196,11 +196,6 @@ define [ "Design",
         return _.uniq azs.concat( @get("AvailabilityZones") )
 
     serialize : ()->
-      layout =
-        coordinate : [ @x(), @y() ]
-        uid        : @id
-        groupUId   : if @parent() then @parent().id else ""
-
       hcTarget = @get("healthCheckTarget")
       if hcTarget.indexOf("TCP") isnt -1 or hcTarget.indexOf("SSL") isnt -1
         # If target is TCP or SSL, remove path.
@@ -274,7 +269,7 @@ define [ "Design",
           #reserved
           CreatedTime  : ""
 
-      json_object = { component : component, layout : layout }
+      json_object = { component : component, layout : @generateLayout() }
 
       if @get("sslCert")
         ssl = @get("sslCert")

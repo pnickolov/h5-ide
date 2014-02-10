@@ -75,11 +75,6 @@ define [ "constant", "../GroupModel", "./DhcpModel" ], ( constant, GroupModel, D
     serialize : ()->
       console.assert( @get("tenancy") is "default" or @get("tenancy") is "dedicated", "Invalid value for Vpc.attributes.tenancy" )
 
-      layout =
-        size       : [ @width(), @height() ]
-        coordinate : [ @x(), @y() ]
-        uid        : @id
-
       dhcp = @get("dhcp")
       if dhcp.isNone()
         dhcp = "default"
@@ -102,7 +97,7 @@ define [ "constant", "../GroupModel", "./DhcpModel" ], ( constant, GroupModel, D
           CidrBlock          : @get("cidr")
           IsDefault          : false
 
-      { component : component, layout : layout }
+      { component : component, layout : @generateLayout() }
 
   }, {
 

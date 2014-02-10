@@ -32,11 +32,6 @@ define [ "../ComplexResModel", "./VpcModel", "Design", "constant", "i18n!nls/lan
 
     serialize : ()->
 
-      layout =
-        coordinate : [ @x(), @y() ]
-        uid        : @id
-        groupUId   : @parent().id
-
       component =
         name : @get("name")
         type : @type
@@ -48,7 +43,7 @@ define [ "../ComplexResModel", "./VpcModel", "Design", "constant", "i18n!nls/lan
             VpcId : @parent().createRef( "VpcId" )
           }]
 
-      { component : component, layout : layout }
+      { component : component, layout : @generateLayout() }
 
   }, {
 

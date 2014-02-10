@@ -115,12 +115,8 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
 
     serialize : ()->
 
-      layout =
-        coordinate : [ @x(), @y() ]
-        uid        : @id
-        groupUId   : @parent().id
-
       ami = @getAmi() || @get("cachedAmi")
+      layout = @generateLayout()
       if ami
         layout.osType         = ami.osType
         layout.architecture   = ami.architecture

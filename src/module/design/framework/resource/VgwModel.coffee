@@ -18,12 +18,6 @@ define [ "../ComplexResModel", "./VpcModel", "Design", "constant" ], ( ComplexRe
 
     serialize : ()->
 
-      layout =
-        size       : [ @width(), @height() ]
-        coordinate : [ @x(), @y() ]
-        uid        : @id
-        groupUId   : @parent().id
-
       component =
         name : @get("name")
         type : @type
@@ -38,7 +32,7 @@ define [ "../ComplexResModel", "./VpcModel", "Design", "constant" ], ( ComplexRe
             VpcId : @parent().createRef( "VpcId" )
           }]
 
-      { component : component, layout : layout }
+      { component : component, layout : @generateLayout() }
 
   }, {
 

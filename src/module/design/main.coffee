@@ -2,7 +2,7 @@
 #  Controller for design module
 ####################################
 
-define [ 'i18n!nls/lang.js', 'constant', 'stateeditor', 'Design', './module/design/framework/test' ], ( lang, constant, stateeditor, Design ) ->
+define [ 'i18n!nls/lang.js', 'constant', 'stateeditor', 'Design', './module/design/framework/DesignBundle' ], ( lang, constant, stateeditor, Design ) ->
 
     #private
     loadModule = () ->

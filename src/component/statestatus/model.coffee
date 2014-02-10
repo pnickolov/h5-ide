@@ -56,10 +56,10 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
                     #state.res_id = 'i-a271b0bc'
 
                     data =
-                        id      : @__genId state.res_id, status.state_id
+                        id      : @__genId state.res_id, status.id
                         appId   : state.app_id
                         resId   : state.res_id
-                        stateId : status.state_id
+                        stateId : status.id
                         time    : status.time
                         result  : status.result
 

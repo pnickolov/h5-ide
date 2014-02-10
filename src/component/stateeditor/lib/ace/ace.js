@@ -2670,6 +2670,41 @@ var Editor = function(renderer, session) {
         return false;
     };
 
+    this.tabReverseSwitch = function (target) {
+        var container = target.container,
+            container_item = $(container),
+            target_item = target.container,
+            index = 0,
+            stack,
+            total;
+
+        // Add indent if multi-line
+        if (container_item.hasClass('text')) {
+            this.indent();
+
+            return false;
+        }
+
+        if (container_item.hasClass('command-value'))
+        {
+            return false;
+        }
+
+        stack = $(target.container).parents('.parameter-list').find('.ace_editor');
+
+        total = stack.length;
+
+        $.each(stack, function (i, item) {
+            if (container === item) {
+                index = i;
+            }
+        });
+
+        if (index >= 0) {
+            stack.eq(index - 1).find('.ace_text-input').focus();
+        }
+    };
+
     this.indent = function() {
         var session = this.session;
         var range = this.getSelectionRange();
@@ -12174,7 +12209,8 @@ exports.commands = [{
 }, {
     name: "outdent",
     bindKey: bindKey("Shift-Tab", "Shift-Tab"),
-    exec: function(editor) { editor.blockOutdent(); },
+    // exec: function(editor) { editor.blockOutdent(); },
+    exec: function(editor) { editor.tabReverseSwitch(editor); },
     multiSelectAction: "forEach",
     scrollIntoView: "selectionPart"
 }, {

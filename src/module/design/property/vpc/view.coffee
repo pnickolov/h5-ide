@@ -80,13 +80,10 @@ define [ '../base/view',
             target = $ event.currentTarget
             name = target.val()
 
-            target.parsley 'custom', ( val ) ->
-                if not MC.validate 'awsName',  val
-                    return 'This value should be a valid VPC name.'
-
-            if target.parsley 'validate'
+            if @checkDupName( target, "Route Table" )
                 @model.setName name
                 @setTitle name
+            null
 
         onChangeCidr : ( event ) ->
             target = $ event.currentTarget

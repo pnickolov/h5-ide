@@ -350,7 +350,8 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
 
     context = context || this
     for uid, comp of @__componentMap
-      func.call( context, comp )
+      if func.call( context, comp ) is false
+        break
     null
 
   DesignImpl.prototype.save = ( canvas_data )->
@@ -441,8 +442,8 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
 
 
 
-    # At this point, we allow each ModelClass to have full privilege to modify
-    # the component data. This is necessary for ModelClass that wants to work on
+    # At this point, we allow each visitors to have full privilege to modify
+    # the component data. This is necessary for visitors that wants to work on
     # many components at once. ( One use-case is Subnet would like to assign IPs. )
     version = data.version
     for visitor in Design.__serializeVisitors

@@ -32,7 +32,7 @@ define [ 'backbone', 'underscore', 'state_service', 'base_model' ], ( Backbone, 
 
                     if forge_result.resolved_data
 
-                        jsonDataStr = forge_result.resolved_data[2]
+                        jsonDataStr = forge_result.resolved_data
 
                         try
                             jsonData = JSON.parse(jsonDataStr)

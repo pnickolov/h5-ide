@@ -375,6 +375,19 @@
 	z-index: 80;
 }
 
+.drag-hide {
+	border-bottom: 1px solid #eee;
+}
+
+.drag-hide:before {
+	visibility: hidden;
+}
+
+.drag-hide .state-toolbar,
+.drag-hide .state-edit {
+	visibility: hidden;
+}
+
 #state-editor .command-value {
 	float: left;
 	width: 150px;

@@ -14,12 +14,12 @@ define [ 'event',
         events      :
 
             'closed': 'closedPopup'
-            'keydown .parameter-item.dict .parameter-value': 'onDictInputChange'
+            'keyup .parameter-item.dict .parameter-value': 'onDictInputChange'
             'blur .parameter-item.dict .parameter-value': 'onDictInputBlur'
 
-            'keydown .parameter-item.array .parameter-value': 'onArrayInputChange'
+            'keyup .parameter-item.array .parameter-value': 'onArrayInputChange'
             'blur .parameter-item.array .parameter-value': 'onArrayInputBlur'
-            'keydown .parameter-item.state .parameter-value': 'onArrayInputChange'
+            'keyup .parameter-item.state .parameter-value': 'onArrayInputChange'
             'blur .parameter-item.state .parameter-value': 'onArrayInputBlur'
 
             'blur .command-value': 'onCommandInputBlur'
@@ -40,7 +40,8 @@ define [ 'event',
 
             'OPTION_CHANGE .state-editor-res-select': 'onResSelectChange'
 
-            'keydown .parameter-item.optional .parameter-value': 'onOptionalParaItemChange'
+            'keyup .parameter-item.optional .parameter-value': 'onOptionalParaItemChange'
+            'keyup .parameter-item.optional .parameter-value': 'onOptionalParaItemChange'
 
             'SWITCH_STATE': 'onSwitchState'
 
@@ -117,6 +118,7 @@ define [ 'event',
         initData: () ->
 
             that = this
+            that.cmdNameAry = that.model.get('cmdNameAry')
             that.cmdParaMap = that.model.get('cmdParaMap')
             that.cmdParaObjMap = that.model.get('cmdParaObjMap')
             that.cmdModuleMap = that.model.get('cmdModuleMap')
@@ -410,7 +412,7 @@ define [ 'event',
 
             that = this
 
-            cmdNameAry = _.keys(that.cmdParaMap)
+            cmdNameAry = that.cmdNameAry
 
             cmdNameAry = _.map cmdNameAry, (value, i) ->
                 return {

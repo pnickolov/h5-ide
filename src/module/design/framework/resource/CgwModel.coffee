@@ -24,7 +24,6 @@ define [ "../ComplexResModel", "Design", "constant" ], ( ComplexResModel, Design
         resource :
           CustomerGatewayId : @get("appId")
           BgpAsn            : @get("bgpAsn")
-          State             : "available"
           Type              : "ipsec.1"
           IpAddress         : @get("ip")
 

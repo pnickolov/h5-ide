@@ -91,11 +91,9 @@ define [ "constant", "../GroupModel", "./DhcpModel" ], ( constant, GroupModel, D
           EnableDnsSupport   : @get("dnsSupport")
           InstanceTenancy    : @get("tenancy")
           EnableDnsHostnames : @get("dnsHostnames")
-          State              : ""
           DhcpOptionsId      : dhcp
           VpcId              : @get("appId")
           CidrBlock          : @get("cidr")
-          IsDefault          : false
 
       { component : component, layout : @generateLayout() }
 

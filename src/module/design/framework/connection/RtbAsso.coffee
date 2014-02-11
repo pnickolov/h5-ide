@@ -34,9 +34,7 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
 
       rtb_data.resource.AssociationSet.push {
         SubnetId: sb.createRef( "SubnetId" )
-        RouteTableId : ""
         Main : false
-        RouteTableAssociationId : ""
       }
       null
 

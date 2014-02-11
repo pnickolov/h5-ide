@@ -429,7 +429,6 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
           }
           BlockDeviceMapping : []
           Placement : {
-            GroupName : ""
             Tenancy : if tenancy is "dedicated" then "dedicated" else ""
             AvailabilityZone : @getAvailabilityZone().createRef()
           }
@@ -443,14 +442,9 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
           NetworkInterface      : []
           InstanceType          : @get("instanceType")
           DisableApiTermination : false
-          RamdiskId             : ""
           ShutdownBehavior      : "terminate"
-          KernelId              : ""
           SecurityGroup         : securitygroups
           SecurityGroupId       : securitygroupsId
-          PrivateIpAddress      : ""
-        #reserved
-        software : {}
 
       component
 
@@ -468,10 +462,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
           AllocationId       : eipData.allocationId or ""
           NetworkInterfaceId : ""
           PrivateIpAddress   : ""
-          AllowReassociation      : ""
-          AssociationId           : eipData.associationId or ""
-          NetworkInterfaceOwnerId : ""
-          PublicIp                : eipData.publicIp or ""
+          PublicIp           : eipData.publicIp or ""
       }
 
     getStateData : () ->
@@ -575,7 +566,6 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
           eipData = {
             id            : data.resource.EipResource.uid
             allocationId  : data.resource.EipResource.resource.AllocationId
-            associationId : data.resource.EipResource.resource.AssociationId
             publicIp      : data.resource.EipResource.resource.PublicIp
           }
 

@@ -151,15 +151,9 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
           BlockDeviceMapping       : blockDevice
           KeyName                  : ""
           SecurityGroups           : sgarray
-          SpotPrice                : ""
           LaunchConfigurationName  : @get("configName") or @get("name")
-          KernelId                 : ""
-          IamInstanceProfile       : ""
           InstanceType             : @get("instanceType")
           AssociatePublicIpAddress : @get("publicIp")
-          #reserved
-          CreatedTime              : ""
-          RamdiskId                : ""
 
 
       { component : component, layout : layout }

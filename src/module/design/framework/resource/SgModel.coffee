@@ -203,7 +203,6 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
           GroupId          : @get("appId")
           GroupName        : @get("groupName") or @get("name")
           GroupDescription : @get("description")
-          OwnerId          : ""
           VpcId            : @getVpcRef()
           IpPermissions       : []
           IpPermissionsEgress : []

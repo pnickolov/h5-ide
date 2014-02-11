@@ -93,18 +93,13 @@ define [ "../ComplexResModel", "Design", "../connection/Route", "../connection/R
             DestinationCidrBlock : "10.0.0.0/16"
             InstanceId           : ""
             NetworkInterfaceId   : ""
-            State                : "active"
             GatewayId            : "local"
-            InstanceOwnerId      : ""
-
           }]
 
       if @get("main")
         component.resource.AssociationSet.push {
-          Main         : "true" # Must be string.
-          SubnetId     : ""
-          RouteTableId : ""
-          RouteTableAssociationId : ""
+          Main     : "true" # Must be string.
+          SubnetId : ""
         }
 
       { component : component, layout : @generateLayout() }

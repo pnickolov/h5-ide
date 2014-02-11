@@ -23,14 +23,9 @@ define [ "../ComplexResModel", "./VpcModel", "Design", "constant" ], ( ComplexRe
         type : @type
         uid  : @id
         resource :
-          State            : "available"
-          Type             : "ipsec.1"
-          VpnGatewayId     : @get("appId")
-          AvailabilityZone : ""
-          Attachments      : [{
-            State : "attached"
-            VpcId : @parent().createRef( "VpcId" )
-          }]
+          Type         : "ipsec.1"
+          VpnGatewayId : @get("appId")
+          Attachments  : [{ VpcId : @parent().createRef( "VpcId" ) }]
 
       { component : component, layout : @generateLayout() }
 

@@ -181,13 +181,10 @@ define [ "constant",
         type : @type
         uid  : @id
         resource :
-          AvailableIpAddressCount : ""
           AvailabilityZone : @parent().createRef()
           VpcId            : @parent().parent().createRef( "VpcId" )
           SubnetId         : @get("appId")
           CidrBlock        : @get("cidr")
-          #reserved
-          State            : ""
 
       { component : component, layout : @generateLayout() }
 

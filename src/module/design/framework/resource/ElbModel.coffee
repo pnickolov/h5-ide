@@ -242,8 +242,6 @@ define [ "Design",
         resource :
           AvailabilityZones : @getAvailabilityZones()
           Subnets : subnets
-          CanonicalHostedZoneNameID : ""
-          CanonicalHostedZoneName : ""
           Instances : []
           CrossZoneLoadBalancing : @get("crossZone")
           VpcId                  : @getVpcRef()
@@ -265,9 +263,6 @@ define [ "Design",
               OtherPolicies : []
             }
           BackendServerDescriptions : [ { InstantPort : "", PoliciyNames : "" } ]
-          SourceSecurityGroup : { OwnerAlias : "", GroupName : "" }
-          #reserved
-          CreatedTime  : ""
 
       json_object = { component : component, layout : @generateLayout() }
 
@@ -284,9 +279,8 @@ define [ "Design",
             ServerCertificateMetadata :
               ServerCertificateName : ssl.get("name")
               Arn : ssl.get("arn")
-              ServerCertificateId : ""
-              UploadDate : ""
-              Path : ""
+              ServerCertificateId : ssl.get("certId")
+
         return [ json_object, { component : sslComponent } ]
       else
         return json_object
@@ -300,12 +294,13 @@ define [ "Design",
       # Handle Certificate
       if data.type is constant.AWS_RESOURCE_TYPE.AWS_IAM_ServerCertificate
         cert = new ResouceModel({
-          uid   : data.uid
-          name  : data.name
-          body  : data.resource.CertificateBody
-          chain : data.resource.CertificateChain
-          key   : data.resource.PrivateKey
-          arn   : data.resource.ServerCertificateMetadata.Arn
+          uid    : data.uid
+          name   : data.name
+          body   : data.resource.CertificateBody
+          chain  : data.resource.CertificateChain
+          key    : data.resource.PrivateKey
+          arn    : data.resource.ServerCertificateMetadata.Arn
+          certId : data.resource.ServerCertificateMetadata.ServerCertificateId
         })
         return
 

@@ -19,7 +19,6 @@ define [ "../ComplexResModel", "../ConnectionModel", "constant" ], ( ComplexResM
 
       components[ acl.id ].resource.AssociationSet.push {
         NetworkAclAssociationId : @get("associationId")
-        NetworkAclId : ""
         SubnetId: sb.createRef( "SubnetId" )
       }
       null
@@ -143,7 +142,6 @@ define [ "../ComplexResModel", "../ConnectionModel", "constant" ], ( ComplexResM
           Default        : @isDefault()
           EntrySet       : ruleSet
           NetworkAclId   : @get("appId")
-          RouteTableId   : ""
           VpcId          : vpc.createRef( "VpcId" )
 
       for rule in @get("rules")

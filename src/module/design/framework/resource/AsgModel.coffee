@@ -405,7 +405,6 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
         name : @get("name")
         type : @type
         resource :
-          PlacementGroup : ""
           AvailabilityZones : azs
           VPCZoneIdentifier : subnets.join(" , ")
           LoadBalancerNames : elbArray or []
@@ -419,15 +418,6 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
           AutoScalingGroupName   : @get("groupName") or @get("name")
           DesiredCapacity        : @get("capacity")
           LaunchConfigurationName : lcId
-          EnabledMetrics                 : [{ Metric : "", Granularity : "" }]
-          Instances                      : []
-          SuspendedProcesses             : [ ProcessName: "", SuspensionReason : "" ]
-          ShouldDecrementDesiredCapacity : ""
-          #reserved
-          CreatedTime : ""
-          InstanceId  : ""
-          Status      : ""
-          Tags        : ""
 
       { component : component, layout : @generateLayout() }
 

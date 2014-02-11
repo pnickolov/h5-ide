@@ -129,14 +129,6 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
           InsufficientDataActions : act_insuffi
           OKAction                : act_ok
 
-          ActionEnabled : ""
-          AlarmConfigurationUpdatedTimestamp : ""
-          AlarmDescription : ""
-          StateReason : ""
-          StateReasonData : ""
-          StateUpdateTimestamp : ""
-          StateValue : ""
-
       [ { component : policy }, { component : alarm } ]
 
   }, {

@@ -183,6 +183,8 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
 
       @ensureEnoughMember()
 
+      appId = ""
+
       if index > 0
         member = @groupMembers()[ index - 1 ]
         uid   = member.id
@@ -204,17 +206,15 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
         index           : index
         number          : serverGroupOption.number or 1
         resource :
-          VolumeId   : appId || ""
+          VolumeId   : appId
           Size       : @get("volumeSize")
           SnapshotId : @get("snapshotId")
           Iops       : @get("iops")
+          VolumeType : @get("volumeType")
           AvailabilityZone : if owner then owner.getAvailabilityZone().createRef() else ""
           AttachmentSet :
-            VolumeId            : appId || ""
-            InstanceId          : instanceId
-            Device              : @get("name")
-            DeleteOnTermination : true
-          VolumeType  : @get("volumeType")
+            InstanceId : instanceId
+            Device     : @get("name")
       }
 
 

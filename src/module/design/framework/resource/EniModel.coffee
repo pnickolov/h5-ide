@@ -386,14 +386,6 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
           PrivateIpAddress : @getRealIp( ipObj.ip )
           AutoAssign       : autoAssign
           Primary          : false
-          #reserved
-          Association      :
-            InstanceId        : ""
-            AssociationID     : ""
-            PublicDnsName     : ""
-            IpOwnerId         : ""
-            PublicIp          : ""
-            AllocationID      : ""
         }
 
         if hasEip
@@ -411,10 +403,7 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
               AllocationId       : eip.allocationId or ""
               NetworkInterfaceId : @createRef( "NetworkInterfaceId", memberData.id )
               PrivateIpAddress   : @createRef( "PrivateIpAddressSet.#{idx}.PrivateIpAddress", memberData.id )
-              NetworkInterfaceOwnerId : ""
-              AllowReassociation      : ""
-              AssociationId           : eip.associationId or ""
-              PublicIp                : eip.publicIp or ""
+              PublicIp           : eip.publicIp or ""
           }
       ips[0].Primary = true
 
@@ -461,26 +450,13 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
           VpcId            : parent.getVpcRef()
           SubnetId         : parent.getSubnetRef()
 
+          AssociatePublicIpAddress : @get("assoPublicIp")
           PrivateIpAddressSet : ips
           GroupSet   : securitygroups
           Attachment :
             InstanceId   : instanceId
             DeviceIndex  : if eniIndex is undefined then "1" else "" + eniIndex
             AttachmentId : memberData.attachmentId or ""
-            AttachTime   : ""
-
-          SecondPriIpCount : ""
-          MacAddress       : ""
-          RequestId        : ""
-          RequestManaged   : ""
-          OwnerId          : ""
-          PrivateIpAddress : ""
-
-          AssociatePublicIpAddress : @get("assoPublicIp")
-          #reserved
-          PrivateDnsName     : ""
-          Status             : ""
-
 
       resources[0] = component
       resources
@@ -581,7 +557,6 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
           ipObj.eipData =
             id            : ip.EipResource.uid
             allocationId  : ip.EipResource.resource.AllocationId
-            associationId : ip.EipResource.resource.AssociationId
             publicIp      : ip.EipResource.resource.PublicIp
         attr.ips.push( ipObj )
 

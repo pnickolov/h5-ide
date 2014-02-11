@@ -38,10 +38,7 @@ define [ "../ComplexResModel", "./VpcModel", "Design", "constant", "i18n!nls/lan
         uid  : @id
         resource :
           InternetGatewayId : @get("appId")
-          AttachmentSet     : [{
-            State : "available"
-            VpcId : @parent().createRef( "VpcId" )
-          }]
+          AttachmentSet     : [{ VpcId : @parent().createRef( "VpcId" ) }]
 
       { component : component, layout : @generateLayout() }
 

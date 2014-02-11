@@ -10,7 +10,8 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
 
     if not view
       console.debug "Creating an view for an unfound component : ", defaultType, id
-      view = CanvasElement.createView( defaultType, component or id )
+      type = if component then component.type else defaultType
+      view = CanvasElement.createView( type, component or id )
 
     view
 

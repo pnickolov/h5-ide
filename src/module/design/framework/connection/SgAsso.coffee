@@ -17,6 +17,9 @@ define [ "constant", "../ConnectionModel", "CanvasManager", "Design" ], ( consta
         # will draw us after connetion is established
         @draw = @updateLabel
 
+      # Listen to Sg's name change, so that we could update the label tooltip
+      @listenTo @getTarget( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup ), "change:name", @updateLabel
+
       # Update target's label after this connection is removed.
       @on "destroy", @updateLabel
       null
@@ -48,6 +51,9 @@ define [ "constant", "../ConnectionModel", "CanvasManager", "Design" ], ( consta
 
     # Drawing method, drawing method is used to update resource label
     updateLabel : ()->
+      if not Design.instance().shouldDraw()
+        return
+
       resource = @getOtherTarget( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup )
       res_node = document.getElementById( resource.id )
 

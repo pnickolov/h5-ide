@@ -76,7 +76,14 @@ define [ "Design",
       if @getElbSg() then @getElbSg().remove()
       null
 
-    getElbSg : ()-> @__elbSg
+    # Always use this method to get the sg of this elb
+    getElbSg : ()->
+      if @__elbSg
+        # If the elbsg is removed, we would like to nullify it.
+        if @__elbSg.isRemoved()
+          @__elbSg = undefined
+
+      @__elbSg
 
     getElbSgName : ()-> "elbsg-"+ @get("name")
 
@@ -86,9 +93,9 @@ define [ "Design",
 
       @set "name", name
 
-      if @__elbSg
+      if @getElbSg()
         # Update Elb's Sg's Name
-        @__elbSg.set( "name", @getElbSgName() )
+        @getElbSg().set( "name", @getElbSgName() )
 
       if @draw then @draw()
       null

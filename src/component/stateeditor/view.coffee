@@ -44,6 +44,10 @@ define [ 'event',
 
             'SWITCH_STATE': 'onSwitchState'
 
+            'EXPAND_STATE': 'expandState',
+
+            'COLLAPSE_STATE': 'collapseState'
+
         initialize: () ->
 
             this.compileTpl()
@@ -843,6 +847,22 @@ define [ 'event',
 
             that.refreshStateView($stateItem)
             $stateItem.addClass('view')
+
+        expandState: (event) ->
+            
+            that = this
+
+            that.expandItem($('.state-list').find('.selected'))
+
+            return false
+
+        collapseState: (event) ->
+            
+            that = this
+
+            that.collapseItem($('.state-list').find('.selected'))
+
+            return false
 
         clearSelectedItem: () ->
 

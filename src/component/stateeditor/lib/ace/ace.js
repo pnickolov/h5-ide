@@ -2706,6 +2706,14 @@ var Editor = function(renderer, session) {
         return false;
     },
 
+    this.expandState = function (target) {
+        $('#state-editor-body').trigger('EXPAND_STATE');
+    },
+
+    this.collapseState = function (target) {
+        $('#state-editor-body').trigger('COLLAPSE_STATE');
+    },
+
     this.indent = function() {
         var session = this.session;
         var range = this.getSelectionRange();
@@ -12222,9 +12230,18 @@ exports.commands = [{
 }, {
     name: "indent",
     bindKey: bindKey("Tab", "Tab"),
+    // exec: function(editor) { editor.indent(); },
     exec: function(editor) { editor.tabSwitch(editor); },
     multiSelectAction: "forEach",
     scrollIntoView: "selectionPart"
+}, {
+    name: "expandState",
+    bindKey: bindKey("Ctrl-Down"),
+    exec: function(editor) { editor.expandState(editor); }
+}, {
+    name: "collapseState",
+    bindKey: bindKey("Ctrl-Up"),
+    exec: function(editor) { editor.collapseState(editor); }
 }, {
     name: "blockoutdent",
     bindKey: bindKey("Ctrl-[", "Ctrl-["),

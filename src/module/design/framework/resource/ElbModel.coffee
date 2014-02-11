@@ -372,7 +372,7 @@ define [ "Design",
       elb = Design.instance().component( data.uid )
 
       # Find out which SG is this Elb's Sg
-      sgName = elb.get("name") + "-sg"
+      sgName = "elbsg-" + elb.get("name")
       for sg in SgModel.allObjects()
         if sg.get("name") is sgName
           elb.__elbSg = sg

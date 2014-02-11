@@ -456,7 +456,7 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
     # 2. save stoppable to property
     data.property = $.extend { stoppable : @isStoppable() }, PropertyDefination
 
-    data.version = "2014-01-25"
+    data.version = "2014-02-11"
 
     data
 

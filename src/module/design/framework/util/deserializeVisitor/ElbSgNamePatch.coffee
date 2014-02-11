@@ -27,5 +27,6 @@ define [ "Design", "constant" ], ( Design, constant )->
           if sg.resource.GroupName is sgName
             sg.resource.GroupName = sg.name
           break
+    null
 
   null

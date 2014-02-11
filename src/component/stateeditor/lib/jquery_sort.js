@@ -390,7 +390,7 @@ var dragsort = {
 				event.data.option.dragStart.call(target, event);
 			}
 
-			target.css('visibility', 'hidden');
+			target.addClass('drag-hide');
 
 			state_list.parent().append('<div id="state-shadow-item"></div>');
 
@@ -450,7 +450,7 @@ var dragsort = {
 			event.data.option.dragEnd.call(event.data.target, event);
 		}
 
-		event.data.target.css('visibility', 'visible');
+		event.data.target.removeClass('drag-hide');
 		event.data.shadow.remove();
 
 		$(document).off({

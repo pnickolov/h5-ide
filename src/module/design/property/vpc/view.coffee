@@ -80,7 +80,7 @@ define [ '../base/view',
             target = $ event.currentTarget
             name = target.val()
 
-            if @checkDupName( target, "Route Table" )
+            if @checkResName( target, "Route Table" )
                 @model.setName name
                 @setTitle name
             null

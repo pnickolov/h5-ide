@@ -49,7 +49,7 @@ define [ '../base/view',
             target = $ event.currentTarget
             name = target.val()
 
-            if @checkDupName( target, "Instance" )
+            if @checkResName( target, "Instance" )
                 @model.setName name
                 @setTitle name
             null

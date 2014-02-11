@@ -49,7 +49,7 @@ define [ '../base/view', 'text!./template/stack.html', 'event', 'constant', "Des
             target = $ event.currentTarget
             name = target.val()
 
-            if @checkDupName( target, "Customer Gateway" )
+            if @checkResName( target, "Customer Gateway" )
                 @model.setName name
                 @setTitle name
 

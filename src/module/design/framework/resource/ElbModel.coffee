@@ -304,7 +304,7 @@ define [ "Design",
       attr =
         id     : data.uid
         name   : data.name
-        appId  : data.resource.LoadBalancerName
+        appId  : data.resource.DNSName
         parent : resolve( layout_data.groupUId )
 
         internal  : data.resource.Scheme is 'internal'

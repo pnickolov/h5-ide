@@ -2635,21 +2635,15 @@ var Editor = function(renderer, session) {
             return false;
         }
 
-        if (container_item.hasClass('command-value'))
-        {
+        if (container_item.hasClass('command-value')) {
             stack = $(target.container).parents('.state-item').find('.parameter-list .ace_editor');
 
-            if (stack[0] != null)
-            {
+            if (stack[0] != null) {
                 stack.eq(0).find('.ace_text-input').focus();
-            }
-            else
-            {
+            } else {
                 $('#state-editor-body').trigger('SWITCH_STATE');
             }
-        }
-        else
-        {
+        } else {
             stack = $(target.container).parents('.parameter-list').find('.ace_editor');
 
             total = stack.length;
@@ -2685,8 +2679,7 @@ var Editor = function(renderer, session) {
             return false;
         }
 
-        if (container_item.hasClass('command-value'))
-        {
+        if (container_item.hasClass('command-value')) {
             return false;
         }
 

@@ -88,6 +88,8 @@ define [ "Design", "CanvasManager", "./ResourceModel", "constant", "./canvasview
         while cns.length
           # Removing connection of this Resource might cause other connections of this
           # resource get removed. So, we always check if the connection is not empty.
+          # In some case, removing a connection will result in adding new connection to
+          # this resource, meaning the connections.length will increase.
           cns[ cns.length - 1 ].remove( reason )
           cns.length = cns.length - 1
 

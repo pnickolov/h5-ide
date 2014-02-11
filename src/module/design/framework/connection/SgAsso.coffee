@@ -27,6 +27,28 @@ define [ "constant", "../ConnectionModel", "CanvasManager", "Design" ], ( consta
     # Return false, so that ConnectionModel will not create an line for us.
     isVisual : ()-> false
 
+    remove : ()->
+      # When an SgAsso is removed. If this SgAsso is the last SgAsso of the resource.
+      # Attach DefaultSg to resource.
+
+      # When A is removed, and A delete an Sg ( SgA ) while removing,
+      # and if B only connects to SgA.
+      # Then B will be detached from SgA and then connects to DefaultSG
+      # If this behaviour results in creating an SgLine between A & B.
+      # Then the SgLine is actually connecting to an removing resource : A.
+      # Currently the ComplexResModel can hanlde : after SgLine is created, A continues
+      # to disconnect its connection, thus the newly created SgLine will be removed.
+      # But this is a flaw of design of Connection, because I think it makes
+      # ComplexResModel/ConnectionModel and its subclass strong coupling.
+      # Maybe we could work out a better solution about this later.
+
+      resource = @getOtherTarget( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup )
+      if resource.connections("SgAsso").length == 1
+        defaultSg = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup ).getDefaultSg()
+        if defaultSg
+          new SgAsso( resource, defaultSg )
+      null
+
     sortedSgList : ()->
 
       resource = @getOtherTarget( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup )

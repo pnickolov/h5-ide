@@ -58,7 +58,15 @@ define [ "Design",
         new SgAssoModel( this, sg )
       null
 
-    isRemovable : ()-> true
+    isRemovable : ()->
+      elbsg = @getElbSg()
+      if elbsg and elbsg.connections("SgAsso").length > 1
+        return MC.template.ElbRemoveConfirmation {
+          name : @get("name")
+          sg : elbsg.get("name")
+        }
+
+      true
 
     remove : ()->
       sslCert = @get("sslCert")

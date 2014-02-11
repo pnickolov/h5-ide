@@ -193,7 +193,7 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
         newName = if @defaults then @defaults.name
         return newName or ""
 
-      if not base
+      if base is undefined
         myKinds = Design.modelClassForType( @type ).allObjects()
         base = myKinds.length
 

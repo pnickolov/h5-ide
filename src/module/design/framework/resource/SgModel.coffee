@@ -60,6 +60,10 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
 
     createIpTarget : ( ipAddress )-> new SgTargetModel( ipAddress )
 
+    getNewName : ()->
+      myKinds = Design.modelClassForType( @type ).allObjects()
+      ResourceModel.prototype.getNewName.call( this, myKinds.length - 1 )
+
     ruleCount : ()->
       count = 0
       for ruleset in @connections( "SgRuleSet" )

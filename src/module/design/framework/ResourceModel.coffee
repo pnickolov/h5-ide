@@ -155,6 +155,11 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
 
     constructor : ( attributes, options )->
 
+      # Remember current design object
+      # So that later, we can check if this object's design is showing
+      design = Design.instance()
+      this.__design = design
+
       if not attributes
         attributes = {}
 
@@ -166,11 +171,6 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
       if not attributes.name
         attributes.name = @getNewName()
         if not attributes.name then delete attributes.name
-
-      # Remember current design object
-      # So that later, we can check if this object's design is showing
-      design = Design.instance()
-      this.__design = design
 
       # Cache the object inside the current design.
       design.classCacheForCid( this.classId ).push( this )
@@ -188,23 +188,28 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
 
       this
 
-    getNewName : ()->
+    getNewName : ( base )->
       if not @newNameTmpl
         newName = if @defaults then @defaults.name
         return newName or ""
 
-      myKinds = Design.modelClassForType( @type ).allObjects()
-      base = myKinds.length
+      if not base
+        myKinds = Design.modelClassForType( @type ).allObjects()
+        base = myKinds.length
+
+      # Collect all the resources name
+      nameMap = {}
+      @design().eachComponent ( comp )->
+        if comp.get("name")
+          nameMap[ comp.get("name") ] = true
+        null
+
       while true
         newName = @newNameTmpl + base
-        same    = false
-        for k in myKinds
-          if k.get("name") is newName
-            same = true
-            break
-
-        if not same then break
-        base += 1
+        if nameMap[ newName ]
+          base += 1
+        else
+          break
 
       newName
 

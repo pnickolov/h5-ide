@@ -49,7 +49,7 @@ define [ "Design",
 
       if option.createByUser and not Design.instance().typeIsClassic()
         sg = new SgModel({
-          name        : @get("name")+"-sg"
+          name        : @getElbSgName()
           isElbSg     : true
           description : "Automatically created SG for load-balancer"
         })
@@ -58,23 +58,19 @@ define [ "Design",
         new SgAssoModel( this, sg )
       null
 
+    isRemovable : ()-> true
+
     remove : ()->
       sslCert = @get("sslCert")
       if sslCert then sslCert.remove()
 
-      # Remove my elb sg, if the sg is not used by anyone.
-      for elbSg in @.connectionTargets( "SgAsso" )
-        if elbSg.isElbSg()
-          cannotDelete = false
-          for elb in elbSg.connectionTargets("SgAsso")
-            if elb isnt this
-              cannotDelete = true
-              break
-          if not cannotDelete
-            elbSg.remove()
+      # Remove elb will only remove my elb sg
+      if @getElbSg() then @getElbSg().remove()
       null
 
     getElbSg : ()-> @__elbSg
+
+    getElbSgName : ()-> "elbsg-"+ @get("name")
 
     setName : ( name )->
       if @get("name") is name
@@ -84,7 +80,7 @@ define [ "Design",
 
       if @__elbSg
         # Update Elb's Sg's Name
-        @__elbSg.set( "name", name+"-sg" )
+        @__elbSg.set( "name", @getElbSgName() )
 
       if @draw then @draw()
       null
@@ -367,7 +363,7 @@ define [ "Design",
       elb = Design.instance().component( data.uid )
 
       # Find out which SG is this Elb's Sg
-      sgName = "elbsg-" + elb.get("name")
+      sgName = elb.getElbSgName()
       for sg in SgModel.allObjects()
         if sg.get("name") is sgName
           elb.__elbSg = sg

@@ -1169,100 +1169,106 @@ define [ 'event',
 
             _.each stateObjAry, (state, idx) ->
 
-                cmdName = that.moduleCMDMap[state.module]
-                paraModelObj = that.cmdParaObjMap[cmdName]
+                try
 
-                paraListObj = state.parameter
-                stateId = state.id
+                    cmdName = that.moduleCMDMap[state.module]
+                    paraModelObj = that.cmdParaObjMap[cmdName]
 
-                stateRenderObj = {
-                    id: stateId,
-                    id_show: idx + 1,
-                    cmd_value: cmdName,
-                    parameter_list: []
-                }
+                    paraListObj = state.parameter
+                    stateId = state.id
 
-                _.each paraModelObj, (paraModelValue, paraModelName) ->
-
-                    paraModelType = paraModelValue.type
-                    paraModelRequired = paraModelValue.required
-
-                    renderParaObj = {
-                        para_name: paraModelName,
-                        para_disabled: true,
-                        required: paraModelRequired
+                    stateRenderObj = {
+                        id: stateId,
+                        id_show: idx + 1,
+                        cmd_value: cmdName,
+                        parameter_list: []
                     }
 
-                    renderParaObj['type_' + paraModelType] = true
+                    _.each paraModelObj, (paraModelValue, paraModelName) ->
 
-                    paraValue = paraListObj[paraModelName]
+                        paraModelType = paraModelValue.type
+                        paraModelRequired = paraModelValue.required
 
-                    if paraValue is undefined and not paraModelRequired
-                        renderParaObj.para_disabled = true
-                    else
-                        renderParaObj.para_disabled = false
+                        renderParaObj = {
+                            para_name: paraModelName,
+                            para_disabled: true,
+                            required: paraModelRequired
+                        }
 
-                    renderParaValue = null
-                    if paraModelType in ['line', 'text', 'bool']
+                        renderParaObj['type_' + paraModelType] = true
 
-                        renderParaValue = String(paraValue)
+                        paraValue = paraListObj[paraModelName]
 
-                        if not paraValue
-                            renderParaValue = ''
+                        if paraValue is undefined and not paraModelRequired
+                            renderParaObj.para_disabled = true
+                        else
+                            renderParaObj.para_disabled = false
 
-                        if paraModelType is 'bool' and paraValue is false
-                            renderParaValue = 'false'
+                        renderParaValue = null
+                        if paraModelType in ['line', 'text', 'bool']
 
-                        if paraModelType in ['line', 'text']
-                            renderParaValue = that.model.replaceParaUIDToName(renderParaValue)
+                            renderParaValue = String(paraValue)
 
-                    else if paraModelType is 'dict'
+                            if not paraValue
+                                renderParaValue = ''
 
-                        renderParaValue = []
-                        _.each paraValue, (paraValueStr, paraKey) ->
+                            if paraModelType is 'bool' and paraValue is false
+                                renderParaValue = 'false'
 
-                            paraValueStr = that.model.replaceParaUIDToName(paraValueStr)
+                            if paraModelType in ['line', 'text']
+                                renderParaValue = that.model.replaceParaUIDToName(renderParaValue)
 
-                            renderParaValue.push({
-                                key: paraKey
-                                value: paraValueStr
-                            })
+                        else if paraModelType is 'dict'
 
-                            null
+                            renderParaValue = []
+                            _.each paraValue, (paraValueStr, paraKey) ->
 
-                        if not paraValue or _.isEmpty(paraValue)
-                            renderParaValue = [{
-                                key: '',
-                                value: ''
-                            }]
-
-                    else if paraModelType in ['array', 'state']
-
-                        renderParaValue = []
-                        _.each paraValue, (paraValueStr) ->
-
-                            if paraModelType is 'state'
-                                paraValueStr = that.model.replaceStateUIDToName(paraValueStr)
-                            else
                                 paraValueStr = that.model.replaceParaUIDToName(paraValueStr)
-                                
-                            renderParaValue.push(paraValueStr)
-                            null
 
-                        if not paraValue or not paraValue.length
-                            renderParaValue = ['']
+                                renderParaValue.push({
+                                    key: paraKey
+                                    value: paraValueStr
+                                })
 
-                    renderParaObj.para_value = renderParaValue
+                                null
 
-                    stateRenderObj.parameter_list.push(renderParaObj)
+                            if not paraValue or _.isEmpty(paraValue)
+                                renderParaValue = [{
+                                    key: '',
+                                    value: ''
+                                }]
 
-                    paraListAry = stateRenderObj.parameter_list
+                        else if paraModelType in ['array', 'state']
 
-                    stateRenderObj.parameter_list = that.model.sortParaList(paraListAry, 'para_name')
+                            renderParaValue = []
+                            _.each paraValue, (paraValueStr) ->
 
-                    null
+                                if paraModelType is 'state'
+                                    paraValueStr = that.model.replaceStateUIDToName(paraValueStr)
+                                else
+                                    paraValueStr = that.model.replaceParaUIDToName(paraValueStr)
+                                    
+                                renderParaValue.push(paraValueStr)
+                                null
 
-                renderObj.state_list.push(stateRenderObj)
+                            if not paraValue or not paraValue.length
+                                renderParaValue = ['']
+
+                        renderParaObj.para_value = renderParaValue
+
+                        stateRenderObj.parameter_list.push(renderParaObj)
+
+                        paraListAry = stateRenderObj.parameter_list
+
+                        stateRenderObj.parameter_list = that.model.sortParaList(paraListAry, 'para_name')
+
+                        null
+
+                    renderObj.state_list.push(stateRenderObj)
+
+                catch err
+
+                    console.log('state editor: resource state data parse failed')
 
                 null
 
@@ -1546,10 +1552,16 @@ define [ 'event',
             paraParagraph = paraNameSpan.parents('p')
             paraParagraph.addClass('highlight')
 
-            scrollToPos = paraParagraph.offset().top - that.$cmdDsec.offset().top + that.$cmdDsec.scrollTop() - 15
-            that.$cmdDsec.animate({
-                scrollTop: scrollToPos
-            }, 200)
+            try
+
+                scrollToPos = paraParagraph.offset().top - that.$cmdDsec.offset().top + that.$cmdDsec.scrollTop() - 15
+                that.$cmdDsec.animate({
+                    scrollTop: scrollToPos
+                }, 200)
+
+            catch err
+
+                null
 
         setEditorCompleter: (editor, dataAry, metaType) ->
 

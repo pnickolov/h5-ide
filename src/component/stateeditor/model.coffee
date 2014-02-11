@@ -30,12 +30,12 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 			moduleData = {}
 
 			if osPlatform is 'linux'
-				moduleData = moduleDataObj.linux
+				moduleData = moduleDataObj.linux if moduleDataObj.linux
 			else if osPlatform is 'windows'
-				moduleData = moduleDataObj.windows
+				moduleData = moduleDataObj.windows if moduleDataObj.windows
 
-			moduleData = _.extend(moduleData, moduleDataObj.common)
-			moduleData = _.extend(moduleData, moduleDataObj.general)
+			moduleData = _.extend(moduleData, moduleDataObj.common) if moduleDataObj.common
+			moduleData = _.extend(moduleData, moduleDataObj.general) if moduleDataObj.general
 
 			# generate module autocomplete data
 			cmdAry = []
@@ -115,7 +115,6 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 			newCMDAllParaAry = cmdAllParaAry.sort (paraObj1, paraObj2) ->
 
 				if paraObj1.required is paraObj2.required
-					return 0
 					if paraObj1[paraName] < paraObj2[paraName]
 						return -1
 					else

@@ -11,7 +11,7 @@ define [ 'event',
 
     StateEditorView = Backbone.View.extend {
 
-        events      :
+        events:
 
             'closed': 'closedPopup'
             'keyup .parameter-item.dict .parameter-value': 'onDictInputChange'
@@ -746,25 +746,29 @@ define [ 'event',
 
                 paraObj = that.getParaObj($currentInput)
 
-                if paraObj and paraObj.default isnt undefined
-                    defaultValue = String(paraObj.default)
-                    if not currentValue and defaultValue and not $currentInput.hasClass('key')
-                        that.setPlainText($currentInput, defaultValue)
-                        $paraItem = $currentInput.parents('.parameter-item')
-                        $paraItem.removeClass('disabled')
+                if paraObj
 
-                        # auto add new para item
-                        # if $currentInput.hasClass('parameter-value')
+                    that.highlightParaDesc(paraObj.name)
 
-                        #     $paraItem = $currentInput.parents('.parameter-item')
-                        #     if $paraItem.hasClass('dict')
-                        #         that.onDictInputChange({
-                        #             currentTarget: $currentInput[0]
-                        #         })
-                        #     else if $paraItem.hasClass('array') or $paraItem.hasClass('state')
-                        #         that.onArrayInputChange({
-                        #             currentTarget: $currentInput[0]
-                        #         })
+                    if paraObj.default isnt undefined
+                        defaultValue = String(paraObj.default)
+                        if not currentValue and defaultValue and not $currentInput.hasClass('key')
+                            that.setPlainText($currentInput, defaultValue)
+                            $paraItem = $currentInput.parents('.parameter-item')
+                            $paraItem.removeClass('disabled')
+
+                            # auto add new para item
+                            # if $currentInput.hasClass('parameter-value')
+
+                            #     $paraItem = $currentInput.parents('.parameter-item')
+                            #     if $paraItem.hasClass('dict')
+                            #         that.onDictInputChange({
+                            #             currentTarget: $currentInput[0]
+                            #         })
+                            #     else if $paraItem.hasClass('array') or $paraItem.hasClass('state')
+                            #         that.onArrayInputChange({
+                            #             currentTarget: $currentInput[0]
+                            #         })
 
             # refresh module description
 
@@ -1411,8 +1415,6 @@ define [ 'event',
 
         initCodeEditor: (editorElem, hintObj) ->
 
-            console.time('init editor')
-
             that = this
 
             # if that.readOnlyMode
@@ -1531,7 +1533,14 @@ define [ 'event',
                     thatEditor.execCommand("startAutocomplete")
             )
 
-            console.timeEnd('init editor')
+        highlightParaDesc: (paraName) ->
+
+            that = this
+
+            that.$cmdDsec.find('.highlight').removeClass('highlight')
+            paraNameSpan = that.$cmdDsec.find("strong:contains('#{paraName}')")
+            paraParagraph = paraNameSpan.parents('p')
+            paraParagraph.addClass('highlight')
 
         setEditorCompleter: (editor, dataAry, metaType) ->
 

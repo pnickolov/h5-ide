@@ -911,3 +911,7 @@
 #state-editor-model.se-model-app #state-editor .ace_cursor-layer {
 	display: none;
 }
+
+#state-description .highlight  {
+	color: #000;
+}

@@ -205,7 +205,7 @@ exports.edit = function(el) {
     el.innerHTML = '';
 
     var editor = new Editor(new Renderer(el));
-    new MultiSelect(editor);
+    // new MultiSelect(editor);
     editor.setSession(doc);
 
     var env = {

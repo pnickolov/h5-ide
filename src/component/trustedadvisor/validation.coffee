@@ -84,8 +84,8 @@ define [ 'constant', 'event', 'ta_conf', './validation/main', './validation/resu
 
             # validate state editor
             #try
-            result = validation_main[ 'state' ]( uid )
-            _pushResult result, 'state', 'state', uid
+            result = validation_main[ 'stateEditor' ]( uid )
+            _pushResult result, 'stateEditor', 'stateEditor', uid
             #catch err
                 #_handleException( err )
 
@@ -160,9 +160,9 @@ define [ 'constant', 'event', 'ta_conf', './validation/main', './validation/resu
 
 
     #public
-    validComp : validComp
-    validAll  : validAll
-    validRun  : validRun
-    state     : validation_main.state
+    validComp   : validComp
+    validAll    : validAll
+    validRun    : validRun
+    stateEditor : validation_main.stateEditor
 
 

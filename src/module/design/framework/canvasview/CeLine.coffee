@@ -1,5 +1,5 @@
 
-define [ "./CanvasElement", "CanvasManager" ], ( CanvasElement, CanvasManager )->
+define [ "./CanvasElement", "CanvasManager", "constant" ], ( CanvasElement, CanvasManager, constant )->
 
   ChildElement = ()-> CanvasElement.apply( this, arguments )
   CanvasElement.extend( ChildElement, "Line" )
@@ -12,6 +12,14 @@ define [ "./CanvasElement", "CanvasManager" ], ( CanvasElement, CanvasManager )-
   ChildElementProto.portName = ( targetId )-> @model.port( targetId, "name" )
 
   ChildElementProto.reConnect = ()-> @draw()
+
+  ChildElementProto.select = ()->
+    # QuickFix for Rtb_Asso
+    if @type is "RTB_Route"
+      @doSelect( @type, @model.getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable ).id, @id )
+    else
+      @doSelect( @type, @id, @id )
+    true
 
   ChildElementProto.draw = ()->
     connection = @model

@@ -73,9 +73,13 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 				cmdParaMap[cmdName] = that.sortParaList(cmdAllParaAry, 'name')
 				null
 
-			cmdAry = cmdAry.sort (val1, val2) ->
-				return val1 < val2
-			cmdAry = cmdAry.reverse()
+			cmdNameAry = cmdAry.sort (val1, val2) ->
+				if val1 > val2
+					return 1
+				else if val1 < val2
+					return -1
+				else
+					return 0
 
 			# generate resource attr autocomplete data
 			allCompData = that.get('allCompData')
@@ -85,6 +89,7 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 			that.genAttrRefRegexList()
 
 			# for view
+			that.set('cmdNameAry', cmdNameAry)
 			that.set('cmdParaMap', cmdParaMap)
 			that.set('cmdParaObjMap', cmdParaObjMap)
 			that.set('cmdModuleMap', cmdModuleMap)

@@ -411,6 +411,7 @@
 	float: left;
 	width: 100%;
 	max-width: 309px;
+	overflow: hidden;
 }
 
 #state-editor .parameter-list .parameter-container {
@@ -447,15 +448,15 @@
 #state-editor .parameter-remove {
 	float: left;
 	background-color: #f00;
-	width: 15px;
+	width: 14px;
 	text-align: center;
-	height: 15px;
+	height: 14px;
 	margin-right: 10px;
 	border-radius: 15px;
 	color: #fff;
-	line-height: 11px;
+	line-height: 14px;
 	cursor: pointer;
-	font-size: 24px;
+	font-size: 16px;
 }
 
 #state-editor .parameter-remove:hover {

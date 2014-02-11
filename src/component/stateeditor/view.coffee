@@ -14,12 +14,12 @@ define [ 'event',
         events      :
 
             'closed': 'closedPopup'
-            'keydown .parameter-item.dict .parameter-value': 'onDictInputChange'
+            'keyup .parameter-item.dict .parameter-value': 'onDictInputChange'
             'blur .parameter-item.dict .parameter-value': 'onDictInputBlur'
 
-            'keydown .parameter-item.array .parameter-value': 'onArrayInputChange'
+            'keyup .parameter-item.array .parameter-value': 'onArrayInputChange'
             'blur .parameter-item.array .parameter-value': 'onArrayInputBlur'
-            'keydown .parameter-item.state .parameter-value': 'onArrayInputChange'
+            'keyup .parameter-item.state .parameter-value': 'onArrayInputChange'
             'blur .parameter-item.state .parameter-value': 'onArrayInputBlur'
 
             'blur .command-value': 'onCommandInputBlur'
@@ -40,7 +40,14 @@ define [ 'event',
 
             'OPTION_CHANGE .state-editor-res-select': 'onResSelectChange'
 
-            'keydown .parameter-item.optional .parameter-value': 'onOptionalParaItemChange'
+            'keyup .parameter-item.optional .parameter-value': 'onOptionalParaItemChange'
+            'keyup .parameter-item.optional .parameter-value': 'onOptionalParaItemChange'
+
+            'SWITCH_STATE': 'onSwitchState'
+
+            'EXPAND_STATE': 'expandState',
+
+            'COLLAPSE_STATE': 'collapseState'
 
         initialize: () ->
 
@@ -111,6 +118,7 @@ define [ 'event',
         initData: () ->
 
             that = this
+            that.cmdNameAry = that.model.get('cmdNameAry')
             that.cmdParaMap = that.model.get('cmdParaMap')
             that.cmdParaObjMap = that.model.get('cmdParaObjMap')
             that.cmdModuleMap = that.model.get('cmdModuleMap')
@@ -404,7 +412,7 @@ define [ 'event',
 
             that = this
 
-            cmdNameAry = _.keys(that.cmdParaMap)
+            cmdNameAry = that.cmdNameAry
 
             cmdNameAry = _.map cmdNameAry, (value, i) ->
                 return {
@@ -795,41 +803,8 @@ define [ 'event',
 
             if $stateItem.hasClass('view')
                 that.expandItem.call this, $stateItem
-                # currentCMD = $stateItem.attr('data-command')
-                # $paraListItem = $stateItem.find('.parameter-list')
-                # that.bindParaListEvent($paraListItem, currentCMD)
-
-                # # remove other item view
-                # _.each $stateItemList, (otherStateItem) ->
-                #     $otherStateItem = $(otherStateItem)
-                #     if not $stateItem.is($otherStateItem) and not $otherStateItem.hasClass('view')
-                #         that.refreshStateView($otherStateItem)
-                #     null
-
-                # $stateItemList.addClass('view')
-                # $stateItem.removeClass('view')
-
-                # # refresh description
-                # cmdName = $stateItem.attr('data-command')
-                # if cmdName
-                #     that.refreshDescription(cmdName)
-
-                # $cmdValueItem = $stateItem.find('.command-value')
-                # cmdEditor = $cmdValueItem.data('editor')
-                # if cmdEditor
-                #     setTimeout(() ->
-                #         cmdEditor.focus()
-                #     , 0)
-
-                # if that.readOnlyMode
-                #     that.setEditorReadOnlyMode()
-
-                # $stateItem.addClass('selected')
-
             else
                 that.collapseItem.call this, $stateItem
-                # that.refreshStateView($stateItem)
-                # $stateItem.addClass('view')
 
         expandItem: ($stateItem) ->
 
@@ -875,10 +850,28 @@ define [ 'event',
             that.refreshStateView($stateItem)
             $stateItem.addClass('view')
 
+        expandState: (event) ->
+            
+            that = this
+
+            that.expandItem($('.state-list').find('.selected'))
+
+            return false
+
+        collapseState: (event) ->
+            
+            that = this
+
+            that.collapseItem($('.state-list').find('.selected'))
+
+            return false
+
         clearSelectedItem: () ->
 
             that = this
+            
             that.$stateList.find('.selected').removeClass('selected')
+
             null
 
         # onStateAddClick: (event) ->
@@ -952,6 +945,8 @@ define [ 'event',
 
             $newStateItem = $(newStateHTML).appendTo(that.$stateList)
 
+            that.clearSelectedItem()
+
             $cmdValueItem = $newStateItem.find('.command-value')
             that.bindCommandEvent($cmdValueItem)
 
@@ -971,6 +966,8 @@ define [ 'event',
                 setTimeout(() ->
                     cmdEditor.focus()
                 , 0)
+
+            $newStateItem.addClass('selected')
 
             that.refreshLogItemNum()
 
@@ -1860,6 +1857,28 @@ define [ 'event',
             if event.ctrlKey and keyCode is 40
                 that.collapseItem.call(that, $('.state-list').find('.selected'))
                 return false
+
+        onSwitchState: (event) ->
+
+            that = this
+
+            selected_index = 0
+
+            stack = $('#state-editor .state-item')
+
+            total = stack.length
+
+            selected_index = $('#state-editor .state-item.selected').index('#state-editor .state-list > li')
+
+            that.clearSelectedItem()
+
+            if selected_index + 1 < total
+                that.expandItem.call this, stack.eq(selected_index + 1).addClass('selected')
+
+            else
+                that.expandItem.call this, stack.eq(0).addClass('selected')
+
+            return false
     }
 
     return StateEditorView

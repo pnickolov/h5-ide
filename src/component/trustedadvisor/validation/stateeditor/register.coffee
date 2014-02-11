@@ -1,6 +1,6 @@
 define  [
-    './validation/refrence'
+    './validation/reference'
 
-], ( refrence ) ->
+], ( reference ) ->
 
-    [ refrence ]
+    [ reference ]

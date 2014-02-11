@@ -40,7 +40,7 @@ define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, const
       # If this is RTB or this is RTB blue lines, show RTB property
       routes = []
       data =
-        uid         : uid
+        uid         : component.id # The component is guarantee to be RTB at this point, and we assign the uid of the property to be the RTB id, because we might need to set attributes of the rtb.
         title       : component.get("name")
         isMain      : component.get("main")
         local_route : VPCModel.theVPC().get("cidr")
@@ -71,13 +71,10 @@ define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, const
       component = Design.instance().component( @get("uid") )
 
       # Only one vgw will be in a stack. So, RTB can only connects to one VPN
-      if component.setPropagate
-        component.setPropagate propagate
-      else if component.connections
-        cn = _.find component.connections(), ( cn )->
-          cn.getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway ) isnt null
+      cn = _.find component.connections(), ( cn )->
+        cn.getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway ) isnt null
 
-        cn.setPropagate propagate
+      cn.setPropagate propagate
       null
 
     setRoutes : ( routeId, routes ) ->

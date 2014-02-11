@@ -99,6 +99,7 @@ define [ "../ComplexResModel", "Design", "../connection/Route", "../connection/R
       if @get("main")
         component.resource.AssociationSet.push {
           Main     : "true" # Must be string.
+          RouteTableAssociationId : ""
           SubnetId : ""
         }
 
@@ -153,7 +154,7 @@ define [ "../ComplexResModel", "Design", "../connection/Route", "../connection/R
       # Create asso between RTB and Subnet
       for r in data.resource.AssociationSet || []
         if not r.Main and r.SubnetId
-          new RtbAsso( rtb, design.component( MC.extractID( r.SubnetId ) ) )
+          new RtbAsso( rtb, design.component( MC.extractID( r.SubnetId ) ), { assoId : r.RouteTableAssociationId } )
 
       # Create routes between RTB and resources
       routes = data.resource.RouteSet

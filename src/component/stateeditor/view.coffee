@@ -1533,6 +1533,10 @@ define [ 'event',
                     thatEditor.execCommand("startAutocomplete")
             )
 
+            editor.on("blur", (e) ->
+                that.$cmdDsec.find('.highlight').removeClass('highlight')
+            )
+
         highlightParaDesc: (paraName) ->
 
             that = this
@@ -1541,6 +1545,11 @@ define [ 'event',
             paraNameSpan = that.$cmdDsec.find("strong:contains('#{paraName}')")
             paraParagraph = paraNameSpan.parents('p')
             paraParagraph.addClass('highlight')
+
+            scrollToPos = paraParagraph.offset().top - that.$cmdDsec.offset().top + that.$cmdDsec.scrollTop() - 15
+            that.$cmdDsec.animate({
+                scrollTop: scrollToPos
+            }, 200)
 
         setEditorCompleter: (editor, dataAry, metaType) ->
 

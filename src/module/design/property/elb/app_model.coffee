@@ -78,11 +78,9 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
                 if elb.Subnets.member and elb.Subnets.member.constructor == Array
 
                     $.each elb.Subnets.member, (j, subnet_id) ->
-
-                        if MC.data.resource_list[Design.instance().region()][subnet_id].availabilityZone == zone_name
-
+                        subnet = MC.data.resource_list[Design.instance().region()][subnet_id]
+                        if subnet and subnet.availabilityZone is zone_name
                             tmp.subnet = subnetMap[ subnet_id ]
-
                             return false
 
                 else if elb.Subnets.member

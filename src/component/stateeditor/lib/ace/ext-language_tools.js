@@ -1134,26 +1134,38 @@ var Autocomplete = function() {
     };
     
     this.updateCompletions = function(keepPopupPosition) {
+        if (this.completions && this.completions.filtered.length) {
+            this.editor.execCommand("autocomplete_match", true);
+        } else {
+            this.editor.execCommand("autocomplete_match", false);
+        }
         if (keepPopupPosition && this.base && this.completions) {
             var pos = this.editor.getCursorPosition();
             var prefix = this.editor.session.getTextRange({start: this.base, end: pos});
             if (prefix == this.completions.filterText)
                 return;
             this.completions.setFilter(prefix);
-            if (!this.completions.filtered.length)
+            if (!this.completions.filtered.length) {
+                this.editor.execCommand("autocomplete_match", false);
                 return this.detach();
+            }
             this.openPopup(this.editor, prefix, keepPopupPosition);
             return;
         }
         this.gatherCompletions(this.editor, function(err, results) {
             var matches = results && results.matches;
-            if (!matches || !matches.length)
+            if (!matches || !matches.length) {
+                this.editor.execCommand("autocomplete_match", false);
                 return this.detach();
+            }
 
             this.completions = new FilteredList(matches);
             this.completions.setFilter(results.prefix);
-            if (!this.completions.filtered.length)
+            if (!this.completions.filtered.length) {
+                this.editor.execCommand("autocomplete_match", false);
                 return this.detach();
+            }
+            this.editor.execCommand("autocomplete_match", true);
             this.openPopup(this.editor, results.prefix, keepPopupPosition);
         }.bind(this));
     };

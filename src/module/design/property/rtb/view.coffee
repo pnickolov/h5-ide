@@ -67,8 +67,12 @@ define [ '../base/view', 'text!./template/stack.html' ], ( PropertyView, templat
                 @setTitle name
 
         setMainRT : () ->
-            $("#set-main-rt").hide().parent().find("p").show()
-            @model.setMainRT()
+            if @model.isAppEdit
+                @model.setMainRT()
+                @render()
+            else
+                $("#set-main-rt").hide().parent().find("p").show()
+                @model.setMainRT()
             null
 
         changePropagation : ( event ) ->

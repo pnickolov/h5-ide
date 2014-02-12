@@ -29,7 +29,7 @@ define [ 'Design',
          "./util/deserializeVisitor/FixOldStack",
          "./util/deserializeVisitor/AsgExpandor",
          "./util/deserializeVisitor/ElbSgNamePatch",
-         "./util/serializeVisitor/EniIpVisitor",
+         "./util/serializeVisitor/EniIpAssigner",
 
          "./canvasview/CeLine"
          './canvasview/CeAz'

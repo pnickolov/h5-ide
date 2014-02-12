@@ -123,7 +123,7 @@ define [ "./CanvasElement", "constant", "CanvasManager", "Design" ], ( CanvasEle
         # instance-state
         node.append(
           Canvon.circle(68, 15, 5,{}).attr({
-            'id'    : '#{@id}_instance-state'
+            'id'    : "#{@id}_instance-state"
             'class' : 'instance-state instance-state-unknown'
           })
         )

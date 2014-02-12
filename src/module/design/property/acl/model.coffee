@@ -90,6 +90,8 @@ define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, const
             component = Design.instance().component( uid )
 
             aclObj = MC.data.resource_list[Design.instance().region()][ component.get 'appId' ]
+            if not aclObj then return false
+
             aclObj.name = component.get 'name'
 
             aclObj.rule_number = 0

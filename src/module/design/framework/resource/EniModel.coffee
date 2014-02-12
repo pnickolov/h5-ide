@@ -376,7 +376,9 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
 
         hasEip = ipObj.hasEip
 
-        ipObj = memberData.ips[ idx ]
+        # The memberData might not have enough ip there. So we use the ipObj in this eni.
+        # This happens when AppEdit, the servergroup adds another IP.
+        ipObj = memberData.ips[ idx ] || ipObj
         if servergroupOption.number > 1
           autoAssign = true
         else

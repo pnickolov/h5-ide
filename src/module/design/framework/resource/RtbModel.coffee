@@ -154,11 +154,14 @@ define [ "../ComplexResModel", "Design", "../connection/Route", "../connection/R
       # Create asso between RTB and Subnet
       for r in data.resource.AssociationSet || []
         if not r.Main and r.SubnetId
-          # When an subnet is created, it will automatically connect to a RTB.
-          # So here, the RtbAsso might already exist.
-          # We need to directly call set to update its attributes.
-          rtbasso = new RtbAsso( rtb, design.component( MC.extractID( r.SubnetId ) ) )
-          rtbasso.set { implicit : false, assoId : r.RouteTableAssociationId }
+          # The fact is subnet will automatically creates an RtbAsso to the MainRtb
+          # So if this is mainRtb, the connection will exist, so we need to ensure the
+          # line is implicit.
+          # Ignoring the fact, we would still like to explicitly set the `implicit` to false.
+          new RtbAsso rtb, design.component(MC.extractID(r.SubnetId)), {
+            implicit : false
+            assoId : r.RouteTableAssociationId
+          }
 
       # Create routes between RTB and resources
       routes = data.resource.RouteSet

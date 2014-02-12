@@ -79,6 +79,10 @@ define [ "./ResourceModel", "Design", "CanvasManager", "./canvasview/CanvasEleme
         cn = Design.modelClassForType( @type ).findExisting( p1Comp, p2Comp )
         if cn
           console.info "Found existing connection #{@type} of ", [p1Comp, p2Comp]
+
+          # If the user creates a connection with some additonal parameters,
+          # then we would like to assign these parameters to the found connection.
+          if attr then cn.set attr
           return cn
 
       if @portDefs

@@ -23,6 +23,7 @@ define [ "../base/main",
         initStack : () ->
             @model = model
             @model.isApp = false
+            @model.isAppEdit = false
             @view  = view
             null
 
@@ -33,12 +34,14 @@ define [ "../base/main",
         initApp : () ->
             @model = model
             @model.isApp = true
+            @model.isAppEdit = false
             @view = app_view
             null
 
         initAppEdit : () ->
             @model = model
-            @model.isApp = true
+            @model.isApp = false
+            @model.isAppEdit = true
             @view = app_view
             null
     }

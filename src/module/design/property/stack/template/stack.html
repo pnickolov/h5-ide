@@ -18,7 +18,7 @@
 	</div>
 	<div class="option-group">
     <ul class="acl-sg-info-list acl-info-list property-list" id="stack-property-acl-list"></ul>
-    {{#unless isApp}}<a href="#" class="add-to-list action-link" id="stack-property-new-acl">{{ i18n "PROP_STACK_BTN_CREATE_NEW_ACL" }}</a>{{/unless}}
+    {{#if isAppEdit}}<a href="#" class="add-to-list action-link" id="stack-property-new-acl">{{ i18n "PROP_STACK_BTN_CREATE_NEW_ACL" }}</a>{{/if}}
   </div>
 	{{/if}}
 

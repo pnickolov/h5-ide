@@ -4,12 +4,14 @@
 
 define [ '../base/view',
          'text!./template/stack.html',
+         'text!./template/app.html',
          'text!./template/acl.html',
          'text!./template/sub.html',
          'event'
-], ( PropertyView, template, acl_template, sub_template, ide_event ) ->
+], ( PropertyView, template, app_template, acl_template, sub_template, ide_event ) ->
 
     template     = Handlebars.compile template
+    app_template = Handlebars.compile app_template
     acl_template = Handlebars.compile acl_template
     sub_template = Handlebars.compile sub_template
 
@@ -27,12 +29,28 @@ define [ '../base/view',
 
         render     : () ->
 
-            @$el.html( template( @model.attributes ) )
-            @setTitle( "Stack - #{@model.get('name')}" )
+            t = template
+            if @model.isApp or @model.isAppEdit
+                tpl = app_template
+                if @model.attributes.isImport
+                    str = '<header class="property-sidebar-title sidebar-title truncate" id="property-title">Visualization - '+@model.attributes.vpcid+'<i class="icon-info tooltip property-header-info" data-tooltip="Currently you can rearrange the layout of visualisation and export it as PNG image file. Future version will include the feature to import VPC resource as an app. "></i></header>'
+                    $('#property-title').html(str)
+                else
+                    title = "App - #{@model.get('name')}"
+            else
+                tpl = template
+                title = "Stack - #{@model.get('name')}"
+
+            @$el.html( tpl( @model.attributes ) )
+
+            if title
+                @setTitle( "Stack - #{@model.get('name')}" )
 
             @refreshACLList()
 
-            @updateSNSList @model.get("subscription"), true
+            if not @model.isApp and not @model.isAppEdit
+                @updateSNSList @model.get("subscription"), true
+
             null
 
         stackNameChanged : () ->

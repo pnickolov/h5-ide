@@ -62,6 +62,7 @@ define [ '../base/main',
         initStack : ( uid ) ->
             @model = model
             @model.isApp = false
+            @model.isAppEdit = false
             @view  = view
             null
 
@@ -77,7 +78,8 @@ define [ '../base/main',
         initApp : ( uid ) ->
             @model = model
             @model.isApp = true
-            @view  = app_view
+            @model.isAppEdit = false
+            @view  = view
             null
 
         afterLoadApp : () ->
@@ -89,8 +91,9 @@ define [ '../base/main',
 
         initAppEdit : ()->
             @model = model
-            @model.isApp = true
-            @view  = app_view
+            @model.isApp = false
+            @model.isAppEdit = true
+            @view  = view
             null
 
         afterLoadAppEdit : () ->

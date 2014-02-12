@@ -1,11 +1,29 @@
-define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo' ], ( constant, MC, lang, resultVO ) ->
+define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo', 'Design' ], ( constant, MC, lang, resultVO, Design ) ->
 
-    isHasLaunchConfiguration = ( uid ) ->
-        asg = MC.canvas_data.component[ uid ]
-        if asg.resource.LaunchConfigurationName
+    __wrap = ( method ) ->
+        ( uid ) ->
+            if __hasState uid
+                method uid
+            else
+                null
+
+    __hasState = ( uid ) ->
+        if uid
+            component = MC.canvas_data.component[ uid ]
+            component.state and component.state.length
+        else
+            _.some MC.canvas_data.component, ( component ) ->
+                component.state and component.state.length
+
+    __hasType = ( type ) ->
+        _.some MC.canvas_data.component, ( component ) ->
+            component.type is type
+
+    isHasIgw = ( uid ) ->
+        if __hasType constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway
             return null
 
-        tipInfo = sprintf lang.ide.TA_MSG_ERROR_ASG_HAS_NO_LAUNCH_CONFIG, asg.name
+        tipInfo = lang.ide.TA_MSG_ERROR_NO_CGW
 
         # return
         level   : constant.TA.ERROR
@@ -13,20 +31,8 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo' ], ( constant, MC,
         uid     : uid
 
 
-    isELBHasHealthCheck = ( uid ) ->
-        asg =  MC.canvas_data.component[ uid ]
 
-        isConnectELB = MC.aws.asg.isConnectELB( uid )
-        if not isConnectELB or isConnectELB and asg.resource.HealthCheckType is 'ELB'
-            return null
 
-        tipInfo = sprintf lang.ide.TA_MSG_WARNING_ELB_HEALTH_NOT_CHECK, asg.name
-
-        # return
-        level   : constant.TA.WARNING
-        info    : tipInfo
-        uid     : uid
 
     # public
-    isHasLaunchConfiguration    : isHasLaunchConfiguration
-    isELBHasHealthCheck         : isELBHasHealthCheck
+    isHasIgw    : __wrap isHasIgw

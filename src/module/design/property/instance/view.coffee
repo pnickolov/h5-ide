@@ -272,8 +272,9 @@ define [ '../base/view',
 
             if not @validateIpItem( $target ) then return
 
-            ip = $target.siblings( ".input-ip-prefix" ).text() + $target.val()
-            autoAssign = ip is "x" or ip is "x.x"
+            ipVal = $target.val()
+            ip = $target.siblings( ".input-ip-prefix" ).text() + ipVal
+            autoAssign = ipVal is "x" or ipVal is "x.x"
 
             @model.setIp $target.closest("li").index(), ip, autoAssign
             null

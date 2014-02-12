@@ -69,7 +69,7 @@ define [ "Design", "constant", 'lib/forge/app' ], ( Design, constant, forge_app 
 					name        : sg.get("name")
 					desc        : sg.get("description")
 					ruleCount   : sg.ruleCount()
-					memberCount : assos.length
+					memberCount : sg.getMemberList().length
 					hideCheck   : readonly or isStackParent
 					deletable   : deletable
 					used        : enabledSG[ sg.id ]

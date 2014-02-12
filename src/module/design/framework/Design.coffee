@@ -394,14 +394,15 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
     @__backingStore.name = @attributes.name
     null
 
-  DesignImpl.prototype.isModified = ()->
+  DesignImpl.prototype.isModified = ( newData )->
 
     if Design.instance().modeIsApp() then return false
 
     if @__backingStore.name isnt @attributes.name
       return true
 
-    newData = @serialize()
+    if not newData
+      newData = @serialize()
 
     if _.isEqual( @__backingStore.component, newData.component )
       if _.isEqual( @__backingStore.layout, newData.layout )
@@ -507,6 +508,19 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
     { costList : costList, totalFee : Math.round(totalFee * 100) / 100 }
 
   ########## AWS Business logics ############
+  DesignImpl.prototype.diffAmi = ( newData, oldData )->
+
+    newComps = newData.component
+    oldComps = ( oldData || @__backingStore ).component
+
+    newInstances = []
+    oldINstances = []
+
+    {
+      remain : newInstances
+      remove : oldINstances
+    }
+
   DesignImpl.prototype.isStoppable = ()->
     # Previous version will set canvas_data.property.stoppable to false
     # If the stack contains instance-stor ami.

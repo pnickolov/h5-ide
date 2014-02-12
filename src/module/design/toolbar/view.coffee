@@ -3,6 +3,7 @@
 #############################
 
 define [ 'MC', 'event',
+         "Design",
          'i18n!nls/lang.js',
          'text!./stack_template.html',
          'text!./app_template.html',
@@ -12,7 +13,7 @@ define [ 'MC', 'event',
          'backbone', 'jquery', 'handlebars',
          'UI.selectbox', 'UI.notification',
          "UI.tabbar"
-], ( MC, ide_event, lang, stack_tmpl, app_tmpl, appview_tmpl, download, constant ) ->
+], ( MC, ide_event, Design, lang, stack_tmpl, app_tmpl, appview_tmpl, download, constant ) ->
 
     stack_tmpl   = Handlebars.compile stack_tmpl
     app_tmpl     = Handlebars.compile app_tmpl
@@ -642,44 +643,30 @@ define [ 'MC', 'event',
                 require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
 
             else
-                # check changes
+                design = Design.instance()
+                newData = design.serialize()
 
-                # old design flow
-                #diff_data = MC.aws.aws.getChanges(MC.canvas_data, MC.data.origin_canvas_data)
-                #if diff_data.isChanged
-
-                # new design flow
-                diff_data = MC.aws.aws.getChanges MC.common.other.canvasData.data(), MC.common.other.canvasData.origin()
-
-                if MC.common.other.canvasData.isModified()
+                if design.isModified( newData )
 
                     state    = null
                     platform = 'vpc'
                     info     = lang.ide.TOOL_POP_BODY_APP_UPDATE_VPC
 
                     # set state
-
-                    # old design flow
-                    #if MC.canvas_data.state is constant.APP_STATE.APP_STATE_RUNNING
-
-                    # new design flow
                     if MC.common.other.canvasData.get( 'state' ) is constant.APP_STATE.APP_STATE_RUNNING
                         state = constant.APP_STATE.APP_STATE_RUNNING
 
                     # set platform and info
-
-                    # old design flow
-                    #if MC.canvas_data.platform is "ec2-classic"
-
-                    # new design flow
                     if MC.common.other.canvasData.get( 'platform' ) is "ec2-classic"
                         platform = 'ec2'
                         info = lang.ide.TOOL_POP_BODY_APP_UPDATE_EC2
 
                     ## modal init
-                    obj = { 'state' : state, 'platform' : platform, 'info' : info, 'instance_list' : diff_data.changes }
-                    console.log 'app update object'
-                    console.log obj
+                    obj =
+                        state         : state
+                        platform      : platform
+                        info          : info
+                        instance_list : Design.instance().diffAmi( newData )
 
                     modal MC.template.updateApp obj
 

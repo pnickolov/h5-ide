@@ -17,8 +17,7 @@ define [ '../base/model', "Design", 'constant', 'event'  ], ( PropertyModel, Des
             for rule in component.connections("SgRuleSet")
                 rules = rules.concat( rule.toPlainObjects( uid ) )
 
-            members = _.map component.connectionTargets("SgAsso"), ( sgTarget )->
-                sgTarget.get("name")
+            members = _.map component.getMemberList(), ( tgt )-> tgt.get("name")
 
             @set {
                 uid          : uid

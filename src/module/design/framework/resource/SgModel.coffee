@@ -70,6 +70,10 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
         count += ruleset.ruleCount( @id )
       count
 
+    getMemberList : ()->
+      # Sg member does not include any ExpandedAsg
+      _.filter @connectionTargets("SgAsso"), ( tgt )-> tgt.type isnt "ExpandedAsg"
+
     connect : ( cn )->
       if cn.type is "SgAsso"
         @vlineAdd( cn.getOtherTarget( @ ) )

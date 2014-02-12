@@ -165,7 +165,7 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
 
       # Assign new GUID
       if not attributes.id
-        attributes.id = MC.guid()
+        attributes.id = design.guid()
 
       # Assign new name
       if not attributes.name

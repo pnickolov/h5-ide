@@ -96,6 +96,7 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
     @__canvasGroups = {}
     @__classCache   = {}
     @__backingStore = {}
+    @__usedUidCache = {}
 
     @__mode = options.mode
 
@@ -146,18 +147,16 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
     for devistor in Design.__deserializeVisitors
       devistor( json_data, layout_data, version )
 
-    that = @
-
     # Disable triggering event when Design is deserializing
     Design.trigger = noop
 
 
     # A helper function to let each resource to get its dependency
-    resolveDeserialize = ( uid )->
+    resolveDeserialize = ( uid )=>
 
       if not uid then return null
 
-      obj = that.__componentMap[ uid ]
+      obj = this.__componentMap[ uid ]
       if obj then return obj
 
       # Check if we have recursive dependency
@@ -192,6 +191,10 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
     # Deserialize resolveFisrt resources
     @component = null # Forbid user to call component at this time.
     for uid, comp of json_data
+
+      # Collect Used UID. So that we can ensure we will always generate unique uid.
+      @__usedUidCache[ uid ] = true
+
       if Design.__resolveFirstMap[ comp.type ] is true
         ModelClass = Design.modelClassForType( comp.type )
 
@@ -279,6 +282,10 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
       delete @__componentMap[ id ]
       delete @__canvasGroups[ id ]
       delete @__canvasNodes[ id ]
+
+      # Only in stack mode, we reclaim the id once the component is removed from cache.
+      if @modeIsAppEdit()
+        @reclaimGuid( id )
     else
       @__componentMap[ id ] = comp
 
@@ -314,6 +321,16 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
       type = port2 + ">" + port1
 
     @__modelClassMap[ type ]
+
+  DesignImpl.prototype.reclaimGuid = ( guid )-> delete @__usedUidCache[ guid ]
+  DesignImpl.prototype.guid = ()->
+    newId = MC.guid()
+    while @__usedUidCache[ newId ]
+      console.warn "GUID collision detected, the generated GUID is #{newId}. Try generating a new one."
+      newId = MC.guid()
+
+    @__usedUidCache[ newId ] = true
+    newId
 
   DesignImpl.prototype.get = ( key )-> @attributes[key]
   DesignImpl.prototype.set = ( key, value )->

@@ -928,3 +928,7 @@
 #state-description .highlight  {
 	color: #000;
 }
+
+#state-description .icon-log-refresh {
+	background-color: #f00;
+}

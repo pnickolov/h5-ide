@@ -1861,7 +1861,7 @@ MC.canvas.layout = {
 				'width' : canvas_size[0] * MC.canvas.GRID_WIDTH,
 				'height': canvas_size[1] * MC.canvas.GRID_HEIGHT
 			};
-		
+
 		// var dict_sg = {};
 		// var dict_sg_elb = {};
 
@@ -4699,16 +4699,16 @@ MC.canvas.event.appMove = function (event)
 
 MC.canvas.event.appDrawConnection = function ()
 {
-	if ($(this).is([
-		'.port-instance-sg',
-		'.port-eni-sg',
-		'.port-launchconfig-sg',
-		'.port-elb-sg'
-		].join(', ')
-	))
-	{
-		MC.canvas.event.drawConnection.mousedown.call( this, event );
-	}
+	// if ($(this).is([
+	// 	'.port-instance-sg',
+	// 	'.port-eni-sg',
+	// 	'.port-launchconfig-sg',
+	// 	'.port-elb-sg'
+	// 	].join(', ')
+	// ))
+	// {
+	MC.canvas.event.drawConnection.mousedown.call( this, event );
+	// }
 
 	return false;
 };

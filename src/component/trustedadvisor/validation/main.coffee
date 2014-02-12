@@ -15,7 +15,6 @@ define ['MC',
         './vpc/eni'
         './stateeditor/main'
         './state/state'
-        './state/state_global'
 
 
 ], ( MC, stack, instance, subnet, vpc, elb, sg, asg, eip, az, vpn, igw, acl, cgw, eni, stateEditor, state, stateGlobal ) ->
@@ -36,7 +35,6 @@ define ['MC',
         eni : eni
         stateEditor: stateEditor
         state: state
-        stateGlobal: stateGlobal
 
 
 

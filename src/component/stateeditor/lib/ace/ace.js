@@ -380,7 +380,7 @@ if ([1,2].splice(0).length != 2) {
         array.splice.apply(array, makeArray(26));
 
         lengthBefore = array.length; //46
-        array.splice(5, 0, "XXX"); // add one element
+        array.splice(5, 0, ""); // add one element
 
         lengthBefore + 1 == array.length
 
@@ -12251,6 +12251,9 @@ exports.commands = [{
 }, {
     name: "autocomplete_confirm",
     exec: function(editor, str) { }
+}, {
+    name: "autocomplete_match",
+    exec: function(editor, args) { }
 }, {
     name: "inserttext",
     exec: function(editor, args) {

@@ -57,6 +57,7 @@ define [ 'event',
             $(document).on 'keydown', {target: this}, this.keyEvent
 
         closedPopup: () ->
+
             @trigger 'CLOSE_POPUP'
             $(document).off 'keydown', this.keyEvent
 
@@ -112,6 +113,11 @@ define [ 'event',
             if that.currentState is 'stack'
                 $logPanelToggle = that.$editorModal.find('.state-log-toggle')
                 $logPanelToggle.hide()
+
+            $aceAutocompleteTip = $('.ace_autocomplete_tip')
+            if not $aceAutocompleteTip.length
+                $('body').append('<div class="ace_autocomplete_tip">nothing to match</div>')
+            that.$aceAutocompleteTip = $('.ace_autocomplete_tip')
 
             # , 1)
 
@@ -1433,9 +1439,7 @@ define [ 'event',
             if $editorElem.data('editor')
                 return
 
-            console.time('init core')
             editor = ace.edit(editorElem)
-            console.timeEnd('init core')
 
             $editorElem.data('editor', editor)
 
@@ -1528,6 +1532,26 @@ define [ 'event',
                             that.onArrayInputChange({
                                 currentTarget: $editorElem[0]
                             })
+
+                if e.command.name is "autocomplete_match"
+
+                    isShowTip = false
+
+                    if $editorElem.hasClass('parameter-value')
+
+                        $paraItem = $editorElem.parents('.parameter-item')
+                        if $paraItem.hasClass('state')
+                            isShowTip = true
+
+                    if $editorElem.hasClass('command-value')
+                        isShowTip = true
+
+                    if isShowTip
+
+                        if not e.args
+                            that.$aceAutocompleteTip.show()
+                        else
+                            that.$aceAutocompleteTip.hide()
             )
 
             editor.on("focus", (e, thatEditor) ->
@@ -1537,10 +1561,20 @@ define [ 'event',
                 if not currentValue and hintDataAryMap['focus']
                     that.setEditorCompleter(thatEditor, hintDataAryMap['focus'], 'command')
                     thatEditor.execCommand("startAutocomplete")
+
+                $valueInput = $(thatEditor.container)
+                inputPosX = $valueInput.offset().left
+                inputPosY = $valueInput.offset().top
+                that.$aceAutocompleteTip.css({
+                    left: inputPosX,
+                    top: inputPosY + 25
+                })
+                # that.$aceAutocompleteTip.show()
             )
 
             editor.on("blur", (e) ->
                 that.$cmdDsec.find('.highlight').removeClass('highlight')
+                that.$aceAutocompleteTip.hide()
             )
 
         highlightParaDesc: (paraName) ->

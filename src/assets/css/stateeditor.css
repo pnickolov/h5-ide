@@ -22,7 +22,7 @@
 
 /* *************************************** state editor */
 
-#state-editor {
+#state-editor, .ace_autocomplete_tip {
 	/*padding: 20px;*/
 	height: 460px;
 	overflow-y: auto;
@@ -929,6 +929,19 @@
 	color: #000;
 }
 
-#state-description .icon-log-refresh {
+#state-description .state-log-refresh {
 	background-color: #f00;
+}
+
+.ace_autocomplete_tip {
+	width: 265px;
+	height: 17px;
+	position: absolute;
+	z-index: 999999999;
+	display: none;
+	padding-left: 5px;
+	background-color: #fff;
+	border: 1px #aaa solid;
+	font-size: 12px;
+	line-height: 18px;
 }

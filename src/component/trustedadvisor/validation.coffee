@@ -23,7 +23,7 @@ define [ 'constant', 'event', 'ta_conf', './validation/main', './validation/resu
 
         filename = _.last componentType.split '.'
         filename = filename.toLowerCase()
-        filename
+        [ filename ]
 
     _pushResult = ( result, method, filename, uid ) ->
         resultVO.set "#{filename}.#{method}", result, uid
@@ -73,14 +73,15 @@ define [ 'constant', 'event', 'ta_conf', './validation/main', './validation/resu
     _validComponents = () ->
         components = MC.canvas_data.component
         _.each components, ( component , uid ) ->
-            filename = _getFilename component.type
-            _.each validation_main[ filename ], ( func, method ) ->
-                if not _isGlobal(filename, method) and not _isAsync(filename, method)
-                    try
-                        result = validation_main[ filename ][ method ]( uid )
-                        _pushResult result, method, filename, uid
-                    catch err
-                        _handleException( err )
+            filenames = _getFilename component.type
+            _.each filenames, ( filename ) ->
+                _.each validation_main[ filename ], ( func, method ) ->
+                    if not _isGlobal(filename, method) and not _isAsync(filename, method)
+                        try
+                            result = validation_main[ filename ][ method ]( uid )
+                            _pushResult result, method, filename, uid
+                        catch err
+                            _handleException( err )
 
             # validate state editor
             #try

@@ -3,12 +3,12 @@
 #* Filename: UI.modal
 #* Creator: Angel
 #* Description: UI.modal
-#* Date: 20130727
+#* Date: 20140213
 # **********************************************************
-# (c) Copyright 2013 Madeiracloud  All Rights Reserved
+# (c) Copyright 2014 Madeiracloud  All Rights Reserved
 # **********************************************************
 */
-var modal = function (template, dismiss, callback)
+var modal = function (template, dismiss, callback, options)
 {
 	var modal_wrap = $('#modal-wrap');
 
@@ -16,6 +16,11 @@ var modal = function (template, dismiss, callback)
 	{
 		$(document.body).append('<div id="modal-wrap"></div>');
 		modal_wrap = $('#modal-wrap');
+	}
+
+	if (options && options.opacity)
+	{
+		modal_wrap.css('background-color', 'rgba(0, 0, 0, ' + options.opacity + ')');
 	}
 
 	modal_wrap.html('<div id="modal-box">' + template + '</div>');
@@ -38,7 +43,7 @@ var modal = function (template, dismiss, callback)
 
 	$("#modal-box")
 		.on('click', '.modal-close', modal.close)
-		.on('mousedown', '.modal-header', modal.drag.mousedown);
+		.on('mousedown', '.modal-header', {'options': options}, modal.drag.mousedown);
 
 	if (callback)
 	{
@@ -50,7 +55,6 @@ var modal = function (template, dismiss, callback)
 
 modal.open = function (event)
 {
-	console.info(event);
 	var target = $(this),
 		target_template = target.data('modal-template'),
 		target_data = target.data('modal-data');
@@ -139,7 +143,8 @@ modal.drag = {
 		}, {
 			'target': target,
 			'left': event.pageX - target_position.left,
-			'top': event.pageY - target_position.top
+			'top': event.pageY - target_position.top,
+			'options': event.data.options
 		});
 
 		event.preventDefault();
@@ -159,29 +164,55 @@ modal.drag = {
 	mouseup: function (event)
 	{
 		var target = event.data.target,
+			options = event.data.options,
 			position = target.position(),
 			height = target.height(),
 			width = target.width(),
 			prop = {};
 
-		if (position.top < 0)
+		if (options && options.conflict === 'loose')
 		{
-			prop['top'] = 10;
-		}
+			if (position.top < 0)
+			{
+				prop['top'] = 10;
+			}
 
-		if (position.left < 0)
-		{
-			prop['left'] = 10;
-		}
+			if (position.left < -width * 0.8)
+			{
+				prop['left'] = 10;
+			}
 
-		if (position.top > window.innerHeight - height)
-		{
-			prop['top'] = window.innerHeight - height - 10;
-		}
+			if (position.top > window.innerHeight - height + (height * 0.7))
+			{
+				prop['top'] = window.innerHeight - height - 10;
+			}
 
-		if (position.left > window.innerWidth - width)
+			if (position.left > window.innerWidth - width + (width * 0.8))
+			{
+				prop['left'] = window.innerWidth - width - 25;
+			}
+		}
+		else
 		{
-			prop['left'] = window.innerWidth - width - 25;
+			if (position.top < 0)
+			{
+				prop['top'] = 10;
+			}
+
+			if (position.left < 0)
+			{
+				prop['left'] = 10;
+			}
+
+			if (position.top > window.innerHeight - height)
+			{
+				prop['top'] = window.innerHeight - height - 10;
+			}
+
+			if (position.left > window.innerWidth - width)
+			{
+				prop['left'] = window.innerWidth - width - 25;
+			}
 		}
 
 		if (!$.isEmptyObject(prop))

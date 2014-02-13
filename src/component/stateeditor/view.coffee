@@ -70,7 +70,7 @@ define [ 'event',
                 res_name: that.resName,
                 supported_platform: that.supportedPlatform,
                 current_state: that.currentState
-            }), false
+            }), false, null, {opacity: 0.2, conflict: 'loose'}
 
             # setTimeout(() ->
 

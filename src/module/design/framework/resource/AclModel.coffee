@@ -107,6 +107,9 @@ define [ "../ComplexResModel", "../ConnectionModel", "constant" ], ( ComplexResM
 
       if ruleExist then return false
 
+      # Add rule Id for the rule
+      rule.id = _.uniqueId( "aclrule_" )
+
       currentRules = currentRules.slice(0)
       currentRules.push rule
       @set "rules", currentRules

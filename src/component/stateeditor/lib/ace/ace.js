@@ -2680,6 +2680,19 @@ var Editor = function(renderer, session) {
         }
 
         if (container_item.hasClass('command-value')) {
+            var stack = $('#state-editor .state-item'),
+                selected_index = $('#state-editor .state-item.selected').index('#state-editor .state-list > li');
+
+            $('#state-editor .state-item.selected').removeClass('selected').addClass('view');
+
+            if (selected_index > 0) {
+                stack.eq( selected_index - 1 ).addClass('selected').removeClass('view').find('.command-value .ace_text-input').focus();
+            }
+
+            if (selected_index === 0) {
+                stack.eq( stack.length - 1 ).addClass('selected').removeClass('view').find('.command-value .ace_text-input').focus();
+            }
+
             return false;
         }
 

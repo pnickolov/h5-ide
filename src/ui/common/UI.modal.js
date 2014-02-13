@@ -25,7 +25,46 @@ var modal = function (template, dismiss, callback, options)
 
 	modal_wrap.html('<div id="modal-box">' + template + '</div>');
 
-	$('#modal-box').children(':first').show();
+	var newStyle = '';
+	var newClass = '';
+
+	var $source = null;
+	
+	if (options && options.$source) {
+		$source = options.$source
+	}
+	
+	if ($source) {
+		var srcLeft = $source.offset().left;
+		var srcTop = $source.offset().top;
+		var srcWidth = $source.width();
+		var srcHeight = $source.height();
+
+		newStyle = "overflow:hidden;opacity:0;left:" +
+			srcLeft + "px;top:" + srcTop + "px;width:" +
+			srcWidth + "px;height:" + srcHeight + "px;";
+
+		newClass = "modal-transition-animation";
+	}
+
+	modal_wrap.html('<div id="modal-box" class="' + newClass + '" style="' + newStyle + '">' + template + '</div>');
+
+	$modal = $('#modal-box');
+
+	$modal.show();
+	$modal.children(':first').show();
+
+	if ($source) {
+		$modal.css({
+			'opacity': 1,
+			'width': $modal.find('div').width(),
+			'height': $modal.find('div').height()
+		});
+
+		$modal.on('webkitTransitionEnd transitionend oTransitionEnd', function() {
+			$modal.removeClass('modal-transition-animation');
+		});
+	}
 
 	modal.position();
 
@@ -234,8 +273,8 @@ modal.position = function ()
 	var modal_box = $('#modal-box');
 
 	modal_box.css({
-		'top': (window.innerHeight - modal_box.height()) / 2,
-		'left': (window.innerWidth - modal_box.width()) / 2
+		'top': (window.innerHeight - modal_box.find('div').height()) / 2,
+		'left': (window.innerWidth - modal_box.find('div').width()) / 2
 	});
 
 	return true;

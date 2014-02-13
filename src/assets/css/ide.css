@@ -7254,3 +7254,20 @@ summary:focus {
 	text-align: center;
 	display: none;
 }
+
+.modal-transition-animation {
+	transition: all 0.5s ease-in-out;
+	-webkit-transition:  0.5s ease-in-out;
+	-moz-transition: all 0.5s ease-in-out;
+	-o-transition: all 0.5s ease-in-out;
+
+	transition-property: left, top, width, height, opacity;
+	-webkit-transition-property: left, top, width, height, opacity;
+	-moz-transition-property: left, top, width, height, opacity;
+	-o-transition-property: left, top, width, height, opacity;
+
+/*	-webkit-transition: all 5s ease-in-out;
+	-moz-transition: all 5s ease-in-out;
+	-o-transition: all 5s ease-in-out;
+	transition: all 5s ease-in-out;*/
+}

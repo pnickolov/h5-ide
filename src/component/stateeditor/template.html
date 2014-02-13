@@ -160,7 +160,7 @@
 {{/each}}
 
 <!-- state-template-editor-modal -->
-<div style="width:900px;height:610px;" id="state-editor-model" class="se-model-{{current_state}}">
+<div style="width:900px;" id="state-editor-model" class="se-model-{{current_state}}">
 	<div class="modal-header">
 		<h3>Conﬁguration Manager of {{res_name}}</h3>
 		<div class="selectbox state-editor-res-select">
@@ -175,33 +175,35 @@
 		<li class="state-log-refresh"></li>
 	</ul>
 
-	<div id="state-editor-body" class="scroll-content modal-body clearfix">
-		<div id="state-editor" spellcheck="false">
-			{{#unless supported_platform}}<div class="state-warning">The AMI's distro cannot be recognised. Some commands may not apply to this AMI.</div>{{/unless}}
-			<ol class="state-list"></ol>
-			<div class="state-item-add">+ Add New State...</div>
-		</div>
-		<div id="state-description" data-command=""></div>
-		<div id="state-log" data-state-id="">
-			<ul class="state-log-list">
-				{{> state-template-log-instance-item}}
-				{{> state-template-log-item}}
-			</ul>
-			<div class="state-log-loading">Loading...</div>
-			<div class="state-log-info">
-				<div class="state-log-title">All states are pending.</div>
-				<div class="state-log-detail">
-					<span class="pending">Detailed log will show here when a state succeeds or fails.</span>
-					<span class="stoped">The app is currently stopped. Detailed log will show here when the app is started and a state succeeds or fails.</span>
+	<div id="state-editor-wrap">
+		<div id="state-editor-body" class="scroll-content modal-body clearfix">
+			<div id="state-editor" spellcheck="false">
+				{{#unless supported_platform}}<div class="state-warning">The AMI's distro cannot be recognised. Some commands may not apply to this AMI.</div>{{/unless}}
+				<ol class="state-list"></ol>
+				<div class="state-item-add">+ Add New State...</div>
+			</div>
+			<div id="state-description" data-command=""></div>
+			<div id="state-log" data-state-id="">
+				<ul class="state-log-list">
+					{{> state-template-log-instance-item}}
+					{{> state-template-log-item}}
+				</ul>
+				<div class="state-log-loading">Loading...</div>
+				<div class="state-log-info">
+					<div class="state-log-title">All states are pending.</div>
+					<div class="state-log-detail">
+						<span class="pending">Detailed log will show here when a state succeeds or fails.</span>
+						<span class="stoped">The app is currently stopped. Detailed log will show here when the app is started and a state succeeds or fails.</span>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
 
-	<div class="state-bottom modal-footer">
-		<div class="state-save btn btn-blue">Save</div>
-		<div class="state-cancel btn btn-silver">Cancel</div>
-		<div class="state-close btn btn-silver">Close</div>
+		<div class="state-bottom modal-footer">
+			<div class="state-save btn btn-blue">Save</div>
+			<div class="state-cancel btn btn-silver">Cancel</div>
+			<div class="state-close btn btn-silver">Close</div>
+		</div>
 	</div>
 </div>
 

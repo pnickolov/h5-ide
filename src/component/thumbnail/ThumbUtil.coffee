@@ -283,7 +283,7 @@ define ['UI.canvg', 'UI.download'], ()->
 
   cleanupThumbnail = ()->
     validId = {}
-    for id, region of MC.data.app_list
+    for id, region of MC.data.app_thumb_list
       for app in region
         validId[ app.id ] = true
 

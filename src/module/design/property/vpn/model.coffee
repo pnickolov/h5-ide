@@ -12,17 +12,15 @@ define [ '../base/model', "Design", "constant" ], ( PropertyModel, Design, const
             vgw = vpn.getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway )
             cgw = vpn.getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_CustomerGateway )
 
-            if @isApp
+            if @isApp or @isAppEdit
                 @getAppData( vpn.get("appId") )
 
-            else
-                @set {
-                    uid     : uid
-                    name    : "vpn:#{cgw.get('name')}"
-                    ips     : vpn.get("routes")
-                    dynamic : cgw.isDynamic()
-                }
-
+            @set {
+                uid     : uid
+                name    : "vpn:#{cgw.get('name')}"
+                ips     : vpn.get("routes")
+                dynamic : cgw.isDynamic()
+            }
             null
 
         updateIps : ( ipset ) ->
@@ -42,22 +40,10 @@ define [ '../base/model', "Design", "constant" ], ( PropertyModel, Design, const
 
             # vpn.detail = JSON.parse MC.aws.vpn.generateDownload( [ config ], vpn )
 
-            #set vpn routing
-            if vpn.options.staticRoutesOnly
-                vpn.routing = "Static"
-            else
-                vpn.routing = "Dynamic"
-
-            # cgw state color
-            twoStateColorMap =
-                DOWN : 'red'
-                UP   : 'green'
-
             if vpn.vgwTelemetry and vpn.vgwTelemetry.item
-              vpn.vgwTelemetry.item = _.map vpn.vgwTelemetry.item, ( item, idx ) ->
+              vpn.vgwTelemetry = _.map vpn.vgwTelemetry.item, ( item, idx ) ->
                 item = $.extend true, {}, item
                 item.index = idx + 1
-                item.stateColor = twoStateColorMap[item.status]
                 item
 
             vpn.isApp = @isApp

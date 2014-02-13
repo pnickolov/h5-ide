@@ -948,6 +948,7 @@ textarea {
 /* Stauts size is decided by context */
 
 .status-green,
+.status-UP,
 .status-running,
 .status-Running,
 .status-in-use,
@@ -963,6 +964,7 @@ textarea {
 }
 
 .status-red,
+.status-DOWN,
 .status-stopped,
 .status-Stopped,
 .status-Terminated,

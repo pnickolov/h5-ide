@@ -43,7 +43,7 @@ define [ '../base/model', "Design", "constant" ], ( PropertyModel, Design, const
             # vpn.detail = JSON.parse MC.aws.vpn.generateDownload( [ config ], vpn )
 
             #set vpn routing
-            if vpn.options.staticRoutesOnly is "true"
+            if vpn.options.staticRoutesOnly
                 vpn.routing = "Static"
             else
                 vpn.routing = "Dynamic"

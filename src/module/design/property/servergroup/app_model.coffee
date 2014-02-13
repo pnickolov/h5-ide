@@ -38,7 +38,7 @@ define [ '../base/model',
 
 			# Ebs Optimized
 			@set 'instance_type', myInstanceComponent.getInstanceTypeList()
-			@set 'ebs_optimized', "" + myInstanceComponent.get 'EbsOptimized' is "true"
+			@set 'ebs_optimized', myInstanceComponent.isEbsOptimizedEnabled()
 			@set 'can_set_ebs',   MC.aws.instance.canSetEbsOptimized myInstanceComponent
 			routeCount = myInstanceComponent.connectionTargets( 'RTB_Route' ).length
 

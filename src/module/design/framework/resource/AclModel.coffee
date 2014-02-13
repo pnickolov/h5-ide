@@ -120,7 +120,7 @@ define [ "../ComplexResModel", "../ConnectionModel", "constant" ], ( ComplexResM
           break
 
       if theRule.number is "32767" then return false
-      if @get.isDefault() and theRule.number is "100" then return false
+      if @isDefault() and theRule.number is "100" then return false
 
       @set "rules", rules.slice(0).splice( idx, 1 )
       true

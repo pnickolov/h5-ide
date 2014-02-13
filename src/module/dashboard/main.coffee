@@ -24,6 +24,22 @@ define [ "component/thumbnail/ThumbUtil", 'jquery', 'event', 'MC', 'base_main', 
         accountIsDemo: ->
             $.cookie('account_id') is 'demo_account'
 
+        cleanupThumbnail: ->
+            appListGot = stackListGot = false
+            keepArray = []
+            for id, region of MC.data.app_thumb_list
+              for app in region
+                keepArray.push app.id
+
+            for id, region of MC.data.stack_list
+              for app in region
+                keepArray.push app.id
+
+            ThumbUtil.cleanup( keepArray )
+            null
+
+
+
     initialize()
 
     # private
@@ -158,12 +174,7 @@ define [ "component/thumbnail/ThumbUtil", 'jquery', 'event', 'MC', 'base_main', 
                 view.renderMapResult()
                 model.getItemList 'app', current_region, overview_app
 
-
-                if stackListGot
-                    ThumbUtil.cleanup()
-                    stackListGot = false
-                else
-                    appListGot = true
+                if stackListGot then Helper.cleanupThumbnail()
                 null
 
             ide_event.onLongListen 'RESULT_STACK_LIST', ( result ) ->
@@ -177,12 +188,7 @@ define [ "component/thumbnail/ThumbUtil", 'jquery', 'event', 'MC', 'base_main', 
 
                 model.getItemList 'stack', current_region, overview_stack
 
-
-                if appListGot
-                    ThumbUtil.cleanup()
-                    appListGot = false
-                else
-                    stackListGot = true
+                if appListGot then Helper.cleanupThumbnail()
                 null
 
             ide_event.onLongListen ide_event.NAVIGATION_TO_DASHBOARD_REGION, ( result ) ->

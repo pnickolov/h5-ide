@@ -281,15 +281,10 @@ define ['UI.canvg', 'UI.download'], ()->
     localStorage.removeItem "tn/#{id}"
     null
 
-  cleanupThumbnail = ()->
+  cleanupThumbnail = ( keepArray )->
     validId = {}
-    for id, region of MC.data.app_thumb_list
-      for app in region
-        validId[ app.id ] = true
-
-    for id, region of MC.data.stack_list
-      for app in region
-        validId[ app.id ] = true
+    for keepId in keepArray
+      validId[ keepId ] = true
 
     # Remove expired thumbnail
     oldArray    = (localStorage.getItem("thumbnails") or "").split(",")

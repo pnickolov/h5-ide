@@ -5,14 +5,19 @@
 define [ '../base/main',
          './model',
          './view',
-         './app_view',
          '../sglist/main',
          'event',
          "Design"
-], ( PropertyModule, model, view, app_view, sglist_main, ide_event, Design ) ->
+], ( PropertyModule, model, view, sglist_main, ide_event, Design ) ->
 
     # Listen shared view events here
-    app_view.on 'OPEN_ACL', ( uid ) ->
+    view.on 'STACK_NAME_CHANGED', ( name ) ->
+        design = Design.instance()
+        design.set("name", name)
+        ide_event.trigger ide_event.UPDATE_DESIGN_TAB, design.get("id"), name + ' - stack'
+        null
+
+    view.on 'OPEN_ACL', ( uid ) ->
         PropertyModule.loadSubPanel( "ACL", uid )
         null
 
@@ -41,22 +46,6 @@ define [ '../base/main',
         ### # # # # # # # # # # # #
         # For stack mode
         ###
-
-        # After initStack is called, this method will be called to setup connection between
-        # model / view. It is called only once.
-        setupStack : () ->
-            me = @
-
-            @view.on 'STACK_NAME_CHANGED', ( name ) ->
-                design = Design.instance()
-                design.set("name", name)
-                ide_event.trigger ide_event.UPDATE_DESIGN_TAB, design.get("id"), name + ' - stack'
-                null
-
-            @view.on 'OPEN_ACL', ( uid ) ->
-                PropertyModule.loadSubPanel( "ACL", uid )
-                null
-            null
 
         # In initStack, all we have to do is to assign this.model / this.view
         initStack : ( uid ) ->

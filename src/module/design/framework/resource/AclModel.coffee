@@ -122,7 +122,9 @@ define [ "../ComplexResModel", "../ConnectionModel", "constant" ], ( ComplexResM
       if theRule.number is "32767" then return false
       if @isDefault() and theRule.number is "100" then return false
 
-      @set "rules", rules.slice(0).splice( idx, 1 )
+      rules = rules.slice(0)
+      rules.splice( idx, 1 )
+      @set "rules", rules
       true
 
     getRuleCount : ()-> @get("rules").length

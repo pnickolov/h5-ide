@@ -2698,11 +2698,13 @@ var Editor = function(renderer, session) {
         }
     };
 
-    this.removeState = function () {
-        if (container_item.hasClass('command-value')) {
-            $('.state-list').find('.selected').remove();
-        }
-
+    this.removeState = function (target) {
+        // var container = target.container,
+        //     container_item = $(container);
+        // if (container_item.hasClass('command-value')) {
+        //     $('.state-list').find('.selected').remove();
+        // }
+        $('#state-editor-body').trigger('REMOVE_STATE', $('.state-list').find('.selected'));
         return false;
     },
 
@@ -12207,7 +12209,7 @@ exports.commands = [{
 
     name: "removestate",
     bindKey: bindKey("Ctrl-Delete", "Ctrl-Backspace"),
-    exec: function(editor) { editor.removeState(); },
+    exec: function(editor) { editor.removeState(editor); },
     multiSelectAction: "forEach"
 }, {
     name: "outdent",

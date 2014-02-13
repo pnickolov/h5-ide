@@ -36,6 +36,7 @@ define [ 'event',
             'click .parameter-item .parameter-remove': 'onParaRemoveClick'
             'click .state-desc-toggle': 'onDescToggleClick'
             'click .state-log-toggle': 'onLogToggleClick'
+            'click .state-log-refresh': 'onLogRefreshClick'
             'click .state-item-add': 'onStateItemAddClick'
 
             'OPTION_CHANGE .state-editor-res-select': 'onResSelectChange'
@@ -45,9 +46,11 @@ define [ 'event',
 
             'SWITCH_STATE': 'onSwitchState'
 
-            'EXPAND_STATE': 'expandState',
+            'EXPAND_STATE': 'onExpandState',
 
-            'COLLAPSE_STATE': 'collapseState'
+            'COLLAPSE_STATE': 'onCollapseState'
+
+            'REMOVE_STATE': 'onRemoveState'
 
         initialize: () ->
 
@@ -99,13 +102,7 @@ define [ 'event',
             that.initResSelect()
 
             # refresh state log
-            $resSelectElem = that.$editorModal.find('.state-editor-res-select')
-            if that.currentState is 'stack'
-                $resSelectElem.hide()
-            else
-                that.onResSelectChange({
-                    target: $resSelectElem[0]
-                })
+            that.onLogRefreshClick()
 
             if that.isShowLogPanel
                 that.showLogPanel()
@@ -116,7 +113,7 @@ define [ 'event',
 
             $aceAutocompleteTip = $('.ace_autocomplete_tip')
             if not $aceAutocompleteTip.length
-                $('body').append('<div class="ace_autocomplete_tip">nothing to match</div>')
+                $('body').append('<div class="ace_autocomplete_tip">No result matches the input</div>')
             that.$aceAutocompleteTip = $('.ace_autocomplete_tip')
 
             # , 1)
@@ -255,6 +252,17 @@ define [ 'event',
                     that.refreshLogItemNum()
                     null
             })
+
+        onLogRefreshClick: (event) ->
+
+            that = this
+            $resSelectElem = that.$editorModal.find('.state-editor-res-select')
+            if that.currentState is 'stack'
+                $resSelectElem.hide()
+            else
+                that.onResSelectChange({
+                    target: $resSelectElem[0]
+                })
 
         refreshStateList: (stateListObj) ->
 
@@ -860,7 +868,7 @@ define [ 'event',
             that.refreshStateView($stateItem)
             $stateItem.addClass('view')
 
-        expandState: (event) ->
+        onExpandState: (event) ->
             
             that = this
 
@@ -868,7 +876,7 @@ define [ 'event',
 
             return false
 
-        collapseState: (event) ->
+        onCollapseState: (event) ->
             
             that = this
 
@@ -988,9 +996,7 @@ define [ 'event',
             $currentElem = $(event.currentTarget)
             $stateItem = $currentElem.parents('.state-item')
 
-            $stateItem.remove()
-
-            that.refreshLogItemNum()
+            that.onRemoveState(null, $stateItem)
 
         submitValidate: ( element ) ->
 
@@ -1899,27 +1905,30 @@ define [ 'event',
             $aceAutoCompList.remove()
 
         keyEvent: (event) ->
-            that = event.data.target
+
+            that = this
+
+            target = event.data.target
             keyCode = event.which
 
             # Remove state item [Ctrl + delete/backspace]
             if event.ctrlKey and (keyCode is 46 or keyCode is 8)
-                $('.state-list').find('.selected').remove()
+                that.onRemoveState(null, $('.state-list').find('.selected'))
                 return false
 
             # Add state item [Ctrl + +]
             if event.ctrlKey and keyCode is 187
-                that.addStateItem.call(that, event)
+                target.addStateItem.call(target, event)
                 return false
 
             # Expand state item [Ctrl + down]
             if event.ctrlKey and keyCode is 38
-                that.expandItem.call(that, $('.state-list').find('.selected'))
+                target.expandItem.call(target, $('.state-list').find('.selected'))
                 return false
 
             # Expand state item [Ctrl + up]
             if event.ctrlKey and keyCode is 40
-                that.collapseItem.call(that, $('.state-list').find('.selected'))
+                target.collapseItem.call(target, $('.state-list').find('.selected'))
                 return false
 
         onSwitchState: (event) ->
@@ -1943,6 +1952,12 @@ define [ 'event',
                 that.expandItem.call this, stack.eq(0).addClass('selected')
 
             return false
+
+        onRemoveState: (event, $targetState) ->
+
+            that = this
+            $targetState.remove()
+            that.refreshLogItemNum()
     }
 
     return StateEditorView

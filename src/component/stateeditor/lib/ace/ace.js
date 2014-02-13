@@ -2693,8 +2693,12 @@ var Editor = function(renderer, session) {
             }
         });
 
-        if (index >= 0) {
+        if (index > 0) {
             stack.eq(index - 1).find('.ace_text-input').focus();
+        }
+
+        if (index === 0) {
+            container_item.parents('.state-item').find('.command-value .ace_text-input').focus();
         }
     };
 

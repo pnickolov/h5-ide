@@ -63,6 +63,7 @@ define [ "../ComplexResModel", "./VpcModel", "Design", "constant", "i18n!nls/lan
       new Model({
         x : vpcX - igwW / 2
         y : vpcY + ( vpcH - igwH ) / 2
+        parent : vpc
       })
       null
 

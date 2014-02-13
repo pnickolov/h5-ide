@@ -133,8 +133,8 @@ define [ "constant", "../ConnectionModel", "Design" ], ( constant, ConnectionMod
       # Ensure valid protocol and port
       rule = {
         protocol : rawRule.protocol
-        fromPort : rawRule.fromPort
-        toPort   : rawRule.toPort
+        fromPort : "" + rawRule.fromPort
+        toPort   : "" + rawRule.toPort
       }
       if rule.protocol is "-1" or rule.protocol is "all"
         rule.protocol = "all"
@@ -266,9 +266,14 @@ define [ "constant", "../ConnectionModel", "Design" ], ( constant, ConnectionMod
       else
         owner = @port1Comp().id
 
-      ports = (""+ruleObj.port).split("-")
+      ports = ""+ruleObj.port
+      if ports.indexOf "/"
+        ports = ports.split("/")
+      else
+        ports = ports.split("-")
+
       ruleObj.fromPort = ports[0]
-      ruleObj.toPort   = if ports.length >= 2 then ruleObj[1] else ""
+      ruleObj.toPort   = ports[1] or ""
 
       @removeRawRule( owner, ruleObj.direction, ruleObj )
       null

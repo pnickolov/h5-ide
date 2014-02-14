@@ -4,60 +4,87 @@ define [ "constant", "../ConnectionModel", "../ResourceModel", "component/sgrule
   # SgRuleLine is used to draw lines in canvas
   SgRuleLine = ConnectionModel.extend {
 
-    initialize : ( attributes, option )->
-      console.assert( @port1Comp() isnt @port2Comp(), "Sgline should connect to different resources." )
+    constructor : ( p1Comp, p2Comp, attr, option ) ->
+      console.assert( p1Comp isnt p2Comp, "Sgline should connect to different resources." )
 
-      # If Eni is attached to Ami, then hide sg line
-      ami = @getTarget constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
-      eni = @getTarget constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+      # Override the constructor to determine if the line should be created.
+      # Using the `@setDestroyAfterInit()` has its limilation
+
+      @assignCompsToPorts( p1Comp, p2Comp )
+      if not @shouldCreateLine()
+        return
+
+      ConnectionModel.call this, p1Comp, p2Comp, attr, option
+
+    shouldCreateLine : ()->
+      p1Comp = @port1Comp()
+      p2Comp = @port2Comp()
+
+      TYPE   = constant.AWS_RESOURCE_TYPE
+
+      # There will never be sgline between two Elb.
+      if p1Comp.type is p2Comp.type and p1Comp.type is TYPE.AWS_ELB
+        return false
+
+      # Sgline only exist when eni is not attached to the ami
+      ami = @getTarget TYPE.AWS_EC2_Instance
+      eni = @getTarget TYPE.AWS_VPC_NetworkInterface
       if ami and eni
         for e in ami.connectionTargets( "EniAttachment" )
-          if e is eni
-            @setDestroyAfterInit()
-            return
+          if e is eni then return false
 
       # Hide sglist between lc and expandedasg
       expandAsg = @getTarget "ExpandedAsg"
-      lc        = @getTarget constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+      lc        = @getTarget TYPE.AWS_AutoScaling_LaunchConfiguration
       if expandAsg and lc and expandAsg.get("originalAsg").get("lc") is lc
-        @setDestroyAfterInit()
-        return
+        return false
+
+      # If elb is internet-facing, don't show line.
+      elb = @getTarget TYPE.AWS_ELB
+      if elb and not elb.get("internal")
+        return false
+
+      true
 
 
+    # validate() returns true if the line should still exist.
+    validate : ( autoRemoveWhenFailValidatation )->
+      # Only show sg line for inbound rules of elb
+      result = true
+      elb = @getTarget constant.AWS_RESOURCE_TYPE.AWS_ELB
+      if elb
+        elbSgMap  = {}
+        hasInRule = false
+        for sg in elb.connectionTargets( "SgAsso" )
+          elbSgMap[ sg.id ] = sg
+
+        for sg in @getOtherTarget( elb ).connectionTargets( "SgAsso" )
+          for ruleset in sg.connections( "SgRuleSet" )
+            target = ruleset.getOtherTarget( sg )
+            if not elbSgMap[ target.id ] then continue
+
+            if ruleset.hasRawRuleTo( elbSgMap[ target.id ] )
+              hasInRule = true
+              break
+
+          if hasInRule then break
+
+        if not hasInRule then result = false
+
+
+      if not result and autoRemoveWhenFailValidatation
+        @remove( { reason : "Validation Failed" } )
+
+      result
+
+    initialize : ( attributes, option )->
       # If the line is created by the user, we should a popup dialog to let
       # user add sgrule. And then immediately remove the sgline
       if option and option.createByUser
         new SGRulePopup( this.id )
         @setDestroyAfterInit()
-        return
-
-
-      # Only show sg line for inbound rules of elb
-      # If the target is elb and the elb is internet-facing, don't show sgline
-      elb = @getTarget constant.AWS_RESOURCE_TYPE.AWS_ELB
-      if elb
-        if not elb.get("internal")
-          @setDestroyAfterInit()
-        else
-          elbSgMap  = {}
-          hasInRule = false
-          for sg in elb.connectionTargets( "SgAsso" )
-            elbSgMap[ sg.id ] = sg
-
-          for sg in @getOtherTarget( elb ).connectionTargets( "SgAsso" )
-            for ruleset in sg.connections( "SgRuleSet" )
-              target = ruleset.getOtherTarget( sg )
-              if not elbSgMap[ target.id ] then continue
-
-              if ruleset.hasRawRuleTo( elbSgMap[ target.id ] )
-                hasInRule = true
-                break
-            if hasInRule
-              break
-
-          if not hasInRule
-            @setDestroyAfterInit()
-
+      else if not @validate()
+        @setDestroyAfterInit()
       null
 
     isRemovable : ()->

@@ -39,8 +39,8 @@ define [ '../base/main',
             null
 
         initAppEdit : ()->
-            @model = app_model
-            @view  = app_view
+            @model = model
+            @view  = view
             null
 
         afterLoadAppEdit : ()->

@@ -27,9 +27,12 @@ define [ "constant", "../ConnectionModel", "CanvasManager", "Design" ], ( consta
     # Return false, so that ConnectionModel will not create an line for us.
     isVisual : ()-> false
 
-    remove : ()->
-      # When an SgAsso is removed. If this SgAsso is the last SgAsso of the resource.
-      # Attach DefaultSg to resource.
+    remove : ( reason )->
+      # When an SgAsso is removed because of an SecurityGroup is removed.
+      # If this SgAsso is the last SgAsso of some resources, attach DefaultSg to these resources.
+
+      if reason and reason.reason isnt @getTarget( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup )
+        return
 
       # When A is removed, and A delete an Sg ( SgA ) while removing,
       # and if B only connects to SgA.

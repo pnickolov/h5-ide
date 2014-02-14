@@ -85,27 +85,8 @@ define [ "./ResourceModel", "Design", "CanvasManager", "./canvasview/CanvasEleme
           if attr then cn.set attr
           return cn
 
-      if @portDefs
-
-        for def in @portDefs
-          if def.port1.type is p1Comp.type and def.port2.type is p2Comp.type
-            @__portDef   = def
-            @__port1Comp = p1Comp
-            @__port2Comp = p2Comp
-            break
-          else if def.port1.type is p2Comp.type and def.port2.type is p1Comp.type
-            @__portDef   = def
-            @__port1Comp = p2Comp
-            @__port2Comp = p1Comp
-            break
-
-        console.assert( @__portDef, "Cannot create connection!" )
-
-      else
-        # If there's no portDefs, we directly assign the parameter to this
-        @__port1Comp = p1Comp
-        @__port2Comp = p2Comp
-
+      # Assign components to the connection.
+      @assignCompsToPorts( p1Comp, p2Comp )
 
       # Call super constructor
       ResourceModel.call(this, attr, option)
@@ -139,6 +120,30 @@ define [ "./ResourceModel", "Design", "CanvasManager", "./canvasview/CanvasEleme
 
     setDestroyAfterInit : ()->
       @__destroyAfterInit = true
+      null
+
+    assignCompsToPorts : ( p1Comp, p2Comp )->
+      if @portDefs
+
+        for def in @portDefs
+          if def.port1.type is p1Comp.type and def.port2.type is p2Comp.type
+            @__portDef   = def
+            @__port1Comp = p1Comp
+            @__port2Comp = p2Comp
+            break
+          else if def.port1.type is p2Comp.type and def.port2.type is p1Comp.type
+            @__portDef   = def
+            @__port1Comp = p2Comp
+            @__port2Comp = p1Comp
+            break
+
+        console.assert( @__portDef, "Trying to connect components while the connection does not support them : ", [ p1Comp, p2Comp ] )
+
+      else
+        # If there's no portDefs, we directly assign the parameter to this
+        @__port1Comp = p1Comp
+        @__port2Comp = p2Comp
+
       null
 
     port : ( id, attr )->

@@ -2030,7 +2030,17 @@ define [ 'event',
                 target.collapseItem.call target, $('.state-list').find('.selected')
                 return false
 
-        onSwitchState: (event) ->
+            # Tab reverse switch [Shift + Tab]
+            if keyCode is 9 and event.shiftKey
+                target.onSwitchState.call target, true
+                return false
+
+            # Tab switch [Tab]
+            if keyCode is 9
+                target.onSwitchState.call target
+                return false
+
+        onSwitchState: (reverse) ->
 
             that = this
 
@@ -2044,17 +2054,31 @@ define [ 'event',
 
             that.clearSelectedItem()
 
-            if selected_index + 1 < total
-                that.expandItem.call this, stack.eq(selected_index + 1).addClass('selected')
+            if reverse and reverse is true
+
+                if selected_index > 0
+                    that.expandItem.call this, stack.eq(selected_index - 1).addClass('selected')
+
+                if selected_index is 0
+                    that.expandItem.call this, stack.eq(total - 1).addClass('selected')
 
             else
-                that.expandItem.call this, stack.eq(0).addClass('selected')
+
+                if selected_index + 1 < total
+                    that.expandItem.call this, stack.eq(selected_index + 1).addClass('selected')
+
+                else
+                    that.expandItem.call this, stack.eq(0).addClass('selected')
 
             return false
 
         aceTabSwitch: (event, container) ->
 
             that = this
+
+            if that.currentState is 'app'
+                that.onSwitchState.call this, event
+                return false
 
             container_item = $(container)
             index = 0
@@ -2084,6 +2108,10 @@ define [ 'event',
         aceUTabSwitch: (event, container) ->
 
             that = this
+
+            if that.currentState is 'app'
+                that.onSwitchState.call this, event
+                return false
 
             container_item = $(container)
             index = 0

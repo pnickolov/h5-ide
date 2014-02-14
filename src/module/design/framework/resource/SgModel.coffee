@@ -153,9 +153,14 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
 
       # Try remove all the resources connectable to this SG
       for res in possibleAffectedRes
-        if not connectableMap[ res.id ] and res isnt resource
-          cn = SgLine.findExisting( resource, res )
-          if cn then cn.remove( reason )
+        if res is resource then continue
+        cn = SgLine.findExisting( resource, res )
+
+        if cn # There's a line between two resources.
+          if not connectableMap[ res.id ]
+            cn.remove( reason )
+          else
+            cn.validate( true )
       null
 
     vlineRemoveBatch : ( otherSg, reason )->

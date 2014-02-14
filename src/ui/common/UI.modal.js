@@ -66,7 +66,7 @@ var modal = function (template, dismiss, callback, options)
 		});
 	}
 
-	modal.position();
+	modal.position($source);
 
 	if (dismiss === true)
 	{
@@ -268,13 +268,24 @@ modal.drag = {
 	}
 };
 
-modal.position = function ()
+modal.position = function ($source)
 {
 	var modal_box = $('#modal-box');
 
+	var top = 0;
+	var left = 0;
+
+	if ($source) {
+		top = (window.innerHeight - modal_box.find('div').height()) / 2;
+		left = (window.innerWidth - modal_box.find('div').width()) / 2;
+	} else {
+		top = (window.innerHeight - modal_box.height()) / 2;
+		left = (window.innerWidth - modal_box.width()) / 2;
+	}
+
 	modal_box.css({
-		'top': (window.innerHeight - modal_box.find('div').height()) / 2,
-		'left': (window.innerWidth - modal_box.find('div').width()) / 2
+		'top': top,
+		'left': left
 	});
 
 	return true;

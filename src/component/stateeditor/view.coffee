@@ -1581,6 +1581,9 @@ define [ 'event',
                     left: inputPosX,
                     top: inputPosY + 25
                 })
+
+                thatEditor.selectAll()
+
                 # that.$aceAutocompleteTip.show()
             )
 
@@ -1619,7 +1622,7 @@ define [ 'event',
                                 name: ea.name,
                                 value: ea.value,
                                 score: ea.value,
-                                meta: metaType
+                                meta: ''
                             }
                         ))
                     else

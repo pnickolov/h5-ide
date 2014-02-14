@@ -62,8 +62,8 @@ define [ "constant", "../ResourceModel", "Design"  ], ( constant, ResourceModel,
     setCustom  : ()-> @set "dhcpType", ""
 
     set : ()->
-      if @design().isAppEdit() and not @__newIdForAppEdit
-        @__newIdForAppEdit = @design.guid()
+      if @design().modeIsAppEdit() and not @__newIdForAppEdit
+        @__newIdForAppEdit = @design().guid()
 
       Backbone.Model.prototype.set.apply this, arguments
 

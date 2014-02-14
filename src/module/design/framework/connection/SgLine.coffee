@@ -73,7 +73,7 @@ define [ "constant", "../ConnectionModel", "../ResourceModel", "component/sgrule
 
 
       if not result and autoRemoveWhenFailValidatation
-        @remove()
+        @remove( { reason : "Validation Failed" } )
 
       result
 

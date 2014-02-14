@@ -28,7 +28,8 @@ define [ "constant", "../ConnectionModel", "CanvasManager", "Design" ], ( consta
     isVisual : ()-> false
 
     remove : ( reason )->
-      # When an SgAsso is removed because of an SecurityGroup is removed. If this SgAsso is the last SgAsso of some resources, attach DefaultSg to these resources.
+      # When an SgAsso is removed because of an SecurityGroup is removed.
+      # If this SgAsso is the last SgAsso of some resources, attach DefaultSg to these resources.
 
       if reason and reason.reason isnt @getTarget( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup )
         return

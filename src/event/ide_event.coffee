@@ -180,8 +180,7 @@ define [ 'underscore', 'backbone' ], () ->
         UPDATE_APP_INFO        : 'UPDATE_APP_INFO'
 
         UPDATE_STATE_STATUS_DATA  :  'STATE_STATUS_DATA_UPDATE'
-
-
+        UPDATE_STATE_STATUS_DATA_TO_EDITOR  :  'UPDATE_STATE_STATUS_DATA_TO_EDITOR'
 
         constructor : ->
             _.extend this, Backbone.Events

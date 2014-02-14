@@ -666,6 +666,12 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 			# console.log(dataAry)
 
 			return dataAry
+
+		listenStateStatusUpdate: (newStateUpdateResIdAry) ->
+
+			that = this
+			that.trigger 'STATE_STATUS_UPDATE', newStateUpdateResIdAry
+			null
 	}
 
 	return StateEditorModel

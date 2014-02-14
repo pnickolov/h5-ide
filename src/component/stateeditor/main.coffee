@@ -27,8 +27,13 @@ define [ 'event', 'ace', 'ace_ext_language_tools',  'UI.modal', 'jquery_sort', '
 
             view.model = model
 
+            ide_event.onLongListen ide_event.UPDATE_STATE_STATUS_DATA_TO_EDITOR, model.listenStateStatusUpdate, model
+
             view.on 'CLOSE_POPUP', () ->
                 unLoadModule view, model
+
+            model.on 'STATE_STATUS_UPDATE', (newStateUpdateResIdAry) ->
+                view.onStateStatusUpdate(newStateUpdateResIdAry)
 
             view.render()
 

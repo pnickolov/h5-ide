@@ -42,7 +42,6 @@ define [ 'event',
             'OPTION_CHANGE .state-editor-res-select': 'onResSelectChange'
 
             'keyup .parameter-item.optional .parameter-value': 'onOptionalParaItemChange'
-            'keyup .parameter-item.optional .parameter-value': 'onOptionalParaItemChange'
 
             'SWITCH_STATE': 'onSwitchState'
 
@@ -1727,7 +1726,7 @@ define [ 'event',
                     log_time: timeStr,
                     state_status: stateStatus,
                     stdout: logObj.stdout,
-                    stderr: logObj.stderr
+                    comment: logObj.comment
                 })
                 null
 
@@ -1796,14 +1795,43 @@ define [ 'event',
 
             that.model.getResState(selectedResId)
             resState = that.model.get('resState')
-            
+
             that.$stateLogList.empty().html(that.stateLogInstanceItemTpl({
                 res_status: resState
             }))
-            that.model.genStateLogData(selectedResId, () ->
-                that.refreshStateLogList()
-                that.showLogListLoading(false)
-            )
+
+            if not that.isLoadingLogList
+
+                $logPanel = $('#state-log')
+                $loadText = $logPanel.find('.state-log-loading')
+
+                $loadText.text('Loading...')
+
+                that.isLoadingLogList = true
+
+                that.model.genStateLogData(selectedResId, () ->
+                    that.refreshStateLogList()
+                    that.showLogListLoading(false)
+                    that.isLoadingLogList = false
+                )
+
+                if that.logRefreshTimer
+                    clearTimeout(that.logRefreshTimer)
+
+                that.logRefreshTimer = setTimeout(() ->
+                    if that.isLoadingLogList
+                        $loadText.text('Request state log info timeout, please try again')
+                , 5000)
+
+        onStateStatusUpdate: (newStateUpdateResIdAry) ->
+
+            selectedResId = $(event.target).find('.selected').attr('data-id')
+
+            if selectedResId in newStateUpdateResIdAry
+                # refresh state log
+                that.onLogRefreshClick()
+
+            that = this
 
         onOptionalParaItemChange: (event) ->
 
@@ -1811,9 +1839,69 @@ define [ 'event',
             $currentInputElem = $(event.currentTarget)
             currentValue = that.getPlainText($currentInputElem)
 
+            $paraItem = $currentInputElem.parents('.parameter-item')
+
             if currentValue
-                $paraItem = $currentInputElem.parents('.parameter-item')
+
                 $paraItem.removeClass('disabled')
+
+            else
+
+                # disable the para item when empty value
+
+                if $paraItem.hasClass('line') or
+                    $paraItem.hasClass('bool') or
+                    $paraItem.hasClass('text')
+
+                        $paraItem.addClass('disabled')
+
+                else if $paraItem.hasClass('dict')
+
+                    needDisable = true
+
+                    $dictItemList = $paraItem.find('.parameter-dict-item')
+
+                    if $dictItemList.length <= 2
+
+                        _.each $dictItemList, (dictItem) ->
+
+                            $dictItem = $(dictItem)
+                            $keyInput = $dictItem.find('.key')
+                            $valueInput = $dictItem.find('.value')
+
+                            keyValue = that.getPlainText($keyInput)
+                            valueValue = that.getPlainText($valueInput)
+
+                            if keyValue or valueValue
+                                needDisable = false
+
+                            null
+
+                        if needDisable
+
+                            $paraItem.addClass('disabled')
+
+                else if $paraItem.hasClass('array') or $paraItem.hasClass('state')
+
+                    needDisable = true
+
+                    $arrayItemList = $paraItem.find('.parameter-value')
+
+                    if $arrayItemList.length <= 2
+
+                        _.each $arrayItemList, (arrayItem) ->
+                            
+                            $arrayItem = $(arrayItem)
+                            inputValue = that.getPlainText($arrayItem)
+                            
+                            if inputValue
+                                needDisable = false
+
+                            null
+
+                        if needDisable
+
+                            $paraItem.addClass('disabled')
 
         onCommandInputBlur: (event) ->
 
@@ -1825,9 +1913,9 @@ define [ 'event',
 
             moduleObj = that.cmdModuleMap[currentValue]
 
-            if moduleObj
+            originCMDName = $stateItem.attr('data-command')
 
-                originCMDName = $stateItem.attr('data-command')
+            if moduleObj
 
                 if originCMDName isnt currentValue
 
@@ -1836,6 +1924,10 @@ define [ 'event',
                     $paraListElem = $stateItem.find('.parameter-list')
                     that.refreshParaList($paraListElem, currentValue)
                     that.refreshStateView($stateItem)
+
+            else
+
+                that.setPlainText($currentElem, originCMDName)
 
         refreshStateItemStatus: (stateStatusMap) ->
 

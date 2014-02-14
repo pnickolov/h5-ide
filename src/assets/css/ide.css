@@ -7261,10 +7261,10 @@ summary:focus {
 	-moz-transition: all 0.5s ease-in-out;
 	-o-transition: all 0.5s ease-in-out;
 
-	transition-property: left, top, width, height, opacity;
-	-webkit-transition-property: left, top, width, height, opacity;
-	-moz-transition-property: left, top, width, height, opacity;
-	-o-transition-property: left, top, width, height, opacity;
+	transition-property: left, top, width, height, opacity, background-color;
+	-webkit-transition-property: left, top, width, height, opacity, background-color;
+	-moz-transition-property: left, top, width, height, opacity, background-color;
+	-o-transition-property: left, top, width, height, opacity, background-color;
 
 /*	-webkit-transition: all 5s ease-in-out;
 	-moz-transition: all 5s ease-in-out;

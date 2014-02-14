@@ -223,8 +223,8 @@
 			{{#if log_time}}<div class="state-log-item-time">{{log_time}}</div>{{/if}}
 			<div class="state-log-item-status {{state_status}}">{{state_status}}</div>
 		</div>
+		{{#if comment}}<div class="state-log-item-detail">{{nl2br comment}}</div>{{/if}}
 		{{#if stdout}}<div class="state-log-item-detail">{{nl2br stdout}}</div>{{/if}}
-		{{#if stderr}}<div class="state-log-item-detail">{{nl2br stderr}}</div>{{/if}}
 	</li>
 {{/each}}
 

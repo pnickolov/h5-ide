@@ -2,7 +2,7 @@
 #  View Mode for component/trustedadvisor
 #############################
 
-define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
+define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant, ide_event ) ->
 
     StateStatusModel = Backbone.Model.extend
 
@@ -36,6 +36,9 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
             "#{resId}|#{stateId}"
 
         __dispose: ( stateList ) ->
+
+            newStateUpdateResIdAry = []
+
             collection = new Backbone.Collection()
             console.log stateList
             if not _.isArray stateList
@@ -66,8 +69,12 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
 
                     _.extend data, @__extendComponent data.resId
 
+                    newStateUpdateResIdAry.push(state.res_id)
 
                     collection.add new Backbone.Model data
+
+            if newStateUpdateResIdAry.length
+                ide_event.trigger ide_event.UPDATE_STATE_STATUS_DATA_TO_EDITOR, newStateUpdateResIdAry
 
             collection
 

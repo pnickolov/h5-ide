@@ -364,6 +364,11 @@
 	border-bottom: 1px solid transparent;
 }
 
+/* stack view */
+#state-editor-model.se-model-stack .state-log-refresh {
+	display: none;
+}
+
 /* *************************************** parameter */
 #state-shadow-item {
 	width: 100%;

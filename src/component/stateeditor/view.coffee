@@ -51,6 +51,10 @@ define [ 'event',
 
             'REMOVE_STATE': 'onRemoveState'
 
+            'ACE_TAB_SWITCH': 'aceTabSwitch'
+
+            'ACE_UTAB_SWITCH': 'aceUTabSwitch'
+
         initialize: () ->
 
             this.compileTpl()
@@ -943,6 +947,9 @@ define [ 'event',
         addStateItem: (event) ->
 
             that = this
+
+            if that.currentState is 'app'
+                return false
 
             $stateItem = that.$stateList.find('.state-item:last')
 
@@ -2005,7 +2012,7 @@ define [ 'event',
 
             # Remove state item [Ctrl + delete/backspace]
             if event.ctrlKey and (keyCode is 46 or keyCode is 8)
-                that.onRemoveState(null, $('.state-list').find('.selected'))
+                target.onRemoveState null, $('.state-list').find('.selected')
                 return false
 
             # Add state item [Ctrl + +]
@@ -2015,12 +2022,12 @@ define [ 'event',
 
             # Expand state item [Ctrl + down]
             if event.ctrlKey and keyCode is 38
-                target.expandItem.call(target, $('.state-list').find('.selected'))
+                target.expandItem.call target, $('.state-list').find('.selected')
                 return false
 
             # Expand state item [Ctrl + up]
             if event.ctrlKey and keyCode is 40
-                target.collapseItem.call(target, $('.state-list').find('.selected'))
+                target.collapseItem.call target, $('.state-list').find('.selected')
                 return false
 
         onSwitchState: (event) ->
@@ -2045,9 +2052,77 @@ define [ 'event',
 
             return false
 
+        aceTabSwitch: (event, container) ->
+
+            that = this
+
+            container_item = $(container)
+            index = 0
+
+            if container_item.hasClass('command-value')
+                stack = $(container).parents('.state-item').find('.parameter-list .ace_editor')
+
+                if stack[0] isnt null
+                    stack.eq(0).find('.ace_text-input').focus()
+                else
+                    that.onSwitchState.call this, event
+
+            else
+                stack = container_item.parents('.parameter-list').find('.ace_editor')
+
+                total = stack.length
+
+                $.each stack, (i, item) ->
+                    if container is item
+                        index = i
+
+                if index + 1 < total
+                    stack.eq(index + 1).find('.ace_text-input').focus()
+                else
+                    that.onSwitchState.call this, event
+
+        aceUTabSwitch: (event, container) ->
+
+            that = this
+
+            container_item = $(container)
+            index = 0
+
+            if container_item.hasClass('command-value')
+                stack = $('#state-editor .state-item')
+                selected_index = $('#state-editor .state-item.selected').index('#state-editor .state-list > li')
+
+                $('#state-editor .state-item.selected').removeClass('selected').addClass('view')
+
+                if selected_index > 0
+                    stack.eq( selected_index - 1 ).addClass('selected').removeClass('view').find('.command-value .ace_text-input').focus()
+
+                if selected_index is 0
+                    stack.eq( stack.length - 1 ).addClass('selected').removeClass('view').find('.command-value .ace_text-input').focus()
+
+                return false
+
+            stack = container_item.parents('.parameter-list').find('.ace_editor')
+
+            total = stack.length
+
+            $.each stack, (i, item) ->
+                if container is item
+                    index = i
+
+            if index > 0
+                stack.eq(index - 1).find('.ace_text-input').focus()
+
+            if index is 0
+                container_item.parents('.state-item').find('.command-value .ace_text-input').focus()
+
         onRemoveState: (event, $targetState) ->
 
             that = this
+
+            if that.currentState is 'app'
+                return false
+
             $targetState.remove()
             that.refreshLogItemNum()
     }

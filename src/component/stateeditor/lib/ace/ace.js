@@ -2621,108 +2621,31 @@ var Editor = function(renderer, session) {
     // For processing tab key
     // Added by Angel
     this.tabSwitch = function (target) {
-        var container = target.container,
-            container_item = $(container),
-            target_item = target.container,
-            index = 0,
-            stack,
-            total;
 
-        // Add indent if multi-line
-        if (container_item.hasClass('text')) {
+        // For multi-line
+        if ($(target.container).hasClass('text')) {
             this.indent();
 
             return false;
         }
 
-        if (container_item.hasClass('command-value')) {
-            stack = $(target.container).parents('.state-item').find('.parameter-list .ace_editor');
-
-            if (stack[0] != null) {
-                stack.eq(0).find('.ace_text-input').focus();
-            } else {
-                $('#state-editor-body').trigger('SWITCH_STATE');
-            }
-        } else {
-            stack = $(target.container).parents('.parameter-list').find('.ace_editor');
-
-            total = stack.length;
-
-            $.each(stack, function (i, item) {
-                if (container === item) {
-                    index = i;
-                }
-            });
-
-            if (index + 1 < total) {
-                stack.eq(index + 1).find('.ace_text-input').focus();
-            } else {
-                $('#state-editor-body').trigger('SWITCH_STATE');
-            }
-        }
-
-        return false;
+        $('#state-editor-body').trigger('ACE_TAB_SWITCH', [target.container]);
     };
 
     this.tabReverseSwitch = function (target) {
-        var container = target.container,
-            container_item = $(container),
-            target_item = target.container,
-            index = 0,
-            stack,
-            total;
 
         // For multi-line
-        if (container_item.hasClass('text')) {
+        if ($(target.container).hasClass('text')) {
             this.blockOutdent();
 
             return false;
         }
 
-        if (container_item.hasClass('command-value')) {
-            var stack = $('#state-editor .state-item'),
-                selected_index = $('#state-editor .state-item.selected').index('#state-editor .state-list > li');
-
-            $('#state-editor .state-item.selected').removeClass('selected').addClass('view');
-
-            if (selected_index > 0) {
-                stack.eq( selected_index - 1 ).addClass('selected').removeClass('view').find('.command-value .ace_text-input').focus();
-            }
-
-            if (selected_index === 0) {
-                stack.eq( stack.length - 1 ).addClass('selected').removeClass('view').find('.command-value .ace_text-input').focus();
-            }
-
-            return false;
-        }
-
-        stack = $(target.container).parents('.parameter-list').find('.ace_editor');
-
-        total = stack.length;
-
-        $.each(stack, function (i, item) {
-            if (container === item) {
-                index = i;
-            }
-        });
-
-        if (index > 0) {
-            stack.eq(index - 1).find('.ace_text-input').focus();
-        }
-
-        if (index === 0) {
-            container_item.parents('.state-item').find('.command-value .ace_text-input').focus();
-        }
+        $('#state-editor-body').trigger('ACE_UTAB_SWITCH', [target.container]);
     };
 
     this.removeState = function (target) {
-        // var container = target.container,
-        //     container_item = $(container);
-        // if (container_item.hasClass('command-value')) {
-        //     $('.state-list').find('.selected').remove();
-        // }
         $('#state-editor-body').trigger('REMOVE_STATE', $('.state-list').find('.selected'));
-        return false;
     },
 
     this.expandState = function (target) {
@@ -2732,6 +2655,7 @@ var Editor = function(renderer, session) {
     this.collapseState = function (target) {
         $('#state-editor-body').trigger('COLLAPSE_STATE');
     },
+    // For processing tab key - end
 
     this.indent = function() {
         var session = this.session;

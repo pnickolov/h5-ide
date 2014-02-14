@@ -91,7 +91,15 @@ define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, const
 
       appData       = resource_list[ component.get("appId") ]
 
-      aws_rt_is_main = appData.associationSet and appData.associationSet.item and appData.associationSet.item[0] and appData.associationSet.item[0].main is true
+      aws_rt_is_main = false
+
+      if appData.associationSet and appData.associationSet.item
+
+        for asso in appData.associationSet.item
+
+          if asso.main is true
+
+            aws_rt_is_main = true
 
       now_main_rtb = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable ).getMainRouteTable()
 

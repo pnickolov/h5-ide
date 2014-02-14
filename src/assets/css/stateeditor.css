@@ -947,7 +947,8 @@
 	display: none;
 	padding-left: 5px;
 	background-color: #fff;
-	border: 1px #aaa solid;
+	border: 1px #999 solid;
 	font-size: 12px;
 	line-height: 18px;
+	overflow: hidden;
 }

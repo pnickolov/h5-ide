@@ -3,21 +3,18 @@
 	<div class="option-group-head expand">{{ i18n "PROP_ELB_DETAILS" }}</div>
 	<div class="option-group" data-bind="true" >
 	{{#if appData}}
-		<div class="option-group-head expand">{{i18n "PROP_ELB_DETAILS"}}</div>
-	  <div class="option-group">
-	      <dl class="dl-vertical">
-	        <dt>{{i18n "PROP_ELB_SCHEME"}}</dt>
-	        <dd>{{#if isInternet}}Internet Facing{{else}}Internal{{/if}}</dd>
-	        <dt>{{i18n "PROP_ELB_DNS_NAME"}}</dt>
-	        <dd>
-	          <div class="click-select tooltip" data-tooltip="Click to select all">(A){{DNSName}}</div>
-	          <div class="click-select tooltip" data-tooltip="Click to select all">(AAAA)ipv6.{{DNSName}}</div>
-	          <div class="click-select tooltip" data-tooltip="Click to select all">(A/AAAA)dualstack.{{DNSName}}</div>
-	        </dd>
-	        <dt>{{i18n "PROP_ELB_HOST_ZONE_ID"}}</dt>
-	        <dd>{{CanonicalHostedZoneNameID}}<dd>
-	      </dl>
-	  </div>
+    <dl class="dl-vertical property-app">
+      <dt>{{i18n "PROP_ELB_SCHEME"}}</dt>
+      <dd>{{#if isInternet}}Internet Facing{{else}}Internal{{/if}}</dd>
+      <dt>{{i18n "PROP_ELB_DNS_NAME"}}</dt>
+      <dd>
+        <div class="click-select tooltip" data-tooltip="Click to select all">(A){{DNSName}}</div>
+        <div class="click-select tooltip" data-tooltip="Click to select all">(AAAA)ipv6.{{DNSName}}</div>
+        <div class="click-select tooltip" data-tooltip="Click to select all">(A/AAAA)dualstack.{{DNSName}}</div>
+      </dd>
+      <dt>{{i18n "PROP_ELB_HOST_ZONE_ID"}}</dt>
+      <dd>{{CanonicalHostedZoneNameID}}<dd>
+    </dl>
 	{{else}}
 		<section class="property-control-group">
 			<label class="left" for="property-elb-name" >{{ i18n "PROP_ELB_NAME" }}</label>

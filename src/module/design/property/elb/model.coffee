@@ -83,6 +83,7 @@ define [ '../base/model', "event", "Design", 'constant' ], ( PropertyModel, ide_
                 appData    : true
                 isInternet : elb.Scheme is 'internet-facing'
                 DNSName    : elb.DNSName
+                CanonicalHostedZoneNameID : elb.CanonicalHostedZoneNameID
             }
             null
 

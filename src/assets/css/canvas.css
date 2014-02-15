@@ -1172,30 +1172,3 @@
 	font-size: 12px;
 	display: block;
 }
-
-#node-action-copy {
-	background: rgba(0,0,0,.7);
-	-webkit-transition: background .2s;
-	-moz-transition: background .2s;
-	-ms-transition: background .2s;
-	-o-transition: background .2s;
-	transition: background .2s;
-
-	border-radius: 2px;
-	box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
-
-	height: 25px;
-	width: 25px;
-
-	position: absolute;
-	top: 30px;
-	left: 0px;
-}
-
-/*#node-copy-icon {
-	width: 10px;
-	height: 10px;
-	display: block;
-	background: #fff;
-	border-radius: 5px;
-}*/

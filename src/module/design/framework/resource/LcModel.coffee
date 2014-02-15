@@ -77,6 +77,8 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
       for v in (@get("volumeList") or emptyArray).slice(0)
         v.remove()
 
+      MC.canvas.nodeAction.remove @id
+
       null
 
     connect : ( cn )->

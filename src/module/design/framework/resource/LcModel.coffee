@@ -138,6 +138,10 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
           DeviceName : volume.get("name")
           Ebs :
             VolumeSize : volume.get("volumeSize")
+            VolumeType : volume.get("volumeType")
+
+        if volume.get("volumeType") is "io1"
+          vd.Ebs.Iops = volume.get("iops")
 
         if volume.get("snapshotId")
           vd.Ebs.SnapshotId = volume.get("snapshotId")

@@ -16,14 +16,10 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
 
             component = Design.instance().component( uid )
 
-            if !component
-                console.error "[volume property] no volume component found!"
-                return null
-
             res = component.attributes
             if !res.owner
                 console.error "[volume property] can not found owner of volume!"
-                return null
+                return false
 
             # if not component
             # #volume of LC(old)

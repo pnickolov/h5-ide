@@ -2033,6 +2033,16 @@ define [ 'event',
                 target.collapseItem.call target, $('.state-list').find('.selected')
                 return false
 
+            # Toggle Document Sidebar [Ctrl + I]
+            if event.ctrlKey and keyCode is 73
+                target.onDescToggleClick target, event
+                return false
+
+            # Toggle Log Sidebar [Ctrl + L]
+            if event.ctrlKey and keyCode is 76
+                target.onLogToggleClick target, event
+                return false
+
             # Tab reverse switch [Shift + Tab]
             if keyCode is 9 and event.shiftKey
                 target.onSwitchState.call target, true

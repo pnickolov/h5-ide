@@ -33,11 +33,12 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
     else
       "ide/ami/ami-not-available.png"
 
-  ChildElementProto.draw = ( isCreate, isLcCreate ) ->
+  ChildElementProto.draw = ( isCreate ) ->
     m = @model
     originalAsg = m.get("originalAsg")
 
     label   = originalAsg.get("name")
+    lc = originalAsg.get 'lc'
 
     if isCreate
 
@@ -69,6 +70,8 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
       # Move the node to right place
       @getLayer("asg_layer").append node
       @initNode node, m.x(), m.y()
+      if lc
+        lc.draw true, m
 
     else
       node = @$element()

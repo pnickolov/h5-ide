@@ -227,7 +227,8 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
 
       @set "lc", lc
       @listenTo lc, "change:name", @draw
-      @listenTo lc, 'change', @drawExpanedLc
+      @listenTo lc, 'change', () ->
+        @drawExpanedLc false
 
       for elb in lc.connectionTargets("ElbAmiAsso")
         @updateExpandedAsgAsso( elb )
@@ -245,8 +246,9 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
 
     drawExpanedLc: ( isCreate ) ->
       lc = @get 'lc'
-      for asg in @get("expandedList")
-        lc.draw isCreate, asg
+      if lc
+        for asg in @get("expandedList")
+          lc.draw isCreate, asg
 
       null
 
@@ -276,8 +278,12 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
       ElbAsso = Design.modelClassForType( "ElbAmiAsso" )
 
       for i in old_expandedList
-        asso = new ElbAsso( i, elb )
-        if isRemove then asso.remove()
+        if elb
+          asso = new ElbAsso( i, elb )
+          if isRemove then asso.remove()
+        else
+          for c in i.connections 'ElbAmiAsso'
+            c.remove()
 
       @attributes.expandedList = old_expandedList
       null
@@ -359,6 +365,7 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
         SgAsso = Design.modelClassForType( "SgAsso" )
         for sgTarget in lc.connectionTargets( "SgAsso" )
           new SgAsso( expandedAsg, sgTarget )
+
 
       null
 

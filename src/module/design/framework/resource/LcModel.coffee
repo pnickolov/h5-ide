@@ -82,6 +82,9 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
       # Remove itself from parent ASG
       asg.removeChild()
 
+      # disconnect elb connected to expanded lc
+      asg.updateExpandedAsgAsso( null, true )
+
       # Remove state icon
       MC.canvas.nodeState.remove @id
 

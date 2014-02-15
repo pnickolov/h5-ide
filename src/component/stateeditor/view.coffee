@@ -2016,32 +2016,32 @@ define [ 'event',
             keyCode = event.which
 
             # Remove state item [Ctrl + delete/backspace]
-            if event.ctrlKey and (keyCode is 46 or keyCode is 8)
+            if (event.ctrlKey or event.metaKey) and (keyCode is 46 or keyCode is 8)
                 target.onRemoveState null, $('.state-list').find('.selected')
                 return false
 
             # Add state item [Ctrl + +]
-            if event.ctrlKey and keyCode is 187
+            if (event.ctrlKey or event.metaKey) and keyCode is 187
                 target.addStateItem.call(target, event)
                 return false
 
             # Expand state item [Ctrl + down]
-            if event.ctrlKey and keyCode is 38
+            if (event.ctrlKey or event.metaKey) and keyCode is 38
                 target.expandItem.call target, $('.state-list').find('.selected')
                 return false
 
             # Expand state item [Ctrl + up]
-            if event.ctrlKey and keyCode is 40
+            if (event.ctrlKey or event.metaKey) and keyCode is 40
                 target.collapseItem.call target, $('.state-list').find('.selected')
                 return false
 
             # Toggle Document Sidebar [Ctrl + I]
-            if event.ctrlKey and keyCode is 73
+            if (event.ctrlKey or event.metaKey) and keyCode is 73
                 target.onDescToggleClick target, event
                 return false
 
             # Toggle Log Sidebar [Ctrl + L]
-            if event.ctrlKey and keyCode is 76 and target.currentState isnt 'stack'
+            if (event.ctrlKey or event.metaKey) and keyCode is 76 and target.currentState isnt 'stack'
                 target.onLogToggleClick target, event
                 return false
 

@@ -2767,7 +2767,7 @@ MC.canvas.event.dragable = {
 	{
 		if (
 			event.which === 1 &&
-			event.ctrlKey
+			(event.ctrlKey || event.metaKey)
 		)
 		{
 			event.stopImmediatePropagation();
@@ -4579,7 +4579,7 @@ MC.canvas.event.ctrlMove = {
 	{
 		if (
 			event.which === 1 &&
-			event.ctrlKey
+			(event.ctrlKey || event.metaKey)
 		)
 		{
 			event.stopImmediatePropagation();
@@ -5039,7 +5039,7 @@ MC.canvas.event.keyEvent = function (event)
 
 		// Save stack - [Ctrl + S]
 		if (
-			event.ctrlKey && keyCode === 83 &&
+			(event.ctrlKey || event.metaKey) && keyCode === 83 &&
 			canvas_status === 'stack'
 		)
 		{
@@ -5050,7 +5050,7 @@ MC.canvas.event.keyEvent = function (event)
 
 		// ZoomIn - [Ctrl + +]
 		if (
-			event.ctrlKey && keyCode === 187
+			(event.ctrlKey || event.metaKey) && keyCode === 187
 		)
 		{
 			MC.canvas.zoomIn();
@@ -5060,7 +5060,7 @@ MC.canvas.event.keyEvent = function (event)
 
 		// ZoomIn - [Ctrl + -]
 		if (
-			event.ctrlKey && keyCode === 189
+			(event.ctrlKey || event.metaKey) && keyCode === 189
 		)
 		{
 			MC.canvas.zoomOut();

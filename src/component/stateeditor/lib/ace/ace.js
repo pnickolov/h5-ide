@@ -12129,7 +12129,7 @@ exports.commands = [{
     multiSelectAction: "forEach"
 }, {
     name: "removetolinestart",
-    bindKey: bindKey("Alt-Backspace", "Command-Backspace"),
+    bindKey: bindKey("Alt-Backspace"),
     exec: function(editor) { editor.removeToLineStart(); },
     multiSelectAction: "forEach"
 }, {
@@ -12149,7 +12149,7 @@ exports.commands = [{
 //     multiSelectAction: "forEach"
 
     name: "removestate",
-    bindKey: bindKey("Ctrl-Delete", "Ctrl-Backspace"),
+    bindKey: bindKey("Ctrl-Delete", "Ctrl-Backspace", "Command-Backspace"),
     exec: function(editor) { editor.removeState(editor); },
     multiSelectAction: "forEach"
 }, {
@@ -12168,11 +12168,11 @@ exports.commands = [{
     scrollIntoView: "selectionPart"
 }, {
     name: "expandState",
-    bindKey: bindKey("Ctrl-Down"),
+    bindKey: bindKey("Ctrl-Down", "Command-Down"),
     exec: function(editor) { editor.expandState(editor); }
 }, {
     name: "collapseState",
-    bindKey: bindKey("Ctrl-Up"),
+    bindKey: bindKey("Ctrl-Up", "Command-Up"),
     exec: function(editor) { editor.collapseState(editor); }
 }, {
 //     name: "blockoutdent",

@@ -266,6 +266,12 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
 
 
     isEbsOptimizedEnabled : ()->
+
+      ami = @getAmi() || @get("cachedAmi")
+      if ami and ami.rootDeviceType is "instance-store"
+        return false
+
+      #default
       EbsMap =
         "m1.large"   : true
         "m1.xlarge"  : true
@@ -282,12 +288,14 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
         "i2.2xlarge"  : true
         "i2.4xlarge"  : true
 
+      try
+        k = @get("instanceType").split '.'
+        instanceType = MC.data.config[ Design.instance().region() ].instance_type
+        return instanceType[ k[0] ][ k[1] ].ebs_optimized is 'Yes'
 
-      ami = @getAmi() || @get("cachedAmi")
-      if ami and ami.rootDeviceType is "instance-store"
-        return false
-
-      return !!EbsMap[ @get("instanceType") ]
+      catch error
+        console.error "isEbsOptimizedEnabled() : use default EbsMap"
+        return !!EbsMap[ @get("instanceType") ]
 
     setInstanceType : ( type )->
 

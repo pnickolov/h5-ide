@@ -211,7 +211,7 @@ define [ "./CanvasElement", "constant", "CanvasManager", "Design" ], ( CanvasEle
     #update icon state and tooltip
     stateClass = "instance-state tooltip instance-state-#{instanceState} instance-state-#{m.design().mode()}"
     stateEl = $("##{@id}_instance-state").attr({ "class" : stateClass })
-    CanvasManager.update stateEl, instanceState, "update"
+    CanvasManager.update stateEl, instanceState, "data-tooltip"
     null
 
   ChildElementProto.volume = ( volume_id )->

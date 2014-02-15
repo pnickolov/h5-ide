@@ -1050,6 +1050,9 @@ var Autocomplete = function() {
             data = this.popup.getData(this.popup.getRow());
         if (!data)
             return false;
+        if (data.meta === false) {
+            return false;
+        }
         if (data.completer && data.completer.insertMatch) {
             data.completer.insertMatch(this.editor);
         } else {
@@ -1209,7 +1212,16 @@ var FilteredList = function(array, filterText, mutateData) {
         matches = this.filterCompletions(matches, this.filterText);
         if (this.filterText) {
             matches = matches.sort(function(a, b) {
-                return b.exactMatch - a.exactMatch || b.score - a.score;
+                if (a.meta === b.meta) {
+                    return b.exactMatch - a.exactMatch || b.score - a.score;
+                } else {
+                    if (a.meta === true) {
+                        return -1;
+                    }
+                    if (b.meta === true) {
+                        return 1;
+                    }
+                }
             });
         }
         var prev = null;
@@ -1420,7 +1432,11 @@ var AcePopup = function(parentNode) {
             c = data.caption[i];
             flag = data.matchMask & (1 << i) ? 1 : 0;
             if (last !== flag) {
-                tokens.push({type: data.className || "" + ( flag ? "completion-highlight" : ""), value: c});
+                var activeClass = '';
+                if (data.meta === false) {
+                    activeClass = 'autocomplete_disable_select';
+                } 
+                tokens.push({type: data.className || activeClass || "" + ( flag ? "completion-highlight" : ""), value: c});
                 last = flag;
             } else {
                 tokens[tokens.length - 1].value += c;
@@ -1430,7 +1446,7 @@ var AcePopup = function(parentNode) {
         if (data.meta) {
             var maxW = popup.renderer.$size.scrollerWidth / popup.renderer.layerConfig.characterWidth;
             if (data.meta.length + data.caption.length < maxW - 2)
-                tokens.push({type: "rightAlignedText", value: data.meta});
+                tokens.push({type: "rightAlignedText", value: String(data.meta)});
         }
         return tokens;
     };

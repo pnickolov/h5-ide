@@ -433,8 +433,9 @@ define [ 'event',
 
             cmdNameAry = _.map cmdNameAry, (value, i) ->
                 return {
-                    'name': value,
-                    'value': value
+                    'name': value.name,
+                    'value': value.name,
+                    'meta': value.support
                 }
 
             that.initCodeEditor($cmdValueItem[0], {
@@ -1624,7 +1625,7 @@ define [ 'event',
                                 name: ea.name,
                                 value: ea.value,
                                 score: ea.value,
-                                meta: ''
+                                meta: ea.meta
                             }
                         ))
                     else

@@ -953,3 +953,7 @@
 	line-height: 18px;
 	overflow: hidden;
 }
+
+.ace_autocomplete_disable_select {
+	opacity: 0.2;
+}

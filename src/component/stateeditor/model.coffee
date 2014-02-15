@@ -49,10 +49,14 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 				# get command name
 				cmdDistroAry = cmdObj.distro
 
+				supportCMD = true
 				if not ((not cmdDistroAry) or (cmdDistroAry and osPlatformDistro in cmdDistroAry))
-					return
+					supportCMD = false
 
-				cmdAry.push cmdName
+				cmdAry.push({
+					name: cmdName,
+					support: supportCMD
+				})
 				paraAryObj = cmdObj.parameter
 				cmdParaMap[cmdName] = []
 				cmdParaObjMap[cmdName] = {}
@@ -74,12 +78,20 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 				null
 
 			cmdNameAry = cmdAry.sort (val1, val2) ->
-				if val1 > val2
-					return 1
-				else if val1 < val2
-					return -1
+
+				if val1.support is val2.support
+
+					if val1.name > val2.name
+						return 1
+					else if val1.name < val2.name
+						return -1
+					else
+						return 0
+
 				else
-					return 0
+
+					if val1.support is true then return -1
+					if val2.support is true then return 1
 
 			# generate resource attr autocomplete data
 			allCompData = that.get('allCompData')

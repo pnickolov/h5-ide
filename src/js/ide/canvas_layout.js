@@ -27,7 +27,7 @@ var listen = function ()
 			.on('mousedown' + name_space, '.AWS-EC2-Instance .instance-number-group', MC.canvas.instanceList.show)
 			.on('mousedown' + name_space, '.AWS-VPC-NetworkInterface .eni-number-group', MC.canvas.eniList.show)
 			.on('mousedown' + name_space, MC.canvas.event.ctrlMove.mousedown)
-			.on('mousedown' + name_space, '#node-state-wrap', MC.canvas.nodeState.popup);
+			.on('mousedown' + name_space, '#node-state-wrap', MC.canvas.nodeAction.popup);
 	}
 
 	if (canvas_state === 'appedit')
@@ -43,7 +43,7 @@ var listen = function ()
 			.on('mouseenter'  + name_space + ' mouseleave'  + name_space, '.node', MC.canvas.event.nodeHover)
 			.on('selectstart' + name_space, returnFalse)
 			.on('mousedown' + name_space, MC.canvas.event.ctrlMove.mousedown)
-			.on('mousedown' + name_space, '#node-state-wrap', MC.canvas.nodeState.popup);
+			.on('mousedown' + name_space, '#node-state-wrap', MC.canvas.nodeAction.popup);
 	}
 
 	if (canvas_state === 'stack')
@@ -58,7 +58,7 @@ var listen = function ()
 			.on('mousedown' + name_space, '#svg_canvas', MC.canvas.event.clickBlank)
 			.on('selectstart' + name_space, returnFalse)
 			.on('mousedown' + name_space, MC.canvas.event.ctrlMove.mousedown)
-			.on('mousedown' + name_space, '#node-state-wrap', MC.canvas.nodeState.popup);
+			.on('mousedown' + name_space, '#node-state-wrap', MC.canvas.nodeAction.popup);
 	}
 
 	if (canvas_state === 'appview')

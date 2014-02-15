@@ -2649,7 +2649,7 @@ MC.canvas.eniList = {
 	}
 };
 
-MC.canvas.nodeState = {
+MC.canvas.nodeAction = {
 	show: function (id)
 	{
 		var canvas_status = MC.canvas.getState(),
@@ -2681,13 +2681,13 @@ MC.canvas.nodeState = {
 				return;
 			}
 
-			$('#canvas_container').append(MC.template.nodeState({
+			$('#canvas_container').append(MC.template.nodeAction({
 				state_num: stateNum
 			}));
 
-			MC.canvas.nodeState.updateNumber(stateNum);
+			MC.canvas.nodeAction.updateNumber(stateNum);
 
-			MC.canvas.nodeState.position(id);
+			MC.canvas.nodeAction.position(id);
 		}
 	},
 
@@ -2704,7 +2704,7 @@ MC.canvas.nodeState = {
 			offset = target[0].getBoundingClientRect(),
 			canvas_offset = $('#svg_canvas').offset();
 
-		$('#node-state-wrap')
+		$('#node-action-wrap')
 			.css({
 				'left': offset.left - canvas_offset.left + offset.width + 5,
 				'top': offset.top - canvas_offset.top
@@ -2728,11 +2728,11 @@ MC.canvas.nodeState = {
 
 	remove: function (id)
 	{
-		var node_state = $('#node-state-wrap');
+		var node_action = $('#node-action-wrap');
 
-		if (node_state.data('id') === id)
+		if (node_action.data('id') === id)
 		{
-			node_state.remove();
+			node_action.remove();
 		}
 
 		return true;
@@ -2813,7 +2813,7 @@ MC.canvas.event.dragable = {
 					MC.canvas.event.clearSelected();
 
 					$canvas(this.id).select();
-					MC.canvas.nodeState.show(this.id);
+					MC.canvas.nodeAction.show(this.id);
 				}
 
 				return false;
@@ -3003,7 +3003,7 @@ MC.canvas.event.dragable = {
 
 				if (target_item.type === 'AWS.EC2.Instance')
 				{
-					MC.canvas.nodeState.show(target_id);
+					MC.canvas.nodeAction.show(target_id);
 				}
 			}
 		}
@@ -3266,7 +3266,7 @@ MC.canvas.event.dragable = {
 			}
 
 			$canvas(target_id).select();
-			MC.canvas.nodeState.show(target_id);
+			MC.canvas.nodeAction.show(target_id);
 		}
 
 		event_data.shadow.remove();
@@ -3906,7 +3906,7 @@ MC.canvas.event.siderbarDrag = {
 
 								if (target_type === 'AWS.EC2.Instance')
 								{
-									MC.canvas.nodeState.show(new_node_id);
+									MC.canvas.nodeAction.show(new_node_id);
 								}
 							}
 						}
@@ -4667,7 +4667,7 @@ MC.canvas.event.selectNode = function (event)
 		MC.canvas.event.clearSelected();
 
 		$canvas(this.id).select();
-		MC.canvas.nodeState.show(this.id);
+		MC.canvas.nodeAction.show(this.id);
 	}
 
 	return false;
@@ -5031,7 +5031,7 @@ MC.canvas.event.keyEvent = function (event)
 				$('#node-state-wrap').data('id') === target_id
 			)
 			{
-				MC.canvas.nodeState.position(target_id);
+				MC.canvas.nodeAction.position(target_id);
 			}
 
 			return false;

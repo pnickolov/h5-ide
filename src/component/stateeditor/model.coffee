@@ -209,7 +209,7 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 			compData = that.get('compData')
 			resModel = that.get('resModel')
 			resModel.setStateData(stateData)
-			MC.canvas.nodeState.show(compData.uid)
+			MC.canvas.nodeAction.show(compData.uid)
 
 		getStateData: () ->
 

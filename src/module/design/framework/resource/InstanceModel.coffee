@@ -275,7 +275,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
       instanceType = MC.data.config[ Design.instance().region() ].instance_type
       if instanceType then instanceType = instanceType[ k[0] ]
       if instanceType then instanceType = instanceType[ k[1] ]
-      if instanceType.ebs_optimized
+      if instanceType and instanceType.ebs_optimized
         return instanceType.ebs_optimized is 'Yes'
 
       #default

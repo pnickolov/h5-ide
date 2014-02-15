@@ -5067,6 +5067,20 @@ MC.canvas.event.keyEvent = function (event)
 
 			return false;
 		}
+
+		// Open state editor - [Enter]
+		if (keyCode === 13)
+		{
+			var type = $canvas( $canvas.selected_node()[ 0 ] ).type;
+
+			if (
+				type === 'AWS.EC2.Instance' ||
+				type === 'AWS.AutoScaling.LaunchConfiguration'
+			)
+			{
+				$canvas.trigger("STATE_ICON_CLICKED", $canvas.selected_node()[ 0 ]);
+			}
+		}
 	}
 };
 

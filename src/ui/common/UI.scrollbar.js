@@ -12,7 +12,6 @@
 (function (document) {
 
 var style = document.documentElement.style,
-	isTouch = window.ontouchstart !== undefined,
 	isTransform = false,
 	cssTransform;
 

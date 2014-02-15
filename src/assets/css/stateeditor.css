@@ -208,7 +208,7 @@
 	z-index: 80;
 	display: block;
 	border-left: 2px solid transparent;
-	padding: 9px 0;
+	padding: 10px 0;
 	text-align: center;
 	color: #666;
 	/*font-family: Lucida Console;*/
@@ -320,8 +320,8 @@
 	white-space: nowrap !important;
 	display: inline !important;
 	height: 13px !important;
-	line-height: 17px !important;
-	padding-top: 3px !important;
+	line-height: 13px !important;
+	padding-top: 0px !important;
 	overflow: hidden !important;
 	cursor: text !important;
 	opacity: 1.0 !important;
@@ -438,6 +438,7 @@
 	max-width: 350px;
 	overflow: auto;
 	margin-left: 10px;
+	margin-top: 4px;
 }
 
 #state-editor .parameter-list .parameter-item.dict .parameter-value {

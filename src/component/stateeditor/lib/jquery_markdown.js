@@ -32,6 +32,7 @@
 
 		function Markdown(text) {
 			text = "\n\n" + text;
+			text = text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 			text = text.replace("\r\n", "\n");
 			text = text.replace("\r", "\n");
 			text += "\n\n";

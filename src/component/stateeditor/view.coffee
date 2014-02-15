@@ -560,10 +560,12 @@ define [ 'event',
                 descMarkdown = 'Get Started with Conﬁguration Manager Conﬁguration manager is blah blah blah... You can use following command...'
 
             descHTML = ''
-            if descMarkdown
-                descHTML = $.markdown(descMarkdown)
 
-            that.$cmdDsec.html(descHTML)
+            setTimeout(() ->
+                if descMarkdown
+                    descHTML = $.markdown(descMarkdown)
+                that.$cmdDsec.html(descHTML)
+            , 200)
 
             null
 

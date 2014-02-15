@@ -290,23 +290,26 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 				compType = compData.type
 
 				if compType is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
-					if compData.serverGroupUid isnt compUID
-						return
-					else
-						if compData.serverGroupName
-							compName = compData.serverGroupName
+					return
+					# if compData.serverGroupUid isnt compUID
+					# 	return
+					# else
+					# 	if compData.serverGroupName
+					# 		compName = compData.serverGroupName
 
 				# replace instance default eni name to instance name
 				if compType is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
-					if compData.resource.Attachment.DeviceIndex in ['0', 0]
+					if compData.index isnt 0
 						return
 					if compData.serverGroupUid isnt compUID
 						return
-						# instanceRef = compData.resource.Attachment.InstanceId
-						# if instanceRef
-						# 	instanceUID = MC.extractID(instanceRef)
-						# 	if instanceUID
-						# 		compName = allCompData[instanceUID].name
+					instanceRef = compData.resource.Attachment.InstanceId
+					if not instanceRef
+						return
+					if compData.resource.Attachment.DeviceIndex in ['0', 0]
+						instanceUID = MC.extractID(instanceRef)
+						if instanceUID
+							compName = allCompData[instanceUID].serverGroupName
 
 				supportType = compType.replace(/\./ig, '_')
 
@@ -391,7 +394,7 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 			if not resAttrDataAry then resAttrDataAry = []
 			refAry = resAttrDataAry.concat(resStateDataAry)
 			attrRefRegexList = _.map refAry, (refObj) ->
-				regStr = refObj.name.replace('{', '\\{').replace('}', '\\}').replace('.', '\\.')
+				regStr = refObj.name.replace('{', '\\{').replace('}', '\\}').replace('.', '\\.').replace('[', '\\[').replace(']', '\\]')
 				return '@' + regStr
 			resAttrRegexStr = attrRefRegexList.join('|')
 			that.set('resAttrRegexStr', resAttrRegexStr)

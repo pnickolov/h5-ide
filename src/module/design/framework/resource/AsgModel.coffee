@@ -234,6 +234,10 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
       @draw()
       null
 
+    removeChild: ->
+      @unset "lc"
+      @draw()
+
     getNotification : ()->
       n = @get("notification")
       if n then n.toJSON() else {}
@@ -332,15 +336,18 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
 
       @listenTo( expandedAsg, "destroy", @__onExpandedAsgRemove )
 
-      # Connect Elb to expandedAsg
-      ElbAsso = Design.modelClassForType( "ElbAmiAsso" )
-      for elb in @get("lc").connectionTargets( "ElbAmiAsso" )
-        new ElbAsso( elb, expandedAsg )
+      lc = @get("lc")
+      if lc
+        # Connect Elb to ExpandedAsg
+        ElbAsso = Design.modelClassForType( "ElbAmiAsso" )
+        for elb in lc.connectionTargets( "ElbAmiAsso" )
+          new ElbAsso( elb, expandedAsg )
 
-      # Connect other sglilne to expandedAsg
-      SgAsso = Design.modelClassForType( "SgAsso" )
-      for sgTarget in @get("lc").connectionTargets( "SgAsso" )
-        new SgAsso( expandedAsg, sgTarget )
+        # Connect other sglilne to expandedAsg
+        SgAsso = Design.modelClassForType( "SgAsso" )
+        for sgTarget in lc.connectionTargets( "SgAsso" )
+          new SgAsso( expandedAsg, sgTarget )
+
       null
 
     __onExpandedAsgRemove : ( target )->

@@ -50,7 +50,8 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
       # state = @get("state")
       # if state isnt undefined and state.length > 0
       #   return MC.template.NodeStateRemoveConfirmation(name: @get("name"))
-      { error : lang.ide.CVS_MSG_ERR_DEL_LC }
+      # { error : lang.ide.CVS_MSG_ERR_DEL_LC }
+      true
 
     isDefaultTenancy : ()-> true
 
@@ -76,6 +77,12 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
       # Remove attached volumes
       for v in (@get("volumeList") or emptyArray).slice(0)
         v.remove()
+
+      asg = @.parent()
+      # Remove itself from parent ASG
+      asg.removeChild()
+
+
 
       null
 

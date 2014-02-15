@@ -2072,7 +2072,7 @@ define [ 'event',
                 if selected_index > 0
                     that.expandItem.call this, stack.eq(selected_index - 1).addClass('selected')
 
-                if selected_index is 0
+                if selected_index < 1
                     that.expandItem.call this, stack.eq(total - 1).addClass('selected')
 
             else

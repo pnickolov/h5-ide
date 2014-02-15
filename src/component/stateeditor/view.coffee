@@ -2039,7 +2039,7 @@ define [ 'event',
                 return false
 
             # Toggle Log Sidebar [Ctrl + L]
-            if event.ctrlKey and keyCode is 76
+            if event.ctrlKey and keyCode is 76 and target.currentState isnt 'stack'
                 target.onLogToggleClick target, event
                 return false
 

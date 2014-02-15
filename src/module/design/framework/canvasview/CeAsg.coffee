@@ -105,7 +105,7 @@ define [ "./CanvasElement", 'i18n!nls/lang.js', "constant", "Design", "CanvasMan
     CanvasManager.toggle( node.children(".asg-resource-dragger"), true )
     null
 
-  CeAsgProto.__drawExpandedAsg = ()->
+  CeAsgProto.__drawExpandedAsg = ->
     for asg in @model.get("expandedList")
       asg.draw()
     null

@@ -26,14 +26,16 @@ define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager" ], ( Can
     else
       "ide/ami/#{ami.osType}.#{ami.architecture}.#{ami.rootDeviceType}.png"
 
-  ChildElementProto.draw = ( isCreate )->
+  ChildElementProto.draw = ( isCreate, expandedAsg )->
 
     m = @model
+    id = expandedAsg and "#{expandedAsg.id}-lc" or @model.id
 
     if isCreate
 
       # Call parent's createNode to do basic creation
       node = @createNode({
+        id      : id
         image   : "ide/icon/instance-canvas.png"
         imageX  : 15
         imageY  : 9
@@ -43,6 +45,20 @@ define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager" ], ( Can
         labelBg : true
         sg      : true
       })
+
+      # lc in expanded asg
+      if expandedAsg
+        CanvasManager.removeClass node, 'dragable'
+        CanvasManager.removeClass node, 'node'
+        CanvasManager.addClass node, 'lc-expand'
+
+        x = expandedAsg.x() + 2
+        y = expandedAsg.y() + 3
+
+        @mirrorIds.push id
+      else
+        x = m.x()
+        y = m.y()
 
       # Insert Volume / Eip / Port
       node.append(
@@ -97,10 +113,11 @@ define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager" ], ( Can
 
       # Move the node to right place
       @getLayer("node_layer").append node
-      @initNode node, m.x(), m.y()
+
+      @initNode node, x, y
 
     else
-      node = @$element()
+      node = @$element id
 
       # Node Label
       CanvasManager.update node.children(".node-label-name"), m.get("name")

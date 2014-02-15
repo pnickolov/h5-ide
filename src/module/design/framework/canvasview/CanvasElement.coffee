@@ -8,9 +8,11 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
   # Canvas interface of CanvasElement
   ###
   CanvasElement = ( model )->
-    @id       = model.id
-    @model    = model
-    @type     = model.type
+    @id         = model.id
+    @model      = model
+    @type       = model.type
+    # store id of mirror views
+    @mirrorIds  = []
 
     if model.parent
       @parentId = model.parent()
@@ -57,8 +59,8 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
   ###
   CanvasElement.prototype.getModel = ()-> @model
 
-  CanvasElement.prototype.element  = ()-> document.getElementById( @id )
-  CanvasElement.prototype.$element = ()-> $( document.getElementById( @id ) )
+  CanvasElement.prototype.element  = ( id )-> document.getElementById( id or @id )
+  CanvasElement.prototype.$element = ( id )-> $( document.getElementById( id or @id ) )
 
   CanvasElement.prototype.move = ( x, y )->
     if x is @model.x() and y is @model.y() then return
@@ -367,7 +369,7 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
       Canvon.image( MC.IMG_URL+option.image, option.imageX, option.imageY, option.imageW, option.imageH )
 
     ).attr({
-      'id'         : @id
+      'id'         : option.id or @id
       'class'      : 'dragable node ' + @type.replace(/\./g, "-")
       'data-type'  : 'node'
       'data-class' : @type
@@ -464,7 +466,10 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
       CanvasManager.addClass @element(), "deleted"
     null
 
-  CanvasElement.prototype.detach = ()-> MC.canvas.remove( @element() )
+  CanvasElement.prototype.detach = () ->
+    MC.canvas.remove( @element() )
+    for id in @mirrorIds
+      MC.canvas.remove( @element( id ) )
 
   CanvasElement.setDesign = ( design )->
     Design = design

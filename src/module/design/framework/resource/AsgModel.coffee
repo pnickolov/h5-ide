@@ -226,17 +226,29 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
           @updateExpandedAsgAsso( elb, true )
 
       @set "lc", lc
-      @listenTo( lc, "change:name", @draw )
+      @listenTo lc, "change:name", @draw
+      @listenTo lc, 'change', @drawExpanedLc
 
       for elb in lc.connectionTargets("ElbAmiAsso")
         @updateExpandedAsgAsso( elb )
 
       @draw()
+      @drawExpanedLc true
+
       null
 
     removeChild: ->
       @unset "lc"
       @draw()
+
+      null
+
+    drawExpanedLc: ( isCreate ) ->
+      lc = @get 'lc'
+      for asg in @get("expandedList")
+        lc.draw isCreate, asg
+
+      null
 
     getNotification : ()->
       n = @get("notification")

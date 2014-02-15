@@ -4751,7 +4751,7 @@ MC.canvas.event.clearSelected = function (event)
 
 	Canvon('#svg_canvas .view-show').removeClass('view-show');
 
-	$('#node-state-wrap').remove();
+	$('#node-action-wrap').remove();
 
 	// Empty selected_node
 	$canvas.selected_node().length = 0;
@@ -5028,7 +5028,7 @@ MC.canvas.event.keyEvent = function (event)
 
 			if (
 				target_type === 'AWS.EC2.Instance' &&
-				$('#node-state-wrap').data('id') === target_id
+				$('#node-action-wrap').data('id') === target_id
 			)
 			{
 				MC.canvas.nodeAction.position(target_id);

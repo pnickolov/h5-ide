@@ -3,9 +3,9 @@
 #* Filename: UI.scrollbar
 #* Creator: Angel
 #* Description: UI.scrollbar
-#* Date: 20131108
+#* Date: 20140215
 # **********************************************************
-# (c) Copyright 2013 Madeiracloud  All Rights Reserved
+# (c) Copyright 2014 Madeiracloud  All Rights Reserved
 # **********************************************************
 */
 
@@ -52,8 +52,7 @@ var scrollbar = {
 					children = wrap.children(),
 					veritical_thumb = children[0] ? $(children[0].firstChild) : undefined,
 					horizontal_thumb = children[1] ? $(children[1].firstChild) : undefined,
-					scroll_content = wrap.find('.scroll-content').first()[0],
-					//scroll_content_elem = scroll_content[0],
+					scroll_content = target.getElementsByClassName('scroll-content')[0],
 					offsetHeight = target.offsetHeight,
 					offsetWidth = target.offsetWidth,
 					scrollbar_height,
@@ -74,7 +73,6 @@ var scrollbar = {
 					{
 						wrap_height = wrap.height();
 
-						//console.info(target.id, target.offsetHeight, scroll_content.scrollHeight, scrollbar_height, offsetHeight * 2 - scroll_content.scrollHeight, wrap_height);
 						if (scrollbar_height <= offsetHeight * 2 - scroll_content.scrollHeight || scrollbar_height > wrap_height)
 						{
 							veritical_thumb.parent().hide();
@@ -89,12 +87,12 @@ var scrollbar = {
 							}
 
 							scroll_content.realScrollTop = 0;
-							veritical_thumb.css('top', 0);
+							veritical_thumb[0].style.top = '0px';
 						}
 						else
 						{
 							veritical_thumb.parent().show();
-							veritical_thumb.css('height', scrollbar_height);
+							veritical_thumb[0].style.height = scrollbar_height + 'px';
 
 							if (
 								scroll_content.realScrollTop !== 0 &&
@@ -128,12 +126,12 @@ var scrollbar = {
 							}
 
 							scroll_content.realScrollLeft = 0;
-							horizontal_thumb.css('left', 0);
+							horizontal_thumb[0].style.left = '0px';
 						}
 						else
 						{
 							horizontal_thumb.parent().show();
-							horizontal_thumb.css('width', scrollbar_width);
+							horizontal_thumb[0].style.width = scrollbar_width + 'px';
 
 							if (
 								scroll_content.realScrollLeft !== 0 &&
@@ -160,21 +158,11 @@ var scrollbar = {
 	{
 		var thumb = $(this),
 			target = thumb.parent().parent(),
-			tag = event.target.tagName.toLowerCase(),
 			direction = event.data.direction;
-
-		if (
-			$.inArray(tag, ['a', 'input', 'img']) > -1
-		)
-		{
-			return false;
-		}
 
 		$(document.body).append('<div id="overlayer"></div>');
 
 		target.addClass('scrolling');
-
-		event = scrollbar.isTouch ? event.originalEvent.touches[0] : event;
 
 		$(document)
 			.on({
@@ -199,16 +187,14 @@ var scrollbar = {
 			direction = event_data.direction,
 			thumbPos = event_data.thumbPos;
 
-		originalEvent = scrollbar.isTouch ? event.touches.originalEvent[0] : event;
-
 		if (direction === 'veritical')
 		{
-			scrollbar.scrollTop(event_data, scrollbar.isTouch ? thumbPos - originalEvent.clientY : originalEvent.clientY - event_data.scrollbar_wrap.offset().top - thumbPos);
+			scrollbar.scrollTop(event_data, event.clientY - event_data.scrollbar_wrap.offset().top - thumbPos);
 		}
 
 		if (direction === 'horizontal')
 		{
-			scrollbar.scrollLeft(event_data, scrollbar.isTouch ? thumbPos - originalEvent.clientX : originalEvent.clientX - event_data.scrollbar_wrap.offset().left - thumbPos);
+			scrollbar.scrollLeft(event_data, event.clientX - event_data.scrollbar_wrap.offset().left - thumbPos);
 		}
 
 		return false;
@@ -216,14 +202,10 @@ var scrollbar = {
 
 	mouseup: function (event)
 	{
-		$(document)
-			.off(scrollbar.isTouch ? {
-				'touchmove': scrollbar.mousemove,
-				'touchend': scrollbar.mouseup
-			} : {
-				'mousemove': scrollbar.mousemove,
-				'mouseup': scrollbar.mouseup
-			});
+		$(document).off({
+			'mousemove': scrollbar.mousemove,
+			'mouseup': scrollbar.mouseup
+		});
 
 		$('#overlayer').remove();
 
@@ -238,7 +220,7 @@ var scrollbar = {
 			scrollbar_wrap,
 			thumb;
 
-		if (direction.left)
+		if (direction.left >= 0)
 		{
 			thumb = target.find('.scrollbar-horizontal-thumb').first();
 			scrollbar_wrap = target.find('.scrollbar-horizontal-wrap').first();
@@ -254,7 +236,7 @@ var scrollbar = {
 			}
 		}
 
-		if (direction.top)
+		if (direction.top >= 0)
 		{
 			thumb = target.find('.scrollbar-veritical-thumb').first();
 			scrollbar_wrap = target.find('.scrollbar-veritical-wrap').first();
@@ -366,6 +348,7 @@ var scrollbar = {
 	wheel: function (event, delta)
 	{
 		var target = $(this),
+			event_target = event.target,
 			originalEvent = event.originalEvent,
 			scroll_content = target.find('.scroll-content').first(),
 			thumb,
@@ -375,6 +358,14 @@ var scrollbar = {
 			max_scroll,
 			scale,
 			thumb_max;
+
+		if (
+			event_target.tagName.toLowerCase() === 'textarea' &&
+			event_target.scrollHeight > event_target.offsetHeight
+		)
+		{
+			return true;
+		}
 
 		if (
 			originalEvent.wheelDeltaX ||
@@ -402,14 +393,7 @@ var scrollbar = {
 						'scroll_target': target
 					}, scrollLeft);
 
-					if (scrollLeft < 0 || scrollLeft > thumb_max)
-					{
-						return true;
-					}
-					else
-					{
-						return false;
-					}
+					return (scrollLeft < 0 || scrollLeft > thumb_max);
 				}
 				else
 				{
@@ -445,14 +429,7 @@ var scrollbar = {
 						'scroll_target': target
 					}, scrollTop);
 
-					if (scrollTop < 0 || scrollTop > thumb_max)
-					{
-						return true;
-					}
-					else
-					{
-						return false;
-					}
+					return (scrollTop < 0 || scrollTop > thumb_max);
 				}
 				else
 				{

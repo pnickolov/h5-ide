@@ -4896,7 +4896,9 @@ MC.canvas.event.keyEvent = function (event)
 				node_stack = [],
 				index = 0,
 				current_index,
-				next_node;
+				next_node,
+				next_id,
+				next_item;
 
 			if ($canvas(current_node_id).nodeType !== 'node')
 			{
@@ -4924,11 +4926,21 @@ MC.canvas.event.keyEvent = function (event)
 				current_index++;
 			}
 
-			next_node = $('#' + node_stack[ current_index ]);
-
 			MC.canvas.event.clearSelected();
 
-			$canvas(next_node.attr('id')).select();
+			next_id = $('#' + node_stack[ current_index ]).attr('id');
+
+			next_item = $canvas(next_id);
+
+			next_item.select();
+
+			if (
+				next_item.type === 'AWS.EC2.Instance' ||
+				next_item.type === 'AWS.AutoScaling.LaunchConfiguration'
+			)
+			{
+				MC.canvas.nodeAction.show(next_id);
+			}
 
 			return false;
 		}

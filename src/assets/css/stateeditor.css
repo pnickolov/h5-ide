@@ -636,26 +636,6 @@
 	position: absolute;
 }
 
-#state-editor .state-add {
-	margin-top: 6px;
-	margin-right: 15px;
-	background-color: #ddd;
-	width: 15px;
-	height: 15px;
-	text-align: center;
-	line-height: 13px;
-	border-radius: 20px;
-	background-color: #aaa;
-	color: #fff;
-	cursor: pointer;
-	float: right;
-	display: none;
-}
-
-#state-editor .state-add:hover {
-	background-color: #ccc;
-}
-
 #state-editor .state-remove {
 	position: absolute;
 	display: none;

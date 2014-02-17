@@ -566,7 +566,7 @@ define [ 'event',
                 if descMarkdown
                     descHTML = $.markdown(descMarkdown)
                 that.$cmdDsec.html(descHTML)
-            , 200)
+            , 0)
 
             null
 
@@ -1444,156 +1444,163 @@ define [ 'event',
 
             that = this
 
-            # if that.readOnlyMode
-            #     return
-
             if not editorElem then return
-
             $editorElem = $(editorElem)
-
             if $editorElem.data('editor')
                 return
 
-            editor = ace.edit(editorElem)
+            _initEditor = () ->
 
-            $editorElem.data('editor', editor)
+                # if that.readOnlyMode
+                #     return
 
-            editor.hintObj = hintObj
-            editor.getSession().setMode(that.resRefHighLight)
+                editor = ace.edit(editorElem)
 
-            # config editor
+                $editorElem.data('editor', editor)
 
-            # editor.setTheme("ace/theme/monokai")
-            editor.renderer.setPadding(4)
-            editor.setBehavioursEnabled(false)
+                editor.hintObj = hintObj
+                editor.getSession().setMode(that.resRefHighLight)
 
-            # single/mutil line editor
-            editorSingleLine = false
-            maxLines = undefined
-            if $editorElem.hasClass('line')
-                maxLines = 1
-                editorSingleLine = true
+                # config editor
 
-            editor.setOptions({
-                enableBasicAutocompletion: true,
-                maxLines: maxLines,
-                showGutter: false,
-                highlightGutterLine: false,
-                showPrintMargin: false,
-                highlightActiveLine: false,
-                highlightSelectedWord: false,
-                enableSnippets: false,
-                singleLine: editorSingleLine
-            })
+                # editor.setTheme("ace/theme/monokai")
+                editor.renderer.setPadding(4)
+                editor.setBehavioursEnabled(false)
 
-            tk = new that.Tokenizer({
-                'start': [{
-                    token: 'res_ref_correct',
-                    regex: that.resAttrRegexStr
-                }, {
-                    token: 'res_ref',
-                    regex: '@\\{(\\w|\\-)+(\\.(\\w+(\\[\\d+\\])*))+\\}'
-                }]
-            })
-            editor.session.$mode.$tokenizer = tk
-            editor.session.bgTokenizer.setTokenizer(tk)
-            editor.renderer.updateText()
+                # single/mutil line editor
+                editorSingleLine = false
+                maxLines = undefined
+                if $editorElem.hasClass('line')
+                    maxLines = 1
+                    editorSingleLine = true
 
-            editor.commands.on("afterExec", (e) ->
-
-                thatEditor = e.editor
-                currentValue = thatEditor.getValue()
-                hintDataAryMap = thatEditor.hintObj
-
-                if e.command.name is "insertstring"
-                    if /^@$/.test(e.args) and hintDataAryMap['at']
-                        that.setEditorCompleter(thatEditor, hintDataAryMap['at'], 'reference')
-                        thatEditor.execCommand("startAutocomplete")
-
-                if e.command.name is "backspace" and hintDataAryMap['focus']
-                    that.setEditorCompleter(thatEditor, hintDataAryMap['focus'], 'command')
-                    thatEditor.execCommand("startAutocomplete")
-
-                if e.command.name is "backspace" and hintDataAryMap['at'] and currentValue
-                    currentLineContent = thatEditor.getSession().getLine(thatEditor.getCursorPosition().row)
-                    if currentLineContent.indexOf('@') >= 0
-                        that.setEditorCompleter(thatEditor, hintDataAryMap['at'], 'reference')
-                        thatEditor.execCommand("startAutocomplete")
-
-                if e.command.name is "autocomplete_confirm"
-
-                    if $editorElem.hasClass('command-value')
-
-                        value = e.args
-                        $stateItem = $editorElem.parents('.state-item')
-                        originCMDName = $stateItem.attr('data-command')
-
-                        if originCMDName isnt value
-
-                            $stateItem.attr('data-command', value)
-                            that.refreshDescription(value)
-                            $paraListElem = $stateItem.find('.parameter-list')
-                            that.refreshParaList($paraListElem, value)
-                            that.refreshStateView($stateItem)
-
-                    else if $editorElem.hasClass('parameter-value')
-
-                        $paraItem = $editorElem.parents('.parameter-item')
-                        if $paraItem.hasClass('dict')
-                            that.onDictInputChange({
-                                currentTarget: $editorElem[0]
-                            })
-                        else if $paraItem.hasClass('array') or $paraItem.hasClass('state')
-                            that.onArrayInputChange({
-                                currentTarget: $editorElem[0]
-                            })
-
-                if e.command.name is "autocomplete_match"
-
-                    isShowTip = false
-
-                    if $editorElem.hasClass('parameter-value')
-
-                        $paraItem = $editorElem.parents('.parameter-item')
-                        if $paraItem.hasClass('state')
-                            isShowTip = true
-
-                    if $editorElem.hasClass('command-value')
-                        isShowTip = true
-
-                    if isShowTip
-
-                        if not e.args
-                            that.$aceAutocompleteTip.show()
-                        else
-                            that.$aceAutocompleteTip.hide()
-            )
-
-            editor.on("focus", (e, thatEditor) ->
-
-                hintDataAryMap = thatEditor.hintObj
-                currentValue = thatEditor.getValue()
-                if not currentValue and hintDataAryMap['focus']
-                    that.setEditorCompleter(thatEditor, hintDataAryMap['focus'], 'command')
-                    thatEditor.execCommand("startAutocomplete")
-
-                $valueInput = $(thatEditor.container)
-                inputPosX = $valueInput.offset().left
-                inputPosY = $valueInput.offset().top
-                that.$aceAutocompleteTip.css({
-                    left: inputPosX,
-                    top: inputPosY + 25
+                editor.setOptions({
+                    enableBasicAutocompletion: true,
+                    maxLines: maxLines,
+                    showGutter: false,
+                    highlightGutterLine: false,
+                    showPrintMargin: false,
+                    highlightActiveLine: false,
+                    highlightSelectedWord: false,
+                    enableSnippets: false,
+                    singleLine: editorSingleLine
                 })
 
-                thatEditor.selectAll()
+                tk = new that.Tokenizer({
+                    'start': [{
+                        token: 'res_ref_correct',
+                        regex: that.resAttrRegexStr
+                    }, {
+                        token: 'res_ref',
+                        regex: '@\\{(\\w|\\-)+(\\.(\\w+(\\[\\d+\\])*))+\\}'
+                    }]
+                })
+                editor.session.$mode.$tokenizer = tk
+                editor.session.bgTokenizer.setTokenizer(tk)
+                editor.renderer.updateText()
 
-                # that.$aceAutocompleteTip.show()
-            )
+                editor.commands.on("afterExec", (e) ->
 
-            editor.on("blur", (e) ->
-                that.$cmdDsec.find('.highlight').removeClass('highlight')
-                that.$aceAutocompleteTip.hide()
-            )
+                    thatEditor = e.editor
+                    currentValue = thatEditor.getValue()
+                    hintDataAryMap = thatEditor.hintObj
+
+                    if e.command.name is "insertstring"
+                        if /^@$/.test(e.args) and hintDataAryMap['at']
+                            that.setEditorCompleter(thatEditor, hintDataAryMap['at'], 'reference')
+                            thatEditor.execCommand("startAutocomplete")
+
+                    if e.command.name is "backspace" and hintDataAryMap['focus']
+                        that.setEditorCompleter(thatEditor, hintDataAryMap['focus'], 'command')
+                        thatEditor.execCommand("startAutocomplete")
+
+                    if e.command.name is "backspace" and hintDataAryMap['at'] and currentValue
+                        currentLineContent = thatEditor.getSession().getLine(thatEditor.getCursorPosition().row)
+                        if currentLineContent.indexOf('@') >= 0
+                            that.setEditorCompleter(thatEditor, hintDataAryMap['at'], 'reference')
+                            thatEditor.execCommand("startAutocomplete")
+
+                    if e.command.name is "autocomplete_confirm"
+
+                        if $editorElem.hasClass('command-value')
+
+                            value = e.args
+                            $stateItem = $editorElem.parents('.state-item')
+                            originCMDName = $stateItem.attr('data-command')
+
+                            if originCMDName isnt value
+
+                                $stateItem.attr('data-command', value)
+                                that.refreshDescription(value)
+                                $paraListElem = $stateItem.find('.parameter-list')
+                                that.refreshParaList($paraListElem, value)
+                                that.refreshStateView($stateItem)
+
+                        else if $editorElem.hasClass('parameter-value')
+
+                            $paraItem = $editorElem.parents('.parameter-item')
+                            if $paraItem.hasClass('dict')
+                                that.onDictInputChange({
+                                    currentTarget: $editorElem[0]
+                                })
+                            else if $paraItem.hasClass('array') or $paraItem.hasClass('state')
+                                that.onArrayInputChange({
+                                    currentTarget: $editorElem[0]
+                                })
+
+                    if e.command.name is "autocomplete_match"
+
+                        isShowTip = false
+
+                        if $editorElem.hasClass('parameter-value')
+
+                            $paraItem = $editorElem.parents('.parameter-item')
+                            if $paraItem.hasClass('state')
+                                isShowTip = true
+
+                        if $editorElem.hasClass('command-value')
+                            isShowTip = true
+
+                        if isShowTip
+
+                            if not e.args
+                                that.$aceAutocompleteTip.show()
+                            else
+                                that.$aceAutocompleteTip.hide()
+                )
+
+                editor.on("focus", (e, thatEditor) ->
+
+                    hintDataAryMap = thatEditor.hintObj
+                    currentValue = thatEditor.getValue()
+                    if not currentValue and hintDataAryMap['focus']
+                        that.setEditorCompleter(thatEditor, hintDataAryMap['focus'], 'command')
+                        thatEditor.execCommand("startAutocomplete")
+
+                    $valueInput = $(thatEditor.container)
+                    inputPosX = $valueInput.offset().left
+                    inputPosY = $valueInput.offset().top
+                    that.$aceAutocompleteTip.css({
+                        left: inputPosX,
+                        top: inputPosY + 25
+                    })
+
+                    thatEditor.selectAll()
+
+                    # that.$aceAutocompleteTip.show()
+                )
+
+                editor.on("blur", (e) ->
+                    that.$cmdDsec.find('.highlight').removeClass('highlight')
+                    that.$aceAutocompleteTip.hide()
+                )
+
+            if $editorElem.hasClass('command-value')
+                _initEditor()
+            else
+                setTimeout(() ->
+                    _initEditor()
+                , 0)
 
         highlightParaDesc: (paraName) ->
 

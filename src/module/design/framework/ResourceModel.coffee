@@ -24,7 +24,7 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
     null
 
   # FORCE_MAP defines what parent method will be called when child's overriden method is called
-  FORCE_MAP = [ "remove", "connect_base", "addChild", "disconnect_base" ]
+  FORCE_MAP = [ "remove", "connect_base", "addChild", "removeChild", "disconnect_base" ]
   __checkForceMap = ( protoProps )->
     # This function is used to detect if the one of the method defined in FORCE_MAP have
     # called its super version.
@@ -35,11 +35,11 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
       if propName is "constructor"
         p = ""
       else
-        p = "propName"
+        p = propName
 
       matchRegex = new RegExp( p + "\\.(call|apply)\\s?\\(?\\s?this" )
       if not funcString.match( matchRegex )
-        console.warn "Subclass of ResourceModel (type : #{protoProps.type}) is overriding #{propName}, but it seems to forget to call Parent's method!"
+        console.warn "ResourceModel subclass (type : #{protoProps.type}) is overriding `#{propName}`, but it seems to forget to call Parent's method!"
 
     null
 
@@ -130,6 +130,9 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
 
     # isDesignAwake() : Boolean
         description : return true if the object is in current tab. Otherwise, return false.
+
+    # markAsRemoved() :
+        description : Simple set this object as removed, so that isRemoved() will return true. Since the object will remain in cache, user still need to call remove() at appropriate time.
 
     # isRemoved() : Boolean
         description : return true if this object has already been removed.
@@ -243,6 +246,10 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
     getAllObjects : ( awsType )->
       if not awsType then awsType = @type
       @design().classCacheForCid( this.prototype.classId ).slice(0)
+
+    markAsRemoved : ()->
+      @__design = null
+      null
 
     isRemoved   : ()-> !@__design
     isRemovable : () -> true
@@ -443,18 +450,18 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
 
       ### jshint -W083 ###
       # Handle overriding methods for FORCED methods.
-      for m in FORCE_MAP
-        parentMethod = this.prototype[m]
-        if protoProps[ m ] and parentMethod
+      # for m in FORCE_MAP
+      #   parentMethod = this.prototype[m]
+      #   if protoProps[ m ] and parentMethod
 
-          protoProps[ m ] = (()->
-            childImpl  = protoProps[m]
-            parentImpl = parentMethod
-            ()->
-              ret = childImpl.apply( this, arguments )
-              parentImpl.apply( this, arguments )
-              ret
-          )()
+      #     protoProps[ m ] = (()->
+      #       childImpl  = protoProps[m]
+      #       parentImpl = parentMethod
+      #       ()->
+      #         ret = childImpl.apply( this, arguments )
+      #         parentImpl.apply( this, arguments )
+      #         ret
+      #     )()
       ### jshint +W083 ###
 
       protoProps.classId = _.uniqueId("dfc_")

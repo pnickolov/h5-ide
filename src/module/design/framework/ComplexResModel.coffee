@@ -80,9 +80,10 @@ define [ "Design", "CanvasManager", "./ResourceModel", "constant", "./canvasview
       null
 
     remove : ()->
-      # Remove connection
-      reason = { reason : this }
-      cns    = @attributes.__connections
+      # Mark as removed first, so that connection knows why they're being removed.
+      @markAsRemoved()
+
+      cns = @attributes.__connections
 
       if cns
         while cns.length
@@ -90,14 +91,20 @@ define [ "Design", "CanvasManager", "./ResourceModel", "constant", "./canvasview
           # resource get removed. So, we always check if the connection is not empty.
           # In some case, removing a connection will result in adding new connection to
           # this resource, meaning the connections.length will increase.
-          cns[ cns.length - 1 ].remove( reason )
+          cns[0].remove()
 
       # Remove element in SVG
       v = @getCanvasView()
       if v then v.detach()
+
+      ResourceModel.prototype.remove.call this
       null
 
     connect_base : ( connection )->
+      ###
+      connect_base.call(this) # This is used to suppress the warning in ResourceModel.extend.
+      ###
+
       connections = @get "__connections"
 
       if not connections
@@ -112,6 +119,10 @@ define [ "Design", "CanvasManager", "./ResourceModel", "constant", "./canvasview
       null
 
     disconnect_base : ( connection, reason )->
+      ###
+      disconnect_base.call(this) # This is used to suppress the warning in ResourceModel.extend.
+      ###
+
       connections = @get "__connections"
       # Directly remove the connection without triggering anything changed.
       # But I'm not sure if this will affect undo/redo

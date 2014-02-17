@@ -16,9 +16,15 @@ define [ "Design", "./ComplexResModel" ], ( Design, ComplexResModel )->
         for child in @attributes.__children.splice(0)
           child.off "destroy", @removeChild, @
           child.remove()
+
+      ComplexResModel.prototype.remove.call this
       null
 
     addChild : ( child )->
+      ###
+      addChild.call(this) # This is used to suppress the warning in ResourceModel.extend.
+      ###
+
       console.assert( child.remove, "This child is not a ResourceModel object" )
 
       # Remove from old parent
@@ -51,6 +57,10 @@ define [ "Design", "./ComplexResModel" ], ( Design, ComplexResModel )->
       null
 
     removeChild : ( child )->
+      ###
+      removeChild.call(this) # This is used to suppress the warning in ResourceModel.extend.
+      ###
+
       children = @get("__children")
 
       if not children or children.length == 0

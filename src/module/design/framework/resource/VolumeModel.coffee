@@ -49,6 +49,8 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
       vl = @attributes.owner.get("volumeList")
       vl.splice( vl.indexOf(this), 1 )
       @attributes.owner.draw()
+
+      ComplexResModel.prototype.remove.call this
       null
 
     genFullName: ( name ) ->

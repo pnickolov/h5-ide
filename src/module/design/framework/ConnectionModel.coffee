@@ -192,20 +192,21 @@ define [ "./ResourceModel", "Design", "CanvasManager", "./canvasview/CanvasEleme
 
     remove : ( option )->
 
-      if @isRemoved() then return
+      console.assert (not (@__port1Comp.isRemoved() and @__port2Comp.isRemoved())), "Both ports are already removed when connection is removing", this
 
-      reason = if option then option.reason
-      reason = reason or null
+      # When an connection is removed because of a resource's removal, that resource.isRemoved() will be true. In that case, that resource.disconnect will not be called.
 
-      # If the connection is removed because a resource is removed, that resource's disconnect will not be called
-      if @__port1Comp isnt reason
-        @__port1Comp.disconnect_base( this, reason )
-      if @__port1Comp isnt @__port2Comp and @__port2Comp isnt reason
-        @__port2Comp.disconnect_base( this, reason )
+      if not @__port1Comp.isRemoved()
+        @__port1Comp.disconnect_base( this, option )
+
+      if not @__port2Comp.isRemoved()
+        @__port2Comp.disconnect_base( this, option )
 
       # Try removing line element in SVG, if the line is visual
       v = @__view
       if v then v.detach()
+
+      ResourceModel.prototype.remove.call this
       null
 
     serialize : ()->

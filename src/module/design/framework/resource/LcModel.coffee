@@ -111,6 +111,7 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
       for v in (@get("volumeList") or emptyArray).slice(0)
         v.remove()
 
+      ComplexResModel.prototype.remove.call this
       null
 
     connect : ( cn )->

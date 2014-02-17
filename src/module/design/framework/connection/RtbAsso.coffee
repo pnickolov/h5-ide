@@ -39,22 +39,27 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
       }
       null
 
-    remove : ( reason )->
-      # If no reason, it means the user try to delete the line.
-      # So we connect the subnet to MainRTB
-      if not reason or ( reason.reason and reason.reason.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable )
-        subnet = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet )
-        oldRtb = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable )
+    remove : ()->
+      ConnectionModel.prototype.remove.apply this, arguments
 
-        # When an RtbAsso is disconnected create a connection between this subnet and mainRtb
-        RtbModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable )
-        newRtb   = RtbModel.getMainRouteTable()
+      # When an RtbAsso is removed, and it's not because the Subnet is removed.
+      # Connects the subnet to mainRTB
+      subnet = @getOtherTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet )
+      if subnet.isRemoved()
+        return
 
-        # If the user disconnect the subent <=> mainRtb,
-        # we must pass in { detectDuplicate : false } to disable ConnectionManager
-        # to find duplicate connection, because at this time, the disconnecting
-        # connection is not considered "Removed".
-        new C( subnet, newRtb, { implicit : true }, { detectDuplicate : oldRtb isnt newRtb } )
+
+      oldRtb = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable )
+
+      # When an RtbAsso is disconnected create a connection between this subnet and mainRtb
+      RtbModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable )
+      newRtb   = RtbModel.getMainRouteTable()
+
+      # If the user disconnect the subent <=> mainRtb,
+      # we must pass in { detectDuplicate : false } to disable ConnectionManager
+      # to find duplicate connection, because at this time, the disconnecting
+      # connection is not considered "Removed".
+      new C( subnet, newRtb, { implicit : true }, { detectDuplicate : oldRtb isnt newRtb } )
       null
   }
 

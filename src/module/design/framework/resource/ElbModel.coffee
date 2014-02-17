@@ -74,6 +74,8 @@ define [ "Design",
 
       # Remove elb will only remove my elb sg
       if @getElbSg() then @getElbSg().remove()
+
+      ComplexResModel.prototype.remove.call this
       null
 
     # Always use this method to get the sg of this elb

@@ -356,6 +356,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
         for eni in @connectionTargets("EniAttachment")
           eni.remove()
 
+      ComplexResModel.prototype.remove.call this
       null
 
     isRemovable : ()->

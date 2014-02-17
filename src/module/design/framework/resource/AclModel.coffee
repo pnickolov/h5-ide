@@ -91,6 +91,8 @@ define [ "../ComplexResModel", "../ConnectionModel", "constant" ], ( ComplexResM
       defaultAcl = Model.getDefaultAcl()
       for target in @connectionTargets()
         new AclAsso( defaultAcl, target )
+
+      ComplexResModel.prototype.remove.call this
       null
 
     addRule : ( rule )->

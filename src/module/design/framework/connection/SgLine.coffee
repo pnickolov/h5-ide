@@ -105,6 +105,8 @@ define [ "constant", "../ConnectionModel", "../ResourceModel", "component/sgrule
     # If the sgline is removed by use, we need to remove all the rules
     # that are represented by this line.
     remove : ( reason )->
+      ConnectionModel.prototype.remove.apply this, arguments
+
       if reason then return
 
       SgRuleSetModel = Design.modelClassForType( "SgRuleSet" )

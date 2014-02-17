@@ -219,6 +219,9 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
       return lcPrice
 
     addChild : ( lc )->
+
+      GroupModel.prototype.addChild.call this, lc
+
       oldLc = @get("lc")
       if oldLc
         @stopListening( oldLc )
@@ -354,6 +357,8 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
       # Remove Notification
       if @get("notification")
         @get("notification").remove()
+
+      GroupModel.prototype.remove.call this
       null
 
     __addExpandedAsg : ( expandedAsg )->

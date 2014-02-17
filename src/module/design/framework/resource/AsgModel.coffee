@@ -278,12 +278,8 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
       ElbAsso = Design.modelClassForType( "ElbAmiAsso" )
 
       for i in old_expandedList
-        if elb
-          asso = new ElbAsso( i, elb )
-          if isRemove then asso.remove()
-        else
-          for c in i.connections 'ElbAmiAsso'
-            c.remove()
+        asso = new ElbAsso( i, elb )
+        if isRemove then asso.remove()
 
       @attributes.expandedList = old_expandedList
       null
@@ -309,6 +305,15 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
 
       @attributes.expandedList = old_expandedList
       null
+
+    removeExpandedAsso: () ->
+      for expandedAsg in @get 'expandedList'
+        connections = expandedAsg.connections()
+        while connections.length
+          _.first(connections).remove()
+
+      null
+
 
     addScalingPolicy : ( policy )->
       policy.__asg = this

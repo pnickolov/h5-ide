@@ -74,16 +74,18 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
       amis || []
 
     remove : ()->
+
       # Remove attached volumes
       for v in (@get("volumeList") or emptyArray).slice(0)
         v.remove()
 
-      asg = @.parent()
+      asg = @parent()
+
+      # disconnect all asso of expanded asg
+      asg.removeExpandedAsso()
+
       # Remove itself from parent ASG
       asg.removeChild()
-
-      # disconnect elb connected to expanded lc
-      asg.updateExpandedAsgAsso( null, true )
 
       # Remove state icon
       MC.canvas.nodeState.remove @id

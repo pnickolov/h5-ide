@@ -4774,7 +4774,8 @@ MC.canvas.keypressed = [];
 
 MC.canvas.event.keyEvent = function (event)
 {
-	var canvas_status = MC.canvas.getState();
+	var canvas_status = MC.canvas.getState(),
+		selected_node = $canvas.selected_node();
 
 	if ($('#modal-wrap')[0] != null)
 	{
@@ -4792,8 +4793,7 @@ MC.canvas.event.keyEvent = function (event)
 	)
 	{
 		var keyCode = event.which,
-			nodeName = event.target.nodeName.toLowerCase(),
-			selected_node;
+			nodeName = event.target.nodeName.toLowerCase();
 
 		MC.canvas.keypressed.push(keyCode);
 
@@ -4818,31 +4818,32 @@ MC.canvas.event.keyEvent = function (event)
 				canvas_status === 'stack' ||
 				canvas_status === 'appedit'
 			) &&
-			$canvas.selected_node().length > 0 &&
+			selected_node.length > 0 &&
 			event.target === document.body
 		)
 		{
 			MC.canvas.volume.close();
-			$.each($canvas.selected_node(), function (index, id)
+			$.each(selected_node, function (index, id)
 			{
 				$canvas( id ).remove();
 			});
-			$canvas.selected_node().length = 0;
+
+			selected_node.length = 0;
 
 			return false;
 		}
 
 		if (
-			$canvas.selected_node().length === 1 &&
+			selected_node.length === 1 &&
 			MC.canvas.keypressed.join('').match(/383840403739373966656665$/i)
 		)
 		{
-			if ($('#' + $canvas.selected_node()[ 0 ]).data('type') !== 'node')
+			if ($('#' + selected_node[ 0 ]).data('type') !== 'node')
 			{
 				return false;
 			}
 
-			var offset = Canvon('#' + $canvas.selected_node()[ 0 ]).offset();
+			var offset = Canvon('#' + selected_node[ 0 ]).offset();
 
 			$(document.body).append('<div id="s"></div>');
 
@@ -4887,10 +4888,10 @@ MC.canvas.event.keyEvent = function (event)
 		// Switch node - [tab]
 		if (
 			keyCode === 9 &&
-			$canvas.selected_node().length === 1
+			selected_node.length === 1
 		)
 		{
-			var 	current_node_id = $canvas.selected_node()[ 0 ],
+			var 	current_node_id = selected_node[ 0 ],
 				//selected_node = $('#' + current_node_id),
 				//layout_node_data = $canvas.node(),
 				node_stack = [],
@@ -4953,12 +4954,12 @@ MC.canvas.event.keyEvent = function (event)
 				canvas_status === 'appedit' ||
 				canvas_status === 'appview'
 			) &&
-			$canvas.selected_node().length === 1 &&
-			$('#' + $canvas.selected_node()[ 0 ]).data('type') !== 'line'
+			selected_node.length === 1 &&
+			$('#' + selected_node[ 0 ]).data('type') !== 'line'
 		)
 		{
-			var target = $('#' + $canvas.selected_node()[ 0 ]),
-				target_id = $canvas.selected_node()[ 0 ],
+			var target = $('#' + selected_node[ 0 ]),
+				target_id = selected_node[ 0 ],
 				target_item = $canvas(target_id),
 				node_type = target_item.nodeType,
 				target_type = target_item.type,
@@ -5092,6 +5093,19 @@ MC.canvas.event.keyEvent = function (event)
 			{
 				$canvas.trigger("STATE_ICON_CLICKED", $canvas.selected_node()[ 0 ]);
 			}
+
+			return false;
+		}
+
+		// Focus property input - [P]
+		if (
+			keyCode === 80 &&
+			selected_node.length === 1
+		)
+		{
+			$('#property-panel .input').first().focus();
+
+			return false;
 		}
 	}
 };

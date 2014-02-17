@@ -23,6 +23,26 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
     ### jshint +W083 ###
     null
 
+  # FORCE_MAP defines what parent method will be called when child's overriden method is called
+  FORCE_MAP = [ "remove", "connect_base", "addChild", "disconnect_base" ]
+  __checkForceMap = ( protoProps )->
+    # This function is used to detect if the one of the method defined in FORCE_MAP have
+    # called its super version.
+    for propName, prop of protoProps
+      if FORCE_MAP.indexOf(propName) is -1 and  propName isnt "constructor" then continue
+      funcString = prop.toString()
+
+      if propName is "constructor"
+        p = ""
+      else
+        p = "propName"
+
+      matchRegex = new RegExp( p + "\\.(call|apply)\\s?\\(?\\s?this" )
+      if not funcString.match( matchRegex )
+        console.warn "Subclass of ResourceModel (type : #{protoProps.type}) is overriding #{propName}, but it seems to forget to call Parent's method!"
+
+    null
+
   __detailExtend = ( protoProps, staticProps )->
     ### jshint -W061 ###
 
@@ -144,9 +164,6 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
         Better not to use this api.
 
   ###
-
-  # FORCE_MAP defines what parent method will be called when child's overriden method is called
-  FORCE_MAP = [ "remove", "connect_base", "addChild", "disconnect_base" ]
 
   ResourceModel = Backbone.Model.extend {
 
@@ -412,14 +429,6 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
 
       console.assert protoProps.type, "Subclass of ResourceModel does not specifying a type"
 
-      ### env:dev ###
-      # Check if the class is overriding constructor
-      if _.has(protoProps, 'constructor')
-        constructorStr = protoProps.constructor.toString()
-        if not constructorStr.match(/\.call\s?\(?\s?this/)
-          console.warn "Subclass of ResourceModel (type : #{protoProps.type}) is overriding Constructor, don't forget to call 'this.constructor.__super__.constructor' !"
-      ### env:dev:end ###
-
       # Get handleTypes and resolveFirst
       if staticProps
         handleTypes  = staticProps.handleTypes
@@ -429,6 +438,7 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
 
       ### env:dev ###
       __checkEventOnUsage( protoProps )
+      __checkForceMap( protoProps )
       ### env:dev:end ###
 
       ### jshint -W083 ###

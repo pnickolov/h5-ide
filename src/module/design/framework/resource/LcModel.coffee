@@ -120,10 +120,6 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
       # Remove itself from parent ASG
       asg.removeChild()
 
-      # Remove state icon
-      MC.canvas.nodeState.remove @id
-
-
       null
 
     connect : ( cn )->

@@ -19,6 +19,12 @@ define [ "./CanvasElement", "constant", "CanvasManager", "Design" ], ( CanvasEle
     "instance-sg" : "horizontal"
   }
 
+  ChildElementProto.detach = ()->
+    # Remove state icon
+    MC.canvas.nodeState.remove @id
+    CanvasElement.prototype.detach.call this
+    null
+
   ChildElementProto.iconUrl = ()->
     ami = @model.getAmi() || @model.get("cachedAmi")
 

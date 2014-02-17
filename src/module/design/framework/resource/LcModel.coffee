@@ -46,6 +46,39 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
         new SgAsso( defaultSg, this )
       null
 
+    getNewName : ( base )->
+      if not @newNameTmpl
+        newName = if @defaults then @defaults.name
+        return newName or ""
+
+      if base is undefined
+        myKinds = Design.modelClassForType( @type ).allObjects()
+        base = myKinds.length
+
+      # Collect all the resources name
+      nameMap = {}
+      @design().eachComponent ( comp )->
+        if comp.get("name")
+          nameMap[ comp.get("name") ] = true
+        null
+
+      if Design.instance().modeIsAppEdit()
+        resource_list = MC.data.resource_list[Design.instance().region()]
+        for id, rl of resource_list
+          if rl.LaunchConfigurationName
+            nameMap[ _.first rl.LaunchConfigurationName.split( '---' ) ] = true
+
+
+
+      while true
+        newName = @newNameTmpl + base
+        if nameMap[ newName ]
+          base += 1
+        else
+          break
+
+      newName
+
     isRemovable : ()->
       # state = @get("state")
       # if state isnt undefined and state.length > 0

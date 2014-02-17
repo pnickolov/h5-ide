@@ -1126,12 +1126,45 @@
 	fill: red;
 }
 
+/* node action */
 #node-action-wrap {
 	position: absolute;
 	z-index: 60;
+/*	overflow: hidden;*/
 }
 
-#node-action-state {
+.node-action-tooltip {
+	background: #333;
+	color: #fff;
+	position: absolute;
+	right: -25px;
+	top: 0;
+	padding: 5px 7px;
+	font-size: 12px;
+	border-radius: 2px;
+	box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+	opacity: 0;
+
+	-webkit-transition: right .2s;
+	-moz-transition: right .2s;
+	-ms-transition: right .2s;
+	-o-transition: right .2s;
+	transition: right .2s;
+}
+
+.node-action-tooltip:before {
+	content:"";
+	width: 0; 
+	height: 0; 
+	border-top: 4px solid transparent;
+	border-bottom: 4px solid transparent;
+	border-right: 4px solid rgba(0,0,0, 0.8);
+	left: -4px;
+	top: 8px;
+	position: absolute;
+}
+
+#node-action-state-btn {
 	background: rgba(0,0,0,.7);
 	-webkit-transition: background .2s, max-width .2s;
 	-moz-transition: background .2s, max-width .2s;
@@ -1144,14 +1177,24 @@
 
 	height: 25px;
 	max-width: 25px;
-	cursor: pointer;
+	cursor: pointer;	
 }
 
-#node-action-state:hover {
+#node-action-state {
+	max-width: 200px;
+	padding-right: 70px;
+}
+
+#node-action-state:hover #node-action-state-btn {
 	background: rgba(0,0,0,.9);
 
 	/* Hack for transition */
 	max-width: 100px;
+}
+
+#node-action-state:hover .node-action-tooltip {
+	opacity: 1;
+	right: 0;
 }
 
 #node-state-icon {

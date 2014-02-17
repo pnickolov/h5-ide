@@ -432,10 +432,16 @@ define [ 'event',
             cmdNameAry = that.cmdNameAry
 
             cmdNameAry = _.map cmdNameAry, (value, i) ->
+
+                metaStr = ''
+                if value.support is false
+                    metaStr = 'not supported'
+
                 return {
                     'name': value.name,
                     'value': value.name,
-                    'meta': value.support
+                    'meta': metaStr,
+                    'support': value.support
                 }
 
             that.initCodeEditor($cmdValueItem[0], {
@@ -1547,6 +1553,8 @@ define [ 'event',
                                 that.onArrayInputChange({
                                     currentTarget: $editorElem[0]
                                 })
+                            else if $paraItem.hasClass('line') or $paraItem.hasClass('bool') or $paraItem.hasClass('text')
+                                $paraItem.removeClass('disabled')
 
                     if e.command.name is "autocomplete_match"
 
@@ -1614,9 +1622,10 @@ define [ 'event',
             try
 
                 scrollToPos = paraParagraph.offset().top - that.$cmdDsec.offset().top + that.$cmdDsec.scrollTop() - 15
+                that.$cmdDsec.stop(true, true)
                 that.$cmdDsec.animate({
                     scrollTop: scrollToPos
-                }, 200)
+                }, 150)
 
             catch err
 
@@ -1632,7 +1641,8 @@ define [ 'event',
                                 name: ea.name,
                                 value: ea.value,
                                 score: ea.value,
-                                meta: ea.meta
+                                meta: ea.meta,
+                                support: ea.support
                             }
                         ))
                     else
@@ -1935,7 +1945,7 @@ define [ 'event',
 
             originCMDName = $stateItem.attr('data-command')
 
-            if moduleObj
+            if moduleObj and moduleObj.support
 
                 if originCMDName isnt currentValue
 

@@ -526,6 +526,10 @@
 	margin-right: 100px;
 }
 
+#state-editor-model.se-model-app .state-item.view .state-view {
+	left: 0px;
+}
+
 #state-editor .command-view-value {
 	float: left;
 	display: inline;
@@ -955,5 +959,11 @@
 }
 
 .ace_autocomplete_disable_select {
-	opacity: 0.2;
+	opacity: 0.4;
+}
+
+.ace_rightAlignedText {
+	font-style: italic;
+	opacity: 0.3;
+	padding-right: 4px;
 }

@@ -49,9 +49,11 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 				# get command name
 				cmdDistroAry = cmdObj.distro
 
-				supportCMD = true
-				if not ((not cmdDistroAry) or (cmdDistroAry and osPlatformDistro in cmdDistroAry))
-					supportCMD = false
+				supportCMD = false
+				if ((not cmdDistroAry) or (cmdDistroAry and osPlatformDistro in cmdDistroAry)) and osPlatform is 'linux'
+					supportCMD = true
+
+				cmdObj.support = supportCMD
 
 				cmdAry.push({
 					name: cmdName,

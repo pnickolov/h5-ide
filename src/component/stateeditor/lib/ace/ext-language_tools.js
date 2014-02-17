@@ -1050,7 +1050,7 @@ var Autocomplete = function() {
             data = this.popup.getData(this.popup.getRow());
         if (!data)
             return false;
-        if (data.meta === false) {
+        if (data.support === false) {
             return false;
         }
         if (data.completer && data.completer.insertMatch) {
@@ -1212,13 +1212,13 @@ var FilteredList = function(array, filterText, mutateData) {
         matches = this.filterCompletions(matches, this.filterText);
         if (this.filterText) {
             matches = matches.sort(function(a, b) {
-                if (a.meta === b.meta) {
+                if (a.support === b.support) {
                     return b.exactMatch - a.exactMatch || b.score - a.score;
                 } else {
-                    if (a.meta === true) {
+                    if (a.support === true) {
                         return -1;
                     }
-                    if (b.meta === true) {
+                    if (b.support === true) {
                         return 1;
                     }
                 }
@@ -1433,7 +1433,7 @@ var AcePopup = function(parentNode) {
             flag = data.matchMask & (1 << i) ? 1 : 0;
             if (last !== flag) {
                 var activeClass = '';
-                if (data.meta === false) {
+                if (data.support === false) {
                     activeClass = 'autocomplete_disable_select';
                 } 
                 tokens.push({type: data.className || activeClass || "" + ( flag ? "completion-highlight" : ""), value: c});

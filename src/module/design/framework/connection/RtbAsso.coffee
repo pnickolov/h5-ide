@@ -42,7 +42,7 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
     remove : ( reason )->
       # If no reason, it means the user try to delete the line.
       # So we connect the subnet to MainRTB
-      if not reason
+      if not reason or ( reason.reason and reason.reason.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable )
         subnet = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet )
         oldRtb = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable )
 

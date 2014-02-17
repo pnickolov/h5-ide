@@ -8,7 +8,7 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
 
     init : ( uid ) ->
 
-        asg_comp = Design.instance().component( uid )
+        asg_comp = component = Design.instance().component( uid )
 
         data =
           uid        : uid
@@ -35,12 +35,105 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
         if asg_data.TerminationPolicies and asg_data.TerminationPolicies.member
             @set 'term_policy_brief', asg_data.TerminationPolicies.member.join(" > ")
 
+        @handleInstance asg_comp, resource_list, asg_data
+
         if not @isAppEdit
             @set 'lcName',   asg_data.LaunchConfigurationName
             @set 'cooldown', asg_data.DefaultCooldown
             @set 'healCheckType', asg_data.HealthCheckType
             @set 'healthCheckGracePeriod', asg_data.HealthCheckGracePeriod
 
+            @handlePolicy asg_comp, resource_list, asg_data
+            @handleNotify asg_comp, resource_list, asg_data
+
+
+        else
+            data = component.toJSON()
+            data.uid = uid
+            @set data
+            lc = asg_comp.get 'lc'
+
+            if not lc
+                @set "emptyAsg", true
+                return
+
+            @set "has_elb", !!component.get("lc").connections("ElbAmiAsso").length
+            @set "isEC2HealthCheck", component.isEC2HealthCheckType()
+            @set 'detail_monitor', !!lc.get( 'monitoring' )
+
+            # Notification
+            n = component.getNotification()
+            @set "notification", n
+            @set "has_notification", n.instanceLaunch or n.instanceLaunchError or n.instanceTerminate or n.instanceTerminateError or n.test
+            @set "has_sns_sub", !!(Design.modelClassForType(constant.AWS_RESOURCE_TYPE.AWS_SNS_Subscription).allObjects().length)
+
+            # Policies
+            @set "policies", _.map data.policies, ( p )->
+                data = $.extend true, {}, p.attributes
+                data.cooldown = Math.round( data.cooldown / 60 )
+                data.alarmData.period = Math.round( data.alarmData.period / 60 )
+                data
+
+
+
+
+        null
+
+    handleInstance: ( asg_comp, resource_list, asg_data ) ->
+        # Get generated instances
+        instance_count  = 0
+        instance_groups = []
+        instances_map   = {}
+
+        if asg_data.Instances and asg_data.Instances.member
+            instance_count = asg_data.Instances.member.length
+
+            for instance, idx in asg_data.Instances.member
+                ami =
+                    status : if instance.HealthStatus is 'Healthy' then 'green' else 'red'
+                    name   : instance.InstanceId
+
+                az = instance.AvailabilityZone
+                if instances_map[ az ]
+                    instances_map[ az ].push ami
+                else
+                    instances_map[ az ] = [ ami ]
+
+            for az, instances of instances_map
+                instance_groups.push {
+                    name : az
+                    instances : instances
+                }
+
+        else
+            instance_count = 0
+
+        @set 'instance_groups', instance_groups
+        @set 'instance_count',  instance_count
+
+    handleNotify: ( asg_comp, resource_list, asg_data ) ->
+        # Get notifications
+        notifications = resource_list.NotificationConfigurations
+
+        sendNotify = false
+        nc_array = [false, false, false, false, false]
+        nc_map   =
+            "autoscaling:EC2_INSTANCE_LAUNCH" : 0
+            "autoscaling:EC2_INSTANCE_LAUNCH_ERROR" : 1
+            "autoscaling:EC2_INSTANCE_TERMINATE" : 2
+            "autoscaling:EC2_INSTANCE_TERMINATE_ERROR" : 3
+            "autoscaling:TEST_NOTIFICATION" : 4
+
+        if notifications
+            for notification in notifications
+                if notification.AutoScalingGroupName is asg_data.AutoScalingGroupName
+                    nc_array[ nc_map[ notification.NotificationType ] ] = true
+                    sendNotify = true
+
+        @set 'notifies',   nc_array
+        @set 'sendNotify', sendNotify
+
+    handlePolicy: ( asg_comp, resource_list, asg_data ) ->
         # Get policy
         policies = []
         cloudWatchPolicyMap = {}
@@ -87,62 +180,7 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
 
             policies.push policy
 
-
-        @set 'policies', _.sortBy(policies, "name")
-
-        # Get notifications
-        notifications = resource_list.NotificationConfigurations
-
-        sendNotify = false
-        nc_array = [false, false, false, false, false]
-        nc_map   =
-            "autoscaling:EC2_INSTANCE_LAUNCH" : 0
-            "autoscaling:EC2_INSTANCE_LAUNCH_ERROR" : 1
-            "autoscaling:EC2_INSTANCE_TERMINATE" : 2
-            "autoscaling:EC2_INSTANCE_TERMINATE_ERROR" : 3
-            "autoscaling:TEST_NOTIFICATION" : 4
-
-        if notifications
-            for notification in notifications
-                if notification.AutoScalingGroupName is asg_data.AutoScalingGroupName
-                    nc_array[ nc_map[ notification.NotificationType ] ] = true
-                    sendNotify = true
-
-        @set 'notifies',   nc_array
-        @set 'sendNotify', sendNotify
-
-
-        # Get generated instances
-        instance_count  = 0
-        instance_groups = []
-        instances_map   = {}
-
-        if asg_data.Instances and asg_data.Instances.member
-            instance_count = asg_data.Instances.member.length
-
-            for instance, idx in asg_data.Instances.member
-                ami =
-                    status : if instance.HealthStatus is 'Healthy' then 'green' else 'red'
-                    name   : instance.InstanceId
-
-                az = instance.AvailabilityZone
-                if instances_map[ az ]
-                    instances_map[ az ].push ami
-                else
-                    instances_map[ az ] = [ ami ]
-
-            for az, instances of instances_map
-                instance_groups.push {
-                    name : az
-                    instances : instances
-                }
-
-        else
-            instance_count = 0
-
-        @set 'instance_groups', instance_groups
-        @set 'instance_count',  instance_count
-        null
+            @set 'policies', _.sortBy(policies, "name")
 
     setASGMin : ( value ) ->
 
@@ -167,6 +205,67 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
         Design.instance().component( uid ).set( "capacity", value )
 
         null
+
+    setASGCoolDown : ( value ) ->
+      Design.instance().component( @get("uid") ).set( "cooldown", value )
+
+    setHealthCheckGrace : ( value ) ->
+      Design.instance().component( @get("uid") ).set( "healthCheckGracePeriod", value )
+
+    setNotification : ( notification )->
+      Design.instance().component( @get("uid") ).setNotification( notification )
+
+    setTerminatePolicy : ( policies ) ->
+      Design.instance().component( @get("uid") ).set("terminationPolicies", policies)
+      @set "terminationPolicies", policies
+      null
+
+    delPolicy : ( uid ) ->
+      Design.instance().component( uid ).remove()
+      null
+
+    isDupPolicyName : ( policy_uid, name ) ->
+      _.some Design.instance().component( @get("uid") ).get("policies"), ( p ) ->
+        if p.id isnt policy_uid and p.get( 'name' ) is name
+          return true
+
+    defaultScalingPolicyName : () ->
+      component = Design.instance().component( @get("uid") )
+      if component.type is "ExpandedAsg"
+        component = component.get("originalAsg")
+      count = component.get("policies").length
+      "#{@attributes.name}-policy-#{count}"
+
+    getPolicy : ( uid )->
+      data = $.extend true, {}, Design.instance().component( uid ).attributes
+      data.cooldown = Math.round( data.cooldown / 60 )
+      data.alarmData.period = Math.round( data.alarmData.period / 60 )
+      data
+
+    setPolicy : ( policy_detail ) ->
+      asg = Design.instance().component( @get("uid") )
+      if asg.type is "ExpandedAsg"
+        asg = asg.get('originalAsg')
+
+      if policy_detail.sendNotification
+        Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic ).ensureExistence()
+
+      if not policy_detail.uid
+        PolicyModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_ScalingPolicy )
+        policy = new PolicyModel( policy_detail )
+        asg.addScalingPolicy( policy )
+
+        policy_detail.uid = policy.id
+        @get("policies").push( policy.toJSON() )
+
+      else
+        policy = Design.instance().component( policy_detail.uid )
+        alarmData = policy_detail.alarmData
+        policy.setAlarm( alarmData )
+        delete policy_detail.alarmData
+        policy.set policy_detail
+        policy_detail.alarmData = alarmData
+      null
 
   }
 

@@ -58,6 +58,37 @@
       <label class="left" for="property-asg-capacity">{{ i18n "PROP_ASG_DESIRE_CAPACITY" }}</label>
       <input class="input" type="text" id="property-asg-capacity" value="{{capacity}}" maxlength="255" data-type="digits" data-ignore="true">
     </section>
+
+    <section class="property-control-group">
+      <label class="left" for="property-asg-cooldown">{{ i18n "PROP_ASG_COOL_DOWN" }}</label>
+      <input class="input input-short" type="text" id="property-asg-cooldown" value="{{cooldown}}" data-type="digits" max="86400">
+      <span>{{ i18n "PROP_ASG_UNIT_SECONDS"}}</span>
+    </section>
+
+    <section class="property-control-group clearfix">
+      <label clas="left">{{i18n "PROP_ASG_HEALTH_CHECK_TYPE"}}</label>
+      <div class="asg-radio-group">
+        <div class="radio">
+          <input id="property-asg-ec2" type="radio" value="ec2" {{#if isEC2HealthCheck}}checked="true"{{/if}} name="property-asg-hc-option" />
+          <label for="property-asg-ec2"></label>
+        </div>
+        <label for="property-asg-ec2">EC2</label>
+      </div>
+      <div {{#unless has_elb}}data-tooltip="{{ i18n 'PROP_ASG_HAS_ELB_WARN'}}" class="asg-radio-group tooltip"{{else}}class="asg-radio-group"{{/unless}}>
+        <div class="radio">
+          <input id="property-asg-elb" type="radio" {{#unless has_elb}}disabled="disabled"{{/unless}} value="elb" {{#unless isEC2HealthCheck}}checked="true"{{/unless}} name="property-asg-hc-option" />
+          <label for="property-asg-elb"></label>
+        </div>
+        <label for="property-asg-elb">ELB</label>
+      </div>
+    </section>
+
+    <section class="property-control-group">
+      <label class="left" for="property-asg-healthcheck">{{ i18n "PROP_ASG_HEALTH_CHECK_CRACE_PERIOD"}}</label>
+      <input class="input input-short" type="text" id="property-asg-healthcheck" value="{{healthCheckGracePeriod}}" maxlength="255" data-type="digits" data-ignore="true">
+      <span>{{i18n "PROP_ASG_UNIT_SECONDS"}}</span>
+    </section>
+
   </div>
   {{/if}}
 
@@ -76,45 +107,132 @@
 
   <div class="option-group-head">{{i18n "PROP_ASG_POLICY"}}</div>
   <div class="option-group">
-    <section class="property-control-group pos-r">
-      <h5>{{i18n "PROP_ASG_TERMINATION_POLICY"}}</h5>
-      <p class="termination-policy-brief">{{emptyStr term_policy_brief}}</p>
-    </section>
 
-    <ul id="property-asg-policies" class="property-list">
-      {{#each policies}}
-      <li class="pos-r" data-uid="{{uid}}">
-        <div class="property-asg-policy-name" title="{{i18n 'PROP_ASG_POLICY_TLT_NAME'}}">{{name}}</div>
-        {{#if arn}}
-        <div class="click-select tooltip" data-tooltip="Click to select">{{arn}}</div>
-        {{else}}
-        <span class="asg-p-metric asg-p-tag" title="{{i18n 'PROP_ASG_POLICY_TLT_ALARM_METRIC'}}">{{metric}}</span>
-        <span class="asg-p-eval asg-p-tag" title="{{i18n 'PROP_ASG_POLICY_TLT_THRESHOLD'}}">{{evaluation}} {{threshold}}{{unit}}</span>
-        <span class="asg-p-periods asg-p-tag" title="{{i18n 'PROP_ASG_POLICY_TLT_PERIOD'}}">{{periods}}x{{minute}}m</span>
-        <span class="asg-p-trigger asg-p-tag asg-p-trigger-{{trigger}}" title="{{i18n 'PROP_ASG_POLICY_TLT_ACTION'}}">{{trigger}}</span>
-        <span class="asg-p-adjust asg-p-tag" title="{{i18n 'PROP_ASG_POLICY_TLT_ADJUSTMENT'}}">{{adjustment}} {{adjusttype}}</span>
-        {{/if}}
-      </li>
-      {{/each}}
-    </ul>
+    {{#unless isEditable}}
+      <section class="property-control-group pos-r">
+        <h5>{{i18n "PROP_ASG_TERMINATION_POLICY"}}</h5>
+        <p class="termination-policy-brief">{{emptyStr term_policy_brief}}</p>
+      </section>
+      <ul id="property-asg-policies" class="property-list">
+        {{#each policies}}
+          <li class="pos-r" data-uid="{{uid}}">
+            <div class="property-asg-policy-name" title="{{i18n 'PROP_ASG_POLICY_TLT_NAME'}}">{{name}}</div>
+            {{#if arn}}
+            <div class="click-select tooltip" data-tooltip="Click to select">{{arn}}</div>
+            {{else}}
+            <span class="asg-p-metric asg-p-tag" title="{{i18n 'PROP_ASG_POLICY_TLT_ALARM_METRIC'}}">{{metric}}</span>
+            <span class="asg-p-eval asg-p-tag" title="{{i18n 'PROP_ASG_POLICY_TLT_THRESHOLD'}}">{{evaluation}} {{threshold}}{{unit}}</span>
+            <span class="asg-p-periods asg-p-tag" title="{{i18n 'PROP_ASG_POLICY_TLT_PERIOD'}}">{{periods}}x{{minute}}m</span>
+            <span class="asg-p-trigger asg-p-tag asg-p-trigger-{{trigger}}" title="{{i18n 'PROP_ASG_POLICY_TLT_ACTION'}}">{{trigger}}</span>
+            <span class="asg-p-adjust asg-p-tag" title="{{i18n 'PROP_ASG_POLICY_TLT_ADJUSTMENT'}}">{{adjustment}} {{adjusttype}}</span>
+            {{/if}}
+
+          </li>
+
+        {{/each}}
+      </ul>
+    {{else}}
+      <section class="property-control-group pos-r property-term-p">
+        <h5>{{ i18n "PROP_ASG_TERMINATION_POLICY" }}</h5>
+        <div class="termination-policy-brief">{{term_policy_brief}}</div>
+        <div class="asg-p-action"><i class="icon-edit tooltip" data-tooltip="Edit Termination Policy" id="property-asg-term-edit"></i></div>
+      </section>
+      <ul id="property-asg-policies" class="property-list">
+        <li class="pos-r hide">
+          <h5 class="property-asg-policy-name name"></h5>
+          <span class="asg-p-metric asg-p-tag" title="Alarm Metric"></span>
+          <span class="asg-p-eval asg-p-tag" title="Threshold"></span>
+          <span class="asg-p-periods asg-p-tag" title="Evaluation Period x Periords"></span>
+          <span class="asg-p-trigger asg-p-tag" title="Action Trigger"></span>
+          <span class="asg-p-adjust asg-p-tag" title="Adjustment"></span>
+          <div class="asg-p-action">
+            <i class="icon-edit tooltip" data-tooltip="Edit Scaling Policy"></i>
+            <i class="icon-remove icon-del tooltip" data-tooltip="Remove Scaling Policy"></i>
+          </div>
+        </li>
+        {{#each policies}}
+        <li class="pos-r" data-uid="{{id}}">
+          <h5 class="property-asg-policy-name name" title="{{i18n 'PROP_ASG_POLICY_TLT_NAME'}}">{{name}}</h5>
+          <span class="asg-p-metric asg-p-tag" title="{{i18n 'PROP_ASG_POLICY_TLT_ALARM_METRIC'}}">{{alarmData.metricName}}</span>
+          <span class="asg-p-eval asg-p-tag" title="{{i18n 'PROP_ASG_POLICY_TLT_THRESHOLD'}}">{{alarmData.comparisonOperator}} {{alarmData.threshold}}{{unit}}</span>
+          <span class="asg-p-periods asg-p-tag" title="{{i18n 'PROP_ASG_POLICY_TLT_PERIOD'}}">{{alarmData.evaluationPeriods}}x{{alarmData.period}}m</span>
+          <span class="asg-p-trigger asg-p-tag asg-p-trigger-{{state}}" title="{{i18n 'PROP_ASG_POLICY_TLT_ACTION'}}">{{state}}</span>
+          <span class="asg-p-adjust asg-p-tag" title="{{i18n 'PROP_ASG_POLICY_TLT_ADJUSTMENT'}}">{{adjustment}} {{adjustmentType}}</span>
+          <div class="asg-p-action">
+            <i class="icon-edit tooltip" data-tooltip="{{i18n 'PROP_ASG_POLICY_TLT_EDIT'}}"></i>
+            <i class="icon-remove icon-del tooltip" data-tooltip="{{i18n 'PROP_ASG_POLICY_TLT_REMOVE'}}"></i>
+          </div>
+        </li>
+        {{/each}}
+
+      </ul>
+      <div class="property-control-group tac">
+        <button class="btn btn-blue {{#unless can_add_policy}}disabled tooltip{{/unless}}" id="property-asg-policy-add" data-tooltip="You can only add 25 scaling policies">{{i18n "PROP_ASG_BTN_ADD_SCALING_POLICY"}}</button>
+      </div>
+    {{/unless}}
+
+
   </div>
 
   <div class="option-group-head">{{i18n "PROP_ASG_LBL_NOTIFICATION"}}</div>
-  <div class="option-group">
-    <div class="property-asg-notification-wrap property-control-group">
-      {{#if sendNotify}}
-      <label>{{i18n "PROP_ASG_LBL_SEND_NOTIFICATION"}}</label>
-      <section>
-        {{#if notifies.[0]}}<p>{{i18n "PROP_ASG_LBL_SUCCESS_INSTANCES_LAUNCH"}}</p>{{/if}}
-        {{#if notifies.[1]}}<p>{{i18n "PROP_ASG_LBL_FAILED_INSTANCES_LAUNCH"}}</p>{{/if}}
-        {{#if notifies.[2]}}<p>{{i18n "PROP_ASG_LBL_SUCCESS_INSTANCES_TERMINATE"}}</p>{{/if}}
-        {{#if notifies.[3]}}<p>{{i18n "PROP_ASG_LBL_FAILED_INSTANCES_TERMINATE"}}</p>{{/if}}
-        {{#if notifies.[4]}}<p>{{i18n "PROP_ASG_LBL_VALIDATE_SNS"}}</p>{{/if}}
-      </section>
-      {{else}}
-      <p class="property-info tac">{{i18n "PROP_ASG_MSG_NO_NOTIFICATION_WARN"}}</p>
-      {{/if}}
-    </div>
+  <div class="option-group" id="property-asg-sns">
+
+    {{#unless isEditable}}
+      <div class="property-asg-notification-wrap property-control-group">
+        {{#if sendNotify}}
+        <label>{{i18n "PROP_ASG_LBL_SEND_NOTIFICATION"}}</label>
+        <section>
+          {{#if notifies.[0]}}<p>{{i18n "PROP_ASG_LBL_SUCCESS_INSTANCES_LAUNCH"}}</p>{{/if}}
+          {{#if notifies.[1]}}<p>{{i18n "PROP_ASG_LBL_FAILED_INSTANCES_LAUNCH"}}</p>{{/if}}
+          {{#if notifies.[2]}}<p>{{i18n "PROP_ASG_LBL_SUCCESS_INSTANCES_TERMINATE"}}</p>{{/if}}
+          {{#if notifies.[3]}}<p>{{i18n "PROP_ASG_LBL_FAILED_INSTANCES_TERMINATE"}}</p>{{/if}}
+          {{#if notifies.[4]}}<p>{{i18n "PROP_ASG_LBL_VALIDATE_SNS"}}</p>{{/if}}
+        </section>
+        {{else}}
+        <p class="property-info tac">{{i18n "PROP_ASG_MSG_NO_NOTIFICATION_WARN"}}</p>
+        {{/if}}
+      </div>
+
+    {{else}}
+      <div class="property-control-group property-asg-notification-wrap">
+        <p>{{ i18n "PROP_ASG_LBL_SEND_NOTIFICATION" }}</p>
+        <div><div class="checkbox">
+          <input id="property-asg-sns1" type="checkbox" data-key="instanceLaunch" {{#if notification.instanceLaunch}}checked="checked"{{/if}}/>
+          <label for="property-asg-sns1"></label>
+        </div>
+        <label for="property-asg-sns1">{{ i18n "PROP_ASG_LBL_SUCCESS_INSTANCES_LAUNCH" }}</label></div>
+
+        <div><div class="checkbox">
+          <input id="property-asg-sns2" type="checkbox" data-key="instanceLaunchError" {{#if notification.instanceLaunchError}}checked="checked"{{/if}}/>
+          <label for="property-asg-sns2"></label>
+        </div>
+        <label for="property-asg-sns2">{{ i18n "PROP_ASG_LBL_FAILED_INSTANCES_LAUNCH" }}</label></div>
+
+        <div><div class="checkbox">
+          <input id="property-asg-sns3" type="checkbox" data-key="instanceTerminate" {{#if notification.instanceTerminate}}checked="checked"{{/if}}/>
+          <label for="property-asg-sns3"></label>
+        </div>
+        <label for="property-asg-sns3">{{ i18n "PROP_ASG_LBL_SUCCESS_INSTANCES_TERMINATE" }}</label></div>
+
+        <div><div class="checkbox">
+          <input id="property-asg-sns4" type="checkbox" data-key="instanceTerminateError" {{#if notification.instanceTerminateError}}checked="checked"{{/if}}/>
+          <label for="property-asg-sns4"></label>
+        </div>
+        <label for="property-asg-sns4">{{ i18n "PROP_ASG_LBL_FAILED_INSTANCES_TERMINATE" }}</label></div>
+
+        <div><div class="checkbox">
+          <input id="property-asg-sns5" type="checkbox" data-key="test" {{#if notification.test}}checked="checked"{{/if}}/>
+          <label for="property-asg-sns5"></label>
+        </div>
+        <label for="property-asg-sns5">{{ i18n "PROP_ASG_LBL_VALIDATE_SNS" }}</label></div>
+
+        {{#unless has_sns_sub}}
+        <p class="property-warning {{#unless has_notification}}hide{{/unless}}" id="property-asg-sns-info"> {{ i18n "PROP_ASG_MSG_SNS_WARN" }} </p>
+        {{/unless}}
+
+      </div>
+    {{/unless}}
+
   </div>
   {{/if}}
 

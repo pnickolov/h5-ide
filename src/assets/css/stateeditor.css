@@ -526,10 +526,6 @@
 	margin-right: 100px;
 }
 
-#state-editor-model.se-model-app .state-item.view .state-view {
-	left: 0px;
-}
-
 #state-editor .command-view-value {
 	float: left;
 	display: inline;

@@ -118,7 +118,7 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
       asg.removeExpandedAsso()
 
       # Remove itself from parent ASG
-      asg.removeChild()
+      asg.removeChild( this )
 
       null
 

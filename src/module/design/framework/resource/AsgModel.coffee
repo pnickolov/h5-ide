@@ -238,7 +238,11 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
 
       null
 
-    removeChild: ->
+    removeChild : (lc) ->
+      console.assert (lc is @get("lc")), "Invalid parameter when calling Asg.removeChild"
+
+      GroupModel.prototype.removeChild.call this, lc
+
       @unset "lc"
       @draw()
 

@@ -2840,6 +2840,14 @@ MC.canvas.event.dragable = {
 
 			shadow = target.clone();
 
+			// Allow cloning for instance 
+			if (target_type === 'AWS.EC2.Instance')
+			{
+				shadow.append(
+					Canvon.rectangle(75, 75, 25, 25).attr({'class': 'clone-icon', 'rx': 2, 'ry': 2})
+				);
+			}
+
 			svg_canvas.append(shadow);
 
 			target_group_type = MC.canvas.MATCH_PLACEMENT[ platform ][ target_type ];
@@ -2894,6 +2902,7 @@ MC.canvas.event.dragable = {
 			else
 			{
 				$(document).on({
+					'keydown': target_type === 'AWS.EC2.Instance' ? MC.canvas.event.dragable.keyClone : returnFalse,
 					'mousemove': MC.canvas.event.dragable.mousemove,
 					'mouseup': Canvon(event.target).hasClass('asg-resource-dragger') ?
 						// For asgExpand
@@ -2922,6 +2931,25 @@ MC.canvas.event.dragable = {
 
 			MC.canvas.volume.close();
 			MC.canvas.event.clearSelected();
+		}
+
+		return false;
+	},
+	// For instance cloning recently
+	keyClone: function (event)
+	{
+		if (
+			event.altKey
+		)
+		{
+			if (!event.data.canvas_body.hasClass('cloning'))
+			{
+				event.data.canvas_body.addClass('cloning');
+			}
+		}
+		else
+		{
+			event.data.canvas_body.removeClass('cloning');
 		}
 
 		return false;
@@ -2958,6 +2986,15 @@ MC.canvas.event.dragable = {
 		{
 			Canvon(event_data.shadow).addClass('shadow');
 			event_data.canvas_body.addClass('node-dragging');
+		}
+
+		if (event.altKey)
+		{
+			event_data.canvas_body.addClass('cloning');
+		}
+		else
+		{
+			event_data.canvas_body.removeClass('cloning');
 		}
 
 		Canvon('.match-dropable-group').removeClass('match-dropable-group');
@@ -3053,26 +3090,33 @@ MC.canvas.event.dragable = {
 					coordinate.x > 0 &&
 					coordinate.y > 0 &&
 					match_place.is_matched // &&
-				// 	// Disallow Instance to ASG
-				// 	// !(
-				// 	// 	parentGroup &&
-				// 	// 	parentGroup.getAttribute('data-class') === 'AWS.AutoScaling.Group' &&
-				// 	// 	target_type === 'AWS.EC2.Instance'
-				// 	// )
-				// 	// &&
-				// 	// target_item.changeParent()
-				// 	// &&
-				// 	// (
-				// 	// 	$canvas.trigger(BEFORE_DROP_EVENT, {'src_node': target_id, 'tgt_parent': parentGroup ? parentGroup.id : ''}) &&
-				// 	// 	!BEFORE_DROP_EVENT.isDefaultPrevented()
-				// 	// )
+					// Disallow Instance to ASG
+					// !(
+					// 	parentGroup &&
+					// 	parentGroup.getAttribute('data-class') === 'AWS.AutoScaling.Group' &&
+					// 	target_type === 'AWS.EC2.Instance'
+					// )
+					// &&
+					// target_item.changeParent()
+					// &&
+					// (
+					// 	$canvas.trigger(BEFORE_DROP_EVENT, {'src_node': target_id, 'tgt_parent': parentGroup ? parentGroup.id : ''}) &&
+					// 	!BEFORE_DROP_EVENT.isDefaultPrevented()
+					// )
 				)
 				{
-					target_item.changeParent((parentGroup ? parentGroup.id : 'canvas'), function ()
+					if (event_data.canvas_body.hasClass('cloning'))
 					{
-						this.move(coordinate.x, coordinate.y);
-						this.reConnect();
-					});
+						target_item.clone((parentGroup ? parentGroup.id : 'canvas'), coordinate.x, coordinate.y);
+					}
+					else
+					{
+						target_item.changeParent((parentGroup ? parentGroup.id : 'canvas'), function ()
+						{
+							this.move(coordinate.x, coordinate.y);
+							this.reConnect();
+						});
+					}
 				}
 			}
 
@@ -3270,7 +3314,10 @@ MC.canvas.event.dragable = {
 		}
 
 		event_data.shadow.remove();
-		event_data.canvas_body.removeClass('node-dragging');
+
+		event_data.canvas_body
+			.removeClass('node-dragging')
+			.removeClass('cloning');
 
 		$('#overlayer').remove();
 

@@ -143,6 +143,14 @@
 	stroke: #659FFF;
 }
 
+.clone-icon {
+	display: none;
+}
+
+.cloning .clone-icon {
+	display: block;
+}
+
 #canvas_select_ranger {
 	position: absolute;
 	background: rgba(255, 255, 255, 0.5);

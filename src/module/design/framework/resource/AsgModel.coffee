@@ -226,29 +226,30 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
           @updateExpandedAsgAsso( elb, true )
 
       @set "lc", lc
-      @listenTo lc, "change:name", @draw
+      #@listenTo lc, "change:name", @draw
+      @listenTo lc, "destroy", removeLC, @
       @listenTo lc, 'change', () ->
         @drawExpanedLc false
 
       for elb in lc.connectionTargets("ElbAmiAsso")
         @updateExpandedAsgAsso( elb )
 
-      @draw()
+      #@draw()
       @drawExpanedLc true
 
       null
 
-    removeChild : (lc) ->
-      console.assert (lc is @get("lc")), "Invalid parameter when calling Asg.removeChild"
+    removeLC : (lc)->
+      # disconnect all asso of expanded asg
+      @removeExpandedAsso()
 
-      GroupModel.prototype.removeChild.call this, lc
-
+      # Remove lc from parent ASG
       @unset "lc"
       @draw()
-
       null
 
     drawExpanedLc: ( isCreate ) ->
+      @draw()
       lc = @get 'lc'
       if lc
         for asg in @get("expandedList")

@@ -16,7 +16,7 @@ define [ '../base/main',
 
         initStack : () ->
             @model = model
-            @isAppEdit = false
+            @model.isAppEdit = false
             @view  = view
             null
 

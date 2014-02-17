@@ -76,7 +76,7 @@
       <label for="property-dhcp-none">{{ i18n "PROP_VPC_DHCP_LBL_NONE" }}</label>
     </section>
 
-    {{#unless isAppEdit}}
+    {{#if dhcp.default}}
     <section class="property-control-group">
       <div class="radio property-dhcp">
         <input id="property-dhcp-default" type="radio" name="dhcp-opts" {{#if dhcp.default}}checked="checked" {{/if}}value="none" />
@@ -84,7 +84,7 @@
       </div>
       <label for="property-dhcp-default">{{ i18n "PROP_VPC_DHCP_LBL_DEFAULT" }}</label>
     </section>
-    {{/unless}}
+    {{/if}}
     <section class="property-control-group">
       <div class="radio property-dhcp">
         <input id="property-dhcp-spec" type="radio" name="dhcp-opts" {{#if dhcp.hasDhcp}}checked="checked"{{/if}} value="specified"/>

@@ -641,19 +641,33 @@
 	display: none;
 	width: 16px;
 	height: 16px;
-	right: 10px;
-	top: 12px;
+	right: 30px;
+	top: 14px;
 	text-align: center;
 	cursor: pointer;
 	color: #aaa;
 }
 
-#state-editor .state-item:hover .state-remove {
+#state-editor .state-check {
+	position: absolute;
+	display: none;
+	width: 16px;
+	height: 16px;
+	right: 10px;
+	top: 10px;
+}
+
+#state-editor .state-item:hover .state-remove,
+#state-editor .state-item:hover .state-check {
 	display: block;
 }
 
 #state-editor .state-remove:hover {
 	color: #ec3c38;
+}
+
+#state-editor .state-item .selected .checkbox:checked {
+	display: block;
 }
 
 #state-editor .state-view .parsley-error {

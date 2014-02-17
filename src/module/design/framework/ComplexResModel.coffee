@@ -91,7 +91,6 @@ define [ "Design", "CanvasManager", "./ResourceModel", "constant", "./canvasview
           # In some case, removing a connection will result in adding new connection to
           # this resource, meaning the connections.length will increase.
           cns[ cns.length - 1 ].remove( reason )
-          cns.length = cns.length - 1
 
       # Remove element in SVG
       v = @getCanvasView()

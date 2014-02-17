@@ -4557,7 +4557,7 @@ MC.canvas.event.groupResize = {
 
 			event_data.group_port[0].attr('transform', 'translate(-12, ' + port_top + ')');
 
-			event_data.group_port[1].attr('transform', 'translate(' + (group_width * MC.canvas.GRID_WIDTH + 4) + ', ' + port_top + ')');
+			event_data.group_port[1].attr('transform', 'translate(' + (group_width * MC.canvas.GRID_WIDTH + 10) + ', ' + port_top + ')');
 
 			//group_node.reConnect();
 		}

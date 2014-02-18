@@ -2359,7 +2359,6 @@ MC.canvas.volume = {
 			original_node_id,
 			volume_type,
 			new_volume,
-			data_option,
 			volume_id,
 			target_id,
 			target_az;
@@ -2375,49 +2374,6 @@ MC.canvas.volume = {
 			if (event.data.action === 'move')
 			{
 				volume_id = target.attr('id');
-				//data_option = target.data('json');
-			}
-			else
-			{
-				data_option = target.data('option');
-				// data_option['instance_id'] = target_id;
-
-				volume_item = $canvas(target_id).addVolume(data_option);
-
-				if (volume_item)
-				{
-					volume_type = volume_item.snapshotId ? 'snapshot_item' : 'volume_item';
-
-					$('#instance_volume_list').append('<li><a href="javascript:void(0)" id="' + volume_item.id +'" data-instance="' + target_id + '" class="' + volume_type + '"><span class="volume_name">' + volume_item.name + '</span><span class="volume_size">' + volume_item.size + 'GB</span></a></li>');
-
-					$('#instance_volume_number').text(
-						$canvas( target_id ).volume().length
-					);
-
-					$canvas( volume_item.id, 'AWS.EC2.EBS.Volume' ).select();
-				}
-
-				// if (volume_item.id === null)
-				// {
-				// 	event.data.action = 'cancel';
-				// }
-				// else
-				// {
-				// 	// if (target_node.data('class') === 'AWS.AutoScaling.LaunchConfiguration')
-				// 	// {
-				// 	// 	volume_id = new_volume;
-				// 	// }
-				// 	// else
-				// 	// {
-				// 	// 	volume_id = new_volume.id;
-				// 	// 	//data_option.name = MC.canvas.data.get('component.' + volume_id + '.name');
-				// 	// }
-				// }
-			}
-
-			if (event.data.action === 'move')
-			{
-				//volume_item = $canvas(event.data.instance_id).volume(volume_id);
 
 				if (event.data.instance_id !== target_id)
 				{
@@ -2435,6 +2391,23 @@ MC.canvas.volume = {
 
 						$canvas( volume_item.id, 'AWS.EC2.EBS.Volume' ).select();
 					}
+				}
+			}
+			else
+			{
+				volume_item = $canvas(target_id).addVolume(target.data('option'));
+
+				if (volume_item)
+				{
+					volume_type = volume_item.snapshotId ? 'snapshot_item' : 'volume_item';
+
+					$('#instance_volume_list').append('<li><a href="javascript:void(0)" id="' + volume_item.id +'" data-instance="' + target_id + '" class="' + volume_type + '"><span class="volume_name">' + volume_item.name + '</span><span class="volume_size">' + volume_item.size + 'GB</span></a></li>');
+
+					$('#instance_volume_number').text(
+						$canvas( target_id ).volume().length
+					);
+
+					$canvas( volume_item.id, 'AWS.EC2.EBS.Volume' ).select();
 				}
 			}
 

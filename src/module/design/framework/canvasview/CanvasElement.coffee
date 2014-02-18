@@ -228,10 +228,11 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
 
   CanvasElement.prototype.clone = ( parentId, x, y )->
     parent       = @model.design.component( parentId ) or @model.parent()
+    attributes   = { parent : parent, name : @model.get("name") + "-copy" }
     pos          = { x : x, y : y }
     createOption = { sourceTarget : @model }
 
-    $canvas.add( @type, parent, pos, createOption )
+    $canvas.add( @type, attributes, pos, createOption )
 
   CanvasElement.prototype.parent  = ()->
     p = @model.parent()

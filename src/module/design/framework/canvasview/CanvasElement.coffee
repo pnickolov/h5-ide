@@ -57,6 +57,8 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
   ###
   # CanvasElement Interface
   ###
+  CanvasElement.prototype.draw = ()-> null # do nothing
+
   CanvasElement.prototype.getModel = ()-> @model
 
   CanvasElement.prototype.element  = ( id )-> document.getElementById( id or @id )

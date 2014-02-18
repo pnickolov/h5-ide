@@ -2277,8 +2277,14 @@ define [ 'event',
             item.removeClass('selected')
 
             if checkbox.prop('checked') is false
+
                 checkbox.prop('checked', true)
+
                 item.addClass('selected')
+
+            else
+
+                checkbox.prop('checked', false)
 
             return false
     }

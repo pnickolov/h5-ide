@@ -46,12 +46,17 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
           assoPublicIp : Design.instance().typeIsDefaultVpc()
         }, { instance: this }) )
 
+      # Hack, we need to clone the imageId before drawing.
+      if option.cloneSource
+        @attributes.imageId = option.cloneSource.get("imageId")
+
+      # Draw before creating SgAsso and before cloning
+      @draw(true)
 
       if option.cloneSource
+        # When cloning, instance might also clone volume, which will ask the instance
+        # to update. So we need to draw first.
         @clone( option.cloneSource )
-
-      # Draw before creating SgAsso
-      @draw(true)
 
       if shouldInit
         #assign DefaultKP
@@ -376,6 +381,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
       console.assert srcTarget.type is @type, "Invalid type of target when cloning."
 
       @cloneAttributes srcTarget, {
+        reserve : "volumeList"
         copyConnection : [ "KeypairUsage", "SgAsso", "ElbAmiAsso" ]
       }
 
@@ -383,16 +389,13 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
       for state in @get("state") or []
         state.id = "state-" + @design().guid()
 
-      # Copy Eni
-
       # Copy volume
-      null
+      Volume = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume )
+      for v in srcTarget.get("volumeList") or []
+        new Volume( { owner : this }, { cloneSource : v } )
 
-    cloneObjectAttributes : ( name, value )->
-      if name is "volumeList"
-        undefined
-      else
-        Model.__super__.cloneObjectAttributes.call this, name, value
+      # Copy Eni
+      null
 
     setEmbedEni : ( eni )->
       this.__mainEni = eni

@@ -392,12 +392,14 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
       # option =
       #   reserve : "id|appId|x|y|width|height"
       #   copyConnection : [ "KeypairUsage", "SgAsso" ]
-      option  = option or {}
-      reserve = option.reserve or "id|appId|x|y|width|height|name"
+
+      option = option or {}
+      extraReserve = option.reserve or ""
+      reserve = "id|appId|x|y|width|height|name"
       cnsType = option.copyConnection or []
 
       for attr, value of srcTarget.attributes
-        if attr.indexOf("__") is 0 or reserve.indexOf( attr ) isnt -1
+        if attr.indexOf("__") is 0 or reserve.indexOf( attr ) isnt -1 or extraReserve.indexOf( attr ) isnt -1
           continue
 
         if value isnt null and _.isObject( value )

@@ -478,7 +478,8 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
 
       if not @attachedInstance()
         if res is null then res = {}
-        res.component = @generateJSON( 0, { number : 1 }, 0 )[0]
+        eniIndex = if @__embedInstance then 0 else 1
+        res.component = @generateJSON( 0, { number : 1 }, eniIndex )[0]
 
       res
 

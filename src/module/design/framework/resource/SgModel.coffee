@@ -19,6 +19,7 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
       this
 
     isClassicElbSg : ()-> @attributes.name is "amazon-elb/amazon-elb-sg"
+    isVisual       : ()-> false
   }
 
   Model = ComplexResModel.extend {

@@ -230,7 +230,7 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
 
       @set "lc", lc
       #@listenTo lc, "change:name", @draw
-      @listenTo lc, "destroy", removeLC, @
+      @listenTo lc, "destroy", @removeChild
       @listenTo lc, 'change', () ->
         @drawExpanedLc false
 
@@ -242,7 +242,7 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
 
       null
 
-    removeLC : (lc)->
+    removeChild: ( lc ) ->
       # disconnect all asso of expanded asg
       @removeExpandedAsso()
 

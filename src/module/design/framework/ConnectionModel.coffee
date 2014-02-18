@@ -213,13 +213,6 @@ define [ "./ResourceModel", "Design", "CanvasManager", "./canvasview/CanvasEleme
       # Most of the connection don't have to implement serialize()
       null
 
-    isRemoved : ()->
-      if @__port1Comp.isRemoved() or @__port1Comp.isRemoved()
-        console.warn( "One or two targets of the connection has been removed, yet the connection is not removed : ", this )
-        return true
-
-      return ConnectionModel.__super__.isRemoved.call( this )
-
     getCanvasView : ()->
       if not @isVisual() then return null
 

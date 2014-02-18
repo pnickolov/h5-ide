@@ -86,12 +86,15 @@ define [ "Design", "CanvasManager", "./ResourceModel", "constant", "./canvasview
       cns = @attributes.__connections
 
       if cns
-        while cns.length
+        # The connections is not modified during the removal of the resource.
+        l = cns.length
+        while l
           # Removing connection of this Resource might cause other connections of this
           # resource get removed. So, we always check if the connection is not empty.
           # In some case, removing a connection will result in adding new connection to
           # this resource, meaning the connections.length will increase.
-          cns[0].remove()
+          --l
+          cns[l].remove()
 
       # Remove element in SVG
       v = @getCanvasView()

@@ -66,7 +66,7 @@ define [ 'text!./template/stack.html' ], ( template, rule_template ) ->
 
 			# show dialog to confirm that delete sg
 			if not mainContent and memberNum
-				mainContent = 'Are you sure you want to delete #{sgName}?'
+				mainContent = "Are you sure you want to delete #{sgName}?"
 				descContent = 'The firewall settings of ' + sgName + '\'s member will be affected. Member only has this security group will be using DefaultSG.'
 
 			if mainContent

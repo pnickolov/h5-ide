@@ -99,18 +99,19 @@ define [ "./ResourceModel", "Design", "CanvasManager", "./canvasview/CanvasEleme
         return this
 
 
+      @__port1Comp.connect_base this
+      if @__port1Comp isnt @__port2Comp
+        @__port2Comp.connect_base this
+
+
       # If oneToMany is defined. Then one of the component of this connection should be
       # checked.
       if @oneToMany
         console.assert( @oneToMany is @port1Comp().type or @oneToMany is @port2Comp().type, "Invalid oneToMany parameter" )
         comp = @getOtherTarget( @oneToMany )
         for cn in comp.connections( @type )
-          cn.remove( this )
-
-
-      @__port1Comp.connect_base this
-      if @__port1Comp isnt @__port2Comp
-        @__port2Comp.connect_base this
+          if cn isnt this
+            cn.remove( this )
 
 
       # Draw in the end

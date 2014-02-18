@@ -3,7 +3,12 @@
 	<li class="state-item view" data-command="{{cmd_value}}" data-id="{{id}}">
 		<div class="state-toolbar">
 			<div class="state-remove icon-remove"></div>
-			<div class="state-add">+</div>
+			<div class="state-check">
+				<div class="checkbox">
+					<input id="state-check-{{id}}" type="checkbox" name="state-check-{{id}}">
+					<label for="state-check-{{id}}"></label>
+				</div>
+			</div>
 			<i class="state-status-icon"></i>
 			<i class="state-drag icon-sort"></i>
 			<div class="state-view">
@@ -160,7 +165,7 @@
 {{/each}}
 
 <!-- state-template-editor-modal -->
-<div style="width:900px;height:610px;" id="state-editor-model" class="se-model-{{current_state}}">
+<div style="width:900px;" id="state-editor-model" class="se-model-{{current_state}}">
 	<div class="modal-header">
 		<h3>Conﬁguration Manager of {{res_name}}</h3>
 		<div class="selectbox state-editor-res-select">
@@ -172,35 +177,38 @@
 	<ul class="modal-sidebar-toggle">
 		<li class="state-desc-toggle active icon-desc"></li>
 		<li class="state-log-toggle icon-log"></li>
+		<li class="state-log-refresh icon-refresh"></li>
 	</ul>
 
-	<div id="state-editor-body" class="scroll-content modal-body clearfix">
-		<div id="state-editor" spellcheck="false">
-			{{#unless supported_platform}}<div class="state-warning">The AMI's distro cannot be recognised. Some commands may not apply to this AMI.</div>{{/unless}}
-			<ol class="state-list"></ol>
-			<div class="state-item-add">+ Add New State...</div>
-		</div>
-		<div id="state-description" data-command=""></div>
-		<div id="state-log" data-state-id="">
-			<ul class="state-log-list">
-				{{> state-template-log-instance-item}}
-				{{> state-template-log-item}}
-			</ul>
-			<div class="state-log-loading">Loading...</div>
-			<div class="state-log-info">
-				<div class="state-log-title">All states are pending.</div>
-				<div class="state-log-detail">
-					<span class="pending">Detailed log will show here when a state succeeds or fails.</span>
-					<span class="stoped">The app is currently stopped. Detailed log will show here when the app is started and a state succeeds or fails.</span>
+	<div id="state-editor-wrap">
+		<div id="state-editor-body" class="scroll-content modal-body clearfix">
+			<div id="state-editor" spellcheck="false">
+				{{#unless supported_platform}}<div class="state-warning">The AMI's distro cannot be recognised. Some commands may not apply to this AMI.</div>{{/unless}}
+				<ol class="state-list"></ol>
+				<div class="state-item-add">+ Add New State...</div>
+			</div>
+			<div id="state-description" data-command=""></div>
+			<div id="state-log" data-state-id="">
+				<ul class="state-log-list">
+					{{> state-template-log-instance-item}}
+					{{> state-template-log-item}}
+				</ul>
+				<div class="state-log-loading">Loading...</div>
+				<div class="state-log-info">
+					<div class="state-log-title">All states are pending.</div>
+					<div class="state-log-detail">
+						<span class="pending">Detailed log will show here when a state succeeds or fails.</span>
+						<span class="stoped">The app is currently stopped. Detailed log will show here when the app is started and a state succeeds or fails.</span>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
 
-	<div class="state-bottom modal-footer">
-		<div class="state-save btn btn-blue">Save</div>
-		<div class="state-cancel btn btn-silver">Cancel</div>
-		<div class="state-close btn btn-silver">Close</div>
+		<div class="state-bottom modal-footer">
+			<div class="state-save btn btn-blue">Save</div>
+			<div class="state-cancel btn btn-silver">Cancel</div>
+			<div class="state-close btn btn-silver">Close</div>
+		</div>
 	</div>
 </div>
 
@@ -220,8 +228,8 @@
 			{{#if log_time}}<div class="state-log-item-time">{{log_time}}</div>{{/if}}
 			<div class="state-log-item-status {{state_status}}">{{state_status}}</div>
 		</div>
+		{{#if comment}}<div class="state-log-item-detail">{{nl2br comment}}</div>{{/if}}
 		{{#if stdout}}<div class="state-log-item-detail">{{nl2br stdout}}</div>{{/if}}
-		{{#if stderr}}<div class="state-log-item-detail">{{nl2br stderr}}</div>{{/if}}
 	</li>
 {{/each}}
 

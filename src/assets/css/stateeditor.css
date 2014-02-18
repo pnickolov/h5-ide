@@ -1,5 +1,5 @@
 .ace_editor {
-	font-family: "OxygenMono", "Lucida Console", "Monaco", monospace  !important;
+	font-family: "Lucida Console", "Monaco", monospace  !important;
 	color: #666;
 }
 
@@ -22,7 +22,7 @@
 
 /* *************************************** state editor */
 
-#state-editor {
+#state-editor, .ace_autocomplete_tip {
 	/*padding: 20px;*/
 	height: 460px;
 	overflow-y: auto;
@@ -208,7 +208,7 @@
 	z-index: 80;
 	display: block;
 	border-left: 2px solid transparent;
-	padding: 9px 0;
+	padding: 10px 0;
 	text-align: center;
 	color: #666;
 	/*font-family: Lucida Console;*/
@@ -320,8 +320,8 @@
 	white-space: nowrap !important;
 	display: inline !important;
 	height: 13px !important;
-	line-height: 17px !important;
-	padding-top: 3px !important;
+	line-height: 13px !important;
+	padding-top: 0px !important;
 	overflow: hidden !important;
 	cursor: text !important;
 	opacity: 1.0 !important;
@@ -364,6 +364,11 @@
 	border-bottom: 1px solid transparent;
 }
 
+/* stack view */
+#state-editor-model.se-model-stack .state-log-refresh {
+	display: none;
+}
+
 /* *************************************** parameter */
 #state-shadow-item {
 	width: 100%;
@@ -373,6 +378,19 @@
 	background: #fff;
 	position: absolute;
 	z-index: 80;
+}
+
+.drag-hide {
+	border-bottom: 1px solid #eee;
+}
+
+.drag-hide:before {
+	visibility: hidden;
+}
+
+.drag-hide .state-toolbar,
+.drag-hide .state-edit {
+	visibility: hidden;
 }
 
 #state-editor .command-value {
@@ -420,6 +438,7 @@
 	max-width: 350px;
 	overflow: auto;
 	margin-left: 10px;
+	margin-top: 4px;
 }
 
 #state-editor .parameter-list .parameter-item.dict .parameter-value {
@@ -457,6 +476,7 @@
 	line-height: 14px;
 	cursor: pointer;
 	font-size: 16px;
+	display: none;
 }
 
 #state-editor .parameter-remove:hover {
@@ -616,44 +636,38 @@
 	position: absolute;
 }
 
-#state-editor .state-add {
-	margin-top: 6px;
-	margin-right: 15px;
-	background-color: #ddd;
-	width: 15px;
-	height: 15px;
-	text-align: center;
-	line-height: 13px;
-	border-radius: 20px;
-	background-color: #aaa;
-	color: #fff;
-	cursor: pointer;
-	float: right;
-	display: none;
-}
-
-#state-editor .state-add:hover {
-	background-color: #ccc;
-}
-
 #state-editor .state-remove {
 	position: absolute;
 	display: none;
 	width: 16px;
 	height: 16px;
-	right: 10px;
-	top: 12px;
+	right: 30px;
+	top: 14px;
 	text-align: center;
 	cursor: pointer;
 	color: #aaa;
 }
 
-#state-editor .state-item:hover .state-remove {
+#state-editor .state-check {
+	position: absolute;
+	display: none;
+	width: 16px;
+	height: 16px;
+	right: 10px;
+	top: 10px;
+}
+
+#state-editor .state-item:hover .state-remove,
+#state-editor .state-item:hover .state-check {
 	display: block;
 }
 
 #state-editor .state-remove:hover {
 	color: #ec3c38;
+}
+
+#state-editor .state-item .selected .checkbox:checked {
+	display: block;
 }
 
 #state-editor .state-view .parsley-error {
@@ -910,4 +924,36 @@
 
 #state-editor-model.se-model-app #state-editor .ace_cursor-layer {
 	display: none;
+}
+
+#state-description .highlight  {
+	color: #000;
+}
+
+#state-description .state-log-refresh {
+	background-color: #f00;
+}
+
+.ace_autocomplete_tip {
+	width: 265px;
+	height: 17px;
+	position: absolute;
+	z-index: 999999999;
+	display: none;
+	padding-left: 5px;
+	background-color: #fff;
+	border: 1px #999 solid;
+	font-size: 12px;
+	line-height: 18px;
+	overflow: hidden;
+}
+
+.ace_autocomplete_disable_select {
+	opacity: 0.4;
+}
+
+.ace_rightAlignedText {
+	font-style: italic;
+	opacity: 0.3;
+	padding-right: 4px;
 }

@@ -143,6 +143,14 @@
 	stroke: #659FFF;
 }
 
+.clone-icon {
+	display: none;
+}
+
+.cloning .clone-icon {
+	display: block;
+}
+
 #canvas_select_ranger {
 	position: absolute;
 	background: rgba(255, 255, 255, 0.5);
@@ -1124,42 +1132,107 @@
 	fill: red;
 }
 
-#node-state-wrap {
+/* node action */
+#node-action-wrap {
+	position: absolute;
+	z-index: 60;
+/*	overflow: hidden;*/
+}
+
+.node-action-tooltip {
+	background: #333;
+	color: #fff;
+	position: absolute;
+	right: -35px;
+	top: 0;
+	padding: 5px 7px;
+	font-size: 12px;
+	border-radius: 2px;
+	box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+	opacity: 0;
+
+	-webkit-transition: right .2s, opacity .2s;
+	-moz-transition: right .2s, opacity .2s;
+	-ms-transition: right .2s, opacity .2s;
+	-o-transition: right .2s, opacity .2s;
+	transition: right .2s, opacity .2s;
+}
+
+.node-action-tooltip:before {
+	content:"";
+	width: 0; 
+	height: 0; 
+	border-top: 4px solid transparent;
+	border-bottom: 4px solid transparent;
+	border-right: 4px solid rgba(0,0,0, 0.8);
+	left: -4px;
+	top: 8px;
+	position: absolute;
+}
+
+#node-action-state-btn {
 	background: rgba(0,0,0,.7);
-	-webkit-transition: background .2s;
-	-moz-transition: background .2s;
-	-ms-transition: background .2s;
-	-o-transition: background .2s;
-	transition: background .2s;
+	-webkit-transition: background .2s, width .2s;
+	-moz-transition: background .2s, width .2s;
+	-ms-transition: background .2s, width .2s;
+	-o-transition: background .2s, width .2s;
+	transition: background .2s, width .2s;
 
 	border-radius: 2px;
 	box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
-	position: absolute;
-	z-index: 60;
-	height: 25px;
 
-	cursor: pointer;
+	height: 26px;
+	width: 26px;
+	cursor: pointer;	
+	overflow: hidden;
 }
 
-#node-state-wrap:hover {
+#node-action-state {
+	max-width: 200px;
+	padding-right: 70px;
+}
+
+#node-action-state:hover #node-action-state-btn {
 	background: rgba(0,0,0,.9);
+
+	/* Hack for transition */
+	width: 47px;
+}
+
+#node-action-state:hover .node-action-tooltip {
+	opacity: 1;
+	right: 0;
 }
 
 #node-state-icon {
-	width: 10px;
-	height: 10px;
-	display: block;
-	position: absolute;
-	top: 8px;
-	left: 8px;
+	width: 12px;
+	height: 12px;
+	border-radius: 50%;
+	border: 1px solid #fff;
+	position: relative;
+	display: inline-block;
+	top:6px;
+	left: 6px;
+}
+
+#node-state-icon:before {
+	content: "";
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
 	background: #fff;
-	border-radius: 5px;
+	position: absolute;
+	top: 2px;
+	left: 2px;
 }
 
 #node-state-number {
-	margin-left: 25px;
-	padding: 7px;
+	margin-left: 8px;
 	color: #fff;
 	font-size: 12px;
-	display: block;
+	float: right;
+	height: 14px;
+	line-height: 27px;
+	display: inline-block;
+	padding-right: 6px;
 }

@@ -14,7 +14,10 @@ define ['MC',
         './vpc/cgw',
         './vpc/eni'
         './stateeditor/main'
-], ( MC, stack, instance, subnet, vpc, elb, sg, asg, eip, az, vpn, igw, acl, cgw, eni, state ) ->
+        './state/state'
+
+
+], ( MC, stack, instance, subnet, vpc, elb, sg, asg, eip, az, vpn, igw, acl, cgw, eni, stateEditor, state, stateGlobal ) ->
 
         stack : stack
         instance : instance
@@ -30,4 +33,9 @@ define ['MC',
         acl : acl
         cgw : cgw
         eni : eni
+        stateEditor: stateEditor
         state: state
+
+
+
+

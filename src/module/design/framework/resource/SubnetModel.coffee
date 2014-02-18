@@ -105,7 +105,7 @@ define [ "constant",
       # 3. It must have enough space for its Eni's Ip.
       if not @isCidrEnoughForIps( cidr )
         return {
-          error  : "#{cidr} has not enough IP for the Enis in this subnet."
+          error  : "#{cidr} has not enough IP for the ENIs in this subnet."
         }
 
       # 4. Check Elb.

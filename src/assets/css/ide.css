@@ -4025,7 +4025,7 @@ a.sidebar-hider {
 }
 
 .acl-info-list > li {
-	height  : 34px;
+	height  : 38px;
 }
 
 .acl-sg-info-list .col1 {
@@ -4078,8 +4078,8 @@ a.sidebar-hider {
 }
 
 .acl-info-list .col3 {
-	height      : 58px;
-	line-height : 58px;
+	height      : 62px;
+	line-height : 62px;
 }
 
 .acl-sg-info-list .col3:hover {
@@ -7253,4 +7253,21 @@ summary:focus {
 	margin-top: 43px;
 	text-align: center;
 	display: none;
+}
+
+.modal-transition-animation {
+	transition: all 0.5s ease-in-out;
+	-webkit-transition:  0.5s ease-in-out;
+	-moz-transition: all 0.5s ease-in-out;
+	-o-transition: all 0.5s ease-in-out;
+
+	transition-property: left, top, width, height, opacity, background-color;
+	-webkit-transition-property: left, top, width, height, opacity, background-color;
+	-moz-transition-property: left, top, width, height, opacity, background-color;
+	-o-transition-property: left, top, width, height, opacity, background-color;
+
+/*	-webkit-transition: all 5s ease-in-out;
+	-moz-transition: all 5s ease-in-out;
+	-o-transition: all 5s ease-in-out;
+	transition: all 5s ease-in-out;*/
 }

@@ -11,7 +11,7 @@ define [ 'event',
 
     StateEditorView = Backbone.View.extend {
 
-        events      :
+        events:
 
             'closed': 'closedPopup'
             'keyup .parameter-item.dict .parameter-value': 'onDictInputChange'
@@ -36,18 +36,26 @@ define [ 'event',
             'click .parameter-item .parameter-remove': 'onParaRemoveClick'
             'click .state-desc-toggle': 'onDescToggleClick'
             'click .state-log-toggle': 'onLogToggleClick'
+            'click .state-log-refresh': 'onLogRefreshClick'
             'click .state-item-add': 'onStateItemAddClick'
+
+            'click .checkbox input': 'checkboxSelect'
 
             'OPTION_CHANGE .state-editor-res-select': 'onResSelectChange'
 
             'keyup .parameter-item.optional .parameter-value': 'onOptionalParaItemChange'
-            'keyup .parameter-item.optional .parameter-value': 'onOptionalParaItemChange'
 
             'SWITCH_STATE': 'onSwitchState'
 
-            'EXPAND_STATE': 'expandState',
+            'EXPAND_STATE': 'onExpandState',
 
-            'COLLAPSE_STATE': 'collapseState'
+            'COLLAPSE_STATE': 'onCollapseState'
+
+            'REMOVE_STATE': 'onRemoveState'
+
+            'ACE_TAB_SWITCH': 'aceTabSwitch'
+
+            'ACE_UTAB_SWITCH': 'aceUTabSwitch'
 
         initialize: () ->
 
@@ -57,6 +65,7 @@ define [ 'event',
             $(document).on 'keydown', {target: this}, this.keyEvent
 
         closedPopup: () ->
+
             @trigger 'CLOSE_POPUP'
             $(document).off 'keydown', this.keyEvent
 
@@ -69,7 +78,7 @@ define [ 'event',
                 res_name: that.resName,
                 supported_platform: that.supportedPlatform,
                 current_state: that.currentState
-            }), false
+            }), false, null, {opacity: 0.2, conflict: 'loose'}
 
             # setTimeout(() ->
 
@@ -98,13 +107,7 @@ define [ 'event',
             that.initResSelect()
 
             # refresh state log
-            $resSelectElem = that.$editorModal.find('.state-editor-res-select')
-            if that.currentState is 'stack'
-                $resSelectElem.hide()
-            else
-                that.onResSelectChange({
-                    target: $resSelectElem[0]
-                })
+            that.onLogRefreshClick()
 
             if that.isShowLogPanel
                 that.showLogPanel()
@@ -112,6 +115,11 @@ define [ 'event',
             if that.currentState is 'stack'
                 $logPanelToggle = that.$editorModal.find('.state-log-toggle')
                 $logPanelToggle.hide()
+
+            $aceAutocompleteTip = $('.ace_autocomplete_tip')
+            if not $aceAutocompleteTip.length
+                $('body').append('<div class="ace_autocomplete_tip">No result matches the input</div>')
+            that.$aceAutocompleteTip = $('.ace_autocomplete_tip')
 
             # , 1)
 
@@ -249,6 +257,17 @@ define [ 'event',
                     that.refreshLogItemNum()
                     null
             })
+
+        onLogRefreshClick: (event) ->
+
+            that = this
+            $resSelectElem = that.$editorModal.find('.state-editor-res-select')
+            if that.currentState is 'stack'
+                $resSelectElem.hide()
+            else
+                that.onResSelectChange({
+                    target: $resSelectElem[0]
+                })
 
         refreshStateList: (stateListObj) ->
 
@@ -415,9 +434,16 @@ define [ 'event',
             cmdNameAry = that.cmdNameAry
 
             cmdNameAry = _.map cmdNameAry, (value, i) ->
+
+                metaStr = ''
+                if value.support is false
+                    metaStr = 'not supported'
+
                 return {
-                    'name': value,
-                    'value': value
+                    'name': value.name,
+                    'value': value.name,
+                    'meta': metaStr,
+                    'support': value.support
                 }
 
             that.initCodeEditor($cmdValueItem[0], {
@@ -543,10 +569,12 @@ define [ 'event',
                 descMarkdown = 'Get Started with Conﬁguration Manager Conﬁguration manager is blah blah blah... You can use following command...'
 
             descHTML = ''
-            if descMarkdown
-                descHTML = $.markdown(descMarkdown)
 
-            that.$cmdDsec.html(descHTML)
+            setTimeout(() ->
+                if descMarkdown
+                    descHTML = $.markdown(descMarkdown)
+                that.$cmdDsec.html(descHTML)
+            , 0)
 
             null
 
@@ -746,25 +774,29 @@ define [ 'event',
 
                 paraObj = that.getParaObj($currentInput)
 
-                if paraObj and paraObj.default isnt undefined
-                    defaultValue = String(paraObj.default)
-                    if not currentValue and defaultValue and not $currentInput.hasClass('key')
-                        that.setPlainText($currentInput, defaultValue)
-                        $paraItem = $currentInput.parents('.parameter-item')
-                        $paraItem.removeClass('disabled')
+                if paraObj
 
-                        # auto add new para item
-                        # if $currentInput.hasClass('parameter-value')
+                    that.highlightParaDesc(paraObj.name)
 
-                        #     $paraItem = $currentInput.parents('.parameter-item')
-                        #     if $paraItem.hasClass('dict')
-                        #         that.onDictInputChange({
-                        #             currentTarget: $currentInput[0]
-                        #         })
-                        #     else if $paraItem.hasClass('array') or $paraItem.hasClass('state')
-                        #         that.onArrayInputChange({
-                        #             currentTarget: $currentInput[0]
-                        #         })
+                    if paraObj.default isnt undefined
+                        defaultValue = String(paraObj.default)
+                        if not currentValue and defaultValue and not $currentInput.hasClass('key')
+                            that.setPlainText($currentInput, defaultValue)
+                            $paraItem = $currentInput.parents('.parameter-item')
+                            $paraItem.removeClass('disabled')
+
+                            # auto add new para item
+                            # if $currentInput.hasClass('parameter-value')
+
+                            #     $paraItem = $currentInput.parents('.parameter-item')
+                            #     if $paraItem.hasClass('dict')
+                            #         that.onDictInputChange({
+                            #             currentTarget: $currentInput[0]
+                            #         })
+                            #     else if $paraItem.hasClass('array') or $paraItem.hasClass('state')
+                            #         that.onArrayInputChange({
+                            #             currentTarget: $currentInput[0]
+                            #         })
 
             # refresh module description
 
@@ -850,7 +882,7 @@ define [ 'event',
             that.refreshStateView($stateItem)
             $stateItem.addClass('view')
 
-        expandState: (event) ->
+        onExpandState: (event) ->
             
             that = this
 
@@ -858,7 +890,7 @@ define [ 'event',
 
             return false
 
-        collapseState: (event) ->
+        onCollapseState: (event) ->
             
             that = this
 
@@ -927,6 +959,9 @@ define [ 'event',
 
             that = this
 
+            if that.currentState is 'app'
+                return false
+
             $stateItem = that.$stateList.find('.state-item:last')
 
             newStateIdShow = 1
@@ -978,9 +1013,7 @@ define [ 'event',
             $currentElem = $(event.currentTarget)
             $stateItem = $currentElem.parents('.state-item')
 
-            $stateItem.remove()
-
-            that.refreshLogItemNum()
+            that.onRemoveState(null, $stateItem)
 
         submitValidate: ( element ) ->
 
@@ -1165,100 +1198,106 @@ define [ 'event',
 
             _.each stateObjAry, (state, idx) ->
 
-                cmdName = that.moduleCMDMap[state.module]
-                paraModelObj = that.cmdParaObjMap[cmdName]
+                try
 
-                paraListObj = state.parameter
-                stateId = state.id
+                    cmdName = that.moduleCMDMap[state.module]
+                    paraModelObj = that.cmdParaObjMap[cmdName]
 
-                stateRenderObj = {
-                    id: stateId,
-                    id_show: idx + 1,
-                    cmd_value: cmdName,
-                    parameter_list: []
-                }
+                    paraListObj = state.parameter
+                    stateId = state.id
 
-                _.each paraModelObj, (paraModelValue, paraModelName) ->
-
-                    paraModelType = paraModelValue.type
-                    paraModelRequired = paraModelValue.required
-
-                    renderParaObj = {
-                        para_name: paraModelName,
-                        para_disabled: true,
-                        required: paraModelRequired
+                    stateRenderObj = {
+                        id: stateId,
+                        id_show: idx + 1,
+                        cmd_value: cmdName,
+                        parameter_list: []
                     }
 
-                    renderParaObj['type_' + paraModelType] = true
+                    _.each paraModelObj, (paraModelValue, paraModelName) ->
 
-                    paraValue = paraListObj[paraModelName]
+                        paraModelType = paraModelValue.type
+                        paraModelRequired = paraModelValue.required
 
-                    if paraValue is undefined and not paraModelRequired
-                        renderParaObj.para_disabled = true
-                    else
-                        renderParaObj.para_disabled = false
+                        renderParaObj = {
+                            para_name: paraModelName,
+                            para_disabled: true,
+                            required: paraModelRequired
+                        }
 
-                    renderParaValue = null
-                    if paraModelType in ['line', 'text', 'bool']
+                        renderParaObj['type_' + paraModelType] = true
 
-                        renderParaValue = String(paraValue)
+                        paraValue = paraListObj[paraModelName]
 
-                        if not paraValue
-                            renderParaValue = ''
+                        if paraValue is undefined and not paraModelRequired
+                            renderParaObj.para_disabled = true
+                        else
+                            renderParaObj.para_disabled = false
 
-                        if paraModelType is 'bool' and paraValue is false
-                            renderParaValue = 'false'
+                        renderParaValue = null
+                        if paraModelType in ['line', 'text', 'bool']
 
-                        if paraModelType in ['line', 'text']
-                            renderParaValue = that.model.replaceParaUIDToName(renderParaValue)
+                            renderParaValue = String(paraValue)
 
-                    else if paraModelType is 'dict'
+                            if not paraValue
+                                renderParaValue = ''
 
-                        renderParaValue = []
-                        _.each paraValue, (paraValueStr, paraKey) ->
+                            if paraModelType is 'bool' and paraValue is false
+                                renderParaValue = 'false'
 
-                            paraValueStr = that.model.replaceParaUIDToName(paraValueStr)
+                            if paraModelType in ['line', 'text']
+                                renderParaValue = that.model.replaceParaUIDToName(renderParaValue)
 
-                            renderParaValue.push({
-                                key: paraKey
-                                value: paraValueStr
-                            })
+                        else if paraModelType is 'dict'
 
-                            null
+                            renderParaValue = []
+                            _.each paraValue, (paraValueStr, paraKey) ->
 
-                        if not paraValue or _.isEmpty(paraValue)
-                            renderParaValue = [{
-                                key: '',
-                                value: ''
-                            }]
-
-                    else if paraModelType in ['array', 'state']
-
-                        renderParaValue = []
-                        _.each paraValue, (paraValueStr) ->
-
-                            if paraModelType is 'state'
-                                paraValueStr = that.model.replaceStateUIDToName(paraValueStr)
-                            else
                                 paraValueStr = that.model.replaceParaUIDToName(paraValueStr)
-                                
-                            renderParaValue.push(paraValueStr)
-                            null
 
-                        if not paraValue or not paraValue.length
-                            renderParaValue = ['']
+                                renderParaValue.push({
+                                    key: paraKey
+                                    value: paraValueStr
+                                })
 
-                    renderParaObj.para_value = renderParaValue
+                                null
 
-                    stateRenderObj.parameter_list.push(renderParaObj)
+                            if not paraValue or _.isEmpty(paraValue)
+                                renderParaValue = [{
+                                    key: '',
+                                    value: ''
+                                }]
 
-                    paraListAry = stateRenderObj.parameter_list
+                        else if paraModelType in ['array', 'state']
 
-                    stateRenderObj.parameter_list = that.model.sortParaList(paraListAry, 'para_name')
+                            renderParaValue = []
+                            _.each paraValue, (paraValueStr) ->
 
-                    null
+                                if paraModelType is 'state'
+                                    paraValueStr = that.model.replaceStateUIDToName(paraValueStr)
+                                else
+                                    paraValueStr = that.model.replaceParaUIDToName(paraValueStr)
+                                    
+                                renderParaValue.push(paraValueStr)
+                                null
 
-                renderObj.state_list.push(stateRenderObj)
+                            if not paraValue or not paraValue.length
+                                renderParaValue = ['']
+
+                        renderParaObj.para_value = renderParaValue
+
+                        stateRenderObj.parameter_list.push(renderParaObj)
+
+                        paraListAry = stateRenderObj.parameter_list
+
+                        stateRenderObj.parameter_list = that.model.sortParaList(paraListAry, 'para_name')
+
+                        null
+
+                    renderObj.state_list.push(stateRenderObj)
+
+                catch err
+
+                    console.log('state editor: resource state data parse failed')
 
                 null
 
@@ -1411,127 +1450,188 @@ define [ 'event',
 
         initCodeEditor: (editorElem, hintObj) ->
 
-            console.time('init editor')
-
             that = this
 
-            # if that.readOnlyMode
-            #     return
-
             if not editorElem then return
-
             $editorElem = $(editorElem)
-
             if $editorElem.data('editor')
                 return
 
-            console.time('init core')
-            editor = ace.edit(editorElem)
-            console.timeEnd('init core')
+            _initEditor = () ->
 
-            $editorElem.data('editor', editor)
+                # if that.readOnlyMode
+                #     return
 
-            editor.hintObj = hintObj
-            editor.getSession().setMode(that.resRefHighLight)
+                editor = ace.edit(editorElem)
 
-            # config editor
+                $editorElem.data('editor', editor)
 
-            # editor.setTheme("ace/theme/monokai")
-            editor.renderer.setPadding(4)
-            editor.setBehavioursEnabled(false)
+                editor.hintObj = hintObj
+                editor.getSession().setMode(that.resRefHighLight)
 
-            # single/mutil line editor
-            editorSingleLine = false
-            maxLines = undefined
-            if $editorElem.hasClass('line')
-                maxLines = 1
-                editorSingleLine = true
+                # config editor
 
-            editor.setOptions({
-                enableBasicAutocompletion: true,
-                maxLines: maxLines,
-                showGutter: false,
-                highlightGutterLine: false,
-                showPrintMargin: false,
-                highlightActiveLine: false,
-                highlightSelectedWord: false,
-                enableSnippets: false,
-                singleLine: editorSingleLine
-            })
+                # editor.setTheme("ace/theme/monokai")
+                editor.renderer.setPadding(4)
+                editor.setBehavioursEnabled(false)
 
-            tk = new that.Tokenizer({
-                'start': [{
-                    token: 'res_ref_correct',
-                    regex: that.resAttrRegexStr
-                }, {
-                    token: 'res_ref',
-                    regex: '@\\{(\\w|\\-)+(\\.(\\w+(\\[\\d+\\])*))+\\}'
-                }]
-            })
-            editor.session.$mode.$tokenizer = tk
-            editor.session.bgTokenizer.setTokenizer(tk)
-            editor.renderer.updateText()
+                # single/mutil line editor
+                editorSingleLine = false
+                maxLines = undefined
+                if $editorElem.hasClass('line')
+                    maxLines = 1
+                    editorSingleLine = true
 
-            editor.commands.on("afterExec", (e) ->
+                editor.setOptions({
+                    enableBasicAutocompletion: true,
+                    maxLines: maxLines,
+                    showGutter: false,
+                    highlightGutterLine: false,
+                    showPrintMargin: false,
+                    highlightActiveLine: false,
+                    highlightSelectedWord: false,
+                    enableSnippets: false,
+                    singleLine: editorSingleLine
+                })
 
-                thatEditor = e.editor
-                currentValue = thatEditor.getValue()
-                hintDataAryMap = thatEditor.hintObj
+                tk = new that.Tokenizer({
+                    'start': [{
+                        token: 'res_ref_correct',
+                        regex: that.resAttrRegexStr
+                    }, {
+                        token: 'res_ref',
+                        regex: '@\\{(\\w|\\-)+(\\.(\\w+(\\[\\d+\\])*))+\\}'
+                    }]
+                })
+                editor.session.$mode.$tokenizer = tk
+                editor.session.bgTokenizer.setTokenizer(tk)
+                editor.renderer.updateText()
 
-                if e.command.name is "insertstring"
-                    if /^@$/.test(e.args) and hintDataAryMap['at']
-                        that.setEditorCompleter(thatEditor, hintDataAryMap['at'], 'reference')
+                editor.commands.on("afterExec", (e) ->
+
+                    thatEditor = e.editor
+                    currentValue = thatEditor.getValue()
+                    hintDataAryMap = thatEditor.hintObj
+
+                    if e.command.name is "insertstring"
+                        if /^@$/.test(e.args) and hintDataAryMap['at']
+                            that.setEditorCompleter(thatEditor, hintDataAryMap['at'], 'reference')
+                            thatEditor.execCommand("startAutocomplete")
+
+                    if e.command.name is "backspace" and hintDataAryMap['focus']
+                        that.setEditorCompleter(thatEditor, hintDataAryMap['focus'], 'command')
                         thatEditor.execCommand("startAutocomplete")
 
-                if e.command.name is "backspace" and hintDataAryMap['focus']
-                    that.setEditorCompleter(thatEditor, hintDataAryMap['focus'], 'command')
-                    thatEditor.execCommand("startAutocomplete")
+                    if e.command.name is "backspace" and hintDataAryMap['at'] and currentValue
+                        currentLineContent = thatEditor.getSession().getLine(thatEditor.getCursorPosition().row)
+                        if currentLineContent.indexOf('@') >= 0
+                            that.setEditorCompleter(thatEditor, hintDataAryMap['at'], 'reference')
+                            thatEditor.execCommand("startAutocomplete")
 
-                if e.command.name is "backspace" and hintDataAryMap['at'] and currentValue
-                    currentLineContent = thatEditor.getSession().getLine(thatEditor.getCursorPosition().row)
-                    if currentLineContent.indexOf('@') >= 0
-                        that.setEditorCompleter(thatEditor, hintDataAryMap['at'], 'reference')
+                    if e.command.name is "autocomplete_confirm"
+
+                        if $editorElem.hasClass('command-value')
+
+                            value = e.args
+                            $stateItem = $editorElem.parents('.state-item')
+                            originCMDName = $stateItem.attr('data-command')
+
+                            if originCMDName isnt value
+
+                                $stateItem.attr('data-command', value)
+                                that.refreshDescription(value)
+                                $paraListElem = $stateItem.find('.parameter-list')
+                                that.refreshParaList($paraListElem, value)
+                                that.refreshStateView($stateItem)
+
+                        else if $editorElem.hasClass('parameter-value')
+
+                            $paraItem = $editorElem.parents('.parameter-item')
+                            if $paraItem.hasClass('dict')
+                                that.onDictInputChange({
+                                    currentTarget: $editorElem[0]
+                                })
+                            else if $paraItem.hasClass('array') or $paraItem.hasClass('state')
+                                that.onArrayInputChange({
+                                    currentTarget: $editorElem[0]
+                                })
+                            else if $paraItem.hasClass('line') or $paraItem.hasClass('bool') or $paraItem.hasClass('text')
+                                $paraItem.removeClass('disabled')
+
+                    if e.command.name is "autocomplete_match"
+
+                        isShowTip = false
+
+                        if $editorElem.hasClass('parameter-value')
+
+                            $paraItem = $editorElem.parents('.parameter-item')
+                            if $paraItem.hasClass('state')
+                                isShowTip = true
+
+                        if $editorElem.hasClass('command-value')
+                            isShowTip = true
+
+                        if isShowTip
+
+                            if not e.args
+                                that.$aceAutocompleteTip.show()
+                            else
+                                that.$aceAutocompleteTip.hide()
+                )
+
+                editor.on("focus", (e, thatEditor) ->
+
+                    hintDataAryMap = thatEditor.hintObj
+                    currentValue = thatEditor.getValue()
+                    if not currentValue and hintDataAryMap['focus']
+                        that.setEditorCompleter(thatEditor, hintDataAryMap['focus'], 'command')
                         thatEditor.execCommand("startAutocomplete")
 
-                if e.command.name is "autocomplete_confirm"
+                    $valueInput = $(thatEditor.container)
+                    inputPosX = $valueInput.offset().left
+                    inputPosY = $valueInput.offset().top
+                    that.$aceAutocompleteTip.css({
+                        left: inputPosX,
+                        top: inputPosY + 25
+                    })
 
-                    if $editorElem.hasClass('command-value')
+                    thatEditor.selectAll()
 
-                        value = e.args
-                        $stateItem = $editorElem.parents('.state-item')
-                        originCMDName = $stateItem.attr('data-command')
+                    # that.$aceAutocompleteTip.show()
+                )
 
-                        if originCMDName isnt value
+                editor.on("blur", (e) ->
+                    that.$cmdDsec.find('.highlight').removeClass('highlight')
+                    that.$aceAutocompleteTip.hide()
+                )
 
-                            $stateItem.attr('data-command', value)
-                            that.refreshDescription(value)
-                            $paraListElem = $stateItem.find('.parameter-list')
-                            that.refreshParaList($paraListElem, value)
-                            that.refreshStateView($stateItem)
+            if $editorElem.hasClass('command-value')
+                _initEditor()
+            else
+                setTimeout(() ->
+                    _initEditor()
+                , 0)
 
-                    else if $editorElem.hasClass('parameter-value')
+        highlightParaDesc: (paraName) ->
 
-                        $paraItem = $editorElem.parents('.parameter-item')
-                        if $paraItem.hasClass('dict')
-                            that.onDictInputChange({
-                                currentTarget: $editorElem[0]
-                            })
-                        else if $paraItem.hasClass('array') or $paraItem.hasClass('state')
-                            that.onArrayInputChange({
-                                currentTarget: $editorElem[0]
-                            })
-            )
+            that = this
 
-            editor.on("focus", (e, thatEditor) ->
+            that.$cmdDsec.find('.highlight').removeClass('highlight')
+            paraNameSpan = that.$cmdDsec.find("strong:contains('#{paraName}')")
+            paraParagraph = paraNameSpan.parents('p')
+            paraParagraph.addClass('highlight')
 
-                hintDataAryMap = thatEditor.hintObj
-                currentValue = thatEditor.getValue()
-                if not currentValue and hintDataAryMap['focus']
-                    that.setEditorCompleter(thatEditor, hintDataAryMap['focus'], 'command')
-                    thatEditor.execCommand("startAutocomplete")
-            )
+            try
 
-            console.timeEnd('init editor')
+                scrollToPos = paraParagraph.offset().top - that.$cmdDsec.offset().top + that.$cmdDsec.scrollTop() - 15
+                that.$cmdDsec.stop(true, true)
+                that.$cmdDsec.animate({
+                    scrollTop: scrollToPos
+                }, 150)
+
+            catch err
+
+                null
 
         setEditorCompleter: (editor, dataAry, metaType) ->
 
@@ -1543,7 +1643,8 @@ define [ 'event',
                                 name: ea.name,
                                 value: ea.value,
                                 score: ea.value,
-                                meta: metaType
+                                meta: ea.meta,
+                                support: ea.support
                             }
                         ))
                     else
@@ -1657,7 +1758,7 @@ define [ 'event',
                     log_time: timeStr,
                     state_status: stateStatus,
                     stdout: logObj.stdout,
-                    stderr: logObj.stderr
+                    comment: logObj.comment
                 })
                 null
 
@@ -1726,14 +1827,43 @@ define [ 'event',
 
             that.model.getResState(selectedResId)
             resState = that.model.get('resState')
-            
+
             that.$stateLogList.empty().html(that.stateLogInstanceItemTpl({
                 res_status: resState
             }))
-            that.model.genStateLogData(selectedResId, () ->
-                that.refreshStateLogList()
-                that.showLogListLoading(false)
-            )
+
+            if not that.isLoadingLogList
+
+                $logPanel = $('#state-log')
+                $loadText = $logPanel.find('.state-log-loading')
+
+                $loadText.text('Loading...')
+
+                that.isLoadingLogList = true
+
+                that.model.genStateLogData(selectedResId, () ->
+                    that.refreshStateLogList()
+                    that.showLogListLoading(false)
+                    that.isLoadingLogList = false
+                )
+
+                if that.logRefreshTimer
+                    clearTimeout(that.logRefreshTimer)
+
+                that.logRefreshTimer = setTimeout(() ->
+                    if that.isLoadingLogList
+                        $loadText.text('Request state log info timeout, please try again')
+                , 5000)
+
+        onStateStatusUpdate: (newStateUpdateResIdAry) ->
+
+            selectedResId = $(event.target).find('.selected').attr('data-id')
+
+            if selectedResId in newStateUpdateResIdAry
+                # refresh state log
+                that.onLogRefreshClick()
+
+            that = this
 
         onOptionalParaItemChange: (event) ->
 
@@ -1741,9 +1871,69 @@ define [ 'event',
             $currentInputElem = $(event.currentTarget)
             currentValue = that.getPlainText($currentInputElem)
 
+            $paraItem = $currentInputElem.parents('.parameter-item')
+
             if currentValue
-                $paraItem = $currentInputElem.parents('.parameter-item')
+
                 $paraItem.removeClass('disabled')
+
+            else
+
+                # disable the para item when empty value
+
+                if $paraItem.hasClass('line') or
+                    $paraItem.hasClass('bool') or
+                    $paraItem.hasClass('text')
+
+                        $paraItem.addClass('disabled')
+
+                else if $paraItem.hasClass('dict')
+
+                    needDisable = true
+
+                    $dictItemList = $paraItem.find('.parameter-dict-item')
+
+                    if $dictItemList.length <= 2
+
+                        _.each $dictItemList, (dictItem) ->
+
+                            $dictItem = $(dictItem)
+                            $keyInput = $dictItem.find('.key')
+                            $valueInput = $dictItem.find('.value')
+
+                            keyValue = that.getPlainText($keyInput)
+                            valueValue = that.getPlainText($valueInput)
+
+                            if keyValue or valueValue
+                                needDisable = false
+
+                            null
+
+                        if needDisable
+
+                            $paraItem.addClass('disabled')
+
+                else if $paraItem.hasClass('array') or $paraItem.hasClass('state')
+
+                    needDisable = true
+
+                    $arrayItemList = $paraItem.find('.parameter-value')
+
+                    if $arrayItemList.length <= 2
+
+                        _.each $arrayItemList, (arrayItem) ->
+                            
+                            $arrayItem = $(arrayItem)
+                            inputValue = that.getPlainText($arrayItem)
+                            
+                            if inputValue
+                                needDisable = false
+
+                            null
+
+                        if needDisable
+
+                            $paraItem.addClass('disabled')
 
         onCommandInputBlur: (event) ->
 
@@ -1755,9 +1945,9 @@ define [ 'event',
 
             moduleObj = that.cmdModuleMap[currentValue]
 
-            if moduleObj
+            originCMDName = $stateItem.attr('data-command')
 
-                originCMDName = $stateItem.attr('data-command')
+            if moduleObj and moduleObj.support
 
                 if originCMDName isnt currentValue
 
@@ -1766,6 +1956,10 @@ define [ 'event',
                     $paraListElem = $stateItem.find('.parameter-list')
                     that.refreshParaList($paraListElem, currentValue)
                     that.refreshStateView($stateItem)
+
+            else
+
+                that.setPlainText($currentElem, originCMDName)
 
         refreshStateItemStatus: (stateStatusMap) ->
 
@@ -1835,30 +2029,53 @@ define [ 'event',
             $aceAutoCompList.remove()
 
         keyEvent: (event) ->
-            that = event.data.target
+
+            that = this
+
+            target = event.data.target
             keyCode = event.which
 
             # Remove state item [Ctrl + delete/backspace]
-            if event.ctrlKey and (keyCode is 46 or keyCode is 8)
-                $('.state-list').find('.selected').remove()
+            if (event.ctrlKey or event.metaKey) and (keyCode is 46 or keyCode is 8)
+                target.onRemoveState null, $('.state-list').find('.selected')
                 return false
 
             # Add state item [Ctrl + +]
-            if event.ctrlKey and keyCode is 187
-                that.addStateItem.call(that, event)
+            if (event.ctrlKey or event.metaKey) and keyCode is 187
+                target.addStateItem.call(target, event)
                 return false
 
             # Expand state item [Ctrl + down]
-            if event.ctrlKey and keyCode is 38
-                that.expandItem.call(that, $('.state-list').find('.selected'))
+            if (event.ctrlKey or event.metaKey) and keyCode is 38
+                target.expandItem.call target, $('.state-list').find('.selected')
                 return false
 
             # Expand state item [Ctrl + up]
-            if event.ctrlKey and keyCode is 40
-                that.collapseItem.call(that, $('.state-list').find('.selected'))
+            if (event.ctrlKey or event.metaKey) and keyCode is 40
+                target.collapseItem.call target, $('.state-list').find('.selected')
                 return false
 
-        onSwitchState: (event) ->
+            # Toggle Document Sidebar [Ctrl + I]
+            if (event.ctrlKey or event.metaKey) and keyCode is 73
+                target.onDescToggleClick target, event
+                return false
+
+            # Toggle Log Sidebar [Ctrl + L]
+            if (event.ctrlKey or event.metaKey) and keyCode is 76 and target.currentState isnt 'stack'
+                target.onLogToggleClick target, event
+                return false
+
+            # Tab reverse switch [Shift + Tab]
+            if keyCode is 9 and event.shiftKey
+                target.onSwitchState.call target, true
+                return false
+
+            # Tab switch [Tab]
+            if keyCode is 9
+                target.onSwitchState.call target
+                return false
+
+        onSwitchState: (reverse) ->
 
             that = this
 
@@ -1872,13 +2089,120 @@ define [ 'event',
 
             that.clearSelectedItem()
 
-            if selected_index + 1 < total
-                that.expandItem.call this, stack.eq(selected_index + 1).addClass('selected')
+            if reverse and reverse is true
+
+                if selected_index > 0
+                    that.expandItem.call this, stack.eq(selected_index - 1).addClass('selected')
+
+                if selected_index < 1
+                    that.expandItem.call this, stack.eq(total - 1).addClass('selected')
 
             else
-                that.expandItem.call this, stack.eq(0).addClass('selected')
+
+                if selected_index + 1 < total
+                    that.expandItem.call this, stack.eq(selected_index + 1).addClass('selected')
+
+                else
+                    that.expandItem.call this, stack.eq(0).addClass('selected')
 
             return false
+
+        aceTabSwitch: (event, container) ->
+
+            that = this
+
+            if that.currentState is 'app'
+                that.onSwitchState.call this, event
+                return false
+
+            container_item = $(container)
+            index = 0
+
+            if container_item.hasClass('command-value')
+                stack = $(container).parents('.state-item').find('.parameter-list .ace_editor')
+
+                if stack[0] isnt null
+                    stack.eq(0).find('.ace_text-input').focus()
+                else
+                    that.onSwitchState.call this, event
+
+            else
+                stack = container_item.parents('.parameter-list').find('.ace_editor')
+
+                total = stack.length
+
+                $.each stack, (i, item) ->
+                    if container is item
+                        index = i
+
+                if index + 1 < total
+                    stack.eq(index + 1).find('.ace_text-input').focus()
+                else
+                    that.onSwitchState.call this, event
+
+        aceUTabSwitch: (event, container) ->
+
+            that = this
+
+            if that.currentState is 'app'
+                that.onSwitchState.call this, event
+                return false
+
+            container_item = $(container)
+            index = 0
+
+            if container_item.hasClass('command-value')
+                stack = $('#state-editor .state-item')
+                selected_index = $('#state-editor .state-item.selected').index('#state-editor .state-list > li')
+
+                $('#state-editor .state-item.selected').removeClass('selected').addClass('view')
+
+                if selected_index > 0
+                    stack.eq( selected_index - 1 ).addClass('selected').removeClass('view').find('.command-value .ace_text-input').focus()
+
+                if selected_index is 0
+                    stack.eq( stack.length - 1 ).addClass('selected').removeClass('view').find('.command-value .ace_text-input').focus()
+
+                return false
+
+            stack = container_item.parents('.parameter-list').find('.ace_editor')
+
+            total = stack.length
+
+            $.each stack, (i, item) ->
+                if container is item
+                    index = i
+
+            if index > 0
+                stack.eq(index - 1).find('.ace_text-input').focus()
+
+            if index is 0
+                container_item.parents('.state-item').find('.command-value .ace_text-input').focus()
+
+        onRemoveState: (event, $targetState) ->
+
+            that = this
+
+            if that.currentState is 'app'
+                return false
+
+            $targetState.remove()
+            that.refreshLogItemNum()
+
+        checkboxSelect: (event) ->
+
+            # that = this
+
+            # checkbox = $(event.currentTarget)
+
+            # item = checkbox.parents('.state-item')
+
+            # item.removeClass('selected')
+
+            # if checkbox.prop('checked') is true
+            #     item.addClass('selected')
+
+            # return false
     }
 
     return StateEditorView

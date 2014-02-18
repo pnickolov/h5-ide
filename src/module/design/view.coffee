@@ -130,7 +130,7 @@ define [ 'Design', 'event', 'text!./module/design/template.html', 'constant', 'i
 
             for state in stateList
                 # Show current app only
-                if state.app_id isnt Design.instance().get( 'id' )
+                if state.app_id isnt Design.instance().get 'id'
                     continue
 
                 for status in state.statuses

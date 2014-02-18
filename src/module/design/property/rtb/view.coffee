@@ -150,6 +150,9 @@ define [ '../base/view', 'text!./template/stack.html' ], ( PropertyView, templat
                     that.disabledAllOperabilityArea(false)
                     modal.close()
 
+            , {
+                $source: $(event.target)
+            }
 
             null
 

@@ -3,12 +3,12 @@
 #* Filename: UI.modal
 #* Creator: Angel
 #* Description: UI.modal
-#* Date: 20130727
+#* Date: 20140213
 # **********************************************************
-# (c) Copyright 2013 Madeiracloud  All Rights Reserved
+# (c) Copyright 2014 Madeiracloud  All Rights Reserved
 # **********************************************************
 */
-var modal = function (template, dismiss, callback)
+var modal = function (template, dismiss, callback, options)
 {
 	var modal_wrap = $('#modal-wrap');
 
@@ -18,11 +18,55 @@ var modal = function (template, dismiss, callback)
 		modal_wrap = $('#modal-wrap');
 	}
 
+	if (options && options.opacity)
+	{
+		modal_wrap.css('background-color', 'rgba(0, 0, 0, ' + options.opacity + ')');
+	}
+
 	modal_wrap.html('<div id="modal-box">' + template + '</div>');
 
-	$('#modal-box').children(':first').show();
+	var newStyle = '';
+	var newClass = '';
 
-	modal.position();
+	var $source = null;
+	
+	if (options && options.$source) {
+		$source = options.$source
+	}
+	
+	if ($source) {
+		var srcLeft = $source.offset().left;
+		var srcTop = $source.offset().top;
+		var srcWidth = $source.width();
+		var srcHeight = $source.height();
+
+		newStyle = "overflow:hidden;opacity:0;left:" +
+			srcLeft + "px;top:" + srcTop + "px;width:" +
+			srcWidth + "px;height:" + srcHeight + "px;";
+
+		newClass = "modal-transition-animation";
+	}
+
+	modal_wrap.html('<div id="modal-box" class="' + newClass + '" style="' + newStyle + '">' + template + '</div>');
+
+	$modal = $('#modal-box');
+
+	$modal.show();
+	$modal.children(':first').show();
+
+	if ($source) {
+		$modal.css({
+			'opacity': 1,
+			'width': $modal.find('div').width(),
+			'height': $modal.find('div').height()
+		});
+
+		$modal.on('webkitTransitionEnd transitionend oTransitionEnd', function() {
+			$modal.removeClass('modal-transition-animation');
+		});
+	}
+
+	modal.position($source);
 
 	if (dismiss === true)
 	{
@@ -38,7 +82,7 @@ var modal = function (template, dismiss, callback)
 
 	$("#modal-box")
 		.on('click', '.modal-close', modal.close)
-		.on('mousedown', '.modal-header', modal.drag.mousedown);
+		.on('mousedown', '.modal-header', {'options': options}, modal.drag.mousedown);
 
 	if (callback)
 	{
@@ -50,7 +94,6 @@ var modal = function (template, dismiss, callback)
 
 modal.open = function (event)
 {
-	console.info(event);
 	var target = $(this),
 		target_template = target.data('modal-template'),
 		target_data = target.data('modal-data');
@@ -139,7 +182,8 @@ modal.drag = {
 		}, {
 			'target': target,
 			'left': event.pageX - target_position.left,
-			'top': event.pageY - target_position.top
+			'top': event.pageY - target_position.top,
+			'options': event.data.options
 		});
 
 		event.preventDefault();
@@ -159,29 +203,55 @@ modal.drag = {
 	mouseup: function (event)
 	{
 		var target = event.data.target,
+			options = event.data.options,
 			position = target.position(),
 			height = target.height(),
 			width = target.width(),
 			prop = {};
 
-		if (position.top < 0)
+		if (options && options.conflict === 'loose')
 		{
-			prop['top'] = 10;
-		}
+			if (position.top < 0)
+			{
+				prop['top'] = 10;
+			}
 
-		if (position.left < 0)
-		{
-			prop['left'] = 10;
-		}
+			if (position.left < -width * 0.8)
+			{
+				prop['left'] = 10;
+			}
 
-		if (position.top > window.innerHeight - height)
-		{
-			prop['top'] = window.innerHeight - height - 10;
-		}
+			if (position.top > window.innerHeight - height + (height * 0.7))
+			{
+				prop['top'] = window.innerHeight - height - 10;
+			}
 
-		if (position.left > window.innerWidth - width)
+			if (position.left > window.innerWidth - width + (width * 0.8))
+			{
+				prop['left'] = window.innerWidth - width - 25;
+			}
+		}
+		else
 		{
-			prop['left'] = window.innerWidth - width - 25;
+			if (position.top < 0)
+			{
+				prop['top'] = 10;
+			}
+
+			if (position.left < 0)
+			{
+				prop['left'] = 10;
+			}
+
+			if (position.top > window.innerHeight - height)
+			{
+				prop['top'] = window.innerHeight - height - 10;
+			}
+
+			if (position.left > window.innerWidth - width)
+			{
+				prop['left'] = window.innerWidth - width - 25;
+			}
 		}
 
 		if (!$.isEmptyObject(prop))
@@ -198,13 +268,24 @@ modal.drag = {
 	}
 };
 
-modal.position = function ()
+modal.position = function ($source)
 {
 	var modal_box = $('#modal-box');
 
+	var top = 0;
+	var left = 0;
+
+	if ($source) {
+		top = (window.innerHeight - modal_box.find('div').height()) / 2;
+		left = (window.innerWidth - modal_box.find('div').width()) / 2;
+	} else {
+		top = (window.innerHeight - modal_box.height()) / 2;
+		left = (window.innerWidth - modal_box.width()) / 2;
+	}
+
 	modal_box.css({
-		'top': (window.innerHeight - modal_box.height()) / 2,
-		'left': (window.innerWidth - modal_box.width()) / 2
+		'top': top,
+		'left': left
 	});
 
 	return true;

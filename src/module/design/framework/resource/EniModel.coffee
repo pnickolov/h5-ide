@@ -418,7 +418,10 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
           GroupId   : sg.createRef( "GroupId" )
         }
 
-      instanceId = @createRef( "InstanceId", servergroupOption.instanceId )
+      if servergroupOption.instanceId
+        instanceId = @createRef( "InstanceId", servergroupOption.instanceId )
+      else
+        instanceId = ""
 
       az = ""
 

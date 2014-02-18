@@ -78,7 +78,9 @@ define [ '../base/view',
                     main_content   : mainContent
                     desc_content   : descContent
                     remove_content : removeInfo
-                })
+                }), false, null, {
+                    $source: $(event.target)
+                }
 
                 $('.modal-close').click () -> $('#property-cidr-block').focus()
                 $('#cidr-remove').click () ->

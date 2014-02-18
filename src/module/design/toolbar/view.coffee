@@ -178,7 +178,12 @@ define [ 'MC', 'event',
                     # delete F5 old process
                     obj = MC.common.other.getProcess process_tab_name
                     if obj and obj.flag_list and obj.flag_list.is_failed is true and obj.flag_list.flag is 'RUN_STACK'
+
+                        # delete MC.process
                         MC.common.other.deleteProcess process_tab_name
+
+                        # close tab if exist
+                        ide_event.trigger ide_event.CLOSE_DESIGN_TAB, process_tab_name
 
                     # repeat with app list or tab name(some run failed app tabs)
                     if (not MC.aws.aws.checkAppName app_name) or (_.contains(_.keys(MC.process), process_tab_name))

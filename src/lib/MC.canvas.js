@@ -2624,7 +2624,7 @@ MC.canvas.eniList = {
 	}
 };
 
-MC.canvas.nodeState = {
+MC.canvas.nodeAction = {
 	show: function (id)
 	{
 		var canvas_status = MC.canvas.getState(),
@@ -2656,13 +2656,13 @@ MC.canvas.nodeState = {
 				return;
 			}
 
-			$('#canvas_container').append(MC.template.nodeState({
+			$('#canvas_container').append(MC.template.nodeAction({
 				state_num: stateNum
 			}));
 
-			MC.canvas.nodeState.updateNumber(stateNum);
+			MC.canvas.nodeAction.updateNumber(stateNum);
 
-			MC.canvas.nodeState.position(id);
+			MC.canvas.nodeAction.position(id);
 		}
 	},
 
@@ -2679,7 +2679,7 @@ MC.canvas.nodeState = {
 			offset = target[0].getBoundingClientRect(),
 			canvas_offset = $('#svg_canvas').offset();
 
-		$('#node-state-wrap')
+		$('#node-action-wrap')
 			.css({
 				'left': offset.left - canvas_offset.left + offset.width + 5,
 				'top': offset.top - canvas_offset.top
@@ -2703,11 +2703,11 @@ MC.canvas.nodeState = {
 
 	remove: function (id)
 	{
-		var node_state = $('#node-state-wrap');
+		var node_action = $('#node-action-wrap');
 
-		if (node_state.data('id') === id)
+		if (node_action.data('id') === id)
 		{
-			node_state.remove();
+			node_action.remove();
 		}
 
 		return true;
@@ -2742,7 +2742,7 @@ MC.canvas.event.dragable = {
 	{
 		if (
 			event.which === 1 &&
-			event.ctrlKey
+			(event.ctrlKey || event.metaKey)
 		)
 		{
 			event.stopImmediatePropagation();
@@ -2788,7 +2788,7 @@ MC.canvas.event.dragable = {
 					MC.canvas.event.clearSelected();
 
 					$canvas(this.id).select();
-					MC.canvas.nodeState.show(this.id);
+					MC.canvas.nodeAction.show(this.id);
 				}
 
 				return false;
@@ -2814,6 +2814,14 @@ MC.canvas.event.dragable = {
 			}
 
 			shadow = target.clone();
+
+			// Allow cloning for instance 
+			if (target_type === 'AWS.EC2.Instance')
+			{
+				shadow.append(
+					Canvon.rectangle(75, 75, 25, 25).attr({'class': 'clone-icon', 'rx': 2, 'ry': 2})
+				);
+			}
 
 			svg_canvas.append(shadow);
 
@@ -2869,8 +2877,9 @@ MC.canvas.event.dragable = {
 			else
 			{
 				$(document).on({
-					'mousemove': MC.canvas.event.dragable.mousemove,
-					'mouseup': Canvon(event.target).hasClass('asg-resource-dragger') ?
+					'keydown.DRAGABLE_EVENT': target_type === 'AWS.EC2.Instance' ? MC.canvas.event.dragable.keyClone : returnFalse,
+					'mousemove.DRAGABLE_EVENT': MC.canvas.event.dragable.mousemove,
+					'mouseup.DRAGABLE_EVENT': Canvon(event.target).hasClass('asg-resource-dragger') ?
 						// For asgExpand
 						MC.canvas.event.dragable.asgExpandup :
 						// Default
@@ -2900,6 +2909,27 @@ MC.canvas.event.dragable = {
 		}
 
 		return false;
+	},
+	// For instance cloning recently
+	keyClone: function (event)
+	{
+		if (
+			event.altKey
+		)
+		{
+			if (!event.data.canvas_body.hasClass('cloning'))
+			{
+				event.data.canvas_body.addClass('cloning');
+
+				return false;
+			}
+		}
+		else
+		{
+			event.data.canvas_body.removeClass('cloning');
+
+			return false;
+		}
 	},
 	mousemove: function (event)
 	{
@@ -2933,6 +2963,15 @@ MC.canvas.event.dragable = {
 		{
 			Canvon(event_data.shadow).addClass('shadow');
 			event_data.canvas_body.addClass('node-dragging');
+		}
+
+		if (event.altKey)
+		{
+			event_data.canvas_body.addClass('cloning');
+		}
+		else
+		{
+			event_data.canvas_body.removeClass('cloning');
 		}
 
 		Canvon('.match-dropable-group').removeClass('match-dropable-group');
@@ -2978,7 +3017,7 @@ MC.canvas.event.dragable = {
 
 				if (target_item.type === 'AWS.EC2.Instance')
 				{
-					MC.canvas.nodeState.show(target_id);
+					MC.canvas.nodeAction.show(target_id);
 				}
 			}
 		}
@@ -3028,26 +3067,33 @@ MC.canvas.event.dragable = {
 					coordinate.x > 0 &&
 					coordinate.y > 0 &&
 					match_place.is_matched // &&
-				// 	// Disallow Instance to ASG
-				// 	// !(
-				// 	// 	parentGroup &&
-				// 	// 	parentGroup.getAttribute('data-class') === 'AWS.AutoScaling.Group' &&
-				// 	// 	target_type === 'AWS.EC2.Instance'
-				// 	// )
-				// 	// &&
-				// 	// target_item.changeParent()
-				// 	// &&
-				// 	// (
-				// 	// 	$canvas.trigger(BEFORE_DROP_EVENT, {'src_node': target_id, 'tgt_parent': parentGroup ? parentGroup.id : ''}) &&
-				// 	// 	!BEFORE_DROP_EVENT.isDefaultPrevented()
-				// 	// )
+					// Disallow Instance to ASG
+					// !(
+					// 	parentGroup &&
+					// 	parentGroup.getAttribute('data-class') === 'AWS.AutoScaling.Group' &&
+					// 	target_type === 'AWS.EC2.Instance'
+					// )
+					// &&
+					// target_item.changeParent()
+					// &&
+					// (
+					// 	$canvas.trigger(BEFORE_DROP_EVENT, {'src_node': target_id, 'tgt_parent': parentGroup ? parentGroup.id : ''}) &&
+					// 	!BEFORE_DROP_EVENT.isDefaultPrevented()
+					// )
 				)
 				{
-					target_item.changeParent((parentGroup ? parentGroup.id : 'canvas'), function ()
+					if (event_data.canvas_body.hasClass('cloning'))
 					{
-						this.move(coordinate.x, coordinate.y);
-						this.reConnect();
-					});
+						target_item.clone((parentGroup ? parentGroup.id : 'canvas'), coordinate.x, coordinate.y);
+					}
+					else
+					{
+						target_item.changeParent((parentGroup ? parentGroup.id : 'canvas'), function ()
+						{
+							this.move(coordinate.x, coordinate.y);
+							this.reConnect();
+						});
+					}
 				}
 			}
 
@@ -3241,11 +3287,14 @@ MC.canvas.event.dragable = {
 			}
 
 			$canvas(target_id).select();
-			MC.canvas.nodeState.show(target_id);
+			MC.canvas.nodeAction.show(target_id);
 		}
 
 		event_data.shadow.remove();
-		event_data.canvas_body.removeClass('node-dragging');
+
+		event_data.canvas_body
+			.removeClass('node-dragging')
+			.removeClass('cloning');
 
 		$('#overlayer').remove();
 
@@ -3253,10 +3302,7 @@ MC.canvas.event.dragable = {
 
 		Canvon('.match-dropable-group').removeClass('match-dropable-group');
 
-		$(document).off({
-			'mousemove': MC.canvas.event.dragable.mousemove,
-			'mouseup': MC.canvas.event.dragable.mouseup
-		});
+		$(document).off('.DRAGABLE_EVENT');
 	},
 	gatewaymove: function (event)
 	{
@@ -3386,10 +3432,7 @@ MC.canvas.event.dragable = {
 
 		$('#overlayer').remove();
 
-		$(document).off({
-			'mousemove': MC.canvas.event.dragable.mousemove,
-			'mouseup': MC.canvas.event.dragable.asgExpandup
-		});
+		$(document).off('.DRAGABLE_EVENT');
 	}
 };
 
@@ -3882,7 +3925,7 @@ MC.canvas.event.siderbarDrag = {
 
 								if (target_type === 'AWS.EC2.Instance')
 								{
-									MC.canvas.nodeState.show(new_node_id);
+									MC.canvas.nodeAction.show(new_node_id);
 								}
 							}
 						}
@@ -4533,7 +4576,7 @@ MC.canvas.event.groupResize = {
 
 			event_data.group_port[0].attr('transform', 'translate(-12, ' + port_top + ')');
 
-			event_data.group_port[1].attr('transform', 'translate(' + (group_width * MC.canvas.GRID_WIDTH + 4) + ', ' + port_top + ')');
+			event_data.group_port[1].attr('transform', 'translate(' + (group_width * MC.canvas.GRID_WIDTH + 10) + ', ' + port_top + ')');
 
 			//group_node.reConnect();
 		}
@@ -4555,7 +4598,7 @@ MC.canvas.event.ctrlMove = {
 	{
 		if (
 			event.which === 1 &&
-			event.ctrlKey
+			(event.ctrlKey || event.metaKey)
 		)
 		{
 			event.stopImmediatePropagation();
@@ -4643,7 +4686,7 @@ MC.canvas.event.selectNode = function (event)
 		MC.canvas.event.clearSelected();
 
 		$canvas(this.id).select();
-		MC.canvas.nodeState.show(this.id);
+		MC.canvas.nodeAction.show(this.id);
 	}
 
 	return false;
@@ -4727,7 +4770,7 @@ MC.canvas.event.clearSelected = function (event)
 
 	Canvon('#svg_canvas .view-show').removeClass('view-show');
 
-	$('#node-state-wrap').remove();
+	$('#node-action-wrap').remove();
 
 	// Empty selected_node
 	$canvas.selected_node().length = 0;
@@ -4750,7 +4793,8 @@ MC.canvas.keypressed = [];
 
 MC.canvas.event.keyEvent = function (event)
 {
-	var canvas_status = MC.canvas.getState();
+	var canvas_status = MC.canvas.getState(),
+		selected_node = $canvas.selected_node();
 
 	if ($('#modal-wrap')[0] != null)
 	{
@@ -4768,8 +4812,7 @@ MC.canvas.event.keyEvent = function (event)
 	)
 	{
 		var keyCode = event.which,
-			nodeName = event.target.nodeName.toLowerCase(),
-			selected_node;
+			nodeName = event.target.nodeName.toLowerCase();
 
 		MC.canvas.keypressed.push(keyCode);
 
@@ -4794,31 +4837,32 @@ MC.canvas.event.keyEvent = function (event)
 				canvas_status === 'stack' ||
 				canvas_status === 'appedit'
 			) &&
-			$canvas.selected_node().length > 0 &&
+			selected_node.length > 0 &&
 			event.target === document.body
 		)
 		{
 			MC.canvas.volume.close();
-			$.each($canvas.selected_node(), function (index, id)
+			$.each(selected_node, function (index, id)
 			{
 				$canvas( id ).remove();
 			});
-			$canvas.selected_node().length = 0;
+
+			selected_node.length = 0;
 
 			return false;
 		}
 
 		if (
-			$canvas.selected_node().length === 1 &&
+			selected_node.length === 1 &&
 			MC.canvas.keypressed.join('').match(/383840403739373966656665$/i)
 		)
 		{
-			if ($('#' + $canvas.selected_node()[ 0 ]).data('type') !== 'node')
+			if ($('#' + selected_node[ 0 ]).data('type') !== 'node')
 			{
 				return false;
 			}
 
-			var offset = Canvon('#' + $canvas.selected_node()[ 0 ]).offset();
+			var offset = Canvon('#' + selected_node[ 0 ]).offset();
 
 			$(document.body).append('<div id="s"></div>');
 
@@ -4863,16 +4907,18 @@ MC.canvas.event.keyEvent = function (event)
 		// Switch node - [tab]
 		if (
 			keyCode === 9 &&
-			$canvas.selected_node().length === 1
+			selected_node.length === 1
 		)
 		{
-			var 	current_node_id = $canvas.selected_node()[ 0 ],
+			var 	current_node_id = selected_node[ 0 ],
 				//selected_node = $('#' + current_node_id),
 				//layout_node_data = $canvas.node(),
 				node_stack = [],
 				index = 0,
 				current_index,
-				next_node;
+				next_node,
+				next_id,
+				next_item;
 
 			if ($canvas(current_node_id).nodeType !== 'node')
 			{
@@ -4900,11 +4946,21 @@ MC.canvas.event.keyEvent = function (event)
 				current_index++;
 			}
 
-			next_node = $('#' + node_stack[ current_index ]);
-
 			MC.canvas.event.clearSelected();
 
-			$canvas(next_node.attr('id')).select();
+			next_id = $('#' + node_stack[ current_index ]).attr('id');
+
+			next_item = $canvas(next_id);
+
+			next_item.select();
+
+			if (
+				next_item.type === 'AWS.EC2.Instance' ||
+				next_item.type === 'AWS.AutoScaling.LaunchConfiguration'
+			)
+			{
+				MC.canvas.nodeAction.show(next_id);
+			}
 
 			return false;
 		}
@@ -4917,12 +4973,12 @@ MC.canvas.event.keyEvent = function (event)
 				canvas_status === 'appedit' ||
 				canvas_status === 'appview'
 			) &&
-			$canvas.selected_node().length === 1 &&
-			$('#' + $canvas.selected_node()[ 0 ]).data('type') !== 'line'
+			selected_node.length === 1 &&
+			$('#' + selected_node[ 0 ]).data('type') !== 'line'
 		)
 		{
-			var target = $('#' + $canvas.selected_node()[ 0 ]),
-				target_id = $canvas.selected_node()[ 0 ],
+			var target = $('#' + selected_node[ 0 ]),
+				target_id = selected_node[ 0 ],
 				target_item = $canvas(target_id),
 				node_type = target_item.nodeType,
 				target_type = target_item.type,
@@ -5004,10 +5060,10 @@ MC.canvas.event.keyEvent = function (event)
 
 			if (
 				target_type === 'AWS.EC2.Instance' &&
-				$('#node-state-wrap').data('id') === target_id
+				$('#node-action-wrap').data('id') === target_id
 			)
 			{
-				MC.canvas.nodeState.position(target_id);
+				MC.canvas.nodeAction.position(target_id);
 			}
 
 			return false;
@@ -5015,7 +5071,7 @@ MC.canvas.event.keyEvent = function (event)
 
 		// Save stack - [Ctrl + S]
 		if (
-			event.ctrlKey && keyCode === 83 &&
+			(event.ctrlKey || event.metaKey) && keyCode === 83 &&
 			canvas_status === 'stack'
 		)
 		{
@@ -5026,7 +5082,7 @@ MC.canvas.event.keyEvent = function (event)
 
 		// ZoomIn - [Ctrl + +]
 		if (
-			event.ctrlKey && keyCode === 187
+			(event.ctrlKey || event.metaKey) && keyCode === 187
 		)
 		{
 			MC.canvas.zoomIn();
@@ -5036,10 +5092,37 @@ MC.canvas.event.keyEvent = function (event)
 
 		// ZoomIn - [Ctrl + -]
 		if (
-			event.ctrlKey && keyCode === 189
+			(event.ctrlKey || event.metaKey) && keyCode === 189
 		)
 		{
 			MC.canvas.zoomOut();
+
+			return false;
+		}
+
+		// Open state editor - [Enter]
+		if (keyCode === 13)
+		{
+			var type = $canvas( $canvas.selected_node()[ 0 ] ).type;
+
+			if (
+				type === 'AWS.EC2.Instance' ||
+				type === 'AWS.AutoScaling.LaunchConfiguration'
+			)
+			{
+				$canvas.trigger("STATE_ICON_CLICKED", $canvas.selected_node()[ 0 ]);
+			}
+
+			return false;
+		}
+
+		// Focus property input - [P]
+		if (
+			keyCode === 80 &&
+			selected_node.length === 1
+		)
+		{
+			$('#property-panel .input').first().focus();
 
 			return false;
 		}

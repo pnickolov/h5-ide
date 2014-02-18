@@ -30,16 +30,21 @@ define [ 'backbone', 'underscore', 'state_service', 'base_model' ], ( Backbone, 
                 if !forge_result.is_error
                 #module succeed
 
-                    #dispatch event (dispatch event whenever login succeed or failed)
-                    if src.sender and src.sender.trigger then src.sender.trigger 'STATE_MODULE_RETURN', forge_result
+                    if forge_result.resolved_data
 
-                else
-                #module failed
+                        jsonDataStr = forge_result.resolved_data
 
-                    console.log 'state.module failed, error is ' + forge_result.error_message
-                    me.pub forge_result
+                        try
+                            jsonData = JSON.parse(jsonDataStr)
+                            forge_result.resolved_data = jsonData
+                            if src.sender and src.sender.trigger then src.sender.trigger 'STATE_MODULE_RETURN', forge_result
+                            return
 
+                        catch err
+                            console.log 'state.module failed, error is JSON parse error'
 
+                console.log 'state.module failed, error is ' + forge_result.error_message
+                me.pub forge_result
 
         #status api (define function)
         status : ( src, username, session_id, app_id ) ->

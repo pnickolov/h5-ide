@@ -205,7 +205,7 @@ exports.edit = function(el) {
     el.innerHTML = '';
 
     var editor = new Editor(new Renderer(el));
-    new MultiSelect(editor);
+    // new MultiSelect(editor);
     editor.setSession(doc);
 
     var env = {
@@ -380,7 +380,7 @@ if ([1,2].splice(0).length != 2) {
         array.splice.apply(array, makeArray(26));
 
         lengthBefore = array.length; //46
-        array.splice(5, 0, "XXX"); // add one element
+        array.splice(5, 0, ""); // add one element
 
         lengthBefore + 1 == array.length
 
@@ -2621,89 +2621,31 @@ var Editor = function(renderer, session) {
     // For processing tab key
     // Added by Angel
     this.tabSwitch = function (target) {
-        var container = target.container,
-            container_item = $(container),
-            target_item = target.container,
-            index = 0,
-            stack,
-            total;
 
-        // Add indent if multi-line
-        if (container_item.hasClass('text')) {
+        // For multi-line
+        if ($(target.container).hasClass('text')) {
             this.indent();
 
             return false;
         }
 
-        if (container_item.hasClass('command-value')) {
-            stack = $(target.container).parents('.state-item').find('.parameter-list .ace_editor');
-
-            if (stack[0] != null) {
-                stack.eq(0).find('.ace_text-input').focus();
-            } else {
-                $('#state-editor-body').trigger('SWITCH_STATE');
-            }
-        } else {
-            stack = $(target.container).parents('.parameter-list').find('.ace_editor');
-
-            total = stack.length;
-
-            $.each(stack, function (i, item) {
-                if (container === item) {
-                    index = i;
-                }
-            });
-
-            if (index + 1 < total) {
-                stack.eq(index + 1).find('.ace_text-input').focus();
-            } else {
-                $('#state-editor-body').trigger('SWITCH_STATE');
-            }
-        }
-
-        return false;
+        $('#state-editor-body').trigger('ACE_TAB_SWITCH', [target.container]);
     };
 
     this.tabReverseSwitch = function (target) {
-        var container = target.container,
-            container_item = $(container),
-            target_item = target.container,
-            index = 0,
-            stack,
-            total;
 
         // For multi-line
-        if (container_item.hasClass('text')) {
+        if ($(target.container).hasClass('text')) {
             this.blockOutdent();
 
             return false;
         }
 
-        if (container_item.hasClass('command-value')) {
-            return false;
-        }
-
-        stack = $(target.container).parents('.parameter-list').find('.ace_editor');
-
-        total = stack.length;
-
-        $.each(stack, function (i, item) {
-            if (container === item) {
-                index = i;
-            }
-        });
-
-        if (index >= 0) {
-            stack.eq(index - 1).find('.ace_text-input').focus();
-        }
+        $('#state-editor-body').trigger('ACE_UTAB_SWITCH', [target.container]);
     };
 
-    this.removeState = function () {
-        if (container_item.hasClass('command-value')) {
-            $('.state-list').find('.selected').remove();
-        }
-
-        return false;
+    this.removeState = function (target) {
+        $('#state-editor-body').trigger('REMOVE_STATE', $('.state-list').find('.selected'));
     },
 
     this.expandState = function (target) {
@@ -2713,6 +2655,7 @@ var Editor = function(renderer, session) {
     this.collapseState = function (target) {
         $('#state-editor-body').trigger('COLLAPSE_STATE');
     },
+    // For processing tab key - end
 
     this.indent = function() {
         var session = this.session;
@@ -11798,116 +11741,106 @@ function bindKey(win, mac) {
     return {win: win, mac: mac};
 }
 exports.commands = [{
-    name: "showSettingsMenu",
-    bindKey: bindKey("Ctrl-,", "Command-,"),
-    exec: function(editor) {
-        config.loadModule("ace/ext/settings_menu", function(module) {
-            module.init(editor);
-            editor.showSettingsMenu();
-        });
-    },
-    readOnly: true
-}, {
     name: "selectall",
     bindKey: bindKey("Ctrl-A", "Command-A"),
     exec: function(editor) { editor.selectAll(); },
     readOnly: true
-}, {
-    name: "centerselection",
-    bindKey: bindKey(null, "Ctrl-L"),
-    exec: function(editor) { editor.centerSelection(); },
-    readOnly: true
-}, {
-    name: "gotoline",
-    bindKey: bindKey("Ctrl-L", "Command-L"),
-    exec: function(editor) {
-        var line = parseInt(prompt("Enter line number:"), 10);
-        if (!isNaN(line)) {
-            editor.gotoLine(line);
-        }
-    },
-    readOnly: true
-}, {
-    name: "fold",
-    bindKey: bindKey("Alt-L|Ctrl-F1", "Command-Alt-L|Command-F1"),
-    exec: function(editor) { editor.session.toggleFold(false); },
-    scrollIntoView: "center",
-    readOnly: true
-}, {
-    name: "unfold",
-    bindKey: bindKey("Alt-Shift-L|Ctrl-Shift-F1", "Command-Alt-Shift-L|Command-Shift-F1"),
-    exec: function(editor) { editor.session.toggleFold(true); },
-    scrollIntoView: "center",
-    readOnly: true
-}, {
-    name: "toggleFoldWidget",
-    bindKey: bindKey("F2", "F2"),
-    exec: function(editor) { editor.session.toggleFoldWidget(); },
-    scrollIntoView: "center",
-    readOnly: true
-}, {
-    name: "toggleParentFoldWidget",
-    bindKey: bindKey("Alt-F2", "Alt-F2"),
-    exec: function(editor) { editor.session.toggleFoldWidget(true); },
-    scrollIntoView: "center",
-    readOnly: true
-}, {
-    name: "foldall",
-    bindKey: bindKey("Ctrl-Alt-0", "Ctrl-Command-Option-0"),
-    exec: function(editor) { editor.session.foldAll(); },
-    scrollIntoView: "center",
-    readOnly: true
-}, {
-    name: "foldOther",
-    bindKey: bindKey("Alt-0", "Command-Option-0"),
-    exec: function(editor) { 
-        editor.session.foldAll();
-        editor.session.unfold(editor.selection.getAllRanges());
-    },
-    scrollIntoView: "center",
-    readOnly: true
-}, {
-    name: "unfoldall",
-    bindKey: bindKey("Alt-Shift-0", "Command-Option-Shift-0"),
-    exec: function(editor) { editor.session.unfold(); },
-    scrollIntoView: "center",
-    readOnly: true
-}, {
-    name: "findnext",
-    bindKey: bindKey("Ctrl-K", "Command-G"),
-    exec: function(editor) { editor.findNext(); },
-    readOnly: true
-}, {
-    name: "findprevious",
-    bindKey: bindKey("Ctrl-Shift-K", "Command-Shift-G"),
-    exec: function(editor) { editor.findPrevious(); },
-    readOnly: true
-}, {
-    name: "find",
-    bindKey: bindKey("Ctrl-F", "Command-F"),
-    exec: function(editor) {
-        config.loadModule("ace/ext/searchbox", function(e) {e.Search(editor)});
-    },
-    readOnly: true
-}, {
-    name: "overwrite",
-    bindKey: "Insert",
-    exec: function(editor) { editor.toggleOverwrite(); },
-    readOnly: true
-}, {
-    name: "selecttostart",
-    bindKey: bindKey("Ctrl-Shift-Home", "Command-Shift-Up"),
-    exec: function(editor) { editor.getSelection().selectFileStart(); },
-    multiSelectAction: "forEach",
-    readOnly: true,
-    group: "fileJump"
-}, {
-    name: "gotostart",
-    bindKey: bindKey("Ctrl-Home", "Command-Home|Command-Up"),
-    exec: function(editor) { editor.navigateFileStart(); },
-    multiSelectAction: "forEach",
-    readOnly: true,
-    group: "fileJump"
+// }, {
+//     name: "centerselection",
+//     bindKey: bindKey(null, "Ctrl-L"),
+//     exec: function(editor) { editor.centerSelection(); },
+//     readOnly: true
+// }, {
+//     name: "gotoline",
+//     bindKey: bindKey("Ctrl-L", "Command-L"),
+//     exec: function(editor) {
+//         var line = parseInt(prompt("Enter line number:"), 10);
+//         if (!isNaN(line)) {
+//             editor.gotoLine(line);
+//         }
+//     },
+//     readOnly: true
+// }, {
+//     name: "fold",
+//     bindKey: bindKey("Alt-L|Ctrl-F1", "Command-Alt-L|Command-F1"),
+//     exec: function(editor) { editor.session.toggleFold(false); },
+//     scrollIntoView: "center",
+//     readOnly: true
+// }, {
+//     name: "unfold",
+//     bindKey: bindKey("Alt-Shift-L|Ctrl-Shift-F1", "Command-Alt-Shift-L|Command-Shift-F1"),
+//     exec: function(editor) { editor.session.toggleFold(true); },
+//     scrollIntoView: "center",
+//     readOnly: true
+// }, {
+//     name: "toggleFoldWidget",
+//     bindKey: bindKey("F2", "F2"),
+//     exec: function(editor) { editor.session.toggleFoldWidget(); },
+//     scrollIntoView: "center",
+//     readOnly: true
+// }, {
+//     name: "toggleParentFoldWidget",
+//     bindKey: bindKey("Alt-F2", "Alt-F2"),
+//     exec: function(editor) { editor.session.toggleFoldWidget(true); },
+//     scrollIntoView: "center",
+//     readOnly: true
+// }, {
+//     name: "foldall",
+//     bindKey: bindKey("Ctrl-Alt-0", "Ctrl-Command-Option-0"),
+//     exec: function(editor) { editor.session.foldAll(); },
+//     scrollIntoView: "center",
+//     readOnly: true
+// }, {
+//     name: "foldOther",
+//     bindKey: bindKey("Alt-0", "Command-Option-0"),
+//     exec: function(editor) { 
+//         editor.session.foldAll();
+//         editor.session.unfold(editor.selection.getAllRanges());
+//     },
+//     scrollIntoView: "center",
+//     readOnly: true
+// }, {
+//     name: "unfoldall",
+//     bindKey: bindKey("Alt-Shift-0", "Command-Option-Shift-0"),
+//     exec: function(editor) { editor.session.unfold(); },
+//     scrollIntoView: "center",
+//     readOnly: true
+// }, {
+//     name: "findnext",
+//     bindKey: bindKey("Ctrl-K", "Command-G"),
+//     exec: function(editor) { editor.findNext(); },
+//     readOnly: true
+// }, {
+//     name: "findprevious",
+//     bindKey: bindKey("Ctrl-Shift-K", "Command-Shift-G"),
+//     exec: function(editor) { editor.findPrevious(); },
+//     readOnly: true
+// }, {
+//     name: "find",
+//     bindKey: bindKey("Ctrl-F", "Command-F"),
+//     exec: function(editor) {
+//         config.loadModule("ace/ext/searchbox", function(e) {e.Search(editor)});
+//     },
+//     readOnly: true
+// }, {
+//     name: "overwrite",
+//     bindKey: "Insert",
+//     exec: function(editor) { editor.toggleOverwrite(); },
+//     readOnly: true
+// }, {
+//     name: "selecttostart",
+//     bindKey: bindKey("Ctrl-Shift-Home", "Command-Shift-Up"),
+//     exec: function(editor) { editor.getSelection().selectFileStart(); },
+//     multiSelectAction: "forEach",
+//     readOnly: true,
+//     group: "fileJump"
+// }, {
+//     name: "gotostart",
+//     bindKey: bindKey("Ctrl-Home", "Command-Home|Command-Up"),
+//     exec: function(editor) { editor.navigateFileStart(); },
+//     multiSelectAction: "forEach",
+//     readOnly: true,
+//     group: "fileJump"
 }, {
     name: "selectup",
     bindKey: bindKey("Shift-Up", "Shift-Up"),
@@ -12080,20 +12013,19 @@ exports.commands = [{
     bindKey: bindKey("Ctrl-Shift-E", "Command-Shift-E"),
     exec: function(editor) { editor.commands.replay(editor); },
     readOnly: true
+// }, {
+//     name: "jumptomatching",
+//     bindKey: bindKey("Ctrl-P", "Ctrl-Shift-P"),
+//     exec: function(editor) { editor.jumpToMatching(); },
+//     multiSelectAction: "forEach",
+//     readOnly: true
+// }, {
+//     name: "selecttomatching",
+//     bindKey: bindKey("Ctrl-Shift-P", null),
+//     exec: function(editor) { editor.jumpToMatching(true); },
+//     multiSelectAction: "forEach",
+//     readOnly: true
 }, {
-    name: "jumptomatching",
-    bindKey: bindKey("Ctrl-P", "Ctrl-Shift-P"),
-    exec: function(editor) { editor.jumpToMatching(); },
-    multiSelectAction: "forEach",
-    readOnly: true
-}, {
-    name: "selecttomatching",
-    bindKey: bindKey("Ctrl-Shift-P", null),
-    exec: function(editor) { editor.jumpToMatching(true); },
-    multiSelectAction: "forEach",
-    readOnly: true
-}, 
-{
     name: "cut",
     exec: function(editor) {
         var range = editor.getSelectionRange();
@@ -12106,48 +12038,48 @@ exports.commands = [{
     },
     multiSelectAction: "forEach"
 }, {
-    name: "removeline",
-    bindKey: bindKey("Ctrl-D", "Command-D"),
-    exec: function(editor) { editor.removeLines(); },
-    multiSelectAction: "forEachLine"
-}, {
-    name: "duplicateSelection",
-    bindKey: bindKey("Ctrl-Shift-D", "Command-Shift-D"),
-    exec: function(editor) { editor.duplicateSelection(); },
-    multiSelectAction: "forEach"
-}, {
-    name: "sortlines",
-    bindKey: bindKey("Ctrl-Alt-S", "Command-Alt-S"),
-    exec: function(editor) { editor.sortLines(); },
-    multiSelectAction: "forEachLine"
-}, {
-    name: "togglecomment",
-    bindKey: bindKey("Ctrl-/", "Command-/"),
-    exec: function(editor) { editor.toggleCommentLines(); },
-    multiSelectAction: "forEachLine",
-    scrollIntoView: "selectionPart"
-}, {
-    name: "toggleBlockComment",
-    bindKey: bindKey("Ctrl-Shift-/", "Command-Shift-/"),
-    exec: function(editor) { editor.toggleBlockComment(); },
-    multiSelectAction: "forEach"
-}, {
-    name: "modifyNumberUp",
-    bindKey: bindKey("Ctrl-Shift-Up", "Alt-Shift-Up"),
-    exec: function(editor) { editor.modifyNumber(1); },
-    multiSelectAction: "forEach"
-}, {
-    name: "modifyNumberDown",
-    bindKey: bindKey("Ctrl-Shift-Down", "Alt-Shift-Down"),
-    exec: function(editor) { editor.modifyNumber(-1); },
-    multiSelectAction: "forEach"
-}, {
-    name: "replace",
-    bindKey: bindKey("Ctrl-H", "Command-Option-F"),
-    exec: function(editor) {
-        config.loadModule("ace/ext/searchbox", function(e) {e.Search(editor, true)});
-    }
-}, {
+//     name: "removeline",
+//     bindKey: bindKey("Ctrl-D", "Command-D"),
+//     exec: function(editor) { editor.removeLines(); },
+//     multiSelectAction: "forEachLine"
+// }, {
+//     name: "duplicateSelection",
+//     bindKey: bindKey("Ctrl-Shift-D", "Command-Shift-D"),
+//     exec: function(editor) { editor.duplicateSelection(); },
+//     multiSelectAction: "forEach"
+// }, {
+//     name: "sortlines",
+//     bindKey: bindKey("Ctrl-Alt-S", "Command-Alt-S"),
+//     exec: function(editor) { editor.sortLines(); },
+//     multiSelectAction: "forEachLine"
+// }, {
+//     name: "togglecomment",
+//     bindKey: bindKey("Ctrl-/", "Command-/"),
+//     exec: function(editor) { editor.toggleCommentLines(); },
+//     multiSelectAction: "forEachLine",
+//     scrollIntoView: "selectionPart"
+// }, {
+//     name: "toggleBlockComment",
+//     bindKey: bindKey("Ctrl-Shift-/", "Command-Shift-/"),
+//     exec: function(editor) { editor.toggleBlockComment(); },
+//     multiSelectAction: "forEach"
+// }, {
+//     name: "modifyNumberUp",
+//     bindKey: bindKey("Ctrl-Shift-Up", "Alt-Shift-Up"),
+//     exec: function(editor) { editor.modifyNumber(1); },
+//     multiSelectAction: "forEach"
+// }, {
+//     name: "modifyNumberDown",
+//     bindKey: bindKey("Ctrl-Shift-Down", "Alt-Shift-Down"),
+//     exec: function(editor) { editor.modifyNumber(-1); },
+//     multiSelectAction: "forEach"
+// }, {
+//     name: "replace",
+//     bindKey: bindKey("Ctrl-H", "Command-Option-F"),
+//     exec: function(editor) {
+//         config.loadModule("ace/ext/searchbox", function(e) {e.Search(editor, true)});
+//     }
+// }, {
     name: "undo",
     bindKey: bindKey("Ctrl-Z", "Command-Z"),
     exec: function(editor) { editor.undo(); }
@@ -12155,22 +12087,22 @@ exports.commands = [{
     name: "redo",
     bindKey: bindKey("Ctrl-Shift-Z|Ctrl-Y", "Command-Shift-Z|Command-Y"),
     exec: function(editor) { editor.redo(); }
-}, {
-    name: "copylinesup",
-    bindKey: bindKey("Alt-Shift-Up", "Command-Option-Up"),
-    exec: function(editor) { editor.copyLinesUp(); }
-}, {
-    name: "movelinesup",
-    bindKey: bindKey("Alt-Up", "Option-Up"),
-    exec: function(editor) { editor.moveLinesUp(); }
-}, {
-    name: "copylinesdown",
-    bindKey: bindKey("Alt-Shift-Down", "Command-Option-Down"),
-    exec: function(editor) { editor.copyLinesDown(); }
-}, {
-    name: "movelinesdown",
-    bindKey: bindKey("Alt-Down", "Option-Down"),
-    exec: function(editor) { editor.moveLinesDown(); }
+// }, {
+//     name: "copylinesup",
+//     bindKey: bindKey("Alt-Shift-Up", "Command-Option-Up"),
+//     exec: function(editor) { editor.copyLinesUp(); }
+// }, {
+//     name: "movelinesup",
+//     bindKey: bindKey("Alt-Up", "Option-Up"),
+//     exec: function(editor) { editor.moveLinesUp(); }
+// }, {
+//     name: "copylinesdown",
+//     bindKey: bindKey("Alt-Shift-Down", "Command-Option-Down"),
+//     exec: function(editor) { editor.copyLinesDown(); }
+// }, {
+//     name: "movelinesdown",
+//     bindKey: bindKey("Alt-Down", "Option-Down"),
+//     exec: function(editor) { editor.moveLinesDown(); }
 }, {
     name: "del",
     bindKey: bindKey("Delete", "Delete|Ctrl-D|Shift-Delete"),
@@ -12197,7 +12129,7 @@ exports.commands = [{
     multiSelectAction: "forEach"
 }, {
     name: "removetolinestart",
-    bindKey: bindKey("Alt-Backspace", "Command-Backspace"),
+    bindKey: bindKey("Alt-Backspace"),
     exec: function(editor) { editor.removeToLineStart(); },
     multiSelectAction: "forEach"
 }, {
@@ -12217,8 +12149,8 @@ exports.commands = [{
 //     multiSelectAction: "forEach"
 
     name: "removestate",
-    bindKey: bindKey("Ctrl-Delete", "Ctrl-Backspace"),
-    exec: function(editor) { editor.removeState(); },
+    bindKey: bindKey("Ctrl-Delete", "Ctrl-Backspace", "Command-Backspace"),
+    exec: function(editor) { editor.removeState(editor); },
     multiSelectAction: "forEach"
 }, {
     name: "outdent",
@@ -12236,25 +12168,25 @@ exports.commands = [{
     scrollIntoView: "selectionPart"
 }, {
     name: "expandState",
-    bindKey: bindKey("Ctrl-Down"),
+    bindKey: bindKey("Ctrl-Down", "Command-Down"),
     exec: function(editor) { editor.expandState(editor); }
 }, {
     name: "collapseState",
-    bindKey: bindKey("Ctrl-Up"),
+    bindKey: bindKey("Ctrl-Up", "Command-Up"),
     exec: function(editor) { editor.collapseState(editor); }
 }, {
-    name: "blockoutdent",
-    bindKey: bindKey("Ctrl-[", "Ctrl-["),
-    exec: function(editor) { editor.blockOutdent(); },
-    multiSelectAction: "forEachLine",
-    scrollIntoView: "selectionPart"
-}, {
-    name: "blockindent",
-    bindKey: bindKey("Ctrl-]", "Ctrl-]"),
-    exec: function(editor) { editor.blockIndent(); },
-    multiSelectAction: "forEachLine",
-    scrollIntoView: "selectionPart"
-}, {
+//     name: "blockoutdent",
+//     bindKey: bindKey("Ctrl-[", "Ctrl-["),
+//     exec: function(editor) { editor.blockOutdent(); },
+//     multiSelectAction: "forEachLine",
+//     scrollIntoView: "selectionPart"
+// }, {
+//     name: "blockindent",
+//     bindKey: bindKey("Ctrl-]", "Ctrl-]"),
+//     exec: function(editor) { editor.blockIndent(); },
+//     multiSelectAction: "forEachLine",
+//     scrollIntoView: "selectionPart"
+// }, {
     name: "insertstring",
     exec: function(editor, str) { editor.insert(str); },
     multiSelectAction: "forEach",
@@ -12263,31 +12195,34 @@ exports.commands = [{
     name: "autocomplete_confirm",
     exec: function(editor, str) { }
 }, {
+    name: "autocomplete_match",
+    exec: function(editor, args) { }
+}, {
     name: "inserttext",
     exec: function(editor, args) {
         editor.insert(lang.stringRepeat(args.text  || "", args.times || 1));
     },
     multiSelectAction: "forEach"
-}, {
-    name: "splitline",
-    bindKey: bindKey(null, "Ctrl-O"),
-    exec: function(editor) { editor.splitLine(); },
-    multiSelectAction: "forEach"
-}, {
-    name: "transposeletters",
-    bindKey: bindKey("Ctrl-T", "Ctrl-T"),
-    exec: function(editor) { editor.transposeLetters(); },
-    multiSelectAction: function(editor) {editor.transposeSelections(1); }
-}, {
-    name: "touppercase",
-    bindKey: bindKey("Ctrl-U", "Ctrl-U"),
-    exec: function(editor) { editor.toUpperCase(); },
-    multiSelectAction: "forEach"
-}, {
-    name: "tolowercase",
-    bindKey: bindKey("Ctrl-Shift-U", "Ctrl-Shift-U"),
-    exec: function(editor) { editor.toLowerCase(); },
-    multiSelectAction: "forEach"
+// }, {
+//     name: "splitline",
+//     bindKey: bindKey(null, "Ctrl-O"),
+//     exec: function(editor) { editor.splitLine(); },
+//     multiSelectAction: "forEach"
+// }, {
+//     name: "transposeletters",
+//     bindKey: bindKey("Ctrl-T", "Ctrl-T"),
+//     exec: function(editor) { editor.transposeLetters(); },
+//     multiSelectAction: function(editor) {editor.transposeSelections(1); }
+// }, {
+//     name: "touppercase",
+//     bindKey: bindKey("Ctrl-U", "Ctrl-U"),
+//     exec: function(editor) { editor.toUpperCase(); },
+//     multiSelectAction: "forEach"
+// }, {
+//     name: "tolowercase",
+//     bindKey: bindKey("Ctrl-Shift-U", "Ctrl-Shift-U"),
+//     exec: function(editor) { editor.toLowerCase(); },
+//     multiSelectAction: "forEach"
 }];
 
 });

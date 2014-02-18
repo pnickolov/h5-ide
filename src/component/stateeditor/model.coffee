@@ -30,12 +30,12 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 			moduleData = {}
 
 			if osPlatform is 'linux'
-				moduleData = moduleDataObj.linux
+				moduleData = moduleDataObj.linux if moduleDataObj.linux
 			else if osPlatform is 'windows'
-				moduleData = moduleDataObj.windows
+				moduleData = moduleDataObj.windows if moduleDataObj.windows
 
-			moduleData = _.extend(moduleData, moduleDataObj.common)
-			moduleData = _.extend(moduleData, moduleDataObj.general)
+			moduleData = _.extend(moduleData, moduleDataObj.common) if moduleDataObj.common
+			moduleData = _.extend(moduleData, moduleDataObj.general) if moduleDataObj.general
 
 			# generate module autocomplete data
 			cmdAry = []
@@ -49,10 +49,16 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 				# get command name
 				cmdDistroAry = cmdObj.distro
 
-				if not ((not cmdDistroAry) or (cmdDistroAry and osPlatformDistro in cmdDistroAry))
-					return
+				supportCMD = false
+				if ((not cmdDistroAry) or (cmdDistroAry and osPlatformDistro in cmdDistroAry)) and osPlatform is 'linux'
+					supportCMD = true
 
-				cmdAry.push cmdName
+				cmdObj.support = supportCMD
+
+				cmdAry.push({
+					name: cmdName,
+					support: supportCMD
+				})
 				paraAryObj = cmdObj.parameter
 				cmdParaMap[cmdName] = []
 				cmdParaObjMap[cmdName] = {}
@@ -74,12 +80,20 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 				null
 
 			cmdNameAry = cmdAry.sort (val1, val2) ->
-				if val1 > val2
-					return 1
-				else if val1 < val2
-					return -1
+
+				if val1.support is val2.support
+
+					if val1.name > val2.name
+						return 1
+					else if val1.name < val2.name
+						return -1
+					else
+						return 0
+
 				else
-					return 0
+
+					if val1.support is true then return -1
+					if val2.support is true then return 1
 
 			# generate resource attr autocomplete data
 			allCompData = that.get('allCompData')
@@ -115,7 +129,6 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 			newCMDAllParaAry = cmdAllParaAry.sort (paraObj1, paraObj2) ->
 
 				if paraObj1.required is paraObj2.required
-					return 0
 					if paraObj1[paraName] < paraObj2[paraName]
 						return -1
 					else
@@ -210,7 +223,7 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 			compData = that.get('compData')
 			resModel = that.get('resModel')
 			resModel.setStateData(stateData)
-			MC.canvas.nodeState.show(compData.uid)
+			MC.canvas.nodeAction.show(compData.uid)
 
 		getStateData: () ->
 
@@ -291,23 +304,26 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 				compType = compData.type
 
 				if compType is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
-					if compData.serverGroupUid isnt compUID
-						return
-					else
-						if compData.serverGroupName
-							compName = compData.serverGroupName
+					return
+					# if compData.serverGroupUid isnt compUID
+					# 	return
+					# else
+					# 	if compData.serverGroupName
+					# 		compName = compData.serverGroupName
 
 				# replace instance default eni name to instance name
 				if compType is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
-					if compData.resource.Attachment.DeviceIndex in ['0', 0]
+					if compData.index isnt 0
 						return
 					if compData.serverGroupUid isnt compUID
 						return
-						# instanceRef = compData.resource.Attachment.InstanceId
-						# if instanceRef
-						# 	instanceUID = MC.extractID(instanceRef)
-						# 	if instanceUID
-						# 		compName = allCompData[instanceUID].name
+					instanceRef = compData.resource.Attachment.InstanceId
+					if not instanceRef
+						return
+					if compData.resource.Attachment.DeviceIndex in ['0', 0]
+						instanceUID = MC.extractID(instanceRef)
+						if instanceUID
+							compName = allCompData[instanceUID].serverGroupName
 
 				supportType = compType.replace(/\./ig, '_')
 
@@ -392,7 +408,7 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 			if not resAttrDataAry then resAttrDataAry = []
 			refAry = resAttrDataAry.concat(resStateDataAry)
 			attrRefRegexList = _.map refAry, (refObj) ->
-				regStr = refObj.name.replace('{', '\\{').replace('}', '\\}').replace('.', '\\.')
+				regStr = refObj.name.replace('{', '\\{').replace('}', '\\}').replace('.', '\\.').replace('[', '\\[').replace(']', '\\]')
 				return '@' + regStr
 			resAttrRegexStr = attrRefRegexList.join('|')
 			that.set('resAttrRegexStr', resAttrRegexStr)
@@ -667,6 +683,12 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 			# console.log(dataAry)
 
 			return dataAry
+
+		listenStateStatusUpdate: (newStateUpdateResIdAry) ->
+
+			that = this
+			that.trigger 'STATE_STATUS_UPDATE', newStateUpdateResIdAry
+			null
 	}
 
 	return StateEditorModel

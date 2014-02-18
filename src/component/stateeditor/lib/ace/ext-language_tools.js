@@ -1050,6 +1050,9 @@ var Autocomplete = function() {
             data = this.popup.getData(this.popup.getRow());
         if (!data)
             return false;
+        if (data.support === false) {
+            return false;
+        }
         if (data.completer && data.completer.insertMatch) {
             data.completer.insertMatch(this.editor);
         } else {
@@ -1134,26 +1137,38 @@ var Autocomplete = function() {
     };
     
     this.updateCompletions = function(keepPopupPosition) {
+        if (this.completions && this.completions.filtered.length) {
+            this.editor.execCommand("autocomplete_match", true);
+        } else {
+            this.editor.execCommand("autocomplete_match", false);
+        }
         if (keepPopupPosition && this.base && this.completions) {
             var pos = this.editor.getCursorPosition();
             var prefix = this.editor.session.getTextRange({start: this.base, end: pos});
             if (prefix == this.completions.filterText)
                 return;
             this.completions.setFilter(prefix);
-            if (!this.completions.filtered.length)
+            if (!this.completions.filtered.length) {
+                this.editor.execCommand("autocomplete_match", false);
                 return this.detach();
+            }
             this.openPopup(this.editor, prefix, keepPopupPosition);
             return;
         }
         this.gatherCompletions(this.editor, function(err, results) {
             var matches = results && results.matches;
-            if (!matches || !matches.length)
+            if (!matches || !matches.length) {
+                this.editor.execCommand("autocomplete_match", false);
                 return this.detach();
+            }
 
             this.completions = new FilteredList(matches);
             this.completions.setFilter(results.prefix);
-            if (!this.completions.filtered.length)
+            if (!this.completions.filtered.length) {
+                this.editor.execCommand("autocomplete_match", false);
                 return this.detach();
+            }
+            this.editor.execCommand("autocomplete_match", true);
             this.openPopup(this.editor, results.prefix, keepPopupPosition);
         }.bind(this));
     };
@@ -1197,7 +1212,16 @@ var FilteredList = function(array, filterText, mutateData) {
         matches = this.filterCompletions(matches, this.filterText);
         if (this.filterText) {
             matches = matches.sort(function(a, b) {
-                return b.exactMatch - a.exactMatch || b.score - a.score;
+                if (a.support === b.support) {
+                    return b.exactMatch - a.exactMatch || b.score - a.score;
+                } else {
+                    if (a.support === true) {
+                        return -1;
+                    }
+                    if (b.support === true) {
+                        return 1;
+                    }
+                }
             });
         }
         var prev = null;
@@ -1408,7 +1432,11 @@ var AcePopup = function(parentNode) {
             c = data.caption[i];
             flag = data.matchMask & (1 << i) ? 1 : 0;
             if (last !== flag) {
-                tokens.push({type: data.className || "" + ( flag ? "completion-highlight" : ""), value: c});
+                var activeClass = '';
+                if (data.support === false) {
+                    activeClass = 'autocomplete_disable_select';
+                } 
+                tokens.push({type: data.className || activeClass || "" + ( flag ? "completion-highlight" : ""), value: c});
                 last = flag;
             } else {
                 tokens[tokens.length - 1].value += c;
@@ -1418,7 +1446,7 @@ var AcePopup = function(parentNode) {
         if (data.meta) {
             var maxW = popup.renderer.$size.scrollerWidth / popup.renderer.layerConfig.characterWidth;
             if (data.meta.length + data.caption.length < maxW - 2)
-                tokens.push({type: "rightAlignedText", value: data.meta});
+                tokens.push({type: "rightAlignedText", value: String(data.meta)});
         }
         return tokens;
     };

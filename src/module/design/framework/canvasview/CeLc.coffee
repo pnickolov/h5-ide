@@ -20,7 +20,7 @@ define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager" ], ( Can
 
   ChildElementProto.detach = ()->
     # Remove state icon
-    MC.canvas.nodeState.remove @id
+    MC.canvas.nodeAction.remove @id
     CanvasElement.prototype.detach.call this
     null
 

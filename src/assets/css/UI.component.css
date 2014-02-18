@@ -995,7 +995,8 @@ textarea {
 .status-Pending,
 .status-shutting-down,
 .status-Stopping,
-.status-stopping {
+.status-stopping,
+.status-deleting {
 	background-color: #ffa740;
 	background-image: -webkit-linear-gradient(bottom, #ff8330, #ffa740);
 	background-image: -moz-linear-gradient(bottom, #ff8330, #ffa740);

@@ -21,7 +21,7 @@ define [ "./CanvasElement", "constant", "CanvasManager", "Design" ], ( CanvasEle
 
   ChildElementProto.detach = ()->
     # Remove state icon
-    MC.canvas.nodeState.remove @id
+    MC.canvas.nodeAction.remove @id
     CanvasElement.prototype.detach.call this
     null
 

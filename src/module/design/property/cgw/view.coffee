@@ -100,6 +100,10 @@ define [ '../base/view', 'text!./template/stack.html', 'event', 'constant', "Des
 
                     that.disabledAllOperabilityArea(false)
                     modal.close()
+
+            , {
+                $source: $(event.target)
+            }
     }
 
     new CGWView()

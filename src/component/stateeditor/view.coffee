@@ -96,7 +96,10 @@ define [ 'event',
 
             stateObj = that.loadStateData(that.originCompStateData)
             that.refreshStateList(stateObj)
-            that.refreshStateViewList()
+
+            $stateItemList = that.$stateList.find('.state-item')
+            that.refreshStateViewList($stateItemList)
+
             that.bindStateListSortEvent()
 
             if that.readOnlyMode
@@ -286,13 +289,13 @@ define [ 'event',
 
             that.$stateList.html(this.stateListTpl(stateListObj))
 
-            that.bindStateListEvent()
+            $stateItems = that.$stateList.find('.state-item')
 
-        refreshStateViewList: () ->
+            that.bindStateListEvent($stateItems)
+
+        refreshStateViewList: ($stateItemList) ->
 
             that = this
-
-            $stateItemList = that.$stateList.find('.state-item')
 
             _.each $stateItemList, (stateItem) ->
 
@@ -409,11 +412,9 @@ define [ 'event',
                 parameter_view_list: paraListViewRenderAry
             }))
 
-        bindStateListEvent: () ->
+        bindStateListEvent: ($stateItems) ->
 
             that = this
-
-            $stateItems = that.$stateList.find('.state-item')
 
             _.each $stateItems, (stateItem) ->
 
@@ -1006,6 +1007,14 @@ define [ 'event',
 
             that.refreshLogItemNum()
 
+            # redo/undo
+            # that.undoManager.register(newStateId)
+
+            $stateItems = that.$stateList.find('.state-item')
+            if $stateItems[0]
+                stateData = that.genStateItemData($($stateItems[0]))
+                that.addStateItemByData([stateData], 0)
+
         onStateRemoveClick: (event) ->
 
             that = this
@@ -1057,6 +1066,115 @@ define [ 'event',
 
             result
 
+        genStateItemData: ($stateItem) ->
+
+            that = this
+
+            cmdName = $stateItem.attr('data-command')
+            stateId = $stateItem.attr('data-id')
+
+            # for state item sort
+            # newStateId = $stateItem.find('.state-id').text()
+            # oldStateId = $stateItem.attr('data-id')
+            # if oldStateId and newStateId isnt oldStateId
+            #     oldStateIdRef = "@{#{that.resName}.state.#{oldStateId}}"
+            #     newStateIdRef = "@{#{that.resName}.state.#{newStateId}}"
+            #     newOldStateIdMap[oldStateIdRef] = newStateIdRef
+
+            moduleObj = that.cmdModuleMap[cmdName]
+
+            #empty module direct return
+            if not moduleObj
+                return
+
+            stateItemObj = {
+                id: stateId,
+                module: moduleObj.module,
+                parameter: {}
+            }
+
+            $paraListElem = $stateItem.find('.parameter-list')
+            $paraItemList = $paraListElem.find('.parameter-item')
+
+            _.each $paraItemList, (paraItem) ->
+
+                $paraItem = $(paraItem)
+
+                if $paraItem.hasClass('disabled')
+                    return
+
+                paraName = $paraItem.attr('data-para-name')
+
+                paraValue = null
+
+                if $paraItem.hasClass('line') or
+                    $paraItem.hasClass('bool') or
+                    $paraItem.hasClass('text')
+
+                        $paraInput = $paraItem.find('.parameter-value')
+                        paraValue = that.getPlainText($paraInput)
+
+                        if $paraItem.hasClass('bool')
+                            if paraValue is 'true'
+                                paraValue = true
+                            else if paraValue is 'false'
+                                paraValue = false
+                            else
+                                paraValue = ''
+
+                        if $paraItem.hasClass('line') or $paraItem.hasClass('text')
+                            paraValue = that.model.replaceParaNameToUID(paraValue)
+
+                else if $paraItem.hasClass('dict')
+
+                    $dictItemList = $paraItem.find('.parameter-dict-item')
+                    dictObj = {}
+
+                    _.each $dictItemList, (dictItem) ->
+
+                        $dictItem = $(dictItem)
+                        $keyInput = $dictItem.find('.key')
+                        $valueInput = $dictItem.find('.value')
+
+                        keyValue = that.getPlainText($keyInput)
+                        valueValue = that.getPlainText($valueInput)
+
+                        if keyValue
+                            valueValue = that.model.replaceParaNameToUID(valueValue)
+                            dictObj[keyValue] = valueValue
+
+                        null
+
+                    paraValue = dictObj
+
+                else if $paraItem.hasClass('array') or $paraItem.hasClass('state')
+
+                    $arrayItemList = $paraItem.find('.parameter-value')
+                    isStateParaItem = $paraItem.hasClass('state')
+                    arrayObj = []
+
+                    _.each $arrayItemList, (arrayItem) ->
+
+                        $arrayItem = $(arrayItem)
+                        arrayValue = that.getPlainText($arrayItem)
+
+                        if arrayValue
+
+                            if isStateParaItem
+                                arrayValue = that.model.replaceStateNameToUID(arrayValue)
+                            else
+                                arrayValue = that.model.replaceParaNameToUID(arrayValue)
+
+                            arrayObj.push(arrayValue)
+
+                        null
+
+                    paraValue = arrayObj
+
+                stateItemObj['parameter'][paraName] = paraValue
+
+            return stateItemObj
+
         saveStateData: () ->
             
             if not @submitValidate()
@@ -1074,110 +1192,7 @@ define [ 'event',
 
                 $stateItem = $(stateItem)
 
-                cmdName = $stateItem.attr('data-command')
-                stateId = $stateItem.attr('data-id')
-
-                # for state item sort
-                # newStateId = $stateItem.find('.state-id').text()
-                # oldStateId = $stateItem.attr('data-id')
-                # if oldStateId and newStateId isnt oldStateId
-                #     oldStateIdRef = "@{#{that.resName}.state.#{oldStateId}}"
-                #     newStateIdRef = "@{#{that.resName}.state.#{newStateId}}"
-                #     newOldStateIdMap[oldStateIdRef] = newStateIdRef
-
-                moduleObj = that.cmdModuleMap[cmdName]
-
-                #empty module direct return
-                if not moduleObj
-                    return
-
-                stateItemObj = {
-                    id: stateId,
-                    module: moduleObj.module,
-                    parameter: {}
-                }
-
-                $paraListElem = $stateItem.find('.parameter-list')
-                $paraItemList = $paraListElem.find('.parameter-item')
-
-                _.each $paraItemList, (paraItem) ->
-
-                    $paraItem = $(paraItem)
-
-                    if $paraItem.hasClass('disabled')
-                        return
-
-                    paraName = $paraItem.attr('data-para-name')
-
-                    paraValue = null
-
-                    if $paraItem.hasClass('line') or
-                        $paraItem.hasClass('bool') or
-                        $paraItem.hasClass('text')
-
-                            $paraInput = $paraItem.find('.parameter-value')
-                            paraValue = that.getPlainText($paraInput)
-
-                            if $paraItem.hasClass('bool')
-                                if paraValue is 'true'
-                                    paraValue = true
-                                else if paraValue is 'false'
-                                    paraValue = false
-                                else
-                                    paraValue = ''
-
-                            if $paraItem.hasClass('line') or $paraItem.hasClass('text')
-                                paraValue = that.model.replaceParaNameToUID(paraValue)
-
-                    else if $paraItem.hasClass('dict')
-
-                        $dictItemList = $paraItem.find('.parameter-dict-item')
-                        dictObj = {}
-
-                        _.each $dictItemList, (dictItem) ->
-
-                            $dictItem = $(dictItem)
-                            $keyInput = $dictItem.find('.key')
-                            $valueInput = $dictItem.find('.value')
-
-                            keyValue = that.getPlainText($keyInput)
-                            valueValue = that.getPlainText($valueInput)
-
-                            if keyValue
-                                valueValue = that.model.replaceParaNameToUID(valueValue)
-                                dictObj[keyValue] = valueValue
-
-                            null
-
-                        paraValue = dictObj
-
-                    else if $paraItem.hasClass('array') or $paraItem.hasClass('state')
-
-                        $arrayItemList = $paraItem.find('.parameter-value')
-                        isStateParaItem = $paraItem.hasClass('state')
-                        arrayObj = []
-
-                        _.each $arrayItemList, (arrayItem) ->
-
-                            $arrayItem = $(arrayItem)
-                            arrayValue = that.getPlainText($arrayItem)
-
-                            if arrayValue
-
-                                if isStateParaItem
-                                    arrayValue = that.model.replaceStateNameToUID(arrayValue)
-                                else
-                                    arrayValue = that.model.replaceParaNameToUID(arrayValue)
-
-                                arrayObj.push(arrayValue)
-
-                            null
-
-                        paraValue = arrayObj
-
-                    stateItemObj['parameter'][paraName] = paraValue
-
-                    null
+                stateItemObj = that.genStateItemData($stateItem)
 
                 stateObjAry.push(stateItemObj)
 
@@ -2027,6 +2042,65 @@ define [ 'event',
 
             $aceAutoCompList = $('.ace_editor.ace_autocomplete')
             $aceAutoCompList.remove()
+
+        initUndoManager: () ->
+
+            that = this
+            that.commandStack = []
+            that.commandIndex = -1
+
+            that.undoManager = {
+
+                register: (stateId, method, data) ->
+
+                    that.commandStack.push({
+                        stateId: stateId,
+                        method: method,
+                        data: data,
+                    })
+                    that.commandIndex = that.commandStack.length - 1
+                    null
+
+                redo: () ->
+
+                    null
+
+                undo: () ->
+                    null
+
+            }
+
+            null
+
+        getStateItemByData: ($stateItem) ->
+
+            that = this
+            stateData = that.genStateItemData($stateItem)
+            stateData.id = that.genStateUID()
+            return stateData
+
+        addStateItemByData: (stateDataAry, insertPos) ->
+
+            that = this
+
+            stateListObj = that.loadStateData(stateDataAry)
+
+            newStateItems = that.stateListTpl(stateListObj)
+            $currentStateItems = that.$stateList.find('.state-item')
+
+            $insertPosStateItem = null
+            if $currentStateItems[insertPos]
+                $insertPosStateItem = $($currentStateItems[insertPos])
+            else
+                $insertPosStateItem = $($currentStateItems[$currentStateItems.length - 1])
+
+            $newStateItems = $(newStateItems).insertAfter($insertPosStateItem)
+
+            that.bindStateListEvent($newStateItems)
+
+            that.refreshStateViewList($newStateItems)
+
+            null
 
         keyEvent: (event) ->
 

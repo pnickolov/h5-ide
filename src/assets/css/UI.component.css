@@ -1030,7 +1030,7 @@ textarea {
 	background: #eee;
 	box-shadow: 1px 1px 5px rgba(0, 0, 0, .6);
 	z-index: 70;
-	border: 1px solid #242424;
+	/*border: 1px solid #242424;*/
 }
 
 #modal-box #bubble-box {
@@ -1056,7 +1056,7 @@ textarea {
 .modal-header {
 	position: relative;
 	padding: 4px 10px;
-	background: #3D3D3D;
+	background: #181818;
 	border-bottom: 1px solid #333;
 	color: #9b9b9b;
 }

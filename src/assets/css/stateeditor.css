@@ -30,7 +30,7 @@
 	float: left;
 	height: 500px;
 	background: #fff;
-	font-family: "OxygenMono", "Lucida Console", "Monaco", monospace;
+	font-family:  "Lucida Console", "Monaco", monospace;
 	font-size: 13px;
 	position: relative;
 }
@@ -46,14 +46,16 @@
 
 #state-description, #state-log {
 	border-left: 1px solid #ccc;
-	width: 224px;
-	height: 480px;
+	width: 244px;
+	height: 500px;
 	float: left;
 	overflow-x: hidden;
 	overflow-y: auto;
-	padding: 10px;
+	/*padding: 10px;*/
 	font-family: "OxygenMono", "Lucida Console", "Monaco", monospace;
-	font-size: 12px;
+	font-size: 13px;
+	background: #f5f5f5;
+	color: #666;
 }
 
 #state-log {
@@ -109,10 +111,6 @@
 	padding: 0;
 }
 
-#state-editor-model .state-save, .state-cancel, .state-close {
-	margin-right: 14px;
-	margin-top: 14px;
-}
 
 #state-editor-model .state-close{
 	display: none;
@@ -208,7 +206,7 @@
 	z-index: 80;
 	display: block;
 	border-left: 2px solid transparent;
-	padding: 10px 0;
+	padding: 11px 0;
 	text-align: center;
 	color: #666;
 	/*font-family: Lucida Console;*/
@@ -319,8 +317,8 @@
 #state-editor .editable-area.line {
 	white-space: nowrap !important;
 	display: inline !important;
-	height: 13px !important;
-	line-height: 13px !important;
+	height: 14px !important;
+	line-height: 14px !important;
 	padding-top: 0px !important;
 	overflow: hidden !important;
 	cursor: text !important;
@@ -524,6 +522,7 @@
 	position: relative;
 	left: 64px;
 	margin-right: 100px;
+	margin-top: 2px;
 }
 
 #state-editor .command-view-value {
@@ -926,8 +925,14 @@
 	display: none;
 }
 
+#state-description p, #state-description h3 {
+	padding: 2px 10px;
+}
+
 #state-description .highlight  {
-	color: #000;
+	color: #333;
+	background: rgba(255,255,255,.8);
+	box-shadow: inset 3px 0 #25a4f4;
 }
 
 #state-description .state-log-refresh {

@@ -243,12 +243,15 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
       null
 
     removeChild: ( lc ) ->
+      GroupModel.prototype.removeChild.call this, lc
+
       # disconnect all asso of expanded asg
       @removeExpandedAsso()
 
       # Remove lc from parent ASG
       @unset "lc"
       @draw()
+
       null
 
     drawExpanedLc: ( isCreate ) ->

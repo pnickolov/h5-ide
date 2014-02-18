@@ -665,8 +665,8 @@
 	color: #ec3c38;
 }
 
-#state-editor .state-item .selected .checkbox:checked {
-	display: block;
+#state-editor .state-item.selected .state-check {
+	display: block !important;
 }
 
 #state-editor .state-view .parsley-error {

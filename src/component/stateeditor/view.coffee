@@ -26,8 +26,11 @@ define [ 'event',
 
             'focus .editable-area': 'onFocusInput'
             'blur .editable-area': 'onBlurInput'
+
             # 'click .state-toolbar .state-id': 'onStateIdClick'
             'click .state-toolbar': 'onStateToolbarClick'
+
+            'click .state-toolbar .checkbox': 'checkboxSelect'
             # 'click .state-toolbar .state-add': 'onStateAddClick'
             'click .state-toolbar .state-remove': 'onStateRemoveClick'
             'click .state-save': 'onStateSaveClick'
@@ -38,8 +41,6 @@ define [ 'event',
             'click .state-log-toggle': 'onLogToggleClick'
             'click .state-log-refresh': 'onLogRefreshClick'
             'click .state-item-add': 'onStateItemAddClick'
-
-            'click .checkbox input': 'checkboxSelect'
 
             'OPTION_CHANGE .state-editor-res-select': 'onResSelectChange'
 
@@ -838,6 +839,8 @@ define [ 'event',
                 that.expandItem.call this, $stateItem
             else
                 that.collapseItem.call this, $stateItem
+
+            return false
 
         expandItem: ($stateItem) ->
 
@@ -2265,18 +2268,19 @@ define [ 'event',
 
         checkboxSelect: (event) ->
 
-            # that = this
+            that = this
 
-            # checkbox = $(event.currentTarget)
+            checkbox = $(event.currentTarget).find('input')
 
-            # item = checkbox.parents('.state-item')
+            item = checkbox.parents('.state-item')
 
-            # item.removeClass('selected')
+            item.removeClass('selected')
 
-            # if checkbox.prop('checked') is true
-            #     item.addClass('selected')
+            if checkbox.prop('checked') is false
+                checkbox.prop('checked', true)
+                item.addClass('selected')
 
-            # return false
+            return false
     }
 
     return StateEditorView

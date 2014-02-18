@@ -20,7 +20,7 @@ define [ 'event',
 
         initialize : ->
 
-            $( document.body ).on 'click', '.new-stack-dialog',          this, @openNewStackDialog
+            #$( document.body ).on 'click', '.new-stack-dialog',          this, @openNewStackDialog
             $( document.body ).on 'click', '#reload-account-attributes', this, @reloadAccountAttributes
             $( document.body ).on 'click', '#close-tab-confirm',         this, @closeTabConfirmEvent
 
@@ -211,10 +211,13 @@ define [ 'event',
             $( '#tab-bar-dashboard' ).children().html '<i class="icon-dashboard icon-tabbar-label"></i>' + tab_name
             null
 
-        openNewStackDialog : ( event ) ->
+        openNewStackDialog : () ->
             console.log 'openNewStackDialog'
-            console.log $( event.currentTarget ).attr 'data-supported-platform'
-            event.data.trigger 'SELECE_PLATFORM', $( event.currentTarget ).attr 'data-supported-platform'
+            #console.log $( event.currentTarget ).attr 'data-supported-platform'
+            #event.data.trigger 'SELECE_PLATFORM', $( event.currentTarget ).attr 'data-supported-platform'
+
+            @trigger 'SELECE_PLATFORM', 'ec2-vpc'
+
             null
 
     }

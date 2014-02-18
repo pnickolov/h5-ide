@@ -2265,7 +2265,7 @@ MC.canvas.volume = {
 
 			$(document.body)
 				.append('<div id="drag_shadow"><div class="resource-icon resource-icon-volume"></div></div>')
-				.append('<div id="overlayer" class="grabbing"></div>');
+				.append('<div id="overlayer"></div>');
 
 			shadow = $('#drag_shadow');
 
@@ -2292,7 +2292,7 @@ MC.canvas.volume = {
 				'action': 'move'
 			});
 
-			$canvas( this.id ).select();
+			$canvas( this.id, 'AWS.EC2.EBS.Volume' ).select();
 
 			return false;
 		}
@@ -2309,8 +2309,16 @@ MC.canvas.volume = {
 			target_type = MC.canvas.getState() === 'appedit' ? ['AWS.EC2.Instance'] : ['AWS.EC2.Instance', 'AWS.AutoScaling.LaunchConfiguration'];
 
 		if (
-			event_data.originalX !== event.pageX ||
-			event_data.originalY !== event.pageY
+			(
+				event.pageX > event_data.originalPageX + 2 ||
+				event.pageX < event_data.originalPageX - 2
+				
+			)
+			&&
+			(
+				event.pageY > event_data.originalPageY + 2 ||
+				event.pageY < event_data.originalPageY - 2
+			)
 		)
 		{
 			event_data.shadow
@@ -2321,28 +2329,18 @@ MC.canvas.volume = {
 				.show();
 
 			event_data.canvas_body.addClass('node-dragging');
-		}
 
-		if (
-			match_node &&
-			$.inArray(node_type, target_type) > -1
-		)
-		{
-			// if (
-			// 	event_data.action === 'move'// &&
-			// 	//node_type === 'AWS.AutoScaling.LaunchConfiguration'
-			// )
-			// {
-			// 	MC.canvas.volume.close();
-			// }
-			// else
-			// {
+			if (
+				match_node &&
+				$.inArray(node_type, target_type) > -1
+			)
+			{
 				MC.canvas.volume.bubble(match_node.id);
-			//}
-		}
-		else
-		{
-			MC.canvas.volume.close();
+			}
+			else
+			{
+				MC.canvas.volume.close();
+			}
 		}
 
 		return false;

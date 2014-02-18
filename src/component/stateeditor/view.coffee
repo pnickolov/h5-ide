@@ -39,6 +39,8 @@ define [ 'event',
             'click .state-log-refresh': 'onLogRefreshClick'
             'click .state-item-add': 'onStateItemAddClick'
 
+            'click .checkbox input': 'checkboxSelect'
+
             'OPTION_CHANGE .state-editor-res-select': 'onResSelectChange'
 
             'keyup .parameter-item.optional .parameter-value': 'onOptionalParaItemChange'
@@ -2186,6 +2188,21 @@ define [ 'event',
 
             $targetState.remove()
             that.refreshLogItemNum()
+
+        checkboxSelect: (event) ->
+
+            # that = this
+
+            # checkbox = $(event.currentTarget)
+
+            # item = checkbox.parents('.state-item')
+
+            # item.removeClass('selected')
+
+            # if checkbox.prop('checked') is true
+            #     item.addClass('selected')
+
+            # return false
     }
 
     return StateEditorView

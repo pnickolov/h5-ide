@@ -33,7 +33,7 @@ define [ "constant", "../ConnectionModel", "CanvasManager", "Design" ], ( consta
       # When an SgAsso is removed because of an SecurityGroup is removed.
       # If this SgAsso is the last SgAsso of some resources, attach DefaultSg to these resources.
       resource = @getOtherTarget( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup )
-      if resource.isRemoved()
+      if resource.isRemoved() and @type isnt 'ExpandedAsg'
         return
 
       # When A is removed, and A delete an Sg ( SgA ) while removing,

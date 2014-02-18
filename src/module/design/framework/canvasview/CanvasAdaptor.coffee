@@ -64,7 +64,7 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
       CanvasEvent[event].apply( this, Array.prototype.slice.call(arguments, 1) )
     null
 
-  $canvas.add = ( type, attributes, pos )->
+  $canvas.add = ( type, attributes, pos, createOption )->
 
     attributes = $.extend { x : pos.x, y : pos.y }, attributes
     parent = Design.__instance.component( attributes.groupUId )
@@ -82,7 +82,7 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
 
     Model = Design.modelClassForType type
 
-    createOption = { createByUser : true }
+    createOption = $.extend { createByUser : true }, createOption || {}
     m = new Model( attributes, createOption )
 
     ####

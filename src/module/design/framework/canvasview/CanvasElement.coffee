@@ -226,6 +226,13 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
     ide_event.trigger ide_event.PROPERTY_REFRESH_ENI_IP_LIST
     null
 
+  CanvasElement.prototype.clone = ( parentId, x, y )->
+    parent       = @model.design.component( parentId ) or @model.parent()
+    pos          = { x : x, y : y }
+    createOption = { sourceTarget : @model }
+
+    $canvas.add( @type, parent, pos, createOption )
+
   CanvasElement.prototype.parent  = ()->
     p = @model.parent()
     if p then p.getCanvasView() else null

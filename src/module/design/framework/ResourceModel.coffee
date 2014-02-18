@@ -247,11 +247,14 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
       if not awsType then awsType = @type
       @design().classCacheForCid( this.prototype.classId ).slice(0)
 
-    markAsRemoved : ()->
-      @__design = null
+    markAsRemoved : ( isRemoved )->
+      if isRemoved is undefined
+        @__isRemoved = true
+      else
+        @__isRemoved = !!isRemoved
       null
 
-    isRemoved   : ()-> !@__design
+    isRemoved   : ()-> @__isRemoved is true
     isRemovable : () -> true
     isReparentable : ()-> true
 
@@ -279,6 +282,8 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
       if @isRemoved()
         console.warn "The resource is already removed : ", this
         return
+
+      @__isRemoved = true
 
       console.debug "Removing resource : #{@get('name')}", this
 

@@ -97,6 +97,7 @@ define [ "Design", "CanvasManager", "./ResourceModel", "constant", "./canvasview
       v = @getCanvasView()
       if v then v.detach()
 
+      @markAsRemoved( false )
       ResourceModel.prototype.remove.call this
       null
 

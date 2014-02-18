@@ -5,6 +5,7 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
   __emptyObj     = {}
 
   ### env:dev ###
+  Attributes = ()-> this
   __checkEventOnUsage = ( protoProps )->
     ### jshint -W083 ###
     for propName, prop of protoProps
@@ -197,6 +198,10 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
       design.cacheComponent( attributes.id, this )
 
       Backbone.Model.call( this, attributes, options || __emptyObj )
+
+      ### env:dev ###
+      @attributes = _.extend( new Attributes(), @attributes )
+      ### env:dev:end ###
 
       # Initialize name/appId to empty string
       if not @attributes.name  then @attributes.name  = ""

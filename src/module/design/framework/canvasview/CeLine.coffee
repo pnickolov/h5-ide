@@ -1,9 +1,9 @@
 
 define [ "./CanvasElement", "CanvasManager", "constant" ], ( CanvasElement, CanvasManager, constant )->
 
-  ChildElement = ()-> CanvasElement.apply( this, arguments )
-  CanvasElement.extend( ChildElement, "Line" )
-  ChildElementProto = ChildElement.prototype
+  CeLine = ()-> CanvasElement.apply( this, arguments )
+  CanvasElement.extend( CeLine, "Line" )
+  ChildElementProto = CeLine.prototype
 
 
   ###

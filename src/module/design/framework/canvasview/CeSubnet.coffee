@@ -1,9 +1,9 @@
 
 define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, constant, CanvasManager )->
 
-  ChildElement = ()-> CanvasElement.apply( this, arguments )
-  CanvasElement.extend( ChildElement, constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet )
-  ChildElementProto = ChildElement.prototype
+  CeSubnet = ()-> CanvasElement.apply( this, arguments )
+  CanvasElement.extend( CeSubnet, constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet )
+  ChildElementProto = CeSubnet.prototype
 
 
   ###

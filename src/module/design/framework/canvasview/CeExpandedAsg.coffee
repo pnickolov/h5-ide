@@ -1,13 +1,13 @@
 
 define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, constant, CanvasManager )->
 
-  ChildElement = ()->
+  CeExpandedAsg = ()->
     CanvasElement.apply( this, arguments )
     this.type = constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
     null
 
-  CanvasElement.extend( ChildElement, "ExpandedAsg" )
-  ChildElementProto = ChildElement.prototype
+  CanvasElement.extend( CeExpandedAsg, "ExpandedAsg" )
+  ChildElementProto = CeExpandedAsg.prototype
 
 
   ###

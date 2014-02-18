@@ -1,9 +1,9 @@
 
 define [ "./CanvasElement", "constant", "CanvasManager", "Design" ], ( CanvasElement, constant, CanvasManager, Design )->
 
-  ChildElement = ()-> CanvasElement.apply( this, arguments )
-  CanvasElement.extend( ChildElement, constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance )
-  ChildElementProto = ChildElement.prototype
+  CeInstance = ()-> CanvasElement.apply( this, arguments )
+  CanvasElement.extend( CeInstance, constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance )
+  ChildElementProto = CeInstance.prototype
 
 
   ###
@@ -326,4 +326,4 @@ define [ "./CanvasElement", "constant", "CanvasManager", "Design" ], ( CanvasEle
       return @volume( volumeId )
     null
 
-  ChildElement
+  CeInstance

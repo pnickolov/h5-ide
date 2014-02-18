@@ -1,10 +1,10 @@
 
 define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager" ], ( CanvasElement, CeInstance, constant, CanvasManager )->
 
-  ChildElement = ()-> CanvasElement.apply( this, arguments )
+  CeLc = ()-> CanvasElement.apply( this, arguments )
 
-  CanvasElement.extend.call( CeInstance, ChildElement, constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration )
-  ChildElementProto = ChildElement.prototype
+  CanvasElement.extend.call( CeInstance, CeLc, constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration )
+  ChildElementProto = CeLc.prototype
 
 
   ###

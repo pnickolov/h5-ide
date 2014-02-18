@@ -1,9 +1,9 @@
 
 define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, constant, CanvasManager )->
 
-  ChildElement = ()-> CanvasElement.apply( this, arguments )
-  CanvasElement.extend( ChildElement, constant.AWS_RESOURCE_TYPE.AWS_ELB )
-  ChildElementProto = ChildElement.prototype
+  CeElb = ()-> CanvasElement.apply( this, arguments )
+  CanvasElement.extend( CeElb, constant.AWS_RESOURCE_TYPE.AWS_ELB )
+  ChildElementProto = CeElb.prototype
 
 
   ###

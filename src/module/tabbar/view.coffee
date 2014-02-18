@@ -20,7 +20,7 @@ define [ 'event',
 
         initialize : ->
 
-            $( document.body ).on 'click', '.new-stack-dialog',          this, @openNewStackDialog
+            #$( document.body ).on 'click', '.new-stack-dialog',          this, @openNewStackDialog
             $( document.body ).on 'click', '#reload-account-attributes', this, @reloadAccountAttributes
             $( document.body ).on 'click', '#close-tab-confirm',         this, @closeTabConfirmEvent
 

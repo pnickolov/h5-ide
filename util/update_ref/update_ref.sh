@@ -67,7 +67,7 @@ MSG="export app json"
 showlog 1 "$MSG"
 mongoexport -h 127.0.0.1 --port 8290 -d forge -c app --jsonArray -o app.json -q '{state:{$not:{$in:["Terminated"]}}}'
 
-#app.json is single lineï¼Œapp-fmt.json is multiple lines
+#app.json is single line£¬app-fmt.json is multiple lines
 MSG="json pretty"
 showlog 2 "$MSG"
 cat app.json |  python -mjson.tool > app-fmt.json
@@ -75,18 +75,18 @@ add2git "$MSG"
 
 echo
 echo "Test"
-echo -e " @{ \n {@ \n .} \n }.\n" | grep -E "@\{|\{@|\.\}|\}\."
+echo -e " @{ \n {@ \n \"}.\n" | grep -E "@\{|\{@|\"\}\."
 echo "------------------------------"
-echo "check '@{'    '{@'    '.}'    '}.'"
-grep -E "@\{|\{@|\.\}|\}\."  app-fmt.json
+echo "check '@{'    '{@'    '\"}.'"
+grep -E "@\{|\{@|\"\}\."  app-fmt.json
 echo
 
-MSG="[sed]replace '@uuid.' to '{@uuid.}'"
+MSG="[sed]replace '@uuid.xxx.xxx' to '{@uuid.xxx.xxx}'"
 showlog 3 "$MSG"
-sed -i -e "s/@[A-Z 0-9]\{8\}-[A-Z 0-9]\{4\}-[A-Z 0-9]\{4\}-[A-Z 0-9]\{4\}-[A-Z 0-9]\{12\}\./\{&\}/g" app-fmt.json
+sed -i -e "s/@[A-Z 0-9]\{8\}-[A-Z 0-9]\{4\}-[A-Z 0-9]\{4\}-[A-Z 0-9]\{4\}-[A-Z 0-9]\{12\}\..*\"/\{&\}/g" app-fmt.json
 add2git "$MSG"
 
-NREF_BEFORE=`sed -n '/@[A-Z 0-9]\{8\}-[A-Z 0-9]\{4\}-[A-Z 0-9]\{4\}-[A-Z 0-9]\{4\}-[A-Z 0-9]\{12\}\./p' app-fmt.json | wc -l`
+NREF_BEFORE=`sed -n '/@[A-Z 0-9]\{8\}-[A-Z 0-9]\{4\}-[A-Z 0-9]\{4\}-[A-Z 0-9]\{4\}-[A-Z 0-9]\{12\}\..*"/p' app-fmt.json | wc -l`
 
 
 MSG="[sed]replace '{@' to '@{'"
@@ -94,9 +94,11 @@ showlog 4 "$MSG"
 sed -i -e "s/{@/@\{/g" app-fmt.json
 add2git "$MSG"
 
-MSG="[sed]replace '.}' to '}.'"
+
+MSG="[sed]replace '@{uuid.xxx.xxx\"}' -> '@{uuid.xxx.xxx\"}.' -> '@{uuid.xxx.xxx}' "
 showlog 5 "$MSG"
-sed -i -e "s/\.}/\}\./g" app-fmt.json
+sed -i -e "s/@{[A-Z 0-9]\{8\}-[A-Z 0-9]\{4\}-[A-Z 0-9]\{4\}-[A-Z 0-9]\{4\}-[A-Z 0-9]\{12\}\..*\"}/&\./g" app-fmt.json
+sed -i -e "s/\"}\./\}\"/g" app-fmt.json
 add2git "$MSG"
 
 
@@ -105,7 +107,7 @@ showlog '{tmp}' "$MSG"
 sed  -i  "/\"username\": \".*\",/c \"username\": \"eGppbW15\"," app-fmt.json 
 add2git "$MSG"
 
-NREF_AFTER=`sed -n '/@{[A-Z 0-9]\{8\}-[A-Z 0-9]\{4\}-[A-Z 0-9]\{4\}-[A-Z 0-9]\{4\}-[A-Z 0-9]\{12\}}\./p' app-fmt.json | wc -l`
+NREF_AFTER=`sed -n '/@{[A-Z 0-9]\{8\}-[A-Z 0-9]\{4\}-[A-Z 0-9]\{4\}-[A-Z 0-9]\{4\}-[A-Z 0-9]\{12\}\..*}/p' app-fmt.json | wc -l`
 
  
 
@@ -132,3 +134,5 @@ echo -e "\n==========================================="
 echo -e "\n**please use 'vim app/changed.log' to verify**"
 echo -e "\nupdate mongo data  'mongoimport -h 127.0.0.1 --port 8290 -d forge -c app --jsonArray --file app-fmt.json --upsert'"
 echo -e "\ndone\n"
+
+

@@ -14,17 +14,6 @@ define [ "./CanvasElement", 'i18n!nls/lang.js', "constant", "Design", "CanvasMan
   CeAsgProto.asgExpand = ( parentId, x, y )->
     design = @model.design()
 
-    # # #
-    # Quick Hack for supporting AppEdit
-    # Ask the component if it supports AppEdit Mode
-    #
-    if design.modeIsAppEdit()
-      notification "error", "This operation is not supported yet."
-      return
-    #
-    # #
-    # # #
-
     # This method contains some logic to determine if the ASG is expanded
     comp   = @model
     target = design.component(parentId)
@@ -102,7 +91,6 @@ define [ "./CanvasElement", 'i18n!nls/lang.js', "constant", "Design", "CanvasMan
 
     hasLC = !!m.get("lc")
     CanvasManager.toggle( node.children(".prompt_text"), !hasLC )
-    CanvasManager.toggle( node.children(".asg-resource-dragger"), true )
     null
 
   CeAsgProto.__drawExpandedAsg = ->

@@ -837,12 +837,6 @@
 	display: none;
 }
 
-.canvas_state_app .asg-resource-dragger,
-.canvas_state_appedit .asg-resource-dragger,
-.canvas_state_appview .asg-resource-dragger {
-	display: none;
-}
-
 .canvas_state_app .server-number-bg {
 	cursor: pointer;
 }
@@ -1160,8 +1154,8 @@
 
 .node-action-tooltip:before {
 	content:"";
-	width: 0; 
-	height: 0; 
+	width: 0;
+	height: 0;
 	border-top: 4px solid transparent;
 	border-bottom: 4px solid transparent;
 	border-right: 4px solid rgba(0,0,0, 0.8);
@@ -1183,7 +1177,7 @@
 
 	height: 26px;
 	width: 26px;
-	cursor: pointer;	
+	cursor: pointer;
 	overflow: hidden;
 }
 

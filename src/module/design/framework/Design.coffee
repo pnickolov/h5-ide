@@ -96,6 +96,7 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
     @__canvasGroups = {}
     @__classCache   = {}
     @__backingStore = {}
+    @__usedUidCache = {}
 
     @__mode = options.mode
 
@@ -146,18 +147,16 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
     for devistor in Design.__deserializeVisitors
       devistor( json_data, layout_data, version )
 
-    that = @
-
     # Disable triggering event when Design is deserializing
     Design.trigger = noop
 
 
     # A helper function to let each resource to get its dependency
-    resolveDeserialize = ( uid )->
+    resolveDeserialize = ( uid )=>
 
       if not uid then return null
 
-      obj = that.__componentMap[ uid ]
+      obj = this.__componentMap[ uid ]
       if obj then return obj
 
       # Check if we have recursive dependency
@@ -192,6 +191,10 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
     # Deserialize resolveFisrt resources
     @component = null # Forbid user to call component at this time.
     for uid, comp of json_data
+
+      # Collect Used UID. So that we can ensure we will always generate unique uid.
+      @__usedUidCache[ uid ] = true
+
       if Design.__resolveFirstMap[ comp.type ] is true
         ModelClass = Design.modelClassForType( comp.type )
 
@@ -279,6 +282,10 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
       delete @__componentMap[ id ]
       delete @__canvasGroups[ id ]
       delete @__canvasNodes[ id ]
+
+      # Only in stack mode, we reclaim the id once the component is removed from cache.
+      if @modeIsAppEdit()
+        @reclaimGuid( id )
     else
       @__componentMap[ id ] = comp
 
@@ -315,6 +322,16 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
 
     @__modelClassMap[ type ]
 
+  DesignImpl.prototype.reclaimGuid = ( guid )-> delete @__usedUidCache[ guid ]
+  DesignImpl.prototype.guid = ()->
+    newId = MC.guid()
+    while @__usedUidCache[ newId ]
+      console.warn "GUID collision detected, the generated GUID is #{newId}. Try generating a new one."
+      newId = MC.guid()
+
+    @__usedUidCache[ newId ] = true
+    newId
+
   DesignImpl.prototype.get = ( key )-> @attributes[key]
   DesignImpl.prototype.set = ( key, value )->
     @attributes[key] = value
@@ -350,7 +367,8 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
 
     context = context || this
     for uid, comp of @__componentMap
-      func.call( context, comp )
+      if func.call( context, comp ) is false
+        break
     null
 
   DesignImpl.prototype.save = ( canvas_data )->
@@ -376,14 +394,15 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
     @__backingStore.name = @attributes.name
     null
 
-  DesignImpl.prototype.isModified = ()->
+  DesignImpl.prototype.isModified = ( newData )->
 
     if Design.instance().modeIsApp() then return false
 
     if @__backingStore.name isnt @attributes.name
       return true
 
-    newData = @serialize()
+    if not newData
+      newData = @serialize()
 
     if _.isEqual( @__backingStore.component, newData.component )
       if _.isEqual( @__backingStore.layout, newData.layout )
@@ -441,8 +460,8 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
 
 
 
-    # At this point, we allow each ModelClass to have full privilege to modify
-    # the component data. This is necessary for ModelClass that wants to work on
+    # At this point, we allow each visitors to have full privilege to modify
+    # the component data. This is necessary for visitors that wants to work on
     # many components at once. ( One use-case is Subnet would like to assign IPs. )
     version = data.version
     for visitor in Design.__serializeVisitors
@@ -496,6 +515,19 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
     { costList : costList, totalFee : Math.round(totalFee * 100) / 100 }
 
   ########## AWS Business logics ############
+  DesignImpl.prototype.diffAmi = ( newData, oldData )->
+
+    newComps = newData.component
+    oldComps = ( oldData || @__backingStore ).component
+
+    newInstances = []
+    oldINstances = []
+
+    {
+      remain : newInstances
+      remove : oldINstances
+    }
+
   DesignImpl.prototype.isStoppable = ()->
     # Previous version will set canvas_data.property.stoppable to false
     # If the stack contains instance-stor ami.

@@ -2309,15 +2309,19 @@ MC.canvas.volume = {
 			target_type = MC.canvas.getState() === 'appedit' ? ['AWS.EC2.Instance'] : ['AWS.EC2.Instance', 'AWS.AutoScaling.LaunchConfiguration'];
 
 		if (
+			event_data.action === 'add'
+			||
 			(
-				event.pageX > event_data.originalPageX + 2 ||
-				event.pageX < event_data.originalPageX - 2
-				
-			)
-			&&
-			(
-				event.pageY > event_data.originalPageY + 2 ||
-				event.pageY < event_data.originalPageY - 2
+				(
+					event.pageX > event_data.originalPageX + 2 ||
+					event.pageX < event_data.originalPageX - 2
+					
+				)
+				&&
+				(
+					event.pageY > event_data.originalPageY + 2 ||
+					event.pageY < event_data.originalPageY - 2
+				)
 			)
 		)
 		{
@@ -3717,7 +3721,8 @@ MC.canvas.event.siderbarDrag = {
 					'target': target,
 					'canvas_offset': canvas_offset,
 					'canvas_body': $('#canvas_body'),
-					'shadow': shadow
+					'shadow': shadow,
+					'action': 'add'
 				});
 			}
 			else

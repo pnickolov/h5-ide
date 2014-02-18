@@ -67,10 +67,12 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
   $canvas.add = ( type, attributes, pos, createOption )->
 
     attributes = $.extend { x : pos.x, y : pos.y }, attributes
-    parent = Design.__instance.component( attributes.groupUId )
 
-    attributes.parent = parent
-    delete attributes.groupUId
+    parent = attributes.parent
+    if not parent
+      parent = Design.__instance.component( attributes.groupUId )
+      attributes.parent = parent
+      delete attributes.groupUId
 
     if parent
       if parent.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group

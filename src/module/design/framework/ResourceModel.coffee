@@ -387,6 +387,35 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
       for model in removed
         model.removeFromStorage @
 
+    cloneAttributes : ( srcTarget, option )->
+
+      # option =
+      #   reserve : "id|appId|x|y|width|height"
+      #   copyConnection : [ "KeypairUsage", "SgAsso" ]
+      option  = option or {}
+      reserve = option.reserve or "id|appId|x|y|width|height|name"
+      cnsType = option.copyConnection or []
+
+      for attr, value of srcTarget.attributes
+        if attr.indexOf("__") is 0 or reserve.indexOf( attr ) isnt -1
+          continue
+
+        if value isnt null and _.isObject( value )
+          value = @cloneObjectAttributes( attr, value )
+
+        @attributes[ attr ] = value
+
+      # Copy connection
+      for cnType in cnsType
+        CnClass = Design.modelClassForType( cnType )
+        for target in srcTarget.connectionTargets( cnType )
+          new CnClass( target, this )
+      null
+
+    cloneObjectAttributes : ( attributeName, attributeValue )->
+      base = if _.isArray( attributeValue ) then [] else {}
+      $.extend base, attributeValue
+
     # Storage is created when necessary
     storage : ()->
       if not this.__storage

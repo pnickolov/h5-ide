@@ -30,14 +30,30 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
 
     initialize : ( attr, option )->
 
-      if option and option.createByUser
+      option = option || {}
 
+      shouldInit = option.createByUser and not option.cloneSource
+
+      if shouldInit
         @initInstanceType()
 
-        # Draw before creating SgAsso
-        @draw(true)
-        #create mode => no option or option.isCreate==true
 
+      if option.createByUser and not Design.instance().typeIsClassic()
+        #create eni0
+        EniModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface )
+        @setEmbedEni( new EniModel({
+          name : "eni0"
+          assoPublicIp : Design.instance().typeIsDefaultVpc()
+        }, { instance: this }) )
+
+
+      if option.cloneSource
+        @clone( option.cloneSource )
+
+      # Draw before creating SgAsso
+      @draw(true)
+
+      if shouldInit
         #assign DefaultKP
         KpModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair )
         defaultKp = KpModel.getDefaultKP()
@@ -55,16 +71,6 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
         else
           console.error "No DefaultSG found when initialize InstanceModel"
 
-        if not Design.instance().typeIsClassic()
-          #create eni0
-          EniModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface )
-          @setEmbedEni( new EniModel({
-            name : "eni0"
-            assoPublicIp : Design.instance().typeIsDefaultVpc()
-          }, { instance: this }) )
-
-      else
-        @draw( true )
 
       # Always setTenancy to insure we don't have micro type for dedicated.
       tenancy = @get("tenancy")
@@ -365,6 +371,28 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
         return MC.template.NodeStateRemoveConfirmation(name: @get("name"))
 
       true
+
+    clone : ( srcTarget )->
+      console.assert srcTarget.type is @type, "Invalid type of target when cloning."
+
+      @cloneAttributes srcTarget, {
+        copyConnection : [ "KeypairUsage", "SgAsso", "ElbAmiAsso" ]
+      }
+
+      # Update states id
+      for state in @get("state") or []
+        state.id = "state-" + @design().guid()
+
+      # Copy Eni
+
+      # Copy volume
+      null
+
+    cloneObjectAttributes : ( name, value )->
+      if name is "volumeList"
+        undefined
+      else
+        Model.__super__.cloneObjectAttributes.call this, name, value
 
     setEmbedEni : ( eni )->
       this.__mainEni = eni

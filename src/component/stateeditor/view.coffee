@@ -62,6 +62,7 @@ define [ 'event',
 
             this.compileTpl()
             this.initData()
+            this.initUndoManager()
 
             $(document).on 'keydown', {target: this}, this.keyEvent
 
@@ -1011,12 +1012,8 @@ define [ 'event',
             that.refreshLogItemNum()
 
             # redo/undo
-            # that.undoManager.register(newStateId)
-
-            $stateItems = that.$stateList.find('.state-item')
-            if $stateItems[0]
-                stateData = that.genStateItemData($($stateItems[0]))
-                that.addStateItemByData([stateData], 0)
+            statePos = $newStateItem.index()
+            that.undoManager.register(newStateId, statePos, 'add')
 
         onStateRemoveClick: (event) ->
 
@@ -1088,7 +1085,11 @@ define [ 'event',
 
             #empty module direct return
             if not moduleObj
-                return
+                return {
+                    id: stateId,
+                    module: '',
+                    parameter: {}
+                }
 
             stateItemObj = {
                 id: stateId,
@@ -1370,6 +1371,7 @@ define [ 'event',
         onStateCancelClick: (event) ->
 
             that = this
+
             that.unloadEditor()
             that.closedPopup()
 
@@ -2054,12 +2056,13 @@ define [ 'event',
 
             that.undoManager = {
 
-                register: (stateId, method, data) ->
+                register: (stateId, statePos, method, stateData) ->
 
                     that.commandStack.push({
                         stateId: stateId,
+                        statePos: statePos,
                         method: method,
-                        data: data,
+                        stateData: stateData
                     })
                     that.commandIndex = that.commandStack.length - 1
                     null
@@ -2069,11 +2072,31 @@ define [ 'event',
                     null
 
                 undo: () ->
+
+                    operateCommand = that.commandStack[that.commandIndex]
+
+                    if operateCommand
+
+                        if operateCommand.method is 'add'
+                            $stateItem = that.getStateItemById(operateCommand.stateId)
+                            that.onRemoveState(null, $stateItem, true)
+
+                        if operateCommand.method is 'remove'
+                            that.addStateItemByData([operateCommand.stateData], operateCommand.statePos)
+
+                        that.commandIndex = that.commandIndex - 1
+
                     null
 
             }
 
             null
+
+        getStateItemById: (stateId) ->
+
+            that = this
+            $stateItem = that.$stateList.find('.state-item[data-id="' + stateId + '"]')
+            return $stateItem
 
         getStateItemByData: ($stateItem) ->
 
@@ -2092,10 +2115,14 @@ define [ 'event',
             $currentStateItems = that.$stateList.find('.state-item')
 
             $insertPosStateItem = null
-            if $currentStateItems[insertPos]
-                $insertPosStateItem = $($currentStateItems[insertPos])
+
+            if insertPos is -1
+                $insertPosStateItem = $(newStateItems).prependTo(that.$stateList)
             else
-                $insertPosStateItem = $($currentStateItems[$currentStateItems.length - 1])
+                if $currentStateItems[insertPos]
+                    $insertPosStateItem = $($currentStateItems[insertPos])
+                else
+                    $insertPosStateItem = $($currentStateItems[$currentStateItems.length - 1])
 
             $newStateItems = $(newStateItems).insertAfter($insertPosStateItem)
 
@@ -2256,12 +2283,20 @@ define [ 'event',
             if index is 0
                 container_item.parents('.state-item').find('.command-value .ace_text-input').focus()
 
-        onRemoveState: (event, $targetState) ->
+        onRemoveState: (event, $targetState, noRegisterUndo) ->
 
             that = this
 
             if that.currentState is 'app'
                 return false
+
+            # redo/undo
+            if not noRegisterUndo
+
+                stateId = $targetState.data('data-id')
+                stateData = that.getStateItemByData($targetState)
+                statePos = $targetState.index()
+                that.undoManager.register(stateId, statePos - 1, 'remove', stateData)
 
             $targetState.remove()
             that.refreshLogItemNum()

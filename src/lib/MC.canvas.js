@@ -2902,9 +2902,9 @@ MC.canvas.event.dragable = {
 			else
 			{
 				$(document).on({
-					'keydown': target_type === 'AWS.EC2.Instance' ? MC.canvas.event.dragable.keyClone : returnFalse,
-					'mousemove': MC.canvas.event.dragable.mousemove,
-					'mouseup': Canvon(event.target).hasClass('asg-resource-dragger') ?
+					'keydown.DRAGABLE_EVENT': target_type === 'AWS.EC2.Instance' ? MC.canvas.event.dragable.keyClone : returnFalse,
+					'mousemove.DRAGABLE_EVENT': MC.canvas.event.dragable.mousemove,
+					'mouseup.DRAGABLE_EVENT': Canvon(event.target).hasClass('asg-resource-dragger') ?
 						// For asgExpand
 						MC.canvas.event.dragable.asgExpandup :
 						// Default
@@ -2945,14 +2945,16 @@ MC.canvas.event.dragable = {
 			if (!event.data.canvas_body.hasClass('cloning'))
 			{
 				event.data.canvas_body.addClass('cloning');
+
+				return false;
 			}
 		}
 		else
 		{
 			event.data.canvas_body.removeClass('cloning');
-		}
 
-		return false;
+			return false;
+		}
 	},
 	mousemove: function (event)
 	{
@@ -3325,10 +3327,7 @@ MC.canvas.event.dragable = {
 
 		Canvon('.match-dropable-group').removeClass('match-dropable-group');
 
-		$(document).off({
-			'mousemove': MC.canvas.event.dragable.mousemove,
-			'mouseup': MC.canvas.event.dragable.mouseup
-		});
+		$(document).off('.DRAGABLE_EVENT');
 	},
 	gatewaymove: function (event)
 	{
@@ -3458,10 +3457,7 @@ MC.canvas.event.dragable = {
 
 		$('#overlayer').remove();
 
-		$(document).off({
-			'mousemove': MC.canvas.event.dragable.mousemove,
-			'mouseup': MC.canvas.event.dragable.asgExpandup
-		});
+		$(document).off('.DRAGABLE_EVENT');
 	}
 };
 

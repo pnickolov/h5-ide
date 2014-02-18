@@ -57,6 +57,20 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
         defaultSg = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup ).getDefaultSg()
         SgAsso = Design.modelClassForType( "SgAsso" )
         new SgAsso( defaultSg, this )
+
+      if option.cloneSource
+        @clone( option.cloneSource )
+      null
+
+    clone : ( srcTarget )->
+      @cloneAttributes srcTarget
+
+      # Update Ips to automatically assign, and reassign eip uid
+      for ip in @get("ips")
+        ip.ip = "x.x.x.x"
+        ip.autoAssign = true
+        ip.eipData.id = @design().guid()
+
       null
 
     groupMembers : ()->

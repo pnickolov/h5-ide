@@ -40,12 +40,7 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
       null
 
     clone : ( srcTarget )->
-      console.assert srcTarget.type is @type, "Invalid type of target when cloning."
-
-      @cloneAttributes srcTarget, {
-        reserve : "owner"
-        copyConnection : [ "KeypairUsage", "SgAsso", "ElbAmiAsso" ]
-      }
+      @cloneAttributes srcTarget, { reserve : "owner" }
       null
 
     isVisual : ()-> false

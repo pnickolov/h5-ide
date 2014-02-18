@@ -378,8 +378,6 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
       true
 
     clone : ( srcTarget )->
-      console.assert srcTarget.type is @type, "Invalid type of target when cloning."
-
       @cloneAttributes srcTarget, {
         reserve : "volumeList"
         copyConnection : [ "KeypairUsage", "SgAsso", "ElbAmiAsso" ]
@@ -395,6 +393,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
         new Volume( { owner : this }, { cloneSource : v } )
 
       # Copy Eni
+      @getEmbedEni().clone( srcTarget.getEmbedEni() )
       null
 
     setEmbedEni : ( eni )->

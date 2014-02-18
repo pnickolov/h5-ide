@@ -1,6 +1,28 @@
 
 define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
 
+  deepClone = ( base )->
+
+    if base is null or not _.isObject( base )
+      return base
+
+    if _.isArray( base )
+      target = []
+      for a, idx in base
+        target[idx] = deepClone(a)
+
+      return target
+
+    target = {}
+    for key, value of base
+      if value isnt null and _.isObject( value )
+        target[ key ] = deepClone( value )
+      else
+        target[ key ] = value
+
+    target
+
+
   __detailExtend = Backbone.Model.extend
   __emptyObj     = {}
 
@@ -388,6 +410,7 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
         model.removeFromStorage @
 
     cloneAttributes : ( srcTarget, option )->
+      console.assert srcTarget.type is @type, "Invalid type of target when cloning attributes."
 
       # option =
       #   reserve : "id|appId|x|y|width|height"
@@ -415,8 +438,8 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
       null
 
     cloneObjectAttributes : ( attributeName, attributeValue )->
-      base = if _.isArray( attributeValue ) then [] else {}
-      $.extend base, attributeValue
+      # Cannot use $.extend here, because $.extend does not deep copy user-defined-objects.
+      deepClone( attributeValue )
 
     # Storage is created when necessary
     storage : ()->

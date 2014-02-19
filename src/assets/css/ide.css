@@ -7237,11 +7237,17 @@ summary:focus {
 }
 
 /* Instance system log modal */
+
+#modal-instance-sys-log .modal-body {
+	padding: 0;
+}
+
 #modal-instance-sys-log .instance-sys-log-content {
 	height: 500px;
 	overflow: auto;
-	background-color: #000;
+	background-color: #111;
 	display: none;
+	padding: 10px 20px;
 }
 
 #modal-instance-sys-log .instance-sys-log-content::selection {

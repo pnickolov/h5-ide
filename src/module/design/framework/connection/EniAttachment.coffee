@@ -17,7 +17,7 @@ define [ "constant", "../ConnectionModel", "i18n!nls/lang.js" ], ( constant, Con
 
       for sgline in eni.connections( "SgRuleLine" )
         if sgline.getTarget( constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance ) is ami
-          sgline.remove()
+          sgline.remove( { reason : this } )
           break
 
       # Calc the new index of this EniAttachment.

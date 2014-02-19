@@ -2315,7 +2315,7 @@ MC.canvas.volume = {
 				(
 					event.pageX > event_data.originalPageX + 2 ||
 					event.pageX < event_data.originalPageX - 2
-					
+
 				)
 				&&
 				(
@@ -2815,7 +2815,7 @@ MC.canvas.event.dragable = {
 
 			shadow = target.clone();
 
-			// Allow cloning for instance 
+			// Allow cloning for instance
 			if (target_type === 'AWS.EC2.Instance')
 			{
 				shadow.append(
@@ -3447,7 +3447,7 @@ MC.canvas.event.drawConnection = {
 				target_offset = Canvon(this).offset(),
 
 				parent = target.parent(),
-				node_id = parent.attr('id'),
+				node_id = parent.attr('id').slice(0, 36),
 				parent_item = $canvas(node_id),
 				parent_type = parent_item.type,
 

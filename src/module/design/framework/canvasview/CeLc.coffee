@@ -35,7 +35,7 @@ define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager" ], ( Can
   ChildElementProto.draw = ( isCreate, expandedAsg )->
 
     m = @model
-    id = expandedAsg and "#{expandedAsg.id}-lc" or @model.id
+    id = expandedAsg and "#{expandedAsg.id}_lc" or @model.id
 
     if isCreate
 

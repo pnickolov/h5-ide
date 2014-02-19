@@ -4112,14 +4112,14 @@ a.sidebar-hider {
 }
 
 /* Secondary Panel */
-.add-rule {
+.add-rule,
+.btn-get-system-log {
 	display : inline-block;
 	width   : 30px;
 	height  : 30px;
 
 	line-height : 30px;
 	text-align  : center;
-	color: #ccc;
 
 	position    : absolute;
 	right       : 0;
@@ -4133,6 +4133,13 @@ a.sidebar-hider {
 	background    : #c16aa2;
 	line-height   : 32px;
 	box-shadow    : -1px 0 0 0 rgba(0,0,0,.5);
+}
+
+.btn-get-system-log {
+	background: #2A55A2;
+	color: #eee;
+	box-shadow: inset 0 1px 0 rgba(255,255,255,.1);
+	border-left: 1px solid #222;
 }
 
 .rule-list-row {
@@ -7240,6 +7247,11 @@ summary:focus {
 
 #modal-instance-sys-log .modal-body {
 	padding: 0;
+}
+
+#modal-instance-sys-log .loading-spinner {
+	margin: 0 auto;
+	top: 25px;
 }
 
 #modal-instance-sys-log .instance-sys-log-content {

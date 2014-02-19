@@ -880,6 +880,8 @@ define [ 'event',
 
             $stateItem.addClass('selected')
 
+            $stateItem.find('.checkbox input').prop('checked', true)
+
         collapseItem: ($stateItem) ->
 
             that = this
@@ -908,6 +910,8 @@ define [ 'event',
             that = this
             
             that.$stateList.find('.selected').removeClass('selected')
+
+            that.$stateList.find('.checkbox input').prop('checked', false)
 
             null
 
@@ -2199,7 +2203,7 @@ define [ 'event',
 
             # Paste state item [Ctrl + V]
             if (event.ctrlKey or event.metaKey) and keyCode is 86
-                target.addStateItemByData MC.data.stateClipboard
+                target.addStateItemByData( target.setNewStateIdForStateAry( MC.data.stateClipboard ) )
                 return false
 
             # Remove state item [Ctrl + delete/backspace]

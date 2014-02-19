@@ -1325,6 +1325,12 @@ define [ 'event',
         onStateSaveClick: (event) ->
 
             that = this
+
+            if that.undoManager.hasRedo()
+                that.undoManager.redo()
+
+            return
+
             stateData = that.saveStateData()
 
             if stateData
@@ -1372,8 +1378,11 @@ define [ 'event',
 
             that = this
 
-            that.unloadEditor()
-            that.closedPopup()
+            if that.undoManager.hasUndo()
+                that.undoManager.undo()
+
+            # that.unloadEditor()
+            # that.closedPopup()
 
         onParaRemoveClick: (event) ->
 
@@ -2056,18 +2065,46 @@ define [ 'event',
 
             that.undoManager = {
 
-                register: (stateId, statePos, method, stateData) ->
+                register: (stateId, statePos, method) ->
 
-                    that.commandStack.push({
-                        stateId: stateId,
-                        statePos: statePos,
-                        method: method,
-                        stateData: stateData
-                    })
+                    that.commandStack.splice(that.commandIndex + 1, that.commandStack.length - that.commandIndex)
+
+                    if method is 'remove'
+
+                        that.commandStack.push({
+                            redo: () ->
+                                $stateItem = that.getStateItemById(stateId)
+                                stateData = that.getStateItemByData($stateItem)
+                                this.undo = () ->
+                                    that.addStateItemByData([stateData], statePos)
+                                that.onRemoveState(null, $stateItem, true)
+                            undo: () ->
+                                null
+                        })
+
+                    if method is 'add'
+
+                        that.commandStack.push({
+                            redo: () ->
+                                null
+                            undo: () ->
+                                $stateItem = that.getStateItemById(stateId)
+                                stateData = that.getStateItemByData($stateItem)
+                                this.redo = () ->
+                                    that.addStateItemByData([stateData], statePos)
+                                that.onRemoveState(null, $stateItem, true)
+                        })
+
                     that.commandIndex = that.commandStack.length - 1
                     null
 
                 redo: () ->
+
+                    operateCommand = that.commandStack[that.commandIndex + 1]
+
+                    if operateCommand
+                        operateCommand.redo()
+                        that.commandIndex = that.commandIndex + 1
 
                     null
 
@@ -2076,17 +2113,18 @@ define [ 'event',
                     operateCommand = that.commandStack[that.commandIndex]
 
                     if operateCommand
-
-                        if operateCommand.method is 'add'
-                            $stateItem = that.getStateItemById(operateCommand.stateId)
-                            that.onRemoveState(null, $stateItem, true)
-
-                        if operateCommand.method is 'remove'
-                            that.addStateItemByData([operateCommand.stateData], operateCommand.statePos)
-
+                        operateCommand.undo()
                         that.commandIndex = that.commandIndex - 1
 
                     null
+
+                hasUndo: () ->
+
+                    return that.commandIndex isnt -1
+
+                hasRedo: () ->
+
+                    return that.commandIndex < (that.commandStack.length - 1)
 
             }
 
@@ -2102,8 +2140,16 @@ define [ 'event',
 
             that = this
             stateData = that.genStateItemData($stateItem)
-            stateData.id = that.genStateUID()
             return stateData
+
+        setNewStateIdForStateAry: (stateDataAry) ->
+
+            that = this
+            stateDataAry = _.map stateDataAry, (stateData) ->
+                stateData.id = that.genStateUID()
+                return stateData
+
+            return stateDataAry
 
         addStateItemByData: (stateDataAry, insertPos) ->
 
@@ -2294,9 +2340,8 @@ define [ 'event',
             if not noRegisterUndo
 
                 stateId = $targetState.data('data-id')
-                stateData = that.getStateItemByData($targetState)
                 statePos = $targetState.index()
-                that.undoManager.register(stateId, statePos - 1, 'remove', stateData)
+                that.undoManager.register(stateId, statePos - 1, 'remove')
 
             $targetState.remove()
             that.refreshLogItemNum()

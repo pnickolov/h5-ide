@@ -3431,6 +3431,10 @@ a.sidebar-hider {
 	right: 0;
 }
 
+#resource-select:hover .selection {
+	background: rgba(0, 0, 0, 0.2);
+}
+
 .resource-select.selectbox .selection {
 	background: rgba(0, 0, 0, 0.1);
 	color: #F3F3F3;
@@ -3438,6 +3442,11 @@ a.sidebar-hider {
 	border-top: none;
 	border-bottom: none;
 	padding: 10px 20px 10px 10px;
+	-webkit-transition: background .2s ease-in-out;
+	-moz-transition: background .2s ease-in-out;
+	-ms-transition: background .2s ease-in-out;
+	-o-transition: background .2s ease-in-out;
+	transition: background .2s ease-in-out;
 }
 
 .resource-select.selectbox .dropdown {

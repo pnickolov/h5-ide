@@ -2188,6 +2188,8 @@ define [ 'event',
 
             target = event.data.target
             keyCode = event.which
+            status = target.currentState
+            is_editable = status is 'appedit' or 'stack'
 
             # Copy state item [Ctrl + C]
             if (event.ctrlKey or event.metaKey) and keyCode is 67
@@ -2202,27 +2204,27 @@ define [ 'event',
                 return false
 
             # undo [Ctrl + Z]
-            if (event.ctrlKey or event.metaKey) and keyCode is 90
+            if (event.ctrlKey or event.metaKey) and keyCode is 90 and is_editable
                 target.undoManager.undo()
                 return false
 
             # redo [Ctrl +Y]
-            if (event.ctrlKey or event.metaKey) and keyCode is 89
+            if (event.ctrlKey or event.metaKey) and keyCode is 89 and is_editable
                 target.undoManager.redo()
                 return false
 
             # Paste state item [Ctrl + V]
-            if (event.ctrlKey or event.metaKey) and keyCode is 86
+            if (event.ctrlKey or event.metaKey) and keyCode is 86 and is_editable
                 target.addStateItemByData( target.setNewStateIdForStateAry( MC.data.stateClipboard ) )
                 return false
 
             # Remove state item [Ctrl + delete/backspace]
-            if (event.ctrlKey or event.metaKey) and (keyCode is 46 or keyCode is 8)
+            if (event.ctrlKey or event.metaKey) and (keyCode is 46 or keyCode is 8) and is_editable
                 target.onRemoveState null, $('.state-list').find('.selected')
                 return false
 
             # Add state item [Ctrl + +]
-            if (event.ctrlKey or event.metaKey) and keyCode is 187
+            if (event.ctrlKey or event.metaKey) and keyCode is 187 and is_editable
                 target.addStateItem.call(target, event)
                 return false
 
@@ -2242,7 +2244,7 @@ define [ 'event',
                 return false
 
             # Toggle Log Sidebar [Ctrl + L]
-            if (event.ctrlKey or event.metaKey) and keyCode is 76 and target.currentState isnt 'stack'
+            if (event.ctrlKey or event.metaKey) and keyCode is 76 and status isnt 'stack'
                 target.onLogToggleClick target, event
                 return false
 

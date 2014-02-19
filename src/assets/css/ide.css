@@ -7268,7 +7268,7 @@ summary:focus {
 }
 
 #modal-instance-sys-log .instance-sys-log-info {
-	margin-top: 43px;
+	padding: 50px;
 	text-align: center;
 	display: none;
 }

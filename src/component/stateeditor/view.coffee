@@ -830,9 +830,11 @@ define [ 'event',
             #         $stateToolbarElem.hasClass('state-add') or
             #         $stateToolbarElem.hasClass('state-remove'))
 
-            that.clearSelectedItem()
+            that.clearFocusedItem()
 
             $stateItem = $stateToolbarElem.parents('.state-item')
+
+            $stateItem.addClass('focused')
 
             # $stateItemList = that.$stateList.find('.state-item')
 
@@ -878,9 +880,9 @@ define [ 'event',
             if that.readOnlyMode
                 that.setEditorReadOnlyMode()
 
-            $stateItem.addClass('selected')
+            # $stateItem.addClass('selected')
 
-            $stateItem.find('.checkbox input').prop('checked', true)
+            # $stateItem.find('.checkbox input').prop('checked', true)
 
         collapseItem: ($stateItem) ->
 
@@ -893,7 +895,7 @@ define [ 'event',
             
             that = this
 
-            that.expandItem($('.state-list').find('.selected'))
+            that.expandItem($('.state-list').find('.focused'))
 
             return false
 
@@ -901,7 +903,7 @@ define [ 'event',
             
             that = this
 
-            that.collapseItem($('.state-list').find('.selected'))
+            that.collapseItem($('.state-list').find('.focused'))
 
             return false
 
@@ -912,6 +914,14 @@ define [ 'event',
             that.$stateList.find('.selected').removeClass('selected')
 
             that.$stateList.find('.checkbox input').prop('checked', false)
+
+            null
+
+        clearFocusedItem: () ->
+
+            that = this
+            
+            that.$stateList.find('.focused').removeClass('focused')
 
             null
 
@@ -2230,12 +2240,12 @@ define [ 'event',
 
             # Expand state item [Ctrl + down]
             if (event.ctrlKey or event.metaKey) and keyCode is 38
-                target.expandItem.call target, $('.state-list').find('.selected')
+                target.expandItem.call target, $('.state-list').find('.focused')
                 return false
 
             # Expand state item [Ctrl + up]
             if (event.ctrlKey or event.metaKey) and keyCode is 40
-                target.collapseItem.call target, $('.state-list').find('.selected')
+                target.collapseItem.call target, $('.state-list').find('.focused')
                 return false
 
             # Toggle Document Sidebar [Ctrl + I]
@@ -2262,31 +2272,31 @@ define [ 'event',
 
             that = this
 
-            selected_index = 0
+            focused_index = 0
 
             stack = $('#state-editor .state-item')
 
             total = stack.length
 
-            selected_index = $('#state-editor .state-item.selected').index('#state-editor .state-list > li')
+            focused_index = $('#state-editor .state-item.focused').index('#state-editor .state-list > li')
 
-            that.clearSelectedItem()
+            that.clearFocusedItem()
 
             if reverse and reverse is true
 
-                if selected_index > 0
-                    that.expandItem.call this, stack.eq(selected_index - 1).addClass('selected')
+                if focused_index > 0
+                    that.expandItem.call this, stack.eq(focused_index - 1).addClass('focused')
 
-                if selected_index < 1
-                    that.expandItem.call this, stack.eq(total - 1).addClass('selected')
+                if focused_index < 1
+                    that.expandItem.call this, stack.eq(total - 1).addClass('focused')
 
             else
 
-                if selected_index + 1 < total
-                    that.expandItem.call this, stack.eq(selected_index + 1).addClass('selected')
+                if focused_index + 1 < total
+                    that.expandItem.call this, stack.eq(focused_index + 1).addClass('focused')
 
                 else
-                    that.expandItem.call this, stack.eq(0).addClass('selected')
+                    that.expandItem.call this, stack.eq(0).addClass('focused')
 
             return false
 
@@ -2336,15 +2346,15 @@ define [ 'event',
 
             if container_item.hasClass('command-value')
                 stack = $('#state-editor .state-item')
-                selected_index = $('#state-editor .state-item.selected').index('#state-editor .state-list > li')
+                focused_index = $('#state-editor .state-item.focused').index('#state-editor .state-list > li')
 
-                $('#state-editor .state-item.selected').removeClass('selected').addClass('view')
+                $('#state-editor .state-item.focused').removeClass('focused').addClass('view')
 
-                if selected_index > 0
-                    stack.eq( selected_index - 1 ).addClass('selected').removeClass('view').find('.command-value .ace_text-input').focus()
+                if focused_index > 0
+                    stack.eq( focused_index - 1 ).addClass('focused').removeClass('view').find('.command-value .ace_text-input').focus()
 
-                if selected_index is 0
-                    stack.eq( stack.length - 1 ).addClass('selected').removeClass('view').find('.command-value .ace_text-input').focus()
+                if focused_index is 0
+                    stack.eq( stack.length - 1 ).addClass('focused').removeClass('view').find('.command-value .ace_text-input').focus()
 
                 return false
 

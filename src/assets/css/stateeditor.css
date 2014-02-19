@@ -215,7 +215,11 @@
 }
 
 .state-list .selected:before {
-	border-left: 2px solid  #25a4f4;
+	border-left: 2px solid  #25a4f4 !important;
+}
+
+.state-list .focused:before {
+	border-left: 2px solid #F47625;
 }
 
 .state-list .state-placeholder:before {
@@ -609,7 +613,11 @@
 }
 
 #state-editor .state-item.selected .state-toolbar {
-	background: rgba(37, 164, 244, 0.07);
+	background: rgba(37, 164, 244, 0.07) !important;
+}
+
+#state-editor .state-item.focused .state-toolbar {
+	background: rgba(244, 160, 37, 0.07);
 }
 
 /*#state-editor .state-item:first-child .state-remove {

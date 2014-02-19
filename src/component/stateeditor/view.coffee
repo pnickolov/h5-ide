@@ -2185,6 +2185,23 @@ define [ 'event',
             target = event.data.target
             keyCode = event.which
 
+            # Copy state item [Ctrl + C]
+            if (event.ctrlKey or event.metaKey) and keyCode is 67
+
+                stack = []
+
+                $('.state-list .selected').each ->
+                    stack.push(target.getStateItemByData($(this)))
+
+                MC.data.stateClipboard = stack
+
+                return false
+
+            # Paste state item [Ctrl + V]
+            if (event.ctrlKey or event.metaKey) and keyCode is 86
+                target.addStateItemByData MC.data.stateClipboard
+                return false
+
             # Remove state item [Ctrl + delete/backspace]
             if (event.ctrlKey or event.metaKey) and (keyCode is 46 or keyCode is 8)
                 target.onRemoveState null, $('.state-list').find('.selected')

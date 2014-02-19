@@ -141,6 +141,9 @@ define [ 'MC', 'event', 'handlebars'
 		#state editor
 		MC.data.state = {}
 
+		# State clipboard
+		MC.data.stateClipboard = []
+
 		#test
 		MC.ide_event = ide_event
 

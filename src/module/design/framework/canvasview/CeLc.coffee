@@ -28,7 +28,7 @@ define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager" ], ( Can
     list = CanvasElement.prototype.list.call(this)
     for ins in list
       ins.background = @iconUrl( ins.appId )
-    list.volume = (@model.get("volumeList") || []).length;
+    list.volume = (@model.get("volumeList") || []).length
     list
 
   ChildElementProto.iconUrl = ( instanceId )->

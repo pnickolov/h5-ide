@@ -1142,6 +1142,8 @@
 }
 
 .node-action-tooltip {
+
+	display: none;
 	background: #333;
 	color: #fff;
 	position: absolute;

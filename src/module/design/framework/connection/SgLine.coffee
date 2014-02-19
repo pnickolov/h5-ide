@@ -109,6 +109,8 @@ define [ "constant", "../ConnectionModel", "../ResourceModel", "component/sgrule
 
       if reason then return
 
+      if @port1Comp().isRemoved() or @port2Comp().isRemoved() then return
+
       SgRuleSetModel = Design.modelClassForType( "SgRuleSet" )
       for rs in SgRuleSetModel.getRelatedSgRuleSets( @port1Comp(), @port2Comp() )
         rs.remove()

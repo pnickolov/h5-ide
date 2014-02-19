@@ -24,8 +24,20 @@ define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager" ], ( Can
     CanvasElement.prototype.detach.call this
     null
 
-  ChildElementProto.iconUrl = ()->
-    ami = @model.getAmi() || @model.get("cachedAmi")
+  ChildElementProto.list = ()->
+    list = CanvasElement.prototype.list.call(this)
+    for ins in list
+      ins.background = @iconUrl( ins.appId )
+    list.volume = (@model.get("volumeList") || []).length;
+    list
+
+  ChildElementProto.iconUrl = ( instanceId )->
+    if instanceId
+      ami = MC.data.resource_list[@model.design().region()][ instanceId ]
+      if ami then ami = MC.data.dict_ami[ ami.imageId ]
+
+    if not ami
+      ami = @model.getAmi() || @model.get("cachedAmi")
 
     if not ami
       "ide/ami/ami-not-available.png"

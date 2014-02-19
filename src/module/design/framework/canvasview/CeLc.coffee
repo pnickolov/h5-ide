@@ -52,7 +52,7 @@ define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager" ], ( Can
 
       # Call parent's createNode to do basic creation
       node = @createNode({
-        id      : @model.id
+        id      : m.id
         image   : "ide/icon/instance-canvas.png"
         imageX  : 15
         imageY  : 9
@@ -120,7 +120,7 @@ define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager" ], ( Can
       @initNode node, m.x(), m.y()
 
     else
-      node = @$element id
+      node = @$element m.id
 
       # Node Label
       CanvasManager.update node.children(".node-label-name"), m.get("name")

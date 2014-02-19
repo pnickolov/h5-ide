@@ -385,15 +385,19 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
             # old design flow
             #@setOriginData MC.canvas_data
 
+            # re-new Design
+            options =
+                mode : 'app'
+            new Design MC.common.other.canvasData.origin(), options
+
             # new design flow
             @setOriginData MC.common.other.canvasData.data()
 
             # delete current origin_resource
             MC.tab[ app_id ].origin_resource = null if MC.tab and MC.tab[ app_id ] and MC.tab[ app_id ].origin_resource
+
             #
             console.log 'set app.resource end'
-
-
 
     }
 

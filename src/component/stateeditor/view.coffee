@@ -1332,11 +1332,6 @@ define [ 'event',
 
             that = this
 
-            if that.undoManager.hasRedo()
-                that.undoManager.redo()
-
-            return
-
             stateData = that.saveStateData()
 
             if stateData
@@ -1384,11 +1379,8 @@ define [ 'event',
 
             that = this
 
-            if that.undoManager.hasUndo()
-                that.undoManager.undo()
-
-            # that.unloadEditor()
-            # that.closedPopup()
+            that.unloadEditor()
+            that.closedPopup()
 
         onParaRemoveClick: (event) ->
 
@@ -2106,21 +2098,25 @@ define [ 'event',
 
                 redo: () ->
 
-                    operateCommand = that.commandStack[that.commandIndex + 1]
+                    if that.undoManager.hasRedo()
 
-                    if operateCommand
-                        operateCommand.redo()
-                        that.commandIndex = that.commandIndex + 1
+                        operateCommand = that.commandStack[that.commandIndex + 1]
+
+                        if operateCommand
+                            operateCommand.redo()
+                            that.commandIndex = that.commandIndex + 1
 
                     null
 
                 undo: () ->
 
-                    operateCommand = that.commandStack[that.commandIndex]
+                    if that.undoManager.hasUndo()
 
-                    if operateCommand
-                        operateCommand.undo()
-                        that.commandIndex = that.commandIndex - 1
+                        operateCommand = that.commandStack[that.commandIndex]
+
+                        if operateCommand
+                            operateCommand.undo()
+                            that.commandIndex = that.commandIndex - 1
 
                     null
 

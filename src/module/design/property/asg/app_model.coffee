@@ -182,6 +182,10 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
 
             @set 'policies', _.sortBy(policies, "name")
 
+
+    setHealthCheckType : ( type ) ->
+      Design.instance().component( @get("uid") ).set( "healthCheckType", type )
+
     setASGMin : ( value ) ->
 
         uid = @get 'uid'

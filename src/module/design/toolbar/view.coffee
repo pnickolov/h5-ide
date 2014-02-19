@@ -634,6 +634,9 @@ define [ 'MC', 'event',
             # 6. set Design mode
             Design.instance().setMode Design.MODE.AppEdit
 
+            # 7. refresh view for App update
+            Design.instance().refreshAppUpdate()
+
             null
 
         clickSaveEditApp : (event)->
@@ -699,6 +702,8 @@ define [ 'MC', 'event',
                 @appedit2App()
             else
                 modal MC.template.cancelAppEdit2App(), true
+
+            Design.instance().refreshAppUpdate()
 
             null
 

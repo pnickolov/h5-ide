@@ -2075,14 +2075,14 @@ define [ 'event',
 
                     if method is 'remove'
 
+                        $stateItem = that.getStateItemById(stateId)
+                        stateData = that.getStateItemByData($stateItem)
                         that.commandStack.push({
                             redo: () ->
                                 $stateItem = that.getStateItemById(stateId)
-                                stateData = that.getStateItemByData($stateItem)
-                                this.undo = () ->
-                                    that.addStateItemByData([stateData], statePos)
                                 that.onRemoveState(null, $stateItem, true)
                             undo: () ->
+                                that.addStateItemByData([stateData], statePos - 1)
                                 null
                         })
 
@@ -2095,7 +2095,7 @@ define [ 'event',
                                 $stateItem = that.getStateItemById(stateId)
                                 stateData = that.getStateItemByData($stateItem)
                                 this.redo = () ->
-                                    that.addStateItemByData([stateData], statePos)
+                                    that.addStateItemByData([stateData], statePos - 1)
                                 that.onRemoveState(null, $stateItem, true)
                         })
 
@@ -2164,17 +2164,19 @@ define [ 'event',
             newStateItems = that.stateListTpl(stateListObj)
             $currentStateItems = that.$stateList.find('.state-item')
 
-            $insertPosStateItem = null
+            if _.isNumber(insertPos)
 
-            if insertPos is -1
-                $insertPosStateItem = $(newStateItems).prependTo(that.$stateList)
-            else
-                if $currentStateItems[insertPos]
-                    $insertPosStateItem = $($currentStateItems[insertPos])
+                if insertPos <= -1
+                    $newStateItems = $(newStateItems).prependTo(that.$stateList)
                 else
-                    $insertPosStateItem = $($currentStateItems[$currentStateItems.length - 1])
+                    if $currentStateItems[insertPos]
+                        $newStateItems = $(newStateItems).insertAfter($currentStateItems[insertPos])
+                    else
+                        $newStateItems = $(newStateItems).appendTo(that.$stateList)
 
-            $newStateItems = $(newStateItems).insertAfter($insertPosStateItem)
+            else
+
+                $newStateItems = $(newStateItems).appendTo(that.$stateList)
 
             that.bindStateListEvent($newStateItems)
 
@@ -2360,9 +2362,9 @@ define [ 'event',
             # redo/undo
             if not noRegisterUndo
 
-                stateId = $targetState.data('data-id')
+                stateId = $targetState.attr('data-id')
                 statePos = $targetState.index()
-                that.undoManager.register(stateId, statePos - 1, 'remove')
+                that.undoManager.register(stateId, statePos, 'remove')
 
             $targetState.remove()
             that.refreshLogItemNum()

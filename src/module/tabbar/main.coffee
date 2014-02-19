@@ -220,10 +220,10 @@ define [ 'jquery', 'event', 'base_main',
                     modal MC.template.createNewStackErrorAndReload(), true
                 ###
 
-                if platformSupport
-                    view.openNewStackDialog()
-                else
+                if platformSupport is null
                     modal MC.template.createNewStackErrorAndReload(), true
+                else
+                    view.openNewStackDialog()
 
                 null
 

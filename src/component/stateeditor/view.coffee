@@ -2205,6 +2205,16 @@ define [ 'event',
 
                 return false
 
+            # undo [Ctrl + Z]
+            if (event.ctrlKey or event.metaKey) and keyCode is 90
+                target.undoManager.undo()
+                return false
+
+            # redo [Ctrl +Y]
+            if (event.ctrlKey or event.metaKey) and keyCode is 89
+                target.undoManager.redo()
+                return false
+
             # Paste state item [Ctrl + V]
             if (event.ctrlKey or event.metaKey) and keyCode is 86
                 target.addStateItemByData( target.setNewStateIdForStateAry( MC.data.stateClipboard ) )

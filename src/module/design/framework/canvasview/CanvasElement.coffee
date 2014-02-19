@@ -11,8 +11,6 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
     @id         = model.id
     @model      = model
     @type       = model.type
-    # store id of mirror views
-    @mirrorIds  = []
 
     if model.parent
       @parentId = model.parent()
@@ -482,8 +480,6 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
 
   CanvasElement.prototype.detach = () ->
     MC.canvas.remove( @element() )
-    for id in @mirrorIds
-      MC.canvas.remove( @element( id ) )
 
   CanvasElement.setDesign = ( design )->
     Design = design

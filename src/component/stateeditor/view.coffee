@@ -989,7 +989,7 @@ define [ 'event',
 
             $newStateItem = $(newStateHTML).appendTo(that.$stateList)
 
-            that.clearSelectedItem()
+            # that.clearSelectedItem()
 
             $cmdValueItem = $newStateItem.find('.command-value')
             that.bindCommandEvent($cmdValueItem)
@@ -1011,9 +1011,9 @@ define [ 'event',
                     cmdEditor.focus()
                 , 0)
 
-            $newStateItem.addClass('selected')
+            # $newStateItem.addClass('selected')
 
-            $newStateItem.find('.checkbox input').prop('checked', true)
+            # $newStateItem.find('.checkbox input').prop('checked', true)
 
             that.refreshLogItemNum()
 

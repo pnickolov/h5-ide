@@ -125,8 +125,6 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
 
     if not C then return false
 
-    toId = toId.slice 0, 36
-
     p1Comp = @model
     p2Comp = @model.design().component(toId)
 

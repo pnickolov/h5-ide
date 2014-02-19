@@ -103,9 +103,6 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
 
     console.assert( C, "Cannot found Class for type: #{p1Name}>#{p2Name}" )
 
-    p1 = p1.slice 0, 36
-    p2 = p2.slice 0, 36
-
     comp1 = Design.instance().component( p1 )
     comp2 = Design.instance().component( p2 )
 

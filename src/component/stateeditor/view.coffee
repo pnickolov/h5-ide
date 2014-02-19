@@ -1013,6 +1013,8 @@ define [ 'event',
 
             $newStateItem.addClass('selected')
 
+            $newStateItem.find('.checkbox input').prop('checked', true)
+
             that.refreshLogItemNum()
 
             # redo/undo

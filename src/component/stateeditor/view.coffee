@@ -42,6 +42,8 @@ define [ 'event',
             'click .state-log-refresh': 'onLogRefreshClick'
             'click .state-item-add': 'onStateItemAddClick'
 
+            'click .state-item-add-btn': 'onStateItemAddBtnClick'
+
             'OPTION_CHANGE .state-editor-res-select': 'onResSelectChange'
 
             'keyup .parameter-item.optional .parameter-value': 'onOptionalParaItemChange'
@@ -76,10 +78,14 @@ define [ 'event',
             that = this
 
             # show modal
+
+
             modal that.editorModalTpl({
                 res_name: that.resName,
                 supported_platform: that.supportedPlatform,
-                current_state: that.currentState
+                current_state: that.currentState,
+                no_state: that.resNoState,
+                allow_add_state: (that.currentState in ['stack', 'appedit'])
             }), false, null, {opacity: 0.2, conflict: 'loose'}
 
             # setTimeout(() ->
@@ -89,6 +95,18 @@ define [ 'event',
             that.$stateList = that.$editorModal.find('.state-list')
             that.$stateLogList = that.$editorModal.find('.state-log-list')
             that.$cmdDsec = $('#state-description')
+            that.$noStateContainer = that.$editorModal.find('.state-no-state-container')
+            that.$haveStateContainer = that.$editorModal.find('.state-have-state-container')
+
+            if that.resNoState
+
+                that.$haveStateContainer.hide()
+                that.$noStateContainer.show()
+
+            else
+
+                that.$haveStateContainer.show()
+                that.$noStateContainer.hide()
 
             # hide autocomplete when click document
             $(document).on('mousedown', that.onDocumentMouseDown)
@@ -152,6 +170,10 @@ define [ 'event',
             currentAppState = that.model.get('currentAppState')
 
             that.resAttrRegexStr = that.model.get('resAttrRegexStr')
+
+            that.resNoState = true
+            if that.originCompStateData and _.isArray(that.originCompStateData) and that.originCompStateData.length
+                that.resNoState = false
 
             if that.currentState is 'app'
                 that.readOnlyMode = true
@@ -293,7 +315,7 @@ define [ 'event',
 
             $stateItems = that.$stateList.find('.state-item')
 
-            that.bindStateListEvent($stateItems)
+            # that.bindStateListEvent($stateItems)
 
         refreshStateViewList: ($stateItemList) ->
 
@@ -344,6 +366,12 @@ define [ 'event',
 
             paraListViewRenderAry = []
 
+            mustShowPara = true
+            _.each currentParaMap, (paraObj) ->
+                if not paraObj.visible
+                    mustShowPara = false
+                null
+
             _.each $paraItemList, (paraItemElem) ->
 
                 $paraItem = $(paraItemElem)
@@ -353,13 +381,20 @@ define [ 'event',
                 paraType = paraObj.type
                 paraName = paraObj.name
 
-                paraDisabled = false
-                if $paraItem.hasClass('disabled')
-                    paraDisabled = true
+                paraNoVisible = true
+                if mustShowPara
+                    paraNoVisible = false
+                else
+                    if paraObj.visible
+                        if paraObj.required
+                            paraNoVisible = false
+                        else
+                            if not $paraItem.hasClass('disabled')
+                                paraNoVisible = false
 
                 viewRenderObj = {
                     para_name: paraName,
-                    para_disabled: paraDisabled
+                    para_no_visible: paraNoVisible
                 }
 
                 viewRenderObj['type_' + paraType] = true
@@ -421,11 +456,7 @@ define [ 'event',
             _.each $stateItems, (stateItem) ->
 
                 $stateItem = $(stateItem)
-                currentCMD = $stateItem.attr('data-command')
-
-                $paraListItem = $stateItem.find('.parameter-list')
                 $cmdValueItem = $stateItem.find('.command-value')
-
                 that.bindCommandEvent($cmdValueItem)
 
                 null
@@ -771,22 +802,22 @@ define [ 'event',
 
             # add default value
 
-            if $currentInput.hasClass('parameter-value')
+            # if $currentInput.hasClass('parameter-value')
 
-                currentValue = that.getPlainText($currentInput)
+            #     currentValue = that.getPlainText($currentInput)
 
-                paraObj = that.getParaObj($currentInput)
+            #     paraObj = that.getParaObj($currentInput)
 
-                if paraObj
+            #     if paraObj
 
-                    that.highlightParaDesc(paraObj.name)
+            #         that.highlightParaDesc(paraObj.name)
 
-                    if paraObj.default isnt undefined
-                        defaultValue = String(paraObj.default)
-                        if not currentValue and defaultValue and not $currentInput.hasClass('key')
-                            that.setPlainText($currentInput, defaultValue)
-                            $paraItem = $currentInput.parents('.parameter-item')
-                            $paraItem.removeClass('disabled')
+            #         if paraObj.default isnt undefined
+            #             defaultValue = String(paraObj.default)
+            #             if not currentValue and defaultValue and not $currentInput.hasClass('key')
+            #                 that.setPlainText($currentInput, defaultValue)
+            #                 $paraItem = $currentInput.parents('.parameter-item')
+            #                 $paraItem.removeClass('disabled')
 
                             # auto add new para item
                             # if $currentInput.hasClass('parameter-value')
@@ -855,7 +886,7 @@ define [ 'event',
 
             currentCMD = $stateItem.attr('data-command')
             $paraListItem = $stateItem.find('.parameter-list')
-            that.bindParaListEvent($paraListItem, currentCMD)
+            that.bindStateListEvent([$stateItem])
 
             # remove other item view
             _.each $stateItemList, (otherStateItem) ->
@@ -878,6 +909,8 @@ define [ 'event',
                 setTimeout(() ->
                     cmdEditor.focus()
                 , 0)
+
+            that.bindParaListEvent($paraListItem, currentCMD)
 
             if that.readOnlyMode
                 that.setEditorReadOnlyMode()
@@ -1385,6 +1418,11 @@ define [ 'event',
                         ide_event.trigger 'STATE_EDITOR_DATA_UPDATE', changeObj
 
                 that.unloadEditor()
+
+                disableUserDataInput = false
+                if stateData and stateData.length
+                    disableUserDataInput = true
+                ide_event.trigger ide_event.PROPERTY_DISABLE_USER_DATA_INPUT, disableUserDataInput
 
                 that.closedPopup()
 
@@ -2463,6 +2501,12 @@ define [ 'event',
                 that.undoManager.register(stateId, statePos, 'remove')
 
             $targetState.remove()
+
+            $stateItems = that.$stateList.find('.state-item')
+            if not $stateItems.length
+                that.$haveStateContainer.hide()
+                that.$noStateContainer.show()
+
             that.refreshLogItemNum()
 
         checkboxSelect: (event) ->
@@ -2486,6 +2530,14 @@ define [ 'event',
                 checkbox.prop('checked', false)
 
             return false
+
+        onStateItemAddBtnClick: (event) ->
+
+            that = this
+            that.onStateItemAddClick()
+            that.$haveStateContainer.show()
+            that.$noStateContainer.hide()
+
     }
 
     return StateEditorView

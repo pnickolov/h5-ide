@@ -95,6 +95,9 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 		if not currentTypeData or currentTypeData.length <= 0
 			currentTypeData = MC.data.config[region].region_instance_type
 
+		if not currentTypeData
+			currentTypeData = []
+
 		return currentTypeData
 
 	setLayout = ( canvas_data ) ->

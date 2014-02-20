@@ -4,7 +4,7 @@
 
 define [ '../base/view',
          'text!./template/stack.html',
-         'i18n!nls/lang.js' ], ( PropertyView, template, lang ) ->
+         'i18n!nls/lang.js', 'constant' ], ( PropertyView, template, lang, constant ) ->
 
     noop = ()-> null
 
@@ -42,6 +42,13 @@ define [ '../base/view',
 
             if not Design.instance().typeIsClassic()
                 @refreshIPList()
+
+            currentStateData = @model.getStateData()
+
+            if currentStateData and _.isArray(currentStateData) and currentStateData.length
+                @disableUserDataInput(true)
+            else
+                @disableUserDataInput(false)
 
             @model.attributes.name
 
@@ -303,6 +310,23 @@ define [ '../base/view',
 
             $("#instance-ip-add").toggleClass("disabled", !enabled).data("tooltip", tooltip)
             null
+
+        disableUserDataInput : ( flag ) ->
+
+            $userDataInput = $('#property-instance-user-data')
+
+            if flag is true
+                $userDataInput.attr('disabled', 'disabled')
+                $userDataInput.addClass('tooltip').attr('data-tooltip', lang.ide.PROP_INSTANCE_USER_DATA_DISABLE)
+                # $userDataInput.val('')
+                # @userdataChange({
+                #     target: {
+                #         value: ''
+                #     }
+                # })
+            else if flag is false
+                $userDataInput.removeAttr('disabled')
+                $userDataInput.removeClass('tooltip').removeAttr('data-tooltip')
     }
 
     new InstanceView()

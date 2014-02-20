@@ -2,7 +2,7 @@
 #  View(UI logic) for design/property/instacne
 #############################
 
-define [ '../base/view', 'text!./template/stack.html', 'event' ], ( PropertyView, template, ide_event ) ->
+define [ '../base/view', 'text!./template/stack.html', 'event', 'constant', 'i18n!nls/lang.js' ], ( PropertyView, template, ide_event, constant, lang ) ->
 
     template = Handlebars.compile template
 
@@ -27,6 +27,13 @@ define [ '../base/view', 'text!./template/stack.html', 'event' ], ( PropertyView
             @$el.html template @model.attributes
 
             $( "#keypair-select" ).on("click", ".icon-remove", _.bind(this.deleteKP, this) )
+
+            currentStateData = @model.getStateData()
+
+            if currentStateData and _.isArray(currentStateData) and currentStateData.length
+                @disableUserDataInput(true)
+            else
+                @disableUserDataInput(false)
 
             @model.attributes.name
 
@@ -112,6 +119,23 @@ define [ '../base/view', 'text!./template/stack.html', 'event' ], ( PropertyView
                 removeKP()
 
             return false
+
+        disableUserDataInput : ( flag ) ->
+
+            $userDataInput = $('#property-instance-user-data')
+
+            if flag is true
+                $userDataInput.attr('disabled', 'disabled')
+                $userDataInput.addClass('tooltip').attr('data-tooltip', lang.ide.PROP_INSTANCE_USER_DATA_DISABLE)
+                # $userDataInput.val('')
+                # @userdataChange({
+                #     target: {
+                #         value: ''
+                #     }
+                # })
+            else if flag is false
+                $userDataInput.removeAttr('disabled')
+                $userDataInput.removeClass('tooltip').removeAttr('data-tooltip')
     }
 
     new LanchConfigView()

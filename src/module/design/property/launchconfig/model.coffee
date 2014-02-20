@@ -156,6 +156,9 @@ define [ '../base/model', 'keypair_model', 'constant', 'Design' ], ( PropertyMod
       this.set 'uid',  uid
       null
 
+    getStateData : () ->
+      Design.instance().component( @get("uid") ).getStateData()
+
   }
 
   new LaunchConfigModel()

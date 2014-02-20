@@ -939,6 +939,10 @@ module.exports =
       en: "User Data"
       zh: "用户数据"
 
+    PROP_INSTANCE_USER_DATA_DISABLE:
+      en: "Can't edit user data when instance state exist"
+      zh: ""
+
     PROP_INSTANCE_CW_WARN:
       en: "Data is available in 1-minute periods at an additional cost. For information about pricing, go to the "
       zh: "数据在一分钟内可用需要额外的话费。 获取价格信息，请去 "

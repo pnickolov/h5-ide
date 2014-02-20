@@ -1,5 +1,6 @@
-.ace_editor {
+#state-editor .parameter-value {
 	font-family: "Lucida Console", "Monaco", monospace  !important;
+	font-size: 12px !important;
 	color: #666;
 }
 
@@ -590,7 +591,7 @@
 	padding: 0 4px;
 }
 
-#state-editor .parameter-view-list .parameter-item.disabled {
+#state-editor .parameter-view-list .parameter-item.no-visible {
 	display: none;
 }
 
@@ -997,4 +998,25 @@
 	font-style: italic;
 	opacity: 0.3;
 	padding-right: 4px;
+}
+
+#state-editor .state-no-data-tip {
+	margin-top: 140px;
+	text-align: center;
+	font-size: 16px;
+}
+
+#state-editor .state-item-add-btn {
+	margin-top: 35px;
+	margin-left: -56px;
+	position: absolute;
+	left: 50%;
+}
+
+#state-editor .state-have-state-container {
+	display: none;
+}
+
+#state-editor .state-no-state-container {
+	display: none;
 }

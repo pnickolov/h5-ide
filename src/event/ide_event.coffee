@@ -109,6 +109,7 @@ define [ 'underscore', 'backbone' ], () ->
         # property
         SHOW_PROPERTY_PANEL    : 'SHOW_PROPERTY_PANEL'
         PROPERTY_REFRESH_ENI_IP_LIST : 'PROPERTY_REFRESH_ENI_IP_LIST'
+        PROPERTY_DISABLE_USER_DATA_INPUT : 'PROPERTY_DISABLE_USER_DATA_INPUT'
         #trigger property view's undelegateEvents
         UNDELEGATE_PROPERTY_DOM_EVENTS : 'UNDELEGATE_PROPERTY_DOM_EVENTS'
 

@@ -400,8 +400,9 @@ a.table-link {
 /* Input */
 .input {
 	width: 150px;
-	background-color: #fcfcfc;
+	background-color: #FAFAFA;
 	border: solid 1px #ccc;
+	border-radius: 2px;
 	font-size: 14px;
 	padding: 7px 20px 7px 6px;
 	display: inline-block;
@@ -416,7 +417,7 @@ a.table-link {
 
 .input:focus,
 textarea:focus {
-	border: solid 1px #979697;
+	border: solid 1px #358EFF;
 	background: #fff;
 }
 

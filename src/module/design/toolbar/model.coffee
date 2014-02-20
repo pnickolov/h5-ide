@@ -477,6 +477,9 @@ define [ "component/thumbnail/ThumbUtil", 'MC', 'backbone', 'jquery', 'underscor
                 region = value
                 ide_event.trigger ide_event.UPDATE_DESIGN_TAB_ICON, 'running', id
 
+                # temp
+                MC.data.running_app_list[ id ] = { app_id : id }
+
                 # update app resource
                 ide_event.trigger ide_event.UPDATE_APP_INFO, region, id
 

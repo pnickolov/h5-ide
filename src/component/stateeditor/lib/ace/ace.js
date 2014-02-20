@@ -12161,7 +12161,7 @@ exports.commands = [{
     scrollIntoView: "selectionPart"
 }, {
     name: "indent",
-    bindKey: bindKey("Tab"),
+    bindKey: bindKey("Tab", "Tab"),
     // exec: function(editor) { editor.indent(); },
     exec: function(editor) { editor.tabSwitch(editor); },
     multiSelectAction: "forEach",

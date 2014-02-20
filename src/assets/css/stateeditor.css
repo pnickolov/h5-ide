@@ -233,7 +233,7 @@
 }
 
 .state-list .focused:before {
-	border-left: 2px solid #F47625;
+	/*border-left: 2px solid #F47625;*/
 }
 
 .state-list .state-placeholder:before {

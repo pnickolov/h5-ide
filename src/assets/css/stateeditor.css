@@ -207,11 +207,12 @@
 	z-index: 80;
 	display: block;
 	border-left: 2px solid transparent;
-	padding: 11px 0;
+	line-height: 35px;
 	text-align: center;
 	color: #666;
 	/*font-family: Lucida Console;*/
 	width: 30px;
+	height: 100%;
 }
 
 .state-list .selected:before {
@@ -596,6 +597,7 @@
 /* *************************************** state toolbar */
 #state-editor .state-item {
 	overflow: auto;
+	position: relative;
 }
 
 #state-editor .state-toolbar {

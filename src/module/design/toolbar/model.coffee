@@ -100,7 +100,6 @@ define [ "component/thumbnail/ThumbUtil", 'MC', 'backbone', 'jquery', 'underscor
 
                     # set new id and key
                     MC.common.other.canvasData.set 'id',  new_id
-                    MC.common.other.canvasData.set 'key', key
 
                     # get data
                     data = MC.common.other.canvasData.data()

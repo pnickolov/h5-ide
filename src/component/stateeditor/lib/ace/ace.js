@@ -2622,12 +2622,12 @@ var Editor = function(renderer, session) {
     // Added by Angel
     this.tabSwitch = function (target) {
 
-        // For multi-line
-        if ($(target.container).hasClass('text')) {
-            this.indent();
+        // // For multi-line
+        // if ($(target.container).hasClass('text')) {
+        //     this.indent();
 
-            return false;
-        }
+        //     return false;
+        // }
 
         $('#state-editor-body').trigger('ACE_TAB_SWITCH', [target.container]);
     };

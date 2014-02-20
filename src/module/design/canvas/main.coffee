@@ -144,6 +144,10 @@ define [ 'event', 'i18n!nls/lang.js', 'constant' ], ( ide_event, lang, constant 
 
                 null
 
+            ide_event.onLongListen ide_event.CLEAR_DOME, () ->
+                console.log 'canvas:CLEAR_DOME'
+                view.clear()
+
     unLoadModule = () ->
         #view.remove()
 

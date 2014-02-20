@@ -849,6 +849,8 @@ define [ 'event',
 
             that = this
 
+            that.clearFocusedItem()
+
             $stateItemList = that.$stateList.find('.state-item')
 
             currentCMD = $stateItem.attr('data-command')
@@ -863,7 +865,7 @@ define [ 'event',
                 null
 
             $stateItemList.addClass('view')
-            $stateItem.removeClass('view')
+            $stateItem.removeClass('view').addClass('focused')
 
             # refresh description
             cmdName = $stateItem.attr('data-command')
@@ -999,7 +1001,7 @@ define [ 'event',
 
             $newStateItem = $(newStateHTML).appendTo(that.$stateList)
 
-            # that.clearSelectedItem()
+            that.clearFocusedItem()
 
             $cmdValueItem = $newStateItem.find('.command-value')
             that.bindCommandEvent($cmdValueItem)
@@ -1014,7 +1016,8 @@ define [ 'event',
 
             $stateItemList.addClass('view')
 
-            $newStateItem.removeClass('view')
+            $newStateItem.removeClass('view').addClass('focused')
+            
             cmdEditor = $cmdValueItem.data('editor')
             if cmdEditor
                 setTimeout(() ->
@@ -2273,6 +2276,12 @@ define [ 'event',
                 target.switchFocus.call target
                 return false
 
+            # Toggle selected [Blankspace]
+            if keyCode is 32
+                target.toggleSelected.call target
+                return false
+
+            # Expand item [Enter]
             if keyCode is 13
                 focused = $('#state-editor .state-item.focused')
 
@@ -2283,6 +2292,25 @@ define [ 'event',
             if keyCode is 9
                 target.onSwitchState.call target
                 return false
+
+        toggleSelected: () ->
+
+            that = this
+
+            item = $('#state-editor .state-item.focused')
+
+            if item.hasClass('selected')
+
+                item.removeClass('selected')
+
+                item.find('.checkbox input').prop('checked', false)
+
+            else
+                item.addClass('selected')
+
+                item.find('.checkbox input').prop('checked', true)
+
+            return false
 
         switchFocus: (reverse) ->
 

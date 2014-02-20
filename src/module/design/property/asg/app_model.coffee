@@ -24,20 +24,20 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
 
         asg_data = resource_list[ asg_comp.get( 'appId' ) ]
 
-        if not asg_data
-            return false
+        if asg_data
+            @set 'hasData', true
+            @set 'awsResName', asg_data.AutoScalingGroupName
+            @set 'arn', asg_data.AutoScalingGroupARN
+            @set 'createTime', asg_data.CreatedTime
 
-        @set 'hasData', true
-        @set 'awsResName', asg_data.AutoScalingGroupName
-        @set 'arn', asg_data.AutoScalingGroupARN
-        @set 'createTime', asg_data.CreatedTime
+            if asg_data.TerminationPolicies and asg_data.TerminationPolicies.member
+                @set 'term_policy_brief', asg_data.TerminationPolicies.member.join(" > ")
 
-        if asg_data.TerminationPolicies and asg_data.TerminationPolicies.member
-            @set 'term_policy_brief', asg_data.TerminationPolicies.member.join(" > ")
-
-        @handleInstance asg_comp, resource_list, asg_data
+            @handleInstance asg_comp, resource_list, asg_data
 
         if not @isAppEdit
+            if not asg_data
+                return false
             @set 'lcName',   asg_data.LaunchConfigurationName
             @set 'cooldown', asg_data.DefaultCooldown
             @set 'healCheckType', asg_data.HealthCheckType

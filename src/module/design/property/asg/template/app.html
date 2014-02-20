@@ -93,17 +93,18 @@
   {{/if}}
 
   {{#if hasData}}
-  <div class="option-group-head">{{i18n "PROP_ASG_INSTANCE"}} <span class="property-head-num-wrap">({{instance_count}})</span></div>
-  <div class="option-group">
-    {{#each instance_groups}}
-    <div class="property-group-head">{{name}}</div>
-    <ul class="property-list">
-      {{#each instances}}
-        <li><i class="status status-{{status}} icon-label"></i>{{name}}</li>
+    <div class="option-group-head">{{i18n "PROP_ASG_INSTANCE"}} <span class="property-head-num-wrap">({{instance_count}})</span></div>
+    <div class="option-group">
+      {{#each instance_groups}}
+      <div class="property-group-head">{{name}}</div>
+      <ul class="property-list">
+        {{#each instances}}
+          <li><i class="status status-{{status}} icon-label"></i>{{name}}</li>
+        {{/each}}
+      </ul>
       {{/each}}
-    </ul>
-    {{/each}}
-  </div>
+    </div>
+  {{/if}}
 
   <div class="option-group-head">{{i18n "PROP_ASG_POLICY"}}</div>
   <div class="option-group">
@@ -234,6 +235,5 @@
     {{/unless}}
 
   </div>
-  {{/if}}
 
 </article>

@@ -483,15 +483,9 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
     data.layout.size = @canvas.sizeAry
     # 2. save stoppable to property
     data.property = $.extend { stoppable : @isStoppable() }, PropertyDefination
+    data.agent    = { module : { repo : '', tag : '' } }
 
     data.version = "2014-02-17"
-
-    data.agent = {
-        'module': {
-            'repo': '',
-            'tag': ''
-        }
-    }
 
     data
 

@@ -39,6 +39,7 @@ define [ 'underscore', 'backbone' ], () ->
         FORCE_OPEN_PROPERTY    : "FORCE_OPEN_PROPERTY"
         RELOAD_AZ              : 'RELOAD_AZ'
         #OPEN_TOOLBAR          : 'OPEN_TOOLBAR'
+        CLEAR_DOME             : 'CLEAR_DOME'
 
         #design overlay
         SHOW_DESIGN_OVERLAY    : 'SHOW_DESIGN_OVERLAY'

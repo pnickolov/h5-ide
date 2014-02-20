@@ -389,8 +389,9 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
 
                 console.log 'eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
 
-                # set svg
-                MC.canvas.layout.init()
+                # clear svg
+                #$('#group_layer, #line_layer, #node_layer').empty()
+                ide_event.trigger ide_event.CLEAR_DOME
 
                 # re-new Design
                 options =

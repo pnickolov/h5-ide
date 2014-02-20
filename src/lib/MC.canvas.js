@@ -2315,7 +2315,7 @@ MC.canvas.volume = {
 				(
 					event.pageX > event_data.originalPageX + 2 ||
 					event.pageX < event_data.originalPageX - 2
-					
+
 				)
 				&&
 				(
@@ -2815,7 +2815,7 @@ MC.canvas.event.dragable = {
 
 			shadow = target.clone();
 
-			// Allow cloning for instance 
+			// Allow cloning for instance
 			if (target_type === 'AWS.EC2.Instance')
 			{
 				shadow.append(
@@ -3748,7 +3748,7 @@ MC.canvas.event.siderbarDrag = {
 			{
 				if (MC.canvas.getState() === 'appedit')
 				{
-					Canvon('.AWS-EC2-Instance').addClass('attachable');
+					Canvon('.AWS-EC2-Instance, .AWS-AutoScaling-LaunchConfiguration').addClass('attachable');
 				}
 				else
 				{

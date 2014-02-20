@@ -79,8 +79,51 @@ define [ "./ResourceModel", "Design", "CanvasManager", "./canvasview/CanvasEleme
         cn = Design.modelClassForType( @type ).findExisting( p1Comp, p2Comp )
         if cn
           console.info "Found existing connection #{@type} of ", [p1Comp, p2Comp]
+
+          # If the user creates a connection with some additonal parameters,
+          # then we would like to assign these parameters to the found connection.
+          if attr then cn.set attr
           return cn
 
+      # Assign components to the connection.
+      @assignCompsToPorts( p1Comp, p2Comp )
+
+      # Call super constructor
+      ResourceModel.call(this, attr, option)
+
+
+      # The line wants to destroy itslef after init
+      if @__destroyAfterInit
+        @remove( this )
+        this.id = ""
+        return this
+
+
+      @__port1Comp.connect_base this
+      if @__port1Comp isnt @__port2Comp
+        @__port2Comp.connect_base this
+
+
+      # If oneToMany is defined. Then one of the component of this connection should be
+      # checked.
+      if @oneToMany
+        console.assert( @oneToMany is @port1Comp().type or @oneToMany is @port2Comp().type, "Invalid oneToMany parameter" )
+        comp = @getOtherTarget( @oneToMany )
+        for cn in comp.connections( @type )
+          if cn isnt this
+            cn.remove( this )
+
+
+      # Draw in the end
+      if @draw then @draw()
+
+      this
+
+    setDestroyAfterInit : ()->
+      @__destroyAfterInit = true
+      null
+
+    assignCompsToPorts : ( p1Comp, p2Comp )->
       if @portDefs
 
         for def in @portDefs
@@ -95,46 +138,13 @@ define [ "./ResourceModel", "Design", "CanvasManager", "./canvasview/CanvasEleme
             @__port2Comp = p1Comp
             break
 
-        console.assert( @__portDef, "Cannot create connection!" )
+        console.assert( @__portDef, "Trying to connect components while the connection does not support them : ", [ p1Comp, p2Comp ] )
 
       else
         # If there's no portDefs, we directly assign the parameter to this
         @__port1Comp = p1Comp
         @__port2Comp = p2Comp
 
-
-      # Call super constructor
-      ResourceModel.call(this, attr, option)
-
-
-      # The line wants to destroy itslef after init
-      if @__destroyAfterInit
-        @remove( this )
-        this.id = ""
-        return this
-
-
-      # If oneToMany is defined. Then one of the component of this connection should be
-      # checked.
-      if @oneToMany
-        console.assert( @oneToMany is @port1Comp().type or @oneToMany is @port2Comp().type, "Invalid oneToMany parameter" )
-        comp = @getOtherTarget( @oneToMany )
-        for cn in comp.connections( @type )
-          cn.remove( this )
-
-
-      @__port1Comp.connect_base this
-      if @__port1Comp isnt @__port2Comp
-        @__port2Comp.connect_base this
-
-
-      # Draw in the end
-      if @draw then @draw()
-
-      this
-
-    setDestroyAfterInit : ()->
-      @__destroyAfterInit = true
       null
 
     port : ( id, attr )->
@@ -183,32 +193,26 @@ define [ "./ResourceModel", "Design", "CanvasManager", "./canvasview/CanvasEleme
 
     remove : ( option )->
 
-      if @isRemoved() then return
+      console.assert (not (@__port1Comp.isRemoved() and @__port2Comp.isRemoved())), "Both ports are already removed when connection is removing", this
 
-      reason = if option then option.reason
-      reason = reason or null
+      # When an connection is removed because of a resource's removal, that resource.isRemoved() will be true. In that case, that resource.disconnect will not be called.
 
-      # If the connection is removed because a resource is removed, that resource's disconnect will not be called
-      if @__port1Comp isnt reason
-        @__port1Comp.disconnect_base( this, reason )
-      if @__port1Comp isnt @__port2Comp and @__port2Comp isnt reason
-        @__port2Comp.disconnect_base( this, reason )
+      if not @__port1Comp.isRemoved()
+        @__port1Comp.disconnect_base( this, option )
+
+      if not @__port2Comp.isRemoved()
+        @__port2Comp.disconnect_base( this, option )
 
       # Try removing line element in SVG, if the line is visual
       v = @__view
       if v then v.detach()
+
+      ResourceModel.prototype.remove.call this
       null
 
     serialize : ()->
       # Most of the connection don't have to implement serialize()
       null
-
-    isRemoved : ()->
-      if @__port1Comp.isRemoved() or @__port1Comp.isRemoved()
-        console.warn( "One or two targets of the connection has been removed, yet the connection is not removed : ", this )
-        return true
-
-      return ConnectionModel.__super__.isRemoved.call( this )
 
     getCanvasView : ()->
       if not @isVisual() then return null

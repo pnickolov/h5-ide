@@ -1,7 +1,7 @@
 
 define [ "./CanvasElement", "constant", "CanvasManager", "event" ], ( CanvasElement, constant, CanvasManager, ide_event )->
 
-  ChildElement = ( component )->
+  CeVolume = ( component )->
     if _.isString( component )
       @id = component
       @nodeType = "node"
@@ -11,8 +11,8 @@ define [ "./CanvasElement", "constant", "CanvasManager", "event" ], ( CanvasElem
     null
 
 
-  CanvasElement.extend( ChildElement, constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume )
-  ChildElementProto = ChildElement.prototype
+  CanvasElement.extend( CeVolume, constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume )
+  ChildElementProto = CeVolume.prototype
 
 
   ###
@@ -30,7 +30,7 @@ define [ "./CanvasElement", "constant", "CanvasManager", "event" ], ( CanvasElem
     #
     # #
     # # #
-    ChildElement.super.remove.call this
+    CeVolume.super.remove.call this
 
 
   ChildElementProto.select = ( subId )->

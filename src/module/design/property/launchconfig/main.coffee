@@ -51,7 +51,7 @@ define [ "../base/main",
 
         initAppEdit : () ->
             @model = model
-            @model.isApp = true
+            @model.isApp = @model.isAppEdit = true
             @view  = app_view
             null
 

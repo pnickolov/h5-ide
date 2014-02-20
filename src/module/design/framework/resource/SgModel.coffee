@@ -19,6 +19,7 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
       this
 
     isClassicElbSg : ()-> @attributes.name is "amazon-elb/amazon-elb-sg"
+    isVisual       : ()-> false
   }
 
   Model = ComplexResModel.extend {
@@ -60,11 +61,19 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
 
     createIpTarget : ( ipAddress )-> new SgTargetModel( ipAddress )
 
+    getNewName : ()->
+      myKinds = Design.modelClassForType( @type ).allObjects()
+      ResourceModel.prototype.getNewName.call( this, myKinds.length - 1 )
+
     ruleCount : ()->
       count = 0
       for ruleset in @connections( "SgRuleSet" )
         count += ruleset.ruleCount( @id )
       count
+
+    getMemberList : ()->
+      # Sg member does not include any ExpandedAsg
+      _.filter @connectionTargets("SgAsso"), ( tgt )-> tgt.type isnt "ExpandedAsg"
 
     connect : ( cn )->
       if cn.type is "SgAsso"
@@ -145,9 +154,14 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
 
       # Try remove all the resources connectable to this SG
       for res in possibleAffectedRes
-        if not connectableMap[ res.id ] and res isnt resource
-          cn = SgLine.findExisting( resource, res )
-          if cn then cn.remove( reason )
+        if res is resource then continue
+        cn = SgLine.findExisting( resource, res )
+
+        if cn # There's a line between two resources.
+          if not connectableMap[ res.id ]
+            cn.remove( reason )
+          else
+            cn.validate( true )
       null
 
     vlineRemoveBatch : ( otherSg, reason )->
@@ -203,7 +217,6 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
           GroupId          : @get("appId")
           GroupName        : @get("groupName") or @get("name")
           GroupDescription : @get("description")
-          OwnerId          : ""
           VpcId            : @getVpcRef()
           IpPermissions       : []
           IpPermissionsEgress : []

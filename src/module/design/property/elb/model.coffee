@@ -10,6 +10,8 @@ define [ '../base/model', "event", "Design", 'constant' ], ( PropertyModel, ide_
 
             component = Design.instance().component( uid )
 
+            @getAppData( uid )
+
             attr        = component.toJSON()
             attr.uid    = uid
             attr.isVpc  = not Design.instance().typeIsClassic()
@@ -65,6 +67,24 @@ define [ '../base/model', "event", "Design", 'constant' ], ( PropertyModel, ide_
                 attr.azArray = azArr
 
             @set attr
+            null
+
+        getAppData : ( uid )->
+            uid = uid or @get("uid")
+
+            myElbComponent = Design.instance().component( uid )
+
+            appData = MC.data.resource_list[ Design.instance().region() ]
+            elb     = appData[ myElbComponent.get 'appId' ]
+
+            if not elb then return
+
+            @set {
+                appData    : true
+                isInternet : elb.Scheme is 'internet-facing'
+                DNSName    : elb.DNSName
+                CanonicalHostedZoneNameID : elb.CanonicalHostedZoneNameID
+            }
             null
 
         setScheme   : ( value ) ->

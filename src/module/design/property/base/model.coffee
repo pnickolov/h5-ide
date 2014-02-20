@@ -37,8 +37,13 @@ define [ 'backbone', 'Design' ], ( Backbone, Design )->
             if comp.get("name") is newName
                 return false
 
-            _.some Design.modelClassForType( comp.type ).allObjects(), ( obj )->
-                obj.get("name") is newName
+            dup = false
+            Design.instance().eachComponent ( comp )->
+                if comp.get("name") is newName
+                    dup = true
+                    return false
+
+            dup
     }
 
     PropertyModel

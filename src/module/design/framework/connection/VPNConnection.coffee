@@ -1,14 +1,6 @@
 
 define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
 
-  __vgwTelemetry =
-    AcceptRouteCount : ""
-    LastStatusChange : ""
-    OutsideIpAddress : ""
-    Status           : ""
-    StatusMessage    : ""
-
-
   C = ConnectionModel.extend {
 
     type : constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNConnection
@@ -32,25 +24,17 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
       if cgw.isDynamic()
         routes = []
       else
-        routes = _.map @get("routes"), ( r )->
-          {
-            DestinationCidrBlock : r
-            Source               : ""
-            State                : ""
-          }
+        routes = _.map @get("routes"), ( r )-> { DestinationCidrBlock : r }
 
       component_data[ @id ] =
         name : "VPN"
         type : @type
         uid  : @id
         resource :
-          CustomerGatewayConfiguration : ""
           CustomerGatewayId : cgw.createRef( "CustomerGatewayId" )
           Options           : { StaticRoutesOnly : true }
-          State             : ""
           Type              : "ipsec.1"
           Routes            : routes
-          VgwTelemetry      : __vgwTelemetry
           VpnConnectionId   : @get("appId")
           VpnGatewayId      : vgw.createRef( "VpnGatewayId" )
 

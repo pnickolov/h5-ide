@@ -18,20 +18,23 @@ define [ '../base/view',
     ACLView = PropertyView.extend {
 
         events   :
-            'change #property-acl-name'           : 'aclNameChanged'
-            'click #acl-add-rule-icon'            : 'showCreateRuleModal'
-            'OPTION_CHANGE #acl-sort-rule-select' : 'sortAclRule'
-            'click .rule-list-row .icon-remove'   : 'removeAclRule'
+            'change #property-acl-name'                 : 'aclNameChanged'
+            'click #acl-add-rule-icon'                  : 'showCreateRuleModal'
+            'OPTION_CHANGE #acl-sort-rule-select'       : 'sortAclRule'
+            'click .acl-rule-details .rule-remove-icon' : 'removeAclRule'
 
         render : () ->
             @$el.html htmlTpl @model.attributes
+
+            @refreshRuleList()
+
             @model.attributes.name
 
         aclNameChanged : (event) ->
             target = $ event.currentTarget
             name = target.val()
 
-            if @checkDupName( target, "ACL" )
+            if @checkResName( target, "ACL" )
                 @model.setName name
                 @setTitle name
 
@@ -51,7 +54,7 @@ define [ '../base/view',
 
         removeAclRule : (event) ->
             $target = $( event.currentTarget ).closest("li")
-            ruleId  = $target.attr("data-id")
+            ruleId  = $target.attr("data-uid")
 
             if @model.removeAclRule ruleId
                 $target.remove()

@@ -147,6 +147,9 @@ define [ 'MC', 'event', 'handlebars'
 		#test
 		MC.ide_event = ide_event
 
+		#temp
+		MC.data.running_app_list = {}
+
 		#############################
 		#  WebSocket
 		#############################

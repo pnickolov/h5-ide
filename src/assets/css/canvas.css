@@ -242,10 +242,7 @@
 }
 
 .canvas_state_stack .port:hover,
-.canvas_state_appedit .port-instance-sg:hover,
-.canvas_state_appedit .port-eni-sg:hover,
-.canvas_state_appedit .port-launchconfig-sg:hover,
-.canvas_state_appedit .port-elb-sg:hover {
+.canvas_state_appedit .port:hover {
 	fill: #F2F8FF;
 	stroke-width: 2;
 	cursor  : pointer;
@@ -635,7 +632,8 @@
 	font-size: 13px;
 }
 
-.asg-expand {
+.asg-expand,
+.lc-expand {
 	opacity: 0.5;
 }
 
@@ -836,12 +834,6 @@
 
 /*special style for app update state and zoomed state*/
 .canvas_state_app .resizer-wrap {
-	display: none;
-}
-
-.canvas_state_app .asg-resource-dragger,
-.canvas_state_appedit .asg-resource-dragger,
-.canvas_state_appview .asg-resource-dragger {
 	display: none;
 }
 
@@ -1164,8 +1156,8 @@
 
 .node-action-tooltip:before {
 	content:"";
-	width: 0; 
-	height: 0; 
+	width: 0;
+	height: 0;
 	border-top: 4px solid transparent;
 	border-bottom: 4px solid transparent;
 	border-right: 4px solid rgba(0,0,0, 0.8);
@@ -1187,7 +1179,7 @@
 
 	height: 26px;
 	width: 26px;
-	cursor: pointer;	
+	cursor: pointer;
 	overflow: hidden;
 }
 

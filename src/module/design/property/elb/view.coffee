@@ -75,7 +75,7 @@ define [ '../base/view',
 
             oldName = @model.get("name")
 
-            if @checkDupName( target, "Load Balancer" )
+            if @checkResName( target, "Load Balancer" )
                 @model.setName name
                 @setTitle name
 

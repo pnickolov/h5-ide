@@ -57,16 +57,6 @@ define [ "../GroupModel", "./VpcModel", "constant", "i18n!nls/lang.js" ], ( Grou
 
     serialize : ()->
       n = @get("name")
-
-      layout =
-        size       : [ @width(), @height() ]
-        coordinate : [ @x(), @y() ]
-        name       : n
-        uid        : @id
-
-      if @parent()
-        layout.groupUId = @parent().id
-
       component =
         uid  : @id
         name : n
@@ -75,7 +65,7 @@ define [ "../GroupModel", "./VpcModel", "constant", "i18n!nls/lang.js" ], ( Grou
           ZoneName : n
           RegionName : n.substring(0, n.length-1)
 
-      { layout : layout, component : component }
+      { layout : @generateLayout(), component : component }
 
   }, {
     handleTypes : constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone

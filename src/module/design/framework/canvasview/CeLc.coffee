@@ -1,10 +1,10 @@
 
 define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager" ], ( CanvasElement, CeInstance, constant, CanvasManager )->
 
-  ChildElement = ()-> CanvasElement.apply( this, arguments )
+  CeLc = ()-> CanvasElement.apply( this, arguments )
 
-  CanvasElement.extend.call( CeInstance, ChildElement, constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration )
-  ChildElementProto = ChildElement.prototype
+  CanvasElement.extend.call( CeInstance, CeLc, constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration )
+  ChildElementProto = CeLc.prototype
 
 
   ###
@@ -18,8 +18,26 @@ define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager" ], ( Can
     "launchconfig-sg" : "horizontal"
   }
 
-  ChildElementProto.iconUrl = ()->
-    ami = @model.getAmi() || @model.get("cachedAmi")
+  ChildElementProto.detach = ()->
+    # Remove state icon
+    MC.canvas.nodeAction.remove @id
+    CanvasElement.prototype.detach.call this
+    null
+
+  ChildElementProto.list = ()->
+    list = CanvasElement.prototype.list.call(this)
+    for ins in list
+      ins.background = @iconUrl( ins.appId )
+    list.volume = (@model.get("volumeList") || []).length
+    list
+
+  ChildElementProto.iconUrl = ( instanceId )->
+    if instanceId
+      ami = MC.data.resource_list[@model.design().region()][ instanceId ]
+      if ami then ami = MC.data.dict_ami[ ami.imageId ]
+
+    if not ami
+      ami = @model.getAmi() || @model.get("cachedAmi")
 
     if not ami
       "ide/ami/ami-not-available.png"
@@ -34,6 +52,7 @@ define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager" ], ( Can
 
       # Call parent's createNode to do basic creation
       node = @createNode({
+        id      : m.id
         image   : "ide/icon/instance-canvas.png"
         imageX  : 15
         imageY  : 9
@@ -97,10 +116,11 @@ define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager" ], ( Can
 
       # Move the node to right place
       @getLayer("node_layer").append node
+
       @initNode node, m.x(), m.y()
 
     else
-      node = @$element()
+      node = @$element m.id
 
       # Node Label
       CanvasManager.update node.children(".node-label-name"), m.get("name")

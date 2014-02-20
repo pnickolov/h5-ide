@@ -58,7 +58,17 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
           rtb = $.extend true, {}, rtb
           rtb.name = routeTable.get 'name'
 
-          if rtb.associationSet and rtb.associationSet.item and rtb.associationSet.item[0] and rtb.associationSet.item[0].main is true
+          has_main = false
+
+          if rtb.associationSet and rtb.associationSet.item
+
+            for asso in rtb.associationSet.item
+
+              if asso.main is true
+
+                has_main = true
+
+          if has_main
             rtb.main = "Yes"
           else
             rtb.main = "No"

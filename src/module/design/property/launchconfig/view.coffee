@@ -45,7 +45,7 @@ define [ '../base/view', 'text!./template/stack.html', 'event', 'constant', 'i18
             target = $ event.currentTarget
             name = target.val()
 
-            if @checkDupName( target, "LaunchConfiguration" )
+            if @checkResName( target, "LaunchConfiguration" )
                 @model.setName name
                 @setTitle name
             null

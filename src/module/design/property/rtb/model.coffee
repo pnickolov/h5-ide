@@ -6,8 +6,14 @@ define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, const
 
   RTBModel = PropertyModel.extend {
 
+    defaults :
+      'isAppEdit' : false
+
     setMainRT : () ->
       Design.instance().component( @get("uid") ).setMain()
+      if @isAppEdit
+        @setMainMessage( @get("uid") )
+        @set 'isMain', Design.instance().component( @get("uid") ).get("main")
       null
 
     reInit : () ->
@@ -45,6 +51,7 @@ define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, const
         isMain      : component.get("main")
         local_route : VPCModel.theVPC().get("cidr")
         routes      : routes
+        isAppEdit   : @isAppEdit
 
       for cn in component.connections()
         if cn.type isnt "RTB_Route"
@@ -63,8 +70,54 @@ define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, const
 
       routes = _.sortBy routes, "type"
 
+      if @isAppEdit
+
+        @set 'vpcId', component.parent().get('appId')
+
+        @set 'routeTableId', component.get('appId')
+
+        @setMainMessage( uid )
+
+
+
       @set data
       true
+
+    setMainMessage : ( uid ) ->
+
+      component = Design.instance().component(uid)
+
+      resource_list = MC.data.resource_list[ Design.instance().region() ]
+
+      appData       = resource_list[ component.get("appId") ]
+
+      aws_rt_is_main = false
+
+      if appData.associationSet and appData.associationSet.item
+
+        for asso in appData.associationSet.item
+
+          if asso.main is true
+
+            aws_rt_is_main = true
+
+      now_main_rtb = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable ).getMainRouteTable()
+
+      if aws_rt_is_main and now_main_rtb.id isnt component.id
+
+        @set 'main', 'Yes (Set as No after applying updates)'
+
+      else if aws_rt_is_main and now_main_rtb.id is component.id
+
+        @set 'main', 'Yes'
+
+      else if not aws_rt_is_main and now_main_rtb.id is component.id
+
+        @set 'main', 'No (Set as Yes after applying updates)'
+
+      else
+
+        @set 'main', 'No'
 
     setPropagation : ( propagate ) ->
 

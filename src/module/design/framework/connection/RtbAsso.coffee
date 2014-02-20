@@ -5,6 +5,8 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
 
     type : "RTB_Asso"
 
+    oneToMany : constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
+
     defaults :
       lineType : "association"
       implicit : false
@@ -17,12 +19,6 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
         name : "rtb-src"
         type : constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
 
-    initialize : ()->
-      for asso in @getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet ).connections( "RTB_Asso" )
-        if asso isnt this
-          asso.remove( this )
-      null
-
     serialize : ( components )->
       # Do nothing if the line is implicit
       if @get("implicit") then return
@@ -34,28 +30,44 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
 
       rtb_data.resource.AssociationSet.push {
         SubnetId: sb.createRef( "SubnetId" )
-        RouteTableId : ""
+        RouteTableAssociationId : @get("assoId") or ""
         Main : false
-        RouteTableAssociationId : ""
       }
       null
 
-    remove : ( reason )->
-      # If no reason, it means the user try to delete the line.
-      # So we connect the subnet to MainRTB
-      if not reason
-        subnet = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet )
-        oldRtb = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable )
+    remove : ()->
+      # When an RtbAsso is removed, and its subnet still remains and the subnet has no
+      # other RtbAsso, connects the subnet to the mainRTB.
+      subnet = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet )
 
-        # When an RtbAsso is disconnected create a connection between this subnet and mainRtb
-        RtbModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable )
-        newRtb   = RtbModel.getMainRouteTable()
+      if not subnet.isRemoved()
+        subnetRtbAsso = subnet.connections("RTB_Asso")
 
-        # If the user disconnect the subent <=> mainRtb,
-        # we must pass in { detectDuplicate : false } to disable ConnectionManager
-        # to find duplicate connection, because at this time, the disconnecting
-        # connection is not considered "Removed".
-        new C( subnet, newRtb, { implicit : true }, { detectDuplicate : oldRtb isnt newRtb } )
+        if subnetRtbAsso.length is 0 or (subnetRtbAsso.length is 1 and subnetRtbAsso[0] is this)
+
+          oldRtb = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable )
+
+          if oldRtb.get("main")
+            # the RtbAsso will not be removed if the Rtb is MainRTB
+            # But will set implicit to true
+            @set "implicit", true
+            return
+
+          # Call base class to remove the line.
+          ConnectionModel.prototype.remove.apply this, arguments
+
+          # Connects to mainRTB
+          RtbModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable )
+          newRtb   = RtbModel.getMainRouteTable()
+
+          # If the user disconnect the subent <=> mainRtb,
+          # we must pass in { detectDuplicate : false } to disable ConnectionManager
+          # to find duplicate connection, because at this time, the disconnecting
+          # connection is not considered "Removed".
+          new C( subnet, newRtb, { implicit : true } )
+          return
+
+      ConnectionModel.prototype.remove.apply this, arguments
       null
   }
 

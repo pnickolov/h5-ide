@@ -17,8 +17,6 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
       volumeType : 'standard'
       iops       : ''
 
-      supportAppEdit : true
-
 
     type : constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume
 
@@ -37,8 +35,13 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
 
         @attachTo( owner, options )
 
+      if options and options.cloneSource
+        @clone( options.cloneSource )
       null
 
+    clone : ( srcTarget )->
+      @cloneAttributes srcTarget, { reserve : "owner" }
+      null
 
     isVisual : ()-> false
 
@@ -51,6 +54,8 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
       vl = @attributes.owner.get("volumeList")
       vl.splice( vl.indexOf(this), 1 )
       @attributes.owner.draw()
+
+      ComplexResModel.prototype.remove.call this
       null
 
     genFullName: ( name ) ->
@@ -185,6 +190,8 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
 
       @ensureEnoughMember()
 
+      appId = ""
+
       if index > 0
         member = @groupMembers()[ index - 1 ]
         uid   = member.id
@@ -206,17 +213,15 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
         index           : index
         number          : serverGroupOption.number or 1
         resource :
-          VolumeId   : appId || ""
+          VolumeId   : appId
           Size       : @get("volumeSize")
           SnapshotId : @get("snapshotId")
           Iops       : @get("iops")
+          VolumeType : @get("volumeType")
           AvailabilityZone : if owner then owner.getAvailabilityZone().createRef() else ""
           AttachmentSet :
-            VolumeId            : appId || ""
-            InstanceId          : instanceId
-            Device              : @get("name")
-            DeleteOnTermination : true
-          VolumeType  : @get("volumeType")
+            InstanceId : instanceId
+            Device     : @get("name")
       }
 
 

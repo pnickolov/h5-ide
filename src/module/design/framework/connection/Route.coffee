@@ -58,9 +58,7 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
         Origin : ""
         InstanceId : ""
         NetworkInterfaceId : ""
-        State : ""
         GatewayId : ""
-        InstanceOwnerId : ""
       }
 
       TYPE = constant.AWS_RESOURCE_TYPE

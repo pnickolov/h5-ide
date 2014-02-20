@@ -49,7 +49,7 @@ define [ "Design",
 
       if option.createByUser and not Design.instance().typeIsClassic()
         sg = new SgModel({
-          name        : @get("name")+"-sg"
+          name        : @getElbSgName()
           isElbSg     : true
           description : "Automatically created SG for load-balancer"
         })
@@ -58,23 +58,36 @@ define [ "Design",
         new SgAssoModel( this, sg )
       null
 
+    isRemovable : ()->
+      elbsg = @getElbSg()
+      if elbsg and elbsg.connections("SgAsso").length > 1
+        return MC.template.ElbRemoveConfirmation {
+          name : @get("name")
+          sg : elbsg.get("name")
+        }
+
+      true
+
     remove : ()->
       sslCert = @get("sslCert")
       if sslCert then sslCert.remove()
 
-      # Remove my elb sg, if the sg is not used by anyone.
-      for elbSg in @.connectionTargets( "SgAsso" )
-        if elbSg.isElbSg()
-          cannotDelete = false
-          for elb in elbSg.connectionTargets("SgAsso")
-            if elb isnt this
-              cannotDelete = true
-              break
-          if not cannotDelete
-            elbSg.remove()
+      # Remove elb will only remove my elb sg
+      if @getElbSg() then @getElbSg().remove()
+
+      ComplexResModel.prototype.remove.call this
       null
 
-    getElbSg : ()-> @__elbSg
+    # Always use this method to get the sg of this elb
+    getElbSg : ()->
+      if @__elbSg
+        # If the elbsg is removed, we would like to nullify it.
+        if @__elbSg.isRemoved()
+          @__elbSg = undefined
+
+      @__elbSg
+
+    getElbSgName : ()-> "elbsg-"+ @get("name")
 
     setName : ( name )->
       if @get("name") is name
@@ -82,9 +95,9 @@ define [ "Design",
 
       @set "name", name
 
-      if @__elbSg
+      if @getElbSg()
         # Update Elb's Sg's Name
-        @__elbSg.set( "name", name+"-sg" )
+        @getElbSg().set( "name", @getElbSgName() )
 
       if @draw then @draw()
       null
@@ -196,11 +209,6 @@ define [ "Design",
         return _.uniq azs.concat( @get("AvailabilityZones") )
 
     serialize : ()->
-      layout =
-        coordinate : [ @x(), @y() ]
-        uid        : @id
-        groupUId   : if @parent() then @parent().id else ""
-
       hcTarget = @get("healthCheckTarget")
       if hcTarget.indexOf("TCP") isnt -1 or hcTarget.indexOf("SSL") isnt -1
         # If target is TCP or SSL, remove path.
@@ -247,8 +255,6 @@ define [ "Design",
         resource :
           AvailabilityZones : @getAvailabilityZones()
           Subnets : subnets
-          CanonicalHostedZoneNameID : ""
-          CanonicalHostedZoneName : ""
           Instances : []
           CrossZoneLoadBalancing : @get("crossZone")
           VpcId                  : @getVpcRef()
@@ -270,11 +276,8 @@ define [ "Design",
               OtherPolicies : []
             }
           BackendServerDescriptions : [ { InstantPort : "", PoliciyNames : "" } ]
-          SourceSecurityGroup : { OwnerAlias : "", GroupName : "" }
-          #reserved
-          CreatedTime  : ""
 
-      json_object = { component : component, layout : layout }
+      json_object = { component : component, layout : @generateLayout() }
 
       if @get("sslCert")
         ssl = @get("sslCert")
@@ -289,9 +292,8 @@ define [ "Design",
             ServerCertificateMetadata :
               ServerCertificateName : ssl.get("name")
               Arn : ssl.get("arn")
-              ServerCertificateId : ""
-              UploadDate : ""
-              Path : ""
+              ServerCertificateId : ssl.get("certId")
+
         return [ json_object, { component : sslComponent } ]
       else
         return json_object
@@ -305,12 +307,13 @@ define [ "Design",
       # Handle Certificate
       if data.type is constant.AWS_RESOURCE_TYPE.AWS_IAM_ServerCertificate
         cert = new ResouceModel({
-          uid   : data.uid
-          name  : data.name
-          body  : data.resource.CertificateBody
-          chain : data.resource.CertificateChain
-          key   : data.resource.PrivateKey
-          arn   : data.resource.ServerCertificateMetadata.Arn
+          uid    : data.uid
+          name   : data.name
+          body   : data.resource.CertificateBody
+          chain  : data.resource.CertificateChain
+          key    : data.resource.PrivateKey
+          arn    : data.resource.ServerCertificateMetadata.Arn
+          certId : data.resource.ServerCertificateMetadata.ServerCertificateId
         })
         return
 
@@ -318,7 +321,7 @@ define [ "Design",
       attr =
         id     : data.uid
         name   : data.name
-        appId  : data.resource.LoadBalancerName
+        appId  : data.resource.DNSName
         parent : resolve( layout_data.groupUId )
 
         internal  : data.resource.Scheme is 'internal'
@@ -377,7 +380,7 @@ define [ "Design",
       elb = Design.instance().component( data.uid )
 
       # Find out which SG is this Elb's Sg
-      sgName = elb.get("name") + "-sg"
+      sgName = elb.getElbSgName()
       for sg in SgModel.allObjects()
         if sg.get("name") is sgName
           elb.__elbSg = sg

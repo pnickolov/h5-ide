@@ -300,22 +300,22 @@
 
 #state-editor .editable-area {
 	/*background-color: #fff;*/
-	border-bottom: 1px solid #ccc;
+	/*border-bottom: 1px solid #ccc;*/
 	width: 100%;
 	outline: 0px solid transparent;
 	padding: 5px;
-	margin-bottom: 5px;
+	margin-bottom: 6px;
 	margin-right: 5px;
 }
 
 #state-editor .editable-area.ace_focus,
 #state-editor .editable-area.ace_focus:hover {
 	color: #333;
-	border-bottom: 1px solid #69aadc;
+	/*border-bottom: 1px solid #69aadc;*/
 }
 
 #state-editor .editable-area:hover {
-	border-bottom: 1px solid #aaa;
+	/*border-bottom: 1px solid #aaa;*/
 }
 
 #state-editor .editable-area.disabled {

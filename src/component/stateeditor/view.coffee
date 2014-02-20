@@ -2240,12 +2240,12 @@ define [ 'event',
 
             # Expand state item [Ctrl + down]
             if (event.ctrlKey or event.metaKey) and keyCode is 38
-                target.expandItem.call target, $('.state-list').find('.focused')
+                target.expandItem.call target, $('.state-list .focused')
                 return false
 
             # Expand state item [Ctrl + up]
             if (event.ctrlKey or event.metaKey) and keyCode is 40
-                target.collapseItem.call target, $('.state-list').find('.focused')
+                target.collapseItem.call target, $('.state-list .focused')
                 return false
 
             # Toggle Document Sidebar [Ctrl + I]
@@ -2263,10 +2263,58 @@ define [ 'event',
                 target.onSwitchState.call target, true
                 return false
 
+            # Switch focused state [Up]
+            if keyCode is 38
+                target.switchFocus.call target, true
+                return false
+
+            # Switch focused state [Down]
+            if keyCode is 40
+                target.switchFocus.call target
+                return false
+
+            if keyCode is 13
+                focused = $('#state-editor .state-item.focused')
+
+                if focused[0] isnt null and focused.hasClass('view') is true
+                    target.expandItem.call target, focused
+
             # Tab switch [Tab]
             if keyCode is 9
                 target.onSwitchState.call target
                 return false
+
+        switchFocus: (reverse) ->
+
+            that = this
+
+            focused_index = 0
+
+            stack = $('#state-editor .state-item')
+
+            total = stack.length
+
+            focused_index = $('#state-editor .state-item.focused').index('#state-editor .state-list > li')
+
+            that.clearFocusedItem()
+
+            if reverse and reverse is true
+
+                if focused_index > 0
+                    stack.eq(focused_index - 1).addClass('focused')
+
+                if focused_index < 1
+                    stack.eq(total - 1).addClass('focused')
+
+            else
+
+                if focused_index + 1 < total
+                    stack.eq(focused_index + 1).addClass('focused')
+
+                else
+                    stack.eq(0).addClass('focused')
+
+            return false
 
         onSwitchState: (reverse) ->
 

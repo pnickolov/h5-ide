@@ -32,6 +32,7 @@ define [ 'text!./template.html', "event", "constant", "canvas_layout", 'MC.canva
 
         clear : ->
             $( '#canvas' ).html @template
+            canvas_layout.listen()
     }
 
     return CanvasView

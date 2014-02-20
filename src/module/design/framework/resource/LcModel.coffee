@@ -79,11 +79,14 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
 
       newName
 
-    isRemovable : ()->
-      # state = @get("state")
-      # if state isnt undefined and state.length > 0
-      #   return MC.template.NodeStateRemoveConfirmation(name: @get("name"))
-      # { error : lang.ide.CVS_MSG_ERR_DEL_LC }
+    isRemovable : () ->
+      if @design().modeIsAppEdit()
+        return error : lang.ide.CVS_MSG_ERR_DEL_LC
+
+      state = @get("state")
+      if state isnt undefined and state.length > 0
+        return MC.template.NodeStateRemoveConfirmation(name: @get("name"))
+
       true
 
     isDefaultTenancy : ()-> true

@@ -109,7 +109,7 @@ define [ 'event',
                 that.$noStateContainer.hide()
 
             # hide autocomplete when click document
-            $(document).on('mousedown', that.onDocumentMouseDown)
+            $(document).on('mousedown', jQuery.proxy(that.onDocumentMouseDown, that))
             $('#state-editor').on('scroll', () ->
                 $('.ace_editor.ace_autocomplete').hide()
             )
@@ -170,6 +170,8 @@ define [ 'event',
             currentAppState = that.model.get('currentAppState')
 
             that.resAttrRegexStr = that.model.get('resAttrRegexStr')
+
+            that.generalTip = 'Get Started with Conﬁguration Manager Conﬁguration manager is blah blah blah... You can use following command...'
 
             that.resNoState = true
             if that.originCompStateData and _.isArray(that.originCompStateData) and that.originCompStateData.length
@@ -279,8 +281,10 @@ define [ 'event',
                     # $stateItemList = that.$stateList.find('.state-item')
                     $stateItem.addClass('view')
                     return true
-                dragEnd: () ->
+                dragEnd: (event, oldIndex) ->
                     $stateItem = this
+                    newIndex = $stateItem.index()
+                    alert(oldIndex + ', ' + newIndex)
                     that.refreshLogItemNum()
                     null
             })
@@ -600,7 +604,7 @@ define [ 'event',
                     descMarkdown = moduleObj.reference['en']
                 that.$cmdDsec.attr('data-command', cmdName)
             else
-                descMarkdown = 'Get Started with Conﬁguration Manager Conﬁguration manager is blah blah blah... You can use following command...'
+                descMarkdown = that.generalTip
 
             descHTML = ''
 
@@ -802,15 +806,15 @@ define [ 'event',
 
             # add default value
 
-            # if $currentInput.hasClass('parameter-value')
+            if $currentInput.hasClass('parameter-value')
 
-            #     currentValue = that.getPlainText($currentInput)
+                currentValue = that.getPlainText($currentInput)
 
-            #     paraObj = that.getParaObj($currentInput)
+                paraObj = that.getParaObj($currentInput)
 
-            #     if paraObj
+                if paraObj
 
-            #         that.highlightParaDesc(paraObj.name)
+                    that.highlightParaDesc(paraObj.name)
 
             #         if paraObj.default isnt undefined
             #             defaultValue = String(paraObj.default)
@@ -1525,6 +1529,7 @@ define [ 'event',
                     editor = $editableArea.data('editor')
                     if editor then editor.blur()
                     null
+                that.refreshDescription()
 
         initCodeEditor: (editorElem, hintObj) ->
 
@@ -2230,6 +2235,11 @@ define [ 'event',
             that.bindStateListEvent($newStateItems)
 
             that.refreshStateViewList($newStateItems)
+
+            $stateItems = that.$stateList.find('.state-item')
+            if $stateItems.length
+                that.$haveStateContainer.show()
+                that.$noStateContainer.hide()
 
             null
 

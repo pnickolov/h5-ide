@@ -46,11 +46,48 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
         new SgAsso( defaultSg, this )
       null
 
-    isRemovable : ()->
-      # state = @get("state")
-      # if state isnt undefined and state.length > 0
-      #   return MC.template.NodeStateRemoveConfirmation(name: @get("name"))
-      { error : lang.ide.CVS_MSG_ERR_DEL_LC }
+    getNewName : ( base )->
+      if not @newNameTmpl
+        newName = if @defaults then @defaults.name
+        return newName or ""
+
+      if base is undefined
+        myKinds = Design.modelClassForType( @type ).allObjects()
+        base = myKinds.length
+
+      # Collect all the resources name
+      nameMap = {}
+      @design().eachComponent ( comp )->
+        if comp.get("name")
+          nameMap[ comp.get("name") ] = true
+        null
+
+      if Design.instance().modeIsAppEdit()
+        resource_list = MC.data.resource_list[Design.instance().region()]
+        for id, rl of resource_list
+          if rl.LaunchConfigurationName
+            nameMap[ _.first rl.LaunchConfigurationName.split( '---' ) ] = true
+
+
+
+      while true
+        newName = @newNameTmpl + base
+        if nameMap[ newName ]
+          base += 1
+        else
+          break
+
+      newName
+
+    isRemovable : () ->
+      if @design().modeIsAppEdit()
+        return error : lang.ide.CVS_MSG_ERR_DEL_LC
+
+      state = @get("state")
+      if state isnt undefined and state.length > 0
+        return MC.template.NodeStateRemoveConfirmation(name: @get("name"))
+
+      true
 
     isDefaultTenancy : ()-> true
 
@@ -77,8 +114,7 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
       for v in (@get("volumeList") or emptyArray).slice(0)
         v.remove()
 
-      MC.canvas.nodeAction.remove @id
-
+      ComplexResModel.prototype.remove.call this
       null
 
     connect : ( cn )->
@@ -117,12 +153,8 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
 
     serialize : ()->
 
-      layout =
-        coordinate : [ @x(), @y() ]
-        uid        : @id
-        groupUId   : @parent().id
-
       ami = @getAmi() || @get("cachedAmi")
+      layout = @generateLayout()
       if ami
         layout.osType         = ami.osType
         layout.architecture   = ami.architecture
@@ -137,6 +169,10 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
           DeviceName : volume.get("name")
           Ebs :
             VolumeSize : volume.get("volumeSize")
+            VolumeType : volume.get("volumeType")
+
+        if volume.get("volumeType") is "io1"
+          vd.Ebs.Iops = volume.get("iops")
 
         if volume.get("snapshotId")
           vd.Ebs.SnapshotId = volume.get("snapshotId")
@@ -157,15 +193,9 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
           BlockDeviceMapping       : blockDevice
           KeyName                  : ""
           SecurityGroups           : sgarray
-          SpotPrice                : ""
           LaunchConfigurationName  : @get("configName") or @get("name")
-          KernelId                 : ""
-          IamInstanceProfile       : ""
           InstanceType             : @get("instanceType")
           AssociatePublicIpAddress : @get("publicIp")
-          #reserved
-          CreatedTime              : ""
-          RamdiskId                : ""
 
 
       { component : component, layout : layout }

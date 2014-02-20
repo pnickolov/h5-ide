@@ -1,12 +1,4 @@
 <article class="property-app">
-{{#if isLC}}
-    <dl class="dl-vertical">
-    <dt>{{i18n "PROP_VOLUME_DEVICE_NAME"}}</dt>
-    <dd>{{emptyStr DeviceName}}</dd>
-    <dt>{{i18n "PROP_VOLUME_SIZE"}}</dt>
-    <dd>{{emptyStr Ebs.VolumeSize}} GB</dd>
-  </dl>
-{{else}}
   <dl class="dl-vertical">
     <dt>{{i18n "PROP_VOLUME_ID"}}</dt>
     <dd>{{emptyStr volumeId}}</dd>
@@ -26,9 +18,9 @@
     {{/if}}
     <dt>{{i18n "PROP_VOLUME_SIZE"}}</dt>
     <dd>{{emptyStr size}} GB</dd>
-    {{#if IOPS}}
+    {{#if iops}}
     <dt>IOPS</dt>
-    <dd>{{IOPS}}</dd>
+    <dd>{{iops}}</dd>
     {{/if}}
   </dl>
   <dl class="dl-vertical">
@@ -39,7 +31,5 @@
     <dt>{{i18n "PROP_VOLUME_ATTACHMENT_TIME"}}</dt>
     <dd>{{timeStr attachmentSet.item.0.attachTime}}</dd>
   </dl>
-
-{{/if}}
 </article>
 

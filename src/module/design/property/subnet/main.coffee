@@ -28,6 +28,7 @@ define [ '../base/main',
         initStack : () ->
             @view  = view
             @model = model
+            @model.isAppEdit = false
             null
 
         initApp : () ->
@@ -36,8 +37,9 @@ define [ '../base/main',
             null
 
         initAppEdit : () ->
-            @view  = app_view
-            @model = app_model
+            @view  = view
+            @model = model
+            @model.isAppEdit = true
             null
     }
     null

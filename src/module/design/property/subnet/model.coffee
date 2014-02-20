@@ -6,6 +6,9 @@ define [ '../base/model', 'constant', "Design" ], ( PropertyModel, constant, Des
 
   SubnetModel = PropertyModel.extend {
 
+    defaults :
+      'isAppEdit' : false
+
     init : ( uid ) ->
 
       subnet_component = Design.instance().component( uid )
@@ -42,7 +45,31 @@ define [ '../base/model', 'constant', "Design" ], ( PropertyModel, constant, Des
         uid        : uid
         name       : subnet_component.get("name")
         networkACL : networkACLs
+        isAppEdit  : @isAppEdit
       }
+
+      if @isAppEdit
+
+        appData = MC.data.resource_list[ Design.instance().region() ]
+
+        subnet  = appData[ subnet_component.get 'appId' ]
+
+        subnet      = $.extend true, {}, subnet
+        #subnet.name = subnet_component.get 'name'
+        #subnet.acl  = this.getACL( uid )
+        #subnet.uid  = uid
+
+        # Get RouteTable ID
+
+        routeTable = subnet_component.connectionTargets( 'RTB_Asso' )[ 0 ]
+
+        linkedRT = routeTable.get 'appId'
+        if routeTable.get 'main'
+            defaultRT = routeTable.get 'appId'
+
+        subnet.routeTable = if linkedRT then linkedRT else defaultRT
+
+        @set subnet
 
       @getCidr()
       null

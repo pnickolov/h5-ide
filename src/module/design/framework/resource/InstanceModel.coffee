@@ -26,20 +26,39 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
 
       cachedAmi : null
 
-      supportAppEdit : true
-
       state : undefined
 
     initialize : ( attr, option )->
 
-      if option and option.createByUser
+      option = option || {}
 
+      shouldInit = option.createByUser and not option.cloneSource
+
+      if shouldInit
         @initInstanceType()
 
-        # Draw before creating SgAsso
-        @draw(true)
-        #create mode => no option or option.isCreate==true
 
+      if option.createByUser and not Design.instance().typeIsClassic()
+        #create eni0
+        EniModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface )
+        @setEmbedEni( new EniModel({
+          name : "eni0"
+          assoPublicIp : Design.instance().typeIsDefaultVpc()
+        }, { instance: this }) )
+
+      # Hack, we need to clone the imageId before drawing.
+      if option.cloneSource
+        @attributes.imageId = option.cloneSource.get("imageId")
+
+      # Draw before creating SgAsso and before cloning
+      @draw(true)
+
+      if option.cloneSource
+        # When cloning, instance might also clone volume, which will ask the instance
+        # to update. So we need to draw first.
+        @clone( option.cloneSource )
+
+      if shouldInit
         #assign DefaultKP
         KpModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair )
         defaultKp = KpModel.getDefaultKP()
@@ -57,16 +76,6 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
         else
           console.error "No DefaultSG found when initialize InstanceModel"
 
-        if not Design.instance().typeIsClassic()
-          #create eni0
-          EniModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface )
-          @setEmbedEni( new EniModel({
-            name : "eni0"
-            assoPublicIp : Design.instance().typeIsDefaultVpc()
-          }, { instance: this }) )
-
-      else
-        @draw( true )
 
       # Always setTenancy to insure we don't have micro type for dedicated.
       tenancy = @get("tenancy")
@@ -268,6 +277,19 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
 
 
     isEbsOptimizedEnabled : ()->
+
+      ami = @getAmi() || @get("cachedAmi")
+      if ami and ami.rootDeviceType is "instance-store"
+        return false
+
+      k = @get("instanceType").split '.'
+      instanceType = MC.data.config[ Design.instance().region() ].instance_type
+      if instanceType then instanceType = instanceType[ k[0] ]
+      if instanceType then instanceType = instanceType[ k[1] ]
+      if instanceType and instanceType.ebs_optimized
+        return instanceType.ebs_optimized is 'Yes'
+
+      #default
       EbsMap =
         "m1.large"   : true
         "m1.xlarge"  : true
@@ -284,12 +306,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
         "i2.2xlarge"  : true
         "i2.4xlarge"  : true
 
-
-      ami = @getAmi() || @get("cachedAmi")
-      if ami and ami.rootDeviceType is "instance-store"
-        return false
-
-      return !!EbsMap[ @get("instanceType") ]
+      !!EbsMap[ @get("instanceType") ]
 
     setInstanceType : ( type )->
 
@@ -350,8 +367,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
         for eni in @connectionTargets("EniAttachment")
           eni.remove()
 
-      MC.canvas.nodeAction.remove @id
-
+      ComplexResModel.prototype.remove.call this
       null
 
     isRemovable : ()->
@@ -360,6 +376,25 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
         return MC.template.NodeStateRemoveConfirmation(name: @get("name"))
 
       true
+
+    clone : ( srcTarget )->
+      @cloneAttributes srcTarget, {
+        reserve : "volumeList"
+        copyConnection : [ "KeypairUsage", "SgAsso", "ElbAmiAsso" ]
+      }
+
+      # Update states id
+      for state in @get("state") or []
+        state.id = "state-" + @design().guid()
+
+      # Copy volume
+      Volume = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume )
+      for v in srcTarget.get("volumeList") or []
+        new Volume( { owner : this }, { cloneSource : v } )
+
+      # Copy Eni
+      @getEmbedEni().clone( srcTarget.getEmbedEni() )
+      null
 
     setEmbedEni : ( eni )->
       this.__mainEni = eni
@@ -431,7 +466,6 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
           }
           BlockDeviceMapping : []
           Placement : {
-            GroupName : ""
             Tenancy : if tenancy is "dedicated" then "dedicated" else ""
             AvailabilityZone : @getAvailabilityZone().createRef()
           }
@@ -445,14 +479,9 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
           NetworkInterface      : []
           InstanceType          : @get("instanceType")
           DisableApiTermination : false
-          RamdiskId             : ""
           ShutdownBehavior      : "terminate"
-          KernelId              : ""
           SecurityGroup         : securitygroups
           SecurityGroupId       : securitygroupsId
-          PrivateIpAddress      : ""
-        #reserved
-        software : {}
 
       component
 
@@ -470,10 +499,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
           AllocationId       : eipData.allocationId or ""
           NetworkInterfaceId : ""
           PrivateIpAddress   : ""
-          AllowReassociation      : ""
-          AssociationId           : eipData.associationId or ""
-          NetworkInterfaceOwnerId : ""
-          PublicIp                : eipData.publicIp or ""
+          PublicIp           : eipData.publicIp or ""
       }
 
     getStateData : () ->
@@ -489,10 +515,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
       allResourceArray = []
 
       ami    = @getAmi() || @get("cachedAmi")
-      layout =
-        coordinate : [ @x(), @y() ]
-        uid        : @id
-        groupUId   : @parent().id
+      layout = @generateLayout()
       if ami
         layout.osType         = ami.osType
         layout.architecture   = ami.architecture
@@ -580,7 +603,6 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
           eipData = {
             id            : data.resource.EipResource.uid
             allocationId  : data.resource.EipResource.resource.AllocationId
-            associationId : data.resource.EipResource.resource.AssociationId
             publicIp      : data.resource.EipResource.resource.PublicIp
           }
 

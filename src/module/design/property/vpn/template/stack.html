@@ -1,94 +1,90 @@
-{{#if isApp}}
-<article class="property-app">
-  <dl class="dl-vertical">
-    <dt>{{ i18n "PROP_CGW_APP_VPN_LBL_ID" }}</dt>
-    <dd>{{vpnConnectionId}}</dd>
+<article>
+{{#if vpnConnectionId}}
+  <div class="option-group-head expand">VPN Summary</div>
+  <div class="option-group">
+    <dl class="dl-vertical">
+      <dt>{{ i18n "PROP_CGW_APP_VPN_LBL_ID" }}</dt>
+      <dd>{{vpnConnectionId}}</dd>
 
-    <dt>{{ i18n "PROP_CGW_APP_VPN_LBL_STATE" }}</dt>
-    <dd class="capitalize"><i class="status status-xgw-{{state}}"></i>{{state}}</dd>
+      <dt>{{ i18n "PROP_CGW_APP_VPN_LBL_STATE" }}</dt>
+      <dd class="capitalize"><i class="status status-xgw-{{state}}"></i>{{state}}</dd>
 
-    <dt>{{ i18n "PROP_CGW_APP_VPN_LBL_TYPE" }}</dt>
-    <dd>{{type}}</dd>
+      <dt>{{ i18n "PROP_CGW_APP_VPN_LBL_TYPE" }}</dt>
+      <dd>{{type}}</dd>
 
-    <dt>{{ i18n "PROP_CGW_LBL_ROUTING" }}</dt>
-    <dd>{{routing}}</dd>
-  </dl>
-
-  {{#if vgwTelemetry.item}}
-    <div class="accordion-sub-head">
-      <h5>{{ i18n "PROP_CGW_APP_VPN_LBL_TUNNEL" }}</h5>
-    </div>
-    <table class="table">
-      <thead>
-        <tr>
-        <th style="width:20px">{{ i18n "PROP_CGW_APP_VPN_COL_TUNNEL" }}</th>
-        <th style="width:100px">{{ i18n "PROP_CGW_APP_VPN_COL_IP" }}</th>
-        </tr>
-      </thead>
-      <tbody>
-        {{#each vgwTelemetry.item}}
-          <tr>
-            <td><i class="status status-{{stateColor}} icon-label tooltip" data-tooltip="{{status}} since {{lastStatusChange}}{{#if statusMessage}}because {{statusMessage}}{{/if}}"></i>{{index}}</td>
-            <td>{{outsideIpAddress}}</td>
-          </tr>
-        {{/each}}
-      </tbody>
-    </table>
-  {{/if}}
-
-  {{#if routes.item}}
-    <div class="accordion-sub-head">
-      <h5>{{ i18n "PROP_CGW_APP_VPN_LBL_STATUS_RT" }}</h5>
-    </div>
-
-    <table class="table">
-      <thead>
-        <tr>
-        <th style="width:100px">{{ i18n "PROP_CGW_APP_VPN_COL_IP_PREFIX" }}</th>
-        <th style="width:100px">{{ i18n "PROP_CGW_APP_VPN_COL_SOURCE" }}</th>
-        </tr>
-      </thead>
-      <tbody>
-        {{#each routes.item}}
-        <tr>
-          <td><i class="status status-{{state}} icon-label tooltip" data-tooltip="{{state}}"></i>{{destinationCidrBlock}}</td>
-          <td>{{source}}</td>
-        </tr>
-        {{/each}}
-      </tbody>
-    </table>
-  {{/if}}
-</article>
-{{else}}
-
-{{#if dynamic}}
-
-<article class="property-control-group">
-  Since the Customer Gateway this VPN is connected to has dynamic routing enabled no configuration is necessary.
-</article>
-
-{{else}}
-<article class="property-control-group">
-
-  <div class="clearfix">
-    <label class="left" for="property-vpc-ips">{{ i18n "PROP_VPN_LBL_IP_PREFIX" }}</label>
-    <span class="required-input right">{{ i18n "PROP_LBL_REQUIRED" }}</span>
+      <dt>{{ i18n "PROP_CGW_LBL_ROUTING" }}</dt>
+      <dd>{{#if options.staticRoutesOnly}}Static{{else}}Dynamic{{/if}}</dd>
+    </dl>
   </div>
 
-  <div id="property-vpn-ips" class="multi-input" data-max-row="100" data-bind="true">
-    {{#each ips}}
-    <div class="multi-ipt-row">
-      <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
-      <span class="ipt-wrapper"><input data-ignore="true" data-ignore-regexp="^[0-9./]*$" class="input tooltip" data-tooltip="e.g., 192.168.0.0/16" placeholder="e.g., 192.168.0.0/16" value="{{this}}" type="text"></span>
-    </div>
-    {{else}}
-    <div class="multi-ipt-row">
-      <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
-      <span class="ipt-wrapper"><input data-ignore="true" data-empty-remove="true" data-ignore-regexp="^[0-9./]*$" class="input tooltip" data-tooltip="e.g., 192.168.0.0/16" placeholder="e.g., 192.168.0.0/16" type="text"></span>
-    </div>
+  {{#if vgwTelemetry}}
+  <div class="option-group-head expand">{{ i18n "PROP_CGW_APP_VPN_LBL_TUNNEL" }}</div>
+  <div class="option-group"> <table class="table">
+    <thead> <tr>
+      <th style="width:20px">{{ i18n "PROP_CGW_APP_VPN_COL_TUNNEL" }}</th>
+      <th style="width:100px">{{ i18n "PROP_CGW_APP_VPN_COL_IP" }}</th>
+    </tr> </thead>
+    <tbody>
+    {{#each vgwTelemetry}}
+      <tr>
+        <td><i class="status status-{{status}} icon-label tooltip" data-tooltip="{{#ifCond status 'DOWN'}}DOWN{{else}}UP{{/ifCond}} since {{lastStatusChange}}{{#if statusMessage}}because {{statusMessage}}{{/if}}"></i>{{index}}</td>
+        <td>{{outsideIpAddress}}</td>
+      </tr>
     {{/each}}
-  </div>
-</article>
-{{/if}}
+    </tbody>
+  </table> </div>
+  {{/if}}
+
+
+  {{#if isApp}} {{#if routes.item}}
+  <div class="option-group-head expand">{{ i18n "PROP_CGW_APP_VPN_LBL_STATUS_RT" }}</div>
+  <div class="option-group"> <table class="table">
+    <thead> <tr>
+      <th style="width:100px">{{ i18n "PROP_CGW_APP_VPN_COL_IP_PREFIX" }}</th>
+      <th style="width:100px">{{ i18n "PROP_CGW_APP_VPN_COL_SOURCE" }}</th>
+    </tr> </thead>
+    <tbody>
+      {{#each routes.item}}
+      <tr>
+        <td><i class="status status-{{state}} icon-label tooltip" data-tooltip="{{state}}"></i>{{destinationCidrBlock}}</td>
+        <td>{{source}}</td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table> </div>
+  {{/if}} {{/if}}
+
+{{else}}
+  {{#if dynamic}}
+    <section class="property-control-group"> Since the Customer Gateway this VPN is connected to has dynamic routing enabled no configuration is necessary. </section>
+  {{/if}}
 {{/if}}
 
+{{#unless isApp}}
+  {{#if vpnConnectionId}}
+  <div class="option-group-head expand">{{ i18n "PROP_CGW_APP_VPN_LBL_STATUS_RT" }}</div>
+  <div class="option-group">
+  {{/if}}
+  <section class="property-control-group">
+    <div class="clearfix">
+      <label class="left" for="property-vpc-ips">{{ i18n "PROP_VPN_LBL_IP_PREFIX" }}</label>
+      <span class="required-input right">{{ i18n "PROP_LBL_REQUIRED" }}</span>
+    </div>
+    <div id="property-vpn-ips" class="multi-input" data-max-row="100" data-bind="true">
+      {{#each ips}}
+      <div class="multi-ipt-row">
+        <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
+        <span class="ipt-wrapper"><input data-ignore="true" data-ignore-regexp="^[0-9./]*$" class="input tooltip" data-tooltip="e.g., 192.168.0.0/16" placeholder="e.g., 192.168.0.0/16" value="{{this}}" type="text"></span>
+      </div>
+      {{else}}
+      <div class="multi-ipt-row">
+        <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
+        <span class="ipt-wrapper"><input data-ignore="true" data-empty-remove="true" data-ignore-regexp="^[0-9./]*$" class="input tooltip" data-tooltip="e.g., 192.168.0.0/16" placeholder="e.g., 192.168.0.0/16" type="text"></span>
+      </div>
+      {{/each}}
+    </div>
+  </section>
+{{#if vpnConnectionId}} </div> {{/if}}
+{{/unless}}
+
+</article>

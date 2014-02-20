@@ -234,7 +234,7 @@ define [ 'event',
                 $canvas.addClass 'left-hiden'
             null
 
-        updateResourceState : ( type ) ->
+        ###updateResourceState : ( type ) ->
             console.log 'updateResourceState, type = ' + type
             # Get all accordion, and make them not `expanded`
             $item = $('.fixedaccordion').children().removeClass("expanded")
@@ -257,7 +257,7 @@ define [ 'event',
                 #show all
                 $item.show()
 
-            null
+            null###
 
         availabilityZoneRender : () ->
             console.log 'availabilityZoneRender'

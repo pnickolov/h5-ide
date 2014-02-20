@@ -1,5 +1,30 @@
 <article data-bind="true">
   <div class="option-group-head expand" id="subnet-property-detail">{{ i18n "PROP_SUBNET_TIT_DETAIL" }}</div>
+  {{#if isAppEdit}}
+
+  <div class="option-group">
+    <dl class="dl-vertical">
+      <dt>{{ i18n "PROP_SUBNET_APP_ID" }}</dt>
+      <dd>{{subnetId}}</dd>
+
+      <dt>{{ i18n "PROP_SUBNET_APP_STATE" }}</dt>
+      <dd><i class="status status-{{state}}"></i>{{state}}</dd>
+
+      <dt>{{ i18n "PROP_SUBNET_APP_CIDR" }}</dt>
+      <dd>{{cidrBlock}}</dd>
+
+      <dt>{{ i18n "PROP_SUBNET_APP_AVAILABLE_IP" }}</dt>
+      <dd>{{availableIpAddressCount}}</dd>
+
+      <dt>{{ i18n "PROP_SUBNET_APP_VPC_ID" }}</dt>
+      <dd>{{vpcId}}</dd>
+
+      <dt>{{ i18n "PROP_SUBNET_APP_RT_ID" }}</dt>
+      <dd>{{routeTable}}</dd>
+    </dl>
+  </div>
+
+  {{else}}
   <div class="option-group">
     <section class="property-control-group" data-bind="true">
       <label class="left" for="property-subnet-name">{{ i18n "PROP_SUBNET_DETAIL_LBL_NAME" }}</label>
@@ -16,6 +41,7 @@
       </div>
     </section>
   </div>
+  {{/if}}
 
   <div class="option-group-head expand">{{ i18n "PROP_SUBNET_TIT_ASSOC_ACL" }}</div>
   <div class="option-group">

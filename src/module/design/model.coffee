@@ -28,6 +28,11 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
                         else
                             @setOriginResource result, app_id
 
+                        #close all list popup(ServerGroup,ASG)
+                        MC.canvas.event.clearList()
+                        #select app property
+                        $canvas.trigger("CANVAS_NODE_SELECTED", "")
+
                     catch error
 
                         app_name = MC.forge.app.getNameById app_id
@@ -385,15 +390,29 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
             # old design flow
             #@setOriginData MC.canvas_data
 
+            if MC.data.running_app_list and MC.data.running_app_list[ app_id ]
+
+                console.log 'eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+
+                # clear svg
+                $('#vpc_layer, #az_layer, #subnet_layer, #asg_layer, #line_layer, #node_layer').empty()
+
+                # re-new Design
+                options =
+                    mode : 'app'
+                new Design MC.common.other.canvasData.origin(), options
+
+                # delete current app_id
+                delete MC.data.running_app_list[ app_id ]
+
             # new design flow
             @setOriginData MC.common.other.canvasData.data()
 
             # delete current origin_resource
             MC.tab[ app_id ].origin_resource = null if MC.tab and MC.tab[ app_id ] and MC.tab[ app_id ].origin_resource
+
             #
             console.log 'set app.resource end'
-
-
 
     }
 

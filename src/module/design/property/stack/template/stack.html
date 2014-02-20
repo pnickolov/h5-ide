@@ -1,5 +1,17 @@
 <article>
 
+  {{#if appData}}
+  <dl class="dl-horizontal dl-region-type property-control-group">
+    <dt><label>{{ i18n "PROP_STACK_LBL_REGION" }}</label></dt>
+    <dd>{{region}}</dd>
+    <dt><label>{{ i18n "PROP_STACK_LBL_TYPE" }}</label></dt>
+    <dd>{{type}}</dd>
+    {{#if usage}}
+    <dt><label>{{ i18n "PROP_STACK_LBL_USAGE" }}</label></dt>
+    <dd style="text-transform: capitalize">{{usage}}</dd>
+    {{/if}}
+  </dl>
+  {{else}}
 	<section class="property-control-group" data-bind="true">
 		<label class="left" for="property-stack-name">{{ i18n "PROP_STACK_LBL_NAME" }}</label>
 		<input class="input" type="text" data-ignore="true" data-required-rollback="true" value="{{name}}" id="property-stack-name">
@@ -8,10 +20,12 @@
 		<dt><label>{{ i18n "PROP_STACK_LBL_REGION" }}</label></dt><dd>{{region}}</dd>
 		<dt><label>{{ i18n "PROP_STACK_LBL_TYPE" }}</label></dt><dd>{{type}}</dd>
 	</dl>
+  {{/if}}
 
 	<!-- SG, ACL, COST -->
 	<div class="option-group-head">{{ i18n "PROP_STACK_TIT_SG" }}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
   <div class="option-group sg-group"></div>
+
 
 	{{#if networkAcls}}
 	<div class="option-group-head pos-r">{{ i18n "PROP_STACK_TIT_ACL" }}<span class="property-head-num-wrap">({{networkAcls.length}})</span>
@@ -22,6 +36,38 @@
   </div>
 	{{/if}}
 
+
+  {{#if isApp}}
+  <div class="option-group-head">{{ i18n "PROP_STACK_TIT_SNS" }}<span class="property-head-num-wrap">({{#if subscription}}{{subscription.length}}{{else}}0{{/if}})</span></div>
+  <div class="option-group">
+    {{#if subscription}}
+    <div class="property-group-head">SNS Topic</div>
+    <div class="property-control-group">
+      <dl class="dl-vertical">
+        <dt>SNS Topic Name</dt>
+        <dd>{{snstopic.name}}</dd>
+        <dt>SNS Topic ARN</dt>
+        <dd class="click-select tooltip" data-tooltip="Click to select all">{{snstopic.arn}}</dd>
+      </dl>
+    </div>
+    <div class="property-group-head">Subscription</div>
+    <ul class="property-list">
+    {{#each subscription}}
+      <li>
+        <dl class="dl-horizontal dl-region-type">
+          <dt><label>Protocol</label></dt><dd class="protocol">{{protocol}}</dd>
+          <dt><label>Endpoint</label></dt><dd class="endpoint truncate">{{endpoint}}</dd>
+        </dl>
+      </li>
+    {{/each}}
+    </ul>
+    {{else}}
+    <div class="property-control-group">
+      <p class="property-info tac">{{ i18n "PROP_APP_SNS_NONE" }}</p>
+    </div>
+    {{/if}}
+  </div>
+  {{else}}
 	<div class="option-group-head">{{ i18n "PROP_STACK_TIT_SNS" }}<span class="property-head-num-wrap">(<span id="property-stack-sns-num">{{subscription.length}}</span>)</span></div>
   <div class="option-group">
 
@@ -59,8 +105,9 @@
       <div id="property-sns-no-sub"><p class="property-warning">There is auto scaling group relay on SNS Topic to receive notification. Yet no subscription is set up. </p></div>
     </section>
 	<div class="tac property-control-group"><button id="property-create-asg" class="btn btn-blue" style="width:180px">{{ i18n "PROP_STACK_BTN_ADD_SUB" }}</button></div>
-
   </div>
+  {{/if}}
+
 
 	<div class="option-group-head">
 		{{ i18n "PROP_STACK_TIT_COST_ESTIMATION" }}

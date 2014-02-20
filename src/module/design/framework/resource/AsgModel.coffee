@@ -134,12 +134,9 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
       null
 
     serialize : ()->
-      layout =
-        uid        : @id
-        type       : "ExpandedAsg"
-        groupUId   : @parent().id
-        originalId : @get("originalAsg").id
-        coordinate : [ @x(), @y() ]
+      layout = @generateLayout()
+      layout.type = "ExpandedAsg"
+      layout.originalId = @get("originalAsg").id
 
       { layout : layout }
 
@@ -222,6 +219,9 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
       return lcPrice
 
     addChild : ( lc )->
+
+      GroupModel.prototype.addChild.call this, lc
+
       oldLc = @get("lc")
       if oldLc
         @stopListening( oldLc )
@@ -229,12 +229,35 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
           @updateExpandedAsgAsso( elb, true )
 
       @set "lc", lc
-      @listenTo( lc, "change:name", @draw )
+      @listenTo lc, "change:name", @drawExpanedAsg
+      @listenTo lc, "destroy", @removeChild
 
       for elb in lc.connectionTargets("ElbAmiAsso")
         @updateExpandedAsgAsso( elb )
 
       @draw()
+      @drawExpanedAsg false
+
+      null
+
+    removeChild: ( lc ) ->
+      GroupModel.prototype.removeChild.call this, lc
+
+      # disconnect all asso of expanded asg
+      @removeExpandedAsso()
+
+      # Remove lc from parent ASG
+      @unset "lc"
+      @draw()
+
+      null
+
+    drawExpanedAsg: ( isCreate ) ->
+      lc = @get 'lc'
+      if lc
+        for asg in @get("expandedList")
+          asg.draw isCreate
+
       null
 
     getNotification : ()->
@@ -291,6 +314,15 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
       @attributes.expandedList = old_expandedList
       null
 
+    removeExpandedAsso: () ->
+      for expandedAsg in @get 'expandedList'
+        connections = expandedAsg.connections()
+        while connections.length
+          _.first(connections).remove()
+
+      null
+
+
     addScalingPolicy : ( policy )->
       policy.__asg = this
       @get("policies").push( policy )
@@ -325,6 +357,8 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
       # Remove Notification
       if @get("notification")
         @get("notification").remove()
+
+      GroupModel.prototype.remove.call this
       null
 
     __addExpandedAsg : ( expandedAsg )->
@@ -335,15 +369,19 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
 
       @listenTo( expandedAsg, "destroy", @__onExpandedAsgRemove )
 
-      # Connect Elb to expandedAsg
-      ElbAsso = Design.modelClassForType( "ElbAmiAsso" )
-      for elb in @get("lc").connectionTargets( "ElbAmiAsso" )
-        new ElbAsso( elb, expandedAsg )
+      lc = @get("lc")
+      if lc
+        # Connect Elb to ExpandedAsg
+        ElbAsso = Design.modelClassForType( "ElbAmiAsso" )
+        for elb in lc.connectionTargets( "ElbAmiAsso" )
+          new ElbAsso( elb, expandedAsg )
 
-      # Connect other sglilne to expandedAsg
-      SgAsso = Design.modelClassForType( "SgAsso" )
-      for sgTarget in @get("lc").connectionTargets( "SgAsso" )
-        new SgAsso( expandedAsg, sgTarget )
+        # # Connect other sglilne to expandedAsg
+        # SgAsso = Design.modelClassForType( "SgAsso" )
+        # for sgTarget in lc.connectionTargets( "SgAsso" )
+        #   new SgAsso( expandedAsg, sgTarget )
+
+
       null
 
     __onExpandedAsgRemove : ( target )->
@@ -375,13 +413,6 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
       azs
 
     serialize : ()->
-      layout =
-        uid  : @id
-        type : @type
-        groupUId   : @parent().id
-        originalId : ""
-        coordinate : [ @x(), @y() ]
-
       subnets = [ @parent() ]
       for expand in @get("expandedList")
         subnets.push expand.parent()
@@ -415,7 +446,6 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
         name : @get("name")
         type : @type
         resource :
-          PlacementGroup : ""
           AvailabilityZones : azs
           VPCZoneIdentifier : subnets.join(" , ")
           LoadBalancerNames : elbArray or []
@@ -429,17 +459,8 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
           AutoScalingGroupName   : @get("groupName") or @get("name")
           DesiredCapacity        : @get("capacity")
           LaunchConfigurationName : lcId
-          EnabledMetrics                 : [{ Metric : "", Granularity : "" }]
-          Instances                      : []
-          SuspendedProcesses             : [ ProcessName: "", SuspensionReason : "" ]
-          ShouldDecrementDesiredCapacity : ""
-          #reserved
-          CreatedTime : ""
-          InstanceId  : ""
-          Status      : ""
-          Tags        : ""
 
-      { component : component, layout : layout }
+      { component : component, layout : @generateLayout() }
 
   }, {
 

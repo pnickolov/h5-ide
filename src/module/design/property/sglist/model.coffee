@@ -49,7 +49,7 @@ define [ "Design", "constant", 'lib/forge/app' ], ( Design, constant, forge_app 
 				if not needShow
 					continue
 
-				if sg.isElbSg() or sg.isDefault() or readonly or sg.get("appId")
+				if sg.isDefault() or readonly or sg.get("appId")
 					deletable = false
 				else
 					deletable = true
@@ -69,7 +69,7 @@ define [ "Design", "constant", 'lib/forge/app' ], ( Design, constant, forge_app 
 					name        : sg.get("name")
 					desc        : sg.get("description")
 					ruleCount   : sg.ruleCount()
-					memberCount : assos.length
+					memberCount : sg.getMemberList().length
 					hideCheck   : readonly or isStackParent
 					deletable   : deletable
 					used        : enabledSG[ sg.id ]
@@ -136,6 +136,18 @@ define [ "Design", "constant", 'lib/forge/app' ], ( Design, constant, forge_app 
 		deleteSG : (sgUID) ->
 			Design.instance().component( sgUID ).remove()
 			null
+
+		isElbSg : (sgUID)->
+			Design.instance().component( sgUID ).isElbSg()
+
+		getElbNameBySgId : (sgUID)->
+			sg = Design.instance().component( sgUID )
+			if sg.isElbSg()
+				for elb in Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_ELB ).allObjects()
+					if elb.getElbSg() is sg
+						return elb.get("name")
+
+			""
 
 		createNewSG : ()->
 			SgModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup )

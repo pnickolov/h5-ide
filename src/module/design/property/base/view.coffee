@@ -66,7 +66,7 @@ define [ 'constant',
             else
                 $('.disabled-event-layout').remove()
 
-        checkDupName : ( $input, type )->
+        checkResName : ( $input, type )->
             if not $input.length
                 $input = $( $input )
 
@@ -80,6 +80,8 @@ define [ 'constant',
             if not error and @model.isNameDup( name )
                 error = "#{type} name \" #{name} \" is already in using. Please use another one."
 
+            if name.indexOf("elbsg-") is 0
+                error = 'Resource name starting with "elbsg-" is reserved.'
 
             $input.parsley 'custom', ()-> error
             $input.parsley 'validate'

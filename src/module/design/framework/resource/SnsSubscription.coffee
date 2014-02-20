@@ -26,11 +26,9 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
           type : @type
           uid  : @id
           resource :
-            DeliveryPolicy : ""
-            DisplayName    : name
-            Name           : name
-            Policy         : ""
-            TopicArn       : @get("appId")
+            DisplayName : name
+            Name        : name
+            TopicArn    : @get("appId")
       }
 
   }, {
@@ -88,7 +86,6 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
           type : @type
           uid  : @id
           resource :
-            DeliveryPolicy  : ""
             Endpoint        : @get("endpoint")
             Protocol        : @get("protocol")
             SubscriptionArn : @get("appId")

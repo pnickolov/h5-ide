@@ -17,7 +17,7 @@ define [ "constant", "../ConnectionModel", "i18n!nls/lang.js" ], ( constant, Con
 
       for sgline in eni.connections( "SgRuleLine" )
         if sgline.getTarget( constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance ) is ami
-          sgline.remove()
+          sgline.remove( { reason : this } )
           break
 
       # Calc the new index of this EniAttachment.
@@ -54,25 +54,28 @@ define [ "constant", "../ConnectionModel", "i18n!nls/lang.js" ], ( constant, Con
 
       null
 
-    remove : ( reason )->
-      # When this EniAttachment is removed, we need to update all the Eni's name.
-      attachments = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance ).connections("EniAttachment")
+    remove : ()->
+      ConnectionModel.prototype.remove.apply this, arguments
 
-      startIdx = attachments.indexOf( this )+1
-      while startIdx < attachments.length
-        attach = attachments[ startIdx ]
-        attach.attributes.index -= 1
-        attach.getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface ).updateName()
-        ++startIdx
+      ami = @getTarget constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+      eni = @getTarget constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
 
-      if not reason
-        # If reason is falsy, it means the line is delected by user
+      if not ami.isRemoved()
+        # When this EniAttachment is removed, we need to update all the Eni's name.
+        attachments = ami.connections("EniAttachment")
+
+        startIdx = attachments.indexOf( this )+1
+        while startIdx < attachments.length
+          attach = attachments[ startIdx ]
+          attach.attributes.index -= 1
+          attach.getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface ).updateName()
+          ++startIdx
+
+      if not ami.isRemoved() and not eni.isRemoved()
+        # If both resource still exists, it means the line is delected by user
         # Then we should update try to connect sgline between eni and ami
-        ami = @getTarget constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
-        eni = @getTarget constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
-        if ami and eni
-          SgModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup )
-          SgModel.tryDrawLine( ami, eni )
+        SgModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup )
+        SgModel.tryDrawLine( ami, eni )
       null
 
     portDefs :

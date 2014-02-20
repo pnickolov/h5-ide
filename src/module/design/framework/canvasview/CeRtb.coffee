@@ -1,9 +1,9 @@
 
 define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, constant, CanvasManager )->
 
-  ChildElement = ()-> CanvasElement.apply( this, arguments )
-  CanvasElement.extend( ChildElement, constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable )
-  ChildElementProto = ChildElement.prototype
+  CeRtb = ()-> CanvasElement.apply( this, arguments )
+  CanvasElement.extend( CeRtb, constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable )
+  ChildElementProto = CeRtb.prototype
 
 
   ###

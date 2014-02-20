@@ -176,26 +176,17 @@ define [ "constant",
 
     serialize : ()->
 
-      layout =
-        size       : [ @width(), @height() ]
-        coordinate : [ @x(), @y() ]
-        uid        : @id
-        groupUId   : @parent().id
-
       component =
         name : @get("name")
         type : @type
         uid  : @id
         resource :
-          AvailableIpAddressCount : ""
           AvailabilityZone : @parent().createRef()
           VpcId            : @parent().parent().createRef( "VpcId" )
           SubnetId         : @get("appId")
           CidrBlock        : @get("cidr")
-          #reserved
-          State            : ""
 
-      { component : component, layout : layout }
+      { component : component, layout : @generateLayout() }
 
   }, {
 

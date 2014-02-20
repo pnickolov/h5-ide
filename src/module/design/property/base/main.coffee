@@ -243,7 +243,7 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
                 return
             else if result is false
                 # Cannot load the property due to data issue. Display the missing property
-                this._doLoad "missing_resource", "", tab_type
+                this._doLoad "missing_resource", componentUid, tab_type
             else
                 # The property doesn't handle current tab_type. Display the stack property
                 console.warn "Cannot open component for type: #{ componentType }, data : #{componentUid }"

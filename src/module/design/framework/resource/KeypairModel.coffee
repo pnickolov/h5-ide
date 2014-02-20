@@ -30,6 +30,9 @@ define [ "constant", "../ComplexResModel", "../ConnectionModel"  ], ( constant, 
       for i in @connectionTargets("KeypairUsage")
         new KeypairUsage( defaultKp, i )
 
+      ComplexResModel.prototype.remove.call this
+      null
+
     assignTo : ( target )-> new KeypairUsage( this, target )
 
     getKPList : ()->

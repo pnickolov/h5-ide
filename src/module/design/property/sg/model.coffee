@@ -17,8 +17,7 @@ define [ '../base/model', "Design", 'constant', 'event'  ], ( PropertyModel, Des
             for rule in component.connections("SgRuleSet")
                 rules = rules.concat( rule.toPlainObjects( uid ) )
 
-            members = _.map component.connectionTargets("SgAsso"), ( sgTarget )->
-                sgTarget.get("name")
+            members = _.map component.getMemberList(), ( tgt )-> tgt.get("name")
 
             @set {
                 uid          : uid
@@ -36,8 +35,6 @@ define [ '../base/model', "Design", 'constant', 'event'  ], ( PropertyModel, Des
             if component.isElbSg()
                 inputReadOnly = true
 
-                # If the SG is Elb SG, its rule is not editable
-                @set "ruleEditable", false
             else if @isAppEdit
                 # In AppEdit mode, if the SG has no aws resource associated :
                 # Meaning it is a newly created SG. So the input should be editable

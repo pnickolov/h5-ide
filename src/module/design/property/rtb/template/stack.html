@@ -4,17 +4,38 @@
 {{else}}
 	<div class="property-control-group" data-bind="true">
 		<label class="left" for="rt-name">{{i18n "PROP_RT_NAME"}}</label>
-		<input class="input" type="text" data-required="true" data-ignore="true" data-required-rollback="true"  value="{{title}}" id="rt-name">
+		<input class="input" type="text" data-required="true" data-ignore="true" data-required-rollback="true" {{#if isAppEdit}}disabled="disabled"{{/if}} value="{{title}}" id="rt-name">
 	</div>
 
-	<div class="tac property-control-group">
-		{{#if isMain}}
-		<p>{{i18n "PROP_RT_LBL_MAIN_RT"}}</p>
-		{{else}}
-		<button class="btn btn-primary" id="set-main-rt" style="width: 200px;">{{i18n "PROP_RT_SET_MAIN"}}</button>
-		<p class="hide">{{i18n "PROP_RT_LBL_MAIN_RT"}}</p>
-		{{/if}}
-	</div>
+	{{#if isAppEdit}}
+	  <dl class="dl-vertical">
+	    <dt>{{i18n "PROP_RT_ID"}}</dt>
+	    <dd>{{routeTableId}}</dd>
+
+	    <dt>{{i18n "PROP_RT_LBL_MAIN_RT"}}</dt>
+	    <dd>{{main}}</dd>
+
+	    <dt>{{i18n "PROP_RT_VPC_ID"}}</dt>
+	    <dd>{{vpcId}}</dd>
+	  </dl>
+
+	  	{{#unless isMain}}
+			<button class="btn btn-primary" id="set-main-rt" style="width: 200px;">{{i18n "PROP_RT_SET_MAIN"}}</button>
+			<p class="hide">{{i18n "PROP_RT_LBL_MAIN_RT"}}</p>
+		{{/unless}}
+
+	{{else}}
+		<div class="tac property-control-group">
+			{{#if isMain}}
+			<p>{{i18n "PROP_RT_LBL_MAIN_RT"}}</p>
+			{{else}}
+			<button class="btn btn-primary" id="set-main-rt" style="width: 200px;">{{i18n "PROP_RT_SET_MAIN"}}</button>
+			<p class="hide">{{i18n "PROP_RT_LBL_MAIN_RT"}}</p>
+			{{/if}}
+		</div>
+	{{/if}}
+
+
 
 	<div class="option-group-head expand">{{i18n "PROP_RT_LBL_ROUTE"}}</div>
 	<div class="option-group" data-bind="true">

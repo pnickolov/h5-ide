@@ -1724,8 +1724,8 @@ module.exports =
       zh: "IP地址"
 
     PROP_CGW_APP_VPN_LBL_STATUS_RT:
-      en: "Status Routes"
-      zh: "路由状态"
+      en: "Static Routes"
+      zh: "静态路由"
 
     PROP_CGW_APP_VPN_COL_IP_PREFIX:
       en: "IP Prefixes"

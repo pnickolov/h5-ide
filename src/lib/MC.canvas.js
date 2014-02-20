@@ -1861,7 +1861,7 @@ MC.canvas.layout = {
 				'width' : canvas_size[0] * MC.canvas.GRID_WIDTH,
 				'height': canvas_size[1] * MC.canvas.GRID_HEIGHT
 			};
-		
+
 		// var dict_sg = {};
 		// var dict_sg_elb = {};
 
@@ -2265,7 +2265,7 @@ MC.canvas.volume = {
 
 			$(document.body)
 				.append('<div id="drag_shadow"><div class="resource-icon resource-icon-volume"></div></div>')
-				.append('<div id="overlayer" class="grabbing"></div>');
+				.append('<div id="overlayer"></div>');
 
 			shadow = $('#drag_shadow');
 
@@ -2292,7 +2292,7 @@ MC.canvas.volume = {
 				'action': 'move'
 			});
 
-			$canvas( this.id ).select();
+			$canvas( this.id, 'AWS.EC2.EBS.Volume' ).select();
 
 			return false;
 		}
@@ -2309,8 +2309,20 @@ MC.canvas.volume = {
 			target_type = MC.canvas.getState() === 'appedit' ? ['AWS.EC2.Instance'] : ['AWS.EC2.Instance', 'AWS.AutoScaling.LaunchConfiguration'];
 
 		if (
-			event_data.originalX !== event.pageX ||
-			event_data.originalY !== event.pageY
+			event_data.action === 'add'
+			||
+			(
+				(
+					event.pageX > event_data.originalPageX + 2 ||
+					event.pageX < event_data.originalPageX - 2
+
+				)
+				&&
+				(
+					event.pageY > event_data.originalPageY + 2 ||
+					event.pageY < event_data.originalPageY - 2
+				)
+			)
 		)
 		{
 			event_data.shadow
@@ -2321,28 +2333,18 @@ MC.canvas.volume = {
 				.show();
 
 			event_data.canvas_body.addClass('node-dragging');
-		}
 
-		if (
-			match_node &&
-			$.inArray(node_type, target_type) > -1
-		)
-		{
-			// if (
-			// 	event_data.action === 'move'// &&
-			// 	//node_type === 'AWS.AutoScaling.LaunchConfiguration'
-			// )
-			// {
-			// 	MC.canvas.volume.close();
-			// }
-			// else
-			// {
+			if (
+				match_node &&
+				$.inArray(node_type, target_type) > -1
+			)
+			{
 				MC.canvas.volume.bubble(match_node.id);
-			//}
-		}
-		else
-		{
-			MC.canvas.volume.close();
+			}
+			else
+			{
+				MC.canvas.volume.close();
+			}
 		}
 
 		return false;
@@ -2359,7 +2361,6 @@ MC.canvas.volume = {
 			original_node_id,
 			volume_type,
 			new_volume,
-			data_option,
 			volume_id,
 			target_id,
 			target_az;
@@ -2375,49 +2376,6 @@ MC.canvas.volume = {
 			if (event.data.action === 'move')
 			{
 				volume_id = target.attr('id');
-				//data_option = target.data('json');
-			}
-			else
-			{
-				data_option = target.data('option');
-				// data_option['instance_id'] = target_id;
-
-				volume_item = $canvas(target_id).addVolume(data_option);
-
-				if (volume_item)
-				{
-					volume_type = volume_item.snapshotId ? 'snapshot_item' : 'volume_item';
-
-					$('#instance_volume_list').append('<li><a href="javascript:void(0)" id="' + volume_item.id +'" data-instance="' + target_id + '" class="' + volume_type + '"><span class="volume_name">' + volume_item.name + '</span><span class="volume_size">' + volume_item.size + 'GB</span></a></li>');
-
-					$('#instance_volume_number').text(
-						$canvas( target_id ).volume().length
-					);
-
-					$canvas( volume_item.id, 'AWS.EC2.EBS.Volume' ).select();
-				}
-
-				// if (volume_item.id === null)
-				// {
-				// 	event.data.action = 'cancel';
-				// }
-				// else
-				// {
-				// 	// if (target_node.data('class') === 'AWS.AutoScaling.LaunchConfiguration')
-				// 	// {
-				// 	// 	volume_id = new_volume;
-				// 	// }
-				// 	// else
-				// 	// {
-				// 	// 	volume_id = new_volume.id;
-				// 	// 	//data_option.name = MC.canvas.data.get('component.' + volume_id + '.name');
-				// 	// }
-				// }
-			}
-
-			if (event.data.action === 'move')
-			{
-				//volume_item = $canvas(event.data.instance_id).volume(volume_id);
 
 				if (event.data.instance_id !== target_id)
 				{
@@ -2435,6 +2393,23 @@ MC.canvas.volume = {
 
 						$canvas( volume_item.id, 'AWS.EC2.EBS.Volume' ).select();
 					}
+				}
+			}
+			else
+			{
+				volume_item = $canvas(target_id).addVolume(target.data('option'));
+
+				if (volume_item)
+				{
+					volume_type = volume_item.snapshotId ? 'snapshot_item' : 'volume_item';
+
+					$('#instance_volume_list').append('<li><a href="javascript:void(0)" id="' + volume_item.id +'" data-instance="' + target_id + '" class="' + volume_type + '"><span class="volume_name">' + volume_item.name + '</span><span class="volume_size">' + volume_item.size + 'GB</span></a></li>');
+
+					$('#instance_volume_number').text(
+						$canvas( target_id ).volume().length
+					);
+
+					$canvas( volume_item.id, 'AWS.EC2.EBS.Volume' ).select();
 				}
 			}
 
@@ -2840,7 +2815,7 @@ MC.canvas.event.dragable = {
 
 			shadow = target.clone();
 
-			// Allow cloning for instance 
+			// Allow cloning for instance
 			if (target_type === 'AWS.EC2.Instance')
 			{
 				shadow.append(
@@ -3773,7 +3748,7 @@ MC.canvas.event.siderbarDrag = {
 			{
 				if (MC.canvas.getState() === 'appedit')
 				{
-					Canvon('.AWS-EC2-Instance').addClass('attachable');
+					Canvon('.AWS-EC2-Instance, .AWS-AutoScaling-LaunchConfiguration').addClass('attachable');
 				}
 				else
 				{
@@ -3789,7 +3764,8 @@ MC.canvas.event.siderbarDrag = {
 					'target': target,
 					'canvas_offset': canvas_offset,
 					'canvas_body': $('#canvas_body'),
-					'shadow': shadow
+					'shadow': shadow,
+					'action': 'add'
 				});
 			}
 			else
@@ -4742,16 +4718,16 @@ MC.canvas.event.appMove = function (event)
 
 MC.canvas.event.appDrawConnection = function ()
 {
-	if ($(this).is([
-		'.port-instance-sg',
-		'.port-eni-sg',
-		'.port-launchconfig-sg',
-		'.port-elb-sg'
-		].join(', ')
-	))
-	{
-		MC.canvas.event.drawConnection.mousedown.call( this, event );
-	}
+	// if ($(this).is([
+	// 	'.port-instance-sg',
+	// 	'.port-eni-sg',
+	// 	'.port-launchconfig-sg',
+	// 	'.port-elb-sg'
+	// 	].join(', ')
+	// ))
+	// {
+	MC.canvas.event.drawConnection.mousedown.call( this, event );
+	// }
 
 	return false;
 };

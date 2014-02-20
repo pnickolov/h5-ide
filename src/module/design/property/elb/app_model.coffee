@@ -36,8 +36,8 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
             elb.CrossZone = if myElbComponent.get('crossZone') then "Enabled" else "Disabled"
 
             # DNS
-            elb.AAAADNSName = "ipv6.#{elb.DNSName}"
-            elb.ADNSName    = "dualstack.#{elb.DNSName}"
+            # elb.AAAADNSName = "ipv6.#{elb.DNSName}"
+            # elb.ADNSName    = "dualstack.#{elb.DNSName}"
 
 
             elb.listenerDisplay = []

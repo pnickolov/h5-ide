@@ -1,13 +1,13 @@
 
 define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, constant, CanvasManager )->
 
-  ChildElement = ()->
+  CeExpandedAsg = ()->
     CanvasElement.apply( this, arguments )
     this.type = constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
     null
 
-  CanvasElement.extend( ChildElement, "ExpandedAsg" )
-  ChildElementProto = ChildElement.prototype
+  CanvasElement.extend( CeExpandedAsg, "ExpandedAsg" )
+  ChildElementProto = CeExpandedAsg.prototype
 
 
   ###
@@ -34,37 +34,42 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
       "ide/ami/ami-not-available.png"
 
   ChildElementProto.draw = ( isCreate ) ->
+
+    $("##{@id}").remove()
+
     m = @model
     originalAsg = m.get("originalAsg")
 
     label   = originalAsg.get("name")
-    lcLabel = originalAsg.get("lc").get("name")
+    lc      = originalAsg.get("lc")
 
-    if isCreate
+    x      = m.x()
+    y      = m.y()
+    width  = m.width()  * MC.canvas.GRID_WIDTH
+    height = m.height() * MC.canvas.GRID_HEIGHT
 
-      x      = m.x()
-      y      = m.y()
-      width  = m.width()  * MC.canvas.GRID_WIDTH
-      height = m.height() * MC.canvas.GRID_HEIGHT
+    members = [
+      Canvon.rectangle( 1, 1, width - 1, height - 1 ).attr({
+        'class':'group group-asg', 'rx':5, 'ry':5
+      }),
 
-      node = Canvon.group().append(
+      # title bg
+      Canvon.path( MC.canvas.PATH_ASG_TITLE ).attr({'class':'asg-title'}),
 
-        Canvon.rectangle( 1, 1, width - 1, height - 1 ).attr({
-          'class':'group group-asg', 'rx':5, 'ry':5
-        }),
+      # title
+      Canvon.text( 4, 14, label ).attr({'class':'group-label'})
 
-        # title bg
-        Canvon.path( MC.canvas.PATH_ASG_TITLE ).attr({'class':'asg-title'})
+    ]
 
-        # title
-        Canvon.text( 4, 14, label ).attr({'class':'group-label'})
-
+    if lc
+      lcLabel = lc.get("name")
+      members = members.concat [
         # lc icon
-        Canvon.image( MC.IMG_URL + "ide/icon/instance-canvas.png", 35, 39, 61, 62 )
-        Canvon.image( MC.IMG_URL + @amiIconUrl(), 50, 45, 39, 27 ).attr({"class":'ami-icon'})
+        Canvon.image( MC.IMG_URL + "ide/icon/instance-canvas.png", 35, 39, 61, 62 ),
+        Canvon.image( MC.IMG_URL + @amiIconUrl(), 50, 45, 39, 27 ).attr({"class":'ami-icon'}),
 
         # lc label
-        Canvon.text( 65, 116, lcLabel ).attr({'class':'node-label'})
+        Canvon.text( 65, 116, lcLabel ).attr({'class':'node-label'}),
 
         # left port(blue)
         Canvon.path(MC.canvas.PATH_PORT_DIAMOND).attr({
@@ -85,23 +90,18 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
           'data-type'      : 'sg'
           'data-direction' : 'out'
         })
+      ]
 
-      ).attr({
-        'id'         : @id
-        'class'      : 'dragable AWS-AutoScaling-Group asg-expand'
-        'data-type'  : 'group'
-        'data-class' : @type
-      })
+    node = Canvon.group().append.apply( Canvon.group(), members ).attr({
+      'id'         : @id
+      'class'      : 'dragable AWS-AutoScaling-Group asg-expand'
+      'data-type'  : 'group'
+      'data-class' : @type
+    })
 
-      # Move the node to right place
-      @getLayer("asg_layer").append node
-      @initNode node, m.x(), m.y()
+    # Move the node to right place
+    @getLayer("asg_layer").append node
+    @initNode node, m.x(), m.y()
 
-    else
-      node = @$element()
-
-      CanvasManager.update( node.children(".group-label"), label )
-      CanvasManager.update( node.children(".node-label"), lcLabel )
-      CanvasManager.update( node.children(".ami-icon"), @amiIconUrl(), "href" )
 
   null

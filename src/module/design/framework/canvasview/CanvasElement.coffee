@@ -8,9 +8,9 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
   # Canvas interface of CanvasElement
   ###
   CanvasElement = ( model )->
-    @id       = model.id
-    @model    = model
-    @type     = model.type
+    @id         = model.id
+    @model      = model
+    @type       = model.type
 
     if model.parent
       @parentId = model.parent()
@@ -55,10 +55,12 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
   ###
   # CanvasElement Interface
   ###
+  CanvasElement.prototype.draw = ()-> null # do nothing
+
   CanvasElement.prototype.getModel = ()-> @model
 
-  CanvasElement.prototype.element  = ()-> document.getElementById( @id )
-  CanvasElement.prototype.$element = ()-> $( document.getElementById( @id ) )
+  CanvasElement.prototype.element  = ( id )-> document.getElementById( id or @id )
+  CanvasElement.prototype.$element = ( id )-> $( document.getElementById( id or @id ) )
 
   CanvasElement.prototype.move = ( x, y )->
     if x is @model.x() and y is @model.y() then return
@@ -147,18 +149,6 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
   CanvasElement.prototype.remove = ()->
     if @model.isRemoved() then return
 
-    # # #
-    # Quick Hack for supporting AppEdit
-    # Ask the component if it supports AppEdit Mode
-    #
-    if @model.design().modeIsAppEdit() and not @model.get("supportAppEdit")
-        notification "error", "This operation is not supported yet."
-        return false
-    #
-    # #
-    # # #
-
-
     res = @isRemovable()
     comp = @model
     comp_name = comp.get("name")
@@ -233,6 +223,18 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
 
     ide_event.trigger ide_event.PROPERTY_REFRESH_ENI_IP_LIST
     null
+
+  CanvasElement.prototype.clone = ( parentId, x, y )->
+    parent = @model.design().component( parentId )
+    if not parent
+      console.error "No parent is found when cloning object"
+      return
+
+    attributes   = { parent : parent, name : @model.get("name") + "-copy" }
+    pos          = { x : x, y : y }
+    createOption = { cloneSource : @model }
+
+    $canvas.add( @type, attributes, pos, createOption )
 
   CanvasElement.prototype.parent  = ()->
     p = @model.parent()
@@ -379,7 +381,7 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
       Canvon.image( MC.IMG_URL+option.image, option.imageX, option.imageY, option.imageW, option.imageH )
 
     ).attr({
-      'id'         : @id
+      'id'         : option.id or @id
       'class'      : 'dragable node ' + @type.replace(/\./g, "-")
       'data-type'  : 'node'
       'data-class' : @type
@@ -476,7 +478,8 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
       CanvasManager.addClass @element(), "deleted"
     null
 
-  CanvasElement.prototype.detach = ()-> MC.canvas.remove( @element() )
+  CanvasElement.prototype.detach = () ->
+    MC.canvas.remove( @element() )
 
   CanvasElement.setDesign = ( design )->
     Design = design

@@ -93,27 +93,17 @@ define [ "../ComplexResModel", "Design", "../connection/Route", "../connection/R
             DestinationCidrBlock : "10.0.0.0/16"
             InstanceId           : ""
             NetworkInterfaceId   : ""
-            State                : "active"
             GatewayId            : "local"
-            InstanceOwnerId      : ""
-
           }]
 
       if @get("main")
         component.resource.AssociationSet.push {
-          Main         : "true" # Must be string.
-          SubnetId     : ""
-          RouteTableId : ""
+          Main     : "true" # Must be string.
           RouteTableAssociationId : ""
+          SubnetId : ""
         }
 
-      layout =
-        size       : [ @width(), @height() ]
-        coordinate : [ @x(), @y() ]
-        uid        : @id
-        groupUId   : @parent().id
-
-      { component : component, layout : layout }
+      { component : component, layout : @generateLayout() }
 
   }, {
 
@@ -164,7 +154,14 @@ define [ "../ComplexResModel", "Design", "../connection/Route", "../connection/R
       # Create asso between RTB and Subnet
       for r in data.resource.AssociationSet || []
         if not r.Main and r.SubnetId
-          new RtbAsso( rtb, design.component( MC.extractID( r.SubnetId ) ) )
+          # The fact is subnet will automatically creates an RtbAsso to the MainRtb
+          # So if this is mainRtb, the connection will exist, so we need to ensure the
+          # line is implicit.
+          # Ignoring the fact, we would still like to explicitly set the `implicit` to false.
+          new RtbAsso rtb, design.component(MC.extractID(r.SubnetId)), {
+            implicit : false
+            assoId : r.RouteTableAssociationId
+          }
 
       # Create routes between RTB and resources
       routes = data.resource.RouteSet

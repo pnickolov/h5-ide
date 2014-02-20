@@ -32,23 +32,15 @@ define [ "../ComplexResModel", "./VpcModel", "Design", "constant", "i18n!nls/lan
 
     serialize : ()->
 
-      layout =
-        coordinate : [ @x(), @y() ]
-        uid        : @id
-        groupUId   : @parent().id
-
       component =
         name : @get("name")
         type : @type
         uid  : @id
         resource :
           InternetGatewayId : @get("appId")
-          AttachmentSet     : [{
-            State : "available"
-            VpcId : @parent().createRef( "VpcId" )
-          }]
+          AttachmentSet     : [{ VpcId : @parent().createRef( "VpcId" ) }]
 
-      { component : component, layout : layout }
+      { component : component, layout : @generateLayout() }
 
   }, {
 
@@ -71,6 +63,7 @@ define [ "../ComplexResModel", "./VpcModel", "Design", "constant", "i18n!nls/lan
       new Model({
         x : vpcX - igwW / 2
         y : vpcY + ( vpcH - igwH ) / 2
+        parent : vpc
       })
       null
 

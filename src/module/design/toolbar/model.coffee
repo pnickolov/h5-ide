@@ -64,18 +64,6 @@ define [ "component/thumbnail/ThumbUtil", 'MC', 'backbone', 'jquery', 'underscor
                         ide_event.trigger ide_event.UPDATE_STACK_LIST, 'SAVE_STACK', [id]
                     , 500
 
-                    #update key
-                    key = result.resolved_data.key
-
-                    # old design flow
-                    #if key isnt MC.canvas_data.key
-                    #    MC.canvas_data.key = key
-
-                    # new design flow
-                    if key isnt MC.common.other.canvasData.get( 'key' )
-                        MC.common.other.canvasData.set 'key', key
-                        data.key = key
-
                     #set toolbar flag
                     me.setFlag id, 'SAVE_STACK', name
 
@@ -112,7 +100,6 @@ define [ "component/thumbnail/ThumbUtil", 'MC', 'backbone', 'jquery', 'underscor
 
                     # set new id and key
                     MC.common.other.canvasData.set 'id',  new_id
-                    MC.common.other.canvasData.set 'key', key
 
                     # get data
                     data = MC.common.other.canvasData.data()
@@ -476,6 +463,9 @@ define [ "component/thumbnail/ThumbUtil", 'MC', 'backbone', 'jquery', 'underscor
 
                 region = value
                 ide_event.trigger ide_event.UPDATE_DESIGN_TAB_ICON, 'running', id
+
+                # temp
+                MC.data.running_app_list[ id ] = { app_id : id }
 
                 # update app resource
                 ide_event.trigger ide_event.UPDATE_APP_INFO, region, id

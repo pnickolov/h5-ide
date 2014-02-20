@@ -33,7 +33,7 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
       @set "has_sns_sub", !!(Design.modelClassForType(constant.AWS_RESOURCE_TYPE.AWS_SNS_Subscription).allObjects().length)
 
       # Policies
-      @set "policies", _.map data.policies, (p)->
+      @set "policies", _.map data.policies, (p) ->
         data = $.extend true, {}, p.attributes
         data.cooldown = Math.round( data.cooldown / 60 )
         data.alarmData.period = Math.round( data.alarmData.period / 60 )

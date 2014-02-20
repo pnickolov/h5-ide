@@ -28,6 +28,11 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
                         else
                             @setOriginResource result, app_id
 
+                        #close all list popup(ServerGroup,ASG)
+                        MC.canvas.event.clearList()
+                        #select app property
+                        $canvas.trigger("CANVAS_NODE_SELECTED", "")
+
                     catch error
 
                         app_name = MC.forge.app.getNameById app_id
@@ -390,8 +395,7 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
                 console.log 'eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
 
                 # clear svg
-                #$('#group_layer, #line_layer, #node_layer').empty()
-                ide_event.trigger ide_event.CLEAR_DOME
+                $('#vpc_layer, #az_layer, #subnet_layer, #asg_layer, #line_layer, #node_layer').empty()
 
                 # re-new Design
                 options =

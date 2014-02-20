@@ -29,10 +29,6 @@ define [ 'text!./template.html', "event", "constant", "canvas_layout", 'MC.canva
             if $("#canvas").is(":empty") then $( '#canvas' ).html this.template
 
             null
-
-        clear : ->
-            $( '#canvas' ).html @template
-            canvas_layout.listen()
     }
 
     return CanvasView

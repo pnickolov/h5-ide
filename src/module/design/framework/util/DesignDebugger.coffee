@@ -88,6 +88,16 @@ define [ "Design" ], ( Design )->
       JsonViewer.showViewDialog( data )
     null
 
+  Design.debug.checkValidDesign = ()->
+    D.instance().eachComponent ( comp )->
+      if comp.design() is D.instance()
+        console.log "Valid design"
+      else
+        console.log "Invalid design"
+      null
+    null
+
+
   window.D   = Design
   window.dd  = Design.debug
   window.dds = ()-> Design.debug.json( true )

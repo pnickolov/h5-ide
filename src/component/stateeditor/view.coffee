@@ -2430,6 +2430,8 @@ define [ 'event',
             insertPos = that.addStateItemByData( newStateDataAry )
             that.undoManager.register(null, insertPos, 'paste', newStateDataAry)
 
+            that.clearSelectedItem()
+
             return true
 
         toggleSelected: () ->

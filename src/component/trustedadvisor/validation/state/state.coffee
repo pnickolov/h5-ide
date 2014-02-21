@@ -90,8 +90,9 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo', 'Design' ], ( con
             for eni in enis
                 if eni.resource.AssociatePublicIpAddress
                     return true
-                else if __getEipByEni component
+                else if __getEipByEni( component ).length
                     return true
+
     __getSubnetRtb = ( component ) ->
         if component.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
             subnet = component.parent().parent()

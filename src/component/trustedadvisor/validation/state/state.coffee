@@ -82,7 +82,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo', 'Design' ], ( con
     __hasEipOrPublicIp = ( component ) ->
         # LC
         if component.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
-            return AssociatePublicIpAddress is true
+            return component.resource.AssociatePublicIpAddress is true
         # instance
         else if component.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
             enis = __getEniByInstance component

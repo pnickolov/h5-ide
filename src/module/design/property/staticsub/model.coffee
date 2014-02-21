@@ -40,11 +40,14 @@ define [ '../base/model', 'constant', "../base/main" ], ( PropertyModel, constan
       newAmi = MC.data.dict_ami[ amiId ]
       if not oldAmi or not newAmi then return "Ami info is missing, please reopen stack and try again."
 
-      if oldAmi.osFamily isnt newAmi.osFamily
-        return "Incompatiable OS Family"
+      if oldAmi.osType is "windows" and newAmi.osType isnt "windows"
+        return "Changing AMI platform is not supported. To use a #{newAmi.osFamily} AMI, please create a new instance instead."
+
+      if oldAmi.osType isnt "windows" and newAmi.osType is "windows"
+        return "Changing AMI platform is not supported. To use a #{newAmi.osFamily} AMI, please create a new instance instead."
 
       if (newAmi.instance_type or "").indexOf( component.get("instanceType") ) is -1
-        return "New ami doesn't support #{component.get("instanceType")}"
+        return "#{ami.name} does not support previously used instance type #{component.get("instanceType")}. Please change another AMI."
 
       true
 

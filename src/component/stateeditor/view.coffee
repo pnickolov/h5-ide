@@ -151,6 +151,8 @@ define [ 'event',
 
             # , 1)
 
+            that.updateToolbar()
+
         initData: () ->
 
             that = this
@@ -2407,6 +2409,8 @@ define [ 'event',
 
             MC.data.stateClipboard = stack
 
+            that.updateToolbar()
+
             return true
 
         copyAllState: () ->
@@ -2419,6 +2423,8 @@ define [ 'event',
                 stack.push(that.getStateItemByData($(this)))
 
             MC.data.stateClipboard = stack
+
+            that.updateToolbar()
 
             return true
 
@@ -2681,6 +2687,14 @@ define [ 'event',
                 $('#state-toolbar-copy, #state-toolbar-delete').hide()
 
                 $('#state-toolbar-copy-all').show()
+
+            if MC.data.stateClipboard.length > 0
+
+                $('#state-toolbar-paste').removeClass 'disabled'
+
+            else
+
+                $('#state-toolbar-paste').addClass 'disabled'
 
             return true
     }

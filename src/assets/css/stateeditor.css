@@ -431,6 +431,11 @@
 	display: none;
 }
 
+.state-editor-toolbar .disabled {
+	pointer-events: none;
+	color: #ddd;
+}
+
 #state-editor .command-value {
 	float: left;
 	width: 150px;

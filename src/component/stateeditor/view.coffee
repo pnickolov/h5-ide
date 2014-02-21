@@ -28,6 +28,12 @@ define [ 'event',
             'blur .editable-area': 'onBlurInput'
 
             # 'click .state-toolbar .state-id': 'onStateIdClick'
+            # 
+        
+            'click #state-toolbar-add': 'addStateItem'
+            'click #state-toolbar-copy': 'copyAllState'
+            'click #state-toolbar-paste': 'pasteState'
+
             'click .state-toolbar': 'onStateToolbarClick'
 
             'click .state-toolbar .checkbox': 'checkboxSelect'
@@ -2204,18 +2210,6 @@ define [ 'event',
             status = target.currentState
             is_editable = status is 'appedit' or 'stack'
 
-            # Copy state item [Ctrl + C]
-            if (event.ctrlKey or event.metaKey) and keyCode is 67
-
-                stack = []
-
-                $('.state-list .selected').each ->
-                    stack.push(target.getStateItemByData($(this)))
-
-                MC.data.stateClipboard = stack
-
-                return false
-
             # undo [Ctrl + Z]
             if (event.ctrlKey or event.metaKey) and keyCode is 90 and is_editable
                 target.undoManager.undo()
@@ -2226,9 +2220,14 @@ define [ 'event',
                 target.undoManager.redo()
                 return false
 
+            # Copy state item [Ctrl + C]
+            if (event.ctrlKey or event.metaKey) and keyCode is 67
+                target.copyState.call target, event
+                return false
+
             # Paste state item [Ctrl + V]
             if (event.ctrlKey or event.metaKey) and keyCode is 86 and is_editable
-                target.addStateItemByData( target.setNewStateIdForStateAry( MC.data.stateClipboard ) )
+                target.pasteState.call target, event
                 return false
 
             # Remove state item [Ctrl + delete/backspace]
@@ -2292,6 +2291,34 @@ define [ 'event',
             if keyCode is 9
                 target.onSwitchState.call target
                 return false
+
+        copyState: () ->
+
+            stack = []
+
+            $('.state-list .selected').each ->
+                stack.push(target.getStateItemByData($(this)))
+
+            MC.data.stateClipboard = stack
+
+            return true
+
+        copyAllState: () ->
+
+            stack = []
+
+            $('.state-list .state-list').each ->
+                stack.push(target.getStateItemByData($(this)))
+
+            MC.data.stateClipboard = stack
+
+            return true
+
+        pasteState: () ->
+
+            target.addStateItemByData( target.setNewStateIdForStateAry( MC.data.stateClipboard ) )
+
+            return true
 
         toggleSelected: () ->
 

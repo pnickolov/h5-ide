@@ -33,7 +33,6 @@
 	{{#if type_line}}
 		<div class="parameter-item line {{#if required}}required{{else}}optional{{/if}} {{#if para_disabled}}disabled{{/if}}" data-para-name="{{para_name}}">
 			<div class="parameter-name">
-				{{#if required}}<span>*</span>{{else}}<div class="parameter-remove">-</div>{{/if}}
 				{{para_name}}
 			</div>
 			<div class="parameter-container">
@@ -45,7 +44,6 @@
 	{{#if type_dict}}
 		<div class="parameter-item dict {{#if required}}required{{else}}optional{{/if}} {{#if para_disabled}}disabled{{/if}}" data-para-name="{{para_name}}">
 			<div class="parameter-name">
-				{{#if required}}<span>*</span>{{else}}<div class="parameter-remove">-</div>{{/if}}
 				{{para_name}}
 			</div>
 			<div class="parameter-container">
@@ -57,7 +55,6 @@
 	{{#if type_array}}
 		<div class="parameter-item array {{#if required}}required{{else}}optional{{/if}} {{#if para_disabled}}disabled{{/if}}" data-para-name="{{para_name}}">
 			<div class="parameter-name">
-				{{#if required}}<span>*</span>{{else}}<div class="parameter-remove">-</div>{{/if}}
 				{{para_name}}
 			</div>
 			<div class="parameter-container">
@@ -69,7 +66,6 @@
 	{{#if type_bool}}
 		<div class="parameter-item bool {{#if required}}required{{else}}optional{{/if}} {{#if para_disabled}}disabled{{/if}}" data-para-name="{{para_name}}">
 			<div class="parameter-name">
-				{{#if required}}<span>*</span>{{else}}<div class="parameter-remove">-</div>{{/if}}
 				{{para_name}}
 			</div>
 			<div class="parameter-container">
@@ -81,7 +77,6 @@
 	{{#if type_text}}
 		<div class="parameter-item text {{#if required}}required{{else}}optional{{/if}} {{#if para_disabled}}disabled{{/if}}" data-para-name="{{para_name}}">
 			<div class="parameter-name">
-				{{#if required}}<span>*</span>{{else}}<div class="parameter-remove">-</div>{{/if}}
 				{{para_name}}
 			</div>
 			<div class="parameter-container">
@@ -93,7 +88,6 @@
 	{{#if type_state}}
 		<div class="parameter-item state {{#if required}}required{{else}}optional{{/if}} {{#if para_disabled}}disabled{{/if}}" data-para-name="{{para_name}}">
 			<div class="parameter-name">
-				{{#if required}}<span>*</span>{{else}}<div class="parameter-remove">-</div>{{/if}}
 				{{para_name}}
 			</div>
 			<div class="parameter-container">
@@ -108,42 +102,42 @@
 {{#each parameter_view_list}}
 
 	{{#if type_line}}
-		<div class="parameter-item line {{#if para_disabled}}disabled{{/if}}" data-para-name="{{para_name}}">
+		<div class="parameter-item line {{#if para_no_visible}}no-visible{{/if}}" data-para-name="{{para_name}}">
 			<div class="parameter-name">{{para_name}}</div>
 			<div class="parameter-value">{{para_value}}</div>
 		</div>
 	{{/if}}
 
 	{{#if type_dict}}
-		<div class="parameter-item dict {{#if para_disabled}}disabled{{/if}}" data-para-name="{{para_name}}">
+		<div class="parameter-item dict {{#if para_no_visible}}no-visible{{/if}}" data-para-name="{{para_name}}">
 			<div class="parameter-name">{{para_name}}</div>
 			<div class="parameter-value">{{para_value}}</div>
 		</div>
 	{{/if}}
 
 	{{#if type_array}}
-		<div class="parameter-item array {{#if para_disabled}}disabled{{/if}}" data-para-name="{{para_name}}">
+		<div class="parameter-item array {{#if para_no_visible}}no-visible{{/if}}" data-para-name="{{para_name}}">
 			<div class="parameter-name">{{para_name}}</div>
 			<div class="parameter-value">{{para_value}}</div>
 		</div>
 	{{/if}}
 
 	{{#if type_bool}}
-		<div class="parameter-item bool {{#if para_disabled}}disabled{{/if}}" data-para-name="{{para_name}}">
+		<div class="parameter-item bool {{#if para_no_visible}}no-visible{{/if}}" data-para-name="{{para_name}}">
 			<div class="parameter-name">{{para_name}}</div>
 			<div class="parameter-value">{{para_value}}</div>
 		</div>
 	{{/if}}
 
 	{{#if type_text}}
-		<div class="parameter-item text {{#if para_disabled}}disabled{{/if}}" data-para-name="{{para_name}}">
+		<div class="parameter-item text {{#if para_no_visible}}no-visible{{/if}}" data-para-name="{{para_name}}">
 			<div class="parameter-name">{{para_name}}</div>
 			<div class="parameter-value">{{para_value}}</div>
 		</div>
 	{{/if}}
 
 	{{#if type_state}}
-		<div class="parameter-item state {{#if para_disabled}}disabled{{/if}}" data-para-name="{{para_name}}">
+		<div class="parameter-item state {{#if para_no_visible}}no-visible{{/if}}" data-para-name="{{para_name}}">
 			<div class="parameter-name">{{para_name}}</div>
 			<div class="parameter-value">{{para_value}}</div>
 		</div>
@@ -184,8 +178,23 @@
 		<div id="state-editor-body" class="scroll-content modal-body clearfix">
 			<div id="state-editor" spellcheck="false">
 				{{#unless supported_platform}}<div class="state-warning">The AMI's distro cannot be recognised. Some commands may not apply to this AMI.</div>{{/unless}}
-				<ol class="state-list"></ol>
-				<div class="state-item-add">+ Add New State...</div>
+
+				<div class="state-no-state-container">
+					<div class="state-no-data-tip">No state conﬁgured yet.</div>
+					{{#if allow_add_state}}
+						<div class="state-item-add-btn btn btn-blue">Add a State</div>
+					{{/if}}
+				</div>
+
+				<div class="state-have-state-container">
+					<div class="state-editor-toolbar clearfix">
+						<a id="state-toolbar-add" href="javascript:void(0)">+ Add State</a>
+						<a id="state-toolbar-copy" href="javascript:void(0)">Copy all</a>
+						<a id="state-toolbar-paste" href="javascript:void(0)">Paste</a>
+					</div>
+					<ol class="state-list"></ol>
+				</div>
+
 			</div>
 			<div id="state-description" data-command=""></div>
 			<div id="state-log" data-state-id="">

@@ -1,5 +1,6 @@
-.ace_editor {
+#state-editor .parameter-value {
 	font-family: "Lucida Console", "Monaco", monospace  !important;
+	font-size: 12px !important;
 	color: #666;
 }
 
@@ -30,9 +31,17 @@
 	float: left;
 	height: 500px;
 	background: #f8f8f8;
-	font-family:  "Lucida Console", "Monaco", monospace;
+
 	font-size: 13px;
 	position: relative;
+}
+
+.ace_autocomplete_tip {
+	font-family:  "Lucida Console", "Monaco", monospace;
+}
+
+#state-editor .state-list {
+	font-family:  "Lucida Console", "Monaco", monospace;
 }
 
 #state-editor.full {
@@ -113,7 +122,7 @@
 }
 
 
-#state-editor-model .state-close{
+#state-editor-model .state-close {
 	display: none;
 }
 
@@ -397,6 +406,26 @@
 	visibility: hidden;
 }
 
+.state-editor-toolbar {
+	border-bottom: 1px solid #ddd;
+	box-shadow: 1px 1px 1px rgba(250, 250, 250, 0.1);
+	position: relative;
+	z-index: 85;
+	background: #fefefe;
+}
+
+.state-editor-toolbar a {
+	display: block;
+	padding: 10px 15px;
+	font-size: 12px;
+	color: #999;
+	float: left;
+}
+
+.state-editor-toolbar a:hover {
+	color: #666;
+}
+
 #state-editor .command-value {
 	float: left;
 	width: 150px;
@@ -590,7 +619,7 @@
 	padding: 0 4px;
 }
 
-#state-editor .parameter-view-list .parameter-item.disabled {
+#state-editor .parameter-view-list .parameter-item.no-visible {
 	display: none;
 }
 
@@ -979,7 +1008,7 @@
 	width: 265px;
 	height: 17px;
 	position: absolute;
-	z-index: 999999999;
+	z-index: 99999;
 	display: none;
 	padding-left: 5px;
 	background-color: #fff;
@@ -997,4 +1026,25 @@
 	font-style: italic;
 	opacity: 0.3;
 	padding-right: 4px;
+}
+
+#state-editor .state-no-data-tip {
+	margin-top: 140px;
+	text-align: center;
+	font-size: 16px;
+}
+
+#state-editor .state-item-add-btn {
+	margin-top: 35px;
+	margin-left: -56px;
+	position: absolute;
+	left: 50%;
+}
+
+#state-editor .state-have-state-container {
+	display: none;
+}
+
+#state-editor .state-no-state-container {
+	display: none;
 }

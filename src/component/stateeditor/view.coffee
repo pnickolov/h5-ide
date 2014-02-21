@@ -29,7 +29,7 @@ define [ 'event',
 
             # 'click .state-toolbar .state-id': 'onStateIdClick'
             'click #state-toolbar-add': 'addStateItem'
-            'click #state-toolbar-copy': 'copyAllState'
+            'click #state-toolbar-copy-all': 'copyAllState'
             'click #state-toolbar-paste': 'pasteState'
 
             'click .state-toolbar': 'onStateToolbarClick'
@@ -2449,6 +2449,8 @@ define [ 'event',
 
                 item.find('.checkbox input').prop('checked', true)
 
+            that.updateToolbar()
+
             return false
 
         switchFocus: (reverse) ->
@@ -2639,6 +2641,8 @@ define [ 'event',
 
                 checkbox.prop('checked', false)
 
+            that.updateToolbar()
+
             return false
 
         onStateItemAddBtnClick: (event) ->
@@ -2648,6 +2652,25 @@ define [ 'event',
             that.$haveStateContainer.show()
             that.$noStateContainer.hide()
 
+        updateToolbar: () ->
+
+            length = $('#state-editor .state-item.selected').length
+
+            if length > 0
+
+                $('#state-toolbar-copy, #state-toolbar-delete').show()
+
+                $('#state-toolbar-copy-all').hide()
+
+                $('#state-toolbar-copy-count, #state-toolbar-delete-count').text length
+
+            else
+
+                $('#state-toolbar-copy, #state-toolbar-delete').hide()
+
+                $('#state-toolbar-copy-all').show()
+
+            return true
     }
 
     return StateEditorView

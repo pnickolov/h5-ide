@@ -426,6 +426,11 @@
 	color: #666;
 }
 
+#state-toolbar-copy,
+#state-toolbar-delete {
+	display: none;
+}
+
 #state-editor .command-value {
 	float: left;
 	width: 150px;

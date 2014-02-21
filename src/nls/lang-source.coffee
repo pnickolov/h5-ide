@@ -500,8 +500,8 @@ module.exports =
       zh: "删除 %s"
 
     CVS_CFM_DEL_IGW:
-      en: "Internet-facing load balancers and elastic IPs require an internet gateway to function."
-      zh: "面向互联网的负载均衡器和弹性IP需要一个互联网网关才能工作。"
+      en: "Internet-facing load balancer and public IP require an internet gateway to function."
+      zh: "面向互联网的负载均衡器和公网IP需要一个互联网网关才能工作。"
 
     CVS_CFM_DEL_GROUP:
       en: "Deleting %s will also remove all resources inside it. Are you sure you want to delete it?"

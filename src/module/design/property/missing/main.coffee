@@ -2,16 +2,28 @@
 #  Controller for design/property/cgw module
 ####################################
 
-define [ '../base/main', '../base/model', '../base/view' ], ( PropertyModule, PropertyModel, PropertyView ) ->
+define [ '../base/main', '../base/model', '../base/view', 'constant' ], ( PropertyModule, PropertyModel, PropertyView, constant ) ->
 
     MissingView = PropertyView.extend {
         render : () ->
-            @$el.html MC.template.missingPropertyPanel()
-            "Resource Unavailable"
+            comp = Design.instance().component @model.get 'uid'
+            if Design.instance().get('state') is 'Stopped' and comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+                @$el.html MC.template.missingAsgWhenStop asgName: comp.get 'name'
+                return "#{comp.get 'name'} Deleted"
+
+            else
+                @$el.html MC.template.missingPropertyPanel()
+                return "Resource Unavailable"
     }
 
     view  = new MissingView()
-    model = new PropertyModel()
+
+    m = PropertyModel.extend {
+        init : ( uid ) ->
+            @set 'uid', uid
+    }
+
+    model = new m()
 
     MissingModule = PropertyModule.extend {
 

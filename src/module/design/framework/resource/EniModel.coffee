@@ -57,6 +57,20 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
         defaultSg = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup ).getDefaultSg()
         SgAsso = Design.modelClassForType( "SgAsso" )
         new SgAsso( defaultSg, this )
+
+      if option.cloneSource
+        @clone( option.cloneSource )
+      null
+
+    clone : ( srcTarget )->
+      @cloneAttributes srcTarget
+
+      # Update Ips to automatically assign, and reassign eip uid
+      for ip in @get("ips")
+        ip.ip = "x.x.x.x"
+        ip.autoAssign = true
+        ip.eipData.id = @design().guid()
+
       null
 
     groupMembers : ()->
@@ -376,7 +390,9 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
 
         hasEip = ipObj.hasEip
 
-        ipObj = memberData.ips[ idx ]
+        # The memberData might not have enough ip there. So we use the ipObj in this eni.
+        # This happens when AppEdit, the servergroup adds another IP.
+        ipObj = memberData.ips[ idx ] || ipObj
         if servergroupOption.number > 1
           autoAssign = true
         else
@@ -386,14 +402,6 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
           PrivateIpAddress : @getRealIp( ipObj.ip )
           AutoAssign       : autoAssign
           Primary          : false
-          #reserved
-          Association      :
-            InstanceId        : ""
-            AssociationID     : ""
-            PublicDnsName     : ""
-            IpOwnerId         : ""
-            PublicIp          : ""
-            AllocationID      : ""
         }
 
         if hasEip
@@ -411,10 +419,7 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
               AllocationId       : eip.allocationId or ""
               NetworkInterfaceId : @createRef( "NetworkInterfaceId", memberData.id )
               PrivateIpAddress   : @createRef( "PrivateIpAddressSet.#{idx}.PrivateIpAddress", memberData.id )
-              NetworkInterfaceOwnerId : ""
-              AllowReassociation      : ""
-              AssociationId           : eip.associationId or ""
-              PublicIp                : eip.publicIp or ""
+              PublicIp           : eip.publicIp or ""
           }
       ips[0].Primary = true
 
@@ -464,26 +469,13 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
           VpcId            : parent.getVpcRef()
           SubnetId         : parent.getSubnetRef()
 
+          AssociatePublicIpAddress : @get("assoPublicIp")
           PrivateIpAddressSet : ips
           GroupSet   : securitygroups
           Attachment :
             InstanceId   : instanceId
             DeviceIndex  : if eniIndex is undefined then "1" else "" + eniIndex
             AttachmentId : memberData.attachmentId or ""
-            AttachTime   : ""
-
-          SecondPriIpCount : ""
-          MacAddress       : ""
-          RequestId        : ""
-          RequestManaged   : ""
-          OwnerId          : ""
-          PrivateIpAddress : ""
-
-          AssociatePublicIpAddress : @get("assoPublicIp")
-          #reserved
-          PrivateDnsName     : ""
-          Status             : ""
-
 
       resources[0] = component
       resources
@@ -496,17 +488,15 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
       # Here, we only serialize layout
       res = null
       if not @__embedInstance
-        layout =
-          coordinate : [ @x(), @y() ]
-          uid        : @id
-          groupUId   : @parent().id
+        layout = @generateLayout()
 
         if res is null then res = {}
         res.layout = layout
 
       if not @attachedInstance()
         if res is null then res = {}
-        res.component = @generateJSON( 0, { number : 1 }, 0 )[0]
+        eniIndex = if @__embedInstance then 0 else 1
+        res.component = @generateJSON( 0, { number : 1 }, eniIndex )[0]
 
       res
 
@@ -587,7 +577,6 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
           ipObj.eipData =
             id            : ip.EipResource.uid
             allocationId  : ip.EipResource.resource.AllocationId
-            associationId : ip.EipResource.resource.AssociationId
             publicIp      : ip.EipResource.resource.PublicIp
         attr.ips.push( ipObj )
 

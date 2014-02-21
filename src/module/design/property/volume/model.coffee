@@ -6,82 +6,27 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
 
     VolumeModel = PropertyModel.extend {
 
-        ###
-        defaults :
-            'uid' : null
-            'volume_detail' : null
-        ###
-
         init : ( uid ) ->
 
             component = Design.instance().component( uid )
 
-            if !component
-                console.error "[volume property] no volume component found!"
-                return null
-
             res = component.attributes
             if !res.owner
                 console.error "[volume property] can not found owner of volume!"
-                return null
+                return false
 
-            # if not component
-            # #volume of LC(old)
-            #     realuid     = uid.split('_')
-            #     device_name = realuid[2]
-            #     realuid     = realuid[0]
+            volume_detail =
+                isWin       : res.name[0] != '/'
+                isStandard  : res.volumeType is 'standard'
+                iops        : res.iops
+                volume_size : res.volumeSize
+                snapshot_id : res.snapshotId
+                name        : res.name
 
-            #     for block in components[realuid].resource.BlockDeviceMapping
-
-            #         if block.DeviceName.indexOf(device_name) is -1
-            #             continue
-
-            #         volume_detail =
-            #             isWin       : block.DeviceName[0] != '/'
-            #             isLC        : true
-            #             volume_size : block.Ebs.VolumeSize
-            #             snapshot_id : block.Ebs.SnapshotId
-            #             name        : block.DeviceName
-
-            #         if volume_detail.isWin
-            #             volume_detail.editName = volume_detail.name.slice(-1)
-
-            #         else
-            #             volume_detail.editName = volume_detail.name.slice(5)
-
-            #         break
-
-            if res.owner.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
-            #volume of lc
-                volume_detail =
-                    isWin       : res.name[0] != '/'
-                    isLC        : true
-                    volume_size : res.volumeSize
-                    snapshot_id : res.snapshotId
-                    name        : res.name
-
-                if volume_detail.isWin
-                    volume_detail.editName = volume_detail.name.slice(-1)
-                else
-                    volume_detail.editName = volume_detail.name.slice(5)
-
-
-            else if res.owner.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
-            #volume of instance
-
-                volume_detail =
-                    isLC        : false
-                    isWin       : res.name[0] != '/'
-                    isStandard  : res.volumeType is 'standard'
-                    iops        : res.iops
-                    volume_size : res.volumeSize
-                    snapshot_id : res.snapshotId
-                    name        : res.name
-
-                if volume_detail.isWin
-                    volume_detail.editName = volume_detail.name.slice(-1)
-                else
-                    volume_detail.editName = volume_detail.name.slice(5)
+            if volume_detail.isWin
+                volume_detail.editName = volume_detail.name.slice(-1)
+            else
+                volume_detail.editName = volume_detail.name.slice(5)
 
 
             # Snapshot

@@ -1,9 +1,9 @@
 
 define [ "./CanvasElement", "constant", "CanvasManager", "Design" ], ( CanvasElement, constant, CanvasManager, Design )->
 
-  ChildElement = ()-> CanvasElement.apply( this, arguments )
-  CanvasElement.extend( ChildElement, constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance )
-  ChildElementProto = ChildElement.prototype
+  CeInstance = ()-> CanvasElement.apply( this, arguments )
+  CanvasElement.extend( CeInstance, constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance )
+  ChildElementProto = CeInstance.prototype
 
 
   ###
@@ -18,6 +18,12 @@ define [ "./CanvasElement", "constant", "CanvasManager", "Design" ], ( CanvasEle
   ChildElementProto.portDirMap = {
     "instance-sg" : "horizontal"
   }
+
+  ChildElementProto.detach = ()->
+    # Remove state icon
+    MC.canvas.nodeAction.remove @id
+    CanvasElement.prototype.detach.call this
+    null
 
   ChildElementProto.iconUrl = ()->
     ami = @model.getAmi() || @model.get("cachedAmi")
@@ -123,7 +129,7 @@ define [ "./CanvasElement", "constant", "CanvasManager", "Design" ], ( CanvasEle
         # instance-state
         node.append(
           Canvon.circle(68, 15, 5,{}).attr({
-            'id'    : '#{@id}_instance-state'
+            'id'    : "#{@id}_instance-state"
             'class' : 'instance-state instance-state-unknown'
           })
         )
@@ -211,7 +217,7 @@ define [ "./CanvasElement", "constant", "CanvasManager", "Design" ], ( CanvasEle
     #update icon state and tooltip
     stateClass = "instance-state tooltip instance-state-#{instanceState} instance-state-#{m.design().mode()}"
     stateEl = $("##{@id}_instance-state").attr({ "class" : stateClass })
-    CanvasManager.update stateEl, instanceState, "update"
+    CanvasManager.update stateEl, instanceState, "data-tooltip"
     null
 
   ChildElementProto.volume = ( volume_id )->
@@ -320,4 +326,4 @@ define [ "./CanvasElement", "constant", "CanvasManager", "Design" ], ( CanvasEle
       return @volume( volumeId )
     null
 
-  ChildElement
+  CeInstance

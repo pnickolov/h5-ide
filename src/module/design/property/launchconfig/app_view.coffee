@@ -9,7 +9,9 @@ define [ '../base/view', 'text!./template/app.html' ], ( PropertyView, template 
     LCAppView = PropertyView.extend {
 
         events:
-            "click #property-app-keypair": "downloadKeypair"
+            'click #property-app-keypair'                   : 'downloadKeypair'
+            'change #property-instance-enable-cloudwatch'   : 'cloudwatchSelect'
+            'change #property-instance-user-data'           : 'userdataChange'
 
         kpModalClosed: false
 
@@ -17,6 +19,13 @@ define [ '../base/view', 'text!./template/app.html' ], ( PropertyView, template 
             data = @model.toJSON()
             @$el.html template data
             data.name
+
+        cloudwatchSelect : ( event ) ->
+            @model.setCloudWatch event.target.checked
+            $("#property-cloudwatch-warn").toggle( $("#property-instance-enable-cloudwatch").is(":checked") )
+
+        userdataChange : ( event ) ->
+            @model.setUserData event.target.value
 
         downloadKeypair: ( event ) ->
             keypair = $( event.currentTarget ).html()

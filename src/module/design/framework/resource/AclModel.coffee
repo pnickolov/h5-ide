@@ -19,7 +19,6 @@ define [ "../ComplexResModel", "../ConnectionModel", "constant" ], ( ComplexResM
 
       components[ acl.id ].resource.AssociationSet.push {
         NetworkAclAssociationId : @get("associationId")
-        NetworkAclId : ""
         SubnetId: sb.createRef( "SubnetId" )
       }
       null
@@ -92,6 +91,8 @@ define [ "../ComplexResModel", "../ConnectionModel", "constant" ], ( ComplexResM
       defaultAcl = Model.getDefaultAcl()
       for target in @connectionTargets()
         new AclAsso( defaultAcl, target )
+
+      ComplexResModel.prototype.remove.call this
       null
 
     addRule : ( rule )->
@@ -108,6 +109,9 @@ define [ "../ComplexResModel", "../ConnectionModel", "constant" ], ( ComplexResM
 
       if ruleExist then return false
 
+      # Add rule Id for the rule
+      rule.id = _.uniqueId( "aclrule_" )
+
       currentRules = currentRules.slice(0)
       currentRules.push rule
       @set "rules", currentRules
@@ -121,9 +125,11 @@ define [ "../ComplexResModel", "../ConnectionModel", "constant" ], ( ComplexResM
           break
 
       if theRule.number is "32767" then return false
-      if @get.isDefault() and theRule.number is "100" then return false
+      if @isDefault() and theRule.number is "100" then return false
 
-      @set "rules", rules.slice(0).splice( idx, 1 )
+      rules = rules.slice(0)
+      rules.splice( idx, 1 )
+      @set "rules", rules
       true
 
     getRuleCount : ()-> @get("rules").length
@@ -143,7 +149,6 @@ define [ "../ComplexResModel", "../ConnectionModel", "constant" ], ( ComplexResM
           Default        : @isDefault()
           EntrySet       : ruleSet
           NetworkAclId   : @get("appId")
-          RouteTableId   : ""
           VpcId          : vpc.createRef( "VpcId" )
 
       for rule in @get("rules")

@@ -57,7 +57,7 @@ define [ 'jquery',
                 view.disableItem type, filter
 
             ide_event.onLongListen ide_event.UPDATE_RESOURCE_STATE, ( type ) ->
-                view.updateResourceState type
+                #view.updateResourceState type
                 view.hideResourcePanel type
 
             ide_event.onLongListen ide_event.SWITCH_TAB, ( type, tab_id ) ->

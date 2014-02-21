@@ -939,6 +939,11 @@ Following rule(s) will be deleted from its(their) security group:</div>
 	<div class="property-control-group">This resource is not available. It may have been deleted from other source or terminated in previous app editing.</div>
 </article>
 
+<!-- missingAsgWhenStop -->
+<article>
+	<div class="property-control-group">{{asgName}} is deleted in stopped app. The auto scaling group will be created when the app is started.</div>
+</article>
+
 <!-- instanceVolume -->
 <div class="bubble-head">Attached volume (<span id="instance_volume_number">{{this.length}}</span>)</div>
 <div id="instance_volume_wrap" class="scroll-wrap">
@@ -964,7 +969,7 @@ Following rule(s) will be deleted from its(their) security group:</div>
 		<li>
 			<a href="#" class="asgList-item" id="{{id}}" data-id="{{id}}">
 				<i class="asgList-item-status tooltip status status-{{state}}" data-tooltip="{{state}}" ></i>
-				<span class="asgList-item-icon" style="background-image:url('./assets/images/{{../background}}')"></span>
+				<span class="asgList-item-icon" style="background-image:url('./assets/images/{{background}}')"></span>
 				<div class="asgList-item-volume" data-target-id={{id}}>
 					<span class="asgList-item-number">{{../volume}}</span>
 				</div>
@@ -1337,5 +1342,9 @@ Following rule(s) will be deleted from its(their) security group:</div>
 </div>
 
 <!-- NodeStateRemoveConfirmation -->
-Do you confirm to delete {{name}}?</div>
+Are you sure you want to delete {{name}}?</div>
 <div class="modal-text-minor">Once deleted, the states of {{name}}'s configuration will be lost.</div>
+
+<!-- ElbRemoveConfirmation -->
+Are you sure you want to delete {{name}}?</div>
+<div class="modal-text-minor">The security group {{sg}} will also be deleted. Other load balancer using this security group will be affected.</div>

@@ -1136,6 +1136,11 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
             MC.data.app_list = {}
             MC.data.app_list[r] = [] for r in constant.REGION_KEYS
 
+            # temp by thumb
+            MC.data.app_thumb_list = {}
+            MC.data.app_thumb_list[r] = [] for r in constant.REGION_KEYS
+
+
             _.map constant.REGION_KEYS, ( value, key )  ->
 
                 region_counts[value] = { 'running_app': 0, 'stopped_app': 0, 'stack': 0, 'app': 0 }
@@ -1156,6 +1161,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
 
                     if value.region in constant.REGION_KEYS
                         MC.data.app_list[value.region].push value.name
+                        MC.data.app_thumb_list[value.region].push { id: value.id, name: value.name }
 
                     null
 

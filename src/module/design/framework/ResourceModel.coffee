@@ -1,10 +1,33 @@
 
 define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
 
+  deepClone = ( base )->
+
+    if base is null or not _.isObject( base )
+      return base
+
+    if _.isArray( base )
+      target = []
+      for a, idx in base
+        target[idx] = deepClone(a)
+
+      return target
+
+    target = {}
+    for key, value of base
+      if value isnt null and _.isObject( value )
+        target[ key ] = deepClone( value )
+      else
+        target[ key ] = value
+
+    target
+
+
   __detailExtend = Backbone.Model.extend
   __emptyObj     = {}
 
   ### env:dev ###
+  Attributes = ()-> this
   __checkEventOnUsage = ( protoProps )->
     ### jshint -W083 ###
     for propName, prop of protoProps
@@ -21,6 +44,26 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
         console.warn "Do not use Backbone.Events.on. Instead use Backbone.Events.listenTo. Found on() for resource : #{protoProps.type}"
         break
     ### jshint +W083 ###
+    null
+
+  # FORCE_MAP defines what parent method will be called when child's overriden method is called
+  FORCE_MAP = [ "remove", "connect_base", "addChild", "removeChild", "disconnect_base" ]
+  __checkForceMap = ( protoProps )->
+    # This function is used to detect if the one of the method defined in FORCE_MAP have
+    # called its super version.
+    for propName, prop of protoProps
+      if FORCE_MAP.indexOf(propName) is -1 and  propName isnt "constructor" then continue
+      funcString = prop.toString()
+
+      if propName is "constructor"
+        p = ""
+      else
+        p = propName
+
+      matchRegex = new RegExp( p + "\\.(call|apply)\\s?\\(?\\s?this" )
+      if not funcString.match( matchRegex )
+        console.warn "ResourceModel subclass (type : #{protoProps.type}) is overriding `#{propName}`, but it seems to forget to call Parent's method!"
+
     null
 
   __detailExtend = ( protoProps, staticProps )->
@@ -111,6 +154,9 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
     # isDesignAwake() : Boolean
         description : return true if the object is in current tab. Otherwise, return false.
 
+    # markAsRemoved() :
+        description : Simple set this object as removed, so that isRemoved() will return true. Since the object will remain in cache, user still need to call remove() at appropriate time.
+
     # isRemoved() : Boolean
         description : return true if this object has already been removed.
 
@@ -145,9 +191,6 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
 
   ###
 
-  # FORCE_MAP defines what parent method will be called when child's overriden method is called
-  FORCE_MAP = [ "remove", "connect_base", "addChild", "disconnect_base" ]
-
   ResourceModel = Backbone.Model.extend {
 
     classId : _.uniqueId("dfc_")
@@ -155,28 +198,32 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
 
     constructor : ( attributes, options )->
 
+      # Remember current design object
+      # So that later, we can check if this object's design is showing
+      design = Design.instance()
+      this.__design = design
+
       if not attributes
         attributes = {}
 
       # Assign new GUID
       if not attributes.id
-        attributes.id = MC.guid()
+        attributes.id = design.guid()
 
       # Assign new name
       if not attributes.name
         attributes.name = @getNewName()
         if not attributes.name then delete attributes.name
 
-      # Remember current design object
-      # So that later, we can check if this object's design is showing
-      design = Design.instance()
-      this.__design = design
-
       # Cache the object inside the current design.
       design.classCacheForCid( this.classId ).push( this )
       design.cacheComponent( attributes.id, this )
 
       Backbone.Model.call( this, attributes, options || __emptyObj )
+
+      ### env:dev ###
+      @attributes = _.extend( new Attributes(), @attributes )
+      ### env:dev:end ###
 
       # Initialize name/appId to empty string
       if not @attributes.name  then @attributes.name  = ""
@@ -188,23 +235,28 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
 
       this
 
-    getNewName : ()->
+    getNewName : ( base )->
       if not @newNameTmpl
         newName = if @defaults then @defaults.name
         return newName or ""
 
-      myKinds = Design.modelClassForType( @type ).allObjects()
-      base = myKinds.length
+      if base is undefined
+        myKinds = Design.modelClassForType( @type ).allObjects()
+        base = myKinds.length
+
+      # Collect all the resources name
+      nameMap = {}
+      @design().eachComponent ( comp )->
+        if comp.get("name")
+          nameMap[ comp.get("name") ] = true
+        null
+
       while true
         newName = @newNameTmpl + base
-        same    = false
-        for k in myKinds
-          if k.get("name") is newName
-            same = true
-            break
-
-        if not same then break
-        base += 1
+        if nameMap[ newName ]
+          base += 1
+        else
+          break
 
       newName
 
@@ -222,7 +274,14 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
       if not awsType then awsType = @type
       @design().classCacheForCid( this.prototype.classId ).slice(0)
 
-    isRemoved   : ()-> !@__design
+    markAsRemoved : ( isRemoved )->
+      if isRemoved is undefined
+        @__isRemoved = true
+      else
+        @__isRemoved = !!isRemoved
+      null
+
+    isRemoved   : ()-> @__isRemoved is true
     isRemovable : () -> true
     isReparentable : ()-> true
 
@@ -250,6 +309,8 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
       if @isRemoved()
         console.warn "The resource is already removed : ", this
         return
+
+      @__isRemoved = true
 
       console.debug "Removing resource : #{@get('name')}", this
 
@@ -348,6 +409,38 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
       for model in removed
         model.removeFromStorage @
 
+    cloneAttributes : ( srcTarget, option )->
+      console.assert srcTarget.type is @type, "Invalid type of target when cloning attributes."
+
+      # option =
+      #   reserve : "id|appId|x|y|width|height"
+      #   copyConnection : [ "KeypairUsage", "SgAsso" ]
+
+      option = option or {}
+      extraReserve = option.reserve or ""
+      reserve = "id|appId|x|y|width|height|name"
+      cnsType = option.copyConnection or []
+
+      for attr, value of srcTarget.attributes
+        if attr.indexOf("__") is 0 or reserve.indexOf( attr ) isnt -1 or extraReserve.indexOf( attr ) isnt -1
+          continue
+
+        if value isnt null and _.isObject( value )
+          value = @cloneObjectAttributes( attr, value )
+
+        @attributes[ attr ] = value
+
+      # Copy connection
+      for cnType in cnsType
+        CnClass = Design.modelClassForType( cnType )
+        for target in srcTarget.connectionTargets( cnType )
+          new CnClass( target, this )
+      null
+
+    cloneObjectAttributes : ( attributeName, attributeValue )->
+      # Cannot use $.extend here, because $.extend does not deep copy user-defined-objects.
+      deepClone( attributeValue )
+
     # Storage is created when necessary
     storage : ()->
       if not this.__storage
@@ -407,14 +500,6 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
 
       console.assert protoProps.type, "Subclass of ResourceModel does not specifying a type"
 
-      ### env:dev ###
-      # Check if the class is overriding constructor
-      if _.has(protoProps, 'constructor')
-        constructorStr = protoProps.constructor.toString()
-        if not constructorStr.match(/\.call\s?\(?\s?this/)
-          console.warn "Subclass of ResourceModel (type : #{protoProps.type}) is overriding Constructor, don't forget to call 'this.constructor.__super__.constructor' !"
-      ### env:dev:end ###
-
       # Get handleTypes and resolveFirst
       if staticProps
         handleTypes  = staticProps.handleTypes
@@ -424,22 +509,23 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
 
       ### env:dev ###
       __checkEventOnUsage( protoProps )
+      __checkForceMap( protoProps )
       ### env:dev:end ###
 
       ### jshint -W083 ###
       # Handle overriding methods for FORCED methods.
-      for m in FORCE_MAP
-        parentMethod = this.prototype[m]
-        if protoProps[ m ] and parentMethod
+      # for m in FORCE_MAP
+      #   parentMethod = this.prototype[m]
+      #   if protoProps[ m ] and parentMethod
 
-          protoProps[ m ] = (()->
-            childImpl  = protoProps[m]
-            parentImpl = parentMethod
-            ()->
-              ret = childImpl.apply( this, arguments )
-              parentImpl.apply( this, arguments )
-              ret
-          )()
+      #     protoProps[ m ] = (()->
+      #       childImpl  = protoProps[m]
+      #       parentImpl = parentMethod
+      #       ()->
+      #         ret = childImpl.apply( this, arguments )
+      #         parentImpl.apply( this, arguments )
+      #         ret
+      #     )()
       ### jshint +W083 ###
 
       protoProps.classId = _.uniqueId("dfc_")

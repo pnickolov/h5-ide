@@ -1,5 +1,26 @@
 <article>
   <div class="option-group-head expand" id="vpc-property-detail">{{ i18n "PROP_VPC_TIT_DETAIL" }}</div>
+
+  {{#if isAppEdit}}
+  <div class="option-group">
+    <dl class="dl-vertical">
+      <dt>{{ i18n "PROP_VPC_APP_VPC_ID" }}</dt>
+      <dd>{{vpcId}}</dd>
+      <dt>{{ i18n "PROP_VPC_APP_STATE" }}</dt>
+      <dd><i class="status status-{{state}}"></i>{{state}}</dd>
+      <dt>{{ i18n "PROP_VPC_APP_CIDR" }}</dt>
+      <dd>{{cidrBlock}}</dd>
+      <dt>{{ i18n "PROP_VPC_DETAIL_LBL_TENANCY" }}</dt>
+      <dd>{{instanceTenancy}}</dd>
+      <dt>{{ i18n "PROP_VPC_APP_MAIN_RT" }}</dt>
+      <dd>{{mainRTB}}</dd>
+      <dt>{{ i18n "PROP_VPC_APP_DEFAULT_ACL" }}</dt>
+      <dd>{{defaultACL}}</dd>
+    </dl>
+  </div>
+
+
+  {{else}}
   <div class="option-group" data-bind="true">
     <section class="property-control-group clearfix">
       <label class="left" for="property-vpc-name">{{ i18n "PROP_VPC_DETAIL_LBL_NAME" }}</label>
@@ -33,6 +54,7 @@
       <label for="property-dns-resolution">{{ i18n "PROP_VPC_DETAIL_LBL_ENABLE_DNS_RESOLUTION" }}</label>
     </section>
 
+
     <section class="property-control-group">
       <div class="checkbox">
         <input id="property-dns-hostname" type="checkbox"{{#if dnsHosts}} checked="checked"{{/if}} name="dns-hostname">
@@ -41,6 +63,8 @@
       <label for="property-dns-hostname">{{ i18n "PROP_VPC_DETAIL_LBL_ENABLE_DNS_HOSTNAME_SUPPORT" }}</label>
     </section>
   </div>
+
+  {{/if}}
 
   <div class="option-group-head">{{ i18n "PROP_VPC_TIT_DHCP_OPTION" }}</div>
   <div class="option-group" id="dhcp-property-detail" data-type="true">
@@ -52,14 +76,25 @@
       <label for="property-dhcp-none">{{ i18n "PROP_VPC_DHCP_LBL_NONE" }}</label>
     </section>
 
-    <section class="property-control-group">
-      <div class="radio property-dhcp">
-        <input id="property-dhcp-default" type="radio" name="dhcp-opts" {{#if dhcp.default}}checked="checked" {{/if}}value="none" />
-        <label for="property-dhcp-default"></label>
-      </div>
-      <label for="property-dhcp-default">{{ i18n "PROP_VPC_DHCP_LBL_DEFAULT" }}</label>
-    </section>
-
+    {{#if isAppEdit}}
+      {{#if dhcp.default}}
+      <section class="property-control-group">
+        <div class="radio property-dhcp">
+          <input id="property-dhcp-default" type="radio" name="dhcp-opts" {{#if dhcp.default}}checked="checked" {{/if}}value="none" />
+          <label for="property-dhcp-default"></label>
+        </div>
+        <label for="property-dhcp-default">{{ i18n "PROP_VPC_DHCP_LBL_DEFAULT" }}</label>
+      </section>
+      {{/if}}
+    {{else}}
+      <section class="property-control-group">
+        <div class="radio property-dhcp">
+          <input id="property-dhcp-default" type="radio" name="dhcp-opts" {{#if dhcp.default}}checked="checked" {{/if}}value="none" />
+          <label for="property-dhcp-default"></label>
+        </div>
+        <label for="property-dhcp-default">{{ i18n "PROP_VPC_DHCP_LBL_DEFAULT" }}</label>
+      </section>
+    {{/if}}
     <section class="property-control-group">
       <div class="radio property-dhcp">
         <input id="property-dhcp-spec" type="radio" name="dhcp-opts" {{#if dhcp.hasDhcp}}checked="checked"{{/if}} value="specified"/>

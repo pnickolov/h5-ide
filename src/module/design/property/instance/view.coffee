@@ -4,7 +4,7 @@
 
 define [ '../base/view',
          'text!./template/stack.html',
-         'i18n!nls/lang.js' ], ( PropertyView, template, lang ) ->
+         'i18n!nls/lang.js', 'constant' ], ( PropertyView, template, lang, constant ) ->
 
     noop = ()-> null
 
@@ -43,13 +43,20 @@ define [ '../base/view',
             if not Design.instance().typeIsClassic()
                 @refreshIPList()
 
+            currentStateData = @model.getStateData()
+
+            if currentStateData and _.isArray(currentStateData) and currentStateData.length
+                @disableUserDataInput(true)
+            else
+                @disableUserDataInput(false)
+
             @model.attributes.name
 
         instanceNameChange : ( event ) ->
             target = $ event.currentTarget
             name = target.val()
 
-            if @checkDupName( target, "Instance" )
+            if @checkResName( target, "Instance" )
                 @model.setName name
                 @setTitle name
             null
@@ -272,8 +279,9 @@ define [ '../base/view',
 
             if not @validateIpItem( $target ) then return
 
-            ip = $target.siblings( ".input-ip-prefix" ).text() + $target.val()
-            autoAssign = ip is "x" or ip is "x.x"
+            ipVal = $target.val()
+            ip = $target.siblings( ".input-ip-prefix" ).text() + ipVal
+            autoAssign = ipVal is "x" or ipVal is "x.x"
 
             @model.setIp $target.closest("li").index(), ip, autoAssign
             null
@@ -303,6 +311,23 @@ define [ '../base/view',
 
             $("#instance-ip-add").toggleClass("disabled", !enabled).data("tooltip", tooltip)
             null
+
+        disableUserDataInput : ( flag ) ->
+
+            $userDataInput = $('#property-instance-user-data')
+
+            if flag is true
+                $userDataInput.attr('disabled', 'disabled')
+                $userDataInput.addClass('tooltip').attr('data-tooltip', lang.ide.PROP_INSTANCE_USER_DATA_DISABLE)
+                # $userDataInput.val('')
+                # @userdataChange({
+                #     target: {
+                #         value: ''
+                #     }
+                # })
+            else if flag is false
+                $userDataInput.removeAttr('disabled')
+                $userDataInput.removeClass('tooltip').removeAttr('data-tooltip')
     }
 
     new InstanceView()

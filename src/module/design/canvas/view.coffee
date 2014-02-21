@@ -24,7 +24,7 @@ define [ 'text!./template.html', "event", "constant", "canvas_layout", 'MC.canva
             ide_event.trigger ide_event.DESIGN_SUB_COMPLETE
 
         reRender   : ( template ) ->
-            
+
             console.log 're-canvas render'
             if $("#canvas").is(":empty") then $( '#canvas' ).html this.template
 

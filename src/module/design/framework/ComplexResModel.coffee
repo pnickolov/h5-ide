@@ -80,23 +80,35 @@ define [ "Design", "CanvasManager", "./ResourceModel", "constant", "./canvasview
       null
 
     remove : ()->
-      # Remove connection
-      reason = { reason : this }
-      cns    = @attributes.__connections
+      # Mark as removed first, so that connection knows why they're being removed.
+      @markAsRemoved()
+
+      cns = @attributes.__connections
 
       if cns
-        while cns.length
+        # The connections is not modified during the removal of the resource.
+        l = cns.length
+        while l
           # Removing connection of this Resource might cause other connections of this
           # resource get removed. So, we always check if the connection is not empty.
-          cns[ cns.length - 1 ].remove( reason )
-          cns.length = cns.length - 1
+          # In some case, removing a connection will result in adding new connection to
+          # this resource, meaning the connections.length will increase.
+          --l
+          cns[l].remove()
 
       # Remove element in SVG
       v = @getCanvasView()
       if v then v.detach()
+
+      @markAsRemoved( false )
+      ResourceModel.prototype.remove.call this
       null
 
     connect_base : ( connection )->
+      ###
+      connect_base.call(this) # This is used to suppress the warning in ResourceModel.extend.
+      ###
+
       connections = @get "__connections"
 
       if not connections
@@ -111,6 +123,10 @@ define [ "Design", "CanvasManager", "./ResourceModel", "constant", "./canvasview
       null
 
     disconnect_base : ( connection, reason )->
+      ###
+      disconnect_base.call(this) # This is used to suppress the warning in ResourceModel.extend.
+      ###
+
       connections = @get "__connections"
       # Directly remove the connection without triggering anything changed.
       # But I'm not sure if this will affect undo/redo
@@ -136,11 +152,14 @@ define [ "Design", "CanvasManager", "./ResourceModel", "constant", "./canvasview
 
       @__view
 
-    draw : ( isCreate )->
+    draw : ()->
       if not @isVisual() or not Design.instance().shouldDraw() then return
       v = @getCanvasView()
       if v
-        v.draw( isCreate is true )
+        args = arguments
+        args[ 0 ] = args[ 0 ] is true
+
+        v.draw.apply v, args
       null
 
     createNode : ( option )->
@@ -284,6 +303,16 @@ define [ "Design", "CanvasManager", "./ResourceModel", "constant", "./canvasview
         p = VpcModel.theVPC()
 
       return if p then p.createRef( "VpcId" ) else ""
+
+    generateLayout : ()->
+      layout =
+        coordinate : [ @x(), @y() ]
+        uid        : @id
+
+      if @parent()
+        layout.groupUId = @parent().id
+
+      layout
 
     parent : ()-> @attributes.__parent || null
     x      : ()-> @attributes.x || 0

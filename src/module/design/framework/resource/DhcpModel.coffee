@@ -61,6 +61,18 @@ define [ "constant", "../ResourceModel", "Design"  ], ( constant, ResourceModel,
     setDefault : ()-> @set "dhcpType", "default"
     setCustom  : ()-> @set "dhcpType", ""
 
+    set : ()->
+      if @design().modeIsAppEdit() and not @__newIdForAppEdit
+        @__newIdForAppEdit = @design().guid()
+
+      Backbone.Model.prototype.set.apply this, arguments
+
+    createRef : ( refName, isResourceNS, id )->
+      if not id
+        id = @__newIdForAppEdit or @id
+
+      ResourceModel.prototype.createRef.call this, refName, isResourceNS, id
+
     serialize : ()->
 
       if not @isCustom()
@@ -71,12 +83,19 @@ define [ "constant", "../ResourceModel", "Design"  ], ( constant, ResourceModel,
       configs = []
       attr    = @attributes
 
+      if @__newIdForAppEdit
+        id = @__newIdForAppEdit
+        appId = ""
+      else
+        id = @id
+        appId = @get("appId")
+
       component =
         name : "DhcpOption"
         type : @type
-        uid  : @id
+        uid  : id
         resource :
-          DhcpOptionsId        : attr.appId
+          DhcpOptionsId        : appId
           VpcId                : vpc.createRef( "VpcId" )
           DhcpConfigurationSet : configs
 

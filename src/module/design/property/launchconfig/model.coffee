@@ -41,6 +41,7 @@ define [ '../base/model', 'keypair_model', 'constant', 'Design' ], ( PropertyMod
 
       data = @lc.toJSON()
       data.uid = uid
+      data.isEditable = @isAppEdit
       @set data
 
       @set "displayAssociatePublicIp", not Design.instance().typeIsClassic()
@@ -155,6 +156,9 @@ define [ '../base/model', 'keypair_model', 'constant', 'Design' ], ( PropertyMod
       this.set 'lc',   lc_data
       this.set 'uid',  uid
       null
+
+    getStateData : () ->
+      Design.instance().component( @get("uid") ).getStateData()
 
   }
 

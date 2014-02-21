@@ -10,7 +10,8 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
 
     if not view
       console.debug "Creating an view for an unfound component : ", defaultType, id
-      view = CanvasElement.createView( defaultType, component or id )
+      type = if component then component.type else defaultType
+      view = CanvasElement.createView( type, component or id )
 
     view
 
@@ -63,13 +64,15 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
       CanvasEvent[event].apply( this, Array.prototype.slice.call(arguments, 1) )
     null
 
-  $canvas.add = ( type, attributes, pos )->
+  $canvas.add = ( type, attributes, pos, createOption )->
 
     attributes = $.extend { x : pos.x, y : pos.y }, attributes
-    parent = Design.__instance.component( attributes.groupUId )
 
-    attributes.parent = parent
-    delete attributes.groupUId
+    parent = attributes.parent
+    if not parent
+      parent = Design.__instance.component( attributes.groupUId )
+      attributes.parent = parent
+      delete attributes.groupUId
 
     if parent
       if parent.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
@@ -81,7 +84,7 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
 
     Model = Design.modelClassForType type
 
-    createOption = { createByUser : true }
+    createOption = $.extend { createByUser : true }, createOption || {}
     m = new Model( attributes, createOption )
 
     ####

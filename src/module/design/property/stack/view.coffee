@@ -27,12 +27,26 @@ define [ '../base/view',
 
         render     : () ->
 
+            t = template
+            if @model.isApp or @model.isAppEdit
+                if @model.attributes.isImport
+                    str = '<header class="property-sidebar-title sidebar-title truncate" id="property-title">Visualization - '+@model.attributes.vpcid+'<i class="icon-info tooltip property-header-info" data-tooltip="Currently you can rearrange the layout of visualisation and export it as PNG image file. Future version will include the feature to import VPC resource as an app. "></i></header>'
+                    $('#property-title').html(str)
+                else
+                    title = "App - #{@model.get('name')}"
+            else
+                title = "Stack - #{@model.get('name')}"
+
             @$el.html( template( @model.attributes ) )
-            @setTitle( "Stack - #{@model.get('name')}" )
+
+            if title
+                @setTitle( title )
 
             @refreshACLList()
 
-            @updateSNSList @model.get("subscription"), true
+            if not @model.isApp
+                @updateSNSList @model.get("subscription"), true
+
             null
 
         stackNameChanged : () ->

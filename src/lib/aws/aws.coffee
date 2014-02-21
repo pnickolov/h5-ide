@@ -154,7 +154,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
             #elb
             if resources.DescribeLoadBalancers
                 _.map resources.DescribeLoadBalancers, ( res, i ) ->
-                    MC.data.resource_list[region][res.LoadBalancerName] = res
+                    MC.data.resource_list[region][res.DNSName] = res
                     null
 
             #vpn
@@ -601,7 +601,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
                 when res_type.AWS_VPC_CustomerGateway
                     r = data[ comp.resource.CustomerGatewayId ]
                 when res_type.AWS_ELB
-                    r = data[ comp.resource.LoadBalancerName ]
+                    r = data[ comp.resource.DNSName ]
                 when res_type.AWS_VPC_NetworkInterface
                     r = data[ comp.resource.NetworkInterfaceId ]
                 when res_type.AWS_EC2_Instance
@@ -667,7 +667,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
                 resourceId = compRes.VolumeId
 
             when constant.AWS_RESOURCE_TYPE.AWS_ELB
-                resourceId = compRes.LoadBalancerName
+                resourceId = compRes.DNSName
 
             when constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC
                 resourceId = compRes.VpcId
@@ -814,7 +814,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
         'VpcId',
         'SubnetId',
         'GroupId',
-        'LoadBalancerName',
+        'DNSName',
         'NetworkAclId',
         'RouteTableId',
         'KeyName',

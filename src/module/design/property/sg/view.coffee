@@ -97,9 +97,9 @@ define [ '../base/view',
             target = $ event.currentTarget
             name = target.val()
 
-            if @checkDupName( target, "SG" )
+            if @checkResName( target, "SG" )
                 @model.setName name
-                @setTitle name
+                @setTitle '<span class="sg-color sg-color-header" style="background-color:' + @model.get("color") + '" ></span>' + @model.get("name")
             null
 
         setSGDescription : ( event ) ->

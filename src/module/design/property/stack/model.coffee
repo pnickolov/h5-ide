@@ -17,12 +17,14 @@ define ['../base/model', 'constant', "Design" ], ( PropertyModel, constant, Desi
       design = Design.instance()
 
       @set {
-        name   : design.get("name").replace(/\s+/g, '')
-        id     : design.get("id")
-        usage  : design.get("usage")
-        type   : typeMap[ design.type() ]
-        region : constant.REGION_SHORT_LABEL[ design.region() ]
-        isApp  : @isApp
+        name      : design.get("name").replace(/\s+/g, '')
+        id        : design.get("id")
+        usage     : design.get("usage")
+        type      : typeMap[ design.type() ]
+        region    : constant.REGION_SHORT_LABEL[ design.region() ]
+        isApp     : @isApp
+        isAppEdit : @isAppEdit
+        isImport  : design.modeIsAppView()
       }
 
       vpc = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC ).theVPC()
@@ -30,7 +32,7 @@ define ['../base/model', 'constant', "Design" ], ( PropertyModel, constant, Desi
 
       @getNetworkACL()
 
-      if @isApp
+      if @isApp or @isAppEdit
         @getAppSubscription()
       else
         @getSubscription()
@@ -119,13 +121,24 @@ define ['../base/model', 'constant', "Design" ], ( PropertyModel, constant, Desi
 
       networkAcls = []
       defaultACL  = null
+
       _.each ACLModel.allObjects(), ( acl )->
+
+        deletable = true
+        if Design.instance().modeIsApp()
+          deletable = false
+        else if acl.isDefault()
+          deletable = false
+        else if Design.instance().modeIsAppEdit()
+          # If the acl has appId, deletable is false
+          deletable = not acl.get("appId")
+
         aclObj = {
           uid         : acl.id
           name        : acl.get("name")
           rule        : acl.getRuleCount()
           association : acl.getAssoCount()
-          deletable   : Design.instance().modeIsStack() and not acl.isDefault()
+          deletable   : deletable
         }
 
         if acl.isDefault()

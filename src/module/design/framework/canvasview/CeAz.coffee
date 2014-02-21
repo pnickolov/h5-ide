@@ -1,9 +1,9 @@
 
 define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, constant, CanvasManager )->
 
-  ChildElement = ()-> CanvasElement.apply( this, arguments )
-  CanvasElement.extend( ChildElement, constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone )
-  ChildElementProto = ChildElement.prototype
+  CeAz = ()-> CanvasElement.apply( this, arguments )
+  CanvasElement.extend( CeAz, constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone )
+  ChildElementProto = CeAz.prototype
 
 
   ###

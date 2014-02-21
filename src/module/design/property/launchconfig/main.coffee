@@ -21,6 +21,9 @@ define [ "../base/main",
     view.on "OPEN_AMI", (id)->
         PropertyModule.loadSubPanel "STATIC", id
 
+    ide_event.onLongListen ide_event.PROPERTY_DISABLE_USER_DATA_INPUT, (flag) ->
+        view.disableUserDataInput(flag)
+        null
 
     LCModule = PropertyModule.extend {
 
@@ -48,7 +51,7 @@ define [ "../base/main",
 
         initAppEdit : () ->
             @model = model
-            @model.isApp = true
+            @model.isApp = @model.isAppEdit = true
             @view  = app_view
             null
 

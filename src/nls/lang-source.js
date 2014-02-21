@@ -1728,8 +1728,8 @@ module.exports = {
       zh: "IP地址"
     },
     PROP_CGW_APP_VPN_LBL_STATUS_RT: {
-      en: "Status Routes",
-      zh: "路由状态"
+      en: "Static Routes",
+      zh: "静态路由"
     },
     PROP_CGW_APP_VPN_COL_IP_PREFIX: {
       en: "IP Prefixes",
@@ -3545,6 +3545,14 @@ module.exports = {
     },
     TA_MSG_ERROR_STACK_HAVE_NOT_AUTHED_AMI: {
       en: "You are not authorized for %s <span class='validation-tag tag-%s'>%s</span>'s AMI <span class='validation-tag tag-ami'>%s</span>. Go to AWS Marketplace to get authorized or use another AMI by creating new instance.",
+      zh: ""
+    },
+    TA_MSG_ERROR_STATE_EDITOR_INEXISTENT_INSTANCE: {
+      en: "Instance <span class='validation-tag tag-instance'>%s</span> state %s has referenced %s inexistent component(s)",
+      zh: ""
+    },
+    TA_MSG_ERROR_STATE_EDITOR_INEXISTENT_ASG: {
+      en: "Auto Scaling Group <span class='validation-tag tag-asg'>%s</span> state %s has referenced %s inexistent component(s)",
       zh: ""
     }
   },

@@ -69,9 +69,9 @@ define [ '../base/view',
 
         instanceTypeSelect  : instance_view.instanceTypeSelect
 
-        addIP               : instance_view.addIp
-        removeIP            : instance_view.removeIp
-        setEIP              : instance_view.setEip
+        addIp               : instance_view.addIp
+        removeIp            : instance_view.removeIp
+        setEip              : instance_view.setEip
         syncIPList          : instance_view.syncIPList
         refreshIPList       : instance_view.refreshIPList
         updateIPAddBtnState : instance_view.updateIPAddBtnState

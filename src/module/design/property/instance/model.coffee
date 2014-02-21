@@ -170,6 +170,9 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 		setIp : ( idx, ip, autoAssign )->
 			Design.instance().component( @get("uid") ).getEmbedEni().setIp( idx, ip, autoAssign )
 			null
+
+		getStateData : () ->
+			Design.instance().component( @get("uid") ).getStateData()
 	}
 
 	new InstanceModel()

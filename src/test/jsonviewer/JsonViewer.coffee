@@ -78,9 +78,9 @@ define ["event", "text!./diff.html", "text!./view.html", "./JsonDiffLib", "./jqU
     componentData = component
 
     attributes = $.extend true, {}, canvas_data
-    jsond.compare( attributes, attributes, "attributes", $("#jsonAttrContainer").empty()[0] )
-    jsond.compare( component, component, "components", $("#jsonCompContainer").empty()[0] )
-    jsond.compare( layout, layout, "layouts", $("#jsonLayoutContainer").empty()[0] )
+    jsond.compare( attributes, attributes, "attribute", $("#jsonAttrContainer").empty()[0] )
+    jsond.compare( component, component, "component", $("#jsonCompContainer").empty()[0] )
+    jsond.compare( layout, layout, "layout", $("#jsonLayoutContainer").empty()[0] )
 
     $("#jsonCompContainer, #jsonAttrContainer, #jsonLayoutContainer").children().removeClass("closed")
 

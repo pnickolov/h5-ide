@@ -36,7 +36,7 @@ define [ '../base/view',
             target = $ event.currentTarget
             name = target.val()
 
-            if @checkDupName( target, "Subnet" )
+            if @checkResName( target, "Subnet" )
                 @model.setName name
                 @setTitle name
 

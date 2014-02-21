@@ -28,7 +28,8 @@ define [ 'Design',
          "./util/deserializeVisitor/EipMerge",
          "./util/deserializeVisitor/FixOldStack",
          "./util/deserializeVisitor/AsgExpandor",
-         "./util/serializeVisitor/EniIpVisitor",
+         "./util/deserializeVisitor/ElbSgNamePatch",
+         "./util/serializeVisitor/EniIpAssigner",
 
          "./canvasview/CeLine"
          './canvasview/CeAz'

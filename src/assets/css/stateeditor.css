@@ -30,7 +30,7 @@
 	width: 654px;
 	float: left;
 	height: 500px;
-	background: #f8f8f8;
+	background: #fff;
 
 	font-size: 13px;
 	position: relative;
@@ -51,6 +51,7 @@
 
 #state-editor .state-edit {
 	border-bottom: 1px solid #eee;
+	padding-left: 32px;
 }
 
 #state-description, #state-log {
@@ -310,7 +311,7 @@
 
 #state-editor .editable-area.ace_focus,
 #state-editor .editable-area.ace_focus:hover {
-	background-color: rgba(0,0,0,.01);
+	/*background-color: rgba(0,0,0,.01);*/
 	color: #333;
 	/*border-bottom: 1px solid #69aadc;*/
 }
@@ -450,21 +451,20 @@
 #state-editor .command-value {
 	float: left;
 	width: 150px;
-	margin-left: 40px;
+	margin-left: 28px;
 	margin-top: -27px;
-	margin-left: 60px;
-	color: rgb(8, 173, 54);
+	/*margin-left: 60px;*/
+	color: #666 !important;
 }
 
 #state-editor .parameter-list {
 	overflow: auto;
-	/*margin-left: 58px;*/
 }
 
 #state-editor .parameter-list .parameter-item {
 	/*width: 100%;*/
 	overflow: auto;
-	padding: 4px 6px 0 58px;
+	padding: 4px 6px 0 27px;
 	background-color: rgba(248, 248, 248, 0.1);
 	border-bottom: 1px solid #eee;
 }
@@ -476,11 +476,10 @@
 #state-editor .parameter-list .parameter-name {
 	float: left;
 	padding: 5px;
-	/*max-width: 100px;*/
-	/*background-color: #ddd;*/
 	margin-top: 2px;
-	/*width: 100%;*/
 	cursor: default;
+	position: relative;
+	color: rgb(192, 42, 213);
 }
 
 #state-editor .parameter-list .parameter-value {
@@ -592,13 +591,15 @@
 	white-space: nowrap;
 	margin-right: 10px;
 	color: #999;
-	margin-top: 4px;
+	margin-top: 5px;
 	/*background: rgb(59, 127, 250);*/
 	/*background: #999;*/
-	border-radius: 4px;
+	/*border-radius: 4px;*/
+	border-right: 1px solid #ddd;
 	padding: 4px 0;
 	/*width: 80px;*/
 	width: 114px;
+	color: #666;
 }
 
 #state-editor .command-view-value:empty {
@@ -663,7 +664,7 @@
 	position: relative;
 	overflow: hidden;
 	cursor: pointer;
-	background: rgba(0,0,0,.02);
+	background: rgba(0,0,0,.01);
 	border-bottom: 1px solid #eee;
 	min-height: 22px;
 	padding: 6px 0;

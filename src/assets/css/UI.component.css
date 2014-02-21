@@ -695,6 +695,9 @@ textarea {
 .property-content .radio + label {
 	font-size: 14px;
 	color: #d0d0d0;
+	max-width: 236px;
+	vertical-align: middle;
+	height: auto;
 }
 
 /* Select */

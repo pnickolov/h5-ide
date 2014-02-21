@@ -26,5 +26,19 @@
 		"grunt-strip"           : "0.2.1",
 		"grunt-dev-prod-switch" : "0.1.4",
 		"grunt-regex-replace"   : "0.2.5"
+
+
+		, "gulp"            : ""
+		, "gulp-util"       : ""
+		, "node-static"     : ""
+		, "tiny-lr"         : ""
+		, "chokidar"        : ""
+		, "walkdir"         : ""
+		, "event-stream"    : ""
+		, "text-table"      : ""
+		, "through2"        : ""
+		, "gulp-coffee"     : ""
+		, "gulp-coffeelint" : ""
+		, "gulp-jshint"     : ""
 	}
 }

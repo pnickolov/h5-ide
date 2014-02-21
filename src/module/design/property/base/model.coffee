@@ -8,7 +8,7 @@ define [ 'backbone', 'Design' ], ( Backbone, Design )->
     ###
 
     -------------------------------
-     PropertyModel is a base class that every property view should inherit. Currently it does nothing.
+     PropertyModel is a base class that every property view should inherit.
     -------------------------------
 
     ###

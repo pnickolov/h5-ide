@@ -2,35 +2,63 @@
 #  View Mode for design/property/cgw
 #############################
 
-define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
+define [ '../base/model', 'constant', "../base/main" ], ( PropertyModel, constant, PropertyModule ) ->
 
-    StaticSubModel = PropertyModel.extend {
+  StaticSubModel = PropertyModel.extend {
 
-        init : ( uid ) ->
+    init : ( uid ) ->
 
-            # If this uid is ami uid
-            ami = MC.data.dict_ami[ uid ]
-            if ami
-                @set ami
-                @set "instance_type", MC.aws.ami.getInstanceType( ami ).join(", ")
-                @set "ami", true
-                @set "name", ami.name
-                return
-            else if uid.indexOf("ami-") is 0
-                @set "ami", { unavailable : true }
-                @set "name", uid
-                return
+      @set "isApp", @isApp
 
-            @set "name", uid
-            # If this uid is snapshot uid
-            snapshot_list = MC.data.config[Design.instance().region()].snapshot_list
-            if snapshot_list and snapshot_list.item
-                for item in snapshot_list.item
-                    if item.snapshotId is uid
-                        @set item
-                        return
+      # If this uid is ami uid
+      ami = MC.data.dict_ami[ uid ]
+      if ami
+        @set ami
+        @set "instance_type", MC.aws.ami.getInstanceType( ami ).join(", ")
+        @set "ami", true
+        @set "name", ami.name
+        return
+      else if uid.indexOf("ami-") is 0
+        @set "ami", { unavailable : true }
+        @set "name", uid
+        return
 
-            false
-    }
+      @set "name", uid
+      # If this uid is snapshot uid
+      snapshot_list = MC.data.config[Design.instance().region()].snapshot_list
+      if snapshot_list and snapshot_list.item
+        for item in snapshot_list.item
+          if item.snapshotId is uid
+            @set item
+            return
 
-    new StaticSubModel()
+      false
+
+    canChangeAmi : ( amiId )->
+      component = Design.instance().component( PropertyModule.activeModule().uid )
+      oldAmi = component.getAmi()
+      newAmi = MC.data.dict_ami[ amiId ]
+      if not oldAmi or not newAmi then return "Ami info is missing, please reopen stack and try again."
+
+      if oldAmi.osFamily isnt newAmi.osFamily
+        return "Incompatiable OS Family"
+
+      if (newAmi.instance_type or "").indexOf( component.get("instanceType") ) is -1
+        return "New ami doesn't support #{component.get("instanceType")}"
+
+      true
+
+    getAmiPngName : ( amiId ) ->
+      ami = MC.data.dict_ami[ amiId ]
+      if not ami
+        "ami-not-available"
+      else
+        "#{ami.osType}.#{ami.architecture}.#{ami.rootDeviceType}"
+
+    changeAmi : ( amiId )->
+      Design.instance().component( PropertyModule.activeModule().uid ).setAmi( amiId )
+      @init( amiId )
+      null
+  }
+
+  new StaticSubModel()

@@ -259,6 +259,22 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
         return @get("tenancy") isnt "dedicated"
       null
 
+    setAmi : ( amiId )->
+      @set "imageId", amiId
+      # Assume the new amiId supports current instancetype
+      # Assume the new amiId is the same OS of current one.
+
+      # Check If the new amiId is supports current type
+      # instance_type_list = MC.aws.ami.getInstanceType( @getAmi() )
+      # instanceType = @get("instanceType")
+      # for v in instance_type_list or []
+      #   if v is instanceType
+      #     support = true
+      #     break
+      # if not support then @initInstanceType()
+      @draw()
+      null
+
     getAmi : ()-> MC.data.dict_ami[@get("imageId")]
     getInstanceTypeConfig : ()->
       t = @get("instanceType").split(".")

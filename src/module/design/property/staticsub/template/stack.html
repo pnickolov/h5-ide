@@ -1,12 +1,40 @@
 <article class="property-app">
 {{#if ami}}
+
+{{#if isApp}}
     {{#if ami.unavailable}}
-    <div class="property-control-group">
-        <p>This AMI is deleted by its owner and not available any more.</p>
-        <p>Please use another AMI by creating new instance.</p>
+    <div class="property-control-group property-ami-info">
+        <p>This AMI's infomation is unavailable</p>
     </div>
-    {{else}}
-    <dl class="dl-vertical">
+    {{/if}}
+{{else}}
+    {{#if ami.unavailable}}
+    <div class="property-control-group property-ami-info">
+        <p>This AMI is deleted by its owner and not available any more.</p>
+        <p>Please change to another AMI.</p>
+    </div>
+    {{/if}}
+    <div class="property-control-group property-ami-info">
+        <button id="changeAmi">Change AMI</button>
+    </div>
+    <div class="property-control-group hide" id="changeAmiPanel">
+        <p>Drag image from Resource Panel and drop below to change AMI.</p>
+        <div id="changeAmiDropZone" style="width:200px;height:200px;background:#000;text-align:center;">
+            <p>Drop Image Here</p>
+            <div class="resource-icon resource-icon-instance">
+                <img src="assets/images/ide/ami/amazon.i386.ebs.png" width="39" height="27">
+            </div>
+        </div>
+        <div class="hide" id="confirmChangeAmiWrap">
+            <p id="changeAmiWarning"></p>
+            <button id="confirmChangeAmi">Confirm Change AMI</button>
+        </div>
+        <button id="cancelChangeAmi">Cancel</button>
+    </div>
+{{/if}}
+
+    {{#unless ami.unavailable}}
+    <dl class="dl-vertical property-ami-info">
     <dt>{{ i18n "PROP_INSTANCE_AMI_ID" }}</dt>
     <dd>{{imageId}}</dd>
     <dt>{{ i18n "PROP_INSTANCE_AMI_NAME" }}</dt>
@@ -26,7 +54,7 @@
     <dt>{{ i18n "PROP_INSTANCE_AMI_SUPPORT_INSTANCE_TYPE" }}</dt>
     <dd>{{emptyStr instance_type}}</dd>
     </dl>
-    {{/if}}
+    {{/unless}}
 {{else}}
     <dl class="dl-vertical">
     <dt>Snapshot ID</dt>

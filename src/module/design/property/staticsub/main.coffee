@@ -14,16 +14,19 @@ define [ '../base/main',
         initStack : ()->
             @model = model
             @view  = view
+            @model.isApp = false
             null
 
         initApp : () ->
             @model = model
             @view  = view
+            @model.isApp = true
             null
 
         initAppEdit : () ->
             @model = model
             @view  = view
+            @model.isApp = true
             null
     }
     null

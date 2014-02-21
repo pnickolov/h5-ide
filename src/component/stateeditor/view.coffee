@@ -35,6 +35,8 @@ define [ 'event',
             'click #state-toolbar-undo': 'onUndo'
             'click #state-toolbar-redo': 'onRedo'
 
+            'click #state-toolbar-selectAll': 'onSelectAllClick'
+
             'click .state-toolbar': 'onStateToolbarClick'
 
             'click .state-toolbar .checkbox': 'checkboxSelect'
@@ -2692,6 +2694,34 @@ define [ 'event',
 
             return true
 
+        unSelectAll: () ->
+
+            $('#state-editor .state-item').removeClass('selected').find('.checkbox input').prop('checked', false)
+
+            return true
+
+        onSelectAllClick: () ->
+
+            that = this
+
+            checkbox = $(event.currentTarget).find('input')
+
+            if checkbox.prop('checked') is false
+
+                checkbox.prop('checked', true)
+
+                that.selectAll.call this, event
+
+            else
+
+                checkbox.prop('checked', false)
+
+                that.unSelectAll.call this, event
+
+            that.updateToolbar()
+
+            return false
+
         onStateItemAddBtnClick: (event) ->
 
             that = this
@@ -2717,6 +2747,7 @@ define [ 'event',
 
                 $('#state-toolbar-copy-all').show()
 
+
             if MC.data.stateClipboard.length > 0
 
                 $('#state-toolbar-paste').removeClass 'disabled'
@@ -2724,6 +2755,15 @@ define [ 'event',
             else
 
                 $('#state-toolbar-paste').addClass 'disabled'
+
+
+            if $('#state-editor .state-item.selected').length is $('#state-editor .state-item').length
+                
+                $('#state-toolbar-selectAll').find('input').prop('checked', true)
+
+            else
+
+                $('#state-toolbar-selectAll').find('input').prop('checked', false)
 
             return true
     }

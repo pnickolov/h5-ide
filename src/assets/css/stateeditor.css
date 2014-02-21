@@ -426,6 +426,12 @@
 	color: #666;
 }
 
+#state-toolbar-selectAll {
+	position: absolute;
+	right: 5px;
+	top: 12px;
+}
+
 #state-toolbar-copy,
 #state-toolbar-delete {
 	display: none;

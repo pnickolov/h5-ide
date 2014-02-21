@@ -141,7 +141,7 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
             ide_event.trigger ide_event.SWITCH_WAITING_BAR
             #
             @set 'snapshot',      MC.tab[ tab_id ].snapshot
-            @setDesignModel       $.extend true, {}, MC.tab[ tab_id ].design_model
+            @setDesignModel       MC.tab[ tab_id ].design_model
             @setCanvasData        MC.tab[ tab_id ].data
             @setOriginData        MC.tab[ tab_id ].origin_data
             @setCurrentResource   MC.tab[ tab_id ].origin_resource if MC.tab[ tab_id ].origin_resource

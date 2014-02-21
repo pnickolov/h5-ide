@@ -480,6 +480,28 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
             MC.canvas_data.component[ elbUID ].resource.CrossZoneLoadBalancing = String(value)
 
             null
+
+        removeAllCert : (  ) ->
+
+            elbUID = this.get 'uid'
+
+            try
+
+                listenerAry = MC.canvas_data.component[ elbUID ].resource.ListenerDescriptions
+
+                _.each listenerAry, (listenerObj, idx) ->
+                    if listenerObj.Listener.SSLCertificateId
+                        certUID = MC.extractID(listenerObj.Listener.SSLCertificateId)
+                        if certUID
+                            delete MC.canvas_data.component[certUID]
+                            MC.canvas_data.component[ elbUID ].resource.ListenerDescriptions[idx].Listener.SSLCertificateId = ''
+                    null
+
+            catch err
+
+                console.log('remove cert failed')
+
+            null
     }
 
     new ElbModel()

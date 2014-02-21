@@ -144,8 +144,33 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 			info: tipInfo
 			uid: elbUID
 
+	isHaveSSLCert = (elbUID) ->
+
+		elbComp = MC.canvas_data.component[elbUID]
+		listenerAry = elbComp.resource.ListenerDescriptions
+
+		isCorrect = true
+		_.each listenerAry, (listenerItem) ->
+			listenerObj = listenerItem.Listener
+			elbProtocol = listenerObj.Protocol
+			if elbProtocol in ['HTTPS', 'SSL']
+				if not listenerObj.SSLCertificateId
+					isCorrect = false
+			null
+
+		if isCorrect
+			return null
+		else
+			elbName = elbComp.name
+			tipInfo = sprintf lang.ide.TA_MSG_ERROR_ELB_HAVE_NO_SSL_CERT, elbName
+			# return
+			level: constant.TA.ERROR
+			info: tipInfo
+			uid: elbUID
+
 	isHaveIGWForInternetELB : isHaveIGWForInternetELB
 	isHaveInstanceAttached : isHaveInstanceAttached
 	isAttachELBToMultiAZ : isAttachELBToMultiAZ
 	isRedirectPortHttpsToHttp : isRedirectPortHttpsToHttp
 	isHaveRepeatListener : isHaveRepeatListener
+	isHaveSSLCert : isHaveSSLCert

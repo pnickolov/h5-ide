@@ -62,6 +62,8 @@ define [ '../base/view',
 
         render     : () ->
 
+            that = this
+
             @$el.html template @model.attributes
 
             health_detail = @model.get('health_detail')
@@ -73,6 +75,7 @@ define [ '../base/view',
 
             listenerAry = @model.get('listener_detail').listenerAry
 
+            isHaveSSLItem = false
             Canremove = false
             _.each listenerAry, (originObj) ->
                 listener = _.extend {}, originObj.Listener
@@ -80,7 +83,15 @@ define [ '../base/view',
                 itemTpl = MC.template.elbPropertyListenerItem(listener)
                 $('#accordion-group-elb-property-listener').append itemTpl
                 if !Canremove then Canremove = true
+                if listener.Protocol in ['HTTPS', 'SSL']
+                    isHaveSSLItem = true
                 null
+
+            if isHaveSSLItem
+                $('#elb-property-listener-cert-main').show()
+                setTimeout(() ->
+                    that.listenerCertChanged()
+                , 1)
 
             @model.attributes.component.name
 
@@ -286,8 +297,10 @@ define [ '../base/view',
             certPanelElem = $('#elb-property-listener-cert-main')
             if isShowCertPanel
                 certPanelElem.show()
-                me.listenerCertChanged()
-            else certPanelElem.hide()
+                me.listenerCertChanged(null, true)
+            else
+                @model.removeAllCert()
+                certPanelElem.hide()
 
             @model.setListenerAry listenerAry
 
@@ -299,23 +312,41 @@ define [ '../base/view',
             this.listenerItemChanged()
             this.trigger 'REFRESH_SG_LIST'
 
-        listenerCertChanged : ( event ) ->
-            certNameValue = $('#elb-property-cert-name-input').val()
-            certPrikeyValue = $('#elb-property-cert-privatekey-input').val()
-            certPubkeyValue = $('#elb-property-cert-publickey-input').val()
-            certChainValue = $('#elb-property-cert-chain-input').val()
+        listenerCertChanged : ( event, noValid ) ->
 
-            newCertObj = {
-                name: certNameValue,
-                resource: {
-                    PrivateKey: certPrikeyValue,
-                    CertificateBody: certPubkeyValue,
-                    CertificateChain: certChainValue
+            $certName = $('#elb-property-cert-name-input')
+            $certPrikey = $('#elb-property-cert-privatekey-input')
+            $certPubkey = $('#elb-property-cert-publickey-input')
+            $certChain = $('#elb-property-cert-chain-input')
+
+            isCorrect = false
+            if (not noValid) and $certName.is(':visible')
+                valid1 = $certName.parsley('validate')
+                valid2 = $certPrikey.parsley('validate')
+                valid3 = $certPubkey.parsley('validate')
+                if valid1 and valid2 and valid3
+                    isCorrect = true
+            else
+                isCorrect = true
+
+            if isCorrect
+
+                certNameValue = $certName.val()
+                certPrikeyValue = $certPrikey.val()
+                certPubkeyValue = $certPubkey.val()
+                certChainValue = $certChain.val()
+
+                newCertObj = {
+                    name: certNameValue,
+                    resource: {
+                        PrivateKey: certPrikeyValue,
+                        CertificateBody: certPubkeyValue,
+                        CertificateChain: certChainValue
+                    }
                 }
-            }
 
-            # if certNameValue and certPrikeyValue and certPubkeyValue
-            @model.setListenerCert newCertObj
+                # if certNameValue and certPrikeyValue and certPubkeyValue
+                @model.setListenerCert newCertObj
 
             null
 

@@ -28,8 +28,6 @@ define [ 'event',
             'blur .editable-area': 'onBlurInput'
 
             # 'click .state-toolbar .state-id': 'onStateIdClick'
-            # 
-        
             'click #state-toolbar-add': 'addStateItem'
             'click #state-toolbar-copy': 'copyAllState'
             'click #state-toolbar-paste': 'pasteState'

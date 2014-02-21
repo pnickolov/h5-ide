@@ -2257,52 +2257,52 @@ define [ 'event',
             is_editable = status is 'appedit' or 'stack'
 
             # undo [Ctrl + Z]
-            if (event.ctrlKey or event.metaKey) and keyCode is 90 and is_editable
+            if (event.ctrlKey or event.metaKey) and altKey is false and keyCode is 90 and is_editable
                 target.undoManager.undo()
                 return false
 
             # redo [Ctrl +Y]
-            if (event.ctrlKey or event.metaKey) and keyCode is 89 and is_editable
+            if (event.ctrlKey or event.metaKey) and altKey is false and keyCode is 89 and is_editable
                 target.undoManager.redo()
                 return false
 
             # Copy state item [Ctrl + C]
-            if (event.ctrlKey or event.metaKey) and keyCode is 67
+            if (event.ctrlKey or event.metaKey) and altKey is false and keyCode is 67
                 target.copyState.call target, event
                 return false
 
             # Paste state item [Ctrl + V]
-            if (event.ctrlKey or event.metaKey) and keyCode is 86 and is_editable
+            if (event.ctrlKey or event.metaKey) and altKey is false and keyCode is 86 and is_editable
                 target.pasteState.call target, event
                 return false
 
             # Remove state item [Ctrl + delete/backspace]
-            if (event.ctrlKey or event.metaKey) and (keyCode is 46 or keyCode is 8) and is_editable
+            if (event.ctrlKey or event.metaKey) and (keyCode is 46 or keyCode is 8) and altKey is false and is_editable
                 target.onRemoveState null, $('.state-list').find('.selected')
                 return false
 
             # Add state item [Ctrl + +]
-            if (event.ctrlKey or event.metaKey) and keyCode is 187 and is_editable
+            if (event.ctrlKey or event.metaKey) and altKey is false and keyCode is 187 and is_editable
                 target.addStateItem.call(target, event)
                 return false
 
             # Expand state item [Ctrl + down]
-            if (event.ctrlKey or event.metaKey) and keyCode is 38
+            if (event.ctrlKey or event.metaKey) and altKey is false and keyCode is 38
                 target.expandItem.call target, $('.state-list .focused')
                 return false
 
             # Expand state item [Ctrl + up]
-            if (event.ctrlKey or event.metaKey) and keyCode is 40
+            if (event.ctrlKey or event.metaKey) and altKey is false and keyCode is 40
                 target.collapseItem.call target, $('.state-list .focused')
                 return false
 
             # Toggle Document Sidebar [Ctrl + I]
-            if (event.ctrlKey or event.metaKey) and keyCode is 73
+            if (event.ctrlKey or event.metaKey) and altKey is false and keyCode is 73
                 target.onDescToggleClick target, event
                 return false
 
             # Toggle Log Sidebar [Ctrl + L]
-            if (event.ctrlKey or event.metaKey) and keyCode is 76 and status isnt 'stack'
+            if (event.ctrlKey or event.metaKey) and altKey is false and keyCode is 76 and status isnt 'stack'
                 target.onLogToggleClick target, event
                 return false
 

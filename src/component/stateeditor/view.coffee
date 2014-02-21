@@ -2329,15 +2329,9 @@ define [ 'event',
                 return false
 
             # Paste state item [Ctrl + V]
-<<<<<<< HEAD
+
             if metaKey and shiftKey is false and altKey is false and keyCode is 86 and is_editable
                 target.pasteState.call target, event
-=======
-            if (event.ctrlKey or event.metaKey) and keyCode is 86 and is_editable
-                newStateDataAry = target.setNewStateIdForStateAry( MC.data.stateClipboard )
-                insertPos = target.addStateItemByData( newStateDataAry )
-                target.undoManager.register(null, insertPos, 'paste', newStateDataAry)
->>>>>>> add paste/sort/mutil remove redo/undo support
                 return false
 
             # Remove state item [Ctrl + delete/backspace]
@@ -2432,7 +2426,9 @@ define [ 'event',
 
             that = this
 
-            that.addStateItemByData( that.setNewStateIdForStateAry( MC.data.stateClipboard ) )
+            newStateDataAry = that.setNewStateIdForStateAry( MC.data.stateClipboard )
+            insertPos = that.addStateItemByData( newStateDataAry )
+            that.undoManager.register(null, insertPos, 'paste', newStateDataAry)
 
             return true
 

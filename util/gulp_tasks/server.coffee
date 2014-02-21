@@ -10,7 +10,7 @@ module.exports.create = ()->
 
   gutil.log gutil.colors.bgBlue(" Creating File Server... ")
 
-  file = new nstatic.Server("./src", defaultHeader )
+  file = new nstatic.Server("./src", { cache : false, headers : defaultHeader } )
 
   server = http.createServer ( request, response )->
 

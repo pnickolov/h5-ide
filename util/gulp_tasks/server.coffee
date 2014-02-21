@@ -1,38 +1,45 @@
 
 module.exports = {}
+
+defaultHeader = { "Cache-Control" : "no-cache" }
+
 module.exports.create = ()->
-
-  gutil = require("gulp-util")
-  gutil.log gutil.colors.bgBlue(" Creating File Server... ")
-
+  gutil   = require("gulp-util")
   nstatic = require("node-static")
   http    = require("http")
 
-  file = new nstatic.Server("./src", {"Cache-Control": "no-cache"} )
+  gutil.log gutil.colors.bgBlue(" Creating File Server... ")
+
+  file = new nstatic.Server("./src", defaultHeader )
 
   server = http.createServer ( request, response )->
 
     request.addListener 'end', ()->
-
       url = request.url
 
       if url is "/"
-        file.serveFile( "/ide.html", 200, {"Cache-Control": "no-cache"}, request, response )
+        filePath = "/ide.html"
+      else if url[ url.length - 1 ] is "/"
+        response.writeHead 301, { "Location" : url.substring(0, url.length-1) }
+        response.end()
+        return
+      else if url.indexOf( ".", 1 ) is -1
+        filePath = url + ".html"
+
+      errorHandler = ( e )->
+        console.log "[ServerError]", e.message, request.url
+        response.writeHead(404)
+        response.end()
+        null
+
+      if filePath
+        file.serveFile( filePath, 200, defaultHeader, request, response ).addListener("error", errorHandler)
       else
-        if url[ url.length - 1 ] is "/"
-
-          file.serveFile( "/ide.html", 301, { "Location" : url.substring(0,url.length-1) }, request, response )
-
-        else if url.lastIndexOf(".html") isnt -1
-          file.serve( request, response )
-        else if (url.indexOf("/", 1) is -1)
-          file.serveFile( url + ".html", 200, {"Cache-Control": "no-cache"}, request, response )
-        else
-          file.serve( request, response )
+        file.serve( request, response ).addListener("error", errorHandler)
       null
 
     request.resume()
-
+    null
 
   server.listen( "3000", "127.0.0.1" )
   null

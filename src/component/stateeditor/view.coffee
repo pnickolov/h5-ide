@@ -288,7 +288,11 @@ define [ 'event',
                 dragEnd: (event, oldIndex) ->
                     $stateItem = this
                     newIndex = $stateItem.index()
-                    alert(oldIndex + ', ' + newIndex)
+                    stateId = $stateItem.attr('data-id')
+
+                    if oldIndex isnt newIndex
+                        that.undoManager.register(stateId, oldIndex, 'sort', newIndex)
+
                     that.refreshLogItemNum()
                     null
             })
@@ -376,7 +380,7 @@ define [ 'event',
 
             mustShowPara = true
             _.each currentParaMap, (paraObj) ->
-                if not paraObj.visible
+                if paraObj.visible
                     mustShowPara = false
                 null
 
@@ -2123,20 +2127,28 @@ define [ 'event',
 
             that.undoManager = {
 
-                register: (stateId, statePos, method) ->
+                register: (stateId, statePos, method, stateData) ->
 
                     that.commandStack.splice(that.commandIndex + 1, that.commandStack.length - that.commandIndex)
 
                     if method is 'remove'
 
-                        $stateItem = that.getStateItemById(stateId)
-                        stateData = that.getStateItemByData($stateItem)
+                        stateDataAry = []
+                        statePosAry = statePos
+                        _.each stateId, (stateIdValue) ->
+                            $stateItem = that.getStateItemById(stateIdValue)
+                            stateDataValue = that.getStateItemByData($stateItem)
+                            stateDataAry.push(stateDataValue)
+
                         that.commandStack.push({
                             redo: () ->
-                                $stateItem = that.getStateItemById(stateId)
-                                that.onRemoveState(null, $stateItem, true)
+                                _.each stateDataAry, (stateDataValue) ->
+                                    $stateItem = that.getStateItemById(stateDataValue.id)
+                                    that.onRemoveState(null, $stateItem, true)
                             undo: () ->
-                                that.addStateItemByData([stateData], statePos - 1)
+                                idx = 0
+                                _.each stateDataAry, (stateDataValue) ->
+                                    that.addStateItemByData([stateDataValue], statePosAry[idx++] - 1)
                                 null
                         })
 
@@ -2151,6 +2163,41 @@ define [ 'event',
                                 this.redo = () ->
                                     that.addStateItemByData([stateData], statePos - 1)
                                 that.onRemoveState(null, $stateItem, true)
+                        })
+
+                    if method is 'sort'
+
+                        oldIndex = statePos
+                        newIndex = stateData
+
+                        that.commandStack.push({
+                            redo: () ->
+                                $stateItem = that.getStateItemById(stateId)
+                                stateData = that.getStateItemByData($stateItem)
+                                that.onRemoveState(null, $stateItem, true)
+                                that.addStateItemByData([stateData], newIndex - 1)
+                            undo: () ->
+                                $stateItem = that.getStateItemById(stateId)
+                                stateData = that.getStateItemByData($stateItem)
+                                that.onRemoveState(null, $stateItem, true)
+                                that.addStateItemByData([stateData], oldIndex - 1)
+                        })
+
+                    if method is 'paste'
+
+                        insertPos = statePos
+                        stateDataAry = _.map stateData, (data) ->
+                            return _.extend({}, data)
+
+                        that.commandStack.push({
+                            redo: () ->
+                                that.addStateItemByData(stateDataAry, insertPos - 1)
+                            undo: () ->
+                                _.each stateDataAry, (pasteStateData) ->
+                                    pasteStateId = pasteStateData.id
+                                    $stateItem = that.getStateItemById(pasteStateId)
+                                    that.onRemoveState(null, $stateItem, true)
+                                    null
                         })
 
                     that.commandIndex = that.commandStack.length - 1
@@ -2222,19 +2269,25 @@ define [ 'event',
             newStateItems = that.stateListTpl(stateListObj)
             $currentStateItems = that.$stateList.find('.state-item')
 
+            returnInsertPos = null
+
             if _.isNumber(insertPos)
 
                 if insertPos <= -1
                     $newStateItems = $(newStateItems).prependTo(that.$stateList)
+                    returnInsertPos = -1
                 else
                     if $currentStateItems[insertPos]
                         $newStateItems = $(newStateItems).insertAfter($currentStateItems[insertPos])
+                        returnInsertPos = insertPos
                     else
                         $newStateItems = $(newStateItems).appendTo(that.$stateList)
+                        returnInsertPos = that.$stateList.length - 1
 
             else
 
                 $newStateItems = $(newStateItems).appendTo(that.$stateList)
+                returnInsertPos = that.$stateList.length - 1
 
             that.bindStateListEvent($newStateItems)
 
@@ -2245,7 +2298,7 @@ define [ 'event',
                 that.$haveStateContainer.show()
                 that.$noStateContainer.hide()
 
-            null
+            return returnInsertPos
 
         keyEvent: (event) ->
 
@@ -2276,8 +2329,15 @@ define [ 'event',
                 return false
 
             # Paste state item [Ctrl + V]
+<<<<<<< HEAD
             if metaKey and shiftKey is false and altKey is false and keyCode is 86 and is_editable
                 target.pasteState.call target, event
+=======
+            if (event.ctrlKey or event.metaKey) and keyCode is 86 and is_editable
+                newStateDataAry = target.setNewStateIdForStateAry( MC.data.stateClipboard )
+                insertPos = target.addStateItemByData( newStateDataAry )
+                target.undoManager.register(null, insertPos, 'paste', newStateDataAry)
+>>>>>>> add paste/sort/mutil remove redo/undo support
                 return false
 
             # Remove state item [Ctrl + delete/backspace]
@@ -2531,7 +2591,7 @@ define [ 'event',
             if index is 0
                 container_item.parents('.state-item').find('.command-value .ace_text-input').focus()
 
-        onRemoveState: (event, $targetState, noRegisterUndo) ->
+        onRemoveState: (event, $targetStates, noRegisterUndo) ->
 
             that = this
 
@@ -2541,11 +2601,20 @@ define [ 'event',
             # redo/undo
             if not noRegisterUndo
 
-                stateId = $targetState.attr('data-id')
-                statePos = $targetState.index()
-                that.undoManager.register(stateId, statePos, 'remove')
+                stateIdAry = []
+                statePosAry = []
 
-            $targetState.remove()
+                _.each $targetStates, (targetState) ->
+
+                    $targetState = $(targetState)
+                    stateId = $targetState.attr('data-id')
+                    stateIdAry.push(stateId)
+                    statePos = $targetState.index()
+                    statePosAry.push(statePos)
+                
+                that.undoManager.register(stateIdAry, statePosAry, 'remove')
+
+            $targetStates.remove()
 
             $stateItems = that.$stateList.find('.state-item')
             if not $stateItems.length

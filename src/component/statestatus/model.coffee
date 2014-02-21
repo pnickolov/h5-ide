@@ -46,7 +46,7 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], ( cons
 
             for state in stateList
 
-                for status in state.statuses
+                for status in state.status
 
                     # Show failed only
                     #if status.result isnt 'failure'

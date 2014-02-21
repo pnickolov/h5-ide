@@ -133,7 +133,7 @@ define [ 'Design', 'event', 'text!./module/design/template.html', 'constant', 'i
                 if state.app_id isnt Design.instance().get 'id'
                     continue
 
-                for status in state.statuses
+                for status in state.status
                     if status.result is 'success'
                         succeed++
                     else if status.result is 'failed'

@@ -594,7 +594,7 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 						if statusObj.agent_status
 							agentStatus = statusObj.agent_status
 
-						logAry = statusObj.statuses
+						logAry = statusObj.status
 
 						if logAry and _.isArray(logAry)
 							_.each logAry, (logObj) ->

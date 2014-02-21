@@ -2340,10 +2340,12 @@ define [ 'event',
 
         copyState: () ->
 
+            that = this
+
             stack = []
 
             $('.state-list .selected').each ->
-                stack.push(target.getStateItemByData($(this)))
+                stack.push(that.getStateItemByData($(this)))
 
             MC.data.stateClipboard = stack
 
@@ -2351,10 +2353,12 @@ define [ 'event',
 
         copyAllState: () ->
 
+            that = this
+
             stack = []
 
-            $('.state-list .state-list').each ->
-                stack.push(target.getStateItemByData($(this)))
+            $('.state-list .state-item').each ->
+                stack.push(that.getStateItemByData($(this)))
 
             MC.data.stateClipboard = stack
 
@@ -2362,7 +2366,9 @@ define [ 'event',
 
         pasteState: () ->
 
-            target.addStateItemByData( target.setNewStateIdForStateAry( MC.data.stateClipboard ) )
+            that = this
+
+            that.addStateItemByData( that.setNewStateIdForStateAry( MC.data.stateClipboard ) )
 
             return true
 

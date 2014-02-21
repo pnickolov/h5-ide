@@ -134,7 +134,9 @@
   // Public Methods
 
   var first = function( target ) {
-    errortip.call(target)
+    if ( $( target ).is(':hidden') ) return;
+
+    errortip.call( target )
     id = getEid( target )
     firstTimer[ id ] = setTimeout(function() {
       purge({currentTarget: target});

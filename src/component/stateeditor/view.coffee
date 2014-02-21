@@ -30,6 +30,7 @@ define [ 'event',
             # 'click .state-toolbar .state-id': 'onStateIdClick'
             'click #state-toolbar-add': 'addStateItem'
             'click #state-toolbar-copy-all': 'copyAllState'
+            'click #state-toolbar-delete': 'removeState'
             'click #state-toolbar-paste': 'pasteState'
 
             'click .state-toolbar': 'onStateToolbarClick'
@@ -2329,14 +2330,13 @@ define [ 'event',
                 return false
 
             # Paste state item [Ctrl + V]
-
             if metaKey and shiftKey is false and altKey is false and keyCode is 86 and is_editable
                 target.pasteState.call target, event
                 return false
 
             # Remove state item [Ctrl + delete/backspace]
             if metaKey and (keyCode is 46 or keyCode is 8) and shiftKey is false and altKey is false and is_editable
-                target.onRemoveState null, $('.state-list').find('.selected')
+                target.removeState.call target, event
                 return false
 
             # Add state item [Ctrl + +]
@@ -2431,6 +2431,14 @@ define [ 'event',
             that.undoManager.register(null, insertPos, 'paste', newStateDataAry)
 
             that.clearSelectedItem()
+
+            return true
+
+        removeState: () ->
+
+            that = this
+
+            that.onRemoveState null, $('.state-list').find('.selected')
 
             return true
 
@@ -2622,6 +2630,8 @@ define [ 'event',
                 that.$noStateContainer.show()
 
             that.refreshLogItemNum()
+
+            that.updateToolbar()
 
         checkboxSelect: (event) ->
 

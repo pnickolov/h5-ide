@@ -300,10 +300,10 @@
 
 #state-editor .editable-area {
 	/*background-color: #fff;*/
-	border-bottom: 1px solid #ccc;
+	/*border-bottom: 1px solid #ccc;*/
 	width: 100%;
 	outline: 0px solid transparent;
-	padding: 5px;
+	padding: 5px 0;
 	margin-bottom: 6px;
 	margin-right: 5px;
 }
@@ -312,11 +312,11 @@
 #state-editor .editable-area.ace_focus:hover {
 	background-color: rgba(0,0,0,.01);
 	color: #333;
-	border-bottom: 1px solid #69aadc;
+	/*border-bottom: 1px solid #69aadc;*/
 }
 
 #state-editor .editable-area:hover {
-	border-bottom: 1px solid #aaa;
+	/*border-bottom: 1px solid #aaa;*/
 }
 
 #state-editor .editable-area.disabled {
@@ -453,17 +453,20 @@
 	margin-left: 40px;
 	margin-top: -27px;
 	margin-left: 60px;
+	color: rgb(8, 173, 54);
 }
 
 #state-editor .parameter-list {
 	overflow: auto;
-	margin-left: 69px;
+	/*margin-left: 58px;*/
 }
 
 #state-editor .parameter-list .parameter-item {
-	width: 100%;
+	/*width: 100%;*/
 	overflow: auto;
-	margin-top: 4px;
+	padding: 4px 6px 0 58px;
+	background-color: rgba(248, 248, 248, 0.1);
+	border-bottom: 1px solid #eee;
 }
 
 #state-editor .parameter-list .parameter-item.disabled {
@@ -473,25 +476,26 @@
 #state-editor .parameter-list .parameter-name {
 	float: left;
 	padding: 5px;
-	max-width: 100px;
+	/*max-width: 100px;*/
 	/*background-color: #ddd;*/
 	margin-top: 2px;
-	width: 100%;
+	/*width: 100%;*/
+	cursor: default;
 }
 
 #state-editor .parameter-list .parameter-value {
 	float: left;
-	width: 100%;
-	max-width: 309px;
+	/*width: 100%;*/
+	/*max-width: 309px;*/
 	overflow: hidden;
 }
 
 #state-editor .parameter-list .parameter-container {
 	float: left;
 	width: 100%;
-	max-width: 350px;
+	/*max-width: 350px;*/
 	overflow: auto;
-	margin-left: 10px;
+	/*margin-left: 10px;*/
 	margin-top: 4px;
 }
 

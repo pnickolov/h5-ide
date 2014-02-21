@@ -32,6 +32,8 @@ define [ 'event',
             'click #state-toolbar-copy-all': 'copyAllState'
             'click #state-toolbar-delete': 'removeState'
             'click #state-toolbar-paste': 'pasteState'
+            'click #state-toolbar-undo': 'onUndo'
+            'click #state-toolbar-redo': 'onRedo'
 
             'click .state-toolbar': 'onStateToolbarClick'
 
@@ -2366,6 +2368,11 @@ define [ 'event',
                 target.onLogToggleClick target, event
                 return false
 
+            # Toggle Log Sidebar [Ctrl + L]
+            if metaKey and shiftKey is false and altKey is false and keyCode is 65
+                target.selectAll target, event
+                return false
+
             # Tab reverse switch [Shift + Tab]
             if keyCode is 9 and shiftKey
                 target.onSwitchState.call target, true
@@ -2396,6 +2403,22 @@ define [ 'event',
             # Tab switch [Tab]
             if keyCode is 9
                 target.onSwitchState.call target
+                return false
+
+        onUndo: () ->
+
+                that = this
+
+                that.undoManager.undo()
+
+                return false
+
+        onRedo: () ->
+
+                that = this
+
+                that.undoManager.redo()
+
                 return false
 
         copyState: () ->
@@ -2662,6 +2685,12 @@ define [ 'event',
             that.updateToolbar()
 
             return false
+
+        selectAll: () ->
+
+            $('#state-editor .state-item').addClass('selected').find('.checkbox input').prop('checked', true)
+
+            return true
 
         onStateItemAddBtnClick: (event) ->
 

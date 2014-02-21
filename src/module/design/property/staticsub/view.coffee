@@ -40,13 +40,19 @@ define [ '../base/view', 'text!./template/stack.html' ], ( PropertyView, templat
         $("#confirmChangeAmi").hide()
 
       $("#changeAmiDropZone").children().show().filter("p").hide()
-      $("#changeAmiDropZone").find("img").attr("src", "assets/images/ide/ami/" + @model.getAmiPngName( amiId ) + ".png")
+      $("#changeAmiDropZone").find("img").attr("src", "./assets/images/ide/ami/" + @model.getAmiPngName( amiId ) + ".png")
       null
 
     changeAmi : ()->
-      @model.changeAmi( $("#changeAmiPanel").data("amiId") )
+      amiId = $("#changeAmiPanel").data("amiId")
+      @model.changeAmi( amiId )
       @render()
       @setTitle @model.get("name")
+
+      # A hack to update first property ami icon
+      firstPropertyAmi = $(".property-details #property-ami")
+      firstPropertyAmi.find(".property-ami-icon").attr("src", "./assets/images/ide/ami/" + @model.getAmiPngName( amiId ) + ".png")
+      firstPropertyAmi.find(".property-ami-label").html( @model.get("name") )
       null
   }
 

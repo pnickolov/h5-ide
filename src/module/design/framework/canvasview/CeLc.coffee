@@ -66,7 +66,7 @@ define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager" ], ( Can
       # Insert Volume / Eip / Port
       node.append(
         # Ami Icon
-        Canvon.image( MC.IMG_URL + @iconUrl(), 30, 15, 39, 27 ),
+        Canvon.image( MC.IMG_URL + @iconUrl(), 30, 15, 39, 27 ).attr({'class':"ami-image"}),
 
         # Volume Image
         Canvon.image( "" , 31, 44, 29, 24 ).attr({
@@ -125,6 +125,8 @@ define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager" ], ( Can
       # Node Label
       CanvasManager.update node.children(".node-label-name"), m.get("name")
 
+    # Update Ami Image
+    CanvasManager.update node.children(".ami-image"), @iconUrl(), "href"
 
     # Volume Number
     volumeCount = (m.get("volumeList") || []).length

@@ -54,7 +54,7 @@ define [ "./CanvasElement", "constant", "CanvasManager", "Design" ], ( CanvasEle
       # Insert Volume / Eip / Port
       node.append(
         # Ami Icon
-        Canvon.image( MC.IMG_URL + @iconUrl(), 30, 15, 39, 27 ),
+        Canvon.image( MC.IMG_URL + @iconUrl(), 30, 15, 39, 27 ).attr({'class':"ami-image"}),
 
         # Volume Image
         Canvon.image( "", 21, 44, 29, 24 ).attr({
@@ -145,6 +145,9 @@ define [ "./CanvasElement", "constant", "CanvasManager", "Design" ], ( CanvasEle
 
       # Update Instance State in app
       @updateAppState()
+
+    # Update Ami Image
+    CanvasManager.update node.children(".ami-image"), @iconUrl(), "href"
 
 
     # Update Server number

@@ -145,6 +145,7 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
     setStateData : (stateAryData) ->
       @set("state", stateAryData)
 
+    setAmi                : InstanceModel.prototype.setAmi
     getAmi                : InstanceModel.prototype.getAmi
     getDetailedOSFamily   : InstanceModel.prototype.getDetailedOSFamily
     setInstanceType       : InstanceModel.prototype.setInstanceType

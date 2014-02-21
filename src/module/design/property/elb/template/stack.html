@@ -49,19 +49,19 @@
 			</div>
 			<div class="property-control-group clearfix">
 				<label class="left"  >{{ i18n "PROP_ELB_LBL_LISTENER_NAME"}}</label>
-				<input class="input" value="{{server_cert.name}}" type="text" data-required="true" data-ignore="true" id="elb-property-cert-name-input"/>
+				<input class="input" value="{{server_cert.name}}" type="text" data-required="true" data-type="ascii" spellcheck="false" id="elb-property-cert-name-input"/>
 			</div>
 			<div class="property-control-group clearfix">
 				<label class="left"  >{{ i18n "PROP_ELB_LBL_LISTENER_PRIVATE_KEY"}}</label>
-				<textarea class="input elb-property-cert-input tooltip" data-tooltip="PEM Encoded" value="{{server_cert.prikey}}" data-required="true" data-ignore="true" id="elb-property-cert-privatekey-input"/>
+				<textarea class="input elb-property-cert-input tooltip" data-tooltip="PEM Encoded" value="{{server_cert.prikey}}" data-required="true" data-type="ascii" spellcheck="false" id="elb-property-cert-privatekey-input"/>
 			</div>
 			<div class="property-control-group clearfix">
 				<label class="left"  >{{ i18n "PROP_ELB_LBL_LISTENER_PUBLIC_KEY"}}</label>
-				<textarea class="input elb-property-cert-input tooltip" data-tooltip="PEM Encoded" value="{{server_cert.pubkey}}" data-required="true" data-ignore="true" id="elb-property-cert-publickey-input"/>
+				<textarea class="input elb-property-cert-input tooltip" data-tooltip="PEM Encoded" value="{{server_cert.pubkey}}" data-required="true" data-type="ascii" spellcheck="false" id="elb-property-cert-publickey-input"/>
 			</div>
 			<div class="property-control-group clearfix">
 				<label class="left"  >{{ i18n "PROP_ELB_LBL_LISTENER_CERTIFICATE_CHAIN"}}</label>
-				<textarea class="input elb-property-cert-input tooltip" data-tooltip="PEM Encoded" value="{{server_cert.chain}}" id="elb-property-cert-chain-input"/>
+				<textarea class="input elb-property-cert-input tooltip" data-tooltip="PEM Encoded" value="{{server_cert.chain}}" spellcheck="false" id="elb-property-cert-chain-input"/>
 			</div>
 		</div>
 	</div>

@@ -3854,6 +3854,8 @@ MC.canvas.event.siderbarDrag = {
 		if (document.elementFromPoint(event.pageX, event.pageY).id === 'changeAmiDropZone')
 		{
 			$("#changeAmiDropZone").trigger("drop", $(event.data.target).data('option').imageId);
+
+			event.data.shadow.remove();
 		}
 		else
 		{

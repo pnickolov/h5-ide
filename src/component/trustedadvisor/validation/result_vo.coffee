@@ -62,7 +62,7 @@ define [ 'event', 'MC', 'Design', 'underscore' ], ( ide_event, MC, Design ) ->
 				if r
 					set key, r, r.uid
 
-		if result
+		else if result
 			if not _exist k
 				_add res
 			else

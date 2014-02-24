@@ -5136,6 +5136,8 @@ MC.canvas.event.keyEvent = function (event)
 			selected_node.length === 1
 		)
 		{
+			$canvas.trigger('SHOW_PROPERTY_PANEL');
+
 			$('#property-panel .input').first().focus();
 
 			return false;
@@ -5143,9 +5145,8 @@ MC.canvas.event.keyEvent = function (event)
 	}
 };
 
-MC.canvas.analysis = function ( data )
+MC.canvas.analysis = function ()
 {
-	console.info(data);
 	var
 		// component_data = data.component,
 		// layout_data = data.layout,

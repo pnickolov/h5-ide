@@ -49,7 +49,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 		$.cookie 'has_cred',    '', option
 		$.cookie 'is_invitated','', option
 
-		$.cookie 'madeiracloud_ide_session_id', '', option
+		#$.cookie 'madeiracloud_ide_session_id', '', option
 
 	setCred = ( result ) ->
 
@@ -85,34 +85,34 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 			result.is_invitated
 		]
 
-		$.cookie 'madeiracloud_ide_session_id', MC.base64Encode( JSON.stringify madeiracloud_ide_session_id ), option
+		#$.cookie 'madeiracloud_ide_session_id', MC.base64Encode( JSON.stringify madeiracloud_ide_session_id ), option
 		null
 
-	getIDECookie = ->
-
-		result = null
-
-		madeiracloud_ide_session_id = $.cookie 'madeiracloud_ide_session_id'
-		if madeiracloud_ide_session_id
-			try
-				result = JSON.parse ( MC.base64Decode madeiracloud_ide_session_id )
-			catch err
-				result = null
-
-		if result and $.type result == "array" and result.length == 8
-			{
-				usercode    : result[0] ,
-				email       : result[1] ,
-				session_id  : result[2] ,
-				account_id  : result[3] ,
-				mod_repo    : result[4] ,
-				mod_tag     : result[5] ,
-				state       : result[6] ,
-				has_cred    : result[7] ,
-				is_invitated: result[8] ,
-			}
-		else
-			null
+	#getIDECookie = ->
+	#
+	#	result = null
+	#
+	#	madeiracloud_ide_session_id = $.cookie 'madeiracloud_ide_session_id'
+	#	if madeiracloud_ide_session_id
+	#		try
+	#			result = JSON.parse ( MC.base64Decode madeiracloud_ide_session_id )
+	#		catch err
+	#			result = null
+	#
+	#	if result and $.type result == "array" and result.length == 8
+	#		{
+	#			usercode    : result[0] ,
+	#			email       : result[1] ,
+	#			session_id  : result[2] ,
+	#			account_id  : result[3] ,
+	#			mod_repo    : result[4] ,
+	#			mod_tag     : result[5] ,
+	#			state       : result[6] ,
+	#			has_cred    : result[7] ,
+	#			is_invitated: result[8] ,
+	#		}
+	#	else
+	#		null
 
 	checkAllCookie = ->
 
@@ -130,15 +130,13 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 			$.removeCookie cookie_name	, option
 			null
 
-
-	clearInvalidCookie = ( ) ->
-		#for patch
-		option = { domain: 'ide.madeiracloud.com', path: '/' }
-
-		$.each $.cookie(), ( key, cookie_name ) ->
-			$.removeCookie cookie_name	, option
-			null
-
+	#clearInvalidCookie = ( ) ->
+	#	#for patch
+	#	option = { domain: 'ide.madeiracloud.com', path: '/' }
+	#
+	#	$.each $.cookie(), ( key, cookie_name ) ->
+	#		$.removeCookie cookie_name	, option
+	#		null
 
 	getCookieByName = ( cookie_name ) ->
 
@@ -161,10 +159,10 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 	setCookie          : setCookie
 	deleteCookie       : deleteCookie
 	setIDECookie       : setIDECookie
-	getIDECookie       : getIDECookie
+	#getIDECookie      : getIDECookie
 	setCred            : setCred
 	checkAllCookie     : checkAllCookie
 	clearV2Cookie      : clearV2Cookie
-	clearInvalidCookie : clearInvalidCookie
+	#clearInvalidCookie: clearInvalidCookie
 	getCookieByName    : getCookieByName
 	setCookieByName    : setCookieByName

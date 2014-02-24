@@ -76,6 +76,14 @@
       }
       gutil.log(gutil.colors.bgBlue(" Starting livereload server... "));
       lrServer = tinylr();
+      lrServer.server.removeAllListeners('error');
+      lrServer.server.on("error", function(e) {
+        if (e.code !== "EADDRINUSE") {
+          return;
+        }
+        console.error('[LR Error] Cannot start livereload server. You already have a server listening on %s', lrServer.port);
+        return lrServer = null;
+      });
       lrServer.listen(35729, function(err) {
         if (err) {
           gutil.log("[LR Error]", "Cannot start livereload server");
@@ -96,16 +104,12 @@
     throughLiveReload: function() {
       return es.through(function(file) {
         if (lrServer) {
-          if (verbose) {
-            console.log("[LiveReload]", file.replace(process.cwd(), "."));
-          }
           lrServer.changed({
             body: {
-              files: [filePath]
+              files: [file.path]
             }
           });
         }
-        this.emit('data', file);
         return null;
       });
     },
@@ -152,9 +156,7 @@
     langSrcBranch = StreamFuncs.throughLangSrc();
     langSrcBranch.pipe(gulp.dest("."));
     coffeeBranch = gulpif(Helper.shouldLintCoffee, coffeelint(void 0, coffeelintOptions));
-    coffeeCompile = coffeeBranch.pipe(coffee({
-      bare: true
-    }));
+    coffeeCompile = coffeeBranch.pipe(coffee());
     coffeeCompile.pipe(es.through(function(f) {
       console.log("[Compile] " + f.relative);
       return this.emit("data", f);
@@ -167,6 +169,7 @@
   watch = function() {
     var changeHandler, cwd, watchStream, watcher;
 
+    Helper.createLrServer();
     gutil.log(gutil.colors.bgBlue(" Watching file changes... "));
     watcher = chokidar.watch("./src", {
       usePolling: false,
@@ -180,12 +183,21 @@
     changeHandler = function(path) {
       var stats;
 
+      if (!fs.existsSync(path)) {
+        return;
+      }
       stats = fs.statSync(path);
       if (stats.isDirectory()) {
         return;
       }
       if (verbose) {
         console.log("[Change]", path);
+      }
+      if (path.match(/src.assets/)) {
+        watchStream.emit("data", {
+          path: path
+        });
+        return;
       }
       fs.readFile(path, function(err, data) {
         if (!data) {

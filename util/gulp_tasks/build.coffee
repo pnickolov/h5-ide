@@ -54,11 +54,11 @@ Helper =
 
     lrServer = tinylr()
     # Better error output
-    # lrServer.server.removeAllListeners 'error'
-    # lrServer.server.on "error", (e)->
-    #   if e.code isnt "EADDRINUSE" then return
-    #   console.error('[LR Error] Cannot start livereload server. You already have a server listening on %s', lrServer.port)
-    #   lrServer = null
+    lrServer.server.removeAllListeners 'error'
+    lrServer.server.on "error", (e)->
+      if e.code isnt "EADDRINUSE" then return
+      console.error('[LR Error] Cannot start livereload server. You already have a server listening on %s', lrServer.port)
+      lrServer = null
 
     lrServer.listen 35729, ( err )->
       if err
@@ -78,12 +78,9 @@ StreamFuncs =
   throughLiveReload : ()->
     es.through ( file )->
       if lrServer
-        if verbose then console.log "[LiveReload]", file.replace( process.cwd(), "." )
         lrServer.changed {
-          body : { files : [ filePath ] }
+          body : { files : [ file.path ] }
         }
-
-      @emit 'data', file
       null
 
   coffeeErrorPrinter : ( error )->
@@ -126,7 +123,7 @@ setupCompileStream = ( stream )->
   coffeeBranch = gulpif( Helper.shouldLintCoffee, coffeelint( undefined, coffeelintOptions) )
 
   # Compile
-  coffeeCompile = coffeeBranch.pipe( coffee({bare:true}) )
+  coffeeCompile = coffeeBranch.pipe( coffee() )
 
   coffeeCompile
     # Log
@@ -156,7 +153,7 @@ setupCompileStream = ( stream )->
 # Tasks
 watch = ()->
 
-  # Helper.createLrServer()
+  Helper.createLrServer()
 
   # Watch files
   gutil.log gutil.colors.bgBlue(" Watching file changes... ")
@@ -175,11 +172,19 @@ watch = ()->
   setupCompileStream watchStream
 
   changeHandler = ( path )->
+    if not fs.existsSync( path ) then return
+
     stats = fs.statSync( path )
     # If it's a folder, do nothing
     if stats.isDirectory() then return
 
     if verbose then console.log "[Change]", path
+
+    if path.match /src.assets/
+      # No need to read file for assets folder
+      watchStream.emit "data", { path : path }
+      return
+
 
     fs.readFile path, ( err, data )->
       if not data then return

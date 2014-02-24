@@ -2619,7 +2619,7 @@ define [ 'event',
             if container_item.hasClass('command-value')
                 stack = $(container).parents('.state-item').find('.parameter-list .ace_editor')
 
-                if stack[0] isnt null
+                if stack.length > 0
                     stack.eq(0).find('.ace_text-input').focus()
                 else
                     that.onSwitchState.call this, event

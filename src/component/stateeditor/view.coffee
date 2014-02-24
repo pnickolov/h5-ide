@@ -2313,7 +2313,9 @@ define [ 'event',
 
             target = event.data.target
             status = target.currentState
-            is_editable = status is 'appedit' or 'stack'
+            is_editable = status is 'appedit' or status is 'stack'
+            tagName = event.target.tagName.toLowerCase()
+            is_input = tagName is 'input' or tagName is 'textarea'
 
             keyCode = event.which
             metaKey = event.ctrlKey or event.metaKey
@@ -2331,12 +2333,12 @@ define [ 'event',
                 return false
 
             # Copy state item [Ctrl + C]
-            if metaKey and shiftKey is false and altKey is false and keyCode is 67
+            if metaKey and shiftKey is false and altKey is false and keyCode is 67 and is_input is false
                 target.copyState.call target, event
                 return false
 
             # Paste state item [Ctrl + V]
-            if metaKey and shiftKey is false and altKey is false and keyCode is 86 and is_editable
+            if metaKey and shiftKey is false and altKey is false and keyCode is 86 and is_editable and is_input is false
                 target.pasteState.call target, event
                 return false
 

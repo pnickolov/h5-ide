@@ -3859,6 +3859,8 @@ MC.canvas.event.siderbarDrag = {
 		}
 		else
 		{
+			event.data.shadow.show();
+
 			if (!$('#canvas_body').hasClass('canvas_zoomed'))
 			{
 				var target = $(event.data.target),

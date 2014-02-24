@@ -41,11 +41,13 @@ define [ 'event', 'i18n!nls/lang.js', 'constant' ], ( ide_event, lang, constant 
                     MC.common.other.canvasData.initSet 'region'   , region_name
                     MC.common.other.canvasData.initSet 'platform' , current_platform
                     MC.common.other.canvasData.initSet 'version'  , '2014-02-17'
+
+                    cookieData = $.cookie()
                     MC.common.other.canvasData.initSet 'agent' , {
                         'enabled': true,
                         'module': {
-                            'repo': 'https://github.com/MadeiraCloud/salt.git',
-                            'tag': 'develop'
+                            'repo': cookieData.mod_repo,
+                            'tag': cookieData.mod_tag
                         }
                     }
 

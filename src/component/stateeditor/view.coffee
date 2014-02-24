@@ -2385,7 +2385,7 @@ define [ 'event',
                 return false
 
             # Tab reverse switch [Shift + Tab]
-            if keyCode is 9 and shiftKey
+            if keyCode is 9 and shiftKey and metaKey is false
                 target.onSwitchState.call target, true
                 return false
 

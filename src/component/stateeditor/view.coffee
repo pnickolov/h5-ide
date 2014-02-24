@@ -1088,6 +1088,8 @@ define [ 'event',
             statePos = $newStateItem.index()
             that.undoManager.register(newStateId, statePos, 'add')
 
+            that.updateToolbar()
+
             return false
 
         onStateRemoveClick: (event) ->

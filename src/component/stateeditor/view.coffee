@@ -2373,7 +2373,11 @@ define [ 'event',
             # Select all [Ctrl + A]
             if metaKey and shiftKey is false and altKey is false and keyCode is 65
                 target.selectAll target, event
-                target.updateToolbar()
+                return false
+
+            # Unselect all [Ctrl + D]
+            if metaKey and shiftKey is false and altKey is false and keyCode is 68
+                target.unSelectAll target, event
                 return false
 
             # Tab reverse switch [Shift + Tab]
@@ -2695,13 +2699,21 @@ define [ 'event',
 
         selectAll: () ->
 
+            that = this
+
             $('#state-editor .state-item').addClass('selected').find('.checkbox input').prop('checked', true)
+
+            that.updateToolbar()
 
             return true
 
         unSelectAll: () ->
 
+            that = this
+
             $('#state-editor .state-item').removeClass('selected').find('.checkbox input').prop('checked', false)
+
+            that.updateToolbar()
 
             return true
 
@@ -2722,8 +2734,6 @@ define [ 'event',
                 checkbox.prop('checked', false)
 
                 that.unSelectAll.call this, event
-
-            that.updateToolbar()
 
             return false
 

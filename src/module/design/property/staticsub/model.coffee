@@ -46,7 +46,7 @@ define [ '../base/model', 'constant', "../base/main" ], ( PropertyModel, constan
       if oldAmi.osType isnt "windows" and newAmi.osType is "windows"
         return "Changing AMI platform is not supported. To use a #{newAmi.osFamily} AMI, please create a new instance instead."
 
-      if (newAmi.instance_type or "").indexOf( component.get("instanceType") ) is -1
+      if (newAmi.instance_type or newAmi.instanceType or "").indexOf( component.get("instanceType") ) is -1
         return "#{newAmi.name} does not support previously used instance type #{component.get("instanceType")}. Please change another AMI."
 
       true
@@ -62,6 +62,9 @@ define [ '../base/model', 'constant', "../base/main" ], ( PropertyModel, constan
       Design.instance().component( PropertyModule.activeModule().uid ).setAmi( amiId )
       @init( amiId )
       null
+
+    getInstanceName : ()->
+      Design.instance().component( PropertyModule.activeModule().uid ).get("name")
   }
 
   new StaticSubModel()

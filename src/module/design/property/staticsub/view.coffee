@@ -53,6 +53,9 @@ define [ '../base/view', 'text!./template/stack.html' ], ( PropertyView, templat
       firstPropertyAmi = $(".property-details #property-ami")
       firstPropertyAmi.find(".property-ami-icon").attr("src", "./assets/images/ide/ami/" + @model.getAmiPngName( amiId ) + ".png")
       firstPropertyAmi.find(".property-ami-label").html( @model.get("name") )
+
+
+      notification "info", "#{@model.getInstanceName()}'s AMI has changed."
       null
   }
 

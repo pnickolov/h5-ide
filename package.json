@@ -33,7 +33,6 @@
 		, "node-static"     : ""
 		, "tiny-lr"         : ""
 		, "chokidar"        : ""
-		, "walkdir"         : ""
 		, "event-stream"    : ""
 		, "text-table"      : ""
 		, "glob"            : ""

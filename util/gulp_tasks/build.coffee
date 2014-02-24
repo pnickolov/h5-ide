@@ -5,9 +5,10 @@ path   = require("path")
 Buffer = require('buffer').Buffer
 es     = require("event-stream")
 Q      = require("q")
+fs     = require("fs")
 
-walk   = require("walkdir")
-tinylr = require("tiny-lr")
+tinylr   = require("tiny-lr")
+chokidar = require("chokidar")
 
 coffee     = require("gulp-coffee")
 coffeelint = require("gulp-coffeelint")
@@ -158,26 +159,43 @@ watch = ()->
   # Helper.createLrServer()
 
   # Watch files
-  # gutil.log gutil.colors.bgBlue(" Watching file changes... ")
+  gutil.log gutil.colors.bgBlue(" Watching file changes... ")
 
-  # chokidar = require("chokidar")
 
-  # watcher = chokidar.watch "./src", {
-  #   usePolling    : false
-  #   useFsEvents   : true
-  #   ignoreInitial : true
-  #   ignored       : /([\/\\]\.)|src.(test|vender)/
-  # }
+  watcher = chokidar.watch "./src", {
+    usePolling    : false
+    useFsEvents   : true
+    ignoreInitial : true
+    ignored       : /([\/\\]\.)|src.(test|vender)/
+  }
 
-  # changeHandler = ( path )->
-  #   if verbose then console.log "[Change]", path
+  cwd         = process.cwd()
+  watchStream = es.through()
 
-  #   fileTaskDistribute( path )
-  #   null
+  setupCompileStream watchStream
 
-  # watcher.on "add",    changeHandler
-  # watcher.on "change", changeHandler
-  # null
+  changeHandler = ( path )->
+    stats = fs.statSync( path )
+    # If it's a folder, do nothing
+    if stats.isDirectory() then return
+
+    if verbose then console.log "[Change]", path
+
+    fs.readFile path, ( err, data )->
+      if not data then return
+
+      watchStream.emit "data", new gutil.File({
+        cwd      : cwd
+        base     : cwd
+        path     : path
+        contents : data
+      })
+      null
+    null
+
+  watcher.on "add",    changeHandler
+  watcher.on "change", changeHandler
+  null
 
 
 compileDev = ( allCoffee )->

@@ -1193,7 +1193,8 @@ Autocomplete.startCommand = {
         editor.completer.showPopup(editor);
         editor.completer.cancelContextMenu();
     },
-    bindKey: "Ctrl-Space|Ctrl-Shift-Space|Alt-Space"
+    bindKey: "Ctrl-B"
+    // bindKey: "Ctrl-Space|Ctrl-Shift-Space|Alt-Space"
 };
 
 var FilteredList = function(array, filterText, mutateData) {

@@ -461,8 +461,8 @@ define [ 'event',
                     paraValue = valueValue
 
                 viewRenderObj.para_value = paraValue
-
-                paraListViewRenderAry.push(viewRenderObj)
+                if paraValue
+                    paraListViewRenderAry.push(viewRenderObj)
 
                 null
 
@@ -1662,6 +1662,9 @@ define [ 'event',
                                 that.refreshStateView($stateItem)
 
                         else if $editorElem.hasClass('parameter-value')
+
+                            cursorPos = thatEditor.getCursorPosition()
+                            thatEditor.moveCursorTo(cursorPos.row, cursorPos.column + 1)
 
                             $paraItem = $editorElem.parents('.parameter-item')
                             if $paraItem.hasClass('dict')

@@ -406,10 +406,16 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 			resAttrDataAry = that.get('resAttrDataAry')
 			resStateDataAry = that.get('resStateDataAry')
 			if not resAttrDataAry then resAttrDataAry = []
-			refAry = resAttrDataAry.concat(resStateDataAry)
-			attrRefRegexList = _.map refAry, (refObj) ->
+
+			attrRefRegexList = _.map resAttrDataAry, (refObj) ->
 				regStr = refObj.name.replace('{', '\\{').replace('}', '\\}').replace('.', '\\.').replace('[', '\\[').replace(']', '\\]')
 				return '@' + '{' + regStr + '}'
+			stateRefRegexList = _.map resStateDataAry, (refObj) ->
+				regStr = refObj.name.replace('{', '\\{').replace('}', '\\}').replace('.', '\\.').replace('[', '\\[').replace(']', '\\]')
+				return '@' + regStr
+
+			attrRefRegexList = attrRefRegexList.concat(stateRefRegexList)
+
 			resAttrRegexStr = attrRefRegexList.join('|')
 			that.set('resAttrRegexStr', resAttrRegexStr)
 

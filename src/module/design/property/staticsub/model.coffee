@@ -47,7 +47,7 @@ define [ '../base/model', 'constant', "../base/main" ], ( PropertyModel, constan
         return "Changing AMI platform is not supported. To use a #{newAmi.osFamily} AMI, please create a new instance instead."
 
       if (newAmi.instance_type or "").indexOf( component.get("instanceType") ) is -1
-        return "#{ami.name} does not support previously used instance type #{component.get("instanceType")}. Please change another AMI."
+        return "#{newAmi.name} does not support previously used instance type #{component.get("instanceType")}. Please change another AMI."
 
       true
 

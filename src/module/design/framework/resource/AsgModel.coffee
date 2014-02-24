@@ -229,7 +229,7 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
           @updateExpandedAsgAsso( elb, true )
 
       @set "lc", lc
-      @listenTo lc, "change:name", @drawExpanedAsg
+      @listenTo lc, "change:name change:imageId", @drawExpanedAsg
       @listenTo lc, "destroy", @removeChild
 
       for elb in lc.connectionTargets("ElbAmiAsso")

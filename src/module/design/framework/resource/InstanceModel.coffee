@@ -261,6 +261,15 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
 
     setAmi : ( amiId )->
       @set "imageId", amiId
+
+      # Update cached ami
+      ami    = @getAmi()
+      cached = @get("cachedAmi")
+      if ami and cached
+        cached.osType         = ami.osType
+        cached.architecture   = ami.architecture
+        cached.rootDeviceType = ami.rootDeviceType
+
       # Assume the new amiId supports current instancetype
       # Assume the new amiId is the same OS of current one.
 

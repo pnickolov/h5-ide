@@ -86,6 +86,18 @@ module.exports = {
 		}]
 	},
 
+	lib_common: {
+		files: [{
+			expand : true,
+			cwd    : '<%= src %>/lib/common',
+			src    : [ '**' ] ,
+			dest   : '<%= release %>/lib/common',
+			filter : function( filepath ) {
+				return filepath.indexOf( '.coffee' )  == -1 && filepath.indexOf( '.map' )  == -1 && filepath.indexOf( 'min.js' )  == -1 ? true : false;
+			}
+		}]
+	},
+
 	special_lib: {
 		files: [{
 			expand : true,

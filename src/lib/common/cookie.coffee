@@ -11,15 +11,18 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 			option = constant.LOCAL_COOKIE_OPTION
 
 		#set cookies
-		$.cookie 'userid',      result.userid,      option
+		#$.cookie 'userid',      result.userid,      option
+		#$.cookie 'region_name', result.region_name, option
+
 		$.cookie 'usercode',    result.usercode,    option
-		$.cookie 'session_id',  result.session_id,  option
-		$.cookie 'region_name', result.region_name, option
-		$.cookie 'email',       result.email,       option
-		$.cookie 'has_cred',    result.has_cred,    option
 		$.cookie 'username',    MC.base64Decode( result.usercode ), option
-		$.cookie 'account_id',	result.account_id,  option
+		$.cookie 'email',       result.email,       option
+		$.cookie 'session_id',  result.session_id,  option
+		$.cookie 'account_id',  result.account_id,  option
+		$.cookie 'mod_repo',    result.mod_repo,    option
+		$.cookie 'mod_tag',     result.mod_tag,     option
 		$.cookie 'state',       result.state,       option
+		$.cookie 'has_cred',    result.has_cred,    option
 		$.cookie 'is_invitated',result.is_invitated,option
 
 	deleteCookie = ->
@@ -32,16 +35,20 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 			option = constant.LOCAL_COOKIE_OPTION
 
 		#delete cookies
-		$.cookie 'userid',      '', option
+		#$.cookie 'region_name', '', option
+		#$.cookie 'userid',      '', option
+
 		$.cookie 'usercode',    '', option
-		$.cookie 'session_id',  '', option
-		$.cookie 'region_name', '', option
-		$.cookie 'email',       '', option
-		$.cookie 'has_cred',    '', option
 		$.cookie 'username',    '', option
+		$.cookie 'email',       '', option
+		$.cookie 'session_id',  '', option
 		$.cookie 'account_id',	'', option
+		$.cookie 'mod_repo',    '', option
+		$.cookie 'mod_tag',     '', option
 		$.cookie 'state',       '', option
+		$.cookie 'has_cred',    '', option
 		$.cookie 'is_invitated','', option
+
 		$.cookie 'madeiracloud_ide_session_id', '', option
 
 	setCred = ( result ) ->
@@ -67,14 +74,14 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 
 		madeiracloud_ide_session_id = [
-			result.userid,
 			result.usercode,
-			result.session_id,
-			result.region_name,
 			result.email,
+			result.session_id,
+			result.account_id,
+			result.mod_repo,
+			result.mod_tag,
+			result.state,
 			result.has_cred,
-			result.account_id
-			result.state
 			result.is_invitated
 		]
 
@@ -94,14 +101,14 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 		if result and $.type result == "array" and result.length == 8
 			{
-				userid      : result[0] ,
-				usercode    : result[1] ,
+				usercode    : result[0] ,
+				email       : result[1] ,
 				session_id  : result[2] ,
-				region_name : result[3] ,
-				email       : result[4] ,
-				has_cred    : result[5] ,
-				account_id	: result[6] ,
-				state       : result[7] ,
+				account_id  : result[3] ,
+				mod_repo    : result[4] ,
+				mod_tag     : result[5] ,
+				state       : result[6] ,
+				has_cred    : result[7] ,
 				is_invitated: result[8] ,
 			}
 		else
@@ -109,7 +116,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 	checkAllCookie = ->
 
-		if $.cookie('username') and $.cookie('userid') and $.cookie('usercode') and $.cookie('session_id') and $.cookie('region_name') and $.cookie('has_cred') and $.cookie('email') and $.cookie('account_id')
+		if $.cookie('usercode') and $.cookie('username') and $.cookie('session_id') and $.cookie('account_id') and $.cookie('mod_repo') and $.cookie('mod_tag') and $.cookie('state') and $.cookie('has_cred') and $.cookie('is_invitated')
 			true
 		else
 			false

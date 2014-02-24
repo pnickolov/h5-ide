@@ -2360,19 +2360,20 @@ define [ 'event',
                 target.collapseItem.call target, $('.state-list .focused')
                 return false
 
-            # Toggle Document Sidebar [Ctrl + I]
+            # Toggle document Sidebar [Ctrl + I]
             if metaKey and shiftKey is false and altKey is false and keyCode is 73
                 target.onDescToggleClick target, event
                 return false
 
-            # Toggle Log Sidebar [Ctrl + L]
+            # Toggle log sidebar [Ctrl + L]
             if metaKey and shiftKey is false and altKey is false and keyCode is 76 and status isnt 'stack'
                 target.onLogToggleClick target, event
                 return false
 
-            # Toggle Log Sidebar [Ctrl + L]
+            # Select all [Ctrl + A]
             if metaKey and shiftKey is false and altKey is false and keyCode is 65
                 target.selectAll target, event
+                target.updateToolbar()
                 return false
 
             # Tab reverse switch [Shift + Tab]
@@ -2462,6 +2463,10 @@ define [ 'event',
             that.undoManager.register(null, insertPos, 'paste', newStateDataAry)
 
             that.clearSelectedItem()
+
+            that.clearFocusedItem()
+
+            that.updateToolbar()
 
             return true
 

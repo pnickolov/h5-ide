@@ -2780,15 +2780,15 @@ define [ 'event',
 
         updateToolbar: () ->
 
-            length = $('#state-editor .state-item.selected').length
+            selected_length = $('#state-editor .state-item.selected').length
 
-            if length > 0
+            if selected_length > 0
 
                 $('#state-toolbar-copy, #state-toolbar-delete').show()
 
                 $('#state-toolbar-copy-all').hide()
 
-                $('#state-toolbar-copy-count, #state-toolbar-delete-count').text length
+                $('#state-toolbar-copy-count, #state-toolbar-delete-count').text selected_length
 
             else
 
@@ -2806,7 +2806,7 @@ define [ 'event',
                 $('#state-toolbar-paste').addClass 'disabled'
 
 
-            if $('#state-editor .state-item.selected').length is $('#state-editor .state-item').length
+            if selected_length > 0 and selected_length is $('#state-editor .state-item').length
                 
                 $('#state-toolbar-selectAll').find('input').prop('checked', true)
 

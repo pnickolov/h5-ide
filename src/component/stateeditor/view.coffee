@@ -2390,29 +2390,29 @@ define [ 'event',
                 return false
 
             # Switch focused state [Up]
-            if keyCode is 38
+            if metaKey is false and shiftKey is false and keyCode is 38
                 target.switchFocus.call target, true
                 return false
 
             # Switch focused state [Down]
-            if keyCode is 40
+            if metaKey is false and shiftKey is false and keyCode is 40
                 target.switchFocus.call target
                 return false
 
             # Toggle selected [Blankspace]
-            if keyCode is 32 and is_input is false
+            if metaKey is false and shiftKey is false and keyCode is 32 and is_input is false
                 target.toggleSelected.call target
                 return false
 
             # Expand item [Enter]
-            if keyCode is 13
+            if metaKey is false and shiftKey is false and keyCode is 13
                 focused = $('#state-editor .state-item.focused')
 
                 if focused[0] isnt null and focused.hasClass('view') is true
                     target.expandItem.call target, focused
 
             # Tab switch [Tab]
-            if keyCode is 9
+            if metaKey is false and shiftKey is false and keyCode is 9
                 target.onSwitchState.call target
                 return false
 

@@ -2400,7 +2400,7 @@ define [ 'event',
                 return false
 
             # Toggle selected [Blankspace]
-            if keyCode is 32
+            if keyCode is 32 and is_input is false
                 target.toggleSelected.call target
                 return false
 

@@ -35,7 +35,7 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 				moduleData = moduleDataObj.windows if moduleDataObj.windows
 
 			moduleData = _.extend(moduleData, moduleDataObj.common) if moduleDataObj.common
-			moduleData = _.extend(moduleData, moduleDataObj.general) if moduleDataObj.general
+			moduleData = _.extend(moduleData, moduleDataObj.meta) if moduleDataObj.meta
 
 			# generate module autocomplete data
 			cmdAry = []
@@ -394,8 +394,8 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 
 			resAttrDataAry = _.map autoCompList, (autoCompObj) ->
 				return {
-					name: "{#{autoCompObj.name}}"
-					value: "{#{autoCompObj.name}}"
+					name: "#{autoCompObj.name}"
+					value: "#{autoCompObj.name}"
 				}
 			that.set('resAttrDataAry', resAttrDataAry)
 
@@ -409,7 +409,7 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 			refAry = resAttrDataAry.concat(resStateDataAry)
 			attrRefRegexList = _.map refAry, (refObj) ->
 				regStr = refObj.name.replace('{', '\\{').replace('}', '\\}').replace('.', '\\.').replace('[', '\\[').replace(']', '\\]')
-				return '@' + regStr
+				return '@' + '{' + regStr + '}'
 			resAttrRegexStr = attrRefRegexList.join('|')
 			that.set('resAttrRegexStr', resAttrRegexStr)
 

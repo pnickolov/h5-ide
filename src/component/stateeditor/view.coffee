@@ -1607,6 +1607,12 @@ define [ 'event',
                 editor.session.bgTokenizer.setTokenizer(tk)
                 editor.renderer.updateText()
 
+                # move cursor to last
+                editSession = editor.getSession()
+                editRow = editSession.getLength()
+                editColumn = editSession.getLine(editRow - 1).length
+                editor.gotoLine(editRow, editColumn)
+
                 editor.commands.on("afterExec", (e) ->
 
                     thatEditor = e.editor
@@ -1614,19 +1620,29 @@ define [ 'event',
                     hintDataAryMap = thatEditor.hintObj
 
                     if e.command.name is "insertstring"
-                        if /^@$/.test(e.args) and hintDataAryMap['at']
-                            that.setEditorCompleter(thatEditor, hintDataAryMap['at'], 'reference')
-                            thatEditor.execCommand("startAutocomplete")
+                        if /^{$/.test(e.args) and hintDataAryMap['at']
+
+                            editSession = thatEditor.getSession()
+                            cursorPos = thatEditor.getCursorPosition()
+                            editRow = cursorPos.row
+                            editColumn = cursorPos.column
+                            lineStr = editSession.getLine(editRow)
+                            lastChar = lineStr[editColumn - 2]
+                            if lastChar is '@'
+                                thatEditor.insert('}')
+                                thatEditor.moveCursorTo(editRow, editColumn)
+                                that.setEditorCompleter(thatEditor, hintDataAryMap['at'], 'reference')
+                                thatEditor.execCommand("startAutocomplete")
 
                     if e.command.name is "backspace" and hintDataAryMap['focus']
                         that.setEditorCompleter(thatEditor, hintDataAryMap['focus'], 'command')
                         thatEditor.execCommand("startAutocomplete")
 
-                    if e.command.name is "backspace" and hintDataAryMap['at'] and currentValue
-                        currentLineContent = thatEditor.getSession().getLine(thatEditor.getCursorPosition().row)
-                        if currentLineContent.indexOf('@') >= 0
-                            that.setEditorCompleter(thatEditor, hintDataAryMap['at'], 'reference')
-                            thatEditor.execCommand("startAutocomplete")
+                    # if e.command.name is "backspace" and hintDataAryMap['at'] and currentValue
+                    #     currentLineContent = thatEditor.getSession().getLine(thatEditor.getCursorPosition().row)
+                    #     if currentLineContent.indexOf('@') >= 0
+                    #         that.setEditorCompleter(thatEditor, hintDataAryMap['at'], 'reference')
+                    #         thatEditor.execCommand("startAutocomplete")
 
                     if e.command.name is "autocomplete_confirm"
 
@@ -1638,7 +1654,8 @@ define [ 'event',
 
                             if originCMDName isnt value
 
-                                $stateItem.attr('data-command', value)
+                                # $stateItem.attr('data-command', value)
+                                that.setCMDForStateItem($stateItem, value)
                                 that.refreshDescription(value)
                                 $paraListElem = $stateItem.find('.parameter-list')
                                 that.refreshParaList($paraListElem, value)
@@ -1695,7 +1712,7 @@ define [ 'event',
                         top: inputPosY + 25
                     })
 
-                    thatEditor.selectAll()
+                    # thatEditor.selectAll()
 
                     # that.$aceAutocompleteTip.show()
                 )
@@ -2051,7 +2068,8 @@ define [ 'event',
 
                 if originCMDName isnt currentValue
 
-                    $stateItem.attr('data-command', currentValue)
+                    # $stateItem.attr('data-command', currentValue)
+                    that.setCMDForStateItem($stateItem, currentValue)
                     that.refreshDescription(currentValue)
                     $paraListElem = $stateItem.find('.parameter-list')
                     that.refreshParaList($paraListElem, currentValue)
@@ -2060,6 +2078,15 @@ define [ 'event',
             else
 
                 that.setPlainText($currentElem, originCMDName)
+
+        setCMDForStateItem: ($stateItem, cmdValue) ->
+
+            that = this
+            $stateItem.attr('data-command', cmdValue)
+            if cmdValue is '#'
+                $stateItem.addClass('comment')
+            else
+                $stateItem.removeClass('comment')
 
         refreshStateItemStatus: (stateStatusMap) ->
 

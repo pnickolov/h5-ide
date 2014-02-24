@@ -53,6 +53,8 @@ define [ 'event',
 
             'click .state-item-add-btn': 'onStateItemAddBtnClick'
 
+            'click #state-editor': 'onClickBlank'
+
             'OPTION_CHANGE .state-editor-res-select': 'onResSelectChange'
 
             'keyup .parameter-item.optional .parameter-value': 'onOptionalParaItemChange'
@@ -2783,6 +2785,14 @@ define [ 'event',
                 $('#state-toolbar-selectAll').find('input').prop('checked', false)
 
             return true
+
+        onClickBlank: () ->
+
+            that = this
+
+            that.clearFocusedItem()
+
+            return false
     }
 
     return StateEditorView

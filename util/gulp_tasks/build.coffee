@@ -1,9 +1,10 @@
 
-gulp  = require("gulp")
-gutil = require("gulp-util")
-path  = require("path")
-es    = require("event-stream")
-Q     = require("q")
+gulp   = require("gulp")
+gutil  = require("gulp-util")
+path   = require("path")
+Buffer = require('buffer').Buffer
+es     = require("event-stream")
+Q      = require("q")
 
 walk   = require("walkdir")
 tinylr = require("tiny-lr")
@@ -12,6 +13,8 @@ coffee     = require("gulp-coffee")
 coffeelint = require("gulp-coffeelint")
 jshint     = require("gulp-jshint")
 gulpif     = require("gulp-if")
+
+buildLangSrc = require("../../config/lang")
 
 
 # Configs
@@ -64,6 +67,9 @@ Helper =
 
     null
 
+  log  : (e)-> console.log e
+  noop : ()->
+
 
 StreamFuncs =
   lintReporter : require('./reporter')
@@ -83,11 +89,37 @@ StreamFuncs =
     console.log gutil.colors.red.bold("\n[CoffeeError]"), error.message.replace( process.cwd(), "." )
     null
 
+  throughLangSrc : ()->
+    pipeline = es.through ( file )->
+      console.log "[Compiling] lang-souce.coffee"
+      buildLangSrc.run gruntMock, Helper.noop
+      null
+
+    gruntMock =
+      log  :
+        error : Helper.log
+      file :
+        write : ( p1, p2 ) =>
+          cwd = process.cwd()
+          pipeline.emit "data", new gutil.File({
+            cwd      : cwd
+            base     : cwd
+            path     : p1
+            contents : new Buffer( p2 )
+          })
+          null
+
+    pipeline
+
 
 setupCompileStream = ( stream )->
 
   # Branch Used to handle asset files ( image / css / fonts / etc. )
   assetBranch = StreamFuncs.throughLiveReload()
+
+  # Branch Used to handle lang-source.js
+  langSrcBranch = StreamFuncs.throughLangSrc()
+  langSrcBranch.pipe( gulp.dest(".") )
 
   # Branch Used to handle coffee files
   coffeeBranch = gulpif( Helper.shouldLintCoffee, coffeelint( undefined, coffeelintOptions) )
@@ -98,7 +130,7 @@ setupCompileStream = ( stream )->
   coffeeCompile
     # Log
     .pipe( es.through ( f )->
-      console.log "[Compiling] #{f.relative}"
+      console.log "[Compile] #{f.relative}"
       @emit "data", f
     )
     # Jshint and report
@@ -115,7 +147,8 @@ setupCompileStream = ( stream )->
 
 
   # Setup compile branch
-  stream.pipe( gulpif /src.assets/, assetBranch,  true )
+  stream.pipe( gulpif /lang-source\.coffee/, langSrcBranch, true )
+        .pipe( gulpif /src.assets/, assetBranch,  true )
         .pipe( gulpif /\.coffee$/,  coffeeBranch, true )
 
 
@@ -156,7 +189,6 @@ compileDev = ( allCoffee )->
   deferred = Q.defer()
 
   setupCompileStream( gulp.src path, {cwdbase:true} ).on "end", ()->
-    if verbose then console.log "[Dev Compile Finished]"
     deferred.resolve()
 
   deferred.promise

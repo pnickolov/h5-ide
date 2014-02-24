@@ -36,6 +36,8 @@
 		, "walkdir"         : ""
 		, "event-stream"    : ""
 		, "text-table"      : ""
+		, "glob"            : ""
+		, "q"               : ""
 		, "through2"        : ""
 		, "gulp-coffee"     : ""
 		, "gulp-coffeelint" : ""

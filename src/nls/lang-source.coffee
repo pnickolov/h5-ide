@@ -3560,16 +3560,16 @@ module.exports =
 
     # State
     TA_MSG_ERROR_NOT_CONNECT_OUT:
-      en: "%s of instance with states has configured states. To make sure the states work, make sure it is connected to internet directly or via a NAT instance."
+      en: "%s has configured states. To make sure OpsAgent to work, %s must be connected to internet directly or via a NAT instance."
       zh: ""
     TA_MSG_ERROR_NO_CGW:
       en: "You have configured states for instance. To make sure the states work, the VPC must have an internet gateway."
       zh: ""
     TA_MSG_ERROR_NO_OUTBOUND_RULES:
-      en: "%s of instance with states has configured states. To make sure the states work, make sure it has outbound rules on 80 and 443 ports to the outside."
+      en: "%s has configured states. To make sure the states work, make sure it has outbound rules on 80 and 443 ports to the outside."
       zh: ""
     TA_MSG_WARNING_OUTBOUND_NOT_TO_ALL:
-      en: "%s of instance with states has configured states. Suggest to set its outbound rule on 80 and 443 to 0.0.0.0/0. Otherwise, agent may not be able to work properly, install packages or check out source codes lacking route to MadeiraCloud's monitoring systems or required repositories."
+      en: "%s has configured states. Suggest to set its outbound rule on 80 and 443 to 0.0.0.0/0. Otherwise, agent may not be able to work properly, install packages or check out source codes lacking route to MadeiraCloud's monitoring systems or required repositories."
       zh: ""
 
 

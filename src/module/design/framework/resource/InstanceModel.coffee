@@ -474,8 +474,6 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
         for sg in @connectionTargets("SgAsso")
           securitygroups.push( sg.createRef( "GroupName" ) )
           securitygroupsId.push( sg.createRef( "GroupId" ) )
-      else
-
 
 
       component =

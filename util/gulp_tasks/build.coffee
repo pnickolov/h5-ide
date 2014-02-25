@@ -28,8 +28,6 @@ coffeelintOptions =
 compileIgnorePath = /.src.(test|vender|ui)/
 compileCoffeeOnlyRegex = /.src.(service|model)/
 
-verbose = true
-
 lrServer = null
 
 Helper =
@@ -60,7 +58,7 @@ Helper =
       console.error('[LR Error] Cannot start livereload server. You already have a server listening on %s', lrServer.port)
       lrServer = null
 
-    lrServer.listen 35729, ( err )->
+    lrServer.listen GLOBAL.gulpConfig.livereloadServerPort, ( err )->
       if err
         gutil.log "[LR Error]", "Cannot start livereload server"
         lrServer = null
@@ -123,7 +121,7 @@ setupCompileStream = ( stream )->
   coffeeBranch = gulpif( Helper.shouldLintCoffee, coffeelint( undefined, coffeelintOptions) )
 
   # Compile
-  coffeeCompile = coffeeBranch.pipe( coffee() )
+  coffeeCompile = coffeeBranch.pipe( coffee({sourceMap:GLOBAL.gulpConfig.coffeeSourceMap}) )
 
   coffeeCompile
     # Log
@@ -143,15 +141,24 @@ setupCompileStream = ( stream )->
   coffeeCompile.removeAllListeners("error")
   coffeeCompile.on("error", StreamFuncs.coffeeErrorPrinter)
 
-
   # Setup compile branch
-  stream.pipe( gulpif /lang-source\.coffee/, langSrcBranch, true )
-        .pipe( gulpif /src.assets/, assetBranch,  true )
-        .pipe( gulpif /\.coffee$/,  coffeeBranch, true )
+  langeSrcBranchRegex   = /lang-source\.coffee/
+  coffeeBranchRegex     = /\.coffee$/
+
+  if GLOBAL.gulpConfig.reloadJsHtml
+    liveReloadBranchRegex = /(src.assets)|(\.js$)|(\.html$)/
+  else
+    liveReloadBranchRegex = /src.assets/
+
+  stream.pipe( gulpif langeSrcBranchRegex, langSrcBranch, true )
+        .pipe( gulpif liveReloadBranchRegex, assetBranch,  true )
+        .pipe( gulpif coffeeBranchRegex,  coffeeBranch, true )
 
 
 # Tasks
 watch = ()->
+
+  console.log GLOBAL.gulpConfig
 
   Helper.createLrServer()
 
@@ -178,7 +185,7 @@ watch = ()->
     # If it's a folder, do nothing
     if stats.isDirectory() then return
 
-    if verbose then console.log "[Change]", path
+    if GLOBAL.gulpConfig.verbose then console.log "[Change]", path
 
     if path.match /src.assets/
       # No need to read file for assets folder

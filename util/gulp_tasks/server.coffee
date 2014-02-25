@@ -41,5 +41,5 @@ module.exports.create = ()->
     request.resume()
     null
 
-  server.listen( "3000", "127.0.0.1" )
+  server.listen( GLOBAL.gulpConfig.staticFileServerPort, "127.0.0.1" )
   null

@@ -38,8 +38,7 @@
     "through2": "0.4.1",
     "gulp-coffee": "1.4.1",
     "gulp-coffeelint": "0.2.2",
-    "gulp-jshint": "1.5.0",
     "gulp-if": "0.0.5",
-    "jshint": "^2.4.4"
+    "jshint": "2.4.4"
   }
 }

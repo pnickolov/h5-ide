@@ -10,9 +10,7 @@ define [ 'constant', 'MC', 'i18n!nls/lang.js' ], ( constant, MC, lang ) ->
     __getCompTip = ( compType, str1, str2, str100 ) ->
         tip = __componentTipMap[ arguments[ 0 ] ]
 
-        arguments[ 0 ] = tip
-
-        sprintf.apply @, arguments
+        sprintf.apply @, [].concat tip, Array.prototype.slice.call arguments, 1
 
 
     __buildTAErr = ( tip, stateId ) ->

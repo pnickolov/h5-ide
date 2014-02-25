@@ -3562,7 +3562,7 @@ a.sidebar-hider {
 
 .property-wrap .scroll-wrap {
 	position : absolute;
-	top      : 45px;
+	top      : 89px;
 	bottom   : 0;
 	left     : 0;
 	right    : 0;
@@ -7297,4 +7297,26 @@ summary:focus {
 	-moz-transition: all 5s ease-in-out;
 	-o-transition: all 5s ease-in-out;
 	transition: all 5s ease-in-out;*/
+}
+
+/* property switcher */
+.property-wrap .property-switcher {
+	height    : 44px;
+	width     : 100%;
+	background      : #f0f0f0;
+	box-shadow    : 0 2px 5px rgba(0, 0, 0, 0.1);
+	border-bottom : 1px solid #ccc;
+	padding-left: 50px;
+}
+
+.property-switcher .btn-toolbar {
+	width: 100px;
+	padding: 0 4px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+.property-switcher .btn-selected {
+	background-color: #686B6E;
+	color: #FEFEFE;
 }

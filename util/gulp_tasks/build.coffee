@@ -190,7 +190,7 @@ watch = ()->
   watcher = chokidar.watch "./src", {
     usePolling    : false
     useFsEvents   : true
-    ignoreInitial : false
+    ignoreInitial : true
     ignored       : /([\/\\]\.)|src.(test|vender)/
   }
 
@@ -228,11 +228,9 @@ watch = ()->
 
   # Delay the change handler so that we would ignore the first add event
   # and some change event
-  setTimeout ()->
-    gutil.log gutil.colors.bgBlue(" Watching file changes... ")
-    watcher.on "add",    changeHandler
-    watcher.on "change", changeHandler
-  , 250
+  gutil.log gutil.colors.bgBlue(" Watching file changes... ")
+  watcher.on "add",    changeHandler
+  watcher.on "change", changeHandler
   null
 
 

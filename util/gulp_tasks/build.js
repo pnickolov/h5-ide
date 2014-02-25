@@ -209,7 +209,7 @@ watch = function() {
   watcher = chokidar.watch("./src", {
     usePolling: false,
     useFsEvents: true,
-    ignoreInitial: false,
+    ignoreInitial: true,
     ignored: /([\/\\]\.)|src.(test|vender)/
   });
   cwd = process.cwd();
@@ -248,11 +248,9 @@ watch = function() {
     });
     return null;
   };
-  setTimeout(function() {
-    gutil.log(gutil.colors.bgBlue(" Watching file changes... "));
-    watcher.on("add", changeHandler);
-    return watcher.on("change", changeHandler);
-  }, 250);
+  gutil.log(gutil.colors.bgBlue(" Watching file changes... "));
+  watcher.on("add", changeHandler);
+  watcher.on("change", changeHandler);
   return null;
 };
 

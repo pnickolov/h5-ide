@@ -519,7 +519,7 @@
 	stroke: #C6C4C4;
 }
 
-.node-dragging .match-dropable-group .AWS-VPC-VPC .group {
+.node-dragging .match-dropable-group.AWS-VPC-VPC .group {
 	stroke-width: 6;
 }
 
@@ -546,7 +546,7 @@
 	stroke: #F69722;
 }
 
-.node-dragging .match-dropable-group .AWS-EC2-AvailabilityZone .group {
+.node-dragging .match-dropable-group.AWS-EC2-AvailabilityZone .group {
 	/*stroke: #659FFF;*/
 	stroke-width: 4;
 }
@@ -574,7 +574,7 @@
 	stroke: #C6C4C4;
 }
 
-.node-dragging .match-dropable-group .AWS-VPC-Subnet .group {
+.node-dragging .match-dropable-group.AWS-VPC-Subnet .group {
 	/*stroke: #659FFF;*/
 	stroke-width: 4;
 }

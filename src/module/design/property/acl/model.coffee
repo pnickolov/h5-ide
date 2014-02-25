@@ -94,8 +94,9 @@ define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, const
             null
 
         checkRuleNumber : ( rulenumber )->
-            if Number( rulenumber ) > 32767
-                return 'The maximum value is 32767.'
+            rulenumber = Number( rulenumber )
+            if not (0 < rulenumber < 32768)
+                return 'Valid rule number must be between 1 to 32767.'
 
             if @get("isDefault") and rulenumber is "100"
                 return "The DefaultACL's Rule Number 100 has existed."
@@ -104,7 +105,7 @@ define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, const
             rule = _.find Design.instance().component( @get("uid") ).get("rules"), ( r )->
                 r.number is rulenumber
 
-            if rule then return 'Rule #{rulenumber} already exists.'
+            if rule then return "Rule #{rulenumber} already exists."
             return true
     }
 

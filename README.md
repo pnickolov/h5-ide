@@ -1,7 +1,8 @@
 ## MaderiaCloud IDE
 
 ### Getting Started
-* Make sure node.js is installed in system. Then install `gulp` by running :
+* Make sure the newest node.js is installed in system. Recommand version is `v0.10.26`
+* Then install `gulp` by running :
 ```
 npm install -g gulp
 ```

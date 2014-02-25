@@ -61,3 +61,4 @@ src/event/*.js
 #ignore *.map
 *.map
 atwho.js
+gulpconfig.js

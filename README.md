@@ -1,76 +1,37 @@
-## IDE for HTML5 Project configuration guidelines
+## MaderiaCloud IDE
 
-### Feature
-* Automation
-    * Build automation
-    * Validation automation
-    * Test automation
-    * Publish automation
-* Package manager
-    * [Grunt package manager](http://gruntjs.com)
-    * [Javascript libs package manager](http://twitter.github.com/bower/)(for example jquery, requirejs, backbone...)
-* Source manager
-    * [watch](https://github.com/yeoman/grunt-regarde)
-    * [jshint](https://github.com/gruntjs/grunt-contrib-jshint)
-    * [csslint](https://github.com/gruntjs/grunt-contrib-csslint)
-    * [coffee](https://npmjs.org/package/grunt-contrib-coffee)
-    * [coffeelint](https://github.com/vojtajina/grunt-coffeelint)
-* Publish manager
-    * [uglify](http://lisperator.net/uglifyjs)
-    * [cssmin](https://github.com/gruntjs/grunt-contrib-cssmin)
-    * [htmlmin](https://npmjs.org/package/grunt-contrib-htmlmin)
-    * [livereload](https://npmjs.org/package/grunt-contrib-livereload)
-
-### Framework
-* [Backbone.js](http://backbonejs.org)
-* [Underscore.js](http://underscorejs.org)
-* [Require.js](http://requirejs.org)
-* [jQuery](http://jquery.com)
-* [Handlebars.js](http://handlebarsjs.com)
-* [CoffeeScript](http://coffeescript.org)
-
-### Node.js(NPM)
-
-* Install: <http://nodejs.org/download/>
-
-* Validation:
-<pre>
-windows command shell or use sudo (for OSX, *nix, BSD etc)
-node --version
-npm --version
-</pre>
-
-### Grunt & Bower
-
-* Install:
-<pre>
-windows command shell or use sudo (for OSX, *nix, BSD etc)
-npm install grunt-cli bower coffee-script -g
-</pre>
-
-* Validation:
-<pre>
-windows command shell or use sudo (for OSX, *nix, BSD etc)
-grunt --version
-bower --version
-</pre>
-
-### Livereload
-* Installing browser extensions: <http://feedback.livereload.com/knowledgebase/articles/86242-how-do-i-install-and-use-the-browser-extensions->
-
-### Setup H5 Project
-<pre>
-In the H5 Project directory
-windows command shell or use sudo (for OSX, *nix, BSD etc)
+### Getting Started
+* Make sure node.js is installed in system. Then install `gulp` by running :
+```
+npm install -g gulp
+```
+* After `gulp` is installed. Install additional dependencies by running :
+```
 npm install
-grunt init    //Initialize this project
-grunt         //watch and validation this project's source change
-grunt develop //run server on brower( Chrome or Firfox )
-grunt publish //publish and run this's project on brower( Chrome or Firfox )
-</pre>
+```
 
-### Comment
-<pre>
-When change package.json, please run "npm install" in project dir
-When change compnent.json, please run "grunt init" in project dir
-</pre>
+### Gulp Commands
+* `gulp` - Build CoffeeScripts in dev mode, and then runs a static file server and live reload server
+* `gulp watch` - The same as `gulp`, except that it doesn't build CoffScripts at startup
+* `gulp dev` - Build CoffeeScripts in dev mode.
+* `gulp dev_all` - Build CoffeeScripts in dev mode, including `src/service` and `src/model`
+* `gulp release` - Build project for release. The build will be in a different repository. (TODO)
+* `gulp debug`   - The same as `gulp release`, except that source code are not minimized. (TODO)
+* `gulp upgrade` - This is used to upgrade 3rd party module using bower. This command should be used only in rare case. (TODO)
+
+
+### Custom Gulp Config (TODO)
+Copy `gulpconfig-default.js` to `gulpconfig.js`. Then modify `gulpconfig.js`
+
+### LiveReload Support
+* The built-in livereload server will notify a client when anything under `src/assets` changes. It doesn't reload browser if any js/html file is changed.
+* In order to use livereload, one must install the [Chrome LiveReload Plugin](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei).
+* When plugin is installed, an icon will appear in chrome toolbar. Click the icon to enable/disable livereload.
+
+### Known Issue
+The gulp tasks of MaderiaCloud IDE use native OS filesystem to monitor file changes instead of node's fileWatcher. This results in some issues (in OSX) :
+
+* Occasionally happens : `Assersion Failed`
+* When file is changed, the file won't get compiled.
+
+Whenever these issue happens, close the process by hitting `Ctrl+C`, or close the tab. Then wait for several seconds and re-run the command again.

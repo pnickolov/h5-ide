@@ -196,6 +196,8 @@
 }
 
 .state-list {
+	height: 464px;
+	overflow-y: scroll;
 	position: relative;
 	counter-reset: list-counter;
 }
@@ -430,7 +432,7 @@
 
 #state-toolbar-selectAll {
 	position: absolute;
-	right: 5px;
+	right: 20px;
 	top: 12px;
 }
 
@@ -996,8 +998,15 @@
 	background-color: red;
 }
 
-#state-editor-model.se-model-app #state-editor .parameter-item.disabled {
+#state-editor-model.se-model-app #state-editor .parameter-item.disabled,
+#state-editor-model.se-model-app .state-editor-toolbar,
+#state-editor-model.se-model-app .checkbox {
 	display: none;
+}
+
+#state-editor-model.se-model-app .state-list {
+	height: auto;
+	overflow-y: auto;
 }
 
 #state-editor-model.se-model-app #state-editor .parameter-item .text {

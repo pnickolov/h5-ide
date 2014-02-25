@@ -2394,18 +2394,20 @@ define [ 'event',
 
             # Add state item [Ctrl + enter]
             if metaKey and shiftKey is false and altKey is false and keyCode is 13 and is_editable
-                target.addStateItem.call(target, event)
+                target.addStateItem.call target, event
                 return false
 
-            # # Expand state item [Ctrl + down]
-            # if metaKey and shiftKey is false and altKey is false and keyCode is 38
-            #     target.expandItem.call target, $('.state-list .focused')
-            #     return false
+            # Expand state item [Ctrl + down]
+            if metaKey and shiftKey is false and altKey is false and keyCode is 40
+                # target.expandItem.call target, $('.state-list .focused')
+                target.moveState.call target, 'down'
+                return false
 
-            # # CollapseItem state item [Ctrl + up]
-            # if metaKey and shiftKey is false and altKey is false and keyCode is 40
-            #     target.collapseItem.call target, $('.state-list .focused')
-            #     return false
+            # CollapseItem state item [Ctrl + up]
+            if metaKey and shiftKey is false and altKey is false and keyCode is 38
+                # target.collapseItem.call target, $('.state-list .focused')
+                target.moveState.call target, 'up'
+                return false
 
             # CollapseItem state item [Escape]
             if metaKey is false and shiftKey is false and altKey is false and keyCode is 27
@@ -2509,6 +2511,38 @@ define [ 'event',
             that.updateToolbar()
 
             return true
+
+        moveState: (direction) ->
+
+            that = this
+
+            item = $('#state-editor .state-item.focused')
+
+            if direction is 'down'
+
+                next_item = item.next()
+
+                if next_item.length > 0
+
+                    item.insertAfter next_item
+
+                else
+
+                    item.parent().prepend item
+
+            if direction is 'up'
+
+                prev_item = item.prev()
+
+                if prev_item.length > 0
+
+                    item.insertBefore prev_item
+
+                else
+
+                    item.parent().append item
+
+            return false
 
         pasteState: () ->
 

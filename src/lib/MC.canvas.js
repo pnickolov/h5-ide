@@ -4851,8 +4851,8 @@ MC.canvas.event.keyEvent = function (event)
 				canvas_status === 'stack' ||
 				canvas_status === 'appedit'
 			) &&
-			selected_node.length > 0 &&
-			event.target === document.body
+			selected_node.length > 0// &&
+			//event.target === document.body
 		)
 		{
 			MC.canvas.volume.close();

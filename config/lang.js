@@ -1,17 +1,18 @@
 
 
-module.exports.run = function( grunt, callback ) {
+module.exports.run = function( grunt, callback, lang_src ) {
 
     var fs          = require( 'fs' ),
         path        = fs.realpathSync( '.' ),
         source_file = path + '/src/nls/lang-source.coffee',
         zh_file     = path + '/src/nls/zh-cn/lang.js',
         en_file     = path + '/src/nls/en-us/lang.js',
-        lang        = require( source_file ),
+        lang        = lang_src || require( source_file ),
         zh_cn       = {},
         en_us       = {};
 
-    delete require.cache[require.resolve(source_file)];
+    if ( !lang_src )
+        delete require.cache[require.resolve(source_file)];
 
     var hit = function(obj) {
         var hitKey = obj.zh !== undefined && obj.en !== undefined;

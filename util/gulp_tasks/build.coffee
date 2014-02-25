@@ -108,9 +108,10 @@ StreamFuncs =
       null
 
   throughLangSrc : ()->
-    pipeline = es.through ( file )->
+
+    pipeline = coffee().pipe es.through ( file )->
       console.log "[Compile] lang-souce.coffee"
-      buildLangSrc.run gruntMock, Helper.noop
+      buildLangSrc.run gruntMock, Helper.noop, file.contents
       null
 
     gruntMock =

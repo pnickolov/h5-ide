@@ -146,11 +146,11 @@ StreamFuncs = {
     var gruntMock, pipeline,
       _this = this;
 
-    pipeline = es.through(function(file) {
+    pipeline = coffee().pipe(es.through(function(file) {
       console.log("[Compile] lang-souce.coffee");
-      buildLangSrc.run(gruntMock, Helper.noop);
+      buildLangSrc.run(gruntMock, Helper.noop, file.contents);
       return null;
-    });
+    }));
     gruntMock = {
       log: {
         error: Helper.log

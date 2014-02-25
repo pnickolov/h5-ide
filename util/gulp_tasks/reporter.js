@@ -11,7 +11,7 @@ stringLength = function(str) {
   return gutil.colors.stripColor(str).length;
 };
 
-problemSign = process.platform === "win32" ? "" : "✖ ";
+problemSign = process.platform === "win32" ? "x " : "✖ ";
 
 transform = function(el, i) {
   var err;

@@ -5,7 +5,7 @@ es    = require("event-stream")
 
 stringLength = (str) -> gutil.colors.stripColor(str).length
 
-problemSign = if process.platform is "win32" then "" else "✖ "
+problemSign = if process.platform is "win32" then "x " else "✖ "
 
 transform = ( el, i )->
   err = el.error or el

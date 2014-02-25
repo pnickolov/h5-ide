@@ -159,7 +159,7 @@ define [ 'i18n!nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 
 			null
 
-		
+
 
 		return refCompAry
 
@@ -197,7 +197,7 @@ define [ 'i18n!nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 				ipRanges = ruleObj.ipRanges['item'][0]['cidrIp']
 			else
 				sgId = ruleObj.groups.item[0].groupId
-				
+
 				if isAppEdit or currentState is 'app'
 					ipRanges = MC.aws.sg.getSGNameInStackForApp(sgId)
 				else
@@ -350,7 +350,7 @@ define [ 'i18n!nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 			"Groups": []
 			}
 
-		data = Design.instance().serialize()['component']
+		data = Design.instance().serialize().component
 
 		data[uid] = component_data
 

@@ -3,103 +3,103 @@
 define ['i18n!/nls/lang.js'], ( lang ) ->
 
 	AWS_RESOURCE_KEY = {
-		"AWS.EC2.AvailabilityZone"						: "ZoneName"
-		"AWS.EC2.Instance"								: "InstanceId"
-		"AWS.EC2.KeyPair"								: "KeyFingerprint"
-		"AWS.EC2.SecurityGroup"							: "GroupId"
-		"AWS.EC2.EIP"									: "PublicIp"
-		"AWS.EC2.AMI"									: "ImageId"
-		"AWS.EC2.EBS.Volume"							: "VolumeId"
-		"AWS.ELB"										: "LoadBalancerName"
-		"AWS.VPC.VPC"									: "VpcId"
-		"AWS.VPC.Subnet"								: "SubnetId"
-		"AWS.VPC.InternetGateway"						: "InternetGatewayId"
-		"AWS.VPC.RouteTable"							: "RouteTableId"
-		"AWS.VPC.VPNGateway"							: "VpnGatewayId"
-		"AWS.VPC.CustomerGateway"						: "CustomerGatewayId"
-		"AWS.VPC.NetworkInterface"						: "NetworkInterfaceId"
-		"AWS.VPC.DhcpOptions"							: "DhcpOptionsId"
-		"AWS.VPC.VPNConnection"							: "VpnConnectionId"
-		"AWS.VPC.NetworkAcl"							: "NetworkAclId"
-		"AWS.IAM.ServerCertificate"						: ""
-		"AWS.AutoScaling.Group"							: "AutoScalingGroupARN"
-		"AWS.AutoScaling.LaunchConfiguration"			: "LaunchConfigurationARN"
-		"AWS.AutoScaling.NotificationConfiguration"		: ""
-		"AWS.AutoScaling.ScalingPolicy"					: "PolicyARN"
-		"AWS.AutoScaling.ScheduledActions"				: "ScheduledActionARN"
-		"AWS.CloudWatch.CloudWatch"						: "AlarmArn"
-		"AWS.SNS.Subscription"							: ""
-		"AWS.SNS.Topic"									: ""
+		"AWS.EC2.AvailabilityZone"            : "ZoneName"
+		"AWS.EC2.Instance"                : "InstanceId"
+		"AWS.EC2.KeyPair"               : "KeyFingerprint"
+		"AWS.EC2.SecurityGroup"             : "GroupId"
+		"AWS.EC2.EIP"                 : "PublicIp"
+		"AWS.EC2.AMI"                 : "ImageId"
+		"AWS.EC2.EBS.Volume"              : "VolumeId"
+		"AWS.ELB"                   : "LoadBalancerName"
+		"AWS.VPC.VPC"                 : "VpcId"
+		"AWS.VPC.Subnet"                : "SubnetId"
+		"AWS.VPC.InternetGateway"           : "InternetGatewayId"
+		"AWS.VPC.RouteTable"              : "RouteTableId"
+		"AWS.VPC.VPNGateway"              : "VpnGatewayId"
+		"AWS.VPC.CustomerGateway"           : "CustomerGatewayId"
+		"AWS.VPC.NetworkInterface"            : "NetworkInterfaceId"
+		"AWS.VPC.DhcpOptions"             : "DhcpOptionsId"
+		"AWS.VPC.VPNConnection"             : "VpnConnectionId"
+		"AWS.VPC.NetworkAcl"              : "NetworkAclId"
+		"AWS.IAM.ServerCertificate"           : ""
+		"AWS.AutoScaling.Group"             : "AutoScalingGroupARN"
+		"AWS.AutoScaling.LaunchConfiguration"     : "LaunchConfigurationARN"
+		"AWS.AutoScaling.NotificationConfiguration"   : ""
+		"AWS.AutoScaling.ScalingPolicy"         : "PolicyARN"
+		"AWS.AutoScaling.ScheduledActions"        : "ScheduledActionARN"
+		"AWS.CloudWatch.CloudWatch"           : "AlarmArn"
+		"AWS.SNS.Subscription"              : ""
+		"AWS.SNS.Topic"                 : ""
 	}
 
 	#private
 	AWS_RESOURCE_TYPE = {
-		AWS_EC2_AvailabilityZone  					: "AWS.EC2.AvailabilityZone"
-		AWS_EC2_Instance          					: "AWS.EC2.Instance"
-		AWS_EC2_KeyPair           					: "AWS.EC2.KeyPair"
-		AWS_EC2_SecurityGroup     					: "AWS.EC2.SecurityGroup"
-		AWS_EC2_EIP               					: "AWS.EC2.EIP"
-		AWS_EC2_AMI               					: "AWS.EC2.AMI"
-		AWS_EBS_Volume            					: "AWS.EC2.EBS.Volume"
-		AWS_EBS_Snapshot          					: "AWS.EC2.EBS.Snapshot"
-		AWS_ELB                   					: "AWS.ELB"
-		AWS_VPC_VPC               					: "AWS.VPC.VPC"
-		AWS_VPC_Subnet            					: "AWS.VPC.Subnet"
-		AWS_VPC_InternetGateway   					: "AWS.VPC.InternetGateway"
-		AWS_VPC_RouteTable        					: "AWS.VPC.RouteTable"
-		AWS_VPC_VPNGateway        					: "AWS.VPC.VPNGateway"
-		AWS_VPC_CustomerGateway   					: "AWS.VPC.CustomerGateway"
-		AWS_VPC_NetworkInterface  					: "AWS.VPC.NetworkInterface"
-		AWS_VPC_DhcpOptions       					: "AWS.VPC.DhcpOptions"
-		AWS_VPC_VPNConnection     					: "AWS.VPC.VPNConnection"
-		AWS_VPC_NetworkAcl        					: "AWS.VPC.NetworkAcl"
-		AWS_IAM_ServerCertificate 					: "AWS.IAM.ServerCertificate"
-		AWS_AutoScaling_Group                      	: 'AWS.AutoScaling.Group'
+		AWS_EC2_AvailabilityZone            : "AWS.EC2.AvailabilityZone"
+		AWS_EC2_Instance                    : "AWS.EC2.Instance"
+		AWS_EC2_KeyPair                     : "AWS.EC2.KeyPair"
+		AWS_EC2_SecurityGroup               : "AWS.EC2.SecurityGroup"
+		AWS_EC2_EIP                         : "AWS.EC2.EIP"
+		AWS_EC2_AMI                         : "AWS.EC2.AMI"
+		AWS_EBS_Volume                      : "AWS.EC2.EBS.Volume"
+		AWS_EBS_Snapshot                    : "AWS.EC2.EBS.Snapshot"
+		AWS_ELB                             : "AWS.ELB"
+		AWS_VPC_VPC                         : "AWS.VPC.VPC"
+		AWS_VPC_Subnet                      : "AWS.VPC.Subnet"
+		AWS_VPC_InternetGateway             : "AWS.VPC.InternetGateway"
+		AWS_VPC_RouteTable                  : "AWS.VPC.RouteTable"
+		AWS_VPC_VPNGateway                  : "AWS.VPC.VPNGateway"
+		AWS_VPC_CustomerGateway             : "AWS.VPC.CustomerGateway"
+		AWS_VPC_NetworkInterface            : "AWS.VPC.NetworkInterface"
+		AWS_VPC_DhcpOptions                 : "AWS.VPC.DhcpOptions"
+		AWS_VPC_VPNConnection               : "AWS.VPC.VPNConnection"
+		AWS_VPC_NetworkAcl                  : "AWS.VPC.NetworkAcl"
+		AWS_IAM_ServerCertificate           : "AWS.IAM.ServerCertificate"
+		AWS_AutoScaling_Group                       : 'AWS.AutoScaling.Group'
 		AWS_AutoScaling_LaunchConfiguration         : 'AWS.AutoScaling.LaunchConfiguration'
 		AWS_AutoScaling_NotificationConfiguration   : 'AWS.AutoScaling.NotificationConfiguration'
 		AWS_AutoScaling_ScalingPolicy               : 'AWS.AutoScaling.ScalingPolicy'
 		AWS_AutoScaling_ScheduledActions            : 'AWS.AutoScaling.ScheduledActions'
-		AWS_CloudWatch_CloudWatch                  	: 'AWS.CloudWatch.CloudWatch'
+		AWS_CloudWatch_CloudWatch                   : 'AWS.CloudWatch.CloudWatch'
 		AWS_SNS_Subscription                        : 'AWS.SNS.Subscription'
-		AWS_SNS_Topic                              	: 'AWS.SNS.Topic'
+		AWS_SNS_Topic                               : 'AWS.SNS.Topic'
 	}
 
 	# AWS_RESOURCE_TYPE = {}
 
 	# AWS_RESOURCE_TYPES = [
-	# 	"AWS.EC2.AvailabilityZone"
-	# 	"AWS.EC2.Instance"
-	# 	"AWS.EC2.KeyPair"
-	# 	"AWS.EC2.SecurityGroup"
-	# 	"AWS.EC2.EIP"
-	# 	"AWS.EC2.AMI"
-	# 	"AWS.EC2.EBS.Volume"
-	# 	"AWS.EC2.EBS.Snapshot"
-	# 	"AWS.ELB"
-	# 	"AWS.VPC.VPC"
-	# 	"AWS.VPC.Subnet"
-	# 	"AWS.VPC.InternetGateway"
-	# 	"AWS.VPC.RouteTable"
-	# 	"AWS.VPC.VPNGateway"
-	# 	"AWS.VPC.CustomerGateway"
-	# 	"AWS.VPC.NetworkInterface"
-	# 	"AWS.VPC.DhcpOptions"
-	# 	"AWS.VPC.VPNConnection"
-	# 	"AWS.VPC.NetworkAcl"
-	# 	"AWS.IAM.ServerCertificate"
-	# 	#
-	# 	"AWS.AutoScaling.Group"
-	# 	"AWS.AutoScaling.LaunchConfiguration"
-	# 	"AWS.AutoScaling.NotificationConfiguration"
-	# 	"AWS.AutoScaling.ScalingPolicy"
-	# 	"AWS.AutoScaling.ScheduledActions"
-	# 	"AWS.CloudWatch.CloudWatch"
-	# 	"AWS.SNS.Subscription"
-	# 	"AWS.SNS.Topic"
+	#   "AWS.EC2.AvailabilityZone"
+	#   "AWS.EC2.Instance"
+	#   "AWS.EC2.KeyPair"
+	#   "AWS.EC2.SecurityGroup"
+	#   "AWS.EC2.EIP"
+	#   "AWS.EC2.AMI"
+	#   "AWS.EC2.EBS.Volume"
+	#   "AWS.EC2.EBS.Snapshot"
+	#   "AWS.ELB"
+	#   "AWS.VPC.VPC"
+	#   "AWS.VPC.Subnet"
+	#   "AWS.VPC.InternetGateway"
+	#   "AWS.VPC.RouteTable"
+	#   "AWS.VPC.VPNGateway"
+	#   "AWS.VPC.CustomerGateway"
+	#   "AWS.VPC.NetworkInterface"
+	#   "AWS.VPC.DhcpOptions"
+	#   "AWS.VPC.VPNConnection"
+	#   "AWS.VPC.NetworkAcl"
+	#   "AWS.IAM.ServerCertificate"
+	#   #
+	#   "AWS.AutoScaling.Group"
+	#   "AWS.AutoScaling.LaunchConfiguration"
+	#   "AWS.AutoScaling.NotificationConfiguration"
+	#   "AWS.AutoScaling.ScalingPolicy"
+	#   "AWS.AutoScaling.ScheduledActions"
+	#   "AWS.CloudWatch.CloudWatch"
+	#   "AWS.SNS.Subscription"
+	#   "AWS.SNS.Topic"
 	# ]
 
 	# for value in AWS_RESOURCE_TYPES
-	# 	AWS_RESOURCE_TYPE[ value.replace('.', '_') ] = value
+	#   AWS_RESOURCE_TYPE[ value.replace('.', '_') ] = value
 
 	#private
 	AWS_RESOURCE_SHORT_TYPE = {
@@ -270,51 +270,49 @@ define ['i18n!/nls/lang.js'], ( lang ) ->
 		E_BLOCKED_USER : 21
 	}
 
-	###
 	#private
-	SERVICE_ERROR_MESSAGE = {}
-	SERVICE_ERROR_MESSAGE[ 1 ]  = 'Service Message' + 1
-	SERVICE_ERROR_MESSAGE[ 2 ]  = 'Service Message' + 2
-	SERVICE_ERROR_MESSAGE[ 3 ]  = 'Service Message' + 3
-	SERVICE_ERROR_MESSAGE[ 4 ]  = 'Service Message' + 4
-	SERVICE_ERROR_MESSAGE[ 5 ]  = 'Service Message' + 5
-	SERVICE_ERROR_MESSAGE[ 6 ]  = 'Service Message' + 6
-	SERVICE_ERROR_MESSAGE[ 7 ]  = 'Service Message' + 7
-	SERVICE_ERROR_MESSAGE[ 8 ]  = 'Service Message' + 8
-	SERVICE_ERROR_MESSAGE[ 9 ]  = 'Service Message' + 9
-	SERVICE_ERROR_MESSAGE[ 10 ]  = 'Service Message' + 10
-	SERVICE_ERROR_MESSAGE[ 11 ]  = 'Service Message' + 11
-	SERVICE_ERROR_MESSAGE[ 12 ]  = 'Service Message' + 12
-	SERVICE_ERROR_MESSAGE[ 13 ]  = 'Service Message' + 13
-	SERVICE_ERROR_MESSAGE[ 14 ]  = 'Service Message' + 14
-	SERVICE_ERROR_MESSAGE[ 15 ]  = 'Service Message' + 15
-	SERVICE_ERROR_MESSAGE[ 16 ]  = 'Service Message' + 16
-	SERVICE_ERROR_MESSAGE[ 17 ]  = 'Service Message' + 17
-	SERVICE_ERROR_MESSAGE[ 18 ]  = 'Service Message' + 18
-	SERVICE_ERROR_MESSAGE[ 19 ]  = 'Service Message' + 19
-	SERVICE_ERROR_MESSAGE[ 20 ]  = 'Service Message' + 20
-	SERVICE_ERROR_MESSAGE[ 21 ]  = 'Service Message' + 21
-	###
+	# SERVICE_ERROR_MESSAGE = {}
+	# SERVICE_ERROR_MESSAGE[ 1 ]  = 'Service Message' + 1
+	# SERVICE_ERROR_MESSAGE[ 2 ]  = 'Service Message' + 2
+	# SERVICE_ERROR_MESSAGE[ 3 ]  = 'Service Message' + 3
+	# SERVICE_ERROR_MESSAGE[ 4 ]  = 'Service Message' + 4
+	# SERVICE_ERROR_MESSAGE[ 5 ]  = 'Service Message' + 5
+	# SERVICE_ERROR_MESSAGE[ 6 ]  = 'Service Message' + 6
+	# SERVICE_ERROR_MESSAGE[ 7 ]  = 'Service Message' + 7
+	# SERVICE_ERROR_MESSAGE[ 8 ]  = 'Service Message' + 8
+	# SERVICE_ERROR_MESSAGE[ 9 ]  = 'Service Message' + 9
+	# SERVICE_ERROR_MESSAGE[ 10 ]  = 'Service Message' + 10
+	# SERVICE_ERROR_MESSAGE[ 11 ]  = 'Service Message' + 11
+	# SERVICE_ERROR_MESSAGE[ 12 ]  = 'Service Message' + 12
+	# SERVICE_ERROR_MESSAGE[ 13 ]  = 'Service Message' + 13
+	# SERVICE_ERROR_MESSAGE[ 14 ]  = 'Service Message' + 14
+	# SERVICE_ERROR_MESSAGE[ 15 ]  = 'Service Message' + 15
+	# SERVICE_ERROR_MESSAGE[ 16 ]  = 'Service Message' + 16
+	# SERVICE_ERROR_MESSAGE[ 17 ]  = 'Service Message' + 17
+	# SERVICE_ERROR_MESSAGE[ 18 ]  = 'Service Message' + 18
+	# SERVICE_ERROR_MESSAGE[ 19 ]  = 'Service Message' + 19
+	# SERVICE_ERROR_MESSAGE[ 20 ]  = 'Service Message' + 20
+	# SERVICE_ERROR_MESSAGE[ 21 ]  = 'Service Message' + 21
 
 	#private
 	APP_STATE = {
-		APP_STATE_RUNNING		: "Running"
-		APP_STATE_STOPPED		: "Stopped"
-		APP_STATE_REBOOTING		: "Rebooting"
-		APP_STATE_CLONING		: "Cloning"
-		APP_STATE_SAVETOSTACK	: "Saving"
-		APP_STATE_TERMINATING	: "Terminating"
-		APP_STATE_UPDATING		: "Updating"
-		APP_STATE_SHUTTING_DOWN	: "Shutting down"
-		APP_STATE_STOPPING		: "Stopping"
-		APP_STATE_STARTING		: "Starting"
-		APP_STATE_TERMINATED	: "Terminated"
-		APP_STATE_INITIALIZING	: "Initializing"
+		APP_STATE_RUNNING   : "Running"
+		APP_STATE_STOPPED   : "Stopped"
+		APP_STATE_REBOOTING   : "Rebooting"
+		APP_STATE_CLONING   : "Cloning"
+		APP_STATE_SAVETOSTACK : "Saving"
+		APP_STATE_TERMINATING : "Terminating"
+		APP_STATE_UPDATING    : "Updating"
+		APP_STATE_SHUTTING_DOWN : "Shutting down"
+		APP_STATE_STOPPING    : "Stopping"
+		APP_STATE_STARTING    : "Starting"
+		APP_STATE_TERMINATED  : "Terminated"
+		APP_STATE_INITIALIZING  : "Initializing"
 	}
 
 	#private
 	SERVICE_REGION = []
-	SERVICE_REGION[ 'us-east-1' ] = ['cloudfront', 'cloudsearch-us-east-1', 'cloudwatch-us-east-1',	 'dynamodb-us-east-1',
+	SERVICE_REGION[ 'us-east-1' ] = ['cloudfront', 'cloudsearch-us-east-1', 'cloudwatch-us-east-1',  'dynamodb-us-east-1',
 		'ec2-us-east-1', 'elb-us-east-1', 'emr-us-east-1', 'elastictranscoder-us-east-1', 'elasticache-us-east-1', 'fps',
 		'glacier-us-east-1', 'mturk-requestor', 'mturk-worker', 'redshift-us-east-1', 'rds-us-east-1', 'route53',
 		'ses-us-east-1', 'sns-us-east-1', 'sqs-us-east-1', 's3-us-standard', 'swf-us-east-1', 'simpledb-us-east-1',
@@ -365,11 +363,11 @@ define ['i18n!/nls/lang.js'], ( lang ) ->
 
 	#private
 	OPS_STATE = {
-		OPS_STATE_PENDING		: "Pending"
-		OPS_STATE_INPROCESS		: "InProcess"
-		OPS_STATE_DONE			: "Done"
-		OPS_STATE_ROLLBACK		: "Rollback"
-		OPS_STATE_FAILED		: "Failed"
+		OPS_STATE_PENDING   : "Pending"
+		OPS_STATE_INPROCESS   : "InProcess"
+		OPS_STATE_DONE      : "Done"
+		OPS_STATE_ROLLBACK    : "Rollback"
+		OPS_STATE_FAILED    : "Failed"
 	}
 
 	AWS_RESOURCE = {
@@ -395,7 +393,7 @@ define ['i18n!/nls/lang.js'], ( lang ) ->
 		VPN                 :   'AWS.VPC.VPNConnection'
 		VGW                 :   'AWS.VPC.VPNGateway'
 
-		ASG               	:   'AWS.AutoScaling.Group'
+		ASG                 :   'AWS.AutoScaling.Group'
 		ASL_ACT             :   'AWS.AutoScaling.Activities' #none component
 		ASL_INS             :   'AWS.AutoScaling.Instance' #none component
 		ASL_LC              :   'AWS.AutoScaling.LaunchConfiguration'
@@ -403,14 +401,14 @@ define ['i18n!/nls/lang.js'], ( lang ) ->
 		ASL_SP              :   'AWS.AutoScaling.ScalingPolicy'
 		ASL_SA              :   'AWS.AutoScaling.ScheduledActions'
 		CLW                 :   'AWS.CloudWatch.CloudWatch'
-		SNS_SUB 		    :   'AWS.SNS.Subscription'
+		SNS_SUB         :   'AWS.SNS.Subscription'
 		SNS_TOPIC           :   'AWS.SNS.Topic'
 	}
 
 
 	#private, recent items threshold
-	RECENT_NUM		= 5
-	RECENT_DAYS		= 30
+	RECENT_NUM    = 5
+	RECENT_DAYS   = 30
 
 	RDP_TMPL = "\n
 screen mode id:i:2\n
@@ -472,7 +470,7 @@ use redirection server name:i:0\n"
 		WARNING: 'WARNING',
 		NOTICE: 'NOTICE'
 
-	LINUX 	= ['centos', 'redhat',  'rhel', 'ubuntu', 'debian', 'fedora', 'gentoo', 'opensuse', 'suse', 'sles', 'amazon', 'amaz', 'linux-other']
+	LINUX   = ['centos', 'redhat',  'rhel', 'ubuntu', 'debian', 'fedora', 'gentoo', 'opensuse', 'suse', 'sles', 'amazon', 'amaz', 'linux-other']
 	WINDOWS = ['windows', 'win']
 
 	OS_TYPE_MAPPING = {
@@ -489,30 +487,30 @@ use redirection server name:i:0\n"
 
 	#public
 	AWS_RESOURCE_KEY        : AWS_RESOURCE_KEY
-	INSTANCE_TYPE			: INSTANCE_TYPE
-	INSTANCE_STATES			: INSTANCE_STATES
-	AWS_RESOURCE_TYPE		: AWS_RESOURCE_TYPE
+	INSTANCE_TYPE     : INSTANCE_TYPE
+	INSTANCE_STATES     : INSTANCE_STATES
+	AWS_RESOURCE_TYPE   : AWS_RESOURCE_TYPE
 	AWS_RESOURCE_SHORT_TYPE : AWS_RESOURCE_SHORT_TYPE
-	AWS_PORT_NAME			: AWS_PORT_NAME
-	OS_TYPE					: OS_TYPE
-	REGION_KEYS				: REGION_KEYS
-	REGION_SHORT_LABEL		: REGION_SHORT_LABEL
-	REGION_LABEL			: REGION_LABEL
-	RETURN_CODE				: RETURN_CODE
-	LINUX 					: LINUX
-	WINDOWS 				: WINDOWS
+	AWS_PORT_NAME     : AWS_PORT_NAME
+	OS_TYPE         : OS_TYPE
+	REGION_KEYS       : REGION_KEYS
+	REGION_SHORT_LABEL    : REGION_SHORT_LABEL
+	REGION_LABEL      : REGION_LABEL
+	RETURN_CODE       : RETURN_CODE
+	LINUX           : LINUX
+	WINDOWS         : WINDOWS
 	#SERVICE_ERROR_MESSAGE   : SERVICE_ERROR_MESSAGE
-	MESSAGE_E				: MESSAGE_E
-	APP_STATE				: APP_STATE
-	OPS_STATE				: OPS_STATE
-	RECENT_NUM				: RECENT_NUM
-	RECENT_DAYS				: RECENT_DAYS
-	AWS_RESOURCE			: AWS_RESOURCE
-	SERVICE_REGION			: SERVICE_REGION
+	MESSAGE_E       : MESSAGE_E
+	APP_STATE       : APP_STATE
+	OPS_STATE       : OPS_STATE
+	RECENT_NUM        : RECENT_NUM
+	RECENT_DAYS       : RECENT_DAYS
+	AWS_RESOURCE      : AWS_RESOURCE
+	SERVICE_REGION      : SERVICE_REGION
 	RDP_TMPL                : RDP_TMPL
 	COOKIE_OPTION           : COOKIE_OPTION
 	LOCAL_COOKIE_OPTION     : LOCAL_COOKIE_OPTION
 	DEMO_STACK_NAME_LIST    : DEMO_STACK_NAME_LIST
 	TA                      : TA
-	OS_TYPE_MAPPING			: OS_TYPE_MAPPING
-	REGEXP					: REGEXP
+	OS_TYPE_MAPPING     : OS_TYPE_MAPPING
+	REGEXP          : REGEXP

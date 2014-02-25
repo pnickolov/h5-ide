@@ -315,7 +315,7 @@ define [ 'i18n!nls/lang.js',
                 null
 
             #####listen FAVORITE_ADD_RETURN
-            me.on 'FAVORITE_ADD_RETURN', ( result ) =>
+            me.on 'FAVORITE_ADD_RETURN', ( result ) ->
 
                 region_name = result.param[3]
                 console.log 'FAVORITE_ADD_RETURN: ' + region_name
@@ -329,7 +329,7 @@ define [ 'i18n!nls/lang.js',
                 null
 
             #listen FAVORITE_REMOVE_RETURN
-            me.on 'FAVORITE_REMOVE_RETURN', ( result ) =>
+            me.on 'FAVORITE_REMOVE_RETURN', ( result ) ->
 
                 region_name = result.param[3]
                 console.log 'FAVORITE_REMOVE_RETURN: ' + region_name

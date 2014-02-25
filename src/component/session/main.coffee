@@ -52,7 +52,8 @@ define [ 'jquery', 'event',
                 #
 
                 window.location.href = "/ide.html" if !MC.data.is_loading_complete
-                
+                return
+
 
             model.on 'RE_LOGIN_FAILED',             () -> reconnect_view.invalid()
 
@@ -67,6 +68,7 @@ define [ 'jquery', 'event',
         model = null
         #ide_event.offListen ide_event.<EVENT_TYPE>
         #ide_event.offListen ide_event.<EVENT_TYPE>, <function name>
+        return
 
     #public
     loadModule   : loadModule

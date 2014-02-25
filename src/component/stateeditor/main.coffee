@@ -49,6 +49,7 @@ define [ 'event', 'ace', 'ace_ext_language_tools',  'UI.modal', 'jquery_sort', '
         model = null
         #ide_event.offListen ide_event.<EVENT_TYPE>
         #ide_event.offListen ide_event.<EVENT_TYPE>, <function name>
+        return
 
     #public
     loadModule   : loadModule

@@ -138,7 +138,7 @@ define [ 'MC', 'constant', 'Design' ], ( MC, constant, Design ) ->
 	getResourceById = ( id ) ->
 
 		resource_list = MC.data.resource_list[ Design.instance().region() ]
-		comp = Design.instance().serialize()['component'][id]
+		comp = Design.instance().serialize().component[id]
 
 		res_key = constant.AWS_RESOURCE_KEY[comp.type]
 

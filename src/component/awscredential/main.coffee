@@ -100,7 +100,7 @@ define [ 'jquery', 'event',
                     view.notify 'info', lang.ide.HEAD_MSG_INFO_UPDATE_EMAIL
 
                     # update cookie
-                    MC.common.cookie.setCookieByName 'email', MC.base64Encode(attributes['email'])
+                    MC.common.cookie.setCookieByName 'email', MC.base64Encode(attributes.email)
 
                     view.showSetting('account')
 

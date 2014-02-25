@@ -130,7 +130,6 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model',
 
                         else
                             me.set 'is_authenticated', false
-                            null
 
                         me.set 'account_id', account_id
 

@@ -46,6 +46,7 @@ define [ './register', 'constant', 'MC','i18n!nls/lang.js' , '../result_vo' ], (
         _.each states, ( state, id ) ->
 
             errs = errs.concat __checkState state, _.extend {}, data, { stateId: id }
+            null
 
         if not errs.length
             errs = null

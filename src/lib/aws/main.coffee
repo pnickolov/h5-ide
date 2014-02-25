@@ -33,3 +33,5 @@ define ['MC',
 		rtb: aws_handler_rtb,
 		eip: aws_handler_eip
 	}
+
+	MC.aws

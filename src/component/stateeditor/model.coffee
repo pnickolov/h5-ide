@@ -200,7 +200,7 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 						paraModelObj = cmdParaObjMap[cmdName]
 						if not paraModelObj then return
 						_.each paraObj, (paraValue, paraName) ->
-							paraType = paraModelObj[paraName]['type']
+							paraType = paraModelObj[paraName].type
 							if paraType is 'state'
 								newParaValue = _.map paraValue, (stateRef) ->
 									if newOldStateIdRefMap[stateRef]
@@ -508,7 +508,7 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 					resName = allCompData[resUID].name
 				else
 					resName = 'unknown'
-				
+
 				newRefStr = refMatchStr.replace(resUID, resName)
 				newParaValue = newParaValue.replace(refMatchStr, newRefStr)
 

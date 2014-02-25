@@ -389,13 +389,13 @@ define [ '../base/view',
             $max        = @$el.find '#property-asg-max'
             $capacity   = @$el.find '#property-asg-capacity'
 
-            $min.parsley 'custom', ( val ) =>
+            $min.parsley 'custom', ( val ) ->
                 if + val < 1
                     return 'ASG size must be equal or greater than 1'
                 if + val > + $max.val()
                     return 'Minimum Size must be <= Maximum Size.'
 
-            $max.parsley 'custom', ( val ) =>
+            $max.parsley 'custom', ( val ) ->
                 if + val < 1
                     return 'ASG size must be equal or greater than 1'
                 if + val < + $min.val()

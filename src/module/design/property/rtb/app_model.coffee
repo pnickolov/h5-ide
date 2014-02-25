@@ -8,7 +8,7 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
 
         processTarget : ( rtb )->
           console.log rtb
-          rtb.routeSet.item = _.map rtb.routeSet.item, ( item ) =>
+          rtb.routeSet.item = _.map rtb.routeSet.item, ( item ) ->
             item.target = item.instanceId || item.networkInterfaceId || item.gatewayId
 
             if item.target isnt "local"

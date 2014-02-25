@@ -35,6 +35,7 @@ define [ 'jquery', 'event',
         model = null
         #ide_event.offListen ide_event.<EVENT_TYPE>
         #ide_event.offListen ide_event.<EVENT_TYPE>, <function name>
+        return
 
     #public
     loadModule   : loadModule

@@ -9,3 +9,5 @@ define [ 'MC',
 		other  : other
 		convert : convert_handler
 	}
+
+	MC.common

@@ -181,6 +181,7 @@ define [ 'event',
             #
             $( '#resource-panel'      ).toggleClass 'hiden'
             $( '#canvas-panel'        ).toggleClass 'left-hiden'
+            $( '#main-toolbar'        ).toggleClass 'left-hiden'
             $( '#hide-resource-panel' ).toggleClass 'icon-caret-left'
             $( '#hide-resource-panel' ).toggleClass 'icon-caret-right'
             #
@@ -194,9 +195,10 @@ define [ 'event',
 
             @recalcAccordion()
 
-            $item   = $ '#hide-resource-panel'
-            $panel  = $ '#resource-panel'
-            $canvas = $ '#canvas-panel'
+            $item       = $ '#hide-resource-panel'
+            $panel      = $ '#resource-panel'
+            $canvas     = $ '#canvas-panel'
+            $toolbar    = $ '#main-toolbar'
 
             #show hide-resource-panel
             if type.split('_')[1] is 'STACK' or Tabbar.current is 'appedit' or type is 'show'
@@ -209,11 +211,13 @@ define [ 'event',
                 if $item.hasClass( 'icon-caret-left' )
                     $panel.removeClass  'hiden'
                     $canvas.removeClass 'left-hiden'
+                    $toolbar.removeClass 'left-hiden'
 
                 # hide
                 if $item.hasClass( 'icon-caret-right' )
                     $panel.addClass     'hiden'
                     $canvas.addClass    'left-hiden'
+                    $toolbar.addClass    'left-hiden'
 
                 #appeidt
                 if type is 'show' and $item.hasClass( 'icon-caret-right' ) and $panel.hasClass( 'hiden' )
@@ -232,6 +236,7 @@ define [ 'event',
                 # hide
                 $panel.addClass  'hiden'
                 $canvas.addClass 'left-hiden'
+                $toolbar.addClass 'left-hiden'
             null
 
         ###updateResourceState : ( type ) ->

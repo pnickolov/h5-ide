@@ -233,6 +233,9 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
       else
         @get("hasEip")
 
+    hasAutoAssignPublicIp: () ->
+      @getEmbedEni().get 'assoPublicIp'
+
     setCount : ( count )->
       @set "count", count
 

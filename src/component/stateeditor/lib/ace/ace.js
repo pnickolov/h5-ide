@@ -2634,12 +2634,12 @@ var Editor = function(renderer, session) {
 
     this.tabReverseSwitch = function (target) {
 
-        // For multi-line
-        if ($(target.container).hasClass('text')) {
-            this.blockOutdent();
+        // // For multi-line
+        // if ($(target.container).hasClass('text')) {
+        //     this.blockOutdent();
 
-            return false;
-        }
+        //     return false;
+        // }
 
         $('#state-editor-body').trigger('ACE_UTAB_SWITCH', [target.container]);
     };

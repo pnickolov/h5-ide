@@ -6,6 +6,7 @@ Buffer = require('buffer').Buffer
 es     = require("event-stream")
 Q      = require("q")
 fs     = require("fs")
+vm     = require("vm")
 
 tinylr      = require("tiny-lr")
 chokidar    = require("chokidar")
@@ -109,9 +110,15 @@ StreamFuncs =
 
   throughLangSrc : ()->
 
-    pipeline = coffee().pipe es.through ( file )->
-      console.log "[Compile] lang-souce.coffee"
-      buildLangSrc.run gruntMock, Helper.noop, file.contents
+    startPipeline = coffee()
+
+    pipeline = startPipeline.pipe es.through ( file )->
+      console.log "[Compile] lang-source.coffee"
+
+      ctx = vm.createContext({module:{}})
+      vm.runInContext( file.contents.toString("utf8"), ctx )
+
+      buildLangSrc.run gruntMock, Helper.noop, ctx.module.exports
       null
 
     pipeline.pipe( gulp.dest(".") )
@@ -130,7 +137,7 @@ StreamFuncs =
           })
           null
 
-    pipeline
+    startPipeline
 
 
 setupCompileStream = ( stream )->

@@ -14,6 +14,7 @@ npm install
 * `gulp` - Build CoffeeScripts in dev mode, and then runs a static file server and live reload server
 * `gulp watch` - The same as `gulp`, except that it doesn't build CoffScripts at startup
 * `gulp dev` - Build CoffeeScripts in dev mode.
+* `gulp dev_all` - Build CoffeeScripts in dev mode, including `src/service` and `src/model`
 * `gulp release` - Build project for release. The build will be in a different repository. (TODO)
 * `gulp debug`   - The same as `gulp release`, except that source code are not minimized. (TODO)
 * `gulp upgrade` - This is used to upgrade 3rd party module using bower. This command should be used only in rare case. (TODO)

@@ -13,7 +13,6 @@ buffertools = require("buffertools")
 
 coffee     = require("gulp-coffee")
 coffeelint = require("gulp-coffeelint")
-jshint     = require("gulp-jshint")
 gulpif     = require("gulp-if")
 
 buildLangSrc = require("../../config/lang")
@@ -72,6 +71,7 @@ Helper =
 
 
 StreamFuncs =
+  jshint       : require("./jshint")
   lintReporter : require('./reporter')
 
   throughLiveReload : ()->
@@ -156,7 +156,7 @@ setupCompileStream = ( stream )->
       @emit "data", f
     )
     # Jshint and report
-    .pipe( gulpif Helper.shouldLintCoffee, jshint( {lookup:false} ) )
+    .pipe( gulpif Helper.shouldLintCoffee, StreamFuncs.jshint() )
     .pipe( gulpif Helper.shouldLintCoffee, StreamFuncs.lintReporter() )
     # Save
     .pipe( gulp.dest(".") )

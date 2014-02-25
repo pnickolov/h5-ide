@@ -7,8 +7,9 @@ es     = require("event-stream")
 Q      = require("q")
 fs     = require("fs")
 
-tinylr   = require("tiny-lr")
-chokidar = require("chokidar")
+tinylr      = require("tiny-lr")
+chokidar    = require("chokidar")
+buffertools = require("buffertools")
 
 coffee     = require("gulp-coffee")
 coffeelint = require("gulp-coffeelint")
@@ -85,9 +86,30 @@ StreamFuncs =
     console.log gutil.colors.red.bold("\n[CoffeeError]"), error.message.replace( process.cwd(), "." )
     null
 
+  throughCoffeeConditionalCompile : ()->
+    # This transformer simply replace "### env:prod ### to ### env:prod "
+    es.through ( file )->
+      buffer = file.contents
+      index = 0
+      while (index = buffertools.indexOf( buffer, "### env:prod ###", index )) != -1
+        if GLOBAL.gulpConfig.verbose then console.log "[EnvProdFound]", file.relative
+
+        buffer[index + 13] = buffer[index + 14] = buffer[index + 15] = 32
+
+        index = buffertools.indexOf( buffer, "### env:prod:end ###", index+16 )
+        if index == -1
+          console.log "[Missing EnvProdEnd]"
+          break
+        if GLOBAL.gulpConfig.verbose then console.log "[EnvProdEndFound]", file.relative
+        buffer[index + 0] = buffer[index + 1] = buffer[index + 2] = 32
+        index += 20
+
+      @emit "data", file
+      null
+
   throughLangSrc : ()->
     pipeline = es.through ( file )->
-      console.log "[Compiling] lang-souce.coffee"
+      console.log "[Compile] lang-souce.coffee"
       buildLangSrc.run gruntMock, Helper.noop
       null
 
@@ -121,7 +143,9 @@ setupCompileStream = ( stream )->
   coffeeBranch = gulpif( Helper.shouldLintCoffee, coffeelint( undefined, coffeelintOptions) )
 
   # Compile
-  coffeeCompile = coffeeBranch.pipe( coffee({sourceMap:GLOBAL.gulpConfig.coffeeSourceMap}) )
+  coffeeCompile = coffeeBranch
+                    .pipe( StreamFuncs.throughCoffeeConditionalCompile() )
+                    .pipe( coffee({sourceMap:GLOBAL.gulpConfig.coffeeSourceMap}) )
 
   coffeeCompile
     # Log

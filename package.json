@@ -38,6 +38,7 @@
 		, "glob"            : ""
 		, "q"               : ""
 		, "through2"        : ""
+		, "buffertools"     : ""
 		, "gulp-coffee"     : ""
 		, "gulp-coffeelint" : ""
 		, "gulp-jshint"     : ""

@@ -1,12 +1,10 @@
 
-module.exports = {}
-
-defaultHeader = { "Cache-Control" : "no-cache" }
-
 module.exports.create = ()->
   gutil   = require("gulp-util")
   nstatic = require("node-static")
   http    = require("http")
+
+  defaultHeader = { "Cache-Control" : "no-cache" }
 
   gutil.log gutil.colors.bgBlue(" Creating File Server... ")
 

@@ -138,7 +138,7 @@
       <div class="property-control-group">
         <label>{{ i18n "PROP_VPC_DHCP_SPECIFIED_LBL_NETBIOS_NODE_TYPE" }}</label>
         <div class="selectbox selectbox-mega" id="property-netbios-type">
-          <div class="selection tooltip" data-tooltip="Select NetBOIS Node Type. We recommend 2. (Broadcast and multicast are currently not supported by AWS.)">{{#if dhcp.netbiosType}}{{dhcp.netbiosType}}{{else}}{{{ i18n "PROP_VPC_DHCP_SPECIFIED_LBL_NETBIOS_NODE_TYPE_NOT_SPECIFIED" }}}{{/if}}</div>
+          <div class="selection tooltip" data-tooltip="Select NetBIOS Node Type. We recommend 2. (Broadcast and multicast are currently not supported by AWS.)">{{#if dhcp.netbiosType}}{{dhcp.netbiosType}}{{else}}{{{ i18n "PROP_VPC_DHCP_SPECIFIED_LBL_NETBIOS_NODE_TYPE_NOT_SPECIFIED" }}}{{/if}}</div>
           <ul class="dropdown" tabindex="-1">
             {{#each dhcp.netbiosTypes}}
             <li class="item{{#if selected}} selected{{/if}}" data-id="{{id}}">{{value}}</li>

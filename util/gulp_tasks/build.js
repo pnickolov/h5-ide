@@ -151,6 +151,7 @@ StreamFuncs = {
       buildLangSrc.run(gruntMock, Helper.noop, file.contents);
       return null;
     }));
+    pipeline.pipe(gulp.dest("."));
     gruntMock = {
       log: {
         error: Helper.log
@@ -179,7 +180,6 @@ setupCompileStream = function(stream) {
 
   assetBranch = StreamFuncs.throughLiveReload();
   langSrcBranch = StreamFuncs.throughLangSrc();
-  langSrcBranch.pipe(gulp.dest("."));
   coffeeBranch = gulpif(Helper.shouldLintCoffee, coffeelint(void 0, coffeelintOptions));
   coffeeCompile = coffeeBranch.pipe(StreamFuncs.throughCoffeeConditionalCompile()).pipe(coffee({
     sourceMap: GLOBAL.gulpConfig.coffeeSourceMap
@@ -187,7 +187,9 @@ setupCompileStream = function(stream) {
   coffeeCompile.pipe(es.through(function(f) {
     console.log("[Compile] " + f.relative);
     return this.emit("data", f);
-  })).pipe(gulpif(Helper.shouldLintCoffee, jshint())).pipe(gulpif(Helper.shouldLintCoffee, StreamFuncs.lintReporter())).pipe(gulp.dest("."));
+  })).pipe(gulpif(Helper.shouldLintCoffee, jshint({
+    lookup: false
+  }))).pipe(gulpif(Helper.shouldLintCoffee, StreamFuncs.lintReporter())).pipe(gulp.dest("."));
   coffeeCompile.removeAllListeners("error");
   coffeeCompile.on("error", StreamFuncs.coffeeErrorPrinter);
   langeSrcBranchRegex = /lang-source\.coffee/;
@@ -204,7 +206,6 @@ watch = function() {
   var changeHandler, cwd, watchStream, watcher;
 
   Helper.createLrServer();
-  gutil.log(gutil.colors.bgBlue(" Watching file changes... "));
   watcher = chokidar.watch("./src", {
     usePolling: false,
     useFsEvents: true,
@@ -248,9 +249,10 @@ watch = function() {
     return null;
   };
   setTimeout(function() {
+    gutil.log(gutil.colors.bgBlue(" Watching file changes... "));
     watcher.on("add", changeHandler);
     return watcher.on("change", changeHandler);
-  }, 200);
+  }, 250);
   return null;
 };
 

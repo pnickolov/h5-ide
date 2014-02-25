@@ -114,6 +114,8 @@ StreamFuncs =
       buildLangSrc.run gruntMock, Helper.noop, file.contents
       null
 
+    pipeline.pipe( gulp.dest(".") )
+
     gruntMock =
       log  :
         error : Helper.log
@@ -138,7 +140,6 @@ setupCompileStream = ( stream )->
 
   # Branch Used to handle lang-source.js
   langSrcBranch = StreamFuncs.throughLangSrc()
-  langSrcBranch.pipe( gulp.dest(".") )
 
   # Branch Used to handle coffee files
   coffeeBranch = gulpif( Helper.shouldLintCoffee, coffeelint( undefined, coffeelintOptions) )
@@ -155,7 +156,7 @@ setupCompileStream = ( stream )->
       @emit "data", f
     )
     # Jshint and report
-    .pipe( gulpif Helper.shouldLintCoffee, jshint() )
+    .pipe( gulpif Helper.shouldLintCoffee, jshint( {lookup:false} ) )
     .pipe( gulpif Helper.shouldLintCoffee, StreamFuncs.lintReporter() )
     # Save
     .pipe( gulp.dest(".") )
@@ -186,9 +187,6 @@ watch = ()->
   Helper.createLrServer()
 
   # Watch files
-  gutil.log gutil.colors.bgBlue(" Watching file changes... ")
-
-
   watcher = chokidar.watch "./src", {
     usePolling    : false
     useFsEvents   : true
@@ -231,9 +229,10 @@ watch = ()->
   # Delay the change handler so that we would ignore the first add event
   # and some change event
   setTimeout ()->
+    gutil.log gutil.colors.bgBlue(" Watching file changes... ")
     watcher.on "add",    changeHandler
     watcher.on "change", changeHandler
-  , 200
+  , 250
   null
 
 

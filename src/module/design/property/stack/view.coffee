@@ -25,6 +25,8 @@ define [ '../base/view',
             'click #property-sub-list .icon-del'  : 'delSNS'
             'click #property-create-asg'          : 'openSNSModal'
 
+            'click #property-stack-ops-option input' : 'opsOptionChanged'
+
         render     : () ->
 
             t = template
@@ -265,6 +267,28 @@ define [ '../base/view',
             else
                 @model.removeAcl( aclUID )
                 @refreshACLList()
+
+        opsOptionChanged : (event) ->
+
+            thatModel = @model
+            value = $('#property-stack-ops-option input:checked').val()
+            if value is 'property-stack-ops-enable'
+                # $('#property-stack-ops-enable-info').show()
+                notShowModal = thatModel.isAllInstanceNotHaveUserData()
+                if not notShowModal
+                    # if have any userdata in any instance
+                    $('#property-stack-ops-disable').prop('checked', 'checked')
+                    modal MC.template.modalStackAgentEnable({})
+                    $('#modal-stack-agent-enable-confirm').one 'click', ()->
+                        $('#property-stack-ops-enable').prop('checked', 'checked')
+                        thatModel.setAgentEnable(true)
+                        modal.close()
+                else
+                    thatModel.setAgentEnable(true)
+            else
+                # $('#property-stack-ops-enable-info').hide()
+                thatModel.setAgentEnable(false)
     }
 
     new StackView()
+  

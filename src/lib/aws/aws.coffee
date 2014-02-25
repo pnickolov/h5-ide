@@ -1,4 +1,4 @@
-define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
+define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _, $, Design ) ->
 
     #private
     getNewName = (compType) ->
@@ -947,6 +947,28 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 
         return "@{#{uid}.#{attrName}}"
 
+    getDefaultStackAgentData = () ->
+
+        cookieData = $.cookie()
+
+        enableValue = true
+        repoValue = cookieData.mod_repo
+        tagValue = cookieData.mod_tag
+
+        return {
+            'enabled': enableValue,
+            'module': {
+                'repo': repoValue,
+                'tag': tagValue
+            }
+        }
+
+    enableStackAgent = (isEnable) ->
+
+        agentData = MC.common.other.canvasData.get('agent')
+        agentData.enabled = isEnable
+        MC.common.other.canvasData.initSet('agent', agentData)
+
     #public
     collectReference            : collectReference
     getNewName                  : getNewName
@@ -963,3 +985,5 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
     getChanges                  : getChanges
     getOSFamily                 : getOSFamily
     genResRef                   : genResRef
+    enableStackAgent            : enableStackAgent
+    getDefaultStackAgentData    : getDefaultStackAgentData

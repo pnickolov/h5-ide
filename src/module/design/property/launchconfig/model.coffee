@@ -51,6 +51,11 @@ define [ '../base/model', 'keypair_model', 'constant', 'Design' ], ( PropertyMod
       @getAmi()
       @getKeyPair()
 
+      # if stack enable agent
+      design = Design.instance()
+      agentData = design.get('agent')
+      @set "stackAgentEnable", agentData.enabled
+
       if @isApp
         @getAppLaunch( uid )
         @set 'keyName', @lc.connectionTargets( 'KeypairUsage' )[ 0 ].get("appId")

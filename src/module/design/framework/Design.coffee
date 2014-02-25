@@ -100,7 +100,10 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
 
     @__mode = options.mode
 
-    @attributes = {}
+    defaultAgentData = MC.aws.aws.getDefaultStackAgentData()
+    @attributes = {
+      agent: defaultAgentData
+    }
 
     # Disable drawing for deserializing, delay it until everything is deserialized
     @__shoulddraw = false
@@ -391,7 +394,7 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
       delete canvas_data.component
       delete canvas_data.layout
 
-      @attributes = $.extend true, {}, canvas_data
+      $.extend true, @attributes, canvas_data
 
       canvas_data.component = @__backingStore.component
       canvas_data.layout    = @__backingStore.layout
@@ -483,13 +486,6 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
     data.layout.size = @canvas.sizeAry
     # 2. save stoppable to property
     data.property = $.extend { stoppable : @isStoppable() }, PropertyDefination
-    # data.agent = {
-    #     'enabled': true,
-    #     'module': {
-    #         'repo': 'https://github.com/MadeiraCloud/salt.git',
-    #         'tag': 'develop'
-    #     }
-    # }
 
     data.version = "2014-02-17"
 

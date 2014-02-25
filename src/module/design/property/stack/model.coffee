@@ -16,6 +16,8 @@ define ['../base/model', 'constant', "Design" ], ( PropertyModel, constant, Desi
 
       design = Design.instance()
 
+      agentData = design.get('agent')
+
       @set {
         name      : design.get("name").replace(/\s+/g, '')
         id        : design.get("id")
@@ -25,6 +27,7 @@ define ['../base/model', 'constant', "Design" ], ( PropertyModel, constant, Desi
         isApp     : @isApp
         isAppEdit : @isAppEdit
         isImport  : design.modeIsAppView()
+        opsEnable : agentData.enabled
       }
 
       vpc = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC ).theVPC()
@@ -158,6 +161,49 @@ define ['../base/model', 'constant', "Design" ], ( PropertyModel, constant, Desi
       Design.instance().component( acl_uid ).remove()
       @getNetworkACL()
       null
+
+    setAgentEnable : (isEnable) ->
+
+      if isEnable is true
+
+        # clear all instance userdata
+        InstanceModel = Design.modelClassForType(constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance)
+        instanceModels = InstanceModel.allObjects()
+        _.each instanceModels, (instanceModel) ->
+          instanceModel.set('userData', '')
+          null
+
+        # clear all lc userdata
+        LCModel = Design.modelClassForType(constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration)
+        lcModels = LCModel.allObjects()
+        _.each lcModels, (lcModel) ->
+          lcModel.set('userData', '')
+          null
+
+      MC.aws.aws.enableStackAgent(isEnable)
+
+    isAllInstanceNotHaveUserData : () ->
+
+      result = true
+
+      # find all instance userdata
+      InstanceModel = Design.modelClassForType(constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance)
+      instanceModels = InstanceModel.allObjects()
+      _.each instanceModels, (instanceModel) ->
+        userData = instanceModel.get('userData')
+        if userData then result = false
+        null
+
+      # find all lc userdata
+      LCModel = Design.modelClassForType(constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration)
+      lcModels = LCModel.allObjects()
+      _.each lcModels, (lcModel) ->
+        userData = lcModel.get('userData')
+        if userData then result = false
+        null
+
+      return result
+
   }
 
   new StackModel()

@@ -25,6 +25,11 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 			vpc = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC ).allObjects()[0]
 			attr.force_tenacy = vpc and not vpc.isDefaultTenancy()
 
+			# if stack enable agent
+			design = Design.instance()
+			agentData = design.get('agent')
+			attr.stackAgentEnable = agentData.enabled
+
 			@set attr
 
 			@getAmi()

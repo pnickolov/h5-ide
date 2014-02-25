@@ -20,6 +20,32 @@
 		<dt><label>{{ i18n "PROP_STACK_LBL_REGION" }}</label></dt><dd>{{region}}</dd>
 		<dt><label>{{ i18n "PROP_STACK_LBL_TYPE" }}</label></dt><dd>{{type}}</dd>
 	</dl>
+
+
+  <section class="property-control-group">
+      <label>VisualOps Option</label>
+      <div class="context" id="property-stack-ops-option">
+          <div>
+            <div class="radio">
+                <input id="property-stack-ops-enable" {{#if opsEnable}}checked="checked"{{/if}} type="radio" name="property-stack-ops" value="property-stack-ops-enable">
+                <label for="property-stack-ops-enable"></label>
+            </div>
+            <label for="property-stack-ops-enable">Enable VisualOps</label>
+          </div>
+          <div class="property-info" id="property-stack-ops-enable-info" style="display: block;">
+            <p>Custom User Data will be overridden and disabled to allow installing OpsAgent. (Currently only support Linux platform)</p>
+          </div>
+          <div>
+            <div class="radio">
+                <input id="property-stack-ops-disable" {{#unless opsEnable}}checked="checked"{{/unless}} type="radio" name="property-stack-ops" value="property-stack-ops-disable">
+                <label for="property-stack-ops-disable"></label>
+            </div>
+            <label for="property-stack-ops-disable">Disable VisualOps</label>
+          </div>
+      </div>
+  </section>
+
+
   {{/if}}
 
 	<!-- SG, ACL, COST -->

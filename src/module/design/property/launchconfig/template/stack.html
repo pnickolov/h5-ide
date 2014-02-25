@@ -92,8 +92,14 @@
 			<p class="{{#unless monitoring}}hide{{/unless}} property-info" id="property-cloudwatch-warn">{{i18n "PROP_INSTANCE_CW_WARN"}}<a target="_blank" href="http://aws.amazon.com/cloudwatch">Amazon Cloud Watch product page</a></p>
 		</section>
 		<section class="property-control-group">
-			<label class="left" for="property-instance-user-data">{{i18n "PROP_INSTANCE_USER_DATA"}}</label>
-			<textarea id="property-instance-user-data">{{userData}}</textarea>
+			<label for="property-instance-user-data">{{i18n "PROP_INSTANCE_USER_DATA"}}</label>
+			{{#if stackAgentEnable}}
+				<div class="property-info" style="display: block;">
+					<p>User Data is disabled to allow installing OpsAgent for VisualOps. <a href="https://github.com/MadeiraCloud/OpsAgent/blob/develop/scripts/userdata.sh" target="_blank">View content</a>.</p>
+				</div>
+			{{else}}
+				<textarea id="property-instance-user-data">{{userData}}</textarea>
+			{{/if}}
 		</section>
 	</div>
 

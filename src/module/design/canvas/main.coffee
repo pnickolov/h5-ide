@@ -42,15 +42,6 @@ define [ 'event', 'i18n!nls/lang.js', 'constant' ], ( ide_event, lang, constant 
                     MC.common.other.canvasData.initSet 'platform' , current_platform
                     MC.common.other.canvasData.initSet 'version'  , '2014-02-17'
 
-                    cookieData = $.cookie()
-                    MC.common.other.canvasData.initSet 'agent' , {
-                        'enabled': true,
-                        'module': {
-                            'repo': cookieData.mod_repo,
-                            'tag': cookieData.mod_tag
-                        }
-                    }
-
                     # platform is classic
                     if current_platform is Design.TYPE.Classic or current_platform is Design.TYPE.DefaultVpc
                         component = $.extend true, {}, MC.canvas.DESIGN_INIT_DATA

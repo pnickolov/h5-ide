@@ -20,7 +20,7 @@ npm install
 * `gulp upgrade` - This is used to upgrade 3rd party module using bower. This command should be used only in rare case. (TODO)
 
 
-### Custom Gulp Config (TODO)
+### Custom Gulp Config
 Copy `gulpconfig-default.js` to `gulpconfig.js`. Then modify `gulpconfig.js`
 
 ### LiveReload Support

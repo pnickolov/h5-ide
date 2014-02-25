@@ -2397,15 +2397,13 @@ define [ 'event',
                 target.addStateItem.call target, event
                 return false
 
-            # Expand state item [Ctrl + down]
+            # Move down state item [Ctrl + down]
             if metaKey and shiftKey is false and altKey is false and keyCode is 40
-                # target.expandItem.call target, $('.state-list .focused')
                 target.moveState.call target, 'down'
                 return false
 
-            # CollapseItem state item [Ctrl + up]
+            # Move up state item [Ctrl + up]
             if metaKey and shiftKey is false and altKey is false and keyCode is 38
-                # target.collapseItem.call target, $('.state-list .focused')
                 target.moveState.call target, 'up'
                 return false
 

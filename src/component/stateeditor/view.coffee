@@ -2397,13 +2397,18 @@ define [ 'event',
                 target.addStateItem.call(target, event)
                 return false
 
-            # Expand state item [Ctrl + down]
-            if metaKey and shiftKey is false and altKey is false and keyCode is 38
-                target.expandItem.call target, $('.state-list .focused')
-                return false
+            # # Expand state item [Ctrl + down]
+            # if metaKey and shiftKey is false and altKey is false and keyCode is 38
+            #     target.expandItem.call target, $('.state-list .focused')
+            #     return false
 
-            # Expand state item [Ctrl + up]
-            if metaKey and shiftKey is false and altKey is false and keyCode is 40
+            # # CollapseItem state item [Ctrl + up]
+            # if metaKey and shiftKey is false and altKey is false and keyCode is 40
+            #     target.collapseItem.call target, $('.state-list .focused')
+            #     return false
+
+            # CollapseItem state item [Escape]
+            if metaKey is false and shiftKey is false and altKey is false and keyCode is 27
                 target.collapseItem.call target, $('.state-list .focused')
                 return false
 
@@ -2830,11 +2835,14 @@ define [ 'event',
 
             return true
 
-        onClickBlank: () ->
+        onClickBlank: (event) ->
 
             that = this
 
-            that.clearFocusedItem()
+            target = $(event.target)
+
+            if target.parents('.state-item').length is 0
+                that.clearFocusedItem()
 
             return false
     }

@@ -81,10 +81,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo', 'Design' ], ( con
         __80 > 0 and __443 > 0
 
     __getEipByEni = ( eni ) ->
-        _.filter MC.canvas_data.component, ( component ) ->
-            if component.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP
-                if MC.extractID( component.resource.NetworkInterfaceId ) is eni.uid
-                    true
+        hasPrimaryEip
 
     __hasEipOrPublicIp = ( component ) ->
         if component.type is "ExpandedAsg"
@@ -92,16 +89,10 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo', 'Design' ], ( con
             lc.get( 'publicIp' ) is true
         # LC
         else if component.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
-            component.resource.AssociatePublicIpAddress is true
+            component.get( 'publicIp' ) is true
         # instance
         else if component.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
-            enis = __getEniByInstance component
-
-            for eni in enis
-                if eni.resource.AssociatePublicIpAddress
-                    return true
-                else if __getEipByEni( component ).length
-                    return true
+            component.hasPrimaryEip() or component.hasAutoAssignPublicIp()
 
     __getSubnetRtb = ( component ) ->
         subnet = component.parent()
@@ -190,7 +181,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo', 'Design' ], ( con
         name = lc.parent().get 'name'
         subnetName = lc.parent().parent().get 'name'
 
-        if not __notNat( lcOld )
+        if not __notNat( lc )
             result.push __genConnectedError name, subnetName, uid
 
         for asg in expandedAsgs
@@ -203,8 +194,9 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo', 'Design' ], ( con
 
 
     __isInstanceConnectedOut = ( uid ) ->
-        component = __getComp uid
-        if __notNat( component ) or __isNat( component )
+        component = __getComp uid, true
+        componentOld = __getComp uid
+        if __notNat( component ) or __isNat( componentOld )
             return null
 
         #name, subnetName

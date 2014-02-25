@@ -158,8 +158,6 @@ setupCompileStream = ( stream )->
 # Tasks
 watch = ()->
 
-  console.log GLOBAL.gulpConfig
-
   Helper.createLrServer()
 
   # Watch files
@@ -169,7 +167,7 @@ watch = ()->
   watcher = chokidar.watch "./src", {
     usePolling    : false
     useFsEvents   : true
-    ignoreInitial : true
+    ignoreInitial : false
     ignored       : /([\/\\]\.)|src.(test|vender)/
   }
 
@@ -205,8 +203,12 @@ watch = ()->
       null
     null
 
-  watcher.on "add",    changeHandler
-  watcher.on "change", changeHandler
+  # Delay the change handler so that we would ignore the first add event
+  # and some change event
+  setTimeout ()->
+    watcher.on "add",    changeHandler
+    watcher.on "change", changeHandler
+  , 200
   null
 
 

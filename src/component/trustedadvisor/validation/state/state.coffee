@@ -112,8 +112,6 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo', 'Design' ], ( con
 
     __isNat = ( component ) ->
         if component.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
-            uid = component.uid
-            component = Design.instance().component uid
             rtb = __getSubnetRtb component
 
             if rtb
@@ -125,6 +123,48 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo', 'Design' ], ( con
 
     __notNat = ( component ) ->
         __hasEipOrPublicIp( component ) and __isRouteIgw( component )
+
+    __genConnectedError = ( name, subnetName, uid ) ->
+        tipInfo = sprintf lang.ide.TA_MSG_ERROR_NOT_CONNECT_OUT, name, subnetName
+
+        # return
+        level   : constant.TA.ERROR
+        info    : tipInfo
+        uid     : uid
+
+    __isLcConnectedOut = ( uid ) ->
+        lc = __getComp uid, true
+        lcOld = __getComp uid
+        result = []
+
+        asg = lc.parent()
+        expandedAsgs = asg.get 'expandedList'
+
+
+        name = lc.parent().get 'name'
+        subnetName = lc.parent().parent().get 'name'
+
+        if not __notNat( lc )
+            result.push __genConnectedError name, subnetName, uid
+
+        for asg in expandedAsgs
+            if not __notNat( asg )
+                name = asg.get( "originalAsg" ).get 'name'
+                subnetName = asg.parent().get 'name'
+                result.push __genConnectedError name, subnetName, asg.id
+
+        result
+
+
+    __isInstanceConnectedOut = ( uid ) ->
+        component = __getComp uid, true
+        if __notNat( component ) or __isNat( component )
+            return null
+
+        name = component.get 'name'
+        subnetName = component.parent().get 'name'
+        __genConnectedError name, subnetName
+
 
 
     ### Public ###
@@ -169,49 +209,6 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo', 'Design' ], ( con
         info    : tipInfo
         uid     : uid
 
-    __isLcConnectedOut = ( uid ) ->
-        lc = __getComp uid, true
-        lcOld = __getComp uid
-        result = []
-
-        asg = lc.parent()
-        expandedAsgs = asg.get 'expandedList'
-
-
-        name = lc.parent().get 'name'
-        subnetName = lc.parent().parent().get 'name'
-
-        if not __notNat( lc )
-            result.push __genConnectedError name, subnetName, uid
-
-        for asg in expandedAsgs
-            if not __notNat( asg )
-                name = asg.get( "originalAsg" ).get 'name'
-                subnetName = asg.parent().get 'name'
-                result.push __genConnectedError name, subnetName, asg.id
-
-        result
-
-
-    __isInstanceConnectedOut = ( uid ) ->
-        component = __getComp uid, true
-        componentOld = __getComp uid
-        if __notNat( component ) or __isNat( componentOld )
-            return null
-
-        #name, subnetName
-        component = __getComp uid, true
-        name = component.get 'name'
-        subnetName = component.parent().get 'name'
-        __genConnectedError name, subnetName
-
-    __genConnectedError = ( name, subnetName, uid ) ->
-        tipInfo = sprintf lang.ide.TA_MSG_ERROR_NOT_CONNECT_OUT, name, subnetName
-
-        # return
-        level   : constant.TA.ERROR
-        info    : tipInfo
-        uid     : uid
 
     isConnectedOut = ( uid ) ->
         result = []
@@ -220,7 +217,6 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo', 'Design' ], ( con
             return __isLcConnectedOut( uid )
         else
             return __isInstanceConnectedOut( uid )
-
 
 
 

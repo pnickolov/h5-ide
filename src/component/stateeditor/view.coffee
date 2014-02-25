@@ -946,6 +946,7 @@ define [ 'event',
 
             that.refreshStateView($stateItem)
             $stateItem.addClass('view')
+            that.refreshDescription()
 
         onExpandState: (event) ->
             
@@ -1030,6 +1031,8 @@ define [ 'event',
 
             that.addStateItem.call this, event
 
+            return false
+
         addStateItem: (event) ->
 
             that = this
@@ -1083,6 +1086,12 @@ define [ 'event',
             # $newStateItem.find('.checkbox input').prop('checked', true)
 
             that.refreshLogItemNum()
+
+
+            $stateItems = that.$stateList.find('.state-item')
+            if $stateItems.length
+                that.$haveStateContainer.show()
+                that.$noStateContainer.hide()
 
             # redo/undo
             statePos = $newStateItem.index()
@@ -1550,7 +1559,7 @@ define [ 'event',
                     editor = $editableArea.data('editor')
                     if editor then editor.blur()
                     null
-                that.refreshDescription()
+                # that.refreshDescription()
 
         initCodeEditor: (editorElem, hintObj) ->
 
@@ -2781,6 +2790,7 @@ define [ 'event',
             that.onStateItemAddClick()
             that.$haveStateContainer.show()
             that.$noStateContainer.hide()
+            return false
 
         updateToolbar: () ->
 

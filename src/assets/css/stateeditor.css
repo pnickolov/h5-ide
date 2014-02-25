@@ -188,9 +188,11 @@
 #state-editor .state-warning {
 	background-color: #ff0;
 	height: 20px;
-	padding: 15px;
-	font-size: 15px;
+	padding: 5px;
+	font-size: 14px;
+	padding-left: 12px;
 	line-height: 19px;
+	border-bottom: 1px #ddd solid;
 }
 
 .state-list {

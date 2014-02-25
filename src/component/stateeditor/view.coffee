@@ -2392,8 +2392,8 @@ define [ 'event',
                 target.removeState.call target, event
                 return false
 
-            # Add state item [Ctrl + +]
-            if metaKey and shiftKey is false and altKey is false and keyCode is 187 and is_editable
+            # Add state item [Ctrl + enter]
+            if metaKey and shiftKey is false and altKey is false and keyCode is 13 and is_editable
                 target.addStateItem.call(target, event)
                 return false
 

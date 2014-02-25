@@ -42,5 +42,6 @@
 		, "gulp-coffee"     : ""
 		, "gulp-coffeelint" : ""
 		, "gulp-jshint"     : ""
+    , "gulp-if"         : "0.0.5"
 	}
 }

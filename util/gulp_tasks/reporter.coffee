@@ -11,8 +11,8 @@ transform = ( el, i )->
   err = el.error or el
   [
     ""
-    gutil.colors.gray "line " + (err.line or err.lineNumber)
-    gutil.colors.gray( if err.character then "col " + err.character else "" )
+    gutil.colors.yellow "line " + (err.line or err.lineNumber)
+    gutil.colors.yellow( if err.character then "col " + err.character else "" )
     gutil.colors.inverse("(#{err.code or err.rule})") + " " + gutil.colors.blue( err.reason or err.message )
   ]
 

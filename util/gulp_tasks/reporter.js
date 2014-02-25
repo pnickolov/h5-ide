@@ -17,7 +17,7 @@ transform = function(el, i) {
   var err;
 
   err = el.error || el;
-  return ["", gutil.colors.gray("line " + (err.line || err.lineNumber)), gutil.colors.gray(err.character ? "col " + err.character : ""), gutil.colors.inverse("(" + (err.code || err.rule) + ")") + " " + gutil.colors.blue(err.reason || err.message)];
+  return ["", gutil.colors.yellow("line " + (err.line || err.lineNumber)), gutil.colors.yellow(err.character ? "col " + err.character : ""), gutil.colors.inverse("(" + (err.code || err.rule) + ")") + " " + gutil.colors.blue(err.reason || err.message)];
 };
 
 reporter = function(fileName, title, result) {

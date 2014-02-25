@@ -10,11 +10,12 @@ vm     = require("vm")
 
 tinylr      = require("tiny-lr")
 chokidar    = require("chokidar")
-buffertools = require("buffertools")
 
 coffee     = require("gulp-coffee")
 coffeelint = require("gulp-coffeelint")
 gulpif     = require("gulp-if")
+
+indexOf    = require("./indexof")
 
 buildLangSrc = require("../../config/lang")
 
@@ -92,12 +93,12 @@ StreamFuncs =
     es.through ( file )->
       buffer = file.contents
       index = 0
-      while (index = buffertools.indexOf( buffer, "### env:prod ###", index )) != -1
+      while (index = indexOf( buffer, "### env:prod ###", index )) != -1
         if GLOBAL.gulpConfig.verbose then console.log "[EnvProdFound]", file.relative
 
         buffer[index + 13] = buffer[index + 14] = buffer[index + 15] = 32
 
-        index = buffertools.indexOf( buffer, "### env:prod:end ###", index+16 )
+        index = indexOf( buffer, "### env:prod:end ###", index+16 )
         if index == -1
           console.log "[Missing EnvProdEnd]"
           break

@@ -36,7 +36,6 @@
     "glob": "3.2.8",
     "q": "1.0.0",
     "through2": "0.4.1",
-    "buffertools": "2.0.1",
     "gulp-coffee": "1.4.1",
     "gulp-coffeelint": "0.2.2",
     "gulp-jshint": "1.5.0",

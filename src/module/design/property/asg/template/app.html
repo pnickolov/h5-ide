@@ -99,7 +99,7 @@
       <div class="property-group-head">{{name}}</div>
       <ul class="property-list">
         {{#each instances}}
-          <li><i class="status status-{{status}} icon-label"></i>{{name}}</li>
+          <li><i class="status status-{{status}} icon-label tooltip" data-tooltip="{{healthy}}" ></i>{{name}}</li>
         {{/each}}
       </ul>
       {{/each}}

@@ -68,6 +68,8 @@ define [ "constant", "../ComplexResModel", "../ConnectionModel"  ], ( constant, 
     getDefaultKP : ()->
       _.find KeypairModel.allObjects(), ( obj )-> obj.get("name") is "DefaultKP"
 
+    diffJson : ()-> # Disable diff for thie Model
+
     handleTypes : constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair
     deserialize : ( data, layout_data, resolve )->
       new KeypairModel({

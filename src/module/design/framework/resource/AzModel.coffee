@@ -70,6 +70,8 @@ define [ "../GroupModel", "./VpcModel", "constant", "i18n!nls/lang.js" ], ( Grou
   }, {
     handleTypes : constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone
 
+    diffJson : ()-> # Disable diff for thie Model
+
     deserialize : ( data, layout_data, resolve )->
       new Model({
         id    : data.uid

@@ -520,19 +520,49 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
 
     { costList : costList, totalFee : Math.round(totalFee * 100) / 100 }
 
+
+  diffHelper = ( newComp, oldComp, result )->
+    type = if newComp then newComp.type else oldComp.type
+
+    Model = Design.modelClassForType type
+    if Model.diffJson
+      r = Model.diffJson( newComp, oldComp )
+      if r and r.length
+        result = result.concat r
+      return
+
+    if not newComp
+      result.push
+        type   : oldComp.type
+        name   : oldComp.name
+        change : "Delete"
+    else if not oldComp
+      result.push
+        type   : newComp.type
+        name   : newComp.name
+        change : "Create"
+    # Only compare resources.
+    else if not _.isEqual newComp.resource, oldComp.resource
+      result.push
+        type   : newComp.type
+        name   : newComp.name
+        change : "Update"
+    null
+
   DesignImpl.prototype.diff = ()->
     # Get an detailed diff of the current state of the Design and the last save state.
     newData = @serialize()
     oldData = @__backingStore
 
     ### Diff the Component first ###
-    isModified = true
-    result     = [
-      { type : "Sg", name : "CustomSg1", change : "Create" }
-      { type : "Sg", name : "CustomSg2", change : "Delete" }
-      { type : "Instance", name : "host-1", change : "Delete", info : "Hello there" }
-      { type : "Instance", name : "host-2", change : "Terminated", info : "Hello there", extra : "Need to restart." }
-    ]
+    isModified = _.isEqual( newData.component, oldData.component )
+    result     = []
+    for uid, comp of newData.component
+      diffHelper( comp, oldData.component[uid], result )
+
+    for uid, comp of oldData.component
+      if newData.component[ uid ] then continue
+      diffHelper( undefined, comp, result )
 
     {
       result     : result

@@ -27,7 +27,7 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
         routes = _.map @get("routes"), ( r )-> { DestinationCidrBlock : r }
 
       component_data[ @id ] =
-        name : "VPN"
+        name : "vpn:" + cgw.get("name")
         type : @type
         uid  : @id
         resource :

@@ -118,13 +118,9 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
       null
 
     connect : ( cn )->
-      if @parent()
-        if cn.type is "ElbAmiAsso"
-          @parent().updateExpandedAsgAsso( cn.getOtherTarget(@) )
-
-        else if cn.type is "SgRuleLine"
-          # Create duplicate sgline for each expanded asg
-          @parent().updateExpandedAsgSgLine( cn.getOtherTarget(@) )
+      if @parent() and cn.type is "SgRuleLine"
+        # Create duplicate sgline for each expanded asg
+        @parent().updateExpandedAsgSgLine( cn.getOtherTarget(@) )
 
       null
 
@@ -133,7 +129,7 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
         if cn.type is "ElbAmiAsso"
           # No need to reset Asg's healthCheckType to EC2, when disconnected from Elb
           # Because user might just want to asso another Elb right after disconnected.
-          @parent().updateExpandedAsgAsso( cn.getOtherTarget(@), true )
+          # @parent().updateExpandedAsgAsso( cn.getOtherTarget(@), true )
 
         else if cn.type is "SgRuleLine"
           @parent().updateExpandedAsgSgLine( cn.getOtherTarget(@), true )

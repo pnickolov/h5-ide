@@ -116,22 +116,22 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
 
     getLc : ()-> @attributes.originalAsg.get("lc")
 
-    disconnect : ( cn )->
-      if cn.type isnt "ElbAmiAsso" then return
+    # disconnect : ( cn )->
+    #   if cn.type isnt "ElbAmiAsso" then return
 
-      asg = @get("originalAsg")
-      expandedList = asg.get("expandedList")
-      # Need to temperory detach ExpandedAsg from original asg's expandedList
-      # Because, we are going to remove originalAsg's LC's connection.
-      # Which will affect all the expandedList
-      expandedList.splice( expandedList.indexOf(@), 1 )
+    #   asg = @get("originalAsg")
+    #   expandedList = asg.get("expandedList")
+    #   # Need to temperory detach ExpandedAsg from original asg's expandedList
+    #   # Because, we are going to remove originalAsg's LC's connection.
+    #   # Which will affect all the expandedList
+    #   expandedList.splice( expandedList.indexOf(@), 1 )
 
-      ElbAmiAsso = Design.modelClassForType( "ElbAmiAsso" )
-      lcAsso = new ElbAmiAsso( asg.get("lc"), cn.getTarget( constant.AWS_RESOURCE_TYPE.AWS_ELB ))
-      lcAsso.remove()
+    #   ElbAmiAsso = Design.modelClassForType( "ElbAmiAsso" )
+    #   lcAsso = new ElbAmiAsso( asg.get("lc"), cn.getTarget( constant.AWS_RESOURCE_TYPE.AWS_ELB ))
+    #   lcAsso.remove()
 
-      expandedList.push( @ )
-      null
+    #   expandedList.push( @ )
+    #   null
 
     serialize : ()->
       layout = @generateLayout()
@@ -380,8 +380,6 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
         # SgAsso = Design.modelClassForType( "SgAsso" )
         # for sgTarget in lc.connectionTargets( "SgAsso" )
         #   new SgAsso( expandedAsg, sgTarget )
-
-
       null
 
     __onExpandedAsgRemove : ( target )->

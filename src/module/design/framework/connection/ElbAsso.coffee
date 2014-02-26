@@ -133,9 +133,47 @@ define [ "constant", "../ConnectionModel", "i18n!nls/lang.js", "Design", "compon
       for sb in subnet.parent().children()
         if connectedSbs.indexOf( sb ) isnt -1
           # Found a subnet in this AZ that is connected to the Elb, do nothing
-          return
+          foundSubnet = true
+          break
 
-      new ElbSubnetAsso( subnet, elb )
+      if not foundSubnet
+        new ElbSubnetAsso( subnet, elb )
+
+      # If there's a ElbAsso created for Lc and Elb
+      # We also try to connect the Elb to any expanded Asg
+      if ami.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+        for asg in ami.parent().get("expandedList")
+          new ElbAmiAsso( asg, elb )
+      null
+
+    remove : ( option )->
+      # If the line is not deleted by the user or because of the Lc is removed.
+      # Then we do nothing.
+      if option and option.reason.type isnt constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+        ConnectionModel.prototype.remove.apply this, arguments
+        return
+
+      # The ElbAsso is removed by the user.
+      expAsg = @getTarget "ExpandedAsg"
+      if expAsg and not expAsg.isRemoved()
+        # If the user is removing an ElbAsso from Elb to ExpandedAsg.
+        # Then we just delete the ElbAsso from Elb to Lc
+        elb = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_ELB )
+        lc  = expAsg.getLc()
+        (new ElbAmiAsso( elb, lc )).remove()
+        return
+
+      lc = @getTarget constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+      if lc
+        # The user is removing an ElbAsso from Elb to Lc
+        # Remove all the shadow ElbAsso from Elb to ExpandedAsg
+        elb    = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_ELB )
+        reason = { reason : this }
+
+        for asg in lc.parent().get("expandedList")
+          (new ElbAmiAsso( elb, asg )).remove( reason )
+
+      ConnectionModel.prototype.remove.apply this, arguments
       null
 
     serialize : ( components )->

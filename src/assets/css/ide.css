@@ -3558,7 +3558,7 @@ a.sidebar-hider {
 	top      : 0;
 	position : absolute;
 	background: #313131; /* for zoomed out */
-	margin-top: 44px;
+	margin-top: 45px;
 }
 
 .property-wrap .scroll-wrap {
@@ -7315,6 +7315,7 @@ summary:focus {
 	padding: 0 4px;
 	margin-top: 5px;
 	margin-bottom: 5px;
+	border-radius: 4px;
 }
 
 .property-switcher .btn-selected {

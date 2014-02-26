@@ -376,10 +376,10 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
         for elb in lc.connectionTargets( "ElbAmiAsso" )
           new ElbAsso( elb, expandedAsg )
 
-        # # Connect other sglilne to expandedAsg
-        # SgAsso = Design.modelClassForType( "SgAsso" )
-        # for sgTarget in lc.connectionTargets( "SgAsso" )
-        #   new SgAsso( expandedAsg, sgTarget )
+        # Connect other sglilne to expandedAsg
+        Sgline = Design.modelClassForType( "SgRuleLine" )
+        for sgTarget in lc.connectionTargets( "SgRuleLine" )
+          new Sgline( sgTarget, expandedAsg )
       null
 
     __onExpandedAsgRemove : ( target )->

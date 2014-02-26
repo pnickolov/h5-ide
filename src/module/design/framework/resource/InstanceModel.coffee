@@ -6,7 +6,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
   Model = ComplexResModel.extend {
 
     type        : constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
-    newNameTmpl : "host"
+    newNameTmpl : "host-"
 
     defaults :
       x      : 2

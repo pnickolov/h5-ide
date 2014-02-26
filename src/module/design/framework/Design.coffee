@@ -520,19 +520,26 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
 
     { costList : costList, totalFee : Math.round(totalFee * 100) / 100 }
 
-  ########## AWS Business logics ############
-  DesignImpl.prototype.diffAmi = ( newData, oldData )->
+  DesignImpl.prototype.diff = ()->
+    # Get an detailed diff of the current state of the Design and the last save state.
+    newData = @serialize()
+    oldData = @__backingStore
 
-    newComps = newData.component
-    oldComps = ( oldData || @__backingStore ).component
-
-    newInstances = []
-    oldINstances = []
+    ### Diff the Component first ###
+    isModified = true
+    result     = [
+      { type : "Sg", name : "CustomSg1", change : "Create" }
+      { type : "Sg", name : "CustomSg2", change : "Delete" }
+      { type : "Instance", name : "host-1", change : "Delete", info : "Hello there" }
+      { type : "Instance", name : "host-2", change : "Terminated", info : "Hello there", extra : "Need to restart." }
+    ]
 
     {
-      remain : newInstances
-      remove : oldINstances
+      result     : result
+      isRunning  : newData.state is constant.APP_STATE.APP_STATE_RUNNING
+      isModified : isModified || not _.isEqual( oldData.layout, newData.layout )
     }
+
 
   DesignImpl.prototype.isStoppable = ()->
     # Previous version will set canvas_data.property.stoppable to false

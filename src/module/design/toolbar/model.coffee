@@ -1101,6 +1101,10 @@ define [ "component/thumbnail/ThumbUtil", 'MC', 'backbone', 'jquery', 'underscor
 
         isAutoScaling : () ->
             !!Design.modelClassForType( "AWS.AutoScaling.Group" ).allObjects().length
+
+        diff : ()->
+            diffResult = Design.instance().diff()
+            diffResult
     }
 
     model = new ToolbarModel()

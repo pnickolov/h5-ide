@@ -127,6 +127,7 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
       CanvasManager.toggle numberGroup, false
 
     # Update EIP
+    CanvasManager.toggle node.children(".eip-status"), !!m.attachedInstance()
     CanvasManager.updateEip node.children(".eip-status"), m
 
     @updateAppState()

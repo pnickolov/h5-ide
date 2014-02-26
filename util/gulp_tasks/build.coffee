@@ -14,6 +14,7 @@ chokidar    = require("chokidar")
 coffee     = require("gulp-coffee")
 coffeelint = require("gulp-coffeelint")
 gulpif     = require("gulp-if")
+cached     = require("gulp-cached")
 
 indexOf    = require("./indexof")
 
@@ -144,10 +145,11 @@ StreamFuncs =
     startPipeline
 
   throughCoffee : ()->
-    coffeeBranch = gulpif( Helper.shouldLintCoffee, coffeelint( undefined, coffeelintOptions) )
+    coffeeBranch = cached("coffee")
 
     # Compile
     coffeeCompile = coffeeBranch
+                    .pipe( gulpif( Helper.shouldLintCoffee, coffeelint( undefined, coffeelintOptions) ) )
                     .pipe( StreamFuncs.throughCoffeeConditionalCompile() )
                     .pipe( coffee({sourceMap:GLOBAL.gulpConfig.coffeeSourceMap}) )
 

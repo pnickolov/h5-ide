@@ -95,12 +95,19 @@ Helper = {
   log: function(e) {
     return console.log(e);
   },
-  noop: function() {}
+  noop: function() {},
+  compileTitle: function() {
+    return "[" + gutil.colors.green("Compile @" + ((new Date()).toLocaleTimeString())) + "]";
+  }
 };
 
 StreamFuncs = {
   jshint: require("./jshint"),
   lintReporter: require('./reporter'),
+  coffeeErrorPrinter: function(error) {
+    console.log(gutil.colors.red.bold("\n[CoffeeError]"), error.message.replace(process.cwd(), "."));
+    return null;
+  },
   throughLiveReload: function() {
     return es.through(function(file) {
       if (lrServer) {
@@ -112,10 +119,6 @@ StreamFuncs = {
       }
       return null;
     });
-  },
-  coffeeErrorPrinter: function(error) {
-    console.log(gutil.colors.red.bold("\n[CoffeeError]"), error.message.replace(process.cwd(), "."));
-    return null;
   },
   throughCoffeeConditionalCompile: function() {
     return es.through(function(file) {
@@ -151,7 +154,7 @@ StreamFuncs = {
     pipeline = startPipeline.pipe(es.through(function(file) {
       var ctx;
 
-      console.log("[Compile] lang-source.coffee");
+      console.log(Helper.compileTitle(), "lang-souce.coffee");
       ctx = vm.createContext({
         module: {}
       });
@@ -180,24 +183,33 @@ StreamFuncs = {
       }
     };
     return startPipeline;
+  },
+  throughCoffee: function() {
+    var coffeeBranch, coffeeCompile, pipeline;
+
+    coffeeBranch = gulpif(Helper.shouldLintCoffee, coffeelint(void 0, coffeelintOptions));
+    coffeeCompile = coffeeBranch.pipe(StreamFuncs.throughCoffeeConditionalCompile()).pipe(coffee({
+      sourceMap: GLOBAL.gulpConfig.coffeeSourceMap
+    }));
+    pipeline = coffeeCompile.pipe(es.through(function(f) {
+      console.log(Helper.compileTitle(), "" + f.relative);
+      return this.emit("data", f);
+    })).pipe(gulpif(Helper.shouldLintCoffee, StreamFuncs.jshint())).pipe(gulpif(Helper.shouldLintCoffee, StreamFuncs.lintReporter())).pipe(gulp.dest("."));
+    if (GLOBAL.gulpConfig.reloadJsHtml) {
+      pipeline.pipe(StreamFuncs.throughLiveReload());
+    }
+    coffeeCompile.removeAllListeners("error");
+    coffeeCompile.on("error", StreamFuncs.coffeeErrorPrinter);
+    return coffeeBranch;
   }
 };
 
 setupCompileStream = function(stream) {
-  var assetBranch, coffeeBranch, coffeeBranchRegex, coffeeCompile, langSrcBranch, langeSrcBranchRegex, liveReloadBranchRegex;
+  var assetBranch, coffeeBranch, coffeeBranchRegex, langSrcBranch, langeSrcBranchRegex, liveReloadBranchRegex;
 
   assetBranch = StreamFuncs.throughLiveReload();
   langSrcBranch = StreamFuncs.throughLangSrc();
-  coffeeBranch = gulpif(Helper.shouldLintCoffee, coffeelint(void 0, coffeelintOptions));
-  coffeeCompile = coffeeBranch.pipe(StreamFuncs.throughCoffeeConditionalCompile()).pipe(coffee({
-    sourceMap: GLOBAL.gulpConfig.coffeeSourceMap
-  }));
-  coffeeCompile.pipe(es.through(function(f) {
-    console.log("[Compile] " + f.relative);
-    return this.emit("data", f);
-  })).pipe(gulpif(Helper.shouldLintCoffee, StreamFuncs.jshint())).pipe(gulpif(Helper.shouldLintCoffee, StreamFuncs.lintReporter())).pipe(gulp.dest("."));
-  coffeeCompile.removeAllListeners("error");
-  coffeeCompile.on("error", StreamFuncs.coffeeErrorPrinter);
+  coffeeBranch = StreamFuncs.throughCoffee();
   langeSrcBranchRegex = /lang-source\.coffee/;
   coffeeBranchRegex = /\.coffee$/;
   if (GLOBAL.gulpConfig.reloadJsHtml) {
@@ -205,7 +217,7 @@ setupCompileStream = function(stream) {
   } else {
     liveReloadBranchRegex = /src.assets/;
   }
-  return stream.pipe(gulpif(langeSrcBranchRegex, langSrcBranch, true)).pipe(gulpif(liveReloadBranchRegex, assetBranch, true)).pipe(gulpif(coffeeBranchRegex, coffeeBranch, true));
+  return stream.pipe(gulpif(langeSrcBranchRegex, langSrcBranch, true)).pipe(gulpif(coffeeBranchRegex, coffeeBranch, true)).pipe(gulpif(liveReloadBranchRegex, assetBranch, true));
 };
 
 watch = function() {
@@ -257,6 +269,9 @@ watch = function() {
   gutil.log(gutil.colors.bgBlue(" Watching file changes... "));
   watcher.on("add", changeHandler);
   watcher.on("change", changeHandler);
+  watcher.on("error", function(e) {
+    return console.log("[error]", e);
+  });
   return null;
 };
 

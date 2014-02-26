@@ -322,6 +322,14 @@ define [ "./CanvasElement", "constant", "CanvasManager", "Design" ], ( CanvasEle
   ChildElementProto.moveVolume = ( volumeId )->
     design = @model.design()
     volume = design.component( volumeId )
+    result = volume.isReparentable( @model )
+
+    if _.isString( result )
+      notification "error", result
+      return
+    else if result isnt false
+      return false
+
     result = volume.attachTo( @model )
     if !result
       return false

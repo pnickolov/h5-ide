@@ -1456,7 +1456,7 @@ define [ 'event',
                 disableUserDataInput = false
                 if stateData and stateData.length
                     disableUserDataInput = true
-                ide_event.trigger ide_event.PROPERTY_DISABLE_USER_DATA_INPUT, disableUserDataInput
+                # ide_event.trigger ide_event.PROPERTY_DISABLE_USER_DATA_INPUT, disableUserDataInput
 
                 that.closedPopup()
 

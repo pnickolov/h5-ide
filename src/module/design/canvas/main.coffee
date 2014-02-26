@@ -91,6 +91,9 @@ define [ 'event', 'i18n!nls/lang.js', 'constant' ], ( ide_event, lang, constant 
                     new Design MC.common.other.canvasData.data(true), options
                     console.log 'new Design Create Complete'
 
+                    if type is 'NEW_STACK'
+                        MC.aws.aws.enableStackAgent(true)
+
                     # old design flow
                     MC.common.other.canvasData.origin MC.common.other.canvasData.data()
 

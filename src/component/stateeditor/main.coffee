@@ -47,7 +47,7 @@ define [ 'event', 'ace', 'ace_ext_language_tools',  'UI.modal', 'jquery_sort', '
         #
         view  = null
         model = null
-        #ide_event.offListen ide_event.<EVENT_TYPE>
+        ide_event.offListen ide_event.UPDATE_STATE_STATUS_DATA_TO_EDITOR
         #ide_event.offListen ide_event.<EVENT_TYPE>, <function name>
         return
 

@@ -951,7 +951,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
 
         cookieData = $.cookie()
 
-        enableValue = true
+        enableValue = false
         repoValue = cookieData.mod_repo
         tagValue = cookieData.mod_tag
 

@@ -28,12 +28,12 @@ define [ '../base/view', 'text!./template/stack.html', 'event', 'constant', 'i18
 
             $( "#keypair-select" ).on("click", ".icon-remove", _.bind(this.deleteKP, this) )
 
-            currentStateData = @model.getStateData()
+            # currentStateData = @model.getStateData()
 
-            if currentStateData and _.isArray(currentStateData) and currentStateData.length
-                @disableUserDataInput(true)
-            else
-                @disableUserDataInput(false)
+            # if currentStateData and _.isArray(currentStateData) and currentStateData.length
+            #     @disableUserDataInput(true)
+            # else
+            #     @disableUserDataInput(false)
 
             @model.attributes.name
 

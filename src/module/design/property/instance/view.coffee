@@ -43,12 +43,12 @@ define [ '../base/view',
             if not Design.instance().typeIsClassic()
                 @refreshIPList()
 
-            currentStateData = @model.getStateData()
+            # currentStateData = @model.getStateData()
 
-            if currentStateData and _.isArray(currentStateData) and currentStateData.length
-                @disableUserDataInput(true)
-            else
-                @disableUserDataInput(false)
+            # if currentStateData and _.isArray(currentStateData) and currentStateData.length
+            #     @disableUserDataInput(true)
+            # else
+            #     @disableUserDataInput(false)
 
             @model.attributes.name
 

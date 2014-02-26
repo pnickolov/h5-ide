@@ -2516,6 +2516,8 @@ define [ 'event',
 
             item = $('#state-editor .state-item.focused')
 
+            focused_index = $('#state-editor .state-item.focused').index('#state-editor .state-list > li')
+
             if direction is 'down'
 
                 next_item = item.next()
@@ -2524,9 +2526,13 @@ define [ 'event',
 
                     item.insertAfter next_item
 
+                    new_index = focused_index + 1
+
                 else
 
                     item.parent().prepend item
+
+                    new_index = 0
 
             if direction is 'up'
 
@@ -2536,9 +2542,17 @@ define [ 'event',
 
                     item.insertBefore prev_item
 
+                    new_index = focused_index - 1
+
                 else
 
                     item.parent().append item
+
+                    new_index = $('#state-editor .state-item').length
+
+            state_id = item.data('id')
+            
+            that.undoManager.register state_id, focused_index, 'sort', new_index
 
             return false
 

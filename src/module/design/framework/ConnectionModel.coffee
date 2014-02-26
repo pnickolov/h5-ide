@@ -196,12 +196,16 @@ define [ "./ResourceModel", "Design", "CanvasManager", "./canvasview/CanvasEleme
       console.assert (not (@__port1Comp.isRemoved() and @__port2Comp.isRemoved())), "Both ports are already removed when connection is removing", this
 
       # When an connection is removed because of a resource's removal, that resource.isRemoved() will be true. In that case, that resource.disconnect will not be called.
+      p1Exist = not @__port1Comp.isRemoved()
+      p2Exist = not @__port2Comp.isRemoved()
 
-      if not @__port1Comp.isRemoved()
-        @__port1Comp.disconnect_base( this, option )
+      # Update both resource's connection array first.
+      if p1Exist then @__port1Comp.attach_connection( @, true )
+      if p2Exist then @__port2Comp.attach_connection( @, true )
 
-      if not @__port2Comp.isRemoved()
-        @__port2Comp.disconnect_base( this, option )
+      if p1Exist then @__port1Comp.disconnect_base( @, option )
+      if p2Exist then @__port2Comp.disconnect_base( @, option )
+
 
       # Try removing line element in SVG, if the line is visual
       v = @__view

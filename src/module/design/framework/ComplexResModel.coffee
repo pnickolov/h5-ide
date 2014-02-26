@@ -104,22 +104,28 @@ define [ "Design", "CanvasManager", "./ResourceModel", "constant", "./canvasview
       ResourceModel.prototype.remove.call this
       null
 
+    attach_connection : ( cn, detach )->
+      # Use this method to modify connection array
+      # This method might be used by ConnectionModel before connect_base/disconnect_base
+      # is called
+      connections = @get("__connections") or []
+      idx = connections.indexOf( cn )
+      if detach
+        if idx isnt -1
+          connections.splice idx, 1
+      else
+        if idx is -1
+          connections.push cn
+          @set "__connections", connections
+
+      null
+
     connect_base : ( connection )->
       ###
       connect_base.call(this) # This is used to suppress the warning in ResourceModel.extend.
       ###
-
-      connections = @get "__connections"
-
-      if not connections
-        connections = []
-
-      if connections.indexOf( connection ) == -1
-        connections.push connection
-        @set "__connections", connections
-
-      if @connect
-        @connect( connection )
+      @attach_connection( connection )
+      if @connect then @connect( connection )
       null
 
     disconnect_base : ( connection, reason )->
@@ -127,17 +133,10 @@ define [ "Design", "CanvasManager", "./ResourceModel", "constant", "./canvasview
       disconnect_base.call(this) # This is used to suppress the warning in ResourceModel.extend.
       ###
 
-      connections = @get "__connections"
       # Directly remove the connection without triggering anything changed.
       # But I'm not sure if this will affect undo/redo
-
-      if not connections then return
-      if connections.indexOf(connection) is -1 then return
-
-      connections.splice( connections.indexOf( connection ), 1 )
-
-      if @disconnect
-        @disconnect( connection, reason )
+      @attach_connection( connection, true )
+      if @disconnect then @disconnect( connection, reason )
       null
 
     isVisual : ()-> true

@@ -123,7 +123,7 @@ define [ "constant", "../ConnectionModel", "../ResourceModel", "component/sgrule
       v = @__view
       if v then v.detach()
 
-      ResourceModel.remove.apply( this, arguments )
+      ResourceModel.prototype.remove.apply( this, arguments )
       null
 
 

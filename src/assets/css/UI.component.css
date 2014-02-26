@@ -417,7 +417,7 @@ a.table-link {
 
 .input:focus,
 textarea:focus {
-	border: solid 1px #358EFF;
+	border: solid 1px #4495d3;
 	background: #fff;
 }
 
@@ -1031,12 +1031,13 @@ textarea {
 
 /* Modal */
 #modal-box {
-	position: absolute;
-	color: #999;
-	background: #eee;
-	box-shadow: 1px 1px 5px rgba(0, 0, 0, .6);
-	z-index: 70;
-	/*border: 1px solid #242424;*/
+	position     : absolute;
+	z-index      : 70;
+	border-radius: 3px;
+	background   : #eee;
+	box-shadow   : 1px 1px 5px rgba(0, 0, 0, .4);
+	color        : #999;
+	/*border     : 1px solid #242424;*/
 }
 
 #modal-box #bubble-box {
@@ -1045,30 +1046,38 @@ textarea {
 
 .modal-header .modal-close,
 .modal-header .btn-modal-close {
-	position: absolute;
-	right: 10px;
-	top: 14px;
-	font-style: normal;
-	cursor: pointer;
-	font-size: 20px;
-	line-height: 20px;
+	position     : absolute;
+	top          : 14px;
+	right        : 10px;
+	width        : 20px;
+	height       : 20px;
+	border-radius: 2px;
+	background   : rgba(0,0,0,.1);
+	color        : #eee;
+	text-align   : center;
+	font-style   : normal;
+	font-size    : 16px;
+	line-height  : 20px;
+	cursor       : pointer;
 }
 
 .modal-header .modal-close:hover,
 .modal-header .btn-modal-close:hover {
-	color: #fff;
+	color     : #fff;
+	background: rgba(0,0,0,.2);
 }
 
 .modal-header {
-	position: relative;
-	padding: 4px 10px;
-	background: #181818;
-	border-bottom: 1px solid #333;
-	color: #9b9b9b;
+	position     : relative;
+	padding      : 4px 10px;
+	background   : #4495d3;
+	border-bottom: 1px solid #4C639E;
+	color        : #F1F1F1;
+	border-radius: 2px 2px 0 0;
 }
 
 .modal-header h3 {
-	color: #eee;
+	/*color: #eee;*/
 	font-size: 16px;
 	cursor: move;
 }
@@ -1125,13 +1134,13 @@ textarea {
 }
 
 #modal-wrap {
-	position         : fixed;
-	top              : 0;
-	right            : 0;
-	bottom           : 0;
-	left             : 0;
-	z-index          : 70;
-	background-color : rgba(0, 0, 0, 0.8);
+	position        : fixed;
+	top             : 0;
+	right           : 0;
+	bottom          : 0;
+	left            : 0;
+	z-index         : 70;
+	background-color: rgba(41, 56, 71, 0.8);
 }
 
 .modal-control-group {

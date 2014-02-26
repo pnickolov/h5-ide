@@ -449,12 +449,12 @@
 }
 
 #state-editor .command-value {
-	float: left;
-	width: 150px;
-	margin-left: 28px;
-	margin-top: -27px;
+	float        : left;
+	width        : 150px;
+	margin-left  : 28px;
+	margin-top   : -27px;
 	/*margin-left: 60px;*/
-	color: #666 !important;
+	color        : #666 !important;
 }
 
 #state-editor .parameter-list {

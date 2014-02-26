@@ -8,8 +8,9 @@ Q      = require("q")
 fs     = require("fs")
 vm     = require("vm")
 
-tinylr      = require("tiny-lr")
-chokidar    = require("chokidar")
+tinylr   = require("tiny-lr")
+chokidar = require("chokidar")
+notifier = require("node-notifier")
 
 coffee     = require("gulp-coffee")
 coffeelint = require("gulp-coffeelint")
@@ -47,6 +48,15 @@ Helper =
       ++idx
 
     true
+
+  notify : ( msg )->
+    if GLOBAL.gulpConfig.enbaleNotifier
+      notifier.notify({
+        title   : "IDE Gulp"
+        message : msg
+      })
+    null
+
   createLrServer : ()->
     if lrServer then return
 
@@ -82,6 +92,8 @@ StreamFuncs =
 
   coffeeErrorPrinter : ( error )->
     console.log gutil.colors.red.bold("\n[CoffeeError]"), error.message.replace( process.cwd(), "." )
+
+    Helper.notify "Error occur when compiling " + error.message.replace( process.cwd(), "." ).split(":")[0]
     null
 
   throughLiveReload : ()->
@@ -263,6 +275,7 @@ watch = ( secondTime )->
   setTimeout ()->
     if not watchIsWorking
       console.log "[Info]", "Watch is not working. Will retry in 2 seconds."
+      Helper.notify "Watch is not working. Will retry in 2 seconds."
       setTimeout (()-> watch(true)), 2000
 
   , 500

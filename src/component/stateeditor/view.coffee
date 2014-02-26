@@ -919,6 +919,8 @@ define [ 'event',
             $stateItemList.addClass('view')
             $stateItem.removeClass('view').addClass('focused')
 
+            that.justScrollToElem that.$stateList, $stateItem
+
             # refresh description
             cmdName = $stateItem.attr('data-command')
             if cmdName
@@ -2650,18 +2652,24 @@ define [ 'event',
             if reverse and reverse is true
 
                 if focused_index > 0
-                    stack.eq(focused_index - 1).addClass('focused')
+                    target_index = focused_index - 1
 
                 if focused_index < 1
-                    stack.eq(total - 1).addClass('focused')
+                    target_index = total - 1
 
             else
 
                 if focused_index + 1 < total
-                    stack.eq(focused_index + 1).addClass('focused')
+                    target_index = focused_index + 1
 
                 else
-                    stack.eq(0).addClass('focused')
+                    target_index = 0
+
+            target_item = stack.eq target_index
+
+            target_item.addClass('focused')
+
+            that.justScrollToElem that.$stateList, target_item
 
             return false
 
@@ -2682,18 +2690,24 @@ define [ 'event',
             if reverse and reverse is true
 
                 if focused_index > 0
-                    that.expandItem.call this, stack.eq(focused_index - 1).addClass('focused')
+                    target_index = focused_index - 1
 
                 if focused_index < 1
-                    that.expandItem.call this, stack.eq(total - 1).addClass('focused')
+                    target_index = total - 1
 
             else
 
                 if focused_index + 1 < total
-                    that.expandItem.call this, stack.eq(focused_index + 1).addClass('focused')
+                    target_index = focused_index + 1
 
                 else
-                    that.expandItem.call this, stack.eq(0).addClass('focused')
+                    target_index = 0
+
+            target_item = stack.eq target_index
+
+            that.expandItem.call this, target_item.addClass('focused')
+
+            # that.justScrollToElem that.$stateList, target_item
 
             return false
 

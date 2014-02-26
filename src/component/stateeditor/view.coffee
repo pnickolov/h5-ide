@@ -919,6 +919,8 @@ define [ 'event',
             $stateItemList.addClass('view')
             $stateItem.removeClass('view').addClass('focused')
 
+            that.justScrollToElem that.$stateList, $stateItem
+
             # refresh description
             cmdName = $stateItem.attr('data-command')
             if cmdName
@@ -1648,6 +1650,11 @@ define [ 'event',
                                 thatEditor.execCommand("startAutocomplete")
 
                     if e.command.name is "backspace" and hintDataAryMap['focus']
+
+                        $paraItem = $editorElem.parents('.parameter-item')
+                        if $paraItem.hasClass('bool')
+                            that.setPlainText($editorElem, '')
+
                         that.setEditorCompleter(thatEditor, hintDataAryMap['focus'], 'command')
                         thatEditor.execCommand("startAutocomplete")
 
@@ -1714,13 +1721,16 @@ define [ 'event',
 
                 editor.on("focus", (e, thatEditor) ->
 
+                    $valueInput = $(thatEditor.container)
+
+                    that.justScrollToElem(that.$stateList, $valueInput)
+
                     hintDataAryMap = thatEditor.hintObj
                     currentValue = thatEditor.getValue()
                     if not currentValue and hintDataAryMap['focus']
                         that.setEditorCompleter(thatEditor, hintDataAryMap['focus'], 'command')
                         thatEditor.execCommand("startAutocomplete")
 
-                    $valueInput = $(thatEditor.container)
                     inputPosX = $valueInput.offset().left
                     inputPosY = $valueInput.offset().top
                     that.$aceAutocompleteTip.css({
@@ -1761,6 +1771,28 @@ define [ 'event',
                 that.$cmdDsec.animate({
                     scrollTop: scrollToPos
                 }, 150)
+
+            catch err
+
+                null
+
+        justScrollToElem: ($parent, $target) ->
+
+            try
+
+                targetOffsetTop = $target.offset().top
+                parentOffsetTop = $parent.offset().top
+
+                targetTop = targetOffsetTop + $target.height()
+                parentTop = $parent.offset().top + $parent.height()
+
+                if targetTop > parentTop
+                    scrollPos = $parent.scrollTop() - parentTop + targetTop + 15
+
+                if $target.offset().top < $parent.offset().top
+                    scrollPos = $parent.scrollTop() + targetOffsetTop - parentOffsetTop - 15
+
+                $parent.scrollTop(scrollPos)
 
             catch err
 
@@ -2516,6 +2548,8 @@ define [ 'event',
 
             item = $('#state-editor .state-item.focused')
 
+            focused_index = $('#state-editor .state-item.focused').index('#state-editor .state-list > li')
+
             if direction is 'down'
 
                 next_item = item.next()
@@ -2524,9 +2558,13 @@ define [ 'event',
 
                     item.insertAfter next_item
 
+                    new_index = focused_index + 1
+
                 else
 
                     item.parent().prepend item
+
+                    new_index = 0
 
             if direction is 'up'
 
@@ -2536,9 +2574,17 @@ define [ 'event',
 
                     item.insertBefore prev_item
 
+                    new_index = focused_index - 1
+
                 else
 
                     item.parent().append item
+
+                    new_index = $('#state-editor .state-item').length
+
+            state_id = item.data('id')
+            
+            that.undoManager.register state_id, focused_index, 'sort', new_index
 
             return false
 
@@ -2546,9 +2592,11 @@ define [ 'event',
 
             that = this
 
-            newStateDataAry = that.setNewStateIdForStateAry( MC.data.stateClipboard )
-            insertPos = that.addStateItemByData( newStateDataAry )
-            that.undoManager.register(null, insertPos, 'paste', newStateDataAry)
+            focused_index = $('#state-editor .state-item.focused').index('#state-editor .state-list > li')
+
+            newStateDataAry = that.setNewStateIdForStateAry MC.data.stateClipboard
+            insertPos = that.addStateItemByData newStateDataAry, focused_index
+            that.undoManager.register null, insertPos, 'paste', newStateDataAry
 
             that.clearSelectedItem()
 
@@ -2604,18 +2652,24 @@ define [ 'event',
             if reverse and reverse is true
 
                 if focused_index > 0
-                    stack.eq(focused_index - 1).addClass('focused')
+                    target_index = focused_index - 1
 
                 if focused_index < 1
-                    stack.eq(total - 1).addClass('focused')
+                    target_index = total - 1
 
             else
 
                 if focused_index + 1 < total
-                    stack.eq(focused_index + 1).addClass('focused')
+                    target_index = focused_index + 1
 
                 else
-                    stack.eq(0).addClass('focused')
+                    target_index = 0
+
+            target_item = stack.eq target_index
+
+            target_item.addClass('focused')
+
+            that.justScrollToElem that.$stateList, target_item
 
             return false
 
@@ -2636,18 +2690,24 @@ define [ 'event',
             if reverse and reverse is true
 
                 if focused_index > 0
-                    that.expandItem.call this, stack.eq(focused_index - 1).addClass('focused')
+                    target_index = focused_index - 1
 
                 if focused_index < 1
-                    that.expandItem.call this, stack.eq(total - 1).addClass('focused')
+                    target_index = total - 1
 
             else
 
                 if focused_index + 1 < total
-                    that.expandItem.call this, stack.eq(focused_index + 1).addClass('focused')
+                    target_index = focused_index + 1
 
                 else
-                    that.expandItem.call this, stack.eq(0).addClass('focused')
+                    target_index = 0
+
+            target_item = stack.eq target_index
+
+            that.expandItem.call this, target_item.addClass('focused')
+
+            # that.justScrollToElem that.$stateList, target_item
 
             return false
 

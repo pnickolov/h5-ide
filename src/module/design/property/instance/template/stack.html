@@ -136,7 +136,7 @@
 			</div>
 			<label for="property-instance-source-check">{{ i18n "PROP_INSTANCE_ENI_SOURCE_DEST_CHECK" }}</label>
 		</section>
-		<section class="property-control-group">
+		<section {{#if multi_enis}}class="property-control-group tooltip" data-tooltip="Public IP cannot be associated if instance is launching with more than one network interface."{{else}}class="property-control-group"{{/if}}>
 			<div class="checkbox">
 				<input id="property-instance-public-ip" type="checkbox" {{#if multi_enis}}disabled="disabled"{{/if}} {{#if eni.assoPublicIp}}checked="checked" {{/if}} value="None" name="property-instance-public-ip" />
 				<label for="property-instance-public-ip"></label>

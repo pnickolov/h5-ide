@@ -4810,7 +4810,10 @@ MC.canvas.event.keyEvent = function (event)
 	var canvas_status = MC.canvas.getState(),
 		selected_node = $canvas.selected_node();
 
-	if ($('#modal-wrap')[0] != null)
+	if (
+		$('#modal-wrap')[0] != null ||
+		Tabbar.current === 'dashboard'
+	)
 	{
 		return true;
 	}

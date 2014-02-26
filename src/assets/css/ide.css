@@ -3558,11 +3558,12 @@ a.sidebar-hider {
 	top      : 0;
 	position : absolute;
 	background: #313131; /* for zoomed out */
+	margin-top: 44px;
 }
 
 .property-wrap .scroll-wrap {
 	position : absolute;
-	top      : 89px;
+	top      : 45px;
 	bottom   : 0;
 	left     : 0;
 	right    : 0;

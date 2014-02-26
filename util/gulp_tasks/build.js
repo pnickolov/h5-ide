@@ -222,9 +222,10 @@ setupCompileStream = function(stream) {
   return stream.pipe(gulpif(langeSrcBranchRegex, langSrcBranch, true)).pipe(gulpif(coffeeBranchRegex, coffeeBranch, true)).pipe(gulpif(liveReloadBranchRegex, assetBranch, true));
 };
 
-watch = function() {
-  var changeHandler, cwd, watchStream, watcher;
+watch = function(secondTime) {
+  var changeHandler, cwd, watchIsWorking, watchStream, watcher;
 
+  watchIsWorking = secondTime || false;
   Helper.createLrServer();
   watcher = chokidar.watch("./src", {
     usePolling: false,
@@ -238,6 +239,7 @@ watch = function() {
   changeHandler = function(path) {
     var stats;
 
+    watchIsWorking = true;
     if (!fs.existsSync(path)) {
       return;
     }
@@ -274,6 +276,15 @@ watch = function() {
   watcher.on("error", function(e) {
     return console.log("[error]", e);
   });
+  fs.writeFileSync("./src/robots.txt", fs.readFileSync("./src/robots.txt"));
+  setTimeout(function() {
+    if (!watchIsWorking) {
+      console.log("[Info]", "Watch is not working. Will retry in 2 seconds.");
+      return setTimeout((function() {
+        return watch(true);
+      }), 2000);
+    }
+  }, 500);
   return null;
 };
 

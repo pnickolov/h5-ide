@@ -203,7 +203,9 @@ setupCompileStream = ( stream )->
 
 
 # Tasks
-watch = ()->
+watch = ( secondTime )->
+
+  watchIsWorking = secondTime or false
 
   Helper.createLrServer()
 
@@ -221,6 +223,8 @@ watch = ()->
   setupCompileStream watchStream
 
   changeHandler = ( path )->
+    watchIsWorking = true
+
     if not fs.existsSync( path ) then return
 
     stats = fs.statSync( path )
@@ -253,6 +257,15 @@ watch = ()->
   watcher.on "add",    changeHandler
   watcher.on "change", changeHandler
   watcher.on "error", (e)-> console.log "[error]", e
+
+  # Try to detect if watch is not working
+  fs.writeFileSync( "./src/robots.txt", fs.readFileSync("./src/robots.txt") )
+  setTimeout ()->
+    if not watchIsWorking
+      console.log "[Info]", "Watch is not working. Will retry in 2 seconds."
+      setTimeout (()-> watch(true)), 2000
+
+  , 500
   null
 
 

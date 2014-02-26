@@ -2560,9 +2560,11 @@ define [ 'event',
 
             that = this
 
-            newStateDataAry = that.setNewStateIdForStateAry( MC.data.stateClipboard )
-            insertPos = that.addStateItemByData( newStateDataAry )
-            that.undoManager.register(null, insertPos, 'paste', newStateDataAry)
+            focused_index = $('#state-editor .state-item.focused').index('#state-editor .state-list > li')
+
+            newStateDataAry = that.setNewStateIdForStateAry MC.data.stateClipboard
+            insertPos = that.addStateItemByData newStateDataAry, focused_index
+            that.undoManager.register null, insertPos, 'paste', newStateDataAry
 
             that.clearSelectedItem()
 

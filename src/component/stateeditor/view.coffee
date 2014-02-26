@@ -1648,6 +1648,11 @@ define [ 'event',
                                 thatEditor.execCommand("startAutocomplete")
 
                     if e.command.name is "backspace" and hintDataAryMap['focus']
+
+                        $paraItem = $editorElem.parents('.parameter-item')
+                        if $paraItem.hasClass('bool')
+                            that.setPlainText($editorElem, '')
+
                         that.setEditorCompleter(thatEditor, hintDataAryMap['focus'], 'command')
                         thatEditor.execCommand("startAutocomplete")
 
@@ -1714,13 +1719,16 @@ define [ 'event',
 
                 editor.on("focus", (e, thatEditor) ->
 
+                    $valueInput = $(thatEditor.container)
+
+                    that.justScrollToElem(that.$stateList, $valueInput)
+
                     hintDataAryMap = thatEditor.hintObj
                     currentValue = thatEditor.getValue()
                     if not currentValue and hintDataAryMap['focus']
                         that.setEditorCompleter(thatEditor, hintDataAryMap['focus'], 'command')
                         thatEditor.execCommand("startAutocomplete")
 
-                    $valueInput = $(thatEditor.container)
                     inputPosX = $valueInput.offset().left
                     inputPosY = $valueInput.offset().top
                     that.$aceAutocompleteTip.css({
@@ -1761,6 +1769,28 @@ define [ 'event',
                 that.$cmdDsec.animate({
                     scrollTop: scrollToPos
                 }, 150)
+
+            catch err
+
+                null
+
+        justScrollToElem: ($parent, $target) ->
+
+            try
+
+                targetOffsetTop = $target.offset().top
+                parentOffsetTop = $parent.offset().top
+
+                targetTop = targetOffsetTop + $target.height()
+                parentTop = $parent.offset().top + $parent.height()
+
+                if targetTop > parentTop
+                    scrollPos = $parent.scrollTop() - parentTop + targetTop + 15
+
+                if $target.offset().top < $parent.offset().top
+                    scrollPos = $parent.scrollTop() + targetOffsetTop - parentOffsetTop - 15
+
+                $parent.scrollTop(scrollPos)
 
             catch err
 

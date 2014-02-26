@@ -159,7 +159,7 @@ define [ "component/thumbnail/ThumbUtil", 'MC', 'backbone', 'jquery', 'underscor
                     console.log 'save as stack successfully'
 
                     #update stack name list
-                    new_id = result.resolved_data.id
+                    new_id = result.resolved_data
                     MC.data.stack_list[region].push {'id':new_id, 'name':new_name}
 
                     # old save png

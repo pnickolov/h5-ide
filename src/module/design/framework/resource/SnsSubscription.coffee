@@ -35,6 +35,8 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
     handleTypes  : constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic
     resolveFirst : true
 
+    diffJson : ()-> # Disable diff for this Model
+
     isTopicNeeded : ()->
       ScalingPolicyModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_ScalingPolicy )
       for sp in ScalingPolicyModel.allObjects()

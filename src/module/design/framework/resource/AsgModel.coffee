@@ -37,6 +37,8 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
 
     handleTypes : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_NotificationConfiguration
 
+    diffJson : ()-> # Disable diff for this model
+
     typeMap : {
       "autoscaling:EC2_INSTANCE_LAUNCH"          : "instanceLaunch"
       "autoscaling:EC2_INSTANCE_LAUNCH_ERROR"    : "instanceLaunchError"

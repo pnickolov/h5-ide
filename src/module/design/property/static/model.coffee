@@ -26,8 +26,10 @@ define [ "module/design/property/base/model", "Design", "constant" ], ( Property
             if isIGW
               if data.attachmentSet and data.attachmentSet.item.length
                 item = data.attachmentSet.item[0]
-            else if data.attachments and data.attachments.item.length
-              item = data.attachments.item[0]
+            else
+              item = data
+            #else if data.attachments and data.attachments.item.length
+            #  item = data.attachments.item[0]
 
           if item
             @set "state", item.state

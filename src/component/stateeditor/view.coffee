@@ -75,6 +75,8 @@ define [ 'event',
 
             'ACE_UTAB_SWITCH': 'aceUTabSwitch'
 
+        editorShow: false
+
         initialize: () ->
             this.compileTpl()
 
@@ -92,9 +94,11 @@ define [ 'event',
 
         render: () ->
             compData = @model.get 'compData'
-
-            if compData and compData.type in [constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance, constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration]
-                @__renderState()
+            if Design.instance().get('agent').enabled
+                if compData and compData.type in [constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance, constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration]
+                    @__renderState()
+                else
+                    @__renderEmpty()
             else
                 @__renderEmpty()
 
@@ -102,10 +106,13 @@ define [ 'event',
 
         __renderEmpty: () ->
             @$el.html @stateEmptyTpl {}
+            @editorShow = false
+            @
 
 
         __renderState: () ->
 
+            @editorShow = true
             @initState()
             that = this
 

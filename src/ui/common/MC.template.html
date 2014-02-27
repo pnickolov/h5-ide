@@ -1214,7 +1214,17 @@ Following rule(s) will be deleted from its(their) security group:</div>
 			</thead>
 			<tbody>
 			{{#each result}}
-				<tr> <td>{{type}}</td> <td>{{name}}</td> <td class="au-summary-label au-summary-{{change}}">{{change}} {{#if extra}}<span class="au-summary-extra">{{extra}}</span>{{/if}} {{#if info}}<span class="tooltip" data-tooltip="{{info}}">!</span>{{/if}}</td> </tr>
+				<tr> <td>{{type}}</td> <td>{{name}}</td>
+
+				<td>
+					{{#each changes}}
+					<span class="au-summary-label au-summary-{{name}}">{{info}}</span>
+					{{else}}
+					<span class="au-summary-label au-summary-{{change}}">{{change}}</span>
+					{{/each}}
+					{{#if extra}}<span class="au-summary-extra">{{extra}}</span>{{/if}}
+					{{#if info}}<span class="tooltip" data-tooltip="{{info}}">!</span>{{/if}}</td>
+				</tr>
 			{{/each}}
 			</tbody>
 		</table>

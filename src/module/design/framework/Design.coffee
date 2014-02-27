@@ -521,34 +521,39 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
     { costList : costList, totalFee : Math.round(totalFee * 100) / 100 }
 
 
-  diffHelper = ( newComp, oldComp, result )->
-    type = if newComp then newComp.type else oldComp.type
+  diffHelper = ( newComp, oldComp, result, newComponents, oldComponents )->
+    changeObj = newComp or oldComp
 
-    Model = Design.modelClassForType type
+    Model = Design.modelClassForType changeObj.type
     if Model.diffJson
-      r = Model.diffJson( newComp, oldComp )
-      if r and r.length
-        result = result.concat r
-      else if r and r.type
-        result.push r
+      try # Give it a try, because diffJson might be error-prone
+        r = Model.diffJson( newComp, oldComp, newComponents, oldComponents )
+      catch e
+        console.log e
+        r = null
+      if r
+        if r.id
+          result.push r
+        else
+          console.error "Invalid return value when diffing json."
+
       return
 
+    changeObj =
+      type : changeObj.type
+      name : changeObj.name
+      id   : changeObj.uid
+
     if not newComp
-      result.push
-        type   : oldComp.type
-        name   : oldComp.name
-        change : "Delete"
+      changeObj.change = "Delete"
     else if not oldComp
-      result.push
-        type   : newComp.type
-        name   : newComp.name
-        change : "Create"
+      changeObj.change = "Create"
     # Only compare resources.
     else if not _.isEqual newComp.resource, oldComp.resource
-      result.push
-        type   : newComp.type
-        name   : newComp.name
-        change : "Update"
+      changeObj.change = "Update"
+
+    if changeObj.change
+      result.push changeObj
     null
 
   DesignImpl.prototype.diff = ()->
@@ -560,11 +565,11 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
     isModified = not _.isEqual( newData.component, oldData.component )
     result     = []
     for uid, comp of newData.component
-      diffHelper( comp, oldData.component[uid], result )
+      diffHelper( comp, oldData.component[uid], result, newData.component, oldData.component )
 
     for uid, comp of oldData.component
       if newData.component[ uid ] then continue
-      diffHelper( undefined, comp, result )
+      diffHelper( undefined, comp, result, newData.component, oldData.component )
 
     {
       result     : result

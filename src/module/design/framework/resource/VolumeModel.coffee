@@ -255,6 +255,19 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
 
     handleTypes : constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume
 
+    diffJson : ( newData, oldData, newComponent, oldComponent )->
+      if not ( newData and oldData and _.isEqual(newData, oldData) )
+        changeData = newData or oldData
+        instance = Design.instance().component( changeData.resource.AttachmentSet.InstanceId )
+        if instance
+          return {
+            id     : instance.id
+            name   : instance.get("name")
+            change : "Update"
+          }
+
+      return
+
     deserialize : ( data, layout_data, resolve )->
 
       # Compact volume for servergroup

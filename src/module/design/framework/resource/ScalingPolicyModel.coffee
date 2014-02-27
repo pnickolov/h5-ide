@@ -140,11 +140,12 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
         asgId = (newData || oldData).resource
         asgId = asgId.AutoScalingGroupName || asgId.Dimensions[0].value
         asg   = Design.instance().component( MC.extractID( asgId ) )
-        return {
-          type   : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
-          name   : asg.get("name")
-          change : "Update"
-        }
+        if asg
+          return {
+            type   : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+            name   : asg.get("name")
+            change : "Update"
+          }
 
       null
 

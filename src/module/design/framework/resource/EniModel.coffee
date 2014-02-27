@@ -502,7 +502,9 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
 
   }, {
 
-    handleTypes : [ constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface ]
+    # EniModel does not handle EIP's deserialize. Because EIP's component
+    # will be removed before deserializing. It only handles EIP's diffJson
+    handleTypes : [ constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface, constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP ]
 
     createServerGroupMember : ( data )->
       attachment = data.resource.Attachment || {}
@@ -526,6 +528,81 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
         memberData.ips.push( ipObj )
 
       memberData
+
+    diffEipJson : ( newData, oldData, newComponents, oldComponents )->
+      changeData = newData or oldData
+      eni = MC.extractID( changeData.resource.NetworkInterfaceId )
+      eni = newComponents[ eni ] or oldComponents[ eni ]
+      if not eni or eni.index isnt 0 then return
+      if MC.extractID( eni.resource.Attachment.DeviceIndex ) is "0"
+        instance = MC.extractID( eni.resource.Attachment.InstanceId )
+        instance = newComponents[ instance ] or oldComponents[ instance ]
+        if instance
+          return {
+            name   : instance.serverGroupName
+            type   : instance.type
+            change : "Update"
+          }
+      else
+        return {
+          name   : eni.serverGroupName
+          type   : eni.type
+          change : "Update"
+        }
+      return
+
+    diffJson : ( newData, oldData, newComponents, oldComponents )->
+      changeData = newData or oldData
+
+      if changeData.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP
+        return @diffEipJson( newData, oldData, newComponents, oldComponents )
+
+      if changeData.index isnt 0 then return
+
+      if newData then attachment = newData.resource.Attachment
+      if not attachment and oldData then attachment = oldData.resource.Attachment
+      if not attachment then return
+
+      instance = MC.extractID(attachment.InstanceId)
+      instance = newComponents[ instance ] or oldComponents[ instance ]
+      if not instance then return
+
+      if attachment.DeviceIndex is "0"
+        if newData and oldData and not _.isEqual( newData, oldData )
+          return {
+            name   : instance.serverGroupName
+            type   : instance.type
+            id     : instance.uid
+            change : "Update"
+          }
+        else
+          return
+
+      change = {
+        id      : changeData.uid
+        type    : constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+        name    : instance.serverGroupName + "-" + changeData.serverGroupName
+        changes : []
+      }
+      if newData and oldData and not _.isEqual( newData.resource, oldData.resource )
+        change.changes.push { name : "Update" }
+
+      newCount = if newData then newData.number else 0
+      oldCount = if oldData then oldData.number else 0
+      if newCount > oldCount
+        change.changes.push {
+          name  : "Create"
+          count : newCount - oldCount
+        }
+      else if newCount < oldCount
+        change.changes.push {
+          name  : "Delete"
+          count : newCount - oldCount
+        }
+      if change.changes.length
+        change
+      else
+        null
 
     deserialize : ( data, layout_data, resolve )->
 

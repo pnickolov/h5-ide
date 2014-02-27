@@ -1129,18 +1129,26 @@ define [ "component/thumbnail/ThumbUtil", 'MC', 'backbone', 'jquery', 'underscor
                 if AwsTypeConvertMap[ obj.type ]
                     obj.type = AwsTypeConvertMap[ obj.type ]
                 # Remove duplicate
-                key = obj.type + obj.name
-                if obj.change is "Update"
-                    key += "Create"
-                else
-                    key += obj.change
-
-                exist = dedupMap[ key ]
+                exist = dedupMap[ obj.id ]
                 if not exist
-                    dedupMap[ key ] = obj
+                    exist = dedupMap[ obj.id ] = obj
                     dedupResult.push obj
-                else if obj.change is "Create"
+                else if obj.change and obj.change isnt "Update"
                     exist.change = obj.change
+
+                if obj.changes
+                    exist.changes = obj.changes
+                    for c in obj.changes
+                        c.info = c.name
+                        if c.count < 0
+                            c.info = c.name + " " + c.count
+                        else if c.count > 0
+                            c.info = c.name + " +" + c.count
+
+                if exist.change is "Delete"
+                    exist.info = exist.info or "Deletion cannot be rolled back"
+                else if exist.change is "Terminate"
+                    exist.info = exist.info or "Termination cannot be rolled back"
 
             diffResult.result = dedupResult
             diffResult

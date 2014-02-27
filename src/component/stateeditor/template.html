@@ -201,7 +201,7 @@
 		</ul>
 
 		<div id="state-editor-wrap">
-			<div id="state-editor-body" class="scroll-content modal-body clearfix">
+			<div id="state-editor-body">
 				<div id="state-editor" spellcheck="false">
 					{{#unless supported_platform}}<div class="state-warning">The AMI's distro cannot be recognised. Some commands may not apply to this AMI.</div>{{/unless}}
 
@@ -227,15 +227,15 @@
 								<label for="state-toolbar-selectAll"></label>
 							</div>
 						</div>
-					</div>
 
-					<div id="state-list-wrap" class="scroll-wrap">
-						<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-						<div class="scroll-content">
-							<ol class="state-list"></ol>
+						<div id="state-list-wrap" class="scroll-wrap">
+							<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+							<div class="scroll-content">
+								<ol class="state-list"></ol>
+							</div>
 						</div>
+					
 					</div>
-
 				</div>
 			</div>
 			<div id="state-description" data-command="" style="display:none;"></div>

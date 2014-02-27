@@ -30,6 +30,7 @@ define [ 'event',
             # 'click .state-toolbar .state-id': 'onStateIdClick'
             'click #state-toolbar-add': 'addStateItem'
             'click #state-toolbar-copy-all': 'copyAllState'
+            'click #state-toolbar-copy': 'copyState'
             'click #state-toolbar-delete': 'removeState'
             'click #state-toolbar-paste': 'pasteState'
             'click #state-toolbar-undo': 'onUndo'
@@ -2593,6 +2594,9 @@ define [ 'event',
             that = this
 
             focused_index = $('#state-editor .state-item.focused').index('#state-editor .state-list > li')
+
+            if focused_index is -1
+                focused_index = null
 
             newStateDataAry = that.setNewStateIdForStateAry MC.data.stateClipboard
             insertPos = that.addStateItemByData newStateDataAry, focused_index

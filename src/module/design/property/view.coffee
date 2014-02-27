@@ -15,6 +15,8 @@ define [ 'event',
         events:
             'click': 'test'
 
+        currentTab: 'property'
+
         initialize : ->
 
             ##########################
@@ -52,13 +54,23 @@ define [ 'event',
                 .on( 'click', '#hide-property-panel', this.togglePropertyPanel )
                 .on( 'click', '.option-group-head', _.bind( this.toggleOption, this ))
                 .on( 'click', '#hide-second-panel', _.bind( this.hideSecondPanel, this ))
-                .on( 'click', '#btn-switch-state', _.bind( this.renderState, this ) )
-                .on( 'click', '#btn-switch-property', _.bind( this.renderProperty, this ) )
+                .on( 'click', '#btn-switch-state, #btn-switch-property', _.bind( this.switchTab, this ) )
 
             null
 
+        switchTab: ( event ) ->
+            target = event.currentTarget
+            if target.id is 'btn-switch-state'
+                if @currentTab isnt 'state'
+                    @renderState()
+            else
+                if @currentTab is 'state'
+                    @renderProperty()
+
+
         renderProperty: () ->
-            if $( '#property-panel' ).hasClass 'state'
+            if  @currentTab is 'state'
+                @currentTab = 'property'
                 uid = Design.instance().canvas.selectedNode[ 0 ]
                 component = Design.instance().component uid
                 if component
@@ -69,10 +81,11 @@ define [ 'event',
                 @forceShow()
 
         renderState: () ->
-            if  not $( '#property-panel' ).hasClass 'state'
-                uid = Design.instance().canvas.selectedNode[ 0 ]
-                ide_event.trigger ide_event.OPEN_STATE_EDITOR, uid
-                @forceShow()
+
+            @currentTab = 'state'
+            uid = Design.instance().canvas.selectedNode[ 0 ]
+            ide_event.trigger ide_event.OPEN_STATE_EDITOR, uid
+            @forceShow()
 
         render     : () ->
 

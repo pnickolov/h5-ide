@@ -74,8 +74,14 @@ define [ 'event',
 
 		#listen OPEN_PROPERTY
 		ide_event.onLongListen ide_event.OPEN_PROPERTY, ( type, uid, force ) ->
+
 			view.render()
 			view.load()
+
+			if view.currentTab is 'state'
+				view.renderState()
+				return
+
 
 			# Load property
 			# Format `type` so that PropertyBaseModule knows about it.

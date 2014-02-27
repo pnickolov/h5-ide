@@ -3550,13 +3550,12 @@ a.sidebar-hider {
 }
 
 .property-panel-wrapper {
-	height   : 100%;
 	width    : 100%;
-	left     : 0%;
-	top      : 0;
+	left     : 0;
+	top      : 41px;
+	bottom   : 0;
 	position : absolute;
 	background: #313131; /* for zoomed out */
-	margin-top: 41px;
 }
 
 .property-wrap .scroll-wrap {
@@ -7358,4 +7357,14 @@ summary:focus {
 #property-panel #btn-switch-property {
     background-color: rgba(0,0,0,.4);
     color: #FEFEFE;
+}
+
+#state-editor-model {
+	width: 654px;
+	position: absolute;
+	top: 41px;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background-color: #fff;
 }

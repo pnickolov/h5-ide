@@ -104,8 +104,17 @@ define [ 'event',
 
             @
 
-        __renderEmpty: () ->
-            @$el.html @stateEmptyTpl {}
+        __renderEmpty: ( type ) ->
+
+            tipSet =
+                disalbed : 'VisualOps is disabled.'
+                void     : "The component does'nt have state editor."
+                group    : 'View states and log by selecting individual instance.'
+                default  : 'No state editor here.'
+
+            tip = type and tipSet[ type ] or tipSet.default
+
+            @$el.html @stateEmptyTpl { tip: tip }
             @editorShow = false
             @
 

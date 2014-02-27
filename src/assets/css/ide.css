@@ -7348,6 +7348,8 @@ summary:focus {
 #property-panel .state-empty {
 	background: #313131;
 	height: 100%;
+	text-align: center;
+	padding-top: 30%;
 }
 
 #property-panel #btn-switch-property {

@@ -1803,7 +1803,7 @@ define [ 'event',
 
                 # $parent.scrollTop(scrollPos)
 
-                scrollbar.scrollTo $('#state-list-wrap'), {top: scrollPos}
+                scrollbar.scrollTo $('#state-list-wrap'), {top: scrollPos - 15}
 
             catch err
 

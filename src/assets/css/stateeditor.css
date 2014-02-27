@@ -40,6 +40,10 @@
 	position: relative;
 }
 
+#state-editor, .ace_autocomplete {
+	font-family: "Lucida Console", "Monaco", monospace !important;
+}
+
 #state-editor.full {
 	width: auto;
 	float: none;

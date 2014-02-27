@@ -7,6 +7,8 @@ define [ 'event', 'ace', 'ace_ext_language_tools',  'UI.modal', 'jquery_sort', '
     #private
     loadModule = ( allCompData, uid ) ->
 
+        that = this
+
         #
         require [ 'stateeditor_view', 'stateeditor_model' ], ( View, Model ) ->
 
@@ -34,23 +36,35 @@ define [ 'event', 'ace', 'ace_ext_language_tools',  'UI.modal', 'jquery_sort', '
             view.model = model
 
             ide_event.onLongListen ide_event.UPDATE_STATE_STATUS_DATA_TO_EDITOR, model.listenStateStatusUpdate, model
-
+            ide_event.onLongListen ide_event.STATE_EDITOR_SAVE_DATA, () ->
+                if view.editorShow
+                    view.onStateSaveClick()
+                that.unLoadModule()
 
             $( '#property-panel' ).addClass 'state'
             $( '#property-panel' ).html view.render().el
 
     unLoadModule = ( view, model ) ->
         console.log 'state editor unLoadModule'
-        view.off()
-        model.off()
-        view.undelegateEvents()
-        modal.close()
 
-        #
-        view  = null
-        model = null
-        ide_event.offListen ide_event.UPDATE_STATE_STATUS_DATA_TO_EDITOR
-        #ide_event.offListen ide_event.<EVENT_TYPE>, <function name>
+        try
+
+            view.off()
+            model.off()
+            view.undelegateEvents()
+            modal.close()
+
+            #
+            view  = null
+            model = null
+            ide_event.offListen ide_event.UPDATE_STATE_STATUS_DATA_TO_EDITOR
+            ide_event.offListen ide_event.STATE_EDITOR_SAVE_DATA
+            #ide_event.offListen ide_event.<EVENT_TYPE>, <function name>
+
+        catch err
+
+            null
+
         return
 
     #public

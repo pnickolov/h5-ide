@@ -164,7 +164,7 @@ require.config {
 		'unmanagedvpc_model' : 'component/unmanagedvpc/model'
 
 		'jquery_sort'       : 'component/stateeditor/lib/jquery_sort'
-		'jquery_markdown'    : 'component/stateeditor/lib/jquery_markdown'
+		'markdown'    : 'component/stateeditor/lib/markdown'
 		'ace'                : 'component/stateeditor/lib/ace/ace'
 		'ace_ext_language_tools' : 'component/stateeditor/lib/ace/ext-language_tools'
 		'stateeditor'        : 'component/stateeditor/main'
@@ -403,14 +403,14 @@ require.config {
 		'jquery_sort' :
 			deps       : [ 'jquery', 'MC' ]
 
-		'jquery_markdown' :
-			deps       : [ 'jquery', 'MC' ]
+		'markdown' :
+			deps       : [ 'MC' ]
 
 		'ace_ext_language_tools' :
 			deps       : [ 'ace' ]
 
 		'stateeditor'  :
-			deps       : [ 'stateeditor_view', 'stateeditor_model', 'jquery_sort', 'jquery_markdown', 'ace_ext_language_tools', 'MC' ]
+			deps       : [ 'stateeditor_view', 'stateeditor_model', 'jquery_sort', 'markdown', 'ace_ext_language_tools', 'MC' ]
 }
 
 #requirejs.onError = ( err ) ->

@@ -627,7 +627,7 @@ define [ 'event',
 
             setTimeout(() ->
                 if descMarkdown
-                    descHTML = $.markdown(descMarkdown)
+                    descHTML = markdown.toHTML(descMarkdown)
                 that.$cmdDsec.html(descHTML)
             , 0)
 

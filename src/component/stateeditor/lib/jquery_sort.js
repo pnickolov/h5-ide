@@ -170,7 +170,7 @@
 // 				},
 
 // 				//set position of draggedItem
-// 				setPos: function(x, y) { 
+// 				setPos: function(x, y) {
 // 					//remove mouse offset so mouse cursor remains in same place on draggedItem instead of top left corner
 // 					var top = y - this.offset.top;
 // 					var left = x - this.offset.left;
@@ -203,7 +203,7 @@
 // 						y = Math.max(0, y - cont.height() - offset.top) + Math.min(0, y - offset.top);
 // 						x = Math.max(0, x - cont.width() - offset.left) + Math.min(0, x - offset.left);
 // 					}
-					
+
 // 					list.scroll.moveX = x == 0 ? 0 : x * opts.scrollSpeed / Math.abs(x);
 // 					list.scroll.moveY = y == 0 ? 0 : y * opts.scrollSpeed / Math.abs(y);
 
@@ -342,7 +342,7 @@
 // 							else
 // 								//list.placeHolderItem.clone().removeAttr("data-placeholder") crashes in IE7 and jquery 1.5.1 (doesn't in jquery 1.4.2 or IE8)
 // 								$(this.container).append(list.placeHolderItem.removeAttr("data-placeholder").clone().attr("data-droptarget", true));
-							
+
 // 							list.placeHolderItem.attr("data-placeholder", true);
 // 						}
 // 					});
@@ -372,7 +372,12 @@
 var dragsort = {
 	init: function (option)
 	{
-		$('#state-editor').on('mousedown', '.state-drag', {'option': option}, dragsort.mousedown);
+        if (option.$el)
+            stateEditor = option.$el.find('#state-editor');
+        else
+            stateEditor = $('#state-editor');
+
+		stateEditor.on('mousedown', '.state-drag', {'option': option}, dragsort.mousedown);
 	},
 
 	mousedown: function (event)

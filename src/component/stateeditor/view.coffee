@@ -126,10 +126,10 @@ define [ 'event',
             that.$editorModal = that.$el
             that.$stateList = that.$editorModal.find('.state-list')
             that.$stateLogList = that.$editorModal.find('.state-log-list')
-            that.$cmdDsec = $('#state-description')
+            that.$cmdDsec = that.$('#state-description')
             that.$noStateContainer = that.$editorModal.find('.state-no-state-container')
             that.$haveStateContainer = that.$editorModal.find('.state-have-state-container')
-            that.$stateGistPasteArea = $('#state-gist-paste-area')
+            that.$stateGistPasteArea = @$('#state-gist-paste-area')
 
             if that.resNoState
 
@@ -143,8 +143,8 @@ define [ 'event',
 
             # hide autocomplete when click document
             $(document).on('mousedown', jQuery.proxy(that.onDocumentMouseDown, that))
-            $('#state-editor').on('scroll', () ->
-                $('.ace_editor.ace_autocomplete').hide()
+            that.$('#state-editor').on('scroll', () ->
+                that.$('.ace_editor.ace_autocomplete').hide()
             )
 
             stateObj = that.loadStateData(that.originCompStateData)
@@ -315,6 +315,7 @@ define [ 'event',
 
                     that.refreshLogItemNum()
                     null
+                $el: that.$el
             })
 
         onLogRefreshClick: (event) ->

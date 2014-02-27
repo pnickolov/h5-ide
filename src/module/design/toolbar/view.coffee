@@ -621,10 +621,7 @@ define [ 'MC', 'event',
 
             MC.canvas.event.clearList()
 
-            # 4. Trigger OPEN_PROPERTY
-            ide_event.trigger ide_event.OPEN_PROPERTY
-
-            # 5. Create backup point
+            # 4. Create backup point
 
             # old design flow
             #MC.data.origin_canvas_data = $.extend true, {}, MC.canvas_data
@@ -632,8 +629,11 @@ define [ 'MC', 'event',
             # new design flow
             MC.common.other.canvasData.origin MC.common.other.canvasData.data()
 
-            # 6. set Design mode
+            # 5. set Design mode
             Design.instance().setMode Design.MODE.AppEdit
+
+            # 6. Trigger OPEN_PROPERTY
+            ide_event.trigger ide_event.OPEN_PROPERTY
 
             # 7. refresh view for App update
             Design.instance().refreshAppUpdate()
@@ -696,10 +696,7 @@ define [ 'MC', 'event',
             # 3. restore canvas to app model
             ide_event.trigger ide_event.RESTORE_CANVAS if target
 
-            # 4. Trigger OPEN_PROPERTY
-            ide_event.trigger ide_event.OPEN_PROPERTY
-
-            # 5. Close modal
+            # 4. Close modal
             modal.close()
 
             # 6. delete MC.process and MC.data.process
@@ -707,16 +704,19 @@ define [ 'MC', 'event',
             # delete MC.data.process[ MC.data.current_tab_id ]
             # MC.common.other.deleteProcess MC.data.current_tab_id
 
-            # 7. Hide Resource Panel and call canvas_layout.listen()
+            # 5. Hide Resource Panel and call canvas_layout.listen()
             ide_event.trigger ide_event.UPDATE_RESOURCE_STATE, 'hide'
 
-            # 8. Hide status bar validation
+            # 6. Hide status bar validation
             ide_event.trigger ide_event.HIDE_STATUS_BAR
 
-            # 9. set Design mode
+            # 7. set Design mode
             Design.instance().setMode Design.MODE.App
 
-            # 10. re push AwsResourceUpdated
+            # 8. Trigger OPEN_PROPERTY
+            ide_event.trigger ide_event.OPEN_PROPERTY
+
+            # 9. re push AwsResourceUpdated
             Design.instance().trigger Design.EVENT.AwsResourceUpdated
 
             null

@@ -10,9 +10,10 @@ define [ 'event',
 
     PropertyView = Backbone.View.extend {
 
-        el         : '#property-panel'
-
         propertyHeadStateMap : {}
+
+        events:
+            'click': 'test'
 
         initialize : ->
 
@@ -51,13 +52,38 @@ define [ 'event',
                 .on( 'click', '#hide-property-panel', this.togglePropertyPanel )
                 .on( 'click', '.option-group-head', _.bind( this.toggleOption, this ))
                 .on( 'click', '#hide-second-panel', _.bind( this.hideSecondPanel, this ))
+                .on( 'click', '#btn-switch-state', _.bind( this.renderState, this ) )
+                .on( 'click', '#btn-switch-property', _.bind( this.renderProperty, this ) )
 
             null
 
+        renderProperty: () ->
+            if $( '#property-panel' ).hasClass 'state'
+                uid = Design.instance().canvas.selectedNode[ 0 ]
+                component = Design.instance().component uid
+                if component
+                    type = component.type
+                    id = component.id
+
+                ide_event.trigger ide_event.OPEN_PROPERTY, type, id
+                @forceShow()
+
+        renderState: () ->
+            if  not $( '#property-panel' ).hasClass 'state'
+                uid = Design.instance().canvas.selectedNode[ 0 ]
+                ide_event.trigger ide_event.OPEN_STATE_EDITOR, uid
+                @forceShow()
+
         render     : () ->
-            this.$el.html( template )
+
+            @$el.html( template )
+
+            $( '#property-panel' )
+                .html( @el )
+                .removeClass( 'state' )
+
+
             #
-            ide_event.trigger ide_event.DESIGN_SUB_COMPLETE
 
             ###
                 Since the ridiculous process of opening tab will erase any event that is bound to the #property-panel.
@@ -65,7 +91,8 @@ define [ 'event',
                 a lot of unkown bugs if I do so. This handler is bound to body.
             ###
             $( "body" ).on("click", ".click-select", this.selectText )
-            null
+
+            @
 
         getCurrentCompUid : () ->
             event = {}

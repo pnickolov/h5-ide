@@ -39,7 +39,8 @@ define [ 'event',
 
 		# Render property panel frames.
 		view = new View()
-		view.render()
+
+		ide_event.trigger ide_event.DESIGN_SUB_COMPLETE
 
 		ide_event.onLongListen ide_event.FORCE_OPEN_PROPERTY, ()->
 			view.forceShow()
@@ -73,7 +74,7 @@ define [ 'event',
 
 		#listen OPEN_PROPERTY
 		ide_event.onLongListen ide_event.OPEN_PROPERTY, ( type, uid, force ) ->
-
+			view.render()
 			view.load()
 
 			# Load property
@@ -137,10 +138,10 @@ define [ 'event',
 	# Use this method to generate data for the current property
 	# Then use restore() to restore the tab
 	snapshot = ()->
-		PropertyBaseModule.snapshot()
+		#PropertyBaseModule.snapshot()
 
 	restore = ( snapshot ) ->
-		PropertyBaseModule.restore( snapshot )
+		#PropertyBaseModule.restore( snapshot )
 
 
 

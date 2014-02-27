@@ -259,8 +259,7 @@ define [ 'i18n!nls/lang.js', 'constant', 'stateeditor', 'Design', './module/desi
             ide_event.onLongListen ide_event.OPEN_STATE_EDITOR, (uid) ->
               allCompData = Design.instance().serialize().component
               compData = allCompData[uid]
-              if compData and compData.type in [constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance, constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration]
-                  stateeditor.loadModule(allCompData, uid)
+              stateeditor.loadModule(allCompData, uid)
 
             model.on "SET_PROPERTY_PANEL", ( property_panel ) ->
                 property_main.restore property_panel

@@ -16,11 +16,17 @@ define [ 'event', 'ace', 'ace_ext_language_tools',  'UI.modal', 'jquery_sort', '
             compData = allCompData[uid]
             resModel = Design.instance().component(uid)
 
-            model = new Model({
-                compData: compData,
-                resModel: resModel,
-                allCompData: allCompData
-            })
+            if compData
+                model = new Model({
+                    compData: compData,
+                    resModel: resModel,
+                    allCompData: allCompData
+                })
+                model.on 'STATE_STATUS_UPDATE', (newStateUpdateResIdAry) ->
+                    view.onStateStatusUpdate(newStateUpdateResIdAry)
+            else
+                model = new Backbone.Model()
+
             view  = new View({
                 model: model
             })
@@ -29,13 +35,9 @@ define [ 'event', 'ace', 'ace_ext_language_tools',  'UI.modal', 'jquery_sort', '
 
             ide_event.onLongListen ide_event.UPDATE_STATE_STATUS_DATA_TO_EDITOR, model.listenStateStatusUpdate, model
 
-            view.on 'CLOSE_POPUP', () ->
-                unLoadModule view, model
 
-            model.on 'STATE_STATUS_UPDATE', (newStateUpdateResIdAry) ->
-                view.onStateStatusUpdate(newStateUpdateResIdAry)
-
-            view.render()
+            $( '#property-panel' ).html view.render().el
+            $( '#property-panel' ).addClass 'state'
 
     unLoadModule = ( view, model ) ->
         console.log 'state editor unLoadModule'

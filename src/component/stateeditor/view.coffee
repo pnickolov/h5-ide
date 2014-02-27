@@ -5,9 +5,10 @@
 define [ 'event',
          'text!./component/stateeditor/template.html',
          './component/stateeditor/validate',
+         'constant'
          'UI.errortip'
 
-], ( ide_event, template , validate ) ->
+], ( ide_event, template , validate, constant ) ->
 
     StateEditorView = Backbone.View.extend {
 
@@ -72,8 +73,10 @@ define [ 'event',
             'ACE_UTAB_SWITCH': 'aceUTabSwitch'
 
         initialize: () ->
-
             this.compileTpl()
+
+        initState: () ->
+
             this.initData()
             this.initUndoManager()
 
@@ -85,13 +88,28 @@ define [ 'event',
             $(document).off 'keydown', this.keyEvent
 
         render: () ->
+            compData = @model.get 'compData'
 
+            if compData and compData.type in [constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance, constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration]
+                @__renderState()
+            else
+                @__renderEmpty()
+
+            @
+
+        __renderEmpty: () ->
+            @$el.html @stateEmptyTpl {}
+
+
+        __renderState: () ->
+
+            @initState()
             that = this
 
             # show modal
 
 
-            modal that.editorModalTpl({
+            @$el.html that.editorModalTpl({
                 res_name: that.resName,
                 supported_platform: that.supportedPlatform,
                 current_state: that.currentState,
@@ -101,7 +119,7 @@ define [ 'event',
 
             # setTimeout(() ->
 
-            that.setElement $( '#state-editor-model' ).closest '#modal-wrap'
+            #that.setElement $( '#state-editor-model' ).closest '#modal-wrap'
             that.$editorModal = that.$el
             that.$stateList = that.$editorModal.find('.state-list')
             that.$stateLogList = that.$editorModal.find('.state-log-list')
@@ -158,6 +176,7 @@ define [ 'event',
             # , 1)
 
             that.updateToolbar()
+            @
 
         initData: () ->
 
@@ -205,6 +224,18 @@ define [ 'event',
                 that.readOnlyMode = false
                 that.isShowLogPanel = false
 
+        tplMap:
+            'state-template-editor-modal'       : 'editorModalTpl'
+            'state-template-state-list'         : 'stateListTpl'
+            'state-template-para-list'          : 'paraListTpl'
+            'state-template-para-view-list'     : 'paraViewListTpl'
+            'state-template-para-dict-item'     : 'paraDictListTpl'
+            'state-template-para-array-item'    : 'paraArrayListTpl'
+            'state-template-log-item'           : 'stateLogItemTpl'
+            'state-template-log-instance-item'  : 'stateLogInstanceItemTpl'
+            'state-template-res-select'         : 'stateResSelectTpl'
+            'state-template-editor-empty'       : 'stateEmptyTpl'
+
         compileTpl: () ->
 
             # generate template
@@ -218,35 +249,11 @@ define [ 'event',
                 htmlMap[tplType] = tplHTML
                 null
 
-            editorModalHTML = htmlMap['state-template-editor-modal']
-            stateListHTML = htmlMap['state-template-state-list']
-            paraListHTML = htmlMap['state-template-para-list']
-            paraViewListHTML = htmlMap['state-template-para-view-list']
-            paraDictItemHTML = htmlMap['state-template-para-dict-item']
-            paraArrayItemHTML = htmlMap['state-template-para-array-item']
-            stateLogItemHTML = htmlMap['state-template-log-item']
-            stateLogInstanceItemHTML = htmlMap['state-template-log-instance-item']
-            stateResSelectHTML = htmlMap['state-template-res-select']
-            paraCompleteItemHTML = '<li data-value="${atwho-at}${name}">${name}</li>'
+            for id, html of htmlMap
+                Handlebars.registerPartial(id, html)
+                @[ @tplMap[ id ] ] = Handlebars.compile html
 
-            this.stateListTpl = Handlebars.compile(stateListHTML)
-
-            Handlebars.registerPartial('state-template-para-list', paraListHTML)
-            Handlebars.registerPartial('state-template-para-view-list', paraViewListHTML)
-            Handlebars.registerPartial('state-template-para-dict-item', paraDictItemHTML)
-            Handlebars.registerPartial('state-template-para-array-item', paraArrayItemHTML)
-            Handlebars.registerPartial('state-template-log-item', stateLogItemHTML)
-            Handlebars.registerPartial('state-template-log-instance-item', stateLogInstanceItemHTML)
-            Handlebars.registerPartial('state-template-res-select', stateResSelectHTML)
-
-            this.editorModalTpl = Handlebars.compile(editorModalHTML)
-            this.paraListTpl = Handlebars.compile(paraListHTML)
-            this.paraViewListTpl = Handlebars.compile(paraViewListHTML)
-            this.paraDictListTpl = Handlebars.compile(paraDictItemHTML)
-            this.paraArrayListTpl = Handlebars.compile(paraArrayItemHTML)
-            this.stateLogItemTpl = Handlebars.compile(stateLogItemHTML)
-            this.stateLogInstanceItemTpl = Handlebars.compile(stateLogInstanceItemHTML)
-            this.stateResSelectTpl = Handlebars.compile(stateResSelectHTML)
+            null
 
         genStateUID: () ->
 
@@ -287,7 +294,7 @@ define [ 'event',
             #     dragEnd: () ->
             #         that.refreshStateId()
             # })
-            
+
             dragsort.init({
                 dragStart: () ->
                     $stateItem = this
@@ -542,12 +549,6 @@ define [ 'event',
                     }
 
             if paraType is 'dict'
-
-                atwhoOption = {
-                    at: '@',
-                    tpl: that.paraCompleteItemHTML
-                    data: that.resAttrDataAry
-                }
 
                 _.each $paraItem, (paraDictItem) ->
 
@@ -949,7 +950,7 @@ define [ 'event',
             that.refreshDescription()
 
         onExpandState: (event) ->
-            
+
             that = this
 
             that.expandItem($('.state-list').find('.focused'))
@@ -957,7 +958,7 @@ define [ 'event',
             return false
 
         onCollapseState: (event) ->
-            
+
             that = this
 
             that.collapseItem($('.state-list').find('.focused'))
@@ -967,7 +968,7 @@ define [ 'event',
         clearSelectedItem: () ->
 
             that = this
-            
+
             that.$stateList.find('.selected').removeClass('selected')
 
             that.$stateList.find('.checkbox input').prop('checked', false)
@@ -977,7 +978,7 @@ define [ 'event',
         clearFocusedItem: () ->
 
             that = this
-            
+
             that.$stateList.find('.focused').removeClass('focused')
 
             null
@@ -1074,7 +1075,7 @@ define [ 'event',
             $stateItemList.addClass('view')
 
             $newStateItem.removeClass('view').addClass('focused')
-            
+
             cmdEditor = $cmdValueItem.data('editor')
             if cmdEditor
                 setTimeout(() ->
@@ -1266,7 +1267,7 @@ define [ 'event',
             return stateItemObj
 
         saveStateData: () ->
-            
+
             if not @submitValidate()
                 return false
 
@@ -1381,7 +1382,7 @@ define [ 'event',
                                     paraValueStr = that.model.replaceStateUIDToName(paraValueStr)
                                 else
                                     paraValueStr = that.model.replaceParaUIDToName(paraValueStr)
-                                    
+
                                 renderParaValue.push(paraValueStr)
                                 null
 
@@ -2055,10 +2056,10 @@ define [ 'event',
                     if $arrayItemList.length <= 2
 
                         _.each $arrayItemList, (arrayItem) ->
-                            
+
                             $arrayItem = $(arrayItem)
                             inputValue = that.getPlainText($arrayItem)
-                            
+
                             if inputValue
                                 needDisable = false
 
@@ -2151,7 +2152,7 @@ define [ 'event',
 
                     stateNumStr = 'unknown'
                     if stateNum then stateNumStr = stateNum
-                    
+
                     $logItem.find('.state-log-item-name').text('State ' + stateNumStr)
 
                 null
@@ -2551,7 +2552,7 @@ define [ 'event',
                     new_index = $('#state-editor .state-item').length
 
             state_id = item.data('id')
-            
+
             that.undoManager.register state_id, focused_index, 'sort', new_index
 
             return false
@@ -2757,7 +2758,7 @@ define [ 'event',
                     stateIdAry.push(stateId)
                     statePos = $targetState.index()
                     statePosAry.push(statePos)
-                
+
                 that.undoManager.register(stateIdAry, statePosAry, 'remove')
 
             $targetStates.remove()
@@ -2872,7 +2873,7 @@ define [ 'event',
 
 
             if selected_length > 0 and selected_length is $('#state-editor .state-item').length
-                
+
                 $('#state-toolbar-selectAll').find('input').prop('checked', true)
 
             else

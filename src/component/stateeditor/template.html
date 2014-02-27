@@ -158,77 +158,108 @@
 	<div class="parameter-value editable-area line">{{this}}</div>
 {{/each}}
 
+<!-- state-template-editor-empty -->
+<a href="#" id="hide-property-panel" class="tooltip sidebar-hider icon-caret-right" data-tooltip="Show/Hide Property Panel">
+</a>
+
+<div class="property-wrap">
+    <section class="property-switcher">
+      <a href="javascript:void(0)" class="btn-toolbar tooltip btn-selected" data-tooltip="" id="btn-switch-property">Property</a>
+      <a href="javascript:void(0)" class="btn-toolbar tooltip" data-tooltip="" id="btn-switch-state">State</a>
+    </section>
+    <div class="state-empty">
+    	blah blah blah blah
+    	There is some tip
+    	blah blah blah blah
+    </div>
+
+</div>
+
 <!-- state-template-editor-modal -->
-<div style="width:900px;" id="state-editor-model" class="se-model-{{current_state}}">
-	<div class="modal-header">
-		<h3>Conﬁguration Manager of {{res_name}}</h3>
-		<div class="selectbox state-editor-res-select">
-			{{> state-template-res-select}}
+<a href="#" id="hide-property-panel" class="tooltip sidebar-hider icon-caret-right" data-tooltip="Show/Hide Property Panel">
+</a>
+
+<div class="property-wrap">
+    <section class="property-switcher">
+      <a href="javascript:void(0)" class="btn-toolbar tooltip btn-selected" data-tooltip="" id="btn-switch-property">Property</a>
+      <a href="javascript:void(0)" class="btn-toolbar tooltip" data-tooltip="" id="btn-switch-state">State</a>
+    </section>
+
+    <div style="width:900px;" id="state-editor-model" class="se-model-{{current_state}}">
+		<div class="modal-header">
+			<h3>Conﬁguration Manager of {{res_name}}</h3>
+			<div class="selectbox state-editor-res-select">
+				{{> state-template-res-select}}
+			</div>
+			<i class="modal-close">&times;</i>
 		</div>
-		<i class="modal-close">&times;</i>
-	</div>
 
-	<ul class="modal-sidebar-toggle">
-		<li class="state-desc-toggle active icon-desc"></li>
-		<li class="state-log-toggle icon-log"></li>
-		<li class="state-log-refresh icon-refresh"></li>
-	</ul>
+		<ul class="modal-sidebar-toggle">
+			<li class="state-desc-toggle active icon-desc"></li>
+			<li class="state-log-toggle icon-log"></li>
+			<li class="state-log-refresh icon-refresh"></li>
+		</ul>
 
-	<div id="state-editor-wrap">
-		<div id="state-editor-body" class="scroll-content modal-body clearfix">
-			<div id="state-editor" spellcheck="false">
-				{{#unless supported_platform}}<div class="state-warning">The AMI's distro cannot be recognised. Some commands may not apply to this AMI.</div>{{/unless}}
+		<div id="state-editor-wrap">
+			<div id="state-editor-body" class="scroll-content modal-body clearfix">
+				<div id="state-editor" spellcheck="false">
+					{{#unless supported_platform}}<div class="state-warning">The AMI's distro cannot be recognised. Some commands may not apply to this AMI.</div>{{/unless}}
 
-				<div class="state-no-state-container">
-					<div class="state-no-data-tip">No state conﬁgured yet.</div>
-					{{#if allow_add_state}}
-						<div class="state-item-add-btn btn btn-blue">Add a State</div>
-					{{/if}}
+					<div class="state-no-state-container">
+						<div class="state-no-data-tip">No state conﬁgured yet.</div>
+						{{#if allow_add_state}}
+							<div class="state-item-add-btn btn btn-blue">Add a State</div>
+						{{/if}}
+					</div>
+
+					<div class="state-have-state-container">
+						<div class="state-editor-toolbar clearfix">
+							<a id="state-toolbar-add" href="javascript:void(0)">+ Add State</a>
+							<a id="state-toolbar-copy-all" href="javascript:void(0)">Copy all</a>
+							<a id="state-toolbar-copy" href="javascript:void(0)">Copy (<span id="state-toolbar-copy-count"></span>)</a>
+							<a id="state-toolbar-delete" href="javascript:void(0)">Delete (<span id="state-toolbar-delete-count"></span>)</a>
+							<a id="state-toolbar-paste" class="disabled" href="javascript:void(0)">Paste</a>
+							<a id="state-toolbar-undo" href="javascript:void(0)">Undo</a>
+							<a id="state-toolbar-redo" href="javascript:void(0)">Redo</a>
+
+							<div id="state-toolbar-selectAll" class="checkbox">
+								<input type="checkbox" name="state-toolbar-selectAll">
+								<label for="state-toolbar-selectAll"></label>
+							</div>
+						</div>
+						<ol class="state-list"></ol>
+					</div>
+
 				</div>
-
-				<div class="state-have-state-container">
-					<div class="state-editor-toolbar clearfix">
-						<a id="state-toolbar-add" href="javascript:void(0)">+ Add State</a>
-						<a id="state-toolbar-copy-all" href="javascript:void(0)">Copy all</a>
-						<a id="state-toolbar-copy" href="javascript:void(0)">Copy (<span id="state-toolbar-copy-count"></span>)</a>
-						<a id="state-toolbar-delete" href="javascript:void(0)">Delete (<span id="state-toolbar-delete-count"></span>)</a>
-						<a id="state-toolbar-paste" class="disabled" href="javascript:void(0)">Paste</a>
-						<a id="state-toolbar-undo" href="javascript:void(0)">Undo</a>
-						<a id="state-toolbar-redo" href="javascript:void(0)">Redo</a>
-
-						<div id="state-toolbar-selectAll" class="checkbox">
-							<input type="checkbox" name="state-toolbar-selectAll">
-							<label for="state-toolbar-selectAll"></label>
+				<div id="state-description" data-command=""></div>
+				<div id="state-log" data-state-id="">
+					<ul class="state-log-list">
+						{{> state-template-log-instance-item}}
+						{{> state-template-log-item}}
+					</ul>
+					<div class="state-log-loading">Loading...</div>
+					<div class="state-log-info">
+						<div class="state-log-title">All states are pending.</div>
+						<div class="state-log-detail">
+							<span class="pending">Detailed log will show here when a state succeeds or fails.</span>
+							<span class="stoped">The app is currently stopped. Detailed log will show here when the app is started and a state succeeds or fails.</span>
 						</div>
 					</div>
-					<ol class="state-list"></ol>
-				</div>
-
-			</div>
-			<div id="state-description" data-command=""></div>
-			<div id="state-log" data-state-id="">
-				<ul class="state-log-list">
-					{{> state-template-log-instance-item}}
-					{{> state-template-log-item}}
-				</ul>
-				<div class="state-log-loading">Loading...</div>
-				<div class="state-log-info">
-					<div class="state-log-title">All states are pending.</div>
-					<div class="state-log-detail">
-						<span class="pending">Detailed log will show here when a state succeeds or fails.</span>
-						<span class="stoped">The app is currently stopped. Detailed log will show here when the app is started and a state succeeds or fails.</span>
-					</div>
 				</div>
 			</div>
-		</div>
 
-		<div class="state-bottom modal-footer">
-			<div class="state-save btn btn-blue">Save</div>
-			<div class="state-cancel btn btn-silver">Cancel</div>
-			<div class="state-close btn btn-silver">Close</div>
+			<div class="state-bottom modal-footer">
+				<div class="state-save btn btn-blue">Save</div>
+				<div class="state-cancel btn btn-silver">Cancel</div>
+				<div class="state-close btn btn-silver">Close</div>
+			</div>
 		</div>
 	</div>
+
 </div>
+
+
+
 
 <!-- state-template-res-select -->
 <div class="selection">{{res_selects.0.res_name}}</div>

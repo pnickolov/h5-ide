@@ -1791,7 +1791,7 @@ define [ 'event',
                 targetOffsetTop = $target.offset().top
                 parentOffsetTop = $parent.offset().top
 
-                targetTop = targetOffsetTop + $target.height()
+                targetTop = targetOffsetTop + 35
                 parentTop = parentOffsetTop + $parent.height()
 
                 if targetTop > parentTop

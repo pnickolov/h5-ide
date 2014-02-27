@@ -923,7 +923,7 @@ define [ 'event',
             $stateItemList.addClass('view')
             $stateItem.removeClass('view').addClass('focused')
 
-            that.justScrollToElem that.$stateList, $stateItem
+            # that.justScrollToElem that.$stateList, $stateItem
 
             # refresh description
             cmdName = $stateItem.attr('data-command')
@@ -2753,7 +2753,8 @@ define [ 'event',
                 if index + 1 < total
                     stack.eq(index + 1).find('.ace_text-input').focus()
                 else
-                    that.onSwitchState.call this, event
+                    stack.eq(0).find('.ace_text-input').focus()
+                    # that.onSwitchState.call this, event
 
         aceUTabSwitch: (event, container) ->
 
@@ -2792,7 +2793,8 @@ define [ 'event',
                 stack.eq(index - 1).find('.ace_text-input').focus()
 
             if index is 0
-                container_item.parents('.state-item').find('.command-value .ace_text-input').focus()
+                stack.eq(total - 1).find('.ace_text-input').focus()
+                # container_item.parents('.state-item').find('.command-value .ace_text-input').focus()
 
         onRemoveState: (event, $targetStates, noRegisterUndo) ->
 

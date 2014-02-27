@@ -82,8 +82,11 @@ Helper =
   log  : (e)-> console.log e
   noop : ()->
 
-  compileTitle : ()->
-    "[" + gutil.colors.green("Compile @#{(new Date()).toLocaleTimeString()}") + "]"
+  compileTitle : ( extra )->
+    title = "[" + gutil.colors.green("Compile @#{(new Date()).toLocaleTimeString()}") + "]"
+    if extra
+      title += " " + gutil.colors.inverse( extra )
+    title
 
 
 StreamFuncs =
@@ -109,6 +112,7 @@ StreamFuncs =
     es.through ( file )->
       buffer = file.contents
       index = 0
+      found = 0
       while (index = indexOf( buffer, "### env:prod ###", index )) != -1
         if GLOBAL.gulpConfig.verbose then console.log "[EnvProdFound]", file.relative
 
@@ -121,6 +125,12 @@ StreamFuncs =
         if GLOBAL.gulpConfig.verbose then console.log "[EnvProdEndFound]", file.relative
         buffer[index + 0] = buffer[index + 1] = buffer[index + 2] = 32
         index += 20
+
+        ++found
+
+      if found
+        file.extra = "EnvProdFound"
+        if found > 1 then file.extra += " x" + found
 
       @emit "data", file
       null
@@ -168,7 +178,7 @@ StreamFuncs =
     pipeline = coffeeCompile
       # Log
       .pipe( es.through ( f )->
-        console.log Helper.compileTitle(), "#{f.relative}"
+        console.log Helper.compileTitle( f.extra ), "#{f.relative}"
         @emit "data", f
       )
       # Jshint and report

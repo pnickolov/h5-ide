@@ -109,8 +109,14 @@ Helper = {
     return console.log(e);
   },
   noop: function() {},
-  compileTitle: function() {
-    return "[" + gutil.colors.green("Compile @" + ((new Date()).toLocaleTimeString())) + "]";
+  compileTitle: function(extra) {
+    var title;
+
+    title = "[" + gutil.colors.green("Compile @" + ((new Date()).toLocaleTimeString())) + "]";
+    if (extra) {
+      title += " " + gutil.colors.inverse(extra);
+    }
+    return title;
   }
 };
 
@@ -136,10 +142,11 @@ StreamFuncs = {
   },
   throughCoffeeConditionalCompile: function() {
     return es.through(function(file) {
-      var buffer, index;
+      var buffer, found, index;
 
       buffer = file.contents;
       index = 0;
+      found = 0;
       while ((index = indexOf(buffer, "### env:prod ###", index)) !== -1) {
         if (GLOBAL.gulpConfig.verbose) {
           console.log("[EnvProdFound]", file.relative);
@@ -155,6 +162,13 @@ StreamFuncs = {
         }
         buffer[index + 0] = buffer[index + 1] = buffer[index + 2] = 32;
         index += 20;
+        ++found;
+      }
+      if (found) {
+        file.extra = "EnvProdFound";
+        if (found > 1) {
+          file.extra += " x" + found;
+        }
       }
       this.emit("data", file);
       return null;
@@ -206,7 +220,7 @@ StreamFuncs = {
       sourceMap: GLOBAL.gulpConfig.coffeeSourceMap
     }));
     pipeline = coffeeCompile.pipe(es.through(function(f) {
-      console.log(Helper.compileTitle(), "" + f.relative);
+      console.log(Helper.compileTitle(f.extra), "" + f.relative);
       return this.emit("data", f);
     })).pipe(gulpif(Helper.shouldLintCoffee, StreamFuncs.jshint())).pipe(gulpif(Helper.shouldLintCoffee, StreamFuncs.lintReporter())).pipe(gulp.dest("."));
     if (GLOBAL.gulpConfig.reloadJsHtml) {

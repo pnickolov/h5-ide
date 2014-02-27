@@ -36,8 +36,8 @@ define [ 'event', 'ace', 'ace_ext_language_tools',  'UI.modal', 'jquery_sort', '
             ide_event.onLongListen ide_event.UPDATE_STATE_STATUS_DATA_TO_EDITOR, model.listenStateStatusUpdate, model
 
 
-            $( '#property-panel' ).html view.render().el
             $( '#property-panel' ).addClass 'state'
+            $( '#property-panel' ).html view.render().el
 
     unLoadModule = ( view, model ) ->
         console.log 'state editor unLoadModule'

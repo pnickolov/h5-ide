@@ -3562,7 +3562,7 @@ a.sidebar-hider {
 .property-wrap .scroll-wrap {
 	position : absolute;
 	top      : 33px;
-	bottom   : 0;
+	bottom   : 42px;
 	left     : 0;
 	right    : 0;
 	z-index  : 1;
@@ -6095,9 +6095,9 @@ summary:focus {
 	min-width    : 8px;
 	height       : 16px;
 	line-height  : 16px;
-	margin-top   : 5px;
+	margin-top   : 7px;
 	/*box-shadow : inset 0 1px 1px rgba(255,255,255,.3);*/
-	border       : #666;
+	/*border       : #666;*/
 	border-radius: 10px;
 	text-align   : center;
 }
@@ -6112,17 +6112,17 @@ summary:focus {
 
 .validation-counter-error {
 	background-color: #ec3c38;
-	border: 1px solid #9e2622;
+	/*border: 1px solid #9e2622;*/
 }
 
 .validation-counter-warning {
 	background-color: #ffa740;
-	border: 1px solid #ff8330;
+	/*border: 1px solid #ff8330;*/
 }
 
 .validation-counter-notice {
 	background-color: #4495d3;
-	border: 1px solid #377bb0;
+	/*border: 1px solid #377bb0;*/
 }
 
 #app-apply-update .modal-text-wraper {

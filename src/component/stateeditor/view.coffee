@@ -2188,12 +2188,14 @@ define [ 'event',
                 $stateItem = $(stateItem)
                 stateId = $stateItem.attr('data-id')
                 $statusIcon = $stateItem.find('.state-status-icon')
-                $statusIcon.removeClass('success').removeClass('failure')
+                $statusIcon.removeClass('status-green').removeClass('status-red').removeClass('status-yellow')
                 stateStatus = stateStatusMap[stateId]
                 if stateStatus is 'success'
-                    $statusIcon.addClass('success')
+                    $statusIcon.addClass('status-green')
                 else if stateStatus is 'failure'
-                    $statusIcon.addClass('failure')
+                    $statusIcon.addClass('status-red')
+                else
+                    $statusIcon.addClass('status-yellow')
                 null
 
         refreshLogItemNum: () ->

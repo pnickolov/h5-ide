@@ -1,10 +1,11 @@
 #state-editor {
+<<<<<<< HEAD
 	font-family: "Lucida Console", "Monaco", monospace !important;
 	font-size: 12px !important;
 }
 
 #state-editor .parameter-value {
-	font-family: "Lucida Console", "Monaco", monospace !important;
+	font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace  !important;
 	font-size: 12px !important;
 	color: #666;
 }
@@ -65,9 +66,8 @@
 	overflow-x: hidden;
 	overflow-y: auto;
 	padding: 10px 0;
-	font-family: "OxygenMono", "Lucida Console", "Monaco", monospace !important;
-	font-size: 12px;
-	background: #f8f8f8;
+	font-size: 13px;
+	background: #f0f0f0;
 	color: #666;
 	box-shadow: inset 1px 0 0 rgba(0,0,0,.05);
 	height: 100%;
@@ -477,11 +477,12 @@
 }
 
 #state-editor .parameter-list .parameter-item {
-	/*width: 100%;*/
-	overflow: auto;
-	padding: 4px 6px 0 27px;
+	/*width         : 100%;*/
+	overflow        : auto;
+	padding         : 4px 6px 0 27px;
 	background-color: rgba(248, 248, 248, 0.1);
-	border-bottom: 1px solid #eee;
+	border-bottom   : 1px solid #eee;
+	position        : relative;
 }
 
 #state-editor .parameter-list .parameter-item.disabled {
@@ -489,12 +490,12 @@
 }
 
 #state-editor .parameter-list .parameter-name {
-	float: left;
-	padding: 5px;
+	float     : left;
+	padding   : 5px;
 	margin-top: 2px;
-	cursor: default;
-	position: relative;
-	color: rgb(152, 167, 180);
+	cursor    : default;
+	position  : relative;
+	color     : rgb(152, 167, 180);
 }
 
 #state-editor .parameter-list .parameter-value {
@@ -516,6 +517,11 @@
 	/*margin-left: 10px;*/
 	margin-top: 4px;
 	overflow: hidden;
+	min-width : 350px;
+	overflow  : auto;
+	margin-top: 4px;
+	position  : absolute;
+	left      : 150px;
 }
 
 #state-editor .parameter-list .parameter-item.dict .parameter-value {
@@ -830,11 +836,11 @@
 }
 
 #state-log .state-log-item-status {
-	color: #1b1;
-	float: right;
-	margin-top: -12px;
-	right: 30px;
-	font-size: 10px;
+	color: #ccc;
+	position: absolute;
+	font-size: 12px;
+	top: 12px;
+	right: 6px;
 }
 
 #state-log .state-log-item-detail {
@@ -848,12 +854,12 @@
 }
 
 #state-log .state-log-info {
-	padding: 10px;
+	padding   : 10px;
 	margin-top: -36px;
-	position: absolute;
-	top: 50%;
+	position  : absolute;
+	top       : 50%;
 	text-align: center;
-	display: none;
+	display   : none;
 }
 
 #state-log .state-log-loading {
@@ -868,6 +874,7 @@
 
 #state-log .state-log-list li {
 	border-bottom: 1px #333 solid;
+	position     : relative;
 }
 
 .state-bottom {
@@ -1011,28 +1018,25 @@
 }
 
 #state-editor-model .state-status-icon {
-	width: 9px;
-	height: 9px;
-	border-radius: 50%;
-	display:none;
-	margin-left: 43px;
-	margin-right: 10px;
-	margin-top: 12px;
-	float: left;
+	position: absolute;
+	top     : 12px;
+	left    : 42px;
+}
+
+#state-editor-model.se-model-stack .state-status-icon {
+	display: none !important;
 }
 
 #state-editor-model.se-model-appedit .state-status-icon {
-	margin-left: 34px;
+	/*left: 34px;*/
 }
 
 #state-editor-model .state-status-icon.success {
-	display: inline-block;
-	background-color: green;
+
 }
 
 #state-editor-model .state-status-icon.failure {
-	display: inline-block;
-	background-color: red;
+
 }
 
 #state-editor-model.se-model-app #state-editor .parameter-item.disabled,
@@ -1052,6 +1056,10 @@
 
 #state-editor-model.se-model-app #state-editor .ace_cursor-layer {
 	display: none;
+}
+
+#state-editor-model.se-model-app .ace_content {
+	cursor: default !important;
 }
 
 #state-description p, #state-description h3 {

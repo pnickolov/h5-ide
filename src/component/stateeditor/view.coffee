@@ -100,7 +100,7 @@ define [ 'event',
                 else
                     @__renderEmpty()
             else
-                @__renderEmpty()
+                @__renderEmpty 'disalbed'
 
             @
 

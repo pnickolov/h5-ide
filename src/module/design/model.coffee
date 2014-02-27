@@ -144,7 +144,7 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
             @setDesignModel       MC.tab[ tab_id ].design_model
             @setCanvasData        MC.tab[ tab_id ].data
             @setOriginData        MC.tab[ tab_id ].origin_data
-            @setCurrentResource   MC.tab[ tab_id ].origin_resource if MC.tab[ tab_id ].origin_resource
+            @setCurrentResource   MC.tab[ tab_id ].origin_resource if MC.tab[ tab_id ].origin_resourc
             @setPropertyPanel     MC.tab[ tab_id ].property_panel
             @setTAValidation      MC.tab[ tab_id ].origin_ta_valid
             #
@@ -361,9 +361,6 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
             #MC.forge.app.updateDeletedResourceState MC.canvas_data
             # old design flow +++++++++++++++++++++++++++
 
-            # new design flow
-            Design.instance().trigger Design.EVENT.AwsResourceUpdated
-
             #re-draw connection
 
             # old design flow
@@ -399,6 +396,9 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
 
                 # delete current app_id
                 delete MC.data.running_app_list[ app_id ]
+
+            # new design flow
+            Design.instance().trigger Design.EVENT.AwsResourceUpdated
 
             # new design flow
             @setOriginData MC.common.other.canvasData.data()

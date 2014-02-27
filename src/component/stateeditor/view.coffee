@@ -1800,7 +1800,9 @@ define [ 'event',
                 else if targetOffsetTop < parentOffsetTop
                     scrollPos = $parent.scrollTop() + targetOffsetTop - parentOffsetTop - 15
 
-                $parent.scrollTop(scrollPos)
+                # $parent.scrollTop(scrollPos)
+
+                scrollbar.scrollTo $('#state-list-wrap'), {top: scrollPos}
 
             catch err
 

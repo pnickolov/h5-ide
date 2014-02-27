@@ -3529,10 +3529,6 @@ a.sidebar-hider {
 	        transition: margin-right 0.1s;
 }
 
-#property-panel.hiden {
-	margin-right: -280px;
-}
-
 #hide-property-panel {
 	left: -16px;
 	border-radius: 3px 0 0 3px;
@@ -7367,4 +7363,9 @@ summary:focus {
 	left: 0;
 	right: 0;
 	background-color: #fff;
+}
+
+
+#property-panel.hiden {
+	width: 0 !important;
 }

@@ -39,6 +39,7 @@ define ['../base/model', 'constant', "Design" ], ( PropertyModel, constant, Desi
         @getAppSubscription()
       else
         @getSubscription()
+        @set 'isStack', true
 
 
       @set Design.instance().getCost()

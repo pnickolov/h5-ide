@@ -947,6 +947,10 @@ module.exports =
       en: "Data is available in 1-minute periods at an additional cost. For information about pricing, go to the "
       zh: "数据在一分钟内可用需要额外的话费。 获取价格信息，请去 "
 
+    PROP_AGENT_USER_DATA_URL:
+      en: "https://github.com/MadeiraCloud/OpsAgent/blob/develop/scripts/userdata.sh"
+      zh: "https://github.com/MadeiraCloud/OpsAgent/blob/develop/scripts/userdata.sh"
+
     PROP_INSTANCE_ENI_DETAIL:
       en: "Network Interface Details"
       zh: "网卡设置"

@@ -1087,3 +1087,10 @@
 #state-editor .state-no-state-container {
 	display: none;
 }
+
+#state-gist-paste-area {
+	opacity: 0;
+	position: absolute;
+	width: 0px;
+	height: 0px;
+}

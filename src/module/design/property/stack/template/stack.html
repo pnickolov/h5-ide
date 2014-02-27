@@ -21,7 +21,7 @@
 		<dt><label>{{ i18n "PROP_STACK_LBL_TYPE" }}</label></dt><dd>{{type}}</dd>
 	</dl>
 
-
+  {{#if isStack}}
   <section class="property-control-group">
       <label>VisualOps Option</label>
       <div class="context" id="property-stack-ops-option">
@@ -44,7 +44,7 @@
           </div>
       </div>
   </section>
-
+  {{/if}}
 
   {{/if}}
 

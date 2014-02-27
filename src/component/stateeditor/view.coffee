@@ -60,6 +60,8 @@ define [ 'event',
 
             'keyup .parameter-item.optional .parameter-value': 'onOptionalParaItemChange'
 
+            'keyup #state-gist-paste-area': 'onPasteGistData'
+
             'SWITCH_STATE': 'onSwitchState'
 
             'EXPAND_STATE': 'onExpandState',
@@ -109,6 +111,7 @@ define [ 'event',
             that.$cmdDsec = $('#state-description')
             that.$noStateContainer = that.$editorModal.find('.state-no-state-container')
             that.$haveStateContainer = that.$editorModal.find('.state-have-state-container')
+            that.$stateGistPasteArea = $('#state-gist-paste-area')
 
             if that.resNoState
 
@@ -1564,6 +1567,10 @@ define [ 'event',
                     null
                 # that.refreshDescription()
 
+                setTimeout(() ->
+                    that.$stateGistPasteArea.focus()
+                , 0)
+
         initCodeEditor: (editorElem, hintObj) ->
 
             that = this
@@ -1785,12 +1792,12 @@ define [ 'event',
                 parentOffsetTop = $parent.offset().top
 
                 targetTop = targetOffsetTop + $target.height()
-                parentTop = $parent.offset().top + $parent.height()
+                parentTop = parentOffsetTop + $parent.height()
 
                 if targetTop > parentTop
-                    scrollPos = $parent.scrollTop() - parentTop + targetTop + 15
+                    scrollPos = $parent.scrollTop() + targetTop - parentTop + 15
 
-                if $target.offset().top < $parent.offset().top
+                else if targetOffsetTop < parentOffsetTop
                     scrollPos = $parent.scrollTop() + targetOffsetTop - parentOffsetTop - 15
 
                 $parent.scrollTop(scrollPos)
@@ -2941,6 +2948,22 @@ define [ 'event',
                 that.clearFocusedItem()
 
             return false
+
+        onPasteGistData: (event) ->
+
+            that = this
+            $areaTarget = $(event.currentTarget)
+            pasteData = $areaTarget.val()
+
+            try
+                pasteDataJSON = JSON.parse(pasteData)
+                that.addStateItemByData(pasteDataJSON)
+            catch err
+                null
+                # alert('data format error')
+
+            $areaTarget.val('')
+
     }
 
     return StateEditorView

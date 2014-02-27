@@ -46,32 +46,35 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], ( cons
 
             for state in stateList
 
-                for status in state.status
+                if state.status
 
-                    # Show failed only
-                    #if status.result isnt 'failure'
-                    #    continue
-                    # Show current app only
-                    if state.app_id isnt Design.instance().get( 'id' )
-                        continue
+                    for status, idx in state.status
 
-                    # test
-                    #state.res_id = 'i-a271b0bc'
+                        # Show failed only
+                        #if status.result isnt 'failure'
+                        #    continue
+                        # Show current app only
+                        if state.app_id isnt Design.instance().get( 'id' )
+                            continue
 
-                    data =
-                        id      : @__genId state.res_id, status.id
-                        appId   : state.app_id
-                        resId   : state.res_id
-                        stateId : status.id
-                        time    : status.time
-                        result  : status.result
+                        # test
+                        #state.res_id = 'i-a271b0bc'
+
+                        data =
+                            id      : @__genId state.res_id, status.id
+                            appId   : state.app_id
+                            resId   : state.res_id
+                            stateId : idx + 1
+                            time    : status.time
+                            result  : status.result
 
 
-                    _.extend data, @__extendComponent data.resId
+                        _.extend data, @__extendComponent data.resId
 
-                    newStateUpdateResIdAry.push(state.res_id)
+                        newStateUpdateResIdAry.push(state.res_id)
 
-                    collection.add new Backbone.Model data
+                        if data.result is 'failure'
+                            collection.add new Backbone.Model data
 
             if newStateUpdateResIdAry.length
                 ide_event.trigger ide_event.UPDATE_STATE_STATUS_DATA_TO_EDITOR, newStateUpdateResIdAry

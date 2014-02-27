@@ -6122,9 +6122,9 @@ summary:focus {
 }
 
 .no-item .validation-counter {
-	background-color: #B9B9B9;
-	border: 1px solid #a6a6a6;
-	color: #e0e0e0;
+	background-color: #ececec;
+	/*border: 1px solid #a6a6a6;*/
+	color: #aaa;
 	box-shadow: none;
 }
 

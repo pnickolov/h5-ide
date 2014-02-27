@@ -529,6 +529,8 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
       r = Model.diffJson( newComp, oldComp )
       if r and r.length
         result = result.concat r
+      else if r and r.type
+        result.push r
       return
 
     if not newComp
@@ -555,7 +557,7 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
     oldData = @__backingStore
 
     ### Diff the Component first ###
-    isModified = _.isEqual( newData.component, oldData.component )
+    isModified = not _.isEqual( newData.component, oldData.component )
     result     = []
     for uid, comp of newData.component
       diffHelper( comp, oldData.component[uid], result )

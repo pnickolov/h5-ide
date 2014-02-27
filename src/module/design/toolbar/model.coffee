@@ -1121,10 +1121,28 @@ define [ "component/thumbnail/ThumbUtil", 'MC', 'backbone', 'jquery', 'underscor
             !!Design.modelClassForType( "AWS.AutoScaling.Group" ).allObjects().length
 
         diff : ()->
-            diffResult = Design.instance().diff()
+            dedupResult = []
+            dedupMap    = {}
+
+            diffResult  = Design.instance().diff()
             for obj in diffResult.result
                 if AwsTypeConvertMap[ obj.type ]
                     obj.type = AwsTypeConvertMap[ obj.type ]
+                # Remove duplicate
+                key = obj.type + obj.name
+                if obj.change is "Update"
+                    key += "Create"
+                else
+                    key += obj.change
+
+                exist = dedupMap[ key ]
+                if not exist
+                    dedupMap[ key ] = obj
+                    dedupResult.push obj
+                else if obj.change is "Create"
+                    exist.change = obj.change
+
+            diffResult.result = dedupResult
             diffResult
     }
 

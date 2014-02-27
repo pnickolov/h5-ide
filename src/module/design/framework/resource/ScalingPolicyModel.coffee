@@ -135,6 +135,19 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
 
     handleTypes : [ constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_ScalingPolicy, constant.AWS_RESOURCE_TYPE.AWS_CloudWatch_CloudWatch ]
 
+    diffJson : ( newData, oldData )->
+      if not ( newData and oldData and _.isEqual( newData, oldData ) )
+        asgId = (newData || oldData).resource
+        asgId = asgId.AutoScalingGroupName || asgId.Dimensions[0].value
+        asg   = Design.instance().component( MC.extractID( asgId ) )
+        return {
+          type   : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+          name   : asg.get("name")
+          change : "Update"
+        }
+
+      null
+
     deserialize : ( data, layout_data, resolve ) ->
 
       if data.type is constant.AWS_RESOURCE_TYPE.AWS_CloudWatch_CloudWatch

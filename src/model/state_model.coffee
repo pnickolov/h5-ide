@@ -19,13 +19,13 @@ define [ 'backbone', 'underscore', 'state_service', 'base_model' ], ( Backbone, 
 
         ###### api ######
         #module api (define function)
-        module : ( src, username, session_id ) ->
+        module : ( src, username, session_id, mod_repo, mod_tag ) ->
 
             me = this
 
             src.model = me
 
-            state_service.module src, username, session_id, ( forge_result ) ->
+            state_service.module src, username, session_id, mod_repo, mod_tag, ( forge_result ) ->
 
                 if !forge_result.is_error
                 #module succeed

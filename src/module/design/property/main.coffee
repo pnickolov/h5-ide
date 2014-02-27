@@ -79,7 +79,7 @@ define [ 'event',
 			view.load()
 
 			if view.currentTab is 'state'
-				view.renderState()
+				view.renderState uid
 				return
 
 

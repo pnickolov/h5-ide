@@ -68,10 +68,12 @@ define [ 'event',
                     @renderProperty()
 
 
-        renderProperty: () ->
+        renderProperty: ( uid ) ->
             if  @currentTab is 'state'
                 @currentTab = 'property'
-                uid = Design.instance().canvas.selectedNode[ 0 ]
+                if not uid
+                    uid = Design.instance().canvas.selectedNode[ 0 ]
+
                 component = Design.instance().component uid
                 if component
                     type = component.type
@@ -80,10 +82,12 @@ define [ 'event',
                 ide_event.trigger ide_event.OPEN_PROPERTY, type, id
                 @forceShow()
 
-        renderState: () ->
+        renderState: ( uid ) ->
 
             @currentTab = 'state'
-            uid = Design.instance().canvas.selectedNode[ 0 ]
+            if not uid
+                uid = Design.instance().canvas.selectedNode[ 0 ]
+
             ide_event.trigger ide_event.OPEN_STATE_EDITOR, uid
             @forceShow()
 

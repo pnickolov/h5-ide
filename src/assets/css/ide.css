@@ -7326,7 +7326,17 @@ summary:focus {
 	margin-right: 5px;
 }
 
-.property-switcher .btn-selected {
+#property-panel.state #btn-switch-property {
+	background:	#313131;
+	color: #606060;
+}
+
+#property-panel.state #btn-switch-property:hover {
+	color: #c472a7;
+	background-color: rgba(0,0,0,.05);
+}
+
+#property-panel.state #btn-switch-state {
 	background-color: rgba(0,0,0,.4);
 	color: #FEFEFE;
 }
@@ -7334,11 +7344,18 @@ summary:focus {
 #property-panel.state {
 	width: 901px;
 }
+
 #property-panel > div {
 	width: 100%;
 	height: 100%;
 }
+
 #property-panel .state-empty {
 	background: #313131;
 	height: 100%;
+}
+
+#property-panel #btn-switch-property {
+    background-color: rgba(0,0,0,.4);
+    color: #FEFEFE;
 }

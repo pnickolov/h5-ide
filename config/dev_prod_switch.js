@@ -12,7 +12,8 @@ module.exports = {
 			'<%= src %>/js/login/main.js'                              : '<%= src %>/js/login/main.js',
 			'<%= src %>/js/ide/main.js'                                : '<%= src %>/js/ide/main.js',
 			'<%= src %>/js/register/main.js'                           : '<%= src %>/js/register/main.js',
-			'<%= src %>/js/reset/main.js'                              : '<%= src %>/js/reset/main.js'
+			'<%= src %>/js/reset/main.js'                              : '<%= src %>/js/reset/main.js',
+			'<%= src %>/module/design/property/main.js'                : '<%= src %>/module/design/property/main.js'
 		}
 	},
 

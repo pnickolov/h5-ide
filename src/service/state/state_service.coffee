@@ -137,8 +137,8 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 
 
     #def module(self, username, session_id):
-    module = ( src, username, session_id, callback ) ->
-        send_request "module", src, [ username, session_id ], parserModuleReturn, callback
+    module = ( src, username, session_id, mod_repo, mod_tag, callback ) ->
+        send_request "module", src, [ username, session_id, mod_repo, mod_tag ], parserModuleReturn, callback
         true
 
     #def status(self, username, session_id, app_id):

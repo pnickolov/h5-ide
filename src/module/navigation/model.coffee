@@ -248,7 +248,7 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'state_model', 'aws_model', 'c
 
             me = this
 
-            state_model.module { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' )
+            state_model.module { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), $.cookie( 'mod_repo' ), $.cookie( 'mod_tag' )
 
             me.on 'STATE_MODULE_RETURN', ( result ) ->
 

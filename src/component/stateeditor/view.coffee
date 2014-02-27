@@ -31,6 +31,7 @@ define [ 'event',
             # 'click .state-toolbar .state-id': 'onStateIdClick'
             'click #state-toolbar-add': 'addStateItem'
             'click #state-toolbar-copy-all': 'copyAllState'
+            'click #state-toolbar-copy': 'copyState'
             'click #state-toolbar-delete': 'removeState'
             'click #state-toolbar-paste': 'pasteState'
             'click #state-toolbar-undo': 'onUndo'
@@ -59,6 +60,8 @@ define [ 'event',
             'OPTION_CHANGE .state-editor-res-select': 'onResSelectChange'
 
             'keyup .parameter-item.optional .parameter-value': 'onOptionalParaItemChange'
+
+            'keyup #state-gist-paste-area': 'onPasteGistData'
 
             'SWITCH_STATE': 'onSwitchState'
 
@@ -126,6 +129,7 @@ define [ 'event',
             that.$cmdDsec = $('#state-description')
             that.$noStateContainer = that.$editorModal.find('.state-no-state-container')
             that.$haveStateContainer = that.$editorModal.find('.state-have-state-container')
+            that.$stateGistPasteArea = $('#state-gist-paste-area')
 
             if that.resNoState
 
@@ -628,7 +632,7 @@ define [ 'event',
 
             setTimeout(() ->
                 if descMarkdown
-                    descHTML = $.markdown(descMarkdown)
+                    descHTML = markdown.toHTML(descMarkdown)
                 that.$cmdDsec.html(descHTML)
             , 0)
 
@@ -919,6 +923,8 @@ define [ 'event',
 
             $stateItemList.addClass('view')
             $stateItem.removeClass('view').addClass('focused')
+
+            # that.justScrollToElem that.$stateList, $stateItem
 
             # refresh description
             cmdName = $stateItem.attr('data-command')
@@ -1562,6 +1568,10 @@ define [ 'event',
                     null
                 # that.refreshDescription()
 
+                setTimeout(() ->
+                    that.$stateGistPasteArea.focus()
+                , 0)
+
         initCodeEditor: (editorElem, hintObj) ->
 
             that = this
@@ -1649,6 +1659,11 @@ define [ 'event',
                                 thatEditor.execCommand("startAutocomplete")
 
                     if e.command.name is "backspace" and hintDataAryMap['focus']
+
+                        $paraItem = $editorElem.parents('.parameter-item')
+                        if $paraItem.hasClass('bool')
+                            that.setPlainText($editorElem, '')
+
                         that.setEditorCompleter(thatEditor, hintDataAryMap['focus'], 'command')
                         thatEditor.execCommand("startAutocomplete")
 
@@ -1715,13 +1730,16 @@ define [ 'event',
 
                 editor.on("focus", (e, thatEditor) ->
 
+                    $valueInput = $(thatEditor.container)
+
+                    that.justScrollToElem(that.$stateList, $valueInput)
+
                     hintDataAryMap = thatEditor.hintObj
                     currentValue = thatEditor.getValue()
                     if not currentValue and hintDataAryMap['focus']
                         that.setEditorCompleter(thatEditor, hintDataAryMap['focus'], 'command')
                         thatEditor.execCommand("startAutocomplete")
 
-                    $valueInput = $(thatEditor.container)
                     inputPosX = $valueInput.offset().left
                     inputPosY = $valueInput.offset().top
                     that.$aceAutocompleteTip.css({
@@ -1762,6 +1780,28 @@ define [ 'event',
                 that.$cmdDsec.animate({
                     scrollTop: scrollToPos
                 }, 150)
+
+            catch err
+
+                null
+
+        justScrollToElem: ($parent, $target) ->
+
+            try
+
+                targetOffsetTop = $target.offset().top
+                parentOffsetTop = $parent.offset().top
+
+                targetTop = targetOffsetTop + $target.height()
+                parentTop = parentOffsetTop + $parent.height()
+
+                if targetTop > parentTop
+                    scrollPos = $parent.scrollTop() + targetTop - parentTop + 15
+
+                else if targetOffsetTop < parentOffsetTop
+                    scrollPos = $parent.scrollTop() + targetOffsetTop - parentOffsetTop - 15
+
+                $parent.scrollTop(scrollPos)
 
             catch err
 
@@ -2561,9 +2601,14 @@ define [ 'event',
 
             that = this
 
-            newStateDataAry = that.setNewStateIdForStateAry( MC.data.stateClipboard )
-            insertPos = that.addStateItemByData( newStateDataAry )
-            that.undoManager.register(null, insertPos, 'paste', newStateDataAry)
+            focused_index = $('#state-editor .state-item.focused').index('#state-editor .state-list > li')
+
+            if focused_index is -1
+                focused_index = null
+
+            newStateDataAry = that.setNewStateIdForStateAry MC.data.stateClipboard
+            insertPos = that.addStateItemByData newStateDataAry, focused_index
+            that.undoManager.register null, insertPos, 'paste', newStateDataAry
 
             that.clearSelectedItem()
 
@@ -2619,18 +2664,24 @@ define [ 'event',
             if reverse and reverse is true
 
                 if focused_index > 0
-                    stack.eq(focused_index - 1).addClass('focused')
+                    target_index = focused_index - 1
 
                 if focused_index < 1
-                    stack.eq(total - 1).addClass('focused')
+                    target_index = total - 1
 
             else
 
                 if focused_index + 1 < total
-                    stack.eq(focused_index + 1).addClass('focused')
+                    target_index = focused_index + 1
 
                 else
-                    stack.eq(0).addClass('focused')
+                    target_index = 0
+
+            target_item = stack.eq target_index
+
+            target_item.addClass('focused')
+
+            that.justScrollToElem that.$stateList, target_item
 
             return false
 
@@ -2651,18 +2702,24 @@ define [ 'event',
             if reverse and reverse is true
 
                 if focused_index > 0
-                    that.expandItem.call this, stack.eq(focused_index - 1).addClass('focused')
+                    target_index = focused_index - 1
 
                 if focused_index < 1
-                    that.expandItem.call this, stack.eq(total - 1).addClass('focused')
+                    target_index = total - 1
 
             else
 
                 if focused_index + 1 < total
-                    that.expandItem.call this, stack.eq(focused_index + 1).addClass('focused')
+                    target_index = focused_index + 1
 
                 else
-                    that.expandItem.call this, stack.eq(0).addClass('focused')
+                    target_index = 0
+
+            target_item = stack.eq target_index
+
+            that.expandItem.call this, target_item.addClass('focused')
+
+            # that.justScrollToElem that.$stateList, target_item
 
             return false
 
@@ -2697,7 +2754,8 @@ define [ 'event',
                 if index + 1 < total
                     stack.eq(index + 1).find('.ace_text-input').focus()
                 else
-                    that.onSwitchState.call this, event
+                    stack.eq(0).find('.ace_text-input').focus()
+                    # that.onSwitchState.call this, event
 
         aceUTabSwitch: (event, container) ->
 
@@ -2736,7 +2794,8 @@ define [ 'event',
                 stack.eq(index - 1).find('.ace_text-input').focus()
 
             if index is 0
-                container_item.parents('.state-item').find('.command-value .ace_text-input').focus()
+                stack.eq(total - 1).find('.ace_text-input').focus()
+                # container_item.parents('.state-item').find('.command-value .ace_text-input').focus()
 
         onRemoveState: (event, $targetStates, noRegisterUndo) ->
 
@@ -2892,6 +2951,22 @@ define [ 'event',
                 that.clearFocusedItem()
 
             return false
+
+        onPasteGistData: (event) ->
+
+            that = this
+            $areaTarget = $(event.currentTarget)
+            pasteData = $areaTarget.val()
+
+            try
+                pasteDataJSON = JSON.parse(pasteData)
+                that.addStateItemByData(pasteDataJSON)
+            catch err
+                null
+                # alert('data format error')
+
+            $areaTarget.val('')
+
     }
 
     return StateEditorView

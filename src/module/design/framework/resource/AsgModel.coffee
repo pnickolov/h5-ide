@@ -37,6 +37,8 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
 
     handleTypes : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_NotificationConfiguration
 
+    diffJson : ()-> # Disable diff for this model
+
     typeMap : {
       "autoscaling:EC2_INSTANCE_LAUNCH"          : "instanceLaunch"
       "autoscaling:EC2_INSTANCE_LAUNCH_ERROR"    : "instanceLaunchError"
@@ -97,6 +99,19 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
       # Call Superclass's consctructor to finish creating the ExpandAsg
       ComplexResModel.call( this, attributes, options )
       null
+
+    isReparentable : ( newParent )->
+      asg = @attributes.originalAsg
+
+      for expanded in [asg].concat( asg.get("expandedList") )
+        if newParent.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
+          if newParent.parent() is expanded.parent().parent()
+            return false
+        else
+          if newParent.parent is expanded.parent()
+            return false
+
+      true
 
     # Override connections / connectionTargets for "SgAsso"
     connections : ( type )->

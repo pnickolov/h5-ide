@@ -39,6 +39,8 @@
     "gulp-coffee": "1.4.1",
     "gulp-coffeelint": "0.2.2",
     "gulp-if": "0.0.5",
-    "jshint": "2.4.4"
+    "jshint": "2.4.4",
+    "gulp-cached": "0.0.2",
+    "node-notifier": "^1.2.1"
   }
 }

@@ -69,8 +69,8 @@ define [ '../base/view',
             data = @model.toJSON()
 
             for p in data.policies
-                p.alarmData.metricName = metricMap[ p.alarmData.metricName ]
                 p.unit   = unitMap[ p.alarmData.metricName ]
+                p.alarmData.metricName = metricMap[ p.alarmData.metricName ]
                 p.adjustmentType = adjustMap[ p.adjustmentType ]
 
             data.term_policy_brief = data.terminationPolicies.join(" > ")

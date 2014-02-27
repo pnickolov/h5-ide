@@ -110,7 +110,7 @@
 			<label for="property-instance-user-data">{{ i18n "PROP_INSTANCE_USER_DATA" }}</label>
 			{{#if stackAgentEnable}}
 				<div class="property-info" style="display: block;">
-					<p>User Data is disabled to allow installing OpsAgent for VisualOps. <a href="https://github.com/MadeiraCloud/OpsAgent/blob/develop/scripts/userdata.sh" target="_blank">View content</a>.</p>
+					<p>User Data is disabled to allow installing OpsAgent for VisualOps. <a href="{{ i18n "PROP_AGENT_USER_DATA_URL" }}" target="_blank">View content</a>.</p>
 				</div>
 			{{else}}
 				<textarea id="property-instance-user-data">{{userData}}</textarea>

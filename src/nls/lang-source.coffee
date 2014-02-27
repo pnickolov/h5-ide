@@ -947,6 +947,10 @@ module.exports =
       en: "Data is available in 1-minute periods at an additional cost. For information about pricing, go to the "
       zh: "数据在一分钟内可用需要额外的话费。 获取价格信息，请去 "
 
+    PROP_AGENT_USER_DATA_URL:
+      en: "https://github.com/MadeiraCloud/OpsAgent/blob/develop/scripts/userdata.sh"
+      zh: "https://github.com/MadeiraCloud/OpsAgent/blob/develop/scripts/userdata.sh"
+
     PROP_INSTANCE_ENI_DETAIL:
       en: "Network Interface Details"
       zh: "网卡设置"
@@ -3563,10 +3567,10 @@ module.exports =
       en: "%s has configured states. To make sure OpsAgent to work, %s must be connected to internet directly or via a NAT instance."
       zh: ""
     TA_MSG_ERROR_NO_CGW:
-      en: "You have configured states for instance. To make sure the states work, the VPC must have an internet gateway."
+      en: "You have configured states for instance. To make sure OpsAgent to work, the VPC must have an internet gateway."
       zh: ""
     TA_MSG_ERROR_NO_OUTBOUND_RULES:
-      en: "%s has configured states. To make sure the states work, make sure it has outbound rules on 80 and 443 ports to the outside."
+      en: "%s has configured states. To make sure OpsAgent to work, it should have outbound rules on 80 and 443 ports to the outside."
       zh: ""
     TA_MSG_WARNING_OUTBOUND_NOT_TO_ALL:
       en: "%s has configured states. Suggest to set its outbound rule on 80 and 443 to 0.0.0.0/0. Otherwise, agent may not be able to work properly, install packages or check out source codes lacking route to MadeiraCloud's monitoring systems or required repositories."

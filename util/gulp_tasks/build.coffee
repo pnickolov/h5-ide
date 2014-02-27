@@ -8,12 +8,14 @@ Q      = require("q")
 fs     = require("fs")
 vm     = require("vm")
 
-tinylr      = require("tiny-lr")
-chokidar    = require("chokidar")
+tinylr   = require("tiny-lr")
+chokidar = require("chokidar")
+notifier = require("node-notifier")
 
 coffee     = require("gulp-coffee")
 coffeelint = require("gulp-coffeelint")
 gulpif     = require("gulp-if")
+cached     = require("gulp-cached")
 
 indexOf    = require("./indexof")
 
@@ -46,6 +48,15 @@ Helper =
       ++idx
 
     true
+
+  notify : ( msg )->
+    if GLOBAL.gulpConfig.enbaleNotifier
+      notifier.notify({
+        title   : "IDE Gulp"
+        message : msg
+      })
+    null
+
   createLrServer : ()->
     if lrServer then return
 
@@ -71,10 +82,22 @@ Helper =
   log  : (e)-> console.log e
   noop : ()->
 
+  compileTitle : ( extra )->
+    title = "[" + gutil.colors.green("Compile @#{(new Date()).toLocaleTimeString()}") + "]"
+    if extra
+      title += " " + gutil.colors.inverse( extra )
+    title
+
 
 StreamFuncs =
   jshint       : require("./jshint")
   lintReporter : require('./reporter')
+
+  coffeeErrorPrinter : ( error )->
+    console.log gutil.colors.red.bold("\n[CoffeeError]"), error.message.replace( process.cwd(), "." )
+
+    Helper.notify "Error occur when compiling " + error.message.replace( process.cwd(), "." ).split(":")[0]
+    null
 
   throughLiveReload : ()->
     es.through ( file )->
@@ -84,15 +107,12 @@ StreamFuncs =
         }
       null
 
-  coffeeErrorPrinter : ( error )->
-    console.log gutil.colors.red.bold("\n[CoffeeError]"), error.message.replace( process.cwd(), "." )
-    null
-
   throughCoffeeConditionalCompile : ()->
     # This transformer simply replace "### env:prod ### to ### env:prod "
     es.through ( file )->
       buffer = file.contents
       index = 0
+      found = 0
       while (index = indexOf( buffer, "### env:prod ###", index )) != -1
         if GLOBAL.gulpConfig.verbose then console.log "[EnvProdFound]", file.relative
 
@@ -106,6 +126,12 @@ StreamFuncs =
         buffer[index + 0] = buffer[index + 1] = buffer[index + 2] = 32
         index += 20
 
+        ++found
+
+      if found
+        file.extra = "EnvProdFound"
+        if found > 1 then file.extra += " x" + found
+
       @emit "data", file
       null
 
@@ -114,7 +140,7 @@ StreamFuncs =
     startPipeline = coffee()
 
     pipeline = startPipeline.pipe es.through ( file )->
-      console.log "[Compile] lang-source.coffee"
+      console.log Helper.compileTitle(), "lang-souce.coffee"
 
       ctx = vm.createContext({module:{}})
       vm.runInContext( file.contents.toString("utf8"), ctx )
@@ -140,6 +166,38 @@ StreamFuncs =
 
     startPipeline
 
+  throughCoffee : ()->
+    coffeeBranch = cached("coffee")
+
+    # Compile
+    coffeeCompile = coffeeBranch
+                    .pipe( gulpif( Helper.shouldLintCoffee, coffeelint( undefined, coffeelintOptions) ) )
+                    .pipe( StreamFuncs.throughCoffeeConditionalCompile() )
+                    .pipe( coffee({sourceMap:GLOBAL.gulpConfig.coffeeSourceMap}) )
+
+    pipeline = coffeeCompile
+      # Log
+      .pipe( es.through ( f )->
+        console.log Helper.compileTitle( f.extra ), "#{f.relative}"
+        @emit "data", f
+      )
+      # Jshint and report
+      .pipe( gulpif Helper.shouldLintCoffee, StreamFuncs.jshint() )
+      .pipe( gulpif Helper.shouldLintCoffee, StreamFuncs.lintReporter() )
+      # Save
+      .pipe( gulp.dest(".") )
+
+    if GLOBAL.gulpConfig.reloadJsHtml
+      pipeline.pipe StreamFuncs.throughLiveReload()
+
+    # calling pipe will add error listener to the pipeline.
+    # Making the pipeline stop after an error occur.
+    # But I want the coffee pipeline still works even after compilation fails.
+    coffeeCompile.removeAllListeners("error")
+    coffeeCompile.on("error", StreamFuncs.coffeeErrorPrinter)
+
+    coffeeBranch
+
 
 setupCompileStream = ( stream )->
 
@@ -150,30 +208,7 @@ setupCompileStream = ( stream )->
   langSrcBranch = StreamFuncs.throughLangSrc()
 
   # Branch Used to handle coffee files
-  coffeeBranch = gulpif( Helper.shouldLintCoffee, coffeelint( undefined, coffeelintOptions) )
-
-  # Compile
-  coffeeCompile = coffeeBranch
-                    .pipe( StreamFuncs.throughCoffeeConditionalCompile() )
-                    .pipe( coffee({sourceMap:GLOBAL.gulpConfig.coffeeSourceMap}) )
-
-  coffeeCompile
-    # Log
-    .pipe( es.through ( f )->
-      console.log "[Compile] #{f.relative}"
-      @emit "data", f
-    )
-    # Jshint and report
-    .pipe( gulpif Helper.shouldLintCoffee, StreamFuncs.jshint() )
-    .pipe( gulpif Helper.shouldLintCoffee, StreamFuncs.lintReporter() )
-    # Save
-    .pipe( gulp.dest(".") )
-
-  # calling pipe will add and error listener to the pipeline.
-  # Making the pipeline stop after an error occur.
-  # But I want the coffee pipeline still works even after compilation fails.
-  coffeeCompile.removeAllListeners("error")
-  coffeeCompile.on("error", StreamFuncs.coffeeErrorPrinter)
+  coffeeBranch = StreamFuncs.throughCoffee()
 
   # Setup compile branch
   langeSrcBranchRegex   = /lang-source\.coffee/
@@ -184,13 +219,15 @@ setupCompileStream = ( stream )->
   else
     liveReloadBranchRegex = /src.assets/
 
-  stream.pipe( gulpif langeSrcBranchRegex, langSrcBranch, true )
-        .pipe( gulpif liveReloadBranchRegex, assetBranch,  true )
-        .pipe( gulpif coffeeBranchRegex,  coffeeBranch, true )
+  stream.pipe( gulpif langeSrcBranchRegex,   langSrcBranch, true )
+        .pipe( gulpif coffeeBranchRegex,     coffeeBranch,  true )
+        .pipe( gulpif liveReloadBranchRegex, assetBranch,   true )
 
 
 # Tasks
-watch = ()->
+watch = ( secondTime )->
+
+  watchIsWorking = secondTime or false
 
   Helper.createLrServer()
 
@@ -208,6 +245,8 @@ watch = ()->
   setupCompileStream watchStream
 
   changeHandler = ( path )->
+    watchIsWorking = true
+
     if not fs.existsSync( path ) then return
 
     stats = fs.statSync( path )
@@ -239,6 +278,17 @@ watch = ()->
   gutil.log gutil.colors.bgBlue(" Watching file changes... ")
   watcher.on "add",    changeHandler
   watcher.on "change", changeHandler
+  watcher.on "error", (e)-> console.log "[error]", e
+
+  # Try to detect if watch is not working
+  fs.writeFileSync( "./src/robots.txt", fs.readFileSync("./src/robots.txt") )
+  setTimeout ()->
+    if not watchIsWorking
+      console.log "[Info]", "Watch is not working. Will retry in 2 seconds."
+      Helper.notify "Watch is not working. Will retry in 2 seconds."
+      setTimeout (()-> watch(true)), 2000
+
+  , 500
   null
 
 

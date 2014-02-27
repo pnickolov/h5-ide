@@ -45,6 +45,24 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
 
     isVisual : ()-> false
 
+    isReparentable : ( newParent )->
+      if @design().modeIsAppEdit()
+        parent = @get("owner")
+
+        if parent.type isnt newParent.type
+          return false
+
+        if not @get("appId") then return true
+
+        while parent and parent.type isnt constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone
+          parent    = parent.parent()
+          newParent = newParent.parent()
+
+        if parent and newParent and parent isnt newParent
+          return "Cannot move volume across availability zone."
+
+      true
+
     groupMembers : ()->
       if not @__groupMembers then @__groupMembers = []
       return @__groupMembers

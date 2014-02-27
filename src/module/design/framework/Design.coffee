@@ -520,19 +520,58 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
 
     { costList : costList, totalFee : Math.round(totalFee * 100) / 100 }
 
-  ########## AWS Business logics ############
-  DesignImpl.prototype.diffAmi = ( newData, oldData )->
 
-    newComps = newData.component
-    oldComps = ( oldData || @__backingStore ).component
+  diffHelper = ( newComp, oldComp, result )->
+    type = if newComp then newComp.type else oldComp.type
 
-    newInstances = []
-    oldINstances = []
+    Model = Design.modelClassForType type
+    if Model.diffJson
+      r = Model.diffJson( newComp, oldComp )
+      if r and r.length
+        result = result.concat r
+      else if r and r.type
+        result.push r
+      return
+
+    if not newComp
+      result.push
+        type   : oldComp.type
+        name   : oldComp.name
+        change : "Delete"
+    else if not oldComp
+      result.push
+        type   : newComp.type
+        name   : newComp.name
+        change : "Create"
+    # Only compare resources.
+    else if not _.isEqual newComp.resource, oldComp.resource
+      result.push
+        type   : newComp.type
+        name   : newComp.name
+        change : "Update"
+    null
+
+  DesignImpl.prototype.diff = ()->
+    # Get an detailed diff of the current state of the Design and the last save state.
+    newData = @serialize()
+    oldData = @__backingStore
+
+    ### Diff the Component first ###
+    isModified = not _.isEqual( newData.component, oldData.component )
+    result     = []
+    for uid, comp of newData.component
+      diffHelper( comp, oldData.component[uid], result )
+
+    for uid, comp of oldData.component
+      if newData.component[ uid ] then continue
+      diffHelper( undefined, comp, result )
 
     {
-      remain : newInstances
-      remove : oldINstances
+      result     : result
+      isRunning  : newData.state is constant.APP_STATE.APP_STATE_RUNNING
+      isModified : isModified || not _.isEqual( oldData.layout, newData.layout )
     }
+
 
   DesignImpl.prototype.isStoppable = ()->
     # Previous version will set canvas_data.property.stoppable to false

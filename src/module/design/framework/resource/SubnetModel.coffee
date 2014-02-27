@@ -192,6 +192,8 @@ define [ "constant",
 
     handleTypes : constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
 
+    diffJson : ()-> # Disable diff for thie Model
+
     deserialize : ( data, layout_data, resolve )->
 
       new Model {

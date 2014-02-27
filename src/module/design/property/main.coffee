@@ -113,12 +113,14 @@ define [ 'event',
 
 
 			# Tell `PropertyBaseModule` to load corresponding property panel.
+
 			### env:dev ###
 			PropertyBaseModule.load type, uid, tab_type
 			view.afterLoad()
 
 			if force then view.forceShow()
 			### env:dev:end ###
+
 			### env:prod ###
 			try
 				PropertyBaseModule.load type, uid, tab_type

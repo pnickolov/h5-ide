@@ -50,6 +50,7 @@ define [ 'MC', 'event',
             'click #toolbar-edit-app'        : 'clickEditApp'
             'click #toolbar-save-edit-app'   : 'clickSaveEditApp'
             'click #toolbar-cancel-edit-app' : 'clickCancelEditApp'
+            'click .app-update-summary-table .header-row th' : 'sortSummaryTable'
 
 
         render   : ( type ) ->
@@ -640,9 +641,6 @@ define [ 'MC', 'event',
             null
 
         clickSaveEditApp : (event)->
-            me = this
-            console.log 'click save app'
-
             # 1. Send save request
             # check credential
             if MC.common.cookie.getCookieByName('has_cred') isnt 'true'
@@ -651,40 +649,18 @@ define [ 'MC', 'event',
                 require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
 
             else
-                design = Design.instance()
-                newData = design.serialize()
+                result = @model.diff()
 
-                if design.isModified( newData )
+                if not result.isModified
+                    # no changes and return to app modal
+                    @appedit2App()
+                    return
 
-                    state    = null
-                    platform = 'vpc'
-                    info     = lang.ide.TOOL_POP_BODY_APP_UPDATE_VPC
-
-                    # set state
-                    if MC.common.other.canvasData.get( 'state' ) is constant.APP_STATE.APP_STATE_RUNNING
-                        state = constant.APP_STATE.APP_STATE_RUNNING
-
-                    # set platform and info
-                    if MC.common.other.canvasData.get( 'platform' ) is "ec2-classic"
-                        platform = 'ec2'
-                        info = lang.ide.TOOL_POP_BODY_APP_UPDATE_EC2
-
-                    ## modal init
-                    obj =
-                        state         : state
-                        platform      : platform
-                        info          : info
-                        instance_list : Design.instance().diffAmi( newData )
-
-                    modal MC.template.updateApp obj
+                else
+                    modal MC.template.updateApp result
 
                     require [ 'component/trustedadvisor/main' ], ( trustedadvisor_main ) ->
                         trustedadvisor_main.loadModule 'stack'
-
-                else
-                    # no changes and return to app modal
-                    @appedit2App()
-
             null
 
         clickCancelEditApp : ->
@@ -775,6 +751,25 @@ define [ 'MC', 'event',
 
             null
 
+        sortSummaryTable : ( event )->
+            $this   = $( event.currentTarget )
+            index   = $this.index()
+            greater = $this.hasClass("sorted-down")
+
+            $this.siblings().removeClass("sorted sorted-down")
+
+            $this.addClass("sorted").toggleClass("sorted-down")
+
+            tbody = $(".app-update-summary-table").children("tbody")
+            list  = tbody.children()
+            list  = _.sortBy list, (a)-> $(a).children().eq(index).text()
+            tbody.empty()
+            for i in list
+                if greater
+                    tbody.append i
+                else
+                    tbody.prepend i
+            null
     }
 
     return ToolbarView

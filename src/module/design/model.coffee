@@ -345,11 +345,6 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
             if resource_source
 
                 #clear old app data in MC.data.resource_list
-
-                # old design flow
-                #MC.forge.app.clearResourceInCache MC.canvas_data
-
-                # new design flow
                 Design.instance().clearResourceInCache()
 
                 #cache new app data

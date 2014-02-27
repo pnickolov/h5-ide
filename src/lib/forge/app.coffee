@@ -56,27 +56,6 @@ define [ 'MC', 'constant', 'Design' ], ( MC, constant, Design ) ->
 		return result
 
 
-	#clear data in MC.data.resource_list for app
-	clearResourceInCache = ( canvas_data ) ->
-
-		resource_list = MC.data.resource_list[ Design.instance().region() ]
-		if resource_list
-			$.each canvas_data.component, (uid, comp) ->
-
-				res_key = constant.AWS_RESOURCE_KEY[comp.type]
-
-				if res_key and resource_list and resource_list[comp.resource[res_key]]
-
-					delete resource_list[comp.resource[res_key]]
-
-					if comp.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
-						resource_list[comp.resource[res_key]]=null
-
-				null
-
-		null
-
-
 	#add delete class to deleted resource
 	updateDeletedResourceState = ( canvas_data ) ->
 
@@ -170,7 +149,5 @@ define [ 'MC', 'constant', 'Design' ], ( MC, constant, Design ) ->
 	existing_app_resource      : existing_app_resource
 	getNameById                : getNameById
 	updateDeletedResourceState : updateDeletedResourceState
-	clearResourceInCache       : clearResourceInCache
 	getResourceById            : getResourceById
-
 	getAmis                    : getAmis

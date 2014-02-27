@@ -4,6 +4,24 @@
 
 define [ "component/thumbnail/ThumbUtil", 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'stack_model', 'app_model', 'constant' ], (ThumbUtil, MC, Backbone, $, _, ide_event, stack_service, stack_model, app_model, constant) ->
 
+    AWSRes = constant.AWS_RESOURCE_TYPE
+    AwsTypeConvertMap = {}
+
+    AwsTypeConvertMap[ AWSRes.AWS_VPC_NetworkAcl ]                  = "Network ACL"
+    AwsTypeConvertMap[ AWSRes.AWS_AutoScaling_Group ]               = "Auto Scaling Group"
+    AwsTypeConvertMap[ AWSRes.AWS_VPC_CustomerGateway ]             = "Customer Gateway"
+    AwsTypeConvertMap[ AWSRes.AWS_ELB ]                             = "Load Balancer"
+    AwsTypeConvertMap[ AWSRes.AWS_VPC_NetworkInterface ]            = "Network Interface"
+    AwsTypeConvertMap[ AWSRes.AWS_VPC_InternetGateway ]             = "Internet Gateway"
+    AwsTypeConvertMap[ AWSRes.AWS_EC2_Instance ]                    = "Instance"
+    AwsTypeConvertMap[ AWSRes.AWS_AutoScaling_LaunchConfiguration ] = "Launch Configuration"
+    AwsTypeConvertMap[ AWSRes.AWS_VPC_RouteTable ]                  = "Route Table"
+    AwsTypeConvertMap[ AWSRes.AWS_EC2_SecurityGroup ]               = "Security Group"
+    AwsTypeConvertMap[ AWSRes.AWS_SNS_Subscription ]                = "SNS Subscription"
+    AwsTypeConvertMap[ AWSRes.AWS_VPC_VPNGateway ]                  = "VPN Gateway"
+    AwsTypeConvertMap[ AWSRes.AWS_VPC_VPC ]                         = "VPC"
+    AwsTypeConvertMap[ AWSRes.AWS_VPC_VPNConnection ]               = "VPN"
+
     #item state map
     # {app_id:{'name':name, 'state':state, 'is_running':true|false, 'is_pending':true|false, 'is_use_ami':true|false},
     #  stack_id:{'name':name, 'is_run':true|false, 'is_duplicate':true|false, 'is_delete':true|false}}
@@ -141,7 +159,7 @@ define [ "component/thumbnail/ThumbUtil", 'MC', 'backbone', 'jquery', 'underscor
                     console.log 'save as stack successfully'
 
                     #update stack name list
-                    new_id = result.resolved_data.id
+                    new_id = result.resolved_data
                     MC.data.stack_list[region].push {'id':new_id, 'name':new_name}
 
                     # old save png
@@ -1101,6 +1119,31 @@ define [ "component/thumbnail/ThumbUtil", 'MC', 'backbone', 'jquery', 'underscor
 
         isAutoScaling : () ->
             !!Design.modelClassForType( "AWS.AutoScaling.Group" ).allObjects().length
+
+        diff : ()->
+            dedupResult = []
+            dedupMap    = {}
+
+            diffResult  = Design.instance().diff()
+            for obj in diffResult.result
+                if AwsTypeConvertMap[ obj.type ]
+                    obj.type = AwsTypeConvertMap[ obj.type ]
+                # Remove duplicate
+                key = obj.type + obj.name
+                if obj.change is "Update"
+                    key += "Create"
+                else
+                    key += obj.change
+
+                exist = dedupMap[ key ]
+                if not exist
+                    dedupMap[ key ] = obj
+                    dedupResult.push obj
+                else if obj.change is "Create"
+                    exist.change = obj.change
+
+            diffResult.result = dedupResult
+            diffResult
     }
 
     model = new ToolbarModel()

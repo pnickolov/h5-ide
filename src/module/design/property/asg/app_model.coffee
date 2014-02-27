@@ -91,6 +91,7 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
             for instance, idx in asg_data.Instances.member
                 ami =
                     status : if instance.HealthStatus is 'Healthy' then 'green' else 'red'
+                    healthy: instance.HealthStatus
                     name   : instance.InstanceId
 
                 az = instance.AvailabilityZone

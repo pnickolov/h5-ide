@@ -1201,44 +1201,24 @@ Following rule(s) will be deleted from its(their) security group:</div>
 <div id="app-apply-update" style="width:460px">
 	<div class="modal-header"><h3 class="truncate" style="width: 380px;">Conﬁrm to Update App</h3><i class="modal-close">&times;</i> </div>
 	<div class="modal-body">
-		<p class="modal-text-major">Do you confirm to apply the changes?</p>
-		{{#unless state }}
-		<div class="modal-text-minor" style="margin-top:10px;">The app is currently stopped. To apply updates, the app will be started automatically.</div>
-		{{/unless }}
-		{{# if state }}
-			{{# if instance_list.remain }}
-			<div class="summary-block">
-				<details>
-					<summary>{{ instance_list.remain.length }} instance(s) will be restarted.</summary>
-					<div class="scroll-wrap scroll-summary-block" style="max-height: 60px;"><div class="scrollbar-veritical-wrap" style="display: block;"><div class="scrollbar-veritical-thumb"></div></div>
-						<ul class="summary-content scroll-content">
-							{{#each instance_list.remain }}
-							<li>{{ name }}<span class="meta">({{ instance_id }})</span></li>
-							{{/each}}
-						</ul>
-					</div>
-				</details>
-				<div class="modal-text-minor">{{ info }}</div>
-			</div>
-			{{/if}}
-		{{/if}}
-
-		{{# if instance_list.remove }}
-		<div class="summary-block">
-			<details>
-				<summary>{{ instance_list.remove.length }} instance(s) will be terminated.</summary>
-					<div class="scroll-wrap scroll-summary-block" style="max-height: 60px;"><div class="scrollbar-veritical-wrap" style="display: block;"><div class="scrollbar-veritical-thumb"></div></div>
-					<ul class="summary-content scroll-content">
-						{{#each instance_list.remove }}
-						<li>{{ name }}<span class="meta">({{ instance_id }})</span></li>
-						{{/each}}
-					</ul>
-				</div>
-			</details>
-			<div class="modal-text-warning"><b>Caution:</b> Termination cannot be rolled back.</div>
-		</div>
-		{{/if}}
-
+	{{#if isRunning}}
+		<h3 class="modal-text-major">Do you confirm to apply the changes?</h3>
+	{{else}}
+		<h3 class="modal-text-major">Do you confirm to apply the changes and start the app?</h3>
+		<p class="modal-text-minor" style="margin-top:10px;">The app is currently stopped. To apply updates, the app will be started automatically.</p>
+	{{/if}}
+	{{#if result.length}}
+		<table class="app-update-summary-table">
+			<thead> <tr class="header-row">
+				<th class="sorted sorted-down">Type</th> <th>Name</th> <th>Change</th> </tr>
+			</thead>
+			<tbody>
+			{{#each result}}
+				<tr> <td>{{type}}</td> <td>{{name}}</td> <td class="au-summary-label au-summary-{{change}}">{{change}} {{#if extra}}<span class="au-summary-extra">{{extra}}</span>{{/if}} {{#if info}}<span class="tooltip" data-tooltip="{{info}}">!</span>{{/if}}</td> </tr>
+			{{/each}}
+			</tbody>
+		</table>
+	{{/if}}
 		<div class="stack-validation">
 			<details open style="display:none;">
 				<summary>Validation</summary>
@@ -1250,7 +1230,6 @@ Following rule(s) will be deleted from its(their) security group:</div>
 				<p>Validating your app...</p>
 			</div>
 		</div>
-
 	</div>
 	<div class="modal-footer">
 		<button id="confirm-update-app" class="btn btn-blue" style="width:160px;" disabled>Continue to Update</button>

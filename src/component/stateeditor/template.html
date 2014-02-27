@@ -229,21 +229,21 @@
 						</div>
 						<ol class="state-list"></ol>
 					</div>
-
+					<ol class="state-list"></ol>
 				</div>
-				<div id="state-description" data-command=""></div>
-				<div id="state-log" data-state-id="">
-					<ul class="state-log-list">
-						{{> state-template-log-instance-item}}
-						{{> state-template-log-item}}
-					</ul>
-					<div class="state-log-loading">Loading...</div>
-					<div class="state-log-info">
-						<div class="state-log-title">All states are pending.</div>
-						<div class="state-log-detail">
-							<span class="pending">Detailed log will show here when a state succeeds or fails.</span>
-							<span class="stoped">The app is currently stopped. Detailed log will show here when the app is started and a state succeeds or fails.</span>
-						</div>
+			</div>
+			<div id="state-description" data-command=""></div>
+			<div id="state-log" data-state-id="">
+				<ul class="state-log-list">
+					{{> state-template-log-instance-item}}
+					{{> state-template-log-item}}
+				</ul>
+				<div class="state-log-loading">Loading...</div>
+				<div class="state-log-info">
+					<div class="state-log-title">All states are pending.</div>
+					<div class="state-log-detail">
+						<span class="pending">Detailed log will show here when a state succeeds or fails.</span>
+						<span class="stoped">The app is currently stopped. Detailed log will show here when the app is started and a state succeeds or fails.</span>
 					</div>
 				</div>
 			</div>

@@ -143,6 +143,8 @@ a {
 	padding : 0 20px;
 	color   : #ddd;
 	cursor  : pointer;
+	height  : 45px;
+	line-height: 45px;
 }
 
 .header-menu > .dropdown > .js-toggle-dropdown:hover {
@@ -161,7 +163,7 @@ a {
 	position: absolute;
 	display: block;
 	padding: 1px 4px;
-	border-radius: 4px;
+	border-radius: 7px;
 	background-color: #ec3c38;
 	box-shadow: 0 1px rgba(0, 0, 0, 0.25);
 	background-image: -webkit-linear-gradient(bottom, #c5312d , #ec3c38);
@@ -284,7 +286,7 @@ a {
 
 #header--user .icon-caret-down {
 	position: absolute;
-	top: 17px;
+	top: 14px;
 	right: 10px;
 }
 
@@ -304,15 +306,6 @@ a {
 }
 
 /*Account Settings*/
-#account-setting-close {
-	position: absolute;
-	right: 10px;
-	top: 10px;
-	font-style: normal;
-	cursor: pointer;
-	font-size: 20px;
-	line-height: 20px;
-}
 
 #account-setting-wrap .modal-body {
 	padding: 0;
@@ -330,9 +323,9 @@ a {
 }
 
 #account-setting-tab {
-	padding: 0 0 0 10px;
-	background-color: #555;
-	box-shadow: inset 1px 2px 5px rgba(0, 0, 0, 0.2);
+	padding         : 0 0 0 10px;
+	background-color: #F0F0F0;
+	box-shadow      : inset 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 #account-setting-tab li {
@@ -345,10 +338,10 @@ a {
 	padding: 15px 0;
 	display: block;
 	text-align: center;
-	color: #FFF;
+	color: #4495d3;
 	font-size: 12px;
 	border-radius: 5px 5px 0 0;
-	font-weight: 700;
+	/*font-weight: 700;*/
 }
 
 #account-profile-setting {
@@ -584,6 +577,11 @@ a {
 
 #AWSCredential-setting .input:focus {
 	background-color: #fff;
+}
+
+#AWSCredential-setting .input[disabled] {
+	color: #ccc;
+	border: 1px solid #ddd;
 }
 
 #AWSCredentials-submiting-body {
@@ -3027,7 +3025,7 @@ td.table-action a.btn {
 	top      : 0;
 	z-index  : 2;
 
-	height    : 44px;
+	height    : 40px;
 	width     : 100%;
 	min-width : 370px;
 	background      : #f0f0f0;
@@ -3071,12 +3069,12 @@ td.table-action a.btn {
 .btn-toolbar {
 	text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
 	width       : 44px;
-	height      : 36px;
+	height      : 32px;
 
 	position    : relative;
 	float       : left;
 
-	line-height : 36px;
+	line-height : 32px;
 	text-align  : center;
 	color       : #606060;
 
@@ -3114,21 +3112,21 @@ td.table-action a.btn {
 }
 
 .btn-toolbar.selectbox {
-	width : auto;
+	width  : auto;
 	padding: 0;
-	height: 44px;
+	height : 40px;
 }
 
 .btn-toolbar.selectbox .selection {
-	font-size   : 16px;
-	color       : #606060;
-	padding     : 0 18px 0 10px;
-	border      : none;
-	line-height: 44px;
-	display: inline-block;
-	width: 24px;
-	height: 44px;
-	margin: 0;
+	font-size  : 16px;
+	color      : #606060;
+	padding    : 0 18px 0 10px;
+	border     : none;
+	line-height: 40px;
+	display    : inline-block;
+	width      : 24px;
+	height     : 40px;
+	margin     : 0;
 }
 
 .btn-toolbar.selectbox .dropdown {
@@ -3222,10 +3220,10 @@ td.table-action a.btn {
 
 .sidebar-title {
 	padding : 0 10px;
-	height  : 44px;
+	height  : 39px;
 
 	font-size   : 16px;
-	line-height : 44px;
+	line-height : 39px;
 	color       : #b0b0b0;
 	text-shadow : 0 1px #333;
 
@@ -3558,13 +3556,13 @@ a.sidebar-hider {
 	top      : 0;
 	position : absolute;
 	background: #313131; /* for zoomed out */
-	margin-top: 45px;
+	margin-top: 41px;
 }
 
 .property-wrap .scroll-wrap {
 	position : absolute;
-	top      : 45px;
-	bottom   : 0;
+	top      : 33px;
+	bottom   : 42px;
 	left     : 0;
 	right    : 0;
 	z-index  : 1;
@@ -3613,9 +3611,11 @@ a.sidebar-hider {
 	font-size   : 16px;
 	text-shadow : none;
 
-	width    : 260px;
-	position : relative;
-	z-index  : 2;
+	width      : 260px;
+	height     : 32px;
+	line-height: 32px;
+	position   : relative;
+	z-index    : 2;
 
 	cursor : default;
 }
@@ -3638,8 +3638,8 @@ a.sidebar-hider {
 
 	left        : 0;
 	width       : 44px;
-	height      : 44px;
-	line-height : 45px;
+	height      : 32px;
+	line-height : 32px;
 	display     : inline-block;
 }
 
@@ -5888,7 +5888,7 @@ summary:focus {
 }
 
 .validation-content.empty {
-	background    : #f2f2f2;
+	background    : #fff;
 	padding       : 40px 0;
 	text-align    : center;
 	border-radius : 2px;
@@ -5901,9 +5901,9 @@ summary:focus {
 	border        : 1px solid #ccc;
 	border-bottom : none;
 	width         : 100%;
-	border-radius : 4px 4px 0 0;
+	border-radius : 2px 2px 0 0;
 	overflow      : hidden;
-	background   : #dfdfdf;
+	background    : #eee;
 }
 
 #modal-validation-statusbar .validation-content .tab {
@@ -5913,14 +5913,14 @@ summary:focus {
 }
 
 .validation-content .tab li {
-	color        : #666;
+	color        : #999;
 	width        : 119px;
 	line-height  : 30px;
 	display      : block;
 	float        : left;
 	padding      : 0 10px;
 	border-right : 1px solid #ccc;
-	box-shadow   : inset 0 -1px 0 #ccc, inset 0 1px 0 rgba(255,255,255,.3);
+	box-shadow   : inset 0 -1px 0 #e0e0e0;
 	text-align   : left;
 	-webkit-transition: background .2s;
 	-moz-transition: background .2s;
@@ -5935,14 +5935,14 @@ summary:focus {
 }
 
 .validation-content .tab li:hover {
-	background: rgba(255,255,255,.2);
+	background: rgba(255,255,255,.5);
 }
 
 .validation-content .tab li.active,
 .validation-content .tab li.active:hover {
-	background  : #f2f2f2;
-	/*color     : #333;*/
-	font-weight : bold;
+	background  : #fcfcfc;
+	color     : #333;
+	/*font-weight : bold;*/
 	box-shadow  : inset 0 1px 0 rgba(255,255,255,.5);
 }
 
@@ -5957,7 +5957,7 @@ summary:focus {
 	border-top    : none;
 	border-radius : 0 0 2px 2px;
 	overflow      : hidden;
-	background : #f2f2f2;
+	background    : #fcfcfc;
 }
 
 #modal-validation-statusbar .validation-content .scroll-wrap-validation {
@@ -5976,7 +5976,7 @@ summary:focus {
 	height        : 100%;
 	min-height    : 50px;
 	box-sizing    : border-box;
-	background    : #f2f2f2;
+	background    : #fcfcfc;
 }
 
 .validation-content .content_wrap .active {
@@ -6026,7 +6026,7 @@ summary:focus {
 }
 
 .validation-content .content_wrap .title:nth-child(2n) {
-	background-color: rgba(255,255,255,.6);
+	background-color: rgba(0,0,0,.02);
 }
 
 .validation-content .content_wrap .content div:last-child{
@@ -6086,17 +6086,20 @@ summary:focus {
 }
 
 .validation-counter {
-	padding       : 1px 4px;
-	border-radius : 4px;
-	font-size     : 12px;
-	color         : #fff;
-	float: right;
-	display: inline-block;
-	height: 16px;
-	line-height: 16px;
-	margin-top: 5px;
-	box-shadow: inset 0 1px 1px rgba(255,255,255,.3);
-	border: #666;
+	padding      : 0 4px;
+	border-radius: 4px;
+	font-size    : 12px;
+	color        : #fff;
+	float        : right;
+	display      : inline-block;
+	min-width    : 8px;
+	height       : 16px;
+	line-height  : 16px;
+	margin-top   : 7px;
+	/*box-shadow : inset 0 1px 1px rgba(255,255,255,.3);*/
+	/*border       : #666;*/
+	border-radius: 10px;
+	text-align   : center;
 }
 
 .no-item .validation-counter {
@@ -6109,17 +6112,17 @@ summary:focus {
 
 .validation-counter-error {
 	background-color: #ec3c38;
-	border: 1px solid #9e2622;
+	/*border: 1px solid #9e2622;*/
 }
 
 .validation-counter-warning {
 	background-color: #ffa740;
-	border: 1px solid #ff8330;
+	/*border: 1px solid #ff8330;*/
 }
 
 .validation-counter-notice {
 	background-color: #4495d3;
-	border: 1px solid #377bb0;
+	/*border: 1px solid #377bb0;*/
 }
 
 #app-apply-update .modal-text-wraper {
@@ -7265,11 +7268,13 @@ summary:focus {
 }
 
 #modal-instance-sys-log .instance-sys-log-content {
-	height: 500px;
+	display : none;
 	overflow: auto;
-	background-color: #111;
-	display: none;
-	padding: 10px 20px;
+	padding : 10px 20px;
+	height  : 500px;
+	color   : #0E750C;
+/*	background-color: #111;
+	color           : #0f0;*/
 }
 
 #modal-instance-sys-log .instance-sys-log-content::selection {
@@ -7302,34 +7307,27 @@ summary:focus {
 
 /* property switcher */
 .property-wrap .property-switcher {
-	height    : 44px;
-	width     : 100%;
-	background      : #f0f0f0;
+	height    : 30px;
+	/*width     : 100%;*/
+	background      : #313131;
 	box-shadow    : 0 2px 5px rgba(0, 0, 0, 0.1);
-	border-bottom : 1px solid #ccc;
-	padding-left: 50px;
+	border-bottom : 1px solid #111;
+	border-left : 1px solid #111;
+	padding:  4px 5px 6px 5px;
 }
 
 .property-switcher .btn-toolbar {
-	width: 100px;
+	width: 124px;
 	padding: 0 4px;
-	margin-top: 5px;
-	margin-bottom: 5px;
 	border-radius: 4px;
 }
 
-#property-panel.state #btn-switch-property {
-	background: transparent;
-	color: #606060;
+.property-switcher .btn-toolbar:first-child {
+	margin-right: 5px;
 }
 
-#property-panel.state #btn-switch-state {
-	background-color: #686B6E;
-	color: #FEFEFE;
-}
-
-#property-panel #btn-switch-property {
-	background-color: #686B6E;
+.property-switcher .btn-selected {
+	background-color: rgba(0,0,0,.4);
 	color: #FEFEFE;
 }
 

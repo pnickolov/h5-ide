@@ -17,4 +17,7 @@ module.exports = {
   // If true, the compiler will print additional infomation
   , verbose : false
 
+  // If true, it will use notifier of the system to show error info.
+  , enbaleNotifier : true
+
 };

@@ -25,7 +25,12 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
 
   $canvas.scale         = ( ratio )-> Design.__instance.canvas.scale( ratio )
   $canvas.offset        = ()-> $(document.getElementById("svg_canvas")).offset()
-  $canvas.selected_node = ()-> Design.__instance.canvas.selectedNode
+  $canvas.selected_node = ()->
+    if Design.__instance
+      return Design.__instance.canvas.selectedNode
+    else
+      return null
+
   $canvas.lineStyle     = (ls)->
     if ls is undefined
       if Design.__instance

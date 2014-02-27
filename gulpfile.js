@@ -6,13 +6,14 @@ var serverTask  = require('./util/gulp_tasks/server');
 var buildTask   = require('./util/gulp_tasks/build');
 
 // Load user-config
+GLOBAL.gulpConfig = require('./gulpconfig-default');
 if ( fs.existsSync("./gulpconfig.js") ) {
   gutil.log("Loaded Custom Config");
-  GLOBAL.gulpConfig = require('./gulpconfig');
-} else {
-  GLOBAL.gulpConfig = require('./gulpconfig-default');
+  var custom = require('./gulpconfig')
+  for ( var i in custom ) {
+    GLOBAL.gulpConfig[ i ] = custom[ i ]
+  }
 }
-
 
 gulp.task("default", ["dev"], function(){
   serverTask.create(); // Create a static server

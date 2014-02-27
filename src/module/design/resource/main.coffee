@@ -75,6 +75,13 @@ define [ 'jquery',
 
                     null
 
+            # when app update discard refresh az and vpc item
+            ide_event.onLongListen ide_event.UPDATE_RESOURCE_STATE, ( type ) ->
+                console.log 'resource:UPDATE_RESOURCE_STATE', type
+                if type is 'hide'
+                    view.resourceVpcRender MC.common.other.canvasData.get( 'platform' ), 'OPEN_APP'
+                    model.describeAvailableZonesService MC.common.other.canvasData.get( 'region' )
+
             #when add resource
             Design.on Design.EVENT.AddResource, ( comp )->
 

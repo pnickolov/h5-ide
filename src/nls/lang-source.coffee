@@ -632,8 +632,8 @@ module.exports =
       zh: "导出"
 
     TOOL_POP_BODY_EXPORT_AS_JSON:
-      en: "Do you confirm to download this file?"
-      zh: "您确认保存JSON文件吗?"
+      en: "The stack is ready to export. Please click the Download button to save the file."
+      zh: "The stack is ready to export. Please click the Download button to save the file."
 
     TOOL_POP_BTN_DOWNLOAD:
       en: "Download"

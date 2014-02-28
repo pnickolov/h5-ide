@@ -41,6 +41,7 @@ define [ 'MC', 'event',
             'click .icon-undo'              : 'clickUndoIcon'
             'click .icon-redo'              : 'clickRedoIcon'
             'click #toolbar-export-png'     : 'clickExportPngIcon'
+            'click #toolbar-export-json'    : 'clickExportJSONIcon'
             'click #toolbar-stop-app'       : 'clickStopApp'
             'click #toolbar-start-app'      : 'clickStartApp'
             'click #toolbar-terminate-app'  : 'clickTerminateApp'
@@ -408,22 +409,25 @@ define [ 'MC', 'event',
 
 
         clickExportJSONIcon : ->
-            file_content = JSON.stringify MC.canvas.layout.save()
-            #this.trigger 'TOOLBAR_EXPORT_MENU_CLICK'
-            $( '#btn-confirm' ).attr {
-                'href'      : "data://text/plain;, " + file_content,
+            design   = Design.instance()
+            username = $.cookie('username')
+            date     = (new Date()).toLocaleDateString().replace(/\/|\\/g, "-")
+            name     = [design.get("name"), username, date].join("-")
 
-                # old design flow
-                #'download'  : MC.canvas_data.name + '.json',
+            data = JsonExporter.export Design.instance().serialize(), name + ".json"
+            if data
+                # The browser doesn't support Blob. Fallback to show a dialog to
+                # allow user to download the file.
 
-                # new design flow
-                'download'  : MC.common.other.canvasData.get( 'name' ) + '.json',
-            }
-            $( '#json-content' ).val file_content
-
-            $('#btn-confirm').on 'click', { target : this }, (event) ->
-                    console.log 'clickExportJSONIcon'
-                    modal.close()
+                modal MC.template.exportJSON data
+                $("#modal-export-json").click ()->
+                    # I'm not sure if we can remove the dom when the button is clicked.
+                    # Because I think some browser might just prevent the content to be
+                    # donwloaded in this way. So, for safe sake, delay the removal.
+                    setTimeout ()->
+                        modal.close()
+                    , 100
+            null
 
         exportPNG : ( base64_image, uid, blob ) ->
 

@@ -505,7 +505,7 @@ define [ "component/thumbnail/ThumbUtil", 'MC', 'backbone', 'jquery', 'underscor
 
                 # update app resource
                 region = value
-                ide_event.trigger ide_event.UPDATE_APP_INFO, region, id
+                #ide_event.trigger ide_event.UPDATE_APP_INFO, region, id
 
                 return
 

@@ -114,7 +114,6 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
 
 
     cacheResource = (resources, region, need_reset) ->
-        console.log 'cacheResource ===========', resources, region, need_reset
 
         #cache aws resource data to MC.data.reosurce_list
 
@@ -207,11 +206,9 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
                     null
 
             #igw
-            console.log 'sdfsdfasdfadfasdfasdfasdfdddddddddd', resources.DescribeInternetGateways
             if resources.DescribeInternetGateways
                 _.map resources.DescribeInternetGateways, ( res, i ) ->
                     MC.data.resource_list[region][res.internetGatewayId] = res
-                    console.log 'sdfdfadfeeeeeeeeeeeeeee', MC.data.resource_list[region][res.internetGatewayId]
                     null
 
             #vgw

@@ -698,7 +698,9 @@ define [ 'event',
                 parameter_list: newParaAry
             }))
 
-            that.bindParaListEvent($paraListElem, currentCMD)
+            setTimeout(() ->
+                that.bindParaListEvent($paraListElem, currentCMD)
+            , 10)
 
         # refreshStateId: () ->
 
@@ -958,10 +960,11 @@ define [ 'event',
                     cmdEditor.focus()
                 , 0)
 
-            that.bindParaListEvent($paraListItem, currentCMD)
-
-            if that.readOnlyMode
-                that.setEditorReadOnlyMode()
+            setTimeout(() ->
+                that.bindParaListEvent($paraListItem, currentCMD)
+                if that.readOnlyMode
+                    that.setEditorReadOnlyMode()
+            , 10)
 
             # $stateItem.addClass('selected')
 
@@ -1294,8 +1297,8 @@ define [ 'event',
 
         saveStateData: () ->
 
-            # if not @submitValidate()
-            #     return false
+            if not @submitValidate()
+                return false
 
             that = this
 
@@ -1441,6 +1444,8 @@ define [ 'event',
 
             stateData = that.saveStateData()
 
+            that.model.setStateData(stateData)
+
             if stateData
 
                 # compare
@@ -1462,7 +1467,6 @@ define [ 'event',
                         otherCompareStateData = stateData
 
 
-
                     _.each compareStateData, (stateObj, idx) ->
                         originStateObjStr = JSON.stringify(stateObj)
                         currentStateObjStr = JSON.stringify(otherCompareStateData[idx])
@@ -1478,7 +1482,6 @@ define [ 'event',
 
                 if (that.originCompStateData isnt stateData) or changeAry.length
 
-                    that.model.setStateData(stateData)
                     ide_event.trigger 'STATE_EDITOR_DATA_UPDATE', changeObj
 
                 that.unloadEditor()
@@ -1787,9 +1790,9 @@ define [ 'event',
             if $editorElem.hasClass('command-value')
                 _initEditor()
             else
-                setTimeout(() ->
-                    _initEditor()
-                , 0)
+                # setInterval(() ->
+                _initEditor()
+                # , 0)
 
         highlightParaDesc: (paraName) ->
 
@@ -1828,9 +1831,9 @@ define [ 'event',
                 else if targetOffsetTop < parentOffsetTop
                     scrollPos = $parent.scrollTop() + targetOffsetTop - parentOffsetTop - 15
 
-                # $parent.scrollTop(scrollPos)
+                $parent.scrollTop(scrollPos)
 
-                scrollbar.scrollTo $('#state-list-wrap'), {top: scrollPos - 15}
+                # scrollbar.scrollTo $('#state-list-wrap'), {top: scrollPos - 15}
 
             catch err
 

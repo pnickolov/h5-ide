@@ -75,9 +75,8 @@ define [ 'event',
 		#listen OPEN_PROPERTY
 		ide_event.onLongListen ide_event.OPEN_PROPERTY, ( type, uid, force ) ->
 
-			ide_event.trigger ide_event.STATE_EDITOR_SAVE_DATA
-
 			if view.currentTab is 'state'
+				ide_event.trigger ide_event.STATE_EDITOR_SAVE_DATA
 				view.renderState uid
 				return
 

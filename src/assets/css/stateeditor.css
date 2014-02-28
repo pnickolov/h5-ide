@@ -213,8 +213,8 @@
 }
 
 .state-list {
-/*	height: 464px;
-	position: relative;*/
+	/*height: 464px;*/
+	position: relative;
 	counter-reset: list-counter;
 }
 
@@ -537,7 +537,7 @@
 	content: ":";
 	position: absolute;
 	left: 155px;
-	top: 6px;
+	top: 1px;
 	color: #ccc;
 }
 
@@ -658,6 +658,11 @@
 	padding: 0 4px;
 	border-radius: 0 4px 4px 0;
 	margin-left: 0;
+}
+
+#state-editor .parameter-list .parameter-value.ace_editor .ace_scroller {
+	margin-left: 6px;
+	margin-top: -3px;
 }
 
 #state-editor .parameter-view-list .parameter-name {

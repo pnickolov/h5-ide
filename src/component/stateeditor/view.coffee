@@ -1297,8 +1297,8 @@ define [ 'event',
 
         saveStateData: () ->
 
-            if not @submitValidate()
-                return false
+            # if not @submitValidate()
+            #     return false
 
             that = this
 

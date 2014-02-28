@@ -650,7 +650,7 @@
 	white-space: nowrap;
 	overflow: hidden;
 
-	max-width: 100px;
+	/*max-width: 100px;*/
 	display: inline;
 	min-width: 30px;
 	height: 20px;
@@ -883,48 +883,64 @@
 }
 
 /* *************************************** statebar state status */
-.state-status-content .state-status-item {
-	color: #fff;
-	background-color: #666;
-	height: 40px;
-}
 
-.state-status-content .state-status-item:nth-child(odd) {
+.state-status-list {
+	display: table;
+	width  : 424px;
 	background-color: #555;
+} 
+
+.state-status-item {
+	display         : table-row;
+	color           : #fff;
+	height          : 40px;
+	line-height     : 20px;
+	padding         : 4px 0;
 }
 
-.state-status-content .state-status-item-icon {
-	width: 30px;
+.state-status-item > div {
+	display       : table-cell;
+	vertical-align: middle;
+} 
+
+.state-status-item:nth-child(odd) {
+	background-color: rgba(255,255,255,.05);
+}
+
+.state-status-item-icon {
+	width     : 30px;
 	text-align: center;
-	padding-top: 10px;
-	float: left;
 }
 
-.state-status-content .state-status-item-info {
-	padding-top: 6px;
-	float: left;
-	height: 34px;
+.state-status-item-info {
+	/*padding-top: 6px;*/
+	/*float: left;*/
+	/*height: 34px;*/
 }
 
-.state-status-content .state-status-item-time {
-	color: #bbb;
+.state-status-item-desc {
+	width  : 356px;
+	display: block;
 }
 
-.state-status-content .state-status-item-detail {
-	width: 38px;
-	height: 100%;
-	float: right;
-	background-color: green;
-	cursor: pointer;
+.state-status-content .timestamp {
+	/*color: #bbb;*/
 }
 
-.state-status-content .state-status-item-detail:hover {
-	background-color: #00f;
+.state-status-item-detail {
+	width     : 38px;
+	cursor    : pointer;
+	color     : #ccc;
+	text-align: center;
+}
+
+.state-status-item-detail:hover {
+	color: #fff;
 }
 
 .state-status-content .state-status-pedding-main {
 	margin-top: 65px;
-	color: #fff;
+	color     : #fff;
 	text-align: center;
 }
 
@@ -938,7 +954,7 @@
 	display: none;
 }
 
-.statusbar-btn [class^="icon-state-"]
+/*.statusbar-btn [class^="icon-state-"]
 , .statusbar-btn [class*=" icon-state-"]
 , #status-bar-modal [class^="icon-state-"]
 , #status-bar-modal [class*=" icon-state-"]
@@ -948,17 +964,11 @@
 	border-radius: 50%;
 	display: inline-block;
 }
-
+*/
 .statusbar-btn .icon-state-success
 , #status-bar-modal .icon-state-success
  {
 	background-color: green;
-}
-
-.statusbar-btn .icon-state-failed
-, #status-bar-modal .icon-state-failed
-{
-	background-color: red;
 }
 
 .statusbar-btn b {

@@ -2230,3 +2230,7 @@ input.parsley-error {
 	to {transform: rotate(359deg);}
 }
 
+.timestamp {
+	color    : #AAA;
+	font-size: 12px;
+}

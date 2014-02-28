@@ -35,10 +35,12 @@ define ['../base/model', 'constant', "Design" ], ( PropertyModel, constant, Desi
 
       @getNetworkACL()
 
-      if @isApp or @isAppEdit
+      if @isApp
         @getAppSubscription()
       else
         @getSubscription()
+
+      if @isStack
         @set 'isStack', true
 
 

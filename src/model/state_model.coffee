@@ -37,7 +37,7 @@ define [ 'backbone', 'underscore', 'state_service', 'base_model' ], ( Backbone, 
                         try
                             jsonData = JSON.parse(jsonDataStr)
                             forge_result.resolved_data = jsonData
-                            if src.sender and src.sender.trigger then src.sender.trigger 'STATE_MODULE_RETURN', forge_result
+                            if src.sender and src.sender.trigger then src.sender.trigger 'STATE_MODULE_RETURN', forge_result, src
                             return
 
                         catch err

@@ -392,19 +392,31 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'state
 
             me.off('STATE_MODULE_RETURN')
 
-            state_model.module { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), $.cookie( 'mod_repo' ), $.cookie( 'mod_tag' )
+            agentData = MC.common.other.canvasData.get('agent')
 
-            me.on 'STATE_MODULE_RETURN', ( result ) ->
+            modRepo = agentData.mod_repo
+            modTag = agentData.mod_tag
 
-                console.log 'STATE_MODULE_RETURN'
+            mod_version = modRepo + ':' + modTag
 
-                if !result.is_error
-                    MC.data.state.module = result.resolved_data
+            if not MC.data.state.module[mod_version]
 
-                    # push SWITCH_MAIN
-                    ide_event.trigger ide_event.SWITCH_MAIN
+                state_model.module { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), modRepo, modTag
 
-                null
+                me.on 'STATE_MODULE_RETURN', ( result, mod_version ) ->
+
+                    console.log 'STATE_MODULE_RETURN'
+
+                    if !result.is_error
+
+                        # cache result
+
+                        MC.data.state.module[mod_version] = result.resolved_data
+
+                        # push SWITCH_MAIN
+                        ide_event.trigger ide_event.SWITCH_MAIN
+
+                    null
 
     }
 

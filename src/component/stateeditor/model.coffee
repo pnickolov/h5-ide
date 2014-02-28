@@ -16,7 +16,12 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 
 			that = this
 
-			moduleDataObj = MC.data.state.module
+            agentData = MC.common.other.canvasData.get('agent')
+            modRepo = agentData.mod_repo
+            modTag = agentData.mod_tag
+
+            modVersion = modRepo + ':' + modTag
+			moduleDataObj = MC.data.state.module[modVersion]
 
 			platformInfo = that.getResPlatformInfo()
 			osPlatform = platformInfo.osPlatform

@@ -606,6 +606,8 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
 
     deserialize : ( data, layout_data, resolve )->
 
+      if data.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP then return
+
       # deserialize ServerGroup Member Eni
       if data.serverGroupUid and data.serverGroupUid isnt data.uid
         members = resolve( data.serverGroupUid ).groupMembers()

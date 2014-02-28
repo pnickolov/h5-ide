@@ -108,12 +108,6 @@ define [ 'i18n!nls/lang.js', 'constant', 'stateeditor', 'Design', './module/desi
                         if type is 'OPEN_STACK'
                             ide_event.trigger ide_event.SWITCH_WAITING_BAR, null, true
 
-                        #when NEW_STACK result is tab_id
-                        ide_event.trigger ide_event.OPEN_DESIGN, region_name, type, current_platform, tab_id, result
-
-                        # Instead of posting a ide_event.OPEN_DESIGN to let property panel to figure it out what to do, here directly tells it to open a stack property.
-                        ide_event.trigger ide_event.OPEN_PROPERTY, "component", ""
-
                         if type is 'OPEN_STACK'
 
                             #get all not exist ami data for stack
@@ -122,8 +116,18 @@ define [ 'i18n!nls/lang.js', 'constant', 'stateeditor', 'Design', './module/desi
                         if type is 'OPEN_APP'
 
                             if Tabbar.current isnt 'appview'
+
+                                # add running app list
+                                MC.data.running_app_list[ tab_id ] = { app_id : tab_id }
+
                                 #get all resource data for app
                                 model.getAppResourcesService region_name, tab_id
+
+                        #when NEW_STACK result is tab_id
+                        ide_event.trigger ide_event.OPEN_DESIGN, region_name, type, current_platform, tab_id, result
+
+                        # Instead of posting a ide_event.OPEN_DESIGN to let property panel to figure it out what to do, here directly tells it to open a stack property.
+                        ide_event.trigger ide_event.OPEN_PROPERTY, "component", ""
 
                     # setting app state
                     if type in [ 'OPEN_APP', 'OLD_APP' ]

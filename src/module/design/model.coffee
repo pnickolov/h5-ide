@@ -144,7 +144,7 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'state
             @setDesignModel       MC.tab[ tab_id ].design_model
             @setCanvasData        MC.tab[ tab_id ].data
             @setOriginData        MC.tab[ tab_id ].origin_data
-            @setCurrentResource   MC.tab[ tab_id ].origin_resource if MC.tab[ tab_id ].origin_resourc
+            @setCurrentResource   MC.tab[ tab_id ].origin_resource if MC.tab[ tab_id ].origin_resource
             @setPropertyPanel     MC.tab[ tab_id ].property_panel
             @setTAValidation      MC.tab[ tab_id ].origin_ta_valid
             #
@@ -276,6 +276,7 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'state
                     instance_service.DescribeInstances src, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, instance_ids, null, ( aws_result ) ->
 
                         if !aws_result.is_error
+                            console.log 'instance_service.DescribeInstances'
                             #DescribeInstances succeed
                             if aws_result.resolved_data
                                  _.map aws_result.resolved_data, (ins, i) ->
@@ -342,49 +343,9 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'state
             region          = result.param[3]
             resource_source = result.resolved_data
 
-            if resource_source
-
-                #clear old app data in MC.data.resource_list
-                Design.instance().clearResourceInCache()
-
-                #cache new app data
-                MC.aws.aws.cacheResource resource_source, region, false
-                #
-                @describeInstancesOfASG region
-
-            # old design flow +++++++++++++++++++++++++++
-            #update instance icon of app
-            #MC.aws.instance.updateStateIcon app_id
-            #MC.aws.asg.updateASGCount app_id
-            #MC.aws.eni.updateServerGroupState app_id
-            #update deleted resource style
-            #MC.forge.app.updateDeletedResourceState MC.canvas_data
-            # old design flow +++++++++++++++++++++++++++
-
-            #re-draw connection
-
-            # old design flow
-            #MC.canvas_data.layout.connection = {}
-
-            # new design flow
-            MC.common.other.canvasData.set 'layout', 'connection' : {}
-
-            #MC.canvas.initLine()
-            #MC.canvas.reDrawSgLine()
-
-            #update property panel
-            uid = $canvas.selected_node()[0]
-            if uid
-                MC.canvas.select uid
-
-            # re-set origin_data
-
-            # old design flow
-            #@setOriginData MC.canvas_data
-
             if MC.data.running_app_list and MC.data.running_app_list[ app_id ]
 
-                console.log 'eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+                console.log 'when OPEN_APP or stop → start app use it'
 
                 # clear svg
                 $('#vpc_layer, #az_layer, #subnet_layer, #asg_layer, #line_layer, #node_layer').empty()
@@ -397,10 +358,30 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'state
                 # delete current app_id
                 delete MC.data.running_app_list[ app_id ]
 
-            # new design flow
-            Design.instance().trigger Design.EVENT.AwsResourceUpdated
+            if resource_source
+
+                #clear old app data in MC.data.resource_list
+                Design.instance().clearResourceInCache()
+
+                #cache new app data
+                MC.aws.aws.cacheResource resource_source, region, false
+                #
+                @describeInstancesOfASG region
+
+                console.log 'sdfasdffffffffffffffffff', MC.data.resource_list
 
             # new design flow
+            MC.common.other.canvasData.set 'layout', 'connection' : {}
+
+            #update property panel
+            uid = $canvas.selected_node()[0]
+            if uid
+                MC.canvas.select uid
+
+            # update resource
+            Design.instance().trigger Design.EVENT.AwsResourceUpdated
+
+            # set origin data
             @setOriginData MC.common.other.canvasData.data()
 
             # delete current origin_resource

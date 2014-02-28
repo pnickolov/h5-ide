@@ -93,7 +93,7 @@ define ['i18n!/nls/lang.js'], ( lang ) ->
 		SCHEDULEDACTIONS            		: 'AWS.AutoScaling.ScheduledActions'
 		CW                   				: 'AWS.CloudWatch.CloudWatch'
 		SUBSCRIPTION                        : 'AWS.SNS.Subscription'
-		Topic                               : 'AWS.SNS.Topic'
+		TOPIC                               : 'AWS.SNS.Topic'
 
 	# AWS_RESOURCE_TYPE = {}
 

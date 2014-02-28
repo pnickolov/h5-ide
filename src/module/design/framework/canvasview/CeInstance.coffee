@@ -327,7 +327,7 @@ define [ "./CanvasElement", "constant", "CanvasManager", "Design" ], ( CanvasEle
     if _.isString( result )
       notification "error", result
       return
-    else if result isnt false
+    else if result is false
       return false
 
     result = volume.attachTo( @model )

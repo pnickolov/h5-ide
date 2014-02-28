@@ -1531,7 +1531,7 @@ define [ 'event',
                 $stateEditor.addClass('full')
                 $descPanel.hide()
                 $descPanelToggle.removeClass('active')
-            else
+            if (not $descPanel.is(':visible')) or (not $( '#property-panel' ).hasClass('state-wide'))
                 $stateEditor.removeClass('full')
                 $logPanel.hide()
                 $descPanel.show()
@@ -1556,7 +1556,7 @@ define [ 'event',
                 $stateEditor.addClass('full')
                 $logPanel.hide()
                 $logPanelToggle.removeClass('active')
-            else
+            if (not $logPanel.is(':visible')) or (not $( '#property-panel' ).hasClass('state-wide'))
                 $stateEditor.removeClass('full')
                 $descPanel.hide()
                 $logPanel.show()

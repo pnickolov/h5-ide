@@ -51,10 +51,10 @@ Helper =
 
   notify : ( msg )->
     if GLOBAL.gulpConfig.enbaleNotifier
-      notifier.notify({
+      notifier.notify {
         title   : "IDE Gulp"
         message : msg
-      })
+      }, ()-> # Add an callback, so that windows won't fail.
     null
 
   createLrServer : ()->

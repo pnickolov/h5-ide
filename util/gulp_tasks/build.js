@@ -78,7 +78,7 @@ Helper = {
       notifier.notify({
         title: "IDE Gulp",
         message: msg
-      });
+      }, function() {});
     }
     return null;
   },

@@ -3436,7 +3436,8 @@ a.sidebar-hider {
 }
 
 .resource-select.selectbox .selection {
-	background: rgba(0, 0, 0, 0.1);
+	background: #17c249;
+	opacity: .9;
 	color: #F3F3F3;
 	height: 17px;
 	border-top: none;
@@ -3447,6 +3448,10 @@ a.sidebar-hider {
 	-ms-transition: background .2s ease-in-out;
 	-o-transition: background .2s ease-in-out;
 	transition: background .2s ease-in-out;
+}
+
+.resource-select.selectbox .selection:after {
+	border-top-color: #fff;
 }
 
 .resource-select.selectbox .dropdown {

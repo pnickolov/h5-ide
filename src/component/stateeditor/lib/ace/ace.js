@@ -14688,7 +14688,8 @@ var Text = function(parentEl) {
                     (self.config.characterWidth * 2) +
                     "px'>" + space + "</span>";
             } else if (b) {
-                return "<span class='ace_invisible ace_invalid'>" + self.SPACE_CHAR + "</span>";
+                //"<span class='ace_invisible ace_invalid'>" + self.SPACE_CHAR + "</span>";
+                return "<span class='ace_invisible ace_invalid'> </span>";
             } else {
                 screenColumn += 1;
                 return "<span class='ace_cjk' style='width:" +

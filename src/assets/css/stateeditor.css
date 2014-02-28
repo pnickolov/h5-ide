@@ -9,6 +9,10 @@
 	color: #666;
 }
 
+#state-editor-wrap, #state-editor-body, #state-editor {
+	height: 100%;
+}
+
 .ace_scroller.ace_scroll-left:after {
 	content: " ";
 	width: 15px;
@@ -30,11 +34,11 @@
 
 #state-editor, .ace_autocomplete_tip {
 	/*padding: 20px;*/
-	height: 460px;
+	/*height: 460px;*/
 	overflow-y: auto;
 	width: 654px;
 	float: left;
-	height: 500px;
+	/*height: 500px;*/
 	background: #fff;
 	font-size: 13px;
 	position: relative;

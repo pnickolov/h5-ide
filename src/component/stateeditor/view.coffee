@@ -1443,8 +1443,6 @@ define [ 'event',
 
             if stateData
 
-                that.model.setStateData(stateData)
-
                 # compare
                 compareStateData = null
                 otherCompareStateData = null
@@ -1476,6 +1474,8 @@ define [ 'event',
                     }
 
                     if changeAry.length
+
+                        that.model.setStateData(stateData)
                         ide_event.trigger 'STATE_EDITOR_DATA_UPDATE', changeObj
 
                 that.unloadEditor()

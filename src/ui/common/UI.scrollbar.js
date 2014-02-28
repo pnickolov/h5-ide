@@ -162,7 +162,9 @@ var scrollbar = {
 
 		$(document.body).append('<div id="overlayer"></div>');
 
-		target.addClass('scrolling');
+		target
+			.addClass('scrolling')
+			.trigger('scroll');
 
 		$(document)
 			.on({
@@ -382,6 +384,8 @@ var scrollbar = {
 			originalEvent.axis === 1
 		)
 		{
+			target.trigger('onscroll');
+
 			thumb = target.find('.scrollbar-horizontal-thumb').first();
 
 			if (thumb[0])
@@ -418,6 +422,8 @@ var scrollbar = {
 			originalEvent.detail
 		)
 		{
+			target.trigger('scroll');
+
 			thumb = target.find('.scrollbar-veritical-thumb').first();
 
 			if (thumb[0])

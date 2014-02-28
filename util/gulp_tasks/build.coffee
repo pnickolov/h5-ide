@@ -286,6 +286,8 @@ watch = ( secondTime )->
     if not watchIsWorking
       console.log "[Info]", "Watch is not working. Will retry in 2 seconds."
       Helper.notify "Watch is not working. Will retry in 2 seconds."
+      watcher.removeAllListeners()
+
       setTimeout (()-> watch(true)), 2000
 
   , 500

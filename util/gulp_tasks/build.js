@@ -307,6 +307,7 @@ watch = function(secondTime) {
     if (!watchIsWorking) {
       console.log("[Info]", "Watch is not working. Will retry in 2 seconds.");
       Helper.notify("Watch is not working. Will retry in 2 seconds.");
+      watcher.removeAllListeners();
       return setTimeout((function() {
         return watch(true);
       }), 2000);

@@ -116,7 +116,8 @@ define [ 'event', 'i18n!nls/lang.js',
             'modal-shown .duplicate-stack'              : 'duplicateStackClick'
             'modal-shown .delete-stack'                 : 'deleteStackClick'
 
-            'click #global-region-visualize-VPC'        : 'unmanagedVPCClick'
+            'click #global-region-visualize-VPC' : 'unmanagedVPCClick'
+            'click #global-import-stack'         : 'importJson'
 
         status:
             reloading       : false
@@ -302,6 +303,8 @@ define [ 'event', 'i18n!nls/lang.js',
 
             $middleButton.removeAttr 'disabled'
             $topButton.removeClass( 'disabled' ).addClass 'js-toggle-dropdown'
+
+            $("#global-import-stack").removeClass("disabled")
 
             # $.cookie('account_id') isnt 'demo_account' remvoe disable
             if MC.common.cookie.getCookieByName( 'account_id' ) isnt 'demo_account'
@@ -573,6 +576,50 @@ define [ 'event', 'i18n!nls/lang.js',
                 # load unmanagedvpc
                 unmanagedvpc.loadModule()
 
+            null
+
+        importJson : ()->
+            modal MC.template.importJSON()
+
+            model = @model
+
+            reader = new FileReader()
+            reader.onload = ( evt )->
+                error = model.importJson( reader.result )
+                if error
+                    $("#import-json-error").html error
+                else
+                    modal.close()
+                    reader = null
+                null
+
+            reader.onerror = ()->
+                $("#import-json-error").html "An error occured when reading the file. Please try again."
+                null
+
+            hanldeFile = ( evt )->
+                evt.stopPropagation()
+                evt.preventDefault()
+
+                $("#modal-import-json-dropzone").removeClass("dragover")
+                $("#import-json-error").html("")
+
+                evt = evt.originalEvent
+                files = evt.dataTransfer.files
+                if not files or not files.length then return
+                reader.readAsText( files[0] )
+                null
+
+            $("#modal-import-json-file").on "change", hanldeFile
+            zone = $("#modal-import-json-dropzone").on "drop", hanldeFile
+            zone.on "dragenter", ()-> $(this).addClass("dragover")
+            zone.on "dragleave", ()-> $(this).removeClass("dragover")
+            zone.on "dragover", ( evt )->
+                dt = evt.originalEvent.dataTransfer
+                if dt then dt.dropEffect = "copy"
+                evt.stopPropagation()
+                evt.preventDefault()
+                null
             null
 
     }

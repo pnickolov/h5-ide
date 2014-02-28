@@ -4,8 +4,8 @@
 
 define [ 'MC', 'event', 'constant', 'vpc_model',
          'aws_model', 'app_model', 'stack_model', 'ami_service', 'elb_service', 'dhcp_service', 'vpngateway_service', 'customergateway_service',
-         'i18n!nls/lang.js', 'common_handle'
-], ( MC, ide_event, constant, vpc_model, aws_model, app_model, stack_model, ami_service, elb_service, dhcp_service, vpngateway_service, customergateway_service, lang, common_handle ) ->
+         'i18n!nls/lang.js', 'common_handle', "component/exporter/JsonExporter"
+], ( MC, ide_event, constant, vpc_model, aws_model, app_model, stack_model, ami_service, elb_service, dhcp_service, vpngateway_service, customergateway_service, lang, common_handle, JsonExporter ) ->
 
     #private
     #region map
@@ -1435,6 +1435,17 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                             cur_app_list[idx].ispending = true
 
                         me.set 'cur_app_list', cur_app_list
+
+            null
+
+        importJson : ( json )->
+            result = JsonExporter.import json
+
+            if _.isString result
+                return result
+
+            # The result is a valid json
+            console.log "Imported JSON: ", result
 
             null
 

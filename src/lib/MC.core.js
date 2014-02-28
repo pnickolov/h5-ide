@@ -524,44 +524,51 @@ var MC = {
 
 /*
 * Storage
-* Author: Angel
+* Author: Angel & Tim
 *
-* Save data into local computer via HTML5 localStorage, up to 10MB storage capacity.
+* Save data into local computer via HTML5 localStorage or sessionStorage.
 *
 * Saving data
-* MC.storage.set(name, value)
+* MC.[storage|session].set(name, value)
 *
 * Getting data
-* MC.storage.get(name)
+* MC.[storage|session].get(name)
 *
 * Remove data
-* MC.storage.remove(name)
+* MC.[storage|session].remove(name)
 */
-MC.storage = {
-	set: function (name, value)
-	{
-		localStorage[name] = typeof value === 'object' ? JSON.stringify(value) : value;
-	},
 
-	get: function (name)
-	{
-		var data = localStorage[name];
-
-		if (MC.isJSON(data))
+var storage = function( instance ) {
+	return {
+		set: function (name, value)
 		{
-			return JSON.parse(data);
+			instance[name] = typeof value === 'object' ? JSON.stringify(value) : value;
+		},
+
+		get: function (name)
+		{
+			var data = instance[name];
+
+			if (MC.isJSON(data))
+			{
+				return JSON.parse(data);
+			}
+
+			return data || '';
+		},
+
+		remove: function (name)
+		{
+			instance.removeItem(name);
+
+			return true;
 		}
-
-		return data || '';
-	},
-
-	remove: function (name)
-	{
-		localStorage.removeItem(name);
-
-		return true;
 	}
-};
+}
+
+MC.storage = storage( localStorage )
+MC.session = storage( sessionStorage )
+
 
 // For event handler
 var returnTrue = function () {return true},

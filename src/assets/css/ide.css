@@ -7385,3 +7385,8 @@ summary:focus {
 	width: 900px;
 }
 
+#property-panel .property-switcher .switch-btns {
+	position: absolute;
+	right: 5px;
+}
+

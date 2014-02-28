@@ -64,6 +64,37 @@ define ['i18n!/nls/lang.js'], ( lang ) ->
 		AWS_SNS_Topic                               : 'AWS.SNS.Topic'
 	}
 
+	# A short version
+	RESTYPE =
+		AZ            						: "AWS.EC2.AvailabilityZone"
+		INSTANCE                    		: "AWS.EC2.Instance"
+		KP                     				: "AWS.EC2.KeyPair"
+		SG               					: "AWS.EC2.SecurityGroup"
+		EIP                         		: "AWS.EC2.EIP"
+		AMI                         		: "AWS.EC2.AMI"
+		VOLUME                      		: "AWS.EC2.EBS.Volume"
+		SNAPSHOT                    		: "AWS.EC2.EBS.Snapshot"
+		ELB                             	: "AWS.ELB"
+		VPC                         		: "AWS.VPC.VPC"
+		SUBNET                      		: "AWS.VPC.Subnet"
+		IGW             					: "AWS.VPC.InternetGateway"
+		RT                  				: "AWS.VPC.RouteTable"
+		VGW                  				: "AWS.VPC.VPNGateway"
+		CGW             					: "AWS.VPC.CustomerGateway"
+		ENI            						: "AWS.VPC.NetworkInterface"
+		DHCP                 				: "AWS.VPC.DhcpOptions"
+		VPN               					: "AWS.VPC.VPNConnection"
+		ACL                  				: "AWS.VPC.NetworkAcl"
+		CERT           						: "AWS.IAM.ServerCertificate"
+		ASG                       			: 'AWS.AutoScaling.Group'
+		LC         							: 'AWS.AutoScaling.LaunchConfiguration'
+		NOTIFICATION   						: 'AWS.AutoScaling.NotificationConfiguration'
+		POLICY               				: 'AWS.AutoScaling.ScalingPolicy'
+		SCHEDULEDACTIONS            		: 'AWS.AutoScaling.ScheduledActions'
+		CW                   				: 'AWS.CloudWatch.CloudWatch'
+		SUBSCRIPTION                        : 'AWS.SNS.Subscription'
+		Topic                               : 'AWS.SNS.Topic'
+
 	# AWS_RESOURCE_TYPE = {}
 
 	# AWS_RESOURCE_TYPES = [
@@ -487,30 +518,32 @@ use redirection server name:i:0\n"
 
 	#public
 	AWS_RESOURCE_KEY        : AWS_RESOURCE_KEY
-	INSTANCE_TYPE     : INSTANCE_TYPE
-	INSTANCE_STATES     : INSTANCE_STATES
-	AWS_RESOURCE_TYPE   : AWS_RESOURCE_TYPE
+	INSTANCE_TYPE     		: INSTANCE_TYPE
+	INSTANCE_STATES     	: INSTANCE_STATES
+	AWS_RESOURCE_TYPE   	: AWS_RESOURCE_TYPE
 	AWS_RESOURCE_SHORT_TYPE : AWS_RESOURCE_SHORT_TYPE
-	AWS_PORT_NAME     : AWS_PORT_NAME
-	OS_TYPE         : OS_TYPE
-	REGION_KEYS       : REGION_KEYS
-	REGION_SHORT_LABEL    : REGION_SHORT_LABEL
-	REGION_LABEL      : REGION_LABEL
-	RETURN_CODE       : RETURN_CODE
-	LINUX           : LINUX
-	WINDOWS         : WINDOWS
-	#SERVICE_ERROR_MESSAGE   : SERVICE_ERROR_MESSAGE
-	MESSAGE_E       : MESSAGE_E
-	APP_STATE       : APP_STATE
-	OPS_STATE       : OPS_STATE
-	RECENT_NUM        : RECENT_NUM
-	RECENT_DAYS       : RECENT_DAYS
-	AWS_RESOURCE      : AWS_RESOURCE
-	SERVICE_REGION      : SERVICE_REGION
+	AWS_PORT_NAME     		: AWS_PORT_NAME
+	OS_TYPE         		: OS_TYPE
+	REGION_KEYS       		: REGION_KEYS
+	REGION_SHORT_LABEL    	: REGION_SHORT_LABEL
+	REGION_LABEL      		: REGION_LABEL
+	RETURN_CODE       		: RETURN_CODE
+	LINUX           		: LINUX
+	WINDOWS         		: WINDOWS
+	#SERVICE_ERROR_MESSAGE  : SERVICE_ERROR_MESSAGE
+	MESSAGE_E       		: MESSAGE_E
+	APP_STATE       		: APP_STATE
+	OPS_STATE       		: OPS_STATE
+	RECENT_NUM        		: RECENT_NUM
+	RECENT_DAYS       		: RECENT_DAYS
+	AWS_RESOURCE      		: AWS_RESOURCE
+	SERVICE_REGION      	: SERVICE_REGION
 	RDP_TMPL                : RDP_TMPL
 	COOKIE_OPTION           : COOKIE_OPTION
 	LOCAL_COOKIE_OPTION     : LOCAL_COOKIE_OPTION
 	DEMO_STACK_NAME_LIST    : DEMO_STACK_NAME_LIST
 	TA                      : TA
-	OS_TYPE_MAPPING     : OS_TYPE_MAPPING
-	REGEXP          : REGEXP
+	OS_TYPE_MAPPING     	: OS_TYPE_MAPPING
+	REGEXP          		: REGEXP
+	RESTYPE 				: RESTYPE
+

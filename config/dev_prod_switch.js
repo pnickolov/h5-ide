@@ -28,8 +28,8 @@ module.exports = {
 			'<%= release %>/module/design/framework/ConnectionModel.js': '<%= src %>/module/design/framework/ConnectionModel.js',
 			'<%= release %>/module/design/framework/resource/SgModel.js':'<%= src %>/module/design/framework/resource/SgModel.js',
 			'<%= release %>/module/design/property/base/main.js'       : '<%= src %>/module/design/property/base/main.js',
-			'<%= release %>/module/design/property/main.js'            : '<%= src %>/module/design/property/main.js'
-			'<%= release %>/lib/MC.core.js'            				   : '<%= src %>/lib/MC.core.js'
+			'<%= release %>/module/design/property/main.js'            : '<%= src %>/module/design/property/main.js',
+			'<%= release %>/lib/MC.core.js'                            : '<%= src %>/lib/MC.core.js'
 		}
 	}
 

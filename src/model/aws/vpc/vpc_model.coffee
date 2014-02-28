@@ -48,7 +48,10 @@ define [ 'backbone', 'underscore', 'vpc_service', 'base_model' ], ( Backbone, _,
 
             src.model = me
 
-            vpc_service.DescribeAccountAttributes src, username, session_id, region_name, attribute_name, ( aws_result ) ->
+            key = "DescribeAccountAttributes_#{username}_#{region_name}_#{attribute_name}"
+
+            callback = ( aws_result ) ->
+                MC.cacheForDev key, aws_result
 
                 if !aws_result.is_error
                 #DescribeAccountAttributes succeed
@@ -63,6 +66,10 @@ define [ 'backbone', 'underscore', 'vpc_service', 'base_model' ], ( Backbone, _,
                     #me.pub aws_result
 
                     if src.sender and src.sender.trigger then src.sender.trigger 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN', aws_result
+
+
+            if not MC.cacheForDev key, null, callback
+                vpc_service.DescribeAccountAttributes src, username, session_id, region_name, attribute_name, callback
 
 
 

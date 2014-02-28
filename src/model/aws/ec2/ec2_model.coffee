@@ -94,7 +94,11 @@ define [ 'backbone', 'underscore', 'ec2_service', 'base_model' ], ( Backbone, _,
 
             src.model = me
 
-            ec2_service.DescribeRegions src, username, session_id, region_names, filters, ( aws_result ) ->
+            key = "DescribeRegions"
+
+            callback = ( aws_result ) ->
+
+                MC.cacheForDev key, aws_result
 
                 if !aws_result.is_error
                 #DescribeRegions succeed
@@ -108,6 +112,9 @@ define [ 'backbone', 'underscore', 'ec2_service', 'base_model' ], ( Backbone, _,
                     console.log 'ec2.DescribeRegions failed, error is ' + aws_result.error_message
                     #me.pub aws_result
                     if src.sender and src.sender.trigger then src.sender.trigger 'EC2_EC2_DESC_REGIONS_RETURN', aws_result
+
+            if not MC.cacheForDev key, null, callback
+                ec2_service.DescribeRegions src, username, session_id, region_names, filters, callback
 
 
 

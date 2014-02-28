@@ -390,9 +390,12 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'state
 
             me = this
 
+            me.off('STATE_MODULE_RETURN')
+
             state_model.module { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), $.cookie( 'mod_repo' ), $.cookie( 'mod_tag' )
 
             me.on 'STATE_MODULE_RETURN', ( result ) ->
+
                 console.log 'STATE_MODULE_RETURN'
 
                 if !result.is_error

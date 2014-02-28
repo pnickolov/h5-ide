@@ -63,7 +63,7 @@ define [ 'event',
             target = event.currentTarget
             if target.id is 'btn-switch-state'
                 if @currentTab isnt 'state'
-                    @renderState()
+                    @renderState null, true
             else
                 if @currentTab is 'state'
                     @renderProperty()
@@ -83,19 +83,22 @@ define [ 'event',
                 ide_event.trigger ide_event.OPEN_PROPERTY, type, id
                 @forceShow()
 
-        renderState: ( uid ) ->
+        renderState: ( uid, force ) ->
 
             @currentTab = 'state'
-            # trigger by selected element
-            if uid
-                comp = Design.instance().component uid
-                type = comp.type
-                if not _.contains [ CONST.RESTYPE.LC, CONST.RESTYPE.INSTANCE ], type
+            if not uid
+                uid = Design.instance().canvas.selectedNode[ 0 ]
+
+            if not force
+                if uid
+                    comp = Design.instance().component uid
+                    type = comp.type
+                    if not _.contains [ CONST.RESTYPE.LC, CONST.RESTYPE.INSTANCE ], type
+                        @renderProperty uid
+                        return
+                else
                     @renderProperty()
                     return
-            # trigger by switch tab
-            else
-                uid = Design.instance().canvas.selectedNode[ 0 ]
 
             ide_event.trigger ide_event.OPEN_STATE_EDITOR, uid
             @forceShow()

@@ -49,9 +49,12 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
       # Update label
       CanvasManager.update @$element().children(".node-label"), m.get("name")
 
-
     # Update Resource State in app view
     @updateAppState()
+
+    # Update xGW Resource State in app view
+    @updatexGWAppState()
+
     null
 
   null

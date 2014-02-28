@@ -56,6 +56,10 @@ define [ "./CanvasElement", "constant" ], ( CanvasElement, constant )->
 
     # Update Resource State in app view
     @updateAppState()
+
+    # Update xGW Resource State
+    @updatexGWAppState()
+
     null
 
   null

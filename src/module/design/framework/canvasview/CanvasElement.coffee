@@ -478,6 +478,22 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
       CanvasManager.addClass @element(), "deleted"
     null
 
+  CanvasElement.prototype.updatexGWAppState = ()->
+    m = @model
+    if m.design().modeIsStack() or not m.get("appId")
+      return
+
+    # Init
+    el = @element()
+    CanvasManager.removeClass el, "deleted"
+
+    # Get xGW state
+    data = MC.data.resource_list[ m.design().region() ][ m.get("appId") ]
+
+    if data and data.state in [ 'deleted', 'terminated' ]
+      CanvasManager.addClass el, "deleted"
+    null
+
   CanvasElement.prototype.detach = () ->
     MC.canvas.remove( @element() )
 

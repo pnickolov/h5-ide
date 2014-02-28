@@ -5,7 +5,7 @@
 define [ 'event', 'i18n!nls/lang.js',
          'text!./module/dashboard/overview/template.html',
          'text!./module/dashboard/overview/template_data.html',
-         "component/thumbnail/ThumbUtil"
+         "component/exporter/Thumbnail"
          'constant',
          'unmanagedvpc',
          'backbone', 'jquery', 'handlebars', 'MC.ide.template', 'UI.scrollbar'

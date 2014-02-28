@@ -1,5 +1,5 @@
 
-define ['UI.canvg', 'UI.download'], ()->
+define ['UI.canvg', './Download'], ()->
 
   GridBackground = undefined
   Href = undefined

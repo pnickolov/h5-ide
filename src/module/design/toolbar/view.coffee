@@ -8,12 +8,13 @@ define [ 'MC', 'event',
          'text!./stack_template.html',
          'text!./app_template.html',
          'text!./appview_template.html',
-         "UI.download"
+         "component/exporter/JsonExporter",
+         "component/exporter/Download",
          'constant'
          'backbone', 'jquery', 'handlebars',
          'UI.selectbox', 'UI.notification',
          "UI.tabbar"
-], ( MC, ide_event, Design, lang, stack_tmpl, app_tmpl, appview_tmpl, download, constant ) ->
+], ( MC, ide_event, Design, lang, stack_tmpl, app_tmpl, appview_tmpl, JsonExporter, download, constant ) ->
 
     stack_tmpl   = Handlebars.compile stack_tmpl
     app_tmpl     = Handlebars.compile app_tmpl

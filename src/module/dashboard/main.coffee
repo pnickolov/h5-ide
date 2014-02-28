@@ -2,7 +2,7 @@
 #  Controller for dashboard module
 ####################################
 
-define [ "component/thumbnail/ThumbUtil", 'jquery', 'event', 'MC', 'base_main', 'vpc_model' ], ( ThumbUtil, $, ide_event, MC, base_main, vpc_model ) ->
+define [ "component/exporter/Thumbnail", 'jquery', 'event', 'MC', 'base_main', 'vpc_model' ], ( ThumbUtil, $, ide_event, MC, base_main, vpc_model ) ->
 
     current_region = null
     overview_app    = null

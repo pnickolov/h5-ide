@@ -108,8 +108,8 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
                 if !result.is_error
                     console.log 'create stack successfully'
 
-                    new_id = result.resolved_data.id
-                    key    = result.resolved_data.key
+                    new_id = result.resolved_data
+                    #key    = result.resolved_data.key
 
                     # old design flow
                     #MC.data.origin_canvas_data = $.extend true, {}, MC.canvas_data
@@ -348,7 +348,7 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
                 null
 
             #####listen APP_GETKEY_RETURN
-            me.on 'APP_GET_KEY_RETURN', (result) ->
+            ###me.on 'APP_GET_KEY_RETURN', (result) ->
                 console.log 'APP_GET_KEY_RETURN'
 
                 region = result.param[3]
@@ -368,7 +368,7 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
 
                     #me.savePNG app_id, 'new'
 
-                    null
+                    null###
 
         setFlag : (id, flag, value) ->
             me = this

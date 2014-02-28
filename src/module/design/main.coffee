@@ -14,9 +14,6 @@ define [ 'i18n!nls/lang.js', 'constant', 'stateeditor', 'Design', './module/desi
             design_view_init       = null
             MC.data.design_submodule_count = 0
 
-            # for state
-            model.getStateModule()
-
             #view
             view       = new View()
             view.listen model
@@ -272,6 +269,9 @@ define [ 'i18n!nls/lang.js', 'constant', 'stateeditor', 'Design', './module/desi
                 property_main.restore property_panel
                 null
 
+            #listen GET_STATE_MODULE
+            ide_event.onLongListen ide_event.GET_STATE_MODULE, () ->
+                console.log 'design:GET_STATE_MODULE = ' + model.getStateModule()
 
     #private
     unLoadModule = () ->

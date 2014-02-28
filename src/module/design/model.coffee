@@ -43,13 +43,8 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'state
                 else
                     #TO-DO
 
-                #
-
-                # old design flow
-                #ide_event.trigger ide_event.SWITCH_MAIN if app_id == MC.canvas_data.id
-
-                # new design flow
-                ide_event.trigger ide_event.SWITCH_MAIN if app_id == MC.common.other.canvasData.get( 'id' )
+                # SWITCH_MAIN → GET_STATE_MODULE
+                ide_event.trigger ide_event.GET_STATE_MODULE if app_id == MC.common.other.canvasData.get( 'id' )
 
                 null
 
@@ -398,12 +393,13 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'state
             state_model.module { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), $.cookie( 'mod_repo' ), $.cookie( 'mod_tag' )
 
             me.on 'STATE_MODULE_RETURN', ( result ) ->
+                console.log 'STATE_MODULE_RETURN'
 
                 if !result.is_error
                     MC.data.state.module = result.resolved_data
 
-                    # push IDE_AVAILABLE
-                    ide_event.trigger ide_event.IDE_AVAILABLE
+                    # push SWITCH_MAIN
+                    ide_event.trigger ide_event.SWITCH_MAIN
 
                 null
 

@@ -60,7 +60,7 @@ define [ 'event',
 
         toggleWaiting : () ->
             console.log 'toggleWaiting'
-            $( '#waiting-bar-wrapper' ).toggleClass 'waiting-bar'
+            $( '#waiting-bar-wrapper' ).removeClass 'waiting-bar'
             #
             @hideStatubar()
 

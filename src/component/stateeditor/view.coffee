@@ -161,7 +161,8 @@ define [ 'event',
                 that.$noStateContainer.hide()
 
             # hide autocomplete when click document
-            $(document).on('mousedown', jQuery.proxy(that.onDocumentMouseDown, that))
+            docMouseDownFunc = jQuery.proxy(that.onDocumentMouseDown, that)
+            $(document).off('mousedown', docMouseDownFunc).on('mousedown', docMouseDownFunc)
             that.$('#state-editor').on('scroll', () ->
                 that.$('.ace_editor.ace_autocomplete').hide()
             )
@@ -1446,52 +1447,52 @@ define [ 'event',
 
             that.model.setStateData(stateData)
 
-            if stateData
+            # if stateData
 
-                # compare
-                compareStateData = null
-                otherCompareStateData = null
+            #     # compare
+            #     compareStateData = null
+            #     otherCompareStateData = null
 
-                # compare state data
-                # when data change, trigger data update event
+            #     # compare state data
+            #     # when data change, trigger data update event
 
-                changeAry = []
+            #     changeAry = []
 
-                if that.originCompStateData and stateData
+            #     if that.originCompStateData and stateData
 
-                    if that.originCompStateData.length > stateData.length
-                        compareStateData = stateData
-                        otherCompareStateData = that.originCompStateData
-                    else
-                        compareStateData = that.originCompStateData
-                        otherCompareStateData = stateData
+            #         if that.originCompStateData.length > stateData.length
+            #             compareStateData = stateData
+            #             otherCompareStateData = that.originCompStateData
+            #         else
+            #             compareStateData = that.originCompStateData
+            #             otherCompareStateData = stateData
 
 
-                    _.each compareStateData, (stateObj, idx) ->
-                        originStateObjStr = JSON.stringify(stateObj)
-                        currentStateObjStr = JSON.stringify(otherCompareStateData[idx])
-                        if originStateObjStr isnt currentStateObjStr
-                            changeAry.push(stateObj.id)
-                        null
+            #         _.each compareStateData, (stateObj, idx) ->
+            #             originStateObjStr = JSON.stringify(stateObj)
+            #             currentStateObjStr = JSON.stringify(otherCompareStateData[idx])
+            #             if originStateObjStr isnt currentStateObjStr
+            #                 changeAry.push(stateObj.id)
+            #             null
 
-                    resUID = that.model.getCurrentResUID()
-                    changeObj = {
-                        resUID: resUID,
-                        stateIds: changeAry
-                    }
+            #         resUID = that.model.getCurrentResUID()
+            #         changeObj = {
+            #             resUID: resUID,
+            #             stateIds: changeAry
+            #         }
 
-                if (that.originCompStateData isnt stateData) or changeAry.length
+            #     if (that.originCompStateData isnt stateData) or changeAry.length
 
-                    ide_event.trigger 'STATE_EDITOR_DATA_UPDATE', changeObj
+            #         ide_event.trigger 'STATE_EDITOR_DATA_UPDATE', changeObj
 
-                that.unloadEditor()
+            #     that.unloadEditor()
 
-                disableUserDataInput = false
-                if stateData and stateData.length
-                    disableUserDataInput = true
-                # ide_event.trigger ide_event.PROPERTY_DISABLE_USER_DATA_INPUT, disableUserDataInput
+            #     disableUserDataInput = false
+            #     if stateData and stateData.length
+            #         disableUserDataInput = true
+            #     # ide_event.trigger ide_event.PROPERTY_DISABLE_USER_DATA_INPUT, disableUserDataInput
 
-                that.closedPopup()
+            #     that.closedPopup()
 
         onStateCancelClick: (event) ->
 
@@ -1588,6 +1589,7 @@ define [ 'event',
             that = this
             $currentElem = $(event.target)
             $parentElem = $currentElem.parents('.editable-area')
+            $parentEditorModel = $currentElem.parents('#state-editor-model')
 
             if not $parentElem.length and not $currentElem.hasClass('editable-area') and not $currentElem.hasClass('ace_scrollbar')
                 $allEditableArea = $('.editable-area')
@@ -1601,6 +1603,9 @@ define [ 'event',
                 setTimeout(() ->
                     that.$stateGistPasteArea.focus()
                 , 0)
+
+            if (not $parentEditorModel.length) and $('#state-editor-model').is(':visible')
+                that.onStateSaveClick()
 
         initCodeEditor: (editorElem, hintObj) ->
 
@@ -1922,7 +1927,9 @@ define [ 'event',
             if editor
                 return editor.getValue()
             else
-                return $inputElem.text()
+                if not $inputElem.hasClass('ace_editor')
+                    return $inputElem.text()
+                return ''
 
         setPlainText: (inputElem, content) ->
 
@@ -2235,13 +2242,13 @@ define [ 'event',
 
             that = this
 
-            # $editAreaList = that.$stateList.find('.editable-area')
+            $editAreaList = that.$stateList.find('.editable-area')
 
-            # _.each $editAreaList, (editArea) ->
-            #     $editArea = $(editArea)
-            #     editor = $editArea.data('editor')
-            #     if editor then editor.destroy()
-            #     null
+            _.each $editAreaList, (editArea) ->
+                $editArea = $(editArea)
+                editor = $editArea.data('editor')
+                if editor then editor.destroy()
+                null
 
             $aceAutoCompList = $('.ace_editor.ace_autocomplete')
             $aceAutoCompList.remove()

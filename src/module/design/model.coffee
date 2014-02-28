@@ -2,7 +2,7 @@
 #  View Mode for design
 #############################
 
-define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_service', 'ami_service', 'i18n!nls/lang.js', 'underscore', 'backbone' ], ( Design, MC, ide_event, constant, app_model, stack_model, instance_service, ami_service, lang, _) ->
+define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'state_model', 'instance_service', 'ami_service', 'i18n!nls/lang.js', 'underscore', 'backbone' ], ( Design, MC, ide_event, constant, app_model, stack_model, state_model, instance_service, ami_service, lang, _) ->
 
     #private
     DesignModel = Backbone.Model.extend {
@@ -408,6 +408,23 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
 
             #
             console.log 'set app.resource end'
+
+        getStateModule: () ->
+            console.log 'getStateModule'
+
+            me = this
+
+            state_model.module { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), $.cookie( 'mod_repo' ), $.cookie( 'mod_tag' )
+
+            me.on 'STATE_MODULE_RETURN', ( result ) ->
+
+                if !result.is_error
+                    MC.data.state.module = result.resolved_data
+
+                    # push IDE_AVAILABLE
+                    ide_event.trigger ide_event.IDE_AVAILABLE
+
+                null
 
     }
 

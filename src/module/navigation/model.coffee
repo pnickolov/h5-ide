@@ -243,23 +243,6 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'state_model', 'aws_model', 'c
 
             null
 
-        getStateModule: () ->
-            console.log 'getStateModule'
-
-            me = this
-
-            state_model.module { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), $.cookie( 'mod_repo' ), $.cookie( 'mod_tag' )
-
-            me.on 'STATE_MODULE_RETURN', ( result ) ->
-
-                if !result.is_error
-                    MC.data.state.module = result.resolved_data
-
-                    # push IDE_AVAILABLE
-                    ide_event.trigger ide_event.IDE_AVAILABLE
-
-                null
-
         getStateAWSProperty: () ->
             console.log 'getStateAWSProperty'
 

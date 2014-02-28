@@ -36,6 +36,8 @@ define [ 'event', 'ace', 'ace_ext_language_tools',  'UI.modal', 'jquery_sort', '
             view.model = model
 
             ide_event.onLongListen ide_event.UPDATE_STATE_STATUS_DATA_TO_EDITOR, model.listenStateStatusUpdate, model
+
+            ide_event.offListen ide_event.STATE_EDITOR_SAVE_DATA
             ide_event.onLongListen ide_event.STATE_EDITOR_SAVE_DATA, () ->
                 if view.editorShow
                     view.onStateSaveClick()
@@ -58,7 +60,6 @@ define [ 'event', 'ace', 'ace_ext_language_tools',  'UI.modal', 'jquery_sort', '
             view  = null
             model = null
             ide_event.offListen ide_event.UPDATE_STATE_STATUS_DATA_TO_EDITOR
-            ide_event.offListen ide_event.STATE_EDITOR_SAVE_DATA
             #ide_event.offListen ide_event.<EVENT_TYPE>, <function name>
 
         catch err

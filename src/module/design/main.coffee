@@ -14,6 +14,9 @@ define [ 'i18n!nls/lang.js', 'constant', 'stateeditor', 'Design', './module/desi
             design_view_init       = null
             MC.data.design_submodule_count = 0
 
+            # for state
+            model.getStateModule()
+
             #view
             view       = new View()
             view.listen model

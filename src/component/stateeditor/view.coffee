@@ -1294,8 +1294,8 @@ define [ 'event',
 
         saveStateData: () ->
 
-            if not @submitValidate()
-                return false
+            # if not @submitValidate()
+            #     return false
 
             that = this
 
@@ -1449,6 +1449,9 @@ define [ 'event',
 
                 # compare state data
                 # when data change, trigger data update event
+
+                changeAry = []
+
                 if that.originCompStateData and stateData
 
                     if that.originCompStateData.length > stateData.length
@@ -1458,7 +1461,7 @@ define [ 'event',
                         compareStateData = that.originCompStateData
                         otherCompareStateData = stateData
 
-                    changeAry = []
+                    
 
                     _.each compareStateData, (stateObj, idx) ->
                         originStateObjStr = JSON.stringify(stateObj)
@@ -1473,10 +1476,10 @@ define [ 'event',
                         stateIds: changeAry
                     }
 
-                    if changeAry.length
+                if (that.originCompStateData isnt stateData) or changeAry.length
 
-                        that.model.setStateData(stateData)
-                        ide_event.trigger 'STATE_EDITOR_DATA_UPDATE', changeObj
+                    that.model.setStateData(stateData)
+                    ide_event.trigger 'STATE_EDITOR_DATA_UPDATE', changeObj
 
                 that.unloadEditor()
 
@@ -2223,13 +2226,13 @@ define [ 'event',
 
             that = this
 
-            $editAreaList = that.$stateList.find('.editable-area')
+            # $editAreaList = that.$stateList.find('.editable-area')
 
-            _.each $editAreaList, (editArea) ->
-                $editArea = $(editArea)
-                editor = $editArea.data('editor')
-                if editor then editor.destroy()
-                null
+            # _.each $editAreaList, (editArea) ->
+            #     $editArea = $(editArea)
+            #     editor = $editArea.data('editor')
+            #     if editor then editor.destroy()
+            #     null
 
             $aceAutoCompList = $('.ace_editor.ace_autocomplete')
             $aceAutoCompList.remove()
@@ -2528,8 +2531,6 @@ define [ 'event',
             if metaKey is false and shiftKey is false and keyCode is 9
                 target.onSwitchState.call target
                 return false
-
-            return false
 
         onUndo: () ->
 

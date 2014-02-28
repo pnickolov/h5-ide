@@ -4811,7 +4811,8 @@ MC.canvas.event.keyEvent = function (event)
 		selected_node = $canvas.selected_node();
 
 	if (
-		$('#modal-wrap')[0] != null ||
+		$('#modal-wrap')[0] !== undefined ||
+		$('#state-editor')[0] !== undefined ||
 		Tabbar.current === 'dashboard'
 	)
 	{

@@ -85,7 +85,10 @@ define [ 'event',
             this.initData()
             this.initUndoManager()
 
-            $(document).on 'keydown', {target: this}, this.keyEvent
+            $(document)
+                .off('keydown', this.keyEvent)
+                .on('keydown', {target: this}, this.keyEvent)
+
 
         closedPopup: () ->
 
@@ -2519,10 +2522,14 @@ define [ 'event',
                 if focused[0] isnt null and focused.hasClass('view') is true
                     target.expandItem.call target, focused
 
+                return false
+
             # Tab switch [Tab]
             if metaKey is false and shiftKey is false and keyCode is 9
                 target.onSwitchState.call target
                 return false
+
+            return false
 
         onUndo: () ->
 

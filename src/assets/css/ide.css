@@ -7358,6 +7358,7 @@ summary:focus {
 }
 
 #state-editor-model {
+	border-left: 1px solid #999;
 	width: 654px;
 	position: absolute;
 	top: 41px;
@@ -7366,7 +7367,6 @@ summary:focus {
 	right: 0;
 	background-color: #fff;
 }
-
 
 #property-panel.hiden {
 	width: 0 !important;

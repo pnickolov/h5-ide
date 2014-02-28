@@ -3287,7 +3287,7 @@ MC.canvas.event.dragable = {
 			}
 
 			$canvas(target_id).select();
-			MC.canvas.nodeAction.show(target_id);
+			// MC.canvas.nodeAction.show(target_id);
 		}
 
 		event_data.shadow.remove();
@@ -3938,10 +3938,10 @@ MC.canvas.event.siderbarDrag = {
 								{
 									MC.canvas.select(new_node_id);
 
-									if (target_type === 'AWS.EC2.Instance')
-									{
-										MC.canvas.nodeAction.show(new_node_id);
-									}
+									// if (target_type === 'AWS.EC2.Instance')
+									// {
+									// 	MC.canvas.nodeAction.show(new_node_id);
+									// }
 								}
 							}
 							else
@@ -4700,7 +4700,7 @@ MC.canvas.event.selectNode = function (event)
 		MC.canvas.event.clearSelected();
 
 		$canvas(this.id).select();
-		MC.canvas.nodeAction.show(this.id);
+		// MC.canvas.nodeAction.show(this.id);
 	}
 
 	return false;
@@ -4972,13 +4972,13 @@ MC.canvas.event.keyEvent = function (event)
 
 			next_item.select();
 
-			if (
-				next_item.type === 'AWS.EC2.Instance' ||
-				next_item.type === 'AWS.AutoScaling.LaunchConfiguration'
-			)
-			{
-				MC.canvas.nodeAction.show(next_id);
-			}
+			// if (
+			// 	next_item.type === 'AWS.EC2.Instance' ||
+			// 	next_item.type === 'AWS.AutoScaling.LaunchConfiguration'
+			// )
+			// {
+			// 	MC.canvas.nodeAction.show(next_id);
+			// }
 
 			return false;
 		}
@@ -5076,13 +5076,13 @@ MC.canvas.event.keyEvent = function (event)
 				target_item.reConnect();
 			}
 
-			if (
-				target_type === 'AWS.EC2.Instance' &&
-				$('#node-action-wrap').data('id') === target_id
-			)
-			{
-				MC.canvas.nodeAction.position(target_id);
-			}
+			// if (
+			// 	target_type === 'AWS.EC2.Instance' &&
+			// 	$('#node-action-wrap').data('id') === target_id
+			// )
+			// {
+			// 	MC.canvas.nodeAction.position(target_id);
+			// }
 
 			return false;
 		}

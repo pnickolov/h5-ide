@@ -3557,7 +3557,8 @@ a.sidebar-hider {
 .property-wrap .scroll-wrap {
 	position : absolute;
 	top      : 33px;
-	bottom   : 42px;
+	/*bottom   : 42px;*/
+	bottom   : 0;
 	left     : 0;
 	right    : 0;
 	z-index  : 1;

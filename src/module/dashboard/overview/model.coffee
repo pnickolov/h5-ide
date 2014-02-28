@@ -288,6 +288,12 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
 
 
         awsReturnHandler: ( result ) ->
+
+            console.log 'dashboard:awsReturnHandler'
+
+            # push IDE_AVAILABLE
+            ide_event.trigger ide_event.IDE_AVAILABLE
+
             if result
                 @store.awsResource = result
             else

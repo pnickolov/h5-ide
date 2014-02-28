@@ -11,6 +11,9 @@
 
 #state-editor-wrap, #state-editor-body, #state-editor {
 	height: 100%;
+	width: 645px;
+	position: absolute;
+	right: 0;
 }
 
 .ace_scroller.ace_scroll-left:after {
@@ -33,15 +36,12 @@
 /* *************************************** state editor */
 
 #state-editor, .ace_autocomplete_tip {
-	/*padding: 20px;*/
-	/*height: 460px;*/
 	overflow-y: auto;
 	width: 654px;
-	float: left;
-	/*height: 500px;*/
 	background: #fff;
 	font-size: 13px;
-	position: relative;
+	position: absolute;
+	right: 0;
 }
 
 #state-editor, .ace_autocomplete {
@@ -49,7 +49,7 @@
 }
 
 #state-editor.full {
-	width: auto;
+	/*width: auto;*/
 	float: none;
 }
 
@@ -61,7 +61,6 @@
 #state-description, #state-log {
 	/*border-left: 1px solid #ccc;*/
 	width: 246px;
-	height: 480px;
 	float: left;
 	overflow-x: hidden;
 	overflow-y: auto;
@@ -71,12 +70,12 @@
 	background: #f0f0f0;
 	color: #666;
 	box-shadow: inset 1px 0 0 rgba(0,0,0,.05);
+	height: 100%;
 }
 
 #state-log {
 	display: none;
 	width: 245px;
-	height: 500px;
 	padding: 0;
 	background-color: #000;
 }

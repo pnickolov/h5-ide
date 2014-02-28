@@ -109,7 +109,7 @@ define [ 'event',
 
             $( '#property-panel' )
                 .html( @el )
-                .removeClass( 'state' )
+                .removeClass( 'state state-wide' )
 
 
             #

@@ -1461,7 +1461,7 @@ define [ 'event',
                         compareStateData = that.originCompStateData
                         otherCompareStateData = stateData
 
-                    
+
 
                     _.each compareStateData, (stateObj, idx) ->
                         originStateObjStr = JSON.stringify(stateObj)
@@ -1519,6 +1519,8 @@ define [ 'event',
             $descPanel = $('#state-description')
             $logPanel = $('#state-log')
 
+            $( '#property-panel' ).toggleClass 'state-wide'
+
             $descPanelToggle = that.$editorModal.find('.state-desc-toggle')
             $logPanelToggle = that.$editorModal.find('.state-log-toggle')
 
@@ -1541,6 +1543,8 @@ define [ 'event',
             $stateEditor = $('#state-editor')
             $descPanel = $('#state-description')
             $logPanel = $('#state-log')
+
+            $( '#property-panel' ).toggleClass 'state-wide'
 
             $descPanelToggle = that.$editorModal.find('.state-desc-toggle')
             $logPanelToggle = that.$editorModal.find('.state-log-toggle')

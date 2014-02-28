@@ -7360,7 +7360,6 @@ summary:focus {
 
 #state-editor-model {
 	border-left: 1px solid #999;
-	width: 654px;
 	position: absolute;
 	top: 41px;
 	bottom: 0;
@@ -7369,7 +7368,20 @@ summary:focus {
 	background-color: #fff;
 }
 
+#state-editor-model .state-editor-wrap {
+	width: 645px;
+}
+
+
 #property-panel.hiden {
 	width: 0 !important;
+}
+
+.state-editor-toolbar a:hover {
+	cursor: pointer;
+}
+
+#property-panel.state-wide {
+	width: 900px;
 }
 

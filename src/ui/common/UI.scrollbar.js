@@ -3,7 +3,7 @@
 #* Filename: UI.scrollbar
 #* Creator: Angel
 #* Description: UI.scrollbar
-#* Date: 20140215
+#* Date: 20140228
 # **********************************************************
 # (c) Copyright 2014 Madeiracloud  All Rights Reserved
 # **********************************************************
@@ -265,6 +265,11 @@ var scrollbar = {
 			thumb_max = max_scroll / scale,
 			scroll_value;
 
+		if (max_scroll < 0)
+		{
+			return true;
+		}
+
 		if (scroll_left > 0 && scroll_left < thumb_max)
 		{
 			horizontal_thumb.style.left = scroll_left + 'px';
@@ -309,6 +314,11 @@ var scrollbar = {
 			scale = scroll_content.scrollHeight / scroll_wrap_height,
 			thumb_max = max_scroll / scale,
 			scroll_value;
+
+		if (max_scroll < 0)
+		{
+			return true;
+		}
 
 		if (scroll_top > 0 && scroll_top < thumb_max)
 		{

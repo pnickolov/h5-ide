@@ -3432,12 +3432,11 @@ a.sidebar-hider {
 }
 
 #resource-select:hover .selection {
-	background: rgba(0, 0, 0, 0.2);
+	background: #17a03a
 }
 
 .resource-select.selectbox .selection {
 	background: #17c249;
-	opacity: .9;
 	color: #F3F3F3;
 	height: 17px;
 	border-top: none;

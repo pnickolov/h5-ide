@@ -1036,7 +1036,7 @@
 }
 
 #state-editor-model.se-model-app #state-editor .parameter-item.disabled,
-#state-editor-model.se-model-app .state-editor-toolbar,
+#state-editor-model.se-model-app .state-editor-toolbar .state-operate,
 #state-editor-model.se-model-app .checkbox {
 	display: none;
 }

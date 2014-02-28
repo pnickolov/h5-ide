@@ -94,34 +94,11 @@ define [ 'backbone', 'underscore', 'aws_service', 'base_model' ], ( Backbone, _,
 
             src.model = me
 
-            ### env:dev ###
+
             key = "aws_resource_#{region_name}"
-            aws_result = MC.storage.get key
-            if aws_result
-                if addition is 'vpc'
-                    #dispatch event (dispatch event whenever login succeed or failed)
-                    if src.sender and src.sender.trigger then src.sender.trigger 'AWS_RESOURCE_RETURN', aws_result
 
-                else if !aws_result.is_error
-                #resource succeed
-
-                    #dispatch event (dispatch event whenever login succeed or failed)
-                    if src.sender and src.sender.trigger then src.sender.trigger 'AWS_RESOURCE_RETURN', aws_result
-
-                else
-                #resource failed
-
-                    console.log 'aws.resource failed, error is ' + aws_result.error_message
-                    me.pub aws_result
-
-                return
-
-            ### env:dev:end ###
-
-            aws_service.resource src, username, session_id, region_name, resources, addition, retry_times, ( aws_result ) ->
-                ### env:dev ###
-                MC.storage.set key, aws_result
-                ### env:dev:end ###
+            callback = ( aws_result ) ->
+                MC.cacheForDev key, aws_result
 
                 if addition is 'vpc'
                     #dispatch event (dispatch event whenever login succeed or failed)
@@ -138,6 +115,9 @@ define [ 'backbone', 'underscore', 'aws_service', 'base_model' ], ( Backbone, _,
 
                     console.log 'aws.resource failed, error is ' + aws_result.error_message
                     me.pub aws_result
+
+            if not MC.cacheForDev key, null, callback
+                aws_service.resource src, username, session_id, region_name, resources, addition, retry_times, callback
 
 
 

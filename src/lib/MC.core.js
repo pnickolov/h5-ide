@@ -569,6 +569,32 @@ var storage = function( instance ) {
 MC.storage = storage( localStorage )
 MC.session = storage( sessionStorage )
 
+MC.cacheForDev = function( key, data, callback ) {
+	/* env:dev */
+
+	if ( key && data ) {
+		MC.session.set( key, data );
+		return;
+	}
+
+	data = MC.session.get( key );
+
+	if ( data && callback ){
+		callback( data );
+		return true;
+	}
+
+	if ( data ) {
+		return data
+	}
+
+	/* env:dev:end*/
+
+	return false;
+
+
+};
+
 
 // For event handler
 var returnTrue = function () {return true},

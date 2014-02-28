@@ -3,10 +3,11 @@
 #############################
 
 define [ 'event',
+         'constant',
          'text!./template.html'
          'Design'
          'backbone', 'jquery', 'handlebars'
-], ( ide_event, template, Design ) ->
+], ( ide_event, CONST, template, Design ) ->
 
     PropertyView = Backbone.View.extend {
 
@@ -85,7 +86,15 @@ define [ 'event',
         renderState: ( uid ) ->
 
             @currentTab = 'state'
-            if not uid
+            # trigger by selected element
+            if uid
+                comp = Design.instance().component uid
+                type = comp.type
+                if not _.contains [ CONST.RESTYPE.LC, CONST.RESTYPE.INSTANCE ], type
+                    @renderProperty()
+                    return
+            # trigger by switch tab
+            else
                 uid = Design.instance().canvas.selectedNode[ 0 ]
 
             ide_event.trigger ide_event.OPEN_STATE_EDITOR, uid

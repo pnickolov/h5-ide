@@ -104,6 +104,8 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
       asg = @attributes.originalAsg
 
       for expanded in [asg].concat( asg.get("expandedList") )
+        if expanded is @ then continue
+
         if newParent.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
           if newParent.parent() is expanded.parent().parent()
             return false
@@ -200,8 +202,13 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
 
     isReparentable : ( newParent )->
       for expand in @get("expandedList")
-        if expand.parent() is newParent
-          return sprintf lang.ide.CVS_MSG_ERR_DROP_ASG, @get("name"), newParent.get("name")
+        if newParent.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
+          if newParent.parent() is expand.parent().parent()
+            return sprintf lang.ide.CVS_MSG_ERR_DROP_ASG, @get("name"), newParent.parent().get("name")
+        else
+          if newParent.parent is expand.parent()
+            return sprintf lang.ide.CVS_MSG_ERR_DROP_ASG, @get("name"), newParent.get("name")
+
       true
 
     getCost : ( priceMap, currency )->

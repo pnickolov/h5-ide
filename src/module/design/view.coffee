@@ -132,12 +132,12 @@ define [ 'Design', 'event', 'text!./module/design/template.html', 'constant', 'i
                 # Show current app only
                 if state.app_id isnt Design.instance().get 'id'
                     continue
-
-                for status in state.status
-                    if status.result is 'success'
-                        succeed++
-                    else if status.result is 'failed'
-                        failed++
+                if state.status
+                    for status in state.status
+                        if status.result is 'success'
+                            succeed++
+                        else if status.result is 'failed'
+                            failed++
 
             $stateBar = $ '.statusbar-btn'
             $stateBar

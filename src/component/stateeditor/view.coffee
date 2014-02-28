@@ -2532,6 +2532,9 @@ define [ 'event',
                 if focused[0] isnt null and focused.hasClass('view') is true
                     target.expandItem.call target, focused
 
+                if $(event.target).parent().hasClass('text') is true
+                    return true
+
                 return false
 
             # Tab switch [Tab]

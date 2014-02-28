@@ -2788,7 +2788,7 @@ MC.canvas.event.dragable = {
 					MC.canvas.event.clearSelected();
 
 					$canvas(this.id).select();
-					MC.canvas.nodeAction.show(this.id);
+					// MC.canvas.nodeAction.show(this.id);
 				}
 
 				return false;
@@ -3015,10 +3015,10 @@ MC.canvas.event.dragable = {
 				$canvas(target_id).select();
 				MC.canvas.volume.close();
 
-				if (target_item.type === 'AWS.EC2.Instance')
-				{
-					MC.canvas.nodeAction.show(target_id);
-				}
+				// if (target_item.type === 'AWS.EC2.Instance')
+				// {
+				// 	MC.canvas.nodeAction.show(target_id);
+				// }
 			}
 		}
 		else

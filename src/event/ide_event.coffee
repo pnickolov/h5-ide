@@ -184,6 +184,8 @@ define [ 'underscore', 'backbone' ], () ->
         UPDATE_STATE_STATUS_DATA_TO_EDITOR  :  'UPDATE_STATE_STATUS_DATA_TO_EDITOR'
         STATE_EDITOR_SAVE_DATA : 'STATE_EDITOR_SAVE_DATA'
 
+        GET_STATE_MODULE       : 'GET_STATE_MODULE'
+
         constructor : ->
             _.extend this, Backbone.Events
 

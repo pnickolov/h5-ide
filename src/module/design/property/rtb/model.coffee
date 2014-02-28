@@ -93,7 +93,7 @@ define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, const
 
       aws_rt_is_main = false
 
-      if appData.associationSet and appData.associationSet.item
+      if appData and appData.associationSet and appData.associationSet.item
 
         for asso in appData.associationSet.item
 

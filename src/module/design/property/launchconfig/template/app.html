@@ -22,26 +22,6 @@
     </dl>
   </div>
 
-  <!-- Advanced Details -->
-  {{#if isEditable}}
-    <div class="option-group-head">{{ i18n "PROP_INSTANCE_ADVANCED_DETAIL" }}</div>
-    <div class="option-group">
-      <section class="property-control-group">
-        <div class="checkbox">
-          <input id="property-instance-enable-cloudwatch" type="checkbox" {{#if monitorEnabled}}{{#if monitoring}}checked="true"{{/if}}{{else}}disabled="disabled"{{/if}} value="None" name="property-instance-enable-cloudwatch" />
-          <label for="property-instance-enable-cloudwatch"></label>
-        </div>
-        <label for="property-instance-enable-cloudwatch">{{i18n "PROP_INSTANCE_CW_ENABLED"}}</label>
-
-        <p class="{{#unless monitoring}}hide{{/unless}} property-info" id="property-cloudwatch-warn">{{i18n "PROP_INSTANCE_CW_WARN"}}<a target="_blank" href="http://aws.amazon.com/cloudwatch">Amazon Cloud Watch product page</a></p>
-      </section>
-      <section class="property-control-group">
-        <label class="left" for="property-instance-user-data">{{i18n "PROP_INSTANCE_USER_DATA"}}</label>
-        <textarea id="property-instance-user-data">{{userData}}</textarea>
-      </section>
-    </div>
-  {{/if}}
-
   <div class="option-group-head expand">{{i18n "PROP_INSTANCE_SG_DETAIL"}}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
   <div class="option-group sg-group"></div>
 </article>

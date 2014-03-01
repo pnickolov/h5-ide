@@ -55,7 +55,7 @@ define [ 'event',
                     this.trigger 'SWITCH_DASHBOARD',     original_tab_id, tab_id
                 when 'new'
                     this.trigger 'SWITCH_NEW_STACK_TAB', original_tab_id, tab_id, $( '#tab-bar-' + tab_id ).find('a').attr('title')
-                when 'stack'
+                when 'stack', 'import'
                     this.trigger 'SWITCH_STACK_TAB',     original_tab_id, tab_id
                 when 'app', 'appview'
                     this.trigger 'SWITCH_APP_TAB',       original_tab_id, tab_id

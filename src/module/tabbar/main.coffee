@@ -172,16 +172,33 @@ define [ 'jquery', 'event', 'base_main',
 
             # open_stack
             openStack = ( tab_id ) ->
-                console.log 'OPEN_STACK'
+                console.log 'OPEN_STACK', tab_id
 
-                model.once 'GET_STACK_COMPLETE', ( result ) ->
-                    console.log 'GET_STACK_COMPLETE'
-                    console.log result
-                    ide_event.trigger ide_event.SWITCH_TAB, 'OPEN_STACK', tab_id, model.get( 'stack_region_name' ), result, result.resolved_data[0].platform
-                    ide_event.trigger ide_event.UPDATE_DESIGN_TAB_ICON, 'stack', tab_id
-                model.getStackInfo tab_id
+                if tab_id and tab_id.split( '-' ) and tab_id.split( '-' )[0]
 
-                ide_event.trigger ide_event.SWITCH_LOADING_BAR, tab_id
+                    ide_event.trigger ide_event.SWITCH_LOADING_BAR, tab_id
+
+                    if tab_id.split( '-' )[0] is 'stack'
+
+                        model.once 'GET_STACK_COMPLETE', ( result ) ->
+                            console.log 'GET_STACK_COMPLETE', result
+                            console.log result
+                            ide_event.trigger ide_event.SWITCH_TAB, 'OPEN_STACK', tab_id, model.get( 'stack_region_name' ), result, result.resolved_data[0].platform
+                            ide_event.trigger ide_event.UPDATE_DESIGN_TAB_ICON, 'stack', tab_id
+                        model.getStackInfo tab_id
+
+                    else if tab_id.split( '-' )[0] is 'import'
+
+                        # get result
+                        result = @get 'import_stack'
+
+                        # replace 'import' to 'new'
+                        tab_id = tab_id.replace 'import', 'new'
+                        result.resolved_data[0].id = tab_id
+                        view.updateCurrentTab tab_id,  result.resolved_data[0].name + ' - stack'
+
+                        ide_event.trigger ide_event.SWITCH_TAB, 'OPEN_STACK', tab_id, model.get( 'stack_region_name' ), result, result.resolved_data[0].platform
+                        ide_event.trigger ide_event.UPDATE_DESIGN_TAB_ICON, 'stack', tab_id
 
                 null
 
@@ -213,18 +230,10 @@ define [ 'jquery', 'event', 'base_main',
 
             # new stack
             newStackTab = ( region_name ) ->
-                console.log 'ADD_STACK_TAB'
-                console.log region_name
+                console.log 'ADD_STACK_TAB', region_name
+
                 view.temp_region_name = region_name
                 platformSupport = model.checkPlatform( region_name )
-                ###
-                if platformSupport is true
-                    modal MC.template.createNewStackClassic(), true
-                else if  platformSupport is false
-                    modal MC.template.createNewStackVPC(), true
-                else
-                    modal MC.template.createNewStackErrorAndReload(), true
-                ###
 
                 if platformSupport is null
                     modal MC.template.createNewStackErrorAndReload(), true
@@ -321,12 +330,25 @@ define [ 'jquery', 'event', 'base_main',
 
                 null
 
+            # open import stack
+            importStackTab = ( result ) ->
+                console.log 'importStackTab', result
+
+                # set vo
+                model.set 'stack_region_name', result.resolved_data[0].region
+                model.set 'import_stack',      result
+
+                # open tab
+                Tabbar.open result.resolved_data[0].id, result.resolved_data[0].name + ' - stack'
+
+                null
+
             #############################
             #  listen tab
             #############################
 
             # open tab
-            # type: 'NEW_STACK' 'OPEN_STACK' 'OPEN_APP' 'NEW_PROCESS' 'NEW_APPVIEW' 'RELOAD_STACK' 'RELOAD_NEW_STACK' 'RELOAD_APP'
+            # type: 'NEW_STACK' 'OPEN_STACK' 'OPEN_APP' 'NEW_PROCESS' 'NEW_APPVIEW' 'RELOAD_STACK' 'RELOAD_NEW_STACK' 'RELOAD_APP' 'IMPORT_STACK'
             ide_event.onLongListen ide_event.OPEN_DESIGN_TAB, ( type, tab_name, region_name, tab_id ) ->
                 console.log 'OPEN_DESIGN_TAB', type, tab_name, region_name, tab_id
                 switch type
@@ -345,6 +367,9 @@ define [ 'jquery', 'event', 'base_main',
 
                     # when RELOAD_NEW_STACK tab_name is platform
                     when 'RELOAD_NEW_STACK' then reloadNewStackTab tab_id, region_name, tab_name
+
+                    # when IMPORT_STACK tab_name is result( JSON )
+                    when 'IMPORT_STACK'     then importStackTab    tab_name
 
                     else
                         console.log 'open undefined tab'

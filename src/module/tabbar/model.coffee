@@ -12,6 +12,7 @@ define [ 'MC', 'stack_model', 'app_model', 'backbone', 'event' ], ( MC, stack_mo
             app_region_name   : null
             current_platform  : null
             tab_name          : null
+            import_stack      : null   # import stack result( JSON )
 
         initialize : ->
 
@@ -69,7 +70,7 @@ define [ 'MC', 'stack_model', 'app_model', 'backbone', 'event' ], ( MC, stack_mo
             switch type
                 when 'new'
                     if suffix is 'OLD_' then event_type = suffix + 'STACK' else event_type = 'NEW_STACK'
-                when 'stack'
+                when 'stack', 'import'
                     event_type = suffix + 'STACK'
                 when 'app', 'appview'
                     event_type = suffix + 'APP'

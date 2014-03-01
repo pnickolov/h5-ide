@@ -636,7 +636,7 @@
 
 #state-editor .parameter-view-list {
 	margin-right: 45px;
-	overflow: auto;
+	overflow: hidden;
 	line-height: 20px;
 	margin-top: -5px;
 }

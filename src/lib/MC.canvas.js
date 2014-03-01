@@ -2908,7 +2908,7 @@ MC.canvas.event.dragable = {
 			MC.canvas.event.clearSelected();
 		}
 
-		return false;
+		// return false;
 	},
 	// For instance cloning recently
 	keyClone: function (event)

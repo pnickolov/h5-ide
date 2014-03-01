@@ -5119,20 +5119,39 @@ MC.canvas.event.keyEvent = function (event)
 		}
 
 		// Open state editor - [Enter]
-		// if (keyCode === 13)
-		// {
-		// 	var type = $canvas( $canvas.selected_node()[ 0 ] ).type;
+		if (keyCode === 13)
+		{
+			var type = $canvas( $canvas.selected_node()[ 0 ] ).type;
 
-		// 	if (
-		// 		type === 'AWS.EC2.Instance' ||
-		// 		type === 'AWS.AutoScaling.LaunchConfiguration'
-		// 	)
-		// 	{
-		// 		$canvas.trigger("STATE_ICON_CLICKED", $canvas.selected_node()[ 0 ]);
-		// 	}
+			if (
+				type === 'AWS.EC2.Instance' ||
+				type === 'AWS.AutoScaling.LaunchConfiguration'
+			)
+			{
+				$canvas.trigger("SHOW_STATE_EDITOR", $canvas.selected_node()[ 0 ]);
+			}
 
-		// 	return false;
-		// }
+			return false;
+		}
+
+		// Show state editor - [S]
+		if (
+			keyCode === 83 &&
+			selected_node.length === 1
+		)
+		{
+			var type = $canvas( $canvas.selected_node()[ 0 ] ).type;
+
+			if (
+				type === 'AWS.EC2.Instance' ||
+				type === 'AWS.AutoScaling.LaunchConfiguration'
+			)
+			{
+				$canvas.trigger("SHOW_STATE_EDITOR", $canvas.selected_node()[ 0 ]);
+			}
+
+			return false;
+		}
 
 		// Focus property input - [P]
 		if (

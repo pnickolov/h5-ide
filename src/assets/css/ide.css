@@ -7396,7 +7396,15 @@ summary:focus {
 	display: none;
 }
 
+#property-panel .sub-property {
+	height: 100%;
+	width: 100%;
+}
 
+#property-panel .sub-stateeditor {
+	height: 100%;
+	width: 100%;
+}
 
 
 

@@ -12167,14 +12167,14 @@ exports.commands = [{
     multiSelectAction: "forEach",
     scrollIntoView: "selectionPart"
 }, {
-    name: "expandState",
-    bindKey: bindKey("Ctrl-Down", "Command-Down"),
-    exec: function(editor) { editor.expandState(editor); }
-}, {
-    name: "collapseState",
-    bindKey: bindKey("Ctrl-Up", "Command-Up"),
-    exec: function(editor) { editor.collapseState(editor); }
-}, {
+//     name: "expandState",
+//     bindKey: bindKey("Ctrl-Down", "Command-Down"),
+//     exec: function(editor) { editor.expandState(editor); }
+// }, {
+//     name: "collapseState",
+//     bindKey: bindKey("Ctrl-Up", "Command-Up"),
+//     exec: function(editor) { editor.collapseState(editor); }
+// }, {
 //     name: "blockoutdent",
 //     bindKey: bindKey("Ctrl-[", "Ctrl-["),
 //     exec: function(editor) { editor.blockOutdent(); },

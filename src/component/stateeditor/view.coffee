@@ -2785,12 +2785,12 @@ define [ 'event',
             index = 0
 
             if container_item.hasClass('command-value')
-                stack = $(container).parents('.state-item').find('.parameter-list .ace_editor')
+                stack = container_item.parents('.state-item').find('.parameter-list .ace_editor')
 
                 if stack.length > 0
                     stack.eq(0).find('.ace_text-input').focus()
-                else
-                    that.onSwitchState.call this, event
+                # else
+                    # that.onSwitchState.call this, event
 
             else
                 stack = container_item.parents('.parameter-list').find('.ace_editor')
@@ -2804,8 +2804,11 @@ define [ 'event',
                 if index + 1 < total
                     stack.eq(index + 1).find('.ace_text-input').focus()
                 else
-                    stack.eq(0).find('.ace_text-input').focus()
+                    # stack.eq(0).find('.ace_text-input').focus()
+                    container_item.parents('.state-item').find('.command-value .ace_text-input').focus()
                     # that.onSwitchState.call this, event
+
+            return false
 
         aceUTabSwitch: (event, container) ->
 
@@ -2819,18 +2822,25 @@ define [ 'event',
             index = 0
 
             if container_item.hasClass('command-value')
-                stack = $('#state-editor .state-item')
-                focused_index = $('#state-editor .state-item.focused').index('#state-editor .state-list > li')
 
-                $('#state-editor .state-item.focused').removeClass('focused').addClass('view')
+                stack = container_item.parents('.state-item').find('.parameter-list .ace_editor')
 
-                if focused_index > 0
-                    stack.eq( focused_index - 1 ).addClass('focused').removeClass('view').find('.command-value .ace_text-input').focus()
+                total = stack.length
 
-                if focused_index is 0
-                    stack.eq( stack.length - 1 ).addClass('focused').removeClass('view').find('.command-value .ace_text-input').focus()
+                stack.eq(total - 1).find('.ace_text-input').focus()
 
                 return false
+                # focused_index = $('#state-editor .state-item.focused').index('#state-editor .state-list > li')
+
+                # $('#state-editor .state-item.focused').removeClass('focused').addClass('view')
+
+                # if focused_index > 0
+                #     stack.eq( focused_index - 1 ).addClass('focused').removeClass('view').find('.command-value .ace_text-input').focus()
+
+                # if focused_index is 0
+                #     stack.eq( stack.length - 1 ).addClass('focused').removeClass('view').find('.command-value .ace_text-input').focus()
+
+                # return false
 
             stack = container_item.parents('.parameter-list').find('.ace_editor')
 
@@ -2844,8 +2854,11 @@ define [ 'event',
                 stack.eq(index - 1).find('.ace_text-input').focus()
 
             if index is 0
-                stack.eq(total - 1).find('.ace_text-input').focus()
+                container_item.parents('.state-item').find('.command-value .ace_text-input').focus()
+                # stack.eq(total - 1).find('.ace_text-input').focus()
                 # container_item.parents('.state-item').find('.command-value .ace_text-input').focus()
+
+            return false
 
         onRemoveState: (event, $targetStates, noRegisterUndo) ->
 

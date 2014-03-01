@@ -16696,7 +16696,7 @@ background-color: #6B72E6;\
 background-color: transparent;\
 }\
 .ace-tm .ace_cursor {\
-color: black;\
+color: #fff;\
 }\
 .ace-tm .ace_invisible {\
 color: rgb(191, 191, 191);\

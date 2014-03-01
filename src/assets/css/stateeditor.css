@@ -7,7 +7,7 @@
 #state-editor .parameter-value {
 	font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace  !important;
 	font-size: 12px !important;
-	color: #666;
+	color: #ccc;
 }
 
 #state-editor-wrap, #state-editor-body, #state-editor {
@@ -19,19 +19,21 @@
 
 .ace_scroller.ace_scroll-left:after {
 	content: " ";
-	width: 15px;
+	width: 20px;
 	height: 21px;
 	display: inline-block;
 	position: absolute;
+	/*left: -20px;*/
 	z-index: 2;
-	background: rgba(255,255,255,1);
-	background: -moz-linear-gradient(left, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%);
-	background: -webkit-gradient(left top, right top, color-stop(0%, rgba(255,255,255,1)), color-stop(100%, rgba(255,255,255,0)));
-	background: -webkit-linear-gradient(left,rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%);
-	background: -o-linear-gradient(left, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%);
-	background: -ms-linear-gradient(left, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%);
-	background: linear-gradient(to right, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%);
-	filter:progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff', GradientType=1 );
+	color: #eee;
+	background: rgba(39, 41, 44,1);
+	background: -moz-linear-gradient(left, rgba(39, 41, 44,1) 0%, rgba(39, 41, 44,0) 100%);
+	background: -webkit-gradient(left top, right top, color-stop(0%, rgba(39, 41, 44,1)), color-stop(100%, rgba(39, 41, 44,0)));
+	background: -webkit-linear-gradient(left,rgba(39, 41, 44,1) 0%, rgba(39, 41, 44,0) 100%);
+	background: -o-linear-gradient(left, rgba(39, 41, 44,1) 0%, rgba(39, 41, 44,0) 100%);
+	background: -ms-linear-gradient(left, rgba(39, 41, 44,1) 0%, rgba(39, 41, 44,0) 100%);
+	background: linear-gradient(to right, rgba(39, 41, 44,1) 0%, rgba(39, 41, 44,0) 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient( startColorstr='#27292C', endColorstr='#27292C', GradientType=1 );
 }
 
 /* *************************************** state editor */
@@ -39,7 +41,7 @@
 #state-editor, .ace_autocomplete_tip {
 	overflow-y: auto;
 	width: 654px;
-	background: #fff;
+	background: #27292C;
 	font-size: 13px;
 	position: absolute;
 	right: 0;
@@ -55,8 +57,8 @@
 }
 
 #state-editor .state-edit {
-	border-bottom: 1px solid #eee;
-	padding-left: 32px;
+	border-bottom: 1px solid rgba(0,0,0,.2);
+	padding-left: 34px;
 }
 
 #state-description, #state-log {
@@ -177,10 +179,20 @@
 }
 
 #state-list-wrap {
-	height: 100%;
+	height            : 100%;
+	top               : 32px;
 	-webkit-box-sizing: content-box;
-	-moz-box-sizing: content-box;
-	box-sizing: content-box;
+	-moz-box-sizing   : content-box;
+	box-sizing        : content-box;
+}
+
+#state-list-wrap:after {
+	position  : absolute;
+	width     : 34px;
+	background: rgba(0,0,0,.2);
+	height    : 100%;
+	content   : "";
+	top       : 0;
 }
 
 /*#state-editor-model .modal-toolbar li {
@@ -216,17 +228,6 @@
 	/*height: 464px;*/
 	position: relative;
 	counter-reset: list-counter;
-}
-
-.state-list:after {
-	position: absolute;
-	width: 32px;
-	height: 100%;
-	content: "";
-	top: 0;
-	left: 0;
-	background: rgba(0,0,0,.02);
-	border-right: 1px solid #e0e0e0;
 }
 
 .state-list li:before {
@@ -325,9 +326,10 @@
 }
 
 #state-editor .editable-area.ace_focus,
-#state-editor .editable-area.ace_focus:hover {
+#state-editor .editable-area.ace_focus:hover,
+#state-editor .comment .editable-area.ace_focus {
 	/*background-color: rgba(0,0,0,.01);*/
-	color: #333;
+	color: #fff;
 	/*border-bottom: 1px solid #69aadc;*/
 }
 
@@ -428,11 +430,11 @@
 }
 
 .state-editor-toolbar {
-	border-bottom: 1px solid #ddd;
-	box-shadow: 1px 1px 1px rgba(250, 250, 250, 0.1);
-	position: relative;
-	z-index: 85;
-	background: #fefefe;
+	border-bottom: 1px solid #0B0B0C;
+	position     : relative;
+	z-index      : 85;
+	background   : #222427;
+	font-family  : 'Lato', 'Helvetica Neue', Arial, sans-serif;
 }
 
 .state-editor-toolbar a {
@@ -460,16 +462,15 @@
 
 .state-editor-toolbar .disabled {
 	pointer-events: none;
-	color: #ddd;
+	color: #555;
 }
 
 #state-editor .command-value {
 	float        : left;
 	width        : 150px;
 	margin-left  : 28px;
-	margin-top   : -27px;
-	/*margin-left: 60px;*/
-	color        : #666 !important;
+	margin-top   : -25px;
+	color        : #999;
 }
 
 #state-editor .parameter-list {
@@ -480,8 +481,7 @@
 	/*width         : 100%;*/
 	overflow        : auto;
 	padding         : 4px 6px 0 27px;
-	background-color: rgba(248, 248, 248, 0.1);
-	border-bottom   : 1px solid #eee;
+	/*border-bottom   : 1px solid rgba(255,255,255,.05);*/
 	position        : relative;
 }
 
@@ -519,7 +519,7 @@
 	margin-left: 30px;
 	margin-top: 4px;
 	overflow: hidden;
-	min-width : 350px;
+	min-width : 440px;
 	overflow  : auto;
 	margin-top: 4px;
 	/*position  : absolute;*/
@@ -595,6 +595,17 @@
 
 /* *************************************** state view/edit */
 
+#state-editor .state-item {
+	overflow: auto;
+	position: relative;
+	background: #161616;
+}
+
+#state-editor .state-item.view {
+	background: #27292C;
+}
+
+
 #state-editor .state-item.view .state-edit {
 	display: none;
 }
@@ -604,12 +615,12 @@
 }
 
 #state-editor .state-item.view .state-view {
-	display: block;
-	font-size: 12px;
-	position: relative;
-	left: 64px;
+	display     : block;
+	font-size   : 12px;
+	position    : relative;
+	left        : 66px;
 	margin-right: 100px;
-	margin-top: 2px;
+	margin-top  : 2px;
 }
 
 #state-editor .command-view-value {
@@ -623,15 +634,42 @@
 	/*background: rgb(59, 127, 250);*/
 	/*background: #999;*/
 	/*border-radius: 4px;*/
-	border-right: 1px solid #ddd;
+	border-right: 1px solid rgba(255,255,255,.1);
 	padding: 4px 0;
 	/*width: 80px;*/
 	width: 114px;
-	color: #666;
+}
+
+#state-editor .command-value,
+#state-editor .command-view-value {
+	color: #999;
 }
 
 #state-editor .command-view-value:empty {
 	display: none;
+}
+
+#state-editor .comment .command-view-value {
+	border: none;
+}
+
+#state-editor .comment .command-view-value {
+	border: none;
+	width : 8px;
+	margin-right: 3px;
+}
+
+#state-editor .comment .command-view-value,
+#state-editor .comment .parameter-view-list .parameter-value {
+	color: #505050;
+}
+
+#state-editor .comment .command-value {
+	color: ;
+}
+
+#state-editor .comment .parameter-view-list .parameter-value {
+	padding-left: 0;
 }
 
 #state-editor .parameter-view-list {
@@ -660,7 +698,7 @@
 	margin-right: 10px;
 
 	float: left;
-	color: rgb(59, 127, 250);
+	color: #ff6a38;
 
 	/*background: rgba(0,0,0,.03);*/
 	padding: 0 4px;
@@ -691,34 +729,46 @@
 }
 
 /* *************************************** state toolbar */
-#state-editor .state-item {
-	overflow: auto;
-	position: relative;
-	background: #fcfcfc;
-}
 
 #state-editor .state-toolbar {
 	position: relative;
 	overflow: hidden;
 	cursor: pointer;
 	background: rgba(0,0,0,.01);
-	border-bottom: 1px solid #eee;
+	/*border-bottom: 1px solid #eee;*/
 	min-height: 22px;
 	padding: 6px 0;
 }
 
+/*#state-editor .state-toolbar:hover {
+	background: rgba(219, 142, 255, 0.1);
+}*/
+
+/*#state-editor .state-item.selected .state-toolbar {
+	background: rgba(26, 44, 100, 0.7) !important;
+}*/
+
+#state-editor .state-item.selected {
+	background: rgba(26, 44, 100, 0.7) !important;
+}
+
+#state-editor .state-item.focused .state-toolbar,
 #state-editor .state-toolbar:hover {
-	background-color: rgba(0,0,0,.02);
+	background: rgba(250, 240, 255, 0.1);
+	/*box-shadow: inset 0 0 2px rgba(255, 255, 255, 1);*/
 }
 
-#state-editor .state-item.selected .state-toolbar {
-	background: rgba(37, 164, 244, 0.07) !important;
+#state-editor .state-item.focused.selected .state-toolbar {
+	background: rgba(184, 197, 236, 0.1) !important;
 }
 
-#state-editor .state-item.focused .state-toolbar {
-	background: rgba(226, 238, 255, 0.44);
-	box-shadow: inset 0 0 2px rgba(255, 255, 255, 1);
+
+.state-item.selected .state-toolbar .state-view .command-view-value,
+.state-item.selected .state-toolbar .state-view .parameter-value {
+	color: #fff !important;
 }
+
+
 
 /*#state-editor .state-item:first-child .state-remove {
 	display: none;
@@ -764,8 +814,12 @@
 	width: 20px;
 	height: 30px;
 	cursor: move;
-	color: #aaa;
+	color: #555;
 	position: absolute;
+}
+
+#state-editor .state-drag:hover {
+	color: #aaa;
 }
 
 #state-editor .state-remove {
@@ -971,10 +1025,10 @@
 	display: inline-block;
 }
 */
-.statusbar-btn .icon-state-success
-, #status-bar-modal .icon-state-success
- {
-	background-color: green;
+.statusbar-btn .state-success {
+	border-right: 1px solid #353535;
+	margin-right: 10px;
+	padding-right: 10px;
 }
 
 .statusbar-btn b {

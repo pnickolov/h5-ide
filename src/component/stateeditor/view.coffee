@@ -3010,10 +3010,11 @@ define [ 'event',
 
             try
                 pasteDataJSON = JSON.parse(pasteData)
+                pasteDataJSON = that.setNewStateIdForStateAry(pasteDataJSON)
                 that.addStateItemByData(pasteDataJSON)
             catch err
                 null
-                # alert('data format error')
+                # alert('Pasted JSON Data Format Error')
 
             $areaTarget.val('')
 

@@ -19,6 +19,8 @@ define [ 'event',
         initialize : ->
             $( window ).on 'beforeunload', @beforeunloadEvent
 
+            $(document).on 'keydown', @disableBrowserGoBack
+
         showMain : ->
             console.log 'showMain'
             #
@@ -231,6 +233,13 @@ define [ 'event',
                 $( '#status-bar-modal' ).empty()
                 $( '#status-bar-modal' ).hide()
                 ide_event.trigger ide_event.UNLOAD_TA_MODAL
+
+        disableBrowserGoBack: (event) ->
+
+            nodeName = event.target.nodeName.toLowerCase()
+
+            if nodeName isnt 'input' and nodeName isnt 'textarea' and event.target.contentEditable isnt 'true'
+                return false
     }
 
     view = new MainView()

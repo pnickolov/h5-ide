@@ -179,12 +179,12 @@ define [ 'event',
         toggleResourcePanel : ->
             console.log 'toggleResourcePanel'
             #
-            $( '#resource-panel'      ).toggleClass 'hiden'
-            $( '#canvas-panel'        ).toggleClass 'left-hiden'
+            $( '#resource-panel'      ).toggleClass 'hidden'
+            $( '#canvas-panel'        ).toggleClass 'left-hidden'
             $( '#hide-resource-panel' ).toggleClass 'icon-caret-left'
             $( '#hide-resource-panel' ).toggleClass 'icon-caret-right'
             #
-            #if $( '#resource-panel' ).hasClass( 'hiden' ) then state = 'hiden' else state = 'show'
+            #if $( '#resource-panel' ).hasClass( 'hidden' ) then state = 'hidden' else state = 'show'
             #$( '#hide-resource-panel' ).attr 'data-current-state', state
             #
             null
@@ -207,16 +207,16 @@ define [ 'event',
 
                 # show
                 if $item.hasClass( 'icon-caret-left' )
-                    $panel.removeClass  'hiden'
-                    $canvas.removeClass 'left-hiden'
+                    $panel.removeClass  'hidden'
+                    $canvas.removeClass 'left-hidden'
 
                 # hide
                 if $item.hasClass( 'icon-caret-right' )
-                    $panel.addClass     'hiden'
-                    $canvas.addClass    'left-hiden'
+                    $panel.addClass     'hidden'
+                    $canvas.addClass    'left-hidden'
 
                 #appeidt
-                if type is 'show' and $item.hasClass( 'icon-caret-right' ) and $panel.hasClass( 'hiden' )
+                if type is 'show' and $item.hasClass( 'icon-caret-right' ) and $panel.hasClass( 'hidden' )
                     $item.trigger 'click'
 
             else if type.split('_')[1] is 'APP' or type is 'hide'
@@ -230,8 +230,8 @@ define [ 'event',
                 $item.addClass    'icon-caret-right'
 
                 # hide
-                $panel.addClass  'hiden'
-                $canvas.addClass 'left-hiden'
+                $panel.addClass  'hidden'
+                $canvas.addClass 'left-hidden'
             null
 
         ###updateResourceState : ( type ) ->

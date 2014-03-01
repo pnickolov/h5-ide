@@ -894,7 +894,7 @@
 	display: table;
 	width  : 424px;
 	background-color: #555;
-} 
+}
 
 .state-status-item {
 	display         : table-row;
@@ -907,7 +907,7 @@
 .state-status-item > div {
 	display       : table-cell;
 	vertical-align: middle;
-} 
+}
 
 .state-status-item:nth-child(odd) {
 	background-color: rgba(255,255,255,.05);
@@ -1144,11 +1144,11 @@
 	height: 0px;
 }
 
-#property-panel.state:not(.hiden) + #canvas-panel {
+#property-panel.state:not(.hidden) + #canvas-panel {
 	margin-right: 654px;
 }
 
-#property-panel.state-wide:not(.hiden) + #canvas-panel {
+#property-panel.state-wide:not(.hidden) + #canvas-panel {
 	margin-right: 900px;
 }
 

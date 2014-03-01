@@ -129,8 +129,8 @@ define [ 'event',
 
         togglePropertyPanel : ( event ) ->
             console.log 'togglePropertyPanel'
-            $( '#property-panel' ).toggleClass( 'hiden' ).toggleClass( 'transition', true )
-            $( '#canvas-panel' ).toggleClass 'right-hiden'
+            $( '#property-panel' ).toggleClass( 'hidden' ).toggleClass( 'transition', true )
+            $( '#canvas-panel' ).toggleClass 'right-hidden'
             $( '#hide-property-panel' ).toggleClass 'icon-caret-left'
             $( '#hide-property-panel' ).toggleClass 'icon-caret-right'
             $( '#status-bar-modal' ).toggleClass 'toggle'
@@ -193,8 +193,8 @@ define [ 'event',
 
         # This method is used to show the panel immediately if the panel is hidden.
         forceShow : () ->
-            $( '#canvas-panel' ).removeClass 'right-hiden'
-            $( '#property-panel' ).removeClass 'hiden transition'
+            $( '#canvas-panel' ).removeClass 'right-hidden'
+            $( '#property-panel' ).removeClass 'hidden transition'
             $( '#hide-property-panel' ).removeClass( 'icon-caret-left' ).addClass( 'icon-caret-right' )
             null
 

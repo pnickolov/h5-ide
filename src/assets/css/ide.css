@@ -3268,7 +3268,7 @@ a.sidebar-hider {
 	transition         : margin-left 0.1s;
 }
 
-#resource-panel.hiden {
+#resource-panel.hidden {
 	margin-left: -246px;
 }
 
@@ -3766,11 +3766,11 @@ a.sidebar-hider {
 	background : #313131;
 }
 
-#canvas-panel.left-hiden {
+#canvas-panel.left-hidden {
 	margin-left: 0;
 }
 
-#canvas-panel.right-hiden {
+#canvas-panel.right-hidden {
 	margin-right: 0;
 }
 
@@ -7382,7 +7382,7 @@ summary:focus {
 }
 
 
-#property-panel.hiden {
+#property-panel.hidden {
 	width: 0 !important;
 }
 
@@ -7399,10 +7399,10 @@ summary:focus {
 	right: 5px;
 }
 
-#property-panel.state:not(.hiden) ~ #status-bar-modal {
+#property-panel.state:not(.hidden) ~ #status-bar-modal {
 	right: 654px;
 }
 
-#property-panel.state-wide:not(.hiden) ~ #status-bar-modal {
+#property-panel.state-wide:not(.hidden) ~ #status-bar-modal {
 	display: none;
 }

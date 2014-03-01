@@ -17,6 +17,7 @@ define [ 'event',
             'click': 'test'
 
         currentTab: 'property'
+        lastComId: null
 
         initialize : ->
 
@@ -74,8 +75,31 @@ define [ 'event',
                     @renderProperty()
 
 
+        __hideProperty: () ->
+            $( '#property-panel .sub-property' ).hide()
+
+        __hideState: () ->
+            $( '#property-panel .sub-stateeditor' ).hide()
+
+        __showProperty: () ->
+            $( '#property-panel .sub-property' ).show()
+
+        __showState: () ->
+            $( '#property-panel .sub-stateeditor' ).show()
+
+        __hasProperty: () ->
+            $( '#property-panel .sub-property' ).children() > 0
+
+        __hasState: () ->
+            $( '#property-panel .sub-stateeditor' ).children() > 0
+
         renderProperty: ( uid ) ->
-            if  @currentTab is 'state'
+            @__hideState()
+            $( '#property-panel' ).removeClass 'state'
+            if @lastComId is uid and @__hasState()
+                @currentTab = 'property'
+
+            else if @currentTab is 'state'
                 @currentTab = 'property'
                 if not uid
                     uid = Design.instance().canvas.selectedNode[ 0 ]
@@ -86,38 +110,39 @@ define [ 'event',
                     id = component.id
 
                 ide_event.trigger ide_event.OPEN_PROPERTY, type, id
-                @forceShow()
+
+            @__showProperty()
+            @forceShow()
+            @lastComId = uid
+            @
 
         renderState: ( uid, force ) ->
 
-            @currentTab = 'state'
-            if not uid
-                uid = Design.instance().canvas.selectedNode[ 0 ]
+            @__hideProperty()
+            $( '#property-panel' ).addClass 'state'
 
-            if not force
-                if uid
-                    comp = Design.instance().component uid
-                    type = comp.type
-                    if not _.contains [ CONST.RESTYPE.LC, CONST.RESTYPE.INSTANCE ], type
-                        @renderProperty uid
-                        return
-                else
-                    @renderProperty()
-                    return
+            if @lastComId is uid and @__hasProperty()
+
+            else
+
+                if not uid
+                    uid = Design.instance().canvas.selectedNode[ 0 ]
 
             ide_event.trigger ide_event.OPEN_STATE_EDITOR, uid
+            @__showState()
             @forceShow()
+            @lastComId = uid
+            @currentTab = 'state'
+            @
+
 
         render     : () ->
             # Blur any focused input
             # Better than $("input:focus")
             $(document.activeElement).filter("input").blur()
 
-
-            @$el.html( template )
-
-            $( '#property-panel' )
-                .html( @el )
+            $( '#property-panel .sub-property' )
+                .html( template )
                 .removeClass( 'state state-wide' )
             @
 

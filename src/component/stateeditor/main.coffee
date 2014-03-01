@@ -44,7 +44,7 @@ define [ 'event', 'ace', 'ace_ext_language_tools',  'UI.modal', 'jquery_sort', '
                 that.unLoadModule()
 
             $( '#property-panel' ).addClass 'state'
-            $( '#property-panel' ).html view.render().el
+            $( '#property-panel .sub-stateeditor' ).html view.render().el
 
     unLoadModule = ( view, model ) ->
         console.log 'state editor unLoadModule'

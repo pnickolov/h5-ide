@@ -7387,8 +7387,14 @@ summary:focus {
 	margin-right: 0;
 }
 
+#property-panel .sub-stateeditor > div {
+	height: 100%;
+	width: 100%;
+}
 
-
+#property-panel .sub-stateeditor {
+	display: none;
+}
 
 
 

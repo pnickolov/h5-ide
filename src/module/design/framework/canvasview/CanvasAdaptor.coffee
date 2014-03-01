@@ -161,6 +161,10 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
       ide_event.trigger ide_event.OPEN_PROPERTY
       null
 
+    SHOW_STATE_EDITOR : ()->
+      ide_event.trigger ide_event.SHOW_STATE_EDITOR
+      null
+
     SHOW_PROPERTY_PANEL : ()->
       ide_event.trigger ide_event.FORCE_OPEN_PROPERTY
       null

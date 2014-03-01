@@ -644,7 +644,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
         }
 
       if newData and oldData
-        if newData.resource.InstanceType isnt oldData.resource.InstanceType or newData.resource.EbsOptimized isnt oldData.resource.ebsOptimized or newData.resource.UserData.data isnt oldData.resource.UserData.Data
+        if newData.resource.InstanceType isnt oldData.resource.InstanceType or newData.resource.EbsOptimized isnt oldData.resource.EbsOptimized or newData.resource.UserData.Data isnt oldData.resource.UserData.Data
            change.extra = "Need to restart."
            change.info  = "If the instance or instance group has been automatically assigned public IP, the IP will change after restart."
 
@@ -690,7 +690,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
         ebsOptimized : data.resource.EbsOptimized
         instanceType : data.resource.InstanceType
         monitoring   : data.resource.Monitoring isnt "disabled"
-        userData     : data.resource.UserData.Data
+        userData     : data.resource.UserData.Data or ""
 
         parent : resolve( layout_data.groupUId )
 

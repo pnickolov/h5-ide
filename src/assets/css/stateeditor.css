@@ -485,10 +485,6 @@
 	position        : relative;
 }
 
-#state-editor .parameter-list .parameter-container {
-	margin-left: 6px;
-}
-
 #state-editor .parameter-list .parameter-item.disabled {
 	opacity: 0.3;
 }
@@ -500,6 +496,7 @@
 	cursor    : default;
 	position  : relative;
 	color     : rgb(152, 167, 180);
+	width     : 92px;
 }
 
 #state-editor .parameter-list .parameter-value {
@@ -515,17 +512,18 @@
 
 #state-editor .parameter-list .parameter-container {
 	float: left;
-	width: 100%;
+	/*width: 100%;*/
 	/*max-width: 350px;*/
 	/*overflow: auto;*/
 	/*margin-left: 10px;*/
+	margin-left: 30px;
 	margin-top: 4px;
 	overflow: hidden;
 	min-width : 350px;
 	overflow  : auto;
 	margin-top: 4px;
-	position  : absolute;
-	left      : 150px;
+	/*position  : absolute;*/
+	/*left      : 150px;*/
 }
 
 #state-editor .parameter-list .parameter-item.dict .parameter-value {

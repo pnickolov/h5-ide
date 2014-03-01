@@ -52,6 +52,7 @@ define [ '../base/main',
             @model = model
             @model.isApp = false
             @model.isAppEdit = false
+            @model.isStack = true
             @view  = view
             null
 
@@ -68,6 +69,7 @@ define [ '../base/main',
             @model = model
             @model.isApp = true
             @model.isAppEdit = false
+            @model.isStack = false
             @view  = view
             null
 
@@ -82,6 +84,7 @@ define [ '../base/main',
             @model = model
             @model.isApp = false
             @model.isAppEdit = true
+            @model.isStack = false
             @view  = view
             null
 

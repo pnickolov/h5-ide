@@ -1,6 +1,7 @@
 define  [
     './validation/reference'
+    './validation/format'
 
-], ( reference ) ->
+], ( reference, format ) ->
 
-    [ reference ]
+    [ reference, format ]

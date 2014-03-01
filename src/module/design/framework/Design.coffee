@@ -609,6 +609,7 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
 
     @eachComponent ( comp )->
       appId = comp.get("appId")
+
       if appId and appId.indexOf(":autoScalingGroup:")>0 and resource_list[ appId ]
         #appId is asg, need delete instance in asg
         member = resource_list[ appId ].Instances
@@ -618,6 +619,26 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
             delete resource_list[ val ]
           else
             delete resource_list[ val.InstanceId ]
+
+      #clear subscription and notification
+      switch comp.type
+        when constant.AWS_RESOURCE_TYPE.AWS_SNS_Subscription
+          subList = resource_list.Subscriptions
+          idx     = 0
+          while subList and idx < subList.length
+            if subList[idx].TopicArn.indexOf( Design.instance().get("id") ) > 0
+              subList.splice(idx,1)
+            else
+              idx++
+        when constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+          lcList = resource_list.NotificationConfigurations
+          idx    = 0
+          while lcList and idx < lcList.length
+            if lcList[idx].TopicARN.indexOf( Design.instance().get("id") ) > 0
+              lcList.splice(idx,1)
+            else
+              idx++
+
       delete resource_list[ appId ]
 
     console.debug "data.resource_list has been cleared", resource_list

@@ -1121,11 +1121,13 @@ a {
 }
 
 #global-import-stack {
-	left : 510px;
+	left : 240px;
+	background: #bdbdbd;
+	/*color: #999;*/
 }
 
 #global-region-visualize-VPC {
-	left: 240px;
+	left: 460px;
 	width: 250px;
 	padding-right: 6px;
 	display: none;

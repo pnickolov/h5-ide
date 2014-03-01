@@ -112,7 +112,7 @@ define [ 'i18n!nls/lang.js', 'constant', 'stateeditor', 'Design', './module/desi
                         if type is 'OPEN_STACK'
 
                             #get all not exist ami data for stack
-                            model.getAllNotExistAmiInStack region_name, tab_id
+                            model.getAllNotExistAmiInStack region_name
 
                         if type is 'OPEN_APP'
 

@@ -298,8 +298,8 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'state
             console.log 'getAppResourcesService', region, app_id
             app_model.resource { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, app_id
 
-        getAllNotExistAmiInStack : ( region, tab_id )->
-            console.log 'getAllNotExistAmiInStack', region, tab_id
+        getAllNotExistAmiInStack : ( region )->
+            console.log 'getAllNotExistAmiInStack', region
 
             me = this
 

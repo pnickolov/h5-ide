@@ -186,6 +186,9 @@ define [ 'underscore', 'backbone' ], () ->
 
         GET_STATE_MODULE       : 'GET_STATE_MODULE'
 
+        #state editor
+        SHOW_STATE_EDITOR      : 'SHOW_STATE_EDITOR'
+
         constructor : ->
             _.extend this, Backbone.Events
 

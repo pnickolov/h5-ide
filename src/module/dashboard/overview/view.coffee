@@ -223,13 +223,9 @@ define [ 'event', 'i18n!nls/lang.js',
 
             for i in context.cur_stack_list || []
                 i.url = ThumbUtil.fetch( i.id )
-                if not i.url
-                    i.url = "https://madeiracloudthumbnails-dev.s3.amazonaws.com/#{i.code}?time=#{i.update_time}"
 
             for i in context.cur_app_list || []
                 i.url = ThumbUtil.fetch( i.id )
-                if not i.url
-                    i.url = "https://madeiracloudthumbnails-dev.s3.amazonaws.com/#{i.code}?time=#{i.update_time}"
 
 
             context[ tab ] = true

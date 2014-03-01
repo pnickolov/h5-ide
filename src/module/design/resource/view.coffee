@@ -180,7 +180,7 @@ define [ 'event',
             console.log 'toggleResourcePanel'
             #
             $( '#resource-panel'      ).toggleClass 'hidden'
-            $( '#canvas-panel'        ).toggleClass 'left-hidden'
+            #$( '#canvas-panel'        ).toggleClass 'left-hidden'
             $( '#hide-resource-panel' ).toggleClass 'icon-caret-left'
             $( '#hide-resource-panel' ).toggleClass 'icon-caret-right'
             #
@@ -208,12 +208,12 @@ define [ 'event',
                 # show
                 if $item.hasClass( 'icon-caret-left' )
                     $panel.removeClass  'hidden'
-                    $canvas.removeClass 'left-hidden'
+                    #$canvas.removeClass 'left-hidden'
 
                 # hide
                 if $item.hasClass( 'icon-caret-right' )
                     $panel.addClass     'hidden'
-                    $canvas.addClass    'left-hidden'
+                    #$canvas.addClass    'left-hidden'
 
                 #appeidt
                 if type is 'show' and $item.hasClass( 'icon-caret-right' ) and $panel.hasClass( 'hidden' )
@@ -231,7 +231,7 @@ define [ 'event',
 
                 # hide
                 $panel.addClass  'hidden'
-                $canvas.addClass 'left-hidden'
+                #$canvas.addClass 'left-hidden'
             null
 
         ###updateResourceState : ( type ) ->

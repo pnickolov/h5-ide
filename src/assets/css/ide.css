@@ -3535,6 +3535,7 @@ a.sidebar-hider {
 	right        : 0;
 	margin-right : 0;
 	/*border-left  : 1px solid #d1d1d1;*/
+
 }
 
 #property-panel.transition {
@@ -3764,14 +3765,6 @@ a.sidebar-hider {
 	transition         : margin, width 0s linear;*/
 
 	background : #313131;
-}
-
-#canvas-panel.left-hidden {
-	margin-left: 0;
-}
-
-#canvas-panel.right-hidden {
-	margin-right: 0;
 }
 
 /* Property Panel */
@@ -7406,3 +7399,21 @@ summary:focus {
 #property-panel.state-wide:not(.hidden) ~ #status-bar-modal {
 	display: none;
 }
+
+
+#resource-panel.hidden ~ #canvas-panel {
+	margin-left: 0;
+}
+
+#property-panel.hidden ~ #canvas-panel {
+	margin-right: 0;
+}
+
+
+
+
+
+
+
+
+

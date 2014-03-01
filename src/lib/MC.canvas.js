@@ -5161,8 +5161,11 @@ MC.canvas.event.keyEvent = function (event)
 		{
 			$canvas.trigger('SHOW_PROPERTY_PANEL');
 
-			$('#property-panel .input').first().focus();
-
+			if ($('#property-panel .input')[0] !== undefined)
+			{
+				$('#property-panel .input').first().focus();
+			}
+			
 			return false;
 		}
 	}

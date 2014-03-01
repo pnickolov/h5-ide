@@ -57,6 +57,11 @@ define [ 'event',
                 .on( 'click', '#hide-second-panel', _.bind( this.hideSecondPanel, this ))
                 .on( 'click', '#btn-switch-state, #btn-switch-property', _.bind( this.switchTab, this ) )
 
+            ###
+            # Move from render to initialize
+            ###
+            $( "body" ).on("click", ".click-select", this.selectText )
+
             null
 
         switchTab: ( event ) ->
@@ -104,23 +109,16 @@ define [ 'event',
             @forceShow()
 
         render     : () ->
+            # Blur any focused input
+            # Better than $("input:focus")
+            $(document.activeElement).filter("input").blur()
+
 
             @$el.html( template )
 
             $( '#property-panel' )
                 .html( @el )
                 .removeClass( 'state state-wide' )
-
-
-            #
-
-            ###
-                Since the ridiculous process of opening tab will erase any event that is bound to the #property-panel.
-                And I don't want to mess up with the process, because I know there will be
-                a lot of unkown bugs if I do so. This handler is bound to body.
-            ###
-            $( "body" ).on("click", ".click-select", this.selectText )
-
             @
 
         getCurrentCompUid : () ->

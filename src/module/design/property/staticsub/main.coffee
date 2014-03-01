@@ -4,8 +4,16 @@
 
 define [ '../base/main',
          './model',
-         './view'
-], ( PropertyModule, model, view ) ->
+         './view',
+         "event",
+         "Design"
+], ( PropertyModule, model, view, ide_event, Design ) ->
+
+    view.on "AMI_CHANGE", ()->
+        component = Design.instance().component( PropertyModule.activeModule().uid )
+        ide_event.trigger ide_event.OPEN_PROPERTY, component.type, component.id
+        null
+
 
     StaticSubModule = PropertyModule.extend {
 

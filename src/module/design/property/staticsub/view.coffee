@@ -46,16 +46,19 @@ define [ '../base/view', 'text!./template/stack.html' ], ( PropertyView, templat
     changeAmi : ()->
       amiId = $("#changeAmiPanel").data("amiId")
       @model.changeAmi( amiId )
-      @render()
-      @setTitle @model.get("name")
 
-      # A hack to update first property ami icon
-      firstPropertyAmi = $(".property-details #property-ami")
-      firstPropertyAmi.find(".property-ami-icon").attr("src", "./assets/images/ide/ami/" + @model.getAmiPngName( amiId ) + ".png")
-      firstPropertyAmi.find(".property-ami-label").html( @model.get("name") )
+      @trigger "AMI_CHANGE"
+
+      # @render()
+      # @setTitle @model.get("name")
+
+      # # A hack to update first property
+      # firstPropertyAmi = $(".property-details #property-ami")
+      # firstPropertyAmi.find(".property-ami-icon").attr("src", "./assets/images/ide/ami/" + @model.getAmiPngName( amiId ) + ".png")
+      # firstPropertyAmi.find(".property-ami-label").html( @model.get("name") )
 
 
-      notification "info", "#{@model.getInstanceName()}'s AMI has changed."
+      # notification "info", "#{@model.getInstanceName()}'s AMI has changed."
       null
   }
 

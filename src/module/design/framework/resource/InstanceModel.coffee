@@ -193,6 +193,9 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
       return priceObj
 
     isReparentable : ( newParent )->
+      if newParent.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+        return false
+
       if newParent.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
         if newParent.parent() isnt @parent().parent()
           check = true

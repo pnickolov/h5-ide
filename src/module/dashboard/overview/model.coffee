@@ -1448,9 +1448,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
             console.log "Imported JSON: ", result, result.region
 
             # check repeat stack name
-            loop
-                MC.data.untitled = MC.data.untitled + 1
-                break if MC.aws.aws.checkStackName null, 'untitled-' + MC.data.untitled
+            MC.common.other.checkRepeatStackName()
 
             # set username
             result.username = $.cookie 'usercode'

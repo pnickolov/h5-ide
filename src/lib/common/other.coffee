@@ -214,6 +214,12 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 
 		return
 
+	checkRepeatStackName = ->
+		console.log 'checkRepeatStackName'
+		loop
+			MC.data.untitled = MC.data.untitled + 1
+			break if MC.aws.aws.checkStackName null, 'untitled-' + MC.data.untitled
+
 	#############################
 	#  process
 	#############################
@@ -541,12 +547,14 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 
 	#public
 	canvasData         : canvasData
+
 	isCurrentTab       : isCurrentTab
 	isResultRight      : isResultRight
 	setCurrentTabId	   : setCurrentTabId
 	searchStackAppById : searchStackAppById
 	processType        : processType
 	verify500          : verify500
+	checkRepeatStackName : checkRepeatStackName
 
 	addProcess         : addProcess
 	getProcess         : getProcess

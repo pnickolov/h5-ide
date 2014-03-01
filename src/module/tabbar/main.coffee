@@ -93,9 +93,7 @@ define [ 'jquery', 'event', 'base_main',
                     require [ 'component/tutorial/main' ], ( tutorial_main ) -> tutorial_main.loadModule()
 
                 # check repeat stack name
-                loop
-                    MC.data.untitled = MC.data.untitled + 1
-                    break if MC.aws.aws.checkStackName null, 'untitled-'+MC.data.untitled
+                MC.common.other.checkRepeatStackName()
 
                 Tabbar.add 'new-' + MC.data.untitled + '-' + view.temp_region_name, 'untitled-' + MC.data.untitled + ' - stack'
                 modal.close()

@@ -605,7 +605,7 @@ define [ 'event', 'i18n!nls/lang.js',
                 $("#import-json-error").html("")
 
                 evt = evt.originalEvent
-                files = evt.dataTransfer.files
+                files = (evt.dataTransfer || evt.target).files
                 if not files or not files.length then return
                 reader.readAsText( files[0] )
                 null

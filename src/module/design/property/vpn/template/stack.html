@@ -60,7 +60,7 @@
   {{/if}}
 {{/if}}
 
-{{#unless isApp}}
+{{#unless isApp}} {{#unless dynamic}}
   {{#if vpnConnectionId}}
   <div class="option-group-head expand">{{ i18n "PROP_CGW_APP_VPN_LBL_STATUS_RT" }}</div>
   <div class="option-group">
@@ -85,6 +85,6 @@
     </div>
   </section>
 {{#if vpnConnectionId}} </div> {{/if}}
-{{/unless}}
+{{/unless}} {{/unless}}
 
 </article>

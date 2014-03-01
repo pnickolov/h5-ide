@@ -26,6 +26,7 @@ define ['../base/model', 'constant', "Design" ], ( PropertyModel, constant, Desi
         region    : constant.REGION_SHORT_LABEL[ design.region() ]
         isApp     : @isApp
         isAppEdit : @isAppEdit
+        isStack   : @isStack
         isImport  : design.modeIsAppView()
         opsEnable : agentData.enabled
       }

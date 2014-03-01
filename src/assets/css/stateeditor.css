@@ -180,7 +180,7 @@
 
 #state-list-wrap {
 	height            : 100%;
-	top               : 32px;
+	top               : 36px;
 	-webkit-box-sizing: content-box;
 	-moz-box-sizing   : content-box;
 	box-sizing        : content-box;
@@ -396,10 +396,6 @@
 
 /* app view */
 
-#state-editor-model.se-model-app #state-editor .editable-area {
-	border-bottom: 1px solid transparent;
-}
-
 /* stack view */
 #state-editor-model.se-model-stack .state-log-refresh {
 	display: none;
@@ -435,6 +431,7 @@
 	z-index      : 85;
 	background   : #222427;
 	font-family  : 'Lato', 'Helvetica Neue', Arial, sans-serif;
+	height       : 36px;
 }
 
 .state-editor-toolbar a {
@@ -469,7 +466,7 @@
 	float        : left;
 	width        : 150px;
 	margin-left  : 28px;
-	margin-top   : -25px;
+	margin-top   : -26px;
 	color        : #999;
 }
 
@@ -1084,7 +1081,8 @@
 }
 
 #state-editor-model .editable-area span.ace_res_ref_correct {
-	color: #00f;
+	color: #3790DE;
+	background: rgba(124, 194, 255, 0.2);
 }
 
 #state-editor-model .state-status-icon {

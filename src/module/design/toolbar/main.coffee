@@ -137,8 +137,9 @@ define [ 'jquery',
                 model.terminateApp(region, app_id, app_name, flag)
 
             ide_event.onLongListen ide_event.CANVAS_SAVE, () ->
-                console.log 'design_toolbar_click:saveStack'
-                model.saveStack()
+                console.log 'CANVAS_SAVE'
+                #model.saveStack()
+                view.clickSaveIcon()
 
             ide_event.onLongListen ide_event.UPDATE_REQUEST_ITEM, (idx, dag) ->
                 console.log 'toolbar listen UPDATE_REQUEST_ITEM index:' + idx

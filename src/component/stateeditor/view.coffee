@@ -2460,7 +2460,7 @@ define [ 'event',
                 return false
 
             # Copy state item [Ctrl + C]
-            if metaKey and shiftKey is false and altKey is false and keyCode is 67 and is_input is false
+            if metaKey and shiftKey is false and altKey is false and keyCode is 67 and is_input is false and is_editable
                 target.copyState.call target, event
                 return false
 
@@ -2480,12 +2480,12 @@ define [ 'event',
                 return false
 
             # Move down state item [Ctrl + down]
-            if metaKey and shiftKey is false and altKey is false and keyCode is 40
+            if metaKey and shiftKey is false and altKey is false and keyCode is 40 and is_editable
                 target.moveState.call target, 'down'
                 return false
 
             # Move up state item [Ctrl + up]
-            if metaKey and shiftKey is false and altKey is false and keyCode is 38
+            if metaKey and shiftKey is false and altKey is false and keyCode is 38 and is_editable
                 target.moveState.call target, 'up'
                 return false
 
@@ -2505,12 +2505,12 @@ define [ 'event',
                 return false
 
             # Select all [Ctrl + A]
-            if metaKey and shiftKey is false and altKey is false and keyCode is 65
+            if metaKey and shiftKey is false and altKey is false and keyCode is 65 and is_editable
                 target.selectAll target, event
                 return false
 
             # Unselect all [Ctrl + D]
-            if metaKey and shiftKey is false and altKey is false and keyCode is 68
+            if metaKey and shiftKey is false and altKey is false and keyCode is 68 and is_editable
                 target.unSelectAll target, event
                 return false
 
@@ -2530,7 +2530,7 @@ define [ 'event',
                 return false
 
             # Toggle selected [Blankspace]
-            if metaKey is false and shiftKey is false and keyCode is 32 and is_input is false
+            if metaKey is false and shiftKey is false and keyCode is 32 and is_input is false and is_editable
                 target.toggleSelected.call target
                 return false
 

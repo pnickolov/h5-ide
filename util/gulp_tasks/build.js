@@ -86,7 +86,7 @@ Helper = {
     if (lrServer) {
       return;
     }
-    gutil.log(gutil.colors.bgBlue(" Starting livereload server... "));
+    gutil.log(gutil.colors.bgBlue.white(" Starting livereload server... "));
     lrServer = tinylr();
     lrServer.server.removeAllListeners('error');
     lrServer.server.on("error", function(e) {
@@ -296,7 +296,7 @@ watch = function(secondTime) {
     });
     return null;
   };
-  gutil.log(gutil.colors.bgBlue(" Watching file changes... "));
+  gutil.log(gutil.colors.bgBlue.white(" Watching file changes... "));
   watcher.on("add", changeHandler);
   watcher.on("change", changeHandler);
   watcher.on("error", function(e) {

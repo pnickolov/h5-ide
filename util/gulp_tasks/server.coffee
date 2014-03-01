@@ -6,7 +6,7 @@ module.exports.create = ()->
 
   defaultHeader = { "Cache-Control" : "no-cache" }
 
-  gutil.log gutil.colors.bgBlue(" Creating File Server... ")
+  gutil.log gutil.colors.bgBlue.white(" Creating File Server... ")
 
   file = new nstatic.Server("./src", { cache : false, headers : defaultHeader } )
 

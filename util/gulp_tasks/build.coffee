@@ -61,7 +61,7 @@ Helper =
     if lrServer then return
 
     # Start LiveReload Server
-    gutil.log gutil.colors.bgBlue(" Starting livereload server... ")
+    gutil.log gutil.colors.bgBlue.white(" Starting livereload server... ")
 
     lrServer = tinylr()
     # Better error output
@@ -275,7 +275,7 @@ watch = ( secondTime )->
 
   # Delay the change handler so that we would ignore the first add event
   # and some change event
-  gutil.log gutil.colors.bgBlue(" Watching file changes... ")
+  gutil.log gutil.colors.bgBlue.white(" Watching file changes... ")
   watcher.on "add",    changeHandler
   watcher.on "change", changeHandler
   watcher.on "error", (e)-> console.log "[error]", e

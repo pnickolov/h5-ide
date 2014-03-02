@@ -2653,6 +2653,8 @@ define [ 'event',
 
             that.updateToolbar()
 
+            notification 'info', 'State(s) copied to clipboard'
+
             return true
 
         copyAllState: () ->
@@ -2667,6 +2669,8 @@ define [ 'event',
             MC.data.stateClipboard = stack
 
             that.updateToolbar()
+
+            notification 'info', 'State(s) copied to clipboard'
 
             return true
 

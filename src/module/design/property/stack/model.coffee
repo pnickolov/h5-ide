@@ -56,7 +56,9 @@ define ['../base/model', 'constant', "Design" ], ( PropertyModel, constant, Desi
 
       if not data.uid
         sub_comp = new SubscriptionModel( data )
-        subs.push sub_comp.toJSON()
+        sub = sub_comp.toJSON()
+        sub.confirmed = true
+        subs.push sub
       else
         sub_comp = Design.instance().component( data.uid )
         sub_comp.set("protocol", data.protocol)
@@ -65,6 +67,7 @@ define ['../base/model', 'constant', "Design" ], ( PropertyModel, constant, Desi
           if sub.id is data.uid
             sub.protocol = data.protocol
             sub.endpoint = data.endpoint
+            sub.confirmed= data.confirmed
             break
       null
 
@@ -84,10 +87,40 @@ define ['../base/model', 'constant', "Design" ], ( PropertyModel, constant, Desi
       SubscriptionModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_SNS_Subscription )
       TopicModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic )
 
+
+
       subs = _.map SubscriptionModel.allObjects(), ( sub )-> sub.toJSON()
+      subState = @getSubState()
+
+      #set confirmed of subscription
+      for sub in subs
+        if subState and subState[ sub.protocol + "-" + sub.endpoint ] is false
+          sub.confirmed = false
+        else
+          sub.confirmed = true
+
       @set "subscription", subs
       @set "has_asg", TopicModel.isTopicNeeded()
       null
+
+    getSubState : () ->
+
+      TopicModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic )
+      topic = TopicModel.allObjects()[0]
+      if topic
+        topic_arn = topic.get("appId")
+
+      subRes   = MC.data.resource_list[ Design.instance().region() ].Subscriptions
+      subState = {}
+
+      if topic_arn and subRes
+        for sub in subRes
+          # Ignore Subscription that has `topic` attribute
+          if sub.TopicArn is topic_arn
+            subState[ sub.Protocol + "-" + sub.Endpoint ] = sub.SubscriptionArn isnt "PendingConfirmation"
+
+      subState
+
 
     getAppSubscription : () ->
 
@@ -111,6 +144,7 @@ define ['../base/model', 'constant', "Design" ], ( PropertyModel, constant, Desi
               protocol : sub.Protocol
               endpoint : sub.Endpoint
               arn      : sub.SubscriptionArn
+              confirmed: sub.SubscriptionArn isnt "PendingConfirmation"
             }
 
       @set 'subscription', subscription

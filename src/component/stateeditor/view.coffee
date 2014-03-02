@@ -1821,6 +1821,8 @@ define [ 'event',
                 editor.on("focus", (e, thatEditor) ->
 
                     $valueInput = $(thatEditor.container)
+                    # $stateItem = $valueInput.parents('.state-item')
+                    # $paraItem = $valueInput.parents('.parameter-item')
 
                     that.justScrollToElem(that.$stateList, $valueInput)
 
@@ -1837,14 +1839,23 @@ define [ 'event',
                         top: inputPosY + 25
                     })
 
-                    # thatEditor.selectAll()
-
-                    # that.$aceAutocompleteTip.show()
                 )
 
-                editor.on("blur", (e) ->
+                editor.on("blur", (e, thatEditor) ->
+
                     that.$cmdDsec.find('.highlight').removeClass('highlight')
                     that.$aceAutocompleteTip.hide()
+
+                    $valueInput = $(thatEditor.container)
+                    $stateItem = $valueInput.parents('.state-item')
+                    $paraItem = $valueInput.parents('.parameter-item')
+
+                    currentValue = thatEditor.getValue()
+
+                    if $paraItem and $paraItem[0]
+                        if $paraItem.hasClass('bool')
+                            if currentValue not in ['true', 'false']
+                                that.setPlainText($valueInput, '')
                 )
 
             # if $editorElem.hasClass('command-value')

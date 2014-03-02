@@ -1,6 +1,6 @@
 <!-- state-template-state-list -->
 {{#each state_list}}
-	<li class="state-item view" data-command="{{cmd_value}}" data-id="{{id}}">
+	<li class="state-item view {{#ifCond cmd_value '#'}}comment{{/ifCond}}" data-command="{{cmd_value}}" data-id="{{id}}">
 		<div class="state-toolbar">
 			<div class="state-remove icon-remove"></div>
 			<div class="state-check">

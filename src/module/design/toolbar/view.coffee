@@ -803,6 +803,7 @@ define [ 'MC', 'event',
                     $('#modal-stack-agent-enable-confirm').one 'click', ()->
                         $switchInput.addClass('on')
                         thatModel.setAgentEnable(true)
+                        ide_event.trigger ide_event.REFRESH_PROPERTY
                         modal.close()
                 else
                     thatModel.setAgentEnable(true)

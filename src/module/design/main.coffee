@@ -261,10 +261,10 @@ define [ 'i18n!nls/lang.js', 'constant', 'stateeditor', 'Design', './module/desi
             ide_event.onLongListen ide_event.UPDATE_RESOURCE_STATE, () ->
                 view.hideStatusbar()
 
-            ide_event.onLongListen ide_event.OPEN_STATE_EDITOR, (uid) ->
+            ide_event.onLongListen ide_event.OPEN_STATE_EDITOR, (uid, resId) ->
               allCompData = Design.instance().serialize().component
               compData = allCompData[uid]
-              stateeditor.loadModule(allCompData, uid)
+              stateeditor.loadModule(allCompData, uid, resId)
 
             model.on "SET_PROPERTY_PANEL", ( property_panel ) ->
                 property_main.restore property_panel

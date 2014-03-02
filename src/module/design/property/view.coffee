@@ -74,7 +74,6 @@ define [ 'event',
                 if @currentTab is 'state'
                     @renderProperty()
 
-
         __hideProperty: () ->
             $( '#property-panel .sub-property' ).hide()
 
@@ -121,12 +120,43 @@ define [ 'event',
             @__hideProperty()
             $( '#property-panel' ).addClass 'state'
 
+            @currentTab = 'state'
+
+            else
+                @renderProperty()
+                return
+            
             if @lastComId is uid and @__hasProperty()
 
             else
 
                 if not uid
                     uid = Design.instance().canvas.selectedNode[ 0 ]
+
+                if uid
+                    comp = Design.instance().component uid
+                    if comp
+                        type = comp.type
+                        if not _.contains [ CONST.RESTYPE.LC, CONST.RESTYPE.INSTANCE ], type
+                            @renderProperty uid
+                            return
+                        else if _.contains [ CONST.RESTYPE.LC ], type
+                            if Design.instance().modeIsApp() and Design.instance().get('state') is 'Stopped'
+                                @renderProperty uid
+                                return
+                        else
+                            ide_event.trigger ide_event.OPEN_STATE_EDITOR, uid
+                            return
+
+                    resId = $('#asgList-wrap .asgList-item.selected').attr('id')
+
+                    if Design.instance().modeIsApp() and resId
+                        compObj = MC.aws.aws.getCompByResIdForState(resId)
+                        if compObj and compObj.parent and compObj.parent.type is 'AWS.AutoScaling.Group'
+                            lcComp = compObj.parent.get('lc')
+                            if lcComp and lcComp.id
+                                ide_event.trigger ide_event.OPEN_STATE_EDITOR, lcComp.id, resId
+                                return
 
             ide_event.trigger ide_event.OPEN_STATE_EDITOR, uid
             @__showState()

@@ -969,6 +969,40 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
         agentData.enabled = isEnable
         MC.common.other.canvasData.initSet('agent', agentData)
 
+    getCompByResIdForState = ( resId ) ->
+
+        result =
+            parent: null
+            self: null
+
+        Design.instance().eachComponent ( component ) ->
+            groupMembers = component.groupMembers and component.groupMembers()
+            resourceInList = MC.data.resource_list[ Design.instance().region() ]
+            if result.parent or result.self
+                null
+            if component.get( 'appId' ) is resId
+                # ServerGroup
+                if groupMembers and groupMembers.length
+                    result.parent = component
+                    result.self = new Backbone.Model 'name': "#{component.get 'name'}-0"
+                # Instance
+                else
+                    result.self = component
+                null
+            # ServerGroup
+            else if groupMembers and resId in _.pluck( groupMembers, 'appId' )
+                if component.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+                    result.parent = component.parent()
+                else
+                    result.parent = component
+                    for index, member of groupMembers
+                        if member.appId is resId
+                            result.self = new Backbone.Model 'name': "#{component.get 'name'}-#{+index + 1}"
+                            break
+                null
+
+        result
+
     #public
     collectReference            : collectReference
     getNewName                  : getNewName
@@ -987,3 +1021,4 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
     genResRef                   : genResRef
     enableStackAgent            : enableStackAgent
     getDefaultStackAgentData    : getDefaultStackAgentData
+    getCompByResIdForState      : getCompByResIdForState

@@ -2791,7 +2791,7 @@ MC.canvas.event.dragable = {
 					// MC.canvas.nodeAction.show(this.id);
 				}
 
-				return false;
+				// return false;
 			}
 
 			if (currentTarget.is('.instance-volume'))

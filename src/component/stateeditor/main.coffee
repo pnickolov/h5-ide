@@ -5,7 +5,7 @@
 define [ 'event', 'ace', 'ace_ext_language_tools',  'UI.modal', 'jquery_sort', 'markdown' ], ( ide_event ) ->
 
     #private
-    loadModule = ( allCompData, uid ) ->
+    loadModule = ( allCompData, uid, resId ) ->
 
         that = this
 
@@ -22,6 +22,7 @@ define [ 'event', 'ace', 'ace_ext_language_tools',  'UI.modal', 'jquery_sort', '
                 model = new Model({
                     compData: compData,
                     resModel: resModel,
+                    resId: resId,
                     allCompData: allCompData
                 })
                 model.on 'STATE_STATUS_UPDATE', (newStateUpdateResIdAry) ->

@@ -99,6 +99,14 @@ define [ 'event',
             compData = @model.get 'compData'
             if Design.instance().get('agent').enabled
                 if compData and compData.type in [constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance, constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration]
+
+                    if compData.type in [constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration]
+                        if Design.instance().modeIsApp() and Design.instance().get('state') is 'Running'
+                            resId = $('#asgList-wrap .asgList-item.selected').attr('id')
+                            if not resId
+                                @__renderEmpty()
+                                return @
+
                     @__renderState()
                 else
                     @__renderEmpty()
@@ -180,7 +188,7 @@ define [ 'event',
 
             that.refreshDescription()
 
-            that.initResSelect()
+            # that.initResSelect()
 
             # refresh state log
             that.onLogRefreshClick()
@@ -221,6 +229,8 @@ define [ 'event',
 
             that.resName = that.model.getResName()
             that.supportedPlatform = that.model.get('supportedPlatform')
+
+            that.currentResId = that.model.get('resId')
 
             that.currentState = that.model.get('currentState')
             currentAppState = that.model.get('currentAppState')
@@ -283,27 +293,27 @@ define [ 'event',
 
             return 'state-' + MC.guid()
 
-        initResSelect: () ->
+        # initResSelect: () ->
 
-            that = this
+        #     that = this
 
-            $resSelect = that.$editorModal.find('.state-editor-res-select')
+        #     $resSelect = that.$editorModal.find('.state-editor-res-select')
 
-            if that.groupResSelectData and that.groupResSelectData.length
+        #     if that.groupResSelectData and that.groupResSelectData.length
 
-                resSelectHTML = that.stateResSelectTpl({
-                    res_selects: that.groupResSelectData
-                })
+        #         resSelectHTML = that.stateResSelectTpl({
+        #             res_selects: that.groupResSelectData
+        #         })
 
-                $resSelect.html(resSelectHTML)
+        #         $resSelect.html(resSelectHTML)
 
-                if that.groupResSelectData.length is 1
+        #         if that.groupResSelectData.length is 1
 
-                    $resSelect.hide()
+        #             $resSelect.hide()
 
-            else
+        #     else
 
-                $resSelect.hide()
+        #         $resSelect.hide()
 
         bindStateListSortEvent: () ->
 
@@ -341,13 +351,15 @@ define [ 'event',
         onLogRefreshClick: (event) ->
 
             that = this
-            $resSelectElem = that.$editorModal.find('.state-editor-res-select')
-            if that.currentState is 'stack'
-                $resSelectElem.hide()
-            else
-                that.onResSelectChange({
-                    target: $resSelectElem[0]
-                })
+            # $resSelectElem = that.$editorModal.find('.state-editor-res-select')
+            # if that.currentState is 'stack'
+            #     $resSelectElem.hide()
+            # else
+            #     that.onResSelectChange({
+            #         target: $resSelectElem[0]
+            #     })
+
+            that.onResSelectChange()
 
         refreshStateList: (stateListObj) ->
 
@@ -1386,6 +1398,7 @@ define [ 'event',
                         else if paraModelType is 'dict'
 
                             renderParaValue = []
+
                             _.each paraValue, (paraValueStr, paraKey) ->
 
                                 paraValueStr = that.model.replaceParaUIDToName(paraValueStr)
@@ -1406,6 +1419,10 @@ define [ 'event',
                         else if paraModelType in ['array', 'state']
 
                             renderParaValue = []
+
+                            if not _.isArray(paraValue)
+                                paraValue = [paraValue]
+
                             _.each paraValue, (paraValueStr) ->
 
                                 if paraModelType is 'state'
@@ -2029,11 +2046,12 @@ define [ 'event',
                 else
                     $logInfo.hide()
 
-        onResSelectChange: (event) ->
+        onResSelectChange: () ->
 
             that = this
 
-            selectedResId = $(event.target).find('.selected').attr('data-id')
+            selectedResId = that.currentResId
+            # $(event.target).find('.selected').attr('data-id')
 
             # refresh state log
             that.showLogListLoading(true)

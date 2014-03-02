@@ -94,7 +94,7 @@ define [ 'event',
 
         renderProperty: ( uid ) ->
             @__hideState()
-            $( '#property-panel' ).removeClass 'state'
+            $( '#property-panel' ).removeClass('state').removeClass('state-wide')
             if @lastComId is uid and @__hasState()
                 @currentTab = 'property'
 

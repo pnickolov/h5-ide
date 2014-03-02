@@ -208,6 +208,9 @@ define [ 'event',
             # , 1)
 
             that.updateToolbar()
+
+            if $( '#property-panel' ).hasClass('state-wide')
+                that.onDescToggleClick()
             @
 
         initData: () ->
@@ -616,6 +619,12 @@ define [ 'event',
                         at: that.resAttrDataAry
                     })
 
+                $commentStateItem = $paraItem.parents('.state-item.comment')
+                $firstInput = $commentStateItem.find('.parameter-value')
+                firstEditor = $firstInput.data('editor')
+                if firstEditor
+                    firstEditor.focus()
+
             else if paraType is 'state'
 
                 $inputElemAry = $paraItem.find('.parameter-value')
@@ -667,6 +676,8 @@ define [ 'event',
                 if descMarkdown
                     descHTML = markdown.toHTML(descMarkdown)
                 that.$cmdDsec.html(descHTML)
+                that.$cmdDsec.find('em:contains(required)').parents('li').addClass('required')
+                that.$cmdDsec.find('em:contains(optional)').parents('li').addClass('optional')
             , 0)
 
             null
@@ -1545,11 +1556,15 @@ define [ 'event',
             $descPanelToggle = that.$editorModal.find('.state-desc-toggle')
             $logPanelToggle = that.$editorModal.find('.state-log-toggle')
 
-            if $descPanel.is(':visible')
+            if not $( '#property-panel' ).hasClass('state-wide')
+
                 $stateEditor.addClass('full')
                 $descPanel.hide()
+                $logPanel.hide()
                 $descPanelToggle.removeClass('active')
-            if (not $descPanel.is(':visible')) or (not $( '#property-panel' ).hasClass('state-wide'))
+            
+            else
+
                 $stateEditor.removeClass('full')
                 $logPanel.hide()
                 $descPanel.show()
@@ -1570,11 +1585,15 @@ define [ 'event',
             $descPanelToggle = that.$editorModal.find('.state-desc-toggle')
             $logPanelToggle = that.$editorModal.find('.state-log-toggle')
 
-            if $logPanel.is(':visible')
+            if not $( '#property-panel' ).hasClass('state-wide')
+
                 $stateEditor.addClass('full')
                 $logPanel.hide()
+                $descPanel.hide()
                 $logPanelToggle.removeClass('active')
-            if (not $logPanel.is(':visible')) or (not $( '#property-panel' ).hasClass('state-wide'))
+
+            else
+
                 $stateEditor.removeClass('full')
                 $descPanel.hide()
                 $logPanel.show()
@@ -1710,14 +1729,25 @@ define [ 'event',
                                 that.setEditorCompleter(thatEditor, hintDataAryMap['at'], 'reference')
                                 thatEditor.execCommand("startAutocomplete")
 
-                    if e.command.name is "backspace" and hintDataAryMap['focus']
+                    if e.command.name is "backspace"
 
-                        $paraItem = $editorElem.parents('.parameter-item')
-                        if $paraItem.hasClass('bool')
-                            that.setPlainText($editorElem, '')
+                        $stateItem = $editorElem.parents('.state-item')
 
-                        that.setEditorCompleter(thatEditor, hintDataAryMap['focus'], 'command')
-                        thatEditor.execCommand("startAutocomplete")
+                        if hintDataAryMap['focus']
+
+                            $paraItem = $editorElem.parents('.parameter-item')
+
+                            if $paraItem.hasClass('bool')
+                                that.setPlainText($editorElem, '')
+
+                            that.setEditorCompleter(thatEditor, hintDataAryMap['focus'], 'command')
+                            thatEditor.execCommand("startAutocomplete")
+
+                        if currentValue is '' and $stateItem.hasClass('comment')
+
+                            commentCMDEditor = $stateItem.find('.command-value').data('editor')
+                            if commentCMDEditor
+                                commentCMDEditor.focus()
 
                     # if e.command.name is "backspace" and hintDataAryMap['at'] and currentValue
                     #     currentLineContent = thatEditor.getSession().getLine(thatEditor.getCursorPosition().row)
@@ -1727,10 +1757,12 @@ define [ 'event',
 
                     if e.command.name is "autocomplete_confirm"
 
+                        $stateItem = $editorElem.parents('.state-item')
+                        $paraListElem = $stateItem.find('.parameter-list')
+
                         if $editorElem.hasClass('command-value')
 
                             value = e.args
-                            $stateItem = $editorElem.parents('.state-item')
                             originCMDName = $stateItem.attr('data-command')
 
                             if originCMDName isnt value
@@ -1738,9 +1770,15 @@ define [ 'event',
                                 # $stateItem.attr('data-command', value)
                                 that.setCMDForStateItem($stateItem, value)
                                 that.refreshDescription(value)
-                                $paraListElem = $stateItem.find('.parameter-list')
                                 that.refreshParaList($paraListElem, value)
                                 that.refreshStateView($stateItem)
+
+                        if value is '#'
+
+                            $firstInput = $paraListElem.find('.parameter-value')
+                            firstEditor = $firstInput.data('editor')
+                            if firstEditor
+                                firstEditor.focus()
 
                         else if $editorElem.hasClass('parameter-value')
 
@@ -1809,19 +1847,19 @@ define [ 'event',
                     that.$aceAutocompleteTip.hide()
                 )
 
-            if $editorElem.hasClass('command-value')
-                _initEditor()
-            else
-                # setInterval(() ->
-                _initEditor()
-                # , 0)
+            # if $editorElem.hasClass('command-value')
+
+            _initEditor()
 
         highlightParaDesc: (paraName) ->
 
             that = this
 
             that.$cmdDsec.find('.highlight').removeClass('highlight')
-            paraNameSpan = that.$cmdDsec.find("strong:contains('#{paraName}')")
+            $paraNameSpan = that.$cmdDsec.find("strong:contains('#{paraName}')")
+            paraNameSpan = $paraNameSpan.filter(() ->
+                return $(this).text() is paraName
+            )
             paraParagraph = paraNameSpan.parents('p')
             paraParagraph.addClass('highlight')
 

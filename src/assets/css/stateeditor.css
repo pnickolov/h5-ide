@@ -912,6 +912,10 @@
 	line-height: 30px;
 }
 
+#state-log .state-log-item-detail.comment {
+	border-bottom: 1px #444 solid;
+}
+
 #state-log .state-log-info {
 	padding   : 10px;
 	margin-top: -36px;

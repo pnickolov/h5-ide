@@ -351,6 +351,7 @@ define [ 'event',
                     console.warn "Select text by document.createRange"
 
             return false
+
     }
 
     return PropertyView

@@ -37,6 +37,7 @@ define [ 'underscore', 'backbone' ], () ->
         OPEN_SUB_DESIGN        : 'OPEN_SUB_DESIGN'
         OPEN_PROPERTY          : 'OPEN_PROPERTY'
         FORCE_OPEN_PROPERTY    : "FORCE_OPEN_PROPERTY"
+        REFRESH_PROPERTY       : "REFRESH_PROPERTY"
         RELOAD_AZ              : 'RELOAD_AZ'
         #OPEN_TOOLBAR          : 'OPEN_TOOLBAR'
 

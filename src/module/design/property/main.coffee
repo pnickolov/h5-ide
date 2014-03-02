@@ -42,6 +42,10 @@ define [ 'event',
 
 		ide_event.trigger ide_event.DESIGN_SUB_COMPLETE
 
+		ide_event.onLongListen ide_event.REFRESH_PROPERTY, ()->
+			$canvas($canvas.selected_node()).select()
+			null
+
 		ide_event.onLongListen ide_event.FORCE_OPEN_PROPERTY, ()->
 			view.forceShow()
 			null
@@ -86,7 +90,6 @@ define [ 'event',
 
 			view.render()
 			view.load()
-
 
 			# Load property
 			# Format `type` so that PropertyBaseModule knows about it.

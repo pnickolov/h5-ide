@@ -1152,6 +1152,48 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
 
             diffResult.result = dedupResult
             diffResult
+
+        isAllInstanceNotHaveUserData : () ->
+
+          result = true
+
+          # find all instance userdata
+          InstanceModel = Design.modelClassForType(constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance)
+          instanceModels = InstanceModel.allObjects()
+          _.each instanceModels, (instanceModel) ->
+            userData = instanceModel.get('userData')
+            if userData then result = false
+            null
+
+          # find all lc userdata
+          LCModel = Design.modelClassForType(constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration)
+          lcModels = LCModel.allObjects()
+          _.each lcModels, (lcModel) ->
+            userData = lcModel.get('userData')
+            if userData then result = false
+            null
+
+          return result
+
+        setAgentEnable : (isEnable) ->
+
+          if isEnable is true
+
+            # clear all instance userdata
+            InstanceModel = Design.modelClassForType(constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance)
+            instanceModels = InstanceModel.allObjects()
+            _.each instanceModels, (instanceModel) ->
+              instanceModel.set('userData', '')
+              null
+
+            # clear all lc userdata
+            LCModel = Design.modelClassForType(constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration)
+            lcModels = LCModel.allObjects()
+            _.each lcModels, (lcModel) ->
+              lcModel.set('userData', '')
+              null
+
+          MC.aws.aws.enableStackAgent(isEnable)
     }
 
     model = new ToolbarModel()

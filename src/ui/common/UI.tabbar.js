@@ -24,8 +24,7 @@ var Tabbar = {
 			if (this.id === 'tab-bar-dashboard')
 			{
 				Tabbar.open('dashboard');
-
-				return false;
+				// return false;
 			}
 
 			var target = $(this),

@@ -54,6 +54,7 @@ define [ 'MC', 'event',
             'click #toolbar-cancel-edit-app' : 'clickCancelEditApp'
             'click .app-update-summary-table .header-row th' : 'sortSummaryTable'
 
+            'click .toolbar-visual-ops-switch' : 'opsOptionChanged'
 
         render   : ( type ) ->
             console.log 'toolbar render'
@@ -96,6 +97,16 @@ define [ 'MC', 'event',
                 $( '#main-toolbar' ).html app_tmpl this.model.attributes
             else
                 $( '#main-toolbar' ).html stack_tmpl this.model.attributes
+
+            
+            if Design and Design.instance()
+
+                agentData = Design.instance().get('agent')
+                $switchCheckbox = $('#main-toolbar .toolbar-visual-ops-switch')
+                if agentData.enabled
+                    $switchCheckbox.addClass('on')
+                else
+                    $switchCheckbox.removeClass('on')
 
             #
             ide_event.trigger ide_event.DESIGN_SUB_COMPLETE
@@ -775,6 +786,31 @@ define [ 'MC', 'event',
                 else
                     tbody.prepend i
             null
+
+        opsOptionChanged : (event) ->
+
+            thatModel = @model
+            $switchInput = $('#main-toolbar .toolbar-visual-ops-switch')
+            $switchInput.toggleClass('on')
+            value = $switchInput.hasClass('on')
+            if value
+                # $('#property-stack-ops-enable-info').show()
+                notShowModal = thatModel.isAllInstanceNotHaveUserData()
+                if not notShowModal
+                    # if have any userdata in any instance
+                    $switchInput.removeClass('on')
+                    modal MC.template.modalStackAgentEnable({})
+                    $('#modal-stack-agent-enable-confirm').one 'click', ()->
+                        $switchInput.addClass('on')
+                        thatModel.setAgentEnable(true)
+                        modal.close()
+                else
+                    thatModel.setAgentEnable(true)
+            else
+                # $('#property-stack-ops-enable-info').hide()
+                thatModel.setAgentEnable(false)
+
+            ide_event.trigger ide_event.REFRESH_PROPERTY
     }
 
     return ToolbarView

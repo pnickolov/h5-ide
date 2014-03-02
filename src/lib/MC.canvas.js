@@ -2066,6 +2066,27 @@ MC.canvas.layout = {
 			}
 		});
 
+		//patch 20140302: delete VPN when CGW component is not exist
+		$.each(components, function (key, value)
+		{
+			try
+			{
+				if (value.type === "AWS.VPC.VPNConnection")
+				{
+					var cgwUid = MC.extractID(value.resource.CustomerGatewayId);
+					if ( ! components[ cgwUid ] )
+					{
+						//delete vpn when cgw component not exist
+						delete components[value.uid];
+					}
+				}
+			}
+			catch(error)
+			{
+				console.warn("error occur when delete vpn when cgw component not exist");
+				return true;
+			}
+		});
 
 		$.each(components, function (key, value)
 		{

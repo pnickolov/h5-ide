@@ -861,7 +861,7 @@ define [ 'constant',
 				if value.type isnt constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNConnection
 					continue
 
-				if MC.extractID( value.resource.CustomerGatewayId ) is component.id
+				if MC.extractID( value.resource.CustomerGatewayId ) is component.uid
 					delete MC.canvas_data.component[ key ]
 					break
 

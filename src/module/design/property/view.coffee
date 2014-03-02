@@ -120,11 +120,8 @@ define [ 'event',
             @__hideProperty()
             $( '#property-panel' ).addClass 'state'
 
+            @lastComId = uid
             @currentTab = 'state'
-
-            else
-                @renderProperty()
-                return
             
             if @lastComId is uid and @__hasProperty()
 
@@ -146,6 +143,7 @@ define [ 'event',
                                 return
                         else
                             ide_event.trigger ide_event.OPEN_STATE_EDITOR, uid
+                            @__showState()
                             return
 
                     resId = $('#asgList-wrap .asgList-item.selected').attr('id')
@@ -156,13 +154,12 @@ define [ 'event',
                             lcComp = compObj.parent.get('lc')
                             if lcComp and lcComp.id
                                 ide_event.trigger ide_event.OPEN_STATE_EDITOR, lcComp.id, resId
+                                @__showState()
                                 return
 
             ide_event.trigger ide_event.OPEN_STATE_EDITOR, uid
             @__showState()
             @forceShow()
-            @lastComId = uid
-            @currentTab = 'state'
             @
 
 

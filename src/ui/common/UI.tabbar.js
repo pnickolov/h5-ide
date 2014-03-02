@@ -61,7 +61,7 @@ var Tabbar = {
 			MC.canvas.event.clearList(event);
 		}
 
-		return false;
+		// return false;
 	},
 
 	mousemove: function (event)

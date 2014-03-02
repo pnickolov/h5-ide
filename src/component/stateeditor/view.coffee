@@ -2494,6 +2494,9 @@ define [ 'event',
 
             that = this
 
+            if $('.sub-stateeditor').css('display') is "none"
+                return true
+
             target = event.data.target
             status = target.currentState
             is_editable = status is 'appedit' or status is 'stack'
@@ -2605,6 +2608,16 @@ define [ 'event',
             # Tab switch [Tab]
             if metaKey is false and shiftKey is false and keyCode is 9
                 target.onSwitchState.call target
+                return false
+
+            # Switch to property panel [P]
+            if metaKey is false and shiftKey is false and keyCode is 80 and is_input is false
+                $canvas.trigger 'SHOW_PROPERTY_PANEL'
+                return false
+
+            # Switch to state editor [S]
+            if metaKey is false and shiftKey is false and keyCode is 83 and is_input is false
+                $canvas.trigger 'SHOW_STATE_EDITOR'
                 return false
 
             # Disable default delete event [delete/backspace]

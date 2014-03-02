@@ -4812,7 +4812,7 @@ MC.canvas.event.keyEvent = function (event)
 
 	if (
 		$('#modal-wrap')[0] !== undefined ||
-		$('#state-editor')[0] !== undefined ||
+		$('.sub-stateeditor').css('display') === "block" ||
 		Tabbar.current === 'dashboard'
 	)
 	{

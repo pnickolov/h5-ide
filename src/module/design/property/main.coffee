@@ -88,7 +88,7 @@ define [ 'event',
 				view.renderState uid
 			else
 				if view.currentTab is 'state'
-					openState view, type, uid, force
+					view.renderState uid
 				else
 					firstRenderProperty view, type, uid, force
 

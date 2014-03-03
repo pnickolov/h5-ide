@@ -238,7 +238,7 @@ define [ 'event',
 
             nodeName = event.target.nodeName.toLowerCase()
 
-            if nodeName isnt 'input' and nodeName isnt 'textarea' and event.target.contentEditable isnt 'true'
+            if event.which is 8 and nodeName isnt 'input' and nodeName isnt 'textarea' and event.target.contentEditable isnt 'true'
                 return false
     }
 

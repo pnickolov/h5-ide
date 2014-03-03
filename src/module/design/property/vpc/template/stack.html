@@ -17,6 +17,22 @@
       <dt>{{ i18n "PROP_VPC_APP_DEFAULT_ACL" }}</dt>
       <dd>{{defaultACL}}</dd>
     </dl>
+    <section class="property-control-group">
+      <div class="checkbox">
+        <input id="property-dns-resolution" type="checkbox"{{#if dnsSupport}} checked="checked"{{/if}} name="dns-resolution">
+        <label for="property-dns-resolution"></label>
+      </div>
+      <label for="property-dns-resolution">{{ i18n "PROP_VPC_DETAIL_LBL_ENABLE_DNS_RESOLUTION" }}</label>
+    </section>
+
+
+    <section class="property-control-group">
+      <div class="checkbox">
+        <input id="property-dns-hostname" type="checkbox"{{#if dnsHosts}} checked="checked"{{/if}} name="dns-hostname">
+        <label for="property-dns-hostname"></label>
+      </div>
+      <label for="property-dns-hostname">{{ i18n "PROP_VPC_DETAIL_LBL_ENABLE_DNS_HOSTNAME_SUPPORT" }}</label>
+    </section>
   </div>
 
 

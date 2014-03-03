@@ -1171,7 +1171,7 @@ a {
 	border-color: #69aadc;
 }
 
-#modal-import-json-dropzone.dragover > input, #modal-import-json-dropzone.dragover > div {
+.dragover .select-file-link, .dragover #modal-import-json-file {
 	pointer-events : none;
 }
 
@@ -7503,7 +7503,7 @@ summary:focus {
 	background: #ec3c38;
 }
 
-.au-summary-extra, 
+.au-summary-extra,
 #app-apply-update .icon-warning {
 	color    : #ec3c38;
 	font-size: 12px !important;

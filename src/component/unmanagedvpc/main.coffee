@@ -17,6 +17,10 @@ define [ 'jquery', 'event' ], ( $, ide_event ) ->
             # set model
             view.model    = model
 
+            ### env:dev ###
+            MC.session.remove 'aws_resource_null'
+            ### env:dev:end ###
+
             model.on 'change:resource_list', () ->
                 console.log 'change:resource_list', model.get 'resource_list'
                 view.render()
@@ -35,7 +39,7 @@ define [ 'jquery', 'event' ], ( $, ide_event ) ->
 
             view.on 'RELOAD_EVENT', () ->
                 model.reload()
-            
+
             # render when resource_list is empty
             if _.isEmpty model.get( 'resource_list' )
 

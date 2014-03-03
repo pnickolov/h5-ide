@@ -255,7 +255,7 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
     # Quick Hack for supporting AppEdit
     # Ask the component if it supports AppEdit Mode
     #
-    if @model.design().modeIsAppEdit()
+    if @model.design().modeIsAppEdit() and @model.get("appId")
       notification "error", "This operation is not supported yet."
       return
     #

@@ -7479,14 +7479,21 @@ summary:focus {
 	font-size: 12px;
 }*/
 
-.app-update-summary-table {
+.app-update-summary-table.table {
 	font-size: 12px;
+	vertical-align: middle;
+	border: 1px solid #dfdfdf;
+}
+
+.app-update-summary-table-header.table th,
+.app-update-summary-table.table td {
+	padding: 2px 4px;
 }
 
 .au-summary-label {
 	/*background: #666;*/
 	color: #fff;
-	padding: 3px 4px;
+	padding: 2px 4px;
 	border-radius: 3px;
 }
 
@@ -7512,5 +7519,5 @@ summary:focus {
 #app-apply-update .icon-warning {
 	position: absolute;
 	right: 4px;
-	top: 10px;
+	top: 7px;
 }

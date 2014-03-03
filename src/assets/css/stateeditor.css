@@ -839,6 +839,10 @@
 	transition: right .2s ease-out;*/
 }
 
+.se-model-app #state-editor .state-action-wrap {
+	display: none;
+}
+
 #state-editor .state-action-wrap div {
 	display: inline-block;
 }

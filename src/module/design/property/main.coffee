@@ -81,71 +81,19 @@ define [ 'event',
 			null
 
 		#listen OPEN_PROPERTY
-		ide_event.onLongListen ide_event.OPEN_PROPERTY, ( type, uid, force ) ->
-
-			if view.currentTab is 'state'
-				# ide_event.trigger ide_event.STATE_EDITOR_SAVE_DATA
+		ide_event.onLongListen ide_event.OPEN_PROPERTY, ( type, uid, force, tab ) ->
+			if tab is 'property'
+				view.renderProperty uid
+			else if tab is 'state'
 				view.renderState uid
-				return
-
-			view.render()
-			view.load()
-
-			# Load property
-			# Format `type` so that PropertyBaseModule knows about it.
-			# Here, type can be : ( according to the previous version of property/main )
-			# - "component_asg_volume"   => Volume Property
-			# - "component_asg_instance" => Instance main
-			# - "component"
-			# - "stack"
-
-			design    = Design.instance()
-
-			# If type is "component", type should be changed to ResourceModel's type
-			if uid
-				component = design.component( uid )
-				if component and component.type is type and design.modeIsApp() and component.get( 'appId' ) and not component.hasAppResource()
-					type = 'Missing_Resource'
 			else
-				type = "Stack"
-
-
-			# Get current model of design
-			if design.modeIsApp() or design.modeIsAppView()
-				tab_type = PropertyBaseModule.TYPE.App
-
-			else if design.modeIsStack()
-				tab_type = PropertyBaseModule.TYPE.Stack
-
-			else
-				# If component has associated aws resource (a.k.a has appId), it's AppEdit mode ( Partially Editable )
-				# Otherwise, it's Stack mode ( Fully Editable )
-				if not component or component.get("appId")
-					tab_type = PropertyBaseModule.TYPE.AppEdit
+				if view.currentTab is 'state'
+					openState view, type, uid, force
 				else
-					tab_type = PropertyBaseModule.TYPE.Stack
+					firstRenderProperty view, type, uid, force
 
 
-			# Tell `PropertyBaseModule` to load corresponding property panel.
 
-			### env:dev ###
-			PropertyBaseModule.load type, uid, tab_type
-			view.afterLoad()
-
-			if force then view.forceShow()
-			### env:dev:end ###
-
-			### env:prod ###
-			try
-				PropertyBaseModule.load type, uid, tab_type
-				view.afterLoad()
-
-				if force then view.forceShow()
-			catch error
-				console.error error
-			### env:prod:end ###
-
-			null
 
 	unLoadModule = () ->
 		null
@@ -158,6 +106,66 @@ define [ 'event',
 
 	restore = ( snapshot ) ->
 		#PropertyBaseModule.restore( snapshot )
+
+	firstRenderProperty = ( view, type, uid, force ) ->
+		view.render()
+		view.load()
+
+		# Load property
+		# Format `type` so that PropertyBaseModule knows about it.
+		# Here, type can be : ( according to the previous version of property/main )
+		# - "component_asg_volume"   => Volume Property
+		# - "component_asg_instance" => Instance main
+		# - "component"
+		# - "stack"
+
+		design    = Design.instance()
+
+		# If type is "component", type should be changed to ResourceModel's type
+		if uid
+			component = design.component( uid )
+			if component and component.type is type and design.modeIsApp() and component.get( 'appId' ) and not component.hasAppResource()
+				type = 'Missing_Resource'
+		else
+			type = "Stack"
+
+
+		# Get current model of design
+		if design.modeIsApp() or design.modeIsAppView()
+			tab_type = PropertyBaseModule.TYPE.App
+
+		else if design.modeIsStack()
+			tab_type = PropertyBaseModule.TYPE.Stack
+
+		else
+			# If component has associated aws resource (a.k.a has appId), it's AppEdit mode ( Partially Editable )
+			# Otherwise, it's Stack mode ( Fully Editable )
+			if not component or component.get("appId")
+				tab_type = PropertyBaseModule.TYPE.AppEdit
+			else
+				tab_type = PropertyBaseModule.TYPE.Stack
+
+
+		# Tell `PropertyBaseModule` to load corresponding property panel.
+
+		### env:dev ###
+		PropertyBaseModule.load type, uid, tab_type
+		view.afterLoad()
+
+		if force then view.forceShow()
+		### env:dev:end ###
+
+		### env:prod ###
+		try
+			PropertyBaseModule.load type, uid, tab_type
+			view.afterLoad()
+
+			if force then view.forceShow()
+		catch error
+			console.error error
+		### env:prod:end ###
+
+		null
 
 
 

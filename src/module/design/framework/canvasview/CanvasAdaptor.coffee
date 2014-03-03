@@ -166,7 +166,7 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
       null
 
     SHOW_PROPERTY_PANEL : ()->
-      ide_event.trigger ide_event.FORCE_OPEN_PROPERTY
+      ide_event.trigger ide_event.OPEN_PROPERTY, null, null, null, 'property'
       null
 
     CANVAS_PLACE_OVERLAP : () ->

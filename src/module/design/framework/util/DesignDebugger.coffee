@@ -44,17 +44,9 @@ define [ "Design" ], ( Design )->
 
 
   Design.debug.diff = ( e )->
-
-    d = Design.instance()
-
-    canvas_data = $.extend true, {}, d.attributes
-
-    canvas_data.component = d.__backingStore.component
-    canvas_data.layout    = d.__backingStore.layout
-    canvas_data.name      = d.__backingStore.name
-
     require ["test/jsonviewer/JsonViewer"], ( JsonViewer )->
-      JsonViewer.showDiffDialog( canvas_data, Design.instance().serialize() )
+      d = Design.instance()
+      JsonViewer.showDiffDialog( d.__backingStore, d.serialize() )
     null
 
   Design.debug.json = ( notToString )->

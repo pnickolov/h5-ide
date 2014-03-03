@@ -100,9 +100,14 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
 
     @__mode = options.mode
 
-    defaultAgentData = MC.aws.aws.getDefaultStackAgentData()
     @attributes = {
-      agent: defaultAgentData
+      agent : {
+        enabled : false
+        module  : {
+          repo : $.cookie("mod_repo")
+          tag  : $.cookie("mod_tag")
+        }
+      }
     }
 
     # Disable drawing for deserializing, delay it until everything is deserialized
@@ -140,7 +145,7 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
     AwsResourceUpdated : "AWS_RESOURCE_UPDATED"
   }
 
-  DesignImpl.prototype.refreshAppUpdate = ( ) ->
+  DesignImpl.prototype.refreshAppUpdate = () ->
     needRefresh = [
       constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
     ]
@@ -387,8 +392,8 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
   DesignImpl.prototype.save = ( canvas_data )->
 
     if canvas_data
-      @__backingStore.component = canvas_data.component
-      @__backingStore.layout    = canvas_data.layout
+      component = canvas_data.component
+      layout    = canvas_data.layout
 
       # Delete these two attributes before copying canvas_data.
       delete canvas_data.component
@@ -396,26 +401,43 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
 
       $.extend true, @attributes, canvas_data
 
-      canvas_data.component = @__backingStore.component
-      canvas_data.layout    = @__backingStore.layout
+      # Use the canvas_data as the backingStore
+      canvas_data.component = component
+      canvas_data.layout    = layout
+      @__backingStore = canvas_data
 
     else
-      newData = @serialize()
-      @__backingStore.component = newData.component
-      @__backingStore.layout    = newData.layout
-
-    @__backingStore.name = @attributes.name
+      @__backingStore = @serialize()
     null
 
   DesignImpl.prototype.isModified = ( newData )->
 
     if Design.instance().modeIsApp() then return false
 
-    if @__backingStore.name isnt @attributes.name
-      return true
-
     if not newData
-      newData = @serialize()
+      newData = $.extend true, {}, @attributes
+      newDataIsNull = true
+
+    backingComponent = @__backingStore.component
+    backingLayout    = @__backingStore.layout
+    newComponent     = newData.component
+    newLayout        = newData.layout
+
+    delete @__backingStore.component
+    delete @__backingStore.layout
+    delete newData.component
+    delete newData.layout
+
+    equal = _.isEqual( @__backingStore, newData )
+
+    @__backingStore.component = backingComponent
+    @__backingStore.layout    = backingLayout
+    newData.component         = newComponent
+    newData.layout            = newLayout
+
+    if not equal then return true
+
+    if newDataIsNull then newData = @serialize()
 
     if _.isEqual( @__backingStore.component, newData.component )
       if _.isEqual( @__backingStore.layout, newData.layout )
@@ -472,7 +494,7 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
 
     # Seems like some other place have call Design.instance().set("layout")
     # So we assign component/layout at last
-    data = $.extend( {}, @attributes )
+    data = $.extend true, {}, @attributes
     data.component = component_data
     data.layout    = layout_data
 

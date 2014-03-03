@@ -2818,9 +2818,10 @@ MC.canvas.event.dragable = {
 			// Allow cloning for instance
 			if (target_type === 'AWS.EC2.Instance')
 			{
-				shadow.append(
-					Canvon.rectangle(75, 75, 25, 25).attr({'class': 'clone-icon', 'rx': 2, 'ry': 2})
-				);
+				shadow.append([
+					Canvon.rectangle(75, 75, 25, 25).attr({'class': 'clone-icon', 'rx': 2, 'ry': 2}),
+					Canvon.image(MC.IMG_URL + 'ide/icon-drag-to-copy.png', 82, 82, 12, 12).attr('class', 'clone-icon'),
+				]);
 			}
 
 			svg_canvas.append(shadow);
@@ -3092,6 +3093,8 @@ MC.canvas.event.dragable = {
 						{
 							this.move(coordinate.x, coordinate.y);
 							this.reConnect();
+
+							$canvas(target_id).select();
 						});
 					}
 				}
@@ -3284,9 +3287,11 @@ MC.canvas.event.dragable = {
 					//dispatch event when is not blank
 					$canvas.trigger("CANVAS_PLACE_OVERLAP");
 				}
+
+				$canvas(target_id).select();
 			}
 
-			$canvas(target_id).select();
+			// $canvas(target_id).select();
 			// MC.canvas.nodeAction.show(target_id);
 		}
 
@@ -4701,29 +4706,29 @@ MC.canvas.event.selectNode = function (event)
 	return false;
 };
 
-MC.canvas.event.appMove = function (event)
-{
-	if (event.which === 1)
-	{
-		var target = $canvas(this.id);
+// MC.canvas.event.appMove = function (event)
+// {
+// 	if (event.which === 1)
+// 	{
+// 		var target = $canvas(this.id);
 
-		MC.canvas.event.clearSelected();
+// 		MC.canvas.event.clearSelected();
 
-		if (
-			target.class === 'AWS.EC2.Instance' ||
-			target.nodeType === 'group'
-		)
-		{
-			MC.canvas.event.dragable.mousedown.call( this, event );
-		}
-		else
-		{
-			target.select();
-		}
-	}
+// 		if (
+// 			target.class === 'AWS.EC2.Instance' ||
+// 			target.nodeType === 'group'
+// 		)
+// 		{
+// 			MC.canvas.event.dragable.mousedown.call( this, event );
+// 		}
+// 		else
+// 		{
+// 			target.select();
+// 		}
+// 	}
 
-	return false;
-};
+// 	return false;
+// };
 
 MC.canvas.event.appDrawConnection = function ()
 {

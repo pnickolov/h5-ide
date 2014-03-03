@@ -58,6 +58,13 @@ define [ '../base/model', 'constant', "../base/main" ], ( PropertyModel, constan
       else
         "#{ami.osType}.#{ami.architecture}.#{ami.rootDeviceType}"
 
+    getAmiName : ( amiId )->
+      ami = MC.data.dict_ami[ amiId ]
+      if not ami
+        ""
+      else
+        ami.name
+
     changeAmi : ( amiId )->
       Design.instance().component( PropertyModule.activeModule().uid ).setAmi( amiId )
       @init( amiId )

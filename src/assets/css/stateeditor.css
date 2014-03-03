@@ -671,6 +671,12 @@
 	padding-left: 0;
 }
 
+
+#state-editor .comment .status {
+	display: none;
+}
+
+
 #state-editor .parameter-view-list {
 	margin-right: 45px;
 	overflow: hidden;
@@ -733,7 +739,7 @@
 	position: relative;
 	overflow: hidden;
 	cursor: pointer;
-	background: rgba(0,0,0,.01);
+	/*background: rgba(0,0,0,.01);*/
 	/*border-bottom: 1px solid #eee;*/
 	min-height: 22px;
 	padding: 6px 0;
@@ -831,7 +837,7 @@
 	/*display   : none;*/
 	background: rgba(0,0,0,.8);
 	z-index   : 100;
-	padding   : 12px 0 6px 8px;
+	padding   : 10px 0 8px 8px;
 
 /*	-webkit-transition: right .2s ease-out;
 	-moz-transition: right .2s ease-out;

@@ -191,8 +191,9 @@ define [ 'jquery', 'event', 'base_main',
                         result = @get 'import_stack'
 
                         # replace 'import' to 'new'
-                        tab_id = tab_id.replace 'import', 'new'
+                        tab_id                     = tab_id.replace 'import', 'new'
                         result.resolved_data[0].id = tab_id
+                        MC.data.current_tab_id     = tab_id
                         view.updateCurrentTab tab_id,  result.resolved_data[0].name + ' - stack'
 
                         ide_event.trigger ide_event.SWITCH_TAB, 'OPEN_STACK', tab_id, model.get( 'stack_region_name' ), result, result.resolved_data[0].platform

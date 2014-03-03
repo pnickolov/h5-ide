@@ -94,6 +94,11 @@ define [ 'event',
         __hasState: () ->
             $( '#property-panel .sub-stateeditor' ).children() > 0
 
+        __hideResourcePanel: () ->
+            hideButton = $ '#hide-resource-panel'
+            if hideButton.hasClass 'icon-caret-left'
+                hideButton.click()
+
         renderProperty: ( uid ) ->
             @__hideState()
             $( '#property-panel' ).removeClass('state').removeClass('state-wide')
@@ -180,6 +185,7 @@ define [ 'event',
         renderState: ( uid, force ) ->
 
             @__hideProperty()
+            @__hideResourcePanel()
             $( '#property-panel' ).addClass 'state'
 
             @lastComId = uid

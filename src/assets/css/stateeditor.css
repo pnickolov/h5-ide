@@ -1217,15 +1217,19 @@
 	vertical-align: top;
 	width: 56px;
 	height: 20px;
-	padding: 3px;
+	/*padding: 3px;*/
 	background-color: white;
 	border-radius: 18px;
-	box-shadow: inset 0 -1px white, inset 0 1px 1px rgba(0, 0, 0, 0.05);
+	/*box-shadow: inset 0 -1px white, inset 0 1px 1px rgba(0, 0, 0, 0.05);*/
 	cursor: pointer;
-	background-image: -webkit-linear-gradient(top, #eeeeee, white 25px);
+/*	background-image: -webkit-linear-gradient(top, #eeeeee, white 25px);
 	background-image: -moz-linear-gradient(top, #eeeeee, white 25px);
 	background-image: -o-linear-gradient(top, #eeeeee, white 25px);
-	background-image: linear-gradient(to bottom, #eeeeee, white 25px);
+	background-image: linear-gradient(to bottom, #eeeeee, white 25px);*/
+}
+
+.switch.toolbar-visual-ops-switch.on {
+	border: 1px solid #0E8F38;
 }
 
 .switch-input {
@@ -1238,11 +1242,11 @@
 	position: relative;
 	display: block;
 	height: inherit;
-	font-size: 10px;
+	font-size: 12px;
 	/*text-transform: uppercase;*/
-	background: #eceeef;
+	background: #dadada;
 	border-radius: inherit;
-	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.12), inset 0 0 2px rgba(0, 0, 0, 0.15);
+	/*box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.12), inset 0 0 2px rgba(0, 0, 0, 0.15);*/
 	-webkit-transition: 0.15s ease-out;
 	-moz-transition: 0.15s ease-out;
 	-o-transition: 0.15s ease-out;
@@ -1266,18 +1270,18 @@
 	content: attr(data-off);
 	right: 11px;
 	color: #aaa;
-	text-shadow: 0 1px rgba(255, 255, 255, 0.5);
+	/*text-shadow: 0 1px rgba(255, 255, 255, 0.5);*/
 }
 .switch-label:after {
 	content: attr(data-on);
 	left: 11px;
 	color: white;
-	text-shadow: 0 1px rgba(0, 0, 0, 0.2);
+	/*text-shadow: 0 1px rgba(0, 0, 0, 0.2);*/
 	opacity: 0;
 }
 .switch.on .switch-label {
 	background: #47a8d8;
-	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15), inset 0 0 3px rgba(0, 0, 0, 0.2);
+	/*box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15), inset 0 0 3px rgba(0, 0, 0, 0.2);*/
 }
 .switch.on .switch-label:before {
 	opacity: 0;
@@ -1288,23 +1292,23 @@
 
 .switch-handle {
 	position: absolute;
-	top: 6px;
-	left: 6px;
+	top: 3px;
+	left: 3px;
 	width: 18px;
 	height: 18px;
 	background: white;
 	border-radius: 10px;
-	box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
-	background-image: -webkit-linear-gradient(top, white 40%, #f0f0f0);
+	/*box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);*/
+/*	background-image: -webkit-linear-gradient(top, white 40%, #f0f0f0);
 	background-image: -moz-linear-gradient(top, white 40%, #f0f0f0);
 	background-image: -o-linear-gradient(top, white 40%, #f0f0f0);
-	background-image: linear-gradient(to bottom, white 40%, #f0f0f0);
+	background-image: linear-gradient(to bottom, white 40%, #f0f0f0);*/
 	-webkit-transition: left 0.15s ease-out;
 	-moz-transition: left 0.15s ease-out;
 	-o-transition: left 0.15s ease-out;
 	transition: left 0.15s ease-out;
 }
-.switch-handle:before {
+/*.switch-handle:before {
 	content: '';
 	position: absolute;
 	top: 50%;
@@ -1319,10 +1323,10 @@
 	background-image: -moz-linear-gradient(top, #eeeeee, white);
 	background-image: -o-linear-gradient(top, #eeeeee, white);
 	background-image: linear-gradient(to bottom, #eeeeee, white);
-}
+}*/
 .switch.on .switch-handle {
-	left: 94px;
-	box-shadow: -1px 1px 5px rgba(0, 0, 0, 0.2);
+	left: 91px;
+	/*box-shadow: -1px 1px 5px rgba(0, 0, 0, 0.2);*/
 }
 
 .switch.on .switch-label {
@@ -1332,9 +1336,10 @@
 .switch.toolbar-visual-ops-switch {
 	margin-right: 8px;
 	float: right;
-	margin-top: 4px;
+	margin-top: 6px;
 	width: 115px;
 	height: 27px;
+	border: 1px solid #ccc;
 }
 
 .toolbar-visual-ops-switch .switch-handle {

@@ -60,6 +60,18 @@ module.exports = {
         ]
     },
 
+    cond_comp: {
+        src: [ '<%= release %>/lib/MC_core.js' ],
+        actions: [
+            {
+                name: 'conditional compile',
+                search: 'env:dev\\*\\/',
+                replace: 'env:dev*#/',
+                flags: 'g'
+            }
+        ]
+    },
+
     intercome: {
         src: [ '<%= release %>/ide.html' ],
         actions: [

@@ -570,7 +570,7 @@ MC.storage = storage( localStorage )
 MC.session = storage( sessionStorage )
 
 MC.cacheForDev = function( key, data, callback ) {
-	/* env:dev */
+	/* env:dev*/
 
 	if ( key && data ) {
 		MC.session.set( key, data );

@@ -163,6 +163,7 @@ module.exports = function( grunt ) {
 			'regex-replace:intercome',
 			'regex-replace:google_analytics',
 			'regex-replace:href_release',
+			'regex-replace:cond_comp',
 			'copy:dev_prod_switch_task',
 			'replace:prod_env_switch',
 			'dev_prod_switch:release',
@@ -247,7 +248,6 @@ module.exports = function( grunt ) {
 									'regex-replace:dynamic_lang',
 									'regex-replace:dynamic_jquery',
 									'copy:publish_files',
-									'clean:temp',
 									'open:publish',
 									'connect:publish'
 	]);

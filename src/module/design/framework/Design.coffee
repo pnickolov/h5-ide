@@ -462,7 +462,12 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
 
     # Connection
     for c in connections
-      c.serialize( component_data, layout_data )
+      p1 = c.port1Comp()
+      p2 = c.port2Comp()
+      if p1 and p2 and not p1.isRemoved() and not p2.isRemoved()
+        c.serialize( component_data, layout_data )
+      else
+        console.error "Serializing an connection while one of the port is isRemoved() or null"
 
 
     # Seems like some other place have call Design.instance().set("layout")

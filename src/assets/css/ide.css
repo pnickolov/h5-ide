@@ -7536,7 +7536,7 @@ summary:focus {
 }
 
 #property-panel.no-state .property-switcher {
-	width: 269px;
+	width: 100%;
 }
 
 #property-panel.no-state .switch-btns {

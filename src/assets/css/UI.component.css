@@ -302,6 +302,17 @@ a.table-link {
 	font-size: 12px;
 }
 
+.btn-link {
+	border: none;
+	background: none;
+	color: #999;
+	cursor: pointer;
+}
+
+.btn-link:hover {
+	text-decoration: underline;
+}
+
 .link-red {
 	color     : #D64442;
 }

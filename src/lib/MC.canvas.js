@@ -2803,7 +2803,7 @@ MC.canvas.event.dragable = {
 
 			if (currentTarget.is('.eip-status') && MC.canvas.getState() !== 'appview')
 			{
-				MC.canvas.event.EIPstatus.call(event.target);
+				$canvas( this.id ).toggleEip();
 
 				return false;
 			}
@@ -4663,13 +4663,6 @@ MC.canvas.event.ctrlMove = {
 
 		return false;
 	}
-};
-
-MC.canvas.event.EIPstatus = function ()
-{
-	$canvas( this.parentNode.id ).toggleEip();
-
-	return false;
 };
 
 MC.canvas.event.selectLine = function (event)

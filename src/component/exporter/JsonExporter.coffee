@@ -3,7 +3,6 @@ define ['./Download', "./HmacMd5"], ( download )->
 
   exportJson = ( json, name )->
     # Remove uncessary attributes of the json
-
     for i in ["description", "history", "id", "key", "property", "state", "username" ]
       delete json[i]
 
@@ -11,7 +10,12 @@ define ['./Download', "./HmacMd5"], ( download )->
 
     j = JSON.stringify(json)
 
-    blob = new Blob [j]
+    ua = window.navigator.userAgent
+
+    if ua.indexOf("Safari") > -1 and ua.indexOf("Chrome") is -1
+      blob = null
+    else
+      blob = new Blob [j]
 
     if not blob
       return {

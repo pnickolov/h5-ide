@@ -112,7 +112,7 @@
 		</div> </div>
 	</div>
 	<div class="modal-footer">
-		<a id="modal-export-json" class="btn btn-blue" href="{{data}}" download="{{name}}">{{i18n "TOOL_POP_BTN_DOWNLOAD"}}</a>
+		<a id="modal-export-json" class="btn btn-blue" href="{{data}}" target="_blank" download="{{name}}">{{i18n "TOOL_POP_BTN_DOWNLOAD"}}</a>
 		<button id="tpl-cancel" class="btn modal-close btn-silver">{{i18n "TOOL_POP_BTN_CANCEL"}}</button>
 	</div>
 </div>
@@ -1234,8 +1234,8 @@ Following rule(s) will be deleted from its(their) security group:</div>
 	{{#if result.length}}
 		<table class="table-head-fix table">
 			<thead> <tr class="header-row">
-				<th class="sortable active" width="30%">Type</th> 
-				<th class="sortable" width="30%">Name</th> 
+				<th class="sortable active" width="30%">Type</th>
+				<th class="sortable" width="30%">Name</th>
 				<th class="sortable" width="40%">Change</th> </tr>
 			</thead>
 		</table>
@@ -1248,7 +1248,7 @@ Following rule(s) will be deleted from its(their) security group:</div>
 				<tbody>
 				{{#each result}}
 					<tr>
-					<td width="30%">{{type}}</td> 
+					<td width="30%">{{type}}</td>
 					<td width="30%">{{name}}</td>
 					<td width="40%">
 						{{#each changes}}

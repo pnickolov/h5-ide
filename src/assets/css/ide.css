@@ -3,7 +3,6 @@ body {
 	width    : 100%;
 	height   : 100%;
 	overflow : hidden;
-	min-width: 1275px;
 }
 
 #body {
@@ -3059,8 +3058,9 @@ td.table-action a.btn {
 
 	height    : 40px;
 	width     : 100%;
-	min-width : 370px;
-	background      : #f0f0f0;
+	min-width : 710px;
+	overflow  : hidden;
+	background: #f0f0f0;
 
 	box-shadow    : 0 2px 5px rgba(0, 0, 0, 0.1);
 	border-bottom : 1px solid #ccc;
@@ -3989,7 +3989,7 @@ a.sidebar-hider {
 /* General Style for Property Panel List */
 
 .property-list {
-	border-top : 1px solid #252525;
+	/*border-top : 1px solid #252525;*/
 }
 
 .property-list li {
@@ -7474,8 +7474,12 @@ summary:focus {
 }
 
 /* App Update Summary */
-
+/*
 #app-apply-update {
+	font-size: 12px;
+}*/
+
+.app-update-summary-table {
 	font-size: 12px;
 }
 

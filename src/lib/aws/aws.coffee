@@ -965,9 +965,10 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
 
     enableStackAgent = (isEnable) ->
 
-        agentData = MC.common.other.canvasData.get('agent')
+        agentData = Design.instance().get('agent')
         agentData.enabled = isEnable
-        MC.common.other.canvasData.initSet('agent', agentData)
+        Design.instance().set('agent', agentData)
+        # MC.common.other.canvasData.initSet('agent', agentData)
 
     getCompByResIdForState = ( resId ) ->
 

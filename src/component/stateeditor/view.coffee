@@ -104,7 +104,7 @@ define [ 'event',
                         if Design.instance().modeIsApp() and Design.instance().get('state') is 'Running'
                             resId = $('#asgList-wrap .asgList-item.selected').attr('id')
                             if not resId
-                                @__renderEmpty()
+                                @__renderEmpty('asg_in_app')
                                 return @
 
                     @__renderState()
@@ -122,6 +122,7 @@ define [ 'event',
                 void     : "The component does'nt have state editor."
                 group    : 'View states and log by selecting individual instance.'
                 default  : 'No state editor here.'
+                asg_in_app : 'View states and log by selecting individual instance.'
 
             tip = type and tipSet[ type ] or tipSet.default
 
@@ -1443,6 +1444,8 @@ define [ 'event',
                             renderParaValue = []
 
                             if not _.isArray(paraValue)
+                                if not paraValue
+                                    paraValue = ''
                                 paraValue = [paraValue]
 
                             _.each paraValue, (paraValueStr) ->

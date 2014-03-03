@@ -7527,3 +7527,26 @@ summary:focus {
 	right: 4px;
 	top: 7px;
 }
+
+#property-panel.no-state #btn-switch-state {
+	display: none;
+}
+
+#property-panel.no-state #btn-switch-property {
+	width: 100%;
+}
+
+#property-panel.no-state .property-switcher {
+	width: 269px;
+}
+
+#property-panel.no-state .switch-btns {
+	width: 100%;
+	height: 100%;
+	position: relative;
+
+}
+
+
+
+

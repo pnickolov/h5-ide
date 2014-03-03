@@ -32,7 +32,7 @@ define [ 'event',
 				'./module/design/property/acl/main',
 				'./module/design/property/launchconfig/main',
 				'./module/design/property/asg/main'
-], ( ide_event, constant, MC, View, PropertyBaseModule, PropertyBaseView, Design, lang ) ->
+], ( ide_event, CONST, MC, View, PropertyBaseModule, PropertyBaseView, Design, lang ) ->
 
 	#private
 	loadModule = () ->
@@ -82,6 +82,9 @@ define [ 'event',
 
 		#listen OPEN_PROPERTY
 		ide_event.onLongListen ide_event.OPEN_PROPERTY, ( type, uid, force, tab ) ->
+
+			stateStatus = processState uid
+
 			if tab is 'property'
 				view.renderProperty uid
 			else if tab is 'state'
@@ -97,6 +100,17 @@ define [ 'event',
 
 	unLoadModule = () ->
 		null
+
+	processState = ( uid ) ->
+		uid = Design.instance().canvas.selectedNode[ 0 ] if not uid
+		component = Design.instance().component uid
+		if component and _.contains [ CONST.RESTYPE.LC, CONST.RESTYPE.INSTANCE ], component.type
+			$( '#property-panel' ).removeClass 'no-state'
+			true
+		else
+			$( '#property-panel' ).addClass 'no-state'
+			false
+
 
 	# Whenever tab is switched
 	# Use this method to generate data for the current property

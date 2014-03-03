@@ -449,7 +449,7 @@
 
 #state-toolbar-selectAll {
 	position: absolute;
-	right: 10px;
+	right: 9px;
 	top: 12px;
 }
 
@@ -617,7 +617,7 @@
 	font-size   : 12px;
 	position    : relative;
 	left        : 66px;
-	margin-right: 100px;
+	margin-right: 40px;
 	margin-top  : 2px;
 }
 
@@ -821,31 +821,58 @@
 	color: #aaa;
 }
 
-#state-editor .state-remove {
-	position: absolute;
-	display: none;
-	width: 16px;
-	height: 16px;
-	right: 35px;
-	top: 12px;
-	text-align: center;
-	cursor: pointer;
-	color: #aaa;
-	z-index: 80;
+#state-editor .state-action-wrap {
+	position  : absolute;
+	right     : -60px;
+	top       : 0;
+	width     : 52px;
+	height    : 16px;
+	/*display   : none;*/
+	background: rgba(0,0,0,.8);
+	z-index   : 100;
+	padding   : 12px 0 6px 8px;
+
+/*	-webkit-transition: right .2s ease-out;
+	-moz-transition: right .2s ease-out;
+	-ms-transition: right .2s ease-out;
+	-o-transition: right .2s ease-out;
+	transition: right .2s ease-out;*/
+}
+
+#state-editor .state-action-wrap div {
+	display: inline-block;
+}
+
+#state-editor .state-action-wrap  .state-remove {
+	width      : 16px;
+	line-height: 16px;
+	font-size  : 12px !important;
+	height     : 16px;
+	text-align : center;
+	cursor     : pointer;
+	color      : #aaa;
+	z-index    : 80;
+	display    : none;
 }
 
 #state-editor .state-check {
-	position: absolute;
-	display: none;
+	/*display: none;*/
 	width: 16px;
 	height: 16px;
-	right: 15px;
-	top: 12px;
 }
 
-#state-editor .state-item:hover .state-remove,
-#state-editor .state-item:hover .state-check {
-	display: block;
+#state-editor .state-item:hover .state-action-wrap,
+#state-editor .state-item.selected:hover .state-action-wrap {
+	/*display: block;*/
+	right: 0;
+}
+
+#state-editor .state-item.selected .state-action-wrap {
+	right: -22px;
+}
+
+#state-editor .state-item:hover .state-action-wrap .state-remove {
+	display: inline-block;
 }
 
 #state-editor .state-remove:hover {
@@ -853,7 +880,7 @@
 }
 
 #state-editor .state-item.selected .state-check {
-	display: block !important;
+	display: inline-block !important;
 }
 
 #state-editor .state-view .parsley-error {
@@ -1193,6 +1220,7 @@
 
 #state-editor .state-no-state-container {
 	display: none;
+	font-family: 'Lato', 'Helvetica Neue', Arial, sans-serif; 
 }
 
 #state-gist-paste-area {

@@ -1124,8 +1124,8 @@ module.exports =
       zh: "创建新的访问控制表..."
 
     PROP_APP_SNS_NONE:
-      en: "This app has no SNS Topic"
-      zh: "本应用不含SNS主题"
+      en: "This app has no SNS Subscription"
+      zh: "本应用不含SNS订阅"
 
     PROP_AZ_LBL_SWITCH:
       en: "Quick Switch Availability Zone"

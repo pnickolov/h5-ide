@@ -73,7 +73,8 @@
 .icon-desc,
 .icon-log,
 .icon-syslog,
-.icon-import
+.icon-import,
+.icon-drag-copy
 {
 	font : 16px/1em "MCIcon";
 	font-weight : normal;
@@ -143,3 +144,4 @@
 .icon-syslog:before {content:"\F14C";}
 .icon-toolbar-diff:before {content:"\F14D";}
 .icon-import:before {content:"\F14E";}
+.icon-drag-copy:before {content:"\F14F";}

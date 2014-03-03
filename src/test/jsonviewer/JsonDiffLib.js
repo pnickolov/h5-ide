@@ -94,7 +94,7 @@ define([], function(){
       leafNode.appendChild(spanNode);
 
 
-      if (a === undefined)
+      if (a === undefined && b !== undefined)
       {
           leafNode.setAttribute("class", "added");
           valueNode = document.createTextNode(bString);
@@ -112,7 +112,7 @@ define([], function(){
 
           self.feedback(leafNode);
       }
-      else if (b === undefined)
+      else if (b === undefined && a !== undefined)
       {
           leafNode.setAttribute("class", "removed");
           valueNode = document.createTextNode(aString);

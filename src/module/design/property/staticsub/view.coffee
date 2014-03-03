@@ -41,6 +41,7 @@ define [ '../base/view', 'text!./template/stack.html' ], ( PropertyView, templat
 
       $("#changeAmiDropZone").children().show().filter("p").hide()
       $("#changeAmiDropZone").find("img").attr("src", "./assets/images/ide/ami/" + @model.getAmiPngName( amiId ) + ".png")
+      $("#changeAmiDropZone").find(".resource-label").html( @model.getAmiName(amiId) )
       null
 
     changeAmi : ()->

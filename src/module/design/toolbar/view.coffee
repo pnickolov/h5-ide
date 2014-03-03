@@ -52,7 +52,6 @@ define [ 'MC', 'event',
             'click #toolbar-edit-app'        : 'clickEditApp'
             'click #toolbar-save-edit-app'   : 'clickSaveEditApp'
             'click #toolbar-cancel-edit-app' : 'clickCancelEditApp'
-            'click .app-update-summary-table .header-row th' : 'sortSummaryTable'
 
             'click .toolbar-visual-ops-switch' : 'opsOptionChanged'
 
@@ -98,7 +97,7 @@ define [ 'MC', 'event',
             else
                 $( '#main-toolbar' ).html stack_tmpl this.model.attributes
 
-            
+
             if Design and Design.instance()
 
                 agentData = Design.instance().get('agent')
@@ -765,26 +764,6 @@ define [ 'MC', 'event',
             # 2. close modal
             modal.close()
 
-            null
-
-        sortSummaryTable : ( event )->
-            $this   = $( event.currentTarget )
-            index   = $this.index()
-            greater = $this.hasClass("sorted-down")
-
-            $this.siblings().removeClass("sorted sorted-down")
-
-            $this.addClass("sorted").toggleClass("sorted-down")
-
-            tbody = $(".app-update-summary-table").children("tbody")
-            list  = tbody.children()
-            list  = _.sortBy list, (a)-> $(a).children().eq(index).text()
-            tbody.empty()
-            for i in list
-                if greater
-                    tbody.append i
-                else
-                    tbody.prepend i
             null
 
         opsOptionChanged : (event) ->

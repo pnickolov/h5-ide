@@ -7479,7 +7479,7 @@ summary:focus {
 	font-size: 12px;
 }*/
 
-.app-update-summary-table.table {
+#app-update-summary-table {
 	font-size: 12px;
 	vertical-align: middle;
 	border: 1px solid #dfdfdf;

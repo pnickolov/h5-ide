@@ -55,6 +55,11 @@
 				tbody,
 				rows;
 
+			if (table.attr("data-target"))
+			{
+				table = $("#"+table.attr("data-target"));
+			}
+
 			if (table.hasClass('table-head'))
 			{
 				tbody = table.parent().find('.table tbody');

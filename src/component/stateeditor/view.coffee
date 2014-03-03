@@ -1639,7 +1639,7 @@ define [ 'event',
             that = this
             $currentElem = $(event.target)
             $parentElem = $currentElem.parents('.editable-area')
-            $parentEditorModel = $currentElem.parents('#state-editor-model')
+            $stateEditorModel = $('#state-editor-model')
 
             if not $parentElem.length and not $currentElem.hasClass('editable-area') and not $currentElem.hasClass('ace_scrollbar')
                 $allEditableArea = $('.editable-area')
@@ -1654,8 +1654,13 @@ define [ 'event',
                     that.$stateGistPasteArea.focus()
                 , 0)
 
-            if (not $parentEditorModel.length) and $('#state-editor-model').is(':visible')
-                that.onStateSaveClick()
+            $parentEditorModel = $currentElem.parents('#state-editor-model')
+            if $stateEditorModel.length and (not $parentEditorModel.length)
+                if $stateEditorModel.is(':visible')
+                    that.onStateSaveClick()
+                else
+                    if $currentElem.parents('#tabbar-wrapper').length
+                        that.onStateSaveClick()
 
         initCodeEditor: (editorElem, hintObj) ->
 

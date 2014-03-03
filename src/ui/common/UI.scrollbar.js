@@ -179,7 +179,7 @@ var scrollbar = {
 				'thumbPos': direction === 'veritical' ? event.clientY - thumb.offset().top : event.clientX - thumb.offset().left
 			});
 
-		return false;
+		// return false;
 	},
 
 	mousemove: function (event)

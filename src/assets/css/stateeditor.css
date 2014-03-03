@@ -441,10 +441,11 @@
 	font-size: 12px;
 	color: #999;
 	float: left;
+	cursor: pointer;
 }
 
 .state-editor-toolbar a:hover {
-	color: #666;
+	color: #eee;
 }
 
 #state-toolbar-selectAll {

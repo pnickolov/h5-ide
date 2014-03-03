@@ -7377,10 +7377,6 @@ summary:focus {
 	width: 0 !important;
 }
 
-.state-editor-toolbar a:hover {
-	cursor: pointer;
-}
-
 #property-panel.state-wide {
 	width: 900px;
 }
@@ -7427,6 +7423,10 @@ summary:focus {
 }
 
 /* Change AMI Panel */
+
+#changeAmi {
+	width: 130px;
+}
 
 #changeAmiDropZone {
 	width        : 194px;

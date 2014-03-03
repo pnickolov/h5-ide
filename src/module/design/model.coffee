@@ -90,7 +90,10 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'state
                         ami.instanceType = MC.aws.ami.getInstanceType(ami).join(', ')
                         MC.data.dict_ami[ami.imageId] = ami
                         null
+
+                console.log '----------- design:SWITCH_MAIN -----------'
                 ide_event.trigger ide_event.SWITCH_MAIN
+
                 null
 
         #############################
@@ -301,20 +304,32 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'state
         getAllNotExistAmiInStack : ( region )->
             console.log 'getAllNotExistAmiInStack', region
 
-            me = this
+            # include OPEN_STACK or OPEN_APP
+            if Tabbar.current in [ 'stack', 'app', 'appview' ]
 
-            ami_list = []
+                me = this
 
-            amiArray = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance ).allObjects()
-            amiArray = amiArray.concat Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration ).allObjects()
+                ami_list = []
 
-            for ami in amiArray
-                imageId = ami.get("imageId")
-                if not MC.data.dict_ami[ imageId ]
-                    ami_list.push( imageId )
+                amiArray = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance ).allObjects()
+                amiArray = amiArray.concat Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration ).allObjects()
 
-            if ami_list.length
-                stack_model.get_not_exist_ami { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, _.uniq( ami_list )
+                for ami in amiArray
+                    imageId = ami.get("imageId")
+                    if not MC.data.dict_ami[ imageId ]
+                        ami_list.push( imageId )
+
+                if ami_list.length
+                    stack_model.get_not_exist_ami { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, _.uniq( ami_list )
+                else
+                    console.log '----------- design:SWITCH_MAIN -----------'
+                    ide_event.trigger ide_event.SWITCH_MAIN
+
+            else
+                console.log '----------- design:SWITCH_MAIN -----------'
+                ide_event.trigger ide_event.SWITCH_MAIN
+
+            null
 
         returnAppState : ( type, state ) ->
             console.log 'returnAppState', type, state
@@ -362,8 +377,6 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'state
                 MC.aws.aws.cacheResource resource_source, region, false
                 #
                 @describeInstancesOfASG region
-
-                console.log 'sdfasdffffffffffffffffff', MC.data.resource_list
 
             # new design flow
             MC.common.other.canvasData.set 'layout', 'connection' : {}
@@ -417,17 +430,17 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'state
                     if !result.is_error
 
                         # cache result
-
                         MC.data.state.module[src.mod_version] = result.resolved_data
 
-                        # push SWITCH_MAIN
-                        ide_event.trigger ide_event.SWITCH_MAIN
+                        # getAllNotExistAmiInStack  depend on STATE_MODULE_RETURN
+                        me.getAllNotExistAmiInStack MC.common.other.canvasData.get 'region'
 
                     null
 
             else
 
-                ide_event.trigger ide_event.SWITCH_MAIN
+                # getAllNotExistAmiInStack  depend on STATE_MODULE_RETURN
+                @getAllNotExistAmiInStack MC.common.other.canvasData.get 'region'
 
     }
 

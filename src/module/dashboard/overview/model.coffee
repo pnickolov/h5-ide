@@ -1120,6 +1120,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                     #MC.common.cookie.setCookieByName 'has_cred', false
                     common_handle.cookie.setCred false
                     ide_event.trigger ide_event.UPDATE_AWS_CREDENTIAL
+                    console.log '----------- dashboard:SWITCH_MAIN -----------'
                     ide_event.trigger ide_event.SWITCH_MAIN
 
                 me.set 'region_classic_list', region_classic_vpc_result

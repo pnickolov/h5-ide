@@ -223,6 +223,7 @@ define [ 'MC', 'event', 'handlebars'
 		ide_event.onLongListen ide_event.IDE_AVAILABLE, () ->
 			console.log 'IDE_AVAILABLE'
 			MC.data.ide_available_count = MC.data.ide_available_count + 1
+			console.log '----------- ide:SWITCH_MAIN -----------'
 			ide_event.trigger ide_event.SWITCH_MAIN if MC.data.ide_available_count is 4
 
 		#listen RECONNECT_WEBSOCKET

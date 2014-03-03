@@ -104,7 +104,10 @@ define [ 'event',
 	processState = ( uid ) ->
 		uid = Design.instance().canvas.selectedNode[ 0 ] if not uid
 		component = Design.instance().component uid
-		if component and _.contains [ CONST.RESTYPE.LC, CONST.RESTYPE.INSTANCE ], component.type
+		typeAvai = component and _.contains [ CONST.RESTYPE.LC, CONST.RESTYPE.INSTANCE ], component.type
+		opsEnabled = Design.instance().get('agent').enabled
+
+		if opsEnabled and typeAvai
 			$( '#property-panel' ).removeClass 'no-state'
 			true
 		else

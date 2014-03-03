@@ -138,24 +138,32 @@ define [ 'event',
                             @renderProperty uid
                             return
                         else if _.contains [ CONST.RESTYPE.LC ], type
-                            if Design.instance().modeIsApp() and Design.instance().get('state') is 'Stopped'
-                                @renderProperty uid
+                            if Design.instance().modeIsApp()
+                                currentStackState = Design.instance().get('state')
+                                if currentStackState is 'Stopped'
+                                    ide_event.trigger ide_event.OPEN_STATE_EDITOR, uid
+                                    @__showState()
                                 return
-                        else
+
                             ide_event.trigger ide_event.OPEN_STATE_EDITOR, uid
                             @__showState()
                             return
 
-                    resId = $('#asgList-wrap .asgList-item.selected').attr('id')
+                    if Design.instance().modeIsApp()
 
-                    if Design.instance().modeIsApp() and resId
-                        compObj = MC.aws.aws.getCompByResIdForState(resId)
-                        if compObj and compObj.parent and compObj.parent.type is 'AWS.AutoScaling.Group'
-                            lcComp = compObj.parent.get('lc')
-                            if lcComp and lcComp.id
-                                ide_event.trigger ide_event.OPEN_STATE_EDITOR, lcComp.id, resId
-                                @__showState()
-                                return
+                        # for asg
+
+                        resId = $('#asgList-wrap .asgList-item.selected').attr('id')
+
+                        if resId
+
+                            compObj = MC.aws.aws.getCompByResIdForState(resId)
+                            if compObj and compObj.parent and compObj.parent.type is 'AWS.AutoScaling.Group'
+                                lcComp = compObj.parent.get('lc')
+                                if lcComp and lcComp.id
+                                    ide_event.trigger ide_event.OPEN_STATE_EDITOR, lcComp.id, resId
+                                    @__showState()
+                                    return
 
             ide_event.trigger ide_event.OPEN_STATE_EDITOR, uid
             @__showState()

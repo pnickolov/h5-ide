@@ -249,17 +249,28 @@ define [ 'event',
             if that.currentState is 'app'
                 that.readOnlyMode = true
                 that.isShowLogPanel = true
+                that.setEditorAppModel()
 
             if that.currentState is 'appedit'
                 that.readOnlyMode = false
                 that.isShowLogPanel = true
-                if that.groupResSelectData and that.groupResSelectData.length
-                    if not that.groupResSelectData[0].res_id
-                        that.isShowLogPanel = false
+                that.setEditorAppModel()
 
             else if that.currentState is 'stack'
                 that.readOnlyMode = false
                 that.isShowLogPanel = false
+
+        setEditorAppModel: () ->
+
+            that = this
+
+            if (not that.currentResId) and that.groupResSelectData and that.groupResSelectData[0]
+                that.currentResId = that.groupResSelectData[0].res_id
+
+            if not that.currentResId
+                that.isShowLogPanel = false
+
+            null
 
         tplMap:
             'state-template-editor-modal'       : 'editorModalTpl'

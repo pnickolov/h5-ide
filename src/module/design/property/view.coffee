@@ -3,11 +3,12 @@
 #############################
 
 define [ 'event',
+         './base/main',
          'constant',
          'text!./template.html'
          'Design'
          'backbone', 'jquery', 'handlebars'
-], ( ide_event, CONST, template, Design ) ->
+], ( ide_event, PropertyBaseModule, CONST, template, Design ) ->
 
     PropertyView = Backbone.View.extend {
 
@@ -17,6 +18,7 @@ define [ 'event',
             'click': 'test'
 
         currentTab: 'property'
+
         lastComId: null
 
         initialize : ->
@@ -108,12 +110,72 @@ define [ 'event',
                     type = component.type
                     id = component.id
 
-                ide_event.trigger ide_event.OPEN_PROPERTY, type, id
+                @__initProperty type, uid
 
             @__showProperty()
             @forceShow()
             @lastComId = uid
             @
+
+        __initProperty: ( type, uid, force ) ->
+            @render()
+            @load()
+
+            # Load property
+            # Format `type` so that PropertyBaseModule knows about it.
+            # Here, type can be : ( according to the previous version of property/main )
+            # - "component_asg_volume"   => Volume Property
+            # - "component_asg_instance" => Instance main
+            # - "component"
+            # - "stack"
+
+            design    = Design.instance()
+
+            # If type is "component", type should be changed to ResourceModel's type
+            if uid
+                component = design.component( uid )
+                if component and component.type is type and design.modeIsApp() and component.get( 'appId' ) and not component.hasAppResource()
+                    type = 'Missing_Resource'
+            else
+                type = "Stack"
+
+
+            # Get current model of design
+            if design.modeIsApp() or design.modeIsAppView()
+                tab_type = PropertyBaseModule.TYPE.App
+
+            else if design.modeIsStack()
+                tab_type = PropertyBaseModule.TYPE.Stack
+
+            else
+                # If component has associated aws resource (a.k.a has appId), it's AppEdit mode ( Partially Editable )
+                # Otherwise, it's Stack mode ( Fully Editable )
+                if not component or component.get("appId")
+                    tab_type = PropertyBaseModule.TYPE.AppEdit
+                else
+                    tab_type = PropertyBaseModule.TYPE.Stack
+
+
+            # Tell `PropertyBaseModule` to load corresponding property panel.
+
+            ### env:dev ###
+            PropertyBaseModule.load type, uid, tab_type
+            @afterLoad()
+
+            if force then @forceShow()
+            ### env:dev:end ###
+
+            ### env:prod ###
+            try
+                PropertyBaseModule.load type, uid, tab_type
+                @afterLoad()
+
+                if force then @forceShow()
+            catch error
+                console.error error
+            ### env:prod:end ###
+
+            null
 
         renderState: ( uid, force ) ->
 
@@ -122,7 +184,7 @@ define [ 'event',
 
             @lastComId = uid
             @currentTab = 'state'
-            
+
             if @lastComId is uid and @__hasProperty()
 
             else

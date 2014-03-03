@@ -7472,3 +7472,41 @@ summary:focus {
 	border-radius: 4px;
 	border: 1px solid #9e2622;
 }
+
+/* App Update Summary */
+
+#app-apply-update {
+	font-size: 12px;
+}
+
+.au-summary-label {
+	/*background: #666;*/
+	color: #fff;
+	padding: 3px 4px;
+	border-radius: 3px;
+}
+
+.au-summary-Update {
+	background: #25a4f4;
+}
+
+.au-summary-Create {
+	background: #17c249;
+}
+
+.au-summary-Delete,
+.au-summary-Terminate {
+	background: #ec3c38;
+}
+
+.au-summary-extra, 
+#app-apply-update .icon-warning {
+	color    : #ec3c38;
+	font-size: 12px !important;
+}
+
+#app-apply-update .icon-warning {
+	position: absolute;
+	right: 4px;
+	top: 10px;
+}

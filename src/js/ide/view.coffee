@@ -128,7 +128,7 @@ define [ 'event',
                 return
 
             # when not cookie userid
-            if !common_handle.cookie.getCookieByName( 'userid' )
+            if !common_handle.cookie.getCookieByName( 'usercode' )
                 return
 
             #return if MC.data.current_tab_id in [ 'dashboard', undefined ]

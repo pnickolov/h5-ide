@@ -106,7 +106,7 @@ define [ '../base/view',
                 $clone.attr "data-uid", sub.id
                 $clone.find(".protocol").html sub.protocol
                 $clone.find(".endpoint").html sub.endpoint
-                if sub.confirmed and sub.confirmed is false
+                if sub.confirmed isnt null and sub.confirmed is false
                 #not confirmed subscription
                     $clone.find(".sns-action").html( '<i class="icon-pending tooltip" data-tooltip="pendingConfirm" ></i>' )
                 else
@@ -146,7 +146,7 @@ define [ '../base/view',
                 $dom = $("#property-sub-list").children("li[data-uid='#{data.uid}']")
                 $dom.find(".protocol").html( data.protocol )
                 $dom.find(".endpoint").html( data.endpoint )
-                if data.confirmed and data.confirmed is false
+                if data.confirmed isnt null and data.confirmed is false
                 #not confirmed subscription
                     $dom.find(".sns-action").html( '<i class="icon-pending tooltip" data-tooltip="pendingConfirm" ></i>' )
                 else

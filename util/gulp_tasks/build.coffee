@@ -7,6 +7,7 @@ es     = require("event-stream")
 Q      = require("q")
 fs     = require("fs")
 vm     = require("vm")
+EventEmitter = require("events").EventEmitter
 
 tinylr   = require("tiny-lr")
 chokidar = require("chokidar")
@@ -32,7 +33,7 @@ coffeelintOptions =
 compileIgnorePath = /.src.(test|vender|ui)/
 compileCoffeeOnlyRegex = /.src.(service|model)/
 
-lrServer = null
+
 
 Helper =
   shouldLintCoffee : (f)-> not f.path.match compileCoffeeOnlyRegex
@@ -57,24 +58,25 @@ Helper =
       }, ()-> # Add an callback, so that windows won't fail.
     null
 
+  lrServer : undefined
   createLrServer : ()->
-    if lrServer then return
+    if Helper.lrServer isnt undefined then return
 
     # Start LiveReload Server
     gutil.log gutil.colors.bgBlue.white(" Starting livereload server... ")
 
-    lrServer = tinylr()
+    Helper.lrServer = tinylr()
     # Better error output
-    lrServer.server.removeAllListeners 'error'
-    lrServer.server.on "error", (e)->
+    Helper.lrServer.server.removeAllListeners 'error'
+    Helper.lrServer.server.on "error", (e)->
       if e.code isnt "EADDRINUSE" then return
-      console.error('[LR Error] Cannot start livereload server. You already have a server listening on %s', lrServer.port)
-      lrServer = null
+      console.error('[LR Error] Cannot start livereload server. You already have a server listening on %s', Helper.lrServer.port)
+      Helper.lrServer = null
 
-    lrServer.listen GLOBAL.gulpConfig.livereloadServerPort, ( err )->
+    Helper.lrServer.listen GLOBAL.gulpConfig.livereloadServerPort, ( err )->
       if err
         gutil.log "[LR Error]", "Cannot start livereload server"
-        lrServer = null
+        Helper.lrServer = null
       null
 
     null
@@ -87,6 +89,46 @@ Helper =
     if extra
       title += " " + gutil.colors.inverse( extra )
     title
+
+  cwd : process.cwd()
+
+  watchRetry : 0
+  watchIsWorking : false
+  createWatcher : ()->
+    # Watch files
+    if GLOBAL.gulpConfig.pollingWatch
+      gutil.log gutil.colors.bgBlue.white(" Watching file changes... ") + " [Polling]"
+
+      watcher = new EventEmitter()
+      gulp.watch ["./src/**/*.coffee", "./src/assets/**/*"], ( event )->
+        if event.type is "added"
+          type = "add"
+        else if event.type is "changed"
+          type = "change"
+        else
+          return
+
+        watcher.emit type, event.path
+        null
+    else
+      gutil.log gutil.colors.bgBlue.white(" Watching file changes... ") + " [Native FSevent]"
+
+      watcher = chokidar.watch "./src", {
+        usePolling    : false
+        useFsEvents   : true
+        ignoreInitial : true
+        ignored       : /([\/\\]\.)|src.(test|vender)/
+      }
+
+      # Native file event doesn't report git co correctly.
+      # So we polling watch .git/HEAD
+      gulp.watch "./.git/HEAD", ( event )->
+        console.log "[" + gutil.colors.green("Git HEAD Changed @#{(new Date()).toLocaleTimeString()}") + "] Ready to re-compile the whole project"
+
+        compileDev()
+        null
+
+    return watcher
 
 
 StreamFuncs =
@@ -101,8 +143,8 @@ StreamFuncs =
 
   throughLiveReload : ()->
     es.through ( file )->
-      if lrServer
-        lrServer.changed {
+      if Helper.lrServer
+        Helper.lrServer.changed {
           body : { files : [ file.path ] }
         }
       null
@@ -167,11 +209,18 @@ StreamFuncs =
     startPipeline
 
   throughCoffee : ()->
-    coffeeBranch = cached("coffee")
+
+    conditionalCompile = gulpif( Helper.shouldLintCoffee, coffeelint( undefined, coffeelintOptions) )
 
     # Compile
-    coffeeCompile = coffeeBranch
-                    .pipe( gulpif( Helper.shouldLintCoffee, coffeelint( undefined, coffeelintOptions) ) )
+    if GLOBAL.gulpConfig.enableCache
+      coffeeBranch = cached("coffee")
+      coffeeCompile = coffeeBranch.pipe( conditionalCompile )
+    else
+      coffeeCompile = coffeeBranch = conditionalCompile
+
+
+    coffeeCompile = coffeeCompile
                     .pipe( StreamFuncs.throughCoffeeConditionalCompile() )
                     .pipe( coffee({sourceMap:GLOBAL.gulpConfig.coffeeSourceMap}) )
 
@@ -198,99 +247,103 @@ StreamFuncs =
 
     coffeeBranch
 
+  workStream : null
+  workEndStream : null
+  createStreamObject : ()->
+    # Create Work Stream
+    if StreamFuncs.workStream then return
 
-setupCompileStream = ( stream )->
+    StreamFuncs.workStream    = es.through()
+    StreamFuncs.workEndStream = StreamFuncs.setupCompileStream StreamFuncs.workStream
+    null
 
-  # Branch Used to handle asset files ( image / css / fonts / etc. )
-  assetBranch = StreamFuncs.throughLiveReload()
+  setupCompileStream : ( stream )->
 
-  # Branch Used to handle lang-source.js
-  langSrcBranch = StreamFuncs.throughLangSrc()
+    # Branch Used to handle asset files ( image / css / fonts / etc. )
+    assetBranch = StreamFuncs.throughLiveReload()
 
-  # Branch Used to handle coffee files
-  coffeeBranch = StreamFuncs.throughCoffee()
+    # Branch Used to handle lang-source.js
+    langSrcBranch = StreamFuncs.throughLangSrc()
 
-  # Setup compile branch
-  langeSrcBranchRegex   = /lang-source\.coffee/
-  coffeeBranchRegex     = /\.coffee$/
+    # Branch Used to handle coffee files
+    coffeeBranch = StreamFuncs.throughCoffee()
 
-  if GLOBAL.gulpConfig.reloadJsHtml
-    liveReloadBranchRegex = /(src.assets)|(\.js$)|(\.html$)/
+    # Setup compile branch
+    langeSrcBranchRegex   = /lang-source\.coffee/
+    coffeeBranchRegex     = /\.coffee$/
+
+    if GLOBAL.gulpConfig.reloadJsHtml
+      liveReloadBranchRegex = /(src.assets)|(\.js$)|(\.html$)/
+    else
+      liveReloadBranchRegex = /src.assets/
+
+    stream.pipe( gulpif langeSrcBranchRegex,   langSrcBranch, true )
+          .pipe( gulpif coffeeBranchRegex,     coffeeBranch,  true )
+          .pipe( gulpif liveReloadBranchRegex, assetBranch,   true )
+
+
+
+changeHandler = ( path )->
+  Helper.watchIsWorking = true
+
+  if not fs.existsSync( path ) then return
+
+  stats = fs.statSync( path )
+  # If it's a folder, do nothing
+  if stats.isDirectory() then return
+
+  if GLOBAL.gulpConfig.verbose then console.log "[Change]", path
+
+  if path.match /src.assets/
+    # No need to read file for assets folder
+    StreamFuncs.workStream.emit "data", { path : path }
   else
-    liveReloadBranchRegex = /src.assets/
-
-  stream.pipe( gulpif langeSrcBranchRegex,   langSrcBranch, true )
-        .pipe( gulpif coffeeBranchRegex,     coffeeBranch,  true )
-        .pipe( gulpif liveReloadBranchRegex, assetBranch,   true )
-
-
-# Tasks
-watch = ( secondTime )->
-
-  watchIsWorking = secondTime or false
-
-  Helper.createLrServer()
-
-  # Watch files
-  watcher = chokidar.watch "./src", {
-    usePolling    : false
-    useFsEvents   : true
-    ignoreInitial : true
-    ignored       : /([\/\\]\.)|src.(test|vender)/
-  }
-
-  cwd         = process.cwd()
-  watchStream = es.through()
-
-  setupCompileStream watchStream
-
-  changeHandler = ( path )->
-    watchIsWorking = true
-
-    if not fs.existsSync( path ) then return
-
-    stats = fs.statSync( path )
-    # If it's a folder, do nothing
-    if stats.isDirectory() then return
-
-    if GLOBAL.gulpConfig.verbose then console.log "[Change]", path
-
-    if path.match /src.assets/
-      # No need to read file for assets folder
-      watchStream.emit "data", { path : path }
-      return
-
-
     fs.readFile path, ( err, data )->
       if not data then return
 
-      watchStream.emit "data", new gutil.File({
-        cwd      : cwd
-        base     : cwd
+      StreamFuncs.workStream.emit "data", new gutil.File({
+        cwd      : Helper.cwd
+        base     : Helper.cwd
         path     : path
         contents : data
       })
       null
-    null
+  null
 
-  # Delay the change handler so that we would ignore the first add event
-  # and some change event
-  gutil.log gutil.colors.bgBlue.white(" Watching file changes... ")
-  watcher.on "add",    changeHandler
-  watcher.on "change", changeHandler
-  watcher.on "error", (e)-> console.log "[error]", e
+checkWatchHealthy = ( watcher )->
+  # Do not ensure watch for polling.
+  if GLOBAL.gulpConfig.pollingWatch then return
 
   # Try to detect if watch is not working
   fs.writeFileSync( "./src/robots.txt", fs.readFileSync("./src/robots.txt") )
   setTimeout ()->
-    if not watchIsWorking
+    if not Helper.watchIsWorking
       console.log "[Info]", "Watch is not working. Will retry in 2 seconds."
       Helper.notify "Watch is not working. Will retry in 2 seconds."
       watcher.removeAllListeners()
 
-      setTimeout (()-> watch(true)), 2000
+      setTimeout (()-> watch()), 2000
 
   , 500
+
+# Tasks
+watch = ()->
+  ++Helper.watchRetry
+  if Helper.watchRetry > 3
+    console.log gutil.colors.red.bold "[Fatal]", "Watch is still not working. Please manually retry."
+    Helper.notify "Watch is still not working. Please manually retry."
+    return
+
+  Helper.createLrServer()
+
+  StreamFuncs.createStreamObject()
+
+  watcher = Helper.createWatcher()
+  watcher.on "add",    changeHandler
+  watcher.on "change", changeHandler
+  watcher.on "error", (e)-> console.log "[error]", e
+
+  checkWatchHealthy( watcher )
   null
 
 
@@ -302,11 +355,16 @@ compileDev = ( allCoffee )->
 
   deferred = Q.defer()
 
-  setupCompileStream( gulp.src path, {cwdbase:true} ).on "end", ()->
-    deferred.resolve()
+  StreamFuncs.createStreamObject()
+
+  compileStream = gulp.src( path, {cwdbase:true} ).pipe es.through ( f )->
+    # Re-pipe the data to the workStream
+    StreamFuncs.workStream.emit "data", f
+    null
+
+  compileStream.once "end", ()-> deferred.resolve()
 
   deferred.promise
-
 
 
 module.exports =

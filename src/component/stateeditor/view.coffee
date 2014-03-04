@@ -519,6 +519,12 @@ define [ 'event',
                     valueValue = that.getPlainText($valueInput)
                     paraValue = valueValue
 
+                    if paraType is 'bool'
+                        if paraValue is 'true'
+                            paraValue = paraName
+                        else
+                            viewRenderObj.para_no_visible = true
+
                 viewRenderObj.para_value = paraValue
                 if paraValue
                     paraListViewRenderAry.push(viewRenderObj)

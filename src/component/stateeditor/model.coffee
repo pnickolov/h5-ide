@@ -293,8 +293,13 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 
 		genAttrRefList: (allCompData) ->
 
-			allCompData = allCompData or @get('allCompData')
 			that = this
+
+			currentCompData = that.get('compData')
+
+			currentCompUID = currentCompData.uid
+
+			allCompData = allCompData or @get('allCompData')
 
 			autoCompList = []
 
@@ -306,6 +311,10 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 
 				compName = compData.name
 				compUID = compData.uid
+
+				if compUID is currentCompUID
+					compName = 'self'
+
 				compType = compData.type
 
 				if compType is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
@@ -329,6 +338,8 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 						instanceUID = MC.extractID(instanceRef)
 						if instanceUID
 							compName = allCompData[instanceUID].serverGroupName
+							if instanceUID is currentCompUID
+								compName = 'self'
 
 				supportType = compType.replace(/\./ig, '_')
 
@@ -496,6 +507,9 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 
 			that = this
 
+			currentCompData = that.get('compData')
+			currentCompUID = currentCompData.uid
+
 			allCompData = that.get('allCompData')
 
 			refRegex = /@\{([A-Z0-9]{8}-([A-Z0-9]{4}-){3}[A-Z0-9]{12})(\.(\w+(\[\d+\])*))+\}/g
@@ -509,10 +523,13 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 				uidMatchAry = refMatchStr.match(uidRegex)
 				resUID = uidMatchAry[0]
 
-				if allCompData[resUID]
-					resName = allCompData[resUID].name
+				if resUID is currentCompUID
+					resName = 'self'
 				else
-					resName = 'unknown'
+					if allCompData[resUID]
+						resName = allCompData[resUID].name
+					else
+						resName = 'unknown'
 
 				newRefStr = refMatchStr.replace(resUID, resName)
 				newParaValue = newParaValue.replace(refMatchStr, newRefStr)
@@ -546,7 +563,13 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 		getUIDByResName: (resName) ->
 
 			that = this
+			currentCompData = that.get('compData')
+			currentCompUID = currentCompData.uid
 			allCompData = that.get('allCompData')
+
+			if resName is 'self'
+				return currentCompUID
+
 			resultUID = ''
 			_.each allCompData, (resObj, uid) ->
 				if resObj.name is resName

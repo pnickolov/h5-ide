@@ -172,6 +172,7 @@ define [ 'event',
 		if force then view.forceShow()
 		### env:dev:end ###
 
+
 		### env:prod ###
 		try
 			PropertyBaseModule.load type, uid, tab_type

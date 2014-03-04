@@ -44,6 +44,14 @@ define [ 'backbone', 'Design' ], ( Backbone, Design )->
                     return false
 
             dup
+
+        isReservedName : ( newName ) ->
+
+            result = false
+            if newName in ['self', 'this', 'global', 'meta', 'madeira']
+                result = true
+
+            return result
     }
 
     PropertyModel

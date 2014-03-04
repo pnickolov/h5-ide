@@ -80,6 +80,9 @@ define [ 'constant',
             if not error and @model.isNameDup( name )
                 error = "#{type} name \" #{name} \" is already in using. Please use another one."
 
+            if not error and @model.isReservedName( name )
+                error = "#{type} name \" #{name} \" is reserved keyword. Please use another one."
+
             if name.indexOf("elbsg-") is 0
                 error = 'Resource name starting with "elbsg-" is reserved.'
 

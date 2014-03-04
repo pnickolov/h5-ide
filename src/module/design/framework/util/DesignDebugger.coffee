@@ -81,7 +81,7 @@ define [ "Design" ], ( Design )->
     null
 
   Design.debug.checkValidDesign = ()->
-    D.instance().eachComponent ( comp )->
+    dd().eachComponent ( comp )->
       if comp.design() is D.instance()
         console.log "Valid design"
       else

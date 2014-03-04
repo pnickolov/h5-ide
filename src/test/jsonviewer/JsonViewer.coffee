@@ -214,7 +214,7 @@ define ["event", "text!./diff.html", "text!./view.html", "./JsonDiffLib", "./jqU
         $("#jsonViewer").remove()
         null
 
-      $("#diffRefresh").on "click", ()-> updateViewDialog( D.instance().serialize() )
+      $("#diffRefresh").on "click", ()-> updateViewDialog( dd().serialize() )
 
       updateTO = null
       $("#diffSearch").on "keydown", ()->

@@ -5,7 +5,7 @@
 #* Description: I18N
 #* Date: 20131015
 
-#* Nameing Rule
+#* Naming Rule
 
   #*# SYNOPSIS
   ModuleName_Type_Description

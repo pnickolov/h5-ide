@@ -785,6 +785,11 @@ $(document).ready(function ()
 
 	$(document.body).addClass('locale-' + language);
 
+	if (navigator.platform.toLowerCase().indexOf('mac') >= 0)
+	{
+		$(document.body).addClass('mac');
+	}
+
 	// Detecting browser and add the class name on body, so that we can use specific CSS style
 	// or for specific usage.
 	MC.browserDetect();

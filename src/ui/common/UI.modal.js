@@ -98,12 +98,18 @@ modal.open = function (event)
 		target_template = target.data('modal-template'),
 		target_data = target.data('modal-data');
 
-	if (target_template && target_data)
+	if (target_template)
 	{
+		if (target_data === undefined)
+		{
+			target_data = '';
+		}
+
 		modal(
 			MC.template[ target_template ]( target_data ),
 			target.data('modal-dismiss')
 		);
+		
 		target.trigger('modal-shown');
 
 		$('#modal-wrap').one('closed', function ()

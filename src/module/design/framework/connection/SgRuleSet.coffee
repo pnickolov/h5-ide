@@ -267,7 +267,7 @@ define [ "constant", "../ConnectionModel", "Design" ], ( constant, ConnectionMod
         owner = @port1Comp().id
 
       ports = ""+ruleObj.port
-      if ports.indexOf "/"
+      if ports.indexOf("/") >= 0
         ports = ports.split("/")
       else
         ports = ports.split("-")

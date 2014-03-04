@@ -90,9 +90,11 @@ define [ "Design" ], ( Design )->
     null
 
 
-  window.D   = Design
-  window.dd  = Design.debug
-  window.dds = ()-> Design.debug.json( true )
+  window.d    = ()-> Design.instance()
+  window.dd   = Design.debug
+  window.dget = ( a )-> Design.instance().get(a)
+  window.dset = ( a, b )-> Design.instance().set(a,b)
+  window.dds  = ()-> Design.debug.json( true )
   null
 
   ### env:dev:end ###

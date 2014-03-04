@@ -17,8 +17,10 @@ define [ 'event',
         events:
             'click': 'test'
 
+        # store current open tab [ property|state ]
         currentTab: 'property'
 
+        # store lastest render component id
         lastComId: null
 
         initialize : ->
@@ -99,14 +101,10 @@ define [ 'event',
             if hideButton.hasClass 'icon-caret-left'
                 hideButton.click()
 
-        renderProperty: ( uid ) ->
+        renderProperty: ( uid, type, force ) ->
             @__hideState()
             $( '#property-panel' ).removeClass('state').removeClass('state-wide')
-            if @lastComId is uid and @__hasState()
-                @currentTab = 'property'
-
-            else if @currentTab is 'state'
-                @currentTab = 'property'
+            if not uid or @lastComId isnt uid
                 if not uid
                     uid = Design.instance().canvas.selectedNode[ 0 ]
 
@@ -115,11 +113,69 @@ define [ 'event',
                     type = component.type
                     id = component.id
 
-                @__initProperty type, uid
+                @__initProperty type, uid, force
 
+            @currentTab = 'property'
             @__showProperty()
             @forceShow()
             @lastComId = uid
+            @
+
+
+        renderState: ( uid, force ) ->
+
+            @__hideProperty()
+            @__hideResourcePanel()
+            $( '#property-panel' ).addClass 'state'
+
+            @lastComId = uid
+            @currentTab = 'state'
+
+            if @lastComId is uid and @__hasProperty()
+
+            else
+
+                if not uid
+                    uid = Design.instance().canvas.selectedNode[ 0 ]
+
+                if uid
+                    comp = Design.instance().component uid
+                    if comp
+                        type = comp.type
+                        if not _.contains [ CONST.RESTYPE.LC, CONST.RESTYPE.INSTANCE ], type
+                            @renderProperty uid
+                            return
+                        else if _.contains [ CONST.RESTYPE.LC ], type
+                            if Design.instance().modeIsApp()
+                                currentStackState = Design.instance().get('state')
+                                if currentStackState is 'Stopped'
+                                    ide_event.trigger ide_event.OPEN_STATE_EDITOR, uid
+                                    @__showState()
+                                return
+
+                            ide_event.trigger ide_event.OPEN_STATE_EDITOR, uid
+                            @__showState()
+                            return
+
+                    if Design.instance().modeIsApp()
+
+                        # for asg
+
+                        resId = $('#asgList-wrap .asgList-item.selected').attr('id')
+
+                        if resId
+
+                            compObj = MC.aws.aws.getCompByResIdForState(resId)
+                            if compObj and compObj.parent and compObj.parent.type is 'AWS.AutoScaling.Group'
+                                lcComp = compObj.parent.get('lc')
+                                if lcComp and lcComp.id
+                                    ide_event.trigger ide_event.OPEN_STATE_EDITOR, lcComp.id, resId
+                                    @__showState()
+                                    return
+
+            ide_event.trigger ide_event.OPEN_STATE_EDITOR, uid
+            @__showState()
+            @forceShow()
             @
 
         __initProperty: ( type, uid, force ) ->
@@ -181,63 +237,6 @@ define [ 'event',
             ### env:prod:end ###
 
             null
-
-        renderState: ( uid, force ) ->
-
-            @__hideProperty()
-            @__hideResourcePanel()
-            $( '#property-panel' ).addClass 'state'
-
-            @lastComId = uid
-            @currentTab = 'state'
-
-            if @lastComId is uid and @__hasProperty()
-
-            else
-
-                if not uid
-                    uid = Design.instance().canvas.selectedNode[ 0 ]
-
-                if uid
-                    comp = Design.instance().component uid
-                    if comp
-                        type = comp.type
-                        if not _.contains [ CONST.RESTYPE.LC, CONST.RESTYPE.INSTANCE ], type
-                            @renderProperty uid
-                            return
-                        else if _.contains [ CONST.RESTYPE.LC ], type
-                            if Design.instance().modeIsApp()
-                                currentStackState = Design.instance().get('state')
-                                if currentStackState is 'Stopped'
-                                    ide_event.trigger ide_event.OPEN_STATE_EDITOR, uid
-                                    @__showState()
-                                return
-
-                            ide_event.trigger ide_event.OPEN_STATE_EDITOR, uid
-                            @__showState()
-                            return
-
-                    if Design.instance().modeIsApp()
-
-                        # for asg
-
-                        resId = $('#asgList-wrap .asgList-item.selected').attr('id')
-
-                        if resId
-
-                            compObj = MC.aws.aws.getCompByResIdForState(resId)
-                            if compObj and compObj.parent and compObj.parent.type is 'AWS.AutoScaling.Group'
-                                lcComp = compObj.parent.get('lc')
-                                if lcComp and lcComp.id
-                                    ide_event.trigger ide_event.OPEN_STATE_EDITOR, lcComp.id, resId
-                                    @__showState()
-                                    return
-
-            ide_event.trigger ide_event.OPEN_STATE_EDITOR, uid
-            @__showState()
-            @forceShow()
-            @
-
 
         render     : () ->
             # Blur any focused input

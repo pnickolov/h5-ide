@@ -350,17 +350,19 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
 
         null
 
-    PropertyModule.snapshot = ()->
+    PropertyModule.snapshot = ( propertyView )->
         data =
             activeModuleType    : activeModuleType
             activeSubModuleType : activeSubModuleType
             activeModuleId      : activeModule.uid
             activeSubModuleId   : if activeSubModule then activeSubModule.uid else null
             tab_type            : activeModule.type
+            propertyTab         : propertyView.currentTab
 
         data
 
-    PropertyModule.restore  = ( snapshot )->
+    PropertyModule.restore  = ( snapshot, propertyView )->
+        propertyView.currentTab = snapshot.propertyTab
 
         PropertyModule.load snapshot.activeModuleType, snapshot.activeModuleId, snapshot.tab_type
 

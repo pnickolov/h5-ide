@@ -3610,6 +3610,10 @@ module.exports =
       en: "Auto Scaling Group <span class='validation-tag tag-asg'>%s</span> state %s has referenced %s inexistent component(s)"
       zh: ""
 
+    TA_MSG_ERROR_STATE_EDITOR_EMPTY_REQUIED_PARAMETER:
+      en: "%s's state %s is missing required parameter %s."
+      zh: ""
+
     # State
     TA_MSG_ERROR_NOT_CONNECT_OUT:
       en: "%s has configured states. To make sure OpsAgent to work, %s must be connected to internet directly or via a NAT instance."

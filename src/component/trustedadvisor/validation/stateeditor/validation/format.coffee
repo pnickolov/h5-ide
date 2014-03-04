@@ -1,6 +1,6 @@
-#############################
-#  View Mode for component/stateeditor
-#############################
+###
+This file use for validate state.
+###
 
 define [ 'Design', 'constant', 'i18n!nls/lang.js', 'jquery', 'underscore', 'MC' ], ( Design, constant, lang ) ->
 
@@ -184,31 +184,18 @@ define [ 'Design', 'constant', 'i18n!nls/lang.js', 'jquery', 'underscore', 'MC' 
         cmd = Helper.getCommand module, state.module
 
         error = []
-        for param, name of cmd.parameter
+        for name, param of cmd.parameter
             if param.required is true and not Validator.required( state.parameter[ name ] )
-                tip = 'Empty required parameter'
+                tip = sprintf lang.ide.TA_MSG_ERROR_STATE_EDITOR_EMPTY_REQUIED_PARAMETER, data.name, data.stateId, name
                 type = 'requiredParameter'
-                error.push Helper.buildError tip, data.stateId, type
-            if param.type is 'bool' and not Validator.isBool( state.parameter[ name ] )
-                tip = 'invalid boolean value'
-                type = 'invalidbool'
                 error.push Helper.buildError tip, data.stateId, type
 
         error
 
     # Interface
     checkFormat = ( state, data ) ->
-        error = []
+        __matchModule( state, data )
 
-        if not state.module.length
-            tip = "Empty command"
-            type = "emptycommand"
-            error.push Helper.buildError tip, data.stateId, type
-
-        else
-            error = error.concat __matchModule( state, data )
-
-        error
 
     checkFormat
 

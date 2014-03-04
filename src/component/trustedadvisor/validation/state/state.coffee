@@ -1,3 +1,7 @@
+###
+This file use for validate component about state.
+###
+
 define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo', 'Design' ], ( constant, MC, lang, resultVO, Design ) ->
 
     __wrap = ( method ) ->

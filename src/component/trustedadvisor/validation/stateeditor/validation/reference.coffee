@@ -1,3 +1,7 @@
+###
+This file use for validate state.
+###
+
 define [ 'constant', 'MC', 'i18n!nls/lang.js' ], ( constant, MC, lang ) ->
 
     ########## Functional Method ##########

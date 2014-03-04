@@ -29,10 +29,11 @@ Copy `gulpconfig-default.js` to `gulpconfig.js`. Then modify `gulpconfig.js`
 * In order to use livereload, one must install the [Chrome LiveReload Plugin](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei).
 * When plugin is installed, an icon will appear in chrome toolbar. Click the icon to enable/disable livereload.
 
-### Known Issue
-The gulp tasks of MaderiaCloud IDE use native OS filesystem to monitor file changes instead of node's fileWatcher. This results in some issues (in OSX) :
+### Known Issue of Native FsEvent
+When pollingWatch is false or "auto" in OSX, gulp use native FsEvent to monitor file changes. The shortcoming of this method is that some action will not be reported by the OS. For example, most of the git action can not be reported.
 
+Also, there's some other (rare) issues :
 * Occasionally happens : `Assersion Failed`
 * When file is changed, the file won't get compiled.
 
-Whenever these issue happens, close the process by hitting `Ctrl+C`, or close the tab. Then wait for several seconds and re-run the command again.
+Whenever these (rare) issue happens, close the process by hitting `Ctrl+C`, or close the tab. Then wait for several seconds and re-run the command again.

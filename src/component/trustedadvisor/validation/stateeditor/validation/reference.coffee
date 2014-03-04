@@ -21,7 +21,7 @@ define [ 'constant', 'MC', 'i18n!nls/lang.js' ], ( constant, MC, lang ) ->
 
     # return  Array
     __findReference = ( str ) ->
-        reg = constant.REGEXP.stateEditorReference
+        reg = constant.REGEXP.stateEditorOriginReference
         ret = []
 
         while ( resArr = reg.exec str ) isnt null

@@ -121,7 +121,7 @@ Helper = {
   watchRetry: 0,
   watchIsWorking: false,
   createWatcher: function() {
-    var watcher;
+    var compileAfterGitAction, gitDebounceTimer, watcher;
 
     if (GLOBAL.gulpConfig.pollingWatch) {
       gutil.log(gutil.colors.bgBlue.white(" Watching file changes... ") + " [Polling]");
@@ -147,9 +147,16 @@ Helper = {
         ignoreInitial: true,
         ignored: /([\/\\]\.)|src.(test|vender)/
       });
-      gulp.watch("./.git/HEAD", function(event) {
-        console.log("[" + gutil.colors.green("Git HEAD Changed @" + ((new Date()).toLocaleTimeString())) + "] Ready to re-compile the whole project");
-        compileDev();
+      gitDebounceTimer = null;
+      compileAfterGitAction = function() {
+        console.log("[" + gutil.colors.green("Git Action Detected @" + ((new Date()).toLocaleTimeString())) + "] Ready to re-compile the whole project");
+        gitDebounceTimer = null;
+        return compileDev();
+      };
+      gulp.watch(["./.git/HEAD", "./.git/refs/heads/develop", "./.git/refs/heads/**/*"], function(event) {
+        if (gitDebounceTimer === null) {
+          gitDebounceTimer = setTimeout(compileAfterGitAction, 300);
+        }
         return null;
       });
     }

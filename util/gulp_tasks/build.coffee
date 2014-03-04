@@ -119,12 +119,18 @@ Helper =
         ignored       : /([\/\\]\.)|src.(test|vender)/
       }
 
-      # Native file event doesn't report git co correctly.
-      # So we polling watch .git/HEAD
-      gulp.watch "./.git/HEAD", ( event )->
-        console.log "[" + gutil.colors.green("Git HEAD Changed @#{(new Date()).toLocaleTimeString()}") + "] Ready to re-compile the whole project"
-
+      # Native file event doesn't report git action correctly.
+      # So we polling watch .git folder
+      gitDebounceTimer = null
+      compileAfterGitAction = ()->
+        console.log "[" + gutil.colors.green("Git Action Detected @#{(new Date()).toLocaleTimeString()}") + "] Ready to re-compile the whole project"
+        gitDebounceTimer = null
         compileDev()
+
+      gulp.watch ["./.git/HEAD", "./.git/refs/heads/develop", "./.git/refs/heads/**/*" ], ( event )->
+        if gitDebounceTimer is null
+          gitDebounceTimer = setTimeout compileAfterGitAction, 300
+
         null
 
     return watcher

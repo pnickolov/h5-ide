@@ -30,7 +30,7 @@ Copy `gulpconfig-default.js` to `gulpconfig.js`. Then modify `gulpconfig.js`
 * When plugin is installed, an icon will appear in chrome toolbar. Click the icon to enable/disable livereload.
 
 ### Known Issue of Native FsEvent
-When pollingWatch is false or "auto" in OSX, gulp use native FsEvent to monitor file changes. The shortcoming of this method is that some action will not be reported by the OS. For example, most of the git action can not be reported.
+When pollingWatch is false or "auto" in OSX, gulp use native FsEvent to monitor file changes. The shortcoming of this method is that some action will not be reported by the OS. For example, vim saving file probably won't be reported.
 
 Also, there's some other (rare) issues :
 * Occasionally happens : `Assersion Failed`

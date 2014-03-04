@@ -4,9 +4,13 @@
 }
 
 #state-editor .parameter-value {
-	font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace  !important;
+	/*font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace  !important;*/
 	font-size: 12px !important;
 	color: #ccc;
+}
+
+#state-editor .parameter-value.editable-area:hover {
+	background: rgba(255,255,255,.05);
 }
 
 #state-editor-wrap, #state-editor-body, #state-editor {
@@ -364,7 +368,7 @@
 	opacity: 1.0 !important;
 }
 
-#state-editor .line:hover {
+#state-editor .parameter-list .parameter-item.disabled:hover {
 	opacity: 1.0 !important;
 }
 

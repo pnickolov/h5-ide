@@ -69,6 +69,7 @@ define [ 'constant', 'event', 'ta_conf', './validation/main', './validation/resu
                     _pushResult result, method, filename
                 catch err
                     _handleException( err )
+        null
 
     _validComponents = () ->
         components = MC.canvas_data.component
@@ -85,10 +86,17 @@ define [ 'constant', 'event', 'ta_conf', './validation/main', './validation/resu
 
             # validate state editor
             #try
-            result = validation_main[ 'stateEditor' ]( uid )
-            _pushResult result, 'stateEditor', 'stateEditor', uid
+            _validState validation_main, uid
             #catch err
                 #_handleException( err )
+        null
+
+    _validState = ( validation_main, uid ) ->
+        if Design.instance().get('agent').enabled is true
+            result = validation_main[ 'stateEditor' ]( uid )
+            _pushResult result, 'stateEditor', 'stateEditor', uid
+
+        null
 
     _validAsync = ->
         finishTimes = _.reduce config.asyncList, ( memo, arr ) ->
@@ -106,8 +114,7 @@ define [ 'constant', 'event', 'ta_conf', './validation/main', './validation/resu
                     _pushResult result, method, filename
                 catch err
                     _handleException( err )
-
-    _validState = ->
+        null
 
 
     ########## Public Method ##########
@@ -135,6 +142,7 @@ define [ 'constant', 'event', 'ta_conf', './validation/main', './validation/resu
 
         catch err
             _handleException( err )
+        null
 
     validRun = ->
 

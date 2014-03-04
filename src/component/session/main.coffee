@@ -36,12 +36,12 @@ define [ 'jquery', 'event',
             #
             reconnect_view  = new Reconnect_view()
             model           = new Model()
-            #
+
             reconnect_view.render()
 
-            #
             reconnect_view.on 'RE_LOGIN', ( password ) -> model.relogin password
             reconnect_view.on 'CLOSE_POPUP',        () -> unLoadModule reconnect_view, model
+
             model.on 'RE_LOGIN_SCUCCCESS',          () ->
                 #
                 ide_event.trigger ide_event.UPDATE_APP_LIST
@@ -53,7 +53,6 @@ define [ 'jquery', 'event',
 
                 window.location.href = "/ide.html" if !MC.data.is_loading_complete
                 return
-
 
             model.on 'RE_LOGIN_FAILED',             () -> reconnect_view.invalid()
 
@@ -68,7 +67,6 @@ define [ 'jquery', 'event',
         model = null
         #ide_event.offListen ide_event.<EVENT_TYPE>
         #ide_event.offListen ide_event.<EVENT_TYPE>, <function name>
-        return
 
     #public
     loadModule   : loadModule

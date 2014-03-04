@@ -8,15 +8,12 @@ define [ 'session_model', 'common_handle'
 
 	SessionModel = Backbone.Model.extend {
 
-		relogin : ( password ) ->
-			console.log 'relogin, password = ' + password
+		initialize : ->
+
 			me = this
 
-			#invoke session.login api
-			session_model.login { sender : this }, $.cookie( 'username' ), password
-
 			#login return handler (dispatch from service/session/session_model)
-			this.once 'SESSION_LOGIN_RETURN', ( forge_result ) ->
+			@on 'SESSION_LOGIN_RETURN', ( forge_result ) ->
 				console.log 'SESSION_LOGIN_RETURN'
 
 				if !forge_result.is_error
@@ -38,6 +35,11 @@ define [ 'session_model', 'common_handle'
 					me.trigger 'RE_LOGIN_FAILED'
 
 				null
+
+		relogin : ( password ) ->
+			console.log 'relogin, password = ' + password
+			#invoke session.login api
+			session_model.login { sender : this }, $.cookie( 'username' ), password
 
 	}
 

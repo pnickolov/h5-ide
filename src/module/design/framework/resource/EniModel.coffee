@@ -502,8 +502,7 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
 
   }, {
 
-    # EniModel does not handle EIP's deserialize. Because EIP's component
-    # will be removed before deserializing. It only handles EIP's diffJson
+    # EniModel does not handle EIP's deserialize. It only handles EIP's diffJson
     handleTypes : [ constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface, constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP ]
 
     createServerGroupMember : ( data )->
@@ -523,8 +522,9 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
         })
         if ip.EipResource
           ipObj.eipData =
-            id           : ip.EipResource.uid
-            allocationId : ip.EipResource.AllocationId
+            id            : ip.EipResource.uid
+            allocationId  : ip.EipResource.resource.AllocationId
+            publicIp      : ip.EipResource.resource.PublicIp
         memberData.ips.push( ipObj )
 
       memberData

@@ -36,6 +36,8 @@ define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, const
 
             isDefault = @get("isDefault")
 
+            isApp = @isApp
+
             # Format rules
             _.each rules, ( rule )->
                 if not rule.port then rule.port = "All"
@@ -44,6 +46,8 @@ define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, const
                     rule.number   = "*"
                     rule.readOnly = true
                 else if rule.number is "100" and isDefault
+                    rule.readOnly = true
+                else if isApp
                     rule.readOnly = true
 
                 switch rule.protocol

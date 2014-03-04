@@ -9,7 +9,7 @@
 	color: #ccc;
 }
 
-#state-editor .parameter-value.editable-area:hover {
+#state-editor .parameter-item:hover .parameter-value.editable-area {
 	background: rgba(255,255,255,.05);
 }
 
@@ -64,25 +64,38 @@
 	padding-left: 34px;
 }
 
+.state-sidebar {
+	position     : absolute;
+	right        : 653px;
+	z-index      : -1;
+
+	height       : 96%;
+	width        : 320px;
+
+	box-shadow   : 0 0 10px rgba(0,0,0,.2);
+	border       : 1px solid #000;
+	border-radius: 4px 0 0 4px;
+}
+
 #state-description, #state-log {
 	border-right: 1px solid #ccc;
-	width: 244px;
-	float: left;
+	/*width: 244px;*/
+	/*float: left;*/
 	overflow-x: hidden;
 	overflow-y: auto;
 	padding: 10px 0;
 	font-size: 13px;
 	background: #f0f0f0;
 	color: #666;
-	box-shadow: inset 1px 0 0 rgba(0,0,0,.05);
-	height: 100%;
+	/*box-shadow: inset 1px 0 0 rgba(0,0,0,.05);*/
+	/*height: 100%;*/
 }
 
 #state-log {
 	display: none;
-	width: 245px;
+	/*width: 245px;*/
 	padding: 0;
-	background-color: #000;
+	/*background-color: #000;*/
 }
 
 #state-editor::-webkit-scrollbar-track {
@@ -338,24 +351,9 @@
 	/*border-bottom: 1px solid #69aadc;*/
 }
 
-#state-editor .editable-area:hover {
-	/*border-bottom: 1px solid #aaa;*/
-}
-
 #state-editor .editable-area.disabled {
 	opacity: 0.5 !important;
 }
-
-/*#state-editor .editable-area *:not(.Apple-tab-span) {
-	padding: 0;
-	margin: 0;
-	line-height: 14px;
-	font-weight: normal;
-	font-size: 14px;
-	background-color: transparent;
-	color: #000;
-	border: 0;
-}*/
 
 #state-editor .editable-area.line {
 	white-space: nowrap !important;
@@ -944,14 +942,16 @@
 	line-height: 16px;
 	padding: 14px;
 	font-family: "Anonymous Pro","Lucida Console", "Monaco", monospace;
+	color: rgba(80, 226, 77, 0.6);
 }
 
 #state-log .state-log-item-detail br {
-	line-height: 30px;
+	line-height: 10px;
 }
 
 #state-log .state-log-item-detail.comment {
-	border-bottom: 1px #444 solid;
+	/*border-bottom: 1px #444 solid;*/
+	color: rgb(80, 226, 77);
 }
 
 #state-log .state-log-info {
@@ -1245,9 +1245,9 @@
 	margin-right: 654px;
 }
 
-#property-panel.state-wide:not(.hidden) + #canvas-panel {
+/*#property-panel.state-wide:not(.hidden) + #canvas-panel {
 	margin-right: 900px;
-}
+}*/
 
 /* switch button style */
 .switch {

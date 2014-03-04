@@ -170,11 +170,12 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
 
 
     # A helper function to let each resource to get its dependency
-    resolveDeserialize = ( uid )=>
+    that = this
+    resolveDeserialize = ( uid )->
 
       if not uid then return null
 
-      obj = this.__componentMap[ uid ]
+      obj = that.__componentMap[ uid ]
       if obj then return obj
 
       # Check if we have recursive dependency
@@ -216,14 +217,12 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
       if Design.__resolveFirstMap[ comp.type ] is true
         ModelClass = Design.modelClassForType( comp.type )
 
-        ### env:dev ###
         if not ModelClass
           console.warn "We do not support deserializing resource of type : #{component_data.type}"
           continue
         if not ModelClass.preDeserialize
           console.error "The class is marked as resolveFirst, yet it doesn't implement preDeserialize()"
           continue
-        ### env:dev:end ###
 
         ModelClass.preDeserialize( comp, layout_data[uid] )
 

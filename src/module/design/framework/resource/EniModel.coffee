@@ -540,12 +540,14 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
         if instance
           return {
             name   : instance.serverGroupName
+            id     : instance.uid
             type   : instance.type
             change : "Update"
           }
       else
         return {
           name   : eni.serverGroupName
+          id     : eni.uid
           type   : eni.type
           change : "Update"
         }

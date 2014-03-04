@@ -16,7 +16,6 @@ notifier = require("node-notifier")
 coffee     = require("gulp-coffee")
 coffeelint = require("gulp-coffeelint")
 gulpif     = require("gulp-if")
-cached     = require("gulp-cached")
 
 indexOf    = require("./indexof")
 
@@ -141,6 +140,29 @@ StreamFuncs =
     Helper.notify "Error occur when compiling " + error.message.replace( process.cwd(), "." ).split(":")[0]
     null
 
+  throughCached : ( nextPipe )->
+    if not GLOBAL.gulpConfig.enableCache
+      return nextPipe
+
+    newCache = {}
+    pipeline = es.through ( file )->
+      if newCache[ file.path ]
+        utf8Content = file.contents.toString("utf8")
+        if newCache[ file.path ] is utf8Content
+          if GLOBAL.gulpConfig.verbose
+            console.log "[Cached]", file.path
+          return
+
+      if not utf8Content
+        utf8Content = file.contents.toString("utf8")
+
+      newCache[ file.path ] = utf8Content
+      @emit "data", file
+      null
+
+    pipeline.pipe( nextPipe )
+    pipeline
+
   throughLiveReload : ()->
     es.through ( file )->
       if Helper.lrServer
@@ -179,23 +201,14 @@ StreamFuncs =
 
   throughLangSrc : ()->
 
-    startPipeline = coffee()
-
-    cachedLangSrc = null
+    startPipeline = StreamFuncs.throughCached( coffee() )
 
     pipeline = startPipeline.pipe es.through ( file )->
-
-      newContent = file.contents.toString("utf8")
-
-      # Drop the change if the content is the same
-      if newContent is cachedLangSrc then return
-
-      cachedLangSrc = newContent
 
       console.log Helper.compileTitle(), "lang-souce.coffee"
 
       ctx = vm.createContext({module:{}})
-      vm.runInContext( newContent, ctx )
+      vm.runInContext( file.contents.toString("utf8"), ctx )
 
       buildLangSrc.run gruntMock, Helper.noop, ctx.module.exports
       null
@@ -220,17 +233,12 @@ StreamFuncs =
 
   throughCoffee : ()->
 
-    conditionalCompile = gulpif( Helper.shouldLintCoffee, coffeelint( undefined, coffeelintOptions) )
+    conditonalLint = gulpif( Helper.shouldLintCoffee, coffeelint( undefined, coffeelintOptions) )
 
     # Compile
-    if GLOBAL.gulpConfig.enableCache
-      coffeeBranch = cached("coffee")
-      coffeeCompile = coffeeBranch.pipe( conditionalCompile )
-    else
-      coffeeCompile = coffeeBranch = conditionalCompile
+    coffeeBranch  = StreamFuncs.throughCached( conditonalLint )
 
-
-    coffeeCompile = coffeeCompile
+    coffeeCompile = conditonalLint
                     .pipe( StreamFuncs.throughCoffeeConditionalCompile() )
                     .pipe( coffee({sourceMap:GLOBAL.gulpConfig.coffeeSourceMap}) )
 

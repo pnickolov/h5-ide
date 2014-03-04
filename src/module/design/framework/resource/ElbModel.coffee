@@ -9,6 +9,34 @@ define [ "Design",
          "../connection/ElbAsso"
 ], ( Design, constant, ResourceModel, ComplexResModel, VpcModel, SgModel, SgAsso )->
 
+  SslCertModel = ResourceModel.extend {
+
+    type : constant.AWS_RESOURCE_TYPE.AWS_IAM_ServerCertificate
+
+    defaults :
+      body   : ""
+      chain  : ""
+      key    : ""
+      arn    : ""
+      certId : ""
+      body   : ""
+
+    serialize : ()-> # Doesn't do anything. It's implemented in Elb's serialize()
+
+  },{
+    deserialize : ( data )->
+      new SslCertModel({
+        id     : data.uid
+        name   : data.name
+        body   : data.resource.CertificateBody
+        chain  : data.resource.CertificateChain
+        key    : data.resource.PrivateKey
+        arn    : data.resource.ServerCertificateMetadata.Arn
+        certId : data.resource.ServerCertificateMetadata.ServerCertificateId
+      })
+      null
+  }
+
   Model = ComplexResModel.extend {
 
     defaults : ()->
@@ -220,9 +248,11 @@ define [ "Design",
       else
         sslcertId = ""
 
+      usessl = false
       for l in @get("listeners")
         if l.protocol is "SSL" or l.protocol is "HTTPS"
           id = sslcertId
+          usessl = true
         else
           id = ""
 
@@ -279,7 +309,7 @@ define [ "Design",
 
       json_object = { component : component, layout : @generateLayout() }
 
-      if @get("sslCert")
+      if usessl and @get("sslCert")
         ssl = @get("sslCert")
         sslComponent =
           uid : ssl.id
@@ -300,22 +330,9 @@ define [ "Design",
 
   }, {
 
-    handleTypes : [ constant.AWS_RESOURCE_TYPE.AWS_ELB, constant.AWS_RESOURCE_TYPE.AWS_IAM_ServerCertificate ]
+    handleTypes : constant.AWS_RESOURCE_TYPE.AWS_ELB
 
     deserialize : ( data, layout_data, resolve )->
-
-      # Handle Certificate
-      if data.type is constant.AWS_RESOURCE_TYPE.AWS_IAM_ServerCertificate
-        cert = new ResourceModel({
-          id     : data.uid
-          name   : data.name
-          body   : data.resource.CertificateBody
-          chain  : data.resource.CertificateChain
-          key    : data.resource.PrivateKey
-          arn    : data.resource.ServerCertificateMetadata.Arn
-          certId : data.resource.ServerCertificateMetadata.ServerCertificateId
-        })
-        return
 
       # Handle Elb
       attr =
@@ -380,8 +397,6 @@ define [ "Design",
     postDeserialize : ( data, layout_data )->
 
       elb = Design.instance().component( data.uid )
-      if elb.type isnt constant.AWS_RESOURCE_TYPE.AWS_ELB
-        return
 
       # Find out which SG is this Elb's Sg
       sgName = elb.getElbSgName()

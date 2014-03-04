@@ -19,7 +19,6 @@ define [ "Design",
       key    : ""
       arn    : ""
       certId : ""
-      body   : ""
 
     serialize : ()-> # Doesn't do anything. It's implemented in Elb's serialize()
 

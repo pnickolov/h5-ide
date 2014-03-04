@@ -41,7 +41,7 @@ define [ 'event',
                 else
                     $( '#reconnect-ok' ).removeAttr 'disabled'
             else
-                $( '#reconnect-ok' ).attr 'disabled', true
+                $( '#reconnect-ok' ).prop 'disabled', true
 
 
         invalid            : () ->

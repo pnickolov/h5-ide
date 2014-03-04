@@ -24,13 +24,14 @@ module.exports = {
   // If false, gulp will compile when a file is saved, even if the content is not modified.
   , enableCache : true
 
+  // If pollingWatch is "auto", it will use native FS in OSX, use polling in other system.
   // If pollingWatch is true, it will force to use polling when watching file changes.
   // If pollingWatch is false, it will force to use native file event
   // Pros of using native file event:
-  //   Sometimes changes will not be detected. For example, git checkout.
+  //   Sometimes changes will not be detected. For example, most of git action.
   // Cons of using native file event:
   //   Fast, CPU-friendly, Won't open too many files at the same time.
-  , pollingWatch : false
+  , pollingWatch : "auto"
 
 
 };

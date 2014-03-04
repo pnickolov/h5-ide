@@ -1,6 +1,7 @@
 var gulp  = require('gulp');
 var gutil = require('gulp-util');
 var fs    = require('fs');
+var os    = require('os');
 
 var serverTask  = require('./util/gulp_tasks/server');
 var buildTask   = require('./util/gulp_tasks/build');
@@ -12,6 +13,14 @@ if ( fs.existsSync("./gulpconfig.js") ) {
   var custom = require('./gulpconfig')
   for ( var i in custom ) {
     GLOBAL.gulpConfig[ i ] = custom[ i ]
+  }
+}
+
+if ( GLOBAL.gulpConfig.pollingWatch === "auto" ) {
+  if ( os.type() === "Darwin" ) {
+    GLOBAL.gulpConfig.pollingWatch = false
+  } else {
+    GLOBAL.gulpConfig.pollingWatch = true
   }
 }
 

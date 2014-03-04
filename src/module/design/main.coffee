@@ -103,6 +103,7 @@ define [ 'i18n!nls/lang.js', 'constant', 'stateeditor', 'Design', './module/desi
                             model.setCanvasData result.resolved_data[0]
 
                         #when NEW_STACK result is tab_id
+                        ide_event.trigger ide_event.OPEN_DESIGN_0, region_name, type, current_platform, tab_id, result
                         ide_event.trigger ide_event.OPEN_DESIGN, region_name, type, current_platform, tab_id, result
 
                         if type is 'OPEN_STACK'

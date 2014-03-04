@@ -33,6 +33,7 @@ define [ 'underscore', 'backbone' ], () ->
         LOGOUT_IDE             : 'LOGOUT_IDE'
 
         #
+        OPEN_DESIGN_0          : 'OPEN_DESIGN_0'
         OPEN_DESIGN            : 'OPEN_DESIGN'
         OPEN_SUB_DESIGN        : 'OPEN_SUB_DESIGN'
         OPEN_PROPERTY          : 'OPEN_PROPERTY'

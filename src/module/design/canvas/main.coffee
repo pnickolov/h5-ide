@@ -17,7 +17,7 @@ define [ 'event', 'i18n!nls/lang.js', 'constant' ], ( ide_event, lang, constant 
             #listen OPEN_DESIGN
             # when 'NEW_STACK' result is tab_id
             # when Tabbar.current is 'appview' result is result
-            ide_event.onLongListen ide_event.OPEN_DESIGN, ( region_name, type, current_platform, tab_name, result ) ->
+            ide_event.onLongListen ide_event.OPEN_DESIGN_0, ( region_name, type, current_platform, tab_name, result ) ->
                 console.log 'canvas:OPEN_DESIGN', region_name, type, current_platform, tab_name, result
 
                 #check re-render

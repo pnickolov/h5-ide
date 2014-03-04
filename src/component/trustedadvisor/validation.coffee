@@ -93,7 +93,7 @@ define [ 'constant', 'event', 'ta_conf', './validation/main', './validation/resu
 
     _validState = ( validation_main, uid ) ->
         if Design.instance().get('agent').enabled is true
-            result = validation_main[ 'stateEditor' ]( uid )
+            result = validation_main.stateEditor( uid )
             _pushResult result, 'stateEditor', 'stateEditor', uid
 
         null

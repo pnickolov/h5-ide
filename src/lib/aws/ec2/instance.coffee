@@ -90,7 +90,7 @@ define [ 'constant', 'MC' ], ( constant, MC ) ->
 
 		if app_id and Design.instance().get('id') == app_id
 
-			comp_data = Design.instance().serialize()["component"]
+			comp_data = Design.instance().serialize().component
 			instance_id = undefined
 			instance_data = undefined
 			$.each comp_data, (uid, comp) ->

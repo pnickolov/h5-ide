@@ -68,9 +68,9 @@ define [ 'aws_model', 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( 
                 clearTimeout @delay
 
             # delete unnecessary item
-            delete result[ '_id'       ]
-            delete result[ 'timestamp' ]
-            delete result[ 'username'  ]
+            delete result._id
+            delete result.timestamp
+            delete result.username
 
             # create resoruces
             resources = @createResources result
@@ -141,7 +141,7 @@ define [ 'aws_model', 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( 
                         vpc_obj = new_vpc_obj
 
                         # filter default vpc
-                        if vpc_id isnt MC.data.account_attribute[region]['default_vpc']
+                        if vpc_id isnt MC.data.account_attribute[region].default_vpc
 
                             l2_res = {
                                 'AWS.VPC.VPC'                               : {'id':[vpc_id]},
@@ -176,31 +176,31 @@ define [ 'aws_model', 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( 
 
                                 # set id
                                 if 'id' of attrs
-                                    if attrs['id'].length == 0
+                                    if attrs.id.length == 0
                                         # filter 'default' dhcpOptionsId
                                         if type is 'AWS.VPC.DhcpOptions' and type of vpc_obj and 'default' of vpc_obj[type]
                                             dhcp_ids = ( id for id in vpc_obj[type] when id isnt 'default' )
                                             if dhcp_ids.length > 0
-                                                resources['id'] = dhcp_ids
+                                                resources.id = dhcp_ids
 
                                         else if type is 'AWS.VPC.CustomerGateway' and 'AWS.VPC.VPNConnection' of vpc_obj
-                                            resources['id'] = (vpc_obj['AWS.VPC.VPNConnection'][vpn_id]['customerGatewayId'] for vpn_id in _.keys(vpc_obj['AWS.VPC.VPNConnection']) when 'customerGatewayId' of vpc_obj['AWS.VPC.VPNConnection'][vpn_id])
+                                            resources.id = (vpc_obj['AWS.VPC.VPNConnection'][vpn_id].customerGatewayId for vpn_id in _.keys(vpc_obj['AWS.VPC.VPNConnection']) when 'customerGatewayId' of vpc_obj['AWS.VPC.VPNConnection'][vpn_id])
 
                                         else if type is 'AWS.AutoScaling.NotificationConfiguration' and 'AWS.AutoScaling.Group' of vpc_obj
-                                            resources['id'] = _.keys(vpc_obj['AWS.AutoScaling.Group'])
+                                            resources.id = _.keys(vpc_obj['AWS.AutoScaling.Group'])
 
                                         else if type is 'AWS.AutoScaling.LaunchConfiguration' and 'AWS.AutoScaling.Group' of vpc_obj
-                                            resources['id'] = (vpc_obj['AWS.AutoScaling.Group'][asg_id]['LaunchConfigurationName'] for asg_id in _.keys(vpc_obj['AWS.AutoScaling.Group']) when 'LaunchConfigurationName' of vpc_obj['AWS.AutoScaling.Group'][asg_id])
+                                            resources.id = (vpc_obj['AWS.AutoScaling.Group'][asg_id].LaunchConfigurationName for asg_id in _.keys(vpc_obj['AWS.AutoScaling.Group']) when 'LaunchConfigurationName' of vpc_obj['AWS.AutoScaling.Group'][asg_id])
 
                                         else if type of vpc_obj
-                                            resources['id'] = _.keys(vpc_obj[type])
+                                            resources.id = _.keys(vpc_obj[type])
 
                                     else
-                                        resources['id'] = attrs['id']
+                                        resources.id = attrs.id
 
                                 # set filter
                                 if 'filter' of attrs
-                                    for k, v of attrs['filter']
+                                    for k, v of attrs.filter
                                         filter = {}
                                         if not v or v.length == 0
                                             if k in ['instance-id', 'attachment.instance-id'] and 'AWS.EC2.Instance' of vpc_obj
@@ -217,14 +217,14 @@ define [ 'aws_model', 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( 
                                                     filter[k] = asgs
 
                                         else
-                                            filter[k] = attrs['filter'][k]
+                                            filter[k] = attrs.filter[k]
 
                                         if _.keys(filter).length > 0
                                             if not ('filter' of resources)
-                                                resources['filter'] = {}
+                                                resources.filter = {}
 
                                             for k, v of filter
-                                                resources['filter'][k] = v
+                                                resources.filter[k] = v
 
                                 if _.keys(resources).length > 0
                                     new_value[type] = resources
@@ -233,7 +233,7 @@ define [ 'aws_model', 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( 
                                 vpcs[ vpc_id ] = new_value
 
                             # add origin item
-                            vpcs[ vpc_id ][ 'origin' ] = vpc_obj
+                            vpcs[ vpc_id ].origin = vpc_obj
 
                             # add resource_map
                             resource_map[ region ] = vpcs

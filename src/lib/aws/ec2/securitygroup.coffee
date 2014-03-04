@@ -194,7 +194,7 @@ define [ 'i18n!nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 			ipRanges = ''
 			sgColor = ''
 			if ruleObj.ipRanges
-				ipRanges = ruleObj.ipRanges['item'][0]['cidrIp']
+				ipRanges = ruleObj.ipRanges.item[0].cidrIp
 			else
 				sgId = ruleObj.groups.item[0].groupId
 

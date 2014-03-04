@@ -72,8 +72,8 @@ define ['i18n!/nls/lang.js'], ( lang ) ->
 		SG               					: "AWS.EC2.SecurityGroup"
 		EIP                         		: "AWS.EC2.EIP"
 		AMI                         		: "AWS.EC2.AMI"
-		VOLUME                      		: "AWS.EC2.EBS.Volume"
-		SNAPSHOT                    		: "AWS.EC2.EBS.Snapshot"
+		VOL                      			: "AWS.EC2.EBS.Volume"
+		SNAP                    			: "AWS.EC2.EBS.Snapshot"
 		ELB                             	: "AWS.ELB"
 		VPC                         		: "AWS.VPC.VPC"
 		SUBNET                      		: "AWS.VPC.Subnet"
@@ -85,12 +85,12 @@ define ['i18n!/nls/lang.js'], ( lang ) ->
 		DHCP                 				: "AWS.VPC.DhcpOptions"
 		VPN               					: "AWS.VPC.VPNConnection"
 		ACL                  				: "AWS.VPC.NetworkAcl"
-		CERT           						: "AWS.IAM.ServerCertificate"
+		IAM           						: "AWS.IAM.ServerCertificate"
 		ASG                       			: 'AWS.AutoScaling.Group'
 		LC         							: 'AWS.AutoScaling.LaunchConfiguration'
-		NOTIFICATION   						: 'AWS.AutoScaling.NotificationConfiguration'
-		POLICY               				: 'AWS.AutoScaling.ScalingPolicy'
-		SCHEDULEDACTIONS            		: 'AWS.AutoScaling.ScheduledActions'
+		NC   								: 'AWS.AutoScaling.NotificationConfiguration'
+		SP               					: 'AWS.AutoScaling.ScalingPolicy'
+		SA            						: 'AWS.AutoScaling.ScheduledActions'
 		CW                   				: 'AWS.CloudWatch.CloudWatch'
 		SUBSCRIPTION                        : 'AWS.SNS.Subscription'
 		TOPIC                               : 'AWS.SNS.Topic'

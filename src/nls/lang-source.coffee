@@ -1,3 +1,39 @@
+###
+#**********************************************************
+#* Filename: lang-source.coffee
+#* Creator: Tim
+#* Description: I18N
+#* Date: 20131015
+
+#* Nameing Rule
+
+  #*# SYNOPSIS
+  ModuleName_Type_Description
+
+  #*# DESCRIPTION
+    Module Name
+      RES: resource panel
+      PROP: property
+      CVS: canvas
+      TOOL: toolbar
+      HEAD: header
+      NAV:navigation
+      DASH: dashboard
+      MSG: notification
+      TIT： title
+      LBL: label
+      POP: popup
+      TIP: tooltip
+      BTN: button
+    Resource Type Reference
+      CONST.AWS_RESOURCE_SHORT_TYPE
+
+
+# **********************************************************
+# (c) Copyright 2013 Madeiracloud  All Rights Reserved
+# **********************************************************
+###
+
 module.exports =
   login:
     login:

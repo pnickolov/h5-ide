@@ -14,6 +14,8 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo', 'Design' ], ( con
             MC.canvas_data.component[ uid ]
 
     __hasState = ( uid ) ->
+        if Design.instance().get('agent').enabled is false
+            return false
         if uid
             component = __getComp uid, true
             state = component.get 'state'

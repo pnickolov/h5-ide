@@ -39,10 +39,8 @@ define [ 'event', 'ace', 'ace_ext_language_tools',  'UI.modal', 'jquery_sort', '
             ide_event.onLongListen ide_event.UPDATE_STATE_STATUS_DATA_TO_EDITOR, model.listenStateStatusUpdate, model
 
             ide_event.offListen ide_event.STATE_EDITOR_SAVE_DATA
-            ide_event.onLongListen ide_event.STATE_EDITOR_SAVE_DATA, () ->
-                if view.editorShow
-                    view.onStateSaveClick()
-                that.unLoadModule()
+            ide_event.onLongListen ide_event.STATE_EDITOR_SAVE_DATA, (event) ->
+                view.onMouseDownSaveFromOther(event)
 
             $( '#property-panel' ).addClass 'state'
             $( '#property-panel .sub-stateeditor' ).html view.render().el

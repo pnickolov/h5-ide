@@ -1766,7 +1766,7 @@ MC.canvas = {
 			{
 				matched = document.getElementById( item.id );
 
-				//return false;
+				return false;
 			}
 		});
 
@@ -2791,7 +2791,7 @@ MC.canvas.event.dragable = {
 					// MC.canvas.nodeAction.show(this.id);
 				}
 
-				// return false;
+				return false;
 			}
 
 			if (currentTarget.is('.instance-volume'))
@@ -3562,7 +3562,7 @@ MC.canvas.event.drawConnection = {
 			});
 		}
 
-		// return false;
+		return false;
 	},
 
 	mousemove: function (event)
@@ -3802,7 +3802,7 @@ MC.canvas.event.siderbarDrag = {
 		MC.canvas.volume.close();
 		MC.canvas.event.clearSelected();
 
-		// return false;
+		return false;
 	},
 
 	mousemove: function (event)
@@ -4142,7 +4142,7 @@ MC.canvas.event.groupResize = {
 				});
 		}
 
-		// return false;
+		return false;
 	},
 	mousemove: function (event)
 	{
@@ -4643,7 +4643,7 @@ MC.canvas.event.ctrlMove = {
 
 			$(document.body).append('<div id="overlayer" class="grabbing"></div>');
 
-			// return false;
+			return false;
 		}
 	},
 

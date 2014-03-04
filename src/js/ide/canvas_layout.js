@@ -1,5 +1,5 @@
 
-define( ['jquery', 'MC.canvas', 'MC.canvas.constant', 'canvon'], function() {
+define( ['event', 'jquery', 'MC.canvas', 'MC.canvas.constant', 'canvon'], function(ide_event) {
 var listen = function ()
 {
 	var canvas_state = MC.canvas.getState(),

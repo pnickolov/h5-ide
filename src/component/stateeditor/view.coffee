@@ -61,8 +61,6 @@ define [ 'event',
 
             'keyup .parameter-item.optional .parameter-value': 'onOptionalParaItemChange'
 
-            'keyup #state-gist-paste-area': 'onPasteGistData'
-
             'SWITCH_STATE': 'onSwitchState'
 
             'EXPAND_STATE': 'onExpandState',
@@ -138,8 +136,6 @@ define [ 'event',
             that = this
 
             # show modal
-
-
             @$el.html that.editorModalTpl({
                 res_name: that.resName,
                 supported_platform: that.supportedPlatform,
@@ -172,6 +168,10 @@ define [ 'event',
             # hide autocomplete when click document
             docMouseDownFunc = jQuery.proxy(that.onDocumentMouseDown, that)
             $(document).off('mousedown', docMouseDownFunc).on('mousedown', docMouseDownFunc)
+
+            onPasteGistData = jQuery.proxy(that.onPasteGistData, that)
+            $(document).off('paste', onPasteGistData).on('paste', onPasteGistData)
+
             that.$('#state-editor').on('scroll', () ->
                 that.$('.ace_editor.ace_autocomplete').hide()
             )
@@ -1639,7 +1639,6 @@ define [ 'event',
             that = this
             $currentElem = $(event.target)
             $parentElem = $currentElem.parents('.editable-area')
-            $stateEditorModel = $('#state-editor-model')
 
             if not $parentElem.length and not $currentElem.hasClass('editable-area') and not $currentElem.hasClass('ace_scrollbar')
                 $allEditableArea = $('.editable-area')
@@ -1654,6 +1653,14 @@ define [ 'event',
                     that.$stateGistPasteArea.focus()
                 , 0)
 
+            that.onMouseDownSaveFromOther(event)
+
+        onMouseDownSaveFromOther: (event) ->
+
+            that = this
+            $currentElem = $(event.target)
+            $parentElem = $currentElem.parents('.editable-area')
+            $stateEditorModel = $('#state-editor-model')
             $parentEditorModel = $currentElem.parents('#state-editor-model')
             if $stateEditorModel.length and (not $parentEditorModel.length)
                 if $stateEditorModel.is(':visible')
@@ -2556,7 +2563,7 @@ define [ 'event',
             # Paste state item [Ctrl + V]
             if metaKey and shiftKey is false and altKey is false and keyCode is 86 and is_editable and is_input is false
                 target.pasteState.call target, event
-                return false
+                # return false
 
             # Remove state item [Ctrl + delete/backspace]
             if metaKey and (keyCode is 46 or keyCode is 8) and shiftKey is false and altKey is false and is_editable
@@ -3121,8 +3128,7 @@ define [ 'event',
         onPasteGistData: (event) ->
 
             that = this
-            $areaTarget = $(event.currentTarget)
-            pasteData = $areaTarget.val()
+            pasteData = event.originalEvent.clipboardData.getData('text/plain')
 
             try
                 pasteDataJSON = JSON.parse(pasteData)
@@ -3131,8 +3137,6 @@ define [ 'event',
             catch err
                 null
                 # alert('Pasted JSON Data Format Error')
-
-            $areaTarget.val('')
 
     }
 

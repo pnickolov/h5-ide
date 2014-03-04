@@ -111,7 +111,7 @@ Helper =
         watcher.emit type, event.path
         null
     else
-      gutil.log gutil.colors.bgBlue.white(" Watching file changes... ") + " [Native FSevent]"
+      gutil.log gutil.colors.bgBlue.white(" Watching file changes... ") + " [Native FSevent, git pull will not trigger changes]"
 
       watcher = chokidar.watch "./src", {
         usePolling    : false
@@ -181,11 +181,21 @@ StreamFuncs =
 
     startPipeline = coffee()
 
+    cachedLangSrc = null
+
     pipeline = startPipeline.pipe es.through ( file )->
+
+      newContent = file.contents.toString("utf8")
+
+      # Drop the change if the content is the same
+      if newContent is cachedLangSrc then return
+
+      cachedLangSrc = newContent
+
       console.log Helper.compileTitle(), "lang-souce.coffee"
 
       ctx = vm.createContext({module:{}})
-      vm.runInContext( file.contents.toString("utf8"), ctx )
+      vm.runInContext( newContent, ctx )
 
       buildLangSrc.run gruntMock, Helper.noop, ctx.module.exports
       null

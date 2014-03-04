@@ -142,7 +142,7 @@ Helper = {
         return null;
       });
     } else {
-      gutil.log(gutil.colors.bgBlue.white(" Watching file changes... ") + " [Native FSevent]");
+      gutil.log(gutil.colors.bgBlue.white(" Watching file changes... ") + " [Native FSevent, git pull will not trigger changes]");
       watcher = chokidar.watch("./src", {
         usePolling: false,
         useFsEvents: true,
@@ -214,18 +214,24 @@ StreamFuncs = {
     });
   },
   throughLangSrc: function() {
-    var gruntMock, pipeline, startPipeline,
+    var cachedLangSrc, gruntMock, pipeline, startPipeline,
       _this = this;
 
     startPipeline = coffee();
+    cachedLangSrc = null;
     pipeline = startPipeline.pipe(es.through(function(file) {
-      var ctx;
+      var ctx, newContent;
 
+      newContent = file.contents.toString("utf8");
+      if (newContent === cachedLangSrc) {
+        return;
+      }
+      cachedLangSrc = newContent;
       console.log(Helper.compileTitle(), "lang-souce.coffee");
       ctx = vm.createContext({
         module: {}
       });
-      vm.runInContext(file.contents.toString("utf8"), ctx);
+      vm.runInContext(newContent, ctx);
       buildLangSrc.run(gruntMock, Helper.noop, ctx.module.exports);
       return null;
     }));

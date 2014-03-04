@@ -985,7 +985,7 @@ var Autocomplete = function() {
             pos.left -= this.popup.getTextLeftOffset();
             
             var rect = editor.container.getBoundingClientRect();
-            pos.top += rect.top + 8 - renderer.layerConfig.offset;
+            pos.top += rect.top - renderer.layerConfig.offset;
             pos.left += rect.left - editor.renderer.scrollLeft
 
             this.popup.show(pos, lineHeight);
@@ -1504,11 +1504,11 @@ var AcePopup = function(parentNode) {
         var top = pos.top + this.$borderSize;
         if (top + maxH > screenHeight - lineHeight && !topdownOnly) {
             el.style.top = "";
-            el.style.bottom = screenHeight - top + "px";
+            el.style.bottom = screenHeight + 8 - top + "px";
             popup.isTopdown = false;
         } else {
             top += lineHeight;
-            el.style.top = top + "px";
+            el.style.top = top + 8 + "px";
             el.style.bottom = "";
             popup.isTopdown = true;
         }

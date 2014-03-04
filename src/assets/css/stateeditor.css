@@ -39,6 +39,10 @@
 	filter:progid:DXImageTransform.Microsoft.gradient( startColorstr='#27292C', endColorstr='#27292C', GradientType=1 );
 }
 
+#state-editor .editable-area .ace_marker-layer {
+	display: none;
+}
+
 /* *************************************** state editor */
 
 #state-editor, .ace_autocomplete_tip {
@@ -917,6 +921,15 @@
 #state-log .state-log-item-header {
 	background-color: #444;
 	padding: 10px;
+	cursor: pointer;
+}
+
+#state-log .state-log-item-header:hover {
+	background-color: #555;
+}
+
+#state-log .state-log-item.view .state-log-item-detail {
+	display: none;
 }
 
 #state-log .state-log-item-name {

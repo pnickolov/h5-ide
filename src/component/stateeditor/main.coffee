@@ -25,8 +25,6 @@ define [ 'event', 'ace', 'ace_ext_language_tools',  'UI.modal', 'jquery_sort', '
                     resId: resId,
                     allCompData: allCompData
                 })
-                model.on 'STATE_STATUS_UPDATE', (newStateUpdateResIdAry) ->
-                    view.onStateStatusUpdate(newStateUpdateResIdAry)
             else
                 model = new Backbone.Model()
 
@@ -36,7 +34,9 @@ define [ 'event', 'ace', 'ace_ext_language_tools',  'UI.modal', 'jquery_sort', '
 
             view.model = model
 
-            ide_event.onLongListen ide_event.UPDATE_STATE_STATUS_DATA_TO_EDITOR, model.listenStateStatusUpdate, model
+            ide_event.offListen ide_event.UPDATE_STATE_STATUS_DATA_TO_EDITOR
+            ide_event.onLongListen ide_event.UPDATE_STATE_STATUS_DATA_TO_EDITOR, (newStateUpdateResIdAry) ->
+                view.onStateStatusUpdate(newStateUpdateResIdAry)
 
             ide_event.offListen ide_event.STATE_EDITOR_SAVE_DATA
             ide_event.onLongListen ide_event.STATE_EDITOR_SAVE_DATA, (event) ->

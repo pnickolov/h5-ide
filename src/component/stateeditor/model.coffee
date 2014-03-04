@@ -16,7 +16,7 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 
 			that = this
 
-			agentData = MC.common.other.canvasData.get('agent')
+			agentData = Design.instance().get('agent')
 			modRepo = agentData.module.repo
 			modTag = agentData.module.tag
 
@@ -717,12 +717,6 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 			# console.log(dataAry)
 
 			return dataAry
-
-		listenStateStatusUpdate: (newStateUpdateResIdAry) ->
-
-			that = this
-			that.trigger 'STATE_STATUS_UPDATE', newStateUpdateResIdAry
-			null
 	}
 
 	return StateEditorModel

@@ -57,6 +57,8 @@ define [ 'event',
 
             'click #state-editor': 'onClickBlank'
 
+            'click .state-log-item-header': 'onStateLogItemHeaderClick'
+
             'OPTION_CHANGE .state-editor-res-select': 'onResSelectChange'
 
             'keyup .parameter-item.optional .parameter-value': 'onOptionalParaItemChange'
@@ -998,6 +1000,10 @@ define [ 'event',
             if cmdName
                 that.refreshDescription(cmdName)
 
+            if that.currentState in ['app', 'appedit']
+                currentStateId = $stateItem.data('data-id')
+                that.scrollToLogItem(currentStateId)
+
             $cmdValueItem = $stateItem.find('.command-value')
             cmdEditor = $cmdValueItem.data('editor')
             if cmdEditor
@@ -1234,14 +1240,6 @@ define [ 'event',
             cmdName = $stateItem.attr('data-command')
             stateId = $stateItem.attr('data-id')
 
-            # for state item sort
-            # newStateId = $stateItem.find('.state-id').text()
-            # oldStateId = $stateItem.attr('data-id')
-            # if oldStateId and newStateId isnt oldStateId
-            #     oldStateIdRef = "@{#{that.resName}.state.#{oldStateId}}"
-            #     newStateIdRef = "@{#{that.resName}.state.#{newStateId}}"
-            #     newOldStateIdMap[oldStateIdRef] = newStateIdRef
-
             moduleObj = that.cmdModuleMap[cmdName]
 
             #empty module direct return
@@ -1359,7 +1357,8 @@ define [ 'event',
 
                 stateItemObj = that.genStateItemData($stateItem)
 
-                stateObjAry.push(stateItemObj)
+                if stateItemObj and stateItemObj.module and stateItemObj.id
+                    stateObjAry.push(stateItemObj)
 
                 null
 
@@ -1921,6 +1920,24 @@ define [ 'event',
 
                 null
 
+        scrollToLogItem: (stateId) ->
+
+            $targetStateItem = that.$stateLogList.find(".state-log-item[data-state-id='" + stateId + "']")
+            $stateLog = $('#state-log')
+
+            try
+                if $targetStateItem[0]
+
+                    scrollToPos = $targetStateItem.offset().top - $stateLog.offset().top + $stateLog.scrollTop() - 15
+                    $stateLog.stop(true, true)
+                    $stateLog.animate({
+                        scrollTop: scrollToPos
+                    }, 150)
+
+            catch err
+
+                null
+
         justScrollToElem: ($parent, $target) ->
 
             try
@@ -2172,13 +2189,18 @@ define [ 'event',
 
         onStateStatusUpdate: (newStateUpdateResIdAry) ->
 
-            selectedResId = $(event.target).find('.selected').attr('data-id')
-
-            if selectedResId in newStateUpdateResIdAry
-                # refresh state log
-                that.onLogRefreshClick()
-
             that = this
+            
+            selectedResId = that.currentResId
+
+            if newStateUpdateResIdAry
+                if newStateUpdateResIdAry.length
+                    if selectedResId and selectedResId in newStateUpdateResIdAry
+                        that.onLogRefreshClick()
+                else
+                    that.onLogRefreshClick()
+            else
+                that.onLogRefreshClick()
 
         onOptionalParaItemChange: (event) ->
 
@@ -3149,6 +3171,12 @@ define [ 'event',
             catch err
                 null
                 # alert('Pasted JSON Data Format Error')
+
+        onStateLogItemHeaderClick: (event) ->
+
+            $currentTarget = $(event.currentTarget)
+            $stateLogItem = $currentTarget.parents('.state-log-item')
+            $stateLogItem.toggleClass('view')
 
     }
 

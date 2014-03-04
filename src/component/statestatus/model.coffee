@@ -37,8 +37,6 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], ( cons
 
         __dispose: ( stateList ) ->
 
-            newStateUpdateResIdAry = []
-
             collection = new Backbone.Collection()
             console.log stateList
             if not _.isArray stateList
@@ -71,13 +69,8 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], ( cons
 
                         _.extend data, @__extendComponent data.resId
 
-                        newStateUpdateResIdAry.push(state.res_id)
-
                         if data.result is 'failure'
                             collection.add new Backbone.Model data
-
-            if newStateUpdateResIdAry.length
-                ide_event.trigger ide_event.UPDATE_STATE_STATUS_DATA_TO_EDITOR, newStateUpdateResIdAry
 
             collection
 

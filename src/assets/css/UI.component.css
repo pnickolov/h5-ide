@@ -2141,7 +2141,7 @@ textarea {
 
 input.parsley-error {
 	border: 1px solid #ec3c38 !important;
-	background-color: #fad6cf;
+	background-color: rgba(236, 60, 56, 0.2) !important; ;
 }
 
 .parsley-error-list {

@@ -2555,9 +2555,21 @@ module.exports =
       en: "Don't add"
       zh: "不要添加"
 
+    HEAD_LABEL_BLANK_NOTIFICATION:
+      en: "No news is good news."
+      zh: "没有通知。"
+
+    HEAD_LABEL_BLANK_NOTIFICATION_DESC:
+      en: "Results of running, stopping or terminating apps will show up here."
+      zh: ""
+
     HEAD_LABEL_MENUITEM_USER_TOUR:
       en: "User Tour"
       zh: "用户教程"
+
+    HEAD_LABEL_MENUITEM_KEY_SHORT:
+      en: "Keyboard Shortcuts"
+      zh: ""
 
     HEAD_LABEL_MENUITEM_DOC:
       en: "Documentation"

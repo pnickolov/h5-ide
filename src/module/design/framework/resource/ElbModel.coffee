@@ -291,8 +291,8 @@ define [ "Design",
             CertificateChain : ssl.get("chain")
             ServerCertificateMetadata :
               ServerCertificateName : ssl.get("name")
-              Arn : ssl.get("arn")
-              ServerCertificateId : ssl.get("certId")
+              Arn : ssl.get("arn") or ""
+              ServerCertificateId : ssl.get("certId") or ""
 
         return [ json_object, { component : sslComponent } ]
       else
@@ -306,8 +306,8 @@ define [ "Design",
 
       # Handle Certificate
       if data.type is constant.AWS_RESOURCE_TYPE.AWS_IAM_ServerCertificate
-        cert = new ResouceModel({
-          uid    : data.uid
+        cert = new ResourceModel({
+          id     : data.uid
           name   : data.name
           body   : data.resource.CertificateBody
           chain  : data.resource.CertificateChain
@@ -341,8 +341,6 @@ define [ "Design",
         else
           return azRef
 
-      elb = new Model( attr )
-
       # listener
       for l in data.resource.ListenerDescriptions || []
         l = l.Listener
@@ -352,8 +350,12 @@ define [ "Design",
           instanceProtocol : l.InstanceProtocol
           instancePort     : l.InstancePort
         }
-        if l.SSLCertificateId
+        if l.SSLCertificateId and not attr.sslCert
+          # Cannot resolve the same component multiple times within one deserialize.
+          # Because Design might consider it as recursive dependency.
           attr.sslCert = resolve( MC.extractID( l.SSLCertificateId ) )
+
+      elb = new Model( attr )
 
       ElbAmiAsso    = Design.modelClassForType( "ElbAmiAsso" )
       ElbSubnetAsso = Design.modelClassForType( "ElbSubnetAsso" )
@@ -378,6 +380,8 @@ define [ "Design",
     postDeserialize : ( data, layout_data )->
 
       elb = Design.instance().component( data.uid )
+      if elb.type isnt constant.AWS_RESOURCE_TYPE.AWS_ELB
+        return
 
       # Find out which SG is this Elb's Sg
       sgName = elb.getElbSgName()

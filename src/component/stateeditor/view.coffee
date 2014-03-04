@@ -128,6 +128,9 @@ define [ 'event',
             @editorShow = false
             @
 
+        renderStateCount: () ->
+            count = @$stateList.find( '.state-item' ).length
+            $( '#btn-switch-state b' ).text "(#{count})"
 
         __renderState: () ->
 
@@ -1582,7 +1585,7 @@ define [ 'event',
                 $descPanel.hide()
                 $logPanel.hide()
                 $descPanelToggle.removeClass('active')
-            
+
             else
 
                 $stateEditor.removeClass('full')
@@ -2434,6 +2437,9 @@ define [ 'event',
                         })
 
                     that.commandIndex = that.commandStack.length - 1
+
+                    that.renderStateCount()
+
                     null
 
                 redo: () ->

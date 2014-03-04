@@ -119,6 +119,7 @@ define [ 'event',
 
 		if opsEnabled and typeAvai
 			$( '#property-panel' ).removeClass 'no-state'
+			view.renderStateCount component
 			true
 		else
 			$( '#property-panel' ).addClass 'no-state'

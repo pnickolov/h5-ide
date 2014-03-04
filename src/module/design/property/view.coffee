@@ -121,6 +121,9 @@ define [ 'event',
             @lastComId = uid
             @
 
+        renderStateCount: ( component ) ->
+            count = component.get( 'state' ) and component.get( 'state' ).length or 0
+            $( '#btn-switch-state b' ).text "(#{count})"
 
         renderState: ( uid, force ) ->
 

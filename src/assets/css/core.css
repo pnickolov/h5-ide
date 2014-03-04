@@ -61,6 +61,22 @@
 	src: local('Oxygen Bold'), local('Oxygen-Bold'), url('../fonts/OxygenMono-Bold.woff') format('woff');
 }
 
+@font-face {
+	font-family: 'Anonymous Pro';
+	font-style: normal;
+	font-weight: 400;
+	src: local('AnonymousPro Regular'), local('AnonymousPro-Regular'), url('../fonts/AnonymousPro-Regular.woff') format('woff');
+}
+
+.font-mono {
+	font-family: "Anonymous Pro","Lucida Console", "Monaco", monospace;
+	/*font-family: "Lucida Console", "Monaco", monospace;*/
+}
+
+.font-normal {
+	font-family  : 'Lato', 'Helvetica Neue', Arial, sans-serif;
+}
+
 /* CSS reset */
 article,
 footer,

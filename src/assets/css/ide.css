@@ -7546,6 +7546,69 @@ summary:focus {
 
 }
 
+/* Keyboard Shortcuts Cheatsheet */
 
+#modal-key-short .modal-body {
+	padding: 0;
+}
 
+#modal-key-short .title {
+	font-size: 18px;
+	color: #444;
+	border-bottom: 1px solid #ddd;
+	/*margin-bottom: 20px;*/
+	padding: 0 20px;
+}
 
+/*#modal-key-short section {
+	margin-bottom: 40px;
+}*/
+
+#modal-key-short .key-item {
+	color: #666;
+	padding: 20px 24px 20px 24px;
+}
+
+#modal-key-short .key-item:nth-child(2n+1) {
+	background: rgba(0,0,0,.02);
+}
+
+#modal-key-short .key-item > div {
+	display: inline-block;
+	font-size: 16px;
+}
+
+#modal-key-short .keys {
+	background: #F7F7F7;
+	padding: 0;
+}
+
+#modal-key-short .key {
+	width: 220px;
+	margin-right: 20px;
+	color: green;
+	/*text-align: right;*/
+}
+
+#modal-key-short .action {
+	position: relative;
+}
+
+#modal-key-short .meta {
+	font-size: 12px;
+	position: absolute;
+	color: #aaa;
+	display: none;
+}
+
+#modal-key-short .key.mac {
+	display: none;
+}
+
+.mac #modal-key-short .key.mac {
+	display: inline-block !important;
+}
+
+.mac #modal-key-short .key.pc {
+	display: none !important;
+}

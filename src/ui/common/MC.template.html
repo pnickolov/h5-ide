@@ -1352,7 +1352,7 @@ Following rule(s) will be deleted from its(their) security group:</div>
 	<div class="modal-header"><h3>System Log: {{instance_id}}</h3><i class="modal-close">&times;</i> </div>
 	<div class="modal-body">
 		<section class="instance-sys-log-loading loading-spinner"></section>
-		<div class="instance-sys-log-content">{{log_content}}</div>
+		<div class="instance-sys-log-content font-mono">{{log_content}}</div>
 		<div class="instance-sys-log-info modal-text-minor">System log is not ready yet. Please try in a short while.</div>
 	</div>
 	<div class="modal-footer">
@@ -1385,96 +1385,146 @@ Are you sure you want to delete {{name}}?</div>
 </div>
 
 <!-- shortkey -->
-<div style="width:820px">
-	<div class="modal-header"><h3>Shortkey</h3><i class="modal-close">&times;</i></div>
-	<div class="modal-body">
-		<div class="section key-stack-app">
-			<h3 class="title">Stack/App Operation</h3>
-			<ul class="keys">
-				<li class="line">
-					<div class="key">P</div>
-					<div class="action">Show Property Panel</div>
-				</li>
-				<li class="line">
-					<div class="key">R</div>
-					<div class="action">Show Resource Panel
-						<div class="meta">Only in editable mode.</div>
-					</div>
-				</li>
-				<li class="line">
-					<div class="key">S</div>
-					<div class="action">Show State Panel</div>
-				</li>
-				<li class="line">
-					<div class="key mac">Option+Drag Instance</div>
-					<div class="key pc">Alt+Drag Instance</div>
-					<div class="action">Duplicate Instance
-						<div class="meta">Only in editable mode.</div>
-					</div>
-				</li>
-				<li class="line">
-					<div class="key mac">Delete</div>
-					<div class="key pc">Delete/Backspace</div>
-					<div class="action">Delete selected item.
-						<div class="meta">Only in editable mode.</div>
-					</div>
-				</li>
-				<li class="line">
-					<div class="key mac">Command + S</div>
-					<div class="key pc">Ctrl+S</div>
-					<div class="action">Save stack.
-						<div class="meta">Only in stack.</div>
-					</div>
-				</li>
-				<li class="line">
-					<div class="key mac">Command+Hold and move on canvas</div>
-					<div class="key pc">Ctrl+Hold and move on canvas</div>
-					<div class="action">Scroll canvas.</div>
-				</li>
-			</ul>
+<div style="width:640px" id="modal-key-short">
+	<div class="modal-header"><h3>Keyboard Shortcuts(?)</h3><i class="modal-close">&times;</i></div>
+	<div class="modal-body scroll-wrap">
+		<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+		<div class="scroll-content" style="height: 560px">
+			<section class="key-stack-app">
+				<h3 class="title">Stack/App Operation</h3>
+				<ul class="keys">
+					<li class="key-item">
+						<div class="key font-mono">P</div>
+						<div class="action">Show Property Panel</div>
+					</li>
+					<li class="key-item">
+						<div class="key font-mono">R</div>
+						<div class="action">Show Resource Panel
+							<div class="meta">Only in editable mode.</div>
+						</div>
+					</li>
+					<li class="key-item">
+						<div class="key font-mono">S</div>
+						<div class="action">Show State Panel</div>
+					</li>
+					<li class="key-item">
+						<div class="key mac font-mono">Option+Drag Instance</div>
+						<div class="key pc font-mono">Alt+Drag Instance</div>
+						<div class="action">Duplicate Instance
+							<div class="meta">Only in editable mode.</div>
+						</div>
+					</li>
+					<li class="key-item">
+						<div class="key mac font-mono">Delete</div>
+						<div class="key pc font-mono">Delete/Backspace</div>
+						<div class="action">Delete selected item.
+							<div class="meta">Only in editable mode.</div>
+						</div>
+					</li>
+					<li class="key-item">
+						<div class="key mac font-mono">Command + S</div>
+						<div class="key pc font-mono">Ctrl+S</div>
+						<div class="action">Save stack.
+							<div class="meta">Only in stack.</div>
+						</div>
+					</li>
+					<li class="key-item">
+						<div class="key mac font-mono">Command+Drag on canvas</div>
+						<div class="key pc font-mono">Ctrl+Drag on canvas</div>
+						<div class="action">Scroll canvas.</div>
+					</li>
+				</ul>
+			</section>
+			<section class="key-state">
+				<h3 class="title">State Panel Operation - General</h3>
+				<ul class="keys">
+					<li class="key-item">
+						<div class="key font-mono">Up/Down</div>
+						<div class="action">Switch focused state.</div>
+					</li>
+					<li class="key-item">
+						<div class="key font-mono">Space</div>
+						<div class="action">Select/Unselect focused state.</div>
+					</li>
+					<li class="key-item">
+						<div class="key font-mono">Enter</div>
+						<div class="action">Expand focused state.</div>
+					</li>
+					<li class="key-item">
+						<div class="key font-mono">ESC</div>
+						<div class="action">Collapse focused state.</div>
+					</li>
+					<li class="key-item">
+						<div class="key font-mono">Tab</div>
+						<div class="action">Focus to next input.</div>
+					</li>
+					<li class="key-item">
+						<div class="key font-mono">Shift+Tab</div>
+						<div class="action">Focus to previous input.
+						</div>
+					</li>
+					<li class="key-item">
+						<div class="key mac font-mono">Command+I</div>
+						<div class="key pc font-mono">Ctrl+I</div>
+						<div class="action">Open/Close information sidebar.</div>
+					</li>
+					<li class="key-item">
+						<div class="key mac font-mono">Command+L</div>
+						<div class="key pc font-mono">Ctrl+L</div>
+						<div class="action">Open/Close log sidebar.
+							<div class="meta">Only in app.</div>
+						</div>
+					</li>
+				</ul>
+			</section>
+			<section class="key-state-edit">
+				<h3 class="title">State Panel Operation - Editable Mode</h3>
+				<ul class="keys">
+					<li class="key-item">
+						<div class="key mac font-mono">Command+A</div>
+						<div class="key pc font-mono">Ctrl+A</div>
+						<div class="action">Select all states.</div>
+					</li>
+					<li class="key-item">
+						<div class="key mac font-mono">Command+D</div>
+						<div class="key pc font-mono">Ctrl+D</div>
+						<div class="action">Deselect states.</div>
+					</li>
+					<li class="key-item">
+						<div class="key mac font-mono">Command+Delete</div>
+						<div class="key pc font-mono">Ctrl+Delete/Backspace</div>
+						<div class="action">Delete selected state.</div>
+					</li>
+					<li class="key-item">
+						<div class="key mac font-mono">Command+Up/Down</div>
+						<div class="key pc font-mono">Ctrl+Up/Down</div>
+						<div class="action">Move focused state.</div>
+					</li>
+					<li class="key-item">
+						<div class="key mac font-mono">Command+C</div>
+						<div class="key pc font-mono">Ctrl+C</div>
+						<div class="action">Copy selected state.</div>
+					</li>
+					<li class="key-item">
+						<div class="key mac font-mono">Command+V</div>
+						<div class="key pc font-mono">Ctrl+V</div>
+						<div class="action">Paste selecte state.</div>
+					</li>
+					<li class="key-item">
+						<div class="key mac font-mono">Command+Z</div>
+						<div class="key pc font-mono">Ctrl+Z</div>
+						<div class="action">Undo.</div>
+					</li>
+					<li class="key-item">
+						<div class="key mac font-mono">Command+Y</div>
+						<div class="key pc font-mono">Ctrl+Y</div>
+						<div class="action">Redo.</div>
+					</li>
+				</ul>
+			</section>
 		</div>
-		<div class="section key-state">
-			<h3 class="title">State Panel Operation - General</h3>
-			<ul class="keys">
-				<li class="line">
-					<div class="key">Up/Down</div>
-					<div class="action">Switch focused state.</div>
-				</li>
-				<li class="line">
-					<div class="key">Space</div>
-					<div class="action">Select/Unselect focused state.</div>
-				</li>
-				<li class="line">
-					<div class="key">Enter</div>
-					<div class="action">Expand focused state.</div>
-				</li>
-				<li class="line">
-					<div class="key">ESC</div>
-					<div class="action">Collapse focused state.</div>
-				</li>
-				<li class="line">
-					<div class="key">Tab</div>
-					<div class="action">Focus to next input.</div>
-				</li>
-				<li class="line">
-					<div class="key">Shift+Tab</div>
-					<div class="action">Delete selected item.
-						<div class="meta">Only in editable mode.</div>
-					</div>
-				</li>
-				<li class="line">
-					<div class="key mac">Command+S</div>
-					<div class="key pc">Ctrl+S</div>
-					<div class="action">Save stack.
-						<div class="meta">Only in stack.</div>
-					</div>
-				</li>
-				<li class="line">
-					<div class="key mac">Command+Hold and move on canvas</div>
-					<div class="key pc">Ctrl+Hold and move on canvas</div>
-					<div class="action">Scroll canvas.</div>
-				</li>
-			</ul>
-		</div>
+	</div>
+	<div class="modal-footer">
+		<button class="btn modal-close btn-silver">Close</button>
 	</div>
 </div>

@@ -1,5 +1,5 @@
 #state-editor {
-	font-family: "Lucida Console", "Monaco", monospace !important;
+	/*font-family: "Lucida Console", "Monaco", monospace !important;*/
 	font-size: 12px !important;
 }
 
@@ -51,7 +51,7 @@
 }
 
 #state-editor, .ace_autocomplete {
-	font-family: "Lucida Console", "Monaco", monospace !important;
+	font-family: "Anonymous Pro","Lucida Console", "Monaco", monospace !important;
 }
 
 #state-editor.full {
@@ -435,7 +435,7 @@
 	position     : relative;
 	z-index      : 85;
 	background   : #222427;
-	font-family  : 'Lato', 'Helvetica Neue', Arial, sans-serif;
+	/*font-family  : 'Lato', 'Helvetica Neue', Arial, sans-serif;*/
 	height       : 36px;
 }
 
@@ -943,6 +943,7 @@
 	background-color: #000;
 	line-height: 16px;
 	padding: 14px;
+	font-family: "Anonymous Pro","Lucida Console", "Monaco", monospace;
 }
 
 #state-log .state-log-item-detail br {
@@ -1230,7 +1231,7 @@
 
 #state-editor .state-no-state-container {
 	display: none;
-	font-family: 'Lato', 'Helvetica Neue', Arial, sans-serif; 
+	/*font-family: 'Lato', 'Helvetica Neue', Arial, sans-serif; */
 }
 
 #state-gist-paste-area {

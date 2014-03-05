@@ -110,7 +110,7 @@ Helper =
         watcher.emit type, event.path
         null
     else
-      gutil.log gutil.colors.bgBlue.white(" Watching file changes... ") + " [Native FSevent, git pull will not trigger changes]"
+      gutil.log gutil.colors.bgBlue.white(" Watching file changes... ") + " [Native FSevent, vim might not trigger changes]"
 
       watcher = chokidar.watch "./src", {
         usePolling    : false

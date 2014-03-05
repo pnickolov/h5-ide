@@ -166,11 +166,11 @@ define ['../base/model', 'constant', "Design" ], ( PropertyModel, constant, Desi
       _.each ACLModel.allObjects(), ( acl )->
 
         deletable = true
-        if Design.instance().modeIsApp()
+        if @isApp
           deletable = false
         else if acl.isDefault()
           deletable = false
-        else if Design.instance().modeIsAppEdit()
+        else if @isAppEdit
           # If the acl has appId, deletable is false
           deletable = not acl.get("appId")
 

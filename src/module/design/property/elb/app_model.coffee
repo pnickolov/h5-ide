@@ -28,9 +28,13 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
 
 
             elb.isInternet = elb.Scheme is 'internet-facing'
-            elb.HealthCheck.protocol = elb.HealthCheck.Target.split( ':' )[ 0 ]
-            elb.HealthCheck.port     = elb.HealthCheck.Target.split( ':' )[ 1 ].split( '/' )[ 0 ]
-            elb.HealthCheck.path     = elb.HealthCheck.Target.split( '/' )[ 1 ]
+
+            pingArr  = elb.HealthCheck.Target.split( ':' )
+
+            elb.HealthCheck.protocol = pingArr[0]
+            elb.HealthCheck.port     = parseInt( pingArr[1], 10 )
+            if isNaN( elb.HealthCheck.port ) then elb.HealthCheck.port = 80
+            elb.HealthCheck.path     = pingArr[1].replace( /[^\/]+\//, "/" )
 
             # Cross Zone
             elb.CrossZone = if myElbComponent.get('crossZone') then "Enabled" else "Disabled"

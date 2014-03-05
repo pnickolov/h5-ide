@@ -87,7 +87,7 @@ define [ 'event',
 
 	openPorperty = ( type, uid, force, tab ) ->
 
-		stateStatus = processState uid
+		stateStatus = processState uid, type
 
 		if openTab tab, uid
 			return
@@ -111,10 +111,11 @@ define [ 'event',
 	unLoadModule = () ->
 		null
 
-	processState = ( uid ) ->
+	processState = ( uid, type ) ->
 		uid = Design.instance().canvas.selectedNode[ 0 ] if not uid
 		component = Design.instance().component uid
-		typeAvai = component and _.contains [ CONST.RESTYPE.LC, CONST.RESTYPE.INSTANCE ], component.type
+		type = component.type if not type and component
+		typeAvai = _.contains [ CONST.RESTYPE.LC, CONST.RESTYPE.INSTANCE ], type
 		opsEnabled = Design.instance().get('agent').enabled
 
 		if opsEnabled and typeAvai

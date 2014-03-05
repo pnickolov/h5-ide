@@ -163,7 +163,7 @@ define ['../base/model', 'constant', "Design" ], ( PropertyModel, constant, Desi
       networkAcls = []
       defaultACL  = null
 
-      _.each ACLModel.allObjects(), ( acl )->
+      _.each ACLModel.allObjects(), ( acl )=>
 
         deletable = true
         if @isApp

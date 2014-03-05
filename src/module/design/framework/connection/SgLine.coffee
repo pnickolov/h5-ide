@@ -29,9 +29,11 @@ define [ "constant", "../ConnectionModel", "../ResourceModel", "component/sgrule
       # Sgline only exist when eni is not attached to the ami
       ami = @getTarget TYPE.AWS_EC2_Instance
       eni = @getTarget TYPE.AWS_VPC_NetworkInterface
-      if ami and eni
-        for e in ami.connectionTargets( "EniAttachment" )
-          if e is eni then return false
+      if eni
+        attachs = eni.connectionTargets( "EniAttachment" )
+        # Unattached Eni doesn't have SgLine.
+        if attachs.length == 0 then return false
+        if attachs.indexOf( ami ) >= 0 then return false
 
       # Hide sglist between lc and expandedasg
       expandAsg = @getTarget "ExpandedAsg"

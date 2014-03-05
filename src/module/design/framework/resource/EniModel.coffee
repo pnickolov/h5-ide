@@ -324,18 +324,29 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
       result
 
     connect : ( connection )->
-      if connection.type is "EniAttachment"
-        # When the instance is attached to an eni
-        # See if the instance allows eni to have that much of ips.
-        @limitIpAddress()
-        @updateName()
-        @draw()
+      if connection.type isnt "EniAttachment" then return
+
+      # When the instance is attached to an eni
+      # See if the instance allows eni to have that much of ips.
+      @limitIpAddress()
+      @updateName()
+      @draw()
+
+      # When an Eni is attached, show SgLine for the Eni
+      SgModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup )
+      SgModel.tryDrawLine( @ )
       null
 
     disconnect : ( connection )->
-      if connection.type is "EniAttachment"
-        @attributes.name = "eni"
-        @draw()
+      if connection.type isnt "EniAttachment" then return
+
+      @attributes.name = "eni"
+      @draw()
+
+      # When an Eni is detached, hide SgLine for the Eni
+      reason = { reason : connection }
+      for sgline in @connections( "SgRuleLine" )
+        sgline.remove( reason )
       null
 
     ensureEnoughMember : ()->

@@ -352,8 +352,7 @@ define [ 'event',
             dragsort.init({
                 dragStart: () ->
                     $stateItem = this
-                    # $stateItemList = that.$stateList.find('.state-item')
-                    $stateItem.addClass('view')
+                    that.collapseItem($stateItem)
                     return true
                 dragEnd: (event, oldIndex) ->
                     $stateItem = this

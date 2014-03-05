@@ -1922,6 +1922,7 @@ define [ 'event',
 
         scrollToLogItem: (stateId) ->
 
+            that = this
             $targetStateItem = that.$stateLogList.find(".state-log-item[data-state-id='" + stateId + "']")
             $stateLog = $('#state-log')
 

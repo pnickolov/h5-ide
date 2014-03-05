@@ -164,13 +164,10 @@ define [ "Design",
       # Format ping
       pingArr  = @attributes.healthCheckTarget.split(":")
       protocol = pingArr[0]
-
-      pingArr  = (pingArr[1] || "").split("/")
-      port     = parseInt( pingArr[0], 10 )
-
+      port     = parseInt( pingArr[1], 10 )
       if isNaN( port ) then port = 80
 
-      path = if pingArr.length is 2 then pingArr[1] else "index.html"
+      path = pingArr[1].replace( /[^\/]+\//, "" )
 
       [ protocol, port, path ]
 

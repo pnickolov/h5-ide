@@ -421,7 +421,7 @@ define [ 'MC', 'event',
         clickExportJSONIcon : ->
             design   = Design.instance()
             username = $.cookie('username')
-            date     = (new Date()).toLocaleDateString().replace(/\/|\\/g, "-")
+            date     = MC.dateFormat(new Date(), "yyyy-MM-dd")
             name     = [design.get("name"), username, date].join("-")
 
             data = JsonExporter.export Design.instance().serialize(), name + ".json"

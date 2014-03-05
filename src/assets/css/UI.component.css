@@ -1082,6 +1082,16 @@ textarea {
 	background: rgba(0,0,0,.2);
 }
 
+.btn-silver.modal-close {
+	min-width: 80px;
+	background: none;
+	color: #666;
+}
+
+.btn-silver.modal-close:hover {
+	color: #4495d3;
+}
+
 .modal-header {
 	position     : relative;
 	padding      : 0 10px;

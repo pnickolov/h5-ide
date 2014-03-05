@@ -96,17 +96,11 @@ define [ 'event',
             $(document).off 'keydown', this.keyEvent
 
         render: () ->
+
+            that = this
             compData = @model.get 'compData'
             if Design.instance().get('agent').enabled
                 if compData and compData.type in [constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance, constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration]
-
-                    if compData.type in [constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration]
-                        if Design.instance().modeIsApp() and Design.instance().get('state') is 'Running'
-                            resId = $('#asgList-wrap .asgList-item.selected').attr('id')
-                            if not resId
-                                @__renderEmpty('asg_in_app')
-                                return @
-
                     @__renderState()
                 else
                     @__renderEmpty()
@@ -122,7 +116,7 @@ define [ 'event',
                 void     : "The component does'nt have state editor."
                 group    : 'View states and log by selecting individual instance.'
                 default  : 'No state editor here.'
-                asg_in_app : 'View states and log by selecting individual instance.'
+                group_in_app : 'View states and log by selecting individual instance.'
 
             tip = type and tipSet[ type ] or tipSet.default
 

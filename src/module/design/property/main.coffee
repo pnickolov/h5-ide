@@ -118,6 +118,11 @@ define [ 'event',
 		typeAvai = _.contains [ CONST.RESTYPE.LC, CONST.RESTYPE.INSTANCE ], type
 		opsEnabled = Design.instance().get('agent').enabled
 
+		if Design.instance().modeIsAppEdit() and type is 'component_server_group'
+			typeAvai = true
+		else if Design.instance().modeIsApp() and type is CONST.RESTYPE.LC
+			typeAvai = false
+
 		if opsEnabled and typeAvai
 			$( '#property-panel' ).removeClass 'no-state'
 			view.renderStateCount component

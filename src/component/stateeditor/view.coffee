@@ -1001,7 +1001,7 @@ define [ 'event',
                 that.refreshDescription(cmdName)
 
             if that.currentState in ['app', 'appedit']
-                currentStateId = $stateItem.data('data-id')
+                currentStateId = $stateItem.attr('data-id')
                 that.scrollToLogItem(currentStateId)
 
             $cmdValueItem = $stateItem.find('.command-value')
@@ -1929,7 +1929,7 @@ define [ 'event',
             try
                 if $targetStateItem[0]
 
-                    scrollToPos = $targetStateItem.offset().top - $stateLog.offset().top + $stateLog.scrollTop() - 15
+                    scrollToPos = $targetStateItem.offset().top - $stateLog.offset().top + $stateLog.scrollTop()
                     $stateLog.stop(true, true)
                     $stateLog.animate({
                         scrollTop: scrollToPos

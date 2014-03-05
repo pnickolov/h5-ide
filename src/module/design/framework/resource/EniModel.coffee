@@ -541,6 +541,8 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
       memberData
 
     diffEipJson : ( newData, oldData, newComponents, oldComponents )->
+      if _.isEqual( newData, oldData ) then return
+
       changeData = newData or oldData
       eni = MC.extractID( changeData.resource.NetworkInterfaceId )
       eni = newComponents[ eni ] or oldComponents[ eni ]

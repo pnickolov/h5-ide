@@ -307,6 +307,12 @@ define [ 'event',
                 Handlebars.registerPartial(id, html)
                 @[ @tplMap[ id ] ] = Handlebars.compile html
 
+            Handlebars.registerHelper('breaklines', (text) ->
+                text = Handlebars.Utils.escapeExpression(text)
+                text = text.replace(/(\r\n|\n|\r)/gm, '<br>')
+                return new Handlebars.SafeString(text)
+            )
+
             null
 
         genStateUID: () ->

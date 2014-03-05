@@ -28,7 +28,7 @@
 </div>
 <div class="state-status-item-info">
 	<div class="state-status-item-desc truncate">
-		{{#if parent}}{{parent}}'s {{/if}}{{name}} 's state {{stateId}} {{#if updated}}<s>has failed</s>{{else}}has failed{{/if}} is updated.
+		{{#if parent}}{{parent}}'s {{/if}}{{name}} 's state {{stateId}} {{#if updated}}<s>has failed</s> is updated.{{else}}has failed{{/if}}
 	</div>
 	<div class="timestamp">
 		{{#if updated}}State log will update after change is applied.{{else}}{{UTC time}}{{/if}}

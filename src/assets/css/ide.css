@@ -3559,6 +3559,10 @@ a.sidebar-hider {
 	        transform: translate(0,0);
 }
 
+#property-panel.hidden .property-wrap {
+	overflow: hidden;
+}
+
 .property-panel-wrapper {
 	width    : 100%;
 	left     : 0;

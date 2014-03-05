@@ -1497,52 +1497,42 @@ define [ 'event',
 
             that.model.setStateData(stateData)
 
-            # if stateData
+            if stateData
 
-            #     # compare
-            #     compareStateData = null
-            #     otherCompareStateData = null
+                # compare
+                compareStateData = null
+                otherCompareStateData = null
 
-            #     # compare state data
-            #     # when data change, trigger data update event
+                # compare state data
+                # when data change, trigger data update event
 
-            #     changeAry = []
+                changeAry = []
 
-            #     if that.originCompStateData and stateData
+                if that.originCompStateData and stateData
 
-            #         if that.originCompStateData.length > stateData.length
-            #             compareStateData = stateData
-            #             otherCompareStateData = that.originCompStateData
-            #         else
-            #             compareStateData = that.originCompStateData
-            #             otherCompareStateData = stateData
+                    if that.originCompStateData.length > stateData.length
+                        compareStateData = stateData
+                        otherCompareStateData = that.originCompStateData
+                    else
+                        compareStateData = that.originCompStateData
+                        otherCompareStateData = stateData
 
 
-            #         _.each compareStateData, (stateObj, idx) ->
-            #             originStateObjStr = JSON.stringify(stateObj)
-            #             currentStateObjStr = JSON.stringify(otherCompareStateData[idx])
-            #             if originStateObjStr isnt currentStateObjStr
-            #                 changeAry.push(stateObj.id)
-            #             null
+                    _.each compareStateData, (stateObj, idx) ->
+                        originStateObjStr = JSON.stringify(stateObj)
+                        currentStateObjStr = JSON.stringify(otherCompareStateData[idx])
+                        if originStateObjStr isnt currentStateObjStr
+                            changeAry.push(stateObj.id)
+                        null
 
-            #         resUID = that.model.getCurrentResUID()
-            #         changeObj = {
-            #             resUID: resUID,
-            #             stateIds: changeAry
-            #         }
+                    resUID = that.model.getCurrentResUID()
+                    changeObj = {
+                        resUID: resUID,
+                        stateIds: changeAry
+                    }
 
-            #     if (that.originCompStateData isnt stateData) or changeAry.length
-
-            #         ide_event.trigger 'STATE_EDITOR_DATA_UPDATE', changeObj
-
-            #     that.unloadEditor()
-
-            #     disableUserDataInput = false
-            #     if stateData and stateData.length
-            #         disableUserDataInput = true
-            #     # ide_event.trigger ide_event.PROPERTY_DISABLE_USER_DATA_INPUT, disableUserDataInput
-
-            #     that.closedPopup()
+                if (that.originCompStateData isnt stateData) or changeAry.length
+                    ide_event.trigger 'STATE_EDITOR_DATA_UPDATE', changeObj
 
         onStateCancelClick: (event) ->
 

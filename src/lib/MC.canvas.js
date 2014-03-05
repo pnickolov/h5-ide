@@ -2214,6 +2214,7 @@ MC.canvas.volume = {
 				event.metaKey === false
 			)
 			&&
+			event.target.tagName.toLowerCase() !== 'input' &&
 			MC.canvas.getState() !== 'app'
 		)
 		{

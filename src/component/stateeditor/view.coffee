@@ -1517,11 +1517,8 @@ define [ 'event',
                         compareStateData = that.originCompStateData
                         otherCompareStateData = stateData
 
-
                     _.each compareStateData, (stateObj, idx) ->
-                        originStateObjStr = JSON.stringify(stateObj)
-                        currentStateObjStr = JSON.stringify(otherCompareStateData[idx])
-                        if originStateObjStr isnt currentStateObjStr
+                        if not _.isEqual(stateObj, otherCompareStateData[idx])
                             changeAry.push(stateObj.id)
                         null
 
@@ -1531,7 +1528,7 @@ define [ 'event',
                         stateIds: changeAry
                     }
 
-                if (that.originCompStateData isnt stateData) or changeAry.length
+                if (not _.isEqual(that.originCompStateData, stateData)) or changeAry.length
                     ide_event.trigger 'STATE_EDITOR_DATA_UPDATE', changeObj
 
         onStateCancelClick: (event) ->

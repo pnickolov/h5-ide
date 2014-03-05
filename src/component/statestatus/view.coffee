@@ -21,6 +21,7 @@ define [ 'event'
         initialize: () ->
             @items = @model.get( 'items' )
             @listenTo @model, 'change:items', @renderAllItem
+            @listenTo @model, 'change:stop', @renderAllItem
             @listenTo @model, 'change:new', @renderUpdate
             #@listenTo @items, 'remove', @
 
@@ -81,11 +82,10 @@ define [ 'event'
 
         renderAllItem: () ->
             items = @items
-            # test
-            appStoped = Design.instance().get( 'state' ) is 'Stopped'
 
-            if appStoped
+            if @model.get 'stop'
                 @renderPending()
+                return
 
             if items.length
                 @renderContainer()

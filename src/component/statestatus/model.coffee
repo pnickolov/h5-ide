@@ -13,6 +13,7 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], ( cons
             @collection.set @__dispose( stateList ).models, silent: true
             @set 'items', @collection
             @set 'new', []
+            @set 'stop', Design.instance().get( 'state' ) is 'Stopped'
             #test
 
         __collectNew: ( model ) ->
@@ -114,6 +115,12 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], ( cons
                 @collection.get( id ) and @collection.get( id ).set 'updated', true
 
             null
+
+        listenUpdateAppState: ( state ) ->
+            if state is 'Stopped'
+                @set 'stop', true
+            else
+                @set 'stop', false
 
 
 

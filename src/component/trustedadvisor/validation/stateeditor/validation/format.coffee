@@ -103,7 +103,10 @@ define [ 'Design', 'constant', 'i18n!nls/lang.js', 'jquery', 'underscore', 'MC' 
 
         # sub validators [ return true or false ]
         required: ( val ) ->
-            @notnull( val ) and @notblank( val )
+            if _.isArray( val ) or _.isObject( val )
+                not not _.size( val )
+            else
+                @notnull( val ) and @notblank( val )
 
         notnull: ( val ) ->
             val.length > 0

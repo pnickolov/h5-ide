@@ -73,7 +73,7 @@ define [ '../base/model', "Design", 'constant', 'event'  ], ( PropertyModel, Des
 
             # Insert Rule
             beforeCount = sgRuleSet.ruleCount( mySg.id )
-            sgRuleSet.addRule( mySg.id, rule.direction, rule )
+            sgRuleSet.addRawRule( mySg.id, rule.direction, rule )
 
             # See if the rule is inserted
             if beforeCount < sgRuleSet.ruleCount( mySg.id )

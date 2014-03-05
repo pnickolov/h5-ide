@@ -2084,13 +2084,18 @@ define [ 'event',
                 else
                     stateNum = logObj.id
 
+                if logObj.stdout
+                    stdoutStr = logObj.stdout.replace(/\n\n/g, '\n')
+                if logObj.comment
+                    commentStr = logObj.comment.replace(/\n\n/g, '\n')
+
                 stateLogViewAry.push({
                     id: logObj.id,
                     state_num: stateNum,
                     log_time: timeStr,
                     state_status: stateStatus,
-                    stdout: logObj.stdout,
-                    comment: logObj.comment
+                    stdout: stdoutStr,
+                    comment: commentStr
                 })
                 null
 

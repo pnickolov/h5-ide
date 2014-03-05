@@ -22,8 +22,11 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo', 'Design' ], ( con
             return false
         if uid
             component = __getComp uid, true
-            state = component.get 'state'
-            state and state.length
+            if component
+                state = component.get 'state'
+                state and state.length
+            else
+                false
         else
             had = false
             Design.instance().eachComponent ( component ) ->

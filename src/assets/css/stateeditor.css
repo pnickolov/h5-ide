@@ -39,7 +39,7 @@
 	filter:progid:DXImageTransform.Microsoft.gradient( startColorstr='#27292C', endColorstr='#27292C', GradientType=1 );
 }
 
-#state-editor .editable-area .ace_marker-layer {
+#state-editor .editable-area .ace_marker-layer .ace_bracket {
 	display: none;
 }
 

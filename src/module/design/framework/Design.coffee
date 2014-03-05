@@ -413,37 +413,18 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
 
     if Design.instance().modeIsApp() then return false
 
-    if not newData
-      newData = $.extend true, {}, @attributes
-      newDataIsNull = true
+    # Ignore id change.
+    @__backingStore.id = (newData || @attributes).id
 
-    backingComponent = @__backingStore.component
-    backingLayout    = @__backingStore.layout
-    newComponent     = newData.component
-    newLayout        = newData.layout
-
-    # Ignore id's change. Because shit happens in process.
-    @__backingStore.id = newData.id
-
-    delete @__backingStore.component
-    delete @__backingStore.layout
-    delete newData.component
-    delete newData.layout
-
-    equal = _.isEqual( @__backingStore, newData )
-
-    @__backingStore.component = backingComponent
-    @__backingStore.layout    = backingLayout
-    newData.component         = newComponent
-    newData.layout            = newLayout
-
-    if not equal then return true
-
-    if newDataIsNull then newData = @serialize()
-
-    if _.isEqual( @__backingStore.component, newData.component )
-      if _.isEqual( @__backingStore.layout, newData.layout )
+    for key, value in (newData || @attributes)
+      if not _.isEqual( @__backingStore[key], value )
         return false
+
+    if not newData
+      newData = @serialize()
+      if _.isEqual( @__backingStore.component, newData.component )
+        if _.isEqual( @__backingStore.layout, newData.layout )
+          return false
 
     true
 

@@ -5503,22 +5503,6 @@ MC.canvas.analysis = function ()
 
 	sortChild( layout );
 
-	function absPosition(node, x, y)
-	{
-		node.coordinate[0] += x;
-		node.coordinate[1] += y;
-
-		if (node.children !== undefined)
-		{
-			$.each(node.children, function (i, item)
-			{
-				absPosition(item, node.coordinate[0], node.coordinate[1]);
-			});
-		}
-	}
-
-	absPosition( layout, 0, 0 );
-
 	function positionSubnetChild(node)
 	{
 		var stack = {},

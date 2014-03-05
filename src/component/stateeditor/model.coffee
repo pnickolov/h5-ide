@@ -280,12 +280,13 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 					stateAry = compObj.state
 					if stateAry and _.isArray(stateAry)
 						_.each stateAry, (stateObj, idx) ->
-							stateNumStr = String(idx + 1)
-							stateRefStr = '{' + compName + '.state.' + stateNumStr + '}'
-							resStateDataAry.push({
-								name: stateRefStr,
-								value: stateRefStr
-							})
+							if stateObj.module isnt 'meta.comment'
+								stateNumStr = String(idx + 1)
+								stateRefStr = '{' + compName + '.state.' + stateNumStr + '}'
+								resStateDataAry.push({
+									name: stateRefStr,
+									value: stateRefStr
+								})
 
 					null
 

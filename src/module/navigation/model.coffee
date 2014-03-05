@@ -279,7 +279,7 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'state_model', 'aws_model', 'c
 
                     newStateUpdateResIdAry = []
                     if newDocument then newStateUpdateResIdAry.push(newDocument.res_id)
-                    ide_event.trigger ide_event.UPDATE_STATE_STATUS_DATA_TO_EDITOR, newStateUpdateResIdAry                    
+                    ide_event.trigger ide_event.UPDATE_STATE_STATUS_DATA_TO_EDITOR, newStateUpdateResIdAry
             }
 
             null

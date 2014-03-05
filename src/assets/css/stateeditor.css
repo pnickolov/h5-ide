@@ -73,7 +73,7 @@
 	right        : 653px;
 	z-index      : -1;
 
-	height       : 96%;
+	max-height       : 96%;
 	width        : 320px;
 
 	box-shadow   : 0 0 10px rgba(0,0,0,.2);

@@ -641,8 +641,9 @@ a {
 
 #awscredentials-remove.btn {
 	position: relative;
-	color: inherit;
+	/*color: inherit;*/
 	margin: -15px 10px 0 0;
+	width: 150px;
 }
 
 #awscredentials-remove.btn:hover {
@@ -1121,10 +1122,9 @@ a {
 }
 
 #global-import-stack {
-	left : 240px;
-	width: 160px;
-	/*background: #bdbdbd;*/
-	/*color: #999;*/
+	left         : 240px;
+	width        : 160px;
+	padding-right: 0;
 }
 
 #global-region-visualize-VPC {
@@ -7583,7 +7583,7 @@ summary:focus {
 
 #modal-key-short .key-item > div {
 	display: inline-block;
-	font-size: 16px;
+	font-size: 14px;
 }
 
 #modal-key-short .keys {

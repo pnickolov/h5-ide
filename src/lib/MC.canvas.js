@@ -2209,8 +2209,12 @@ MC.canvas.volume = {
 				event.which === 8
 			)
 			&&
-			MC.canvas.getState() !== 'app' &&
-			event.target === document.body
+			(
+				event.ctrlKey === false &&
+				event.metaKey === false
+			)
+			&&
+			MC.canvas.getState() !== 'app'
 		)
 		{
 			var bubble_box = $('#volume-bubble-box'),
@@ -2219,7 +2223,10 @@ MC.canvas.volume = {
 				target_offset = target_node[0].getBoundingClientRect(),
 				volume_id = $('#instance_volume_list').find('.selected').attr('id');
 
-			if ( $canvas(volume_id).remove() )
+			if (
+				volume_id &&
+				$canvas(volume_id).remove()
+			)
 			{
 				$('#' + volume_id).parent().remove();
 
@@ -2235,7 +2242,7 @@ MC.canvas.volume = {
 
 			$(document).off('keyup', MC.canvas.volume.remove);
 
-			return true;
+			return false;
 		}
 	},
 
@@ -2306,7 +2313,7 @@ MC.canvas.volume = {
 			),
 			node_type = match_node ? match_node.getAttribute('data-class') : null,
 			event_data = event.data,
-			target_type = MC.canvas.getState() === 'appedit' ? ['AWS.EC2.Instance'] : ['AWS.EC2.Instance', 'AWS.AutoScaling.LaunchConfiguration'];
+			target_type = ['AWS.EC2.Instance', 'AWS.AutoScaling.LaunchConfiguration'];
 
 		if (
 			event_data.action === 'add'
@@ -2474,6 +2481,8 @@ MC.canvas.asgList = {
 	{
 		$('#asgList-wrap').remove();
 
+		MC.canvas.volume.close();
+
 		return false;
 	},
 
@@ -2485,7 +2494,6 @@ MC.canvas.asgList = {
 
 		target.addClass('selected');
 		$canvas( $('#asgList-wrap').data('target-id') ).select( target.data('id') );
-
 
 		return false;
 	},
@@ -2556,6 +2564,8 @@ MC.canvas.instanceList = {
 	close: function ()
 	{
 		$('#instanceList-wrap').remove();
+
+		MC.canvas.volume.close();
 
 		return false;
 	},

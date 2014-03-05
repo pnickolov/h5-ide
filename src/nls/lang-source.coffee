@@ -150,7 +150,7 @@ module.exports =
       zh: "用户名不能为空。"
 
     username_taken:
-      en: "Username is already taken, Please choose another."
+      en: "Username is already taken. Please choose another."
       zh: "此用户名已经被注册，请选择其它用户名。"
 
     email_available:
@@ -2820,7 +2820,7 @@ module.exports =
       zh: "是否重置密码?"
 
     HEAD_MSG_INFO_UPDATE_EMAIL:
-      en: "Email Address has been updated."
+      en: "Email address has been updated."
       zh: "电子邮件地址修改成功。"
 
     HEAD_MSG_ERR_UPDATE_EMAIL1:

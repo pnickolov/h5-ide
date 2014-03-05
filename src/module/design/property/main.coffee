@@ -120,8 +120,11 @@ define [ 'event',
 
 		if Design.instance().modeIsAppEdit() and type is 'component_server_group'
 			typeAvai = true
-		else if Design.instance().modeIsApp() and type is CONST.RESTYPE.LC
+		if Design.instance().modeIsApp() and type is CONST.RESTYPE.LC
 			typeAvai = false
+		if Design.instance().get('state') is "Stopped" and type is CONST.RESTYPE.LC
+			typeAvai = true
+
 
 		if opsEnabled and typeAvai
 			$( '#property-panel' ).removeClass 'no-state'

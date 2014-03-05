@@ -379,11 +379,11 @@ define [ 'event',
                 $('#AWSCredential-info').show()
                 $('#AWSCredentials-remove-wrap').hide()
 
-                $('#awscredentials-remove').show()
+                $('#awscredentials-remove').css('display','inline-block')
                 $('#awscredentials-cancel').show()
                 $('#awscredentials-submit').attr('disabled',"true")
 
-                $('#awscredentials-remove').show()
+                $('#awscredentials-remove').css('display','inline-block')
 
                 if not flag     # initial
 

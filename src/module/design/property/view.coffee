@@ -73,7 +73,7 @@ define [ 'event',
             target = event.currentTarget
             if target.id is 'btn-switch-state'
                 if @currentTab isnt 'state'
-                    @renderState null, true
+                    @renderState @lastComId, true
             else
                 if @currentTab is 'state'
                     @renderProperty @lastComId
@@ -104,8 +104,12 @@ define [ 'event',
         renderProperty: ( uid, type, force ) ->
             @__hideState()
             $( '#property-panel' ).removeClass('state').removeClass('state-wide')
+            if not type and uid
+                comp = Design.instance().component uid
+                type = comp.type if comp
 
             @__initProperty type, uid, force
+
 
             @currentTab = 'property'
             @__showProperty()
@@ -154,7 +158,7 @@ define [ 'event',
 
                     if Design.instance().modeIsApp()
 
-                        # for asg
+                        # for asg or isg
 
                         resId = $('#asgList-wrap .asgList-item.selected').attr('id')
 
@@ -165,6 +169,17 @@ define [ 'event',
                                 lcComp = compObj.parent.get('lc')
                                 if lcComp and lcComp.id
                                     ide_event.trigger ide_event.OPEN_STATE_EDITOR, lcComp.id, resId
+                                    @__showState()
+                                    return
+
+                        resId = $('#instanceList-wrap .instanceList-item.selected').data('id')
+
+                        if resId
+
+                            compObj = MC.aws.aws.getCompByResIdForState(resId)
+                            if compObj and compObj.parent and compObj.parent.type is 'AWS.EC2.Instance'
+                                if compObj.parent and compObj.parent.id
+                                    ide_event.trigger ide_event.OPEN_STATE_EDITOR, compObj.parent.id, resId
                                     @__showState()
                                     return
 

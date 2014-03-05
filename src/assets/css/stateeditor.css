@@ -9,7 +9,7 @@
 	color: #ccc;
 }
 
-#state-editor .parameter-item:hover .parameter-value.editable-area {
+#state-editor .parameter-item:hover .parameter-container {
 	background: rgba(255,255,255,.05);
 }
 
@@ -55,7 +55,7 @@
 }
 
 #state-editor, .ace_autocomplete {
-	font-family: "Anonymous Pro","Lucida Console", "Monaco", monospace !important;
+	font-family: "Monaco","Consolas", monospace !important;
 }
 
 #state-editor.full {
@@ -262,7 +262,6 @@
 	line-height: 35px;
 	text-align: center;
 	color: #666;
-	/*font-family: Lucida Console;*/
 	width: 32px;
 	height: 100%;
 }
@@ -496,7 +495,7 @@
 
 #state-editor .parameter-list .parameter-name {
 	float     : left;
-	padding   : 5px;
+	padding   : 1px 5px;
 	margin-top: 2px;
 	cursor    : default;
 	position  : relative;
@@ -506,29 +505,16 @@
 
 #state-editor .parameter-list .parameter-value {
 	float: left;
-	/*width: 100%;*/
-	/*max-width: 309px;*/
 	overflow: hidden;
-	/*padding-left: 4px;*/
-	overflow: hidden;
-	/*line-height: 18px;*/
-	/*padding-top: 40px;*/
+	margin: 0;
 }
 
 #state-editor .parameter-list .parameter-container {
 	float: left;
-	/*width: 100%;*/
-	/*max-width: 350px;*/
-	/*overflow: auto;*/
-	/*margin-left: 10px;*/
 	margin-left: 30px;
-	margin-top: 4px;
-	overflow: hidden;
 	min-width : 440px;
 	overflow  : auto;
-	margin-top: 4px;
-	/*position  : absolute;*/
-	/*left      : 150px;*/
+	padding: 4px 0 0 0;
 }
 
 #state-editor .parameter-list .parameter-item.dict .parameter-value {
@@ -543,7 +529,7 @@
 
 #state-editor .parameter-list .parameter-item.dict .parameter-dict-item {
 	position: relative;
-	height: 26px;
+	/*height: 26px;*/
 }
 
 #state-editor .parameter-list .parameter-item.dict .parameter-dict-item:after {
@@ -635,7 +621,7 @@
 	white-space: nowrap;
 	margin-right: 10px;
 	color: #999;
-	margin-top: 5px;
+	margin-top: 2px;
 	/*background: rgb(59, 127, 250);*/
 	/*background: #999;*/
 	/*border-radius: 4px;*/
@@ -705,6 +691,7 @@
 	display: inline;
 	min-width: 30px;
 	height: 20px;
+	line-height: 20px;
 
 	margin-right: 10px;
 
@@ -954,7 +941,7 @@
 	background-color: #000;
 	line-height: 16px;
 	padding: 14px;
-	font-family: "Anonymous Pro","Lucida Console", "Monaco", monospace;
+	font-family: "Monaco","Consolas", monospace;
 	color: rgba(80, 226, 77, 0.6);
 }
 
@@ -1175,9 +1162,9 @@
 	overflow-y: auto;
 }
 
-#state-editor-model.se-model-app #state-editor .parameter-item .text {
+/*#state-editor-model.se-model-app #state-editor .parameter-item .text {
 	height: 35px !important;
-}
+}*/
 
 #state-editor-model.se-model-app #state-editor .ace_cursor-layer {
 	display: none;

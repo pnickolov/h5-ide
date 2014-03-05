@@ -149,7 +149,15 @@ define [ 'Design', 'event', 'text!./module/design/template.html', 'constant', 'i
                 .text failed
 
         loadStateStatusBar: ->
-            appStoped = MC.canvas_data.state is 'Stopped'
+            # Sub Event
+            ide_event.offListen ide_event.UPDATE_STATE_STATUS_DATA, @updateStateBar
+            ide_event.onLongListen ide_event.UPDATE_STATE_STATUS_DATA, @updateStateBar, @
+
+            ide_event.offListen ide_event.UPDATE_APP_STATE, @updateStateBarWhenStateChanged
+            ide_event.onLongListen ide_event.UPDATE_APP_STATE, @updateStateBarWhenStateChanged, @
+
+
+            appStoped = Design.instance().get('state') is 'Stopped'
             if appStoped
                 return
 
@@ -157,10 +165,20 @@ define [ 'Design', 'event', 'text!./module/design/template.html', 'constant', 'i
             stateList = MC.data.websocket.collection.status.find().fetch()
             @renderStateBar stateList
 
-            ide_event.onLongListen ide_event.UPDATE_STATE_STATUS_DATA, ( type, idx, statusData ) ->
+
+        updateStateBarWhenStateChanged: ( state ) ->
+            if state is 'Stopped'
+                stateList = []
+            else
                 stateList = MC.data.websocket.collection.status.find().fetch()
-                @renderStateBar stateList
-            , @
+
+            @renderStateBar stateList
+
+        updateStateBar: ( type, idx, statusData ) ->
+            stateList = MC.data.websocket.collection.status.find().fetch()
+            @renderStateBar stateList
+
+
 
         unloadStateStatusBar: ->
             $( '#main-statusbar .btn-state' ).hide()

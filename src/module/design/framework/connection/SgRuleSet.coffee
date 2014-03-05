@@ -147,6 +147,10 @@ define [ "constant", "../ConnectionModel", "Design" ], ( constant, ConnectionMod
 
       port1 = ruleOwner is @port1Comp().id or ruleOwner is @port1Comp().get("name")
 
+      if not port1 and @getTarget("SgIpTarget")
+        console.info "Ignoring adding sg rules for Ip Target."
+        return
+
       switch direction
         when SgRuleSet.DIRECTION.IN
           portions = [ if port1 then "in1" else "in2" ]

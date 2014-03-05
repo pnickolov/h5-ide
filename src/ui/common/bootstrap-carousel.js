@@ -355,15 +355,18 @@ function onYouTubePlayerAPIReady()
 	{
 		var target = $(this);
 
-		youtube_player.push(new YT.Player(target.attr('id'), {
-			width: '870',
-			height: '500',
-			videoId: target.data('video-id'),
-			playerVars: {
-				wmode: 'transparent',
-				modestbranding: 1,
-				rel: 0
-			}
-		}));
+		if (YT)
+		{
+			youtube_player.push(new YT.Player(target.attr('id'), {
+				width: '870',
+				height: '500',
+				videoId: target.data('video-id'),
+				playerVars: {
+					wmode: 'transparent',
+					modestbranding: 1,
+					rel: 0
+				}
+			}));
+		}
 	});
 }

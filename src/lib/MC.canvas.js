@@ -2474,6 +2474,8 @@ MC.canvas.asgList = {
 	{
 		$('#asgList-wrap').remove();
 
+		MC.canvas.volume.close();
+
 		return false;
 	},
 
@@ -2485,7 +2487,6 @@ MC.canvas.asgList = {
 
 		target.addClass('selected');
 		$canvas( $('#asgList-wrap').data('target-id') ).select( target.data('id') );
-
 
 		return false;
 	},
@@ -2556,6 +2557,8 @@ MC.canvas.instanceList = {
 	close: function ()
 	{
 		$('#instanceList-wrap').remove();
+
+		MC.canvas.volume.close();
 
 		return false;
 	},

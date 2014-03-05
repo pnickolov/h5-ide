@@ -95,6 +95,10 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model',
 
                 if !result1.is_error
 
+                    name = 'DescribeAccountAttributes' + '_' + $.cookie( 'usercode' ) + '__' + 'supported-platforms,default-vpc'
+                    if MC.session.get name
+                        MC.session.remove name
+
                     # check credential
                     vpc_model.DescribeAccountAttributes { sender : vpc_model }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), '',  ["supported-platforms", "default-vpc"]
 

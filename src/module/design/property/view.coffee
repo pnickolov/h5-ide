@@ -104,13 +104,8 @@ define [ 'event',
         renderProperty: ( uid, type, force ) ->
             @__hideState()
             $( '#property-panel' ).removeClass('state').removeClass('state-wide')
-            if not uid or @lastComId isnt uid
-                component = Design.instance().component uid
-                if component
-                    type = component.type
-                    id = component.id
 
-                @__initProperty type, uid, force
+            @__initProperty type, uid, force
 
             @currentTab = 'property'
             @__showProperty()

@@ -423,7 +423,7 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
     newLayout        = newData.layout
 
     # Ignore id's change. Because shit happens in process.
-    @__backingStore = newData.id
+    @__backingStore.id = newData.id
 
     delete @__backingStore.component
     delete @__backingStore.layout

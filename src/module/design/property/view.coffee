@@ -114,7 +114,6 @@ define [ 'event',
 
             @currentTab = 'property'
             @__showProperty()
-            @forceShow()
             @lastComId = uid
             @
 
@@ -175,7 +174,7 @@ define [ 'event',
 
             ide_event.trigger ide_event.OPEN_STATE_EDITOR, uid
             @__showState()
-            @forceShow()
+            if force then @forceShow()
             @
 
         __initProperty: ( type, uid, force ) ->

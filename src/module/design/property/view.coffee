@@ -76,7 +76,7 @@ define [ 'event',
                     @renderState null, true
             else
                 if @currentTab is 'state'
-                    @renderProperty()
+                    @renderProperty @lastComId
 
         __hideProperty: () ->
             $( '#property-panel .sub-property' ).hide()
@@ -105,9 +105,6 @@ define [ 'event',
             @__hideState()
             $( '#property-panel' ).removeClass('state').removeClass('state-wide')
             if not uid or @lastComId isnt uid
-                if not uid
-                    uid = Design.instance().canvas.selectedNode[ 0 ]
-
                 component = Design.instance().component uid
                 if component
                     type = component.type

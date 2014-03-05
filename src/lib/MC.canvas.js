@@ -2306,7 +2306,7 @@ MC.canvas.volume = {
 			),
 			node_type = match_node ? match_node.getAttribute('data-class') : null,
 			event_data = event.data,
-			target_type = MC.canvas.getState() === 'appedit' ? ['AWS.EC2.Instance'] : ['AWS.EC2.Instance', 'AWS.AutoScaling.LaunchConfiguration'];
+			target_type = ['AWS.EC2.Instance', 'AWS.AutoScaling.LaunchConfiguration'];
 
 		if (
 			event_data.action === 'add'

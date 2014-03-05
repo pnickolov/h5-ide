@@ -1060,7 +1060,8 @@ textarea {
 }
 
 .modal-header .modal-close,
-.modal-header .btn-modal-close {
+.modal-header .btn-modal-close,
+#account-setting-close {
 	position     : absolute;
 	top          : 10px;
 	right        : 10px;

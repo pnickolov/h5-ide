@@ -7532,7 +7532,8 @@ summary:focus {
 #app-apply-update .icon-warning {
 	position: absolute;
 	right: 4px;
-	top: 7px;
+	top: 50%;
+	margin-top: -5px;
 }
 
 #property-panel.no-state #btn-switch-state {

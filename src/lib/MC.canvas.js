@@ -2488,6 +2488,28 @@ MC.canvas.asgList = {
 
 
 		return false;
+	},
+
+	selectById: function (target_id, item_id)
+	{
+		MC.canvas.event.clearList();
+
+		var target_offset = Canvon('#' + target_id).offset(),
+			canvas_offset = $canvas.offset();
+
+		$('#canvas_container').append(
+			MC.template.asgList( $canvas( target_id ).list() )
+		);
+
+		$('#asgList-wrap')
+			.data('target-id', target_id)
+			.on('click', '.asgList-item', MC.canvas.asgList.select)
+			.css({
+				'top': target_offset.top - canvas_offset.top - 30,
+				'left': target_offset.left - canvas_offset.left - 20
+			});
+
+		MC.canvas.asgList.select.call( $('#' + item_id) );
 	}
 };
 
@@ -2560,6 +2582,29 @@ MC.canvas.instanceList = {
 		//$canvas.trigger('CANVAS_INSTANCE_SELECTED', target.data('id'));
 
 		return false;
+	},
+
+	selectById: function (target_id, item_id)
+	{
+		MC.canvas.event.clearList();
+
+		var target_offset = Canvon('#' + target_id).offset(),
+		   	canvas_offset = $canvas.offset(),
+		   	list = $canvas(target_id).list();
+
+		$('#canvas_container').append(
+			MC.template.instanceList(list)
+		);
+
+		$('#instanceList-wrap')
+			.data('target-id', target_id)
+			.on('click', '.instanceList-item', MC.canvas.instanceList.select)
+			.css({
+				'top': target_offset.top - canvas_offset.top - 30,
+				'left': target_offset.left - canvas_offset.left - 20
+			});
+
+		MC.canvas.instanceList.select.call( $('#' + item_id) );
 	}
 };
 
@@ -2619,6 +2664,29 @@ MC.canvas.eniList = {
 		$canvas( $('#eniList-wrap').data('target-id') ).select( target.data('id') );
 
 		//$canvas.trigger('CANVAS_ENI_SELECTED', target.data('id'));
+
+		return false;
+	},
+
+	selectById: function (target_id, item_id)
+	{
+		MC.canvas.event.clearList();
+
+		var target_offset = Canvon('#' + target_id).offset(),
+			canvas_offset = $canvas.offset(),
+			list = $canvas( target_id ).list();
+
+		$('#canvas_container').append( MC.template.eniList( list ) );
+
+		$('#eniList-wrap')
+			.data('target-id', target_id)
+			.on('click', '.eniList-item', MC.canvas.eniList.select)
+			.css({
+				'top': target_offset.top - canvas_offset.top - 30,
+				'left': target_offset.left - canvas_offset.left - 20
+			});
+
+		MC.canvas.eniList.select.call( $('#' + item_id) );
 
 		return false;
 	}

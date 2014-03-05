@@ -48,7 +48,7 @@ define [ 'event'
                     'click .state-status-item-detail': 'openStateEditor'
 
                 openStateEditor: ->
-                    ide_event.trigger ide_event.OPEN_STATE_EDITOR, @model.get 'uid'
+                    ide_event.trigger ide_event.OPEN_PROPERTY, null, @model.get( 'uid' ), false, 'state'
                     null
 
         render: () ->

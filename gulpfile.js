@@ -5,6 +5,7 @@ var os    = require('os');
 
 var serverTask  = require('./util/gulp_tasks/server');
 var buildTask   = require('./util/gulp_tasks/build');
+var releaseTask = require('./util/gulp_tasks/release');
 
 // Load user-config
 GLOBAL.gulpConfig = require('./gulpconfig-default');
@@ -38,8 +39,8 @@ gulp.task("watch", function(){
 // Build different version of ide
 gulp.task("dev",     function(){ return buildTask.compileDev(); });
 gulp.task("dev_all", function(){ return buildTask.compileDev( true ); });
-gulp.task("debug",   function(){ buildTask.build("debug");   });
-gulp.task("release", function(){ buildTask.build("release"); });
+gulp.task("debug",   function(){ return releaseTask.build( true );   });
+gulp.task("release", function(){ return releaseTask.build(); });
 
 // Upgrade 3rd party library
 gulp.task("upgrade", function(){ });

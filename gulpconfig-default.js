@@ -33,5 +33,9 @@ module.exports = {
   //   Fast, CPU-friendly, Won't open too many files at the same time.
   , pollingWatch : "auto"
 
+  // If pollingWatch is false, gulp will use polling to watch .git folder. If there's any change
+  // in .git, it will try to recompile the whole project ( enableCache == true can avoid uncessary compile ).
+  , gitPollingDebounce : 1000
+
 
 };

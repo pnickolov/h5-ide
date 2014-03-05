@@ -129,7 +129,7 @@ Helper =
 
       gulp.watch ["./.git/HEAD", "./.git/refs/heads/develop", "./.git/refs/heads/**/*" ], ( event )->
         if gitDebounceTimer is null
-          gitDebounceTimer = setTimeout compileAfterGitAction, 300
+          gitDebounceTimer = setTimeout compileAfterGitAction, (GLOBAL.gulpConfig.gitPollingDebounce || 1000)
 
         null
 

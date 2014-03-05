@@ -865,6 +865,12 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
                             flag_list.is_failed = true
                             flag_list.err_detail = req.data.replace(/\\n/g, '<br />')
 
+                            if req and req.suggestion and _.isArray( req.suggestion ) and req.suggestion.length > 0
+
+                                _.each req.suggestion, ( item ) ->
+                                    flag_list.err_detail += '<br/>' + item
+                                    null
+
                             if flag is 'RUN_STACK'
                                 # remove the app name from app_list
                                 if name in MC.data.app_list[region]

@@ -370,6 +370,9 @@ define [ '../base/view',
 
             $("#asg-policy-metric").on "OPTION_CHANGE", ()->
                 $("#asg-policy-unit").html( unitMap[$(this).find(".selected").data("id")] || "" )
+                $( '#asg-policy-threshold' ).val ''
+
+            null
 
         onPolicyDone : () ->
 

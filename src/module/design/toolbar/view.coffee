@@ -140,40 +140,29 @@ define [ 'MC', 'event',
                 require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
 
             else
+
                 # set app name
-
-                # old design flow
-                #$('.modal-input-value').val MC.canvas_data.name
-
-                # new design flow
                 $('.modal-input-value').val MC.common.other.canvasData.get 'name'
 
                 # set total fee
-
-                # old design flow
-                #copy_data = $.extend( true, {}, MC.canvas_data )
-                #cost = MC.aws.aws.getCost MC.forge.stack.compactServerGroup(copy_data)
-
-                # new design flow
                 cost = Design.instance().getCost()
-
                 $('#label-total-fee').find("b").text("$#{cost.totalFee}")
 
-                #
-                #$( '#modal-run-stack' ).find( 'summary' ).after MC.template.validationDialog()
-
+                # insert ta component
                 require [ 'component/trustedadvisor/main' ], ( trustedadvisor_main ) ->
                     trustedadvisor_main.loadModule 'stack'
 
-
-                target = $( '#main-toolbar' )
-                $('#btn-confirm').on 'click', { target : this }, (event) ->
+                # click logic
+                $('#btn-confirm').on 'click', this, (event) ->
 
                     console.log 'clickRunIcon'
 
-                    app_name = $('.modal-input-value').val()
+                    # set is_run is true
+                    event.data.model.set 'is_run', true
 
                     #check app name
+                    app_name = $('.modal-input-value').val()
+
                     if not app_name
                         notification 'warning', lang.ide.PROP_MSG_WARN_NO_APP_NAME
                         return
@@ -182,10 +171,7 @@ define [ 'MC', 'event',
                         notification 'warning', lang.ide.PROP_MSG_WARN_INVALID_APP_NAME
                         return
 
-                    # old design flow
-                    #process_tab_name = 'process-' + MC.canvas_data.region + '-' + app_name
-
-                    # new design flow
+                    # get process tab name
                     process_tab_name = 'process-' + MC.common.other.canvasData.get( 'region' ) + '-' + app_name
 
                     # delete F5 old process
@@ -207,13 +193,10 @@ define [ 'MC', 'event',
                     $('#btn-confirm').attr 'disabled', true
                     $('.modal-close').attr 'disabled', true
 
-                    # old design flow
-                    #ide_event.trigger ide_event.SAVE_STACK, MC.canvas_data
-
-                    # new design flow
+                    # push SAVE_STACK event
                     ide_event.trigger ide_event.SAVE_STACK, MC.common.other.canvasData.data()
 
-            true
+            null
 
         clickSaveIcon : ->
             console.log 'clickSaveIcon'

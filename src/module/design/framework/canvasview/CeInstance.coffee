@@ -300,6 +300,15 @@ define [ "./CanvasElement", "constant", "CanvasManager", "Design" ], ( CanvasEle
     list
 
   ChildElementProto.addVolume = ( attribute )->
+
+    ###
+      # # # Quick Hack # # #
+      Do not allow adding volume to existing LC in appUpdate
+    ###
+    if Design.instance().modeIsAppEdit() and @model.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration and @model.get("appId")
+      notification "error", "This operation is not supported yet."
+      return false
+
     attribute = $.extend {}, attribute
     attribute.owner = @model
     VolumeModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume )

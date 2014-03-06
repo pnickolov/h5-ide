@@ -22,22 +22,13 @@ define [ "Design", "constant" ], ( Design, constant )->
     ipSet        = []
     reserveIpSet = []
 
-    if Design.instance().modeIsStack()
-      # In stack mode, we always genarate new Ip for auto assign ips.
-      for eni in eniArray
-        for ip in eni.resource.PrivateIpAddressSet
-          if ip.AutoAssign is true
-            ipSet.push ip
-          else
-            reserveIpSet.push( ip.PrivateIpAddress )
-
-    else
-      for eni in eniArray
-        for ip in eni.resource.PrivateIpAddressSet
-          if ip.PrivateIpAddress is "x.x.x.x"
-            ipSet.push ip
-          else
-            reserveIpSet.push( ip.PrivateIpAddress )
+    # We always genarate new Ip for auto assign ips.
+    for eni in eniArray
+      for ip in eni.resource.PrivateIpAddressSet
+        if ip.AutoAssign is true
+          ipSet.push ip
+        else
+          reserveIpSet.push( ip.PrivateIpAddress )
 
     { subnetCid : subnetCid, ipSet : ipSet, reserveIpSet : reserveIpSet }
 

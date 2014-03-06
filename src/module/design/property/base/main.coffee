@@ -363,6 +363,7 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
 
     PropertyModule.restore  = ( snapshot, propertyView )->
         propertyView.currentTab = snapshot.propertyTab
+        propertyView.lastComId = snapshot.activeModuleId
 
         PropertyModule.load snapshot.activeModuleType, snapshot.activeModuleId, snapshot.tab_type
 

@@ -110,7 +110,7 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 		canSetInstanceType : ( value ) ->
 			instance   = Design.instance().component( @get("uid") )
 			eni_number = instance.connectionTargets("EniAttachment").length + 1
-			config     = instance.getInstanceTypeConfig()
+			config     = instance.getInstanceTypeConfig( value )
 
 			max_eni_num = if config then config.eni else 2
 

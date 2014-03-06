@@ -10,6 +10,8 @@ module.exports.create = ()->
 
   file = new nstatic.Server("./src", { cache : false, headers : defaultHeader } )
 
+  redirectRegex = /(login|ide|register|reset)\.html$/
+
   server = http.createServer ( request, response )->
 
     request.addListener 'end', ()->
@@ -17,8 +19,16 @@ module.exports.create = ()->
 
       if url is "/"
         filePath = "/ide.html"
+      else if /ide.html$/.test( url )
+        response.writeHead 301, { "Location" : "/" }
+        response.end()
+        return
       else if url[ url.length - 1 ] is "/"
         response.writeHead 301, { "Location" : url.substring(0, url.length-1) }
+        response.end()
+        return
+      else if redirectRegex.test(url)
+        response.writeHead 301, { "Location" : url.replace(".html", "") }
         response.end()
         return
       else if url.indexOf( ".", 1 ) is -1

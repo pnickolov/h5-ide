@@ -57,7 +57,7 @@ define [ 'event', 'i18n!nls/lang.js',
             if indexOf >= 0 then (indexOf + (startpos || 0)) else indexOf
 
         updateLoadTime: ( time ) ->
-            $('#global-refresh span').text time
+            $('#global-refresh').text time
 
         scrollToResource: ->
             scrollContent = $( '#global-region-wrap .scroll-content' )
@@ -608,8 +608,8 @@ define [ 'event', 'i18n!nls/lang.js',
 
             $("#modal-import-json-file").on "change", hanldeFile
             zone = $("#modal-import-json-dropzone").on "drop", hanldeFile
-            zone.on "dragenter", ()-> $(this).addClass("dragover")
-            zone.on "dragleave", ()-> $(this).removeClass("dragover")
+            zone.on "dragenter", ()-> $(this).closest("#modal-import-json-dropzone").toggleClass("dragover", true)
+            zone.on "dragleave", ()-> $(this).closest("#modal-import-json-dropzone").toggleClass("dragover", false)
             zone.on "dragover", ( evt )->
                 dt = evt.originalEvent.dataTransfer
                 if dt then dt.dropEffect = "copy"

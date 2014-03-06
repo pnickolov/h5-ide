@@ -2209,8 +2209,13 @@ MC.canvas.volume = {
 				event.which === 8
 			)
 			&&
-			MC.canvas.getState() !== 'app' &&
-			event.target === document.body
+			(
+				event.ctrlKey === false &&
+				event.metaKey === false
+			)
+			&&
+			event.target.tagName.toLowerCase() !== 'input' &&
+			MC.canvas.getState() !== 'app'
 		)
 		{
 			var bubble_box = $('#volume-bubble-box'),
@@ -2219,7 +2224,10 @@ MC.canvas.volume = {
 				target_offset = target_node[0].getBoundingClientRect(),
 				volume_id = $('#instance_volume_list').find('.selected').attr('id');
 
-			if ( $canvas(volume_id).remove() )
+			if (
+				volume_id &&
+				$canvas(volume_id).remove()
+			)
 			{
 				$('#' + volume_id).parent().remove();
 
@@ -2235,7 +2243,7 @@ MC.canvas.volume = {
 
 			$(document).off('keyup', MC.canvas.volume.remove);
 
-			return true;
+			return false;
 		}
 	},
 

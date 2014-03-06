@@ -162,15 +162,15 @@ define [ "Design",
 
     getHealthCheckTarget : ()->
       # Format ping
-      pingArr  = @attributes.healthCheckTarget.split(":")
-      protocol = pingArr[0]
+      target = @attributes.healthCheckTarget
+      splitIndex = target.indexOf(":")
+      protocol = target.substring(0, splitIndex)
 
-      pingArr  = (pingArr[1] || "").split("/")
-      port     = parseInt( pingArr[0], 10 )
-
+      target = target.substring(splitIndex+1)
+      port   = parseInt( target, 10 )
       if isNaN( port ) then port = 80
 
-      path = if pingArr.length is 2 then pingArr[1] else "index.html"
+      path = target.replace( /[^\/]+\//, "" )
 
       [ protocol, port, path ]
 
@@ -276,13 +276,13 @@ define [ "Design",
       else
         subnets = _.map @connectionTargets( "ElbSubnetAsso" ), ( sb )-> sb.createRef("SubnetId")
 
-
+      # Remove AZs in Elb JSON because VPC doesn't need it.
       component =
         type : @type
         uid  : @id
         name : @get("name")
         resource :
-          AvailabilityZones : @getAvailabilityZones()
+          AvailabilityZones : [] # @getAvailabilityZones()
           Subnets : subnets
           Instances : []
           CrossZoneLoadBalancing : @get("crossZone")
@@ -345,6 +345,12 @@ define [ "Design",
         listeners : []
         dnsName   : data.resource.DNSName
         elbName   : data.resource.LoadBalancerName
+
+        healthyThreshold    : data.resource.HealthCheck.HealthyThreshold
+        unHealthyThreshold  : data.resource.HealthCheck.UnhealthyThreshold
+        healthCheckTarget   : data.resource.HealthCheck.Target
+        healthCheckInterval : data.resource.HealthCheck.Interval
+        healthCheckTimeout  : data.resource.HealthCheck.Timeout
 
         x : layout_data.coordinate[0]
         y : layout_data.coordinate[1]

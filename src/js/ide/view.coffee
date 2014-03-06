@@ -19,7 +19,7 @@ define [ 'event',
         initialize : ->
             $( window ).on 'beforeunload', @beforeunloadEvent
 
-            $(document).on 'keydown', @disableBrowserGoBack
+            $(document).on 'keydown', @globalKeyEvent
 
         showMain : ->
             console.log 'showMain'
@@ -234,12 +234,19 @@ define [ 'event',
                 $( '#status-bar-modal' ).hide()
                 ide_event.trigger ide_event.UNLOAD_TA_MODAL
 
-        disableBrowserGoBack: (event) ->
+        globalKeyEvent: (event) ->
 
             nodeName = event.target.nodeName.toLowerCase()
 
+            # Disable borwser go back [backspace]
             if event.which is 8 and nodeName isnt 'input' and nodeName isnt 'textarea' and event.target.contentEditable isnt 'true'
                 return false
+
+            # Open short key cheat sheet [/ || ?]
+            if event.which is 191 and nodeName isnt 'input' and nodeName isnt 'textarea' and event.target.contentEditable isnt 'true'
+                modal MC.template.shortkey(), true
+                return false
+
     }
 
     view = new MainView()

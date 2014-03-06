@@ -227,7 +227,12 @@ var Tabbar = {
 	{
 		var tabs = $('#tab-bar li'),
 			tabs_link = $('#tab-bar li a.tab-bar-truncate'),
-			tab_item_width = (tabbar_width - (tabs.length * 5)) / tabs.length;
+
+			// Except for the first tab
+			tabs_count = tabs.length - 1,
+			
+			// tabbar - first tab width + margin-right
+			tab_item_width = (tabbar_width - (117 + 5) - (tabs_count * 5)) / tabs_count;
 
 		tab_item_width = tab_item_width > 220 ? 220 : tab_item_width;
 		tabs.css('width', tab_item_width);

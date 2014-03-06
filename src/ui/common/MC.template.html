@@ -717,7 +717,7 @@ Following rule(s) will be deleted from its(their) security group:</div>
 <li class="input-ip-item">
   <div class="name tooltip" data-tooltip="{{#if autoAssign}}{{i18n 'PROP_INSTANCE_IP_MSG_2'}}{{else}}{{i18n 'PROP_INSTANCE_IP_MSG_1'}}{{/if}}">
     <label class="input-ip-wrap" for="propertyIpListItem-{{@index}}"><span class="input-ip-prefix">{{prefix}}</span>
-    <input type="text" class="input input-ip"  id="propertyIpListItem-{{@index}}" value="{{suffix}}" {{#unless editable}}disabled="disabled"{{/unless}} data-ignore="true" data-ignore-regexp="^[0-9.x]*$">
+    <input type="text" class="input input-ip"  id="propertyIpListItem-{{@index}}" value="{{suffix}}" {{#unless editable}}disabled="disabled"{{/unless}} data-ignore="true" data-ignore-regexp="^[0-9.x]*$" data-required="true">
     </label>
   </div>
   <div class="input-ip-eip-btn tooltip toggle-eip{{#if hasEip}} associated{{/if}}" data-tooltip="{{#if hasEip}}{{i18n 'PROP_INSTANCE_IP_MSG_4'}}{{else}}{{i18n 'PROP_INSTANCE_IP_MSG_3'}}{{/if}}"></div>
@@ -1386,7 +1386,7 @@ Are you sure you want to delete {{name}}?</div>
 
 <!-- shortkey -->
 <div style="width:640px" id="modal-key-short">
-	<div class="modal-header"><h3>Keyboard Shortcuts(?)</h3><i class="modal-close">&times;</i></div>
+	<div class="modal-header"><h3>Keyboard Shortcuts (?)</h3><i class="modal-close">&times;</i></div>
 	<div class="modal-body scroll-wrap">
 		<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
 		<div class="scroll-content" style="height: 560px">
@@ -1489,6 +1489,11 @@ Are you sure you want to delete {{name}}?</div>
 						<div class="key mac font-mono">Command+D</div>
 						<div class="key pc font-mono">Ctrl+D</div>
 						<div class="action">Deselect states.</div>
+					</li>
+					<li class="key-item">
+						<div class="key mac font-mono">Command+Enter</div>
+						<div class="key pc font-mono">Ctrl+Enter</div>
+						<div class="action">Create new state.</div>
 					</li>
 					<li class="key-item">
 						<div class="key mac font-mono">Command+Delete</div>

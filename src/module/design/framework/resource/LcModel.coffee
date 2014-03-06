@@ -80,7 +80,7 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
       newName
 
     isRemovable : () ->
-      if @design().modeIsAppEdit() and @.get("appId")
+      if @design().modeIsAppEdit() and @get("appId")
         return error : lang.ide.CVS_MSG_ERR_DEL_LC
 
       state = @get("state")

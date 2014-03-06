@@ -291,8 +291,8 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
       null
 
     getAmi : ()-> MC.data.dict_ami[@get("imageId")]
-    getInstanceTypeConfig : ()->
-      t = @get("instanceType").split(".")
+    getInstanceTypeConfig : ( type )->
+      t = (type || @get("instanceType")).split(".")
       if t.length >= 2
         config = MC.data.config[ Design.instance().region() ]
         if config and config.instance_type

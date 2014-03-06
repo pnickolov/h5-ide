@@ -29,6 +29,11 @@ a {
 	z-index: 80;
 }
 
+button {
+	border : none;
+	background : none;
+}
+
 /*.blur-effect {
 	-webkit-filter: blur(1px);
 	-moz-filter: blur(1px);
@@ -285,9 +290,9 @@ a {
 }
 
 #header--user .icon-caret-down {
-	position: absolute;
-	top: 14px;
-	right: 10px;
+	position : absolute;
+	top      : 3px;
+	right    : 10px;
 }
 
 #user-dropdown-wrapper {
@@ -955,7 +960,7 @@ a {
 
 /* Main Tab Bar */
 #tabbar-wrapper {
-	padding-left: 46px;
+	padding-left: 45px;
 	padding-right: 180px;
 	height: 45px;
 }
@@ -1073,87 +1078,41 @@ a {
 }
 
 #global-refresh {
-	font-size: 12px;
-	padding-left: 20px;
-	position: absolute;
-	right: 25px;
-	top: 25px;
-	color: #aaa;
-	display: block;
+	font-size : 12px;
+	position  : absolute;
+	right     : 25px;
+	top       : 22px;
+	color     : #aaa;
+	display   : block;
+	cursor    : pointer;
 }
+#global-refresh:before { margin-right: 4px; vertical-align : middle; }
+#global-refresh:hover  { color: #4495d3; }
 
-#global-refresh .icon-refresh {
-	font-size: 12px !important;
-	margin-right: 4px;
-}
-
-/*.global-refresh-icon {
-	top: 3px;
-	left: 0;
-	position: absolute;
-	display: block;
-	background: url('../images/ide/global-refresh.png') no-repeat;
-	width: 14px;
-	height: 12px;
-}*/
-
-#global-refresh:hover {
-	color: #4495d3;
-}
-
-#global-create-stack,
-#global-import-stack,
-#global-region-visualize-VPC {
-	position : absolute;
-	left     : 20px;
-
-	display     : block;
-	width       : 200px;
+#global-region-header .btn {
+	float : left;
 	height      : 40px;
 	line-height : 40px;
 	overflow    : hidden;
 
-	text-align : center;
+	text-align : left;
 	color      : #fff;
 	font-size  : 16px;
-	padding    : 0 18px 0 0;
 
 	border-radius : 3px;
+	padding : 0 16px 0 0;
+	margin-left : 20px;
 }
 
-#global-import-stack {
-	left         : 240px;
-	width        : 160px;
-	padding-right: 0;
-}
-
-#global-region-visualize-VPC {
-	left: 420px;
-	width: 250px;
-	padding-right: 6px;
-	display: none;
-}
-
-.firefox #global-region-visualize-VPC {
-	left: 260px;
-}
-
-#global-create-stack .icon-new-stack,
-#global-region-visualize-VPC .icon-visualize,
-#global-import-stack .icon-import {
-	display       : inline-block;
+#global-region-header .btn:before {
 	width         : 40px;
 	height        : 40px;
 	line-height   : 40px;
+	text-align    : center;
+	float         : left;
 	background    : rgba(0,0,0,.2);
 	border-radius : 3px 0 0 3px;
-	float         : left;
-}
-
-#global-create-stack .icon-caret-down {
-	position: absolute;
-	right: 8px;
-	top: 12px;
+	margin-right  : 10px;
 }
 
 /* Import JSON */
@@ -1188,23 +1147,28 @@ a {
 	cursor: pointer;
 }
 
-.help-tip:hover + .help-tip-body,
-.help-tip-body:hover {
+#global-region-visualize-VPC {
+	position: relative;
+	overflow: visible !important;
+
+}
+#global-region-visualize-VPC:hover .help-tip-body {
 	display: block;
 	opacity: 1;
 }
 
 .help-tip-body {
-	font-size: 13px;
-	background: rgba(0,0,0,.8);
-	color: #ccc;
-	padding: 5px 10px;
-	width: 280px;
-	border-radius: 4px;
-	position: absolute;
-	display: none;
-	top: 56px;
-	left: 395px;
+	font-size     : 13px;
+	line-height   : 1.5em;
+	background    : rgba(0,0,0,.8);
+	color         : #ccc;
+	padding       : 5px 10px;
+	width         : 280px;
+	border-radius : 4px;
+	position      : absolute;
+	display       : none;
+	top           : 56px;
+	left          : -25px;
 }
 
 .help-tip-body:after {
@@ -1233,10 +1197,6 @@ a {
 	background-color: #c472a7;
 }*/
 
-#global-create-stack.disabled,
-#global-create-stack.disabled:hover,
-#global-region-visualize-VPC.disabled,
-#global-region-visualize-VPC.disabled:hover,
 #region-switch.disabled,
 #region-switch.disabled:hover
  {
@@ -1249,35 +1209,30 @@ a {
 	box-shadow       : none;
 }
 
-#global-create-stack.disabled .icon-new-stack,
-#global-create-stack.disabled:hover .icon-new-stack {
-	background-color: rgba(0,0,0,.1);
-}
-
 #global-region-create-stack-list {
-	left: 20px;
-	width: 216px;
-	position: absolute;
-	border: 1px solid #ccc;
-	background: #fcfcfc;
-	top: 56px;
-	box-shadow: 1px 5px 8px rgba(0, 0, 0, 0.5);
-	border-radius: 2px;
+	position : absolute;
+	left     : 20px;
+	top      : 56px;
+
+	width         : 216px;
+	border        : 1px solid #ccc;
+	box-shadow    : 1px 5px 8px rgba(0, 0, 0, 0.5);
+	border-radius : 2px;
+	color         : #666;
+	font-size     : 14px;
+	background    : #f8f8f8;
 }
 
-#global-region-create-stack-list li {
-	border-bottom: 1px solid #ddd;
+#global-region-create-stack-list > li {
+	padding       : 12px 15px;
+	border-bottom : 1px solid #ddd;
+	cursor        : pointer;
+}
+#global-region-create-stack-list > li:last-child {
+	border-bottom : none;
 }
 
-#global-region-create-stack-list a {
-	display: block;
-	padding: 12px 15px;
-	color: #666;
-	font-size: 14px;
-	background: #f8f8f8;
-}
-
-#global-region-create-stack-list a:hover {
+#global-region-create-stack-list > li:hover {
 	background: #eee;
 	color: #4495d3;
 }
@@ -1937,9 +1892,10 @@ a {
 	width: 170px;
 	position: relative;
 	text-align: center;
-	border: 1px solid #ddd;
+	border: 1px solid #bbb;
 	border-bottom: none;
 	background: #F3F3F3;
+	box-shadow: inset 0 -1px 0 #bbb;
 }
 
 #region-resource-tab li:first-child a {
@@ -1953,6 +1909,7 @@ a {
 
 #region-resource-tab a.on {
 	background: transparent;
+	box-shadow: none;
 }
 
 .region-resource-tab-type {
@@ -2010,8 +1967,8 @@ a {
 .region-resource-list {
 	background : #fff;
 	padding    : 5px 20px 20px;
-	box-shadow : 1px 1px 5px rgba(0,0,0,0.1);
-	border     : 1px solid #ddd;
+	box-shadow: 1px 1px 5px rgba(0,0,0,0.1), 0 -1px 0 #bbb;
+	border: 1px solid #bbb;
 	border-top : none;
 }
 
@@ -2432,7 +2389,7 @@ a {
 
 	.blank-widget {
 		margin-top : 15px;
-		padding : 65px 0;
+		padding : 61px 0;
 	}
 
 	.region-resource-thumbnail {
@@ -6776,7 +6733,7 @@ summary:focus {
 	position         : absolute;
 	bottom           : 23px;
 	right            : 280px;
-	z-index          : 65;
+	z-index          : 4;
 	box-shadow       : inset 0 1px rgba(255,255,255,.2), 0 -2px 5px rgba(0,0,0,.2);
 	border           : solid 1px #242424;
 	background-color : #464646;
@@ -7494,13 +7451,13 @@ summary:focus {
 
 #app-update-summary-table {
 	font-size: 12px;
-	vertical-align: middle;
 	border: 1px solid #dfdfdf;
 }
 
 .app-update-summary-table-header.table th,
-.app-update-summary-table.table td {
+#app-update-summary-table.table td {
 	padding: 2px 4px;
+	vertical-align: middle;
 }
 
 .au-summary-label {
@@ -7526,13 +7483,13 @@ summary:focus {
 .au-summary-extra,
 #app-apply-update .icon-warning {
 	color    : #ec3c38;
-	font-size: 12px !important;
 }
 
 #app-apply-update .icon-warning {
 	position: absolute;
 	right: 4px;
-	top: 7px;
+	top: 50%;
+	margin-top: -8px;
 }
 
 #property-panel.no-state #btn-switch-state {

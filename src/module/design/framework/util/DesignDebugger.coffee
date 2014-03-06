@@ -49,13 +49,10 @@ define [ "Design" ], ( Design )->
       JsonViewer.showDiffDialog( d.__backingStore, d.serialize() )
     null
 
-  Design.debug.json = ( notToString )->
+  Design.debug.json = ()->
     data = Design.instance().serialize()
-    if not notToString
-      return JSON.stringify( data )
-    else
-      console.log( data )
-    null
+    console.log( data )
+    return JSON.stringify( data )
 
   Design.debug.export = ()->
     filename = 'CanvasData.json'
@@ -94,7 +91,7 @@ define [ "Design" ], ( Design )->
   window.dd   = Design.debug
   window.dget = ( a )-> Design.instance().get(a)
   window.dset = ( a, b )-> Design.instance().set(a,b)
-  window.dds  = ()-> Design.debug.json( true )
+  window.dds  = ()-> Design.debug.json()
   null
 
   ### env:dev:end ###

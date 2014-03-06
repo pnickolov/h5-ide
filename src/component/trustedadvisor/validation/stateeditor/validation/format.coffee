@@ -185,15 +185,15 @@ define [ 'Design', 'constant', 'i18n!nls/lang.js', 'jquery', 'underscore', 'MC' 
     __matchModule = ( state, data ) ->
         module = Helper.getModule()
         cmd = Helper.getCommand module, state.module
+        if cmd
+            error = []
+            for name, param of cmd.parameter
+                if param.required is true and not Validator.required( state.parameter[ name ] )
+                    tip = sprintf lang.ide.TA_MSG_ERROR_STATE_EDITOR_EMPTY_REQUIED_PARAMETER, data.name, data.stateId, name
+                    type = 'requiredParameter'
+                    error.push Helper.buildError tip, data.stateId, type
 
-        error = []
-        for name, param of cmd.parameter
-            if param.required is true and not Validator.required( state.parameter[ name ] )
-                tip = sprintf lang.ide.TA_MSG_ERROR_STATE_EDITOR_EMPTY_REQUIED_PARAMETER, data.name, data.stateId, name
-                type = 'requiredParameter'
-                error.push Helper.buildError tip, data.stateId, type
-
-        error
+            error
 
     # Interface
     checkFormat = ( state, data ) ->

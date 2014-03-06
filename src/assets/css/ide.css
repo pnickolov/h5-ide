@@ -7449,13 +7449,13 @@ summary:focus {
 
 #app-update-summary-table {
 	font-size: 12px;
-	vertical-align: middle;
 	border: 1px solid #dfdfdf;
 }
 
 .app-update-summary-table-header.table th,
-.app-update-summary-table.table td {
+#app-update-summary-table.table td {
 	padding: 2px 4px;
+	vertical-align: middle;
 }
 
 .au-summary-label {

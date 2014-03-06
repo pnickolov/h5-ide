@@ -3791,6 +3791,11 @@ MC.canvas.event.siderbarDrag = {
 				target_type = target.data('type'),
 				node_type = target.data('component-type'),
 				platform = $canvas.platform(),
+
+				drop_zone = $('#changeAmiDropZone'),
+				drop_zone_offset,
+				drop_zone_data,
+
 				shadow,
 				clone_node,
 				default_width,
@@ -3861,6 +3866,22 @@ MC.canvas.event.siderbarDrag = {
 					Canvon('.' + target_group_type.join(',').replace(/\./ig, '-').replace(/,/ig, ',.')).addClass('dropable-group');
 				}
 
+				// For change AMI
+				if (
+					target_type === 'AWS.EC2.Instance' &&
+					drop_zone.is(":visible")
+				)
+				{
+					drop_zone_offset = drop_zone.offset();
+
+					drop_zone_data = {
+						'x1': drop_zone_offset.left,
+						'x2': drop_zone_offset.left + drop_zone.width(),
+						'y1': drop_zone_offset.top,
+						'y2': drop_zone_offset.top + drop_zone.height()
+					};
+				}
+
 				$(document).on({
 					'mousemove': MC.canvas.event.siderbarDrag.mousemove,
 					'mouseup': MC.canvas.event.siderbarDrag.mouseup
@@ -3871,7 +3892,9 @@ MC.canvas.event.siderbarDrag = {
 					'target_type': target_type,
 					'shadow': shadow,
 					'scale_ratio': $canvas.scale(),
-					'component_size': node_type === 'node' ? MC.canvas.COMPONENT_SIZE[ target_type ] : MC.canvas.GROUP_DEFAULT_SIZE[ target_type ]
+					'component_size': node_type === 'node' ? MC.canvas.COMPONENT_SIZE[ target_type ] : MC.canvas.GROUP_DEFAULT_SIZE[ target_type ],
+					'drop_zone': drop_zone,
+					'drop_zone_data': drop_zone_data
 				});
 			}
 
@@ -3922,6 +3945,24 @@ MC.canvas.event.siderbarDrag = {
 			Canvon('#' + match_place.target).addClass('match-dropable-group');
 		}
 
+		// For change AMI hover effect
+		if (event_data.drop_zone)
+		{
+			if (
+				event.pageX > event_data.drop_zone_data.x1 &&
+				event.pageX < event_data.drop_zone_data.x2 &&
+				event.pageY > event_data.drop_zone_data.y1 &&
+				event.pageY < event_data.drop_zone_data.y2
+			)
+			{
+				event_data.drop_zone.addClass("hover");
+			}
+			else
+			{
+				event_data.drop_zone.removeClass("hover");
+			}
+		}
+
 		shadow.style.top = (event.pageY - 50) + 'px';
 		shadow.style.left = (event.pageX - 50) + 'px';
 
@@ -3939,7 +3980,9 @@ MC.canvas.event.siderbarDrag = {
 
 		if (elem.id === 'changeAmiDropZone' || $(elem).parents('#changeAmiDropZone').length > 0)
 		{
-			$("#changeAmiDropZone").trigger("drop", $(event.data.target).data('option').imageId);
+			$("#changeAmiDropZone")
+				.removeClass("hover")
+				.trigger("drop", $(event.data.target).data('option').imageId);
 
 			event.data.shadow.remove();
 		}

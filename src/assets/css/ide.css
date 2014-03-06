@@ -1892,9 +1892,10 @@ button {
 	width: 170px;
 	position: relative;
 	text-align: center;
-	border: 1px solid #ddd;
+	border: 1px solid #bbb;
 	border-bottom: none;
 	background: #F3F3F3;
+	box-shadow: inset 0 -1px 0 #bbb;
 }
 
 #region-resource-tab li:first-child a {
@@ -1908,6 +1909,7 @@ button {
 
 #region-resource-tab a.on {
 	background: transparent;
+	box-shadow: none;
 }
 
 .region-resource-tab-type {
@@ -1965,8 +1967,8 @@ button {
 .region-resource-list {
 	background : #fff;
 	padding    : 5px 20px 20px;
-	box-shadow : 1px 1px 5px rgba(0,0,0,0.1);
-	border     : 1px solid #ddd;
+	box-shadow: 1px 1px 5px rgba(0,0,0,0.1), 0 -1px 0 #bbb;
+	border: 1px solid #bbb;
 	border-top : none;
 }
 
@@ -2387,7 +2389,7 @@ button {
 
 	.blank-widget {
 		margin-top : 15px;
-		padding : 65px 0;
+		padding : 61px 0;
 	}
 
 	.region-resource-thumbnail {
@@ -7481,14 +7483,13 @@ summary:focus {
 .au-summary-extra,
 #app-apply-update .icon-warning {
 	color    : #ec3c38;
-	font-size: 12px !important;
 }
 
 #app-apply-update .icon-warning {
 	position: absolute;
 	right: 4px;
 	top: 50%;
-	margin-top: -5px;
+	margin-top: -8px;
 }
 
 #property-panel.no-state #btn-switch-state {

@@ -1149,7 +1149,7 @@ button {
 
 #global-region-visualize-VPC {
 	position: relative;
-	overflow: visible;
+	overflow: visible !important;
 
 }
 #global-region-visualize-VPC:hover .help-tip-body {

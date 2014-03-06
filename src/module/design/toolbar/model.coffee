@@ -49,6 +49,10 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
             # {<stack_name>:<data>}
             'cf_data'       : null
 
+            # when click 'toolbar run stack' button is_run is true
+            # when click run button is_run is false
+            'is_run'        : false
+
         initialize : ->
 
             me = this
@@ -600,6 +604,7 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
 
         #run
         runStack : (data) ->
+            console.log 'runStack', data
             me = this
 
             id          = data.id

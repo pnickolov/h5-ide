@@ -112,13 +112,13 @@ define [ '../base/view',
 
         healthIntervalChanged : ( event ) ->
             $target = $ event.currentTarget
-            value = Helper.makeInRange $target.val(), [6, 300], $target, 30
+            value = Helper.makeInRange $target.val(), [30, 300], $target, 30
 
             @model.setHealthInterval value
 
         healthTimeoutChanged : ( event ) ->
             $target = $ event.currentTarget
-            value = Helper.makeInRange $target.val(), [2, 60 ], $target, 5
+            value = Helper.makeInRange $target.val(), [2, 60], $target, 5
 
             @model.setHealthTimeout value
 

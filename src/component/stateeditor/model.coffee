@@ -313,8 +313,8 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 				compName = compData.name
 				compUID = compData.uid
 
-				if compUID is currentCompUID
-					compName = 'self'
+				# if compUID is currentCompUID
+				# 	compName = 'self'
 
 				compType = compData.type
 
@@ -339,8 +339,8 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 						instanceUID = MC.extractID(instanceRef)
 						if instanceUID
 							compName = allCompData[instanceUID].serverGroupName
-							if instanceUID is currentCompUID
-								compName = 'self'
+							# if instanceUID is currentCompUID
+							# 	compName = 'self'
 
 				supportType = compType.replace(/\./ig, '_')
 
@@ -524,13 +524,13 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 				uidMatchAry = refMatchStr.match(uidRegex)
 				resUID = uidMatchAry[0]
 
-				if resUID is currentCompUID
-					resName = 'self'
+				# if resUID is currentCompUID
+				# 	resName = 'self'
+				# else
+				if allCompData[resUID]
+					resName = allCompData[resUID].name
 				else
-					if allCompData[resUID]
-						resName = allCompData[resUID].name
-					else
-						resName = 'unknown'
+					resName = 'unknown'
 
 				newRefStr = refMatchStr.replace(resUID, resName)
 				newParaValue = newParaValue.replace(refMatchStr, newRefStr)
@@ -568,8 +568,8 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 			currentCompUID = currentCompData.uid
 			allCompData = that.get('allCompData')
 
-			if resName is 'self'
-				return currentCompUID
+			# if resName is 'self'
+			# 	return currentCompUID
 
 			resultUID = ''
 			_.each allCompData, (resObj, uid) ->

@@ -717,7 +717,7 @@ Following rule(s) will be deleted from its(their) security group:</div>
 <li class="input-ip-item">
   <div class="name tooltip" data-tooltip="{{#if autoAssign}}{{i18n 'PROP_INSTANCE_IP_MSG_2'}}{{else}}{{i18n 'PROP_INSTANCE_IP_MSG_1'}}{{/if}}">
     <label class="input-ip-wrap" for="propertyIpListItem-{{@index}}"><span class="input-ip-prefix">{{prefix}}</span>
-    <input type="text" class="input input-ip"  id="propertyIpListItem-{{@index}}" value="{{suffix}}" {{#unless editable}}disabled="disabled"{{/unless}} data-ignore="true" data-ignore-regexp="^[0-9.x]*$">
+    <input type="text" class="input input-ip"  id="propertyIpListItem-{{@index}}" value="{{suffix}}" {{#unless editable}}disabled="disabled"{{/unless}} data-ignore="true" data-ignore-regexp="^[0-9.x]*$" data-required="true">
     </label>
   </div>
   <div class="input-ip-eip-btn tooltip toggle-eip{{#if hasEip}} associated{{/if}}" data-tooltip="{{#if hasEip}}{{i18n 'PROP_INSTANCE_IP_MSG_4'}}{{else}}{{i18n 'PROP_INSTANCE_IP_MSG_3'}}{{/if}}"></div>

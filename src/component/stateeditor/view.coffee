@@ -659,12 +659,13 @@ define [ 'event',
                     return {
                         name: '@' + stateRefObj.name,
                         value: '@' + stateRefObj.value
+                        meta: stateRefObj.meta
                     }
 
                 _.each $inputElemAry, (inputElem) ->
                     that.initCodeEditor(inputElem, {
-                        focus: haveAtDataAry,
-                        at: that.resStateDataAry
+                        focus: haveAtDataAry
+                        # at: that.resStateDataAry
                     })
 
             else if paraType is 'bool'

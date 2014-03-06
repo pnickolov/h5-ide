@@ -103,16 +103,16 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 			# generate resource attr autocomplete data
 			allCompData = that.get('allCompData')
 
-			that.genStateRefList(allCompData)
-			that.genAttrRefList(allCompData)
-			that.genAttrRefRegexList()
-
 			# for view
 			that.set('cmdNameAry', cmdNameAry)
 			that.set('cmdParaMap', cmdParaMap)
 			that.set('cmdParaObjMap', cmdParaObjMap)
 			that.set('cmdModuleMap', cmdModuleMap)
 			that.set('moduleCMDMap', moduleCMDMap)
+
+			that.genStateRefList(allCompData)
+			that.genAttrRefList(allCompData)
+			that.genAttrRefRegexList()
 
 			groupResSelectData = that.getGroupResSelectData()
 			that.set('groupResSelectData', groupResSelectData)
@@ -265,16 +265,21 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 			compData = that.get('compData')
 			currentCompUID = compData.uid
 
+			moduleCMDMap = that.get('moduleCMDMap')
+
 			if compList and not _.isEmpty(compList) and _.isArray(compList)
 
 				_.each compList, (compObj) ->
 
 					compUID = compObj.uid
+					compType = compObj.type
+					compName = compObj.name
 
 					if currentCompUID is compUID
 						return
 
-					compName = compObj.name
+					if compType is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+						compName = Design.instance().component(compUID).parent().get('name')
 
 					# find all state
 					stateAry = compObj.state
@@ -283,9 +288,11 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 							if stateObj.module isnt 'meta.comment'
 								stateNumStr = String(idx + 1)
 								stateRefStr = '{' + compName + '.state.' + stateNumStr + '}'
+								stateMeta = moduleCMDMap[stateObj.module]
 								resStateDataAry.push({
 									name: stateRefStr,
-									value: stateRefStr
+									value: stateRefStr,
+									meta: stateMeta
 								})
 
 					null
@@ -299,6 +306,7 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 			currentCompData = that.get('compData')
 
 			currentCompUID = currentCompData.uid
+			currentCompType = currentCompData.type
 
 			allCompData = allCompData or @get('allCompData')
 
@@ -312,11 +320,14 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 
 				compName = compData.name
 				compUID = compData.uid
-
-				# if compUID is currentCompUID
-				# 	compName = 'self'
-
 				compType = compData.type
+
+				if compUID is currentCompUID
+					compName = 'self'
+
+				if currentCompType is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+					if compType is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+						compName = 'self'
 
 				if compType is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
 					return
@@ -339,8 +350,8 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 						instanceUID = MC.extractID(instanceRef)
 						if instanceUID
 							compName = allCompData[instanceUID].serverGroupName
-							# if instanceUID is currentCompUID
-							# 	compName = 'self'
+							if instanceUID is currentCompUID
+								compName = 'self'
 
 				supportType = compType.replace(/\./ig, '_')
 
@@ -371,6 +382,7 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 									azAry = compData.resource.AvailabilityZones
 									if azAry.length > 1
 										_.each azAry, (azName, idx) ->
+											if idx is 0 then return
 											autoCompList.push({
 												name: autoCompStr + '[' + idx + ']',
 												value: autoCompRefStr + '[' + idx + ']'
@@ -382,6 +394,7 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 									ipObjAry = compData.resource.PrivateIpAddressSet
 									if ipObjAry.length > 1
 										_.each ipObjAry, (ipObj, idx) ->
+											if idx is 0 then return
 											autoCompList.push({
 												name: autoCompStr + '[' + idx + ']',
 												value: autoCompRefStr + '[' + idx + ']'
@@ -393,6 +406,7 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 									azAry = compData.resource.AvailabilityZones
 									if azAry.length > 1
 										_.each azAry, (azName, idx) ->
+											if idx is 0 then return
 											autoCompList.push({
 												name: autoCompStr + '[' + idx + ']',
 												value: autoCompRefStr + '[' + idx + ']'
@@ -493,8 +507,18 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 				stateNum = Number(refMatchStr.replace('}', '').split('.')[2])
 				stateUID = ''
 
+				lcCompData = null
 				if resUID and _.isNumber(stateNum)
 					compData = allCompData[resUID]
+					
+					if compData.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+						lcUIDRef = compData.resource.LaunchConfigurationName
+						if lcUIDRef
+							lcUID = MC.extractID(lcUIDRef)
+							lcCompData = allCompData[lcUID]
+
+					if lcCompData then compData = lcCompData
+
 					if compData.state and _.isArray(compData.state) and compData.state[stateNum - 1]
 						stateUID = compData.state[stateNum - 1].id
 
@@ -553,10 +577,11 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 			_.each refMatchAry, (refMatchStr) ->
 
 				resName = refMatchStr.replace('@{', '').split('.')[0]
-				resUID = that.getUIDByResName(resName)
-				if resUID
-					newUIDStr = refMatchStr.replace(resName, resUID)
-					newParaValue = newParaValue.replace(refMatchStr, newUIDStr)
+				if resName isnt 'self'
+					resUID = that.getUIDByResName(resName)
+					if resUID
+						newUIDStr = refMatchStr.replace(resName, resUID)
+						newParaValue = newParaValue.replace(refMatchStr, newUIDStr)
 				null
 
 			return newParaValue

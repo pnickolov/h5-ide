@@ -1595,7 +1595,7 @@ exports.parForEach = function(array, fn, callback) {
     }
 }
 
-var ID_REGEX = /[a-zA-Z\ \.\_0-9\$-]/;
+var ID_REGEX = /[a-zA-Z\-\@\}\ \.\_0-9\$-]/;
 
 exports.retrievePrecedingIdentifier = function(text, pos, regex) {
     regex = regex || ID_REGEX;

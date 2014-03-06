@@ -273,13 +273,13 @@ define [ "Design",
       else
         subnets = _.map @connectionTargets( "ElbSubnetAsso" ), ( sb )-> sb.createRef("SubnetId")
 
-
+      # Remove AZs in Elb JSON because VPC doesn't need it.
       component =
         type : @type
         uid  : @id
         name : @get("name")
         resource :
-          AvailabilityZones : @getAvailabilityZones()
+          AvailabilityZones : [] # @getAvailabilityZones()
           Subnets : subnets
           Instances : []
           CrossZoneLoadBalancing : @get("crossZone")

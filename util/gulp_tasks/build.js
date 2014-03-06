@@ -121,7 +121,7 @@ Helper = {
   watchRetry: 0,
   watchIsWorking: false,
   createWatcher: function() {
-    var compileAfterGitAction, gitDebounceTimer, watcher;
+    var compileAfterGitAction, gitDebounceTimer, gulpWatch, watcher;
 
     if (GLOBAL.gulpConfig.pollingWatch) {
       gutil.log(gutil.colors.bgBlue.white(" Watching file changes... ") + " [Polling]");
@@ -153,11 +153,14 @@ Helper = {
         gitDebounceTimer = null;
         return compileDev();
       };
-      gulp.watch(["./.git/HEAD", "./.git/refs/heads/develop", "./.git/refs/heads/**/*"], function(event) {
+      gulpWatch = gulp.watch(["./.git/HEAD", "./.git/refs/heads/develop", "./.git/refs/heads/**/*"], function(event) {
         if (gitDebounceTimer === null) {
           gitDebounceTimer = setTimeout(compileAfterGitAction, GLOBAL.gulpConfig.gitPollingDebounce || 1000);
         }
         return null;
+      });
+      gulpWatch.on("error", function(error) {
+        return console.log("[Gulp Watch Git Error]", error);
       });
     }
     return watcher;

@@ -127,11 +127,12 @@ Helper =
         gitDebounceTimer = null
         compileDev()
 
-      gulp.watch ["./.git/HEAD", "./.git/refs/heads/develop", "./.git/refs/heads/**/*" ], ( event )->
+      gulpWatch = gulp.watch ["./.git/HEAD", "./.git/refs/heads/develop", "./.git/refs/heads/**/*" ], ( event )->
         if gitDebounceTimer is null
           gitDebounceTimer = setTimeout compileAfterGitAction, (GLOBAL.gulpConfig.gitPollingDebounce || 1000)
-
         null
+
+      gulpWatch.on "error", ( error )-> console.log "[Gulp Watch Git Error]", error
 
     return watcher
 

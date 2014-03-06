@@ -159,12 +159,15 @@ define [ 'constant',
             null
 
         focusImportantInput : ()->
-            $emptyInput = @$el.find("input[data-empty-remove]").filter ()->
+            that = this
+            $emptyInput = that.$el.find("input[data-empty-remove]").filter ()->
                 !this.value.length
             if $emptyInput.length
-                @forceShow()
-                $emptyInput.focus()
-                @disabledAllOperabilityArea( true )
+                setTimeout(() ->
+                    that.forceShow()
+                    $emptyInput.focus()
+                    that.disabledAllOperabilityArea(true)
+                , 0)
             null
     }
 

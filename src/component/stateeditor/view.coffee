@@ -62,6 +62,7 @@ define [ 'event',
             'OPTION_CHANGE .state-editor-res-select': 'onResSelectChange'
 
             'keyup .parameter-item.optional .parameter-value': 'onOptionalParaItemChange'
+            'click .parameter-item .parameter-name': 'onParaNameClick'
 
             'SWITCH_STATE': 'onSwitchState'
 
@@ -945,6 +946,16 @@ define [ 'event',
 
             if editor then editor.clearSelection()
 
+        onParaNameClick: (event) ->
+
+            that = this
+            $currentParaName = $(event.currentTarget)
+            $paraItem = $currentParaName.parents('.parameter-item')
+
+            $paraFirstVauleInput = $paraItem.find('.parameter-value')
+            inputEditor = $paraFirstVauleInput.data('editor')
+            if inputEditor then inputEditor.focus()
+
         onStateToolbarClick: (event) ->
 
             that = this
@@ -1559,17 +1570,17 @@ define [ 'event',
             $descPanel = $('#state-description')
             $logPanel = $('#state-log')
 
-            $( '#property-panel' ).toggleClass 'state-wide'
-
             $descPanelToggle = that.$editorModal.find('.state-desc-toggle')
             $logPanelToggle = that.$editorModal.find('.state-log-toggle')
 
-            if not $( '#property-panel' ).hasClass('state-wide')
+            expandPanel = $('#property-panel').hasClass('state-wide')
+            if expandPanel and $descPanel.is(':visible')
 
                 $stateEditor.addClass('full')
                 $descPanel.hide()
                 $logPanel.hide()
                 $descPanelToggle.removeClass('active')
+                $('#property-panel').removeClass 'state-wide'
 
             else
 
@@ -1577,6 +1588,7 @@ define [ 'event',
                 $logPanel.hide()
                 $descPanel.show()
                 $descPanelToggle.addClass('active')
+                $('#property-panel').addClass 'state-wide'
 
             $logPanelToggle.removeClass('active')
 
@@ -1588,17 +1600,17 @@ define [ 'event',
             $descPanel = $('#state-description')
             $logPanel = $('#state-log')
 
-            $( '#property-panel' ).toggleClass 'state-wide'
-
             $descPanelToggle = that.$editorModal.find('.state-desc-toggle')
             $logPanelToggle = that.$editorModal.find('.state-log-toggle')
 
-            if not $( '#property-panel' ).hasClass('state-wide')
+            expandPanel = $('#property-panel').hasClass('state-wide')
+            if expandPanel and $logPanel.is(':visible')
 
                 $stateEditor.addClass('full')
                 $logPanel.hide()
                 $descPanel.hide()
                 $logPanelToggle.removeClass('active')
+                $('#property-panel').removeClass 'state-wide'
 
             else
 
@@ -1606,6 +1618,7 @@ define [ 'event',
                 $descPanel.hide()
                 $logPanel.show()
                 $logPanelToggle.addClass('active')
+                $('#property-panel').addClass 'state-wide'
 
             $descPanelToggle.removeClass('active')
 
@@ -3104,39 +3117,24 @@ define [ 'event',
 
         updateToolbar: () ->
 
-            selected_length = $('#state-editor .state-item.selected').length
+            that = this
 
+            selected_length = that.$('#state-editor .state-item.selected').length
             if selected_length > 0
-
-                $('#state-toolbar-copy, #state-toolbar-delete').show()
-
-                $('#state-toolbar-copy-all').hide()
-
-                $('#state-toolbar-copy-count, #state-toolbar-delete-count').text selected_length
-
+                that.$('#state-toolbar-copy, #state-toolbar-delete').show()
+                that.$('#state-toolbar-copy-all').hide()
+                that.$('#state-toolbar-copy-count, #state-toolbar-delete-count').text selected_length
             else
-
-                $('#state-toolbar-copy, #state-toolbar-delete').hide()
-
-                $('#state-toolbar-copy-all').show()
-
-
+                that.$('#state-toolbar-copy, #state-toolbar-delete').hide()
+                that.$('#state-toolbar-copy-all').show()
             if MC.data.stateClipboard.length > 0
-
-                $('#state-toolbar-paste').removeClass 'disabled'
-
+                that.$('#state-toolbar-paste').removeClass 'disabled'
             else
-
-                $('#state-toolbar-paste').addClass 'disabled'
-
-
-            if selected_length > 0 and selected_length is $('#state-editor .state-item').length
-
-                $('#state-toolbar-selectAll').find('input').prop('checked', true)
-
+                that.$('#state-toolbar-paste').addClass 'disabled'
+            if selected_length > 0 and selected_length is that.$('#state-editor .state-item').length
+                that.$('#state-toolbar-selectAll').find('input').prop('checked', true)
             else
-
-                $('#state-toolbar-selectAll').find('input').prop('checked', false)
+                that.$('#state-toolbar-selectAll').find('input').prop('checked', false)
 
             return true
 

@@ -500,6 +500,7 @@
 	position  : relative;
 	color     : rgb(152, 167, 180);
 	width     : 92px;
+	cursor: pointer;
 }
 
 #state-editor .parameter-list .parameter-value {

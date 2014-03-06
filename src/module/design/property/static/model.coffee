@@ -38,6 +38,8 @@ define [ "module/design/property/base/model", "Design", "constant" ], ( Property
             else
               @set "state", item.state
               vpcId = item.vpcId
+          else
+            @set "state", "unavailable"
 
           vpc = appData[ vpcId ]
           if vpc then vpcId += " (#{vpc.cidrBlock})"

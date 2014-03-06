@@ -1,6 +1,6 @@
 <article>
 
-  {{#if isApp}}
+  {{#unless isStack}}
   <dl class="dl-horizontal dl-region-type property-control-group">
     <dt><label>{{ i18n "PROP_STACK_LBL_REGION" }}</label></dt>
     <dd>{{region}}</dd>
@@ -20,8 +20,7 @@
 		<dt><label>{{ i18n "PROP_STACK_LBL_REGION" }}</label></dt><dd>{{region}}</dd>
 		<dt><label>{{ i18n "PROP_STACK_LBL_TYPE" }}</label></dt><dd>{{type}}</dd>
 	</dl>
-
-  {{/if}}
+  {{/unless}}
 
 	<!-- SG, ACL, COST -->
 	<div class="option-group-head">{{ i18n "PROP_STACK_TIT_SG" }}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>

@@ -180,7 +180,9 @@ define [ 'i18n!nls/lang.js', 'constant', 'stateeditor', 'Design', './module/desi
                         ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, 'OPEN_TAB_FAIL', tab_id
 
                     # Instead of posting a ide_event.OPEN_DESIGN to let property panel to figure it out what to do, here directly tells it to open a stack property.
-                    ide_event.trigger ide_event.OPEN_PROPERTY, "component", ""
+                    # Run it only if the tab was opened first time
+                    if type not in [ 'OLD_APP', 'OLD_STACK' ]
+                        ide_event.trigger ide_event.OPEN_PROPERTY, "component", ""
 
                     # hide status bar
                     view.hideStatusbar()

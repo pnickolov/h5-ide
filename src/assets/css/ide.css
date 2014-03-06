@@ -1197,10 +1197,6 @@ button {
 	background-color: #c472a7;
 }*/
 
-#global-create-stack.disabled,
-#global-create-stack.disabled:hover,
-#global-region-visualize-VPC.disabled,
-#global-region-visualize-VPC.disabled:hover,
 #region-switch.disabled,
 #region-switch.disabled:hover
  {
@@ -1211,11 +1207,6 @@ button {
 	background       : #9C9FA2;
 	border           : 1px solid #999;
 	box-shadow       : none;
-}
-
-#global-create-stack.disabled .icon-new-stack,
-#global-create-stack.disabled:hover .icon-new-stack {
-	background-color: rgba(0,0,0,.1);
 }
 
 #global-region-create-stack-list {

@@ -162,12 +162,15 @@ define [ "Design",
 
     getHealthCheckTarget : ()->
       # Format ping
-      pingArr  = @attributes.healthCheckTarget.split(":")
-      protocol = pingArr[0]
-      port     = parseInt( pingArr[1], 10 )
+      target = @attributes.healthCheckTarget
+      splitIndex = target.indexOf(":")
+      protocol = target.substring(0, splitIndex)
+
+      target = target.substring(splitIndex+1)
+      port   = parseInt( target, 10 )
       if isNaN( port ) then port = 80
 
-      path = pingArr[1].replace( /[^\/]+\//, "" )
+      path = target.replace( /[^\/]+\//, "" )
 
       [ protocol, port, path ]
 

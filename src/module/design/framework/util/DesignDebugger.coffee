@@ -92,6 +92,15 @@ define [ "Design" ], ( Design )->
   window.dget = ( a )-> Design.instance().get(a)
   window.dset = ( a, b )-> Design.instance().set(a,b)
   window.dds  = ()-> Design.debug.json()
+
+
+  window.man = "
+  d()          Return the current Design instance \n
+  dd()         Print all components in current Design \n
+  dget(a)      Design att getter \n
+  dset(a,b)    Design att setter \n
+  dds()        Print JSON \n
+  copy(dds())  Copy JSON"
   null
 
   ### env:dev:end ###

@@ -57,7 +57,7 @@ define [ 'event', 'i18n!nls/lang.js',
             if indexOf >= 0 then (indexOf + (startpos || 0)) else indexOf
 
         updateLoadTime: ( time ) ->
-            $('#global-refresh span').text time
+            $('#global-refresh').text time
 
         scrollToResource: ->
             scrollContent = $( '#global-region-wrap .scroll-content' )

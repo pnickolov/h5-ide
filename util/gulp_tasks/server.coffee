@@ -19,14 +19,16 @@ module.exports.create = ()->
 
       if url is "/"
         filePath = "/ide.html"
+      else if /ide.html$/.test( url )
+        response.writeHead 301, { "Location" : "/" }
+        response.end()
+        return
       else if url[ url.length - 1 ] is "/"
-        filePath = url + ".html"
         response.writeHead 301, { "Location" : url.substring(0, url.length-1) }
         response.end()
         return
       else if redirectRegex.test(url)
-        console.log "Redirecting"
-        response.writeHead 301, { "Location" : url.replace(".html", "/") }
+        response.writeHead 301, { "Location" : url.replace(".html", "") }
         response.end()
         return
       else if url.indexOf( ".", 1 ) is -1

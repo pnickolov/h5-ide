@@ -21,17 +21,21 @@ module.exports.create = function() {
       url = request.url;
       if (url === "/") {
         filePath = "/ide.html";
+      } else if (/ide.html$/.test(url)) {
+        response.writeHead(301, {
+          "Location": "/"
+        });
+        response.end();
+        return;
       } else if (url[url.length - 1] === "/") {
-        filePath = url + ".html";
         response.writeHead(301, {
           "Location": url.substring(0, url.length - 1)
         });
         response.end();
         return;
       } else if (redirectRegex.test(url)) {
-        console.log("Redirecting");
         response.writeHead(301, {
-          "Location": url.replace(".html", "/")
+          "Location": url.replace(".html", "")
         });
         response.end();
         return;

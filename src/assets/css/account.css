@@ -186,12 +186,16 @@ header {
 
 .icon-user.login-label,
 .icon-password.login-label {
-	color: #9B9B9B;
-	font-size: 32px;
-	position: absolute;
-	top: 10px;
-	left: 12px;
-	text-shadow: none;
+	color       : #9B9B9B;
+	font-size   : 32px;
+	position    : absolute;
+	top         : 5px;
+	left        : 10px;
+	text-shadow : none;
+}
+.icon-user.login-label:before,
+.icon-password.login-label:before {
+	font-size : 32px;
 }
 
 .account-input:focus + .login-label {

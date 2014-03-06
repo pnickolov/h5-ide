@@ -125,7 +125,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo', 'Design' ], ( con
 
             if rtb
                 instances = _.where rtb.connectionTargets('RTB_Route'), type: constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
-                _.some instances, ( instance ) ->
+                return _.some instances, ( instance ) ->
                     __isRouteIgw instance
 
         false

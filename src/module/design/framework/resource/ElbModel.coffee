@@ -346,6 +346,12 @@ define [ "Design",
         dnsName   : data.resource.DNSName
         elbName   : data.resource.LoadBalancerName
 
+        healthyThreshold    : data.resource.HealthCheck.HealthyThreshold
+        unHealthyThreshold  : data.resource.HealthCheck.UnhealthyThreshold
+        healthCheckTarget   : data.resource.HealthCheck.Target
+        healthCheckInterval : data.resource.HealthCheck.Interval
+        healthCheckTimeout  : data.resource.HealthCheck.Timeout
+
         x : layout_data.coordinate[0]
         y : layout_data.coordinate[1]
 

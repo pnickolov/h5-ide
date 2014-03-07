@@ -59,34 +59,34 @@ require.config {
 		'state_status'       : 'component/statestatus/main'
 
 		#############################################
-		# ui/common
+		# ui/
 		#############################################
-		'UI.tooltip'       : 'ui/common/UI.tooltip'
-		'UI.scrollbar'     : 'ui/common/UI.scrollbar'
-		'UI.tabbar'        : 'ui/common/UI.tabbar'
-		'UI.bubble'        : 'ui/common/UI.bubble'
-		'UI.modal'         : 'ui/common/UI.modal'
-		'UI.table'         : 'ui/common/UI.table'
-		'UI.tablist'       : 'ui/common/UI.tablist'
-		'UI.selectbox'     : 'ui/common/UI.selectbox'
-		'UI.searchbar'     : 'ui/common/UI.searchbar'
-		'UI.filter'        : 'ui/common/UI.filter'
-		'UI.radiobuttons'  : 'ui/common/UI.radiobuttons'
-		'UI.notification'  : 'ui/common/UI.notification'
-		'UI.multiinputbox' : 'ui/common/UI.multiinputbox'
-		'UI.canvg'         : 'ui/common/UI.canvg'
-		'UI.sortable'      : 'ui/common/jquery.sortable'
-		'UI.parsley'       : 'ui/common/UI.parsley'
-		'UI.errortip'      : 'ui/common/UI.errortip'
+		'UI.tooltip'       : 'ui/UI.tooltip'
+		'UI.scrollbar'     : 'ui/UI.scrollbar'
+		'UI.tabbar'        : 'ui/UI.tabbar'
+		'UI.bubble'        : 'ui/UI.bubble'
+		'UI.modal'         : 'ui/UI.modal'
+		'UI.table'         : 'ui/UI.table'
+		'UI.tablist'       : 'ui/UI.tablist'
+		'UI.selectbox'     : 'ui/UI.selectbox'
+		'UI.searchbar'     : 'ui/UI.searchbar'
+		'UI.filter'        : 'ui/UI.filter'
+		'UI.radiobuttons'  : 'ui/UI.radiobuttons'
+		'UI.notification'  : 'ui/UI.notification'
+		'UI.multiinputbox' : 'ui/UI.multiinputbox'
+		'UI.canvg'         : 'ui/UI.canvg'
+		'UI.sortable'      : 'ui/jquery.sortable'
+		'UI.parsley'       : 'ui/UI.parsley'
+		'UI.errortip'      : 'ui/UI.errortip'
 
 		#jquery plugin
-		'hoverIntent'        : 'ui/common/jquery.hoverIntent.minified'
-		'bootstrap-carousel' : 'ui/common/bootstrap-carousel'
+		'hoverIntent'        : 'ui/jquery.hoverIntent.minified'
+		'bootstrap-carousel' : 'ui/bootstrap-carousel'
 
 		#delete
-		#'parsley'           : 'ui/common/parsley.min'
-		#'bootstrap-tab'     : 'ui/common/bootstrap-tab'
-		#'bootstrap-dropdown': 'ui/common/bootstrap-dropdown'
+		#'parsley'           : 'ui/parsley.min'
+		#'bootstrap-tab'     : 'ui/bootstrap-tab'
+		#'bootstrap-dropdown': 'ui/bootstrap-dropdown'
 
 		#############################################
 		# constant

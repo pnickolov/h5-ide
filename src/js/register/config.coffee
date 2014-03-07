@@ -40,7 +40,7 @@ require.config {
 		'event'           : 'event/ide_event'
 
 		#
-		'UI.notification'    : 'ui/common/UI.notification'
+		'UI.notification'    : 'ui/UI.notification'
 
 		#core lib
 		'MC'              : 'lib/MC.core'

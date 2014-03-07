@@ -17,7 +17,7 @@ define [ 'constant', 'MC', 'i18n!nls/lang.js' ], ( constant, MC, lang ) ->
         sprintf.apply @, [].concat tip, Array.prototype.slice.call arguments, 1
 
 
-    __buildTAErr = ( tip, stateId ) ->
+    __genError = ( tip, stateId ) ->
 
         level   : constant.TA.ERROR
         info    : tip
@@ -60,13 +60,13 @@ define [ 'constant', 'MC', 'i18n!nls/lang.js' ], ( constant, MC, lang ) ->
 
     checkRefExist = ( obj, data ) ->
         inexistCount = __countInexistentRef obj, data
-        TAError = null
+        error = null
 
         if inexistCount
             tip = __getCompTip data.type, data.name, data.stateId, inexistCount
-            TAError = __buildTAErr tip, data.stateId
+            error = __genError tip, data.stateId
 
-        TAError
+        error
 
     takeplace = ->
         null

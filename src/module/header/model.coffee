@@ -54,19 +54,18 @@ define [ 'backbone', 'jquery', 'underscore',
             in_dashboard = @attributes.in_dashboard
 
             # check whether same operation
-            same_req = 0
-            same_req++ for i in info_list when i.id == item.id
+            same_req = null
+            same_req = i for i in info_list when i.id == item.id
+
+            # not update when the same state
+            if same_req != null and (same_req.is_request == item.is_request and same_req.is_process == item.is_process and same_req.is_complete == item.is_complete)
+                return
 
             # check whether on current tab
-
-            # old design flow
-            #if in_dashboard or item.rid != MC.canvas_data.id
-
-            # new design flow
-            if in_dashboard or item.rid != MC.common.other.canvasData.get( 'id' )
+            if in_dashboard or item.rid != MC.canvas_data.id
                 item.is_readed = false
-                if same_req == 0 or unread_num == 0
-                    @set 'unread_num', unread_num + 1
+                if same_req == null or same_req.is_readed
+                    @set 'unread_num', (unread_num + 1)
 
             # remove the old request and new to the header
             for i, idx in info_list
@@ -119,34 +118,12 @@ define [ 'backbone', 'jquery', 'underscore',
             if item.rid.search('stack') == 0    # run stack
                 item.name = lst[2]
 
-                if item.is_complete     # run stack success
-                    item.rid = req.data.split(' ')[lst.length-1]
+                # if item.is_complete     # run stack success
+                #     item.rid = req.data.split(' ')[lst.length-1]
 
             item.is_terminated = item.is_complete and item.operation is 'terminate'
 
             item
-
-        # queryRequest : () ->
-        #     me = this
-
-        #     info_list = []
-
-        #     # [{id, rid, name, operation, error, time, is_readed(true|false), is_error, is_request, is_process, is_complete}]
-        #     for req in MC.data.websocket.collection.request.find().fetch()
-        #         item = me.parseInfo req
-
-        #         if item
-        #             info_list.push item
-
-        #     # filter done and terminated app
-        #     terminated_list = []
-        #     terminated_list.push i.rid for i in info_list when i.is_complete and i.operation is 'terminate'
-        #     info_list[info_list.indexOf i].is_terminated = true for i in info_list when i.rid in terminated_list
-
-        #     info_list.sort (a, b) ->
-        #         return if a.time <= b.time then 1 else -1
-
-        #     info_list
 
         setFlag : (flag) ->
             @set 'in_dashboard', flag
@@ -156,12 +133,7 @@ define [ 'backbone', 'jquery', 'underscore',
 
             if not flag and unread_num > 0 # in tab and update unread number when on the updating tab
                 for info in info_list
-
-                    # old design flow
-                    #if info.rid == MC.canvas_data.id and not info.is_readed
-
-                    # new design flow
-                    if info.rid == MC.common.other.canvasData.get( 'id' ) and not info.is_readed
+                    if info.rid == MC.canvas_data.id and not info.is_readed
                         info.is_readed = true
 
                         @set 'unread_num', unread_num - 1

@@ -329,6 +329,17 @@ footer {
 	padding: 200px 0;
 }
 
+#body-500 h1 {
+	background: #242224;
+	position: absolute;
+	z-index: 100;
+	width: 100%;
+	top: 0;
+	border-top: 4px solid #c16aa2;
+	border-bottom: 1px solid #181818;
+	padding: 5px 0 9px 0;
+}
+
 .service-down-wrapper {
 	margin: 0 auto;
 	width: 500px;

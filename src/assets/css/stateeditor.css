@@ -69,30 +69,41 @@
 }
 
 .state-sidebar {
-	position     : absolute;
-	right        : 653px;
-	z-index      : -1;
+	position: absolute;
+	right   : 0;
+	z-index : -1;
+/*	display : none;*/
 
 	max-height       : 96%;
 	width        : 320px;
 
-	box-shadow   : 0 0 10px rgba(0,0,0,.2);
-	border       : 1px solid #000;
+	box-shadow   : 0 0 20px rgba(0,0,0,.4);
+	border       : 1px solid #222;
 	border-radius: 4px 0 0 4px;
+
+	-webkit-transition: right .2s ease-in-out;
+	-moz-transition: right .2s ease-in-out;
+	-ms-transition: right .2s ease-in-out;
+	-o-transition: right .2s ease-in-out;
+	transition: right .2s ease-in-out;
+}
+
+.state-sidebar.show {
+	/*display: block;*/
+	right: 653px;
 }
 
 #state-description, #state-log {
-	border-right: 1px solid #ccc;
 	overflow-x: hidden;
 	overflow-y: auto;
 	padding: 10px 0;
 	font-size: 13px;
-	background: #f0f0f0;
+	background: #444;
 	color: #666;
 }
 
 #state-log {
-	display: none;
+/*	display: none;*/
 	padding: 0;
 }
 
@@ -930,11 +941,13 @@
 }
 
 #state-log .state-log-item-status {
-	color: #ccc;
+	color: #aaa;
 	position: absolute;
 	font-size: 12px;
 	top: 12px;
 	right: 6px;
+	font-style: italic;
+	font-variant: small-caps;
 }
 
 #state-log .state-log-item-detail {

@@ -1578,16 +1578,20 @@ define [ 'event',
             if expandPanel and $descPanel.is(':visible')
 
                 $stateEditor.addClass('full')
-                $descPanel.hide()
-                $logPanel.hide()
+                # $descPanel.hide()
+                # $logPanel.hide()
+                $logPanel.removeClass('show')
+                $descPanel.removeClass('show')
                 $descPanelToggle.removeClass('active')
                 $('#property-panel').removeClass 'state-wide'
 
             else
 
                 $stateEditor.removeClass('full')
-                $logPanel.hide()
-                $descPanel.show()
+                # $logPanel.hide()
+                # $descPanel.show()
+                $logPanel.removeClass('show')
+                $descPanel.addClass('show')
                 $descPanelToggle.addClass('active')
                 $('#property-panel').addClass 'state-wide'
 
@@ -1608,16 +1612,20 @@ define [ 'event',
             if expandPanel and $logPanel.is(':visible')
 
                 $stateEditor.addClass('full')
-                $logPanel.hide()
-                $descPanel.hide()
+                # $logPanel.hide()
+                # $descPanel.hide()
+                $descPanel.removeClass('show')
+                $logPanel.removeClass('show')
                 $logPanelToggle.removeClass('active')
                 $('#property-panel').removeClass 'state-wide'
 
             else
 
                 $stateEditor.removeClass('full')
-                $descPanel.hide()
-                $logPanel.show()
+                # $descPanel.hide()
+                # $logPanel.show()
+                $descPanel.removeClass('show')
+                $logPanel.addClass('show')
                 $logPanelToggle.addClass('active')
                 $('#property-panel').addClass 'state-wide'
 
@@ -1634,8 +1642,8 @@ define [ 'event',
             $logPanelToggle = that.$editorModal.find('.state-log-toggle')
 
             $stateEditor.removeClass('full')
-            $descPanel.hide()
-            $logPanel.show()
+            $descPanel.removeClass('show')
+            $logPanel.addClass('show')
 
             $logPanelToggle.addClass('active')
             $descPanelToggle.removeClass('active')

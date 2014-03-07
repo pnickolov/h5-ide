@@ -115,20 +115,22 @@ define [ 'event',
 		uid = Design.instance().canvas.selectedNode[ 0 ] if not uid
 		component = Design.instance().component uid
 		type = component.type if not type and component
-		typeAvai = _.contains [ CONST.RESTYPE.LC, CONST.RESTYPE.INSTANCE ], type
+		typeAvai = _.contains [ CONST.RESTYPE.LC, CONST.RESTYPE.INSTANCE, 'component_server_group' ], type
+		modeAvai = null
 		opsEnabled = Design.instance().get('agent').enabled
 
 		if Design.instance().modeIsAppEdit() and type is 'component_server_group'
-			typeAvai = true
+			modeAvai = true
 		if Design.instance().modeIsApp() and type is CONST.RESTYPE.LC
-			typeAvai = false
+			modeAvai = false
 		if Design.instance().get('state') is "Stopped" and type is CONST.RESTYPE.LC
-			typeAvai = true
-
+			modeAvai = true
 
 		if opsEnabled and typeAvai
-			$( '#property-panel' ).removeClass 'no-state'
 			view.renderStateCount component
+
+		if opsEnabled and ( ( modeAvai is null and typeAvai ) or modeAvai )
+			$( '#property-panel' ).removeClass 'no-state'
 			true
 		else
 			$( '#property-panel' ).addClass 'no-state'

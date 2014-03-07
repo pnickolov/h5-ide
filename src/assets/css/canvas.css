@@ -9,6 +9,10 @@
 	bottom   : 24px;
 }
 
+#canvas ::selection {
+	background: transparent;
+}
+
 #canvas_content {
 	position: relative;
 	padding: 0 65px 45px 0;

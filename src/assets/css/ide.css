@@ -3062,9 +3062,10 @@ td.table-action a.btn {
 	position    : relative;
 	float       : left;
 
-	line-height : 32px;
-	text-align  : center;
-	color       : #606060;
+	line-height: 32px;
+	text-align : center;
+	color      : #606060;
+	font-size  : 16px;
 
 	/*margin-left : 4px;*/
 	padding     : 4px;
@@ -3175,6 +3176,7 @@ td.table-action a.btn {
 #toolbar-save-edit-app span,
 .toolbar-btn-primary #toolbar-export-png span {
 	margin-left : 10px;
+	font-size: 16px;
 	font-family : 'Lato', 'Helvetica Neue', Arial, sans-serif;
 }
 

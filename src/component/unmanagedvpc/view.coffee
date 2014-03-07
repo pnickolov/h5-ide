@@ -76,7 +76,7 @@ define [ 'event',
 
                         if type is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
                             vpc_ids = _.keys item
-                            if _.isArray( vpc_ids ) and vpc_ids.length > 99
+                            if _.isArray( vpc_ids ) and vpc_ids.length > 299
                                 is_true = true
 
                     if is_true

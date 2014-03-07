@@ -1162,8 +1162,9 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
 
         resAttrDataAry = _.map autoCompList, (autoCompObj) ->
             return {
-                name: "#{autoCompObj.name}"
-                value: "#{autoCompObj.name}"
+                name: "#{autoCompObj.name}",
+                value: "#{autoCompObj.name}",
+                ref: "#{autoCompObj.value}"
             }
 
         return resAttrDataAry

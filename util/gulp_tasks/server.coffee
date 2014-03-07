@@ -1,14 +1,15 @@
 
-module.exports.create = ()->
-  gutil   = require("gulp-util")
-  nstatic = require("node-static")
-  http    = require("http")
+gutil   = require("gulp-util")
+nstatic = require("node-static")
+http    = require("http")
+
+module.exports.create = ( path )->
 
   defaultHeader = { "Cache-Control" : "no-cache" }
 
   gutil.log gutil.colors.bgBlue.white(" Creating File Server... ")
 
-  file = new nstatic.Server("./src", { cache : false, headers : defaultHeader } )
+  file = new nstatic.Server( path or "./src", { cache : false, headers : defaultHeader } )
 
   redirectRegex = /(login|ide|register|reset)\.html$/
 

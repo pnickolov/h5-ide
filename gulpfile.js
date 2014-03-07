@@ -41,6 +41,7 @@ gulp.task("dev",     function(){ return buildTask.compileDev(); });
 gulp.task("dev_all", function(){ return buildTask.compileDev( true ); });
 gulp.task("debug",   function(){ return releaseTask.build( true );   });
 gulp.task("release", function(){ return releaseTask.build(); });
+gulp.task("rwatch",  function(){ return serverTask.create("./build"); });
 
 // Upgrade 3rd party library
 gulp.task("upgrade", function(){ });

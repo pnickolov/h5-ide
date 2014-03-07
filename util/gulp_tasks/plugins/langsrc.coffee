@@ -1,4 +1,5 @@
 
+util   = require("./util")
 cached = require("./cached")
 es     = require("event-stream")
 vm     = require("vm")
@@ -9,14 +10,6 @@ coffee = require("gulp-coffee")
 
 buildLangSrc = require("../../../config/lang")
 
-compileTitle = ( extra )->
-  title = "[" + gutil.colors.green("Compile @#{(new Date()).toLocaleTimeString()}") + "]"
-  if extra
-    title += " " + gutil.colors.inverse( extra )
-  title
-
-log  = (e)-> console.log e
-noop = ()->
 
 module.exports = ( dest = ".", useCache = true )->
 
@@ -27,19 +20,19 @@ module.exports = ( dest = ".", useCache = true )->
 
   pipeline = startPipeline.pipe es.through ( file )->
 
-    console.log compileTitle(), "lang-souce.coffee"
+    console.log util.compileTitle(), "lang-souce.coffee"
 
     ctx = vm.createContext({module:{}})
     vm.runInContext( file.contents.toString("utf8"), ctx )
 
-    buildLangSrc.run gruntMock, noop, ctx.module.exports
+    buildLangSrc.run gruntMock, util.noop, ctx.module.exports
     null
 
   pipeline.pipe( gulp.dest(dest) )
 
   gruntMock =
     log  :
-      error : log
+      error : util.log
     file :
       write : ( p1, p2 ) =>
         cwd = process.cwd()

@@ -1,5 +1,5 @@
 (function() {
-  var EventEmitter, Helper, Q, StreamFuncs, cached, changeHandler, checkWatchHealthy, chokidar, coffee, coffeelint, coffeelintOptions, compileCoffeeOnlyRegex, compileDev, compileIgnorePath, confCompile, es, fs, gulp, gulpif, gutil, jshint, langsrc, lintReporter, notifier, path, tinylr, watch;
+  var EventEmitter, Helper, Q, StreamFuncs, cached, changeHandler, checkWatchHealthy, chokidar, coffee, coffeelint, coffeelintOptions, compileCoffeeOnlyRegex, compileDev, compileIgnorePath, confCompile, es, fs, gulp, gulpif, gutil, handlebars, jshint, langsrc, lintReporter, path, tinylr, util, watch;
 
   gulp = require("gulp");
 
@@ -19,8 +19,6 @@
 
   chokidar = require("chokidar");
 
-  notifier = require("node-notifier");
-
   coffee = require("gulp-coffee");
 
   coffeelint = require("gulp-coffeelint");
@@ -36,6 +34,10 @@
   lintReporter = require('./plugins/reporter');
 
   langsrc = require("./plugins/langsrc");
+
+  handlebars = require("./plugins/handlebars");
+
+  util = require("./plugins/util");
 
   coffeelintOptions = {
     indentation: {
@@ -57,30 +59,6 @@
     shouldLintCoffee: function(f) {
       return !f.path.match(compileCoffeeOnlyRegex);
     },
-    endsWith: function(string, pattern) {
-      var idx, startIdx;
-      if (string.length < pattern.length) {
-        return false;
-      }
-      idx = 0;
-      startIdx = string.length - pattern.length;
-      while (idx < pattern.length) {
-        if (string[startIdx + idx] !== pattern[idx]) {
-          return false;
-        }
-        ++idx;
-      }
-      return true;
-    },
-    notify: function(msg) {
-      if (GLOBAL.gulpConfig.enbaleNotifier) {
-        notifier.notify({
-          title: "IDE Gulp",
-          message: msg
-        }, function() {});
-      }
-      return null;
-    },
     lrServer: void 0,
     createLrServer: function() {
       if (Helper.lrServer !== void 0) {
@@ -94,7 +72,8 @@
           return;
         }
         console.error('[LR Error] Cannot start livereload server. You already have a server listening on %s', Helper.lrServer.port);
-        return Helper.lrServer = null;
+        Helper.lrServer = null;
+        return null;
       });
       Helper.lrServer.listen(GLOBAL.gulpConfig.livereloadServerPort, function(err) {
         if (err) {
@@ -105,15 +84,6 @@
       });
       return null;
     },
-    compileTitle: function(extra) {
-      var title;
-      title = "[" + gutil.colors.green("Compile @" + ((new Date()).toLocaleTimeString())) + "]";
-      if (extra) {
-        title += " " + gutil.colors.inverse(extra);
-      }
-      return title;
-    },
-    cwd: process.cwd(),
     watchRetry: 0,
     watchIsWorking: false,
     createWatcher: function() {
@@ -163,8 +133,8 @@
 
   StreamFuncs = {
     coffeeErrorPrinter: function(error) {
-      console.log(gutil.colors.red.bold("\n[CoffeeError]"), error.message.replace(process.cwd(), "."));
-      Helper.notify("Error occur when compiling " + error.message.replace(process.cwd(), ".").split(":")[0]);
+      console.log(gutil.colors.red.bold("\n[CoffeeError]"), error.message.replace(util.cwd, "."));
+      util.notify("Error occur when compiling " + error.message.replace(util.cwd, ".").split(":")[0]);
       return null;
     },
     throughLiveReload: function() {
@@ -187,7 +157,7 @@
         sourceMap: GLOBAL.gulpConfig.coffeeSourceMap
       }));
       pipeline = coffeeCompile.pipe(es.through(function(f) {
-        console.log(Helper.compileTitle(f.extra), "" + f.relative);
+        console.log(util.compileTitle(f.extra), "" + f.relative);
         return this.emit("data", f);
       })).pipe(gulpif(Helper.shouldLintCoffee, jshint())).pipe(gulpif(Helper.shouldLintCoffee, lintReporter())).pipe(gulp.dest("."));
       if (GLOBAL.gulpConfig.reloadJsHtml) {
@@ -196,6 +166,12 @@
       coffeeCompile.removeAllListeners("error");
       coffeeCompile.on("error", StreamFuncs.coffeeErrorPrinter);
       return coffeeBranch;
+    },
+    throughHandlebars: function() {
+      var pipeline;
+      pipeline = handlebars();
+      pipeline.pipe(gulp.dest("."));
+      return pipeline;
     },
     workStream: null,
     workEndStream: null,
@@ -208,18 +184,20 @@
       return null;
     },
     setupCompileStream: function(stream) {
-      var assetBranch, coffeeBranch, coffeeBranchRegex, langSrcBranch, langeSrcBranchRegex, liveReloadBranchRegex;
+      var assetBranch, coffeeBranch, coffeeBranchRegex, langSrcBranch, langeSrcBranchRegex, liveReloadBranchRegex, templateBranch, templateBranchRegex;
       assetBranch = StreamFuncs.throughLiveReload();
       langSrcBranch = langsrc();
       coffeeBranch = StreamFuncs.throughCoffee();
+      templateBranch = StreamFuncs.throughHandlebars();
       langeSrcBranchRegex = /lang-source\.coffee/;
       coffeeBranchRegex = /\.coffee$/;
+      templateBranchRegex = /(\.partials$)|(\.html)/;
       if (GLOBAL.gulpConfig.reloadJsHtml) {
-        liveReloadBranchRegex = /(src.assets)|(\.js$)|(\.html$)/;
+        liveReloadBranchRegex = /(src.assets)|(\.js$)/;
       } else {
         liveReloadBranchRegex = /src.assets/;
       }
-      return stream.pipe(gulpif(langeSrcBranchRegex, langSrcBranch, true)).pipe(gulpif(coffeeBranchRegex, coffeeBranch, true)).pipe(gulpif(liveReloadBranchRegex, assetBranch, true));
+      return stream.pipe(gulpif(langeSrcBranchRegex, langSrcBranch, true)).pipe(gulpif(templateBranchRegex, templateBranch, true)).pipe(gulpif(coffeeBranchRegex, coffeeBranch, true)).pipe(gulpif(liveReloadBranchRegex, assetBranch, true));
     }
   };
 
@@ -246,8 +224,8 @@
           return;
         }
         StreamFuncs.workStream.emit("data", new gutil.File({
-          cwd: Helper.cwd,
-          base: Helper.cwd,
+          cwd: util.cwd,
+          base: util.cwd,
           path: path,
           contents: data
         }));
@@ -265,7 +243,7 @@
     return setTimeout(function() {
       if (!Helper.watchIsWorking) {
         console.log("[Info]", "Watch is not working. Will retry in 2 seconds.");
-        Helper.notify("Watch is not working. Will retry in 2 seconds.");
+        util.notify("Watch is not working. Will retry in 2 seconds.");
         watcher.removeAllListeners();
         return setTimeout((function() {
           return watch();
@@ -279,7 +257,7 @@
     ++Helper.watchRetry;
     if (Helper.watchRetry > 3) {
       console.log(gutil.colors.red.bold("[Fatal]", "Watch is still not working. Please manually retry."));
-      Helper.notify("Watch is still not working. Please manually retry.");
+      util.notify("Watch is still not working. Please manually retry.");
       return;
     }
     Helper.createLrServer();
@@ -296,10 +274,10 @@
 
   compileDev = function(allCoffee) {
     var compileStream, deferred;
-    if (allCoffee) {
-      path = ["src/**/*.coffee", "!src/test/**/*"];
-    } else {
-      path = ["src/**/*.coffee", "!src/test/**/*", "!src/service/**/*", "!src/model/**/*"];
+    path = ["src/**/*.coffee", "src/**/*.partials", "src/**/*.html", "!src/test/**/*", "!src/*.html", "!src/include/*.html"];
+    if (!allCoffee) {
+      path.push("!src/service/**/*");
+      path.push("!src/model/**/*");
     }
     deferred = Q.defer();
     StreamFuncs.createStreamObject();

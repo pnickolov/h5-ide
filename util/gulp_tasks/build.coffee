@@ -9,7 +9,6 @@ EventEmitter = require("events").EventEmitter
 
 tinylr   = require("tiny-lr")
 chokidar = require("chokidar")
-notifier = require("node-notifier")
 
 coffee     = require("gulp-coffee")
 coffeelint = require("gulp-coffeelint")
@@ -20,6 +19,9 @@ cached       = require("./plugins/cached")
 jshint       = require("./plugins/jshint")
 lintReporter = require('./plugins/reporter')
 langsrc      = require("./plugins/langsrc")
+handlebars   = require("./plugins/handlebars")
+
+util = require("./plugins/util")
 
 
 # Configs
@@ -36,26 +38,6 @@ compileCoffeeOnlyRegex = /.src.(service|model)/
 
 Helper =
   shouldLintCoffee : (f)-> not f.path.match compileCoffeeOnlyRegex
-  endsWith : ( string, pattern )->
-    if string.length < pattern.length then return false
-
-    idx      = 0
-    startIdx = string.length - pattern.length
-
-    while idx < pattern.length
-      if string[ startIdx + idx ] isnt pattern[ idx ]
-        return false
-      ++idx
-
-    true
-
-  notify : ( msg )->
-    if GLOBAL.gulpConfig.enbaleNotifier
-      notifier.notify {
-        title   : "IDE Gulp"
-        message : msg
-      }, ()-> # Add an callback, so that windows won't fail.
-    null
 
   lrServer : undefined
   createLrServer : ()->
@@ -71,6 +53,7 @@ Helper =
       if e.code isnt "EADDRINUSE" then return
       console.error('[LR Error] Cannot start livereload server. You already have a server listening on %s', Helper.lrServer.port)
       Helper.lrServer = null
+      null
 
     Helper.lrServer.listen GLOBAL.gulpConfig.livereloadServerPort, ( err )->
       if err
@@ -79,14 +62,6 @@ Helper =
       null
 
     null
-
-  compileTitle : ( extra )->
-    title = "[" + gutil.colors.green("Compile @#{(new Date()).toLocaleTimeString()}") + "]"
-    if extra
-      title += " " + gutil.colors.inverse( extra )
-    title
-
-  cwd : process.cwd()
 
   watchRetry : 0
   watchIsWorking : false
@@ -137,9 +112,9 @@ Helper =
 StreamFuncs =
 
   coffeeErrorPrinter : ( error )->
-    console.log gutil.colors.red.bold("\n[CoffeeError]"), error.message.replace( process.cwd(), "." )
+    console.log gutil.colors.red.bold("\n[CoffeeError]"), error.message.replace( util.cwd, "." )
 
-    Helper.notify "Error occur when compiling " + error.message.replace( process.cwd(), "." ).split(":")[0]
+    util.notify "Error occur when compiling " + error.message.replace( util.cwd, "." ).split(":")[0]
     null
 
   throughLiveReload : ()->
@@ -164,7 +139,7 @@ StreamFuncs =
     pipeline = coffeeCompile
       # Log
       .pipe( es.through ( f )->
-        console.log Helper.compileTitle( f.extra ), "#{f.relative}"
+        console.log util.compileTitle( f.extra ), "#{f.relative}"
         @emit "data", f
       )
       # Jshint and report
@@ -183,6 +158,11 @@ StreamFuncs =
     coffeeCompile.on("error", StreamFuncs.coffeeErrorPrinter)
 
     coffeeBranch
+
+  throughHandlebars : ()->
+    pipeline = handlebars()
+    pipeline.pipe( gulp.dest(".") )
+    pipeline
 
   workStream : null
   workEndStream : null
@@ -205,18 +185,23 @@ StreamFuncs =
     # Branch Used to handle coffee files
     coffeeBranch = StreamFuncs.throughCoffee()
 
+    # Branch Used to handle templates
+    templateBranch = StreamFuncs.throughHandlebars()
+
     # Setup compile branch
     langeSrcBranchRegex   = /lang-source\.coffee/
     coffeeBranchRegex     = /\.coffee$/
+    templateBranchRegex   = /(\.partials$)|(\.html)/
 
     if GLOBAL.gulpConfig.reloadJsHtml
-      liveReloadBranchRegex = /(src.assets)|(\.js$)|(\.html$)/
+      liveReloadBranchRegex = /(src.assets)|(\.js$)/
     else
       liveReloadBranchRegex = /src.assets/
 
-    stream.pipe( gulpif langeSrcBranchRegex,   langSrcBranch, true )
-          .pipe( gulpif coffeeBranchRegex,     coffeeBranch,  true )
-          .pipe( gulpif liveReloadBranchRegex, assetBranch,   true )
+    stream.pipe( gulpif langeSrcBranchRegex,   langSrcBranch,  true )
+          .pipe( gulpif templateBranchRegex,   templateBranch, true )
+          .pipe( gulpif coffeeBranchRegex,     coffeeBranch,   true )
+          .pipe( gulpif liveReloadBranchRegex, assetBranch,    true )
 
 
 
@@ -239,8 +224,8 @@ changeHandler = ( path )->
       if not data then return
 
       StreamFuncs.workStream.emit "data", new gutil.File({
-        cwd      : Helper.cwd
-        base     : Helper.cwd
+        cwd      : util.cwd
+        base     : util.cwd
         path     : path
         contents : data
       })
@@ -256,7 +241,7 @@ checkWatchHealthy = ( watcher )->
   setTimeout ()->
     if not Helper.watchIsWorking
       console.log "[Info]", "Watch is not working. Will retry in 2 seconds."
-      Helper.notify "Watch is not working. Will retry in 2 seconds."
+      util.notify "Watch is not working. Will retry in 2 seconds."
       watcher.removeAllListeners()
 
       setTimeout (()-> watch()), 2000
@@ -268,7 +253,7 @@ watch = ()->
   ++Helper.watchRetry
   if Helper.watchRetry > 3
     console.log gutil.colors.red.bold "[Fatal]", "Watch is still not working. Please manually retry."
-    Helper.notify "Watch is still not working. Please manually retry."
+    util.notify "Watch is still not working. Please manually retry."
     return
 
   Helper.createLrServer()
@@ -285,10 +270,10 @@ watch = ()->
 
 
 compileDev = ( allCoffee )->
-  if allCoffee
-    path = ["src/**/*.coffee", "!src/test/**/*" ]
-  else
-    path = ["src/**/*.coffee", "!src/test/**/*", "!src/service/**/*", "!src/model/**/*" ]
+  path = ["src/**/*.coffee", "src/**/*.partials", "src/**/*.html", "!src/test/**/*", "!src/*.html", "!src/include/*.html" ]
+  if not allCoffee
+    path.push "!src/service/**/*"
+    path.push "!src/model/**/*"
 
   deferred = Q.defer()
 

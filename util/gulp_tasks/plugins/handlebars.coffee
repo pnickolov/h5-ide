@@ -3,12 +3,28 @@ es         = require("event-stream")
 handlebars = require("handlebars")
 path       = require("path")
 gutil      = require("gulp-util")
+util       = require("./util")
 
 HandlebarsOptions =
   knownHelpersOnly : true
   knownHelpers :
-    i18n   : true
-    ifCond : true
+    i18n             : true
+    ifCond           : true
+    nl2br            : true
+    emptyStr         : true
+    timeStr          : true
+    plusone          : true
+    tolower          : true
+    UTC              : true
+    breaklines       : true
+    is_service_error : true
+    is_unmanaged     : true
+    city_code        : true
+    city_area        : true
+    convert_string   : true
+    is_vpc_disabled  : true
+    vpc_list         : true
+    vpc_sub_item     : true
 
 compile = ( file )->
   if path.extname(file.path) is ".partials"
@@ -19,6 +35,19 @@ compile = ( file )->
   @emit "data", file
   null
 
+tryCompile = ( data, file )->
+  try
+    result = handlebars.precompile( data, HandlebarsOptions )
+  catch e
+    console.log gutil.colors.red.bold("\n[TplError]"), file.relative
+    console.log e.message + "\n"
+
+    util.notify "Error occur when compiling " + file.relative
+
+    return ""
+
+  result
+
 compilePartials = ( file )->
   content = file.contents.toString("utf8")
   data = content.split(/\<!-- (.*) --\>/ig)
@@ -28,7 +57,14 @@ compilePartials = ( file )->
 
   i = 1
   while i < data.length
-    newData += "TEMPLATE.#{data[i]}=" + handlebars.precompile( data[i+1], HandlebarsOptions ) + ";\n\n"
+    result = tryCompile( data[i+1], file )
+    if not result
+      newData = ""
+      break
+
+    console.log util.compileTitle(), file.relative
+
+    newData += "TEMPLATE.#{data[i]}=" + result + ";\n\n"
 
     namespaces = data[i].split(".")
     space = namespace
@@ -47,7 +83,11 @@ compilePartials = ( file )->
   null
 
 compileHbs = ( file )->
-  newData = handlebars.precompile file.contents.toString("utf8"), HandlebarsOptions
+  newData = tryCompile file.contents.toString("utf8"), file
+
+  if newData
+    console.log util.compileTitle(), file.relative
+
   newData = "define(['handlebars'], function(Handlebars){ var TEMPLATE = " + newData + "; return TEMPLATE; });"
 
   file.contents = new Buffer( newData, "utf8" )

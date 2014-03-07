@@ -116,18 +116,13 @@ define [ 'event',
 		component = Design.instance().component uid
 		type = component.type if not type and component
 		typeAvai = _.contains [ CONST.RESTYPE.LC, CONST.RESTYPE.INSTANCE, 'component_server_group' ], type
-		modeAvai = null
 		opsEnabled = Design.instance().get('agent').enabled
 
-		if Design.instance().modeIsAppEdit() and type is 'component_server_group'
-			modeAvai = true
-		if Design.instance().modeIsApp() and type is CONST.RESTYPE.LC
-			modeAvai = false
-		if Design.instance().get('state') is "Stopped" and type is CONST.RESTYPE.LC
-			modeAvai = true
+		modeAvai = getModeAvai type
 
 		if opsEnabled and typeAvai
 			view.renderStateCount component
+
 
 		if opsEnabled and ( ( modeAvai is null and typeAvai ) or modeAvai )
 			$( '#property-panel' ).removeClass 'no-state'
@@ -136,6 +131,25 @@ define [ 'event',
 			$( '#property-panel' ).addClass 'no-state'
 			false
 
+	# modeAvai is behalf of tab mode ( app|stack|appedit|stoped|more.. )
+	# modeAvai has 3 states true|false|null( not set )
+	getModeAvai = ( type ) ->
+		modeAvai = null
+
+		if Design.instance().modeIsAppEdit()
+			if type is 'component_server_group'
+				modeAvai = true
+		else if Design.instance().modeIsApp()
+			if type is CONST.RESTYPE.LC
+				modeAvai = false
+			# Stopped APP
+			if Design.instance().get('state') is "Stopped"
+				if type is CONST.RESTYPE.LC
+					modeAvai = true
+				else if type is 'component_server_group'
+					modeAvai = false
+
+		modeAvai
 
 	# Whenever tab is switched
 	# Use this method to generate data for the current property

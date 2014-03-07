@@ -29,9 +29,10 @@ define [ 'constant', 'MC', 'i18n!nls/lang.js' ], ( constant, MC, lang ) ->
         ret = []
 
         while ( resArr = reg.exec str ) isnt null
-            # `self` is a special constant
-            if uid not in [ 'self', 'isg' ]
-                ret.push { uid: resArr[ 1 ], ref: resArr[ 0 ] }
+            refObj = uid: resArr[ 1 ], ref: resArr[ 0 ]
+            # `self`, `isg` are special constants
+            if refObj.uid not in [ 'self', 'isg' ]
+                ret.push refObj
 
         ret
 
@@ -71,5 +72,5 @@ define [ 'constant', 'MC', 'i18n!nls/lang.js' ], ( constant, MC, lang ) ->
         null
 
 
-    takeplace
+    checkRefExist
 

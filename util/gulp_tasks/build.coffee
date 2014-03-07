@@ -2,7 +2,6 @@
 gulp   = require("gulp")
 gutil  = require("gulp-util")
 path   = require("path")
-Buffer = require('buffer').Buffer
 es     = require("event-stream")
 Q      = require("q")
 fs     = require("fs")
@@ -17,8 +16,10 @@ coffee     = require("gulp-coffee")
 coffeelint = require("gulp-coffeelint")
 gulpif     = require("gulp-if")
 
-confCompile = require("./conditional")
-cached      = require("./cached")
+confCompile  = require("./plugins/conditional")
+cached       = require("./plugins/cached")
+jshint       = require("./plugins/jshint")
+lintReporter = require('./plugins/reporter')
 
 buildLangSrc = require("../../config/lang")
 
@@ -113,7 +114,7 @@ Helper =
     else
       gutil.log gutil.colors.bgBlue.white(" Watching file changes... ") + " [Native FSevent, vim might not trigger changes]"
 
-      watcher = chokidar.watch "./src", {
+      watcher = chokidar.watch ["./src", "./util/gulp_tasks"], {
         usePolling    : false
         useFsEvents   : true
         ignoreInitial : true
@@ -139,8 +140,6 @@ Helper =
 
 
 StreamFuncs =
-  jshint       : require("./jshint")
-  lintReporter : require('./reporter')
 
   coffeeErrorPrinter : ( error )->
     console.log gutil.colors.red.bold("\n[CoffeeError]"), error.message.replace( process.cwd(), "." )
@@ -206,8 +205,8 @@ StreamFuncs =
         @emit "data", f
       )
       # Jshint and report
-      .pipe( gulpif Helper.shouldLintCoffee, StreamFuncs.jshint() )
-      .pipe( gulpif Helper.shouldLintCoffee, StreamFuncs.lintReporter() )
+      .pipe( gulpif Helper.shouldLintCoffee, jshint() )
+      .pipe( gulpif Helper.shouldLintCoffee, lintReporter() )
       # Save
       .pipe( gulp.dest(".") )
 

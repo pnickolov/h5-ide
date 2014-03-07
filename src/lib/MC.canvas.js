@@ -3946,7 +3946,7 @@ MC.canvas.event.siderbarDrag = {
 		}
 
 		// For change AMI hover effect
-		if (event_data.drop_zone)
+		if (event_data.drop_zone_data)
 		{
 			if (
 				event.pageX > event_data.drop_zone_data.x1 &&

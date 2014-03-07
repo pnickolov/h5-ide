@@ -107,6 +107,11 @@ var scrollbar = {
 								}, scroll_content.scrollHeight);
 							}
 						}
+
+						if (target.scrollTop !== 0)
+						{
+							target.scrollTop = 0;
+						}
 					}
 
 					if (horizontal_thumb && horizontal_thumb.hasClass('scrollbar-horizontal-thumb'))

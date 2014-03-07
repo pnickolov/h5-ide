@@ -18,7 +18,7 @@
     modified = false;
     data = file.contents.toString("utf8").replace(ReplaceRegex, function(match, includePath) {
       var p;
-      p = path.resolve(file.path, includePath);
+      p = path.resolve(path.dirname(file.path), includePath);
       if (!fs.existsSync(p)) {
         console.log("[Include Error] Cannot find : " + match);
         return match;

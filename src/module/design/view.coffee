@@ -231,8 +231,40 @@ define [ 'Design', 'event', 'text!./module/design/template.html', 'constant', 'i
                     when constant.APP_STATE.APP_STATE_STARTING    then $item.html MC.template.appStarting()
                     when constant.APP_STATE.APP_STATE_STOPPING    then $item.html MC.template.appStopping()
                     when constant.APP_STATE.APP_STATE_TERMINATING then $item.html MC.template.appTerminating()
-                    when constant.APP_STATE.APP_STATE_UPDATING    then $item.html MC.template.appUpdating { 'rate' : MC.data.process[ MC.data.current_tab_id ].flag_list.rate, 'steps' : MC.data.process[ MC.data.current_tab_id ].flag_list.steps, 'dones' : MC.data.process[ MC.data.current_tab_id ].flag_list.dones }
-                    when 'CHANGED_FAIL'                           then $item.html MC.template.appChangedfail { 'state' : lang.ide[ MC.data.process[ MC.data.current_tab_id ].flag_list.flag ] , 'detail' : MC.data.process[ MC.data.current_tab_id ].flag_list.err_detail.replace( /\n/g, '</br>' ), 'update_detail' : if MC.data.process[ MC.data.current_tab_id ].flag_list.flag is 'UPDATE_APP' then true else false  }
+
+                    when constant.APP_STATE.APP_STATE_UPDATING
+
+                        # init obj
+                        obj = { 'is_show' : false, 'rate' : 0, 'steps' : 0, 'dones' : 0 }
+
+                        if MC.data.process and MC.data.current_tab_id and MC.data.process[ MC.data.current_tab_id ] and MC.data.process[ MC.data.current_tab_id ].flag_list
+
+                            flag_list = MC.data.process[ MC.data.current_tab_id ].flag_list
+
+                            if flag_list.rate and flag_list.steps and flag_list.dones
+                                obj = { 'is_show' : true,  'rate' : flag_list.rate, 'steps' : flag_list.steps, 'dones' : flag_list.dones }
+
+                        $item.html MC.template.appUpdating obj
+
+                    when 'CHANGED_FAIL'
+
+                        # init obj
+                        obj = { 'is_show' : false, 'state' : 'update', 'detail' : '', 'update_detail' : true }
+
+                        if MC.data.process and MC.data.current_tab_id and MC.data.process[ MC.data.current_tab_id ] and MC.data.process[ MC.data.current_tab_id ].flag_list
+
+                            flag_list = MC.data.process[ MC.data.current_tab_id ].flag_list
+
+                            if flag_list.flag and lang.ide[ flag_list.flag ] and flag_list.err_detail
+
+                                obj =
+                                    'is_show'       : true
+                                    'state'         : lang.ide[ flag_list.flag ]
+                                    'detail'        : flag_list.err_detail.replace( /\n/g, '</br>' )
+                                    'update_detail' : if flag_list.flag is 'UPDATE_APP' then true else false
+
+                        $item.html MC.template.appChangedfail obj
+
                     when 'UPDATING_SUCCESS'                       then $item.html MC.template.appUpdatedSuccess()
                     else
                         console.log 'current state = ' + state

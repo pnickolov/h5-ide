@@ -1305,6 +1305,7 @@ Following rule(s) will be deleted from its(their) security group:</div>
 <div class="overlay-content-wrap">
 	<div class="overlay-text">Updating app...</div>
 	<div class="loading-spinner"></div>
+	{{# if is_show }}
 	<div class="progress">
 		<div class="bar" id="progress_bar" style="width: {{ rate }}%;"></div>
 	</div>
@@ -1312,6 +1313,7 @@ Following rule(s) will be deleted from its(their) security group:</div>
 		<span><b class="num" id="progress_num">{{ dones }}</b> of</span>
 		<span><b class="total" id="progress_total">{{ steps }}</b> tasks</span>
 	</p>
+	{{/if}}
 </div>
 
 <!-- appUpdatedSuccess -->
@@ -1323,6 +1325,7 @@ Following rule(s) will be deleted from its(their) security group:</div>
 <!-- appChangedfail -->
 <div class="overlay-content-wrap app-change-fail">
 	<div class="overlay-text">Oops! The app failed to {{ state }}.</div>
+	{{#if is_show}}
 	<div class="error-info-block">
 		<div class="result-sub-title">{{ i18n "PROC_RLT_FAILED_SUB_TITLE" }}</div>
 		<div class="result-error-info">
@@ -1333,6 +1336,7 @@ Following rule(s) will be deleted from its(their) security group:</div>
 		<div class="result-error-notice">The state of your app has been rolled back, except for the already deleted resources.</div>
 		{{/if}}
 	</div>
+	{{/if}}
 	<button class="btn btn-silver" id="btn-changedfail">Done</button>
 </div>
 

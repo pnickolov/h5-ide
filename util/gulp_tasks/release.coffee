@@ -2,7 +2,7 @@
 gulp = require("gulp")
 
 #handlebars = require("./plugins/handlebars")
-#include = require("./plugins/include")
+#html = require("./plugins/html")
 
 build = ( debugMode ) ->
   # A task to build IDE
@@ -13,8 +13,8 @@ build = ( debugMode ) ->
   # null
 
   # gulp.src("./src/500.html")
-  #   .pipe(include())
-  #   .pipe(gulp.dest("./src/500-o.html"))
+  #   .pipe(html())
+  #   .pipe(gulp.dest("./build/"))
 
 
 module.exports = { build : build }

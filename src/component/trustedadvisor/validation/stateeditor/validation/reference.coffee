@@ -67,6 +67,9 @@ define [ 'constant', 'MC', 'i18n!nls/lang.js' ], ( constant, MC, lang ) ->
 
         TAError
 
+    takeplace = ->
+        null
 
-    checkRefExist
+
+    takeplace
 

@@ -1,7 +1,7 @@
 
 path    = require("path")
 es      = require("event-stream")
-indexOf = require("./indexOf")
+indexOf = require("./indexof")
 
 delimeterMap =
   ".coffee"   : "### env ###"

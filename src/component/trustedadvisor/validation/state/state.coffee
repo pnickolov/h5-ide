@@ -130,16 +130,29 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo', 'Design' ], ( con
 
         false
 
-    __notNat = ( component ) ->
-        __hasEipOrPublicIp( component ) and __isRouteIgw( component )
+    __notNat = ( component, result, subnetName ) ->
+        # if there is no EIP or publicIP, push an error and stop continued validate.
+        if not __hasEipOrPublicIp( component )
+            name = component.get( 'name' )
+            result.push __genError component.id, lang.ide.TA_MSG_ERROR_NO_EIP_OR_PIP, name, name, subnetName
+            true
+        else if __isRouteIgw( component )
+            true
+        else
+            false
 
-    __genConnectedError = ( name, subnetName, uid ) ->
-        tipInfo = sprintf lang.ide.TA_MSG_ERROR_NOT_CONNECT_OUT, name, subnetName
+    __genConnectedError = ( subnetName, uid ) ->
+        __genError uid, lang.ide.TA_MSG_ERROR_NOT_CONNECT_OUT, subnetName
+
+    __genError = ( uid, tip ) ->
+        if arguments.length > 2
+            tip = sprintf.apply null, Array.prototype.slice.call( arguments, 1 )
 
         # return
         level   : constant.TA.ERROR
-        info    : tipInfo
+        info    : tip
         uid     : uid
+
 
     __isLcConnectedOut = ( uid ) ->
         lc = __getComp uid, true
@@ -149,30 +162,36 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo', 'Design' ], ( con
         asg = lc.parent()
         expandedAsgs = asg.get 'expandedList'
 
-
-        name = lc.parent().get 'name'
         subnetName = lc.parent().parent().get 'name'
 
-        if not __notNat( lc )
-            result.push __genConnectedError name, subnetName, uid
+        # LC could'nt be NAT so only need to validate notNat
+        if not __notNat( lc, result, subnetName )
+            result.push __genConnectedError subnetName, uid
 
         for asg in expandedAsgs
-            if not __notNat( asg )
-                name = asg.get( "originalAsg" ).get 'name'
+            if not __notNat( asg, result, subnetName )
                 subnetName = asg.parent().get 'name'
-                result.push __genConnectedError name, subnetName, asg.id
+                result.push __genConnectedError subnetName, asg.id
 
         result
 
 
     __isInstanceConnectedOut = ( uid ) ->
         component = __getComp uid, true
-        if __notNat( component ) or __isNat( component )
-            return null
-
-        name = component.get 'name'
+        result = []
         subnetName = component.parent().get 'name'
-        __genConnectedError name, subnetName
+
+        # The order is important. isNat must be put before notNat,
+        # becauce notNat will validate EIP and PublicIP,
+        # if the instance is connected out through NAT and it doesn't have an EIP or PublicIP
+        # We can't throw any error.
+
+        if __isNat( component ) or __notNat( component, result, subnetName )
+            return result
+
+        result.push __genConnectedError subnetName, uid
+
+        result
 
 
 
@@ -182,13 +201,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo', 'Design' ], ( con
         if __hasType constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway
             return null
 
-        tipInfo = lang.ide.TA_MSG_ERROR_NO_CGW
-
-        # return
-        level   : constant.TA.ERROR
-        info    : tipInfo
-        uid     : uid
-
+        __genError uid, lang.ide.TA_MSG_ERROR_NO_CGW
 
     isHasOutPort80and443 = ( uid ) ->
         component = __getComp uid
@@ -197,12 +210,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo', 'Design' ], ( con
         if __sgsHasOutPort80and443 sgs
             return null
 
-        tipInfo = sprintf lang.ide.TA_MSG_ERROR_NO_OUTBOUND_RULES, component.name
-
-        # return
-        level   : constant.TA.ERROR
-        info    : tipInfo
-        uid     : uid
+        __genError uid, lang.ide.TA_MSG_ERROR_NO_OUTBOUND_RULES, component.name
 
     isHasOutPort80and443Strict = ( uid ) ->
         component = __getComp uid
@@ -211,13 +219,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo', 'Design' ], ( con
         if isHasOutPort80and443( uid ) or __sgsHasOutPort80and443 sgs, true
             return null
 
-        tipInfo = sprintf lang.ide.TA_MSG_WARNING_OUTBOUND_NOT_TO_ALL, component.name
-
-        # return
-        level   : constant.TA.WARNING
-        info    : tipInfo
-        uid     : uid
-
+        __genError uid, lang.ide.TA_MSG_WARNING_OUTBOUND_NOT_TO_ALL, component.name
 
     isConnectedOut = ( uid ) ->
         result = []

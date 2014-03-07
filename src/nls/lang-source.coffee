@@ -3616,8 +3616,13 @@ module.exports =
 
     # State
     TA_MSG_ERROR_NOT_CONNECT_OUT:
-      en: "%s has configured states. To make sure OpsAgent to work, %s must be connected to internet directly or via a NAT instance."
+      en: "Subnet %s must be connected to internet directly or via a NAT instance. "
       zh: ""
+
+    TA_MSG_ERROR_NO_EIP_OR_PIP:
+      en: "%s has configured states. To make sure OpsAgent to work, %s must have an elastic IP or public IP. If not, subnet %s must be connected to a NAT instance."
+      zh: ""
+
     TA_MSG_ERROR_NO_CGW:
       en: "You have configured states for instance. To make sure OpsAgent to work, the VPC must have an internet gateway."
       zh: ""

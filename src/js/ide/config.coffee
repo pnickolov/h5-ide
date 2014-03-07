@@ -1,16 +1,13 @@
-###
-emptyFunction = ->
 
-for key, value of console
-	if key isnt 'debug' and Object.prototype.toString.call( value ) is '[object Function]'
-		console[ key ] = emptyFunction
-###
+version  = '130830.1912'
+language = 'en-us'
+current_jquery = if /msie (9|8|7|6)/ig.test(navigator.userAgent.toLowerCase()) then '//code.jquery.com/jquery-1.10.2.min' else '//code.jquery.com/jquery-2.0.3.min'
 
 require.config {
 
 	baseUrl                  : './'
 
-	waitSeconds              : 30
+	waitSeconds              : 7
 
 	locale                   : language
 

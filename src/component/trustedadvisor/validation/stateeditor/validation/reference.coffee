@@ -29,7 +29,9 @@ define [ 'constant', 'MC', 'i18n!nls/lang.js' ], ( constant, MC, lang ) ->
         ret = []
 
         while ( resArr = reg.exec str ) isnt null
-            ret.push { uid: resArr[ 1 ], ref: resArr[ 0 ] }
+            # `self` is a special constant
+            if uid isnt 'self'
+                ret.push { uid: resArr[ 1 ], ref: resArr[ 0 ] }
 
         ret
 

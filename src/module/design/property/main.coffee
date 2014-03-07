@@ -158,6 +158,8 @@ define [ 'event',
 		PropertyBaseModule.snapshot view
 
 	restore = ( snapshot ) ->
+		view.restore snapshot
+		openPorperty null, view.uid
 		PropertyBaseModule.restore snapshot, view
 
 

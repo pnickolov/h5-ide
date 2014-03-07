@@ -362,9 +362,6 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
         data
 
     PropertyModule.restore  = ( snapshot, propertyView )->
-        propertyView.currentTab = snapshot.propertyTab
-        propertyView.lastComId = snapshot.activeModuleId
-
         PropertyModule.load snapshot.activeModuleType, snapshot.activeModuleId, snapshot.tab_type
 
         if snapshot.activeSubModuleType
@@ -375,6 +372,7 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
             PropertyModule.event.trigger PropertyModule.event.HIDE_SUB_PANEL
 
         null
+
 
     # The event object is used to communicate with design/property/view
     # So that we don't have a reference to desing/property/view, avoiding

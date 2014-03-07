@@ -20,8 +20,11 @@ define [ 'event',
         # store current open tab [ property|state ]
         currentTab: 'property'
 
+        # store current uid
+        uid: null
+
         # store lastest render component id
-        lastComId: null
+        lastUid: null
 
         initialize : ->
 
@@ -73,10 +76,10 @@ define [ 'event',
             target = event.currentTarget
             if target.id is 'btn-switch-state'
                 if @currentTab isnt 'state'
-                    @renderState @lastComId, true
+                    @renderState @lastUid, true
             else
                 if @currentTab is 'state'
-                    @renderProperty @lastComId
+                    @renderProperty @lastUid
 
         __hideProperty: () ->
             $( '#property-panel .sub-property' ).hide()
@@ -113,7 +116,7 @@ define [ 'event',
 
             @currentTab = 'property'
             @__showProperty()
-            @lastComId = uid
+            @lastUid = uid
             @
 
         renderStateCount: ( component ) ->
@@ -127,10 +130,10 @@ define [ 'event',
             @__hideResourcePanel()
             $( '#property-panel' ).addClass 'state'
 
-            @lastComId = uid
+            @lastUid = uid
             @currentTab = 'state'
 
-            if @lastComId is uid and @__hasProperty()
+            if @lastUid is uid and @__hasProperty()
 
             else
 
@@ -257,6 +260,11 @@ define [ 'event',
                 .html( template )
                 .removeClass( 'state state-wide' )
             @
+
+        restore: ( snapshot ) ->
+            @currentTab = snapshot.propertyTab
+            @uid = snapshot.activeModuleId
+            null
 
         getCurrentCompUid : () ->
             event = {}

@@ -111,7 +111,11 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 			that.set('moduleCMDMap', moduleCMDMap)
 
 			that.genStateRefList(allCompData)
-			that.genAttrRefList(allCompData)
+
+			currentCompData = that.get('compData')
+			resAttrDataAry = MC.aws.aws.genAttrRefList(currentCompData, allCompData)
+			that.set('resAttrDataAry', resAttrDataAry)
+			
 			that.genAttrRefRegexList()
 
 			groupResSelectData = that.getGroupResSelectData()
@@ -298,173 +302,6 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 					null
 
 			that.set('resStateDataAry', resStateDataAry)
-
-		genAttrRefList: (allCompData) ->
-
-			that = this
-
-			currentCompData = that.get('compData')
-
-			currentCompUID = currentCompData.uid
-			currentCompType = currentCompData.type
-
-			currentIsASG = false
-			currentASGName = null
-			if currentCompType is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
-				currentIsASG = true
-
-			currentIsISG = false
-			currentISGName = null
-			if currentCompData.number and currentCompData.number > 1
-				currentIsISG = true
-				currentISGName = currentCompData.serverGroupName
-
-			allCompData = allCompData or @get('allCompData')
-
-			autoCompList = []
-
-			awsPropertyData = MC.data.state.aws_property
-
-			# compTypeMap = constant.AWS_RESOURCE_TYPE
-
-			_.each allCompData, (compData, uid) ->
-
-				compName = compData.name
-				compUID = compData.uid
-				compType = compData.type
-
-				if compUID is currentCompUID
-					compName = 'self'
-
-				if currentCompType is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
-					if compType is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
-						lcUIDRef = compData.resource.LaunchConfigurationName
-						if lcUIDRef
-							lcUID = MC.extractID(lcUIDRef)
-							if currentCompUID is lcUID
-								currentASGName = compName
-								compName = 'self'
-
-				if compType is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
-					return
-					# if compData.serverGroupUid isnt compUID
-					# 	return
-					# else
-					# 	if compData.serverGroupName
-					# 		compName = compData.serverGroupName
-
-				# replace instance default eni name to instance name
-				if compType is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
-					if compData.index isnt 0
-						return
-					if compData.serverGroupUid isnt compUID
-						return
-					instanceRef = compData.resource.Attachment.InstanceId
-					if not instanceRef
-						return
-					if compData.resource.Attachment.DeviceIndex in ['0', 0]
-						instanceUID = MC.extractID(instanceRef)
-						if instanceUID
-							compName = allCompData[instanceUID].serverGroupName
-							if instanceUID is currentCompUID
-								compName = 'self'
-
-				supportType = compType.replace(/\./ig, '_')
-
-				# found supported type
-				attrList = awsPropertyData[supportType]
-				if attrList
-
-					_.each attrList, (isArray, attrName) ->
-
-						autoCompStr = (compName + '.') # host1.
-						autoCompRefStr = (compUID + '.') # uid.
-
-						if attrName is '__array'
-							return
-						else
-							autoCompStr += attrName
-							autoCompRefStr += attrName
-
-						autoCompList.push({
-							name: autoCompStr,
-							value: autoCompRefStr
-						})
-
-						if isArray
-
-							if supportType is 'AWS_AutoScaling_Group'
-								if attrName in ['AvailabilityZones']
-									azAry = compData.resource.AvailabilityZones
-									if azAry.length > 1
-										_.each azAry, (azName, idx) ->
-											# if idx is 0 then return
-											autoCompList.push({
-												name: autoCompStr + '[' + idx + ']',
-												value: autoCompRefStr + '[' + idx + ']'
-											})
-											null
-
-							if supportType is 'AWS_VPC_NetworkInterface'
-								if attrName in ['PublicDnsName', 'PublicIp', 'PrivateDnsName', 'PrivateIpAddress']
-									ipObjAry = compData.resource.PrivateIpAddressSet
-									if ipObjAry.length > 1
-										_.each ipObjAry, (ipObj, idx) ->
-											if idx is 0 then return
-											autoCompList.push({
-												name: autoCompStr + '[' + idx + ']',
-												value: autoCompRefStr + '[' + idx + ']'
-											})
-											null
-
-							if supportType is 'AWS_ELB'
-								if attrName in ['AvailabilityZones']
-									azAry = compData.resource.AvailabilityZones
-									if azAry.length > 1
-										_.each azAry, (azName, idx) ->
-											# if idx is 0 then return
-											autoCompList.push({
-												name: autoCompStr + '[' + idx + ']',
-												value: autoCompRefStr + '[' + idx + ']'
-											})
-											null
-
-						null
-
-				null
-
-			# append asg/isg ref
-			groupAutoCompList = []
-			if currentIsASG or currentIsISG
-				_.each autoCompList, (autoCompObj) ->
-					if autoCompObj.name.indexOf('self.') is 0
-						groupCompNameStr = null
-						groupCompUIDStr = null
-						if currentIsASG
-							groupCompNameStr = autoCompObj.name.replace('self', currentASGName)
-							groupCompUIDStr = autoCompObj.value.replace('self', currentASGName)
-						else if currentIsISG
-							groupCompNameStr = autoCompObj.name.replace('self', currentISGName)
-							groupCompUIDStr = autoCompObj.value.replace('self', currentISGName)
-						groupAutoCompList.push({
-							name: groupCompNameStr,
-							value: groupCompUIDStr
-						})
-
-			autoCompList = autoCompList.concat(groupAutoCompList)
-
-			# sort autoCompList
-			autoCompList = autoCompList.sort((obj1, obj2) ->
-				if obj1.name < obj2.name then return -1
-				if obj1.name > obj2.name then return 1
-			)
-
-			resAttrDataAry = _.map autoCompList, (autoCompObj) ->
-				return {
-					name: "#{autoCompObj.name}"
-					value: "#{autoCompObj.name}"
-				}
-			that.set('resAttrDataAry', resAttrDataAry)
 
 		genAttrRefRegexList: () ->
 

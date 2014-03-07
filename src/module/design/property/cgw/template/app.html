@@ -1,122 +1,14 @@
 <article class="property-app">
-
-  {{#with cgw}}
-  <div class="option-group-head expand">{{ i18n "PROP_CGW_APP_TIT_CGW" }}</div>
-  <div class="option-group">
-    <dl class="dl-vertical">
-      <dt>{{ i18n "PROP_CGW_APP_CGW_LBL_ID" }}</dt>
-      <dd>{{customerGatewayId}}</dd>
-      <dt>{{ i18n "PROP_CGW_APP_CGW_LBL_STATE" }}</dt>
-      <dd class="capitalize"><i class="status status-xgw-{{state}}"></i>{{state}}</dd>
-      <dt>{{ i18n "PROP_CGW_LBL_IPADDR" }}</dt>
-      <dd>{{ipAddress}}</dd>
-      <dt>{{ i18n "PROP_CGW_APP_CGW_LBL_TYPE" }}</dt>
-      <dd>{{type}}</dd>
-      <dt>{{ i18n "PROP_CGW_LBL_BGP_ASN" }}</dt>
-      <dd>{{bgpAsn}}</dd>
-    </dl>
-  </div>
-  {{/with}}
-
-<!--   {{#with vpn}}
-  <div class="option-group-head expand">{{ i18n "PROP_CGW_APP_TIT_VPN" }}</div>
-  <div class="option-group">
-    <dl class="dl-vertical">
-      <dt>{{ i18n "PROP_CGW_APP_VPN_LBL_ID" }}</dt>
-      <dd>{{vpnConnectionId}}</dd>
-
-      <dt>{{ i18n "PROP_CGW_APP_VPN_LBL_STATE" }}</dt>
-      <dd class="capitalize"><i class="status status-xgw-{{state}}"></i>{{state}}</dd>
-
-      <dt>{{ i18n "PROP_CGW_APP_VPN_LBL_TYPE" }}</dt>
-      <dd>{{type}}</dd>
-
-      <dt>{{ i18n "PROP_CGW_LBL_ROUTING" }}</dt>
-      <dd>{{routing}}</dd>
-    </dl>
-
-    {{#if vgwTelemetry.item}}
-      <div class="property-group-head">
-        <h5>{{ i18n "PROP_CGW_APP_VPN_LBL_TUNNEL" }}</h5>
-      </div>
-      <table class="table">
-        <thead>
-          <tr>
-          <th style="width:20px">{{ i18n "PROP_CGW_APP_VPN_COL_TUNNEL" }}</th>
-          <th style="width:100px">{{ i18n "PROP_CGW_APP_VPN_COL_IP" }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {{#each vgwTelemetry.item}}
-            <tr>
-              <td><i class="status status-{{stateColor}} tooltip icon-label" data-tooltip="{{status}} since {{lastStatusChange}} because {{statusMessage}}"></i>{{index}}</td>
-              <td>{{outsideIpAddress}}</td>
-            </tr>
-          {{/each}}
-        </tbody>
-      </table>
-    {{/if}}
-
-    {{#if routes.item}}
-      <div class="property-group-head">
-        <h5>{{ i18n "PROP_CGW_APP_VPN_LBL_STATUS_RT" }}</h5>
-      </div>
-
-      <table class="table">
-        <thead>
-          <tr>
-          <th style="width:100px">{{ i18n "PROP_CGW_APP_VPN_COL_IP_PREFIX" }}</th>
-          <th style="width:100px">{{ i18n "PROP_CGW_APP_VPN_COL_SOURCE" }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {{#each routes.item}}
-          <tr>
-            <td><i class="status status-{{state}} tooltip icon-label" data-tooltip="{{state}}"></i>{{destinationCidrBlock}}</td>
-            <td>{{source}}</td>
-          </tr>
-          {{/each}}
-        </tbody>
-      </table>
-    {{/if}}
-  </div>
-  {{/with}}
-
-  {{#if vpn.detail}}
-  <div class="option-group-head">{{ i18n "PROP_CGW_APP_TIT_DOWNLOAD_CONF" }}</div>
-  <div class="option-group" id="app-vpn-connection-body">
-    <div class="property-control-group clearfix">
-      <label>{{ i18n "PROP_CGW_APP_DOWN_LBL_VENDOR" }}</label>
-      <div class="selectbox" id="tenancy-select">
-        <div class="selection">{{ i18n "PROP_CGW_APP_DOWN_LBL_GENERIC" }}</div>
-        <ul class="dropdown" tabindex="-1">
-          <li class="item selected focused" data-id="default">{{ i18n "PROP_CGW_APP_DOWN_LBL_GENERIC" }}</li>
-        </ul>
-      </div>
-    </div >
-
-    <div class="property-control-group clearfix">
-      <label>{{ i18n "PROP_CGW_APP_DOWN_LBL_PLATFORM" }}</label>
-      <div class="selectbox" id="tenancy-select">
-        <div class="selection">{{ i18n "PROP_CGW_APP_DOWN_LBL_GENERIC" }}</div>
-        <ul class="dropdown" tabindex="-1">
-          <li class="item selected focused" data-id="default">{{ i18n "PROP_CGW_APP_DOWN_LBL_GENERIC" }}</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="property-control-group clearfix">
-      <label>{{ i18n "PROP_CGW_APP_DOWN_LBL_SOFTWARE" }}</label>
-      <div class="selectbox" id="tenancy-select">
-        <div class="selection">{{ i18n "PROP_CGW_APP_DOWN_LBL_VENDOR_AGNOSTIC" }}</div>
-        <ul class="dropdown" tabindex="-1">
-          <li class="item selected focused" data-id="default">{{ i18n "PROP_CGW_APP_DOWN_LBL_VENDOR_AGNOSTIC" }}</li>
-        </ul>
-      </div>
-    </div>
-    {{#each vpn.detail}}
-    <a id="download-vpn-cgw-conf" class="btn btn-primary" {{#if download}}href="data://text/plain;base64,{{filecontent}}" download="{{filename}}.txt"{{/if}}>{{ i18n "PROP_CGW_APP_DOWN_BTN_DOWNLOAD" }}</a>
-    {{/each}}
-  </div>
-  {{/if}} -->
+  <dl class="dl-vertical">
+    <dt>{{ i18n "PROP_CGW_APP_CGW_LBL_ID" }}</dt>
+    <dd>{{customerGatewayId}}</dd>
+    <dt>{{ i18n "PROP_CGW_APP_CGW_LBL_STATE" }}</dt>
+    <dd class="capitalize"><i class="status status-xgw-{{state}}"></i>{{state}}</dd>
+    <dt>{{ i18n "PROP_CGW_LBL_IPADDR" }}</dt>
+    <dd>{{ipAddress}}</dd>
+    <dt>{{ i18n "PROP_CGW_APP_CGW_LBL_TYPE" }}</dt>
+    <dd>{{type}}</dd>
+    <dt>{{ i18n "PROP_CGW_LBL_BGP_ASN" }}</dt>
+    <dd>{{bgpAsn}}</dd>
+  </dl>
 </article>

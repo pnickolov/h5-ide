@@ -2050,7 +2050,7 @@ MC.canvas.volume = {
 
 	show: function ()
 	{
-		event.stopImmediatePropagation();
+		//event.stopImmediatePropagation();
 
 		var target = $(this),
 			bubble_box = $('#volume-bubble-box'),
@@ -2077,8 +2077,6 @@ MC.canvas.volume = {
 					return false;
 				}
 				else if (
-					//$('#' + target_id + '_instance-number').text() * 1 === 1 ||
-					//target.hasClass('instanceList-item-volume') ||
 					$canvas( target_id ).list().length === 0
 				)
 				{
@@ -2134,16 +2132,47 @@ MC.canvas.volume = {
 
 			if (target_uid !== bubble_target_id)
 			{
-				if (
-					MC.canvas.getState() === 'app' &&
-					volume_type
-				)
+				// if (
+				// 	MC.canvas.getState() === 'app' &&
+				// 	volume_type
+				// )
+				// {
+				// 	MC.canvas.volume.bubble( target_id, target.parent().data('id'), volume_type );
+				// }
+				// else
+				// {
+				// 	MC.canvas.volume.bubble(target_id);
+				// }
+
+				if (MC.canvas.getState() === 'app')
 				{
-					MC.canvas.volume.bubble( target_id, target.parent().data('id'), volume_type );
-				}
-				else
-				{
-					MC.canvas.volume.bubble(target_id);
+					if (volume_type)
+					{
+						MC.canvas.volume.bubble( target_id, target.parent().data('id'), volume_type );
+
+						return false;
+					}
+					else if (
+						$canvas( target_id ).list().length === 0
+					)
+					{
+						MC.canvas.volume.bubble(target_id);
+
+						return false;
+					}
+					else
+					{
+						$canvas( target_uid ).select();
+
+						return false;
+					}
+
+					if ($canvas(target_id).type === 'AWS.AutoScaling.LaunchConfiguration')
+					{
+						MC.canvas.asgList.show.call( this, event );
+
+						return false;
+					}
 				}
 			}
 		}
@@ -2856,7 +2885,7 @@ MC.canvas.event.dragable = {
 				target_group_type,
 				SVGtranslate;
 
-			if (target_type === 'AWS.AutoScaling.LaunchConfiguration')
+			if (target_type === 'AWS.AutoScaling.LaunchConfiguration' && MC.canvas.getState() === 'app')
 			{
 				if (currentTarget.is('.instance-volume'))
 				{

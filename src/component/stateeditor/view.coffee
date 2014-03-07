@@ -5,10 +5,11 @@
 define [ 'event',
          'text!./component/stateeditor/template.html',
          './component/stateeditor/validate',
-         'constant'
+         'constant',
+         'instance_model'
          'UI.errortip'
 
-], ( ide_event, template , validate, constant ) ->
+], ( ide_event, template , validate, constant, instance_model ) ->
 
     StateEditorView = Backbone.View.extend {
 
@@ -51,6 +52,8 @@ define [ 'event',
             'click .state-desc-toggle': 'onDescToggleClick'
             'click .state-log-toggle': 'onLogToggleClick'
             'click .state-log-refresh': 'onLogRefreshClick'
+            'click .state-sys-log-btn': 'openSysLogModal'
+
             'click .state-item-add': 'onStateItemAddClick'
 
             'click .state-item-add-btn': 'onStateItemAddBtnClick'
@@ -3176,6 +3179,50 @@ define [ 'event',
             $currentTarget = $(event.currentTarget)
             $stateLogItem = $currentTarget.parents('.state-log-item')
             $stateLogItem.toggleClass('view')
+
+        openSysLogModal : () ->
+
+            that = this
+
+            instanceId = that.currentResId
+
+            currentRegion = MC.canvas_data.region
+            instance_model.GetConsoleOutput {sender: that}, $.cookie('usercode'), $.cookie('session_id'), currentRegion, instanceId
+
+            modal MC.template.modalInstanceSysLog {
+                instance_id: instanceId,
+                log_content: ''
+            }, true
+
+            that.off('EC2_INS_GET_CONSOLE_OUTPUT_RETURN').on 'EC2_INS_GET_CONSOLE_OUTPUT_RETURN', (result) ->
+
+                if !result.is_error
+                    console.log(result.resolved_data)
+                that.refreshSysLog(result.resolved_data)
+
+            return false
+
+        refreshSysLog : (result) ->
+
+            $('#modal-instance-sys-log .instance-sys-log-loading').hide()
+
+            if result and result.output
+
+                logContent = MC.base64Decode(result.output)
+                $contentElem = $('#modal-instance-sys-log .instance-sys-log-content')
+
+                logContentTpl = Handlebars.compile('{{nl2br content}}')
+                logContentHTML = logContentTpl({
+                    content: logContent
+                })
+                $contentElem.html(logContentHTML)
+                $contentElem.show()
+
+            else
+
+                $('#modal-instance-sys-log .instance-sys-log-info').show()
+                
+            modal.position()
 
     }
 

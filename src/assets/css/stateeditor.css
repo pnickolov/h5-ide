@@ -410,13 +410,6 @@
 	background: rgba(0,0,0,.01);
 }
 
-/* app view */
-
-/* stack view */
-#state-editor-model.se-model-stack .state-log-refresh {
-	display: none;
-}
-
 /* *************************************** parameter */
 #state-shadow-item {
 	width: 100%;
@@ -451,7 +444,6 @@
 }
 
 .state-editor-toolbar a {
-	display: block;
 	padding: 10px 15px;
 	font-size: 12px;
 	color: #999;
@@ -471,6 +463,15 @@
 
 #state-toolbar-copy,
 #state-toolbar-delete {
+	display: none;
+}
+
+/* stack view */
+#state-editor-model.se-model-stack .state-log-refresh {
+	display: none;
+}
+
+#state-editor-model.se-model-stack .state-sys-log-btn {
 	display: none;
 }
 

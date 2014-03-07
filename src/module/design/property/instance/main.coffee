@@ -59,9 +59,6 @@ define [ "../base/main",
             @view.on "OPEN_AMI", (id) ->
                 PropertyModule.loadSubPanel "STATIC", id
 
-            @model.on "SYS_LOG_RETURNED", (result) ->
-                me.view.refreshSysLog(result)
-
             null
 
         initApp : () ->

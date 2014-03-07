@@ -308,6 +308,17 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 			currentCompUID = currentCompData.uid
 			currentCompType = currentCompData.type
 
+			currentIsASG = false
+			currentASGName = null
+			if currentCompType is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+				currentIsASG = true
+
+			currentIsISG = false
+			currentISGName = null
+			if currentCompData.number and currentCompData.number > 1
+				currentIsISG = true
+				currentISGName = currentCompData.serverGroupName
+
 			allCompData = allCompData or @get('allCompData')
 
 			autoCompList = []
@@ -327,7 +338,12 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 
 				if currentCompType is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
 					if compType is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
-						compName = 'self'
+						lcUIDRef = compData.resource.LaunchConfigurationName
+						if lcUIDRef
+							lcUID = MC.extractID(lcUIDRef)
+							if currentCompUID is lcUID
+								currentASGName = compName
+								compName = 'self'
 
 				if compType is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
 					return
@@ -382,7 +398,7 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 									azAry = compData.resource.AvailabilityZones
 									if azAry.length > 1
 										_.each azAry, (azName, idx) ->
-											if idx is 0 then return
+											# if idx is 0 then return
 											autoCompList.push({
 												name: autoCompStr + '[' + idx + ']',
 												value: autoCompRefStr + '[' + idx + ']'
@@ -406,7 +422,7 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 									azAry = compData.resource.AvailabilityZones
 									if azAry.length > 1
 										_.each azAry, (azName, idx) ->
-											if idx is 0 then return
+											# if idx is 0 then return
 											autoCompList.push({
 												name: autoCompStr + '[' + idx + ']',
 												value: autoCompRefStr + '[' + idx + ']'
@@ -416,6 +432,26 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 						null
 
 				null
+
+			# append asg/isg ref
+			groupAutoCompList = []
+			if currentIsASG or currentIsISG
+				_.each autoCompList, (autoCompObj) ->
+					if autoCompObj.name.indexOf('self.') is 0
+						groupCompNameStr = null
+						groupCompUIDStr = null
+						if currentIsASG
+							groupCompNameStr = autoCompObj.name.replace('self', currentASGName)
+							groupCompUIDStr = autoCompObj.value.replace('self', currentASGName)
+						else if currentIsISG
+							groupCompNameStr = autoCompObj.name.replace('self', currentISGName)
+							groupCompUIDStr = autoCompObj.value.replace('self', currentISGName)
+						groupAutoCompList.push({
+							name: groupCompNameStr,
+							value: groupCompUIDStr
+						})
+
+			autoCompList = autoCompList.concat(groupAutoCompList)
 
 			# sort autoCompList
 			autoCompList = autoCompList.sort((obj1, obj2) ->
@@ -476,7 +512,12 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 
 				if compData
 					stateNumMap = {}
-					resName = allCompData[resUID].name
+
+					resName = compData.name
+					if compData.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+						if compData.number and compData.number > 1
+							resName = compData.serverGroupName
+
 					if compData.state and _.isArray compData.state
 						_.each compData.state, (stateObj, idx) ->
 							if stateObj.id is stateUID
@@ -551,8 +592,12 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 				# if resUID is currentCompUID
 				# 	resName = 'self'
 				# else
-				if allCompData[resUID]
-					resName = allCompData[resUID].name
+				compData = allCompData[resUID]
+				if compData
+					resName = compData.name
+					if compData.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+						if compData.number and compData.number > 1
+							resName = compData.serverGroupName
 				else
 					resName = 'unknown'
 
@@ -597,10 +642,19 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 			# 	return currentCompUID
 
 			resultUID = ''
-			_.each allCompData, (resObj, uid) ->
+			$.each allCompData, (uid, resObj) ->
+
+				if resObj.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+					if resObj.number and resObj.number > 1
+						if resObj.serverGroupName is resName
+							resultUID = uid
+							return false
+
 				if resObj.name is resName
 					resultUID = uid
+
 				null
+
 			return resultUID
 
 		getResState: (resId) ->

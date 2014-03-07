@@ -2,7 +2,7 @@
 #  View(UI logic) for design/property/instance(app)
 #############################
 
-define [ '../base/view', 'text!./template/app.html', 'i18n!nls/lang.js' ], ( PropertyView, template, lang )->
+define [ '../base/view', 'text!./template/app.html', 'i18n!nls/lang.js', 'instance_model' ], ( PropertyView, template, lang, instance_model )->
 
     template = Handlebars.compile template
 
@@ -10,7 +10,7 @@ define [ '../base/view', 'text!./template/app.html', 'i18n!nls/lang.js' ], ( Pro
         events   :
             "click #property-app-keypair" : "downloadKeypair"
             "click #property-app-ami" : "openAmiPanel"
-            "click .icon-syslog" : "openSysLogModal"
+            "click .property-btn-get-system-log" : "openSysLogModal"
 
         kpModalClosed : false
 
@@ -120,12 +120,21 @@ define [ '../base/view', 'text!./template/app.html', 'i18n!nls/lang.js' ], ( Pro
         openSysLogModal : () ->
 
             instanceId = @model.get('instanceId')
-            @model.loadSysLogData(instanceId)
+
+            that = this
+            currentRegion = MC.canvas_data.region
+            instance_model.GetConsoleOutput {sender: that}, $.cookie('usercode'), $.cookie('session_id'), currentRegion, instanceId
 
             modal MC.template.modalInstanceSysLog {
                 instance_id: instanceId,
                 log_content: ''
             }, true
+
+            that.off('EC2_INS_GET_CONSOLE_OUTPUT_RETURN').on 'EC2_INS_GET_CONSOLE_OUTPUT_RETURN', (result) ->
+
+                if !result.is_error
+                    console.log(result.resolved_data)
+                that.refreshSysLog(result.resolved_data)
 
             return false
 

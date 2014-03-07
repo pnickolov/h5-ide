@@ -1,9 +1,13 @@
 (function() {
-  var build, gulp;
+  var build, gulp, include;
 
   gulp = require("gulp");
 
-  build = function(debugMode) {};
+  include = require("./plugins/include");
+
+  build = function(debugMode) {
+    return null;
+  };
 
   module.exports = {
     build: build

@@ -1,5 +1,5 @@
 (function() {
-  var CssVersionRegex, ReadOption, ReplaceRegex, es, fs, htmlModify, path;
+  var ReadOption, ReplaceRegex, es, fs, include, path;
 
   es = require("event-stream");
 
@@ -9,15 +9,12 @@
 
   ReplaceRegex = /<!--\s+{{([^}]+)}}\s+-->/g;
 
-  CssVersionRegex = /(href="|')([^'"]+)\/([^.]+.css)("|')/g;
-
   ReadOption = {
     encoding: "utf8"
   };
 
-  htmlModify = function(file) {
+  include = function(file) {
     var data, modified;
-    ReplaceRegex.lastIndex = 0;
     modified = false;
     data = file.contents.toString("utf8").replace(ReplaceRegex, function(match, includePath) {
       var p;
@@ -29,17 +26,6 @@
       modified = true;
       return fs.readFileSync(p, ReadOption);
     });
-    data = data.replace(CssVersionRegex, (function(_this) {
-      return function(match, p1, p2, p3, p4) {
-        if (_this.cssVersion[p3]) {
-          modified = true;
-          return p1 + p2 + "/" + p3 + "?v=" + _this.cssVersion[p3] + p4;
-        } else {
-          return match;
-        }
-        return null;
-      };
-    })(this));
     if (modified) {
       file.contents = new Buffer(data);
     }
@@ -47,11 +33,8 @@
     return null;
   };
 
-  module.exports = function(cssVersion) {
-    var pipe;
-    pipe = es.through(htmlModify);
-    pipe.cssVersion = cssVersion || {};
-    return pipe;
+  module.exports = function() {
+    return es.through(include);
   };
 
 }).call(this);

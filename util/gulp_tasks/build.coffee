@@ -17,7 +17,8 @@ coffee     = require("gulp-coffee")
 coffeelint = require("gulp-coffeelint")
 gulpif     = require("gulp-if")
 
-indexOf    = require("./indexof")
+confCompile = require("./conditional")
+cached      = require("./cached")
 
 buildLangSrc = require("../../config/lang")
 
@@ -147,29 +148,6 @@ StreamFuncs =
     Helper.notify "Error occur when compiling " + error.message.replace( process.cwd(), "." ).split(":")[0]
     null
 
-  throughCached : ( nextPipe )->
-    if not GLOBAL.gulpConfig.enableCache
-      return nextPipe
-
-    newCache = {}
-    pipeline = es.through ( file )->
-      if newCache[ file.path ]
-        utf8Content = file.contents.toString("utf8")
-        if newCache[ file.path ] is utf8Content
-          if GLOBAL.gulpConfig.verbose
-            console.log "[Cached]", file.path
-          return
-
-      if not utf8Content
-        utf8Content = file.contents.toString("utf8")
-
-      newCache[ file.path ] = utf8Content
-      @emit "data", file
-      null
-
-    pipeline.pipe( nextPipe )
-    pipeline
-
   throughLiveReload : ()->
     es.through ( file )->
       if Helper.lrServer
@@ -178,37 +156,9 @@ StreamFuncs =
         }
       null
 
-  throughCoffeeConditionalCompile : ()->
-    # This transformer simply replace "### env:prod ### to ### env:prod "
-    es.through ( file )->
-      buffer = file.contents
-      index = 0
-      found = 0
-      while (index = indexOf( buffer, "### env:prod ###", index )) != -1
-        if GLOBAL.gulpConfig.verbose then console.log "[EnvProdFound]", file.relative
-
-        buffer[index + 13] = buffer[index + 14] = buffer[index + 15] = 32
-
-        index = indexOf( buffer, "### env:prod:end ###", index+16 )
-        if index == -1
-          console.log "[Missing EnvProdEnd]"
-          break
-        if GLOBAL.gulpConfig.verbose then console.log "[EnvProdEndFound]", file.relative
-        buffer[index + 0] = buffer[index + 1] = buffer[index + 2] = 32
-        index += 20
-
-        ++found
-
-      if found
-        file.extra = "EnvProdFound"
-        if found > 1 then file.extra += " x" + found
-
-      @emit "data", file
-      null
-
   throughLangSrc : ()->
 
-    startPipeline = StreamFuncs.throughCached( coffee() )
+    startPipeline = cached( coffee() )
 
     pipeline = startPipeline.pipe es.through ( file )->
 
@@ -243,10 +193,10 @@ StreamFuncs =
     conditonalLint = gulpif( Helper.shouldLintCoffee, coffeelint( undefined, coffeelintOptions) )
 
     # Compile
-    coffeeBranch  = StreamFuncs.throughCached( conditonalLint )
+    coffeeBranch  = cached( conditonalLint )
 
     coffeeCompile = conditonalLint
-                    .pipe( StreamFuncs.throughCoffeeConditionalCompile() )
+                    .pipe( confCompile( false ) )
                     .pipe( coffee({sourceMap:GLOBAL.gulpConfig.coffeeSourceMap}) )
 
     pipeline = coffeeCompile

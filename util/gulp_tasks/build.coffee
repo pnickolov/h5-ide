@@ -5,7 +5,6 @@ path   = require("path")
 es     = require("event-stream")
 Q      = require("q")
 fs     = require("fs")
-vm     = require("vm")
 EventEmitter = require("events").EventEmitter
 
 tinylr   = require("tiny-lr")
@@ -20,8 +19,7 @@ confCompile  = require("./plugins/conditional")
 cached       = require("./plugins/cached")
 jshint       = require("./plugins/jshint")
 lintReporter = require('./plugins/reporter')
-
-buildLangSrc = require("../../config/lang")
+langsrc      = require("./plugins/langsrc")
 
 
 # Configs
@@ -81,9 +79,6 @@ Helper =
       null
 
     null
-
-  log  : (e)-> console.log e
-  noop : ()->
 
   compileTitle : ( extra )->
     title = "[" + gutil.colors.green("Compile @#{(new Date()).toLocaleTimeString()}") + "]"
@@ -155,38 +150,6 @@ StreamFuncs =
         }
       null
 
-  throughLangSrc : ()->
-
-    startPipeline = cached( coffee() )
-
-    pipeline = startPipeline.pipe es.through ( file )->
-
-      console.log Helper.compileTitle(), "lang-souce.coffee"
-
-      ctx = vm.createContext({module:{}})
-      vm.runInContext( file.contents.toString("utf8"), ctx )
-
-      buildLangSrc.run gruntMock, Helper.noop, ctx.module.exports
-      null
-
-    pipeline.pipe( gulp.dest(".") )
-
-    gruntMock =
-      log  :
-        error : Helper.log
-      file :
-        write : ( p1, p2 ) =>
-          cwd = process.cwd()
-          pipeline.emit "data", new gutil.File({
-            cwd      : cwd
-            base     : cwd
-            path     : p1
-            contents : new Buffer( p2 )
-          })
-          null
-
-    startPipeline
-
   throughCoffee : ()->
 
     conditonalLint = gulpif( Helper.shouldLintCoffee, coffeelint( undefined, coffeelintOptions) )
@@ -237,7 +200,7 @@ StreamFuncs =
     assetBranch = StreamFuncs.throughLiveReload()
 
     # Branch Used to handle lang-source.js
-    langSrcBranch = StreamFuncs.throughLangSrc()
+    langSrcBranch = langsrc()
 
     # Branch Used to handle coffee files
     coffeeBranch = StreamFuncs.throughCoffee()

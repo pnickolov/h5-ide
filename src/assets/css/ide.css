@@ -1944,10 +1944,10 @@ button {
 	height: 10px;
 	position: absolute;
 	left: 10px;
-	top: 8px;
+	top: 4px;
 }
 
-.region-resource-status.icon-pending {
+.region-resource-status.icon-pending:before {
 	font-size: 10px;
 	color: #999;
 }

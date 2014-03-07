@@ -85,10 +85,10 @@ define [ 'constant', 'event', 'ta_conf', './validation/main', './validation/resu
                             _handleException( err )
 
             # validate state editor
-            #try
-            _validState validation_main, uid
-            #catch err
-                #_handleException( err )
+            try
+                _validState validation_main, uid
+            catch err
+                _handleException( err )
         null
 
     _validState = ( validation_main, uid ) ->

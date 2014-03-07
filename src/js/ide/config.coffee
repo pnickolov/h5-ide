@@ -12,18 +12,11 @@ require.config {
 
 	waitSeconds              : 30
 
-	deps                     : [ 'main' ]
-
 	locale                   : language
 
 	urlArgs                  : 'v=' + version
 
 	paths                    :
-
-		#############################################
-		# main
-		#############################################
-		'main'               : 'js/ide/main'
 
 		#############################################
 		# vender
@@ -103,12 +96,6 @@ require.config {
 		#############################################
 		'constant'           : 'lib/constant'
 
-		#############################################
-		# main
-		#############################################
-		'router'             : 'js/ide/router'
-		'ide'                : 'js/ide/ide'
-		'view'               : 'js/ide/view'
 		#temp
 		#'layout'            : 'js/ide/layout'
 		'canvas_layout'      : 'js/ide/canvas_layout'
@@ -393,9 +380,6 @@ require.config {
 		'process'      :
 			deps       : [ 'process_view', 'process_model', 'MC' ]
 
-		'main'         :
-			deps       : [ 'jquery' ]
-
 		# unmanaged vpc
 
 		# state editor
@@ -412,5 +396,12 @@ require.config {
 			deps       : [ 'stateeditor_view', 'stateeditor_model', 'jquery_sort', 'markdown', 'ace_ext_language_tools', 'MC' ]
 }
 
-#requirejs.onError = ( err ) ->
-#    console.log 'error type:', err.requireType, ', modules:', err.requireModules, ', error:', err
+require [ 'domReady', './js/ide/ide' ], ( domReady, ide ) ->
+
+	l = window.location
+	if l.protocol is "http:" and not l.port
+		window.location = l.href.replace("http:","https:")
+		return
+
+	domReady () -> ide.initialize()
+	null

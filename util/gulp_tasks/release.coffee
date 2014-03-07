@@ -14,19 +14,21 @@ build = ( debugMode ) ->
 
   # 3. Process `*.coffee` and copy to `build` folder
 
-  # 4. Use `r.js` to optimize the whole `build` folder
+  # 4. Process all other `templates` and copy to `build` folder
 
-  # 5. Git commit
+  # 5. Use `r.js` to optimize the whole `build` folder
 
-  # 6. Fetach all file version
+  # 6. Git commit
 
-  # 7. Insert css version to html
+  # 7. Fetach all file version
 
-  # 8. Generate version for JS files
+  # 8. Insert css version to html
 
-  # 9. Final Git commit
+  # 9. Generate version for JS files
 
-  # 10. Push to remote
+  # 10. Final Git commit
+
+  # 11. Push to remote
 
 
   # gulp.src("./test/*")

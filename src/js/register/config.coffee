@@ -47,7 +47,7 @@ require.config {
 		'UI.notification'    : 'ui/UI.notification'
 
 		#core lib
-		'MC'              : 'lib/MC.core'
+		'MC'              : 'js/MC.core'
 
 		#common lib
 		'constant'        : 'lib/constant'

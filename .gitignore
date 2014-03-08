@@ -22,9 +22,8 @@ release/**
 publish/**
 
 #ignore page
-src/js/*.js
 src/js/**/*.js
-!src/js/ide/layout.js
+!src/js/*.js
 
 #ignore model
 src/model/**/*.js

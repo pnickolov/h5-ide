@@ -38,7 +38,7 @@ require.config {
 		'base_main'       : 'module/base/base_main'
 
 		#
-		'event'           : 'lib/ide_event'
+		'event'           : 'js/ide_event'
 
 		#
 		'UI.notification'    : 'ui/UI.notification'

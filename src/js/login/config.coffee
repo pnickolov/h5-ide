@@ -34,7 +34,7 @@ require.config {
 		'crypto'          : 'vender/crypto-js/hmac-sha256'
 
 		#core lib
-		'MC'              : 'lib/MC.core'
+		'MC'              : 'js/MC.core'
 
 		#common lib
 		'constant'        : 'lib/constant'

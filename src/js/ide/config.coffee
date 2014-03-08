@@ -35,12 +35,12 @@ require.config {
 		#############################################
 		# lib
 		#############################################
-		'MC'                 : 'lib/MC.core'
-		'MC.validate'  	     : 'lib/MC.validate'
+		'MC'                 : 'js/MC.core'
+		'MC.validate'  	     : 'js/MC.validate'
 
 		#canvas
-		'MC.canvas'          : 'lib/MC.canvas'
-		'MC.canvas.constant' : 'lib/MC.canvas.constant'
+		'MC.canvas'          : 'js/MC.canvas'
+		'MC.canvas.constant' : 'js/MC.canvas.constant'
 
 		#############################################
 		# lib/aws logic handler
@@ -92,8 +92,7 @@ require.config {
 		'constant'           : 'lib/constant'
 
 		#temp
-		#'layout'            : 'js/ide/layout'
-		'canvas_layout'      : 'js/ide/canvas_layout'
+		'canvas_layout'      : 'js/canvas_layout'
 
 		#############################################
 		# design model

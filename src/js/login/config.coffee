@@ -56,7 +56,7 @@ require.config {
 
 		'common_handle'    : 'lib/common/main'
 
-		'event'           : 'event/ide_event'
+		'event'           : 'lib/ide_event'
 
 		'MC.canvas.constant' : 'lib/MC.canvas.constant'
 

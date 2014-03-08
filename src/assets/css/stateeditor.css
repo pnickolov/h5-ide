@@ -1375,3 +1375,14 @@
 .switch.on .switch-handle {
 	left: 91px;
 }
+
+#modal-ssl-cert-setting .modal-ssl-cert-item {
+	width: 200px;
+	margin-top: 10px;
+}
+
+#modal-ssl-cert-setting .input {
+	width: 275px;
+	float: left;
+	margin-top: 5px;
+}

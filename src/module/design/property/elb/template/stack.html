@@ -98,7 +98,7 @@
 		</li>
 		{{/each}}
 		</ul>
-		<a href="#" id="elb-property-listener-content-add" class="add-to-list action-link">
+<!-- 		<a href="#" id="elb-property-listener-content-add" class="add-to-list action-link">
 			+ {{ i18n "PROP_ELB_BTN_ADD_LISTENER"}}
 		</a>
 
@@ -108,21 +108,43 @@
 			</div>
 			<div class="property-control-group clearfix">
 				<label class="left">{{ i18n "PROP_ELB_LBL_LISTENER_NAME"}}</label>
-				<input class="input" value="{{sslCert.name}}" type="text" id="elb-property-cert-name-input"/>
+				<input class="input" value="{{sslCert.name}}" type="text" data-required="true" data-ignore="true" id="elb-property-cert-name-input"/>
 			</div>
 			<div class="property-control-group clearfix">
 				<label class="left">{{ i18n "PROP_ELB_LBL_LISTENER_PRIVATE_KEY"}}</label>
-				<textarea class="input elb-property-cert-input tooltip" data-tooltip="PEM Encoded" id="elb-property-cert-privatekey-input">{{sslCert.key}}</textarea>
+				<textarea class="input elb-property-cert-input tooltip" data-tooltip="PEM Encoded" data-required="true" data-ignore="true" id="elb-property-cert-privatekey-input">{{sslCert.key}}</textarea>
 			</div>
 			<div class="property-control-group clearfix">
 				<label class="left"  >{{ i18n "PROP_ELB_LBL_LISTENER_PUBLIC_KEY"}}</label>
-				<textarea class="input elb-property-cert-input tooltip" data-tooltip="PEM Encoded" id="elb-property-cert-publickey-input">{{sslCert.body}}</textarea>
+				<textarea class="input elb-property-cert-input tooltip" data-tooltip="PEM Encoded" data-required="true" data-ignore="true" id="elb-property-cert-publickey-input">{{sslCert.body}}</textarea>
 			</div>
 			<div class="property-control-group clearfix">
 				<label class="left"  >{{ i18n "PROP_ELB_LBL_LISTENER_CERTIFICATE_CHAIN"}}</label>
 				<textarea class="input elb-property-cert-input tooltip" data-tooltip="PEM Encoded" id="elb-property-cert-chain-input">{{sslCert.chain}}</textarea>
 			</div>
-		</div>
+		</div> -->
+		<section class="property-control-group">
+			<label class="left">{{ i18n "PROP_ELB_BTN_ADD_LISTENER" }}</label>
+			<div class="selectbox" id="sslcert-select">
+				<div class="selection"></div>
+				<div style="height: 120px; width:260px;" class="dropdown scroll-wrap scrollbar-auto-hide  clearfix">
+					<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+					<div class="scroll-content">
+						<ul>
+							<li class="item{{#if noSSLCert}} selected{{/if}}">None</li>
+							{{#each sslCertItem}}
+								<li class="item{{#if selected}} selected{{/if}}" data-id="{{uid}}">
+									{{name}}<span class="icon-edit"></span><span class="icon-remove"></span>
+								</li>
+							{{/each}}
+						</ul>
+					</div>
+				</div>
+				<div class="editor">
+					<a href="#" class="editbtn">Add New Certiﬁcate...</a>
+				</div>
+			</div>
+		</section>
 	</div>
 
 	<div class="option-group-head"> {{ i18n "PROP_ELB_HEALTH_CHECK_DETAILS" }} </div>

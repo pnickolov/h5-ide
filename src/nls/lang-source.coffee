@@ -3521,6 +3521,10 @@ module.exports =
       en: "Load Balancer <span class='validation-tag tag-elb'>%s</span> has duplicate load balancer ports."
       zh: ""
 
+    TA_MSG_ERROR_ELB_HAVE_NO_SSL_CERT:
+      en: "Load Balancer <span class='validation-tag tag-elb'>%s</span> is using HTTPS/SSL protocol for Load Balancer Listener. Please add server certificate."
+      zh: ""
+
     # SG
     TA_MSG_WARNING_SG_RULE_EXCEED_FIT_NUM:
       en: "Security Group <span class='validation-tag tag-sg'>%s</span> has more than %s rules, If a security group has a large number of rules, performance can be degraded."

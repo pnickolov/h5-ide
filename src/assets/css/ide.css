@@ -7586,3 +7586,41 @@ summary:focus {
 .mac #modal-key-short .key.pc {
 	display: none !important;
 }
+
+#sslcert-select .selection .icon-remove {
+	display : none;
+}
+
+#sslcert-select .dropdown {
+	top: 30px;
+}
+
+#sslcert-select .sslcert-select-add .input {
+	background-color: #f3f3f3;
+	font-size: 12px;
+	color: #999;
+	border: 1px solid #ccc;
+}
+
+#sslcert-select .sslcert-select-add .input:focus {
+	color: #333 !important;
+	border: 1px solid #aaa;
+	box-shadow: none;
+}
+
+#sslcert-select .icon-remove {
+	display: none;
+	position: absolute;
+	right: 5px;
+	top: 50%;
+	color: #999;
+	margin-top: -6px;
+}
+
+#sslcert-select .item:hover .icon-remove {
+	display: block;
+}
+
+#sslcert-select .icon-remove:hover {
+	color: #F74A48;
+}

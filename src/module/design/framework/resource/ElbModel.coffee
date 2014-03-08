@@ -5,36 +5,10 @@ define [ "Design",
          "../ComplexResModel",
          "./VpcModel",
          "./SgModel",
+         "./SslCertModel",
          "../connection/SgAsso"
          "../connection/ElbAsso"
-], ( Design, constant, ResourceModel, ComplexResModel, VpcModel, SgModel, SgAsso )->
-
-  SslCertModel = ResourceModel.extend {
-
-    type : constant.AWS_RESOURCE_TYPE.AWS_IAM_ServerCertificate
-
-    defaults :
-      body   : ""
-      chain  : ""
-      key    : ""
-      arn    : ""
-      certId : ""
-
-    serialize : ()-> # Doesn't do anything. It's implemented in Elb's serialize()
-
-  },{
-    deserialize : ( data )->
-      new SslCertModel({
-        id     : data.uid
-        name   : data.name
-        body   : data.resource.CertificateBody
-        chain  : data.resource.CertificateChain
-        key    : data.resource.PrivateKey
-        arn    : data.resource.ServerCertificateMetadata.Arn
-        certId : data.resource.ServerCertificateMetadata.ServerCertificateId
-      })
-      null
-  }
+], ( Design, constant, ResourceModel, ComplexResModel, VpcModel, SgModel, SslCertModel, SgAsso )->
 
   Model = ComplexResModel.extend {
 
@@ -155,7 +129,7 @@ define [ "Design",
         for key, value of cert
           sslCert.set(key, value)
       else
-        sslCert = new ResourceModel( cert )
+        sslCert = new SslCertModel( cert )
         @set("sslCert", sslCert)
       null
 
@@ -310,18 +284,7 @@ define [ "Design",
 
       if usessl and @get("sslCert")
         ssl = @get("sslCert")
-        sslComponent =
-          uid : ssl.id
-          type : "AWS.IAM.ServerCertificate"
-          name : ssl.get("name")
-          resource :
-            PrivateKey : ssl.get("key")
-            CertificateBody : ssl.get("body")
-            CertificateChain : ssl.get("chain")
-            ServerCertificateMetadata :
-              ServerCertificateName : ssl.get("name")
-              Arn : ssl.get("arn") or ""
-              ServerCertificateId : ssl.get("certId") or ""
+        sslComponent = ssl.serialize()
 
         return [ json_object, { component : sslComponent } ]
       else

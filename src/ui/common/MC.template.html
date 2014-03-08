@@ -1537,3 +1537,30 @@ Are you sure you want to delete {{name}}?</div>
 		<button class="btn modal-close btn-silver">Close</button>
 	</div>
 </div>
+
+<!-- modalSSLCertSetting -->
+<div style="width:343px" id="modal-ssl-cert-setting">
+	<div class="modal-header"><h3>Server Certiﬁcate</h3><i class="modal-close">&times;</i> </div>
+	<div class="modal-body" style="min-height:120px;">
+		<div class="modal-ssl-cert-item clearfix">
+			<label class="left">{{ i18n "PROP_ELB_LBL_LISTENER_NAME"}}</label>
+			<input class="input" value="{{sslCert.name}}" type="text" data-required="true" data-ignore="true" id="elb-ssl-cert-name-input"/>
+		</div>
+		<div class="modal-ssl-cert-item clearfix">
+			<label class="left">{{ i18n "PROP_ELB_LBL_LISTENER_PRIVATE_KEY"}}</label>
+			<textarea class="input elb-ssl-cert-input tooltip" data-tooltip="PEM Encoded" data-required="true" data-ignore="true" id="elb-ssl-cert-privatekey-input">{{sslCert.key}}</textarea>
+		</div>
+		<div class="modal-ssl-cert-item clearfix">
+			<label class="left"  >{{ i18n "PROP_ELB_LBL_LISTENER_PUBLIC_KEY"}}</label>
+			<textarea class="input elb-ssl-cert-input tooltip" data-tooltip="PEM Encoded" data-required="true" data-ignore="true" id="elb-ssl-cert-publickey-input">{{sslCert.body}}</textarea>
+		</div>
+		<div class="modal-ssl-cert-item clearfix">
+			<label class="left"  >{{ i18n "PROP_ELB_LBL_LISTENER_CERTIFICATE_CHAIN"}}</label>
+			<textarea class="input elb-ssl-cert-input tooltip" data-tooltip="PEM Encoded" id="elb-ssl-cert-chain-input">{{sslCert.chain}}</textarea>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button id="elb-ssl-cert-confirm" class="btn btn-blue">Save</button>
+		<button id="elb-ssl-cert-cancel" class="btn modal-close btn-silver">Cancel</button>
+	</div>
+</div>

@@ -60,6 +60,8 @@ define [ '../base/view',
 
             'change #elb-cross-az-select' : 'elbCrossAZSelect'
 
+            'click .editbtn' : 'elbSSLCertAdd'
+
         render     : () ->
 
             @$el.html template @model.attributes
@@ -441,6 +443,42 @@ define [ '../base/view',
         elbCrossAZSelect : ( event ) ->
             @model.setElbCrossAZ event.target.checked
             null
+
+        elbSSLCertAdd : (event) ->
+
+            that = this
+
+            modal MC.template.modalSSLCertSetting {}, true
+
+            $("#elb-ssl-cert-confirm").off('click').on('click', ()->
+
+                $certName = $('#elb-ssl-cert-name-input')
+                $certPrikey = $('#elb-ssl-cert-privatekey-input')
+                $certPubkey = $('#elb-ssl-cert-publickey-input')
+                $certChain = $('#elb-ssl-cert-chain-input')
+
+                isCorrect = false
+
+                valid1 = $certName.parsley('validate')
+                valid2 = $certPrikey.parsley('validate')
+                valid3 = $certPubkey.parsley('validate')
+                if valid1 and valid2 and valid3
+                    isCorrect = true
+
+                if isCorrect
+                    that.model.setCert {
+                        name  : $certName.val()
+                        key   : $certPrikey.val()
+                        body  : $certPubkey.val()
+                        chain : $certChain.val()
+                    }
+                    ide_event.trigger ide_event.REFRESH_PROPERTY
+                    modal.close()
+
+                null
+            )
+
+            return false
 
     }
 

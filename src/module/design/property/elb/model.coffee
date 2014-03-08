@@ -66,6 +66,25 @@ define [ '../base/model', "event", "Design", 'constant' ], ( PropertyModel, ide_
 
                 attr.azArray = azArr
 
+            # Get SSL Cert List
+            currentSSLCert = component.get('sslCert')
+            allCertModelAry = Design.modelClassForType(constant.AWS_RESOURCE_TYPE.AWS_IAM_ServerCertificate).allObjects()
+            sslCertItem = []
+            noSSLCert = true
+            _.each allCertModelAry, (sslCertModel) ->
+                sslCertUID = sslCertModel.id
+                sslCertName = sslCertModel.get('name')
+                sslCertSelected = false
+                if currentSSLCert.id is sslCertUID
+                    sslCertSelected = true
+                    noSSLCert = false
+                sslCertItem.push({
+                    uid: sslCertUID,
+                    name: sslCertName,
+                    selected: sslCertSelected
+                })
+            attr.sslCertItem = sslCertItem
+            attr.noSSLCert = noSSLCert
             @set attr
             null
 
@@ -142,6 +161,24 @@ define [ '../base/model', "event", "Design", 'constant' ], ( PropertyModel, ide_
 
         updateElbAZ : ( azArray )->
             Design.instance().component( @get("uid") ).set("AvailabilityZones", azArray )
+            null
+
+        removeAllCert : (  ) ->
+
+            elbUID = @get("uid")
+
+            try
+
+                elbModel = Design.instance().component(elbUID)
+                sslModel = elbModel.get('sslCert')
+
+                if sslModel
+                    Design.instance().component(sslModel.id).remove()
+
+            catch err
+
+                console.log('remove cert failed')
+
             null
     }
 

@@ -1,24 +1,14 @@
 
-version  = '130830.1912'
-language = 'en-us'
-current_jquery = if /msie (9|8|7|6)/ig.test(navigator.userAgent.toLowerCase()) then '//code.jquery.com/jquery-1.10.2.min' else '//code.jquery.com/jquery-2.0.3.min'
-
 require.config {
 
-	baseUrl                  : './'
-
-	waitSeconds              : 7
-
-	locale                   : language
-
-	urlArgs                  : 'v=' + version
-
-	paths                    :
+	baseUrl : './'
+	locale  : "en-us"
+	paths   :
 
 		#############################################
 		# vender
 		#############################################
-		'jquery'             : [ current_jquery , 'vender/jquery/jquery' ]
+		'jquery'             : 'vender/jquery/jquery'
 		'canvon'             : 'vender/canvon/canvon'
 
 		'underscore'         : 'vender/underscore/underscore'
@@ -239,9 +229,6 @@ require.config {
 		#############################################
 		# vender
 		#############################################
-
-		'jquery'       :
-			exports    : '$'
 
 		'canvon'       :
 			deps       : [ 'jquery', 'canvas' ]

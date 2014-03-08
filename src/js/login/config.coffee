@@ -1,3 +1,8 @@
+
+version  = '130830.1912'
+language = 'en-us'
+current_jquery = if /msie (9|8|7|6)/ig.test(navigator.userAgent.toLowerCase()) then '//code.jquery.com/jquery-1.10.2.min' else '//code.jquery.com/jquery-2.0.3.min'
+
 require.config {
 
 	baseUrl               : './'

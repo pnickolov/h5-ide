@@ -50,7 +50,7 @@ tryCompile = ( data, file )->
 
 compilePartials = ( file )->
   content = file.contents.toString("utf8")
-  data = content.split(/\<!-- (.*) --\>/ig)
+  data = content.split(/\<!--\s*\{\{\s*(.*)\s*\}\}\s*--\>/ig)
 
   newData = ""
   namespace = {}
@@ -62,7 +62,6 @@ compilePartials = ( file )->
       newData = ""
       break
 
-    console.log util.compileTitle(), file.relative
 
     newData += "TEMPLATE.#{data[i]}=" + result + ";\n\n"
 
@@ -75,6 +74,9 @@ compilePartials = ( file )->
         space = space[n]
 
     i += 2
+
+  if newData
+    console.log util.compileTitle(), file.relative
 
   newData = "define(['handlebars'], function(Handlebars){ var TEMPLATE=" + JSON.stringify(namespace) + ";\n\n" + newData + "return TEMPLATE; });"
 

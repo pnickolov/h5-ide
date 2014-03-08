@@ -61,7 +61,7 @@
   compilePartials = function(file) {
     var content, data, i, idx, n, namespace, namespaces, newData, result, space, _i, _len;
     content = file.contents.toString("utf8");
-    data = content.split(/\<!-- (.*) --\>/ig);
+    data = content.split(/\<!--\s*\{\{\s*(.*)\s*\}\}\s*--\>/ig);
     newData = "";
     namespace = {};
     i = 1;
@@ -71,7 +71,6 @@
         newData = "";
         break;
       }
-      console.log(util.compileTitle(), file.relative);
       newData += ("TEMPLATE." + data[i] + "=") + result + ";\n\n";
       namespaces = data[i].split(".");
       space = namespace;
@@ -85,6 +84,9 @@
         }
       }
       i += 2;
+    }
+    if (newData) {
+      console.log(util.compileTitle(), file.relative);
     }
     newData = "define(['handlebars'], function(Handlebars){ var TEMPLATE=" + JSON.stringify(namespace) + ";\n\n" + newData + "return TEMPLATE; });";
     file.contents = new Buffer(newData, "utf8");

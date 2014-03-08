@@ -36,9 +36,9 @@
 
   compile = function(file) {
     if (path.extname(file.path) === ".partials") {
-      compilePartials(file);
+      compilePartials(file, this.shouldLog);
     } else {
-      compileHbs(file);
+      compileHbs(file, this.shouldLog);
     }
     this.emit("data", file);
     return null;
@@ -58,7 +58,7 @@
     return result;
   };
 
-  compilePartials = function(file) {
+  compilePartials = function(file, shouldLog) {
     var content, data, i, idx, n, namespace, namespaces, newData, result, space, _i, _len;
     content = file.contents.toString("utf8");
     data = content.split(/\<!--\s*\{\{\s*(.*)\s*\}\}\s*--\>/ig);
@@ -85,7 +85,7 @@
       }
       i += 2;
     }
-    if (newData) {
+    if (newData && shouldLog) {
       console.log(util.compileTitle(), file.relative);
     }
     newData = "define(['handlebars'], function(Handlebars){ var __TEMPLATE__, TEMPLATE=" + JSON.stringify(namespace) + ";\n\n" + newData + "return TEMPLATE; });";
@@ -94,10 +94,10 @@
     return null;
   };
 
-  compileHbs = function(file) {
+  compileHbs = function(file, shouldLog) {
     var newData;
     newData = tryCompile(file.contents.toString("utf8"), file);
-    if (newData) {
+    if (newData && shouldLog) {
       console.log(util.compileTitle(), file.relative);
     }
     newData = "define(['handlebars'], function(Handlebars){ var TEMPLATE = " + newData + "; return Handlebars.template(TEMPLATE); });";
@@ -106,8 +106,14 @@
     return null;
   };
 
-  module.exports = function() {
-    return es.through(compile);
+  module.exports = function(shouldLog) {
+    var pipe;
+    if (shouldLog == null) {
+      shouldLog = true;
+    }
+    pipe = es.through(compile);
+    pipe.shouldLog = shouldLog;
+    return pipe;
   };
 
 }).call(this);

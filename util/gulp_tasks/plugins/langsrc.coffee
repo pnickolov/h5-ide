@@ -11,7 +11,7 @@ coffee = require("gulp-coffee")
 buildLangSrc = require("../../../config/lang")
 
 
-module.exports = ( dest = ".", useCache = true )->
+module.exports = ( dest = ".", useCache = true, shouldLog = true )->
 
   if useCache
     startPipeline = cached( coffee() )
@@ -20,7 +20,8 @@ module.exports = ( dest = ".", useCache = true )->
 
   pipeline = startPipeline.pipe es.through ( file )->
 
-    console.log util.compileTitle(), "lang-souce.coffee"
+    if shouldLog
+      console.log util.compileTitle(), "lang-souce.coffee"
 
     ctx = vm.createContext({module:{}})
     vm.runInContext( file.contents.toString("utf8"), ctx )

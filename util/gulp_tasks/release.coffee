@@ -1,47 +1,67 @@
 
-gulp = require("gulp")
-es   = require("event-stream")
+gulp  = require("gulp")
+gutil = require("gulp-util")
+es    = require("event-stream")
 
-#handlebars = require("./plugins/handlebars")
-
+coffee      = require("gulp-coffee")
 include     = require("./plugins/include")
 langsrc     = require("./plugins/langsrc")
-coffee      = require("gulp-coffee")
 confCompile = require("./plugins/conditional")
 handlebars  = require("./plugins/handlebars")
+
+util = require("./plugins/util")
+
+logTask = ( msg )->
+  console.log "[", gutil.colors.bgBlue.white(msg), "]"
+  null
+
+logCoffee = ()->
+  es.through ( f )->
+    if GLOBAL.gulpConfig.verbose
+      console.log util.compileTitle( f.extra ), "#{f.relative}"
+    @emit "data", f
+    null
 
 # A task to build IDE
 build = ( debugMode ) ->
 
   #*** Copy assets file to `build` folder
+  logTask "Copying Assets"
   gulp.src(["./src/assets/**/*", "!**/*.glyphs", "!**/*.scss"])
     .pipe( gulp.dest "./build/assets/" )
 
 
   #*** Copy js file to `build` folder
-  gulp.src(["./src/assets/**/*", "!**/*.glyphs", "!**/*.scss"])
-    .pipe( gulp.dest "./build/assets/" )
+  logTask "Copying Js Files"
+  gulp.src(["./src/js/*.js"]).pipe( gulp.dest "./build/js" )
+  gulp.src(["./src/ui/*.js"]).pipe( gulp.dest "./build/ui" )
+  gulp.src(["./src/vender/**/*"]).pipe( gulp.dest "./build/vender" )
 
 
   #*** Process `lang-source.coffee` and copy to `build` folder
-  gulp.src(["./src/nls/lang-source.coffee"]).pipe(langsrc("./build",false))
+  logTask "Compiling lang-source"
+  gulp.src(["./src/nls/lang-source.coffee"]).pipe(langsrc("./build",false,GLOBAL.gulpConfig.verbose))
 
 
   #*** Process `*.coffee` and copy to `build` folder
-  gulp.src(["./src/**/*.coffee"])
+  logTask "Compiling coffees"
+  gulp.src(["./src/**/*.coffee", "!src/test/**/*"])
     .pipe( confCompile( true ) ) # Remove ### env:dev ###
     .pipe( coffee() ) # Compile coffee
+    .pipe( logCoffee() )
     .pipe( gulp.dest "./build" )
 
 
   #*** Process all other `templates` and copy to `build` folder
+  logTask "Compiling templates"
   gulp.src( ["./src/**/*.partials", "./src/**/*.html", "!src/test/**/*", "!src/*.html", "!src/include/*.html" ] )
     .pipe( confCompile(true) )
-    .pipe( handlebars() )
+    .pipe( handlebars( GLOBAL.gulpConfig.verbose ) )
     .pipe( gulp.dest "./build" )
 
 
   #*** Process `./src/*.html` and copy to `build` folder
+  logTask "Copying ./src/*.html"
   gulp.src(["./src/*.html"])
     .pipe( confCompile( true ) )
     .pipe( include() ) # Include other templates to the html

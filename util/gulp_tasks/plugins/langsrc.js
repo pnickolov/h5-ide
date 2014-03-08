@@ -17,13 +17,16 @@
 
   buildLangSrc = require("../../../config/lang");
 
-  module.exports = function(dest, useCache) {
+  module.exports = function(dest, useCache, shouldLog) {
     var gruntMock, pipeline, startPipeline;
     if (dest == null) {
       dest = ".";
     }
     if (useCache == null) {
       useCache = true;
+    }
+    if (shouldLog == null) {
+      shouldLog = true;
     }
     if (useCache) {
       startPipeline = cached(coffee());
@@ -32,7 +35,9 @@
     }
     pipeline = startPipeline.pipe(es.through(function(file) {
       var ctx;
-      console.log(util.compileTitle(), "lang-souce.coffee");
+      if (shouldLog) {
+        console.log(util.compileTitle(), "lang-souce.coffee");
+      }
       ctx = vm.createContext({
         module: {}
       });

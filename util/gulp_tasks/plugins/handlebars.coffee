@@ -28,9 +28,9 @@ HandlebarsOptions =
 
 compile = ( file )->
   if path.extname(file.path) is ".partials"
-    compilePartials( file )
+    compilePartials( file, @shouldLog )
   else
-    compileHbs( file )
+    compileHbs( file, @shouldLog )
 
   @emit "data", file
   null
@@ -48,7 +48,7 @@ tryCompile = ( data, file )->
 
   result
 
-compilePartials = ( file )->
+compilePartials = ( file, shouldLog )->
   content = file.contents.toString("utf8")
   data = content.split(/\<!--\s*\{\{\s*(.*)\s*\}\}\s*--\>/ig)
 
@@ -75,7 +75,7 @@ compilePartials = ( file )->
 
     i += 2
 
-  if newData
+  if newData and shouldLog
     console.log util.compileTitle(), file.relative
 
   newData = "define(['handlebars'], function(Handlebars){ var __TEMPLATE__, TEMPLATE=" + JSON.stringify(namespace) + ";\n\n" + newData + "return TEMPLATE; });"
@@ -84,10 +84,10 @@ compilePartials = ( file )->
   file.path = gutil.replaceExtension(file.path, ".js")
   null
 
-compileHbs = ( file )->
+compileHbs = ( file, shouldLog )->
   newData = tryCompile file.contents.toString("utf8"), file
 
-  if newData
+  if newData and shouldLog
     console.log util.compileTitle(), file.relative
 
   newData = "define(['handlebars'], function(Handlebars){ var TEMPLATE = " + newData + "; return Handlebars.template(TEMPLATE); });"
@@ -96,5 +96,7 @@ compileHbs = ( file )->
   file.path = gutil.replaceExtension(file.path, ".js")
   null
 
-module.exports = ()->
-  es.through( compile )
+module.exports = ( shouldLog = true )->
+  pipe = es.through( compile )
+  pipe.shouldLog = shouldLog
+  pipe

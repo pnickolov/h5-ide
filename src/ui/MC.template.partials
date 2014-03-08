@@ -1,4 +1,4 @@
-<!-- tab.item -->
+<!-- {{tab.item}} -->
 <li id="tab-bar-{{tab_id}}" data-tab-type="{{tab_type}}">
 	<a href="#tab-content-{{tab_id}}" title="{{tab_name}}" data-tab-id="{{tab_id}}" class="truncate tab-bar-truncate">
 		<i class="icon-tabbar-label"></i>
@@ -7,7 +7,7 @@
 	<a href="javascript:void(0)" class="close-restriction icon-close" title="Close Tab"></a>
 </li>
 
-<!-- tab.dashboard -->
+<!-- {{tab.dashboard}} -->
 <li id="tab-bar-{{target_id}}">
 	<a href="#tab-content-{{target_id}}" data-toggle="tab" class="truncate tab-bar-truncate" title="{{target_id}}">
 		<i class="icon-dashboard-tabbar icon-tabbar-label"></i>
@@ -16,7 +16,7 @@
 	<a href="javascript:void(0)" class="icon-close close-tab" title="Close Tab"></a>
 </li>
 
-<!-- notification.item -->
+<!-- {{notification.item}} -->
 <div class="notification_item {{type}}_item">
 	<span>{{template}}</span>
 	{{#if should_stay}}
@@ -24,7 +24,7 @@
 	{{/if}}
 </div>
 
-<!-- modalApp -->
+<!-- {{modalApp}} -->
 <div style="width:420px">
 	<div class="modal-header">
 		<h3>{{title}}</h3>
@@ -72,7 +72,7 @@
 	</div>
 </div>
 
-<!-- modalToolbar -->
+<!-- {{modalToolbar}} -->
 <div style="width:700px">
 	<div class="modal-header">
 		<h3>{{title}}</h3>
@@ -87,7 +87,7 @@
 	</div>
 </div>
 
-<!-- modalDownloadCloudFormationTpl -->
+<!-- {{modalDownloadCloudFormationTpl}} -->
 <div id="modal-export-cf" style="width:468px">
 	<div class="modal-header"> <h3>{{i18n "TOOL_POP_EXPORT_CF"}}</h3><i class="modal-close">&times;</i> </div>
 	<div class="modal-body">
@@ -102,7 +102,7 @@
 	</div>
 </div>
 
-<!-- exportJSON -->
+<!-- {{exportJSON}} -->
 <div style="width:468px">
 	<div class="modal-header"> <h3>{{i18n "TOOL_EXPORT_AS_JSON"}}</h3><i class="modal-close">&times;</i> </div>
 	<div class="modal-body">
@@ -117,7 +117,7 @@
 	</div>
 </div>
 
-<!-- importJSON -->
+<!-- {{importJSON}} -->
 <div style="width:468px">
 	<div class="modal-header"> <h3>Import Stack from JSON file</h3><i class="modal-close">&times;</i> </div>
 	<div class="modal-body">
@@ -126,7 +126,7 @@
 	</div>
 </div>
 
-<!-- exportPNG -->
+<!-- {{exportPNG}} -->
 <div style="width:420px">
 	<div class="modal-header">
 		<h3>{{title}}</h3>
@@ -143,7 +143,7 @@
 	</div>
 </div>
 
-<!-- modalResourceInstanceDetail -->
+<!-- {{modalResourceInstanceDetail}} -->
 <div class="modal-resource-instance-detail" style="width:420px">
 	<div class="modal-header">
 		<h3>{{title}}</h3>
@@ -196,7 +196,7 @@
 	</div>
 </div>
 
-<!-- modalRegionResourceDetail -->
+<!-- {{modalRegionResourceDetail}} -->
 {{#if detail_table}}
 <div class="modal-resource-detail" style="width:800px">
 {{else}}
@@ -251,7 +251,7 @@
 	</div>
 </div>
 
-<!-- bubbleTest -->
+<!-- {{bubbleTest}} -->
 <div class="bubble-head">{{title}}</div>
 <div class="bubble-content">
 	<dl class="dl-horizontal">
@@ -264,19 +264,19 @@
 	</dl>
 </div>
 
-<!-- bubbleAlert -->
+<!-- {{bubbleAlert}} -->
 <div class="bubble-head alert">{{title}}</div>
 <div class="bubble-content">
 	{{description}}
 </div>
 
-<!-- bubbleSuggest -->
+<!-- {{bubbleSuggest}} -->
 <div class="bubble-head suggest">{{title}}</div>
 <div class="bubble-content">
 	{{description}}
 </div>
 
-<!-- bubbleAppInfo -->
+<!-- {{bubbleAppInfo}} -->
 <div class="bubble-head"><i class="icon-{{status}} icon-label"></i>{{title}}</div>
 <div class="bubble-content">
 	<dl class="dl-horizontal">
@@ -289,7 +289,7 @@
 	</dl>
 </div>
 
-<!-- bubbleInstanceInfo -->
+<!-- {{bubbleInstanceInfo}} -->
 <div class="bubble-head"><i class="status-{{status}} icon-label"></i>{{title}}-({{id}})</div>
 <div class="bubble-content">
 	<dl class="dl-horizontal">
@@ -302,7 +302,7 @@
 	</dl>
 </div>
 
-<!-- bubbleRegionResourceInfo -->
+<!-- {{bubbleRegionResourceInfo}} -->
 <div class="bubble-head"><i class="status-{{status}} icon-label"></i>{{title}}</div>
 <div class="bubble-content">
 <dl class="dl-horizontal">
@@ -312,7 +312,7 @@
 </dl>
 </div>
 
-<!-- bubbleSnapshotInfo -->
+<!-- {{bubbleSnapshotInfo}} -->
 <div class="bubble-head"></i>{{snapshotId}}</div>
 <div class="bubble-content">
 	<dl class="dl-horizontal">
@@ -327,7 +327,7 @@
 	</dl>
 </div>
 
-<!-- bubbleAMIInfo -->
+<!-- {{bubbleAMIInfo}} -->
 <div class="bubble-head">{{id}}</div>
 <div class="bubble-content">
 	<dl class="dl-horizontal">
@@ -350,7 +350,7 @@
 	</dl>
 </div>
 
-<!-- bubbleAMIMongoInfo -->
+<!-- {{bubbleAMIMongoInfo}} -->
 <div class="bubble-head"></i>{{id}}</div>
 <div class="bubble-content">
 	<dl class="dl-horizontal">
@@ -377,7 +377,7 @@
 	</dl>
 </div>
 
-<!-- createNewStackClassic -->
+<!-- {{createNewStackClassic}} -->
 <div style="width:660px">
 	<div class="modal-header">
 		<h3>{{i18n "DASH_POP_CREATE_STACK_CREATE_THIS_STACK_IN"}}:</h3>
@@ -403,7 +403,7 @@
 	</div>
 </div>
 
-<!-- createNewStackErrorAndReload -->
+<!-- {{createNewStackErrorAndReload}} -->
 <div style="width:400px">
 	<div class="modal-header">
 		<h3>{{i18n "DASH_POP_CREATE_STACK_CREATE_STACK_ERROR"}}</h3>
@@ -417,7 +417,7 @@
 	</div>
 </div>
 
-<!-- createNewStackVPC -->
+<!-- {{createNewStackVPC}} -->
 <div style="width:660px">
 	<div class="modal-header">
 		<h3>{{i18n "DASH_POP_CREATE_STACK_CREATE_THIS_STACK_IN"}}:</h3>
@@ -443,7 +443,7 @@
 	</div>
 </div>
 
-<!-- configurationDownload -->
+<!-- {{configurationDownload}} -->
 Amazon Web Services
 Virtual Private Cloud
 
@@ -553,7 +553,7 @@ Additional Notes and Questions
 			http://docs.amazonwebservices.com/AmazonVPC/latest/NetworkAdminGuide
 	- XSL Version: 2009-07-15-1119716
 
-<!-- modalStackValidationRun -->
+<!-- {{modalStackValidationRun}} -->
 <div id="modal-stack-validation-run">
 	<div class="modal-header">
 		<h3>{{title}}</h3>
@@ -610,7 +610,7 @@ Additional Notes and Questions
 	</div>
 </div>
 
-<!-- modalRunStack -->
+<!-- {{modalRunStack}} -->
 <div id="modal-run-stack">
 	<div class="modal-header">
 		<h3>Run Stack</h3>
@@ -660,7 +660,7 @@ Additional Notes and Questions
 	</div>
 </div>
 
-<!-- sgRuleList -->
+<!-- {{sgRuleList}} -->
 {{#each this}}
 {{#if ../deletable}}
 <li data-uid="{{ruleSetId}}" data-protocol="{{protocol}}" data-port="{{port}}" data-relation="{{relation}}" data-direction="{{direction}}" class="pos-r sg-create-rule-item">
@@ -680,13 +680,13 @@ Additional Notes and Questions
 {{#if ../deletable}}<a href="#" class="sg-rule-delete icon-remove tooltip" data-tooltip='{{ i18n "PROP_SG_TIP_REMOVE_RULE" }}'></a>{{/if}}
 </li>{{/each}}
 
-<!-- groupedSgRuleList -->
+<!-- {{groupedSgRuleList}} -->
 {{#each groups}}
 <h3 class="sg-create-group truncate"><span class="sg-color sg-color-rule-header" style="background-color:{{ownerColor}}"></span>{{ownerName}}</h3>
 <ul class="sg-rule-list">{{{content}}}</ul>
 {{/each}}
 
-<!-- groupedSgRuleListDelConfirm -->
+<!-- {{groupedSgRuleListDelConfirm}} -->
 Following rule(s) will be deleted from its(their) security group:</div>
 <article class="scroll-wrap delete-sgrule-dialog">
 <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
@@ -698,7 +698,7 @@ Following rule(s) will be deleted from its(their) security group:</div>
 </div>
 </article>
 
-<!-- canvasOpConfirm -->
+<!-- {{canvasOpConfirm}} -->
 <div style="width:420px">
 	<div class="modal-header"> <h3>{{title}}</h3><i class="modal-close">&times;</i> </div>
 	<div class="modal-body">
@@ -712,7 +712,7 @@ Following rule(s) will be deleted from its(their) security group:</div>
 	</div>
 </div>
 
-<!-- propertyIpList -->
+<!-- {{propertyIpList}} -->
 {{#each this}}
 <li class="input-ip-item">
   <div class="name tooltip" data-tooltip="{{#if autoAssign}}{{i18n 'PROP_INSTANCE_IP_MSG_2'}}{{else}}{{i18n 'PROP_INSTANCE_IP_MSG_1'}}{{/if}}">
@@ -725,7 +725,7 @@ Following rule(s) will be deleted from its(their) security group:</div>
 </li>
 {{/each}}
 
-<!-- modalSGRule -->
+<!-- {{modalSGRule}} -->
 <div id="modal-sg-rule" data-bind="true">
 	<div class="modal-header">
 		<h3>{{ i18n "POP_SGRULE_TITLE_ADD" }}</h3><i class="modal-close">&times;</i>
@@ -907,7 +907,7 @@ Following rule(s) will be deleted from its(their) security group:</div>
 	</div>
 </div>
 
-<!-- modalDownloadKP -->
+<!-- {{modalDownloadKP}} -->
 <div style="width:420px">
 	<div class="modal-header">
 		<h3 id='keypair-name'>{{name}}</h3>
@@ -958,17 +958,17 @@ Following rule(s) will be deleted from its(their) security group:</div>
 	</div>
 </div>
 
-<!-- missingPropertyPanel -->
+<!-- {{missingPropertyPanel}} -->
 <article>
 	<div class="property-control-group">This resource is not available. It may have been deleted from other source or terminated in previous app editing.</div>
 </article>
 
-<!-- missingAsgWhenStop -->
+<!-- {{missingAsgWhenStop}} -->
 <article>
 	<div class="property-control-group">{{asgName}} is deleted in stopped app. The auto scaling group will be created when the app is started.</div>
 </article>
 
-<!-- instanceVolume -->
+<!-- {{instanceVolume}} -->
 <div class="bubble-head">Attached volume (<span id="instance_volume_number">{{this.length}}</span>)</div>
 <div id="instance_volume_wrap" class="scroll-wrap">
 	<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
@@ -982,7 +982,7 @@ Following rule(s) will be deleted from its(their) security group:</div>
 	</ul>
 </div>
 
-<!-- asgList -->
+<!-- {{asgList}} -->
 <div id="asgList-wrap">
 	<div id="asgList-header">
 		<span id="asgList-title">{{name}}</span>
@@ -1004,7 +1004,7 @@ Following rule(s) will be deleted from its(their) security group:</div>
 	</ul>
 </div>
 
-<!-- instanceList -->
+<!-- {{instanceList}} -->
 <div id="instanceList-wrap" data-id="{{this.[0].id}}">
 	<div id="instanceList-header">
 		<span id="instanceList-title">{{this.name}}</span>
@@ -1026,7 +1026,7 @@ Following rule(s) will be deleted from its(their) security group:</div>
 	</ul>
 </div>
 
-<!-- instanceListItem -->
+<!-- {{instanceListItem}} -->
 <li>
 	<a href="#" class="instanceList-item" id="{{id}}_{{@index}}" data-id="{{appId}}">
 		<i class="instanceList-item-status tooltip status status-{{status}}"></i>
@@ -1038,7 +1038,7 @@ Following rule(s) will be deleted from its(their) security group:</div>
 	</a>
 </li>
 
-<!-- eniList -->
+<!-- {{eniList}} -->
 <div id="eniList-wrap">
 	<div id="eniList-header">
 		<span id="eniList-title">{{this.name}}</span>
@@ -1056,7 +1056,7 @@ Following rule(s) will be deleted from its(their) security group:</div>
 	</ul>
 </div>
 
-<!-- eniListItem -->
+<!-- {{eniListItem}} -->
 <li>
 	<a href="#" class="eniList-item" id="{{id}}_{{@index}}" data-id="{{id}}">
 		<i class="eniList-item-eip-status{{#if ../eip}} on{{/if}}"></i>
@@ -1064,7 +1064,7 @@ Following rule(s) will be deleted from its(their) security group:</div>
 	</a>
 </li>
 
-<!-- setupCIDRConfirm -->
+<!-- {{setupCIDRConfirm}} -->
 <div style="width:420px">
 	<div class="modal-header"> <h3>Set up CIDR Block</h3><i class="modal-close">&times;</i> </div>
 	<div class="modal-body">
@@ -1079,7 +1079,7 @@ Following rule(s) will be deleted from its(their) security group:</div>
 	</div>
 </div>
 
-<!-- modalAttachingEni -->
+<!-- {{modalAttachingEni}} -->
 <div class="modal-header"> <h3>Attach Network Interface to Instance</h3><i class="modal-close">&times;</i> </div>
 <div class="modal-body">
 	<div class="modal-center-align-helper">
@@ -1089,7 +1089,7 @@ Following rule(s) will be deleted from its(their) security group:</div>
 	</div>
 </div>
 
-<!-- modalCanvasConfirm -->
+<!-- {{modalCanvasConfirm}} -->
 <div style="width:420px">
 	{{{confirm}}}
 	<div class="modal-footer">
@@ -1098,7 +1098,7 @@ Following rule(s) will be deleted from its(their) security group:</div>
 	</div>
 </div>
 
-<!-- modalReinputStackName -->
+<!-- {{modalReinputStackName}} -->
 <div style="width:420px">
 	<div class="modal-header"> <h3>Stack Name Already in Use</h3><i class="modal-close">&times;</i> </div>
 	<div class="modal-body" style="min-height:120px;">
@@ -1117,7 +1117,7 @@ Following rule(s) will be deleted from its(their) security group:</div>
 	</div>
 </div>
 
-<!-- closeTabRestriction -->
+<!-- {{closeTabRestriction}} -->
 <div style="width:420px">
 	<div class="modal-header"><h3 class="truncate" style="width: 380px;">Confirm to close {{ tab_name }}</h3><i class="modal-close">&times;</i> </div>
 	<div class="modal-body">
@@ -1132,7 +1132,7 @@ Following rule(s) will be deleted from its(their) security group:</div>
 	</div>
 </div>
 
-<!-- cancelAppEdit2App -->
+<!-- {{cancelAppEdit2App}} -->
 <div style="width:420px">
 	<div class="modal-header"><h3 class="truncate" style="width: 380px;">Changes not applied</h3><i class="modal-close">&times;</i> </div>
 	<div class="modal-body">
@@ -1147,7 +1147,7 @@ Following rule(s) will be deleted from its(their) security group:</div>
 	</div>
 </div>
 
-<!-- modalDeleteSGOrACL -->
+<!-- {{modalDeleteSGOrACL}} -->
 <div style="width:420px">
 	<div class="modal-header"> <h3>{{title}}</h3><i class="modal-close">&times;</i> </div>
 	<div class="modal-body">
@@ -1164,7 +1164,7 @@ Following rule(s) will be deleted from its(their) security group:</div>
 	</div>
 </div>
 
-<!-- loadingTransparent -->
+<!-- {{loadingTransparent}} -->
 <div id="loading-modal-wrap">
 	<div class="loading-modal" id="modal-box">
 		<div class="loading-spinner loading-spinner-mid"></div>
@@ -1172,7 +1172,7 @@ Following rule(s) will be deleted from its(their) security group:</div>
 	</div>
 </div>
 
-<!-- modalForceDeleteApp -->
+<!-- {{modalForceDeleteApp}} -->
 <div style="width:420px">
 	<div class="modal-header"> <h3>{{title}}</h3><i class="modal-close">&times;</i> </div>
 	<div class="modal-body">
@@ -1189,7 +1189,7 @@ Following rule(s) will be deleted from its(their) security group:</div>
 	</div>
 </div>
 
-<!-- statusbar -->
+<!-- {{statusbar}} -->
 <div>
 	<div class="info">Last saved: <span class="stack-save-time">-<span></div>
 	<ul class="statusbar-btn-list">
@@ -1201,7 +1201,7 @@ Following rule(s) will be deleted from its(their) security group:</div>
 	</ul>
 </div>
 
-<!-- restartInstance -->
+<!-- {{restartInstance}} -->
 <div style="width:420px">
 	<div class="modal-header"><h3 class="truncate" style="width: 380px;">Need to Restart Instance</h3><i class="modal-close">&times;</i> </div>
 	<div class="modal-body" style="height:150px;">
@@ -1221,7 +1221,7 @@ Following rule(s) will be deleted from its(their) security group:</div>
 	</div>
 </div>
 
-<!-- updateApp -->
+<!-- {{updateApp}} -->
 <div id="app-apply-update" style="width:460px">
 	<div class="modal-header"><h3 class="truncate" style="width: 380px;">Conﬁrm to Update App</h3><i class="modal-close">&times;</i> </div>
 	<div class="modal-body">
@@ -1277,31 +1277,31 @@ Following rule(s) will be deleted from its(their) security group:</div>
 	</div>
 </div>
 
-<!-- openTabFail -->
+<!-- {{openTabFail}} -->
 <div class="overlay-content-wrap">
 	<div class="overlay-text">Oops! There has been some issue loading the tab.</div>
 	<button class="btn btn-blue" id="btn-fail-reload">Reload</button>
 </div>
 
-<!-- appStarting -->
+<!-- {{appStarting}} -->
 <div class="overlay-content-wrap">
 	<div class="overlay-text">Starting app...</div>
 	<div class="loading-spinner"></div>
 </div>
 
-<!-- appStopping -->
+<!-- {{appStopping}} -->
 <div class="overlay-content-wrap">
 	<div class="overlay-text">Stopping app...</div>
 	<div class="loading-spinner"></div>
 </div>
 
-<!-- appTerminating -->
+<!-- {{appTerminating}} -->
 <div class="overlay-content-wrap">
 	<div class="overlay-text">Terminating app...</div>
 	<div class="loading-spinner"></div>
 </div>
 
-<!-- appUpdating -->
+<!-- {{appUpdating}} -->
 <div class="overlay-content-wrap">
 	<div class="overlay-text">Updating app...</div>
 	<div class="loading-spinner"></div>
@@ -1316,13 +1316,13 @@ Following rule(s) will be deleted from its(their) security group:</div>
 	{{/if}}
 </div>
 
-<!-- appUpdatedSuccess -->
+<!-- {{appUpdatedSuccess}} -->
 <div class="overlay-content-wrap">
 	<div class="overlay-text">App has updated successfully.</div>
 	<button class="btn btn-blue" id="btn-updated-success">Done</button>
 </div>
 
-<!-- appChangedfail -->
+<!-- {{appChangedfail}} -->
 <div class="overlay-content-wrap app-change-fail">
 	<div class="overlay-text">Oops! The app failed to {{ state }}.</div>
 	{{#if is_show}}
@@ -1340,7 +1340,7 @@ Following rule(s) will be deleted from its(their) security group:</div>
 	<button class="btn btn-silver" id="btn-changedfail">Done</button>
 </div>
 
-<!-- nodeAction -->
+<!-- {{nodeAction}} -->
 <div id="node-action-wrap">
 	<div id="node-action-state">
 		<div id="node-action-state-btn">
@@ -1351,7 +1351,7 @@ Following rule(s) will be deleted from its(their) security group:</div>
 	</div>
 </div>
 
-<!-- modalInstanceSysLog -->
+<!-- {{modalInstanceSysLog}} -->
 <div id="modal-instance-sys-log" style="width: 900px;">
 	<div class="modal-header"><h3>System Log: {{instance_id}}</h3><i class="modal-close">&times;</i> </div>
 	<div class="modal-body">
@@ -1364,15 +1364,15 @@ Following rule(s) will be deleted from its(their) security group:</div>
 	</div>
 </div>
 
-<!-- NodeStateRemoveConfirmation -->
+<!-- {{NodeStateRemoveConfirmation}} -->
 Are you sure you want to delete {{name}}?</div>
 <div class="modal-text-minor">Once deleted, the states of {{name}}'s configuration will be lost.</div>
 
-<!-- ElbRemoveConfirmation -->
+<!-- {{ElbRemoveConfirmation}} -->
 Are you sure you want to delete {{name}}?</div>
 <div class="modal-text-minor">The security group {{sg}} will also be deleted. Other load balancer using this security group will be affected.</div>
 
-<!-- modalStackAgentEnable -->
+<!-- {{modalStackAgentEnable}} -->
 <div style="width:420px">
 	<div class="modal-header"><h3>Conﬁrm to Enable VisualOps</h3><i class="modal-close">&times;</i></div>
 	<div class="modal-body">
@@ -1388,7 +1388,7 @@ Are you sure you want to delete {{name}}?</div>
 	</div>
 </div>
 
-<!-- shortkey -->
+<!-- {{shortkey}} -->
 <div style="width:640px" id="modal-key-short">
 	<div class="modal-header"><h3>Keyboard Shortcuts (?)</h3><i class="modal-close">&times;</i></div>
 	<div class="modal-body scroll-wrap">

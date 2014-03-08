@@ -4,22 +4,23 @@
 
 define [ 'event',
          'constant'
-         'backbone', 'jquery','i18n!nls/lang.js' , 'handlebars',
+         'text!./template.html',
+         './template_data',
+         'i18n!nls/lang.js', 'backbone', 'jquery', 'handlebars',
          'UI.selectbox',
          'UI.radiobuttons', 'UI.modal', 'UI.table'
-], ( ide_event, constant, Backbone, $, lang ) ->
+], ( ide_event, constant, template, template_data, lang ) ->
+
+    template = Handlebars.compile template
 
     ResourceView = Backbone.View.extend {
 
         el                     : $ '#resource-panel'
 
-        availability_zone_tmpl : Handlebars.compile $( '#availability-zone-tmpl' ).html()
-        resource_snapshot_tmpl : Handlebars.compile $( '#resoruce-snapshot-tmpl' ).html()
-        quickstart_ami_tmpl    : Handlebars.compile $( '#quickstart-ami-tmpl' ).html()
-        my_ami_tmpl            : Handlebars.compile $( '#my-ami-tmpl' ).html()
-        favorite_ami_tmpl      : Handlebars.compile $( '#favorite-ami-tmpl' ).html()
-        community_ami_tmpl     : Handlebars.compile $( '#community-ami-tmpl' ).html()
-        resource_vpc_tmpl      : Handlebars.compile $( '#resource-vpc-tmpl' ).html()
+        my_ami_tmpl            : template_data.my_ami_tmpl
+        favorite_ami_tmpl      : template_data.favorite_ami_tmpl
+        community_ami_tmpl     : template_data.community_ami_tmpl
+        resource_vpc_tmpl      : template_data.resource_vpc_tmpl
 
 
         initialize : ->
@@ -42,9 +43,9 @@ define [ 'event',
             $( window ).on "resize", _.bind( this.resizeAccordion, this )
             $( "#tab-content-design" ).on "click", ".fixedaccordion-head", this.updateAccordion
 
-        render   : ( template, attrs ) ->
+        render   : () ->
             console.log 'resource render'
-            $( '#resource-panel' ).html Handlebars.compile template
+            $( '#resource-panel' ).html template()
             #
             #
             ide_event.trigger ide_event.DESIGN_SUB_COMPLETE
@@ -52,9 +53,9 @@ define [ 'event',
             this.recalcAccordion()
             null
 
-        reRender   : ( template ) ->
+        reRender   : () ->
             console.log 're-resource render'
-            if $.trim( this.$el.html() ) is 'loading...' then $( '#resource-panel' ).html Handlebars.compile template
+            if $.trim( this.$el.html() ) is 'loading...' then $( '#resource-panel' ).html template()
 
             this.recalcAccordion()
 
@@ -263,14 +264,14 @@ define [ 'event',
             console.log 'availabilityZoneRender'
             console.log this.model.attributes.availability_zone
             return if !this.model.attributes.availability_zone
-            $( '.availability-zone' ).html this.availability_zone_tmpl this.model.attributes
+            $( '.availability-zone' ).html template_data.availability_zone_data( @model.attributes )
             null
 
         resourceSnapshotRender : () ->
             console.log 'resourceSnapshotRender'
             console.log this.model.attributes.resource_snapshot
             return if !this.model.attributes.resource_snapshot
-            $( '.resoruce-snapshot' ).append this.resource_snapshot_tmpl this.model.attributes
+            $( '.resoruce-snapshot' ).append template_data.resoruce_snapshot_data( @model.attributes )
             null
 
         quickstartAmiRender : () ->
@@ -279,7 +280,7 @@ define [ 'event',
             if !this.model.attributes.quickstart_ami
                 $( '.quickstart-ami-list' ).html ''
                 return
-            $( '.quickstart-ami-list' ).html this.quickstart_ami_tmpl this.model.attributes
+            $( '.quickstart-ami-list' ).html template_data.quickstart_ami_data( @model.attributes )
             null
 
         myAmiRender : () ->
@@ -288,21 +289,21 @@ define [ 'event',
             if !@model.attributes.my_ami or _.isNumber @model.attributes.my_ami
                 $( '.my-ami-list' ).html ''
                 return
-            $( '.my-ami-list' ).html this.my_ami_tmpl this.model.attributes
+            $( '.my-ami-list' ).html template_data.my_ami_data( @model.attributes )
             null
 
         favoriteAmiRender : () ->
             console.log 'favoriteAmiRender'
             console.log this.model.attributes.favorite_ami
             return if !this.model.attributes.favorite_ami
-            $( '.favorite-ami-list' ).html this.favorite_ami_tmpl this.model.attributes
+            $( '.favorite-ami-list' ).html template_data.favorite_ami_data( @model.attributes )
             null
 
         communityAmiBtnRender : () ->
             console.log 'communityAmiRender'
             console.log this.model.attributes.community_ami
             #return if !this.model.attributes.community_ami
-            $( '.community-ami' ).html this.community_ami_tmpl this
+            $( '.community-ami' ).html template_data.community_ami_btn( this )
             null
 
         openBrowseCommunityAMIsModal : ( event ) ->
@@ -424,7 +425,7 @@ define [ 'event',
 
                         data.vgwIsUsed = this.model.getVgwStatus()
 
-            $list = $( '.resource-vpc-list' ).html this.resource_vpc_tmpl data
+            $list = $( '.resource-vpc-list' ).html template_data.resource_vpc_select_list( data )
             $list.toggle $list.children().length > 0
 
         searchCommunityAmi : ( pageNum ) ->

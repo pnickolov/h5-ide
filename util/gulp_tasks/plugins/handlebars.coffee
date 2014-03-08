@@ -63,7 +63,7 @@ compilePartials = ( file )->
       break
 
 
-    newData += "TEMPLATE.#{data[i]}=" + result + ";\n\n"
+    newData += "__TEMPLATE__ =" + result + ";\nTEMPLATE.#{data[i]}=Handlebars.template(__TEMPLATE__);\n\n\n"
 
     namespaces = data[i].split(".")
     space = namespace
@@ -78,7 +78,7 @@ compilePartials = ( file )->
   if newData
     console.log util.compileTitle(), file.relative
 
-  newData = "define(['handlebars'], function(Handlebars){ var TEMPLATE=" + JSON.stringify(namespace) + ";\n\n" + newData + "return TEMPLATE; });"
+  newData = "define(['handlebars'], function(Handlebars){ var __TEMPLATE__, TEMPLATE=" + JSON.stringify(namespace) + ";\n\n" + newData + "return TEMPLATE; });"
 
   file.contents = new Buffer( newData, "utf8" )
   file.path = gutil.replaceExtension(file.path, ".js")
@@ -90,7 +90,7 @@ compileHbs = ( file )->
   if newData
     console.log util.compileTitle(), file.relative
 
-  newData = "define(['handlebars'], function(Handlebars){ var TEMPLATE = " + newData + "; return TEMPLATE; });"
+  newData = "define(['handlebars'], function(Handlebars){ var TEMPLATE = " + newData + "; return Handlebars.template(TEMPLATE); });"
 
   file.contents = new Buffer( newData, "utf8" )
   file.path = gutil.replaceExtension(file.path, ".js")

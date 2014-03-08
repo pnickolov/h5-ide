@@ -1,4 +1,4 @@
-<!--{{ .app-list-data }}-->
+<!-- {{app_list_data}} -->
 
 {{#if app_list}}
 
@@ -29,7 +29,7 @@
 
 {{/if}}
 
-<!--{{ .stack-list-data }}-->
+<!-- {{stack_list_data}} -->
 {{#each stack_list }}
 <li>
 	<a href="javascript:void(0)" class="nav-stack-region-title create-new-stack">{{ region_group }} ({{ region_count }})<span class="icon-new-stack nav-new-stack tooltip" data-tooltip='{{ i18n "IDE_COM_CREATE_NEW_STACK" }}'></span></a>
@@ -46,7 +46,7 @@
 </li>
 {{/each}}
 
-<!--{{ .region-empty-list }}-->
+<!-- {{region_empty_list}} -->
 {{#if stack_list }}
 	{{#if region_empty_list }}
 		<ul class="sub-menu nav-region-list">
@@ -84,7 +84,7 @@
 	</ul>
 {{/if}}
 
-<!--{{ .region-list }}-->
+<!-- {{region_list}} -->
 {{#each region_list }}
 <li>
 	<a href="javascript:void(0)" class="truncate nav-truncate region-name" data-region-name="{{ region_name }}">

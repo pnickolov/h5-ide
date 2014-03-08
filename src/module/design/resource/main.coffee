@@ -2,26 +2,16 @@
 #  Controller for design/resource module
 ####################################
 
-define [ 'jquery',
-         'text!./module/design/resource/template.html',
-         'text!./module/design/resource/template_data.html',
-         'event',
-         'constant',
-         'MC.ide.template'
-], ( $, template, template_data, ide_event, constant ) ->
+define [ 'event', 'constant' ], ( ide_event, constant ) ->
 
     #private
     loadModule = () ->
-
-        #compile partial template
-        MC.IDEcompile 'design-resource', template_data, { '.availability-zone-data' : 'availability-zone-tmpl', '.resoruce-snapshot-data' : 'resoruce-snapshot-tmpl', '.quickstart-ami-data' : 'quickstart-ami-tmpl', '.my-ami-data' : 'my-ami-tmpl', '.favorite-ami-data' : 'favorite-ami-tmpl', '.community-ami-btn':'community-ami-tmpl', '.resource-vpc-select-list' : 'resource-vpc-tmpl' }
-
         #
         require [ './module/design/resource/view', './module/design/resource/model', 'UI.bubble' ], ( View, model ) ->
 
             #view
             view       = new View()
-            view.render template
+            view.render()
             view.listen model
             view.model = model
 
@@ -30,7 +20,7 @@ define [ 'jquery',
                 console.log 'resource:OPEN_DESIGN, region_name ' + region_name + ', type = ' + type + ', current_platform = ' + current_platform
                 #
                 #check re-render
-                view.reRender template
+                view.reRender()
                 #init resoruce service count
                 #when OPEN_APP set service_count = 10; OPEN_STACK or NEW_STACK set service_count = 0
                 model.service_count = if type is 'OPEN_APP' then 10 else 0

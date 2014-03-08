@@ -36,8 +36,6 @@ require.config {
 		# lib
 		#############################################
 		'MC'                 : 'lib/MC.core'
-		'MC.template'        : 'lib/MC.template'
-		'MC.ide.template'    : 'lib/MC.ide.template'
 		'MC.validate'  	     : 'lib/MC.validate'
 
 		#canvas
@@ -271,13 +269,6 @@ require.config {
 		'MC.validate'  :
 			deps       : [ 'MC' ]
 
-		'MC.template'  :
-			deps       : [ 'handlebars', 'MC' ]
-			exports    : 'MC.template'
-
-		'MC.ide.template'  :
-			deps       : [ 'MC', 'jquery', 'underscore' ]
-
 		'MC.canvas'    :
 			deps       : [ 'MC', 'canvon' ]
 
@@ -295,13 +286,13 @@ require.config {
 		#############################################
 
 		'UI.tabbar'    :
-			deps       : [ 'MC.template', 'jquery' ]
+			deps       : [ 'jquery' ]
 
 		'UI.bubble'    :
-			deps       : [ 'MC.template', 'jquery' ]
+			deps       : [ 'jquery' ]
 
 		'UI.modal'     :
-			deps       : [ 'MC.template', 'jquery' ]
+			deps       : [ 'jquery' ]
 
 		'UI.tooltip'   :
 			deps       : [ 'jquery' ]
@@ -393,12 +384,14 @@ require.config {
 			deps       : [ 'stateeditor_view', 'stateeditor_model', 'jquery_sort', 'markdown', 'ace_ext_language_tools', 'MC' ]
 }
 
-require [ 'domReady', './js/ide/ide' ], ( domReady, ide ) ->
+require [ 'domReady', './js/ide/ide', "ui/MC.template", "MC" ], ( domReady, ide, template ) ->
 
 	l = window.location
 	if l.protocol is "http:" and not l.port
 		window.location = l.href.replace("http:","https:")
 		return
+
+	MC.template = template
 
 	domReady () -> ide.initialize()
 	null

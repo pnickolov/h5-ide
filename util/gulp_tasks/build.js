@@ -191,7 +191,7 @@
       templateBranch = StreamFuncs.throughHandlebars();
       langeSrcBranchRegex = /lang-source\.coffee/;
       coffeeBranchRegex = /\.coffee$/;
-      templateBranchRegex = /(\.partials$)|(\.html)/;
+      templateBranchRegex = /(\.partials)|(\.html)$/;
       if (GLOBAL.gulpConfig.reloadJsHtml) {
         liveReloadBranchRegex = /(src.assets)|(\.js$)/;
       } else {
@@ -218,6 +218,8 @@
       StreamFuncs.workStream.emit("data", {
         path: path
       });
+    } else if (path.match(/src.[^\/]+\.html/)) {
+      return;
     } else {
       fs.readFile(path, function(err, data) {
         if (!data) {

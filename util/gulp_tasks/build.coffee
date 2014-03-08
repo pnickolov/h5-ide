@@ -191,7 +191,7 @@ StreamFuncs =
     # Setup compile branch
     langeSrcBranchRegex   = /lang-source\.coffee/
     coffeeBranchRegex     = /\.coffee$/
-    templateBranchRegex   = /(\.partials$)|(\.html)/
+    templateBranchRegex   = /(\.partials)|(\.html)$/
 
     if GLOBAL.gulpConfig.reloadJsHtml
       liveReloadBranchRegex = /(src.assets)|(\.js$)/
@@ -219,6 +219,10 @@ changeHandler = ( path )->
   if path.match /src.assets/
     # No need to read file for assets folder
     StreamFuncs.workStream.emit "data", { path : path }
+  else if path.match /src.[^\/]+\.html/
+    # Drop the src/*.html here, because it seems like gulpif doesn't
+    # handle globs well. Although it claims to support it.
+    return
   else
     fs.readFile path, ( err, data )->
       if not data then return

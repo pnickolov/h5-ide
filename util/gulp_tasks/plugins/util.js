@@ -35,9 +35,13 @@
       }
       return null;
     },
-    compileTitle: function(extra) {
-      var title;
-      title = "[" + gutil.colors.green("Compile @" + ((new Date()).toLocaleTimeString())) + "]";
+    compileTitle: function(extra, printTime) {
+      var time, title;
+      if (printTime == null) {
+        printTime = true;
+      }
+      time = printTime ? " @" + (new Date()).toLocaleTimeString() : "";
+      title = "[" + gutil.colors.green("Compile" + time) + "]";
       if (extra) {
         title += " " + gutil.colors.inverse(extra);
       }

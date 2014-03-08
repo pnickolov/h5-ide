@@ -29,8 +29,11 @@ module.exports =
       }, ()-> # Add an callback, so that windows won't fail.
     null
 
-  compileTitle : ( extra )->
-    title = "[" + gutil.colors.green("Compile @#{(new Date()).toLocaleTimeString()}") + "]"
+  compileTitle : ( extra, printTime = true )->
+
+    time = if printTime then " @" + (new Date()).toLocaleTimeString() else ""
+
+    title = "[" + gutil.colors.green("Compile#{time}") + "]"
     if extra
       title += " " + gutil.colors.inverse( extra )
     title

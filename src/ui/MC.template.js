@@ -22,6 +22,8 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return buffer;
   };
 TEMPLATE.tab.item=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -40,6 +42,8 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return buffer;
   };
 TEMPLATE.tab.dashboard=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -62,6 +66,8 @@ function program1(depth0,data) {
   return buffer;
   };
 TEMPLATE.notification.item=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -166,6 +172,8 @@ function program13(depth0,data) {
   return buffer;
   };
 TEMPLATE.modalApp=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -187,6 +195,8 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return buffer;
   };
 TEMPLATE.modalToolbar=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -207,6 +217,8 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return buffer;
   };
 TEMPLATE.modalDownloadCloudFormationTpl=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -229,6 +241,8 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return buffer;
   };
 TEMPLATE.exportJSON=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -238,6 +252,8 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return "\n<div style=\"width:468px\">\n	<div class=\"modal-header\"> <h3>Import Stack from JSON file</h3><i class=\"modal-close\">&times;</i> </div>\n	<div class=\"modal-body\">\n		<div id=\"modal-import-json-dropzone\">Drop JSON file here or <label for=\"modal-import-json-file\" class=\"select-file-link\"> select a file.</label><input type=\"file\" id=\"modal-import-json-file\"></div>\n		<div id=\"import-json-error\"></div>\n	</div>\n</div>\n\n";
   };
 TEMPLATE.importJSON=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -254,6 +270,8 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return buffer;
   };
 TEMPLATE.exportPNG=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -302,6 +320,8 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return buffer;
   };
 TEMPLATE.modalResourceInstanceDetail=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -406,6 +426,8 @@ function program13(depth0,data) {
   return buffer;
   };
 TEMPLATE.modalRegionResourceDetail=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -424,6 +446,8 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return buffer;
   };
 TEMPLATE.bubbleTest=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -438,6 +462,8 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return buffer;
   };
 TEMPLATE.bubbleAlert=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -452,6 +478,8 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return buffer;
   };
 TEMPLATE.bubbleSuggest=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -472,6 +500,8 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return buffer;
   };
 TEMPLATE.bubbleAppInfo=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -494,6 +524,8 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return buffer;
   };
 TEMPLATE.bubbleInstanceInfo=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -520,6 +552,8 @@ function program1(depth0,data) {
   return buffer;
   };
 TEMPLATE.bubbleRegionResourceInfo=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -540,6 +574,8 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return buffer;
   };
 TEMPLATE.bubbleSnapshotInfo=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -584,6 +620,8 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return buffer;
   };
 TEMPLATE.bubbleAMIInfo=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -616,6 +654,8 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return buffer;
   };
 TEMPLATE.bubbleAMIMongoInfo=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -636,6 +676,8 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return buffer;
   };
 TEMPLATE.createNewStackClassic=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -652,6 +694,8 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return buffer;
   };
 TEMPLATE.createNewStackErrorAndReload=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -672,6 +716,8 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return buffer;
   };
 TEMPLATE.createNewStackVPC=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -745,6 +791,8 @@ function program1(depth0,data) {
   return buffer;
   };
 TEMPLATE.configurationDownload=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -757,6 +805,8 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return buffer;
   };
 TEMPLATE.modalStackValidationRun=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -771,6 +821,8 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return buffer;
   };
 TEMPLATE.modalRunStack=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -881,6 +933,8 @@ function program16(depth0,data) {
   return buffer;
   };
 TEMPLATE.sgRuleList=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -907,6 +961,8 @@ function program1(depth0,data) {
   return buffer;
   };
 TEMPLATE.groupedSgRuleList=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -933,6 +989,8 @@ function program1(depth0,data) {
   return buffer;
   };
 TEMPLATE.groupedSgRuleListDelConfirm=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -952,6 +1010,8 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return buffer;
   };
 TEMPLATE.canvasOpConfirm=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -1035,6 +1095,8 @@ function program14(depth0,data) {
   return buffer;
   };
 TEMPLATE.propertyIpList=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -1138,6 +1200,8 @@ function program11(depth0,data) {
   return buffer;
   };
 TEMPLATE.modalSGRule=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -1150,6 +1214,8 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return buffer;
   };
 TEMPLATE.modalDownloadKP=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -1159,6 +1225,8 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return "\n<article>\n	<div class=\"property-control-group\">This resource is not available. It may have been deleted from other source or terminated in previous app editing.</div>\n</article>\n\n";
   };
 TEMPLATE.missingPropertyPanel=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -1171,6 +1239,8 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return buffer;
   };
 TEMPLATE.missingAsgWhenStop=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -1216,6 +1286,8 @@ function program4(depth0,data) {
   return buffer;
   };
 TEMPLATE.instanceVolume=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -1253,6 +1325,8 @@ function program1(depth0,data,depth1) {
   return buffer;
   };
 TEMPLATE.asgList=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -1300,6 +1374,8 @@ function program1(depth0,data,depth1) {
   return buffer;
   };
 TEMPLATE.instanceList=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data,depth1) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -1328,6 +1404,8 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return buffer;
   };
 TEMPLATE.instanceListItem=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -1367,6 +1445,8 @@ function program2(depth0,data) {
   return buffer;
   };
 TEMPLATE.eniList=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data,depth1) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -1393,6 +1473,8 @@ function program1(depth0,data) {
   return buffer;
   };
 TEMPLATE.eniListItem=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -1409,6 +1491,8 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return buffer;
   };
 TEMPLATE.setupCIDRConfirm=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -1427,6 +1511,8 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return buffer;
   };
 TEMPLATE.modalAttachingEni=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -1442,6 +1528,8 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return buffer;
   };
 TEMPLATE.modalCanvasConfirm=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -1456,6 +1544,8 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return buffer;
   };
 TEMPLATE.modalReinputStackName=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -1472,6 +1562,8 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return buffer;
   };
 TEMPLATE.closeTabRestriction=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -1481,6 +1573,8 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return "\n<div style=\"width:420px\">\n	<div class=\"modal-header\"><h3 class=\"truncate\" style=\"width: 380px;\">Changes not applied</h3><i class=\"modal-close\">&times;</i> </div>\n	<div class=\"modal-body\">\n		<div class=\"modal-text-wraper\"> <div class=\"modal-center-align-helper\">\n			<div class=\"modal-text-major\">This app has been changed.</div>\n			<div class=\"modal-text-major\">Do you conﬁrm to discard the changes?</div>\n		</div> </div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"return-app-confirm\" class=\"btn btn-red\">Discard</button>\n		<button class=\"btn modal-close btn-silver\">Cancel</button>\n	</div>\n</div>\n\n";
   };
 TEMPLATE.cancelAppEdit2App=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -1497,6 +1591,8 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return buffer;
   };
 TEMPLATE.modalDeleteSGOrACL=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -1506,6 +1602,8 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return "\n<div id=\"loading-modal-wrap\">\n	<div class=\"loading-modal\" id=\"modal-box\">\n		<div class=\"loading-spinner loading-spinner-mid\"></div>\n		<div>Refreshing resources...</div>\n	</div>\n</div>\n\n";
   };
 TEMPLATE.loadingTransparent=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -1522,6 +1620,8 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return buffer;
   };
 TEMPLATE.modalForceDeleteApp=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -1531,6 +1631,8 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return "\n<div>\n	<div class=\"info\">Last saved: <span class=\"stack-save-time\">-<span></div>\n	<ul class=\"statusbar-btn-list\">\n		<li class=\"statusbar-btn btn-state\">\n			<span class=\"state-success\"><i class=\"status status-green icon-label\"></i><b>0</b></span>\n			<span class=\"state-failed\"><i class=\"status status-red icon-label\"></i><b>0</b></span>\n		</li>\n		<li class=\"statusbar-btn btn-ta-valid\">Validate</li>\n	</ul>\n</div>\n\n";
   };
 TEMPLATE.statusbar=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -1554,6 +1656,8 @@ function program1(depth0,data) {
   return buffer;
   };
 TEMPLATE.restartInstance=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -1649,6 +1753,8 @@ function program13(depth0,data) {
   return buffer;
   };
 TEMPLATE.updateApp=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -1658,6 +1764,8 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return "\n<div class=\"overlay-content-wrap\">\n	<div class=\"overlay-text\">Oops! There has been some issue loading the tab.</div>\n	<button class=\"btn btn-blue\" id=\"btn-fail-reload\">Reload</button>\n</div>\n\n";
   };
 TEMPLATE.openTabFail=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -1667,6 +1775,8 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return "\n<div class=\"overlay-content-wrap\">\n	<div class=\"overlay-text\">Starting app...</div>\n	<div class=\"loading-spinner\"></div>\n</div>\n\n";
   };
 TEMPLATE.appStarting=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -1676,6 +1786,8 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return "\n<div class=\"overlay-content-wrap\">\n	<div class=\"overlay-text\">Stopping app...</div>\n	<div class=\"loading-spinner\"></div>\n</div>\n\n";
   };
 TEMPLATE.appStopping=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -1685,6 +1797,8 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return "\n<div class=\"overlay-content-wrap\">\n	<div class=\"overlay-text\">Terminating app...</div>\n	<div class=\"loading-spinner\"></div>\n</div>\n\n";
   };
 TEMPLATE.appTerminating=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -1710,6 +1824,8 @@ function program1(depth0,data) {
   return buffer;
   };
 TEMPLATE.appUpdating=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -1719,6 +1835,8 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return "\n<div class=\"overlay-content-wrap\">\n	<div class=\"overlay-text\">App has updated successfully.</div>\n	<button class=\"btn btn-blue\" id=\"btn-updated-success\">Done</button>\n</div>\n\n";
   };
 TEMPLATE.appUpdatedSuccess=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -1755,6 +1873,8 @@ function program2(depth0,data) {
   return buffer;
   };
 TEMPLATE.appChangedfail=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -1767,6 +1887,8 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return buffer;
   };
 TEMPLATE.nodeAction=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -1781,6 +1903,8 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return buffer;
   };
 TEMPLATE.modalInstanceSysLog=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -1795,6 +1919,8 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return buffer;
   };
 TEMPLATE.NodeStateRemoveConfirmation=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -1809,6 +1935,8 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return buffer;
   };
 TEMPLATE.ElbRemoveConfirmation=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -1818,6 +1946,8 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return "\n<div style=\"width:420px\">\n	<div class=\"modal-header\"><h3>Conﬁrm to Enable VisualOps</h3><i class=\"modal-close\">&times;</i></div>\n	<div class=\"modal-body\">\n		<div class=\"modal-text-wraper\">\n			<div class=\"modal-center-align-helper\">\n				<div class=\"modal-text-major\">Enable VisualOps will override your custom User Data. Are you sure to continue?</div>\n			</div>\n		</div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"modal-stack-agent-enable-confirm\" style=\"width:145px;\" class=\"btn modal-confirm btn-blue\">Enable VisualOps</button>\n		<button id=\"modal-stack-agent-enable-cancel\" class=\"btn modal-close btn-silver\">Cancel</button>\n	</div>\n</div>\n\n";
   };
 TEMPLATE.modalStackAgentEnable=Handlebars.template(__TEMPLATE__);
+
+
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -1827,4 +1957,6 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return "\n<div style=\"width:640px\" id=\"modal-key-short\">\n	<div class=\"modal-header\"><h3>Keyboard Shortcuts (?)</h3><i class=\"modal-close\">&times;</i></div>\n	<div class=\"modal-body scroll-wrap\">\n		<div class=\"scrollbar-veritical-wrap\"><div class=\"scrollbar-veritical-thumb\"></div></div>\n		<div class=\"scroll-content\" style=\"height: 560px\">\n			<section class=\"key-stack-app\">\n				<h3 class=\"title\">Stack/App Operation</h3>\n				<ul class=\"keys\">\n					<li class=\"key-item\">\n						<div class=\"key font-mono\">P</div>\n						<div class=\"action\">Show Property Panel</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key font-mono\">R</div>\n						<div class=\"action\">Show Resource Panel\n							<div class=\"meta\">Only in editable mode.</div>\n						</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key font-mono\">S</div>\n						<div class=\"action\">Show State Panel</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key mac font-mono\">Option+Drag Instance</div>\n						<div class=\"key pc font-mono\">Alt+Drag Instance</div>\n						<div class=\"action\">Duplicate Instance\n							<div class=\"meta\">Only in editable mode.</div>\n						</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key mac font-mono\">Delete</div>\n						<div class=\"key pc font-mono\">Delete/Backspace</div>\n						<div class=\"action\">Delete selected item.\n							<div class=\"meta\">Only in editable mode.</div>\n						</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key mac font-mono\">Command + S</div>\n						<div class=\"key pc font-mono\">Ctrl+S</div>\n						<div class=\"action\">Save stack.\n							<div class=\"meta\">Only in stack.</div>\n						</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key mac font-mono\">Command+Drag on canvas</div>\n						<div class=\"key pc font-mono\">Ctrl+Drag on canvas</div>\n						<div class=\"action\">Scroll canvas.</div>\n					</li>\n				</ul>\n			</section>\n			<section class=\"key-state\">\n				<h3 class=\"title\">State Panel Operation - General</h3>\n				<ul class=\"keys\">\n					<li class=\"key-item\">\n						<div class=\"key font-mono\">Up/Down</div>\n						<div class=\"action\">Switch focused state.</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key font-mono\">Space</div>\n						<div class=\"action\">Select/Unselect focused state.</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key font-mono\">Enter</div>\n						<div class=\"action\">Expand focused state.</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key font-mono\">ESC</div>\n						<div class=\"action\">Collapse focused state.</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key font-mono\">Tab</div>\n						<div class=\"action\">Focus to next input.</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key font-mono\">Shift+Tab</div>\n						<div class=\"action\">Focus to previous input.\n						</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key mac font-mono\">Command+I</div>\n						<div class=\"key pc font-mono\">Ctrl+I</div>\n						<div class=\"action\">Open/Close information sidebar.</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key mac font-mono\">Command+L</div>\n						<div class=\"key pc font-mono\">Ctrl+L</div>\n						<div class=\"action\">Open/Close log sidebar.\n							<div class=\"meta\">Only in app.</div>\n						</div>\n					</li>\n				</ul>\n			</section>\n			<section class=\"key-state-edit\">\n				<h3 class=\"title\">State Panel Operation - Editable Mode</h3>\n				<ul class=\"keys\">\n					<li class=\"key-item\">\n						<div class=\"key mac font-mono\">Command+A</div>\n						<div class=\"key pc font-mono\">Ctrl+A</div>\n						<div class=\"action\">Select all states.</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key mac font-mono\">Command+D</div>\n						<div class=\"key pc font-mono\">Ctrl+D</div>\n						<div class=\"action\">Deselect states.</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key mac font-mono\">Command+Enter</div>\n						<div class=\"key pc font-mono\">Ctrl+Enter</div>\n						<div class=\"action\">Create new state.</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key mac font-mono\">Command+Delete</div>\n						<div class=\"key pc font-mono\">Ctrl+Delete/Backspace</div>\n						<div class=\"action\">Delete selected state.</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key mac font-mono\">Command+Up/Down</div>\n						<div class=\"key pc font-mono\">Ctrl+Up/Down</div>\n						<div class=\"action\">Move focused state.</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key mac font-mono\">Command+C</div>\n						<div class=\"key pc font-mono\">Ctrl+C</div>\n						<div class=\"action\">Copy selected state.</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key mac font-mono\">Command+V</div>\n						<div class=\"key pc font-mono\">Ctrl+V</div>\n						<div class=\"action\">Paste selecte state.</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key mac font-mono\">Command+Z</div>\n						<div class=\"key pc font-mono\">Ctrl+Z</div>\n						<div class=\"action\">Undo.</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key mac font-mono\">Command+Y</div>\n						<div class=\"key pc font-mono\">Ctrl+Y</div>\n						<div class=\"action\">Redo.</div>\n					</li>\n				</ul>\n			</section>\n		</div>\n	</div>\n	<div class=\"modal-footer\">\n		<button class=\"btn modal-close btn-silver\">Close</button>\n	</div>\n</div>\n";
   };
 TEMPLATE.shortkey=Handlebars.template(__TEMPLATE__);
+
+
 return TEMPLATE; });

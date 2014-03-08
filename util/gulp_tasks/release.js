@@ -1,11 +1,13 @@
 (function() {
-  var build, coffee, confCompile, es, gulp, gutil, handlebars, include, langsrc, logCoffee, logTask, util;
+  var Q, SrcOption, Tasks, coffee, confCompile, dest, end, es, fileLogger, gulp, gutil, handlebars, ideversion, include, langsrc, logTask, util, variable;
 
   gulp = require("gulp");
 
   gutil = require("gulp-util");
 
   es = require("event-stream");
+
+  Q = require("q");
 
   coffee = require("gulp-coffee");
 
@@ -17,43 +19,110 @@
 
   handlebars = require("./plugins/handlebars");
 
+  ideversion = require("./plugins/ideversion");
+
+  variable = require("./plugins/variable");
+
   util = require("./plugins/util");
 
-  logTask = function(msg) {
-    console.log("[", gutil.colors.bgBlue.white(msg), "]");
+  SrcOption = {
+    "base": "./src"
+  };
+
+  logTask = function(msg, noNewlineWhenNotVerbose) {
+    msg = "[ " + (gutil.colors.bgBlue.white(msg)) + " ] ";
+    if (noNewlineWhenNotVerbose && !GLOBAL.gulpConfig.verbose) {
+      process.stdout.write(msg);
+    } else {
+      console.log(msg);
+    }
     return null;
   };
 
-  logCoffee = function() {
+  fileLogger = function() {
     return es.through(function(f) {
       if (GLOBAL.gulpConfig.verbose) {
-        console.log(util.compileTitle(f.extra), "" + f.relative);
+        console.log(util.compileTitle(f.extra, false), "" + f.relative);
+      } else {
+        process.stdout.write(".");
       }
       this.emit("data", f);
       return null;
     });
   };
 
-  build = function(debugMode) {
-    logTask("Copying Assets");
-    gulp.src(["./src/assets/**/*", "!**/*.glyphs", "!**/*.scss"]).pipe(gulp.dest("./build/assets/"));
-    logTask("Copying Js Files");
-    gulp.src(["./src/js/*.js"]).pipe(gulp.dest("./build/js"));
-    gulp.src(["./src/ui/*.js"]).pipe(gulp.dest("./build/ui"));
-    gulp.src(["./src/vender/**/*"]).pipe(gulp.dest("./build/vender"));
-    logTask("Compiling lang-source");
-    gulp.src(["./src/nls/lang-source.coffee"]).pipe(langsrc("./build", false, GLOBAL.gulpConfig.verbose));
-    logTask("Compiling coffees");
-    gulp.src(["./src/**/*.coffee", "!src/test/**/*"]).pipe(confCompile(true)).pipe(coffee()).pipe(logCoffee()).pipe(gulp.dest("./build"));
-    logTask("Compiling templates");
-    gulp.src(["./src/**/*.partials", "./src/**/*.html", "!src/test/**/*", "!src/*.html", "!src/include/*.html"]).pipe(confCompile(true)).pipe(handlebars(GLOBAL.gulpConfig.verbose)).pipe(gulp.dest("./build"));
-    logTask("Copying ./src/*.html");
-    gulp.src(["./src/*.html"]).pipe(confCompile(true)).pipe(include()).pipe(gulp.dest("./build"));
-    return null;
+  dest = function() {
+    return gulp.dest("./build");
+  };
+
+  end = function(d, printNewlineWhenNotVerbose) {
+    if (printNewlineWhenNotVerbose && !GLOBAL.gulpConfig.verbose) {
+      return function() {
+        process.stdout.write("\n");
+        return d.resolve();
+      };
+    } else {
+      return function() {
+        return d.resolve();
+      };
+    }
+  };
+
+  Tasks = {
+    copyAssets: function() {
+      var d, path;
+      logTask("Copying Assets");
+      path = ["./src/assets/**/*", "!**/*.glyphs", "!**/*.scss"];
+      d = Q.defer();
+      gulp.src(path, SrcOption).pipe(dest()).on("end", end(d));
+      return d.promise;
+    },
+    copyJs: function() {
+      var d, path;
+      logTask("Copying Js Files");
+      path = ["./src/js/*.js", "./src/ui/*.js", "./src/vender/**/*"];
+      d = Q.defer();
+      gulp.src(path, SrcOption).pipe(dest()).on("end", end(d));
+      return d.promise;
+    },
+    compileLangSrc: function() {
+      var d;
+      logTask("Compiling lang-source");
+      d = Q.defer();
+      gulp.src(["./src/nls/lang-source.coffee"]).pipe(langsrc("./build", false, GLOBAL.gulpConfig.verbose)).on("end", end(d));
+      return d.promise;
+    },
+    compileCoffee: function() {
+      var d, path;
+      logTask("Compiling coffees", true);
+      path = ["./src/**/*.coffee", "!src/test/**/*"];
+      d = Q.defer();
+      gulp.src(path, SrcOption).pipe(confCompile(true)).pipe(coffee()).pipe(fileLogger()).pipe(dest()).on("end", end(d, true));
+      return d.promise;
+    },
+    compileTemplate: function() {
+      var d, path;
+      logTask("Compiling templates", true);
+      path = ["./src/**/*.partials", "./src/**/*.html", "!src/test/**/*", "!src/*.html", "!src/include/*.html"];
+      d = Q.defer();
+      gulp.src(path, SrcOption).pipe(confCompile(true)).pipe(handlebars(false)).pipe(fileLogger()).pipe(dest()).on("end", end(d, true));
+      return d.promise;
+    },
+    processHtml: function() {
+      var d, path;
+      logTask("Processing ./src/*.html");
+      path = ["./src/*.html"];
+      d = Q.defer();
+      gulp.src(path).pipe(confCompile(true)).pipe(include()).pipe(variable()).pipe(dest()).on("end", end(d));
+      return d.promise;
+    }
   };
 
   module.exports = {
-    build: build
+    build: function(debugMode) {
+      ideversion.save();
+      return [Tasks.copyAssets, Tasks.copyJs, Tasks.compileLangSrc, Tasks.compileCoffee, Tasks.compileTemplate, Tasks.processHtml].reduce(Q.when, Q());
+    }
   };
 
 }).call(this);

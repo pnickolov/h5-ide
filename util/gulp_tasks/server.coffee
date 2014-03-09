@@ -3,7 +3,7 @@ gutil   = require("gulp-util")
 nstatic = require("node-static")
 http    = require("http")
 
-module.exports.create = ( path )->
+module.exports.create = ( path, port )->
 
   defaultHeader = { "Cache-Control" : "no-cache" }
 
@@ -50,5 +50,5 @@ module.exports.create = ( path )->
     request.resume()
     null
 
-  server.listen( GLOBAL.gulpConfig.staticFileServerPort )
+  server.listen( port or GLOBAL.gulpConfig.staticFileServerPort )
   null

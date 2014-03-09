@@ -5,11 +5,14 @@ module.exports =
   dir            : "./build2"
 
   optimize        : "none" || "uglify"
-  skipDirOptimize : true || false
   optimizeCss     : "none" || "standard"
+  skipDirOptimize : true   || false
+  removeCombined  : true
 
   modules : [
     {
-      name : "vender/vender"
+      name    : "vender/vender"
+      create  : true
+      include : [ "jquery", "backbone", "Meteor" ]
     }
   ]

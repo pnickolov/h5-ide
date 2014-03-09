@@ -57,9 +57,14 @@ Tasks =
     d.promise
 
   copyJs : ()->
-    logTask "Copying Js Files"
+    logTask "Copying Js Templates"
 
-    path = ["./src/js/*.js", "./src/ui/*.js", "./src/vender/**/*"]
+    path = ["./src/js/*.js", "./src/ui/*.js", "./src/vender/**/*",
+      "./src/nls/**/*.js"
+      "./src/component/stateeditor/lib/**/*.js" # LEGACY Files
+      "./src/component/exporter/*.js"  # LEGACY Files
+      "./src/**/*.html" # LEGACY Files
+    ]
 
     d = Q.defer()
     gulp.src( path, SrcOption ).pipe( dest() ).on( "end", end(d) )
@@ -157,5 +162,5 @@ module.exports =
       Tasks.compileCoffee
       Tasks.compileTemplate
       Tasks.processHtml
-      Tasks.concatJS
+      # Tasks.concatJS
     ].reduce( Q.when, Q() )

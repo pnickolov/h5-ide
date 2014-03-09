@@ -83,8 +83,8 @@
     },
     copyJs: function() {
       var d, path;
-      logTask("Copying Js Files");
-      path = ["./src/js/*.js", "./src/ui/*.js", "./src/vender/**/*"];
+      logTask("Copying Js Templates");
+      path = ["./src/js/*.js", "./src/ui/*.js", "./src/vender/**/*", "./src/nls/**/*.js", "./src/component/stateeditor/lib/**/*.js", "./src/component/exporter/*.js", "./src/**/*.html"];
       d = Q.defer();
       gulp.src(path, SrcOption).pipe(dest()).on("end", end(d));
       return d.promise;
@@ -134,7 +134,7 @@
   module.exports = {
     build: function(debugMode) {
       ideversion.save();
-      return [Tasks.concatJS].reduce(Q.when, Q());
+      return [Tasks.copyAssets, Tasks.copyJs, Tasks.compileLangSrc, Tasks.compileCoffee, Tasks.compileTemplate, Tasks.processHtml].reduce(Q.when, Q());
     }
   };
 

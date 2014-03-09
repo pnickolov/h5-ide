@@ -1,8 +1,9 @@
 
-gulp  = require("gulp")
-gutil = require("gulp-util")
-es    = require("event-stream")
-Q     = require("q")
+gulp      = require("gulp")
+gutil     = require("gulp-util")
+es        = require("event-stream")
+Q         = require("q")
+requirejs = require("requirejs")
 
 coffee      = require("gulp-coffee")
 include     = require("./plugins/include")
@@ -11,6 +12,7 @@ confCompile = require("./plugins/conditional")
 handlebars  = require("./plugins/handlebars")
 ideversion  = require("./plugins/ideversion")
 variable    = require("./plugins/variable")
+rjsconfig   = require("./plugins/rjsconfig")
 
 util = require("./plugins/util")
 
@@ -75,7 +77,7 @@ Tasks =
   compileCoffee : ()->
     logTask "Compiling coffees", true
 
-    path = ["./src/**/*.coffee", "!src/test/**/*"]
+    path = ["./src/**/*.coffee", "!src/test/**/*", "!lang-source.coffee"]
 
     d = Q.defer()
     gulp.src( path, SrcOption )
@@ -114,6 +116,20 @@ Tasks =
       .on( "end", end(d) )
     d.promise
 
+  concatJS : ()->
+    logTask "Concating JS"
+
+    requirejs.optimize( rjsconfig
+
+    , (buildres)->
+      null
+    , (err)->
+      console.log err
+    )
+
+    true
+
+
 
 
 # A task to build IDE
@@ -141,4 +157,5 @@ module.exports =
       Tasks.compileCoffee
       Tasks.compileTemplate
       Tasks.processHtml
+      Tasks.concatJS
     ].reduce( Q.when, Q() )

@@ -1,5 +1,5 @@
 (function() {
-  var Q, SrcOption, Tasks, coffee, confCompile, dest, end, es, fileLogger, gulp, gutil, handlebars, ideversion, include, langsrc, logTask, util, variable;
+  var Q, SrcOption, Tasks, coffee, confCompile, dest, end, es, fileLogger, gulp, gutil, handlebars, ideversion, include, langsrc, logTask, requirejs, rjsconfig, util, variable;
 
   gulp = require("gulp");
 
@@ -8,6 +8,8 @@
   es = require("event-stream");
 
   Q = require("q");
+
+  requirejs = require("requirejs");
 
   coffee = require("gulp-coffee");
 
@@ -22,6 +24,8 @@
   ideversion = require("./plugins/ideversion");
 
   variable = require("./plugins/variable");
+
+  rjsconfig = require("./plugins/rjsconfig");
 
   util = require("./plugins/util");
 
@@ -95,7 +99,7 @@
     compileCoffee: function() {
       var d, path;
       logTask("Compiling coffees", true);
-      path = ["./src/**/*.coffee", "!src/test/**/*"];
+      path = ["./src/**/*.coffee", "!src/test/**/*", "!lang-source.coffee"];
       d = Q.defer();
       gulp.src(path, SrcOption).pipe(confCompile(true)).pipe(coffee()).pipe(fileLogger()).pipe(dest()).on("end", end(d, true));
       return d.promise;
@@ -115,13 +119,22 @@
       d = Q.defer();
       gulp.src(path).pipe(confCompile(true)).pipe(include()).pipe(variable()).pipe(dest()).on("end", end(d));
       return d.promise;
+    },
+    concatJS: function() {
+      logTask("Concating JS");
+      requirejs.optimize(rjsconfig, function(buildres) {
+        return null;
+      }, function(err) {
+        return console.log(err);
+      });
+      return true;
     }
   };
 
   module.exports = {
     build: function(debugMode) {
       ideversion.save();
-      return [Tasks.copyAssets, Tasks.copyJs, Tasks.compileLangSrc, Tasks.compileCoffee, Tasks.compileTemplate, Tasks.processHtml].reduce(Q.when, Q());
+      return [Tasks.concatJS].reduce(Q.when, Q());
     }
   };
 

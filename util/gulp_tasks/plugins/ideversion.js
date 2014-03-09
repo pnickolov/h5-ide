@@ -15,9 +15,6 @@
     }));
     version = pkgInfo.version.split(".");
     version[1] = parseInt(version[1], 10) + 1;
-    if (version[1] < 10) {
-      version[1] = "0" + version[1];
-    }
     pkgInfo.version = version.join(".");
     date = new Date();
     date = [date.getFullYear(), date.getMonth() + 1, date.getDate()];

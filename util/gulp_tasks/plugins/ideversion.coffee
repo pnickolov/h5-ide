@@ -11,7 +11,6 @@ version = ()->
   version = pkgInfo.version.split(".")
 
   version[1] = parseInt( version[1], 10 ) + 1
-  if version[1] < 10 then version[1] = "0" + version[1]
 
   pkgInfo.version = version.join(".")
 

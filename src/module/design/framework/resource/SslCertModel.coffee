@@ -19,6 +19,8 @@ define [ "constant", "../ComplexResModel", "../ConnectionModel"  ], ( constant, 
       arn    : ""
       certId : ""
 
+    isVisual : ()-> false
+
     assignTo : ( target )-> new SslCertUsage( this, target )
 
     serialize : () ->

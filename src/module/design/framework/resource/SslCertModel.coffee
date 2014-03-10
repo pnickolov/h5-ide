@@ -1,6 +1,12 @@
 
 define [ "constant", "../ComplexResModel", "../ConnectionModel"  ], ( constant, ComplexResModel, ConnectionModel )->
 
+  SslCertUsage = ConnectionModel.extend {
+    type : "SslCertUsage"
+    oneToMany : constant.AWS_RESOURCE_TYPE.AWS_IAM_ServerCertificate
+  }
+
+
   SslCertModel = ComplexResModel.extend {
 
     type : constant.AWS_RESOURCE_TYPE.AWS_IAM_ServerCertificate
@@ -13,8 +19,10 @@ define [ "constant", "../ComplexResModel", "../ConnectionModel"  ], ( constant, 
       arn    : ""
       certId : ""
 
+    assignTo : ( target )-> new SslCertUsage( this, target )
+
     serialize : () ->
-      
+
       return { component : {
         uid : @id
         type : "AWS.IAM.ServerCertificate"
@@ -28,17 +36,6 @@ define [ "constant", "../ComplexResModel", "../ConnectionModel"  ], ( constant, 
             Arn : @get("arn") or ""
             ServerCertificateId : @get("certId") or ""
       }}
-
-    remove : () ->
-
-      # remove forme all elb cert ref
-      elbModelAry = Design.modelClassForType(constant.AWS_RESOURCE_TYPE.AWS_ELB).allObjects()
-      _.each elbModelAry, (elbModel) ->
-        elbCertModel = elbModel.get('sslCert')
-        if elbCertModel is this
-          elbModel.setSslCert(null)
-
-      ComplexResModel.prototype.remove.call this
 
     updateValue : (certObj) ->
       for key, value of certObj

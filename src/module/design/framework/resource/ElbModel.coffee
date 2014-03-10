@@ -121,49 +121,6 @@ define [ "Design",
       @set "listeners", listeners
       null
 
-    setSslCert : ( cert )->
-
-      console.assert( cert.body isnt undefined and cert.chain isnt undefined and cert.key isnt undefined and cert.name isnt undefined, "Invalid parameter for setSslCert" )
-
-      if not cert
-        @set("sslCert", null)
-        return
-
-      sslCert = @get("sslCert")
-      if sslCert
-        for key, value of cert
-          sslCert.set(key, value)
-      else
-        sslCert = new SslCertModel( cert )
-        @set("sslCert", sslCert)
-
-      null
-
-    updateSslCert : (certUID, certObj) ->
-
-      certModel = Design.instance().component(certUID)
-      certModel.updateValue(certObj)
-
-    addSslCert : ( cert ) ->
-
-      sslCert = new SslCertModel( cert )
-      @set("sslCert", sslCert)
-
-    removeSslCert : ( certUID ) ->
-
-      sslCertModel = Design.instance().component(certUID)
-      if sslCertModel
-        sslCertModel.remove()
-
-    changeSslCert : ( certUID ) ->
-
-      if not certUID
-        @set("sslCert", null)
-
-      sslCertModel = Design.instance().component(certUID)
-      if sslCertModel
-        @set("sslCert", sslCertModel)
-
     getHealthCheckTarget : ()->
       # Format ping
       target = @attributes.healthCheckTarget
@@ -246,16 +203,15 @@ define [ "Design",
         hcTarget = hcTarget.split("/")[0]
 
       listeners = []
-      if @get("sslCert")
-        sslcertId = @get('sslCert').createRef("ServerCertificateMetadata.Arn")
+      ssl = @connectionTargets("SslCertUsage")[0]
+      if ssl
+        sslcertId = ssl.createRef("ServerCertificateMetadata.Arn")
       else
         sslcertId = ""
 
-      # usessl = false
       for l in @get("listeners")
         if l.protocol is "SSL" or l.protocol is "HTTPS"
           id = sslcertId
-          # usessl = true
         else
           id = ""
 
@@ -312,14 +268,6 @@ define [ "Design",
 
       return { component : component, layout : @generateLayout() }
 
-      # if usessl and @get("sslCert")
-      #   ssl = @get("sslCert")
-      #   sslComponent = ssl.serialize()
-
-      #   return [ json_object ]
-      # else
-      # return json_object
-
   }, {
 
     handleTypes : constant.AWS_RESOURCE_TYPE.AWS_ELB
@@ -357,6 +305,7 @@ define [ "Design",
           return azRef
 
       # listener
+      sslCert = null
       for l in data.resource.ListenerDescriptions || []
         l = l.Listener
         attr.listeners.push {
@@ -365,12 +314,13 @@ define [ "Design",
           instanceProtocol : l.InstanceProtocol
           instancePort     : l.InstancePort
         }
-        if l.SSLCertificateId and not attr.sslCert
+        if l.SSLCertificateId and not sslCert
           # Cannot resolve the same component multiple times within one deserialize.
           # Because Design might consider it as recursive dependency.
-          attr.sslCert = resolve( MC.extractID( l.SSLCertificateId ) )
+          sslCert = resolve( MC.extractID( l.SSLCertificateId ) )
 
       elb = new Model( attr )
+      if sslCert then sslCert.assignTo( elb )
 
       ElbAmiAsso    = Design.modelClassForType( "ElbAmiAsso" )
       ElbSubnetAsso = Design.modelClassForType( "ElbSubnetAsso" )

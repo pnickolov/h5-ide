@@ -67,24 +67,18 @@ define [ '../base/model', "event", "Design", 'constant' ], ( PropertyModel, ide_
                 attr.azArray = azArr
 
             # Get SSL Cert List
-            currentSSLCert = component.get('sslCert')
+            currentSSLCert = component.connectionTargets("SslCertUsage")[0]
             allCertModelAry = Design.modelClassForType(constant.AWS_RESOURCE_TYPE.AWS_IAM_ServerCertificate).allObjects()
-            sslCertItem = []
-            noSSLCert = true
-            _.each allCertModelAry, (sslCertModel) ->
-                sslCertUID = sslCertModel.id
-                sslCertName = sslCertModel.get('name')
-                sslCertSelected = false
-                if currentSSLCert and (currentSSLCert.id is sslCertUID)
-                    sslCertSelected = true
-                    noSSLCert = false
-                sslCertItem.push({
-                    uid: sslCertUID,
-                    name: sslCertName,
-                    selected: sslCertSelected
-                })
-            attr.sslCertItem = sslCertItem
-            attr.noSSLCert = noSSLCert
+
+            attr.noSSLCert = true
+            attr.sslCertItem = _.map allCertModelAry, (sslCertModel) ->
+                if currentSSLCert is sslCertModel then attr.noSSLCert = false
+
+                {
+                    uid: sslCertModel.id,
+                    name: sslCertModel.get('name'),
+                    selected: currentSSLCert is sslCertModel
+                }
             @set attr
             null
 
@@ -156,15 +150,16 @@ define [ '../base/model', "event", "Design", 'constant' ], ( PropertyModel, ide_
             null
 
         setCert : ( value )->
-            Design.instance().component( @get("uid") ).setSslCert( value )
+            Design.instance().component( @get("uid") ).connectionTargets("SslCertUsage")[0].set( value )
             null
 
         addCert : ( value )->
-            Design.instance().component( @get("uid") ).addSslCert( value )
+            SslCertModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_IAM_ServerCertificate )
+            (new SslCertModel( value )).assignTo( Design.instance().component( @get("uid") ) )
             null
 
         removeCert : ( value ) ->
-            Design.instance().component( @get("uid") ).removeSslCert( value )
+            Design.instance().component( value ).remove()
             null
 
         updateElbAZ : ( azArray )->
@@ -172,29 +167,16 @@ define [ '../base/model', "event", "Design", 'constant' ], ( PropertyModel, ide_
             null
 
         changeCert : ( certUID ) ->
-            Design.instance().component( @get("uid") ).changeSslCert(certUID)
+            design = Design.instance()
+            if certUID
+                design.component( certUID ).assignTo( design.component( @get("uid") ) )
+            else
+                for cn in design.component( @get("uid") ).connections("SslCertUsage")
+                    cn.remove()
             null
 
         updateCert : (certUID, certObj) ->
-            Design.instance().component( @get("uid") ).updateSslCert(certUID, certObj)
-            null
-
-        removeAllCert : (  ) ->
-
-            elbUID = @get("uid")
-
-            try
-
-                elbModel = Design.instance().component(elbUID)
-                sslModel = elbModel.get('sslCert')
-
-                if sslModel
-                    Design.instance().component(sslModel.id).remove()
-
-            catch err
-
-                console.log('remove cert failed')
-
+            Design.instance().component( certUID ).updateValue( certObj )
             null
     }
 

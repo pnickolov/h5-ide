@@ -1067,6 +1067,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
                     instanceUID = MC.extractID(instanceRef)
                     if instanceUID
                         compName = allCompData[instanceUID].serverGroupName
+                        compUID = instanceUID
                         if instanceUID is currentCompUID
                             compName = 'self'
 

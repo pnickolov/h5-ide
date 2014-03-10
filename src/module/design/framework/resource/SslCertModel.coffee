@@ -13,21 +13,8 @@ define [ "constant", "../ComplexResModel", "../ConnectionModel"  ], ( constant, 
       arn    : ""
       certId : ""
 
-    serialize : ()-> # Doesn't do anything. It's implemented in Elb's serialize()
-
-  },{
-    deserialize : ( data )->
-      new SslCertModel({
-        id     : data.uid
-        name   : data.name
-        body   : data.resource.CertificateBody
-        chain  : data.resource.CertificateChain
-        key    : data.resource.PrivateKey
-        arn    : data.resource.ServerCertificateMetadata.Arn
-        certId : data.resource.ServerCertificateMetadata.ServerCertificateId
-      })
-      null
     serialize : () ->
+      
       return {
         uid : @id
         type : "AWS.IAM.ServerCertificate"
@@ -55,6 +42,19 @@ define [ "constant", "../ComplexResModel", "../ConnectionModel"  ], ( constant, 
     updateValue : (certObj) ->
       for key, value of certObj
         this.set(key, value)
+      null
+
+  },{
+    deserialize : ( data )->
+      new SslCertModel({
+        id     : data.uid
+        name   : data.name
+        body   : data.resource.CertificateBody
+        chain  : data.resource.CertificateChain
+        key    : data.resource.PrivateKey
+        arn    : data.resource.ServerCertificateMetadata.Arn
+        certId : data.resource.ServerCertificateMetadata.ServerCertificateId
+      })
       null
   }
 

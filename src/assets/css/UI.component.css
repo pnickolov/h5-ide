@@ -1086,13 +1086,15 @@ textarea {
 	background: rgba(0,0,0,.2);
 }
 
-.btn-silver.modal-close {
+.btn-silver.modal-close,
+#close-awscredential {
 	min-width: 80px;
 	background: none;
 	color: #666;
 }
 
-.btn-silver.modal-close:hover {
+.btn-silver.modal-close:hover,
+#close-awscredential:hover {
 	color: #4495d3;
 }
 

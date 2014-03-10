@@ -81,7 +81,7 @@
 	border       : 1px solid #222;
 	border-radius: 4px 0 0 4px;
 
-	background: #444;
+	background: #30343A;
 	color: #ccc;
 
 	overflow-x: hidden;
@@ -155,7 +155,6 @@
 #state-editor-body {
 	padding: 0;
 }
-
 
 #state-editor-model .state-close {
 	display: none;
@@ -382,10 +381,6 @@
 	opacity: 1.0 !important;
 }
 
-#state-editor .parameter-list .parameter-item.disabled:hover {
-	opacity: 1.0 !important;
-}
-
 #state-editor .line {
 	cursor: pointer !important;
 }
@@ -504,7 +499,11 @@
 }
 
 #state-editor .parameter-list .parameter-item.disabled {
-	opacity: 0.3;
+	opacity: 0.5;
+}
+
+#state-editor .parameter-list .parameter-item.disabled:hover {
+	opacity: 1.0 !important;
 }
 
 #state-editor .parameter-list .parameter-name {
@@ -513,9 +512,16 @@
 	margin-top: 2px;
 	cursor    : default;
 	position  : relative;
-	color     : rgb(152, 167, 180);
+	color     : rgb(248, 185, 72);
 	width     : 92px;
-	cursor: pointer;
+	cursor    : pointer;
+}
+
+#state-editor .parameter-list .required .parameter-name:before {
+	content : "*";
+	position: absolute;
+	left    : -10px;
+	color   : red;
 }
 
 #state-editor .parameter-list .parameter-value {
@@ -604,11 +610,11 @@
 #state-editor .state-item {
 	overflow: auto;
 	position: relative;
-	background: #161616;
+	background: #171D25;
 }
 
 #state-editor .state-item.view {
-	background: #27292C;
+	background: #252A31;
 }
 
 
@@ -1199,6 +1205,11 @@
 
 #state-editor-model.se-model-app .ace_content {
 	cursor: default !important;
+}
+
+#state-description > ul > li {
+	border-bottom: 1px solid #272727;
+	padding: 10px 0;
 }
 
 #state-description p, #state-description h3 {

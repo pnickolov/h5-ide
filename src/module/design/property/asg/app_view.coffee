@@ -224,6 +224,11 @@ define [ '../base/view',
                         period : 5
                     }
 
+            if data.alarmData and data.alarmData.metricName
+                data.unit = unitMap[ data.alarmData.metricName ]
+            else
+                data.unit = '%'
+
             data.noSNS = not this.model.attributes.has_sns_sub
             data.detail_monitor = this.model.attributes.detail_monitor
 

@@ -332,7 +332,7 @@ define [ "Design",
       if Design.instance().typeIsVpc()
         # Elb <=> Subnet ( ElbSubnetAsso must created before ElbAmiAsso )
         for sb in data.resource.Subnets || []
-          new ElbSubnetAsso( elb, resolve( MC.extractID(sb)  ) )
+          new ElbSubnetAsso( elb, resolve( MC.extractID(sb) ), { deserialized : true } )
 
       # Elb <=> Ami
       for ami in data.resource.Instances || []

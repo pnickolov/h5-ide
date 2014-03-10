@@ -6,8 +6,10 @@ define [ "constant", "../ConnectionModel", "i18n!nls/lang.js", "Design", "compon
 
     type : "ElbSubnetAsso"
 
-    defaults : ()->
-      lineType : "association"
+    defaults :
+      lineType     : "association"
+      deserialized : false # Indicate that this line is created by deserialize.
+
 
     portDefs : [
       {
@@ -27,25 +29,38 @@ define [ "constant", "../ConnectionModel", "i18n!nls/lang.js", "Design", "compon
 
       for cn in @getTarget( constant.AWS_RESOURCE_TYPE.AWS_ELB ).connections( "ElbSubnetAsso" )
         if cn.getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet ).parent() is az
-          cn.remove()
+          if cn.hasAppUpdateRestriction()
+            @setDestroyAfterInit()
+          else
+            cn.remove()
 
       null
 
-    isRemovable : ()->
-      elb    = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_ELB )
+    hasAppUpdateRestriction : ()->
+      elb = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_ELB )
 
-      # Elb should at least connects to a subnet if it connects to some ami
-      if elb.connections( "ElbAmiAsso" ).length > 0 and elb.connections( "ElbSubnetAsso" ).length <= 1
-        return { error : lang.ide.CVS_MSG_ERR_DEL_ELB_LINE_1 }
+      if @design().modeIsAppEdit()
+        # In AppEdit, prevent the last existing asso to be deleted
+        for asso in elb.connections( "ElbSubnetAsso" )
+          if asso isnt @ and asso.get("deserialized")
+            return false
+
+        return true
+
+      false
+
+    isRemovable : ()->
+      if @design().modeIsAppEdit()
+        if @hasAppUpdateRestriction()
+          return { error : lang.ide.CVS_MSG_ERR_DEL_ELB_LINE_2 }
+
+      else
+        elb = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_ELB )
+        # Elb should at least connects to a subnet if it connects to some ami
+        if elb.connections( "ElbAmiAsso" ).length > 0 and elb.connections( "ElbSubnetAsso" ).length <= 1
+          return { error : lang.ide.CVS_MSG_ERR_DEL_ELB_LINE_1 }
 
       true
-
-    # serialize : ( components )->
-    #   sb  = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet )
-    #   elb = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_ELB )
-
-    #   components[ elb.id ].resource.Subnets.push sb.createRef( "SubnetId" )
-    #   null
 
   }, {
     isConnectable : ( comp1, comp2 )->

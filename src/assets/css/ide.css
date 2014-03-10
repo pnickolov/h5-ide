@@ -7617,10 +7617,27 @@ summary:focus {
 	margin-top: -6px;
 }
 
+#sslcert-select .icon-edit {
+	display: none;
+	position: absolute;
+	right: 30px;
+	top: 50%;
+	color: #999;
+	margin-top: -6px;
+}
+
 #sslcert-select .item:hover .icon-remove {
 	display: block;
 }
 
 #sslcert-select .icon-remove:hover {
+	color: #F74A48;
+}
+
+#sslcert-select .item:hover .icon-edit {
+	display: block;
+}
+
+#sslcert-select .icon-edit:hover {
 	color: #F74A48;
 }

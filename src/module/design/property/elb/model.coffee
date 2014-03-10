@@ -75,7 +75,7 @@ define [ '../base/model', "event", "Design", 'constant' ], ( PropertyModel, ide_
                 sslCertUID = sslCertModel.id
                 sslCertName = sslCertModel.get('name')
                 sslCertSelected = false
-                if currentSSLCert.id is sslCertUID
+                if currentSSLCert and (currentSSLCert.id is sslCertUID)
                     sslCertSelected = true
                     noSSLCert = false
                 sslCertItem.push({
@@ -159,8 +159,24 @@ define [ '../base/model', "event", "Design", 'constant' ], ( PropertyModel, ide_
             Design.instance().component( @get("uid") ).setSslCert( value )
             null
 
+        addCert : ( value )->
+            Design.instance().component( @get("uid") ).addSslCert( value )
+            null
+
+        removeCert : ( value ) ->
+            Design.instance().component( @get("uid") ).removeSslCert( value )
+            null
+
         updateElbAZ : ( azArray )->
             Design.instance().component( @get("uid") ).set("AvailabilityZones", azArray )
+            null
+
+        changeCert : ( certUID ) ->
+            Design.instance().component( @get("uid") ).changeSslCert(certUID)
+            null
+
+        updateCert : (certUID, certObj) ->
+            Design.instance().component( @get("uid") ).updateSslCert(certUID, certObj)
             null
 
         removeAllCert : (  ) ->

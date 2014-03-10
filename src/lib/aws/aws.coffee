@@ -1089,7 +1089,8 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
 
                     autoCompList.push({
                         name: autoCompStr,
-                        value: autoCompRefStr
+                        value: autoCompRefStr,
+                        uid: compUID
                     })
 
                     if isArray
@@ -1102,7 +1103,8 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
                                         # if idx is 0 then return
                                         autoCompList.push({
                                             name: autoCompStr + '[' + idx + ']',
-                                            value: autoCompRefStr + '[' + idx + ']'
+                                            value: autoCompRefStr + '[' + idx + ']',
+                                            uid: compUID
                                         })
                                         null
 
@@ -1114,7 +1116,8 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
                                         if idx is 0 then return
                                         autoCompList.push({
                                             name: autoCompStr + '[' + idx + ']',
-                                            value: autoCompRefStr + '[' + idx + ']'
+                                            value: autoCompRefStr + '[' + idx + ']',
+                                            uid: compUID
                                         })
                                         null
 
@@ -1126,7 +1129,8 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
                                         # if idx is 0 then return
                                         autoCompList.push({
                                             name: autoCompStr + '[' + idx + ']',
-                                            value: autoCompRefStr + '[' + idx + ']'
+                                            value: autoCompRefStr + '[' + idx + ']',
+                                            uid: compUID
                                         })
                                         null
 
@@ -1149,7 +1153,8 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
                         groupCompUIDStr = autoCompObj.value.replace('self', currentISGName)
                     groupAutoCompList.push({
                         name: groupCompNameStr,
-                        value: groupCompUIDStr
+                        value: groupCompUIDStr,
+                        uid: autoCompObj.uid
                     })
 
         autoCompList = autoCompList.concat(groupAutoCompList)
@@ -1164,7 +1169,8 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
             return {
                 name: "#{autoCompObj.name}",
                 value: "#{autoCompObj.name}",
-                ref: "#{autoCompObj.value}"
+                ref: "#{autoCompObj.value}",
+                uid: "#{autoCompObj.uid}"
             }
 
         return resAttrDataAry

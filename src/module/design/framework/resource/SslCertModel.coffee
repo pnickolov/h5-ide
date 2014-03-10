@@ -41,6 +41,21 @@ define [ "constant", "../ComplexResModel", "../ConnectionModel"  ], ( constant, 
             Arn : @get("arn") or ""
             ServerCertificateId : @get("certId") or ""
       }
+    remove : () ->
+
+      # remove forme all elb cert ref
+      elbModelAry = Design.modelClassForType(constant.AWS_RESOURCE_TYPE.AWS_ELB).allObjects()
+      _.each elbModelAry, (elbModel) ->
+        elbCertModel = elbCertModel.get('sslCert')
+        if elbCertModel is this
+          elbModel.setSslCert(null)
+
+      ComplexResModel.prototype.remove.call this
+
+    updateValue : (certObj) ->
+      for key, value of certObj
+        this.set(key, value)
+      null
   }
 
   SslCertModel

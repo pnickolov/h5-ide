@@ -70,8 +70,8 @@ define [ "Design",
       true
 
     remove : ()->
-      sslCert = @get("sslCert")
-      if sslCert then sslCert.remove()
+      # sslCert = @get("sslCert")
+      # if sslCert then sslCert.remove()
 
       # Remove elb will only remove my elb sg
       if @getElbSg() then @getElbSg().remove()
@@ -122,7 +122,12 @@ define [ "Design",
       null
 
     setSslCert : ( cert )->
+
       console.assert( cert.body isnt undefined and cert.chain isnt undefined and cert.key isnt undefined and cert.name isnt undefined, "Invalid parameter for setSslCert" )
+
+      if not cert
+        @set("sslCert", null)
+        return
 
       sslCert = @get("sslCert")
       if sslCert
@@ -131,8 +136,33 @@ define [ "Design",
       else
         sslCert = new SslCertModel( cert )
         @set("sslCert", sslCert)
+
       null
 
+    updateSslCert : (certUID, certObj) ->
+
+      certModel = Design.instance().component(certUID)
+      certModel.updateValue(certObj)
+
+    addSslCert : ( cert ) ->
+
+      sslCert = new SslCertModel( cert )
+      @set("sslCert", sslCert)
+
+    removeSslCert : ( certUID ) ->
+
+      sslCertModel = Design.instance().component(certUID)
+      if sslCertModel
+        sslCertModel.remove()
+
+    changeSslCert : ( certUID ) ->
+
+      if not certUID
+        @set("sslCert", null)
+
+      sslCertModel = Design.instance().component(certUID)
+      if sslCertModel
+        @set("sslCert", sslCertModel)
 
     getHealthCheckTarget : ()->
       # Format ping

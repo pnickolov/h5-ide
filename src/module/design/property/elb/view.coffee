@@ -61,6 +61,9 @@ define [ '../base/view',
             'change #elb-cross-az-select' : 'elbCrossAZSelect'
 
             'click .editbtn' : 'elbSSLCertAdd'
+            'click #sslcert-select .item' : 'changeSSLCert'
+            'click #sslcert-select .item .icon-edit' : 'elbSSLCertEdit'
+            'click #sslcert-select .item .icon-remove' : 'elbSSLCertRemove'
 
         render     : () ->
 
@@ -447,15 +450,60 @@ define [ '../base/view',
         elbSSLCertAdd : (event) ->
 
             that = this
+            that.popSSLCertModal(false)
+            return false
+
+        elbSSLCertEdit : (event) ->
+
+            that = this
+            $certEditItem = $(event.currentTarget)
+            $certItem = $certEditItem.parents('.item')
+            certUID = $certItem.attr('data-id')
+            if certUID
+                that.popSSLCertModal(true, certUID)
+            return false
+
+        elbSSLCertRemove : (event) ->
+
+            that = this
+            $certEditItem = $(event.currentTarget)
+            $certItem = $certEditItem.parents('.item')
+            certUID = $certItem.attr('data-id')
+
+            if certUID
+                that.model.removeCert(certUID)
+                ide_event.trigger ide_event.REFRESH_PROPERTY
+                return false
+
+        changeSSLCert : (event) ->
+
+            that = this
+            $certItem = $(event.currentTarget)
+            certUID = $certItem.attr('data-id')
+
+            that.model.changeCert(certUID)
+            ide_event.trigger ide_event.REFRESH_PROPERTY
+
+        popSSLCertModal : (isEdit, certUID) ->
+
+            that = this
 
             modal MC.template.modalSSLCertSetting {}, true
 
-            $("#elb-ssl-cert-confirm").off('click').on('click', ()->
+            $certName = $('#elb-ssl-cert-name-input')
+            $certPrikey = $('#elb-ssl-cert-privatekey-input')
+            $certPubkey = $('#elb-ssl-cert-publickey-input')
+            $certChain = $('#elb-ssl-cert-chain-input')
 
-                $certName = $('#elb-ssl-cert-name-input')
-                $certPrikey = $('#elb-ssl-cert-privatekey-input')
-                $certPubkey = $('#elb-ssl-cert-publickey-input')
-                $certChain = $('#elb-ssl-cert-chain-input')
+            if isEdit and certUID
+                certModel = Design.instance().component(certUID)
+                if certModel
+                    $certName.val(certModel.get('name'))
+                    $certPrikey.val(certModel.get('key'))
+                    $certPubkey.val(certModel.get('body'))
+                    $certChain.val(certModel.get('chain'))
+
+            $("#elb-ssl-cert-confirm").off('click').on('click', ()->
 
                 isCorrect = false
 
@@ -466,19 +514,24 @@ define [ '../base/view',
                     isCorrect = true
 
                 if isCorrect
-                    that.model.setCert {
+
+                    certObj = {
                         name  : $certName.val()
                         key   : $certPrikey.val()
                         body  : $certPubkey.val()
                         chain : $certChain.val()
                     }
+
+                    if isEdit and certUID
+                        that.model.updateCert(certUID, certObj)
+                    else
+                        that.model.addCert(certObj)
+
                     ide_event.trigger ide_event.REFRESH_PROPERTY
                     modal.close()
 
                 null
             )
-
-            return false
 
     }
 

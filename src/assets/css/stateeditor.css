@@ -1195,6 +1195,10 @@
 	padding: 2px 10px;
 }
 
+#state-description li>p {
+	font-size: 14px;
+}
+
 #state-description code {
 	display: block;
 	background-color: #252525;

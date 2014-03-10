@@ -2088,6 +2088,87 @@ MC.canvas.layout = {
 			}
 		});
 
+		//patch 20140310: fix AZ of volume
+		$.each(components, function (key, value)
+		{
+			try
+			{
+				if (value.type === "AWS.EC2.EBS.Volume")
+				{
+					var instanceId = MC.extractID(value.resource.AttachmentSet.InstanceId);
+					if ( components[ instanceId ] )
+					{
+						//delete vpn when cgw component not exist
+						if (value.resource.AvailabilityZone != components[ instanceId ].resource.Placement.AvailabilityZone )
+						{
+							value.resource.AvailabilityZone = components[ instanceId ].resource.Placement.AvailabilityZone;
+							console.warn("patch - AZ of volume " + value.name + "(" + value.uid + ") had been fixed" );
+						}
+					}
+					else
+					{
+						console.warn("volume " + value.name + "(" + value.uid + ") didn't attached to an instance" );
+					}
+				}
+			}
+			catch(error)
+			{
+				console.warn("error occur when patch AZ of volume");
+				return true;
+			}
+		});
+		//patch 20140310: fix xvda for windows ami
+		$.each(components, function (key, value)
+		{
+			try
+			{
+				if (value.type === "AWS.EC2.Instance")
+				{
+					var volumeList    = value.resource.BlockDeviceMapping,
+						volIdxvda     = null,
+						maxDeviceName = null;
+
+					$.each(volumeList, function (_key, _value)
+					{
+						var volId = _value.substr(1),
+							volComp = components[volId];
+
+						if (volComp === null)
+						{
+							return true;
+						}
+
+						if ( volComp.resource.AttachmentSet.Device === "xvda" )
+						{
+							volIdxvda =  volId;
+						}
+						if ( maxDeviceName === null || maxDeviceName < volComp.resource.AttachmentSet.Device )
+						{
+							maxDeviceName = volComp.resource.AttachmentSet.Device;
+						}
+
+					});
+					if (volIdxvda && maxDeviceName )
+					{
+						var oldName = components[volIdxvda].name,
+							lastDevice = maxDeviceName.substr(-1),
+							new_volume_name = maxDeviceName.substr(0,maxDeviceName.length-1) + String.fromCharCode((lastDevice.charCodeAt(0)+1));
+
+						components[volIdxvda].resource.AttachmentSet.Device = new_volume_name;
+						components[volIdxvda].name = components[volIdxvda].name.replace(oldName,new_volume_name);
+						components[volIdxvda].serverGroupName = components[volIdxvda].serverGroupName.replace(oldName,new_volume_name);
+						console.warn("patch - found xvda, change deviceName to " + new_volume_name );
+					}
+				}
+			}
+			catch(error)
+			{
+				console.warn("error occur when patch AZ of volume");
+				return true;
+			}
+		});
+
+
 		$.each(components, function (key, value)
 		{
 			try

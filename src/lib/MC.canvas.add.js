@@ -1209,7 +1209,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				device_name = null;
 				if (ami_info.osType !== 'windows')
 				{
-					device_name = ['f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
+					device_name = ['f','g','h','i','j','k','l','m','n','o','p'];
 				}
 				else
 				{

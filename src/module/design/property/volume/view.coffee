@@ -63,7 +63,7 @@ define [ '../base/view',
             target.parsley 'custom', ( val ) ->
                 if not MC.validate.deviceName val, type, true
                     if type is 'linux'
-                        return "Device name must be like /dev/hd[a-z], /dev/hd[a-z][1-15],/dev/sd[a-z] or /dev/sd[b-z][1-15]"
+                        return "Device name must be like /dev/sd[f-p] or /dev/sd[f-p][1-6]"
                     else
                         return "Device name must be like xvd[f-p]."
 

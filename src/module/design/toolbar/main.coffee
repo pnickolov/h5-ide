@@ -21,17 +21,11 @@ define [ 'jquery',
             #listen OPEN_DESIGN
             ide_event.onLongListen ide_event.OPEN_SUB_DESIGN, ( region_name, type, current_platform, tab_name, tab_id ) ->
                 console.log 'toolbar:OPEN_SUB_DESIGN, region_name = ' + region_name + ', type = ' + type
-                #
-                model.setFlag tab_id, type
-                #
-                # MC.ta.validAll() if type is 'OPEN_STACK'
 
-            ###
-            #listen OPEN_TOOLBAR
-            ide_event.onLongListen ide_event.OPEN_TOOLBAR, ( tab_id, type ) ->
-                console.log 'toolbar:OPEN_TOOLBAR, tab_id = ' + tab_id + ', type = ' + type
-                console.log MC.canvas_data
-            ###
+                # set toolbar template( app or stack )
+                model.setFlag tab_id, type
+
+                null
 
             #listen toolbar state change
             model.on 'UPDATE_TOOLBAR', (type) ->

@@ -97,15 +97,9 @@ define [ 'MC', 'event',
             else
                 $( '#main-toolbar' ).html stack_tmpl this.model.attributes
 
-
-            if Design and Design.instance()
-
-                agentData = Design.instance().get('agent')
-                $switchCheckbox = $('#main-toolbar .toolbar-visual-ops-switch')
-                if agentData.enabled
-                    $switchCheckbox.addClass('on')
-                else
-                    $switchCheckbox.removeClass('on')
+            if type
+                # vispos state
+                @opsState()
 
             #
             ide_event.trigger ide_event.DESIGN_SUB_COMPLETE
@@ -748,6 +742,39 @@ define [ 'MC', 'event',
             modal.close()
 
             null
+
+        opsState : ->
+            console.log 'opsState'
+
+            # set toolbar-visual-ops-switch and apply-visops
+            $switchCheckbox = $('#main-toolbar .toolbar-visual-ops-switch')
+            $applyVisops    = $('#apply-visops')
+
+            # when new stack enable VisualOps else disabled
+            if Tabbar.current is 'new'
+                $switchCheckbox.addClass    'on'
+            else
+                $switchCheckbox.removeClass 'on'
+
+            # when JSON 'agent' existing
+            if Design and Design.instance()
+
+                agentData = Design.instance().get 'agent'
+                if agentData.enabled
+                    $switchCheckbox.addClass    'on'
+                else
+                    $switchCheckbox.removeClass 'on'
+
+            # set visual-ops-switch show/hide
+            if MC.common.cookie.getCookieByName( 'is_invitated' ) in [ 'true', true ]
+
+                $applyVisops.hide()
+                $switchCheckbox.show()
+
+            else if MC.common.cookie.getCookieByName( 'is_invitated' ) in [ 'false', false ]
+
+                $applyVisops.show()
+                $switchCheckbox.hide()
 
         opsOptionChanged : (event) ->
 

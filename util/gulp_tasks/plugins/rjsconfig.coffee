@@ -14,7 +14,14 @@ readRequirejsConfig = ( path )->
   source = fs.readFileSync path, "utf8"
 
   Context =
+    version  : ""
+    language : ""
+    window   : {}
     require : ()->
+    document :
+      getElementsByTagName : ()-> []
+      cookie : ""
+
 
   Context.require.config = ( config )->
     this.config = config

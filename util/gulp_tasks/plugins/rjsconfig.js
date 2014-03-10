@@ -17,7 +17,16 @@
     var Context, source;
     source = fs.readFileSync(path, "utf8");
     Context = {
-      require: function() {}
+      version: "",
+      language: "",
+      window: {},
+      require: function() {},
+      document: {
+        getElementsByTagName: function() {
+          return [];
+        },
+        cookie: ""
+      }
     };
     Context.require.config = function(config) {
       this.config = config;

@@ -9,8 +9,6 @@
 			break
 	if window.version is '#{version}' then window.version = "dev"
 
-	console.log window.version
-
 	window.language = document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + "lang\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1") || "en-us"
 	null
 )()
@@ -394,7 +392,7 @@ require.config {
 			"jquery"
 			"backbone"
 			"underscore"
-			"vender/handlebars/handlebars.rt"
+			"handlebars"
 			"sprintf"
 			"Meteor"
 		]

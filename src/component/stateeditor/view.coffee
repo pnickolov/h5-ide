@@ -1305,7 +1305,7 @@ define [ 'event',
                 else if $paraItem.hasClass('dict')
 
                     $dictItemList = $paraItem.find('.parameter-dict-item')
-                    dictObj = {}
+                    dictObjAry = []
 
                     _.each $dictItemList, (dictItem) ->
 
@@ -1318,11 +1318,14 @@ define [ 'event',
 
                         if keyValue
                             valueValue = that.model.replaceParaNameToUID(valueValue)
-                            dictObj[keyValue] = valueValue
+                            dictObjAry.push({
+                                key: keyValue,
+                                value: valueValue
+                            })
 
                         null
 
-                    paraValue = dictObj
+                    paraValue = dictObjAry
 
                 else if $paraItem.hasClass('array') or $paraItem.hasClass('state')
 
@@ -1444,16 +1447,33 @@ define [ 'event',
 
                             renderParaValue = []
 
-                            _.each paraValue, (paraValueStr, paraKey) ->
+                            if _.isArray(paraValue)
 
-                                paraValueStr = that.model.replaceParaUIDToName(paraValueStr)
+                                _.each paraValue, (paraValueObj) ->
 
-                                renderParaValue.push({
-                                    key: paraKey
-                                    value: paraValueStr
-                                })
+                                    paraValueObj.value = that.model.replaceParaUIDToName(paraValueObj.value)
 
-                                null
+                                    renderParaValue.push({
+                                        key: paraValueObj.key
+                                        value: paraValueObj.value
+                                    })
+
+                                    null
+
+                            # adjust for old format
+                            
+                            else if _.isObject(paraValue)
+
+                                _.each paraValue, (paraValueStr, paraKey) ->
+
+                                    paraValueStr = that.model.replaceParaUIDToName(paraValueStr)
+
+                                    renderParaValue.push({
+                                        key: paraKey
+                                        value: paraValueStr
+                                    })
+
+                                    null
 
                             if not paraValue or _.isEmpty(paraValue)
                                 renderParaValue = [{

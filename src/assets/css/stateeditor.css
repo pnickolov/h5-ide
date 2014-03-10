@@ -550,14 +550,14 @@
 
 #state-editor .parameter-list .parameter-item.dict .parameter-dict-item {
 	position: relative;
-	/*height: 26px;*/
+	height: 22px;
 }
 
 #state-editor .parameter-list .parameter-item.dict .parameter-dict-item:after {
 	content: ":";
 	position: absolute;
 	left: 153px;
-	top: 1px;
+	top: 0px;
 	color: #ccc;
 }
 

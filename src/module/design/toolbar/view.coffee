@@ -54,6 +54,7 @@ define [ 'MC', 'event',
             'click #toolbar-cancel-edit-app' : 'clickCancelEditApp'
 
             'click .toolbar-visual-ops-switch' : 'opsOptionChanged'
+            'click #apply-visops'              : 'openExperimentalVisops'
 
         render   : ( type ) ->
             console.log 'toolbar render'
@@ -113,6 +114,10 @@ define [ 'MC', 'event',
             $( document.body ).on 'click', '#return-app-confirm', this, @appedit2App
             # export to png download button click
             $( document.body ).on 'click', '.modal-footer #btn-confirm', this, () -> modal.close()
+
+            # experimentalVisops
+            $( document.body ).on 'click', '#experimental-visops-confirm', this, @experimentalVisopsConfirm
+            $( document.body ).on 'click', '#experimental-visops-cancel', this, () -> modal.close()
 
         reRender   : ( type ) ->
             console.log 're-toolbar render'
@@ -801,6 +806,13 @@ define [ 'MC', 'event',
                 thatModel.setAgentEnable(false)
 
             ide_event.trigger ide_event.REFRESH_PROPERTY
+
+        openExperimentalVisops : ->
+            console.log 'openExperimentalVisops'
+            modal MC.template.experimentalVisops()
+
+        experimentalVisopsConfirm : ( event ) ->
+            console.log 'experimentalVisopsConfirm', event
     }
 
     return ToolbarView

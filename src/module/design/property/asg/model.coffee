@@ -80,8 +80,16 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
       component = Design.instance().component( @get("uid") )
       if component.type is "ExpandedAsg"
         component = component.get("originalAsg")
-      count = component.get("policies").length
-      "#{@attributes.name}-policy-#{count}"
+      policies = component.get("policies")
+      count = policies.length
+      name = "#{@attributes.name}-policy-#{count}"
+      currentNames = _.map policies, ( policy ) ->
+        policy.get 'name'
+
+      while name in currentNames
+        name = "#{@attributes.name}-policy-#{++count}"
+      name
+
 
     getPolicy : ( uid )->
       data = $.extend true, {}, Design.instance().component( uid ).attributes

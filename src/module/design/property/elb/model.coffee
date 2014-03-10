@@ -178,6 +178,19 @@ define [ '../base/model', "event", "Design", 'constant' ], ( PropertyModel, ide_
         updateCert : (certUID, certObj) ->
             Design.instance().component( certUID ).updateValue( certObj )
             null
+        
+        getOtherCertName : (currentName) ->
+
+            allCertModelAry = Design.modelClassForType(constant.AWS_RESOURCE_TYPE.AWS_IAM_ServerCertificate).allObjects()
+            
+            otherCertNameAry = []
+            _.each allCertModelAry, (sslCertModel) ->
+                sslCertName = sslCertModel.get('name')
+                if currentName isnt sslCertName
+                    otherCertNameAry.push(sslCertName)
+
+            return otherCertNameAry
+
     }
 
     new ElbModel()

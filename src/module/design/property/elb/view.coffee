@@ -498,22 +498,32 @@ define [ '../base/view',
             $certPrikey = $('#elb-ssl-cert-privatekey-input')
             $certPubkey = $('#elb-ssl-cert-publickey-input')
             $certChain = $('#elb-ssl-cert-chain-input')
+            currentCertName = ''
 
             if isEdit and certUID
                 certModel = Design.instance().component(certUID)
                 if certModel
-                    $certName.val(certModel.get('name'))
+                    currentCertName = certModel.get('name')
+                    $certName.val(currentCertName)
                     $certPrikey.val(certModel.get('key'))
                     $certPubkey.val(certModel.get('body'))
                     $certChain.val(certModel.get('chain'))
+
+            otherCertNameAry = that.model.getOtherCertName(currentCertName)
 
             $("#elb-ssl-cert-confirm").off('click').on('click', ()->
 
                 isCorrect = false
 
+                $certName.parsley 'custom', (val) ->
+                    if val in otherCertNameAry
+                        return 'This name is already in using.'
+                    null
+
                 valid1 = $certName.parsley('validate')
                 valid2 = $certPrikey.parsley('validate')
                 valid3 = $certPubkey.parsley('validate')
+
                 if valid1 and valid2 and valid3
                     isCorrect = true
 

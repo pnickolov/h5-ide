@@ -13,8 +13,6 @@ var VER = '',
 	MC_HOST = 'https://api.madeiracloud.com/';
 
 var MC = {
-	version: '0.3',
-
 	// Global Variable
 	API_URL: MC_HOST,
 	IMG_URL: './assets/images/',

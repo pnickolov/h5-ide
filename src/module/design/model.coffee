@@ -435,6 +435,10 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'state
                         # getAllNotExistAmiInStack  depend on STATE_MODULE_RETURN
                         me.getAllNotExistAmiInStack MC.common.other.canvasData.get 'region'
 
+                    # else
+
+                    #     notification 'error', result.error_message
+
                     null
 
             else

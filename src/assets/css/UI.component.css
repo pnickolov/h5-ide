@@ -1371,7 +1371,7 @@ textarea {
 	width      : 100%;
 	height     : 0;
 	text-align : center;
-	z-index    : 100;
+	z-index    : 999999;
 }
 
 .notification_item {

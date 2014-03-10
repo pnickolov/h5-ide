@@ -1916,7 +1916,7 @@ define [ 'event',
             paraNameSpan = $paraNameSpan.filter(() ->
                 return $(this).text() is paraName
             )
-            paraParagraph = paraNameSpan.parents('p')
+            paraParagraph = paraNameSpan.parents('li')
             paraParagraph.addClass('highlight')
 
             try

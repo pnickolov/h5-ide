@@ -98,31 +98,6 @@
 		</li>
 		{{/each}}
 		</ul>
-<!-- 		<a href="#" id="elb-property-listener-content-add" class="add-to-list action-link">
-			+ {{ i18n "PROP_ELB_BTN_ADD_LISTENER"}}
-		</a>
-
-		<div id="elb-property-listener-cert-main" {{#if showCert}}style="display:block;"{{/if}}>
-			<div class="property-control-group">
-				<h5>{{ i18n "PROP_ELB_BTN_ADD_SERVER_CERTIFICATE"}}</h5>
-			</div>
-			<div class="property-control-group clearfix">
-				<label class="left">{{ i18n "PROP_ELB_LBL_LISTENER_NAME"}}</label>
-				<input class="input" value="{{sslCert.name}}" type="text" data-required="true" data-ignore="true" id="elb-property-cert-name-input"/>
-			</div>
-			<div class="property-control-group clearfix">
-				<label class="left">{{ i18n "PROP_ELB_LBL_LISTENER_PRIVATE_KEY"}}</label>
-				<textarea class="input elb-property-cert-input tooltip" data-tooltip="PEM Encoded" data-required="true" data-ignore="true" id="elb-property-cert-privatekey-input">{{sslCert.key}}</textarea>
-			</div>
-			<div class="property-control-group clearfix">
-				<label class="left"  >{{ i18n "PROP_ELB_LBL_LISTENER_PUBLIC_KEY"}}</label>
-				<textarea class="input elb-property-cert-input tooltip" data-tooltip="PEM Encoded" data-required="true" data-ignore="true" id="elb-property-cert-publickey-input">{{sslCert.body}}</textarea>
-			</div>
-			<div class="property-control-group clearfix">
-				<label class="left"  >{{ i18n "PROP_ELB_LBL_LISTENER_CERTIFICATE_CHAIN"}}</label>
-				<textarea class="input elb-property-cert-input tooltip" data-tooltip="PEM Encoded" id="elb-property-cert-chain-input">{{sslCert.chain}}</textarea>
-			</div>
-		</div> -->
 		<section class="property-control-group" id="property-control-group-cert-setting">
 			<label class="left">{{ i18n "PROP_ELB_SERVER_CERTIFICATE" }}</label>
 			<div class="selectbox" id="sslcert-select">

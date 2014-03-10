@@ -4645,8 +4645,8 @@ a.action-link:hover {
 /* written by song */
 
 /* elb listener set */
-.elb-property-listener {
-	border-bottom: 1px #292929 solid;
+#property-control-group-cert-setting {
+	border-top: 1px #292929 solid;
 }
 
 .elb-property-listener .accordion-body {

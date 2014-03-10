@@ -3188,6 +3188,21 @@ td.table-action a.btn {
 	line-height: 31px;
 }
 
+#apply-visops {
+	background   : #c16aa2;
+	position     : absolute;
+	display      : inline-block;
+	right        : 10px;
+	top          : 11px;
+	font-size    : 12px;
+	color        : #fff;
+	border-radius: 2px;
+	padding      : 2px 4px;
+}
+
+#apply-visops:hover {
+	background   : #9c5787;
+}
 
 /* Sidebars, including Resource Panle and Property Panel */
 .sidebar {
@@ -7643,4 +7658,22 @@ summary:focus {
 
 #sslcert-select .icon-edit:hover {
 	color: #F74A48;
+}
+
+/* Request Invite to VisualOps Modal */
+
+#experimental-visops-confirm {
+	width: 130px;
+}
+
+.modal-body-h3 {
+	color: #333;
+	margin-bottom: 10px;
+	line-height: 24px;
+	font-size: 20px;
+}
+
+.modal-body-h4 {
+	color: #333;
+	margin: 10px 0px;
 }

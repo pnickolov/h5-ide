@@ -21,6 +21,13 @@ require.config {
 	paths   :
 
 		#############################################
+		# Requirejs lib
+		#############################################
+		'domReady'           : 'vender/requirejs/domReady'
+		'text'               : 'vender/requirejs/text'
+		'i18n'               : 'vender/requirejs/i18n'
+
+		#############################################
 		# vender
 		#############################################
 		'jquery'             : 'vender/jquery/jquery'
@@ -30,21 +37,25 @@ require.config {
 		'backbone'           : 'vender/backbone/backbone'
 		'handlebars'         : 'vender/handlebars/handlebars'
 
-		'domReady'           : 'vender/requirejs/domReady'
-		'text'               : 'vender/requirejs/text'
-		'i18n'               : 'vender/requirejs/i18n'
-
 		'sprintf'            : 'vender/sprintf/sprintf'
 
 		#############################################
-		# lib
+		# MC
 		#############################################
 		'MC'                 : 'js/MC.core'
 		'MC.validate'        : 'js/MC.validate'
 
-		#canvas
+		'canvas_layout'      : 'js/canvas_layout'
 		'MC.canvas'          : 'js/MC.canvas'
+
 		'MC.canvas.constant' : 'js/MC.canvas.constant'
+		'constant'           : 'lib/constant'
+
+		'event'              : 'lib/ide_event'
+
+		'Meteor'             : 'vender/meteor/meteor'
+		'WS'                 : 'lib/websocket'
+
 
 		#############################################
 		# lib/aws logic handler
@@ -142,16 +153,6 @@ require.config {
 		'stateeditor_view'   : 'component/stateeditor/view'
 		'stateeditor_model'  : 'component/stateeditor/model'
 
-		#############################################
-		# events
-		#############################################
-		'event'              : 'lib/ide_event'
-
-		#############################################
-		# websocket
-		#############################################
-		'Meteor'             : 'vender/meteor/meteor'
-		'WS'                 : 'lib/websocket'
 
 		#############################################
 		# model

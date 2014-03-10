@@ -1944,7 +1944,7 @@ button {
 	height: 10px;
 	position: absolute;
 	left: 10px;
-	top: 4px;
+	top: 8px;
 }
 
 .region-resource-status.icon-pending:before {
@@ -3222,7 +3222,7 @@ td.table-action a.btn {
 	box-shadow       : inset 0 1px 0 rgba(255,255,255,.05);
 }
 
-a.sidebar-hider {
+a.sidebar-hider:before {
 	color: #eee;
 	font-size: 12px;
 }
@@ -7296,6 +7296,16 @@ summary:focus {
 	background-color: rgba(0,0,0,.4);
 	color: #FEFEFE;
 }
+
+#btn-switch-state .count {
+	font-size: 12px;
+	color: #666;
+}
+
+#property-panel.state #btn-switch-state .count {
+	color: #999;
+}
+
 
 #property-panel.state {
 	width: 654px;

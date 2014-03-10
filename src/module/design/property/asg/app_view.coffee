@@ -383,6 +383,7 @@ define [ '../base/view',
                     p.alarmData.metricName = metricMap[ p.alarmData.metricName ]
                     p.unit   = unitMap[ p.alarmData.metricName ]
                     p.adjustmentType = adjustMap[ p.adjustmentType ]
+                    p.isNew = not p.appId
 
                 data.term_policy_brief = data.terminationPolicies.join(" > ")
                 data.can_add_policy = data.policies.length < 25

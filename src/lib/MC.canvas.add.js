@@ -1213,7 +1213,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				}
 				else
 				{
-					device_name = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p'];
+					device_name = ['f','g','h','i','j','k','l','m','n','o','p'];
 				}
 
 				$.each(ami_info.blockDeviceMapping, function (key, value){

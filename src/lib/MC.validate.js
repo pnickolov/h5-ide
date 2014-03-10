@@ -42,7 +42,7 @@ var MC = MC || {};
 		, sqs: /^arn:aws:sqs:[\w-]+:\d{12}:.+$/
 
 		, deviceLinux: /^\/dev\/(hd[a-z]([1-9]|1[0-5])|(sd[a-z]|sd[b-z]([1-9]|1[0-5])))$/
-		, deviceWindows: /^xvd[a-p]$/
+		, deviceWindows: /^xvd[f-p]$/
 
 	};
 

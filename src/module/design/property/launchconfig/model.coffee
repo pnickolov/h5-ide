@@ -151,7 +151,8 @@ define [ '../base/model', 'keypair_model', 'constant', 'Design' ], ( PropertyMod
       null
 
     isSGListReadOnly : ()->
-      true
+      if @get 'appId'
+        true
 
     getAppLaunch : ( uid ) ->
       lc_data   = MC.data.resource_list[Design.instance().region()][ @lc.get 'LaunchConfigurationARN' ]

@@ -1195,9 +1195,26 @@
 	padding: 2px 10px;
 }
 
+#state-description code {
+	display: block;
+	background-color: #252525;
+	border: 1px solid #131313;
+	color: rgb(58, 194, 58);
+}
+
+#state-description pre {
+	margin: 0;
+}
+
+#state-description blockquote {
+	margin: 0;
+	color: #999;
+	font-style: italic;
+}
+
 #state-description .highlight  {
-	color: #333;
-	background: rgba(255,255,255,.8);
+	color: #eee;
+	background: rgba(0,0,0,.2);
 	box-shadow: inset 3px 0 #25a4f4;
 }
 

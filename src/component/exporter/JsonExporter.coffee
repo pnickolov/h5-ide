@@ -10,9 +10,7 @@ define ['./Download', "./HmacMd5"], ( download )->
 
     j = JSON.stringify(json)
 
-    ua = window.navigator.userAgent
-
-    if ua.indexOf("Safari") > -1 and ua.indexOf("Chrome") is -1
+    if $("body").hasClass("safari")
       blob = null
     else
       blob = new Blob [j]

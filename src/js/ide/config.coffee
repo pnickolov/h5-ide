@@ -83,7 +83,7 @@ require.config {
 		'UI.errortip'      : 'ui/UI.errortip'
 
 		#jquery plugin
-		'hoverIntent'        : 'ui/jquery.hoverIntent.minified'
+		'hoverIntent'        : 'ui/jquery.hoverIntent'
 		'bootstrap-carousel' : 'ui/bootstrap-carousel'
 
 		#delete
@@ -415,6 +415,8 @@ require.config {
 			'UI.parsley'
 			'UI.errortip'
 			"jqpagination"
+			'hoverIntent'
+			'bootstrap-carousel'
 		]
 	### env:prod:end ###
 }

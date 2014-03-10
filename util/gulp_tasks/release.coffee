@@ -57,14 +57,9 @@ Tasks =
     d.promise
 
   copyJs : ()->
-    logTask "Copying Js Templates"
+    logTask "Copying Js & Templates"
 
-    path = ["./src/js/*.js", "./src/ui/*.js", "./src/vender/**/*",
-      "./src/nls/**/*.js"
-      "./src/component/stateeditor/lib/**/*.js" # LEGACY Files
-      "./src/component/exporter/*.js"  # LEGACY Files
-      "./src/**/*.html" # LEGACY Files
-    ]
+    path = ["./src/**/*.js", "./src/**/*.html", "!./src/test/**/*"]
 
     d = Q.defer()
     gulp.src( path, SrcOption ).pipe( dest() ).on( "end", end(d) )
@@ -82,7 +77,7 @@ Tasks =
   compileCoffee : ()->
     logTask "Compiling coffees", true
 
-    path = ["./src/**/*.coffee", "!src/test/**/*", "!lang-source.coffee"]
+    path = ["./src/**/*.coffee", "!src/test/**/*", "!./src/nls/lang-source.coffee"]
 
     d = Q.defer()
     gulp.src( path, SrcOption )
@@ -124,15 +119,18 @@ Tasks =
   concatJS : ()->
     logTask "Concating JS"
 
-    requirejs.optimize( rjsconfig
+    d = Q.defer()
+    requirejs.optimize( rjsconfig()
 
     , (buildres)->
-      null
+      console.log "Concat result:"
+      console.log buildres
+      d.resolve()
     , (err)->
       console.log err
     )
 
-    true
+    d.promise
 
 
 
@@ -162,5 +160,5 @@ module.exports =
       Tasks.compileCoffee
       Tasks.compileTemplate
       Tasks.processHtml
-      # Tasks.concatJS
+      Tasks.concatJS
     ].reduce( Q.when, Q() )

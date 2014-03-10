@@ -83,8 +83,8 @@
     },
     copyJs: function() {
       var d, path;
-      logTask("Copying Js Templates");
-      path = ["./src/js/*.js", "./src/ui/*.js", "./src/vender/**/*", "./src/nls/**/*.js", "./src/component/stateeditor/lib/**/*.js", "./src/component/exporter/*.js", "./src/**/*.html"];
+      logTask("Copying Js & Templates");
+      path = ["./src/**/*.js", "./src/**/*.html", "!./src/test/**/*"];
       d = Q.defer();
       gulp.src(path, SrcOption).pipe(dest()).on("end", end(d));
       return d.promise;
@@ -99,7 +99,7 @@
     compileCoffee: function() {
       var d, path;
       logTask("Compiling coffees", true);
-      path = ["./src/**/*.coffee", "!src/test/**/*", "!lang-source.coffee"];
+      path = ["./src/**/*.coffee", "!src/test/**/*", "!./src/nls/lang-source.coffee"];
       d = Q.defer();
       gulp.src(path, SrcOption).pipe(confCompile(true)).pipe(coffee()).pipe(fileLogger()).pipe(dest()).on("end", end(d, true));
       return d.promise;
@@ -121,20 +121,24 @@
       return d.promise;
     },
     concatJS: function() {
+      var d;
       logTask("Concating JS");
-      requirejs.optimize(rjsconfig, function(buildres) {
-        return null;
+      d = Q.defer();
+      requirejs.optimize(rjsconfig(), function(buildres) {
+        console.log("Concat result:");
+        console.log(buildres);
+        return d.resolve();
       }, function(err) {
         return console.log(err);
       });
-      return true;
+      return d.promise;
     }
   };
 
   module.exports = {
     build: function(debugMode) {
       ideversion.save();
-      return [Tasks.copyAssets, Tasks.copyJs, Tasks.compileLangSrc, Tasks.compileCoffee, Tasks.compileTemplate, Tasks.processHtml].reduce(Q.when, Q());
+      return [Tasks.copyAssets, Tasks.copyJs, Tasks.compileLangSrc, Tasks.compileCoffee, Tasks.compileTemplate, Tasks.processHtml, Tasks.concatJS].reduce(Q.when, Q());
     }
   };
 

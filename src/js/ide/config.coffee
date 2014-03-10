@@ -26,7 +26,7 @@ require.config {
 		# lib
 		#############################################
 		'MC'                 : 'js/MC.core'
-		'MC.validate'  	     : 'js/MC.validate'
+		'MC.validate'        : 'js/MC.validate'
 
 		#canvas
 		'MC.canvas'          : 'js/MC.canvas'
@@ -321,7 +321,7 @@ require.config {
 
 
 		'bootstrap-carousel':
-			deps	   : [ 'jquery' ]
+			deps     : [ 'jquery' ]
 
 		#############################################
 		# WS
@@ -368,6 +368,40 @@ require.config {
 
 		'stateeditor'  :
 			deps       : [ 'stateeditor_view', 'stateeditor_model', 'jquery_sort', 'markdown', 'ace_ext_language_tools', 'MC' ]
+
+	### env:prod ###
+	bundles :
+		"module" : [] # Use to supress the 'module' dependency for "domReady/i18n/text"
+		"vender/requirejs/requirelib" : [ "domReady", "i18n", "text" ]
+		"vender/vender" : [
+			"jquery"
+			"backbone"
+			"underscore"
+			"vender/handlebars/handlebars.rt"
+			"sprintf"
+			"Meteor"
+		]
+		"ui/ui" : [
+			'UI.tooltip'
+			'UI.scrollbar'
+			'UI.tabbar'
+			'UI.bubble'
+			'UI.modal'
+			'UI.table'
+			'UI.tablist'
+			'UI.selectbox'
+			'UI.searchbar'
+			'UI.filter'
+			'UI.radiobuttons'
+			'UI.notification'
+			'UI.multiinputbox'
+			'UI.canvg'
+			'UI.sortable'
+			'UI.parsley'
+			'UI.errortip'
+			"jqpagination"
+		]
+	### end:prod:end ###
 }
 
 require [ 'domReady', './js/ide/ide', "ui/MC.template", "MC" ], ( domReady, ide, template ) ->

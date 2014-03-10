@@ -66,10 +66,21 @@ define [ "constant",
       true
 
     isRemovable : ()->
-      # If Elb connects to an subnet, and the subnet is not the only subnet in its parent. Then the subnet cannot be removed.
-      if @connections("ElbSubnetAsso").length > 0
-        for child in @parent().children()
-          if child isnt @ and child.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
+      # The subnet is only un-removable if it connects to elb and the ElbAsso is not removable
+      for cn in @connections("ElbSubnetAsso")
+        if cn.isRemovable() isnt true
+
+          # In stack mode, we allow the subnet to be deleted, if the Elb only connects
+          # to resource that are children of this subnet
+          notRemovable = true
+          if @design().modeIsStack()
+            notRemovable = false
+            for ami in cn.getOtherTarget( @ ).connectionTargets("ElbAmiAsso")
+              if ami.parent() isnt @ and ami.parent().parent() isnt @
+                notRemovable = true
+                break
+
+          if notRemovable
             return { error : lang.ide.CVS_MSG_ERR_DEL_LINKED_ELB }
 
       true

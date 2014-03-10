@@ -34,7 +34,6 @@ require.config {
 		'text'               : 'vender/requirejs/text'
 		'i18n'               : 'vender/requirejs/i18n'
 
-		'jqpagination'       : 'vender/jqpagination/jqpagination'
 		'sprintf'            : 'vender/sprintf/sprintf'
 
 		#############################################
@@ -64,40 +63,27 @@ require.config {
 		#############################################
 		# ui/
 		#############################################
-		'UI.tooltip'       : 'ui/UI.tooltip'
-		'UI.scrollbar'     : 'ui/UI.scrollbar'
-		'UI.tabbar'        : 'ui/UI.tabbar'
-		'UI.bubble'        : 'ui/UI.bubble'
-		'UI.modal'         : 'ui/UI.modal'
-		'UI.table'         : 'ui/UI.table'
-		'UI.tablist'       : 'ui/UI.tablist'
-		'UI.selectbox'     : 'ui/UI.selectbox'
-		'UI.searchbar'     : 'ui/UI.searchbar'
-		'UI.filter'        : 'ui/UI.filter'
-		'UI.radiobuttons'  : 'ui/UI.radiobuttons'
-		'UI.notification'  : 'ui/UI.notification'
-		'UI.multiinputbox' : 'ui/UI.multiinputbox'
-		'UI.canvg'         : 'ui/UI.canvg'
-		'UI.sortable'      : 'ui/jquery.sortable'
-		'UI.parsley'       : 'ui/UI.parsley'
-		'UI.errortip'      : 'ui/UI.errortip'
-
-		#jquery plugin
+		'UI.tooltip'         : 'ui/UI.tooltip'
+		'UI.scrollbar'       : 'ui/UI.scrollbar'
+		'UI.tabbar'          : 'ui/UI.tabbar'
+		'UI.bubble'          : 'ui/UI.bubble'
+		'UI.modal'           : 'ui/UI.modal'
+		'UI.table'           : 'ui/UI.table'
+		'UI.tablist'         : 'ui/UI.tablist'
+		'UI.selectbox'       : 'ui/UI.selectbox'
+		'UI.searchbar'       : 'ui/UI.searchbar'
+		'UI.filter'          : 'ui/UI.filter'
+		'UI.radiobuttons'    : 'ui/UI.radiobuttons'
+		'UI.notification'    : 'ui/UI.notification'
+		'UI.multiinputbox'   : 'ui/UI.multiinputbox'
+		'UI.canvg'           : 'ui/UI.canvg'
+		'UI.sortable'        : 'ui/jquery.sortable'
+		'UI.parsley'         : 'ui/UI.parsley'
+		'UI.errortip'        : 'ui/UI.errortip'
 		'hoverIntent'        : 'ui/jquery.hoverIntent'
 		'bootstrap-carousel' : 'ui/bootstrap-carousel'
+		'jqpagination'       : 'ui/jqpagination'
 
-		#delete
-		#'parsley'           : 'ui/parsley.min'
-		#'bootstrap-tab'     : 'ui/bootstrap-tab'
-		#'bootstrap-dropdown': 'ui/bootstrap-dropdown'
-
-		#############################################
-		# constant
-		#############################################
-		'constant'           : 'lib/constant'
-
-		#temp
-		'canvas_layout'      : 'js/canvas_layout'
 
 		#############################################
 		# design model

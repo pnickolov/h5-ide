@@ -1,8 +1,25 @@
 
+# Get Version and locale
+(()->
+	scripts = document.getElementsByTagName("script")
+	for s in scripts
+		version = s.getAttribute("data-main")
+		if version
+			window.version = version.split("?")[1]
+			break
+	if window.version is '#{version}' then window.version = "dev"
+
+	console.log window.version
+
+	window.language = document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + "lang\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1") || "en-us"
+	null
+)()
+
 require.config {
 
 	baseUrl : './'
-	locale  : "en-us"
+	locale  : language
+	urlArgs : "v=#{version}"
 	paths   :
 
 		#############################################

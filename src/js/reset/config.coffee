@@ -1,7 +1,17 @@
 
-version  = '130830.1912'
-language = 'en-us'
-current_jquery = if /msie (9|8|7|6)/ig.test(navigator.userAgent.toLowerCase()) then '//code.jquery.com/jquery-1.10.2.min' else '//code.jquery.com/jquery-2.0.3.min'
+# Get Version and locale
+(()->
+	scripts = document.getElementsByTagName("script")
+	for s in scripts
+		version = s.getAttribute("data-main")
+		if version
+			window.version = version.split("?")[1]
+			break
+	if window.version is '#{version}' then window.version = "dev"
+
+	window.language = document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + "lang\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1") || "en-us"
+	null
+)()
 
 require.config {
 
@@ -25,7 +35,7 @@ require.config {
 		'reset_view'      : 'module/reset/view'
 
 		#vender
-		'jquery'          : [ current_jquery , 'vender/jquery/jquery' ]
+		'jquery'          : 'vender/jquery/jquery.1.0'
 		'underscore'      : 'vender/underscore/underscore'
 		'backbone'        : 'vender/backbone/backbone'
 		'handlebars'      : 'vender/handlebars/handlebars'

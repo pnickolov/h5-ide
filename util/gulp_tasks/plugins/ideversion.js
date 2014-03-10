@@ -24,7 +24,7 @@
     if (date[2] < 10) {
       date[2] = "0" + date[2];
     }
-    GLOBAL.gulpConfig.version = pkgInfo.version + (" (" + (date.join('')) + ")");
+    GLOBAL.gulpConfig.version = pkgInfo.version + ("." + (date.join('')));
     return GLOBAL.gulpConfig.version;
   };
 

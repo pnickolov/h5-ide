@@ -19,7 +19,7 @@ version = ()->
   if date[1] < 10 then date[1] = "0" + date[1]
   if date[2] < 10 then date[2] = "0" + date[2]
 
-  GLOBAL.gulpConfig.version = pkgInfo.version + " (#{date.join('')})"
+  GLOBAL.gulpConfig.version = pkgInfo.version + ".#{date.join('')}"
 
   return GLOBAL.gulpConfig.version
 

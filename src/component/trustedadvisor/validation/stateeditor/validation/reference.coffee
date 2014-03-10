@@ -43,7 +43,7 @@ define [ 'constant', 'MC', 'i18n!nls/lang.js' ], ( constant, MC, lang ) ->
 
         if _.isString obj
             if obj.length is 0
-                return 0
+                return []
             ref = ref.concat __findReference obj
         else
             for key, value of obj

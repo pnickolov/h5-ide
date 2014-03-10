@@ -6,7 +6,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "\n<li id=\"tab-bar-"
+  buffer += "<li id=\"tab-bar-"
     + escapeExpression(((stack1 = (depth0 && depth0.tab_id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\" data-tab-type=\""
     + escapeExpression(((stack1 = (depth0 && depth0.tab_type)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -30,7 +30,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "\n<li id=\"tab-bar-"
+  buffer += "<li id=\"tab-bar-"
     + escapeExpression(((stack1 = (depth0 && depth0.target_id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\">\n	<a href=\"#tab-content-"
     + escapeExpression(((stack1 = (depth0 && depth0.target_id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -55,7 +55,7 @@ function program1(depth0,data) {
   return "\n		<i class=\"notification_close\">&times;</i>\n	";
   }
 
-  buffer += "\n<div class=\"notification_item "
+  buffer += "<div class=\"notification_item "
     + escapeExpression(((stack1 = (depth0 && depth0.type)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "_item\">\n	<span>"
     + escapeExpression(((stack1 = (depth0 && depth0.template)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -154,7 +154,7 @@ function program13(depth0,data) {
   return "disabled";
   }
 
-  buffer += "\n<div style=\"width:420px\">\n	<div class=\"modal-header\">\n		<h3>"
+  buffer += "<div style=\"width:420px\">\n	<div class=\"modal-header\">\n		<h3>"
     + escapeExpression(((stack1 = (depth0 && depth0.title)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</h3>\n		<i class=\"modal-close\">&times;</i>\n	</div>\n	<div class=\"modal-body\">\n		";
   stack1 = helpers.unless.call(depth0, (depth0 && depth0.is_production), {hash:{},inverse:self.program(7, program7, data),fn:self.program(1, program1, data),data:data});
@@ -180,7 +180,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "\n<div style=\"width:700px\">\n	<div class=\"modal-header\">\n		<h3>"
+  buffer += "<div style=\"width:700px\">\n	<div class=\"modal-header\">\n		<h3>"
     + escapeExpression(((stack1 = (depth0 && depth0.title)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</h3>\n		<i class=\"modal-close\">&times;</i>\n	</div>\n	<div class=\"modal-body\">\n		<textarea id=\"json-content\"></textarea>\n	</div>\n	<div class=\"modal-footer\">\n		<a id=\"btn-confirm\" class=\"btn btn-"
     + escapeExpression(((stack1 = (depth0 && depth0.color)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -203,7 +203,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, escapeExpression=this.escapeExpression, functionType="function";
 
 
-  buffer += "\n<div id=\"modal-export-cf\" style=\"width:468px\">\n	<div class=\"modal-header\"> <h3>"
+  buffer += "<div id=\"modal-export-cf\" style=\"width:468px\">\n	<div class=\"modal-header\"> <h3>"
     + escapeExpression(helpers.i18n.call(depth0, "TOOL_POP_EXPORT_CF", {hash:{},data:data}))
     + "</h3><i class=\"modal-close\">&times;</i> </div>\n	<div class=\"modal-body\">\n		<div class=\"modal-text-wraper\"> <div class=\"modal-center-align-helper\">\n			<div class=\"modal-text-major\"></div>\n			<div class=\"modal-text-minor\">"
     + escapeExpression(helpers.i18n.call(depth0, "TOOL_POP_EXPORT_CF_INFO", {hash:{},data:data}))
@@ -225,7 +225,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, escapeExpression=this.escapeExpression, functionType="function";
 
 
-  buffer += "\n<div style=\"width:468px\">\n	<div class=\"modal-header\"> <h3>"
+  buffer += "<div style=\"width:468px\">\n	<div class=\"modal-header\"> <h3>"
     + escapeExpression(helpers.i18n.call(depth0, "TOOL_EXPORT_AS_JSON", {hash:{},data:data}))
     + "</h3><i class=\"modal-close\">&times;</i> </div>\n	<div class=\"modal-body\">\n		<div class=\"modal-text-wraper\"> <div class=\"modal-center-align-helper\">\n			<div class=\"modal-text-major\"></div>\n			<div class=\"modal-text-minor\">"
     + escapeExpression(helpers.i18n.call(depth0, "TOOL_POP_BODY_EXPORT_AS_JSON", {hash:{},data:data}))
@@ -249,7 +249,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   
 
 
-  return "\n<div style=\"width:468px\">\n	<div class=\"modal-header\"> <h3>Import Stack from JSON file</h3><i class=\"modal-close\">&times;</i> </div>\n	<div class=\"modal-body\">\n		<div id=\"modal-import-json-dropzone\">Drop JSON file here or <label for=\"modal-import-json-file\" class=\"select-file-link\"> select a file.</label><input type=\"file\" id=\"modal-import-json-file\"></div>\n		<div id=\"import-json-error\"></div>\n	</div>\n</div>\n\n";
+  return "<div style=\"width:468px\">\n	<div class=\"modal-header\"> <h3>Import Stack from JSON file</h3><i class=\"modal-close\">&times;</i> </div>\n	<div class=\"modal-body\">\n		<div id=\"modal-import-json-dropzone\">Drop JSON file here or <label for=\"modal-import-json-file\" class=\"select-file-link\"> select a file.</label><input type=\"file\" id=\"modal-import-json-file\"></div>\n		<div id=\"import-json-error\"></div>\n	</div>\n</div>\n\n";
   };
 TEMPLATE.importJSON=Handlebars.template(__TEMPLATE__);
 
@@ -260,7 +260,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "\n<div style=\"width:420px\">\n	<div class=\"modal-header\">\n		<h3>"
+  buffer += "<div style=\"width:420px\">\n	<div class=\"modal-header\">\n		<h3>"
     + escapeExpression(((stack1 = (depth0 && depth0.title)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</h3>\n		<i class=\"modal-close\">&times;</i>\n	</div>\n\n	<div class=\"modal-body\">\n		<div class=\"loading-spinner\"></div>\n	</div>\n\n	<div class=\"modal-footer\">\n		<a id=\"btn-confirm\" class=\"btn btn-"
     + escapeExpression(((stack1 = (depth0 && depth0.color)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -278,7 +278,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "\n<div class=\"modal-resource-instance-detail\" style=\"width:420px\">\n	<div class=\"modal-header\">\n		<h3>"
+  buffer += "<div class=\"modal-resource-instance-detail\" style=\"width:420px\">\n	<div class=\"modal-header\">\n		<h3>"
     + escapeExpression(((stack1 = (depth0 && depth0.title)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</h3>\n		<i class=\"modal-close\">&times;</i>\n	</div>\n\n	<div class=\"modal-body\">\n		<dl class=\"dl-horizontal\">\n			<dt>DnsName</dt>\n			<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.dnsName)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -406,7 +406,6 @@ function program13(depth0,data) {
   return buffer;
   }
 
-  buffer += "\n";
   stack1 = helpers['if'].call(depth0, (depth0 && depth0.detail_table), {hash:{},inverse:self.program(3, program3, data),fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n	<div class=\"modal-header\">\n		<h3>"
@@ -434,7 +433,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "\n<div class=\"bubble-head\">"
+  buffer += "<div class=\"bubble-head\">"
     + escapeExpression(((stack1 = (depth0 && depth0.title)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</div>\n<div class=\"bubble-content\">\n	<dl class=\"dl-horizontal\">\n		<dt>Start Time:</dt>\n		<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0['start-time'])),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -454,7 +453,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "\n<div class=\"bubble-head alert\">"
+  buffer += "<div class=\"bubble-head alert\">"
     + escapeExpression(((stack1 = (depth0 && depth0.title)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</div>\n<div class=\"bubble-content\">\n	"
     + escapeExpression(((stack1 = (depth0 && depth0.description)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -470,7 +469,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "\n<div class=\"bubble-head suggest\">"
+  buffer += "<div class=\"bubble-head suggest\">"
     + escapeExpression(((stack1 = (depth0 && depth0.title)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</div>\n<div class=\"bubble-content\">\n	"
     + escapeExpression(((stack1 = (depth0 && depth0.description)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -486,7 +485,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "\n<div class=\"bubble-head\"><i class=\"icon-"
+  buffer += "<div class=\"bubble-head\"><i class=\"icon-"
     + escapeExpression(((stack1 = (depth0 && depth0.status)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + " icon-label\"></i>"
     + escapeExpression(((stack1 = (depth0 && depth0.title)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -508,7 +507,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "\n<div class=\"bubble-head\"><i class=\"status-"
+  buffer += "<div class=\"bubble-head\"><i class=\"status-"
     + escapeExpression(((stack1 = (depth0 && depth0.status)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + " icon-label\"></i>"
     + escapeExpression(((stack1 = (depth0 && depth0.title)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -541,7 +540,7 @@ function program1(depth0,data) {
   return buffer;
   }
 
-  buffer += "\n<div class=\"bubble-head\"><i class=\"status-"
+  buffer += "<div class=\"bubble-head\"><i class=\"status-"
     + escapeExpression(((stack1 = (depth0 && depth0.status)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + " icon-label\"></i>"
     + escapeExpression(((stack1 = (depth0 && depth0.title)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -560,7 +559,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "\n<div class=\"bubble-head\"></i>"
+  buffer += "<div class=\"bubble-head\"></i>"
     + escapeExpression(((stack1 = (depth0 && depth0.snapshotId)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</div>\n<div class=\"bubble-content\">\n	<dl class=\"dl-horizontal\">\n		<dt>SnapshotId</dt>\n		<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.snapshotId)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -582,7 +581,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "\n<div class=\"bubble-head\">"
+  buffer += "<div class=\"bubble-head\">"
     + escapeExpression(((stack1 = (depth0 && depth0.id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</div>\n<div class=\"bubble-content\">\n	<dl class=\"dl-horizontal\">\n		<dt>"
     + escapeExpression(helpers.i18n.call(depth0, "DASH_BUB_NAME", {hash:{},data:data}))
@@ -628,7 +627,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "\n<div class=\"bubble-head\"></i>"
+  buffer += "<div class=\"bubble-head\"></i>"
     + escapeExpression(((stack1 = (depth0 && depth0.id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</div>\n<div class=\"bubble-content\">\n	<dl class=\"dl-horizontal\">\n		<dt>Name</dt>\n		<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -662,7 +661,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", escapeExpression=this.escapeExpression;
 
 
-  buffer += "\n<div style=\"width:660px\">\n	<div class=\"modal-header\">\n		<h3>"
+  buffer += "<div style=\"width:660px\">\n	<div class=\"modal-header\">\n		<h3>"
     + escapeExpression(helpers.i18n.call(depth0, "DASH_POP_CREATE_STACK_CREATE_THIS_STACK_IN", {hash:{},data:data}))
     + ":</h3>\n		<i class=\"modal-close\">×</i>\n	</div>\n	<div class=\"modal-body\">\n		<div id=\"createNewStack_wrap\">\n			<ul class=\"clearfix\">\n				<li>\n					<a class=\"new-stack-dialog\" href=\"javascript:void(0)\" data-supported-platform=\"ec2-classic\">\n						<h4>"
     + escapeExpression(helpers.i18n.call(depth0, "DASH_POP_CREATE_STACK_CLASSIC", {hash:{},data:data}))
@@ -684,7 +683,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", escapeExpression=this.escapeExpression;
 
 
-  buffer += "\n<div style=\"width:400px\">\n	<div class=\"modal-header\">\n		<h3>"
+  buffer += "<div style=\"width:400px\">\n	<div class=\"modal-header\">\n		<h3>"
     + escapeExpression(helpers.i18n.call(depth0, "DASH_POP_CREATE_STACK_CREATE_STACK_ERROR", {hash:{},data:data}))
     + "</h3>\n		<i class=\"modal-close\">×</i>\n	</div>\n	<div class=\"modal-body\">\n		<div id=\"createNewStack_wrap\" class=\"load-account-attr-error\">\n			<p>"
     + escapeExpression(helpers.i18n.call(depth0, "DASH_POP_FALE_LOAD_RESOURCE_PLEASE_RETRY", {hash:{},data:data}))
@@ -702,7 +701,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", escapeExpression=this.escapeExpression;
 
 
-  buffer += "\n<div style=\"width:660px\">\n	<div class=\"modal-header\">\n		<h3>"
+  buffer += "<div style=\"width:660px\">\n	<div class=\"modal-header\">\n		<h3>"
     + escapeExpression(helpers.i18n.call(depth0, "DASH_POP_CREATE_STACK_CREATE_THIS_STACK_IN", {hash:{},data:data}))
     + ":</h3>\n		<i class=\"modal-close\">×</i>\n	</div>\n	<div class=\"modal-body\">\n		<div id=\"createNewStack_wrap\">\n			<ul class=\"clearfix\">\n				<li>\n					<a class=\"new-stack-dialog\" href=\"javascript:void(0)\" data-supported-platform=\"default-vpc\">\n						<h4>"
     + escapeExpression(helpers.i18n.call(depth0, "DASH_POP_CREATE_STACK_DEFAULT_VPC", {hash:{},data:data}))
@@ -778,7 +777,7 @@ function program1(depth0,data) {
   return buffer;
   }
 
-  buffer += "\nAmazon Web Services\nVirtual Private Cloud\n\nVPN Connection Configuration\n================================================================================\nAWS utilizes unique identifiers to manipulate the configuration of\na VPN Connection. Each VPN Connection is assigned a VPN Connection Identifier\nand is associated with two other identifiers, namely the\nCustomer Gateway Identifier and the Virtual Private Gateway Identifier.\n\nYour VPN Connection ID            : "
+  buffer += "Amazon Web Services\nVirtual Private Cloud\n\nVPN Connection Configuration\n================================================================================\nAWS utilizes unique identifiers to manipulate the configuration of\na VPN Connection. Each VPN Connection is assigned a VPN Connection Identifier\nand is associated with two other identifiers, namely the\nCustomer Gateway Identifier and the Virtual Private Gateway Identifier.\n\nYour VPN Connection ID            : "
     + escapeExpression(((stack1 = (depth0 && depth0.vpnConnectionId)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\nYour Virtual Private Gateway ID   : "
     + escapeExpression(((stack1 = (depth0 && depth0.vpnGatewayId)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -799,7 +798,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "\n<div id=\"modal-stack-validation-run\">\n	<div class=\"modal-header\">\n		<h3>"
+  buffer += "<div id=\"modal-stack-validation-run\">\n	<div class=\"modal-header\">\n		<h3>"
     + escapeExpression(((stack1 = (depth0 && depth0.title)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</h3>\n		<i class=\"modal-close\">&times;</i>\n	</div>\n	<div class=\"modal-body\">\n		<div class=\"accordion accordion-default\" data-accordion-option=\"exclusive\">\n			<div class=\"accordion-group expanded validation-error\">\n				<div class=\"accordion-head\">\n					<i class=\"icon-error\"></i> 1 Error\n				</div>\n				<div class=\"accordion-body\">\n					<ol>\n						<li>Subnet(10.0.1.0/24) is attached to an ELB, but larger than /27.</li>\n					</ol>\n				</div>\n			</div>\n			<div class=\"accordion-group validation-warning\">\n				<div class=\"accordion-head\">\n					<i class=\"icon-warning\"></i> 5 Warning\n				</div>\n				<div class=\"accordion-body\">\n					<ol>\n						<li>No instance is attached to ELB.</li>\n						<li>ELB is only attached to instance in 1 availability zone. Use multiple availability zones will enhance fault tolerance.</li>\n						<li>No instance is attached to ELB.</li>\n						<li>ELB is only attached to instance in 1 availability zone. Use multiple availability zones will enhance fault tolerance.</li>\n						<li>No instance is attached to ELB.</li>\n						<li>ELB is only attached to instance in 1 availability zone. Use multiple availability zones will enhance fault tolerance.</li>\n					</ol>\n				</div>\n			</div>\n			<div class=\"accordion-group validation-notice\">\n				<div class=\"accordion-head\">\n					<i class=\"icon-notice\"></i> 5 Notice\n				</div>\n				<div class=\"accordion-body\">\n					<ol>\n						<li>No instance is attached to ELB.</li>\n						<li>elb1 is only attached to instance in 1 availability zone. Use multiple availability zones will enhance fault tolerance.</li>\n						<li>No instance is attached to ELB.</li>\n						<li>elb1 is only attached to instance in 1 availability zone. Use multiple availability zones will enhance fault tolerance.</li>\n						<li>No instance is attached to elb1.</li>\n						<li>elb1 is only attached to instance in 1 availability zone. Use multiple availability zones will enhance fault tolerance.</li>\n					</ol>\n				</div>\n			</div>\n		</div>\n	</div>\n	<div class=\"modal-footer\">\n		<button class=\"btn btn-red\">Proceed</button>\n		<button disabled class=\"btn btn-red\">Proceed</button>\n		<button class=\"btn btn-silver modal-close\">Run Later</button>\n	</div>\n</div>\n\n";
   return buffer;
@@ -813,7 +812,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "\n<div id=\"modal-run-stack\">\n	<div class=\"modal-header\">\n		<h3>Run Stack</h3>\n		<i class=\"modal-close\">×</i>\n	</div>\n	<div class=\"modal-body\">\n		<div class=\"modal-control-group clearfix\" data-bind=\"true\">\n			<label class=\"label modal-text-major\" for=\"app-name\">App Name</label>\n			<input id=\"app-name\" class=\"input modal-input-value\" type=\"text\" value=\""
+  buffer += "<div id=\"modal-run-stack\">\n	<div class=\"modal-header\">\n		<h3>Run Stack</h3>\n		<i class=\"modal-close\">×</i>\n	</div>\n	<div class=\"modal-body\">\n		<div class=\"modal-control-group clearfix\" data-bind=\"true\">\n			<label class=\"label modal-text-major\" for=\"app-name\">App Name</label>\n			<input id=\"app-name\" class=\"input modal-input-value\" type=\"text\" value=\""
     + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\" data-ignore=\"true\">\n		</div>\n		<div class=\"modal-control-group app-usage-group clearfix\">\n			<label for=\"\">App Usage</label>\n			<div id=\"app-usage-selectbox\" class=\"selectbox\">\n				<div class=\"selection\"><i class=\"icon-app-type-testing\"></i>Testing</div>\n				<ul class=\"dropdown\" tabindex=\"-1\">\n					<li class=\"selected item\" data-value=\"testing\"><i class=\"icon-app-type-testing\"></i>Testing</li>\n					<li class=\"item\" data-value=\"development\"><i class=\"icon-app-type-development\"></i>Development</li>\n					<li class=\"item\" data-value=\"production\"><i class=\"icon-app-type-production\"></i>Production</li>\n					<li class=\"item\" data-value=\"others\"><i class=\"icon-app-type-others\" data-value=\"testing\"></i>Others</li>\n				<ul>\n			</div>\n		</div>\n		<div class=\"stack-validation\">\n			<details open style=\"display:none;\">\n				<summary>Stack Validation</summary>\n				<div id=\"stack-run-validation-container\"></div>\n			</details>\n			<div class=\"nutshell\" style=\"display: none;\">:<label></label></div>\n			<div class=\"validating\">\n				<div class=\"loading-spinner loading-spinner-small\"></div>\n				<p>Validating your stack...</p>\n			</div>\n		</div>\n		<div class=\"estimate clearfix\">\n			<span class=\"title\">Estimated Cost</span>\n			<span class=\"price\" id=\"label-total-fee\"><b>$"
     + escapeExpression(((stack1 = (depth0 && depth0.total_fee)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -926,7 +925,6 @@ function program16(depth0,data) {
   return buffer;
   }
 
-  buffer += "\n";
   stack1 = helpers.each.call(depth0, depth0, {hash:{},inverse:self.noop,fn:self.programWithDepth(1, program1, data, depth0),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n\n";
@@ -954,7 +952,6 @@ function program1(depth0,data) {
   return buffer;
   }
 
-  buffer += "\n";
   stack1 = helpers.each.call(depth0, (depth0 && depth0.groups), {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n\n";
@@ -982,7 +979,7 @@ function program1(depth0,data) {
   return buffer;
   }
 
-  buffer += "\nFollowing rule(s) will be deleted from its(their) security group:</div>\n<article class=\"scroll-wrap delete-sgrule-dialog\">\n<div class=\"scrollbar-veritical-wrap\"><div class=\"scrollbar-veritical-thumb\"></div></div>\n<div class=\"scroll-content\">\n";
+  buffer += "Following rule(s) will be deleted from its(their) security group:</div>\n<article class=\"scroll-wrap delete-sgrule-dialog\">\n<div class=\"scrollbar-veritical-wrap\"><div class=\"scrollbar-veritical-thumb\"></div></div>\n<div class=\"scroll-content\">\n";
   stack1 = helpers.each.call(depth0, depth0, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n</div>\n</article>\n\n";
@@ -997,7 +994,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "\n<div style=\"width:420px\">\n	<div class=\"modal-header\"> <h3>"
+  buffer += "<div style=\"width:420px\">\n	<div class=\"modal-header\"> <h3>"
     + escapeExpression(((stack1 = (depth0 && depth0.title)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</h3><i class=\"modal-close\">&times;</i> </div>\n	<div class=\"modal-body\">\n		<div class=\"modal-text-wraper\"> <div class=\"modal-center-align-helper\">\n			<div class=\"modal-text-major\">";
   stack1 = ((stack1 = (depth0 && depth0.content)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1);
@@ -1088,7 +1085,6 @@ function program14(depth0,data) {
   return "<div class=\"icon-remove\"></div>";
   }
 
-  buffer += "\n";
   stack1 = helpers.each.call(depth0, depth0, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n\n";
@@ -1158,7 +1154,7 @@ function program11(depth0,data) {
   return "\n					<div class=\"sg-protocol-option-input\" id=\"sg-protocol-custom\">\n						<input class=\"input\" name=\"protocol-custom-ranged\" placeholder=\"1-255\" data-ignore=\"true\" data-ignore-regexp=\"^[0-9]*$\" data-required=\"true\">\n					</div>\n					<div class=\"sg-protocol-option-input\" id=\"sg-protocol-all\">\n						Port Range:<span>0-65535</span>\n					</div>\n				";
   }
 
-  buffer += "\n<div id=\"modal-sg-rule\" data-bind=\"true\">\n	<div class=\"modal-header\">\n		<h3>"
+  buffer += "<div id=\"modal-sg-rule\" data-bind=\"true\">\n	<div class=\"modal-header\">\n		<h3>"
     + escapeExpression(helpers.i18n.call(depth0, "POP_SGRULE_TITLE_ADD", {hash:{},data:data}))
     + "</h3><i class=\"modal-close\">&times;</i>\n	</div>\n\n	<div class=\"modal-body\">\n		<div class=\"modal-control-group clearfix\">\n			<label class=\"label-short\">"
     + escapeExpression(helpers.i18n.call(depth0, "POP_SGRULE_LBL_DIRECTION", {hash:{},data:data}))
@@ -1208,7 +1204,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "\n<div style=\"width:420px\">\n	<div class=\"modal-header\">\n		<h3 id='keypair-name'>"
+  buffer += "<div style=\"width:420px\">\n	<div class=\"modal-header\">\n		<h3 id='keypair-name'>"
     + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</h3>\n		<i class=\"modal-close\">&times;</i>\n	</div>\n	<div class=\"modal-body\">\n		<section id='keypair-loading' class=\"loading-spinner\"></section>\n\n		<section id=\"keypair-body-linux\" class=\"hide\">\n			<div class=\"keypair-download clearfix modal-control-group\">\n				<p class=\"modal-text-major left\">Key Pair data is ready</p>\n				<a href=\"#\" class=\"btn btn-blue right\" id=\"keypair-kp-linux\">Download</a>\n			</div>\n			<div id=\"keypair-remote\" class=\"modal-control-group clearfix\">\n				<label for=\"keypair-cmd\">Remote Access</label>\n				<input class=\"input click-select\" id=\"keypair-cmd\" type=\"text\" readonly=\"readonly\">\n			</div>\n\n		</section>\n		<section id=\"keypair-body-win\" class=\"hide\">\n			<div class=\"modal-control-group\">\n				<h4>Remote Access</h4>\n				<label for=\"keypair-private-key\">Private Key</label>\n				<textarea id=\"keypair-private-key\" class=\"click-select\" readonly=\"readonly\"></textarea>\n				<a href=\"#\" id=\"keypair-rdp\" class=\"btn btn-blue\">Download RDP</a>\n				<a href=\"#\" id=\"keypair-kp-win\" class=\"btn btn-blue\">Download Key Pair</a>\n			</div>\n\n			<div id=\"keypair-public\" class=\"modal-control-group clearfix\">\n				<label for=\"keypair-dns\">Public DNS</label>\n				<input class=\"input click-select\" type=\"text\" readonly=\"readonly\" id=\"keypair-dns\">\n			</div>\n\n			<div class=\"modal-control-group clearfix\">\n				<label style=\"width:100%;\">Windows Login Password</label>\n				<div id=\"keypair-login\">\n					<input type=\"password\" readonly=\"readonly\" id=\"keypair-pwd\" class=\"input click-select\">\n					<a href=\"#\" class=\"btn btn-silver kp-copy-btn\" id=\"keypair-show\">Show password</a>\n				</div>\n				<div id=\"keypair-no-pwd\"></div>\n			</div>\n\n		</section>\n	</div>\n\n	<div class=\"modal-footer\">\n		<button class=\"btn modal-close btn-silver\">Close</button>\n	</div>\n</div>\n\n";
   return buffer;
@@ -1222,7 +1218,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   
 
 
-  return "\n<article>\n	<div class=\"property-control-group\">This resource is not available. It may have been deleted from other source or terminated in previous app editing.</div>\n</article>\n\n";
+  return "<article>\n	<div class=\"property-control-group\">This resource is not available. It may have been deleted from other source or terminated in previous app editing.</div>\n</article>\n\n";
   };
 TEMPLATE.missingPropertyPanel=Handlebars.template(__TEMPLATE__);
 
@@ -1233,7 +1229,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "\n<article>\n	<div class=\"property-control-group\">"
+  buffer += "<article>\n	<div class=\"property-control-group\">"
     + escapeExpression(((stack1 = (depth0 && depth0.asgName)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + " is deleted in stopped app. The auto scaling group will be created when the app is started.</div>\n</article>\n\n";
   return buffer;
@@ -1277,7 +1273,7 @@ function program4(depth0,data) {
   return "volume";
   }
 
-  buffer += "\n<div class=\"bubble-head\">Attached volume (<span id=\"instance_volume_number\">"
+  buffer += "<div class=\"bubble-head\">Attached volume (<span id=\"instance_volume_number\">"
     + escapeExpression(((stack1 = (depth0 && depth0.length)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</span>)</div>\n<div id=\"instance_volume_wrap\" class=\"scroll-wrap\">\n	<div class=\"scrollbar-veritical-wrap\"><div class=\"scrollbar-veritical-thumb\"></div></div>\n	<ul id=\"instance_volume_list\" class=\"clearfix bubble-content scroll-content\">\n		";
   stack1 = helpers.each.call(depth0, depth0, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
@@ -1316,7 +1312,7 @@ function program1(depth0,data,depth1) {
   return buffer;
   }
 
-  buffer += "\n<div id=\"asgList-wrap\">\n	<div id=\"asgList-header\">\n		<span id=\"asgList-title\">"
+  buffer += "<div id=\"asgList-wrap\">\n	<div id=\"asgList-header\">\n		<span id=\"asgList-title\">"
     + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</span>\n		<a id=\"asgList-close\" href=\"javascript:void(0)\" onclick=\"MC.canvas.asgList.close()\">&times;</a>\n	</div>\n	<ul id=\"asgList\" class=\"clearfix\">\n		";
   stack1 = helpers.each.call(depth0, depth0, {hash:{},inverse:self.noop,fn:self.programWithDepth(1, program1, data, depth0),data:data});
@@ -1363,7 +1359,7 @@ function program1(depth0,data,depth1) {
   return buffer;
   }
 
-  buffer += "\n<div id=\"instanceList-wrap\" data-id=\""
+  buffer += "<div id=\"instanceList-wrap\" data-id=\""
     + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0[0])),stack1 == null || stack1 === false ? stack1 : stack1.id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\">\n	<div id=\"instanceList-header\">\n		<span id=\"instanceList-title\">"
     + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -1382,7 +1378,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "\n<li>\n	<a href=\"#\" class=\"instanceList-item\" id=\""
+  buffer += "<li>\n	<a href=\"#\" class=\"instanceList-item\" id=\""
     + escapeExpression(((stack1 = (depth0 && depth0.id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "_"
     + escapeExpression(((stack1 = (data == null || data === false ? data : data.index)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -1436,7 +1432,7 @@ function program2(depth0,data) {
   return " on";
   }
 
-  buffer += "\n<div id=\"eniList-wrap\">\n	<div id=\"eniList-header\">\n		<span id=\"eniList-title\">"
+  buffer += "<div id=\"eniList-wrap\">\n	<div id=\"eniList-header\">\n		<span id=\"eniList-title\">"
     + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</span>\n		<a id=\"eniList-close\" href=\"javascript:void(0)\" onclick=\"MC.canvas.eniList.close()\">&times;</a>\n	</div>\n	<ul id=\"eniList\" class=\"clearfix\">\n		";
   stack1 = helpers.each.call(depth0, depth0, {hash:{},inverse:self.noop,fn:self.programWithDepth(1, program1, data, depth0),data:data});
@@ -1458,7 +1454,7 @@ function program1(depth0,data) {
   return " on";
   }
 
-  buffer += "\n<li>\n	<a href=\"#\" class=\"eniList-item\" id=\""
+  buffer += "<li>\n	<a href=\"#\" class=\"eniList-item\" id=\""
     + escapeExpression(((stack1 = (depth0 && depth0.id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "_"
     + escapeExpression(((stack1 = (data == null || data === false ? data : data.index)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -1481,7 +1477,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "\n<div style=\"width:420px\">\n	<div class=\"modal-header\"> <h3>Set up CIDR Block</h3><i class=\"modal-close\">&times;</i> </div>\n	<div class=\"modal-body\">\n		<div class=\"modal-text-wraper\"> <div class=\"modal-center-align-helper\">\n			<div class=\"modal-text-major\">"
+  buffer += "<div style=\"width:420px\">\n	<div class=\"modal-header\"> <h3>Set up CIDR Block</h3><i class=\"modal-close\">&times;</i> </div>\n	<div class=\"modal-body\">\n		<div class=\"modal-text-wraper\"> <div class=\"modal-center-align-helper\">\n			<div class=\"modal-text-major\">"
     + escapeExpression(((stack1 = (depth0 && depth0.main_content)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</div>\n			<div class=\"modal-text-minor\">"
     + escapeExpression(((stack1 = (depth0 && depth0.desc_content)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -1499,7 +1495,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "\n<div class=\"modal-header\"> <h3>Attach Network Interface to Instance</h3><i class=\"modal-close\">&times;</i> </div>\n<div class=\"modal-body\">\n	<div class=\"modal-center-align-helper\">\n		<p>"
+  buffer += "<div class=\"modal-header\"> <h3>Attach Network Interface to Instance</h3><i class=\"modal-close\">&times;</i> </div>\n<div class=\"modal-body\">\n	<div class=\"modal-center-align-helper\">\n		<p>"
     + escapeExpression(((stack1 = (depth0 && depth0.host)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + " has been automatically assigned Public IP.</p>\n		<p>If you want to attach the external network interface to "
     + escapeExpression(((stack1 = (depth0 && depth0.host)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -1519,7 +1515,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "\n<div style=\"width:420px\">\n	";
+  buffer += "<div style=\"width:420px\">\n	";
   stack1 = ((stack1 = (depth0 && depth0.confirm)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1);
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n	<div class=\"modal-footer\">\n		<button class=\"btn modal-close btn-blue\" id=\"canvas-op-confirm\" style=\"width:200px;\">"
@@ -1536,7 +1532,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "\n<div style=\"width:420px\">\n	<div class=\"modal-header\"> <h3>Stack Name Already in Use</h3><i class=\"modal-close\">&times;</i> </div>\n	<div class=\"modal-body\" style=\"min-height:120px;\">\n		<div class=\"modal-text-wraper\">\n			<div class=\"modal-center-align-helper\">\n				<div class=\"modal-text-major\">Stack name <span class=\"resource-name-label\">"
+  buffer += "<div style=\"width:420px\">\n	<div class=\"modal-header\"> <h3>Stack Name Already in Use</h3><i class=\"modal-close\">&times;</i> </div>\n	<div class=\"modal-body\" style=\"min-height:120px;\">\n		<div class=\"modal-text-wraper\">\n			<div class=\"modal-center-align-helper\">\n				<div class=\"modal-text-major\">Stack name <span class=\"resource-name-label\">"
     + escapeExpression(((stack1 = (depth0 && depth0.stack_name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</span> is already used by another stack. Please use a different name.</div>\n				<div class=\"modal-control-group modal-control-group-bg-blue\" data-bind=\"true\">\n					<label for=\"new-stack-name\">Stack Name</label>\n					<input id=\"new-stack-name\" class=\"input modal-input-value\" type=\"text\" value=\""
     + escapeExpression(((stack1 = (depth0 && depth0.stack_name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -1552,7 +1548,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "\n<div style=\"width:420px\">\n	<div class=\"modal-header\"><h3 class=\"truncate\" style=\"width: 380px;\">Confirm to close "
+  buffer += "<div style=\"width:420px\">\n	<div class=\"modal-header\"><h3 class=\"truncate\" style=\"width: 380px;\">Confirm to close "
     + escapeExpression(((stack1 = (depth0 && depth0.tab_name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</h3><i class=\"modal-close\">&times;</i> </div>\n	<div class=\"modal-body\">\n		<div class=\"modal-text-wraper\"> <div class=\"modal-center-align-helper\">\n			<div class=\"modal-text-major\">"
     + escapeExpression(((stack1 = (depth0 && depth0.tab_name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -1570,7 +1566,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   
 
 
-  return "\n<div style=\"width:420px\">\n	<div class=\"modal-header\"><h3 class=\"truncate\" style=\"width: 380px;\">Changes not applied</h3><i class=\"modal-close\">&times;</i> </div>\n	<div class=\"modal-body\">\n		<div class=\"modal-text-wraper\"> <div class=\"modal-center-align-helper\">\n			<div class=\"modal-text-major\">This app has been changed.</div>\n			<div class=\"modal-text-major\">Do you conﬁrm to discard the changes?</div>\n		</div> </div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"return-app-confirm\" class=\"btn btn-red\">Discard</button>\n		<button class=\"btn modal-close btn-silver\">Cancel</button>\n	</div>\n</div>\n\n";
+  return "<div style=\"width:420px\">\n	<div class=\"modal-header\"><h3 class=\"truncate\" style=\"width: 380px;\">Changes not applied</h3><i class=\"modal-close\">&times;</i> </div>\n	<div class=\"modal-body\">\n		<div class=\"modal-text-wraper\"> <div class=\"modal-center-align-helper\">\n			<div class=\"modal-text-major\">This app has been changed.</div>\n			<div class=\"modal-text-major\">Do you conﬁrm to discard the changes?</div>\n		</div> </div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"return-app-confirm\" class=\"btn btn-red\">Discard</button>\n		<button class=\"btn modal-close btn-silver\">Cancel</button>\n	</div>\n</div>\n\n";
   };
 TEMPLATE.cancelAppEdit2App=Handlebars.template(__TEMPLATE__);
 
@@ -1581,7 +1577,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "\n<div style=\"width:420px\">\n	<div class=\"modal-header\"> <h3>"
+  buffer += "<div style=\"width:420px\">\n	<div class=\"modal-header\"> <h3>"
     + escapeExpression(((stack1 = (depth0 && depth0.title)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</h3><i class=\"modal-close\">&times;</i> </div>\n	<div class=\"modal-body\">\n		<div class=\"modal-text-wraper\">\n			 <div class=\"modal-center-align-helper\">\n				<div class=\"modal-text-major\">"
     + escapeExpression(((stack1 = (depth0 && depth0.main_content)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -1599,7 +1595,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   
 
 
-  return "\n<div id=\"loading-modal-wrap\">\n	<div class=\"loading-modal\" id=\"modal-box\">\n		<div class=\"loading-spinner loading-spinner-mid\"></div>\n		<div>Refreshing resources...</div>\n	</div>\n</div>\n\n";
+  return "<div id=\"loading-modal-wrap\">\n	<div class=\"loading-modal\" id=\"modal-box\">\n		<div class=\"loading-spinner loading-spinner-mid\"></div>\n		<div>Refreshing resources...</div>\n	</div>\n</div>\n\n";
   };
 TEMPLATE.loadingTransparent=Handlebars.template(__TEMPLATE__);
 
@@ -1610,7 +1606,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "\n<div style=\"width:420px\">\n	<div class=\"modal-header\"> <h3>"
+  buffer += "<div style=\"width:420px\">\n	<div class=\"modal-header\"> <h3>"
     + escapeExpression(((stack1 = (depth0 && depth0.title)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</h3><i class=\"modal-close\">&times;</i> </div>\n	<div class=\"modal-body\">\n		<div class=\"modal-text-wraper\">\n			 <div class=\"modal-center-align-helper\">\n				<div class=\"modal-text-major\">"
     + escapeExpression(((stack1 = (depth0 && depth0.main_content)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -1628,7 +1624,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   
 
 
-  return "\n<div>\n	<div class=\"info\">Last saved: <span class=\"stack-save-time\">-<span></div>\n	<ul class=\"statusbar-btn-list\">\n		<li class=\"statusbar-btn btn-state\">\n			<span class=\"state-success\"><i class=\"status status-green icon-label\"></i><b>0</b></span>\n			<span class=\"state-failed\"><i class=\"status status-red icon-label\"></i><b>0</b></span>\n		</li>\n		<li class=\"statusbar-btn btn-ta-valid\">Validate</li>\n	</ul>\n</div>\n\n";
+  return "<div>\n	<div class=\"info\">Last saved: <span class=\"stack-save-time\">-<span></div>\n	<ul class=\"statusbar-btn-list\">\n		<li class=\"statusbar-btn btn-state\">\n			<span class=\"state-success\"><i class=\"status status-green icon-label\"></i><b>0</b></span>\n			<span class=\"state-failed\"><i class=\"status status-red icon-label\"></i><b>0</b></span>\n		</li>\n		<li class=\"statusbar-btn btn-ta-valid\">Validate</li>\n	</ul>\n</div>\n\n";
   };
 TEMPLATE.statusbar=Handlebars.template(__TEMPLATE__);
 
@@ -1649,7 +1645,7 @@ function program1(depth0,data) {
   return buffer;
   }
 
-  buffer += "\n<div style=\"width:420px\">\n	<div class=\"modal-header\"><h3 class=\"truncate\" style=\"width: 380px;\">Need to Restart Instance</h3><i class=\"modal-close\">&times;</i> </div>\n	<div class=\"modal-body\" style=\"height:150px;\">\n		<div class=\"modal-text-wraper\">\n			<div class=\"modal-text-major\">To update the properties you have changed, following instances need to restart:</div>\n			<ul class=\"clearfix\">\n				";
+  buffer += "<div style=\"width:420px\">\n	<div class=\"modal-header\"><h3 class=\"truncate\" style=\"width: 380px;\">Need to Restart Instance</h3><i class=\"modal-close\">&times;</i> </div>\n	<div class=\"modal-body\" style=\"height:150px;\">\n		<div class=\"modal-text-wraper\">\n			<div class=\"modal-text-major\">To update the properties you have changed, following instances need to restart:</div>\n			<ul class=\"clearfix\">\n				";
   stack1 = helpers.each.call(depth0, (depth0 && depth0.instance_list), {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n			</ul>\n			<div id=\"instance-type\" class=\"modal-text-major\"></div>\n		</div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"confirm-update-app\" class=\"btn btn-blue\" style=\"width:160px;\">Continue to Update</button>\n		<button class=\"btn modal-close btn-silver\">Cancel</button>\n	</div>\n</div>\n\n";
@@ -1743,7 +1739,7 @@ function program13(depth0,data) {
   return buffer;
   }
 
-  buffer += "\n<div id=\"app-apply-update\" style=\"width:460px\">\n	<div class=\"modal-header\"><h3 class=\"truncate\" style=\"width: 380px;\">Conﬁrm to Update App</h3><i class=\"modal-close\">&times;</i> </div>\n	<div class=\"modal-body\">\n	";
+  buffer += "<div id=\"app-apply-update\" style=\"width:460px\">\n	<div class=\"modal-header\"><h3 class=\"truncate\" style=\"width: 380px;\">Conﬁrm to Update App</h3><i class=\"modal-close\">&times;</i> </div>\n	<div class=\"modal-body\">\n	";
   stack1 = helpers['if'].call(depth0, (depth0 && depth0.isRunning), {hash:{},inverse:self.program(3, program3, data),fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n	";
@@ -1761,7 +1757,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   
 
 
-  return "\n<div class=\"overlay-content-wrap\">\n	<div class=\"overlay-text\">Oops! There has been some issue loading the tab.</div>\n	<button class=\"btn btn-blue\" id=\"btn-fail-reload\">Reload</button>\n</div>\n\n";
+  return "<div class=\"overlay-content-wrap\">\n	<div class=\"overlay-text\">Oops! There has been some issue loading the tab.</div>\n	<button class=\"btn btn-blue\" id=\"btn-fail-reload\">Reload</button>\n</div>\n\n";
   };
 TEMPLATE.openTabFail=Handlebars.template(__TEMPLATE__);
 
@@ -1772,7 +1768,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   
 
 
-  return "\n<div class=\"overlay-content-wrap\">\n	<div class=\"overlay-text\">Starting app...</div>\n	<div class=\"loading-spinner\"></div>\n</div>\n\n";
+  return "<div class=\"overlay-content-wrap\">\n	<div class=\"overlay-text\">Starting app...</div>\n	<div class=\"loading-spinner\"></div>\n</div>\n\n";
   };
 TEMPLATE.appStarting=Handlebars.template(__TEMPLATE__);
 
@@ -1783,7 +1779,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   
 
 
-  return "\n<div class=\"overlay-content-wrap\">\n	<div class=\"overlay-text\">Stopping app...</div>\n	<div class=\"loading-spinner\"></div>\n</div>\n\n";
+  return "<div class=\"overlay-content-wrap\">\n	<div class=\"overlay-text\">Stopping app...</div>\n	<div class=\"loading-spinner\"></div>\n</div>\n\n";
   };
 TEMPLATE.appStopping=Handlebars.template(__TEMPLATE__);
 
@@ -1794,7 +1790,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   
 
 
-  return "\n<div class=\"overlay-content-wrap\">\n	<div class=\"overlay-text\">Terminating app...</div>\n	<div class=\"loading-spinner\"></div>\n</div>\n\n";
+  return "<div class=\"overlay-content-wrap\">\n	<div class=\"overlay-text\">Terminating app...</div>\n	<div class=\"loading-spinner\"></div>\n</div>\n\n";
   };
 TEMPLATE.appTerminating=Handlebars.template(__TEMPLATE__);
 
@@ -1817,7 +1813,7 @@ function program1(depth0,data) {
   return buffer;
   }
 
-  buffer += "\n<div class=\"overlay-content-wrap\">\n	<div class=\"overlay-text\">Updating app...</div>\n	<div class=\"loading-spinner\"></div>\n	";
+  buffer += "<div class=\"overlay-content-wrap\">\n	<div class=\"overlay-text\">Updating app...</div>\n	<div class=\"loading-spinner\"></div>\n	";
   stack1 = helpers['if'].call(depth0, (depth0 && depth0.is_show), {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n</div>\n\n";
@@ -1832,7 +1828,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   
 
 
-  return "\n<div class=\"overlay-content-wrap\">\n	<div class=\"overlay-text\">App has updated successfully.</div>\n	<button class=\"btn btn-blue\" id=\"btn-updated-success\">Done</button>\n</div>\n\n";
+  return "<div class=\"overlay-content-wrap\">\n	<div class=\"overlay-text\">App has updated successfully.</div>\n	<button class=\"btn btn-blue\" id=\"btn-updated-success\">Done</button>\n</div>\n\n";
   };
 TEMPLATE.appUpdatedSuccess=Handlebars.template(__TEMPLATE__);
 
@@ -1864,7 +1860,7 @@ function program2(depth0,data) {
   return "\n		<div class=\"result-error-notice\">The state of your app has been rolled back, except for the already deleted resources.</div>\n		";
   }
 
-  buffer += "\n<div class=\"overlay-content-wrap app-change-fail\">\n	<div class=\"overlay-text\">Oops! The app failed to "
+  buffer += "<div class=\"overlay-content-wrap app-change-fail\">\n	<div class=\"overlay-text\">Oops! The app failed to "
     + escapeExpression(((stack1 = (depth0 && depth0.state)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + ".</div>\n	";
   stack1 = helpers['if'].call(depth0, (depth0 && depth0.is_show), {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
@@ -1881,7 +1877,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "\n<div id=\"node-action-wrap\">\n	<div id=\"node-action-state\">\n		<div id=\"node-action-state-btn\">\n			<i id=\"node-state-icon\"></i>\n			<span id=\"node-state-number\">"
+  buffer += "<div id=\"node-action-wrap\">\n	<div id=\"node-action-state\">\n		<div id=\"node-action-state-btn\">\n			<i id=\"node-state-icon\"></i>\n			<span id=\"node-state-number\">"
     + escapeExpression(((stack1 = (depth0 && depth0.state_num)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</span>\n		</div>\n		<div class=\"node-action-tooltip\">Edit State</div>\n	</div>\n</div>\n\n";
   return buffer;
@@ -1895,7 +1891,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "\n<div id=\"modal-instance-sys-log\" style=\"width: 900px;\">\n	<div class=\"modal-header\"><h3>System Log: "
+  buffer += "<div id=\"modal-instance-sys-log\" style=\"width: 900px;\">\n	<div class=\"modal-header\"><h3>System Log: "
     + escapeExpression(((stack1 = (depth0 && depth0.instance_id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</h3><i class=\"modal-close\">&times;</i> </div>\n	<div class=\"modal-body\">\n		<section class=\"instance-sys-log-loading loading-spinner\"></section>\n		<div class=\"instance-sys-log-content font-mono\">"
     + escapeExpression(((stack1 = (depth0 && depth0.log_content)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -1911,7 +1907,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "\nAre you sure you want to delete "
+  buffer += "Are you sure you want to delete "
     + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "?</div>\n<div class=\"modal-text-minor\">Once deleted, the states of "
     + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -1927,7 +1923,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "\nAre you sure you want to delete "
+  buffer += "Are you sure you want to delete "
     + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "?</div>\n<div class=\"modal-text-minor\">The security group "
     + escapeExpression(((stack1 = (depth0 && depth0.sg)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -1943,7 +1939,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   
 
 
-  return "\n<div style=\"width:420px\">\n	<div class=\"modal-header\"><h3>Conﬁrm to Enable VisualOps</h3><i class=\"modal-close\">&times;</i></div>\n	<div class=\"modal-body\">\n		<div class=\"modal-text-wraper\">\n			<div class=\"modal-center-align-helper\">\n				<div class=\"modal-text-major\">Enable VisualOps will override your custom User Data. Are you sure to continue?</div>\n			</div>\n		</div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"modal-stack-agent-enable-confirm\" style=\"width:145px;\" class=\"btn modal-confirm btn-blue\">Enable VisualOps</button>\n		<button id=\"modal-stack-agent-enable-cancel\" class=\"btn modal-close btn-silver\">Cancel</button>\n	</div>\n</div>\n\n";
+  return "<div style=\"width:420px\">\n	<div class=\"modal-header\"><h3>Conﬁrm to Enable VisualOps</h3><i class=\"modal-close\">&times;</i></div>\n	<div class=\"modal-body\">\n		<div class=\"modal-text-wraper\">\n			<div class=\"modal-center-align-helper\">\n				<div class=\"modal-text-major\">Enable VisualOps will override your custom User Data. Are you sure to continue?</div>\n			</div>\n		</div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"modal-stack-agent-enable-confirm\" style=\"width:145px;\" class=\"btn modal-confirm btn-blue\">Enable VisualOps</button>\n		<button id=\"modal-stack-agent-enable-cancel\" class=\"btn modal-close btn-silver\">Cancel</button>\n	</div>\n</div>\n\n";
   };
 TEMPLATE.modalStackAgentEnable=Handlebars.template(__TEMPLATE__);
 
@@ -1954,7 +1950,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   
 
 
-  return "\n<div style=\"width:640px\" id=\"modal-key-short\">\n	<div class=\"modal-header\"><h3>Keyboard Shortcuts (?)</h3><i class=\"modal-close\">&times;</i></div>\n	<div class=\"modal-body scroll-wrap\">\n		<div class=\"scrollbar-veritical-wrap\"><div class=\"scrollbar-veritical-thumb\"></div></div>\n		<div class=\"scroll-content\" style=\"height: 560px\">\n			<section class=\"key-stack-app\">\n				<h3 class=\"title\">Stack/App Operation</h3>\n				<ul class=\"keys\">\n					<li class=\"key-item\">\n						<div class=\"key font-mono\">P</div>\n						<div class=\"action\">Show Property Panel</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key font-mono\">R</div>\n						<div class=\"action\">Show Resource Panel\n							<div class=\"meta\">Only in editable mode.</div>\n						</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key font-mono\">S</div>\n						<div class=\"action\">Show State Panel</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key mac font-mono\">Option+Drag Instance</div>\n						<div class=\"key pc font-mono\">Alt+Drag Instance</div>\n						<div class=\"action\">Duplicate Instance\n							<div class=\"meta\">Only in editable mode.</div>\n						</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key mac font-mono\">Delete</div>\n						<div class=\"key pc font-mono\">Delete/Backspace</div>\n						<div class=\"action\">Delete selected item.\n							<div class=\"meta\">Only in editable mode.</div>\n						</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key mac font-mono\">Command + S</div>\n						<div class=\"key pc font-mono\">Ctrl+S</div>\n						<div class=\"action\">Save stack.\n							<div class=\"meta\">Only in stack.</div>\n						</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key mac font-mono\">Command+Drag on canvas</div>\n						<div class=\"key pc font-mono\">Ctrl+Drag on canvas</div>\n						<div class=\"action\">Scroll canvas.</div>\n					</li>\n				</ul>\n			</section>\n			<section class=\"key-state\">\n				<h3 class=\"title\">State Panel Operation - General</h3>\n				<ul class=\"keys\">\n					<li class=\"key-item\">\n						<div class=\"key font-mono\">Up/Down</div>\n						<div class=\"action\">Switch focused state.</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key font-mono\">Space</div>\n						<div class=\"action\">Select/Unselect focused state.</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key font-mono\">Enter</div>\n						<div class=\"action\">Expand focused state.</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key font-mono\">ESC</div>\n						<div class=\"action\">Collapse focused state.</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key font-mono\">Tab</div>\n						<div class=\"action\">Focus to next input.</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key font-mono\">Shift+Tab</div>\n						<div class=\"action\">Focus to previous input.\n						</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key mac font-mono\">Command+I</div>\n						<div class=\"key pc font-mono\">Ctrl+I</div>\n						<div class=\"action\">Open/Close information sidebar.</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key mac font-mono\">Command+L</div>\n						<div class=\"key pc font-mono\">Ctrl+L</div>\n						<div class=\"action\">Open/Close log sidebar.\n							<div class=\"meta\">Only in app.</div>\n						</div>\n					</li>\n				</ul>\n			</section>\n			<section class=\"key-state-edit\">\n				<h3 class=\"title\">State Panel Operation - Editable Mode</h3>\n				<ul class=\"keys\">\n					<li class=\"key-item\">\n						<div class=\"key mac font-mono\">Command+A</div>\n						<div class=\"key pc font-mono\">Ctrl+A</div>\n						<div class=\"action\">Select all states.</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key mac font-mono\">Command+D</div>\n						<div class=\"key pc font-mono\">Ctrl+D</div>\n						<div class=\"action\">Deselect states.</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key mac font-mono\">Command+Enter</div>\n						<div class=\"key pc font-mono\">Ctrl+Enter</div>\n						<div class=\"action\">Create new state.</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key mac font-mono\">Command+Delete</div>\n						<div class=\"key pc font-mono\">Ctrl+Delete/Backspace</div>\n						<div class=\"action\">Delete selected state.</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key mac font-mono\">Command+Up/Down</div>\n						<div class=\"key pc font-mono\">Ctrl+Up/Down</div>\n						<div class=\"action\">Move focused state.</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key mac font-mono\">Command+C</div>\n						<div class=\"key pc font-mono\">Ctrl+C</div>\n						<div class=\"action\">Copy selected state.</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key mac font-mono\">Command+V</div>\n						<div class=\"key pc font-mono\">Ctrl+V</div>\n						<div class=\"action\">Paste selecte state.</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key mac font-mono\">Command+Z</div>\n						<div class=\"key pc font-mono\">Ctrl+Z</div>\n						<div class=\"action\">Undo.</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key mac font-mono\">Command+Y</div>\n						<div class=\"key pc font-mono\">Ctrl+Y</div>\n						<div class=\"action\">Redo.</div>\n					</li>\n				</ul>\n			</section>\n		</div>\n	</div>\n	<div class=\"modal-footer\">\n		<button class=\"btn modal-close btn-silver\">Close</button>\n	</div>\n</div>\n";
+  return "<div style=\"width:640px\" id=\"modal-key-short\">\n	<div class=\"modal-header\"><h3>Keyboard Shortcuts (?)</h3><i class=\"modal-close\">&times;</i></div>\n	<div class=\"modal-body scroll-wrap\">\n		<div class=\"scrollbar-veritical-wrap\"><div class=\"scrollbar-veritical-thumb\"></div></div>\n		<div class=\"scroll-content\" style=\"height: 560px\">\n			<section class=\"key-stack-app\">\n				<h3 class=\"title\">Stack/App Operation</h3>\n				<ul class=\"keys\">\n					<li class=\"key-item\">\n						<div class=\"key font-mono\">P</div>\n						<div class=\"action\">Show Property Panel</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key font-mono\">R</div>\n						<div class=\"action\">Show Resource Panel\n							<div class=\"meta\">Only in editable mode.</div>\n						</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key font-mono\">S</div>\n						<div class=\"action\">Show State Panel</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key mac font-mono\">Option+Drag Instance</div>\n						<div class=\"key pc font-mono\">Alt+Drag Instance</div>\n						<div class=\"action\">Duplicate Instance\n							<div class=\"meta\">Only in editable mode.</div>\n						</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key mac font-mono\">Delete</div>\n						<div class=\"key pc font-mono\">Delete/Backspace</div>\n						<div class=\"action\">Delete selected item.\n							<div class=\"meta\">Only in editable mode.</div>\n						</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key mac font-mono\">Command + S</div>\n						<div class=\"key pc font-mono\">Ctrl+S</div>\n						<div class=\"action\">Save stack.\n							<div class=\"meta\">Only in stack.</div>\n						</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key mac font-mono\">Command+Drag on canvas</div>\n						<div class=\"key pc font-mono\">Ctrl+Drag on canvas</div>\n						<div class=\"action\">Scroll canvas.</div>\n					</li>\n				</ul>\n			</section>\n			<section class=\"key-state\">\n				<h3 class=\"title\">State Panel Operation - General</h3>\n				<ul class=\"keys\">\n					<li class=\"key-item\">\n						<div class=\"key font-mono\">Up/Down</div>\n						<div class=\"action\">Switch focused state.</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key font-mono\">Space</div>\n						<div class=\"action\">Select/Unselect focused state.</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key font-mono\">Enter</div>\n						<div class=\"action\">Expand focused state.</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key font-mono\">ESC</div>\n						<div class=\"action\">Collapse focused state.</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key font-mono\">Tab</div>\n						<div class=\"action\">Focus to next input.</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key font-mono\">Shift+Tab</div>\n						<div class=\"action\">Focus to previous input.\n						</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key mac font-mono\">Command+I</div>\n						<div class=\"key pc font-mono\">Ctrl+I</div>\n						<div class=\"action\">Open/Close information sidebar.</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key mac font-mono\">Command+L</div>\n						<div class=\"key pc font-mono\">Ctrl+L</div>\n						<div class=\"action\">Open/Close log sidebar.\n							<div class=\"meta\">Only in app.</div>\n						</div>\n					</li>\n				</ul>\n			</section>\n			<section class=\"key-state-edit\">\n				<h3 class=\"title\">State Panel Operation - Editable Mode</h3>\n				<ul class=\"keys\">\n					<li class=\"key-item\">\n						<div class=\"key mac font-mono\">Command+A</div>\n						<div class=\"key pc font-mono\">Ctrl+A</div>\n						<div class=\"action\">Select all states.</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key mac font-mono\">Command+D</div>\n						<div class=\"key pc font-mono\">Ctrl+D</div>\n						<div class=\"action\">Deselect states.</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key mac font-mono\">Command+Enter</div>\n						<div class=\"key pc font-mono\">Ctrl+Enter</div>\n						<div class=\"action\">Create new state.</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key mac font-mono\">Command+Delete</div>\n						<div class=\"key pc font-mono\">Ctrl+Delete/Backspace</div>\n						<div class=\"action\">Delete selected state.</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key mac font-mono\">Command+Up/Down</div>\n						<div class=\"key pc font-mono\">Ctrl+Up/Down</div>\n						<div class=\"action\">Move focused state.</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key mac font-mono\">Command+C</div>\n						<div class=\"key pc font-mono\">Ctrl+C</div>\n						<div class=\"action\">Copy selected state.</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key mac font-mono\">Command+V</div>\n						<div class=\"key pc font-mono\">Ctrl+V</div>\n						<div class=\"action\">Paste selecte state.</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key mac font-mono\">Command+Z</div>\n						<div class=\"key pc font-mono\">Ctrl+Z</div>\n						<div class=\"action\">Undo.</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key mac font-mono\">Command+Y</div>\n						<div class=\"key pc font-mono\">Ctrl+Y</div>\n						<div class=\"action\">Redo.</div>\n					</li>\n				</ul>\n			</section>\n		</div>\n	</div>\n	<div class=\"modal-footer\">\n		<button class=\"btn modal-close btn-silver\">Close</button>\n	</div>\n</div>\n";
   };
 TEMPLATE.shortkey=Handlebars.template(__TEMPLATE__);
 

@@ -401,7 +401,7 @@ require.config {
 			'UI.errortip'
 			"jqpagination"
 		]
-	### end:prod:end ###
+	### env:prod:end ###
 }
 
 require [ 'domReady', './js/ide/ide', "ui/MC.template", "MC" ], ( domReady, ide, template ) ->

@@ -50,7 +50,7 @@ tryCompile = ( data, file )->
 
 compilePartials = ( file, shouldLog )->
   content = file.contents.toString("utf8")
-  data = content.split(/\<!--\s*\{\{\s*(.*)\s*\}\}\s*--\>/ig)
+  data = content.split(/\<!--\s*\{\{\s*(.*)\s*\}\}\s*--\>\n/ig)
 
   newData = ""
   namespace = {}

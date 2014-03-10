@@ -72,6 +72,8 @@ define [ '../base/view',
             @updateSlider( $('#elb-property-slider-unhealthy'), @model.get('unHealthyThreshold') - 2)
             @updateSlider( $('#elb-property-slider-healthy'), @model.get('healthyThreshold') - 2)
 
+            @updateCertView()
+
             @model.attributes.name
 
         elbNameChange : ( event ) ->
@@ -315,8 +317,6 @@ define [ '../base/view',
                 elbPort = that.find('.elb-property-listener-elb-port-input')
                 instancePort = that.find('.elb-property-listener-instance-port-input')
 
-
-
                 if elbPortValidate and instancePortValidate and !isNaN(parseInt(elbPortValue, 10)) and !isNaN(parseInt(instancePortValue, 10))
 
                     newItemObj = {
@@ -336,7 +336,6 @@ define [ '../base/view',
                     isShowCertPanel = true
 
                 null
-
 
             @model.setListenerAry idx, listener
             @updateCertView()
@@ -367,7 +366,12 @@ define [ '../base/view',
                     show = true
                     return false
 
-            $("#elb-property-listener-cert-main").toggle( show )
+            $certPanel = $('#property-control-group-cert-setting')
+            if show
+                $certPanel.show()
+            else
+                $certPanel.hide()
+
             null
 
         azCheckChanged : ( event ) ->

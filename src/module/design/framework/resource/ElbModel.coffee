@@ -251,11 +251,11 @@ define [ "Design",
       else
         sslcertId = ""
 
-      usessl = false
+      # usessl = false
       for l in @get("listeners")
         if l.protocol is "SSL" or l.protocol is "HTTPS"
           id = sslcertId
-          usessl = true
+          # usessl = true
         else
           id = ""
 
@@ -310,15 +310,15 @@ define [ "Design",
             }
           BackendServerDescriptions : [ { InstantPort : "", PoliciyNames : "" } ]
 
-      json_object = { component : component, layout : @generateLayout() }
+      return { component : component, layout : @generateLayout() }
 
-      if usessl and @get("sslCert")
-        ssl = @get("sslCert")
-        sslComponent = ssl.serialize()
+      # if usessl and @get("sslCert")
+      #   ssl = @get("sslCert")
+      #   sslComponent = ssl.serialize()
 
-        return [ json_object, { component : sslComponent } ]
-      else
-        return json_object
+      #   return [ json_object ]
+      # else
+      # return json_object
 
   }, {
 

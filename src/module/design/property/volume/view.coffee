@@ -65,7 +65,7 @@ define [ '../base/view',
                     if type is 'linux'
                         return "Device name must be like /dev/hd[a-z], /dev/hd[a-z][1-15],/dev/sd[a-z] or /dev/sd[b-z][1-15]"
                     else
-                        return "Device name must be like xvd[a-p]."
+                        return "Device name must be like xvd[f-p]."
 
                 if self.model.isDuplicate val
                     "Volume name '#{val}' is already in using. Please use another one."

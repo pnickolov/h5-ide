@@ -160,7 +160,7 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
         if ami_info.osType isnt "windows"
           deviceName = ["f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
         else
-          deviceName = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p"]
+          deviceName = ["f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p"]
 
         $.each ami_info.blockDeviceMapping || [], (key, value) ->
           if key.slice(0, 4) is "/dev/"

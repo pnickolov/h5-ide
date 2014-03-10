@@ -17,7 +17,7 @@ define [ 'MC' ], ( MC) ->
 
 		else
 			#windows
-			device_list = 'a b c d e f g h i j k l m n o p'.split(' ')
+			device_list = 'f g h i j k l m n o p'.split(' ')
 
 
 		$.each ami_info.blockDeviceMapping, (key, value) ->

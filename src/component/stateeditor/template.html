@@ -190,8 +190,8 @@
 					<div class="state-editor-toolbar clearfix font-normal">
 						<a class="tooltip state-desc-toggle icon-desc" data-tooltip="Description"></a>
 						<a class="tooltip state-log-toggle icon-log" data-tooltip="State Log"></a>
-						<a class="tooltip state-log-refresh icon-refresh" data-tooltip="Refresh state log"></a>
-						<a class="tooltip state-sys-log-btn icon-syslog" data-tooltip="System log"></a>
+						<a class="tooltip state-log-refresh icon-refresh" data-tooltip="Refresh State Log"></a>
+						<a class="tooltip state-sys-log-btn icon-syslog" data-tooltip="System Log"></a>
 
 						<div class="state-operate">
 							<a id="state-toolbar-add" href="javascript:void(0)">+ Add State</a>
@@ -256,11 +256,11 @@
 
 <!-- state-template-log-item -->
 {{#each state_logs}}
-	<li class="state-log-item" data-state-id="{{id}}">
+	<li class="state-log-item {{state_status}}" data-state-id="{{id}}">
 		<div class="state-log-item-header">
 			<div class="state-log-item-name">{{#if state_num}}{{state_num}}{{/if}}</div>
 			{{#if log_time}}<div class="state-log-item-time">{{log_time}}</div>{{/if}}
-			<div class="state-log-item-status {{state_status}}">{{state_status}}</div>
+			<div class="state-log-item-status">{{state_status}}</div>
 		</div>
 		{{#if comment}}<div class="state-log-item-detail comment">{{breaklines comment}}</div>{{/if}}
 		{{#if stdout}}<div class="state-log-item-detail stdout">{{breaklines stdout}}</div>{{/if}}

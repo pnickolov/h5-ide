@@ -2644,7 +2644,7 @@ button {
 	position: absolute;
 	right: 10px;
 	top: 50%;
-	margin-top: -8px;
+	margin-top: -10px;
 	color: #999;
 	cursor: pointer;
 }
@@ -3503,7 +3503,7 @@ a.sidebar-hider:before {
 }
 
 #hide-property-panel {
-	left: -18px;
+	left: -16px;
 	border-radius: 3px 0 0 3px;
 }
 
@@ -7507,6 +7507,9 @@ summary:focus {
 
 #property-panel.no-state #btn-switch-property {
 	width: 100%;
+	background: none;
+	text-align: left;
+	padding-left: 10px;
 }
 
 #property-panel.no-state .property-switcher {

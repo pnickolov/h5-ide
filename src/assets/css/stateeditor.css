@@ -954,6 +954,16 @@
 	font-variant: small-caps;
 }
 
+#state-log .success .state-log-item-status,
+#state-log .success .state-log-item-detail.comment {
+	color: #17c249;
+}
+
+#state-log .failure .state-log-item-status,
+#state-log .failure .state-log-item-detail.comment {
+	color: #ec3c38;
+}
+
 #state-log .state-log-item-detail {
 	background-color: #000;
 	line-height: 16px;

@@ -41,6 +41,7 @@ define [ './register', 'constant', 'MC','i18n!nls/lang.js' , '../result_vo' ], (
 
         data =
             uid     : uid
+            comp    : component
             type    : component.type
             name    : component.name
             stateId : null

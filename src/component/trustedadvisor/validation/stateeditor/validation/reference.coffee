@@ -29,42 +29,52 @@ define [ 'constant', 'MC', 'i18n!nls/lang.js' ], ( constant, MC, lang ) ->
         ret = []
 
         while ( resArr = reg.exec str ) isnt null
-            refObj = uid: resArr[ 1 ], ref: resArr[ 0 ]
-            # `self`, `isg` are special constants
-            if refObj.uid not in [ 'self', 'isg' ]
-                ret.push refObj
+            refObj = attr: resArr[ 3 ], uid: resArr[ 2 ], ref: resArr[ 1 ], str: resArr[ 0 ]
+            ret.push refObj
 
         ret
 
-    ########## Public Method ##########
-    __countInexistentRef = ( obj, data ) ->
-        count = 0
+    __getComp = ( uid ) ->
+        component = MC.canvas_data.component[ uid ]
+        component
+
+    __getRef = ( obj, data ) ->
+        ref = []
 
         if _.isString obj
             if obj.length is 0
                 return 0
-
-            refs = __findReference obj
-
-            for ref in refs
-                component = MC.canvas_data.component[ ref.uid ]
-                if not component
-                    count++
-
+            ref = ref.concat __findReference obj
         else
             for key, value of obj
-                count += __countInexistentRef value, data
+                ref = ref.concat __getRef value, data
 
-        count
+        ref
 
+
+    ########## Public Method ##########
 
     checkRefExist = ( obj, data ) ->
-        inexistCount = __countInexistentRef obj, data
-        error = null
+        ref = __getRef obj, data
+        error = []
+        if ref.length
+            legalRef = MC.aws.aws.genAttrRefList data.comp, MC.canvas_data.component
 
-        if inexistCount
-            tip = __getCompTip data.type, data.name, data.stateId, inexistCount
-            error = __genError tip, data.stateId
+
+        for r in ref
+            hitLegal = null
+            exist = _.some legalRef, ( legal ) ->
+                legal.ref is r.ref
+
+            if not exist
+                comp = __getComp r.uid
+                if comp
+                    refName = "#{comp.name}.#{r.attr}"
+                else
+                    refName = "unknown.#{r.attr}"
+
+                tip = __getCompTip data.type, data.name, data.stateId, refName
+                error.push __genError tip, data.stateId
 
         error
 

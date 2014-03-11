@@ -752,12 +752,13 @@ define [ 'MC', 'event',
             console.log 'opsState'
 
             # set toolbar-visual-ops-switch and apply-visops
-            $switchCheckbox = $('#main-toolbar .toolbar-visual-ops-switch')
-            $applyVisops    = $('#apply-visops')
+            $switchCheckbox = $ '#main-toolbar .toolbar-visual-ops-switch'
+            $applyVisops    = $ '#apply-visops'
 
             # when new stack enable VisualOps else disabled
             if Tabbar.current is 'new'
                 $switchCheckbox.addClass    'on'
+                @model.setAgentEnable       true
             else
                 $switchCheckbox.removeClass 'on'
 
@@ -780,6 +781,8 @@ define [ 'MC', 'event',
 
                 $applyVisops.show()
                 $switchCheckbox.hide()
+
+                @model.setAgentEnable false
 
         opsOptionChanged : (event) ->
 

@@ -408,7 +408,7 @@ require.config {
 	### env:prod:end ###
 }
 
-require [ 'domReady', './js/ide/ide', "ui/MC.template", "MC" ], ( domReady, ide, template ) ->
+require [ 'domReady', './js/ide/ide', "ui/MC.template", "lib/handlebarhelpers", "MC" ], ( domReady, ide, template ) ->
 
 	l = window.location
 	if l.protocol is "http:" and not l.port

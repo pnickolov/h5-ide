@@ -1,5 +1,5 @@
 (function() {
-  define(["handlebars", "i18n!nls/lang.js"], function(Handlebars) {
+  define(["handlebars", "i18n!nls/lang.js"], function(Handlebars, lang) {
     Handlebars.registerHelper('i18n', function(text) {
       return new Handlebars.SafeString(lang.reset[text]);
     });

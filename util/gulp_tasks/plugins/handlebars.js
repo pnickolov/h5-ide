@@ -145,8 +145,8 @@
     return null;
   };
 
-  compiler = function() {
-    var pipe, shouldLog;
+  compiler = function(shouldLog) {
+    var pipe;
     if (shouldLog === void 0) {
       shouldLog = true;
     }

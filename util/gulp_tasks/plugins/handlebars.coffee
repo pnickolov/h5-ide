@@ -124,7 +124,7 @@ compileHbs = ( file, shouldLog )->
   file.path = gutil.replaceExtension(file.path, ".js")
   null
 
-compiler = ()->
+compiler = ( shouldLog )->
   if shouldLog is undefined then shouldLog = true
 
   pipe = es.through( compile )

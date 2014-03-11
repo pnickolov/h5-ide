@@ -2,7 +2,7 @@
 This file use for validate state.
 ###
 
-define [ 'constant', 'MC', 'i18n!nls/lang.js' ], ( constant, MC, lang ) ->
+define [ 'constant', 'MC', 'i18n!nls/lang.js' ], ( CONST, MC, lang ) ->
 
     ########## Functional Method ##########
     #errors = []
@@ -19,13 +19,13 @@ define [ 'constant', 'MC', 'i18n!nls/lang.js' ], ( constant, MC, lang ) ->
 
     __genError = ( tip, stateId ) ->
 
-        level   : constant.TA.ERROR
+        level   : CONST.TA.ERROR
         info    : tip
         uid     : "refinexsit:#{stateId}"
 
     # return  Array
     __findReference = ( str ) ->
-        reg = constant.REGEXP.stateEditorOriginReference
+        reg = CONST.REGEXP.stateEditorOriginReference
         ret = []
 
         while ( resArr = reg.exec str ) isnt null
@@ -33,6 +33,9 @@ define [ 'constant', 'MC', 'i18n!nls/lang.js' ], ( constant, MC, lang ) ->
             ret.push refObj
 
         ret
+
+    __isUid = ( uid ) ->
+        CONST.REGEXP.uid.test uid
 
     __getComp = ( uid ) ->
         component = MC.canvas_data.component[ uid ]
@@ -70,8 +73,10 @@ define [ 'constant', 'MC', 'i18n!nls/lang.js' ], ( constant, MC, lang ) ->
                 comp = __getComp r.uid
                 if comp
                     refName = "#{comp.name}.#{r.attr}"
-                else
+                else if __isUid r.uid
                     refName = "unknown.#{r.attr}"
+                else
+                    refName = r.ref
 
                 tip = __getCompTip data.type, data.name, data.stateId, refName
                 error.push __genError tip, data.stateId

@@ -9,8 +9,6 @@
 
   Q = require("q");
 
-  requirejs = require("requirejs");
-
   coffee = require("gulp-coffee");
 
   include = require("./plugins/include");
@@ -26,6 +24,8 @@
   variable = require("./plugins/variable");
 
   rjsconfig = require("./plugins/rjsconfig");
+
+  requirejs = require("./plugins/r");
 
   util = require("./plugins/util");
 

@@ -57,12 +57,12 @@
           name: bundleName,
           create: true,
           include: bundles,
-          exclude: exclude.length ? exclude : void 0
+          exclude: exclude.concat(config.bundleExcludes[bundleName] || [])
         });
       }
-      exclude = exclude.slice();
       exclude.push(bundleName);
     }
+    console.log(config.modules);
     delete config.bundles;
     return config;
   };

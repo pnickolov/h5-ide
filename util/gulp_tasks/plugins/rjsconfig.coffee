@@ -49,10 +49,9 @@ transformModules = ( config )->
         name    : bundleName
         create  : true
         include : bundles
-        exclude : if exclude.length then exclude else undefined
+        exclude : exclude.concat( config.bundleExcludes[bundleName] || [] )
       }
 
-    exclude = exclude.slice()
     exclude.push bundleName
 
   delete config.bundles

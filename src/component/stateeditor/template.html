@@ -262,14 +262,16 @@
 			{{#if log_time}}<div class="state-log-item-time">{{log_time}}</div>{{/if}}
 			<div class="state-log-item-status">{{state_status}}</div>
 		</div>
-		{{#if comment}}<div class="state-log-item-detail comment">{{breaklines comment}}</div>{{/if}}
-		{{#if stdout}}
-			{{#if long_stdout}}
-				<a>View details...</a>
-			{{else}}
-				<div class="state-log-item-detail stdout">{{breaklines stdout}}</div>
+		<div class="state-log-item-content">
+			{{#if comment}}<div class="state-log-item-detail comment">{{breaklines comment}}</div>{{/if}}
+			{{#if stdout}}
+				{{#if long_stdout}}
+					<a class="state-log-item-view-detail">View details...</a>
+				{{else}}
+					<div class="state-log-item-detail stdout">{{breaklines stdout}}</div>
+				{{/if}}
 			{{/if}}
-		{{/if}}
+		</div>
 	</li>
 {{/each}}
 
@@ -280,5 +282,16 @@
 		<div class="state-log-item-status">{{#if res_status}}{{res_status}}{{else}}unknown{{/if}}</div>
 	</div>
 </li>
+
+<!-- state-template-log-detail-modal -->
+<div id="modal-state-log-detail" style="width: 900px;">
+	<div class="modal-header"><h3>State log detail</h3><i class="modal-close">&times;</i> </div>
+	<div class="modal-body">
+		<textarea class="state-log-detail-content" readonly="readonly">{{content}}</textarea>
+	</div>
+	<div class="modal-footer">
+		<button class="btn modal-close btn-silver">Close</button>
+	</div>
+</div>
 
 <!-- template end -->

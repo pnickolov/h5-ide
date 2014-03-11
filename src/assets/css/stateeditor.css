@@ -936,7 +936,7 @@
 	background-color: #555;
 }
 
-#state-log .state-log-item.view .state-log-item-detail {
+#state-log .state-log-item.view .state-log-item-content {
 	display: none;
 }
 
@@ -978,6 +978,12 @@
 	color: rgba(80, 226, 77, 0.6);
 }
 
+#modal-state-log-detail .state-log-detail-content {
+	height: 500px;
+	width: 100%;
+	background-color: #000;
+}
+
 #state-log .state-log-item-detail br {
 	line-height: 10px;
 }
@@ -985,6 +991,18 @@
 #state-log .state-log-item-detail.comment {
 	/*border-bottom: 1px #444 solid;*/
 	color: rgb(80, 226, 77);
+}
+
+#state-log .state-log-item .state-log-item-view-detail {
+	text-align: center;
+	padding: 5px;
+	width: 100%;
+	display: block;
+	cursor: pointer;
+}
+
+#state-log .state-log-item .state-log-item-view-detail:hover {
+	background-color: #444;
 }
 
 #state-log .state-log-info {

@@ -62,6 +62,8 @@ define [ 'event',
 
             'click .state-log-item-header': 'onStateLogItemHeaderClick'
 
+            'click .state-log-item .state-log-item-view-detail': 'onStateLogDetailBtnClick'
+
             'OPTION_CHANGE .state-editor-res-select': 'onResSelectChange'
 
             'keyup .parameter-item.optional .parameter-value': 'onOptionalParaItemChange'
@@ -295,6 +297,7 @@ define [ 'event',
             'state-template-log-instance-item'  : 'stateLogInstanceItemTpl'
             'state-template-res-select'         : 'stateResSelectTpl'
             'state-template-editor-empty'       : 'stateEmptyTpl'
+            'state-template-log-detail-modal'   : 'stateLogDetailModal'
 
         compileTpl: () ->
 
@@ -2109,6 +2112,8 @@ define [ 'event',
             if not (stateLogDataAry and stateLogDataAry.length)
                 that.showLogListLoading(false, true)
 
+            that.stateIdLogContentMap = {}
+
             stateLogViewAry = []
             stateStatusMap = {}
             _.each stateLogDataAry, (logObj, idx) ->
@@ -2133,8 +2138,12 @@ define [ 'event',
 
                 if logObj.stdout
                     stdoutStr = $.trim(logObj.stdout.replace(/\n\n/g, '\n'))
-                    # if stdoutStr.length > 100
-                    #     longStdout = true
+                    if stdoutStr.length > 100
+                        longStdout = true
+                        that.stateIdLogContentMap[logObj.id] = {
+                            number: stateNum,
+                            content: stdoutStr
+                        }
 
                 stateLogViewAry.push({
                     id: logObj.id,
@@ -3274,6 +3283,20 @@ define [ 'event',
                 $('#modal-instance-sys-log .instance-sys-log-info').show()
                 
             modal.position()
+
+        onStateLogDetailBtnClick: (event) ->
+
+            that = this
+            $logDetailBtn = $(event.currentTarget)
+            $logItem = $logDetailBtn.parents('.state-log-item')
+            stateId = $logItem.attr('data-state-id')
+            if stateId
+                stateLogObj = that.stateIdLogContentMap[stateId]
+                if stateLogObj
+                    modal that.stateLogDetailModal({
+                        number: stateLogObj.number
+                        content: stateLogObj.content
+                    }), true
 
     }
 

@@ -24,6 +24,10 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
       monitoring   : false
       userData     : ""
 
+      # RootDevice
+      rdSize : 10
+      rdIops : 0
+
       cachedAmi : null
 
       state : undefined
@@ -276,6 +280,12 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
         cached.architecture   = ami.architecture
         cached.rootDeviceType = ami.rootDeviceType
 
+      # Update RootDevice Size
+      rootDevice = ami.blockDeviceMapping[ ami.rootDeviceName ]
+      minRdSize  = if rootDevice then parseInt( rootDevice.volumeSize, 10 ) else 10
+      if @get("rdSize") < minRdSize
+        @set("rdSize", minRdSize)
+
       # Assume the new amiId supports current instancetype
       # Assume the new amiId is the same OS of current one.
 
@@ -478,6 +488,23 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
           securitygroups.push( sg.createRef( "GroupName" ) )
           securitygroupsId.push( sg.createRef( "GroupId" ) )
 
+      # Generate RootDevice
+      ami = @getAmi() || @get("cachedAmi")
+      if ami.rootDeviceType is "instance-store"
+        blockDeviceMapping = []
+      else
+        blockDeviceMapping = [{
+          DeviceName : ami.rootDeviceName
+          Ebs : {
+            VolumeSize : @get("rdSize") || ami.blockDeviceMapping[ ami.rootDeviceName ].volumeSize
+            VolumeType : "standard"
+          }
+        }]
+
+        if @get("rdIops")
+          blockDeviceMapping[0].Ebs.Iops = @get("rdIops")
+          blockDeviceMapping[0].Ebs.VolumeType = "io1"
+
 
       component =
         type   : @type
@@ -493,7 +520,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
             Base64Encoded : false
             Data : @get("userData")
           }
-          BlockDeviceMapping : []
+          BlockDeviceMapping : blockDeviceMapping
           Placement : {
             Tenancy : if tenancy is "dedicated" then "dedicated" else ""
             AvailabilityZone : @getAvailabilityZone().createRef()
@@ -553,7 +580,6 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
       # Add this instance' layout first.
       allResourceArray.push( { layout : layout } )
 
-
       # Generate instance member.
       instances = [ @generateJSON() ]
       i = instances.length
@@ -602,7 +628,6 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
 
         for volume in volumeModels
           v = volume.generateJSON( idx, serverGroupOption )
-          instance.resource.BlockDeviceMapping.push( "#"+ v.uid )
           volumes.push( v )
 
         for eni, eniIndex in eniModels
@@ -682,6 +707,14 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
         return
 
 
+      rootDevice = data.resource.BlockDeviceMapping[0]
+      if not rootDevice or _.isString( rootDevice )
+        rootDevice =
+          Ebs :
+            VolumeSize : 10
+            Iops : ""
+
+
       attr =
         id    : data.uid
         name  : data.serverGroupName or data.name
@@ -694,6 +727,9 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
         instanceType : data.resource.InstanceType
         monitoring   : data.resource.Monitoring isnt "disabled"
         userData     : data.resource.UserData.Data or ""
+
+        rdSize : rootDevice.Ebs.VolumeSize
+        rdIops : rootDevice.Ebs.Iops
 
         parent : resolve( layout_data.groupUId )
 

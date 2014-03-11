@@ -254,9 +254,6 @@ require.config {
 			deps       : [ 'jquery', 'underscore', 'backbone', 'handlebars', 'sprintf' ]
 			exports    : 'MC'
 
-		'MC.validate'  :
-			deps       : [ 'MC' ]
-
 		'MC.canvas'    :
 			deps       : [ 'MC', 'canvon' ]
 

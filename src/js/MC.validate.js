@@ -9,11 +9,7 @@
 # **********************************************************
 */
 
-var MC = MC || {};
-
-(function( MC ) {
-
-	MC = MC || {};
+define(["MC"], function( MC ) {
 
 	var slice = function( arr ) {
 		return Array.prototype.slice.apply( arr, Array.prototype.slice.call( arguments, 1 ) );
@@ -173,5 +169,5 @@ var MC = MC || {};
 		return portValue;
 	};
 
-})( MC );
+});
 

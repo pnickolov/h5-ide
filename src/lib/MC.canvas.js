@@ -2713,7 +2713,12 @@ MC.canvas.volume = {
 					//volume in instance
 					$.each(node_volume_data, function (index, item)
 					{
+						if ($.type(item) === "object" )
+						{//root device
+							return true;
+						}
 
+						////external volume
 						volume_id = item.replace('#', '');
 						volume_data = component_data[ volume_id ];
 
@@ -2738,7 +2743,7 @@ MC.canvas.volume = {
 							})
 						});
 					});
-					volume_len = node_volume_data.length;
+					volume_len = node_volume_data.length - 1;//exclude root device
 				}
 					
 			}
@@ -2960,9 +2965,9 @@ MC.canvas.volume = {
 				);
 			}
 
-			$('#instance_volume_number, #' + target_id + '_volume_number').text(target_volume_data.length);
+			$('#instance_volume_number, #' + target_id + '_volume_number').text(target_volume_data.length - 1);//exclude root device
 
-			document.getElementById(target_id + '_volume_number').setAttribute('value', target_volume_data.length);
+			document.getElementById(target_id + '_volume_number').setAttribute('value', target_volume_data.length - 1); //exclude root device
 
 			MC.canvas.data.set('component.' + target_id + '.resource.BlockDeviceMapping', target_volume_data);
 
@@ -3181,10 +3186,10 @@ MC.canvas.volume = {
 
 						target_volume_data.push('#' + volume_id);
 
-						$('#instance_volume_number').text(target_volume_data.length);
+						$('#instance_volume_number').text(target_volume_data.length - 1);//exclude root device
 
-						MC.canvas.update(target_id, 'text', 'volume_number', target_volume_data.length);
-						document.getElementById(target_id + '_volume_number').setAttribute('value', target_volume_data.length);
+						MC.canvas.update(target_id, 'text', 'volume_number', target_volume_data.length - 1);//exclude root device
+						document.getElementById(target_id + '_volume_number').setAttribute('value', target_volume_data.length - 1);//exclude root device
 
 						target_az = MC.canvas.data.get('component.' + target_id + '.resource.Placement.AvailabilityZone');
 
@@ -3206,9 +3211,9 @@ MC.canvas.volume = {
 
 						MC.canvas.data.set('component.' + original_node_id + '.resource.BlockDeviceMapping', original_node_volume_data);
 
-						MC.canvas.update(original_node_id, 'text', 'volume_number', original_node_volume_data.length);
+						MC.canvas.update(original_node_id, 'text', 'volume_number', original_node_volume_data.length - 1);//exclude root device
 
-						document.getElementById(original_node_id + '_volume_number').setAttribute('value', target_volume_data.length);
+						document.getElementById(original_node_id + '_volume_number').setAttribute('value', target_volume_data.length - 1);//exclude root device
 					}
 				}
 			}
@@ -3231,11 +3236,11 @@ MC.canvas.volume = {
 					target_volume_data.push('#' + volume_id);
 				}
 
-				$('#instance_volume_number').text(target_volume_data.length);
+				$('#instance_volume_number').text(target_volume_data.length - 1);//exclude root device
 
-				MC.canvas.update(target_id, 'text', 'volume_number', target_volume_data.length);
+				MC.canvas.update(target_id, 'text', 'volume_number', target_volume_data.length -1 );//exclude root device
 
-				document.getElementById(target_id + '_volume_number').setAttribute('value', target_volume_data.length);
+				document.getElementById(target_id + '_volume_number').setAttribute('value', target_volume_data.length - 1);//exclude root device
 
 				MC.canvas.data.set('component.' + target_id + '.resource.BlockDeviceMapping', target_volume_data);
 

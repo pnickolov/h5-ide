@@ -792,6 +792,8 @@ MC.canvas.add = function (flag, option, coordinate)
 					var amiObj = MC.data.dict_ami[resource.ImageId];
 					var instanceAry = MC.aws.ami.getInstanceType(amiObj);
 					var haveSmallType = false;
+					var root_device = MC.aws.ebs.getRootDevice(amiObj.imageId);
+
 					_.each(instanceAry, function(instanceTypeStr){
 						if (instanceTypeStr === 'm1.small') {
 							haveSmallType = true;
@@ -805,6 +807,11 @@ MC.canvas.add = function (flag, option, coordinate)
 					} else {
 						resource.InstanceType = 'm1.small';
 					}
+					//append root device
+					
+					if (root_device !== null)
+						resource.BlockDeviceMapping.push(root_device);
+
 				} catch (err) {
 					resource.InstanceType = 'm1.small';
 				}
@@ -947,7 +954,7 @@ MC.canvas.add = function (flag, option, coordinate)
 			}
 
 			//check volume number,set icon
-			volume_number = component_data.resource.BlockDeviceMapping.length;
+			volume_number = component_data.resource.BlockDeviceMapping.length - 1; //exclude root device
 			if (volume_number > 0)
 			{
 				icon_volume_status = 'attached-normal';
@@ -1231,12 +1238,15 @@ MC.canvas.add = function (flag, option, coordinate)
 				{//for AWS.EC2.Instance
 
 					$.each(MC.canvas_data.component[option.instance_id].resource.BlockDeviceMapping, function (key, value){
-						volume_uid = value.slice(1);
-						k = MC.canvas_data.component[volume_uid].name.slice(-1);
-						index = device_name.indexOf(k);
-						if (index >= 0)
+						if ($.type(value) === "string")
 						{
-							device_name.splice(index, 1);
+							volume_uid = value.slice(1);
+							k = MC.canvas_data.component[volume_uid].name.slice(-1);
+							index = device_name.indexOf(k);
+							if (index >= 0)
+							{
+								device_name.splice(index, 1);
+							}
 						}
 					});
 

@@ -36,6 +36,14 @@ define [ "../base/main",
         setupStack : () ->
             @view.on "OPEN_AMI", (id) ->
                 PropertyModule.loadSubPanel "STATIC", id
+
+            me = this
+            @view.on 'VOLUME_SIZE_CHANGED', ( value ) ->
+                me.model.setVolumeSize value
+                #MC.canvas.update model.attributes.uid, "text", "volume_size", value + "GB"
+
+                null
+
             null
 
         initStack : ()->

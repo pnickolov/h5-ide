@@ -109,8 +109,37 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 					#canvas_data.layout.component.node[uid].virtualizationType = MC.data.dict_ami[comp.resource.ImageId].virtualizationType
 
 
+	convertBlockDeviceMapping = (ami) ->
+
+	    data = {}
+	    if ami and ami.blockDeviceMapping.item
+		    for value,idx in ami.blockDeviceMapping.item
+
+		        if value.ebs
+		            data[value.deviceName] =
+		                snapshotId : value.ebs.snapshotId
+		                volumeSize : value.ebs.volumeSize
+		                volumeType : value.ebs.volumeType
+		                deleteOnTermination : value.ebs.deleteOnTermination
+		        else
+		            data[value.deviceName] = {}
+
+		    ami.blockDeviceMapping = data
+	    null
+
+
+	getRootDevice = (ami) ->
+
+		rootDevice = null
+		if ami and ami.rootDeviceName and ami.blockDeviceMapping[ami.rootDeviceName]
+			rootDevice = ami.blockDeviceMapping[ami.rootDeviceName]
+			rootDevice.deviceName = ami.rootDeviceName
+
+		rootDevice
 
 
 	setLayout : setLayout
 	getOSType : getOSType
 	getInstanceType : getInstanceType
+	convertBlockDeviceMapping : convertBlockDeviceMapping
+	getRootDevice : getRootDevice

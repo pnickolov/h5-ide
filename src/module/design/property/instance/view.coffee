@@ -34,6 +34,13 @@ define [ '../base/view',
             'click #property-network-list .icon-remove' : "removeIP"
             'change .input-ip'                          : 'syncIPList'
 
+            #root device
+            'click #volume-type-radios input' : 'volumeTypeChecked'
+            'keyup #volume-size-ranged' : 'sizeChanged'
+            'keyup  #volume-size-ranged' : 'processIops'
+            'keyup #iops-ranged' : 'sizeChanged'
+
+
 
         render : () ->
 
@@ -45,6 +52,21 @@ define [ '../base/view',
             @$el.html template @model.attributes
 
             @refreshIPList()
+
+            me = this
+            # parsley bind
+            $( '#volume-size-ranged' ).parsley 'custom', ( val ) ->
+                val = + val
+                if not val || val > 1024 || val < me.model.attributes.min_volume_size
+                    return "Volume size of this rootDevice must in the range of " + me.model.attributes.min_volume_size + "-1024 GB."
+
+            $( '#iops-ranged' ).parsley 'custom', ( val ) ->
+                val = + val
+                volume_size = parseInt( $( '#volume-size-ranged' ).val(), 10 )
+                if val > 4000 || val < 100
+                    return 'IOPS must be between 100 and 4000'
+                else if( val > 10 * volume_size)
+                    return 'IOPS must be less than 10 times of volume size.'
 
             @model.attributes.name
 
@@ -348,6 +370,57 @@ define [ '../base/view',
 
             $("#instance-ip-add").toggleClass("disabled", !enabled).data("tooltip", tooltip)
             null
+
+
+        ###### root device #########
+        volumeTypeChecked : ( event ) ->
+            @processIops()
+            if($('#volume-type-radios input:checked').val() is 'radio-standard')
+                $( '#iops-group' ).hide()
+                @model.setVolumeTypeStandard()
+            else
+                $( '#iops-group' ).show()
+                @model.setVolumeTypeIops $( '#iops-ranged' ).val()
+            @sizeChanged()
+
+        processIops: ( event ) ->
+            size = parseInt $( '#volume-size-ranged' ).val(), 10
+            opsCheck = $( '#radio-iops' ).is ':checked'
+            if size >= 10
+                @enableIops()
+            else if not opsCheck
+                @disableIops()
+
+            null
+
+        enableIops: ->
+            $( '#volume-type-radios > div' )
+                .last()
+                .data( 'tooltip', '' )
+                .find( 'input' )
+                .removeAttr( 'disabled' )
+
+        disableIops: ->
+            $( '#volume-type-radios > div' )
+                .last()
+                .data( 'tooltip', 'Volume size must be at least 10 GB to use Provisioned IOPS volume type.' )
+                .find( 'input' )
+                .attr( 'disabled', '' )
+
+
+        sizeChanged : ( event ) ->
+            volumeSize = parseInt $( '#volume-size-ranged' ).val(), 10
+            iopsValidate = true
+            volumeValidate = $( '#volume-size-ranged' ).parsley 'validate'
+            iopsEnabled = $( '#radio-iops' ).is ':checked'
+            if iopsEnabled
+                iopsValidate = $( '#iops-ranged' ).parsley 'validate'
+            if volumeValidate and iopsValidate
+                this.trigger 'VOLUME_SIZE_CHANGED', volumeSize
+                if iopsEnabled
+                    @model.setVolumeIops $( '#iops-ranged' ).val()
+            null
+
     }
 
     new InstanceView()

@@ -151,12 +151,24 @@ define [ '../base/model',
                 # Possible value : running, stopped, pending...
                 instance.state = MC.capitalize instance.instanceState.name
                 instance.blockDevice = ""
+                root_device = @getRootDevice instance.imageId
                 if instance.blockDeviceMapping && instance.blockDeviceMapping.item
                     deviceName = []
                     for i in instance.blockDeviceMapping.item
                         deviceName.push i.deviceName
-
+                        if root_device and root_device.deviceName is i.deviceName
+                            #root device
+                            instance.rootDevice = i.ebs.volumeId
                     instance.blockDevice = deviceName.join ", "
+
+                #root device
+                if instance.rootDevice
+                    vol_data = MC.data.resource_list[MC.canvas_data.region][instance.rootDevice]
+                    if vol_data
+                        instance.hasRootDevice = true
+                        instance.rootDevice = vol_data
+                else
+                    instance.hasRootDevice = false
 
                 # Eni Data
                 instance.eni = this.getEniData instance
@@ -169,6 +181,18 @@ define [ '../base/model',
                 return false
 
             null
+
+        getRootDevice :  ( imageId ) ->
+
+            ami = MC.data.dict_ami[imageId]
+            root_device = null
+            if ami
+                root_device = MC.aws.ami.getRootDevice ami
+            #else
+                #can not find ami info
+
+            root_device
+
 
         getEniData : ( instance_data ) ->
 

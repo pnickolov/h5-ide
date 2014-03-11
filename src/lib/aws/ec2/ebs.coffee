@@ -21,22 +21,25 @@ define [ 'MC' ], ( MC) ->
 
 
 		$.each ami_info.blockDeviceMapping, (key, value) ->
-
-			if key.slice(0, 4) is "/dev/"
-				k = key.slice(-1)
-				index = device_list.indexOf(k)
-				device_list.splice index, 1  if index >= 0
-
+			if $.type(value) is "string"
+				#only for external volume
+				if key.slice(0, 4) is "/dev/"
+					k = key.slice(-1)
+					index = device_list.indexOf(k)
+					device_list.splice index, 1  if index >= 0
+			null
 
 
 		if comp_data.type == 'AWS.EC2.Instance'
 
 			#for Instance
 			$.each comp_data.resource.BlockDeviceMapping, (key, value) ->
-				volume_uid = value.slice(1)
-				k = MC.canvas_data.component[volume_uid].name.slice(-1)
-				index = device_list.indexOf(k)
-				device_list.splice index, 1  if index >= 0
+				if $.type(value) is "string"
+					#only for external volume
+					volume_uid = value.slice(1)
+					k = MC.canvas_data.component[volume_uid].name.slice(-1)
+					index = device_list.indexOf(k)
+					device_list.splice index, 1  if index >= 0
 
 		else if comp_data.type == 'AWS.AutoScaling.LaunchConfiguration'
 
@@ -59,5 +62,30 @@ define [ 'MC' ], ( MC) ->
 
 		device_name
 
+
+	getRootDevice = ( image_id ) ->
+
+		device_info = null
+		
+		if MC.data.dict_ami and MC.data.dict_ami[image_id]
+			ami_info    = MC.data.dict_ami[image_id]
+			root_device_name = ami_info.rootDeviceName
+			root_device_info = ami_info.blockDeviceMapping[root_device_name]
+			if root_device_name and root_device_info
+				device_info = {
+					"DeviceName": root_device_name
+					"Ebs":
+						"VolumeSize": root_device_info.volumeSize
+						"SnapshotId": root_device_info.snapshotId
+						"VolumeType": root_device_info.volumeType
+						"Iops": if root_device_info.iops then root_device_info.iops else ""
+					}
+			else
+				console.warn "root_device(): can not found root device of AMI(" + image_id + ")"
+
+		device_info
+
+
 	getDeviceName : getDeviceName
+	getRootDevice: getRootDevice
 

@@ -72,6 +72,7 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
                         if not ami.osFamily
                             ami.osFamily = MC.aws.aws.getOSFamily(ami.osType)
                         ami.instanceType = MC.aws.ami.getInstanceType(ami).join(', ')
+                        MC.aws.ami.convertBlockDeviceMapping ami
                         MC.data.dict_ami[ami.imageId] = ami
                         null
                 ide_event.trigger ide_event.SWITCH_MAIN

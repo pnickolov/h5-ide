@@ -234,6 +234,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
                         if not res.osFamily
                             res.osFamily = MC.aws.aws.getOSFamily(res.osType, res)
 
+                        MC.aws.ami.convertBlockDeviceMapping res
                         MC.data.dict_ami[res.imageId] = res
                         MC.data.resource_list[region][res.imageId] = res
 
@@ -468,15 +469,16 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
                 vols = item.resource.BlockDeviceMapping
                 if vols and 'price' of feeMap and 'ebs' of feeMap.price
                     for vol_uid in vols
-                        volume = data.component[vol_uid.split('#')[1]]
-                        if volume.resource.VolumeType is 'standard'
-                            vol_lst = i.ebsVols for i in feeMap.price.ebs.types when 'ebsVols' of i
-                        else
-                            vol_lst = i.ebsPIOPSVols for i in feeMap.price.ebs.types when 'ebsPIOPSVols' of i
+                        if $.type(vol_uid) is 'string'
+                            volume = data.component[vol_uid.split('#')[1]]
+                            if volume.resource.VolumeType is 'standard'
+                                vol_lst = i.ebsVols for i in feeMap.price.ebs.types when 'ebsVols' of i
+                            else
+                                vol_lst = i.ebsPIOPSVols for i in feeMap.price.ebs.types when 'ebsPIOPSVols' of i
 
-                        vol_fee = i[currency] for i in vol_lst when i.unit is 'perGBmoProvStorage'
+                            vol_fee = i[currency] for i in vol_lst when i.unit is 'perGBmoProvStorage'
 
-                        cost_list.push { 'resource' : name + ' - ' + volume.name, 'size' :  volume.resource.Size + 'G', 'fee' : vol_fee, 'unit' : '/GB/mo', 'count' : parseInt(volume.resource.Size) }
+                            cost_list.push { 'resource' : name + ' - ' + volume.name, 'size' :  volume.resource.Size + 'G', 'fee' : vol_fee, 'unit' : '/GB/mo', 'count' : parseInt(volume.resource.Size) }
 
             # elb
             else if item.type is 'AWS.ELB'

@@ -935,6 +935,10 @@ module.exports =
       en: "Advanced Details"
       zh: "高级设置"
 
+    PROP_INSTANCE_ROOT_DEVICE:
+      en: "Root Device"
+      zh: "根设备"
+
     PROP_INSTANCE_USER_DATA:
       en: "User Data"
       zh: "用户数据"
@@ -1834,6 +1838,10 @@ module.exports =
     PROP_MSG_SG_CREATE_SELF:
       en: "%d rules have been created in %s to allow %s send and receive traffic within itself."
       zh: "%d条规则被创建到 %s 来允许 %s 它内部的收发通信."
+
+    PROP_MSG_WARN_ROOT_DEVICE_SIZE_ERROR:
+      en: "Volume of size %d GB is smaller than snapshot '%s', expect size >= %s GB"
+      zh: "卷组的大小 %d 小于snapshot %s, 期望大小 >= %d GB"
 
     PROP_VOLUME_DEVICE_NAME:
       en: "Device Name"

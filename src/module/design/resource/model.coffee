@@ -202,6 +202,7 @@ define [ 'i18n!nls/lang.js',
                                     value.osFamily = MC.aws.aws.getOSFamily(value.osType)
                                 instanceTypeAry = MC.aws.ami.getInstanceType(value)
                                 value.instanceType = instanceTypeAry.join ', '
+                                MC.aws.ami.convertBlockDeviceMapping value
                                 MC.data.dict_ami[value.imageId] = value
                             catch err
                                 console.info 'Resolve My AMI error'
@@ -231,6 +232,7 @@ define [ 'i18n!nls/lang.js',
                                 value.osFamily = MC.aws.aws.getOSFamily(value.osType)
                             instanceTypeAry = MC.aws.ami.getInstanceType(value)
                             value.instanceType = instanceTypeAry.join ', '
+                            MC.aws.ami.convertBlockDeviceMapping value
                             MC.data.dict_ami[value.imageId] = value
 
                             null

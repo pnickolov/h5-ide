@@ -1,7 +1,7 @@
 (function() {
   define(["handlebars", "i18n!nls/lang.js"], function(Handlebars, lang) {
     Handlebars.registerHelper('i18n', function(text) {
-      return new Handlebars.SafeString(lang.reset[text]);
+      return new Handlebars.SafeString(lang.ide[text]);
     });
     Handlebars.registerHelper('tolower', function(result) {
       return new Handlebars.SafeString(result.toLowerCase());

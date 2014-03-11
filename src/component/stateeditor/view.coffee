@@ -1473,7 +1473,7 @@ define [ 'event',
                                     null
 
                             # adjust for old format
-                            
+
                             else if _.isObject(paraValue)
 
                                 _.each paraValue, (paraValueStr, paraKey) ->
@@ -2253,7 +2253,7 @@ define [ 'event',
         onStateStatusUpdate: (newStateUpdateResIdAry) ->
 
             that = this
-            
+
             selectedResId = that.currentResId
 
             if newStateUpdateResIdAry
@@ -2523,7 +2523,7 @@ define [ 'event',
 
                     that.commandIndex = that.commandStack.length - 1
 
-                    that.renderStateCount()
+                    _.defer _.bind that.renderStateCount, that
 
                     null
 
@@ -3281,7 +3281,7 @@ define [ 'event',
             else
 
                 $('#modal-instance-sys-log .instance-sys-log-info').show()
-                
+
             modal.position()
 
         onStateLogDetailBtnClick: (event) ->

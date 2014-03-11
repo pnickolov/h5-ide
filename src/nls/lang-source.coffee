@@ -3479,7 +3479,8 @@ module.exports =
 
     # VPC
     TA_MSG_WARNING_NOT_VPC_CAN_CONNECT_OUTSIDE:
-      en: "No instance in VPC has Elastic IP, which means this VPC can only connect to outside via VPN."
+      en: "No instance in VPC has Elastic IP or auto-assigned public IP, which means this VPC can only connect to outside via VPN."
+      # en: "No instance in VPC has Elastic IP, which means this VPC can only connect to outside via VPN."
       zh: ""
 
     # Subnet
@@ -3589,6 +3590,11 @@ module.exports =
       zh:""
     TA_MSG_ERROR_CGW_IP_CONFLICT:
       en:"Customer Gateway <span class='validation-tag tag-cgw'>%s</span>'s IP <span class='validation-tag tag-ip'>%s</span> conflicts with existing <span class='validation-tag tag-cgw'>%s</span>'s IP <span class='validation-tag tag-ip'>%s</span>."
+      zh:""
+
+    # VPN
+    TA_MSG_ERROR_VPN_NO_IP_FOR_STATIC_CGW:
+      en:"VPN Connection of <span class='validation-tag tag-cgw'>%s</span> and <span class='validation-tag tag-vgw'>%s</span> is missing IP prefix."
       zh:""
 
     # Stack

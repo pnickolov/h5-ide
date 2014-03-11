@@ -7,14 +7,14 @@ define({
     componentTypeToFileMap:
         'AWS.AutoScaling.Group'                 : [ 'asg' ]
         'AWS.EC2.SecurityGroup'                 : [ 'sg' ]
-        'AWS.VPC.VPNGateway'                    : [ 'vpn' ]
+        'AWS.VPC.VPNGateway'                    : [ 'vgw' ]
+        'AWS.VPC.VPNConnection'                 : [ 'vpn' ]
         'AWS.VPC.InternetGateway'               : [ 'igw' ]
         'AWS.EC2.Instance'                      : [ 'instance', 'state' ]
         'AWS.ELB'                               : [ 'elb' ]
         'AWS.VPC.NetworkInterface'              : [ 'eni' ]
         'AWS.VPC.NetworkAcl'                    : [ 'acl' ]
         'AWS.AutoScaling.LaunchConfiguration'   : [ 'state' ]
-
 
     globalList:
         eip: [ 'isHasIGW' ]

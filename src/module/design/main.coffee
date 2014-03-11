@@ -187,10 +187,11 @@ define [ 'i18n!nls/lang.js', 'constant', 'stateeditor', 'Design', './module/desi
                     # hide status bar
                     view.hideStatusbar()
 
+                    ### env:prod ###
                 catch error
-                    ### env:dev ###
-                    throw error
-                    ### env:dev:end ###
+                    console.error error
+                    ### env:prod:end ###
+                finally
 
                 null
 

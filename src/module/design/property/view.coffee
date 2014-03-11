@@ -231,23 +231,16 @@ define [ 'event',
 
 
             # Tell `PropertyBaseModule` to load corresponding property panel.
-
-            ### env:dev ###
-            PropertyBaseModule.load type, uid, tab_type
-            @afterLoad()
-
-            if force then @forceShow()
-            ### env:dev:end ###
-
-            ### env:prod ###
             try
                 PropertyBaseModule.load type, uid, tab_type
                 @afterLoad()
 
                 if force then @forceShow()
+                ### env:prod ###
             catch error
                 console.error error
-            ### env:prod:end ###
+                ### env:prod:end ###
+            finally
 
             null
 

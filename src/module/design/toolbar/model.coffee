@@ -2,7 +2,7 @@
 #  View Mode for design/toolbar module
 #############################
 
-define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'stack_model', 'app_model', 'constant' ], (ThumbUtil, MC, Backbone, $, _, ide_event, stack_service, stack_model, app_model, constant) ->
+define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'stack_model', 'app_model', 'constant', 'account_model' ], (ThumbUtil, MC, Backbone, $, _, ide_event, stack_service, stack_model, app_model, constant, account_model) ->
 
     AWSRes = constant.AWS_RESOURCE_TYPE
     AwsTypeConvertMap = {}
@@ -349,6 +349,17 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
                 #
                 #MC.canvas_data             = $.extend true, {}, result.param[4]
                 #MC.data.origin_canvas_data = $.extend true, {}, result.param[4]
+                null
+
+            #####listen ACCOUNT_APPLY__TRIAL_RETURN
+            me.on 'ACCOUNT_APPLY__TRIAL_RETURN', (result) ->
+                console.log 'ACCOUNT_APPLY__TRIAL_RETURN', result
+
+                if result and result.return_code is 0
+                    console.log 'apply trial succcess'
+                else
+                    console.log 'apply trial succcess'
+
                 null
 
             #####listen APP_GETKEY_RETURN
@@ -1205,6 +1216,10 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
               null
 
           MC.aws.aws.enableStackAgent(isEnable)
+
+        getApplayTrial : ( value ) ->
+            console.log 'getApplayTrial', value
+            account_model.apply_trial { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), value
     }
 
     model = new ToolbarModel()

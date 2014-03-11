@@ -816,6 +816,16 @@ define [ 'MC', 'event',
 
         experimentalVisopsConfirm : ( event ) ->
             console.log 'experimentalVisopsConfirm', event
+
+            # push event
+            #event.data.trigger 'APPLAY_TRIAL', $( '#experimental-message' ).val()
+
+            # change modal body
+            $( '.modal-body' ).html MC.template.experimentalVisopsTrail()
+            $( '#experimental-visops-cancel'  ).html 'Done'
+            $( '#experimental-visops-confirm' ).hide()
+
+            null
     }
 
     return ToolbarView

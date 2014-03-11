@@ -114,6 +114,9 @@ define [ 'jquery',
                 else
                     console.log 'current is not object, data is ' + data
 
+            view.on 'APPLAY_TRIAL', ( value ) ->
+                model.getApplayTrial value
+
             # model.on 'CONVERT_CLOUDFORMATION_COMPLETE', ( cf_json ) ->
             #     view.saveCloudFormation cf_json
 

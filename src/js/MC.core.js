@@ -794,7 +794,7 @@ $(document).ready(function ()
 });
 
 /* Define as MC module */
-if (typeof define === "function")
-{
-	define( "MC", [], function () { return MC; } );
-}
+define( "MC", [ "ui/MC.template", "lib/handlebarhelpers" ], function ( template ) {
+	MC.template = template;
+	return MC;
+});

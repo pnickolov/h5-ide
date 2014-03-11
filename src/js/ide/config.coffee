@@ -38,6 +38,7 @@ require.config {
 		'handlebars'         : 'vender/handlebars/handlebars'
 
 		'sprintf'            : 'vender/sprintf/sprintf'
+		'Meteor'             : 'vender/meteor/meteor'
 
 		#############################################
 		# MC
@@ -53,7 +54,6 @@ require.config {
 
 		'event'              : 'lib/ide_event'
 
-		'Meteor'             : 'vender/meteor/meteor'
 		'WS'                 : 'lib/websocket'
 
 
@@ -233,7 +233,7 @@ require.config {
 		#############################################
 
 		'canvon'       :
-			deps       : [ 'jquery', 'canvas' ]
+			deps       : [ 'jquery' ]
 			exports    : 'Canvon'
 
 		'underscore'   :
@@ -373,7 +373,6 @@ require.config {
 
 	### env:prod ###
 	bundles :
-		"module" : [] # Use to supress the 'module' dependency for "domReady/i18n/text"
 		"vender/requirejs/requirelib" : [ "domReady", "i18n", "text" ]
 		"vender/vender" : [
 			"jquery"
@@ -382,6 +381,18 @@ require.config {
 			"handlebars"
 			"sprintf"
 			"Meteor"
+			"canvon"
+		]
+		"lib/lib" : [
+			"MC"
+			"constant"
+			"MC.canvas"
+			"MC.canvas.constant"
+			'MC.validate'
+			"canvas_layout"
+			"lib/handlebarhelpers"
+			"event"
+			"WS"
 		]
 		"ui/ui" : [
 			'UI.tooltip'
@@ -405,17 +416,19 @@ require.config {
 			'hoverIntent'
 			'bootstrap-carousel'
 		]
+	bundleExcludes :
+		# This is a none requirejs option, but it's used by compiler to exclude some of the source.
+		"lib/lib" : [ "i18n!nls/lang.js" ] # i18n!nls/lang.js must have a suffix `.js`, otherwise, it will have error when compiling.
+
 	### env:prod:end ###
 }
 
-require [ 'domReady', './js/ide/ide', "ui/MC.template", "lib/handlebarhelpers", "MC" ], ( domReady, ide, template ) ->
+require [ 'domReady', './js/ide/ide' ], ( domReady, ide ) ->
 
 	l = window.location
 	if l.protocol is "http:" and not l.port
 		window.location = l.href.replace("http:","https:")
 		return
-
-	MC.template = template
 
 	domReady () -> ide.initialize()
 	null

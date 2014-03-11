@@ -26,7 +26,6 @@ define [ 'event'
             #@listenTo @items, 'remove', @
 
             @compileTpl()
-            @registerHelper()
 
             @itemView = @customView()
 
@@ -109,9 +108,6 @@ define [ 'event'
         renderPending: () ->
             @$( '.status-item' ).html @template.pending
 
-        registerHelper: () ->
-            Handlebars.registerHelper 'UTC', ( text ) ->
-                new Handlebars.SafeString new Date( text ).toUTCString()
 
         compileTpl: () ->
             # generate template

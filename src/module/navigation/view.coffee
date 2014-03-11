@@ -28,9 +28,7 @@ define [ 'event', 'constant', 'i18n!nls/lang.js',
         initialize : ->
             #listen
             this.listenTo ide_event, 'SWITCH_TAB', this.hideNavigation
-
-            Handlebars.registerHelper 'tolower', ( result ) ->
-                return new Handlebars.SafeString result.toLowerCase()
+            null
 
         render     : () ->
             #render html

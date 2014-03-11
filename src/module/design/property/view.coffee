@@ -28,36 +28,6 @@ define [ 'event',
 
         initialize : ->
 
-            ##########################
-            # Handlebar helper
-            ##########################
-
-            Handlebars.registerHelper 'emptyStr', ( v1 ) ->
-                if v1 in [ '', undefined, null ]
-                    '-'
-                else
-                    new Handlebars.SafeString v1
-
-
-            Handlebars.registerHelper 'timeStr', ( v1 ) ->
-                d = new Date( v1 )
-
-                if isNaN( Date.parse( v1 ) ) or not d.toLocaleDateString or not d.toTimeString
-                    if v1
-                        return new Handlebars.SafeString v1
-                    else
-                        return '-'
-
-                d = new Date( v1 )
-                d.toLocaleDateString() + " " + d.toTimeString()
-
-            Handlebars.registerHelper "plusone", ( v1 ) ->
-                v1 = parseInt( v1, 10 )
-                if isNaN( v1 )
-                    return v1
-                else
-                    return '' + (v1 + 1)
-
             #listen
             $( document.body )
                 .on( 'click', '#hide-property-panel', this.togglePropertyPanel )

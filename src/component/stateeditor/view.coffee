@@ -305,12 +305,6 @@ define [ 'event',
                 Handlebars.registerPartial(id, html)
                 @[ @tplMap[ id ] ] = Handlebars.compile html
 
-            Handlebars.registerHelper('breaklines', (text) ->
-                text = Handlebars.Utils.escapeExpression(text)
-                text = text.replace(/(\r\n|\n|\r)/gm, '<br>')
-                return new Handlebars.SafeString(text)
-            )
-
             null
 
         genStateUID: () ->
@@ -2207,7 +2201,7 @@ define [ 'event',
         onStateStatusUpdate: (newStateUpdateResIdAry) ->
 
             that = this
-            
+
             selectedResId = that.currentResId
 
             if newStateUpdateResIdAry
@@ -3221,7 +3215,7 @@ define [ 'event',
             else
 
                 $('#modal-instance-sys-log .instance-sys-log-info').show()
-                
+
             modal.position()
 
     }

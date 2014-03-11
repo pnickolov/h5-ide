@@ -40,17 +40,22 @@ extend = ( a, b )->
 
 transformModules = ( config )->
   # Transform the bundles
-  exclude = []
+  exclude = [] # i18n!nls/lang.js must have a suffix `.js`, otherwise, it will have error when compiling. And we always exclude the lang from anything.
+
   config.modules = []
+  bundleExcludes = config.bundleExcludes || {}
   for bundleName, bundles of config.bundles
 
-    if bundles.length
-      config.modules.push {
-        name    : bundleName
-        create  : true
-        include : bundles
-        exclude : exclude.concat( config.bundleExcludes[bundleName] || [] )
-      }
+    config.modules.push {
+      name    : bundleName
+      create  : !!bundles.length
+      include : bundles
+      exclude : exclude.concat( bundleExcludes[bundleName] || [] )
+    }
+
+    # We assume the first bundle is "requirelib", and "requirelib" cannot have "i18n!xxx" excluded.
+    if exclude.length == 0
+      exclude.push "i18n!nls/lang.js"
 
     exclude.push bundleName
 

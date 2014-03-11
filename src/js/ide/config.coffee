@@ -370,7 +370,7 @@ require.config {
 
 	### env:prod ###
 	bundles :
-		"vender/requirejs/requirelib" : [ "domReady", "i18n", "text" ]
+		"vender/requirejs/requirelib" : [ "domReady", "i18n", "text" ] # requirelib must be the first one.
 		"vender/vender" : [
 			"jquery"
 			"backbone"
@@ -391,6 +391,7 @@ require.config {
 			"event"
 			"WS"
 		]
+		"common_handle" : []
 		"ui/ui" : [
 			'UI.tooltip'
 			'UI.scrollbar'
@@ -413,9 +414,66 @@ require.config {
 			'hoverIntent'
 			'bootstrap-carousel'
 		]
-	bundleExcludes :
-		# This is a none requirejs option, but it's used by compiler to exclude some of the source.
-		"lib/lib" : [ "i18n!nls/lang.js" ] # i18n!nls/lang.js must have a suffix `.js`, otherwise, it will have error when compiling.
+		"model/model" : [
+			'base_model'
+			'account_model'
+			'session_model'
+			'favorite_model'
+			'app_model'
+			'stack_model'
+			'state_model'
+			'ec2_model'
+			'vpc_model'
+			'aws_model'
+			'ami_model'
+			'ebs_model'
+			'elb_model'
+			'dhcp_model'
+			'customergateway_model'
+			'vpngateway_model'
+			'keypair_model'
+			'autoscaling_model'
+			'cloudwatch_model'
+			'sns_model'
+			'subnet_model'
+			'instance_model'
+			'result_vo'
+			'favorite_service'
+			'session_service'
+			'account_service'
+			'app_service'
+			'stack_service'
+			'aws_service'
+			'state_service'
+			'ami_service'
+			'ebs_service'
+			'ec2_service'
+			'eip_service'
+			'instance_service'
+			'keypair_service'
+			'placementgroup_service'
+			'securitygroup_service'
+			'acl_service'
+			'customergateway_service'
+			'dhcp_service'
+			'eni_service'
+			'internetgateway_service'
+			'routetable_service'
+			'subnet_service'
+			'vpc_service'
+			'vpngateway_service'
+			'vpn_service'
+			'elb_service'
+			'iam_service'
+			'autoscaling_service'
+			'cloudwatch_service'
+			'sns_service'
+		]
+	# bundleExcludes :
+	# 	# This is a none requirejs option, but it's used by compiler to exclude some of the source.
+	# 	"lib/lib" : [ "i18n!nls/lang.js" ] # i18n!nls/lang.js must have a suffix `.js`, otherwise, it will have error when compiling.
+	# 	"common_handle" : [ "i18n!nls/lang.js" ]
+	# 	"model/model" : [ "i18n!nls/lang.js" ]
 
 	### env:prod:end ###
 }

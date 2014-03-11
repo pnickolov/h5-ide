@@ -46,23 +46,24 @@
   };
 
   transformModules = function(config) {
-    var bundleName, bundles, exclude, _ref;
+    var bundleExcludes, bundleName, bundles, exclude, _ref;
     exclude = [];
     config.modules = [];
+    bundleExcludes = config.bundleExcludes || {};
     _ref = config.bundles;
     for (bundleName in _ref) {
       bundles = _ref[bundleName];
-      if (bundles.length) {
-        config.modules.push({
-          name: bundleName,
-          create: true,
-          include: bundles,
-          exclude: exclude.concat(config.bundleExcludes[bundleName] || [])
-        });
+      config.modules.push({
+        name: bundleName,
+        create: !!bundles.length,
+        include: bundles,
+        exclude: exclude.concat(bundleExcludes[bundleName] || [])
+      });
+      if (exclude.length === 0) {
+        exclude.push("i18n!nls/lang.js");
       }
       exclude.push(bundleName);
     }
-    console.log(config.modules);
     delete config.bundles;
     return config;
   };

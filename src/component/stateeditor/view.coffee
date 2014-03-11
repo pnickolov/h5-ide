@@ -2537,6 +2537,8 @@ define [ 'event',
                             operateCommand.redo()
                             that.commandIndex = that.commandIndex + 1
 
+                        that.renderStateCount()
+
                     null
 
                 undo: () ->
@@ -2548,6 +2550,8 @@ define [ 'event',
                         if operateCommand
                             operateCommand.undo()
                             that.commandIndex = that.commandIndex - 1
+
+                        that.renderStateCount()
 
                     null
 

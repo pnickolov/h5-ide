@@ -159,6 +159,11 @@
       pipeline = coffeeCompile.pipe(es.through(function(f) {
         console.log(util.compileTitle(f.extra), "" + f.relative);
         return this.emit("data", f);
+      })).pipe(es.through(function(f) {
+        if (f.path.match(/src.lib.handlebarhelpers.js/)) {
+          handlebars.reloadConfig();
+        }
+        return this.emit("data", f);
       })).pipe(gulpif(Helper.shouldLintCoffee, jshint())).pipe(gulpif(Helper.shouldLintCoffee, lintReporter())).pipe(gulp.dest("."));
       if (GLOBAL.gulpConfig.reloadJsHtml) {
         pipeline.pipe(StreamFuncs.throughLiveReload());

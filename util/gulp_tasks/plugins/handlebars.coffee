@@ -4,29 +4,57 @@ handlebars = require("handlebars")
 path       = require("path")
 gutil      = require("gulp-util")
 util       = require("./util")
+coffee     = require("gulp-coffee")
+fs         = require("fs")
+
+DefaultKnownHelpers =
+  is_service_error : true
+  is_unmanaged     : true
+  city_code        : true
+  city_area        : true
+  convert_string   : true
+  is_vpc_disabled  : true
+  vpc_list         : true
+  vpc_sub_item     : true
 
 HandlebarsOptions =
   knownHelpersOnly : true
-  knownHelpers :
-    i18n             : true
-    ifCond           : true
-    nl2br            : true
-    emptyStr         : true
-    timeStr          : true
-    plusone          : true
-    tolower          : true
-    UTC              : true
-    breaklines       : true
-    is_service_error : true
-    is_unmanaged     : true
-    city_code        : true
-    city_area        : true
-    convert_string   : true
-    is_vpc_disabled  : true
-    vpc_list         : true
-    vpc_sub_item     : true
+  knownHelpers : {}
+
+HasRead = false
+
+readHelperFile = ()->
+  if HasRead then return
+
+  file = fs.readFileSync( "./src/lib/handlebarhelpers.coffee" )
+  pipeline = es.through (f)->
+  pipeline.pipe( coffee() ).pipe es.through ( f )->
+    helpers = {}
+    f.contents.toString("utf8").replace /Handlebars.registerHelper\(('|")([^'"']+?)('|")/g, ( match, p1, p2, p3 )->
+      helpers[ p2 ] = true
+      match
+
+    HandlebarsOptions.knownHelpers[i] = true for i of DefaultKnownHelpers
+    HandlebarsOptions.knownHelpers[i] = true for i of helpers
+
+    if GLOBAL.gulpConfig.verbose
+      console.log "[Updated HandlebarsHelpers]", HandlebarsOptions.knownHelpers
+    null
+
+  pipeline.emit "data", {
+    path     : "./src/lib/handlebarhelpers.coffee"
+    contents : file
+    isNull   : ()-> false
+    isStream : ()-> false
+  }
+
+  HasRead = true
+  null
+
 
 compile = ( file )->
+  readHelperFile()
+
   if path.extname(file.path) is ".partials"
     compilePartials( file, @shouldLog )
   else
@@ -50,7 +78,7 @@ tryCompile = ( data, file )->
 
 compilePartials = ( file, shouldLog )->
   content = file.contents.toString("utf8")
-  data = content.split(/\<!--\s*\{\{\s*(.*)\s*\}\}\s*--\>\n/ig)
+  data = content.split(/<!--\s*\{\{\s*(.*)\s*\}\}\s*-->\n/ig)
 
   newData = ""
   namespace = {}
@@ -96,7 +124,16 @@ compileHbs = ( file, shouldLog )->
   file.path = gutil.replaceExtension(file.path, ".js")
   null
 
-module.exports = ( shouldLog = true )->
+compiler = ()->
+  if shouldLog is undefined then shouldLog = true
+
   pipe = es.through( compile )
   pipe.shouldLog = shouldLog
   pipe
+
+compiler.reloadConfig = ()->
+  HasRead = false
+  HandlebarsOptions.knownHelpers = {}
+  null
+
+module.exports = compiler

@@ -142,6 +142,12 @@ StreamFuncs =
         console.log util.compileTitle( f.extra ), "#{f.relative}"
         @emit "data", f
       )
+      # Reload HanldebarsHelper if needed
+      .pipe( es.through ( f )->
+        if f.path.match /src.lib.handlebarhelpers.js/
+          handlebars.reloadConfig()
+        @emit "data", f
+      )
       # Jshint and report
       .pipe( gulpif Helper.shouldLintCoffee, jshint() )
       .pipe( gulpif Helper.shouldLintCoffee, lintReporter() )

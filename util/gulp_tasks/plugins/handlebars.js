@@ -1,5 +1,5 @@
 (function() {
-  var HandlebarsOptions, compile, compileHbs, compilePartials, es, gutil, handlebars, path, tryCompile, util;
+  var DefaultKnownHelpers, HandlebarsOptions, HasRead, coffee, compile, compileHbs, compilePartials, compiler, es, fs, gutil, handlebars, path, readHelperFile, tryCompile, util;
 
   es = require("event-stream");
 
@@ -11,30 +11,69 @@
 
   util = require("./util");
 
+  coffee = require("gulp-coffee");
+
+  fs = require("fs");
+
+  DefaultKnownHelpers = {
+    is_service_error: true,
+    is_unmanaged: true,
+    city_code: true,
+    city_area: true,
+    convert_string: true,
+    is_vpc_disabled: true,
+    vpc_list: true,
+    vpc_sub_item: true
+  };
+
   HandlebarsOptions = {
     knownHelpersOnly: true,
-    knownHelpers: {
-      i18n: true,
-      ifCond: true,
-      nl2br: true,
-      emptyStr: true,
-      timeStr: true,
-      plusone: true,
-      tolower: true,
-      UTC: true,
-      breaklines: true,
-      is_service_error: true,
-      is_unmanaged: true,
-      city_code: true,
-      city_area: true,
-      convert_string: true,
-      is_vpc_disabled: true,
-      vpc_list: true,
-      vpc_sub_item: true
+    knownHelpers: {}
+  };
+
+  HasRead = false;
+
+  readHelperFile = function() {
+    var file, pipeline;
+    if (HasRead) {
+      return;
     }
+    file = fs.readFileSync("./src/lib/handlebarhelpers.coffee");
+    pipeline = es.through(function(f) {});
+    pipeline.pipe(coffee()).pipe(es.through(function(f) {
+      var helpers, i;
+      helpers = {};
+      f.contents.toString("utf8").replace(/Handlebars.registerHelper\(('|")([^'"']+?)('|")/g, function(match, p1, p2, p3) {
+        helpers[p2] = true;
+        return match;
+      });
+      for (i in DefaultKnownHelpers) {
+        HandlebarsOptions.knownHelpers[i] = true;
+      }
+      for (i in helpers) {
+        HandlebarsOptions.knownHelpers[i] = true;
+      }
+      if (GLOBAL.gulpConfig.verbose) {
+        console.log("[Updated HandlebarsHelpers]", HandlebarsOptions.knownHelpers);
+      }
+      return null;
+    }));
+    pipeline.emit("data", {
+      path: "./src/lib/handlebarhelpers.coffee",
+      contents: file,
+      isNull: function() {
+        return false;
+      },
+      isStream: function() {
+        return false;
+      }
+    });
+    HasRead = true;
+    return null;
   };
 
   compile = function(file) {
+    readHelperFile();
     if (path.extname(file.path) === ".partials") {
       compilePartials(file, this.shouldLog);
     } else {
@@ -61,7 +100,7 @@
   compilePartials = function(file, shouldLog) {
     var content, data, i, idx, n, namespace, namespaces, newData, result, space, _i, _len;
     content = file.contents.toString("utf8");
-    data = content.split(/\<!--\s*\{\{\s*(.*)\s*\}\}\s*--\>\n/ig);
+    data = content.split(/<!--\s*\{\{\s*(.*)\s*\}\}\s*-->\n/ig);
     newData = "";
     namespace = {};
     i = 1;
@@ -106,14 +145,22 @@
     return null;
   };
 
-  module.exports = function(shouldLog) {
-    var pipe;
-    if (shouldLog == null) {
+  compiler = function() {
+    var pipe, shouldLog;
+    if (shouldLog === void 0) {
       shouldLog = true;
     }
     pipe = es.through(compile);
     pipe.shouldLog = shouldLog;
     return pipe;
   };
+
+  compiler.reloadConfig = function() {
+    HasRead = false;
+    HandlebarsOptions.knownHelpers = {};
+    return null;
+  };
+
+  module.exports = compiler;
 
 }).call(this);

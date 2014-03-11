@@ -23,22 +23,10 @@ define [ 'aws_model', 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( 
                 console.log 'AWS_RESOURCE_RETURN', result
 
                 # test
-                #result.is_error = true
+                #result.return_code = -1
 
-                if result and not result.is_error and result.resolved_data
+                if result and result.return_code is 0
                     console.log 'import succcess'
-
-                    # create resoruces
-                    resources = me.createResources result.resolved_data
-
-                    # set vo
-                    me.set 'resource_list', $.extend true, {}, resources
-
-                    # set global resource list
-                    MC.common.other.addUnmanaged $.extend true, {}, resources
-
-                    null
-
                 else
                     console.log 'import error'
                     @set 'resource_list', 'service_error'

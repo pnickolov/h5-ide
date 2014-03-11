@@ -271,6 +271,7 @@ define [ '../base/view',
                         $(this).val( "0" )
                     else if val < -100
                         $(this).val( "-100" )
+                    # More than 100% is legal.
                     # else if val > 100
                     #     $(this).val( "100" )
 

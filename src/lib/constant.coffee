@@ -1,6 +1,6 @@
 
 
-define ['i18n!/nls/lang.js'], ( lang ) ->
+define ['i18n!nls/lang.js'], ( lang ) ->
 
 	AWS_RESOURCE_KEY = {
 		"AWS.EC2.AvailabilityZone"            : "ZoneName"

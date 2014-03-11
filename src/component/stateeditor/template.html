@@ -263,7 +263,13 @@
 			<div class="state-log-item-status">{{state_status}}</div>
 		</div>
 		{{#if comment}}<div class="state-log-item-detail comment">{{breaklines comment}}</div>{{/if}}
-		{{#if stdout}}<div class="state-log-item-detail stdout">{{breaklines stdout}}</div>{{/if}}
+		{{#if stdout}}
+			{{#if long_stdout}}
+				<a>View details...</a>
+			{{else}}
+				<div class="state-log-item-detail stdout">{{breaklines stdout}}</div>
+			{{/if}}
+		{{/if}}
 	</li>
 {{/each}}
 

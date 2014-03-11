@@ -998,8 +998,9 @@
 
 #state-log .state-log-loading {
 	text-align: center;
-	margin-top: 200px;
+	margin-top: 80px;
 	display: none;
+	padding-bottom: 80px;
 }
 
 #state-log .state-log-title {

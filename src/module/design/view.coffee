@@ -156,12 +156,17 @@ define [ 'Design', 'event', 'text!./module/design/template.html', 'constant', 'i
             ide_event.offListen ide_event.UPDATE_APP_STATE, @updateStateBarWhenStateChanged
             ide_event.onLongListen ide_event.UPDATE_APP_STATE, @updateStateBarWhenStateChanged, @
 
-
             appStoped = Design.instance().get('state') is 'Stopped'
             if appStoped
                 return
 
-            $( '#main-statusbar .btn-state' ).show()
+            $btnState = $( '#main-statusbar .btn-state' )
+
+            if Tabbar.current is 'appview'
+                $btnState.hide()
+            else
+                $btnState.show()
+            
             stateList = MC.data.websocket.collection.status.find().fetch()
             @renderStateBar stateList
 

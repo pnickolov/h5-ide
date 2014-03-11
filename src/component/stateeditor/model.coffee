@@ -27,6 +27,11 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 			osPlatform = platformInfo.osPlatform
 			osPlatformDistro = platformInfo.osPlatformDistro
 
+			if osPlatform is 'windows'
+				that.set('isWindowsPlatform', true)
+			else
+				that.set('isWindowsPlatform', false)
+
 			if osPlatformDistro
 				that.set('supportedPlatform', true)
 			else

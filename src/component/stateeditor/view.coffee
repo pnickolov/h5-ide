@@ -103,6 +103,13 @@ define [ 'event',
 
             that = this
             compData = @model.get 'compData'
+
+            that.initState()
+
+            if that.isWindowsPlatform
+                @__renderEmpty('is_windows')
+                return that
+
             if Design.instance().get('agent').enabled
                 if compData and compData.type in [constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance, constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration]
                     @__renderState()
@@ -121,6 +128,7 @@ define [ 'event',
                 group    : 'View states and log by selecting individual instance.'
                 default  : 'No state editor here.'
                 group_in_app : 'View states and log by selecting individual instance.'
+                is_windows : 'Editing state is only available for Linux platform.'
 
             tip = type and tipSet[ type ] or tipSet.default
 
@@ -135,7 +143,6 @@ define [ 'event',
         __renderState: () ->
 
             @editorShow = true
-            @initState()
             that = this
 
             # show modal
@@ -236,6 +243,7 @@ define [ 'event',
 
             that.resName = that.model.getResName()
             that.supportedPlatform = that.model.get('supportedPlatform')
+            that.isWindowsPlatform = that.model.get('isWindowsPlatform')
 
             that.currentResId = that.model.get('resId')
 
@@ -705,6 +713,7 @@ define [ 'event',
                 that.$cmdDsec.html(descHTML)
                 that.$cmdDsec.find('em:contains(required)').parents('li').addClass('required')
                 that.$cmdDsec.find('em:contains(optional)').parents('li').addClass('optional')
+                that.$cmdDsec.scrollTop(0)
             , 0)
 
             null
@@ -1598,7 +1607,7 @@ define [ 'event',
             $logPanelToggle = that.$editorModal.find('.state-log-toggle')
 
             expandPanel = $('#property-panel').hasClass('state-wide')
-            if expandPanel and $descPanel.is(':visible')
+            if expandPanel and $descPanel.hasClass('show')
 
                 $stateEditor.addClass('full')
                 # $descPanel.hide()
@@ -1632,7 +1641,7 @@ define [ 'event',
             $logPanelToggle = that.$editorModal.find('.state-log-toggle')
 
             expandPanel = $('#property-panel').hasClass('state-wide')
-            if expandPanel and $logPanel.is(':visible')
+            if expandPanel and $logPanel.hasClass('show')
 
                 $stateEditor.addClass('full')
                 # $logPanel.hide()
@@ -2115,10 +2124,17 @@ define [ 'event',
                 else
                     stateNum = logObj.id
 
-                if logObj.stdout
-                    stdoutStr = logObj.stdout.replace(/\n\n/g, '\n')
+                stdoutStr = ''
+                commentStr = ''
+                longStdout = false
+
                 if logObj.comment
-                    commentStr = logObj.comment.replace(/\n\n/g, '\n')
+                    commentStr = $.trim(logObj.comment.replace(/\n\n/g, '\n'))
+
+                if logObj.stdout
+                    stdoutStr = $.trim(logObj.stdout.replace(/\n\n/g, '\n'))
+                    # if stdoutStr.length > 100
+                    #     longStdout = true
 
                 stateLogViewAry.push({
                     id: logObj.id,
@@ -2126,7 +2142,8 @@ define [ 'event',
                     log_time: timeStr,
                     state_status: stateStatus,
                     stdout: stdoutStr,
-                    comment: commentStr
+                    comment: commentStr,
+                    long_stdout: longStdout
                 })
                 null
 
@@ -2221,7 +2238,7 @@ define [ 'event',
 
                 that.logRefreshTimer = setTimeout(() ->
                     if that.isLoadingLogList
-                        $loadText.text('Request state log info timeout, please try again')
+                        $loadText.text('Request log info timeout, please try again')
                 , 5000)
 
         onStateStatusUpdate: (newStateUpdateResIdAry) ->
@@ -3064,16 +3081,30 @@ define [ 'event',
 
                 that.undoManager.register(stateIdAry, statePosAry, 'remove')
 
+            _.each $targetStates, (targetState) ->
+                $targetState = $(targetState)
+                that.collapseItem($targetState)
+                null
+
             $targetStates.remove()
 
             $stateItems = that.$stateList.find('.state-item')
+
             if not $stateItems.length
                 that.$haveStateContainer.hide()
                 that.$noStateContainer.show()
+            else
+                _.each $stateItems, (stateItem) ->
+                    $stateItem = $(stateItem)
+                    if not $stateItem.hasClass('view')
+                        that.expandItem($stateItem)
+                    null
 
             that.refreshLogItemNum()
 
             that.updateToolbar()
+
+            return false
 
         checkboxSelect: (event) ->
 

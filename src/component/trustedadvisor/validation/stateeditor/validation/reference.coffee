@@ -63,11 +63,13 @@ define [ 'constant', 'MC', 'i18n!nls/lang.js' ], ( CONST, MC, lang ) ->
         if ref.length
             legalRef = MC.aws.aws.genAttrRefList data.comp, MC.canvas_data.component
 
+        legalExist = ( legalRef, ref ) ->
+            _.some legalRef, ( legal ) ->
+                legal.ref is ref.ref
 
         for r in ref
             hitLegal = null
-            exist = _.some legalRef, ( legal ) ->
-                legal.ref is r.ref
+            exist = legalExist legalRef, r
 
             if not exist
                 comp = __getComp r.uid

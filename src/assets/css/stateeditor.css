@@ -43,6 +43,23 @@
 	display: none;
 }
 
+#state-editor .checkbox > label {
+	background: #333;
+	border: 1px solid #9E9E9E;
+}
+
+#state-editor .checkbox > input:checked + label:after {
+	content: "\F13A";
+	position: absolute;
+	width: 13px;
+	height: 13px;
+	top: 3px;
+	left: 3px;
+	font: 10px/1em "MCIcon";
+	font-weight: normal;
+	-webkit-font-smoothing: antialiased;
+	color: #fff;
+}
 /* *************************************** state editor */
 
 #state-editor, .ace_autocomplete_tip {
@@ -869,7 +886,7 @@
 }
 
 #state-editor .state-action-wrap  .state-remove {
-	width      : 16px;
+	width      : 15px;
 	line-height: 16px;
 	font-size  : 12px !important;
 	height     : 16px;
@@ -884,6 +901,10 @@
 	/*display: none;*/
 	width: 16px;
 	height: 16px;
+}
+
+#state-editor .state-action-wrap .state-remove:before {
+	font-size: 12px;
 }
 
 #state-editor .state-item:hover .state-action-wrap,

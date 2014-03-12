@@ -88,6 +88,12 @@ define([], function(){
       if ( typeA == "string" ) { aString = '"' + aString + '"'; }
       if ( typeB == "string" ) { bString = '"' + bString + '"'; }
 
+      var childNodeType = "span";
+      if ( aString.indexOf("\n") > -1 || bString.indexOf("\n") > -1 )
+      {
+        childNodeType = "pre";
+      }
+
       var leafNode = document.createElement("span");
       spanNode = document.createElement("span");
       spanNode.appendChild(document.createTextNode(name + ": "))
@@ -101,7 +107,7 @@ define([], function(){
 
           if( typeB == "number" || typeB == "string" || typeB == "boolean" )
           {
-            spanNode = document.createElement("span");
+            spanNode = document.createElement(childNodeType);
             spanNode.setAttribute("class", typeB )
             spanNode.appendChild( valueNode )
             leafNode.appendChild(spanNode);
@@ -119,7 +125,7 @@ define([], function(){
 
           if( typeA == "number" || typeA == "string" || typeA == "boolean" )
           {
-            spanNode = document.createElement("span");
+            spanNode = document.createElement(childNodeType);
             spanNode.setAttribute("class", typeA )
             spanNode.appendChild( valueNode )
             leafNode.appendChild(spanNode);
@@ -137,7 +143,7 @@ define([], function(){
           valueNode = document.createTextNode(aString);
           if( typeA == "number" || typeA == "string" || typeA == "boolean" )
           {
-            spanNode = document.createElement("span");
+            spanNode = document.createElement(childNodeType);
             spanNode.setAttribute("class", typeA )
             spanNode.appendChild( valueNode )
             leafNode.appendChild(spanNode);
@@ -150,7 +156,7 @@ define([], function(){
           valueNode = document.createTextNode(bString);
           if( typeB == "number" || typeB == "string" || typeB == "boolean" )
           {
-            spanNode = document.createElement("span");
+            spanNode = document.createElement(childNodeType);
             spanNode.setAttribute("class", typeB )
             spanNode.appendChild( valueNode )
             leafNode.appendChild(spanNode);
@@ -167,7 +173,7 @@ define([], function(){
           valueNode = document.createTextNode(aString);
           if( typeA == "number" || typeA == "string" || typeA == "boolean" )
           {
-            spanNode = document.createElement("span");
+            spanNode = document.createElement(childNodeType);
             spanNode.setAttribute("class", typeA )
             spanNode.appendChild( valueNode )
             leafNode.appendChild(spanNode);

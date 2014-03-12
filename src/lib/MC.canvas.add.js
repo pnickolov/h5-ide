@@ -954,7 +954,8 @@ MC.canvas.add = function (flag, option, coordinate)
 			}
 
 			//check volume number,set icon
-			volume_number = component_data.resource.BlockDeviceMapping.length - 1; //exclude root device
+			volume_number = MC.aws.ebs.getVolumeLen(component_data.resource.BlockDeviceMapping);
+
 			if (volume_number > 0)
 			{
 				icon_volume_status = 'attached-normal';
@@ -2396,7 +2397,8 @@ MC.canvas.add = function (flag, option, coordinate)
 			}
 
 			//check volume number,set icon
-			volume_number = component_data.resource.BlockDeviceMapping.length - 1;
+			volume_number = MC.aws.ebs.getVolumeLen(component_data.resource.BlockDeviceMapping);
+
 			if (volume_number > 0)
 			{
 				icon_volume_status = 'attached-normal';

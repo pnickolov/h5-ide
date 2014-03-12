@@ -331,6 +331,11 @@ define [ '../base/model', 'keypair_model', 'constant' ], ( PropertyModel, keypai
             name        : value.DeviceName
 
 
+      if volume_detail isnt null
+        this.set 'hasRootDevice', true
+      else
+        this.set 'hasRootDevice', false
+
       this.set 'volume_detail', volume_detail
       
       @getMinVolumeSize()
@@ -344,7 +349,7 @@ define [ '../base/model', 'keypair_model', 'constant' ], ( PropertyModel, keypai
       uid    = this.get 'uid'
       if !volume
         uid = this.get 'uid'
-        console.error "[setVolumeSize]not found rootDevice of uid: " + uid
+        console.warn "[setVolumeSize]not found rootDevice of uid: " + uid
         return null
 
       ami = MC.data.dict_ami[ MC.canvas_data.component[uid].resource.ImageId ]
@@ -376,7 +381,7 @@ define [ '../base/model', 'keypair_model', 'constant' ], ( PropertyModel, keypai
       uid    = this.get 'uid'
       if !volume
         uid = this.get 'uid'
-        console.error "[setVolumeSize]not found rootDevice of uid: " + uid
+        console.warn "[setVolumeSize]not found rootDevice of uid: " + uid
         return null
 
       ami = MC.data.dict_ami[ MC.canvas_data.component[uid].resource.ImageId ]
@@ -395,7 +400,7 @@ define [ '../base/model', 'keypair_model', 'constant' ], ( PropertyModel, keypai
       volume = @getVolume()
       if !volume
         uid = this.get 'uid'
-        console.error "[setVolumeTypeStandard]not found rootDevice of uid: " + uid
+        console.warn "[setVolumeTypeStandard]not found rootDevice of uid: " + uid
         return null
 
       volume.Ebs.VolumeType = 'standard'
@@ -407,7 +412,7 @@ define [ '../base/model', 'keypair_model', 'constant' ], ( PropertyModel, keypai
       volume = @getVolume()
       if !volume
         uid = this.get 'uid'
-        console.error "[setVolumeTypeIops]not found rootDevice of uid: " + uid
+        console.warn "[setVolumeTypeIops]not found rootDevice of uid: " + uid
         return null
 
       volume.Ebs.VolumeType = 'io1'
@@ -420,7 +425,7 @@ define [ '../base/model', 'keypair_model', 'constant' ], ( PropertyModel, keypai
       volume = @getVolume()
       if !volume
         uid = this.get 'uid'
-        console.error "[setVolumeIops]not found rootDevice of uid: " + uid
+        console.warn "[setVolumeIops]not found rootDevice of uid: " + uid
         return null
 
       volume.Ebs.VolumeType = "io1"

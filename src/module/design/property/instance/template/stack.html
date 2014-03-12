@@ -114,6 +114,7 @@
 		</section>
 	</div>
 
+	{{#if hasRootDevice}}
 	<div class="option-group-head">{{ i18n "PROP_INSTANCE_ROOT_DEVICE" }}</div>
 	<div class="option-group">
 		<article id='property-panel-volume' data-bind="true" data-focus="none">
@@ -178,6 +179,7 @@
 		</article>
 
 	</div>
+	{{/if}}
 
 	{{#if eni_display}}
 	<div class="option-group-head">{{ i18n "PROP_INSTANCE_ENI_DETAIL" }}</div>

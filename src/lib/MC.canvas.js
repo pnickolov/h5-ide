@@ -2173,6 +2173,41 @@ MC.canvas.layout = {
 		});
 
 
+		//patch 20140312: append root device for old stack/app
+		$.each(components, function (key, value)
+		{
+			try
+			{
+				if (value.type === "AWS.EC2.Instance")
+				{
+					var volumeList    = value.resource.BlockDeviceMapping,
+						root_device   = null;
+					root_device = MC.aws.ami.getRootDevice(value.resource.ImageId);
+					if (  (volumeList.length === 0 || $.type(volumeList[0]) === "string") && root_device !== null )
+					{//need append root device
+						value.resource.BlockDeviceMapping.splice(0,0,root_device);
+					}
+				}
+				else if (value.type === "AWS.AutoScaling.LaunchConfiguration")
+				{
+					var volumeList    = value.resource.BlockDeviceMapping,
+						root_device   = null;
+					root_device = MC.aws.ami.getRootDevice(value.resource.ImageId);
+					if (  (volumeList.length === 0 || volumeList[0].DeviceName !== "/dev/sda1") && root_device !== null )
+					{//need append root device
+						delete root_device.Ebs.Iops;
+						value.resource.BlockDeviceMapping.splice(0,0,root_device);
+					}
+				}
+			}
+			catch(error)
+			{
+				console.warn("error occur when append root device to instance " + key);
+				return true;
+			}
+		});
+
+
 		$.each(components, function (key, value)
 		{
 			try
@@ -2657,6 +2692,7 @@ MC.canvas.volume = {
 								'volumeSize': item.Ebs.VolumeSize
 							})
 						});
+						volume_len++;
 					}
 				});
 			}
@@ -2760,7 +2796,7 @@ MC.canvas.volume = {
 							})
 						});
 					});
-					volume_len = node_volume_data.length - 1;//exclude root device
+					volume_len = MC.aws.ebs.getVolumeLen( target_data.resource.BlockDeviceMapping );//exclude root device
 				}
 					
 			}
@@ -2946,7 +2982,8 @@ MC.canvas.volume = {
 				target_node = $('#' + target_id),
 				target_offset = target_node[0].getBoundingClientRect(),
 				volume_id = $('#instance_volume_list').find('.selected').attr('id'),
-				volumeList;
+				volumeList,
+				volume_len;
 
 			if (!volume_id)
 			{
@@ -2959,6 +2996,7 @@ MC.canvas.volume = {
 					volume_match = rvolume.exec(volume_id),
 					volume_name = volume_match[1],
 					target_index;
+
 
 				$.each(target_volume_data, function (i, item)
 				{
@@ -2982,9 +3020,11 @@ MC.canvas.volume = {
 				);
 			}
 
-			$('#instance_volume_number, #' + target_id + '_volume_number').text(target_volume_data.length - 1);//exclude root device
+			volume_len = MC.aws.ebs.getVolumeLen( target_volume_data );
 
-			document.getElementById(target_id + '_volume_number').setAttribute('value', target_volume_data.length - 1); //exclude root device
+			$('#instance_volume_number, #' + target_id + '_volume_number').text(volume_len);//exclude root device
+
+			document.getElementById(target_id + '_volume_number').setAttribute('value', volume_len); //exclude root device
 
 			MC.canvas.data.set('component.' + target_id + '.resource.BlockDeviceMapping', target_volume_data);
 
@@ -3140,7 +3180,8 @@ MC.canvas.volume = {
 			data_option,
 			volume_id,
 			target_id,
-			target_az;
+			target_az,
+			volume_len;
 
 		Canvon('.AWS-EC2-Instance, .AWS-AutoScaling-LaunchConfiguration').removeClass('attachable');
 
@@ -3203,10 +3244,12 @@ MC.canvas.volume = {
 
 						target_volume_data.push('#' + volume_id);
 
-						$('#instance_volume_number').text(target_volume_data.length - 1);//exclude root device
+						volume_len = MC.aws.ebs.getVolumeLen( target_volume_data );
 
-						MC.canvas.update(target_id, 'text', 'volume_number', target_volume_data.length - 1);//exclude root device
-						document.getElementById(target_id + '_volume_number').setAttribute('value', target_volume_data.length - 1);//exclude root device
+						$('#instance_volume_number').text(volume_len);//exclude root device
+
+						MC.canvas.update(target_id, 'text', 'volume_number', volume_len);//exclude root device
+						document.getElementById(target_id + '_volume_number').setAttribute('value', volume_len);//exclude root device
 
 						target_az = MC.canvas.data.get('component.' + target_id + '.resource.Placement.AvailabilityZone');
 
@@ -3228,9 +3271,10 @@ MC.canvas.volume = {
 
 						MC.canvas.data.set('component.' + original_node_id + '.resource.BlockDeviceMapping', original_node_volume_data);
 
-						MC.canvas.update(original_node_id, 'text', 'volume_number', original_node_volume_data.length - 1);//exclude root device
+						volume_len = MC.aws.ebs.getVolumeLen( original_node_volume_data );
+						MC.canvas.update(original_node_id, 'text', 'volume_number', volume_len);//exclude root device
 
-						document.getElementById(original_node_id + '_volume_number').setAttribute('value', target_volume_data.length - 1);//exclude root device
+						document.getElementById(original_node_id + '_volume_number').setAttribute('value', volume_len);//exclude root device
 					}
 				}
 			}
@@ -3253,11 +3297,13 @@ MC.canvas.volume = {
 					target_volume_data.push('#' + volume_id);
 				}
 
-				$('#instance_volume_number').text(target_volume_data.length - 1);//exclude root device
+				volume_len = MC.aws.ebs.getVolumeLen(target_volume_data);
 
-				MC.canvas.update(target_id, 'text', 'volume_number', target_volume_data.length -1 );//exclude root device
+				$('#instance_volume_number').text(volume_len);//exclude root device
 
-				document.getElementById(target_id + '_volume_number').setAttribute('value', target_volume_data.length - 1);//exclude root device
+				MC.canvas.update(target_id, 'text', 'volume_number', volume_len );//exclude root device
+
+				document.getElementById(target_id + '_volume_number').setAttribute('value', volume_len);//exclude root device
 
 				MC.canvas.data.set('component.' + target_id + '.resource.BlockDeviceMapping', target_volume_data);
 
@@ -3306,6 +3352,7 @@ MC.canvas.asgList = {
 			// Prepare data
 			var uid     = MC.extractID( target_id );
 			var layout  = MC.canvas_data.layout.component.node[ uid ];
+			var volume_len = 0;
 			if (!layout) {
 				return;
 			}
@@ -3340,8 +3387,9 @@ MC.canvas.asgList = {
 				instances : []
 			};
 
-			lc_comp = MC.canvas_data.component[ MC.extractID( lc_comp.resource.LaunchConfigurationName ) ]
-			temp_data.volume = lc_comp ? lc_comp.resource.BlockDeviceMapping.length - 1 : 0
+			lc_comp = MC.canvas_data.component[ MC.extractID( lc_comp.resource.LaunchConfigurationName ) ];
+			volume_len = MC.aws.ebs.getVolumeLen( lc_comp.resource.BlockDeviceMapping );
+			temp_data.volume = volume_len;
 
 			if ( layout ) {
 				temp_data.background = [layout.osType, layout.architecture, layout.rootDeviceType].join(".");
@@ -3483,7 +3531,7 @@ MC.canvas.instanceList = {
 				temp_data.instances.push( {
 					  color : statusMap[ state ]
 					, id     : inst_comp.uid
-					, volume : inst_comp.resource.BlockDeviceMapping.length - 1
+					, volume : MC.aws.ebs.getVolumeLen(inst_comp.resource.BlockDeviceMapping)
 					, name   : inst_comp.name
 					, state  : state
 					, is_deleted : 'terminated|shutting-down|unknown'.indexOf(state) !== -1 ? ' deleted' : ''

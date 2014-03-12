@@ -62,7 +62,38 @@ define [ 'MC' ], ( MC) ->
 
 		device_name
 
+	getVolumeLen = (bdm) ->
 
+		volume_len = 0
+
+		if bdm is null
+			return volume_len
+
+		if bdm.length is 0 or ( bdm.length > 0 and ( $.type(bdm[0]) is "string" or bdm[0].DeviceName isnt "/dev/sda1" ) )
+			#has no root device
+			volume_len = bdm.length
+
+		else
+			volume_len = bdm.length - 1
+
+		volume_len
+
+	getRootDevice = (bdm) ->
+
+		rootDevice = null
+
+		if bdm is null or bdm.length is 0
+			return null
+
+		if bdm.length is 0 or ( bdm.length > 0 and ( $.type(bdm[0]) is "string" or bdm[0].DeviceName isnt "/dev/sda1" ) )
+			#has no root device
+			return null
+
+		else
+			rootDevice = bdm[0]
+
+		rootDevice
 
 	getDeviceName : getDeviceName
-
+	getVolumeLen : getVolumeLen
+	getRootDevice : getRootDevice

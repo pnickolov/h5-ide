@@ -190,12 +190,12 @@ define [ 'constant', 'MC','i18n!nls/lang.js', 'validation_helper'], ( constant, 
 			isInRange = taHelper.sg.isInRange('tcp', elbPort, portData, 'in')
 			if not isInRange
 				result = false
-				resultPortAry.push(elbPort)
+				resultPortAry.push(elbProtocol + ' <span class="validation-tag tag-port">' + elbPort + '</span>')
 
 		if not result
 
 			elbName = elbComp.name
-			tipInfo = sprintf lang.ide.TA_MSG_ERROR_ELB_RULE_NOT_TRAFFIC_TO_LISTENER, elbName, elbProtocol, resultPortAry.join(', ')
+			tipInfo = sprintf lang.ide.TA_MSG_ERROR_ELB_RULE_NOT_TRAFFIC_TO_LISTENER, elbName, resultPortAry.join(', ')
 
 			return {
 				level: constant.TA.WARNING

@@ -3527,7 +3527,7 @@ module.exports =
       zh: ""
 
     TA_MSG_ERROR_ELB_RULE_NOT_TRAFFIC_TO_LISTENER:
-      en: "Load balancer <span class='validation-tag tag-elb'>%s</span> should allow inbound traffic towards its Load Balancer Protocol: %s %s."
+      en: "Load balancer <span class='validation-tag tag-elb'>%s</span> should allow inbound traffic towards its Load Balancer Protocol: %s."
       zh: ""
 
     # SG

@@ -2986,7 +2986,7 @@ MC.canvas.event.dragable = {
 			else
 			{
 				$(document).on({
-					'keydown.DRAGABLE_EVENT': target_type === 'AWS.EC2.Instance' ? MC.canvas.event.dragable.keyClone : returnFalse,
+					'keydown.DRAGABLE_EVENT': target_type === 'AWS.EC2.Instance' ? MC.canvas.event.dragable.keyClone : false,
 					'mousemove.DRAGABLE_EVENT': MC.canvas.event.dragable.mousemove,
 					'mouseup.DRAGABLE_EVENT': Canvon(event.target).hasClass('asg-resource-dragger') ?
 						// For asgExpand
@@ -5316,7 +5316,7 @@ MC.canvas.event.keyEvent = function (event)
 			{
 				$('#property-panel .input').first().focus();
 			}
-			
+
 			return false;
 		}
 	}

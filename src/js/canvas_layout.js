@@ -21,7 +21,7 @@ var listen = function ()
 			.on('mousedown' + name_space, MC.canvas.event.clearSelected)
 			.on('mousedown' + name_space, '#svg_canvas', MC.canvas.event.clickBlank)
 			.on('mouseenter'  + name_space + ' mouseleave'  + name_space, '.node', MC.canvas.event.nodeHover)
-			.on('selectstart' + name_space, returnFalse)
+			.on('selectstart' + name_space, false)
 			.on('mousedown' + name_space, '.dragable', MC.canvas.event.selectNode)
 			.on('mousedown' + name_space, '.AWS-AutoScaling-LaunchConfiguration .instance-number-group', MC.canvas.asgList.show)
 			.on('mousedown' + name_space, '.AWS-EC2-Instance .instance-number-group', MC.canvas.instanceList.show)
@@ -41,7 +41,7 @@ var listen = function ()
 			.on('mousedown' + name_space, MC.canvas.event.clearSelected)
 			.on('mousedown' + name_space, '#svg_canvas', MC.canvas.event.clickBlank)
 			.on('mouseenter'  + name_space + ' mouseleave'  + name_space, '.node', MC.canvas.event.nodeHover)
-			.on('selectstart' + name_space, returnFalse)
+			.on('selectstart' + name_space, false)
 			.on('mousedown' + name_space, MC.canvas.event.ctrlMove.mousedown)
 			.on('mousedown' + name_space, '#node-action-wrap', MC.canvas.nodeAction.popup);
 	}
@@ -56,7 +56,7 @@ var listen = function ()
 			.on('click' + name_space, '.line', MC.canvas.event.selectLine)
 			.on('mousedown' + name_space, MC.canvas.event.clearSelected)
 			.on('mousedown' + name_space, '#svg_canvas', MC.canvas.event.clickBlank)
-			.on('selectstart' + name_space, returnFalse)
+			.on('selectstart' + name_space, false)
 			.on('mousedown' + name_space, MC.canvas.event.ctrlMove.mousedown)
 			.on('mousedown' + name_space, '#node-action-wrap', MC.canvas.nodeAction.popup);
 	}
@@ -71,7 +71,7 @@ var listen = function ()
 			.on('mousedown' + name_space, '.AWS-AutoScaling-LaunchConfiguration .instance-number-group', MC.canvas.asgList.show)
 			.on('mousedown' + name_space, MC.canvas.event.clearSelected)
 			.on('mousedown' + name_space, '#svg_canvas', MC.canvas.event.clickBlank)
-			.on('selectstart' + name_space, returnFalse)
+			.on('selectstart' + name_space, false)
 			.on('mousedown' + name_space, MC.canvas.event.ctrlMove.mousedown);
 	}
 

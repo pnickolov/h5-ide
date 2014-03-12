@@ -3,8 +3,15 @@
   <dl class="dl-vertical">
     <dt>{{#if isIGW}}Internet Gateway{{else}}VPN Gateway{{/if}} ID</dt>
     <dd>{{emptyStr appId}}</dd>
-    <dt>State</dt>
-    <dd><i class="status status-xgw-{{state}}"></i>{{state}}</dd>
+    {{#if isIGW}}
+      <dt>State</dt>
+      <dd><i class="status status-xgw-{{state}}"></i>{{state}}</dd>
+    {{else}}
+      <dt>State</dt>
+      <dd><i class="status status-xgw-{{state}}"></i>{{state}}</dd>
+      <dt>Attachment State</dt>
+      <dd><i class="status status-xgw-{{attachment_state}}"></i>{{attachment_state}}</dd>
+    {{/if}}
     {{#if type}}
     <dt>type</dt>
     <dd>{{type}}</dd>

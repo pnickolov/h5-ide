@@ -6,7 +6,7 @@
 #state-editor .parameter-value {
 	/*font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace  !important;*/
 	font-size: 12px !important;
-	color: #ccc;
+	color: #ff6a38;
 }
 
 #state-editor .parameter-item:hover .parameter-container {
@@ -499,7 +499,7 @@
 	float        : left;
 	width        : 150px;
 	margin-left  : 28px;
-	margin-top   : -26px;
+	margin-top   : -28px;
 	color        : #999;
 }
 
@@ -508,15 +508,13 @@
 }
 
 #state-editor .parameter-list .parameter-item {
-	/*width         : 100%;*/
 	overflow        : auto;
 	padding         : 4px 6px 0 27px;
-	/*border-bottom   : 1px solid rgba(255,255,255,.05);*/
 	position        : relative;
 }
 
 #state-editor .parameter-list .parameter-item.disabled {
-	opacity: 0.5;
+	opacity: 0.7;
 }
 
 #state-editor .parameter-list .parameter-item.disabled:hover {
@@ -529,7 +527,7 @@
 	margin-top: 2px;
 	cursor    : default;
 	position  : relative;
-	color     : rgb(248, 185, 72);
+	color     : #8E5CBB;
 	width     : 92px;
 	cursor    : pointer;
 }
@@ -538,7 +536,7 @@
 	content : "*";
 	position: absolute;
 	left    : -10px;
-	color   : rgb(248, 185, 72);
+	color   : #8E5CBB;
 }
 
 #state-editor .parameter-list .parameter-value {
@@ -772,7 +770,7 @@
 	cursor: pointer;
 	/*background: rgba(0,0,0,.01);*/
 	/*border-bottom: 1px solid #eee;*/
-	min-height: 22px;
+	min-height: 23px;
 	padding: 6px 0;
 }
 

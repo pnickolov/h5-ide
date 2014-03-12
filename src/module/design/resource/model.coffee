@@ -237,6 +237,8 @@ define [ 'i18n!nls/lang.js',
 
                             null
 
+                        MC.forge.stack.appendRootDevice MC.canvas_data
+
 
                 null
 
@@ -551,6 +553,8 @@ define [ 'i18n!nls/lang.js',
 
             if stack_ami_list.length !=0
                 ami_model.DescribeImages { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, stack_ami_list
+            else
+                MC.forge.stack.appendRootDevice MC.canvas_data
 
         describeCommunityAmiService : ( region_name, name, platform, isPublic, architecture, rootDeviceType, perPageNum, returnPage ) ->
 

@@ -2186,6 +2186,7 @@ MC.canvas.layout = {
 					if (  (volumeList.length === 0 || $.type(volumeList[0]) === "string") && root_device !== null )
 					{//need append root device
 						value.resource.BlockDeviceMapping.splice(0,0,root_device);
+						console.info("append root device to instance "+key);
 					}
 				}
 				else if (value.type === "AWS.AutoScaling.LaunchConfiguration")
@@ -2197,12 +2198,13 @@ MC.canvas.layout = {
 					{//need append root device
 						delete root_device.Ebs.Iops;
 						value.resource.BlockDeviceMapping.splice(0,0,root_device);
+						console.info("append root device to instance "+key);
 					}
 				}
 			}
 			catch(error)
 			{
-				console.warn("error occur when append root device to instance " + key);
+				console.warn("error occur when append root device to component " + key);
 				return true;
 			}
 		});

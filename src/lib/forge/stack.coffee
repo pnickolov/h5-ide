@@ -957,9 +957,42 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 		null
 
+	appendRootDevice = ( json_data ) ->
+
+		if json_data and json_data.component
+			$.each json_data.component, (key, value) ->
+				try
+					if value.type is "AWS.EC2.Instance"
+						volumeList = value.resource.BlockDeviceMapping
+						root_device = null
+						root_device = MC.aws.ami.getRootDevice(value.resource.ImageId)
+						#need append root device
+						if (volumeList.length is 0 or $.type(volumeList[0]) is "string") and root_device isnt null
+							value.resource.BlockDeviceMapping.splice 0, 0, root_device
+							console.info "append root device to instance " + key
+
+					else if value.type is "AWS.AutoScaling.LaunchConfiguration"
+						volumeList = value.resource.BlockDeviceMapping
+						root_device = null
+						root_device = MC.aws.ami.getRootDevice(value.resource.ImageId)
+						if (volumeList.length is 0 or volumeList[0].DeviceName isnt "/dev/sda1") and root_device isnt null
+							#need append root device
+							delete root_device.Ebs.Iops
+							value.resource.BlockDeviceMapping.splice 0, 0, root_device
+							console.info "append root device to launchconfiguration " + key
+				catch error
+					console.warn "error occur when append root device to " + key
+					return true
+				null
+		else
+			console.warn "error occur when append root device"
+
+		null
+
 	#public
 	getVolumeList	   : getVolumeList
 	expandServerGroup  : expandServerGroup
 	compactServerGroup : compactServerGroup
 	getAllImageId      : getAllImageId
 	checkStoppable     : checkStoppable
+	appendRootDevice   : appendRootDevice

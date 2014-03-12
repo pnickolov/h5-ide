@@ -19,6 +19,10 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
       publicIp     : Design.instance().typeIsDefaultVpc()
       state        : undefined
 
+      # RootDevice
+      rdSize : 10
+      rdIops : ""
+
     type : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
     newNameTmpl : "launch-config-"
 
@@ -147,6 +151,7 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
     setInstanceType       : InstanceModel.prototype.setInstanceType
     initInstanceType      : InstanceModel.prototype.initInstanceType
     isEbsOptimizedEnabled : InstanceModel.prototype.isEbsOptimizedEnabled
+    getBlockDeviceMapping : InstanceModel.prototype.getBlockDeviceMapping
 
     serialize : ()->
 
@@ -160,7 +165,9 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
 
       sgarray = _.map @connectionTargets("SgAsso"), ( sg )-> sg.createRef( "GroupId" )
 
-      blockDevice = []
+      # Generate RootDevice
+      blockDevice = @getBlockDeviceMapping()
+
       for volume in @get("volumeList") or emptyArray
         vd =
           DeviceName : volume.get("name")

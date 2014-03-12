@@ -39,10 +39,10 @@ gulp.task("watch", function(){
 // Build different version of ide
 gulp.task("dev",     function(){ return buildTask.compileDev(); });
 gulp.task("dev_all", function(){ return buildTask.compileDev( true ); });
-gulp.task("debug",   function(){ return releaseTask.build( true );   });
-gulp.task("release", function(){ return releaseTask.build(); });
+gulp.task("debug",   function(){ return releaseTask.build( "debug" );   });
+gulp.task("release", function(){ return releaseTask.build( "release" ); });
 
-gulp.task("qa_build", function(){ return releaseTask.build( true, "./qa" ); })
+gulp.task("qa_build", function(){ return releaseTask.build( "qa" ); })
 gulp.task("qa", ["qa_build"], function(){ return serverTask.create("./qa", 3002); });
 
 // Help

@@ -158,8 +158,14 @@ Tasks =
   #*** Final Git commit
   #*** Push to remote
 module.exports =
-  build : ( debugMode, outputPath )->
-    ideversion.save()
+  build : ( mode )->
+
+    deploy     = mode isnt "qa"
+    debugMode  = mode is "qa" or mode is "debug"
+    outputPath = if mode is "qa" then "./qa" else undefined
+
+    if deploy
+      ideversion.save()
 
     [
       Tasks.copyAssets

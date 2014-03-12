@@ -116,21 +116,22 @@ Tasks =
       .on( "end", end(d) )
     d.promise
 
-  concatJS : ()->
-    logTask "Concating JS"
+  concatJS : ( debug, outputPath )->
+    ()->
+      logTask "Concating JS"
 
-    d = Q.defer()
-    requirejs.optimize( rjsconfig()
+      d = Q.defer()
+      requirejs.optimize( rjsconfig( debug, outputPath )
 
-    , (buildres)->
-      console.log "Concat result:"
-      console.log buildres
-      d.resolve()
-    , (err)->
-      console.log err
-    )
+      , (buildres)->
+        console.log "Concat result:"
+        console.log buildres
+        d.resolve()
+      , (err)->
+        console.log err
+      )
 
-    d.promise
+      d.promise
 
 
 
@@ -150,7 +151,7 @@ Tasks =
   #*** Final Git commit
   #*** Push to remote
 module.exports =
-  build : ( debugMode )->
+  build : ( debugMode, outputPath )->
     ideversion.save()
 
     [
@@ -160,5 +161,5 @@ module.exports =
       Tasks.compileCoffee
       Tasks.compileTemplate
       Tasks.processHtml
-      Tasks.concatJS
+      Tasks.concatJS( debugMode, outputPath )
     ].reduce( Q.when, Q() )

@@ -4,12 +4,6 @@ vm = require("vm")
 
 ConfigFile = "./build/js/ide/config.js"
 
-DefaultConfig =
-  baseUrl        : "./build"
-  dir            : "./build2"
-  removeCombined : true
-
-
 readRequirejsConfig = ( path )->
   source = fs.readFileSync path, "utf8"
 
@@ -33,9 +27,11 @@ readRequirejsConfig = ( path )->
   Context.require.config
 
 
-extend = ( a, b )->
-  for i of b
-    a[i] = b[i]
+extend = ( a )->
+  for arg, idx in arguments
+    if idx is 0 then continue
+    for i of arg
+      a[i] = arg[i]
   a
 
 transformModules = ( config )->
@@ -48,7 +44,6 @@ transformModules = ( config )->
 
     config.modules.push {
       name    : bundleName
-      create  : !!bundles.length
       include : bundles
       exclude : exclude.concat( bundleExcludes[bundleName] || [] )
     }
@@ -62,21 +57,18 @@ transformModules = ( config )->
   delete config.bundles
   config
 
-getConfig = ()->
-
-  if debugMode is undefined then debugMode = true
-
-  if debugMode
+getConfig = ( debugMode, outputPath )->
+  if debugMode is true
     extra =
       optimize        : "none"
       optimizeCss     : "none"
       skipDirOptimize : true
-  else
-    extra = {}
 
-  config = extend( extra, DefaultConfig )
-
-  config = extend( readRequirejsConfig( ConfigFile ), config )
+  config = extend( readRequirejsConfig( ConfigFile ), extra or {}, {
+    removeCombined : true
+    baseUrl : "./build"
+    dir     : outputPath or "./build2"
+  } )
 
   # Read the config. Transform the bundles to modules
   transformModules( config )

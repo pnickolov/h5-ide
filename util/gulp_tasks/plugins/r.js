@@ -17,6 +17,12 @@ function UNIQUEARRAY( theArray ) {
     }
 }
 
+/* Set module create to true if the file is not found */
+fs = require("fs");
+function SETMODULECREATE ( module ) {
+    module.create = !fs.existsSync( module._sourcePath );
+}
+
 
 /**
  * @license r.js 2.1.11 Copyright (c) 2010-2014, The Dojo Foundation All Rights Reserved.
@@ -25973,6 +25979,9 @@ define('build', function (require) {
                 modules.forEach(function (module) {
                     if (module.name) {
                         module._sourcePath = buildContext.nameToUrl(module.name);
+
+                        SETMODULECREATE( module )
+
                         //If the module does not exist, and this is not a "new" module layer,
                         //as indicated by a true "create" property on the module, and
                         //it is not a plugin-loaded resource, and there is no

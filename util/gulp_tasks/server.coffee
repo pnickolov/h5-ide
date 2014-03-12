@@ -2,6 +2,7 @@
 gutil   = require("gulp-util")
 nstatic = require("node-static")
 http    = require("http")
+open    = require("open")
 
 module.exports.create = ( path, port )->
 
@@ -51,4 +52,6 @@ module.exports.create = ( path, port )->
     null
 
   server.listen( port or GLOBAL.gulpConfig.staticFileServerPort )
+
+  open("http://127.0.0.1:" + (port or GLOBAL.gulpConfig.staticFileServerPort) )
   null

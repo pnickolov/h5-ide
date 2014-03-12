@@ -1,11 +1,13 @@
 (function() {
-  var gutil, http, nstatic;
+  var gutil, http, nstatic, open;
 
   gutil = require("gulp-util");
 
   nstatic = require("node-static");
 
   http = require("http");
+
+  open = require("open");
 
   module.exports.create = function(path, port) {
     var defaultHeader, file, redirectRegex, server;
@@ -62,6 +64,7 @@
       return null;
     });
     server.listen(port || GLOBAL.gulpConfig.staticFileServerPort);
+    open("http://127.0.0.1:" + (port || GLOBAL.gulpConfig.staticFileServerPort));
     return null;
   };
 

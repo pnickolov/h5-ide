@@ -469,7 +469,11 @@ require.config {
 			'cloudwatch_service'
 			'sns_service'
 		]
-	# bundleExcludes :
+		"component/sgrule/SGRulePopup" : []
+		"module/design/framework/DesignBundle" : [ "Design", "CanvasManager" ]
+	bundleExcludes :
+		"component/sgrule/SGRulePopup" : [ "Design" ]
+		"module/design/framework/DesignBundle" : [ "component/sgrule/SGRulePopup" ]
 	# 	# This is a none requirejs option, but it's used by compiler to exclude some of the source.
 	# 	"lib/lib" : [ "i18n!nls/lang.js" ] # i18n!nls/lang.js must have a suffix `.js`, otherwise, it will have error when compiling.
 	# 	"common_handle" : [ "i18n!nls/lang.js" ]

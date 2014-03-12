@@ -1,17 +1,11 @@
 (function() {
-  var ConfigFile, DefaultConfig, extend, fs, getConfig, readRequirejsConfig, transformModules, vm;
+  var ConfigFile, extend, fs, getConfig, readRequirejsConfig, transformModules, vm;
 
   fs = require("fs");
 
   vm = require("vm");
 
   ConfigFile = "./build/js/ide/config.js";
-
-  DefaultConfig = {
-    baseUrl: "./build",
-    dir: "./build2",
-    removeCombined: true
-  };
 
   readRequirejsConfig = function(path) {
     var Context, source;
@@ -37,10 +31,16 @@
     return Context.require.config;
   };
 
-  extend = function(a, b) {
-    var i;
-    for (i in b) {
-      a[i] = b[i];
+  extend = function(a) {
+    var arg, i, idx, _i, _len;
+    for (idx = _i = 0, _len = arguments.length; _i < _len; idx = ++_i) {
+      arg = arguments[idx];
+      if (idx === 0) {
+        continue;
+      }
+      for (i in arg) {
+        a[i] = arg[i];
+      }
     }
     return a;
   };
@@ -55,7 +55,6 @@
       bundles = _ref[bundleName];
       config.modules.push({
         name: bundleName,
-        create: !!bundles.length,
         include: bundles,
         exclude: exclude.concat(bundleExcludes[bundleName] || [])
       });
@@ -68,22 +67,20 @@
     return config;
   };
 
-  getConfig = function() {
-    var config, debugMode, extra;
-    if (debugMode === void 0) {
-      debugMode = true;
-    }
-    if (debugMode) {
+  getConfig = function(debugMode, outputPath) {
+    var config, extra;
+    if (debugMode === true) {
       extra = {
         optimize: "none",
         optimizeCss: "none",
         skipDirOptimize: true
       };
-    } else {
-      extra = {};
     }
-    config = extend(extra, DefaultConfig);
-    config = extend(readRequirejsConfig(ConfigFile), config);
+    config = extend(readRequirejsConfig(ConfigFile), extra || {}, {
+      removeCombined: true,
+      baseUrl: "./build",
+      dir: outputPath || "./build2"
+    });
     transformModules(config);
 
     /*

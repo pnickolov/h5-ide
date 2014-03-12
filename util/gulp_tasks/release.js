@@ -120,25 +120,27 @@
       gulp.src(path).pipe(confCompile(true)).pipe(include()).pipe(variable()).pipe(dest()).on("end", end(d));
       return d.promise;
     },
-    concatJS: function() {
-      var d;
-      logTask("Concating JS");
-      d = Q.defer();
-      requirejs.optimize(rjsconfig(), function(buildres) {
-        console.log("Concat result:");
-        console.log(buildres);
-        return d.resolve();
-      }, function(err) {
-        return console.log(err);
-      });
-      return d.promise;
+    concatJS: function(debug, outputPath) {
+      return function() {
+        var d;
+        logTask("Concating JS");
+        d = Q.defer();
+        requirejs.optimize(rjsconfig(debug, outputPath), function(buildres) {
+          console.log("Concat result:");
+          console.log(buildres);
+          return d.resolve();
+        }, function(err) {
+          return console.log(err);
+        });
+        return d.promise;
+      };
     }
   };
 
   module.exports = {
-    build: function(debugMode) {
+    build: function(debugMode, outputPath) {
       ideversion.save();
-      return [Tasks.copyAssets, Tasks.copyJs, Tasks.compileLangSrc, Tasks.compileCoffee, Tasks.compileTemplate, Tasks.processHtml, Tasks.concatJS].reduce(Q.when, Q());
+      return [Tasks.copyAssets, Tasks.copyJs, Tasks.compileLangSrc, Tasks.compileCoffee, Tasks.compileTemplate, Tasks.processHtml, Tasks.concatJS(debugMode, outputPath)].reduce(Q.when, Q());
     }
   };
 

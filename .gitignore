@@ -61,3 +61,4 @@ src/event/*.js
 *.map
 atwho.js
 gulpconfig.js
+qa

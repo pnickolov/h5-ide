@@ -14,6 +14,8 @@ variable    = require("./plugins/variable")
 rjsconfig   = require("./plugins/rjsconfig")
 requirejs   = require("./plugins/r")
 
+stripdDebug = require("gulp-strip-debug")
+
 util = require("./plugins/util")
 
 SrcOption = {"base":"./src"}
@@ -74,19 +76,22 @@ Tasks =
         .on( "end", end(d) )
     d.promise
 
-  compileCoffee : ()->
-    logTask "Compiling coffees", true
+  compileCoffee : ( debugMode )->
+    ()->
+      logTask "Compiling coffees", true
 
-    path = ["./src/**/*.coffee", "!src/test/**/*", "!./src/nls/lang-source.coffee"]
+      path = ["./src/**/*.coffee", "!src/test/**/*", "!./src/nls/lang-source.coffee"]
 
-    d = Q.defer()
-    gulp.src( path, SrcOption )
-      .pipe( confCompile( true ) ) # Remove ### env:dev ###
-      .pipe( coffee() ) # Compile coffee
-      .pipe( fileLogger() )
-      .pipe( dest() )
-      .on( "end", end(d, true) )
-    d.promise
+      d = Q.defer()
+      pipe = gulp.src( path, SrcOption )
+        .pipe( confCompile( true ) ) # Remove ### env:dev ###
+        .pipe( coffee() ) # Compile coffee
+        .pipe( fileLogger() )
+
+      if debugMode then pipe = pipe.pipe( stripdDebug() )
+
+      pipe.pipe( dest() ).on( "end", end(d, true) )
+      d.promise
 
   compileTemplate : ()->
     logTask "Compiling templates", true
@@ -158,7 +163,7 @@ module.exports =
       Tasks.copyAssets
       Tasks.copyJs
       Tasks.compileLangSrc
-      Tasks.compileCoffee
+      Tasks.compileCoffee( debugMode )
       Tasks.compileTemplate
       Tasks.processHtml
       Tasks.concatJS( debugMode, outputPath )

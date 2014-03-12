@@ -75,8 +75,12 @@
         optimizeCss: "none",
         skipDirOptimize: true
       };
+    } else {
+      extra = {
+        optimizeCss: "standard"
+      };
     }
-    config = extend(readRequirejsConfig(ConfigFile), extra || {}, {
+    config = extend(readRequirejsConfig(ConfigFile), extra, {
       removeCombined: true,
       baseUrl: "./build",
       dir: outputPath || "./build2"

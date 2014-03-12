@@ -2130,6 +2130,10 @@ MC.canvas.layout = {
 
 					$.each(volumeList, function (_key, _value)
 					{
+						if ($.type(_value) !== "string")
+						{
+							return true;
+						}
 						var volId = _value.substr(1),
 							volComp = components[volId];
 
@@ -2622,25 +2626,38 @@ MC.canvas.volume = {
 
 			if (target_data && target_data.type === 'AWS.AutoScaling.LaunchConfiguration')
 			{
+
+				var root_devName  = '',
+					volume_len    = 0,
+					ami_info      = null;
+
+				ami_info = MC.data.dict_ami[target_data.resource.ImageId];
+				if (ami_info)
+				{
+					root_devName = ami_info.rootDeviceName;
+				}
+
 				node_volume_data = target_data.resource.BlockDeviceMapping;
 
 				$.each(node_volume_data, function (index, item)
 				{
 					volume_id = node_uid + '_volume_' + item.DeviceName.replace('/dev/', '');
-
-					data.list.push({
-						'volume_id': volume_id,
-						'name': item.DeviceName,
-						'size': item.Ebs.VolumeSize,
-						'snapshotId': item.Ebs.SnapshotId,
-						'json': JSON.stringify({
-							'instance_id': node_uid,
-							'id': volume_id,
+					if (item.DeviceName !== root_devName)
+					{
+						data.list.push({
+							'volume_id': volume_id,
 							'name': item.DeviceName,
+							'size': item.Ebs.VolumeSize,
 							'snapshotId': item.Ebs.SnapshotId,
-							'volumeSize': item.Ebs.VolumeSize
-						})
-					});
+							'json': JSON.stringify({
+								'instance_id': node_uid,
+								'id': volume_id,
+								'name': item.DeviceName,
+								'snapshotId': item.Ebs.SnapshotId,
+								'volumeSize': item.Ebs.VolumeSize
+							})
+						});
+					}
 				});
 			}
 			else
@@ -2677,7 +2694,7 @@ MC.canvas.volume = {
 						volume_id = item.ebs.volumeId;
 						if (item.deviceName === root_devName )
 						{
-							delete node_volume_data[index];
+							//delete node_volume_data[index];
 							return true;
 						}
 						else
@@ -3324,7 +3341,7 @@ MC.canvas.asgList = {
 			};
 
 			lc_comp = MC.canvas_data.component[ MC.extractID( lc_comp.resource.LaunchConfigurationName ) ]
-			temp_data.volume = lc_comp ? lc_comp.resource.BlockDeviceMapping.length : 0
+			temp_data.volume = lc_comp ? lc_comp.resource.BlockDeviceMapping.length - 1 : 0
 
 			if ( layout ) {
 				temp_data.background = [layout.osType, layout.architecture, layout.rootDeviceType].join(".");
@@ -3466,7 +3483,7 @@ MC.canvas.instanceList = {
 				temp_data.instances.push( {
 					  color : statusMap[ state ]
 					, id     : inst_comp.uid
-					, volume : inst_comp.resource.BlockDeviceMapping.length
+					, volume : inst_comp.resource.BlockDeviceMapping.length - 1
 					, name   : inst_comp.name
 					, state  : state
 					, is_deleted : 'terminated|shutting-down|unknown'.indexOf(state) !== -1 ? ' deleted' : ''

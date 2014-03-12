@@ -128,12 +128,26 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 	    null
 
 
-	getRootDevice = (ami) ->
+	getRootDevice = (image_id) ->
 
+		ami = MC.data.dict_ami[image_id]
 		rootDevice = null
-		if ami and ami.rootDeviceName and ami.blockDeviceMapping[ami.rootDeviceName]
-			rootDevice = ami.blockDeviceMapping[ami.rootDeviceName]
-			rootDevice.deviceName = ami.rootDeviceName
+
+		if MC.data.dict_ami and MC.data.dict_ami[image_id]
+			ami_info    = MC.data.dict_ami[image_id]
+			root_device_name = ami_info.rootDeviceName
+			root_device_info = ami_info.blockDeviceMapping[root_device_name]
+			if root_device_name and root_device_info
+				rootDevice = {
+					"DeviceName": root_device_name
+					"Ebs":
+						"VolumeSize": root_device_info.volumeSize
+						"SnapshotId": root_device_info.snapshotId
+						"VolumeType": root_device_info.volumeType
+						"Iops": if root_device_info.iops then root_device_info.iops else ""
+					}
+			else
+				console.warn "root_device(): can not found root device of AMI(" + image_id + ")"
 
 		rootDevice
 

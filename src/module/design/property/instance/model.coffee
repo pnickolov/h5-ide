@@ -679,9 +679,10 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 
 			uid         = this.get 'uid'
 			volume_detail = null
+			root_device = MC.aws.ami.getRootDevice MC.canvas_data.component[ uid ].resource.ImageId
 			device_list = MC.canvas_data.component[ uid ].resource.BlockDeviceMapping
 			for value, key in device_list
-				if $.type(value) is 'object'
+				if root_device.DeviceName is value.DeviceName
 					#root device
 					volume_detail =
 						isLC        : false
@@ -722,9 +723,10 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 
 			uid         = this.get 'uid'
 			volume      = null
+			root_device = MC.aws.ami.getRootDevice MC.canvas_data.component[ uid ].resource.ImageId
 			device_list = MC.canvas_data.component[ uid ].resource.BlockDeviceMapping
 			for value, key in device_list
-				if $.type(value) is 'object' and volume is null
+				if root_device.DeviceName is value.DeviceName
 					#root device
 					volume = value
 			volume

@@ -792,7 +792,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					var amiObj = MC.data.dict_ami[resource.ImageId];
 					var instanceAry = MC.aws.ami.getInstanceType(amiObj);
 					var haveSmallType = false;
-					var root_device = MC.aws.ebs.getRootDevice(amiObj.imageId);
+					var root_device = MC.aws.ami.getRootDevice(resource.ImageId);
 
 					_.each(instanceAry, function(instanceTypeStr){
 						if (instanceTypeStr === 'm1.small') {
@@ -807,8 +807,8 @@ MC.canvas.add = function (flag, option, coordinate)
 					} else {
 						resource.InstanceType = 'm1.small';
 					}
-					//append root device
-					
+
+					//append root device					
 					if (root_device !== null)
 						resource.BlockDeviceMapping.push(root_device);
 
@@ -2268,6 +2268,8 @@ MC.canvas.add = function (flag, option, coordinate)
 						var amiObj = MC.data.dict_ami[option.imageId];
 						var instanceAry = MC.aws.ami.getInstanceType(amiObj);
 						var haveSmallType = false;
+						var root_device = MC.aws.ami.getRootDevice(option.imageId);
+
 						_.each(instanceAry, function(instanceTypeStr){
 							if (instanceTypeStr === 'm1.small') {
 								haveSmallType = true;
@@ -2281,6 +2283,13 @@ MC.canvas.add = function (flag, option, coordinate)
 						} else {
 							component_data.resource.InstanceType = 'm1.small';
 						}
+
+						//append root device
+						if (root_device !== null)
+							delete root_device.Ebs.Iops;
+							component_data.resource.BlockDeviceMapping.push(root_device);
+
+
 					} catch (err) {
 						component_data.resource.InstanceType = 'm1.small';
 					}
@@ -2387,7 +2396,7 @@ MC.canvas.add = function (flag, option, coordinate)
 			}
 
 			//check volume number,set icon
-			volume_number = component_data.resource.BlockDeviceMapping.length;
+			volume_number = component_data.resource.BlockDeviceMapping.length - 1;
 			if (volume_number > 0)
 			{
 				icon_volume_status = 'attached-normal';

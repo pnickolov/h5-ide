@@ -95,6 +95,71 @@
 		</section>
 	</div>
 
+	<div class="option-group-head">{{ i18n "PROP_INSTANCE_ROOT_DEVICE" }}</div>
+	<div class="option-group">
+		<article id='property-panel-volume' data-bind="true" data-focus="none">
+		    <section class="property-control-group">
+		        <label>{{ i18n "PROP_VOLUME_DEVICE_NAME" }}</label>
+		        <div class="name">
+		            <label for="volume-device">{{ volume_detail.name }}</label>
+		        </div>
+		    </section>
+		    <section class="property-control-group">
+		        <label>{{ i18n "PROP_VOLUME_SIZE" }}</label>
+		        <div class="ranged-number-input">
+		            <label for="volume-size-ranged"></label>
+		            <input id="volume-size-ranged" type="text" class="input" value="{{volume_detail.volume_size}}" name="volume-size-ranged" data-ignore="true" maxlength="4" data-required="true" data-required="true" data-type="number"/>
+		        <label for="volume-property-ranged-number" >GB</label>
+		        </div>
+		    </section>
+
+		    {{#if volume_detail.snapshot_id}}
+		    <section class="property-control-group">
+		        <label>{{i18n "PROP_VOLUME_SNAPSHOT"}}</label>
+		        <div class="name">
+		            <label for="volume-device">{{ volume_detail.snapshot_id }}</label>
+		        </div>
+		    </section>
+		    {{/if}}
+
+
+		    <section class="property-control-group">
+		        <label>{{ i18n "PROP_VOLUME_TYPE" }}</label>
+		        <div class="context" id="volume-type-radios">
+		            <div>
+		            <div class="radio">
+		                <input id="radio-standard" type="radio" name="volume-type" {{#if volume_detail.isStandard}}checked="checked"{{/if}} value="radio-standard"/>
+		                <label for="radio-standard"></label>
+		            </div>
+		            <label for="radio-standard">{{ i18n "PROP_VOLUME_TYPE_STANDARD" }}</label>
+		            </div>
+		            <div {{#if volume_detail.iopsDisabled}}class="tooltip" data-tooltip="{{ i18n 'PROP_VOLUME_MSG_WARN'}}"{{/if}}>
+		            <div class="radio">
+		                <input id="radio-iops" type="radio" name="volume-type" {{#if volume_detail.isStandard}}{{else}}checked="checked"{{/if}} value="radio-iops" {{#if volume_detail.iopsDisabled}}disabled{{/if}}/>
+		                <label for="radio-iops"></label>
+		            </div>
+		            <label for="radio-iops">{{ i18n "PROP_VOLUME_TYPE_IOPS" }}</label>
+		            </div>
+		        </div>
+		    </section>
+
+		    <section class="property-control-group" id="iops-group" {{#if volume_detail.isStandard}}style="display:none"{{else}}style="display:block"{{/if}}>
+		        <label>IOPS</label>
+		        <div class="ranged-number-input">
+		            <label for="iops-ranged"></label>
+		            {{#if volume_detail.isStandard}}
+		            <input id="iops-ranged" type="text" class="input" value="100" name="iops-ranged" min="100" max="2000" required="">
+		            {{else}}
+		            <input class="input" id="iops-ranged" type="text" value="{{volume_detail.iops}}" name="iops-ranged" min="100" max="2000" required="">
+		            {{/if}}
+		        <label for="volume-property-ranged-number" ></label>
+		        </div>
+		    </section>
+
+		</article>
+
+	</div>
+
 	<div class="option-group-head">{{i18n "PROP_INSTANCE_SG_DETAIL"}}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
   <div class="option-group sg-group">Loading...</div>
 </article>

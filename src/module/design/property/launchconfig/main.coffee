@@ -34,6 +34,13 @@ define [ "../base/main",
             @model = model
             @model.isApp = false
             @view  = view
+
+            me = this
+            @view.on 'VOLUME_SIZE_CHANGED', ( value ) ->
+                me.model.setVolumeSize value
+                #MC.canvas.update model.attributes.uid, "text", "volume_size", value + "GB"
+
+                null
             null
 
         afterLoadStack : () ->

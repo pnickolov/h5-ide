@@ -58,6 +58,8 @@ define [ '../base/model', 'keypair_model', 'constant' ], ( PropertyModel, keypai
 
     init  : ( uid ) ->
 
+      @set 'uid', uid
+
       if @isApp
         @getAppLaunch( uid )
       else
@@ -73,6 +75,7 @@ define [ '../base/model', 'keypair_model', 'constant' ], ( PropertyModel, keypai
         @getInstanceType( uid, data )
         @getAssociatePublicIp( uid, data )
         @getAmi( uid, data )
+        @getRootDevice()
 
         this.set data
 
@@ -306,6 +309,122 @@ define [ '../base/model', 'keypair_model', 'constant' ], ( PropertyModel, keypai
       this.set 'name', component.name
       this.set 'lc',   lc_data
       this.set 'uid',  uid
+      null
+
+    #### root device ####
+    getRootDevice : () ->
+
+      uid         = this.get 'uid'
+      volume_detail = null
+      root_device = MC.aws.ami.getRootDevice MC.canvas_data.component[ uid ].resource.ImageId
+      device_list = MC.canvas_data.component[ uid ].resource.BlockDeviceMapping
+      for value, key in device_list
+        if root_device.DeviceName is value.DeviceName
+          #root device
+          volume_detail =
+            isLC        : false
+            isWin       : value.DeviceName != '/'
+            isStandard  : value.Ebs.VolumeType is 'standard'
+            iops        : value.Ebs.Iops
+            volume_size : value.Ebs.VolumeSize
+            snapshot_id : value.Ebs.SnapshotId
+            name        : value.DeviceName
+
+
+      this.set 'volume_detail', volume_detail
+      
+      @getMinVolumeSize()
+
+      null
+
+
+    getMinVolumeSize : () ->
+
+      volume = @getVolume()
+      uid    = this.get 'uid'
+      if !volume
+        uid = this.get 'uid'
+        console.error "[setVolumeSize]not found rootDevice of uid: " + uid
+        return null
+
+      ami = MC.data.dict_ami[ MC.canvas_data.component[uid].resource.ImageId ]
+      if ami and ami.rootDeviceName and ami.blockDeviceMapping[ami.rootDeviceName]
+        minVolSize = ami.blockDeviceMapping[ami.rootDeviceName].volumeSize
+        this.set "min_volume_size", Number(minVolSize)
+      else
+        this.set "min_volume_size", 1
+        console.warn "setVolumeSize(): can not found root device of AMI " + ami.imageId
+      null
+
+    getVolume : () ->
+
+      uid         = this.get 'uid'
+      volume      = null
+      root_device = MC.aws.ami.getRootDevice MC.canvas_data.component[ uid ].resource.ImageId
+      device_list = MC.canvas_data.component[ uid ].resource.BlockDeviceMapping
+      for value, key in device_list
+        if root_device.DeviceName is value.DeviceName
+          #root device
+          volume = value
+      volume
+
+
+
+    setVolumeSize : ( value ) ->
+
+      volume = @getVolume()
+      uid    = this.get 'uid'
+      if !volume
+        uid = this.get 'uid'
+        console.error "[setVolumeSize]not found rootDevice of uid: " + uid
+        return null
+
+      ami = MC.data.dict_ami[ MC.canvas_data.component[uid].resource.ImageId ]
+      if ami and ami.rootDeviceName and ami.blockDeviceMapping[ami.rootDeviceName]
+        minVolSize = ami.blockDeviceMapping[ami.rootDeviceName].volumeSize
+        if value >= minVolSize
+          volume.Ebs.VolumeSize = value
+        #else
+          #notification 'warning', sprintf lang.ide.PROP_MSG_WARN_ROOT_DEVICE_SIZE_ERROR, value, volume.Ebs.SnapshotId, minVolSize
+      else
+        console.warn "setVolumeSize(): can not found root device of AMI " + ami.imageId
+      null
+
+    setVolumeTypeStandard : () ->
+
+      volume = @getVolume()
+      if !volume
+        uid = this.get 'uid'
+        console.error "[setVolumeTypeStandard]not found rootDevice of uid: " + uid
+        return null
+
+      volume.Ebs.VolumeType = 'standard'
+      delete volume.Ebs.Iops
+      null
+
+    setVolumeTypeIops : ( value ) ->
+
+      volume = @getVolume()
+      if !volume
+        uid = this.get 'uid'
+        console.error "[setVolumeTypeIops]not found rootDevice of uid: " + uid
+        return null
+
+      volume.Ebs.VolumeType = 'io1'
+      volume.Ebs.Iops       = value
+      null
+
+
+    setVolumeIops : ( value )->
+
+      volume = @getVolume()
+      if !volume
+        uid = this.get 'uid'
+        console.error "[setVolumeIops]not found rootDevice of uid: " + uid
+        return null
+
+      volume.Ebs.VolumeType = "io1"
+      volume.Ebs.Iops       = value
       null
 
   }

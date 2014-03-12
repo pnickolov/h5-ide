@@ -3624,7 +3624,7 @@ module.exports =
       zh: ""
 
     TA_MSG_ERROR_STATE_EDITOR_EMPTY_REQUIED_PARAMETER:
-      en: "%s's state %s is missing required parameter %s."
+      en: "<span class='validation-tag tag-instance'>%s</span>'s state <span class='validation-tag tag-state'>%s</span> is missing required parameter <span class='validation-tag tag-parameter'>%s</span>."
       zh: ""
 
     # State

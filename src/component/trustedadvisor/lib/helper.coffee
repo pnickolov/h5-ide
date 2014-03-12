@@ -7,10 +7,6 @@ define [ 'constant', 'MC', 'i18n!nls/lang.js', 'Design', 'underscore' ], ( CONST
                 '6' : 'tcp'
                 '17': 'udp'
                 '-1': 'all'
-                'tcp': 'tcp'
-                'udp': 'udp'
-                'icmp': 'icmp'
-                'all': 'all'
 
         protocal:
             get: ( code ) ->
@@ -62,21 +58,31 @@ define [ 'constant', 'MC', 'i18n!nls/lang.js', 'Design', 'underscore' ], ( CONST
                     for permission in sg.resource.IpPermissionsEgress
                         protocal = Helper.protocal.get permission.IpProtocol
                         info[ 'out' ][ protocal ] or ( info[ 'out' ][ protocal ] = [] )
-                        info[ 'out' ][ protocal ].push from: permission.FromPort, to: permission.ToPort
+                        info[ 'out' ][ protocal ].push from: Number(permission.FromPort), to: Number(permission.ToPort)
 
                     for permission in sg.resource.IpPermissions
                         protocal = Helper.protocal.get permission.IpProtocol
                         info[ 'in' ][ protocal ] or ( info[ 'in' ][ protocal ] = [] )
-                        info[ 'in' ][ protocal ].push from: permission.FromPort, to: permission.ToPort
+                        info[ 'in' ][ protocal ].push from: Number(permission.FromPort), to: Number(permission.ToPort)
 
 
                 info
 
-            # isInRange: (protocal, port, portData, direction) ->
+            isInRange: (protocal, port, portData, direction) ->
 
-            #     isInRangeResult = false
-            #     _.each portMap[direction], (portAry, proto) ->
-            #         if proto is -1
-            #         isInRangeResult = true
+                isInRangeResult = false
+
+                protocalCode = Helper.protocal.get(protocal.toLowerCase())
+                portCode = Number(port)
+
+                _.each portData[direction], (portAry, proto) ->
+                    if proto is protocalCode
+                        _.each portAry, (portObj) ->
+                            if portCode >= portObj.from and portCode <= portObj.to
+                                isInRangeResult = true
+                            null
+                    null
+
+                return isInRangeResult
 
     Helper

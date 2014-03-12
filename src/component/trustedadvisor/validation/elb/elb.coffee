@@ -171,18 +171,39 @@ define [ 'constant', 'MC','i18n!nls/lang.js', 'validation_helper'], ( constant, 
 	isRuleTrafficToELBListener = (elbUID) ->
 
 		elbComp = MC.canvas_data.component[elbUID]
+
+		elbName = elbComp.name
+
 		sgCompAry = taHelper.sg.get(elbComp)
 		portData = taHelper.sg.port(sgCompAry)
 
 		listenerAry = elbComp.resource.ListenerDescriptions
 
-		_.each listenerAry, (listenerItem) ->
-			
+		result = true
+		resultPortAry = []
+
+		for listenerItem in listenerAry
+
 			listenerObj = listenerItem.Listener
 			elbProtocol = listenerObj.Protocol
 			elbPort = listenerObj.LoadBalancerPort
+			isInRange = taHelper.sg.isInRange('tcp', elbPort, portData, 'in')
+			if not isInRange
+				result = false
+				resultPortAry.push(elbPort)
 
-			null
+		if not result
+
+			elbName = elbComp.name
+			tipInfo = sprintf lang.ide.TA_MSG_ERROR_ELB_RULE_NOT_TRAFFIC_TO_LISTENER, elbName, elbProtocol, resultPortAry.join(', ')
+
+			return {
+				level: constant.TA.WARNING
+				info: tipInfo
+				uid: elbUID
+			}
+
+		return null
 
 	isHaveIGWForInternetELB : isHaveIGWForInternetELB
 	isHaveInstanceAttached : isHaveInstanceAttached

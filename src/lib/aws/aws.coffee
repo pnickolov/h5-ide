@@ -839,6 +839,10 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
 
                 key[comp.resource[constant.AWS_RESOURCE_KEY[comp.type]]] = MC.aws.aws.genResRef(uid, "resource.#{constant.AWS_RESOURCE_KEY[comp.type]}")
 
+                if comp.type is "AWS.EC2.KeyPair"
+
+                    key[comp.resource.KeyName + '-keypair'] = MC.aws.aws.genResRef(uid, 'resource.KeyName')
+
                 if comp.type is "AWS.AutoScaling.Group"
 
                     key[comp.resource.AutoScalingGroupName + '-asg'] = MC.aws.aws.genResRef(uid, 'resource.AutoScalingGroupName')
@@ -882,6 +886,12 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
                             if reference[v + '-asg'] and k not in [except_key, 'name']
 
                                 obj[k] = reference[v + '-asg']
+
+                        else if k is 'KeyName'
+
+                            if reference[v + '-keypair'] and k not in [except_key, 'name'] and not obj.KeyFingerprint
+
+                                obj[k] = reference[v + '-keypair']
 
                         else if reference[v] and k not in [except_key, 'name']
 

@@ -988,8 +988,10 @@ textarea {
 .status-Terminated,
 .status-terminated,
 .status-deleted,
+.status-xgw-pending,
+.status-xgw-detaching,
+.status-xgw-attaching,
 .status-xgw-unavailable,
-.status-xgw-deleted,
 .status-xgw-deleted,
 .status-xgw-detached {
 	background-color: #ec3c38;

@@ -6,6 +6,11 @@ define [ 'constant', 'MC', 'i18n!nls/lang.js', 'Design', 'underscore' ], ( CONST
                 '1' : 'icmp'
                 '6' : 'tcp'
                 '17': 'udp'
+                '-1': 'all'
+                'tcp': 'tcp'
+                'udp': 'udp'
+                'icmp': 'icmp'
+                'all': 'all'
 
         protocal:
             get: ( code ) ->
@@ -39,6 +44,10 @@ define [ 'constant', 'MC', 'i18n!nls/lang.js', 'Design', 'underscore' ], ( CONST
                     for eni in enis
                         for sg in eni.resource.GroupSet
                             sgs.push Helper.component.get MC.extractID sg.GroupId
+                # ELB
+                else if component.type is CONST.AWS_RESOURCE_TYPE.AWS_ELB
+                    for sgId in component.resource.SecurityGroups
+                        sgs.push Helper.component.get MC.extractID sgId
 
                 _.uniq _.compact sgs
 
@@ -63,8 +72,11 @@ define [ 'constant', 'MC', 'i18n!nls/lang.js', 'Design', 'underscore' ], ( CONST
 
                 info
 
+            # isInRange: (protocal, port, portData, direction) ->
 
+            #     isInRangeResult = false
+            #     _.each portMap[direction], (portAry, proto) ->
+            #         if proto is -1
+            #         isInRangeResult = true
 
     Helper
-
-

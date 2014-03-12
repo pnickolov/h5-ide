@@ -42,6 +42,7 @@ define [ '../base/model', 'keypair_model', 'constant', 'Design' ], ( PropertyMod
       data = @lc.toJSON()
       data.uid = uid
       data.isEditable = @isAppEdit
+      data.app_view = Design.instance().modeIsAppView()
       @set data
 
       @set "displayAssociatePublicIp", not Design.instance().typeIsClassic()

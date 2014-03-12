@@ -384,24 +384,31 @@ var dragsort = {
 	{
 		if (event.which === 1)
 		{
-			var target = $(this.parentNode.parentNode),
-				position = target.position(),
-				shadow = target.clone(),
+			var target = $(this).parents('.state-item'),
+				state_list_wrap = target.parents('.state-list'),
 				state_list = $('.state-list li'),
-				state_offset_top = state_list.offset().top;
+				state_offset_top,
+				shadow,
+				position;
 
 			if (event.data.option.dragStart)
 			{
 				event.data.option.dragStart.call(target, event);
 			}
 
+			state_list_wrap.addClass('state-dragging');
+
 			target.addClass('drag-hide');
 
-			state_list.parent().append('<div id="state-shadow-item"></div>');
+			position = target.position();
+
+			state_offset_top = state_list_wrap.offset().top;
+
+			state_list_wrap.append('<div id="state-shadow-item"></div>');
 
 			shadow = $('#state-shadow-item');
 
-			shadow.css('top', target.offset().top - state_offset_top);
+			shadow.css('top', event.pageY - state_offset_top - 10);
 
 			$(document).on({
 				'mousemove': dragsort.mousemove,
@@ -409,8 +416,9 @@ var dragsort = {
 			}, {
 				'target': target,
 				'state_list': state_list,
+				'state_list_wrap': state_list_wrap,
 				'item_height': target.height(),
-				'shadow': $('#state-shadow-item'),
+				'shadow': shadow,
 				'state_offset_top': state_offset_top,
 				'offset_top': event.pageY - target.offset().top,
 				'option': event.data.option,
@@ -423,28 +431,36 @@ var dragsort = {
 
 	mousemove: function(event)
 	{
-		var top = event.pageY - event.data.offset_top - event.data.state_offset_top,
-			state_offset_top = event.data.state_offset_top,
-			index = Math.round((top - event.data.offset_top) / event.data.item_height) + 1,
+		var state_offset_top = event.data.state_offset_top,
+			top = event.pageY - state_offset_top,
+			target = event.data.target,
+			index = Math.round(top / event.data.item_height) + 1,
 			length = event.data.state_list.length;
 
 		if (index > 0)
 		{
 			if (index >= length)
 			{
-				$('.state-list').append(event.data.target);
+				$('.state-list').append(target);
 			}
 			else
 			{
-				event.data.state_list.eq(index).before(event.data.target);
+				if (index > event.data.old_index)
+				{
+					event.data.state_list.eq(index).before(target);
+				}
+				else
+				{
+					event.data.state_list.eq(index - 1).before(target);
+				}
 			}
 		}
 		else
 		{
-			event.data.state_list.eq(0).before(event.data.target);
+			event.data.state_list.eq(0).before(target);
 		}
 
-		event.data.shadow.css('top', event.pageY - event.data.offset_top - state_offset_top);
+		event.data.shadow.css('top', event.pageY - state_offset_top - 10);
 
 		return false;
 	},
@@ -453,11 +469,12 @@ var dragsort = {
 	{
 		if (event.data.option.dragEnd)
 		{
-			old_index = event.data.old_index
+			old_index = event.data.old_index;
 			event.data.option.dragEnd.call(event.data.target, event, old_index);
 		}
 
 		event.data.target.removeClass('drag-hide');
+		event.data.state_list_wrap.removeClass('state-dragging');
 		event.data.shadow.remove();
 
 		$(document).off({

@@ -859,6 +859,11 @@
 	color: #aaa;
 }
 
+.state-dragging .state-item {
+	height: 35px;
+	overflow: hidden !important;
+}
+
 #state-editor .state-action-wrap {
 	position  : absolute;
 	right     : -60px;

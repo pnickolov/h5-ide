@@ -63,8 +63,11 @@ getConfig = ( debugMode, outputPath )->
       optimize        : "none"
       optimizeCss     : "none"
       skipDirOptimize : true
+  else
+    extra =
+      optimizeCss : "standard"
 
-  config = extend( readRequirejsConfig( ConfigFile ), extra or {}, {
+  config = extend( readRequirejsConfig( ConfigFile ), extra, {
     removeCombined : true
     baseUrl : "./build"
     dir     : outputPath or "./build2"

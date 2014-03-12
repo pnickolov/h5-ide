@@ -1,18 +1,15 @@
+// Author : Tim
 
-
-module.exports.run = function( grunt, callback, lang_src ) {
+module.exports = function( callback, lang_src ) {
 
     var fs          = require( 'fs' ),
         path        = fs.realpathSync( '.' ),
         source_file = path + '/src/nls/lang-source.coffee',
         zh_file     = path + '/src/nls/zh-cn/lang.js',
         en_file     = path + '/src/nls/en-us/lang.js',
-        lang        = lang_src || require( source_file ),
+        lang        = lang_src,
         zh_cn       = {},
         en_us       = {};
-
-    if ( !lang_src )
-        delete require.cache[require.resolve(source_file)];
 
     var hit = function(obj) {
         var hitKey = obj.zh !== undefined && obj.en !== undefined;
@@ -40,7 +37,7 @@ module.exports.run = function( grunt, callback, lang_src ) {
         try {
             recursion(lang);
         } catch (e) {
-            grunt.log.error("Lang File Error: " + e);
+            console.log("Lang File Error: " + e);
             return false;
         }
         return true;
@@ -100,54 +97,12 @@ module.exports.run = function( grunt, callback, lang_src ) {
 
     // do check
     if (!check(lang)) {
-        callback(false);
         return false;
     }
 
     // do divorce
     divorce(lang, en_us, zh_cn);
 
-    grunt.file.write(en_file, format(en_us));
-    grunt.file.write(zh_file, format(zh_cn));
-
-    callback(true);
-
-};
-
-module.exports.merge = function( grunt, callback ) {
-    var fs          = require( 'fs' ),
-        path        = fs.realpathSync( '.' ),
-        en_us       = require( path + '/src/nls/en-us/lang.js').lang,
-        zh_cn       = require( path + '/src/nls/zh-cn/lang.js').lang;
-
-    var checkLang = function(en_us, zh_cn) {
-        var creature = {};
-        var rec = function(ob, cp, creature) {
-            if (ob === Object(ob) )
-                for (var k in ob) {
-                    creature[k] = creature[k] || {};
-                    if (ob[k] === Object(ob[k])) {
-                        rec(ob[k], cp[k], creature[k]);
-                    }
-                    else if (ob[k] !== undefined) {
-                        creature[k].en_us = ob[k];
-                        creature[k].zh_cn = cp[k];
-                    }
-                    else{
-                        console.log(ob);
-                    }
-                }
-            else
-                return;
-        };
-
-        rec(en_us, zh_cn, creature);
-
-        return creature;
-    };
-
-    var creature = checkLang(en_us, zh_cn);
-    grunt.file.write('lang.js', JSON.stringify(creature));
-
-    callback();
+    callback(en_file, format(en_us));
+    callback(zh_file, format(zh_cn));
 };

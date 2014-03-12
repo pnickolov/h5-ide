@@ -8,10 +8,13 @@ gulp   = require("gulp")
 gutil  = require("gulp-util")
 coffee = require("gulp-coffee")
 
-buildLangSrc = require("../../../config/lang")
+buildLangSrc = require("./lang")
 
+module.exports = ( dest, useCache, shouldLog )->
 
-module.exports = ( dest = ".", useCache = true, shouldLog = true )->
+  if dest      is undefined then dest      = "."
+  if useCache  is undefined then useCache  = true
+  if shouldLog is undefined then shouldLog = true
 
   if useCache
     startPipeline = cached( coffee() )
@@ -26,23 +29,19 @@ module.exports = ( dest = ".", useCache = true, shouldLog = true )->
     ctx = vm.createContext({module:{}})
     vm.runInContext( file.contents.toString("utf8"), ctx )
 
-    buildLangSrc.run gruntMock, util.noop, ctx.module.exports
+    buildLangSrc writeFile, ctx.module.exports
     null
 
   pipeline.pipe( gulp.dest(dest) )
 
-  gruntMock =
-    log  :
-      error : util.log
-    file :
-      write : ( p1, p2 ) =>
-        cwd = process.cwd()
-        pipeline.emit "data", new gutil.File({
-          cwd      : cwd
-          base     : cwd
-          path     : p1
-          contents : new Buffer( p2 )
-        })
-        null
+  writeFile = ( p1, p2 ) ->
+    cwd = process.cwd()
+    pipeline.emit "data", new gutil.File({
+      cwd      : cwd
+      base     : cwd
+      path     : p1
+      contents : new Buffer( p2 )
+    })
+    null
 
   startPipeline

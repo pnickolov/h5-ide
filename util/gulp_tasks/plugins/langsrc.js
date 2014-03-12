@@ -15,17 +15,17 @@
 
   coffee = require("gulp-coffee");
 
-  buildLangSrc = require("../../../config/lang");
+  buildLangSrc = require("./lang");
 
   module.exports = function(dest, useCache, shouldLog) {
-    var gruntMock, pipeline, startPipeline;
-    if (dest == null) {
+    var pipeline, startPipeline, writeFile;
+    if (dest === void 0) {
       dest = ".";
     }
-    if (useCache == null) {
+    if (useCache === void 0) {
       useCache = true;
     }
-    if (shouldLog == null) {
+    if (shouldLog === void 0) {
       shouldLog = true;
     }
     if (useCache) {
@@ -42,29 +42,20 @@
         module: {}
       });
       vm.runInContext(file.contents.toString("utf8"), ctx);
-      buildLangSrc.run(gruntMock, util.noop, ctx.module.exports);
+      buildLangSrc(writeFile, ctx.module.exports);
       return null;
     }));
     pipeline.pipe(gulp.dest(dest));
-    gruntMock = {
-      log: {
-        error: util.log
-      },
-      file: {
-        write: (function(_this) {
-          return function(p1, p2) {
-            var cwd;
-            cwd = process.cwd();
-            pipeline.emit("data", new gutil.File({
-              cwd: cwd,
-              base: cwd,
-              path: p1,
-              contents: new Buffer(p2)
-            }));
-            return null;
-          };
-        })(this)
-      }
+    writeFile = function(p1, p2) {
+      var cwd;
+      cwd = process.cwd();
+      pipeline.emit("data", new gutil.File({
+        cwd: cwd,
+        base: cwd,
+        path: p1,
+        contents: new Buffer(p2)
+      }));
+      return null;
     };
     return startPipeline;
   };

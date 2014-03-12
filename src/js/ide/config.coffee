@@ -57,6 +57,7 @@ require.config {
 		#
 		'validation'         : 'component/trustedadvisor/validation'
 		'ta_conf'            : 'component/trustedadvisor/config'
+		'validation_helper'	 : 'component/trustedadvisor/lib/helper'
 
 		#statusbar state
 		'state_status'       : 'component/statestatus/main'

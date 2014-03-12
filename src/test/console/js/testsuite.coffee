@@ -187,6 +187,22 @@ define [ 'MC', 'session_model' ,'jquery', 'apiList', 'account_model', 'log_model
             account_model.once "ACCOUNT_CHECK__VALIDATION_RETURN", ( forge_result ) ->
                 resolveResult request_time, current_service, current_resource, current_api, forge_result
 
+        if current_service.toLowerCase() == "forge" && current_resource.toLowerCase() == "account" && current_api == "is_invitated"
+
+            #account.is_invitated
+            account_model.is_invitated {sender: me}, username, session_id
+            account_model.once "USER_IS__INVITATED_RETURN", ( forge_result ) ->
+                resolveResult request_time, current_service, current_resource, current_api, forge_result
+
+        if current_service.toLowerCase() == "forge" && current_resource.toLowerCase() == "account" && current_api == "apply_trial"
+            message = if $("#message").val() != "null" then $("#message").val() else null
+            message = if message != null and MC.isJSON(message)==true then JSON.parse message else message
+            #account.apply_trial
+            account_model.apply_trial {sender: me}, username, session_id, message
+            account_model.once "USER_APPLY__TRIAL_RETURN", ( forge_result ) ->
+                resolveResult request_time, current_service, current_resource, current_api, forge_result
+
+
         ########## Log ##########
         if current_service.toLowerCase() == "forge" && current_resource.toLowerCase() == "log" && current_api == "put_user_log"
             user_logs = if $("#user_logs").val() != "null" then $("#user_logs").val() else null

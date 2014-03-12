@@ -490,8 +490,25 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
     # Get xGW state
     data = MC.data.resource_list[ m.design().region() ][ m.get("appId") ]
 
-    if data and data.state in [ 'deleted', 'terminated' ]
+    if data
+      if m.get("appId").indexOf("igw-") is 0
+        #igw attachment.state: available | unavailable
+        if not ( data.attachmentSet isnt null and data.attachmentSet.item[0].state is "available" and data.attachmentSet.item[0].vpcId is m.parent().get("appId") )
+          CanvasManager.addClass el, "deleted"
+
+      else if m.get("appId").indexOf("vgw-") is 0
+        #vgw            state: pending | available | deleting | deleted
+        #    attachment.state: attaching | attached | detaching | detached
+        if not ( data.state is "available" and data.attachments.item[0].state is "attached" and data.attachments.item[0].vpcId is m.parent().get("appId") )
+          CanvasManager.addClass el, "deleted"
+
+      else if m.get("appId").indexOf("cgw-") is 0
+        #cgw state: pending | available | deleting | deleted
+        if data.state isnt "available"
+          CanvasManager.addClass el, "deleted"
+    else
       CanvasManager.addClass el, "deleted"
+
     null
 
   CanvasElement.prototype.detach = () ->

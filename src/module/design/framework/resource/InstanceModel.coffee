@@ -281,10 +281,11 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
         cached.rootDeviceType = ami.rootDeviceType
 
       # Update RootDevice Size
-      rootDevice = ami.blockDeviceMapping[ ami.rootDeviceName ]
-      minRdSize  = if rootDevice then parseInt( rootDevice.volumeSize, 10 ) else 10
-      if @get("rdSize") < minRdSize
-        @set("rdSize", minRdSize)
+      if ami.blockDeviceMapping
+        rootDevice = ami.blockDeviceMapping[ ami.rootDeviceName ]
+        minRdSize  = if rootDevice then parseInt( rootDevice.volumeSize, 10 ) else 10
+        if @get("rdSize") < minRdSize
+          @set("rdSize", minRdSize)
 
       # Assume the new amiId supports current instancetype
       # Assume the new amiId is the same OS of current one.
@@ -465,6 +466,25 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
         }
       null
 
+    getBlockDeviceMapping : ()->
+      ami = @getAmi() || @get("cachedAmi")
+      if ami.rootDeviceType is "ebs" and ami.blockDeviceMapping
+
+        blockDeviceMapping = [{
+          DeviceName : ami.rootDeviceName
+          Ebs : {
+            SnapshotId : ami.blockDeviceMapping[ami.rootDeviceName].snapshotId
+            VolumeSize : @get("rdSize") || ami.blockDeviceMapping[ ami.rootDeviceName ].volumeSize
+            VolumeType : "standard"
+          }
+        }]
+
+        if @get("rdIops") and parseInt( @get("rdSize"), 10 ) >= 10
+          blockDeviceMapping[0].Ebs.Iops = @get("rdIops")
+          blockDeviceMapping[0].Ebs.VolumeType = "io1"
+
+      blockDeviceMapping || []
+
     generateJSON : ()->
       tenancy = @get("tenancy")
 
@@ -489,22 +509,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
           securitygroupsId.push( sg.createRef( "GroupId" ) )
 
       # Generate RootDevice
-      ami = @getAmi() || @get("cachedAmi")
-      if ami.rootDeviceType is "instance-store"
-        blockDeviceMapping = []
-      else
-        blockDeviceMapping = [{
-          DeviceName : ami.rootDeviceName
-          Ebs : {
-            VolumeSize : @get("rdSize") || ami.blockDeviceMapping[ ami.rootDeviceName ].volumeSize
-            VolumeType : "standard"
-          }
-        }]
-
-        if @get("rdIops")
-          blockDeviceMapping[0].Ebs.Iops = @get("rdIops")
-          blockDeviceMapping[0].Ebs.VolumeType = "io1"
-
+      blockDeviceMapping = @getBlockDeviceMapping()
 
       component =
         type   : @type

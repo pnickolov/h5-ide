@@ -1177,6 +1177,9 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
         )
 
         resAttrDataAry = _.map autoCompList, (autoCompObj) ->
+            if autoCompObj.name.indexOf('self.') is 0
+                autoCompObj.value = autoCompObj.value.replace(autoCompObj.uid, 'self')
+                autoCompObj.uid = 'self'
             return {
                 name: "#{autoCompObj.name}",
                 value: "#{autoCompObj.name}",

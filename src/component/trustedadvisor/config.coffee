@@ -9,6 +9,7 @@ define({
         'AWS.EC2.SecurityGroup'                 : [ 'sg' ]
         'AWS.VPC.VPNGateway'                    : [ 'vgw' ]
         'AWS.VPC.VPNConnection'                 : [ 'vpn' ]
+        'AWS.VPC.CustomerGateway'               : [ 'cgw' ]
         'AWS.VPC.InternetGateway'               : [ 'igw' ]
         'AWS.EC2.Instance'                      : [ 'instance', 'state' ]
         'AWS.ELB'                               : [ 'elb' ]

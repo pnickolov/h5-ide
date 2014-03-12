@@ -1,4 +1,4 @@
-define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
+define [ 'constant', 'MC','i18n!nls/lang.js', 'validation_helper'], ( constant, MC, lang, taHelper ) ->
 
 	isHaveIGWForInternetELB = (elbUID) ->
 
@@ -168,9 +168,26 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 			info: tipInfo
 			uid: elbUID
 
+	isRuleTrafficToELBListener = (elbUID) ->
+
+		elbComp = MC.canvas_data.component[elbUID]
+		sgCompAry = taHelper.sg.get(elbComp)
+		portData = taHelper.sg.port(sgCompAry)
+
+		listenerAry = elbComp.resource.ListenerDescriptions
+
+		_.each listenerAry, (listenerItem) ->
+			
+			listenerObj = listenerItem.Listener
+			elbProtocol = listenerObj.Protocol
+			elbPort = listenerObj.LoadBalancerPort
+
+			null
+
 	isHaveIGWForInternetELB : isHaveIGWForInternetELB
 	isHaveInstanceAttached : isHaveInstanceAttached
 	isAttachELBToMultiAZ : isAttachELBToMultiAZ
 	isRedirectPortHttpsToHttp : isRedirectPortHttpsToHttp
 	isHaveRepeatListener : isHaveRepeatListener
 	isHaveSSLCert : isHaveSSLCert
+	isRuleTrafficToELBListener : isRuleTrafficToELBListener

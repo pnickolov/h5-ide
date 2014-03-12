@@ -176,6 +176,49 @@ define [ 'backbone', 'underscore', 'account_service', 'base_model' ], ( Backbone
                 if src.sender and src.sender.trigger then src.sender.trigger 'ACCOUNT_RESET__KEY_RETURN', forge_result
 
 
+        #is_invitated api (define function)
+        is_invitated : ( src, username, session_id ) ->
+
+            me = this
+
+            src.model = me
+
+            account_service.is_invitated src, username, session_id, ( forge_result ) ->
+
+                if !forge_result.is_error
+                #is_invitated succeed
+
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'USER_IS__INVITATED_RETURN', forge_result
+
+                else
+                #is_invitated failed
+
+                    console.log 'user.is_invitated failed, error is ' + forge_result.error_message
+                    me.pub forge_result
+
+
+        #apply_trial api (define function)
+        apply_trial : ( src, username, session_id, message=null ) ->
+
+            me = this
+
+            src.model = me
+
+            account_service.apply_trial src, username, session_id, message, ( forge_result ) ->
+
+                if !forge_result.is_error
+                #apply_trial succeed
+
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'USER_APPLY__TRIAL_RETURN', forge_result
+
+                else
+                #apply_trial failed
+
+                    console.error 'user.apply_trial failed, error is ' + forge_result.error_message
+                    me.pub forge_result
+
     }
 
     #############################################################

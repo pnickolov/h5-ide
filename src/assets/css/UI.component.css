@@ -989,8 +989,11 @@ textarea {
 .status-terminated,
 .status-deleted,
 .status-xgw-unavailable,
+.status-xgw-pending,
+.status-xgw-deleting,
 .status-xgw-deleted,
-.status-xgw-deleted,
+.status-xgw-attaching,
+.status-xgw-detaching,
 .status-xgw-detached {
 	background-color: #ec3c38;
 	background-image: -webkit-linear-gradient(bottom, #c5312d , #ec3c38);

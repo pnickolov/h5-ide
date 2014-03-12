@@ -42,6 +42,7 @@ define [ '../base/model', 'keypair_model', 'constant', 'Design' ], ( PropertyMod
       data = @lc.toJSON()
       data.uid = uid
       data.isEditable = @isAppEdit
+      data.app_view = Design.instance().modeIsAppView()
       @set data
 
       @set "displayAssociatePublicIp", not Design.instance().typeIsClassic()
@@ -106,6 +107,7 @@ define [ '../base/model', 'keypair_model', 'constant', 'Design' ], ( PropertyMod
 
     getAmi : () ->
       ami_id = @get("imageId")
+      comp   = Design.instance().component( @get("uid") )
       ami    = @lc.getAmi()
 
       if not ami
@@ -121,6 +123,19 @@ define [ '../base/model', 'keypair_model', 'constant', 'Design' ], ( PropertyMod
         }
 
       @set 'instance_ami', data
+
+
+      if ami.blockDeviceMapping
+        deivce = ami.blockDeviceMapping[ ami.rootDeviceName ]
+        rootDevice =
+          name : ami.rootDeviceName
+          size : parseInt( comp.get("rdSize"), 10 )
+          iops : comp.get("rdIops")
+
+        if rootDevice.size < 10
+          rootDevice.iops = ""
+          rootDevice.iopsDisabled = true
+        @set "rootDevice", rootDevice
       null
 
     getKeyPair : ()->
@@ -165,6 +180,14 @@ define [ '../base/model', 'keypair_model', 'constant', 'Design' ], ( PropertyMod
 
     getStateData : () ->
       Design.instance().component( @get("uid") ).getStateData()
+
+    setIops : ( iops )->
+      Design.instance().component( @get("uid") ).set("rdIops", iops)
+      null
+
+    setVolumeSize : ( size )->
+      Design.instance().component( @get("uid") ).set("rdSize", size)
+      null
 
   }
 

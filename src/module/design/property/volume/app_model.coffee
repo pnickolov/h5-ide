@@ -17,7 +17,8 @@ define [ '../base/model', 'Design' ], ( PropertyModel, Design ) ->
 
           volume = MC.data.resource_list[Design.instance().region()][ appId ]
           if volume
-            volume.name = volume.attachmentSet.item[0].device
+            if volume.attachmentSet
+              volume.name = volume.attachmentSet.item[0].device
           else
             return false
 

@@ -3015,7 +3015,7 @@ td.table-action a.btn {
 
 	height    : 40px;
 	width     : 100%;
-	min-width : 710px;
+	min-width : 610px;
 	background: #f0f0f0;
 
 	box-shadow    : 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -4586,10 +4586,6 @@ a.action-link:hover {
 #volume-size-ranged, #iops-ranged {
 	display: inline-block;
 	width: 60px;
-}
-
-#iops-group {
-	display: none;
 }
 
 #snapshot-info-group {

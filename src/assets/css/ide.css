@@ -4588,10 +4588,6 @@ a.action-link:hover {
 	width: 60px;
 }
 
-#iops-group {
-	display: none;
-}
-
 #snapshot-info-group {
 	padding: 10px;
 	font-size: 14px;

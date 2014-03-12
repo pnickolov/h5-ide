@@ -37,5 +37,6 @@ module.exports = {
   // in .git, it will try to recompile the whole project ( enableCache == true can avoid uncessary compile ).
   , gitPollingDebounce : 1000
 
-
+  // If true, it will automatically open the index of the server.
+  , openUrlAfterCreateServer : true
 };

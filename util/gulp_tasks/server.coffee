@@ -53,5 +53,6 @@ module.exports.create = ( path, port )->
 
   server.listen( port or GLOBAL.gulpConfig.staticFileServerPort )
 
-  open("http://127.0.0.1:" + (port or GLOBAL.gulpConfig.staticFileServerPort) )
+  if GLOBAL.gulpConfig.openUrlAfterCreateServer
+    open("http://127.0.0.1:" + (port or GLOBAL.gulpConfig.staticFileServerPort) )
   null

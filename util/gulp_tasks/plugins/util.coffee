@@ -1,8 +1,9 @@
 
 gutil    = require("gulp-util")
 notifier = require("node-notifier")
+fs       = require("fs")
 
-module.exports =
+util =
   log  : (e)-> console.log e
   noop : ()->
 
@@ -37,3 +38,18 @@ module.exports =
     if extra
       title += " " + gutil.colors.inverse( extra )
     title
+
+  deleteFolderRecursive : ( path )->
+    if not fs.existsSync( path ) then return
+
+    for file, index in ( fs.readdirSync( path ) || [] )
+      curPath = path + "/" + file
+      if fs.lstatSync( curPath ).isDirectory()
+        util.deleteFolderRecursive( curPath )
+      else
+        fs.unlinkSync( curPath )
+
+    fs.rmdirSync( path )
+    null
+
+module.exports = util

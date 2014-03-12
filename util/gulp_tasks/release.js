@@ -1,5 +1,5 @@
 (function() {
-  var Q, SrcOption, Tasks, coffee, confCompile, dest, end, es, fileLogger, gulp, gutil, handlebars, ideversion, include, langsrc, logTask, requirejs, rjsconfig, util, variable;
+  var Q, SrcOption, Tasks, coffee, confCompile, dest, end, es, fileLogger, gulp, gutil, handlebars, ideversion, include, langsrc, logTask, requirejs, rjsconfig, stripdDebug, util, variable;
 
   gulp = require("gulp");
 
@@ -26,6 +26,8 @@
   rjsconfig = require("./plugins/rjsconfig");
 
   requirejs = require("./plugins/r");
+
+  stripdDebug = require("gulp-strip-debug");
 
   util = require("./plugins/util");
 
@@ -96,13 +98,19 @@
       gulp.src(["./src/nls/lang-source.coffee"]).pipe(langsrc("./build", false, GLOBAL.gulpConfig.verbose)).on("end", end(d));
       return d.promise;
     },
-    compileCoffee: function() {
-      var d, path;
-      logTask("Compiling coffees", true);
-      path = ["./src/**/*.coffee", "!src/test/**/*", "!./src/nls/lang-source.coffee"];
-      d = Q.defer();
-      gulp.src(path, SrcOption).pipe(confCompile(true)).pipe(coffee()).pipe(fileLogger()).pipe(dest()).on("end", end(d, true));
-      return d.promise;
+    compileCoffee: function(debugMode) {
+      return function() {
+        var d, path, pipe;
+        logTask("Compiling coffees", true);
+        path = ["./src/**/*.coffee", "!src/test/**/*", "!./src/nls/lang-source.coffee"];
+        d = Q.defer();
+        pipe = gulp.src(path, SrcOption).pipe(confCompile(true)).pipe(coffee()).pipe(fileLogger());
+        if (debugMode) {
+          pipe = pipe.pipe(stripdDebug());
+        }
+        pipe.pipe(dest()).on("end", end(d, true));
+        return d.promise;
+      };
     },
     compileTemplate: function() {
       var d, path;
@@ -134,13 +142,17 @@
         });
         return d.promise;
       };
+    },
+    removeBuildFolder: function() {
+      util.deleteFolderRecursive(process.cwd() + "/build");
+      return true;
     }
   };
 
   module.exports = {
     build: function(debugMode, outputPath) {
       ideversion.save();
-      return [Tasks.copyAssets, Tasks.copyJs, Tasks.compileLangSrc, Tasks.compileCoffee, Tasks.compileTemplate, Tasks.processHtml, Tasks.concatJS(debugMode, outputPath)].reduce(Q.when, Q());
+      return [Tasks.copyAssets, Tasks.copyJs, Tasks.compileLangSrc, Tasks.compileCoffee(debugMode), Tasks.compileTemplate, Tasks.processHtml, Tasks.concatJS(debugMode, outputPath), Tasks.removeBuildFolder].reduce(Q.when, Q());
     }
   };
 

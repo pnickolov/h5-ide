@@ -138,7 +138,9 @@ Tasks =
 
       d.promise
 
-
+  removeBuildFolder : ()->
+    util.deleteFolderRecursive( process.cwd() + "/build" )
+    true
 
 
 # A task to build IDE
@@ -167,4 +169,5 @@ module.exports =
       Tasks.compileTemplate
       Tasks.processHtml
       Tasks.concatJS( debugMode, outputPath )
+      Tasks.removeBuildFolder
     ].reduce( Q.when, Q() )

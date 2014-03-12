@@ -105,7 +105,7 @@
         path = ["./src/**/*.coffee", "!src/test/**/*", "!./src/nls/lang-source.coffee"];
         d = Q.defer();
         pipe = gulp.src(path, SrcOption).pipe(confCompile(true)).pipe(coffee()).pipe(fileLogger());
-        if (debugMode) {
+        if (!debugMode) {
           pipe = pipe.pipe(stripdDebug());
         }
         pipe.pipe(dest()).on("end", end(d, true));
@@ -150,8 +150,12 @@
   };
 
   module.exports = {
-    build: function(debugMode, outputPath) {
-      ideversion.save();
+    build: function(mode) {
+      var debugMode, deploy, outputPath;
+      deploy = mode !== "qa";
+      debugMode = mode === "qa" || mode === "debug";
+      outputPath = mode === "qa" ? "./qa" : void 0;
+      ideversion.read(deploy);
       return [Tasks.copyAssets, Tasks.copyJs, Tasks.compileLangSrc, Tasks.compileCoffee(debugMode), Tasks.compileTemplate, Tasks.processHtml, Tasks.concatJS(debugMode, outputPath), Tasks.removeBuildFolder].reduce(Q.when, Q());
     }
   };

@@ -1,5 +1,5 @@
 (function() {
-  var fs, pkgInfo, save, version;
+  var fs, pkgInfo, read, version;
 
   fs = require("fs");
 
@@ -36,17 +36,19 @@
     return GLOBAL.gulpConfig.version;
   };
 
-  save = function() {
+  read = function(update) {
     if (!pkgInfo) {
       version();
     }
-    fs.writeFileSync("./package.json", JSON.stringify(pkgInfo, null, 2));
+    if (update) {
+      fs.writeFileSync("./package.json", JSON.stringify(pkgInfo, null, 2));
+    }
     return null;
   };
 
   module.exports = {
     version: version,
-    save: save
+    read: read
   };
 
 }).call(this);

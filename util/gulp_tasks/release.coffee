@@ -88,7 +88,7 @@ Tasks =
         .pipe( coffee() ) # Compile coffee
         .pipe( fileLogger() )
 
-      if debugMode then pipe = pipe.pipe( stripdDebug() )
+      if not debugMode then pipe = pipe.pipe( stripdDebug() )
 
       pipe.pipe( dest() ).on( "end", end(d, true) )
       d.promise
@@ -164,8 +164,7 @@ module.exports =
     debugMode  = mode is "qa" or mode is "debug"
     outputPath = if mode is "qa" then "./qa" else undefined
 
-    if deploy
-      ideversion.save()
+    ideversion.read( deploy )
 
     [
       Tasks.copyAssets

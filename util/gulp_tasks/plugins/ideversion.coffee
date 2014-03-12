@@ -28,14 +28,16 @@ version = ()->
 
   return GLOBAL.gulpConfig.version
 
-save = ()->
-  if not pkgInfo then version()
-  fs.writeFileSync("./package.json", JSON.stringify( pkgInfo, null, 2 ) )
+read = ( update )->
+  if not pkgInfo
+    version()
+
+  if update
+    fs.writeFileSync("./package.json", JSON.stringify( pkgInfo, null, 2 ) )
+
   null
-
-
 
 module.exports = {
   version : version
-  save    : save
+  read    : read
 }

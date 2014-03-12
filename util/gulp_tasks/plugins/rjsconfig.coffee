@@ -1,11 +1,28 @@
 
-fs = require("fs")
-vm = require("vm")
+fs     = require("fs")
+vm     = require("vm")
+es     = require("event-stream")
+coffee = require("gulp-coffee")
 
-ConfigFile = "./build/js/ide/config.js"
+ConfigFile = "./src/js/ide/config.coffee"
 
 readRequirejsConfig = ( path )->
-  source = fs.readFileSync path, "utf8"
+
+  # We should compile the config.coffee without conditionalCompiler
+  # instead of reading the compiled config.js
+  s = fs.readFileSync path
+
+  pipeline = es.through ()->
+
+  pipeline.pipe(coffee()).pipe es.through ( f )-> s = f.contents.toString("utf8")
+
+  pipeline.emit "data", {
+    path     : path
+    contents : source
+    isNull   : ()-> false
+    isStream : ()-> false
+  }
+
 
   Context =
     version  : ""
@@ -22,7 +39,7 @@ readRequirejsConfig = ( path )->
     null
 
   Context = vm.createContext( Context )
-  vm.runInContext( source, Context )
+  vm.runInContext( s, Context )
 
   Context.require.config
 

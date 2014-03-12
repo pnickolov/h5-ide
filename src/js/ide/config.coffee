@@ -20,15 +20,16 @@ require.config {
 	urlArgs : "v=#{version}"
 	paths   :
 
+		### env:dev ###
 		#############################################
-		# Requirejs lib
+		# Requirejs lib             # Merge in deploy
 		#############################################
 		'domReady'           : 'vender/requirejs/domReady'
 		'text'               : 'vender/requirejs/text'
 		'i18n'               : 'vender/requirejs/i18n'
 
 		#############################################
-		# vender
+		# vender                    # Merge in deploy
 		#############################################
 		'jquery'             : 'vender/jquery/jquery'
 		'canvon'             : 'vender/canvon/canvon'
@@ -41,7 +42,7 @@ require.config {
 		'Meteor'             : 'vender/meteor/meteor'
 
 		#############################################
-		# MC
+		# MC                        # Merge in deploy
 		#############################################
 		'MC'                 : 'js/MC.core'
 		'MC.validate'        : 'js/MC.validate'
@@ -56,23 +57,8 @@ require.config {
 
 		'WS'                 : 'lib/websocket'
 
-
 		#############################################
-		# lib/aws logic handler
-		#############################################
-		'aws_handle'         : 'lib/aws/main'
-		'forge_handle'       : 'lib/forge/main'
-		'common_handle'       : 'lib/common/main'
-
-		#
-		'validation'         : 'component/trustedadvisor/validation'
-		'ta_conf'            : 'component/trustedadvisor/config'
-
-		#statusbar state
-		'state_status'       : 'component/statestatus/main'
-
-		#############################################
-		# ui/
+		# ui/                       # Merge in deploy
 		#############################################
 		'UI.tooltip'         : 'ui/UI.tooltip'
 		'UI.scrollbar'       : 'ui/UI.scrollbar'
@@ -97,65 +83,13 @@ require.config {
 
 
 		#############################################
-		# design model
+		# design model              # Merge in deploy
 		#############################################
 		'Design'             : 'module/design/framework/Design'
 		'CanvasManager'      : 'module/design/framework/canvasview/CanvasManager'
 
 		#############################################
-		# module
-		#############################################
-		'base_main'          : 'module/base/base_main'
-
-		'header'             : 'module/header/main'
-		'header_view'        : 'module/header/view'
-		'header_model'       : 'module/header/model'
-
-		'navigation'         : 'module/navigation/main'
-		'navigation_view'    : 'module/navigation/view'
-		'navigation_model'   : 'module/navigation/model'
-
-		'tabbar'             : 'module/tabbar/main'
-		'tabbar_view'        : 'module/tabbar/view'
-		'tabbar_model'       : 'module/tabbar/model'
-
-		'dashboard'          : 'module/dashboard/main'
-		'dashboard_view'     : 'module/dashboard/overview/view'
-		'dashboard_model'    : 'module/dashboard/overview/model'
-
-		'process'            : 'module/process/main'
-		'process_view'       : 'module/process/view'
-		'process_model'      : 'module/process/model'
-
-		'design_module'      : 'module/design/main'
-		'design_view'        : 'module/design/view'
-		'design_model'       : 'module/design/model'
-
-		#sub module with design
-		'resource'           : 'module/design/resource/main'
-		'property'           : 'module/design/property/main'
-		'canvas'             : 'module/design/canvas/main'
-		'toolbar'            : 'module/design/toolbar/main'
-
-		#############################################
-		# component
-		#############################################
-
-		'unmanagedvpc'       : 'component/unmanagedvpc/main'
-		'unmanagedvpc_view'  : 'component/unmanagedvpc/view'
-		'unmanagedvpc_model' : 'component/unmanagedvpc/model'
-
-		'jquery_sort'       : 'component/stateeditor/lib/jquery_sort'
-		'markdown'    : 'component/stateeditor/lib/markdown'
-		'ace'                : 'component/stateeditor/lib/ace/ace'
-		'ace_ext_language_tools' : 'component/stateeditor/lib/ace/ext-language_tools'
-		'stateeditor'        : 'component/stateeditor/main'
-		'stateeditor_view'   : 'component/stateeditor/view'
-		'stateeditor_model'  : 'component/stateeditor/model'
-
-
-		#############################################
-		# model
+		# model                     # Merge in deploy
 		#############################################
 
 		#base_model
@@ -187,7 +121,7 @@ require.config {
 		'result_vo'              : 'service/result_vo'
 
 		#############################################
-		# service
+		# service                   # Merge in deploy
 		#############################################
 
 		#forge
@@ -225,6 +159,75 @@ require.config {
 		'autoscaling_service'    : 'service/aws/autoscaling/autoscaling/autoscaling_service'
 		'cloudwatch_service'     : 'service/aws/cloudwatch/cloudwatch/cloudwatch_service'
 		'sns_service'            : 'service/aws/sns/sns/sns_service'
+
+		### env:dev:end ###
+
+
+
+		#############################################
+		# module
+		#############################################
+		'base_main'          : 'module/base/base_main'
+
+		'header'             : 'module/header/main'
+		'header_view'        : 'module/header/view'
+		'header_model'       : 'module/header/model'
+
+		'navigation'         : 'module/navigation/main'
+		'navigation_view'    : 'module/navigation/view'
+		'navigation_model'   : 'module/navigation/model'
+
+		'tabbar'             : 'module/tabbar/main'
+		'tabbar_view'        : 'module/tabbar/view'
+		'tabbar_model'       : 'module/tabbar/model'
+
+		'dashboard'          : 'module/dashboard/main'
+		'dashboard_view'     : 'module/dashboard/overview/view'
+		'dashboard_model'    : 'module/dashboard/overview/model'
+
+		'process'            : 'module/process/main'
+		'process_view'       : 'module/process/view'
+		'process_model'      : 'module/process/model'
+
+		'design_module'      : 'module/design/main'
+		'design_view'        : 'module/design/view'
+		'design_model'       : 'module/design/model'
+
+		#sub module with design
+		'resource'           : 'module/design/resource/main'
+		'property'           : 'module/design/property/main'
+		'canvas'             : 'module/design/canvas/main'
+		'toolbar'            : 'module/design/toolbar/main'
+
+		#############################################
+		# lib/aws logic handler
+		#############################################
+		'aws_handle'         : 'lib/aws/main'
+		'forge_handle'       : 'lib/forge/main'
+		'common_handle'       : 'lib/common/main'
+
+		#
+		'validation'         : 'component/trustedadvisor/validation'
+		'ta_conf'            : 'component/trustedadvisor/config'
+
+		#statusbar state
+		'state_status'       : 'component/statestatus/main'
+
+		#############################################
+		# component
+		#############################################
+
+		'unmanagedvpc'       : 'component/unmanagedvpc/main'
+		'unmanagedvpc_view'  : 'component/unmanagedvpc/view'
+		'unmanagedvpc_model' : 'component/unmanagedvpc/model'
+
+		'jquery_sort'       : 'component/stateeditor/lib/jquery_sort'
+		'markdown'    : 'component/stateeditor/lib/markdown'
+		'ace'                : 'component/stateeditor/lib/ace/ace'
+		'ace_ext_language_tools' : 'component/stateeditor/lib/ace/ext-language_tools'
+		'stateeditor'        : 'component/stateeditor/main'
+		'stateeditor_view'   : 'component/stateeditor/view'
+		'stateeditor_model'  : 'component/stateeditor/model'
 
 	shim               :
 
@@ -471,13 +474,9 @@ require.config {
 		]
 		"component/sgrule/SGRulePopup" : []
 		"module/design/framework/DesignBundle" : [ "Design", "CanvasManager" ]
-	bundleExcludes :
+	bundleExcludes : # This is a none requirejs option, but it's used by compiler to exclude some of the source.
 		"component/sgrule/SGRulePopup" : [ "Design" ]
 		"module/design/framework/DesignBundle" : [ "component/sgrule/SGRulePopup" ]
-	# 	# This is a none requirejs option, but it's used by compiler to exclude some of the source.
-	# 	"lib/lib" : [ "i18n!nls/lang.js" ] # i18n!nls/lang.js must have a suffix `.js`, otherwise, it will have error when compiling.
-	# 	"common_handle" : [ "i18n!nls/lang.js" ]
-	# 	"model/model" : [ "i18n!nls/lang.js" ]
 
 	### env:prod:end ###
 }

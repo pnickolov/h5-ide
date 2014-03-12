@@ -1,15 +1,33 @@
 (function() {
-  var ConfigFile, extend, fs, getConfig, readRequirejsConfig, transformModules, vm;
+  var ConfigFile, coffee, es, extend, fs, getConfig, readRequirejsConfig, transformModules, vm;
 
   fs = require("fs");
 
   vm = require("vm");
 
-  ConfigFile = "./build/js/ide/config.js";
+  es = require("event-stream");
+
+  coffee = require("gulp-coffee");
+
+  ConfigFile = "./src/js/ide/config.coffee";
 
   readRequirejsConfig = function(path) {
-    var Context, source;
-    source = fs.readFileSync(path, "utf8");
+    var Context, pipeline, s;
+    s = fs.readFileSync(path);
+    pipeline = es.through(function() {});
+    pipeline.pipe(coffee()).pipe(es.through(function(f) {
+      return s = f.contents.toString("utf8");
+    }));
+    pipeline.emit("data", {
+      path: path,
+      contents: source,
+      isNull: function() {
+        return false;
+      },
+      isStream: function() {
+        return false;
+      }
+    });
     Context = {
       version: "",
       language: "",
@@ -27,7 +45,7 @@
       return null;
     };
     Context = vm.createContext(Context);
-    vm.runInContext(source, Context);
+    vm.runInContext(s, Context);
     return Context.require.config;
   };
 

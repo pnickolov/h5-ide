@@ -13,23 +13,29 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 		else
 
-			instance_layout_volume_list = null
+			volume_list = []
 
 			index = 0
 
-			if MC.canvas_data.layout.component.node[instance_id]
+			if MC.canvas_data.component[instance_id] and MC.canvas_data.component[instance_id].serverGroupUid is instance_id
 				#instance
-				instance_layout_volume_list = MC.canvas_data.layout.component.node[instance_id].volumeList
+				instance_volume_list = MC.canvas_data.component[instance_id].resource.BlockDeviceMapping
+
+				for key, value of instance_volume_list
+					if $.type(value) is "string"
+						volume_list.push value.substr(1)
 
 			else
 				#servergroup
-				instance_layout_volume_list = MC.canvas_data.layout.component.node[MC.canvas_data.component[instance_id].serverGroupUid].volumeList
-
+				instance_volume_group_list = MC.canvas_data.component[MC.canvas_data.component[instance_id].serverGroupUid].resource.BlockDeviceMapping
 				index = MC.canvas_data.component[instance_id].index
 
-			for main_vol, vol_list of instance_layout_volume_list
+				for key, value of instance_volume_group_list
+					if $.type(value) is "string"
+						for uid, comp of MC.canvas_data.component
+							if comp.type is constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume and comp.serverGroupUid is value.substr(1) and comp.index is index
+								volume_list.push uid
 
-				volume_list.push vol_list[index]
 
 		volume_list
 

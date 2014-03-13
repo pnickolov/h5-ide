@@ -3127,6 +3127,12 @@ MC.canvas.volume = {
 			event_data = event.data,
 			target_type = MC.canvas.getState() === 'appedit' ? ['AWS.EC2.Instance'] : ['AWS.EC2.Instance', 'AWS.AutoScaling.LaunchConfiguration'];
 
+		if (MC.canvas.getState() === 'appedit' && event_data.action ==='move' )
+		{
+			if (MC.canvas_data.component[$(event.data.target).data().json.id].resource.VolumeId)
+				return false;
+		}
+
 		if (
 			event_data.originalX !== event.pageX ||
 			event_data.originalY !== event.pageY

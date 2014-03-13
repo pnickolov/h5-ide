@@ -4011,10 +4011,14 @@ a.sidebar-hider:before {
 }
 
 .acl-sg-info-list .col1 {
-	margin-right : 15px;
-	width        : 15px;
-	float        : left;
-	padding      : 10px 0;
+	margin-right: 15px;
+	width       : 15px;
+	float       : left;
+	margin-top  : 13px;
+}
+
+.acl-sg-info-list .col1.checkbox-wrap {
+	margin-top  : 20px;
 }
 
 .acl-sg-info-list .col2 {

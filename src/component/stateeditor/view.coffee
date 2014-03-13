@@ -1574,7 +1574,7 @@ define [ 'event',
                             stateIds: changeAry
                         }
                         if (not _.isEqual(that.originCompStateData, stateData)) or changeAry.length
-                            ide_event.trigger 'STATE_EDITOR_DATA_UPDATE', changeObj
+                            ide_event.trigger ide_event.STATE_EDITOR_DATA_UPDATE, changeObj
 
         onStateCancelClick: (event) ->
 

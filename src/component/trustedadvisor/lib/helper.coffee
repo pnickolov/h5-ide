@@ -48,22 +48,28 @@ define [ 'constant', 'MC', 'i18n!nls/lang.js', 'Design', 'underscore' ], ( CONST
                 _.uniq _.compact sgs
 
             port: ( sgs ) ->
+
                 info = in: {}, out: {}
                 if not _.isArray sgs
                     sgs = [ sgs ]
+
+                build = ( permission, direction ) ->
+                    protocal = Helper.protocal.get permission.IpProtocol
+                    info[ direction ][ protocal ] or ( info[ direction ][ protocal ] = [] )
+                    theInfo = from: Number(permission.FromPort), to: Number(permission.ToPort), range: permission.IpRanges
+                    if _.where( info[ direction ][ protocal ], theInfo ).length is 0
+                        info[ direction ][ protocal ].push theInfo
+
                 for sg in sgs
                     if sg.type isnt CONST.RESTYPE.SG
                         continue
 
                     for permission in sg.resource.IpPermissionsEgress
-                        protocal = Helper.protocal.get permission.IpProtocol
-                        info[ 'out' ][ protocal ] or ( info[ 'out' ][ protocal ] = [] )
-                        info[ 'out' ][ protocal ].push from: Number(permission.FromPort), to: Number(permission.ToPort)
+                        build permission, 'out'
 
                     for permission in sg.resource.IpPermissions
-                        protocal = Helper.protocal.get permission.IpProtocol
-                        info[ 'in' ][ protocal ] or ( info[ 'in' ][ protocal ] = [] )
-                        info[ 'in' ][ protocal ].push from: Number(permission.FromPort), to: Number(permission.ToPort)
+                        build permission, 'in'
+
 
 
                 info

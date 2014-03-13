@@ -35,6 +35,7 @@ define [ 'constant', 'MC', 'i18n!nls/lang.js' ], ( CONST, MC, lang ) ->
         ret
 
     __isUid = ( uid ) ->
+        CONST.REGEXP.uid.lastIndex = 0
         CONST.REGEXP.uid.test uid
 
     __getComp = ( uid ) ->
@@ -74,7 +75,7 @@ define [ 'constant', 'MC', 'i18n!nls/lang.js' ], ( CONST, MC, lang ) ->
             if not exist
                 comp = __getComp r.uid
                 if comp
-                    refName = "#{comp.name}.#{r.attr}"
+                    refName = "#{comp.serverGroupName or comp.name}.#{r.attr}"
                 else if __isUid r.uid
                     refName = "unknown.#{r.attr}"
                 else

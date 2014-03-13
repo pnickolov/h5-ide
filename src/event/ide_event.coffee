@@ -189,7 +189,8 @@ define [ 'underscore', 'backbone' ], () ->
         GET_STATE_MODULE       : 'GET_STATE_MODULE'
 
         #state editor
-        SHOW_STATE_EDITOR      : 'SHOW_STATE_EDITOR'
+        SHOW_STATE_EDITOR        : 'SHOW_STATE_EDITOR'
+        STATE_EDITOR_DATA_UPDATE : 'STATE_EDITOR_DATA_UPDATE'
 
         constructor : ->
             _.extend this, Backbone.Events

@@ -112,7 +112,7 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], ( cons
             null
 
         listenStateEditorUpdate: ( data ) ->
-            resId = data.resUID
+            resId = data.resId
             stateIds = data.stateIds
 
             for stateId in stateIds

@@ -818,7 +818,7 @@ define [ 'MC', 'event',
             console.log 'experimentalVisopsConfirm', event
 
             # push event
-            #event.data.trigger 'APPLAY_TRIAL', $( '#experimental-message' ).val()
+            event.data.trigger 'APPLAY_TRIAL', $( '#experimental-message' ).val()
 
             # change modal body
             $( '.modal-body' ).html MC.template.experimentalVisopsTrail()

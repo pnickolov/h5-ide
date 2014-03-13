@@ -351,9 +351,9 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
                 #MC.data.origin_canvas_data = $.extend true, {}, result.param[4]
                 null
 
-            #####listen ACCOUNT_APPLY__TRIAL_RETURN
-            me.on 'ACCOUNT_APPLY__TRIAL_RETURN', (result) ->
-                console.log 'ACCOUNT_APPLY__TRIAL_RETURN', result
+            #####listen USER_APPLY__TRIAL_RETURN
+            me.on 'USER_APPLY__TRIAL_RETURN', (result) ->
+                console.log 'USER_APPLY__TRIAL_RETURN', result
 
                 if result and result.return_code is 0
                     console.log 'apply trial succcess'

@@ -167,12 +167,13 @@ define [ 'i18n!nls/lang.js',
                     #get favorite AMI
                     me.favoriteAmiService region_name
 
+                    # service_count +1
+                    me.stackLoadDepend 'quickstartService:NEW'
+
                     #describe ami in stack
                     me.describeStackAmiService region_name
 
                     ide_event.trigger ide_event.RESOURCE_QUICKSTART_READY, region_name
-                    #
-                    me.stackLoadDepend( 'quickstartService:NEW' )
 
                 else
                     # to do
@@ -241,7 +242,6 @@ define [ 'i18n!nls/lang.js',
 
                             null
 
-
                 null
 
             ######listen AWS__PUBLIC_RETURN
@@ -268,7 +268,6 @@ define [ 'i18n!nls/lang.js',
                 else
 
                     notification 'warning', lang.ide.RES_MSG_WARN_GET_COMMUNITY_AMI_FAILED
-
 
                 null
 
@@ -344,7 +343,6 @@ define [ 'i18n!nls/lang.js',
 
                 null
 
-
             #listen VPC_SNET_DESC_SUBNETS_RETURN
             me.on 'VPC_SNET_DESC_SUBNETS_RETURN', ( result ) ->
 
@@ -372,7 +370,6 @@ define [ 'i18n!nls/lang.js',
                         console.log 'no default subnet found in default vpc ' + default_vpc
 
                 null
-
 
         #call service
         describeAvailableZonesService : ( region_name ) ->
@@ -402,8 +399,10 @@ define [ 'i18n!nls/lang.js',
                                 res.item[idx].isUsed = true
 
                                 null
-                #
-                me.stackLoadDepend( 'describeAvailableZonesService:OLD' )
+
+                # service_count +1
+                me.stackLoadDepend 'describeAvailableZonesService:OLD'
+
                 #
                 me.set 'availability_zone', res
 
@@ -448,9 +447,10 @@ define [ 'i18n!nls/lang.js',
 
                         #cache az to MC.data.config[region_name].zone
                         MC.data.config[region_name].zone = result.resolved_data
-                        #
-                        me.stackLoadDepend( 'describeAvailableZonesService:NEW' )
-                        #
+
+                        # service_count +1
+                        me.stackLoadDepend 'describeAvailableZonesService:NEW'
+
                         null
                     else
                         #DescribeAvailabilityZones failed
@@ -494,10 +494,6 @@ define [ 'i18n!nls/lang.js',
                 # filter nat ami when in classic style
                 quickstart_amis = []
 
-                # old design flow
-                #if MC.canvas_data.platform is 'ec2-classic'
-
-                # new design flow
                 if Design.instance().typeIsClassic()
                     quickstart_amis.push i for i in ami_list when i.name.indexOf('ami-vpc-nat') < 0
                 else
@@ -511,10 +507,11 @@ define [ 'i18n!nls/lang.js',
                 #get favorite AMI
                 me.favoriteAmiService region_name
 
+                # service_count +1
+                me.stackLoadDepend 'quickstartService:OLD'
+
                 #describe ami in stack
                 me.describeStackAmiService region_name
-
-                me.stackLoadDepend( 'quickstartService:OLD' )
 
                 ide_event.trigger ide_event.RESOURCE_QUICKSTART_READY, region_name
 
@@ -590,12 +587,10 @@ define [ 'i18n!nls/lang.js',
 
             }
 
-
             ami_list = []
             if community_ami[region_name] == undefined
                 #get service(model)
                 aws_model.Public { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, filters
-
 
             null
 
@@ -678,7 +673,6 @@ define [ 'i18n!nls/lang.js',
                 else
 
                     console.log 'current region ' + region_name + ' has no default vpc'
-
 
             null
 

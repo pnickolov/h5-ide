@@ -46,9 +46,17 @@ define [ '../base/view',
 
             $("#iops-group").toggle( $this.attr("id") is "radio-iops" )
 
-            # Reset iops
-            @model.setIops("")
-            $("#iops-ranged").val("100")
+            if $this.attr("id") is "radio-iops"
+                # Init iops
+                volumeSize = parseInt $( '#volume-size-ranged' ).val(), 10
+                iops = volumeSize * 10
+                $("#iops-ranged").val( iops )
+                @model.setIops( iops )
+                $("#iops-ranged").val(iops)
+            else
+                # Reset standard
+                @model.setIops("")
+                $("#iops-ranged").val("")
 
         changeIops : ()->
             if $( '#iops-ranged' ).parsley( 'validate' )
@@ -71,10 +79,14 @@ define [ '../base/view',
             $iops = $( '#volume-type-radios' ).children("div").last()
                 .toggleClass("tooltip", iopsDisabled)
                 .find( 'input' )
+
             if iopsDisabled
                 $iops.attr("disabled", "disabled")
+                $("#radio-standard").click()
+                $("#iops-group").hide()
             else
                 $iops.removeAttr( 'disabled' )
+                
 
             # Adjust IOPS if it exceed limits
             iops = parseInt( $("#iops-ranged").val(), 10 ) || 0

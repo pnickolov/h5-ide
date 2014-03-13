@@ -50,12 +50,9 @@ end  = ( d, printNewlineWhenNotVerbose )->
 
 Tasks =
   cleanRepo : ()->
-    util.runCommand "git", ["-Xf"], { cwd : process.cwd() + "/src" }, (d)->
-      process.stdout.write d
-      null
-    , ()->
-      console.log "Finished."
+    logTask "Removing ignored files in src (git clean -Xf)"
 
+    util.runCommand "git", ["clean", "-Xf"], { cwd : process.cwd() + "/src" }, ( data )-> console.log data; null
 
   copyAssets : ()->
     logTask "Copying Assets"
@@ -177,12 +174,12 @@ module.exports =
 
     [
       Tasks.cleanRepo
-      Tasks.copyAssets
-      Tasks.copyJs
-      Tasks.compileLangSrc
-      Tasks.compileCoffee( debugMode )
-      Tasks.compileTemplate
-      Tasks.processHtml
-      Tasks.concatJS( debugMode, outputPath )
-      Tasks.removeBuildFolder
+      # Tasks.copyAssets
+      # Tasks.copyJs
+      # Tasks.compileLangSrc
+      # Tasks.compileCoffee( debugMode )
+      # Tasks.compileTemplate
+      # Tasks.processHtml
+      # Tasks.concatJS( debugMode, outputPath )
+      # Tasks.removeBuildFolder
     ].reduce( Q.when, Q() )

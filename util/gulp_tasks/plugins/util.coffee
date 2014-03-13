@@ -3,6 +3,7 @@ gutil    = require("gulp-util")
 notifier = require("node-notifier")
 fs       = require("fs")
 spawn    = require('child_process').spawn
+Q        = require("q")
 
 util =
   log  : (e)-> console.log e
@@ -53,10 +54,23 @@ util =
     fs.rmdirSync( path )
     null
 
-  runCommand : ( command, args, options, onData, onEnd )->
+  runCommand : ( command, args, options, handlers )->
+    d = Q.defer()
     process = spawn( command, args, options )
-    if onData then process.stdout.on("data", onData)
-    if onEnd  then process.on("exit", onEnd)
-    process
+
+    handlers = handlers || {}
+
+    onData = if handlers.apply and handlers.call then handlers else handlers.onData
+
+    process.on "exit", ()-> d.resolve()
+
+    if handlers.onError
+      process.on "error", handlers.onError
+
+    if onData
+      process.stderr.on("data", (d)-> onData d.toString("utf8"), "error" )
+      process.stdout.on("data", (d)-> onData d.toString("utf8"), "out" )
+
+    d.promise
 
 module.exports = util

@@ -76,13 +76,12 @@
 
   Tasks = {
     cleanRepo: function() {
-      return util.runCommand("git", ["-Xf"], {
+      logTask("Removing ignored files in src (git clean -Xf)");
+      return util.runCommand("git", ["clean", "-Xf"], {
         cwd: process.cwd() + "/src"
-      }, function(d) {
-        process.stdout.write(d);
+      }, function(data) {
+        console.log(data);
         return null;
-      }, function() {
-        return console.log("Finished.");
       });
     },
     copyAssets: function() {
@@ -166,7 +165,7 @@
       debugMode = mode === "qa" || mode === "debug";
       outputPath = mode === "qa" ? "./qa" : void 0;
       ideversion.read(deploy);
-      return [Tasks.cleanRepo, Tasks.copyAssets, Tasks.copyJs, Tasks.compileLangSrc, Tasks.compileCoffee(debugMode), Tasks.compileTemplate, Tasks.processHtml, Tasks.concatJS(debugMode, outputPath), Tasks.removeBuildFolder].reduce(Q.when, Q());
+      return [Tasks.cleanRepo].reduce(Q.when, Q());
     }
   };
 

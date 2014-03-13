@@ -1,5 +1,5 @@
 (function() {
-  var fs, gutil, notifier, spawn, util;
+  var Q, fs, gutil, notifier, spawn, util;
 
   gutil = require("gulp-util");
 
@@ -8,6 +8,8 @@
   fs = require("fs");
 
   spawn = require('child_process').spawn;
+
+  Q = require("q");
 
   util = {
     log: function(e) {
@@ -69,16 +71,27 @@
       fs.rmdirSync(path);
       return null;
     },
-    runCommand: function(command, args, options, onData, onEnd) {
-      var process;
+    runCommand: function(command, args, options, handlers) {
+      var d, onData, process;
+      d = Q.defer();
       process = spawn(command, args, options);
+      handlers = handlers || {};
+      onData = handlers.apply && handlers.call ? handlers : handlers.onData;
+      process.on("exit", function() {
+        return d.resolve();
+      });
+      if (handlers.onError) {
+        process.on("error", handlers.onError);
+      }
       if (onData) {
-        process.stdout.on("data", onData);
+        process.stderr.on("data", function(d) {
+          return onData(d.toString("utf8"), "error");
+        });
+        process.stdout.on("data", function(d) {
+          return onData(d.toString("utf8"), "out");
+        });
       }
-      if (onEnd) {
-        process.on("exit", onEnd);
-      }
-      return process;
+      return d.promise;
     }
   };
 

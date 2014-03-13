@@ -20,7 +20,7 @@
     }));
     pipeline.emit("data", {
       path: path,
-      contents: source,
+      contents: s,
       isNull: function() {
         return false;
       },

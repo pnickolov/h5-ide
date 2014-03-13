@@ -18,7 +18,7 @@ readRequirejsConfig = ( path )->
 
   pipeline.emit "data", {
     path     : path
-    contents : source
+    contents : s
     isNull   : ()-> false
     isStream : ()-> false
   }

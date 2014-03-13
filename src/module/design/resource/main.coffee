@@ -144,18 +144,21 @@ define [ 'jquery',
             model.on 'change:check_required_service_count', () ->
                 console.log 'check_required_service_count, count = ' + model.get 'check_required_service_count'
 
-                return if model.get( 'check_required_service_count' ) is -1
+                # return
+                if model.get( 'check_required_service_count' ) is -1
+                    return
 
                 # SWITCH_MAIN → GET_STATE_MODULE
                 if MC.common.cookie.getCookieByName('has_cred') is 'false' and model.get( 'check_required_service_count' ) is 1    # not set credential then use quickstart data
                     console.log 'not set credential and described quickstart service'
                     ide_event.trigger ide_event.GET_STATE_MODULE if MC.data.current_tab_type isnt 'OPEN_APP'
-                    model.service_count = 0
 
                 else if model.get( 'check_required_service_count' ) is 2      # has setted credential
                     console.log 'set credential and described require service'
                     ide_event.trigger ide_event.GET_STATE_MODULE if MC.data.current_tab_type isnt 'OPEN_APP'
-                    model.service_count = 0
+
+                # init service_count
+                model.service_count = 0
 
                 null
 

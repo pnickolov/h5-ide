@@ -48,7 +48,7 @@ define [ '../base/view',
 
             # Reset iops
             @model.setIops("")
-            $("#iops-ranged").val("")
+            $("#iops-ranged").val("100")
 
         changeIops : ()->
             if $( '#iops-ranged' ).parsley( 'validate' )
@@ -90,11 +90,12 @@ define [ '../base/view',
             if not Design.instance().typeIsClassic()
                 @refreshIPList()
 
+            me = this
             # parsley bind
             $( '#volume-size-ranged' ).parsley 'custom', ( val ) ->
                 val = + val
-                if not val || val > 1024 || val < 1
-                    return "Volume size must in the range of 1-1024 GB."
+                if not val || val > 1024 || val < me.model.attributes.min_volume_size
+                    return "Volume size of this rootDevice must in the range of " + me.model.attributes.min_volume_size + "-1024 GB."
 
             $( '#iops-ranged' ).parsley 'custom', ( val ) ->
                 val = + val
@@ -103,6 +104,7 @@ define [ '../base/view',
                     return 'IOPS must be between 100 and 4000'
                 else if( val > 10 * volume_size)
                     return 'IOPS must be less than 10 times of volume size.'
+
             #
 
             # currentStateData = @model.getStateData()

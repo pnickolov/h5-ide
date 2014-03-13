@@ -234,7 +234,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
                         if not res.osFamily
                             res.osFamily = MC.aws.aws.getOSFamily(res.osType, res)
 
-                        MC.aws.ami.convertBlockDeviceMapping res
+                        convertBlockDeviceMapping res
                         MC.data.dict_ami[res.imageId] = res
                         MC.data.resource_list[region][res.imageId] = res
 
@@ -1189,6 +1189,28 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
             }
 
         return resAttrDataAry
+
+
+    convertBlockDeviceMapping = (ami) ->
+
+        data = {}
+        if ami and ami.blockDeviceMapping and ami.blockDeviceMapping.item
+            for value,idx in ami.blockDeviceMapping.item
+
+                if value.ebs
+                    data[value.deviceName] =
+                        snapshotId : value.ebs.snapshotId
+                        volumeSize : value.ebs.volumeSize
+                        volumeType : value.ebs.volumeType
+                        deleteOnTermination : value.ebs.deleteOnTermination
+                else
+                    data[value.deviceName] = {}
+
+                ami.blockDeviceMapping = data
+        else
+            console.warn "convertBlockDeviceMapping(): nothing to convert"
+        null
+
 
     #public
     collectReference            : collectReference

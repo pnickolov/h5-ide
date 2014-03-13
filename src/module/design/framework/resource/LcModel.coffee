@@ -147,6 +147,7 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
 
     setAmi                : InstanceModel.prototype.setAmi
     getAmi                : InstanceModel.prototype.getAmi
+    getAmiRootDevice      : InstanceModel.prototype.getAmiRootDevice
     getDetailedOSFamily   : InstanceModel.prototype.getDetailedOSFamily
     setInstanceType       : InstanceModel.prototype.setInstanceType
     initInstanceType      : InstanceModel.prototype.initInstanceType

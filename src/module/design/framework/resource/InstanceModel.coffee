@@ -302,6 +302,25 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
       null
 
     getAmi : ()-> MC.data.dict_ami[@get("imageId")]
+
+    getAmiRootDevice : () ->
+      amiInfo = @getAmi()
+      rd = null
+      if amiInfo
+        rdName = amiInfo.rootDeviceName
+        rdEbs = amiInfo.blockDeviceMapping[rdName]
+        if rdName and rdEbs
+          rd =
+            "DeviceName": rdName
+            "Ebs":
+              "VolumeSize": rdEbs.volumeSize
+              "SnapshotId": rdEbs.snapshotId
+              "VolumeType": rdEbs.volumeType
+              "Iops"      : if rdEbs.iops then rdEbs.iops else ""
+        else
+          console.warn "getAmiRootDevice(): can not found root device of AMI(" + @get("imageId") + ")", this
+      rd
+
     getInstanceTypeConfig : ( type )->
       t = (type || @get("instanceType")).split(".")
       if t.length >= 2

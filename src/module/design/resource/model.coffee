@@ -207,7 +207,7 @@ define [ 'i18n!nls/lang.js',
                                     value.osFamily = MC.aws.aws.getOSFamily(value.osType)
                                 instanceTypeAry = MC.aws.ami.getInstanceType(value)
                                 value.instanceType = instanceTypeAry.join ', '
-                                MC.aws.ami.convertBlockDeviceMapping value
+                                me.convertBlockDeviceMapping value
                                 MC.data.dict_ami[value.imageId] = value
                             catch err
                                 console.info 'Resolve My AMI error'
@@ -237,7 +237,7 @@ define [ 'i18n!nls/lang.js',
                                 value.osFamily = MC.aws.aws.getOSFamily(value.osType)
                             instanceTypeAry = MC.aws.ami.getInstanceType(value)
                             value.instanceType = instanceTypeAry.join ', '
-                            MC.aws.ami.convertBlockDeviceMapping value
+                            me.convertBlockDeviceMapping value
                             MC.data.dict_ami[value.imageId] = value
 
                             null
@@ -693,6 +693,28 @@ define [ 'i18n!nls/lang.js',
 
 
             null
+
+
+        convertBlockDeviceMapping : (ami) ->
+
+            data = {}
+            if ami and ami.blockDeviceMapping and ami.blockDeviceMapping.item
+                for value,idx in ami.blockDeviceMapping.item
+
+                    if value.ebs
+                        data[value.deviceName] =
+                            snapshotId : value.ebs.snapshotId
+                            volumeSize : value.ebs.volumeSize
+                            volumeType : value.ebs.volumeType
+                            deleteOnTermination : value.ebs.deleteOnTermination
+                    else
+                        data[value.deviceName] = {}
+
+                    ami.blockDeviceMapping = data
+            else
+                console.warn "convertBlockDeviceMapping(): nothing to convert"
+            null
+
 
     }
 

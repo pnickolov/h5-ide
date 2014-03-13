@@ -119,10 +119,6 @@ define [ 'i18n!nls/lang.js', 'constant', 'stateeditor', 'Design', './module/desi
                                 #get all resource data for app
                                 model.getAppResourcesService region_name, tab_id
 
-                            #else if Tabbar.current is 'appview'
-                            #
-                            #    model.getAllNotExistAmiInStack region_name
-
                     # setting app state
                     if type in [ 'OPEN_APP', 'OLD_APP' ]
 

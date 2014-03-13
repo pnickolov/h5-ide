@@ -280,7 +280,8 @@ define [ 'i18n!nls/lang.js', 'constant', 'stateeditor', 'Design', './module/desi
 
             #listen GET_STATE_MODULE
             ide_event.onLongListen ide_event.GET_STATE_MODULE, () ->
-                console.log 'design:GET_STATE_MODULE = ' + model.getStateModule()
+                console.log 'design:GET_STATE_MODULE'
+                model.getStateModule()
 
     #private
     unLoadModule = () ->

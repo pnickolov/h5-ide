@@ -23,7 +23,7 @@ define [ 'i18n!nls/lang.js',
             'check_required_service_count' : null
 
         # max service count is 2
-        # include describeAvailableZonesService and quickstartService
+        # include describeAvailableZonesService | quickstartService | describeStackAmiService
         service_count : 0
 
         initialize : ->
@@ -226,7 +226,7 @@ define [ 'i18n!nls/lang.js',
                 else
                 #####
 
-                    console.log 'EC2_AMI_DESC_IMAGES_RETURN:'
+                    console.log 'EC2_AMI_DESC_IMAGES_RETURN:describeStackAmiService'
 
                     if result.resolved_data
                         _.map result.resolved_data, (value)->
@@ -241,6 +241,8 @@ define [ 'i18n!nls/lang.js',
                             MC.data.dict_ami[value.imageId] = value
 
                             null
+
+                    @stackLoadDepend 'describeStackAmiService:OLD'
 
                 null
 
@@ -546,6 +548,7 @@ define [ 'i18n!nls/lang.js',
             null
 
         describeStackAmiService : ( region_name )->
+            console.log 'describeStackAmiService', name
 
             me = this
 
@@ -560,6 +563,8 @@ define [ 'i18n!nls/lang.js',
 
             if stack_ami_list.length != 0
                 ami_model.DescribeImages { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, _.uniq( stack_ami_list )
+            else
+                me.stackLoadDepend 'describeStackAmiService:NEW'
 
         describeCommunityAmiService : ( region_name, name, platform, isPublic, architecture, rootDeviceType, perPageNum, returnPage ) ->
 

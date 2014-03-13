@@ -144,7 +144,7 @@ define [ 'jquery',
                     console.log 'not set credential and described quickstart service'
                     is_true = true
 
-                else if model.get( 'check_required_service_count' ) is 2      # has setted credential
+                else if model.get( 'check_required_service_count' ) is 3      # has setted credential
                     console.log 'set credential and described require service'
                     is_true = true
 

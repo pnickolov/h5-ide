@@ -3475,6 +3475,64 @@ module.exports =
       en: "update"
       zh: "更新错误"
 
+    ##### State Editor
+    STATE_TIP_DELETE_STATE:
+      en: "Delete State"
+      zh: ""
+
+    STATE_TIP_SELECT_STATE:
+      en: "Select State"
+      zh: ""
+
+    STATE_TIP_DESCRIPTION:
+      en: "Description"
+      zh: ""
+
+    STATE_TIP_STATE_LOG:
+      en: "State Log"
+      zh: ""
+
+    STATE_TIP_REFRESH_STATE_LOG:
+      en: "Refresh State Log"
+      zh: ""
+
+    STATE_TIP_SYSTEM_LOG:
+      en: "System Log"
+      zh: ""
+
+    STATE_TIP_SELECT_ALL_STATES:
+      en: "Select All States"
+      zh: ""
+
+    STATE_TIP_:
+      en: ""
+      zh: ""
+
+    STATE_TIP_:
+      en: ""
+      zh: ""
+
+    STATE_TIP_:
+      en: ""
+      zh: ""
+
+    STATE_TIP_:
+      en: ""
+      zh: ""
+
+    STATE_TIP_:
+      en: ""
+      zh: ""
+
+    STATE_TIP_:
+      en: ""
+      zh: ""
+
+
+
+
+    ##### State Editor
+
     ##### Trust Advisor
 
     # VPC

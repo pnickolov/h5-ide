@@ -3,8 +3,8 @@
 	<li class="state-item view {{#ifCond cmd_value '#'}}comment{{/ifCond}}" data-command="{{cmd_value}}" data-id="{{id}}">
 		<div class="state-toolbar">
 			<div class="state-action-wrap">
-				<div class="state-remove icon-delete tooltip" data-tooltip="Delete State"></div>
-				<div class="state-check tooltip" data-tooltip="Select State">
+				<div class="state-remove icon-delete tooltip" data-tooltip="{{i18n 'STATE_TIP_DELETE_STATE'}}"></div>
+				<div class="state-check tooltip" data-tooltip="{{i18n 'STATE_TIP_SELECT_STATE'}}">
 					<div class="checkbox">
 						<input id="state-check-{{id}}" type="checkbox" name="state-check-{{id}}">
 						<label for="state-check-{{id}}"></label>
@@ -188,10 +188,10 @@
 
 				<div class="state-have-state-container">
 					<div class="state-editor-toolbar clearfix font-normal">
-						<a class="tooltip state-desc-toggle icon-desc" data-tooltip="Description"></a>
-						<a class="tooltip state-log-toggle icon-log" data-tooltip="State Log"></a>
-						<a class="tooltip state-log-refresh icon-refresh" data-tooltip="Refresh State Log"></a>
-						<a class="tooltip state-sys-log-btn icon-syslog" data-tooltip="System Log"></a>
+						<a class="tooltip state-desc-toggle icon-desc" data-tooltip="{{i18n 'STATE_TIP_DESCRIPTION'}}"></a>
+						<a class="tooltip state-log-toggle icon-log" data-tooltip="{{i18n 'STATE_TIP_STATE_LOG'}}"></a>
+						<a class="tooltip state-log-refresh icon-refresh" data-tooltip="{{i18n 'STATE_TIP_REFRESH_STATE_LOG'}}"></a>
+						<a class="tooltip state-sys-log-btn icon-syslog" data-tooltip="{{i18n 'STATE_TIP_SYSTEM_LOG'}}"></a>
 
 						<div class="state-operate">
 							<a id="state-toolbar-add" href="javascript:void(0)">+ Add State</a>
@@ -202,7 +202,7 @@
 							<a id="state-toolbar-undo" href="javascript:void(0)">Undo</a>
 							<a id="state-toolbar-redo" href="javascript:void(0)">Redo</a>
 
-							<div id="state-toolbar-selectAll" class="checkbox tooltip" data-tooltip="Select All States">
+							<div id="state-toolbar-selectAll" class="checkbox tooltip" data-tooltip="{{i18n 'STATE_TIP_SELECT_ALL_STATES'}}">
 								<input type="checkbox" name="state-toolbar-selectAll">
 								<label for="state-toolbar-selectAll"></label>
 							</div>

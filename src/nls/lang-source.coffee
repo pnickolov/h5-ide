@@ -2495,7 +2495,7 @@ module.exports =
       en: "VPC ID"
       zh: "VPC ID"
 
-    PROP_SHOW_OR_HIDE_PROPERTY_PANEL
+    PROP_SHOW_OR_HIDE_PROPERTY_PANEL:
       en: "Show/Hide Property Panel"
       zh: ""
 

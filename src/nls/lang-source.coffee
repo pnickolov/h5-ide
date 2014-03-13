@@ -3526,8 +3526,16 @@ module.exports =
       en: "Load Balancer <span class='validation-tag tag-elb'>%s</span> is using HTTPS/SSL protocol for Load Balancer Listener. Please add server certificate."
       zh: ""
 
-    TA_MSG_ERROR_ELB_RULE_NOT_TRAFFIC_TO_LISTENER:
+    TA_MSG_ERROR_ELB_RULE_NOT_INBOUND_TO_ELB_LISTENER:
       en: "Load balancer <span class='validation-tag tag-elb'>%s</span> should allow inbound traffic towards its Load Balancer Protocol: %s."
+      zh: ""
+
+    TA_MSG_ERROR_ELB_RULE_NOT_OUTBOUND_TO_INSTANCE_LISTENER:
+      en: "Load balancer <span class='validation-tag tag-elb'>%s</span> should allow outbound traffic towards its backend instance or auto-scaling group through Instance Protocol: %s."
+      zh: ""
+
+    TA_MSG_ERROR_ELB_RULE_INSTANCE_NOT_OUTBOUND_FOR_ELB_LISTENER:
+      en: "%s <span class='validation-tag tag-elb'>%s</span> should allow inbound traffic towards %s according to %s's Instance Listener Protocol."
       zh: ""
 
     # SG

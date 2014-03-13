@@ -1568,14 +1568,13 @@ define [ 'event',
                             changeAry.push(stateObj.id)
                         null
 
-                    resUID = that.model.getCurrentResUID()
-                    changeObj = {
-                        resUID: resUID,
-                        stateIds: changeAry
-                    }
-
-                if (not _.isEqual(that.originCompStateData, stateData)) or changeAry.length
-                    ide_event.trigger 'STATE_EDITOR_DATA_UPDATE', changeObj
+                    if that.currentState in ['app', 'appedit']
+                        changeObj = {
+                            resId: that.currentResId,
+                            stateIds: changeAry
+                        }
+                        if (not _.isEqual(that.originCompStateData, stateData)) or changeAry.length
+                            ide_event.trigger 'STATE_EDITOR_DATA_UPDATE', changeObj
 
         onStateCancelClick: (event) ->
 

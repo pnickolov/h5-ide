@@ -19,7 +19,6 @@ define [ 'jquery',
         #
         require [ './module/design/resource/view', './module/design/resource/model', 'UI.bubble' ], ( View, model ) ->
 
-            #view
             view       = new View()
             view.render template
             view.listen model
@@ -28,26 +27,35 @@ define [ 'jquery',
             #listen OPEN_DESIGN
             ide_event.onLongListen ide_event.OPEN_DESIGN, ( region_name, type, current_platform ) ->
                 console.log 'resource:OPEN_DESIGN, region_name ' + region_name + ', type = ' + type + ', current_platform = ' + current_platform
-                #
-                #check re-render
+
+                # check re-render
                 view.reRender template
-                #init resoruce service count
-                #when OPEN_APP set service_count = 10; OPEN_STACK or NEW_STACK set service_count = 0
+
+                # init resoruce service count
+                # when OPEN_APP set service_count = 10
+                # when OPEN_STACK or NEW_STACK set service_count = 0
                 model.service_count = if type is 'OPEN_APP' then 10 else 0
                 model.set 'check_required_service_count', -1
+
+                # init resouceapi array
+                # resource api same [ 'describeAvailableZonesService:OLD', 'quickstartService:OLD' ]
                 MC.data.resouceapi = []
-                #
-                ide_event.onListen ide_event.RESOURCE_QUICKSTART_READY, (region_name) ->
+
+                # listen ide_event
+                ide_event.onListen ide_event.RESOURCE_QUICKSTART_READY, ( region_name ) ->
                     console.log 'resource:RESOURCE_QUICKSTART_READY'
                     model.describeAvailableZonesService region_name
                     model.describeSnapshotsService      region_name
+
+                # model
                 model.quickstartService                 region_name
                 model.describeSubnetInDefaultVpc        region_name
-                #
+
+                # view
                 view.region = region_name
                 view.resourceVpcRender( current_platform, type )
                 view.communityAmiBtnRender()
-                #
+
                 null
 
             ide_event.onLongListen ide_event.ENABLE_RESOURCE_ITEM, ( type, filter ) ->

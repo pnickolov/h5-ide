@@ -22,6 +22,8 @@ define [ 'i18n!nls/lang.js',
             'community_ami'      : null
             'check_required_service_count' : null
 
+        # max service count is 2
+        # include describeAvailableZonesService and quickstartService
         service_count : 0
 
         initialize : ->
@@ -38,9 +40,6 @@ define [ 'i18n!nls/lang.js',
 
                     me.set 'resource_snapshot', result.resolved_data
                     MC.data.config[region_name].snapshot_list = result.resolved_data
-
-                    #
-                    #me._checkRequireServiceCount( 'EC2_EBS_DESC_SSS_RETURN' )
 
                 null
 
@@ -173,7 +172,7 @@ define [ 'i18n!nls/lang.js',
 
                     ide_event.trigger ide_event.RESOURCE_QUICKSTART_READY, region_name
                     #
-                    me._checkRequireServiceCount( 'AWS_QUICKSTART_RETURN:NEW' )
+                    me.stackLoadDepend( 'quickstartService:NEW' )
 
                 else
                     # to do
@@ -404,7 +403,7 @@ define [ 'i18n!nls/lang.js',
 
                                 null
                 #
-                me._checkRequireServiceCount( 'describeAvailableZonesService:OLD' )
+                me.stackLoadDepend( 'describeAvailableZonesService:OLD' )
                 #
                 me.set 'availability_zone', res
 
@@ -450,7 +449,7 @@ define [ 'i18n!nls/lang.js',
                         #cache az to MC.data.config[region_name].zone
                         MC.data.config[region_name].zone = result.resolved_data
                         #
-                        me._checkRequireServiceCount( 'describeAvailableZonesService:NEW' )
+                        me.stackLoadDepend( 'describeAvailableZonesService:NEW' )
                         #
                         null
                     else
@@ -515,7 +514,7 @@ define [ 'i18n!nls/lang.js',
                 #describe ami in stack
                 me.describeStackAmiService region_name
 
-                me._checkRequireServiceCount( 'AWS_QUICKSTART_RETURN:OLD' )
+                me.stackLoadDepend( 'quickstartService:OLD' )
 
                 ide_event.trigger ide_event.RESOURCE_QUICKSTART_READY, region_name
 
@@ -659,17 +658,6 @@ define [ 'i18n!nls/lang.js',
         getVgwStatus : ->
             !!Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway ).allObjects().length
 
-        _checkRequireServiceCount : ( name ) ->
-            console.log '_checkRequireServiceCount, name = ' + name
-            #
-            @service_count = @service_count + 1
-            #
-            @set 'check_required_service_count', @service_count
-            #
-            MC.data.resouceapi.push name
-            null
-
-
         describeSubnetInDefaultVpc : ( region_name ) ->
 
             me = this
@@ -691,6 +679,20 @@ define [ 'i18n!nls/lang.js',
 
                     console.log 'current region ' + region_name + ' has no default vpc'
 
+
+            null
+
+        stackLoadDepend : ( name ) ->
+            console.log 'stackLoadDepend, name = ' + name
+
+            # accumulate
+            @service_count = @service_count + 1
+
+            # add deppend api name to resourceapi array
+            MC.data.resouceapi.push name
+
+            # set service_count
+            @set 'check_required_service_count', @service_count
 
             null
 

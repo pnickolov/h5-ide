@@ -2899,6 +2899,14 @@ module.exports =
       en: " in this region"
       zh: ""
 
+    DASH_TIP_APP_CREATED_BY:
+      en: "App created by "
+      zh: ""
+
+    DASH_TIP_APP_CREATED_BY_OTHER_USER:
+      en: "App created by other user"
+      zh: ""
+
     DASH_BTN_GLOBAL:
       en: "Global"
       zh: "全局"

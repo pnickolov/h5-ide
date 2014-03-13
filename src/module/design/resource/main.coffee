@@ -115,20 +115,8 @@ define [ 'jquery',
                     console.log "Design.EVENT.RemoveResource: " + comp.type
                 null
 
-
-
             view.on 'LOADING_COMMUNITY_AMI', ( region, name, platform, isPublic, architecture, rootDeviceType, perPageNum, pageNum ) ->
-                # name = $('#community-ami-input').val()
-                # platform = $('#selectbox-ami-platform').find('.selected').data('id')
-                # architecture = radiobuttons.data($('#filter-ami-32bit-64bit'))
-                # rootDeviceType = radiobuttons.data($('#filter-ami-EBS-Instance'))
-                # page = parseInt $('#community_ami_page_current').attr("page"), 10
-                # totalPage = parseInt $('#community_ami_page_current').attr("totalPage"), 10
-
-                # model.describeCommunityAmiService region_name, name, platform, architecture, rootDeviceType, null, pageNum
-
                 console.log 'LOADING_COMMUNITY_AMI'
-
                 model.describeCommunityAmiService region, name, platform, isPublic, architecture, rootDeviceType, perPageNum, pageNum
 
             view.on 'TOGGLE_FAV', ( region_name, action, amiId ) ->
@@ -144,6 +132,9 @@ define [ 'jquery',
             model.on 'change:check_required_service_count', () ->
                 console.log 'check_required_service_count, count = ' + model.get 'check_required_service_count'
 
+                # set false
+                is_true = false
+
                 # return
                 if model.get( 'check_required_service_count' ) is -1
                     return
@@ -151,14 +142,15 @@ define [ 'jquery',
                 # SWITCH_MAIN → GET_STATE_MODULE
                 if MC.common.cookie.getCookieByName('has_cred') is 'false' and model.get( 'check_required_service_count' ) is 1    # not set credential then use quickstart data
                     console.log 'not set credential and described quickstart service'
-                    ide_event.trigger ide_event.GET_STATE_MODULE if MC.data.current_tab_type isnt 'OPEN_APP'
+                    is_true = true
 
                 else if model.get( 'check_required_service_count' ) is 2      # has setted credential
                     console.log 'set credential and described require service'
-                    ide_event.trigger ide_event.GET_STATE_MODULE if MC.data.current_tab_type isnt 'OPEN_APP'
+                    is_true = true
 
-                # init service_count
-                model.service_count = 0
+                if is_true
+                    ide_event.trigger ide_event.GET_STATE_MODULE if MC.data.current_tab_type isnt 'OPEN_APP'
+                    model.service_count = 0
 
                 null
 

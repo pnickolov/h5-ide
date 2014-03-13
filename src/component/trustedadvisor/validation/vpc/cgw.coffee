@@ -72,55 +72,19 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'customergateway_service
 
 	isValidCGWIP = (uid) ->
 
-		pubIPAry = [
-			{
-				low: '1.0.0.1',
-				high: '126.255.255.254'
-			},
-			{
-				low: '128.1.0.1',
-				high: '191.254.255.254'
-			},
-			{
-				low: '192.0.1.1',
-				high: '223.255.254.254'
-			}
-		]
-
-		ipRangeValid = (ipAryStr1, ipAryStr2, ipStr) ->
-
-			ipAry1 = ipAryStr1.split('.')
-			ipAry2 = ipAryStr2.split('.')
-			curIPAry = ipStr.split('.')
-
-			isInIPRange = true
-			_.each curIPAry, (ipNum, idx) ->
-				if not (Number(curIPAry[idx]) >= Number(ipAry1[idx]) and
-				Number(curIPAry[idx]) <= Number(ipAry2[idx]))
-					isInIPRange = false
-				null
-
-			return isInIPRange
-
 		cgwComp = MC.canvas_data.component[uid]
 		cgwName = cgwComp.name
 		cgwIP = cgwComp.resource.IpAddress
 
-		isInAnyRange = false
-		_.each pubIPAry, (ipRangeObj) ->
-			lowRange = ipRangeObj.low
-			highRange = ipRangeObj.high
-			isInRange = ipRangeValid(lowRange, highRange, cgwIP)
-			if isInRange
-				isInAnyRange = true
-			null
+		# isInAnyPubIPRange = MC.aws.aws.isValidInIPRange(cgwIP, 'public')
+		isInAnyPriIPRange = MC.aws.aws.isValidInIPRange(cgwIP, 'private')
 
-		if not isInAnyRange
+		if isInAnyPriIPRange
 
-			tipInfo = sprintf lang.ide.TA_MSG_ERROR_CGW_IP_RANGE_ERROR, cgwName, cgwIP
+			tipInfo = sprintf lang.ide.TA_MSG_WARNING_CGW_IP_RANGE_ERROR, cgwName, cgwIP
 
 			return {
-				level: constant.TA.ERROR
+				level: constant.TA.WARNING
 				info: tipInfo
 				uid: uid
 			}

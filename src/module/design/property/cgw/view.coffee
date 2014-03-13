@@ -72,7 +72,7 @@ define [ '../base/view', 'text!./template/stack.html', 'event', 'constant', "Des
             else if !MC.validate 'ipv4', ipAddr
                 mainContent = "#{ipAddr} is not a valid IP Address."
                 descContent = 'Please provide a valid IP Address. For example, 192.168.1.1.'
-            else if !MC.aws.eni.isPublicIPAddress(ipAddr)
+            else if MC.aws.aws.isValidInIPRange(ipAddr, 'private')
                 mainContent = "IP Address #{ipAddr} is invalid for customer gateway."
                 descContent = "The address must be static and can't be behind a device performing network address translation (NAT)."
             else

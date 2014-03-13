@@ -3673,13 +3673,16 @@ module.exports =
     TA_MSG_ERROR_CGW_IP_CONFLICT:
       en:"Customer Gateway <span class='validation-tag tag-cgw'>%s</span>'s IP <span class='validation-tag tag-ip'>%s</span> conflicts with existing <span class='validation-tag tag-cgw'>%s</span>'s IP <span class='validation-tag tag-ip'>%s</span>."
       zh:""
-    TA_MSG_ERROR_CGW_IP_RANGE_ERROR:
+    TA_MSG_WARNING_CGW_IP_RANGE_ERROR:
       en:"Customer Gateway <span class='validation-tag tag-cgw'>%s</span>'s IP(%s) invalid."
       zh:""
 
     # VPN
     TA_MSG_ERROR_VPN_NO_IP_FOR_STATIC_CGW:
       en:"VPN Connection of <span class='validation-tag tag-cgw'>%s</span> and <span class='validation-tag tag-vgw'>%s</span> is missing IP prefix."
+      zh:""
+    TA_MSG_ERROR_VPN_NOT_PUBLIC_IP:
+      en:"VPN Connection <span class='validation-tag tag-vpn'>%s</span>'s IP prefix(%s) is invalid."
       zh:""
 
     # Stack

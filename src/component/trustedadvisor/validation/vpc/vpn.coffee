@@ -45,6 +45,40 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo' ], ( constant, MC,
                         }
 
         return returnObj
+
+    isVPNPrefixIPNotValid = (uid) ->
+
+        returnObj = null
+
+        vpnComp = MC.canvas_data.component[uid]
+        vpnName = vpnComp.name
+        routeAry = vpnComp.resource.Routes
+
+        invalidRouteCIDRAry = []
+
+        _.each routeAry, (routeObj) ->
+
+            routeCIDR = routeObj.DestinationCidrBlock
+            if routeCIDR
+                routeIP = routeCIDR.split('/')[0]
+                isInAnyPubIPRange = MC.aws.aws.isValidInIPRange(routeIP, 'public')
+                isInAnyPriIPRange = MC.aws.aws.isValidInIPRange(routeIP, 'private')
+
+            if (isInAnyPubIPRange and not isInAnyPriIPRange)
+
+                invalidRouteCIDRAry.push(routeCIDR)
+
+        if invalidRouteCIDRAry.length
+
+            tipInfo = sprintf lang.ide.TA_MSG_ERROR_VPN_NOT_PUBLIC_IP, vpnName, invalidRouteCIDRAry.join(', ')
+            returnObj = {
+                level   : constant.TA.ERROR
+                info    : tipInfo
+                uid     : uid
+            }
+
+        return returnObj
         
     # public
     isVPNHaveIPForStaticCGW : isVPNHaveIPForStaticCGW
+    isVPNPrefixIPNotValid : isVPNPrefixIPNotValid

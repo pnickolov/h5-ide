@@ -1212,6 +1212,71 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
         null
 
 
+    isValidInIPRange = (ipStr, validIPType) ->
+
+        pubIPAry = [
+            {
+                low: '1.0.0.1',
+                high: '126.255.255.254'
+            },
+            {
+                low: '128.1.0.1',
+                high: '191.254.255.254'
+            },
+            {
+                low: '192.0.1.1',
+                high: '223.255.254.254'
+            }
+        ]
+
+        priIPAry = [
+            {
+                low: '10.0.0.0',
+                high: '10.255.255.255'
+            },
+            {
+                low: '172.16.0.0',
+                high: '172.31.255.255'
+            },
+            {
+                low: '192.168.0.0',
+                high: '192.168.255.255'
+            }
+        ]
+
+        ipRangeValid = (ipAryStr1, ipAryStr2, ipStr) ->
+
+            ipAry1 = ipAryStr1.split('.')
+            ipAry2 = ipAryStr2.split('.')
+            curIPAry = ipStr.split('.')
+
+            isInIPRange = true
+            _.each curIPAry, (ipNum, idx) ->
+                if not (Number(curIPAry[idx]) >= Number(ipAry1[idx]) and
+                Number(curIPAry[idx]) <= Number(ipAry2[idx]))
+                    isInIPRange = false
+                null
+
+            return isInIPRange
+
+        ipRangeAry = []
+
+        if validIPType is 'public'
+            ipRangeAry = pubIPAry
+        else if validIPType is 'private'
+            ipRangeAry = priIPAry
+
+        isInAryRange = false
+        _.each ipRangeAry, (ipRangeObj) ->
+            lowRange = ipRangeObj.low
+            highRange = ipRangeObj.high
+            isInRange = ipRangeValid(lowRange, highRange, ipStr)
+            if isInRange
+                isInAryRange = true
+            null
+
+        return isInAryRange
+
     #public
     collectReference            : collectReference
     getNewName                  : getNewName
@@ -1232,3 +1297,4 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
     getDefaultStackAgentData    : getDefaultStackAgentData
     getCompByResIdForState      : getCompByResIdForState
     genAttrRefList              : genAttrRefList
+    isValidInIPRange            : isValidInIPRange

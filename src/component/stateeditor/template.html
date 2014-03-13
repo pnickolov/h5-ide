@@ -166,10 +166,7 @@
     </div>
 
 <!-- state-template-editor-modal -->
-
-
 <div id="state-editor-model" class="se-model-{{current_state}}">
-
 	<div class="selectbox state-editor-res-select" data-res-name="{{res_name}}">
 		{{> state-template-res-select}}
 	</div>
@@ -221,30 +218,17 @@
 				</div>
 			</div>
 		</div>
-
 	</div>
-
 
 	<div id="state-description" data-command="" class="state-sidebar"></div>
 	<div id="state-log" data-state-id="" class="state-sidebar">
+		<div class="state-log-header">State log<span class="state-log-loading">Loading...</span></div>
 		<ul class="state-log-list">
 			{{> state-template-log-instance-item}}
 			{{> state-template-log-item}}
 		</ul>
-		<div class="state-log-loading">Loading...</div>
-		<div class="state-log-info">
-			<div class="state-log-title">All states are pending.</div>
-			<div class="state-log-detail">
-				<span class="pending">Detailed log will show here when a state succeeds or fails.</span>
-				<span class="stoped">The app is currently stopped. Detailed log will show here when the app is started and a state succeeds or fails.</span>
-			</div>
-		</div>
 	</div>
-	</div>
-
-
-
-
+</div>
 
 <!-- state-template-res-select -->
 <div class="selection">{{res_selects.0.res_name}}</div>
@@ -256,7 +240,7 @@
 
 <!-- state-template-log-item -->
 {{#each state_logs}}
-	<li class="state-log-item {{state_status}}" data-state-id="{{id}}">
+	<li class="state-log-item {{state_status}} {{#if view}}view{{/if}}" data-state-id="{{id}}">
 		<div class="state-log-item-header">
 			<div class="state-log-item-name">{{#if state_num}}{{state_num}}{{/if}}</div>
 			{{#if log_time}}<div class="state-log-item-time">{{log_time}}</div>{{/if}}

@@ -32,9 +32,7 @@ define [ 'jquery',
                 view.reRender template
 
                 # init resoruce service count
-                # when OPEN_APP set service_count = 10
-                # when OPEN_STACK or NEW_STACK set service_count = 0
-                model.service_count = if type is 'OPEN_APP' then 10 else 0
+                model.service_count = 0
                 model.set 'check_required_service_count', -1
 
                 # init resouceapi array

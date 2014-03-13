@@ -109,12 +109,6 @@ define [ 'i18n!nls/lang.js', 'constant', 'stateeditor', 'Design', './module/desi
                         if type is 'OPEN_STACK'
                             ide_event.trigger ide_event.SWITCH_WAITING_BAR, null, true
 
-                        # move it to trigger GET_STATE_MODULE
-                        #if type is 'OPEN_STACK'
-                        #
-                        #    #get all not exist ami data for stack
-                        #    model.getAllNotExistAmiInStack region_name
-
                         if type is 'OPEN_APP'
 
                             if Tabbar.current isnt 'appview'

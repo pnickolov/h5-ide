@@ -13,7 +13,8 @@ module.exports = {
 			'<%= src %>/js/ide/main.js'                                : '<%= src %>/js/ide/main.js',
 			'<%= src %>/js/register/main.js'                           : '<%= src %>/js/register/main.js',
 			'<%= src %>/js/reset/main.js'                              : '<%= src %>/js/reset/main.js',
-			'<%= src %>/module/design/property/view.js'                : '<%= src %>/module/design/property/view.js'
+			'<%= src %>/module/design/property/view.js'                : '<%= src %>/module/design/property/view.js',
+			'<%= src %>/js/ide/ide.js'                                : '<%= src %>/js/ide/ide.js'
 		}
 	},
 
@@ -29,7 +30,8 @@ module.exports = {
 			'<%= release %>/module/design/framework/resource/SgModel.js':'<%= src %>/module/design/framework/resource/SgModel.js',
 			'<%= release %>/module/design/property/base/main.js'       : '<%= src %>/module/design/property/base/main.js',
 			'<%= release %>/module/design/property/view.js'            : '<%= src %>/module/design/property/view.js',
-			'<%= release %>/component/unmanagedvpc/main.js'            : '<%= src %>/component/unmanagedvpc/main.js'
+			'<%= release %>/component/unmanagedvpc/main.js'            : '<%= src %>/component/unmanagedvpc/main.js',
+			'<%= release %>/js/ide/ide.js'                             : '<%= release %>/js/ide/ide.js'
 		}
 	}
 

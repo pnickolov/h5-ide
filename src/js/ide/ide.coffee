@@ -250,7 +250,14 @@ define [ 'MC', 'event', 'handlebars'
 
 		# i18n
 		Handlebars.registerHelper 'i18n', ( text ) ->
+			### env:prod ###
+			if lang.ide[ text ]
+				return new Handlebars.SafeString lang.ide[ text ]
+			### env:prod:end ###
+
+			### env:dev ###
 			new Handlebars.SafeString lang.ide[ text ]
+			### env:dev:end ###
 
 		# nl2br
 		Handlebars.registerHelper 'nl2br', (text) ->

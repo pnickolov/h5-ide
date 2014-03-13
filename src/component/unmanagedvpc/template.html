@@ -16,7 +16,7 @@
 			<div class="unmanaged-vpc-empty">Oops, loading VPC failed.
 				<button class="btn btn-blue" id="btn-vpc-reload">Retry</button>
 			</div>
-			
+
 			{{/is_service_error }}
 
 			{{#is_unmanaged resource_list }}
@@ -34,7 +34,7 @@
 					<ul class="unmanaged-VPC-resource-list clearfix">
 						{{#each this }}
 						<li class="unmanaged-VPC-resource-item{{#is_vpc_disabled this }} unmanaged-VPC-resource-item-disabled tooltip{{/is_vpc_disabled}}"
-							{{#is_vpc_disabled this }} data-tooltip="Currently we do not support to visualize system has more than 100 network interfaces. Contact us by the Feedback button for details." {{/is_vpc_disabled}}
+							{{#is_vpc_disabled this }} data-tooltip="{{i18n 'IDE_TIP_VISUALIZE_MORE_THAN_100_ENI'}}" {{/is_vpc_disabled}}
 							id="{{ @key }}-item"
 							data-vpc-id="{{ @key }}"
 							data-vpc-obj='{{ convert_string @key this }}'>

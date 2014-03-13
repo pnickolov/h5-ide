@@ -295,6 +295,10 @@ module.exports =
       en: "Unable to load some parts of the IDE, please refresh the browser"
       zh: "无法加载部分IDE内容，请重试"
 
+    IDE_TIP_VISUALIZE_MORE_THAN_100_ENI:
+      en: "Currently we do not support to visualize system has more than 100 network interfaces. Contact us by the Feedback button for details."
+      zh: ""
+
     RES_TIT_RESOURCES:
       en: "Resources"
       zh: "资源"

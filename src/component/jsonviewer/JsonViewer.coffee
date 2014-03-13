@@ -222,6 +222,7 @@ define ["event", "text!./diff.html", "text!./view.html", "./JsonDiffLib", "./jqU
         updateTO = setTimeout ()->
           applyViewFilter()
         , 200
+        null
 
       $("#diffTypeSelect").on "change", applyViewFilter
       null

@@ -24,7 +24,7 @@ util =
     true
 
   notify : ( msg )->
-    if GLOBAL.gulpConfig.enbaleNotifier
+    if GLOBAL.gulpConfig.enbaleNotifier and msg
       notifier.notify {
         title   : "IDE Gulp"
         message : msg

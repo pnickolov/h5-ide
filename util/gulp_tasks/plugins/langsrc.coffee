@@ -10,11 +10,7 @@ coffee = require("gulp-coffee")
 
 buildLangSrc = require("./lang")
 
-module.exports = ( dest, useCache, shouldLog )->
-
-  if dest      is undefined then dest      = "."
-  if useCache  is undefined then useCache  = true
-  if shouldLog is undefined then shouldLog = true
+module.exports = ( dest = ".", useCache = true, shouldLog = true )->
 
   if useCache
     startPipeline = cached( coffee() )

@@ -49,6 +49,14 @@ end  = ( d, printNewlineWhenNotVerbose )->
     ()-> d.resolve()
 
 Tasks =
+  cleanRepo : ()->
+    util.runCommand "git", ["-Xf"], { cwd : process.cwd() + "/src" }, (d)->
+      process.stdout.write d
+      null
+    , ()->
+      console.log "Finished."
+
+
   copyAssets : ()->
     logTask "Copying Assets"
 
@@ -144,6 +152,7 @@ Tasks =
 
 
 # A task to build IDE
+  #*** Perform `git -fX ./src` first, to remove ignored files.
   #*** Copy assets file to `build` folder
   #*** Copy js file to `build` folder
   #*** Process `lang-source.coffee` and copy to `build` folder
@@ -167,6 +176,7 @@ module.exports =
     ideversion.read( deploy )
 
     [
+      Tasks.cleanRepo
       Tasks.copyAssets
       Tasks.copyJs
       Tasks.compileLangSrc

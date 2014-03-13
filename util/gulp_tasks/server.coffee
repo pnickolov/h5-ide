@@ -4,13 +4,13 @@ nstatic = require("node-static")
 http    = require("http")
 open    = require("open")
 
-module.exports.create = ( path, port )->
+module.exports.create = ( path = "./src", port = GLOBAL.gulpConfig.staticFileServerPort )->
 
   defaultHeader = { "Cache-Control" : "no-cache" }
 
   gutil.log gutil.colors.bgBlue.white(" Creating File Server... ")
 
-  file = new nstatic.Server( path or "./src", { cache : false, headers : defaultHeader } )
+  file = new nstatic.Server( path, { cache : false, headers : defaultHeader } )
 
   redirectRegex = /(login|ide|register|reset)\.html$/
 
@@ -51,8 +51,8 @@ module.exports.create = ( path, port )->
     request.resume()
     null
 
-  server.listen( port or GLOBAL.gulpConfig.staticFileServerPort )
+  server.listen( port )
 
   if GLOBAL.gulpConfig.openUrlAfterCreateServer
-    open("http://127.0.0.1:" + (port or GLOBAL.gulpConfig.staticFileServerPort) )
+    open "http://127.0.0.1:#{port}"
   null

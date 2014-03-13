@@ -75,6 +75,16 @@
   };
 
   Tasks = {
+    cleanRepo: function() {
+      return util.runCommand("git", ["-Xf"], {
+        cwd: process.cwd() + "/src"
+      }, function(d) {
+        process.stdout.write(d);
+        return null;
+      }, function() {
+        return console.log("Finished.");
+      });
+    },
     copyAssets: function() {
       var d, path;
       logTask("Copying Assets");
@@ -156,7 +166,7 @@
       debugMode = mode === "qa" || mode === "debug";
       outputPath = mode === "qa" ? "./qa" : void 0;
       ideversion.read(deploy);
-      return [Tasks.copyAssets, Tasks.copyJs, Tasks.compileLangSrc, Tasks.compileCoffee(debugMode), Tasks.compileTemplate, Tasks.processHtml, Tasks.concatJS(debugMode, outputPath), Tasks.removeBuildFolder].reduce(Q.when, Q());
+      return [Tasks.cleanRepo, Tasks.copyAssets, Tasks.copyJs, Tasks.compileLangSrc, Tasks.compileCoffee(debugMode), Tasks.compileTemplate, Tasks.processHtml, Tasks.concatJS(debugMode, outputPath), Tasks.removeBuildFolder].reduce(Q.when, Q());
     }
   };
 

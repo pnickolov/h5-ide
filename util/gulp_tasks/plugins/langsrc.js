@@ -19,13 +19,13 @@
 
   module.exports = function(dest, useCache, shouldLog) {
     var pipeline, startPipeline, writeFile;
-    if (dest === void 0) {
+    if (dest == null) {
       dest = ".";
     }
-    if (useCache === void 0) {
+    if (useCache == null) {
       useCache = true;
     }
-    if (shouldLog === void 0) {
+    if (shouldLog == null) {
       shouldLog = true;
     }
     if (useCache) {

@@ -11,11 +11,17 @@
 
   module.exports.create = function(path, port) {
     var defaultHeader, file, redirectRegex, server;
+    if (path == null) {
+      path = "./src";
+    }
+    if (port == null) {
+      port = GLOBAL.gulpConfig.staticFileServerPort;
+    }
     defaultHeader = {
       "Cache-Control": "no-cache"
     };
     gutil.log(gutil.colors.bgBlue.white(" Creating File Server... "));
-    file = new nstatic.Server(path || "./src", {
+    file = new nstatic.Server(path, {
       cache: false,
       headers: defaultHeader
     });
@@ -63,8 +69,10 @@
       request.resume();
       return null;
     });
-    server.listen(port || GLOBAL.gulpConfig.staticFileServerPort);
-    open("http://127.0.0.1:" + (port || GLOBAL.gulpConfig.staticFileServerPort));
+    server.listen(port);
+    if (GLOBAL.gulpConfig.openUrlAfterCreateServer) {
+      open("http://127.0.0.1:" + port);
+    }
     return null;
   };
 

@@ -31,7 +31,7 @@
       return true;
     },
     notify: function(msg) {
-      if (GLOBAL.gulpConfig.enbaleNotifier) {
+      if (GLOBAL.gulpConfig.enbaleNotifier && msg) {
         notifier.notify({
           title: "IDE Gulp",
           message: msg

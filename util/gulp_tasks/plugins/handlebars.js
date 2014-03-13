@@ -147,7 +147,7 @@
 
   compiler = function(shouldLog) {
     var pipe;
-    if (shouldLog === void 0) {
+    if (shouldLog == null) {
       shouldLog = true;
     }
     pipe = es.through(compile);

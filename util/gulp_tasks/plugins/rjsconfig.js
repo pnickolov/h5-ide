@@ -87,6 +87,12 @@
 
   getConfig = function(debugMode, outputPath) {
     var config, extra;
+    if (debugMode == null) {
+      debugMode = true;
+    }
+    if (outputPath == null) {
+      outputPath = "./deploy";
+    }
     if (debugMode === true) {
       extra = {
         optimize: "none",
@@ -101,7 +107,7 @@
     config = extend(readRequirejsConfig(ConfigFile), extra, {
       removeCombined: true,
       baseUrl: "./build",
-      dir: outputPath || "./build2"
+      dir: outputPath
     });
     transformModules(config);
 

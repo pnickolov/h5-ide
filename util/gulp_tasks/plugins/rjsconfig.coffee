@@ -74,7 +74,7 @@ transformModules = ( config )->
   delete config.bundles
   config
 
-getConfig = ( debugMode, outputPath )->
+getConfig = ( debugMode = true, outputPath = "./deploy" )->
   if debugMode is true
     extra =
       optimize        : "none"
@@ -87,7 +87,7 @@ getConfig = ( debugMode, outputPath )->
   config = extend( readRequirejsConfig( ConfigFile ), extra, {
     removeCombined : true
     baseUrl : "./build"
-    dir     : outputPath or "./build2"
+    dir     : outputPath
   } )
 
   # Read the config. Transform the bundles to modules

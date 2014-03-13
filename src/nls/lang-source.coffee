@@ -2495,10 +2495,6 @@ module.exports =
       en: "VPC ID"
       zh: "VPC ID"
 
-    PROP_SHOW_OR_HIDE_PROPERTY_PANEL
-      en: "Show/Hide Property Panel"
-      zh: ""
-
     NAV_DESMOD_NOT_FINISH_LOAD:
       en: "Sorry, the designer module is loading now. Please try again after several seconds."
       zh: "抱歉，设计模块正在加载，请稍后重试。"

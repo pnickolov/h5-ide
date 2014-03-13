@@ -1004,8 +1004,12 @@
 
 #modal-state-log-detail .state-log-detail-content {
 	height: 500px;
-	width: 100%;
+	width: 880px;
 	background-color: #000;
+	border: none;
+	border-radius: 0px;
+	padding: 10px;
+	margin: 0;
 }
 
 #state-log .state-log-item-detail br {
@@ -1023,10 +1027,12 @@
 	width: 100%;
 	display: block;
 	cursor: pointer;
+	background: #000;
+	color: #999;
 }
 
 #state-log .state-log-item .state-log-item-view-detail:hover {
-	background-color: #444;
+	color: #ccc;
 }
 
 #state-log .state-log-info {
@@ -1449,4 +1455,9 @@
 	width: 275px;
 	float: left;
 	margin-top: 5px;
+}
+
+
+#modal-state-log-detail .modal-body {
+	padding: 0;
 }

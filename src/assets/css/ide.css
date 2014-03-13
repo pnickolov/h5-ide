@@ -7232,8 +7232,7 @@ summary:focus {
 	padding : 10px 20px;
 	height  : 500px;
 	color   : #0E750C;
-/*	background-color: #111;
-	color           : #0f0;*/
+	background-color: #000;
 }
 
 #modal-instance-sys-log .instance-sys-log-content::selection {

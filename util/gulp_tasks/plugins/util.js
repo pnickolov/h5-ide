@@ -1,11 +1,13 @@
 (function() {
-  var fs, gutil, notifier, util;
+  var fs, gutil, notifier, spawn, util;
 
   gutil = require("gulp-util");
 
   notifier = require("node-notifier");
 
   fs = require("fs");
+
+  spawn = require('child_process').spawn;
 
   util = {
     log: function(e) {
@@ -66,6 +68,17 @@
       }
       fs.rmdirSync(path);
       return null;
+    },
+    runCommand: function(command, args, options, onData, onEnd) {
+      var process;
+      process = spawn(command, args, options);
+      if (onData) {
+        process.stdout.on("data", onData);
+      }
+      if (onEnd) {
+        process.on("exit", onEnd);
+      }
+      return process;
     }
   };
 

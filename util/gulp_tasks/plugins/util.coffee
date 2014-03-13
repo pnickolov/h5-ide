@@ -2,6 +2,7 @@
 gutil    = require("gulp-util")
 notifier = require("node-notifier")
 fs       = require("fs")
+spawn    = require('child_process').spawn
 
 util =
   log  : (e)-> console.log e
@@ -51,5 +52,11 @@ util =
 
     fs.rmdirSync( path )
     null
+
+  runCommand : ( command, args, options, onData, onEnd )->
+    process = spawn( command, args, options )
+    if onData then process.stdout.on("data", onData)
+    if onEnd  then process.on("exit", onEnd)
+    process
 
 module.exports = util

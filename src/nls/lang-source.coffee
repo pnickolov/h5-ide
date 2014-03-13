@@ -3628,34 +3628,34 @@ module.exports =
 
     # State Editor
     TA_MSG_ERROR_STATE_EDITOR_INEXISTENT_INSTANCE:
-      en: "Instance <span class='validation-tag tag-instance'>%s</span> state %s has referenced the inexistent <span class='validation-tag tag-state-ref'>%s</span>."
+      en: "Instance <span class='validation-tag tag-instance'>%s</span> <span class='validation-tag tag-state'>state %s</span> has referenced the inexistent <span class='validation-tag tag-state-ref'>%s</span>."
       zh: ""
 
     TA_MSG_ERROR_STATE_EDITOR_INEXISTENT_ASG:
-      en: "Auto Scaling Group <span class='validation-tag tag-asg'>%s</span> state %s has referenced the inexistent <span class='validation-tag tag-state-ref'>%s</span>."
+      en: "Auto Scaling Group <span class='validation-tag tag-asg'>%s</span> <span class='validation-tag tag-state'>state %s</span> has referenced the inexistent <span class='validation-tag tag-state-ref'>%s</span>."
       zh: ""
 
     TA_MSG_ERROR_STATE_EDITOR_EMPTY_REQUIED_PARAMETER:
-      en: "<span class='validation-tag tag-instance'>%s</span>'s state <span class='validation-tag tag-state'>%s</span> is missing required parameter <span class='validation-tag tag-parameter'>%s</span>."
+      en: "<span class='validation-tag tag-instance'>%s</span>'s <span class='validation-tag tag-state'>state %s</span> is missing required parameter <span class='validation-tag tag-parameter'>%s</span>."
       zh: ""
 
     # State
     TA_MSG_ERROR_NOT_CONNECT_OUT:
-      en: "Subnet %s must be connected to internet directly or via a NAT instance. "
+      en: "Subnet <span class='validation-tag tag-subnet'>%s</span> must be connected to internet directly or via a NAT instance. "
       zh: ""
 
     TA_MSG_ERROR_NO_EIP_OR_PIP:
-      en: "%s has configured states. To make sure OpsAgent to work, %s must have an elastic IP or public IP. If not, subnet %s must be connected to a NAT instance."
+      en: "<span class='validation-tag tag-instance'>%s</span> has configured states. To make sure OpsAgent to work, <span class='validation-tag tag-instance'>%s</span> must have an elastic IP or public IP. If not, subnet <span class='validation-tag tag-subnet'>%s</span> must be connected to a NAT instance."
       zh: ""
 
     TA_MSG_ERROR_NO_CGW:
       en: "You have configured states for instance. To make sure OpsAgent to work, the VPC must have an internet gateway."
       zh: ""
     TA_MSG_ERROR_NO_OUTBOUND_RULES:
-      en: "%s has configured states. To make sure OpsAgent to work, it should have outbound rules on 80 and 443 ports to the outside."
+      en: "<span class='validation-tag tag-instance'>%s</span> has configured states. To make sure OpsAgent to work, it should have outbound rules on <span class='validation-tag tag-port'>80</span> and <span class='validation-tag tag-port'>443</span> ports to the outside."
       zh: ""
     TA_MSG_WARNING_OUTBOUND_NOT_TO_ALL:
-      en: "%s has configured states. Suggest to set its outbound rule on 80 and 443 to 0.0.0.0/0. Otherwise, agent may not be able to work properly, install packages or check out source codes lacking route to MadeiraCloud's monitoring systems or required repositories."
+      en: "<span class='validation-tag tag-instance'>%s</span> has configured states. Suggest to set its outbound rule on <span class='validation-tag tag-port'>80</span> and <span class='validation-tag tag-port'>443</span> to <span class='validation-tag tag-ip'>0.0.0.0/0</span>. Otherwise, agent may not be able to work properly, install packages or check out source codes lacking route to MadeiraCloud's monitoring systems or required repositories."
       zh: ""
 
 

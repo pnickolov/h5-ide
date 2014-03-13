@@ -234,6 +234,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
                         if not res.osFamily
                             res.osFamily = MC.aws.aws.getOSFamily(res.osType, res)
 
+                        MC.aws.ami.convertBlockDeviceMapping res
                         MC.data.dict_ami[res.imageId] = res
                         MC.data.resource_list[region][res.imageId] = res
 

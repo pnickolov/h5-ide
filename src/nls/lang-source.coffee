@@ -12,19 +12,21 @@
 
   #*# DESCRIPTION
     Module Name
-      RES   : resource panel
-      PROP  : property
-      CVS   : canvas
-      TOOL  : toolbar
-      HEAD  : header
-      NAV   : navigation
-      DASH  : dashboard
-      MSG   : notification
-      TIT   : title
-      LBL   : label
-      POP   : popup
-      TIP   : tooltip
-      BTN   : button
+      RES     : resource panel
+      PROP    : property
+      CVS     : canvas
+      TOOL    : toolbar
+      HEAD    : header
+      NAV     : navigation
+      DASH    : dashboard
+      MSG     : notification
+      TIT     : title
+      LBL     : label
+      POP     : popup
+      TIP     : tooltip
+      BTN     : button
+      PARSLEY : parsley
+
     Resource Type Reference
       CONST.AWS_RESOURCE_SHORT_TYPE
 
@@ -263,6 +265,23 @@ module.exports =
       zh: "用户名或邮件地址还没有在MadeiraCloud注册过。"
 
   ide:
+
+    PARSLEY_MUST_BE_A_VALID_FORMAT_OF_NUMBER:
+      en: "Must be a valid format of number."
+      zh: ""
+
+    PARSLEY_THE_PROTOCOL_NUMBER_RANGE_MUST_BE_0_255:
+      en: "The protocol number range must be 0-255."
+      zh: ""
+
+    PARSLEY_MUST_BE_A_VALID_FORMAT_OF_PORT_RANGE:
+      en: "Must be a valid format of port range."
+      zh: ""
+
+    PARSLEY_PORT_RANGE_BETWEEN_0_65535:
+      en: "Port range needs to be a number or a range of numbers between 0 and 65535."
+      zh: ""
+
     NAV_TIT_DASHBOARD:
       en: "Dashboard"
       zh: "仪表板"

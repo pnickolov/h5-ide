@@ -3540,8 +3540,134 @@ module.exports =
       en: ""
       zh: ""
 
+    ##### Keyboard Shortcuts Modal 
+    KEY_MOD_TIT:
+      en: "Keyboard Shortcuts (?)"
+      zh: ""
 
+    # Stack/App Operation
 
+    KEY_TIT_STACK_APP_OP:
+      en: "Stack/App Operation"
+      zh: ""
+
+    KEY_PROP_KEY:
+      en: "P"
+      zh: ""
+
+    KEY_PROP_ACTION:
+      en: "Show Property Panel"
+      zh: ""
+
+    KEY_STAT_KEY:
+      en: "S"
+      zh: ""
+
+    KEY_STAT_ACTION:
+      en: "Show State Panel"
+      zh: ""
+
+    KEY_DUPL_KEY_MAC:
+      en: "Option + Drag Instance"
+      zh: ""
+
+    KEY_DUPL_KEY_PC:
+      en: "Alt + Drag Instance"
+      zh: ""
+
+    KEY_DUPL_ACTION:
+      en: "Duplicate Instance"
+      zh: ""
+
+    KEY_DEL_KEY_MAC:
+      en: "Delete"
+      zh: ""
+
+    KEY_DEL_KEY_PC:
+      en: "Delete/Backspace"
+      zh: ""
+
+    KEY_DEL_ACTION:
+      en: "Delete selected item"
+      zh: ""
+
+    KEY_SAVE_KEY_MAC:
+      en: "Command + S"
+      zh: ""
+
+    KEY_SAVE_KEY_PC:
+      en: "Ctrl + S"
+      zh: ""
+
+    KEY_SAVE_ACTION:
+      en: "Save stack"
+      zh: ""
+
+    KEY_SCRL_KEY_MAC:
+      en: "Command + Drag on canvas"
+      zh: ""
+
+    KEY_SCRL_KEY_PC:
+      en: "Ctrl + Drag on canvas"
+      zh: ""
+
+    KEY_SCRL_ACTION:
+      en: "Scroll canvas"
+      zh: ""
+
+    # State Panel Operation - General
+
+    KEY_TIT_STATE_GEN:
+      en: "State Panel Operation - General"
+      zh: ""
+
+    KEY_FOCUS_KEY:
+      en: "Up/Down"
+      zh: ""
+
+    KEY_FOCUS_ACTION:
+      en: "Switch focused state"
+      zh: ""
+
+    KEY_SELECT_KEY:
+      en: "Space"
+      zh: ""
+
+    KEY_SELECT_ACTION:
+      en: "Select/Unselect focused state"
+      zh: ""
+
+    KEY_EXPAND_KEY:
+      en: "ENTER"
+      zh: ""
+
+    KEY_EXPAND_ACTION:
+      en: "Expand focused state"
+      zh: ""
+
+    KEY_COLLAPSE_KEY:
+      en: "ESC"
+      zh: ""
+
+    KEY_COLLAPSE_ACTION:
+      en: "Collapse focused state"
+      zh: ""
+
+    KEY_NEXT_KEY:
+      en: "Tab"
+      zh: ""
+
+    KEY_NEXT_ACTION:
+      en: "Focus to next input"
+      zh: ""
+
+    KEY_PREV_KEY:
+      en: "Shift + Tab"
+      zh: ""
+
+    KEY_PREV_ACTION:
+      en: " Focus to previous input"
+      zh: ""
 
     ##### State Editor
 

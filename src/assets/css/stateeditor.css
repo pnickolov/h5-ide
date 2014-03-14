@@ -1441,14 +1441,14 @@
 }
 .switch-label:before {
 	content     : attr(data-off);
-	right       : 10px;
+	right       : 8px;
 	color       : #aaa;
 	font-variant: small-caps;
 }
 
 .switch-label:after {
 	content     : attr(data-on);
-	left        : 10px;
+	left        : 8px;
 	color       : white;
 	opacity     : 0;
 	font-variant: small-caps;

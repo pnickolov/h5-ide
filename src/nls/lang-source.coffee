@@ -3536,8 +3536,6 @@ module.exports =
       en: "Select All States"
       zh: ""
 
-<<<<<<< HEAD
-=======
     STATE_TIP_:
       en: ""
       zh: ""
@@ -3561,6 +3559,7 @@ module.exports =
     STATE_TIP_:
       en: ""
       zh: ""
+
     ##### Request Invite to Experimental Feature
 
     INVITE_MOD_TIT:
@@ -3606,7 +3605,6 @@ module.exports =
     INVITE_MOD_BTN_DONE:
       en: "Done"
       zh: ""
->>>>>>> [feature/state-editor] Update Request Invite lang
 
     ##### Keyboard Shortcuts Modal 
     KEY_MOD_TIT:

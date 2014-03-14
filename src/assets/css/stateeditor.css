@@ -262,6 +262,12 @@
 
 #state-editor .state-list {
 	/*width: 99%;*/
+	position: absolute;
+	top: 37px;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	overflow: auto;
 }
 
 #state-editor .state-warning {
@@ -451,9 +457,13 @@
 
 .state-editor-toolbar {
 	border-bottom: 1px solid #0B0B0C;
-	position     : relative;
+	/*position     : relative;*/
 	z-index      : 85;
 	background   : #222427;
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
 	/*font-family  : 'Lato', 'Helvetica Neue', Arial, sans-serif;*/
 	height       : 36px;
 }

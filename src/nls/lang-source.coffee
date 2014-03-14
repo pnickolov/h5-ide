@@ -2163,6 +2163,26 @@ module.exports =
       en: "Click to select all"
       zh: ""
 
+    PROP_ELB_TIP_CLICK_TO_SELECT_ALL:
+      en: "Click to select all"
+      zh: ""
+
+    PROP_ELB_TIP_REMOVE_LISTENER:
+      en: "Remove listener"
+      zh: ""
+
+    PROP_ELB_TIP_25_80_443OR1024TO65535:
+      en: "25, 80, 443 or 1024 - 65535"
+      zh: ""
+
+    PROP_ELB_TIP_1_65535:
+      en: "1 - 65535"
+      zh: ""
+
+    PROP_ELB_TIP_CLICK_TO_READ_RELATED_AWS_DOCUMENT:
+      en: "Click to read related AWS document"
+      zh: ""
+
     PROP_ASG_SUMMARY:
       en: "Auto Scaling Group Summary"
       zh: "自动伸缩组摘要"

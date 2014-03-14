@@ -48,7 +48,7 @@
 				<label for="elb-cross-az-select"></label>
 			</div>
 			<label for="elb-cross-az-select" >Enable cross-zone load balancing</label>
-			<a class="elb-info-icon tooltip icon-info" href="https://aws.amazon.com/about-aws/whats-new/2013/11/06/elastic-load-balancing-adds-cross-zone-load-balancing/" data-tooltip="Click to read related AWS document" target="_blank"></a>
+			<a class="elb-info-icon tooltip icon-info" href="https://aws.amazon.com/about-aws/whats-new/2013/11/06/elastic-load-balancing-adds-cross-zone-load-balancing/" data-tooltip="{{i18n 'PROP_ELB_TIP_CLICK_TO_READ_RELATED_AWS_DOCUMENT'}}" target="_blank"></a>
 		</section>
 	</div>
 
@@ -56,7 +56,7 @@
 	<div class="option-group" data-bind="true"> <ul id="elb-property-listener-list">
 		{{#each listeners}}
 		<li class="elb-property-listener">
-			<div class="elb-property-listener-item-remove icon-remove tooltip" data-tooltip="Remove listener" {{#unless @index}}style="display:none;"{{/unless}}></div>
+			<div class="elb-property-listener-item-remove icon-remove tooltip" data-tooltip="{{i18n 'PROP_ELB_TIP_REMOVE_LISTENER'}}" {{#unless @index}}style="display:none;"{{/unless}}></div>
 
 			<div class="property-control-group clearfix">
 				<div class="elb-property-listener-item-1">
@@ -73,7 +73,7 @@
 				</div>
 				<div class="elb-property-listener-item-2">
 					<label class="left">Port</label>
-					<input class="input elb-property-elb-port tooltip" data-tooltip="25, 80, 443 or 1024 - 65535" type="text" value="{{port}}" data-ignore="true" data-required="true" data-type="digits" maxlength="5"/>
+					<input class="input elb-property-elb-port tooltip" data-tooltip="{{i18n 'PROP_ELB_TIP_25_80_443OR1024TO65535'}}" type="text" value="{{port}}" data-ignore="true" data-required="true" data-type="digits" maxlength="5"/>
 				</div>
 			</div>
 
@@ -92,7 +92,7 @@
 				</div>
 				<div class="left elb-property-listener-item-2">
 					<label class="left">Port</label>
-					<input class="input elb-property-instance-port tooltip" data-tooltip="1 - 65535" type="text" value="{{instancePort}}" data-ignore="true" data-required="true" data-type="digits" maxlength="5"/>
+					<input class="input elb-property-instance-port tooltip" data-tooltip="{{i18n 'PROP_ELB_TIP_1_65535'}}" type="text" value="{{instancePort}}" data-ignore="true" data-required="true" data-type="digits" maxlength="5"/>
 				</div>
 			</div>
 		</li>

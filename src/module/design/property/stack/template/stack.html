@@ -47,7 +47,7 @@
         <dt>SNS Topic Name</dt>
         <dd>{{snstopic.name}}</dd>
         <dt>SNS Topic ARN</dt>
-        <dd class="click-select tooltip" data-tooltip="Click to select all">{{snstopic.arn}}</dd>
+        <dd class="click-select tooltip" data-tooltip="{{i18n 'PROP_ELB_TIP_CLICK_TO_SELECT_ALL'}}">{{snstopic.arn}}</dd>
       </dl>
     </div>
     <div class="property-group-head">Subscription</div>
@@ -85,7 +85,7 @@
             {{#if confirmed}}
               <i class="icon-del icon-remove"></i>
             {{else}}
-              <i class="icon-pending tooltip" data-tooltip="pendingConfirm" ></i>
+              <i class="icon-pending tooltip" data-tooltip="{{i18n 'PROP_STACK_PENDING_CONFIRM'}}" ></i>
             {{/if}}
           {{/if}}
         </div>
@@ -103,7 +103,7 @@
             {{#if confirmed}}
               <i class="icon-del icon-remove"></i>
             {{else}}
-              <i class="icon-pending tooltip" data-tooltip="pendingConfirm" ></i>
+              <i class="icon-pending tooltip" data-tooltip="{{i18n 'PROP_STACK_PENDING_CONFIRM'}}" ></i>
             {{/if}}
           {{/if}}
         </div>

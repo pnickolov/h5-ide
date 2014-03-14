@@ -1103,6 +1103,10 @@ module.exports =
       en: "Public IP cannot be associated if instance is launching with more than one network interface."
       zh: ""
 
+    PROP_STACK_PENDING_CONFIRM:
+      en: "pendingConfirm"
+      zh: ""
+
     PROP_STACK_LBL_NAME:
       en: "Stack Name"
       zh: "模版名称"
@@ -1346,6 +1350,10 @@ module.exports =
     PROP_SUBNET_APP_RT_ID:
       en: "Route Table ID"
       zh: "路由表标识"
+
+    PROP_VPC_TIP_EG_10_0_0_0_16:
+      en: "e.g. 10.0.0.0/16"
+      zh: ""
 
     PROP_SG_TIT_DETAIL:
       en: "Security Group Details"

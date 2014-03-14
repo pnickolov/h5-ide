@@ -15,8 +15,8 @@
         <div class="rule-reference truncate tooltip" data-tooltip='{{#ifCond direction "inbound"}}Source{{else}}Destination{{/ifCond}}'>{{ipRanges}}</div>
       </div>
       <div class="rule-list-row">
-        <div><span class="rule-protocol tooltip" data-tooltip="Protocol">{{ipProtocol}}</span></div>
-        <div class="rule-port tooltip" data-tooltip="Port or Code">{{dispPort}}</div>
+        <div><span class="rule-protocol tooltip" data-tooltip="{{i18n 'DASH_LBL_PROTOCOL'}}">{{ipProtocol}}</span></div>
+        <div class="rule-port tooltip" data-tooltip="{{i18n 'PROP_SG_TIP_PORT_CODE'}}">{{dispPort}}</div>
       </div>
     </li>
     {{/each}}

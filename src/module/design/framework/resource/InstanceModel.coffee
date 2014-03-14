@@ -25,7 +25,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
       userData     : ""
 
       # RootDevice
-      rdSize : 10
+      rdSize : 0
       rdIops : 0
 
       cachedAmi : null
@@ -49,6 +49,9 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
           name : "eni0"
           assoPublicIp : Design.instance().typeIsDefaultVpc()
         }, { instance: this }) )
+
+      # Set rdSize if it's empty
+      if not @get("rdSize")
         #append root device
         @set("rdSize",@getAmiRootDeviceVolumeSize())
 
@@ -761,7 +764,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
       if not rootDevice or _.isString( rootDevice )
         rootDevice =
           Ebs :
-            VolumeSize : 10
+            VolumeSize : 0
             Iops : ""
 
 

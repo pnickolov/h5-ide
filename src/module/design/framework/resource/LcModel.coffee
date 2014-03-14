@@ -20,7 +20,7 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
       state        : undefined
 
       # RootDevice
-      rdSize : 10
+      rdSize : 0
       rdIops : ""
 
     type : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
@@ -49,6 +49,7 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
         SgAsso = Design.modelClassForType( "SgAsso" )
         new SgAsso( defaultSg, this )
 
+      if not @get("rdSize")
         #append root device
         @set("rdSize",@getAmiRootDeviceVolumeSize())
 
@@ -257,16 +258,22 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
 
       model = new Model( attr )
 
+      rd = model.getAmiRootDevice()
 
       # Create Volume for
       for volume in data.resource.BlockDeviceMapping || []
-        _attr =
-          name       : volume.DeviceName
-          snapshotId : volume.Ebs.SnapshotId
-          volumeSize : volume.Ebs.VolumeSize
-          owner      : model
+        if volume.DeviceName is rd.DeviceName
+          model.set "rdSize", volume.Ebs.VolumeSize
+          model.set "rdIops", volume.Ebs.Iops
+        else
+          _attr =
+            name       : volume.DeviceName
+            snapshotId : volume.Ebs.SnapshotId
+            volumeSize : volume.Ebs.VolumeSize
+            iops       : volume.Ebs.Iops
+            owner      : model
 
-        new VolumeModel(_attr, {noNeedGenName:true})
+          new VolumeModel(_attr, {noNeedGenName:true})
 
       # Asso SG
       SgAsso = Design.modelClassForType( "SgAsso" )

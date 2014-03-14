@@ -37,6 +37,9 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
 
       if options and options.cloneSource
         @clone( options.cloneSource )
+
+      if attributes.iops
+        attributes.volumeType = "io1"
       null
 
     clone : ( srcTarget )->

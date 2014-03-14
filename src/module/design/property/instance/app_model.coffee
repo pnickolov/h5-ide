@@ -164,6 +164,12 @@ define [ '../base/model',
                             if obj is instance_id or obj.InstanceId is instance_id
                                 @set "uid", asg.get("lc").id
                                 break
+            
+            if not myInstanceComponent
+                myInstanceComponent = Design.instance().component( @get "uid" )
+
+            if not myInstanceComponent
+                console.warn "instance.app_model.init(): can not find InstanceModel"
 
             app_data = MC.data.resource_list[ Design.instance().region() ]
 
@@ -171,6 +177,7 @@ define [ '../base/model',
 
                 instance = $.extend true, {}, app_data[ instance_id ]
                 instance.name = if myInstanceComponent then myInstanceComponent.get 'name' else instance_id
+                rdName = myInstanceComponent.getAmiRootDeviceName()
 
                 # Possible value : running, stopped, pending...
                 instance.state = MC.capitalize instance.instanceState.name
@@ -179,8 +186,17 @@ define [ '../base/model',
                     deviceName = []
                     for i in instance.blockDeviceMapping.item
                         deviceName.push i.deviceName
-
+                        if rdName is i.deviceName
+                            rootDevice = i
                     instance.blockDevice = deviceName.join ", "
+
+                    #RootDevice Data
+                    if rootDevice
+                        volume = MC.data.resource_list[Design.instance().region()][ rootDevice.ebs.volumeId ]
+                        if volume
+                            if volume.attachmentSet
+                                volume.name = volume.attachmentSet.item[0].device
+                            @set "rootDevice", volume
 
                 # Eni Data
                 instance.eni = this.getEniData instance

@@ -59,6 +59,46 @@
     </dl>
   </div>
 
+  {{#if rootDevice}}
+  <div class="option-group-head">Root Device</div>
+  <div class="option-group">
+    <article class="property-app">
+      <dl class="dl-vertical">
+        <dt>{{i18n "PROP_VOLUME_ID"}}</dt>
+        <dd>{{emptyStr rootDevice.volumeId}}</dd>
+        <dt>{{i18n "PROP_VOLUME_DEVICE_NAME"}}</dt>
+        <dd>{{emptyStr rootDevice.name}}</dd>
+        <dt>{{i18n "PROP_VOLUME_STATE"}}</dt>
+        <dd><i class="status status-{{rootDevice.status}}"></i>{{rootDevice.status}}</dd>
+        <dt>{{i18n "PROP_VOLUME_CREATE_TIME"}}</dt>
+        <dd>{{timeStr rootDevice.createTime}}</dd>
+      </dl>
+      <dl class="dl-vertical">
+        <dt>{{i18n "PROP_VOLUME_TYPE"}}</dt>
+        <dd>{{emptyStr rootDevice.volumeType}}</dd>
+        {{#if rootDevice.snapshotId}}
+        <dt>{{i18n "PROP_VOLUME_SNAPSHOT_ID"}}</dt>
+        <dd>{{rootDevice.snapshotId}}</dd>
+        {{/if}}
+        <dt>{{i18n "PROP_VOLUME_SIZE"}}</dt>
+        <dd>{{emptyStr rootDevice.size}} GB</dd>
+        {{#if rootDevice.iops}}
+        <dt>IOPS</dt>
+        <dd>{{rootDevice.iops}}</dd>
+        {{/if}}
+      </dl>
+      <dl class="dl-vertical">
+        <dt>{{i18n "PROP_VOLUME_ATTACHMENT_STATE"}}</dt>
+        <dd>{{emptyStr rootDevice.attachmentSet.item.0.status}}</dd>
+        <dt>{{i18n "PROP_VOLUME_INSTANCE_ID"}}</dt>
+        <dd>{{emptyStr rootDevice.attachmentSet.item.0.instanceId}}</dd>
+        <dt>{{i18n "PROP_VOLUME_ATTACHMENT_TIME"}}</dt>
+        <dd>{{timeStr rootDevice.attachmentSet.item.0.attachTime}}</dd>
+      </dl>
+    </article>
+  </div>
+  {{/if}}
+
   {{#if eni}}
   <div class="option-group-head">{{i18n "PROP_INSTANCE_ENI_DETAIL"}}</div>
   <div class="option-group">

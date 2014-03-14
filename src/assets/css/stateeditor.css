@@ -540,7 +540,7 @@
 #state-editor .parameter-list .parameter-container {
 	float: left;
 	margin-left: 30px;
-	min-width : 440px;
+	min-width : 435px;
 	overflow  : auto;
 	padding: 4px 0 0 0;
 }
@@ -549,6 +549,10 @@
 	width: 147px;
 	margin-right: 5px;
 	position: relative;
+}
+
+#state-editor .parameter-list .parameter-item.dict .parameter-value.value {
+	width: 265px;
 }
 
 #state-editor .parameter-list .parameter-item.dict .parameter-value:last-child {

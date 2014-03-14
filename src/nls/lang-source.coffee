@@ -1087,6 +1087,10 @@ module.exports =
       en: "Network Interface"
       zh: "网络接口"
 
+    PROP_INSTANCE_TIP_GET_SYSTEM_LOG:
+      en: "Get System Log"
+      zh: ""
+
     PROP_STACK_LBL_NAME:
       en: "Stack Name"
       zh: "模版名称"
@@ -2031,6 +2035,10 @@ module.exports =
       en: "IP Owner"
       zh: "IP拥有者"
 
+    PROP_ENI_TIP_ADD_IP_ADDRESS:
+      en: "Add IP Address"
+      zh: ""
+
     PROP_ELB_DETAILS:
       en: "Load Balancer Details"
       zh: "负载均衡器设置"
@@ -2158,10 +2166,6 @@ module.exports =
     PROP_ELB_DISTRIBUTION:
       en: "Distribution"
       zh: "分布"
-
-    PROP_ELB_TIP_CLICK_TO_SELECT_ALL:
-      en: "Click to select all"
-      zh: ""
 
     PROP_ELB_TIP_CLICK_TO_SELECT_ALL:
       en: "Click to select all"

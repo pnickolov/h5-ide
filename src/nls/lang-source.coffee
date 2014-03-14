@@ -1811,6 +1811,14 @@ module.exports =
       en: "Download"
       zh: "下载"
 
+    PROP_CGW_TIP_THIS_ADDRESS_MUST_BE_STATIC:
+      en: "This address must be static and not behind a NAT. e.g. 12.1.2.3"
+      zh: ""
+
+    PROP_CGW_TIP_1TO65534:
+      en: "1 - 65534"
+      zh: ""
+
     PROP_MSG_ERR_RESOURCE_NOT_EXIST:
       en: "Sorry, the selected resource not exist."
       zh: "抱歉，选定的资源不存在。"
@@ -2151,6 +2159,10 @@ module.exports =
       en: "Distribution"
       zh: "分布"
 
+    PROP_ELB_TIP_CLICK_TO_SELECT_ALL:
+      en: "Click to select all"
+      zh: ""
+
     PROP_ASG_SUMMARY:
       en: "Auto Scaling Group Summary"
       zh: "自动伸缩组摘要"
@@ -2438,6 +2450,14 @@ module.exports =
     PROP_ASG_ADD_POLICY_ADVANCED_TIP_MIN_ADJUST_STEP:
       en: "Changes the DesiredCapacity of the Auto Scaling group by at least the specified number of instances."
       zh: "调整期望数量时的最小实例数量"
+
+    PROP_ASG_TIP_CLICK_TO_SELECT:
+      en: "Click to select"
+      zh: ""
+
+    PROP_ASG_TIP_YOU_CAN_ONLY_ADD_25_SCALING_POLICIES:
+      en: "You can only add 25 scaling policies"
+      zh: ""
 
     PROP_LC_TITLE:
       en: "Launch Configuation"
@@ -3516,6 +3536,8 @@ module.exports =
       en: "Select All States"
       zh: ""
 
+<<<<<<< HEAD
+=======
     STATE_TIP_:
       en: ""
       zh: ""
@@ -3539,6 +3561,52 @@ module.exports =
     STATE_TIP_:
       en: ""
       zh: ""
+    ##### Request Invite to Experimental Feature
+
+    INVITE_MOD_TIT:
+      en: "Request invitation to experimental new feature"
+      zh: ""
+
+    INVITE_MOD_INTRO:
+      en: "We are exited to introduce VisualOps, a new way to devOps your infrastructure!"
+      zh: ""
+
+    INVITE_MOD_INTRO_MORE:
+      en: "VisualOps let you manage the software layer of your instances. Software packages, configuration files, services, all are there in a very easy, intuitive and functional way."
+      zh: ""
+
+    INVITE_MOD_REQUEST_TIT:
+      en: "Request an Invite"
+      zh: ""
+
+    INVITE_MOD_REQUEST_CONTENT:
+      en: "This feature is experimental and still in a beta phase. If you are interested, feel free to request an invite for early peek!"
+      zh: ""
+
+    INVITE_MOD_REQUEST_PLACEHOLDER:
+      en: "Tell us more about your use case, why you are interested etc. to help us accelerate the approval of request."
+      zh: ""
+
+    INVITE_MOD_BTN_REQUEST:
+      en: "Request an Invite"
+      zh: ""
+
+    INVITE_MOD_BTN_CANCEL:
+      en: "Cancel"
+      zh: ""
+
+    INVITE_MOD_THANK_LBL:
+      en: "Your request has been sent."
+      zh: ""
+
+    INVITE_MOD_THANK_MORE:
+      en: "Thanks for your interest. We will get back with you soon."
+      zh: ""
+
+    INVITE_MOD_BTN_DONE:
+      en: "Done"
+      zh: ""
+>>>>>>> [feature/state-editor] Update Request Invite lang
 
     ##### Keyboard Shortcuts Modal 
     KEY_MOD_TIT:
@@ -4100,3 +4168,5 @@ module.exports =
     ERROR_CODE_21_MESSAGE:
       en: "User has been blocked."
       zh: "对不起，此账号已被锁住"
+
+

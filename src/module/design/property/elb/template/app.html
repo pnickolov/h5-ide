@@ -7,9 +7,9 @@
         <dd>{{#if isInternet}}Internet Facing{{else}}Internal{{/if}}</dd>
         <dt>{{i18n "PROP_ELB_DNS_NAME"}}</dt>
         <dd>
-          <div class="click-select tooltip" data-tooltip="Click to select all">(A){{DNSName}}</div>
-          <div class="click-select tooltip" data-tooltip="Click to select all">(AAAA)ipv6.{{DNSName}}</div>
-          <div class="click-select tooltip" data-tooltip="Click to select all">(A/AAAA)dualstack.{{DNSName}}</div>
+          <div class="click-select tooltip" data-tooltip="{{i18n 'PROP_ELB_TIP_CLICK_TO_SELECT_ALL'}}">(A){{DNSName}}</div>
+          <div class="click-select tooltip" data-tooltip="{{i18n 'PROP_ELB_TIP_CLICK_TO_SELECT_ALL'}}">(AAAA)ipv6.{{DNSName}}</div>
+          <div class="click-select tooltip" data-tooltip="{{i18n 'PROP_ELB_TIP_CLICK_TO_SELECT_ALL'}}">(A/AAAA)dualstack.{{DNSName}}</div>
         </dd>
         <dt>{{i18n "PROP_ELB_HOST_ZONE_ID"}}</dt>
         <dd>{{CanonicalHostedZoneNameID}}<dd>

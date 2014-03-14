@@ -355,32 +355,42 @@ define [ 'event',
             that = this
 
             # state item sortable
-            # that.$stateList.dragsort({
-            #     itemSelector: '.state-item',
-            #     dragSelector: '.state-drag',
-            #     dragBetween: true,
-            #     placeHolderTemplate: '<div class="state-item state-placeholder"></div>',
-            #     dragEnd: () ->
-            #         that.refreshStateId()
-            # })
+            that.$stateList.dragsort({
+                itemSelector: '.state-item',
+                dragSelector: '.state-drag',
+                dragBetween: true,
+                placeHolderTemplate: '<div class="state-item state-placeholder"></div>',
 
-            dragsort.init({
-                dragStart: () ->
-                    $stateItem = this
+                dragStart: (stateItem) ->
+                    $stateItem = $(stateItem)
                     that.collapseItem($stateItem)
-                    return true
-                dragEnd: (event, oldIndex) ->
-                    $stateItem = this
+
+                dragEnd: (stateItem, oldIndex) ->
+                    $stateItem = $(stateItem)
                     newIndex = $stateItem.index()
                     stateId = $stateItem.attr('data-id')
-
                     if oldIndex isnt newIndex
                         that.undoManager.register(stateId, oldIndex, 'sort', newIndex)
-
                     that.refreshLogItemNum()
-                    null
-                $el: that.$el
             })
+
+            # dragsort.init({
+            #     dragStart: () ->
+            #         $stateItem = this
+            #         that.collapseItem($stateItem)
+            #         return true
+            #     dragEnd: (event, oldIndex) ->
+            #         $stateItem = this
+            #         newIndex = $stateItem.index()
+            #         stateId = $stateItem.attr('data-id')
+
+            #         if oldIndex isnt newIndex
+            #             that.undoManager.register(stateId, oldIndex, 'sort', newIndex)
+
+            #         that.refreshLogItemNum()
+            #         null
+            #     $el: that.$el
+            # })
 
         onLogRefreshClick: (event) ->
 

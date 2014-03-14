@@ -129,15 +129,22 @@ define [ 'Design', 'event', 'text!./module/design/template.html', 'constant', 'i
                 stateList = [ stateList ]
 
             for state in stateList
-                # Show current app only
-                if state.app_id isnt MC.common.other.canvasData.data( 'origin' ).id
-                    continue
-                if state.status
-                    for status in state.status
-                        if status.result is 'success'
-                            succeed++
-                        else if status.result is 'failure'
-                            failed++
+
+                try
+
+                    # Show current app only
+                    if state.app_id isnt MC.common.other.canvasData.data( 'origin' ).id
+                        continue
+                    if state.status
+                        for status in state.status
+                            if status.result is 'success'
+                                succeed++
+                            else if status.result is 'failure'
+                                failed++
+
+                catch err
+
+                    console.log('renderStateBar Error')
 
             $stateBar = $ '.statusbar-btn'
             $stateBar

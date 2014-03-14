@@ -936,7 +936,7 @@
 /* *************************************** state sortable */
 
 #state-editor .state-placeholder {
-	border: 2px dashed #bbb;
+	border: 1px dashed #aaa;
 	border-left: none;
 	border-right: none;
 	width: 100px;
@@ -963,6 +963,7 @@
 #state-log .state-log-item-name {
 	color: #fff;
 	margin-bottom: 3px;
+	padding-left: 10px;
 }
 
 #state-log .state-log-item .state-log-item-name:before {
@@ -974,6 +975,7 @@
 	border-top-color: #999;
 	position: absolute;
 	left: 8px;
+	top: 18px;
 	margin-top: -1px;
 }
 

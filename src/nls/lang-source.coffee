@@ -1103,10 +1103,6 @@ module.exports =
       en: "Public IP cannot be associated if instance is launching with more than one network interface."
       zh: ""
 
-    PROP_INSTANCE_TIP_:
-      en: ""
-      zh: ""
-
     PROP_STACK_LBL_NAME:
       en: "Stack Name"
       zh: "模版名称"
@@ -2554,6 +2550,18 @@ module.exports =
     PROP_RT_VPC_ID:
       en: "VPC ID"
       zh: "VPC ID"
+
+    PROP_RT_TIP_ACTIVE:
+      en: "Active"
+      zh: ""
+
+    PROP_RT_TIP_BLACKHOLE:
+      en: "Blackhole"
+      zh: ""
+
+    PROP_RT_TIP_PROPAGATED:
+      en: "Propagated"
+      zh: ""
 
     NAV_DESMOD_NOT_FINISH_LOAD:
       en: "Sorry, the designer module is loading now. Please try again after several seconds."

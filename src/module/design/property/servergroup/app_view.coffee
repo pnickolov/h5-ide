@@ -51,7 +51,7 @@ define [ '../base/view',
 
             target.parsley 'custom', ( val ) ->
                 if isNaN( val ) or val > 99 or val < 1
-                    return 'This value must be >= 1 and <= 99'
+                    return lang.ide.PARSLEY_THIS_VALUE_MUST_BETWEEN_1_99
 
             if not target.parsley 'validate'
                 return

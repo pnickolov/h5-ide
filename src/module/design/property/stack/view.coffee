@@ -6,8 +6,9 @@ define [ '../base/view',
          'text!./template/stack.html',
          'text!./template/acl.html',
          'text!./template/sub.html',
-         'event'
-], ( PropertyView, template, acl_template, sub_template, ide_event ) ->
+         'event',
+         'i18n!nls/lang.js'
+], ( PropertyView, template, acl_template, sub_template, ide_event, lang ) ->
 
     template     = Handlebars.compile template
     acl_template = Handlebars.compile acl_template
@@ -56,10 +57,10 @@ define [ '../base/view',
 
             stackNameInput.parsley 'custom', ( val ) ->
                 if not MC.validate 'awsName',  val
-                    return 'This value should be a valid Stack name.'
+                    return lang.ide.PARSLEY_SHOULD_BE_A_VALID_STACK_NAME
 
                 if not MC.aws.aws.checkStackName stackId, val
-                    return "Stack name \" #{name} \" is already in using. Please use another one."
+                    return sprintf lang.ide.PARSLEY_TYPE_NAME_CONFLICT, 'Stack', name
 
             if stackNameInput.parsley 'validate'
                 @trigger 'STACK_NAME_CHANGED', name
@@ -184,41 +185,41 @@ define [ '../base/view',
                 switch $modal.find(".selected").data("id")
 
                     when "sqs"
-                        placeholder = "Amazon ARN"
-                        type        = 'sqs'
-                        errorMsg    = 'Please provide a valid Amazon SQS ARN'
+                        placeholder = lang.ide.PROP_STACK_AMAZON_ARN
+                        type        = lang.ide.PROP_STACK_SQS
+                        errorMsg    = lang.ide.PARSLEY_PLEASE_PROVIDE_A_VALID_AMAZON_SQS_ARN
 
                     when "arn"
-                        placeholder = "Amazon ARN"
-                        type        = 'arn'
-                        errorMsg    = 'Please provide a valid Application ARN'
+                        placeholder = lang.ide.PROP_STACK_AMAZON_ARN
+                        type        = lang.ide.PROP_STACK_ARN
+                        errorMsg    = lang.ide.PARSLEY_PLEASE_PROVIDE_A_VALID_APPLICATION_ARN
 
                     when "email"
-                        placeholder = "example@acme.com"
-                        type        = 'email'
-                        errorMsg    = 'Please provide a valid email address'
+                        placeholder = lang.ide.PROP_STACK_EXAMPLE_EMAIL
+                        type        = lang.ide.PROP_STACK_EMAIL
+                        errorMsg    = lang.ide.HEAD_MSG_ERR_UPDATE_EMAIL3
 
                     when "email-json"
-                        placeholder = "example@acme.com"
-                        type        = 'email'
-                        errorMsg    = 'Please provide a valid email address'
+                        placeholder = lang.ide.PROP_STACK_EXAMPLE_EMAIL
+                        type        = lang.ide.PROP_STACK_EMAIL
+                        errorMsg    = lang.ide.HEAD_MSG_ERR_UPDATE_EMAIL3
 
                     when "sms"
-                        placeholder = "e.g. 1-206-555-6423"
-                        type        = 'usPhone'
-                        errorMsg    = 'Please provide a valid phone number (currently only support US phone number)'
+                        placeholder = lang.ide.PROP_STACK_E_G_1_206_555_6423
+                        type        = lang.ide.PROP_STACK_USPHONE
+                        errorMsg    = lang.ide.PARSLEY_PLEASE_PROVIDE_A_VALID_PHONE_NUMBER
 
                     when "http"
                         #$input.addClass "http"
-                        placeholder = "http://www.example.com"
-                        type        = 'http'
-                        errorMsg    = 'Please provide a valid URL'
+                        placeholder = lang.ide.PROP_STACK_HTTP_WWW_EXAMPLE_COM
+                        type        = lang.ide.PROP_STACK_HTTP
+                        errorMsg    = lang.ide.PARSLEY_PLEASE_PROVIDE_A_VALID_URL
 
                     when "https"
                         #$input.addClass "https"
-                        placeholder = "https://www.example.com"
-                        type        = 'https'
-                        errorMsg    = 'Please provide a valid URL'
+                        placeholder = lang.ide.PROP_STACK_HTTPS_WWW_EXAMPLE_COM
+                        type        = lang.ide.PROP_STACK_HTTPS
+                        errorMsg    = lang.ide.PARSLEY_PLEASE_PROVIDE_A_VALID_URL
 
                 endPoint = $ '#property-asg-endpoint'
                 endPoint.attr "placeholder", placeholder
@@ -280,4 +281,3 @@ define [ '../base/view',
     }
 
     new StackView()
-  

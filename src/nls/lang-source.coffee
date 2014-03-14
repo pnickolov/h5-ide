@@ -378,32 +378,40 @@ module.exports =
       en: "This value must be >= 1 and <= 99"
       zh: ""
 
-    PARSLEY_:
-      en: ""
+    PARSLEY_SHOULD_BE_A_VALID_STACK_NAME:
+      en: "This value should be a valid Stack name"
       zh: ""
 
-    PARSLEY_:
-      en: ""
+    PARSLEY_PLEASE_PROVIDE_A_VALID_AMAZON_SQS_ARN:
+      en: "Please provide a valid Amazon SQS ARN"
       zh: ""
 
-    PARSLEY_:
-      en: ""
+    PARSLEY_PLEASE_PROVIDE_A_VALID_APPLICATION_ARN:
+      en: "Please provide a valid Application ARN"
       zh: ""
 
-    PARSLEY_:
-      en: ""
+    PARSLEY_PLEASE_PROVIDE_A_VALID_PHONE_NUMBER:
+      en: "Please provide a valid phone number (currently only support US phone number)"
       zh: ""
 
-    PARSLEY_:
-      en: ""
+    PARSLEY_PLEASE_PROVIDE_A_VALID_URL:
+      en: "Please provide a valid URL"
       zh: ""
 
-    PARSLEY_:
-      en: ""
+    PARSLEY_VOLUME_SIZE_MUST_IN_1_1024:
+      en: "Volume size must in the range of 1-1024 GB."
       zh: ""
 
-    PARSLEY_:
-      en: ""
+    PARSLEY_DEVICENAME_LINUX:
+      en: "Device name must be like /dev/hd[a-z], /dev/hd[a-z][1-15],/dev/sd[a-z] or /dev/sd[b-z][1-15]"
+      zh: ""
+
+    PARSLEY_DEVICENAME_WINDOWS:
+      en: "Device name must be like xvd[f-p]."
+      zh: ""
+
+    PARSLEY_VOLUME_NAME_INUSE:
+      en: "Volume name '%s' is already in using. Please use another one."
       zh: ""
 
     NAV_TIT_DASHBOARD:
@@ -1292,6 +1300,50 @@ module.exports =
 
     PROP_INSTANCE_TIP_PUBLIC_IP_CANNOT_BE_ASSOCIATED:
       en: "Public IP cannot be associated if instance is launching with more than one network interface."
+      zh: ""
+
+    PROP_STACK_AMAZON_ARN:
+      en: "Amazon ARN"
+      zh: ""
+
+    PROP_STACK_EXAMPLE_EMAIL:
+      en: "example@acme.com"
+      zh: ""
+
+    PROP_STACK_E_G_1_206_555_6423:
+      en: "e.g. 1-206-555-6423"
+      zh: ""
+
+    PROP_STACK_HTTP_WWW_EXAMPLE_COM:
+      en: "http://www.example.com"
+      zh: ""
+
+    PROP_STACK_HTTPS_WWW_EXAMPLE_COM:
+      en: "https://www.example.com"
+      zh: ""
+
+    PROP_STACK_HTTPS:
+      en: "https"
+      zh: ""
+
+    PROP_STACK_HTTP:
+      en: "http"
+      zh: ""
+
+    PROP_STACK_USPHONE:
+      en: "usPhone"
+      zh: ""
+
+    PROP_STACK_EMAIL:
+      en: "email"
+      zh: ""
+
+    PROP_STACK_ARN:
+      en: "arn"
+      zh: ""
+
+    PROP_STACK_SQS:
+      en: "sqs"
       zh: ""
 
     PROP_STACK_PENDING_CONFIRM:
@@ -3835,45 +3887,45 @@ module.exports =
 
     STATE_UNKNOWN_DISTRO_LBL:
       en: "The AMI's distro cannot be recognised. Some commands may not apply to this AMI."
-      zh: ""  
+      zh: ""
 
     STATE_NO_STATE_LBL:
       en: "No state configured yet."
-      zh: ""  
+      zh: ""
 
     STATE_NO_STATE_ADD_BTN:
       en: "Add a State"
-      zh: ""  
+      zh: ""
 
     ## State Editor Toolbar
 
     STATE_TOOL_ADD_STATE:
       en: "+ Add State"
-      zh: "" 
+      zh: ""
 
     STATE_TOOL_COPY_ALL:
       en: "Copy All"
-      zh: "" 
+      zh: ""
 
     STATE_TOOL_COPY_SELECTED:
       en: "Copy "
-      zh: ""  
+      zh: ""
 
     STATE_TOOL_DELETE:
       en: "Delete "
-      zh: "" 
+      zh: ""
 
     STATE_TOOL_PASTE:
       en: "Paste"
-      zh: ""  
+      zh: ""
 
     STATE_TOOL_UNDO:
       en: "Undo"
-      zh: "" 
+      zh: ""
 
     STATE_TOOL_REDO:
       en: "Redo"
-      zh: ""  
+      zh: ""
 
     ## State Editor Log
 

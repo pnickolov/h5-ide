@@ -4789,19 +4789,26 @@ a.action-link:hover {
 
 #modal-acl-rule .simple-protocol-select {
 	list-style: none;
-	margin-left: 80px;
+	margin-left: 95px;
+	margin-top: 20px;
+	border: 1px dashed;
+	padding: 5px;
+	width: 325px;
 }
 
 #modal-acl-rule .simple-protocol-select li {
-	float: left;
 	cursor: pointer;
 	color: #4495d3;
 	font-size: 12px;
-	margin-left: 12px;
+	padding: 3px 0;
+	display: inline-block;
+	text-align: center;
+	width: 79px;
 }
 
 #modal-acl-rule .simple-protocol-select li:hover {
-	text-decoration: underline;
+	background: #4495d3;
+	color: white;
 }
 
 /* property-stack */

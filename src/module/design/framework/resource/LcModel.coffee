@@ -199,6 +199,7 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
         # Append RootDevice
         rd = @getAmiRootDevice()
         if rd
+          delete rd.Ebs.Iops
           blockDevice.splice 0, 0, rd
 
 

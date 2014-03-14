@@ -305,10 +305,31 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
 
     getAmi : ()-> MC.data.dict_ami[@get("imageId")]
 
+    getBlockDeviceMapping : ()->
+      #get root device of current instance
+      ami = @getAmi() || @get("cachedAmi")
+      if ami.rootDeviceType is "ebs" and ami.blockDeviceMapping
+
+        blockDeviceMapping = [{
+          DeviceName : ami.rootDeviceName
+          Ebs : {
+            SnapshotId : ami.blockDeviceMapping[ami.rootDeviceName].snapshotId
+            VolumeSize : @get("rdSize") || ami.blockDeviceMapping[ ami.rootDeviceName ].volumeSize
+            VolumeType : "standard"
+          }
+        }]
+
+        if @get("rdIops") and parseInt( @get("rdSize"), 10 ) >= 10
+          blockDeviceMapping[0].Ebs.Iops = @get("rdIops")
+          blockDeviceMapping[0].Ebs.VolumeType = "io1"
+
+      blockDeviceMapping || []
+
     getAmiRootDevice : () ->
-      amiInfo = @getAmi()
+      #get root deivce of ami
+      amiInfo = @getAmi() || @get("cachedAmi")
       rd = null
-      if amiInfo
+      if amiInfo and amiInfo.rootDeviceType is "ebs" and amiInfo.blockDeviceMapping
         rdName = amiInfo.rootDeviceName
         rdEbs = amiInfo.blockDeviceMapping[rdName]
         if rdName and rdEbs
@@ -341,6 +362,9 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
         console.warn "getAmiRootDeviceVolumeSize(): unknown volumeSize for " + @get("imageId")
       volSize
 
+    getAmiRootDeviceName : () ->
+      rd = @getAmiRootDevice()
+      if rd and rd.DeviceName then rd.DeviceName else ""
 
     getInstanceTypeConfig : ( type )->
       t = (type || @get("instanceType")).split(".")
@@ -505,25 +529,6 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
           eipData : { id : MC.guid() }
         }
       null
-
-    getBlockDeviceMapping : ()->
-      ami = @getAmi() || @get("cachedAmi")
-      if ami.rootDeviceType is "ebs" and ami.blockDeviceMapping
-
-        blockDeviceMapping = [{
-          DeviceName : ami.rootDeviceName
-          Ebs : {
-            SnapshotId : ami.blockDeviceMapping[ami.rootDeviceName].snapshotId
-            VolumeSize : @get("rdSize") || ami.blockDeviceMapping[ ami.rootDeviceName ].volumeSize
-            VolumeType : "standard"
-          }
-        }]
-
-        if @get("rdIops") and parseInt( @get("rdSize"), 10 ) >= 10
-          blockDeviceMapping[0].Ebs.Iops = @get("rdIops")
-          blockDeviceMapping[0].Ebs.VolumeType = "io1"
-
-      blockDeviceMapping || []
 
     generateJSON : ()->
       tenancy = @get("tenancy")

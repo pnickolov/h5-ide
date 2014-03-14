@@ -4800,7 +4800,7 @@ a.action-link:hover {
 	cursor: pointer;
 	color: #4495d3;
 	font-size: 12px;
-	padding: 3px 0;
+	padding: 5px 0;
 	display: inline-block;
 	text-align: center;
 	width: 79px;
@@ -4809,6 +4809,7 @@ a.action-link:hover {
 #modal-acl-rule .simple-protocol-select li:hover {
 	background: #4495d3;
 	color: white;
+	border-radius: 3px;
 }
 
 /* property-stack */

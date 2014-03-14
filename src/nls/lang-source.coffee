@@ -3536,30 +3536,6 @@ module.exports =
       en: "Select All States"
       zh: ""
 
-    STATE_TIP_:
-      en: ""
-      zh: ""
-
-    STATE_TIP_:
-      en: ""
-      zh: ""
-
-    STATE_TIP_:
-      en: ""
-      zh: ""
-
-    STATE_TIP_:
-      en: ""
-      zh: ""
-
-    STATE_TIP_:
-      en: ""
-      zh: ""
-
-    STATE_TIP_:
-      en: ""
-      zh: ""
-
     ##### Request Invite to Experimental Feature
 
     INVITE_MOD_TIT:
@@ -3606,7 +3582,7 @@ module.exports =
       en: "Done"
       zh: ""
 
-    ##### Keyboard Shortcuts Modal 
+    ##### Keyboard Shortcuts Modal
     KEY_MOD_TIT:
       en: "Keyboard Shortcuts (?)"
       zh: ""

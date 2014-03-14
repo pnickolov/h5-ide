@@ -24,14 +24,17 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'state
                     try
 
                         if app_id is MC.data.current_tab_id
+
+                            # set current resource
                             @setCurrentResource result
+
+                            #close all list popup(ServerGroup,ASG)
+                            MC.canvas.event.clearList()
+                            #select app property
+                            $canvas.trigger("CANVAS_NODE_SELECTED", "")
+
                         else
                             @setOriginResource result, app_id
-
-                        #close all list popup(ServerGroup,ASG)
-                        MC.canvas.event.clearList()
-                        #select app property
-                        $canvas.trigger("CANVAS_NODE_SELECTED", "")
 
                     catch error
 

@@ -639,6 +639,10 @@ module.exports =
       en: "Duplicate Stack"
       zh: "复制模版"
 
+    TOOL_TIT_CLOSE_TAB:
+      en: "Close Tab"
+      zh: ""
+
     TOOL_POP_TIT_DUPLICATE_STACK:
       en: "Duplicate Stack"
       zh: "复制模版"
@@ -3039,6 +3043,10 @@ module.exports =
     BEFOREUNLOAD_MESSAGE:
       en: "You have unsaved changes."
       zh: "您有未保存的更改。"
+
+    DASH_TIT_VIEW_RESOURCE_DETAIL:
+      en: "View resource detail"
+      zh: ""
 
     DASH_MSG_RELOAD_AWS_RESOURCE_SUCCESS:
       en: "Status of resources is up to date."

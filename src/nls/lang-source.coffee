@@ -1811,6 +1811,14 @@ module.exports =
       en: "Download"
       zh: "下载"
 
+    PROP_CGW_TIP_THIS_ADDRESS_MUST_BE_STATIC:
+      en: "This address must be static and not behind a NAT. e.g. 12.1.2.3"
+      zh: ""
+
+    PROP_CGW_TIP_1TO65534:
+      en: "1 - 65534"
+      zh: ""
+
     PROP_MSG_ERR_RESOURCE_NOT_EXIST:
       en: "Sorry, the selected resource not exist."
       zh: "抱歉，选定的资源不存在。"
@@ -2150,6 +2158,10 @@ module.exports =
     PROP_ELB_DISTRIBUTION:
       en: "Distribution"
       zh: "分布"
+
+    PROP_ELB_TIP_CLICK_TO_SELECT_ALL:
+      en: "Click to select all"
+      zh: ""
 
     PROP_ASG_SUMMARY:
       en: "Auto Scaling Group Summary"

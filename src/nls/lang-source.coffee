@@ -319,6 +319,10 @@ module.exports =
       en: "Load Balancer and Auto Scaling"
       zh: "负载均衡器和自动伸缩组"
 
+    RES_TIT_REMOVE_FROM_FAVORITE:
+      en: "Remove from Favorite"
+      zh: ""
+
     RES_TIT_VPC:
       en: "Virtual Private Cloud"
       zh: "虚拟私有云"
@@ -1291,6 +1295,11 @@ module.exports =
       en: "DHCP Options Set ID"
       zh: "DHCP选项标识"
 
+    PROP_SUBNET_TIP_CIDR_BLOCK:
+      en: "e.g. 10.0.0.0/24. The range of IP addresses in the subnet must be a subset of the IP address in the VPC. Block sizes must be between a /16 netmask and /28 netmask. The size of the subnet can equal the size of the VPC."
+      zh: ""
+
+
     PROP_SUBNET_TIT_DETAIL:
       en: "Subnet Details"
       zh: "子网详细"
@@ -1353,6 +1362,34 @@ module.exports =
 
     PROP_VPC_TIP_EG_10_0_0_0_16:
       en: "e.g. 10.0.0.0/16"
+      zh: ""
+
+    PROP_VPC_TIP_ENTER_THE_DOMAIN_NAME:
+      en: "Enter the domain name that should be used for your hosts"
+      zh: ""
+
+    PROP_VPC_TIP_ENTER_UP_TO_4_DNS:
+      en: "Enter up to 4 DNS server IP addresses"
+      zh: ""
+
+    PROP_VPC_TIP_ENTER_UP_TO_4_NTP:
+      en: "Enter up to 4 NTP server IP addresses"
+      zh: ""
+
+    PROP_VPC_TIP_ENTER_UP_TO_4_NETBIOS:
+      en: "Enter up to 4 NetBIOS server IP addresses"
+      zh: ""
+
+    PROP_VPC_TIP_EG_172_16_16_16:
+      en: "e.g. 172.16.16.16"
+      zh: ""
+
+    PROP_VPC_TIP_SELECT_NETBIOS_NODE:
+      en: "Select NetBIOS Node Type. We recommend 2. (Broadcast and multicast are currently not supported by AWS.)"
+      zh: ""
+
+    PROP_VPC_TIP_:
+      en: ""
       zh: ""
 
     PROP_SG_TIT_DETAIL:
@@ -1722,6 +1759,10 @@ module.exports =
     PROP_VPN_LBL_IP_PREFIX:
       en: "Network IP Prefixes"
       zh: "网络号前缀"
+
+    PROP_VPN_TIP_EG_192_168_0_0_16:
+      en: "e.g., 192.168.0.0/16"
+      zh: ""
 
     PROP_IGW_TXT_DESCRIPTION:
       en: "The Internet gateway is the router on the AWS network that connects your VPC to the Internet."

@@ -119,7 +119,11 @@ define [ "constant", "../ConnectionModel", "i18n!nls/lang.js", "Design", "compon
       elb = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_ELB )
 
       if elb.connections( "ElbSubnetAsso" ).length == 0
-        new ElbSubnetAsso( elb, ami.parent() )
+        subnet = ami.parent()
+        while subnet.type isnt constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
+          subnet = subnet.parent()
+        if subnet
+          new ElbSubnetAsso( elb, subnet )
 
       # If there's a ElbAsso created for Lc and Elb
       # We also try to connect the Elb to any expanded Asg

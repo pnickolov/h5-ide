@@ -42,15 +42,15 @@
 </div>
 
 <!-- env:dev -->
-<a href="javascript:dd.diff();" class="btn-toolbar tooltip icon-toolbar-diff" data-tooltip="JSON Diff"></a>
-<a href="javascript:dd.view();" class="btn-toolbar tooltip icon-toolbar-cloudformation seperator" data-tooltip="JSON View"></a>
+<a href="javascript:dd.diff();" class="btn-toolbar tooltip icon-toolbar-diff" data-tooltip="{{i18n 'TOOL_TIP_JSON_DIFF'}}"></a>
+<a href="javascript:dd.view();" class="btn-toolbar tooltip icon-toolbar-cloudformation seperator" data-tooltip="{{i18n 'TOOL_TIP_JSON_VIEW'}}"></a>
 <!-- env:dev:end -->
 
 <section class="toolbar-btn-group">
 	<a href="javascript:void(0);" id="apply-visops" style="display: none;">Experimental Feature!</a>
 </section>
 
-<label class="switch toolbar-visual-ops-switch tooltip" data-tooltip="Custom User Data will be overridden and disabled to allow installing OpsAgent. (Currently only support Linux platform)" style="display: none;">
+<label class="switch toolbar-visual-ops-switch tooltip" data-tooltip="{{i18n 'TOOL_TIP_CUSTOM_USER_DATA'}}" style="display: none;">
   <span class="switch-label" data-on="VisualOps On" data-off="VisualOps Off"></span>
   <span class="switch-handle"></span>
 </label>

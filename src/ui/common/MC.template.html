@@ -653,9 +653,6 @@ Additional Notes and Questions
 	<div class="modal-footer">
 
 		<button class="btn btn-blue" id="btn-confirm" disabled>Run Stack</button>
-		<!--  If there is error of this stack, disable this button.
-			<button disabled class="btn btn-blue tooltip" data-tooltip="Please fix error first and try to run the stack again.">Run Stack</button>
-		-->
 		<button class="btn btn-silver modal-close">Cancel</button>
 	</div>
 </div>
@@ -1538,15 +1535,15 @@ Are you sure you want to delete {{name}}?</div>
 		</div>
 		<div class="modal-ssl-cert-item clearfix">
 			<label class="left">{{ i18n "PROP_ELB_LBL_LISTENER_PRIVATE_KEY"}}</label>
-			<textarea class="input elb-ssl-cert-input tooltip" data-tooltip="PEM Encoded" data-required="true" data-ignore="true" id="elb-ssl-cert-privatekey-input">{{sslCert.key}}</textarea>
+			<textarea class="input elb-ssl-cert-input tooltip" data-tooltip="{{i18n 'POP_TIP_PEM_ENCODED'}}" data-required="true" data-ignore="true" id="elb-ssl-cert-privatekey-input">{{sslCert.key}}</textarea>
 		</div>
 		<div class="modal-ssl-cert-item clearfix">
 			<label class="left"  >{{ i18n "PROP_ELB_LBL_LISTENER_PUBLIC_KEY"}}</label>
-			<textarea class="input elb-ssl-cert-input tooltip" data-tooltip="PEM Encoded" data-required="true" data-ignore="true" id="elb-ssl-cert-publickey-input">{{sslCert.body}}</textarea>
+			<textarea class="input elb-ssl-cert-input tooltip" data-tooltip="{{i18n 'POP_TIP_PEM_ENCODED'}}" data-required="true" data-ignore="true" id="elb-ssl-cert-publickey-input">{{sslCert.body}}</textarea>
 		</div>
 		<div class="modal-ssl-cert-item clearfix">
 			<label class="left"  >{{ i18n "PROP_ELB_LBL_LISTENER_CERTIFICATE_CHAIN"}}</label>
-			<textarea class="input elb-ssl-cert-input tooltip" data-tooltip="PEM Encoded" id="elb-ssl-cert-chain-input">{{sslCert.chain}}</textarea>
+			<textarea class="input elb-ssl-cert-input tooltip" data-tooltip="{{i18n 'POP_TIP_PEM_ENCODED'}}" id="elb-ssl-cert-chain-input">{{sslCert.chain}}</textarea>
 		</div>
 	</div>
 	<div class="modal-footer">

@@ -12,19 +12,19 @@
 
   #*# DESCRIPTION
     Module Name
-      RES: resource panel
-      PROP: property
-      CVS: canvas
-      TOOL: toolbar
-      HEAD: header
-      NAV:navigation
-      DASH: dashboard
-      MSG: notification
-      TIT： title
-      LBL: label
-      POP: popup
-      TIP: tooltip
-      BTN: button
+      RES   : resource panel
+      PROP  : property
+      CVS   : canvas
+      TOOL  : toolbar
+      HEAD  : header
+      NAV   : navigation
+      DASH  : dashboard
+      MSG   : notification
+      TIT   : title
+      LBL   : label
+      POP   : popup
+      TIP   : tooltip
+      BTN   : button
     Resource Type Reference
       CONST.AWS_RESOURCE_SHORT_TYPE
 
@@ -854,6 +854,22 @@ module.exports =
     TOOL_MSG_ERR_CONVERT_CLOUDFORMATION:
       en: "Convert to stack json to CloudFormation format error"
       zh: "转换成CloudFormation出错"
+
+    TOOL_TIP_REFRESH_REOURCES:
+      en: "Refresh Reources"
+      zh: ""
+
+    TOOL_TIP_JSON_DIFF:
+      en: "JSON Diff"
+      zh: ""
+
+    TOOL_TIP_JSON_VIEW:
+      en: "JSON View"
+      zh: ""
+
+    TOOL_TIP_CUSTOM_USER_DATA:
+      en: "Custom User Data will be overridden and disabled to allow installing OpsAgent. (Currently only support Linux platform)"
+      zh: ""
 
     TOOL_TIP_LINESTYLE:
       en: "Security Group Rule Line Style..."
@@ -3583,6 +3599,10 @@ module.exports =
     POP_BTN_CLOSE:
       en: "Close"
       zh: "关闭"
+
+    POP_TIP_PEM_ENCODED:
+      en: "PEM Encoded"
+      zh: ""
 
     RUN_STACK:
       en: "run stack"

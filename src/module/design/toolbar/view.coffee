@@ -822,7 +822,7 @@ define [ 'MC', 'event',
 
             # change modal body
             $( '.modal-body' ).html MC.template.experimentalVisopsTrail()
-            $( '#experimental-visops-cancel'  ).html 'Done'
+            $( '#experimental-visops-cancel'  ).html lang.ide.INVITE_MOD_BTN_DONE
             $( '#experimental-visops-confirm' ).hide()
 
             null

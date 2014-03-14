@@ -72,9 +72,11 @@ define [ '../base/view', 'text!./template/stack.html', 'event', 'constant', 'i18
 
             # Adjust IOPS if it exceed limits
             iops = parseInt( $("#iops-ranged").val(), 10 ) || 0
-            if iops > volumeSize * 10
-                iops = volumeSize * 10
-                $("#iops-ranged").val( iops ).keyup()
+            if iops
+                if iops > volumeSize * 10
+                    iops = volumeSize * 10
+                    $("#iops-ranged").val( iops )
+                $("#iops-ranged").keyup()
             null
 
         render : () ->
@@ -83,11 +85,12 @@ define [ '../base/view', 'text!./template/stack.html', 'event', 'constant', 'i18
 
             $( "#keypair-select" ).on("click", ".icon-remove", _.bind(this.deleteKP, this) )
 
+            me = this
             # parsley bind
             $( '#volume-size-ranged' ).parsley 'custom', ( val ) ->
                 val = + val
                 if not val || val > 1024 || val < me.model.attributes.min_volume_size
-                    return "Volume size must in the range of " + me.model.attributes.min_volume_size + "-1024 GB."
+                    return "Volume size of this rootDevice must in the range of " + me.model.attributes.min_volume_size + "-1024 GB."
 
             $( '#iops-ranged' ).parsley 'custom', ( val ) ->
                 val = + val

@@ -49,6 +49,8 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
           name : "eni0"
           assoPublicIp : Design.instance().typeIsDefaultVpc()
         }, { instance: this }) )
+        #append root device
+        @set("rdSize",@getAmiRootDeviceVolumeSize())
 
       # Hack, we need to clone the imageId before drawing.
       if option.cloneSource

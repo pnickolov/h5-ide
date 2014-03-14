@@ -88,9 +88,11 @@ define [ '../base/view',
 
             # Adjust IOPS if it exceed limits
             iops = parseInt( $("#iops-ranged").val(), 10 ) || 0
-            if iops > volumeSize * 10
-                iops = volumeSize * 10
-                $("#iops-ranged").val( iops ).keyup()
+            if iops
+                if iops > volumeSize * 10
+                    iops = volumeSize * 10
+                    $("#iops-ranged").val( iops )
+                $("#iops-ranged").keyup()
             null
 
         render : () ->

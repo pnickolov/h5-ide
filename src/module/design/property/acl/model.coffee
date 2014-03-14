@@ -2,7 +2,7 @@
 #  View Mode for design/property/acl
 #############################
 
-define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, constant ) ->
+define [ '../base/model', "Design", 'constant', 'i18n!nls/lang.js' ], ( PropertyModel, Design, constant, lang ) ->
 
     ACLModel = PropertyModel.extend {
 
@@ -100,16 +100,16 @@ define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, const
         checkRuleNumber : ( rulenumber )->
             rulenumber = Number( rulenumber )
             if not (0 < rulenumber < 32768)
-                return 'Valid rule number must be between 1 to 32767.'
+                return lang.ide.PARSLEY_VALID_RULE_NUMBER_1_TO_32767
 
             if @get("isDefault") and rulenumber is "100"
-                return "The DefaultACL's Rule Number 100 has existed."
+                return lang.ide.PARSLEY_RULE_NUMBER_100_HAS_EXISTED
 
 
             rule = _.find Design.instance().component( @get("uid") ).get("rules"), ( r )->
                 r.number is rulenumber
 
-            if rule then return "Rule #{rulenumber} already exists."
+            if rule then return sprintf lang.ide.PARSLEY_RULENUMBER_ALREADY_EXISTS, rulenumber
             return true
     }
 

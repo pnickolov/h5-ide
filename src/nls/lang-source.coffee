@@ -282,6 +282,50 @@ module.exports =
       en: "Port range needs to be a number or a range of numbers between 0 and 65535."
       zh: ""
 
+    PARSLEY_VALID_RULE_NUMBER_1_TO_32767:
+      en: "Valid rule number must be between 1 to 32767."
+      zh: ""
+
+    PARSLEY_RULE_NUMBER_100_HAS_EXISTED:
+      en: "The DefaultACL's Rule Number 100 has existed."
+      zh: ""
+
+    PARSLEY_RULENUMBER_ALREADY_EXISTS:
+      en: "Rule %s already exists."
+      zh: ""
+
+    PARSLEY_MUST_BE_CIDR_BLOCK:
+      en: "Must be a valid form of CIDR block."
+      zh: ""
+
+    PARSLEY_MAX_VALUE_86400:
+      en: "Max value: 86400"
+      zh: ""
+
+    PARSLEY_DUPLICATED_POLICY_NAME:
+      en: "Duplicated policy name in this autoscaling group"
+      zh: ""
+
+    PARSLEY_ASG_SIZE_MUST_BE_EQUAL_OR_GREATER_THAN_1:
+      en: "ASG size must be equal or greater than 1"
+      zh: ""
+
+    PARSLEY_MINIMUM_SIZE_MUST_BE_LESSTHAN_MAXIMUM_SIZE:
+      en: "Minimum Size must be <= Maximum Size."
+      zh: ""
+
+    PARSLEY_DESIRED_CAPACITY_EQUAL_OR_GREATER_1:
+      en: "Desired Capacity must be equal or greater than 1"
+      zh: ""
+
+    PARSLEY_DESIRED_CAPACITY_IN_ALLOW_SCOPE:
+      en: "Desired Capacity must be >= Minimal Size and <= Maximum Size"
+      zh: ""
+
+    PARSLEY_:
+      en: ""
+      zh: ""
+
     NAV_TIT_DASHBOARD:
       en: "Dashboard"
       zh: "仪表板"

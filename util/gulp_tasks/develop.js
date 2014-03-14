@@ -1,5 +1,5 @@
 (function() {
-  var EventEmitter, Helper, Q, StreamFuncs, cached, changeHandler, checkWatchHealthy, chokidar, coffee, coffeelint, coffeelintOptions, compileCoffeeOnlyRegex, compileDev, compileIgnorePath, confCompile, es, fs, gulp, gulpif, gutil, handlebars, jshint, langsrc, lintReporter, path, tinylr, util, watch;
+  var EventEmitter, Helper, Q, StreamFuncs, cached, changeHandler, checkWatchHealthy, chokidar, coffee, coffeelint, coffeelintOptions, compileCoffeeOnlyRegex, compileDev, compileIgnorePath, confCompile, es, fs, globwatcher, gulp, gulpif, gutil, handlebars, jshint, langsrc, lintReporter, path, tinylr, util, watch;
 
   gulp = require("gulp");
 
@@ -36,6 +36,8 @@
   langsrc = require("./plugins/langsrc");
 
   handlebars = require("./plugins/handlebars");
+
+  globwatcher = require("./plugins/globwatcher");
 
   util = require("./plugins/util");
 
@@ -117,7 +119,7 @@
           gitDebounceTimer = null;
           return compileDev();
         };
-        gulpWatch = gulp.watch(["./.git/HEAD", "./.git/refs/heads/develop", "./.git/refs/heads/**/*"], function(event) {
+        gulpWatch = globwatcher(["./.git/HEAD", "./.git/refs/heads/develop", "./.git/refs/heads/**/*"], function(event) {
           if (gitDebounceTimer === null) {
             gitDebounceTimer = setTimeout(compileAfterGitAction, GLOBAL.gulpConfig.gitPollingDebounce || 1000);
           }

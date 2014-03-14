@@ -20,6 +20,7 @@ jshint       = require("./plugins/jshint")
 lintReporter = require('./plugins/reporter')
 langsrc      = require("./plugins/langsrc")
 handlebars   = require("./plugins/handlebars")
+globwatcher  = require("./plugins/globwatcher")
 
 util = require("./plugins/util")
 
@@ -99,7 +100,7 @@ Helper =
         gitDebounceTimer = null
         compileDev()
 
-      gulpWatch = gulp.watch ["./.git/HEAD", "./.git/refs/heads/develop", "./.git/refs/heads/**/*" ], ( event )->
+      gulpWatch = globwatcher ["./.git/HEAD", "./.git/refs/heads/develop", "./.git/refs/heads/**/*" ], ( event )->
         if gitDebounceTimer is null
           gitDebounceTimer = setTimeout compileAfterGitAction, (GLOBAL.gulpConfig.gitPollingDebounce || 1000)
         null

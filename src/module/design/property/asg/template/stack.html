@@ -62,20 +62,20 @@
 		<section class="property-control-group pos-r property-term-p">
 			<h5>{{ i18n "PROP_ASG_TERMINATION_POLICY" }}</h5>
 			<div class="termination-policy-brief">{{term_policy_brief}}</div>
-			<div class="asg-p-action"><i class="icon-edit tooltip" data-tooltip="Edit Termination Policy" id="property-asg-term-edit"></i></div>
+			<div class="asg-p-action"><i class="icon-edit tooltip" data-tooltip="{{i18n 'PROP_ASG_TERMINATION_EDIT'}}" id="property-asg-term-edit"></i></div>
 		</section>
 
 		<ul id="property-asg-policies" class="property-list">
 			<li class="pos-r hide">
         <h5 class="property-asg-policy-name name"></h5>
-				<span class="asg-p-metric asg-p-tag" title="Alarm Metric"></span>
-        <span class="asg-p-eval asg-p-tag" title="Threshold"></span>
-        <span class="asg-p-periods asg-p-tag" title="Evaluation Period x Periords"></span>
-        <span class="asg-p-trigger asg-p-tag" title="Action Trigger"></span>
-        <span class="asg-p-adjust asg-p-tag" title="Adjustment"></span>
+				<span class="asg-p-metric asg-p-tag" title="{{i18n 'PROP_ASG_POLICY_TLT_ALARM_METRIC'}}"></span>
+        <span class="asg-p-eval asg-p-tag" title="{{i18n 'PROP_ASG_POLICY_TLT_THRESHOLD'}}"></span>
+        <span class="asg-p-periods asg-p-tag" title="{{i18n 'PROP_ASG_POLICY_TLT_PERIOD'}}"></span>
+        <span class="asg-p-trigger asg-p-tag" title="{{i18n 'PROP_ASG_POLICY_TLT_ACTION'}}"></span>
+        <span class="asg-p-adjust asg-p-tag" title="{{i18n 'PROP_ASG_POLICY_TLT_ADJUSTMENT'}}"></span>
         <div class="asg-p-action">
-	        <i class="icon-edit tooltip" data-tooltip="Edit Scaling Policy"></i>
-	        <i class="icon-remove icon-del tooltip" data-tooltip="Remove Scaling Policy"></i>
+	        <i class="icon-edit tooltip" data-tooltip="{{i18n 'PROP_ASG_POLICY_TLT_EDIT'}}"></i>
+	        <i class="icon-remove icon-del tooltip" data-tooltip="{{i18n 'PROP_ASG_POLICY_TLT_REMOVE'}}"></i>
         </div>
       </li>
       {{#each policies}}
@@ -95,7 +95,7 @@
 
 		</ul>
 		<div class="property-control-group tac">
-			<button class="btn btn-blue {{#unless can_add_policy}}disabled tooltip{{/unless}}" id="property-asg-policy-add" data-tooltip="You can only add 25 scaling policies">{{i18n "PROP_ASG_BTN_ADD_SCALING_POLICY"}}</button>
+			<button class="btn btn-blue {{#unless can_add_policy}}disabled tooltip{{/unless}}" id="property-asg-policy-add" data-tooltip="{{i18n 'PROP_ASG_TIP_YOU_CAN_ONLY_ADD_25_SCALING_POLICIES'}}">{{i18n "PROP_ASG_BTN_ADD_SCALING_POLICY"}}</button>
 		</div>
 	</div>
 

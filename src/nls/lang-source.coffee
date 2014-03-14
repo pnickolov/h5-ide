@@ -2439,6 +2439,14 @@ module.exports =
       en: "Changes the DesiredCapacity of the Auto Scaling group by at least the specified number of instances."
       zh: "调整期望数量时的最小实例数量"
 
+    PROP_ASG_TIP_CLICK_TO_SELECT:
+      en: "Click to select"
+      zh: ""
+
+    PROP_ASG_TIP_YOU_CAN_ONLY_ADD_25_SCALING_POLICIES:
+      en: "You can only add 25 scaling policies"
+      zh: ""
+
     PROP_LC_TITLE:
       en: "Launch Configuation"
       zh: "启动配置"
@@ -3516,29 +3524,6 @@ module.exports =
       en: "Select All States"
       zh: ""
 
-    STATE_TIP_:
-      en: ""
-      zh: ""
-
-    STATE_TIP_:
-      en: ""
-      zh: ""
-
-    STATE_TIP_:
-      en: ""
-      zh: ""
-
-    STATE_TIP_:
-      en: ""
-      zh: ""
-
-    STATE_TIP_:
-      en: ""
-      zh: ""
-
-    STATE_TIP_:
-      en: ""
-      zh: ""
 
     ##### Keyboard Shortcuts Modal 
     KEY_MOD_TIT:

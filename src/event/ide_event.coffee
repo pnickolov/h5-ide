@@ -33,14 +33,16 @@ define [ 'underscore', 'backbone' ], () ->
         LOGOUT_IDE             : 'LOGOUT_IDE'
 
         #
-        OPEN_DESIGN_0          : 'OPEN_DESIGN_0'
         OPEN_DESIGN            : 'OPEN_DESIGN'
         OPEN_SUB_DESIGN        : 'OPEN_SUB_DESIGN'
+        CREATE_DESIGN_OBJ      : 'CREATE_DESIGN_OBJ'
         OPEN_PROPERTY          : 'OPEN_PROPERTY'
         FORCE_OPEN_PROPERTY    : "FORCE_OPEN_PROPERTY"
         REFRESH_PROPERTY       : "REFRESH_PROPERTY"
         RELOAD_AZ              : 'RELOAD_AZ'
+        RESOURCE_API_COMPLETE  : 'RESOURCE_API_COMPLETE'
         #OPEN_TOOLBAR          : 'OPEN_TOOLBAR'
+        #OPEN_DESIGN_0          : 'OPEN_DESIGN_0'
 
         #design overlay
         SHOW_DESIGN_OVERLAY    : 'SHOW_DESIGN_OVERLAY'

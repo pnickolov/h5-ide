@@ -273,6 +273,9 @@ define [ 'aws_model', 'ami_model'
                 if resources and resources.origin
                     delete resources.origin
 
+                # delete session
+                MC.session.remove 'aws_resource_' + region
+
                 # call api
                 aws_model.resource { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, resources, 'vpc', 1
 

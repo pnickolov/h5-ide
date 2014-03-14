@@ -128,17 +128,21 @@ define [ 'i18n!nls/lang.js',
                     # filter nat ami when in classic style
                     quickstart_amis = []
 
-                    # old design flow
-                    #if MC.canvas_data.platform is 'ec2-classic'
-
                     # new design flow
-                    if Design.instance().typeIsClassic()
+                    #if Design.instance().typeIsClassic()
+
+                    # old design flow
+                    if MC.canvas_data.platform is 'ec2-classic'
                         quickstart_amis.push i for i in ami_list when i.name.indexOf('ami-vpc-nat') < 0
                     else
                         quickstart_amis =  ami_list
 
-                    console.log 'get quistart ami: -> data region: ' + region_name + ', stack region: ' + Design.instance().region()
-                    if region_name == Design.instance().region()
+                    #console.log 'get quistart ami: -> data region: ' + region_name + ', stack region: ' + Design.instance().region()
+                    #if region_name == Design.instance().region()
+                    #    me.set 'quickstart_ami', quickstart_amis
+
+                    console.log 'get quistart ami: -> data region: ' + region_name + ', stack region: ' + MC.canvas_data.region
+                    if region_name == MC.canvas_data.region
                         me.set 'quickstart_ami', quickstart_amis
 
                     #cache config data for current region
@@ -218,9 +222,12 @@ define [ 'i18n!nls/lang.js',
 
                         MC.data.config[region_name].my_ami = result.resolved_data
 
+                    #console.log 'get my ami: -> data region: ' + region_name + ', stack region: ' + Design.instance().region()
+                    #if region_name == Design.instance().region()
+                    #    me.set 'my_ami', my_ami_list
 
-                    console.log 'get my ami: -> data region: ' + region_name + ', stack region: ' + Design.instance().region()
-                    if region_name == Design.instance().region()
+                    console.log 'get my ami: -> data region: ' + region_name + ', stack region: ' + MC.canvas_data.region
+                    if region_name == MC.canvas_data.region
                         me.set 'my_ami', my_ami_list
 
                 else
@@ -262,9 +269,12 @@ define [ 'i18n!nls/lang.js',
                         if _.contains favorite_ami_ids, key
                             value.favorite = true
 
+                    #console.log 'get community ami: -> data region: ' + region_name + ', stack region: ' + Design.instance().region()
+                    #if region_name == Design.instance().region()
+                    #    me.set 'community_ami', community_ami_list
 
-                    console.log 'get community ami: -> data region: ' + region_name + ', stack region: ' + Design.instance().region()
-                    if region_name == Design.instance().region()
+                    console.log 'get community ami: -> data region: ' + region_name + ', stack region: ' + MC.canvas_data.region
+                    if region_name == MC.canvas_data.region
                         me.set 'community_ami', community_ami_list
 
                 else
@@ -305,9 +315,12 @@ define [ 'i18n!nls/lang.js',
 
                     null
 
+                #console.log 'get favorite ami: -> data region: ' + region_name + ', stack region: ' + Design.instance().region()
+                #if region_name == Design.instance().region()
+                #    me.set 'favorite_ami', legalData
 
-                console.log 'get favorite ami: -> data region: ' + region_name + ', stack region: ' + Design.instance().region()
-                if region_name == Design.instance().region()
+                console.log 'get favorite ami: -> data region: ' + region_name + ', stack region: ' + MC.canvas_data.region
+                if region_name == MC.canvas_data.region
                     me.set 'favorite_ami', legalData
 
                 #cache favorite_ami
@@ -390,17 +403,15 @@ define [ 'i18n!nls/lang.js',
 
                     $.each res.item, ( idx, value ) ->
 
-                        # old design flow
-                        #$.each MC.canvas_data.layout.component.group, ( i, zone ) ->
-
                         # new design flow
-                        $.each Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone ).allObjects(), ( i, zone ) ->
+                        #$.each Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone ).allObjects(), ( i, zone ) ->
 
-                            if zone.attributes.name == value.zoneName
-
-                                res.item[idx].isUsed = true
-
-                                null
+                        # old design flow
+                        $.each MC.canvas_data.component, ( i, zone ) ->
+                            if zone.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone
+                                if zone.resource.ZoneName is value.zoneName
+                                    res.item[idx].isUsed = true
+                                    null
 
                 # service_count +1
                 me.stackLoadDepend 'describeAvailableZonesService:OLD'
@@ -430,21 +441,22 @@ define [ 'i18n!nls/lang.js',
 
                             $.each res.item, ( idx, value ) ->
 
+                                # new design flow
+                                #$.each Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone ).allObjects(), ( i, zone ) ->
 
                                 # old design flow
-                                #$.each MC.canvas_data.layout.component.group, ( i, zone ) ->
+                                $.each MC.canvas_data.component, ( i, zone ) ->
+                                    if zone.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone
+                                        if zone.resource.ZoneName is value.zoneName
+                                            res.item[idx].isUsed = true
+                                            null
 
-                                # new design flow
-                                $.each Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone ).allObjects(), ( i, zone ) ->
+                        #console.log 'get az: -> data region: ' + region_name + ', stack region: ' + Design.instance().region()
+                        #if region_name == Design.instance().region()
+                        #    me.set 'availability_zone', res
 
-                                    if zone.attributes.name == value.zoneName
-
-                                        res.item[idx].isUsed = true
-
-                                        null
-
-                        console.log 'get az: -> data region: ' + region_name + ', stack region: ' + Design.instance().region()
-                        if region_name == Design.instance().region()
+                        console.log 'get az: -> data region: ' + region_name + ', stack region: ' + MC.canvas_data.region
+                        if region_name == MC.canvas_data.region
                             me.set 'availability_zone', res
 
                         #cache az to MC.data.config[region_name].zone
@@ -496,7 +508,8 @@ define [ 'i18n!nls/lang.js',
                 # filter nat ami when in classic style
                 quickstart_amis = []
 
-                if Design.instance().typeIsClassic()
+                #if Design.instance().typeIsClassic()
+                if MC.canvas_data.platform is 'ec2-classic'
                     quickstart_amis.push i for i in ami_list when i.name.indexOf('ami-vpc-nat') < 0
                 else
                     quickstart_amis =  ami_list
@@ -557,9 +570,19 @@ define [ 'i18n!nls/lang.js',
             dict_ami = MC.data.dict_ami
             if not dict_ami then return
 
-            for instance in Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance ).allObjects()
-                if not dict_ami[ instance.get("imageId") ]
-                    stack_ami_list.push instance.get("imageId")
+            #for instance in Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance ).allObjects()
+            #    if not dict_ami[ instance.get("imageId") ]
+            #        stack_ami_list.push instance.get("imageId")
+            _.map MC.canvas_data.component, (value)->
+                if value.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+
+                    if MC.data.dict_ami
+
+                        if not MC.data.dict_ami[value.resource.ImageId]
+
+                            if value.resource.ImageId not in stack_ami_list
+
+                                stack_ami_list.push value.resource.ImageId
 
             if stack_ami_list.length != 0
                 ami_model.DescribeImages { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, _.uniq( stack_ami_list )
@@ -653,10 +676,32 @@ define [ 'i18n!nls/lang.js',
                 @set 'favorite_ami', new_favorite_ami
 
         getIgwStatus : ->
-            !!Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway ).allObjects().length
+            #!!Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway ).allObjects().length
+            isUsed = false
+
+            $.each MC.canvas_data.component, ( key, comp ) ->
+
+                if comp.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway
+
+                    isUsed = true
+
+                    return false
+
+            isUsed
 
         getVgwStatus : ->
-            !!Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway ).allObjects().length
+            #!!Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway ).allObjects().length
+            isUsed = false
+
+            $.each MC.canvas_data.component, ( key, comp ) ->
+
+                if comp.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway
+
+                    isUsed = true
+
+                    return false
+
+            isUsed
 
         describeSubnetInDefaultVpc : ( region_name ) ->
 

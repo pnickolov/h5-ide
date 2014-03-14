@@ -147,7 +147,8 @@ define [ 'jquery',
                     is_true = true
 
                 if is_true
-                    ide_event.trigger ide_event.GET_STATE_MODULE if MC.data.current_tab_type isnt 'OPEN_APP'
+                    #ide_event.trigger ide_event.GET_STATE_MODULE if MC.data.current_tab_type isnt 'OPEN_APP'
+                    ide_event.trigger ide_event.RESOURCE_API_COMPLETE
                     model.service_count = 0
 
                 null

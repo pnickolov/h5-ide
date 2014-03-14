@@ -18,7 +18,7 @@ define [ 'jquery',
             view.listen()
             view.render()
 
-            #listen OPEN_DESIGN
+            #listen OPEN_SUB_DESIGN
             ide_event.onLongListen ide_event.OPEN_SUB_DESIGN, ( region_name, type, current_platform, tab_name, tab_id ) ->
                 console.log 'toolbar:OPEN_SUB_DESIGN, region_name = ' + region_name + ', type = ' + type
 

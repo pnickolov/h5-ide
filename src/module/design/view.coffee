@@ -156,7 +156,8 @@ define [ 'Design', 'event', 'text!./module/design/template.html', 'constant', 'i
             ide_event.offListen ide_event.UPDATE_APP_STATE, @updateStateBarWhenStateChanged
             ide_event.onLongListen ide_event.UPDATE_APP_STATE, @updateStateBarWhenStateChanged, @
 
-            appStoped = Design.instance().get('state') is 'Stopped'
+            #appStoped = Design.instance().get('state') is 'Stopped'
+            appStoped = MC.canvas_data.state is 'Stopped'
             if appStoped
                 return
 
@@ -166,7 +167,7 @@ define [ 'Design', 'event', 'text!./module/design/template.html', 'constant', 'i
                 $btnState.hide()
             else
                 $btnState.show()
-            
+
             stateList = MC.data.websocket.collection.status.find().fetch()
             @renderStateBar stateList
 

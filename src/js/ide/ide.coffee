@@ -127,6 +127,9 @@ define [ 'MC', 'event', 'handlebars'
 		#temp
 		MC.data.running_app_list = {}
 
+		# include 'NEW_STACK' 'OPEN_STACK' 'OPEN_APP'
+		MC.data.open_tab_data    = {}
+
 		#############################
 		#  WebSocket
 		#############################

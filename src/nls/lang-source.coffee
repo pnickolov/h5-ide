@@ -3618,7 +3618,7 @@ module.exports =
     # State Panel Operation - General
 
     KEY_TIT_STATE_GEN:
-      en: "State Panel Operation - General"
+      en: "State Panel TA_MSG_NOTICE_INSTANCE_NOT_EBS_OPTIMIZED_FOR_ATTACHED_PROVISIONED_VOLUME - General"
       zh: ""
 
     KEY_FOCUS_KEY:
@@ -3666,7 +3666,7 @@ module.exports =
       zh: ""
 
     KEY_PREV_ACTION:
-      en: " Focus to previous input"
+      en: "Focus to previous input"
       zh: ""
 
     ##### State Editor

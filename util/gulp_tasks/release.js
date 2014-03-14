@@ -1,5 +1,5 @@
 (function() {
-  var Q, SrcOption, Tasks, coffee, confCompile, dest, end, es, fileLogger, gulp, gutil, handlebars, ideversion, include, langsrc, logTask, requirejs, rjsconfig, stripdDebug, util, variable;
+  var Q, SrcOption, Tasks, coffee, confCompile, dest, end, es, fileLogger, gulp, gutil, handlebars, ideversion, include, langsrc, logTask, requirejs, rjsconfig, stdRedirect, stripdDebug, util, variable;
 
   gulp = require("gulp");
 
@@ -74,15 +74,17 @@
     }
   };
 
+  stdRedirect = function(d) {
+    process.stdout.write(d);
+    return null;
+  };
+
   Tasks = {
     cleanRepo: function() {
       logTask("Removing ignored files in src (git clean -Xf)");
       return util.runCommand("git", ["clean", "-Xf"], {
         cwd: process.cwd() + "/src"
-      }, function(data) {
-        console.log(data);
-        return null;
-      });
+      }, stdRedirect);
     },
     copyAssets: function() {
       var d, path;
@@ -155,17 +157,94 @@
     removeBuildFolder: function() {
       util.deleteFolderRecursive(process.cwd() + "/build");
       return true;
+    },
+    fetchRepo: function(debugMode, qaMode) {
+      if (qaMode) {
+        return function() {
+          return true;
+        };
+      }
+      return function() {
+        var params;
+        logTask("Checking out h5-ide-build");
+        util.deleteFolderRecursive(process.cwd() + "/h5-ide-build");
+        params = ["clone", GLOBAL.gulpConfig.buildRepoUrl, "-b", debugMode ? "develop" : "master"];
+        if (GLOBAL.gulpConfig.buildUsername) {
+          params.push("-c");
+          params.push("user.name=\"" + GLOBAL.gulpConfig.buildUsername + "\"");
+        }
+        if (GLOBAL.gulpConfig.buildEmail) {
+          params.push("-c");
+          params.push("user.email=\"" + GLOBAL.gulpConfig.buildEmail + "\"");
+        }
+        return util.runCommand("git", params, {}, stdRedirect);
+      };
+    },
+    preCommit: function() {
+      var commitData, move, option;
+      logTask("Pre-commit");
+      move = util.runCommand("mv", ["h5-ide-build/.git", "deploy/.git"], {});
+      option = {
+        cwd: process.cwd() + "/deploy"
+      };
+      commitData = "";
+      return move.then(function() {
+        return util.runCommand("git", ["add", "-A"], option);
+      }).then(function() {
+        return util.runCommand("git", ["commit", "-m", "pre-" + (ideversion.version())], option, function(d) {
+          commitData += d;
+          return null;
+        });
+      }).then(function() {
+        if (commitData[0] === "#") {
+          console.log(commitData);
+        } else {
+          commitData = commitData.split("\n");
+          console.log(commitData[0]);
+          console.log(commitData[1]);
+        }
+        return true;
+      });
+    },
+    fileVersion: function() {
+      var fileData, listFile;
+      logTask("Getting all files version");
+      fileData = "";
+      listFile = util.runCommand("git", ["ls-files", "-s"], {
+        cwd: process.cwd() + "/deploy"
+      }, function(d, type) {
+        if (type === "out") {
+          fileData += d;
+        }
+        return null;
+      });
+      return listFile.then(function() {
+        var entry, line, versions, _i, _len, _ref;
+        versions = {};
+        _ref = fileData.split("\n");
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          entry = _ref[_i];
+          line = entry.split(/\s+?/);
+          if (line[3]) {
+            versions[line[3]] = line[1].substr(0, 8);
+          }
+          null;
+        }
+        GLOBAL.gulpConfig.fileVersions = versions;
+        return true;
+      });
     }
   };
 
   module.exports = {
     build: function(mode) {
-      var debugMode, deploy, outputPath;
+      var debugMode, deploy, outputPath, qaMode;
       deploy = mode !== "qa";
       debugMode = mode === "qa" || mode === "debug";
       outputPath = mode === "qa" ? "./qa" : void 0;
+      qaMode = mode === "qa";
       ideversion.read(deploy);
-      return [Tasks.cleanRepo].reduce(Q.when, Q());
+      return [].reduce(Q.when, Q());
     }
   };
 

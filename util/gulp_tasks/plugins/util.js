@@ -1,5 +1,5 @@
 (function() {
-  var Q, fs, gutil, notifier, spawn, util;
+  var Q, childprocess, exec, fs, gutil, notifier, spawn, util;
 
   gutil = require("gulp-util");
 
@@ -7,9 +7,13 @@
 
   fs = require("fs");
 
-  spawn = require('child_process').spawn;
+  childprocess = require('child_process');
 
   Q = require("q");
+
+  spawn = childprocess.spawn;
+
+  exec = childprocess.exec;
 
   util = {
     log: function(e) {

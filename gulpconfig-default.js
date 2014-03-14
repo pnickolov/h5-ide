@@ -39,4 +39,9 @@ module.exports = {
 
   // If true, it will automatically open the index of the server.
   , openUrlAfterCreateServer : true
+
+  // Parameters for build
+  , buildRepoUrl  : "git@github.com:MadeiraCloud/h5-ide-build.git"
+  , buildUsername : "" // If empty, use Global Git Username
+  , buildEmail    : "" // If empty, use Global Git Email
 };

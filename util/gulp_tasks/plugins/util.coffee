@@ -1,9 +1,12 @@
 
-gutil    = require("gulp-util")
-notifier = require("node-notifier")
-fs       = require("fs")
-spawn    = require('child_process').spawn
-Q        = require("q")
+gutil        = require("gulp-util")
+notifier     = require("node-notifier")
+fs           = require("fs")
+childprocess = require('child_process')
+Q            = require("q")
+
+spawn = childprocess.spawn
+exec  = childprocess.exec
 
 util =
   log  : (e)-> console.log e

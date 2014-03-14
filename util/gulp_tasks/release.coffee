@@ -48,11 +48,13 @@ end  = ( d, printNewlineWhenNotVerbose )->
   else
     ()-> d.resolve()
 
+stdRedirect = (d)-> process.stdout.write d; null
+
 Tasks =
   cleanRepo : ()->
     logTask "Removing ignored files in src (git clean -Xf)"
 
-    util.runCommand "git", ["clean", "-Xf"], { cwd : process.cwd() + "/src" }, ( data )-> console.log data; null
+    util.runCommand "git", ["clean", "-Xf"], { cwd : process.cwd() + "/src" }, stdRedirect
 
   copyAssets : ()->
     logTask "Copying Assets"
@@ -147,6 +149,69 @@ Tasks =
     util.deleteFolderRecursive( process.cwd() + "/build" )
     true
 
+  fetchRepo : ( debugMode, qaMode )->
+    if qaMode
+      return ()-> true
+
+    ()->
+      logTask "Checking out h5-ide-build"
+
+      # First delete the repo
+      util.deleteFolderRecursive( process.cwd() + "/h5-ide-build" )
+
+      # Checkout latest repo
+      params = ["clone", GLOBAL.gulpConfig.buildRepoUrl, "-b", if debugMode then "develop" else "master"]
+
+      if GLOBAL.gulpConfig.buildUsername
+        params.push "-c"
+        params.push "user.name=\"#{GLOBAL.gulpConfig.buildUsername}\""
+      if GLOBAL.gulpConfig.buildEmail
+        params.push "-c"
+        params.push "user.email=\"#{GLOBAL.gulpConfig.buildEmail}\""
+
+      util.runCommand "git", params, {}, stdRedirect
+
+  preCommit : ()->
+    logTask "Pre-commit"
+
+    # Move h5-ide-build/.git to deploy/.git
+    move = util.runCommand "mv", ["h5-ide-build/.git", "deploy/.git"], {}
+
+    option = { cwd : process.cwd() + "/deploy" }
+
+    # Add all files
+    commitData = ""
+    move.then ()->
+      util.runCommand "git", ["add", "-A"], option
+    .then ()->
+      util.runCommand "git", ["commit", "-m", "pre-#{ideversion.version()}"], option, (d)-> commitData+=d;null
+    .then ()->
+      if commitData[0] is "#"
+        console.log commitData
+      else
+        # Strip uncessary commit info
+        commitData = commitData.split("\n")
+        console.log commitData[0]
+        console.log commitData[1]
+      true
+
+  fileVersion : ()->
+    logTask "Getting all files version"
+
+    fileData = ""
+    listFile = util.runCommand "git", ["ls-files", "-s"], { cwd : process.cwd() + "/deploy" }, (d, type)->
+      if type is "out" then fileData += d
+      null
+
+    listFile.then ()->
+      versions = {}
+      for entry in fileData.split("\n")
+        line = entry.split(/\s+?/)
+        if line[3]
+          versions[ line[3] ] = line[1].substr(0, 8)
+        null
+      GLOBAL.gulpConfig.fileVersions = versions
+      true
 
 # A task to build IDE
   #*** Perform `git -fX ./src` first, to remove ignored files.
@@ -169,11 +234,12 @@ module.exports =
     deploy     = mode isnt "qa"
     debugMode  = mode is "qa" or mode is "debug"
     outputPath = if mode is "qa" then "./qa" else undefined
+    qaMode     = mode is "qa"
 
     ideversion.read( deploy )
 
     [
-      Tasks.cleanRepo
+      # Tasks.cleanRepo
       # Tasks.copyAssets
       # Tasks.copyJs
       # Tasks.compileLangSrc
@@ -182,4 +248,7 @@ module.exports =
       # Tasks.processHtml
       # Tasks.concatJS( debugMode, outputPath )
       # Tasks.removeBuildFolder
+      # Tasks.fetchRepo( debugMode, qaMode )
+      # Tasks.preCommit
+      # Tasks.fileVersion
     ].reduce( Q.when, Q() )

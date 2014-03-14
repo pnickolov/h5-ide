@@ -3660,11 +3660,11 @@ module.exports =
       zh: ""
 
     INVITE_MOD_INTRO:
-      en: "We are exited to introduce VisualOps, a new way to devOps your infrastructure!"
+      en: "Introduce <b>Instance State</b>,<br>a new way to devOps your infrastructure!"
       zh: ""
 
     INVITE_MOD_INTRO_MORE:
-      en: "VisualOps let you manage the software layer of your instances. Software packages, configuration files, services, all are there in a very easy, intuitive and functional way."
+      en: "<b>Instance State</b> enables you to manage the software layer of your instances. Software packages, configuration files, services, all are there in a very easy, intuitive and functional way."
       zh: ""
 
     INVITE_MOD_REQUEST_TIT:

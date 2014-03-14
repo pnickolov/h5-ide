@@ -1553,17 +1553,19 @@ Are you sure you want to delete {{name}}?</div>
 </div>
 
 <!-- experimentalVisops -->
-<div style="width:623px">
+<div style="width:623px" id="experimental-modal">
 	<div class="modal-header">
 		<h3>{{ i18n "INVITE_MOD_TIT"}}</h3>
 		<i class="modal-close">×</i>
 	</div>
 	<div class="modal-body">
-		<h3 class="modal-body-h3">{{ i18n "INVITE_MOD_INTRO"}}</h3>
-		<div class="modal-text-major">{{ i18n "INVITE_MOD_INTRO_MORE"}}</div>
-		<h4 class="modal-body-h4">{{ i18n "INVITE_MOD_REQUEST_TIT"}}</h4>
-		<div class="modal-text-major">{{ i18n "INVITE_MOD_REQUEST_CONTENT"}}</div>
-		<textarea id="experimental-message" class="input" style="width:95%;height:120px;" placeholder='{{ i18n "INVITE_MOD_REQUEST_PLACEHOLDER"}}' data-required="true"></textarea>
+		<h3 class="modal-body-header">{{ i18n "INVITE_MOD_INTRO"}}</h3>
+		<div class="modal-body-content">
+			<div class="modal-text-major">{{ i18n "INVITE_MOD_INTRO_MORE"}}</div>
+			<h4 class="request-invite-header">{{ i18n "INVITE_MOD_REQUEST_TIT"}}</h4>
+			<div class="request-invite-content">{{ i18n "INVITE_MOD_REQUEST_CONTENT"}}</div>
+			<textarea id="experimental-message" class="input" style="width:95%;height:120px;" placeholder='{{ i18n "INVITE_MOD_REQUEST_PLACEHOLDER"}}' data-required="true"></textarea>
+		</div>
 	</div>
 	<div class="modal-footer">
 		<button id="experimental-visops-confirm" class="btn btn-blue">{{ i18n "INVITE_MOD_BTN_REQUEST"}}</button>
@@ -1572,5 +1574,5 @@ Are you sure you want to delete {{name}}?</div>
 </div>
 
 <!-- experimentalVisopsTrail -->
-<h3 class="modal-body-h3">{{ i18n "INVITE_MOD_THANK_LBL"}}</h3>
-<div class="modal-text-major">{{ i18n "INVITE_MOD_THANK_MORE"}}</div>
+<h3 class="modal-body-header">{{ i18n "INVITE_MOD_THANK_LBL"}}</h3>
+<div class="modal-text-major tac">{{ i18n "INVITE_MOD_THANK_MORE"}}</div>

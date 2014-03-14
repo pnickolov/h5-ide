@@ -322,6 +322,54 @@ module.exports =
       en: "Desired Capacity must be >= Minimal Size and <= Maximum Size"
       zh: ""
 
+    PARSLEY_THIS_VALUE_SHOULD_BE_A_VALID_TYPE_NAME:
+      en: "This value should be a valid %s name."
+      zh: ""
+
+    PARSLEY_TYPE_NAME_CONFLICT:
+      en: "%s name \" %s \" is already in using. Please use another one."
+      zh: ""
+
+    PARSLEY_RESOURCE_NAME_ELBSG_RESERVED:
+      en: "Resource name starting with \"elbsg-\" is reserved."
+      zh: ""
+
+    PARSLEY_MUST_BE_BETWEEN_1_AND_65534:
+      en: "Must be between 1 and 65534"
+      zh: ""
+
+    PARSLEY_ASN_NUMBER_7224_RESERVED:
+      en: "ASN number 7224 is reserved in Virginia"
+      zh: ""
+
+    PARSLEY_ASN_NUMBER_9059_RESERVED_IN_IRELAND:
+      en: "ASN number 9059 is reserved in Ireland"
+      zh: ""
+
+    PARSLEY_:
+      en: ""
+      zh: ""
+
+    PARSLEY_:
+      en: ""
+      zh: ""
+
+    PARSLEY_:
+      en: ""
+      zh: ""
+
+    PARSLEY_:
+      en: ""
+      zh: ""
+
+    PARSLEY_:
+      en: ""
+      zh: ""
+
+    PARSLEY_:
+      en: ""
+      zh: ""
+
     PARSLEY_:
       en: ""
       zh: ""

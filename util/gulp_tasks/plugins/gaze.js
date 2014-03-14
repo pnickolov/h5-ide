@@ -198,13 +198,15 @@ Gaze.prototype.emit = function() {
   // Detect if new folder added to trigger for matching files within folder
   if (e === 'added') {
     if (helper.isDir(filepath)) {
-      fs.readdirSync(filepath).map(function(file) {
-        return path.join(filepath, file);
-      }).filter(function(file) {
-        return globule.isMatch(self._patterns, file, self.options);
-      }).forEach(function(file) {
-        self.emit('added', file);
-      });
+      if ( fs.existsSync(filepath) ) {
+        fs.readdirSync(filepath).map(function(file) {
+          return path.join(filepath, file);
+        }).filter(function(file) {
+          return globule.isMatch(self._patterns, file, self.options);
+        }).forEach(function(file) {
+          self.emit('added', file);
+        });
+      }
     }
   }
 

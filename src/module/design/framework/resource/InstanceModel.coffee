@@ -321,6 +321,25 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
           console.warn "getAmiRootDevice(): can not found root device of AMI(" + @get("imageId") + ")", this
       rd
 
+    getAmiRootDeviceVolumeSize : () ->
+      volSize = 0
+      amiInfo = @getAmi()
+      if amiInfo
+        if amiInfo.osType is "windows"
+          volumeSize = 30
+        else
+          volumeSize = 10
+
+        rd = @getAmiRootDevice()
+        if rd
+          volSize = rd.Ebs.VolumeSize
+        else
+          console.warn "getAmiRootDeviceVolumeSize(): use default volumeSize " + volSize , this
+      else
+        console.warn "getAmiRootDeviceVolumeSize(): unknown volumeSize for " + @get("imageId")
+      volSize
+
+
     getInstanceTypeConfig : ( type )->
       t = (type || @get("instanceType")).split(".")
       if t.length >= 2

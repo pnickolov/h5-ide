@@ -50,9 +50,7 @@ define [ '../base/view',
                 # Init iops
                 volumeSize = parseInt $( '#volume-size-ranged' ).val(), 10
                 iops = volumeSize * 10
-                $("#iops-ranged").val( iops )
-                @model.setIops( iops )
-                $("#iops-ranged").val(iops)
+                $("#iops-ranged").val( iops ).keyup()
             else
                 # Reset standard
                 @model.setIops("")
@@ -92,8 +90,7 @@ define [ '../base/view',
             iops = parseInt( $("#iops-ranged").val(), 10 ) || 0
             if iops > volumeSize * 10
                 iops = volumeSize * 10
-                $("#iops-ranged").val( iops )
-                @model.setIops( iops )
+                $("#iops-ranged").val( iops ).keyup()
             null
 
         render : () ->

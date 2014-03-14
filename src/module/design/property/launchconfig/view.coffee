@@ -32,9 +32,15 @@ define [ '../base/view', 'text!./template/stack.html', 'event', 'constant', 'i18
 
             $("#iops-group").toggle( $this.attr("id") is "radio-iops" )
 
-            # Reset iops
-            @model.setIops("")
-            $("#iops-ranged").val("")
+            if $this.attr("id") is "radio-iops"
+                # Init iops
+                volumeSize = parseInt $( '#volume-size-ranged' ).val(), 10
+                iops = volumeSize * 10
+                $("#iops-ranged").val( iops ).keyup()
+            else
+                # Reset standard
+                @model.setIops("")
+                $("#iops-ranged").val("")
 
         changeIops : ()->
             if $( '#iops-ranged' ).parsley( 'validate' )
@@ -59,15 +65,18 @@ define [ '../base/view', 'text!./template/stack.html', 'event', 'constant', 'i18
                 .find( 'input' )
             if iopsDisabled
                 $iops.attr("disabled", "disabled")
+                $("#radio-standard").click()
+                $("#iops-group").hide()
             else
                 $iops.removeAttr( 'disabled' )
 
             # Adjust IOPS if it exceed limits
             iops = parseInt( $("#iops-ranged").val(), 10 ) || 0
-            if iops > volumeSize * 10
-                iops = volumeSize * 10
-                $("#iops-ranged").val( iops )
-                @model.setIops( iops )
+            if iops
+                if iops > volumeSize * 10
+                    iops = volumeSize * 10
+                    $("#iops-ranged").val( iops )
+                $("#iops-ranged").keyup()
             null
 
         render : () ->
@@ -76,11 +85,12 @@ define [ '../base/view', 'text!./template/stack.html', 'event', 'constant', 'i18
 
             $( "#keypair-select" ).on("click", ".icon-remove", _.bind(this.deleteKP, this) )
 
+            me = this
             # parsley bind
             $( '#volume-size-ranged' ).parsley 'custom', ( val ) ->
                 val = + val
-                if not val || val > 1024 || val < 1
-                    return "Volume size must in the range of 1-1024 GB."
+                if not val || val > 1024 || val < me.model.attributes.min_volume_size
+                    return "Volume size of this rootDevice must in the range of " + me.model.attributes.min_volume_size + "-1024 GB."
 
             $( '#iops-ranged' ).parsley 'custom', ( val ) ->
                 val = + val

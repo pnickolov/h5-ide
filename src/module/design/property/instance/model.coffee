@@ -118,6 +118,9 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 					rootDevice.iops = ""
 					rootDevice.iopsDisabled = true
 				@set "rootDevice", rootDevice
+
+			@set "min_volume_size", comp.getAmiRootDeviceVolumeSize()
+
 			null
 
 		canSetInstanceType : ( value ) ->

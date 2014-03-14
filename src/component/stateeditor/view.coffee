@@ -1997,9 +1997,9 @@ define [ 'event',
                 else if targetOffsetTop < parentOffsetTop
                     scrollPos = $parent.scrollTop() + targetOffsetTop - parentOffsetTop - 15
 
-                # $parent.scrollTop(scrollPos)
+                $parent.scrollTop(scrollPos)
 
-                scrollbar.scrollTo $('#state-list-wrap'), {top: scrollPos - 15}
+                # scrollbar.scrollTo $('#state-list-wrap'), {top: 300}
 
             catch err
 
@@ -2115,7 +2115,19 @@ define [ 'event',
 
             stateLogViewAry = []
             stateStatusMap = {}
+
+            stateIdLogViewMap = {}
+            $stateLogItems = that.$stateLogList.find('.state-log-item')
+            _.each $stateLogItems, (stateLogItem) ->
+                $stateLogItem = $(stateLogItem)
+                stateId = $stateLogItem.attr('data-state-id')
+                stateView = $stateLogItem.hasClass('view')
+                if stateId
+                    stateIdLogViewMap[stateId] = stateView
+                null
+
             _.each stateLogDataAry, (logObj, idx) ->
+
                 timeStr = null
                 if logObj.time
                     timeStr = MC.dateFormat(new Date(logObj.time), 'yyyy-MM-dd hh:mm:ss')
@@ -2144,6 +2156,10 @@ define [ 'event',
                             content: stdoutStr
                         }
 
+                viewLog = stateIdLogViewMap[logObj.id]
+                if viewLog not in [true, false]
+                    viewLog = false
+
                 stateLogViewAry.push({
                     id: logObj.id,
                     state_num: stateNum,
@@ -2151,7 +2167,8 @@ define [ 'event',
                     state_status: stateStatus,
                     stdout: stdoutStr,
                     comment: commentStr,
-                    long_stdout: longStdout
+                    long_stdout: longStdout,
+                    view: viewLog
                 })
                 null
 
@@ -2160,7 +2177,7 @@ define [ 'event',
             })
 
             that.refreshStateItemStatus(stateStatusMap)
-            that.$stateLogList.append(renderHTML)
+            that.$stateLogList.empty().append(renderHTML)
             that.refreshLogItemNum()
 
         setEditorReadOnlyMode: () ->
@@ -2222,16 +2239,16 @@ define [ 'event',
             that.model.getResState(selectedResId)
             resState = that.model.get('resState')
 
-            that.$stateLogList.empty().html(that.stateLogInstanceItemTpl({
-                res_status: resState
-            }))
+            # that.$stateLogList.empty().html(that.stateLogInstanceItemTpl({
+            #     res_status: resState
+            # }))
 
             if not that.isLoadingLogList
 
                 $logPanel = $('#state-log')
                 $loadText = $logPanel.find('.state-log-loading')
 
-                $loadText.text('Loading...')
+                $loadText.text('Refresh...')
 
                 that.isLoadingLogList = true
 
@@ -2410,7 +2427,7 @@ define [ 'event',
 
             _.each $logItemList, (logItem, idx) ->
 
-                if idx >= 2
+                if idx >= 1
 
                     $logItem = $(logItem)
                     stateId = $logItem.attr('data-state-id')

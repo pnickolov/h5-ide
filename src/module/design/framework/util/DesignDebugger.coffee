@@ -44,7 +44,7 @@ define [ "Design" ], ( Design )->
 
 
   Design.debug.diff = ( e )->
-    require ["test/jsonviewer/JsonViewer"], ( JsonViewer )->
+    require ["component/jsonviewer/JsonViewer"], ( JsonViewer )->
       d = Design.instance()
       JsonViewer.showDiffDialog( d.__backingStore, d.serialize() )
     null
@@ -73,7 +73,7 @@ define [ "Design" ], ( Design )->
     if e and e.preventDefault then e.preventDefault()
 
     data = Design.instance().serialize()
-    require ["test/jsonviewer/JsonViewer"], ( JsonViewer )->
+    require ["component/jsonviewer/JsonViewer"], ( JsonViewer )->
       JsonViewer.showViewDialog( data )
     null
 

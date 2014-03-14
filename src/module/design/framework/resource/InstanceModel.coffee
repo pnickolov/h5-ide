@@ -49,6 +49,8 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
           name : "eni0"
           assoPublicIp : Design.instance().typeIsDefaultVpc()
         }, { instance: this }) )
+        #append root device
+        @set("rdSize",@getAmiRootDeviceVolumeSize())
 
       # Hack, we need to clone the imageId before drawing.
       if option.cloneSource
@@ -302,6 +304,44 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
       null
 
     getAmi : ()-> MC.data.dict_ami[@get("imageId")]
+
+    getAmiRootDevice : () ->
+      amiInfo = @getAmi()
+      rd = null
+      if amiInfo
+        rdName = amiInfo.rootDeviceName
+        rdEbs = amiInfo.blockDeviceMapping[rdName]
+        if rdName and rdEbs
+          rd =
+            "DeviceName": rdName
+            "Ebs":
+              "VolumeSize": rdEbs.volumeSize
+              "SnapshotId": rdEbs.snapshotId
+              "VolumeType": rdEbs.volumeType
+              "Iops"      : if rdEbs.iops then rdEbs.iops else ""
+        else
+          console.warn "getAmiRootDevice(): can not found root device of AMI(" + @get("imageId") + ")", this
+      rd
+
+    getAmiRootDeviceVolumeSize : () ->
+      volSize = 0
+      amiInfo = @getAmi()
+      if amiInfo
+        if amiInfo.osType is "windows"
+          volumeSize = 30
+        else
+          volumeSize = 10
+
+        rd = @getAmiRootDevice()
+        if rd
+          volSize = rd.Ebs.VolumeSize
+        else
+          console.warn "getAmiRootDeviceVolumeSize(): use default volumeSize " + volSize , this
+      else
+        console.warn "getAmiRootDeviceVolumeSize(): unknown volumeSize for " + @get("imageId")
+      volSize
+
+
     getInstanceTypeConfig : ( type )->
       t = (type || @get("instanceType")).split(".")
       if t.length >= 2

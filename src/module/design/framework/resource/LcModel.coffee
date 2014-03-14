@@ -48,6 +48,10 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
         defaultSg = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup ).getDefaultSg()
         SgAsso = Design.modelClassForType( "SgAsso" )
         new SgAsso( defaultSg, this )
+
+        #append root device
+        @set("rdSize",@getAmiRootDeviceVolumeSize())
+
       null
 
     getNewName : ( base )->
@@ -152,6 +156,8 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
     initInstanceType      : InstanceModel.prototype.initInstanceType
     isEbsOptimizedEnabled : InstanceModel.prototype.isEbsOptimizedEnabled
     getBlockDeviceMapping : InstanceModel.prototype.getBlockDeviceMapping
+    getAmiRootDevice           : InstanceModel.prototype.getAmiRootDevice
+    getAmiRootDeviceVolumeSize : InstanceModel.prototype.getAmiRootDeviceVolumeSize
 
     serialize : ()->
 

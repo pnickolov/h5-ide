@@ -3027,33 +3027,6 @@ td.table-action a.btn {
 	border-right: 1px solid #ddd;
 }
 
-.toolbar-btn-group .selectbox .dropdown {
-	border     : 1px solid #aaa;
-	width      : auto;
-	margin-top : 5px;
-}
-
-.toolbar-btn-group .dropdown li {
-	display       : block;
-	border-bottom : 1px solid #E0E0E0;
-	cursor        : pointer !important;
-	position      : relative;
-	color         : #555;
-	text-align    : left;
-	line-height   : 42px;
-	padding-left  : 40px;
-	padding-right : 10px;
-	font-size: 12px
-}
-
-.toolbar-btn-group .dropdown > li > i {
-	position   : absolute;
-	top        : 13px;
-	left       : 0px;
-	width      : 40px;
-	text-align : center;
-}
-
 .btn-toolbar {
 	text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
 	width       : 34px;
@@ -3067,10 +3040,17 @@ td.table-action a.btn {
 	color      : #606060;
 	font-size  : 16px;
 
-	/*margin-left : 4px;*/
 	padding     : 4px;
 
 	cursor : pointer;
+	box-sizing : content-box;
+}
+
+.btn-toolbar:not(:empty):before {
+	margin-right : 5px;
+}
+.btn-toolbar.seperator {
+	border-right : 1px solid #ddd;
 }
 
 .toolbar-btn-group .icon-update-app {
@@ -3097,36 +3077,57 @@ td.table-action a.btn {
 }
 
 .btn-toolbar:hover .selection, .btn-toolbar.open .selection {
-	color         : #c472a7 !important;
+	color : #c472a7 !important;
 }
 
 .btn-toolbar.selectbox {
-	width  : auto;
+	width  : 52px;
 	padding: 0;
 	height : 40px;
 }
 
 .btn-toolbar.selectbox .selection {
-	font-size  : 16px;
-	color      : #606060;
-	padding    : 0 18px 0 10px;
-	border     : none;
-	line-height: 40px;
-	display    : inline-block;
-	width      : 24px;
-	height     : 40px;
-	margin     : 0;
+	font-size   : 16px;
+	color       : #606060;
+	padding     : 0 18px 0 10px;
+	float       : left;
+	border      : none;
+	line-height : 40px;
+	display     : inline-block;
+	width       : 24px;
+	height      : 40px;
+	margin      : 0;
+	box-sizing  : content-box;
 }
 
 .btn-toolbar.selectbox .dropdown {
-	margin-top: 1px;
+	top       : 43px;
+	width     : auto;
+	min-width : initial;
 }
 
-.toolbar-btn-group .dropdown li:last-child {
+.btn-toolbar .dropdown > li {
+	display       : block;
+	border-bottom : 1px solid #E0E0E0;
+	cursor        : pointer !important;
+	color         : #555;
+	text-align    : left;
+	line-height   : 42px;
+	padding-left  : 12px;
+	padding-right : 10px;
+	font-size     : 12px
+}
+
+.btn-toolbar .dropdown > li > i, .btn-toolbar .dropdown > li:before {
+	padding-right : 0.5em;
+	vertical-align: -1px;
+}
+
+.btn-toolbar .dropdown > li:last-child {
 	border-bottom: none;
 }
 
-.toolbar-btn-group .dropdown > li:hover {
+.btn-toolbar .dropdown > li:hover {
 	background-color: #f3f3f3;
 }
 
@@ -3140,24 +3141,21 @@ td.table-action a.btn {
 	background-color: #ec3c38;
 }
 
-#toolbar-run,
-#toolbar-edit-app,
-#toolbar-save-edit-app,
-.toolbar-btn-primary #toolbar-export-png {
+.toolbar-btn-primary {
 	width : 112px;
-	color : #fff;
+	color : #f3f3f3;
 	box-shadow: inset 0 -1px 0 rgba(0,0,0,.1);
 	background: #17c249;
 	border-right: 1px solid #17a03a;
 }
 
-.toolbar-btn-primary #toolbar-export-png {
+#toolbar-export-png.toolbar-btn-primary {
 	background: #4495d3;
 	border-right: 1px solid #377bb0;
 	width: 160px;
 }
 
-.toolbar-btn-primary #toolbar-export-png:hover {
+#toolbar-export-png.toolbar-btn-primary:hover {
 	background: #377bb0;
 }
 
@@ -3165,19 +3163,9 @@ td.table-action a.btn {
 	border-right: 1px solid #8A8A8A;
 }
 
-#toolbar-run:hover,
-#toolbar-edit-app:hover,
-#toolbar-save-edit-app:hover {
+.toolbar-btn-primary:hover {
+	color : #fff;
 	background: #17a03a;
-}
-
-#toolbar-run span,
-#toolbar-edit-app span,
-#toolbar-save-edit-app span,
-.toolbar-btn-primary #toolbar-export-png span {
-	margin-left : 10px;
-	font-size: 16px;
-	font-family : 'Lato', 'Helvetica Neue', Arial, sans-serif;
 }
 
 #toolbar-line-style > span {
@@ -4023,10 +4011,14 @@ a.sidebar-hider:before {
 }
 
 .acl-sg-info-list .col1 {
-	margin-right : 15px;
-	width        : 15px;
-	float        : left;
-	padding      : 10px 0;
+	margin-right: 15px;
+	width       : 15px;
+	float       : left;
+	margin-top  : 13px;
+}
+
+.acl-sg-info-list .col1.checkbox-wrap {
+	margin-top  : 20px;
 }
 
 .acl-sg-info-list .col2 {
@@ -7240,8 +7232,7 @@ summary:focus {
 	padding : 10px 20px;
 	height  : 500px;
 	color   : #0E750C;
-/*	background-color: #111;
-	color           : #0f0;*/
+	background-color: #000;
 }
 
 #modal-instance-sys-log .instance-sys-log-content::selection {

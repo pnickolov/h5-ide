@@ -295,6 +295,10 @@ module.exports =
       en: "Unable to load some parts of the IDE, please refresh the browser"
       zh: "无法加载部分IDE内容，请重试"
 
+    IDE_TIP_VISUALIZE_MORE_THAN_100_ENI:
+      en: "Currently we do not support to visualize system has more than 100 network interfaces. Contact us by the Feedback button for details."
+      zh: ""
+
     RES_TIT_RESOURCES:
       en: "Resources"
       zh: "资源"
@@ -2895,6 +2899,14 @@ module.exports =
       en: " in this region"
       zh: ""
 
+    DASH_TIP_APP_CREATED_BY:
+      en: "App created by "
+      zh: ""
+
+    DASH_TIP_APP_CREATED_BY_OTHER_USER:
+      en: "App created by other user"
+      zh: ""
+
     DASH_BTN_GLOBAL:
       en: "Global"
       zh: "全局"
@@ -3475,6 +3487,332 @@ module.exports =
       en: "update"
       zh: "更新错误"
 
+    ##### State Editor
+    STATE_TIP_DELETE_STATE:
+      en: "Delete State"
+      zh: ""
+
+    STATE_TIP_SELECT_STATE:
+      en: "Select State"
+      zh: ""
+
+    STATE_TIP_DESCRIPTION:
+      en: "Description"
+      zh: ""
+
+    STATE_TIP_STATE_LOG:
+      en: "State Log"
+      zh: ""
+
+    STATE_TIP_REFRESH_STATE_LOG:
+      en: "Refresh State Log"
+      zh: ""
+
+    STATE_TIP_SYSTEM_LOG:
+      en: "System Log"
+      zh: ""
+
+    STATE_TIP_SELECT_ALL_STATES:
+      en: "Select All States"
+      zh: ""
+
+    STATE_TIP_:
+      en: ""
+      zh: ""
+
+    STATE_TIP_:
+      en: ""
+      zh: ""
+
+    STATE_TIP_:
+      en: ""
+      zh: ""
+
+    STATE_TIP_:
+      en: ""
+      zh: ""
+
+    STATE_TIP_:
+      en: ""
+      zh: ""
+
+    STATE_TIP_:
+      en: ""
+      zh: ""
+
+    ##### Keyboard Shortcuts Modal 
+    KEY_MOD_TIT:
+      en: "Keyboard Shortcuts (?)"
+      zh: ""
+
+    # Stack/App Operation
+
+    KEY_TIT_STACK_APP_OP:
+      en: "Stack/App Operation"
+      zh: ""
+
+    KEY_PROP_KEY:
+      en: "P"
+      zh: ""
+
+    KEY_PROP_ACTION:
+      en: "Show Property Panel"
+      zh: ""
+
+    KEY_STAT_KEY:
+      en: "S"
+      zh: ""
+
+    KEY_STAT_ACTION:
+      en: "Show State Panel"
+      zh: ""
+
+    KEY_DUPL_KEY_MAC:
+      en: "Option + Drag Instance"
+      zh: ""
+
+    KEY_DUPL_KEY_PC:
+      en: "Alt + Drag Instance"
+      zh: ""
+
+    KEY_DUPL_ACTION:
+      en: "Duplicate Instance"
+      zh: ""
+
+    KEY_DEL_KEY_MAC:
+      en: "Delete"
+      zh: ""
+
+    KEY_DEL_KEY_PC:
+      en: "Delete/Backspace"
+      zh: ""
+
+    KEY_DEL_ACTION:
+      en: "Delete selected item"
+      zh: ""
+
+    KEY_SAVE_KEY_MAC:
+      en: "Command + S"
+      zh: ""
+
+    KEY_SAVE_KEY_PC:
+      en: "Ctrl + S"
+      zh: ""
+
+    KEY_SAVE_ACTION:
+      en: "Save stack"
+      zh: ""
+
+    KEY_SCRL_KEY_MAC:
+      en: "Command + Drag on canvas"
+      zh: ""
+
+    KEY_SCRL_KEY_PC:
+      en: "Ctrl + Drag on canvas"
+      zh: ""
+
+    KEY_SCRL_ACTION:
+      en: "Scroll canvas"
+      zh: ""
+
+    # State Panel Operation - General
+
+    KEY_TIT_STATE_GEN:
+      en: "State Panel - General"
+      zh: ""
+
+    KEY_FOCUS_KEY:
+      en: "Up/Down"
+      zh: ""
+
+    KEY_FOCUS_ACTION:
+      en: "Switch focused state"
+      zh: ""
+
+    KEY_SELECT_KEY:
+      en: "Space"
+      zh: ""
+
+    KEY_SELECT_ACTION:
+      en: "Select/Unselect focused state"
+      zh: ""
+
+    KEY_EXPAND_KEY:
+      en: "ENTER"
+      zh: ""
+
+    KEY_EXPAND_ACTION:
+      en: "Expand focused state"
+      zh: ""
+
+    KEY_COLLAPSE_KEY:
+      en: "ESC"
+      zh: ""
+
+    KEY_COLLAPSE_ACTION:
+      en: "Collapse focused state"
+      zh: ""
+
+    KEY_NEXT_KEY:
+      en: "Tab"
+      zh: ""
+
+    KEY_NEXT_ACTION:
+      en: "Focus to next input"
+      zh: ""
+
+    KEY_PREV_KEY:
+      en: "Shift + Tab"
+      zh: ""
+
+    KEY_PREV_ACTION:
+      en: "Focus to previous input"
+      zh: ""
+
+    KEY_INFO_KEY_MAC:
+      en: "Command + I"
+      zh: ""
+
+    KEY_INFO_KEY_PC:
+      en: "Ctrl + I"
+      zh: ""
+
+    KEY_INFO_ACTION:
+      en: "Open/Close information sidebar"
+      zh: ""
+
+    KEY_LOG_KEY_MAC:
+      en: "Command + L"
+      zh: ""
+
+    KEY_LOG_KEY_PC:
+      en: "Ctrl + L"
+      zh: ""
+
+    KEY_LOG_ACTION:
+      en: "Open/Close log sidebar"
+      zh: ""
+
+    # State Panel Operation - Editable Mode
+
+    KEY_TIT_STATE_EDIT:
+      en: "State Panel Operation - Editable Mode"
+      zh: ""
+
+    KEY_SELECT_ALL_KEY_MAC:
+      en: "Command + A"
+      zh: ""
+
+    KEY_SELECT_ALL_KEY_PC:
+      en: "Ctrl + A"
+      zh: ""
+
+    KEY_SELECT_ALL_ACTION:
+      en: "Select all states"
+      zh: ""
+
+    KEY_DESELECT_KEY_MAC:
+      en: "Command + D"
+      zh: ""
+
+    KEY_DESELECT_KEY_PC:
+      en: "Ctrl + D"
+      zh: ""
+
+    KEY_DESELECT_ACTION:
+      en: "Deselect states"
+      zh: ""
+
+    KEY_CREATE_KEY_MAC:
+      en: "Command + Enter"
+      zh: ""
+
+    KEY_CREATE_KEY_PC:
+      en: "Ctrl + Enter"
+      zh: ""
+
+    KEY_CREATE_ACTION:
+      en: "Create new state"
+      zh: ""
+
+    KEY_DEL_STATE_KEY_MAC:
+      en: "Command + Delete"
+      zh: ""
+
+    KEY_DEL_STATE_KEY_PC:
+      en: "Ctrl + Delete"
+      zh: ""
+
+    KEY_DEL_STATE_ACTION:
+      en: "Delete selected state"
+      zh: ""
+
+    KEY_MOVE_FOCUS_STATE_KEY_MAC:
+      en: "Command + Up/Down"
+      zh: ""
+
+    KEY_MOVE_FOCUS_STATE_KEY_PC:
+      en: "Ctrl + Up/Down"
+      zh: ""
+
+    KEY_MOVE_FOCUS_STATE_ACTION:
+      en: "Move focused state"
+      zh: ""
+
+    KEY_COPY_STATE_KEY_MAC:
+      en: "Command + C"
+      zh: ""
+
+    KEY_COPY_STATE_KEY_PC:
+      en: "Ctrl + C"
+      zh: ""
+
+    KEY_COPY_STATE_ACTION:
+      en: "Copy selected state"
+      zh: ""
+
+    KEY_PASTE_STATE_KEY_MAC:
+      en: "Command + V"
+      zh: ""
+
+    KEY_PASTE_STATE_KEY_PC:
+      en: "Ctrl + V"
+      zh: ""
+
+    KEY_PASTE_STATE_ACTION:
+      en: "Paste copied state"
+      zh: ""
+
+    KEY_UNDO_STATE_KEY_MAC:
+      en: "Command + Z"
+      zh: ""
+
+    KEY_UNDO_STATE_KEY_PC:
+      en: "Ctrl + Z"
+      zh: ""
+
+    KEY_UNDO_STATE_ACTION:
+      en: "Undo"
+      zh: ""
+
+    KEY_REDO_STATE_KEY_MAC:
+      en: "Command + Y"
+      zh: ""
+
+    KEY_REDO_STATE_KEY_PC:
+      en: "Ctrl + Y"
+      zh: ""
+
+    KEY_REDO_STATE_ACTION:
+      en: "Redo"
+      zh: ""
+
+    KEY_MODAL_BTN_CLOSE:
+      en: "Close"
+      zh: ""
+
+    ##### State Editor
+
     ##### Trust Advisor
 
     # VPC
@@ -3603,13 +3941,16 @@ module.exports =
     TA_MSG_ERROR_CGW_IP_CONFLICT:
       en:"Customer Gateway <span class='validation-tag tag-cgw'>%s</span>'s IP <span class='validation-tag tag-ip'>%s</span> conflicts with existing <span class='validation-tag tag-cgw'>%s</span>'s IP <span class='validation-tag tag-ip'>%s</span>."
       zh:""
-    TA_MSG_ERROR_CGW_IP_RANGE_ERROR:
+    TA_MSG_WARNING_CGW_IP_RANGE_ERROR:
       en:"Customer Gateway <span class='validation-tag tag-cgw'>%s</span>'s IP(%s) invalid."
       zh:""
 
     # VPN
     TA_MSG_ERROR_VPN_NO_IP_FOR_STATIC_CGW:
       en:"VPN Connection of <span class='validation-tag tag-cgw'>%s</span> and <span class='validation-tag tag-vgw'>%s</span> is missing IP prefix."
+      zh:""
+    TA_MSG_ERROR_VPN_NOT_PUBLIC_IP:
+      en:"VPN Connection <span class='validation-tag tag-vpn'>%s</span>'s IP prefix(%s) is invalid."
       zh:""
 
     # Stack
@@ -3628,34 +3969,34 @@ module.exports =
 
     # State Editor
     TA_MSG_ERROR_STATE_EDITOR_INEXISTENT_INSTANCE:
-      en: "Instance <span class='validation-tag tag-instance'>%s</span> state %s has referenced the inexistent <span class='validation-tag tag-state-ref'>%s</span>."
+      en: "Instance <span class='validation-tag tag-instance'>%s</span> <span class='validation-tag tag-state'>state %s</span> has referenced the inexistent <span class='validation-tag tag-state-ref'>%s</span>."
       zh: ""
 
     TA_MSG_ERROR_STATE_EDITOR_INEXISTENT_ASG:
-      en: "Auto Scaling Group <span class='validation-tag tag-asg'>%s</span> state %s has referenced the inexistent <span class='validation-tag tag-state-ref'>%s</span>."
+      en: "Auto Scaling Group <span class='validation-tag tag-asg'>%s</span> <span class='validation-tag tag-state'>state %s</span> has referenced the inexistent <span class='validation-tag tag-state-ref'>%s</span>."
       zh: ""
 
     TA_MSG_ERROR_STATE_EDITOR_EMPTY_REQUIED_PARAMETER:
-      en: "<span class='validation-tag tag-instance'>%s</span>'s state <span class='validation-tag tag-state'>%s</span> is missing required parameter <span class='validation-tag tag-parameter'>%s</span>."
+      en: "<span class='validation-tag tag-instance'>%s</span>'s <span class='validation-tag tag-state'>state %s</span> is missing required parameter <span class='validation-tag tag-parameter'>%s</span>."
       zh: ""
 
     # State
     TA_MSG_ERROR_NOT_CONNECT_OUT:
-      en: "Subnet %s must be connected to internet directly or via a NAT instance. "
+      en: "Subnet <span class='validation-tag tag-subnet'>%s</span> must be connected to internet directly or via a NAT instance. "
       zh: ""
 
     TA_MSG_ERROR_NO_EIP_OR_PIP:
-      en: "%s has configured states. To make sure OpsAgent to work, %s must have an elastic IP or public IP. If not, subnet %s must be connected to a NAT instance."
+      en: "<span class='validation-tag tag-instance'>%s</span> has configured states. To make sure OpsAgent to work, <span class='validation-tag tag-instance'>%s</span> must have an elastic IP or public IP. If not, subnet <span class='validation-tag tag-subnet'>%s</span> must be connected to a NAT instance."
       zh: ""
 
     TA_MSG_ERROR_NO_CGW:
       en: "You have configured states for instance. To make sure OpsAgent to work, the VPC must have an internet gateway."
       zh: ""
     TA_MSG_ERROR_NO_OUTBOUND_RULES:
-      en: "%s has configured states. To make sure OpsAgent to work, it should have outbound rules on 80 and 443 ports to the outside."
+      en: "<span class='validation-tag tag-instance'>%s</span> has configured states. To make sure OpsAgent to work, it should have outbound rules on <span class='validation-tag tag-port'>80</span> and <span class='validation-tag tag-port'>443</span> ports to the outside."
       zh: ""
     TA_MSG_WARNING_OUTBOUND_NOT_TO_ALL:
-      en: "%s has configured states. Suggest to set its outbound rule on 80 and 443 to 0.0.0.0/0. Otherwise, agent may not be able to work properly, install packages or check out source codes lacking route to MadeiraCloud's monitoring systems or required repositories."
+      en: "<span class='validation-tag tag-instance'>%s</span> has configured states. Suggest to set its outbound rule on <span class='validation-tag tag-port'>80</span> and <span class='validation-tag tag-port'>443</span> to <span class='validation-tag tag-ip'>0.0.0.0/0</span>. Otherwise, agent may not be able to work properly, install packages or check out source codes lacking route to MadeiraCloud's monitoring systems or required repositories."
       zh: ""
 
 

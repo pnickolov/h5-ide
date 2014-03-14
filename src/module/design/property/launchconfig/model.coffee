@@ -136,6 +136,9 @@ define [ '../base/model', 'keypair_model', 'constant', 'Design' ], ( PropertyMod
           rootDevice.iops = ""
           rootDevice.iopsDisabled = true
         @set "rootDevice", rootDevice
+
+      @set "min_volume_size", comp.getAmiRootDeviceVolumeSize()
+
       null
 
     getKeyPair : ()->

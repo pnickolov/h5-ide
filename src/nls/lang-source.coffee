@@ -907,6 +907,14 @@ module.exports =
       en: "instnace state off"
       zh: ""
 
+    TOOL_EDIT_APP:
+      en: "Edit App"
+      zh: ""
+
+    TOOL_APPLY_EDIT:
+      en: "Apply"
+      zh: ""
+
     PROP_LBL_REQUIRED:
       en: "Required"
       zh: "必填"

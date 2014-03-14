@@ -3047,7 +3047,7 @@ td.table-action a.btn {
 }
 
 .btn-toolbar:not(:empty):before {
-	margin-right : 5px;
+	margin-right : 15px;
 }
 .btn-toolbar.seperator {
 	border-right : 1px solid #ddd;

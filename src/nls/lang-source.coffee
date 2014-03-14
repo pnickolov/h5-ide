@@ -1091,6 +1091,22 @@ module.exports =
       en: "Get System Log"
       zh: ""
 
+    PROP_INSTANCE_TIP_IF_THE_QUANTITY_IS_MORE_THAN_1:
+      en: "If the quantity is more than 1, host name will be the string you provide plus number index."
+      zh: ""
+
+    PROP_INSTANCE_TIP_YOU_CANNOT_SPECIFY_INSTANCE_NUMBER:
+      en: "You cannot specify instance number, since the instance is connected to a route table."
+      zh: ""
+
+    PROP_INSTANCE_TIP_PUBLIC_IP_CANNOT_BE_ASSOCIATED:
+      en: "Public IP cannot be associated if instance is launching with more than one network interface."
+      zh: ""
+
+    PROP_INSTANCE_TIP_:
+      en: ""
+      zh: ""
+
     PROP_STACK_LBL_NAME:
       en: "Stack Name"
       zh: "模版名称"

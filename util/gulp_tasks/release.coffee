@@ -182,6 +182,10 @@ Tasks =
     # Add all files
     commitData = ""
     move.then ()->
+
+      # Delete the deprecated repo
+      util.deleteFolderRecursive( process.cwd() + "/h5-ide-build" )
+
       util.runCommand "git", ["add", "-A"], option
     .then ()->
       util.runCommand "git", ["commit", "-m", "pre-#{ideversion.version()}"], option, (d)-> commitData+=d;null
@@ -203,14 +207,48 @@ Tasks =
       if type is "out" then fileData += d
       null
 
+    urlRegex = /(\="|\=')([^'":]+?\/[^'"]+?\/[^'"?]+?)("|')/g
+    noramlize = /\\/g
+
+    versions = {}
+
     listFile.then ()->
-      versions = {}
       for entry in fileData.split("\n")
         line = entry.split(/\s+?/)
         if line[3]
-          versions[ line[3] ] = line[1].substr(0, 8)
+          versions[ line[3].replace(noramlize, "/") ] = line[1].substr(0, 8)
         null
-      GLOBAL.gulpConfig.fileVersions = versions
+
+    .then ()-> # Insert buster in all *.html
+      d = Q.defer()
+      gulp.src("./deploy/*.html")
+        .pipe es.through (f)->
+          newContent = f.contents.toString("utf8").replace urlRegex, ( match, p1, p2, p3 )->
+            version = versions[ p2.replace("./", "") ]
+            if version
+              p1 + p2 + "?v=#{version}" + p3
+            else
+              match
+
+          f.contents = new Buffer( newContent )
+          @emit "data", f
+          null
+        .pipe( gulp.dest("./deploy") ).on( "end", ()-> d.resolve() )
+      d.promise
+
+    # .then ()-> # Generate file version and pack them into config.js
+
+  finalCommit : ()->
+    logTask "Final Commit"
+
+    option = { cwd : process.cwd() + "/deploy" }
+
+    # Add all files
+    commit = util.runCommand "git", ["add", "-A"], option
+    commit.then ()->
+      util.runCommand "git", ["commit", "-m", "#{ideversion.version()}"], option
+    commit.then ()->
+      console.log "\n[ " + gutil.colors.bgYellow.black("Currently you have to manually push ./deploy to the `origin`") + " ]\n"
       true
 
 # A task to build IDE
@@ -239,16 +277,17 @@ module.exports =
     ideversion.read( deploy )
 
     [
-      # Tasks.cleanRepo
-      # Tasks.copyAssets
-      # Tasks.copyJs
-      # Tasks.compileLangSrc
-      # Tasks.compileCoffee( debugMode )
-      # Tasks.compileTemplate
-      # Tasks.processHtml
-      # Tasks.concatJS( debugMode, outputPath )
-      # Tasks.removeBuildFolder
-      # Tasks.fetchRepo( debugMode, qaMode )
-      # Tasks.preCommit
-      # Tasks.fileVersion
+      Tasks.cleanRepo
+      Tasks.copyAssets
+      Tasks.copyJs
+      Tasks.compileLangSrc
+      Tasks.compileCoffee( debugMode )
+      Tasks.compileTemplate
+      Tasks.processHtml
+      Tasks.concatJS( debugMode, outputPath )
+      Tasks.removeBuildFolder
+      Tasks.fetchRepo( debugMode, qaMode )
+      Tasks.preCommit
+      Tasks.fileVersion
+      Tasks.finalCommit
     ].reduce( Q.when, Q() )

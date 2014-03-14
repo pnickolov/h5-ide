@@ -189,6 +189,7 @@
       };
       commitData = "";
       return move.then(function() {
+        util.deleteFolderRecursive(process.cwd() + "/h5-ide-build");
         return util.runCommand("git", ["add", "-A"], option);
       }).then(function() {
         return util.runCommand("git", ["commit", "-m", "pre-" + (ideversion.version())], option, function(d) {
@@ -207,7 +208,7 @@
       });
     },
     fileVersion: function() {
-      var fileData, listFile;
+      var fileData, listFile, noramlize, urlRegex, versions;
       logTask("Getting all files version");
       fileData = "";
       listFile = util.runCommand("git", ["ls-files", "-s"], {
@@ -218,19 +219,57 @@
         }
         return null;
       });
+      urlRegex = /(\="|\=')([^'":]+?\/[^'"]+?\/[^'"?]+?)("|')/g;
+      noramlize = /\\/g;
+      versions = {};
       return listFile.then(function() {
-        var entry, line, versions, _i, _len, _ref;
-        versions = {};
+        var entry, line, _i, _len, _ref, _results;
         _ref = fileData.split("\n");
+        _results = [];
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           entry = _ref[_i];
           line = entry.split(/\s+?/);
           if (line[3]) {
-            versions[line[3]] = line[1].substr(0, 8);
+            versions[line[3].replace(noramlize, "/")] = line[1].substr(0, 8);
           }
-          null;
+          _results.push(null);
         }
-        GLOBAL.gulpConfig.fileVersions = versions;
+        return _results;
+      }).then(function() {
+        var d;
+        d = Q.defer();
+        gulp.src("./deploy/*.html").pipe(es.through(function(f) {
+          var newContent;
+          newContent = f.contents.toString("utf8").replace(urlRegex, function(match, p1, p2, p3) {
+            var version;
+            version = versions[p2.replace("./", "")];
+            if (version) {
+              return p1 + p2 + ("?v=" + version) + p3;
+            } else {
+              return match;
+            }
+          });
+          f.contents = new Buffer(newContent);
+          this.emit("data", f);
+          return null;
+        })).pipe(gulp.dest("./deploy")).on("end", function() {
+          return d.resolve();
+        });
+        return d.promise;
+      });
+    },
+    finalCommit: function() {
+      var commit, option;
+      logTask("Final Commit");
+      option = {
+        cwd: process.cwd() + "/deploy"
+      };
+      commit = util.runCommand("git", ["add", "-A"], option);
+      commit.then(function() {
+        return util.runCommand("git", ["commit", "-m", "" + (ideversion.version())], option);
+      });
+      return commit.then(function() {
+        console.log("\n[ " + gutil.colors.bgYellow.black("Currently you have to manually push ./deploy to the `origin`") + " ]\n");
         return true;
       });
     }
@@ -244,7 +283,7 @@
       outputPath = mode === "qa" ? "./qa" : void 0;
       qaMode = mode === "qa";
       ideversion.read(deploy);
-      return [].reduce(Q.when, Q());
+      return [Tasks.cleanRepo, Tasks.copyAssets, Tasks.copyJs, Tasks.compileLangSrc, Tasks.compileCoffee(debugMode), Tasks.compileTemplate, Tasks.processHtml, Tasks.concatJS(debugMode, outputPath), Tasks.removeBuildFolder, Tasks.fetchRepo(debugMode, qaMode), Tasks.preCommit, Tasks.fileVersion, Tasks.finalCommit].reduce(Q.when, Q());
     }
   };
 

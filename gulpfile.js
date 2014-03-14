@@ -4,7 +4,7 @@ var fs    = require('fs');
 var os    = require('os');
 
 var serverTask  = require('./util/gulp_tasks/server');
-var buildTask   = require('./util/gulp_tasks/build');
+var developTask = require('./util/gulp_tasks/develop');
 var releaseTask = require('./util/gulp_tasks/release');
 
 // Load user-config
@@ -27,18 +27,18 @@ if ( GLOBAL.gulpConfig.pollingWatch === "auto" ) {
 
 gulp.task("default", ["dev"], function(){
   serverTask.create(); // Create a static server
-  buildTask.watch();   // Watch File Changes
+  developTask.watch();   // Watch File Changes
 });
 
 // Create a server without compiling
 gulp.task("watch", function(){
   serverTask.create(); // Create a static server
-  buildTask.watch();   // Watch File Changes
+  developTask.watch();   // Watch File Changes
 });
 
 // Build different version of ide
-gulp.task("dev",     function(){ return buildTask.compileDev(); });
-gulp.task("dev_all", function(){ return buildTask.compileDev( true ); });
+gulp.task("dev",     function(){ return developTask.compileDev(); });
+gulp.task("dev_all", function(){ return developTask.compileDev( true ); });
 gulp.task("debug",   function(){ return releaseTask.build( "debug" );   });
 gulp.task("release", function(){ return releaseTask.build( "release" ); });
 

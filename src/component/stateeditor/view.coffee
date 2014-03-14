@@ -1149,21 +1149,19 @@ define [ 'event',
 
             $stateItem = that.$stateList.find('.state-item:last')
 
-            newStateIdShow = 1
-
-            if $stateItem.length
-                newStateIdShow = $stateItem.index() + 2
-
             newStateId = that.genStateUID()
 
             newStateHTML = that.stateListTpl({
                 state_list: [{
-                    id: newStateId,
-                    id_show: newStateIdShow
+                    id: newStateId
                 }]
             })
 
-            $newStateItem = $(newStateHTML).appendTo(that.$stateList)
+            $focusState = that.$stateList.find('.state-item.focused')
+            if $focusState.length
+                $newStateItem = $(newStateHTML).insertAfter($focusState)
+            else
+                $newStateItem = $(newStateHTML).appendTo(that.$stateList)
 
             that.clearFocusedItem()
 
@@ -1188,12 +1186,7 @@ define [ 'event',
                     cmdEditor.focus()
                 , 0)
 
-            # $newStateItem.addClass('selected')
-
-            # $newStateItem.find('.checkbox input').prop('checked', true)
-
             that.refreshLogItemNum()
-
 
             $stateItems = that.$stateList.find('.state-item')
             if $stateItems.length

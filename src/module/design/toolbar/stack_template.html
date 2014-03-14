@@ -24,7 +24,7 @@
 	<ul class="dropdown">
 		<li id="toolbar-export-png" class="icon-export-png">{{ i18n "TOOL_EXPORT_AS_PNG" }}</li>
 		<li id="toolbar-export-json" class="icon-export-json">{{ i18n "TOOL_EXPORT_AS_JSON" }}</li>
-		<li id="toolbar-convert-cf" data-modal-template="modalDownloadCloudFormationTpl" data-modal-data='{"title":"{{{ i18n "TOOL_POP_TIT_EXPORT_AS_JSON" }}}", "body":"{{{ i18n "TOOL_POP_BODY_EXPORT_AS_JSON" }}}", "confirm":"{{{ i18n "TOOL_POP_BTN_DOWNLOAD" }}}", "color":"blue", "download":"{{json_file}}", "filecontent":"{{json_content}}" }' data-modal-dismiss="true" class="icon-toolbar-cloudformation modal">Convert to CloudFormation Format</li>
+		<li id="toolbar-convert-cf" data-modal-template="modalDownloadCloudFormationTpl" data-modal-data='{"title":"{{{ i18n "TOOL_POP_TIT_EXPORT_AS_JSON" }}}", "body":"{{{ i18n "TOOL_POP_BODY_EXPORT_AS_JSON" }}}", "confirm":"{{{ i18n "TOOL_POP_BTN_DOWNLOAD" }}}", "color":"blue", "download":"{{json_file}}", "filecontent":"{{json_content}}" }' data-modal-dismiss="true" class="icon-toolbar-cloudformation modal">{{ i18n "TOOL_EXPORT_AS_CF" }}</li>
 	</ul>
 </div>
 
@@ -47,10 +47,10 @@
 <!-- env:dev:end -->
 
 <section class="toolbar-btn-group">
-	<a href="javascript:void(0);" id="apply-visops" style="display: none;">Experimental Feature!</a>
+	<a href="javascript:void(0);" id="apply-visops" style="display: none;">{{ i18n "TOOL_EXPERIMENT" }}</a>
 </section>
 
 <label class="switch toolbar-visual-ops-switch tooltip" data-tooltip="{{i18n 'TOOL_TIP_CUSTOM_USER_DATA'}}" style="display: none;">
-  <span class="switch-label" data-on="VisualOps On" data-off="VisualOps Off"></span>
+  <span class="switch-label" data-on="{{i18n 'TOOL_TOGGLE_VISUALOPS_ON'}}" data-off="{{i18n 'TOOL_TOGGLE_VISUALOPS_OFF'}}"></span>
   <span class="switch-handle"></span>
 </label>

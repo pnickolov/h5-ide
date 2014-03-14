@@ -687,6 +687,10 @@ module.exports =
       en: "Export to PNG"
       zh: "导出图片"
 
+    TOOL_EXPORT_AS_CF:
+      en: "Convert to CloudFormation Format"
+      zh: "导出JSON文件"
+
     TOOL_TIP_STOP_APP:
       en: "Stop This App's Resources."
       zh: "暂停应用"
@@ -890,6 +894,18 @@ module.exports =
     TOOL_LBL_LINESTYLE_SMOOTH_QUADRATIC_BELZIER:
       en: "Smooth quadratic Belzier curve"
       zh: "光滑的二次贝塞尔曲线"
+
+    TOOL_EXPERIMENT:
+      en: "Experimental Feature!"
+      zh: ""
+
+    TOOL_TOGGLE_VISUALOPS_ON:
+      en: "instance state on"
+      zh: ""
+
+    TOOL_TOGGLE_VISUALOPS_OFF:
+      en: "instnace state off"
+      zh: ""
 
     PROP_LBL_REQUIRED:
       en: "Required"

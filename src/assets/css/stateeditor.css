@@ -1405,7 +1405,7 @@
 	margin-right : 8px;
 	float        : right;
 	margin-top   : 6px;
-	width        : 115px;
+	width        : 120px;
 	height       : 27px;
 	border       : 1px solid #ccc;
 	background   : #dadada;
@@ -1440,15 +1440,18 @@
 	line-height: 1;
 }
 .switch-label:before {
-	content: attr(data-off);
-	right: 11px;
-	color: #aaa;
+	content     : attr(data-off);
+	right       : 10px;
+	color       : #aaa;
+	font-variant: small-caps;
 }
+
 .switch-label:after {
-	content: attr(data-on);
-	left: 11px;
-	color: white;
-	opacity: 0;
+	content     : attr(data-on);
+	left        : 10px;
+	color       : white;
+	opacity     : 0;
+	font-variant: small-caps;
 }
 
 .switch.on .switch-label:before { opacity: 0; }
@@ -1468,7 +1471,7 @@
 	transition: left 0.15s ease-out;
 }
 .switch.on .switch-handle {
-	left: 91px;
+	left: 96px;
 }
 
 #modal-ssl-cert-setting .modal-ssl-cert-item {

@@ -7210,7 +7210,7 @@ summary:focus {
 .property-header-info {
 	position: absolute;
 	right: 15px;
-	top: 10px;
+	top: 2px;
 	color: #4495d3;
 	cursor: pointer;
 }

@@ -3768,6 +3768,9 @@ module.exports =
       zh: "更新错误"
 
     ##### State Editor
+
+    ## State Editor Tooltip
+
     STATE_TIP_DELETE_STATE:
       en: "Delete State"
       zh: ""
@@ -3794,6 +3797,80 @@ module.exports =
 
     STATE_TIP_SELECT_ALL_STATES:
       en: "Select All States"
+      zh: ""
+
+    ## State Editor Special State
+
+    STATE_UNKNOWN_DISTRO_LBL:
+      en: "The AMI's distro cannot be recognised. Some commands may not apply to this AMI."
+      zh: ""  
+
+    STATE_NO_STATE_LBL:
+      en: "No state configured yet."
+      zh: ""  
+
+    STATE_NO_STATE_ADD_BTN:
+      en: "Add a State"
+      zh: ""  
+
+    ## State Editor Toolbar
+
+    STATE_TOOL_ADD_STATE:
+      en: "+ Add State"
+      zh: "" 
+
+    STATE_TOOL_COPY_ALL:
+      en: "Copy All"
+      zh: "" 
+
+    STATE_TOOL_COPY_SELECTED:
+      en: "Copy "
+      zh: ""  
+
+    STATE_TOOL_DELETE:
+      en: "Delete "
+      zh: "" 
+
+    STATE_TOOL_PASTE:
+      en: "Paste"
+      zh: ""  
+
+    STATE_TOOL_UNDO:
+      en: "Undo"
+      zh: "" 
+
+    STATE_TOOL_REDO:
+      en: "Redo"
+      zh: ""  
+
+    ## State Editor Log
+
+    STATE_LOG_TIT:
+      en: "State Log"
+      zh: ""
+
+    STATE_LOG_LOADING_LBL:
+      en: "Loading..."
+      zh: ""
+
+    STATE_LOG_VIEW_DETAIL:
+      en: "View details..."
+      zh: ""
+
+    STATE_LOG_ITEM_INSTANCE:
+      en: "Instance"
+      zh: ""
+
+    STATE_LOG_ITEM_UNKNOWN:
+      en: "unknown"
+      zh: ""
+
+    STATE_LOG_DETAIL_MOD_TIT:
+      en: "State Log Detail"
+      zh: ""
+
+    STATE_LOG_DETAIL_MOD_CLOSE_BTN:
+      en: "Close"
       zh: ""
 
     ##### Request Invite to Experimental Feature

@@ -174,12 +174,12 @@
 	<div id="state-editor-wrap">
 		<div id="state-editor-body">
 			<div id="state-editor" spellcheck="false" class="font-mono">
-				{{#unless supported_platform}}<div class="state-warning">The AMI's distro cannot be recognised. Some commands may not apply to this AMI.</div>{{/unless}}
+				{{#unless supported_platform}}<div class="state-warning">{{ i18n 'STATE_UNKNOWN_DISTRO_LBL' }}</div>{{/unless}}
 
 				<div class="state-no-state-container font-normal">
-					<div class="state-no-data-tip">No state conﬁgured yet.</div>
+					<div class="state-no-data-tip">{{ i18n 'STATE_NO_STATE_LBL' }}</div>
 					{{#if allow_add_state}}
-						<div class="state-item-add-btn btn btn-blue">Add a State</div>
+						<div class="state-item-add-btn btn btn-blue">{{ i18n 'STATE_NO_STATE_ADD_BTN' }}</div>
 					{{/if}}
 				</div>
 
@@ -191,13 +191,13 @@
 						<a class="tooltip state-sys-log-btn icon-syslog" data-tooltip="{{i18n 'STATE_TIP_SYSTEM_LOG'}}"></a>
 
 						<div class="state-operate">
-							<a id="state-toolbar-add" href="javascript:void(0)">+ Add State</a>
-							<a id="state-toolbar-copy-all" href="javascript:void(0)">Copy all</a>
-							<a id="state-toolbar-copy" href="javascript:void(0)">Copy (<span id="state-toolbar-copy-count"></span>)</a>
-							<a id="state-toolbar-delete" href="javascript:void(0)">Delete (<span id="state-toolbar-delete-count"></span>)</a>
-							<a id="state-toolbar-paste" class="disabled" href="javascript:void(0)">Paste</a>
-							<a id="state-toolbar-undo" href="javascript:void(0)">Undo</a>
-							<a id="state-toolbar-redo" href="javascript:void(0)">Redo</a>
+							<a id="state-toolbar-add" href="javascript:void(0)">{{i18n 'STATE_TOOL_ADD_STATE'}}</a>
+							<a id="state-toolbar-copy-all" href="javascript:void(0)">{{i18n 'STATE_TOOL_COPY_ALL'}}</a>
+							<a id="state-toolbar-copy" href="javascript:void(0)">{{i18n 'STATE_TOOL_COPY_SELECTED'}}(<span id="state-toolbar-copy-count"></span>)</a>
+							<a id="state-toolbar-delete" href="javascript:void(0)">{{i18n 'STATE_TOOL_DELETE'}}(<span id="state-toolbar-delete-count"></span>)</a>
+							<a id="state-toolbar-paste" class="disabled" href="javascript:void(0)">{{i18n 'STATE_TOOL_PASTE'}}</a>
+							<a id="state-toolbar-undo" href="javascript:void(0)">{{i18n 'STATE_TOOL_UNDO'}}</a>
+							<a id="state-toolbar-redo" href="javascript:void(0)">{{i18n 'STATE_TOOL_REDO'}}</a>
 
 							<div id="state-toolbar-selectAll" class="checkbox tooltip" data-tooltip="{{i18n 'STATE_TIP_SELECT_ALL_STATES'}}">
 								<input type="checkbox" name="state-toolbar-selectAll">
@@ -215,7 +215,7 @@
 
 	<div id="state-description" data-command="" class="state-sidebar"></div>
 	<div id="state-log" data-state-id="" class="state-sidebar">
-		<div class="state-log-header">State log<span class="state-log-loading">Loading...</span></div>
+		<div class="state-log-header">{{i18n 'STATE_LOG_TIT'}}<span class="state-log-loading">{{i18n 'STATE_LOG_LOADING_LBL'}}</span></div>
 		<ul class="state-log-list">
 			{{> state-template-log-instance-item}}
 			{{> state-template-log-item}}
@@ -243,7 +243,7 @@
 			{{#if comment}}<div class="state-log-item-detail comment">{{breaklines comment}}</div>{{/if}}
 			{{#if stdout}}
 				{{#if long_stdout}}
-					<a class="state-log-item-view-detail">View details...</a>
+					<a class="state-log-item-view-detail">{{i18n 'STATE_LOG_VIEW_DETAIL'}}</a>
 				{{else}}
 					<div class="state-log-item-detail stdout">{{breaklines stdout}}</div>
 				{{/if}}
@@ -255,19 +255,19 @@
 <!-- state-template-log-instance-item -->
 <li class="state-log-item">
 	<div class="state-log-item-header">
-		<div class="state-log-item-name">Instance</div>
-		<div class="state-log-item-status">{{#if res_status}}{{res_status}}{{else}}unknown{{/if}}</div>
+		<div class="state-log-item-name">{{i18n 'STATE_LOG_ITEM_INSTANCE'}}</div>
+		<div class="state-log-item-status">{{#if res_status}}{{res_status}}{{else}}{{i18n 'STATE_LOG_ITEM_UNKNOWN'}}{{/if}}</div>
 	</div>
 </li>
 
 <!-- state-template-log-detail-modal -->
 <div id="modal-state-log-detail" style="width: 900px;">
-	<div class="modal-header"><h3>State log detail</h3><i class="modal-close">&times;</i> </div>
+	<div class="modal-header"><h3>{{i18n 'STATE_LOG_DETAIL_MOD_TIT'}}</h3><i class="modal-close">&times;</i> </div>
 	<div class="modal-body">
 		<textarea class="state-log-detail-content" readonly="readonly">{{content}}</textarea>
 	</div>
 	<div class="modal-footer">
-		<button class="btn modal-close btn-silver">Close</button>
+		<button class="btn modal-close btn-silver">{{i18n 'STATE_LOG_DETAIL_MOD_CLOSE_BTN'}}</button>
 	</div>
 </div>
 

@@ -3618,7 +3618,7 @@ module.exports =
     # State Panel Operation - General
 
     KEY_TIT_STATE_GEN:
-      en: "State Panel TA_MSG_NOTICE_INSTANCE_NOT_EBS_OPTIMIZED_FOR_ATTACHED_PROVISIONED_VOLUME - General"
+      en: "State Panel - General"
       zh: ""
 
     KEY_FOCUS_KEY:
@@ -3667,6 +3667,148 @@ module.exports =
 
     KEY_PREV_ACTION:
       en: "Focus to previous input"
+      zh: ""
+
+    KEY_INFO_KEY_MAC:
+      en: "Command + I"
+      zh: ""
+
+    KEY_INFO_KEY_PC:
+      en: "Ctrl + I"
+      zh: ""
+
+    KEY_INFO_ACTION:
+      en: "Open/Close information sidebar"
+      zh: ""
+
+    KEY_LOG_KEY_MAC:
+      en: "Command + L"
+      zh: ""
+
+    KEY_LOG_KEY_PC:
+      en: "Ctrl + L"
+      zh: ""
+
+    KEY_LOG_ACTION:
+      en: "Open/Close log sidebar"
+      zh: ""
+
+    # State Panel Operation - Editable Mode
+
+    KEY_TIT_STATE_EDIT:
+      en: "State Panel Operation - Editable Mode"
+      zh: ""
+
+    KEY_SELECT_ALL_KEY_MAC:
+      en: "Command + A"
+      zh: ""
+
+    KEY_SELECT_ALL_KEY_PC:
+      en: "Ctrl + A"
+      zh: ""
+
+    KEY_SELECT_ALL_ACTION:
+      en: "Select all states"
+      zh: ""
+
+    KEY_DESELECT_KEY_MAC:
+      en: "Command + D"
+      zh: ""
+
+    KEY_DESELECT_KEY_PC:
+      en: "Ctrl + D"
+      zh: ""
+
+    KEY_DESELECT_ACTION:
+      en: "Deselect states"
+      zh: ""
+
+    KEY_CREATE_KEY_MAC:
+      en: "Command + Enter"
+      zh: ""
+
+    KEY_CREATE_KEY_PC:
+      en: "Ctrl + Enter"
+      zh: ""
+
+    KEY_CREATE_ACTION:
+      en: "Create new state"
+      zh: ""
+
+    KEY_DEL_STATE_KEY_MAC:
+      en: "Command + Delete"
+      zh: ""
+
+    KEY_DEL_STATE_KEY_PC:
+      en: "Ctrl + Delete"
+      zh: ""
+
+    KEY_DEL_STATE_ACTION:
+      en: "Delete selected state"
+      zh: ""
+
+    KEY_MOVE_FOCUS_STATE_KEY_MAC:
+      en: "Command + Up/Down"
+      zh: ""
+
+    KEY_MOVE_FOCUS_STATE_KEY_PC:
+      en: "Ctrl + Up/Down"
+      zh: ""
+
+    KEY_MOVE_FOCUS_STATE_ACTION:
+      en: "Move focused state"
+      zh: ""
+
+    KEY_COPY_STATE_KEY_MAC:
+      en: "Command + C"
+      zh: ""
+
+    KEY_COPY_STATE_KEY_PC:
+      en: "Ctrl + C"
+      zh: ""
+
+    KEY_COPY_STATE_ACTION:
+      en: "Copy selected state"
+      zh: ""
+
+    KEY_PASTE_STATE_KEY_MAC:
+      en: "Command + V"
+      zh: ""
+
+    KEY_PASTE_STATE_KEY_PC:
+      en: "Ctrl + V"
+      zh: ""
+
+    KEY_PASTE_STATE_ACTION:
+      en: "Paste copied state"
+      zh: ""
+
+    KEY_UNDO_STATE_KEY_MAC:
+      en: "Command + Z"
+      zh: ""
+
+    KEY_UNDO_STATE_KEY_PC:
+      en: "Ctrl + Z"
+      zh: ""
+
+    KEY_UNDO_STATE_ACTION:
+      en: "Undo"
+      zh: ""
+
+    KEY_REDO_STATE_KEY_MAC:
+      en: "Command + Y"
+      zh: ""
+
+    KEY_REDO_STATE_KEY_PC:
+      en: "Ctrl + Y"
+      zh: ""
+
+    KEY_REDO_STATE_ACTION:
+      en: "Redo"
+      zh: ""
+
+    KEY_MODAL_BTN_CLOSE:
+      en: "Close"
       zh: ""
 
     ##### State Editor

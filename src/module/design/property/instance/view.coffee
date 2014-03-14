@@ -84,7 +84,7 @@ define [ '../base/view',
                 $("#iops-group").hide()
             else
                 $iops.removeAttr( 'disabled' )
-                
+
 
             # Adjust IOPS if it exceed limits
             iops = parseInt( $("#iops-ranged").val(), 10 ) || 0
@@ -106,15 +106,15 @@ define [ '../base/view',
             $( '#volume-size-ranged' ).parsley 'custom', ( val ) ->
                 val = + val
                 if not val || val > 1024 || val < me.model.attributes.min_volume_size
-                    return "Volume size of this rootDevice must in the range of " + me.model.attributes.min_volume_size + "-1024 GB."
+                    return sprintf lang.ide.PARSLEY_VOLUME_SIZE_OF_ROOTDEVICE_MUST_IN_RANGE, me.model.attributes.min_volume_size
 
             $( '#iops-ranged' ).parsley 'custom', ( val ) ->
                 val = + val
                 volume_size = parseInt( $( '#volume-size-ranged' ).val(), 10 )
                 if val > 4000 || val < 100
-                    return 'IOPS must be between 100 and 4000'
+                    return lang.ide.PARSLEY_IOPS_MUST_BETWEEN_100_4000
                 else if( val > 10 * volume_size)
-                    return 'IOPS must be less than 10 times of volume size.'
+                    return lang.ide.PARSLEY_IOPS_MUST_BE_LESS_THAN_10_TIMES_OF_VOLUME_SIZE
 
             #
 
@@ -143,7 +143,7 @@ define [ '../base/view',
 
             target.parsley 'custom', ( val ) ->
                 if isNaN( val ) or val > 99 or val < 1
-                    return 'This value must be >= 1 and <= 99'
+                    return lang.ide.PARSLEY_THIS_VALUE_MUST_BETWEEN_1_99
 
             if target.parsley 'validate'
 

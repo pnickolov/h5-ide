@@ -346,6 +346,38 @@ module.exports =
       en: "ASN number 9059 is reserved in Ireland"
       zh: ""
 
+    PARSLEY_LOAD_BALANCER_PORT_MUST_BE_SOME_PROT:
+      en: "Load Balancer Port must be either 25,80,443 or 1024 to 65535 inclusive"
+      zh: ""
+
+    PARSLEY_INSTANCE_PORT_MUST_BE_BETWEEN_1_AND_65535:
+      en: "Instance Port must be between 1 and 65535"
+      zh: ""
+
+    PARSLEY_THIS_NAME_IS_ALREADY_IN_USING:
+      en: "This name is already in using."
+      zh: ""
+
+    PARSLEY_INVALID_IP_ADDRESS:
+      en: "Invalid IP address"
+      zh: ""
+
+    PARSLEY_VOLUME_SIZE_OF_ROOTDEVICE_MUST_IN_RANGE:
+      en: "Volume size of this rootDevice must in the range of %s -1024 GB."
+      zh: ""
+
+    PARSLEY_IOPS_MUST_BETWEEN_100_4000:
+      en: "IOPS must be between 100 and 4000"
+      zh: ""
+
+    PARSLEY_IOPS_MUST_BE_LESS_THAN_10_TIMES_OF_VOLUME_SIZE:
+      en: "IOPS must be less than 10 times of volume size."
+      zh: ""
+
+    PARSLEY_THIS_VALUE_MUST_BETWEEN_1_99:
+      en: "This value must be >= 1 and <= 99"
+      zh: ""
+
     PARSLEY_:
       en: ""
       zh: ""

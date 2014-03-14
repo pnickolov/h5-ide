@@ -5,7 +5,8 @@
 define [ '../base/view',
          'text!./template/stack.html',
          'event'
-], ( PropertyView, template, ide_event ) ->
+         'i18n!nls/lang.js'
+], ( PropertyView, template, ide_event, lang ) ->
 
     Helper =
         makeInRange: ( value, range , $target, deflt ) ->
@@ -223,25 +224,12 @@ define [ '../base/view',
                 validate = ( val )->
                     val = parseInt( val, 10 )
                     if not ( val is 25 or val is 80 or val is 443 or ( 1023 < val < 65536 ) )
-                        return 'Load Balancer Port must be either 25,80,443 or 1024 to 65535 inclusive'
+                        return lang.ide.PARSLEY_LOAD_BALANCER_PORT_MUST_BE_SOME_PROT
             else
                 validate = ( val )->
                     val = parseInt( val, 10 )
                     if not ( 0 < val < 65536 )
-                        return 'Instance Port must be between 1 and 65535'
-
-                    # isThisSafe = _.contains [ 'https', 'ssl' ], instanceProtocolValue.toLowerCase()
-                    # i = 0
-                    # for listener in listenerAry
-                    #     listener = listener.Listener
-                    #     samePort = listener.InstancePort is instancePortValue
-                    #     isLisenerSafe = _.contains [ 'https', 'ssl' ], listener.InstanceProtocol.toLowerCase()
-                    #     if samePort and isLisenerSafe isnt isThisSafe and index > i
-                    #         if not isLisenerSafe
-                    #             prefix = 'in'
-                    #         return "The Instance Port specified was previous associated with #{prefix}secure protocol so this listener must also use a #{prefix}secure protocol for this Instance Port"
-
-                    #     i = i + 1
+                        return lang.ide.PARSLEY_INSTANCE_PORT_MUST_BE_BETWEEN_1_AND_65535
 
             $input.parsley "custom", validate
 
@@ -517,7 +505,7 @@ define [ '../base/view',
 
                 $certName.parsley 'custom', (val) ->
                     if val in otherCertNameAry
-                        return 'This name is already in using.'
+                        return lang.ide.PARSLEY_THIS_NAME_IS_ALREADY_IN_USING
                     null
 
                 valid1 = $certName.parsley('validate')

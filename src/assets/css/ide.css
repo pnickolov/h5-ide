@@ -3493,6 +3493,7 @@ a.sidebar-hider:before {
 #property-panel {
 	right        : 0;
 	margin-right : 0;
+	background: #313131;
 	/*border-left  : 1px solid #d1d1d1;*/
 
 }

@@ -142,6 +142,8 @@ define [ 'event',
 		else if Design.instance().modeIsApp()
 			if type is CONST.RESTYPE.LC
 				modeAvai = false
+			if type is 'component_server_group'
+				modeAvai = false
 			# Stopped APP
 			if Design.instance().get('state') is "Stopped"
 				if type is CONST.RESTYPE.LC

@@ -146,13 +146,13 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo', 'Design' ], ( CON
 
     __genError = ( uid, tip ) ->
         if arguments.length > 2
-            tip = sprintf.apply null, Array.prototype.slice.call( arguments, 1 )
+            tip = Function.call.apply sprintf, arguments
 
         __genTaReturn 'ERROR', tip, uid
 
     __genWarning = ( uid, tip ) ->
         if arguments.length > 2
-            tip = sprintf.apply null, Array.prototype.slice.call( arguments, 1 )
+            tip = Function.call.apply sprintf, arguments
 
         __genTaReturn 'WARNING', tip, uid
 

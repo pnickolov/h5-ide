@@ -2,7 +2,7 @@
 #**********************************************************
 #* Filename: MC.validate.js
 #* Creator: Tim
-#* Description: The core of the whole system
+#* Description: Validate helper of logic
 #* Date: 20130813
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
@@ -15,7 +15,7 @@ var MC = MC || {};
 
 	MC = MC || {};
 
-	var slice = function( arr ) {
+	var slice = function( arr, start, end ) {
 		return Function.call.apply( Array.prototype.slice, arguments );
 	};
 

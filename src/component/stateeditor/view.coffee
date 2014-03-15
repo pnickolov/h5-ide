@@ -3,13 +3,14 @@
 #############################
 
 define [ 'event',
+         'i18n!nls/lang.js',
          'text!./component/stateeditor/template.html',
          './component/stateeditor/validate',
          'constant',
-         'instance_model'
+         'instance_model',
          'UI.errortip'
 
-], ( ide_event, template , validate, constant, instance_model ) ->
+], ( ide_event, lang, template , validate, constant, instance_model ) ->
 
     StateEditorView = Backbone.View.extend {
 
@@ -2810,7 +2811,7 @@ define [ 'event',
 
             that.updateToolbar()
 
-            notification 'info', 'State(s) copied to clipboard'
+            notification 'info', lang.ide.NOTIFY_MSG_INFO_STATE_COPY_TO_CLIPBOARD
 
             return true
 
@@ -2827,7 +2828,7 @@ define [ 'event',
 
             that.updateToolbar()
 
-            notification 'info', 'State(s) copied to clipboard'
+            notification 'info', lang.ide.NOTIFY_MSG_INFO_STATE_COPY_TO_CLIPBOARD
 
             return true
 

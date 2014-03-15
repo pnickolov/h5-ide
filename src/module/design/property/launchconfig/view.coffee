@@ -147,7 +147,7 @@ define [ '../base/view', 'text!./template/stack.html', 'event', 'constant', 'i18
         addKP : ( event, id ) ->
             result = @model.addKP id
             if not result
-                notification "error", "KeyPair with the same name already exists."
+                notification "error", lang.ide.NOTIFY_MSG_WARN_KEYPAIR_NAME_ALREADY_EXISTS
                 return result
 
         updateKPSelect : () ->

@@ -2899,6 +2899,38 @@ module.exports =
       en: "Your app is in Processing. Please wait a moment."
       zh: "您的应用正在处理中，请稍等一会。"
 
+    NOTIFY_MSG_WARN_AUTH_FAILED:
+      en : "Authentication failed."
+      zh : ""
+
+    NOTIFY_MSG_INFO_STATE_COPY_TO_CLIPBOARD:
+      en : "State(s) copied to clipboard"
+      zh : ""
+
+    NOTIFY_MSG_WARN_OPERATE_NOT_SUPPORT_YET:
+      en : "This operation is not supported yet."
+      zh : ""
+
+    NOTIFY_MSG_WARN_AMI_NOT_EXIST_TRY_USE_OTHER:
+      en : "The AMI(%s) is not exist now, try to use another AMI."
+      zh : ""
+
+    NOTIFY_MSG_WARN_ATTACH_VOLUME_REACH_INSTANCE_LIMIT:
+      en : "Attached volume has reached instance limit."
+      zh : ""
+
+    NOTIFY_MSG_WARN_KEYPAIR_NAME_ALREADY_EXISTS:
+      en : "KeyPair with the same name already exists."
+      zh : ""
+
+    NOTIFY_MSG_WARN_CANNT_AUTO_ASSIGN_CIDR_FOR_SUBNET:
+      en : "Cannot auto-assign cidr for subnets, please manually update subnets' cidr before changing vpc's cidr."
+      zh : ""
+
+    NOTIFY_MSG_WARN_VPC_DOES_NOT_EXIST:
+      en : "VPC does not exist."
+      zh : ""
+
     CFM_BTN_DELETE:
       en: "Delete"
       zh: "删除"

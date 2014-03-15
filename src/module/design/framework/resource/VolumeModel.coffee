@@ -1,5 +1,5 @@
 
-define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
+define [ "i18n!nls/lang.js", "../ComplexResModel", "constant" ], ( lang, ComplexResModel, constant )->
 
   Model = ComplexResModel.extend {
 
@@ -154,7 +154,7 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
       ami_info = MC.data.dict_ami[ imageId ]
 
       if !ami_info
-        notification "warning", "The AMI(" +  imageId + ") is not exist now, try to use another AMI.", false  unless ami_info
+        notification "warning", sprintf(lang.ide.NOTIFY_MSG_WARN_AMI_NOT_EXIST_TRY_USE_OTHER, imageId), false  unless ami_info
         return null
 
       else
@@ -181,7 +181,7 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
 
         #no valid deviceName
         if deviceName.length is 0
-          notification "warning", "Attached volume has reached instance limit.", false
+          notification "warning", lang.ide.NOTIFY_MSG_WARN_ATTACH_VOLUME_REACH_INSTANCE_LIMIT, false
           return null
 
         if ami_info.osType isnt "windows"

@@ -234,7 +234,7 @@ define [ '../base/view',
             event.id = id
 
             if not id
-                notification "error", "KeyPair with the same name already exists."
+                notification "error", lang.ide.NOTIFY_MSG_WARN_KEYPAIR_NAME_ALREADY_EXISTS
                 return id
 
         updateKPSelect : () ->

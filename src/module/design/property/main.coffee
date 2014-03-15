@@ -112,24 +112,29 @@ define [ 'event',
 		null
 
 	processState = ( uid, type ) ->
-		uid = Design.instance().canvas.selectedNode[ 0 ] if not uid
-		component = Design.instance().component uid
-		type = component.type if not type and component
-		typeAvai = _.contains [ CONST.RESTYPE.LC, CONST.RESTYPE.INSTANCE, 'component_server_group' ], type
-		opsEnabled = Design.instance().get('agent').enabled
+		propertyPanel = $ '#property-panel'
 
-		modeAvai = getModeAvai type
+		if uid
+			component = Design.instance().component uid
+			type = component.type if not type and component
+			typeAvai = _.contains [ CONST.RESTYPE.LC, CONST.RESTYPE.INSTANCE, 'component_server_group' ], type
+			opsEnabled = Design.instance().get('agent').enabled
 
-		if opsEnabled and typeAvai
-			view.renderStateCount component
+			modeAvai = getModeAvai type
+
+			if opsEnabled and typeAvai
+				view.renderStateCount component
 
 
-		if opsEnabled and ( ( modeAvai is null and typeAvai ) or modeAvai )
-			$( '#property-panel' ).removeClass 'no-state'
-			true
+			if opsEnabled and ( ( modeAvai is null and typeAvai ) or modeAvai )
+				propertyPanel.removeClass 'no-state'
+				return true
+			else
+				propertyPanel.addClass 'no-state'
+				return false
 		else
-			$( '#property-panel' ).addClass 'no-state'
-			false
+			propertyPanel.addClass 'no-state'
+			return false
 
 	# modeAvai is behalf of tab mode ( app|stack|appedit|stoped|more.. )
 	# modeAvai has 3 states true|false|null( not set )

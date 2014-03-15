@@ -3901,6 +3901,33 @@ module.exports =
       en: "The app is currently stopped. To apply updates, the app will be started automatically."
       zh: ""
 
+    POP_CONFIRM_UPDATE_TABLE_TYPE:
+      en: "Type"
+      zh: ""
+
+    POP_CONFIRM_UPDATE_TABLE_NAME:
+      en: "Name"
+      zh: ""
+
+    POP_CONFIRM_UPDATE_TABLE_CHANGE:
+      en: "Change"
+      zh: ""
+
+    POP_CONFIRM_UPDATE_VALIDATION:
+      en: "Validation"
+      zh: ""
+
+    POP_CONFIRM_UPDATE_VALIDATING:
+      en: "Validating your app..."
+      zh: ""
+
+    POP_CONFIRM_UPDATE_CONFIRM_BTN:
+      en: "Continue to Update"
+      zh: ""
+
+    POP_CONFIRM_UPDATE_CANCEL_BTN:
+      en: "Cancel"
+      zh: ""
 
     ##### State Editor
 

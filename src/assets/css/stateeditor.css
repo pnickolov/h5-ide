@@ -967,6 +967,22 @@
 	padding-left: 10px;
 }
 
+/*#state-log .state-log-item .state-log-item-header {
+	box-shadow: inset 2px 0 0 #333;
+}
+
+#state-log .state-log-item[data-state-id="Agent"] .state-log-item-header {
+	box-shadow: none !important;
+}
+
+#state-log .state-log-item.view .state-log-item-header {
+	box-shadow: inset 2px 0 0 blue;
+}*/
+
+#state-log .state-log-item[data-state-id="Agent"] .state-log-item-name:before {
+	display: none !important;
+}
+
 #state-log .state-log-item .state-log-item-name:before {
 	display: block;
 	content: " ";

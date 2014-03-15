@@ -877,6 +877,11 @@ button {
 	position    : relative;
 }
 
+.nav-region-list-items.app-list li > a {
+	width: 180px;
+	padding-right: 60px;
+}
+
 #nav-dashboard-region li a:hover,
 .nav-region-list-items li a:hover {
 	background-color: rgba(0,0,0,.4);
@@ -7001,12 +7006,17 @@ summary:focus {
 	position: absolute;
 	top: 15px;
 	right: 8px;
+	z-index: 20;
 }
 
 .global-region-status-list h5 [class^="icon-app-type-"],
 .global-region-status-list h5 [class*=" icon-app-type-"]  {
 	position: absolute;
 	right: 0px;
+}
+
+.nav-region-list-items.app-list>li {
+	position: relative;
 }
 
 /* App Useage: Confirm Terminate App for Production */

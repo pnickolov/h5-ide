@@ -342,7 +342,9 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
               "VolumeSize": rdEbs.volumeSize
               "SnapshotId": rdEbs.snapshotId
               "VolumeType": rdEbs.volumeType
-              "Iops"      : if rdEbs.iops then rdEbs.iops else ""
+
+          if rdEbs.volumeType is "io1"
+            rd.Ebs.Iops = rdEbs.iops
         else
           console.warn "getAmiRootDevice(): can not found root device of AMI(" + @get("imageId") + ")", this
       rd

@@ -53,6 +53,32 @@
     {{/if}}
   </div>
 
+  {{#if rootDevice}}
+  <div class="option-group-head">Root Device</div>
+  <div class="option-group">
+    <article class="property-app">
+      <dl class="dl-vertical">
+        <dt>{{i18n "PROP_VOLUME_DEVICE_NAME"}}</dt>
+        <dd>{{emptyStr rootDevice.DeviceName}}</dd>
+      </dl>
+      <dl class="dl-vertical">
+        <dt>{{i18n "PROP_VOLUME_TYPE"}}</dt>
+        <dd>{{emptyStr rootDevice.Ebs.VolumeType}}</dd>
+        {{#if rootDevice.Ebs.SnapshotId}}
+        <dt>{{i18n "PROP_VOLUME_SNAPSHOT_ID"}}</dt>
+        <dd>{{rootDevice.Ebs.SnapshotId}}</dd>
+        {{/if}}
+        <dt>{{i18n "PROP_VOLUME_SIZE"}}</dt>
+        <dd>{{emptyStr rootDevice.Ebs.VolumeSize}} GB</dd>
+        {{#if rootDevice.Ebs.Iops}}
+        <dt>IOPS</dt>
+        <dd>{{rootDevice.Ebs.Iops}}</dd>
+        {{/if}}
+      </dl>
+    </article>
+  </div>
+  {{/if}}
+
   {{#if eni}}
   <div class="option-group-head">{{i18n "PROP_INSTANCE_ENI_DETAIL"}}</div>
   <div class="option-group">

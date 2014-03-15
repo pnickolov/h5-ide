@@ -23,8 +23,11 @@ define [ 'event',
         # store current uid
         uid: null
 
-        # store lastest render component id
-        lastUid: null
+        # store the message of latest rendered component
+        last:
+            uid     : null
+            type    : null
+
 
         initialize : ->
 
@@ -76,10 +79,10 @@ define [ 'event',
             target = event.currentTarget
             if target.id is 'btn-switch-state'
                 if @currentTab isnt 'state'
-                    @renderState @lastUid, true
+                    @renderState @last.uid, @last.type, true
             else
                 if @currentTab is 'state'
-                    @renderProperty @lastUid
+                    @renderProperty @last.uid, @last.type
 
         __hideProperty: () ->
             $( '#property-panel .sub-property' ).hide()
@@ -104,6 +107,11 @@ define [ 'event',
             if hideButton.hasClass 'icon-caret-left'
                 hideButton.click()
 
+        storeLast: ( uid, type ) ->
+            @last.uid = uid
+            @last.type = type
+            null
+
         renderProperty: ( uid, type, force ) ->
             @__hideState()
             $( '#property-panel' ).removeClass('state').removeClass('state-wide')
@@ -116,7 +124,7 @@ define [ 'event',
 
             @currentTab = 'property'
             @__showProperty()
-            @lastUid = uid
+            @storeLast uid, type
             @
 
         renderStateCount: ( component ) ->
@@ -124,16 +132,16 @@ define [ 'event',
                 count = component.get( 'state' ) and component.get( 'state' ).length or 0
                 $( '#btn-switch-state b' ).text "(#{count})"
 
-        renderState: ( uid, force ) ->
+        renderState: ( uid, type, force ) ->
 
             @__hideProperty()
             @__hideResourcePanel()
             $( '#property-panel' ).addClass 'state'
 
-            @lastUid = uid
+            @storeLast uid, type
             @currentTab = 'state'
 
-            if @lastUid is uid and @__hasProperty()
+            if @last.uid is uid and @__hasProperty()
 
             else
 

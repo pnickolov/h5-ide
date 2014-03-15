@@ -16,7 +16,7 @@ var MC = MC || {};
 	MC = MC || {};
 
 	var slice = function( arr ) {
-		return Array.prototype.slice.apply( arr, Array.prototype.slice.call( arguments, 1 ) );
+		return Function.call.apply( Array.prototype.slice, arguments );
 	};
 
 	var regExp = {

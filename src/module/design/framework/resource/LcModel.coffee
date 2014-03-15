@@ -173,13 +173,8 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
 
       sgarray = _.map @connectionTargets("SgAsso"), ( sg )-> sg.createRef( "GroupId" )
 
-      blockDevice = []
+      blockDevice = @getBlockDeviceMapping()
       for volume in @get("volumeList") or emptyArray
-
-        #Check RootDevice
-        if volume.get("name") is @getAmiRootDeviceName()
-          hasRootDevice = true
-          continue
 
         vd =
           DeviceName : volume.get("name")
@@ -194,14 +189,6 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
           vd.Ebs.SnapshotId = volume.get("snapshotId")
 
         blockDevice.push vd
-
-      if !hasRootDevice
-        # Append RootDevice
-        rd = @getAmiRootDevice()
-        if rd
-          delete rd.Ebs.Iops
-          blockDevice.splice 0, 0, rd
-
 
       component =
         type : @type

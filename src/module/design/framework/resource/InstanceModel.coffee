@@ -560,6 +560,8 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
 
       # Generate RootDevice
       blockDeviceMapping = @getBlockDeviceMapping()
+      for volume in @get("volumeList") or []
+        blockDeviceMapping.push "#"+volume.id
 
       component =
         type   : @type

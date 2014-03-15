@@ -1045,8 +1045,8 @@
 }
 
 #state-log .state-log-item .state-log-item-view-detail {
-	text-align: center;
-	padding: 5px;
+	/*text-align: center;*/
+	padding: 10px 15px;
 	width: 100%;
 	display: block;
 	cursor: pointer;
@@ -1069,12 +1069,10 @@
 
 #state-log .state-log-loading {
 	text-align: center;
-	/*margin-top: 80px;*/
 	display: none;
 	float: right;
 	font-style: italic;
 	color: #aaa;
-	/*padding-bottom: 80px;*/
 }
 
 #state-log .state-log-title {

@@ -2360,7 +2360,7 @@ module.exports =
       zh: "监听设置"
 
     PROP_ELB_BTN_ADD_LISTENER:
-      en: "Add Listener"
+      en: "+ Add Listener"
       zh: "添加监听器"
 
     PROP_ELB_BTN_ADD_SERVER_CERTIFICATE:

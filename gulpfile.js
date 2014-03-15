@@ -46,4 +46,14 @@ gulp.task("qa_build", function(){ return releaseTask.build( "qa" ); })
 gulp.task("qa", ["qa_build"], function(){ return serverTask.create("./qa", 3002); });
 
 // Help
-gulp.task("help", function(){ });
+gulp.task("help", function(){
+  console.log( "\n ", gutil.colors.bgBlue.white(" gulp         "), "Compile IDE and start a server @127.0.0.1:3000." );
+  console.log( "\n ", gutil.colors.bgBlue.white(" gulp watch   "), "Start a server @127.0.0.1:3000." );
+  console.log( "\n ", gutil.colors.bgBlue.white(" gulp dev     "), "Compile IDE" );
+  console.log( "\n ", gutil.colors.bgBlue.white(" gulp dev_all "), "Compile IDE including src/model and src/service" );
+
+  console.log( "\n ", gutil.colors.bgBlue.white(" gulp release "), "Compile IDE in release mode, and push to remote master" );
+  console.log( "\n ", gutil.colors.bgBlue.white(" gulp debug   "), "Almost the same as `gulp release`, except that the code are not minified and are pushed to remote develop" );
+  console.log( "\n ", gutil.colors.bgBlue.white(" gulp qa      "), "Almost the same as `gulp debug`, except that instead of pushing code to remote, it starts a server @127.0.0.1:3002" );
+  console.log("");
+});

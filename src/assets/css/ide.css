@@ -2914,6 +2914,7 @@ td.table-action a.btn {
 
 #ami-table-wrap .toggle-fav:hover {
 	margin: 0;
+	cursor: pointer;
 }
 
 #ami-table-wrap .table-head thead th {

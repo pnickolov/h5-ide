@@ -307,7 +307,7 @@ define [ 'event', 'i18n!nls/lang.js',
                 $( '#global-region-visualize-VPC' ).removeClass 'disabled'
 
             # when is_invitated cookie not true hide
-            if MC.common.cookie.getCookieByName( 'is_invitated' ) in [ 'true', true ]
+            if MC.common.cookie.getCookieByName( 'is_invitated' ) in [ 'true', true, 2, '2' ]
                 $( '#global-region-visualize-VPC' ).show()
             else
                 $( '#global-region-visualize-VPC' ).hide()
@@ -567,7 +567,7 @@ define [ 'event', 'i18n!nls/lang.js',
             console.log 'unmanagedVPCClick'
 
             # when is_invitated cookie is true can click
-            if MC.common.cookie.getCookieByName( 'is_invitated' ) in [ 'true', true ] and MC.common.cookie.getCookieByName( 'account_id' ) isnt 'demo_account'
+            if MC.common.cookie.getCookieByName( 'is_invitated' ) in [ 'true', true, 2, '2' ] and MC.common.cookie.getCookieByName( 'account_id' ) isnt 'demo_account'
 
                 # load unmanagedvpc
                 unmanagedvpc.loadModule()

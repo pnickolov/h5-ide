@@ -772,12 +772,12 @@ define [ 'MC', 'event',
                     $switchCheckbox.removeClass 'on'
 
             # set visual-ops-switch show/hide
-            if MC.common.cookie.getCookieByName( 'is_invitated' ) in [ 'true', true ]
+            if MC.common.cookie.getCookieByName( 'is_invitated' ) in [ 'true', true, 2, '2' ]
 
                 $applyVisops.hide()
                 $switchCheckbox.show()
 
-            else if MC.common.cookie.getCookieByName( 'is_invitated' ) in [ 'false', false ]
+            else if MC.common.cookie.getCookieByName( 'is_invitated' ) in [ 'false', false, 0, '0', 1, '1' ]
 
                 $applyVisops.show()
                 $switchCheckbox.hide()
@@ -812,7 +812,15 @@ define [ 'MC', 'event',
 
         openExperimentalVisops : ->
             console.log 'openExperimentalVisops'
+
+            # modal experimentalVisops
             modal MC.template.experimentalVisops()
+
+            # if is_invitated = 1, explanation audit
+            if MC.common.cookie.getCookieByName( 'is_invitated' ) in [ 1, '1' ]
+                $( '.modal-body' ).html MC.template.experimentalVisopsTrail()
+                $( '#experimental-visops-cancel'  ).html lang.ide.INVITE_MOD_BTN_DONE
+                $( '#experimental-visops-confirm' ).hide()
 
         experimentalVisopsConfirm : ( event ) ->
             console.log 'experimentalVisopsConfirm', event

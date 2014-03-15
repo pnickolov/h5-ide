@@ -287,6 +287,11 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 					if currentCompUID is compUID
 						return
 
+					if compType is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+						if compObj.index isnt 0
+							return
+						compName = compObj.serverGroupName
+
 					if compType is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
 						compName = Design.instance().component(compUID).parent().get('name')
 
@@ -359,6 +364,9 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 					if compData.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
 						if compData.number and compData.number > 1
 							resName = compData.serverGroupName
+
+					# if compData.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+					# 	resName = compData.serverGroupName
 
 					if compData.state and _.isArray compData.state
 						_.each compData.state, (stateObj, idx) ->

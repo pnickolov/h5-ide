@@ -244,6 +244,11 @@ Tasks =
 
       d.promise
 
+  logDeployInDevRepo : ()->
+    logTask "Commit deploy in h5-ide"
+    # Update IDE Version to dev repo
+    util.runCommand "git", ["commit", "-m", '"Deploy '+ideversion.version()+'"', "package.json"]
+
 
   finalCommit : ()->
     logTask "Final Commit"
@@ -310,6 +315,7 @@ module.exports =
 
     if not qaMode
       tasks = tasks.concat [
+        Tasks.logDeployInDevRepo
         Tasks.fetchRepo( debugMode )
         Tasks.preCommit
         Tasks.fileVersion

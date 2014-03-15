@@ -260,6 +260,10 @@
         return d.promise;
       });
     },
+    logDeployInDevRepo: function() {
+      logTask("Commit deploy in h5-ide");
+      return util.runCommand("git", ["commit", "-m", '"Deploy ' + ideversion.version() + '"', "package.json"]);
+    },
     finalCommit: function() {
       var commit, option;
       logTask("Final Commit");
@@ -299,7 +303,7 @@
       ideversion.read(deploy);
       tasks = [Tasks.cleanRepo, Tasks.copyAssets, Tasks.copyJs, Tasks.compileLangSrc, Tasks.compileCoffee(debugMode), Tasks.compileTemplate, Tasks.processHtml, Tasks.concatJS(debugMode, outputPath), Tasks.removeBuildFolder];
       if (!qaMode) {
-        tasks = tasks.concat([Tasks.fetchRepo(debugMode), Tasks.preCommit, Tasks.fileVersion, Tasks.finalCommit]);
+        tasks = tasks.concat([Tasks.logDeployInDevRepo, Tasks.fetchRepo(debugMode), Tasks.preCommit, Tasks.fileVersion, Tasks.finalCommit]);
       }
       return tasks.reduce(Q.when, Q());
     }

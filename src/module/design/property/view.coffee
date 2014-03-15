@@ -137,8 +137,12 @@ define [ 'event',
 
             else
 
+                currentSelectedCompModel = null
+
                 if not uid
                     uid = Design.instance().canvas.selectedNode[ 0 ]
+                    if uid
+                        currentSelectedCompModel = Design.instance().component(uid)
 
                 if uid
                     comp = Design.instance().component uid
@@ -162,10 +166,11 @@ define [ 'event',
                     if Design.instance().modeIsApp()
 
                         # for asg or isg
+                        isASGSelect = false
 
                         resId = $('#asgList-wrap .asgList-item.selected').attr('id')
 
-                        if resId
+                        if resId and resId is uid
 
                             compObj = MC.aws.aws.getCompByResIdForState(resId)
                             if compObj and compObj.parent and compObj.parent.type is 'AWS.AutoScaling.Group'
@@ -175,16 +180,20 @@ define [ 'event',
                                     @__showState()
                                     return
 
-                        resId = $('#instanceList-wrap .instanceList-item.selected').data('id')
+                            isASGSelect = true
 
-                        if resId
+                        if not isASGSelect
 
-                            compObj = MC.aws.aws.getCompByResIdForState(resId)
-                            if compObj and compObj.parent and compObj.parent.type is 'AWS.EC2.Instance'
-                                if compObj.parent and compObj.parent.id
-                                    ide_event.trigger ide_event.OPEN_STATE_EDITOR, compObj.parent.id, resId
-                                    @__showState()
-                                    return
+                            resId = $('#instanceList-wrap .instanceList-item.selected').data('id')
+
+                            if resId and resId is uid
+
+                                compObj = MC.aws.aws.getCompByResIdForState(resId)
+                                if compObj and compObj.parent and compObj.parent.type is 'AWS.EC2.Instance'
+                                    if compObj.parent and compObj.parent.id
+                                        ide_event.trigger ide_event.OPEN_STATE_EDITOR, compObj.parent.id, resId
+                                        @__showState()
+                                        return
 
             ide_event.trigger ide_event.OPEN_STATE_EDITOR, uid
             @__showState()

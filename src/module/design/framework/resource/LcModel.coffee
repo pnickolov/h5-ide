@@ -173,6 +173,8 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
 
       sgarray = _.map @connectionTargets("SgAsso"), ( sg )-> sg.createRef( "GroupId" )
 
+      # Generate an array containing the root device and then append all other volumes
+      # to the array to form the LC's volume list
       blockDevice = @getBlockDeviceMapping()
       for volume in @get("volumeList") or emptyArray
 

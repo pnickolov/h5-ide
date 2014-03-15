@@ -149,10 +149,7 @@ Tasks =
     util.deleteFolderRecursive( process.cwd() + "/build" )
     true
 
-  fetchRepo : ( debugMode, qaMode )->
-    if qaMode
-      return ()-> true
-
+  fetchRepo : ( debugMode )->
     ()->
       logTask "Checking out h5-ide-build"
 
@@ -160,7 +157,7 @@ Tasks =
       util.deleteFolderRecursive( process.cwd() + "/h5-ide-build" )
 
       # Checkout latest repo
-      params = ["clone", GLOBAL.gulpConfig.buildRepoUrl, "-v", "-b", if debugMode then "develop" else "master"]
+      params = ["clone", GLOBAL.gulpConfig.buildRepoUrl, "-v", "--progress", "-b", if debugMode then "develop" else "master"]
 
       if GLOBAL.gulpConfig.buildUsername
         params.push "-c"
@@ -233,10 +230,20 @@ Tasks =
           f.contents = new Buffer( newContent )
           @emit "data", f
           null
-        .pipe( gulp.dest("./deploy") ).on( "end", ()-> d.resolve() )
+        .pipe( gulp.dest("./deploy") ).on( "end", end(d) )
       d.promise
 
-    # .then ()-> # Generate file version and pack them into config.js
+    .then ()-> # Generate file version and pack them into config.js
+      buster = "window.FileVersions="+JSON.stringify(versions)+";\n"
+      d = Q.defer()
+      gulp.src("./deploy/**/config.js")
+        .pipe es.through (f)->
+          f.contents = new Buffer( buster + f.contents.toString("utf8") )
+          @emit "data", f
+        .pipe( gulp.dest("./deploy") ).on("end", end(d) )
+
+      d.promise
+
 
   finalCommit : ()->
     logTask "Final Commit"
@@ -251,11 +258,13 @@ Tasks =
 
       if GLOBAL.gulpConfig.autoPush
         console.log "\n[ " + gutil.colors.bgBlue.white("Pushing to Remote") + " ]"
-        console.log gutil.colors.bgYellow.black("  AutoPush might be slow, you can always kill the task at this moment, and manually push `./deploy` folder to the remote. You can delete the `./deploy` folder after pushing. ")
+        console.log gutil.colors.bgYellow.black("  AutoPush might be slow, you can always kill the task at this moment. ")
+        console.log gutil.colors.bgYellow.black("  Then manually git-push `./deploy`. You can delete `./deploy` after git-pushing. ")
 
         util.runCommand "git", ["push", "-v", "--progress", "-f"], option, stdRedirect
       else
-        console.log gutil.colors.bgYellow.black("  AutoPush is disabled. You need to manually push `./deploy` folder to the remote. You can delete the `./deploy` folder after pushing. ")
+        console.log gutil.colors.bgYellow.black("  AutoPush is disabled. Please manually git-push `./deploy`. ")
+        console.log gutil.colors.bgYellow.black("  You can delete `./deploy` after pushing. ")
         true
     .then ()->
       if GLOBAL.gulpConfig.autoPush
@@ -287,7 +296,7 @@ module.exports =
 
     ideversion.read( deploy )
 
-    [
+    tasks = [
       Tasks.cleanRepo
       Tasks.copyAssets
       Tasks.copyJs
@@ -297,8 +306,14 @@ module.exports =
       Tasks.processHtml
       Tasks.concatJS( debugMode, outputPath )
       Tasks.removeBuildFolder
-      Tasks.fetchRepo( debugMode, qaMode )
-      Tasks.preCommit
-      Tasks.fileVersion
-      Tasks.finalCommit
-    ].reduce( Q.when, Q() )
+    ]
+
+    if not qaMode
+      tasks = tasks.concat [
+        Tasks.fetchRepo( debugMode )
+        Tasks.preCommit
+        Tasks.fileVersion
+        Tasks.finalCommit
+      ]
+
+    tasks.reduce( Q.when, Q() )

@@ -1,3 +1,8 @@
+
+/* This is a modification of require.js to allow per file cache-busrting */
+
+
+
 /** vim: et:ts=4:sw=4:sts=4
  * @license RequireJS 2.1.11 Copyright (c) 2010-2014, The Dojo Foundation All Rights Reserved.
  * Available via the MIT or new BSD license.
@@ -1625,12 +1630,21 @@ var requirejs, require, define;
                     //Join the path parts together, then figure out if baseUrl is needed.
                     url = syms.join('/');
                     url += (ext || (/^data\:|\?/.test(url) || skipExt ? '' : '.js'));
+
+                    var args = "";
+                    if ( window.FileVersions && window.FileVersions[url] ) {
+                        args = window.FileVersions[url];
+                    } else {
+                        args = config.urlArgs;
+                    }
+                    if (args) {
+                        url += (url.indexOf("?") === -1 ? "?" : "&") + args;
+                    }
+
                     url = (url.charAt(0) === '/' || url.match(/^[\w\+\.\-]+:/) ? '' : config.baseUrl) + url;
                 }
 
-                return config.urlArgs ? url +
-                                        ((url.indexOf('?') === -1 ? '?' : '&') +
-                                         config.urlArgs) : url;
+                return url; ////// If the url is specified by url not module id, then we do not insert any urlArgs.
             },
 
             //Delegates to req.load. Broken out as a separate function to

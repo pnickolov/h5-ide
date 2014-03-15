@@ -158,17 +158,12 @@
       util.deleteFolderRecursive(process.cwd() + "/build");
       return true;
     },
-    fetchRepo: function(debugMode, qaMode) {
-      if (qaMode) {
-        return function() {
-          return true;
-        };
-      }
+    fetchRepo: function(debugMode) {
       return function() {
         var params;
         logTask("Checking out h5-ide-build");
         util.deleteFolderRecursive(process.cwd() + "/h5-ide-build");
-        params = ["clone", GLOBAL.gulpConfig.buildRepoUrl, "-v", "-b", debugMode ? "develop" : "master"];
+        params = ["clone", GLOBAL.gulpConfig.buildRepoUrl, "-v", "--progress", "-b", debugMode ? "develop" : "master"];
         if (GLOBAL.gulpConfig.buildUsername) {
           params.push("-c");
           params.push("user.name=\"" + GLOBAL.gulpConfig.buildUsername + "\"");
@@ -252,9 +247,16 @@
           f.contents = new Buffer(newContent);
           this.emit("data", f);
           return null;
-        })).pipe(gulp.dest("./deploy")).on("end", function() {
-          return d.resolve();
-        });
+        })).pipe(gulp.dest("./deploy")).on("end", end(d));
+        return d.promise;
+      }).then(function() {
+        var buster, d;
+        buster = "window.FileVersions=" + JSON.stringify(versions) + ";\n";
+        d = Q.defer();
+        gulp.src("./deploy/**/config.js").pipe(es.through(function(f) {
+          f.contents = new Buffer(buster + f.contents.toString("utf8"));
+          return this.emit("data", f);
+        })).pipe(gulp.dest("./deploy")).on("end", end(d));
         return d.promise;
       });
     },
@@ -270,10 +272,12 @@
       }).then(function() {
         if (GLOBAL.gulpConfig.autoPush) {
           console.log("\n[ " + gutil.colors.bgBlue.white("Pushing to Remote") + " ]");
-          console.log(gutil.colors.bgYellow.black("  AutoPush might be slow, you can always kill the task at this moment, and manually push `./deploy` folder to the remote. You can delete the `./deploy` folder after pushing. "));
+          console.log(gutil.colors.bgYellow.black("  AutoPush might be slow, you can always kill the task at this moment. "));
+          console.log(gutil.colors.bgYellow.black("  Then manually git-push `./deploy`. You can delete `./deploy` after git-pushing. "));
           return util.runCommand("git", ["push", "-v", "--progress", "-f"], option, stdRedirect);
         } else {
-          console.log(gutil.colors.bgYellow.black("  AutoPush is disabled. You need to manually push `./deploy` folder to the remote. You can delete the `./deploy` folder after pushing. "));
+          console.log(gutil.colors.bgYellow.black("  AutoPush is disabled. Please manually git-push `./deploy`. "));
+          console.log(gutil.colors.bgYellow.black("  You can delete `./deploy` after pushing. "));
           return true;
         }
       }).then(function() {
@@ -287,13 +291,17 @@
 
   module.exports = {
     build: function(mode) {
-      var debugMode, deploy, outputPath, qaMode;
+      var debugMode, deploy, outputPath, qaMode, tasks;
       deploy = mode !== "qa";
       debugMode = mode === "qa" || mode === "debug";
       outputPath = mode === "qa" ? "./qa" : void 0;
       qaMode = mode === "qa";
       ideversion.read(deploy);
-      return [Tasks.cleanRepo, Tasks.copyAssets, Tasks.copyJs, Tasks.compileLangSrc, Tasks.compileCoffee(debugMode), Tasks.compileTemplate, Tasks.processHtml, Tasks.concatJS(debugMode, outputPath), Tasks.removeBuildFolder, Tasks.fetchRepo(debugMode, qaMode), Tasks.preCommit, Tasks.fileVersion, Tasks.finalCommit].reduce(Q.when, Q());
+      tasks = [Tasks.cleanRepo, Tasks.copyAssets, Tasks.copyJs, Tasks.compileLangSrc, Tasks.compileCoffee(debugMode), Tasks.compileTemplate, Tasks.processHtml, Tasks.concatJS(debugMode, outputPath), Tasks.removeBuildFolder];
+      if (!qaMode) {
+        tasks = tasks.concat([Tasks.fetchRepo(debugMode), Tasks.preCommit, Tasks.fileVersion, Tasks.finalCommit]);
+      }
+      return tasks.reduce(Q.when, Q());
     }
   };
 

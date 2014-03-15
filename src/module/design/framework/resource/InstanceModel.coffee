@@ -339,7 +339,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
           rd =
             "DeviceName": rdName
             "Ebs":
-              "VolumeSize": rdEbs.volumeSize
+              "VolumeSize": Number(rdEbs.volumeSize)
               "SnapshotId": rdEbs.snapshotId
               "VolumeType": rdEbs.volumeType
 

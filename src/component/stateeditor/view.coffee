@@ -17,16 +17,20 @@ define [ 'event',
         events:
 
             'closed': 'closedPopup'
-            'keyup .parameter-item.dict .parameter-value': 'onDictInputChange'
             'blur .parameter-item.dict .parameter-value': 'onDictInputBlur'
 
+            'keyup .parameter-item.dict .parameter-value': 'onDictInputChange'
+            'paste .parameter-item.dict .parameter-value': 'onDictInputChange'
+            
             'keyup .parameter-item.array .parameter-value': 'onArrayInputChange'
-            'blur .parameter-item.array .parameter-value': 'onArrayInputBlur'
+            'paste .parameter-item.array .parameter-value': 'onArrayInputChange'
+
             'keyup .parameter-item.state .parameter-value': 'onArrayInputChange'
+            'paste .parameter-item.state .parameter-value': 'onArrayInputChange'
+
+            'blur .parameter-item.array .parameter-value': 'onArrayInputBlur'
             'blur .parameter-item.state .parameter-value': 'onArrayInputBlur'
-
             'blur .command-value': 'onCommandInputBlur'
-
             'focus .editable-area': 'onFocusInput'
             'blur .editable-area': 'onBlurInput'
 
@@ -68,6 +72,8 @@ define [ 'event',
             'OPTION_CHANGE .state-editor-res-select': 'onResSelectChange'
 
             'keyup .parameter-item.optional .parameter-value': 'onOptionalParaItemChange'
+            'paste .parameter-item.optional .parameter-value': 'onOptionalParaItemChange'
+
             'click .parameter-item .parameter-name': 'onParaNameClick'
 
             'SWITCH_STATE': 'onSwitchState'

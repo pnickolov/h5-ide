@@ -1,5 +1,5 @@
 
-define ['./Download', "./HmacMd5"], ( download )->
+define ['./Download', 'i18n!nls/lang.js', "./HmacMd5"], ( download, lang )->
 
   exportJson = ( json, name )->
     # Remove uncessary attributes of the json
@@ -30,12 +30,12 @@ define ['./Download', "./HmacMd5"], ( download )->
     try
       j = JSON.parse( json )
     catch e
-      return "The json file is malformed."
+      return lang.ide.POP_IMPORT_FORMAT_ERROR
 
     signature = j.signature
     delete j.signature
     if CryptoJS.HmacMD5( JSON.stringify( j ) , "MaderiaCloudIDE" ).toString() isnt signature
-      return "We do not support user modified json."
+      return lang.ide.POP_IMPORT_MODIFIED_ERROR
 
     return j
 

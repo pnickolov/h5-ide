@@ -3883,6 +3883,58 @@ module.exports =
       en: "update"
       zh: "更新错误"
 
+    ##### Modal Confirm Stop/Terminate App
+
+    POP_CONFIRM_STOP_ASG:
+      en: "Auto scaling group in this app will be deleted when it is stopped."
+      zh: ""
+
+    POP_CONFIRM_PROD_APP_WARNING_MSG:
+      en: " is for PRODUCTION."
+      zh: ""
+
+    POP_CONFIRM_STOP_PROD_APP_MSG:
+      en: " Stopping it will make your service unavailable."
+      zh: ""
+
+    POP_CONFIRM_STOP_PROD_APP_INPUT_LBL:
+      en: "Please type in the name of this app to confirm stopping it."
+      zh: ""
+
+    POP_CONFIRM_TERMINATE_PROD_APP_MSG:
+      en: " Terminating it will make your service unavailable."
+      zh: ""
+
+    POP_CONFIRM_TERMINATE_PROD_APP_INPUT_LBL:
+      en: "Please type in the name of this app to confirm terminating it."
+      zh: ""
+
+    ##### Modal Import JSON
+
+    POP_IMPORT_JSON_TIT:
+      en: "Import Stack from JSON file"
+      zh: ""
+
+    POP_IMPORT_DROP_LBL:
+      en: "Drop JSON file here or "
+      zh: ""
+
+    POP_IMPORT_SELECT_LBL:
+      en: " select a file."
+      zh: ""
+
+    POP_IMPORT_ERROR:
+      en: "An error occured when reading the file. Please try again."
+      zh: ""
+
+    POP_IMPORT_FORMAT_ERROR:
+      en: "The json file is malformed."
+      zh: ""
+
+    POP_IMPORT_MODIFIED_ERROR:
+      en: "We do not support user modified json."
+      zh: ""
+
     ##### Modal Confirm Update 
 
     POP_CONFIRM_UPDATE_TIT:

@@ -590,7 +590,7 @@ define [ 'event', 'i18n!nls/lang.js',
                 null
 
             reader.onerror = ()->
-                $("#import-json-error").html "An error occured when reading the file. Please try again."
+                $("#import-json-error").html lang.ide.POP_IMPORT_ERROR
                 null
 
             hanldeFile = ( evt )->

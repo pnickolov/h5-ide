@@ -282,7 +282,7 @@ watch = ()->
 
 compileDev = ( allCoffee )->
   path = ["src/**/*.coffee", "src/**/*.partials", "src/**/*.html", "!src/test/**/*", "!src/*.html", "!src/include/*.html" ]
-  if not allCoffee
+  if not allCoffee and fs.existsSync("./src/service/result_vo.js")
     path.push "!src/service/**/*"
     path.push "!src/model/**/*"
 

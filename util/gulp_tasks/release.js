@@ -168,7 +168,7 @@
         var params;
         logTask("Checking out h5-ide-build");
         util.deleteFolderRecursive(process.cwd() + "/h5-ide-build");
-        params = ["clone", GLOBAL.gulpConfig.buildRepoUrl, "-b", debugMode ? "develop" : "master"];
+        params = ["clone", GLOBAL.gulpConfig.buildRepoUrl, "-v", "-b", debugMode ? "develop" : "master"];
         if (GLOBAL.gulpConfig.buildUsername) {
           params.push("-c");
           params.push("user.name=\"" + GLOBAL.gulpConfig.buildUsername + "\"");
@@ -265,11 +265,21 @@
         cwd: process.cwd() + "/deploy"
       };
       commit = util.runCommand("git", ["add", "-A"], option);
-      commit.then(function() {
-        return util.runCommand("git", ["commit", "-m", "" + (ideversion.version())], option);
-      });
       return commit.then(function() {
-        console.log("\n[ " + gutil.colors.bgYellow.black("Currently you have to manually push ./deploy to the `origin`") + " ]\n");
+        return util.runCommand("git", ["commit", "-m", "" + (ideversion.version())], option);
+      }).then(function() {
+        if (GLOBAL.gulpConfig.autoPush) {
+          console.log("\n[ " + gutil.colors.bgBlue.white("Pushing to Remote") + " ]");
+          console.log(gutil.colors.bgYellow.black("  AutoPush might be slow, you can always kill the task at this moment, and manually push `./deploy` folder to the remote. You can delete the `./deploy` folder after pushing. "));
+          return util.runCommand("git", ["push", "-v", "--progress", "-f"], option, stdRedirect);
+        } else {
+          console.log(gutil.colors.bgYellow.black("  AutoPush is disabled. You need to manually push `./deploy` folder to the remote. You can delete the `./deploy` folder after pushing. "));
+          return true;
+        }
+      }).then(function() {
+        if (GLOBAL.gulpConfig.autoPush) {
+          util.deleteFolderRecursive(process.cwd() + "/deploy");
+        }
         return true;
       });
     }

@@ -284,7 +284,7 @@
   compileDev = function(allCoffee) {
     var compileStream, deferred;
     path = ["src/**/*.coffee", "src/**/*.partials", "src/**/*.html", "!src/test/**/*", "!src/*.html", "!src/include/*.html"];
-    if (!allCoffee) {
+    if (!allCoffee && fs.existsSync("./src/service/result_vo.js")) {
       path.push("!src/service/**/*");
       path.push("!src/model/**/*");
     }

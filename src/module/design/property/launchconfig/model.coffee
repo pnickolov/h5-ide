@@ -60,6 +60,11 @@ define [ '../base/model', 'keypair_model', 'constant', 'Design' ], ( PropertyMod
       if @isApp
         @getAppLaunch( uid )
         @set 'keyName', @lc.connectionTargets( 'KeypairUsage' )[ 0 ].get("appId")
+
+        #RootDevice Data
+        rootDevice = @lc.getBlockDeviceMapping()
+        if rootDevice.length is 1
+          @set "rootDevice", rootDevice[0]
         return
 
       null
@@ -173,7 +178,7 @@ define [ '../base/model', 'keypair_model', 'constant', 'Design' ], ( PropertyMod
         true
 
     getAppLaunch : ( uid ) ->
-      lc_data   = MC.data.resource_list[Design.instance().region()][ @lc.get 'LaunchConfigurationARN' ]
+      lc_data   = MC.data.resource_list[Design.instance().region()][ @lc.get 'appId' ]
 
       this.set "ebsOptimized", @lc.get("ebsOptimized") + ""
       this.set 'name', @lc.get 'name'

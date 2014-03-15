@@ -231,8 +231,6 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
         publicIp     : data.resource.AssociatePublicIpAddress
         configName   : data.resource.LaunchConfigurationName
 
-        createdTime   : data.resource.CreatedTime
-
         x : layout_data.coordinate[0]
         y : layout_data.coordinate[1]
       }

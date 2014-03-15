@@ -1220,13 +1220,13 @@ Following rule(s) will be deleted from its(their) security group:</div>
 
 <!-- updateApp -->
 <div id="app-apply-update" style="width:460px">
-	<div class="modal-header"><h3 class="truncate" style="width: 380px;">Conﬁrm to Update App</h3><i class="modal-close">&times;</i> </div>
+	<div class="modal-header"><h3 class="truncate" style="width: 380px;">{{ i18n 'POP_CONFIRM_UPDATE_TIT'}}</h3><i class="modal-close">&times;</i> </div>
 	<div class="modal-body">
 	{{#if isRunning}}
-		<h3 class="modal-text-major">Do you confirm to apply the changes?</h3>
+		<h3 class="modal-text-major">{{ i18n 'POP_CONFIRM_UPDATE_MAJOR_TEXT_RUNNING'}}</h3>
 	{{else}}
-		<h3 class="modal-text-major">Do you confirm to apply the changes and start the app?</h3>
-		<p class="modal-text-minor" style="margin-top:10px;">The app is currently stopped. To apply updates, the app will be started automatically.</p>
+		<h3 class="modal-text-major">{{ i18n 'POP_CONFIRM_UPDATE_MAJOR_TEXT_STOPPED'}}</h3>
+		<p class="modal-text-minor" style="margin-top:10px;">{{ i18n 'POP_CONFIRM_UPDATE_MINOR_TEXT_STOPPED'}}</p>
 	{{/if}}
 	{{#if result.length}}
 		<table class="table-head-fix table app-update-summary-table-header" data-target="app-update-summary-table">

@@ -3851,6 +3851,25 @@ module.exports =
       en: "update"
       zh: "更新错误"
 
+    ##### Modal Confirm Update 
+
+    POP_CONFIRM_UPDATE_TIT:
+      en: "Confirm to Update App"
+      zh: ""
+
+    POP_CONFIRM_UPDATE_MAJOR_TEXT_RUNNING:
+      en: "Do you confirm to apply the changes?"
+      zh: ""
+
+    POP_CONFIRM_UPDATE_MAJOR_TEXT_STOPPED:
+      en: "Do you confirm to apply the changes and start the app?"
+      zh: ""
+
+    POP_CONFIRM_UPDATE_MINOR_TEXT_STOPPED:
+      en: "The app is currently stopped. To apply updates, the app will be started automatically."
+      zh: ""
+
+
     ##### State Editor
 
     ## State Editor Tooltip

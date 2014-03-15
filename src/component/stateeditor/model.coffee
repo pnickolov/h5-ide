@@ -365,8 +365,12 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 						if compData.number and compData.number > 1
 							resName = compData.serverGroupName
 
-					# if compData.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
-					# 	resName = compData.serverGroupName
+					if compData.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+						lcUIDRef = compData.resource.LaunchConfigurationName
+						if lcUIDRef
+							lcUID = MC.extractID(lcUIDRef)
+							lcCompData = allCompData[lcUID]
+							if lcCompData then compData = lcCompData
 
 					if compData.state and _.isArray compData.state
 						_.each compData.state, (stateObj, idx) ->

@@ -158,10 +158,15 @@ define [ 'Design', 'event', 'text!./module/design/template.html', 'constant', 'i
 
             #appStoped = Design.instance().get('state') is 'Stopped'
             appStoped = MC.common.other.canvasData.data( 'origin' ).state is 'Stopped'
-            if appStoped
-                return
 
             $btnState = $( '#main-statusbar .btn-state' )
+
+            if Tabbar.current in ['app', 'appedit']
+                if appStoped
+                    $btnState.hide()
+
+            if appStoped
+                return
 
             if Tabbar.current is 'appview'
                 $btnState.hide()

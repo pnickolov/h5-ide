@@ -130,6 +130,7 @@
 }
 #state-editor-model *::-webkit-scrollbar {
 	width: 8px;
+	height: 8px;
 	background-color: transparent;
 	/*background-color: #F5F5F5;*/
 }
@@ -1275,6 +1276,10 @@
 
 #state-editor-model.se-model-app #state-editor .ace_cursor-layer {
 	display: none;
+}
+
+#state-editor-model .ace-tm .ace_indent-guide {
+	opacity: 0.1;
 }
 
 #state-editor-model.se-model-app .ace_content {

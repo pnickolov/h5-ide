@@ -216,9 +216,20 @@ define [ 'event',
             if that.isShowLogPanel
                 that.showLogPanel()
 
+            $logPanelToggle = that.$editorModal.find('.state-log-toggle')
+            $logPanelRefresh = that.$editorModal.find('.state-log-refresh')
+            $logSysBtn = that.$editorModal.find('.state-sys-log-btn')
+
             if that.currentState is 'stack'
-                $logPanelToggle = that.$editorModal.find('.state-log-toggle')
                 $logPanelToggle.hide()
+
+            else if that.currentState in ['app', 'appedit']
+                currentAppState = Design.instance().get('state')
+                if currentAppState is 'Stopped'
+                    $logPanelToggle.hide()
+                    $logPanelRefresh.hide()
+                    if not that.currentResId
+                        $logSysBtn.hide()
 
             $aceAutocompleteTip = $('.ace_autocomplete_tip')
             if not $aceAutocompleteTip.length
@@ -1644,6 +1655,11 @@ define [ 'event',
         onLogToggleClick: (event) ->
 
             that = this
+
+            if that.currentState in ['app', 'appedit']
+                currentAppState = Design.instance().get('state')
+                if currentAppState is 'Stopped'
+                    return
 
             $stateEditor = $('#state-editor')
             $descPanel = $('#state-description')

@@ -99,6 +99,3 @@ define([], function(){
 不要使用`main.coffee`, `view.coffee`, `model.coffee`这种笼统的名字来做为文件名。一般来说可以使用这个模块的名称作为文件名。例如上述例子中的TA模块可以叫做`TA.coffee`。
 
 具体例子参考`module/design/framework/*.coffee`
-
-### 不要写没有意义的函数
-如果一个函数没有干什么事情，那么它就不应该存在。例如`js/canvas_layout.js:connect()`

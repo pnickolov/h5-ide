@@ -1,5 +1,5 @@
 (function() {
-  var DefaultKnownHelpers, HandlebarsOptions, HasRead, coffee, compile, compileHbs, compilePartials, compiler, es, fs, gutil, handlebars, path, readHelperFile, tryCompile, util;
+  var DefaultKnownHelpers, HandlebarsOptions, HasRead, IgnoreSyntax, coffee, compile, compileHbs, compilePartials, compiler, es, fs, gutil, handlebars, path, readHelperFile, tryCompile, util;
 
   es = require("event-stream");
 
@@ -32,6 +32,8 @@
   };
 
   HasRead = false;
+
+  IgnoreSyntax = new Buffer("<!DOCTYPE HTML>");
 
   readHelperFile = function() {
     var file, pipeline;
@@ -73,6 +75,22 @@
   };
 
   compile = function(file) {
+    var i, idx, ignored, _i, _len;
+    ignored = true;
+    for (idx = _i = 0, _len = IgnoreSyntax.length; _i < _len; idx = ++_i) {
+      i = IgnoreSyntax[idx];
+      if (file.contents[idx] !== i) {
+        ignored = false;
+        break;
+      }
+    }
+    if (ignored) {
+      if (this.shouldLog) {
+        console.log("[Handlebars Ignored]", file.relative);
+      }
+      this.emit("data", file);
+      return;
+    }
     readHelperFile();
     if (path.extname(file.path) === ".partials") {
       compilePartials(file, this.shouldLog);

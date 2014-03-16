@@ -23,6 +23,8 @@ HandlebarsOptions =
 
 HasRead = false
 
+IgnoreSyntax = new Buffer("<!DOCTYPE HTML>")
+
 readHelperFile = ()->
   if HasRead then return
 
@@ -53,6 +55,19 @@ readHelperFile = ()->
 
 
 compile = ( file )->
+  # Ignored compiling if the file has <!DOCTYPE html>
+  ignored = true
+  for i, idx in IgnoreSyntax
+    if file.contents[idx] isnt i
+      ignored = false
+      break
+  if ignored
+    if @shouldLog
+      console.log "[Handlebars Ignored]", file.relative
+    @emit "data", file
+    return
+
+  # Compile hanldebars
   readHelperFile()
 
   if path.extname(file.path) is ".partials"

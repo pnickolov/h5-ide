@@ -2,6 +2,7 @@
 gulp      = require("gulp")
 gutil     = require("gulp-util")
 es        = require("event-stream")
+fs        = require("fs")
 Q         = require("q")
 
 coffee      = require("gulp-coffee")
@@ -174,6 +175,11 @@ Tasks =
     # Move h5-ide-build/.git to deploy/.git
     move = util.runCommand "mv", ["h5-ide-build/.git", "deploy/.git"], {}
 
+    # Move gitignore if there's any
+    if fs.existsSync("./h5-ide-build/.gitignore" )
+      move.then ()->
+        util.runCommand "mv", ["h5-ide-build/.gitignore", "deploy/.gitignore"], {}
+
     option = { cwd : process.cwd() + "/deploy" }
 
     # Add all files
@@ -234,7 +240,14 @@ Tasks =
       d.promise
 
     .then ()-> # Generate file version and pack them into config.js
-      buster = "window.FileVersions="+JSON.stringify(versions)+";\n"
+      jsV = {}
+      for key, value of versions
+        l = key.length
+        if key[l-3] is "." and key[l-2] is "j" and key[l-1] is "s"
+          jsV[key] = value
+
+      # Only keep js file version
+      buster = "window.FileVersions="+JSON.stringify(jsV)+";\n"
       d = Q.defer()
       gulp.src("./deploy/**/config.js")
         .pipe es.through (f)->

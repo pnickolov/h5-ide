@@ -1,11 +1,13 @@
 (function() {
-  var Q, SrcOption, Tasks, coffee, confCompile, dest, end, es, fileLogger, gulp, gutil, handlebars, ideversion, include, langsrc, logTask, requirejs, rjsconfig, stdRedirect, stripdDebug, util, variable;
+  var Q, SrcOption, Tasks, coffee, confCompile, dest, end, es, fileLogger, fs, gulp, gutil, handlebars, ideversion, include, langsrc, logTask, requirejs, rjsconfig, stdRedirect, stripdDebug, util, variable;
 
   gulp = require("gulp");
 
   gutil = require("gulp-util");
 
   es = require("event-stream");
+
+  fs = require("fs");
 
   Q = require("q");
 
@@ -179,6 +181,11 @@
       var commitData, move, option;
       logTask("Pre-commit");
       move = util.runCommand("mv", ["h5-ide-build/.git", "deploy/.git"], {});
+      if (fs.existsSync("./h5-ide-build/.gitignore")) {
+        move.then(function() {
+          return util.runCommand("mv", ["h5-ide-build/.gitignore", "deploy/.gitignore"], {});
+        });
+      }
       option = {
         cwd: process.cwd() + "/deploy"
       };
@@ -250,8 +257,16 @@
         })).pipe(gulp.dest("./deploy")).on("end", end(d));
         return d.promise;
       }).then(function() {
-        var buster, d;
-        buster = "window.FileVersions=" + JSON.stringify(versions) + ";\n";
+        var buster, d, jsV, key, l, value;
+        jsV = {};
+        for (key in versions) {
+          value = versions[key];
+          l = key.length;
+          if (key[l - 3] === "." && key[l - 2] === "j" && key[l - 1] === "s") {
+            jsV[key] = value;
+          }
+        }
+        buster = "window.FileVersions=" + JSON.stringify(jsV) + ";\n";
         d = Q.defer();
         gulp.src("./deploy/**/config.js").pipe(es.through(function(f) {
           f.contents = new Buffer(buster + f.contents.toString("utf8"));

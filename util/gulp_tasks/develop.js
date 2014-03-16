@@ -61,6 +61,52 @@
     shouldLintCoffee: function(f) {
       return !f.path.match(compileCoffeeOnlyRegex);
     },
+    compileCompass: function() {
+      var compassSuccess;
+      compassSuccess = true;
+      return util.runCommand("compass", ["compile"], {
+        cwd: process.cwd() + "/src/assets"
+      }, {
+        onError: function(e) {
+          if (e.code === "ENOENT" && e.errno === "ENOENT" && e.syscall === "spawn") {
+            compassSuccess = false;
+            console.log("[" + gutil.colors.yellow("Compass Missing") + "] Scss files are not re-compiled.");
+          }
+          return null;
+        },
+        onData: function(d) {
+          if (compassSuccess) {
+            return process.stdout.write(d);
+          }
+        }
+      });
+    },
+    runCompass: function() {
+      var compassSuccess;
+      compassSuccess = false;
+      gutil.log(gutil.colors.bgBlue.white(" Watching scss... "));
+      return util.runCommand("compass", ["watch"], {
+        cwd: process.cwd() + "/src/assets"
+      }, {
+        onError: function() {
+          if (e.code === "ENOENT" && e.errno === "ENOENT" && e.syscall === "spawn") {
+            console.log("[" + gutil.colors.yellow("Compass Missing") + "] Cannot find compass, don't manually edit compressed css.");
+          }
+          return null;
+        },
+        onData: function(d) {
+          if (d.indexOf("Compass is polling") > -1) {
+            compassSuccess = true;
+            return;
+          }
+          if (!compassSuccess) {
+            return;
+          }
+          process.stdout.write(d);
+          return null;
+        }
+      });
+    },
     lrServer: void 0,
     createLrServer: function() {
       if (Helper.lrServer !== void 0) {
@@ -270,6 +316,7 @@
       return;
     }
     Helper.createLrServer();
+    Helper.runCompass();
     StreamFuncs.createStreamObject();
     watcher = Helper.createWatcher();
     watcher.on("add", changeHandler);
@@ -288,6 +335,7 @@
       path.push("!src/service/**/*");
       path.push("!src/model/**/*");
     }
+    path = ["src/*.html"];
     deferred = Q.defer();
     StreamFuncs.createStreamObject();
     compileStream = gulp.src(path, {
@@ -297,7 +345,9 @@
       return null;
     }));
     compileStream.once("end", function() {
-      return deferred.resolve();
+      return Helper.compileCompass().then(function(value) {
+        return deferred.resolve();
+      });
     });
     return deferred.promise;
   };

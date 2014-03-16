@@ -23,6 +23,10 @@ npm install
 ### Custom Gulp Config
 Copy `gulpconfig-default.js` to `gulpconfig.js`. Then modify `gulpconfig.js`
 
+### Use Compass
+MadeiraCloud IDE uses compass to pre-process css/scss files. If you need to modify scss, then you need to install compass by (Assuming you have ruby installed on your system):
+`sudo gem install compass`
+
 ### LiveReload Support
 * The built-in livereload server will notify a client when anything under `src/assets` changes. It doesn't reload browser if any js/html file is changed by default.
 * In order to use livereload, one must install the [Chrome LiveReload Plugin](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei).

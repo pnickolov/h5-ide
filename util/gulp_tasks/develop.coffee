@@ -40,6 +40,39 @@ compileCoffeeOnlyRegex = /.src.(service|model)/
 Helper =
   shouldLintCoffee : (f)-> not f.path.match compileCoffeeOnlyRegex
 
+  compileCompass : ()->
+    compassSuccess = true
+    gutil.log gutil.colors.bgBlue.white(" Compiling scss... ")
+    util.runCommand "compass", ["compile"], { cwd : process.cwd() + "/src/assets" }, {
+      onError : (e)->
+        if e.code is "ENOENT" and e.errno is "ENOENT" and e.syscall is "spawn"
+          compassSuccess = false
+          console.log "[" + gutil.colors.yellow("Compass Missing") + "] Scss files are not re-compiled."
+        null
+      onData : (d)->
+        if compassSuccess then process.stdout.write d
+    }
+
+  runCompass : ()->
+    compassSuccess = false
+    gutil.log gutil.colors.bgBlue.white(" Watching scss... ")
+    util.runCommand "compass", ["watch"], { cwd : process.cwd() + "/src/assets" }, {
+      onError : ()->
+        if e.code is "ENOENT" and e.errno is "ENOENT" and e.syscall is "spawn"
+          console.log "[" + gutil.colors.yellow("Compass Missing") + "] Cannot find compass, don't manually edit compressed css."
+        null
+
+      onData : (d)->
+        if d.indexOf("Compass is polling") > -1
+          compassSuccess = true
+          return
+
+        if not compassSuccess then return
+
+        process.stdout.write d
+        null
+    }
+
   lrServer : undefined
   createLrServer : ()->
     if Helper.lrServer isnt undefined then return
@@ -268,6 +301,7 @@ watch = ()->
     return
 
   Helper.createLrServer()
+  Helper.runCompass()
 
   StreamFuncs.createStreamObject()
 
@@ -295,7 +329,8 @@ compileDev = ( allCoffee )->
     StreamFuncs.workStream.emit "data", f
     null
 
-  compileStream.once "end", ()-> deferred.resolve()
+  compileStream.once "end", ()->
+    Helper.compileCompass().then ( value )-> deferred.resolve()
 
   deferred.promise
 

@@ -67,8 +67,13 @@ util =
 
     process.on "exit", ()-> d.resolve()
 
-    if handlers.onError
-      process.on "error", handlers.onError
+    process.on "error", (e)->
+      if handlers.onError
+        handlers.onError.apply( null, arguments )
+
+      if e.code is "ENOENT" and e.errno is "ENOENT" and e.syscall is "spawn"
+        d.resolve()
+      null
 
     if onData
       process.stderr.on("data", (d)-> onData d.toString("utf8"), "error" )

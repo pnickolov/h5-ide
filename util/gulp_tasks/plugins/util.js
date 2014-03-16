@@ -84,9 +84,15 @@
       process.on("exit", function() {
         return d.resolve();
       });
-      if (handlers.onError) {
-        process.on("error", handlers.onError);
-      }
+      process.on("error", function(e) {
+        if (handlers.onError) {
+          handlers.onError.apply(null, arguments);
+        }
+        if (e.code === "ENOENT" && e.errno === "ENOENT" && e.syscall === "spawn") {
+          d.resolve();
+        }
+        return null;
+      });
       if (onData) {
         process.stderr.on("data", function(d) {
           return onData(d.toString("utf8"), "error");

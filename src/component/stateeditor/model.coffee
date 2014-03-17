@@ -311,6 +311,15 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 
 					null
 
+			resStateDataAry = resStateDataAry.sort (val1, val2) ->
+				
+				if val1.name > val2.name
+					return 1
+				else if val1.name < val2.name
+					return -1
+				else
+					return 0
+
 			that.set('resStateDataAry', resStateDataAry)
 
 		genAttrRefRegexList: () ->

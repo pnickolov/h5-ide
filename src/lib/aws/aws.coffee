@@ -1171,12 +1171,6 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
 
         autoCompList = autoCompList.concat(groupAutoCompList)
 
-        # sort autoCompList
-        autoCompList = autoCompList.sort((obj1, obj2) ->
-            if obj1.name < obj2.name then return -1
-            if obj1.name > obj2.name then return 1
-        )
-
         resAttrDataAry = _.map autoCompList, (autoCompObj) ->
             if autoCompObj.name.indexOf('self.') is 0
                 autoCompObj.value = autoCompObj.value.replace(autoCompObj.uid, 'self')
@@ -1187,6 +1181,12 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
                 ref: "#{autoCompObj.value}",
                 uid: "#{autoCompObj.uid}"
             }
+
+        # sort autoCompList
+        resAttrDataAry = resAttrDataAry.sort((obj1, obj2) ->
+            if obj1.name < obj2.name then return -1
+            if obj1.name > obj2.name then return 1
+        )
 
         return resAttrDataAry
 

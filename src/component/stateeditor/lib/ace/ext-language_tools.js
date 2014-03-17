@@ -1224,6 +1224,19 @@ var FilteredList = function(array, filterText, mutateData) {
                     }
                 }
             });
+            matches = matches.sort(function(a, b) {
+                if (a.score < b.score)
+                    return 1
+                else if (a.score > b.score)
+                    return -1
+                else
+                    if (a.name > b.name)
+                        return 1
+                    else if (a.name < b.name)
+                        return -1
+                    else
+                        return 0
+            });
         }
         var prev = null;
         matches = matches.filter(function(item){

@@ -1,5 +1,5 @@
 (function() {
-  var Q, SrcOption, Tasks, coffee, confCompile, dest, end, es, fileLogger, fs, gulp, gutil, handlebars, ideversion, include, langsrc, logTask, requirejs, rjsconfig, stdRedirect, stripdDebug, util, variable;
+  var Q, SrcOption, Tasks, coffee, confCompile, dest, end, es, fileLogger, fs, gulp, gutil, handlebars, ideversion, include, langsrc, logTask, path, requirejs, rjsconfig, stdRedirect, stripdDebug, util, variable;
 
   gulp = require("gulp");
 
@@ -10,6 +10,8 @@
   fs = require("fs");
 
   Q = require("q");
+
+  path = require("path");
 
   coffee = require("gulp-coffee");
 
@@ -89,19 +91,19 @@
       }, stdRedirect);
     },
     copyAssets: function() {
-      var d, path;
+      var d, p;
       logTask("Copying Assets");
-      path = ["./src/assets/**/*", "!**/*.glyphs", "!**/*.scss"];
+      p = ["./src/assets/**/*", "!**/*.glyphs", "!**/*.scss"];
       d = Q.defer();
-      gulp.src(path, SrcOption).pipe(dest()).on("end", end(d));
+      gulp.src(p, SrcOption).pipe(dest()).on("end", end(d));
       return d.promise;
     },
     copyJs: function() {
-      var d, path;
+      var d, p;
       logTask("Copying Js & Templates");
-      path = ["./src/**/*.js", "./src/**/*.html", "!./src/test/**/*"];
+      p = ["./src/**/*.js", "./src/**/*.html", "!./src/test/**/*"];
       d = Q.defer();
-      gulp.src(path, SrcOption).pipe(dest()).on("end", end(d));
+      gulp.src(p, SrcOption).pipe(dest()).on("end", end(d));
       return d.promise;
     },
     compileLangSrc: function() {
@@ -113,11 +115,11 @@
     },
     compileCoffee: function(debugMode) {
       return function() {
-        var d, path, pipe;
+        var d, p, pipe;
         logTask("Compiling coffees", true);
-        path = ["./src/**/*.coffee", "!src/test/**/*", "!./src/nls/lang-source.coffee"];
+        p = ["./src/**/*.coffee", "!src/test/**/*", "!./src/nls/lang-source.coffee"];
         d = Q.defer();
-        pipe = gulp.src(path, SrcOption).pipe(confCompile(true)).pipe(coffee()).pipe(fileLogger());
+        pipe = gulp.src(p, SrcOption).pipe(confCompile(true)).pipe(coffee()).pipe(fileLogger());
         if (!debugMode) {
           pipe = pipe.pipe(stripdDebug());
         }
@@ -126,19 +128,19 @@
       };
     },
     compileTemplate: function() {
-      var d, path;
+      var d, p;
       logTask("Compiling templates", true);
-      path = ["./src/**/*.partials", "./src/**/*.html", "!src/test/**/*", "!src/*.html", "!src/include/*.html"];
+      p = ["./src/**/*.partials", "./src/**/*.html", "!src/test/**/*", "!src/*.html", "!src/include/*.html"];
       d = Q.defer();
-      gulp.src(path, SrcOption).pipe(confCompile(true)).pipe(handlebars(false)).pipe(fileLogger()).pipe(dest()).on("end", end(d, true));
+      gulp.src(p, SrcOption).pipe(confCompile(true)).pipe(handlebars(false)).pipe(fileLogger()).pipe(dest()).on("end", end(d, true));
       return d.promise;
     },
     processHtml: function() {
-      var d, path;
+      var d, p;
       logTask("Processing ./src/*.html");
-      path = ["./src/*.html"];
+      p = ["./src/*.html"];
       d = Q.defer();
-      gulp.src(path).pipe(confCompile(true)).pipe(include()).pipe(variable()).pipe(dest()).on("end", end(d));
+      gulp.src(p).pipe(confCompile(true)).pipe(include()).pipe(variable()).pipe(dest()).on("end", end(d));
       return d.promise;
     },
     concatJS: function(debug, outputPath) {
@@ -221,7 +223,7 @@
         }
         return null;
       });
-      urlRegex = /(\="|\=')([^'":]+?\/[^'"]+?\/[^'"?]+?)("|')/g;
+      urlRegex = /(\="|\='|url\('|url\(")([^'":]+?\/[^'"]+?\/[^'"?]+?)("|')/g;
       noramlize = /\\/g;
       versions = {};
       return listFile.then(function() {
@@ -240,11 +242,21 @@
       }).then(function() {
         var d;
         d = Q.defer();
-        gulp.src("./deploy/*.html").pipe(es.through(function(f) {
-          var newContent;
+        gulp.src(["./deploy/*.html", "./deploy/assets/css/*.css"], {
+          base: process.cwd() + "/deploy"
+        }).pipe(es.through(function(f) {
+          var cwd, newContent;
+          cwd = path.resolve(process.cwd(), "./deploy");
           newContent = f.contents.toString("utf8").replace(urlRegex, function(match, p1, p2, p3) {
-            var version;
-            version = versions[p2.replace("./", "")];
+            var p, version;
+            p = path.resolve(path.dirname(f.path), p2).replace(cwd, "");
+            if (p[0] === "/" || p[0] === "\\") {
+              p = p.replace(/\/|\\/, "");
+            }
+            version = versions[p];
+            if (GLOBAL.gulpConfig.verbose) {
+              console.log(p, version);
+            }
             if (version) {
               return p1 + p2 + ("?v=" + version) + p3;
             } else {

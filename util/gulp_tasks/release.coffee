@@ -4,6 +4,7 @@ gutil     = require("gulp-util")
 es        = require("event-stream")
 fs        = require("fs")
 Q         = require("q")
+path      = require("path")
 
 coffee      = require("gulp-coffee")
 include     = require("./plugins/include")
@@ -60,19 +61,19 @@ Tasks =
   copyAssets : ()->
     logTask "Copying Assets"
 
-    path = ["./src/assets/**/*", "!**/*.glyphs", "!**/*.scss"]
+    p = ["./src/assets/**/*", "!**/*.glyphs", "!**/*.scss"]
 
     d = Q.defer()
-    gulp.src( path, SrcOption ).pipe( dest() ).on( "end", end(d) )
+    gulp.src( p, SrcOption ).pipe( dest() ).on( "end", end(d) )
     d.promise
 
   copyJs : ()->
     logTask "Copying Js & Templates"
 
-    path = ["./src/**/*.js", "./src/**/*.html", "!./src/test/**/*"]
+    p = ["./src/**/*.js", "./src/**/*.html", "!./src/test/**/*"]
 
     d = Q.defer()
-    gulp.src( path, SrcOption ).pipe( dest() ).on( "end", end(d) )
+    gulp.src( p, SrcOption ).pipe( dest() ).on( "end", end(d) )
     d.promise
 
   compileLangSrc : ()->
@@ -88,10 +89,10 @@ Tasks =
     ()->
       logTask "Compiling coffees", true
 
-      path = ["./src/**/*.coffee", "!src/test/**/*", "!./src/nls/lang-source.coffee"]
+      p = ["./src/**/*.coffee", "!src/test/**/*", "!./src/nls/lang-source.coffee"]
 
       d = Q.defer()
-      pipe = gulp.src( path, SrcOption )
+      pipe = gulp.src( p, SrcOption )
         .pipe( confCompile( true ) ) # Remove ### env:dev ###
         .pipe( coffee() ) # Compile coffee
         .pipe( fileLogger() )
@@ -104,10 +105,10 @@ Tasks =
   compileTemplate : ()->
     logTask "Compiling templates", true
 
-    path = ["./src/**/*.partials", "./src/**/*.html", "!src/test/**/*", "!src/*.html", "!src/include/*.html" ]
+    p = ["./src/**/*.partials", "./src/**/*.html", "!src/test/**/*", "!src/*.html", "!src/include/*.html" ]
 
     d = Q.defer()
-    gulp.src( path, SrcOption )
+    gulp.src( p, SrcOption )
       .pipe( confCompile(true) )
       .pipe( handlebars( false ) )
       .pipe( fileLogger() )
@@ -118,10 +119,10 @@ Tasks =
   processHtml : ()->
     logTask "Processing ./src/*.html"
 
-    path = ["./src/*.html"]
+    p = ["./src/*.html"]
 
     d = Q.defer()
-    gulp.src( path )
+    gulp.src( p )
       .pipe( confCompile( true ) )
       .pipe( include() ) # Include other templates or variables to the html
       .pipe( variable() )
@@ -210,7 +211,7 @@ Tasks =
       if type is "out" then fileData += d
       null
 
-    urlRegex = /(\="|\=')([^'":]+?\/[^'"]+?\/[^'"?]+?)("|')/g
+    urlRegex = /(\="|\='|url\('|url\(")([^'":]+?\/[^'"]+?\/[^'"?]+?)("|')/g
     noramlize = /\\/g
 
     versions = {}
@@ -222,12 +223,23 @@ Tasks =
           versions[ line[3].replace(noramlize, "/") ] = line[1].substr(0, 8)
         null
 
-    .then ()-> # Insert buster in all *.html
+    .then ()-> # Insert buster in all *.html and all *.css
       d = Q.defer()
-      gulp.src("./deploy/*.html")
+      gulp.src(["./deploy/*.html","./deploy/assets/css/*.css"], {base:process.cwd()+"/deploy"})
         .pipe es.through (f)->
+
+          cwd = path.resolve( process.cwd(), "./deploy" )
           newContent = f.contents.toString("utf8").replace urlRegex, ( match, p1, p2, p3 )->
-            version = versions[ p2.replace("./", "") ]
+
+            p = path.resolve( path.dirname(f.path), p2 ).replace( cwd, "" )
+            if p[0] is "/" or p[0] is "\\"
+              p = p.replace(/\/|\\/, "")
+
+            version = versions[p]
+
+            if GLOBAL.gulpConfig.verbose
+              console.log p, version
+
             if version
               p1 + p2 + "?v=#{version}" + p3
             else

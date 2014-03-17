@@ -621,18 +621,22 @@ define [ 'event',
 
             that = this
 
-            $paraItemList = $paraListElem.find('.parameter-item')
+            setTimeout(() ->
 
-            currentParaMap = that.cmdParaObjMap[currentCMD]
+                $paraItemList = $paraListElem.find('.parameter-item')
 
-            _.each $paraItemList, (paraItem) ->
+                currentParaMap = that.cmdParaObjMap[currentCMD]
 
-                $paraItem = $(paraItem)
-                currentParaName = $paraItem.attr('data-para-name')
-                paraObj = currentParaMap[currentParaName]
-                that.bindParaItemEvent($paraItem, paraObj)
+                _.each $paraItemList, (paraItem) ->
 
-                null
+                    $paraItem = $(paraItem)
+                    currentParaName = $paraItem.attr('data-para-name')
+                    paraObj = currentParaMap[currentParaName]
+                    that.bindParaItemEvent($paraItem, paraObj)
+
+                    null
+
+            , 0)
 
         bindParaItemEvent: ($paraItem, paraObj) ->
 
@@ -789,9 +793,9 @@ define [ 'event',
                 parameter_list: newParaAry
             }))
 
-            setTimeout(() ->
-                that.bindParaListEvent($paraListElem, currentCMD)
-            , 10)
+            # setTimeout(() ->
+            that.bindParaListEvent($paraListElem, currentCMD)
+            # , 10)
 
         # refreshStateId: () ->
 
@@ -1065,11 +1069,11 @@ define [ 'event',
                     cmdEditor.focus()
                 , 0)
 
-            setTimeout(() ->
-                that.bindParaListEvent($paraListItem, currentCMD)
-                if that.readOnlyMode
-                    that.setEditorReadOnlyMode()
-            , 10)
+            # setTimeout(() ->
+            that.bindParaListEvent($paraListItem, currentCMD)
+            if that.readOnlyMode
+                that.setEditorReadOnlyMode()
+            # , 10)
 
             # $stateItem.addClass('selected')
 

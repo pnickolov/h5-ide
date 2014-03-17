@@ -1,5 +1,5 @@
 (function() {
-  var Q, SrcOption, Tasks, coffee, confCompile, dest, end, es, fileLogger, fs, gulp, gutil, handlebars, ideversion, include, langsrc, logTask, path, requirejs, rjsconfig, stdRedirect, stripdDebug, util, variable;
+  var Q, SrcOption, Tasks, coffee, confCompile, dest, end, es, fileLogger, fs, gulp, gutil, handlebars, ideversion, include, langsrc, logTask, path, requirejs, rjsconfig, rjsreporter, stdRedirect, stripdDebug, util, variable;
 
   gulp = require("gulp");
 
@@ -30,6 +30,8 @@
   rjsconfig = require("./plugins/rjsconfig");
 
   requirejs = require("./plugins/r");
+
+  rjsreporter = require("./plugins/rjsreporter");
 
   stripdDebug = require("gulp-strip-debug");
 
@@ -149,11 +151,15 @@
         logTask("Concating JS");
         d = Q.defer();
         requirejs.optimize(rjsconfig(debug, outputPath), function(buildres) {
-          console.log("Concat result:");
-          console.log(buildres);
-          return d.resolve();
+          if (rjsreporter(buildres)) {
+            return d.resolve();
+          } else {
+            console.log(gutil.colors.bgRed.white("Aborted due to concat error"));
+            return d.reject();
+          }
         }, function(err) {
-          return console.log(err);
+          console.log(err);
+          return d.reject();
         });
         return d.promise;
       };
@@ -328,9 +334,9 @@
       outputPath = mode === "qa" ? "./qa" : void 0;
       qaMode = mode === "qa";
       ideversion.read(deploy);
-      tasks = [Tasks.cleanRepo, Tasks.copyAssets, Tasks.copyJs];
+      tasks = [Tasks.cleanRepo, Tasks.copyAssets, Tasks.copyJs, Tasks.compileLangSrc, Tasks.compileCoffee(debugMode), Tasks.compileTemplate, Tasks.processHtml, Tasks.concatJS(debugMode, outputPath), Tasks.removeBuildFolder];
       if (!qaMode) {
-        tasks = tasks.concat([Tasks.fetchRepo(debugMode), Tasks.preCommit]);
+        tasks = tasks.concat([Tasks.logDeployInDevRepo, Tasks.fetchRepo(debugMode), Tasks.preCommit, Tasks.fileVersion, Tasks.finalCommit]);
       }
       return tasks.reduce(Q.when, Q());
     }

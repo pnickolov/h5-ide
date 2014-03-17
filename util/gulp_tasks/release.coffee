@@ -15,6 +15,7 @@ ideversion  = require("./plugins/ideversion")
 variable    = require("./plugins/variable")
 rjsconfig   = require("./plugins/rjsconfig")
 requirejs   = require("./plugins/r")
+rjsreporter = require("./plugins/rjsreporter")
 
 stripdDebug = require("gulp-strip-debug")
 
@@ -138,11 +139,14 @@ Tasks =
       requirejs.optimize( rjsconfig( debug, outputPath )
 
       , (buildres)->
-        console.log "Concat result:"
-        console.log buildres
-        d.resolve()
+        if rjsreporter(buildres)
+          d.resolve()
+        else
+          console.log gutil.colors.bgRed.white("Aborted due to concat error")
+          d.reject()
       , (err)->
         console.log err
+        d.reject()
       )
 
       d.promise

@@ -166,45 +166,41 @@ define [ 'jquery',
                 console.log 'TOOLBAR_HANDLE_SUCCESS', flag, value
                 if flag
                     if modal and modal.isPopup()
-                        if (flag is "SAVE_STACK" or flag is "CREATE_STACK")
 
-                            # run stack
-                            if model.get( 'is_run' )
+                        #if (flag is "SAVE_STACK" or flag is "CREATE_STACK")
+                        if flag is 'SAVE_STACK_BY_RUN'
 
-                                # get MC.canvas_data
-                                data      = MC.common.other.canvasData.data()
+                            # get MC.canvas_data
+                            data      = MC.common.other.canvasData.data()
 
-                                # set app name
-                                app_name  = $('.modal-input-value').val()
-                                data.name = app_name
+                            # set app name
+                            app_name  = $('.modal-input-value').val()
+                            data.name = app_name
 
-                                # set usage
-                                data.usage = 'others'
-                                usage = $('#app-usage-selectbox .selected').data 'value'
-                                if usage
-                                    data.usage = usage
+                            # set usage
+                            data.usage = 'others'
+                            usage = $('#app-usage-selectbox .selected').data 'value'
+                            if usage
+                                data.usage = usage
 
-                                # call api
-                                model.runStack data
+                            # call api
+                            model.runStack data
 
-                                # update MC.data.app_list
-                                region = MC.common.other.canvasData.get 'region'
-                                MC.data.app_list[ region ].push app_name
+                            # update MC.data.app_list
+                            region = MC.common.other.canvasData.get 'region'
+                            MC.data.app_list[ region ].push app_name
 
-                                # close run stack dialog
-                                modal.close()
-
-                                # set is_run is true
-                                model.set 'is_run', true
-
-                            # start to export cf
-                            else if $('#modal-export-cf')[0] isnt undefined
-                                # convert cf
-                                model.convertCloudformation()
+                            # close run stack dialog
+                            modal.close()
 
                         else if flag is "EXPORT_CLOUDFORMATION"
                             #download
                             view.saveCloudFormation value
+
+                        # start to export cf
+                        else if $('#modal-export-cf')[0] isnt undefined
+                            # convert cf
+                            model.convertCloudformation()
 
                     str_idx = 'TOOLBAR_HANDLE_' + flag
                     if str_idx of lang.ide

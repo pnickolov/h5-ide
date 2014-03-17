@@ -49,10 +49,6 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
             # {<stack_name>:<data>}
             'cf_data'       : null
 
-            # when click 'toolbar run stack' button is_run is true
-            # when click run button is_run is false
-            'is_run'        : false
-
         initialize : ->
 
             me = this
@@ -594,6 +590,94 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
 
                 # call api
                 stack_model.create { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, data
+
+        syncSaveStack : ( region, data ) ->
+            console.log 'syncSaveStack', region, data
+
+            me         = this
+            src        = {}
+            src.sender = this
+            src.model  = null
+            id         = MC.common.other.canvasData.get( 'id' )
+
+            if id and _.isArray id.split( '-' )
+
+                # save api
+                if id.split( '-' )[0] is 'stack'
+
+                    func = stack_service.save
+
+                # create api
+                else if id.split( '-' )[0] is 'new'
+
+                    # add current canvas and svg to cacheThumb
+                    MC.common.other.addCacheThumb id, $("#canvas_body").html(), $("#svg_canvas")[0].getBBox()
+
+                    func = stack_service.create
+
+                if _.isFunction func
+
+                    func src, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, data, ( aws_result ) ->
+
+                        if !aws_result.is_error
+                            console.log 'stack_service api'
+
+                            region  = aws_result.param[3]
+                            data    = aws_result.param[4]
+                            id      = data.id
+                            name    = data.name
+
+                            # save api
+                            if id.split( '-' )[0] is 'stack'
+
+                                # save png
+                                me.savePNG id
+
+                                #update initial data
+                                _.delay () ->
+                                    ide_event.trigger ide_event.UPDATE_STACK_LIST, 'SAVE_STACK', [id]
+                                , 500
+
+                                #set toolbar flag
+                                me.setFlag id, 'SAVE_STACK', name
+
+                                # trigger TOOLBAR_HANDLE_SUCCESS
+                                me.trigger 'TOOLBAR_HANDLE_SUCCESS', 'SAVE_STACK_BY_RUN', name
+
+                                ide_event.trigger ide_event.UPDATE_STATUS_BAR_SAVE_TIME
+
+                            # create api
+                            else if id.split( '-' )[0] is 'new'
+
+                                new_id = aws_result.resolved_data
+
+                                # set new id and key
+                                MC.common.other.canvasData.set 'id',  new_id
+
+                                # get new data
+                                data = MC.common.other.canvasData.data()
+
+                                # set origin
+                                MC.common.other.canvasData.origin data
+
+                                # local thumbnail
+                                # NEW_STACK
+                                me.savePNG new_id, 'new', id
+
+                                _.delay () ->
+                                    ide_event.trigger ide_event.UPDATE_STACK_LIST, 'NEW_STACK', [new_id]
+                                , 500
+                                ide_event.trigger ide_event.UPDATE_DESIGN_TAB, new_id, name + ' - stack'
+                                ide_event.trigger ide_event.UPDATE_STATUS_BAR_SAVE_TIME
+
+                                MC.data.stack_list[region].push {'id':new_id, 'name':name}
+                                me.setFlag id, 'CREATE_STACK', data
+
+                                # trigger TOOLBAR_HANDLE_SUCCESS
+                                me.trigger 'TOOLBAR_HANDLE_SUCCESS', 'SAVE_STACK_BY_RUN', name
+
+                        else
+                            console.log 'stack_service.save_stack, error is ' + aws_result.error_message
 
         #duplicate
         duplicateStack : (region, id, new_name, name) ->

@@ -156,9 +156,6 @@ define [ 'MC', 'event',
 
                     console.log 'clickRunIcon'
 
-                    # set is_run is true
-                    event.data.model.set 'is_run', true
-
                     #check app name
                     app_name = $('.modal-input-value').val()
 
@@ -193,7 +190,8 @@ define [ 'MC', 'event',
                     $('.modal-close').attr 'disabled', true
 
                     # push SAVE_STACK event
-                    ide_event.trigger ide_event.SAVE_STACK, MC.common.other.canvasData.data()
+                    #ide_event.trigger ide_event.SAVE_STACK, MC.common.other.canvasData.data()
+                    event.data.model.syncSaveStack MC.common.other.canvasData.get( 'region' ), MC.common.other.canvasData.data()
 
             null
 

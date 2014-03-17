@@ -610,6 +610,14 @@ module.exports =
       en: "Volumes and snapshots must be dragged to an instance or image."
       zh: "卷和快照必须拖放到实例或映像。"
 
+    CVS_MSG_ERR_SERVERGROUP_VOLUME:
+      en: "Detach existing volume or snapshot of instance server group is not supported yet."
+      zh: "Detach existing volume or snapshot of instance server group is not supported yet."
+
+    CVS_MSG_ERR_SERVERGROUP_VOLUME2:
+      en: "Attach existing volume from single instance to instance server group is not supported yet."
+      zh: "Attach existing volume from single instance to instance server group is not supported yet."
+
     CVS_MSG_WARN_NOTMATCH_SUBNET:
       en: "Subnets must be dragged to an availability zone."
       zh: "子网必须拖放到可用区域。"
@@ -3935,7 +3943,7 @@ module.exports =
       en: "We do not support user modified json."
       zh: ""
 
-    ##### Modal Confirm Update 
+    ##### Modal Confirm Update
 
     POP_CONFIRM_UPDATE_TIT:
       en: "Confirm to Update App"

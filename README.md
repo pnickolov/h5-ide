@@ -103,3 +103,24 @@ define([], function(){
 不要使用`main.coffee`, `view.coffee`, `model.coffee`这种笼统的名字来做为文件名。一般来说可以使用这个模块的名称作为文件名。例如上述例子中的TA模块可以叫做`TA.coffee`。
 
 具体例子参考`module/design/framework/*.coffee`
+
+
+### 如果一个文件只在一个大的模块内部被使用，那么就不应该为这个文件在`config.coffee`里创建模块ID。
+Bad Example:
+```js
+// src/js/ide/config.coffee
+// https://github.com/MadeiraCloud/h5-ide/commit/fbb2f81#diff-6de95fe0ab25276ee4f5ef715f625a04R167
+// 这里的markdown属于stateeditor这个模块，并且只被它使用。所以不应该使用ID
+require.config({
+  ...
+  'markdown' : "component/stateeditor/lib/markdown"
+});
+```
+Good Example:
+```js
+// src/js/ide/config.coffee
+// 这里的UI.tooltip属于ui这个模块，并且也被其他模块使用，所以应该使用ID
+require.config({
+  'UI.tooltip' : 'ui/common/UI.tooltip'
+});
+```

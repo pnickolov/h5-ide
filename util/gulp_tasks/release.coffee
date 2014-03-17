@@ -178,7 +178,7 @@ Tasks =
 
     # Move gitignore if there's any
     if fs.existsSync("./h5-ide-build/.gitignore" )
-      move.then ()->
+      move = move.then ()->
         util.runCommand "mv", ["h5-ide-build/.gitignore", "deploy/.gitignore"], {}
 
     option = { cwd : process.cwd() + "/deploy" }

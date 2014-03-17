@@ -184,7 +184,7 @@
       logTask("Pre-commit");
       move = util.runCommand("mv", ["h5-ide-build/.git", "deploy/.git"], {});
       if (fs.existsSync("./h5-ide-build/.gitignore")) {
-        move.then(function() {
+        move = move.then(function() {
           return util.runCommand("mv", ["h5-ide-build/.gitignore", "deploy/.gitignore"], {});
         });
       }
@@ -328,9 +328,9 @@
       outputPath = mode === "qa" ? "./qa" : void 0;
       qaMode = mode === "qa";
       ideversion.read(deploy);
-      tasks = [Tasks.cleanRepo, Tasks.copyAssets, Tasks.copyJs, Tasks.compileLangSrc, Tasks.compileCoffee(debugMode), Tasks.compileTemplate, Tasks.processHtml, Tasks.concatJS(debugMode, outputPath), Tasks.removeBuildFolder];
+      tasks = [Tasks.cleanRepo, Tasks.copyAssets, Tasks.copyJs];
       if (!qaMode) {
-        tasks = tasks.concat([Tasks.logDeployInDevRepo, Tasks.fetchRepo(debugMode), Tasks.preCommit, Tasks.fileVersion, Tasks.finalCommit]);
+        tasks = tasks.concat([Tasks.fetchRepo(debugMode), Tasks.preCommit]);
       }
       return tasks.reduce(Q.when, Q());
     }

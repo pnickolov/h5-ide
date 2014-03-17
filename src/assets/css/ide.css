@@ -6065,6 +6065,21 @@ summary:focus {
 	background-color: #4495d3;
 }
 
+.validation-content a.bubble-NAT-instance {
+	color: #4495d3;
+}
+
+.validation-content a.bubble-NAT-instance:hover {
+	text-decoration: underline;
+}
+
+.bubble-NAT-req-list li {
+	font-size: 14px;
+	padding: 4px 0;
+	list-style-type: decimal;
+	list-style-position: inside;
+}
+
 #app-apply-update .modal-text-wraper {
 	position: relative;
 }

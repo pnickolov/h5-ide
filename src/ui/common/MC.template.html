@@ -1519,3 +1519,16 @@ Are you sure you want to delete {{name}}?</div>
 <!-- experimentalVisopsTrail -->
 <h3 class="modal-body-header">{{ i18n "INVITE_MOD_THANK_LBL"}}</h3>
 <div class="modal-text-major tac">{{ i18n "INVITE_MOD_THANK_MORE"}}</div>
+
+<!-- bubbleNATreq -->
+
+<div class="bubble-head">A NAT instance must meet following requirements:</div>
+<div class="bubble-content">
+	<ul class="bubble-NAT-req-list">
+		<li>Should disable Source/Destination Checking in "Network Interface Details".</li>
+		<li>Should have public IP or Elastic IP.</li>
+		<li>Should belong to a subnet which routes traffic with destination 0.0.0.0/0 to Internet Gateway.</li>
+		<li>Should have outbound rule to the outside.</li>
+		<li>Should have inbound rule from with the VPC.</li>
+	</ul>
+</div>

@@ -23,6 +23,13 @@ define [ "i18n!nls/lang.js", "../ComplexResModel", "constant" ], ( lang, Complex
 
     constructor : ( attributes, options )->
 
+      #  <attributes.owner> : InstanceModel
+      #  [attributes.snapshotId]
+      #  [attributes.volumeSize]
+      #  [attributes.volumeType]
+      #  [attributes.iops]
+      #  [options.noNeedGenName] : true|false
+
       owner = attributes.owner
       delete attributes.owner
 

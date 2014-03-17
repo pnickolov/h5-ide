@@ -71,7 +71,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
               attribute.iops = vol.iops
             attribute.owner = @
             VolumeModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume )
-            new VolumeModel( attribute )
+            new VolumeModel( attribute, {noNeedGenName:true})
 
 
       # Hack, we need to clone the imageId before drawing.

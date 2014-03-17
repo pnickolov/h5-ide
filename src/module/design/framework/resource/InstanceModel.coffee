@@ -56,22 +56,24 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
         volSize = @getAmiRootDeviceVolumeSize()
         if volSize > 0
           @set("rdSize",volSize)
-          #append other volume in ami
-          amiInfo = @.getAmi()
-          volList = amiInfo.blockDeviceMapping
-          for key, vol of volList
-            if key is amiInfo.rootDeviceName
-              continue
-            attribute =
-              name : key
-              snapshotId : vol.snapshotId
-              volumeSize : vol.volumeSize
-              volumeType : vol.volumeType
-            if vol.volumeType is "io1"
-              attribute.iops = vol.iops
-            attribute.owner = @
-            VolumeModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume )
-            new VolumeModel( attribute, {noNeedGenName:true})
+
+          # < need add volume of ami like root device, not support now >
+          # append other volume in ami
+          # amiInfo = @.getAmi()
+          # volList = amiInfo.blockDeviceMapping
+          # for key, vol of volList
+          #   if key is amiInfo.rootDeviceName
+          #     continue
+          #   attribute =
+          #     name : key
+          #     snapshotId : vol.snapshotId
+          #     volumeSize : vol.volumeSize
+          #     volumeType : vol.volumeType
+          #   if vol.volumeType is "io1"
+          #     attribute.iops = vol.iops
+          #   attribute.owner = @
+          #   VolumeModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume )
+          #   new VolumeModel( attribute, {noNeedGenName:true})
 
 
       # Hack, we need to clone the imageId before drawing.

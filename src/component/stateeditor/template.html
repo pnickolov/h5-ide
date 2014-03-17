@@ -233,7 +233,7 @@
 
 <!-- state-template-log-item -->
 {{#each state_logs}}
-	<li class="state-log-item {{state_status}} {{#if view}}view{{/if}}" data-state-id="{{id}}">
+	<li class="state-log-item {{state_status}} {{#if view}}view{{/if}} {{#if is_state_log}}state-log{{/if}}" data-state-id="{{id}}">
 		<div class="state-log-item-header">
 			<div class="state-log-item-name">{{#if state_num}}{{state_num}}{{/if}}</div>
 			{{#if log_time}}<div class="state-log-item-time">{{log_time}}</div>{{/if}}

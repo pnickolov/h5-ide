@@ -2160,8 +2160,10 @@ define [ 'event',
                 stateStatus = logObj.result
                 stateId = "#{logObj.id}"
                 stateNum = ''
+                isStateLog = false
                 if logObj.id isnt 'Agent'
                     stateId = "State #{stateId}"
+                    isStateLog = true
                     stateStatusMap[logObj.id] = stateStatus
                 else
                     stateNum = logObj.id
@@ -2194,7 +2196,8 @@ define [ 'event',
                     stdout: stdoutStr,
                     comment: commentStr,
                     long_stdout: longStdout,
-                    view: viewLog
+                    view: viewLog,
+                    is_state_log: isStateLog
                 })
                 null
 
@@ -2203,7 +2206,13 @@ define [ 'event',
             })
 
             that.refreshStateItemStatus(stateStatusMap)
-            that.$stateLogList.empty().append(renderHTML)
+
+            resState = that.model.get('resState')
+            instanceStateHTML = that.stateLogInstanceItemTpl({
+                res_status: resState
+            })
+
+            that.$stateLogList.empty().append(instanceStateHTML).append(renderHTML)
             that.refreshLogItemNum()
 
         setEditorReadOnlyMode: () ->
@@ -2263,11 +2272,6 @@ define [ 'event',
             that.showLogListLoading(true)
 
             that.model.getResState(selectedResId)
-            resState = that.model.get('resState')
-
-            # that.$stateLogList.empty().html(that.stateLogInstanceItemTpl({
-            #     res_status: resState
-            # }))
 
             if not that.isLoadingLogList
 
@@ -2453,7 +2457,7 @@ define [ 'event',
 
             _.each $logItemList, (logItem, idx) ->
 
-                if idx >= 1
+                if idx >= 2
 
                     $logItem = $(logItem)
                     stateId = $logItem.attr('data-state-id')

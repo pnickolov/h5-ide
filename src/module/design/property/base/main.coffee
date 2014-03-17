@@ -228,7 +228,6 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
     PropertyModule.prototype.activeSubModule = () ->
         activeSubModule
 
-
     PropertyModule.activeModule = PropertyModule.prototype.activeModule
     PropertyModule.activeSubModule = PropertyModule.prototype.activeSubModule
     PropertyModule.loadSubPanel = PropertyModule.prototype.loadSubPanel
@@ -236,25 +235,33 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
     # Class methods. They're used by design/property/main.
     PropertyModule.load  = ( componentType, componentUid, tab_type ) ->
         if not componentType
-            this._doLoad propertyTypeMap.DEFAULT_TYPE, "", tab_type
+            #this._doLoad propertyTypeMap.DEFAULT_TYPE, "", tab_type
+            type    = propertyTypeMap.DEFAULT_TYPE
+            uid     = ''
+            tabType = tab_type
         else
-            result = this._doLoad componentType, componentUid, tab_type
-            if result is true
+            type    = componentType
+            uid     = componentUid
+            tabType = tab_type
+
+        property = __getProperty type, uid, tabType
+        loadResult = __loadProperty type, property, uid, tabType
+
+        if componentType
+            if loadResult is true
                 return
-            else if result is false
+            if loadResult is false
                 # Cannot load the property due to data issue. Display the missing property
-                this._doLoad "missing_resource", componentUid, tab_type
+                property = __getProperty "missing_resource", uid, tabType
+                __loadProperty type, property, uid, tabType
             else
                 # The property doesn't handle current tab_type. Display the stack property
                 console.warn "Cannot open component for type: #{ componentType }, data : #{componentUid }"
-                this._doLoad propertyTypeMap.DEFAULT_TYPE, "", tab_type
-        null
+                property = __getProperty propertyTypeMap.DEFAULT_TYPE, "", tabType
+                __loadProperty type, property, uid, tabType
 
-
-    PropertyModule._doLoad = ( componentType, componentUid, tab_type ) ->
-
+    __getProperty = ( componentType, componentUid, tab_type ) ->
         handle = componentType
-
         # 1. Find the corresponding property
         property = propertyTypeMap[ componentType ]
         if not property
@@ -275,15 +282,11 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
             return
 
         property.handle = handle
+        property
 
-        # Return _doLoadProperty's return value.
-        PropertyModule._doLoadProperty componentType, property, componentUid, tab_type
-
-    PropertyModule._doLoadProperty = ( componentType, property, componentUid, tab_type ) ->
-
+    __loadProperty = ( componentType, property, componentUid, tab_type ) ->
         # 1. Set the property type to "App" or "Stack"
         property.type = tab_type
-
         # 2. Init
         procName = "init#{property.type}"
         if property[ procName ]
@@ -295,13 +298,11 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
         else
             # The property cannot init. Default to use Stack property.
             return
-
         # 3. Setup ( Only run once )
         procName = "setup#{property.type}"
         if property[ procName ]
             property[ procName ].call property
             property[ procName ] = null
-
         # 4. Register the property as active property
         if property.subPanelID
             activeSubModule     = property
@@ -311,27 +312,23 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
             activeSubModuleType = null
             activeModule        = property
             activeModuleType    = componentType
-
         # 5. Re-init the `model` and `view`
         # Since the model is singleton, need to clear all the attributes.
         property.model.clear( { silent : true } )
         # If the model cannot init. Default to use Missing Property.
         if property.model.init( componentUid ) is false
             return false
-
         # Injects the model to the view. So that the view doesn't have hard dependency
         # to the model. Thus they're decoupled.
         property.view.model      = property.model
         property.view._isSub     = !!property.subPanelID
         property.view.__restore  = PropertyModule.__restore
         PropertyModule.__restore = false # Reset this attr here, so that even there's error, it still get reset
-
         # 6. Tell view to Render
         if property.subPanelID
             property.view._loadAsSub( property.subPanelID )
         else
             property.view._load()
-
         # 7. After load callback.
         procName = "afterLoad#{property.type}"
         if property[ procName ]
@@ -340,7 +337,6 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
         true
 
     PropertyModule.onUnloadSubPanel = () ->
-
         # Calls `onUnloadSubPanel` callback for current main property module
         if activeModule.onUnloadSubPanel
             activeModule.onUnloadSubPanel( activeSubModule.subPanelID )

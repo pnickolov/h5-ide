@@ -1839,7 +1839,7 @@ define [ 'event',
 
                             $paraItem = $editorElem.parents('.parameter-item')
 
-                            if $paraItem.hasClass('bool')
+                            if $paraItem.hasClass('bool') or $paraItem.hasClass('state')
                                 that.setPlainText($editorElem, '')
 
                             that.setEditorCompleter(thatEditor, hintDataAryMap['focus'], 'command')

@@ -202,7 +202,7 @@ StreamFuncs =
   throughHandlebars : ()->
     pipeline = handlebars()
     pipeline.pipe( gulp.dest(".") )
-    pipeline
+    cached( pipeline )
 
   workStream : null
   workEndStream : null

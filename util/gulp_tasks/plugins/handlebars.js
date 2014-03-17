@@ -7,13 +7,13 @@
 
   path = require("path");
 
-  gutil = require("gulp-util");
+  fs = require("fs");
 
-  util = require("./util");
+  gutil = require("gulp-util");
 
   coffee = require("gulp-coffee");
 
-  fs = require("fs");
+  util = require("./util");
 
   DefaultKnownHelpers = {
     is_service_error: true,

@@ -12,9 +12,9 @@ readRequirejsConfig = ( path )->
   # instead of reading the compiled config.js
   s = fs.readFileSync path
 
-  pipeline = es.through ()->
+  pipeline = es.through ()-> null
 
-  pipeline.pipe(coffee()).pipe es.through ( f )-> s = f.contents.toString("utf8")
+  pipeline.pipe(coffee()).pipe es.through ( f )-> s = f.contents.toString("utf8");null
 
   pipeline.emit "data", {
     path     : path

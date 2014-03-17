@@ -2,10 +2,12 @@
 es         = require("event-stream")
 handlebars = require("handlebars")
 path       = require("path")
-gutil      = require("gulp-util")
-util       = require("./util")
-coffee     = require("gulp-coffee")
 fs         = require("fs")
+
+gutil      = require("gulp-util")
+coffee     = require("gulp-coffee")
+
+util       = require("./util")
 
 DefaultKnownHelpers =
   is_service_error : true

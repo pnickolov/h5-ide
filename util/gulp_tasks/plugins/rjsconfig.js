@@ -14,9 +14,12 @@
   readRequirejsConfig = function(path) {
     var Context, pipeline, s;
     s = fs.readFileSync(path);
-    pipeline = es.through(function() {});
+    pipeline = es.through(function() {
+      return null;
+    });
     pipeline.pipe(coffee()).pipe(es.through(function(f) {
-      return s = f.contents.toString("utf8");
+      s = f.contents.toString("utf8");
+      return null;
     }));
     pipeline.emit("data", {
       path: path,

@@ -64,6 +64,7 @@
     compileCompass: function() {
       var compassSuccess;
       compassSuccess = true;
+      gutil.log(gutil.colors.bgBlue.white(" Compiling scss... "));
       return util.runCommand("compass", ["compile"], {
         cwd: process.cwd() + "/src/assets"
       }, {
@@ -224,7 +225,7 @@
       var pipeline;
       pipeline = handlebars();
       pipeline.pipe(gulp.dest("."));
-      return pipeline;
+      return cached(pipeline);
     },
     workStream: null,
     workEndStream: null,
@@ -335,7 +336,6 @@
       path.push("!src/service/**/*");
       path.push("!src/model/**/*");
     }
-    path = ["src/*.html"];
     deferred = Q.defer();
     StreamFuncs.createStreamObject();
     compileStream = gulp.src(path, {

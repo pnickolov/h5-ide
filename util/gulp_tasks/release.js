@@ -308,14 +308,13 @@
         devRepoV = d;
         return null;
       });
-      task.then(function() {
-        return util.runCommand("git", ["add", "-A"], option);
-      });
       return task.then(function() {
+        return util.runCommand("git", ["add", "-A"], option);
+      }).then(function() {
         return util.runCommand("git", ["commit", "-m", "" + (ideversion.version()) + " ; DevRepo: MadeiraCloud/h5-ide@" + devRepoV], option);
       }).then(function() {
         if (GLOBAL.gulpConfig.autoPush) {
-          console.log("\n[ " + gutil.colors.bgBlue.white("Pushing to Remote") + " ]");
+          console.log("[ " + gutil.colors.bgBlue.white("Pushing to Remote") + " ]");
           console.log(gutil.colors.bgYellow.black("  AutoPush might be slow, you can always kill the task at this moment. "));
           console.log(gutil.colors.bgYellow.black("  Then manually git-push `./deploy`. You can delete `./deploy` after git-pushing. "));
           return util.runCommand("git", ["push", "-v", "--progress", "-f"], option, stdRedirect);

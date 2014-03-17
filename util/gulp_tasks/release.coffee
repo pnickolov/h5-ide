@@ -290,12 +290,12 @@ Tasks =
 
     task.then ()->
       util.runCommand "git", ["add", "-A"], option
-    task.then ()->
+    .then ()->
       util.runCommand "git", ["commit", "-m", "#{ideversion.version()} ; DevRepo: MadeiraCloud/h5-ide@#{devRepoV}"], option
     .then ()->
 
       if GLOBAL.gulpConfig.autoPush
-        console.log "\n[ " + gutil.colors.bgBlue.white("Pushing to Remote") + " ]"
+        console.log "[ " + gutil.colors.bgBlue.white("Pushing to Remote") + " ]"
         console.log gutil.colors.bgYellow.black("  AutoPush might be slow, you can always kill the task at this moment. ")
         console.log gutil.colors.bgYellow.black("  Then manually git-push `./deploy`. You can delete `./deploy` after git-pushing. ")
 

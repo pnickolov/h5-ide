@@ -145,12 +145,14 @@ define [ '../base/model',
                 for instance in Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance ).allObjects()
                     if instance.get("appId") is instance_id
                         @set "uid", instance.id
+                        @set "memberId", "#{instance.id}_0"
                         found = true
                         break
                     else if instance.groupMembers
-                        for member in instance.groupMembers()
+                        for member, index in instance.groupMembers()
                             if member and member.appId is instance_id
                                 @set "uid", instance.id
+                                @set "memberId", "#{member.id}_#{index + 1}"
                                 found = true
                                 break
                 if not found
@@ -163,8 +165,9 @@ define [ '../base/model',
                         for obj in data
                             if obj is instance_id or obj.InstanceId is instance_id
                                 @set "uid", asg.get("lc").id
+                                @set "memberId", instance_id
                                 break
-            
+
             if not myInstanceComponent
                 myInstanceComponent = Design.instance().component( @get "uid" )
 

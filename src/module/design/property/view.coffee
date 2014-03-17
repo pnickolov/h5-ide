@@ -91,16 +91,10 @@ define [ 'event',
             $( '#property-panel .sub-stateeditor' ).hide()
 
         __showProperty: () ->
-            $( '#property-panel .sub-property' ).show()
+            $( '#property-panel' ).removeClass 'state'
 
         __showState: () ->
-            $( '#property-panel .sub-stateeditor' ).show()
-
-        __hasProperty: () ->
-            $( '#property-panel .sub-property' ).children() > 0
-
-        __hasState: () ->
-            $( '#property-panel .sub-stateeditor' ).children() > 0
+            $( '#property-panel' ).addClass 'state'
 
         __hideResourcePanel: () ->
             hideButton = $ '#hide-resource-panel'
@@ -113,13 +107,12 @@ define [ 'event',
             null
 
         renderProperty: ( uid, type, force ) ->
-            @__hideState()
             $( '#property-panel' ).removeClass('state').removeClass('state-wide')
             if not type and uid
                 comp = Design.instance().component uid
                 type = comp.type if comp
 
-            @__initProperty type, uid, force
+            @initProperty type, uid, force
 
 
             @currentTab = 'property'
@@ -134,81 +127,73 @@ define [ 'event',
 
         renderState: ( uid, type, force ) ->
 
-            @__hideProperty()
             @__hideResourcePanel()
-            $( '#property-panel' ).addClass 'state'
+
 
             @storeLast uid, type
             @currentTab = 'state'
 
-            if @last.uid is uid and @__hasProperty()
+            currentSelectedCompModel = null
 
-            else
-
-                currentSelectedCompModel = null
-
-                if not uid
-                    uid = Design.instance().canvas.selectedNode[ 0 ]
-                    if uid
-                        currentSelectedCompModel = Design.instance().component(uid)
-
+            if not uid
+                uid = Design.instance().canvas.selectedNode[ 0 ]
                 if uid
-                    comp = Design.instance().component uid
-                    if comp
-                        type = comp.type
-                        if not _.contains [ CONST.RESTYPE.LC, CONST.RESTYPE.INSTANCE ], type
-                            @renderProperty uid
+                    currentSelectedCompModel = Design.instance().component(uid)
+
+            if uid
+                comp = Design.instance().component uid
+                if comp
+                    type = comp.type
+                    if not _.contains [ CONST.RESTYPE.LC, CONST.RESTYPE.INSTANCE ], type
+                        @renderProperty uid
+                        return
+                    else if _.contains [ CONST.RESTYPE.LC ], type
+                        if Design.instance().modeIsApp()
+                            currentStackState = Design.instance().get('state')
+                            if currentStackState is 'Stopped'
+                                ide_event.trigger ide_event.OPEN_STATE_EDITOR, uid
                             return
-                        else if _.contains [ CONST.RESTYPE.LC ], type
-                            if Design.instance().modeIsApp()
-                                currentStackState = Design.instance().get('state')
-                                if currentStackState is 'Stopped'
-                                    ide_event.trigger ide_event.OPEN_STATE_EDITOR, uid
-                                    @__showState()
+
+                        ide_event.trigger ide_event.OPEN_STATE_EDITOR, uid
+                        #@__showState()
+                        return
+
+                if Design.instance().modeIsApp()
+
+                    # for asg or isg
+                    isASGSelect = false
+
+                    resId = $('#asgList-wrap .asgList-item.selected').attr('id')
+
+                    if resId and resId is uid
+
+                        compObj = MC.aws.aws.getCompByResIdForState(resId)
+                        if compObj and compObj.parent and compObj.parent.type is 'AWS.AutoScaling.Group'
+                            lcComp = compObj.parent.get('lc')
+                            if lcComp and lcComp.id
+                                ide_event.trigger ide_event.OPEN_STATE_EDITOR, lcComp.id, resId
                                 return
 
-                            ide_event.trigger ide_event.OPEN_STATE_EDITOR, uid
-                            @__showState()
-                            return
+                        isASGSelect = true
 
-                    if Design.instance().modeIsApp()
+                    if not isASGSelect
 
-                        # for asg or isg
-                        isASGSelect = false
-
-                        resId = $('#asgList-wrap .asgList-item.selected').attr('id')
+                        resId = $('#instanceList-wrap .instanceList-item.selected').data('id')
 
                         if resId and resId is uid
 
                             compObj = MC.aws.aws.getCompByResIdForState(resId)
-                            if compObj and compObj.parent and compObj.parent.type is 'AWS.AutoScaling.Group'
-                                lcComp = compObj.parent.get('lc')
-                                if lcComp and lcComp.id
-                                    ide_event.trigger ide_event.OPEN_STATE_EDITOR, lcComp.id, resId
-                                    @__showState()
+                            if compObj and compObj.parent and compObj.parent.type is 'AWS.EC2.Instance'
+                                if compObj.parent and compObj.parent.id
+                                    ide_event.trigger ide_event.OPEN_STATE_EDITOR, compObj.parent.id, resId
                                     return
-
-                            isASGSelect = true
-
-                        if not isASGSelect
-
-                            resId = $('#instanceList-wrap .instanceList-item.selected').data('id')
-
-                            if resId and resId is uid
-
-                                compObj = MC.aws.aws.getCompByResIdForState(resId)
-                                if compObj and compObj.parent and compObj.parent.type is 'AWS.EC2.Instance'
-                                    if compObj.parent and compObj.parent.id
-                                        ide_event.trigger ide_event.OPEN_STATE_EDITOR, compObj.parent.id, resId
-                                        @__showState()
-                                        return
 
             ide_event.trigger ide_event.OPEN_STATE_EDITOR, uid
             @__showState()
             if force then @forceShow()
             @
 
-        __initProperty: ( type, uid, force ) ->
+        initProperty: ( type, uid, force ) ->
             @render()
             @load()
 

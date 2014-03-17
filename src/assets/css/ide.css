@@ -7385,9 +7385,17 @@ summary:focus {
 	display: none;
 }
 
+#property-panel.state .sub-stateeditor {
+	display: block;
+}
+
 #property-panel .sub-property {
 	height: 100%;
 	width: 100%;
+}
+
+#property-panel.state .sub-property {
+	display: none;
 }
 
 #property-panel .sub-stateeditor {

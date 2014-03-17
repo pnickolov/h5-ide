@@ -93,8 +93,16 @@ define [ 'event',
 			return
 		if view.currentTab is 'state' and stateStatus
 			view.renderState uid
+			# Because snapshot is needed, and snapshot is only in property now.
+			# TODO: Optimize
+			#view.initProperty type, uid, force
 		else
 			view.renderProperty uid, type, force
+
+	restoreState = ( type, uid ) ->
+		stateStatus = processState uid, type
+		if view.currentTab is 'state' and stateStatus
+			view.renderState uid
 
 	openTab = ( tab, uid ) ->
 		if tab is 'property'
@@ -166,7 +174,7 @@ define [ 'event',
 
 	restore = ( snapshot ) ->
 		view.restore snapshot
-		openPorperty null, view.uid
+		restoreState null, view.uid
 		PropertyBaseModule.restore snapshot, view
 
 

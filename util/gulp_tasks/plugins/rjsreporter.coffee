@@ -39,6 +39,8 @@ module.exports = ( info )->
     console.log "----------------"
 
     for source in item[1].split "\n"
+      if not source then continue
+
       message = ""
 
       if duplicateTest[ source ]

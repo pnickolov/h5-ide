@@ -50,6 +50,9 @@
       _ref = item[1].split("\n");
       for (_j = 0, _len1 = _ref.length; _j < _len1; _j++) {
         source = _ref[_j];
+        if (!source) {
+          continue;
+        }
         message = "";
         if (duplicateTest[source]) {
           hasDuplicate = true;

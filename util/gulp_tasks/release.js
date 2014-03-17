@@ -294,18 +294,25 @@
       });
     },
     logDeployInDevRepo: function() {
-      logTask("Commit deploy in h5-ide");
+      logTask("Commit IdeVersion in h5-ide");
       return util.runCommand("git", ["commit", "-m", '"Deploy ' + ideversion.version() + '"', "package.json"]);
     },
     finalCommit: function() {
-      var commit, option;
+      var devRepoV, option, task;
       logTask("Final Commit");
       option = {
         cwd: process.cwd() + "/deploy"
       };
-      commit = util.runCommand("git", ["add", "-A"], option);
-      return commit.then(function() {
-        return util.runCommand("git", ["commit", "-m", "" + (ideversion.version())], option);
+      devRepoV = "HEAD";
+      task = util.runCommand("git", ["rev-parse", "HEAD"], void 0, function(d) {
+        devRepoV = d;
+        return null;
+      });
+      task.then(function() {
+        return util.runCommand("git", ["add", "-A"], option);
+      });
+      return task.then(function() {
+        return util.runCommand("git", ["commit", "-m", "" + (ideversion.version()) + " ; DevRepo: MadeiraCloud/h5-ide@" + devRepoV], option);
       }).then(function() {
         if (GLOBAL.gulpConfig.autoPush) {
           console.log("\n[ " + gutil.colors.bgBlue.white("Pushing to Remote") + " ]");

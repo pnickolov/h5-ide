@@ -274,7 +274,7 @@ Tasks =
       d.promise
 
   logDeployInDevRepo : ()->
-    logTask "Commit deploy in h5-ide"
+    logTask "Commit IdeVersion in h5-ide"
     # Update IDE Version to dev repo
     util.runCommand "git", ["commit", "-m", '"Deploy '+ideversion.version()+'"', "package.json"]
 
@@ -285,9 +285,13 @@ Tasks =
     option = { cwd : process.cwd() + "/deploy" }
 
     # Add all files
-    commit = util.runCommand "git", ["add", "-A"], option
-    commit.then ()->
-      util.runCommand "git", ["commit", "-m", "#{ideversion.version()}"], option
+    devRepoV = "HEAD"
+    task = util.runCommand "git", ["rev-parse", "HEAD"], undefined, (d)-> devRepoV=d;null
+
+    task.then ()->
+      util.runCommand "git", ["add", "-A"], option
+    task.then ()->
+      util.runCommand "git", ["commit", "-m", "#{ideversion.version()} ; DevRepo: MadeiraCloud/h5-ide@#{devRepoV}"], option
     .then ()->
 
       if GLOBAL.gulpConfig.autoPush

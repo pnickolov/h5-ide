@@ -473,7 +473,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                         #use elb_service to invoke api
                         elb_service.DescribeInstanceHealth { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  elb.LoadBalancerName, null, ( result ) ->
 
-                            if !result.is_error
+                            if !result.is_error and result and result.resolved_data and result.resolved_data.length
                             #DescribeInstanceHealth succeed
                                 total = result.resolved_data.length
                                 health = 0

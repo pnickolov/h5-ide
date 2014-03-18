@@ -60,36 +60,17 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
                 region  = result.param[3]
                 data    = result.param[4]
                 id      = data.id
-
-                name = data.name
+                name    = data.name
 
                 if !result.is_error
-
                     console.log 'save stack successfully'
 
-                    # track
-                    # analytics.track "Saved Stack",
-                    #     stack_name: data.name,
-                    #     stack_region: data.region,
-                    #     stack_id: data.id
+                    # call saveStackCallback
+                    me.saveStackCallback id, name
 
-                    # local thumbnail
-                    # OPEN_STACK
-                    me.savePNG id
-
-                    #update initial data
-                    _.delay () ->
-                        ide_event.trigger ide_event.UPDATE_STACK_LIST, 'SAVE_STACK', [id]
-                    , 500
-
-                    #set toolbar flag
-                    me.setFlag id, 'SAVE_STACK', name
-
+                    # trigger TOOLBAR_HANDLE_SUCCESS
                     me.trigger 'TOOLBAR_HANDLE_SUCCESS', 'SAVE_STACK', name
 
-                    ide_event.trigger ide_event.UPDATE_STATUS_BAR_SAVE_TIME
-
-                    id
                 else
                     me.trigger 'TOOLBAR_HANDLE_FAILED', 'SAVE_STACK', name
 
@@ -102,44 +83,16 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
                 region  = result.param[3]
                 data    = result.param[4]
                 old_id  = data.id
-
                 name    = data.name
 
                 if !result.is_error
                     console.log 'create stack successfully'
 
-                    new_id = result.resolved_data
-                    #key    = result.resolved_data.key
+                    # call createStackCallback
+                    me.createStackCallback result, old_id, name, region
 
-                    # old design flow
-                    #MC.data.origin_canvas_data = $.extend true, {}, MC.canvas_data
-
-                    # new design flow
-
-                    # set new id and key
-                    MC.common.other.canvasData.set 'id',  new_id
-
-                    # get data
-                    data = MC.common.other.canvasData.data()
-
-                    # set origin
-                    MC.common.other.canvasData.origin data
-
-                    # local thumbnail
-                    # NEW_STACK
-                    me.savePNG new_id, 'new', old_id
-
+                    # push TOOLBAR_HANDLE_SUCCESS
                     me.trigger 'TOOLBAR_HANDLE_SUCCESS', 'CREATE_STACK', name
-                    _.delay () ->
-                        ide_event.trigger ide_event.UPDATE_STACK_LIST, 'NEW_STACK', [new_id]
-                    , 500
-                    ide_event.trigger ide_event.UPDATE_DESIGN_TAB, new_id, name + ' - stack'
-                    ide_event.trigger ide_event.UPDATE_STATUS_BAR_SAVE_TIME
-
-                    MC.data.stack_list[region].push {'id':new_id, 'name':name}
-                    me.setFlag old_id, 'CREATE_STACK', data
-
-                    new_id
 
                 else
                     me.trigger 'TOOLBAR_HANDLE_FAILED', 'CREATE_STACK', name
@@ -381,6 +334,49 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
                     #me.savePNG app_id, 'new'
 
                     null###
+
+        createStackCallback : ( result, old_id, name, region ) ->
+            console.log 'createStackCallback', result, old_id, name, region
+            # get new id
+            new_id = result.resolved_data
+
+            # set new id and key
+            MC.common.other.canvasData.set 'id',  new_id
+
+            # get new data
+            data = MC.common.other.canvasData.data()
+
+            # set origin
+            MC.common.other.canvasData.origin data
+
+            # local thumbnail
+            # NEW_STACK
+            @savePNG new_id, 'new', old_id
+
+            # add stack_list and change toolbar model
+            MC.data.stack_list[ region ].push { 'id' : new_id, 'name' : name }
+            @setFlag old_id, 'CREATE_STACK', data
+
+            # update other module
+            ide_event.trigger ide_event.UPDATE_STACK_LIST, 'NEW_STACK', [new_id]
+            ide_event.trigger ide_event.UPDATE_DESIGN_TAB, new_id, name + ' - stack'
+            ide_event.trigger ide_event.UPDATE_STATUS_BAR_SAVE_TIME
+
+        saveStackCallback : ( id, name ) ->
+            console.log 'createStackCallback', id, name
+
+            # local thumbnail
+            # OPEN_STACK
+            @savePNG id
+
+            #update initial data
+            ide_event.trigger ide_event.UPDATE_STACK_LIST, 'SAVE_STACK', [id]
+
+            #set toolbar flag
+            @setFlag id, 'SAVE_STACK', name
+
+            # push event
+            ide_event.trigger ide_event.UPDATE_STATUS_BAR_SAVE_TIME
 
         setFlag : (id, flag, value) ->
             me = this
@@ -630,48 +626,17 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
                             # save api
                             if id.split( '-' )[0] is 'stack'
 
-                                # save png
-                                me.savePNG id
-
-                                #update initial data
-                                _.delay () ->
-                                    ide_event.trigger ide_event.UPDATE_STACK_LIST, 'SAVE_STACK', [id]
-                                , 500
-
-                                #set toolbar flag
-                                me.setFlag id, 'SAVE_STACK', name
+                                # call saveStackCallback
+                                me.saveStackCallback id, name
 
                                 # trigger TOOLBAR_HANDLE_SUCCESS
                                 me.trigger 'TOOLBAR_HANDLE_SUCCESS', 'SAVE_STACK_BY_RUN', name
 
-                                ide_event.trigger ide_event.UPDATE_STATUS_BAR_SAVE_TIME
-
                             # create api
                             else if id.split( '-' )[0] is 'new'
 
-                                new_id = aws_result.resolved_data
-
-                                # set new id and key
-                                MC.common.other.canvasData.set 'id',  new_id
-
-                                # get new data
-                                data = MC.common.other.canvasData.data()
-
-                                # set origin
-                                MC.common.other.canvasData.origin data
-
-                                # local thumbnail
-                                # NEW_STACK
-                                me.savePNG new_id, 'new', id
-
-                                _.delay () ->
-                                    ide_event.trigger ide_event.UPDATE_STACK_LIST, 'NEW_STACK', [new_id]
-                                , 500
-                                ide_event.trigger ide_event.UPDATE_DESIGN_TAB, new_id, name + ' - stack'
-                                ide_event.trigger ide_event.UPDATE_STATUS_BAR_SAVE_TIME
-
-                                MC.data.stack_list[region].push {'id':new_id, 'name':name}
-                                me.setFlag id, 'CREATE_STACK', data
+                                # call createStackCallback
+                                me.createStackCallback aws_result, id, name, region
 
                                 # trigger TOOLBAR_HANDLE_SUCCESS
                                 me.trigger 'TOOLBAR_HANDLE_SUCCESS', 'SAVE_STACK_BY_RUN', name

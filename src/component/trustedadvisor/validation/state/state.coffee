@@ -119,18 +119,30 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo', 'Design' ], ( CON
         igw = _.where rtbConn, type: CONST.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway
         igw.length > 0
 
-    __isNat = ( component ) ->
+    __natOut = ( component ) ->
         if component.type is CONST.AWS_RESOURCE_TYPE.AWS_EC2_Instance
             rtb = __getSubnetRtb component
-
             if rtb
                 instances = _.where rtb.connectionTargets('RTB_Route'), type: CONST.AWS_RESOURCE_TYPE.AWS_EC2_Instance
                 return _.some instances, ( instance ) ->
-                    __isRouteIgw instance
+                    __isInstanceNat instance
 
         false
 
-    __notNat = ( component, result, subnetName ) ->
+    # parameter required a rework instance.
+    __isInstanceNat = ( instance ) ->
+        __isRouteIgw( instance ) and __isEniSourceDestCheck( instance )
+
+
+
+    __isEniSourceDestCheck = ( instance ) ->
+        enis = instance.connectionTargets('EniAttachment')
+        enis.push instance.getEmbedEni()
+        _.some enis, ( eni ) ->
+            eni.get 'sourceDestCheck'
+
+
+    __selfOut = ( component, result, subnetName ) ->
         # if there is no EIP or publicIP, push an error and stop continued validate.
         if not __hasEipOrPublicIp( component )
             name = component.get( 'name' )
@@ -173,11 +185,11 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo', 'Design' ], ( CON
         subnetName = lc.parent().parent().get 'name'
 
         # LC could'nt be NAT so only need to validate notNat
-        if not __notNat( lc, result, subnetName )
+        if not __selfOut( lc, result, subnetName )
             result.push __genConnectedError subnetName, uid
 
         for asg in expandedAsgs
-            if not __notNat( asg, result, subnetName )
+            if not __selfOut( asg, result, subnetName )
                 subnetName = asg.parent().get 'name'
                 result.push __genConnectedError subnetName, asg.id
 
@@ -194,7 +206,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo', 'Design' ], ( CON
         # if the instance is connected out through NAT and it doesn't have an EIP or PublicIP
         # We can't throw any error.
 
-        if __isNat( component ) or __notNat( component, result, subnetName )
+        if __natOut( component ) or __selfOut( component, result, subnetName )
             return result
 
         result.push __genConnectedError subnetName, uid

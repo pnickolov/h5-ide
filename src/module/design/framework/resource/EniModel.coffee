@@ -357,11 +357,22 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
 
       ipTemplate = @get("ips")
 
+      # In ensureEnoughMember(), we need to ensure the we have at least
+      # servergroup count of member.
+      # And we also need to ensure each member's ip have at least the amount
+      # of the main eni's ip.
+      for member in @groupMembers()
+        while member.ips.length < ipTemplate.length
+          member.ips.push {
+            autoAssign : true
+            ip         : "x.x.x.x"
+            eipData    : { id :MC.guid() }
+          }
+
       while @groupMembers().length < count
         ips = []
         for ip, idx in ipTemplate
           ips.push {
-            hasEip     : ipTemplate[ idx ].hasEip
             autoAssign : true
             ip         : "x.x.x.x"
             eipData    : { id : MC.guid() }
@@ -401,9 +412,10 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
 
         hasEip = ipObj.hasEip
 
-        # The memberData might not have enough ip there. So we use the ipObj in this eni.
-        # This happens when AppEdit, the servergroup adds another IP.
-        ipObj = memberData.ips[ idx ] || ipObj
+        # The ipObj in memberData always exists, because ensureEnoughMember() ensures it.
+        ipObj = memberData.ips[ idx ]
+        console.assert ipObj, "ipObj should be defined."
+
         if servergroupOption.number > 1
           autoAssign = true
         else

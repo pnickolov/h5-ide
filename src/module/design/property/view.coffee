@@ -217,7 +217,7 @@ define [ 'event',
         render     : () ->
             # Blur any focused input
             # Better than $("input:focus")
-            $(document.activeElement).filter("input").blur()
+            $(document.activeElement).filter("input, textarea").blur()
 
             $( '#property-panel .sub-property' )
                 .html( template )

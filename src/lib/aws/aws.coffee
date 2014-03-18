@@ -1015,6 +1015,22 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
 
         result
 
+    checkPrivateIPIfHaveEIP = (allCompData, eniUID, priIPNum) ->
+
+        haveEIP = false
+        _.each allCompData, (compData) ->
+
+            if compData.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP
+                currentENIUIDRef = compData.resource.NetworkInterfaceId
+                currentENIUID = MC.extractID(currentENIUIDRef)
+                if eniUID is currentENIUID
+                    currentPriIPNumAry = compData.resource.PrivateIpAddress.split('.')
+                    currentPriIPNum = currentPriIPNumAry[3]
+                    if Number(currentPriIPNum) is priIPNum
+                        haveEIP = true
+            null
+        return haveEIP
+
     genAttrRefList = (currentCompData, allCompData) ->
 
         currentCompUID = currentCompData.uid
@@ -1045,6 +1061,8 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
             compUID = compData.uid
             compType = compData.type
 
+            checkASGPublicIP = false
+
             if compUID is currentCompUID
                 compName = 'self'
 
@@ -1054,8 +1072,11 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
                     if lcUIDRef
                         lcUID = MC.extractID(lcUIDRef)
                         if currentCompUID is lcUID
+                            lcCompData = allCompData[lcUID]
                             currentASGName = compName
                             compName = 'self'
+                            if lcCompData.resource.AssociatePublicIpAddress
+                                asgHavePublicIP = true
 
             if compType is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
                 return
@@ -1099,11 +1120,26 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
                         autoCompStr += attrName
                         autoCompRefStr += attrName
 
-                    autoCompList.push({
-                        name: autoCompStr,
-                        value: autoCompRefStr,
-                        uid: compUID
-                    })
+                    instanceNoMainPublicIP = false
+
+                    if attrName in ['PublicIp']
+
+                        if compType is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+                            if not asgHavePublicIP
+                                return
+
+                        if compType is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+                            if (not MC.aws.aws.checkPrivateIPIfHaveEIP(allCompData, compData.uid, 0)) and
+                            (not compData.resource.AssociatePublicIpAddress)
+                                instanceNoMainPublicIP = true
+
+                    if not instanceNoMainPublicIP
+
+                        autoCompList.push({
+                            name: autoCompStr,
+                            value: autoCompRefStr,
+                            uid: compUID
+                        })
 
                     if isArray
 
@@ -1123,9 +1159,14 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
                         if supportType is 'AWS_VPC_NetworkInterface'
                             if attrName in ['PublicDnsName', 'PublicIp', 'PrivateDnsName', 'PrivateIpAddress']
                                 ipObjAry = compData.resource.PrivateIpAddressSet
+                                if compData.index isnt 0
+                                    return
                                 if ipObjAry.length > 1
                                     _.each ipObjAry, (ipObj, idx) ->
                                         if idx is 0 then return
+                                        if attrName in ['PublicIp']
+                                            if not MC.aws.aws.checkPrivateIPIfHaveEIP(allCompData, compData.uid, idx)
+                                                return
                                         autoCompList.push({
                                             name: autoCompStr + '[' + idx + ']',
                                             value: autoCompRefStr + '[' + idx + ']',
@@ -1298,3 +1339,4 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
     getCompByResIdForState      : getCompByResIdForState
     genAttrRefList              : genAttrRefList
     isValidInIPRange            : isValidInIPRange
+    checkPrivateIPIfHaveEIP     : checkPrivateIPIfHaveEIP

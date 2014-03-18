@@ -7,7 +7,6 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
 
     activeModule        = null
     activeSubModule     = null
-    activeModuleType    = null
     activeSubModuleType = null
     slice               = [].slice
 
@@ -359,7 +358,7 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
             activeSubModule     = null
             activeSubModuleType = null
             activeModule        = property
-            activeModuleType    = componentType
+            activeModule.comType   = componentType
         # 5. Re-init the `model` and `view`
         # Since the model is singleton, need to clear all the attributes.
         property.model.clear( { silent : true } )
@@ -391,10 +390,7 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
         uid = model.get 'uid'
 
         if restore and mid
-            if mid.length is 38
-                MC.canvas.instanceList.selectById uid, mid
-            else
-                MC.canvas.asgList.selectById uid, mid
+            MC.aws.instance.resetSelectedinGroup( uid, mid )
 
 
     PropertyModule.onUnloadSubPanel = () ->
@@ -407,9 +403,9 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
 
         null
 
-    PropertyModule.snapshot = ( propertyView )->
+    PropertyModule.snapshot = ( propertyView ) ->
         data =
-            activeModuleType    : activeModuleType
+            activeModuleType    : activeModule.comType
             activeSubModuleType : activeSubModuleType
             activeModuleId      : activeModule.uid
             activeSubModuleId   : if activeSubModule then activeSubModule.uid else null
@@ -418,7 +414,7 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
 
         data
 
-    PropertyModule.restore  = ( snapshot, propertyView )->
+    PropertyModule.restore  = ( snapshot, propertyView ) ->
         param =
             type    : snapshot.activeModuleType
             uid     : snapshot.activeModuleId

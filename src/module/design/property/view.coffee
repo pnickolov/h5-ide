@@ -122,7 +122,7 @@ define [ 'event',
         renderState: ( uid, type, force ) ->
 
             @__hideResourcePanel()
-
+            @showState()
 
             @storeLast uid, type
             @currentTab = 'state'
@@ -151,38 +151,13 @@ define [ 'event',
                         ide_event.trigger ide_event.OPEN_STATE_EDITOR, uid
                         return
 
-                if Design.instance().modeIsApp()
+                else if Design.instance().modeIsApp()
+                    resId = uid
+                    effective = MC.aws.instance.getEffectiveId resId
+                    uid = effective.uid
 
-                    # for asg or isg
-                    isASGSelect = false
 
-                    resId = $('#asgList-wrap .asgList-item.selected').attr('id')
-
-                    if resId and resId is uid
-
-                        compObj = MC.aws.aws.getCompByResIdForState(resId)
-                        if compObj and compObj.parent and compObj.parent.type is 'AWS.AutoScaling.Group'
-                            lcComp = compObj.parent.get('lc')
-                            if lcComp and lcComp.id
-                                ide_event.trigger ide_event.OPEN_STATE_EDITOR, lcComp.id, resId
-                                return
-
-                        isASGSelect = true
-
-                    if not isASGSelect
-
-                        resId = $('#instanceList-wrap .instanceList-item.selected').data('id')
-
-                        if resId and resId is uid
-
-                            compObj = MC.aws.aws.getCompByResIdForState(resId)
-                            if compObj and compObj.parent and compObj.parent.type is 'AWS.EC2.Instance'
-                                if compObj.parent and compObj.parent.id
-                                    ide_event.trigger ide_event.OPEN_STATE_EDITOR, compObj.parent.id, resId
-                                    return
-
-            ide_event.trigger ide_event.OPEN_STATE_EDITOR, uid
-            @showState()
+            ide_event.trigger ide_event.OPEN_STATE_EDITOR, uid, resId
             if force then @forceShow()
             @
 
@@ -250,9 +225,63 @@ define [ 'event',
             @
 
         restore: ( snapshot ) ->
-            @currentTab = snapshot.propertyTab
-            @uid = snapshot.activeModuleId
+            type = snapshot.activeModuleType
+            currentTab = @currentTab = snapshot.propertyTab
+            uid = @uid = snapshot.activeModuleId
+
+            stateStatus = @processState uid, type
+            if currentTab is 'state' and stateStatus
+                @renderState uid
+            else
+                @showProperty()
             null
+
+        # modeAvai is behalf of tab mode ( app|stack|appedit|stoped|more.. )
+        # modeAvai has 3 states true|false|null( not set )
+        getModeAvai: ( type ) ->
+            modeAvai = null
+
+            if Design.instance().modeIsAppEdit()
+                if type is 'component_server_group'
+                    modeAvai = true
+            else if Design.instance().modeIsApp()
+                if type is CONST.RESTYPE.LC
+                    modeAvai = false
+                if type is 'component_server_group'
+                    modeAvai = false
+                # Stopped APP
+                if Design.instance().get('state') is "Stopped"
+                    if type is CONST.RESTYPE.LC
+                        modeAvai = true
+                    else if type is 'component_server_group'
+                        modeAvai = false
+
+            modeAvai
+
+        processState: ( uid, type ) ->
+            propertyPanel = $ '#property-panel'
+
+            if uid
+                component = Design.instance().component uid
+                type = component.type if not type and component
+                typeAvai = _.contains [ CONST.RESTYPE.LC, CONST.RESTYPE.INSTANCE, 'component_server_group' ], type
+                opsEnabled = Design.instance().get('agent').enabled
+
+                modeAvai = @getModeAvai type
+
+                if opsEnabled and typeAvai
+                    @renderStateCount component
+
+
+                if opsEnabled and ( ( modeAvai is null and typeAvai ) or modeAvai )
+                    propertyPanel.removeClass 'no-state'
+                    return true
+                else
+                    propertyPanel.addClass 'no-state'
+                    return false
+            else
+                propertyPanel.addClass 'no-state'
+                return false
 
         getCurrentCompUid : () ->
             event = {}

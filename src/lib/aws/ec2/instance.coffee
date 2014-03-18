@@ -171,6 +171,12 @@ define [ 'constant', 'MC', 'Design' ], ( constant, MC, Design ) ->
 
         ret
 
+    resetSelectedinGroup = ( uid, mid ) ->
+        if mid.length is 38
+            MC.canvas.instanceList.selectById uid, mid
+        else
+            MC.canvas.asgList.selectById uid, mid
+
 
 	#public
 	updateCount        		: updateCount
@@ -180,3 +186,4 @@ define [ 'constant', 'MC', 'Design' ], ( constant, MC, Design ) ->
 	updateServerGroupState 	: updateServerGroupState
 	getInstanceInServerGroup: getInstanceInServerGroup
 	getEffectiveId			: getEffectiveId
+	resetSelectedinGroup	: resetSelectedinGroup

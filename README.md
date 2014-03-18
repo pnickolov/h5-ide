@@ -124,3 +124,5 @@ require.config({
   'UI.tooltip' : 'ui/common/UI.tooltip'
 });
 ```
+
+### 给复杂的逻辑/参数写详细注释

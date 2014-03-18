@@ -1743,7 +1743,8 @@ define [ 'event',
             $stateEditorModel = $('#state-editor-model')
             $parentEditorModel = $currentElem.parents('#state-editor-model')
             if $stateEditorModel.length and (not $parentEditorModel.length)
-                if $stateEditorModel.is(':visible')
+                # if $stateEditorModel.is(':visible')
+                if $stateEditorModel.length
                     that.onStateSaveClick()
                 else
                     if $currentElem.parents('#tabbar-wrapper').length

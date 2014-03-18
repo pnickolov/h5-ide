@@ -161,8 +161,13 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
         subPanel = propertySubTypeMap[ subPanelID ]
         if not subPanel
             return
+        panel = new Panel()
+        panel.uid = componentUid
+        panel.property = subPanel
+        panel.type = subPanelID
+        panel.tabType = activeModule.type
 
-        PropertyModule._doLoadProperty subPanelID, subPanel, componentUid, activeModule.type
+        __loadProperty panel
         null
 
     PropertyModule.extend = ( protoProps, staticProps ) ->

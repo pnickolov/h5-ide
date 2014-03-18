@@ -47,13 +47,15 @@ gulp.task("qa", ["qa_build"], function(){ return serverTask.create("./qa", 3002)
 
 // Help
 gulp.task("help", function(){
-  console.log( "\n ", gutil.colors.bgBlue.white(" gulp         "), "Compile IDE and start a server @127.0.0.1:3000." );
-  console.log( "\n ", gutil.colors.bgBlue.white(" gulp watch   "), "Start a server @127.0.0.1:3000." );
-  console.log( "\n ", gutil.colors.bgBlue.white(" gulp dev     "), "Compile IDE" );
-  console.log( "\n ", gutil.colors.bgBlue.white(" gulp dev_all "), "Compile IDE including src/model and src/service" );
+  console.log( "\n ===== For Daily Development =====")
+  console.log( "\n * gulp          - Compile IDE and start a server @127.0.0.1:3000. Aka `gulp dev;gulp watch`" );
+  console.log( "\n * gulp watch    - Start a server @127.0.0.1:3000." );
+  console.log( "\n * gulp dev      - Compile IDE, excluding src/model and src/service" );
+  console.log( "\n * gulp dev_all  - Compile IDE, including src/model and src/service" );
 
-  console.log( "\n ", gutil.colors.bgBlue.white(" gulp release "), "Compile IDE in release mode, and push to remote master" );
-  console.log( "\n ", gutil.colors.bgBlue.white(" gulp debug   "), "Almost the same as `gulp release`, except that the code are not minified and are pushed to remote develop" );
-  console.log( "\n ", gutil.colors.bgBlue.white(" gulp qa      "), "Almost the same as `gulp debug`, except that instead of pushing code to remote, it starts a server @127.0.0.1:3002" );
+  console.log( "\n\n ===== For Delpoyment =====")
+  console.log( "\n * gulp debug    - Compile IDE in release mode, and push to remote develop" );
+  console.log( "\n * gulp release  - Like `gulp debug`, except: minification applied and push to master" );
+  console.log( "\n * gulp qa       - Like `gulp debug`, except: serve files @127.0.0.1:3002 instead of pushing code." );
   console.log("");
 });

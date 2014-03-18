@@ -84,16 +84,10 @@ define [ 'event',
                 if @currentTab is 'state'
                     @renderProperty @last.uid, @last.type
 
-        __hideProperty: () ->
-            $( '#property-panel .sub-property' ).hide()
-
-        __hideState: () ->
-            $( '#property-panel .sub-stateeditor' ).hide()
-
-        __showProperty: () ->
+        showProperty: () ->
             $( '#property-panel' ).removeClass 'state'
 
-        __showState: () ->
+        showState: () ->
             $( '#property-panel' ).addClass 'state'
 
         __hideResourcePanel: () ->
@@ -116,7 +110,7 @@ define [ 'event',
 
 
             @currentTab = 'property'
-            @__showProperty()
+            @showProperty()
             @storeLast uid, type
             @
 
@@ -155,7 +149,6 @@ define [ 'event',
                             return
 
                         ide_event.trigger ide_event.OPEN_STATE_EDITOR, uid
-                        #@__showState()
                         return
 
                 if Design.instance().modeIsApp()
@@ -189,7 +182,7 @@ define [ 'event',
                                     return
 
             ide_event.trigger ide_event.OPEN_STATE_EDITOR, uid
-            @__showState()
+            @showState()
             if force then @forceShow()
             @
 

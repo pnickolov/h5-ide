@@ -94,8 +94,11 @@ define [ 'event',
 		if view.currentTab is 'state' and stateStatus
 			view.renderState uid
 			# Because snapshot is needed, and snapshot is only in property now.
-			# TODO: Optimize
-			#view.initProperty type, uid, force
+			# snapshot work in state mode
+			PropertyBaseModule.activeModule().uid = uid
+			PropertyBaseModule.activeModule().type = ''
+
+			null
 		else
 			view.renderProperty uid, type, force
 
@@ -103,6 +106,9 @@ define [ 'event',
 		stateStatus = processState uid, type
 		if view.currentTab is 'state' and stateStatus
 			view.renderState uid
+			view.showState()
+		else
+			view.showProperty()
 
 	openTab = ( tab, uid ) ->
 		if tab is 'property'

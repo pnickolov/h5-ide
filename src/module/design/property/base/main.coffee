@@ -280,6 +280,7 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
             return
 
         panel.property = __getProperty panel
+
         loadResult = __loadProperty panel
 
         if loadResult is true
@@ -328,6 +329,9 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
         property = panel.property
         componentUid = panel.uid
         tab_type = panel.tabType
+
+        if not property
+            return false
 
         # 1. Set the property type to "App" or "Stack"
         property.type = tab_type
@@ -383,7 +387,7 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
         true
 
     __resetSelectedinGroup = ( restore, model ) ->
-        mid = model.get 'memberId'
+        mid = model.get 'mid'
         uid = model.get 'uid'
 
         if restore and mid

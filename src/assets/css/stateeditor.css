@@ -1309,6 +1309,10 @@
 	cursor: default !important;
 }
 
+#state-description a {
+	color: #25a4f4 !important;
+}
+
 #state-description > ul > li {
 	border-bottom: 1px solid #272727;
 	padding: 10px 0;

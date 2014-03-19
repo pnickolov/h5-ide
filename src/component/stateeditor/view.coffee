@@ -219,17 +219,29 @@ define [ 'event',
             $logPanelToggle = that.$editorModal.find('.state-log-toggle')
             $logPanelRefresh = that.$editorModal.find('.state-log-refresh')
             $logSysBtn = that.$editorModal.find('.state-sys-log-btn')
+            $logPanel = $('#state-log')
 
             if that.currentState is 'stack'
                 $logPanelToggle.hide()
 
             else if that.currentState in ['app', 'appedit']
                 currentAppState = Design.instance().get('state')
+
                 if currentAppState is 'Stopped'
+
                     $logPanelToggle.hide()
                     $logPanelRefresh.hide()
                     if not that.currentResId
                         $logSysBtn.hide()
+
+                else
+
+                    setTimeout(() ->
+                        # $('#property-panel').addClass('state-wide')
+                        that.onLogToggleClick()
+                    , 0)
+                    
+                    # that.onLogToggleClick()
 
             $aceAutocompleteTip = $('.ace_autocomplete_tip')
             if not $aceAutocompleteTip.length
@@ -240,8 +252,8 @@ define [ 'event',
 
             that.updateToolbar()
 
-            if $( '#property-panel' ).hasClass('state-wide')
-                that.onDescToggleClick()
+            # if $( '#property-panel' ).hasClass('state-wide')
+            #     that.onDescToggleClick()
             @
 
         initData: () ->
@@ -752,7 +764,9 @@ define [ 'event',
                     descMarkdown = moduleObj.reference['en']
                 that.$cmdDsec.attr('data-command', cmdName)
             else
-                descMarkdown = that.generalTip
+                descHTML = that.generalTip
+                that.$cmdDsec.html(descHTML)
+                return
 
             descHTML = ''
 

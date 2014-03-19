@@ -4098,8 +4098,8 @@ module.exports =
     ## State Editor Help
 
     STATE_HELP_INTRO_LBL:
-      en: " "
-      zh: " "
+      en: "Select or input a command to see a related help document here. Read detailed <a href='http://madeiracloud-document.readthedocs.org/en/latest/' target='_blank'>documentation</a>."
+      zh: ""
 
     ##### Request Invite to Experimental Feature
 

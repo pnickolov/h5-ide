@@ -462,7 +462,7 @@ define [ 'event',
                 _.each $lastDictInputList, (lastDictInput) ->
                     that.onDictInputChange({
                         currentTarget: lastDictInput
-                    })
+                    }, true)
 
                 # create new array/state input box
                 $lastArrayInputListAry = $stateItemList.find('.parameter-item.array .parameter-value:last').toArray()
@@ -473,7 +473,7 @@ define [ 'event',
                 _.each $lastInputListAry, (lastInput) ->
                     that.onArrayInputChange({
                         currentTarget: lastInput
-                    })
+                    }, true)
 
         refreshStateView: ($stateItem) ->
 
@@ -726,6 +726,20 @@ define [ 'event',
                     }]
                 })
 
+        unBindParaListEvent: ($paraListElem) ->
+
+            that = this
+
+            setTimeout(() ->
+
+                $editInputs = $paraListElem.find('.editable-area')
+                _.each $editInputs, (editInput) ->
+                    $editInput = $(editInput)
+                    editor = $editInput.data('editor')
+                    if editor then editor.destroy()
+
+            , 0)
+
         refreshDescription: (cmdName) ->
 
             that = this
@@ -826,7 +840,7 @@ define [ 'event',
 
             return paraObj
 
-        onDictInputChange: (event) ->
+        onDictInputChange: (event, noBindEvent) ->
 
             # append new dict item
 
@@ -862,9 +876,11 @@ define [ 'event',
                     })
                     $dictItemElem = $(newDictItemHTML).appendTo($currentDictItemContainer)
                     $paraDictItem = $dictItemElem.nextAll('.parameter-dict-item')
-                    that.bindParaItemEvent($paraDictItem, paraObj)
                     $paraValueAry = $paraDictItem.find('.parameter-value')
                     $paraValueAry.addClass('disabled')
+
+                    if not noBindEvent
+                        that.bindParaItemEvent($paraDictItem, paraObj)
 
         onDictInputBlur: (event) ->
 
@@ -892,7 +908,7 @@ define [ 'event',
                 newInputElemAry = $(newAllInputElemAry[0]).find('.parameter-value')
                 newInputElemAry.removeClass('disabled')
 
-        onArrayInputChange: (event) ->
+        onArrayInputChange: (event, noBindEvent) ->
 
             # append new array item
 
@@ -920,7 +936,9 @@ define [ 'event',
                     })
                     $arrayItemElem = $(newArrayItemHTML).appendTo($currentArrayInputContainer)
                     $arrayItemElem.addClass('disabled')
-                    that.bindParaItemEvent($arrayItemElem, paraObj)
+
+                    if not noBindEvent
+                        that.bindParaItemEvent($arrayItemElem, paraObj)
 
         onArrayInputBlur: (event) ->
 
@@ -1086,6 +1104,9 @@ define [ 'event',
             that.refreshStateView($stateItem)
             $stateItem.addClass('view')
             that.refreshDescription()
+
+            $paraListItem = $stateItem.find('.parameter-list')
+            # that.unBindParaListEvent($paraListItem)
 
         onExpandState: (event) ->
 

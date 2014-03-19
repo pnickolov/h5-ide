@@ -332,7 +332,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
     getBlockDeviceMapping : ()->
       #get root device of current instance
       ami = @getAmi() || @get("cachedAmi")
-      if ami.rootDeviceType is "ebs" and ami.blockDeviceMapping
+      if ami and ami.rootDeviceType is "ebs" and ami.blockDeviceMapping
 
         blockDeviceMapping = [{
           DeviceName : ami.rootDeviceName

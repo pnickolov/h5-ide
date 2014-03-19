@@ -196,13 +196,14 @@ define [ 'i18n!nls/lang.js',
 
                     console.log 'EC2_AMI_DESC_IMAGES_RETURN: My AMI'
 
-                    my_ami_list = {}
+                    my_ami_list = []
 
                     #cache my ami to my_ami
-                    MC.data.config[region_name].my_ami = {}
+                    MC.data.config[region_name].my_ami = []
 
                     if result.resolved_data
 
+                        ami_list = []
                         _.map result.resolved_data, (value)->
                             #cache my ami item to MC.data.dict_ami
                             try
@@ -214,6 +215,7 @@ define [ 'i18n!nls/lang.js',
                                     value.instanceType = instanceTypeAry.join ', '
                                     me.convertBlockDeviceMapping value
                                     MC.data.dict_ami[value.imageId] = value
+                                    ami_list.push value
                                 else
                                     console.warn "imageState of myAMI (" + value.imageId + ") is " + value.imageState + " , should be available"
                             catch err
@@ -221,9 +223,9 @@ define [ 'i18n!nls/lang.js',
                                 return true
                             null
 
-                        my_ami_list = result.resolved_data
+                        my_ami_list = ami_list
 
-                        MC.data.config[region_name].my_ami = result.resolved_data
+                        MC.data.config[region_name].my_ami = ami_list
 
                     #console.log 'get my ami: -> data region: ' + region_name + ', stack region: ' + Design.instance().region()
                     #if region_name == Design.instance().region()

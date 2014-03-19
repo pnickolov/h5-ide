@@ -1075,6 +1075,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
                             lcCompData = allCompData[lcUID]
                             currentASGName = compName
                             compName = 'self'
+                            asgHaveSelf = true
                             if lcCompData.resource.AssociatePublicIpAddress
                                 asgHavePublicIP = true
 
@@ -1213,6 +1214,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
         autoCompList = autoCompList.concat(groupAutoCompList)
 
         resAttrDataAry = _.map autoCompList, (autoCompObj) ->
+
             if autoCompObj.name.indexOf('self.') is 0
                 autoCompObj.value = autoCompObj.value.replace(autoCompObj.uid, 'self')
                 autoCompObj.uid = 'self'
@@ -1222,6 +1224,17 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
                 ref: "#{autoCompObj.value}",
                 uid: "#{autoCompObj.uid}"
             }
+
+        # filter all self's AZ ref
+        resAttrDataAry = _.filter resAttrDataAry, (autoCompObj) ->
+
+            if autoCompObj.name.indexOf('self.') is 0
+                if autoCompObj.name.indexOf('.AvailabilityZones') isnt -1
+                    return false
+                else
+                    return true
+
+            return true
 
         # sort autoCompList
         resAttrDataAry = resAttrDataAry.sort((obj1, obj2) ->

@@ -82,23 +82,6 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'state
 
                 null
 
-            #listen GET_NOT_EXIST_AMI_RETURN
-            me.on 'GET_NOT_EXIST_AMI_RETURN', ( result ) ->
-
-                if $.type(result.resolved_data) == 'array'
-                    _.each result.resolved_data, ( ami ) ->
-                        ami.osType = MC.aws.ami.getOSType ami
-                        if not ami.osFamily
-                            ami.osFamily = MC.aws.aws.getOSFamily(ami.osType)
-                        ami.instanceType = MC.aws.ami.getInstanceType(ami).join(', ')
-                        MC.data.dict_ami[ami.imageId] = ami
-                        null
-
-                console.log '----------- design:SWITCH_MAIN -----------'
-                ide_event.trigger ide_event.SWITCH_MAIN
-
-                null
-
         #############################
         #  tab
         #############################
@@ -304,36 +287,6 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'state
             console.log 'getAppResourcesService', region, app_id
             app_model.resource { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, app_id
 
-        #getAllNotExistAmiInStack : ( region )->
-        #    console.log 'getAllNotExistAmiInStack', region
-        #
-        #    # include OPEN_STACK or OPEN_APP
-        #    if Tabbar.current in [ 'stack', 'app', 'appview' ]
-        #
-        #        me = this
-        #
-        #        ami_list = []
-        #
-        #        amiArray = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance ).allObjects()
-        #        amiArray = amiArray.concat Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration ).allObjects()
-        #
-        #        for ami in amiArray
-        #            imageId = ami.get("imageId")
-        #            if not MC.data.dict_ami[ imageId ]
-        #                ami_list.push( imageId )
-        #
-        #        if ami_list.length
-        #            stack_model.get_not_exist_ami { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, _.uniq( ami_list )
-        #        else
-        #            console.log '----------- design:SWITCH_MAIN -----------'
-        #            ide_event.trigger ide_event.SWITCH_MAIN
-        #
-        #    else
-        #        console.log '----------- design:SWITCH_MAIN -----------'
-        #        ide_event.trigger ide_event.SWITCH_MAIN
-        #
-        #    null
-
         returnAppState : ( type, state ) ->
             console.log 'returnAppState', type, state
 
@@ -435,18 +388,12 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'state
                         # cache result
                         MC.data.state.module[src.mod_version] = result.resolved_data
 
-                        # getAllNotExistAmiInStack  depend on STATE_MODULE_RETURN
-                        #me.getAllNotExistAmiInStack MC.common.other.canvasData.get 'region'
-
                         console.log '----------- design:SWITCH_MAIN -----------'
                         ide_event.trigger ide_event.SWITCH_MAIN
 
                     null
 
             else
-
-                # getAllNotExistAmiInStack  depend on STATE_MODULE_RETURN
-                #@getAllNotExistAmiInStack MC.common.other.canvasData.get 'region'
 
                 console.log '----------- design:SWITCH_MAIN -----------'
                 ide_event.trigger ide_event.SWITCH_MAIN

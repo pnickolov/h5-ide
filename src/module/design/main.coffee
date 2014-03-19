@@ -132,21 +132,10 @@ define [ 'i18n!nls/lang.js', 'constant', 'stateeditor', 'Design', './module/desi
                         model.setCanvasData result.resolved_data[0]
 
                     #when NEW_STACK result is tab_id
-                    #ide_event.trigger ide_event.OPEN_DESIGN_0, region_name, type, current_platform, tab_id, result
                     ide_event.trigger ide_event.OPEN_DESIGN, region_name, type, current_platform, tab_id, result
 
                     if type is 'OPEN_STACK'
                         ide_event.trigger ide_event.SWITCH_WAITING_BAR, null, true
-
-                    #if type is 'OPEN_APP'
-                    #
-                    #    if Tabbar.current isnt 'appview'
-                    #
-                    #        # add running app list
-                    #        MC.data.running_app_list[ tab_id ] = { app_id : tab_id }
-                    #
-                    #        #get all resource data for app
-                    #        model.getAppResourcesService region_name, tab_id
 
                 # setting app state
                 if type in [ 'OPEN_APP', 'OLD_APP' ]
@@ -299,11 +288,13 @@ define [ 'i18n!nls/lang.js', 'constant', 'stateeditor', 'Design', './module/desi
 
                     if Tabbar.current is 'app'
 
-                        # add running app list
-                        #MC.data.running_app_list[ obj.tab_id ] = { app_id : obj.tab_id }
-
                         #get all resource data for app
                         model.getAppResourcesService obj.region, obj.tab_id
+
+                    else if Tabbar.current is 'appview'
+
+                        # update resource
+                        Design.instance().trigger Design.EVENT.AwsResourceUpdated
 
                     else if Tabbar.current in [ 'new', 'stack' ]
 

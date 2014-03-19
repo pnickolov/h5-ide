@@ -206,13 +206,16 @@ define [ 'i18n!nls/lang.js',
                         _.map result.resolved_data, (value)->
                             #cache my ami item to MC.data.dict_ami
                             try
-                                value.osType = MC.aws.ami.getOSType value
-                                if not value.osFamily
-                                    value.osFamily = MC.aws.aws.getOSFamily(value.osType)
-                                instanceTypeAry = MC.aws.ami.getInstanceType(value)
-                                value.instanceType = instanceTypeAry.join ', '
-                                me.convertBlockDeviceMapping value
-                                MC.data.dict_ami[value.imageId] = value
+                                if value.imageState is "available"
+                                    value.osType = MC.aws.ami.getOSType value
+                                    if not value.osFamily
+                                        value.osFamily = MC.aws.aws.getOSFamily(value.osType)
+                                    instanceTypeAry = MC.aws.ami.getInstanceType(value)
+                                    value.instanceType = instanceTypeAry.join ', '
+                                    me.convertBlockDeviceMapping value
+                                    MC.data.dict_ami[value.imageId] = value
+                                else
+                                    console.warn "imageState of myAMI (" + value.imageId + ") is " + value.imageState + " , should be available"
                             catch err
                                 console.info 'Resolve My AMI error'
                                 return true
@@ -238,14 +241,17 @@ define [ 'i18n!nls/lang.js',
                     if result.resolved_data
                         _.map result.resolved_data, (value)->
 
-                            #cache ami item in stack to MC.data.dict_ami
-                            value.osType = MC.aws.ami.getOSType value
-                            if not value.osFamily
-                                value.osFamily = MC.aws.aws.getOSFamily(value.osType)
-                            instanceTypeAry = MC.aws.ami.getInstanceType(value)
-                            value.instanceType = instanceTypeAry.join ', '
-                            me.convertBlockDeviceMapping value
-                            MC.data.dict_ami[value.imageId] = value
+                            if value.imageState is "available"
+                                #cache ami item in stack to MC.data.dict_ami
+                                value.osType = MC.aws.ami.getOSType value
+                                if not value.osFamily
+                                    value.osFamily = MC.aws.aws.getOSFamily(value.osType)
+                                instanceTypeAry = MC.aws.ami.getInstanceType(value)
+                                value.instanceType = instanceTypeAry.join ', '
+                                me.convertBlockDeviceMapping value
+                                MC.data.dict_ami[value.imageId] = value
+                            else
+                                console.warn "imageState of AMI (" + value.imageId + ") is " + value.imageState + " , should be available"
 
                             null
 

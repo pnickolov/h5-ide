@@ -62,10 +62,10 @@ define [ 'constant', 'MC', 'i18n!nls/lang.js' ], ( CONST, MC, lang ) ->
     __legalState = ( ref ) ->
         arr = ref.attr.split '.'
         state = arr[ 0 ]
-        index = arr[ 1 ]
+        stateId = arr[ 1 ]
 
         comp = __getComp ref.uid
-        if comp and comp[ state ] and comp[ state ][ index ]
+        if comp and comp[ state ] and _.where( comp[ state ], id: stateId ).length
             true
         else
             false

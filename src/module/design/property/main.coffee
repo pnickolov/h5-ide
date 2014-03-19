@@ -44,17 +44,17 @@ define [ 'event',
 
 		ide_event.trigger ide_event.DESIGN_SUB_COMPLETE
 
-		ide_event.onLongListen ide_event.REFRESH_PROPERTY, ()->
+		ide_event.onLongListen ide_event.REFRESH_PROPERTY, () ->
 			$canvas($canvas.selected_node()).select()
 			null
 
-		ide_event.onLongListen ide_event.FORCE_OPEN_PROPERTY, ()->
-			view.forceShow()
+		ide_event.onLongListen ide_event.FORCE_OPEN_PROPERTY, ( tab ) ->
+			view.forceShow tab
 			null
 
 		# Setup view / PropertyBaseView / PropertyBaseModule events.
-		PropertyBaseView.event.on PropertyBaseView.event.FORCE_SHOW, () ->
-			view.forceShow()
+		PropertyBaseView.event.on PropertyBaseView.event.FORCE_SHOW, ( tab ) ->
+			view.forceShow tab
 			null
 
 		PropertyBaseView.event.on PropertyBaseView.event.OPEN_SUBPANEL_IMM, () ->

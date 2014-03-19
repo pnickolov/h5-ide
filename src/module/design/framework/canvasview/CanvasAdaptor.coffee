@@ -166,7 +166,7 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
       null
 
     SHOW_PROPERTY_PANEL : () ->
-      ide_event.trigger ide_event.FORCE_OPEN_PROPERTY
+      ide_event.trigger ide_event.FORCE_OPEN_PROPERTY, 'property'
       null
 
     CANVAS_PLACE_OVERLAP : () ->
@@ -264,7 +264,7 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
       # If removing a selected item, show stack property panel.
       selected = $canvas.selected_node()[0]
       if selected and selected.id is resource.id
-        ide_event.trigger ide_event.FORCE_OPEN_PROPERTY
+        ide_event.trigger ide_event.FORCE_OPEN_PROPERTY, 'property'
         null
     null
 

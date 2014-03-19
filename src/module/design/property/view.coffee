@@ -353,9 +353,15 @@ define [ 'event',
                 })
 
         # This method is used to show the panel immediately if the panel is hidden.
-        forceShow : () ->
+        forceShow : ( tab ) ->
+            if tab is 'property'
+                @showProperty()
+            else if tab is 'state'
+                @showState()
+
             $( '#property-panel' ).removeClass 'hidden transition'
             $( '#hide-property-panel' ).removeClass( 'icon-caret-left' ).addClass( 'icon-caret-right' )
+
             null
 
         showSecondPanel : () ->

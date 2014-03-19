@@ -131,15 +131,15 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo', 'Design' ], ( CON
 
     # parameter required a rework instance.
     __isInstanceNat = ( instance ) ->
-        __isRouteIgw( instance ) and __isEniSourceDestCheck( instance )
+        __isRouteIgw( instance ) and __isEniSourceDestUncheck( instance )
 
 
 
-    __isEniSourceDestCheck = ( instance ) ->
+    __isEniSourceDestUncheck = ( instance ) ->
         enis = instance.connectionTargets('EniAttachment')
         enis.push instance.getEmbedEni()
         _.some enis, ( eni ) ->
-            eni.get 'sourceDestCheck'
+            not eni.get 'sourceDestCheck'
 
 
     __selfOut = ( component, result, subnetName ) ->

@@ -4095,6 +4095,12 @@ module.exports =
       en: "Close"
       zh: ""
 
+    ## State Editor Help
+
+    STATE_HELP_INTRO_LBL:
+      en: " "
+      zh: " "
+
     ##### Request Invite to Experimental Feature
 
     INVITE_MOD_TIT:

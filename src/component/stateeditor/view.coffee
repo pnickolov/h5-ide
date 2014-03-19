@@ -272,7 +272,7 @@ define [ 'event',
 
             that.resAttrRegexStr = that.model.get('resAttrRegexStr')
 
-            that.generalTip = 'Get Started with Conﬁguration Manager Conﬁguration manager is blah blah blah... You can use following command...'
+            that.generalTip = lang.ide.STATE_HELP_INTRO_LBL
 
             that.resNoState = true
             if that.originCompStateData and _.isArray(that.originCompStateData) and that.originCompStateData.length

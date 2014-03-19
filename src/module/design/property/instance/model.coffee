@@ -107,7 +107,7 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 
 			@set 'instance_ami', data
 
-			if ami.blockDeviceMapping
+			if ami and ami.blockDeviceMapping
 				deivce = ami.blockDeviceMapping[ ami.rootDeviceName ]
 				rootDevice =
 					name : ami.rootDeviceName

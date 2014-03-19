@@ -38,7 +38,10 @@ define [ '../base/model', 'constant', "../base/main" ], ( PropertyModel, constan
       component = Design.instance().component( PropertyModule.activeModule().uid )
       oldAmi = component.getAmi()
       newAmi = MC.data.dict_ami[ amiId ]
-      if not oldAmi or not newAmi then return "Ami info is missing, please reopen stack and try again."
+      if not newAmi then return "Ami info is missing, please reopen stack and try again."
+
+      if not oldAmi
+        oldAmi = component.get("cachedAmi")
 
       if oldAmi.osType is "windows" and newAmi.osType isnt "windows"
         return "Changing AMI platform is not supported. To use a #{newAmi.osFamily} AMI, please create a new instance instead."

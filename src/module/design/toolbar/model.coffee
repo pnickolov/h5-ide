@@ -309,6 +309,7 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
                     MC.common.cookie.setCookieByName 'is_invitated', 1
                 else
                     console.log 'apply trial succcess'
+                    MC.common.cookie.setCookieByName 'is_invitated', 0
 
                 null
 

@@ -831,6 +831,9 @@ define [ 'MC', 'event',
             $( '#experimental-visops-cancel'  ).html lang.ide.INVITE_MOD_BTN_DONE
             $( '#experimental-visops-confirm' ).hide()
 
+            # set is_invitated
+            MC.common.cookie.setCookieByName 'is_invitated', 1
+
             null
     }
 

@@ -3161,7 +3161,7 @@ module.exports =
 
     HEAD_TIP_ACCOUNT_SECRET_KEY:
       en: "You will find those keys in Account > Security Credentials menu under Access Keys tab in the box at the middle of the page. e.g., aBCDefgH/ Ijklmnopq1Rs2tUVWXY3AbcDeFGhijk"
-      zh: "通过点击&nbsp;账号&nbsp;&gt;安全性认证&nbsp;菜单，然后切换到页面中间的&nbsp;访问码&nbsp;页面，您将能找到您的访问码。 例如aBCDefgH/ Ijklmnopq1Rs2tUVWXY3AbcDeFGhijk"
+      zh: "通过点击&nbsp;账号&nbsp;&gt;安全性认证&nbsp;菜单，然后切换到页面中间的&nbsduplp;访问码&nbsp;页面，您将能找到您的访问码。 例如aBCDefgH/ Ijklmnopq1Rs2tUVWXY3AbcDeFGhijk"
 
     HEAD_MSG_ERR_INVALID_ACCOUNT_ID:
       en: "Invalid accout id"
@@ -4149,7 +4149,7 @@ module.exports =
     # Stack/App Operation
 
     KEY_TIT_STACK_APP_OP:
-      en: "Stack/App Operation"
+      en: "Canvas"
       zh: ""
 
     KEY_PROP_KEY:
@@ -4157,7 +4157,7 @@ module.exports =
       zh: ""
 
     KEY_PROP_ACTION:
-      en: "Show Property Panel"
+      en: "Open Property Panel"
       zh: ""
 
     KEY_STAT_KEY:
@@ -4165,19 +4165,19 @@ module.exports =
       zh: ""
 
     KEY_STAT_ACTION:
-      en: "Show State Panel"
+      en: "Open State Panel"
       zh: ""
 
     KEY_DUPL_KEY_MAC:
-      en: "Option + Drag Instance"
+      en: "Option + drag"
       zh: ""
 
     KEY_DUPL_KEY_PC:
-      en: "Alt + Drag Instance"
+      en: "Alt + drag"
       zh: ""
 
     KEY_DUPL_ACTION:
-      en: "Duplicate Instance"
+      en: "Duplicate the selected instance"
       zh: ""
 
     KEY_DEL_KEY_MAC:
@@ -4189,7 +4189,7 @@ module.exports =
       zh: ""
 
     KEY_DEL_ACTION:
-      en: "Delete selected item"
+      en: "Delete the selected item"
       zh: ""
 
     KEY_SAVE_KEY_MAC:
@@ -4201,19 +4201,19 @@ module.exports =
       zh: ""
 
     KEY_SAVE_ACTION:
-      en: "Save stack"
+      en: "Save the stack"
       zh: ""
 
     KEY_SCRL_KEY_MAC:
-      en: "Command + Drag on canvas"
+      en: "Command + drag"
       zh: ""
 
     KEY_SCRL_KEY_PC:
-      en: "Ctrl + Drag on canvas"
+      en: "Ctrl + drag"
       zh: ""
 
     KEY_SCRL_ACTION:
-      en: "Scroll canvas"
+      en: "Scroll the canvas"
       zh: ""
 
     # State Panel Operation - General
@@ -4227,7 +4227,7 @@ module.exports =
       zh: ""
 
     KEY_FOCUS_ACTION:
-      en: "Switch focused state"
+      en: "Switch focus in the state list"
       zh: ""
 
     KEY_SELECT_KEY:
@@ -4235,7 +4235,7 @@ module.exports =
       zh: ""
 
     KEY_SELECT_ACTION:
-      en: "Select/Unselect focused state"
+      en: "Select/unselect the focused state"
       zh: ""
 
     KEY_EXPAND_KEY:
@@ -4243,7 +4243,7 @@ module.exports =
       zh: ""
 
     KEY_EXPAND_ACTION:
-      en: "Expand focused state"
+      en: "Expand the focused state"
       zh: ""
 
     KEY_COLLAPSE_KEY:
@@ -4251,7 +4251,7 @@ module.exports =
       zh: ""
 
     KEY_COLLAPSE_ACTION:
-      en: "Collapse focused state"
+      en: "Fold the focused state"
       zh: ""
 
     KEY_NEXT_KEY:
@@ -4259,7 +4259,7 @@ module.exports =
       zh: ""
 
     KEY_NEXT_ACTION:
-      en: "Focus to next input"
+      en: "Switch to the next input"
       zh: ""
 
     KEY_PREV_KEY:
@@ -4267,7 +4267,7 @@ module.exports =
       zh: ""
 
     KEY_PREV_ACTION:
-      en: "Focus to previous input"
+      en: "Switch back to the previous input"
       zh: ""
 
     KEY_INFO_KEY_MAC:
@@ -4279,7 +4279,7 @@ module.exports =
       zh: ""
 
     KEY_INFO_ACTION:
-      en: "Open/Close information sidebar"
+      en: "Open/fold the help"
       zh: ""
 
     KEY_LOG_KEY_MAC:
@@ -4291,13 +4291,13 @@ module.exports =
       zh: ""
 
     KEY_LOG_ACTION:
-      en: "Open/Close log sidebar"
+      en: "Open/fold the log"
       zh: ""
 
     # State Panel Operation - Editable Mode
 
     KEY_TIT_STATE_EDIT:
-      en: "State Panel Operation - Editable Mode"
+      en: "State Panel - Edit Mode"
       zh: ""
 
     KEY_SELECT_ALL_KEY_MAC:
@@ -4321,7 +4321,7 @@ module.exports =
       zh: ""
 
     KEY_DESELECT_ACTION:
-      en: "Deselect states"
+      en: "Deselect all states"
       zh: ""
 
     KEY_CREATE_KEY_MAC:
@@ -4333,7 +4333,7 @@ module.exports =
       zh: ""
 
     KEY_CREATE_ACTION:
-      en: "Create new state"
+      en: "Add a new state"
       zh: ""
 
     KEY_DEL_STATE_KEY_MAC:
@@ -4345,7 +4345,7 @@ module.exports =
       zh: ""
 
     KEY_DEL_STATE_ACTION:
-      en: "Delete selected state"
+      en: "Delete selected state(s)"
       zh: ""
 
     KEY_MOVE_FOCUS_STATE_KEY_MAC:
@@ -4357,7 +4357,7 @@ module.exports =
       zh: ""
 
     KEY_MOVE_FOCUS_STATE_ACTION:
-      en: "Move focused state"
+      en: "Move the focused state"
       zh: ""
 
     KEY_COPY_STATE_KEY_MAC:
@@ -4369,7 +4369,7 @@ module.exports =
       zh: ""
 
     KEY_COPY_STATE_ACTION:
-      en: "Copy selected state"
+      en: "Copy the selected state(s)"
       zh: ""
 
     KEY_PASTE_STATE_KEY_MAC:
@@ -4381,7 +4381,7 @@ module.exports =
       zh: ""
 
     KEY_PASTE_STATE_ACTION:
-      en: "Paste copied state"
+      en: "Paste the copied state(s)"
       zh: ""
 
     KEY_UNDO_STATE_KEY_MAC:

@@ -43,7 +43,7 @@ Whenever these (rare) issue happens, close the process by hitting `Ctrl+C`, or c
 
 
 ## Best Practice
-### 使用正确的方式定义模块
+### # 使用正确的方式定义模块
 不要使用这种错误的方式去定义一个模块：
 ```js
 define([], function(){
@@ -99,13 +99,13 @@ define([], function(){
 });
 ```
 
-### 给文件（模块）提供有意义的名字
+### # 给文件（模块）提供有意义的名字
 不要使用`main.coffee`, `view.coffee`, `model.coffee`这种笼统的名字来做为文件名。一般来说可以使用这个模块的名称作为文件名。例如上述例子中的TA模块可以叫做`TA.coffee`。
 
 具体例子参考`module/design/framework/*.coffee`
 
 
-### 如果一个文件只在一个大的模块内部被使用，那么就不应该为这个文件在`config.coffee`里创建模块ID。
+### # 如果一个文件只在一个大的模块内部被使用，那么就不应该为这个文件在`config.coffee`里创建模块ID。
 Bad Example:
 ```js
 // src/js/ide/config.coffee
@@ -125,4 +125,4 @@ require.config({
 });
 ```
 
-### 给复杂的逻辑/参数写详细注释
+### # 给复杂的逻辑/参数写详细注释

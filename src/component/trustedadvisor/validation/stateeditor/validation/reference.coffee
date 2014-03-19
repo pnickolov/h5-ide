@@ -55,6 +55,48 @@ define [ 'constant', 'MC', 'i18n!nls/lang.js' ], ( CONST, MC, lang ) ->
 
         ref
 
+    __legalExist = ( legalRef, ref ) ->
+        _.some legalRef, ( legal ) ->
+            legal.ref is ref.ref
+
+    __legalState = ( ref ) ->
+        arr = ref.attr.split '.'
+        state = arr[ 0 ]
+        index = arr[ 1 ]
+
+        comp = __getComp ref.uid
+        if comp and comp[ state ] and comp[ state ][ index ]
+            true
+        else
+            false
+
+    __refState = ( ref ) ->
+        ref.attr.indexOf('.' ) isnt -1
+
+
+
+    Message =
+
+        illegal: ( ref ) ->
+            comp = __getComp ref.uid
+            if comp
+                refName = "#{comp.serverGroupName or comp.name}.#{ref.attr}"
+            else if __isUid ref.uid
+                refName = "unknown.#{r.attr}"
+            else
+                refName = ref.ref
+
+            refName
+
+        state: ( ref ) ->
+            refName = Message.illegal ref
+            arr = refName.split '.'
+            # etc. "state-F3CEEEB9-3CFD-4FA9-8DBE-1C8F8E0C2C1E" display as unknow
+            if arr[ 2 ].length is 42
+                arr[ 2 ] = 'unknown'
+
+            arr.join '.'
+
 
     ########## Public Method ##########
 
@@ -64,23 +106,15 @@ define [ 'constant', 'MC', 'i18n!nls/lang.js' ], ( CONST, MC, lang ) ->
         if ref.length
             legalRef = MC.aws.aws.genAttrRefList data.comp, MC.canvas_data.component
 
-        legalExist = ( legalRef, ref ) ->
-            _.some legalRef, ( legal ) ->
-                legal.ref is ref.ref
-
         for r in ref
-            hitLegal = null
-            exist = legalExist legalRef, r
+            if __refState r
+                if not __legalState r
+                    refName = Message.state r
+            else
+                if not __legalExist( legalRef, r )
+                    refName = Message.illegal r
 
-            if not exist
-                comp = __getComp r.uid
-                if comp
-                    refName = "#{comp.serverGroupName or comp.name}.#{r.attr}"
-                else if __isUid r.uid
-                    refName = "unknown.#{r.attr}"
-                else
-                    refName = r.ref
-
+            if refName
                 tip = __getCompTip data.type, data.name, data.stateId, refName
                 error.push __genError tip, data.stateId
 

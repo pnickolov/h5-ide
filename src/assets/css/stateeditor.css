@@ -1044,10 +1044,11 @@
 
 #state-log .state-log-item-detail {
 	background-color: #000;
-	line-height: 16px;
-	padding: 14px;
-	font-family: "Monaco","Consolas", monospace;
-	color: rgba(80, 226, 77, 0.6);
+	line-height     : 16px;
+	padding         : 14px;
+	font-family     : "Monaco","Consolas", monospace;
+	color           : rgba(80, 226, 77, 0.6);
+	word-wrap       : break-word;
 }
 
 #modal-state-log-detail .state-log-detail-content {

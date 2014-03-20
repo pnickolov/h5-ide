@@ -2209,6 +2209,28 @@ MC.canvas.layout = {
 			}
 		});
 
+		//patch 20140320: truncate long ELB name
+		$.each(components, function (key, value)
+		{
+			try
+			{
+				if (value.type === "AWS.ELB")
+				{
+					if (value.name.length>17)
+					{
+						var elbName = value.name.substr(0,17);
+						value.name = elbName;
+						value.resource.LoadBalancerName = elbName;
+						console.info("truncate long ELB name");
+					}
+				}
+			}
+			catch(error)
+			{
+				console.warn("error occur when fix long name of ELB " + key);
+				return true;
+			}
+		});
 
 		$.each(components, function (key, value)
 		{

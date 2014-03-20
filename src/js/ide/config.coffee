@@ -1,6 +1,11 @@
-
-# Get Version and locale
 (()->
+	# Redirect
+	l = window.location
+	if l.protocol is "http:" and not l.port
+		window.location = l.href.replace("http:","https:")
+		return
+
+	# Get Version and locale
 	scripts = document.getElementsByTagName("script")
 	for s in scripts
 		version = s.getAttribute("data-main")
@@ -481,12 +486,6 @@ require.config {
 	### env:prod:end ###
 }
 
-require [ 'domReady', './js/ide/ide' ], ( domReady, ide ) ->
-
-	l = window.location
-	if l.protocol is "http:" and not l.port
-		window.location = l.href.replace("http:","https:")
-		return
-
-	domReady () -> ide.initialize()
+require ['./js/ide/ide' ], ( ide ) ->
+	$ ()-> ide.initialize()
 	null

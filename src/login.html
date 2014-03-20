@@ -5,13 +5,13 @@
 	<meta charset="UTF-8" />
 	<link rel="shortcut icon" href="./assets/images/ide/favicon.ico">
 	<link rel="stylesheet" href="./assets/css/account.css" media="all"/>
-	<link id="css_style" rel="stylesheet" href="./assets/css/UI.component.css" media="all"/>
-	<link id="css_style" rel="stylesheet" href="./assets/css/icon-font.css" media="all"/>
+	<link rel="stylesheet" href="./assets/css/UI.component.css" media="all"/>
+	<link rel="stylesheet" href="./assets/css/icon-font.css" media="all"/>
 	<!--[if lt IE 9]><script>for(var a=['section','article','nav','header','footer','aside','blockquote'],i=a.length-1;i>=0;--i){document.createElement(a[i]);}</script><![endif]-->
 
 	<!-- {{include/analytics.html}} -->
 </head>
-<body id="body">
+<body id="body" data-entry="login">
 	<div id="container">
 
 		<header>
@@ -28,7 +28,7 @@
 
 	</div>
 
-	<script type="text/javascript" src='./vender/requirejs/require.js' data-main='./js/login/config.js?#{version}'>
+	<script type="text/javascript" src='./vender/requirejs/require.js' data-main='./js/user/config.js?#{version}'>
 	</script>
 </body>
 </html>

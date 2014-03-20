@@ -1,76 +1,10 @@
-###
-
-define([ 'MC','jquery' ], function( MC, $ ) {
-
-	MC.login = function ( event )
-	{
-		event.preventDefault();
-
-		MC.api({
-			url: '/session/',
-			method: 'login',
-			data: [
-				$('#login_user').val(),
-				$('#login_password').val()
-			],
-			success: function(data, status)
-			{
-				if (status === 0)
-				{
-					$.cookie('user_name', data[1], { expires: 3600 });
-					$.cookie('session_id', data[2], { expires: 3600 });
-
-					location = 'map.html';
-				}
-				else
-				{
-					alert(data);
-					$('#login_form')[0].reset();
-				}
-			}
-		});
-
-		return false;
-	};
-
-	return {
-		ready : function () {
-			$('#login_form').submit(MC.login);
-		}
-	};
-
-});
-###
-
 define [ 'jquery', 'handlebars',
 		 'MC', 'session_model',
 		 'i18n!nls/lang.js',
-		 'text!./js/login/template.html',
+		 'text!js/user/logintemplate.html',
 		 'common_handle', 'crypto'
 ], ( $, Handlebars, MC, session_model, lang, template, common_handle ) ->
 
-
-	#setMadeiracloudIDESessionID = ( result ) ->
-	#
-	#	madeiracloud_ide_session_id = [
-	#		result.userid,
-	#		result.usercode,
-	#		result.session_id,
-	#		result.region_name,
-	#		result.email,
-	#		result.has_cred,
-	#		result.account_id
-	#	]
-	#
-	#	$.cookie 'madeiracloud_ide_session_id', MC.base64Encode( JSON.stringify madeiracloud_ide_session_id ), {
-	#		path: '/',
-	#		#domain: '.madeiracloud.com', #temp comment
-	#		expires: 1
-	#	}
-	#
-	#	null
-
-	#private method
 	MC.login = ( event ) ->
 
 		event.preventDefault()
@@ -149,10 +83,6 @@ define [ 'jquery', 'handlebars',
 
 	#public object
 	ready : () ->
-		#i18n
-		Handlebars.registerHelper 'i18n', ( text ) ->
-			new Handlebars.SafeString lang.login[ text ]
-
 		data =
 			english: $.cookie( 'lang' ) is 'en-us'
 

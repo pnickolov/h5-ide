@@ -3,7 +3,7 @@
 #############################
 
 define [ 'event',
-         'text!./module/register/template.html', 'text!./module/register/success.html',
+         './template', './success',
          'i18n!nls/lang.js',
          'backbone', 'jquery', 'handlebars' ], ( ide_event, tmpl, success_tmpl, lang ) ->
 
@@ -11,8 +11,8 @@ define [ 'event',
 
         el           :  '#main-body'
 
-        template     : Handlebars.compile tmpl
-        success_tmpl : Handlebars.compile success_tmpl
+        template     : tmpl
+        success_tmpl : success_tmpl
 
         is_submit    : false
 

@@ -15,6 +15,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo' ], ( constant, MC,
 
         if cgwUID and vgwUID
             cgwComp = MC.canvas_data.component[cgwUID]
+            vgwComp = MC.canvas_data.component[vgwUID]
             if cgwComp
                 isStaticCGW = true
                 bgpAsn = cgwComp.resource.BgpAsn
@@ -34,10 +35,10 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo' ], ( constant, MC,
                             null
 
                     if isStaticCGW and not isHaveNoEmptyRoute
-                        vpnName = vpnComp.name
+                        vgwName = vgwComp.name
                         cgwName = cgwComp.name
 
-                        tipInfo = sprintf lang.ide.TA_MSG_ERROR_VPN_NO_IP_FOR_STATIC_CGW, cgwName, vpnName
+                        tipInfo = sprintf lang.ide.TA_MSG_ERROR_VPN_NO_IP_FOR_STATIC_CGW, cgwName, vgwName
                         returnObj = {
                             level   : constant.TA.ERROR
                             info    : tipInfo

@@ -1066,18 +1066,18 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
             if compUID is currentCompUID
                 compName = 'self'
 
-            if currentCompType is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
-                if compType is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
-                    lcUIDRef = compData.resource.LaunchConfigurationName
-                    if lcUIDRef
-                        lcUID = MC.extractID(lcUIDRef)
-                        if currentCompUID is lcUID
-                            lcCompData = allCompData[lcUID]
-                            currentASGName = compName
-                            compName = 'self'
-                            asgHaveSelf = true
-                            if lcCompData.resource.AssociatePublicIpAddress
-                                asgHavePublicIP = true
+            if compType is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+                lcUIDRef = compData.resource.LaunchConfigurationName
+                if lcUIDRef
+                    lcUID = MC.extractID(lcUIDRef)
+                    lcCompData = allCompData[lcUID]
+                    if currentCompType is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration and currentCompUID is lcUID
+                        currentASGName = compName
+                        compName = 'self'
+                        asgHaveSelf = true
+
+                    if lcCompData.resource.AssociatePublicIpAddress
+                        asgHavePublicIP = true
 
             if compType is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
                 return

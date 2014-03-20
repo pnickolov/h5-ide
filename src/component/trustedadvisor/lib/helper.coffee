@@ -1,5 +1,18 @@
 define [ 'constant', 'MC', 'i18n!nls/lang.js', 'Design', 'underscore' ], ( CONST, MC, lang, Design, _ ) ->
 
+    Inside =
+        taReturn: ( type, tip, uid ) ->
+            level   : CONST.TA[ type ]
+            info    : tip
+            uid     : uid
+
+        genTip: ( args ) ->
+            if args.length > 2
+                tip = Function.call.apply sprintf, args
+            else
+                tip = args[ 1 ]
+            tip
+
     Helper =
         map:
             protocal:
@@ -18,6 +31,20 @@ define [ 'constant', 'MC', 'i18n!nls/lang.js', 'Design', 'underscore' ], ( CONST
                     Design.instance().component uid
                 else
                     MC.canvas_data.component[ uid ]
+
+        message:
+            error: ( uid, tip ) ->
+                tip = Inside.genTip arguments
+                Inside.taReturn CONST.TA.ERROR, tip, uid
+
+            warning: ( uid, tip ) ->
+                tip = Inside.genTip arguments
+                Inside.taReturn CONST.TA.WARNING, tip, uid
+
+            notice: ( uid, tip ) ->
+                tip = Inside.genTip arguments
+                Inside.taReturn CONST.TA.NOTICE, tip, uid
+
 
         eni:
             getByInstance: ( instance ) ->

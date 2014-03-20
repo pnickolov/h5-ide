@@ -8,7 +8,14 @@ define ['./Download', 'i18n!nls/lang.js', "./HmacMd5"], ( download, lang )->
 
     json.signature = CryptoJS.HmacMD5(JSON.stringify( json ), "MaderiaCloudIDE").toString()
 
-    j = JSON.stringify(json)
+    # I don't want to mess up with the grunt.
+    # If we use gulp to build the source, the export json will be pretty-print in dev mode.
+    space = 4
+    ### env:prod ###
+    space = undefined
+    ### env:prod:end ###
+
+    j = JSON.stringify json, undefined, space
 
     ua = window.navigator.userAgent
 

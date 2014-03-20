@@ -4440,6 +4440,10 @@ module.exports =
     TA_MSG_WARNING_INSTANCE_SG_RULE_EXCEED_FIT_NUM:
       en: "Instance <span class='validation-tag tag-instance'>%s</span> has more than %s security group rules, If a Instance has a large number of security group rules, performance can be degraded."
       zh: ""
+    TA_MSG_ERROR_INSTANCE_NAT_CHECKED_SOURCE_DEST:
+      en: "To allow routing to work properly, instance <span class='validation-tag tag-instance'>%s</span> should disabled Source/Destination Checking in \"Network Interface Details\""
+      zh: ""
+
 
     # ENI
     TA_MSG_ERROR_ENI_NOT_ATTACH_TO_INSTANCE:
@@ -4520,6 +4524,10 @@ module.exports =
       zh: ""
 
     # RT
+    TA_MSG_NOTICE_RT_ROUTE_NAT:
+      en: "Instance <span class='validation-tag tag-instance'>%s</span> is a target of Route Table <span class='validation-tag tag-rtb'>%s</span>. To make sure the routing works, <span class='validation-tag tag-instance'>%s</span> should have security group rule to allow traffic from subnets assciated with <span class='validation-tag tag-rtb'>%s</span>."
+      zh: ""
+
     TA_MSG_NOTICE_INSTANCE_HAS_RTB_NO_ELB:
       en: "Route Table <span class='validation-tag tag-rtb'>%s</span> has route to Instance <span class='validation-tag tag-instance'>%s</span>. If <span class='validation-tag tag-instance'>%s</span> is working as NAT instance, it should be assigned with an Elastic IP."
       zh: ""

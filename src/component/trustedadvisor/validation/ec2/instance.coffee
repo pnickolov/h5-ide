@@ -1,4 +1,4 @@
-define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
+define [ 'constant', 'MC','i18n!nls/lang.js', 'Design', 'validation_helper' ], ( constant, MC, lang, Design, Helper ) ->
 
 	isEBSOptimizedForAttachedProvisionedVolume = (instanceUID) ->
 
@@ -156,8 +156,24 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
         uid     : uid
 
 
+	isNatCheckedSourceDest = ( uid ) ->
+		instance = Design.instance().component uid
+		connectedRt = instance.connectionTargets 'RTB_Route'
+		if connectedRt and connectedRt.length
+			enis = instance.connectionTargets('EniAttachment')
+			enis.push instance.getEmbedEni()
+			hasUncheck = _.some enis, ( eni ) ->
+				not eni.get 'sourceDestCheck'
+			if not hasUncheck
+				return Helper.message.error uid, lang.ide.TA_MSG_ERROR_INSTANCE_NAT_CHECKED_SOURCE_DEST, instance.get 'name'
+			null
+
+		null
+
+
 	isEBSOptimizedForAttachedProvisionedVolume 	: isEBSOptimizedForAttachedProvisionedVolume
 	isAssociatedSGRuleExceedFitNum 				: isAssociatedSGRuleExceedFitNum
 	isConnectRoutTableButNoEIP				 	: isConnectRoutTableButNoEIP
+	isNatCheckedSourceDest						: isNatCheckedSourceDest
 
 

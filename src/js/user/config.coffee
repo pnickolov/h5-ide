@@ -70,6 +70,34 @@ require.config {
     'MC'              :
       deps          : [ 'jquery', 'constant' ]
       exports       : 'MC'
+
+  ### env:prod ###
+  # The bundles is a subset of the one defined in "js/ide/config"
+  # The bundle doesn't have to excately be the same as in "js/ide/config"
+  bundles :
+    "vender/requirejs/requirelib" : [ "domReady", "i18n", "text" ] # requirelib must be the first one.
+    "vender/vender" : [
+      "jquery"
+      "backbone"
+      "underscore"
+      "handlebars"
+    ]
+    "lib/lib" : [
+      "MC"
+      "constant"
+      "MC.canvas.constant"
+      "event"
+    ]
+    "ui/ui" : [ 'UI.notification' ]
+    "model/model" : [
+      'base_model'
+      'account_model'
+      'session_model'
+      'session_service'
+      'account_service'
+      "result_vo"
+    ]
+  ### env:prod:end ###
 }
 
 # Load Corresponding Page

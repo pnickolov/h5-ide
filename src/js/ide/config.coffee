@@ -377,6 +377,8 @@ require.config {
 			deps       : [ 'stateeditor_view', 'stateeditor_model', 'jquery_sort', 'markdown', 'ace_ext_language_tools', 'MC' ]
 
 	### env:prod ###
+	# The rule of bundles is that, if an ID defined above is ever included in a bundle
+	# Then that ID should appear in the bundle's array.
 	bundles :
 		"vender/requirejs/requirelib" : [ "domReady", "i18n", "text" ] # requirelib must be the first one.
 		"vender/vender" : [

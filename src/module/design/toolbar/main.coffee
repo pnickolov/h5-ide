@@ -19,10 +19,10 @@ define [ 'jquery',
             view.render()
 
             #listen OPEN_DESIGN
-            #ide_event.onLongListen ide_event.OPEN_DESIGN, ( region_name, type, current_platform, tab_name, tab_id ) ->
-            #    console.log 'toolbar:OPEN_DESIGN', tab_id, type
-            #    view.render type, 0
-            #    null
+            ide_event.onLongListen ide_event.OPEN_DESIGN, ( region_name, type, current_platform, tab_name, tab_id ) ->
+                console.log 'toolbar:OPEN_DESIGN', tab_id, type
+                view.render type, 0
+                null
 
             #listen OPEN_SUB_DESIGN
             # when NEW_STACK tab_id is string( tab id )

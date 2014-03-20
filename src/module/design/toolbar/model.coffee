@@ -386,6 +386,14 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
             name  = MC.common.other.canvasData.get 'name'
             state = MC.common.other.canvasData.get 'state'
 
+            # reset id
+            if id and _.isObject( id ) and flag is 'OPEN_STACK'
+                id = id.resolved_data[0].id
+
+            # reset flag( e.g. import JSON )
+            if id and id.split and id.split( '-' )[0] is 'new' and flag is 'OPEN_STACK'
+                flag = 'NEW_STACK'
+
             if flag is 'NEW_STACK'
 
                 # old design flow
@@ -397,7 +405,7 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
                 is_tab = true
 
             else if flag is 'OPEN_STACK'
-                id = id.resolved_data[0].id
+
 
                 # old design flow
                 #item_state_map[id] = {'name':MC.canvas_data.name, 'is_run':true, 'is_duplicate':true, 'is_delete':true, 'is_zoomin':false, 'is_zoomout':true}
@@ -542,30 +550,30 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
                 else
                     me.trigger 'UPDATE_TOOLBAR', 'stack'
 
-        setTabFlag : (flag) ->
-            me = this
-
-            is_tab = flag
-
-            if flag
-
-                # old design flow
-                #id = MC.canvas_data.id
-
-                # new design flow
-                id = MC.common.other.canvasData.get 'id'
-
-                rid = k for k,v of item_state_map when id == k
-
-                if rid
-                    me.set 'item_flags', item_state_map[id]
-
-                    if id.indexOf('app-') == 0
-                        me.trigger 'UPDATE_TOOLBAR', 'app'
-                    else
-                        me.trigger 'UPDATE_TOOLBAR', 'stack'
-
-            null
+        #setTabFlag : (flag) ->
+        #    me = this
+        #
+        #    is_tab = flag
+        #
+        #    if flag
+        #
+        #        # old design flow
+        #        #id = MC.canvas_data.id
+        #
+        #        # new design flow
+        #        id = MC.common.other.canvasData.get 'id'
+        #
+        #        rid = k for k,v of item_state_map when id == k
+        #
+        #        if rid
+        #            me.set 'item_flags', item_state_map[id]
+        #
+        #            if id.indexOf('app-') == 0
+        #                me.trigger 'UPDATE_TOOLBAR', 'app'
+        #            else
+        #                me.trigger 'UPDATE_TOOLBAR', 'stack'
+        #
+        #    null
 
         #save stack
         saveStack : (data) ->

@@ -550,30 +550,30 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
                 else
                     me.trigger 'UPDATE_TOOLBAR', 'stack'
 
-        #setTabFlag : (flag) ->
-        #    me = this
-        #
-        #    is_tab = flag
-        #
-        #    if flag
-        #
-        #        # old design flow
-        #        #id = MC.canvas_data.id
-        #
-        #        # new design flow
-        #        id = MC.common.other.canvasData.get 'id'
-        #
-        #        rid = k for k,v of item_state_map when id == k
-        #
-        #        if rid
-        #            me.set 'item_flags', item_state_map[id]
-        #
-        #            if id.indexOf('app-') == 0
-        #                me.trigger 'UPDATE_TOOLBAR', 'app'
-        #            else
-        #                me.trigger 'UPDATE_TOOLBAR', 'stack'
-        #
-        #    null
+        setTabFlag : (flag) ->
+            me = this
+
+            is_tab = flag
+
+            if flag
+
+                # old design flow
+                #id = MC.canvas_data.id
+
+                # new design flow
+                id = MC.common.other.canvasData.get 'id'
+
+                rid = k for k,v of item_state_map when id == k
+
+                if rid
+                    me.set 'item_flags', item_state_map[id]
+
+                    if id.indexOf('app-') == 0
+                        me.trigger 'UPDATE_TOOLBAR', 'app'
+                    else
+                        me.trigger 'UPDATE_TOOLBAR', 'stack'
+
+            null
 
         #save stack
         saveStack : (data) ->

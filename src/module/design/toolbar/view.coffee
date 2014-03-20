@@ -56,9 +56,7 @@ define [ 'MC', 'event',
             'click .toolbar-visual-ops-switch' : 'opsOptionChanged'
             'click #apply-visops'              : 'openExperimentalVisops'
 
-        # when flag = 0 not invoke opsState
-        # when flag = 1 invoke opsState
-        render   : ( type, flag ) ->
+        render   : ( type ) ->
             console.log 'toolbar render'
 
             #set line style
@@ -100,7 +98,7 @@ define [ 'MC', 'event',
             else
                 $( '#main-toolbar' ).html stack_tmpl this.model.attributes
 
-            if type and flag is 1
+            if type
                 # vispos state
                 @opsState()
 

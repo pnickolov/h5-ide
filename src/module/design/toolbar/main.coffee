@@ -19,10 +19,10 @@ define [ 'jquery',
             view.render()
 
             #listen OPEN_DESIGN
-            ide_event.onLongListen ide_event.OPEN_DESIGN, ( region_name, type, current_platform, tab_name, tab_id ) ->
-                console.log 'toolbar:OPEN_DESIGN', tab_id, type
-                view.render type, 0
-                null
+            #ide_event.onLongListen ide_event.OPEN_DESIGN, ( region_name, type, current_platform, tab_name, tab_id ) ->
+            #    console.log 'toolbar:OPEN_DESIGN', tab_id, type
+            #    view.render type, 0
+            #    null
 
             #listen OPEN_SUB_DESIGN
             # when NEW_STACK tab_id is string( tab id )
@@ -37,16 +37,16 @@ define [ 'jquery',
                 console.log 'update toolbar status'
                 view.render type, 1
 
-            #ide_event.onLongListen ide_event.SWITCH_DASHBOARD, () ->
-            #    console.log 'toolbar:SWITCH_DASHBOARD'
-            #    model.setTabFlag(false)
-            #    null
+            ide_event.onLongListen ide_event.SWITCH_DASHBOARD, () ->
+                console.log 'toolbar:SWITCH_DASHBOARD'
+                model.setTabFlag(false)
+                null
 
-            #ide_event.onLongListen ide_event.SWITCH_TAB, () ->
-            #    setTimeout () ->
-            #        console.log 'SWITCH_TAB toolbar id:' + MC.common.other.canvasData.get 'id'
-            #        model.setTabFlag(true)
-            #    , 500
+            ide_event.onLongListen ide_event.SWITCH_TAB, () ->
+                setTimeout () ->
+                    console.log 'SWITCH_TAB toolbar id:' + MC.common.other.canvasData.get 'id'
+                    model.setTabFlag(true)
+                , 500
 
             #save
             ide_event.onLongListen ide_event.SAVE_STACK, (data) ->

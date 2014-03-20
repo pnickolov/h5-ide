@@ -90,9 +90,6 @@ define [ 'constant', 'MC', '../result_vo', 'Design', 'validation_helper' ], ( CO
 
         __80 > 0 and __443 > 0
 
-    __getEipByEni = ( eni ) ->
-        hasPrimaryEip
-
     __hasEipOrPublicIp = ( component ) ->
         if component.type is "ExpandedAsg"
             lc = component.get( 'originalAsg' ).get 'lc'
@@ -102,7 +99,11 @@ define [ 'constant', 'MC', '../result_vo', 'Design', 'validation_helper' ], ( CO
             component.get( 'publicIp' ) is true
         # instance
         else if component.type is CONST.AWS_RESOURCE_TYPE.AWS_EC2_Instance
-            component.hasPrimaryEip() or component.hasAutoAssignPublicIp()
+
+            enis = component.connectionTargets('EniAttachment')
+            enis.push component.getEmbedEni()
+            hasEip = _.some enis, ( eni ) -> eni.hasEip()
+            component.hasAutoAssignPublicIp() or hasEip
 
     __getSubnetRtb = ( component ) ->
         subnet = component.parent()

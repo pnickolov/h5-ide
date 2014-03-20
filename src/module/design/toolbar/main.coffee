@@ -21,7 +21,7 @@ define [ 'jquery',
             #listen OPEN_DESIGN
             ide_event.onLongListen ide_event.OPEN_DESIGN, ( region_name, type, current_platform, tab_name, tab_id ) ->
                 console.log 'toolbar:OPEN_DESIGN', tab_id, type
-                view.render type
+                view.render type, 0
                 null
 
             #listen OPEN_SUB_DESIGN
@@ -35,7 +35,7 @@ define [ 'jquery',
             #listen toolbar state change
             model.on 'UPDATE_TOOLBAR', (type) ->
                 console.log 'update toolbar status'
-                view.render type
+                view.render type, 1
 
             #ide_event.onLongListen ide_event.SWITCH_DASHBOARD, () ->
             #    console.log 'toolbar:SWITCH_DASHBOARD'

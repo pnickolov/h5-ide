@@ -1,4 +1,4 @@
-define [ 'constant', 'MC', 'i18n!nls/lang.js', 'Design', 'underscore' ], ( CONST, MC, lang, Design, _ ) ->
+define [ 'constant', 'MC', 'i18n!nls/lang.js', 'Design', 'underscore' ], ( CONST, MC, LANG, Design, _ ) ->
 
     Inside =
         taReturn: ( type, tip, uid ) ->
@@ -24,6 +24,10 @@ define [ 'constant', 'MC', 'i18n!nls/lang.js', 'Design', 'underscore' ], ( CONST
         protocal:
             get: ( code ) ->
                 Helper.map.protocal[ code.toString() ] or code
+
+        i18n:
+            short: () ->
+                LANG.ide
 
         component:
             get: ( uid, rework ) ->

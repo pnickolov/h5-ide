@@ -2,8 +2,9 @@
 This file use for validate component about state.
 ###
 
-define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo', 'Design', 'validation_helper' ], ( CONST, MC, lang, resultVO, Design, Helper ) ->
+define [ 'constant', 'MC', '../result_vo', 'Design', 'validation_helper' ], ( CONST, MC, resultVO, Design, Helper ) ->
 
+    i18n = Helper.i18n.short()
     __wrap = ( method ) ->
         ( uid ) ->
             if __hasState uid
@@ -146,7 +147,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo', 'Design', 'valida
         # if there is no EIP or publicIP, push an error and stop continued validate.
         if not __hasEipOrPublicIp( component )
             name = component.get( 'name' )
-            result.push Helper.message.error component.id, lang.ide.TA_MSG_ERROR_NO_EIP_OR_PIP, name, name, subnetName
+            result.push Helper.message.error component.id, i18n.TA_MSG_ERROR_NO_EIP_OR_PIP, name, name, subnetName
             true
         else if __isRouteIgw( component )
             true
@@ -154,7 +155,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo', 'Design', 'valida
             false
 
     __genConnectedError = ( subnetName, uid ) ->
-        Helper.message.error uid, lang.ide.TA_MSG_ERROR_NOT_CONNECT_OUT, subnetName
+        Helper.message.error uid, i18n.TA_MSG_ERROR_NOT_CONNECT_OUT, subnetName
 
 
     __isLcConnectedOut = ( uid ) ->
@@ -204,7 +205,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo', 'Design', 'valida
         if __hasType CONST.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway
             return null
 
-        Helper.message.error uid, lang.ide.TA_MSG_ERROR_NO_CGW
+        Helper.message.error uid, i18n.TA_MSG_ERROR_NO_CGW
 
     isHasOutPort80and443 = ( uid ) ->
         component = __getComp uid
@@ -213,7 +214,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo', 'Design', 'valida
         if __sgsHasOutPort80and443 sgs
             return null
 
-        Helper.message.error uid, lang.ide.TA_MSG_ERROR_NO_OUTBOUND_RULES, component.name
+        Helper.message.error uid, i18n.TA_MSG_ERROR_NO_OUTBOUND_RULES, component.name
 
     isHasOutPort80and443Strict = ( uid ) ->
         component = __getComp uid
@@ -222,7 +223,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo', 'Design', 'valida
         if isHasOutPort80and443( uid ) or __sgsHasOutPort80and443 sgs, true
             return null
 
-        Helper.message.warning uid, lang.ide.TA_MSG_WARNING_OUTBOUND_NOT_TO_ALL, component.name
+        Helper.message.warning uid, i18n.TA_MSG_WARNING_OUTBOUND_NOT_TO_ALL, component.name
 
     isConnectedOut = ( uid ) ->
         result = []

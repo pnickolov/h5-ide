@@ -1525,10 +1525,11 @@ Are you sure you want to delete {{name}}?</div>
 <div class="bubble-head">A NAT instance must meet following requirements:</div>
 <div class="bubble-content">
 	<ul class="bubble-NAT-req-list">
+		<li>Should have a route targeting the instance itself with destination to 0.0.0.0/0.</li>
+		<li>Should belong to a subnet which routes traffic with destination 0.0.0.0/0 to Internet Gateway.</li>
 		<li>Should disable Source/Destination Checking in "Network Interface Details".</li>
 		<li>Should have public IP or Elastic IP.</li>
-		<li>Should belong to a subnet which routes traffic with destination 0.0.0.0/0 to Internet Gateway.</li>
 		<li>Should have outbound rule to the outside.</li>
-		<li>Should have inbound rule from with the VPC.</li>
+		<li>Should have inbound rule from within the VPC.</li>
 	</ul>
 </div>

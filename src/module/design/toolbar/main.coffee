@@ -18,19 +18,24 @@ define [ 'jquery',
             view.listen()
             view.render()
 
+            #listen OPEN_DESIGN
+            ide_event.onLongListen ide_event.OPEN_DESIGN, ( region_name, type, current_platform, tab_name, tab_id ) ->
+                console.log 'toolbar:OPEN_DESIGN', tab_id, type
+                view.render type, 0
+                null
+
             #listen OPEN_SUB_DESIGN
+            # when NEW_STACK tab_id is string( tab id )
+            # when OPEN_STACK tab_id is Object( id.resolved_data[0].id )
             ide_event.onLongListen ide_event.OPEN_SUB_DESIGN, ( region_name, type, current_platform, tab_name, tab_id ) ->
-                console.log 'toolbar:OPEN_SUB_DESIGN, region_name = ' + region_name + ', type = ' + type
-
-                # set toolbar template( app or stack )
+                console.log 'toolbar:OPEN_SUB_DESIGN', tab_id, type
                 model.setFlag tab_id, type
-
                 null
 
             #listen toolbar state change
             model.on 'UPDATE_TOOLBAR', (type) ->
                 console.log 'update toolbar status'
-                view.render type
+                view.render type, 1
 
             ide_event.onLongListen ide_event.SWITCH_DASHBOARD, () ->
                 console.log 'toolbar:SWITCH_DASHBOARD'

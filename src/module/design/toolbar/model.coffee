@@ -386,6 +386,14 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
             name  = MC.common.other.canvasData.get 'name'
             state = MC.common.other.canvasData.get 'state'
 
+            # reset id
+            if id and _.isObject( id ) and flag is 'OPEN_STACK'
+                id = id.resolved_data[0].id
+
+            # reset flag( e.g. import JSON )
+            if id and id.split and id.split( '-' )[0] is 'new' and flag is 'OPEN_STACK'
+                flag = 'NEW_STACK'
+
             if flag is 'NEW_STACK'
 
                 # old design flow
@@ -397,7 +405,7 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
                 is_tab = true
 
             else if flag is 'OPEN_STACK'
-                id = id.resolved_data[0].id
+
 
                 # old design flow
                 #item_state_map[id] = {'name':MC.canvas_data.name, 'is_run':true, 'is_duplicate':true, 'is_delete':true, 'is_zoomin':false, 'is_zoomout':true}

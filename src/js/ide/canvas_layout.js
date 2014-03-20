@@ -64,6 +64,7 @@ var listen = function ()
 	if (canvas_state === 'appview')
 	{
 		canvas_container
+			.on('mousedown' + name_space, '.instance-volume, .instanceList-item-volume, .asgList-item-volume', MC.canvas.volume.show)
 			.on('mousedown' + name_space, '.dragable', MC.canvas.event.dragable.mousedown)
 			.on('mousedown' + name_space, '.group-resizer', MC.canvas.event.groupResize.mousedown)
 			.on('mouseenter'  + name_space + ' mouseleave'  + name_space, '.node', MC.canvas.event.nodeHover)

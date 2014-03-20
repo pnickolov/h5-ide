@@ -163,11 +163,12 @@ define [ "../ComplexResModel", "Design", "../connection/Route", "../connection/R
 
 
         # The first RouteSet is always local, so we don't deserialize it
-        i = 1
+        i = 0
         while i < routes.length
           r  = routes[i]
-          id = MC.extractID( r.GatewayId || r.InstanceId || r.NetworkInterfaceId )
-          rtb.addRoute( id, r.DestinationCidrBlock, propagateMap[id] )
+          if r.GatewayId isnt "local"
+            id = MC.extractID( r.GatewayId || r.InstanceId || r.NetworkInterfaceId )
+            rtb.addRoute( id, r.DestinationCidrBlock, propagateMap[id] )
           ++i
       null
   }

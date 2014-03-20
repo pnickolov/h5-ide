@@ -55,12 +55,13 @@ define [ "constant", "../ConnectionModel", "i18n!nls/lang.js" ], ( constant, Con
       if not ami.isRemoved()
         # When this EniAttachment is removed, we need to update all the Eni's name.
         attachments = ami.connections("EniAttachment")
+        startIdx = 1
 
-        startIdx = attachments.indexOf( this )+1
-        while startIdx < attachments.length
-          attach = attachments[ startIdx ]
-          attach.attributes.index -= 1
-          attach.getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface ).updateName()
+        while startIdx <= attachments.length
+          attach = attachments[ startIdx - 1 ]
+          if attach.attributes.index isnt startIdx
+            attach.attributes.index = startIdx
+            attach.getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface ).updateName()
           ++startIdx
 
       if not ami.isRemoved() and not eni.isRemoved()

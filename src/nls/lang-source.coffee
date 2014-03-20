@@ -4002,7 +4002,7 @@ module.exports =
       zh: ""
 
     STATE_TIP_DESCRIPTION:
-      en: "Description"
+      en: "Help"
       zh: ""
 
     STATE_TIP_STATE_LOG:

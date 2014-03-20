@@ -34,7 +34,9 @@
     Context = {
       version: "",
       language: "",
-      window: {},
+      window: {
+        location: {}
+      },
       require: function() {},
       document: {
         getElementsByTagName: function() {

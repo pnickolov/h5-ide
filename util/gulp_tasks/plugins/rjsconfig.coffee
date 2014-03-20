@@ -27,7 +27,7 @@ readRequirejsConfig = ( path )->
   Context =
     version  : ""
     language : ""
-    window   : {}
+    window   : { location : {} }
     require : ()->
     document :
       getElementsByTagName : ()-> []

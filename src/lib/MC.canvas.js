@@ -2068,7 +2068,7 @@ MC.canvas.volume = {
 
 		if (!bubble_box[0])
 		{
-			if (MC.canvas.getState() === 'app')
+			if (MC.canvas.getState() === 'app' || MC.canvas.getState() === 'appview')
 			{
 				if (volume_type)
 				{

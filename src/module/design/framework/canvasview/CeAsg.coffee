@@ -53,14 +53,19 @@ define [ "./CanvasElement", 'i18n!nls/lang.js', "constant", "Design", "CanvasMan
         }),
 
         # title bg
-        Canvon.path( MC.canvas.PATH_ASG_TITLE ).attr({'class':'asg-title'}),
+        Canvon.path( MC.canvas.PATH_ASG_TITLE ).attr({'class':'asg-title'})
+      )
 
-        # dragger
-        Canvon.image(MC.IMG_URL + 'ide/icon/asg-resource-dragger.png', width - 21, 0, 22, 21).attr({
-          'class'        : 'asg-resource-dragger tooltip'
-          'data-tooltip' : 'Expand the group by drag-and-drop in other availability zone.'
-        }),
+      if not @model.design().modeIsAppView()
+        node.append(
+          # dragger
+          Canvon.image(MC.IMG_URL + 'ide/icon/asg-resource-dragger.png', width - 21, 0, 22, 21).attr({
+            'class'        : 'asg-resource-dragger tooltip'
+            'data-tooltip' : 'Expand the group by drag-and-drop in other availability zone.'
+          })
+        )
 
+      node.append(
         # prompt
         Canvon.group().append(
           Canvon.text(25, 45,  'Drop AMI from'),

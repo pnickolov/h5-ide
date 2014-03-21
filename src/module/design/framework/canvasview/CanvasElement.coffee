@@ -225,7 +225,11 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
     null
 
   CanvasElement.prototype.clone = ( parentId, x, y )->
-    parent = @model.design().component( parentId )
+    design = @model.design()
+    if not design.modeIsStack() and not design.modeIsAppEdit()
+      return
+
+    parent = design.component( parentId )
     if not parent
       console.error "No parent is found when cloning object"
       return

@@ -4,8 +4,9 @@
 
 define [ '../base/view',
          'text!./template/stack.html',
-         'event'
-], ( PropertyView, template, ide_event ) ->
+         'event',
+         'i18n!nls/lang.js'
+], ( PropertyView, template, ide_event, lang ) ->
 
     Helper =
         makeInRange: ( value, range , $target, deflt ) ->
@@ -147,15 +148,41 @@ define [ '../base/view',
         healthIntervalChanged : ( event ) ->
             $target = $ event.currentTarget
             value = $target.val()
-            value = Helper.makeInRange value, [6, 300], $target, 30
 
+            $timeoutDom = $('#property-elb-health-timeout')
+            $target.parsley 'custom', (val) ->
+                intervalValue = Number(val)
+                timeoutValue = Number($timeoutDom.val())
+                if intervalValue < timeoutValue
+                    return lang.ide.PROP_ELB_HEALTH_INTERVAL_VALID
+                null
+
+            if not $target.parsley 'validate'
+                return
+            else
+                $timeoutDom.parsley 'validate'
+
+            value = Helper.makeInRange value, [5, 300], $target, 30
             @model.setHealthInterval value
 
         healthTimeoutChanged : ( event ) ->
             $target = $ event.currentTarget
             value = $target.val()
-            value = Helper.makeInRange value, [2, 60 ], $target, 5
 
+            $intervalDom = $('#property-elb-health-interval')
+            $target.parsley 'custom', (val) ->
+                intervalValue = Number($intervalDom.val())
+                timeoutValue = Number(val)
+                if intervalValue < timeoutValue
+                    return lang.ide.PROP_ELB_HEALTH_INTERVAL_VALID
+                null
+
+            if not $target.parsley 'validate'
+                return
+            else
+                $intervalDom.parsley 'validate'
+
+            value = Helper.makeInRange value, [2, 60 ], $target, 5
             @model.setHealthTimeout value
 
         sliderChanged : ( event, value ) ->

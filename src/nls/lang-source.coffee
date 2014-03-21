@@ -2111,6 +2111,10 @@ module.exports =
       en: "Distribution"
       zh: "分布"
 
+    PROP_ELB_HEALTH_INTERVAL_VALID:
+      en: "Response timeout must be less than or equal to the health check interval value"
+      zh: ""
+
     PROP_ASG_SUMMARY:
       en: "Auto Scaling Group Summary"
       zh: "自动伸缩组摘要"

@@ -2,9 +2,12 @@ define [ 'constant', 'MC', 'i18n!nls/lang.js', 'Design', 'underscore' ], ( CONST
 
     Inside =
         taReturn: ( type, tip, uid ) ->
-            level   : CONST.TA[ type ]
-            info    : tip
-            uid     : uid
+            ret =
+                level   : CONST.TA[ type ]
+                info    : tip
+            if uid
+                ret.uid = uid
+            ret
 
         genTip: ( args ) ->
             if args.length > 2

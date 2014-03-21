@@ -57,7 +57,7 @@ Tasks =
   cleanRepo : ()->
     logTask "Removing ignored files in src (git clean -Xf)"
 
-    util.runCommand "git", ["clean", "-Xf"], { cwd : process.cwd() + "/src" }, stdRedirect
+    util.runCommand "git", ["clean", "-Xdf"], { cwd : process.cwd() + "/src" }, stdRedirect
 
   copyAssets : ()->
     logTask "Copying Assets"

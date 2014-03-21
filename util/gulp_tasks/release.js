@@ -88,7 +88,7 @@
   Tasks = {
     cleanRepo: function() {
       logTask("Removing ignored files in src (git clean -Xf)");
-      return util.runCommand("git", ["clean", "-Xf"], {
+      return util.runCommand("git", ["clean", "-Xdf"], {
         cwd: process.cwd() + "/src"
       }, stdRedirect);
     },

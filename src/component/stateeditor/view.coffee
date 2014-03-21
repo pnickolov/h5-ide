@@ -1969,7 +1969,7 @@ define [ 'event',
                 editor.on("focus", (e, thatEditor) ->
 
                     $valueInput = $(thatEditor.container)
-                    # $stateItem = $valueInput.parents('.state-item')
+                    $stateItem = $valueInput.parents('.state-item')
                     # $paraItem = $valueInput.parents('.parameter-item')
 
                     that.justScrollToElem(that.$stateList, $valueInput)
@@ -1986,6 +1986,9 @@ define [ 'event',
                         left: inputPosX,
                         top: inputPosY + 25
                     })
+
+                    that.clearFocusedItem()
+                    $stateItem.addClass('focused')
 
                 )
 

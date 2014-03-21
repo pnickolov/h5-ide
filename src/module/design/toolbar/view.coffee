@@ -410,15 +410,7 @@ define [ 'MC', 'event',
             if data
                 # The browser doesn't support Blob. Fallback to show a dialog to
                 # allow user to download the file.
-
                 modal MC.template.exportJSON data
-                $("#modal-export-json").click ()->
-                    # I'm not sure if we can remove the dom when the button is clicked.
-                    # Because I think some browser might just prevent the content to be
-                    # donwloaded in this way. So, for safe sake, delay the removal.
-                    setTimeout ()->
-                        modal.close()
-                    , 100
             null
 
         exportPNG : ( base64_image, uid, blob ) ->
@@ -471,7 +463,7 @@ define [ 'MC', 'event',
 
             try
                 # able
-                aTag     = $('#tpl-download').removeAttr 'disabled'
+                aTag     = $('#tpl-download').removeClass 'disabled'
                 cf_json  = @model.attributes.cf_data[name]
                 fileName = "#{Design.instance().get('name')}.json"
 

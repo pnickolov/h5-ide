@@ -61,10 +61,6 @@ require.config {
 
 		'event'              : 'lib/ide_event'
 
-		'validation'         : 'component/trustedadvisor/validation'
-		'ta_conf'            : 'component/trustedadvisor/config'
-		'validation_helper'	 : 'component/trustedadvisor/lib/helper'
-
 		'WS'                 : 'lib/websocket'
 
 		#############################################
@@ -234,6 +230,10 @@ require.config {
 		'stateeditor'        : 'component/stateeditor/main'
 		'stateeditor_view'   : 'component/stateeditor/view'
 		'stateeditor_model'  : 'component/stateeditor/model'
+
+		'validation'         : 'component/trustedadvisor/validation'
+		'ta_conf'            : 'component/trustedadvisor/config'
+		'validation_helper'	 : 'component/trustedadvisor/lib/helper'
 
 	shim               :
 

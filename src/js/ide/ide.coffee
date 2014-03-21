@@ -28,21 +28,9 @@ define [ 'MC', 'event', 'handlebars'
 		#  validation cookie
 		#############################
 
-		#clear path=/v2 cookie(patch)
-		#common_handle.cookie.clearV2Cookie '/v2'
-		#common_handle.cookie.clearV2Cookie '/v2/'
-
-		#if common_handle.cookie.getIDECookie()
-		#	common_handle.cookie.setCookie common_handle.cookie.getIDECookie()
-		#else
-		#	if !common_handle.cookie.checkAllCookie()
-		#		#user session not exist, go to login page
-		#
-        #        window.location.href = "login.html"
-
 		#user session not exist, go to login page
 		if !common_handle.cookie.checkAllCookie()
-			window.location.href = "login.html"
+			window.location.href = "/login"
 
 		#clear cookie in 'ide.madeiracloud.com'
 		#common_handle.cookie.clearInvalidCookie()

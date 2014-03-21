@@ -71,10 +71,10 @@ define [ 'MC', 'event', 'account_model', 'session_model', 'common_handle', 'cryp
                     sessionStorage.setItem 'password', forge_result.param[ 2 ]
 
 
-                    window.location.href = "register.html#success"
+                    window.location.href = "/register/#success"
 
 
-                    
+
                 else
                     #login failed
                     this.trigger 'RESET_CREATE_ACCOUNT'

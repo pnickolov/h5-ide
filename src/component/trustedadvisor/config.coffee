@@ -16,6 +16,7 @@ define({
         'AWS.VPC.NetworkInterface'              : [ 'eni' ]
         'AWS.VPC.NetworkAcl'                    : [ 'acl' ]
         'AWS.AutoScaling.LaunchConfiguration'   : [ 'state' ]
+        'AWS.VPC.RouteTable'                    : [ 'rtb' ]
 
     globalList:
         eip: [ 'isHasIGW' ]

@@ -5270,7 +5270,10 @@ MC.canvas.event.keyEvent = function (event)
 		}
 
 		// Open state editor - [Enter]
-		if (keyCode === 13)
+		if (
+			keyCode === 13 &&
+			MC.canvas.getState() !== "appview"
+		)
 		{
 			var type = $canvas( $canvas.selected_node()[ 0 ] ).type;
 
@@ -5288,7 +5291,8 @@ MC.canvas.event.keyEvent = function (event)
 		// Show state editor - [S]
 		if (
 			keyCode === 83 &&
-			selected_node.length === 1
+			selected_node.length === 1 &&
+			MC.canvas.getState() !== "appview"
 		)
 		{
 			var type = $canvas( $canvas.selected_node()[ 0 ] ).type;

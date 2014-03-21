@@ -37,6 +37,8 @@ require.config {
     'i18n'     : 'vender/requirejs/i18n'
     'text'     : 'vender/requirejs/text'
 
+    'sprintf'            : 'vender/sprintf/sprintf'
+
     'crypto'             : 'vender/crypto-js/hmac-sha256'
     'MC'                 : 'js/MC.core'
     'constant'           : 'lib/constant'
@@ -81,6 +83,7 @@ require.config {
       "backbone"
       "underscore"
       "handlebars"
+      "sprintf"
     ]
     "lib/lib" : [
       "MC"

@@ -84,6 +84,8 @@ define [ 'event',
                 if @currentTab is 'state'
                     @renderProperty @last.uid, @last.type
 
+            @renderStateCount Design.instance().component( @last.uid )
+
         showProperty: () ->
             $( '#property-panel' ).removeClass 'state'
 

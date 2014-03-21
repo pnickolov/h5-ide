@@ -258,21 +258,8 @@ require.config {
 		# MC
 		#############################################
 
-		'MC'           :
-			deps       : [ 'jquery', 'underscore', 'backbone', 'handlebars', 'sprintf' ]
-			exports    : 'MC'
-
 		'MC.canvas'    :
 			deps       : [ 'MC', 'canvon' ]
-
-		'MC.canvas.constant':
-			deps       : [ 'MC.canvas' ]
-
-		'forge_handle' :
-			deps       : [ 'Design' ]
-
-		'aws_handle'   :
-			deps       : [ 'Design' ]
 
 		#############################################
 		# UI
@@ -337,10 +324,6 @@ require.config {
 		'Meteor'       :
 			deps       : ['underscore']
 			exports    : 'Meteor'
-
-		'WS'           :
-			deps       : [ 'Meteor', 'underscore', 'MC' ]
-			exports    : 'WS'
 
 		#############################################
 		# modules

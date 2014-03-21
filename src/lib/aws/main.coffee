@@ -14,7 +14,8 @@ define ['MC',
 		'lib/aws/vpc/rtb',
 		'lib/aws/autoscaling/asg',
 		'lib/aws/autoscaling/launchconfiguration',
-		'lib/aws/ec2/eip'], (MC, aws_handler, aws_handler_instance, aws_handler_ebs, aws_handler_ami, aws_handler_elb, aws_handler_vpn, aws_handler_acl, aws_handler_securitygroup, aws_handler_keypair,aws_handler_eni, aws_handler_vpc, aws_handler_subnet, aws_handler_rtb, aws_handler_asg, aws_handler_lc, aws_handler_eip) ->
+		'lib/aws/ec2/eip',
+		"Design"], (MC, aws_handler, aws_handler_instance, aws_handler_ebs, aws_handler_ami, aws_handler_elb, aws_handler_vpn, aws_handler_acl, aws_handler_securitygroup, aws_handler_keypair,aws_handler_eni, aws_handler_vpc, aws_handler_subnet, aws_handler_rtb, aws_handler_asg, aws_handler_lc, aws_handler_eip) ->
 	MC.aws = {
 		instance: aws_handler_instance,
 		asg: aws_handler_asg,

@@ -593,7 +593,7 @@ MC.cacheForDev = function( key, data, callback ) {
 };
 
 /* Define as MC module */
-define( "MC", [ "ui/MC.template", "lib/handlebarhelpers", "jquery" ], function ( template ) {
+define( "MC", [ "ui/MC.template", "lib/handlebarhelpers", "jquery", "sprintf" ], function ( template ) {
 
 // For event handler
 var returnTrue = function () {return true},

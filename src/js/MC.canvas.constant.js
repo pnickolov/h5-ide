@@ -1,6 +1,4 @@
-MC.canvas = MC.canvas || {};
-
-define([ 'i18n!nls/lang.js' ], function( lang ){
+define([ 'i18n!nls/lang.js', "MC.canvas" ], function( lang ){
 
 var constant_data = {
 
@@ -1932,9 +1930,7 @@ var constant_data = {
 
 };
 
-$.each(constant_data, function (key, value)
-{
-	MC.canvas[ key ] = value;
-});
-
+for ( var i in constant_data ) {
+	MC.canvas[i] = constant_data[i];
+}
 });

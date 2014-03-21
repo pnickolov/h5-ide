@@ -1,6 +1,6 @@
 <article class="property-app">
   <div class="option-group-head expand">{{i18n "PROP_INSTANCE_DETAIL"}}
-  <a href="#" class="icon-syslog tooltip property-btn-get-system-log action-link" data-tooltip='Get System Log' ></a>
+  <a href="#" class="icon-syslog tooltip property-btn-get-system-log action-link" data-tooltip="{{i18n 'PROP_INSTANCE_TIP_GET_SYSTEM_LOG'}}" ></a>
 </div>
   <div class="option-group">
     <dl class="dl-vertical">
@@ -19,13 +19,13 @@
       <dd>{{emptyStr ipAddress}}</dd>
 
       <dt>{{i18n "PROP_INSTANCE_PUBLIC_DNS"}}</dt>
-      <dd class="click-select tooltip" data-tooltip="Click to select all">{{emptyStr dnsName}}</dd>
+      <dd class="click-select tooltip" data-tooltip="{{i18n 'PROP_ELB_TIP_CLICK_TO_SELECT_ALL'}}">{{emptyStr dnsName}}</dd>
 
       <dt>{{i18n "PROP_INSTANCE_PRIMARY_PRIVATE_IP"}}</dt>
       <dd>{{emptyStr privateIpAddress}}</dd>
 
       <dt>{{i18n "PROP_INSTANCE_PRIVATE_DNS"}}</dt>
-      <dd class="click-select tooltip" data-tooltip="Click to select all">{{emptyStr privateDnsName}}</dd>
+      <dd class="click-select tooltip" data-tooltip="{{i18n 'PROP_ELB_TIP_CLICK_TO_SELECT_ALL'}}">{{emptyStr privateDnsName}}</dd>
     </dl>
 
     <dl class="dl-vertical">
@@ -58,6 +58,46 @@
       <dd>{{emptyStr blockDevice}}</dd>
     </dl>
   </div>
+
+  {{#if rootDevice}}
+  <div class="option-group-head">Root Device</div>
+  <div class="option-group">
+    <article class="property-app">
+      <dl class="dl-vertical">
+        <dt>{{i18n "PROP_VOLUME_ID"}}</dt>
+        <dd>{{emptyStr rootDevice.volumeId}}</dd>
+        <dt>{{i18n "PROP_VOLUME_DEVICE_NAME"}}</dt>
+        <dd>{{emptyStr rootDevice.name}}</dd>
+        <dt>{{i18n "PROP_VOLUME_STATE"}}</dt>
+        <dd><i class="status status-{{rootDevice.status}}"></i>{{rootDevice.status}}</dd>
+        <dt>{{i18n "PROP_VOLUME_CREATE_TIME"}}</dt>
+        <dd>{{timeStr rootDevice.createTime}}</dd>
+      </dl>
+      <dl class="dl-vertical">
+        <dt>{{i18n "PROP_VOLUME_TYPE"}}</dt>
+        <dd>{{emptyStr rootDevice.volumeType}}</dd>
+        {{#if rootDevice.snapshotId}}
+        <dt>{{i18n "PROP_VOLUME_SNAPSHOT_ID"}}</dt>
+        <dd>{{rootDevice.snapshotId}}</dd>
+        {{/if}}
+        <dt>{{i18n "PROP_VOLUME_SIZE"}}</dt>
+        <dd>{{emptyStr rootDevice.size}} GB</dd>
+        {{#if rootDevice.iops}}
+        <dt>IOPS</dt>
+        <dd>{{rootDevice.iops}}</dd>
+        {{/if}}
+      </dl>
+      <dl class="dl-vertical">
+        <dt>{{i18n "PROP_VOLUME_ATTACHMENT_STATE"}}</dt>
+        <dd>{{emptyStr rootDevice.attachmentSet.item.0.status}}</dd>
+        <dt>{{i18n "PROP_VOLUME_INSTANCE_ID"}}</dt>
+        <dd>{{emptyStr rootDevice.attachmentSet.item.0.instanceId}}</dd>
+        <dt>{{i18n "PROP_VOLUME_ATTACHMENT_TIME"}}</dt>
+        <dd>{{timeStr rootDevice.attachmentSet.item.0.attachTime}}</dd>
+      </dl>
+    </article>
+  </div>
+  {{/if}}
 
   {{#if eni}}
   <div class="option-group-head">{{i18n "PROP_INSTANCE_ENI_DETAIL"}}</div>

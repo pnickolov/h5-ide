@@ -214,7 +214,7 @@ define ["event", "text!./diff.html", "text!./view.html", "./JsonDiffLib", "./jqU
         $("#jsonViewer").remove()
         null
 
-      $("#diffRefresh").on "click", ()-> updateViewDialog( dd().serialize() )
+      $("#diffRefresh").on "click", ()-> updateViewDialog( d().serialize() )
 
       updateTO = null
       $("#diffSearch").on "keydown", ()->
@@ -222,6 +222,7 @@ define ["event", "text!./diff.html", "text!./view.html", "./JsonDiffLib", "./jqU
         updateTO = setTimeout ()->
           applyViewFilter()
         , 200
+        null
 
       $("#diffTypeSelect").on "change", applyViewFilter
       null

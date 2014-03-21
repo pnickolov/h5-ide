@@ -1,5 +1,5 @@
 
-define ['./Download', "./HmacMd5"], ( download )->
+define ['./Download', 'i18n!nls/lang.js', "./HmacMd5"], ( download, lang )->
 
   exportJson = ( json, name )->
     # Remove uncessary attributes of the json
@@ -8,7 +8,14 @@ define ['./Download', "./HmacMd5"], ( download )->
 
     json.signature = CryptoJS.HmacMD5(JSON.stringify( json ), "MaderiaCloudIDE").toString()
 
-    j = JSON.stringify(json)
+    # I don't want to mess up with the grunt.
+    # If we use gulp to build the source, the export json will be pretty-print in dev mode.
+    space = 4
+    ### env:prod ###
+    space = undefined
+    ### env:prod:end ###
+
+    j = JSON.stringify json, undefined, space
 
     if $("body").hasClass("safari")
       blob = null
@@ -17,7 +24,7 @@ define ['./Download', "./HmacMd5"], ( download )->
 
     if not blob
       return {
-        data : "data://text/plain;, " + j
+        data : "data://text/plain;,#{j}"
         name : name
       }
 
@@ -28,16 +35,41 @@ define ['./Download', "./HmacMd5"], ( download )->
     try
       j = JSON.parse( json )
     catch e
-      return "The json file is malformed."
+      return lang.ide.POP_IMPORT_FORMAT_ERROR
 
     signature = j.signature
     delete j.signature
     if CryptoJS.HmacMD5( JSON.stringify( j ) , "MaderiaCloudIDE" ).toString() isnt signature
-      return "We do not support user modified json."
+      return lang.ide.POP_IMPORT_MODIFIED_ERROR
 
     return j
 
+  # genericExport() can download a file after the user clicks an `a link`.
+  genericExport = ( aTag, contentJsonObject, fileName )->
+    space = 4
+    ### env:prod ###
+    space = undefined
+    ### env:prod:end ###
+    j = JSON.stringify contentJsonObject, undefined, space
+
+    ua = window.navigator.userAgent
+    if ua.indexOf("Safari") > -1 and ua.indexOf("Chrome") is -1
+      # Safari doesn't support blob download. We set the content to the link
+      $(aTag).attr {
+        href     : "data://text/plain;,#{j}"
+        download : fileName
+      }
+
+    else
+      $(aTag).off("click.export").on "click.export", ()->
+        download( new Blob([j]), fileName )
+        null
+
+    null
+
   {
-    export : exportJson
-    import : importJson
+    exportJson : exportJson
+    importJson : importJson
+
+    genericExport : genericExport
   }

@@ -33,6 +33,11 @@ define [ '../base/model',
 			else
 				notification 'warning', sprintf lang.ide.PROP_MSG_ERR_AMI_NOT_FOUND, ami_id
 
+			#root device
+			rd = myInstanceComponent.getBlockDeviceMapping()
+			if rd.length is 1
+				@set "rootDevice", rd[0]
+
 			# Find out Instance Type
 			tenancy = myInstanceComponent.get 'tenancy' isnt 'dedicated'
 

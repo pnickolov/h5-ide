@@ -173,7 +173,7 @@
                     <i class="region-resource-tab-icon region-resource-icon-stack"></i>
                     <span class="region-resource-tab-number">{{#if cur_stack_list}}{{ cur_stack_list.length }}{{else}}0{{/if}}</span>
                     <span class="region-resource-tab-type">{{i18n "DASH_LBL_STACK"}}</span>
-                    <button id="btn-create-stack" class="icon-new-stack" {{#unless supported_platforms}}disabled="disabled"{{/unless}} title="Create New Stack"></button>
+                    <button id="btn-create-stack" class="icon-new-stack" {{#unless supported_platforms}}disabled="disabled"{{/unless}} title="{{i18n 'TOOL_TIP_CREATE_STACK'}}"></button>
                 </a>
             </li>
         </ul>
@@ -414,9 +414,9 @@
                             <div>
                                 {{#if app}}
                                 {{#if owner}}
-                                <span class="table-app-link truncate tooltip {{#unless isTerminated}}table-app-link-clickable{{/unless}}" data-tooltip="App created by {{ owner }}" data-id="{{tagSet.app-id}}" data-name="{{tabSet.name}}">[{{ app }}]</span>
+                                <span class="table-app-link truncate tooltip {{#unless isTerminated}}table-app-link-clickable{{/unless}}" data-tooltip="{{i18n 'DASH_TIP_APP_CREATED_BY'}}{{ owner }}" data-id="{{tagSet.app-id}}" data-name="{{tabSet.name}}">[{{ app }}]</span>
                                 {{else}}
-                                <span class="table-app-link truncate tooltip" data-tooltip='App created by other user' >[{{ app }}]</span>
+                                <span class="table-app-link truncate tooltip" data-tooltip="{{i18n 'DASH_TIP_APP_CREATED_BY_OTHER_USER'}}" >[{{ app }}]</span>
                                 {{/if}}
                                 {{else}}
                                 <span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip='{{ i18n "DASH_TIP_UNMANAGED_RESOURCE" }}' >{{ i18n "DASH_LBL_UNMANAGED" }}</span>
@@ -431,7 +431,7 @@
                         <td>{{ launchTime }}</td>
                         <td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleAMIInfo" data-bubble-data='{"id":"{{imageId}}","name":"{{ image.name }}","description":"{{image.description}}","architecture":"{{image.architecture}}","imageLocation":"{{image.imageLocation}}","isPublic":"{{image.isPublic}}","kernelId":"{{image.kernelId}}","rootDeviceName":"{{image.rootDeviceName}}","rootDeviceType":"{{image.rootDeviceType}}"}'>{{ imageId }}</a></td>
                         <td>{{ placement.availabilityZone}}</td>
-                        <td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="icon-detail modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+                        <td class="table-action"><a href="javascript:void(0)" title="{{i18n 'DASH_TIT_VIEW_RESOURCE_DETAIL'}}" class="icon-detail modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
                     </tr>
                     {{else}}
                     <div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
@@ -474,7 +474,7 @@
                             {{ publicIp }}
                         </td>
                         <td>{{ instanceId }}</td>
-                        <td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="icon-detail modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+                        <td class="table-action"><a href="javascript:void(0)" title="{{i18n 'DASH_TIT_VIEW_RESOURCE_DETAIL'}}" class="icon-detail modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
                     </tr>
                     {{else}}
                     <div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
@@ -523,9 +523,9 @@
                             <div>
                                 {{#if app}}
                                 {{#if owner}}
-                                <span class="table-app-link truncate tooltip" data-tooltip="App created by {{ owner }}" >[{{ app }}]</span>
+                                <span class="table-app-link truncate tooltip" data-tooltip="{{i18n 'DASH_TIP_APP_CREATED_BY'}}{{ owner }}" >[{{ app }}]</span>
                                 {{else}}
-                                <span class="table-app-link truncate tooltip" data-tooltip='App created by other user' >[{{ app }}]</span>
+                                <span class="table-app-link truncate tooltip" data-tooltip="{{i18n 'DASH_TIP_APP_CREATED_BY_OTHER_USER'}}" >[{{ app }}]</span>
                                 {{/if}}
                                 {{else}}
                                 <span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip='{{ i18n "DASH_TIP_UNMANAGED_RESOURCE" }}' >{{ i18n "DASH_LBL_UNMANAGED" }}</span>
@@ -539,7 +539,7 @@
                         <td>{{ createTime }}</td>
                         <td>{{#each attachmentSet.item }}{{ this.device }}{{/each}}</td>
                         <td><i class="status status-{{#each attachmentSet.item }}{{ this.status }}{{/each}} icon-label"></i>{{#each attachmentSet.item }}{{ this.status }}{{/each}}</td>
-                        <td class="table-action"><a href="javascript:void(0)" title="View resource detail" class=" icon-detail modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+                        <td class="table-action"><a href="javascript:void(0)" title="{{i18n 'DASH_TIT_VIEW_RESOURCE_DETAIL'}}" class=" icon-detail modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
                     </tr>
                     {{else}}
                     <div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
@@ -586,9 +586,9 @@
                             <div>
                                 {{#if app}}
                                 {{#if owner}}
-                                <span class="table-app-link truncate tooltip" data-tooltip="App created by {{ owner }}" >[{{ app }}]</span>
+                                <span class="table-app-link truncate tooltip" data-tooltip="{{i18n 'DASH_TIP_APP_CREATED_BY'}}{{ owner }}" >[{{ app }}]</span>
                                 {{else}}
-                                <span class="table-app-link truncate tooltip" data-tooltip='App created by other user' >[{{ app }}]</span>
+                                <span class="table-app-link truncate tooltip" data-tooltip="{{i18n 'DASH_TIP_APP_CREATED_BY_OTHER_USER'}}" >[{{ app }}]</span>
                                 {{/if}}
                                 {{else}}
                                 <span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip='{{ i18n "DASH_TIP_UNMANAGED_RESOURCE" }}' >{{ i18n "DASH_LBL_UNMANAGED" }}</span>
@@ -605,7 +605,7 @@
                         {{else}}
                         <td>None</td>
                         {{/if}}
-                        <td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="icon-detail modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+                        <td class="table-action"><a href="javascript:void(0)" title="{{i18n 'DASH_TIT_VIEW_RESOURCE_DETAIL'}}" class="icon-detail modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
                     </tr>
                     {{else}}
                     <div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
@@ -653,9 +653,9 @@
                             <div>
                                 {{#if app}}
                                 {{#if owner}}
-                                <span class="table-app-link truncate tooltip" data-tooltip="App created by {{ owner }}" >[{{ app }}]</span>
+                                <span class="table-app-link truncate tooltip" data-tooltip="{{i18n 'DASH_TIP_APP_CREATED_BY'}}{{ owner }}" >[{{ app }}]</span>
                                 {{else}}
-                                <span class="table-app-link truncate tooltip" data-tooltip='App created by current user' >[{{ app }}]</span>
+                                <span class="table-app-link truncate tooltip" data-tooltip="{{i18n 'DASH_TIP_APP_CREATED_BY_OTHER_USER'}}" >[{{ app }}]</span>
                                 {{/if}}
                                 {{else}}
                                 <span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip='{{ i18n "DASH_TIP_UNMANAGED_RESOURCE" }}' >{{ i18n "DASH_LBL_UNMANAGED" }}</span>
@@ -668,7 +668,7 @@
                         <td><i class="status status-{{ state }} icon-label"></i>{{ state }}</td>
                         <td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleRegionResourceInfo" data-bubble-data='{{{vgw}}}'>{{ vpnGatewayId }}</a></td>
                         <td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleRegionResourceInfo" data-bubble-data='{{{cgw}}}'>{{ customerGatewayId }}</a></td>
-                        <td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="icon-detail modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+                        <td class="table-action"><a href="javascript:void(0)" title="{{i18n 'DASH_TIT_VIEW_RESOURCE_DETAIL'}}" class="icon-detail modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
                     </tr>
                     {{else}}
                     <div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
@@ -716,7 +716,7 @@
                         <td>{{ CreatedTime }}</td>
                         <td>{{ AvailabilityZones.member }}</td>
                         <td>{{ state }}</td>
-                        <td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="icon-detail modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+                        <td class="table-action"><a href="javascript:void(0)" title="{{i18n 'DASH_TIT_VIEW_RESOURCE_DETAIL'}}" class="icon-detail modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
                     </tr>
                     {{else}}
                     <div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
@@ -761,9 +761,9 @@
                             <div>
                                 {{#if app}}
                                 {{#if owner}}
-                                <span class="table-app-link truncate tooltip" id="asg-app-name" data-tooltip="App created by {{ owner }}" >[{{ app }}]</span>
+                                <span class="table-app-link truncate tooltip" id="asg-app-name" data-tooltip="{{i18n 'DASH_TIP_APP_CREATED_BY'}}{{ owner }}" >[{{ app }}]</span>
                                 {{else}}
-                                <span class="table-app-link truncate tooltip" data-tooltip="App created by other user" >[{{ app }}]</span>
+                                <span class="table-app-link truncate tooltip" data-tooltip="{{i18n 'DASH_TIP_APP_CREATED_BY_OTHER_USER'}}" >[{{ app }}]</span>
                                 {{/if}}
                                 {{else}}
                                 <span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip='{{ i18n "DASH_TIP_UNMANAGED_RESOURCE" }}' >[{{ i18n "DASH_LBL_UNMANAGED" }}] </span>
@@ -775,7 +775,7 @@
                         </td>
                         <td>{{last_activity}}</td>
                         <td>{{activity_state}}</td>
-                        <td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="icon-detail modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+                        <td class="table-action"><a href="javascript:void(0)" title="{{i18n 'DASH_TIT_VIEW_RESOURCE_DETAIL'}}" class="icon-detail modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
                     </tr>
                     {{else}}
                     <!-- Blank Slate -->
@@ -825,7 +825,7 @@
                         <td>{{dimension_display}}</td>
                         <td>{{threshold_display}}</td>
                         <td><i class="status {{#if state_ok}}status-green{{/if}} {{#if state_alarm}}status-red{{/if}} {{#if state_insufficient}}status-grey{{/if}} icon-label"></i>{{StateValue}}</td>
-                        <td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="icon-detail modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+                        <td class="table-action"><a href="javascript:void(0)" title="{{i18n 'DASH_TIT_VIEW_RESOURCE_DETAIL'}}" class="icon-detail modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
                     </tr>
                     {{else}}
                     <!-- Blank Slate -->
@@ -871,7 +871,7 @@
                     </td>
                     <td>{{Protocol}}: {{Endpoint}}</td>
                     <td><i class="status {{#if pending_state}}status-red{{else}}status-green{{/if}} icon-label"></i>{{#if pending_state}}{{pending_state}}{{else}}{{success_state}}{{/if}}</td>
-                    <td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="icon-detail modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+                    <td class="table-action"><a href="javascript:void(0)" title="{{i18n 'DASH_TIT_VIEW_RESOURCE_DETAIL'}}" class="icon-detail modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
                 </tr>
                 {{else}}
                 <!-- Blank Slate -->

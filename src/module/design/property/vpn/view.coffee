@@ -102,7 +102,9 @@ define [ '../base/view',
 
                     that.disabledAllOperabilityArea(false)
                     modal.close()
-            null
+            , {
+                $source: $(event.target)
+            }
     }
 
     new VPNView()

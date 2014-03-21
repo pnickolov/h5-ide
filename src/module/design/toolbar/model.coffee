@@ -2,7 +2,7 @@
 #  View Mode for design/toolbar module
 #############################
 
-define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'stack_model', 'app_model', 'constant' ], (ThumbUtil, MC, Backbone, $, _, ide_event, stack_service, stack_model, app_model, constant) ->
+define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'stack_model', 'app_model', 'constant', 'account_model' ], (ThumbUtil, MC, Backbone, $, _, ide_event, stack_service, stack_model, app_model, constant, account_model) ->
 
     AWSRes = constant.AWS_RESOURCE_TYPE
     AwsTypeConvertMap = {}
@@ -49,10 +49,6 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
             # {<stack_name>:<data>}
             'cf_data'       : null
 
-            # when click 'toolbar run stack' button is_run is true
-            # when click run button is_run is false
-            'is_run'        : false
-
         initialize : ->
 
             me = this
@@ -64,36 +60,17 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
                 region  = result.param[3]
                 data    = result.param[4]
                 id      = data.id
-
-                name = data.name
+                name    = data.name
 
                 if !result.is_error
-
                     console.log 'save stack successfully'
 
-                    # track
-                    # analytics.track "Saved Stack",
-                    #     stack_name: data.name,
-                    #     stack_region: data.region,
-                    #     stack_id: data.id
+                    # call saveStackCallback
+                    me.saveStackCallback id, name
 
-                    # local thumbnail
-                    # OPEN_STACK
-                    me.savePNG id
-
-                    #update initial data
-                    _.delay () ->
-                        ide_event.trigger ide_event.UPDATE_STACK_LIST, 'SAVE_STACK', [id]
-                    , 500
-
-                    #set toolbar flag
-                    me.setFlag id, 'SAVE_STACK', name
-
+                    # trigger TOOLBAR_HANDLE_SUCCESS
                     me.trigger 'TOOLBAR_HANDLE_SUCCESS', 'SAVE_STACK', name
 
-                    ide_event.trigger ide_event.UPDATE_STATUS_BAR_SAVE_TIME
-
-                    id
                 else
                     me.trigger 'TOOLBAR_HANDLE_FAILED', 'SAVE_STACK', name
 
@@ -106,44 +83,16 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
                 region  = result.param[3]
                 data    = result.param[4]
                 old_id  = data.id
-
                 name    = data.name
 
                 if !result.is_error
                     console.log 'create stack successfully'
 
-                    new_id = result.resolved_data
-                    #key    = result.resolved_data.key
+                    # call createStackCallback
+                    me.createStackCallback result, old_id, name, region
 
-                    # old design flow
-                    #MC.data.origin_canvas_data = $.extend true, {}, MC.canvas_data
-
-                    # new design flow
-
-                    # set new id and key
-                    MC.common.other.canvasData.set 'id',  new_id
-
-                    # get data
-                    data = MC.common.other.canvasData.data()
-
-                    # set origin
-                    MC.common.other.canvasData.origin data
-
-                    # local thumbnail
-                    # NEW_STACK
-                    me.savePNG new_id, 'new', old_id
-
+                    # push TOOLBAR_HANDLE_SUCCESS
                     me.trigger 'TOOLBAR_HANDLE_SUCCESS', 'CREATE_STACK', name
-                    _.delay () ->
-                        ide_event.trigger ide_event.UPDATE_STACK_LIST, 'NEW_STACK', [new_id]
-                    , 500
-                    ide_event.trigger ide_event.UPDATE_DESIGN_TAB, new_id, name + ' - stack'
-                    ide_event.trigger ide_event.UPDATE_STATUS_BAR_SAVE_TIME
-
-                    MC.data.stack_list[region].push {'id':new_id, 'name':name}
-                    me.setFlag old_id, 'CREATE_STACK', data
-
-                    new_id
 
                 else
                     me.trigger 'TOOLBAR_HANDLE_FAILED', 'CREATE_STACK', name
@@ -351,6 +300,19 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
                 #MC.data.origin_canvas_data = $.extend true, {}, result.param[4]
                 null
 
+            #####listen USER_APPLY__TRIAL_RETURN
+            me.on 'USER_APPLY__TRIAL_RETURN', (result) ->
+                console.log 'USER_APPLY__TRIAL_RETURN', result
+
+                if result and result.return_code is 0
+                    console.log 'apply trial succcess'
+                    MC.common.cookie.setCookieByName 'is_invitated', 1
+                else
+                    console.log 'apply trial succcess'
+                    MC.common.cookie.setCookieByName 'is_invitated', 0
+
+                null
+
             #####listen APP_GETKEY_RETURN
             ###me.on 'APP_GET_KEY_RETURN', (result) ->
                 console.log 'APP_GET_KEY_RETURN'
@@ -374,12 +336,63 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
 
                     null###
 
+        createStackCallback : ( result, old_id, name, region ) ->
+            console.log 'createStackCallback', result, old_id, name, region
+            # get new id
+            new_id = result.resolved_data
+
+            # set new id and key
+            MC.common.other.canvasData.set 'id',  new_id
+
+            # get new data
+            data = MC.common.other.canvasData.data()
+
+            # set origin
+            MC.common.other.canvasData.origin data
+
+            # local thumbnail
+            # NEW_STACK
+            @savePNG new_id, 'new', old_id
+
+            # add stack_list and change toolbar model
+            MC.data.stack_list[ region ].push { 'id' : new_id, 'name' : name }
+            @setFlag old_id, 'CREATE_STACK', data
+
+            # update other module
+            ide_event.trigger ide_event.UPDATE_STACK_LIST, 'NEW_STACK', [new_id]
+            ide_event.trigger ide_event.UPDATE_DESIGN_TAB, new_id, name + ' - stack'
+            ide_event.trigger ide_event.UPDATE_STATUS_BAR_SAVE_TIME
+
+        saveStackCallback : ( id, name ) ->
+            console.log 'createStackCallback', id, name
+
+            # local thumbnail
+            # OPEN_STACK
+            @savePNG id
+
+            #update initial data
+            ide_event.trigger ide_event.UPDATE_STACK_LIST, 'SAVE_STACK', [id]
+
+            #set toolbar flag
+            @setFlag id, 'SAVE_STACK', name
+
+            # push event
+            ide_event.trigger ide_event.UPDATE_STATUS_BAR_SAVE_TIME
+
         setFlag : (id, flag, value) ->
             me = this
 
             # new design flow
             name  = MC.common.other.canvasData.get 'name'
             state = MC.common.other.canvasData.get 'state'
+
+            # reset id
+            if id and _.isObject( id ) and flag is 'OPEN_STACK'
+                id = id.resolved_data[0].id
+
+            # reset flag( e.g. import JSON )
+            if id and id.split and id.split( '-' )[0] is 'new' and flag is 'OPEN_STACK'
+                flag = 'NEW_STACK'
 
             if flag is 'NEW_STACK'
 
@@ -392,7 +405,7 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
                 is_tab = true
 
             else if flag is 'OPEN_STACK'
-                id = id.resolved_data[0].id
+
 
                 # old design flow
                 #item_state_map[id] = {'name':MC.canvas_data.name, 'is_run':true, 'is_duplicate':true, 'is_delete':true, 'is_zoomin':false, 'is_zoomout':true}
@@ -582,6 +595,63 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
 
                 # call api
                 stack_model.create { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, data
+
+        syncSaveStack : ( region, data ) ->
+            console.log 'syncSaveStack', region, data
+
+            me         = this
+            src        = {}
+            src.sender = this
+            src.model  = null
+            id         = MC.common.other.canvasData.get( 'id' )
+
+            if id and _.isArray id.split( '-' )
+
+                # save api
+                if id.split( '-' )[0] is 'stack'
+
+                    func = stack_service.save
+
+                # create api
+                else if id.split( '-' )[0] is 'new'
+
+                    # add current canvas and svg to cacheThumb
+                    MC.common.other.addCacheThumb id, $("#canvas_body").html(), $("#svg_canvas")[0].getBBox()
+
+                    func = stack_service.create
+
+                if _.isFunction func
+
+                    func src, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, data, ( aws_result ) ->
+
+                        if !aws_result.is_error
+                            console.log 'stack_service api'
+
+                            region  = aws_result.param[3]
+                            data    = aws_result.param[4]
+                            id      = data.id
+                            name    = data.name
+
+                            # save api
+                            if id.split( '-' )[0] is 'stack'
+
+                                # call saveStackCallback
+                                me.saveStackCallback id, name
+
+                                # trigger TOOLBAR_HANDLE_SUCCESS
+                                me.trigger 'TOOLBAR_HANDLE_SUCCESS', 'SAVE_STACK_BY_RUN', name
+
+                            # create api
+                            else if id.split( '-' )[0] is 'new'
+
+                                # call createStackCallback
+                                me.createStackCallback aws_result, id, name, region
+
+                                # trigger TOOLBAR_HANDLE_SUCCESS
+                                me.trigger 'TOOLBAR_HANDLE_SUCCESS', 'SAVE_STACK_BY_RUN', name
+
+                        else
+                            console.log 'stack_service.save_stack, error is ' + aws_result.error_message
 
         #duplicate
         duplicateStack : (region, id, new_name, name) ->
@@ -1088,23 +1158,6 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
 
         isInstanceStore : () -> !Design.instance().isStoppable()
 
-        #saveAppThumbnail  :   (flag, region, app_name, app_id) ->
-        #    me = this
-        #
-        #    idx = 'process-' + region + '-' + app_name
-        #    if idx of process_data_map
-        #        data = $.extend(true, {}, process_data_map[idx])
-        #
-        #        if data
-        #            if flag is 'RUN_STACK'
-        #                # generate s3 key
-        #                app_model.getKey { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, app_id, app_name
-        #
-        #            else
-        #                me.savePNG app_id
-        #
-        #    null
-
         convertCloudformation : () ->
             me = this
 
@@ -1205,6 +1258,10 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
               null
 
           MC.aws.aws.enableStackAgent(isEnable)
+
+        getApplayTrial : ( value ) ->
+            console.log 'getApplayTrial', value
+            account_model.apply_trial { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), value
     }
 
     model = new ToolbarModel()

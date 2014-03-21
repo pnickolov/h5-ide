@@ -3,10 +3,11 @@
 #############################
 
 define [ 'event',
-         'text!./reconnect_template.html'
+         'i18n!nls/lang.js',
+         'text!./reconnect_template.html',
          'backbone', 'jquery', 'handlebars',
          'UI.modal'
-], ( ide_event, reconnect_template ) ->
+], ( ide_event, lang, reconnect_template ) ->
 
     ReConnectView = Backbone.View.extend {
 
@@ -46,7 +47,7 @@ define [ 'event',
 
         invalid            : () ->
             console.log 'invalid'
-            notification 'error', 'Authentication failed.'
+            notification 'error', lang.ide.NOTIFY_MSG_WARN_AUTH_FAILED
             $( '#reconnect-ok' ).prop 'disabled', false
 
             $( '#input-demo' )

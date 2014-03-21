@@ -4,8 +4,9 @@
 
 define [ '../base/view',
          'text!./template/stack.html',
-         'event'
-], ( PropertyView, template, ide_event ) ->
+         'event',
+         'i18n!nls/lang.js'
+], ( PropertyView, template, ide_event, lang ) ->
 
     template = Handlebars.compile template
 
@@ -29,15 +30,15 @@ define [ '../base/view',
             $( '#volume-size-ranged' ).parsley 'custom', ( val ) ->
                 val = + val
                 if not val || val > 1024 || val < 1
-                    return "Volume size must in the range of 1-1024 GB."
+                    return lang.ide.PARSLEY_VOLUME_SIZE_MUST_IN_1_1024
 
             $( '#iops-ranged' ).parsley 'custom', ( val ) ->
                 val = + val
                 volume_size = parseInt( $( '#volume-size-ranged' ).val(), 10 )
                 if val > 4000 || val < 100
-                    return 'IOPS must be between 100 and 4000'
+                    return lang.ide.PARSLEY_IOPS_MUST_BETWEEN_100_4000
                 else if( val > 10 * volume_size)
-                    return 'IOPS must be less than 10 times of volume size.'
+                    return lang.ide.PARSLEY_IOPS_MUST_BE_LESS_THAN_10_TIMES_OF_VOLUME_SIZE
             #
 
             @model.attributes.volume_detail.name
@@ -63,12 +64,12 @@ define [ '../base/view',
             target.parsley 'custom', ( val ) ->
                 if not MC.validate.deviceName val, type, true
                     if type is 'linux'
-                        return "Device name must be like /dev/hd[a-z], /dev/hd[a-z][1-15],/dev/sd[a-z] or /dev/sd[b-z][1-15]"
+                        return lang.ide.PARSLEY_DEVICENAME_LINUX
                     else
-                        return "Device name must be like xvd[a-p]."
+                        return lang.ide.PARSLEY_DEVICENAME_WINDOWS
 
                 if self.model.isDuplicate val
-                    "Volume name '#{val}' is already in using. Please use another one."
+                    sprintf lang.ide.PARSLEY_VOLUME_NAME_INUSE, val
 
             if target.parsley 'validate'
                 @model.setDeviceName name

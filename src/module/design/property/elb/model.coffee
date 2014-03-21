@@ -66,6 +66,19 @@ define [ '../base/model', "event", "Design", 'constant' ], ( PropertyModel, ide_
 
                 attr.azArray = azArr
 
+            # Get SSL Cert List
+            currentSSLCert = component.connectionTargets("SslCertUsage")[0]
+            allCertModelAry = Design.modelClassForType(constant.AWS_RESOURCE_TYPE.AWS_IAM_ServerCertificate).allObjects()
+
+            attr.noSSLCert = true
+            attr.sslCertItem = _.map allCertModelAry, (sslCertModel) ->
+                if currentSSLCert is sslCertModel then attr.noSSLCert = false
+
+                {
+                    uid: sslCertModel.id,
+                    name: sslCertModel.get('name'),
+                    selected: currentSSLCert is sslCertModel
+                }
             @set attr
             null
 
@@ -137,12 +150,47 @@ define [ '../base/model', "event", "Design", 'constant' ], ( PropertyModel, ide_
             null
 
         setCert : ( value )->
-            Design.instance().component( @get("uid") ).setSslCert( value )
+            Design.instance().component( @get("uid") ).connectionTargets("SslCertUsage")[0].set( value )
+            null
+
+        addCert : ( value )->
+            SslCertModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_IAM_ServerCertificate )
+            (new SslCertModel( value )).assignTo( Design.instance().component( @get("uid") ) )
+            null
+
+        removeCert : ( value ) ->
+            Design.instance().component( value ).remove()
             null
 
         updateElbAZ : ( azArray )->
             Design.instance().component( @get("uid") ).set("AvailabilityZones", azArray )
             null
+
+        changeCert : ( certUID ) ->
+            design = Design.instance()
+            if certUID
+                design.component( certUID ).assignTo( design.component( @get("uid") ) )
+            else
+                for cn in design.component( @get("uid") ).connections("SslCertUsage")
+                    cn.remove()
+            null
+
+        updateCert : (certUID, certObj) ->
+            Design.instance().component( certUID ).updateValue( certObj )
+            null
+        
+        getOtherCertName : (currentName) ->
+
+            allCertModelAry = Design.modelClassForType(constant.AWS_RESOURCE_TYPE.AWS_IAM_ServerCertificate).allObjects()
+            
+            otherCertNameAry = []
+            _.each allCertModelAry, (sslCertModel) ->
+                sslCertName = sslCertModel.get('name')
+                if currentName isnt sslCertName
+                    otherCertNameAry.push(sslCertName)
+
+            return otherCertNameAry
+
     }
 
     new ElbModel()

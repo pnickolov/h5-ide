@@ -19,24 +19,23 @@ define [ 'jquery',
             view.render()
 
             #listen OPEN_DESIGN
-            ide_event.onLongListen ide_event.OPEN_SUB_DESIGN, ( region_name, type, current_platform, tab_name, tab_id ) ->
-                console.log 'toolbar:OPEN_SUB_DESIGN, region_name = ' + region_name + ', type = ' + type
-                #
-                model.setFlag tab_id, type
-                #
-                # MC.ta.validAll() if type is 'OPEN_STACK'
+            ide_event.onLongListen ide_event.OPEN_DESIGN, ( region_name, type, current_platform, tab_name, tab_id ) ->
+                console.log 'toolbar:OPEN_DESIGN', tab_id, type
+                view.render type, 0
+                null
 
-            ###
-            #listen OPEN_TOOLBAR
-            ide_event.onLongListen ide_event.OPEN_TOOLBAR, ( tab_id, type ) ->
-                console.log 'toolbar:OPEN_TOOLBAR, tab_id = ' + tab_id + ', type = ' + type
-                console.log MC.canvas_data
-            ###
+            #listen OPEN_SUB_DESIGN
+            # when NEW_STACK tab_id is string( tab id )
+            # when OPEN_STACK tab_id is Object( id.resolved_data[0].id )
+            ide_event.onLongListen ide_event.OPEN_SUB_DESIGN, ( region_name, type, current_platform, tab_name, tab_id ) ->
+                console.log 'toolbar:OPEN_SUB_DESIGN', tab_id, type
+                model.setFlag tab_id, type
+                null
 
             #listen toolbar state change
             model.on 'UPDATE_TOOLBAR', (type) ->
                 console.log 'update toolbar status'
-                view.render type
+                view.render type, 1
 
             ide_event.onLongListen ide_event.SWITCH_DASHBOARD, () ->
                 console.log 'toolbar:SWITCH_DASHBOARD'
@@ -120,6 +119,9 @@ define [ 'jquery',
                 else
                     console.log 'current is not object, data is ' + data
 
+            view.on 'APPLAY_TRIAL', ( value ) ->
+                model.getApplayTrial value
+
             # model.on 'CONVERT_CLOUDFORMATION_COMPLETE', ( cf_json ) ->
             #     view.saveCloudFormation cf_json
 
@@ -169,45 +171,41 @@ define [ 'jquery',
                 console.log 'TOOLBAR_HANDLE_SUCCESS', flag, value
                 if flag
                     if modal and modal.isPopup()
-                        if (flag is "SAVE_STACK" or flag is "CREATE_STACK")
 
-                            # run stack
-                            if model.get( 'is_run' )
+                        #if (flag is "SAVE_STACK" or flag is "CREATE_STACK")
+                        if flag is 'SAVE_STACK_BY_RUN'
 
-                                # get MC.canvas_data
-                                data      = MC.common.other.canvasData.data()
+                            # get MC.canvas_data
+                            data      = MC.common.other.canvasData.data()
 
-                                # set app name
-                                app_name  = $('.modal-input-value').val()
-                                data.name = app_name
+                            # set app name
+                            app_name  = $('.modal-input-value').val()
+                            data.name = app_name
 
-                                # set usage
-                                data.usage = 'others'
-                                usage = $('#app-usage-selectbox .selected').data 'value'
-                                if usage
-                                    data.usage = usage
+                            # set usage
+                            data.usage = 'others'
+                            usage = $('#app-usage-selectbox .selected').data 'value'
+                            if usage
+                                data.usage = usage
 
-                                # call api
-                                model.runStack data
+                            # call api
+                            model.runStack data
 
-                                # update MC.data.app_list
-                                region = MC.common.other.canvasData.get 'region'
-                                MC.data.app_list[ region ].push app_name
+                            # update MC.data.app_list
+                            region = MC.common.other.canvasData.get 'region'
+                            MC.data.app_list[ region ].push app_name
 
-                                # close run stack dialog
-                                modal.close()
-
-                                # set is_run is true
-                                model.set 'is_run', true
-
-                            # start to export cf
-                            else if $('#modal-export-cf')[0] isnt undefined
-                                # convert cf
-                                model.convertCloudformation()
+                            # close run stack dialog
+                            modal.close()
 
                         else if flag is "EXPORT_CLOUDFORMATION"
                             #download
                             view.saveCloudFormation value
+
+                        # start to export cf
+                        else if $('#modal-export-cf')[0] isnt undefined
+                            # convert cf
+                            model.convertCloudformation()
 
                     str_idx = 'TOOLBAR_HANDLE_' + flag
                     if str_idx of lang.ide

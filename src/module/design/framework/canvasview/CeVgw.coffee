@@ -54,11 +54,13 @@ define [ "./CanvasElement", "constant" ], ( CanvasElement, constant )->
       @getLayer("node_layer").append node
       @initNode node, m.x(), m.y()
 
-    # Update Resource State in app view
-    @updateAppState()
 
-    # Update xGW Resource State
+    # Update Resource State in app view
+    #@updateAppState()
+
+    # Update xGW Resource Attachment State in app view
     @updatexGWAppState()
+
 
     null
 

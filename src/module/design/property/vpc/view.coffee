@@ -92,7 +92,7 @@ define [ '../base/view',
             if target.parsley 'validate'
                 if not @model.setCidr cidr
                     target.val( @model.get("cidr") )
-                    notification "Cannot auto-assign cidr for subnets, please manually update subnets' cidr before changing vpc's cidr."
+                    notification lang.ide.NOTIFY_MSG_WARN_CANNT_AUTO_ASSIGN_CIDR_FOR_SUBNET
             null
 
         onChangeTenancy : ( event, newValue ) ->

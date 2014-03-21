@@ -1,5 +1,5 @@
 
-define [ "./CanvasElement", "constant", "CanvasManager", "event" ], ( CanvasElement, constant, CanvasManager, ide_event )->
+define [ "i18n!nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "event" ], ( lang, CanvasElement, constant, CanvasManager, ide_event )->
 
   CeVolume = ( component )->
     if _.isString( component )
@@ -25,7 +25,7 @@ define [ "./CanvasElement", "constant", "CanvasManager", "event" ], ( CanvasElem
     #
     if @model.design().modeIsAppEdit()
       if (@model.get("owner") || {}).type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
-        notification "error", "This operation is not supported yet."
+        notification "error", lang.ide.NOTIFY_MSG_WARN_OPERATE_NOT_SUPPORT_YET
         return false
     #
     # #

@@ -1,5 +1,6 @@
-define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
+define [ 'constant', 'MC', 'Design', 'validation_helper' ], ( constant, MC, Design, Helper ) ->
 
+	i18n = Helper.i18n.short()
 	isEBSOptimizedForAttachedProvisionedVolume = (instanceUID) ->
 
 		instanceComp = MC.canvas_data.component[instanceUID]
@@ -29,7 +30,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 			return null
 		else
 			instanceName = instanceComp.name
-			tipInfo = sprintf lang.ide.TA_MSG_NOTICE_INSTANCE_NOT_EBS_OPTIMIZED_FOR_ATTACHED_PROVISIONED_VOLUME, instanceName
+			tipInfo = sprintf i18n.TA_MSG_NOTICE_INSTANCE_NOT_EBS_OPTIMIZED_FOR_ATTACHED_PROVISIONED_VOLUME, instanceName
 			# return
 			level: constant.TA.NOTICE
 			info: tipInfo
@@ -90,7 +91,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 
 			if totalSGRuleNum > 50
 				instanceName = instanceComp.name
-				tipInfo = sprintf lang.ide.TA_MSG_WARNING_INSTANCE_SG_RULE_EXCEED_FIT_NUM, instanceName, 50
+				tipInfo = sprintf i18n.TA_MSG_WARNING_INSTANCE_SG_RULE_EXCEED_FIT_NUM, instanceName, 50
 				return {
 					level: constant.TA.WARNING,
 					info: tipInfo,
@@ -118,7 +119,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 
 			if totalSGRuleNum > 100
 				instanceName = instanceComp.name
-				tipInfo = sprintf lang.ide.TA_MSG_WARNING_INSTANCE_SG_RULE_EXCEED_FIT_NUM, instanceName, 100
+				tipInfo = sprintf i18n.TA_MSG_WARNING_INSTANCE_SG_RULE_EXCEED_FIT_NUM, instanceName, 100
 				return {
 					level: constant.TA.WARNING,
 					info: tipInfo,
@@ -148,7 +149,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
        		return null
 
 
-        tipInfo = sprintf lang.ide.TA_MSG_NOTICE_INSTANCE_HAS_RTB_NO_ELB, RTB.name, instance.name, instance.name
+        tipInfo = sprintf i18n.TA_MSG_NOTICE_INSTANCE_HAS_RTB_NO_ELB, RTB.name, instance.name, instance.name
 
         # return
         level   : constant.TA.NOTICE
@@ -156,8 +157,24 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
         uid     : uid
 
 
+	isNatCheckedSourceDest = ( uid ) ->
+		instance = Design.instance().component uid
+		connectedRt = instance.connectionTargets 'RTB_Route'
+		if connectedRt and connectedRt.length
+			enis = instance.connectionTargets('EniAttachment')
+			enis.push instance.getEmbedEni()
+			hasUncheck = _.some enis, ( eni ) ->
+				not eni.get 'sourceDestCheck'
+			if not hasUncheck
+				return Helper.message.error uid, i18n.TA_MSG_ERROR_INSTANCE_NAT_CHECKED_SOURCE_DEST, instance.get 'name'
+			null
+
+		null
+
+
 	isEBSOptimizedForAttachedProvisionedVolume 	: isEBSOptimizedForAttachedProvisionedVolume
 	isAssociatedSGRuleExceedFitNum 				: isAssociatedSGRuleExceedFitNum
 	isConnectRoutTableButNoEIP				 	: isConnectRoutTableButNoEIP
+	isNatCheckedSourceDest						: isNatCheckedSourceDest
 
 

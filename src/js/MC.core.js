@@ -537,13 +537,11 @@ var MC = {
 
 var storage = function( instance ) {
 	return {
-		set: function (name, value)
-		{
+		  set: function (name, value) {
 			instance[name] = typeof value === 'object' ? JSON.stringify(value) : value;
-		},
+		}
 
-		get: function (name)
-		{
+		, get: function (name) {
 			var data = instance[name];
 
 			if (MC.isJSON(data))
@@ -552,13 +550,16 @@ var storage = function( instance ) {
 			}
 
 			return data || '';
-		},
+		}
 
-		remove: function (name)
-		{
+		, remove: function (name) {
 			instance.removeItem(name);
 
 			return true;
+		}
+
+		, clear: function() {
+			instance.clear();
 		}
 	}
 }

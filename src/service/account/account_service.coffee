@@ -287,6 +287,63 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 
     # end of parserResetKeyReturn
 
+    #///////////////// Parser for is_invitated return (need resolve) /////////////////
+    #private (resolve result to vo )
+    resolveIsInvitatedResult = ( result ) ->
+        #resolve result
+        #TO-DO
+
+        #return vo
+        #TO-DO
+
+    #private (parser is_invitated return)
+    parserIsInvitatedReturn = ( result, return_code, param ) ->
+
+        #1.resolve return_code
+        forge_result = result_vo.processForgeReturnHandler result, return_code, param
+
+        #2.resolve return_data when return_code is E_OK
+        if return_code == constant.RETURN_CODE.E_OK && !forge_result.is_error
+
+            resolved_data = resolveIsInvitatedResult result
+
+            forge_result.resolved_data = resolved_data
+
+
+        #3.return vo
+        forge_result
+
+    # end of parserIsInvitatedReturn
+
+
+    #///////////////// Parser for apply_trial return (need resolve) /////////////////
+    #private (resolve result to vo )
+    resolveApplyTrialResult = ( result ) ->
+        #resolve result
+        #TO-DO
+
+        #return vo
+        #TO-DO
+
+    #private (parser apply_trial return)
+    parserApplyTrialReturn = ( result, return_code, param ) ->
+
+        #1.resolve return_code
+        forge_result = result_vo.processForgeReturnHandler result, return_code, param
+
+        #2.resolve return_data when return_code is E_OK
+        if return_code == constant.RETURN_CODE.E_OK && !forge_result.is_error
+
+            resolved_data = resolveApplyTrialResult result
+
+            forge_result.resolved_data = resolved_data
+
+
+        #3.return vo
+        forge_result
+
+    # end of parserApplyTrialReturn
+
 
     #def register(self, username, password, email):
     register = ( src, username, password, email, callback ) ->
@@ -323,6 +380,15 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
         send_request "reset_key", src, [ username, session_id, flag ], parserResetKeyReturn, callback
         true
 
+    #def is_invitated(self, username, session_id):
+    is_invitated = ( src, username, session_id, callback ) ->
+        send_request "is_invitated", src, [ username, session_id ], parserIsInvitatedReturn, callback
+        true
+
+    #def apply_trial(self, username, session_id, message=None):
+    apply_trial = ( src, username, session_id, message=null, callback ) ->
+        send_request "apply_trial", src, [ username, session_id, message ], parserApplyTrialReturn, callback
+        true
 
     #############################################################
     #public
@@ -333,4 +399,5 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
     check_repeat                 : check_repeat
     check_validation             : check_validation
     reset_key                    : reset_key
-
+    is_invitated                 : is_invitated
+    apply_trial                  : apply_trial

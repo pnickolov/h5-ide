@@ -36,12 +36,87 @@ define [ '../base/view',
             'click #property-network-list .icon-remove' : "removeIp"
             'change .input-ip'                          : 'syncIPList'
 
+            'click #volume-type-radios input' : 'changeVolumeType'
+            'keyup #iops-ranged'              : 'changeIops'
+            'keyup #volume-size-ranged'       : 'sizeChanged'
+
+        changeVolumeType : ( event ) ->
+            $this = $( event.currentTarget )
+            if $this.is(":disabled") then return
+
+            $("#iops-group").toggle( $this.attr("id") is "radio-iops" )
+
+            if $this.attr("id") is "radio-iops"
+                # Init iops
+                volumeSize = parseInt $( '#volume-size-ranged' ).val(), 10
+                iops = volumeSize * 10
+                $("#iops-ranged").val( iops ).keyup()
+            else
+                # Reset standard
+                @model.setIops("")
+                $("#iops-ranged").val("")
+
+        changeIops : ()->
+            if $( '#iops-ranged' ).parsley( 'validate' )
+                @model.setIops( $( '#iops-ranged' ).val() )
+            null
+
+        sizeChanged : ( event ) ->
+            if not $( '#volume-size-ranged' ).parsley( 'validate' )
+                return
+
+            volumeSize = parseInt $( '#volume-size-ranged' ).val(), 10
+
+            @model.setVolumeSize( volumeSize )
+
+            if volumeSize < 10
+                @model.setIops("")
+                iopsDisabled = true
+
+            # Toggle IOPS input
+            $iops = $( '#volume-type-radios' ).children("div").last()
+                .toggleClass("tooltip", iopsDisabled)
+                .find( 'input' )
+
+            if iopsDisabled
+                $iops.attr("disabled", "disabled")
+                $("#radio-standard").click()
+                $("#iops-group").hide()
+            else
+                $iops.removeAttr( 'disabled' )
+
+
+            # Adjust IOPS if it exceed limits
+            iops = parseInt( $("#iops-ranged").val(), 10 ) || 0
+            if iops
+                if iops > volumeSize * 10
+                    iops = volumeSize * 10
+                    $("#iops-ranged").val( iops )
+                $("#iops-ranged").keyup()
+            null
 
         render : () ->
             @$el.html template @model.attributes
 
             if not Design.instance().typeIsClassic()
                 @refreshIPList()
+
+            me = this
+            # parsley bind
+            $( '#volume-size-ranged' ).parsley 'custom', ( val ) ->
+                val = + val
+                if not val || val > 1024 || val < me.model.attributes.min_volume_size
+                    return sprintf lang.ide.PARSLEY_VOLUME_SIZE_OF_ROOTDEVICE_MUST_IN_RANGE, me.model.attributes.min_volume_size
+
+            $( '#iops-ranged' ).parsley 'custom', ( val ) ->
+                val = + val
+                volume_size = parseInt( $( '#volume-size-ranged' ).val(), 10 )
+                if val > 4000 || val < 100
+                    return lang.ide.PARSLEY_IOPS_MUST_BETWEEN_100_4000
+                else if( val > 10 * volume_size)
+                    return lang.ide.PARSLEY_IOPS_MUST_BE_LESS_THAN_10_TIMES_OF_VOLUME_SIZE
+
+            #
 
             # currentStateData = @model.getStateData()
 
@@ -68,7 +143,7 @@ define [ '../base/view',
 
             target.parsley 'custom', ( val ) ->
                 if isNaN( val ) or val > 99 or val < 1
-                    return 'This value must be >= 1 and <= 99'
+                    return lang.ide.PARSLEY_THIS_VALUE_MUST_BETWEEN_1_99
 
             if target.parsley 'validate'
 
@@ -159,7 +234,7 @@ define [ '../base/view',
             event.id = id
 
             if not id
-                notification "error", "KeyPair with the same name already exists."
+                notification "error", lang.ide.NOTIFY_MSG_WARN_KEYPAIR_NAME_ALREADY_EXISTS
                 return id
 
         updateKPSelect : () ->

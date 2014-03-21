@@ -1,4 +1,7 @@
 {
+DisplayStrings = (
+/newGlyph
+);
 copyright = MedeiraCloud;
 date = "2013-08-14 04:12:41 +0000";
 familyName = "MadeiraIcon";
@@ -5179,6 +5182,17 @@ width = 960;
 }
 );
 unicode = F14F;
+},
+{
+glyphname = newGlyph;
+lastChange = "2014-03-12 14:34:16 +0800";
+layers = (
+{
+layerId = "EAE21ECE-B6C3-4A45-AE76-37E4E2404B22";
+name = Regular;
+width = 960;
+}
+);
 }
 );
 gridLength = 60;

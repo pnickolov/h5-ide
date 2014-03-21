@@ -47,7 +47,7 @@
     <section class="property-control-group clearfix">
       <label class="left" for="property-cidr-block">{{ i18n "PROP_VPC_DETAIL_LBL_CIDR_BLOCK" }}</label>
       <span class="required-input right">{{ i18n "PROP_LBL_REQUIRED" }}</span>
-      <input class="input cidr-block tooltip" type="text" value="{{cidr}}" id="property-cidr-block" data-tooltip="e.g. 10.0.0.0/16" maxlength="255" data-ignore="true" data-required-rollback="true" data-trigger="change" data-type="awsCidr"/>
+      <input class="input cidr-block tooltip" type="text" value="{{cidr}}" id="property-cidr-block" data-tooltip="{{i18n 'PROP_VPC_TIP_EG_10_0_0_0_16'}}" maxlength="255" data-ignore="true" data-required-rollback="true" data-trigger="change" data-type="awsCidr"/>
     </section>
 
     <section class="property-control-group">
@@ -124,7 +124,7 @@
     <section id="property-dhcp-options" data-bind="true" class="property-control-group-sub {{#unless dhcp.hasDhcp}}hide{{/unless}}">
       <div class="property-control-group">
         <label class="left" for="property-dhcp-domain">{{ i18n "PROP_VPC_DHCP_SPECIFIED_LBL_DOMAIN_NAME" }}</label>
-        <input class="input tooltip" type="text" value="{{dhcp.domainName}}" data-tooltip="Enter the domain name that should be used for your hosts" id="property-dhcp-domain" maxlength="255" data-type="domain" data-ignore="true"/>
+        <input class="input tooltip" type="text" value="{{dhcp.domainName}}" data-tooltip="{{i18n 'PROP_VPC_TIP_ENTER_THE_DOMAIN_NAME'}}" id="property-dhcp-domain" maxlength="255" data-type="domain" data-ignore="true"/>
       </div>
 
       <div class="property-control-group">
@@ -141,12 +141,12 @@
           {{#each dhcp.domainServers}}
           <div class="multi-ipt-row">
             <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
-            <span class="ipt-wrapper"><input class="input tooltip" data-tooltip="Enter up to 4 DNS server IP addresses" value="{{this}}" type="text" maxlength="255" placeholder="e.g. 172.16.16.16" data-type="ipv4" data-ignore="true"></span>
+            <span class="ipt-wrapper"><input class="input tooltip" data-tooltip="{{i18n 'PROP_VPC_TIP_ENTER_UP_TO_4_DNS'}}" value="{{this}}" type="text" maxlength="255" placeholder="{{i18n 'PROP_VPC_TIP_EG_172_16_16_16'}}" data-type="ipv4" data-ignore="true"></span>
           </div>
           {{else}}
           <div class="multi-ipt-row">
             <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
-            <span class="ipt-wrapper"><input class="input tooltip" data-tooltip="Enter up to 4 DNS server IP addresses"  placeholder="e.g. 172.16.16.16" type="text" maxlength="255" data-type="ipv4" data-ignore="true"></span>
+            <span class="ipt-wrapper"><input class="input tooltip" data-tooltip="{{i18n 'PROP_VPC_TIP_ENTER_UP_TO_4_DNS'}}"  placeholder="{{i18n 'PROP_VPC_TIP_EG_172_16_16_16'}}" type="text" maxlength="255" data-type="ipv4" data-ignore="true"></span>
           </div>
           {{/each}}
         </div>
@@ -158,12 +158,12 @@
           {{#each dhcp.ntpServers}}
           <div class="multi-ipt-row">
             <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
-            <span class="ipt-wrapper"><input class="input tooltip" data-tooltip="Enter up to 4 NTP server IP addresses" value="{{this}}" type="text" maxlength="255" data-type="ipv4" data-ignore="true"></span>
+            <span class="ipt-wrapper"><input class="input tooltip" data-tooltip="{{i18n 'PROP_VPC_TIP_ENTER_UP_TO_4_NTP'}}" value="{{this}}" type="text" maxlength="255" data-type="ipv4" data-ignore="true"></span>
           </div>
           {{else}}
           <div class="multi-ipt-row">
             <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
-            <span class="ipt-wrapper"><input class="input tooltip" data-tooltip="Enter up to 4 NTP server IP addresses" type="text" maxlength="255" data-type="ipv4" data-ignore="true"></span>
+            <span class="ipt-wrapper"><input class="input tooltip" data-tooltip="{{i18n 'PROP_VPC_TIP_ENTER_UP_TO_4_NTP'}}" type="text" maxlength="255" data-type="ipv4" data-ignore="true"></span>
           </div>
           {{/each}}
         </div>
@@ -175,12 +175,12 @@
           {{#each dhcp.netbiosServers}}
           <div class="multi-ipt-row">
             <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
-            <span class="ipt-wrapper"><input class="input tooltip" data-tooltip="Enter up to 4 NetBIOS server IP addresses" value="{{this}}" type="text" maxlength="255" data-type="ipv4" data-ignore="true"></span>
+            <span class="ipt-wrapper"><input class="input tooltip" data-tooltip="{{i18n 'PROP_VPC_TIP_ENTER_UP_TO_4_NETBIOS'}}" value="{{this}}" type="text" maxlength="255" data-type="ipv4" data-ignore="true"></span>
           </div>
           {{else}}
           <div class="multi-ipt-row">
             <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
-            <span class="ipt-wrapper"><input class="input tooltip" data-tooltip="Enter up to 4 NetBIOS server IP addresses" type="text" maxlength="255" data-type="ipv4" data-ignore="true"></span>
+            <span class="ipt-wrapper"><input class="input tooltip" data-tooltip="{{i18n 'PROP_VPC_TIP_ENTER_UP_TO_4_NETBIOS'}}" type="text" maxlength="255" data-type="ipv4" data-ignore="true"></span>
           </div>
           {{/each}}
         </div>
@@ -189,7 +189,7 @@
       <div class="property-control-group">
         <label>{{ i18n "PROP_VPC_DHCP_SPECIFIED_LBL_NETBIOS_NODE_TYPE" }}</label>
         <div class="selectbox selectbox-mega" id="property-netbios-type">
-          <div class="selection tooltip" data-tooltip="Select NetBIOS Node Type. We recommend 2. (Broadcast and multicast are currently not supported by AWS.)">{{#unless dhcp.netbiosType}}{{{ i18n "PROP_VPC_DHCP_SPECIFIED_LBL_NETBIOS_NODE_TYPE_NOT_SPECIFIED" }}}{{/unless}}</div>
+          <div class="selection tooltip" data-tooltip="{{i18n 'PROP_VPC_TIP_SELECT_NETBIOS_NODE'}}">{{#unless dhcp.netbiosType}}{{{ i18n "PROP_VPC_DHCP_SPECIFIED_LBL_NETBIOS_NODE_TYPE_NOT_SPECIFIED" }}}{{/unless}}</div>
           <ul class="dropdown" tabindex="-1">
             {{#each dhcp.netbiosTypes}}
             <li class="item{{#if selected}} selected{{/if}}" data-id="{{id}}">{{value}}</li>

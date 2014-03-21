@@ -409,6 +409,24 @@ define [ 'MC', 'common_handle', 'result_vo', 'constant', 'ebs_service', 'eip_ser
 							# app_json.layout.component.group[c.uid] = layout
 
 					else
+						# add keypair
+						if resource_type is 'DescribeInstances'
+
+							keypair_name = []
+
+							for comp in resource_comp
+
+								if comp.keyName not in keypair_name
+									keypair_name.push comp.keyName
+									key_obj = {}
+									key_obj.keyName = comp.keyName
+									key_obj.keyFingerprint = 'resource_import'
+									c = vpc_resource_map["DescribeKeyPairs"] key_obj
+
+									if c
+
+										app_json.component[c.uid] = c
+
 						if resource_type is "DescribeVpcs"
 
 							vpc_id = resource_comp[0].vpcId
@@ -736,7 +754,7 @@ define [ 'MC', 'common_handle', 'result_vo', 'constant', 'ebs_service', 'eip_ser
 	#///////////////// Parser for property return (need resolve) /////////////////
 	#private (resolve result to vo )
 	resolvePropertyResult = ( result ) ->
-		
+
 		return result
 
 	#private (parser property return)

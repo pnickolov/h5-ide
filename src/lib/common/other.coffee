@@ -14,10 +14,15 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 			console.log 'canvasData:initSet', key, value
 			MC.canvas_data[ key ] = value
 
+		# is_origin include bool and string
 		data : ( is_origin = false ) ->
-			console.log 'canvasData:data', is_origin
+			#console.log 'canvasData:data', is_origin
 
-			if is_origin
+			if _.isString( is_origin ) and is_origin is 'origin'
+
+				data = MC.canvas_data
+
+			else if is_origin
 
 				# old design flow
 				data = $.extend true, {}, MC.canvas_data

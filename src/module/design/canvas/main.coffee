@@ -14,11 +14,11 @@ define [ 'event', 'i18n!nls/lang.js', 'constant' ], ( ide_event, lang, constant 
             view = new View()
             view.render()
 
-            #listen OPEN_DESIGN
+            #listen CREATE_DESIGN_OBJ
             # when 'NEW_STACK' result is tab_id
             # when Tabbar.current is 'appview' result is result
-            ide_event.onLongListen ide_event.OPEN_DESIGN_0, ( region_name, type, current_platform, tab_name, result ) ->
-                console.log 'canvas:OPEN_DESIGN', region_name, type, current_platform, tab_name, result
+            ide_event.onLongListen ide_event.CREATE_DESIGN_OBJ, ( region_name, type, current_platform, tab_name, result ) ->
+                console.log 'canvas:CREATE_DESIGN_OBJ', region_name, type, current_platform, tab_name, result
 
                 #check re-render
                 view.reRender()
@@ -33,27 +33,27 @@ define [ 'event', 'i18n!nls/lang.js', 'constant' ], ( ide_event, lang, constant 
                 #### added by song, if the stack/app too old, unable to open ###
 
                 # new stack
-                if type is 'NEW_STACK'
-
-                    # create MC.canvas_data
-                    MC.common.other.canvasData.initSet 'id'       , result
-                    MC.common.other.canvasData.initSet 'name'     , tab_name
-                    MC.common.other.canvasData.initSet 'region'   , region_name
-                    MC.common.other.canvasData.initSet 'platform' , current_platform
-                    MC.common.other.canvasData.initSet 'version'  , '2014-02-17'
-
-                    # platform is classic
-                    if current_platform is Design.TYPE.Classic or current_platform is Design.TYPE.DefaultVpc
-                        component = $.extend true, {}, MC.canvas.DESIGN_INIT_DATA
-                        layout    = MC.canvas.DESIGN_INIT_LAYOUT
-
-                    # platform is vpc
-                    else
-                        component = $.extend true, {}, MC.canvas.DESIGN_INIT_DATA_VPC
-                        layout    = MC.canvas.DESIGN_INIT_LAYOUT_VPC
-
-                    MC.common.other.canvasData.initSet 'component', component
-                    MC.common.other.canvasData.initSet 'layout'   , layout
+                #if type is 'NEW_STACK'
+                #
+                #    # create MC.canvas_data
+                #    MC.common.other.canvasData.initSet 'id'       , result
+                #    MC.common.other.canvasData.initSet 'name'     , tab_name
+                #    MC.common.other.canvasData.initSet 'region'   , region_name
+                #    MC.common.other.canvasData.initSet 'platform' , current_platform
+                #    MC.common.other.canvasData.initSet 'version'  , '2014-02-17'
+                #
+                #    # platform is classic
+                #    if current_platform is Design.TYPE.Classic or current_platform is Design.TYPE.DefaultVpc
+                #        component = $.extend true, {}, MC.canvas.DESIGN_INIT_DATA
+                #        layout    = MC.canvas.DESIGN_INIT_LAYOUT
+                #
+                #    # platform is vpc
+                #    else
+                #        component = $.extend true, {}, MC.canvas.DESIGN_INIT_DATA_VPC
+                #        layout    = MC.canvas.DESIGN_INIT_LAYOUT_VPC
+                #
+                #    MC.common.other.canvasData.initSet 'component', component
+                #    MC.common.other.canvasData.initSet 'layout'   , layout
 
                 # init options
                 options =

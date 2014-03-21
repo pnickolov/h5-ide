@@ -264,16 +264,17 @@ define [ 'event', 'i18n!nls/lang.js',
             $topButton    = $( "#global-create-stack" )
 
             $middleButton.removeAttr 'disabled'
-            $topButton.removeClass( 'disabled' ).addClass 'js-toggle-dropdown'
+            $topButton.removeAttr( 'disabled' ).addClass 'js-toggle-dropdown'
 
-            $("#global-import-stack").removeClass("disabled")
+            $("#global-import-stack").removeAttr("disabled")
 
             # $.cookie('account_id') isnt 'demo_account' remvoe disable
             if MC.common.cookie.getCookieByName( 'account_id' ) isnt 'demo_account'
-                $( '#global-region-visualize-VPC' ).removeClass 'disabled'
+                $( '#global-region-visualize-VPC' ).removeAttr 'disabled'
 
             # when is_invitated cookie not true hide
-            if MC.common.cookie.getCookieByName( 'is_invitated' ) in [ 'true', true ]
+            is_invitated = "" + MC.common.cookie.getCookieByName( 'is_invitated' )
+            if is_invitated is "true" or is_invitated is "2"
                 $( '#global-region-visualize-VPC' ).show()
             else
                 $( '#global-region-visualize-VPC' ).hide()
@@ -533,7 +534,7 @@ define [ 'event', 'i18n!nls/lang.js',
             console.log 'unmanagedVPCClick'
 
             # when is_invitated cookie is true can click
-            if MC.common.cookie.getCookieByName( 'is_invitated' ) in [ 'true', true ] and MC.common.cookie.getCookieByName( 'account_id' ) isnt 'demo_account'
+            if MC.common.cookie.getCookieByName( 'is_invitated' ) in [ 'true', true, 2, '2' ] and MC.common.cookie.getCookieByName( 'account_id' ) isnt 'demo_account'
 
                 # load unmanagedvpc
                 unmanagedvpc.loadModule()
@@ -556,7 +557,7 @@ define [ 'event', 'i18n!nls/lang.js',
                 null
 
             reader.onerror = ()->
-                $("#import-json-error").html "An error occured when reading the file. Please try again."
+                $("#import-json-error").html lang.ide.POP_IMPORT_ERROR
                 null
 
             hanldeFile = ( evt )->

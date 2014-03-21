@@ -5,36 +5,10 @@ define [ "Design",
          "../ComplexResModel",
          "./VpcModel",
          "./SgModel",
+         "./SslCertModel",
          "../connection/SgAsso"
          "../connection/ElbAsso"
-], ( Design, constant, ResourceModel, ComplexResModel, VpcModel, SgModel, SgAsso )->
-
-  SslCertModel = ResourceModel.extend {
-
-    type : constant.AWS_RESOURCE_TYPE.AWS_IAM_ServerCertificate
-
-    defaults :
-      body   : ""
-      chain  : ""
-      key    : ""
-      arn    : ""
-      certId : ""
-
-    serialize : ()-> # Doesn't do anything. It's implemented in Elb's serialize()
-
-  },{
-    deserialize : ( data )->
-      new SslCertModel({
-        id     : data.uid
-        name   : data.name
-        body   : data.resource.CertificateBody
-        chain  : data.resource.CertificateChain
-        key    : data.resource.PrivateKey
-        arn    : data.resource.ServerCertificateMetadata.Arn
-        certId : data.resource.ServerCertificateMetadata.ServerCertificateId
-      })
-      null
-  }
+], ( Design, constant, ResourceModel, ComplexResModel, VpcModel, SgModel, SslCertModel, SgAsso )->
 
   Model = ComplexResModel.extend {
 
@@ -96,8 +70,8 @@ define [ "Design",
       true
 
     remove : ()->
-      sslCert = @get("sslCert")
-      if sslCert then sslCert.remove()
+      # sslCert = @get("sslCert")
+      # if sslCert then sslCert.remove()
 
       # Remove elb will only remove my elb sg
       if @getElbSg() then @getElbSg().remove()
@@ -146,19 +120,6 @@ define [ "Design",
       listeners.splice( idx, 1 )
       @set "listeners", listeners
       null
-
-    setSslCert : ( cert )->
-      console.assert( cert.body isnt undefined and cert.chain isnt undefined and cert.key isnt undefined and cert.name isnt undefined, "Invalid parameter for setSslCert" )
-
-      sslCert = @get("sslCert")
-      if sslCert
-        for key, value of cert
-          sslCert.set(key, value)
-      else
-        sslCert = new ResourceModel( cert )
-        @set("sslCert", sslCert)
-      null
-
 
     getHealthCheckTarget : ()->
       # Format ping
@@ -242,16 +203,15 @@ define [ "Design",
         hcTarget = hcTarget.split("/")[0]
 
       listeners = []
-      if @get("sslCert")
-        sslcertId = @get('sslCert').createRef("ServerCertificateMetadata.Arn")
+      ssl = @connectionTargets("SslCertUsage")[0]
+      if ssl
+        sslcertId = ssl.createRef("ServerCertificateMetadata.Arn")
       else
         sslcertId = ""
 
-      usessl = false
       for l in @get("listeners")
         if l.protocol is "SSL" or l.protocol is "HTTPS"
           id = sslcertId
-          usessl = true
         else
           id = ""
 
@@ -306,26 +266,7 @@ define [ "Design",
             }
           BackendServerDescriptions : [ { InstantPort : "", PoliciyNames : "" } ]
 
-      json_object = { component : component, layout : @generateLayout() }
-
-      if usessl and @get("sslCert")
-        ssl = @get("sslCert")
-        sslComponent =
-          uid : ssl.id
-          type : "AWS.IAM.ServerCertificate"
-          name : ssl.get("name")
-          resource :
-            PrivateKey : ssl.get("key")
-            CertificateBody : ssl.get("body")
-            CertificateChain : ssl.get("chain")
-            ServerCertificateMetadata :
-              ServerCertificateName : ssl.get("name")
-              Arn : ssl.get("arn") or ""
-              ServerCertificateId : ssl.get("certId") or ""
-
-        return [ json_object, { component : sslComponent } ]
-      else
-        return json_object
+      return { component : component, layout : @generateLayout() }
 
   }, {
 
@@ -364,6 +305,7 @@ define [ "Design",
           return azRef
 
       # listener
+      sslCert = null
       for l in data.resource.ListenerDescriptions || []
         l = l.Listener
         attr.listeners.push {
@@ -372,12 +314,13 @@ define [ "Design",
           instanceProtocol : l.InstanceProtocol
           instancePort     : l.InstancePort
         }
-        if l.SSLCertificateId and not attr.sslCert
+        if l.SSLCertificateId and not sslCert
           # Cannot resolve the same component multiple times within one deserialize.
           # Because Design might consider it as recursive dependency.
-          attr.sslCert = resolve( MC.extractID( l.SSLCertificateId ) )
+          sslCert = resolve( MC.extractID( l.SSLCertificateId ) )
 
       elb = new Model( attr )
+      if sslCert then sslCert.assignTo( elb )
 
       ElbAmiAsso    = Design.modelClassForType( "ElbAmiAsso" )
       ElbSubnetAsso = Design.modelClassForType( "ElbSubnetAsso" )
@@ -389,7 +332,7 @@ define [ "Design",
       if Design.instance().typeIsVpc()
         # Elb <=> Subnet ( ElbSubnetAsso must created before ElbAmiAsso )
         for sb in data.resource.Subnets || []
-          new ElbSubnetAsso( elb, resolve( MC.extractID(sb)  ) )
+          new ElbSubnetAsso( elb, resolve( MC.extractID(sb) ), { deserialized : true } )
 
       # Elb <=> Ami
       for ami in data.resource.Instances || []

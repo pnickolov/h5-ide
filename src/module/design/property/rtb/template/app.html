@@ -29,14 +29,14 @@
       {{#each routeSet.item}}
       <tr>
         {{#if active}}
-        <td><i class="status status-green tooltip" data-tooltip="Active"></i></td>
+        <td><i class="status status-green tooltip" data-tooltip="{{i18n 'PROP_RT_TIP_ACTIVE'}}"></i></td>
         {{else}}
-        <td><i class="status status-red tooltip" data-tooltip="Blackhole"></i></td>
+        <td><i class="status status-red tooltip" data-tooltip="{{i18n 'PROP_RT_TIP_BLACKHOLE'}}"></i></td>
         {{/if}}
         <td>{{destinationCidrBlock}}</td>
         <td>{{target}}</td>
         {{#if propagate}}
-        <td><i class="icon-info tooltip" data-tooltip="Propagated"></i></td>
+        <td><i class="icon-info tooltip" data-tooltip="{{i18n 'PROP_RT_TIP_PROPAGATED'}}"></i></td>
         {{else}}
         <td></td>
         {{/if}}

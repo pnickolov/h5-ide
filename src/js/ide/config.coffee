@@ -59,6 +59,9 @@ require.config {
 		'constant'           : 'lib/constant'
 
 		'event'              : 'lib/ide_event'
+		'validation'         : 'component/trustedadvisor/validation'
+		'ta_conf'            : 'component/trustedadvisor/config'
+		'validation_helper'	 : 'component/trustedadvisor/lib/helper'
 
 		'WS'                 : 'lib/websocket'
 

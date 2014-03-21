@@ -19,6 +19,10 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
       publicIp     : Design.instance().typeIsDefaultVpc()
       state        : undefined
 
+      # RootDevice
+      rdSize : 0
+      rdIops : ""
+
     type : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
     newNameTmpl : "launch-config-"
 
@@ -44,6 +48,11 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
         defaultSg = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup ).getDefaultSg()
         SgAsso = Design.modelClassForType( "SgAsso" )
         new SgAsso( defaultSg, this )
+
+      if not @get("rdSize")
+        #append root device
+        @set("rdSize",@getAmiRootDeviceVolumeSize())
+
       null
 
     getNewName : ( base )->
@@ -147,6 +156,10 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
     setInstanceType       : InstanceModel.prototype.setInstanceType
     initInstanceType      : InstanceModel.prototype.initInstanceType
     isEbsOptimizedEnabled : InstanceModel.prototype.isEbsOptimizedEnabled
+    getBlockDeviceMapping : InstanceModel.prototype.getBlockDeviceMapping
+    getAmiRootDevice           : InstanceModel.prototype.getAmiRootDevice
+    getAmiRootDeviceName       : InstanceModel.prototype.getAmiRootDeviceName
+    getAmiRootDeviceVolumeSize : InstanceModel.prototype.getAmiRootDeviceVolumeSize
 
     serialize : ()->
 
@@ -160,8 +173,11 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
 
       sgarray = _.map @connectionTargets("SgAsso"), ( sg )-> sg.createRef( "GroupId" )
 
-      blockDevice = []
+      # Generate an array containing the root device and then append all other volumes
+      # to the array to form the LC's volume list
+      blockDevice = @getBlockDeviceMapping()
       for volume in @get("volumeList") or emptyArray
+
         vd =
           DeviceName : volume.get("name")
           Ebs :
@@ -217,8 +233,6 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
         publicIp     : data.resource.AssociatePublicIpAddress
         configName   : data.resource.LaunchConfigurationName
 
-        createdTime   : data.resource.CreatedTime
-
         x : layout_data.coordinate[0]
         y : layout_data.coordinate[1]
       }
@@ -232,16 +246,22 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
 
       model = new Model( attr )
 
+      rd = model.getAmiRootDevice()
 
       # Create Volume for
       for volume in data.resource.BlockDeviceMapping || []
-        _attr =
-          name       : volume.DeviceName
-          snapshotId : volume.Ebs.SnapshotId
-          volumeSize : volume.Ebs.VolumeSize
-          owner      : model
+        if volume.DeviceName is rd.DeviceName
+          model.set "rdSize", volume.Ebs.VolumeSize
+          model.set "rdIops", volume.Ebs.Iops
+        else
+          _attr =
+            name       : volume.DeviceName
+            snapshotId : volume.Ebs.SnapshotId
+            volumeSize : volume.Ebs.VolumeSize
+            iops       : volume.Ebs.Iops
+            owner      : model
 
-        new VolumeModel(_attr, {noNeedGenName:true})
+          new VolumeModel(_attr, {noNeedGenName:true})
 
       # Asso SG
       SgAsso = Design.modelClassForType( "SgAsso" )

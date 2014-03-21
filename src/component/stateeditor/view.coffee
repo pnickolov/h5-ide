@@ -3,29 +3,34 @@
 #############################
 
 define [ 'event',
+         'i18n!nls/lang.js',
          'text!./component/stateeditor/template.html',
          './component/stateeditor/validate',
          'constant',
-         'instance_model'
+         'instance_model',
          'UI.errortip'
 
-], ( ide_event, template , validate, constant, instance_model ) ->
+], ( ide_event, lang, template , validate, constant, instance_model ) ->
 
     StateEditorView = Backbone.View.extend {
 
         events:
 
             'closed': 'closedPopup'
-            'keyup .parameter-item.dict .parameter-value': 'onDictInputChange'
             'blur .parameter-item.dict .parameter-value': 'onDictInputBlur'
 
+            'keyup .parameter-item.dict .parameter-value': 'onDictInputChange'
+            'paste .parameter-item.dict .parameter-value': 'onDictInputChange'
+            
             'keyup .parameter-item.array .parameter-value': 'onArrayInputChange'
-            'blur .parameter-item.array .parameter-value': 'onArrayInputBlur'
+            'paste .parameter-item.array .parameter-value': 'onArrayInputChange'
+
             'keyup .parameter-item.state .parameter-value': 'onArrayInputChange'
+            'paste .parameter-item.state .parameter-value': 'onArrayInputChange'
+
+            'blur .parameter-item.array .parameter-value': 'onArrayInputBlur'
             'blur .parameter-item.state .parameter-value': 'onArrayInputBlur'
-
             'blur .command-value': 'onCommandInputBlur'
-
             'focus .editable-area': 'onFocusInput'
             'blur .editable-area': 'onBlurInput'
 
@@ -62,9 +67,13 @@ define [ 'event',
 
             'click .state-log-item-header': 'onStateLogItemHeaderClick'
 
+            'click .state-log-item .state-log-item-view-detail': 'onStateLogDetailBtnClick'
+
             'OPTION_CHANGE .state-editor-res-select': 'onResSelectChange'
 
             'keyup .parameter-item.optional .parameter-value': 'onOptionalParaItemChange'
+            'paste .parameter-item.optional .parameter-value': 'onOptionalParaItemChange'
+
             'click .parameter-item .parameter-name': 'onParaNameClick'
 
             'SWITCH_STATE': 'onSwitchState'
@@ -103,6 +112,13 @@ define [ 'event',
 
             that = this
             compData = @model.get 'compData'
+
+            that.initState()
+
+            if that.isWindowsPlatform
+                @__renderEmpty('is_windows')
+                return that
+
             if Design.instance().get('agent').enabled
                 if compData and compData.type in [constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance, constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration]
                     @__renderState()
@@ -121,6 +137,7 @@ define [ 'event',
                 group    : 'View states and log by selecting individual instance.'
                 default  : 'No state editor here.'
                 group_in_app : 'View states and log by selecting individual instance.'
+                is_windows : 'Editing state is only available for Linux platform.'
 
             tip = type and tipSet[ type ] or tipSet.default
 
@@ -135,7 +152,6 @@ define [ 'event',
         __renderState: () ->
 
             @editorShow = true
-            @initState()
             that = this
 
             # show modal
@@ -200,9 +216,32 @@ define [ 'event',
             if that.isShowLogPanel
                 that.showLogPanel()
 
+            $logPanelToggle = that.$editorModal.find('.state-log-toggle')
+            $logPanelRefresh = that.$editorModal.find('.state-log-refresh')
+            $logSysBtn = that.$editorModal.find('.state-sys-log-btn')
+            $logPanel = $('#state-log')
+
             if that.currentState is 'stack'
-                $logPanelToggle = that.$editorModal.find('.state-log-toggle')
                 $logPanelToggle.hide()
+
+            else if that.currentState in ['app', 'appedit']
+                currentAppState = Design.instance().get('state')
+
+                if currentAppState is 'Stopped'
+
+                    $logPanelToggle.hide()
+                    $logPanelRefresh.hide()
+                    if not that.currentResId
+                        $logSysBtn.hide()
+
+                else
+
+                    setTimeout(() ->
+                        # $('#property-panel').addClass('state-wide')
+                        that.onLogToggleClick()
+                    , 0)
+                    
+                    # that.onLogToggleClick()
 
             $aceAutocompleteTip = $('.ace_autocomplete_tip')
             if not $aceAutocompleteTip.length
@@ -213,8 +252,8 @@ define [ 'event',
 
             that.updateToolbar()
 
-            if $( '#property-panel' ).hasClass('state-wide')
-                that.onDescToggleClick()
+            # if $( '#property-panel' ).hasClass('state-wide')
+            #     that.onDescToggleClick()
             @
 
         initData: () ->
@@ -236,6 +275,7 @@ define [ 'event',
 
             that.resName = that.model.getResName()
             that.supportedPlatform = that.model.get('supportedPlatform')
+            that.isWindowsPlatform = that.model.get('isWindowsPlatform')
 
             that.currentResId = that.model.get('resId')
 
@@ -244,7 +284,7 @@ define [ 'event',
 
             that.resAttrRegexStr = that.model.get('resAttrRegexStr')
 
-            that.generalTip = 'Get Started with Conﬁguration Manager Conﬁguration manager is blah blah blah... You can use following command...'
+            that.generalTip = lang.ide.STATE_HELP_INTRO_LBL
 
             that.resNoState = true
             if that.originCompStateData and _.isArray(that.originCompStateData) and that.originCompStateData.length
@@ -287,6 +327,7 @@ define [ 'event',
             'state-template-log-instance-item'  : 'stateLogInstanceItemTpl'
             'state-template-res-select'         : 'stateResSelectTpl'
             'state-template-editor-empty'       : 'stateEmptyTpl'
+            'state-template-log-detail-modal'   : 'stateLogDetailModal'
 
         compileTpl: () ->
 
@@ -338,32 +379,42 @@ define [ 'event',
             that = this
 
             # state item sortable
-            # that.$stateList.dragsort({
-            #     itemSelector: '.state-item',
-            #     dragSelector: '.state-drag',
-            #     dragBetween: true,
-            #     placeHolderTemplate: '<div class="state-item state-placeholder"></div>',
-            #     dragEnd: () ->
-            #         that.refreshStateId()
-            # })
+            that.$stateList.dragsort({
+                itemSelector: '.state-item',
+                dragSelector: '.state-drag',
+                dragBetween: true,
+                placeHolderTemplate: '<div class="state-item state-placeholder"></div>',
 
-            dragsort.init({
-                dragStart: () ->
-                    $stateItem = this
+                dragStart: (stateItem) ->
+                    $stateItem = $(stateItem)
                     that.collapseItem($stateItem)
-                    return true
-                dragEnd: (event, oldIndex) ->
-                    $stateItem = this
+
+                dragEnd: (stateItem, oldIndex) ->
+                    $stateItem = $(stateItem)
                     newIndex = $stateItem.index()
                     stateId = $stateItem.attr('data-id')
-
                     if oldIndex isnt newIndex
                         that.undoManager.register(stateId, oldIndex, 'sort', newIndex)
-
                     that.refreshLogItemNum()
-                    null
-                $el: that.$el
             })
+
+            # dragsort.init({
+            #     dragStart: () ->
+            #         $stateItem = this
+            #         that.collapseItem($stateItem)
+            #         return true
+            #     dragEnd: (event, oldIndex) ->
+            #         $stateItem = this
+            #         newIndex = $stateItem.index()
+            #         stateId = $stateItem.attr('data-id')
+
+            #         if oldIndex isnt newIndex
+            #             that.undoManager.register(stateId, oldIndex, 'sort', newIndex)
+
+            #         that.refreshLogItemNum()
+            #         null
+            #     $el: that.$el
+            # })
 
         onLogRefreshClick: (event) ->
 
@@ -417,7 +468,7 @@ define [ 'event',
                 _.each $lastDictInputList, (lastDictInput) ->
                     that.onDictInputChange({
                         currentTarget: lastDictInput
-                    })
+                    }, true)
 
                 # create new array/state input box
                 $lastArrayInputListAry = $stateItemList.find('.parameter-item.array .parameter-value:last').toArray()
@@ -428,7 +479,7 @@ define [ 'event',
                 _.each $lastInputListAry, (lastInput) ->
                     that.onArrayInputChange({
                         currentTarget: lastInput
-                    })
+                    }, true)
 
         refreshStateView: ($stateItem) ->
 
@@ -576,18 +627,22 @@ define [ 'event',
 
             that = this
 
-            $paraItemList = $paraListElem.find('.parameter-item')
+            setTimeout(() ->
 
-            currentParaMap = that.cmdParaObjMap[currentCMD]
+                $paraItemList = $paraListElem.find('.parameter-item')
 
-            _.each $paraItemList, (paraItem) ->
+                currentParaMap = that.cmdParaObjMap[currentCMD]
 
-                $paraItem = $(paraItem)
-                currentParaName = $paraItem.attr('data-para-name')
-                paraObj = currentParaMap[currentParaName]
-                that.bindParaItemEvent($paraItem, paraObj)
+                _.each $paraItemList, (paraItem) ->
 
-                null
+                    $paraItem = $(paraItem)
+                    currentParaName = $paraItem.attr('data-para-name')
+                    paraObj = currentParaMap[currentParaName]
+                    that.bindParaItemEvent($paraItem, paraObj)
+
+                    null
+
+            , 0)
 
         bindParaItemEvent: ($paraItem, paraObj) ->
 
@@ -677,6 +732,20 @@ define [ 'event',
                     }]
                 })
 
+        unBindParaListEvent: ($paraListElem) ->
+
+            that = this
+
+            setTimeout(() ->
+
+                $editInputs = $paraListElem.find('.editable-area')
+                _.each $editInputs, (editInput) ->
+                    $editInput = $(editInput)
+                    editor = $editInput.data('editor')
+                    if editor then editor.destroy()
+
+            , 0)
+
         refreshDescription: (cmdName) ->
 
             that = this
@@ -689,7 +758,9 @@ define [ 'event',
                     descMarkdown = moduleObj.reference['en']
                 that.$cmdDsec.attr('data-command', cmdName)
             else
-                descMarkdown = that.generalTip
+                descHTML = that.generalTip
+                that.$cmdDsec.html(descHTML)
+                return
 
             descHTML = ''
 
@@ -699,6 +770,7 @@ define [ 'event',
                 that.$cmdDsec.html(descHTML)
                 that.$cmdDsec.find('em:contains(required)').parents('li').addClass('required')
                 that.$cmdDsec.find('em:contains(optional)').parents('li').addClass('optional')
+                that.$cmdDsec.scrollTop(0)
             , 0)
 
             null
@@ -743,9 +815,9 @@ define [ 'event',
                 parameter_list: newParaAry
             }))
 
-            setTimeout(() ->
-                that.bindParaListEvent($paraListElem, currentCMD)
-            , 10)
+            # setTimeout(() ->
+            that.bindParaListEvent($paraListElem, currentCMD)
+            # , 10)
 
         # refreshStateId: () ->
 
@@ -776,7 +848,7 @@ define [ 'event',
 
             return paraObj
 
-        onDictInputChange: (event) ->
+        onDictInputChange: (event, noBindEvent) ->
 
             # append new dict item
 
@@ -812,9 +884,11 @@ define [ 'event',
                     })
                     $dictItemElem = $(newDictItemHTML).appendTo($currentDictItemContainer)
                     $paraDictItem = $dictItemElem.nextAll('.parameter-dict-item')
-                    that.bindParaItemEvent($paraDictItem, paraObj)
                     $paraValueAry = $paraDictItem.find('.parameter-value')
                     $paraValueAry.addClass('disabled')
+
+                    if not noBindEvent
+                        that.bindParaItemEvent($paraDictItem, paraObj)
 
         onDictInputBlur: (event) ->
 
@@ -842,7 +916,7 @@ define [ 'event',
                 newInputElemAry = $(newAllInputElemAry[0]).find('.parameter-value')
                 newInputElemAry.removeClass('disabled')
 
-        onArrayInputChange: (event) ->
+        onArrayInputChange: (event, noBindEvent) ->
 
             # append new array item
 
@@ -870,7 +944,9 @@ define [ 'event',
                     })
                     $arrayItemElem = $(newArrayItemHTML).appendTo($currentArrayInputContainer)
                     $arrayItemElem.addClass('disabled')
-                    that.bindParaItemEvent($arrayItemElem, paraObj)
+
+                    if not noBindEvent
+                        that.bindParaItemEvent($arrayItemElem, paraObj)
 
         onArrayInputBlur: (event) ->
 
@@ -1019,11 +1095,11 @@ define [ 'event',
                     cmdEditor.focus()
                 , 0)
 
-            setTimeout(() ->
-                that.bindParaListEvent($paraListItem, currentCMD)
-                if that.readOnlyMode
-                    that.setEditorReadOnlyMode()
-            , 10)
+            # setTimeout(() ->
+            that.bindParaListEvent($paraListItem, currentCMD)
+            if that.readOnlyMode
+                that.setEditorReadOnlyMode()
+            # , 10)
 
             # $stateItem.addClass('selected')
 
@@ -1036,6 +1112,9 @@ define [ 'event',
             that.refreshStateView($stateItem)
             $stateItem.addClass('view')
             that.refreshDescription()
+
+            $paraListItem = $stateItem.find('.parameter-list')
+            # that.unBindParaListEvent($paraListItem)
 
         onExpandState: (event) ->
 
@@ -1131,21 +1210,19 @@ define [ 'event',
 
             $stateItem = that.$stateList.find('.state-item:last')
 
-            newStateIdShow = 1
-
-            if $stateItem.length
-                newStateIdShow = $stateItem.index() + 2
-
             newStateId = that.genStateUID()
 
             newStateHTML = that.stateListTpl({
                 state_list: [{
-                    id: newStateId,
-                    id_show: newStateIdShow
+                    id: newStateId
                 }]
             })
 
-            $newStateItem = $(newStateHTML).appendTo(that.$stateList)
+            $focusState = that.$stateList.find('.state-item.focused')
+            if $focusState.length
+                $newStateItem = $(newStateHTML).insertAfter($focusState)
+            else
+                $newStateItem = $(newStateHTML).appendTo(that.$stateList)
 
             that.clearFocusedItem()
 
@@ -1170,12 +1247,7 @@ define [ 'event',
                     cmdEditor.focus()
                 , 0)
 
-            # $newStateItem.addClass('selected')
-
-            # $newStateItem.find('.checkbox input').prop('checked', true)
-
             that.refreshLogItemNum()
-
 
             $stateItems = that.$stateList.find('.state-item')
             if $stateItems.length
@@ -1299,7 +1371,7 @@ define [ 'event',
                 else if $paraItem.hasClass('dict')
 
                     $dictItemList = $paraItem.find('.parameter-dict-item')
-                    dictObj = {}
+                    dictObjAry = []
 
                     _.each $dictItemList, (dictItem) ->
 
@@ -1312,11 +1384,14 @@ define [ 'event',
 
                         if keyValue
                             valueValue = that.model.replaceParaNameToUID(valueValue)
-                            dictObj[keyValue] = valueValue
+                            dictObjAry.push({
+                                key: keyValue,
+                                value: valueValue
+                            })
 
                         null
 
-                    paraValue = dictObj
+                    paraValue = dictObjAry
 
                 else if $paraItem.hasClass('array') or $paraItem.hasClass('state')
 
@@ -1438,16 +1513,33 @@ define [ 'event',
 
                             renderParaValue = []
 
-                            _.each paraValue, (paraValueStr, paraKey) ->
+                            if _.isArray(paraValue)
 
-                                paraValueStr = that.model.replaceParaUIDToName(paraValueStr)
+                                _.each paraValue, (paraValueObj) ->
 
-                                renderParaValue.push({
-                                    key: paraKey
-                                    value: paraValueStr
-                                })
+                                    paraValueObj.value = that.model.replaceParaUIDToName(paraValueObj.value)
 
-                                null
+                                    renderParaValue.push({
+                                        key: paraValueObj.key
+                                        value: paraValueObj.value
+                                    })
+
+                                    null
+
+                            # adjust for old format
+
+                            else if _.isObject(paraValue)
+
+                                _.each paraValue, (paraValueStr, paraKey) ->
+
+                                    paraValueStr = that.model.replaceParaUIDToName(paraValueStr)
+
+                                    renderParaValue.push({
+                                        key: paraKey
+                                        value: paraValueStr
+                                    })
+
+                                    null
 
                             if not paraValue or _.isEmpty(paraValue)
                                 renderParaValue = [{
@@ -1530,14 +1622,13 @@ define [ 'event',
                             changeAry.push(stateObj.id)
                         null
 
-                    resUID = that.model.getCurrentResUID()
-                    changeObj = {
-                        resUID: resUID,
-                        stateIds: changeAry
-                    }
-
-                if (not _.isEqual(that.originCompStateData, stateData)) or changeAry.length
-                    ide_event.trigger 'STATE_EDITOR_DATA_UPDATE', changeObj
+                    if that.currentState in ['app', 'appedit']
+                        changeObj = {
+                            resId: that.currentResId,
+                            stateIds: changeAry
+                        }
+                        if (not _.isEqual(that.originCompStateData, stateData)) or changeAry.length
+                            ide_event.trigger ide_event.STATE_EDITOR_DATA_UPDATE, changeObj
 
         onStateCancelClick: (event) ->
 
@@ -1572,7 +1663,7 @@ define [ 'event',
             $logPanelToggle = that.$editorModal.find('.state-log-toggle')
 
             expandPanel = $('#property-panel').hasClass('state-wide')
-            if expandPanel and $descPanel.is(':visible')
+            if expandPanel and $descPanel.hasClass('show')
 
                 $stateEditor.addClass('full')
                 # $descPanel.hide()
@@ -1598,6 +1689,11 @@ define [ 'event',
 
             that = this
 
+            if that.currentState in ['app', 'appedit']
+                currentAppState = Design.instance().get('state')
+                if currentAppState is 'Stopped'
+                    return
+
             $stateEditor = $('#state-editor')
             $descPanel = $('#state-description')
             $logPanel = $('#state-log')
@@ -1606,7 +1702,7 @@ define [ 'event',
             $logPanelToggle = that.$editorModal.find('.state-log-toggle')
 
             expandPanel = $('#property-panel').hasClass('state-wide')
-            if expandPanel and $logPanel.is(':visible')
+            if expandPanel and $logPanel.hasClass('show')
 
                 $stateEditor.addClass('full')
                 # $logPanel.hide()
@@ -1676,7 +1772,8 @@ define [ 'event',
             $stateEditorModel = $('#state-editor-model')
             $parentEditorModel = $currentElem.parents('#state-editor-model')
             if $stateEditorModel.length and (not $parentEditorModel.length)
-                if $stateEditorModel.is(':visible')
+                # if $stateEditorModel.is(':visible')
+                if $stateEditorModel.length
                     that.onStateSaveClick()
                 else
                     if $currentElem.parents('#tabbar-wrapper').length
@@ -1776,7 +1873,7 @@ define [ 'event',
 
                             $paraItem = $editorElem.parents('.parameter-item')
 
-                            if $paraItem.hasClass('bool')
+                            if $paraItem.hasClass('bool') or $paraItem.hasClass('state')
                                 that.setPlainText($editorElem, '')
 
                             that.setEditorCompleter(thatEditor, hintDataAryMap['focus'], 'command')
@@ -1910,7 +2007,7 @@ define [ 'event',
             paraNameSpan = $paraNameSpan.filter(() ->
                 return $(this).text() is paraName
             )
-            paraParagraph = paraNameSpan.parents('p')
+            paraParagraph = paraNameSpan.parents('li')
             paraParagraph.addClass('highlight')
 
             try
@@ -1960,9 +2057,9 @@ define [ 'event',
                 else if targetOffsetTop < parentOffsetTop
                     scrollPos = $parent.scrollTop() + targetOffsetTop - parentOffsetTop - 15
 
-                # $parent.scrollTop(scrollPos)
+                $parent.scrollTop(scrollPos)
 
-                scrollbar.scrollTo $('#state-list-wrap'), {top: scrollPos - 15}
+                # scrollbar.scrollTo $('#state-list-wrap'), {top: 300}
 
             catch err
 
@@ -2074,25 +2171,56 @@ define [ 'event',
             if not (stateLogDataAry and stateLogDataAry.length)
                 that.showLogListLoading(false, true)
 
+            that.stateIdLogContentMap = {}
+
             stateLogViewAry = []
             stateStatusMap = {}
+
+            stateIdLogViewMap = {}
+            $stateLogItems = that.$stateLogList.find('.state-log-item')
+            _.each $stateLogItems, (stateLogItem) ->
+                $stateLogItem = $(stateLogItem)
+                stateId = $stateLogItem.attr('data-state-id')
+                stateView = $stateLogItem.hasClass('view')
+                if stateId
+                    stateIdLogViewMap[stateId] = stateView
+                null
+
             _.each stateLogDataAry, (logObj, idx) ->
+
                 timeStr = null
                 if logObj.time
                     timeStr = MC.dateFormat(new Date(logObj.time), 'yyyy-MM-dd hh:mm:ss')
                 stateStatus = logObj.result
                 stateId = "#{logObj.id}"
                 stateNum = ''
+                isStateLog = false
                 if logObj.id isnt 'Agent'
                     stateId = "State #{stateId}"
+                    isStateLog = true
                     stateStatusMap[logObj.id] = stateStatus
                 else
                     stateNum = logObj.id
 
-                if logObj.stdout
-                    stdoutStr = logObj.stdout.replace(/\n\n/g, '\n')
+                stdoutStr = ''
+                commentStr = ''
+                longStdout = false
+
                 if logObj.comment
-                    commentStr = logObj.comment.replace(/\n\n/g, '\n')
+                    commentStr = $.trim(logObj.comment.replace(/\n\n/g, '\n'))
+
+                if logObj.stdout
+                    stdoutStr = $.trim(logObj.stdout.replace(/\n\n/g, '\n'))
+                    if stdoutStr.length > 100
+                        longStdout = true
+                        that.stateIdLogContentMap[logObj.id] = {
+                            number: stateNum,
+                            content: stdoutStr
+                        }
+
+                viewLog = stateIdLogViewMap[logObj.id]
+                if viewLog not in [true, false]
+                    viewLog = false
 
                 stateLogViewAry.push({
                     id: logObj.id,
@@ -2100,7 +2228,10 @@ define [ 'event',
                     log_time: timeStr,
                     state_status: stateStatus,
                     stdout: stdoutStr,
-                    comment: commentStr
+                    comment: commentStr,
+                    long_stdout: longStdout,
+                    view: viewLog,
+                    is_state_log: isStateLog
                 })
                 null
 
@@ -2109,7 +2240,13 @@ define [ 'event',
             })
 
             that.refreshStateItemStatus(stateStatusMap)
-            that.$stateLogList.append(renderHTML)
+
+            resState = that.model.get('resState')
+            instanceStateHTML = that.stateLogInstanceItemTpl({
+                res_status: resState
+            })
+
+            that.$stateLogList.empty().append(instanceStateHTML).append(renderHTML)
             that.refreshLogItemNum()
 
         setEditorReadOnlyMode: () ->
@@ -2169,18 +2306,13 @@ define [ 'event',
             that.showLogListLoading(true)
 
             that.model.getResState(selectedResId)
-            resState = that.model.get('resState')
-
-            that.$stateLogList.empty().html(that.stateLogInstanceItemTpl({
-                res_status: resState
-            }))
 
             if not that.isLoadingLogList
 
                 $logPanel = $('#state-log')
                 $loadText = $logPanel.find('.state-log-loading')
 
-                $loadText.text('Loading...')
+                $loadText.text('Refresh...')
 
                 that.isLoadingLogList = true
 
@@ -2195,7 +2327,7 @@ define [ 'event',
 
                 that.logRefreshTimer = setTimeout(() ->
                     if that.isLoadingLogList
-                        $loadText.text('Request state log info timeout, please try again')
+                        $loadText.text('Request log info timeout, please try again')
                 , 5000)
 
         onStateStatusUpdate: (newStateUpdateResIdAry) ->
@@ -2471,7 +2603,7 @@ define [ 'event',
 
                     that.commandIndex = that.commandStack.length - 1
 
-                    that.renderStateCount()
+                    _.defer _.bind that.renderStateCount, that
 
                     null
 
@@ -2485,6 +2617,8 @@ define [ 'event',
                             operateCommand.redo()
                             that.commandIndex = that.commandIndex + 1
 
+                        that.renderStateCount()
+
                     null
 
                 undo: () ->
@@ -2496,6 +2630,8 @@ define [ 'event',
                         if operateCommand
                             operateCommand.undo()
                             that.commandIndex = that.commandIndex - 1
+
+                        that.renderStateCount()
 
                     null
 
@@ -2735,7 +2871,7 @@ define [ 'event',
 
             that.updateToolbar()
 
-            notification 'info', 'State(s) copied to clipboard'
+            notification 'info', lang.ide.NOTIFY_MSG_INFO_STATE_COPY_TO_CLIPBOARD
 
             return true
 
@@ -2752,7 +2888,7 @@ define [ 'event',
 
             that.updateToolbar()
 
-            notification 'info', 'State(s) copied to clipboard'
+            notification 'info', lang.ide.NOTIFY_MSG_INFO_STATE_COPY_TO_CLIPBOARD
 
             return true
 
@@ -3038,16 +3174,30 @@ define [ 'event',
 
                 that.undoManager.register(stateIdAry, statePosAry, 'remove')
 
+            _.each $targetStates, (targetState) ->
+                $targetState = $(targetState)
+                that.collapseItem($targetState)
+                null
+
             $targetStates.remove()
 
             $stateItems = that.$stateList.find('.state-item')
+
             if not $stateItems.length
                 that.$haveStateContainer.hide()
                 that.$noStateContainer.show()
+            else
+                _.each $stateItems, (stateItem) ->
+                    $stateItem = $(stateItem)
+                    if not $stateItem.hasClass('view')
+                        that.expandItem($stateItem)
+                    null
 
             that.refreshLogItemNum()
 
             that.updateToolbar()
+
+            return false
 
         checkboxSelect: (event) ->
 
@@ -3217,6 +3367,20 @@ define [ 'event',
                 $('#modal-instance-sys-log .instance-sys-log-info').show()
 
             modal.position()
+
+        onStateLogDetailBtnClick: (event) ->
+
+            that = this
+            $logDetailBtn = $(event.currentTarget)
+            $logItem = $logDetailBtn.parents('.state-log-item')
+            stateId = $logItem.attr('data-state-id')
+            if stateId
+                stateLogObj = that.stateIdLogContentMap[stateId]
+                if stateLogObj
+                    modal that.stateLogDetailModal({
+                        number: stateLogObj.number
+                        content: stateLogObj.content
+                    }), true
 
     }
 

@@ -44,17 +44,17 @@ define [ 'event',
 
 		ide_event.trigger ide_event.DESIGN_SUB_COMPLETE
 
-		ide_event.onLongListen ide_event.REFRESH_PROPERTY, ()->
+		ide_event.onLongListen ide_event.REFRESH_PROPERTY, () ->
 			$canvas($canvas.selected_node()).select()
 			null
 
-		ide_event.onLongListen ide_event.FORCE_OPEN_PROPERTY, ()->
-			view.forceShow()
+		ide_event.onLongListen ide_event.FORCE_OPEN_PROPERTY, ( tab ) ->
+			view.forceShow tab
 			null
 
 		# Setup view / PropertyBaseView / PropertyBaseModule events.
-		PropertyBaseView.event.on PropertyBaseView.event.FORCE_SHOW, () ->
-			view.forceShow()
+		PropertyBaseView.event.on PropertyBaseView.event.FORCE_SHOW, ( tab ) ->
+			view.forceShow tab
 			null
 
 		PropertyBaseView.event.on PropertyBaseView.event.OPEN_SUBPANEL_IMM, () ->
@@ -70,7 +70,7 @@ define [ 'event',
 			null
 
 		ide_event.onLongListen ide_event.SHOW_STATE_EDITOR, ( uid )->
-			view.renderState uid
+			view.renderState uid, null, true
 			null
 
 		view.on "HIDE_SUBPANEL", ()->
@@ -87,14 +87,24 @@ define [ 'event',
 
 	openPorperty = ( type, uid, force, tab ) ->
 
-		stateStatus = processState uid, type
+		stateStatus = view.processState uid, type
 
 		if openTab tab, uid
 			return
 		if view.currentTab is 'state' and stateStatus
 			view.renderState uid
+			updateActiveModule uid, type
+			null
 		else
 			view.renderProperty uid, type, force
+
+	updateActiveModule = ( uid, type ) ->
+		# Because snapshot is needed, and snapshot is only in property now.
+		# snapshot work in state mode
+		activeModule = PropertyBaseModule.activeModule()
+		activeModule.uid = uid
+		activeModule.comType = type
+		null
 
 	openTab = ( tab, uid ) ->
 		if tab is 'property'
@@ -106,50 +116,8 @@ define [ 'event',
 		else
 			false
 
-
-
 	unLoadModule = () ->
 		null
-
-	processState = ( uid, type ) ->
-		uid = Design.instance().canvas.selectedNode[ 0 ] if not uid
-		component = Design.instance().component uid
-		type = component.type if not type and component
-		typeAvai = _.contains [ CONST.RESTYPE.LC, CONST.RESTYPE.INSTANCE, 'component_server_group' ], type
-		opsEnabled = Design.instance().get('agent').enabled
-
-		modeAvai = getModeAvai type
-
-		if opsEnabled and typeAvai
-			view.renderStateCount component
-
-
-		if opsEnabled and ( ( modeAvai is null and typeAvai ) or modeAvai )
-			$( '#property-panel' ).removeClass 'no-state'
-			true
-		else
-			$( '#property-panel' ).addClass 'no-state'
-			false
-
-	# modeAvai is behalf of tab mode ( app|stack|appedit|stoped|more.. )
-	# modeAvai has 3 states true|false|null( not set )
-	getModeAvai = ( type ) ->
-		modeAvai = null
-
-		if Design.instance().modeIsAppEdit()
-			if type is 'component_server_group'
-				modeAvai = true
-		else if Design.instance().modeIsApp()
-			if type is CONST.RESTYPE.LC
-				modeAvai = false
-			# Stopped APP
-			if Design.instance().get('state') is "Stopped"
-				if type is CONST.RESTYPE.LC
-					modeAvai = true
-				else if type is 'component_server_group'
-					modeAvai = false
-
-		modeAvai
 
 	# Whenever tab is switched
 	# Use this method to generate data for the current property
@@ -159,7 +127,6 @@ define [ 'event',
 
 	restore = ( snapshot ) ->
 		view.restore snapshot
-		openPorperty null, view.uid
 		PropertyBaseModule.restore snapshot, view
 
 

@@ -64,7 +64,7 @@ define [], ()->
         tootipStr = 'Associate Elastic IP to primary IP'
         imgUrl    = 'ide/icon/eip-off.png'
 
-      if targetModel.design().modeIsApp()
+      if targetModel.design().modeIsApp() or targetModel.design().modeIsAppView()
         resource_list = MC.data.resource_list[ targetModel.design().region() ]
         res = resource_list[ targetModel.get("appId") ]
         if toggle and res

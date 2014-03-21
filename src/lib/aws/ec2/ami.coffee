@@ -115,7 +115,6 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 
 
 
-
 	setLayout : setLayout
 	getOSType : getOSType
 	getInstanceType : getInstanceType

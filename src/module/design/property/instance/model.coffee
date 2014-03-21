@@ -90,7 +90,8 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 
 		getAmi : () ->
 			ami_id = @get("imageId")
-			ami    = Design.instance().component( @get("uid") ).getAmi()
+			comp   = Design.instance().component( @get("uid") )
+			ami    = comp.getAmi()
 
 			if not ami
 				data = {
@@ -105,6 +106,21 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 				}
 
 			@set 'instance_ami', data
+
+			if ami and ami.blockDeviceMapping
+				deivce = ami.blockDeviceMapping[ ami.rootDeviceName ]
+				rootDevice =
+					name : ami.rootDeviceName
+					size : parseInt( comp.get("rdSize"), 10 )
+					iops : comp.get("rdIops")
+
+				if rootDevice.size < 10
+					rootDevice.iops = ""
+					rootDevice.iopsDisabled = true
+				@set "rootDevice", rootDevice
+
+			@set "min_volume_size", comp.getAmiRootDeviceVolumeSize()
+
 			null
 
 		canSetInstanceType : ( value ) ->
@@ -178,6 +194,14 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 
 		getStateData : () ->
 			Design.instance().component( @get("uid") ).getStateData()
+
+		setIops : ( iops )->
+			Design.instance().component( @get("uid") ).set("rdIops", iops)
+			null
+
+		setVolumeSize : ( size )->
+			Design.instance().component( @get("uid") ).set("rdSize", size)
+			null
 	}
 
 	new InstanceModel()

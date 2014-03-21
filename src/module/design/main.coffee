@@ -73,124 +73,122 @@ define [ 'i18n!nls/lang.js', 'constant', 'stateeditor', 'Design', './module/desi
             # SWITCH_TAB
             ide_event.onLongListen ide_event.SWITCH_TAB, ( type, tab_id, region_name, result, current_platform ) ->
 
-                try
+                console.log 'design:SWITCH_TAB', type, tab_id, region_name, result, current_platform
 
-                    console.log 'design:SWITCH_TAB', type, tab_id, region_name, result, current_platform
+                # new stack store MC.open_failed_list
+                # when 'NEW_STACK' result is tab_id
+                if type in [ 'NEW_STACK' ]
+                    MC.open_failed_list[ MC.data.current_tab_id ] = { 'id' : tab_id, 'region' : region_name, 'platform' : current_platform, 'type' : type }
 
-                    # new stack store MC.open_failed_list
-                    # when 'NEW_STACK' result is tab_id
-                    if type in [ 'NEW_STACK' ]
-                        MC.open_failed_list[ MC.data.current_tab_id ] = { 'id' : tab_id, 'region' : region_name, 'platform' : current_platform, 'type' : type }
+                # restore old tab
+                if type in [ 'OLD_STACK', 'OLD_APP' ] then model.getTab type, tab_id else view.$el.html design_view_init
 
-                    # restore old tab
-                    if type in [ 'OLD_STACK', 'OLD_APP' ] then model.getTab type, tab_id else view.$el.html design_view_init
+                # new stack | open stack | open app
+                if type in [ 'NEW_STACK', 'OPEN_STACK', 'OPEN_APP' ]
 
-                    # new stack | open stack | open app
-                    if type in [ 'NEW_STACK', 'OPEN_STACK', 'OPEN_APP' ]
+                    if result and result.resolved_data and result.resolved_data.length is 0
+                        console.log 'current tab inexistence', type, tab_id, region_name, result, current_platform
+                        return
 
-                        if result and result.resolved_data and result.resolved_data.length is 0
-                            console.log 'current tab inexistence', type, tab_id, region_name, result, current_platform
-                            return
+                    # add open_tab_data
+                    id = if type is 'NEW_STACK' then result else tab_id
+                    MC.data.open_tab_data[ id ] =
+                            region   : region_name
+                            type     : type
+                            platform : current_platform
+                            tab_id   : tab_id
+                            result   : result
 
-                        if type is 'NEW_STACK'
+                    # save MC.canvas_data
+                    if type is 'NEW_STACK'
 
-                            #set MC.canvas_data
-                            model.setCanvasData {}
+                        #set MC.canvas_data
+                        model.setCanvasData {}
 
-                        if type in [ 'OPEN_STACK', 'OPEN_APP' ]
+                        # create MC.canvas_data
+                        MC.common.other.canvasData.initSet 'id'       , result
+                        MC.common.other.canvasData.initSet 'name'     , tab_id
+                        MC.common.other.canvasData.initSet 'region'   , region_name
+                        MC.common.other.canvasData.initSet 'platform' , current_platform
+                        MC.common.other.canvasData.initSet 'version'  , '2014-02-17'
 
-                            #set MC.canvas_data
-                            model.setCanvasData result.resolved_data[0]
+                        # platform is classic
+                        if current_platform is Design.TYPE.Classic or current_platform is Design.TYPE.DefaultVpc
+                            component = $.extend true, {}, MC.canvas.DESIGN_INIT_DATA
+                            layout    = MC.canvas.DESIGN_INIT_LAYOUT
 
-                        #when NEW_STACK result is tab_id
-                        ide_event.trigger ide_event.OPEN_DESIGN_0, region_name, type, current_platform, tab_id, result
-                        ide_event.trigger ide_event.OPEN_DESIGN, region_name, type, current_platform, tab_id, result
-
-                        if type is 'OPEN_STACK'
-                            ide_event.trigger ide_event.SWITCH_WAITING_BAR, null, true
-
-                        # move it to trigger GET_STATE_MODULE
-                        #if type is 'OPEN_STACK'
-                        #
-                        #    #get all not exist ami data for stack
-                        #    model.getAllNotExistAmiInStack region_name
-
-                        if type is 'OPEN_APP'
-
-                            if Tabbar.current isnt 'appview'
-
-                                # add running app list
-                                MC.data.running_app_list[ tab_id ] = { app_id : tab_id }
-
-                                #get all resource data for app
-                                model.getAppResourcesService region_name, tab_id
-
-                            #else if Tabbar.current is 'appview'
-                            #
-                            #    model.getAllNotExistAmiInStack region_name
-
-                    # setting app state
-                    if type in [ 'OPEN_APP', 'OLD_APP' ]
-
-                        console.log 'when open_app or old_app restore the scene'
-
-                        # update design-overlay when app changed
-                        if MC.data.process[ tab_id ] and MC.data.process[ tab_id ].flag_list
-
-                            # changed success
-                            if MC.data.process[ tab_id ].flag_list.is_updated
-
-                                if type is 'OLD_APP'
-                                    ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, 'UPDATING_SUCCESS', tab_id
-                                else
-                                    MC.common.other.deleteProcess tab_id
-
-                            # changed done
-                            else if MC.data.process[ tab_id ].flag_list.is_done
-                                ide_event.trigger ide_event.HIDE_DESIGN_OVERLAY
-
-                            # changed fail
-                            else if MC.data.process[ tab_id ].flag_list.is_failed
-
-                                if type is 'OLD_APP'
-                                    ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, 'CHANGED_FAIL', tab_id
-                                else
-                                    # don't do anything
-
-                            # upading
-                            else if MC.data.process[ tab_id ].flag_list.flag is 'UPDATE_APP'
-                                ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, constant.APP_STATE.APP_STATE_UPDATING, tab_id
-
-                            # staring stopping terminating
-                            else if MC.data.process[ tab_id ].flag_list.flag in [ 'START_APP', 'STOP_APP', 'TERMINATE_APP' ]
-
-                                ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, model.returnAppState( MC.data.process[ tab_id ].flag_list.flag, MC.data.process[ tab_id ].state ), tab_id
-
+                        # platform is vpc
                         else
+                            component = $.extend true, {}, MC.canvas.DESIGN_INIT_DATA_VPC
+                            layout    = MC.canvas.DESIGN_INIT_LAYOUT_VPC
 
-                            # F5 ide restore overlay
-                            state = MC.common.other.filterProcess tab_id
-                            if state
-                                ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, state, tab_id
+                        MC.common.other.canvasData.initSet 'component', component
+                        MC.common.other.canvasData.initSet 'layout'   , layout
+
+                    # save MC.canvas_data
+                    if type in [ 'OPEN_STACK', 'OPEN_APP' ]
+
+                        #set MC.canvas_data
+                        model.setCanvasData result.resolved_data[0]
+
+                    #when NEW_STACK result is tab_id
+                    ide_event.trigger ide_event.OPEN_DESIGN, region_name, type, current_platform, tab_id, result
+
+                    if type is 'OPEN_STACK'
+                        ide_event.trigger ide_event.SWITCH_WAITING_BAR, null, true
+
+                # setting app state
+                if type in [ 'OPEN_APP', 'OLD_APP' ]
+
+                    console.log 'when open_app or old_app restore the scene'
+
+                    # update design-overlay when app changed
+                    if MC.data.process[ tab_id ] and MC.data.process[ tab_id ].flag_list
+
+                        # changed success
+                        if MC.data.process[ tab_id ].flag_list.is_updated
+
+                            if type is 'OLD_APP'
+                                ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, 'UPDATING_SUCCESS', tab_id
                             else
-                                console.log 'current tab not found state'
+                                MC.common.other.deleteProcess tab_id
 
-                    # show OPEN_TAB_FAIL
-                    if type in [ 'OLD_APP', 'OLD_STACK' ] and MC.open_failed_list[ tab_id ]
-                        ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, 'OPEN_TAB_FAIL', tab_id
+                        # changed done
+                        else if MC.data.process[ tab_id ].flag_list.is_done
+                            ide_event.trigger ide_event.HIDE_DESIGN_OVERLAY
 
-                    # Instead of posting a ide_event.OPEN_DESIGN to let property panel to figure it out what to do, here directly tells it to open a stack property.
-                    # Run it only if the tab was opened first time
-                    if type not in [ 'OLD_APP', 'OLD_STACK' ]
-                        ide_event.trigger ide_event.OPEN_PROPERTY, "component", ""
+                        # changed fail
+                        else if MC.data.process[ tab_id ].flag_list.is_failed
 
-                    # hide status bar
-                    view.hideStatusbar()
+                            if type is 'OLD_APP'
+                                ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, 'CHANGED_FAIL', tab_id
+                            else
+                                # don't do anything
 
-                catch error
-                    ### env:dev ###
-                    throw error
-                    ### env:dev:end ###
+                        # upading
+                        else if MC.data.process[ tab_id ].flag_list.flag is 'UPDATE_APP'
+                            ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, constant.APP_STATE.APP_STATE_UPDATING, tab_id
+
+                        # staring stopping terminating
+                        else if MC.data.process[ tab_id ].flag_list.flag in [ 'START_APP', 'STOP_APP', 'TERMINATE_APP' ]
+
+                            ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, model.returnAppState( MC.data.process[ tab_id ].flag_list.flag, MC.data.process[ tab_id ].state ), tab_id
+
+                    else
+
+                        # F5 ide restore overlay
+                        state = MC.common.other.filterProcess tab_id
+                        if state
+                            ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, state, tab_id
+                        else
+                            console.log 'current tab not found state'
+
+                # show OPEN_TAB_FAIL
+                if type in [ 'OLD_APP', 'OLD_STACK' ] and MC.open_failed_list[ tab_id ]
+                    ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, 'OPEN_TAB_FAIL', tab_id
+
+                # hide status bar
+                view.hideStatusbar()
 
                 null
 
@@ -277,9 +275,46 @@ define [ 'i18n!nls/lang.js', 'constant', 'stateeditor', 'Design', './module/desi
                 property_main.restore property_panel
                 null
 
+            #listen RESOURCE_API_COMPLETE
+            ide_event.onLongListen ide_event.RESOURCE_API_COMPLETE, () ->
+                console.log 'design:RESOURCE_API_COMPLETE'
+
+                obj = MC.data.open_tab_data[ MC.data.current_tab_id ]
+
+                if obj and obj.tab_id
+
+                    # push event
+                    ide_event.trigger ide_event.CREATE_DESIGN_OBJ, obj.region, obj.type, obj.platform, obj.tab_id, obj.result
+
+                    if Tabbar.current is 'app'
+
+                        #get all resource data for app
+                        model.getAppResourcesService obj.region, obj.tab_id
+
+                    else if Tabbar.current is 'appview'
+
+                        # update resource
+                        Design.instance().trigger Design.EVENT.AwsResourceUpdated
+
+                    else if Tabbar.current in [ 'new', 'stack' ]
+
+                        ide_event.trigger ide_event.GET_STATE_MODULE
+
+                    # Instead of posting a ide_event.OPEN_DESIGN to let property panel to figure it out what to do, here directly tells it to open a stack property.
+                    # Run it only if the tab was opened first time
+                    if obj.type not in [ 'OLD_APP', 'OLD_STACK' ]
+                        ide_event.trigger ide_event.OPEN_PROPERTY, "component", ""
+
+                    # delete tab id object
+                    delete MC.data.open_tab_data[ MC.data.current_tab_id ]
+
+                else
+                    console.error 'design:RESOURCE_API_COMPLETE'
+
             #listen GET_STATE_MODULE
             ide_event.onLongListen ide_event.GET_STATE_MODULE, () ->
-                console.log 'design:GET_STATE_MODULE = ' + model.getStateModule()
+                console.log 'design:GET_STATE_MODULE'
+                model.getStateModule()
 
     #private
     unLoadModule = () ->

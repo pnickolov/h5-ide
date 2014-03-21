@@ -8,9 +8,9 @@
       <dd>{{#if isInternet}}Internet Facing{{else}}Internal{{/if}}</dd>
       <dt>{{i18n "PROP_ELB_DNS_NAME"}}</dt>
       <dd>
-        <div class="click-select tooltip" data-tooltip="Click to select all">(A){{DNSName}}</div>
-        <div class="click-select tooltip" data-tooltip="Click to select all">(AAAA)ipv6.{{DNSName}}</div>
-        <div class="click-select tooltip" data-tooltip="Click to select all">(A/AAAA)dualstack.{{DNSName}}</div>
+        <div class="click-select tooltip" data-tooltip="{{i18n 'PROP_ELB_TIP_CLICK_TO_SELECT_ALL'}}">(A){{DNSName}}</div>
+        <div class="click-select tooltip" data-tooltip="{{i18n 'PROP_ELB_TIP_CLICK_TO_SELECT_ALL'}}">(AAAA)ipv6.{{DNSName}}</div>
+        <div class="click-select tooltip" data-tooltip="{{i18n 'PROP_ELB_TIP_CLICK_TO_SELECT_ALL'}}">(A/AAAA)dualstack.{{DNSName}}</div>
       </dd>
       <dt>{{i18n "PROP_ELB_HOST_ZONE_ID"}}</dt>
       <dd>{{CanonicalHostedZoneNameID}}<dd>
@@ -19,7 +19,7 @@
 		<section class="property-control-group">
 			<label class="left" for="property-elb-name" >{{ i18n "PROP_ELB_NAME" }}</label>
 			<span class="required-input right">{{ i18n "PROP_ELB_REQUIRED" }}</span>
-			<input data-ignore="true" data-required-rollback="true" maxlength="18" class="input elb-name"  type="text" value="{{name}}" id="property-elb-name"/>
+			<input data-ignore="true" data-required-rollback="true" maxlength="17" class="input elb-name"  type="text" value="{{name}}" id="property-elb-name"/>
 		</section>
 
 		{{#if isVpc}}
@@ -48,15 +48,15 @@
 				<label for="elb-cross-az-select"></label>
 			</div>
 			<label for="elb-cross-az-select" >Enable cross-zone load balancing</label>
-			<a class="elb-info-icon tooltip icon-info" href="https://aws.amazon.com/about-aws/whats-new/2013/11/06/elastic-load-balancing-adds-cross-zone-load-balancing/" data-tooltip="Click to read related AWS document" target="_blank"></a>
+			<a class="elb-info-icon tooltip icon-info" href="https://aws.amazon.com/about-aws/whats-new/2013/11/06/elastic-load-balancing-adds-cross-zone-load-balancing/" data-tooltip="{{i18n 'PROP_ELB_TIP_CLICK_TO_READ_RELATED_AWS_DOCUMENT'}}" target="_blank"></a>
 		</section>
 	</div>
 
 	<div class="option-group-head"> {{ i18n "PROP_ELB_LISTENER_DETAIL" }} </div>
-	<div class="option-group" data-bind="true"> <ul id="elb-property-listener-list">
+	<div class="option-group" data-bind="true"> <ul id="elb-property-listener-list" class="property-list">
 		{{#each listeners}}
 		<li class="elb-property-listener">
-			<div class="elb-property-listener-item-remove icon-remove tooltip" data-tooltip="Remove listener" {{#unless @index}}style="display:none;"{{/unless}}></div>
+			<div class="elb-property-listener-item-remove icon-remove tooltip" data-tooltip="{{i18n 'PROP_ELB_TIP_REMOVE_LISTENER'}}" {{#unless @index}}style="display:none;"{{/unless}}></div>
 
 			<div class="property-control-group clearfix">
 				<div class="elb-property-listener-item-1">
@@ -73,7 +73,7 @@
 				</div>
 				<div class="elb-property-listener-item-2">
 					<label class="left">Port</label>
-					<input class="input elb-property-elb-port tooltip" data-tooltip="25, 80, 443 or 1024 - 65535" type="text" value="{{port}}" data-ignore="true" data-required="true" data-type="digits" maxlength="5"/>
+					<input class="input elb-property-elb-port tooltip" data-tooltip="{{i18n 'PROP_ELB_TIP_25_80_443OR1024TO65535'}}" type="text" value="{{port}}" data-ignore="true" data-required="true" data-type="digits" maxlength="5"/>
 				</div>
 			</div>
 
@@ -92,37 +92,35 @@
 				</div>
 				<div class="left elb-property-listener-item-2">
 					<label class="left">Port</label>
-					<input class="input elb-property-instance-port tooltip" data-tooltip="1 - 65535" type="text" value="{{instancePort}}" data-ignore="true" data-required="true" data-type="digits" maxlength="5"/>
+					<input class="input elb-property-instance-port tooltip" data-tooltip="{{i18n 'PROP_ELB_TIP_1_65535'}}" type="text" value="{{instancePort}}" data-ignore="true" data-required="true" data-type="digits" maxlength="5"/>
 				</div>
 			</div>
 		</li>
 		{{/each}}
 		</ul>
-		<a href="#" id="elb-property-listener-content-add" class="add-to-list action-link">
-			+ {{ i18n "PROP_ELB_BTN_ADD_LISTENER"}}
-		</a>
-
-		<div id="elb-property-listener-cert-main" {{#if showCert}}style="display:block;"{{/if}}>
-			<div class="property-control-group">
-				<h5>{{ i18n "PROP_ELB_BTN_ADD_SERVER_CERTIFICATE"}}</h5>
+		<a href="#" id="elb-property-listener-content-add" class="add-to-list action-link">{{ i18n "PROP_ELB_BTN_ADD_LISTENER"}}</a>
+		<section class="property-control-group" id="property-control-group-cert-setting">
+			<label class="left">{{ i18n "PROP_ELB_SERVER_CERTIFICATE" }}</label>
+			<div class="selectbox" id="sslcert-select">
+				<div class="selection"></div>
+				<div style="height: 120px; width:260px;" class="dropdown scroll-wrap scrollbar-auto-hide  clearfix">
+					<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+					<div class="scroll-content">
+						<ul>
+							<li class="item{{#if noSSLCert}} selected{{/if}}">None</li>
+							{{#each sslCertItem}}
+								<li class="item{{#if selected}} selected{{/if}}" data-id="{{uid}}">
+									{{name}}<span class="icon-edit"></span><span class="icon-remove"></span>
+								</li>
+							{{/each}}
+						</ul>
+					</div>
+				</div>
+				<div class="editor">
+					<a href="#" class="editbtn">Add New Certiﬁcate...</a>
+				</div>
 			</div>
-			<div class="property-control-group clearfix">
-				<label class="left">{{ i18n "PROP_ELB_LBL_LISTENER_NAME"}}</label>
-				<input class="input" value="{{sslCert.name}}" type="text" id="elb-property-cert-name-input"/>
-			</div>
-			<div class="property-control-group clearfix">
-				<label class="left">{{ i18n "PROP_ELB_LBL_LISTENER_PRIVATE_KEY"}}</label>
-				<textarea class="input elb-property-cert-input tooltip" data-tooltip="PEM Encoded" id="elb-property-cert-privatekey-input">{{sslCert.key}}</textarea>
-			</div>
-			<div class="property-control-group clearfix">
-				<label class="left"  >{{ i18n "PROP_ELB_LBL_LISTENER_PUBLIC_KEY"}}</label>
-				<textarea class="input elb-property-cert-input tooltip" data-tooltip="PEM Encoded" id="elb-property-cert-publickey-input">{{sslCert.body}}</textarea>
-			</div>
-			<div class="property-control-group clearfix">
-				<label class="left"  >{{ i18n "PROP_ELB_LBL_LISTENER_CERTIFICATE_CHAIN"}}</label>
-				<textarea class="input elb-property-cert-input tooltip" data-tooltip="PEM Encoded" id="elb-property-cert-chain-input">{{sslCert.chain}}</textarea>
-			</div>
-		</div>
+		</section>
 	</div>
 
 	<div class="option-group-head"> {{ i18n "PROP_ELB_HEALTH_CHECK_DETAILS" }} </div>

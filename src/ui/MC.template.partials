@@ -4,7 +4,7 @@
 		<i class="icon-tabbar-label"></i>
 		{{tab_name}}
 	</a>
-	<a href="javascript:void(0)" class="close-restriction icon-close" title="Close Tab"></a>
+	<a href="javascript:void(0)" class="close-restriction icon-close" title="{{i18n 'TOOL_TIT_CLOSE_TAB'}}"></a>
 </li>
 
 <!-- {{tab.dashboard}} -->
@@ -13,7 +13,7 @@
 		<i class="icon-dashboard-tabbar icon-tabbar-label"></i>
 		{{target_id}}
 	</a>
-	<a href="javascript:void(0)" class="icon-close close-tab" title="Close Tab"></a>
+	<a href="javascript:void(0)" class="icon-close close-tab" title="{{i18n 'TOOL_TIT_CLOSE_TAB'}}"></a>
 </li>
 
 <!-- {{notification.item}} -->
@@ -44,7 +44,7 @@
 							{{{body}}}
 						</div>
 						{{#if is_asg}}
-							<div class="modal-text-minor">The auto scaling group will be deleted when the app is stopped.</div>
+							<div class="modal-text-minor">{{ i18n 'POP_CONFIRM_STOP_ASG' }}</div>
 						{{/if}}
 					{{/if}}
 				</div>
@@ -52,15 +52,15 @@
 		{{else}}
 			<div class="terminate-pro-app-confirm">
 				{{#if is_stop}}
-					<p><b>{{app_name}} is for PRODUCTION.</b> Stopping it will make your service unavailable.
+					<p><b>{{app_name}}{{ i18n 'POP_CONFIRM_PROD_APP_WARNING_MSG' }}</b>{{ i18n 'POP_CONFIRM_STOP_PROD_APP_MSG' }}
 						{{#if is_asg}}
-							The auto scaling group will be deleted when the app is stopped.
+							{{ i18n 'POP_CONFIRM_STOP_ASG' }}
 						{{/if}}
 					</p>
-					<p>Please type in the name of this app to confirm stopping it.</p>
+					<p>{{ i18n 'POP_CONFIRM_STOP_PROD_APP_INPUT_LBL' }}</p>
 				{{else}}
-					<p><b>{{app_name}} is for PRODUCTION.</b> Terminating it will make your service unavailable.</p>
-					<p>Please type in the name of this app to confirm terminating it.</p>
+					<p><b>{{app_name}} {{ i18n 'POP_CONFIRM_PROD_APP_WARNING_MSG' }}</b>{{ i18n 'POP_CONFIRM_TERMINATE_PROD_APP_MSG' }}</p>
+					<p>{{ i18n 'POP_CONFIRM_TERMINATE_PROD_APP_INPUT_LBL' }}</p>
 				{{/if}}
 				<p class="confirm-area"><input class="input" id="confirm-app-name" data-confirm="{{app_name}}"/></p>
 			</div>
@@ -83,11 +83,11 @@
 	</div>
 	<div class="modal-footer">
 		<a id="btn-confirm" class="btn btn-{{color}}" href="data://text/plain;, {{{this.filecontent}}}" download="{{this.download}}">{{confirm}}</a>
-		<button class="btn modal-close btn-silver">Cancel</button>
+		<button class="btn modal-close btn-silver">{{i18n "TOOL_POP_BTN_CANCEL"}}</button>
 	</div>
 </div>
 
-<!-- {{modalDownloadCloudFormationTpl}} -->
+<!-- {{exportCloudFormation}} -->
 <div id="modal-export-cf" style="width:468px">
 	<div class="modal-header"> <h3>{{i18n "TOOL_POP_EXPORT_CF"}}</h3><i class="modal-close">&times;</i> </div>
 	<div class="modal-body">
@@ -97,8 +97,8 @@
 		</div> </div>
 	</div>
 	<div class="modal-footer">
-		<a id="tpl-download" class="btn btn-blue" disabled download="{{this.download}}">{{i18n "TOOL_POP_BTN_EXPORT_CF"}}</a>
-		<button id="tpl-cancel" class="btn modal-close btn-silver">{{i18n "TOOL_POP_BTN_CANCEL"}}</button>
+		<a id="tpl-download" class="btn btn-blue modal-close disabled" target="_blank">{{i18n "TOOL_POP_BTN_EXPORT_CF"}}</a>
+		<button class="btn modal-close btn-silver">{{i18n "TOOL_POP_BTN_CANCEL"}}</button>
 	</div>
 </div>
 
@@ -112,16 +112,16 @@
 		</div> </div>
 	</div>
 	<div class="modal-footer">
-		<a id="modal-export-json" class="btn btn-blue" href="{{data}}" target="_blank" download="{{name}}">{{i18n "TOOL_POP_BTN_DOWNLOAD"}}</a>
+		<a class="btn btn-blue modal-close" href="{{data}}" target="_blank" download="{{name}}">{{i18n "TOOL_POP_BTN_DOWNLOAD"}}</a>
 		<button id="tpl-cancel" class="btn modal-close btn-silver">{{i18n "TOOL_POP_BTN_CANCEL"}}</button>
 	</div>
 </div>
 
 <!-- {{importJSON}} -->
 <div style="width:468px">
-	<div class="modal-header"> <h3>Import Stack from JSON file</h3><i class="modal-close">&times;</i> </div>
-	<div class="modal-body">
-		<div id="modal-import-json-dropzone">Drop JSON file here or <label for="modal-import-json-file" class="select-file-link"> select a file.</label><input type="file" id="modal-import-json-file"></div>
+	<div class="modal-header"> <h3>{{i18n "POP_IMPORT_JSON_TIT"}}</h3><i class="modal-close">&times;</i> </div>
+	<div class="modal-body" style="min-height:0px;">
+		<div id="modal-import-json-dropzone">{{i18n "POP_IMPORT_DROP_LBL"}}<label for="modal-import-json-file" class="select-file-link">{{i18n "POP_IMPORT_SELECT_LBL"}}</label><input type="file" id="modal-import-json-file"></div>
 		<div id="import-json-error"></div>
 	</div>
 </div>
@@ -139,7 +139,7 @@
 
 	<div class="modal-footer">
 		<a id="btn-confirm" class="btn btn-{{color}}" >{{confirm}}</a>
-		<button class="btn modal-close btn-silver">Cancel</button>
+		<button class="btn modal-close btn-silver">{{i18n "TOOL_POP_BTN_CANCEL"}}</button>
 	</div>
 </div>
 
@@ -192,7 +192,7 @@
 	</div>
 
 	<div class="modal-footer">
-		<button class="btn modal-close btn-silver">Close</button>
+		<button class="btn modal-close btn-silver">{{i18n "POP_BTN_CLOSE"}}</button>
 	</div>
 </div>
 
@@ -553,63 +553,6 @@ Additional Notes and Questions
 			http://docs.amazonwebservices.com/AmazonVPC/latest/NetworkAdminGuide
 	- XSL Version: 2009-07-15-1119716
 
-<!-- {{modalStackValidationRun}} -->
-<div id="modal-stack-validation-run">
-	<div class="modal-header">
-		<h3>{{title}}</h3>
-		<i class="modal-close">&times;</i>
-	</div>
-	<div class="modal-body">
-		<div class="accordion accordion-default" data-accordion-option="exclusive">
-			<div class="accordion-group expanded validation-error">
-				<div class="accordion-head">
-					<i class="icon-error"></i> 1 Error
-				</div>
-				<div class="accordion-body">
-					<ol>
-						<li>Subnet(10.0.1.0/24) is attached to an ELB, but larger than /27.</li>
-					</ol>
-				</div>
-			</div>
-			<div class="accordion-group validation-warning">
-				<div class="accordion-head">
-					<i class="icon-warning"></i> 5 Warning
-				</div>
-				<div class="accordion-body">
-					<ol>
-						<li>No instance is attached to ELB.</li>
-						<li>ELB is only attached to instance in 1 availability zone. Use multiple availability zones will enhance fault tolerance.</li>
-						<li>No instance is attached to ELB.</li>
-						<li>ELB is only attached to instance in 1 availability zone. Use multiple availability zones will enhance fault tolerance.</li>
-						<li>No instance is attached to ELB.</li>
-						<li>ELB is only attached to instance in 1 availability zone. Use multiple availability zones will enhance fault tolerance.</li>
-					</ol>
-				</div>
-			</div>
-			<div class="accordion-group validation-notice">
-				<div class="accordion-head">
-					<i class="icon-notice"></i> 5 Notice
-				</div>
-				<div class="accordion-body">
-					<ol>
-						<li>No instance is attached to ELB.</li>
-						<li>elb1 is only attached to instance in 1 availability zone. Use multiple availability zones will enhance fault tolerance.</li>
-						<li>No instance is attached to ELB.</li>
-						<li>elb1 is only attached to instance in 1 availability zone. Use multiple availability zones will enhance fault tolerance.</li>
-						<li>No instance is attached to elb1.</li>
-						<li>elb1 is only attached to instance in 1 availability zone. Use multiple availability zones will enhance fault tolerance.</li>
-					</ol>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="modal-footer">
-		<button class="btn btn-red">Proceed</button>
-		<button disabled class="btn btn-red">Proceed</button>
-		<button class="btn btn-silver modal-close">Run Later</button>
-	</div>
-</div>
-
 <!-- {{modalRunStack}} -->
 <div id="modal-run-stack">
 	<div class="modal-header">
@@ -653,9 +596,6 @@ Additional Notes and Questions
 	<div class="modal-footer">
 
 		<button class="btn btn-blue" id="btn-confirm" disabled>Run Stack</button>
-		<!--  If there is error of this stack, disable this button.
-			<button disabled class="btn btn-blue tooltip" data-tooltip="Please fix error first and try to run the stack again.">Run Stack</button>
-		-->
 		<button class="btn btn-silver modal-close">Cancel</button>
 	</div>
 </div>
@@ -1223,20 +1163,20 @@ Following rule(s) will be deleted from its(their) security group:</div>
 
 <!-- {{updateApp}} -->
 <div id="app-apply-update" style="width:460px">
-	<div class="modal-header"><h3 class="truncate" style="width: 380px;">Conﬁrm to Update App</h3><i class="modal-close">&times;</i> </div>
+	<div class="modal-header"><h3 class="truncate" style="width: 380px;">{{ i18n 'POP_CONFIRM_UPDATE_TIT'}}</h3><i class="modal-close">&times;</i> </div>
 	<div class="modal-body">
 	{{#if isRunning}}
-		<h3 class="modal-text-major">Do you confirm to apply the changes?</h3>
+		<h3 class="modal-text-major">{{ i18n 'POP_CONFIRM_UPDATE_MAJOR_TEXT_RUNNING'}}</h3>
 	{{else}}
-		<h3 class="modal-text-major">Do you confirm to apply the changes and start the app?</h3>
-		<p class="modal-text-minor" style="margin-top:10px;">The app is currently stopped. To apply updates, the app will be started automatically.</p>
+		<h3 class="modal-text-major">{{ i18n 'POP_CONFIRM_UPDATE_MAJOR_TEXT_STOPPED'}}</h3>
+		<p class="modal-text-minor" style="margin-top:10px;">{{ i18n 'POP_CONFIRM_UPDATE_MINOR_TEXT_STOPPED'}}</p>
 	{{/if}}
 	{{#if result.length}}
 		<table class="table-head-fix table app-update-summary-table-header" data-target="app-update-summary-table">
 			<thead> <tr class="header-row">
-				<th class="sortable active" width="30%">Type</th>
-				<th class="sortable" width="30%">Name</th>
-				<th class="sortable" width="40%">Change</th> </tr>
+				<th class="sortable active" width="30%">{{ i18n 'POP_CONFIRM_UPDATE_TABLE_TYPE'}}</th>
+				<th class="sortable" width="30%">{{ i18n 'POP_CONFIRM_UPDATE_TABLE_NAME'}}</th>
+				<th class="sortable" width="40%">{{ i18n 'POP_CONFIRM_UPDATE_TABLE_CHANGE'}}</th> </tr>
 			</thead>
 		</table>
 		<div class="scroll-wrap" style="max-height:256px;">
@@ -1252,7 +1192,7 @@ Following rule(s) will be deleted from its(their) security group:</div>
 						{{else}}
 						<span class="au-summary-label au-summary-{{change}}">{{change}}</span>
 						{{/each}}
-						{{#if extra}}<span class="au-summary-extra">{{extra}}</span>{{/if}}
+						{{#if extra}}<p class="au-summary-extra">{{extra}}</p>{{/if}}
 						{{#if info}}<span class="tooltip icon-warning" data-tooltip="{{info}}"></span>{{/if}}</td>
 				</tr> {{/each}}
 				</tbody>
@@ -1261,19 +1201,19 @@ Following rule(s) will be deleted from its(their) security group:</div>
 	{{/if}}
 		<div class="stack-validation">
 			<details open style="display:none;">
-				<summary>Validation</summary>
+				<summary>{{ i18n 'POP_CONFIRM_UPDATE_VALIDATION'}}</summary>
 				<div id="stack-run-validation-container"></div>
 			</details>
 			<div class="nutshell" style="display: none;">:<label></label></div>
 			<div class="validating">
 				<div class="loading-spinner loading-spinner-small"></div>
-				<p>Validating your app...</p>
+				<p>{{ i18n 'POP_CONFIRM_UPDATE_VALIDATING'}}</p>
 			</div>
 		</div>
 	</div>
 	<div class="modal-footer">
-		<button id="confirm-update-app" class="btn btn-blue" style="width:160px;" disabled>Continue to Update</button>
-		<button class="btn modal-close btn-silver">Cancel</button>
+		<button id="confirm-update-app" class="btn btn-blue" style="width:160px;" disabled>{{ i18n 'POP_CONFIRM_UPDATE_CONFIRM_BTN'}}</button>
+		<button class="btn modal-close btn-silver">{{ i18n 'POP_CONFIRM_UPDATE_CANCEL_BTN'}}</button>
 	</div>
 </div>
 
@@ -1390,150 +1330,206 @@ Are you sure you want to delete {{name}}?</div>
 
 <!-- {{shortkey}} -->
 <div style="width:640px" id="modal-key-short">
-	<div class="modal-header"><h3>Keyboard Shortcuts (?)</h3><i class="modal-close">&times;</i></div>
+	<div class="modal-header"><h3>{{i18n "KEY_MOD_TIT"}}</h3><i class="modal-close">&times;</i></div>
 	<div class="modal-body scroll-wrap">
 		<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
 		<div class="scroll-content" style="height: 560px">
 			<section class="key-stack-app">
-				<h3 class="title">Stack/App Operation</h3>
+				<h3 class="title">{{i18n "KEY_TIT_STACK_APP_OP"}}</h3>
 				<ul class="keys">
 					<li class="key-item">
-						<div class="key font-mono">P</div>
-						<div class="action">Show Property Panel</div>
+						<div class="key font-mono">{{i18n "KEY_PROP_KEY"}}</div>
+						<div class="action">{{i18n "KEY_PROP_ACTION"}}</div>
 					</li>
 					<li class="key-item">
-						<div class="key font-mono">R</div>
-						<div class="action">Show Resource Panel
-							<div class="meta">Only in editable mode.</div>
+						<div class="key font-mono">{{i18n "KEY_STAT_KEY"}}</div>
+						<div class="action">{{i18n "KEY_STAT_ACTION"}}</div>
+					</li>
+					<li class="key-item">
+						<div class="key mac font-mono">{{i18n "KEY_DUPL_KEY_MAC"}}</div>
+						<div class="key pc font-mono">{{i18n "KEY_DUPL_KEY_PC"}}</div>
+						<div class="action">{{i18n "KEY_DUPL_ACTION"}}
 						</div>
 					</li>
 					<li class="key-item">
-						<div class="key font-mono">S</div>
-						<div class="action">Show State Panel</div>
-					</li>
-					<li class="key-item">
-						<div class="key mac font-mono">Option+Drag Instance</div>
-						<div class="key pc font-mono">Alt+Drag Instance</div>
-						<div class="action">Duplicate Instance
-							<div class="meta">Only in editable mode.</div>
+						<div class="key mac font-mono">{{i18n "KEY_DEL_KEY_MAC"}}</div>
+						<div class="key pc font-mono">{{i18n "KEY_DEL_KEY_PC"}}</div>
+						<div class="action">{{i18n "KEY_DEL_ACTION"}}
 						</div>
 					</li>
 					<li class="key-item">
-						<div class="key mac font-mono">Delete</div>
-						<div class="key pc font-mono">Delete/Backspace</div>
-						<div class="action">Delete selected item.
-							<div class="meta">Only in editable mode.</div>
+						<div class="key mac font-mono">{{i18n "KEY_SAVE_KEY_MAC"}}</div>
+						<div class="key pc font-mono">{{i18n "KEY_SAVE_KEY_PC"}}</div>
+						<div class="action">{{i18n "KEY_SAVE_ACTION"}}
 						</div>
 					</li>
 					<li class="key-item">
-						<div class="key mac font-mono">Command + S</div>
-						<div class="key pc font-mono">Ctrl+S</div>
-						<div class="action">Save stack.
-							<div class="meta">Only in stack.</div>
-						</div>
-					</li>
-					<li class="key-item">
-						<div class="key mac font-mono">Command+Drag on canvas</div>
-						<div class="key pc font-mono">Ctrl+Drag on canvas</div>
-						<div class="action">Scroll canvas.</div>
+						<div class="key mac font-mono">{{i18n "KEY_SCRL_KEY_MAC"}}</div>
+						<div class="key pc font-mono">{{i18n "KEY_SCRL_KEY_PC"}}</div>
+						<div class="action">{{i18n "KEY_SCRL_ACTION"}}</div>
 					</li>
 				</ul>
 			</section>
 			<section class="key-state">
-				<h3 class="title">State Panel Operation - General</h3>
+				<h3 class="title">{{i18n "KEY_TIT_STATE_GEN"}}</h3>
 				<ul class="keys">
 					<li class="key-item">
-						<div class="key font-mono">Up/Down</div>
-						<div class="action">Switch focused state.</div>
+						<div class="key font-mono">{{i18n "KEY_FOCUS_KEY"}}</div>
+						<div class="action">{{i18n "KEY_FOCUS_ACTION"}}</div>
 					</li>
 					<li class="key-item">
-						<div class="key font-mono">Space</div>
-						<div class="action">Select/Unselect focused state.</div>
+						<div class="key font-mono">{{i18n "KEY_SELECT_KEY"}}</div>
+						<div class="action">{{i18n "KEY_SELECT_ACTION"}}</div>
 					</li>
 					<li class="key-item">
-						<div class="key font-mono">Enter</div>
-						<div class="action">Expand focused state.</div>
+						<div class="key font-mono">{{i18n "KEY_EXPAND_KEY"}}</div>
+						<div class="action">{{i18n "KEY_EXPAND_ACTION"}}</div>
 					</li>
 					<li class="key-item">
-						<div class="key font-mono">ESC</div>
-						<div class="action">Collapse focused state.</div>
+						<div class="key font-mono">{{i18n "KEY_COLLAPSE_KEY"}}</div>
+						<div class="action">{{i18n "KEY_COLLAPSE_ACTION"}}</div>
 					</li>
 					<li class="key-item">
-						<div class="key font-mono">Tab</div>
-						<div class="action">Focus to next input.</div>
+						<div class="key font-mono">{{i18n "KEY_NEXT_KEY"}}</div>
+						<div class="action">{{i18n "KEY_NEXT_ACTION"}}</div>
 					</li>
 					<li class="key-item">
-						<div class="key font-mono">Shift+Tab</div>
-						<div class="action">Focus to previous input.
+						<div class="key font-mono">{{i18n "KEY_PREV_KEY"}}</div>
+						<div class="action">{{i18n "KEY_PREV_ACTION"}}
 						</div>
 					</li>
 					<li class="key-item">
-						<div class="key mac font-mono">Command+I</div>
-						<div class="key pc font-mono">Ctrl+I</div>
-						<div class="action">Open/Close information sidebar.</div>
+						<div class="key mac font-mono">{{i18n "KEY_INFO_KEY_MAC"}}</div>
+						<div class="key pc font-mono">{{i18n "KEY_INFO_KEY_PC"}}</div>
+						<div class="action">{{i18n "KEY_INFO_ACTION"}}</div>
 					</li>
 					<li class="key-item">
-						<div class="key mac font-mono">Command+L</div>
-						<div class="key pc font-mono">Ctrl+L</div>
-						<div class="action">Open/Close log sidebar.
-							<div class="meta">Only in app.</div>
+						<div class="key mac font-mono">{{i18n "KEY_LOG_KEY_MAC"}}</div>
+						<div class="key pc font-mono">{{i18n "KEY_LOG_KEY_PC"}}</div>
+						<div class="action">{{i18n "KEY_LOG_ACTION"}}
 						</div>
 					</li>
 				</ul>
 			</section>
 			<section class="key-state-edit">
-				<h3 class="title">State Panel Operation - Editable Mode</h3>
+				<h3 class="title">{{i18n "KEY_TIT_STATE_EDIT"}}</h3>
 				<ul class="keys">
 					<li class="key-item">
-						<div class="key mac font-mono">Command+A</div>
-						<div class="key pc font-mono">Ctrl+A</div>
-						<div class="action">Select all states.</div>
+						<div class="key mac font-mono">{{i18n "KEY_SELECT_ALL_KEY_MAC"}}</div>
+						<div class="key pc font-mono">{{i18n "KEY_SELECT_ALL_KEY_PC"}}</div>
+						<div class="action">{{i18n "KEY_SELECT_ALL_ACTION"}}</div>
 					</li>
 					<li class="key-item">
-						<div class="key mac font-mono">Command+D</div>
-						<div class="key pc font-mono">Ctrl+D</div>
-						<div class="action">Deselect states.</div>
+						<div class="key mac font-mono">{{i18n "KEY_DESELECT_KEY_MAC"}}</div>
+						<div class="key pc font-mono">{{i18n "KEY_DESELECT_KEY_PC"}}</div>
+						<div class="action">{{i18n "KEY_DESELECT_ACTION"}}</div>
 					</li>
 					<li class="key-item">
-						<div class="key mac font-mono">Command+Enter</div>
-						<div class="key pc font-mono">Ctrl+Enter</div>
-						<div class="action">Create new state.</div>
+						<div class="key mac font-mono">{{i18n "KEY_CREATE_KEY_MAC"}}</div>
+						<div class="key pc font-mono">{{i18n "KEY_CREATE_KEY_PC"}}</div>
+						<div class="action">{{i18n "KEY_CREATE_ACTION"}}</div>
 					</li>
 					<li class="key-item">
-						<div class="key mac font-mono">Command+Delete</div>
-						<div class="key pc font-mono">Ctrl+Delete/Backspace</div>
-						<div class="action">Delete selected state.</div>
+						<div class="key mac font-mono">{{i18n "KEY_DEL_STATE_KEY_MAC"}}</div>
+						<div class="key pc font-mono">{{i18n "KEY_DEL_STATE_KEY_MAC"}}</div>
+						<div class="action">{{i18n "KEY_DEL_STATE_ACTION"}}</div>
 					</li>
 					<li class="key-item">
-						<div class="key mac font-mono">Command+Up/Down</div>
-						<div class="key pc font-mono">Ctrl+Up/Down</div>
-						<div class="action">Move focused state.</div>
+						<div class="key mac font-mono">{{i18n "KEY_MOVE_FOCUS_STATE_KEY_MAC"}}</div>
+						<div class="key pc font-mono">{{i18n "KEY_MOVE_FOCUS_STATE_KEY_PC"}}</div>
+						<div class="action">{{i18n "KEY_MOVE_FOCUS_STATE_ACTION"}}</div>
 					</li>
 					<li class="key-item">
-						<div class="key mac font-mono">Command+C</div>
-						<div class="key pc font-mono">Ctrl+C</div>
-						<div class="action">Copy selected state.</div>
+						<div class="key mac font-mono">{{i18n "KEY_COPY_STATE_KEY_MAC"}}</div>
+						<div class="key pc font-mono">{{i18n "KEY_COPY_STATE_KEY_PC"}}</div>
+						<div class="action">{{i18n "KEY_COPY_STATE_ACTION"}}</div>
 					</li>
 					<li class="key-item">
-						<div class="key mac font-mono">Command+V</div>
-						<div class="key pc font-mono">Ctrl+V</div>
-						<div class="action">Paste selecte state.</div>
+						<div class="key mac font-mono">{{i18n "KEY_PASTE_STATE_KEY_MAC"}}</div>
+						<div class="key pc font-mono">{{i18n "KEY_PASTE_STATE_KEY_PC"}}</div>
+						<div class="action">{{i18n "KEY_PASTE_STATE_ACTION"}}</div>
 					</li>
 					<li class="key-item">
-						<div class="key mac font-mono">Command+Z</div>
-						<div class="key pc font-mono">Ctrl+Z</div>
-						<div class="action">Undo.</div>
+						<div class="key mac font-mono">{{i18n "KEY_UNDO_STATE_KEY_MAC"}}</div>
+						<div class="key pc font-mono">{{i18n "KEY_UNDO_STATE_KEY_PC"}}</div>
+						<div class="action">{{i18n "KEY_UNDO_STATE_ACTION"}}</div>
 					</li>
 					<li class="key-item">
-						<div class="key mac font-mono">Command+Y</div>
-						<div class="key pc font-mono">Ctrl+Y</div>
-						<div class="action">Redo.</div>
+						<div class="key mac font-mono">{{i18n "KEY_REDO_STATE_KEY_MAC"}}</div>
+						<div class="key pc font-mono">{{i18n "KEY_REDO_STATE_KEY_PC"}}</div>
+						<div class="action">{{i18n "KEY_REDO_STATE_ACTION"}}</div>
 					</li>
 				</ul>
 			</section>
 		</div>
 	</div>
 	<div class="modal-footer">
-		<button class="btn modal-close btn-silver">Close</button>
+		<button class="btn modal-close btn-silver">{{i18n "KEY_MODAL_BTN_CLOSE"}}</button>
 	</div>
+</div>
+
+<!-- modalSSLCertSetting -->
+<div style="width:343px" id="modal-ssl-cert-setting">
+	<div class="modal-header"><h3>Server Certiﬁcate</h3><i class="modal-close">&times;</i> </div>
+	<div class="modal-body" style="min-height:120px;">
+		<div class="modal-ssl-cert-item clearfix">
+			<label class="left">{{ i18n "PROP_ELB_LBL_LISTENER_NAME"}}</label>
+			<input class="input" value="{{sslCert.name}}" type="text" data-required="true" data-ignore="true" id="elb-ssl-cert-name-input"/>
+		</div>
+		<div class="modal-ssl-cert-item clearfix">
+			<label class="left">{{ i18n "PROP_ELB_LBL_LISTENER_PRIVATE_KEY"}}</label>
+			<textarea class="input elb-ssl-cert-input tooltip" data-tooltip="{{i18n 'POP_TIP_PEM_ENCODED'}}" data-required="true" data-ignore="true" id="elb-ssl-cert-privatekey-input">{{sslCert.key}}</textarea>
+		</div>
+		<div class="modal-ssl-cert-item clearfix">
+			<label class="left"  >{{ i18n "PROP_ELB_LBL_LISTENER_PUBLIC_KEY"}}</label>
+			<textarea class="input elb-ssl-cert-input tooltip" data-tooltip="{{i18n 'POP_TIP_PEM_ENCODED'}}" data-required="true" data-ignore="true" id="elb-ssl-cert-publickey-input">{{sslCert.body}}</textarea>
+		</div>
+		<div class="modal-ssl-cert-item clearfix">
+			<label class="left"  >{{ i18n "PROP_ELB_LBL_LISTENER_CERTIFICATE_CHAIN"}}</label>
+			<textarea class="input elb-ssl-cert-input tooltip" data-tooltip="{{i18n 'POP_TIP_PEM_ENCODED'}}" id="elb-ssl-cert-chain-input">{{sslCert.chain}}</textarea>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button id="elb-ssl-cert-confirm" class="btn btn-blue">Save</button>
+		<button id="elb-ssl-cert-cancel" class="btn modal-close btn-silver">Cancel</button>
+	</div>
+</div>
+
+<!-- experimentalVisops -->
+<div style="width:623px" id="experimental-modal">
+	<div class="modal-header">
+		<h3>{{ i18n "INVITE_MOD_TIT"}}</h3>
+		<i class="modal-close">×</i>
+	</div>
+	<div class="modal-body">
+		<h3 class="modal-body-header">{{ i18n "INVITE_MOD_INTRO"}}</h3>
+		<div class="modal-body-content">
+			<div class="modal-text-major">{{ i18n "INVITE_MOD_INTRO_MORE"}}</div>
+			<h4 class="request-invite-header">{{ i18n "INVITE_MOD_REQUEST_TIT"}}</h4>
+			<div class="request-invite-content">{{ i18n "INVITE_MOD_REQUEST_CONTENT"}}</div>
+			<textarea id="experimental-message" class="input" style="width:95%;height:120px;" placeholder='{{ i18n "INVITE_MOD_REQUEST_PLACEHOLDER"}}' data-required="true"></textarea>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button id="experimental-visops-confirm" class="btn btn-blue">{{ i18n "INVITE_MOD_BTN_REQUEST"}}</button>
+		<button id="experimental-visops-cancel" class="btn modal-close btn-silver">{{ i18n "INVITE_MOD_BTN_CANCEL"}}</button>
+	</div>
+</div>
+
+<!-- experimentalVisopsTrail -->
+<h3 class="modal-body-header">{{ i18n "INVITE_MOD_THANK_LBL"}}</h3>
+<div class="modal-text-major tac">{{ i18n "INVITE_MOD_THANK_MORE"}}</div>
+
+<!-- bubbleNATreq -->
+
+<div class="bubble-head">A NAT instance must meet following requirements:</div>
+<div class="bubble-content">
+	<ul class="bubble-NAT-req-list">
+		<li>Should have a route targeting the instance itself with destination to 0.0.0.0/0.</li>
+		<li>Should belong to a subnet which routes traffic with destination 0.0.0.0/0 to Internet Gateway.</li>
+		<li>Should disable Source/Destination Checking in "Network Interface Details".</li>
+		<li>Should have public IP or Elastic IP.</li>
+		<li>Should have outbound rule to the outside.</li>
+		<li>Should have inbound rule from within the VPC.</li>
+	</ul>
 </div>

@@ -8,6 +8,29 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
       backup : { when : null, day : null },
       start  : { when : null }
 
+  # The recursiveCheck is not fully working.
+  ### env:prod ###
+  createRecursiveCheck = ()->
+    return createRecursiveCheck.o or (createRecursiveCheck.o = {
+      check : ()->
+    })
+  ### env:prod:end ###
+  ### env:dev ###
+  createRecursiveCheck = ( uid )->
+    robj = {}
+    robj.cache = []
+    robj.check = ( uid )->
+      idx = robj.cache.indexOf( uid )
+      if idx is 0 or (idx > 0 and idx isnt robj.cache.length - 1)
+        console.error "Possible Recursive dependency found when deserializing JSON_DATA, uid: " + uid
+        return
+      robj.cache.push uid
+      null
+
+    if uid then robj.check( uid )
+    robj
+  ### env:dev:end ###
+
   ###
     -------------------------------
      Design is the main controller of the framework. It handles the input / ouput of the Application ( a.k.a the DesignCanvas ).
@@ -179,8 +202,7 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
       if obj then return obj
 
       # Check if we have recursive dependency
-      console.assert (not recursiveCheck[uid] && recursiveCheck[uid] = true ), "Recursive dependency found when deserializing JSON_DATA"
-
+      recursiveCheck.check( uid )
 
       component_data = json_data[ uid ]
 
@@ -235,10 +257,10 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
       # in the preDeserialize, meaning that its deserialize will not be called. Thus
       # we directly call the deserialize() of the resource here.
       if Design.__resolveFirstMap[ comp.type ] is true
-        recursiveCheck = { uid : true }
+        recursiveCheck = createRecursiveCheck( uid )
         Design.modelClassForType( comp.type ).deserialize( comp, layout_data[uid], resolveDeserialize )
       else
-        recursiveCheck = {}
+        recursiveCheck = createRecursiveCheck()
         resolveDeserialize uid
 
 

@@ -1,4 +1,4 @@
-define [ 'constant', 'MC' ], ( constant, MC ) ->
+define [ 'constant', 'MC', 'Design' ], ( constant, MC, Design ) ->
 
 	EbsMap =
 		"m1.large"   : true
@@ -133,11 +133,57 @@ define [ 'constant', 'MC' ], ( constant, MC ) ->
 		#return
 		instance_list
 
+	# parameter could be uid or aws id
+	# return uid and mid( memberId )
+	getEffectiveId = ( instance_id ) ->
+        myInstanceComponent = Design.instance().component( instance_id )
+        ret = uid: null, mid: null
+
+        # The instance_id might be component uid or aws id
+        if myInstanceComponent
+            ret.uid = instance_id
+        else
+            for instance in Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance ).allObjects()
+                if instance.get("appId") is instance_id
+                    ret.uid = instance.id
+                    ret.mid = "#{instance.id}_0"
+                    found = true
+                    break
+                else if instance.groupMembers
+                    for member, index in instance.groupMembers()
+                        if member and member.appId is instance_id
+                            ret.uid = instance.id
+                            ret.mid = "#{member.id}_#{index + 1}"
+                            found = true
+                            break
+            if not found
+                resource_list = MC.data.resource_list[ Design.instance().region() ]
+                for asg in Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group ).allObjects()
+                    data = resource_list[ asg.get("appId") ]
+                    if not data then continue
+                    data = data.Instances
+                    if data.member then data = data.member
+                    for obj in data
+                        if obj is instance_id or obj.InstanceId is instance_id
+                            ret.uid = asg.get("lc").id
+                            ret.mid = instance_id
+                            break
+
+        ret
+
+    resetSelectedinGroup = ( uid, mid ) ->
+        if mid.length is 38
+            MC.canvas.instanceList.selectById uid, mid
+        else
+            MC.canvas.asgList.selectById uid, mid
+
 
 	#public
-	updateCount        : updateCount
-	updateStateIcon    : updateStateIcon
-	canSetEbsOptimized : canSetEbsOptimized
-	getInstanceState   : getInstanceState
-	updateServerGroupState : updateServerGroupState
-	getInstanceInServerGroup : getInstanceInServerGroup
+	updateCount        		: updateCount
+	updateStateIcon    		: updateStateIcon
+	canSetEbsOptimized 		: canSetEbsOptimized
+	getInstanceState   		: getInstanceState
+	updateServerGroupState 	: updateServerGroupState
+	getInstanceInServerGroup: getInstanceInServerGroup
+	getEffectiveId			: getEffectiveId
+	resetSelectedinGroup	: resetSelectedinGroup

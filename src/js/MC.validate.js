@@ -2,7 +2,7 @@
 #**********************************************************
 #* Filename: MC.validate.js
 #* Creator: Tim
-#* Description: The core of the whole system
+#* Description: Validate helper of logic
 #* Date: 20130813
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
@@ -11,8 +11,8 @@
 
 define(["MC"], function( MC ) {
 
-	var slice = function( arr ) {
-		return Array.prototype.slice.apply( arr, Array.prototype.slice.call( arguments, 1 ) );
+	var slice = function( arr, start, end ) {
+		return Function.call.apply( Array.prototype.slice, arguments );
 	};
 
 	var regExp = {
@@ -38,7 +38,7 @@ define(["MC"], function( MC ) {
 		, sqs: /^arn:aws:sqs:[\w-]+:\d{12}:.+$/
 
 		, deviceLinux: /^\/dev\/(hd[a-z]([1-9]|1[0-5])|(sd[a-z]|sd[b-z]([1-9]|1[0-5])))$/
-		, deviceWindows: /^xvd[a-p]$/
+		, deviceWindows: /^xvd[f-p]$/
 
 	};
 

@@ -33,14 +33,14 @@ define [ './register', 'constant', 'MC','i18n!nls/lang.js' , '../result_vo' ], (
     isStateValid = ( uid ) ->
         component = MC.canvas_data.component[ uid ]
 
-        if component
-            states = component.state
-        else
-            component = Design.instance().component uid
-            states = component.get 'state'
+        if not component or not component.state or component.index and component.index > 0
+            return null
+
+        states = component.state
 
         data =
             uid     : uid
+            comp    : component
             type    : component.type
             name    : component.name
             stateId : null

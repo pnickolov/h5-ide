@@ -247,7 +247,7 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
         rightResArr = []
         for sg in leftRes.connectionTargets("SgAsso")
 
-          for otherSg in sg.connectionTargets("SgRuleSet")
+          for otherSg in sg.getVisualConnectedSg()
 
             rightResArr = _.union rightResArr, otherSg.connectionTargets("SgAsso")
 
@@ -258,10 +258,7 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
       null
 
     updateSgLines : ()->
-      ### env:dev ###
-      if this isnt Design
-        console.error( "Possible misuse of updateSgLines detected!" )
-      ### env:dev:end ###
+      console.assert( this is Design, "Possible misuse of updateSgLines detected!" )
 
       connectableMap = {}
       for ruleset in SgRuleSet.allObjects()

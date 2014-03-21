@@ -54,8 +54,11 @@ define [ 'MC', 'event',
             'click #toolbar-cancel-edit-app' : 'clickCancelEditApp'
 
             'click .toolbar-visual-ops-switch' : 'opsOptionChanged'
+            'click #apply-visops'              : 'openExperimentalVisops'
 
-        render   : ( type ) ->
+        # when flag = 0 not invoke opsState
+        # when flag = 1 invoke opsState
+        render   : ( type, flag ) ->
             console.log 'toolbar render'
 
             #set line style
@@ -97,15 +100,9 @@ define [ 'MC', 'event',
             else
                 $( '#main-toolbar' ).html stack_tmpl this.model.attributes
 
-
-            if Design and Design.instance()
-
-                agentData = Design.instance().get('agent')
-                $switchCheckbox = $('#main-toolbar .toolbar-visual-ops-switch')
-                if agentData.enabled
-                    $switchCheckbox.addClass('on')
-                else
-                    $switchCheckbox.removeClass('on')
+            if type and flag is 1
+                # vispos state
+                @opsState()
 
             #
             ide_event.trigger ide_event.DESIGN_SUB_COMPLETE
@@ -119,6 +116,10 @@ define [ 'MC', 'event',
             $( document.body ).on 'click', '#return-app-confirm', this, @appedit2App
             # export to png download button click
             $( document.body ).on 'click', '.modal-footer #btn-confirm', this, () -> modal.close()
+
+            # experimentalVisops
+            $( document.body ).on 'click', '#experimental-visops-confirm', this, @experimentalVisopsConfirm
+            $( document.body ).on 'click', '#experimental-visops-cancel', this, () -> modal.close()
 
         reRender   : ( type ) ->
             console.log 're-toolbar render'
@@ -157,9 +158,6 @@ define [ 'MC', 'event',
 
                     console.log 'clickRunIcon'
 
-                    # set is_run is true
-                    event.data.model.set 'is_run', true
-
                     #check app name
                     app_name = $('.modal-input-value').val()
 
@@ -194,7 +192,8 @@ define [ 'MC', 'event',
                     $('.modal-close').attr 'disabled', true
 
                     # push SAVE_STACK event
-                    ide_event.trigger ide_event.SAVE_STACK, MC.common.other.canvasData.data()
+                    #ide_event.trigger ide_event.SAVE_STACK, MC.common.other.canvasData.data()
+                    event.data.model.syncSaveStack MC.common.other.canvasData.get( 'region' ), MC.common.other.canvasData.data()
 
             null
 
@@ -407,19 +406,11 @@ define [ 'MC', 'event',
             date     = MC.dateFormat(new Date(), "yyyy-MM-dd")
             name     = [design.get("name"), username, date].join("-")
 
-            data = JsonExporter.export Design.instance().serialize(), name + ".json"
+            data = JsonExporter.exportJson Design.instance().serialize(), name + ".json"
             if data
                 # The browser doesn't support Blob. Fallback to show a dialog to
                 # allow user to download the file.
-
                 modal MC.template.exportJSON data
-                $("#modal-export-json").click ()->
-                    # I'm not sure if we can remove the dom when the button is clicked.
-                    # Because I think some browser might just prevent the content to be
-                    # donwloaded in this way. So, for safe sake, delay the removal.
-                    setTimeout ()->
-                        modal.close()
-                    , 100
             null
 
         exportPNG : ( base64_image, uid, blob ) ->
@@ -461,15 +452,9 @@ define [ 'MC', 'event',
 
         #request cloudformation
         clickConvertCloudFormation : ->
-            console.log 'clickConvertCloudFormation'
-            me = this
-
-            # old design flow
-            #ide_event.trigger ide_event.SAVE_STACK, MC.canvas_data
-
-            # new design flow
+            modal MC.template.exportCloudFormation()
+            # Seems like cloudfomation triggers a save event. And then trigger a export event...... Darn!
             ide_event.trigger ide_event.SAVE_STACK, MC.common.other.canvasData.data()
-
             null
 
         #save cloudformation
@@ -478,22 +463,15 @@ define [ 'MC', 'event',
 
             try
                 # able
-                $('#tpl-download').removeAttr 'disabled'
+                aTag     = $('#tpl-download').removeClass 'disabled'
+                cf_json  = @model.attributes.cf_data[name]
+                fileName = "#{Design.instance().get('name')}.json"
 
-                cf_json = me.model.attributes.cf_data[name]
-                file_content = JSON.stringify cf_json
-                $( '#tpl-download' ).attr {
-                    'href'      : "data://application/json;," + file_content,
+                JsonExporter.genericExport aTag, cf_json, fileName
 
-                    # old design flow
-                    #'download'  : MC.canvas_data.name + '.json',
-
-                    # new design flow
-                    'download'  : MC.common.other.canvasData.get( 'name' ) + '.json',
-                }
-                $('#tpl-download').on 'click', { target : this }, (event) ->
-                    console.log 'clickExportJSONIcon'
+                $('#tpl-download').on 'click', (event) ->
                     modal.close()
+
             catch error
                 notification 'error', lang.ide.TOOL_MSG_ERR_CONVERT_CLOUDFORMATION
 
@@ -749,6 +727,42 @@ define [ 'MC', 'event',
 
             null
 
+        opsState : ->
+            console.log 'opsState'
+
+            # set toolbar-visual-ops-switch and apply-visops
+            $switchCheckbox = $ '#main-toolbar .toolbar-visual-ops-switch'
+            $applyVisops    = $ '#apply-visops'
+
+            # when new stack enable VisualOps else disabled
+            if Tabbar.current is 'new'
+                $switchCheckbox.addClass    'on'
+                @model.setAgentEnable       true
+            else
+                $switchCheckbox.removeClass 'on'
+
+            # when JSON 'agent' existing
+            if Design and Design.instance()
+
+                agentData = Design.instance().get 'agent'
+                if agentData.enabled
+                    $switchCheckbox.addClass    'on'
+                else
+                    $switchCheckbox.removeClass 'on'
+
+            # set visual-ops-switch show/hide
+            if MC.common.cookie.getCookieByName( 'is_invitated' ) in [ 'true', true, 2, '2' ]
+
+                $applyVisops.hide()
+                $switchCheckbox.show()
+
+            else if MC.common.cookie.getCookieByName( 'is_invitated' ) in [ 'false', false, 0, '0', 1, '1' ]
+
+                $applyVisops.show()
+                $switchCheckbox.hide()
+
+                @model.setAgentEnable false
+
         opsOptionChanged : (event) ->
 
             thatModel = @model
@@ -774,6 +788,34 @@ define [ 'MC', 'event',
                 thatModel.setAgentEnable(false)
 
             ide_event.trigger ide_event.REFRESH_PROPERTY
+
+        openExperimentalVisops : ->
+            console.log 'openExperimentalVisops'
+
+            # modal experimentalVisops
+            modal MC.template.experimentalVisops()
+
+            # if is_invitated = 1, explanation audit
+            if MC.common.cookie.getCookieByName( 'is_invitated' ) in [ 1, '1' ]
+                $( '.modal-body' ).html MC.template.experimentalVisopsTrail()
+                $( '#experimental-visops-cancel'  ).html lang.ide.INVITE_MOD_BTN_DONE
+                $( '#experimental-visops-confirm' ).hide()
+
+        experimentalVisopsConfirm : ( event ) ->
+            console.log 'experimentalVisopsConfirm', event
+
+            # push event
+            event.data.trigger 'APPLAY_TRIAL', $( '#experimental-message' ).val()
+
+            # change modal body
+            $( '.modal-body' ).html MC.template.experimentalVisopsTrail()
+            $( '#experimental-visops-cancel'  ).html lang.ide.INVITE_MOD_BTN_DONE
+            $( '#experimental-visops-confirm' ).hide()
+
+            # set is_invitated
+            MC.common.cookie.setCookieByName 'is_invitated', 1
+
+            null
     }
 
     return ToolbarView

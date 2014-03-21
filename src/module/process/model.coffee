@@ -2,11 +2,11 @@
 #  View Mode for header module
 #############################
 
-define [ 'aws_model', 'ami_model'
+define [ 'i18n!nls/lang.js', 'aws_model', 'ami_model'
          'event', 'constant', 'forge_handle'
          'UI.notification',
          'backbone', 'jquery', 'underscore'
-], ( aws_model, ami_model, ide_event, constant, forge_handle ) ->
+], ( lang, aws_model, ami_model, ide_event, constant, forge_handle ) ->
 
     ProcessModel = Backbone.Model.extend {
 
@@ -76,7 +76,7 @@ define [ 'aws_model', 'ami_model'
                         MC.common.other.delUnmanaged vpc_id
 
                         # set error message
-                        error_message = 'VPC does not exist.'
+                        error_message = lang.ide.NOTIFY_MSG_WARN_VPC_DOES_NOT_EXIST
 
                     else if result.is_error
 
@@ -272,6 +272,9 @@ define [ 'aws_model', 'ami_model'
                 # delete resource.origin
                 if resources and resources.origin
                     delete resources.origin
+
+                # delete session
+                MC.session.remove 'aws_resource_' + region
 
                 # call api
                 aws_model.resource { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, resources, 'vpc', 1

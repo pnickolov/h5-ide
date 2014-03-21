@@ -33,9 +33,12 @@ define [ "module/design/property/base/model", "Design", "constant" ], ( Property
 
           if item
             if item.attachments and item.attachments.item and item.attachments.item.length
-              @set "state", item.attachments.item[0].state
+              #vgw
+              @set "state", item.state
+              @set "attachment_state", item.attachments.item[0].state
               vpcId = item.attachments.item[0].vpcId
             else
+              #igw
               @set "state", item.state
               vpcId = item.vpcId
           else

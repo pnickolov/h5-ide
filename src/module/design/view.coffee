@@ -130,7 +130,7 @@ define [ 'Design', 'event', 'text!./module/design/template.html', 'constant', 'i
 
             for state in stateList
                 # Show current app only
-                if state.app_id isnt Design.instance().get 'id'
+                if state.app_id isnt MC.common.other.canvasData.data( 'origin' ).id
                     continue
                 if state.status
                     for status in state.status
@@ -156,12 +156,23 @@ define [ 'Design', 'event', 'text!./module/design/template.html', 'constant', 'i
             ide_event.offListen ide_event.UPDATE_APP_STATE, @updateStateBarWhenStateChanged
             ide_event.onLongListen ide_event.UPDATE_APP_STATE, @updateStateBarWhenStateChanged, @
 
+            #appStoped = Design.instance().get('state') is 'Stopped'
+            appStoped = MC.common.other.canvasData.data( 'origin' ).state is 'Stopped'
 
-            appStoped = Design.instance().get('state') is 'Stopped'
+            $btnState = $( '#main-statusbar .btn-state' )
+
+            if Tabbar.current in ['app', 'appedit']
+                if appStoped
+                    $btnState.hide()
+
             if appStoped
                 return
 
-            $( '#main-statusbar .btn-state' ).show()
+            if Tabbar.current is 'appview'
+                $btnState.hide()
+            else
+                $btnState.show()
+
             stateList = MC.data.websocket.collection.status.find().fetch()
             @renderStateBar stateList
 

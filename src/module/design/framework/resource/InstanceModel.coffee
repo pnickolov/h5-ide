@@ -24,6 +24,10 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
       monitoring   : false
       userData     : ""
 
+      # RootDevice
+      rdSize : 0
+      rdIops : 0
+
       cachedAmi : null
 
       state : undefined
@@ -32,12 +36,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
 
       option = option || {}
 
-      shouldInit = option.createByUser and not option.cloneSource
-
-      if shouldInit
-        @initInstanceType()
-
-
+      # Create Eni0 if necessary
       if option.createByUser and not Design.instance().typeIsClassic()
         #create eni0
         EniModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface )
@@ -46,19 +45,45 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
           assoPublicIp : Design.instance().typeIsDefaultVpc()
         }, { instance: this }) )
 
-      # Hack, we need to clone the imageId before drawing.
-      if option.cloneSource
-        @attributes.imageId = option.cloneSource.get("imageId")
 
-      # Draw before creating SgAsso and before cloning
+      # Clone the attributes if cloneSource is supplied.
+      if option.cloneSource
+        @clone( option.cloneSource )
+      else if option.createByUser
+        @initInstanceType()
+
+
+      # Set rdSize if it's empty
+      if not @get("rdSize")
+        #append root device
+        volSize = @getAmiRootDeviceVolumeSize()
+        if volSize > 0
+          @set("rdSize",volSize)
+
+          # < need add volume of ami like root device, not support now >
+          # append other volume in ami
+          # amiInfo = @.getAmi()
+          # volList = amiInfo.blockDeviceMapping
+          # for key, vol of volList
+          #   if key is amiInfo.rootDeviceName
+          #     continue
+          #   attribute =
+          #     name : key
+          #     snapshotId : vol.snapshotId
+          #     volumeSize : vol.volumeSize
+          #     volumeType : vol.volumeType
+          #   if vol.volumeType is "io1"
+          #     attribute.iops = vol.iops
+          #   attribute.owner = @
+          #   VolumeModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume )
+          #   new VolumeModel( attribute, {noNeedGenName:true})
+
+
+      # Draw before creating SgAsso
       @draw(true)
 
-      if option.cloneSource
-        # When cloning, instance might also clone volume, which will ask the instance
-        # to update. So we need to draw first.
-        @clone( option.cloneSource )
-
-      if shouldInit
+      # Create additonal association if the instance is created by user.
+      if option.createByUser and not option.cloneSource
         #assign DefaultKP
         KpModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair )
         defaultKp = KpModel.getDefaultKP()
@@ -276,6 +301,13 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
         cached.architecture   = ami.architecture
         cached.rootDeviceType = ami.rootDeviceType
 
+      # Update RootDevice Size
+      if ami.blockDeviceMapping
+        rootDevice = ami.blockDeviceMapping[ ami.rootDeviceName ]
+        minRdSize  = if rootDevice then parseInt( rootDevice.volumeSize, 10 ) else 10
+        if @get("rdSize") < minRdSize
+          @set("rdSize", minRdSize)
+
       # Assume the new amiId supports current instancetype
       # Assume the new amiId is the same OS of current one.
 
@@ -291,6 +323,70 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
       null
 
     getAmi : ()-> MC.data.dict_ami[@get("imageId")]
+
+    getBlockDeviceMapping : ()->
+      #get root device of current instance
+      ami = @getAmi() || @get("cachedAmi")
+      if ami and ami.rootDeviceType is "ebs" and ami.blockDeviceMapping
+
+        blockDeviceMapping = [{
+          DeviceName : ami.rootDeviceName
+          Ebs : {
+            SnapshotId : ami.blockDeviceMapping[ami.rootDeviceName].snapshotId
+            VolumeSize : @get("rdSize") || ami.blockDeviceMapping[ ami.rootDeviceName ].volumeSize
+            VolumeType : "standard"
+          }
+        }]
+
+        if @get("rdIops") and parseInt( @get("rdSize"), 10 ) >= 10
+          blockDeviceMapping[0].Ebs.Iops = @get("rdIops")
+          blockDeviceMapping[0].Ebs.VolumeType = "io1"
+
+      blockDeviceMapping || []
+
+    getAmiRootDevice : () ->
+      #get root deivce of ami
+      amiInfo = @getAmi() || @get("cachedAmi")
+      rd = null
+      if amiInfo and amiInfo.rootDeviceType is "ebs" and amiInfo.blockDeviceMapping
+        rdName = amiInfo.rootDeviceName
+        rdEbs = amiInfo.blockDeviceMapping[rdName]
+        if rdName and rdEbs
+          rd =
+            "DeviceName": rdName
+            "Ebs":
+              "VolumeSize": Number(rdEbs.volumeSize)
+              "SnapshotId": rdEbs.snapshotId
+              "VolumeType": rdEbs.volumeType
+
+          if rdEbs.volumeType is "io1"
+            rd.Ebs.Iops = rdEbs.iops
+        else
+          console.warn "getAmiRootDevice(): can not found root device of AMI(" + @get("imageId") + ")", this
+      rd
+
+    getAmiRootDeviceVolumeSize : () ->
+      volSize = 0
+      amiInfo = @getAmi()
+      if amiInfo
+        if amiInfo.osType is "windows"
+          volumeSize = 30
+        else
+          volumeSize = 10
+
+        rd = @getAmiRootDevice()
+        if rd
+          volSize = rd.Ebs.VolumeSize
+        else
+          console.warn "getAmiRootDeviceVolumeSize(): use default volumeSize " + volSize , this
+      else
+        console.warn "getAmiRootDeviceVolumeSize(): unknown volumeSize for " + @get("imageId")
+      volSize
+
+    getAmiRootDeviceName : () ->
+      rd = @getAmiRootDevice()
+      if rd and rd.DeviceName then rd.DeviceName else ""
+
     getInstanceTypeConfig : ( type )->
       t = (type || @get("instanceType")).split(".")
       if t.length >= 2
@@ -478,6 +574,10 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
           securitygroups.push( sg.createRef( "GroupName" ) )
           securitygroupsId.push( sg.createRef( "GroupId" ) )
 
+      # Generate RootDevice
+      blockDeviceMapping = @getBlockDeviceMapping()
+      for volume in @get("volumeList") or []
+        blockDeviceMapping.push "#"+volume.id
 
       component =
         type   : @type
@@ -493,7 +593,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
             Base64Encoded : false
             Data : @get("userData")
           }
-          BlockDeviceMapping : []
+          BlockDeviceMapping : blockDeviceMapping
           Placement : {
             Tenancy : if tenancy is "dedicated" then "dedicated" else ""
             AvailabilityZone : @getAvailabilityZone().createRef()
@@ -553,7 +653,6 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
       # Add this instance' layout first.
       allResourceArray.push( { layout : layout } )
 
-
       # Generate instance member.
       instances = [ @generateJSON() ]
       i = instances.length
@@ -602,7 +701,6 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
 
         for volume in volumeModels
           v = volume.generateJSON( idx, serverGroupOption )
-          instance.resource.BlockDeviceMapping.push( "#"+ v.uid )
           volumes.push( v )
 
         for eni, eniIndex in eniModels
@@ -682,6 +780,14 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
         return
 
 
+      rootDevice = data.resource.BlockDeviceMapping[0]
+      if not rootDevice or _.isString( rootDevice )
+        rootDevice =
+          Ebs :
+            VolumeSize : 0
+            Iops : ""
+
+
       attr =
         id    : data.uid
         name  : data.serverGroupName or data.name
@@ -694,6 +800,9 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
         instanceType : data.resource.InstanceType
         monitoring   : data.resource.Monitoring isnt "disabled"
         userData     : data.resource.UserData.Data or ""
+
+        rdSize : rootDevice.Ebs.VolumeSize
+        rdIops : rootDevice.Ebs.Iops
 
         parent : resolve( layout_data.groupUId )
 

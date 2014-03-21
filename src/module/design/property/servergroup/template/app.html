@@ -8,7 +8,7 @@
     <section class="property-control-group" data-bind="true">
       <label class="left" for="property-instance-count" >{{ i18n "PROP_INSTANCE_NUMBER" }}</label>
       <span class="required-input right">{{ i18n "PROP_INSTANCE_REQUIRE" }}</span>
-      <input class="input tooltip" type="text" value="{{ number }}" id="property-instance-count" data-ignore="true" data-required="true" data-type="digits" {{#if number_disable}}disabled="disabled" data-tooltip="You cannot specify instance number, since the instance is connected to a route table."{{else}}data-tooltip="If the quantity is more than 1, host name will be the string you provide plus number index."{{/if}}/>
+      <input class="input tooltip" type="text" value="{{ number }}" id="property-instance-count" data-ignore="true" data-required="true" data-type="digits" {{#if number_disable}}disabled="disabled" data-tooltip="{{i18n 'PROP_INSTANCE_TIP_YOU_CANNOT_SPECIFY_INSTANCE_NUMBER'}}"{{else}}data-tooltip="{{i18n 'PROP_INSTANCE_TIP_IF_THE_QUANTITY_IS_MORE_THAN_1'}}"{{/if}}/>
     </section>
 
     {{#if ami}}
@@ -53,6 +53,32 @@
     {{/if}}
   </div>
 
+  {{#if rootDevice}}
+  <div class="option-group-head">Root Device</div>
+  <div class="option-group">
+    <article class="property-app">
+      <dl class="dl-vertical">
+        <dt>{{i18n "PROP_VOLUME_DEVICE_NAME"}}</dt>
+        <dd>{{emptyStr rootDevice.DeviceName}}</dd>
+      </dl>
+      <dl class="dl-vertical">
+        <dt>{{i18n "PROP_VOLUME_TYPE"}}</dt>
+        <dd>{{emptyStr rootDevice.Ebs.VolumeType}}</dd>
+        {{#if rootDevice.Ebs.SnapshotId}}
+        <dt>{{i18n "PROP_VOLUME_SNAPSHOT_ID"}}</dt>
+        <dd>{{rootDevice.Ebs.SnapshotId}}</dd>
+        {{/if}}
+        <dt>{{i18n "PROP_VOLUME_SIZE"}}</dt>
+        <dd>{{emptyStr rootDevice.Ebs.VolumeSize}} GB</dd>
+        {{#if rootDevice.Ebs.Iops}}
+        <dt>IOPS</dt>
+        <dd>{{rootDevice.Ebs.Iops}}</dd>
+        {{/if}}
+      </dl>
+    </article>
+  </div>
+  {{/if}}
+
   {{#if eni}}
   <div class="option-group-head">{{i18n "PROP_INSTANCE_ENI_DETAIL"}}</div>
   <div class="option-group">
@@ -60,7 +86,7 @@
       <div class="network-list-wrap">
         <div class="network-list-header clearfix">
           {{ i18n "PROP_INSTANCE_ENI_IP_ADDRESS" }}
-          <button id="instance-ip-add" class="right btn btn-blue btn-small tooltip" data-tooltip="Add IP Address">{{ i18n "PROP_INSTANCE_ENI_ADD_IP" }}</button>
+          <button id="instance-ip-add" class="right btn btn-blue btn-small tooltip" data-tooltip="{{i18n 'PROP_ENI_TIP_ADD_IP_ADDRESS'}}">{{ i18n "PROP_INSTANCE_ENI_ADD_IP" }}</button>
         </div>
         <ul class="network-list" id="property-network-list" data-bind="true"></ul>
       </div>

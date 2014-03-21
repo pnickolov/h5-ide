@@ -234,6 +234,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
                         if not res.osFamily
                             res.osFamily = MC.aws.aws.getOSFamily(res.osType, res)
 
+                        convertBlockDeviceMapping res
                         MC.data.dict_ami[res.imageId] = res
                         MC.data.resource_list[region][res.imageId] = res
 
@@ -839,6 +840,10 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
 
                 key[comp.resource[constant.AWS_RESOURCE_KEY[comp.type]]] = MC.aws.aws.genResRef(uid, "resource.#{constant.AWS_RESOURCE_KEY[comp.type]}")
 
+                if comp.type is "AWS.EC2.KeyPair"
+
+                    key[comp.resource.KeyName + '-keypair'] = MC.aws.aws.genResRef(uid, 'resource.KeyName')
+
                 if comp.type is "AWS.AutoScaling.Group"
 
                     key[comp.resource.AutoScalingGroupName + '-asg'] = MC.aws.aws.genResRef(uid, 'resource.AutoScalingGroupName')
@@ -882,6 +887,12 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
                             if reference[v + '-asg'] and k not in [except_key, 'name']
 
                                 obj[k] = reference[v + '-asg']
+
+                        else if k is 'KeyName'
+
+                            if reference[v + '-keypair'] and k not in [except_key, 'name'] and not obj.KeyFingerprint
+
+                                obj[k] = reference[v + '-keypair']
 
                         else if reference[v] and k not in [except_key, 'name']
 
@@ -1004,6 +1015,22 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
 
         result
 
+    checkPrivateIPIfHaveEIP = (allCompData, eniUID, priIPNum) ->
+
+        haveEIP = false
+        _.each allCompData, (compData) ->
+
+            if compData.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP
+                currentENIUIDRef = compData.resource.NetworkInterfaceId
+                currentENIUID = MC.extractID(currentENIUIDRef)
+                if eniUID is currentENIUID
+                    currentPriIPNumAry = compData.resource.PrivateIpAddress.split('.')
+                    currentPriIPNum = currentPriIPNumAry[3]
+                    if Number(currentPriIPNum) is priIPNum
+                        haveEIP = true
+            null
+        return haveEIP
+
     genAttrRefList = (currentCompData, allCompData) ->
 
         currentCompUID = currentCompData.uid
@@ -1034,17 +1061,23 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
             compUID = compData.uid
             compType = compData.type
 
+            checkASGPublicIP = false
+
             if compUID is currentCompUID
                 compName = 'self'
 
-            if currentCompType is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
-                if compType is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
-                    lcUIDRef = compData.resource.LaunchConfigurationName
-                    if lcUIDRef
-                        lcUID = MC.extractID(lcUIDRef)
-                        if currentCompUID is lcUID
-                            currentASGName = compName
-                            compName = 'self'
+            if compType is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+                lcUIDRef = compData.resource.LaunchConfigurationName
+                if lcUIDRef
+                    lcUID = MC.extractID(lcUIDRef)
+                    lcCompData = allCompData[lcUID]
+                    if currentCompType is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration and currentCompUID is lcUID
+                        currentASGName = compName
+                        compName = 'self'
+                        asgHaveSelf = true
+
+                    if lcCompData.resource.AssociatePublicIpAddress
+                        asgHavePublicIP = true
 
             if compType is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
                 return
@@ -1067,6 +1100,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
                     instanceUID = MC.extractID(instanceRef)
                     if instanceUID
                         compName = allCompData[instanceUID].serverGroupName
+                        compUID = instanceUID
                         if instanceUID is currentCompUID
                             compName = 'self'
 
@@ -1087,10 +1121,26 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
                         autoCompStr += attrName
                         autoCompRefStr += attrName
 
-                    autoCompList.push({
-                        name: autoCompStr,
-                        value: autoCompRefStr
-                    })
+                    instanceNoMainPublicIP = false
+
+                    if attrName in ['PublicIp']
+
+                        if compType is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+                            if not asgHavePublicIP
+                                return
+
+                        if compType is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+                            if (not MC.aws.aws.checkPrivateIPIfHaveEIP(allCompData, compData.uid, 0)) and
+                            (not compData.resource.AssociatePublicIpAddress)
+                                instanceNoMainPublicIP = true
+
+                    if not instanceNoMainPublicIP
+
+                        autoCompList.push({
+                            name: autoCompStr,
+                            value: autoCompRefStr,
+                            uid: compUID
+                        })
 
                     if isArray
 
@@ -1102,19 +1152,26 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
                                         # if idx is 0 then return
                                         autoCompList.push({
                                             name: autoCompStr + '[' + idx + ']',
-                                            value: autoCompRefStr + '[' + idx + ']'
+                                            value: autoCompRefStr + '[' + idx + ']',
+                                            uid: compUID
                                         })
                                         null
 
                         if supportType is 'AWS_VPC_NetworkInterface'
                             if attrName in ['PublicDnsName', 'PublicIp', 'PrivateDnsName', 'PrivateIpAddress']
                                 ipObjAry = compData.resource.PrivateIpAddressSet
+                                if compData.index isnt 0
+                                    return
                                 if ipObjAry.length > 1
                                     _.each ipObjAry, (ipObj, idx) ->
                                         if idx is 0 then return
+                                        if attrName in ['PublicIp']
+                                            if not MC.aws.aws.checkPrivateIPIfHaveEIP(allCompData, compData.uid, idx)
+                                                return
                                         autoCompList.push({
                                             name: autoCompStr + '[' + idx + ']',
-                                            value: autoCompRefStr + '[' + idx + ']'
+                                            value: autoCompRefStr + '[' + idx + ']',
+                                            uid: compUID
                                         })
                                         null
 
@@ -1126,7 +1183,8 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
                                         # if idx is 0 then return
                                         autoCompList.push({
                                             name: autoCompStr + '[' + idx + ']',
-                                            value: autoCompRefStr + '[' + idx + ']'
+                                            value: autoCompRefStr + '[' + idx + ']',
+                                            uid: compUID
                                         })
                                         null
 
@@ -1149,25 +1207,129 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
                         groupCompUIDStr = autoCompObj.value.replace('self', currentISGName)
                     groupAutoCompList.push({
                         name: groupCompNameStr,
-                        value: groupCompUIDStr
+                        value: groupCompUIDStr,
+                        uid: autoCompObj.uid
                     })
 
         autoCompList = autoCompList.concat(groupAutoCompList)
 
+        resAttrDataAry = _.map autoCompList, (autoCompObj) ->
+
+            if autoCompObj.name.indexOf('self.') is 0
+                autoCompObj.value = autoCompObj.value.replace(autoCompObj.uid, 'self')
+                autoCompObj.uid = 'self'
+            return {
+                name: "#{autoCompObj.name}",
+                value: "#{autoCompObj.name}",
+                ref: "#{autoCompObj.value}",
+                uid: "#{autoCompObj.uid}"
+            }
+
+        # filter all self's AZ ref
+        resAttrDataAry = _.filter resAttrDataAry, (autoCompObj) ->
+
+            if autoCompObj.name.indexOf('self.') is 0
+                if autoCompObj.name.indexOf('.AvailabilityZones') isnt -1
+                    return false
+                else
+                    return true
+
+            return true
+
         # sort autoCompList
-        autoCompList = autoCompList.sort((obj1, obj2) ->
+        resAttrDataAry = resAttrDataAry.sort((obj1, obj2) ->
             if obj1.name < obj2.name then return -1
             if obj1.name > obj2.name then return 1
         )
 
-        resAttrDataAry = _.map autoCompList, (autoCompObj) ->
-            return {
-                name: "#{autoCompObj.name}",
-                value: "#{autoCompObj.name}",
-                ref: "#{autoCompObj.value}"
-            }
-
         return resAttrDataAry
+
+
+    convertBlockDeviceMapping = (ami) ->
+
+        data = {}
+        if ami and ami.blockDeviceMapping and ami.blockDeviceMapping.item
+            for value,idx in ami.blockDeviceMapping.item
+
+                if value.ebs
+                    data[value.deviceName] =
+                        snapshotId : value.ebs.snapshotId
+                        volumeSize : value.ebs.volumeSize
+                        volumeType : value.ebs.volumeType
+                        deleteOnTermination : value.ebs.deleteOnTermination
+                else
+                    data[value.deviceName] = {}
+
+                ami.blockDeviceMapping = data
+        else
+            console.warn "convertBlockDeviceMapping(): nothing to convert"
+        null
+
+
+    isValidInIPRange = (ipStr, validIPType) ->
+
+        pubIPAry = [
+            {
+                low: '1.0.0.1',
+                high: '126.255.255.254'
+            },
+            {
+                low: '128.1.0.1',
+                high: '191.254.255.254'
+            },
+            {
+                low: '192.0.1.1',
+                high: '223.255.254.254'
+            }
+        ]
+
+        priIPAry = [
+            {
+                low: '10.0.0.0',
+                high: '10.255.255.255'
+            },
+            {
+                low: '172.16.0.0',
+                high: '172.31.255.255'
+            },
+            {
+                low: '192.168.0.0',
+                high: '192.168.255.255'
+            }
+        ]
+
+        ipRangeValid = (ipAryStr1, ipAryStr2, ipStr) ->
+
+            ipAry1 = ipAryStr1.split('.')
+            ipAry2 = ipAryStr2.split('.')
+            curIPAry = ipStr.split('.')
+
+            isInIPRange = true
+            _.each curIPAry, (ipNum, idx) ->
+                if not (Number(curIPAry[idx]) >= Number(ipAry1[idx]) and
+                Number(curIPAry[idx]) <= Number(ipAry2[idx]))
+                    isInIPRange = false
+                null
+
+            return isInIPRange
+
+        ipRangeAry = []
+
+        if validIPType is 'public'
+            ipRangeAry = pubIPAry
+        else if validIPType is 'private'
+            ipRangeAry = priIPAry
+
+        isInAryRange = false
+        _.each ipRangeAry, (ipRangeObj) ->
+            lowRange = ipRangeObj.low
+            highRange = ipRangeObj.high
+            isInRange = ipRangeValid(lowRange, highRange, ipStr)
+            if isInRange
+                isInAryRange = true
+            null
+
+        return isInAryRange
 
     #public
     collectReference            : collectReference
@@ -1189,3 +1351,5 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
     getDefaultStackAgentData    : getDefaultStackAgentData
     getCompByResIdForState      : getCompByResIdForState
     genAttrRefList              : genAttrRefList
+    isValidInIPRange            : isValidInIPRange
+    checkPrivateIPIfHaveEIP     : checkPrivateIPIfHaveEIP

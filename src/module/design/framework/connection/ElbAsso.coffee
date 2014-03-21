@@ -6,8 +6,10 @@ define [ "constant", "../ConnectionModel", "i18n!nls/lang.js", "Design", "compon
 
     type : "ElbSubnetAsso"
 
-    defaults : ()->
-      lineType : "association"
+    defaults :
+      lineType     : "association"
+      deserialized : false # Indicate that this line is created by deserialize.
+
 
     portDefs : [
       {
@@ -27,43 +29,38 @@ define [ "constant", "../ConnectionModel", "i18n!nls/lang.js", "Design", "compon
 
       for cn in @getTarget( constant.AWS_RESOURCE_TYPE.AWS_ELB ).connections( "ElbSubnetAsso" )
         if cn.getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet ).parent() is az
-          cn.remove()
+          if cn.hasAppUpdateRestriction()
+            @setDestroyAfterInit()
+          else
+            cn.remove()
 
       null
 
+    hasAppUpdateRestriction : ()->
+      elb = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_ELB )
+
+      if @design().modeIsAppEdit()
+        # In AppEdit, prevent the last existing asso to be deleted
+        for asso in elb.connections( "ElbSubnetAsso" )
+          if asso isnt @ and asso.get("deserialized")
+            return false
+
+        return true
+
+      false
+
     isRemovable : ()->
-      elb    = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_ELB )
-      subnet = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet )
+      if @design().modeIsAppEdit()
+        if @hasAppUpdateRestriction()
+          return { error : lang.ide.CVS_MSG_ERR_DEL_ELB_LINE_2 }
 
-      # 1. Find out if any child of this subnet connects to the elb
-      elbTargets = elb.connectionTargets( "ElbAmiAsso" )
-      for child in subnet.children()
-        if child.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
-          child = child.get("lc")
+      else
+        elb = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_ELB )
+        # Elb should at least connects to a subnet if it connects to some ami
+        if elb.connections( "ElbAmiAsso" ).length > 0 and elb.connections( "ElbSubnetAsso" ).length <= 1
+          return { error : lang.ide.CVS_MSG_ERR_DEL_ELB_LINE_1 }
 
-        if elbTargets.indexOf( child ) isnt -1
-          connected = true
-          break
-
-      if not connected then return true
-
-      # 2. Find out if there's other subnet in my az connects to the elb
-      connected = false
-      for sb in elb.connectionTargets( "ElbSubnetAsso" )
-        if sb isnt subnet and sb.parent() is subnet.parent()
-          connected = true
-          break
-
-      if connected then return true
-
-      return { error : lang.ide.CVS_MSG_ERR_DEL_ELB_LINE_2 }
-
-    # serialize : ( components )->
-    #   sb  = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet )
-    #   elb = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_ELB )
-
-    #   components[ elb.id ].resource.Subnets.push sb.createRef( "SubnetId" )
-    #   null
+      true
 
   }, {
     isConnectable : ( comp1, comp2 )->
@@ -121,23 +118,12 @@ define [ "constant", "../ConnectionModel", "i18n!nls/lang.js", "Design", "compon
       ami = @getOtherTarget( constant.AWS_RESOURCE_TYPE.AWS_ELB )
       elb = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_ELB )
 
-      subnet = ami
-      while true
-        subnet = subnet.parent()
-        if not subnet then return
-        if subnet.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
-          break
-
-      connectedSbs = elb.connectionTargets("ElbSubnetAsso")
-
-      for sb in subnet.parent().children()
-        if connectedSbs.indexOf( sb ) isnt -1
-          # Found a subnet in this AZ that is connected to the Elb, do nothing
-          foundSubnet = true
-          break
-
-      if not foundSubnet
-        new ElbSubnetAsso( subnet, elb )
+      if elb.connections( "ElbSubnetAsso" ).length == 0
+        subnet = ami.parent()
+        while subnet.type isnt constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
+          subnet = subnet.parent()
+        if subnet
+          new ElbSubnetAsso( elb, subnet )
 
       # If there's a ElbAsso created for Lc and Elb
       # We also try to connect the Elb to any expanded Asg

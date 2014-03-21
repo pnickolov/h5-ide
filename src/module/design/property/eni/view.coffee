@@ -118,7 +118,7 @@ define [ '../base/view',
                         ipIPFormatCorrect = true
 
                 if !ipIPFormatCorrect
-                    return 'Invalid IP address'
+                    return lang.ide.PARSLEY_INVALID_IP_ADDRESS
                 else
                     result = that.model.isValidIp( currentInputIP )
                     if result isnt true

@@ -1,5 +1,5 @@
 
-define [ "./CanvasElement", "constant", "CanvasManager", "Design" ], ( CanvasElement, constant, CanvasManager, Design )->
+define [ "i18n!nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "Design" ], ( lang, CanvasElement, constant, CanvasManager, Design )->
 
   CeInstance = ()-> CanvasElement.apply( this, arguments )
   CanvasElement.extend( CeInstance, constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance )
@@ -306,7 +306,7 @@ define [ "./CanvasElement", "constant", "CanvasManager", "Design" ], ( CanvasEle
       Do not allow adding volume to existing LC in appUpdate
     ###
     if Design.instance().modeIsAppEdit() and @model.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration and @model.get("appId")
-      notification "error", "This operation is not supported yet."
+      notification "error", lang.ide.NOTIFY_MSG_WARN_OPERATE_NOT_SUPPORT_YET
       return false
 
     attribute = $.extend {}, attribute

@@ -166,6 +166,12 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
     # isReparentable( newParent ) : Boolean / String
         description : Returns true to indicate the resource can change to other parent. Returns string to show as an error.
 
+    # clone() :
+        description : To allow user to duplicate the resource by drag-drop. The model must implement clone() interface.
+
+    # cloneAttributes() :
+        description : A helper function to allow ChildClass to implement clone(). More details, see InstanceModel
+
     # remove() : [FORCE]
         description : Just like the destructor in C++. User can override this method.
         The framework will ensure the base class's remove() will get called.
@@ -409,6 +415,7 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
       for model in removed
         model.removeFromStorage @
 
+    clone : null
     cloneAttributes : ( srcTarget, option )->
       console.assert srcTarget.type is @type, "Invalid type of target when cloning attributes."
 

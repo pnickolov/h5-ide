@@ -1,17 +1,17 @@
 <header id="global-region-header">
 	<button id="global-refresh" class="icon-refresh">just now</button>
 
-	<button id="global-create-stack" class="disabled btn btn-primary icon-new-stack">{{i18n "IDE_COM_CREATE_NEW_STACK"}}<i class="icon-caret-down"></i></button>
+	<button id="global-create-stack" class="btn btn-primary icon-new-stack" disabled>{{i18n "IDE_COM_CREATE_NEW_STACK"}}<i class="icon-caret-down"></i></button>
 	<div class="dropdown-menu">
 		<ul id="global-region-create-stack-list">{{#each region_names}}
 			<li data-region="{{long.id}}">{{long.name}} - {{short.name}}</li>
 		{{/each}}</ul>
 	</div>
 
-	<button id="global-import-stack" class="disabled btn btn-primary icon-import">Import stack</button>
+	<button id="global-import-stack" class="btn btn-primary icon-import" disabled>Import stack</button>
 
 	<!-- Visualize unmanaged VPC -->
-	<button id="global-region-visualize-VPC" class="btn btn-blue icon-visualize">Visualize unmanaged VPC
+	<button id="global-region-visualize-VPC" class="btn btn-blue icon-visualize" disabled>Visualize unmanaged VPC
 	<div class="help-tip-body">
 		<p><b>Visualize custom VPC resources you have created outside MadeiraCloud.</b></p>
 		<p>Once the VPC you select has been visualized, you can manually fine-tune the auto-generated diagram.

@@ -19,7 +19,7 @@
 		<section class="property-control-group" data-bind="true">
 			<label class="left" for="property-instance-count" >{{ i18n "PROP_INSTANCE_NUMBER" }}</label>
 			<span class="required-input right">{{ i18n "PROP_INSTANCE_REQUIRE" }}</span>
-			<input class="input tooltip" type="text" value="{{ count }}" id="property-instance-count" data-ignore="true" data-required="true" data-type="digits" {{#if number_disable}}disabled="disabled" data-tooltip="You cannot specify instance number, since the instance is connected to a route table."{{else}}data-tooltip="If the quantity is more than 1, host name will be the string you provide plus number index."{{/if}}/>
+			<input class="input tooltip" type="text" value="{{ count }}" id="property-instance-count" data-ignore="true" data-required="true" data-type="digits" {{#if number_disable}}disabled="disabled" data-tooltip="{{i18n 'PROP_INSTANCE_TIP_YOU_CANNOT_SPECIFY_INSTANCE_NUMBER'}}"{{else}}data-tooltip="{{i18n 'PROP_INSTANCE_TIP_IF_THE_QUANTITY_IS_MORE_THAN_1'}}"{{/if}}/>
 		</section>
 		<section class="property-control-group">
 			<label>{{ i18n "PROP_INSTANCE_AMI" }}</label>
@@ -107,16 +107,60 @@
 			<p class="{{#unless monitoring}}hide{{/unless}} property-info" id="property-cloudwatch-warn">{{ i18n "PROP_INSTANCE_CW_WARN" }}<a target="_blank" href="http://aws.amazon.com/cloudwatch">Amazon Cloud Watch product page</a></p>
 		</section>
 		<section class="property-control-group">
-			<label for="property-instance-user-data">{{ i18n "PROP_INSTANCE_USER_DATA" }}</label>
 			{{#if stackAgentEnable}}
-				<div class="property-info" style="display: block;">
-					<p>User Data is disabled to allow installing OpsAgent for VisualOps. <a href="{{ i18n "PROP_AGENT_USER_DATA_URL" }}" target="_blank">View content</a>.</p>
-				</div>
+			<div class="property-info">User Data is disabled to allow installing OpsAgent for VisualOps. <a href="{{ i18n 'PROP_AGENT_USER_DATA_URL' }}" target="_blank">View content</a>.</div>
 			{{else}}
-				<textarea id="property-instance-user-data">{{userData}}</textarea>
+			<label for="property-instance-user-data">{{ i18n "PROP_INSTANCE_USER_DATA" }}</label>
+			<textarea id="property-instance-user-data">{{userData}}</textarea>
 			{{/if}}
 		</section>
 	</div>
+
+  {{#if rootDevice}}
+	<div class="option-group-head">Root Device</div>
+	<div class="option-group">
+    <section class="property-control-group">
+      <label>{{ i18n "PROP_VOLUME_DEVICE_NAME" }}</label>
+      <div>{{rootDevice.name}}</div>
+    </section>
+    <section class="property-control-group">
+      <label>{{ i18n "PROP_VOLUME_SIZE" }}</label>
+      <div class="ranged-number-input">
+          <label for="volume-size-ranged"></label>
+          <input id="volume-size-ranged" type="text" class="input" value="{{rootDevice.size}}" name="volume-size-ranged" data-ignore="true" maxlength="4" data-required="true" data-required="true" data-type="number"/>
+      <label for="volume-property-ranged-number" >GB</label>
+      </div>
+    </section>
+
+    <section class="property-control-group">
+      <label>{{ i18n "PROP_VOLUME_TYPE" }}</label>
+      <div id="volume-type-radios">
+      <div>
+      	<div class="radio">
+          <input id="radio-standard" type="radio" name="volume-type" {{#unless rootDevice.iops}}checked="checked"{{/unless}}/>
+          <label for="radio-standard"></label>
+        </div>
+        <label for="radio-standard">{{ i18n "PROP_VOLUME_TYPE_STANDARD" }}</label>
+      </div>
+      <div {{#if rootDevice.iopsDisabled}}class="tooltip"{{/if}} data-tooltip="{{ i18n 'PROP_VOLUME_MSG_WARN'}}">
+        <div class="radio">
+          <input id="radio-iops" type="radio" name="volume-type" {{#if rootDevice.iops}}checked="checked"{{/if}} {{#if rootDevice.iopsDisabled}}disabled{{/if}}/>
+          <label for="radio-iops"></label>
+        </div>
+        <label for="radio-iops">{{ i18n "PROP_VOLUME_TYPE_IOPS" }}</label>
+      </div>
+      </div>
+    </section>
+
+    <section class="property-control-group" id="iops-group" {{#unless rootDevice.iops}}style="display:none"{{/unless}}>
+        <label>IOPS</label>
+        <div class="ranged-number-input">
+          <label for="iops-ranged"></label>
+          <input id="iops-ranged" type="text" class="input" min="100" max="2000" value="{{rootDevice.iops}}">
+        </div>
+    </section>
+	</div>
+  {{/if}}
 
 	{{#if eni}}
 	<div class="option-group-head">{{ i18n "PROP_INSTANCE_ENI_DETAIL" }}</div>
@@ -136,7 +180,7 @@
 			</div>
 			<label for="property-instance-source-check">{{ i18n "PROP_INSTANCE_ENI_SOURCE_DEST_CHECK" }}</label>
 		</section>
-		<section {{#if multi_enis}}class="property-control-group tooltip" data-tooltip="Public IP cannot be associated if instance is launching with more than one network interface."{{else}}class="property-control-group"{{/if}}>
+		<section {{#if multi_enis}}class="property-control-group tooltip" data-tooltip="{{i18n 'PROP_INSTANCE_TIP_PUBLIC_IP_CANNOT_BE_ASSOCIATED'}}"{{else}}class="property-control-group"{{/if}}>
 			<div class="checkbox">
 				<input id="property-instance-public-ip" type="checkbox" {{#if multi_enis}}disabled="disabled"{{/if}} {{#if eni.assoPublicIp}}checked="checked" {{/if}} value="None" name="property-instance-public-ip" />
 				<label for="property-instance-public-ip"></label>
@@ -147,7 +191,7 @@
 			<div class="network-list-wrap">
 				<div class="network-list-header clearfix">
 					{{ i18n "PROP_INSTANCE_ENI_IP_ADDRESS" }}
-					<button id="instance-ip-add" class="right btn btn-blue btn-small tooltip" data-tooltip="Add IP Address">{{ i18n "PROP_INSTANCE_ENI_ADD_IP" }}</button>
+					<button id="instance-ip-add" class="right btn btn-blue btn-small tooltip" data-tooltip="{{i18n 'PROP_ENI_TIP_ADD_IP_ADDRESS'}}">{{ i18n "PROP_INSTANCE_ENI_ADD_IP" }}</button>
 				</div>
 				<ul class="network-list" id="property-network-list" data-bind="true"></ul>
 			</div>

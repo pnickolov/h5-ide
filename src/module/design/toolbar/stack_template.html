@@ -1,68 +1,56 @@
-<section class="toolbar-btn-group toolbar-btn-primary">
-	<a href="#" class="btn-toolbar icon-play tooltip modal" id="toolbar-run" data-tooltip='{{ i18n "TOOL_TIP_BTN_RUN_STACK" }}' data-modal-template="modalRunStack" data-modal-data='{"title":"{{{ i18n "TOOL_POP_TIT_RUN_STACK" }}}", "name":"{{item_flags.name}}"}' data-modal-dismiss="false"><span>{{ i18n "TOOL_BTN_RUN_STACK" }}</span></a>
-</section>
+<button class="btn-toolbar icon-play tooltip modal toolbar-btn-primary" id="toolbar-run" data-tooltip='{{ i18n "TOOL_TIP_BTN_RUN_STACK" }}' data-modal-template="modalRunStack" data-modal-data='{"title":"{{{ i18n "TOOL_POP_TIT_RUN_STACK" }}}", "name":"{{item_flags.name}}"}' data-modal-dismiss="false">{{ i18n "TOOL_BTN_RUN_STACK" }}</button>
 
-<section class="toolbar-btn-group">
-	<a href="#" class="btn-toolbar tooltip icon-save" data-tooltip='{{ i18n "TOOL_TIP_SAVE_STACK" }}'></a>
+<button class="btn-toolbar tooltip icon-save" data-tooltip='{{ i18n "TOOL_TIP_SAVE_STACK" }}'></button>
 
-	{{#if item_flags.is_delete}}
-	<a href="#" class="btn-toolbar modal icon-delete tooltip" id="toolbar-delete" data-modal-template="modalApp" data-modal-data='{"title":"{{{ i18n "TOOL_POP_TIT_DELETE_STACK" }}}", "body":"{{{ i18n "TOOL_POP_BODY_DELETE_STACK" }}} {{item_flags.name}}?", "confirm":"{{{ i18n "TOOL_POP_BTN_DELETE_STACK" }}}", "color":"red" }' data-modal-dismiss="true"  data-tooltip='{{ i18n "TOOL_TIP_DELETE_STACK" }}'></a>
-	{{else}}
-	<a href="#" class="btn-toolbar disabled modal icon-delete tooltip" id="toolbar-delete" data-tooltip='{{ i18n "TOOL_TIP_DELETE_NEW_STACK" }}'></a>
-	{{/if}}
-</section>
+{{#if item_flags.is_delete}}
+<button class="btn-toolbar modal icon-delete tooltip seperator" id="toolbar-delete" data-modal-template="modalApp" data-modal-data='{"title":"{{{ i18n "TOOL_POP_TIT_DELETE_STACK" }}}", "body":"{{{ i18n "TOOL_POP_BODY_DELETE_STACK" }}} {{item_flags.name}}?", "confirm":"{{{ i18n "TOOL_POP_BTN_DELETE_STACK" }}}", "color":"red" }' data-modal-dismiss="true"  data-tooltip='{{ i18n "TOOL_TIP_DELETE_STACK" }}'></button>
+{{else}}
+<button class="btn-toolbar disabled modal icon-delete tooltip seperator" id="toolbar-delete" data-tooltip='{{ i18n "TOOL_TIP_DELETE_NEW_STACK" }}'></button>
+{{/if}}
 
-<section class="toolbar-btn-group">
-	{{#if item_flags.is_duplicate}}
-	<a href="#" class="modal btn-toolbar tooltip icon-duplicate" data-tooltip='{{ i18n "TOOL_TIP_DUPLICATE_STACK" }}' id="toolbar-duplicate" data-modal-template="modalApp" data-modal-data='{"title":"{{{ i18n "TOOL_POP_TIT_DUPLICATE_STACK" }}}", "body":"{{{ i18n "TOOL_POP_BODY_DUPLICATE_STACK" }}}", "input":"{{item_flags.name}}", "confirm":"{{{ i18n "TOOL_POP_BTN_DUPLICATE_STACK" }}}", "color":"blue" }' data-modal-dismiss="true"></a>
-	{{else}}
-	<a href="#" class="btn-toolbar tooltip icon-duplicate disabled" data-tooltip='{{ i18n "TOOL_TIP_DUPLICATE_STACK" }}'></a>
-	{{/if}}
-	<a hre="#" class="btn-toolbar icon-new-stack tooltip" id="toolbar-new" data-tooltip='{{ i18n "TOOL_TIP_CREATE_STACK" }}'></a>
-</section>
+{{#if item_flags.is_duplicate}}
+<button class="modal btn-toolbar tooltip icon-duplicate" data-tooltip='{{ i18n "TOOL_TIP_DUPLICATE_STACK" }}' id="toolbar-duplicate" data-modal-template="modalApp" data-modal-data='{"title":"{{{ i18n "TOOL_POP_TIT_DUPLICATE_STACK" }}}", "body":"{{{ i18n "TOOL_POP_BODY_DUPLICATE_STACK" }}}", "input":"{{item_flags.name}}", "confirm":"{{{ i18n "TOOL_POP_BTN_DUPLICATE_STACK" }}}", "color":"blue" }' data-modal-dismiss="true"></button>
+{{else}}
+<button class="btn-toolbar tooltip icon-duplicate disabled" data-tooltip='{{ i18n "TOOL_TIP_DUPLICATE_STACK" }}'></button>
+{{/if}}
+<button class="btn-toolbar icon-new-stack tooltip seperator" id="toolbar-new" data-tooltip='{{ i18n "TOOL_TIP_CREATE_STACK" }}'></button>
 
-<section class="toolbar-btn-group hide">
-	<a href="#" class="btn-toolbar tooltip icon-undo" data-tooltip="Undo"></a>
-	<a href="#" class="btn-toolbar tooltip icon-redo" data-tooltip="Redo"></a>
-</section>
+<button class="btn-toolbar icon-zoom-in {{#if item_flags.is_zoomin}}tooltip{{else}}disabled{{/if}}" data-tooltip='{{{ i18n "TOOL_TIP_ZOOM_IN" }}}'></button>
+<button class="btn-toolbar icon-zoom-out seperator {{#if item_flags.is_zoomout}}tooltip{{else}}disabled{{/if}}" data-tooltip='{{{ i18n "TOOL_TIP_ZOOM_OUT"}}}'></button>
 
-<section class="toolbar-btn-group">
-	<a href="#" class="btn-toolbar tooltip icon-zoom-in {{#if item_flags.is_zoomin}}{{else}}disabled{{/if}}" data-tooltip='{{#if item_flags.is_zoomin}}{{{ i18n "TOOL_TIP_ZOOM_IN" }}}{{else}}{{/if}}'></a>
-	<a href="#" class="btn-toolbar tooltip icon-zoom-out {{#if item_flags.is_zoomout}}{{else}}disabled{{/if}}" data-tooltip='{{#if item_flags.is_zoomout}}{{{ i18n "TOOL_TIP_ZOOM_OUT"}}}{{else}}{{/if}}'></a>
-</section>
+<div class="selectbox btn-toolbar seperator">
+	<button class="selection tooltip icon-send" data-tooltip='{{ i18n "TOOL_EXPORT" }}' id="toolbar-export"></button>
 
-<section class="toolbar-btn-group">
-	<div class="selectbox btn-toolbar">
-		<a class="selection tooltip icon-send" data-tooltip='{{ i18n "TOOL_EXPORT" }}' id="toolbar-export"></a>
-		<ul class="dropdown" tabindex="-1">
-			<li id="toolbar-export-png"><i class="icon-export-png"></i>{{ i18n "TOOL_EXPORT_AS_PNG" }}</li>
-			<li id="toolbar-export-json"><i class="icon-export-json"></i>{{ i18n "TOOL_EXPORT_AS_JSON" }}</li>
-			<li class="modal" id="toolbar-convert-cf" data-modal-template="modalDownloadCloudFormationTpl" data-modal-data='{"title":"{{{ i18n "TOOL_POP_TIT_EXPORT_AS_JSON" }}}", "body":"{{{ i18n "TOOL_POP_BODY_EXPORT_AS_JSON" }}}", "confirm":"{{{ i18n "TOOL_POP_BTN_DOWNLOAD" }}}", "color":"blue", "download":"{{json_file}}", "filecontent":"{{json_content}}" }' data-modal-dismiss=True><i class="icon-toolbar-cloudformation"></i>Convert to CloudFormation Format</li>
-		</ul>
-	</div>
-</section>
+	<ul class="dropdown">
+		<li id="toolbar-export-png" class="icon-export-png">{{ i18n "TOOL_EXPORT_AS_PNG" }}</li>
+		<li id="toolbar-export-json" class="icon-export-json">{{ i18n "TOOL_EXPORT_AS_JSON" }}</li>
+		<li id="toolbar-convert-cf"  class="icon-toolbar-cloudformation">{{ i18n "TOOL_EXPORT_AS_CF" }}</li>
+	</ul>
+</div>
 
 <!-- line style -->
-<section class="toolbar-btn-group">
-	<div class="selectbox btn-toolbar toolbar-line-style">
-		<a class="selection tooltip" data-tooltip='{{ i18n "TOOL_TIP_LINESTYLE" }}' id="toolbar-line-style"><i class="{{ lines.icon }}"></i></a>
-		<ul class="dropdown" tabindex="-1">
-			<li id="toolbar-straight" class='item {{#if lines.is_style0}}selected{{/if}}'> <i class="icon-straight"></i><span>{{ i18n "TOOL_LBL_LINESTYLE_STRAIGHT" }}</span></li>
-			<li id="toolbar-elbow" class='item {{#if lines.is_style1}}selected{{/if}}'> <i class="icon-elbow"></i><span>{{ i18n "TOOL_LBL_LINESTYLE_ELBOW" }}</span></li>
-			<li id="toolbar-bezier-q" class='item {{#if lines.is_style2}}selected{{/if}}'> <i class="icon-bezier-q"></i><span>{{ i18n "TOOL_LBL_LINESTYLE_QUADRATIC_BELZIER" }}</span></li>
-			<li id="toolbar-bezier-qt" class='item {{#if lines.is_style3}}selected{{/if}}'><i class="icon-bezier-qt"></i><span>{{ i18n "TOOL_LBL_LINESTYLE_SMOOTH_QUADRATIC_BELZIER" }}</span></li>
-		</ul>
-	</div>
-</section>
+<div class="selectbox btn-toolbar toolbar-line-style seperator">
+	<button class="selection tooltip" data-tooltip='{{ i18n "TOOL_TIP_LINESTYLE" }}' id="toolbar-line-style"><i class="{{ lines.icon }}"></i></button>
+
+	<ul class="dropdown">
+		<li id="toolbar-straight" class='item {{#if lines.is_style0}}selected{{/if}}'>
+			<i class="icon-straight"></i><span>{{ i18n "TOOL_LBL_LINESTYLE_STRAIGHT" }}</span></li>
+		<li id="toolbar-elbow" class='item {{#if lines.is_style1}}selected{{/if}}'> <i class="icon-elbow"></i><span>{{ i18n "TOOL_LBL_LINESTYLE_ELBOW" }}</span></li>
+		<li id="toolbar-bezier-q" class='item {{#if lines.is_style2}}selected{{/if}}'> <i class="icon-bezier-q"></i><span>{{ i18n "TOOL_LBL_LINESTYLE_QUADRATIC_BELZIER" }}</span></li>
+		<li id="toolbar-bezier-qt" class='item {{#if lines.is_style3}}selected{{/if}}'><i class="icon-bezier-qt"></i><span>{{ i18n "TOOL_LBL_LINESTYLE_SMOOTH_QUADRATIC_BELZIER" }}</span></li>
+	</ul>
+</div>
 
 <!-- env:dev -->
-<section class="toolbar-btn-group">
-  <a href="javascript:dd.diff();" class="btn-toolbar tooltip icon-toolbar-diff" data-tooltip="JSON Diff"></a>
-  <a href="javascript:dd.view();" class="btn-toolbar tooltip icon-toolbar-cloudformation" data-tooltip="JSON View"></a>
-</section>
+<a href="javascript:dd.diff();" class="btn-toolbar tooltip icon-toolbar-diff" data-tooltip="{{i18n 'TOOL_TIP_JSON_DIFF'}}"></a>
+<a href="javascript:dd.view();" class="btn-toolbar tooltip icon-toolbar-cloudformation seperator" data-tooltip="{{i18n 'TOOL_TIP_JSON_VIEW'}}"></a>
 <!-- env:dev:end -->
 
-<label class="switch toolbar-visual-ops-switch tooltip" data-tooltip="Custom User Data will be overridden and disabled to allow installing OpsAgent. (Currently only support Linux platform)">
-  <span class="switch-label" data-on="VisualOps On" data-off="VisualOps Off"></span>
+<section class="toolbar-btn-group">
+	<a href="javascript:void(0);" id="apply-visops" style="display: none;">{{ i18n "TOOL_EXPERIMENT" }}</a>
+</section>
+
+<label class="switch toolbar-visual-ops-switch tooltip" data-tooltip="{{i18n 'TOOL_TIP_CUSTOM_USER_DATA'}}" style="display: none;">
+  <span class="switch-label" data-on="{{i18n 'TOOL_TOGGLE_VISUALOPS_ON'}}" data-off="{{i18n 'TOOL_TOGGLE_VISUALOPS_OFF'}}"></span>
   <span class="switch-handle"></span>
 </label>

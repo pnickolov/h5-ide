@@ -59,6 +59,8 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], ( cons
                         # test
                         #state.res_id = 'i-a271b0bc'
 
+
+
                         data =
                             id      : @__genId state.res_id, status.id
                             appId   : state.app_id
@@ -69,6 +71,9 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], ( cons
 
 
                         _.extend data, @__extendComponent data.resId
+                        # component was deleted.
+                        if not data.name
+                            data.name = 'unknown'
 
                         if data.result is 'failure'
                             collection.add new Backbone.Model data
@@ -107,7 +112,7 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], ( cons
             null
 
         listenStateEditorUpdate: ( data ) ->
-            resId = data.resUID
+            resId = data.resId
             stateIds = data.stateIds
 
             for stateId in stateIds

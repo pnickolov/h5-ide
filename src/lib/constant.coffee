@@ -512,8 +512,9 @@ use redirection server name:i:0\n"
 	}
 
 	REGEXP =
-		'stateEditorReference': /@\{([A-Z0-9]{8}-([A-Z0-9]{4}-){3}[A-Z0-9]{12})\.\w+\}/g
-		'stateEditorOriginReference': /@\{([\w-]+)\.[\w-]+(\[\d+\])?\}/g
+		'stateEditorReference'		: /@\{([A-Z0-9]{8}-([A-Z0-9]{4}-){3}[A-Z0-9]{12})\.\w+\}/g
+		'stateEditorOriginReference': /@\{(([\w-]+)\.(([\w-]+(\[\d+\])?)|state.[\w-]+))\}/g
+		'uid'						: /[A-Z0-9]{8}-([A-Z0-9]{4}-){3}[A-Z0-9]{12}/g
 
 
 	#public

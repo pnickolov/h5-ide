@@ -23,8 +23,11 @@ define [ 'event',
         # store current uid
         uid: null
 
-        # store lastest render component id
-        lastUid: null
+        # store the message of latest rendered component
+        last:
+            uid     : null
+            type    : null
+
 
         initialize : ->
 
@@ -46,47 +49,41 @@ define [ 'event',
             target = event.currentTarget
             if target.id is 'btn-switch-state'
                 if @currentTab isnt 'state'
-                    @renderState @lastUid, true
+                    @renderState @last.uid, @last.type, true
             else
                 if @currentTab is 'state'
-                    @renderProperty @lastUid
+                    @renderProperty @last.uid, @last.type
 
-        __hideProperty: () ->
-            $( '#property-panel .sub-property' ).hide()
+            @renderStateCount Design.instance().component( @last.uid )
 
-        __hideState: () ->
-            $( '#property-panel .sub-stateeditor' ).hide()
+        showProperty: () ->
+            $( '#property-panel' ).removeClass 'state'
 
-        __showProperty: () ->
-            $( '#property-panel .sub-property' ).show()
-
-        __showState: () ->
-            $( '#property-panel .sub-stateeditor' ).show()
-
-        __hasProperty: () ->
-            $( '#property-panel .sub-property' ).children() > 0
-
-        __hasState: () ->
-            $( '#property-panel .sub-stateeditor' ).children() > 0
+        showState: () ->
+            $( '#property-panel' ).addClass 'state'
 
         __hideResourcePanel: () ->
             hideButton = $ '#hide-resource-panel'
             if hideButton.hasClass 'icon-caret-left'
                 hideButton.click()
 
+        storeLast: ( uid, type ) ->
+            @last.uid = uid
+            @last.type = type
+            null
+
         renderProperty: ( uid, type, force ) ->
-            @__hideState()
             $( '#property-panel' ).removeClass('state').removeClass('state-wide')
             if not type and uid
                 comp = Design.instance().component uid
                 type = comp.type if comp
 
-            @__initProperty type, uid, force
+            @initProperty type, uid, force
 
 
             @currentTab = 'property'
-            @__showProperty()
-            @lastUid = uid
+            @showProperty()
+            @storeLast uid, type
             @
 
         renderStateCount: ( component ) ->
@@ -94,74 +91,49 @@ define [ 'event',
                 count = component.get( 'state' ) and component.get( 'state' ).length or 0
                 $( '#btn-switch-state b' ).text "(#{count})"
 
-        renderState: ( uid, force ) ->
+        renderState: ( uid, type, force ) ->
 
-            @__hideProperty()
             @__hideResourcePanel()
-            $( '#property-panel' ).addClass 'state'
+            @showState()
 
-            @lastUid = uid
+            @storeLast uid, type
             @currentTab = 'state'
 
-            if @lastUid is uid and @__hasProperty()
+            currentSelectedCompModel = null
 
-            else
-
-                if not uid
-                    uid = Design.instance().canvas.selectedNode[ 0 ]
-
+            if not uid
+                uid = Design.instance().canvas.selectedNode[ 0 ]
                 if uid
-                    comp = Design.instance().component uid
-                    if comp
-                        type = comp.type
-                        if not _.contains [ CONST.RESTYPE.LC, CONST.RESTYPE.INSTANCE ], type
-                            @renderProperty uid
-                            return
-                        else if _.contains [ CONST.RESTYPE.LC ], type
-                            if Design.instance().modeIsApp()
-                                currentStackState = Design.instance().get('state')
-                                if currentStackState is 'Stopped'
-                                    ide_event.trigger ide_event.OPEN_STATE_EDITOR, uid
-                                    @__showState()
-                                return
+                    currentSelectedCompModel = Design.instance().component(uid)
 
-                            ide_event.trigger ide_event.OPEN_STATE_EDITOR, uid
-                            @__showState()
+            if uid
+                comp = Design.instance().component uid
+                if comp
+                    type = comp.type
+                    if not _.contains [ CONST.RESTYPE.LC, CONST.RESTYPE.INSTANCE ], type
+                        @renderProperty uid
+                        return
+                    else if _.contains [ CONST.RESTYPE.LC ], type
+                        if Design.instance().modeIsApp()
+                            currentStackState = Design.instance().get('state')
+                            if currentStackState is 'Stopped'
+                                ide_event.trigger ide_event.OPEN_STATE_EDITOR, uid
                             return
 
-                    if Design.instance().modeIsApp()
+                        ide_event.trigger ide_event.OPEN_STATE_EDITOR, uid
+                        return
 
-                        # for asg or isg
+                else if Design.instance().modeIsApp()
+                    resId = uid
+                    effective = MC.aws.instance.getEffectiveId resId
+                    uid = effective.uid
 
-                        resId = $('#asgList-wrap .asgList-item.selected').attr('id')
 
-                        if resId
-
-                            compObj = MC.aws.aws.getCompByResIdForState(resId)
-                            if compObj and compObj.parent and compObj.parent.type is 'AWS.AutoScaling.Group'
-                                lcComp = compObj.parent.get('lc')
-                                if lcComp and lcComp.id
-                                    ide_event.trigger ide_event.OPEN_STATE_EDITOR, lcComp.id, resId
-                                    @__showState()
-                                    return
-
-                        resId = $('#instanceList-wrap .instanceList-item.selected').data('id')
-
-                        if resId
-
-                            compObj = MC.aws.aws.getCompByResIdForState(resId)
-                            if compObj and compObj.parent and compObj.parent.type is 'AWS.EC2.Instance'
-                                if compObj.parent and compObj.parent.id
-                                    ide_event.trigger ide_event.OPEN_STATE_EDITOR, compObj.parent.id, resId
-                                    @__showState()
-                                    return
-
-            ide_event.trigger ide_event.OPEN_STATE_EDITOR, uid
-            @__showState()
+            ide_event.trigger ide_event.OPEN_STATE_EDITOR, uid, resId
             if force then @forceShow()
             @
 
-        __initProperty: ( type, uid, force ) ->
+        initProperty: ( type, uid, force ) ->
             @render()
             @load()
 
@@ -201,30 +173,23 @@ define [ 'event',
 
 
             # Tell `PropertyBaseModule` to load corresponding property panel.
-
-            ### env:dev ###
-            PropertyBaseModule.load type, uid, tab_type
-            @afterLoad()
-
-            if force then @forceShow()
-            ### env:dev:end ###
-
-            ### env:prod ###
             try
                 PropertyBaseModule.load type, uid, tab_type
                 @afterLoad()
 
                 if force then @forceShow()
+                ### env:prod ###
             catch error
                 console.error error
-            ### env:prod:end ###
+                ### env:prod:end ###
+            finally
 
             null
 
         render     : () ->
             # Blur any focused input
             # Better than $("input:focus")
-            $(document.activeElement).filter("input").blur()
+            $(document.activeElement).filter("input, textarea").blur()
 
             $( '#property-panel .sub-property' )
                 .html( template )
@@ -232,9 +197,63 @@ define [ 'event',
             @
 
         restore: ( snapshot ) ->
-            @currentTab = snapshot.propertyTab
-            @uid = snapshot.activeModuleId
+            type = snapshot.activeModuleType
+            currentTab = @currentTab = snapshot.propertyTab
+            uid = @uid = snapshot.activeModuleId
+
+            stateStatus = @processState uid, type
+            if currentTab is 'state' and stateStatus
+                @renderState uid
+            else
+                @showProperty()
             null
+
+        # modeAvai is behalf of tab mode ( app|stack|appedit|stoped|more.. )
+        # modeAvai has 3 states true|false|null( not set )
+        getModeAvai: ( type ) ->
+            modeAvai = null
+
+            if Design.instance().modeIsAppEdit()
+                if type is 'component_server_group'
+                    modeAvai = true
+            else if Design.instance().modeIsApp()
+                if type is CONST.RESTYPE.LC
+                    modeAvai = false
+                if type is 'component_server_group'
+                    modeAvai = false
+                # Stopped APP
+                if Design.instance().get('state') is "Stopped"
+                    if type is CONST.RESTYPE.LC
+                        modeAvai = true
+                    else if type is 'component_server_group'
+                        modeAvai = false
+
+            modeAvai
+
+        processState: ( uid, type ) ->
+            propertyPanel = $ '#property-panel'
+
+            if uid
+                component = Design.instance().component uid
+                type = component.type if not type and component
+                typeAvai = _.contains [ CONST.RESTYPE.LC, CONST.RESTYPE.INSTANCE, 'component_server_group' ], type
+                opsEnabled = Design.instance().get('agent').enabled
+
+                modeAvai = @getModeAvai type
+
+                if opsEnabled and typeAvai
+                    @renderStateCount component
+
+
+                if opsEnabled and ( ( modeAvai is null and typeAvai ) or modeAvai )
+                    propertyPanel.removeClass 'no-state'
+                    return true
+                else
+                    propertyPanel.addClass 'no-state'
+                    return false
+            else
+                propertyPanel.addClass 'no-state'
+                return false
 
         getCurrentCompUid : () ->
             event = {}
@@ -306,9 +325,15 @@ define [ 'event',
                 })
 
         # This method is used to show the panel immediately if the panel is hidden.
-        forceShow : () ->
+        forceShow : ( tab ) ->
+            if tab is 'property'
+                @showProperty()
+            else if tab is 'state'
+                @showState()
+
             $( '#property-panel' ).removeClass 'hidden transition'
             $( '#hide-property-panel' ).removeClass( 'icon-caret-left' ).addClass( 'icon-caret-right' )
+
             null
 
         showSecondPanel : () ->

@@ -230,11 +230,12 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
       console.error "No parent is found when cloning object"
       return
 
-    attributes   = { parent : parent, name : @model.get("name") + "-copy" }
-    pos          = { x : x, y : y }
-    createOption = { cloneSource : @model }
+    if @model.clone # If the model supports clone() interface, then clone the target.
+      attributes   = { parent : parent, name : @model.get("name") + "-copy" }
+      pos          = { x : x, y : y }
+      createOption = { cloneSource : @model }
 
-    $canvas.add( @type, attributes, pos, createOption )
+      $canvas.add( @type, attributes, pos, createOption )
 
   CanvasElement.prototype.parent  = ()->
     p = @model.parent()
@@ -256,7 +257,7 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
     # Ask the component if it supports AppEdit Mode
     #
     if @model.design().modeIsAppEdit() and @model.get("appId")
-      notification "error", "This operation is not supported yet."
+      notification "error", lang.ide.NOTIFY_MSG_WARN_OPERATE_NOT_SUPPORT_YET
       return
     #
     # #
@@ -490,8 +491,25 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
     # Get xGW state
     data = MC.data.resource_list[ m.design().region() ][ m.get("appId") ]
 
-    if data and data.state in [ 'deleted', 'terminated' ]
+    if data
+      if m.get("appId").indexOf("igw-") is 0
+        #igw attachment.state: available | unavailable
+        if not ( data.attachmentSet isnt null and data.attachmentSet.item[0].state is "available" and data.attachmentSet.item[0].vpcId is m.parent().get("appId") )
+          CanvasManager.addClass el, "deleted"
+
+      else if m.get("appId").indexOf("vgw-") is 0
+        #vgw            state: pending | available | deleting | deleted
+        #    attachment.state: attaching | attached | detaching | detached
+        if not ( data.state is "available" and data.attachments.item[0].state is "attached" and data.attachments.item[0].vpcId is m.parent().get("appId") )
+          CanvasManager.addClass el, "deleted"
+
+      else if m.get("appId").indexOf("cgw-") is 0
+        #cgw state: pending | available | deleting | deleted
+        if data.state isnt "available"
+          CanvasManager.addClass el, "deleted"
+    else
       CanvasManager.addClass el, "deleted"
+
     null
 
   CanvasElement.prototype.detach = () ->

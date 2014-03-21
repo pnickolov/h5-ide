@@ -6,7 +6,12 @@ define ["handlebars", "i18n!nls/lang.js"], ( Handlebars, lang )->
 
   #i18n
   Handlebars.registerHelper 'i18n', ( text ) ->
-    new Handlebars.SafeString lang.ide[ text ]
+    t = lang.ide[ text ] || ""
+    ### env:dev ###
+    t = t || "undefined"
+    ### env:dev:end ###
+
+    new Handlebars.SafeString t
 
   Handlebars.registerHelper 'tolower', ( result ) ->
     return new Handlebars.SafeString result.toLowerCase()

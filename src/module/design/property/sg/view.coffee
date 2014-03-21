@@ -144,9 +144,9 @@ define [ '../base/view',
                     dom: custom_protocal_dom
                     method: ( val ) ->
                         if not MC.validate.portRange(val)
-                            return 'Must be a valid format of number.'
+                            return lang.ide.PARSLEY_MUST_BE_A_VALID_FORMAT_OF_NUMBER
                         if Number(val) < 0 or Number(val) > 255
-                            return 'The protocol number range must be 0-255.'
+                            return lang.ide.PARSLEY_THE_PROTOCOL_NUMBER_RANGE_MUST_BE_0_255
                         null
                 'tcp':
                     dom: tcp_port_dom
@@ -154,9 +154,9 @@ define [ '../base/view',
                         portAry = []
                         portAry = MC.validate.portRange(val)
                         if not portAry
-                            return 'Must be a valid format of port range.'
+                            return lang.ide.PARSLEY_MUST_BE_A_VALID_FORMAT_OF_PORT_RANGE
                         if not MC.validate.portValidRange(portAry)
-                            return 'Port range needs to be a number or a range of numbers between 0 and 65535.'
+                            return lang.ide.PARSLEY_PORT_RANGE_BETWEEN_0_65535
                         null
                 'udp':
                     dom: udp_port_dom
@@ -164,9 +164,9 @@ define [ '../base/view',
                         portAry = []
                         portAry = MC.validate.portRange(val)
                         if not portAry
-                            return 'Must be a valid format of port range.'
+                            return lang.ide.PARSLEY_MUST_BE_A_VALID_FORMAT_OF_PORT_RANGE
                         if not MC.validate.portValidRange(portAry)
-                            return 'Port range needs to be a number or a range of numbers between 0 and 65535.'
+                            return lang.ide.PARSLEY_PORT_RANGE_BETWEEN_0_65535
                         null
 
             if protocol_type of validateMap
@@ -175,7 +175,7 @@ define [ '../base/view',
 
             descrition_dom.parsley 'custom', ( val ) ->
                 if !MC.validate 'cidr', val
-                    return 'Must be a valid form of CIDR block.'
+                    return lang.ide.PARSLEY_MUST_BE_CIDR_BLOCK
                 null
 
             if (sourceValue is 'custom' and (not descrition_dom.parsley 'validate')) or (needValidate and not needValidate.dom.parsley 'validate')

@@ -92,16 +92,61 @@
 			<p class="{{#unless monitoring}}hide{{/unless}} property-info" id="property-cloudwatch-warn">{{i18n "PROP_INSTANCE_CW_WARN"}}<a target="_blank" href="http://aws.amazon.com/cloudwatch">Amazon Cloud Watch product page</a></p>
 		</section>
 		<section class="property-control-group">
-			<label for="property-instance-user-data">{{i18n "PROP_INSTANCE_USER_DATA"}}</label>
 			{{#if stackAgentEnable}}
-				<div class="property-info" style="display: block;">
-					<p>User Data is disabled to allow installing OpsAgent for VisualOps. <a href="{{ i18n "PROP_AGENT_USER_DATA_URL" }}" target="_blank">View content</a>.</p>
-				</div>
+			<div class="property-info"> User Data is disabled to allow installing OpsAgent for VisualOps. <a href="{{ i18n "PROP_AGENT_USER_DATA_URL" }}" target="_blank">View content</a>.
+			</div>
 			{{else}}
+				<label for="property-instance-user-data">{{i18n "PROP_INSTANCE_USER_DATA"}}</label>
 				<textarea id="property-instance-user-data">{{userData}}</textarea>
 			{{/if}}
 		</section>
 	</div>
+
+	{{#if rootDevice}}
+	<div class="option-group-head">Root Device</div>
+	<div class="option-group">
+    <section class="property-control-group">
+      <label>{{ i18n "PROP_VOLUME_DEVICE_NAME" }}</label>
+      <div>{{rootDevice.name}}</div>
+    </section>
+    <section class="property-control-group">
+      <label>{{ i18n "PROP_VOLUME_SIZE" }}</label>
+      <div class="ranged-number-input">
+          <label for="volume-size-ranged"></label>
+          <input id="volume-size-ranged" type="text" class="input" value="{{rootDevice.size}}" name="volume-size-ranged" data-ignore="true" maxlength="4" data-required="true" data-required="true" data-type="number"/>
+      <label for="volume-property-ranged-number" >GB</label>
+      </div>
+    </section>
+
+    <section class="property-control-group">
+      <label>{{ i18n "PROP_VOLUME_TYPE" }}</label>
+      <div id="volume-type-radios">
+      <div>
+      	<div class="radio">
+          <input id="radio-standard" type="radio" name="volume-type" {{#unless rootDevice.iops}}checked="checked"{{/unless}}/>
+          <label for="radio-standard"></label>
+        </div>
+        <label for="radio-standard">{{ i18n "PROP_VOLUME_TYPE_STANDARD" }}</label>
+      </div>
+      <div {{#if rootDevice.iopsDisabled}}class="tooltip"{{/if}} data-tooltip="{{ i18n 'PROP_VOLUME_MSG_WARN'}}">
+        <div class="radio">
+          <input id="radio-iops" type="radio" name="volume-type" {{#if rootDevice.iops}}checked="checked"{{/if}} {{#if rootDevice.iopsDisabled}}disabled{{/if}}/>
+          <label for="radio-iops"></label>
+        </div>
+        <label for="radio-iops">{{ i18n "PROP_VOLUME_TYPE_IOPS" }}</label>
+      </div>
+      </div>
+    </section>
+
+    <section class="property-control-group" id="iops-group" {{#unless rootDevice.iops}}style="display:none"{{/unless}}>
+        <label>IOPS</label>
+        <div class="ranged-number-input">
+          <label for="iops-ranged"></label>
+          <input id="iops-ranged" type="text" class="input" min="100" max="2000" value="{{rootDevice.iops}}">
+        </div>
+    </section>
+	</div>
+  {{/if}}
 
 	<div class="option-group-head">{{i18n "PROP_INSTANCE_SG_DETAIL"}}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
   <div class="option-group sg-group"></div>

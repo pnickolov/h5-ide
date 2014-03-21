@@ -11,7 +11,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo' ], ( constant, MC,
         if !instanceCount.instance
             return null
 
-        count = _.countBy MC.canvas_data.layout, ( component ) ->
+        count = _.countBy MC.canvas_data.component, ( component ) ->
             if component.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone then 'az' else 'others'
 
         if count.az > 1

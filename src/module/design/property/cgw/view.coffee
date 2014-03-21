@@ -2,7 +2,7 @@
 #  View(UI logic) for design/property/cgw
 #############################
 
-define [ '../base/view', 'text!./template/stack.html', 'event', 'constant', "Design" ], ( PropertyView, template, ide_event, constant, Design ) ->
+define [ 'i18n!nls/lang.js', '../base/view', 'text!./template/stack.html', 'event', 'constant', "Design" ], ( lang, PropertyView, template, ide_event, constant, Design ) ->
 
     template = Handlebars.compile template
 
@@ -13,9 +13,9 @@ define [ '../base/view', 'text!./template/stack.html', 'event', 'constant', "Des
             "change #property-cgw-bgp"               : 'onChangeBGP'
             "change #property-cgw-name"              : 'onChangeName'
 
-            "focus #property-cgw-ip"    : 'onFocusIP'
-            "keypress #property-cgw-ip" : 'onPressIP'
-            "blur #property-cgw-ip"     : 'onBlurIP'
+            "focus #property-cgw-ip"                 : 'onFocusIP'
+            "keypress #property-cgw-ip"              : 'onPressIP'
+            "blur #property-cgw-ip"                  : 'onBlurIP'
 
         render     : () ->
             @$el.html template @model.toJSON()
@@ -35,11 +35,11 @@ define [ '../base/view', 'text!./template/stack.html', 'event', 'constant', "Des
             $target.parsley 'custom', ( val ) ->
                 val = + val
                 if val < 1 or val > 65534
-                    return 'Must be between 1 and 65534'
+                    return lang.ide.PARSLEY_MUST_BE_BETWEEN_1_AND_65534
                 if val is 7224 and region is 'us-east-1'
-                    return 'ASN number 7224 is reserved in Virginia'
+                    return lang.ide.PARSLEY_ASN_NUMBER_7224_RESERVED
                 if val is 9059 and region is 'eu-west-1'
-                    return 'ASN number 9059 is reserved in Ireland'
+                    return lang.ide.PARSLEY_ASN_NUMBER_9059_RESERVED_IN_IRELAND
 
             if $target.parsley 'validate'
                 @model.setBGP $target.val()
@@ -72,7 +72,7 @@ define [ '../base/view', 'text!./template/stack.html', 'event', 'constant', "Des
             else if !MC.validate 'ipv4', ipAddr
                 mainContent = "#{ipAddr} is not a valid IP Address."
                 descContent = 'Please provide a valid IP Address. For example, 192.168.1.1.'
-            else if !MC.aws.eni.isPublicIPAddress(ipAddr)
+            else if MC.aws.aws.isValidInIPRange(ipAddr, 'private')
                 mainContent = "IP Address #{ipAddr} is invalid for customer gateway."
                 descContent = "The address must be static and can't be behind a device performing network address translation (NAT)."
             else

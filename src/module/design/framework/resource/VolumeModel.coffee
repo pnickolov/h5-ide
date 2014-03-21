@@ -1,5 +1,5 @@
 
-define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
+define [ "i18n!nls/lang.js", "../ComplexResModel", "constant" ], ( lang, ComplexResModel, constant )->
 
   Model = ComplexResModel.extend {
 
@@ -23,6 +23,13 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
 
     constructor : ( attributes, options )->
 
+      #  <attributes.owner> : InstanceModel
+      #  [attributes.snapshotId]
+      #  [attributes.volumeSize]
+      #  [attributes.volumeType]
+      #  [attributes.iops]
+      #  [options.noNeedGenName] : true|false
+
       owner = attributes.owner
       delete attributes.owner
 
@@ -37,6 +44,9 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
 
       if options and options.cloneSource
         @clone( options.cloneSource )
+
+      if attributes.iops
+        attributes.volumeType = "io1"
       null
 
     clone : ( srcTarget )->
@@ -53,6 +63,13 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
           return false
 
         if not @get("appId") then return true
+
+        # Disable transfering exsiting volume between servergroups and others.
+        if parent.get("count") > 1
+          return lang.ide.CVS_MSG_ERR_SERVERGROUP_VOLUME
+
+        if newParent.get("count") > 1
+          return lang.ide.CVS_MSG_ERR_SERVERGROUP_VOLUME2
 
         while parent and parent.type isnt constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone
           parent    = parent.parent()
@@ -151,7 +168,7 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
       ami_info = MC.data.dict_ami[ imageId ]
 
       if !ami_info
-        notification "warning", "The AMI(" +  imageId + ") is not exist now, try to use another AMI.", false  unless ami_info
+        notification "warning", sprintf(lang.ide.NOTIFY_MSG_WARN_AMI_NOT_EXIST_TRY_USE_OTHER, imageId), false  unless ami_info
         return null
 
       else
@@ -160,7 +177,7 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
         if ami_info.osType isnt "windows"
           deviceName = ["f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
         else
-          deviceName = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p"]
+          deviceName = ["f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p"]
 
         $.each ami_info.blockDeviceMapping || [], (key, value) ->
           if key.slice(0, 4) is "/dev/"
@@ -178,7 +195,7 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
 
         #no valid deviceName
         if deviceName.length is 0
-          notification "warning", "Attached volume has reached instance limit.", false
+          notification "warning", lang.ide.NOTIFY_MSG_WARN_ATTACH_VOLUME_REACH_INSTANCE_LIMIT, false
           return null
 
         if ami_info.osType isnt "windows"

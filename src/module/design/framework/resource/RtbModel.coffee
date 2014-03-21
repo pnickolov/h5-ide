@@ -60,18 +60,8 @@ define [ "../ComplexResModel", "Design", "../connection/Route", "../connection/R
         component = component.embedInstance()
 
       # Find out if we already have one connection between this rtb to targetId
-      connection = _.find @connections(), ( cn )->
-        p1 = cn.port1Comp()
-        p2 = cn.port2Comp()
-
-        p1 && p2 && (p1.id is targetId or p2.id is targetId)
-
-      # No connection found, create a new one.
-      if not connection
-        connection = new Route( this, component, { routes : [r] } )
-      else
-        # Add the route to the connection
-        connection.addRoute( r )
+      connection = new Route( this, component )
+      connection.addRoute( r )
 
       # Set propagating
       if propagating isnt undefined
@@ -173,11 +163,12 @@ define [ "../ComplexResModel", "Design", "../connection/Route", "../connection/R
 
 
         # The first RouteSet is always local, so we don't deserialize it
-        i = 1
+        i = 0
         while i < routes.length
           r  = routes[i]
-          id = MC.extractID( r.GatewayId || r.InstanceId || r.NetworkInterfaceId )
-          rtb.addRoute( id, r.DestinationCidrBlock, propagateMap[id] )
+          if r.GatewayId isnt "local"
+            id = MC.extractID( r.GatewayId || r.InstanceId || r.NetworkInterfaceId )
+            rtb.addRoute( id, r.DestinationCidrBlock, propagateMap[id] )
           ++i
       null
   }

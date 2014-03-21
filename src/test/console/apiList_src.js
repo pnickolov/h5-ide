@@ -120,6 +120,36 @@ var API_DATA_LIST = {
             "value"  : "null"
           }
         }
+      },
+      "is_invitated" : {
+        "method"  : "/account:is_invitated",
+        "param"   : {
+          "username" : {
+            "type"   : "String",
+            "value"  : "null"
+          },
+          "session_id" : {
+            "type"   : "String",
+            "value"  : "null"
+          }
+        }
+      },
+      "apply_trial" : {
+        "method"  : "/account:apply_trial",
+        "param"   : {
+          "username" : {
+            "type"   : "String",
+            "value"  : "null"
+          },
+          "session_id" : {
+            "type"   : "String",
+            "value"  : "null"
+          },
+          "message" : {
+            "type"   : "String",
+            "value"  : "null"
+          }
+        }
       }
     },
     "Log" : {

@@ -6,10 +6,10 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'customergateway_service
 			if !callback
 				callback = () ->
 
-			currentState = MC.canvas.getState()
-			if currentState is 'appedit'
-				callback(null)
-				return null
+			# currentState = MC.canvas.getState()
+			# if currentState is 'appedit'
+			# 	callback(null)
+			# 	return null
 
 			# get current stack all cgw
 			stackCGWIP = stackCGWName = stackCGWUID = null
@@ -70,4 +70,26 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'customergateway_service
 		catch err
 			callback(null)
 
+	isValidCGWIP = (uid) ->
+
+		cgwComp = MC.canvas_data.component[uid]
+		cgwName = cgwComp.name
+		cgwIP = cgwComp.resource.IpAddress
+
+		# isInAnyPubIPRange = MC.aws.aws.isValidInIPRange(cgwIP, 'public')
+		isInAnyPriIPRange = MC.aws.aws.isValidInIPRange(cgwIP, 'private')
+
+		if isInAnyPriIPRange
+
+			tipInfo = sprintf lang.ide.TA_MSG_WARNING_CGW_IP_RANGE_ERROR, cgwName, cgwIP
+
+			return {
+				level: constant.TA.WARNING
+				info: tipInfo
+				uid: uid
+			}
+
+		return null
+
 	isCGWHaveIPConflict : isCGWHaveIPConflict
+	isValidCGWIP : isValidCGWIP

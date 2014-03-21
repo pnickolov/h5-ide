@@ -8,7 +8,7 @@
 	<div class="property-control-group clearfix">
 		<label class="left" for="property-cgw-ip">{{ i18n "PROP_CGW_LBL_IPADDR" }}</label>
 		<span class="required-input right">{{ i18n "PROP_LBL_REQUIRED" }}</span>
-		<input class="input tooltip" type="text" value="{{ip}}" data-ignore="true" data-ignore-regexp="^[0-9.]*$" id="property-cgw-ip" data-empty-remove="true" data-tooltip="This address must be static and not behind a NAT. e.g. 12.1.2.3"/>
+		<input class="input tooltip" type="text" value="{{ip}}" data-ignore="true" data-ignore-regexp="^[0-9.]*$" id="property-cgw-ip" data-empty-remove="true" data-tooltip="{{i18n 'PROP_CGW_TIP_THIS_ADDRESS_MUST_BE_STATIC'}}"/>
 	</div>
 
 	<div class="property-control-group clearfix cgw-routing">
@@ -32,7 +32,7 @@
 	<div class="property-control-group clearfix" {{#unless BGP}}style="display:none;"{{/unless}} id="property-cgw-bgp-wrapper">
 		<label class="left" for="property-cgw-bgp">{{ i18n "PROP_CGW_LBL_BGP_ASN" }}</label>
 		<span class="required-input right">{{ i18n "PROP_LBL_REQUIRED" }}</span>
-		<input class="input tooltip" type="text" value="{{BGP}}" id="property-cgw-bgp" maxlength="5" data-tooltip="1 - 65534" data-type="digits" />
+		<input class="input tooltip" type="text" value="{{BGP}}" id="property-cgw-bgp" maxlength="5" data-tooltip="{{i18n 'PROP_CGW_TIP_1TO65534'}}" data-type="digits" />
 	</div>
 
 </article>

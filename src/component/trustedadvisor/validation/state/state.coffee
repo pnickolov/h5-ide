@@ -2,8 +2,9 @@
 This file use for validate component about state.
 ###
 
-define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo', 'Design' ], ( constant, MC, lang, resultVO, Design ) ->
+define [ 'constant', 'MC', '../result_vo', 'Design', 'validation_helper' ], ( CONST, MC, resultVO, Design, Helper ) ->
 
+    i18n = Helper.i18n.short()
     __wrap = ( method ) ->
         ( uid ) ->
             if __hasState uid
@@ -40,18 +41,18 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo', 'Design' ], ( con
 
     __getEniByInstance = ( instance ) ->
         _.filter MC.canvas_data.component, ( component ) ->
-            if component.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+            if component.type is CONST.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
                 if MC.extractID( component.resource.Attachment.InstanceId ) is instance.uid
                     true
 
     __getSg = ( component ) ->
         sgs = []
         # LC
-        if component.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+        if component.type is CONST.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
             for sgId in component.resource.SecurityGroups
                 sgs.push __getComp MC.extractID sgId
         # instance
-        else if component.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+        else if component.type is CONST.AWS_RESOURCE_TYPE.AWS_EC2_Instance
             enis = __getEniByInstance component
 
             for eni in enis
@@ -89,23 +90,24 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo', 'Design' ], ( con
 
         __80 > 0 and __443 > 0
 
-    __getEipByEni = ( eni ) ->
-        hasPrimaryEip
-
     __hasEipOrPublicIp = ( component ) ->
         if component.type is "ExpandedAsg"
             lc = component.get( 'originalAsg' ).get 'lc'
             lc.get( 'publicIp' ) is true
         # LC
-        else if component.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+        else if component.type is CONST.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
             component.get( 'publicIp' ) is true
         # instance
-        else if component.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
-            component.hasPrimaryEip() or component.hasAutoAssignPublicIp()
+        else if component.type is CONST.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+
+            enis = component.connectionTargets('EniAttachment')
+            enis.push component.getEmbedEni()
+            hasEip = _.some enis, ( eni ) -> eni.hasEip()
+            component.hasAutoAssignPublicIp() or hasEip
 
     __getSubnetRtb = ( component ) ->
         subnet = component.parent()
-        if subnet.type isnt constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
+        if subnet.type isnt CONST.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
             subnet = subnet.parent()
 
         subnet.connectionTargets('RTB_Asso')[ 0 ]
@@ -116,25 +118,42 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo', 'Design' ], ( con
         rtb = __getSubnetRtb( component )
 
         rtbConn = rtb.connectionTargets('RTB_Route')
-        igw = _.where rtbConn, type: constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway
+        igw = _.where rtbConn, type: CONST.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway
         igw.length > 0
 
-    __isNat = ( component ) ->
-        if component.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+    __natOut = ( component ) ->
+        if component.type is CONST.AWS_RESOURCE_TYPE.AWS_EC2_Instance
             rtb = __getSubnetRtb component
-
             if rtb
-                instances = _.where rtb.connectionTargets('RTB_Route'), type: constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+                instances = _.where rtb.connectionTargets('RTB_Route'), type: CONST.AWS_RESOURCE_TYPE.AWS_EC2_Instance
                 return _.some instances, ( instance ) ->
-                    __isRouteIgw instance
+                    __isInstanceNat instance
 
         false
 
-    __notNat = ( component, result, subnetName ) ->
+    # parameter required a rework instance.
+    __isInstanceNat = ( instance ) ->
+        __isRouteIgw( instance ) and __isEniSourceDestUncheck( instance )
+
+
+
+    __isEniSourceDestUncheck = ( instance ) ->
+        enis = instance.connectionTargets('EniAttachment')
+        enis.push instance.getEmbedEni()
+        _.some enis, ( eni ) ->
+            not eni.get 'sourceDestCheck'
+
+
+    __selfOut = ( component, result, subnetName ) ->
         # if there is no EIP or publicIP, push an error and stop continued validate.
         if not __hasEipOrPublicIp( component )
             name = component.get( 'name' )
-            result.push __genError component.id, lang.ide.TA_MSG_ERROR_NO_EIP_OR_PIP, name, name, subnetName
+            if component.type is 'ExpandedAsg'
+                lc = component.get('originalAsg').get('lc')
+                subnetName = component.parent().get 'name'
+                name = lc and lc.get 'name'
+
+            result.push Helper.message.error component.id, i18n.TA_MSG_ERROR_NO_EIP_OR_PIP, name, name, subnetName
             true
         else if __isRouteIgw( component )
             true
@@ -142,16 +161,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo', 'Design' ], ( con
             false
 
     __genConnectedError = ( subnetName, uid ) ->
-        __genError uid, lang.ide.TA_MSG_ERROR_NOT_CONNECT_OUT, subnetName
-
-    __genError = ( uid, tip ) ->
-        if arguments.length > 2
-            tip = sprintf.apply null, Array.prototype.slice.call( arguments, 1 )
-
-        # return
-        level   : constant.TA.ERROR
-        info    : tip
-        uid     : uid
+        Helper.message.error uid, i18n.TA_MSG_ERROR_NOT_CONNECT_OUT, subnetName
 
 
     __isLcConnectedOut = ( uid ) ->
@@ -165,11 +175,11 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo', 'Design' ], ( con
         subnetName = lc.parent().parent().get 'name'
 
         # LC could'nt be NAT so only need to validate notNat
-        if not __notNat( lc, result, subnetName )
+        if not __selfOut( lc, result, subnetName )
             result.push __genConnectedError subnetName, uid
 
         for asg in expandedAsgs
-            if not __notNat( asg, result, subnetName )
+            if not __selfOut( asg, result, subnetName )
                 subnetName = asg.parent().get 'name'
                 result.push __genConnectedError subnetName, asg.id
 
@@ -186,7 +196,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo', 'Design' ], ( con
         # if the instance is connected out through NAT and it doesn't have an EIP or PublicIP
         # We can't throw any error.
 
-        if __isNat( component ) or __notNat( component, result, subnetName )
+        if __natOut( component ) or __selfOut( component, result, subnetName )
             return result
 
         result.push __genConnectedError subnetName, uid
@@ -198,10 +208,10 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo', 'Design' ], ( con
     ### Public ###
 
     isHasIgw = ( uid ) ->
-        if __hasType constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway
+        if __hasType CONST.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway
             return null
 
-        __genError uid, lang.ide.TA_MSG_ERROR_NO_CGW
+        Helper.message.error uid, i18n.TA_MSG_ERROR_NO_CGW
 
     isHasOutPort80and443 = ( uid ) ->
         component = __getComp uid
@@ -210,7 +220,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo', 'Design' ], ( con
         if __sgsHasOutPort80and443 sgs
             return null
 
-        __genError uid, lang.ide.TA_MSG_ERROR_NO_OUTBOUND_RULES, component.name
+        Helper.message.error uid, i18n.TA_MSG_ERROR_NO_OUTBOUND_RULES, component.name
 
     isHasOutPort80and443Strict = ( uid ) ->
         component = __getComp uid
@@ -219,12 +229,12 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo', 'Design' ], ( con
         if isHasOutPort80and443( uid ) or __sgsHasOutPort80and443 sgs, true
             return null
 
-        __genError uid, lang.ide.TA_MSG_WARNING_OUTBOUND_NOT_TO_ALL, component.name
+        Helper.message.warning uid, i18n.TA_MSG_WARNING_OUTBOUND_NOT_TO_ALL, component.name
 
     isConnectedOut = ( uid ) ->
         result = []
         component = __getComp uid
-        if component.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+        if component.type is CONST.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
             return __isLcConnectedOut( uid )
         else
             return __isInstanceConnectedOut( uid )

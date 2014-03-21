@@ -12,8 +12,9 @@
 				<a href="javascript:void(0)" data-region-name="{{ region }}" data-app-id="{{ id }}" class="truncate nav-truncate" title="{{ name }}-[{{ state }}]">
 					<i class="icon-app-{{ tolower state }} icon-sub-nav-label"></i>
 					{{ name }}
-					{{#if usage}}<i class="icon-app-type-{{usage}}"></i>{{/if}}
+					
 				</a>
+				{{#if usage}}<i class="icon-app-type-{{usage}}"></i>{{/if}}
 			</li>
 			{{/each}}
 

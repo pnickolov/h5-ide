@@ -162,13 +162,24 @@ define [ 'event',
 
         toggleFav : ( event ) ->
             resourceView = event.data
+            $this = $ @
             # remove
-            if $( @ ).hasClass( 'faved' )
-                resourceView.trigger 'TOGGLE_FAV', resourceView.region, 'remove', $( @ ).data( 'id' )
-            else
-                resourceView.trigger 'TOGGLE_FAV', resourceView.region, 'add', $( @ ).data( 'id' )
+            if $this.hasClass( 'faved' )
+                resourceView.trigger 'TOGGLE_FAV', resourceView.region, 'remove', $this.data( 'id' )
+                $this
+                    .removeClass( 'faved' )
+                    .data 'tooltip', 'Add to Favorite'
 
-            ( $ ( @ ) ).toggleClass( 'faved' )
+            else
+                resourceView.trigger 'TOGGLE_FAV', resourceView.region, 'add', $this.data( 'id' )
+                $this
+                    .addClass( 'faved' )
+                    .data 'tooltip', 'Remove from Favorite'
+
+            # Update the tooltip immediately
+            $this.trigger 'mouseleave', event
+            $this.trigger 'mouseenter', event
+
 
         removeFav : ( event ) ->
             resourceView = event.data

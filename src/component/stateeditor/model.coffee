@@ -27,6 +27,11 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 			osPlatform = platformInfo.osPlatform
 			osPlatformDistro = platformInfo.osPlatformDistro
 
+			if osPlatform is 'windows'
+				that.set('isWindowsPlatform', true)
+			else
+				that.set('isWindowsPlatform', false)
+
 			if osPlatformDistro
 				that.set('supportedPlatform', true)
 			else
@@ -282,6 +287,11 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 					if currentCompUID is compUID
 						return
 
+					if compType is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+						if compObj.index isnt 0
+							return
+						compName = compObj.serverGroupName
+
 					if compType is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
 						compName = Design.instance().component(compUID).parent().get('name')
 
@@ -300,6 +310,15 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 								})
 
 					null
+
+			resStateDataAry = resStateDataAry.sort (val1, val2) ->
+				
+				if val1.name > val2.name
+					return 1
+				else if val1.name < val2.name
+					return -1
+				else
+					return 0
 
 			that.set('resStateDataAry', resStateDataAry)
 
@@ -355,6 +374,23 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 						if compData.number and compData.number > 1
 							resName = compData.serverGroupName
 
+					if compData.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+						_.each allCompData, (asgCompData) ->
+							if asgCompData.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+								lcUIDRef = asgCompData.resource.LaunchConfigurationName
+								if lcUIDRef
+									lcUID = MC.extractID(lcUIDRef)
+									if lcUID is resUID
+										resName = asgCompData.name
+							null
+
+					# if compData.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+					# 	lcUIDRef = compData.resource.LaunchConfigurationName
+					# 	if lcUIDRef
+					# 		lcUID = MC.extractID(lcUIDRef)
+					# 		lcCompData = allCompData[lcUID]
+					# 		if lcCompData then compData = lcCompData
+
 					if compData.state and _.isArray compData.state
 						_.each compData.state, (stateObj, idx) ->
 							if stateObj.id is stateUID
@@ -393,6 +429,7 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 						lcUIDRef = compData.resource.LaunchConfigurationName
 						if lcUIDRef
 							lcUID = MC.extractID(lcUIDRef)
+							resUID = lcUID
 							lcCompData = allCompData[lcUID]
 
 					if lcCompData then compData = lcCompData

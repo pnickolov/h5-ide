@@ -12,19 +12,21 @@
 
   #*# DESCRIPTION
     Module Name
-      RES: resource panel
-      PROP: property
-      CVS: canvas
-      TOOL: toolbar
-      HEAD: header
-      NAV:navigation
-      DASH: dashboard
-      MSG: notification
-      TIT： title
-      LBL: label
-      POP: popup
-      TIP: tooltip
-      BTN: button
+      RES     : resource panel
+      PROP    : property
+      CVS     : canvas
+      TOOL    : toolbar
+      HEAD    : header
+      NAV     : navigation
+      DASH    : dashboard
+      MSG     : notification
+      TIT     : title
+      LBL     : label
+      POP     : popup
+      TIP     : tooltip
+      BTN     : button
+      PARSLEY : parsley
+
     Resource Type Reference
       CONST.AWS_RESOURCE_SHORT_TYPE
 
@@ -263,6 +265,155 @@ module.exports =
       zh: "用户名或邮件地址还没有在MadeiraCloud注册过。"
 
   ide:
+
+    PARSLEY_MUST_BE_A_VALID_FORMAT_OF_NUMBER:
+      en: "Must be a valid format of number."
+      zh: ""
+
+    PARSLEY_THE_PROTOCOL_NUMBER_RANGE_MUST_BE_0_255:
+      en: "The protocol number range must be 0-255."
+      zh: ""
+
+    PARSLEY_MUST_BE_A_VALID_FORMAT_OF_PORT_RANGE:
+      en: "Must be a valid format of port range."
+      zh: ""
+
+    PARSLEY_PORT_RANGE_BETWEEN_0_65535:
+      en: "Port range needs to be a number or a range of numbers between 0 and 65535."
+      zh: ""
+
+    PARSLEY_VALID_RULE_NUMBER_1_TO_32767:
+      en: "Valid rule number must be between 1 to 32767."
+      zh: ""
+
+    PARSLEY_RULE_NUMBER_100_HAS_EXISTED:
+      en: "The DefaultACL's Rule Number 100 has existed."
+      zh: ""
+
+    PARSLEY_RULENUMBER_ALREADY_EXISTS:
+      en: "Rule %s already exists."
+      zh: ""
+
+    PARSLEY_MUST_BE_CIDR_BLOCK:
+      en: "Must be a valid form of CIDR block."
+      zh: ""
+
+    PARSLEY_MAX_VALUE_86400:
+      en: "Max value: 86400"
+      zh: ""
+
+    PARSLEY_DUPLICATED_POLICY_NAME:
+      en: "Duplicated policy name in this autoscaling group"
+      zh: ""
+
+    PARSLEY_ASG_SIZE_MUST_BE_EQUAL_OR_GREATER_THAN_1:
+      en: "ASG size must be equal or greater than 1"
+      zh: ""
+
+    PARSLEY_MINIMUM_SIZE_MUST_BE_LESSTHAN_MAXIMUM_SIZE:
+      en: "Minimum Size must be <= Maximum Size."
+      zh: ""
+
+    PARSLEY_DESIRED_CAPACITY_EQUAL_OR_GREATER_1:
+      en: "Desired Capacity must be equal or greater than 1"
+      zh: ""
+
+    PARSLEY_DESIRED_CAPACITY_IN_ALLOW_SCOPE:
+      en: "Desired Capacity must be >= Minimal Size and <= Maximum Size"
+      zh: ""
+
+    PARSLEY_THIS_VALUE_SHOULD_BE_A_VALID_TYPE_NAME:
+      en: "This value should be a valid %s name."
+      zh: ""
+
+    PARSLEY_TYPE_NAME_CONFLICT:
+      en: "%s name \" %s \" is already in using. Please use another one."
+      zh: ""
+
+    PARSLEY_RESOURCE_NAME_ELBSG_RESERVED:
+      en: "Resource name starting with \"elbsg-\" is reserved."
+      zh: ""
+
+    PARSLEY_MUST_BE_BETWEEN_1_AND_65534:
+      en: "Must be between 1 and 65534"
+      zh: ""
+
+    PARSLEY_ASN_NUMBER_7224_RESERVED:
+      en: "ASN number 7224 is reserved in Virginia"
+      zh: ""
+
+    PARSLEY_ASN_NUMBER_9059_RESERVED_IN_IRELAND:
+      en: "ASN number 9059 is reserved in Ireland"
+      zh: ""
+
+    PARSLEY_LOAD_BALANCER_PORT_MUST_BE_SOME_PROT:
+      en: "Load Balancer Port must be either 25,80,443 or 1024 to 65535 inclusive"
+      zh: ""
+
+    PARSLEY_INSTANCE_PORT_MUST_BE_BETWEEN_1_AND_65535:
+      en: "Instance Port must be between 1 and 65535"
+      zh: ""
+
+    PARSLEY_THIS_NAME_IS_ALREADY_IN_USING:
+      en: "This name is already in using."
+      zh: ""
+
+    PARSLEY_INVALID_IP_ADDRESS:
+      en: "Invalid IP address"
+      zh: ""
+
+    PARSLEY_VOLUME_SIZE_OF_ROOTDEVICE_MUST_IN_RANGE:
+      en: "Volume size of this rootDevice must in the range of %s -1024 GB."
+      zh: ""
+
+    PARSLEY_IOPS_MUST_BETWEEN_100_4000:
+      en: "IOPS must be between 100 and 4000"
+      zh: ""
+
+    PARSLEY_IOPS_MUST_BE_LESS_THAN_10_TIMES_OF_VOLUME_SIZE:
+      en: "IOPS must be less than 10 times of volume size."
+      zh: ""
+
+    PARSLEY_THIS_VALUE_MUST_BETWEEN_1_99:
+      en: "This value must be >= 1 and <= 99"
+      zh: ""
+
+    PARSLEY_SHOULD_BE_A_VALID_STACK_NAME:
+      en: "This value should be a valid Stack name"
+      zh: ""
+
+    PARSLEY_PLEASE_PROVIDE_A_VALID_AMAZON_SQS_ARN:
+      en: "Please provide a valid Amazon SQS ARN"
+      zh: ""
+
+    PARSLEY_PLEASE_PROVIDE_A_VALID_APPLICATION_ARN:
+      en: "Please provide a valid Application ARN"
+      zh: ""
+
+    PARSLEY_PLEASE_PROVIDE_A_VALID_PHONE_NUMBER:
+      en: "Please provide a valid phone number (currently only support US phone number)"
+      zh: ""
+
+    PARSLEY_PLEASE_PROVIDE_A_VALID_URL:
+      en: "Please provide a valid URL"
+      zh: ""
+
+    PARSLEY_VOLUME_SIZE_MUST_IN_1_1024:
+      en: "Volume size must in the range of 1-1024 GB."
+      zh: ""
+
+    PARSLEY_DEVICENAME_LINUX:
+      en: "Device name must be like /dev/hd[a-z], /dev/hd[a-z][1-15],/dev/sd[a-z] or /dev/sd[b-z][1-15]"
+      zh: ""
+
+    PARSLEY_DEVICENAME_WINDOWS:
+      en: "Device name must be like xvd[f-p]."
+      zh: ""
+
+    PARSLEY_VOLUME_NAME_INUSE:
+      en: "Volume name '%s' is already in using. Please use another one."
+      zh: ""
+
     NAV_TIT_DASHBOARD:
       en: "Dashboard"
       zh: "仪表板"
@@ -295,6 +446,10 @@ module.exports =
       en: "Unable to load some parts of the IDE, please refresh the browser"
       zh: "无法加载部分IDE内容，请重试"
 
+    IDE_TIP_VISUALIZE_MORE_THAN_100_ENI:
+      en: "Currently we do not support to visualize system has more than 100 network interfaces. Contact us by the Feedback button for details."
+      zh: ""
+
     RES_TIT_RESOURCES:
       en: "Resources"
       zh: "资源"
@@ -314,6 +469,10 @@ module.exports =
     RES_TIT_ELB_ASG:
       en: "Load Balancer and Auto Scaling"
       zh: "负载均衡器和自动伸缩组"
+
+    RES_TIT_REMOVE_FROM_FAVORITE:
+      en: "Remove from Favorite"
+      zh: ""
 
     RES_TIT_VPC:
       en: "Virtual Private Cloud"
@@ -451,6 +610,14 @@ module.exports =
       en: "Volumes and snapshots must be dragged to an instance or image."
       zh: "卷和快照必须拖放到实例或映像。"
 
+    CVS_MSG_ERR_SERVERGROUP_VOLUME:
+      en: "Detach existing volume or snapshot of instance server group is not supported yet."
+      zh: "Detach existing volume or snapshot of instance server group is not supported yet."
+
+    CVS_MSG_ERR_SERVERGROUP_VOLUME2:
+      en: "Attach existing volume from single instance to instance server group is not supported yet."
+      zh: "Attach existing volume from single instance to instance server group is not supported yet."
+
     CVS_MSG_WARN_NOTMATCH_SUBNET:
       en: "Subnets must be dragged to an availability zone."
       zh: "子网必须拖放到可用区域。"
@@ -524,8 +691,8 @@ module.exports =
       zh: "负载均衡器至少需要连接一个子网。"
 
     CVS_MSG_ERR_DEL_ELB_LINE_2:
-      en: "Load balancer must attach to a subnet of its connected resource's AvailabilityZone"
-      zh: "负载均衡器和其他资源连接，它必须连接这些资源所在区域的一个子网。"
+      en: "Cannot delete or change the current attachment."
+      zh: "最少要保留一条已有的负载均衡器和子网的连线。"
 
     CVS_MSG_ERR_DEL_LINKED_ELB:
       en: "This subnet cannot be deleted because it is associated to a load balancer."
@@ -631,6 +798,10 @@ module.exports =
       en: "Duplicate Stack"
       zh: "复制模版"
 
+    TOOL_TIT_CLOSE_TAB:
+      en: "Close Tab"
+      zh: ""
+
     TOOL_POP_TIT_DUPLICATE_STACK:
       en: "Duplicate Stack"
       zh: "复制模版"
@@ -678,6 +849,10 @@ module.exports =
     TOOL_EXPORT_AS_PNG:
       en: "Export to PNG"
       zh: "导出图片"
+
+    TOOL_EXPORT_AS_CF:
+      en: "Convert to CloudFormation Format"
+      zh: "导出JSON文件"
 
     TOOL_TIP_STOP_APP:
       en: "Stop This App's Resources."
@@ -847,6 +1022,22 @@ module.exports =
       en: "Convert to stack json to CloudFormation format error"
       zh: "转换成CloudFormation出错"
 
+    TOOL_TIP_REFRESH_REOURCES:
+      en: "Refresh Reources"
+      zh: ""
+
+    TOOL_TIP_JSON_DIFF:
+      en: "JSON Diff"
+      zh: ""
+
+    TOOL_TIP_JSON_VIEW:
+      en: "JSON View"
+      zh: ""
+
+    TOOL_TIP_CUSTOM_USER_DATA:
+      en: "Custom User Data will be overridden and disabled to allow installing OpsAgent. (Currently only support Linux platform)"
+      zh: ""
+
     TOOL_TIP_LINESTYLE:
       en: "Security Group Rule Line Style..."
       zh: "安全组规则连线类型..."
@@ -866,6 +1057,26 @@ module.exports =
     TOOL_LBL_LINESTYLE_SMOOTH_QUADRATIC_BELZIER:
       en: "Smooth quadratic Belzier curve"
       zh: "光滑的二次贝塞尔曲线"
+
+    TOOL_EXPERIMENT:
+      en: "Experimental Feature!"
+      zh: ""
+
+    TOOL_TOGGLE_VISUALOPS_ON:
+      en: "instance state on"
+      zh: ""
+
+    TOOL_TOGGLE_VISUALOPS_OFF:
+      en: "instnace state off"
+      zh: ""
+
+    TOOL_EDIT_APP:
+      en: "Edit App"
+      zh: ""
+
+    TOOL_APPLY_EDIT:
+      en: "Apply"
+      zh: ""
 
     PROP_LBL_REQUIRED:
       en: "Required"
@@ -1083,6 +1294,70 @@ module.exports =
       en: "Network Interface"
       zh: "网络接口"
 
+    PROP_INSTANCE_TIP_GET_SYSTEM_LOG:
+      en: "Get System Log"
+      zh: ""
+
+    PROP_INSTANCE_TIP_IF_THE_QUANTITY_IS_MORE_THAN_1:
+      en: "If the quantity is more than 1, host name will be the string you provide plus number index."
+      zh: ""
+
+    PROP_INSTANCE_TIP_YOU_CANNOT_SPECIFY_INSTANCE_NUMBER:
+      en: "You cannot specify instance number, since the instance is connected to a route table."
+      zh: ""
+
+    PROP_INSTANCE_TIP_PUBLIC_IP_CANNOT_BE_ASSOCIATED:
+      en: "Public IP cannot be associated if instance is launching with more than one network interface."
+      zh: ""
+
+    PROP_STACK_AMAZON_ARN:
+      en: "Amazon ARN"
+      zh: ""
+
+    PROP_STACK_EXAMPLE_EMAIL:
+      en: "example@acme.com"
+      zh: ""
+
+    PROP_STACK_E_G_1_206_555_6423:
+      en: "e.g. 1-206-555-6423"
+      zh: ""
+
+    PROP_STACK_HTTP_WWW_EXAMPLE_COM:
+      en: "http://www.example.com"
+      zh: ""
+
+    PROP_STACK_HTTPS_WWW_EXAMPLE_COM:
+      en: "https://www.example.com"
+      zh: ""
+
+    PROP_STACK_HTTPS:
+      en: "https"
+      zh: ""
+
+    PROP_STACK_HTTP:
+      en: "http"
+      zh: ""
+
+    PROP_STACK_USPHONE:
+      en: "usPhone"
+      zh: ""
+
+    PROP_STACK_EMAIL:
+      en: "email"
+      zh: ""
+
+    PROP_STACK_ARN:
+      en: "arn"
+      zh: ""
+
+    PROP_STACK_SQS:
+      en: "sqs"
+      zh: ""
+
+    PROP_STACK_PENDING_CONFIRM:
+      en: "pendingConfirm"
+      zh: ""
+
     PROP_STACK_LBL_NAME:
       en: "Stack Name"
       zh: "模版名称"
@@ -1267,6 +1542,11 @@ module.exports =
       en: "DHCP Options Set ID"
       zh: "DHCP选项标识"
 
+    PROP_SUBNET_TIP_CIDR_BLOCK:
+      en: "e.g. 10.0.0.0/24. The range of IP addresses in the subnet must be a subset of the IP address in the VPC. Block sizes must be between a /16 netmask and /28 netmask. The size of the subnet can equal the size of the VPC."
+      zh: ""
+
+
     PROP_SUBNET_TIT_DETAIL:
       en: "Subnet Details"
       zh: "子网详细"
@@ -1326,6 +1606,38 @@ module.exports =
     PROP_SUBNET_APP_RT_ID:
       en: "Route Table ID"
       zh: "路由表标识"
+
+    PROP_VPC_TIP_EG_10_0_0_0_16:
+      en: "e.g. 10.0.0.0/16"
+      zh: ""
+
+    PROP_VPC_TIP_ENTER_THE_DOMAIN_NAME:
+      en: "Enter the domain name that should be used for your hosts"
+      zh: ""
+
+    PROP_VPC_TIP_ENTER_UP_TO_4_DNS:
+      en: "Enter up to 4 DNS server IP addresses"
+      zh: ""
+
+    PROP_VPC_TIP_ENTER_UP_TO_4_NTP:
+      en: "Enter up to 4 NTP server IP addresses"
+      zh: ""
+
+    PROP_VPC_TIP_ENTER_UP_TO_4_NETBIOS:
+      en: "Enter up to 4 NetBIOS server IP addresses"
+      zh: ""
+
+    PROP_VPC_TIP_EG_172_16_16_16:
+      en: "e.g. 172.16.16.16"
+      zh: ""
+
+    PROP_VPC_TIP_SELECT_NETBIOS_NODE:
+      en: "Select NetBIOS Node Type. We recommend 2. (Broadcast and multicast are currently not supported by AWS.)"
+      zh: ""
+
+    PROP_VPC_TIP_:
+      en: ""
+      zh: ""
 
     PROP_SG_TIT_DETAIL:
       en: "Security Group Details"
@@ -1695,6 +2007,10 @@ module.exports =
       en: "Network IP Prefixes"
       zh: "网络号前缀"
 
+    PROP_VPN_TIP_EG_192_168_0_0_16:
+      en: "e.g., 192.168.0.0/16"
+      zh: ""
+
     PROP_IGW_TXT_DESCRIPTION:
       en: "The Internet gateway is the router on the AWS network that connects your VPC to the Internet."
       zh: "互联网网关是将你位于AWS网络中的VPC网络连接到互联网的路由器."
@@ -1806,6 +2122,14 @@ module.exports =
     PROP_CGW_APP_DOWN_BTN_DOWNLOAD:
       en: "Download"
       zh: "下载"
+
+    PROP_CGW_TIP_THIS_ADDRESS_MUST_BE_STATIC:
+      en: "This address must be static and not behind a NAT. e.g. 12.1.2.3"
+      zh: ""
+
+    PROP_CGW_TIP_1TO65534:
+      en: "1 - 65534"
+      zh: ""
 
     PROP_MSG_ERR_RESOURCE_NOT_EXIST:
       en: "Sorry, the selected resource not exist."
@@ -2019,6 +2343,10 @@ module.exports =
       en: "IP Owner"
       zh: "IP拥有者"
 
+    PROP_ENI_TIP_ADD_IP_ADDRESS:
+      en: "Add IP Address"
+      zh: ""
+
     PROP_ELB_DETAILS:
       en: "Load Balancer Details"
       zh: "负载均衡器设置"
@@ -2040,7 +2368,7 @@ module.exports =
       zh: "监听设置"
 
     PROP_ELB_BTN_ADD_LISTENER:
-      en: "Add Listener"
+      en: "+ Add Listener"
       zh: "添加监听器"
 
     PROP_ELB_BTN_ADD_SERVER_CERTIFICATE:
@@ -2146,6 +2474,26 @@ module.exports =
     PROP_ELB_DISTRIBUTION:
       en: "Distribution"
       zh: "分布"
+
+    PROP_ELB_TIP_CLICK_TO_SELECT_ALL:
+      en: "Click to select all"
+      zh: ""
+
+    PROP_ELB_TIP_REMOVE_LISTENER:
+      en: "Remove listener"
+      zh: ""
+
+    PROP_ELB_TIP_25_80_443OR1024TO65535:
+      en: "25, 80, 443 or 1024 - 65535"
+      zh: ""
+
+    PROP_ELB_TIP_1_65535:
+      en: "1 - 65535"
+      zh: ""
+
+    PROP_ELB_TIP_CLICK_TO_READ_RELATED_AWS_DOCUMENT:
+      en: "Click to read related AWS document"
+      zh: ""
 
     PROP_ASG_SUMMARY:
       en: "Auto Scaling Group Summary"
@@ -2435,6 +2783,14 @@ module.exports =
       en: "Changes the DesiredCapacity of the Auto Scaling group by at least the specified number of instances."
       zh: "调整期望数量时的最小实例数量"
 
+    PROP_ASG_TIP_CLICK_TO_SELECT:
+      en: "Click to select"
+      zh: ""
+
+    PROP_ASG_TIP_YOU_CAN_ONLY_ADD_25_SCALING_POLICIES:
+      en: "You can only add 25 scaling policies"
+      zh: ""
+
     PROP_LC_TITLE:
       en: "Launch Configuation"
       zh: "启动配置"
@@ -2491,6 +2847,18 @@ module.exports =
       en: "VPC ID"
       zh: "VPC ID"
 
+    PROP_RT_TIP_ACTIVE:
+      en: "Active"
+      zh: ""
+
+    PROP_RT_TIP_BLACKHOLE:
+      en: "Blackhole"
+      zh: ""
+
+    PROP_RT_TIP_PROPAGATED:
+      en: "Propagated"
+      zh: ""
+
     NAV_DESMOD_NOT_FINISH_LOAD:
       en: "Sorry, the designer module is loading now. Please try again after several seconds."
       zh: "抱歉，设计模块正在加载，请稍后重试。"
@@ -2538,6 +2906,38 @@ module.exports =
     REG_MSG_WARN_APP_PENDING:
       en: "Your app is in Processing. Please wait a moment."
       zh: "您的应用正在处理中，请稍等一会。"
+
+    NOTIFY_MSG_WARN_AUTH_FAILED:
+      en : "Authentication failed."
+      zh : ""
+
+    NOTIFY_MSG_INFO_STATE_COPY_TO_CLIPBOARD:
+      en : "State(s) copied to clipboard"
+      zh : ""
+
+    NOTIFY_MSG_WARN_OPERATE_NOT_SUPPORT_YET:
+      en : "This operation is not supported yet."
+      zh : ""
+
+    NOTIFY_MSG_WARN_AMI_NOT_EXIST_TRY_USE_OTHER:
+      en : "The AMI(%s) is not exist now, try to use another AMI."
+      zh : ""
+
+    NOTIFY_MSG_WARN_ATTACH_VOLUME_REACH_INSTANCE_LIMIT:
+      en : "Attached volume has reached instance limit."
+      zh : ""
+
+    NOTIFY_MSG_WARN_KEYPAIR_NAME_ALREADY_EXISTS:
+      en : "KeyPair with the same name already exists."
+      zh : ""
+
+    NOTIFY_MSG_WARN_CANNT_AUTO_ASSIGN_CIDR_FOR_SUBNET:
+      en : "Cannot auto-assign cidr for subnets, please manually update subnets' cidr before changing vpc's cidr."
+      zh : ""
+
+    NOTIFY_MSG_WARN_VPC_DOES_NOT_EXIST:
+      en : "VPC does not exist."
+      zh : ""
 
     CFM_BTN_DELETE:
       en: "Delete"
@@ -2752,8 +3152,8 @@ module.exports =
       zh: "正在连接AWS账号"
 
     HEAD_TIP_AWS_ACCOUNT_ID:
-      en: "Your AWS account number is shown in the upper-left area of your browser window when you are logged into your AWS Account. e.g., 123456789000"
-      zh: "当您登陆到您的AWS账号时，您的AWS账号编号将显示在您浏览器窗口的左上角区域。 比如123456789000"
+      en: "Your AWS account number is shown in the upper-right area of your browser window when you are logged into your AWS Account. e.g., 123456789000"
+      zh: "当您登陆到您的AWS账号时，您的AWS账号编号将显示在您浏览器窗口的右上角区域。 比如123456789000"
 
     HEAD_TIP_ACCOUNT_ACCESS_KEY:
       en: "You will find those keys in Account > Security Credentials menu under Access Keys tab in the box at the middle of the page. e.g., ABCDEFGHIJ1LMNOPQR2S"
@@ -2761,7 +3161,7 @@ module.exports =
 
     HEAD_TIP_ACCOUNT_SECRET_KEY:
       en: "You will find those keys in Account > Security Credentials menu under Access Keys tab in the box at the middle of the page. e.g., aBCDefgH/ Ijklmnopq1Rs2tUVWXY3AbcDeFGhijk"
-      zh: "通过点击&nbsp;账号&nbsp;&gt;安全性认证&nbsp;菜单，然后切换到页面中间的&nbsp;访问码&nbsp;页面，您将能找到您的访问码。 例如aBCDefgH/ Ijklmnopq1Rs2tUVWXY3AbcDeFGhijk"
+      zh: "通过点击&nbsp;账号&nbsp;&gt;安全性认证&nbsp;菜单，然后切换到页面中间的&nbsduplp;访问码&nbsp;页面，您将能找到您的访问码。 例如aBCDefgH/ Ijklmnopq1Rs2tUVWXY3AbcDeFGhijk"
 
     HEAD_MSG_ERR_INVALID_ACCOUNT_ID:
       en: "Invalid accout id"
@@ -2879,6 +3279,10 @@ module.exports =
       en: "You have unsaved changes."
       zh: "您有未保存的更改。"
 
+    DASH_TIT_VIEW_RESOURCE_DETAIL:
+      en: "View resource detail"
+      zh: ""
+
     DASH_MSG_RELOAD_AWS_RESOURCE_SUCCESS:
       en: "Status of resources is up to date."
       zh: "资源更新完毕"
@@ -2893,6 +3297,14 @@ module.exports =
 
     DASH_TIP_NO_RESOURCE_RIGHT:
       en: " in this region"
+      zh: ""
+
+    DASH_TIP_APP_CREATED_BY:
+      en: "App created by "
+      zh: ""
+
+    DASH_TIP_APP_CREATED_BY_OTHER_USER:
+      en: "App created by other user"
       zh: ""
 
     DASH_BTN_GLOBAL:
@@ -3455,6 +3867,10 @@ module.exports =
       en: "Close"
       zh: "关闭"
 
+    POP_TIP_PEM_ENCODED:
+      en: "PEM Encoded"
+      zh: ""
+
     RUN_STACK:
       en: "run stack"
       zh: "运行"
@@ -3475,11 +3891,541 @@ module.exports =
       en: "update"
       zh: "更新错误"
 
+    ##### Modal Confirm Stop/Terminate App
+
+    POP_CONFIRM_STOP_ASG:
+      en: "Auto scaling group in this app will be deleted when it is stopped."
+      zh: ""
+
+    POP_CONFIRM_PROD_APP_WARNING_MSG:
+      en: " is for PRODUCTION."
+      zh: ""
+
+    POP_CONFIRM_STOP_PROD_APP_MSG:
+      en: " Stopping it will make your service unavailable."
+      zh: ""
+
+    POP_CONFIRM_STOP_PROD_APP_INPUT_LBL:
+      en: "Please type in the name of this app to confirm stopping it."
+      zh: ""
+
+    POP_CONFIRM_TERMINATE_PROD_APP_MSG:
+      en: " Terminating it will make your service unavailable."
+      zh: ""
+
+    POP_CONFIRM_TERMINATE_PROD_APP_INPUT_LBL:
+      en: "Please type in the name of this app to confirm terminating it."
+      zh: ""
+
+    ##### Modal Import JSON
+
+    POP_IMPORT_JSON_TIT:
+      en: "Import Stack from JSON file"
+      zh: ""
+
+    POP_IMPORT_DROP_LBL:
+      en: "Drop JSON file here or "
+      zh: ""
+
+    POP_IMPORT_SELECT_LBL:
+      en: " select a file."
+      zh: ""
+
+    POP_IMPORT_ERROR:
+      en: "An error occured when reading the file. Please try again."
+      zh: ""
+
+    POP_IMPORT_FORMAT_ERROR:
+      en: "The json file is malformed."
+      zh: ""
+
+    POP_IMPORT_MODIFIED_ERROR:
+      en: "We do not support user modified json."
+      zh: ""
+
+    ##### Modal Confirm Update
+
+    POP_CONFIRM_UPDATE_TIT:
+      en: "Confirm to Update App"
+      zh: ""
+
+    POP_CONFIRM_UPDATE_MAJOR_TEXT_RUNNING:
+      en: "Do you confirm to apply the changes?"
+      zh: ""
+
+    POP_CONFIRM_UPDATE_MAJOR_TEXT_STOPPED:
+      en: "Do you confirm to apply the changes and start the app?"
+      zh: ""
+
+    POP_CONFIRM_UPDATE_MINOR_TEXT_STOPPED:
+      en: "The app is currently stopped. To apply updates, the app will be started automatically."
+      zh: ""
+
+    POP_CONFIRM_UPDATE_TABLE_TYPE:
+      en: "Type"
+      zh: ""
+
+    POP_CONFIRM_UPDATE_TABLE_NAME:
+      en: "Name"
+      zh: ""
+
+    POP_CONFIRM_UPDATE_TABLE_CHANGE:
+      en: "Change"
+      zh: ""
+
+    POP_CONFIRM_UPDATE_VALIDATION:
+      en: "Validation"
+      zh: ""
+
+    POP_CONFIRM_UPDATE_VALIDATING:
+      en: "Validating your app..."
+      zh: ""
+
+    POP_CONFIRM_UPDATE_CONFIRM_BTN:
+      en: "Continue to Update"
+      zh: ""
+
+    POP_CONFIRM_UPDATE_CANCEL_BTN:
+      en: "Cancel"
+      zh: ""
+
+    ##### State Editor
+
+    ## State Editor Tooltip
+
+    STATE_TIP_DELETE_STATE:
+      en: "Delete State"
+      zh: ""
+
+    STATE_TIP_SELECT_STATE:
+      en: "Select State"
+      zh: ""
+
+    STATE_TIP_DESCRIPTION:
+      en: "Help"
+      zh: ""
+
+    STATE_TIP_STATE_LOG:
+      en: "State Log"
+      zh: ""
+
+    STATE_TIP_REFRESH_STATE_LOG:
+      en: "Refresh State Log"
+      zh: ""
+
+    STATE_TIP_SYSTEM_LOG:
+      en: "System Log"
+      zh: ""
+
+    STATE_TIP_SELECT_ALL_STATES:
+      en: "Select All States"
+      zh: ""
+
+    ## State Editor Special State
+
+    STATE_UNKNOWN_DISTRO_LBL:
+      en: "The AMI's distro cannot be recognised. Some commands may not apply to this AMI."
+      zh: ""
+
+    STATE_NO_STATE_LBL:
+      en: "No state configured yet."
+      zh: ""
+
+    STATE_NO_STATE_ADD_BTN:
+      en: "Add a State"
+      zh: ""
+
+    ## State Editor Toolbar
+
+    STATE_TOOL_ADD_STATE:
+      en: "+ Add State"
+      zh: ""
+
+    STATE_TOOL_COPY_ALL:
+      en: "Copy All"
+      zh: ""
+
+    STATE_TOOL_COPY_SELECTED:
+      en: "Copy "
+      zh: ""
+
+    STATE_TOOL_DELETE:
+      en: "Delete "
+      zh: ""
+
+    STATE_TOOL_PASTE:
+      en: "Paste"
+      zh: ""
+
+    STATE_TOOL_UNDO:
+      en: "Undo"
+      zh: ""
+
+    STATE_TOOL_REDO:
+      en: "Redo"
+      zh: ""
+
+    ## State Editor Log
+
+    STATE_LOG_TIT:
+      en: "State Log"
+      zh: ""
+
+    STATE_LOG_LOADING_LBL:
+      en: "Loading..."
+      zh: ""
+
+    STATE_LOG_VIEW_DETAIL:
+      en: "View details..."
+      zh: ""
+
+    STATE_LOG_ITEM_INSTANCE:
+      en: "Instance"
+      zh: ""
+
+    STATE_LOG_ITEM_UNKNOWN:
+      en: "unknown"
+      zh: ""
+
+    STATE_LOG_DETAIL_MOD_TIT:
+      en: "State Log Detail"
+      zh: ""
+
+    STATE_LOG_DETAIL_MOD_CLOSE_BTN:
+      en: "Close"
+      zh: ""
+
+    ## State Editor Help
+
+    STATE_HELP_INTRO_LBL:
+      en: "<p>Select or input a command to see a related help document here. Read detailed <a href='http://madeiracloud-document.readthedocs.org/en/latest/' target='_blank'>documentation</a>.</p>"
+      zh: ""
+
+    ##### Request Invite to Experimental Feature
+
+    INVITE_MOD_TIT:
+      en: "Request invitation to experimental new feature"
+      zh: ""
+
+    INVITE_MOD_INTRO:
+      en: "Introduce <b>Instance State</b>,<br>a new way to devOps your infrastructure!"
+      zh: ""
+
+    INVITE_MOD_INTRO_MORE:
+      en: "<b>Instance State</b> enables you to manage the software layer of your instances. Software packages, configuration files, services, all are there in a very easy, intuitive and functional way."
+      zh: ""
+
+    INVITE_MOD_REQUEST_TIT:
+      en: "Request an Invite"
+      zh: ""
+
+    INVITE_MOD_REQUEST_CONTENT:
+      en: "This feature is experimental and still in a beta phase. If you are interested, feel free to request an invite for early peek!"
+      zh: ""
+
+    INVITE_MOD_REQUEST_PLACEHOLDER:
+      en: "Tell us more about your use case, why you are interested etc. to help us accelerate the approval of request."
+      zh: ""
+
+    INVITE_MOD_BTN_REQUEST:
+      en: "Request an Invite"
+      zh: ""
+
+    INVITE_MOD_BTN_CANCEL:
+      en: "Cancel"
+      zh: ""
+
+    INVITE_MOD_THANK_LBL:
+      en: "Your request has been sent."
+      zh: ""
+
+    INVITE_MOD_THANK_MORE:
+      en: "Thanks for your interest. We will get back with you soon."
+      zh: ""
+
+    INVITE_MOD_BTN_DONE:
+      en: "Done"
+      zh: ""
+
+    ##### Keyboard Shortcuts Modal
+    KEY_MOD_TIT:
+      en: "Keyboard Shortcuts (?)"
+      zh: ""
+
+    # Stack/App Operation
+
+    KEY_TIT_STACK_APP_OP:
+      en: "Canvas"
+      zh: ""
+
+    KEY_PROP_KEY:
+      en: "P"
+      zh: ""
+
+    KEY_PROP_ACTION:
+      en: "Open Property Panel"
+      zh: ""
+
+    KEY_STAT_KEY:
+      en: "S"
+      zh: ""
+
+    KEY_STAT_ACTION:
+      en: "Open State Panel"
+      zh: ""
+
+    KEY_DUPL_KEY_MAC:
+      en: "Option + drag"
+      zh: ""
+
+    KEY_DUPL_KEY_PC:
+      en: "Alt + drag"
+      zh: ""
+
+    KEY_DUPL_ACTION:
+      en: "Duplicate the selected instance"
+      zh: ""
+
+    KEY_DEL_KEY_MAC:
+      en: "Delete"
+      zh: ""
+
+    KEY_DEL_KEY_PC:
+      en: "Delete/Backspace"
+      zh: ""
+
+    KEY_DEL_ACTION:
+      en: "Delete the selected item"
+      zh: ""
+
+    KEY_SAVE_KEY_MAC:
+      en: "Command + S"
+      zh: ""
+
+    KEY_SAVE_KEY_PC:
+      en: "Ctrl + S"
+      zh: ""
+
+    KEY_SAVE_ACTION:
+      en: "Save the stack"
+      zh: ""
+
+    KEY_SCRL_KEY_MAC:
+      en: "Command + drag"
+      zh: ""
+
+    KEY_SCRL_KEY_PC:
+      en: "Ctrl + drag"
+      zh: ""
+
+    KEY_SCRL_ACTION:
+      en: "Scroll the canvas"
+      zh: ""
+
+    # State Panel Operation - General
+
+    KEY_TIT_STATE_GEN:
+      en: "State Panel - General"
+      zh: ""
+
+    KEY_FOCUS_KEY:
+      en: "Up/Down"
+      zh: ""
+
+    KEY_FOCUS_ACTION:
+      en: "Switch focus in the state list"
+      zh: ""
+
+    KEY_SELECT_KEY:
+      en: "Space"
+      zh: ""
+
+    KEY_SELECT_ACTION:
+      en: "Select/unselect the focused state"
+      zh: ""
+
+    KEY_EXPAND_KEY:
+      en: "ENTER"
+      zh: ""
+
+    KEY_EXPAND_ACTION:
+      en: "Expand the focused state"
+      zh: ""
+
+    KEY_COLLAPSE_KEY:
+      en: "ESC"
+      zh: ""
+
+    KEY_COLLAPSE_ACTION:
+      en: "Fold the focused state"
+      zh: ""
+
+    KEY_NEXT_KEY:
+      en: "Tab"
+      zh: ""
+
+    KEY_NEXT_ACTION:
+      en: "Switch to the next input"
+      zh: ""
+
+    KEY_PREV_KEY:
+      en: "Shift + Tab"
+      zh: ""
+
+    KEY_PREV_ACTION:
+      en: "Switch back to the previous input"
+      zh: ""
+
+    KEY_INFO_KEY_MAC:
+      en: "Command + I"
+      zh: ""
+
+    KEY_INFO_KEY_PC:
+      en: "Ctrl + I"
+      zh: ""
+
+    KEY_INFO_ACTION:
+      en: "Open/fold the help"
+      zh: ""
+
+    KEY_LOG_KEY_MAC:
+      en: "Command + L"
+      zh: ""
+
+    KEY_LOG_KEY_PC:
+      en: "Ctrl + L"
+      zh: ""
+
+    KEY_LOG_ACTION:
+      en: "Open/fold the log"
+      zh: ""
+
+    # State Panel Operation - Editable Mode
+
+    KEY_TIT_STATE_EDIT:
+      en: "State Panel - Edit Mode"
+      zh: ""
+
+    KEY_SELECT_ALL_KEY_MAC:
+      en: "Command + A"
+      zh: ""
+
+    KEY_SELECT_ALL_KEY_PC:
+      en: "Ctrl + A"
+      zh: ""
+
+    KEY_SELECT_ALL_ACTION:
+      en: "Select all states"
+      zh: ""
+
+    KEY_DESELECT_KEY_MAC:
+      en: "Command + D"
+      zh: ""
+
+    KEY_DESELECT_KEY_PC:
+      en: "Ctrl + D"
+      zh: ""
+
+    KEY_DESELECT_ACTION:
+      en: "Deselect all states"
+      zh: ""
+
+    KEY_CREATE_KEY_MAC:
+      en: "Command + Enter"
+      zh: ""
+
+    KEY_CREATE_KEY_PC:
+      en: "Ctrl + Enter"
+      zh: ""
+
+    KEY_CREATE_ACTION:
+      en: "Add a new state"
+      zh: ""
+
+    KEY_DEL_STATE_KEY_MAC:
+      en: "Command + Delete"
+      zh: ""
+
+    KEY_DEL_STATE_KEY_PC:
+      en: "Ctrl + Delete"
+      zh: ""
+
+    KEY_DEL_STATE_ACTION:
+      en: "Delete selected state(s)"
+      zh: ""
+
+    KEY_MOVE_FOCUS_STATE_KEY_MAC:
+      en: "Command + Up/Down"
+      zh: ""
+
+    KEY_MOVE_FOCUS_STATE_KEY_PC:
+      en: "Ctrl + Up/Down"
+      zh: ""
+
+    KEY_MOVE_FOCUS_STATE_ACTION:
+      en: "Move the focused state"
+      zh: ""
+
+    KEY_COPY_STATE_KEY_MAC:
+      en: "Command + C"
+      zh: ""
+
+    KEY_COPY_STATE_KEY_PC:
+      en: "Ctrl + C"
+      zh: ""
+
+    KEY_COPY_STATE_ACTION:
+      en: "Copy the selected state(s)"
+      zh: ""
+
+    KEY_PASTE_STATE_KEY_MAC:
+      en: "Command + V"
+      zh: ""
+
+    KEY_PASTE_STATE_KEY_PC:
+      en: "Ctrl + V"
+      zh: ""
+
+    KEY_PASTE_STATE_ACTION:
+      en: "Paste the copied state(s)"
+      zh: ""
+
+    KEY_UNDO_STATE_KEY_MAC:
+      en: "Command + Z"
+      zh: ""
+
+    KEY_UNDO_STATE_KEY_PC:
+      en: "Ctrl + Z"
+      zh: ""
+
+    KEY_UNDO_STATE_ACTION:
+      en: "Undo"
+      zh: ""
+
+    KEY_REDO_STATE_KEY_MAC:
+      en: "Command + Y"
+      zh: ""
+
+    KEY_REDO_STATE_KEY_PC:
+      en: "Ctrl + Y"
+      zh: ""
+
+    KEY_REDO_STATE_ACTION:
+      en: "Redo"
+      zh: ""
+
+    KEY_MODAL_BTN_CLOSE:
+      en: "Close"
+      zh: ""
+
+    ##### State Editor
+
     ##### Trust Advisor
 
     # VPC
     TA_MSG_WARNING_NOT_VPC_CAN_CONNECT_OUTSIDE:
-      en: "No instance in VPC has Elastic IP, which means this VPC can only connect to outside via VPN."
+      en: "No instance in VPC has Elastic IP or auto-assigned public IP, which means this VPC can only connect to outside via VPN."
+      # en: "No instance in VPC has Elastic IP, which means this VPC can only connect to outside via VPN."
       zh: ""
 
     # Subnet
@@ -3494,6 +4440,10 @@ module.exports =
     TA_MSG_WARNING_INSTANCE_SG_RULE_EXCEED_FIT_NUM:
       en: "Instance <span class='validation-tag tag-instance'>%s</span> has more than %s security group rules, If a Instance has a large number of security group rules, performance can be degraded."
       zh: ""
+    TA_MSG_ERROR_INSTANCE_NAT_CHECKED_SOURCE_DEST:
+      en: "To allow routing to work properly, instance <span class='validation-tag tag-instance'>%s</span> should disabled Source/Destination Checking in \"Network Interface Details\""
+      zh: ""
+
 
     # ENI
     TA_MSG_ERROR_ENI_NOT_ATTACH_TO_INSTANCE:
@@ -3519,6 +4469,22 @@ module.exports =
 
     TA_MSG_ERROR_ELB_HAVE_REPEAT_LISTENER_ITEM:
       en: "Load Balancer <span class='validation-tag tag-elb'>%s</span> has duplicate load balancer ports."
+      zh: ""
+
+    TA_MSG_ERROR_ELB_HAVE_NO_SSL_CERT:
+      en: "Load Balancer <span class='validation-tag tag-elb'>%s</span> is using HTTPS/SSL protocol for Load Balancer Listener. Please add server certificate."
+      zh: ""
+
+    TA_MSG_ERROR_ELB_RULE_NOT_INBOUND_TO_ELB_LISTENER:
+      en: "Load balancer <span class='validation-tag tag-elb'>%s</span> should allow inbound traffic towards its Load Balancer Protocol: %s."
+      zh: ""
+
+    TA_MSG_ERROR_ELB_RULE_NOT_OUTBOUND_TO_INSTANCE_LISTENER:
+      en: "Load balancer <span class='validation-tag tag-elb'>%s</span> should allow outbound traffic towards its backend instance or auto-scaling group through Instance Protocol: %s."
+      zh: ""
+
+    TA_MSG_ERROR_ELB_RULE_INSTANCE_NOT_OUTBOUND_FOR_ELB_LISTENER:
+      en: "%s <span class='validation-tag tag-elb'>%s</span> should allow inbound traffic towards %s according to %s's Instance Listener Protocol."
       zh: ""
 
     # SG
@@ -3558,6 +4524,10 @@ module.exports =
       zh: ""
 
     # RT
+    TA_MSG_NOTICE_RT_ROUTE_NAT:
+      en: "Instance <span class='validation-tag tag-instance'>%s</span> is a target of Route Table <span class='validation-tag tag-rtb'>%s</span>. To make sure the routing works, <span class='validation-tag tag-instance'>%s</span> should have security group rule to allow traffic from subnets assciated with <span class='validation-tag tag-rtb'>%s</span>."
+      zh: ""
+
     TA_MSG_NOTICE_INSTANCE_HAS_RTB_NO_ELB:
       en: "Route Table <span class='validation-tag tag-rtb'>%s</span> has route to Instance <span class='validation-tag tag-instance'>%s</span>. If <span class='validation-tag tag-instance'>%s</span> is working as NAT instance, it should be assigned with an Elastic IP."
       zh: ""
@@ -3586,6 +4556,17 @@ module.exports =
     TA_MSG_ERROR_CGW_IP_CONFLICT:
       en:"Customer Gateway <span class='validation-tag tag-cgw'>%s</span>'s IP <span class='validation-tag tag-ip'>%s</span> conflicts with existing <span class='validation-tag tag-cgw'>%s</span>'s IP <span class='validation-tag tag-ip'>%s</span>."
       zh:""
+    TA_MSG_WARNING_CGW_IP_RANGE_ERROR:
+      en:"Customer Gateway <span class='validation-tag tag-cgw'>%s</span>'s IP(%s) invalid."
+      zh:""
+
+    # VPN
+    TA_MSG_ERROR_VPN_NO_IP_FOR_STATIC_CGW:
+      en:"VPN Connection of <span class='validation-tag tag-cgw'>%s</span> and <span class='validation-tag tag-vgw'>%s</span> is missing IP prefix."
+      zh:""
+    TA_MSG_ERROR_VPN_NOT_PUBLIC_IP:
+      en:"VPN Connection <span class='validation-tag tag-vpn'>%s</span>'s IP prefix(%s) is invalid."
+      zh:""
 
     # Stack
     TA_MSG_ERROR_STACK_CHECKING_FORMAT_VALID:
@@ -3603,34 +4584,34 @@ module.exports =
 
     # State Editor
     TA_MSG_ERROR_STATE_EDITOR_INEXISTENT_INSTANCE:
-      en: "Instance <span class='validation-tag tag-instance'>%s</span> state %s has referenced %s inexistent component(s)"
+      en: "Instance <span class='validation-tag tag-instance'>%s</span> <span class='validation-tag tag-state'>state %s</span> has referenced the inexistent <span class='validation-tag tag-state-ref'>%s</span>."
       zh: ""
 
     TA_MSG_ERROR_STATE_EDITOR_INEXISTENT_ASG:
-      en: "Auto Scaling Group <span class='validation-tag tag-asg'>%s</span> state %s has referenced %s inexistent component(s)"
+      en: "Auto Scaling Group <span class='validation-tag tag-asg'>%s</span> <span class='validation-tag tag-state'>state %s</span> has referenced the inexistent <span class='validation-tag tag-state-ref'>%s</span>."
       zh: ""
 
     TA_MSG_ERROR_STATE_EDITOR_EMPTY_REQUIED_PARAMETER:
-      en: "%s's state %s is missing required parameter %s."
+      en: "<span class='validation-tag tag-instance'>%s</span>'s <span class='validation-tag tag-state'>state %s</span> is missing required parameter <span class='validation-tag tag-parameter'>%s</span>."
       zh: ""
 
     # State
     TA_MSG_ERROR_NOT_CONNECT_OUT:
-      en: "Subnet %s must be connected to internet directly or via a NAT instance. "
+      en: "Subnet <span class='validation-tag tag-subnet'>%s</span> must be connected to internet directly or via a NAT instance. "
       zh: ""
 
     TA_MSG_ERROR_NO_EIP_OR_PIP:
-      en: "%s has configured states. To make sure OpsAgent to work, %s must have an elastic IP or public IP. If not, subnet %s must be connected to a NAT instance."
+      en: "<span class='validation-tag tag-instance'>%s</span> has configured states. To make sure OpsAgent to work, <span class='validation-tag tag-instance'>%s</span> must have an elastic IP or public IP. If not, subnet <span class='validation-tag tag-subnet'>%s</span>'s outward traffic must be routed to a <a href='javascript:void(0)' class='bubble bubble-NAT-instance' data-bubble-template='bubbleNATreq'>NAT instance</a>."
       zh: ""
 
     TA_MSG_ERROR_NO_CGW:
       en: "You have configured states for instance. To make sure OpsAgent to work, the VPC must have an internet gateway."
       zh: ""
     TA_MSG_ERROR_NO_OUTBOUND_RULES:
-      en: "%s has configured states. To make sure OpsAgent to work, it should have outbound rules on 80 and 443 ports to the outside."
+      en: "<span class='validation-tag tag-instance'>%s</span> has configured states. To make sure OpsAgent to work, it should have outbound rules on <span class='validation-tag tag-port'>80</span> and <span class='validation-tag tag-port'>443</span> ports to the outside."
       zh: ""
     TA_MSG_WARNING_OUTBOUND_NOT_TO_ALL:
-      en: "%s has configured states. Suggest to set its outbound rule on 80 and 443 to 0.0.0.0/0. Otherwise, agent may not be able to work properly, install packages or check out source codes lacking route to MadeiraCloud's monitoring systems or required repositories."
+      en: "<span class='validation-tag tag-instance'>%s</span> has configured states. Suggest to set its outbound rule on <span class='validation-tag tag-port'>80</span> and <span class='validation-tag tag-port'>443</span> to <span class='validation-tag tag-ip'>0.0.0.0/0</span>. Otherwise, agent may not be able to work properly, install packages or check out source codes lacking route to MadeiraCloud's monitoring systems or required repositories."
       zh: ""
 
 
@@ -3640,12 +4621,12 @@ module.exports =
   service:
 
     "ERROR_CODE_-1_MESSAGE_AWS_RESOURCE":
-      en: "Sorry, AWS is suffering from some technical issues, please click the refresh icon at top right corner of Global tab again."
-      zh: "对不起,AWS有一些技术问题,请点击'我的资源'页上右上角的刷新图标"
+      en: "Sorry, we are suffering from some technical issues, please click the refresh icon at top right corner of Global tab again."
+      zh: "对不起,我们有一些技术问题,请点击'我的资源'页上右上角的刷新图标"
 
     "ERROR_CODE_-1_MESSAGE":
-      en: "Sorry, AWS is suffering from some technical issues, please try again later."
-      zh: "对不起,AWS有一些技术问题,请稍后再试"
+      en: "Sorry, we are suffering from some technical issues, please try again later."
+      zh: "对不起,我们有一些技术问题,请稍后再试"
 
     ERROR_CODE_0_MESSAGE:
       en: ""
@@ -3734,3 +4715,5 @@ module.exports =
     ERROR_CODE_21_MESSAGE:
       en: "User has been blocked."
       zh: "对不起，此账号已被锁住"
+
+

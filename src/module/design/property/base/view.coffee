@@ -4,6 +4,7 @@
 ####################################
 
 define [ 'constant',
+         'i18n!nls/lang.js',
          'backbone',
          'jquery',
          'handlebars',
@@ -17,7 +18,7 @@ define [ 'constant',
          'UI.tooltip',
          'UI.sortable',
          'UI.tablist'
-], (constant)->
+], ( constant, lang ) ->
 
     ###
 
@@ -75,16 +76,16 @@ define [ 'constant',
             if not type then type = name
 
             if name && !MC.validate( 'awsName',  name )
-                error = "This value should be a valid #{type} name."
+                error = sprintf lang.ide.PARSLEY_THIS_VALUE_SHOULD_BE_A_VALID_TYPE_NAME, type
 
             if not error and @model.isNameDup( name )
-                error = "#{type} name \" #{name} \" is already in using. Please use another one."
+                error = sprintf lang.ide.PARSLEY_TYPE_NAME_CONFLICT, type, name
 
             if not error and @model.isReservedName( name )
-                error = "#{type} name \" #{name} \" is reserved keyword. Please use another one."
+                error = sprintf lang.ide.PARSLEY_TYPE_NAME_CONFLICT, type, name
 
             if name.indexOf("elbsg-") is 0
-                error = 'Resource name starting with "elbsg-" is reserved.'
+                error = lang.ide.PARSLEY_RESOURCE_NAME_ELBSG_RESERVED
 
             $input.parsley 'custom', ()-> error
             $input.parsley 'validate'

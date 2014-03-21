@@ -886,7 +886,7 @@ var constant_data = {
 						"RuleAction": "allow",
 						"Protocol": "-1",
 						"CidrBlock": "0.0.0.0/0",
-						"Egress": "true",
+						"Egress": true,
 						"IcmpTypeCode": {
 							"Type": "",
 							"Code": ""
@@ -901,7 +901,7 @@ var constant_data = {
 						"RuleAction": "deny",
 						"Protocol": "-1",
 						"CidrBlock": "0.0.0.0/0",
-						"Egress": "true",
+						"Egress": true,
 						"IcmpTypeCode": {
 							"Type": "",
 							"Code": ""
@@ -916,7 +916,7 @@ var constant_data = {
 						"RuleAction": "allow",
 						"Protocol": "-1",
 						"CidrBlock": "0.0.0.0/0",
-						"Egress": "false",
+						"Egress": false,
 						"IcmpTypeCode": {
 							"Type": "",
 							"Code": ""
@@ -931,7 +931,7 @@ var constant_data = {
 						"RuleAction": "deny",
 						"Protocol": "-1",
 						"CidrBlock": "0.0.0.0/0",
-						"Egress": "false",
+						"Egress": false,
 						"IcmpTypeCode": {
 							"Type": "",
 							"Code": ""

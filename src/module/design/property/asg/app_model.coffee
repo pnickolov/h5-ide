@@ -156,28 +156,31 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
             #cloudWatchPolicyMap[ "#{comp.get 'name'}-alarm" ] = policy
 
             alarm_data  = resource_list[ sp.get("alarmData").appId ]
-            actions_arr = [ alarm_data.InsufficientDataActions, alarm_data.OKActions, alarm_data.AlarmActions ]
-            trigger_arr = [ 'INSUFFICIANT_DATA', 'OK', 'ALARM' ]
+            if alarm_data
+                actions_arr = [ alarm_data.InsufficientDataActions, alarm_data.OKActions, alarm_data.AlarmActions ]
+                trigger_arr = [ 'INSUFFICIANT_DATA', 'OK', 'ALARM' ]
 
-            for actions, idx in actions_arr
-                if not actions
-                    continue
-                for action in actions.member
-                    if action isnt policy.arn
+                for actions, idx in actions_arr
+                    if not actions
                         continue
+                    for action in actions.member
+                        if action isnt policy.arn
+                            continue
 
-                    # Set arn to empty if we have cloudwatch.
-                    # So that view can show cloudwatch info.
-                    policy.arn = ""
+                        # Set arn to empty if we have cloudwatch.
+                        # So that view can show cloudwatch info.
+                        policy.arn = ""
 
-                    policy.evaluation = sp.get("alarmData").comparisonOperator
-                    policy.metric     = alarm_data.MetricName
-                    policy.notify     = actions.length is 2
-                    policy.periods    = alarm_data.EvaluationPeriods
-                    policy.minute     = Math.round( alarm_data.Period / 60 )
-                    policy.statistics = alarm_data.Statistic
-                    policy.threshold  = alarm_data.Threshold
-                    policy.trigger    = trigger_arr[ idx ]
+                        policy.evaluation = sp.get("alarmData").comparisonOperator
+                        policy.metric     = alarm_data.MetricName
+                        policy.notify     = actions.length is 2
+                        policy.periods    = alarm_data.EvaluationPeriods
+                        policy.minute     = Math.round( alarm_data.Period / 60 )
+                        policy.statistics = alarm_data.Statistic
+                        policy.threshold  = alarm_data.Threshold
+                        policy.trigger    = trigger_arr[ idx ]
+            else
+                console.warn "handlePolicy():can not find CloudWatch info of ScalingPolicy"
 
             policies.push policy
 
@@ -238,8 +241,15 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
       component = Design.instance().component( @get("uid") )
       if component.type is "ExpandedAsg"
         component = component.get("originalAsg")
-      count = component.get("policies").length
-      "#{@attributes.name}-policy-#{count}"
+      policies = component.get("policies")
+      count = policies.length
+      name = "#{@attributes.name}-policy-#{count}"
+      currentNames = _.map policies, ( policy ) ->
+        policy.get 'name'
+
+      while name in currentNames
+        name = "#{@attributes.name}-policy-#{++count}"
+      name
 
     getPolicy : ( uid )->
       data = $.extend true, {}, Design.instance().component( uid ).attributes

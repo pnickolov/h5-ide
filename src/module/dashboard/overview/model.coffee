@@ -451,6 +451,9 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
         # setResource method class
         setResource : ( resources, region ) ->
 
+            if not resources
+                return
+
             me = this
             lists = {ELB:0, EIP:0, Instance:0, VPC:0, VPN:0, Volume:0, AutoScalingGroup:0, SNS:0, CW:0}
             lists.Not_Used = { 'EIP' : 0, 'Volume' : 0 , SNS:0, CW:0}
@@ -470,7 +473,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                         #use elb_service to invoke api
                         elb_service.DescribeInstanceHealth { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  elb.LoadBalancerName, null, ( result ) ->
 
-                            if !result.is_error
+                            if !result.is_error and result and result.resolved_data and result.resolved_data.length
                             #DescribeInstanceHealth succeed
                                 total = result.resolved_data.length
                                 health = 0
@@ -1440,7 +1443,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
             null
 
         importJson : ( json )->
-            result = JsonExporter.import json
+            result = JsonExporter.importJson json
 
             if _.isString result
                 return result

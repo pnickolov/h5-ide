@@ -151,12 +151,19 @@ define [ "Design", "CanvasManager", "./ResourceModel", "constant", "./canvasview
 
       @__view
 
-    draw : ()->
+    draw : ( isCreate )->
       if not @isVisual() or not Design.instance().shouldDraw() then return
       v = @getCanvasView()
       if v
         args = arguments
         args[ 0 ] = args[ 0 ] is true
+
+        # A quick fix to suppress draw() call if the element doesn't already
+        # create the svg node.
+        # This should probably be refactored in the future, along with the
+        # canvas rendering logics.
+        if isCreate then v.nodeCreated = true
+        if not isCreate and not v.nodeCreated then return
 
         v.draw.apply v, args
       null

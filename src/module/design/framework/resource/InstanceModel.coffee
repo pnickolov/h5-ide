@@ -50,6 +50,12 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
           assoPublicIp : Design.instance().typeIsDefaultVpc()
         }, { instance: this }) )
 
+
+      # Hack, we need to clone the imageId before drawing.
+      if option.cloneSource
+        @attributes.imageId = option.cloneSource.get("imageId")
+
+
       # Set rdSize if it's empty
       if not @get("rdSize")
         #append root device
@@ -74,11 +80,6 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
           #   attribute.owner = @
           #   VolumeModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume )
           #   new VolumeModel( attribute, {noNeedGenName:true})
-
-
-      # Hack, we need to clone the imageId before drawing.
-      if option.cloneSource
-        @attributes.imageId = option.cloneSource.get("imageId")
 
       # Draw before creating SgAsso and before cloning
       @draw(true)

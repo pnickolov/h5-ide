@@ -148,6 +148,11 @@ define [ 'constant', 'MC', '../result_vo', 'Design', 'validation_helper' ], ( CO
         # if there is no EIP or publicIP, push an error and stop continued validate.
         if not __hasEipOrPublicIp( component )
             name = component.get( 'name' )
+            if component.type is 'ExpandedAsg'
+                lc = component.get('originalAsg').get('lc')
+                subnetName = component.parent().get 'name'
+                name = lc and lc.get 'name'
+
             result.push Helper.message.error component.id, i18n.TA_MSG_ERROR_NO_EIP_OR_PIP, name, name, subnetName
             true
         else if __isRouteIgw( component )

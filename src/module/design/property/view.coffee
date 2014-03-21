@@ -272,13 +272,19 @@ define [ 'event',
 
 
                 if opsEnabled and ( ( modeAvai is null and typeAvai ) or modeAvai )
-                    propertyPanel.removeClass 'no-state'
+                    setTimeout(() ->
+                        propertyPanel.removeClass 'no-state'
+                    , 0)
                     return true
                 else
-                    propertyPanel.addClass 'no-state'
+                    setTimeout(() ->
+                        propertyPanel.addClass 'no-state'
+                    , 0)
                     return false
             else
-                propertyPanel.addClass 'no-state'
+                setTimeout(() ->
+                    propertyPanel.addClass 'no-state'
+                , 0)
                 return false
 
         getCurrentCompUid : () ->

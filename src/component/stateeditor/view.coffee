@@ -1115,6 +1115,11 @@ define [ 'event',
 
             that = this
 
+            $focusInput = that.$stateList.find('.editable-area.ace_focus')
+            if $focusInput
+                editor = $focusInput.data('editor')
+                if editor then editor.blur()
+
             that.refreshStateView($stateItem)
             $stateItem.addClass('view')
             that.refreshDescription()
@@ -1779,7 +1784,8 @@ define [ 'event',
             $parentEditorModel = $currentElem.parents('#state-editor-model')
             if $stateEditorModel.length and (not $parentEditorModel.length)
                 # if $stateEditorModel.is(':visible')
-                if $stateEditorModel.length
+                $propertyPanel = $('#property-panel')
+                if $stateEditorModel.length and not $propertyPanel.hasClass('no-state')
                     that.onStateSaveClick()
                 else
                     if $currentElem.parents('#tabbar-wrapper').length

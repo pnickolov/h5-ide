@@ -230,46 +230,6 @@ define [ 'MC', 'event', 'handlebars'
 			process.loadModule()
 			#
 			#ide_event.trigger ide_event.SWITCH_MAIN
-
-		#listen RESOURCE_COMPLETE
-		#ide_event.onListen ide_event.RESOURCE_COMPLETE, () ->
-		#	console.log 'RESOURCE_COMPLETE'
-
-		#############################
-		#  analytics
-		#############################
-
-		#temp disable analytics
-
-		# analytics.identify($.cookie("userid"), {
-		# 	name : $.cookie("username"),
-		# 	username : $.cookie("username"),
-		# 	email : MC.base64Decode($.cookie("email")),
-		# 	region : $.cookie("region_name"),
-		# 	created : 1328260166
-		# 	}, {
-		# 	Intercom : {
-		# 		userHash : '5add343430ecaf54f7c1a6285758fcccb87fb365d089d6e1a520b2d7fa49fb05'
-		# 	}
-		# })
-
-		# analytics.track('Loaded IDE', { })
-
-		#intercom
-		#window.intercomSettings.email      = MC.base64Decode( common_handle.cookie.getCookieByName( 'email' ))
-		#window.intercomSettings.username   = common_handle.cookie.getCookieByName( 'username' )
-		#window.intercomSettings.created_at = MC.dateFormat( new Date(), 'hh:mm MM-dd-yyyy' )
-		#intercom_sercure_mode_hash         = () ->
-		#	intercom_api_secret = '4tGsMJzq_2gJmwGDQgtP2En1rFlZEvBhWQWEOTKE'
-		#	hash = CryptoJS.HmacSHA256( MC.base64Decode($.cookie('email')), intercom_api_secret )
-		#	console.log 'hash.toString(CryptoJS.enc.Hex) = ' + hash.toString(CryptoJS.enc.Hex)
-		#	return hash.toString CryptoJS.enc.Hex
-		#if !window.intercomSettings.user_hash
-		#	localStorage.setItem 'user_hash', intercom_sercure_mode_hash()
-		#	window.intercomSettings.user_hash  = intercom_sercure_mode_hash()
-
-		#window.intercomSettings.stack_total= 0
-
 		#############################
 		#  base model
 		#############################

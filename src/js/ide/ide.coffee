@@ -313,7 +313,6 @@ define [ 'MC', 'event', 'handlebars'
 
 		base_model.sub ( error ) ->
 			console.log 'sub'
-			console.log error
 			if error.return_code is constant.RETURN_CODE.E_SESSION
 				relogin()
 				if error.param[0].method is 'info'
@@ -322,7 +321,7 @@ define [ 'MC', 'event', 'handlebars'
 			else
 
 				label = 'ERROR_CODE_' + error.return_code + '_MESSAGE'
-				console.log lang.service[ label ]
+				console.warn lang.service[ label ],error
 
 				return if error.error_message.indexOf( 'AWS was not able to validate the provided access credentials' ) isnt -1
 				return if error.param[0].url is '/session/' and error.param[0].method is 'login'
@@ -332,15 +331,17 @@ define [ 'MC', 'event', 'handlebars'
 						notification 'warning', lang.service["ERROR_CODE_-1_MESSAGE_AWS_RESOURCE"]
 					else
 						notification 'warning', label
-					return
+					return null
 
-				#
-				if error.error_message
-					if error.error_message != "0"
-						notification 'warning', error.error_message
+				if lang.service[ label ]
+					error_msg = lang.service[ label ] + "(" + error.return_code + ")"
 				else
-					notification 'error', lang.service[ label ], false if lang.service[ label ] and MC.common.cookie.getCookieByName('has_cred') is 'true'
+					error_msg = "unknown error (" + error.return_code + ")"
 
+				if error_msg and $(".error_item").text().indexOf(error_msg) is -1
+					notification 'error', error_msg, false
+
+			null
 
 		###########################
 		#listen to the request list

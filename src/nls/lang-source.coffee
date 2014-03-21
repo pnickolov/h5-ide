@@ -4621,12 +4621,12 @@ module.exports =
   service:
 
     "ERROR_CODE_-1_MESSAGE_AWS_RESOURCE":
-      en: "Sorry, AWS is suffering from some technical issues, please click the refresh icon at top right corner of Global tab again."
-      zh: "对不起,AWS有一些技术问题,请点击'我的资源'页上右上角的刷新图标"
+      en: "Sorry, we are suffering from some technical issues, please click the refresh icon at top right corner of Global tab again."
+      zh: "对不起,我们有一些技术问题,请点击'我的资源'页上右上角的刷新图标"
 
     "ERROR_CODE_-1_MESSAGE":
-      en: "Sorry, AWS is suffering from some technical issues, please try again later."
-      zh: "对不起,AWS有一些技术问题,请稍后再试"
+      en: "Sorry, we are suffering from some technical issues, please try again later."
+      zh: "对不起,我们有一些技术问题,请稍后再试"
 
     ERROR_CODE_0_MESSAGE:
       en: ""

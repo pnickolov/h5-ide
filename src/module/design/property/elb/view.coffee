@@ -120,13 +120,39 @@ define [ '../base/view',
 
         healthIntervalChanged : ( event ) ->
             $target = $ event.currentTarget
-            value = Helper.makeInRange $target.val(), [30, 300], $target, 30
+            value = Helper.makeInRange $target.val(), [5, 300], $target, 30
+
+            $timeoutDom = $('#property-elb-health-timeout')
+            $target.parsley 'custom', (val) ->
+                intervalValue = Number(val)
+                timeoutValue = Number($timeoutDom.val())
+                if intervalValue < timeoutValue
+                    return lang.ide.PROP_ELB_HEALTH_INTERVAL_VALID
+                null
+
+            if not $target.parsley 'validate'
+                return
+            else
+                $timeoutDom.parsley 'validate'
 
             @model.setHealthInterval value
 
         healthTimeoutChanged : ( event ) ->
             $target = $ event.currentTarget
             value = Helper.makeInRange $target.val(), [2, 60], $target, 5
+
+            $intervalDom = $('#property-elb-health-interval')
+            $target.parsley 'custom', (val) ->
+                intervalValue = Number($intervalDom.val())
+                timeoutValue = Number(val)
+                if intervalValue < timeoutValue
+                    return lang.ide.PROP_ELB_HEALTH_INTERVAL_VALID
+                null
+
+            if not $target.parsley 'validate'
+                return
+            else
+                $intervalDom.parsley 'validate'
 
             @model.setHealthTimeout value
 

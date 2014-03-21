@@ -2475,6 +2475,10 @@ module.exports =
       en: "Distribution"
       zh: "分布"
 
+    PROP_ELB_HEALTH_INTERVAL_VALID:
+      en: "Response timeout must be less than or equal to the health check interval value"
+      zh: ""
+
     PROP_ELB_TIP_CLICK_TO_SELECT_ALL:
       en: "Click to select all"
       zh: ""

@@ -1,5 +1,5 @@
 
-define ['./Download', 'i18n!nls/lang.js', "./HmacMd5"], ( download, lang )->
+define ['./Download', 'i18n!nls/lang.js', "crypto"], ( download, lang )->
 
   exportJson = ( json, name )->
     # Remove uncessary attributes of the json

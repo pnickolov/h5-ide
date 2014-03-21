@@ -45,6 +45,7 @@ require.config {
 
 		'sprintf'            : 'vender/sprintf/sprintf'
 		'Meteor'             : 'vender/meteor/meteor'
+		'crypto'             : 'vender/crypto-js/cryptobundle'
 
 		#############################################
 		# MC                        # Merge in deploy
@@ -59,6 +60,7 @@ require.config {
 		'constant'           : 'lib/constant'
 
 		'event'              : 'lib/ide_event'
+
 		'validation'         : 'component/trustedadvisor/validation'
 		'ta_conf'            : 'component/trustedadvisor/config'
 		'validation_helper'	 : 'component/trustedadvisor/lib/helper'
@@ -213,10 +215,6 @@ require.config {
 		'aws_handle'         : 'lib/aws/main'
 		'forge_handle'       : 'lib/forge/main'
 		'common_handle'       : 'lib/common/main'
-
-		#
-		'validation'         : 'component/trustedadvisor/validation'
-		'ta_conf'            : 'component/trustedadvisor/config'
 
 		#statusbar state
 		'state_status'       : 'component/statestatus/main'
@@ -375,6 +373,7 @@ require.config {
 			"sprintf"
 			"Meteor"
 			"canvon"
+			"crypto"
 		]
 		"lib/lib" : [
 			"MC"

@@ -39,7 +39,7 @@ require.config {
 
     'sprintf'            : 'vender/sprintf/sprintf'
 
-    'crypto'             : 'vender/crypto-js/hmac-sha256'
+    'crypto'             : 'vender/crypto-js/cryptobundle'
     'MC'                 : 'js/MC.core'
     'constant'           : 'lib/constant'
     'common_handle'      : 'lib/common/main'
@@ -84,6 +84,7 @@ require.config {
       "underscore"
       "handlebars"
       "sprintf"
+      "crypto"
     ]
     "lib/lib" : [
       "MC"

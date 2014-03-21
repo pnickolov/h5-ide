@@ -43,6 +43,12 @@ Also, there's some other (rare) issues :
 Whenever these (rare) issue happens, close the process by hitting `Ctrl+C`, or close the tab. Then wait for several seconds and re-run the command again.
 
 
+## 关于 js/ide/config & Module ID
+* 首先按照下面的Best Practice来正确选择是否使用Module ID。
+* 接着把模块ID和路径的映射添加到js/ide/config的`requirejs.config.paths`里面
+* 假如这个模块最终会被合并到一个大的模块`bigModuleA`里面的话，需要把这个模块的ID添加到`requirejs.config.bundles["bigModuleA"]`的数组里。
+
+
 ## Best Practice
 ### # 使用正确的方式定义模块
 不要使用这种错误的方式去定义一个模块：

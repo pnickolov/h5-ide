@@ -20,13 +20,9 @@ define [ 'event',
         # store current open tab [ property|state ]
         currentTab: 'property'
 
-        # store current uid
+        # store the message of currrent rendered component
         uid: null
-
-        # store the message of latest rendered component
-        last:
-            uid     : null
-            type    : null
+        type: null
 
 
         initialize : ->
@@ -79,12 +75,12 @@ define [ 'event',
             target = event.currentTarget
             if target.id is 'btn-switch-state'
                 if @currentTab isnt 'state'
-                    @renderState @last.uid, @last.type, true
+                    @renderState @uid, @type, true
             else
                 if @currentTab is 'state'
-                    @renderProperty @last.uid, @last.type
+                    @renderProperty @uid, @type
 
-            @renderStateCount Design.instance().component( @last.uid )
+            @renderStateCount Design.instance().component( @uid )
 
         showProperty: () ->
             $( '#property-panel' ).removeClass 'state'
@@ -98,8 +94,8 @@ define [ 'event',
                 hideButton.click()
 
         storeLast: ( uid, type ) ->
-            @last.uid = uid
-            @last.type = type
+            @uid = uid
+            @type = type
             null
 
         renderProperty: ( uid, type, force ) ->

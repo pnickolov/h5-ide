@@ -70,7 +70,7 @@ define [ 'event',
 			null
 
 		ide_event.onLongListen ide_event.SHOW_STATE_EDITOR, ( uid )->
-			view.renderState uid
+			view.renderState uid, null, true
 			null
 
 		view.on "HIDE_SUBPANEL", ()->

@@ -1443,7 +1443,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
             null
 
         importJson : ( json )->
-            result = JsonExporter.import json
+            result = JsonExporter.importJson json
 
             if _.isString result
                 return result

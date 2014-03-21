@@ -406,7 +406,7 @@ define [ 'MC', 'event',
             date     = MC.dateFormat(new Date(), "yyyy-MM-dd")
             name     = [design.get("name"), username, date].join("-")
 
-            data = JsonExporter.export Design.instance().serialize(), name + ".json"
+            data = JsonExporter.exportJson Design.instance().serialize(), name + ".json"
             if data
                 # The browser doesn't support Blob. Fallback to show a dialog to
                 # allow user to download the file.
@@ -460,15 +460,9 @@ define [ 'MC', 'event',
 
         #request cloudformation
         clickConvertCloudFormation : ->
-            console.log 'clickConvertCloudFormation'
-            me = this
-
-            # old design flow
-            #ide_event.trigger ide_event.SAVE_STACK, MC.canvas_data
-
-            # new design flow
+            modal MC.template.exportCloudFormation()
+            # Seems like cloudfomation triggers a save event. And then trigger a export event...... Darn!
             ide_event.trigger ide_event.SAVE_STACK, MC.common.other.canvasData.data()
-
             null
 
         #save cloudformation
@@ -477,22 +471,15 @@ define [ 'MC', 'event',
 
             try
                 # able
-                $('#tpl-download').removeAttr 'disabled'
+                aTag     = $('#tpl-download').removeAttr 'disabled'
+                cf_json  = @model.attributes.cf_data[name]
+                fileName = "#{Design.instance().get('name')}.json"
 
-                cf_json = me.model.attributes.cf_data[name]
-                file_content = JSON.stringify cf_json
-                $( '#tpl-download' ).attr {
-                    'href'      : "data://application/json;," + file_content,
+                JsonExporter.genericExport aTag, cf_json, fileName
 
-                    # old design flow
-                    #'download'  : MC.canvas_data.name + '.json',
-
-                    # new design flow
-                    'download'  : MC.common.other.canvasData.get( 'name' ) + '.json',
-                }
-                $('#tpl-download').on 'click', { target : this }, (event) ->
-                    console.log 'clickExportJSONIcon'
+                $('#tpl-download').on 'click', (event) ->
                     modal.close()
+
             catch error
                 notification 'error', lang.ide.TOOL_MSG_ERR_CONVERT_CLOUDFORMATION
 

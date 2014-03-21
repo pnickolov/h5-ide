@@ -26,7 +26,7 @@ define ['./Download', 'i18n!nls/lang.js', "./HmacMd5"], ( download, lang )->
 
     if not blob
       return {
-        data : "data://text/plain;, " + j
+        data : "data://text/plain;,#{j}"
         name : name
       }
 
@@ -46,7 +46,32 @@ define ['./Download', 'i18n!nls/lang.js', "./HmacMd5"], ( download, lang )->
 
     return j
 
+  # genericExport() can download a file after the user clicks an `a link`.
+  genericExport = ( aTag, contentJsonObject, fileName )->
+    space = 4
+    ### env:prod ###
+    space = undefined
+    ### env:prod:end ###
+    j = JSON.stringify contentJsonObject, undefined, space
+
+    ua = window.navigator.userAgent
+    if ua.indexOf("Safari") > -1 and ua.indexOf("Chrome") is -1
+      # Safari doesn't support blob download. We set the content to the link
+      $(aTag).attr {
+        href     : "data://text/plain;,#{j}"
+        download : fileName
+      }
+
+    else
+      $(aTag).off("click.export").on "click.export", ()->
+        download( new Blob([j]), fileName )
+        null
+
+    null
+
   {
-    export : exportJson
-    import : importJson
+    exportJson : exportJson
+    importJson : importJson
+
+    genericExport : genericExport
   }

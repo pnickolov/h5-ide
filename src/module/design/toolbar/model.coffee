@@ -1158,23 +1158,6 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
 
         isInstanceStore : () -> !Design.instance().isStoppable()
 
-        #saveAppThumbnail  :   (flag, region, app_name, app_id) ->
-        #    me = this
-        #
-        #    idx = 'process-' + region + '-' + app_name
-        #    if idx of process_data_map
-        #        data = $.extend(true, {}, process_data_map[idx])
-        #
-        #        if data
-        #            if flag is 'RUN_STACK'
-        #                # generate s3 key
-        #                app_model.getKey { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, app_id, app_name
-        #
-        #            else
-        #                me.savePNG app_id
-        #
-        #    null
-
         convertCloudformation : () ->
             me = this
 

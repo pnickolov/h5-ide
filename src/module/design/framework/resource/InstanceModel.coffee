@@ -36,12 +36,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
 
       option = option || {}
 
-      shouldInit = option.createByUser and not option.cloneSource
-
-      if shouldInit
-        @initInstanceType()
-
-
+      # Create Eni0 if necessary
       if option.createByUser and not Design.instance().typeIsClassic()
         #create eni0
         EniModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface )
@@ -51,9 +46,11 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
         }, { instance: this }) )
 
 
-      # Hack, we need to clone the imageId before drawing.
+      # Clone the attributes if cloneSource is supplied.
       if option.cloneSource
-        @attributes.imageId = option.cloneSource.get("imageId")
+        @clone( option.cloneSource )
+      else if option.createByUser
+        @initInstanceType()
 
 
       # Set rdSize if it's empty
@@ -81,15 +78,12 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
           #   VolumeModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume )
           #   new VolumeModel( attribute, {noNeedGenName:true})
 
-      # Draw before creating SgAsso and before cloning
+
+      # Draw before creating SgAsso
       @draw(true)
 
-      if option.cloneSource
-        # When cloning, instance might also clone volume, which will ask the instance
-        # to update. So we need to draw first.
-        @clone( option.cloneSource )
-
-      if shouldInit
+      # Create additonal association if the instance is created by user.
+      if option.createByUser and not option.cloneSource
         #assign DefaultKP
         KpModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair )
         defaultKp = KpModel.getDefaultKP()

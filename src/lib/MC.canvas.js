@@ -5306,17 +5306,10 @@ MC.canvas.event.keyEvent = function (event)
 
 		// Focus property input - [P]
 		if (
-			keyCode === 80 &&
-			selected_node.length === 1
+			keyCode === 80
 		)
 		{
 			$canvas.trigger('SHOW_PROPERTY_PANEL');
-
-			if ($('#property-panel .input')[0] !== undefined)
-			{
-				$('#property-panel .input').first().focus();
-			}
-
 			return false;
 		}
 	}

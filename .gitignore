@@ -15,6 +15,7 @@ deploy/
 #ignore js
 src/**/*.js
 !src/js/*.js
+!src/vender/**/*.js
 !src/component/stateeditor/lib/**/*.js
 
 #ignore test

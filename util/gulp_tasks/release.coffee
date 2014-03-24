@@ -316,9 +316,6 @@ Tasks =
     path = if qaMode then "./qa" else "./deploy"
 
     ()->
-      # Disable test for now.
-      return true
-
       # Create a server to serve the files for testing.
       testserver = server.create path, 3010, false, false
 

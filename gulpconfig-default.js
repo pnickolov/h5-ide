@@ -47,4 +47,8 @@ module.exports = {
 
   // If true, it will try to automatically push the ready-to-depoly build to "git@github.com:MadeiraCloud/h5-ide-build.git"
   , autoPush : true
+
+  // A string to indicate which reporter should mocha use.
+  // Possible values are : "dot", "spec", "nyan", "TAP", "List", "progress", "min"
+  , testReporter : "dot"
 };

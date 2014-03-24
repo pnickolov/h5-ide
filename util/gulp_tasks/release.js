@@ -338,7 +338,6 @@
       path = qaMode ? "./qa" : "./deploy";
       return function() {
         var testserver;
-        return true;
         testserver = server.create(path, 3010, false, false);
         logTask("Starting automated test");
         return unittest().then(function() {

@@ -41,7 +41,7 @@ require.config {
 
 		'underscore'         : 'vender/underscore/underscore'
 		'backbone'           : 'vender/backbone/backbone'
-		'handlebars'         : 'vender/handlebars/handlebars'
+		'handlebars'         : 'vender/handlebars/handlebars.rt'
 
 		'sprintf'            : 'vender/sprintf/sprintf'
 		'Meteor'             : 'vender/meteor/meteor'

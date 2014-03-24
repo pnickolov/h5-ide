@@ -31,7 +31,7 @@ require.config {
     'jquery'     : 'vender/jquery/jquery.1.0'
     'underscore' : 'vender/underscore/underscore'
     'backbone'   : 'vender/backbone/backbone'
-    'handlebars' : 'vender/handlebars/handlebars'
+    'handlebars' : 'vender/handlebars/handlebars.rt'
 
     'domReady' : 'vender/requirejs/domReady'
     'i18n'     : 'vender/requirejs/i18n'

@@ -935,7 +935,10 @@ else
                     var item = m3;
                     var leading_space = m1;
                     var ends_with_double_newline = /\n\n$/.test(item);
-                    var contains_double_newline = ends_with_double_newline || item.search(/\n{2,}/) > -1;
+
+                    //modify by song
+                    var contains_double_newline = ends_with_double_newline || item.search(/\n{1,}/) > -1;
+                    // var contains_double_newline = ends_with_double_newline || item.search(/\n{2,}/) > -1;
 
                     if (contains_double_newline || last_item_had_a_double_newline) {
                         item = _RunBlockGamut(_Outdent(item), /* doNotUnhash = */true);

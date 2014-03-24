@@ -726,7 +726,7 @@ define [ 'event',
             if cmdName
                 moduleObj = that.cmdModuleMap[cmdName]
                 if moduleObj.reference
-                    descMarkdown = moduleObj.reference['en']
+                    descMarkdown = moduleObj.reference.en
                 that.$cmdDsec.attr('data-command', cmdName)
             else
                 descHTML = that.generalTip
@@ -1345,7 +1345,7 @@ define [ 'event',
 
                     paraValue = arrayObj
 
-                stateItemObj['parameter'][paraName] = paraValue
+                stateItemObj.parameter[paraName] = paraValue
 
             return stateItemObj
 
@@ -1779,7 +1779,7 @@ define [ 'event',
                     hintDataAryMap = thatEditor.hintObj
 
                     if e.command.name is "insertstring"
-                        if /^{$/.test(e.args) and hintDataAryMap['at']
+                        if /^{$/.test(e.args) and hintDataAryMap.at
 
                             editSession = thatEditor.getSession()
                             cursorPos = thatEditor.getCursorPosition()
@@ -1790,21 +1790,21 @@ define [ 'event',
                             if lastChar is '@'
                                 thatEditor.insert('}')
                                 thatEditor.moveCursorTo(editRow, editColumn)
-                                that.setEditorCompleter(thatEditor, hintDataAryMap['at'], 'reference')
+                                that.setEditorCompleter(thatEditor, hintDataAryMap.at, 'reference')
                                 thatEditor.execCommand("startAutocomplete")
 
                     if e.command.name is "backspace"
 
                         $stateItem = $editorElem.parents('.state-item')
 
-                        if hintDataAryMap['focus']
+                        if hintDataAryMap.focus
 
                             $paraItem = $editorElem.parents('.parameter-item')
 
                             if $paraItem.hasClass('bool') or $paraItem.hasClass('state')
                                 that.setPlainText($editorElem, '')
 
-                            that.setEditorCompleter(thatEditor, hintDataAryMap['focus'], 'command')
+                            that.setEditorCompleter(thatEditor, hintDataAryMap.focus, 'command')
                             thatEditor.execCommand("startAutocomplete")
 
                         if currentValue is '' and $stateItem.hasClass('comment')
@@ -1892,8 +1892,8 @@ define [ 'event',
 
                     hintDataAryMap = thatEditor.hintObj
                     currentValue = thatEditor.getValue()
-                    if not currentValue and hintDataAryMap['focus']
-                        that.setEditorCompleter(thatEditor, hintDataAryMap['focus'], 'command')
+                    if not currentValue and hintDataAryMap.focus
+                        that.setEditorCompleter(thatEditor, hintDataAryMap.focus, 'command')
                         thatEditor.execCommand("startAutocomplete")
 
                     inputPosX = $valueInput.offset().left

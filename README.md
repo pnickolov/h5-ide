@@ -24,14 +24,21 @@ npm install
 ### Custom Gulp Config
 Copy `gulpconfig-default.js` to `gulpconfig.js`. Then modify `gulpconfig.js`
 
+
+### Automated Test
+`gulp release` `gulp debug` `gulp qa` will try to run test suit if `zombie` is available. In order to install `zombie`, one need to install an C++ compiler in the system and then run `npm install zombie`
+
+
 ### Use Compass
 MadeiraCloud IDE uses compass to pre-process css/scss files. If you need to modify scss, then you need to install compass by (Assuming you have ruby installed on your system):
 `sudo gem install compass`
+
 
 ### LiveReload Support
 * The built-in livereload server will notify a client when anything under `src/assets` changes. It doesn't reload browser if any js/html file is changed by default.
 * In order to use livereload, one must install the [Chrome LiveReload Plugin](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei).
 * When plugin is installed, an icon will appear in chrome toolbar. Click the icon to enable/disable livereload.
+
 
 ### Known Issue of Native FsEvent
 When pollingWatch is false or "auto" in OSX, gulp use native FsEvent to monitor file changes. The shortcoming of this method is that some action will not be reported by the OS. For example, vim saving file probably won't be reported.

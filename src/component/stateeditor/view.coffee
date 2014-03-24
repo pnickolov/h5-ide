@@ -284,6 +284,8 @@ define [ 'event',
 
             that.resAttrRegexStr = that.model.get('resAttrRegexStr')
 
+            that.markdownConvert = new Markdown.Converter()
+
             that.generalTip = lang.ide.STATE_HELP_INTRO_LBL
 
             that.resNoState = true
@@ -772,7 +774,8 @@ define [ 'event',
 
             setTimeout(() ->
                 if descMarkdown
-                    descHTML = markdown.toHTML(descMarkdown)
+                    # descHTML = markdown.toHTML(descMarkdown)
+                    descHTML = that.markdownConvert.makeHtml(descMarkdown)
                 that.$cmdDsec.html(descHTML)
                 that.$cmdDsec.find('em:contains(required)').parents('li').addClass('required')
                 that.$cmdDsec.find('em:contains(optional)').parents('li').addClass('optional')
@@ -2018,7 +2021,7 @@ define [ 'event',
             that = this
 
             that.$cmdDsec.find('.highlight').removeClass('highlight')
-            $paraNameSpan = that.$cmdDsec.find("strong:contains('#{paraName}')")
+            $paraNameSpan = that.$cmdDsec.find("code:contains('#{paraName}')")
             paraNameSpan = $paraNameSpan.filter(() ->
                 return $(this).text() is paraName
             )

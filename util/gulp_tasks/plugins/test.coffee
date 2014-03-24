@@ -45,7 +45,6 @@ runTest = ()->
       true
     .on "end", ()-> d.resolve()
     .on "error", ()-> d.reject()
-  null
 
   d.promise
 

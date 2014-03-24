@@ -2459,6 +2459,10 @@ module.exports =
       en: "Cross-zone Load Balancing"
       zh: "Cross-zone Load Balancing"
 
+    PROP_ELB_CONNECTION_DRAIN:
+      en: "Connection Draining"
+      zh: ""
+
     PROP_ELB_ELB_PROTOCOL:
       en: "Load Balancer Protocol"
       zh: "负载均衡器协议"
@@ -2477,6 +2481,10 @@ module.exports =
 
     PROP_ELB_HEALTH_INTERVAL_VALID:
       en: "Response timeout must be less than or equal to the health check interval value"
+      zh: ""
+
+    PROP_ELB_CONNECTION_DRAIN_TIMEOUT_INVALID:
+      en: "Timeout must be an integer between 1 and 3600"
       zh: ""
 
     PROP_ELB_TIP_CLICK_TO_SELECT_ALL:

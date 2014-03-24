@@ -20,6 +20,14 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
             appData = MC.data.resource_list[ Design.instance().region() ]
             elb     = appData[ myElbComponent.get 'appId' ]
 
+            if elb.ConnectionDraining
+                if elb.ConnectionDraining.Enabled
+                    elb.ConnectionDrainingInfo = "Enabled; Timeout: #{elb.ConnectionDraining.Timeout} seconds"
+                else
+                    elb.ConnectionDrainingInfo = 'Disabled'
+            else
+                elb.ConnectionDrainingInfo = 'Disabled'
+
             if not elb
                 return false
 

@@ -65,6 +65,8 @@ define [ '../base/view',
             'click #sslcert-select .item' : 'changeSSLCert'
             'click #sslcert-select .item .icon-edit' : 'elbSSLCertEdit'
             'click #sslcert-select .item .icon-remove' : 'elbSSLCertRemove'
+            'click #elb-connection-draining-select' : 'elbConnectionDrainSelectChange'
+            'change #elb-connection-draining-input' : 'elbConnectionDrainTimeoutChange'
 
         render     : () ->
 
@@ -560,6 +562,47 @@ define [ '../base/view',
 
                 null
             )
+
+        elbConnectionDrainSelectChange : (event) ->
+
+            that = this
+            $selectbox = that.$('#elb-connection-draining-select')
+            $inputGroup = that.$('.elb-connection-draining-input-group')
+            $timeoutInput = that.$('#elb-connection-draining-input')
+            selectValue = $selectbox.prop('checked')
+            if selectValue
+                $inputGroup.removeClass('hide')
+            else
+                $inputGroup.addClass('hide')
+
+            timeoutValue = Number($timeoutInput.val())
+            if selectValue and timeoutValue
+                that.model.setConnectionDraining(true, timeoutValue)
+            if not selectValue
+                that.model.setConnectionDraining(false)
+
+        elbConnectionDrainTimeoutChange : (event) ->
+
+            that = this
+            $timeoutInput = that.$('#elb-connection-draining-input')
+            $selectbox = that.$('#elb-connection-draining-select')
+            selectValue = $selectbox.prop('checked')
+
+            timeoutValue = Number($timeoutInput.val())
+
+            $timeoutInput.parsley 'custom', (val) ->
+                inputValue = Number($timeoutInput.val())
+                if inputValue >= 1 and inputValue < 3600
+                    null
+                else
+                    return lang.ide.PROP_ELB_CONNECTION_DRAIN_TIMEOUT_INVALID
+                null
+
+            if not $timeoutInput.parsley 'validate'
+                return
+
+            if selectValue and timeoutValue
+                that.model.setConnectionDraining(true, timeoutValue)
 
     }
 

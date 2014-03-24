@@ -592,9 +592,7 @@ define [ '../base/view',
 
             $timeoutInput.parsley 'custom', (val) ->
                 inputValue = Number($timeoutInput.val())
-                if inputValue >= 1 and inputValue < 3600
-                    null
-                else
+                if not (inputValue >= 1 and inputValue < 3600)
                     return lang.ide.PROP_ELB_CONNECTION_DRAIN_TIMEOUT_INVALID
                 null
 

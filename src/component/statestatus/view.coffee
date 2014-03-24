@@ -3,16 +3,32 @@
 #############################
 
 define [ 'event'
-       , 'text!./template.tpl'
+       , './template'
        , 'backbone'
        , 'jquery'
        , 'handlebars'
 
 ], ( ide_event, template ) ->
 
-    StateStatusView = Backbone.View.extend
+    CustomView = Backbone.View.extend
+        tagName: 'li'
+        className: 'state-status-item'
 
-        template: {}
+        initialize: () ->
+            @listenTo @model, 'change', @render
+
+        render: () ->
+            @$el.html template.item @model.toJSON()
+            @
+
+        events:
+            'click .state-status-item-detail': 'openStateEditor'
+
+        openStateEditor: ->
+            ide_event.trigger ide_event.OPEN_PROPERTY, null, @model.get( 'uid' ), false, 'state'
+            null
+
+    StateStatusView = Backbone.View.extend
 
         events:
             'click .modal-close'        : 'closePopup'
@@ -23,40 +39,16 @@ define [ 'event'
             @listenTo @model, 'change:items', @renderAllItem
             @listenTo @model, 'change:stop', @renderAllItem
             @listenTo @model, 'change:new', @renderUpdate
-            #@listenTo @items, 'remove', @
 
-            @compileTpl()
-
-            @itemView = @customView()
-
-        customView: () ->
-            parent = @
-            Backbone.View.extend
-                tagName: 'li'
-                className: 'state-status-item'
-                template: parent.template.item
-
-
-                initialize: () ->
-                    @listenTo @model, 'change', @render
-
-                render: () ->
-                    @$el.html @template @model.toJSON()
-                    @
-
-                events:
-                    'click .state-status-item-detail': 'openStateEditor'
-
-                openStateEditor: ->
-                    ide_event.trigger ide_event.OPEN_PROPERTY, null, @model.get( 'uid' ), false, 'state'
-                    null
+            @itemView = CustomView()
+            null
 
         render: () ->
 
             @$statusModal = @$el
 
-            @$el.html @template.modal
-            @$( '.modal-state-statusbar' ).html @template.content
+            @$el.html template.modal()
+            @$( '.modal-state-statusbar' ).html template.content()
 
             @renderAllItem()
 
@@ -70,7 +62,7 @@ define [ 'event'
             newCount = model.get( 'new' ).length
 
             if newCount
-                @$( '.update-tip' ).html @template.update newCount
+                @$( '.update-tip' ).html template.update newCount
 
             scrollbar.scrollTo @$( '.scroll-wrap' ), 'top': 0
 
@@ -103,42 +95,10 @@ define [ 'event'
                 view.$el.show()
 
         renderContainer: () ->
-            @$( '.status-item' ).html @template.container
+            @$( '.status-item' ).html template.container()
 
         renderPending: () ->
-            @$( '.status-item' ).html @template.pending
-
-
-        compileTpl: () ->
-            # generate template
-            tplRegex = /(\<!-- (.*) --\>)(\n|\r|.)*?(?=\<!-- (.*) --\>)/ig
-            tplHTMLAry = template.match tplRegex
-            htmlMap = {}
-
-            _.each tplHTMLAry, ( tplHTML ) ->
-                commentHead = tplHTML.split( '\n' )[ 0 ]
-                tplType = commentHead.replace( /(<!-- )|( -->)/g, '' )
-                tplType = $.trim(tplType)
-                htmlMap[ tplType ] = tplHTML
-                null
-
-            stateStatusModalHTML = htmlMap[ 'statestatus-template-modal' ]
-            stateStatusContentHTML = htmlMap[ 'statestatus-template-status-content' ]
-            stateStatusItemHTML = htmlMap[ 'statestatus-template-status-item' ]
-            stateStatusUpdateHTML = htmlMap[ 'statestatus-template-status-update' ]
-
-            pending = htmlMap[ 'statestatus-template-status-pending' ]
-            container = htmlMap[ 'statestatus-template-status-item-container' ]
-
-            @template.modal     = stateStatusModalHTML
-            @template.content   = stateStatusContentHTML
-            @template.item      = Handlebars.compile stateStatusItemHTML
-            @template.update    = Handlebars.compile stateStatusUpdateHTML
-
-            @template.pending      = pending
-            @template.container = container
-
-            @template
+            @$( '.status-item' ).html template.pending()
 
         closePopup : ->
             $( '#status-bar-modal' ).hide()

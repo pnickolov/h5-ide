@@ -3,15 +3,11 @@
 #############################
 
 define [ '../base/view',
-         'text!./template/stack.html',
-         'text!./template/policy.html',
-         'text!./template/term.html',
+         './template/stack',
+         './template/policy',
+         './template/term',
          'i18n!nls/lang.js'
 ], ( PropertyView, template, policy_template, term_template, lang ) ->
-
-    template        = Handlebars.compile template
-    policy_template = Handlebars.compile policy_template
-    term_template   = Handlebars.compile term_template
 
     metricMap =
         "CPUUtilization"             : "CPU Utilization"

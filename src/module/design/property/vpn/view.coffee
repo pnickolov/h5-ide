@@ -2,11 +2,8 @@
 #  View(UI logic) for design/property/vpn
 #############################
 
-define [ '../base/view',
-         'text!./template/stack.html'
+define [ '../base/view', './template/stack'
 ], ( PropertyView, template ) ->
-
-    template = Handlebars.compile template
 
     VPNView = PropertyView.extend {
         events   :

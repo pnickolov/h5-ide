@@ -2,9 +2,7 @@
 #  View(UI logic) for design/property/instacne
 #############################
 
-define [ '../base/view', 'text!./template/stack.html', 'event', 'constant', 'i18n!nls/lang.js' ], ( PropertyView, template, ide_event, constant, lang ) ->
-
-    template = Handlebars.compile template
+define [ '../base/view', './template/stack', 'event', 'constant', 'i18n!nls/lang.js' ], ( PropertyView, template, ide_event, constant, lang ) ->
 
     LanchConfigView = PropertyView.extend {
 

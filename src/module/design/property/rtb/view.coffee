@@ -2,9 +2,7 @@
 #  View(UI logic) for design/property/rtb
 #############################
 
-define [ '../base/view', 'text!./template/stack.html' ], ( PropertyView, template ) ->
-
-    template = Handlebars.compile template
+define [ '../base/view', './template/stack' ], ( PropertyView, template ) ->
 
     RTBView = PropertyView.extend {
 

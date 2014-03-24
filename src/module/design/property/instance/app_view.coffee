@@ -2,9 +2,7 @@
 #  View(UI logic) for design/property/instance(app)
 #############################
 
-define [ '../base/view', 'text!./template/app.html', 'i18n!nls/lang.js', 'instance_model' ], ( PropertyView, template, lang, instance_model )->
-
-    template = Handlebars.compile template
+define [ '../base/view', './template/app', 'i18n!nls/lang.js', 'instance_model' ], ( PropertyView, template, lang, instance_model )->
 
     InstanceAppView = PropertyView.extend {
         events   :
@@ -157,7 +155,7 @@ define [ '../base/view', 'text!./template/app.html', 'i18n!nls/lang.js', 'instan
             else
 
                 $('#modal-instance-sys-log .instance-sys-log-info').show()
-                
+
             modal.position()
 
     }

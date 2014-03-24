@@ -3,8 +3,8 @@
 #############################
 
 define [ 'event',
-         'text!./module/process/template.html',
-         'text!./module/process/appview_template.html',
+         './module/process/template',
+         './module/process/appview_template',
          'backbone', 'jquery', 'handlebars'
 ], ( ide_event, template, appview_template ) ->
 
@@ -12,8 +12,8 @@ define [ 'event',
 
         el       : '#tab-content-process'
 
-        template         : Handlebars.compile template
-        appview_template : Handlebars.compile appview_template
+        template         : template
+        appview_template : appview_template
 
         events:
             'click .btn-close-process'      : 'closeProcess'

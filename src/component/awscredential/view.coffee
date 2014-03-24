@@ -5,7 +5,7 @@
 define [ 'event',
          'i18n!nls/lang.js',
          'constant',
-         'text!./form.html', 'text!./loading.html', 'text!./skip.html',
+         './form', './loading', './skip',
          'backbone', 'jquery', 'handlebars',
          'UI.modal', 'UI.notification'
 ], ( ide_event, lang, constant, form_tmpl, loading_tmpl, skip_tmpl ) ->
@@ -43,12 +43,12 @@ define [ 'event',
         render     : (template) ->
             console.log 'account_setting_tab render'
             #
-            modal Handlebars.compile( template )(@model.get 'account_id'), false
+            modal template(@model.get 'account_id'), false
             #
             this.setElement $( '#account-setting-wrap' ).closest '#modal-wrap'
             #
-            $( '#AWSCredential-form' ).find( 'ul' ).html Handlebars.compile( form_tmpl )
-            $( '#AWSCredentials-submiting' ).html Handlebars.compile( loading_tmpl )
+            $( '#AWSCredential-form' ).find( 'ul' ).html form_tmpl()
+            $( '#AWSCredentials-submiting' ).html loading_tmpl()
             $( '#modal-box' ).hide()
             #
             setTimeout () ->
@@ -302,7 +302,7 @@ define [ 'event',
                 $( '#awscredentials-submit' ).text( 'Done' )
                 $( '#awscredentials-submit' ).removeAttr 'disabled'
                 #
-                $( '#AWSCredential-form' ).find( 'ul' ).html skip_tmpl
+                $( '#AWSCredential-form' ).find( 'ul' ).html skip_tmpl()
                 $( '#AWSCredential-welcome').text lang.ide.HEAD_INFO_PROVIDE_CREDENTIAL1
                 $( '#AWSCredential-info').find('p').text lang.ide.HEAD_INFO_DEMO_MODE
                 $( '#AWSCredential-welcome-img').hide()
@@ -315,7 +315,7 @@ define [ 'event',
                 $( '#awscredentials-submit' ).attr 'disabled', true
                 $( '#awscredentials-submit' ).text lang.ide.HEAD_BTN_SUBMIT
                 #
-                $( '#AWSCredential-form' ).find( 'ul' ).html Handlebars.compile( form_tmpl )
+                $( '#AWSCredential-form' ).find( 'ul' ).html form_tmpl()
                 $( '#AWSCredential-welcome').text sprintf lang.ide.HEAD_INFO_WELCOME, MC.common.cookie.getCookieByName( 'username' )
                 $( '#AWSCredential-info').find('p').text lang.ide.HEAD_INFO_PROVIDE_CREDENTIAL2
                 $( '#AWSCredential-welcome-img').show()

@@ -3,7 +3,7 @@
 #############################
 
 define [ 'event',
-         'text!./session_template.html'
+         './session_template'
          'backbone', 'jquery', 'handlebars',
          'UI.modal'
 ], ( ide_event, session_template ) ->
@@ -18,7 +18,7 @@ define [ 'event',
         render     : ->
             console.log 'pop-up:session render'
             #
-            modal session_template, false
+            modal session_template(), false
             #
             this.setElement $( '.invalid-session' ).closest '#modal-wrap'
 

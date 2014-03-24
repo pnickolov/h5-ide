@@ -3,12 +3,10 @@
 #############################
 
 define [ 'event', 'constant', 'i18n!nls/lang.js',
-         'text!./module/navigation/template.html',
+         './module/navigation/template',
          './module/navigation/template_data',
          'backbone', 'jquery', 'handlebars', 'UI.notification'
 ], ( ide_event, constant, lang, template, template_data ) ->
-
-    template = Handlebars.compile template
 
     NavigationView = Backbone.View.extend {
 

@@ -3,7 +3,7 @@
 #############################
 
 define [ 'event',
-         'text!./module/tabbar/template.html',
+         './module/tabbar/template',
          'backbone', 'jquery', 'handlebars', 'UI.tabbar'
 ], ( ide_event, tmpl ) ->
 
@@ -11,7 +11,7 @@ define [ 'event',
 
         el       : $( '#tab-bar' )
 
-        template : Handlebars.compile tmpl
+        template : tmpl
 
         events   :
             'OPEN_TAB'              : 'openTabEvent'

@@ -4,7 +4,7 @@
 
 define [ 'event',
          'i18n!nls/lang.js',
-         'text!./reconnect_template.html',
+         './reconnect_template',
          'backbone', 'jquery', 'handlebars',
          'UI.modal'
 ], ( ide_event, lang, reconnect_template ) ->
@@ -19,7 +19,7 @@ define [ 'event',
         render             : ->
             console.log 'pop-up:reconnect render'
             #
-            modal reconnect_template, false
+            modal reconnect_template(), false
             #
             this.setElement $( '.reconnect-session' ).closest '#modal-wrap'
 

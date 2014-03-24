@@ -4,14 +4,12 @@
 
 define [ 'event',
          'constant'
-         'text!./template.html',
+         './template',
          './template_data',
          'i18n!nls/lang.js', 'backbone', 'jquery', 'handlebars',
          'UI.selectbox',
          'UI.radiobuttons', 'UI.modal', 'UI.table'
 ], ( ide_event, constant, template, template_data, lang ) ->
-
-    template = Handlebars.compile template
 
     ResourceView = Backbone.View.extend {
 

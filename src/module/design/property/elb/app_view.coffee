@@ -2,10 +2,7 @@
 #  View(UI logic) for design/property/elb(app)
 #############################
 
-define [ '../base/view',
-         'text!./template/app.html'], ( PropertyView, template ) ->
-
-    template = Handlebars.compile template
+define [ '../base/view', './template/app'], ( PropertyView, template ) ->
 
     ElbAppView = PropertyView.extend {
 

@@ -3,14 +3,11 @@
 #############################
 
 define [ '../base/view',
-         'text!./template/stack.html',
-         'text!./template/app.html',
+         './template/stack',
+         './template/app',
          'constant',
          'i18n!nls/lang.js'
 ], ( PropertyView, template, app_template, constant, lang ) ->
-
-    template           = Handlebars.compile template
-    app_template       = Handlebars.compile app_template
 
     SgView = PropertyView.extend {
 

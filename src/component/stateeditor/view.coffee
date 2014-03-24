@@ -4,7 +4,7 @@
 
 define [ 'event',
          'i18n!nls/lang.js',
-         'text!./component/stateeditor/template.html',
+         'text!./component/stateeditor/template.tpl',
          './component/stateeditor/validate',
          'constant',
          'instance_model',
@@ -21,7 +21,7 @@ define [ 'event',
 
             'keyup .parameter-item.dict .parameter-value': 'onDictInputChange'
             'paste .parameter-item.dict .parameter-value': 'onDictInputChange'
-            
+
             'keyup .parameter-item.array .parameter-value': 'onArrayInputChange'
             'paste .parameter-item.array .parameter-value': 'onArrayInputChange'
 
@@ -240,7 +240,7 @@ define [ 'event',
                         # $('#property-panel').addClass('state-wide')
                         that.onLogToggleClick()
                     , 0)
-                    
+
                     # that.onLogToggleClick()
 
             $aceAutocompleteTip = $('.ace_autocomplete_tip')

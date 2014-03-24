@@ -2,9 +2,7 @@
 #  pop-up for component/tutorial module
 ####################################
 
-define [ 'jquery', 'event',
-         'text!./template.html'
-], ( $, ide_event, template ) ->
+define [ 'jquery', 'event' ], ( $, ide_event ) ->
 
     #private
     loadModule = () ->
@@ -27,7 +25,7 @@ define [ 'jquery', 'event',
                 unLoadModule view, model
 
             #render
-            view.render template
+            view.render()
 
     unLoadModule = ( view, model ) ->
         console.log 'stack run unLoadModule'

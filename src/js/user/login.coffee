@@ -1,7 +1,7 @@
 define [ 'jquery', 'handlebars',
 		 'MC', 'session_model',
 		 'i18n!nls/lang.js',
-		 'text!js/user/logintemplate.html',
+		 'js/user/logintemplate',
 		 'common_handle', 'crypto'
 ], ( $, Handlebars, MC, session_model, lang, template, common_handle ) ->
 
@@ -86,7 +86,7 @@ define [ 'jquery', 'handlebars',
 		data =
 			english: $.cookie( 'lang' ) is 'en-us'
 
-		$( '#main-body' ).html (Handlebars.compile template) data
+		$( '#main-body' ).html template data
 		$( '#login-btn'   ).removeAttr 'disabled'
 		$( '#login-btn'   ).addClass 'enabled'
 		$( '#login-form'  ).submit( MC.login )

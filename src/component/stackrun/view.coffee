@@ -2,10 +2,10 @@
 #  View(UI logic) for component/stackrun
 #############################
 
-define [ 'event',
+define [ 'event', "./template"
          'backbone', 'jquery', 'handlebars',
          'UI.modal'
-], ( ide_event ) ->
+], ( ide_event, template ) ->
 
     StackRunView = Backbone.View.extend {
 
@@ -13,10 +13,10 @@ define [ 'event',
             'click .stack-run-click' : 'stackRunClickEvent'
             'closed'                 : 'closedStackRunPopup'
 
-        render     : ( template ) ->
+        render     : () ->
             console.log 'pop-up:stack run render'
             #
-            modal template, true
+            modal template(), true
             #
             this.setElement $( '#stack-run-modal' ).closest '#modal-wrap'
 

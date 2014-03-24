@@ -3,7 +3,7 @@
 #############################
 
 define [ 'event'
-       , 'text!./template.html'
+       , 'text!./template.tpl'
        , 'backbone'
        , 'jquery'
        , 'handlebars'

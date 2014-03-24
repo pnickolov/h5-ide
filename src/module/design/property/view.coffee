@@ -5,7 +5,7 @@
 define [ 'event',
          './base/main',
          'constant',
-         'text!./template.html'
+         './template'
          'Design'
          'backbone', 'jquery', 'handlebars'
 ], ( ide_event, PropertyBaseModule, CONST, template, Design ) ->
@@ -192,7 +192,7 @@ define [ 'event',
             $(document.activeElement).filter("input, textarea").blur()
 
             $( '#property-panel .sub-property' )
-                .html( template )
+                .html( template() )
                 .removeClass( 'state state-wide' )
             @
 

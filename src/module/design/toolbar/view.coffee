@@ -5,9 +5,9 @@
 define [ 'MC', 'event',
          "Design",
          'i18n!nls/lang.js',
-         'text!./stack_template.html',
-         'text!./app_template.html',
-         'text!./appview_template.html',
+         './stack_template',
+         './app_template',
+         './appview_template',
          "component/exporter/JsonExporter",
          "component/exporter/Download",
          'constant'
@@ -15,10 +15,6 @@ define [ 'MC', 'event',
          'UI.selectbox', 'UI.notification',
          "UI.tabbar"
 ], ( MC, ide_event, Design, lang, stack_tmpl, app_tmpl, appview_tmpl, JsonExporter, download, constant ) ->
-
-    stack_tmpl   = Handlebars.compile stack_tmpl
-    app_tmpl     = Handlebars.compile app_tmpl
-    appview_tmpl = Handlebars.compile appview_tmpl
 
     ToolbarView = Backbone.View.extend {
 

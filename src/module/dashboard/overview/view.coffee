@@ -3,7 +3,7 @@
 #############################
 
 define [ 'event', 'i18n!nls/lang.js',
-         'text!./module/dashboard/overview/template.html',
+         './module/dashboard/overview/template',
          './module/dashboard/overview/template_data',
          "component/exporter/Thumbnail"
          'constant',
@@ -68,7 +68,7 @@ define [ 'event', 'i18n!nls/lang.js',
 
         el                      : $( '#tab-content-dashboard' )
 
-        overview                : Handlebars.compile overview_tmpl
+        overview                : overview_tmpl
 
         events          :
             'click #global-region-spot > li'            : 'gotoRegion'

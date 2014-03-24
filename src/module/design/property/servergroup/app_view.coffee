@@ -4,13 +4,10 @@
 
 define [ '../base/view',
          '../instance/view'
-         'text!./template/app.html',
-         'text!./template/ami_list.html',
+         './template/app',
+         './template/ami_list',
          'i18n!nls/lang.js'
 ], ( PropertyView, instance_view, template, ami_list_template, lang ) ->
-
-    template          = Handlebars.compile template
-    ami_list_template = Handlebars.compile ami_list_template
 
     InstanceView = PropertyView.extend {
 

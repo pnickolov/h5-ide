@@ -4,13 +4,16 @@
 
 define [ 'event',
          'i18n!nls/lang.js',
-         'text!./component/stateeditor/template.tpl',
+         './component/stateeditor/template',
          './component/stateeditor/validate',
          'constant',
          'instance_model',
          'UI.errortip'
 
 ], ( ide_event, lang, template , validate, constant, instance_model ) ->
+
+    # Register Partials
+    Handlebars.registerPartial(id, tpl) for id, tpl of template
 
     StateEditorView = Backbone.View.extend {
 
@@ -141,7 +144,7 @@ define [ 'event',
 
             tip = type and tipSet[ type ] or tipSet.default
 
-            @$el.html @stateEmptyTpl { tip: tip }
+            @$el.html template.stateEmptyTpl { tip: tip }
             @editorShow = false
             @
 
@@ -155,7 +158,7 @@ define [ 'event',
             that = this
 
             # show modal
-            @$el.html that.editorModalTpl({
+            @$el.html template.editorModalTpl({
                 res_name: that.resName,
                 supported_platform: that.supportedPlatform,
                 current_state: that.currentState,
@@ -316,38 +319,6 @@ define [ 'event',
 
             null
 
-        tplMap:
-            'state-template-editor-modal'       : 'editorModalTpl'
-            'state-template-state-list'         : 'stateListTpl'
-            'state-template-para-list'          : 'paraListTpl'
-            'state-template-para-view-list'     : 'paraViewListTpl'
-            'state-template-para-dict-item'     : 'paraDictListTpl'
-            'state-template-para-array-item'    : 'paraArrayListTpl'
-            'state-template-log-item'           : 'stateLogItemTpl'
-            'state-template-log-instance-item'  : 'stateLogInstanceItemTpl'
-            'state-template-res-select'         : 'stateResSelectTpl'
-            'state-template-editor-empty'       : 'stateEmptyTpl'
-            'state-template-log-detail-modal'   : 'stateLogDetailModal'
-
-        compileTpl: () ->
-
-            # generate template
-            tplRegex = /(\<!-- (.*) --\>)(\n|\r|.)*?(?=\<!-- (.*) --\>)/ig
-            tplHTMLAry = template.match(tplRegex)
-            htmlMap = {}
-            _.each tplHTMLAry, (tplHTML) ->
-                commentHead = tplHTML.split('\n')[0]
-                tplType = commentHead.replace(/(<!-- )|( -->)|\r|\n/g, '')
-                tplType = $.trim(tplType)
-                htmlMap[tplType] = tplHTML
-                null
-
-            for id, html of htmlMap
-                Handlebars.registerPartial(id, html)
-                @[ @tplMap[ id ] ] = Handlebars.compile html
-
-            null
-
         genStateUID: () ->
 
             return 'state-' + MC.guid()
@@ -360,7 +331,7 @@ define [ 'event',
 
         #     if that.groupResSelectData and that.groupResSelectData.length
 
-        #         resSelectHTML = that.stateResSelectTpl({
+        #         resSelectHTML = template.stateResSelectTpl({
         #             res_selects: that.groupResSelectData
         #         })
 
@@ -444,7 +415,7 @@ define [ 'event',
                     # }]
                 }
 
-            that.$stateList.html(this.stateListTpl(stateListObj))
+            that.$stateList.html(template.stateListTpl(stateListObj))
 
             $stateItems = that.$stateList.find('.state-item')
 
@@ -584,7 +555,7 @@ define [ 'event',
 
                 null
 
-            $paraViewListElem.html(that.paraViewListTpl({
+            $paraViewListElem.html(template.paraViewListTpl({
                 parameter_view_list: paraListViewRenderAry
             }))
 
@@ -811,7 +782,7 @@ define [ 'event',
 
                 null
 
-            $paraListElem.html(that.paraListTpl({
+            $paraListElem.html(template.paraListTpl({
                 parameter_list: newParaAry
             }))
 
@@ -876,7 +847,7 @@ define [ 'event',
                 valueInputValue = that.getPlainText($valueInput)
 
                 if keyInputValue or valueInputValue
-                    newDictItemHTML = that.paraDictListTpl({
+                    newDictItemHTML = template.paraDictListTpl({
                         para_value: [{
                             key: '',
                             value: ''
@@ -939,7 +910,7 @@ define [ 'event',
                 currentInput = that.getPlainText($currentInputElem)
 
                 if currentInput
-                    newArrayItemHTML = that.paraArrayListTpl({
+                    newArrayItemHTML = template.paraArrayListTpl({
                         para_value: ['']
                     })
                     $arrayItemElem = $(newArrayItemHTML).appendTo($currentArrayInputContainer)
@@ -1150,49 +1121,6 @@ define [ 'event',
 
             null
 
-        # onStateAddClick: (event) ->
-
-        #     that = this
-
-        #     $currentElem = $(event.currentTarget)
-        #     $stateItem = $currentElem.parents('.state-item')
-
-        #     stateIdStr = $stateItem.find('.state-id').text()
-        #     stateId = Number(stateIdStr)
-
-        #     newStateId = ++stateId
-
-        #     newStateHTML = that.stateListTpl({
-        #         state_list: [{
-        #             id_show: newStateId
-        #         }]
-        #     })
-
-        #     $stateItem.after(newStateHTML)
-
-        #     $newStateItem = $stateItem.next()
-
-        #     $cmdValueItem = $newStateItem.find('.command-value')
-        #     that.bindCommandEvent($cmdValueItem)
-
-        #     $stateItemList = that.$stateList.find('.state-item')
-        #     $stateItemList.addClass('view')
-
-        #     _.each $stateItemList, (otherStateItem) ->
-        #         $otherStateItem = $(otherStateItem)
-        #         if not $newStateItem.is($otherStateItem) and not $otherStateItem.hasClass('view')
-        #             that.refreshStateView($otherStateItem)
-        #         null
-
-        #     $newStateItem.removeClass('view')
-        #     cmdEditor = $cmdValueItem.data('editor')
-        #     if cmdEditor
-        #         setTimeout(() ->
-        #             cmdEditor.focus()
-        #         , 0)
-
-        #     that.refreshStateId()
-
         onStateItemAddClick: (event) ->
 
             that = this
@@ -1212,7 +1140,7 @@ define [ 'event',
 
             newStateId = that.genStateUID()
 
-            newStateHTML = that.stateListTpl({
+            newStateHTML = template.stateListTpl({
                 state_list: [{
                     id: newStateId
                 }]
@@ -2235,14 +2163,14 @@ define [ 'event',
                 })
                 null
 
-            renderHTML = that.stateLogItemTpl({
+            renderHTML = template.stateLogItemTpl({
                 state_logs: stateLogViewAry
             })
 
             that.refreshStateItemStatus(stateStatusMap)
 
             resState = that.model.get('resState')
-            instanceStateHTML = that.stateLogInstanceItemTpl({
+            instanceStateHTML = template.stateLogInstanceItemTpl({
                 res_status: resState
             })
 
@@ -2674,7 +2602,7 @@ define [ 'event',
 
             stateListObj = that.loadStateData(stateDataAry)
 
-            newStateItems = that.stateListTpl(stateListObj)
+            newStateItems = template.stateListTpl(stateListObj)
             $currentStateItems = that.$stateList.find('.state-item')
 
             returnInsertPos = null
@@ -3373,7 +3301,7 @@ define [ 'event',
             if stateId
                 stateLogObj = that.stateIdLogContentMap[stateId]
                 if stateLogObj
-                    modal that.stateLogDetailModal({
+                    modal template.stateLogDetailModal({
                         number: stateLogObj.number
                         content: stateLogObj.content
                     }), true

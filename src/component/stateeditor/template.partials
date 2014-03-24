@@ -1,4 +1,4 @@
-<!-- state-template-state-list -->
+<!-- {{stateListTpl}} -->
 {{#each state_list}}
 	<li class="state-item view {{#ifCond cmd_value '#'}}comment{{/ifCond}}" data-command="{{cmd_value}}" data-id="{{id}}">
 		<div class="state-toolbar">
@@ -16,20 +16,20 @@
 			<div class="state-view">
 				<div class="command-view-value"></div>
 				<div class="parameter-view-list">
-					{{> state-template-para-view-list}}
+					{{> paraViewListTpl}}
 				</div>
 			</div>
 		</div>
 		<div class="state-edit clearfix">
 			<div class="command-value editable-area line">{{cmd_value}}</div>
 			<div class="parameter-list">
-				{{> state-template-para-list}}
+				{{> paraListTpl}}
 			</div>
 		</div>
 	</li>
 {{/each}}
 
-<!-- state-template-para-list -->
+<!-- {{paraListTpl}} -->
 {{#each parameter_list}}
 
 	{{#if type_line}}
@@ -49,7 +49,7 @@
 				{{para_name}}
 			</div>
 			<div class="parameter-container">
-				{{> state-template-para-dict-item}}
+				{{> paraDictListTpl}}
 			</div>
 		</div>
 	{{/if}}
@@ -60,7 +60,7 @@
 				{{para_name}}
 			</div>
 			<div class="parameter-container">
-				{{> state-template-para-array-item}}
+				{{> paraarraylisttpl}}
 			</div>
 		</div>
 	{{/if}}
@@ -93,14 +93,14 @@
 				{{para_name}}
 			</div>
 			<div class="parameter-container">
-				{{> state-template-para-array-item}}
+				{{> paraarraylisttpl}}
 			</div>
 		</div>
 	{{/if}}
 
 {{/each}}
 
-<!-- state-template-para-view-list -->
+<!-- {{paraViewListTpl}} -->
 {{#each parameter_view_list}}
 
 	{{#if type_line}}
@@ -147,7 +147,7 @@
 
 {{/each}}
 
-<!-- state-template-para-dict-item -->
+<!-- {{paraDictListTpl}} -->
 {{#each para_value}}
 	<div class="parameter-dict-item">
 		<div class="parameter-value editable-area line key">{{key}}</div>
@@ -155,20 +155,16 @@
 	</div>
 {{/each}}
 
-<!-- state-template-para-array-item -->
-{{#each para_value}}
-	<div class="parameter-value editable-area line">{{this}}</div>
-{{/each}}
+<!-- {{paraArrayListTpl}} -->
+{{#each para_value}}<div class="parameter-value editable-area line">{{this}}</div>{{/each}}
 
-<!-- state-template-editor-empty -->
-    <div class="state-empty">
-    	{{tip}}
-    </div>
+<!-- {{stateEmptyTpl}} -->
+<div class="state-empty">{{tip}}</div>
 
-<!-- state-template-editor-modal -->
+<!-- {{editorModalTpl}} -->
 <div id="state-editor-model" class="se-model-{{current_state}}">
 	<div class="selectbox state-editor-res-select" data-res-name="{{res_name}}">
-		{{> state-template-res-select}}
+		{{> {{stateResSelectTpl}}}}
 	</div>
 
 	<div id="state-editor-wrap">
@@ -217,13 +213,13 @@
 	<div id="state-log" data-state-id="" class="state-sidebar">
 		<div class="state-log-header">{{i18n 'STATE_LOG_TIT'}}<span class="state-log-loading">{{i18n 'STATE_LOG_LOADING_LBL'}}</span></div>
 		<ul class="state-log-list">
-			{{> state-template-log-instance-item}}
-			{{> state-template-log-item}}
+			{{> stateLogInstanceItemTpl}}
+			{{> stateLogItemTpl}}
 		</ul>
 	</div>
 </div>
 
-<!-- state-template-res-select -->
+<!-- {{stateResSelectTpl}} -->
 <div class="selection">{{res_selects.0.res_name}}</div>
 <ul class="dropdown" tabindex="-1">
 	{{#each res_selects}}
@@ -231,7 +227,7 @@
 	{{/each}}
 </ul>
 
-<!-- state-template-log-item -->
+<!-- {{stateLogItemTpl}} -->
 {{#each state_logs}}
 	<li class="state-log-item {{state_status}} {{#if view}}view{{/if}} {{#if is_state_log}}state-log{{/if}}" data-state-id="{{id}}">
 		<div class="state-log-item-header">
@@ -252,7 +248,7 @@
 	</li>
 {{/each}}
 
-<!-- state-template-log-instance-item -->
+<!-- {{stateLogInstanceItemTpl}} -->
 <li class="state-log-item">
 	<div class="state-log-item-header">
 		<div class="state-log-item-name">{{i18n 'STATE_LOG_ITEM_INSTANCE'}}</div>
@@ -260,7 +256,7 @@
 	</div>
 </li>
 
-<!-- state-template-log-detail-modal -->
+<!-- {{stateLogDetailModal}} -->
 <div id="modal-state-log-detail" style="width: 900px;">
 	<div class="modal-header"><h3>{{i18n 'STATE_LOG_DETAIL_MOD_TIT'}}</h3><i class="modal-close">&times;</i> </div>
 	<div class="modal-body">
@@ -270,5 +266,3 @@
 		<button class="btn modal-close btn-silver">{{i18n 'STATE_LOG_DETAIL_MOD_CLOSE_BTN'}}</button>
 	</div>
 </div>
-
-<!-- template end -->

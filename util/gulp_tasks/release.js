@@ -107,7 +107,7 @@
     copyJs: function() {
       var d, p;
       logTask("Copying Js & Templates");
-      p = ["./src/**/*.js", "./src/**/*.tpl", "!./src/test/**/*"];
+      p = ["./src/**/*.js", "!./src/test/**/*"];
       d = Q.defer();
       gulp.src(p, SrcOption).pipe(dest()).on("end", end(d));
       return d.promise;

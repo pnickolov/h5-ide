@@ -9,7 +9,7 @@
 
   open = require("open");
 
-  module.exports.create = function(path, port) {
+  module.exports.create = function(path, port, autoOpen, logTask) {
     var defaultHeader, file, redirectRegex, server;
     if (path == null) {
       path = "./src";
@@ -17,10 +17,18 @@
     if (port == null) {
       port = GLOBAL.gulpConfig.staticFileServerPort;
     }
+    if (autoOpen == null) {
+      autoOpen = GLOBAL.gulpConfig.openUrlAfterCreateServer;
+    }
+    if (logTask == null) {
+      logTask = true;
+    }
     defaultHeader = {
       "Cache-Control": "no-cache"
     };
-    gutil.log(gutil.colors.bgBlue.white(" Creating File Server... "));
+    if (logTask) {
+      gutil.log(gutil.colors.bgBlue.white(" Creating File Server... "));
+    }
     file = new nstatic.Server(path, {
       cache: false,
       headers: defaultHeader
@@ -70,10 +78,10 @@
       return null;
     });
     server.listen(port);
-    if (GLOBAL.gulpConfig.openUrlAfterCreateServer) {
+    if (autoOpen) {
       open("http://127.0.0.1:" + port);
     }
-    return null;
+    return server;
   };
 
 }).call(this);

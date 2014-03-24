@@ -7,6 +7,8 @@ Q         = require("q")
 path      = require("path")
 
 coffee      = require("gulp-coffee")
+stripdDebug = require("gulp-strip-debug")
+
 include     = require("./plugins/include")
 langsrc     = require("./plugins/langsrc")
 confCompile = require("./plugins/conditional")
@@ -16,10 +18,11 @@ variable    = require("./plugins/variable")
 rjsconfig   = require("./plugins/rjsconfig")
 requirejs   = require("./plugins/r")
 rjsreporter = require("./plugins/rjsreporter")
+unittest    = require("./plugins/test")
+util        = require("./plugins/util")
 
-stripdDebug = require("gulp-strip-debug")
+server = require("./server")
 
-util = require("./plugins/util")
 
 SrcOption = {"base":"./src"}
 
@@ -309,6 +312,22 @@ Tasks =
         util.deleteFolderRecursive( process.cwd() + "/deploy" )
       true
 
+  test : ( qaMode )->
+    path = if qaMode then "./qa" else "./deploy"
+
+    ()->
+      # Disable test for now.
+      return true
+
+      # Create a server to serve the files for testing.
+      testserver = server.create path, 3010, false, false
+
+      # Start test with zombie
+      logTask "Starting automated test"
+
+      unittest().then ()-> testserver.close(); true
+
+
 # A task to build IDE
   #*** Perform `git -fX ./src` first, to remove ignored files.
   #*** Copy assets file to `build` folder
@@ -344,6 +363,7 @@ module.exports =
       Tasks.processHtml
       Tasks.concatJS( debugMode, outputPath )
       Tasks.removeBuildFolder
+      Tasks.test( qaMode )
     ]
 
     if not qaMode

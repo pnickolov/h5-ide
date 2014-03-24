@@ -1,5 +1,5 @@
 (function() {
-  var Q, SrcOption, Tasks, coffee, confCompile, dest, end, es, fileLogger, fs, gulp, gutil, handlebars, ideversion, include, langsrc, logTask, path, requirejs, rjsconfig, rjsreporter, stdRedirect, stripdDebug, util, variable;
+  var Q, SrcOption, Tasks, coffee, confCompile, dest, end, es, fileLogger, fs, gulp, gutil, handlebars, ideversion, include, langsrc, logTask, path, requirejs, rjsconfig, rjsreporter, server, stdRedirect, stripdDebug, unittest, util, variable;
 
   gulp = require("gulp");
 
@@ -14,6 +14,8 @@
   path = require("path");
 
   coffee = require("gulp-coffee");
+
+  stripdDebug = require("gulp-strip-debug");
 
   include = require("./plugins/include");
 
@@ -33,9 +35,11 @@
 
   rjsreporter = require("./plugins/rjsreporter");
 
-  stripdDebug = require("gulp-strip-debug");
+  unittest = require("./plugins/test");
 
   util = require("./plugins/util");
+
+  server = require("./server");
 
   SrcOption = {
     "base": "./src"
@@ -329,6 +333,19 @@
         }
         return true;
       });
+    },
+    test: function(qaMode) {
+      path = qaMode ? "./qa" : "./deploy";
+      return function() {
+        var testserver;
+        return true;
+        testserver = server.create(path, 3010, false, false);
+        logTask("Starting automated test");
+        return unittest().then(function() {
+          testserver.close();
+          return true;
+        });
+      };
     }
   };
 
@@ -340,7 +357,7 @@
       outputPath = mode === "qa" ? "./qa" : void 0;
       qaMode = mode === "qa";
       ideversion.read(deploy);
-      tasks = [Tasks.cleanRepo, Tasks.copyAssets, Tasks.copyJs, Tasks.compileLangSrc, Tasks.compileCoffee(debugMode), Tasks.compileTemplate, Tasks.processHtml, Tasks.concatJS(debugMode, outputPath), Tasks.removeBuildFolder];
+      tasks = [Tasks.cleanRepo, Tasks.copyAssets, Tasks.copyJs, Tasks.compileLangSrc, Tasks.compileCoffee(debugMode), Tasks.compileTemplate, Tasks.processHtml, Tasks.concatJS(debugMode, outputPath), Tasks.removeBuildFolder, Tasks.test(qaMode)];
       if (!qaMode) {
         tasks = tasks.concat([Tasks.logDeployInDevRepo, Tasks.fetchRepo(debugMode), Tasks.preCommit, Tasks.fileVersion, Tasks.finalCommit]);
       }

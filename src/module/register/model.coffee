@@ -119,7 +119,7 @@ define [ 'MC', 'event', 'account_model', 'session_model', 'common_handle', 'cryp
                         return hash.toString CryptoJS.enc.Hex
                     localStorage.setItem 'user_hash', intercom_sercure_mode_hash()
 
-                    window.location.href = "/ide.html"
+                    window.location.href = "/"
 
 
                     null

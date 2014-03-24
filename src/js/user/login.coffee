@@ -63,7 +63,7 @@ define [ 'jquery', 'handlebars',
 					return hash.toString CryptoJS.enc.Hex
 				localStorage.setItem 'user_hash', intercom_sercure_mode_hash()
 
-				window.location.href = "/ide.html"
+				window.location.href = "/"
 
 
 				return true

@@ -51,7 +51,7 @@ define [ 'jquery', 'event',
                 reconnect_view.close()
                 #
 
-                window.location.href = "/ide.html" if !MC.data.is_loading_complete
+                window.location.href = "/" if !MC.data.is_loading_complete
                 return
 
             model.on 'RE_LOGIN_FAILED',             () -> reconnect_view.invalid()

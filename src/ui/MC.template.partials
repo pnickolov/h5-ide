@@ -1468,7 +1468,7 @@ Are you sure you want to delete {{name}}?</div>
 	</div>
 </div>
 
-<!-- modalSSLCertSetting -->
+<!-- {{modalSSLCertSetting}} -->
 <div style="width:343px" id="modal-ssl-cert-setting">
 	<div class="modal-header"><h3>Server Certiﬁcate</h3><i class="modal-close">&times;</i> </div>
 	<div class="modal-body" style="min-height:120px;">
@@ -1495,7 +1495,7 @@ Are you sure you want to delete {{name}}?</div>
 	</div>
 </div>
 
-<!-- experimentalVisops -->
+<!-- {{experimentalVisops}} -->
 <div style="width:623px" id="experimental-modal">
 	<div class="modal-header">
 		<h3>{{ i18n "INVITE_MOD_TIT"}}</h3>
@@ -1516,12 +1516,11 @@ Are you sure you want to delete {{name}}?</div>
 	</div>
 </div>
 
-<!-- experimentalVisopsTrail -->
+<!-- {{experimentalVisopsTrail}} -->
 <h3 class="modal-body-header">{{ i18n "INVITE_MOD_THANK_LBL"}}</h3>
 <div class="modal-text-major tac">{{ i18n "INVITE_MOD_THANK_MORE"}}</div>
 
-<!-- bubbleNATreq -->
-
+<!-- {{bubbleNATreq}} -->
 <div class="bubble-head">A NAT instance must meet following requirements:</div>
 <div class="bubble-content">
 	<ul class="bubble-NAT-req-list">
@@ -1533,3 +1532,6 @@ Are you sure you want to delete {{name}}?</div>
 		<li>Should have inbound rule from within the VPC.</li>
 	</ul>
 </div>
+
+<!-- {{covertNl2br}} -->
+{{nl2br content}}

@@ -145,11 +145,7 @@ define [ '../base/view', './template/app', 'i18n!nls/lang.js', 'instance_model' 
                 logContent = MC.base64Decode(result.output)
                 $contentElem = $('#modal-instance-sys-log .instance-sys-log-content')
 
-                logContentTpl = Handlebars.compile('{{nl2br content}}')
-                logContentHTML = logContentTpl({
-                    content: logContent
-                })
-                $contentElem.html(logContentHTML)
+                $contentElem.html MC.template.covertNl2br({content:logContent})
                 $contentElem.show()
 
             else

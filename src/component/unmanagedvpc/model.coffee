@@ -156,7 +156,7 @@ define [ 'aws_model', 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( 
                                 'AWS.VPC.VPNConnection'                     : {'filter':{'vpn-gateway-id':''}},
                                 'AWS.AutoScaling.ScalingPolicy'             : {'filter':{'AutoScalingGroupName':[]}},
 
-                                'AWS.CloudWatch.CloudWatch'                 : {'id':[]},
+                                # 'AWS.CloudWatch.CloudWatch'                 : {'id':[]},
                             }
 
                             new_value = {}
@@ -184,7 +184,7 @@ define [ 'aws_model', 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( 
 
                                         else if type is 'AWS.CloudWatch.CloudWatch' and 'AWS.AutoScaling.ScalingPolicy' of vpc_obj
                                             resources['id'] = (vpc_obj['AWS.AutoScaling.ScalingPolicy'][sg_name]['AlarmName'] for sg_name in _.keys(vpc_obj['AWS.AutoScaling.ScalingPolicy']) when 'AlarmName' of vpc_obj['AWS.AutoScaling.ScalingPolicy'][sg_name])
-                                            
+
                                         else if type of vpc_obj
                                             resources.id = _.keys(vpc_obj[type])
 

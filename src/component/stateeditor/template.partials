@@ -164,7 +164,7 @@
 <!-- {{editorModalTpl}} -->
 <div id="state-editor-model" class="se-model-{{current_state}}">
 	<div class="selectbox state-editor-res-select" data-res-name="{{res_name}}">
-		{{> {{stateResSelectTpl}}}}
+		{{> stateResSelectTpl}}
 	</div>
 
 	<div id="state-editor-wrap">

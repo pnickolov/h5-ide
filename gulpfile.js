@@ -6,6 +6,7 @@ var os    = require('os');
 var serverTask  = require('./util/gulp_tasks/server');
 var developTask = require('./util/gulp_tasks/develop');
 var releaseTask = require('./util/gulp_tasks/release');
+var traceTask   = require('./util/gulp_tasks/trace');
 
 // Load user-config
 GLOBAL.gulpConfig = require('./gulpconfig-default');
@@ -44,6 +45,8 @@ gulp.task("release", function(){ return releaseTask.build( "release" ); });
 
 gulp.task("qa_build", function(){ return releaseTask.build( "qa" ); })
 gulp.task("qa", ["qa_build"], function(){ return serverTask.create("./qa", 3002); });
+
+gulp.task("trace", function(){ return traceTask(); });
 
 // Help
 gulp.task("help", function(){

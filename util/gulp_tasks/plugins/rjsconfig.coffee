@@ -25,6 +25,7 @@ readRequirejsConfig = ( path )->
 
 
   Context =
+    window   : false
     version  : ""
     language : ""
     require  : ()-> return
@@ -46,7 +47,10 @@ extend = ( a )->
       a[i] = arg[i]
   a
 
-transformModules = ( config )->
+transformModules = ( config, traceMode )->
+  # In traceMode, we doesn't exclude anything.
+  # So that we can know every dependency of a module.
+
   # Transform the bundles
   exclude = [] # i18n!nls/lang.js must have a suffix `.js`, otherwise, it will have error when compiling. And we always exclude the lang from anything.
 
@@ -57,7 +61,7 @@ transformModules = ( config )->
     config.modules.push {
       name    : bundleName
       include : bundles
-      exclude : exclude.concat( bundleExcludes[bundleName] || [] )
+      exclude : if traceMode then [] else exclude.concat( bundleExcludes[bundleName] || [] )
     }
 
     # We assume the first bundle is "requirelib", and "requirelib" cannot have "i18n!xxx" excluded.
@@ -69,7 +73,7 @@ transformModules = ( config )->
   delete config.bundles
   config
 
-getConfig = ( debugMode = true, outputPath = "./deploy" )->
+getConfig = ( debugMode = true, outputPath = "./deploy", traceMode = false )->
   if debugMode is true
     extra =
       optimize        : "none"
@@ -86,7 +90,7 @@ getConfig = ( debugMode = true, outputPath = "./deploy" )->
   } )
 
   # Read the config. Transform the bundles to modules
-  transformModules( config )
+  transformModules( config, traceMode )
 
   ###
   # Example of the modules definination

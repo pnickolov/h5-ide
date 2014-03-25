@@ -32,18 +32,10 @@
       }
     });
     Context = {
+      window: false,
       version: "",
       language: "",
-      window: {
-        location: {}
-      },
-      require: function() {},
-      document: {
-        getElementsByTagName: function() {
-          return [];
-        },
-        cookie: ""
-      }
+      require: function() {}
     };
     Context.require.config = function(config) {
       this.config = config;
@@ -68,7 +60,7 @@
     return a;
   };
 
-  transformModules = function(config) {
+  transformModules = function(config, traceMode) {
     var bundleExcludes, bundleName, bundles, exclude, _ref;
     exclude = [];
     config.modules = [];
@@ -79,7 +71,7 @@
       config.modules.push({
         name: bundleName,
         include: bundles,
-        exclude: exclude.concat(bundleExcludes[bundleName] || [])
+        exclude: traceMode ? [] : exclude.concat(bundleExcludes[bundleName] || [])
       });
       if (exclude.length === 0) {
         exclude.push("i18n!nls/lang.js");
@@ -90,13 +82,16 @@
     return config;
   };
 
-  getConfig = function(debugMode, outputPath) {
+  getConfig = function(debugMode, outputPath, traceMode) {
     var config, extra;
     if (debugMode == null) {
       debugMode = true;
     }
     if (outputPath == null) {
       outputPath = "./deploy";
+    }
+    if (traceMode == null) {
+      traceMode = false;
     }
     if (debugMode === true) {
       extra = {
@@ -114,7 +109,7 @@
       baseUrl: "./build",
       dir: outputPath
     });
-    transformModules(config);
+    transformModules(config, traceMode);
 
     /*
      * Example of the modules definination

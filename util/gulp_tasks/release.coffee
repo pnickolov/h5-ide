@@ -139,8 +139,8 @@ Tasks =
       logTask "Concating JS"
 
       d = Q.defer()
-      requirejs.optimize( rjsconfig( debug, outputPath )
-
+      requirejs.optimize(
+        rjsconfig( debug, outputPath )
       , (buildres)->
         if rjsreporter(buildres)
           d.resolve()

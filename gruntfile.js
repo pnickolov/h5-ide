@@ -224,6 +224,7 @@ module.exports = function( grunt ) {
 	grunt.registerTask( 'release', ['clean:release',
 									'make_all',
 									'copy:publish',
+									'copy:release_proxy',
 									'copy:lib_aws',
 									'copy:lib_forge',
 									'copy:lib_common',
@@ -248,6 +249,7 @@ module.exports = function( grunt ) {
 									'regex-replace:dynamic_lang',
 									'regex-replace:dynamic_jquery',
 									'copy:publish_files',
+									'copy:publish_proxy',
 									'open:publish',
 									'connect:publish'
 	]);
@@ -285,6 +287,7 @@ module.exports = function( grunt ) {
 									'regex-replace:dynamic_lang',
 									'regex-replace:dynamic_jquery',
 									'copy:publish_files',
+									'copy:publish_proxy',
 									'clean:temp'
 	]);
 

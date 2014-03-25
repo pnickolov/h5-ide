@@ -36,6 +36,20 @@ module.exports = {
 		}
 	},
 
+	release_proxy : {
+		files : {
+			'<%= release %>/proxy/api.html'      : 'util/api_proxy/api.html',
+			'<%= release %>/proxy/jquery.js'     : 'util/api_proxy/jquery.js'
+		}
+	},
+
+	publish_proxy : {
+		files : {
+			'<%= publish %>/proxy/api.html'      : 'util/api_proxy/api.html',
+			'<%= publish %>/proxy/jquery.js'     : 'util/api_proxy/jquery.js'
+		}
+	},
+
 	publish: {
 		files: [{
 			expand : true,

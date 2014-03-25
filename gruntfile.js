@@ -251,7 +251,8 @@ module.exports = function( grunt ) {
 									'copy:publish_files',
 									'copy:publish_proxy',
 									'open:publish',
-									'connect:publish'
+									'connect:publish',
+									'clean:temp'
 	]);
 
 	/* task of use as release */

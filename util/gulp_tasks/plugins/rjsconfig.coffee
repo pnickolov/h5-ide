@@ -27,12 +27,7 @@ readRequirejsConfig = ( path )->
   Context =
     version  : ""
     language : ""
-    window   : { location : {} }
-    require : ()->
-    document :
-      getElementsByTagName : ()-> []
-      cookie : ""
-
+    require  : ()-> return
 
   Context.require.config = ( config )->
     this.config = config

@@ -14,7 +14,7 @@ module.exports = ( isProduction )->
 
   replaceKey = if isProduction then "dev" else "prod"
 
-  # This transformer simply replace thins inside delimeter to be space
+  # This transformer simply replace things inside delimeter to be space
   es.through ( file )->
 
     delimeter = delimeterMap[ path.extname(file.path) ]

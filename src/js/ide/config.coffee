@@ -1,4 +1,9 @@
 (()->
+
+	# When deploying, node will load this file to get the requirejs config
+	# In such case, window is undefined.
+	if not window then return
+
 	# Redirect
 	l = window.location
 	if l.protocol is "http:" and not l.port

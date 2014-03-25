@@ -1446,8 +1446,8 @@ textarea {
 	margin-right : 5px;
 }
 
-.dl-vertical:nth-of-type(2n+1) {
-	background: rgba(255,255,255,.05);
+.dl-vertical:nth-child(2n) {
+	background : #454545;
 }
 
 .property-app .dl-vertical .truncate {

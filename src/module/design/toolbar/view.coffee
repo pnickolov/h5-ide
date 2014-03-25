@@ -95,7 +95,7 @@ define [ 'MC', 'event',
                 $( '#main-toolbar' ).html appview_tmpl this.model.attributes
 
             # type include 'app' | 'stack'
-            else if type is 'app'
+            else if type in [ 'app', 'OPEN_APP' ]
                 $( '#main-toolbar' ).html app_tmpl this.model.attributes
             else
                 $( '#main-toolbar' ).html stack_tmpl this.model.attributes

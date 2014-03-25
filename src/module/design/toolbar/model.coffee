@@ -543,7 +543,7 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
 
             # new design flow
             if id == MC.common.other.canvasData.get( 'id' ) and is_tab
-                me.set 'item_flags', item_state_map[id]
+                me.set 'item_flags', $.extend true, {}, item_state_map[id]
 
                 if id.indexOf('app-') == 0
                     me.trigger 'UPDATE_TOOLBAR', 'app'
@@ -557,18 +557,17 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
 
             if flag
 
-                # old design flow
-                #id = MC.canvas_data.id
-
-                # new design flow
-                id = MC.common.other.canvasData.get 'id'
+                # get id
+                id  = MC.data.current_tab_id
 
                 rid = k for k,v of item_state_map when id == k
 
                 if rid
-                    me.set 'item_flags', item_state_map[id]
 
-                    if id.indexOf('app-') == 0
+                    # set item_flags
+                    me.set 'item_flags', $.extend true, {}, item_state_map[id]
+
+                    if id and id.split( '-' ) and id.split( '-' )[0] is 'app'
                         me.trigger 'UPDATE_TOOLBAR', 'app'
                     else
                         me.trigger 'UPDATE_TOOLBAR', 'stack'

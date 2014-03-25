@@ -478,6 +478,4 @@ require.config {
 	### env:prod:end ###
 }
 
-require ['./js/ide/ide' ], ( ide ) ->
-	$ ()-> ide.initialize()
-	null
+require ['./js/ide/ide' ], ( ide ) -> $ ()-> ide.initialize()

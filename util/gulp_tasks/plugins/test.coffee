@@ -25,26 +25,36 @@ runTest = ()->
   d = Q.defer()
   p = ["./test/**/*.js", "!./test/Browser.js"]
 
+  ###
+  console.log "Loading IDE in Zombie."
+
   # Create a zombie browser
-  # require("../../../test/Browser").visit("http://127.0.0.1:3010").then ()->
-  #   gulp.src(p)
-  #     .pipe(mocha({reporter:"nyan"}))
-  #     .on "end", ()-> d.resolve()
-  #   null
-  # .fail (error)->
-  #   console.log gutil.colors.bgRed.black "Cannot start zombie to run test."
-  #   d.reject()
+  Browser = require("../../../test/env/Browser")
+  Browser.globalBrowser.visit("http://127.0.0.1:3010").then ()->
+
+    gulp.src(p)
+      .pipe mocha({reporter: GLOBAL.gulpConfig.testReporter})
+      .pipe es.through ()->
+        # Don't know why, but we need a pipe here,
+        # so that the `end` event will be delivered.
+        true
+      .on "end", ()-> d.resolve()
+      .on "error", ()->
+        console.log gutil.colors.bgRed.black "  Deploy aborted, due to test failure.  "
+        d.reject()
+    null
+  .fail (error)->
+    console.log gutil.colors.bgRed.black "  Deploy aborted, due to zombie fails to run.  "
+    d.reject()
+  ###
 
   gulp.src(p)
-    .pipe(mocha({reporter: GLOBAL.gulpConfig.testReporter }))
-    .pipe es.through ()->
-      ###
-        Don't know why, but we need a pipe here, so that the `end` event
-        will be delivered.
-      ###
-      true
+    .pipe mocha({reporter: GLOBAL.gulpConfig.testReporter})
+    .pipe es.through ()-> true
     .on "end", ()-> d.resolve()
-    .on "error", ()-> d.reject()
+    .on "error", ()->
+      console.log gutil.colors.bgRed.black "  Deploy aborted, due to test failure.  "
+      d.reject()
 
   d.promise
 

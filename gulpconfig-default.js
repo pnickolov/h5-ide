@@ -50,5 +50,5 @@ module.exports = {
 
   // A string to indicate which reporter should mocha use.
   // Possible values are : "dot", "spec", "nyan", "TAP", "List", "progress", "min"
-  , testReporter : "dot"
+  , testReporter : "nyan"
 };

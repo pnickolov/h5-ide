@@ -33,21 +33,39 @@
     var d, p;
     d = Q.defer();
     p = ["./test/**/*.js", "!./test/Browser.js"];
+
+    /*
+    console.log "Loading IDE in Zombie."
+    
+     * Create a zombie browser
+    Browser = require("../../../test/env/Browser")
+    Browser.globalBrowser.visit("http://127.0.0.1:3010").then ()->
+    
+      gulp.src(p)
+        .pipe mocha({reporter: GLOBAL.gulpConfig.testReporter})
+        .pipe es.through ()->
+           * Don't know why, but we need a pipe here,
+           * so that the `end` event will be delivered.
+          true
+        .on "end", ()-> d.resolve()
+        .on "error", ()->
+          console.log gutil.colors.bgRed.black "  Deploy aborted, due to test failure.  "
+          d.reject()
+      null
+    .fail (error)->
+      console.log gutil.colors.bgRed.black "  Deploy aborted, due to zombie fails to run.  "
+      d.reject()
+     */
     gulp.src(p).pipe(mocha({
       reporter: GLOBAL.gulpConfig.testReporter
     })).pipe(es.through(function() {
-
-      /*
-        Don't know why, but we need a pipe here, so that the `end` event
-        will be delivered.
-       */
       return true;
     })).on("end", function() {
       return d.resolve();
     }).on("error", function() {
+      console.log(gutil.colors.bgRed.black("  Deploy aborted, due to test failure.  "));
       return d.reject();
     });
-    null;
     return d.promise;
   };
 

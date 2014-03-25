@@ -10,7 +10,7 @@
 */
 
 var VER = '',
-	MC_HOST = 'https://api.madeiracloud.com/';
+	MC_HOST = 'https://api.visualops.io/';
 
 var MC = {
 	version: '0.3',

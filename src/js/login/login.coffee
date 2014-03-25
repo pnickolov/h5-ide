@@ -64,7 +64,7 @@ define [ 'jquery', 'handlebars',
 	#
 	#	$.cookie 'madeiracloud_ide_session_id', MC.base64Encode( JSON.stringify madeiracloud_ide_session_id ), {
 	#		path: '/',
-	#		#domain: '.madeiracloud.com', #temp comment
+	#		#domain: '.visualops.io', #temp comment
 	#		expires: 1
 	#	}
 	#

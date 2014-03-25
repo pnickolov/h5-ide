@@ -247,7 +247,7 @@ define ['i18n!/nls/lang.js'], ( lang ) ->
 		MESSAGE_E_SESSION  : "This session has expired, please log in again"
 		MESSAGE_E_EXTERNAL : "Sorry, there seems to be a problem with AWS"
 		MESSAGE_E_ERROR    : "Sorry, we're experiencing techincal difficulty"
-		MESSAGE_E_UNKNOWN  : "Something is wrong. Please contact support@madeiracloud.com"
+		MESSAGE_E_UNKNOWN  : "Something is wrong. Please contact support@visualops.io"
 		MESSAGE_E_PARAM    : "Parameter error!"
 	}
 
@@ -488,7 +488,7 @@ use redirection server name:i:0\n"
 	COOKIE_OPTION =
 		expires:1
 		path: '/'
-		domain: '.madeiracloud.com'
+		domain: '.visualops.io'
 
 	LOCAL_COOKIE_OPTION =
 		expires:1

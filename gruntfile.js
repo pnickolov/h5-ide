@@ -259,6 +259,7 @@ module.exports = function( grunt ) {
 	grunt.registerTask( 'debug', ['clean:debug',
 									'make_all',
 									'copy:debug',
+									'copy:debug_proxy',
 									'make_debug',
 	]);
 

@@ -43,7 +43,7 @@ module.exports =
       zh: "登录"
 
     "login-register":
-      en: "New to MadeiraCloud? "
+      en: "New to VisualOps? "
       zh: "注册新用户？ "
 
     "link-register":
@@ -83,8 +83,8 @@ module.exports =
       zh: "稍等..."
 
     "madeira-offered-in":
-      en: "&copy; MadeiraCloud offered in"
-      zh: "&copy; MadeiraCloud 还提供"
+      en: "&copy; VisualOps offered in"
+      zh: "&copy; VisualOps 还提供"
 
   register:
     register:
@@ -128,8 +128,8 @@ module.exports =
       zh: "注册成功"
 
     "account-instruction":
-      en: "Thanks for signing up with MadeiraCloud."
-      zh: "非常感谢您注册 MadeiraCloud。"
+      en: "Thanks for signing up with VisualOps."
+      zh: "非常感谢您注册 VisualOps。"
 
     "register-get-start":
       en: "Get Started"
@@ -205,8 +205,8 @@ module.exports =
       zh: "登录"
 
     "email-label":
-      en: "Provide the email address or username you registered with MadeiraCloud. An email with link to reset password will be sent to you soon."
-      zh: "请提供您在MadeiraCloud注册时的邮件地址或者用户名。包含重置链接的邮件马上将会发送给您。"
+      en: "Provide the email address or username you registered with VisualOps. An email with link to reset password will be sent to you soon."
+      zh: "请提供您在VisualOps注册时的邮件地址或者用户名。包含重置链接的邮件马上将会发送给您。"
 
     "account-label":
       en: "Username or Email Address"
@@ -229,8 +229,8 @@ module.exports =
       zh: "密码重置链接非法或者过期。"
 
     "reset-relogin":
-      en: "Log in MadeiraCloud"
-      zh: "登录MadeiraCloud"
+      en: "Log in VisualOps"
+      zh: "登录VisualOps"
 
     "reset-new-password":
       en: "New Password"
@@ -261,8 +261,8 @@ module.exports =
       zh: "发送密码重置请求邮件"
 
     reset_error_state:
-      en: "The username or email address is not registered with MadeiraCloud."
-      zh: "用户名或邮件地址还没有在MadeiraCloud注册过。"
+      en: "The username or email address is not registered with VisualOps."
+      zh: "用户名或邮件地址还没有在VisualOps注册过。"
 
   ide:
 
@@ -1195,8 +1195,8 @@ module.exports =
       zh: "数据在一分钟内可用需要额外的话费。 获取价格信息，请去 "
 
     PROP_AGENT_USER_DATA_URL:
-      en: "https://github.com/MadeiraCloud/OpsAgent/blob/develop/scripts/userdata.sh"
-      zh: "https://github.com/MadeiraCloud/OpsAgent/blob/develop/scripts/userdata.sh"
+      en: "https://github.com/VisualOps/OpsAgent/blob/develop/scripts/userdata.sh"
+      zh: "https://github.com/VisualOps/OpsAgent/blob/develop/scripts/userdata.sh"
 
     PROP_INSTANCE_ENI_DETAIL:
       en: "Network Interface Details"
@@ -3136,8 +3136,8 @@ module.exports =
       zh: "您可以使用试用证书进行模板设计，但有以下缺点："
 
     HEAD_INFO_WELCOME:
-      en: "Welcome to MadeiraCloud, %s."
-      zh: "欢迎来到MadeiraCloud, %s。"
+      en: "Welcome to VisualOps, %s."
+      zh: "欢迎来到VisualOps, %s。"
 
     HEAD_INFO_PROVIDE_CREDENTIAL2:
       en: "To start designing cloud architecture, please provide your AWS credentials:"
@@ -4623,7 +4623,7 @@ module.exports =
       en: "<span class='validation-tag tag-instance'>%s</span> has configured states. To make sure OpsAgent to work, it should have outbound rules on <span class='validation-tag tag-port'>80</span> and <span class='validation-tag tag-port'>443</span> ports to the outside."
       zh: ""
     TA_MSG_WARNING_OUTBOUND_NOT_TO_ALL:
-      en: "<span class='validation-tag tag-instance'>%s</span> has configured states. Suggest to set its outbound rule on <span class='validation-tag tag-port'>80</span> and <span class='validation-tag tag-port'>443</span> to <span class='validation-tag tag-ip'>0.0.0.0/0</span>. Otherwise, agent may not be able to work properly, install packages or check out source codes lacking route to MadeiraCloud's monitoring systems or required repositories."
+      en: "<span class='validation-tag tag-instance'>%s</span> has configured states. Suggest to set its outbound rule on <span class='validation-tag tag-port'>80</span> and <span class='validation-tag tag-port'>443</span> to <span class='validation-tag tag-ip'>0.0.0.0/0</span>. Otherwise, agent may not be able to work properly, install packages or check out source codes lacking route to VisualOps's monitoring systems or required repositories."
       zh: ""
 
 

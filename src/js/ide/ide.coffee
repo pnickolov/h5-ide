@@ -70,7 +70,7 @@ define [ 'MC', 'event', 'handlebars'
 		if !common_handle.cookie.checkAllCookie()
 			window.location.href = "login.html"
 
-		#clear cookie in 'ide.madeiracloud.com'
+		#clear cookie in 'ide.visualops.io'
 		#common_handle.cookie.clearInvalidCookie()
 
 		#############################

@@ -1343,14 +1343,15 @@
 	border: none;
 	color: #fff;
 	font-size: 14px;
-}	
+}
 
 #state-description pre code {
-	display         : block;
-	background-color: #252525;
-	border          : 1px solid #131313;
-	color           : rgb(58, 194, 58);
-	font-size       : 12px;
+	display          : block;
+	background-color : #252525;
+	border           : 1px solid #131313;
+	color            : rgb(58, 194, 58);
+	font-size        : 12px;
+	word-break       : break-word;
 }
 
 #state-description pre {

@@ -1042,10 +1042,16 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
             currentIsASG = true
 
         currentIsISG = false
+        currentIsInstance = false
+        currentInstanceName = null
         currentISGName = null
-        if currentCompData.number and currentCompData.number > 1
-            currentIsISG = true
-            currentISGName = currentCompData.serverGroupName
+        if currentCompData.number
+            if currentCompData.number > 1
+                currentIsISG = true
+                currentISGName = currentCompData.serverGroupName
+            else
+                currentIsInstance = true
+                currentInstanceName = currentCompData.serverGroupName
 
         allCompData = allCompData or @get('allCompData')
 
@@ -1081,11 +1087,6 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
 
             if compType is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
                 return
-                # if compData.serverGroupUid isnt compUID
-                #   return
-                # else
-                #   if compData.serverGroupName
-                #       compName = compData.serverGroupName
 
             # replace instance default eni name to instance name
             if compType is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
@@ -1194,9 +1195,20 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
 
         # append asg/isg ref
         groupAutoCompList = []
-        if currentIsASG or currentIsISG
-            _.each autoCompList, (autoCompObj) ->
-                if autoCompObj.name.indexOf('self.') is 0
+        instanceAutoCompList = []
+        _.each autoCompList, (autoCompObj) ->
+            if autoCompObj.name.indexOf('self.') is 0
+
+                if currentIsInstance
+                    instanceCompNameStr = autoCompObj.name.replace('self', currentInstanceName)
+                    instanceCompUIDStr = autoCompObj.value.replace('self', currentInstanceName)
+                    instanceAutoCompList.push({
+                        name: instanceCompNameStr,
+                        value: instanceCompUIDStr,
+                        uid: autoCompObj.uid
+                    })
+
+                if currentIsASG or currentIsISG
                     groupCompNameStr = null
                     groupCompUIDStr = null
                     if currentIsASG
@@ -1212,6 +1224,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
                     })
 
         autoCompList = autoCompList.concat(groupAutoCompList)
+        autoCompList = autoCompList.concat(instanceAutoCompList)
 
         resAttrDataAry = _.map autoCompList, (autoCompObj) ->
 

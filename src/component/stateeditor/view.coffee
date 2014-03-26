@@ -863,6 +863,9 @@ define [ 'event',
 
             that = this
 
+            if that.readOnlyMode
+                return
+
             $currentInputElem = $(event.currentTarget)
 
             currentValue = that.getPlainText($currentInputElem)
@@ -904,6 +907,9 @@ define [ 'event',
             # remove empty dict item
 
             that = this
+
+            if that.readOnlyMode
+                return
 
             $currentInputElem = $(event.currentTarget)
 
@@ -1106,8 +1112,8 @@ define [ 'event',
 
             # setTimeout(() ->
             that.bindParaListEvent($paraListItem, currentCMD)
-            if that.readOnlyMode
-                that.setEditorReadOnlyMode()
+            # if that.readOnlyMode
+            #     that.setEditorReadOnlyMode()
             # , 10)
 
             # $stateItem.addClass('selected')
@@ -2012,6 +2018,9 @@ define [ 'event',
                                 that.setPlainText($valueInput, '')
                 )
 
+                if that.readOnlyMode
+                    editor.setReadOnly(true)
+
             # if $editorElem.hasClass('command-value')
 
             _initEditor()
@@ -2270,14 +2279,6 @@ define [ 'event',
         setEditorReadOnlyMode: () ->
 
             that = this
-
-            editableAreaAry = that.$stateList.find('.editable-area')
-            _.each editableAreaAry, (editableArea) ->
-                $editableArea = $(editableArea)
-                editor = $editableArea.data('editor')
-                if editor
-                    editor.setReadOnly(true)
-                null
 
             that.$stateList.find('.state-drag').hide()
             that.$stateList.find('.state-add').hide()

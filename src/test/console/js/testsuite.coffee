@@ -1583,6 +1583,15 @@ define [ 'MC', 'session_model' ,'jquery', 'apiList', 'account_model', 'log_model
             elb_model.once "ELB__DESC_LBS_RETURN", ( aws_result ) ->
                 resolveResult request_time, current_service, current_resource, current_api, aws_result
 
+        if current_service.toLowerCase() == "elb" && current_resource.toLowerCase() == "elb" && current_api == "DescribeLoadBalancerAttributes"
+            elb_name = if $("#elb_name").val() != "null" then $("#elb_name").val() else null
+            elb_name = if elb_name != null and MC.isJSON(elb_name)==true then JSON.parse elb_name else elb_name
+            #elb.DescribeLoadBalancerAttributes
+            elb_model.DescribeLoadBalancerAttributes {sender: elb_model}, username, session_id, region_name, elb_name
+            elb_model.once "ELB__DESC_LB_ATTRS_RETURN", ( aws_result ) ->
+                resolveResult request_time, current_service, current_resource, current_api, aws_result
+
+
         ########## IAM ##########
         if current_service.toLowerCase() == "iam" && current_resource.toLowerCase() == "iam" && current_api == "GetServerCertificate"
             servercer_name = if $("#servercer_name").val() != "null" then $("#servercer_name").val() else null

@@ -94,8 +94,8 @@ define [ 'event',
                 hideButton.click()
 
         storeLast: ( uid, type ) ->
-            @uid = uid
-            @type = type
+            @uid = uid if uid
+            @type = type if type
             null
 
         renderProperty: ( uid, type, force ) ->

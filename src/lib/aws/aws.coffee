@@ -151,27 +151,27 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
                     MC.data.resource_list[region][res.publicIp] = res
                     null
 
+            # merge elb cache
+            elbResMap = {}
+
             #elb
             if resources.DescribeLoadBalancers
                 _.map resources.DescribeLoadBalancers, ( res, i ) ->
-                    if not MC.data.resource_list[region][res.DNSName]
-                        MC.data.resource_list[region][res.DNSName] = {}
-                    MC.data.resource_list[region][res.DNSName] = _.extend(res, MC.data.resource_list[region][res.DNSName])
-                    null
-
-            #elb attr
-            if resources.DescribeLoadBalancerAttributes
-                _.map resources.DescribeLoadBalancerAttributes, ( res, i ) ->
-                    if not MC.data.resource_list[region][res.DNSName]
-                        MC.data.resource_list[region][res.DNSName] = {}
-                    MC.data.resource_list[region][res.DNSName] = _.extend(res, MC.data.resource_list[region][res.DNSName])
+                    if not elbResMap[res.LoadBalancerName]
+                        elbResMap[res.LoadBalancerName] = {}
+                    elbResMap[res.LoadBalancerName] = _.extend(elbResMap[res.LoadBalancerName], res)
                     null
 
             #elb attributes (disable these code because it's already embed in ELB)
-            # if resources.DescribeLoadBalancerAttributes
-            #     _.map resources.DescribeLoadBalancerAttributes, ( res, i ) ->
-            #         MC.data.resource_list[region][res.LoadBalancerName] = res
-            #         null
+            if resources.DescribeLoadBalancerAttributes
+                _.map resources.DescribeLoadBalancerAttributes, ( res, i ) ->
+                    if not elbResMap[res.LoadBalancerName]
+                        elbResMap[res.LoadBalancerName] = {}
+                    elbResMap[res.LoadBalancerName] = _.extend(elbResMap[res.LoadBalancerName], res)
+                    null
+
+            _.map elbResMap, (res) ->
+                MC.data.resource_list[region][res.DNSName] = res
 
             #vpn
             if resources.DescribeVpnConnections

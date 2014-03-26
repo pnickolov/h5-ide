@@ -40,10 +40,12 @@ require.config {
 		'event'           : 'event/ide_event'
 
 		#
-		'UI.notification'    : 'ui/common/UI.notification'
+		'UI.notification' : 'ui/common/UI.notification'
 
 		#core lib
 		'MC'              : 'lib/MC.core'
+
+		'MC.template'     : 'lib/MC.template'
 
 		#common lib
 		'constant'        : 'lib/constant'
@@ -85,6 +87,14 @@ require.config {
 
 		'main'            :
 			deps          : [ 'jquery' ]
+
+		'MC.template'  :
+			deps       : [ 'handlebars', 'MC' ]
+			exports    : 'MC.template'
+
+		'UI.notification' :
+			deps          : [ 'jquery', 'MC.template' ]
+
 }
 
 #requirejs.onError = ( err ) ->

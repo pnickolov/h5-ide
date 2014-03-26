@@ -12,7 +12,7 @@ module.exports.proxyMiddleware = function(req, res, next){
 	var requestStr = JSON.stringify(req.body);
 
 	var options = {
-		hostname: 'api.madeiracloud.com',
+		hostname: 'api.visualops.io',
 		path: reqPath,
 		method: 'POST',
 		headers: {

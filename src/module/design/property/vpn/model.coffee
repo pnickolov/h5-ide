@@ -33,6 +33,13 @@ define [ '../base/model', "Design", "constant" ], ( PropertyModel, Design, const
 
             vpn = $.extend true, {}, appData[ vpnAppId ]
 
+            #temp
+            if vpn
+                vpncfg_str = MC.aws.vpn.generateDownload( [{"type":"download_configuration","name":"Download Configuration"}], vpn )
+                vpncfg     = JSON.parse(vpncfg_str)
+                if vpncfg and vpncfg.length>0
+                    @set "vpncfg", vpncfg[0]
+
             # # JSON detail
             # config =
             #     name : "Download"

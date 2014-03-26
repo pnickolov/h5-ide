@@ -176,8 +176,8 @@ define [ 'event',
 
             #if invoke failed, then reset create account button
             if $( '#register-btn' ).val() == lang.register.reginster_waiting
-                @resetCreateAccount()
-
+                $( '#register-btn' ).attr( 'disabled', false )
+                $( '#register-btn' ).attr( 'value', lang.register['register-btn'] )
 
             null
 
@@ -253,7 +253,7 @@ define [ 'event',
             console.log 'otherError'
             $( '#username-verification-status' ).removeClass( 'error-status' ).removeClass( 'verification-status' ).show().text('')
             $( '#email-verification-status' ).removeClass( 'error-status' ).removeClass( 'verification-status' ).show().text('')
-            $( '#register-btn' ).attr( 'disabled', true )
+            #$( '#register-btn' ).attr( 'disabled', true )
 
         notifError : ( message ) ->
             console.log 'notifError', message

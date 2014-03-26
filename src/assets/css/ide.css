@@ -3289,6 +3289,10 @@ a.sidebar-hider:before {
 	cursor: grab;
 }
 
+.resource-item.deleted {
+	opacity: .5;
+}
+
 .resource-item:hover {
 	background: rgba(255,255,255,.2);
 }

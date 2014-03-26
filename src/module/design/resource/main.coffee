@@ -117,9 +117,9 @@ define [ 'jquery',
                 console.log 'LOADING_COMMUNITY_AMI'
                 model.describeCommunityAmiService region, name, platform, isPublic, architecture, rootDeviceType, perPageNum, pageNum
 
-            view.on 'TOGGLE_FAV', ( region_name, action, amiId ) ->
+            view.on 'TOGGLE_FAV', ( region_name, action, amiId, amiVO, noReset ) ->
                 if action is 'add'
-                    model.addFav region_name, amiId
+                    model.addFav region_name, amiId, amiVO, noReset
                 else if action is 'remove'
                     model.removeFav region_name, amiId
 

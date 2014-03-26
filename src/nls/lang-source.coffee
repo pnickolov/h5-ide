@@ -474,6 +474,10 @@ module.exports =
       en: "Remove from Favorite"
       zh: ""
 
+    RES_TIT_ADD_TO_FAVORITE:
+      en: "Add to Favorite"
+      zh: ""
+
     RES_TIT_VPC:
       en: "Virtual Private Cloud"
       zh: "虚拟私有云"

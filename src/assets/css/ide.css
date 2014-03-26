@@ -2012,7 +2012,7 @@ button {
 }
 
 .blank-widget {
-	margin-top : 14px;
+	/*margin-top : 14px;*/
 	text-align : center;
 	padding    : 70px 0;
 	color      : #999;

@@ -653,6 +653,12 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
             delete resource_list[ val.InstanceId ]
 
       delete resource_list[ appId ]
+      #delete elb attributes (disable these code because it's already embed in ELB)
+      # if comp.type is constant.AWS_RESOURCE_TYPE.AWS_ELB
+      #   elb_name = comp.get("name") + "---" + Design.instance().get("id")
+      #   if resource_list[ elb_name ]
+      #     delete resource_list[ elb_name ]
+
 
     #clear Subscriptions in current app
     subList = resource_list.Subscriptions

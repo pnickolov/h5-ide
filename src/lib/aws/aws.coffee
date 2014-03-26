@@ -157,11 +157,11 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
                     MC.data.resource_list[region][res.DNSName] = res
                     null
 
-            #elb attributes
-            if resources.DescribeLoadBalancerAttributes
-                _.map resources.DescribeLoadBalancerAttributes, ( res, i ) ->
-                    MC.data.resource_list[region][res.LoadBalancerName] = res
-                    null
+            #elb attributes (disable these code because it's already embed in ELB)
+            # if resources.DescribeLoadBalancerAttributes
+            #     _.map resources.DescribeLoadBalancerAttributes, ( res, i ) ->
+            #         MC.data.resource_list[region][res.LoadBalancerName] = res
+            #         null
 
             #vpn
             if resources.DescribeVpnConnections

@@ -449,24 +449,24 @@ Virtual Private Cloud
 
 VPN Connection Configuration
 ================================================================================
-AWS utilizes unique identifiers to manipulate the configuration of 
-a VPN Connection. Each VPN Connection is assigned a VPN Connection Identifier 
-and is associated with two other identifiers, namely the 
+AWS utilizes unique identifiers to manipulate the configuration of
+a VPN Connection. Each VPN Connection is assigned a VPN Connection Identifier
+and is associated with two other identifiers, namely the
 Customer Gateway Identifier and the Virtual Private Gateway Identifier.
 
 Your VPN Connection ID		         : {{vpnConnectionId}}
 Your Virtual Private Gateway ID          : {{vpnGatewayId}}
 Your Customer Gateway ID    		 : {{customerGatewayId}}
-		
-A VPN Connection consists of a pair of IPSec tunnel security associations (SAs). 
-It is important that both tunnel security associations be configured. 
+
+A VPN Connection consists of a pair of IPSec tunnel security associations (SAs).
+It is important that both tunnel security associations be configured.
 
 {{#each tunnel}}
-				
+
 IPSec Tunnel #{{this.number}}
 ================================================================================
 #1: Internet Key Exchange Configuration
-		
+
 Configure the IKE SA as follows
   - Authentication Method    : {{this.ike_protocol_method}}
   - Pre-Shared Key           : {{this.ike_pre_shared_key}}
@@ -485,7 +485,7 @@ Configure the IPSec SA as follows:
   - Lifetime                 : {{this.ipsec_lifetime}} seconds
   - Mode                     : {{this.ipsec_mode}}
   - Perfect Forward Secrecy  : {{this.ipsec_perfect_forward_secrecy}}
-	
+
 IPSec Dead Peer Detection (DPD) will be enabled on the AWS Endpoint. We
 recommend configuring DPD on your endpoint as follows:
   - DPD Interval             : {{this.ipsec_interval}}
@@ -510,25 +510,25 @@ The Customer Gateway and Virtual Private Gateway each have two addresses that re
 to this IPSec tunnel. Each contains an outside address, upon which encrypted
 traffic is exchanged. Each also contain an inside address associated with
 the tunnel interface.
- 
+
 The Customer Gateway outside IP address was provided when the Customer Gateway
 was created. Changing the IP address requires the creation of a new
 Customer Gateway.
 
 The Customer Gateway inside IP address should be configured on your tunnel
-interface. 
+interface.
 
 Outside IP Addresses:
-  - Customer Gateway 		        : {{this.customer_gateway_outside_address}} 
+  - Customer Gateway 		        : {{this.customer_gateway_outside_address}}
   - Virtual Private Gateway	        : {{this.vpn_gateway_outside_address}}
-		
+
 Inside IP Addresses
   - Customer Gateway         		: {{this.customer_gateway_inside_address}}
   - Virtual Private Gateway             : {{this.vpn_gateway_inside_address}}
 
 Configure your tunnel to fragment at the optimal size:
   - Tunnel interface MTU     : 1436 bytes
-    
+
 {{#if this.isStaticRouting}}
 #4: Static Routing Configuration:
 
@@ -547,29 +547,29 @@ he tunnels.
 
 The Border Gateway Protocol (BGPv4) is used within the tunnel, between the inside
 IP addresses, to exchange routes from the VPC to your home network. Each
-BGP router has an Autonomous System Number (ASN). Your ASN was provided 
+BGP router has an Autonomous System Number (ASN). Your ASN was provided
 to AWS when the Customer Gateway was created.
 
 BGP Configuration Options:
-  - Customer Gateway ASN	          : {{this.customer_gateway_bgp_asn}} 
+  - Customer Gateway ASN	          : {{this.customer_gateway_bgp_asn}}
   - Virtual Private  Gateway ASN          : {{this.vpn_gateway_bgp_asn}}
   - Neighbor IP Address     		  : {{this.neighbor_ip_address}}
   - Neighbor Hold Time       : {{this.customer_gateway_bgp_hold_time}}
 
 Configure BGP to announce routes to the Virtual Private Gateway. The gateway
-will announce prefixes to your customer gateway based upon the prefix you 
+will announce prefixes to your customer gateway based upon the prefix you
 assigned to the VPC at creation time.
 {{/if}}
 {{/each}}
- 
- 
+
+
 
 Additional Notes and Questions
 ================================================================================
 
-  - Amazon Virtual Private Cloud Getting Started Guide: 
+  - Amazon Virtual Private Cloud Getting Started Guide:
       http://docs.amazonwebservices.com/AmazonVPC/latest/GettingStartedGuide
-  - Amazon Virtual Private Cloud Network Administrator Guide: 
+  - Amazon Virtual Private Cloud Network Administrator Guide:
       http://docs.amazonwebservices.com/AmazonVPC/latest/NetworkAdminGuide
   - XSL Version: 2009-07-15-1119716
 
@@ -624,15 +624,13 @@ Additional Notes and Questions
 <!-- sgRuleList -->
 {{#each this}}
 {{#if ../deletable}}
-<li data-uid="{{ruleSetId}}" data-protocol="{{protocol}}" data-port="{{port}}" data-relation="{{relation}}" data-direction="{{direction}}" class="pos-r sg-create-rule-item">
+<li data-uid="{{ruleSetId}}" data-protocol="{{protocol}}" data-port="{{port}}" data-relation="{{relation}}" data-relationid="{{relationId}}" data-direction="{{direction}}" class="pos-r sg-create-rule-item">
 {{else}}
 <li class="sg-create-rule-item">
 {{/if}}
 <div class="rule-list-row">
 	<div class='rule-direction-icon tooltip icon-{{direction}}' data-tooltip='{{#ifCond direction "inbound"}}{{ i18n "PROP_SG_TIP_INBOUND" }}{{else}}{{ i18n "PROP_SG_TIP_OUTBOUND" }}{{/ifCond}}'></div>
-	<div class='rule-reference tooltip truncate' data-tooltip='{{#ifCond direction "inbound"}}Source{{else}}Destination{{/ifCond}}'>
-	{{#if color}}<span class="sg-color" style="background-color:{{color}}"></span>{{/if}}
-	{{relation}}</div>
+	<div class='rule-reference tooltip truncate' data-tooltip='{{#ifCond direction "inbound"}}Source{{else}}Destination{{/ifCond}}'>{{#if color}}<span class="sg-color" style="background-color:{{color}}"></span>{{/if}}{{relation}}</div>
 </div>
 <div class="rule-list-row">
 	<div><span class="rule-protocol tooltip" data-tooltip='{{ i18n "PROP_SG_TIP_PROTOCOL" }}' >{{protocol}}</span></div>

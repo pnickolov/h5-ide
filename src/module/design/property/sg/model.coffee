@@ -15,7 +15,7 @@ define [ '../base/model', "Design", 'constant', 'event'  ], ( PropertyModel, Des
 
             rules = []
             for rule in component.connections("SgRuleSet")
-                rules = rules.concat( rule.toPlainObjects( uid ) )
+                rules = rules.concat( rule.toPlainObjects( uid, true ) )
 
             members = _.map component.getMemberList(), ( tgt )-> tgt.get("name")
 
@@ -79,7 +79,7 @@ define [ '../base/model', "Design", 'constant', 'event'  ], ( PropertyModel, Des
             if beforeCount < sgRuleSet.ruleCount( mySg.id )
                 rules = []
                 for rule in mySg.connections("SgRuleSet")
-                    rules = rules.concat( rule.toPlainObjects( uid ) )
+                    rules = rules.concat( rule.toPlainObjects( uid, true ) )
                 @attributes.rules = rules
                 @sortSGRule()
                 return true

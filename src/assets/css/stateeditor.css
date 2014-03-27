@@ -354,6 +354,14 @@
 
 /* *************************************** editable-area */
 
+#state-editor .editable-area.parameter-value {
+	width: 440px;
+}
+
+#state-editor .editable-area.parameter-value.ace_editor {
+	width: 100%;
+}
+
 #state-editor .editable-area {
 	/*background-color: #fff;*/
 	/*border-bottom: 1px solid #ccc;*/

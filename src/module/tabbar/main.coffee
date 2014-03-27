@@ -188,7 +188,7 @@ define [ 'jquery', 'event', 'base_main',
                                 ide_event.trigger ide_event.UPDATE_DESIGN_TAB_ICON, 'stack', tab_id
                             else
                                 ide_event.trigger ide_event.CLOSE_DESIGN_TAB, result.param[4][0]
-    
+
                         model.getStackInfo tab_id
 
                     else if tab_id.split( '-' )[0] is 'import'

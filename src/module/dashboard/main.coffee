@@ -174,6 +174,7 @@ define [ "component/exporter/Thumbnail", 'jquery', 'event', 'MC', 'base_main', '
                 view.renderMapResult()
                 model.getItemList 'app', current_region, overview_app
 
+                appListGot = true
                 if stackListGot then Helper.cleanupThumbnail()
                 null
 
@@ -188,6 +189,7 @@ define [ "component/exporter/Thumbnail", 'jquery', 'event', 'MC', 'base_main', '
 
                 model.getItemList 'stack', current_region, overview_stack
 
+                stackListGot = true
                 if appListGot then Helper.cleanupThumbnail()
                 null
 

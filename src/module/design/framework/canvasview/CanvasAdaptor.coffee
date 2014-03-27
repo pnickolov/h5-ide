@@ -27,12 +27,7 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
   $canvas.offset        = ()-> $(document.getElementById("svg_canvas")).offset()
   $canvas.selected_node = ()->
     if Design.__instance
-      selectedNode = Design.__instance.canvas.selectedNode
-      if not selectedNode.length
-        domSelectedNode = $('#canvas .node.selected').attr('id')
-        if domSelectedNode
-          selectedNode = [domSelectedNode]
-      return selectedNode
+      return Design.__instance.canvas.selectedNode
     else
       return null
 

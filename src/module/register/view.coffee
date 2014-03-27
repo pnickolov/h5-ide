@@ -269,7 +269,8 @@ define [ 'event',
 
             $( '#username-verification-status' ).removeClass( 'error-status' ).removeClass( 'verification-status' ).show().text('')
             $( '#email-verification-status' ).removeClass( 'error-status' ).removeClass( 'verification-status' ).show().text('')
-            $( '#register-btn' ).attr( 'disabled', true )
+            $( '#register-btn' ).attr( 'disabled', false )
+            $( '#register-btn' ).attr( 'value', lang.register['register-btn'] )
 
             label = 'ERROR_CODE_' + message + '_MESSAGE'
             msg   = lang.service[ label ]

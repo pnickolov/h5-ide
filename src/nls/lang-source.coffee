@@ -2931,6 +2931,10 @@ module.exports =
       en : "State(s) copied to clipboard"
       zh : ""
 
+    NOTIFY_MSG_INFO_STATE_PARSE_STATE_JSON_DATA_FAILED:
+      en : "Some state data format different with state module of current version"
+      zh : ""
+
     NOTIFY_MSG_WARN_OPERATE_NOT_SUPPORT_YET:
       en : "This operation is not supported yet."
       zh : ""

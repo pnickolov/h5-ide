@@ -2693,6 +2693,10 @@ define [ 'event',
 
             stateListObj = that.loadStateData(stateDataAry)
 
+            # resolve incompletely json data
+            if stateListObj.state_list.length isnt stateDataAry.length
+                notification 'info', lang.ide.NOTIFY_MSG_INFO_STATE_PARSE_STATE_JSON_DATA_FAILED
+
             newStateItems = that.stateListTpl(stateListObj)
             $currentStateItems = that.$stateList.find('.state-item')
 

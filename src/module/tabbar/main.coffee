@@ -188,6 +188,7 @@ define [ 'jquery', 'event', 'base_main',
                                 ide_event.trigger ide_event.UPDATE_DESIGN_TAB_ICON, 'stack', tab_id
                             else
                                 ide_event.trigger ide_event.CLOSE_DESIGN_TAB, result.param[4][0]
+                                ide_event.trigger ide_event.SWITCH_MAIN
 
                         model.getStackInfo tab_id
 
@@ -222,6 +223,7 @@ define [ 'jquery', 'event', 'base_main',
 
                     else
                         ide_event.trigger ide_event.CLOSE_DESIGN_TAB, result.param[4][0]
+                        ide_event.trigger ide_event.SWITCH_MAIN
 
                 model.getAppInfo tab_id
 

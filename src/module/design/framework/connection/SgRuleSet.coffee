@@ -372,7 +372,7 @@ define [ "constant", "../ConnectionModel", "Design" ], ( constant, ConnectionMod
           if res1SgMap[ ruleset.getOtherTarget( sg ).id ]
             foundRuleSet.push ruleset
 
-      foundRuleSet
+      _.uniq foundRuleSet
 
     # Get plain objects from an ruleset array.
     # The objects are guaranteed to be unique

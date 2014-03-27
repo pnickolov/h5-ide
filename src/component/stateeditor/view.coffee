@@ -154,6 +154,8 @@ define [ 'event',
             @editorShow = true
             that = this
 
+            that.unloadEditor()
+
             # show modal
             @$el.html that.editorModalTpl({
                 res_name: that.resName,
@@ -2532,16 +2534,19 @@ define [ 'event',
 
             that = this
 
-            $editAreaList = that.$stateList.find('.editable-area')
+            # $editAreaList = that.$stateList.find('.editable-area')
 
-            _.each $editAreaList, (editArea) ->
-                $editArea = $(editArea)
-                editor = $editArea.data('editor')
-                if editor then editor.destroy()
-                null
+            # _.each $editAreaList, (editArea) ->
+            #     $editArea = $(editArea)
+            #     editor = $editArea.data('editor')
+            #     if editor then editor.destroy()
+            #     null
 
-            $aceAutoCompList = $('.ace_editor.ace_autocomplete')
-            $aceAutoCompList.remove()
+            # $aceAutoCompList = $('.ace_editor.ace_autocomplete')
+            # $aceAutoCompList.remove()
+
+            $aceEditors = $('.ace_editor')
+            $aceEditors.remove()
 
         initUndoManager: () ->
 

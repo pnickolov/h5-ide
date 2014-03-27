@@ -16,9 +16,10 @@ define [ 'MC', 'event', 'account_model', 'session_model', 'common_handle', 'cryp
                 console.log forge_result
 
                 # test
-                #forge_result.is_error = true
-                #forge_result.error_message = 'sdfsfsdfadaddaadfs'
-                #forge_result.return_code = 12
+                #if not _.isEmpty( forge_result.param[1] ) and not _.isEmpty( forge_result.param[2] )
+                #    forge_result.is_error = true
+                #    forge_result.error_message = 'sdfsfsdfadaddaadfs'
+                #    forge_result.return_code = 12
 
                 if !forge_result.is_error
                     if forge_result.param[1] and forge_result.param[2]
@@ -44,7 +45,7 @@ define [ 'MC', 'event', 'account_model', 'session_model', 'common_handle', 'cryp
                         else
                             console.log 'other error'
                             if not _.isEmpty( forge_result.param[1] ) and not _.isEmpty( forge_result.param[2] )
-                                this.trigger 'NOTIF_ERROR', forge_result.return_code
+                                this.trigger 'RESET_CREATE_ACCOUNT', forge_result.return_code
                             else
                                 this.trigger 'OTHER_ERROR'
                 null

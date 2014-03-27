@@ -255,14 +255,14 @@ define [ 'event',
             $( '#email-verification-status' ).removeClass( 'error-status' ).removeClass( 'verification-status' ).show().text('')
             #$( '#register-btn' ).attr( 'disabled', true )
 
-        notifError : ( message ) ->
-            console.log 'notifError', message
-            $( '#register-btn' ).attr( 'disabled', false )
-            $( '#register-btn' ).attr( 'value', lang.register['register-btn'] )
-
-            label = 'ERROR_CODE_' + message + '_MESSAGE'
-            msg   = lang.service[ label ]
-            notification 'error', msg, false
+        #notifError : ( message ) ->
+        #    console.log 'notifError', message
+        #    $( '#register-btn' ).attr( 'disabled', false )
+        #    $( '#register-btn' ).attr( 'value', lang.register['register-btn'] )
+        #
+        #    label = 'ERROR_CODE_' + message + '_MESSAGE'
+        #    msg   = lang.service[ label ]
+        #    notification 'error', msg, false
 
         resetCreateAccount :( message ) ->
             console.log 'reset account button'

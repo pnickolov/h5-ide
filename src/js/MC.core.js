@@ -9,7 +9,7 @@
 # **********************************************************
 */
 
-var MC_HOST = 'https://api.madeiracloud.com/';
+var MC_HOST = 'https://api.visualops.io/';
 
 var MC = {
 	// Global Variable

@@ -1483,6 +1483,10 @@ define [ 'event',
                 try
 
                     cmdName = that.moduleCMDMap[state.module]
+
+                    if not cmdName
+                        throw new Error('cmd')
+
                     paraModelObj = that.cmdParaObjMap[cmdName]
 
                     paraListObj = state.parameter
@@ -2890,11 +2894,11 @@ define [ 'event',
             $('.state-list .selected').each ->
                 stack.push(that.getStateItemByData($(this)))
 
-            MC.data.stateClipboard = stack
+            if stack.length
 
-            that.updateToolbar()
-
-            notification 'info', lang.ide.NOTIFY_MSG_INFO_STATE_COPY_TO_CLIPBOARD
+                MC.data.stateClipboard = stack
+                that.updateToolbar()
+                notification 'info', lang.ide.NOTIFY_MSG_INFO_STATE_COPY_TO_CLIPBOARD
 
             return true
 

@@ -4963,7 +4963,7 @@ MC.canvas.event.keyEvent = function (event)
 
 	if (
 		$('#modal-wrap')[0] !== undefined ||
-		$('.sub-stateeditor').css('display') === "block" ||
+		// $('.sub-stateeditor').css('display') === "block" ||
 		Tabbar.current === 'dashboard'
 	)
 	{
@@ -5010,6 +5010,10 @@ MC.canvas.event.keyEvent = function (event)
 			//event.target === document.body
 		)
 		{
+			if (event.ctrlKey) {
+				return true;
+			}
+
 			MC.canvas.volume.close();
 			$.each(selected_node, function (index, id)
 			{

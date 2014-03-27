@@ -2858,8 +2858,8 @@ define [ 'event',
                 return false
 
             # Disable default delete event [delete/backspace]
-            if metaKey is false and shiftKey is false and altKey is false and is_input is false and (keyCode is 46 or keyCode is 8)
-                return false
+            # if metaKey is false and shiftKey is false and altKey is false and is_input is false and (keyCode is 46 or keyCode is 8)
+            #     return false
 
         onUndo: () ->
 

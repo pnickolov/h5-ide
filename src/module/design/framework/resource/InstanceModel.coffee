@@ -499,8 +499,9 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
 
     isRemovable : ()->
       state = @get("state")
-      if state isnt undefined and state.length > 0
-        return MC.template.NodeStateRemoveConfirmation(name: @get("name"))
+      if (state isnt undefined and state.length > 0) or
+        ($('#state-editor-model').is(':visible') and $('#state-editor-model .state-list .state-item').length >= 1)
+          return MC.template.NodeStateRemoveConfirmation(name: @get("name"))
 
       true
 

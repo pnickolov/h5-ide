@@ -189,7 +189,8 @@ define [ 'MC', 'event',
 
                     # disable button
                     $('#btn-confirm').attr 'disabled', true
-                    $('.modal-close').attr 'disabled', true
+                    $('.modal-header .modal-close').hide()
+                    $('#run-stack-cancel').attr 'disabled', true
 
                     # push SAVE_STACK event
                     #ide_event.trigger ide_event.SAVE_STACK, MC.common.other.canvasData.data()

@@ -223,7 +223,7 @@ define [ 'event',
             @
 
         restore: ( snapshot ) ->
-            type = snapshot.activeModuleType
+            type = @type = snapshot.activeModuleType
             currentTab = @currentTab = snapshot.propertyTab
             uid = @uid = snapshot.activeModuleId
 

@@ -1047,7 +1047,7 @@
 	line-height     : 16px;
 	padding         : 14px;
 	font-family     : "Monaco","Consolas", monospace;
-	color           : rgba(80, 226, 77, 0.6);
+	color           : #999;
 	word-wrap       : break-word;
 }
 

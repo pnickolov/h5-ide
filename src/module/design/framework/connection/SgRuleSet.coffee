@@ -122,7 +122,7 @@ define [ "constant", "../ConnectionModel", "Design" ], ( constant, ConnectionMod
     addRawRule : ( ruleOwner, direction, rawRule ) ->
       console.assert( ruleOwner is @port1Comp().id or ruleOwner is @port2Comp().id or ruleOwner is @port1Comp().get("name") or ruleOwner is @port2Comp().get("name"), "Invalid ruleOwner, when adding a raw rule to SgRuleSet : ", ruleOwner )
       console.assert( direction is SgRuleSet.DIRECTION.BIWAY or direction is SgRuleSet.DIRECTION.IN or direction is SgRuleSet.DIRECTION.OUT, "Invalid direction, when adding a raw rule to SgRuleSet : ", rawRule )
-      console.assert( ("#{rawRule.protocol}" is "-1" and rawRule.protocol is "all") or rawRule.fromPort or rawRule.toPort, "Invalid rule, when adding a raw rule to SgRuleSet : ", rawRule )
+      console.assert( ("#{rawRule.protocol}" is "-1" or rawRule.protocol is "all") or rawRule.fromPort or rawRule.toPort, "Invalid rule, when adding a raw rule to SgRuleSet : ", rawRule )
 
       if Design.instance().typeIsClassic() and direction is SgRuleSet.DIRECTION.OUT
         console.warn( "Ignoring setting outbound rule in Classic Mode " )

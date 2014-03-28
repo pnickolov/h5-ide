@@ -1477,7 +1477,8 @@ define [ 'event',
             that = this
 
             renderObj = {
-                state_list: []
+                state_list: [],
+                err_list: []
             }
 
             _.each stateObjAry, (state, idx) ->
@@ -1487,7 +1488,7 @@ define [ 'event',
                     cmdName = that.moduleCMDMap[state.module]
 
                     if not cmdName
-                        throw new Error('cmd')
+                        throw new Error('command')
 
                     paraModelObj = that.cmdParaObjMap[cmdName]
 
@@ -1516,6 +1517,9 @@ define [ 'event',
 
                         paraValue = paraListObj[paraModelName]
 
+                        if paraValue is undefined and paraModelRequired
+                            throw new Error('parameter')
+
                         if paraValue is undefined and not paraModelRequired
                             renderParaObj.para_disabled = true
                         else
@@ -1534,6 +1538,8 @@ define [ 'event',
 
                             if paraModelType in ['line', 'text']
                                 renderParaValue = that.model.replaceParaUIDToName(renderParaValue)
+                                if renderParaValue and renderParaValue.indexOf('unknown') isnt -1
+                                    renderObj.err_list.push('reference')
 
                         else if paraModelType is 'dict'
 
@@ -1544,6 +1550,8 @@ define [ 'event',
                                 _.each paraValue, (paraValueObj) ->
 
                                     paraValueObj.value = that.model.replaceParaUIDToName(paraValueObj.value)
+                                    if paraValueObj.value and paraValueObj.value.indexOf('unknown') isnt -1
+                                        renderObj.err_list.push('reference')
 
                                     renderParaValue.push({
                                         key: paraValueObj.key
@@ -1559,6 +1567,8 @@ define [ 'event',
                                 _.each paraValue, (paraValueStr, paraKey) ->
 
                                     paraValueStr = that.model.replaceParaUIDToName(paraValueStr)
+                                    if paraValueStr and paraValueStr.indexOf('unknown') isnt -1
+                                        renderObj.err_list.push('reference')
 
                                     renderParaValue.push({
                                         key: paraKey
@@ -1589,6 +1599,9 @@ define [ 'event',
                                 else
                                     paraValueStr = that.model.replaceParaUIDToName(paraValueStr)
 
+                                if paraValueStr and paraValueStr.indexOf('unknown') isnt -1
+                                    renderObj.err_list.push('reference')
+
                                 renderParaValue.push(paraValueStr)
                                 null
 
@@ -1609,7 +1622,7 @@ define [ 'event',
 
                 catch err
 
-                    console.log('state editor: resource state data parse failed')
+                    renderObj.err_list.push(err.message)
 
                 null
 
@@ -2703,8 +2716,12 @@ define [ 'event',
             stateListObj = that.loadStateData(stateDataAry)
 
             # resolve incompletely json data
-            if stateListObj.state_list.length isnt stateDataAry.length
-                notification 'info', lang.ide.NOTIFY_MSG_INFO_STATE_PARSE_STATE_JSON_DATA_FAILED
+            parseErrList = stateListObj.err_list
+            if parseErrList.length
+                if 'command' in parseErrList or 'parameter' in parseErrList
+                    notification 'warning', lang.ide.NOTIFY_MSG_INFO_STATE_PARSE_COMMAND_FAILED
+                if 'reference' in parseErrList
+                    notification 'warning', lang.ide.NOTIFY_MSG_INFO_STATE_PARSE_REFRENCE_FAILED
 
             newStateItems = that.stateListTpl(stateListObj)
             $currentStateItems = that.$stateList.find('.state-item')

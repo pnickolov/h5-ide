@@ -564,7 +564,7 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 					id: stateObj.id,
 					result: 'pending'
 				}
-			agentStatus = 'unknown'
+			agentStatus = 'pending'
 
 			state_model.log {sender: that}, $.cookie('usercode'), $.cookie('session_id'), appId, resId
 

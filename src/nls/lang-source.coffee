@@ -2931,8 +2931,12 @@ module.exports =
       en : "State(s) copied to clipboard"
       zh : ""
 
-    NOTIFY_MSG_INFO_STATE_PARSE_STATE_JSON_DATA_FAILED:
-      en : "Some state data format different with state module of current version"
+    NOTIFY_MSG_INFO_STATE_PARSE_COMMAND_FAILED:
+      en : "The states are from a different version. Some module may be incompatible."
+      zh : ""
+
+    NOTIFY_MSG_INFO_STATE_PARSE_REFRENCE_FAILED:
+      en : "The states contains @references which cannot pass on. Validate to see details."
       zh : ""
 
     NOTIFY_MSG_WARN_OPERATE_NOT_SUPPORT_YET:

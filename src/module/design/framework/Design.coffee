@@ -298,7 +298,7 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
     Design.trigger = Backbone.Events.trigger
     Design.trigger Design.EVENT.Deserialized
 
-    @save()
+    # @save()
     null
 
   ### Private Interface ###

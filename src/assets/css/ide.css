@@ -7711,6 +7711,7 @@ summary:focus {
 	width: 60px;
 }
 
+<<<<<<< HEAD
 
 /* Dispaly stop supporting classic and default VPC notification */
 #system-notice {
@@ -7790,4 +7791,8 @@ summary:focus {
 	text-align: right;
 	background: #f6f6f6;
 	border-top: 1px solid #ddd;
+}
+
+#run-stack-cancel:disabled {
+	color: #ccc;
 }

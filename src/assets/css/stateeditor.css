@@ -219,27 +219,6 @@
 	top: 37px;
 }
 
-/*#state-list-wrap:after {
-	position  : absolute;
-	width     : 34px;
-	background: rgba(0,0,0,.2);
-	height    : 100%;
-	content   : "";
-	top       : 0;
-}*/
-
-/*#state-editor-model .modal-toolbar li {
-	width: 30px;
-	height: 30px;
-	background-color: #eee;
-	float: left;
-	margin-left: 5px;
-	cursor: pointer;
-}
-
-#state-editor-model .modal-toolbar li:hover {
-	background-color: #ccc;
-}*/
 
 /* *************************************** state item */
 

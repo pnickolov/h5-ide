@@ -168,6 +168,7 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
       $("#canvas-op-confirm").one "click", ()->
         if not comp.isRemoved()
           comp.remove()
+          $canvas.selected_node().length = 0
           ide_event.trigger ide_event.OPEN_PROPERTY
         null
 
@@ -178,6 +179,7 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
     else if res is true
       # Do remove
       comp.remove()
+      $canvas.selected_node().length = 0
       ide_event.trigger ide_event.OPEN_PROPERTY
       return true
 

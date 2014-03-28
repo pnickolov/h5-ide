@@ -5020,7 +5020,7 @@ MC.canvas.event.keyEvent = function (event)
 				$canvas( id ).remove();
 			});
 
-			selected_node.length = 0;
+			// selected_node.length = 0;
 
 			return false;
 		}

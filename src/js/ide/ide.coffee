@@ -356,7 +356,7 @@ define [ 'MC', 'event', 'handlebars'
 					if error.param[0].url is '/aws/' and error.param[0].method is 'resource'
 						notification 'warning', lang.service["ERROR_CODE_-1_MESSAGE_AWS_RESOURCE"]
 					else
-						notification 'warning', label
+						notification 'warning', lang.service[label]
 					return null
 
 				if lang.service[ label ]

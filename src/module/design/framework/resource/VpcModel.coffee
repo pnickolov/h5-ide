@@ -39,11 +39,13 @@ define [ "constant", "../GroupModel", "./DhcpModel" ], ( constant, GroupModel, D
 
     setCidr : ( cidr )->
 
-      subnets = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet ).allObjects()
+      SubnetModel = Design.modelClassForType(constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet).
+
+      subnets = SubnetModel.allObjects()
       shouldUpdateSubnetCidr = false
       subnetCidrAry = _.map subnets, ( sb )->
         subnetCidr = sb.get("cidr")
-        if not MC.aws.subnet.isInVPCCIDR( cidr, subnetCidr )
+        if not SubnetModel.isInVPCCIDR( cidr, subnetCidr )
           shouldUpdateSubnetCidr = true
         subnetCidr
 
@@ -61,11 +63,13 @@ define [ "constant", "../GroupModel", "./DhcpModel" ], ( constant, GroupModel, D
 
     generateSubnetCidr : ( newCidr, subnetCidrAry )->
 
-      subnets = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet ).allObjects()
+      SubnetModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet )
 
-      subnetCidrAry = MC.aws.subnet.autoAssignSimpleCIDR( newCidr, subnetCidrAry, @get("cidr") )
+      subnets = SubnetModel.allObjects()
+
+      subnetCidrAry = SubnetModel.autoAssignSimpleCIDR( newCidr, subnetCidrAry, @get("cidr") )
       if not subnetCidrAry.length
-        subnetCidrAry = MC.aws.subnet.autoAssignAllCIDR( newCidr, subnets.length )
+        subnetCidrAry = SubnetModel.autoAssignAllCIDR( newCidr, subnets.length )
 
       if subnetCidrAry.length != subnets.length
         return null

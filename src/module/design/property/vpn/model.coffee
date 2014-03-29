@@ -119,6 +119,9 @@ define [ '../base/model', "Design", "constant" ], ( PropertyModel, Design, const
 
             vpn.isApp = @isApp
             @set vpn
+
+        isCidrConflict : ( inputValue, cidr )->
+            Design.modelClassForType(constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet).isCidrConflict( inputValue, cidr )
     }
 
     new VPNModel()

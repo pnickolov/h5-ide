@@ -69,6 +69,13 @@ require.config {
 		'WS'                 : 'lib/websocket'
 
 		#############################################
+		# lib                        # Merge in deploy
+		#############################################
+		'aws_handle'         : 'lib/aws/main'
+		'forge_handle'       : 'lib/forge/main'
+		'common_handle'      : 'lib/common/main'
+
+		#############################################
 		# ui/                       # Merge in deploy
 		#############################################
 		'UI.tooltip'         : 'ui/UI.tooltip'
@@ -207,13 +214,6 @@ require.config {
 		'property'           : 'module/design/property/main'
 		'canvas'             : 'module/design/canvas/main'
 		'toolbar'            : 'module/design/toolbar/main'
-
-		#############################################
-		# lib/aws logic handler
-		#############################################
-		'aws_handle'         : 'lib/aws/main'
-		'forge_handle'       : 'lib/forge/main'
-		'common_handle'       : 'lib/common/main'
 
 		#statusbar state
 		'state_status'       : 'component/statestatus/main'
@@ -389,7 +389,11 @@ require.config {
 			"event"
 			"WS"
 		]
-		"common_handle" : []
+		"lib/deprecated" : [
+			'aws_handle'
+			'forge_handle'
+			'common_handle'
+		]
 		"ui/ui" : [
 			'UI.tooltip'
 			'UI.scrollbar'
@@ -470,6 +474,7 @@ require.config {
 		"component/sgrule/SGRulePopup" : []
 		"module/design/framework/DesignBundle" : [ "Design", "CanvasManager" ]
 	bundleExcludes : # This is a none requirejs option, but it's used by compiler to exclude some of the source.
+		"lib/deprecated" : ["Design"]
 		"component/sgrule/SGRulePopup" : [ "Design" ]
 		"module/design/framework/DesignBundle" : [ "component/sgrule/SGRulePopup" ]
 

@@ -1,5 +1,9 @@
 define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 
+	isELBDefaultSG = (sgUID) ->
+		component = MC.canvas_data.component[sgUID]
+		component and component.name.indexOf("elbsg-") is 0
+
 	isSGRuleExceedFitNum = (sgUID) ->
 
 		sgComp = MC.canvas_data.component[sgUID]
@@ -65,7 +69,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 			return null
 
 		# not elb's default sg
-		if MC.aws.elb.isELBDefaultSG(sgUID)
+		if isELBDefaultSG(sgUID)
 			return null
 
 		sgComp = MC.canvas_data.component[sgUID]
@@ -105,7 +109,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 			return null
 
 		# not elb's default sg
-		if MC.aws.elb.isELBDefaultSG(sgUID)
+		if isELBDefaultSG(sgUID)
 			return null
 
 		sgComp = MC.canvas_data.component[sgUID]
@@ -140,7 +144,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 			return null
 
 		# not elb's default sg
-		if MC.aws.elb.isELBDefaultSG(sgUID)
+		if isELBDefaultSG(sgUID)
 			return null
 
 		sgComp = MC.canvas_data.component[sgUID]
@@ -173,7 +177,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 			return null
 
 		# not elb's default sg
-		if MC.aws.elb.isELBDefaultSG(sgUID)
+		if isELBDefaultSG(sgUID)
 			return null
 
 		sgComp = MC.canvas_data.component[sgUID]
@@ -211,7 +215,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 			compName = comp.name
 			compUID = comp.uid
 			isExceedLimit = false
-			
+
 			sgAry = []
 			resTypeName = ''
 			tagName = ''

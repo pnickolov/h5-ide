@@ -1,5 +1,22 @@
 define [ 'MC', 'constant', 'underscore', 'Design' ], ( MC, constant, _, Design ) ->
 
+	getAZAryForDefaultVPC = (elbUID) ->
+
+		elbComp = MC.canvas_data.component[elbUID]
+		elbInstances = elbComp.resource.Instances
+		azNameAry = []
+
+		_.each elbInstances, (instanceRefObj) ->
+			instanceRef = instanceRefObj.InstanceId
+			instanceUID = MC.extractID(instanceRef)
+			instanceAZName = MC.canvas_data.component[instanceUID].resource.Placement.AvailabilityZone
+			if !(instanceAZName in azNameAry)
+				azNameAry.push(instanceAZName)
+			null
+
+		return azNameAry
+
+
 	#private
 	getVPCUID = () ->
 		vpc = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC ).theVPC()
@@ -162,7 +179,7 @@ define [ 'MC', 'constant', 'underscore', 'Design' ], ( MC, constant, _, Design )
 
 			else if compType is resType.AWS_ELB
 				currentComps[compUID].resource.VpcId = defaultVPCId
-				azNameAry = MC.aws.elb.getAZAryForDefaultVPC(compUID)
+				azNameAry = getAZAryForDefaultVPC(compUID)
 				subnetIdAry = _.map azNameAry, (azName) ->
 					return azSubnetIdMap[azName]
 				currentComps[compUID].resource.Subnets = subnetIdAry

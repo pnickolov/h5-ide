@@ -413,6 +413,11 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
   DesignImpl.prototype.save = ( canvas_data )->
 
     if canvas_data
+
+      # Normalize stack version in case some old stack is not using date as the version
+      if canvas_data.version.split("-").length < 3
+        canvas_data.version = "2013-09-03"
+
       component = canvas_data.component
       layout    = canvas_data.layout
 

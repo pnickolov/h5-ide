@@ -17,6 +17,8 @@ copyJs = ()->
 
 module.exports = ()->
 
+  console.log "This trace dependency of each module. Don't forget to run `gulp dev_all` before tracing."
+
   copyJs().then ()->
 
     d = Q.defer()

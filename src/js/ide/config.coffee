@@ -473,10 +473,12 @@ require.config {
 		]
 		"component/sgrule/SGRulePopup" : []
 		"module/design/framework/DesignBundle" : [ "Design", "CanvasManager" ]
+		"property" : []
 	bundleExcludes : # This is a none requirejs option, but it's used by compiler to exclude some of the source.
 		"lib/deprecated" : ["Design"]
 		"component/sgrule/SGRulePopup" : [ "Design" ]
 		"module/design/framework/DesignBundle" : [ "component/sgrule/SGRulePopup" ]
+		"property" : [ "component/sgrule/SGRulePopup" ]
 
 	### env:prod:end ###
 }

@@ -140,3 +140,5 @@ require.config({
 ```
 
 ### # 给复杂的逻辑/参数写详细注释
+### # 不要写没意义的代码
+### # DRY - Don't repeat yourself

@@ -11,6 +11,7 @@
 
 var VER = '',
 	MC_HOST = 'https://api.visualops.io/';
+	API_HOST = 'https://api.visualops.io';
 
 var MC = {
 	version: '0.3',
@@ -79,66 +80,86 @@ var MC = {
 	 */
 	api: function (option)
 	{
-		var api_frame = $('#api-frame'),
-			guid = MC.guid(),
-			callback = function(event)
-			{
-				var data = event.originalEvent.data,
-					option = MC.api_queue[data.id];
+		// var api_frame = $('#api-frame'),
+		// 	guid = MC.guid(),
+		// 	callback = function(event)
+		// 	{
+		// 		var data = event.originalEvent.data,
+		// 			option = MC.api_queue[data.id];
 
-				if (data.call === 'success' && option.success)
-				{
-					option.success(data.result[1], data.result[0]);
-					/*try{
-						option.success(data.result[1], data.result[0]);
-					}
-					catch(error)
-					{
-						console.info(error);
-					}*/
+		// 		if (data.call === 'success' && option.success)
+		// 		{
+		// 			option.success(data.result[1], data.result[0]);
+		// 			/*try{
+		// 				option.success(data.result[1], data.result[0]);
+		// 			}
+		// 			catch(error)
+		// 			{
+		// 				console.info(error);
+		// 			}*/
+		// 		}
+		// 		if (data.call === 'error' && option.error)
+		// 		{
+		// 			option.error(data.status, -1);
+		// 		}
+		// 		delete MC.api_queue[data.id];
+		// 	},
+		// 	postMessage = function (guid)
+		// 	{
+		// 		var option = MC.api_queue[guid];
+
+		// 		if (api_frame[0] !== undefined)
+		// 		{
+		// 			api_frame[0].contentWindow.postMessage({
+		// 				id: guid,
+		// 				url: '' + VER + option.url,
+		// 				method: option.method || '',
+		// 				params: option.data || {}
+		// 			}, '*');
+		// 		}
+		// 	};
+
+		// MC.api_queue[guid] = option;
+
+		// if (!api_frame[0])
+		// {
+		// 	$(document.body).append('<iframe id="api-frame" src="' + MC.API_URL + 'api.html" style="display:none;"></iframe>');
+		// 	api_frame = $('#api-frame');
+		// 	api_frame.load(function ()
+		// 	{
+		// 		api_frame[0].docLoad = true;
+		// 		$.each(MC.api_queue, function (guid, option)
+		// 		{
+		// 			postMessage(guid);
+		// 		});
+		// 	});
+		// 	$(window).on('message', callback);
+		// }
+
+		// if (api_frame[0].docLoad === true)
+		// {
+		// 	postMessage(guid);
+		// }
+
+		(function(option){
+			$.ajax({
+				url: API_HOST + option.url,
+				dataType: 'json',
+				type: 'POST',
+				data: JSON.stringify({
+					jsonrpc: '2.0',
+					id: MC.guid(),
+					method: option.method || '',
+					params: option.data || {}
+				}),
+				success: function(res){
+					option.success(res.result[1], res.result[0]);
+				},
+				error: function(xhr, status, error){
+					option.error(status, -1);
 				}
-				if (data.call === 'error' && option.error)
-				{
-					option.error(data.status, -1);
-				}
-				delete MC.api_queue[data.id];
-			},
-			postMessage = function (guid)
-			{
-				var option = MC.api_queue[guid];
-
-				if (api_frame[0] !== undefined)
-				{
-					api_frame[0].contentWindow.postMessage({
-						id: guid,
-						url: '' + VER + option.url,
-						method: option.method || '',
-						params: option.data || {}
-					}, '*');
-				}
-			};
-
-		MC.api_queue[guid] = option;
-
-		if (!api_frame[0])
-		{
-			$(document.body).append('<iframe id="api-frame" src="' + MC.API_URL + 'api.html" style="display:none;"></iframe>');
-			api_frame = $('#api-frame');
-			api_frame.load(function ()
-			{
-				api_frame[0].docLoad = true;
-				$.each(MC.api_queue, function (guid, option)
-				{
-					postMessage(guid);
-				});
 			});
-			$(window).on('message', callback);
-		}
-
-		if (api_frame[0].docLoad === true)
-		{
-			postMessage(guid);
-		}
+		})(option);
 	},
 
 	browserDetect: function ()

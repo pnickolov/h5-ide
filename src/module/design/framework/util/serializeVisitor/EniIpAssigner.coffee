@@ -36,7 +36,7 @@ define [ "Design", "constant" ], ( Design, constant )->
 
 
   generateIpForEnis = ( data )->
-    validIpSet = MC.aws.eni.getAvailableIPInCIDR( data.subnetCid, data.reserveIpSet, data.ipSet.length )
+    validIpSet = Design.modelClassForType(constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface).getAvailableIPInCIDR( data.subnetCid, data.reserveIpSet, data.ipSet.length )
 
     validIpSet = _.filter validIpSet, ( ip )-> ip.available
 

@@ -1,6 +1,12 @@
 
 define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/EniAttachment", "constant", 'i18n!nls/lang.js' ], ( ComplexResModel, Design, SgAsso, EniAttachment, constant, lang )->
 
+  _addZeroToLeftStr = (str, n) ->
+    count = n - str.length + 1
+    strAry = _.map [1...count], () ->
+      return '0'
+    str = strAry.join('') + str
+
   ###
   IpObject is used to represent an ip in Eni
   ###
@@ -175,7 +181,7 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
 
       cidr            = @subnetCidr()
       isServergroup   = @serverGroupCount() > 1
-      prefixSuffixAry = MC.aws.subnet.genCIDRPrefixSuffix( cidr )
+      prefixSuffixAry = Design.modelClassForType(constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet).genCIDRPrefixSuffix( cidr )
       ips             = []
 
       for ip, idx in @get("ips")
@@ -209,7 +215,7 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
       if not cidr then cidr = @subnetCidr()
       if not cidr then return ip
 
-      prefixSuffixAry = MC.aws.subnet.genCIDRPrefixSuffix( cidr )
+      prefixSuffixAry = Design.modelClassForType(constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet).genCIDRPrefixSuffix( cidr )
 
       ipAry = ip.split(".")
       if prefixSuffixAry[1] is "x.x"
@@ -227,7 +233,7 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
       cidr = @subnetCidr()
 
       # Check for subnet
-      if not MC.aws.subnet.isIPInSubnet( ip, cidr )
+      if not Design.modelClassForType(constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet).isIPInSubnet( ip, cidr )
         return 'This IP address conflicts with subnet’s IP range'
 
       realNewIp = @getRealIp( ip, cidr )
@@ -527,6 +533,86 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
 
     # EniModel does not handle EIP's deserialize. It only handles EIP's diffJson
     handleTypes : [ constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface, constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP ]
+
+    getAvailableIPInCIDR : (ipCidr, filter, maxNeedIPCount) ->
+
+      cutAry = ipCidr.split('/')
+      ipAddr = cutAry[0]
+      suffix = Number cutAry[1]
+      prefix = 32 - suffix
+
+      ipAddrAry = ipAddr.split '.'
+      ipAddrBinAry = _.map ipAddrAry, (value) ->
+        return _addZeroToLeftStr(parseInt(value).toString(2), 8)
+
+      ipAddrBinStr = ipAddrBinAry.join ''
+      ipAddrBinPrefixStr = ipAddrBinStr.slice(0, suffix)
+
+      ipAddrBinStrSuffixMin = ipAddrBinStr.slice(suffix).replace(/1/g, '0')
+      ipAddrBinStrSuffixMax = ipAddrBinStrSuffixMin.replace(/0/g, '1')
+
+      ipAddrNumSuffixMin = parseInt ipAddrBinStrSuffixMin, 2
+      ipAddrNumSuffixMax = parseInt ipAddrBinStrSuffixMax, 2
+
+      allIPAry = []
+      availableIPCount = 0
+      readyAssignAry = [ipAddrNumSuffixMin...ipAddrNumSuffixMax + 1]
+      readyAssignAryLength = readyAssignAry.length
+      $.each readyAssignAry, (idx, value) ->
+        newIPBinStr = ipAddrBinPrefixStr + _addZeroToLeftStr(value.toString(2), prefix)
+        isAvailableIP = true
+        if idx in [0, 1, 2, 3]
+          isAvailableIP = false
+        if idx is readyAssignAryLength - 1
+          isAvailableIP = false
+        newIPAry = _.map [0, 8, 16, 24], (value) ->
+          newIPNum = (parseInt newIPBinStr.slice(value, value + 8), 2)
+          return newIPNum
+
+        newIPStr = newIPAry.join('.')
+        if newIPStr in filter
+          isAvailableIP = false
+        newIPObj = {
+          ip: newIPStr
+          available: isAvailableIP
+        }
+
+        allIPAry.push(newIPObj)
+        if isAvailableIP then availableIPCount++
+        if availableIPCount > maxNeedIPCount then return false
+
+        null
+
+      console.log('availableIPCount: ' + availableIPCount)
+
+      return allIPAry
+
+    getAvailableIPCountInCIDR : (ipCidr) ->
+
+      cutAry = ipCidr.split('/')
+      ipAddr = cutAry[0]
+      suffix = Number cutAry[1]
+      prefix = 32 - suffix
+
+      ipAddrAry = ipAddr.split '.'
+      ipAddrBinAry = _.map ipAddrAry, (value) ->
+        return _addZeroToLeftStr(parseInt(value).toString(2), 8)
+
+      ipAddrBinStr = ipAddrBinAry.join ''
+      ipAddrBinPrefixStr = ipAddrBinStr.slice(0, suffix)
+
+      ipAddrBinStrSuffixMin = ipAddrBinStr.slice(suffix).replace(/1/g, '0')
+      ipAddrBinStrSuffixMax = ipAddrBinStrSuffixMin.replace(/0/g, '1')
+
+      ipAddrNumSuffixMin = parseInt ipAddrBinStrSuffixMin, 2
+      ipAddrNumSuffixMax = parseInt ipAddrBinStrSuffixMax, 2
+
+      # availableIPCount = (ipAddrNumSuffixMax - ipAddrNumSuffixMin + 1) - filter.length - 5
+      availableIPCount = (ipAddrNumSuffixMax - ipAddrNumSuffixMin + 1) - 5
+      if availableIPCount < 0
+        availableIPCount = 0
+
+      return availableIPCount
 
     createServerGroupMember : ( data )->
       attachment = data.resource.Attachment || {}

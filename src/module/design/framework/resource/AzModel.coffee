@@ -54,7 +54,7 @@ define [ "../GroupModel", "./VpcModel", "constant", "i18n!nls/lang.js" ], ( Grou
 
         ipCount += eni.get("ips").length
 
-      maxIpCount = MC.aws.eni.getAvailableIPCountInCIDR( cidr )
+      maxIpCount = Design.modelClassForType(constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface).getAvailableIPCountInCIDR( cidr )
       maxIpCount >= ipCount
 
     serialize : ()->

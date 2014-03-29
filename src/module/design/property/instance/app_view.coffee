@@ -90,31 +90,6 @@ define [ '../base/view', './template/app', 'i18n!nls/lang.js', 'instance_model' 
             this.trigger "OPEN_AMI", $( event.target ).data("uid")
             false
 
-        changeIPAddBtnState : () ->
-
-            disabledBtn = false
-            instanceUID = @model.get 'id'
-
-            maxIPNum = MC.aws.eni.getENIMaxIPNum(instanceUID)
-            currentENIComp = MC.aws.eni.getInstanceDefaultENI(instanceUID)
-            if !currentENIComp
-                disabledBtn = true
-                return
-
-            currentIPNum = currentENIComp.resource.PrivateIpAddressSet.length
-            if maxIPNum is currentIPNum
-                disabledBtn = true
-
-            instanceType = Design.instance().component( instanceUID ).get 'instanceType'
-
-            if disabledBtn
-                tooltipStr = sprintf(lang.ide.PROP_MSG_WARN_ENI_IP_EXTEND, instanceType, maxIPNum)
-                $('#instance-ip-add').addClass('disabled').attr('data-tooltip', tooltipStr).data('tooltip', tooltipStr)
-            else
-                $('#instance-ip-add').removeClass('disabled').attr('data-tooltip', 'Add IP Address').data('tooltip', 'Add IP Address')
-
-            null
-
         openSysLogModal : () ->
 
             instanceId = @model.get('instanceId')

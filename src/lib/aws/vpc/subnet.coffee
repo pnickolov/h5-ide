@@ -214,7 +214,7 @@ define [ 'MC', 'constant', 'i18n!nls/lang.js' ], ( MC, constant, lang ) ->
 
 		if defaultVPC
 			azName = subnetUidOrAZ
-			subnetObj = MC.aws.vpc.getAZSubnetForDefaultVPC(azName)
+			subnetObj = Design.modelClassForType(constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone).getSubnetOfDefaultVPC(azName)
 			if notForce
 				filterAry = MC.aws.eni.getAllNoAutoAssignIPInCIDR(azName)
 			subnetCIDR = subnetObj.cidrBlock
@@ -301,7 +301,7 @@ define [ 'MC', 'constant', 'i18n!nls/lang.js' ], ( MC, constant, lang ) ->
 
 	generateCIDRPossibile = () ->
 
-		currentVPCUID = MC.aws.vpc.getVPCUID()
+		currentVPCUID = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC ).theVPC().id
 		currentVPCCIDR = MC.canvas_data.component[currentVPCUID].resource.CidrBlock
 
 		vpcCIDRAry = currentVPCCIDR.split('/')
@@ -346,7 +346,7 @@ define [ 'MC', 'constant', 'i18n!nls/lang.js' ], ( MC, constant, lang ) ->
 		return result
 
 	isAbleConnectToELB = ( subnetUid ) ->
-		
+
 		subnet = MC.canvas_data.component[ subnetUid ]
 		cidr = + subnet.resource.CidrBlock.split('/')[1]
 		console.log subnet.resource.CidrBlock
@@ -354,7 +354,7 @@ define [ 'MC', 'constant', 'i18n!nls/lang.js' ], ( MC, constant, lang ) ->
 		if cidr <= 27
 			return true
 		false
-		
+
 	isIPInSubnet = (ipAddr, subnetCIDR) ->
 
 		subnetIPAry = subnetCIDR.split('/')

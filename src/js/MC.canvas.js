@@ -4097,7 +4097,7 @@ MC.canvas.event.siderbarDrag = {
 
 								new_node_id = $canvas.add(target_type, node_option, coordinate);
 
-								if (!(MC.aws.vpc.getVPCUID() && target_type === "AWS.EC2.AvailabilityZone"))
+								if (!($canvas.hasVPC() && target_type === "AWS.EC2.AvailabilityZone"))
 								{
 									//has no vpc
 									MC.canvas.select(new_node_id);

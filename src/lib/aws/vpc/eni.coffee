@@ -183,7 +183,7 @@ define [ 'MC', 'jquery' ], ( MC, $ ) ->
 		subnetCidr = ''
 
 		if defaultVPCId
-			subnetObj = MC.aws.vpc.getAZSubnetForDefaultVPC(azName)
+			subnetObj = Design.modelClassForType(constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone).getSubnetOfDefaultVPC(azName)
 			subnetCidr = subnetObj.cidrBlock
 		else
 			subnetId = MC.extractID(subnetUIDRef)

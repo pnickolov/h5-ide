@@ -155,6 +155,9 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
     else
       return lineArray
 
+  $canvas.hasVPC = ()->
+    !!Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC ).theVPC()
+
   # CanvasEvent is used to deal with the event that will trigger by MC.canvas.js
   CanvasEvent = {
     CANVAS_NODE_SELECTED : ()->

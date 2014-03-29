@@ -672,7 +672,7 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
 
 
       for ip in data.resource.PrivateIpAddressSet || []
-        autoAssign = if Design.instance().modeIsStack() then ip.autoAssign else false
+        autoAssign = if Design.instance().modeIsStack() then ip.AutoAssign else false
         ipObj = new IpObject({
           autoAssign   : autoAssign
           ip           : ip.PrivateIpAddress

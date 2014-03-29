@@ -454,51 +454,51 @@ a VPN Connection. Each VPN Connection is assigned a VPN Connection Identifier
 and is associated with two other identifiers, namely the
 Customer Gateway Identifier and the Virtual Private Gateway Identifier.
 
-Your VPN Connection ID            : {{vpnConnectionId}}
-Your Virtual Private Gateway ID   : {{vpnGatewayId}}
-Your Customer Gateway ID          : {{customerGatewayId}}
+Your VPN Connection ID		         : {{vpnConnectionId}}
+Your Virtual Private Gateway ID          : {{vpnGatewayId}}
+Your Customer Gateway ID    		 : {{customerGatewayId}}
 
 A VPN Connection consists of a pair of IPSec tunnel security associations (SAs).
 It is important that both tunnel security associations be configured.
-{{#each tunnel}}
 
+{{#each tunnel}}
 
 IPSec Tunnel #{{this.number}}
 ================================================================================
 #1: Internet Key Exchange Configuration
 
 Configure the IKE SA as follows
-	- Authentication Method         : {{this.ike_protocol_method}}
-	- Pre-Shared Key                : {{this.ike_pre_shared_key}}
-	- Authentication Algorithm      : {{this.ike_authentication_protocol_algorithm}}
-	- Encryption Algorithm          : {{this.ike_encryption_protocol}}
-	- Lifetime                      : {{this.ike_lifetime}} seconds
-	- Phase 1 Negotiation Mode      : {{this.ike_mode}}
-	- Perfect Forward Secrecy       : {{this.ike_perfect_forward_secrecy}}
+  - Authentication Method    : {{this.ike_protocol_method}}
+  - Pre-Shared Key           : {{this.ike_pre_shared_key}}
+  - Authentication Algorithm : {{this.ike_authentication_protocol_algorithm}}
+  - Encryption Algorithm     : {{this.ike_encryption_protocol}}
+  - Lifetime                 : {{this.ike_lifetime}} seconds
+  - Phase 1 Negotiation Mode : {{this.ike_mode}}
+  - Perfect Forward Secrecy  : {{this.ike_perfect_forward_secrecy}}
 
 #2: IPSec Configuration
 
 Configure the IPSec SA as follows:
-	- Protocol                      : {{this.ipsec_protocol}}
-	- Authentication Algorithm      : {{this.ipsec_authentication_protocol}}
-	- Encryption Algorithm          : {{this.ipsec_encryption_protocol}}
-	- Lifetime                      : {{this.ipsec_lifetime}} seconds
-	- Mode                          : {{this.ipsec_mode}}
-	- Perfect Forward Secrecy       : {{this.ipsec_perfect_forward_secrecy}}
+  - Protocol                 : {{this.ipsec_protocol}}
+  - Authentication Algorithm : {{this.ipsec_authentication_protocol}}
+  - Encryption Algorithm     : {{this.ipsec_encryption_protocol}}
+  - Lifetime                 : {{this.ipsec_lifetime}} seconds
+  - Mode                     : {{this.ipsec_mode}}
+  - Perfect Forward Secrecy  : {{this.ipsec_perfect_forward_secrecy}}
 
 IPSec Dead Peer Detection (DPD) will be enabled on the AWS Endpoint. We
 recommend configuring DPD on your endpoint as follows:
-	- DPD Interval                  : {{this.ipsec_interval}}
-	- DPD Retries                   : {{this.ipsec_retries}}
+  - DPD Interval             : {{this.ipsec_interval}}
+  - DPD Retries              : {{this.ipsec_retries}}
 
 IPSec ESP (Encapsulating Security Payload) inserts additional
 headers to transmit packets. These headers require additional space,
 which reduces the amount of space available to transmit application data.
 To limit the impact of this behavior, we recommend the following
 configuration on your Customer Gateway:
-	- TCP MSS Adjustment            : {{this.tcp_mss_adjustment}} bytes
-	- Clear Don't Fragment Bit      : {{this.clear_df_bit}}
-	- Fragmentation                 : {{this.fragmentation_before_encryption}}
+  - TCP MSS Adjustment       : {{this.tcp_mss_adjustment}} bytes
+  - Clear Don't Fragment Bit : {{this.clear_df_bit}}
+  - Fragmentation            : {{this.fragmentation_before_encryption}}
 
 #3: Tunnel Interface Configuration
 
@@ -519,17 +519,17 @@ The Customer Gateway inside IP address should be configured on your tunnel
 interface.
 
 Outside IP Addresses:
-	- Customer Gateway              : {{this.customer_gateway_outside_address}}
-	- Virtual Private Gateway       : {{this.vpn_gateway_outside_address}}
+  - Customer Gateway 		        : {{this.customer_gateway_outside_address}}
+  - Virtual Private Gateway	        : {{this.vpn_gateway_outside_address}}
 
 Inside IP Addresses
-	- Customer Gateway              : {{this.customer_gateway_inside_address}}
-	- Virtual Private Gateway       : {{this.vpn_gateway_inside_address}}
+  - Customer Gateway         		: {{this.customer_gateway_inside_address}}
+  - Virtual Private Gateway             : {{this.vpn_gateway_inside_address}}
 
 Configure your tunnel to fragment at the optimal size:
-	- Tunnel interface MTU          : 1436 bytes
+  - Tunnel interface MTU     : 1436 bytes
 
-
+{{#if this.isStaticRouting}}
 #4: Static Routing Configuration:
 
 To route traffic between your internal network and your VPC,
@@ -537,21 +537,42 @@ you will need a static route added to your router.
 
 Static Route Configuration Options:
 
-	- Next hop                      : {{this.next_hop}}
+  - Next hop                      : {{this.next_hop}}
 
 You should add static routes towards your internal network on the VGW.
 The VGW will then send traffic towards your internal network over
 he tunnels.
+{{else}}
+#4: Border Gateway Protocol (BGP) Configuration:
+
+The Border Gateway Protocol (BGPv4) is used within the tunnel, between the inside
+IP addresses, to exchange routes from the VPC to your home network. Each
+BGP router has an Autonomous System Number (ASN). Your ASN was provided
+to AWS when the Customer Gateway was created.
+
+BGP Configuration Options:
+  - Customer Gateway ASN	          : {{this.customer_gateway_bgp_asn}}
+  - Virtual Private  Gateway ASN          : {{this.vpn_gateway_bgp_asn}}
+  - Neighbor IP Address     		  : {{this.neighbor_ip_address}}
+  - Neighbor Hold Time       : {{this.customer_gateway_bgp_hold_time}}
+
+Configure BGP to announce routes to the Virtual Private Gateway. The gateway
+will announce prefixes to your customer gateway based upon the prefix you
+assigned to the VPC at creation time.
+{{/if}}
 {{/each}}
+
+
 
 Additional Notes and Questions
 ================================================================================
 
-	- Amazon Virtual Private Cloud Getting Started Guide:
-			http://docs.amazonwebservices.com/AmazonVPC/latest/GettingStartedGuide
-	- Amazon Virtual Private Cloud Network Administrator Guide:
-			http://docs.amazonwebservices.com/AmazonVPC/latest/NetworkAdminGuide
-	- XSL Version: 2009-07-15-1119716
+  - Amazon Virtual Private Cloud Getting Started Guide:
+      http://docs.amazonwebservices.com/AmazonVPC/latest/GettingStartedGuide
+  - Amazon Virtual Private Cloud Network Administrator Guide:
+      http://docs.amazonwebservices.com/AmazonVPC/latest/NetworkAdminGuide
+  - XSL Version: 2009-07-15-1119716
+
 
 <!-- {{modalRunStack}} -->
 <div id="modal-run-stack">
@@ -596,22 +617,20 @@ Additional Notes and Questions
 	<div class="modal-footer">
 
 		<button class="btn btn-blue" id="btn-confirm" disabled>Run Stack</button>
-		<button class="btn btn-silver modal-close">Cancel</button>
+		<button class="btn btn-silver modal-close" id="run-stack-cancel">Cancel</button>
 	</div>
 </div>
 
 <!-- {{sgRuleList}} -->
 {{#each this}}
 {{#if ../deletable}}
-<li data-uid="{{ruleSetId}}" data-protocol="{{protocol}}" data-port="{{port}}" data-relation="{{relation}}" data-direction="{{direction}}" class="pos-r sg-create-rule-item">
+<li data-uid="{{ruleSetId}}" data-protocol="{{protocol}}" data-port="{{port}}" data-relation="{{relation}}" data-relationid="{{relationId}}" data-direction="{{direction}}" class="pos-r sg-create-rule-item">
 {{else}}
 <li class="sg-create-rule-item">
 {{/if}}
 <div class="rule-list-row">
 	<div class='rule-direction-icon tooltip icon-{{direction}}' data-tooltip='{{#ifCond direction "inbound"}}{{ i18n "PROP_SG_TIP_INBOUND" }}{{else}}{{ i18n "PROP_SG_TIP_OUTBOUND" }}{{/ifCond}}'></div>
-	<div class='rule-reference tooltip truncate' data-tooltip='{{#ifCond direction "inbound"}}Source{{else}}Destination{{/ifCond}}'>
-	{{#if color}}<span class="sg-color" style="background-color:{{color}}"></span>{{/if}}
-	{{relation}}</div>
+	<div class='rule-reference tooltip truncate' data-tooltip='{{#ifCond direction "inbound"}}Source{{else}}Destination{{/ifCond}}'>{{#if color}}<span class="sg-color" style="background-color:{{color}}"></span>{{/if}}{{relation}}</div>
 </div>
 <div class="rule-list-row">
 	<div><span class="rule-protocol tooltip" data-tooltip='{{ i18n "PROP_SG_TIP_PROTOCOL" }}' >{{protocol}}</span></div>
@@ -1431,7 +1450,7 @@ Are you sure you want to delete {{name}}?</div>
 					</li>
 					<li class="key-item">
 						<div class="key mac font-mono">{{i18n "KEY_DEL_STATE_KEY_MAC"}}</div>
-						<div class="key pc font-mono">{{i18n "KEY_DEL_STATE_KEY_MAC"}}</div>
+						<div class="key pc font-mono">{{i18n "KEY_DEL_STATE_KEY_PC"}}</div>
 						<div class="action">{{i18n "KEY_DEL_STATE_ACTION"}}</div>
 					</li>
 					<li class="key-item">

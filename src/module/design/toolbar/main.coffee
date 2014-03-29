@@ -44,7 +44,6 @@ define [ 'jquery',
 
             ide_event.onLongListen ide_event.SWITCH_TAB, () ->
                 setTimeout () ->
-                    console.log 'SWITCH_TAB toolbar id:' + MC.common.other.canvasData.get 'id'
                     model.setTabFlag(true)
                 , 500
 

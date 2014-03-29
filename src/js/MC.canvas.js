@@ -4963,7 +4963,7 @@ MC.canvas.event.keyEvent = function (event)
 
 	if (
 		$('#modal-wrap')[0] !== undefined ||
-		$('.sub-stateeditor').css('display') === "block" ||
+		($('.sub-stateeditor').css('display') === "block" && (event.which !== 46 && event.which !== 8)) ||
 		Tabbar.current === 'dashboard'
 	)
 	{
@@ -5010,13 +5010,17 @@ MC.canvas.event.keyEvent = function (event)
 			//event.target === document.body
 		)
 		{
+			if (event.ctrlKey) {
+				return true;
+			}
+
 			MC.canvas.volume.close();
 			$.each(selected_node, function (index, id)
 			{
 				$canvas( id ).remove();
 			});
 
-			selected_node.length = 0;
+			// selected_node.length = 0;
 
 			return false;
 		}
@@ -5270,7 +5274,10 @@ MC.canvas.event.keyEvent = function (event)
 		}
 
 		// Open state editor - [Enter]
-		if (keyCode === 13)
+		if (
+			keyCode === 13 &&
+			MC.canvas.getState() !== "appview"
+		)
 		{
 			var type = $canvas( $canvas.selected_node()[ 0 ] ).type;
 
@@ -5288,7 +5295,8 @@ MC.canvas.event.keyEvent = function (event)
 		// Show state editor - [S]
 		if (
 			keyCode === 83 &&
-			selected_node.length === 1
+			selected_node.length === 1 &&
+			MC.canvas.getState() !== "appview"
 		)
 		{
 			var type = $canvas( $canvas.selected_node()[ 0 ] ).type;

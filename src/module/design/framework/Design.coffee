@@ -298,7 +298,7 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
     Design.trigger = Backbone.Events.trigger
     Design.trigger Design.EVENT.Deserialized
 
-    @save()
+    # @save()
     null
 
   ### Private Interface ###
@@ -413,6 +413,11 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
   DesignImpl.prototype.save = ( canvas_data )->
 
     if canvas_data
+
+      # Normalize stack version in case some old stack is not using date as the version
+      if canvas_data.version.split("-").length < 3
+        canvas_data.version = "2013-09-03"
+
       component = canvas_data.component
       layout    = canvas_data.layout
 
@@ -653,6 +658,12 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
             delete resource_list[ val.InstanceId ]
 
       delete resource_list[ appId ]
+      #delete elb attributes (disable these code because it's already embed in ELB)
+      # if comp.type is constant.AWS_RESOURCE_TYPE.AWS_ELB
+      #   elb_name = comp.get("name") + "---" + Design.instance().get("id")
+      #   if resource_list[ elb_name ]
+      #     delete resource_list[ elb_name ]
+
 
     #clear Subscriptions in current app
     subList = resource_list.Subscriptions

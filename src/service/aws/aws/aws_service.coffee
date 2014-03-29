@@ -250,7 +250,7 @@ define [ 'MC', 'common_handle', 'result_vo', 'constant', 'ebs_service', 'eip_ser
 				if addition is 'vpc'
 					aws_result.is_error = true
 
-					aws_result.error_message = "Failed to visualize VPC. Try to refresh resources or contact MadeiraCloud."
+					aws_result.error_message = "Failed to visualize VPC. Try to refresh resources or contact VisualOps."
 
 					aws_result.return_code = 15
 
@@ -709,7 +709,7 @@ define [ 'MC', 'common_handle', 'result_vo', 'constant', 'ebs_service', 'eip_ser
 
 				aws_result.is_error = true
 
-				aws_result.error_message = "We can not reverse your app, please contact MadeiraCloud"
+				aws_result.error_message = "We can not reverse your app, please contact VisualOps"
 
 				aws_result.return_code = 15
 

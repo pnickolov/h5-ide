@@ -86,7 +86,10 @@ define [ "./ResourceModel", "Design", "CanvasManager", "./canvasview/CanvasEleme
           return cn
 
       # Assign components to the connection.
-      @assignCompsToPorts( p1Comp, p2Comp )
+      if not @assignCompsToPorts( p1Comp, p2Comp )
+        console.error "Trying to connect components while the connection does not support them : ", [ p1Comp, p2Comp ]
+        return
+
 
       # Call super constructor
       ResourceModel.call(this, attr, option)
@@ -138,14 +141,14 @@ define [ "./ResourceModel", "Design", "CanvasManager", "./canvasview/CanvasEleme
             @__port2Comp = p1Comp
             break
 
-        console.assert( @__portDef, "Trying to connect components while the connection does not support them : ", [ p1Comp, p2Comp ] )
+        return !!@__portDef
 
       else
         # If there's no portDefs, we directly assign the parameter to this
         @__port1Comp = p1Comp
         @__port2Comp = p2Comp
 
-      null
+      return true
 
     port : ( id, attr )->
       if not @__portDef then return ""

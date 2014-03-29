@@ -10,8 +10,7 @@ define [ "constant", "../ConnectionModel", "../ResourceModel", "component/sgrule
       # Override the constructor to determine if the line should be created.
       # Using the `@setDestroyAfterInit()` has its limilation
 
-      @assignCompsToPorts( p1Comp, p2Comp )
-      if not @shouldCreateLine()
+      if not @assignCompsToPorts( p1Comp, p2Comp ) or not @shouldCreateLine()
         return
 
       ConnectionModel.call this, p1Comp, p2Comp, attr, option

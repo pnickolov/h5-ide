@@ -20,7 +20,7 @@ define [ "Design",
         height   : 9
 
         internal  : if Design.instance().typeIsClassic() then false else true
-        crossZone : false
+        crossZone : true
 
         # HealthCheck
         healthyThreshold    : "9"
@@ -39,6 +39,12 @@ define [ "Design",
 
         # AvailabilityZones ( This attribute is used to store which AZ is attached to Elb in Classic ). It stores AZ's name, not reference
         AvailabilityZones : []
+
+        # Connection draining
+        ConnectionDraining: {
+          Enabled: true,
+          Timeout: 300
+        }
       }
 
     type : constant.AWS_RESOURCE_TYPE.AWS_ELB
@@ -246,6 +252,7 @@ define [ "Design",
           Subnets : subnets
           Instances : []
           CrossZoneLoadBalancing : @get("crossZone")
+          ConnectionDraining: @get("ConnectionDraining")
           VpcId                  : @getVpcRef()
           LoadBalancerName       : @get("elbName") or @get("name")
           SecurityGroups         : sgs
@@ -283,6 +290,10 @@ define [ "Design",
 
         internal  : data.resource.Scheme is 'internal'
         crossZone : !!data.resource.CrossZoneLoadBalancing
+        ConnectionDraining : data.resource.ConnectionDraining || {
+          Enabled: true,
+          Timeout: 300
+        }
         listeners : []
         dnsName   : data.resource.DNSName
         elbName   : data.resource.LoadBalancerName

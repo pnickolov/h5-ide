@@ -122,7 +122,7 @@ define [ "constant", "../ConnectionModel", "Design" ], ( constant, ConnectionMod
     addRawRule : ( ruleOwner, direction, rawRule ) ->
       console.assert( ruleOwner is @port1Comp().id or ruleOwner is @port2Comp().id or ruleOwner is @port1Comp().get("name") or ruleOwner is @port2Comp().get("name"), "Invalid ruleOwner, when adding a raw rule to SgRuleSet : ", ruleOwner )
       console.assert( direction is SgRuleSet.DIRECTION.BIWAY or direction is SgRuleSet.DIRECTION.IN or direction is SgRuleSet.DIRECTION.OUT, "Invalid direction, when adding a raw rule to SgRuleSet : ", rawRule )
-      console.assert( rawRule.fromPort isnt undefined and rawRule.toPort isnt undefined and typeof rawRule.protocol is "string", "Invalid rule, when adding a raw rule to SgRuleSet : ", rawRule )
+      console.assert( ("#{rawRule.protocol}" is "-1" or rawRule.protocol is "all") or rawRule.fromPort or rawRule.toPort, "Invalid rule, when adding a raw rule to SgRuleSet : ", rawRule )
 
       if Design.instance().typeIsClassic() and direction is SgRuleSet.DIRECTION.OUT
         console.warn( "Ignoring setting outbound rule in Classic Mode " )
@@ -136,7 +136,7 @@ define [ "constant", "../ConnectionModel", "Design" ], ( constant, ConnectionMod
         fromPort : "" + rawRule.fromPort
         toPort   : "" + rawRule.toPort
       }
-      if rule.protocol is "-1" or rule.protocol is "all"
+      if "#{rule.protocol}" is "-1" or rule.protocol is "all"
         rule.protocol = "all"
         rule.fromPort = "0"
         rule.toPort   = "65535"
@@ -372,7 +372,7 @@ define [ "constant", "../ConnectionModel", "Design" ], ( constant, ConnectionMod
           if res1SgMap[ ruleset.getOtherTarget( sg ).id ]
             foundRuleSet.push ruleset
 
-      foundRuleSet
+      _.uniq foundRuleSet
 
     # Get plain objects from an ruleset array.
     # The objects are guaranteed to be unique

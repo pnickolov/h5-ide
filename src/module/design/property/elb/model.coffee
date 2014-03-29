@@ -79,6 +79,14 @@ define [ '../base/model', "event", "Design", 'constant' ], ( PropertyModel, ide_
                     name: sslCertModel.get('name'),
                     selected: currentSSLCert is sslCertModel
                 }
+
+            if attr.ConnectionDraining
+                if attr.ConnectionDraining.Enabled is true
+                    attr.connectionDrainingEnabled = true
+                    attr.connectionDrainingTimeout = attr.ConnectionDraining.Timeout
+                else
+                    attr.connectionDrainingEnabled = false
+
             @set attr
             null
 
@@ -191,6 +199,16 @@ define [ '../base/model', "event", "Design", 'constant' ], ( PropertyModel, ide_
 
             return otherCertNameAry
 
+        setConnectionDraining : (enabled, timeout) ->
+
+            if not enabled
+                timeout = null
+
+            elbModel = Design.instance().component( @get("uid") )
+            elbModel.set('ConnectionDraining', {
+                Enabled: enabled,
+                Timeout: timeout
+            })
     }
 
     new ElbModel()

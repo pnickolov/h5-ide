@@ -102,8 +102,6 @@ require.config {
 		#############################################
 		# model                     # Merge in deploy
 		#############################################
-
-		#base_model
 		'base_model'             : 'model/base_model'
 
 		'account_model'          : 'model/account_model'

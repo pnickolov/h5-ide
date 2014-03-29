@@ -3453,6 +3453,27 @@ var API_DATA_LIST = {
             "value"  : "null"
           }
         }
+      },
+      "DescribeLoadBalancerAttributes" : {
+        "method"  : "/aws/elb:DescribeLoadBalancerAttributes",
+        "param"   : {
+          "username" : {
+            "type"   : "String",
+            "value"  : "null"
+          },
+          "session_id" : {
+            "type"   : "String",
+            "value"  : "null"
+          },
+          "region_name" : {
+            "type"   : "String",
+            "value"  : "null"
+          },
+          "elb_name" : {
+            "type"   : "String",
+            "value"  : "null"
+          }
+        }
       }
     }
   },

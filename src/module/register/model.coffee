@@ -14,6 +14,13 @@ define [ 'MC', 'event', 'account_model', 'session_model', 'common_handle', 'cryp
             this.on 'ACCOUNT_CHECK__REPEAT_RETURN', ( forge_result ) ->
                 console.log 'ACCOUNT_CHECK__REPEAT_RETURN'
                 console.log forge_result
+
+                # test
+                #if not _.isEmpty( forge_result.param[1] ) and not _.isEmpty( forge_result.param[2] )
+                #    forge_result.is_error = true
+                #    forge_result.error_message = 'sdfsfsdfadaddaadfs'
+                #    forge_result.return_code = 12
+
                 if !forge_result.is_error
                     if forge_result.param[1] and forge_result.param[2]
                         #this.trigger 'USERNAME_EMAIL_VALID'
@@ -37,6 +44,10 @@ define [ 'MC', 'event', 'account_model', 'session_model', 'common_handle', 'cryp
                             this.trigger 'USERNAME_EMAIL_REPEAT'
                         else
                             console.log 'other error'
+                            if not _.isEmpty( forge_result.param[1] ) and not _.isEmpty( forge_result.param[2] )
+                                this.trigger 'RESET_CREATE_ACCOUNT', forge_result.return_code
+                            else
+                                this.trigger 'OTHER_ERROR'
                 null
 
         checkRepeatService : ( username, email, password ) ->
@@ -53,31 +64,14 @@ define [ 'MC', 'event', 'account_model', 'session_model', 'common_handle', 'cryp
                 console.log 'ACCOUNT_REGISTER_RETURN'
                 console.log forge_result
                 if !forge_result.is_error
-                    #
-                    #result = forge_result.resolved_data
 
-                    #
-                    #common_handle.cookie.deleteCookie()
-
-                    #set cookies
-                    #common_handle.cookie.setCookie result
-
-                    #set madeiracloud_ide_session_id
-                    #result.new_account = true
-                    #common_handle.cookie.setCookie result
-                    #common_handle.cookie.setIDECookie result
-                    #
                     sessionStorage.setItem 'username', forge_result.param[ 1 ]
                     sessionStorage.setItem 'password', forge_result.param[ 2 ]
 
-
                     window.location.href = "/register/#success"
-
-
-
                 else
                     #login failed
-                    this.trigger 'RESET_CREATE_ACCOUNT'
+                    this.trigger 'RESET_CREATE_ACCOUNT', forge_result.return_code
 
                 null
 
@@ -115,12 +109,10 @@ define [ 'MC', 'event', 'account_model', 'session_model', 'common_handle', 'cryp
                     intercom_sercure_mode_hash = () ->
                         intercom_api_secret = '4tGsMJzq_2gJmwGDQgtP2En1rFlZEvBhWQWEOTKE'
                         hash = CryptoJS.HmacSHA256( MC.base64Decode($.cookie('email')), intercom_api_secret )
-                        console.log 'hash.toString(CryptoJS.enc.Hex) = ' + hash.toString(CryptoJS.enc.Hex)
                         return hash.toString CryptoJS.enc.Hex
                     localStorage.setItem 'user_hash', intercom_sercure_mode_hash()
 
                     window.location.href = "/"
-
 
                     null
 

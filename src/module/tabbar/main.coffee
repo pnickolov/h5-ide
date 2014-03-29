@@ -181,8 +181,15 @@ define [ 'jquery', 'event', 'base_main',
                         model.once 'GET_STACK_COMPLETE', ( result ) ->
                             console.log 'GET_STACK_COMPLETE', result
                             console.log result
-                            ide_event.trigger ide_event.SWITCH_TAB, 'OPEN_STACK', tab_id, model.get( 'stack_region_name' ), result, result.resolved_data[0].platform
-                            ide_event.trigger ide_event.UPDATE_DESIGN_TAB_ICON, 'stack', tab_id
+
+                            # check result valid
+                            if MC.common.other.isResultRight( result ) is true
+                                ide_event.trigger ide_event.SWITCH_TAB, 'OPEN_STACK', tab_id, model.get( 'stack_region_name' ), result, result.resolved_data[0].platform
+                                ide_event.trigger ide_event.UPDATE_DESIGN_TAB_ICON, 'stack', tab_id
+                            else
+                                ide_event.trigger ide_event.CLOSE_DESIGN_TAB, result.param[4][0]
+                                ide_event.trigger ide_event.SWITCH_MAIN
+
                         model.getStackInfo tab_id
 
                     else if tab_id.split( '-' )[0] is 'import'
@@ -216,6 +223,7 @@ define [ 'jquery', 'event', 'base_main',
 
                     else
                         ide_event.trigger ide_event.CLOSE_DESIGN_TAB, result.param[4][0]
+                        ide_event.trigger ide_event.SWITCH_MAIN
 
                 model.getAppInfo tab_id
 

@@ -34,7 +34,7 @@ define [ "constant", "../ComplexResModel", "../ConnectionModel"  ], ( constant, 
           CertificateBody : @get("body")
           CertificateChain : @get("chain")
           ServerCertificateMetadata :
-            ServerCertificateName : @get("name")
+            ServerCertificateName : @get("appName") or @get("name")
             Arn : @get("arn") or ""
             ServerCertificateId : @get("certId") or ""
       }}
@@ -47,13 +47,14 @@ define [ "constant", "../ComplexResModel", "../ConnectionModel"  ], ( constant, 
     handleTypes : constant.AWS_RESOURCE_TYPE.AWS_IAM_ServerCertificate
     deserialize : ( data )->
       new SslCertModel({
-        id     : data.uid
-        name   : data.name
-        body   : data.resource.CertificateBody
-        chain  : data.resource.CertificateChain
-        key    : data.resource.PrivateKey
-        arn    : data.resource.ServerCertificateMetadata.Arn
-        certId : data.resource.ServerCertificateMetadata.ServerCertificateId
+        id      : data.uid
+        name    : data.name
+        body    : data.resource.CertificateBody
+        chain   : data.resource.CertificateChain
+        key     : data.resource.PrivateKey
+        arn     : data.resource.ServerCertificateMetadata.Arn
+        certId  : data.resource.ServerCertificateMetadata.ServerCertificateId
+        appName : data.resource.ServerCertificateMetadata.ServerCertificateName
       })
       null
   }

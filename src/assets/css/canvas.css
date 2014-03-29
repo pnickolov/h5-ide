@@ -1067,8 +1067,8 @@
 	margin-right: 5px;
 }
 
-.sg-color-header {
-	margin-top: 12px;
+#property-second-title > .sg-color {
+	margin-top : 12px;
 }
 
 /* instance state */

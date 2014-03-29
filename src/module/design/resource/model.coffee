@@ -26,6 +26,9 @@ define [ 'i18n!nls/lang.js',
         # include describeAvailableZonesService | quickstartService | describeStackAmiService
         service_count : 0
 
+        setting:
+            noReset: false
+
         initialize : ->
 
             me = this
@@ -271,7 +274,7 @@ define [ 'i18n!nls/lang.js',
 
                 if !result.is_error and  result.resolved_data
                     community_ami_list = _.extend result.resolved_data.ami, {timestamp: ( new Date() ).getTime()}
-                    favorite_ami_ids = _.pluck ( me.get 'favorite_ami' ), 'resource_id'
+                    favorite_ami_ids = _.pluck ( _.filter me.get('favorite_ami'), (f) -> not f.delete ), 'resource_id'
 
                     for key, value of community_ami_list.result
                         if _.contains favorite_ami_ids, key
@@ -293,7 +296,9 @@ define [ 'i18n!nls/lang.js',
 
             ######listen FAVORITE_INFO_RETURN
             me.on 'FAVORITE_INFO_RETURN', ( result ) ->
-
+                if @setting.noReset
+                    @setting.noReset = false
+                    return
                 region_name = result.param[3]
                 console.log 'FAVORITE_INFO_RETURN: ' + region_name
 
@@ -303,6 +308,7 @@ define [ 'i18n!nls/lang.js',
 
                 _.map legalData, ( value, key ) ->
 
+                    value.amiVO = value.resource_info
                     value.resource_info = JSON.parse value.resource_info
 
                     _.map value.resource_info, ( val, key ) ->
@@ -329,6 +335,7 @@ define [ 'i18n!nls/lang.js',
 
                 console.log 'get favorite ami: -> data region: ' + region_name + ', stack region: ' + MC.canvas_data.region
                 if region_name == MC.canvas_data.region
+                    me.set 'favorite_ami', null
                     me.set 'favorite_ami', legalData
 
                 #cache favorite_ami
@@ -358,7 +365,7 @@ define [ 'i18n!nls/lang.js',
                 console.log 'FAVORITE_REMOVE_RETURN: ' + region_name
                 if !result.is_error
                     delete MC.data.config[region_name].favorite_ami
-                    me.favoriteAmiService region_name
+                    #me.favoriteAmiService region_name
                     notification 'info', lang.ide.RES_MSG_INFO_REMVOE_FAVORITE_AMI_SUCCESS
                 else
                     notification 'error', lang.ide.RES_MSG_ERR_REMOVE_FAVORITE_AMI_FAILED
@@ -636,12 +643,11 @@ define [ 'i18n!nls/lang.js',
 
             me = this
 
-            #init
-            me.set 'favorite_ami', null
 
             #check cached data
             if MC.data.config[region_name] and MC.data.config[region_name].favorite_ami
-
+                #init
+                me.set 'favorite_ami', null
                 me.set 'favorite_ami', MC.data.config[region_name].favorite_ami
 
             else
@@ -651,9 +657,14 @@ define [ 'i18n!nls/lang.js',
 
             null
 
-        addFav: ( region_name, amiId ) ->
+        addFav: ( region_name, amiId, amiVO, noReset ) ->
+            @setting.noReset = noReset
+            if noReset
+                ami = _.findWhere @get('favorite_ami'), resource_id: amiId
+                delete ami.delete
+                @trigger 'change:favorite_ami'
             # temp hack
-            amiVO = JSON.stringify @get( 'community_ami' ).result[ amiId ]
+            amiVO = JSON.stringify @get( 'community_ami' ).result[ amiId ] if not amiVO
             amiId = { id: amiId, provider: 'AWS', 'resource': 'AMI', service: 'EC2' }
 
             me =  this
@@ -678,8 +689,10 @@ define [ 'i18n!nls/lang.js',
 
             else if action is 'remove'
                 favorite_ami = @get 'favorite_ami'
-                new_favorite_ami = _.reject favorite_ami, ( ami ) ->
-                    return ami.resource_id is data
+                new_favorite_ami = _.map favorite_ami, ( ami ) ->
+                    if ami.resource_id is data
+                        return _.extend {}, ami, {delete: true}
+                    ami
 
                 @set 'favorite_ami', new_favorite_ami
 

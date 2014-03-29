@@ -4,12 +4,38 @@
 
 define [ 'MC', 'event', 'handlebars'
 		 'i18n!nls/lang.js',
-		 './view', 'canvas_layout',
+		 'view', 'canvas_layout',
 		 'header', 'navigation', 'tabbar', 'dashboard', 'design_module', 'process',
 		 'WS', 'constant',
 		 'base_model',
 		 'common_handle', 'validation', 'aws_handle'
 ], ( MC, ide_event, Handlebars, lang, view, canvas_layout, header, navigation, tabbar, dashboard, design, process, WS, constant, base_model, common_handle, validation ) ->
+
+	console.info canvas_layout
+
+	#getMadeiracloudIDESessionID = ( ) ->
+	#
+	#	result = null
+	#
+	#	madeiracloud_ide_session_id = $.cookie 'madeiracloud_ide_session_id'
+	#	if madeiracloud_ide_session_id
+	#		try
+	#			result = JSON.parse ( MC.base64Decode madeiracloud_ide_session_id )
+	#		catch err
+	#			result = null
+	#
+	#	if result and $.type result == "array" and result.length == 7
+	#		{
+	#			userid      : result[0] ,
+	#			usercode    : result[1] ,
+	#			session_id  : result[2] ,
+	#			region_name : result[3] ,
+	#			email       : result[4] ,
+	#			has_cred    : result[5] ,
+	#			account_id	: result[6] ,
+	#		}
+	#	else
+	#		null
 
 	initialize : () ->
 
@@ -32,7 +58,7 @@ define [ 'MC', 'event', 'handlebars'
 		if !common_handle.cookie.checkAllCookie()
 			window.location.href = "/login"
 
-		#clear cookie in 'ide.madeiracloud.com'
+		#clear cookie in 'ide.visualops.io'
 		#common_handle.cookie.clearInvalidCookie()
 
 		#############################
@@ -252,7 +278,7 @@ define [ 'MC', 'event', 'handlebars'
 					if error.param[0].url is '/aws/' and error.param[0].method is 'resource'
 						notification 'warning', lang.service["ERROR_CODE_-1_MESSAGE_AWS_RESOURCE"]
 					else
-						notification 'warning', label
+						notification 'warning', lang.service[label]
 					return null
 
 				if lang.service[ label ]

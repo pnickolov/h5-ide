@@ -43,13 +43,13 @@
 <!-- {{favorite_ami_data}} -->
 {{#each favorite_ami }}
 <li class="pos-r">
-	<div class="resource-item bubble"  data-bubble-template="bubbleAMIInfo" data-bubble-data='{"id":"{{resource_info.imageId}}","name":"{{resource_info.name}}","description":"{{resource_info.description}}","architecture":"{{resource_info.architecture}}","imageLocation":"{{resource_info.imageLocation}}","isPublic":"{{resource_info.isPublic}}","kernelId":"{{resource_info.kernelId}}","rootDeviceName":"{{resource_info.rootDeviceName}}","rootDeviceType":"{{resource_info.rootDeviceType}}"}' data-component-type="node" data-type="AWS.EC2.Instance" data-option='{"imageId": "{{resource_info.imageId}}", "osType": "{{resource_info.osType}}", "architecture":"{{resource_info.architecture}}", "rootDeviceType":"{{resource_info.rootDeviceType}}", "virtualizationType":"{{resource_info.virtualizationType}}" }'>
+	<div class="resource-item bubble {{#if delete}}deleted{{/if}}"  data-bubble-template="bubbleAMIInfo" data-bubble-data='{"id":"{{resource_info.imageId}}","name":"{{resource_info.name}}","description":"{{resource_info.description}}","architecture":"{{resource_info.architecture}}","imageLocation":"{{resource_info.imageLocation}}","isPublic":"{{resource_info.isPublic}}","kernelId":"{{resource_info.kernelId}}","rootDeviceName":"{{resource_info.rootDeviceName}}","rootDeviceType":"{{resource_info.rootDeviceType}}"}' data-component-type="node" data-type="AWS.EC2.Instance" data-option='{"imageId": "{{resource_info.imageId}}", "osType": "{{resource_info.osType}}", "architecture":"{{resource_info.architecture}}", "rootDeviceType":"{{resource_info.rootDeviceType}}", "virtualizationType":"{{resource_info.virtualizationType}}" }'>
 		<div class="resource-icon resource-icon-instance">
 			<img src="assets/images/ide/ami/{{resource_info.osType}}.{{resource_info.architecture}}.{{resource_info.rootDeviceType}}.png" width='39' height='27' />
 		</div>
 		<div class="resource-label instance-label" >{{resource_info.name}}</div>
 	</div>
-	<div class="btn-fav-ami faved tooltip" data-tooltip="{{i18n 'RES_TIT_REMOVE_FROM_FAVORITE'}}" data-id="{{resource_id}}" ></div>
+	<div class="btn-fav-ami {{#if delete}}deleted{{else}}faved{{/if}} tooltip" data-tooltip="{{#unless delete}}{{i18n 'RES_TIT_ADD_TO_FAVORITE'}}{{/unless}}" data-id="{{resource_id}}" data-amiVO="{{amiVO}}"></div>
 </li>
 {{/each}}
 

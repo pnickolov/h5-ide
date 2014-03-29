@@ -168,6 +168,7 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
       $("#canvas-op-confirm").one "click", ()->
         if not comp.isRemoved()
           comp.remove()
+          $canvas.selected_node().length = 0
           ide_event.trigger ide_event.OPEN_PROPERTY
         null
 
@@ -178,6 +179,7 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
     else if res is true
       # Do remove
       comp.remove()
+      $canvas.selected_node().length = 0
       ide_event.trigger ide_event.OPEN_PROPERTY
       return true
 
@@ -225,7 +227,11 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
     null
 
   CanvasElement.prototype.clone = ( parentId, x, y )->
-    parent = @model.design().component( parentId )
+    design = @model.design()
+    if not design.modeIsStack() and not design.modeIsAppEdit()
+      return
+
+    parent = design.component( parentId )
     if not parent
       console.error "No parent is found when cloning object"
       return

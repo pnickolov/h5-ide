@@ -92,7 +92,7 @@ define [ 'event',
 		if openTab tab, uid
 			return
 		if view.currentTab is 'state' and stateStatus
-			view.renderState uid
+			view.renderState uid, type
 			updateActiveModule uid, type
 			null
 		else

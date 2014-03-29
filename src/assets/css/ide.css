@@ -3291,6 +3291,10 @@ a.sidebar-hider:before {
 	cursor: grab;
 }
 
+.resource-item.deleted {
+	opacity: .5;
+}
+
 .resource-item:hover {
 	background: rgba(255,255,255,.2);
 }
@@ -7692,4 +7696,19 @@ summary:focus {
 #experimental-modal .request-invite-content {
 	margin-bottom: 10px;
 	color: #666;
+}
+
+#stack-elb-property-panel .elb-connection-draining-input-group {
+	margin-top: 10px;
+	margin-left: 14px;
+}
+
+#stack-elb-property-panel .elb-connection-draining-input-group label {
+	margin-left: 10px;
+	margin-right: 10px;
+	margin-top: 11px;
+}
+
+#elb-connection-draining-input {
+	width: 60px;
 }

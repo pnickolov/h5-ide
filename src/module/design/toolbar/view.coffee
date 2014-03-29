@@ -91,7 +91,7 @@ define [ 'MC', 'event',
                 $( '#main-toolbar' ).html appview_tmpl this.model.attributes
 
             # type include 'app' | 'stack'
-            else if type is 'app'
+            else if type in [ 'app', 'OPEN_APP' ]
                 $( '#main-toolbar' ).html app_tmpl this.model.attributes
             else
                 $( '#main-toolbar' ).html stack_tmpl this.model.attributes
@@ -185,7 +185,8 @@ define [ 'MC', 'event',
 
                     # disable button
                     $('#btn-confirm').attr 'disabled', true
-                    $('.modal-close').attr 'disabled', true
+                    $('.modal-header .modal-close').hide()
+                    $('#run-stack-cancel').attr 'disabled', true
 
                     # push SAVE_STACK event
                     #ide_event.trigger ide_event.SAVE_STACK, MC.common.other.canvasData.data()

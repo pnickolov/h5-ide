@@ -36,6 +36,7 @@ define [ 'event',
                 .on( 'click',            '#community_ami_page_next',            this, this.searchCommunityAmiNext )
                 .on( 'click',            '#community_ami_table .toggle-fav',    this, this.toggleFav )
                 .on( 'click',            '.favorite-ami-list .faved',           this, this.removeFav )
+                .on( 'click',            '.favorite-ami-list .btn-fav-ami.deleted',         this, this.addFav )
                 .on( 'keypress',         '#community-ami-input',                this, this.searchCommunityAmiCurrent)
 
             $( window ).on "resize", _.bind( this.resizeAccordion, this )
@@ -179,12 +180,20 @@ define [ 'event',
             $this.trigger 'mouseenter', event
 
 
+        addFav: ( event ) ->
+            resourceView = event.data
+            target = $ event.currentTarget
+            #target.trigger 'mouseleave' )
+            id = target.data( 'id' )
+            amiVO = target.data( 'amivo' )
+            resourceView.trigger 'TOGGLE_FAV', resourceView.region, 'add', id, amiVO, true
+
         removeFav : ( event ) ->
             resourceView = event.data
             target = $ event.currentTarget
             #target.trigger 'mouseleave' )
             id = target.data( 'id' )
-            resourceView.trigger 'TOGGLE_FAV', resourceView.region, 'remove', id
+            resourceView.trigger 'TOGGLE_FAV', resourceView.region, 'remove', id,
 
         toggleResourcePanel : ->
             console.log 'toggleResourcePanel'
@@ -385,11 +394,13 @@ define [ 'event',
             if this.model.attributes.community_ami
                 this_tr = ""
                 _.map this.model.attributes.community_ami.result, ( value, key ) ->
+                    value.favorite = false if value.delete
                     fav_class = if value.favorite then 'faved' else ''
+                    tooltip = if value.favorite then lang.ide.RES_TIT_REMOVE_FROM_FAVORITE else lang.ide.RES_TIT_ADD_TO_FAVORITE
                     bit         = if value.architecture == 'i386' then '32' else '64'
                     visibility  = if value.isPublic then 'public' else 'private'
                     this_tr += '<tr class="item" data-id="'+key+' '+value.name+'" data-publicprivate="public" data-platform="'+value.osType+'" data-ebs="'+value.rootDeviceType+'" data-bit="'+bit+'">'
-                    this_tr += '<td class="ami-table-fav"><div class="toggle-fav tooltip ' + fav_class + '" data-tooltip="Add to Favorite" data-id="'+key+'"></div></td>'
+                    this_tr += '<td class="ami-table-fav"><div class="toggle-fav tooltip ' + fav_class + '" data-tooltip="' + tooltip + '" data-id="'+key+'"></div></td>'
                     this_tr += '<td class="ami-table-id">'+key+'</td>'
                     this_tr += '<td class="ami-table-info"><span class="ami-table-name">' + value.name + '</span><div class="ami-meta"><i class="icon-' + value.osType + ' icon-ami-os"></i><span>' + visibility + ' | ' + value.architecture + ' | ' + value.rootDeviceType + '</span></div></td>'
                     this_tr += "<td class='ami-table-size'>#{value.imageSize}</td></tr>"

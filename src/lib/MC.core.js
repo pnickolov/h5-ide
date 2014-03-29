@@ -595,7 +595,8 @@ MC.cacheForDev = function( key, data, callback ) {
 	/* env:dev*/
 
 	if ( key && data ) {
-		if ( !data.hasOwnProperty('resolved_data') || data.resolved_data )
+		// don't cache if resolved_data is null or is_error is true
+		if ( !data.is_error && (!data.hasOwnProperty('resolved_data') || data.resolved_data) )
 			MC.session.set( key, data );
 
 		return;

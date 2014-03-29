@@ -121,7 +121,7 @@ define [ 'event',
 
                 else if Design.instance().modeIsApp()
                     resId = uid
-                    effective = MC.aws.instance.getEffectiveId resId
+                    effective = Design.modelClassForType(constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance).getEffectiveId resId
                     uid = effective.uid
 
 

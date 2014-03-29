@@ -226,23 +226,8 @@ define [ 'MC', 'event',
                     if MC.aws.aws.checkStackName id, new_name
                         modal.close()
 
-                        # old design flow
-                        #MC.canvas_data.name = new_name
-
                         # new design flow
                         MC.common.other.canvasData.set 'name', new_name
-
-                        # old design flow +++++++++++++++++++++++++++
-                        # #expand components
-                        # MC.canvas_data = MC.forge.stack.expandServerGroup MC.canvas_data
-                        # #save stack
-                        # ide_event.trigger ide_event.SAVE_STACK, MC.canvas.layout.save()
-                        # #compact and update canvas
-                        # MC.canvas_data = MC.forge.stack.compactServerGroup json_data
-                        # old design flow +++++++++++++++++++++++++++
-
-                        # old design flow
-                        #ide_event.trigger ide_event.SAVE_STACK, MC.canvas_data
 
                         # new design flow
                         ide_event.trigger ide_event.SAVE_STACK, MC.common.other.canvasData.data()
@@ -251,23 +236,8 @@ define [ 'MC', 'event',
 
             else
 
-                # old design flow
-                #MC.canvas_data.name = name
-
                 # new design flow
                 MC.common.other.canvasData.set 'name', name
-
-                # old design flow +++++++++++++++++++++++++++
-                # #expand components
-                # MC.canvas_data = MC.forge.stack.expandServerGroup MC.canvas_data
-                # #save stack
-                # ide_event.trigger ide_event.SAVE_STACK, MC.canvas.layout.save()
-                # #compact and update canvas
-                # MC.canvas_data = MC.forge.stack.compactServerGroup MC.canvas_data
-                # old design flow +++++++++++++++++++++++++++
-
-                # old design flow
-                #ide_event.trigger ide_event.SAVE_STACK, MC.canvas_data
 
                 # new design flow
                 ide_event.trigger ide_event.SAVE_STACK, MC.common.other.canvasData.data()

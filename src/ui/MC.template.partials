@@ -212,13 +212,6 @@
 			{{{this}}}
 		{{/each}}
 		</dl>
-
-		{{#each btns}}
-			{{#if this.download}}
-				<a class='btn btn-primary' href="data://text/plain;base64,{{{this.filecontent}}}" download="{{{this.filename}}}.txt">{{this.btnname}}</a>
-			{{/if}}
-		{{/each}}
-
 		{{#if detail_table}}
 		<br />
 		<br />

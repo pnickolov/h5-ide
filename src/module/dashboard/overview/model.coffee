@@ -865,15 +865,6 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                     else
                         parse_sub_info = parse_table
 
-            if keys_to_parse.btns
-                parse_btns  = MC.aws.vpn.generateDownload keys_to_parse.btns, value_to_parse
-                if parse_btns
-                    parse_btns = '"btns":' + parse_btns
-                    if parse_sub_info
-                        parse_sub_info = parse_sub_info + ', ' + parse_btns
-                    else
-                        parse_sub_info = parse_btns
-
             if parse_result
                 parse_result = '{' + parse_result
                 if parse_sub_info

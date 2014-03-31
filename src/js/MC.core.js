@@ -9,14 +9,13 @@
 # **********************************************************
 */
 
-var MC_HOST = 'https://api.visualops.io/';
+var API_HOST = 'https://api.visualops.io';
 
 var MC = {
 	// Global Variable
-	API_URL: MC_HOST,
 	IMG_URL: './assets/images/',
-	WS_URL: MC_HOST + 'ws/',//-> 8300
-	SAVEPNG_URL: MC_HOST + 'export/',//->8400
+	WS_URL: API_HOST + '/ws/',//-> 8300
+	SAVEPNG_URL: API_HOST + '/export/',//->8400
 
 	current_module : {},
 
@@ -76,66 +75,23 @@ var MC = {
 	 */
 	api: function (option)
 	{
-		var api_frame = $('#api-frame'),
-			guid = MC.guid(),
-			callback = function(event)
-			{
-				var data = event.originalEvent.data,
-					option = MC.api_queue[data.id];
-
-				if (data.call === 'success' && option.success)
-				{
-					option.success(data.result[1], data.result[0]);
-					/*try{
-						option.success(data.result[1], data.result[0]);
-					}
-					catch(error)
-					{
-						console.info(error);
-					}*/
-				}
-				if (data.call === 'error' && option.error)
-				{
-					option.error(data.status, -1);
-				}
-				delete MC.api_queue[data.id];
+		$.ajax({
+			url: API_HOST + option.url,
+			dataType: 'json',
+			type: 'POST',
+			data: JSON.stringify({
+				jsonrpc: '2.0',
+				id: MC.guid(),
+				method: option.method || '',
+				params: option.data || {}
+			}),
+			success: function(res){
+				option.success(res.result[1], res.result[0]);
 			},
-			postMessage = function (guid)
-			{
-				var option = MC.api_queue[guid];
-
-				if (api_frame[0] !== undefined)
-				{
-					api_frame[0].contentWindow.postMessage({
-						id: guid,
-						url: '' + option.url,
-						method: option.method || '',
-						params: option.data || {}
-					}, '*');
-				}
-			};
-
-		MC.api_queue[guid] = option;
-
-		if (!api_frame[0])
-		{
-			$(document.body).append('<iframe id="api-frame" src="' + MC.API_URL + 'api.html" style="display:none;"></iframe>');
-			api_frame = $('#api-frame');
-			api_frame.load(function ()
-			{
-				api_frame[0].docLoad = true;
-				$.each(MC.api_queue, function (guid, option)
-				{
-					postMessage(guid);
-				});
-			});
-			$(window).on('message', callback);
-		}
-
-		if (api_frame[0].docLoad === true)
-		{
-			postMessage(guid);
-		}
+			error: function(xhr, status, error){
+				option.error(status, -1);
+			}
+		});
 	},
 
 	browserDetect: function ()
@@ -571,7 +527,10 @@ MC.cacheForDev = function( key, data, callback ) {
 	/* env:dev*/
 
 	if ( key && data ) {
-		MC.session.set( key, data );
+		// don't cache if resolved_data is null or is_error is true
+		if ( !data.is_error && (!data.hasOwnProperty('resolved_data') || data.resolved_data) )
+			MC.session.set( key, data );
+
 		return;
 	}
 

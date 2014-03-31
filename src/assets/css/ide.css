@@ -94,14 +94,14 @@ button {
 
 /* Header */
 #header-wrapper {
-	border-top: 4px solid #c16aa2;
+	border-top: 4px solid #9e62d4;
 	background-color: #303030;
 	position: relative;
 	height: 45px;
 }
 
 #header {
-	background: #303030;
+	/*background: #303030;*/
 	height: 45px;
 	z-index: 10;
 	position: absolute;
@@ -153,7 +153,7 @@ button {
 }
 
 .header-menu > .dropdown > .js-toggle-dropdown:hover {
-	color: #c16aa2;
+	color: #9e62d4;
 }
 
 .header-menu .dropdown:hover,
@@ -924,7 +924,7 @@ button {
 }
 
 .nav-stack-region-title:hover .nav-new-stack:hover {
-	color: #c16aa2
+	color: #9e62d4
 }
 
 .nav-head {
@@ -1199,7 +1199,7 @@ button {
 }
 
 /*#global-create-stack:hover {
-	background-color: #c472a7;
+	background-color: #B27BE4;
 }*/
 
 #region-switch.disabled,
@@ -1804,7 +1804,7 @@ button {
 
 #global-region-resource-vpn,
 #global-region-resource-vpn .global-region-resource-location-count {
-	color: #c16aa2;
+	color: #9e62d4;
 }
 
 #global-resource-icon-eip {
@@ -2060,7 +2060,7 @@ button {
 
 
 .nav-new-stack:hover {
-	color: #c16aa2;
+	color: #9e62d4;
 }
 
 .nav-stack-region-title:hover {
@@ -2655,7 +2655,7 @@ button {
 }
 
 #btn-create-stack:hover {
-	color: #c16aa2;
+	color: #9e62d4;
 }
 
 .thumbnail-name {
@@ -3064,7 +3064,7 @@ td.table-action a.btn {
 }
 
 .btn-toolbar:hover {
-	color: #c472a7;
+	color: #B27BE4;
 	background-color: rgba(0,0,0,.05);
 }
 
@@ -3083,7 +3083,7 @@ td.table-action a.btn {
 }
 
 .btn-toolbar:hover .selection, .btn-toolbar.open .selection {
-	color : #c472a7 !important;
+	color : #B27BE4 !important;
 }
 
 .btn-toolbar.selectbox {
@@ -3183,7 +3183,7 @@ td.table-action a.btn {
 }
 
 #apply-visops {
-	background   : #c16aa2;
+	background   : #9e62d4;
 	position     : absolute;
 	display      : inline-block;
 	right        : 10px;
@@ -4093,7 +4093,7 @@ a.sidebar-hider:before {
 .add-rule:hover {
 	color         : #fff;
 	/*text-shadow : 0 2px rgba(0,0,0,.8);*/
-	background    : #c16aa2;
+	background    : #9e62d4;
 	line-height   : 32px;
 	box-shadow    : -1px 0 0 0 rgba(0,0,0,.5);
 }
@@ -6452,7 +6452,7 @@ summary:focus {
 }
 
 #Intercom {
-	background    : #c16aa2;
+	background    : #9e62d4;
 	border        : 1px solid #333;
 	border-bottom : none;
 	border-radius : 4px 4px 0 0;
@@ -6479,7 +6479,7 @@ summary:focus {
 #Intercom:hover {
 	left: -34px;
 	color: #fff;
-	background: #c472a7;
+	background: #B27BE4;
 }
 
 .icon-feedback {
@@ -7295,7 +7295,7 @@ summary:focus {
 }
 
 #property-panel.state #btn-switch-property:hover {
-	color: #c472a7;
+	color: #B27BE4;
 	background-color: rgba(0,0,0,.05);
 }
 

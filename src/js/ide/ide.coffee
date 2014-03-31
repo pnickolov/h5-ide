@@ -409,4 +409,22 @@ define [ 'MC', 'event', 'handlebars'
 
 		listenImportList()
 
+
+		###########################
+		# Dispaly stop supporting classic and default VPC notification
+		###########################
+		displaySystemNotice = () ->
+
+			isDisplayed = $.cookie('notice-sn')
+
+			if isDisplayed is undefined
+				$( "#wrapper" ).before MC.template.systemNotice
+
+			$('#system-notice-close').on 'click', () ->
+				$('#system-notice').remove()
+
+				$.cookie 'notice-sn', '1'
+
+		displaySystemNotice()
+
 		null

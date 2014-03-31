@@ -820,6 +820,10 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
         }
 
       if layout_data.osType and layout_data.architecture and layout_data.rootDeviceType
+        #patch for old windows ami
+        if layout_data.osType is "win"
+          layout_data.osType = "windows"
+
         attr.cachedAmi = {
           osType         : layout_data.osType
           architecture   : layout_data.architecture

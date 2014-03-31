@@ -472,8 +472,10 @@ require.config {
 			'sns_service'
 		]
 		"component/sgrule/SGRulePopup" : []
+		"component/exporter/exporter"  : [ "component/exporter/Download", "component/exporter/Thumbnail", "component/exporter/JsonExporter" ]
 		"module/design/framework/DesignBundle" : [ "Design", "CanvasManager" ]
 		"property" : []
+
 	bundleExcludes : # This is a none requirejs option, but it's used by compiler to exclude some of the source.
 		"lib/deprecated" : ["Design"]
 		"component/sgrule/SGRulePopup" : [ "Design" ]

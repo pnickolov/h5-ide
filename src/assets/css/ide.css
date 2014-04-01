@@ -1407,13 +1407,13 @@ button {
 }
 
 .global-region-status-tab-item {
-	text-align: center;
-	float: left;
-	height: 145px;
-	width: 195px;
+	text-align      : center;
+	float           : left;
+	height          : 145px;
+	width           : 195px;
 	background-color: #323e49;
-	position: relative;
-	box-shadow: inset 0 1px 2px rgba(255,255,255,.1)
+	position        : relative;
+	/*box-shadow    : inset 0 1px 2px rgba(255,255,255,.1)*/
 }
 
 .global-region-status-list li:last-child a {
@@ -3000,10 +3000,10 @@ td.table-action a.btn {
 	height    : 40px;
 	width     : 100%;
 	min-width : 610px;
-	background: #f0f0f0;
+	/*background: #f0f0f0;*/
 
 	box-shadow    : 0 2px 5px rgba(0, 0, 0, 0.1);
-	border-bottom : 1px solid #ccc;
+	border-bottom : 1px solid #111;
 }
 
 .toolbar-btn-group {
@@ -3021,7 +3021,7 @@ td.table-action a.btn {
 
 	line-height: 32px;
 	text-align : center;
-	color      : #606060;
+	color      : #ccc;
 	font-size  : 16px;
 
 	padding     : 4px;
@@ -3034,7 +3034,7 @@ td.table-action a.btn {
 	margin-right : 15px;
 }
 .btn-toolbar.seperator {
-	border-right : 1px solid #ddd;
+	border-right : 1px solid #222;
 }
 
 .toolbar-btn-group .icon-update-app {
@@ -3043,21 +3043,21 @@ td.table-action a.btn {
 
 .btn-toolbar:hover {
 	color: #9F62D1;
-	background-color: rgba(0,0,0,.05);
+	background-color: rgba(0,0,0,.3);
 }
 
 .btn-toolbar.disabled {
-	color : #cecece;
+	color : #666;
 }
 
 .btn-toolbar.disabled:hover {
-	background: #efefef;
-	box-shadow       : none;
-	cursor           : default;
+	background-color: transparent;
+	box-shadow      : none;
+	cursor          : default;
 }
 
 .btn-toolbar.open {
-	background-color: #FFF;
+	background-color: #0f0f0f;
 }
 
 .btn-toolbar:hover .selection, .btn-toolbar.open .selection {
@@ -3072,7 +3072,7 @@ td.table-action a.btn {
 
 .btn-toolbar.selectbox .selection {
 	font-size   : 16px;
-	color       : #606060;
+	color       : #ccc;
 	padding     : 0 18px 0 10px;
 	float       : left;
 	border      : none;
@@ -3085,7 +3085,7 @@ td.table-action a.btn {
 }
 
 .btn-toolbar.selectbox .dropdown {
-	top       : 43px;
+	top       : 39px;
 	width     : auto;
 	min-width : initial;
 }
@@ -3096,7 +3096,7 @@ td.table-action a.btn {
 	cursor        : pointer !important;
 	color         : #555;
 	text-align    : left;
-	line-height   : 42px;
+	line-height   : 28px;
 	padding-left  : 12px;
 	padding-right : 10px;
 	font-size     : 12px
@@ -3112,7 +3112,7 @@ td.table-action a.btn {
 }
 
 .btn-toolbar .dropdown > li:hover {
-	background-color: #f3f3f3;
+	/*background-color: #f3f3f3;*/
 }
 
 #toolbar-cancel-edit-app {
@@ -3131,11 +3131,13 @@ td.table-action a.btn {
 	box-shadow: inset 0 -1px 0 rgba(0,0,0,.1);
 	background: #17c249;
 	border-right: 1px solid #17a03a;
+	border-bottom: 1px solid #17a03a;
 }
 
 #toolbar-export-png.toolbar-btn-primary {
 	background: #148BE6;
 	border-right: 1px solid #1B7FCC;
+	border-bottom: 1px solid #1B7FCC;
 	width: 160px;
 }
 

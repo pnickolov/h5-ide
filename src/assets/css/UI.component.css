@@ -1737,14 +1737,16 @@ textarea {
 	background: #464646;
 }
 
-.property-content .selectbox .dropdown {
+.property-content .selectbox .dropdown,
+#main-toolbar .selectbox .dropdown {
 	box-shadow: 1px 1px 5px #333;
 	background: #5c5c5c;
 	border: 1px solid #333;
 }
 
 .property-content .selectbox .dropdown li,
-.resource-select.selectbox .dropdown li {
+.resource-select.selectbox .dropdown li,
+#main-toolbar .selectbox .dropdown li  {
 	color: #D0D0D0;
 	border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 	padding: 8px;
@@ -1757,14 +1759,18 @@ textarea {
 .property-content .selectbox .dropdown .item.focused,
 .resource-select.selectbox .dropdown .item:hover,
 .resource-select.selectbox .dropdown .item:focus,
-.resource-select.selectbox .dropdown .item.focused  {
+.resource-select.selectbox .dropdown .item.focused,
+#main-toolbar .selectbox .dropdown li:hover,
+#main-toolbar .selectbox .dropdown li:focus,
+#main-toolbar .selectbox .dropdown li.focused  {
 	background: rgba(255, 255, 255, 0.1);
 	color: #F0F0F0;
 	box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.1);
 }
 
 .property-content .selectbox .dropdown .item.selected,
-.resource-select.selectbox .dropdown .item.selected {
+.resource-select.selectbox .dropdown .item.selected,
+#main-toolbar .selectbox .dropdown .item.selected {
 	position      : relative;
 	background    : #1B7FCC;
 	color         : #F5F5F5;
@@ -2297,7 +2303,7 @@ input.parsley-error {
 
   top    : 10px;
   left   : 10px;
-  /*opacity: .8;*/
+  opacity: .8;
 }
 
 .gear-loading:after {
@@ -2314,7 +2320,7 @@ input.parsley-error {
 
   top: 38px;
   left: 38px;
-  /*opacity:.6;*/
+  opacity:.6;
 }
 
 

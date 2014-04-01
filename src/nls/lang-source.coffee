@@ -1042,8 +1042,12 @@ module.exports =
       en: "Custom User Data will be overridden and disabled to allow installing OpsAgent. (Currently only support Linux platform)"
       zh: ""
 
-    TOOL_TIP_NO_CLASSIC_DATA:
+    TOOL_TIP_NO_CLASSIC_DATA_STACK:
       en: "We will drop support for EC2 Classic and Default VPC soon. We have disabled create new stack, run app or edit app in those platforms. You can export existing stacks as CloudFormation template or as a PNG file. Click to read detailed announcement."
+      zh: ""
+
+    TOOL_TIP_NO_CLASSIC_DATA_APP:
+      en: "We will drop support for EC2 Classic and Default VPC soon. We have disabled create new stack, run app or edit app in those platforms. You can still manage the lifecycle of existing apps.  Click to read detailed announcement."
       zh: ""
 
     TOOL_TIP_LINESTYLE:
@@ -1078,7 +1082,7 @@ module.exports =
       en: "instnace state off"
       zh: ""
 
-    TOOL_TOGGLE_NO_CLASSIC_STACK:
+    TOOL_LBL_NO_CLASSIC:
       en: "Where are the missing buttons?"
       zh: ""
 

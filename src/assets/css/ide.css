@@ -6231,8 +6231,8 @@ summary:focus {
 	width: 100%;
 	height: 100%;
 	z-index: 100000;
-	background: #262626;
-	opacity: 0.975;
+	background: rgba(0,0,0,.9);
+	/*background: rgba(102, 57, 139, 0.9);*/
 }
 
 #loading-modal-wrap {
@@ -6242,7 +6242,8 @@ summary:focus {
 	bottom: 0;
 	left: 0;
 	z-index: 70;
-	background-color: rgba(0, 0, 0, 0.5);
+	/*background-color: rgba(0, 0, 0, 0.5);*/
+	/*background: rgba(102, 57, 139, 0.9);*/
 }
 
 .loading-modal {
@@ -7792,4 +7793,18 @@ summary:focus {
 
 #run-stack-cancel:disabled {
 	color: #ccc;
+}
+
+/* toolbar drop support for default vpc or classic notice */
+
+.no-classic-toolbar {
+	float: right;
+	background: #ffa740;
+	border: 1px solid #DF7F0E;
+	color: #fff;
+	border-radius: 4px;
+	margin-top: 7px;
+	margin-right: 5px;
+	padding: 4px 6px;
+	font-size: 12px;
 }

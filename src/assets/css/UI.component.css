@@ -199,7 +199,7 @@ a.table-link {
 	border-radius    : 2px;
 	/*border         : 1px solid #404040;*/
 	border           : none;
-	/*box-shadow       : inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(0, 0, 0, 0.1);*/
+	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
 }
 
 .btn:hover {
@@ -213,7 +213,7 @@ a.table-link {
 }
 
 .btn-primary {
-	background      : #8648B9;
+	background      : #9C6DC0;
 	color           : #fff;
 	text-decoration : none !important;
 }
@@ -223,7 +223,7 @@ a.table-link {
 }
 
 .btn-primary:active {
-	background : #65328F;
+	background : #66398b;
 	/*box-shadow : none;*/
 }
 
@@ -1093,6 +1093,7 @@ textarea {
 	min-width: 80px;
 	background: none;
 	color: #666;
+	box-shadow: none;
 }
 
 .btn-silver.modal-close:hover,
@@ -2265,7 +2266,8 @@ input.parsley-error {
   position: relative;
   width: 80px;
   height: 80px;
-  margin: 30% auto;
+  margin: auto;
+  top: 40%;
 }
 
 
@@ -2286,7 +2288,7 @@ input.parsley-error {
   height           : 40px;
   /*background-size: 40px auto;*/
   font-size        : 40px;
-  color            : #8648B9;
+  color            : #9C6DC0;
 
   animation        : rotate 2s linear infinite;
   -webkit-animation: rotation 2s linear infinite;

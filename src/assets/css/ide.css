@@ -96,22 +96,22 @@ button {
 #header-wrapper {
 	background-color: #303030;
 	position: relative;
-	height: 45px;
+	height: 49px;
 }
 
 #header {
-	height: 45px;
+	height: 49px;
 	z-index: 10;
 	position: absolute;
 	right: 0;
 }
 
 .logo {
-	background: #8648B9 url('../images/ide/logo-ide.png') center no-repeat;
+	background: url('../images/ide/logo-ide.png') center no-repeat;
 	height: 49px;
 	width: 45px;
 	position: absolute;
-	border-right: 1px solid #222;
+	/*border-right: 1px solid #222;*/
 	text-indent: -9999px;
 }
 
@@ -126,8 +126,6 @@ button {
 .header-menu .dropdown {
 	position           : relative;
 	float              : left;
-	line-height        : 45px;
-	height             : 45px;
 
 	border-left        : 1px solid #222;
 
@@ -144,12 +142,12 @@ button {
 	padding : 0 20px;
 	color   : #ddd;
 	cursor  : pointer;
-	height  : 45px;
-	line-height: 45px;
+	height  : 49px;
+	line-height: 49px;
 }
 
 .header-menu > .dropdown > .js-toggle-dropdown:hover {
-	color: #8648B9;
+	color: #9C6DC0;
 }
 
 .header-menu .dropdown:hover,
@@ -920,7 +918,7 @@ button {
 }
 
 .nav-stack-region-title:hover .nav-new-stack:hover {
-	color: #8648B9;
+	color: #9C6DC0;
 }
 
 .nav-head {
@@ -963,12 +961,12 @@ button {
 #tabbar-wrapper {
 	padding-left: 45px;
 	padding-right: 180px;
-	height: 45px;
+	height: 49px;
 }
 
 #tab-bar {
 	font-size: 14px;
-	padding: 11px 20px 0 4px;
+	padding: 11px 20px 0 0;
 	width: 100%;
 	height: 30px;
 }
@@ -987,15 +985,13 @@ button {
 
 #tab-bar li {
 
-	border-radius    : 4px 4px 0 0;
-	border           : 1px solid #131313;
-	border-bottom    : none;
-	background-color : #454545;
-	box-shadow       : inset 0 1px 0 rgba(255,255,255,.1), inset 0 -5px 11px rgba(0,0,0,.2);
+	border          : 1px solid #222;
+	border-bottom   : none;
+	border-left     : none;
+	background-color: #404040;
 
-	position     : relative;
-	float        : left;
-	margin-right : 2px;
+	position: relative;
+	float   : left;
 
 	-webkit-transition : width .2s;
 	-moz-transition    : width .2s;
@@ -1010,8 +1006,12 @@ button {
 	transition         : background .2s ease-in-out, box-shadow .2s ease-in-out;
 }
 
+#tab-bar li:first-child {
+	border-left: 1px solid #131313;
+}
+
 #tab-bar li:hover {
-	background-color: #555;
+	background-color: #494949;
 }
 
 .tab-bar-truncate {
@@ -1024,13 +1024,14 @@ button {
 }
 
 #tab-bar li.active {
-	background-color: #1B7FCC;
-	box-shadow: inset 0 1px rgba(255,255,255,.1);
-	border: 1px solid #000;
+	background-color: #202020;
+	box-shadow      : inset 0 3px 0 #0D49CA;
+	border-right    : 1px solid #000;
+	border-top      : 1px solid #000;
 }
 
 #tab-bar li.active a {
-	color       : #eee;
+	color       : #fff;
 	font-weight : bold;
 }
 
@@ -1046,16 +1047,8 @@ button {
 	line-height: 16px;
 }
 
-/*#tab-bar li.unsaved a.close-tab,
-#tab-bar li.active.unsaved a.close-tab {
-	border-radius: 100%;
-	background: red;
-	color: #fff;
-}*/
-
 #tab-bar-dashboard {
 	width: 117px !important;
-	/*margin-right: 4px !important;*/
 }
 
 #tab-bar-dashboard .tab-bar-truncate {
@@ -1071,7 +1064,7 @@ button {
 	padding: 10px 0;
 	position: absolute;
 	z-index: 5;
-	background: #f0f0f0;
+	background: rgba(42, 46, 49, .9);
 	box-shadow: 1px 5px 5px rgba(22, 22, 23, 0.1);
 	width: 100%;
 	height: 42px;
@@ -1099,9 +1092,8 @@ button {
 	color      : #fff;
 	font-size  : 16px;
 
-	border-radius : 3px;
 	padding : 0 16px 0 0;
-	margin-left : 20px;
+	margin-left : 10px;
 }
 
 #global-region-header .btn:before {
@@ -1209,7 +1201,7 @@ button {
 #global-region-create-stack-list {
 	position : absolute;
 	left     : 20px;
-	top      : 56px;
+	top      : 51px;
 
 	width         : 216px;
 	border        : 1px solid #ccc;
@@ -1599,7 +1591,7 @@ button {
 #region-switch-list {
 	position: absolute;
 	background: #FFF;
-	top: 48px;
+	top: 46px;
 	z-index: 35;
 	border: 1px solid #CCC;
 	box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
@@ -1790,7 +1782,7 @@ button {
 
 #global-region-resource-vpn,
 #global-region-resource-vpn .global-region-resource-location-count {
-	color: #8648B9;
+	color: #9C6DC0;
 }
 
 #global-resource-icon-eip {
@@ -2046,7 +2038,7 @@ button {
 
 
 .nav-new-stack:hover {
-	color: #8648B9;
+	color: #9C6DC0;
 }
 
 .nav-stack-region-title:hover {
@@ -2427,7 +2419,7 @@ button {
 }
 
 #tab-bar li.active a.close-tab, #tab-bar li.active a.close-restriction {
-	color: #283138;
+	color: #666;
 	display : block;
 	font-weight: normal;
 }
@@ -2641,7 +2633,7 @@ button {
 }
 
 #btn-create-stack:hover {
-	color: #8648B9;
+	color: #9C6DC0;
 }
 
 .thumbnail-name {
@@ -3169,7 +3161,7 @@ td.table-action a.btn {
 }
 
 #apply-visops {
-	background   : #8648B9;
+	background   : #9C6DC0;
 	position     : absolute;
 	display      : inline-block;
 	right        : 10px;
@@ -3181,7 +3173,7 @@ td.table-action a.btn {
 }
 
 #apply-visops:hover {
-	background   : #65328F;
+	background   : #66398b;
 }
 
 /* Sidebars, including Resource Panle and Property Panel */
@@ -4079,7 +4071,7 @@ a.sidebar-hider:before {
 .add-rule:hover {
 	color         : #fff;
 	/*text-shadow : 0 2px rgba(0,0,0,.8);*/
-	background    : #8648B9;
+	background    : #9C6DC0;
 	line-height   : 32px;
 	box-shadow    : -1px 0 0 0 rgba(0,0,0,.5);
 }
@@ -6445,7 +6437,7 @@ summary:focus {
 }
 
 #Intercom {
-	background    : #8648B9;
+	background    : #9C6DC0;
 	border        : 1px solid #333;
 	border-bottom : none;
 	border-radius : 4px 4px 0 0;

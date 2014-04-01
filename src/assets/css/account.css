@@ -18,7 +18,7 @@ a:hover {
 }
 
 header {
-	background: #8648B9;
+	background: #66398b;
 	position: absolute;
 	z-index: 100;
 	width: 100%;
@@ -327,12 +327,12 @@ footer {
 }
 
 #body-500 h1 {
-	background: #242224;
+	background: #65328F;
 	position: absolute;
 	z-index: 100;
 	width: 100%;
 	top: 0;
-	border-top: 4px solid #8648B9;
+	border-top: 4px solid #9C6DC0;
 	border-bottom: 1px solid #181818;
 	padding: 5px 0 9px 0;
 }

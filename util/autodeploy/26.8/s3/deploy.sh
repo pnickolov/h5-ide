@@ -1,9 +1,4 @@
 #!/bin/bash
-#/visualops/site/s3/deploy.sh
-#usage: 
-# cd /visualops/site/s3
-# ./deploy.sh
-
 
 DIR=$(cd "$(dirname "$0")"; pwd)
 cd $DIR
@@ -11,7 +6,7 @@ cd $DIR
 
 
 FILENAME=ide.tar.gz
-TARGETDIR=s3://madeiradeploy/2014-03-28/
+TARGETDIR=s3://madeiradeploy/2014-03-28
 CHKSUMFILE=checksum
 SYNC=1 #1. can sync  2. can not sync
 
@@ -68,6 +63,17 @@ then
 	echo ${NEWCHKSUM} > ${CHKSUMFILE}
 else
 	echo ">Failed."
+fi
+
+
+echo "=============================================="
+echo "4.Set Acl"
+s3cmd setacl --acl-public --recursive ${TARGETDIR}/${FILENAME}
+if [ $? -eq 0 ]
+then
+        echo ">Succeed."
+else
+        echo ">Failed."
 fi
 
 echo 

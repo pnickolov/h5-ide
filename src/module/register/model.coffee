@@ -9,6 +9,7 @@ define [ 'MC', 'event', 'account_model', 'session_model', 'common_handle', 'cryp
 
         defaults   :
             password : null
+            username : null
 
         initialize : ->
             this.on 'ACCOUNT_CHECK__REPEAT_RETURN', ( forge_result ) ->
@@ -60,32 +61,40 @@ define [ 'MC', 'event', 'account_model', 'session_model', 'common_handle', 'cryp
             console.log 'registerService, username = ' + username + ', email = ' + email + ', password = ' + password
             #
             account_model.register { sender : this }, username, password, email
+            me = this
             this.once 'ACCOUNT_REGISTER_RETURN', ( forge_result ) ->
                 console.log 'ACCOUNT_REGISTER_RETURN'
                 console.log forge_result
                 if !forge_result.is_error
 
-                    sessionStorage.setItem 'username', forge_result.param[ 1 ]
-                    sessionStorage.setItem 'password', forge_result.param[ 2 ]
+                    #sessionStorage.setItem 'username', forge_result.param[ 1 ]
+                    #sessionStorage.setItem 'password', forge_result.param[ 2 ]
+                    #window.location.href = "register.html#success"
 
-                    window.location.href = "register.html#success"
-                    
+                    me.set 'username', forge_result.param[ 1 ]
+                    me.set 'password', forge_result.param[ 2 ]
+
+                    me.trigger 'RESIGER_SUCCESS'
+
                 else
                     #login failed
-                    this.trigger 'RESET_CREATE_ACCOUNT', forge_result.return_code
+                    me.trigger 'RESET_CREATE_ACCOUNT', forge_result.return_code
 
                 null
 
         loginService : ->
             console.log 'loginService'
 
-            return if !sessionStorage.getItem( 'username' ) or !sessionStorage.getItem( 'password' )
+            if !@get( 'username' ) or !@get( 'password' )
+                return
 
             #invoke session.login api
-            session_model.login { sender : this }, sessionStorage.getItem( 'username' ), sessionStorage.getItem( 'password' )
+            session_model.login { sender : this }, @get( 'username' ), @get( 'password' )
 
             #
-            sessionStorage.clear()
+            #sessionStorage.clear()
+            @set 'username', null
+            @set 'password', null
 
             #login return handler (dispatch from service/session/session_model)
             this.once 'SESSION_LOGIN_RETURN', ( forge_result ) ->

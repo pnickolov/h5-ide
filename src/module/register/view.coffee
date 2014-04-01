@@ -40,8 +40,8 @@ define [ 'event',
             switch type
                 when 'normal'
                     @$el.html @template @model
-                when 'success'
-                    @$el.html @success_tmpl()
+                #when 'success'
+                #    @$el.html @success_tmpl()
                 else
                     @$el.html @template @model
 
@@ -277,6 +277,10 @@ define [ 'event',
             notification 'error', msg, false
 
             null
+
+        registerSuccess : ->
+            console.log 'registerSuccess'
+            @$el.html @success_tmpl()
 
     }
 

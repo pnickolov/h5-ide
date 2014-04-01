@@ -161,7 +161,7 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
           if not connectableMap[ res.id ]
             cn.remove( reason )
           else
-            cn.validate( true )
+            cn.validate()
       null
 
     vlineRemoveBatch : ( otherSg, reason )->

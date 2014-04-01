@@ -74,7 +74,8 @@
 .icon-log:before,
 .icon-syslog:before,
 .icon-import:before,
-.icon-drag-copy:before
+.icon-drag-copy:before,
+.icon-gear:before
 {
 	font : 16px/1em "MCIcon";
 	font-weight : normal;
@@ -145,3 +146,4 @@
 .icon-toolbar-diff:before {content:"\F14D";}
 .icon-import:before {content:"\F14E";}
 .icon-drag-copy:before {content:"\F14F";}
+.icon-gear:before {content:"\F150";}

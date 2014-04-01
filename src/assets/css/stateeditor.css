@@ -148,7 +148,7 @@
 }
 
 #state-log *::selection {
-	background: #4495d3;
+	background: #148BE6;
 	color: #fcfcfc;
 }
 
@@ -356,7 +356,7 @@
 #state-editor .comment .editable-area.ace_focus {
 	/*background-color: rgba(0,0,0,.01);*/
 	color: #fff;
-	/*border-bottom: 1px solid #69aadc;*/
+	/*border-bottom: 1px solid #34A3F8;*/
 }
 
 #state-editor .editable-area.disabled {

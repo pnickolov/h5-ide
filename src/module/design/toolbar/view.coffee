@@ -6,7 +6,9 @@ define [ 'MC', 'event',
          "Design",
          'i18n!nls/lang.js',
          'text!./stack_template.html',
+         'text!./stack_classic_template.html',
          'text!./app_template.html',
+         'text!./app_classic_template.html',
          'text!./appview_template.html',
          "component/exporter/JsonExporter",
          "component/exporter/Download",
@@ -14,11 +16,13 @@ define [ 'MC', 'event',
          'backbone', 'jquery', 'handlebars',
          'UI.selectbox', 'UI.notification',
          "UI.tabbar"
-], ( MC, ide_event, Design, lang, stack_tmpl, app_tmpl, appview_tmpl, JsonExporter, download, constant ) ->
+], ( MC, ide_event, Design, lang, stack_tmpl, stack_classic_tmpl, app_tmpl, app_classic_tmpl, appview_tmpl, JsonExporter, download, constant ) ->
 
     stack_tmpl   = Handlebars.compile stack_tmpl
     app_tmpl     = Handlebars.compile app_tmpl
     appview_tmpl = Handlebars.compile appview_tmpl
+    stack_classic_tmpl = Handlebars.compile stack_classic_tmpl
+    app_classic_tmpl   = Handlebars.compile app_classic_tmpl
 
     ToolbarView = Backbone.View.extend {
 
@@ -90,8 +94,16 @@ define [ 'MC', 'event',
 
             this.model.attributes.lines = lines
 
+            # platform is 'classis' stack or app
+            data = MC.common.other.canvasData.data( true )
+            if Tabbar.current is 'stack' and data and data.platform in [ MC.canvas.PLATFORM_TYPE.EC2_CLASSIC, MC.canvas.PLATFORM_TYPE.DEFAULT_VPC ]
+                $( '#main-toolbar' ).html stack_classic_tmpl this.model.attributes
+
+            else if Tabbar.current is 'app' and data and data.platform in [ MC.canvas.PLATFORM_TYPE.EC2_CLASSIC, MC.canvas.PLATFORM_TYPE.DEFAULT_VPC ]
+                $( '#main-toolbar' ).html app_classic_tmpl this.model.attributes
+
             # appview
-            if Tabbar.current is 'appview'
+            else if Tabbar.current is 'appview'
                 $( '#main-toolbar' ).html appview_tmpl this.model.attributes
 
             # type include 'app' | 'stack'

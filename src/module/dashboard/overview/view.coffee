@@ -307,9 +307,8 @@ define [ 'event', 'i18n!nls/lang.js',
                 $( '#global-region-visualize-VPC' ).removeAttr 'disabled'
 
             # when is_invitated cookie not true hide
-            #is_invitated = "" + MC.common.cookie.getCookieByName( 'is_invitated' )
-            #if is_invitated is "true" or is_invitated is "2"
-            if MC.common.cookie.getCookieByName( 'is_invitated' ) in [ 'true', true, 2, '2' ]
+            is_invitated = "" + MC.common.cookie.getCookieByName( 'is_invitated' )
+            if is_invitated is "true" or is_invitated is "2"
                 $( '#global-region-visualize-VPC' ).show()
             else
                 $( '#global-region-visualize-VPC' ).hide()

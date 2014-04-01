@@ -5,17 +5,8 @@ body {
 }
 
 #body {
-	background: #C8CFD5;
+	background-color: #000;
 	color: #222;
-/*	background-image: -webkit-linear-gradient(102deg, #6799ca, #dda8d2);
-	background-image: -moz-linear-gradient(102deg, #6799ca, #dda8d2);
-	background-image: -o-linear-gradient(102deg, #6799ca, #dda8d2);
-	background-image: linear-gradient(-12deg, #6799ca, #dda8d2);*/
-/*	background-image: -webkit-linear-gradient(102deg, #afcdeb, #e7cbdd);
-	background-image: -moz-linear-gradient(102deg, #afcdeb, #e7cbdd);
-	background-image: -o-linear-gradient(102deg, #afcdeb, #e7cbdd);
-	background-image: linear-gradient(-12deg, #afcdeb, #e7cbdd);*/
-
 }
 
 a {
@@ -27,28 +18,25 @@ a:hover {
 }
 
 header {
-	background: #242224;
+	background: #66398b;
 	position: absolute;
 	z-index: 100;
 	width: 100%;
 	top: 0;
-	border-top: 4px solid #9e62d4;
-	border-bottom: 1px solid #181818;
 	padding: 10px 0 9px 0;
 }
 
 #logo-link {
 	background: url('../images/login/top_logo.png') center no-repeat;
-	height: 52px;
-	width: 200px;
-	opacity: 0.8;
+	height: 60px;
+	width: 202px;
 	margin: 0 auto;
 	display: block;
 	text-indent: -9999px;
 }
 
 #logo-link:hover {
-	opacity: 1;
+	opacity: .8;
 }
 
 #container {
@@ -67,16 +55,10 @@ header {
 	width            : 450px;
 	padding: 0 0 60px 0;
 
-	background-color : #f2f4f7;
-	box-shadow: 5px 5px 0 rgba(0,0,0,.2);
-/*	border           : solid 1px #666;
-	border-radius    : 4px;*/
+	background-color : #343434;
 }
 
 .box-loading.box-wrapper {
-/*	background : none;
-	border     : none;
-	box-shadow : none;*/
 	background-color : #fff;
 	text-align : center;
 	padding    : 40px 0;≠
@@ -84,15 +66,12 @@ header {
 
 .box-header {
 	position         : relative;
-	/*background-color : #d1d4d8;*/
-	box-shadow       : 0 1px #fff, inset 0 1px rgba(255,255,255,.3);
 	padding          : 20px 30px;
-	/*border-radius    : 4px 4px 0 0;*/
-	border-bottom    : 1px solid #e0e0e0;
+	border-bottom    : 1px solid #222;
 }
 
 .box-header h2 {
-	color: #666;
+	color: #eee;
 	font-weight: 700;
 }
 
@@ -116,7 +95,6 @@ header {
  	border-radius: 4px;
 	color: #14683D;
 	background-color: #BEF5BA;
-	border: 1px solid #27a162;
 	display: none;
 }
 
@@ -125,10 +103,8 @@ header {
  	padding: 10px 15px;
  	font-size: 14px;
  	border-radius: 4px;
-
-	color: #ec3c38;
-	background-color: #fad6cf;
-	border: 1px solid #ec3c38;
+	color: #FFEBEA;
+	background-color: #BE2608
 }
 
 .error-msg {
@@ -149,27 +125,40 @@ header {
 
 #login-box .account-input {
 	padding: 14px 25px 14px 55px;
-	border: 1px solid #ccc;
+	border: 1px solid #000;
 	width: 306px;
 }
 
 .account-input {
 	display: block;
-	/*margin: 20px 0;*/
+	color: #eee;
 	margin: 8px 0 14px 0;
 	padding: 10px;
 	width: 368px;
 	font-size: 16px;
-	border: 1px solid #ccc;
+	border: 1px solid #000;
 	border-radius: 4px;
-	background: #fff;
+	background: #161616;
 	box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
 	outline: none;
 }
 
+.account-input::-webkit-input-placeholder { /* WebKit browsers */
+    color:    #444;
+}
+.account-input:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color:    #444;
+}
+.account-input::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color:    #444;
+}
+.account-input:-ms-input-placeholder { /* Internet Explorer 10+ */
+    color:    #444;
+}
+
 .account-input:focus {
-	border: 1px solid #aaa;
 	box-shadow: 0px 2px 2px 0px rgba(0,0,0,0.1);
+	background: #000;
 }
 
 .control-group {
@@ -186,7 +175,7 @@ header {
 
 .icon-user.login-label,
 .icon-password.login-label {
-	color       : #9B9B9B;
+	color       : #666;
 	font-size   : 32px;
 	position    : absolute;
 	top         : 5px;
@@ -199,7 +188,7 @@ header {
 }
 
 .account-input:focus + .login-label {
-	color: #666;
+	color: #eee;
 }
 
 .account-instruction {
@@ -273,10 +262,18 @@ header {
 	color: #FFF;
 }
 
+#register-btn[disabled] {
+	color: #d4d4d4;
+}
+
 #reset-btn {
 	width: 200px;
 	font-size: 14px;
 	color: #FFF;
+}
+
+#reset-btn[disabled] {
+	color: #d4d4d4;
 }
 
 #register-get-start {
@@ -335,7 +332,7 @@ footer {
 	z-index: 100;
 	width: 100%;
 	top: 0;
-	border-top: 4px solid #9e62d4;
+	border-top: 4px solid #66398b;
 	border-bottom: 1px solid #181818;
 	padding: 5px 0 9px 0;
 }

@@ -94,7 +94,11 @@ button {
 
 /* Header */
 #header-wrapper {
+<<<<<<< HEAD
 	border-top: 4px solid #66398b;
+=======
+	border-top: 4px solid #9e62d4;
+>>>>>>> [release/visualops-20140324] update color scheme
 	background-color: #303030;
 	position: relative;
 	height: 45px;
@@ -153,7 +157,11 @@ button {
 }
 
 .header-menu > .dropdown > .js-toggle-dropdown:hover {
+<<<<<<< HEAD
 	color: #66398b;
+=======
+	color: #9e62d4;
+>>>>>>> [release/visualops-20140324] update color scheme
 }
 
 .header-menu .dropdown:hover,
@@ -924,7 +932,11 @@ button {
 }
 
 .nav-stack-region-title:hover .nav-new-stack:hover {
+<<<<<<< HEAD
 	color: #66398b
+=======
+	color: #9e62d4
+>>>>>>> [release/visualops-20140324] update color scheme
 }
 
 .nav-head {
@@ -1199,7 +1211,11 @@ button {
 }
 
 /*#global-create-stack:hover {
+<<<<<<< HEAD
 	background-color: #723197;
+=======
+	background-color: #B27BE4;
+>>>>>>> [release/visualops-20140324] update color scheme
 }*/
 
 #region-switch.disabled,
@@ -1804,7 +1820,11 @@ button {
 
 #global-region-resource-vpn,
 #global-region-resource-vpn .global-region-resource-location-count {
+<<<<<<< HEAD
 	color: #66398b;
+=======
+	color: #9e62d4;
+>>>>>>> [release/visualops-20140324] update color scheme
 }
 
 #global-resource-icon-eip {
@@ -2060,7 +2080,11 @@ button {
 
 
 .nav-new-stack:hover {
+<<<<<<< HEAD
 	color: #66398b;
+=======
+	color: #9e62d4;
+>>>>>>> [release/visualops-20140324] update color scheme
 }
 
 .nav-stack-region-title:hover {
@@ -2655,7 +2679,11 @@ button {
 }
 
 #btn-create-stack:hover {
+<<<<<<< HEAD
 	color: #66398b;
+=======
+	color: #9e62d4;
+>>>>>>> [release/visualops-20140324] update color scheme
 }
 
 .thumbnail-name {
@@ -3064,7 +3092,11 @@ td.table-action a.btn {
 }
 
 .btn-toolbar:hover {
+<<<<<<< HEAD
 	color: #723197;
+=======
+	color: #B27BE4;
+>>>>>>> [release/visualops-20140324] update color scheme
 	background-color: rgba(0,0,0,.05);
 }
 
@@ -3083,7 +3115,11 @@ td.table-action a.btn {
 }
 
 .btn-toolbar:hover .selection, .btn-toolbar.open .selection {
+<<<<<<< HEAD
 	color : #723197 !important;
+=======
+	color : #B27BE4 !important;
+>>>>>>> [release/visualops-20140324] update color scheme
 }
 
 .btn-toolbar.selectbox {
@@ -3183,7 +3219,11 @@ td.table-action a.btn {
 }
 
 #apply-visops {
+<<<<<<< HEAD
 	background   : #66398b;
+=======
+	background   : #9e62d4;
+>>>>>>> [release/visualops-20140324] update color scheme
 	position     : absolute;
 	display      : inline-block;
 	right        : 10px;
@@ -4093,7 +4133,11 @@ a.sidebar-hider:before {
 .add-rule:hover {
 	color         : #fff;
 	/*text-shadow : 0 2px rgba(0,0,0,.8);*/
+<<<<<<< HEAD
 	background    : #66398b;
+=======
+	background    : #9e62d4;
+>>>>>>> [release/visualops-20140324] update color scheme
 	line-height   : 32px;
 	box-shadow    : -1px 0 0 0 rgba(0,0,0,.5);
 }
@@ -6452,7 +6496,11 @@ summary:focus {
 }
 
 #Intercom {
+<<<<<<< HEAD
 	background    : #66398b;
+=======
+	background    : #9e62d4;
+>>>>>>> [release/visualops-20140324] update color scheme
 	border        : 1px solid #333;
 	border-bottom : none;
 	border-radius : 4px 4px 0 0;
@@ -6479,7 +6527,11 @@ summary:focus {
 #Intercom:hover {
 	left: -34px;
 	color: #fff;
+<<<<<<< HEAD
 	background: #723197;
+=======
+	background: #B27BE4;
+>>>>>>> [release/visualops-20140324] update color scheme
 }
 
 .icon-feedback {
@@ -7295,7 +7347,11 @@ summary:focus {
 }
 
 #property-panel.state #btn-switch-property:hover {
+<<<<<<< HEAD
 	color: #723197;
+=======
+	color: #B27BE4;
+>>>>>>> [release/visualops-20140324] update color scheme
 	background-color: rgba(0,0,0,.05);
 }
 

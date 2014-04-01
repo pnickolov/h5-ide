@@ -23,13 +23,24 @@ header {
 	z-index: 100;
 	width: 100%;
 	top: 0;
+<<<<<<< HEAD
+=======
+	border-top: 4px solid #9e62d4;
+	border-bottom: 1px solid #181818;
+>>>>>>> [release/visualops-20140324] update color scheme
 	padding: 10px 0 9px 0;
 }
 
 #logo-link {
 	background: url('../images/login/top_logo.png') center no-repeat;
+<<<<<<< HEAD
 	height: 60px;
 	width: 202px;
+=======
+	height: 52px;
+	width: 200px;
+	opacity: 0.8;
+>>>>>>> [release/visualops-20140324] update color scheme
 	margin: 0 auto;
 	display: block;
 	text-indent: -9999px;

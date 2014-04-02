@@ -216,7 +216,7 @@ button {
 #header .dropdown-menu {
 	font-size  : 12px;
 	position   : absolute;
-	top        : 46px;
+	top        : 50px;
 	right      : 0;
 	z-index    : 3;
 	box-shadow : 0 2px 5px rgba(0, 0, 0, 0.5);
@@ -7781,13 +7781,12 @@ summary:focus {
 /* toolbar drop support for default vpc or classic notice */
 
 .no-classic-toolbar {
-	float: right;
-	background: #ffa740;
-	border: 1px solid #DF7F0E;
-	color: #fff;
+	float        : right;
+	background   : #ffa740;
+	color        : #fff;
 	border-radius: 4px;
-	margin-top: 7px;
-	margin-right: 5px;
-	padding: 4px 6px;
-	font-size: 12px;
+	margin-top   : 9px;
+	margin-right : 5px;
+	padding      : 4px 6px;
+	font-size    : 12px;
 }

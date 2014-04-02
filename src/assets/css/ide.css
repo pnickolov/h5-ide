@@ -12,7 +12,6 @@ body {
 	background : #303030;
 
 	position   : relative;
-	/*min-height : 600px;*/
 }
 
 a {
@@ -33,14 +32,6 @@ button {
 	border : none;
 	background : none;
 }
-
-/*.blur-effect {
-	-webkit-filter: blur(1px);
-	-moz-filter: blur(1px);
-	-o-filter: blur(1px);
-	-ms-filter: blur(1px);
-	filter: blur(1px);
-}*/
 
 .icon-caret-down {
 	margin-left: 2px;
@@ -140,7 +131,7 @@ button {
 	padding : 0 20px;
 	color   : #ddd;
 	cursor  : pointer;
-	height  : 49px;
+	height  : 50px;
 	line-height: 49px;
 }
 
@@ -952,7 +943,7 @@ button {
 	top      : 49px;
 	right    : 0;
 	bottom   : 0;
-	border-top: 1px solid #101010;
+	border-top: 1px solid #202020;
 }
 
 /* Main Tab Bar */
@@ -1023,7 +1014,7 @@ button {
 
 #tab-bar li.active {
 	background-color: #202020;
-	box-shadow      : inset 0 3px 0 #0D49CA;
+	box-shadow      : inset 0 3px 0 #9F62D1;
 	border-right    : 1px solid #000;
 	border-top      : 1px solid #000;
 }
@@ -1198,8 +1189,8 @@ button {
 
 #global-region-create-stack-list {
 	position : absolute;
-	left     : 20px;
-	top      : 51px;
+	left     : 10px;
+	top      : 53px;
 
 	width         : 216px;
 	border        : 1px solid #ccc;
@@ -3157,7 +3148,7 @@ td.table-action a.btn {
 }
 
 .toolbar-line-style .dropdown li {
-	line-height: 31px;
+	line-height: 28px;
 }
 
 #apply-visops {

@@ -84,25 +84,34 @@ button {
 }
 
 #off-canvas-menu {
-	width       : 45px;
-	height      : 49px;
-	line-height : 60px;
-	position    : absolute;
-	text-align  : center;
-	color       : #ccc;
-	top         : 0;
-	left        : 0;
-	cursor      : pointer;
-}
-#off-canvas-overlay {
+	width      : 45px;
+	height     : 49px;
+	line-height: 60px;
 	position   : absolute;
-	left       : 0;
-	right      : 0;
+	text-align : center;
+	color      : #eee;
 	top        : 0;
-	bottom     : 0;
-	display    : none;
-	background : rgba(0,0,0,0.3);
-	z-index    : 100;
+	left       : 0;
+	cursor     : pointer;
+}
+
+#off-canvas-menu:before {
+	font-size  : 24px;
+}
+
+#off-canvas-menu:hover {
+	color: #9C6DC0;
+}
+
+#off-canvas-overlay {
+	position          : absolute;
+	left              : 0;
+	right             : 0;
+	top               : 0;
+	bottom            : 0;
+	display           : none;
+	background-color  : rgba(41, 56, 71, 0.3);
+	z-index           : 100;
 }
 /* Main */
 #main {
@@ -136,7 +145,7 @@ button {
 				  transform : translate(300px, 0);
 }
 #wrapper.off-canvas > #off-canvas-overlay {
-	display : block;
+	display: block;
 }
 
 #navigation {

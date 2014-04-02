@@ -353,6 +353,12 @@ define [ '../base/view',
                         $(this).val( "0" )
                     else if val < -100
                         $(this).val( "-100" )
+
+                if val < -65534
+                    $(@).val -65534
+                else if val > 65534
+                    $(@).val 65534
+
                     # More than 100% is legal.
                     # else if val > 100
                     #     $(this).val( "100" )

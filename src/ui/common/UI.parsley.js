@@ -214,7 +214,7 @@
           , dateIso:    "This value should be a valid date (YYYY-MM-DD)."
           , alphanum:   "This value should be alphanumeric."
           , phone:      "This value should be a valid phone number."
-          , usPhone:   "This value should be a valid US phone number."
+          , usPhone:    "This value should be a valid US phone number."
 
          // hack
           , ipaddress: "This value should be a valid ip address."

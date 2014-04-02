@@ -314,6 +314,18 @@ module.exports =
       en: "Minimum Size must be <= Maximum Size."
       zh: ""
 
+    PARSLEY_MAXIMUM_SIZE_MUST_BE_MORETHAN_MINIMUM_SIZE:
+      en: "Maximum Size must be >= Minimum Size."
+      zh: ""
+
+    PARSLEY_VALUE_MUST_BE_LESSTHAN_VAR:
+      en: "This value should be < %s"
+      zh: ""
+
+    PARSLEY_VALUE_MUST_BE_GREATERTHAN_VAR:
+      en: "This value should be > %s"
+      zh: ""
+
     PARSLEY_DESIRED_CAPACITY_EQUAL_OR_GREATER_1:
       en: "Desired Capacity must be equal or greater than 1"
       zh: ""

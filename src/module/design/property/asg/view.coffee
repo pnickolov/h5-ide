@@ -101,32 +101,43 @@ define [ '../base/view',
                 @setTitle name
 
         setSizeGroup: ( event ) ->
+            that        = @
             $min        = @$el.find '#property-asg-min'
             $max        = @$el.find '#property-asg-max'
             $capacity   = @$el.find '#property-asg-capacity'
 
             $min.parsley 'custom', ( val ) ->
-                if + val < 1
-                    return lang.ide.PARSLEY_ASG_SIZE_MUST_BE_EQUAL_OR_GREATER_THAN_1
                 if + val > + $max.val()
                     return lang.ide.PARSLEY_MINIMUM_SIZE_MUST_BE_LESSTHAN_MAXIMUM_SIZE
+                that.constantCheck val
 
             $max.parsley 'custom', ( val ) ->
-                if + val < 1
-                    return lang.ide.PARSLEY_ASG_SIZE_MUST_BE_EQUAL_OR_GREATER_THAN_1
                 if + val < + $min.val()
-                    return lang.ide.PARSLEY_MINIMUM_SIZE_MUST_BE_LESSTHAN_MAXIMUM_SIZE
+                    return lang.ide.PARSLEY_MAXIMUM_SIZE_MUST_BE_MORETHAN_MINIMUM_SIZE
+                that.constantCheck val
 
             $capacity.parsley 'custom', ( val ) ->
-                if + val < 1
-                    return lang.ide.PARSLEY_DESIRED_CAPACITY_EQUAL_OR_GREATER_1
                 if + val < + $min.val() or + val > + $max.val()
                     return lang.ide.PARSLEY_DESIRED_CAPACITY_IN_ALLOW_SCOPE
+                that.constantCheck val
 
             if $( event.currentTarget ).parsley 'validateForm'
                 @model.setASGMin $min.val()
                 @model.setASGMax $max.val()
                 @model.setASGDesireCapacity $capacity.val()
+
+        constantCheck: (val) ->
+            val = +val
+
+            if val < 1
+                return sprintf lang.ide.PARSLEY_VALUE_MUST_BE_GREATERTHAN_VAR, 1
+
+            if val > 65534
+                return sprintf lang.ide.PARSLEY_VALUE_MUST_BE_LESSTHAN_VAR, 65534
+
+            null
+
+
 
         setHealthCheckGrace : ( event ) ->
             @model.setHealthCheckGrace event.target.value

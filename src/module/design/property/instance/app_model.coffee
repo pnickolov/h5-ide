@@ -4,11 +4,12 @@
 
 define [ '../base/model',
     'keypair_model',
+    'instance_model',
     'constant',
     'i18n!nls/lang.js'
     'Design'
 
-], ( PropertyModel, keypair_model, constant, lang, Design ) ->
+], ( PropertyModel, keypair_model, instance_model, constant, lang, Design ) ->
 
     AppInstanceModel = PropertyModel.extend {
 

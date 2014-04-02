@@ -360,7 +360,7 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
 
             # update other module
             ide_event.trigger ide_event.UPDATE_STACK_LIST, 'NEW_STACK', [new_id]
-            ide_event.trigger ide_event.UPDATE_DESIGN_TAB, new_id, name + ' - stack'
+            ide_event.trigger ide_event.UPDATE_DESIGN_TAB, new_id, name + ' - stack', old_id
             ide_event.trigger ide_event.UPDATE_STATUS_BAR_SAVE_TIME
 
         saveStackCallback : ( id, name ) ->

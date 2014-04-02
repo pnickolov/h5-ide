@@ -70,32 +70,40 @@ define [ 'event',
         #  update
         #############################
 
-        updateCurrentTab : ( tab_id, tab_name ) ->
-            console.log 'updateCurrentTab', tab_id, tab_name
+        updateCurrentTab : ( tab_id, tab_name, old_tab_id ) ->
+            console.log 'updateCurrentTab', tab_id, tab_name, old_tab_id
 
             original_tab_id = null
 
             _.each $( '.tabbar-group' ).children(), ( item ) ->
-                if $( item ).attr( 'class' ) is 'active'
-                    console.log $( item )
 
-                    # update temp html tag property
-                    $( item ).attr 'id', 'tab-bar-' + tab_id
-                    temp = $( $( item ).find( 'a' )[0] )
+                console.log $( item )
 
-                    # get origin tab id
-                    original_tab_id = temp.attr 'data-tab-id'
+                # new stack save
+                if old_tab_id and $( item ).attr('id') isnt 'tab-bar-' + old_tab_id
+                    return
 
-                    # reset
-                    temp.attr 'title',       tab_name
-                    temp.attr 'data-tab-id', tab_id
-                    temp.attr 'href',        '#tab-content-' + tab_id
-                    temp.html temp.find( 'i' ).get( 0 ).outerHTML + tab_name
+                # change stack name or run stack
+                if not old_tab_id and $( item ).attr( 'class' ) isnt 'active'
+                    return
 
-                    # set Tabbar.current
-                    ide_event.trigger ide_event.UPDATE_DESIGN_TAB_TYPE, tab_id, tab_id.split( '-' )[0]
+                # update temp html tag property
+                $( item ).attr 'id', 'tab-bar-' + tab_id
+                temp = $( $( item ).find( 'a' )[0] )
 
-                    null
+                # get origin tab id
+                original_tab_id = temp.attr 'data-tab-id'
+
+                # reset
+                temp.attr 'title',       tab_name
+                temp.attr 'data-tab-id', tab_id
+                temp.attr 'href',        '#tab-content-' + tab_id
+                temp.html temp.find( 'i' ).get( 0 ).outerHTML + tab_name
+
+                # set Tabbar.current
+                ide_event.trigger ide_event.UPDATE_DESIGN_TAB_TYPE, tab_id, tab_id.split( '-' )[0]
+
+                null
 
             original_tab_id
 

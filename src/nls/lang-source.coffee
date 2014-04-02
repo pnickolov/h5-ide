@@ -326,6 +326,10 @@ module.exports =
       en: "This value should be > %s"
       zh: ""
 
+    PARSLEY_VALUE_MUST_IN_ALLOW_SCOPE:
+      en: "This value should be >= %s and <= %s"
+      zh: ""
+
     PARSLEY_DESIRED_CAPACITY_EQUAL_OR_GREATER_1:
       en: "Desired Capacity must be equal or greater than 1"
       zh: ""

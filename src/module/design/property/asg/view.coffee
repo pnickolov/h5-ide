@@ -140,7 +140,15 @@ define [ '../base/view',
 
 
         setHealthCheckGrace : ( event ) ->
-            @model.setHealthCheckGrace event.target.value
+            $target = $ event.currentTarget
+
+            $target.parsley 'custom', ( val ) ->
+                val = + val
+                if val < 0 or val > 86400
+                    return sprintf lang.ide.PARSLEY_VALUE_MUST_IN_ALLOW_SCOPE, 0, 86400
+
+            if $target.parsley 'validate'
+                @model.setHealthCheckGrace $target.val()
 
         showTermPolicy : () ->
             data    = []

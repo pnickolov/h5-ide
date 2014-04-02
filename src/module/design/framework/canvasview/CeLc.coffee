@@ -58,7 +58,7 @@ define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager" ], ( Can
         imageY  : 9
         imageW  : 61
         imageH  : 62
-        label   : m.get "name"
+        label   : MC.truncate m.get('name'), 15
         labelBg : true
         sg      : true
       })
@@ -123,7 +123,7 @@ define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager" ], ( Can
       node = @$element m.id
 
       # Node Label
-      CanvasManager.update node.children(".node-label-name"), m.get("name")
+      CanvasManager.update node.children(".node-label-name"), MC.truncate m.get('name'), 15
 
     # Update Ami Image
     CanvasManager.update node.children(".ami-image"), @iconUrl(), "href"

@@ -267,18 +267,19 @@ var MC = {
 
 	canvasName : function (string)
 	{
-		return string.length > 17 ? string.substring(0, 17) + '...' : string;
+		return string.length > 17 ? string.substring(0, 17 - 3) + '...' : string;
 	},
 
 	asgName : function (string)
 	{
-		return string.length > 12 ? string.substring(0, 12) + '...' : string;
+		return string.length > 12 ? string.substring(0, 12 - 3) + '...' : string;
 	},
 
 	truncate: function (string, length)
 	{
-		return string.length > length ? string.substring(0, length) + '...' : string;
+		return string.length > length ? string.substring(0, length - 3) + '...' : string;
 	},
+
 
 	/*
 		For realtime CSS edit

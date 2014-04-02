@@ -56,7 +56,7 @@ fi
 
 echo "=============================================="
 echo "3.Start sync ${FILENAME} to S3..."
-s3cmd sync ./${FILENAME} ${TARGETDIR}
+s3cmd sync ./${FILENAME} ${TARGETDIR}/
 if [ $? -eq 0 ]
 then
 	echo ">Succeed."

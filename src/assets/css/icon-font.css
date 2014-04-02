@@ -75,7 +75,8 @@
 .icon-syslog:before,
 .icon-import:before,
 .icon-drag-copy:before,
-.icon-gear:before
+.icon-gear:before,
+.icon-menu:before
 {
 	font : 16px/1em "MCIcon";
 	font-weight : normal;
@@ -147,3 +148,4 @@
 .icon-import:before {content:"\F14E";}
 .icon-drag-copy:before {content:"\F14F";}
 .icon-gear:before {content:"\F150";}
+.icon-menu:before {content:"\F151";}

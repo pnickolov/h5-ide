@@ -97,15 +97,22 @@ button {
 	right: 0;
 }
 
-.logo {
-	background  : url('../images/ide/logo-ide.png') center no-repeat;
+.nav-menu {
+	/*background: url('../images/ide/logo-ide.png') center no-repeat;*/
 	width       : 45px;
-	height      : 100%;
+	height      : 49px;
+	line-height : 60px;
 	position    : absolute;
+	text-align  : center;
+}
+
+.logo:before {
+	font-size   : 24px;
+	color: #9C6DC0;
 }
 
 .logo:hover {
-	opacity: 。8;
+	opacity: .8;
 }
 
 .header-menu {
@@ -7781,4 +7788,5 @@ summary:focus {
 	margin-right : 5px;
 	padding      : 4px 6px;
 	font-size    : 12px;
-}
+}}
+

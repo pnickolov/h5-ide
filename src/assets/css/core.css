@@ -301,7 +301,6 @@ body {
 }
 
 /* Hide Selection */
-/*::selection {
+::selection {
 	background: transparent;
 }
-*/

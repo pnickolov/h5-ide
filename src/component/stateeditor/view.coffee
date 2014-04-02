@@ -350,12 +350,6 @@ define [ 'event',
                 Handlebars.registerPartial(id, html)
                 @[ @tplMap[ id ] ] = Handlebars.compile html
 
-            Handlebars.registerHelper('breaklines', (text) ->
-                text = Handlebars.Utils.escapeExpression(text)
-                text = text.replace(/(\r\n|\n|\r)/gm, '<br>')
-                return new Handlebars.SafeString(text)
-            )
-
             null
 
         genStateUID: () ->
@@ -3404,7 +3398,7 @@ define [ 'event',
                 logContent = MC.base64Decode(result.output)
                 $contentElem = $('#modal-instance-sys-log .instance-sys-log-content')
 
-                logContentTpl = Handlebars.compile('{{nl2br content}}')
+                logContentTpl = Handlebars.compile('{{breaklines content}}')
                 logContentHTML = logContentTpl({
                     content: logContent
                 })

@@ -147,7 +147,7 @@ define [ '../base/view', 'text!./template/app.html', 'i18n!nls/lang.js', 'instan
                 logContent = MC.base64Decode(result.output)
                 $contentElem = $('#modal-instance-sys-log .instance-sys-log-content')
 
-                logContentTpl = Handlebars.compile('{{nl2br content}}')
+                logContentTpl = Handlebars.compile('{{breaklines content}}')
                 logContentHTML = logContentTpl({
                     content: logContent
                 })

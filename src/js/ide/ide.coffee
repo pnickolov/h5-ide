@@ -298,6 +298,13 @@ define [ 'MC', 'event', 'handlebars'
 			return options.fn this if v1 is v2
 			return options.inverse this
 
+		# deal break line
+		Handlebars.registerHelper('breaklines', (text) ->
+			text = Handlebars.Utils.escapeExpression(text)
+			text = text.replace(/(\r\n|\n|\r)/gm, '<br>')
+			return new Handlebars.SafeString(text)
+		)
+
 		#############################
 		#  analytics
 		#############################

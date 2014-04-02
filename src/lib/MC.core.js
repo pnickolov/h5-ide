@@ -272,7 +272,7 @@ var MC = {
 
 	asgName : function (string)
 	{
-		return string.length > 12 ? string.substring(0, 12 - 3) + '...' : string;
+		return string.length > 15 ? string.substring(0, 15 - 3) + '...' : string;
 	},
 
 	truncate: function (string, length)

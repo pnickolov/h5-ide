@@ -33,9 +33,10 @@ define [ 'event',
             'click #account-email-cancel'           : 'clickCancelEmail'
             'click #account-password-update'        : 'clickUpdatePassword'
             'click #account-password-cancel'        : 'clickCancelPassword'
-            'keyup #aws-credential-account-id'      : 'verificationKey'
-            'keyup #aws-credential-access-key'      : 'verificationKey'
-            'keyup #aws-credential-secret-key'      : 'verificationKey'
+
+            'change #aws-credential-account-id'     : 'verificationKey'
+            'change #aws-credential-access-key'     : 'verificationKey'
+            'change #aws-credential-secret-key'     : 'verificationKey'
 
             #welcome
             'click #awscredentials-skip'            : 'onSkinButton'
@@ -279,6 +280,7 @@ define [ 'event',
             notification type, msg
 
         verificationKey : ->
+
             console.log 'verificationKey'
 
             right_count = 0

@@ -52,7 +52,7 @@ define [ 'event', 'constant', 'i18n!nls/lang.js',
                 else
                     $("#off-canvas-app").click()
 
-                $("#wrapper").addClass("off-canvas");
+                $("#wrapper").addClass("off-canvas")
                 return
 
             $("#off-canvas-overlay").click ()-> $("#wrapper").removeClass("off-canvas"); return

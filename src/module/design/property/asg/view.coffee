@@ -320,10 +320,21 @@ define [ '../base/view',
                     return "Duplicated policy name in this autoscaling group"
 
 
-            $("#asg-policy-periods, #asg-policy-second").on "change", ()->
+            $("#asg-policy-periods").on "change", () ->
                 val = parseInt $(this).val(), 10
                 if not val or val < 1
-                    $(this).val( "1" ).parsley("validate")
+                    $(this).val( "1" )
+                if val > 86400
+                    $(@).val 86400
+
+            $("#asg-policy-second").on "change", () ->
+                val = parseInt $(this).val(), 10
+                if not val or val < 1
+                    $(this).val( "1" )
+
+                if val > 1440
+                    $(@).val 1440
+
 
             $("#asg-policy-adjust-type").on "OPTION_CHANGE", ()->
                 type = $(this).find(".selected").data("id")
@@ -358,8 +369,8 @@ define [ '../base/view',
 
                 if val < 0
                     val = 0
-                else if val > 86400
-                    val = 86400
+                else if val > 1440
+                    val = 1440
 
                 $this.val( val )
 

@@ -172,16 +172,18 @@ define [ 'constant', 'MC', '../result_vo', 'Design', 'validation_helper' ], ( CO
         asg = lc.parent()
         expandedAsgs = asg.get 'expandedList'
 
-        subnetName = lc.parent().parent().get 'name'
+        subnet = lc.parent().parent()
+        subnetName = subnet.get 'name'
+        subnetId = subnet.id
 
         # LC could'nt be NAT so only need to validate notNat
         if not __selfOut( lc, result, subnetName )
-            result.push __genConnectedError subnetName, uid
+            result.push __genConnectedError subnetName, subnetId
 
         for asg in expandedAsgs
             if not __selfOut( asg, result, subnetName )
                 subnetName = asg.parent().get 'name'
-                result.push __genConnectedError subnetName, asg.id
+                result.push __genConnectedError subnetName, subnetId
 
         result
 
@@ -189,7 +191,10 @@ define [ 'constant', 'MC', '../result_vo', 'Design', 'validation_helper' ], ( CO
     __isInstanceConnectedOut = ( uid ) ->
         component = __getComp uid, true
         result = []
-        subnetName = component.parent().get 'name'
+
+        subnet = component.parent()
+        subnetName = subnet.get 'name'
+        subnetId = subnet.id
 
         # The order is important. isNat must be put before notNat,
         # becauce notNat will validate EIP and PublicIP,
@@ -199,7 +204,7 @@ define [ 'constant', 'MC', '../result_vo', 'Design', 'validation_helper' ], ( CO
         if __natOut( component ) or __selfOut( component, result, subnetName )
             return result
 
-        result.push __genConnectedError subnetName, uid
+        result.push __genConnectedError subnetName, subnetId
 
         result
 

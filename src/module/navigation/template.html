@@ -1,83 +1,18 @@
-<ul id="first-level-nav">
-	<li class="nav-head">
+<nav>
+	<button class="off-canvas-tab" id="off-canvas-app">{{ i18n "NAV_TIT_APPS" }}</button>
+	<button class="off-canvas-tab selected" id="off-canvas-stack">{{ i18n "NAV_TIT_STACKS" }}</button>
+</nav>
 
-		<a href="javascript:void(0)" id="nav-dashboard">
-			<i class="icon-dashboard icon-nav-label"></i>
-		</a>
+<section class="scroll-wrap">
+	<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+	<div class="scroll-content">
 
-		<div class="sub-menu-wrapper">
-			<div class="first-level-nav-label">{{ i18n "NAV_TIT_DASHBOARD" }}</div>
+		<ul class="scroll-content hide" id="nav-app-region"></ul>
 
-			<div class="scroll-wrap sub-menu-scroll-wrap">
-
-				<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-
-				<ul class="sub-menu scroll-content" id="nav-dashboard-region">
-
-					<li>
-						<a id="dashboard-global" href="javascript:void(0)" class="truncate nav-truncate">
-							{{ i18n "NAV_LBL_GLOBAL" }}
-						</a>
-					</li>
-
-					<div class="nav-region-group">
-						<div class="loading-wrapper">Loading...</div>
-					</div>
-
-				</ul>
-			</div>
-
+		<div class="scroll-content" id="nav-stack">
+			<ul id="nav-stack-region"></ul>
+			<ul id="nav-region-empty-list"></ul>
 		</div>
 
-	</li>
-
-	<li class="nav-head">
-
-		<a href="javascript:void(0)" id="nav-app">
-			<i class="icon-app-nav icon-nav-label"></i>
-		</a>
-
-		<div class="sub-menu-wrapper">
-			<div class="first-level-nav-label">{{ i18n "NAV_TIT_APPS" }}</div>
-			<div class="scroll-wrap sub-menu-scroll-wrap">
-
-				<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-
-				<ul class="sub-menu nav-region-list scroll-content" id="nav-app-region">
-					<div class="loading-wrapper">Loading...</div>
-				</ul>
-
-			</div>
-		</div>
-
-	</li>
-
-	<li class="nav-head">
-
-		<a href="javascript:void(0)" id="nav-stack">
-			<i class="icon-stack-nav icon-nav-label"></i>
-		</a>
-
-		<div class="sub-menu-wrapper">
-			<div class="first-level-nav-label">{{ i18n "NAV_TIT_STACKS" }}</div>
-			<div class="scroll-wrap sub-menu-scroll-wrap">
-
-				<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-
-					<div class="scroll-content">
-						<ul class="sub-menu nav-region-list" id="nav-stack-region">
-							<div class="loading-wrapper">Loading...</div>
-						</ul>
-
-						<div class="nav-region-empty-list">
-							<div class="loading-wrapper">Loading...</div>
-						</div>
-					</div>
-
-			</div>
-
-		</div>
-
-	</li>
-
-</ul>
+	</div>
+</section>

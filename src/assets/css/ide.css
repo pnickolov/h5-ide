@@ -7317,8 +7317,9 @@ summary:focus {
 
 .app-update-summary-table-header.table th,
 #app-update-summary-table.table td {
-	padding: 2px 4px;
+	padding       : 2px 4px;
 	vertical-align: middle;
+	position      : relative;
 }
 
 .au-summary-label {

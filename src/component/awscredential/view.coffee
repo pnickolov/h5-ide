@@ -27,7 +27,7 @@ define [ 'event',
             'click #awscredentials-cancel'          : 'onAWSCredentialCancel'
             'click #awscredentials-remove'          : 'onAWSCredentialRemove'
             'click #account-setting-tab li a'       : 'onTab'
-            'click #account-update-email-link'      : 'onChangeEmail'
+            #'click #account-update-email-link'     : 'onChangeEmail'
             'click #account-change-password'        : 'onChangePassword'
             'click #account-email-update'           : 'clickUpdateEmail'
             'click #account-email-cancel'           : 'clickCancelEmail'
@@ -185,14 +185,14 @@ define [ 'event',
 
             null
 
-        onChangeEmail : (event) ->
-            console.log 'account_setting_tab onChangeEmail'
-
-            me = this
-
-            me.showSetting('account', 'on_email')
-
-            null
+        #onChangeEmail : (event) ->
+        #    console.log 'account_setting_tab onChangeEmail'
+        #
+        #    me = this
+        #
+        #    me.showSetting('account', 'on_email')
+        #
+        #    null
 
         clickUpdateEmail : (flag) ->
             console.log 'account_setting_tab clickUpdateEmail'

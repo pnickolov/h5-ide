@@ -107,12 +107,10 @@ button {
 }
 
 .logo {
-	background: url('../images/ide/logo-ide.png') center no-repeat;
-	height: 49px;
-	width: 45px;
-	position: absolute;
-	/*border-right: 1px solid #222;*/
-	text-indent: -9999px;
+	background  : url('../images/ide/logo-ide.png') center no-repeat;
+	width       : 45px;
+	height      : 100%;
+	position    : absolute;
 }
 
 .logo:hover {
@@ -4071,11 +4069,16 @@ a.sidebar-hider:before {
 }
 
 .add-rule:hover {
+<<<<<<< HEAD
 	color         : #fff;
 	/*text-shadow : 0 2px rgba(0,0,0,.8);*/
 	background    : #9C6DC0;
 	line-height   : 32px;
 	box-shadow    : -1px 0 0 0 rgba(0,0,0,.5);
+=======
+	color      : #fff;
+	background : #66398b;
+>>>>>>> [release/visualops-20140324]:bear: Centering IDE logo and the ide logo link doesn't need have text inside. Because the IDE is not crawled by the search engine.
 }
 
 .rule-list-row {

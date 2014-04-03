@@ -206,9 +206,14 @@ button {
 }
 
 .nav-stack-region-title > button {
-	float      : right;
-	color      : #fff;
-	margin-top : 8px;
+	float     : right;
+	color     : #ccc;
+	margin-top: 8px;
+	cursor    : pointer;
+}
+
+.nav-stack-region-title > button:hover {
+	color: #9F62D1;
 }
 
 .nav-region-list-items > li {
@@ -4845,6 +4850,7 @@ a.action-link:hover {
 /* SG Rule Create Dialog */
 #sg-rule-create-modal {
 	width  : 500px;
+	background: rgb(44,44,44);
 }
 
 #sg-rule-create-modal .selectbox .selection {
@@ -4862,8 +4868,9 @@ a.action-link:hover {
 }
 
 .sg-node-wrap {
-	background : #f2f2f2;
-	padding    : 15px 10px;
+	background   : #222;
+	padding      : 15px 10px;
+	border-radius: 4px;
 }
 
 .sg-node-wrap > label {
@@ -4995,7 +5002,7 @@ a.action-link:hover {
 .sg-rule-create-sidebar {
 	height     : 100%;
 	position   : absolute;
-	width      : 200px;
+	width      : 202px;
 	top        : 0;
 	z-index    : -1;
 	padding    : 20px 0;
@@ -5055,7 +5062,7 @@ a.action-link:hover {
 }
 
 .sg-create-rule-list .sg-create-group {
-	width       : 194px;
+	width       : 196px;
 }
 
 .sg-create-rule-list .sg-color {
@@ -5101,7 +5108,7 @@ a.action-link:hover {
 
 #sg-rule-self-ref {
 	border-radius: 4px;
-	background-color: #f3f3f3;
+	background-color: #283138;
 	padding: 10px;
 }
 

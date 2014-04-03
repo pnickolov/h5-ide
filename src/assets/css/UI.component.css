@@ -1065,7 +1065,8 @@ textarea {
 }
 
 .btn-silver.modal-close,
-#close-awscredential {
+#close-awscredential,
+.btn-silver.btn-modal-close {
 	min-width: 80px;
 	background: none;
 	color: #666;
@@ -1080,7 +1081,7 @@ textarea {
 .modal-header {
 	position     : relative;
 	padding      : 0 15px;
-	background   : rgba(0, 0, 0, 0.2);
+	background   : #333;
 	color        : #F1F1F1;
 	border-radius: 2px 2px 0 0;
 }

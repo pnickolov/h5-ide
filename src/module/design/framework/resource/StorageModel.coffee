@@ -13,6 +13,8 @@ define [ "Design", "../ResourceModel" ], ( Design, ResourceModel )->
 
   }, {
 
+    diffJson : ()-> # Disable diff for thie Model
+
     handleTypes : ["AWS.EC2.Tag", "AWS.AutoScaling.Tag"]
 
     deserialize : ( data )->

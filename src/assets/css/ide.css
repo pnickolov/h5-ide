@@ -1030,6 +1030,10 @@ button {
 	height: 100%;
 }
 
+#global-region-wrap > .scroll-content {
+	background : #f0f0f0;
+}
+
 #global-region-header {
 	padding: 10px 0;
 	position: absolute;
@@ -1585,7 +1589,7 @@ button {
 	position: relative;
 	width: 1280px;
 	padding: 0 0 20px 0;
-	margin: -15px auto 15px;
+	margin: -15px auto 0;
 	z-index: 3;
 }
 
@@ -2388,7 +2392,6 @@ button {
 /* Main Content */
 .main-content {
 	display: none;
-	background: #f0f0f0;
 	height: 100%;
 	width: 100%;
 }

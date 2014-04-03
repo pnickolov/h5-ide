@@ -521,11 +521,13 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
                 region = value
                 ide_event.trigger ide_event.UPDATE_DESIGN_TAB_ICON, 'stopped', id
 
-                # temp
-                MC.data.running_app_list[ id ] = { app_id : id, state : 'stopped' }
+                if item_state_map and item_state_map[id] and item_state_map[id].is_app_updating is false
 
-                # update app resource
-                ide_event.trigger ide_event.UPDATE_APP_INFO, region, id
+                    # temp
+                    MC.data.running_app_list[ id ] = { app_id : id, state : 'stopped' }
+
+                    # update app resource
+                    ide_event.trigger ide_event.UPDATE_APP_INFO, region, id
 
             else if flag is 'TERMINATED_APP'
                 (delete item_state_map[id]) if id of item_state_map

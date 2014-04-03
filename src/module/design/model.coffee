@@ -65,8 +65,10 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'state
                     @setCanvasData result.resolved_data[ 0 ]
                     @setOriginData result.resolved_data[ 0 ]
 
-                    # save design_model
-                    MC.common.other.canvasData.save MC.common.other.canvasData.data(true)
+                    if MC.data.running_app_list and MC.data.running_app_list[ app_id ] and MC.data.running_app_list[ app_id ].state is 'stopped'
+
+                        # save design_model
+                        MC.common.other.canvasData.save MC.common.other.canvasData.data(true)
 
                 # update MC.Tab[app_id]
                 else
@@ -305,7 +307,7 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'state
             region          = result.param[3]
             resource_source = result.resolved_data
 
-            if MC.data.running_app_list and MC.data.running_app_list[ app_id ]
+            if MC.data.running_app_list and MC.data.running_app_list[ app_id ] and MC.data.running_app_list[ app_id ].state is 'running'
 
                 console.log 'when OPEN_APP or stop → start app use it'
 
@@ -317,8 +319,8 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'state
                     mode : 'app'
                 new Design MC.common.other.canvasData.origin(), options
 
-                # delete current app_id
-                delete MC.data.running_app_list[ app_id ]
+            # delete current app_id
+            delete MC.data.running_app_list[ app_id ]
 
             if resource_source
 

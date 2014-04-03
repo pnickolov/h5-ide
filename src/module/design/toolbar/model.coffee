@@ -499,11 +499,18 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
                 region = value
                 ide_event.trigger ide_event.UPDATE_DESIGN_TAB_ICON, 'running', id
 
-                # temp
-                MC.data.running_app_list[ id ] = { app_id : id }
+                # stop => start
+                if item_state_map and item_state_map[id] and item_state_map[id].is_app_updating is false and item_state_map[id].is_running is true
 
-                # update app resource
-                #ide_event.trigger ide_event.UPDATE_APP_INFO, region, id
+                    # temp
+                    MC.data.running_app_list[ id ] = { app_id : id, state : 'running' }
+
+                    # update app resource
+                    ide_event.trigger ide_event.UPDATE_APP_INFO, region, id
+
+                # app updating
+                else
+                    # TO DO
 
             else if flag is 'STOPPED_APP'
                 if id of item_state_map
@@ -513,6 +520,9 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
 
                 region = value
                 ide_event.trigger ide_event.UPDATE_DESIGN_TAB_ICON, 'stopped', id
+
+                # temp
+                MC.data.running_app_list[ id ] = { app_id : id, state : 'stopped' }
 
                 # update app resource
                 ide_event.trigger ide_event.UPDATE_APP_INFO, region, id

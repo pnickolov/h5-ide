@@ -155,7 +155,7 @@ button {
 	left            : -260px;
 	z-index         : 60;
 	width           : 260px;
-	background-color: #1F1E24;
+	background-color: #232224;
 }
 
 #navigation > nav {
@@ -198,11 +198,12 @@ button {
 }
 
 .nav-stack-region-title {
-	height      : 35px;
-	line-height : 35px;
-	color       : #999;
-	padding     : 0 17px;
-	font-size   : 14px;
+	height          : 35px;
+	line-height     : 35px;
+	color           : #999;
+	padding         : 0 17px;
+	font-size       : 14px;
+	background-color: #1D1D1D;
 }
 
 .nav-stack-region-title > button {
@@ -436,9 +437,8 @@ button {
 	padding: 10px;
 	border-radius: 2px;
 	font-size: 12px;
-	color: #ec3c38;
-	background-color: #fad6cf;
-	border: 1px solid #222;
+	color: #fff;
+	background-color: #ec3c38;
 }
 
 #notification-panel-wrapper .notification-duration {
@@ -610,8 +610,8 @@ button {
 }
 
 .modal-welcome #AWSCredential-info.error {
-	color           : #fff;
-	background-color: #ec3c38;
+	color: #ec3c38;
+	background-color: #111;
 	border          : none;
 	padding-bottom  : 20px;
 }
@@ -621,7 +621,7 @@ button {
 }
 
 #AWSCredential-welcome {
-	color: #666;
+	color: #ccc;
 	font-weight: bold;
 	margin-bottom: 5px;
 }
@@ -819,7 +819,7 @@ button {
 }
 
 .AWSCredentials-account-info {
-	color            : #666;
+	color            : #ccc;
 	background-color : #111;
 	padding          : 15px 20px;
 	border-radius    : 4px;
@@ -924,7 +924,7 @@ button {
 }
 
 .welcome-skip-item {
-	color: #555;
+	color: #eee;
 }
 
 /* Main Tab Bar */
@@ -7394,10 +7394,9 @@ summary:focus {
 
 #modal-key-short .title {
 	font-size: 18px;
-	color: #444;
-	border-bottom: 1px solid #ddd;
-	/*margin-bottom: 20px;*/
-	padding: 0 20px;
+	color: #999;
+	border-bottom: 1px solid #1d1d1d;
+	padding: 0 15px;
 }
 
 /*#modal-key-short section {
@@ -7410,7 +7409,7 @@ summary:focus {
 }
 
 #modal-key-short .key-item:nth-child(2n+1) {
-	background: rgba(0,0,0,.02);
+	background: rgba(255,255,255,.02);
 }
 
 #modal-key-short .key-item > div {
@@ -7419,7 +7418,7 @@ summary:focus {
 }
 
 #modal-key-short .keys {
-	background: #F7F7F7;
+	background: #232224;
 	padding: 0;
 }
 

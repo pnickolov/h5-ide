@@ -503,7 +503,7 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
                 MC.data.running_app_list[ id ] = { app_id : id }
 
                 # update app resource
-                ide_event.trigger ide_event.UPDATE_APP_INFO, region, id
+                #ide_event.trigger ide_event.UPDATE_APP_INFO, region, id
 
             else if flag is 'STOPPED_APP'
                 if id of item_state_map

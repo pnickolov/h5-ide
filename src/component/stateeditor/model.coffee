@@ -40,9 +40,9 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 			moduleData = {}
 
 			if osPlatform is 'linux'
-				moduleData = moduleDataObj.linux if moduleDataObj.linux
+				moduleData = _.extend(moduleData, moduleDataObj.linux) if moduleDataObj.linux
 			else if osPlatform is 'windows'
-				moduleData = moduleDataObj.windows if moduleDataObj.windows
+				moduleData = _.extend(moduleData, moduleDataObj.windows) if moduleDataObj.windows
 
 			moduleData = _.extend(moduleData, moduleDataObj.common) if moduleDataObj.common
 			moduleData = _.extend(moduleData, moduleDataObj.meta) if moduleDataObj.meta

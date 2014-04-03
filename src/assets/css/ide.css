@@ -2683,7 +2683,7 @@ td.table-action a.btn {
 	height: 450px;
 	position: relative;
 	width: 100%;
-	background-color: #EEE;
+	/*background-color: #1f1f1f;*/
 }
 
 #modal-browse-community-ami .show-loading {
@@ -2709,8 +2709,7 @@ td.table-action a.btn {
 #ami-data-wrap {
 	height: 100%;
 	margin-left: 250px;
-	background: #FFF;
-	border-left: 1px solid #ccc;
+	border-left: 1px solid #222;
 }
 
 #btn-search-ami {
@@ -2724,21 +2723,14 @@ td.table-action a.btn {
 .ami-option-group h5 {
 	font-size: 12px;
 	margin-bottom: 10px;
-	color: #555;
 }
 
 .ami-option-wrap button {
 	width: 114px;
 	font-size: 12px;
 	padding: 4px 0;
-	background-color: #ccc;
-	border: 1px solid #aaa;
 }
 
-.ami-option-wrap button:hover {
-	background-color: #bbb;
-	border: 1px solid #aaa;
-}
 
 .ami-option-wrap button.active {
 	background-color: #148BE6;
@@ -2756,8 +2748,6 @@ td.table-action a.btn {
 	font-size: 12px;
 	padding: 8px 5px 8px 10px;
 	width: 215px;
-	color: #666;
-	border: 1px solid #CCC;
 }
 
 #modal-browse-community-ami .radiobuttons button {
@@ -2774,15 +2764,13 @@ td.table-action a.btn {
 #selectbox-ami-platform {
 	margin: 5px 0;
 	width: 232px;
-	background: #F3F3F3;
 }
 
 #selectbox-ami-platform .item {
-	font-size: 12px;
-	display: block;
-	color: #333;
-	cursor: pointer;
-	padding: 8px;
+	font-size  : 12px;
+	display    : block;
+	cursor     : pointer;
+	padding    : 8px;
 	line-height: 23px;
 }
 
@@ -2794,25 +2782,11 @@ td.table-action a.btn {
 	margin-left: 28px;
 }
 
-#selectbox-ami-platform .selected {
-	background-color: #f3f3f3;
-}
-
 #selectbox-ami-platform .selection {
 	border-radius: 3px;
 	padding: 8px 10px;
 
 	line-height: 24px;
-
-	background-color: #F5F5F5;
-	background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);
-	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#FFF), to(#E6E6E6));
-	background-image: -webkit-linear-gradient(top, #FFF, #E6E6E6);
-	background-image: -o-linear-gradient(top, #ffffff, #e6e6e6);
-	background-image: linear-gradient(to bottom, #FFF, #E6E6E6);
-
-	border-top: 1px solid rgba(0, 0, 0, 0.1);
-	border-bottom: 1px solid rgba(0, 0, 0, 0.3);
 }
 
 #selectbox-ami-platform .selection span {
@@ -2869,11 +2843,11 @@ td.table-action a.btn {
 	font-size: 12px;
 	font-weight: 500;
 	color: #F3F3F3;
-	background: #323e49;
+	background: #292C2E;
 }
 
 #ami-table-wrap .table-head thead th:hover {
-	background-color: #46596B;
+	background-color: #2E3338;
 }
 
 .ami-meta {
@@ -2931,9 +2905,9 @@ td.table-action a.btn {
 	position: absolute;
 	bottom: 0;
 	height: 45px;
-	background-color: #F8F8F8;
-	border-top: 1px solid #ccc;
-	width: 599px;
+	background-color: #292C2E;
+	border-top: 1px solid #000;
+	width: 604px;
 }
 
 #community-ami-page .pagination {

@@ -1,7 +1,7 @@
 /* Table */
 .table {
 	max-width: 100%;
-	background-color: rgba(0, 0, 0, 0);
+	background-color: #2e2e2e;
 	border-collapse: collapse;
 	border-spacing: 0;
 	width: 100%;
@@ -50,17 +50,17 @@
 	line-height: 20px;
 	text-align: left;
 	vertical-align: top;
-	border: 1px solid #151515;
+	border: 1px solid #222;
 }
 
 .table tbody tr:hover th,
 .table tbody tr:hover td {
-	background: rgba(255,255,255,.02);
+	background: #393939;
 }
 
 .table tbody th,
 .table tbody td {
-	background: #1F1F1F;
+	background: #2e2e2e;
 }
 
 .table-head-fix {

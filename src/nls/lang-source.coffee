@@ -4596,6 +4596,10 @@ module.exports =
       en: "Network ACL <span class='validation-tag tag-acl'>%s</span> has no ALLOW rule. The subnet(s) associate(s) with it cannot have traffic in or out."
       zh: ""
 
+    TA_MSG_ERROR_RT_HAVE_CONFLICT_DESTINATION:
+      en:"Route Table <span class='validation-tag tag-rtb'>%s</span> has routes with conflicting CIDR blocks."
+      zh:""
+
     # AZ
     TA_MSG_WARNING_SINGLE_AZ:
       en: "Only 1 Availability Zone is used. Multiple Availability Zone can improve fault tolerance."

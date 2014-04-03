@@ -181,11 +181,11 @@ a.table-link {
 
 /* Button */
 .btn {
-	display       : inline-block;
-	padding       : 8px 0;
-	min-width         : 115px;
-	margin-bottom : 0;
-	box-sizing    : border-box;
+	display      : inline-block;
+	padding      : 8px 0;
+	min-width    : 115px;
+	margin-bottom: 0;
+	box-sizing   : border-box;
 
 	font-size      : 14px;
 	color          : #eee;
@@ -194,7 +194,7 @@ a.table-link {
 
 	cursor : pointer;
 
-	background       : #555;
+	background       : #111;
 	background-repeat: repeat-x;
 	border-radius    : 2px;
 	/*border         : 1px solid #404040;*/
@@ -204,7 +204,7 @@ a.table-link {
 
 .btn:hover {
 	color       : #fff;
-	background  : #505050;
+	background  : #222;
 	text-shadow : none;
 }
 
@@ -478,9 +478,8 @@ textarea[readonly]  {
 }
 
 .prefix-input {
-	border: 1px solid #ccc;
-	/*width: 200px;*/
-	background: #f3f3f3;
+	border       : 1px solid #000;
+	background   : #161616;
 	border-radius: 2px 0 0 2px;
 }
 
@@ -506,7 +505,7 @@ textarea[readonly]  {
 
 .prefix-input input:focus {
 	border: none;
-	border-left: 1px solid #ccc;
+	border-left: 1px solid #000;
 }
 
 /* Placeholder-input */

@@ -161,7 +161,7 @@ define [ 'event',
 
             $('#AWSCredentials-remove-wrap').attr('data-type', 'remove')
 
-            if $('#awscredentials-remove').hasClass('btn btn-silver')
+            if $('#awscredentials-remove').hasClass('btn btn-red')
                 #remove credential
                 me.trigger 'REMOVE_CREDENTIAL'
                 me.showSetting('credential')
@@ -470,7 +470,7 @@ define [ 'event',
                     $('#aws-credential-account-id').val me.model.attributes.account_id
 
                     # set remove button style
-                    $('#awscredentials-remove').removeClass("btn btn-silver")
+                    $('#awscredentials-remove').removeClass("btn btn-red")
 
                     #clear key
                     $('#aws-credential-access-key').val(' ')
@@ -521,7 +521,7 @@ define [ 'event',
                     $('#AWSCredential-form').find('ul').hide()
 
                     # change remove button's style
-                    $('#awscredentials-remove').addClass("btn btn-silver")
+                    $('#awscredentials-remove').addClass("btn btn-red")
                     # hide submit botton
 
             null

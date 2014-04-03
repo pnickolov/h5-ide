@@ -149,17 +149,17 @@ button {
 }
 
 #navigation {
-	position   : absolute;
-	top        : 0;
-	bottom     : 0;
-	left       : -300px;
-	z-index    : 60;
-	width      : 300px;
-	background : #505050;
+	position        : absolute;
+	top             : 0;
+	bottom          : 0;
+	left            : -300px;
+	z-index         : 60;
+	width           : 300px;
+	background-color: #1F1E24;
 }
 
 #navigation > nav {
-	background : #3c3c3c;
+	background : #111;
 	height     : 50px;
 }
 
@@ -171,20 +171,28 @@ button {
 }
 
 .off-canvas-tab {
-	float  : left;
-	height : 100%;
-	width  : 50%;
-	color  : #fff;
+	float : left;
+	height: 100%;
+	width : 50%;
+	color : #ccc;
+	cursor: pointer;
 }
+
+.off-canvas-tab:hover {
+	background: rgba(255,255,255,.02);
+	color     : #fff;
+}
+
 .off-canvas-tab.selected {
-	background : #111;
+	border-bottom: 3px solid #66398b;
+	color: #9F62D1;
 }
 
 .nav-empty {
 	margin: 15px;
 	padding: 15px;
 	color: #AAA;
-	background-color: rgba(0,0,0,.1);
+	background-color: rgba(0,0,0,.5);
 	border-radius: 5px;
 	font-size: 12px;
 }
@@ -215,7 +223,7 @@ button {
 }
 
 .nav-region-list-items > li:hover {
-	background-color : rgba(0,0,0,.4);
+	background-color : rgba(0,0,0,.5);
 }
 
 .show-unused-region {
@@ -533,7 +541,7 @@ button {
 
 #account-setting-tab {
 	padding         : 0 0 0 10px;
-	background-color: #F0F0F0;
+	background-color: #0c0c0c;
 	box-shadow      : inset 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
@@ -575,7 +583,7 @@ button {
 	top: -6px;
 	display: inline-block;
 	border-right: 6px solid transparent;
-	border-bottom: 6px solid #fff;
+	border-bottom: 6px solid #272727;
 	border-left: 6px solid transparent;
 	content: '';
 }
@@ -587,15 +595,15 @@ button {
 }
 
 #AWSCredential-info.error {
-	color            : #ec3c38;
-	background-color : #fad6cf;
-	border           : 1px solid #ec3c38;
+	color: #fff;
+	background-color: #ec3c38;
 }
 
 .modal-welcome #AWSCredential-info.error {
-	background-color : #E0EBF3;
-	border           : none;
-	padding-bottom   : 20px;
+	color           : #fff;
+	background-color: #ec3c38;
+	border          : none;
+	padding-bottom  : 20px;
 }
 
 .modal-welcome #AWSCredential-info.error p {
@@ -622,7 +630,7 @@ button {
 .modal-welcome .AWSCredential-wall {
 	width            : 100%;
 	padding          : 15px 15px 40px 15px;
-	background-color : #EDF9FF;
+	background-color : #111;
 	border           : none;
 	margin           : 0;
 	border-radius    : 0;
@@ -695,13 +703,13 @@ button {
 }
 
 #account-passowrd-info {
-	width: 360px;
-	padding: 10px 15px;
-	font-size: 12px;
-	border-radius: 3px;
-	color: #ec3c38;
-	background-color: #fad6cf;
-	border: 1px solid #ec3c38;
+	width           : 360px;
+	padding         : 10px 15px;
+	font-size       : 12px;
+	border-radius   : 3px;
+	color           : #ec3c38;
+	color           : #fff;
+	background-color: #ec3c38;
 }
 
 #account-passowrd-info a {
@@ -741,13 +749,12 @@ button {
 }
 
 .AWSCredential-wall {
-	width            : 410px;
-	padding          : 15px;
-	background-color : #EDF9FF;
-	margin           : 20px auto 0;
-	border           : 1px solid #b4d5ed;
-	border-radius    : 4px;
-	color            : #1B7FCC;
+	width           : 410px;
+	padding         : 15px;
+	background-color: #111;
+	margin          : 20px auto 0;
+	border-radius   : 4px;
+	color           : #55626e;
 }
 
 .AWSCredential-wall p {
@@ -781,20 +788,10 @@ button {
 	border-radius: 2px;
 	margin-bottom: 10px;
 	padding: 10px;
-	background-color: #F8F8F8;
 }
 
-#AWSCredential-setting .input:focus {
-	background-color: #fff;
-}
-
-#AWSCredential-setting .input[disabled] {
-	color: #ccc;
-	border: 1px solid #ddd;
-}
 
 #AWSCredentials-submiting-body {
-	background-color: #fff;
 	position: relative;
 	padding: 80px 0 80px 100px;
 }
@@ -809,13 +806,11 @@ button {
 	margin: 0 auto;
 	width: 450px;
 	padding: 25px 20px;
-	background-color: #FFF;
 }
 
 .AWSCredentials-account-info {
-	border           : 1px solid #b4d5ed;
 	color            : #666;
-	background-color : #EDF9FF;
+	background-color : #111;
 	padding          : 15px 20px;
 	border-radius    : 4px;
 	margin           : 40px 0;
@@ -850,14 +845,13 @@ button {
 
 #awscredentials-remove.btn {
 	position: relative;
-	/*color: inherit;*/
-	margin: -15px 10px 0 0;
-	width: 150px;
+	margin  : -15px 10px 0 0;
+	width   : 150px;
+	color   : #fff;
 }
 
 #awscredentials-remove.btn:hover {
 	text-decoration: none;
-	background-color: #eee;
 }
 
 #AWSCredentials-remove-wrap {
@@ -4347,8 +4341,12 @@ a.action-link:hover {
 }
 
 .modal-body .modal-protocol-select {
-	width: 90px;
 	display: inline-block;
+	float  : left;
+}
+
+.modal-body .modal-protocol-select .selection {
+	width: 68px;
 }
 
 #modal-sg-rule #modal-protocol-select {
@@ -4391,8 +4389,9 @@ a.action-link:hover {
 }
 
 #sg-protocol-select-result {
-	display: inline-block;
-	width: 240px;
+	display    : inline-block;
+	width      : 240px;
+	margin-left: 7px;
 }
 #modal-sg-rule .protocol-icmp-sub-select.shown {
 	display: block;
@@ -4729,9 +4728,7 @@ a.action-link:hover {
 }
 
 #modal-acl-rule .simple-protocol-select li:hover {
-	background: #148BE6;
-	color: white;
-	border-radius: 3px;
+	text-decoration: underline;
 }
 
 /* property-stack */
@@ -6148,12 +6145,11 @@ summary:focus {
 }
 
 .reconnect-session .input {
-	width: 240px;
+	width: 260px;
 }
 
 .reconnect-session .modal-center-align-helper {
-	padding-left: 9px;
-	/*padding-top: 20px;*/
+
 }
 
 .disconnected-notification {

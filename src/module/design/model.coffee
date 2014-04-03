@@ -47,7 +47,7 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'state
                     #TO-DO
 
                 # SWITCH_MAIN → GET_STATE_MODULE
-                ide_event.trigger ide_event.GET_STATE_MODULE if app_id == MC.common.other.canvasData.get( 'id' )
+                ide_event.trigger ide_event.GET_STATE_MODULE if app_id == MC.data.current_tab_id
 
                 null
 

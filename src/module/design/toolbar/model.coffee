@@ -1178,7 +1178,7 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
             # new design flow
             id     = MC.common.other.canvasData.get( 'id' )
             region = MC.common.other.canvasData.get( 'region' )
-            stack_model.export_cloudformation { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id
+            stack_model.export_cloudformation { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, MC.common.other.canvasData.data()
             # stack_service.export_cloudformation {sender:me}, $.cookie( 'usercode' ), $.cookie( 'session_id' ), MC.canvas_data.region, MC.canvas_data.id, ( forge_result ) ->
 
             #     if !forge_result.is_error

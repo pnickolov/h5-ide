@@ -466,8 +466,8 @@ define [ 'MC', 'event',
         #request cloudformation
         clickConvertCloudFormation : ->
             modal MC.template.exportCloudFormation()
-            # Seems like cloudfomation triggers a save event. And then trigger a export event...... Darn!
-            ide_event.trigger ide_event.SAVE_STACK, MC.common.other.canvasData.data()
+            #change export_cloudformation param stack_id to json, so no need save stack
+            @trigger "CONVERT_CLOUDFORMATION"
             null
 
         #save cloudformation

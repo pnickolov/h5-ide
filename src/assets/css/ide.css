@@ -130,19 +130,19 @@ button {
 	top      : 0;
 	bottom   : 0;
 
-	-webkit-transition : -webkit-transform 0.3s ease-in-out;
-	   -moz-transition : -moz-transform 0.3s ease-in-out;
-	     -o-transition : -o-transform 0.3s ease-in-out;
-					transition : transform 0.3s ease-in-out;
+	-webkit-transition : -webkit-transform 0.21s ease-in;
+	   -moz-transition : -moz-transform 0.21s ease-in;
+	     -o-transition : -o-transform 0.21s ease-in;
+					transition : transform 0.21s ease-in;
 }
 #system-notice ~ #wrapper {
 	top : 38px;
 }
 #wrapper.off-canvas {
-	-webkit-transform : translate(300px, 0);
-	   -moz-transform : translate(300px, 0);
-			 -o-transform : translate(300px, 0);
-				  transform : translate(300px, 0);
+	-webkit-transform : translate(260px, 0);
+	   -moz-transform : translate(260px, 0);
+			 -o-transform : translate(260px, 0);
+				  transform : translate(260px, 0);
 }
 #wrapper.off-canvas > #off-canvas-overlay {
 	display: block;
@@ -152,9 +152,9 @@ button {
 	position        : absolute;
 	top             : 0;
 	bottom          : 0;
-	left            : -300px;
+	left            : -260px;
 	z-index         : 60;
-	width           : 300px;
+	width           : 260px;
 	background-color: #1F1E24;
 }
 
@@ -165,7 +165,7 @@ button {
 
 #navigation > .scroll-wrap {
 	position : absolute;
-	top      : 50px;
+	top      : 60px;
 	bottom   : 0;
 	width    : 100%;
 }
@@ -189,12 +189,12 @@ button {
 }
 
 .nav-empty {
-	margin: 15px;
-	padding: 15px;
-	color: #AAA;
-	background-color: rgba(0,0,0,.5);
-	border-radius: 5px;
-	font-size: 12px;
+	margin           : 5px 15px 15px;
+	padding          : 15px;
+	color            : #AAA;
+	background-color : rgba(0,0,0,.5);
+	border-radius    : 5px;
+	font-size        : 12px;
 }
 
 .nav-stack-region-title {
@@ -208,7 +208,7 @@ button {
 .nav-stack-region-title > button {
 	float     : right;
 	color     : #ccc;
-	margin-top: 8px;
+	margin-top: 9px;
 	cursor    : pointer;
 }
 
@@ -229,6 +229,11 @@ button {
 
 .nav-region-list-items > li:hover {
 	background-color : rgba(0,0,0,.5);
+}
+
+.nav-region-list-items > li > i {
+	float      : right;
+	margin-top : 15px;
 }
 
 .show-unused-region {
@@ -402,7 +407,7 @@ button {
 }
 
 #notification-panel-wrapper .notification-item:hover {
-	background: rgba(0,0,0,.2);
+	background: #020202;
 }
 
 #notification-panel-wrapper > div:last-child {
@@ -6865,14 +6870,6 @@ summary:focus {
 	position: absolute;
 	top: 5px;
 	right: 5px;
-}
-
-.nav-region-list-items [class^="icon-app-type-"],
-.nav-region-list-items [class*=" icon-app-type-"] {
-	position: absolute;
-	top: 15px;
-	right: 8px;
-	z-index: 20;
 }
 
 .global-region-status-list h5 [class^="icon-app-type-"],

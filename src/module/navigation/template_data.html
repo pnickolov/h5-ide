@@ -35,7 +35,7 @@
 	{{/if}}
 {{else}}
 	<ul>
-		{{#each region_empty_list }} <li class="nav-stack-region-title create-new-empty-stack" data-empty-region-label="{{ this }}"> {{ this }} (0) <button class="icon-new-stack tooltip" data-tooltip='{{ i18n "IDE_COM_CREATE_NEW_STACK" }}'></button>
+		{{#each region_empty_list }} <li class="nav-stack-region-title" data-empty-region-label="{{ this }}"> {{ this }} (0) <button class="icon-new-stack tooltip create-new-empty-stack" data-tooltip='{{ i18n "IDE_COM_CREATE_NEW_STACK" }}'></button>
 		</li> {{/each}}
 	</ul>
 {{/if}}

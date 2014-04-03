@@ -42,19 +42,17 @@ define [ '../base/model', "Design", 'constant', 'i18n!nls/lang.js' ], ( Property
             _.each rules, ( rule )->
                 if not rule.port then rule.port = "All"
 
-                if rule.number is '32767'
+                if rule.number is 32767
                     rule.number   = "*"
                     rule.readOnly = true
-                else if rule.number is "100" and isDefault
-                    rule.readOnly = true
-                else if isApp
+                else if (rule.number is 100 and isDefault) or isApp
                     rule.readOnly = true
 
                 switch rule.protocol
-                    when "-1" then rule.protocol = "ALL"
-                    when "1"  then rule.protocol = "ICMP"
-                    when "6"  then rule.protocol = "TCP"
-                    when "17" then rule.protocol = "UDP"
+                    when -1 then rule.protocol = "ALL"
+                    when 1  then rule.protocol = "ICMP"
+                    when 6  then rule.protocol = "TCP"
+                    when 17 then rule.protocol = "UDP"
                 null
 
             @set "rules", rules
@@ -98,11 +96,11 @@ define [ '../base/model', "Design", 'constant', 'i18n!nls/lang.js' ], ( Property
             null
 
         checkRuleNumber : ( rulenumber )->
-            rulenumber = Number( rulenumber )
+            rulenumber = parseInt rulenumber, 10
             if not (0 < rulenumber < 32768)
                 return lang.ide.PARSLEY_VALID_RULE_NUMBER_1_TO_32767
 
-            if @get("isDefault") and rulenumber is "100"
+            if @get("isDefault") and rulenumber is 100
                 return lang.ide.PARSLEY_RULE_NUMBER_100_HAS_EXISTED
 
 

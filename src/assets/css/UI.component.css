@@ -495,17 +495,16 @@ textarea[readonly]  {
 
 .prefix-input input {
 	border: none;
-	border-left: 1px solid #ccc;
 	/*padding: 6px 0 6px 6px;*/
 	width: 150px;
 	font-size: 12px;
 	outline: none;
 	color: #666;
+	border-left: 1px solid #000;
 }
 
 .prefix-input input:focus {
 	border: none;
-	border-left: 1px solid #000;
 }
 
 /* Placeholder-input */
@@ -2232,7 +2231,7 @@ input.parsley-error {
 .gear-loading:after {
   content: "\F150";
   background-repeat: no-repeat;
- 
+
   position : absolute;
   top      : 10px;
   left     : 10px;

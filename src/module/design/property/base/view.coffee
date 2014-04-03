@@ -49,7 +49,7 @@ define [ 'constant',
     PropertyView = Backbone.View.extend {
 
         setTitle : ( title ) ->
-            $( if @_isSub then "#property-second-title" else "#property-title" ).text title
+            $( if @_isSub then "#property-second-title" else "#property-title" ).html title
             null
 
         forceShow : () ->

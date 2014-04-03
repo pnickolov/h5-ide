@@ -58,12 +58,8 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'state
                 app_id = result.param[4][0]
 
                 # update canvas_data when on current tab
-
-                # old design flow
-                #if app_id == MC.canvas_data.id
-
-                # new design flow
-                if app_id == MC.common.other.canvasData.get( 'id' )
+                #if app_id == MC.common.other.canvasData.get( 'id' )
+                if app_id is MC.data.current_tab_id
 
                     # set data
                     @setCanvasData result.resolved_data[ 0 ]

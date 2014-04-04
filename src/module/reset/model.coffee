@@ -42,10 +42,10 @@ define [ 'MC', 'event', 'account_model' ], ( MC, ide_event, account_model ) ->
                 if !forge_result.is_error
                     #
 
-                    window.location.href = "reset.html#email"
+                    window.location.href = "/reset/#email"
 
 
-                    
+
                 else
                     #
                     this.trigger 'NO_EMAIL'
@@ -63,7 +63,7 @@ define [ 'MC', 'event', 'account_model' ], ( MC, ide_event, account_model ) ->
                     this.trigger 'KEY_VALID'
                 else
                     #
-                    window.location.href = "reset.html#expire"
+                    window.location.href = "/reset/#expire"
                 null
 
         updatePasswordServer : ( result ) ->
@@ -76,12 +76,12 @@ define [ 'MC', 'event', 'account_model' ], ( MC, ide_event, account_model ) ->
                 if !forge_result.is_error
                     #
 
-                    window.location.href = "reset.html#success"
+                    window.location.href = "/reset/#success"
 
 
                 else
                     #this.trigger 'PASSWORD_INVAILD'
-                    #window.location.href = "reset.html#expire" if forge_result.return_code is 2
+                    #window.location.href = "/reset/#expire" if forge_result.return_code is 2
                 null
 
     }

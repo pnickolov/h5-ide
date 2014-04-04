@@ -7,7 +7,8 @@ jshint = require('jshint').JSHINT
 # Option for jshint
 jshintGlobals = {}
 jshintOption =
-  "-W099" : true
+  "-W099" : true # Allow mixed tabs and spaces
+  "-W041" : true # Allow comparing null using ==
 
 
 problemSign = if process.platform is "win32" then "x " else "✖ "

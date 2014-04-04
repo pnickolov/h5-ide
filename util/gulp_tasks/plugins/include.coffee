@@ -10,23 +10,18 @@ ReadOption = {encoding:"utf8"}
 
 include = ( file )->
 
-  modified = false
-
   # Include file
-  data = file.contents.toString("utf8").replace ReplaceRegex, (match, includePath)->
+  file.strings = file.contents.toString("utf8").replace ReplaceRegex, (match, includePath)->
 
-    p = path.resolve( file.path, includePath )
+    p = path.resolve( path.dirname(file.path), includePath )
 
     if not fs.existsSync( p )
       console.log "[Include Error] Cannot find : #{match}"
       return match
 
-    modified = true
     fs.readFileSync p, ReadOption
 
-  if modified
-    file.contents = new Buffer(data)
-
+  file.contents = null
   @emit "data", file
   null
 

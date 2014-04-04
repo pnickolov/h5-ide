@@ -2,7 +2,7 @@
 #  View(UI logic) for design
 #############################
 
-define [ 'Design', 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/lang.js', 'state_status', 'backbone', 'jquery', 'handlebars' ], ( Design, ide_event, template, constant, lang, stateStatusMain ) ->
+define [ 'Design', 'event', './module/design/template', 'constant', 'i18n!nls/lang.js', 'state_status', 'backbone', 'jquery', 'handlebars' ], ( Design, ide_event, template, constant, lang, stateStatusMain ) ->
 
     DesignView = Backbone.View.extend {
 
@@ -15,7 +15,7 @@ define [ 'Design', 'event', 'text!./module/design/template.html', 'constant', 'i
         render   : () ->
             console.log 'design render'
             #render
-            this.$el.html template
+            this.$el.html template()
             #push DESIGN_COMPLETE
             this.trigger 'DESIGN_COMPLETE'
             #

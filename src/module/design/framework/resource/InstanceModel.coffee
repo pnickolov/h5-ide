@@ -718,6 +718,33 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
 
     handleTypes : constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
 
+    # parameter could be uid or aws id
+    # return uid and mid( memberId )
+    getEffectiveId : ( instance_id ) ->
+      design = Design.instance()
+
+      # The instance_id might be component uid or aws id
+      if design.component( instance_id ) then return {uid:instance_id, mid:null}
+
+      for instance in @allObjects()
+        if instance.get("appId") is instance_id
+          return { uid : instance.id, mid : "#{instance.id}_0" }
+        else if instance.groupMembers
+          for member, index in instance.groupMembers()
+            if member and member.appId is instance_id
+              return { uid : instance.id, mid : "#{member.id}_#{index + 1}" }
+
+      resource_list = MC.data.resource_list[ design.region() ]
+      for asg in Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group ).allObjects()
+        data = resource_list[ asg.get("appId") ]
+        if not data or not data.Instances then continue
+        data = data.Instances
+        for obj in (data.member or data)
+          if obj is instance_id or obj.InstanceId is instance_id
+            return { uid : asg.get("lc").id, mid : instance_id }
+
+      {uid:null,mid:null}
+
     diffJson : ( newData, oldData )->
       changeData = newData or oldData
 

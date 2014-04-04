@@ -27,9 +27,9 @@ module.exports = {
   // If pollingWatch is "auto", it will use native FS in OSX, use polling in other system.
   // If pollingWatch is true, it will force to use polling when watching file changes.
   // If pollingWatch is false, it will force to use native file event
-  // Pros of using native file event:
-  //   Sometimes changes will not be detected. For example, most of git action.
   // Cons of using native file event:
+  //   Sometimes changes will not be detected. For example, most of git action.
+  // Pros of using native file event:
   //   Fast, CPU-friendly, Won't open too many files at the same time.
   , pollingWatch : "auto"
 
@@ -37,5 +37,18 @@ module.exports = {
   // in .git, it will try to recompile the whole project ( enableCache == true can avoid uncessary compile ).
   , gitPollingDebounce : 1000
 
+  // If true, it will automatically open the index of the server.
+  , openUrlAfterCreateServer : true
 
+  // Parameters for build
+  , buildRepoUrl  : "git@github.com:MadeiraCloud/h5-ide-build.git"
+  , buildUsername : "" // If empty, use Global Git Username
+  , buildEmail    : "" // If empty, use Global Git Email
+
+  // If true, it will try to automatically push the ready-to-depoly build to "git@github.com:MadeiraCloud/h5-ide-build.git"
+  , autoPush : true
+
+  // A string to indicate which reporter should mocha use.
+  // Possible values are : "dot", "spec", "nyan", "TAP", "List", "progress", "min"
+  , testReporter : "nyan"
 };

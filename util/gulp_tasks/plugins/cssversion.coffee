@@ -5,7 +5,7 @@ fs = require("fs")
 
 # Insert CSS Version to html
 
-CssVersionRegex = /(href="|')([^'"]+)\/([^.]+.css)("|')/g
+CssVersionRegex = /(href="|href=')([^'"]+)\/([^.]+.css)("|')/g
 
 htmlModify = ( file )->
 

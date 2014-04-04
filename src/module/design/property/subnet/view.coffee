@@ -3,14 +3,11 @@
 #############################
 
 define [ '../base/view',
-         'text!./template/stack.html',
-         'text!./template/acl.html',
+         './template/stack',
+         './template/acl',
          'event',
          "Design"
 ], ( PropertyView, template, acl_template, ide_event, Design ) ->
-
-    template     = Handlebars.compile template
-    acl_template = Handlebars.compile acl_template
 
     SubnetView = PropertyView.extend {
 

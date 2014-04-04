@@ -3,25 +3,15 @@
 #############################
 
 define [ 'event', 'constant', 'i18n!nls/lang.js',
-         'text!./module/navigation/template.html',
-         'text!./module/navigation/template_data.html',
-         'backbone', 'jquery', 'handlebars', 'UI.notification', 'MC.ide.template'
+         './module/navigation/template',
+         './module/navigation/template_data',
+         'backbone', 'jquery', 'handlebars', 'UI.notification'
 ], ( ide_event, constant, lang, template, template_data ) ->
-
-    #compile partial template
-    MC.IDEcompile 'nav', template_data, { '.app-list-data' : 'nav-app-list-tmpl', '.stack-list-data' : 'nav-stack-list-tmpl', '.region-empty-list' : 'nav-region-empty-list-tmpl', '.region-list' : 'nav-region-list-tmpl' }
 
     NavigationView = Backbone.View.extend {
 
         #element
         el              : $ '#navigation'
-
-        #templdate
-        #template        : Handlebars.compile $( '#navigation-tmpl' ).html()
-        app_list_tmpl    : Handlebars.compile $( '#nav-app-list-tmpl' ).html()
-        stack_list_tmpl  : Handlebars.compile $( '#nav-stack-list-tmpl' ).html()
-        region_empty_list_tmpl : Handlebars.compile $( '#nav-region-empty-list-tmpl' ).html()
-        region_list_tmpl : Handlebars.compile $( '#nav-region-list-tmpl' ).html()
 
         #events
         events   :
@@ -37,9 +27,7 @@ define [ 'event', 'constant', 'i18n!nls/lang.js',
         initialize : ->
             #listen
             this.listenTo ide_event, 'SWITCH_TAB', this.hideNavigation
-
-            Handlebars.registerHelper 'tolower', ( result ) ->
-                return new Handlebars.SafeString result.toLowerCase()
+            null
 
 
             # off-canvas-navigation
@@ -80,22 +68,28 @@ define [ 'event', 'constant', 'i18n!nls/lang.js',
             console.log 'navigation render'
             #$( this.el ).html this.template this.model.attributes
             #$( this.el ).html template
-            $( this.el ).html Handlebars.compile template
+            $( this.el ).html template()
 
             #push event
             ide_event.trigger ide_event.NAVIGATION_COMPLETE
             null
 
         appListRender : ->
-            @$el.find( '#nav-app-region' ).html this.app_list_tmpl this.model.attributes
+            #render html
+            console.log 'appListRender render'
+            $( this.el ).find( '#nav-app-region' ).html template_data.app_list_data( @model.attributes )
             null
 
         stackListRender : ->
-            @$el.find( '#nav-stack-region' ).html this.stack_list_tmpl this.model.attributes
+            #render html
+            console.log 'stackListRender render'
+            $( this.el ).find( '#nav-stack-region' ).html template_data.stack_list_data( @model.attributes )
             null
 
         regionEmtpyListRender : ->
-            @$el.find( '#nav-region-empty-list' ).html this.region_empty_list_tmpl this.model.attributes
+            #render html
+            console.log 'regionEmtpyListRender render'
+            $( this.el ).find( '.nav-region-empty-list' ).html template_data.region_empty_list( @model.attributes )
             null
 
         regionListRender : ->

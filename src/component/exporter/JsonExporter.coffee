@@ -1,5 +1,5 @@
 
-define ['./Download', 'i18n!nls/lang.js', "./HmacMd5"], ( download, lang )->
+define ['./Download', 'i18n!nls/lang.js', "crypto"], ( download, lang )->
 
   ascii = ()-> String.fromCharCode.apply String, arguments
   key = ascii 77,97,100,101,105,114,97,67,108,111,117,100,73,68,69
@@ -20,9 +20,7 @@ define ['./Download', 'i18n!nls/lang.js', "./HmacMd5"], ( download, lang )->
 
     j = JSON.stringify json, undefined, space
 
-    ua = window.navigator.userAgent
-
-    if ua.indexOf("Safari") > -1 and ua.indexOf("Chrome") is -1
+    if $("body").hasClass("safari")
       blob = null
     else
       blob = new Blob [j]

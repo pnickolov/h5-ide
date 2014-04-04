@@ -5,15 +5,11 @@
 define [ '../base/view',
          'Design',
          'constant'
-         'text!./template/stack.html',
-         'text!./template/rule_item.html',
-         'text!./template/dialog.html',
+         './template/stack',
+         './template/rule_item',
+         './template/dialog',
          'i18n!nls/lang.js'
 ], ( PropertyView, Design, constant, htmlTpl, ruleTpl, rulePopupTpl, lang ) ->
-
-    htmlTpl  = Handlebars.compile htmlTpl
-    ruleTpl  = Handlebars.compile ruleTpl
-    rulePopupTpl = Handlebars.compile rulePopupTpl
 
     ACLView = PropertyView.extend {
 

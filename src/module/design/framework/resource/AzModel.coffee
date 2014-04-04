@@ -30,12 +30,14 @@ define [ "../GroupModel", "./VpcModel", "constant", "i18n!nls/lang.js" ], ( Grou
         return sprintf lang.ide.CVS_CFM_DEL_GROUP, @get("name")
       true
 
+    getSubnetOfDefaultVPC : ()-> Model.getSubnetOfDefaultVPC( @get("name") )
+
     createRef : ()-> Model.__super__.createRef( "ZoneName", true, @id )
 
     isCidrEnoughForIps : ( cidr )->
 
       if not cidr
-        defaultSubnet = MC.aws.vpc.getAZSubnetForDefaultVPC( @get("name") )
+        defaultSubnet = @getSubnetOfDefaultVPC()
         if defaultSubnet
           cidr = defaultSubnet.cidrBlock
         else
@@ -52,7 +54,7 @@ define [ "../GroupModel", "./VpcModel", "constant", "i18n!nls/lang.js" ], ( Grou
 
         ipCount += eni.get("ips").length
 
-      maxIpCount = MC.aws.eni.getAvailableIPCountInCIDR( cidr )
+      maxIpCount = Design.modelClassForType(constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface).getAvailableIPCountInCIDR( cidr )
       maxIpCount >= ipCount
 
     serialize : ()->
@@ -70,7 +72,10 @@ define [ "../GroupModel", "./VpcModel", "constant", "i18n!nls/lang.js" ], ( Grou
   }, {
     handleTypes : constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone
 
-    diffJson : ()-> # Disable diff for thie Model
+    diffJson : ()-> # Disable diff for this Model
+
+    getSubnetOfDefaultVPC : (azName) ->
+      MC.data.account_attribute[ Design.instance().region() ].default_subnet[ azName ]
 
     deserialize : ( data, layout_data, resolve )->
       new Model({

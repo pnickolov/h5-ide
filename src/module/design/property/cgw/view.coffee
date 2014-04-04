@@ -2,9 +2,7 @@
 #  View(UI logic) for design/property/cgw
 #############################
 
-define [ 'i18n!nls/lang.js', '../base/view', 'text!./template/stack.html', 'event', 'constant', "Design" ], ( lang, PropertyView, template, ide_event, constant, Design ) ->
-
-    template = Handlebars.compile template
+define [ 'i18n!nls/lang.js', '../base/view', './template/stack', 'event', 'constant', "Design" ], ( lang, PropertyView, template, ide_event, constant, Design ) ->
 
     CGWView = PropertyView.extend {
 

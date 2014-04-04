@@ -1,51 +1,25 @@
-*.bat
 .DS_Store
-
-#ignore import-test
-src/import-test.html
-src/import-test-crayfish.json
-
-#ignore demo
-src/js/demo/*.js
-src/js/demo/**/*.js
+*.map
+gulpconfig.js
 
 #ignore node_modules
-node_modules/**
+node_modules/
 
-#ignore components
-bower_components/**
-components/**
+.sass-cache/
 
-#ignore release publish
-debug/**
-release/**
-publish/**
+#ignore everything related to deploy
+qa/
+h5-ide-build/
+deploy/
 
-#ignore page
-src/js/*.js
-src/js/**/*.js
-!src/js/ide/layout.js
-
-#ignore model
-src/model/**/*.js
-src/model/*.js
-
-#ignore service
-src/service/**/*.js
-src/service/*.js
-
-#ignore module
-src/module/**/*.js
-
-#ignore lib
-src/lib/websocket.js
-src/lib/constant.js
+#ignore js
+src/**/*.js
+!src/js/*.js
+!src/vender/**/*.js
+!src/component/stateeditor/lib/**/*.js
 
 #ignore test
-src/test/console/js/*.js
 src/test/**/*.js
-src/test/websocket/request/*.js
-!src/test/json_view/*.js
 
 #ignore util
 util/gen_service/out.tmp
@@ -55,10 +29,5 @@ util/gen_model/**/*.js
 util/gen_apilist/out.tmp
 util/gen_apilist/**/*.js
 
-#ignore event
-src/event/*.js
 
-#ignore *.map
-*.map
-atwho.js
-gulpconfig.js
+

@@ -2,9 +2,7 @@
 #  View(UI logic) for design/property/rtb
 #############################
 
-define [ '../base/view', 'text!./template/stack.html' ], ( PropertyView, template ) ->
-
-    template = Handlebars.compile template
+define [ '../base/view', './template/stack' ], ( PropertyView, template ) ->
 
     RTBView = PropertyView.extend {
 
@@ -121,7 +119,7 @@ define [ '../base/view', 'text!./template/stack.html' ], ( PropertyView, templat
             # Right now we do not check if "0.0.0.0/0" conflicts with other cidr
             else
                 for cidr in allCidrAry
-                    if inputValue is cidr or ( cidr isnt "0.0.0.0/0" and MC.aws.subnet.isSubnetConflict( inputValue, cidr ) )
+                    if inputValue is cidr or ( cidr isnt "0.0.0.0/0" and @model.isCidrConflict( inputValue, cidr ) )
                         mainContent = "#{inputValue} conflicts with other route."
                         descContent = 'Please choose a CIDR block not conflicting with existing route.'
                         break

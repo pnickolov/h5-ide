@@ -3,27 +3,15 @@
 #############################
 
 define [ 'event', 'i18n!nls/lang.js',
-         'text!./module/dashboard/overview/template.html',
-         'text!./module/dashboard/overview/template_data.html',
+         './module/dashboard/overview/template',
+         './module/dashboard/overview/template_data',
          "component/exporter/Thumbnail"
          'constant',
          'unmanagedvpc',
-         'backbone', 'jquery', 'handlebars', 'MC.ide.template', 'UI.scrollbar'
-], ( ide_event, lang, overview_tmpl, overview_tmpl_data, ThumbUtil, constant, unmanagedvpc ) ->
+         'backbone', 'jquery', 'handlebars', 'UI.scrollbar'
+], ( ide_event, lang, overview_tmpl, template_data, ThumbUtil, constant, unmanagedvpc ) ->
 
     current_region = null
-
-    MC.IDEcompile 'overview', overview_tmpl_data,
-        '.overview-result'      : 'overview-result-tmpl'
-        '.global-list'          : 'global-list-tmpl'
-        '.region-app-stack'     : 'region-app-stack-tmpl'
-        '.region-resource-head' : 'region-resource-head-tmpl'
-        '.region-resource-body' : 'region-resource-body-tmpl'
-        '.recent'               : 'recent-tmpl'
-        '.loading'              : 'loading-tmpl'
-        '.loading-failed'       : 'loading-failed-tmpl'
-        '.demo-global'          : 'global-demo-tmpl'
-        '.demo-region'          : 'region-demo-tmpl'
 
     ### helper ###
     Helper =
@@ -76,24 +64,11 @@ define [ 'event', 'i18n!nls/lang.js',
         accountIsDemo: ->
             $.cookie('account_id') is 'demo_account'
 
-    Template_Cache = {}
-
     OverviewView = Backbone.View.extend {
 
         el                      : $( '#tab-content-dashboard' )
 
-        overview                : Handlebars.compile overview_tmpl
-        overview_result         : Handlebars.compile $( '#overview-result-tmpl' ).html()
-        global_list             : Handlebars.compile $( '#global-list-tmpl' ).html()
-        region_app_stack        : Handlebars.compile $( '#region-app-stack-tmpl' ).html()
-        region_resource_head    : Handlebars.compile $( '#region-resource-head-tmpl' ).html()
-        region_resource_body    : Handlebars.compile $( '#region-resource-body-tmpl' ).html()
-        recent                  : Handlebars.compile $( '#recent-tmpl' ).html()
-        loading                 : $( '#loading-tmpl' ).html()
-        loading_failed          : $( '#loading-failed-tmpl' ).html()
-        region_demo             : $( '#region-demo-tmpl' ).html()
-        global_demo             : $( '#global-demo-tmpl' ).html()
-
+        overview                : overview_tmpl
 
         events          :
             'click #global-region-spot > li'            : 'gotoRegion'
@@ -158,10 +133,10 @@ define [ 'event', 'i18n!nls/lang.js',
                 @showCredential()
 
         showLoading: ( selector ) ->
-            @$el.find( selector ).html @loading
+            @$el.find( selector ).html template_data.loading()
 
         showLoadingFaild: ( selector ) ->
-            @$el.find( selector ).html @loading_failed
+            @$el.find( selector ).html template_data.loading_failed()
 
         switchRegion: ( event ) ->
             console.log 'switchRegion'
@@ -211,7 +186,7 @@ define [ 'event', 'i18n!nls/lang.js',
                 notification 'info', lang.ide.DASH_MSG_RELOAD_AWS_RESOURCE_SUCCESS
                 @status.reloading = false
 
-            tmpl = @global_list @model.toJSON()
+            tmpl = template_data.global_list @model.toJSON()
             if current_region
                 @trigger 'SWITCH_REGION', current_region, true
             $( this.el ).find('#global-view').html tmpl
@@ -229,7 +204,7 @@ define [ 'event', 'i18n!nls/lang.js',
 
 
             context[ tab ] = true
-            tmpl = @region_app_stack context
+            tmpl = template_data.region_app_stack context
             $( this.el )
                 .find('#region-app-stack-wrap')
                 .html( tmpl )
@@ -239,7 +214,7 @@ define [ 'event', 'i18n!nls/lang.js',
         renderRegionResource: ( event ) ->
             console.log  @model.toJSON()
             if not @status.reloading
-                tmpl = @region_resource_head @model.toJSON()
+                tmpl = template_data.region_resource_head @model.toJSON()
                 @$el.find('#region-resource-wrap').html tmpl
                 @renderRegionResourceBody()
             null
@@ -259,16 +234,7 @@ define [ 'event', 'i18n!nls/lang.js',
                 else
                     type = 'DescribeInstances'
 
-            if not Template_Cache[ type ]
-                tmplAll = $( '#region-resource-body-tmpl' ).html()
-
-                startPos = tmplAll.indexOf "<!-- #{type} -->"
-                endPos = tmplAll.indexOf "<!-- #{type} -->", startPos + 1
-
-                tmpl = tmplAll.slice startPos, endPos
-                Template_Cache[ type ] = Handlebars.compile tmpl
-
-            template = Template_Cache[ type ]
+            template = template_data[ type ]
 
             $typeTabs.each () ->
                 if $( this ).data( 'resourceType' ) is type
@@ -281,17 +247,17 @@ define [ 'event', 'i18n!nls/lang.js',
             null
 
         renderRecent: ->
-            $( this.el ).find( '#global-region-status-widget' ).html this.recent this.model.attributes
+            $( this.el ).find( '#global-region-status-widget' ).html template_data.recent @model.attributes
             null
 
         renderLoadingFaild: ->
             @showLoadingFaild '#global-view, #region-resource-wrap'
 
         renderGlobalDemo: ->
-            @$el.find( '#global-view' ).html @global_demo
+            @$el.find( '#global-view' ).html template_data.demo_global()
 
         renderRegionDemo: ->
-            @$el.find( '#region-resource-wrap' ).html @region_demo
+            @$el.find( '#region-resource-wrap' ).html template_data.demo_region()
 
         enableCreateStack : ( platforms ) ->
             $middleButton = $( "#btn-create-stack" )
@@ -384,7 +350,7 @@ define [ 'event', 'i18n!nls/lang.js',
         renderMapResult : ->
             console.log 'dashboard overview-result render'
 
-            cur_tmpl = (this.overview_result this.model.attributes)
+            cur_tmpl = template_data.overview_result @model.attributes
 
             $( this.el ).find('#global-region-spot').html cur_tmpl
 

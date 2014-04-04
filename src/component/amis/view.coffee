@@ -2,10 +2,10 @@
 #  View(UI logic) for component/amis
 #############################
 
-define [ 'event',
+define [ 'event', './template'
          'backbone', 'jquery', 'handlebars',
          'UI.modal', 'jqpagination'
-], ( ide_event, Backbone, $, Handlebars ) ->
+], ( ide_event, template, Backbone, $, Handlebars ) ->
 
     AMIsView = Backbone.View.extend {
 
@@ -13,10 +13,9 @@ define [ 'event',
             'closed'                                            : 'closedAMIsPopup'
             'click .ami-option-group .ami-option-wrap .btn'     : 'clickOptionBtn'
 
-        render     : ( template ) ->
+        render     : () ->
             console.log 'pop-up:amis run render'
             #
-            template = Handlebars.compile template
             that = this
             modal template( {} ), true, () ->
                 _.defer () ->

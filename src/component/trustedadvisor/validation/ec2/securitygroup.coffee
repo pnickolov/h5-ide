@@ -1,5 +1,49 @@
 define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 
+	getAllRefComp = (sgUID) ->
+
+		refNum = 0
+		sgAry = []
+		refCompAry = []
+		_.each MC.canvas_data.component, (comp) ->
+			compType = comp.type
+			if compType is 'AWS.ELB' or compType is 'AWS.AutoScaling.LaunchConfiguration'
+				sgAry = comp.resource.SecurityGroups
+				sgAry = _.map sgAry, (value) ->
+					refSGUID = MC.extractID(value)
+					return refSGUID
+				if sgUID in sgAry
+					refCompAry.push comp
+
+			if compType is 'AWS.EC2.Instance'
+				sgAry = comp.resource.SecurityGroupId
+				sgAry = _.map sgAry, (value) ->
+					refSGUID = MC.extractID(value)
+					return refSGUID
+				if sgUID in sgAry
+					refCompAry.push comp
+
+			if compType is 'AWS.VPC.NetworkInterface'
+				_sgAry = []
+				_.each comp.resource.GroupSet, (sgObj) ->
+					_sgAry.push sgObj.GroupId
+					null
+
+				sgAry = _sgAry
+				sgAry = _.map sgAry, (value) ->
+					refSGUID = MC.extractID(value)
+					return refSGUID
+
+				if sgUID in sgAry
+					refCompAry.push comp
+			null
+
+		return refCompAry
+
+	isELBDefaultSG = (sgUID) ->
+		component = MC.canvas_data.component[sgUID]
+		component and component.name.indexOf("elbsg-") is 0
+
 	isSGRuleExceedFitNum = (sgUID) ->
 
 		sgComp = MC.canvas_data.component[sgUID]
@@ -44,7 +88,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 		_.each MC.canvas_data.component, (compObj) ->
 			if compObj.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup
 				sgUID = compObj.uid
-				allRefComp = MC.aws.sg.getAllRefComp(sgUID)
+				allRefComp = getAllRefComp(sgUID)
 				if allRefComp.length > 0
 					refSGNum++
 			null
@@ -60,12 +104,12 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 	isHaveUsingAllProtocolRule = (sgUID) ->
 
 		# only valid when use
-		allRefComp = MC.aws.sg.getAllRefComp(sgUID)
+		allRefComp = getAllRefComp(sgUID)
 		if allRefComp.length is 0
 			return null
 
 		# not elb's default sg
-		if MC.aws.elb.isELBDefaultSG(sgUID)
+		if isELBDefaultSG(sgUID)
 			return null
 
 		sgComp = MC.canvas_data.component[sgUID]
@@ -100,12 +144,12 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 	isHaveFullZeroSourceToHTTPRule = (sgUID) ->
 
 		# only valid when use
-		allRefComp = MC.aws.sg.getAllRefComp(sgUID)
+		allRefComp = getAllRefComp(sgUID)
 		if allRefComp.length is 0
 			return null
 
 		# not elb's default sg
-		if MC.aws.elb.isELBDefaultSG(sgUID)
+		if isELBDefaultSG(sgUID)
 			return null
 
 		sgComp = MC.canvas_data.component[sgUID]
@@ -135,12 +179,12 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 	isHaveUsingPort22Rule = (sgUID) ->
 
 		# only valid when use
-		allRefComp = MC.aws.sg.getAllRefComp(sgUID)
+		allRefComp = getAllRefComp(sgUID)
 		if allRefComp.length is 0
 			return null
 
 		# not elb's default sg
-		if MC.aws.elb.isELBDefaultSG(sgUID)
+		if isELBDefaultSG(sgUID)
 			return null
 
 		sgComp = MC.canvas_data.component[sgUID]
@@ -168,12 +212,12 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 	isHaveFullZeroOutboundRule = (sgUID) ->
 
 		# only valid when use
-		allRefComp = MC.aws.sg.getAllRefComp(sgUID)
+		allRefComp = getAllRefComp(sgUID)
 		if allRefComp.length is 0
 			return null
 
 		# not elb's default sg
-		if MC.aws.elb.isELBDefaultSG(sgUID)
+		if isELBDefaultSG(sgUID)
 			return null
 
 		sgComp = MC.canvas_data.component[sgUID]
@@ -211,7 +255,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 			compName = comp.name
 			compUID = comp.uid
 			isExceedLimit = false
-			
+
 			sgAry = []
 			resTypeName = ''
 			tagName = ''

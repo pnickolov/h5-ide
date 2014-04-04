@@ -69,7 +69,6 @@ define [ 'MC', 'event', 'account_model', 'session_model', 'common_handle', 'cryp
 
                     #sessionStorage.setItem 'username', forge_result.param[ 1 ]
                     #sessionStorage.setItem 'password', forge_result.param[ 2 ]
-                    #window.location.href = "register.html#success"
 
                     me.set 'username', forge_result.param[ 1 ]
                     me.set 'password', forge_result.param[ 2 ]
@@ -119,11 +118,10 @@ define [ 'MC', 'event', 'account_model', 'session_model', 'common_handle', 'cryp
                     intercom_sercure_mode_hash = () ->
                         intercom_api_secret = '4tGsMJzq_2gJmwGDQgtP2En1rFlZEvBhWQWEOTKE'
                         hash = CryptoJS.HmacSHA256( MC.base64Decode($.cookie('email')), intercom_api_secret )
-                        console.log 'hash.toString(CryptoJS.enc.Hex) = ' + hash.toString(CryptoJS.enc.Hex)
                         return hash.toString CryptoJS.enc.Hex
                     localStorage.setItem 'user_hash', intercom_sercure_mode_hash()
 
-                    window.location.href = "/ide.html"
+                    window.location.href = "/"
 
                     null
 

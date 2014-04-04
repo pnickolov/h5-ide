@@ -3,12 +3,10 @@
 #############################
 
 define [ '../base/view',
-         'text!./template/stack.html',
+         './template/stack',
          'event',
          'i18n!nls/lang.js'
 ], ( PropertyView, template, ide_event, lang ) ->
-
-    template = Handlebars.compile template
 
     VolumeView = PropertyView.extend {
 

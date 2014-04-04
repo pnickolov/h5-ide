@@ -4,11 +4,11 @@
 
 define [ 'MC', 'event', 'handlebars'
 		 'i18n!nls/lang.js',
-		 'view', 'canvas_layout',
+		 './view', 'canvas_layout',
 		 'header', 'navigation', 'tabbar', 'dashboard', 'design_module', 'process',
 		 'WS', 'constant',
 		 'base_model',
-		 'common_handle', 'validation', 'aws_handle', "MC.template"
+		 'common_handle', 'validation', 'aws_handle'
 ], ( MC, ide_event, Handlebars, lang, view, canvas_layout, header, navigation, tabbar, dashboard, design, process, WS, constant, base_model, common_handle, validation ) ->
 
 	console.info canvas_layout
@@ -54,21 +54,9 @@ define [ 'MC', 'event', 'handlebars'
 		#  validation cookie
 		#############################
 
-		#clear path=/v2 cookie(patch)
-		#common_handle.cookie.clearV2Cookie '/v2'
-		#common_handle.cookie.clearV2Cookie '/v2/'
-
-		#if common_handle.cookie.getIDECookie()
-		#	common_handle.cookie.setCookie common_handle.cookie.getIDECookie()
-		#else
-		#	if !common_handle.cookie.checkAllCookie()
-		#		#user session not exist, go to login page
-		#
-        #        window.location.href = "login.html"
-
 		#user session not exist, go to login page
 		if !common_handle.cookie.checkAllCookie()
-			window.location.href = "login.html"
+			window.location.href = "/login"
 
 		#clear cookie in 'ide.visualops.io'
 		#common_handle.cookie.clearInvalidCookie()
@@ -236,13 +224,12 @@ define [ 'MC', 'event', 'handlebars'
 		#  load module
 		#############################
 
-		if window.location.pathname isnt '/import-test.html'
-			#load header
-			header.loadModule()
-			#load tabbar
-			tabbar.loadModule()
-			#load dashboard
-			dashboard.loadModule()
+		#load header
+		header.loadModule()
+		#load tabbar
+		tabbar.loadModule()
+		#load dashboard
+		dashboard.loadModule()
 
 		#listen DASHBOARD_COMPLETE
 		ide_event.onListen ide_event.DASHBOARD_COMPLETE, () ->
@@ -268,77 +255,6 @@ define [ 'MC', 'event', 'handlebars'
 			process.loadModule()
 			#
 			#ide_event.trigger ide_event.SWITCH_MAIN
-
-		#listen RESOURCE_COMPLETE
-		#ide_event.onListen ide_event.RESOURCE_COMPLETE, () ->
-		#	console.log 'RESOURCE_COMPLETE'
-
-		#############################
-		# Handlebars helper
-		#############################
-
-		# i18n
-		Handlebars.registerHelper 'i18n', ( text ) ->
-			### env:prod ###
-			if lang.ide[ text ]
-				return new Handlebars.SafeString lang.ide[ text ]
-			### env:prod:end ###
-
-			### env:dev ###
-			new Handlebars.SafeString lang.ide[ text ]
-			### env:dev:end ###
-
-		# nl2br
-		Handlebars.registerHelper 'nl2br', (text) ->
-			nl2br = (text + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + '<br>' + '$2')
-			return new Handlebars.SafeString(nl2br)
-
-		# if equal
-		Handlebars.registerHelper 'ifCond', ( v1, v2, options ) ->
-			return options.fn this if v1 is v2
-			return options.inverse this
-
-		# deal break line
-		Handlebars.registerHelper('breaklines', (text) ->
-			text = Handlebars.Utils.escapeExpression(text)
-			text = text.replace(/(\r\n|\n|\r)/gm, '<br>')
-			return new Handlebars.SafeString(text)
-		)
-
-		#############################
-		#  analytics
-		#############################
-
-		#temp disable analytics
-
-		# analytics.identify($.cookie("userid"), {
-		# 	name : $.cookie("username"),
-		# 	username : $.cookie("username"),
-		# 	email : MC.base64Decode($.cookie("email")),
-		# 	region : $.cookie("region_name"),
-		# 	created : 1328260166
-		# 	}, {
-		# 	Intercom : {
-		# 		userHash : '5add343430ecaf54f7c1a6285758fcccb87fb365d089d6e1a520b2d7fa49fb05'
-		# 	}
-		# })
-
-		# analytics.track('Loaded IDE', { })
-
-		#intercom
-		#window.intercomSettings.email      = MC.base64Decode( common_handle.cookie.getCookieByName( 'email' ))
-		#window.intercomSettings.username   = common_handle.cookie.getCookieByName( 'username' )
-		#window.intercomSettings.created_at = MC.dateFormat( new Date(), 'hh:mm MM-dd-yyyy' )
-		#intercom_sercure_mode_hash         = () ->
-		#	intercom_api_secret = '4tGsMJzq_2gJmwGDQgtP2En1rFlZEvBhWQWEOTKE'
-		#	hash = CryptoJS.HmacSHA256( MC.base64Decode($.cookie('email')), intercom_api_secret )
-		#	console.log 'hash.toString(CryptoJS.enc.Hex) = ' + hash.toString(CryptoJS.enc.Hex)
-		#	return hash.toString CryptoJS.enc.Hex
-		#if !window.intercomSettings.user_hash
-		#	localStorage.setItem 'user_hash', intercom_sercure_mode_hash()
-		#	window.intercomSettings.user_hash  = intercom_sercure_mode_hash()
-
-		#window.intercomSettings.stack_total= 0
 
 		#############################
 		#  base model

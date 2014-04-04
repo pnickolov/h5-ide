@@ -3,7 +3,7 @@
 #############################
 
 define [ '../base/view',
-         'text!./template/stack.html',
+         './template/stack',
          'event'
          'i18n!nls/lang.js'
 ], ( PropertyView, template, ide_event, lang ) ->
@@ -24,8 +24,6 @@ define [ '../base/view',
 
             $target.val( value )
             value
-
-    template = Handlebars.compile template
 
     ElbView = PropertyView.extend {
 

@@ -2,9 +2,7 @@
 #  View(UI logic) for design/property/sglist
 #############################
 
-define [ 'text!./template/stack.html' ], ( template, rule_template ) ->
-
-	template = Handlebars.compile template
+define [ './template/stack' ], ( template ) ->
 
 	SGListView = Backbone.View.extend {
 

@@ -1,0 +1,1561 @@
+<!-- {{tab.item}} -->
+<li id="tab-bar-{{tab_id}}" data-tab-type="{{tab_type}}">
+	<a href="#tab-content-{{tab_id}}" title="{{tab_name}}" data-tab-id="{{tab_id}}" class="truncate tab-bar-truncate">
+		<i class="icon-tabbar-label"></i>
+		{{tab_name}}
+	</a>
+	<a href="javascript:void(0)" class="close-restriction icon-close" title="{{i18n 'TOOL_TIT_CLOSE_TAB'}}"></a>
+</li>
+
+<!-- {{tab.dashboard}} -->
+<li id="tab-bar-{{target_id}}">
+	<a href="#tab-content-{{target_id}}" data-toggle="tab" class="truncate tab-bar-truncate" title="{{target_id}}">
+		<i class="icon-dashboard-tabbar icon-tabbar-label"></i>
+		{{target_id}}
+	</a>
+	<a href="javascript:void(0)" class="icon-close close-tab" title="{{i18n 'TOOL_TIT_CLOSE_TAB'}}"></a>
+</li>
+
+<!-- {{notification.item}} -->
+<div class="notification_item {{type}}_item">
+	<span>{{template}}</span>
+	{{#if should_stay}}
+		<i class="notification_close">&times;</i>
+	{{/if}}
+</div>
+
+<!-- {{modalApp}} -->
+<div style="width:420px">
+	<div class="modal-header">
+		<h3>{{title}}</h3>
+		<i class="modal-close">&times;</i>
+	</div>
+	<div class="modal-body">
+		{{#unless is_production}}
+			<div class="modal-text-wraper">
+				<div class="modal-center-align-helper">
+					{{#if input}}
+						<div class="modal-control-group">
+							<label class="modal-text-major">{{body}}</label>
+							<input id="modal-input-value" class="input" type="text" value="{{input}}" />
+						</div>
+					{{else}}
+						<div class="modal-text-major">
+							{{{body}}}
+						</div>
+						{{#if is_asg}}
+							<div class="modal-text-minor">{{ i18n 'POP_CONFIRM_STOP_ASG' }}</div>
+						{{/if}}
+					{{/if}}
+				</div>
+			</div>
+		{{else}}
+			<div class="terminate-pro-app-confirm">
+				{{#if is_stop}}
+					<p><b>{{app_name}}{{ i18n 'POP_CONFIRM_PROD_APP_WARNING_MSG' }}</b>{{ i18n 'POP_CONFIRM_STOP_PROD_APP_MSG' }}
+						{{#if is_asg}}
+							{{ i18n 'POP_CONFIRM_STOP_ASG' }}
+						{{/if}}
+					</p>
+					<p>{{ i18n 'POP_CONFIRM_STOP_PROD_APP_INPUT_LBL' }}</p>
+				{{else}}
+					<p><b>{{app_name}} {{ i18n 'POP_CONFIRM_PROD_APP_WARNING_MSG' }}</b>{{ i18n 'POP_CONFIRM_TERMINATE_PROD_APP_MSG' }}</p>
+					<p>{{ i18n 'POP_CONFIRM_TERMINATE_PROD_APP_INPUT_LBL' }}</p>
+				{{/if}}
+				<p class="confirm-area"><input class="input" id="confirm-app-name" data-confirm="{{app_name}}"/></p>
+			</div>
+		{{/unless}}
+	</div>
+	<div class="modal-footer">
+		<button id="btn-confirm" class="btn btn-{{color}}" {{#if is_production}}disabled{{/if}}>{{confirm}}</button>
+		<button class="btn modal-close btn-silver">{{i18n "TOOL_POP_BTN_CANCEL"}}</button>
+	</div>
+</div>
+
+<!-- {{modalToolbar}} -->
+<div style="width:700px">
+	<div class="modal-header">
+		<h3>{{title}}</h3>
+		<i class="modal-close">&times;</i>
+	</div>
+	<div class="modal-body">
+		<textarea id="json-content"></textarea>
+	</div>
+	<div class="modal-footer">
+		<a id="btn-confirm" class="btn btn-{{color}}" href="data://text/plain;, {{{this.filecontent}}}" download="{{this.download}}">{{confirm}}</a>
+		<button class="btn modal-close btn-silver">{{i18n "TOOL_POP_BTN_CANCEL"}}</button>
+	</div>
+</div>
+
+<!-- {{exportCloudFormation}} -->
+<div id="modal-export-cf" style="width:468px">
+	<div class="modal-header"> <h3>{{i18n "TOOL_POP_EXPORT_CF"}}</h3><i class="modal-close">&times;</i> </div>
+	<div class="modal-body">
+		<div class="modal-text-wraper"> <div class="modal-center-align-helper">
+			<div class="modal-text-major"></div>
+			<div class="modal-text-minor">{{i18n "TOOL_POP_EXPORT_CF_INFO"}}</div>
+		</div> </div>
+	</div>
+	<div class="modal-footer">
+		<a id="tpl-download" class="btn btn-blue modal-close disabled" target="_blank">{{i18n "TOOL_POP_BTN_EXPORT_CF"}}</a>
+		<button class="btn modal-close btn-silver">{{i18n "TOOL_POP_BTN_CANCEL"}}</button>
+	</div>
+</div>
+
+<!-- {{exportJSON}} -->
+<div style="width:468px">
+	<div class="modal-header"> <h3>{{i18n "TOOL_EXPORT_AS_JSON"}}</h3><i class="modal-close">&times;</i> </div>
+	<div class="modal-body">
+		<div class="modal-text-wraper"> <div class="modal-center-align-helper">
+			<div class="modal-text-major"></div>
+			<div class="modal-text-minor">{{i18n "TOOL_POP_BODY_EXPORT_AS_JSON"}}</div>
+		</div> </div>
+	</div>
+	<div class="modal-footer">
+		<a class="btn btn-blue modal-close" href="{{data}}" target="_blank" download="{{name}}">{{i18n "TOOL_POP_BTN_DOWNLOAD"}}</a>
+		<button id="tpl-cancel" class="btn modal-close btn-silver">{{i18n "TOOL_POP_BTN_CANCEL"}}</button>
+	</div>
+</div>
+
+<!-- {{importJSON}} -->
+<div style="width:468px">
+	<div class="modal-header"> <h3>{{i18n "POP_IMPORT_JSON_TIT"}}</h3><i class="modal-close">&times;</i> </div>
+	<div class="modal-body" style="min-height:0px;">
+		<div id="modal-import-json-dropzone">{{i18n "POP_IMPORT_DROP_LBL"}}<label for="modal-import-json-file" class="select-file-link">{{i18n "POP_IMPORT_SELECT_LBL"}}</label><input type="file" id="modal-import-json-file"></div>
+		<div id="import-json-error"></div>
+	</div>
+</div>
+
+<!-- {{exportPNG}} -->
+<div style="width:420px">
+	<div class="modal-header">
+		<h3>{{title}}</h3>
+		<i class="modal-close">&times;</i>
+	</div>
+
+	<div class="modal-body">
+		<div class="loading-spinner"></div>
+	</div>
+
+	<div class="modal-footer">
+		<a id="btn-confirm" class="btn btn-{{color}}" >{{confirm}}</a>
+		<button class="btn modal-close btn-silver">{{i18n "TOOL_POP_BTN_CANCEL"}}</button>
+	</div>
+</div>
+
+<!-- {{modalResourceInstanceDetail}} -->
+<div class="modal-resource-instance-detail" style="width:420px">
+	<div class="modal-header">
+		<h3>{{title}}</h3>
+		<i class="modal-close">&times;</i>
+	</div>
+
+	<div class="modal-body">
+		<dl class="dl-horizontal">
+			<dt>DnsName</dt>
+			<dd>{{dnsName}}</dd>
+			<dt>Architecture</dt>
+			<dd>{{architecture}}</dd>
+			<dt>EbsOptimized</dt>
+			<dd>{{ebsOptimized}}</dd>
+			<dt>GroupSet</dt>
+			<dd>{{groupSet}}</dd>
+			<dt>Hypervisor</dt>
+			<dd>{{hypervisor}}</dd>
+			<dt>ImageId</dt>
+			<dd>{{imageId}}</dd>
+			<dt>InstanceState</dt>
+			<dd>{{instanceState}}</dd>
+			<dt>InstanceType</dt>
+			<dd>{{instanceType}}</dd>
+			<dt>IpAddress</dt>
+			<dd>{{ipAddress}}</dd>
+			<dt>KernelId</dt>
+			<dd>{{kernelId}}</dd>
+			<dt>KeyName</dt>
+			<dd>{{keyName}}</dd>
+			<dt>LaunchTime</dt>
+			<dd>{{launchTime}}</dd>
+			<dt>Monitoring</dt>
+			<dd>{{monitoring}}</dd>
+			<dt>NetworkInterfaceSet</dt>
+			<dd>{{networkInterfaceSet}}</dd>
+			<dt>AvailabilityZone</dt>
+			<dd>{{availabilityZone}}</dd>
+			<dt>PrivateDnsName</dt>
+			<dd>{{privateDnsName}}</dd>
+			<dt>RootDeviceName</dt>
+			<dd>{{rootDeviceName}}</dd>
+			<dt>RootDeviceType</dt>
+			<dd>{{rootDeviceType}}</dd>
+		</dl>
+	</div>
+
+	<div class="modal-footer">
+		<button class="btn modal-close btn-silver">{{i18n "POP_BTN_CLOSE"}}</button>
+	</div>
+</div>
+
+<!-- {{modalRegionResourceDetail}} -->
+{{#if detail_table}}
+<div class="modal-resource-detail" style="width:800px">
+{{else}}
+<div class="modal-resource-detail" style="width:420px">
+{{/if}}
+	<div class="modal-header">
+		<h3>{{title}}</h3>
+		<i class="modal-close">&times;</i>
+	</div>
+	<div class="modal-body">
+		<dl class="dl-horizontal">
+		{{#each sub_info}}
+			{{{this}}}
+		{{/each}}
+		</dl>
+		{{#if detail_table}}
+		<br />
+		<br />
+		<table class="table table-light">
+			<thead>
+				<tr>
+					{{#each detail_table.th_set}}
+					<th style="width:160px">{{this}}</th>
+					{{/each}}
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+				{{#each detail_table.tr1_set}}
+					<td>{{this}}</td>
+				{{/each}}
+				</tr>
+
+				<tr>
+				{{#each detail_table.tr2_set}}
+					<td>{{this}}</td>
+				{{/each}}
+				</tr>
+			</tbody>
+		</table>
+		{{/if}}
+	</div>
+	<div class="modal-footer">
+		<button class="btn modal-close btn-silver">{{i18n "POP_BTN_CLOSE"}}</button>
+	</div>
+</div>
+
+<!-- {{bubbleTest}} -->
+<div class="bubble-head">{{title}}</div>
+<div class="bubble-content">
+	<dl class="dl-horizontal">
+		<dt>Start Time:</dt>
+		<dd>{{start-time}}</dd>
+		<dt>Stop Time:</dt>
+		<dd>{{end-time}}</dd>
+		<dt>Estimated Cost:</dt>
+		<dd>{{cost}}</dd>
+	</dl>
+</div>
+
+<!-- {{bubbleAlert}} -->
+<div class="bubble-head alert">{{title}}</div>
+<div class="bubble-content">
+	{{description}}
+</div>
+
+<!-- {{bubbleSuggest}} -->
+<div class="bubble-head suggest">{{title}}</div>
+<div class="bubble-content">
+	{{description}}
+</div>
+
+<!-- {{bubbleAppInfo}} -->
+<div class="bubble-head"><i class="icon-{{status}} icon-label"></i>{{title}}</div>
+<div class="bubble-content">
+	<dl class="dl-horizontal">
+		<dt>Start Time:</dt>
+		<dd>{{start-time}}</dd>
+		<dt>Stop Time:</dt>
+		<dd>{{end-time}}</dd>
+		<!--dt>Estimated Cost:</dt>
+		<dd>{{cost}}</dd-->
+	</dl>
+</div>
+
+<!-- {{bubbleInstanceInfo}} -->
+<div class="bubble-head"><i class="status-{{status}} icon-label"></i>{{title}}-({{id}})</div>
+<div class="bubble-content">
+	<dl class="dl-horizontal">
+		<dt>Launch Time:</dt>
+		<dd>{{launch-time}}</dd>
+		<dt>Availability Zone:</dt>
+		<dd>{{az}}</dd>
+		<dt>Instance Type:</dt>
+		<dd>{{instance-type}}</dd>
+	</dl>
+</div>
+
+<!-- {{bubbleRegionResourceInfo}} -->
+<div class="bubble-head"><i class="status-{{status}} icon-label"></i>{{title}}</div>
+<div class="bubble-content">
+<dl class="dl-horizontal">
+	{{#each sub_info}}
+		{{{this}}}
+	{{/each}}
+</dl>
+</div>
+
+<!-- {{bubbleSnapshotInfo}} -->
+<div class="bubble-head"></i>{{snapshotId}}</div>
+<div class="bubble-content">
+	<dl class="dl-horizontal">
+		<dt>SnapshotId</dt>
+		<dd>{{snapshotId}}</dd>
+		<dt>StartTime</dt>
+		<dd>{{startTime}}</dd>
+		<dt>Status</dt>
+		<dd>{{status}}</dd>
+		<dt>Size</dt>
+		<dd>{{size}}</dd>
+	</dl>
+</div>
+
+<!-- {{bubbleAMIInfo}} -->
+<div class="bubble-head">{{id}}</div>
+<div class="bubble-content">
+	<dl class="dl-horizontal">
+		<dt>{{i18n "DASH_BUB_NAME"}}</dt>
+		<dd>{{name}}</dd>
+		<dt>{{i18n "DASH_BUB_DESCRIPTION"}}</dt>
+		<dd>{{description}}</dd>
+		<dt>{{i18n "DASH_BUB_ARCHITECTURE"}}</dt>
+		<dd>{{architecture}}</dd>
+		<dt>{{i18n "DASH_BUB_IMAGELOCATION"}}</dt>
+		<dd>{{imageLocation}}</dd>
+		<dt>{{i18n "DASH_BUB_ISPUBLIC"}}</dt>
+		<dd>{{isPublic}}</dd>
+		<dt>{{i18n "DASH_BUB_KERNELID"}}</dt>
+		<dd>{{kernelId}}</dd>
+		<dt>{{i18n "DASH_BUB_ROOTDEVICENAME"}}</dt>
+		<dd>{{rootDeviceName}}</dd>
+		<dt>{{i18n "DASH_BUB_ROOTDEVICETYPE"}}</dt>
+		<dd>{{rootDeviceType}}</dd>
+	</dl>
+</div>
+
+<!-- {{bubbleAMIMongoInfo}} -->
+<div class="bubble-head"></i>{{id}}</div>
+<div class="bubble-content">
+	<dl class="dl-horizontal">
+		<dt>Name</dt>
+		<dd>{{name}}</dd>
+		<dt>Description</dt>
+		<dd>{{description}}</dd>
+		<dt>Architecture</dt>
+		<dd>{{architecture}}</dd>
+		<dt>Image Location</dt>
+		<dd>{{imageLocation}}</dd>
+		<dt>Public</dt>
+		<dd>{{isPublic}}</dd>
+		<dt>KernelId</dt>
+		<dd>{{kernelId}}</dd>
+		<dt>Root Device Name</dt>
+		<dd>{{rootDeviceName}}</dd>
+		<dt>Root Device Type</dt>
+		<dd>{{rootDeviceType}}</dd>
+		<dt>Image Size</dt>
+		<dd>{{imageSize}}</dd>
+		<dt>Support Instance Type</dt>
+		<dd>{{instance_type}}</dd>
+	</dl>
+</div>
+
+<!-- {{createNewStackClassic}} -->
+<div style="width:660px">
+	<div class="modal-header">
+		<h3>{{i18n "DASH_POP_CREATE_STACK_CREATE_THIS_STACK_IN"}}:</h3>
+		<i class="modal-close">×</i>
+	</div>
+	<div class="modal-body">
+		<div id="createNewStack_wrap">
+			<ul class="clearfix">
+				<li>
+					<a class="new-stack-dialog" href="javascript:void(0)" data-supported-platform="ec2-classic">
+						<h4>{{i18n "DASH_POP_CREATE_STACK_CLASSIC"}}</h4>
+						<p>{{i18n "DASH_POP_CREATE_STACK_CLASSIC_INTRO"}}.</p>
+					</a>
+				</li>
+				<li>
+					<a class="new-stack-dialog" href="javascript:void(0)" data-supported-platform="ec2-vpc">
+						<h4>{{i18n "DASH_POP_CREATE_STACK_VPC"}}</h4>
+						<p>{{i18n "DASH_POP_CREATE_STACK_VPC_INTRO"}}.</p>
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<!-- {{createNewStackErrorAndReload}} -->
+<div style="width:400px">
+	<div class="modal-header">
+		<h3>{{i18n "DASH_POP_CREATE_STACK_CREATE_STACK_ERROR"}}</h3>
+		<i class="modal-close">×</i>
+	</div>
+	<div class="modal-body">
+		<div id="createNewStack_wrap" class="load-account-attr-error">
+			<p>{{i18n "DASH_POP_FALE_LOAD_RESOURCE_PLEASE_RETRY"}}</p>
+			<button class="btn btn-blue" id="reload-account-attributes">{{i18n "DASH_POP_BTN_RETRY"}}</button>
+		</div>
+	</div>
+</div>
+
+<!-- {{createNewStackVPC}} -->
+<div style="width:660px">
+	<div class="modal-header">
+		<h3>{{i18n "DASH_POP_CREATE_STACK_CREATE_THIS_STACK_IN"}}:</h3>
+		<i class="modal-close">×</i>
+	</div>
+	<div class="modal-body">
+		<div id="createNewStack_wrap">
+			<ul class="clearfix">
+				<li>
+					<a class="new-stack-dialog" href="javascript:void(0)" data-supported-platform="default-vpc">
+						<h4>{{i18n "DASH_POP_CREATE_STACK_DEFAULT_VPC"}}</h4>
+						<p>{{i18n "DASH_POP_CREATE_STACK_DEFAULT_VPC_INTRO"}}.</p>
+					</a>
+				</li>
+				<li>
+					<a class="new-stack-dialog" href="javascript:void(0)" data-supported-platform="custom-vpc">
+						<h4>{{i18n "DASH_POP_CREATE_STACK_CUSTOM_VPC"}}</h4>
+						<p>{{i18n "DASH_POP_CREATE_STACK_VPC_INTRO"}}.</p>
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<!-- {{configurationDownload}} -->
+Amazon Web Services
+Virtual Private Cloud
+
+VPN Connection Configuration
+================================================================================
+AWS utilizes unique identifiers to manipulate the configuration of
+a VPN Connection. Each VPN Connection is assigned a VPN Connection Identifier
+and is associated with two other identifiers, namely the
+Customer Gateway Identifier and the Virtual Private Gateway Identifier.
+
+Your VPN Connection ID		         : {{vpnConnectionId}}
+Your Virtual Private Gateway ID          : {{vpnGatewayId}}
+Your Customer Gateway ID    		 : {{customerGatewayId}}
+
+A VPN Connection consists of a pair of IPSec tunnel security associations (SAs).
+It is important that both tunnel security associations be configured.
+
+{{#each tunnel}}
+
+IPSec Tunnel #{{this.number}}
+================================================================================
+#1: Internet Key Exchange Configuration
+
+Configure the IKE SA as follows
+  - Authentication Method    : {{this.ike_protocol_method}}
+  - Pre-Shared Key           : {{this.ike_pre_shared_key}}
+  - Authentication Algorithm : {{this.ike_authentication_protocol_algorithm}}
+  - Encryption Algorithm     : {{this.ike_encryption_protocol}}
+  - Lifetime                 : {{this.ike_lifetime}} seconds
+  - Phase 1 Negotiation Mode : {{this.ike_mode}}
+  - Perfect Forward Secrecy  : {{this.ike_perfect_forward_secrecy}}
+
+#2: IPSec Configuration
+
+Configure the IPSec SA as follows:
+  - Protocol                 : {{this.ipsec_protocol}}
+  - Authentication Algorithm : {{this.ipsec_authentication_protocol}}
+  - Encryption Algorithm     : {{this.ipsec_encryption_protocol}}
+  - Lifetime                 : {{this.ipsec_lifetime}} seconds
+  - Mode                     : {{this.ipsec_mode}}
+  - Perfect Forward Secrecy  : {{this.ipsec_perfect_forward_secrecy}}
+
+IPSec Dead Peer Detection (DPD) will be enabled on the AWS Endpoint. We
+recommend configuring DPD on your endpoint as follows:
+  - DPD Interval             : {{this.ipsec_interval}}
+  - DPD Retries              : {{this.ipsec_retries}}
+
+IPSec ESP (Encapsulating Security Payload) inserts additional
+headers to transmit packets. These headers require additional space,
+which reduces the amount of space available to transmit application data.
+To limit the impact of this behavior, we recommend the following
+configuration on your Customer Gateway:
+  - TCP MSS Adjustment       : {{this.tcp_mss_adjustment}} bytes
+  - Clear Don't Fragment Bit : {{this.clear_df_bit}}
+  - Fragmentation            : {{this.fragmentation_before_encryption}}
+
+#3: Tunnel Interface Configuration
+
+Your Customer Gateway must be configured with a tunnel interface that is
+associated with the IPSec tunnel. All traffic transmitted to the tunnel
+interface is encrypted and transmitted to the Virtual Private Gateway.
+
+The Customer Gateway and Virtual Private Gateway each have two addresses that relate
+to this IPSec tunnel. Each contains an outside address, upon which encrypted
+traffic is exchanged. Each also contain an inside address associated with
+the tunnel interface.
+
+The Customer Gateway outside IP address was provided when the Customer Gateway
+was created. Changing the IP address requires the creation of a new
+Customer Gateway.
+
+The Customer Gateway inside IP address should be configured on your tunnel
+interface.
+
+Outside IP Addresses:
+  - Customer Gateway 		        : {{this.customer_gateway_outside_address}}
+  - Virtual Private Gateway	        : {{this.vpn_gateway_outside_address}}
+
+Inside IP Addresses
+  - Customer Gateway         		: {{this.customer_gateway_inside_address}}
+  - Virtual Private Gateway             : {{this.vpn_gateway_inside_address}}
+
+Configure your tunnel to fragment at the optimal size:
+  - Tunnel interface MTU     : 1436 bytes
+
+{{#if this.isStaticRouting}}
+#4: Static Routing Configuration:
+
+To route traffic between your internal network and your VPC,
+you will need a static route added to your router.
+
+Static Route Configuration Options:
+
+  - Next hop                      : {{this.next_hop}}
+
+You should add static routes towards your internal network on the VGW.
+The VGW will then send traffic towards your internal network over
+he tunnels.
+{{else}}
+#4: Border Gateway Protocol (BGP) Configuration:
+
+The Border Gateway Protocol (BGPv4) is used within the tunnel, between the inside
+IP addresses, to exchange routes from the VPC to your home network. Each
+BGP router has an Autonomous System Number (ASN). Your ASN was provided
+to AWS when the Customer Gateway was created.
+
+BGP Configuration Options:
+  - Customer Gateway ASN	          : {{this.customer_gateway_bgp_asn}}
+  - Virtual Private  Gateway ASN          : {{this.vpn_gateway_bgp_asn}}
+  - Neighbor IP Address     		  : {{this.neighbor_ip_address}}
+  - Neighbor Hold Time       : {{this.customer_gateway_bgp_hold_time}}
+
+Configure BGP to announce routes to the Virtual Private Gateway. The gateway
+will announce prefixes to your customer gateway based upon the prefix you
+assigned to the VPC at creation time.
+{{/if}}
+{{/each}}
+
+
+
+Additional Notes and Questions
+================================================================================
+
+  - Amazon Virtual Private Cloud Getting Started Guide:
+      http://docs.amazonwebservices.com/AmazonVPC/latest/GettingStartedGuide
+  - Amazon Virtual Private Cloud Network Administrator Guide:
+      http://docs.amazonwebservices.com/AmazonVPC/latest/NetworkAdminGuide
+  - XSL Version: 2009-07-15-1119716
+
+
+<!-- {{modalRunStack}} -->
+<div id="modal-run-stack">
+	<div class="modal-header">
+		<h3>Run Stack</h3>
+		<i class="modal-close">×</i>
+	</div>
+	<div class="modal-body">
+		<div class="modal-control-group clearfix" data-bind="true">
+			<label class="label" for="app-name">App Name</label>
+			<input id="app-name" class="input modal-input-value" type="text" value="{{name}}" data-ignore="true">
+		</div>
+		<div class="modal-control-group app-usage-group clearfix">
+			<label for="">App Usage</label>
+			<div id="app-usage-selectbox" class="selectbox">
+				<div class="selection"><i class="icon-app-type-testing"></i>Testing</div>
+				<ul class="dropdown" tabindex="-1">
+					<li class="selected item" data-value="testing"><i class="icon-app-type-testing"></i>Testing</li>
+					<li class="item" data-value="development"><i class="icon-app-type-development"></i>Development</li>
+					<li class="item" data-value="production"><i class="icon-app-type-production"></i>Production</li>
+					<li class="item" data-value="others"><i class="icon-app-type-others" data-value="testing"></i>Others</li>
+				<ul>
+			</div>
+		</div>
+		<div class="stack-validation">
+			<details open style="display:none;">
+				<summary>Stack Validation</summary>
+				<div id="stack-run-validation-container"></div>
+			</details>
+			<div class="nutshell" style="display: none;">:<label></label></div>
+			<div class="validating">
+				<div class="loading-spinner loading-spinner-small"></div>
+				<p>Validating your stack...</p>
+			</div>
+		</div>
+		<div class="estimate clearfix">
+			<span class="title">Estimated Cost</span>
+			<span class="price" id="label-total-fee"><b>${{total_fee}}</b> / month</span>
+		</div>
+
+	</div>
+	<div class="modal-footer">
+
+		<button class="btn btn-blue" id="btn-confirm" disabled>Run Stack</button>
+		<button class="btn btn-silver modal-close" id="run-stack-cancel">Cancel</button>
+	</div>
+</div>
+
+<!-- {{sgRuleList}} -->
+{{#each this}}
+{{#if ../deletable}}
+<li data-uid="{{ruleSetId}}" data-protocol="{{protocol}}" data-port="{{port}}" data-relation="{{relation}}" data-relationid="{{relationId}}" data-direction="{{direction}}" class="pos-r sg-create-rule-item">
+{{else}}
+<li class="sg-create-rule-item">
+{{/if}}
+<div class="rule-list-row">
+	<div class='rule-direction-icon tooltip icon-{{direction}}' data-tooltip='{{#ifCond direction "inbound"}}{{ i18n "PROP_SG_TIP_INBOUND" }}{{else}}{{ i18n "PROP_SG_TIP_OUTBOUND" }}{{/ifCond}}'></div>
+	<div class='rule-reference tooltip truncate' data-tooltip='{{#ifCond direction "inbound"}}Source{{else}}Destination{{/ifCond}}'>{{#if color}}<span class="sg-color" style="background-color:{{color}}"></span>{{/if}}{{relation}}</div>
+</div>
+<div class="rule-list-row">
+	<div><span class="rule-protocol tooltip" data-tooltip='{{ i18n "PROP_SG_TIP_PROTOCOL" }}' >{{protocol}}</span></div>
+	<div class='rule-port tooltip' data-tooltip='{{ i18n "PROP_SG_TIP_PORT_CODE" }}'>{{port}}</div>
+</div>
+{{#if ../deletable}}<a href="#" class="sg-rule-delete icon-remove tooltip" data-tooltip='{{ i18n "PROP_SG_TIP_REMOVE_RULE" }}'></a>{{/if}}
+</li>{{/each}}
+
+<!-- {{groupedSgRuleList}} -->
+{{#each groups}}
+<h3 class="sg-create-group truncate"><span class="sg-color sg-color-rule-header" style="background-color:{{ownerColor}}"></span>{{ownerName}}</h3>
+<ul class="sg-rule-list">{{{content}}}</ul>
+{{/each}}
+
+<!-- {{groupedSgRuleListDelConfirm}} -->
+Following rule(s) will be deleted from its(their) security group:</div>
+<article class="scroll-wrap delete-sgrule-dialog">
+<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+<div class="scroll-content">
+{{#each this}}
+<h3 class="sg-create-group truncate"><span class="sg-color sg-color-rule-header" style="background-color:{{ownerColor}}"></span>{{ownerName}}</h3>
+<ul class="sg-rule-list">{{{content}}}</ul>
+{{/each}}
+</div>
+</article>
+
+<!-- {{canvasOpConfirm}} -->
+<div style="width:420px">
+	<div class="modal-header"> <h3>{{title}}</h3><i class="modal-close">&times;</i> </div>
+	<div class="modal-body">
+		<div class="modal-text-wraper"> <div class="modal-center-align-helper">
+			<div class="modal-text-major">{{{content}}}</div>
+		</div> </div>
+	</div>
+	<div class="modal-footer">
+		<button id="canvas-op-confirm" class="btn modal-close btn-red">{{i18n 'CFM_BTN_DELETE'}}</button>
+		<button class="btn modal-close btn-silver">{{i18n 'CFM_BTN_CANCEL'}}</button>
+	</div>
+</div>
+
+<!-- {{propertyIpList}} -->
+{{#each this}}
+<li class="input-ip-item">
+  <div class="name tooltip" data-tooltip="{{#if autoAssign}}{{i18n 'PROP_INSTANCE_IP_MSG_2'}}{{else}}{{i18n 'PROP_INSTANCE_IP_MSG_1'}}{{/if}}">
+    <label class="input-ip-wrap" for="propertyIpListItem-{{@index}}"><span class="input-ip-prefix">{{prefix}}</span>
+    <input type="text" class="input input-ip"  id="propertyIpListItem-{{@index}}" value="{{suffix}}" {{#unless editable}}disabled="disabled"{{/unless}} data-ignore="true" data-ignore-regexp="^[0-9.x]*$" data-required="true">
+    </label>
+  </div>
+  <div class="input-ip-eip-btn tooltip toggle-eip{{#if hasEip}} associated{{/if}}" data-tooltip="{{#if hasEip}}{{i18n 'PROP_INSTANCE_IP_MSG_4'}}{{else}}{{i18n 'PROP_INSTANCE_IP_MSG_3'}}{{/if}}"></div>
+  {{#unless unDeletable}}<div class="icon-remove"></div>{{/unless}}
+</li>
+{{/each}}
+
+<!-- {{modalSGRule}} -->
+<div id="modal-sg-rule" data-bind="true">
+	<div class="modal-header">
+		<h3>{{ i18n "POP_SGRULE_TITLE_ADD" }}</h3><i class="modal-close">&times;</i>
+	</div>
+
+	<div class="modal-body">
+		<div class="modal-control-group clearfix">
+			<label class="label-short">{{ i18n "POP_SGRULE_LBL_DIRECTION" }}</label>
+
+			<div id="sg-modal-direction">
+			{{#if isClassic}}
+				<div class="modal-text-minor" style="margin-top:10px;"><i class="icon-inbound"></i>{{ i18n "POP_SGRULE_LBL_INBOUND" }}</div>
+			{{else}}
+			<div class="radio-group-horizontal">
+				<div class="radio">
+					<input id="radio_inbound" type="radio" name="sg-direction" checked="checked" value="inbound" />
+					<label for="radio_inbound"></label>
+				</div>
+				<label for="radio_inbound" ><i class="icon-inbound"></i>{{ i18n "POP_SGRULE_LBL_INBOUND" }}</label>
+			</div>
+
+			<div class="radio-group-horizontal">
+				<div class="radio">
+					<input id="radio_outbound" type="radio" name="sg-direction" value="outbound"/>
+					<label for="radio_outbound"></label>
+				</div>
+				<label for="radio_outbound"><i class="icon-outbound"></i>{{ i18n "POP_SGRULE_LBL_OUTBOUND" }}</label>
+			</div>
+			{{/if}}
+			</div>
+		</div>
+
+		<div class="modal-control-group clearfix">
+			<label class="label-short" for="securitygroup-modal-description" id="rule-modal-ip-range">{{ i18n "POP_SGRULE_LBL_SOURCE" }}</label>
+			<div class="selectbox" id="sg-add-model-source-select">
+				<div class="selection">IP...</div>
+				<ul class="dropdown">
+					<li class="item selected" data-id="custom">IP...</li>
+					{{#each sgList}}
+					<li class="item truncate" data-id="sg" data-uid="{{id}}"><span class="sg-color" style="background-color:{{color}}"></span>{{name}}</li>
+					{{/each}}
+				</ul>
+			</div>
+			<input class="input" type="text" id="securitygroup-modal-description" data-ignore="true" data-ignore-regexp="^[0-9./]*$" data-required="true" placeholder='{{ i18n "POP_SGRULE_PLACEHOLD_SOURCE" }}'>
+		</div>
+
+		<div class="modal-control-group clearfix">
+			<label class="label-short" >{{ i18n "POP_SGRULE_LBL_PROTOCOL" }}</label>
+				<div class="modal-protocol-select">
+					<div class="selectbox" id="modal-protocol-select"  data-protocal-type="tcp">
+						<div class="selection">{{ i18n "POP_SGRULE_PROTOCOL_TCP" }}</div>
+						<ul class="dropdown" tabindex="-1">
+							<li class="selected item" data-id="tcp">{{ i18n "POP_SGRULE_PROTOCOL_TCP" }}</li>
+							<li class="item" data-id="udp">{{ i18n "POP_SGRULE_PROTOCOL_UDP" }}</li>
+							<li class="item" data-id="icmp">{{ i18n "POP_SGRULE_PROTOCOL_ICMP" }}</li>
+							{{#if isClassic}}
+							{{else}}
+							<li class="item" data-id="custom">{{ i18n "POP_SGRULE_PROTOCOL_CUSTOM" }}</li>
+							<li class="item" data-id="all">{{ i18n "POP_SGRULE_PROTOCOL_ALL" }}</li>
+							{{/if}}
+						</ul>
+					</div>
+				</div>
+			<div id="sg-protocol-select-result">
+				<div class="sg-protocol-option-input show" id="sg-protocol-tcp">
+					<input class="input" type="text" placeholder='{{ i18n "POP_SGRULE_PLACEHOLD_PORT_RANGE" }}' data-ignore="true" data-ignore-regexp="^[0-9-]*$"  data-required="true"/>
+				</div>
+				<div class="sg-protocol-option-input" id="sg-protocol-udp">
+					<input class="input" type="text" placeholder='{{ i18n "POP_SGRULE_PLACEHOLD_PORT_RANGE" }}' data-ignore="true" data-ignore-regexp="^[0-9-]*$" data-required="true"/>
+				</div>
+
+				<div class="sg-protocol-option-input" id="sg-protocol-icmp">
+					<div class="selectbox" id="protocol-icmp-main-select" data-protocal-main="0"  data-protocal-sub="-1">
+					<div class="selection">Echo Reply(0)</div>
+					<div class="dropdown scroll-wrap scrollbar-auto-hide context-wrap" style="height:300px;">
+						<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+						<ul tabindex="-1" class="scroll-content">
+							<li class="item selected" data-id="0">Echo Reply(0)</li>
+							<li class="item" data-id="3">Destination Unreachable(3) ...</li>
+							<li class="item" data-id="4">Source Quench(4)</li>
+							<li class="item" data-id="5">Redirect Message(5) ...</li>
+							<li class="item" data-id="6">Alternate Host Address(6)</li>
+							<li class="item" data-id="8">Echo Request(8)</li>
+							<li class="item" data-id="9">Router Advertisement(9)</li>
+							<li class="item" data-id="10">Router Solicitation(10)</li>
+							<li class="item" data-id="11">Time Exceeded(11) ...</li>
+							<li class="item" data-id="12">Parameter Problem: Bad IP header(12) ...</li>
+							<li class="item" data-id="13">Timestamp(13)</li>
+							<li class="item" data-id="14">Timestamp Reply(14)</li>
+							<li class="item" data-id="15">Information Request(15)</li>
+							<li class="item" data-id="16">Information Reply(16)</li>
+							<li class="item" data-id="17">Address Mask Request(17)</li>
+							<li class="item" data-id="18">Address Mask Reply(18)</li>
+							<li class="item" data-id="30">Traceroute(30)</li>
+							<li class="item" data-id="31">Datagram Conversion Error(31)</li>
+							<li class="item" data-id="32">Mobile Host Redirect(32)</li>
+							<li class="item" data-id="33">Where Are You(33)</li>
+							<li class="item" data-id="34">Here I Am(34)</li>
+							<li class="item" data-id="35">Mobile Registration Request(35)</li>
+							<li class="item" data-id="36">Mobile Registration Reply(36)</li>
+							<li class="item" data-id="37">Domain Name Request(37)</li>
+							<li class="item" data-id="38">Domain Name Reply(38)</li>
+							<li class="item" data-id="39">SKIP Algorithm Discovery Protocol(39)</li>
+							<li class="item" data-id="40">Photuris Security Failures(40)</li>
+							<li class="item" data-id="-1">All(-1)</li>
+						</ul>
+					</div>
+					</div>
+				</div>
+
+				<div class="selectbox protocol-icmp-sub-select" id="protocol-icmp-sub-select-3">
+					<div class="selection">All(-1)</div>
+					<div class="dropdown scroll-wrap scrollbar-auto-hide context-wrap" style="height:300px;">
+						<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+						<ul class="scroll-content" tabindex="-1">
+							<li class="item selected" data-id="-1">All(-1)</li>
+							<li class="item" data-id="0">destination network unreachable(0)</li>
+							<li class="item" data-id="1">destination host unreachable(1)</li>
+							<li class="item" data-id="2">destination protocol unreachable(2)</li>
+							<li class="item" data-id="3">destination port unreachable(3)</li>
+							<li class="item" data-id="4">fragmentation required and DF flag set(4)</li>
+							<li class="item" data-id="5">source route failed(5)</li>
+							<li class="item" data-id="6">destination network unknown(6)</li>
+							<li class="item" data-id="7">destination host unknown(7)</li>
+							<li class="item" data-id="8">source host isolated(8)</li>
+							<li class="item" data-id="9">network administratively prohibited(9)</li>
+							<li class="item" data-id="10">host administratively prohibited(10)</li>
+							<li class="item" data-id="11">network unreachable for TOS(11)</li>
+							<li class="item" data-id="12">host unreachable for TOS(12)</li>
+							<li class="item" data-id="13">communication administratively prohibited(13)</li>
+						</ul>
+					</div>
+				</div>
+
+				<div class="selectbox protocol-icmp-sub-select" id="protocol-icmp-sub-select-5">
+					<div class="selection">All(-1)</div>
+					<ul class="dropdown" tabindex="-1">
+						<li class="selected item" data-id="-1">All(-1)</li>
+						<li class="item" data-id="0">redirect datagram for the network(0)</li>
+						<li class="item" data-id="1">redirect datagram for the host(1)</li>
+						<li class="item" data-id="2">redirect datagram for the TOS & network(2)</li>
+						<li class="item" data-id="3">redirect datagram for the TOS & host(3)</li>
+					</ul>
+				</div>
+
+				<div class="selectbox protocol-icmp-sub-select" id="protocol-icmp-sub-select-11">
+					<div class="selection">All(-1)</div>
+					<ul class="dropdown" tabindex="-1">
+						<li class="item selected" data-id="-1">All(-1)</li>
+						<li class="item" data-id="0">TTL expired transit(0)</li>
+						<li class="item" data-id="1">fragmentation reasembly time exceeded(1)</li>
+					</ul>
+				</div>
+
+				<div class="selectbox protocol-icmp-sub-select" id="protocol-icmp-sub-select-12">
+					<div class="selection">All(-1)</div>
+					<ul class="dropdown" role="menu">
+						<li class="item selected" data-id="-1">All(-1)</li>
+						<li class="item" data-id="0">pointer indicates the error(0)</li>
+						<li class="item" data-id="1">missing a required option(1)</li>
+						<li class="item" data-id="2">bad length(2)</li>
+					</ul>
+				</div>
+
+				{{#unless isClassic}}
+					<div class="sg-protocol-option-input" id="sg-protocol-custom">
+						<input class="input" name="protocol-custom-ranged" placeholder="0-255" data-ignore="true" data-ignore-regexp="^[0-9]*$" data-required="true">
+					</div>
+					<div class="sg-protocol-option-input" id="sg-protocol-all">
+						Port Range:<span>0-65535</span>
+					</div>
+				{{/unless}}
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-blue" id='sg-modal-save'>{{ i18n "POP_SGRULE_BTN_SAVE" }}</button>
+		<button class="btn btn-silver modal-close">{{ i18n "POP_SGRULE_BTN_CANCEL" }}</button>
+	</div>
+</div>
+
+<!-- {{modalDownloadKP}} -->
+<div style="width:420px">
+	<div class="modal-header">
+		<h3 id='keypair-name'>{{name}}</h3>
+		<i class="modal-close">&times;</i>
+	</div>
+	<div class="modal-body">
+		<section id='keypair-loading' class="loading-spinner"></section>
+
+		<section id="keypair-body-linux" class="hide">
+			<div class="keypair-download clearfix modal-control-group">
+				<p class="modal-text-major left">Key Pair data is ready</p>
+				<a href="#" class="btn btn-blue right" id="keypair-kp-linux">Download</a>
+			</div>
+			<div id="keypair-remote" class="modal-control-group clearfix">
+				<label for="keypair-cmd">Remote Access</label>
+				<input class="input click-select" id="keypair-cmd" type="text" readonly="readonly">
+			</div>
+
+		</section>
+		<section id="keypair-body-win" class="hide">
+			<div class="modal-control-group">
+				<h4>Remote Access</h4>
+				<label for="keypair-private-key">Private Key</label>
+				<textarea id="keypair-private-key" class="click-select" readonly="readonly"></textarea>
+				<a href="#" id="keypair-rdp" class="btn btn-blue">Download RDP</a>
+				<a href="#" id="keypair-kp-win" class="btn btn-blue">Download Key Pair</a>
+			</div>
+
+			<div id="keypair-public" class="modal-control-group clearfix">
+				<label for="keypair-dns">Public DNS</label>
+				<input class="input click-select" type="text" readonly="readonly" id="keypair-dns">
+			</div>
+
+			<div class="modal-control-group clearfix">
+				<label style="width:100%;">Windows Login Password</label>
+				<div id="keypair-login">
+					<input type="password" readonly="readonly" id="keypair-pwd" class="input click-select">
+					<a href="#" class="btn btn-silver kp-copy-btn" id="keypair-show">Show password</a>
+				</div>
+				<div id="keypair-no-pwd"></div>
+			</div>
+
+		</section>
+	</div>
+
+	<div class="modal-footer">
+		<button class="btn modal-close btn-silver">Close</button>
+	</div>
+</div>
+
+<!-- {{missingPropertyPanel}} -->
+<article>
+	<div class="property-control-group">This resource is not available. It may have been deleted from other source or terminated in previous app editing.</div>
+</article>
+
+<!-- {{missingAsgWhenStop}} -->
+<article>
+	<div class="property-control-group">{{asgName}} is deleted in stopped app. The auto scaling group will be created when the app is started.</div>
+</article>
+
+<!-- {{instanceVolume}} -->
+<div class="bubble-head">Attached volume (<span id="instance_volume_number">{{this.length}}</span>)</div>
+<div id="instance_volume_wrap" class="scroll-wrap">
+	<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+	<ul id="instance_volume_list" class="clearfix bubble-content scroll-content">
+		{{#each this}}<li>
+			<a href="#" id="{{id}}" data-instance="{{instance_id}}" class="{{#if snapshotId}}snapshot{{else}}volume{{/if}}_item {{deleted}}">
+				<span class="volume_name">{{name}}</span>
+				<span class="volume_size">{{size}}GB</span>
+			</a>
+		</li>{{/each}}
+	</ul>
+</div>
+
+<!-- {{asgList}} -->
+<div id="asgList-wrap">
+	<div id="asgList-header">
+		<span id="asgList-title">{{name}}</span>
+		<a id="asgList-close" href="javascript:void(0)" onclick="MC.canvas.asgList.close()">&times;</a>
+	</div>
+	<ul id="asgList" class="clearfix">
+		{{#each this}}
+		<li>
+			<a href="#" class="asgList-item" id="{{id}}" data-id="{{id}}">
+				<i class="asgList-item-status tooltip status status-{{state}}" data-tooltip="{{state}}" ></i>
+				<span class="asgList-item-icon" style="background-image:url('./assets/images/{{background}}')"></span>
+				<div class="asgList-item-volume" data-target-id={{id}}>
+					<span class="asgList-item-number">{{../volume}}</span>
+				</div>
+				<span class="asgList-item-label">{{id}}</span>
+			</a>
+		</li>
+		{{/each}}
+	</ul>
+</div>
+
+<!-- {{instanceList}} -->
+<div id="instanceList-wrap" data-id="{{this.[0].id}}">
+	<div id="instanceList-header">
+		<span id="instanceList-title">{{this.name}}</span>
+		<a id="instanceList-close" href="javascript:void(0)" onclick="MC.canvas.instanceList.close()">&times;</a>
+	</div>
+	<ul id="instanceList" class="clearfix">
+		{{#each this}}
+		<li>
+			<a href="#" class='instanceList-item {{deleted}}' id="{{id}}_{{@index}}" data-id="{{appId}}">
+				<i class="instanceList-item-status tooltip status status-{{state}}" data-tooltip="{{state}}"></i>
+				<span class="instanceList-item-icon" style="background-image:url('./assets/images/{{../background}}')"></span>
+				<div class="instanceList-item-volume" data-target-id="{{id}}_{{@index}}">
+					<span class="instanceList-item-number">{{../volume}}</span>
+				</div>
+				<span class="instanceList-item-label">{{name}}-{{@index}}</span>
+			</a>
+		</li>
+		{{/each}}
+	</ul>
+</div>
+
+<!-- {{instanceListItem}} -->
+<li>
+	<a href="#" class="instanceList-item" id="{{id}}_{{@index}}" data-id="{{appId}}">
+		<i class="instanceList-item-status tooltip status status-{{status}}"></i>
+		<span class="instanceList-item-icon" style="background-image:url('./assets/images/ide/ami/{{../background}}.png')"></span>
+		<div class="instanceList-item-volume" data-target-id="{{id}}_{{@index}}">
+			<span class="instanceList-item-number">{{volume}}</span>
+		</div>
+		<span class="instanceList-item-label">{{name}}</span>
+	</a>
+</li>
+
+<!-- {{eniList}} -->
+<div id="eniList-wrap">
+	<div id="eniList-header">
+		<span id="eniList-title">{{this.name}}</span>
+		<a id="eniList-close" href="javascript:void(0)" onclick="MC.canvas.eniList.close()">&times;</a>
+	</div>
+	<ul id="eniList" class="clearfix">
+		{{#each this}}
+		<li>
+			<a href="#" class="eniList-item {{deleted}}" id="{{id}}_{{@index}}" data-id="{{appId}}">
+				<i class="eniList-item-eip-status{{#if ../eip}} on{{/if}}"></i>
+				<span class="eniList-item-label">{{appId}}</span>
+			</a>
+		</li>
+		{{/each}}
+	</ul>
+</div>
+
+<!-- {{eniListItem}} -->
+<li>
+	<a href="#" class="eniList-item" id="{{id}}_{{@index}}" data-id="{{id}}">
+		<i class="eniList-item-eip-status{{#if ../eip}} on{{/if}}"></i>
+		<span class="eniList-item-label">{{name}}</span>
+	</a>
+</li>
+
+<!-- {{setupCIDRConfirm}} -->
+<div style="width:420px">
+	<div class="modal-header"> <h3>Set up CIDR Block</h3><i class="modal-close">&times;</i> </div>
+	<div class="modal-body">
+		<div class="modal-text-wraper"> <div class="modal-center-align-helper">
+			<div class="modal-text-major">{{main_content}}</div>
+			<div class="modal-text-minor">{{desc_content}}</div>
+		</div> </div>
+	</div>
+	<div class="modal-footer">
+		<a id="cidr-remove" class="link-red left link-modal-danger">{{remove_content}}</a>
+		<button id="cidr-return" class="btn modal-close btn-blue">OK</button>
+	</div>
+</div>
+
+<!-- {{modalAttachingEni}} -->
+<div class="modal-header"> <h3>Attach Network Interface to Instance</h3><i class="modal-close">&times;</i> </div>
+<div class="modal-body">
+	<div class="modal-center-align-helper">
+		<p>{{host}} has been automatically assigned Public IP.</p>
+		<p>If you want to attach the external network interface to {{host}}, the Public IP must be removed.</p>
+		<p>Do you still want to attach {{eni}} to {{host}} and remove the Public IP?</p>
+	</div>
+</div>
+
+<!-- {{modalCanvasConfirm}} -->
+<div style="width:420px">
+	{{{confirm}}}
+	<div class="modal-footer">
+		<button class="btn modal-close btn-blue" id="canvas-op-confirm" style="width:200px;">{{action}}</button>
+		<button class="btn modal-close btn-silver">Cancel</button>
+	</div>
+</div>
+
+<!-- {{modalReinputStackName}} -->
+<div style="width:420px">
+	<div class="modal-header"> <h3>Stack Name Already in Use</h3><i class="modal-close">&times;</i> </div>
+	<div class="modal-body" style="min-height:120px;">
+		<div class="modal-text-wraper">
+			<div class="modal-center-align-helper">
+				<div class="modal-text-major">Stack name <span class="resource-name-label">{{stack_name}}</span> is already used by another stack. Please use a different name.</div>
+				<div class="modal-control-group modal-control-group-bg-blue" data-bind="true">
+					<label for="new-stack-name">Stack Name</label>
+					<input id="new-stack-name" class="input modal-input-value" type="text" value="{{stack_name}}" data-ignore="true">
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button id="rename-confirm" class="btn btn-blue">Save</button>
+	</div>
+</div>
+
+<!-- {{closeTabRestriction}} -->
+<div style="width:420px">
+	<div class="modal-header"><h3 class="truncate" style="width: 380px;">Confirm to close {{ tab_name }}</h3><i class="modal-close">&times;</i> </div>
+	<div class="modal-body">
+		<div class="modal-text-wraper"> <div class="modal-center-align-helper">
+			<div class="modal-text-major">{{ tab_name }} has unsaved changes.</div>
+			<div class="modal-text-major">Do you confirm to close it?</div>
+		</div> </div>
+	</div>
+	<div class="modal-footer">
+		<button id="close-tab-confirm" class="btn btn-red" data-tab-id="{{ tab_id }}">Close Tab</button>
+		<button class="btn modal-close btn-silver">Cancel</button>
+	</div>
+</div>
+
+<!-- {{cancelAppEdit2App}} -->
+<div style="width:420px">
+	<div class="modal-header"><h3 class="truncate" style="width: 380px;">Changes not applied</h3><i class="modal-close">&times;</i> </div>
+	<div class="modal-body">
+		<div class="modal-text-wraper"> <div class="modal-center-align-helper">
+			<div class="modal-text-major">This app has been changed.</div>
+			<div class="modal-text-major">Do you conﬁrm to discard the changes?</div>
+		</div> </div>
+	</div>
+	<div class="modal-footer">
+		<button id="return-app-confirm" class="btn btn-red">Discard</button>
+		<button class="btn modal-close btn-silver">Cancel</button>
+	</div>
+</div>
+
+<!-- {{modalDeleteSGOrACL}} -->
+<div style="width:420px">
+	<div class="modal-header"> <h3>{{title}}</h3><i class="modal-close">&times;</i> </div>
+	<div class="modal-body">
+		<div class="modal-text-wraper">
+			 <div class="modal-center-align-helper">
+				<div class="modal-text-major">{{main_content}}</div>
+				<div class="modal-text-minor">{{desc_content}}</div>
+			</div>
+		 </div>
+	</div>
+	<div class="modal-footer">
+		<button id="modal-confirm-delete" class="btn btn-red">Delete</button>
+		<button id="modal-cancel" class="btn modal-close btn-silver">Cancel</button>
+	</div>
+</div>
+
+<!-- {{loadingTransparent}} -->
+<div id="loading-modal-wrap">
+	<div class="loading-modal" id="modal-box">
+		<div class="loading-spinner loading-spinner-mid"></div>
+		<div>Refreshing resources...</div>
+	</div>
+</div>
+
+<!-- {{modalForceDeleteApp}} -->
+<div style="width:420px">
+	<div class="modal-header"> <h3>{{title}}</h3><i class="modal-close">&times;</i> </div>
+	<div class="modal-body">
+		<div class="modal-text-wraper">
+			 <div class="modal-center-align-helper">
+				<div class="modal-text-major">{{main_content}}</div>
+				<div class="modal-text-minor">{{desc_content}}</div>
+			</div>
+		 </div>
+	</div>
+	<div class="modal-footer">
+		<button id="modal-confirm-delete" class="btn btn-red">Delete</button>
+		<button id="modal-cancel" class="btn modal-close btn-silver">Cancel</button>
+	</div>
+</div>
+
+<!-- {{statusbar}} -->
+<div>
+	<div class="info">Last saved: <span class="stack-save-time">-<span></div>
+	<ul class="statusbar-btn-list">
+		<li class="statusbar-btn btn-state">
+			<span class="state-success"><i class="status status-green icon-label"></i><b>0</b></span>
+			<span class="state-failed"><i class="status status-red icon-label"></i><b>0</b></span>
+		</li>
+		<li class="statusbar-btn btn-ta-valid">Validate</li>
+	</ul>
+</div>
+
+<!-- {{restartInstance}} -->
+<div style="width:420px">
+	<div class="modal-header"><h3 class="truncate" style="width: 380px;">Need to Restart Instance</h3><i class="modal-close">&times;</i> </div>
+	<div class="modal-body" style="height:150px;">
+		<div class="modal-text-wraper">
+			<div class="modal-text-major">To update the properties you have changed, following instances need to restart:</div>
+			<ul class="clearfix">
+				{{#each instance_list}}
+				<li>{{ name }}( {{ instance_id }} )</li>
+				{{/each}}
+			</ul>
+			<div id="instance-type" class="modal-text-major"></div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button id="confirm-update-app" class="btn btn-blue" style="width:160px;">Continue to Update</button>
+		<button class="btn modal-close btn-silver">Cancel</button>
+	</div>
+</div>
+
+<!-- {{updateApp}} -->
+<div id="app-apply-update" style="width:460px">
+	<div class="modal-header"><h3 class="truncate" style="width: 380px;">{{ i18n 'POP_CONFIRM_UPDATE_TIT'}}</h3><i class="modal-close">&times;</i> </div>
+	<div class="modal-body">
+	{{#if isRunning}}
+		<h3 class="modal-text-major">{{ i18n 'POP_CONFIRM_UPDATE_MAJOR_TEXT_RUNNING'}}</h3>
+	{{else}}
+		<h3 class="modal-text-major">{{ i18n 'POP_CONFIRM_UPDATE_MAJOR_TEXT_STOPPED'}}</h3>
+		<p class="modal-text-minor" style="margin-top:10px;">{{ i18n 'POP_CONFIRM_UPDATE_MINOR_TEXT_STOPPED'}}</p>
+	{{/if}}
+	{{#if result.length}}
+		<table class="table-head-fix table app-update-summary-table-header" data-target="app-update-summary-table">
+			<thead> <tr class="header-row">
+				<th class="sortable active" width="30%">{{ i18n 'POP_CONFIRM_UPDATE_TABLE_TYPE'}}</th>
+				<th class="sortable" width="30%">{{ i18n 'POP_CONFIRM_UPDATE_TABLE_NAME'}}</th>
+				<th class="sortable" width="40%">{{ i18n 'POP_CONFIRM_UPDATE_TABLE_CHANGE'}}</th> </tr>
+			</thead>
+		</table>
+		<div class="scroll-wrap" style="max-height:256px;">
+			<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+			<table class="table scroll-content" id="app-update-summary-table">
+				<tbody>
+				{{#each result}} <tr>
+					<td width="30%">{{type}}</td>
+					<td width="30%">{{name}}</td>
+					<td width="40%">
+						{{#each changes}}
+						<span class="au-summary-label au-summary-{{name}}">{{info}}</span>
+						{{else}}
+						<span class="au-summary-label au-summary-{{change}}">{{change}}</span>
+						{{/each}}
+						{{#if extra}}<p class="au-summary-extra">{{extra}}</p>{{/if}}
+						{{#if info}}<span class="tooltip icon-warning" data-tooltip="{{info}}"></span>{{/if}}</td>
+				</tr> {{/each}}
+				</tbody>
+			</table>
+		</div>
+	{{/if}}
+		<div class="stack-validation">
+			<details open style="display:none;">
+				<summary>{{ i18n 'POP_CONFIRM_UPDATE_VALIDATION'}}</summary>
+				<div id="stack-run-validation-container"></div>
+			</details>
+			<div class="nutshell" style="display: none;">:<label></label></div>
+			<div class="validating">
+				<div class="loading-spinner loading-spinner-small"></div>
+				<p>{{ i18n 'POP_CONFIRM_UPDATE_VALIDATING'}}</p>
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button id="confirm-update-app" class="btn btn-blue" style="width:160px;" disabled>{{ i18n 'POP_CONFIRM_UPDATE_CONFIRM_BTN'}}</button>
+		<button class="btn modal-close btn-silver">{{ i18n 'POP_CONFIRM_UPDATE_CANCEL_BTN'}}</button>
+	</div>
+</div>
+
+<!-- {{openTabFail}} -->
+<div class="overlay-content-wrap">
+	<div class="overlay-text">Oops! There has been some issue loading the tab.</div>
+	<button class="btn btn-blue" id="btn-fail-reload">Reload</button>
+</div>
+
+<!-- {{appStarting}} -->
+<div class="overlay-content-wrap">
+	<div class="overlay-text">Starting app...</div>
+	<div class="loading-spinner"></div>
+</div>
+
+<!-- {{appStopping}} -->
+<div class="overlay-content-wrap">
+	<div class="overlay-text">Stopping app...</div>
+	<div class="loading-spinner"></div>
+</div>
+
+<!-- {{appTerminating}} -->
+<div class="overlay-content-wrap">
+	<div class="overlay-text">Terminating app...</div>
+	<div class="loading-spinner"></div>
+</div>
+
+<!-- {{appUpdating}} -->
+<div class="overlay-content-wrap">
+	<div class="overlay-text">Updating app...</div>
+	<div class="loading-spinner"></div>
+	{{# if is_show }}
+	<div class="progress">
+		<div class="bar" id="progress_bar" style="width: {{ rate }}%;"></div>
+	</div>
+	<p class="process-info">
+		<span><b class="num" id="progress_num">{{ dones }}</b> of</span>
+		<span><b class="total" id="progress_total">{{ steps }}</b> tasks</span>
+	</p>
+	{{/if}}
+</div>
+
+<!-- {{appUpdatedSuccess}} -->
+<div class="overlay-content-wrap">
+	<div class="overlay-text">App has updated successfully.</div>
+	<button class="btn btn-blue" id="btn-updated-success">Done</button>
+</div>
+
+<!-- {{appChangedfail}} -->
+<div class="overlay-content-wrap app-change-fail">
+	<div class="overlay-text">Oops! The app failed to {{ state }}.</div>
+	{{#if is_show}}
+	<div class="error-info-block">
+		<div class="result-sub-title">{{ i18n "PROC_RLT_FAILED_SUB_TITLE" }}</div>
+		<div class="result-error-info">
+			<p class="title">{{ i18n "PROC_ERR_INFO" }}</p>
+			<p class="detail">{{{ detail }}}</p>
+		</div>
+		{{#if update_detail}}
+		<div class="result-error-notice">The state of your app has been rolled back, except for the already deleted resources.</div>
+		{{/if}}
+	</div>
+	{{/if}}
+	<button class="btn btn-silver" id="btn-changedfail">Done</button>
+</div>
+
+<!-- {{nodeAction}} -->
+<div id="node-action-wrap">
+	<div id="node-action-state">
+		<div id="node-action-state-btn">
+			<i id="node-state-icon"></i>
+			<span id="node-state-number">{{state_num}}</span>
+		</div>
+		<div class="node-action-tooltip">Edit State</div>
+	</div>
+</div>
+
+<!-- {{modalInstanceSysLog}} -->
+<div id="modal-instance-sys-log" style="width: 900px;">
+	<div class="modal-header"><h3>System Log: {{instance_id}}</h3><i class="modal-close">&times;</i> </div>
+	<div class="modal-body">
+		<section class="instance-sys-log-loading loading-spinner"></section>
+		<div class="instance-sys-log-content font-mono">{{log_content}}</div>
+		<div class="instance-sys-log-info modal-text-minor">System log is not ready yet. Please try in a short while.</div>
+	</div>
+	<div class="modal-footer">
+		<button id="modal-instance-sys-log-cancel" class="btn modal-close btn-silver">Close</button>
+	</div>
+</div>
+
+<!-- {{NodeStateRemoveConfirmation}} -->
+Are you sure you want to delete {{name}}?</div>
+<div class="modal-text-minor">Once deleted, the states of {{name}}'s configuration will be lost.</div>
+
+<!-- {{ElbRemoveConfirmation}} -->
+Are you sure you want to delete {{name}}?</div>
+<div class="modal-text-minor">The security group {{sg}} will also be deleted. Other load balancer using this security group will be affected.</div>
+
+<!-- {{modalStackAgentEnable}} -->
+<div style="width:420px">
+	<div class="modal-header"><h3>Conﬁrm to Enable VisualOps</h3><i class="modal-close">&times;</i></div>
+	<div class="modal-body">
+		<div class="modal-text-wraper">
+			<div class="modal-center-align-helper">
+				<div class="modal-text-major">Enable VisualOps will override your custom User Data. Are you sure to continue?</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button id="modal-stack-agent-enable-confirm" style="width:145px;" class="btn modal-confirm btn-blue">Enable VisualOps</button>
+		<button id="modal-stack-agent-enable-cancel" class="btn modal-close btn-silver">Cancel</button>
+	</div>
+</div>
+
+<!-- {{shortkey}} -->
+<div style="width:640px" id="modal-key-short">
+	<div class="modal-header"><h3>{{i18n "KEY_MOD_TIT"}}</h3><i class="modal-close">&times;</i></div>
+	<div class="modal-body scroll-wrap">
+		<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+		<div class="scroll-content" style="height: 560px">
+			<section class="key-stack-app">
+				<h3 class="title">{{i18n "KEY_TIT_STACK_APP_OP"}}</h3>
+				<ul class="keys">
+					<li class="key-item">
+						<div class="key font-mono">{{i18n "KEY_PROP_KEY"}}</div>
+						<div class="action">{{i18n "KEY_PROP_ACTION"}}</div>
+					</li>
+					<li class="key-item">
+						<div class="key font-mono">{{i18n "KEY_STAT_KEY"}}</div>
+						<div class="action">{{i18n "KEY_STAT_ACTION"}}</div>
+					</li>
+					<li class="key-item">
+						<div class="key mac font-mono">{{i18n "KEY_DUPL_KEY_MAC"}}</div>
+						<div class="key pc font-mono">{{i18n "KEY_DUPL_KEY_PC"}}</div>
+						<div class="action">{{i18n "KEY_DUPL_ACTION"}}
+						</div>
+					</li>
+					<li class="key-item">
+						<div class="key mac font-mono">{{i18n "KEY_DEL_KEY_MAC"}}</div>
+						<div class="key pc font-mono">{{i18n "KEY_DEL_KEY_PC"}}</div>
+						<div class="action">{{i18n "KEY_DEL_ACTION"}}
+						</div>
+					</li>
+					<li class="key-item">
+						<div class="key mac font-mono">{{i18n "KEY_SAVE_KEY_MAC"}}</div>
+						<div class="key pc font-mono">{{i18n "KEY_SAVE_KEY_PC"}}</div>
+						<div class="action">{{i18n "KEY_SAVE_ACTION"}}
+						</div>
+					</li>
+					<li class="key-item">
+						<div class="key mac font-mono">{{i18n "KEY_SCRL_KEY_MAC"}}</div>
+						<div class="key pc font-mono">{{i18n "KEY_SCRL_KEY_PC"}}</div>
+						<div class="action">{{i18n "KEY_SCRL_ACTION"}}</div>
+					</li>
+				</ul>
+			</section>
+			<section class="key-state">
+				<h3 class="title">{{i18n "KEY_TIT_STATE_GEN"}}</h3>
+				<ul class="keys">
+					<li class="key-item">
+						<div class="key font-mono">{{i18n "KEY_FOCUS_KEY"}}</div>
+						<div class="action">{{i18n "KEY_FOCUS_ACTION"}}</div>
+					</li>
+					<li class="key-item">
+						<div class="key font-mono">{{i18n "KEY_SELECT_KEY"}}</div>
+						<div class="action">{{i18n "KEY_SELECT_ACTION"}}</div>
+					</li>
+					<li class="key-item">
+						<div class="key font-mono">{{i18n "KEY_EXPAND_KEY"}}</div>
+						<div class="action">{{i18n "KEY_EXPAND_ACTION"}}</div>
+					</li>
+					<li class="key-item">
+						<div class="key font-mono">{{i18n "KEY_COLLAPSE_KEY"}}</div>
+						<div class="action">{{i18n "KEY_COLLAPSE_ACTION"}}</div>
+					</li>
+					<li class="key-item">
+						<div class="key font-mono">{{i18n "KEY_NEXT_KEY"}}</div>
+						<div class="action">{{i18n "KEY_NEXT_ACTION"}}</div>
+					</li>
+					<li class="key-item">
+						<div class="key font-mono">{{i18n "KEY_PREV_KEY"}}</div>
+						<div class="action">{{i18n "KEY_PREV_ACTION"}}
+						</div>
+					</li>
+					<li class="key-item">
+						<div class="key mac font-mono">{{i18n "KEY_INFO_KEY_MAC"}}</div>
+						<div class="key pc font-mono">{{i18n "KEY_INFO_KEY_PC"}}</div>
+						<div class="action">{{i18n "KEY_INFO_ACTION"}}</div>
+					</li>
+					<li class="key-item">
+						<div class="key mac font-mono">{{i18n "KEY_LOG_KEY_MAC"}}</div>
+						<div class="key pc font-mono">{{i18n "KEY_LOG_KEY_PC"}}</div>
+						<div class="action">{{i18n "KEY_LOG_ACTION"}}
+						</div>
+					</li>
+				</ul>
+			</section>
+			<section class="key-state-edit">
+				<h3 class="title">{{i18n "KEY_TIT_STATE_EDIT"}}</h3>
+				<ul class="keys">
+					<li class="key-item">
+						<div class="key mac font-mono">{{i18n "KEY_SELECT_ALL_KEY_MAC"}}</div>
+						<div class="key pc font-mono">{{i18n "KEY_SELECT_ALL_KEY_PC"}}</div>
+						<div class="action">{{i18n "KEY_SELECT_ALL_ACTION"}}</div>
+					</li>
+					<li class="key-item">
+						<div class="key mac font-mono">{{i18n "KEY_DESELECT_KEY_MAC"}}</div>
+						<div class="key pc font-mono">{{i18n "KEY_DESELECT_KEY_PC"}}</div>
+						<div class="action">{{i18n "KEY_DESELECT_ACTION"}}</div>
+					</li>
+					<li class="key-item">
+						<div class="key mac font-mono">{{i18n "KEY_CREATE_KEY_MAC"}}</div>
+						<div class="key pc font-mono">{{i18n "KEY_CREATE_KEY_PC"}}</div>
+						<div class="action">{{i18n "KEY_CREATE_ACTION"}}</div>
+					</li>
+					<li class="key-item">
+						<div class="key mac font-mono">{{i18n "KEY_DEL_STATE_KEY_MAC"}}</div>
+						<div class="key pc font-mono">{{i18n "KEY_DEL_STATE_KEY_PC"}}</div>
+						<div class="action">{{i18n "KEY_DEL_STATE_ACTION"}}</div>
+					</li>
+					<li class="key-item">
+						<div class="key mac font-mono">{{i18n "KEY_MOVE_FOCUS_STATE_KEY_MAC"}}</div>
+						<div class="key pc font-mono">{{i18n "KEY_MOVE_FOCUS_STATE_KEY_PC"}}</div>
+						<div class="action">{{i18n "KEY_MOVE_FOCUS_STATE_ACTION"}}</div>
+					</li>
+					<li class="key-item">
+						<div class="key mac font-mono">{{i18n "KEY_COPY_STATE_KEY_MAC"}}</div>
+						<div class="key pc font-mono">{{i18n "KEY_COPY_STATE_KEY_PC"}}</div>
+						<div class="action">{{i18n "KEY_COPY_STATE_ACTION"}}</div>
+					</li>
+					<li class="key-item">
+						<div class="key mac font-mono">{{i18n "KEY_PASTE_STATE_KEY_MAC"}}</div>
+						<div class="key pc font-mono">{{i18n "KEY_PASTE_STATE_KEY_PC"}}</div>
+						<div class="action">{{i18n "KEY_PASTE_STATE_ACTION"}}</div>
+					</li>
+					<li class="key-item">
+						<div class="key mac font-mono">{{i18n "KEY_UNDO_STATE_KEY_MAC"}}</div>
+						<div class="key pc font-mono">{{i18n "KEY_UNDO_STATE_KEY_PC"}}</div>
+						<div class="action">{{i18n "KEY_UNDO_STATE_ACTION"}}</div>
+					</li>
+					<li class="key-item">
+						<div class="key mac font-mono">{{i18n "KEY_REDO_STATE_KEY_MAC"}}</div>
+						<div class="key pc font-mono">{{i18n "KEY_REDO_STATE_KEY_PC"}}</div>
+						<div class="action">{{i18n "KEY_REDO_STATE_ACTION"}}</div>
+					</li>
+				</ul>
+			</section>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button class="btn modal-close btn-silver">{{i18n "KEY_MODAL_BTN_CLOSE"}}</button>
+	</div>
+</div>
+
+<!-- {{modalSSLCertSetting}} -->
+<div style="width:343px" id="modal-ssl-cert-setting">
+	<div class="modal-header"><h3>Server Certiﬁcate</h3><i class="modal-close">&times;</i> </div>
+	<div class="modal-body" style="min-height:120px;">
+		<div class="modal-ssl-cert-item clearfix">
+			<label class="left">{{ i18n "PROP_ELB_LBL_LISTENER_NAME"}}</label>
+			<input class="input" value="{{sslCert.name}}" type="text" data-required="true" data-ignore="true" id="elb-ssl-cert-name-input"/>
+		</div>
+		<div class="modal-ssl-cert-item clearfix">
+			<label class="left">{{ i18n "PROP_ELB_LBL_LISTENER_PRIVATE_KEY"}}</label>
+			<textarea class="input elb-ssl-cert-input tooltip" data-tooltip="{{i18n 'POP_TIP_PEM_ENCODED'}}" data-required="true" data-ignore="true" id="elb-ssl-cert-privatekey-input">{{sslCert.key}}</textarea>
+		</div>
+		<div class="modal-ssl-cert-item clearfix">
+			<label class="left"  >{{ i18n "PROP_ELB_LBL_LISTENER_PUBLIC_KEY"}}</label>
+			<textarea class="input elb-ssl-cert-input tooltip" data-tooltip="{{i18n 'POP_TIP_PEM_ENCODED'}}" data-required="true" data-ignore="true" id="elb-ssl-cert-publickey-input">{{sslCert.body}}</textarea>
+		</div>
+		<div class="modal-ssl-cert-item clearfix">
+			<label class="left"  >{{ i18n "PROP_ELB_LBL_LISTENER_CERTIFICATE_CHAIN"}}</label>
+			<textarea class="input elb-ssl-cert-input tooltip" data-tooltip="{{i18n 'POP_TIP_PEM_ENCODED'}}" id="elb-ssl-cert-chain-input">{{sslCert.chain}}</textarea>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button id="elb-ssl-cert-confirm" class="btn btn-blue">Save</button>
+		<button id="elb-ssl-cert-cancel" class="btn modal-close btn-silver">Cancel</button>
+	</div>
+</div>
+
+<!-- {{experimentalVisops}} -->
+<div style="width:623px" id="experimental-modal">
+	<div class="modal-header">
+		<h3>{{ i18n "INVITE_MOD_TIT"}}</h3>
+		<i class="modal-close">×</i>
+	</div>
+	<div class="modal-body">
+		<h3 class="modal-body-header">{{ i18n "INVITE_MOD_INTRO"}}</h3>
+		<div class="modal-body-content">
+			<div class="modal-text-major">{{ i18n "INVITE_MOD_INTRO_MORE"}}</div>
+			<h4 class="request-invite-header">{{ i18n "INVITE_MOD_REQUEST_TIT"}}</h4>
+			<div class="request-invite-content">{{ i18n "INVITE_MOD_REQUEST_CONTENT"}}</div>
+			<textarea id="experimental-message" class="input" style="width:95%;height:120px;" placeholder='{{ i18n "INVITE_MOD_REQUEST_PLACEHOLDER"}}' data-required="true"></textarea>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button id="experimental-visops-confirm" class="btn btn-blue">{{ i18n "INVITE_MOD_BTN_REQUEST"}}</button>
+		<button id="experimental-visops-cancel" class="btn modal-close btn-silver">{{ i18n "INVITE_MOD_BTN_CANCEL"}}</button>
+	</div>
+</div>
+
+<!-- {{experimentalVisopsTrail}} -->
+<h3 class="modal-body-header">{{ i18n "INVITE_MOD_THANK_LBL"}}</h3>
+<div class="modal-text-major tac">{{ i18n "INVITE_MOD_THANK_MORE"}}</div>
+
+<!-- {{bubbleNATreq}} -->
+<div class="bubble-head">A NAT instance must meet following requirements:</div>
+<div class="bubble-content">
+	<ul class="bubble-NAT-req-list">
+		<li>Should have a route targeting the instance itself with destination to 0.0.0.0/0.</li>
+		<li>Should belong to a subnet which routes traffic with destination 0.0.0.0/0 to Internet Gateway.</li>
+		<li>Should disable Source/Destination Checking in "Network Interface Details".</li>
+		<li>Should have public IP or Elastic IP.</li>
+		<li>Should have outbound rule to the outside.</li>
+		<li>Should have inbound rule from within the VPC.</li>
+	</ul>
+</div>
+
+<!-- {{covertNl2br}} -->
+{{nl2br content}}
+
+<!-- {{convertBreaklines}} -->
+{{breaklines content}}
+
+<!-- systemNotice -->
+<div id="system-notice">
+	<span>
+		<b>Notice: </b>We will drop the support for <em>EC2 Classic</em> and <em>Default VPC</em> soon, and focus on VPC, which is recommended for everyone.
+		<a href="http://blog.visualops.io/2014/02/18/vpc-always-forget-about-the-rest/" class="notice-btn" target="_blank">Learn more</a>
+	</span>
+	<a class="notice-close" href="javascript:void(0)" id="system-notice-close">x</a>
+</div>

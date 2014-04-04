@@ -2,10 +2,10 @@
 #  View(UI logic) for component/tutorial
 #############################
 
-define [ 'event',
+define [ 'event', "./template"
          'backbone', 'jquery', 'handlebars',
          'UI.modal', 'bootstrap-carousel'
-], ( ide_event ) ->
+], ( ide_event, template ) ->
 
     TutorialView = Backbone.View.extend {
 
@@ -15,7 +15,7 @@ define [ 'event',
         render     : ( template ) ->
             console.log 'pop-up:stack run render'
             #
-            modal Handlebars.compile( template )(), true
+            modal template(), true
             #
             this.setElement $( '#guide-carousel-modal' ).closest '#modal-wrap'
             #

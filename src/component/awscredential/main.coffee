@@ -3,7 +3,7 @@
 ####################################
 
 define [ 'jquery', 'event',
-         'text!./template.html', 'text!./welcome.html',
+         './template', './welcome',
          'i18n!nls/lang.js'
 ], ( $, ide_event, template, welcome_tmpl, lang ) ->
 

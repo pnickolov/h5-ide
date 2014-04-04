@@ -14,21 +14,16 @@
   };
 
   include = function(file) {
-    var data, modified;
-    modified = false;
-    data = file.contents.toString("utf8").replace(ReplaceRegex, function(match, includePath) {
+    file.strings = file.contents.toString("utf8").replace(ReplaceRegex, function(match, includePath) {
       var p;
-      p = path.resolve(file.path, includePath);
+      p = path.resolve(path.dirname(file.path), includePath);
       if (!fs.existsSync(p)) {
         console.log("[Include Error] Cannot find : " + match);
         return match;
       }
-      modified = true;
       return fs.readFileSync(p, ReadOption);
     });
-    if (modified) {
-      file.contents = new Buffer(data);
-    }
+    file.contents = null;
     this.emit("data", file);
     return null;
   };

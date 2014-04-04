@@ -1,7 +1,4 @@
-define ["event", "text!./diff.html", "text!./view.html", "./JsonDiffLib", "./jqUi" ], (ide_event, tplDiff, tplView, jsond )->
-
-  tplDiff = Handlebars.compile tplDiff
-  tplView = Handlebars.compile tplView
+define ["event", "./diff", "./view", "./JsonDiffLib", "./jqUi" ], (ide_event, tplDiff, tplView, jsond )->
 
   componentData = null
   selectedComponetUid = "."

@@ -7,27 +7,13 @@
 	<meta name="description" content="VisualOps - Visual Cloud Computing IDE"/>
 	<link rel="shortcut icon" href="./assets/images/ide/favicon.ico" type="image/x-icon" />
 
-	<script type="text/javascript">
-		document.write( "<s"+"cript type='text/javascript' src='./lib/version.js?" + Math.random() + "'></scr"+"ipt>" );
-	</script>
+	<link rel="stylesheet" href="./assets/css/icon-font.css"/>
+	<link rel="stylesheet" href="./assets/css/ide.css"/>
+	<link rel="stylesheet" href="./assets/css/UI.component.css"/>
+	<link rel="stylesheet" href="./assets/css/canvas.css"/>
+	<link rel="stylesheet" href="./assets/css/stateeditor.css"/>
 
-	<script type="text/javascript">
-    (function(){
-      var head = document.getElementsByTagName('HEAD').item(0), s,
-          ss = ["icon-font","core","ide","UI.component","canvas","stateeditor"];
-      for ( var i = 0; i < ss.length; ++i ) {
-        s = document.createElement('link');
-        s.href = './assets/css/' + ss[i] + '.css?v=' + version;
-        s.rel = 'stylesheet';
-        s.type = 'text/css';
-        head.appendChild(s);
-      }
-    })();
-  </script>
-
-	<!-- env:prod --#>
-	<script type="text/javascript" src="./lib/analytics.js"></script>
-	<!-- env:prod -->
+	<!-- {{include/analytics.html}} -->
 </head>
 <body id="body">
 	<!-- Loading bar -->
@@ -66,14 +52,8 @@
 		<p>Changes made now may not be saved.</p>
 	</div>
 
-
-	<!-- env:prod --#>
-	<a id="Intercom" href="mailto:3rp02j1w@incoming.intercom.io"><span class="icon-feedback"></span>Feedback</a>
-	<script type="text/javascript" src="./lib/intercom.js"></script>
-	<!-- env:prod:end -->
-	<script type="text/javascript">
-		document.write( "<s"+"cript type='text/javascript' src='./vender/requirejs/require.js' data-main='./js/ide/config.js?v=" + version + "'></scr"+"ipt>" );
-	</script>
+	<!-- {{include/intercom.html}} -->
+	<script type="text/javascript" src='./vender/requirejs/require.js' data-main='./js/ide/config.js?#{version}'></script>
 
 </body>
 </html>

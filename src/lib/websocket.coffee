@@ -1,7 +1,7 @@
 
 #Author: Ken
 
-define ['Meteor', 'underscore'], ( Meteor, _ ) ->
+define ['Meteor', 'underscore', "MC"], ( Meteor, _ ) ->
 
 	host = MC.WS_URL
 
@@ -46,7 +46,7 @@ define ['Meteor', 'underscore'], ( Meteor, _ ) ->
 				'app'				:	new Meteor.Collection "app"
 
 				'status'			:	new Meteor.Collection "status"
-				
+
 				'imports'			:	new Meteor.Collection "imports"
 
 			}

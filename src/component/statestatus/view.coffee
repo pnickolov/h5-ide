@@ -40,7 +40,7 @@ define [ 'event'
             @listenTo @model, 'change:stop', @renderAllItem
             @listenTo @model, 'change:new', @renderUpdate
 
-            @itemView = CustomView()
+            @itemView = new CustomView()
             null
 
         render: () ->

@@ -324,9 +324,9 @@ Tasks =
 
       result = unittest()
       if result
-        return true
-      else
         return result.then ()-> testserver.close(); true
+      else
+        return true
 
 # A task to build IDE
   #*** Perform `git -fX ./src` first, to remove ignored files.

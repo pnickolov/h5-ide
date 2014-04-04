@@ -342,12 +342,12 @@
         logTask("Starting automated test");
         result = unittest();
         if (result) {
-          return true;
-        } else {
           return result.then(function() {
             testserver.close();
             return true;
           });
+        } else {
+          return true;
         }
       };
     }

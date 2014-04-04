@@ -1167,25 +1167,13 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
         convertCloudformation : () ->
             me = this
 
-            # old design flow
-            #stack_model.export_cloudformation { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), MC.canvas_data.region, MC.canvas_data.id
-
-            # new design flow
-            id     = MC.common.other.canvasData.get( 'id' )
+            # get region
             region = MC.common.other.canvasData.get( 'region' )
+
+            # api
             stack_model.export_cloudformation { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, MC.common.other.canvasData.data()
-            # stack_service.export_cloudformation {sender:me}, $.cookie( 'usercode' ), $.cookie( 'session_id' ), MC.canvas_data.region, MC.canvas_data.id, ( forge_result ) ->
 
-            #     if !forge_result.is_error
-            #     #export_cloudformation succeed
-
-            #         #dispatch event (dispatch event whenever login succeed or failed)
-            #         me.trigger 'CONVERT_CLOUDFORMATION_COMPLETE', forge_result.resolved_data
-
-            #     else
-            #     #export_cloudformation failed
-
-            #         console.log 'stack.export_cloudformation failed, error is ' + forge_result.error_message
+            null
 
         isAutoScaling : () ->
             !!Design.modelClassForType( "AWS.AutoScaling.Group" ).allObjects().length

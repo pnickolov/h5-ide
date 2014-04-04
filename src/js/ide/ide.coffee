@@ -8,7 +8,7 @@ define [ 'MC', 'event', 'handlebars'
 		 'header', 'navigation', 'tabbar', 'dashboard', 'design_module', 'process',
 		 'WS', 'constant',
 		 'base_model',
-		 'common_handle', 'validation', 'aws_handle', "MC.template"
+		 'common_handle', 'validation', 'aws_handle'
 ], ( MC, ide_event, Handlebars, lang, view, canvas_layout, header, navigation, tabbar, dashboard, design, process, WS, constant, base_model, common_handle, validation ) ->
 
 	console.info canvas_layout

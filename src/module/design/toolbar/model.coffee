@@ -24,7 +24,7 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
 
     #item state map
     # {app_id:{'name':name, 'state':state, 'is_running':true|false, 'is_pending':true|false, 'is_use_ami':true|false},
-    #  stack_id:{'name':name, 'is_run':true|false, 'is_duplicate':true|false, 'is_delete':true|false}}
+    #  stack_id:{'name':name, 'is_run':true|false, 'is_duplicate':true|false, 'is_delete':true|false, 'is_enable:true'}}
     item_state_map   = {}
 
     # save data for thumbnail
@@ -65,8 +65,10 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
                 if !result.is_error
                     console.log 'save stack successfully'
 
-                    # call saveStackCallback
-                    me.saveStackCallback id, name
+                    setTimeout ()->
+                        # call saveStackCallback
+                        me.saveStackCallback id, name
+                    , 5000
 
                     # trigger TOOLBAR_HANDLE_SUCCESS
                     me.trigger 'TOOLBAR_HANDLE_SUCCESS', 'SAVE_STACK', name
@@ -88,8 +90,10 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
                 if !result.is_error
                     console.log 'create stack successfully'
 
-                    # call createStackCallback
-                    me.createStackCallback result, old_id, name, region
+                    setTimeout ()->
+                        # call createStackCallback
+                        me.createStackCallback result, old_id, name, region
+                    , 5000
 
                     # push TOOLBAR_HANDLE_SUCCESS
                     me.trigger 'TOOLBAR_HANDLE_SUCCESS', 'CREATE_STACK', name
@@ -338,17 +342,9 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
 
         createStackCallback : ( result, old_id, name, region ) ->
             console.log 'createStackCallback', result, old_id, name, region
+
             # get new id
             new_id = result.resolved_data
-
-            # set new id and key
-            MC.common.other.canvasData.set 'id',  new_id
-
-            # get new data
-            data = MC.common.other.canvasData.data()
-
-            # set origin
-            MC.common.other.canvasData.origin data
 
             # local thumbnail
             # NEW_STACK
@@ -356,15 +352,52 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
 
             # add stack_list and change toolbar model
             MC.data.stack_list[ region ].push { 'id' : new_id, 'name' : name }
-            @setFlag old_id, 'CREATE_STACK', data
 
             # update other module
             ide_event.trigger ide_event.UPDATE_STACK_LIST, 'NEW_STACK', [new_id]
-            ide_event.trigger ide_event.UPDATE_DESIGN_TAB, new_id, name + ' - stack', old_id
-            ide_event.trigger ide_event.UPDATE_STATUS_BAR_SAVE_TIME
+
+            # check return id is current id
+            if MC.common.other.isCurrentTab old_id
+
+                # set new id and key
+                MC.common.other.canvasData.set 'id',  new_id
+
+                # get new data
+                data = MC.common.other.canvasData.data()
+
+                # refresh toolbar
+                @setFlag old_id, 'CREATE_STACK', data
+
+                # set origin
+                MC.common.other.canvasData.origin data
+
+                ide_event.trigger ide_event.UPDATE_DESIGN_TAB, new_id, name + ' - stack', old_id
+                ide_event.trigger ide_event.UPDATE_STATUS_BAR_SAVE_TIME
+
+            else
+
+                # update item_state_map
+                if item_state_map and item_state_map[ old_id ]
+
+                    # set new item_state_map
+                    item_state_map[ new_id ] =  $.extend true, {}, item_state_map[ old_id ]
+
+                    #set property true
+                    item_state_map[ new_id ].is_enable    = true
+                    item_state_map[ new_id ].is_duplicate = true
+                    item_state_map[ new_id ].is_delete    = true
+
+                    # delete old item_state_map
+                    delete item_state_map[ old_id ]
+
+                # update new id
+                # update data
+                # update origin data
+                # update Design
+                ide_event.trigger ide_event.UPDATE_TAB_DATA, new_id, old_id
 
         saveStackCallback : ( id, name ) ->
-            console.log 'createStackCallback', id, name
+            console.log 'saveStackCallback', id, name
 
             # local thumbnail
             # OPEN_STACK
@@ -373,11 +406,26 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
             #update initial data
             ide_event.trigger ide_event.UPDATE_STACK_LIST, 'SAVE_STACK', [id]
 
-            #set toolbar flag
-            @setFlag id, 'SAVE_STACK', name
+            # check return id is current id
+            if MC.common.other.isCurrentTab id
 
-            # push event
-            ide_event.trigger ide_event.UPDATE_STATUS_BAR_SAVE_TIME
+                #set toolbar flag
+                @setFlag id, 'SAVE_STACK', name
+
+                # push event
+                ide_event.trigger ide_event.UPDATE_STATUS_BAR_SAVE_TIME
+
+            else
+
+                # update item_state_map
+                if item_state_map and item_state_map[ id ]
+
+                    #set property true
+                    item_state_map[ id ].is_enable    = true
+                    item_state_map[ id ].is_duplicate = true
+                    item_state_map[ id ].is_delete    = true
+
+            null
 
         setFlag : (id, flag, value) ->
             me = this
@@ -400,7 +448,7 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
                 #item_state_map[id] = {'name':MC.canvas_data.name, 'is_run':true, 'is_duplicate':false, 'is_delete':false, 'is_zoomin':false, 'is_zoomout':true}
 
                 # new design flow
-                item_state_map[id] = {'name': name, 'is_run':true, 'is_duplicate':false, 'is_delete':false, 'is_zoomin':false, 'is_zoomout':true}
+                item_state_map[id] = {'name': name, 'is_run':true, 'is_duplicate':false, 'is_delete':false, 'is_zoomin':false, 'is_zoomout':true, 'is_enable':true}
 
                 is_tab = true
 
@@ -411,7 +459,7 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
                 #item_state_map[id] = {'name':MC.canvas_data.name, 'is_run':true, 'is_duplicate':true, 'is_delete':true, 'is_zoomin':false, 'is_zoomout':true}
 
                 # new design flow
-                item_state_map[id] = {'name':name, 'is_run':true, 'is_duplicate':true, 'is_delete':true, 'is_zoomin':false, 'is_zoomout':true}
+                item_state_map[id] = {'name':name, 'is_run':true, 'is_duplicate':true, 'is_delete':true, 'is_zoomin':false, 'is_zoomout':true, 'is_enable':true}
 
                 is_tab = true
 
@@ -420,9 +468,10 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
                 item_state_map[id].is_run       = true
                 item_state_map[id].is_duplicate = true
                 item_state_map[id].is_delete    = true
+                item_state_map[id].is_enable    = true
 
             else if flag is 'CREATE_STACK'
-                item_state_map[value.id] = {'name':value.name, 'is_run':true, 'is_duplicate':true, 'is_delete':true, 'is_zoomin':item_state_map[id].is_zoomin, 'is_zoomout':item_state_map[id].is_zoomout}
+                item_state_map[value.id] = {'name':value.name, 'is_run':true, 'is_duplicate':true, 'is_delete':true, 'is_zoomin':item_state_map[id].is_zoomin, 'is_zoomout':item_state_map[id].is_zoomout, 'is_enable':true}
 
                 delete item_state_map[id]
 
@@ -549,12 +598,13 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
                 if id of item_state_map
                     item_state_map[id].is_app_updating = value
 
+            else if flag is 'ENABLE_SAVE'
 
-            # old design flow
-            #if id == MC.canvas_data.id and is_tab
+                 item_state_map[ id ].is_enable = value
 
-            # new design flow
+            # refresh toolbar
             if id == MC.common.other.canvasData.get( 'id' ) and is_tab
+
                 me.set 'item_flags', $.extend true, {}, item_state_map[id]
 
                 if id.indexOf('app-') == 0
@@ -606,6 +656,9 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
 
                 # call api
                 stack_model.create { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, data
+
+            # set item_state_map.is_enable = false
+            @setFlag id, 'ENABLE_SAVE', false
 
         syncSaveStack : ( region, data ) ->
             console.log 'syncSaveStack', region, data
@@ -693,7 +746,12 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
             app_name    = data.name
             usage       = data.usage
 
-            stack_model.run { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, app_name, null, null, null, null, null, usage
+            #src, username, session_id, region_name, stack_id, app_name, app_desc=null, app_component=null, app_property=null, app_layout=null, stack_name=null, usage=null
+            if MC.aws.aws.checkDefaultVPC()
+                stack_model.run { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, app_name, null, MC.aws.vpc.generateComponentForDefaultVPC(), null, null, null, usage
+
+            else
+                stack_model.run { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, app_name, null, null, null, null, null, usage
 
             # save stack data for generating png
             idx = 'process-' + region + '-' + app_name

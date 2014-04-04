@@ -70,6 +70,11 @@ define [ 'i18n!nls/lang.js', 'constant', 'stateeditor', 'Design', './module/desi
                 model.deleteTab tab_id
                 null
 
+            # UPDATE_TAB_DATA
+            ide_event.onLongListen ide_event.UPDATE_TAB_DATA, ( new_tab_id, old_tab_id ) ->
+                model.updateTab new_tab_id, old_tab_id
+                null
+
             # SWITCH_TAB
             ide_event.onLongListen ide_event.SWITCH_TAB, ( type, tab_id, region_name, result, current_platform ) ->
 

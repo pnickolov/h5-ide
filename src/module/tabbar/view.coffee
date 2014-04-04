@@ -95,13 +95,16 @@ define [ 'event',
                 original_tab_id = temp.attr 'data-tab-id'
 
                 # reset
-                temp.attr 'title',       tab_name
+                if tab_name
+                    temp.attr 'title',       tab_name
                 temp.attr 'data-tab-id', tab_id
                 temp.attr 'href',        '#tab-content-' + tab_id
-                temp.html temp.find( 'i' ).get( 0 ).outerHTML + tab_name
+                if tab_name
+                    temp.html temp.find( 'i' ).get( 0 ).outerHTML + tab_name
 
                 # set Tabbar.current
-                ide_event.trigger ide_event.UPDATE_DESIGN_TAB_TYPE, tab_id, tab_id.split( '-' )[0]
+                if MC.common.other.isCurrentTab old_tab_id
+                    ide_event.trigger ide_event.UPDATE_DESIGN_TAB_TYPE, tab_id, tab_id.split( '-' )[0]
 
                 null
 

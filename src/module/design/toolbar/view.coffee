@@ -207,11 +207,7 @@ define [ 'MC', 'event',
         clickSaveIcon : ->
             console.log 'clickSaveIcon'
 
-            # old design flow
-            #name = MC.canvas_data.name
-            #id = MC.canvas_data.id
-
-            # new design flow
+            # get name and id
             name = MC.common.other.canvasData.get 'name'
             id   = MC.common.other.canvasData.get 'id'
 
@@ -222,34 +218,39 @@ define [ 'MC', 'event',
                 notification 'warning', lang.ide.PROP_MSG_WARN_WHITE_SPACE
 
             else if not MC.aws.aws.checkStackName id, name
+
                 #notification 'warning', lang.ide.PROP_MSG_WARN_REPEATED_STACK_NAME
                 #show modal to re-input stack name
                 template = MC.template.modalReinputStackName {
                     stack_name : name
                 }
 
+                # popup rename dialog
                 modal template, false
+
                 $('#rename-confirm').click () ->
                     new_name = $('#new-stack-name').val()
                     console.log 'save stack new name:' + new_name
 
                     if MC.aws.aws.checkStackName id, new_name
+
+                        # close dialog
                         modal.close()
 
-                        # new design flow
+                        # set new name
                         MC.common.other.canvasData.set 'name', new_name
 
-                        # new design flow
+                        # push event
                         ide_event.trigger ide_event.SAVE_STACK, MC.common.other.canvasData.data()
 
                         true
 
             else
 
-                # new design flow
+                # set new name
                 MC.common.other.canvasData.set 'name', name
 
-                # new design flow
+                # push event
                 ide_event.trigger ide_event.SAVE_STACK, MC.common.other.canvasData.data()
 
             true

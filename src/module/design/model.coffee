@@ -150,6 +150,25 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'state
             MC.tab[ tab_id ].origin_data = $.extend( true, {}, data ) if MC.tab[ tab_id ]
             null
 
+        updateTab : ( new_tab_id, old_tab_id ) ->
+            console.log 'updateTab', new_tab_id, old_tab_id
+
+            # get old tab
+            old_tab = $.extend true, {}, MC.tab[ old_tab_id ]
+
+            if old_tab
+
+                # set new tab id with Design, data and origin_data
+                old_tab.data.id        = new_tab_id
+                old_tab.origin_data.id = new_tab_id
+                old_tab.design_model.set 'id', new_tab_id
+
+                # set new tab
+                MC.tab[ new_tab_id ] = $.extend true, {}, old_tab
+
+                # delete old tab
+                delete MC.tab[ old_tab_id ]
+
         setCanvasData : ( data ) ->
             console.log 'setCanvasData'
 

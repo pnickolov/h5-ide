@@ -167,6 +167,7 @@ define [ 'jquery',
 
             model.on 'TOOLBAR_HANDLE_SUCCESS', (flag, value) ->
                 console.log 'TOOLBAR_HANDLE_SUCCESS', flag, value
+
                 if flag
                     if modal and modal.isPopup()
 
@@ -206,11 +207,14 @@ define [ 'jquery',
                             # convert cf
                             model.convertCloudformation()
 
+                    # push nofication
                     str_idx = 'TOOLBAR_HANDLE_' + flag
                     if str_idx of lang.ide
-                        msg = sprintf lang.ide.TOOL_MSG_INFO_HDL_SUCCESS, lang.ide[str_idx], value
 
+                        msg = sprintf lang.ide.TOOL_MSG_INFO_HDL_SUCCESS, lang.ide[str_idx], value
                         view.notify 'info', msg
+
+                    null
 
             model.on 'TOOLBAR_HANDLE_FAILED', (flag, value) ->
 

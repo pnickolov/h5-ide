@@ -62,7 +62,7 @@ define [ 'underscore', 'backbone' ], () ->
         #tab
         ADD_TAB_DATA           : 'ADD_TAB_DATA'
         DELETE_TAB_DATA        : 'DELETE_TAB_DATA'
-        #UPDATE_TAB_DATA       : 'UPDATE_TAB_DATA'
+        UPDATE_TAB_DATA        : 'UPDATE_TAB_DATA'
         #UPDATE_TAB_CLOSE_STATE: 'UPDATE_TAB_CLOSE_STATE'
 
         #tabbar

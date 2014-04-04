@@ -451,6 +451,11 @@ define [ 'jquery', 'event', 'base_main',
 
                 null
 
+            # UPDATE_TAB_DATA
+            ide_event.onLongListen ide_event.UPDATE_TAB_DATA, ( new_tab_id, old_tab_id ) ->
+                view.updateCurrentTab new_tab_id, null, old_tab_id
+                null
+
             #############################
             #  view
             #############################

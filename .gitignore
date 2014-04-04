@@ -12,6 +12,8 @@ qa/
 h5-ide-build/
 deploy/
 
+*.js
+
 #ignore js
 src/**/*.js
 !src/js/*.js

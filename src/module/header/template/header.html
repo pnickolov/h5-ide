@@ -27,17 +27,17 @@
     </div>
 
     <ul id="user-dropdown-wrapper" class="dropdown-menu" role="menu">
-      <li><a id="guide-tutorial" href="#">{{ i18n "HEAD_LABEL_MENUITEM_USER_TOUR" }}</a></li>
-      <li><a id="keyboard-shortcuts" class="modal" data-modal-template="shortkey" href="#">{{ i18n "HEAD_LABEL_MENUITEM_KEY_SHORT" }}</a></li>
+      <li id="guide-tutorial">{{ i18n "HEAD_LABEL_MENUITEM_USER_TOUR" }}</li>
+      <li id="keyboard-shortcuts" class="modal" data-modal-template="shortkey">{{ i18n "HEAD_LABEL_MENUITEM_KEY_SHORT" }}</li>
 
       <li><a href="http://visualops.readthedocs.org/" target="_blank" >{{ i18n "HEAD_LABEL_MENUITEM_DOC" }}</a></li>
 
       <li>
         <span class="no-credential" style="display:none;"></span>
-        <a href="#" id="awscredential-modal">{{ i18n "HEAD_LABEL_MENUITEM_SETTING" }}</a>
+        <a href="javascript:void(0);" id="awscredential-modal">{{ i18n "HEAD_LABEL_MENUITEM_SETTING" }}</a>
       </li>
 
-      <li><a id="btn-logout" href="#">{{ i18n "HEAD_LABEL_MENUITEM_LOGOUT" }}</a></li>
+      <li id="btn-logout">{{ i18n "HEAD_LABEL_MENUITEM_LOGOUT" }}</li>
 
     </ul>
   </section>

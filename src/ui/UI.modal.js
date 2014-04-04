@@ -29,11 +29,11 @@ var modal = function (template, dismiss, callback, options)
 	var newClass = '';
 
 	var $source = null;
-	
+
 	if (options && options.$source) {
 		$source = options.$source
 	}
-	
+
 	if ($source) {
 		var srcLeft = $source.offset().left;
 		var srcTop = $source.offset().top;
@@ -109,7 +109,7 @@ modal.open = function (event)
 			MC.template[ target_template ]( target_data ),
 			target.data('modal-dismiss')
 		);
-		
+
 		target.trigger('modal-shown');
 
 		$('#modal-wrap').one('closed', function ()
@@ -287,6 +287,7 @@ modal.position = function ($source)
 	} else {
 		top = (window.innerHeight - modal_box.height()) / 2;
 		left = (window.innerWidth - modal_box.width()) / 2;
+		if (top > 200) { top = 200; }
 	}
 
 	modal_box.css({

@@ -293,7 +293,7 @@ button {
 }
 
 .header-menu > .dropdown > .js-toggle-dropdown,
-#user-dropdown-wrapper a {
+#user-dropdown-wrapper > li {
 	display : block;
 	padding : 0 20px;
 	color   : #ddd;
@@ -301,6 +301,11 @@ button {
 	height  : 50px;
 	line-height: 49px;
 }
+
+#user-dropdown-wrapper > li {
+	line-height : 49px !important;
+}
+
 
 .header-menu > .dropdown > .js-toggle-dropdown:hover {
 	color: #9C6DC0;

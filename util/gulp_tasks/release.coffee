@@ -322,8 +322,11 @@ Tasks =
       # Start test with zombie
       logTask "Starting automated test"
 
-      unittest().then ()-> testserver.close(); true
-
+      result = unittest()
+      if result
+        return true
+      else
+        return result.then ()-> testserver.close(); true
 
 # A task to build IDE
   #*** Perform `git -fX ./src` first, to remove ignored files.

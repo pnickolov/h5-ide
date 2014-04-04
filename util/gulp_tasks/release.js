@@ -337,13 +337,18 @@
     test: function(qaMode) {
       path = qaMode ? "./qa" : "./deploy";
       return function() {
-        var testserver;
+        var result, testserver;
         testserver = server.create(path, 3010, false, false);
         logTask("Starting automated test");
-        return unittest().then(function() {
-          testserver.close();
+        result = unittest();
+        if (result) {
           return true;
-        });
+        } else {
+          return result.then(function() {
+            testserver.close();
+            return true;
+          });
+        }
       };
     }
   };

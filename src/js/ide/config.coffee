@@ -6,6 +6,7 @@
 
 	# Redirect
 	l = window.location
+	window.language = window.version = ""
 	if l.protocol is "http:" and not l.port
 		window.location = l.href.replace("http:","https:")
 		return

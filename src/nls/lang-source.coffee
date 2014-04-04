@@ -314,6 +314,22 @@ module.exports =
       en: "Minimum Size must be <= Maximum Size."
       zh: ""
 
+    PARSLEY_MAXIMUM_SIZE_MUST_BE_MORETHAN_MINIMUM_SIZE:
+      en: "Maximum Size must be >= Minimum Size."
+      zh: ""
+
+    PARSLEY_VALUE_MUST_BE_LESSTHAN_VAR:
+      en: "This value should be < %s"
+      zh: ""
+
+    PARSLEY_VALUE_MUST_BE_GREATERTHAN_VAR:
+      en: "This value should be > %s"
+      zh: ""
+
+    PARSLEY_VALUE_MUST_IN_ALLOW_SCOPE:
+      en: "This value should be >= %s and <= %s"
+      zh: ""
+
     PARSLEY_DESIRED_CAPACITY_EQUAL_OR_GREATER_1:
       en: "Desired Capacity must be equal or greater than 1"
       zh: ""
@@ -1042,6 +1058,14 @@ module.exports =
       en: "Custom User Data will be overridden and disabled to allow installing OpsAgent. (Currently only support Linux platform)"
       zh: ""
 
+    TOOL_TIP_NO_CLASSIC_DATA_STACK:
+      en: "We will drop support for EC2 Classic and Default VPC soon. We have disabled create new stack, run app or edit app in those platforms. You can export existing stacks as CloudFormation template or as a PNG file. Click to read detailed announcement."
+      zh: ""
+
+    TOOL_TIP_NO_CLASSIC_DATA_APP:
+      en: "We will drop support for EC2 Classic and Default VPC soon. We have disabled create new stack, run app or edit app in those platforms. You can still manage the lifecycle of existing apps.  Click to read detailed announcement."
+      zh: ""
+
     TOOL_TIP_LINESTYLE:
       en: "Security Group Rule Line Style..."
       zh: "安全组规则连线类型..."
@@ -1072,6 +1096,10 @@ module.exports =
 
     TOOL_TOGGLE_VISUALOPS_OFF:
       en: "instnace state off"
+      zh: ""
+
+    TOOL_LBL_NO_CLASSIC:
+      en: "Where are the missing buttons?"
       zh: ""
 
     TOOL_EDIT_APP:
@@ -4567,6 +4595,10 @@ module.exports =
     TA_MSG_NOTICE_ACL_HAS_NO_ALLOW_RULE:
       en: "Network ACL <span class='validation-tag tag-acl'>%s</span> has no ALLOW rule. The subnet(s) associate(s) with it cannot have traffic in or out."
       zh: ""
+
+    TA_MSG_ERROR_RT_HAVE_CONFLICT_DESTINATION:
+      en:"Route Table <span class='validation-tag tag-rtb'>%s</span> has routes with conflicting CIDR blocks."
+      zh:""
 
     # AZ
     TA_MSG_WARNING_SINGLE_AZ:

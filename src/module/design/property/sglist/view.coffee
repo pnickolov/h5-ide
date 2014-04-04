@@ -57,13 +57,8 @@ define [ './template/stack' ], ( template ) ->
 			memberNum = Number($target.attr('data-count'))
 			sgName    = $target.attr('data-name')
 
-			if @model.isElbSg( sgUID )
-				elbName = @model.getElbNameBySgId( sgUID )
-				mainContent = "Are you sure you want to delete #{sgName}?"
-				descContent = "This is an auto-assigned security group for #{elbName}. It will automatically add rules according to load balancer's listener configuration. Once the security group is deleted, the action cannot be reverted."
-
 			# show dialog to confirm that delete sg
-			if not mainContent and memberNum
+			if memberNum
 				mainContent = "Are you sure you want to delete #{sgName}?"
 				descContent = 'The firewall settings of ' + sgName + '\'s member will be affected. Member only has this security group will be using DefaultSG.'
 

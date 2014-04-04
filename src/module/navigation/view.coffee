@@ -15,18 +15,53 @@ define [ 'event', 'constant', 'i18n!nls/lang.js',
 
         #events
         events   :
-            'click .stack-list a'           : 'stackListItemsClick'
-            'click .app-list a'             : 'appListItemsClick'
-            'click .show-unused-region a'   : 'showEmptyRegionClick'
+            'click .stack-list li'          : 'stackListItemsClick'
+            'click .app-list li'            : 'appListItemsClick'
+            'click .show-unused-region'     : 'showEmptyRegionClick'
             'click .create-new-stack'       : 'createNewStackClick'
             'click .create-new-empty-stack' : 'createNewEmptyStackClick'
-            'click .region-name'            : 'regionNameClick'
-            'click #dashboard-global'       : 'dashboardGlobal'
+
+            "click #off-canvas-app"   : "showOffCanvasApp"
+            "click #off-canvas-stack" : "showOffCanvasStack"
 
         initialize : ->
             #listen
             this.listenTo ide_event, 'SWITCH_TAB', this.hideNavigation
             null
+
+
+            # off-canvas-navigation
+            $("#off-canvas-menu").click ()->
+                if $("#wrapper").hasClass("off-canvas")
+                    return $("wrapper").removeClass("off-canvas")
+
+                if $("#nav-app-region").children(".nav-empty").length
+                    $("#off-canvas-stack").click()
+                else
+                    $("#off-canvas-app").click()
+
+                $("#wrapper").addClass("off-canvas")
+                return
+
+            $("#off-canvas-overlay").click ()-> $("#wrapper").removeClass("off-canvas"); return
+
+            return
+
+        hideOffCanvas : ()-> $("#wrapper").removeClass("off-canvas"); return
+
+        showOffCanvasApp : ()->
+            $("#nav-app-region").show()
+            $("#nav-stack").hide()
+            $("#off-canvas-app").toggleClass("selected", true)
+            $("#off-canvas-stack").toggleClass("selected", false)
+            return
+
+        showOffCanvasStack : ()->
+            $("#nav-app-region").hide()
+            $("#nav-stack").show()
+            $("#off-canvas-app").toggleClass("selected", false)
+            $("#off-canvas-stack").toggleClass("selected", true)
+            return
 
         render     : () ->
             #render html
@@ -34,9 +69,6 @@ define [ 'event', 'constant', 'i18n!nls/lang.js',
             #$( this.el ).html this.template this.model.attributes
             #$( this.el ).html template
             $( this.el ).html template()
-
-            #Collapsed Navigation Mouse Interaction
-            this.hoverIntent()
 
             #push event
             ide_event.trigger ide_event.NAVIGATION_COMPLETE
@@ -61,43 +93,45 @@ define [ 'event', 'constant', 'i18n!nls/lang.js',
             null
 
         regionListRender : ->
-            #render html
-            console.log 'regionListRender render'
-            $( this.el ).find( '.nav-region-group' ).html template_data.region_list( @model.attributes )
             null
 
         stackListItemsClick : ( event ) ->
             console.log 'stack tab click event'
             target   = event.currentTarget
             tab_name = $( target ).text()
+
+            @hideOffCanvas()
+
             @openDesignTab 'OPEN_STACK', tab_name, $( target ).attr( 'data-region-name' ), $( target ).attr( 'data-stack-id' )
 
         appListItemsClick : ( event ) ->
             console.log 'app tab click event'
             target   = event.currentTarget
             tab_name = $( target ).text()
+
+            @hideOffCanvas()
+
             @openDesignTab 'OPEN_APP', $.trim( tab_name ), $( target ).attr( 'data-region-name' ) , $( target ).attr( 'data-app-id' )
 
-        showEmptyRegionClick : ( event ) ->
-            $( event.target ).parent().prev().find('.hide').show()
-            $( event.target ).hide()
+        showEmptyRegionClick : () -> $("#nav-region-empty-list").addClass("show"); return
 
         createNewStackClick  : ( event ) ->
-            console.log 'createNewStackClick'
-            console.log $( event.target ).parent().parent().find('li a').first().attr( 'data-region-name' )
-            if $( event.target ).parent().parent().find('li a').first().attr( 'data-region-name' ) is undefined then return
-            @openDesignTab 'NEW_STACK', null, $( event.target ).parent().parent().find( 'li a' ).first().attr( 'data-region-name' ), null
+            region = $(event.currentTarget).closest("li").children("ul").children().eq(0).attr("data-region-name")
+            if region
+                @hideOffCanvas()
+                @openDesignTab 'NEW_STACK', null, region, null
+            return
 
         createNewEmptyStackClick  : ( event ) ->
-            console.log 'createNewEmptyStackClick'
-            console.log $( event.currentTarget ).attr( 'data-empty-region-label' )
-            region_label         = $( event.currentTarget ).attr( 'data-empty-region-label' )
+            region_label = $( event.currentTarget ).parent().attr( 'data-empty-region-label' )
+
             current_region_name  = null
             _.map constant.REGION_SHORT_LABEL, ( value, key ) ->
                 if value is region_label
                     current_region_name = key
                     return current_region_name
-            console.log 'current_region_name = ' + current_region_name
+
+            @hideOffCanvas()
             @openDesignTab 'NEW_STACK', null, current_region_name, null
 
         regionNameClick      : ( event ) ->
@@ -109,18 +143,6 @@ define [ 'event', 'constant', 'i18n!nls/lang.js',
         dashboardGlobal : ->
             console.log 'dashboardGlobal'
             ide_event.trigger ide_event.NAVIGATION_TO_DASHBOARD_REGION, 'global'
-
-        hoverIntent          : ->
-            $('.nav-head').hoverIntent {
-
-                timeout  : 100
-
-                over     : () ->
-                    $( this ).delay( 300 ).addClass 'collapsed-show'
-
-                out      : () ->
-                    $( this ).removeClass 'collapsed-show'
-            }
 
         openDesignTab : ( type, tab_name, region_name, tab_id ) ->
             console.log 'openDesignTab', type, tab_name, region_name, tab_id

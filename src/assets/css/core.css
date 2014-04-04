@@ -264,3 +264,8 @@ body {
 		font-family: 'Lato', 'Helvetica Neue', 'Microsoft Yahei', Arial, sans-serif;
 	}
 }
+
+/* Hide Selection */
+::selection {
+	background: transparent;
+}

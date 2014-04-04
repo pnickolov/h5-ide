@@ -5,17 +5,26 @@ define [ "constant", "../ConnectionModel", "../ResourceModel", "component/sgrule
   SgRuleLine = ConnectionModel.extend {
 
     constructor : ( p1Comp, p2Comp, attr, option ) ->
+
+      # If the line is created by the user, we should a popup dialog to let
+      # user add sgrule. And then immediately remove the sgline
+      if option and option.createByUser
+        new SGRulePopup( p1Comp, p2Comp )
+        return
+
       console.assert( p1Comp isnt p2Comp, "Sgline should connect to different resources." )
 
       # Override the constructor to determine if the line should be created.
       # Using the `@setDestroyAfterInit()` has its limilation
 
-      if not @assignCompsToPorts( p1Comp, p2Comp ) or not @shouldCreateLine()
+      if not @assignCompsToPorts( p1Comp, p2Comp ) or not @isValid()
         return
 
       ConnectionModel.call this, p1Comp, p2Comp, attr, option
 
-    shouldCreateLine : ()->
+    # Return true if the line is valid and should be shown.
+    # Otherwise return false.
+    isValid : ()->
       p1Comp = @port1Comp()
       p2Comp = @port2Comp()
 
@@ -40,20 +49,13 @@ define [ "constant", "../ConnectionModel", "../ResourceModel", "component/sgrule
       if expandAsg and lc and expandAsg.get("originalAsg").get("lc") is lc
         return false
 
-      # If elb is internet-facing, don't show line.
+      # Rules for checking sgline of elb.
       elb = @getTarget TYPE.AWS_ELB
-      if elb and not elb.get("internal")
-        return false
-
-      true
-
-
-    # validate() returns true if the line should still exist.
-    validate : ( autoRemoveWhenFailValidatation )->
-      # Only show sg line for inbound rules of elb
-      result = true
-      elb = @getTarget constant.AWS_RESOURCE_TYPE.AWS_ELB
       if elb
+        # If elb is internet-facing, don't show line.
+        if not elb.get("internal") then return false
+
+        # If the elb's sgline doesn't represent an in rule to the elb. don't show line.
         elbSgMap  = {}
         hasInRule = false
         for sg in elb.connectionTargets( "SgAsso" )
@@ -70,23 +72,15 @@ define [ "constant", "../ConnectionModel", "../ResourceModel", "component/sgrule
 
           if hasInRule then break
 
-        if not hasInRule then result = false
+        if not hasInRule then return false
+
+      true
 
 
-      if not result and autoRemoveWhenFailValidatation
-        @remove( { reason : "Validation Failed" } )
+    validate : ()->
+      if not @isValid() then @remove( { reason : "Validation Failed" } )
+      return
 
-      result
-
-    initialize : ( attributes, option )->
-      # If the line is created by the user, we should a popup dialog to let
-      # user add sgrule. And then immediately remove the sgline
-      if option and option.createByUser
-        new SGRulePopup( this.id )
-        @setDestroyAfterInit()
-      else if not @validate()
-        @setDestroyAfterInit()
-      null
 
     isRemovable : ()->
       SgRuleSetModel = Design.modelClassForType( "SgRuleSet" )

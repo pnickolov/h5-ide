@@ -575,7 +575,7 @@ Additional Notes and Questions
 	</div>
 	<div class="modal-body">
 		<div class="modal-control-group clearfix" data-bind="true">
-			<label class="label modal-text-major" for="app-name">App Name</label>
+			<label class="label" for="app-name">App Name</label>
 			<input id="app-name" class="input modal-input-value" type="text" value="{{name}}" data-ignore="true">
 		</div>
 		<div class="modal-control-group app-usage-group clearfix">
@@ -844,7 +844,7 @@ Following rule(s) will be deleted from its(their) security group:</div>
 
 				{{#unless isClassic}}
 					<div class="sg-protocol-option-input" id="sg-protocol-custom">
-						<input class="input" name="protocol-custom-ranged" placeholder="1-255" data-ignore="true" data-ignore-regexp="^[0-9]*$" data-required="true">
+						<input class="input" name="protocol-custom-ranged" placeholder="0-255" data-ignore="true" data-ignore-regexp="^[0-9]*$" data-required="true">
 					</div>
 					<div class="sg-protocol-option-input" id="sg-protocol-all">
 						Port Range:<span>0-65535</span>
@@ -1193,7 +1193,7 @@ Following rule(s) will be deleted from its(their) security group:</div>
 		</table>
 		<div class="scroll-wrap" style="max-height:256px;">
 			<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-			<table class="table table-light scroll-content" id="app-update-summary-table">
+			<table class="table scroll-content" id="app-update-summary-table">
 				<tbody>
 				{{#each result}} <tr>
 					<td width="30%">{{type}}</td>
@@ -1547,3 +1547,15 @@ Are you sure you want to delete {{name}}?</div>
 
 <!-- {{covertNl2br}} -->
 {{nl2br content}}
+
+<!-- {{convertBreaklines}} -->
+{{breaklines content}}
+
+<!-- systemNotice -->
+<div id="system-notice">
+	<span>
+		<b>Notice: </b>We will drop the support for <em>EC2 Classic</em> and <em>Default VPC</em> soon, and focus on VPC, which is recommended for everyone.
+		<a href="http://blog.visualops.io/2014/02/18/vpc-always-forget-about-the-rest/" class="notice-btn" target="_blank">Learn more</a>
+	</span>
+	<a class="notice-close" href="javascript:void(0)" id="system-notice-close">x</a>
+</div>

@@ -2,6 +2,7 @@
 define ['UI.canvg', './Download'], ()->
 
   GridBackground = undefined
+  ThumbGridBackground = undefined
   Href = undefined
 
   exportBeforeRender = (ctx) ->
@@ -9,8 +10,6 @@ define ['UI.canvg', './Download'], ()->
     cHeight = ctx.canvas.clientHeight || ctx.canvas.height
 
     orgFS = ctx.fillStyle
-    ctx.fillStyle = "#FFFFFF"
-    ctx.fillRect( 0, 54, cWidth, cHeight - 54 )
     ctx.fillStyle = ctx.createPattern(GridBackground, "repeat")
     ctx.fillRect( 0, 54, cWidth, cHeight - 54 )
     ctx.fillStyle = orgFS
@@ -29,12 +28,9 @@ define ['UI.canvg', './Download'], ()->
 
     ctx.canvas.width  = 218
     ctx.canvas.height = 144
-
+    ctx.fillStyle = ctx.createPattern(ThumbGridBackground, "repeat")
+    ctx.fillRect 0, 0, cWidth, cHeight
     ctx.scale ratio, ratio
-    ctx.fillStyle = "#FFFFFF"
-    ctx.fillRect 0, 0, cWidth, cHeight
-    ctx.fillStyle = ctx.createPattern(GridBackground, "repeat")
-    ctx.fillRect 0, 0, cWidth, cHeight
     null
 
   exportPNG = ( $svg_canvas_element, data ) ->
@@ -54,6 +50,8 @@ define ['UI.canvg', './Download'], ()->
     if not GridBackground
       GridBackground = document.createElement("img")
       GridBackground.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAIAAAACUFjqAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAHUlEQVQYV2P48ePHf9yAgabSHz9+/I4bENI9gNIA0iYpJd74eOIAAAAASUVORK5CYII="
+      ThumbGridBackground = document.createElement("img")
+      ThumbGridBackground.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAADCAMAAABh9kWNAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAAZQTFRF9fX1////0eouzwAAABRJREFUeNpiYGBkZGBkYABhgAADAAApAAUR1P0IAAAAAElFTkSuQmCC"
 
 
     # Insert the document so that we can calculate the style.

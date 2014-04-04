@@ -203,13 +203,13 @@ define [ 'backbone', 'underscore', 'stack_service', 'ami_service', 'base_model' 
 
 
         #export_cloudformation api (define function)
-        export_cloudformation : ( src, username, session_id, region_name, stack_id ) ->
+        export_cloudformation : ( src, username, session_id, region_name, stack ) ->
 
             me = this
 
             src.model = me
 
-            stack_service.export_cloudformation src, username, session_id, region_name, stack_id, ( forge_result ) ->
+            stack_service.export_cloudformation src, username, session_id, region_name, stack, ( forge_result ) ->
 
                 if !forge_result.is_error
                 #export_cloudformation succeed

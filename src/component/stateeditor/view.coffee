@@ -3326,7 +3326,7 @@ define [ 'event',
                 logContent = MC.base64Decode(result.output)
                 $contentElem = $('#modal-instance-sys-log .instance-sys-log-content')
 
-                $contentElem.html  MC.template.covertNl2br({content:logContent})
+                $contentElem.html  MC.template.convertBreaklines({content:logContent})
                 $contentElem.show()
 
             else

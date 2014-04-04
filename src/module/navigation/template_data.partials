@@ -1,48 +1,24 @@
 <!-- {{app_list_data}} -->
-
-{{#if app_list}}
-
-	{{#each app_list }}
-	<li>
-		<a href="javascript:void(0)">{{ region_group }} ({{ region_count }})</a>
-		<ul class="nav-region-list-items app-list">
-
-			{{#each region_name_group }}
-			<li>
-				<a href="javascript:void(0)" data-region-name="{{ region }}" data-app-id="{{ id }}" class="truncate nav-truncate" title="{{ name }}-[{{ state }}]">
-					<i class="icon-app-{{ tolower state }} icon-sub-nav-label"></i>
-					{{ name }}
-					
-				</a>
-				{{#if usage}}<i class="icon-app-type-{{usage}}"></i>{{/if}}
-			</li>
-			{{/each}}
-
-		</ul>
-	</li>
-	{{/each}}
-
+{{#each app_list}}
+<li>
+	<h3 class="nav-stack-region-title">{{ region_group }} ({{ region_count }})</h3>
+	<ul class="nav-region-list-items app-list">
+	{{#each region_name_group }}<li data-region-name="{{ region }}" data-app-id="{{ id }}" class="truncate nav-truncate icon-app-{{ tolower state }}" title="{{ name }}-[{{ state }}]">{{ name }}{{#if usage}}<i class="icon-app-type-{{usage}}"></i>{{/if}}</li>{{/each}}
+	</ul>
+</li>
 {{else}}
-
-	<li>
-		<div class="nav-empty">{{ i18n "DASH_LBL_NO_APP" }}</div>
-	</li>
-
-{{/if}}
+<div class="nav-empty">{{ i18n "DASH_LBL_NO_APP" }}</div>
+{{/each}}
 
 <!-- {{stack_list_data}} -->
 {{#each stack_list }}
 <li>
-	<a href="javascript:void(0)" class="nav-stack-region-title create-new-stack">{{ region_group }} ({{ region_count }})<span class="icon-new-stack nav-new-stack tooltip" data-tooltip='{{ i18n "IDE_COM_CREATE_NEW_STACK" }}'></span></a>
+	<h3 class="nav-stack-region-title">{{ region_group }} ({{ region_count }})<button class="icon-new-stack tooltip create-new-stack" data-tooltip='{{ i18n "IDE_COM_CREATE_NEW_STACK" }}'></button></h3>
 
 	<ul class="nav-region-list-items stack-list">
-
 		{{#each region_name_group }}
-		<li>
-			<a href="javascript:void(0)" data-region-name="{{ region }}" data-stack-id="{{ id }}" class="truncate nav-truncate"><i class="icon-stack-nav icon-sub-nav-label"></i>{{ name }}</a>
-		</li>
+		<li data-region-name="{{ region }}" data-stack-id="{{ id }}" class="truncate nav-truncate icon-stack-nav">{{ name }}</li>
 		{{/each}}
-
 	</ul>
 </li>
 {{/each}}
@@ -50,38 +26,17 @@
 <!-- {{region_empty_list}} -->
 {{#if stack_list }}
 	{{#if region_empty_list }}
-		<ul class="sub-menu nav-region-list">
-			{{#each region_empty_list }}
-
-				<li class="hide">
-					<a href="javascript:void(0)" class="nav-stack-region-title create-new-empty-stack" data-empty-region-label="{{ this }}">
-						{{ this }} (0)
-						<span class="icon-new-stack nav-new-stack tooltip" data-tooltip='{{ i18n "IDE_COM_CREATE_NEW_STACK" }}'></span>
-					</a>
-				</li>
-
-			{{/each}}
+		<ul class="nav-region-list">
+			{{#each region_empty_list }} <li class="nav-stack-region-title" data-empty-region-label="{{ this }}"> {{ this }} (0) <button class="icon-new-stack tooltip create-new-empty-stack" data-tooltip='{{ i18n "IDE_COM_CREATE_NEW_STACK" }}'></button>
+			</li> {{/each}}
 		</ul>
 
-		<div class="show-unused-region">
-			<a href="javascript:void(0)">
-				Show unused regions
-			</a>
-		</div>
-
+		<div class="show-unused-region">Show unused regions</div>
 	{{/if}}
 {{else}}
-	<ul class="sub-menu nav-region-list">
-		{{#each region_empty_list }}
-
-			<li class="show">
-				<a href="javascript:void(0)" class="nav-stack-region-title create-new-empty-stack" data-empty-region-label="{{ this }}">
-					{{ this }} (0)
-					<span class="icon-new-stack nav-new-stack tooltip" data-tooltip='{{ i18n "IDE_COM_CREATE_NEW_STACK" }}'></span>
-				</a>
-			</li>
-
-		{{/each}}
+	<ul>
+		{{#each region_empty_list }} <li class="nav-stack-region-title" data-empty-region-label="{{ this }}"> {{ this }} (0) <button class="icon-new-stack tooltip create-new-empty-stack" data-tooltip='{{ i18n "IDE_COM_CREATE_NEW_STACK" }}'></button>
+		</li> {{/each}}
 	</ul>
 {{/if}}
 

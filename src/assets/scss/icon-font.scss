@@ -13,7 +13,7 @@
 .icon-play,
 .icon-stop,
 .icon-save,
-.icon-stack,
+//.icon-stack,
 .icon-undo,
 .icon-redo,
 .icon-zoom-out,
@@ -74,7 +74,9 @@
 .icon-log,
 .icon-syslog,
 .icon-import,
-.icon-drag-copy {
+.icon-drag-copy,
+.icon-gear,
+.icon-menu {
 	&:before{
 		font : 16px/1em "MCIcon";
 		font-weight : normal;
@@ -85,7 +87,7 @@
 .icon-play:before  { content : "\F110"; }
 .icon-stop:before  { content : "\F111"; }
 .icon-save:before  { content : "\F112"; }
-.icon-stack:before { content : "\F113"; }
+//.icon-stack:before { content : "\F113"; }
 .icon-undo:before  { content : "\F114"; }
 .icon-redo:before  { content : "\F115"; }
 .icon-zoom-in:before   { content : "\F116"; }
@@ -146,3 +148,5 @@
 .icon-toolbar-diff:before {content:"\F14D";}
 .icon-import:before {content:"\F14E";}
 .icon-drag-copy:before {content:"\F14F";}
+.icon-gear:before {content:"\F150";}
+.icon-menu:before {content:"\F151";}

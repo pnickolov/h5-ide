@@ -27,15 +27,16 @@ define [ 'event',
             'click #awscredentials-cancel'          : 'onAWSCredentialCancel'
             'click #awscredentials-remove'          : 'onAWSCredentialRemove'
             'click #account-setting-tab li a'       : 'onTab'
-            'click #account-update-email-link'      : 'onChangeEmail'
+            #'click #account-update-email-link'     : 'onChangeEmail'
             'click #account-change-password'        : 'onChangePassword'
             'click #account-email-update'           : 'clickUpdateEmail'
             'click #account-email-cancel'           : 'clickCancelEmail'
             'click #account-password-update'        : 'clickUpdatePassword'
             'click #account-password-cancel'        : 'clickCancelPassword'
-            'keyup #aws-credential-account-id'      : 'verificationKey'
-            'keyup #aws-credential-access-key'      : 'verificationKey'
-            'keyup #aws-credential-secret-key'      : 'verificationKey'
+
+            'change #aws-credential-account-id'     : 'verificationKey'
+            'change #aws-credential-access-key'     : 'verificationKey'
+            'change #aws-credential-secret-key'     : 'verificationKey'
 
             #welcome
             'click #awscredentials-skip'            : 'onSkinButton'
@@ -160,7 +161,7 @@ define [ 'event',
 
             $('#AWSCredentials-remove-wrap').attr('data-type', 'remove')
 
-            if $('#awscredentials-remove').hasClass('btn btn-silver')
+            if $('#awscredentials-remove').hasClass('btn btn-red')
                 #remove credential
                 me.trigger 'REMOVE_CREDENTIAL'
                 me.showSetting('credential')
@@ -185,14 +186,14 @@ define [ 'event',
 
             null
 
-        onChangeEmail : (event) ->
-            console.log 'account_setting_tab onChangeEmail'
-
-            me = this
-
-            me.showSetting('account', 'on_email')
-
-            null
+        #onChangeEmail : (event) ->
+        #    console.log 'account_setting_tab onChangeEmail'
+        #
+        #    me = this
+        #
+        #    me.showSetting('account', 'on_email')
+        #
+        #    null
 
         clickUpdateEmail : (flag) ->
             console.log 'account_setting_tab clickUpdateEmail'
@@ -278,6 +279,7 @@ define [ 'event',
             notification type, msg
 
         verificationKey : ->
+
             console.log 'verificationKey'
 
             right_count = 0
@@ -467,7 +469,7 @@ define [ 'event',
                     $('#aws-credential-account-id').val me.model.attributes.account_id
 
                     # set remove button style
-                    $('#awscredentials-remove').removeClass("btn btn-silver")
+                    $('#awscredentials-remove').removeClass("btn btn-red")
 
                     #clear key
                     $('#aws-credential-access-key').val(' ')
@@ -518,7 +520,7 @@ define [ 'event',
                     $('#AWSCredential-form').find('ul').hide()
 
                     # change remove button's style
-                    $('#awscredentials-remove').addClass("btn btn-silver")
+                    $('#awscredentials-remove').addClass("btn btn-red")
                     # hide submit botton
 
             null

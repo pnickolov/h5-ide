@@ -1,0 +1,36 @@
+{{#unless item_flags.is_app_updating}}
+
+{{#if item_flags.has_instance_store_ami}}
+<button {{#unless item_flags.is_running}}style="display:none;"{{/unless}} class="modal tooltip btn-toolbar icon-stop disabled" data-modal-data='{"title":"{{{ i18n "TOOL_POP_TIT_STOP_APP" }}}", "body":"{{{i18n "TOOL_POP_BODY_STOP_APP_LEFT"}}} {{item_flags.name}}{{{i18n "TOOL_POP_BODY_STOP_APP_RIGHT"}}}", "confirm":"{{{ i18n "TOOL_POP_BTN_STOP_APP" }}}", "color":"red" }' data-modal-dismiss="true" data-tooltip="{{ i18n 'TOOL_TIP_CONTAINS_INSTANCE_STORED' }}"></button>
+{{else}}
+<button {{#unless item_flags.is_running}}style="display:none;"{{/unless}} {{#if item_flags.is_pending}}class="tooltip btn-toolbar icon-stop disabled"{{else}} class="modal tooltip btn-toolbar icon-stop" data-modal-template="modalApp" data-modal-data='{"title":{{#if item_flags.is_production}}"{{{i18n "TOOL_POP_TIT_STOP_PRD_APP"}}}"{{else}}"{{{ i18n "TOOL_POP_TIT_STOP_APP" }}}"{{/if}}, "body":"{{{i18n "TOOL_POP_BODY_STOP_APP_LEFT"}}} {{item_flags.name}}{{{i18n "TOOL_POP_BODY_STOP_APP_RIGHT"}}}", "confirm":"{{{ i18n "TOOL_POP_BTN_STOP_APP" }}}", "color":"red", "is_asg":{{#if item_flags.is_asg}}true{{else}}false{{/if}}, "is_production":{{#if item_flags.is_production}}true{{else}}false{{/if}}, "app_name": "{{item_flags.name}}", "is_stop": true}' data-modal-dismiss="true" id="toolbar-stop-app"{{/if}} data-tooltip="{{ i18n 'TOOL_TIP_STOP_APP' }}"></button>
+<button {{#if item_flags.is_running}}style="display:none;"{{/if}} {{#if item_flags.is_pending}}class="tooltip btn-toolbar icon-play disabled" {{else}}class="modal tooltip btn-toolbar icon-play"  data-modal-template="modalApp" data-modal-data='{"title":"{{{ i18n "TOOL_POP_TIT_START_APP" }}}", "body":"{{{ i18n "TOOL_POP_BODY_START_APP_LEFT" }}} {{item_flags.name}}{{{ i18n "TOOL_POP_BODY_START_APP_RIGHT" }}}", "confirm":"{{{i18n "TOOL_POP_BTN_START_APP"}}}", "color":"blue" }' data-modal-dismiss="true" id="toolbar-start-app"{{/if}} data-tooltip="{{ i18n 'TOOL_TIP_START_APP' }}"></button>
+{{/if}}
+<button {{#if item_flags.is_pending}}class="btn-toolbar tooltip icon-terminate disabled"{{else}}class="modal btn-toolbar tooltip icon-terminate seperator" data-modal-template="modalApp" data-modal-data='{"title":{{#if item_flags.is_production}}"{{{i18n "TOOL_POP_TIT_TERMINATE_PRD_APP"}}}"{{else}}"{{{ i18n "TOOL_POP_TIT_TERMINATE_APP" }}}"{{/if}}, "body":"{{{ i18n "TOOL_POP_BODY_TERMINATE_APP_LEFT" }}} {{item_flags.name}}{{{ i18n "TOOL_POP_BODY_TERMINATE_APP_RIGHT" }}}", "confirm":"{{{ i18n "TOOL_POP_BTN_TERMINATE_APP" }}}", "color":"red", "is_production":{{#if item_flags.is_production}}true{{else}}false{{/if}}, "app_name": "{{item_flags.name}}" }' data-modal-dismiss="true" id="toolbar-terminate-app"{{/if}} data-tooltip="{{{ i18n 'TOOL_TIP_TERMINATE_APP' }}}"></button>
+{{/unless}}
+
+<button class="btn-toolbar icon-zoom-in {{#if item_flags.is_zoomin}}tooltip{{else}}disabled{{/if}}" data-tooltip='{{ i18n "TOOL_TIP_ZOOM_IN" }}'></button>
+<button class="btn-toolbar icon-zoom-out seperator {{#if item_flags.is_zoomout}}tooltip{{else}}disabled{{/if}}" data-tooltip='{{ i18n "TOOL_TIP_ZOOM_OUT" }}'></button>
+
+<button class="btn-toolbar icon-export-png tooltip seperator" id="toolbar-export-png" data-tooltip='{{ i18n "TOOL_EXPORT_AS_PNG" }}'></button>
+
+<!-- line style -->
+<div class="selectbox btn-toolbar toolbar-line-style seperator">
+  <button class="selection tooltip" data-tooltip="{{i18n 'TOOL_TIP_LINESTYLE'}}" id="toolbar-line-style"><i class="{{ lines.icon }}"></i></button>
+  <ul class="dropdown">
+    <li id="toolbar-straight" class='item {{#if lines.is_style0}}selected{{/if}}'> <i class="icon-straight"></i><span>{{ i18n "TOOL_LBL_LINESTYLE_STRAIGHT" }}</span></li>
+    <li id="toolbar-elbow" class='item {{#if lines.is_style1}}selected{{/if}}'> <i class="icon-elbow"></i><span>{{ i18n "TOOL_LBL_LINESTYLE_ELBOW" }}</span></li>
+    <li id="toolbar-bezier-q" class='item {{#if lines.is_style2}}selected{{/if}}'> <i class="icon-bezier-q"></i><span>{{ i18n "TOOL_LBL_LINESTYLE_QUADRATIC_BELZIER" }}</span></li>
+    <li id="toolbar-bezier-qt" class='item {{#if lines.is_style3}}selected{{/if}}'><i class="icon-bezier-qt"></i><span>{{ i18n "TOOL_LBL_LINESTYLE_SMOOTH_QUADRATIC_BELZIER" }}</span></li>
+  </ul>
+</div>
+
+<button class="btn-toolbar tooltip icon-refresh seperator" data-tooltip="{{i18n 'TOOL_TIP_REFRESH_REOURCES'}}" id="btn-app-refresh"></button>
+
+<!-- env:dev -->
+<a href="javascript:dd.diff();" class="btn-toolbar tooltip icon-toolbar-diff" data-tooltip="{{i18n 'TOOL_TIP_JSON_DIFF'}}"></a>
+<a href="javascript:dd.view();" class="btn-toolbar tooltip icon-toolbar-cloudformation" data-tooltip="{{i18n 'TOOL_TIP_JSON_VIEW'}}"></a>
+<!-- env:dev:end -->
+
+<a href="http://blog.visualops.io/2014/02/18/vpc-always-forget-about-the-res" target="_blank" class="tooltip no-classic-toolbar" data-tooltip="{{i18n 'TOOL_TIP_NO_CLASSIC_DATA_APP'}}">{{ i18n "TOOL_LBL_NO_CLASSIC" }}</a>
+

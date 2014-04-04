@@ -33,6 +33,7 @@ define [ 'jquery', 'event', 'base_main' ], ( $, ide_event, base_main ) ->
             model.on 'USERNAME_EMAIL_VALID',    () -> view.showUsernameEmailValid()
             model.on 'RESET_CREATE_ACCOUNT',    ( message ) -> view.resetCreateAccount( message )
             model.on 'OTHER_ERROR',             () -> view.otherError()
+            model.on 'RESIGER_SUCCESS',         () -> view.registerSuccess()
             #model.on 'NOTIF_ERROR',            ( message ) -> view.notifError( message )
 
             #render

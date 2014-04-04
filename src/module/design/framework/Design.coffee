@@ -123,7 +123,13 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
 
     @__mode = options.mode
 
-    @attributes = {
+    # Delete these two attr before copying canvas_data.
+    component = canvas_data.component
+    layout    = canvas_data.layout
+    delete canvas_data.component
+    delete canvas_data.layout
+
+    @attributes = $.extend true, {
       agent : {
         enabled : false
         module  : {
@@ -131,7 +137,16 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
           tag  : $.cookie("mod_tag")
         }
       }
-    }
+    }, canvas_data
+
+    # Restore these two attr
+    canvas_data.component = component
+    canvas_data.layout    = layout
+
+    # Normalize stack version in case some old stack is not using date as the version
+    # The version will be updated after serialize
+    if (canvas_data.version or "").split("-").length < 3
+      @attributes.version = "2013-09-13"
 
     # Disable drawing for deserializing, delay it until everything is deserialized
     @__shoulddraw = false
@@ -298,7 +313,7 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
     Design.trigger = Backbone.Events.trigger
     Design.trigger Design.EVENT.Deserialized
 
-    # @save()
+    @save()
     null
 
   ### Private Interface ###
@@ -411,30 +426,14 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
     null
 
   DesignImpl.prototype.save = ( canvas_data )->
+    # save() no-longer modifies the attributes of design
+    # because the save() is being misused in somewhere.
 
-    if canvas_data
-
-      # Normalize stack version in case some old stack is not using date as the version
-      if canvas_data.version.split("-").length < 3
-        canvas_data.version = "2013-09-03"
-
-      component = canvas_data.component
-      layout    = canvas_data.layout
-
-      # Delete these two attributes before copying canvas_data.
-      delete canvas_data.component
-      delete canvas_data.layout
-
-      $.extend true, @attributes, canvas_data
-
-      # Use the canvas_data as the backingStore
-      canvas_data.component = component
-      canvas_data.layout    = layout
-      @__backingStore = canvas_data
-
-    else
-      @__backingStore = @serialize()
-    null
+    # save() now only store the data as backingstore.
+    # The canvas_data is not copied.
+    # So make sure the canvas_data is not modified by other.
+    @__backingStore = if canvas_data then canvas_data else @serialize()
+    return
 
   DesignImpl.prototype.isModified = ( newData )->
 

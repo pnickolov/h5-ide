@@ -552,10 +552,10 @@ define [ 'MC', 'session_model' ,'jquery', 'apiList', 'account_model', 'log_model
                 resolveResult request_time, current_service, current_resource, current_api, forge_result
 
         if current_service.toLowerCase() == "forge" && current_resource.toLowerCase() == "stack" && current_api == "export_cloudformation"
-            stack_id = if $("#stack_id").val() != "null" then $("#stack_id").val() else null
-            stack_id = if stack_id != null and MC.isJSON(stack_id)==true then JSON.parse stack_id else stack_id
+            stack = if $("#stack").val() != "null" then $("#stack").val() else null
+            stack = if stack != null and MC.isJSON(stack)==true then JSON.parse stack else stack
             #stack.export_cloudformation
-            stack_model.export_cloudformation {sender: stack_model}, username, session_id, region_name, stack_id
+            stack_model.export_cloudformation {sender: stack_model}, username, session_id, region_name, stack
             stack_model.once "STACK_EXPORT__CLOUDFORMATION_RETURN", ( forge_result ) ->
                 resolveResult request_time, current_service, current_resource, current_api, forge_result
 

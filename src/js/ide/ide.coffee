@@ -8,7 +8,7 @@ define [ 'MC', 'event', 'handlebars'
 		 'header', 'navigation', 'tabbar', 'dashboard', 'design_module', 'process',
 		 'WS', 'constant',
 		 'base_model',
-		 'common_handle', 'validation', 'aws_handle'
+		 'common_handle', 'validation', 'aws_handle', "MC.template"
 ], ( MC, ide_event, Handlebars, lang, view, canvas_layout, header, navigation, tabbar, dashboard, design, process, WS, constant, base_model, common_handle, validation ) ->
 
 	console.info canvas_layout
@@ -255,6 +255,7 @@ define [ 'MC', 'event', 'handlebars'
 			process.loadModule()
 			#
 			#ide_event.trigger ide_event.SWITCH_MAIN
+
 		#############################
 		#  base model
 		#############################
@@ -330,5 +331,23 @@ define [ 'MC', 'event', 'handlebars'
 			null
 
 		listenImportList()
+
+
+		###########################
+		# Dispaly stop supporting classic and default VPC notification
+		###########################
+		displaySystemNotice = () ->
+
+			isDisplayed = $.cookie('notice-sn')
+
+			if isDisplayed is undefined
+				$( "#wrapper" ).before MC.template.systemNotice
+
+			$('#system-notice-close').on 'click', () ->
+				$('#system-notice').remove()
+
+				$.cookie 'notice-sn', '1'
+
+		displaySystemNotice()
 
 		null

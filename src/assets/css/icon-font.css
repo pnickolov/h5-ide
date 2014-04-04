@@ -8,7 +8,6 @@
 .icon-play:before,
 .icon-stop:before,
 .icon-save:before,
-.icon-stack:before,
 .icon-undo:before,
 .icon-redo:before,
 .icon-zoom-out:before,
@@ -69,7 +68,9 @@
 .icon-log:before,
 .icon-syslog:before,
 .icon-import:before,
-.icon-drag-copy:before {
+.icon-drag-copy:before,
+.icon-gear:before,
+.icon-menu:before {
   font: 16px/1em "MCIcon";
   font-weight: normal;
   -webkit-font-smoothing: antialiased; }
@@ -82,9 +83,6 @@
 
 .icon-save:before {
   content: "\F112"; }
-
-.icon-stack:before {
-  content: "\F113"; }
 
 .icon-undo:before {
   content: "\F114"; }
@@ -265,3 +263,9 @@
 
 .icon-drag-copy:before {
   content: "\F14F"; }
+
+.icon-gear:before {
+  content: "\F150"; }
+
+.icon-menu:before {
+  content: "\F151"; }

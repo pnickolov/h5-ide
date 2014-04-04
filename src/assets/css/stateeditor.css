@@ -148,7 +148,7 @@
 }
 
 #state-log *::selection {
-	background: #4495d3;
+	background: #148BE6;
 	color: #fcfcfc;
 }
 
@@ -219,27 +219,6 @@
 	top: 37px;
 }
 
-/*#state-list-wrap:after {
-	position  : absolute;
-	width     : 34px;
-	background: rgba(0,0,0,.2);
-	height    : 100%;
-	content   : "";
-	top       : 0;
-}*/
-
-/*#state-editor-model .modal-toolbar li {
-	width: 30px;
-	height: 30px;
-	background-color: #eee;
-	float: left;
-	margin-left: 5px;
-	cursor: pointer;
-}
-
-#state-editor-model .modal-toolbar li:hover {
-	background-color: #ccc;
-}*/
 
 /* *************************************** state item */
 
@@ -377,7 +356,7 @@
 #state-editor .comment .editable-area.ace_focus {
 	/*background-color: rgba(0,0,0,.01);*/
 	color: #fff;
-	/*border-bottom: 1px solid #69aadc;*/
+	/*border-bottom: 1px solid #34A3F8;*/
 }
 
 #state-editor .editable-area.disabled {
@@ -563,6 +542,7 @@
 	min-width : 435px;
 	overflow  : auto;
 	padding: 4px 0 0 0;
+	max-width: 440px;
 }
 
 #state-editor .parameter-list .parameter-item.dict .parameter-value {

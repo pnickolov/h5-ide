@@ -12,7 +12,7 @@ define [ 'event', "./template"
         events   :
             'closed'                 : 'closedPopup'
 
-        render     : ( template ) ->
+        render     : () ->
             console.log 'pop-up:stack run render'
             #
             modal template(), true

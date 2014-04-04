@@ -94,7 +94,7 @@ define [ 'event',
         editorShow: false
 
         initialize: () ->
-            this.compileTpl()
+            # this.compileTpl()
 
         initState: () ->
 

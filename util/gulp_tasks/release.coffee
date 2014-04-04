@@ -57,6 +57,12 @@ end  = ( d, printNewlineWhenNotVerbose )->
 stdRedirect = (d)-> process.stdout.write d; null
 
 Tasks =
+  tryKeepDeployFolder : ( qaMode )->
+    if not qaMode and GLOBAL.gulpConfig.keepDeployFolder and fs.existsSync("./deploy/.git")
+      return util.runCommand "mv", ["./deploy", "./h5-ide-build"], {}
+
+    return true
+
   cleanRepo : ()->
     logTask "Removing ignored files in src (git clean -Xf)"
 
@@ -161,6 +167,17 @@ Tasks =
   fetchRepo : ( debugMode )->
     ()->
       logTask "Checking out h5-ide-build"
+
+      if fs.existsSync("./h5-ide-build/.git")
+        # The deploy folder is not removed
+        option = { cwd : process.cwd() + "/h5-ide-build" }
+        move = util.runCommand "git", ["reset", "--hard"], option
+
+        return move.then ()->
+          util.runCommand "git", ["checkout", if debugMode then "develop" else "master" ], option
+        .then ()->
+          util.runCommand "git", ["pull"], option, stdRedirect
+
 
       # First delete the repo
       util.deleteFolderRecursive( process.cwd() + "/h5-ide-build" )
@@ -308,16 +325,15 @@ Tasks =
         console.log gutil.colors.bgYellow.black("  You can delete `./deploy` after pushing. ")
         true
     .then ()->
-      if GLOBAL.gulpConfig.autoPush
+      if GLOBAL.gulpConfig.autoPush and not GLOBAL.gulpConfig.keepDeployFolder
         util.deleteFolderRecursive( process.cwd() + "/deploy" )
       true
 
   test : ( qaMode )->
-    path = if qaMode then "./qa" else "./deploy"
-
     ()->
+      p = if qaMode then "./qa" else "./deploy"
       # Create a server to serve the files for testing.
-      testserver = server.create path, 3010, false, false
+      testserver = server.create p, 3010, false, false
 
       # Start test with zombie
       logTask "Starting automated test"
@@ -354,6 +370,7 @@ module.exports =
     ideversion.read( deploy )
 
     tasks = [
+      Tasks.tryKeepDeployFolder( qaMode )
       Tasks.cleanRepo
       Tasks.copyAssets
       Tasks.copyJs

@@ -90,6 +90,12 @@
   };
 
   Tasks = {
+    tryKeepDeployFolder: function(qaMode) {
+      if (!qaMode && GLOBAL.gulpConfig.keepDeployFolder && fs.existsSync("./deploy/.git")) {
+        return util.runCommand("mv", ["./deploy", "./h5-ide-build"], {});
+      }
+      return true;
+    },
     cleanRepo: function() {
       logTask("Removing ignored files in src (git clean -Xf)");
       return util.runCommand("git", ["clean", "-Xdf"], {
@@ -174,8 +180,19 @@
     },
     fetchRepo: function(debugMode) {
       return function() {
-        var params;
+        var move, option, params;
         logTask("Checking out h5-ide-build");
+        if (fs.existsSync("./h5-ide-build/.git")) {
+          option = {
+            cwd: process.cwd() + "/h5-ide-build"
+          };
+          move = util.runCommand("git", ["reset", "--hard"], option);
+          return move.then(function() {
+            return util.runCommand("git", ["checkout", debugMode ? "develop" : "master"], option);
+          }).then(function() {
+            return util.runCommand("git", ["pull"], option, stdRedirect);
+          });
+        }
         util.deleteFolderRecursive(process.cwd() + "/h5-ide-build");
         params = ["clone", GLOBAL.gulpConfig.buildRepoUrl, "-v", "--progress", "-b", debugMode ? "develop" : "master"];
         if (GLOBAL.gulpConfig.buildUsername) {
@@ -328,17 +345,17 @@
           return true;
         }
       }).then(function() {
-        if (GLOBAL.gulpConfig.autoPush) {
+        if (GLOBAL.gulpConfig.autoPush && !GLOBAL.gulpConfig.keepDeployFolder) {
           util.deleteFolderRecursive(process.cwd() + "/deploy");
         }
         return true;
       });
     },
     test: function(qaMode) {
-      path = qaMode ? "./qa" : "./deploy";
       return function() {
-        var result, testserver;
-        testserver = server.create(path, 3010, false, false);
+        var p, result, testserver;
+        p = qaMode ? "./qa" : "./deploy";
+        testserver = server.create(p, 3010, false, false);
         logTask("Starting automated test");
         result = unittest();
         if (result) {
@@ -361,7 +378,7 @@
       outputPath = mode === "qa" ? "./qa" : void 0;
       qaMode = mode === "qa";
       ideversion.read(deploy);
-      tasks = [Tasks.cleanRepo, Tasks.copyAssets, Tasks.copyJs, Tasks.compileLangSrc, Tasks.compileCoffee(debugMode), Tasks.compileTemplate, Tasks.processHtml, Tasks.concatJS(debugMode, outputPath), Tasks.removeBuildFolder, Tasks.test(qaMode)];
+      tasks = [Tasks.tryKeepDeployFolder(qaMode), Tasks.cleanRepo, Tasks.copyAssets, Tasks.copyJs, Tasks.compileLangSrc, Tasks.compileCoffee(debugMode), Tasks.compileTemplate, Tasks.processHtml, Tasks.concatJS(debugMode, outputPath), Tasks.removeBuildFolder, Tasks.test(qaMode)];
       if (!qaMode) {
         tasks = tasks.concat([Tasks.logDeployInDevRepo, Tasks.fetchRepo(debugMode), Tasks.preCommit, Tasks.fileVersion, Tasks.finalCommit]);
       }

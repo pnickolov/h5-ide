@@ -55,6 +55,9 @@ Whenever these (rare) issue happens, close the process by hitting `Ctrl+C`, or c
 * 接着把模块ID和路径的映射添加到js/ide/config的`requirejs.config.paths`里面
 * 假如这个模块最终会被合并到一个大的模块`bigModuleA`里面的话，需要把这个模块的ID添加到`requirejs.config.bundles["bigModuleA"]`的数组里。
 
+## 关于Git
+* 合并代码时候，禁止使用`git merge -Xignore-space-change`和`git merge -Xignore-all-space`，因为这样会破坏coffeescript的缩进。
+
 
 ## Best Practice
 ### # 使用正确的方式定义模块
@@ -139,6 +142,6 @@ require.config({
 });
 ```
 
-### # 给复杂的逻辑/参数写详细注释
+### # 写详细和有用的注释
 ### # 不要写没意义的代码
 ### # DRY - Don't repeat yourself

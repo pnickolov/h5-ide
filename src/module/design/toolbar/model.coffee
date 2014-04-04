@@ -65,10 +65,8 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
                 if !result.is_error
                     console.log 'save stack successfully'
 
-                    setTimeout ()->
-                        # call saveStackCallback
-                        me.saveStackCallback id, name
-                    , 5000
+                    # call saveStackCallback
+                    me.saveStackCallback id, name
 
                     # trigger TOOLBAR_HANDLE_SUCCESS
                     me.trigger 'TOOLBAR_HANDLE_SUCCESS', 'SAVE_STACK', name
@@ -90,10 +88,8 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
                 if !result.is_error
                     console.log 'create stack successfully'
 
-                    setTimeout ()->
-                        # call createStackCallback
-                        me.createStackCallback result, old_id, name, region
-                    , 5000
+                    # call createStackCallback
+                    me.createStackCallback result, old_id, name, region
 
                     # push TOOLBAR_HANDLE_SUCCESS
                     me.trigger 'TOOLBAR_HANDLE_SUCCESS', 'CREATE_STACK', name

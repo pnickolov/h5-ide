@@ -1011,7 +1011,7 @@ module.exports =
       zh: "销毁应用"
 
     TOOLBAR_HANDLE_EXPORT_CLOUDFORMATION:
-      en: "Export cloud formation template"
+      en: "Convert to CloudFormation template"
       zh: "导出云编排模板"
 
     TOOL_MSG_INFO_APP_REFRESH_FINISH:
@@ -1034,9 +1034,6 @@ module.exports =
       en: "If any of the instance(s) has been automatically assigned public IP, the IP will change after restart.",
       zh: "重启后，已分配公有IP地址的实例将会被重新分配。"
 
-    TOOL_MSG_INFO_NO_CHANGES:
-      en: "This app is't any change."
-      zh: "当前App没有任何改变。"
 
     TOOL_MSG_ERR_CONVERT_CLOUDFORMATION:
       en: "Convert to stack json to CloudFormation format error"

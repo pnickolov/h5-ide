@@ -75,21 +75,15 @@ define [ 'event', 'constant', 'i18n!nls/lang.js',
             null
 
         appListRender : ->
-            #render html
-            console.log 'appListRender render'
             $( this.el ).find( '#nav-app-region' ).html template_data.app_list_data( @model.attributes )
             null
 
         stackListRender : ->
-            #render html
-            console.log 'stackListRender render'
             $( this.el ).find( '#nav-stack-region' ).html template_data.stack_list_data( @model.attributes )
             null
 
         regionEmtpyListRender : ->
-            #render html
-            console.log 'regionEmtpyListRender render'
-            $( this.el ).find( '.nav-region-empty-list' ).html template_data.region_empty_list( @model.attributes )
+            $( this.el ).find( '#nav-region-empty-list' ).html template_data.region_empty_list( @model.attributes )
             null
 
         regionListRender : ->

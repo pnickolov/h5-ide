@@ -199,6 +199,7 @@ define [ 'jquery',
                         else if flag is "EXPORT_CLOUDFORMATION"
                             #download
                             view.saveCloudFormation value
+                            value = ""
 
                         # start to export cf
                         else if $('#modal-export-cf')[0] isnt undefined

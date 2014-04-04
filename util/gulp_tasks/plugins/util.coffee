@@ -55,12 +55,14 @@ util =
         try
           fs.unlinkSync( curPath )
         catch e
-          console.log "[Cannot remove file]", e
+          if GLOBAL.gulpConfig.verbose
+            console.log "[Cannot remove file]", curPath
 
     try
       fs.rmdirSync( path )
     catch e
-      console.log "[Cannot remove folder]", e
+      if GLOBAL.gulpConfig.verbose
+        console.log "[Cannot remove folder]", path
     null
 
   runCommand : ( command, args, options, handlers )->

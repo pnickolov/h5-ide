@@ -73,7 +73,9 @@
             fs.unlinkSync(curPath);
           } catch (_error) {
             e = _error;
-            console.log("[Cannot remove file]", e);
+            if (GLOBAL.gulpConfig.verbose) {
+              console.log("[Cannot remove file]", curPath);
+            }
           }
         }
       }
@@ -81,7 +83,9 @@
         fs.rmdirSync(path);
       } catch (_error) {
         e = _error;
-        console.log("[Cannot remove folder]", e);
+        if (GLOBAL.gulpConfig.verbose) {
+          console.log("[Cannot remove folder]", path);
+        }
       }
       return null;
     },

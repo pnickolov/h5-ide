@@ -3,7 +3,7 @@
   "repository": "https://github.com/MadeiraCloud/h5-ide",
   "version": "2.1.0",
   "devDependencies": {
-    "gulp": "3.5.2",
+    "gulp": "3.6.0",
     "gulp-util": "2.2.14",
     "node-static": "0.7.3",
     "tiny-lr": "0.0.5",

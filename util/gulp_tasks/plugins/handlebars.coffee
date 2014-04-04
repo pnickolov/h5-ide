@@ -82,6 +82,7 @@ compile = ( file )->
 
 tryCompile = ( data, file )->
   try
+    data = data.replace(/^\s+|\s+$/g, '')
     result = handlebars.precompile( data, HandlebarsOptions )
   catch e
     console.log gutil.colors.red.bold("\n[TplError]"), file.relative

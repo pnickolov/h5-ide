@@ -8,7 +8,9 @@
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
 */
-var searchbar = {
+define(["jquery"], function(){
+
+var searchbar = window.searchbar = {
 
     init: function () {
         $(document)
@@ -74,4 +76,6 @@ var searchbar = {
 
 $(document).ready(function () {
     searchbar.init();
+});
+
 });

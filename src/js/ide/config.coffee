@@ -265,62 +265,6 @@ require.config {
 			deps       : [ 'MC', 'canvon' ]
 
 		#############################################
-		# UI
-		#############################################
-
-		'UI.tabbar'    :
-			deps       : [ 'jquery' ]
-
-		'UI.bubble'    :
-			deps       : [ 'jquery' ]
-
-		'UI.modal'     :
-			deps       : [ 'jquery' ]
-
-		'UI.tooltip'   :
-			deps       : [ 'jquery' ]
-
-		'UI.scrollbar' :
-			deps       : [ 'jquery' ]
-
-		'UI.table'     :
-			deps       : [ 'jquery' ]
-
-		'UI.tablist'   :
-			deps       : [ 'jquery' ]
-
-		'UI.selectbox' :
-			deps       : [ 'jquery' ]
-
-		'UI.searchbar' :
-			deps       : [ 'jquery' ]
-
-		'UI.filter'    :
-			deps       : [ 'jquery' ]
-
-		'UI.radiobuttons' :
-			deps       : [ 'jquery' ]
-
-		'UI.notification' :
-			deps       : [ 'jquery' ]
-
-		'UI.multiinputbox' :
-			deps       : [ 'jquery' ]
-
-		'UI.sortable'  :
-			deps       : [ 'jquery' ]
-
-		'UI.parsley'   :
-			deps       : [ 'jquery', 'UI.errortip' ]
-
-		'UI.errortip'   :
-			deps       : [ 'jquery' ]
-
-
-		'bootstrap-carousel':
-			deps     : [ 'jquery' ]
-
-		#############################################
 		# WS
 		#############################################
 

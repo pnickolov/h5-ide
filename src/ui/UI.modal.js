@@ -8,7 +8,11 @@
 # (c) Copyright 2014 Madeiracloud  All Rights Reserved
 # **********************************************************
 */
-var modal = function (template, dismiss, callback, options)
+
+define(["jquery"], function(){
+
+
+var modal = window.modal = function (template, dismiss, callback, options)
 {
 	var modal_wrap = $('#modal-wrap');
 
@@ -301,4 +305,6 @@ modal.position = function ($source)
 $(document).ready(function ()
 {
 	$(document).on('click', '.modal', modal.open);
+});
+
 });

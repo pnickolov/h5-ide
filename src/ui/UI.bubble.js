@@ -9,6 +9,8 @@
 # **********************************************************
 */
 
+define(["jquery"], function(){
+
 (function ()
 {
 	var bubble = function (event)
@@ -88,3 +90,5 @@
 		$(document.body).on('mouseenter mouseleave', '.bubble', bubble);
 	});
 })();
+
+});

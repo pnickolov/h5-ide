@@ -8,6 +8,8 @@
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
 */
+define(["jquery"], function(){
+
 + function() {
   var errortip = function (event)
   {
@@ -236,3 +238,5 @@
     $(document.body).on('mouseleave', '.parsley-error', leave);
   });
 }();
+
+});

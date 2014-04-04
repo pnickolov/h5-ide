@@ -8,7 +8,9 @@
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
 */
-var filter = {
+define(["jquery"], function(){
+
+window.filter = {
     update: function (dom, valueset) {
         if (!valueset || ((!valueset.type) && valueset.value == '')) {
             dom.trigger("FILTER_RESET");
@@ -51,3 +53,4 @@ var filter = {
         }
     }
 };
+});

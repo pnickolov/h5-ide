@@ -12,7 +12,9 @@
 /* A modified version to reduce redundant html code by Morris */
 /* In-coporate the toggle-dropdown functions from bootstrap-dropdown */
 
-var selectbox = {
+define(["jquery"], function(){
+
+var selectbox = window.selectbox = {
     init : function () {
         $(".selectbox").each(function () {
             var $this = $(this);
@@ -243,3 +245,5 @@ var selectbox = {
     }
 
 })();
+
+});

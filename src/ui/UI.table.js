@@ -9,6 +9,9 @@
 # **********************************************************
 */
 
+define(["jquery"], function(){
+
+
 (function ()
 {
 	var table = {
@@ -151,3 +154,5 @@
 			.on('blur', '.table-input', table.update);
 	});
 })();
+
+});

@@ -8,7 +8,9 @@
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
 */
-var radiobuttons = {
+define(["jquery"], function(){
+
+var radiobuttons = window.radiobuttons = {
 
     init: function () {
         $(document).on('click', '.radiobuttons button', radiobuttons.click);
@@ -56,4 +58,6 @@ var radiobuttons = {
 
 $(document).ready(function () {
     radiobuttons.init();
+});
+
 });

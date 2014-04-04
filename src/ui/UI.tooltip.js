@@ -9,6 +9,9 @@
 # **********************************************************
 */
 
+define(["jquery"], function(){
+
+
 (function ()
 {
 	var tooltip = function (event)
@@ -95,3 +98,5 @@
 		$(document.body).on('mouseenter', '.tooltip', tooltip);
 	});
 })();
+
+});

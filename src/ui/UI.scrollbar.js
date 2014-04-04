@@ -9,6 +9,9 @@
 # **********************************************************
 */
 
+define(["jquery"], function(){
+
+
 (function (document) {
 
 var style = document.documentElement.style,
@@ -488,3 +491,5 @@ $(document).ready(function ()
 });
 
 })(document);
+
+});

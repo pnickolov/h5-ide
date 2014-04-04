@@ -13,6 +13,9 @@
 // 2. Options are set via data-*, possible options are :
 //    data-max-row : number
 
+define(["jquery"], function(){
+
+
 var multiinputbox;
 (function(){
    multiinputbox = {
@@ -70,3 +73,7 @@ var multiinputbox;
 })();
 
 $(function(){ multiinputbox.init( document.body ); });
+
+window.multiinputbox = multiinputbox;
+
+});

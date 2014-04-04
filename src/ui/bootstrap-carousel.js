@@ -17,6 +17,8 @@
  * limitations under the License.
  * ========================================================== */
 
+ define(["jquery"], function(){
+
 (function ($) {
 	// CSS TRANSITION SUPPORT (Shoutout: http://www.modernizr.com/)
 	// ============================================================
@@ -370,3 +372,5 @@ function onYouTubePlayerAPIReady()
 		}
 	});
 }
+
+});

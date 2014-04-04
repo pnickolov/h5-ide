@@ -9,6 +9,9 @@
 # **********************************************************
 */
 
+define(["jquery"], function(){
+
+
 (function(){
     var NOTIFICATION_TYPES = {
         "error"   : true,
@@ -74,3 +77,5 @@
         target_dom.data( "close_to", to );
     };
 })();
+
+});

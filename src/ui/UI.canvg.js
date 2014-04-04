@@ -6,6 +6,8 @@
  *
  */
 
+define(["jquery"], function(){
+
 (function(){
 /**
  * A class to parse color values
@@ -2793,3 +2795,4 @@ function RGBColor(color_string)
   }
 })();
 
+});

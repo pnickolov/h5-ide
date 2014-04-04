@@ -9,13 +9,15 @@
 # **********************************************************
 */
 /* A modified version to reduce redundant html code by Morris */
-var tab = {
+define(["jquery"], function(){
+
+var tab = window.tab = {
     update : function ( event ) {
         var $target = $( event.currentTarget );
         if ( $target.hasClass("active") )
             return false;
 
-        var $previous_selected = 
+        var $previous_selected =
                 $target.addClass("active")
                        .siblings(".active").removeClass("active");
 
@@ -27,4 +29,6 @@ var tab = {
 };
 $(function(){
     $(document.body).on('click', '.tab [data-tab-target]', tab.update );
+});
+
 });

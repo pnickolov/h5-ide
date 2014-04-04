@@ -8,7 +8,9 @@
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
 */
-var Tabbar = {
+define(["jquery"], function(){
+
+var Tabbar = window.Tabbar = {
 	// Default
 	current: 'dashboard',
 
@@ -230,7 +232,7 @@ var Tabbar = {
 
 			// Except for the first tab
 			tabs_count = tabs.length - 1,
-			
+
 			// tabbar - first tab width + margin-right
 			tab_item_width = (tabbar_width - (117 + 5) - (tabs_count * 5)) / tabs_count;
 
@@ -253,4 +255,6 @@ $(document).ready(function ()
 	{
 		Tabbar.resize($('#tab-bar').width());
 	});
+});
+
 });

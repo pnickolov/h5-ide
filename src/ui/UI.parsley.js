@@ -8,6 +8,8 @@
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
 */
+define(["jquery"], function(){
+
 !function($) {
 
   var Util = {
@@ -1889,3 +1891,5 @@ $(document.body).on( globalBindList, bindElements, bindFiled );
 
 
 }(window.jQuery)
+
+});

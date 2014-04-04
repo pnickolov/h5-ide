@@ -144,7 +144,7 @@ define [ 'event',
 
             tip = type and tipSet[ type ] or tipSet.default
 
-            @$el.html template.stateEmptyTpl { tip: tip }
+            @$el.html $.trim(template.stateEmptyTpl { tip: tip })
             @editorShow = false
             @
 
@@ -160,13 +160,13 @@ define [ 'event',
             that.unloadEditor()
 
             # show modal
-            @$el.html template.editorModalTpl({
+            @$el.html $.trim(template.editorModalTpl({
                 res_name: that.resName,
                 supported_platform: that.supportedPlatform,
                 current_state: that.currentState,
                 no_state: that.resNoState,
                 allow_add_state: (that.currentState in ['stack', 'appedit'])
-            }), false, null, {opacity: 0.2, conflict: 'loose'}
+            })), false, null, {opacity: 0.2, conflict: 'loose'}
 
             # setTimeout(() ->
 
@@ -419,7 +419,7 @@ define [ 'event',
                     # }]
                 }
 
-            that.$stateList.html(template.stateListTpl(stateListObj))
+            that.$stateList.html($.trim(template.stateListTpl(stateListObj)))
 
             $stateItems = that.$stateList.find('.state-item')
 
@@ -559,9 +559,9 @@ define [ 'event',
 
                 null
 
-            $paraViewListElem.html(template.paraViewListTpl({
+            $paraViewListElem.html($.trim(template.paraViewListTpl({
                 parameter_view_list: paraListViewRenderAry
-            }))
+            })))
 
         bindStateListEvent: ($stateItems) ->
 
@@ -787,9 +787,9 @@ define [ 'event',
 
                 null
 
-            $paraListElem.html(template.paraListTpl({
+            $paraListElem.html($.trim(template.paraListTpl({
                 parameter_list: newParaAry
-            }))
+            })))
 
             # setTimeout(() ->
             that.bindParaListEvent($paraListElem, currentCMD)
@@ -855,12 +855,12 @@ define [ 'event',
                 valueInputValue = that.getPlainText($valueInput)
 
                 if keyInputValue or valueInputValue
-                    newDictItemHTML = template.paraDictListTpl({
+                    newDictItemHTML = $.trim(template.paraDictListTpl({
                         para_value: [{
                             key: '',
                             value: ''
                         }]
-                    })
+                    }))
                     $dictItemElem = $(newDictItemHTML).appendTo($currentDictItemContainer)
                     $paraDictItem = $dictItemElem.nextAll('.parameter-dict-item')
                     $paraValueAry = $paraDictItem.find('.parameter-value')
@@ -921,9 +921,9 @@ define [ 'event',
                 currentInput = that.getPlainText($currentInputElem)
 
                 if currentInput
-                    newArrayItemHTML = template.paraArrayListTpl({
+                    newArrayItemHTML = $.trim(template.paraArrayListTpl({
                         para_value: ['']
-                    })
+                    }))
                     $arrayItemElem = $(newArrayItemHTML).appendTo($currentArrayInputContainer)
                     $arrayItemElem.addClass('disabled')
 
@@ -1156,11 +1156,11 @@ define [ 'event',
 
             newStateId = that.genStateUID()
 
-            newStateHTML = template.stateListTpl({
+            newStateHTML = $.trim(template.stateListTpl({
                 state_list: [{
                     id: newStateId
                 }]
-            })
+            }))
 
             $focusState = that.$stateList.find('.state-item.focused')
             if $focusState.length
@@ -2203,16 +2203,16 @@ define [ 'event',
                 })
                 null
 
-            renderHTML = template.stateLogItemTpl({
+            renderHTML = $.trim(template.stateLogItemTpl({
                 state_logs: stateLogViewAry
-            })
+            }))
 
             that.refreshStateItemStatus(stateStatusMap)
 
             resState = that.model.get('resState')
-            instanceStateHTML = template.stateLogInstanceItemTpl({
+            instanceStateHTML = $.trim(template.stateLogInstanceItemTpl({
                 res_status: resState
-            })
+            }))
 
             that.$stateLogList.empty().append(instanceStateHTML).append(renderHTML)
             that.refreshLogItemNum()
@@ -2645,7 +2645,7 @@ define [ 'event',
                 if 'reference' in parseErrList
                     notification 'warning', lang.ide.NOTIFY_MSG_INFO_STATE_PARSE_REFRENCE_FAILED
 
-            newStateItems = template.stateListTpl(stateListObj)
+            newStateItems = $.trim(template.stateListTpl(stateListObj))
             $currentStateItems = that.$stateList.find('.state-item')
 
             returnInsertPos = null
@@ -3344,10 +3344,10 @@ define [ 'event',
             if stateId
                 stateLogObj = that.stateIdLogContentMap[stateId]
                 if stateLogObj
-                    modal template.stateLogDetailModal({
+                    modal $.trim(template.stateLogDetailModal({
                         number: stateLogObj.number
                         content: stateLogObj.content
-                    }), true
+                    })), true
 
     }
 

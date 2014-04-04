@@ -58,7 +58,7 @@
       return title;
     },
     deleteFolderRecursive: function(path) {
-      var curPath, file, index, _i, _len, _ref;
+      var curPath, e, file, index, _i, _len, _ref;
       if (!fs.existsSync(path)) {
         return;
       }
@@ -69,10 +69,20 @@
         if (fs.lstatSync(curPath).isDirectory()) {
           util.deleteFolderRecursive(curPath);
         } else {
-          fs.unlinkSync(curPath);
+          try {
+            fs.unlinkSync(curPath);
+          } catch (_error) {
+            e = _error;
+            console.log("[Cannot remove file]", e);
+          }
         }
       }
-      fs.rmdirSync(path);
+      try {
+        fs.rmdirSync(path);
+      } catch (_error) {
+        e = _error;
+        console.log("[Cannot remove folder]", e);
+      }
       return null;
     },
     runCommand: function(command, args, options, handlers) {

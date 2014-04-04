@@ -52,9 +52,15 @@ util =
       if fs.lstatSync( curPath ).isDirectory()
         util.deleteFolderRecursive( curPath )
       else
-        fs.unlinkSync( curPath )
+        try
+          fs.unlinkSync( curPath )
+        catch e
+          console.log "[Cannot remove file]", e
 
-    fs.rmdirSync( path )
+    try
+      fs.rmdirSync( path )
+    catch e
+      console.log "[Cannot remove folder]", e
     null
 
   runCommand : ( command, args, options, handlers )->

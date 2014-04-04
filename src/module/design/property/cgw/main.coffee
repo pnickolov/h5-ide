@@ -19,7 +19,7 @@ define [ '../base/main',
             @view.on "CHANGE_NAME", ( value ) ->
                 me.model.setName value
                 # Sync the name to canvas
-                MC.canvas.update me.model.uid, "text", "name", value
+                MC.canvas.update me.model.get("uid"), "text", "name", value
                 null
 
         initStack : ()->

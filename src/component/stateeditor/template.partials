@@ -93,7 +93,7 @@
 				{{para_name}}
 			</div>
 			<div class="parameter-container">
-				{{> paraarraylisttpl}}
+				{{> paraArrayListTpl}}
 			</div>
 		</div>
 	{{/if}}

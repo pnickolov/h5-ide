@@ -92,6 +92,11 @@ require.config {
       "MC.canvas.constant"
       "event"
     ]
+    "lib/deprecated" : [
+      'aws_handle'
+      'forge_handle'
+      'common_handle'
+    ]
     "ui/ui" : [ 'UI.notification' ]
     "model/model" : [
       'base_model'

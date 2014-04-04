@@ -1516,7 +1516,7 @@ Are you sure you want to delete {{name}}?</div>
 	<div class="modal-body">
 		<h3 class="modal-body-header">{{ i18n "INVITE_MOD_INTRO"}}</h3>
 		<div class="modal-body-content">
-			<div class="modal-text-major">{{ i18n "INVITE_MOD_INTRO_MORE"}}</div>
+			<div class="modal-text-minor">{{ i18n "INVITE_MOD_INTRO_MORE"}}</div>
 			<h4 class="request-invite-header">{{ i18n "INVITE_MOD_REQUEST_TIT"}}</h4>
 			<div class="request-invite-content">{{ i18n "INVITE_MOD_REQUEST_CONTENT"}}</div>
 			<textarea id="experimental-message" class="input" style="width:95%;height:120px;" placeholder='{{ i18n "INVITE_MOD_REQUEST_PLACEHOLDER"}}' data-required="true"></textarea>

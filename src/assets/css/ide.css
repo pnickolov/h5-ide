@@ -473,18 +473,16 @@ button {
 }
 
 .notification-empty {
-	padding    : 10px 15px;
-	text-align : center;
-	background : #f1f1f1;
-	display    : none;
-	border     : 1px solid #ccc;
-	border-bottom : none;
-	width      : 370px;
+	padding      : 10px 15px;
+	text-align   : center;
+	display      : none;
+	border-bottom: none;
+	width        : 370px;
 }
 
 .notification-empty .title {
 	font-size: 16px;
-	color: #666;
+	color: #ccc;
 	padding-bottom: 10px;
 }
 
@@ -6402,7 +6400,7 @@ summary:focus {
 .carousel-btn {
 	text-align: center;
 	padding: 10px;
-	border-top: 1px solid #CFCFCF;
+	border-top: 1px solid #000;
 }
 
 .carousel-previous {
@@ -7496,9 +7494,9 @@ summary:focus {
 	text-align : center;
 	font-size  : 20px;
 	line-height: 24px;
-	color      : #333;
+	color      : #eee;
 	padding    : 10px;
-	border-bottom: 1px solid #eee;
+	border-bottom: 1px solid #444;
 	margin-bottom: 20px;
 }
 
@@ -7517,7 +7515,7 @@ summary:focus {
 
 #experimental-modal .request-invite-content {
 	margin-bottom: 10px;
-	color: #666;
+	color: #999;
 }
 
 #stack-elb-property-panel .elb-connection-draining-input-group {

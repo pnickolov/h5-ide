@@ -723,7 +723,7 @@ module.exports =
       zh: "删除 %s"
 
     CVS_CFM_DEL_IGW:
-      en: "Internet-facing load balancer and public IP require an internet gateway to function."
+      en: "Internet-facing load balancer or public IP requires internet gateway to function."
       zh: "面向互联网的负载均衡器和公网IP需要一个互联网网关才能工作。"
 
     CVS_CFM_DEL_GROUP:
@@ -739,7 +739,7 @@ module.exports =
       zh: "必须要有一个互联网网关"
 
     CVS_CFM_ADD_IGW_MSG:
-      en: "Automatically add an internet gateway for using EIP"
+      en: "Automatically add an internet gateway for using Elastic IP or public IP"
       zh: "为设置EIP，自动添加了一个互联网网关"
 
     CVS_MSG_ERR_ZOOMED_DROP_ERROR:

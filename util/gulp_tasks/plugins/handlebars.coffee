@@ -95,6 +95,7 @@ tryCompile = ( data, file )->
 
 compilePartials = ( file, shouldLog )->
   content = file.contents.toString("utf8").replace(/\r\n/g, "\n")
+  content = content.replace(/^\s+|\s+$/, "").replace(/\}\}\s+/g, "}}")
   data = content.split(/<!--\s*\{\{\s*(.*)\s*\}\}\s*-->\n/ig)
 
   newData = ""

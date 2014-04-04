@@ -117,7 +117,7 @@
 
   compilePartials = function(file, shouldLog) {
     var content, data, i, idx, n, namespace, namespaces, newData, result, space, _i, _len;
-    content = file.contents.toString("utf8");
+    content = file.contents.toString("utf8").replace(/\r\n/g, "\n");
     data = content.split(/<!--\s*\{\{\s*(.*)\s*\}\}\s*-->\n/ig);
     newData = "";
     namespace = {};

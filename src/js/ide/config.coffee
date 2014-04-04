@@ -34,8 +34,6 @@ require.config {
 		#############################################
 		# Requirejs lib             # Merge in deploy
 		#############################################
-		'domReady'           : 'vender/requirejs/domReady'
-		'text'               : 'vender/requirejs/text'
 		'i18n'               : 'vender/requirejs/i18n'
 
 		#############################################
@@ -367,7 +365,7 @@ require.config {
 	# The rule of bundles is that, if an ID defined above is ever included in a bundle
 	# Then that ID should appear in the bundle's array.
 	bundles :
-		"vender/requirejs/requirelib" : [ "domReady", "i18n", "text" ] # requirelib must be the first one.
+		"vender/requirejs/requirelib" : [ "i18n" ] # requirelib must be the first one.
 		"vender/vender" : [
 			"jquery"
 			"backbone"

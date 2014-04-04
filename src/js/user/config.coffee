@@ -77,7 +77,7 @@ require.config {
   # The bundles is a subset of the one defined in "js/ide/config"
   # The bundle doesn't have to excately be the same as in "js/ide/config"
   bundles :
-    "vender/requirejs/requirelib" : [ "domReady", "i18n", "text" ] # requirelib must be the first one.
+    "vender/requirejs/requirelib" : [ "i18n" ] # requirelib must be the first one.
     "vender/vender" : [
       "jquery"
       "backbone"

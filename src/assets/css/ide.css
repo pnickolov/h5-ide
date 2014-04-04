@@ -239,13 +239,15 @@ button {
 }
 
 .show-unused-region {
-	color : #999;
+	color      : #999;
 	text-align : center;
-	cursor: pointer;
-	padding : 3px 0;
+	cursor     : pointer;
+	padding    : 8px 0;
+	height     : 20px;
+	line-height: 20px;
 }
 .show-unused-region:hover {
-	color : #ccc;
+	color : #9C6DC0;
 }
 
 #nav-region-empty-list > .nav-region-list {
@@ -5537,11 +5539,22 @@ a.action-link:hover {
 }
 
 .drag-sort-list li {
-	border : 1px solid #ccc;
-	background : #eee;
+	border      : 1px solid #1d1d1d;
+	color       : #555;
+	background  : #333;
 	line-height : 30px;
-	padding-left : 6px;
-	margin-top   : -1px;
+	padding-left: 6px;
+	margin-top  : -1px;
+	-webkit-transition: background .2s;
+	-moz-transition: background .2s;
+	-ms-transition: background .2s;
+	-o-transition: background .2s;
+	transition: background .2s;
+}
+
+.drag-sort-list li:hover,
+.drag-sort-list li.enabled:hover {
+	background: #222;
 }
 
 .drag-sort-list .list-name {
@@ -5550,23 +5563,23 @@ a.action-link:hover {
 
 .drag-sort-list .checkbox {
 	margin-top : -3px;
-	border-right : 1px solid #ccc;
+	border-right : 1px solid #1d1d1d;
 	padding-right : 8px;
 }
 
 .drag-sort-list li.enabled {
 	background : none;
-	color: #666;
+	color: #ccc;
 }
 
 .drag-sort-list .drag-handle {
-	width   : 16px;
-	height  : 16px;
-	float   : right;
-	margin  : 7px 8px 0 0;
-	display : none;
-	color   : #ccc;
-	cursor  : move;
+	width  : 16px;
+	height : 16px;
+	float  : right;
+	margin : 2px 6px 0 0;
+	display: none;
+	color  : #999;
+	cursor : move;
 }
 
 .drag-sort-list .drag-handle:hover {

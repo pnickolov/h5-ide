@@ -29,9 +29,10 @@ header {
 }
 
 #logo-link {
-	background: url('../images/login/top_logo.png') center no-repeat;
-	height: 60px;
-	width: 202px;
+	background: url('../images/login/logo.svg') center no-repeat;
+	background-size: 240px auto;
+	height: 80px;
+	width: 240px;
 	margin: 0 auto;
 	display: block;
 	text-indent: -9999px;

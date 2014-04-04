@@ -346,6 +346,9 @@ define [ 'MC', 'event', 'handlebars'
 			$('#system-notice-close').on 'click', () ->
 				$('#system-notice').remove()
 
+				# A hack to update resource panel
+				$("#resource-panel").find(".accordion-group.expanded").removeClass("expanded").children(".fixedaccordion-head").trigger("click", true)
+
 				$.cookie 'notice-sn', '1'
 
 		displaySystemNotice()

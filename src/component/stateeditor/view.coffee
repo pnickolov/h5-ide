@@ -1971,12 +1971,13 @@ define [ 'event',
             that = this
 
             that.$cmdDsec.find('.highlight').removeClass('highlight')
-            $paraNameSpan = that.$cmdDsec.find("code:contains('#{paraName}')")
-            paraNameSpan = $paraNameSpan.filter(() ->
+            $paraNameSpan = that.$cmdDsec.find("strong code:contains('#{paraName}')")
+            paraNameSpan = $paraNameSpan.filter () ->
                 return $(this).text() is paraName
-            )
-            paraParagraph = paraNameSpan.parents('li')
-            paraParagraph.addClass('highlight')
+
+            if paraNameSpan[0]
+                paraParagraph = $(paraNameSpan[0]).parents('li')
+                paraParagraph.addClass('highlight')
 
             try
 

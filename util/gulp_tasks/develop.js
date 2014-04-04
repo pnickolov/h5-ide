@@ -89,7 +89,7 @@
       return util.runCommand("compass", ["watch"], {
         cwd: process.cwd() + "/src/assets"
       }, {
-        onError: function() {
+        onError: function(e) {
           if (e.code === "ENOENT" && e.errno === "ENOENT" && e.syscall === "spawn") {
             console.log("[" + gutil.colors.yellow("Compass Missing") + "] Cannot find compass, don't manually edit compressed css.");
           }

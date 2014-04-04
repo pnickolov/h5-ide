@@ -57,7 +57,7 @@ Helper =
     compassSuccess = false
     gutil.log gutil.colors.bgBlue.white(" Watching scss... ")
     util.runCommand "compass", ["watch"], { cwd : process.cwd() + "/src/assets" }, {
-      onError : ()->
+      onError : (e)->
         if e.code is "ENOENT" and e.errno is "ENOENT" and e.syscall is "spawn"
           console.log "[" + gutil.colors.yellow("Compass Missing") + "] Cannot find compass, don't manually edit compressed css."
         null

@@ -1551,7 +1551,7 @@ Are you sure you want to delete {{name}}?</div>
 <!-- {{convertBreaklines}} -->
 {{breaklines content}}
 
-<!-- systemNotice -->
+<!-- {{systemNotice}} -->
 <div id="system-notice">
 	<span>
 		<b>Notice: </b>We will drop the support for <em>EC2 Classic</em> and <em>Default VPC</em> soon, and focus on VPC, which is recommended for everyone.

@@ -25,6 +25,10 @@ define [ "../ComplexResModel", "./VpcModel", "Design", "constant", "i18n!nls/lan
         EniModel   = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface )
         cannotDel  = EniModel.allObjects().some ( eni )-> eni.hasEip() or eni.get("assoPublicIp")
 
+      if not cannotDel
+        LcModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration )
+        cannotDel = LcModel.allObjects.some ( lc )-> lc.get("publicIp")
+
       if cannotDel
         return { error : lang.ide.CVS_CFM_DEL_IGW }
 

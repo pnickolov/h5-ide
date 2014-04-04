@@ -2,7 +2,7 @@
 * Make sure the newest node.js is installed in system. Recommand version is `v0.10.26`
 * Then install `gulp` by running :
 ```
-npm install -g gulp
+npm install -g gulp@3.5.2
 ```
 * After `gulp` is installed. Install additional dependencies by running :
 ```

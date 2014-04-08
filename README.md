@@ -57,6 +57,7 @@ Whenever these (rare) issue happens, close the process by hitting `Ctrl+C`, or c
 
 ## 关于Git
 * 合并代码时候，禁止使用`git merge -Xignore-space-change`和`git merge -Xignore-all-space`，因为这样会破坏coffeescript的缩进。
+* 如果你将要push的分支的远端比本地要新，需要使用`git pull --rebase; git push`，来先将远端rebase到本地，然后再push。
 
 
 ## Best Practice

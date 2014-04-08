@@ -55,4 +55,4 @@ define [ 'Design',
   ### env:dev:end ###
 
   window.Design = Design
-  null
+  Design

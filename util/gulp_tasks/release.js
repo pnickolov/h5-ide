@@ -389,12 +389,17 @@
 
   module.exports = {
     build: function(mode) {
-      var debugMode, deploy, outputPath, qaMode, tasks;
+      var debugMode, deploy, outputPath, qaMode, releaseVersion, tasks;
       deploy = mode !== "qa";
       debugMode = mode === "qa" || mode === "debug";
       outputPath = mode === "qa" ? "./qa" : void 0;
       qaMode = mode === "qa";
       ideversion.read(deploy);
+      if (mode === "release") {
+        releaseVersion = GLOBAL.gulpConfig.version.split(".");
+        releaseVersion.length = 3;
+        GLOBAL.gulpConfig.version = releaseVersion.join(".");
+      }
       tasks = [Tasks.tryKeepDeployFolder(qaMode), Tasks.cleanRepo, Tasks.copyAssets, Tasks.copyJs, Tasks.compileLangSrc, Tasks.compileCoffee(debugMode), Tasks.compileTemplate, Tasks.processHtml, Tasks.concatJS(debugMode, outputPath), Tasks.removeBuildFolder, Tasks.test(qaMode)];
       if (!qaMode) {
         tasks = tasks.concat([Tasks.logDeployInDevRepo, Tasks.fetchRepo(debugMode), Tasks.preCommit, Tasks.fileVersion, Tasks.finalCommit]);

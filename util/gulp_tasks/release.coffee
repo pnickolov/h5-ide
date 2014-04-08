@@ -385,6 +385,10 @@ module.exports =
     qaMode     = mode is "qa"
 
     ideversion.read( deploy )
+    if mode is "release"
+      releaseVersion = GLOBAL.gulpConfig.version.split(".")
+      releaseVersion.length = 3
+      GLOBAL.gulpConfig.version = releaseVersion.join(".")
 
     tasks = [
       Tasks.tryKeepDeployFolder( qaMode )

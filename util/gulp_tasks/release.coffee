@@ -196,7 +196,19 @@ Tasks =
         params.push "-c"
         params.push "user.email=\"#{GLOBAL.gulpConfig.buildEmail}\""
 
-      util.runCommand "git", params, {}, stdRedirect
+      hadError = false
+
+      result = util.runCommand "git", params, {}, ( d, type )->
+        if type == "error"
+          hadError = true
+        process.stdout.write d
+        null
+
+      result.then ()->
+        if hadError
+          throw new Error("Cannot checkout h5-ide-build")
+        true
+
 
   preCommit : ()->
     logTask "Pre-commit"
@@ -400,8 +412,7 @@ module.exports =
     tasks
       .reduce(Q.when, true)
       .then ()->
-        console.log gutil.colors.bgBlue.white("\n [Build Succeed] ")
-        true
+        console.log gutil.colors.bgBlue.white("\n [Build Succeed] ") + "\n"
       , (p)->
-        console.log gutil.colors.bgRed.white("[Build Task Aborted]", p)
+        console.log "[", gutil.colors.bgRed.white("Build Task Aborted"), "]", p
         throw new Error("\n") # Use this method to tell gulp that our task are aborted.

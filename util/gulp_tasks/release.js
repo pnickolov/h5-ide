@@ -180,7 +180,7 @@
     },
     fetchRepo: function(debugMode) {
       return function() {
-        var move, option, params;
+        var hadError, move, option, params, result;
         logTask("Checking out h5-ide-build");
         if (fs.existsSync("./h5-ide-build/.git")) {
           option = {
@@ -205,7 +205,20 @@
           params.push("-c");
           params.push("user.email=\"" + GLOBAL.gulpConfig.buildEmail + "\"");
         }
-        return util.runCommand("git", params, {}, stdRedirect);
+        hadError = false;
+        result = util.runCommand("git", params, {}, function(d, type) {
+          if (type === "error") {
+            hadError = true;
+          }
+          process.stdout.write(d);
+          return null;
+        });
+        return result.then(function() {
+          if (hadError) {
+            throw new Error("Cannot checkout h5-ide-build");
+          }
+          return true;
+        });
       };
     },
     preCommit: function() {
@@ -387,10 +400,9 @@
         tasks = tasks.concat([Tasks.logDeployInDevRepo, Tasks.fetchRepo(debugMode), Tasks.preCommit, Tasks.fileVersion, Tasks.finalCommit]);
       }
       return tasks.reduce(Q.when, true).then(function() {
-        console.log(gutil.colors.bgBlue.white("\n [Build Succeed] "));
-        return true;
+        return console.log(gutil.colors.bgBlue.white("\n [Build Succeed] ") + "\n");
       }, function(p) {
-        console.log(gutil.colors.bgRed.white("[Build Task Aborted]", p));
+        console.log("[", gutil.colors.bgRed.white("Build Task Aborted"), "]", p);
         throw new Error("\n");
       });
     }

@@ -696,7 +696,7 @@ Following rule(s) will be deleted from its(their) security group:</div>
 					<input id="radio_inbound" type="radio" name="sg-direction" checked="checked" value="inbound" />
 					<label for="radio_inbound"></label>
 				</div>
-				<label for="radio_inbound" ><i class="icon-inbound"></i>{{ i18n "POP_SGRULE_LBL_INBOUND" }}</label>
+				<label for="radio_inbound" ><i class="icon-inbound icon-label"></i>{{ i18n "POP_SGRULE_LBL_INBOUND" }}</label>
 			</div>
 
 			<div class="radio-group-horizontal">
@@ -704,7 +704,7 @@ Following rule(s) will be deleted from its(their) security group:</div>
 					<input id="radio_outbound" type="radio" name="sg-direction" value="outbound"/>
 					<label for="radio_outbound"></label>
 				</div>
-				<label for="radio_outbound"><i class="icon-outbound"></i>{{ i18n "POP_SGRULE_LBL_OUTBOUND" }}</label>
+				<label for="radio_outbound"><i class="icon-outbound icon-label"></i>{{ i18n "POP_SGRULE_LBL_OUTBOUND" }}</label>
 			</div>
 			{{/if}}
 			</div>

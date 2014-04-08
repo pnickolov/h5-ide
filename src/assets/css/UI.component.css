@@ -1687,6 +1687,7 @@ textarea {
 	font-size    : 12px;
 	position     : relative;
 	cursor       : pointer;
+	display      : block;
 }
 
 .selectbox .dropdown li:last-child {

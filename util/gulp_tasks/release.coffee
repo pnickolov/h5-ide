@@ -86,7 +86,7 @@ Tasks =
     p = ["./src/**/*.js", "!./src/test/**/*"]
 
     d = Q.defer()
-    gulp.src( p, SrcOption ).pipe( dest() ).on( "end", end(d) )
+    gulp.src( p, SrcOption ).pipe( confCompile( true ) ).pipe( dest() ).on( "end", end(d) )
     d.promise
 
   compileLangSrc : ()->

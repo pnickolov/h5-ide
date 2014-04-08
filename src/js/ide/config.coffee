@@ -98,6 +98,7 @@ require.config {
 		'hoverIntent'        : 'ui/jquery.hoverIntent'
 		'bootstrap-carousel' : 'ui/bootstrap-carousel'
 		'jqpagination'       : 'ui/jqpagination'
+		"jquerysort"         : 'ui/jquery.sort'
 
 
 		#############################################
@@ -226,14 +227,6 @@ require.config {
 		'unmanagedvpc_view'  : 'component/unmanagedvpc/view'
 		'unmanagedvpc_model' : 'component/unmanagedvpc/model'
 
-		'jquery_sort'       : 'component/stateeditor/lib/jquery_sort'
-		'markdown'    : 'component/stateeditor/lib/markdown'
-		'ace'                : 'component/stateeditor/lib/ace/ace'
-		'ace_ext_language_tools' : 'component/stateeditor/lib/ace/ext-language_tools'
-		'stateeditor'        : 'component/stateeditor/main'
-		'stateeditor_view'   : 'component/stateeditor/view'
-		'stateeditor_model'  : 'component/stateeditor/model'
-
 		'validation'         : 'component/trustedadvisor/validation'
 		'ta_conf'            : 'component/trustedadvisor/config'
 		'validation_helper'	 : 'component/trustedadvisor/lib/helper'
@@ -292,21 +285,6 @@ require.config {
 		'process'      :
 			deps       : [ 'process_view', 'process_model', 'MC' ]
 
-		# unmanaged vpc
-
-		# state editor
-		'jquery_sort' :
-			deps       : [ 'jquery', 'MC' ]
-
-		'markdown' :
-			deps       : [ 'MC' ]
-
-		'ace_ext_language_tools' :
-			deps       : [ 'ace' ]
-
-		'stateeditor'  :
-			deps       : [ 'stateeditor_view', 'stateeditor_model', 'jquery_sort', 'markdown', 'ace_ext_language_tools', 'MC' ]
-
 	### env:prod ###
 	# The rule of bundles is that, if an ID defined above is ever included in a bundle
 	# Then that ID should appear in the bundle's array.
@@ -359,6 +337,7 @@ require.config {
 			"jqpagination"
 			'hoverIntent'
 			'bootstrap-carousel'
+			'jquerysort'
 		]
 		"model/model" : [
 			'base_model'
@@ -418,11 +397,17 @@ require.config {
 		"component/sgrule/SGRulePopup" : []
 		"component/exporter/exporter"  : [ "component/exporter/Download", "component/exporter/Thumbnail", "component/exporter/JsonExporter" ]
 		"module/design/framework/DesignBundle" : [ "Design", "CanvasManager" ]
+		"component/stateeditor/stateeditor" : []
 		"property" : []
 
 	bundleExcludes : # This is a none requirejs option, but it's used by compiler to exclude some of the source.
 		"lib/deprecated" : ["Design"]
 		"component/sgrule/SGRulePopup" : [ "Design" ]
+		"component/stateeditor/stateeditor" : [
+			"component/stateeditor/lib/ace"
+			"component/stateeditor/lib/markdown"
+			"validation"
+		]
 		"module/design/framework/DesignBundle" : [ "component/sgrule/SGRulePopup" ]
 		"property" : [ "component/sgrule/SGRulePopup" ]
 

@@ -4,13 +4,14 @@
 
 define [ 'event',
          'i18n!nls/lang.js',
-         './component/stateeditor/template',
-         './component/stateeditor/validate',
+         './template',
+         './validate',
          'constant',
          'instance_model',
+         './lib/markdown',
          'UI.errortip'
 
-], ( ide_event, lang, template , validate, constant, instance_model ) ->
+], ( ide_event, lang, template , validate, constant, instance_model, Markdown) ->
 
     # Register Partials
     Handlebars.registerPartial(id, tpl) for id, tpl of template

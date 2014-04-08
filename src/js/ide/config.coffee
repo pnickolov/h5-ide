@@ -26,10 +26,11 @@
 
 require.config {
 
-	baseUrl : './'
-	locale  : language
-	urlArgs : "v=#{version}"
-	paths   :
+	baseUrl     : './'
+	waitSeconds : 30
+	locale      : language
+	urlArgs     : "v=#{version}"
+	paths       :
 
 		### env:dev ###
 		#############################################

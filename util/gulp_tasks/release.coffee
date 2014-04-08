@@ -56,12 +56,15 @@ end  = ( d, printNewlineWhenNotVerbose )->
 
 stdRedirect = (d)-> process.stdout.write d; null
 
+
+
+
 Tasks =
   tryKeepDeployFolder : ( qaMode )->
     if not qaMode and GLOBAL.gulpConfig.keepDeployFolder and fs.existsSync("./deploy/.git")
       return util.runCommand "mv", ["./deploy", "./h5-ide-build"], {}
 
-    return true
+    true
 
   cleanRepo : ()->
     logTask "Removing ignored files in src (git clean -Xf)"
@@ -180,7 +183,8 @@ Tasks =
 
 
       # First delete the repo
-      util.deleteFolderRecursive( process.cwd() + "/h5-ide-build" )
+      if not util.deleteFolderRecursive( process.cwd() + "/h5-ide-build" )
+        throw new Error("Cannot delete ./h5-ide-build, please manually delete it then retry.")
 
       # Checkout latest repo
       params = ["clone", GLOBAL.gulpConfig.buildRepoUrl, "-v", "--progress", "-b", if debugMode then "develop" else "master"]
@@ -326,7 +330,8 @@ Tasks =
         true
     .then ()->
       if GLOBAL.gulpConfig.autoPush and not GLOBAL.gulpConfig.keepDeployFolder
-        util.deleteFolderRecursive( process.cwd() + "/deploy" )
+        if not util.deleteFolderRecursive( process.cwd() + "/deploy" )
+          console.log gutil.colors.bgYellow.black "  Cannot delete ./deploy. You should manually delete ./deploy before next deploying.\n Or set the xxperimental gulpConfig.keepDeployFolder to `true`  "
       true
 
   test : ( qaMode )->
@@ -392,4 +397,11 @@ module.exports =
         Tasks.finalCommit
       ]
 
-    tasks.reduce( Q.when, Q() )
+    tasks
+      .reduce(Q.when, true)
+      .then ()->
+        console.log gutil.colors.bgBlue.white("\n [Build Succeed] ")
+        true
+      , (p)->
+        console.log gutil.colors.bgRed.white("[Build Task Aborted]", p)
+        throw new Error("\n") # Use this method to tell gulp that our task are aborted.

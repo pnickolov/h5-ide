@@ -45,25 +45,31 @@ util =
     title
 
   deleteFolderRecursive : ( path )->
-    if not fs.existsSync( path ) then return
+    if not fs.existsSync( path ) then return true
 
     for file, index in ( fs.readdirSync( path ) || [] )
       curPath = path + "/" + file
       if fs.lstatSync( curPath ).isDirectory()
-        util.deleteFolderRecursive( curPath )
+        if not util.deleteFolderRecursive( curPath )
+          return false
       else
         try
+          if process.platform is "win32" then fs.chmodSync curPath, 666
+
           fs.unlinkSync( curPath )
         catch e
           if GLOBAL.gulpConfig.verbose
             console.log "[Cannot remove file]", curPath
+          return false
 
     try
       fs.rmdirSync( path )
     catch e
       if GLOBAL.gulpConfig.verbose
         console.log "[Cannot remove folder]", path
-    null
+      return false
+
+    true
 
   runCommand : ( command, args, options, handlers )->
     d = Q.defer()

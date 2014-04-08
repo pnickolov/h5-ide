@@ -193,7 +193,9 @@
             return util.runCommand("git", ["pull"], option, stdRedirect);
           });
         }
-        util.deleteFolderRecursive(process.cwd() + "/h5-ide-build");
+        if (!util.deleteFolderRecursive(process.cwd() + "/h5-ide-build")) {
+          throw new Error("Cannot delete ./h5-ide-build, please manually delete it then retry.");
+        }
         params = ["clone", GLOBAL.gulpConfig.buildRepoUrl, "-v", "--progress", "-b", debugMode ? "develop" : "master"];
         if (GLOBAL.gulpConfig.buildUsername) {
           params.push("-c");
@@ -346,7 +348,9 @@
         }
       }).then(function() {
         if (GLOBAL.gulpConfig.autoPush && !GLOBAL.gulpConfig.keepDeployFolder) {
-          util.deleteFolderRecursive(process.cwd() + "/deploy");
+          if (!util.deleteFolderRecursive(process.cwd() + "/deploy")) {
+            console.log(gutil.colors.bgYellow.black("  Cannot delete ./deploy. You should manually delete ./deploy before next deploying.\n Or set the xxperimental gulpConfig.keepDeployFolder to `true`  "));
+          }
         }
         return true;
       });
@@ -382,7 +386,13 @@
       if (!qaMode) {
         tasks = tasks.concat([Tasks.logDeployInDevRepo, Tasks.fetchRepo(debugMode), Tasks.preCommit, Tasks.fileVersion, Tasks.finalCommit]);
       }
-      return tasks.reduce(Q.when, Q());
+      return tasks.reduce(Q.when, true).then(function() {
+        console.log(gutil.colors.bgBlue.white("\n [Build Succeed] "));
+        return true;
+      }, function(p) {
+        console.log(gutil.colors.bgRed.white("[Build Task Aborted]", p));
+        throw new Error("\n");
+      });
     }
   };
 

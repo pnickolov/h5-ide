@@ -1059,7 +1059,13 @@ button {
 	display   : block;
 	cursor    : pointer;
 }
-#global-refresh:before { margin-right: 4px; vertical-align : middle; }
+
+#global-refresh:before {
+	margin-right: 4px; 
+	font-size   : 12px;
+	line-height : 18px; 
+}
+
 #global-refresh:hover  { color: #148BE6; }
 
 #global-region-header .btn {
@@ -3084,6 +3090,14 @@ td.table-action a.btn {
 	background: #17c249;
 	border-right: 1px solid #17a03a;
 	border-bottom: 1px solid #17a03a;
+}
+
+.toolbar-btn-primary.disabled,
+.toolbar-btn-primary.disabled:hover,
+.toolbar-btn-primary.disabled:active {
+	background: rgb(75, 75, 75);
+	border-right: #ccc;
+	border-bottom: 1px solid transparent;
 }
 
 #toolbar-export-png.toolbar-btn-primary {

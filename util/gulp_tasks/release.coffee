@@ -199,7 +199,7 @@ Tasks =
       hadError = false
 
       result = util.runCommand "git", params, {}, ( d, type )->
-        if type == "error"
+        if d.indexOf "fatal" != -1
           hadError = true
         process.stdout.write d
         null
@@ -406,10 +406,10 @@ module.exports =
 
     if not qaMode
       tasks = tasks.concat [
-        Tasks.logDeployInDevRepo
         Tasks.fetchRepo( debugMode )
         Tasks.preCommit
         Tasks.fileVersion
+        Tasks.logDeployInDevRepo
         Tasks.finalCommit
       ]
 

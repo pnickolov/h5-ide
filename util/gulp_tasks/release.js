@@ -207,7 +207,7 @@
         }
         hadError = false;
         result = util.runCommand("git", params, {}, function(d, type) {
-          if (type === "error") {
+          if (d.indexOf("fatal" !== -1)) {
             hadError = true;
           }
           process.stdout.write(d);
@@ -402,7 +402,7 @@
       }
       tasks = [Tasks.tryKeepDeployFolder(qaMode), Tasks.cleanRepo, Tasks.copyAssets, Tasks.copyJs, Tasks.compileLangSrc, Tasks.compileCoffee(debugMode), Tasks.compileTemplate, Tasks.processHtml, Tasks.concatJS(debugMode, outputPath), Tasks.removeBuildFolder, Tasks.test(qaMode)];
       if (!qaMode) {
-        tasks = tasks.concat([Tasks.logDeployInDevRepo, Tasks.fetchRepo(debugMode), Tasks.preCommit, Tasks.fileVersion, Tasks.finalCommit]);
+        tasks = tasks.concat([Tasks.fetchRepo(debugMode), Tasks.preCommit, Tasks.fileVersion, Tasks.logDeployInDevRepo, Tasks.finalCommit]);
       }
       return tasks.reduce(Q.when, true).then(function() {
         return console.log(gutil.colors.bgBlue.white("\n [Build Succeed] ") + "\n");

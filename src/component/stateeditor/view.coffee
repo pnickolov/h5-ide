@@ -862,12 +862,13 @@ define [ 'event',
                         }]
                     }))
                     $dictItemElem = $(newDictItemHTML).appendTo($currentDictItemContainer)
-                    $paraDictItem = $dictItemElem.nextAll('.parameter-dict-item')
-                    $paraValueAry = $paraDictItem.find('.parameter-value')
+                    # $paraDictItem = $dictItemElem.nextAll('.parameter-dict-item')
+                    $paraValueAry = $dictItemElem.find('.parameter-value')
                     $paraValueAry.addClass('disabled')
 
+                    $paraItem = $dictItemElem.parents('.parameter-item')
                     if not noBindEvent
-                        that.bindParaItemEvent($paraDictItem, paraObj)
+                        that.bindParaItemEvent($paraItem, paraObj)
 
         onDictInputBlur: (event) ->
 
@@ -927,8 +928,9 @@ define [ 'event',
                     $arrayItemElem = $(newArrayItemHTML).appendTo($currentArrayInputContainer)
                     $arrayItemElem.addClass('disabled')
 
+                    $paraItem = $arrayItemElem.parents('.parameter-item')
                     if not noBindEvent
-                        that.bindParaItemEvent($arrayItemElem, paraObj)
+                        that.bindParaItemEvent($paraItem, paraObj)
 
         onArrayInputBlur: (event) ->
 

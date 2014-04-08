@@ -2735,20 +2735,21 @@ td.table-action a.btn {
 }
 
 .ami-option-wrap button {
-	width: 114px;
-	font-size: 12px;
-	padding: 4px 0;
+	width     : 114px;
+	font-size : 12px;
+	padding   : 4px 0;
 }
 
+.ami-option-wrap button:hover {
+	background-color: #353A3F;
+}
 
 .ami-option-wrap button.active {
 	background-color: #148BE6;
-	border: 1px solid #1B7FCC;
 }
 
 .ami-option-wrap button.active:hover {
 	background-color: #34A3F8;
-	border: 1px solid #148BE6;
 }
 
 #community-ami-input {

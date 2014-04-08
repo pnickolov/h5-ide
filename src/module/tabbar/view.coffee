@@ -103,7 +103,7 @@ define [ 'event',
                     temp.html temp.find( 'i' ).get( 0 ).outerHTML + tab_name
 
                 # set Tabbar.current
-                if MC.common.other.isCurrentTab old_tab_id
+                if MC.common.other.isCurrentTab tab_id
                     ide_event.trigger ide_event.UPDATE_DESIGN_TAB_TYPE, tab_id, tab_id.split( '-' )[0]
 
                 null

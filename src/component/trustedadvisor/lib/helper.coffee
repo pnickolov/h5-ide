@@ -89,7 +89,9 @@ define [ 'constant', 'MC', 'i18n!nls/lang.js', 'Design', 'underscore' ], ( CONST
 
                 build = ( permission, direction ) ->
                     protocal = Helper.protocal.get permission.IpProtocol
-                    info[ direction ][ protocal ] or ( info[ direction ][ protocal ] = [] )
+
+                    info[ direction ][ protocal ] = [] if not info[ direction ][ protocal ]
+
                     theInfo = from: Number(permission.FromPort), to: Number(permission.ToPort), range: permission.IpRanges
                     if _.where( info[ direction ][ protocal ], theInfo ).length is 0
                         info[ direction ][ protocal ].push theInfo

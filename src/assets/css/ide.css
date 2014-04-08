@@ -3049,18 +3049,6 @@ td.table-action a.btn {
 	min-width : initial;
 }
 
-.btn-toolbar .dropdown > li {
-	display       : block;
-	border-bottom : 1px solid #E0E0E0;
-	cursor        : pointer !important;
-	color         : #555;
-	text-align    : left;
-	line-height   : 28px;
-	padding-left  : 12px;
-	padding-right : 10px;
-	font-size     : 12px
-}
-
 .btn-toolbar .dropdown > li > i, .btn-toolbar .dropdown > li:before {
 	padding-right : 0.5em;
 	vertical-align: -1px;
@@ -3095,9 +3083,10 @@ td.table-action a.btn {
 .toolbar-btn-primary.disabled,
 .toolbar-btn-primary.disabled:hover,
 .toolbar-btn-primary.disabled:active {
-	background: rgb(75, 75, 75);
-	border-right: #ccc;
+	background   : rgb(75, 75, 75);
+	border-right : #ccc;
 	border-bottom: 1px solid transparent;
+	color        : #ccc;
 }
 
 #toolbar-export-png.toolbar-btn-primary {
@@ -3123,8 +3112,11 @@ td.table-action a.btn {
 	display: none;
 }
 
-.toolbar-line-style .dropdown li {
-	line-height: 28px;
+.btn-toolbar .dropdown > li {
+	line-height   : 24px;
+	padding-bottom: 6px !important;
+	cursor        : pointer;
+	text-align    : left;
 }
 
 #apply-visops {

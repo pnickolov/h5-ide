@@ -27,7 +27,7 @@ define [ "../ComplexResModel", "./VpcModel", "Design", "constant", "i18n!nls/lan
 
       if not cannotDel
         LcModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration )
-        cannotDel = LcModel.allObjects.some ( lc )-> lc.get("publicIp")
+        cannotDel = LcModel.allObjects().some ( lc )-> lc.get("publicIp")
 
       if cannotDel
         return { error : lang.ide.CVS_CFM_DEL_IGW }

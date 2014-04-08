@@ -9,13 +9,36 @@
 # **********************************************************
 */
 
-var API_HOST = 'https://api.visualops.io';
-
 var MC = {
 	// Global Variable
+
+	DOMAIN: 'visualops.io',
+	PROTOCOL: 'https',
+
+	/* env:dev */
+	DOMAIN: 'mc3.io',
+	PROTOCOL: 'http',
+    /* env:dev:end */
+
+
+    get API_HOST() {
+    	return this.PROTOCOL + '://api.' + this.DOMAIN
+    },
+
+    get IDE_HOST() {
+    	return this.PROTOCOL + '://ide.' + this.DOMAIN
+    },
+
 	IMG_URL: './assets/images/',
-	WS_URL: API_HOST + '/ws/',//-> 8300
-	SAVEPNG_URL: API_HOST + '/export/',//->8400
+
+	get WS_URL() {
+		return this.API_HOST + '/ws/';//-> 8300
+	},
+
+	get SAVEPNG_URL() {
+		return this.API_HOST + '/export/';//->8400
+	},
+
 
 	current_module : {},
 
@@ -76,7 +99,7 @@ var MC = {
 	api: function (option)
 	{
 		$.ajax({
-			url: API_HOST + option.url,
+			url: MC.API_HOST + option.url,
 			dataType: 'json',
 			type: 'POST',
 			data: JSON.stringify({
@@ -525,7 +548,7 @@ MC.storage = storage( localStorage )
 MC.session = storage( sessionStorage )
 
 MC.cacheForDev = function( key, data, callback ) {
-	/* env:dev*/
+	/* env:dev */
 
 	if ( key && data ) {
 		// don't cache if resolved_data is null or is_error is true
@@ -546,7 +569,7 @@ MC.cacheForDev = function( key, data, callback ) {
 		return data
 	}
 
-	/* env:dev:end*/
+	/* env:dev:end */
 
 	return false;
 

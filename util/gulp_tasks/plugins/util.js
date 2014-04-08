@@ -60,22 +60,28 @@
     deleteFolderRecursive: function(path) {
       var curPath, e, file, index, _i, _len, _ref;
       if (!fs.existsSync(path)) {
-        return;
+        return true;
       }
       _ref = fs.readdirSync(path) || [];
       for (index = _i = 0, _len = _ref.length; _i < _len; index = ++_i) {
         file = _ref[index];
         curPath = path + "/" + file;
         if (fs.lstatSync(curPath).isDirectory()) {
-          util.deleteFolderRecursive(curPath);
+          if (!util.deleteFolderRecursive(curPath)) {
+            return false;
+          }
         } else {
           try {
+            if (process.platform === "win32") {
+              fs.chmodSync(curPath, 666);
+            }
             fs.unlinkSync(curPath);
           } catch (_error) {
             e = _error;
             if (GLOBAL.gulpConfig.verbose) {
               console.log("[Cannot remove file]", curPath);
             }
+            return false;
           }
         }
       }
@@ -86,8 +92,9 @@
         if (GLOBAL.gulpConfig.verbose) {
           console.log("[Cannot remove folder]", path);
         }
+        return false;
       }
-      return null;
+      return true;
     },
     runCommand: function(command, args, options, handlers) {
       var d, onData, process;

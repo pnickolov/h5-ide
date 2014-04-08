@@ -180,7 +180,7 @@
     },
     fetchRepo: function(debugMode) {
       return function() {
-        var move, option, params;
+        var hadError, move, option, params, result;
         logTask("Checking out h5-ide-build");
         if (fs.existsSync("./h5-ide-build/.git")) {
           option = {
@@ -193,7 +193,9 @@
             return util.runCommand("git", ["pull"], option, stdRedirect);
           });
         }
-        util.deleteFolderRecursive(process.cwd() + "/h5-ide-build");
+        if (!util.deleteFolderRecursive(process.cwd() + "/h5-ide-build")) {
+          throw new Error("Cannot delete ./h5-ide-build, please manually delete it then retry.");
+        }
         params = ["clone", GLOBAL.gulpConfig.buildRepoUrl, "-v", "--progress", "-b", debugMode ? "develop" : "master"];
         if (GLOBAL.gulpConfig.buildUsername) {
           params.push("-c");
@@ -203,7 +205,20 @@
           params.push("-c");
           params.push("user.email=\"" + GLOBAL.gulpConfig.buildEmail + "\"");
         }
-        return util.runCommand("git", params, {}, stdRedirect);
+        hadError = false;
+        result = util.runCommand("git", params, {}, function(d, type) {
+          if (type === "error") {
+            hadError = true;
+          }
+          process.stdout.write(d);
+          return null;
+        });
+        return result.then(function() {
+          if (hadError) {
+            throw new Error("Cannot checkout h5-ide-build");
+          }
+          return true;
+        });
       };
     },
     preCommit: function() {
@@ -346,7 +361,9 @@
         }
       }).then(function() {
         if (GLOBAL.gulpConfig.autoPush && !GLOBAL.gulpConfig.keepDeployFolder) {
-          util.deleteFolderRecursive(process.cwd() + "/deploy");
+          if (!util.deleteFolderRecursive(process.cwd() + "/deploy")) {
+            console.log(gutil.colors.bgYellow.black("  Cannot delete ./deploy. You should manually delete ./deploy before next deploying.\n Or set the xxperimental gulpConfig.keepDeployFolder to `true`  "));
+          }
         }
         return true;
       });
@@ -382,7 +399,12 @@
       if (!qaMode) {
         tasks = tasks.concat([Tasks.logDeployInDevRepo, Tasks.fetchRepo(debugMode), Tasks.preCommit, Tasks.fileVersion, Tasks.finalCommit]);
       }
-      return tasks.reduce(Q.when, Q());
+      return tasks.reduce(Q.when, true).then(function() {
+        return console.log(gutil.colors.bgBlue.white("\n [Build Succeed] ") + "\n");
+      }, function(p) {
+        console.log("[", gutil.colors.bgRed.white("Build Task Aborted"), "]", p);
+        throw new Error("\n");
+      });
     }
   };
 

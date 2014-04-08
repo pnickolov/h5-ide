@@ -211,7 +211,7 @@ require.config {
 
 		#sub module with design
 		'resource'           : 'module/design/resource/main'
-		'property'           : 'module/design/property/main'
+		'property'           : 'module/design/property/property'
 		'canvas'             : 'module/design/canvas/main'
 		'toolbar'            : 'module/design/toolbar/main'
 

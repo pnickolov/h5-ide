@@ -37,7 +37,7 @@ define [ 'constant', 'MC', '../../helper', 'Design' ], ( CONST, MC, Helper, Desi
 
 			_.each routeDesAry, (routeDes) ->
 
-				SubnetModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet )
+				SubnetModel = Design.modelClassForType( CONST.AWS_RESOURCE_TYPE.AWS_VPC_Subnet )
 
 				if SubnetModel.isCidrConflict(currentRouteDes, routeDes)
 

@@ -17,7 +17,7 @@ var MC = {
 
 	/* env:dev */
 	DOMAIN: 'mc3.io',
-	PROTOCOL: 'http',
+	PROTOCOL: 'https',
     /* env:dev:end */
 
 

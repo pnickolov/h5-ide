@@ -138,6 +138,12 @@ define [ 'MC', 'event',
 
         clickRunIcon : ( event ) ->
             console.log 'clickRunIcon'
+
+            # when disabled not click
+            if $('#toolbar-run').hasClass( 'disabled' )
+                modal.close()
+                return
+
             me = this
             event.preventDefault()
             # check credential

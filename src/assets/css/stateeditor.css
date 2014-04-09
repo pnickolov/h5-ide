@@ -72,7 +72,7 @@
 }
 
 #state-editor, .ace_autocomplete {
-	font-family: "Monaco","Consolas", monospace !important;
+	font-family: "Monaco","Consolas","Ubuntu Mono", monospace !important;
 }
 
 #state-editor.full {

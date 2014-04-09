@@ -1,4 +1,4 @@
-define [ 'constant', 'MC','i18n!nls/lang.js', 'validation_helper'], ( constant, MC, lang, taHelper ) ->
+define [ 'constant', 'MC','i18n!nls/lang.js', '../../helper'], ( constant, MC, lang, taHelper ) ->
 
 	isHaveIGWForInternetELB = (elbUID) ->
 

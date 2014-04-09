@@ -86,15 +86,15 @@ Tasks =
     p = ["./src/**/*.js", "!./src/test/**/*"]
 
     d = Q.defer()
-    gulp.src( p, SrcOption ).pipe( dest() ).on( "end", end(d) )
+    gulp.src( p, SrcOption ).pipe( confCompile( true ) ).pipe( dest() ).on( "end", end(d) )
     d.promise
 
   compileLangSrc : ()->
     logTask "Compiling lang-source"
 
     d = Q.defer()
-    gulp.src(["./src/nls/lang-source.coffee"])
-        .pipe(langsrc("./build",false,GLOBAL.gulpConfig.verbose))
+    gulp.src(["./src/nls/lang-source.coffee"], SrcOption )
+        .pipe( langsrc("./build",false,GLOBAL.gulpConfig.verbose,true) )
         .on( "end", end(d) )
     d.promise
 
@@ -171,15 +171,17 @@ Tasks =
     ()->
       logTask "Checking out h5-ide-build"
 
-      if fs.existsSync("./h5-ide-build/.git")
+      if fs.existsSync("./h5-ide-build/.git") and GLOBAL.gulpConfig.keepDeployFolder
+        throw new Error("Please remove h5-ide-build and retry.")
+        return
         # The deploy folder is not removed
-        option = { cwd : process.cwd() + "/h5-ide-build" }
-        move = util.runCommand "git", ["reset", "--hard"], option
+        # option = { cwd : process.cwd() + "/h5-ide-build" }
+        # move = util.runCommand "git", ["reset", "--hard"], option
 
-        return move.then ()->
-          util.runCommand "git", ["checkout", if debugMode then "develop" else "master" ], option
-        .then ()->
-          util.runCommand "git", ["pull"], option, stdRedirect
+        # return move.then ()->
+        #   util.runCommand "git", ["checkout", if debugMode then "develop" else "master" ], option
+        # .then ()->
+        #   util.runCommand "git", ["pull"], option, stdRedirect
 
 
       # First delete the repo
@@ -199,7 +201,8 @@ Tasks =
       hadError = false
 
       result = util.runCommand "git", params, {}, ( d, type )->
-        if type == "error"
+        if d.indexOf("fatal") != -1
+          console.log d
           hadError = true
         process.stdout.write d
         null
@@ -312,6 +315,7 @@ Tasks =
   logDeployInDevRepo : ()->
     logTask "Commit IdeVersion in h5-ide"
     # Update IDE Version to dev repo
+    ideversion.read( true )
     util.runCommand "git", ["commit", "-m", '"Deploy '+ideversion.version()+'"', "package.json"]
 
 
@@ -379,12 +383,19 @@ Tasks =
 module.exports =
   build : ( mode )->
 
+    GLOBAL.gulpConfig.keepDeployFolder = false # Disable keepDeployFolder!
+
     deploy     = mode isnt "qa"
     debugMode  = mode is "qa" or mode is "debug"
     outputPath = if mode is "qa" then "./qa" else undefined
     qaMode     = mode is "qa"
 
-    ideversion.read( deploy )
+    ideversion.read()
+
+    if mode is "release"
+      releaseVersion = GLOBAL.gulpConfig.version.split(".")
+      releaseVersion.length = 3
+      GLOBAL.gulpConfig.version = releaseVersion.join(".")
 
     tasks = [
       Tasks.tryKeepDeployFolder( qaMode )
@@ -402,10 +413,10 @@ module.exports =
 
     if not qaMode
       tasks = tasks.concat [
-        Tasks.logDeployInDevRepo
         Tasks.fetchRepo( debugMode )
         Tasks.preCommit
         Tasks.fileVersion
+        Tasks.logDeployInDevRepo
         Tasks.finalCommit
       ]
 

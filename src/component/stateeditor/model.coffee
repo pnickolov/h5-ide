@@ -120,7 +120,7 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 			currentCompData = that.get('compData')
 			resAttrDataAry = MC.aws.aws.genAttrRefList(currentCompData, allCompData)
 			that.set('resAttrDataAry', resAttrDataAry)
-			
+
 			that.genAttrRefRegexList()
 
 			groupResSelectData = that.getGroupResSelectData()
@@ -312,7 +312,7 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 					null
 
 			resStateDataAry = resStateDataAry.sort (val1, val2) ->
-				
+
 				if val1.name > val2.name
 					return 1
 				else if val1.name < val2.name
@@ -424,7 +424,7 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 				lcCompData = null
 				if resUID and _.isNumber(stateNum)
 					compData = allCompData[resUID]
-					
+
 					if compData.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
 						lcUIDRef = compData.resource.LaunchConfigurationName
 						if lcUIDRef
@@ -589,6 +589,7 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 								stateNum = stateIdNumMap[logObj.id]
 								if _.isNumber(stateNum)
 									originStatusDataAry[stateNum] = logObj
+								return
 
 					originStatusDataAry.unshift({
 						id: 'Agent',
@@ -646,7 +647,6 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 							res_id: resId,
 							res_name: compObj.name
 						})
-				null
 
 				if compType is 'AWS.AutoScaling.Group' and compData.type is 'AWS.AutoScaling.LaunchConfiguration'
 

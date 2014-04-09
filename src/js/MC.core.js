@@ -525,7 +525,7 @@ MC.storage = storage( localStorage )
 MC.session = storage( sessionStorage )
 
 MC.cacheForDev = function( key, data, callback ) {
-	/* env:dev*/
+	/* env:dev */
 
 	if ( key && data ) {
 		// don't cache if resolved_data is null or is_error is true
@@ -546,7 +546,7 @@ MC.cacheForDev = function( key, data, callback ) {
 		return data
 	}
 
-	/* env:dev:end*/
+	/* env:dev:end */
 
 	return false;
 

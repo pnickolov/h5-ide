@@ -346,7 +346,7 @@ firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 // For controling Youtube player
 var youtube_player = [];
 
-function onYouTubePlayerAPIReady()
+window.onYouTubePlayerAPIReady = function ()
 {
 	if (youtube_player.length !== 0)
 	{

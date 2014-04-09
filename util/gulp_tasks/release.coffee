@@ -93,8 +93,8 @@ Tasks =
     logTask "Compiling lang-source"
 
     d = Q.defer()
-    gulp.src(["./src/nls/lang-source.coffee"])
-        .pipe(langsrc("./build",false,GLOBAL.gulpConfig.verbose))
+    gulp.src(["./src/nls/lang-source.coffee"], SrcOption )
+        .pipe( langsrc("./build",false,GLOBAL.gulpConfig.verbose) )
         .on( "end", end(d) )
     d.promise
 
@@ -171,15 +171,17 @@ Tasks =
     ()->
       logTask "Checking out h5-ide-build"
 
-      if fs.existsSync("./h5-ide-build/.git")
+      if fs.existsSync("./h5-ide-build/.git") and GLOBAL.gulpConfig.keepDeployFolder
+        throw new Error("Please remove h5-ide-build and retry.")
+        return
         # The deploy folder is not removed
-        option = { cwd : process.cwd() + "/h5-ide-build" }
-        move = util.runCommand "git", ["reset", "--hard"], option
+        # option = { cwd : process.cwd() + "/h5-ide-build" }
+        # move = util.runCommand "git", ["reset", "--hard"], option
 
-        return move.then ()->
-          util.runCommand "git", ["checkout", if debugMode then "develop" else "master" ], option
-        .then ()->
-          util.runCommand "git", ["pull"], option, stdRedirect
+        # return move.then ()->
+        #   util.runCommand "git", ["checkout", if debugMode then "develop" else "master" ], option
+        # .then ()->
+        #   util.runCommand "git", ["pull"], option, stdRedirect
 
 
       # First delete the repo
@@ -199,7 +201,8 @@ Tasks =
       hadError = false
 
       result = util.runCommand "git", params, {}, ( d, type )->
-        if d.indexOf "fatal" != -1
+        if d.indexOf("fatal") != -1
+          console.log d
           hadError = true
         process.stdout.write d
         null
@@ -378,6 +381,8 @@ Tasks =
   #*** Push to remote
 module.exports =
   build : ( mode )->
+
+    GLOBAL.gulpConfig.keepDeployFolder = false # Disable keepDeployFolder!
 
     deploy     = mode isnt "qa"
     debugMode  = mode is "qa" or mode is "debug"

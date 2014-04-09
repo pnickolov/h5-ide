@@ -122,7 +122,7 @@
       var d;
       logTask("Compiling lang-source");
       d = Q.defer();
-      gulp.src(["./src/nls/lang-source.coffee"]).pipe(langsrc("./build", false, GLOBAL.gulpConfig.verbose)).on("end", end(d));
+      gulp.src(["./src/nls/lang-source.coffee"], SrcOption).pipe(langsrc("./build", false, GLOBAL.gulpConfig.verbose)).on("end", end(d));
       return d.promise;
     },
     compileCoffee: function(debugMode) {
@@ -180,18 +180,11 @@
     },
     fetchRepo: function(debugMode) {
       return function() {
-        var hadError, move, option, params, result;
+        var hadError, params, result;
         logTask("Checking out h5-ide-build");
-        if (fs.existsSync("./h5-ide-build/.git")) {
-          option = {
-            cwd: process.cwd() + "/h5-ide-build"
-          };
-          move = util.runCommand("git", ["reset", "--hard"], option);
-          return move.then(function() {
-            return util.runCommand("git", ["checkout", debugMode ? "develop" : "master"], option);
-          }).then(function() {
-            return util.runCommand("git", ["pull"], option, stdRedirect);
-          });
+        if (fs.existsSync("./h5-ide-build/.git") && GLOBAL.gulpConfig.keepDeployFolder) {
+          throw new Error("Please remove h5-ide-build and retry.");
+          return;
         }
         if (!util.deleteFolderRecursive(process.cwd() + "/h5-ide-build")) {
           throw new Error("Cannot delete ./h5-ide-build, please manually delete it then retry.");
@@ -207,7 +200,8 @@
         }
         hadError = false;
         result = util.runCommand("git", params, {}, function(d, type) {
-          if (d.indexOf("fatal" !== -1)) {
+          if (d.indexOf("fatal") !== -1) {
+            console.log(d);
             hadError = true;
           }
           process.stdout.write(d);
@@ -390,6 +384,7 @@
   module.exports = {
     build: function(mode) {
       var debugMode, deploy, outputPath, qaMode, releaseVersion, tasks;
+      GLOBAL.gulpConfig.keepDeployFolder = false;
       deploy = mode !== "qa";
       debugMode = mode === "qa" || mode === "debug";
       outputPath = mode === "qa" ? "./qa" : void 0;

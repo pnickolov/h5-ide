@@ -18,7 +18,7 @@
   buildLangSrc = require("./lang");
 
   module.exports = function(dest, useCache, shouldLog) {
-    var pipeline, startPipeline, writeFile;
+    var pipeline, startPipeline;
     if (dest == null) {
       dest = ".";
     }
@@ -34,7 +34,7 @@
       startPipeline = coffee();
     }
     pipeline = startPipeline.pipe(es.through(function(file) {
-      var ctx;
+      var ctx, writeFile;
       if (shouldLog) {
         console.log(util.compileTitle(), "lang-souce.coffee");
       }
@@ -42,21 +42,21 @@
         module: {}
       });
       vm.runInContext(file.contents.toString("utf8"), ctx);
+      writeFile = function(p1, p2) {
+        var cwd;
+        cwd = process.cwd();
+        pipeline.emit("data", new gutil.File({
+          cwd: file.cwd,
+          base: file.base,
+          path: p1,
+          contents: new Buffer(p2)
+        }));
+        return null;
+      };
       buildLangSrc(writeFile, ctx.module.exports);
       return null;
     }));
     pipeline.pipe(gulp.dest(dest));
-    writeFile = function(p1, p2) {
-      var cwd;
-      cwd = process.cwd();
-      pipeline.emit("data", new gutil.File({
-        cwd: cwd,
-        base: cwd,
-        path: p1,
-        contents: new Buffer(p2)
-      }));
-      return null;
-    };
     return startPipeline;
   };
 

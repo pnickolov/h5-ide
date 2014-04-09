@@ -45,9 +45,6 @@ module.exports = {
   , buildUsername : "" // If empty, use Global Git Username
   , buildEmail    : "" // If empty, use Global Git Email
 
-  // If true, after running `gulp release` and `gulp debug`, the deploy folder is not removed.
-  , keepDeployFolder : false // Experimental
-
   // If true, it will try to automatically push the ready-to-depoly build to "git@github.com:MadeiraCloud/h5-ide-build.git"
   , autoPush : true
 

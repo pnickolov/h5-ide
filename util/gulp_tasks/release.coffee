@@ -60,12 +60,6 @@ stdRedirect = (d)-> process.stdout.write d; null
 
 
 Tasks =
-  tryKeepDeployFolder : ( qaMode )->
-    if not qaMode and GLOBAL.gulpConfig.keepDeployFolder and fs.existsSync("./deploy/.git")
-      return util.runCommand "mv", ["./deploy", "./h5-ide-build"], {}
-
-    true
-
   cleanRepo : ()->
     logTask "Removing ignored files in src (git clean -Xf)"
 
@@ -170,19 +164,6 @@ Tasks =
   fetchRepo : ( debugMode )->
     ()->
       logTask "Checking out h5-ide-build"
-
-      if fs.existsSync("./h5-ide-build/.git") and GLOBAL.gulpConfig.keepDeployFolder
-        throw new Error("Please remove h5-ide-build and retry.")
-        return
-        # The deploy folder is not removed
-        # option = { cwd : process.cwd() + "/h5-ide-build" }
-        # move = util.runCommand "git", ["reset", "--hard"], option
-
-        # return move.then ()->
-        #   util.runCommand "git", ["checkout", if debugMode then "develop" else "master" ], option
-        # .then ()->
-        #   util.runCommand "git", ["pull"], option, stdRedirect
-
 
       # First delete the repo
       if not util.deleteFolderRecursive( process.cwd() + "/h5-ide-build" )
@@ -345,9 +326,9 @@ Tasks =
         console.log gutil.colors.bgYellow.black("  You can delete `./deploy` after pushing. ")
         true
     .then ()->
-      if GLOBAL.gulpConfig.autoPush and not GLOBAL.gulpConfig.keepDeployFolder
+      if GLOBAL.gulpConfig.autoPush
         if not util.deleteFolderRecursive( process.cwd() + "/deploy" )
-          console.log gutil.colors.bgYellow.black "  Cannot delete ./deploy. You should manually delete ./deploy before next deploying.\n Or set the xxperimental gulpConfig.keepDeployFolder to `true`  "
+          console.log gutil.colors.bgYellow.black "  Cannot delete ./deploy. You should manually delete ./deploy before next deploying.  "
       true
 
   test : ( qaMode )->
@@ -383,8 +364,6 @@ Tasks =
 module.exports =
   build : ( mode )->
 
-    GLOBAL.gulpConfig.keepDeployFolder = false # Disable keepDeployFolder!
-
     deploy     = mode isnt "qa"
     debugMode  = mode is "qa" or mode is "debug"
     outputPath = if mode is "qa" then "./qa" else undefined
@@ -398,7 +377,6 @@ module.exports =
       GLOBAL.gulpConfig.version = releaseVersion.join(".")
 
     tasks = [
-      Tasks.tryKeepDeployFolder( qaMode )
       Tasks.cleanRepo
       Tasks.copyAssets
       Tasks.copyJs

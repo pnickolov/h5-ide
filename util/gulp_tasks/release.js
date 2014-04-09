@@ -90,12 +90,6 @@
   };
 
   Tasks = {
-    tryKeepDeployFolder: function(qaMode) {
-      if (!qaMode && GLOBAL.gulpConfig.keepDeployFolder && fs.existsSync("./deploy/.git")) {
-        return util.runCommand("mv", ["./deploy", "./h5-ide-build"], {});
-      }
-      return true;
-    },
     cleanRepo: function() {
       logTask("Removing ignored files in src (git clean -Xf)");
       return util.runCommand("git", ["clean", "-Xdf"], {
@@ -182,10 +176,6 @@
       return function() {
         var hadError, params, result;
         logTask("Checking out h5-ide-build");
-        if (fs.existsSync("./h5-ide-build/.git") && GLOBAL.gulpConfig.keepDeployFolder) {
-          throw new Error("Please remove h5-ide-build and retry.");
-          return;
-        }
         if (!util.deleteFolderRecursive(process.cwd() + "/h5-ide-build")) {
           throw new Error("Cannot delete ./h5-ide-build, please manually delete it then retry.");
         }
@@ -355,9 +345,9 @@
           return true;
         }
       }).then(function() {
-        if (GLOBAL.gulpConfig.autoPush && !GLOBAL.gulpConfig.keepDeployFolder) {
+        if (GLOBAL.gulpConfig.autoPush) {
           if (!util.deleteFolderRecursive(process.cwd() + "/deploy")) {
-            console.log(gutil.colors.bgYellow.black("  Cannot delete ./deploy. You should manually delete ./deploy before next deploying.\n Or set the xxperimental gulpConfig.keepDeployFolder to `true`  "));
+            console.log(gutil.colors.bgYellow.black("  Cannot delete ./deploy. You should manually delete ./deploy before next deploying.  "));
           }
         }
         return true;
@@ -385,7 +375,6 @@
   module.exports = {
     build: function(mode) {
       var debugMode, deploy, outputPath, qaMode, releaseVersion, tasks;
-      GLOBAL.gulpConfig.keepDeployFolder = false;
       deploy = mode !== "qa";
       debugMode = mode === "qa" || mode === "debug";
       outputPath = mode === "qa" ? "./qa" : void 0;
@@ -396,7 +385,7 @@
         releaseVersion.length = 3;
         GLOBAL.gulpConfig.version = releaseVersion.join(".");
       }
-      tasks = [Tasks.tryKeepDeployFolder(qaMode), Tasks.cleanRepo, Tasks.copyAssets, Tasks.copyJs, Tasks.compileLangSrc, Tasks.compileCoffee(debugMode), Tasks.compileTemplate, Tasks.processHtml, Tasks.concatJS(debugMode, outputPath), Tasks.removeBuildFolder, Tasks.test(qaMode)];
+      tasks = [Tasks.cleanRepo, Tasks.copyAssets, Tasks.copyJs, Tasks.compileLangSrc, Tasks.compileCoffee(debugMode), Tasks.compileTemplate, Tasks.processHtml, Tasks.concatJS(debugMode, outputPath), Tasks.removeBuildFolder, Tasks.test(qaMode)];
       if (!qaMode) {
         tasks = tasks.concat([Tasks.fetchRepo(debugMode), Tasks.preCommit, Tasks.fileVersion, Tasks.logDeployInDevRepo, Tasks.finalCommit]);
       }

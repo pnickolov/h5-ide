@@ -96,6 +96,23 @@
         cwd: process.cwd() + "/src"
       }, stdRedirect);
     },
+    checkGitVersion: function() {
+      var d;
+      logTask("Checking Git Version");
+      d = Q.defer();
+      util.runCommand("git", ["--version"], {}, function(version) {
+        if (!version) {
+          return;
+        }
+        version = version.split(" ") || [];
+        version = parseFloat(version[2]);
+        if (isNaN(version) || version < 1.9) {
+          d.reject("Deployment need Git >=1.9");
+        }
+        return d.resolve(true);
+      });
+      return d.promise;
+    },
     copyAssets: function() {
       var d, p;
       logTask("Copying Assets");
@@ -179,7 +196,7 @@
         if (!util.deleteFolderRecursive(process.cwd() + "/h5-ide-build")) {
           throw new Error("Cannot delete ./h5-ide-build, please manually delete it then retry.");
         }
-        params = ["clone", GLOBAL.gulpConfig.buildRepoUrl, "-v", "--progress", "-b", debugMode ? "develop" : "master"];
+        params = ["clone", GLOBAL.gulpConfig.buildRepoUrl, "-v", "--progress", "--depth", "1", "-b", debugMode ? "test" : "master"];
         if (GLOBAL.gulpConfig.buildUsername) {
           params.push("-c");
           params.push("user.name=\"" + GLOBAL.gulpConfig.buildUsername + "\"");
@@ -385,7 +402,7 @@
         releaseVersion.length = 3;
         GLOBAL.gulpConfig.version = releaseVersion.join(".");
       }
-      tasks = [Tasks.cleanRepo, Tasks.copyAssets, Tasks.copyJs, Tasks.compileLangSrc, Tasks.compileCoffee(debugMode), Tasks.compileTemplate, Tasks.processHtml, Tasks.concatJS(debugMode, outputPath), Tasks.removeBuildFolder, Tasks.test(qaMode)];
+      tasks = [Tasks.checkGitVersion, Tasks.cleanRepo, Tasks.copyAssets, Tasks.copyJs, Tasks.compileLangSrc, Tasks.compileCoffee(debugMode), Tasks.compileTemplate, Tasks.processHtml, Tasks.concatJS(debugMode, outputPath), Tasks.removeBuildFolder, Tasks.test(qaMode)];
       if (!qaMode) {
         tasks = tasks.concat([Tasks.fetchRepo(debugMode), Tasks.preCommit, Tasks.fileVersion, Tasks.logDeployInDevRepo, Tasks.finalCommit]);
       }

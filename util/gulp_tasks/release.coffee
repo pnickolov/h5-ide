@@ -65,6 +65,23 @@ Tasks =
 
     util.runCommand "git", ["clean", "-Xdf"], { cwd : process.cwd() + "/src" }, stdRedirect
 
+  checkGitVersion : ()->
+    logTask "Checking Git Version"
+
+    d = Q.defer()
+
+    util.runCommand "git", ["--version"], {}, (version)->
+      if not version then return
+
+      version = version.split(" ") || []
+      version = parseFloat( version[2] )
+      if isNaN(version) or version < 1.9
+        d.reject "Deployment need Git >=1.9"
+
+      d.resolve(true)
+
+    d.promise
+
   copyAssets : ()->
     logTask "Copying Assets"
 
@@ -170,7 +187,7 @@ Tasks =
         throw new Error("Cannot delete ./h5-ide-build, please manually delete it then retry.")
 
       # Checkout latest repo
-      params = ["clone", GLOBAL.gulpConfig.buildRepoUrl, "-v", "--progress", "-b", if debugMode then "develop" else "master"]
+      params = ["clone", GLOBAL.gulpConfig.buildRepoUrl, "-v", "--progress", "--depth", "1", "-b", if debugMode then "test" else "master"]
 
       if GLOBAL.gulpConfig.buildUsername
         params.push "-c"
@@ -377,6 +394,7 @@ module.exports =
       GLOBAL.gulpConfig.version = releaseVersion.join(".")
 
     tasks = [
+      Tasks.checkGitVersion
       Tasks.cleanRepo
       Tasks.copyAssets
       Tasks.copyJs

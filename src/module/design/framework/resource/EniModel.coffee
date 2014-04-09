@@ -5,7 +5,7 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
     count = n - str.length + 1
     strAry = _.map [1...count], () ->
       return '0'
-    str = strAry.join('') + str
+    strAry.join('') + str
 
   ###
   IpObject is used to represent an ip in Eni

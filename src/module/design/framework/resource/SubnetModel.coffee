@@ -10,13 +10,13 @@ define [ "constant",
     count = n - str.length + 1
     strAry = _.map [1...count], () ->
       return '0'
-    str = strAry.join('') + str
+    strAry.join('') + str
 
   _addZeroToRightStr = (str, n) ->
     count = n - str.length + 1
     strAry = _.map [1...count], () ->
       return '0'
-    str =  str + strAry.join('')
+    str + strAry.join('')
 
   _getCidrBinStr = (ipCidr) ->
     cutAry = ipCidr.split('/')

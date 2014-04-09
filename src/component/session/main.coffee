@@ -65,6 +65,7 @@ define [ 'jquery', 'event',
         return if !model
         model.off()
         model = null
+        return
         #ide_event.offListen ide_event.<EVENT_TYPE>
         #ide_event.offListen ide_event.<EVENT_TYPE>, <function name>
 

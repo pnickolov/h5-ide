@@ -7,7 +7,7 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], ( cons
     StateStatusModel = Backbone.Model.extend
 
         initialize: () ->
-            @collection = new ( @__customCollection() )
+            @collection = new ( @__customCollection() )()
 
             stateList = MC.data.websocket.collection.status.find().fetch()
             @collection.set @__dispose( stateList ).models, silent: true
@@ -117,7 +117,8 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], ( cons
 
             for stateId in stateIds
                 id = @__genId resId, stateId
-                @collection.get( id ) and @collection.get( id ).set 'updated', true
+                if @collection.get( id )
+                    @collection.get( id ).set 'updated', true
 
             null
 

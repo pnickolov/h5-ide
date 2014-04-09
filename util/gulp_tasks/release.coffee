@@ -315,6 +315,7 @@ Tasks =
   logDeployInDevRepo : ()->
     logTask "Commit IdeVersion in h5-ide"
     # Update IDE Version to dev repo
+    ideversion.read( true )
     util.runCommand "git", ["commit", "-m", '"Deploy '+ideversion.version()+'"', "package.json"]
 
 
@@ -389,7 +390,8 @@ module.exports =
     outputPath = if mode is "qa" then "./qa" else undefined
     qaMode     = mode is "qa"
 
-    ideversion.read( deploy )
+    ideversion.read()
+
     if mode is "release"
       releaseVersion = GLOBAL.gulpConfig.version.split(".")
       releaseVersion.length = 3

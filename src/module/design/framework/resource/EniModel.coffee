@@ -1,12 +1,6 @@
 
 define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/EniAttachment", "constant", 'i18n!nls/lang.js' ], ( ComplexResModel, Design, SgAsso, EniAttachment, constant, lang )->
 
-  _addZeroToLeftStr = (str, n) ->
-    count = n - str.length + 1
-    strAry = _.map [1...count], () ->
-      return '0'
-    strAry.join('') + str
-
   ###
   IpObject is used to represent an ip in Eni
   ###
@@ -542,8 +536,7 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
       prefix = 32 - suffix
 
       ipAddrAry = ipAddr.split '.'
-      ipAddrBinAry = _.map ipAddrAry, (value) ->
-        return _addZeroToLeftStr(parseInt(value).toString(2), 8)
+      ipAddrBinAry = ipAddrAry.map (value) -> MC.leftPadString( parseInt(value).toString(2), 8, "0" )
 
       ipAddrBinStr = ipAddrBinAry.join ''
       ipAddrBinPrefixStr = ipAddrBinStr.slice(0, suffix)
@@ -559,7 +552,7 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
       readyAssignAry = [ipAddrNumSuffixMin...ipAddrNumSuffixMax + 1]
       readyAssignAryLength = readyAssignAry.length
       $.each readyAssignAry, (idx, value) ->
-        newIPBinStr = ipAddrBinPrefixStr + _addZeroToLeftStr(value.toString(2), prefix)
+        newIPBinStr = ipAddrBinPrefixStr + MC.leftPadString(value.toString(2), prefix, "0")
         isAvailableIP = true
         if idx in [0, 1, 2, 3]
           isAvailableIP = false
@@ -595,8 +588,7 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
       prefix = 32 - suffix
 
       ipAddrAry = ipAddr.split '.'
-      ipAddrBinAry = _.map ipAddrAry, (value) ->
-        return _addZeroToLeftStr(parseInt(value).toString(2), 8)
+      ipAddrBinAry = ipAddrAry.map (value) -> MC.leftPadString(parseInt(value).toString(2), 8,"0")
 
       ipAddrBinStr = ipAddrBinAry.join ''
       ipAddrBinPrefixStr = ipAddrBinStr.slice(0, suffix)

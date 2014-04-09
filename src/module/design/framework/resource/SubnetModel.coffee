@@ -6,18 +6,6 @@ define [ "constant",
          "i18n!nls/lang.js"
 ], ( constant, Design, GroupModel, RtbAsso, lang )->
 
-  _addZeroToLeftStr = (str, n) ->
-    count = n - str.length + 1
-    strAry = _.map [1...count], () ->
-      return '0'
-    strAry.join('') + str
-
-  _addZeroToRightStr = (str, n) ->
-    count = n - str.length + 1
-    strAry = _.map [1...count], () ->
-      return '0'
-    str + strAry.join('')
-
   _getCidrBinStr = (ipCidr) ->
     cutAry = ipCidr.split('/')
     ipAddr = cutAry[0]
@@ -25,8 +13,7 @@ define [ "constant",
     prefix = 32 - suffix
 
     ipAddrAry = ipAddr.split '.'
-    ipAddrBinAry = _.map ipAddrAry, (value) ->
-      return _addZeroToLeftStr(parseInt(value).toString(2), 8)
+    ipAddrBinAry = ipAddrAry.map (value) -> MC.leftPadString( parseInt(value).toString(2), 8, "0" )
     return ipAddrBinAry.join('')
 
 
@@ -277,7 +264,7 @@ define [ "constant",
       result = false
       filterAry = []
       _.each readyAssignAry, (value, idx) ->
-        newIPBinStr = _addZeroToLeftStr(value.toString(2), suffixLength)
+        newIPBinStr = MC.leftPadString(value.toString(2), suffixLength, "0")
         if idx in [0, 1, 2, 3, readyAssignAryLength - 1]
           filterAry.push(newIPBinStr)
         null
@@ -323,11 +310,11 @@ define [ "constant",
       newSubnetSuffix = vpcIPSuffix + needBinNum
 
       newSubnetAry = []
+      i = 0
+      while i < subnetCount
 
-      _.each [0...subnetCount], (i) ->
-
-        binSeq = _addZeroToLeftStr(i.toString(2), needBinNum)
-        newSubnetBinStr = _addZeroToRightStr(vpcIPBinLeftStr + binSeq, 32)
+        binSeq = MC.leftPadString(i.toString(2), needBinNum,"0")
+        newSubnetBinStr = MC.rightPadString(vpcIPBinLeftStr + binSeq, 32, "0")
 
         newIPAry = _.map [0, 8, 16, 24], (value) ->
           return (parseInt newSubnetBinStr.slice(value, value + 8), 2)
@@ -336,7 +323,7 @@ define [ "constant",
 
         newSubnetAry.push(newSubnetStr)
 
-        null
+        ++i
 
       return newSubnetAry
 

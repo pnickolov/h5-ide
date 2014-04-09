@@ -94,7 +94,7 @@ Tasks =
 
     d = Q.defer()
     gulp.src(["./src/nls/lang-source.coffee"], SrcOption )
-        .pipe( langsrc("./build",false,GLOBAL.gulpConfig.verbose) )
+        .pipe( langsrc("./build",false,GLOBAL.gulpConfig.verbose,true) )
         .on( "end", end(d) )
     d.promise
 

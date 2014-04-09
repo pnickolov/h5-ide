@@ -122,7 +122,7 @@
       var d;
       logTask("Compiling lang-source");
       d = Q.defer();
-      gulp.src(["./src/nls/lang-source.coffee"], SrcOption).pipe(langsrc("./build", false, GLOBAL.gulpConfig.verbose)).on("end", end(d));
+      gulp.src(["./src/nls/lang-source.coffee"], SrcOption).pipe(langsrc("./build", false, GLOBAL.gulpConfig.verbose, true)).on("end", end(d));
       return d.promise;
     },
     compileCoffee: function(debugMode) {
@@ -325,6 +325,7 @@
     },
     logDeployInDevRepo: function() {
       logTask("Commit IdeVersion in h5-ide");
+      ideversion.read(true);
       return util.runCommand("git", ["commit", "-m", '"Deploy ' + ideversion.version() + '"', "package.json"]);
     },
     finalCommit: function() {
@@ -389,7 +390,7 @@
       debugMode = mode === "qa" || mode === "debug";
       outputPath = mode === "qa" ? "./qa" : void 0;
       qaMode = mode === "qa";
-      ideversion.read(deploy);
+      ideversion.read();
       if (mode === "release") {
         releaseVersion = GLOBAL.gulpConfig.version.split(".");
         releaseVersion.length = 3;

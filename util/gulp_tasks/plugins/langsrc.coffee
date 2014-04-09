@@ -10,7 +10,7 @@ coffee = require("gulp-coffee")
 
 buildLangSrc = require("./lang")
 
-module.exports = ( dest = ".", useCache = true, shouldLog = true )->
+module.exports = ( dest = ".", useCache = true, shouldLog = true, emitError = false )->
 
   if useCache
     startPipeline = cached( coffee() )
@@ -23,7 +23,10 @@ module.exports = ( dest = ".", useCache = true, shouldLog = true )->
       console.log util.compileTitle(), "lang-souce.coffee"
 
     ctx = vm.createContext({module:{}})
-    vm.runInContext( file.contents.toString("utf8"), ctx )
+    try
+      vm.runInContext( file.contents.toString("utf8"), ctx )
+    catch e
+      console.log gutil.colors.red.bold("\n[LangSrc]"), "lang-source.coffee content is invalid"
 
     writeFile = ( p1, p2 ) ->
       cwd = process.cwd()
@@ -35,7 +38,8 @@ module.exports = ( dest = ".", useCache = true, shouldLog = true )->
       })
       null
 
-    buildLangSrc writeFile, ctx.module.exports
+    if buildLangSrc(writeFile, ctx.module.exports) is false and emitError
+      pipeline.emit "error", "LangSrc build failure"
     null
 
   pipeline.pipe( gulp.dest(dest) )

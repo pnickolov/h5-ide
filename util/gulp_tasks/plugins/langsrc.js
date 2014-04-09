@@ -17,7 +17,7 @@
 
   buildLangSrc = require("./lang");
 
-  module.exports = function(dest, useCache, shouldLog) {
+  module.exports = function(dest, useCache, shouldLog, emitError) {
     var pipeline, startPipeline;
     if (dest == null) {
       dest = ".";
@@ -28,20 +28,28 @@
     if (shouldLog == null) {
       shouldLog = true;
     }
+    if (emitError == null) {
+      emitError = false;
+    }
     if (useCache) {
       startPipeline = cached(coffee());
     } else {
       startPipeline = coffee();
     }
     pipeline = startPipeline.pipe(es.through(function(file) {
-      var ctx, writeFile;
+      var ctx, e, writeFile;
       if (shouldLog) {
         console.log(util.compileTitle(), "lang-souce.coffee");
       }
       ctx = vm.createContext({
         module: {}
       });
-      vm.runInContext(file.contents.toString("utf8"), ctx);
+      try {
+        vm.runInContext(file.contents.toString("utf8"), ctx);
+      } catch (_error) {
+        e = _error;
+        console.log(gutil.colors.red.bold("\n[LangSrc]"), "lang-source.coffee content is invalid");
+      }
       writeFile = function(p1, p2) {
         var cwd;
         cwd = process.cwd();
@@ -53,7 +61,9 @@
         }));
         return null;
       };
-      buildLangSrc(writeFile, ctx.module.exports);
+      if (buildLangSrc(writeFile, ctx.module.exports) === false && emitError) {
+        pipeline.emit("error", "LangSrc build failure");
+      }
       return null;
     }));
     pipeline.pipe(gulp.dest(dest));

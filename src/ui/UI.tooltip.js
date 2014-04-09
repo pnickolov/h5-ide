@@ -12,8 +12,6 @@
 define(["jquery"], function(){
 
 
-(function ()
-{
 	var tooltip = function (event)
 	{
 		var target = $(this),
@@ -97,6 +95,5 @@ define(["jquery"], function(){
 	{
 		$(document.body).on('mouseenter', '.tooltip', tooltip);
 	});
-})();
 
 });

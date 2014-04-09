@@ -8,9 +8,8 @@
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
 */
-define(["jquery"], function(){
+define(["jquery"], function($){
 
-+ function() {
   var errortip = function (event)
   {
     var target = $(this),
@@ -237,6 +236,5 @@ define(["jquery"], function(){
     $(document.body).on('mouseenter', '.parsley-error', enter);
     $(document.body).on('mouseleave', '.parsley-error', leave);
   });
-}();
 
 });

@@ -5,9 +5,8 @@
  * Copyright 2012, Ali Farhadi
  * Released under the MIT license.
  */
-define(["jquery"], function(){
+define(["jquery"], function($){
 
-(function($) {
 var dragging, placeholders = $();
 $.fn.sortable = function(options) {
   var method = String(options);
@@ -84,6 +83,5 @@ $.fn.sortable = function(options) {
     });
   });
 };
-})(jQuery);
 
 });

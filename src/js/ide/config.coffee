@@ -179,6 +179,11 @@ require.config {
 
 		### env:dev:end ###
 
+		#############################################
+		# component                 # Merge in deploy
+		#############################################
+		'validation'         : 'component/trustedadvisor/validation'
+
 
 
 		#############################################
@@ -226,10 +231,6 @@ require.config {
 		'unmanagedvpc'       : 'component/unmanagedvpc/main'
 		'unmanagedvpc_view'  : 'component/unmanagedvpc/view'
 		'unmanagedvpc_model' : 'component/unmanagedvpc/model'
-
-		'validation'         : 'component/trustedadvisor/validation'
-		'ta_conf'            : 'component/trustedadvisor/config'
-		'validation_helper'	 : 'component/trustedadvisor/lib/helper'
 
 	shim               :
 
@@ -395,8 +396,9 @@ require.config {
 			'sns_service'
 		]
 		"component/sgrule/SGRulePopup" : []
-		"component/exporter/exporter"  : [ "component/exporter/Download", "component/exporter/Thumbnail", "component/exporter/JsonExporter" ]
+		"component/exporter/Exporter"  : [ "component/exporter/Download", "component/exporter/Thumbnail", "component/exporter/JsonExporter" ]
 		"module/design/framework/DesignBundle" : [ "Design", "CanvasManager" ]
+		"validation" : []
 		"component/stateeditor/stateeditor" : []
 		"property" : []
 
@@ -406,7 +408,6 @@ require.config {
 		"component/stateeditor/stateeditor" : [
 			"component/stateeditor/lib/ace"
 			"component/stateeditor/lib/markdown"
-			"validation"
 		]
 		"module/design/framework/DesignBundle" : [ "component/sgrule/SGRulePopup" ]
 		"property" : [ "component/sgrule/SGRulePopup" ]

@@ -1,4 +1,4 @@
-define [ 'constant', 'MC', 'validation_helper', 'Design' ], ( CONST, MC, Helper, Design ) ->
+define [ 'constant', 'MC', '../../helper', 'Design' ], ( CONST, MC, Helper, Design ) ->
 
 	i18n = Helper.i18n.short()
 

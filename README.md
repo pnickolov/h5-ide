@@ -58,6 +58,7 @@ Whenever these (rare) issue happens, close the process by hitting `Ctrl+C`, or c
 ## 关于Git
 * 合并代码时候，禁止使用`git merge -Xignore-space-change`和`git merge -Xignore-all-space`，因为这样会破坏coffeescript的缩进。
 * 如果你将要push的分支的远端比本地要新，需要使用`git pull --rebase; git push`，来先将远端rebase到本地，然后再push。
+* 使用`gulp debug`和`gulp release`之后，仓库里面会多一个commit（里面包含package.json的修改），这个commit在push到远端的时候，如果和远端冲突了，不要用`git pull --rebase`来解决。只能用merge来解决。
 
 
 ## Best Practice

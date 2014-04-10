@@ -27,9 +27,35 @@
 			<p class="pad20">© <a href="http://www.visualops.io" alt="VisualOps" title="VisualOps">VisualOps</a> 2014. <a href="http://www.visualops.io/terms-conditions-privacy-policy" alt="Terms, Conditions and Privacy Policy" title="Terms, Conditions and Privacy Policy">Terms, Conditions and Privacy Policy</a>.</p>
 		</footer>
 
+        <script id="expire-template" type="text/x-handlebars-template">
+            <div id="reset-form-wrap" class="box-wrapper">
+                <div class="box-header">
+                    <h2>{{ i18n "reset" }}</h2>
+                </div>
+                <p class="account-instruction-major">{{ i18n "expired-info" }}</p>
+                <p class="account-instruction"><a href="/login">{{ i18n "reset-relogin" }}</a></p>
+            </div>
+        </script>
+        <script id="email-template" type="text/x-handlebars-template">
+            <div id="reset-form-wrap" class="box-wrapper">
+                <div class="box-header">
+                    <h2>{{ i18n "pre-reset" }}</h2>
+                    <div class="title-link">
+                        <a href="/register">{{ i18n "reset-register" }}</a> / <a href="/login">{{ i18n "reset-login" }}</a>.
+                    </div>
+                </div>
+                <p class="account-instruction-major">{{ i18n "send-email-info" }}</p>
+                <p class="account-instruction">{{ i18n "check-email-info" }}</p>
+            </div>
+        </script>
+        <script id="loading-template" type="text/x-handlebars-template">
+            <div class="box-loading box-wrapper">
+                <div class="loading-spinner"></div>
+            </div>
+        </script>
 	</div>
-
-	<script type="text/javascript" src='./vender/requirejs/require.js' data-main='./js/user/config.js?#{version}'>
-	</script>
+    <script type="text/javascript" src="./vender/jquery/jquery.js"></script>
+    <script src="./user/handlebars.js"></script>
+    <script type="text/javascript" src="./user/main.js"></script>
 </body>
 </html>

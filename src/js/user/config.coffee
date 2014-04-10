@@ -2,9 +2,11 @@
   # Redirect
   l = window.location
   window.language = window.version = ""
+  ### env:prod ###
   if l.protocol is "http:" and not l.port
     window.location = l.href.replace("http:","https:")
     return
+  ### env:prod:end ###
 
   # Get Version and locale
   scripts = document.getElementsByTagName("script")
@@ -71,7 +73,7 @@ require.config {
       exports       : 'Handlebars'
 
     'MC'              :
-      deps          : [ 'jquery', 'constant' ]
+      deps          : [ 'jquery' ]
       exports       : 'MC'
 
   ### env:prod ###

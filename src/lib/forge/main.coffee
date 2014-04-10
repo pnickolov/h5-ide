@@ -1,5 +1,4 @@
-define [ 'MC', 'constant', 'Design' ], ( MC, constant, Design ) ->
-
+define [ 'MC', 'constant' ], ( MC, constant ) ->
 
 	getNameById = ( app_id ) ->
 

@@ -227,6 +227,7 @@ var MC = {
 	/*
 		For realtime CSS edit
 	 */
+	/* env:dev */
 	realtimeCSS: function (option)
 	{
 		if (option === false)
@@ -269,6 +270,7 @@ var MC = {
 			};
 		});
 	},
+	/* env:dev:end */
 
 	extractID: function (uid)
 	{

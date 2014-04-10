@@ -1,4 +1,4 @@
-define [ 'constant', 'MC', 'validation_helper', 'Design' ], ( CONST, MC, Helper, Design ) ->
+define [ 'constant', 'MC', '../../helper', 'Design' ], ( CONST, MC, Helper, Design ) ->
 
 	i18n = Helper.i18n.short()
 
@@ -37,7 +37,9 @@ define [ 'constant', 'MC', 'validation_helper', 'Design' ], ( CONST, MC, Helper,
 
 			_.each routeDesAry, (routeDes) ->
 
-				if MC.aws.subnet.isSubnetConflict(currentRouteDes, routeDes)
+				SubnetModel = Design.modelClassForType( CONST.AWS_RESOURCE_TYPE.AWS_VPC_Subnet )
+
+				if SubnetModel.isCidrConflict(currentRouteDes, routeDes)
 
 					tipInfo = sprintf i18n.TA_MSG_ERROR_RT_HAVE_CONFLICT_DESTINATION, rtbName
 					notices.push({

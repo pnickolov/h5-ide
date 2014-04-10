@@ -12,7 +12,6 @@
 define(["jquery"], function(){
 
 
-(function(){
     var NOTIFICATION_TYPES = {
         "error"   : true,
         "warning" : true,
@@ -76,6 +75,5 @@ define(["jquery"], function(){
         var to = setTimeout(function () { target_dom.trigger('CLOSE_ITEM'); }, stay_time);
         target_dom.data( "close_to", to );
     };
-})();
 
 });

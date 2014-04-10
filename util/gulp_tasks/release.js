@@ -90,17 +90,28 @@
   };
 
   Tasks = {
-    tryKeepDeployFolder: function(qaMode) {
-      if (!qaMode && GLOBAL.gulpConfig.keepDeployFolder && fs.existsSync("./deploy/.git")) {
-        return util.runCommand("mv", ["./deploy", "./h5-ide-build"], {});
-      }
-      return true;
-    },
     cleanRepo: function() {
       logTask("Removing ignored files in src (git clean -Xf)");
       return util.runCommand("git", ["clean", "-Xdf"], {
         cwd: process.cwd() + "/src"
       }, stdRedirect);
+    },
+    checkGitVersion: function() {
+      var d;
+      logTask("Checking Git Version");
+      d = Q.defer();
+      util.runCommand("git", ["--version"], {}, function(version) {
+        if (!version) {
+          return;
+        }
+        version = version.split(" ") || [];
+        version = parseFloat(version[2]);
+        if (isNaN(version) || version < 1.9) {
+          d.reject("Deployment need Git >=1.9");
+        }
+        return d.resolve(true);
+      });
+      return d.promise;
     },
     copyAssets: function() {
       var d, p;
@@ -115,14 +126,14 @@
       logTask("Copying Js & Templates");
       p = ["./src/**/*.js", "!./src/test/**/*"];
       d = Q.defer();
-      gulp.src(p, SrcOption).pipe(dest()).on("end", end(d));
+      gulp.src(p, SrcOption).pipe(confCompile(true)).pipe(dest()).on("end", end(d));
       return d.promise;
     },
     compileLangSrc: function() {
       var d;
       logTask("Compiling lang-source");
       d = Q.defer();
-      gulp.src(["./src/nls/lang-source.coffee"]).pipe(langsrc("./build", false, GLOBAL.gulpConfig.verbose)).on("end", end(d));
+      gulp.src(["./src/nls/lang-source.coffee"], SrcOption).pipe(langsrc("./build", false, GLOBAL.gulpConfig.verbose, true)).on("end", end(d));
       return d.promise;
     },
     compileCoffee: function(debugMode) {
@@ -180,23 +191,12 @@
     },
     fetchRepo: function(debugMode) {
       return function() {
-        var hadError, move, option, params, result;
+        var hadError, params, result;
         logTask("Checking out h5-ide-build");
-        if (fs.existsSync("./h5-ide-build/.git")) {
-          option = {
-            cwd: process.cwd() + "/h5-ide-build"
-          };
-          move = util.runCommand("git", ["reset", "--hard"], option);
-          return move.then(function() {
-            return util.runCommand("git", ["checkout", debugMode ? "develop" : "master"], option);
-          }).then(function() {
-            return util.runCommand("git", ["pull"], option, stdRedirect);
-          });
-        }
         if (!util.deleteFolderRecursive(process.cwd() + "/h5-ide-build")) {
           throw new Error("Cannot delete ./h5-ide-build, please manually delete it then retry.");
         }
-        params = ["clone", GLOBAL.gulpConfig.buildRepoUrl, "-v", "--progress", "-b", debugMode ? "develop" : "master"];
+        params = ["clone", GLOBAL.gulpConfig.buildRepoUrl, "-v", "--progress", "--depth", "1", "-b", debugMode ? "test" : "master"];
         if (GLOBAL.gulpConfig.buildUsername) {
           params.push("-c");
           params.push("user.name=\"" + GLOBAL.gulpConfig.buildUsername + "\"");
@@ -207,7 +207,8 @@
         }
         hadError = false;
         result = util.runCommand("git", params, {}, function(d, type) {
-          if (type === "error") {
+          if (d.indexOf("fatal") !== -1) {
+            console.log(d);
             hadError = true;
           }
           process.stdout.write(d);
@@ -331,6 +332,7 @@
     },
     logDeployInDevRepo: function() {
       logTask("Commit IdeVersion in h5-ide");
+      ideversion.read(true);
       return util.runCommand("git", ["commit", "-m", '"Deploy ' + ideversion.version() + '"', "package.json"]);
     },
     finalCommit: function() {
@@ -360,9 +362,9 @@
           return true;
         }
       }).then(function() {
-        if (GLOBAL.gulpConfig.autoPush && !GLOBAL.gulpConfig.keepDeployFolder) {
+        if (GLOBAL.gulpConfig.autoPush) {
           if (!util.deleteFolderRecursive(process.cwd() + "/deploy")) {
-            console.log(gutil.colors.bgYellow.black("  Cannot delete ./deploy. You should manually delete ./deploy before next deploying.\n Or set the xxperimental gulpConfig.keepDeployFolder to `true`  "));
+            console.log(gutil.colors.bgYellow.black("  Cannot delete ./deploy. You should manually delete ./deploy before next deploying.  "));
           }
         }
         return true;
@@ -389,15 +391,20 @@
 
   module.exports = {
     build: function(mode) {
-      var debugMode, deploy, outputPath, qaMode, tasks;
+      var debugMode, deploy, outputPath, qaMode, releaseVersion, tasks;
       deploy = mode !== "qa";
       debugMode = mode === "qa" || mode === "debug";
       outputPath = mode === "qa" ? "./qa" : void 0;
       qaMode = mode === "qa";
-      ideversion.read(deploy);
-      tasks = [Tasks.tryKeepDeployFolder(qaMode), Tasks.cleanRepo, Tasks.copyAssets, Tasks.copyJs, Tasks.compileLangSrc, Tasks.compileCoffee(debugMode), Tasks.compileTemplate, Tasks.processHtml, Tasks.concatJS(debugMode, outputPath), Tasks.removeBuildFolder, Tasks.test(qaMode)];
+      ideversion.read();
+      if (mode === "release") {
+        releaseVersion = GLOBAL.gulpConfig.version.split(".");
+        releaseVersion.length = 3;
+        GLOBAL.gulpConfig.version = releaseVersion.join(".");
+      }
+      tasks = [Tasks.checkGitVersion, Tasks.cleanRepo, Tasks.copyAssets, Tasks.copyJs, Tasks.compileLangSrc, Tasks.compileCoffee(debugMode), Tasks.compileTemplate, Tasks.processHtml, Tasks.concatJS(debugMode, outputPath), Tasks.removeBuildFolder, Tasks.test(qaMode)];
       if (!qaMode) {
-        tasks = tasks.concat([Tasks.logDeployInDevRepo, Tasks.fetchRepo(debugMode), Tasks.preCommit, Tasks.fileVersion, Tasks.finalCommit]);
+        tasks = tasks.concat([Tasks.fetchRepo(debugMode), Tasks.preCommit, Tasks.fileVersion, Tasks.logDeployInDevRepo, Tasks.finalCommit]);
       }
       return tasks.reduce(Q.when, true).then(function() {
         return console.log(gutil.colors.bgBlue.white("\n [Build Succeed] ") + "\n");

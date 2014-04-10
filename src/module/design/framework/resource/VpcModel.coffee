@@ -38,8 +38,7 @@ define [ "constant", "../GroupModel", "./DhcpModel" ], ( constant, GroupModel, D
       null
 
     setCidr : ( cidr )->
-
-      SubnetModel = Design.modelClassForType(constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet).
+      SubnetModel = Design.modelClassForType(constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet)
 
       subnets = SubnetModel.allObjects()
       shouldUpdateSubnetCidr = false

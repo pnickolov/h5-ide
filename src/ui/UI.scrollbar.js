@@ -12,8 +12,6 @@
 define(["jquery"], function(){
 
 
-(function (document) {
-
 var style = document.documentElement.style,
 	isTransform = false,
 	cssTransform;
@@ -489,7 +487,5 @@ $(document).ready(function ()
 {
 	scrollbar.init();
 });
-
-})(document);
 
 });

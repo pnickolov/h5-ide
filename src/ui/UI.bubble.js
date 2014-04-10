@@ -11,8 +11,6 @@
 
 define(["jquery"], function(){
 
-(function ()
-{
 	var bubble = function (event)
 	{
 		if (event.type === 'mouseleave')
@@ -89,6 +87,5 @@ define(["jquery"], function(){
 	{
 		$(document.body).on('mouseenter mouseleave', '.bubble', bubble);
 	});
-})();
 
 });

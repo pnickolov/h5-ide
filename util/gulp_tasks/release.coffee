@@ -60,16 +60,27 @@ stdRedirect = (d)-> process.stdout.write d; null
 
 
 Tasks =
-  tryKeepDeployFolder : ( qaMode )->
-    if not qaMode and GLOBAL.gulpConfig.keepDeployFolder and fs.existsSync("./deploy/.git")
-      return util.runCommand "mv", ["./deploy", "./h5-ide-build"], {}
-
-    true
-
   cleanRepo : ()->
     logTask "Removing ignored files in src (git clean -Xf)"
 
     util.runCommand "git", ["clean", "-Xdf"], { cwd : process.cwd() + "/src" }, stdRedirect
+
+  checkGitVersion : ()->
+    logTask "Checking Git Version"
+
+    d = Q.defer()
+
+    util.runCommand "git", ["--version"], {}, (version)->
+      if not version then return
+
+      version = version.split(" ") || []
+      version = parseFloat( version[2] )
+      if isNaN(version) or version < 1.9
+        d.reject "Deployment need Git >=1.9"
+
+      d.resolve(true)
+
+    d.promise
 
   copyAssets : ()->
     logTask "Copying Assets"
@@ -86,15 +97,15 @@ Tasks =
     p = ["./src/**/*.js", "!./src/test/**/*"]
 
     d = Q.defer()
-    gulp.src( p, SrcOption ).pipe( dest() ).on( "end", end(d) )
+    gulp.src( p, SrcOption ).pipe( confCompile( true ) ).pipe( dest() ).on( "end", end(d) )
     d.promise
 
   compileLangSrc : ()->
     logTask "Compiling lang-source"
 
     d = Q.defer()
-    gulp.src(["./src/nls/lang-source.coffee"])
-        .pipe(langsrc("./build",false,GLOBAL.gulpConfig.verbose))
+    gulp.src(["./src/nls/lang-source.coffee"], SrcOption )
+        .pipe( langsrc("./build",false,GLOBAL.gulpConfig.verbose,true) )
         .on( "end", end(d) )
     d.promise
 
@@ -171,23 +182,12 @@ Tasks =
     ()->
       logTask "Checking out h5-ide-build"
 
-      if fs.existsSync("./h5-ide-build/.git")
-        # The deploy folder is not removed
-        option = { cwd : process.cwd() + "/h5-ide-build" }
-        move = util.runCommand "git", ["reset", "--hard"], option
-
-        return move.then ()->
-          util.runCommand "git", ["checkout", if debugMode then "develop" else "master" ], option
-        .then ()->
-          util.runCommand "git", ["pull"], option, stdRedirect
-
-
       # First delete the repo
       if not util.deleteFolderRecursive( process.cwd() + "/h5-ide-build" )
         throw new Error("Cannot delete ./h5-ide-build, please manually delete it then retry.")
 
       # Checkout latest repo
-      params = ["clone", GLOBAL.gulpConfig.buildRepoUrl, "-v", "--progress", "-b", if debugMode then "develop" else "master"]
+      params = ["clone", GLOBAL.gulpConfig.buildRepoUrl, "-v", "--progress", "--depth", "1", "-b", if debugMode then "test" else "master"]
 
       if GLOBAL.gulpConfig.buildUsername
         params.push "-c"
@@ -199,7 +199,8 @@ Tasks =
       hadError = false
 
       result = util.runCommand "git", params, {}, ( d, type )->
-        if type == "error"
+        if d.indexOf("fatal") != -1
+          console.log d
           hadError = true
         process.stdout.write d
         null
@@ -312,6 +313,7 @@ Tasks =
   logDeployInDevRepo : ()->
     logTask "Commit IdeVersion in h5-ide"
     # Update IDE Version to dev repo
+    ideversion.read( true )
     util.runCommand "git", ["commit", "-m", '"Deploy '+ideversion.version()+'"', "package.json"]
 
 
@@ -341,9 +343,9 @@ Tasks =
         console.log gutil.colors.bgYellow.black("  You can delete `./deploy` after pushing. ")
         true
     .then ()->
-      if GLOBAL.gulpConfig.autoPush and not GLOBAL.gulpConfig.keepDeployFolder
+      if GLOBAL.gulpConfig.autoPush
         if not util.deleteFolderRecursive( process.cwd() + "/deploy" )
-          console.log gutil.colors.bgYellow.black "  Cannot delete ./deploy. You should manually delete ./deploy before next deploying.\n Or set the xxperimental gulpConfig.keepDeployFolder to `true`  "
+          console.log gutil.colors.bgYellow.black "  Cannot delete ./deploy. You should manually delete ./deploy before next deploying.  "
       true
 
   test : ( qaMode )->
@@ -384,10 +386,15 @@ module.exports =
     outputPath = if mode is "qa" then "./qa" else undefined
     qaMode     = mode is "qa"
 
-    ideversion.read( deploy )
+    ideversion.read()
+
+    if mode is "release"
+      releaseVersion = GLOBAL.gulpConfig.version.split(".")
+      releaseVersion.length = 3
+      GLOBAL.gulpConfig.version = releaseVersion.join(".")
 
     tasks = [
-      Tasks.tryKeepDeployFolder( qaMode )
+      Tasks.checkGitVersion
       Tasks.cleanRepo
       Tasks.copyAssets
       Tasks.copyJs
@@ -402,10 +409,10 @@ module.exports =
 
     if not qaMode
       tasks = tasks.concat [
-        Tasks.logDeployInDevRepo
         Tasks.fetchRepo( debugMode )
         Tasks.preCommit
         Tasks.fileVersion
+        Tasks.logDeployInDevRepo
         Tasks.finalCommit
       ]
 

@@ -12,8 +12,6 @@
 define(["jquery"], function(){
 
 
-(function ()
-{
 	var table = {
 		edit: function (event)
 		{
@@ -153,6 +151,5 @@ define(["jquery"], function(){
 			.on('click', '.table .sortable, .table-head .sortable', table.sort)
 			.on('blur', '.table-input', table.update);
 	});
-})();
 
 });

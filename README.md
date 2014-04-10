@@ -15,8 +15,8 @@ npm install
 * `gulp dev` - Build CoffeeScripts and SCSS in dev mode, excluding `src/service` and `src/model`
 * `gulp dev_all` - Build CoffeeScripts and SCSS in dev mode, including `src/service` and `src/model`
 
-* `gulp release` - Build the project in release mode(Concat & Minify). And push to h5-ide-build/master
-* `gulp debug`   - The same as `gulp release`, except that source code are not minimized. And are push to h5-ide-build/develop
+* `gulp release` - (Git version >= 1.9.0) Build the project in release mode(Concat & Minify). And push to h5-ide-build/master
+* `gulp debug`   - (Git version >= 1.9.0) The same as `gulp release`, except that source code are not minimized. And are push to h5-ide-build/develop
 * `gulp qa`      - The same as `gulp debug`, except that it doesn't push code to remote. And starts a local server. Since the build is almost like the release version. It is recommanded to use this command to create a local version of IDE to test.
 * `gulp help`    - Print help message of gulp tasks.
 
@@ -56,8 +56,10 @@ Whenever these (rare) issue happens, close the process by hitting `Ctrl+C`, or c
 * 假如这个模块最终会被合并到一个大的模块`bigModuleA`里面的话，需要把这个模块的ID添加到`requirejs.config.bundles["bigModuleA"]`的数组里。
 
 ## 关于Git
+* 请使用`prepare-commit-msg` git-hook来为你的commit message自动加上当前分支名，因为分支以后会被删掉。
 * 合并代码时候，禁止使用`git merge -Xignore-space-change`和`git merge -Xignore-all-space`，因为这样会破坏coffeescript的缩进。
 * 如果你将要push的分支的远端比本地要新，需要使用`git pull --rebase; git push`，来先将远端rebase到本地，然后再push。
+* 使用`gulp debug`和`gulp release`之后，仓库里面会多一个commit（里面包含package.json的修改），这个commit在push到远端的时候，如果和远端冲突了，不要用`git pull --rebase`来解决。只能用merge来解决。
 
 
 ## Best Practice

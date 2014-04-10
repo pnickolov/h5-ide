@@ -13,12 +13,10 @@
 // 2. Options are set via data-*, possible options are :
 //    data-max-row : number
 
-define(["jquery"], function(){
+define(["jquery"], function($){
 
 
-var multiinputbox;
-(function(){
-   multiinputbox = {
+var multiinputbox = {
     init : function( baseParent ) {
       $( baseParent )
         .on("click", ".multi-input .icon-add", add)
@@ -70,7 +68,6 @@ var multiinputbox;
 
     return false;
   }
-})();
 
 $(function(){ multiinputbox.init( document.body ); });
 

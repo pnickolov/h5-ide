@@ -291,7 +291,7 @@ modal.position = function ($source)
 	} else {
 		top = (window.innerHeight - modal_box.height()) / 2;
 		left = (window.innerWidth - modal_box.width()) / 2;
-		if (top > 200) { top = 200; }
+		if (top > 250) { top = 250; }
 	}
 
 	modal_box.css({

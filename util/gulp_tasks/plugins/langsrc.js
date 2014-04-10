@@ -17,8 +17,8 @@
 
   buildLangSrc = require("./lang");
 
-  module.exports = function(dest, useCache, shouldLog) {
-    var pipeline, startPipeline, writeFile;
+  module.exports = function(dest, useCache, shouldLog, emitError) {
+    var pipeline, startPipeline;
     if (dest == null) {
       dest = ".";
     }
@@ -28,35 +28,45 @@
     if (shouldLog == null) {
       shouldLog = true;
     }
+    if (emitError == null) {
+      emitError = false;
+    }
     if (useCache) {
       startPipeline = cached(coffee());
     } else {
       startPipeline = coffee();
     }
     pipeline = startPipeline.pipe(es.through(function(file) {
-      var ctx;
+      var ctx, e, writeFile;
       if (shouldLog) {
         console.log(util.compileTitle(), "lang-souce.coffee");
       }
       ctx = vm.createContext({
         module: {}
       });
-      vm.runInContext(file.contents.toString("utf8"), ctx);
-      buildLangSrc(writeFile, ctx.module.exports);
+      try {
+        vm.runInContext(file.contents.toString("utf8"), ctx);
+      } catch (_error) {
+        e = _error;
+        console.log(gutil.colors.red.bold("\n[LangSrc]"), "lang-source.coffee content is invalid");
+      }
+      writeFile = function(p1, p2) {
+        var cwd;
+        cwd = process.cwd();
+        pipeline.emit("data", new gutil.File({
+          cwd: file.cwd,
+          base: file.base,
+          path: p1,
+          contents: new Buffer(p2)
+        }));
+        return null;
+      };
+      if (buildLangSrc(writeFile, ctx.module.exports) === false && emitError) {
+        pipeline.emit("error", "LangSrc build failure");
+      }
       return null;
     }));
     pipeline.pipe(gulp.dest(dest));
-    writeFile = function(p1, p2) {
-      var cwd;
-      cwd = process.cwd();
-      pipeline.emit("data", new gutil.File({
-        cwd: cwd,
-        base: cwd,
-        path: p1,
-        contents: new Buffer(p2)
-      }));
-      return null;
-    };
     return startPipeline;
   };
 

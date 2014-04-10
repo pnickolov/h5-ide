@@ -11,12 +11,17 @@ node_modules/
 qa/
 h5-ide-build/
 deploy/
+build/
 
 #ignore js
 src/**/*.js
 !src/js/*.js
+!src/ui/*.js
 !src/vender/**/*.js
 !src/component/stateeditor/lib/**/*.js
+
+#ignore MC.template.js
+src/ui/MC.template.js
 
 #ignore test
 src/test/**/*.js

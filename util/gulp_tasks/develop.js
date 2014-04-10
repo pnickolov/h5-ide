@@ -50,6 +50,9 @@
     },
     max_line_length: {
       level: "ignore"
+    },
+    no_debugger: {
+      level: "ignore"
     }
   };
 

@@ -744,6 +744,7 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
 
             #src, username, session_id, region_name, stack_id, app_name, app_desc=null, app_component=null, app_property=null, app_layout=null, stack_name=null, usage=null
             if MC.aws.aws.checkDefaultVPC()
+                # Dead code. We do not support DefaultVpc anymore
                 stack_model.run { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, app_name, null, MC.aws.vpc.generateComponentForDefaultVPC(), null, null, null, usage
 
             else

@@ -21,9 +21,8 @@
  *
  */
 
- define(["jquery"], function(){
+ define(["jquery"], function($){
 
-(function ($) {
 	"use strict";
 
 	$.jqPagination = function (el, options) {
@@ -401,20 +400,5 @@
 		});
 
 	};
-
-})(jQuery);
-
-// polyfill, provide a fallback if the console doesn't exist
-if (!console) {
-
-	var console	= {},
-		func	= function () { return false; };
-
-	console.log		= func;
-	console.info	= func;
-	console.warn	= func;
-	console.error	= func;
-
-}
 
 });

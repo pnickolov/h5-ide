@@ -1,6 +1,6 @@
 # todo: Change langu define
 langu = ->
-    'en-us'
+    document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + "lang\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1") || "en-us"
 
 # route function
 userRoute = (routes)->
@@ -38,17 +38,23 @@ tempI18n = $.ajax({
 i18n = (str) ->
     langsrc['reset'][str]
 
+render = (tempName)->
+    template = Handlebars.compile $(tempName).html()
+    $("#main-body").html template()
 # init function
 init = ->
     userRoute(
         "reset": (pathArray, hashArray)->
             hashTarget = hashArray[0]
             if hashTarget == 'password'
-                console.log hashArray[1]
+                #todo: checking if password key is valid
+                if true
+                    render '#password-template'
+                else
+                    render '#expire-template'
+
             else if hashTarget == "expire"
-                console.log hashTarget
+                render '#expire-template'
             else
-                template = Handlebars.compile($("#email-template").html())
-                console.log template()
-                $("#main-body").html template()
+                render '#expire-template'
     )

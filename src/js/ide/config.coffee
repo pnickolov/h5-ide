@@ -247,10 +247,6 @@ require.config {
 		'underscore'   :
 			exports    : '_'
 
-		'backbone'     :
-			deps       : [ 'underscore', 'jquery' ]
-			exports    : 'Backbone'
-
 		'handlebars'   :
 			exports    : 'Handlebars'
 

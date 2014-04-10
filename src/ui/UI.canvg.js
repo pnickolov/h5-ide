@@ -6,9 +6,8 @@
  *
  */
 
-define(["jquery"], function(){
+define([], function(){
 
-(function(){
 /**
  * A class to parse color values
  * @author Stoyan Stefanov <sstoo@gmail.com>
@@ -2793,6 +2792,5 @@ function RGBColor(color_string)
 
     return svg;
   }
-})();
 
 });

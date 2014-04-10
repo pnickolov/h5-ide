@@ -168,10 +168,10 @@
 .icon-deny:before {
   content: "\F12E"; }
 
-.icon-inbound:before {
+.icon-outbound:before {
   content: "\F12F"; }
 
-.icon-outbound:before {
+.icon-inbound:before {
   content: "\F130"; }
 
 .icon-refresh:before {

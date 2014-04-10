@@ -30,6 +30,7 @@ coffeelintOptions =
   indentation     : { level : "ignore" }
   no_tabs         : { level : "ignore" }
   max_line_length : { level : "ignore" }
+  no_debugger     : { level : "ignore" }
 
 
 compileIgnorePath = /.src.(test|vender|ui)/

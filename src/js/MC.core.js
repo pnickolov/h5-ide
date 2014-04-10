@@ -212,10 +212,22 @@ var MC = {
 		return string.length > length ? string.substring(0, length - 3) + '...' : string;
 	},
 
+	leftPadString : function (string, length, padding)
+	{
+		if ( string.length >= length ) { return string; }
+		return (new Array(length-string.length+1)).join(padding) + string;
+	},
+	rightPadString : function (string, length, padding)
+	{
+		if ( string.length >= length ) { return string; }
+		return string + (new Array(length-string.length+1)).join(padding);
+	},
+
 
 	/*
 		For realtime CSS edit
 	 */
+	/* env:dev */
 	realtimeCSS: function (option)
 	{
 		if (option === false)
@@ -258,6 +270,7 @@ var MC = {
 			};
 		});
 	},
+	/* env:dev:end */
 
 	extractID: function (uid)
 	{

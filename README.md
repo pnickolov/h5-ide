@@ -56,6 +56,7 @@ Whenever these (rare) issue happens, close the process by hitting `Ctrl+C`, or c
 * 假如这个模块最终会被合并到一个大的模块`bigModuleA`里面的话，需要把这个模块的ID添加到`requirejs.config.bundles["bigModuleA"]`的数组里。
 
 ## 关于Git
+* 请使用`prepare-commit-msg` git-hook来为你的commit message自动加上当前分支名，因为分支以后会被删掉。
 * 合并代码时候，禁止使用`git merge -Xignore-space-change`和`git merge -Xignore-all-space`，因为这样会破坏coffeescript的缩进。
 * 如果你将要push的分支的远端比本地要新，需要使用`git pull --rebase; git push`，来先将远端rebase到本地，然后再push。
 * 使用`gulp debug`和`gulp release`之后，仓库里面会多一个commit（里面包含package.json的修改），这个commit在push到远端的时候，如果和远端冲突了，不要用`git pull --rebase`来解决。只能用merge来解决。

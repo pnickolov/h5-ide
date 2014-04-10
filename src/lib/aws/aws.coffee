@@ -288,19 +288,35 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
 
     getDuplicateName = (stack_name) ->
 
-        copy_name   = stack_name + "-copy-"
+        if not stack_name
+            stack_name = "untitled"
+
+        idx = 0
+        reg_name = /.*-\d+$/
+        if reg_name.test stack_name
+            #xxx-n
+            prefix = stack_name.substr(0,stack_name.lastIndexOf("-"))
+            idx = Number(stack_name.substr(stack_name.lastIndexOf("-") + 1))
+            copy_name = prefix
+        else
+            if stack_name.charAt(name.length-1) is "-"
+                #xxxx-
+                copy_name = stack_name.substr(0,stack_name.length-1)
+            else
+                copy_name = stack_name
+
         name_list   = []
         stacks      = _.flatten _.values MC.data.stack_list
 
         name_list.push i.name for i in stacks when i.name.indexOf(copy_name) == 0
 
-        idx = 1
+        idx++
         while idx <= name_list.length
-            if $.inArray( (copy_name + idx), name_list ) == -1
+            if $.inArray( (copy_name + "-" + idx), name_list ) == -1
                 break
             idx++
 
-        copy_name + idx
+        copy_name + "-" + idx
 
     checkDefaultVPC = () ->
 

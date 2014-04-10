@@ -1,5 +1,21 @@
 define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'stack_service', 'ami_service', '../result_vo' ], ( constant, $, MC, lang, stackService, amiService ) ->
 
+	getAZAryForDefaultVPC = (elbUID) ->
+
+		elbComp = MC.canvas_data.component[elbUID]
+		elbInstances = elbComp.resource.Instances
+		azNameAry = []
+
+		_.each elbInstances, (instanceRefObj) ->
+			instanceRef = instanceRefObj.InstanceId
+			instanceUID = MC.extractID(instanceRef)
+			instanceAZName = MC.canvas_data.component[instanceUID].resource.Placement.AvailabilityZone
+			if !(instanceAZName in azNameAry)
+				azNameAry.push(instanceAZName)
+			null
+
+		return azNameAry
+
 	generateComponentForDefaultVPC = () ->
 
 		resType = constant.AWS_RESOURCE_TYPE

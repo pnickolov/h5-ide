@@ -95,7 +95,6 @@ require.config {
 		'UI.sortable'        : 'ui/jquery.sortable'
 		'UI.parsley'         : 'ui/UI.parsley'
 		'UI.errortip'        : 'ui/UI.errortip'
-		'hoverIntent'        : 'ui/jquery.hoverIntent'
 		'bootstrap-carousel' : 'ui/bootstrap-carousel'
 		'jqpagination'       : 'ui/jqpagination'
 		"jquerysort"         : 'ui/jquery.sort'
@@ -336,7 +335,6 @@ require.config {
 			'UI.parsley'
 			'UI.errortip'
 			"jqpagination"
-			'hoverIntent'
 			'bootstrap-carousel'
 			'jquerysort'
 		]

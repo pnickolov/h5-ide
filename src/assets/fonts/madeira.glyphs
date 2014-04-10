@@ -1,8 +1,7 @@
 {
 DisplayStrings = (
-/uniF11D,
-/uniF11E,
-/uniF140
+/uniF12F,
+/uniF130
 );
 copyright = MedeiraCloud;
 customParameters = (
@@ -2400,7 +2399,7 @@ unicode = F12E;
 },
 {
 glyphname = uniF12F;
-lastChange = "2014-04-08 16:07:06 +0800";
+lastChange = "2014-04-09 15:40:25 +0800";
 layers = (
 {
 layerId = "8F1B665C-F854-4941-BE6D-BEE4265743FC";
@@ -2409,32 +2408,32 @@ paths = (
 {
 closed = 1;
 nodes = (
-"900 720 LINE",
-"240 720 LINE",
-"240 420 LINE",
-"300 420 LINE",
-"300 660 LINE",
-"840 660 LINE",
-"840 60 LINE",
-"300 60 LINE",
-"300 300 LINE",
-"240 300 LINE",
-"240 0 LINE",
-"900 0 LINE"
+"720 240 LINE",
+"660 240 LINE",
+"660 60 LINE",
+"180 60 LINE",
+"180 600 LINE",
+"660 600 LINE",
+"660 420 LINE",
+"720 420 LINE",
+"720 660 LINE",
+"120 660 LINE",
+"120 0 LINE",
+"720 0 LINE"
 );
 },
 {
 closed = 1;
 nodes = (
-"60 331 LINE",
-"568 331 LINE",
-"464 222 LINE",
-"499 187 LINE",
-"662 360 LINE",
-"499 533 LINE",
-"464 497 LINE",
-"568 387 LINE",
-"60 387 LINE"
+"360 300 LINE",
+"866 300 LINE",
+"762 191 LINE",
+"797 156 LINE",
+"960 330 LINE",
+"797 506 LINE",
+"762 470 LINE",
+"866 360 LINE",
+"360 360 LINE"
 );
 }
 );
@@ -2445,7 +2444,7 @@ unicode = F12F;
 },
 {
 glyphname = uniF130;
-lastChange = "2014-04-08 16:06:03 +0800";
+lastChange = "2014-04-09 15:41:28 +0800";
 layers = (
 {
 layerId = "8F1B665C-F854-4941-BE6D-BEE4265743FC";
@@ -2454,16 +2453,16 @@ paths = (
 {
 closed = 1;
 nodes = (
-"780 300 LINE",
-"720 300 LINE",
+"780 240 LINE",
+"720 240 LINE",
 "720 60 LINE",
 "180 60 LINE",
-"180 660 LINE",
-"720 660 LINE",
+"180 600 LINE",
+"720 600 LINE",
 "720 420 LINE",
 "780 420 LINE",
-"780 720 LINE",
-"120 720 LINE",
+"780 660 LINE",
+"120 660 LINE",
 "120 0 LINE",
 "780 0 LINE"
 );
@@ -2471,15 +2470,15 @@ nodes = (
 {
 closed = 1;
 nodes = (
-"556 497 LINE",
-"521 533 LINE",
-"358 360 LINE",
-"521 187 LINE",
-"556 222 LINE",
-"452 331 LINE",
-"960 331 LINE",
-"960 387 LINE",
-"452 387 LINE"
+"556 470 LINE",
+"521 506 LINE",
+"360 330 LINE",
+"521 156 LINE",
+"556 191 LINE",
+"452 300 LINE",
+"960 300 LINE",
+"960 360 LINE",
+"452 360 LINE"
 );
 }
 );

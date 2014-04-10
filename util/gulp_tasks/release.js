@@ -90,6 +90,21 @@
   };
 
   Tasks = {
+    removeRedirectForPublic: function() {
+      var d, p, pipe;
+      logTask("Stripping https redirect", true);
+      p = ["./src/js/**/config.coffee"];
+      d = Q.defer();
+      pipe = gulp.src(p, SrcOption).pipe(es.through(function(f) {
+        var newContent, stripHttpsRedirectRegex;
+        stripHttpsRedirectRegex = /### AHACKFORRELEASINGPUBLICVERSION ###/g;
+        newContent = f.contents.toString("utf8").replace(stripHttpsRedirectRegex, "###                                   ");
+        f.contents = new Buffer(newContent);
+        this.emit("data", f);
+        return null;
+      })).pipe(confCompile(true)).pipe(coffee()).pipe(fileLogger()).pipe(stripdDebug()).pipe(dest()).on("end", end(d, true));
+      return d.promise;
+    },
     cleanRepo: function() {
       logTask("Removing ignored files in src (git clean -Xf)");
       return util.runCommand("git", ["clean", "-Xdf"], {
@@ -189,14 +204,14 @@
       util.deleteFolderRecursive(process.cwd() + "/build");
       return true;
     },
-    fetchRepo: function(debugMode) {
+    fetchRepo: function(repoBranch) {
       return function() {
         var hadError, params, result;
         logTask("Checking out h5-ide-build");
         if (!util.deleteFolderRecursive(process.cwd() + "/h5-ide-build")) {
           throw new Error("Cannot delete ./h5-ide-build, please manually delete it then retry.");
         }
-        params = ["clone", GLOBAL.gulpConfig.buildRepoUrl, "-v", "--progress", "--depth", "1", "-b", debugMode ? "test" : "master"];
+        params = ["clone", GLOBAL.gulpConfig.buildRepoUrl, "-v", "--progress", "--depth", "1", "-b", repoBranch];
         if (GLOBAL.gulpConfig.buildUsername) {
           params.push("-c");
           params.push("user.name=\"" + GLOBAL.gulpConfig.buildUsername + "\"");
@@ -391,23 +406,39 @@
 
   module.exports = {
     build: function(mode) {
-      var debugMode, deploy, outputPath, qaMode, releaseVersion, tasks;
-      deploy = mode !== "qa";
-      debugMode = mode === "qa" || mode === "debug";
-      outputPath = mode === "qa" ? "./qa" : void 0;
-      qaMode = mode === "qa";
+      var debugMode, deploy, isPublic, outputPath, qaMode, releaseVersion, repoBranch, tasks;
       ideversion.read();
+      repoBranch = "master";
+      if (mode === "debug") {
+        repoBranch = "develop";
+      }
+      if (mode === "public") {
+        repoBranch = "public";
+      }
+      if (mode === "public") {
+        mode = "release";
+        isPublic = true;
+      }
       if (mode === "release") {
         releaseVersion = GLOBAL.gulpConfig.version.split(".");
         releaseVersion.length = 3;
         GLOBAL.gulpConfig.version = releaseVersion.join(".");
       }
-      tasks = [Tasks.checkGitVersion, Tasks.cleanRepo, Tasks.copyAssets, Tasks.copyJs, Tasks.compileLangSrc, Tasks.compileCoffee(debugMode), Tasks.compileTemplate, Tasks.processHtml, Tasks.concatJS(debugMode, outputPath), Tasks.removeBuildFolder, Tasks.test(qaMode)];
+      deploy = mode !== "qa";
+      debugMode = mode === "qa" || mode === "debug";
+      outputPath = mode === "qa" ? "./qa" : void 0;
+      qaMode = mode === "qa";
+      tasks = [Tasks.checkGitVersion, Tasks.cleanRepo, Tasks.copyAssets, Tasks.copyJs, Tasks.compileLangSrc, Tasks.compileCoffee(debugMode)];
+      if (isPublic) {
+        tasks.push(Tasks.removeRedirectForPublic);
+      }
+      tasks = tasks.concat([Tasks.compileTemplate, Tasks.processHtml, Tasks.concatJS(debugMode, outputPath), Tasks.removeBuildFolder, Tasks.test(qaMode)]);
       if (!qaMode) {
-        tasks = tasks.concat([Tasks.fetchRepo(debugMode), Tasks.preCommit, Tasks.fileVersion, Tasks.logDeployInDevRepo, Tasks.finalCommit]);
+        tasks = tasks.concat([Tasks.fetchRepo(repoBranch), Tasks.preCommit, Tasks.fileVersion, Tasks.logDeployInDevRepo, Tasks.finalCommit]);
       }
       return tasks.reduce(Q.when, true).then(function() {
-        return console.log(gutil.colors.bgBlue.white("\n [Build Succeed] ") + "\n");
+        console.log(gutil.colors.bgBlue.white("\n [Build Succeed] ") + "\n");
+        return true;
       }, function(p) {
         console.log("[", gutil.colors.bgRed.white("Build Task Aborted"), "]", p);
         throw new Error("\n");

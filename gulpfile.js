@@ -43,6 +43,8 @@ gulp.task("dev_all", function(){ return developTask.compileDev( true ); });
 gulp.task("debug",   function(){ return releaseTask.build( "debug" );   });
 gulp.task("release", function(){ return releaseTask.build( "release" ); });
 
+gulp.task("public", function(){ return releaseTask.build( "public" ); });
+
 gulp.task("qa_build", function(){ return releaseTask.build( "qa" ); })
 gulp.task("qa", ["qa_build"], function(){ return serverTask.create("./qa", 3002); });
 
@@ -59,6 +61,7 @@ gulp.task("help", function(){
   console.log( "\n\n ===== For Delpoyment =====")
   console.log( "\n * gulp debug    - Compile IDE in release mode, and push to remote develop" );
   console.log( "\n * gulp release  - Like `gulp debug`, except: minification applied and push to master" );
+  console.log( "\n * gulp public   - Like `gulp release`, except: the ide won't redirect to https" );
   console.log( "\n * gulp qa       - Like `gulp debug`, except: serve files @127.0.0.1:3002 instead of pushing code." );
   console.log("");
 });

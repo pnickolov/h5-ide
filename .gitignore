@@ -34,5 +34,5 @@ util/gen_model/**/*.js
 util/gen_apilist/out.tmp
 util/gen_apilist/**/*.js
 
-
+.idea/*
 

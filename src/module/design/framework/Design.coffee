@@ -456,6 +456,14 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
 
   DesignImpl.prototype.serialize = ()->
 
+    # A hack to get around the caveat of the current framework design.
+    # The Design is singleton (Because the Design is created with the mind
+    # that trying to affect as little as possible of the current system)
+    # Which makes it unusable in work with multiple design objects in the same time.
+    # The feature version of design will be fully multiple-support.
+    currentDesignObj = Design.instance()
+    @use()
+
     console.debug "Design is serializing."
 
     component_data = {}
@@ -464,41 +472,47 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
     connections = []
     mockArray   = []
 
-    # ResourceModel can only add json component.
-    for uid, comp of @__componentMap
-      if comp.isRemoved()
-        console.warn( "Resource has been removed, yet it remains in cache when serializing :", comp )
-        continue
+    try
+      # ResourceModel can only add json component.
+      for uid, comp of @__componentMap
+        if comp.isRemoved()
+          console.warn( "Resource has been removed, yet it remains in cache when serializing :", comp )
+          continue
 
-      if comp.node_line
-        connections.push comp
-        continue
+        if comp.node_line
+          connections.push comp
+          continue
 
-      json = comp.serialize()
-      if not json then continue
+        json = comp.serialize()
+        if not json then continue
 
-      # Make json to be an array
-      if not _.isArray( json )
-        mockArray[0] = json
-        json = mockArray
+        # Make json to be an array
+        if not _.isArray( json )
+          mockArray[0] = json
+          json = mockArray
 
-      for j in json
-        if j.component
-          console.assert( j.component.uid, "Serialized JSON data has no uid." )
-          console.assert( not component_data[ j.component.uid ], "ResourceModel cannot modify existing JSON data." )
-          component_data[ j.component.uid ] = j.component
+        for j in json
+          if j.component
+            console.assert( j.component.uid, "Serialized JSON data has no uid." )
+            console.assert( not component_data[ j.component.uid ], "ResourceModel cannot modify existing JSON data." )
+            component_data[ j.component.uid ] = j.component
 
-        if j.layout
-          layout_data[ j.layout.uid ] = j.layout
+          if j.layout
+            layout_data[ j.layout.uid ] = j.layout
 
-    # Connection
-    for c in connections
-      p1 = c.port1Comp()
-      p2 = c.port2Comp()
-      if p1 and p2 and not p1.isRemoved() and not p2.isRemoved()
-        c.serialize( component_data, layout_data )
-      else
-        console.error "Serializing an connection while one of the port is isRemoved() or null"
+      # Connection
+      for c in connections
+        p1 = c.port1Comp()
+        p2 = c.port2Comp()
+        if p1 and p2 and not p1.isRemoved() and not p2.isRemoved()
+          c.serialize( component_data, layout_data )
+        else
+          console.error "Serializing an connection while one of the port is isRemoved() or null"
+
+        ### env:prod ###
+    catch error
+        console.error "Error occur while serializing", error
+        ### env:prod:end ###
 
 
     # Seems like some other place have call Design.instance().set("layout")
@@ -524,6 +538,8 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
     data.property = $.extend { stoppable : @isStoppable() }, PropertyDefination
 
     data.version = "2014-02-17"
+
+    currentDesignObj.use()
 
     data
 

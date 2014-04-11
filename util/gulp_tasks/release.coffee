@@ -60,6 +60,29 @@ stdRedirect = (d)-> process.stdout.write d; null
 
 
 Tasks =
+  removeRedirectForPublic : ()->
+    logTask "Stripping https redirect", true
+
+    p = ["./src/js/**/config.coffee"]
+
+    d = Q.defer()
+    pipe = gulp.src( p, SrcOption )
+      .pipe es.through (f)->
+
+        stripHttpsRedirectRegex = /### AHACKFORRELEASINGPUBLICVERSION ###/g
+        newContent = f.contents.toString("utf8").replace stripHttpsRedirectRegex, "###                                   "
+
+        f.contents = new Buffer( newContent )
+        @emit "data", f
+        null
+      .pipe( confCompile( true ) ) # Remove ### env:dev ###
+      .pipe( coffee() ) # Compile coffee
+      .pipe( fileLogger() )
+      .pipe( stripdDebug() )
+      .pipe( dest() ).on( "end", end(d, true) )
+    d.promise
+
+
   cleanRepo : ()->
     logTask "Removing ignored files in src (git clean -Xf)"
 
@@ -178,7 +201,7 @@ Tasks =
     util.deleteFolderRecursive( process.cwd() + "/build" )
     true
 
-  fetchRepo : ( debugMode )->
+  fetchRepo : ( repoBranch )->
     ()->
       logTask "Checking out h5-ide-build"
 
@@ -187,7 +210,7 @@ Tasks =
         throw new Error("Cannot delete ./h5-ide-build, please manually delete it then retry.")
 
       # Checkout latest repo
-      params = ["clone", GLOBAL.gulpConfig.buildRepoUrl, "-v", "--progress", "--depth", "1", "-b", if debugMode then "test" else "master"]
+      params = ["clone", GLOBAL.gulpConfig.buildRepoUrl, "-v", "--progress", "--depth", "1", "-b", repoBranch]
 
       if GLOBAL.gulpConfig.buildUsername
         params.push "-c"
@@ -381,17 +404,29 @@ Tasks =
 module.exports =
   build : ( mode )->
 
-    deploy     = mode isnt "qa"
-    debugMode  = mode is "qa" or mode is "debug"
-    outputPath = if mode is "qa" then "./qa" else undefined
-    qaMode     = mode is "qa"
-
     ideversion.read()
+
+
+    repoBranch = "master"
+    if mode == "debug"  then repoBranch = "develop"
+    if mode == "public" then repoBranch = "public"
+
+
+    if mode is "public"
+      mode     = "release"
+      isPublic = true
 
     if mode is "release"
       releaseVersion = GLOBAL.gulpConfig.version.split(".")
       releaseVersion.length = 3
       GLOBAL.gulpConfig.version = releaseVersion.join(".")
+
+
+    deploy     = mode isnt "qa"
+    debugMode  = mode is "qa" or mode is "debug"
+    outputPath = if mode is "qa" then "./qa" else undefined
+    qaMode     = mode is "qa"
+
 
     tasks = [
       Tasks.checkGitVersion
@@ -400,6 +435,12 @@ module.exports =
       Tasks.copyJs
       Tasks.compileLangSrc
       Tasks.compileCoffee( debugMode )
+    ]
+
+    if isPublic
+      tasks.push Tasks.removeRedirectForPublic
+
+    tasks = tasks.concat [
       Tasks.compileTemplate
       Tasks.processHtml
       Tasks.concatJS( debugMode, outputPath )
@@ -409,7 +450,7 @@ module.exports =
 
     if not qaMode
       tasks = tasks.concat [
-        Tasks.fetchRepo( debugMode )
+        Tasks.fetchRepo( repoBranch )
         Tasks.preCommit
         Tasks.fileVersion
         Tasks.logDeployInDevRepo
@@ -420,6 +461,7 @@ module.exports =
       .reduce(Q.when, true)
       .then ()->
         console.log gutil.colors.bgBlue.white("\n [Build Succeed] ") + "\n"
+        true
       , (p)->
         console.log "[", gutil.colors.bgRed.white("Build Task Aborted"), "]", p
         throw new Error("\n") # Use this method to tell gulp that our task are aborted.

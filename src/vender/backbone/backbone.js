@@ -5,6 +5,8 @@
 //     For all details and documentation:
 //     http://backbonejs.org
 
+define(['underscore', 'jquery'], function(){
+
 (function(){
 
   // Initial Setup
@@ -1568,4 +1570,7 @@
     };
   };
 
-}).call(this);
+}).call(window);
+
+return window.Backbone;
+});

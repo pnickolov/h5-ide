@@ -54,11 +54,13 @@
           continue;
         }
         message = "";
-        if (duplicateTest[source]) {
-          hasDuplicate = true;
-          message = gutil.colors.bgRed.white("Duplicated") + " ";
+        if (source.lastIndexOf(".css") + 4 !== source.length) {
+          if (duplicateTest[source]) {
+            hasDuplicate = true;
+            message = gutil.colors.bgRed.white("Duplicated") + " ";
+          }
+          duplicateTest[source] = true;
         }
-        duplicateTest[source] = true;
         if (IgnoreCheckPath[source]) {
           message += source;
         } else {

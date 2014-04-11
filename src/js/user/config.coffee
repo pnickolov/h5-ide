@@ -1,12 +1,13 @@
 (()->
   # Redirect
+  ### AHACKFORRELEASINGPUBLICVERSION ###
+  # AHACKFORRELEASINGPUBLICVERSION is a hack, and only ide/config.coffee supports it.
   l = window.location
   window.language = window.version = ""
-  ### env:prod ###
   if l.protocol is "http:" and not l.port
     window.location = l.href.replace("http:","https:")
     return
-  ### env:prod:end ###
+  ### AHACKFORRELEASINGPUBLICVERSION ###
 
   # Get Version and locale
   scripts = document.getElementsByTagName("script")
@@ -64,10 +65,6 @@ require.config {
 
     'underscore'      :
       exports       : '_'
-
-    'backbone'        :
-      deps          : [ 'underscore', 'jquery' ]
-      exports       : 'Backbone'
 
     'handlebars'      :
       exports       : 'Handlebars'

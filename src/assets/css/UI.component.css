@@ -1459,6 +1459,10 @@ textarea {
 
 .dl-horizontal dd {
 	margin-left: 130px;
+	color: #666;
+}
+
+.modal-body .dl-horizontal dd {
 	color: #ccc;
 }
 

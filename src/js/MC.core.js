@@ -12,33 +12,10 @@
 var MC = {
 	// Global Variable
 
-	DOMAIN: 'visualops.io',
-	PROTOCOL: 'https',
-
-	/* env:dev */
-	DOMAIN: 'mc3.io',
-	PROTOCOL: 'https',
-    /* env:dev:end */
-
-
-    get API_HOST() {
-    	return this.PROTOCOL + '://api.' + this.DOMAIN
-    },
-
-    get IDE_HOST() {
-    	return this.PROTOCOL + '://ide.' + this.DOMAIN
-    },
+	DOMAIN   : window.MC_DOMAIN,
+	API_HOST : window.location.protocol + "//api." + window.MC_DOMAIN,
 
 	IMG_URL: './assets/images/',
-
-	get WS_URL() {
-		return this.API_HOST + '/ws/';//-> 8300
-	},
-
-	get SAVEPNG_URL() {
-		return this.API_HOST + '/export/';//->8400
-	},
-
 
 	current_module : {},
 

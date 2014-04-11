@@ -69,6 +69,36 @@
                 </form>
             </div>
         </script>
+        <script id="success-template" type="text/x-handlebars-template">
+            <div id="reset-form-wrap" class="box-wrapper">
+                <div class="box-header">
+                    <h2>{{ i18n "reset" }}</h2>
+                </div>
+                <p class="account-instruction-major">{{ i18n "reset-success-info" }}</p>
+                <p class="account-instruction"><a href="/login">{{ i18n "reset-relogin" }}</a></p>
+            </div>
+        </script>
+        <script id="default-template" type="text/x-handlebars-template">
+            <div id="reset-form-wrap" class="box-wrapper">
+                <div class="box-header">
+                    <h2>{{ i18n "pre-reset" }}</h2>
+                    <div class="title-link">
+                        <a href="/register">{{ i18n "reset-register" }}</a> / <a href="/login">{{ i18n "reset-login" }}</a>.
+                    </div>
+                </div>
+                <p class="account-instruction">{{ i18n "email-label" }}</p>
+
+                <form id="reset-form" method="post" action="" class="box-body">
+                    <div id="email-verification-status" class="verification-status"></div>
+                    <label for="reset-pw-email" class="account-label">{{ i18n "account-label" }}</label>
+                    <input class="account-input" autocomplete="off" name="name" class="reset-input" type="text" id="reset-pw-email" />
+                    <div class="account-btn-wrap">
+                        <input class="btn btn-primary btn-large account-btn" id="reset-btn" type="submit" value="{{ i18n "reset-btn" }}" disabled>
+                    </div>
+                </form>
+            </div>
+
+        </script>
 	</div>
     <script type="text/javascript" src="./vender/jquery/jquery.js"></script>
     <script src="./user/handlebars.js"></script>

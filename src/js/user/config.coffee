@@ -1,6 +1,7 @@
 (()->
   # Set domain and set https
   window.MC_DOMAIN   = "visualops.io"
+  window.MC_PROTO = "https"
   shouldUseHttps = false
   useHttps = false
 
@@ -10,11 +11,13 @@
 
   ### env:debug ###
   window.MC_DOMAIN = "mc3.io"
+  window.MC_PROTO = "https"
   useHttps = false
   ### env:debug:end ###
 
   ### env:dev ###
   window.MC_DOMAIN = "mc3.io"
+  window.MC_PROTO = "https"
   ### env:dev:end ###
 
   ### AHACKFORRELEASINGPUBLICVERSION ###

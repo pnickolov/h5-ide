@@ -64,9 +64,9 @@ header {
 }
 
 .box-loading.box-wrapper {
-	background-color : #fff;
+	background-color : transparent;
 	text-align : center;
-	padding    : 40px 0;≠
+	padding    : 40px 0;
 }
 
 .box-header {

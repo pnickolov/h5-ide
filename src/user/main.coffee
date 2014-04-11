@@ -1,3 +1,4 @@
+API_HOST = 'https://api.visualops.io'
 # language detect
 langu = ->
     document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + "lang\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1") || "en-us"
@@ -10,6 +11,33 @@ userRoute = (routes)->
     console.log pathArray , hashArray
     # run routes func
     routes[pathArray[0]]?(pathArray, hashArray);
+
+# guid
+guid = ->
+    'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c)->
+        r = Math.random() * 16 | 0
+        v = if c == 'x' then r else (r&0x3|0x8)
+        v.toString(16)
+    ).toUpperCase()
+# api
+console.log guid()
+api = (option)->
+    $.ajax(
+        url: API_HOST + option.url
+        dataType: 'json'
+        type: 'POST'
+        data: JSON.stringify(
+            jsonrpc: '2.0',
+            id: guid(),
+            method: option.method || '',
+            params: option.data || {}
+        )
+        success: (res)->
+            option.success(res.result[1], res.result[0])
+        error: (xhr,status,error)->
+            console.log error
+            option.error(status, -1)
+    )
 
 # register i18n handlebars helper
 Handlebars.registerHelper 'i18n', (str)->
@@ -52,17 +80,18 @@ init = ->
             hashTarget = hashArray[0]
             if hashTarget == 'password'
                 # check if reset link is valid
-                checkPassKey (result)->
+                checkPassKey hashArray[1],(result)->
                     if result
                         console.log 'Right Verify Code!'
                         render "#password-template"
-                        $('#reset-form').on 'submit' , ->
+                        $('#reset-form').on 'submit' , (e)->
+                            e.preventDefault();
                             if checkPassword()
                                 $("#reset-password").attr('disabled',true).val langsrc.reset.reset_waiting
                                 #window.location.hash = "#success"
-                                ajaxChangePassword()
+                                ajaxChangePassword(hashArray, $("#reset-pw").val())
                                 console.log('jump...')
-                            false
+                            return false
                     else
                         console.log "Error Verify Code!"
                         render "#expire-template"
@@ -86,8 +115,7 @@ init = ->
                     $("#reset-btn").attr('disabled',true)
                     $("#reset-pw-email").attr('disabled',true)
                     $('#reset-btn').val window.langsrc.reset.reset_waiting
-                    # todo: send request to send email
-                    sendEmail()
+                    sendEmail($("#reset-pw-email").val())
                     false
     )
 
@@ -107,20 +135,6 @@ checkPassword = ->
         status.addClass("error-status").show().text langsrc.reset.reset_password_required
         false
 
-# verify  key with callback
-# todo
-checkPassKey = (fn)->
-    result = false
-    fn(result)
-
-# send Email with callback
-# todo
-sendEmail = (fn)->
-    if false
-        fn?()
-    else
-        showErrorMessage()
-
 # error Message
 showErrorMessage = ->
     console.log 'showErrorMessage'
@@ -129,7 +143,87 @@ showErrorMessage = ->
     $("#email-verification-status").addClass("error-status").show().text(langsrc.reset.reset_error_state)
     false
 
+#handleErrorCode
+handleErrorCode = (statusCode)->
+    console.log langsrc.service["ERROR_CODE_#{statusCode}_MESSAGE"]
+# handleNetError
+handleNetError = (status)->
+    console.log(status)
+# verify  key with callback
 # todo
-ajaxChangePassword = ->
-    console.log "resetting password..."
+checkPassKey = (keyToValid,fn)->
+    api(
+        url: '/account/'
+        method: 'check_validation'
+        data: [keyToValid,'reset']
+        success: (result, statusCode)->
+            if(!statusCode)
+                console.log result
+                fn(true)
+            else
+                handleErrorCode(statusCode)
+                fn(false)
+        error: (status)->
+            handleNetError(status)
+    )
 
+# send Email with callback
+# todo
+sendEmail = (params)->
+    checkUserExist params, (statusCode)->
+        if !statusCode
+            showErrorMessage()
+            return false
+        api(
+            url: '/account/'
+            method: 'reset_password'
+            data: [params]
+            success: (result, statusCode)->
+                if(!statusCode)
+                    console.log(result, statusCode)
+                    window.location.hash = 'email'
+                    true
+
+                else
+                    handleErrorCode(statusCode)
+                    showErrorMessage()
+                    false
+            error: (status)->
+                handleNetError(status)
+        )
+
+# check user exits
+checkUserExist = (username,fn)->
+    api({
+        url: '/account/'
+        method: 'check_repeat'
+        data: [username,null]
+        success: (result,statusCode)->
+            console.log result , statusCode
+            if(statusCode)
+                fn(statusCode)
+                false
+            else
+                fn(statusCode)
+                handleErrorCode(statusCode)
+        error: (status)->
+            handleNetError(status)
+    })
+
+# todo
+# ajax to reset password
+ajaxChangePassword = (hashArray,newPw)->
+    api(
+        url: "/account/"
+        method: "update_password"
+        data: [hashArray[1],newPw]
+        success: (result, statusCode)->
+            console.log result , statusCode
+            if(!statusCode)
+                window.location.hash = 'success'
+            else
+                handleErrorCode(statusCode)
+        error: (status)->
+            handleNetError(status)
+    )
+    return false

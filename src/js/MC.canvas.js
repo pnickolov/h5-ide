@@ -4890,8 +4890,6 @@ MC.canvas.event.clickBlank = function (event)
 	return true;
 };
 
-MC.canvas.keypressed = [];
-
 MC.canvas.event.keyEvent = function (event)
 {
 	var canvas_status = MC.canvas.getState(),
@@ -4918,8 +4916,6 @@ MC.canvas.event.keyEvent = function (event)
 	{
 		var keyCode = event.which,
 			nodeName = event.target.nodeName.toLowerCase();
-
-		MC.canvas.keypressed.push(keyCode);
 
 		// Disable key event for input & textarea
 		if (
@@ -4961,47 +4957,6 @@ MC.canvas.event.keyEvent = function (event)
 			return false;
 		}
 
-		if (
-			selected_node.length === 1 &&
-			MC.canvas.keypressed.join('').match(/383840403739373966656665$/i)
-		)
-		{
-			if ($('#' + selected_node[ 0 ]).data('type') !== 'node')
-			{
-				return false;
-			}
-
-			var offset = Canvon('#' + selected_node[ 0 ]).offset();
-
-			$(document.body).append('<div id="s"></div>');
-
-			$('#s')
-				.text('HP +' + MC.rand(100, 9999))
-				.css({
-					'border-radius': '4px',
-					'padding': '5px 0',
-					'background-color': 'rgba(102, 45, 63, 0.8)',
-					'font-weight': '700',
-					'position': 'absolute',
-					'z-index': 999,
-					'text-align': 'center',
-					'color': 'rgb(252, 232, 244)',
-					'font-weigh': 'bold',
-					'font-size': 12,
-					'width': offset.width,
-					'top': offset.top + offset.height / 2 - 15,
-					'left': offset.left
-				});
-
-			setTimeout(function ()
-			{
-				$('#s').fadeOut(function () {$(this).remove();});
-			}, 1500);
-
-			MC.canvas.keypressed = [];
-
-			return false;
-		}
 
 		// Disable backspace
 		if (

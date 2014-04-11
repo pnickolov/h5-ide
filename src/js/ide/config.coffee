@@ -437,4 +437,29 @@ require.config {
 	### env:prod:end ###
 }
 
-require ['./js/ide/ide' ], ( ide ) -> $ ()-> ide.initialize()
+requirejs.onError = ( err )->
+	# Because there are so many **WRONG USAGE** of require()
+	# We can only try reloading the dependency if timeout
+	err = err || { requireType : "timeout" }
+	if err.requireType is "timeout"
+		for i in err.requireModules || []
+			requirejs.undef i
+
+		require err.requireModules || [], ()->
+	else
+		console.log "[RequireJS Error]", err
+
+
+require ['./js/ide/ide' ], ( ide ) ->
+	$ ()-> ide.initialize()
+, ( err )->
+	err = err || { requireType : "timeout" }
+	if err.requireType is "timeout"
+		requirejs.onError = ()-> # Just use to suppress subsequent error
+		console.error "[RequireJS timeout] Reloading, error modules :", err.requireModules
+		window.location.reload()
+	else if err.requireType is "scripterror"
+		requirejs.onError = ()-> # Just use to suppress subsequent error
+		console.error "[Script Error] Redirecting to 500, error modules :", err.requireModules
+		window.location = "/500"
+	return

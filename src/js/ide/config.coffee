@@ -1,51 +1,52 @@
 (()->
 
-	# When deploying, node will load this file to get the requirejs config
-	# In such case, window is undefined.
-	if not window then return
+  # When deploying, node will load this file to get the requirejs config
+  # In such case, window is undefined.
+  if not window then return
 
 
-	# Set domain and set https
-	window.MC_DOMAIN   = "visualops.io"
-	useHttps = false
+  # Set domain and set https
+  window.MC_DOMAIN   = "visualops.io"
+  shouldUseHttps = false
+  useHttps = false
 
-	### AHACKFORRELEASINGPUBLICVERSION ###
-	# AHACKFORRELEASINGPUBLICVERSION is a hack to force https to be disable, and only ide/config.coffee supports it.
+  ### env:prod ###
+  useHttps = true
+  ### env:prod:end ###
 
-	### env:prod ###
-	useHttps = true
-	### env:prod:end ###
+  ### env:debug ###
+  window.MC_DOMAIN = "mc3.io"
+  useHttps = false
+  ### env:debug:end ###
 
-	### env:debug ###
-	window.MC_DOMAIN = "mc3.io"
-	useHttps = false
-	### env:debug:end ###
+  ### env:dev ###
+  window.MC_DOMAIN = "mc3.io"
+  ### env:dev:end ###
 
-	### env:dev ###
-	window.MC_DOMAIN = "mc3.io"
-	### env:dev:end ###
-
-	### AHACKFORRELEASINGPUBLICVERSION ###
+  ### AHACKFORRELEASINGPUBLICVERSION ###
+  # AHACKFORRELEASINGPUBLICVERSION is a hack to force https to be disable, and only ide/config.coffee supports it.
+  shouldUseHttps = useHttps
+  ### AHACKFORRELEASINGPUBLICVERSION ###
 
 
-	# Redirect
-	l = window.location
-	window.language = window.version = ""
-	if useHttps and l.protocol is "http:"
-		window.location = l.href.replace("http:","https:")
-		return
+  # Redirect
+  l = window.location
+  window.language = window.version = ""
+  if shouldUseHttps and l.protocol is "http:"
+    window.location = l.href.replace("http:","https:")
+    return
 
-	# Get Version and locale
-	scripts = document.getElementsByTagName("script")
-	for s in scripts
-		version = s.getAttribute("data-main")
-		if version
-			window.version = version.split("?")[1]
-			break
-	if window.version is '#{version}' then window.version = "dev"
+  # Get Version and locale
+  scripts = document.getElementsByTagName("script")
+  for s in scripts
+    version = s.getAttribute("data-main")
+    if version
+      window.version = version.split("?")[1]
+      break
+  if window.version is '#{version}' then window.version = "dev"
 
-	window.language = document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + "lang\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1") || "en-us"
-	null
+  window.language = document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + "lang\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1") || "en-us"
+  null
 )()
 
 require.config {

@@ -124,9 +124,9 @@ Tasks =
     d.promise
 
   copyAssets : ()->
-    logTask "Copying Assets"
+    logTask "Copying Assets & robots.txt"
 
-    p = ["./src/assets/**/*", "!**/*.glyphs", "!**/*.scss"]
+    p = ["./src/assets/**/*", "!**/*.glyphs", "!**/*.scss", "./src/robots.txt"]
 
     d = Q.defer()
     gulp.src( p, SrcOption ).pipe( dest() ).on( "end", end(d) )

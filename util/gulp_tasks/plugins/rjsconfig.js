@@ -35,6 +35,7 @@
       window: false,
       version: "",
       language: "",
+      requirejs: {},
       require: function() {}
     };
     Context.require.config = function(config) {

@@ -25,10 +25,11 @@ readRequirejsConfig = ( path )->
 
 
   Context =
-    window   : false
-    version  : ""
-    language : ""
-    require  : ()-> return
+    window    : false
+    version   : ""
+    language  : ""
+    requirejs : {}
+    require   : ()-> return
 
   Context.require.config = ( config )->
     this.config = config

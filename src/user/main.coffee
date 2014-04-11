@@ -66,7 +66,7 @@ window.onhashchange = ->
 
 # temp i18n function
 i18n = (str) ->
-    langsrc['reset'][str]
+    langsrc[window.deepth][str]
 
 # render template
 render = (tempName)->
@@ -77,6 +77,7 @@ render = (tempName)->
 init = ->
     userRoute(
         "reset": (pathArray, hashArray)->
+            window.deepth = 'reset'
             hashTarget = hashArray[0]
             if hashTarget == 'password'
                 # check if reset link is valid
@@ -117,6 +118,37 @@ init = ->
                     $('#reset-btn').val window.langsrc.reset.reset_waiting
                     sendEmail($("#reset-pw-email").val())
                     false
+        '_login': (pathArray, hashArray)->
+            window.deepth = 'login'
+            console.log pathArray, hashArray
+            render "#login-template"
+            user = $("#login-user")
+            password = $("#login-password")
+            submitBtn = $("#login-btn").attr('disabled',false)
+            $("#login-form").on 'submit', (e)->
+                e.preventDefault()
+                if user.val()&&password.val()
+                    $("#error-msg-2").hide()
+                    $(".control-group").removeClass('error')
+                    submitBtn.attr('disabled',true).val langsrc.reset.reset_waiting
+                    ajax()
+                else
+                    $("#error-msg-2").show()
+                    if !user.val().trim() then user.parent().addClass('error') else user.parent().removeClass('error')
+                    if !password.val().trim() then password.parent().addClass('error') else password.parent().removeClass('error')
+                    return false
+
+            checkValid = ->
+                if !user.val().trim() then user.parent().addClass('error') else user.parent().removeClass('error')
+                if !password.val().trim() then password.parent().addClass('error') else password.parent().removeClass('error')
+
+
+            user.on 'blur' , checkValid
+            password.on 'blur', checkValid
+            user.on 'keyup', checkValid
+            password.on 'keyup', checkValid
+        'register': (pathArray, hashArray)->
+            console.log pathArray, hashArray
     )
 
 # handle reset password input

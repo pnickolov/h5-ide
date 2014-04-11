@@ -398,6 +398,7 @@ Tasks =
     if result
       return result.then ()-> testserver.close(); true
     else
+      testserver.close()
       return true
 
 # A task to build IDE

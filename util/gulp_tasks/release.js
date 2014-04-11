@@ -413,6 +413,7 @@
           return true;
         });
       } else {
+        testserver.close();
         return true;
       }
     }

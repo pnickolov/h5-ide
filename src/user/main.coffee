@@ -2,7 +2,7 @@ API_HOST = 'https://api.visualops.io'
 # language detect
 langu = ->
     document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + "lang\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1") || "en-us"
-
+deepth = 'reset'
 # route function
 userRoute = (routes)->
     hashArray = window.location.hash.split('#').pop().split('/')
@@ -66,7 +66,7 @@ window.onhashchange = ->
 
 # temp i18n function
 i18n = (str) ->
-    langsrc[window.deepth][str]
+    langsrc[deepth][str]
 
 # render template
 render = (tempName)->
@@ -77,7 +77,7 @@ render = (tempName)->
 init = ->
     userRoute(
         "reset": (pathArray, hashArray)->
-            window.deepth = 'reset'
+            deepth = 'reset'
             hashTarget = hashArray[0]
             if hashTarget == 'password'
                 # check if reset link is valid
@@ -85,6 +85,7 @@ init = ->
                     if result
                         console.log 'Right Verify Code!'
                         render "#password-template"
+                        $('form.box-body').find('input').eq(0).focus()
                         $('#reset-form').on 'submit' , (e)->
                             e.preventDefault();
                             if checkPassword()
@@ -100,10 +101,12 @@ init = ->
                 render '#expire-template'
             else if hashTarget == "email"
                 render "#email-template"
+                $('form.box-body').find('input').eq(0).focus()
             else if hashTarget == "success"
                 render "#success-template"
             else
                 render '#default-template'
+                $("#reset-pw-email").focus()
                 $('#reset-pw-email').keyup ->
                     console.log @.value
                     if @value
@@ -119,34 +122,33 @@ init = ->
                     sendEmail($("#reset-pw-email").val())
                     false
         '_login': (pathArray, hashArray)->
-            window.deepth = 'login'
+            deepth = 'login'
             console.log pathArray, hashArray
             render "#login-template"
-            user = $("#login-user")
-            password = $("#login-password")
+            $user = $("#login-user")
+            $password = $("#login-password")
             submitBtn = $("#login-btn").attr('disabled',false)
+            $("#login-form input").eq(0).focus()
             $("#login-form").on 'submit', (e)->
                 e.preventDefault()
-                if user.val()&&password.val()
-                    $("#error-msg-2").hide()
+                if $user.val()&&$password.val()
+                    $(".error-msg").hide()
                     $(".control-group").removeClass('error')
                     submitBtn.attr('disabled',true).val langsrc.reset.reset_waiting
-                    ajax()
+                    ajaxLogin [$user.val(),$password.val()] , (statusCode)->
+                        $('#error-msg-1').show()
+                        submitBtn.attr('disabled',false).val langsrc.login['login-btn']
                 else
                     $("#error-msg-2").show()
-                    if !user.val().trim() then user.parent().addClass('error') else user.parent().removeClass('error')
-                    if !password.val().trim() then password.parent().addClass('error') else password.parent().removeClass('error')
+                    if !$user.val().trim() then $user.parent().addClass('error') else $user.parent().removeClass('error')
+                    if !$password.val().trim() then $password.parent().addClass('error') else $password.parent().removeClass('error')
                     return false
 
             checkValid = ->
-                if !user.val().trim() then user.parent().addClass('error') else user.parent().removeClass('error')
-                if !password.val().trim() then password.parent().addClass('error') else password.parent().removeClass('error')
+                if $(@).val().trim() then $(@).parent().removeClass('error')
+            $user.on 'keyup', checkValid
+            $password.on 'keyup', checkValid
 
-
-            user.on 'blur' , checkValid
-            password.on 'blur', checkValid
-            user.on 'keyup', checkValid
-            password.on 'keyup', checkValid
         'register': (pathArray, hashArray)->
             console.log pathArray, hashArray
     )
@@ -180,9 +182,8 @@ handleErrorCode = (statusCode)->
     console.log langsrc.service["ERROR_CODE_#{statusCode}_MESSAGE"]
 # handleNetError
 handleNetError = (status)->
-    console.log(status)
+    window.location = '/500'
 # verify  key with callback
-# todo
 checkPassKey = (keyToValid,fn)->
     api(
         url: '/account/'
@@ -200,7 +201,23 @@ checkPassKey = (keyToValid,fn)->
     )
 
 # send Email with callback
-# todo
+ajaxLogin = (params, errorCB)->
+    api(
+        url: '/session'
+        method: 'login'
+        data: params
+        success: (result, statusCode)->
+            if(!statusCode)
+                console.log 'No login Error'
+                #todo: setCookie
+                setCookie()
+                window.location = "/"
+            else
+                errorCB(statusCode)
+        error: (status)->
+            handleNetError(status)
+
+    )
 sendEmail = (params)->
     checkUserExist params, (statusCode)->
         if !statusCode
@@ -242,7 +259,6 @@ checkUserExist = (username,fn)->
             handleNetError(status)
     })
 
-# todo
 # ajax to reset password
 ajaxChangePassword = (hashArray,newPw)->
     api(

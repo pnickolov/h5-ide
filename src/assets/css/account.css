@@ -56,7 +56,7 @@ header {
 
 .box-wrapper {
 	position         : relative;
-	margin           : 20% auto 0;
+	margin           : 18% auto 0;
 	width            : 450px;
 	padding: 0 0 60px 0;
 
@@ -103,6 +103,7 @@ header {
 	display: none;
 }
 
+
 .error-msg,
 .error-status {
  	padding: 10px 15px;
@@ -110,6 +111,13 @@ header {
  	border-radius: 4px;
 	color: #FFEBEA;
 	background-color: #BE2608
+}
+
+.error-status, .verification-status{
+    position: absolute;
+    right: 0;
+    z-index: 10;
+    margin-top: -10px;
 }
 
 .error-msg {

@@ -336,7 +336,8 @@ init = ->
                     $('#reset-btn').val window.langsrc.reset.reset_waiting
                     sendEmail($("#reset-pw-email").val())
                     false
-        '_login': (pathArray, hashArray)->
+        'login': (pathArray, hashArray)->
+            if checkAllCookie() then window.location = '/'
             deepth = 'login'
             console.log pathArray, hashArray
             render "#login-template"
@@ -364,7 +365,8 @@ init = ->
             $user.on 'keyup', checkValid
             $password.on 'keyup', checkValid
 
-        '_register': (pathArray, hashArray)->
+        'register': (pathArray, hashArray)->
+            if checkAllCookie() then window.location = '/'
             deepth = 'register'
             console.log pathArray, hashArray
             if hashArray[0] == 'success'

@@ -62,11 +62,11 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo' ], ( constant, MC,
             routeCIDR = routeObj.DestinationCidrBlock
             if routeCIDR
                 routeIP = routeCIDR.split('/')[0]
+                routeIPCIDR = routeCIDR.split('/')[1]
                 isInAnyPubIPRange = MC.aws.aws.isValidInIPRange(routeIP, 'public')
                 isInAnyPriIPRange = MC.aws.aws.isValidInIPRange(routeIP, 'private')
 
-            if (isInAnyPubIPRange and not isInAnyPriIPRange)
-
+            if (isInAnyPubIPRange and not isInAnyPriIPRange) or Number(routeIPCIDR) is 0
                 invalidRouteCIDRAry.push(routeCIDR)
 
         if invalidRouteCIDRAry.length

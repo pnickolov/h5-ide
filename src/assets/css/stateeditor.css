@@ -887,7 +887,7 @@
 #state-editor .state-action-wrap  .state-remove {
 	width      : 15px;
 	line-height: 16px;
-	font-size  : 12px !important;
+	font-size  : 14px !important;
 	height     : 16px;
 	text-align : center;
 	cursor     : pointer;
@@ -900,10 +900,6 @@
 	/*display: none;*/
 	width: 16px;
 	height: 16px;
-}
-
-#state-editor .state-action-wrap .state-remove:before {
-	font-size: 12px;
 }
 
 #state-editor .state-item:hover .state-action-wrap,

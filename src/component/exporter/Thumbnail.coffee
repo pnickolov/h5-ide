@@ -100,14 +100,25 @@ define ['UI.canvg', './Download'], ()->
       else
         ch.parentNode.removeChild ch
 
+    origin = { x : 0, y : 0 }
     # Prepare to insert header for Exporting Image
     if data.isExport
+      # Get each layouts BBox and calc the best origin of the export image.
+      origin = { x : size.width, y : size.height }
+      for ch in ($svg_canvas_element[0].children or $svg_canvas_element[0].childNodes)
+        if ch.tagName.toLowerCase() isnt "g" then continue
+        bbox = ch.getBBox()
+        if bbox.x < origin.x then origin.x = bbox.x
+        if bbox.y < origin.y then origin.y = bbox.y
+      origin.x -= 5
+      origin.y -= 30
+
       replaceEl = document.createElementNS("http://www.w3.org/2000/svg", "g")
       replaceEl.textContent = "PLACEHOLDER"
 
       # We use canvg's translate instead of calling context.translate()
       # because context.translate seems a little bit slow.
-      replaceEl.setAttribute "transform", "translate(0 54)"
+      replaceEl.setAttribute "transform", "translate(#{-origin.x} #{54-origin.y})"
       clone.insertBefore replaceEl, line
 
     # Remove a line that is useless
@@ -116,9 +127,9 @@ define ['UI.canvg', './Download'], ()->
     # Generate svg text, and remove data attributes
     svg = (new XMLSerializer()).serializeToString(clone).replace(/data-[^=]+="[^"]*?"/g, "")
 
+
     # Insert header
     if data.isExport
-
       # In IE, XMLSerializer will change xlink:href to href
       Href = (if svg.indexOf("xlink:href") is -1 then "href" else "xlink:href")  if Href is undefined
       time = ""
@@ -126,14 +137,14 @@ define ['UI.canvg', './Download'], ()->
       if data.drawInfo isnt false
         time = MC.dateFormat(new Date(), "yyyy-MM-dd hh:mm:ss")
         name = data.name
-      head = "<rect fill='#ad5992' width='100%' height='4' y='-54'></rect><rect fill='#252526' width='100%' height='50' y='-50'></rect><image #{Href}='./assets/images/ide/logo-t.png' x='10' y='-42' width='160' height='34'></image><text x='100%' y='-27' fill='#fff' text-anchor='end' transform='translate(-10 0)'>#{time}</text><text fill='#fff' x='100%' y='-13' text-anchor='end' transform='translate(-10 0)'>#{name}</text>"
+      head = "<g transform='translate(#{origin.x} #{origin.y-54})'><rect fill='#3b1252' width='100%' height='4'></rect><rect fill='#723197' width='100%' height='50' y='4'></rect><image #{Href}='./assets/images/ide/logo-t.png?v=2' x='10' y='11' width='116' height='35'></image><text x='100%' y='40' fill='#fff' text-anchor='end' transform='translate(-10 0)'>#{time}</text><text fill='#fff' x='100%' y='24' text-anchor='end' transform='translate(-10 0)'>#{name}</text></g>"
       svg = svg.replace("PLACEHOLDER</g>", head).replace("</svg>", "</g></svg>")
 
     # Calc the size for the canvas
     # In IE, getBBox returns SvgRect which is not allowed to modified.
     size =
-      width  : size.width + 50
-      height : size.height + 30
+      width  : size.width  + 50 - origin.x
+      height : size.height + 30 - origin.y
 
 
     # Calc the perfect size

@@ -9,13 +9,13 @@
 # **********************************************************
 */
 
-var API_HOST = 'https://api.visualops.io';
-
 var MC = {
 	// Global Variable
+
+	DOMAIN   : window.MC_DOMAIN,
+	API_HOST : window.MC_PROTO + "://api." + window.MC_DOMAIN,
+
 	IMG_URL: './assets/images/',
-	WS_URL: API_HOST + '/ws/',//-> 8300
-	SAVEPNG_URL: API_HOST + '/export/',//->8400
 
 	current_module : {},
 
@@ -76,7 +76,7 @@ var MC = {
 	api: function (option)
 	{
 		$.ajax({
-			url: API_HOST + option.url,
+			url: MC.API_HOST + option.url,
 			dataType: 'json',
 			type: 'POST',
 			data: JSON.stringify({

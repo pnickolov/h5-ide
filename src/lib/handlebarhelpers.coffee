@@ -6,10 +6,10 @@ define ["handlebars", "i18n!nls/lang.js"], ( Handlebars, lang )->
 
   #i18n
   Handlebars.registerHelper 'i18n', ( text ) ->
-    t = lang.ide[ text ] || ""
-    ### env:dev ###
+    t = lang.ide[ text ]
+    ### env:prod ###
     t = t || "undefined"
-    ### env:dev:end ###
+    ### env:prod:end ###
 
     new Handlebars.SafeString t
 

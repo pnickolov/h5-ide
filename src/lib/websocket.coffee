@@ -3,7 +3,7 @@
 
 define ['Meteor', 'underscore', "MC"], ( Meteor, _ ) ->
 
-	host = MC.WS_URL
+	host = "#{MC.API_HOST}/ws/"
 
 	websocketInit = () ->
 

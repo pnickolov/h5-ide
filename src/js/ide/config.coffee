@@ -1,27 +1,55 @@
 (()->
 
-	# When deploying, node will load this file to get the requirejs config
-	# In such case, window is undefined.
-	if not window then return
+  # When deploying, node will load this file to get the requirejs config
+  # In such case, window is undefined.
+  if not window then return
 
-	# Redirect
-	l = window.location
-	window.language = window.version = ""
-	if l.protocol is "http:" and not l.port
-		window.location = l.href.replace("http:","https:")
-		return
 
-	# Get Version and locale
-	scripts = document.getElementsByTagName("script")
-	for s in scripts
-		version = s.getAttribute("data-main")
-		if version
-			window.version = version.split("?")[1]
-			break
-	if window.version is '#{version}' then window.version = "dev"
+  # Set domain and set https
+  window.MC_DOMAIN   = "visualops.io"
+  window.MC_PROTO = "https"
+  shouldUseHttps = false
+  useHttps = false
 
-	window.language = document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + "lang\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1") || "en-us"
-	null
+  ### env:prod ###
+  useHttps = true
+  ### env:prod:end ###
+
+  ### env:debug ###
+  window.MC_DOMAIN = "mc3.io"
+  window.MC_PROTO = "https"
+  useHttps = false
+  ### env:debug:end ###
+
+  ### env:dev ###
+  window.MC_DOMAIN = "mc3.io"
+  window.MC_PROTO = "https"
+  ### env:dev:end ###
+
+  ### AHACKFORRELEASINGPUBLICVERSION ###
+  # AHACKFORRELEASINGPUBLICVERSION is a hack to force https to be disable, and only ide/config.coffee supports it.
+  shouldUseHttps = useHttps
+  ### AHACKFORRELEASINGPUBLICVERSION ###
+
+
+  # Redirect
+  l = window.location
+  window.language = window.version = ""
+  if shouldUseHttps and l.protocol is "http:"
+    window.location = l.href.replace("http:","https:")
+    return
+
+  # Get Version and locale
+  scripts = document.getElementsByTagName("script")
+  for s in scripts
+    version = s.getAttribute("data-main")
+    if version
+      window.version = version.split("?")[1]
+      break
+  if window.version is '#{version}' then window.version = "dev"
+
+  window.language = document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + "lang\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1") || "en-us"
+  null
 )()
 
 require.config {
@@ -244,10 +272,6 @@ require.config {
 		'underscore'   :
 			exports    : '_'
 
-		'backbone'     :
-			deps       : [ 'underscore', 'jquery' ]
-			exports    : 'Backbone'
-
 		'handlebars'   :
 			exports    : 'Handlebars'
 
@@ -413,4 +437,30 @@ require.config {
 	### env:prod:end ###
 }
 
-require ['./js/ide/ide' ], ( ide ) -> $ ()-> ide.initialize()
+requirejs.onError = ( err )->
+	# Because there are so many **WRONG USAGE** of require()
+	# We can only try reloading the dependency if timeout
+	err = err || { requireType : "timeout" }
+	if err.requireType is "timeout"
+		for i in err.requireModules || []
+			requirejs.undef i
+
+		require err.requireModules || [], ()->
+	else
+		console.log "[RequireJS Error]", err
+
+
+require ['./js/ide/ide' ], ( ide ) ->
+	$ ()-> ide.initialize()
+, ( err )->
+	err = err || { requireType : "timeout" }
+	if err.requireType is "timeout"
+		requirejs.onError = ()-> # Just use to suppress subsequent error
+		console.error "[RequireJS timeout] Reloading, error modules :", err.requireModules
+		window.location.reload()
+	else if err.requireType is "scripterror"
+		console.log "[RequireJS Error]", err
+		# requirejs.onError = ()-> # Just use to suppress subsequent error
+		# console.error "[Script Error] Redirecting to 500, error modules :", err.requireModules
+		# window.location = "/500"
+	return

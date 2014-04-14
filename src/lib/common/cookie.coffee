@@ -3,7 +3,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 	setCookie = ( result ) ->
 
 
-		if document.domain.indexOf('visualops.io') != -1
+		if document.domain.indexOf(MC.DOMAIN) != -1
 			#domain is *.visualops.io
 			option = constant.COOKIE_OPTION
 		else
@@ -27,7 +27,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 	deleteCookie = ->
 
-		if document.domain.indexOf('visualops.io') != -1
+		if document.domain.indexOf(MC.DOMAIN) != -1
 			#domain is *.visualops.io
 			option = constant.COOKIE_OPTION
 		else
@@ -53,7 +53,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 	setCred = ( result ) ->
 
-		if document.domain.indexOf('visualops.io') != -1
+		if document.domain.indexOf(MC.DOMAIN) != -1
 			#domain is *.visualops.io
 			option = constant.COOKIE_OPTION
 		else
@@ -65,7 +65,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 	setIDECookie = ( result ) ->
 
-		if document.domain.indexOf('visualops.io') != -1
+		if document.domain.indexOf(MC.DOMAIN) != -1
 			#domain is *.visualops.io
 			option = constant.COOKIE_OPTION
 		else
@@ -145,7 +145,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 	setCookieByName = ( cookie_name, value ) ->
 
-		if document.domain.indexOf('visualops.io') != -1
+		if document.domain.indexOf(MC.DOMAIN) != -1
 			#domain is *.visualops.io
 			option = constant.COOKIE_OPTION
 		else

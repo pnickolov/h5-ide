@@ -1,8 +1,35 @@
 (()->
+  # Set domain and set https
+  window.MC_DOMAIN   = "visualops.io"
+  window.MC_PROTO = "https"
+  shouldUseHttps = false
+  useHttps = false
+
+  ### env:prod ###
+  useHttps = true
+  ### env:prod:end ###
+
+  ### env:debug ###
+  window.MC_DOMAIN = "mc3.io"
+  window.MC_PROTO = "https"
+  useHttps = false
+  ### env:debug:end ###
+
+  ### env:dev ###
+  window.MC_DOMAIN = "mc3.io"
+  window.MC_PROTO = "https"
+  ### env:dev:end ###
+
+  ### AHACKFORRELEASINGPUBLICVERSION ###
+  # AHACKFORRELEASINGPUBLICVERSION is a hack to force https to be disable, and only ide/config.coffee supports it.
+  shouldUseHttps = useHttps
+  ### AHACKFORRELEASINGPUBLICVERSION ###
+
+
   # Redirect
   l = window.location
   window.language = window.version = ""
-  if l.protocol is "http:" and not l.port
+  if shouldUseHttps and l.protocol is "http:"
     window.location = l.href.replace("http:","https:")
     return
 
@@ -63,15 +90,11 @@ require.config {
     'underscore'      :
       exports       : '_'
 
-    'backbone'        :
-      deps          : [ 'underscore', 'jquery' ]
-      exports       : 'Backbone'
-
     'handlebars'      :
       exports       : 'Handlebars'
 
     'MC'              :
-      deps          : [ 'jquery', 'constant' ]
+      deps          : [ 'jquery' ]
       exports       : 'MC'
 
   ### env:prod ###

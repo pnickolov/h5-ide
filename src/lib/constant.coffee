@@ -1,6 +1,6 @@
 
 
-define ['i18n!nls/lang.js'], ( lang ) ->
+define ['MC', 'i18n!nls/lang.js'], ( MC, lang ) ->
 
 	AWS_RESOURCE_KEY = {
 		"AWS.EC2.AvailabilityZone"            : "ZoneName"
@@ -488,7 +488,7 @@ use redirection server name:i:0\n"
 	COOKIE_OPTION =
 		expires:1
 		path: '/'
-		domain: '.visualops.io'
+		domain: ".#{MC.DOMAIN}"
 
 	LOCAL_COOKIE_OPTION =
 		expires:1

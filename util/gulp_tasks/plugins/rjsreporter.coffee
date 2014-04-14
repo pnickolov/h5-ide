@@ -43,10 +43,14 @@ module.exports = ( info )->
 
       message = ""
 
-      if duplicateTest[ source ]
-        hasDuplicate = true
-        message = gutil.colors.bgRed.white("Duplicated") + " "
-      duplicateTest[ source ] = true
+      # Cannot use String.prototype.endsWith. Don't know why.
+      if source.lastIndexOf(".css") + 4 != source.length
+        # Ignore checking if css is duplicated.
+
+        if duplicateTest[ source ]
+          hasDuplicate = true
+          message = gutil.colors.bgRed.white("Duplicated") + " "
+        duplicateTest[ source ] = true
 
       if IgnoreCheckPath[ source ]
         message += source

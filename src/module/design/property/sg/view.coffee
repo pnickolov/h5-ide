@@ -28,7 +28,8 @@ define [ '../base/view',
             @$el.html tpl @model.toJSON()
             @refreshSgruleList()
 
-            $('#property-second-title').html('<span class="sg-color" style="background-color:' + @model.get("color") + '" ></span>' + @model.get("name") )
+            @setTitle @model.get("name")
+            @prependTitle '<span class="sg-color" style="background-color:' + @model.get("color") + '" ></span>'
 
             @forceShow()
 
@@ -98,9 +99,8 @@ define [ '../base/view',
                 oldName = @model.get("name")
                 @model.setName name
 
-                title = '<span class="sg-color" style="background-color:' + @model.get("color") + '" ></span>' + @model.get("name")
-
-                @setTitle title
+                @setTitle @model.get("name")
+                @prependTitle '<span class="sg-color" style="background-color:' + @model.get("color") + '" ></span>'
 
                 $("#sg-rule-list").children().find(".rule-reference").each ()->
                     if $(this).text() is oldName then $(this).html( title )

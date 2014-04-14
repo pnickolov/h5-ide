@@ -1,5 +1,5 @@
 (function() {
-  var Q, SrcOption, Tasks, coffee, confCompile, dest, end, es, fileLogger, fs, gulp, gutil, handlebars, ideversion, include, langsrc, logTask, path, requirejs, rjsconfig, rjsreporter, server, stdRedirect, stripdDebug, unittest, util, variable;
+  var Q, SrcOption, Tasks, TasksEnvironment, coffee, conditional, confCompile, dest, end, es, fileLogger, fs, gulp, gutil, handlebars, ideversion, include, langsrc, logTask, path, requirejs, rjsconfig, rjsreporter, server, stdRedirect, stripdDebug, unittest, util, variable;
 
   gulp = require("gulp");
 
@@ -21,7 +21,7 @@
 
   langsrc = require("./plugins/langsrc");
 
-  confCompile = require("./plugins/conditional");
+  conditional = require("./plugins/conditional");
 
   handlebars = require("./plugins/handlebars");
 
@@ -89,7 +89,44 @@
     return null;
   };
 
+  confCompile = function() {
+    return conditional(true, TasksEnvironment.isDebug);
+  };
+
+  TasksEnvironment = {
+    isDebug: false,
+    isRelease: false,
+    isQa: false,
+    isPublic: false
+  };
+
   Tasks = {
+    correctReleaseVersion: function() {
+      var releaseVersion;
+      if (TasksEnvironment.isRelease) {
+        releaseVersion = GLOBAL.gulpConfig.version.split(".");
+        releaseVersion.length = 3;
+        GLOBAL.gulpConfig.version = releaseVersion.join(".");
+      }
+      return true;
+    },
+    removeRedirectForPublic: function() {
+      var d, pipe, stripHttpsRedirectRegex;
+      if (!TasksEnvironment.isPublic) {
+        return true;
+      }
+      logTask("Stripping https redirect", true);
+      stripHttpsRedirectRegex = /### AHACKFORRELEASINGPUBLICVERSION ###/g;
+      d = Q.defer();
+      pipe = gulp.src(["./src/js/**/config.coffee"], SrcOption).pipe(es.through(function(f) {
+        var newContent;
+        newContent = f.contents.toString("utf8").replace(stripHttpsRedirectRegex, "###");
+        f.contents = new Buffer(newContent);
+        this.emit("data", f);
+        return null;
+      })).pipe(confCompile()).pipe(coffee()).pipe(fileLogger()).pipe(stripdDebug()).pipe(dest()).on("end", end(d, true));
+      return d.promise;
+    },
     cleanRepo: function() {
       logTask("Removing ignored files in src (git clean -Xf)");
       return util.runCommand("git", ["clean", "-Xdf"], {
@@ -115,8 +152,8 @@
     },
     copyAssets: function() {
       var d, p;
-      logTask("Copying Assets");
-      p = ["./src/assets/**/*", "!**/*.glyphs", "!**/*.scss"];
+      logTask("Copying Assets & robots.txt");
+      p = ["./src/assets/**/*", "!**/*.glyphs", "!**/*.scss", "./src/robots.txt"];
       d = Q.defer();
       gulp.src(p, SrcOption).pipe(dest()).on("end", end(d));
       return d.promise;
@@ -126,7 +163,7 @@
       logTask("Copying Js & Templates");
       p = ["./src/**/*.js", "!./src/test/**/*"];
       d = Q.defer();
-      gulp.src(p, SrcOption).pipe(confCompile(true)).pipe(dest()).on("end", end(d));
+      gulp.src(p, SrcOption).pipe(confCompile()).pipe(dest()).on("end", end(d));
       return d.promise;
     },
     compileLangSrc: function() {
@@ -136,26 +173,24 @@
       gulp.src(["./src/nls/lang-source.coffee"], SrcOption).pipe(langsrc("./build", false, GLOBAL.gulpConfig.verbose, true)).on("end", end(d));
       return d.promise;
     },
-    compileCoffee: function(debugMode) {
-      return function() {
-        var d, p, pipe;
-        logTask("Compiling coffees", true);
-        p = ["./src/**/*.coffee", "!src/test/**/*", "!./src/nls/lang-source.coffee"];
-        d = Q.defer();
-        pipe = gulp.src(p, SrcOption).pipe(confCompile(true)).pipe(coffee()).pipe(fileLogger());
-        if (!debugMode) {
-          pipe = pipe.pipe(stripdDebug());
-        }
-        pipe.pipe(dest()).on("end", end(d, true));
-        return d.promise;
-      };
+    compileCoffee: function() {
+      var d, p, pipe;
+      logTask("Compiling coffees", true);
+      p = ["./src/**/*.coffee", "!src/test/**/*", "!./src/nls/lang-source.coffee"];
+      d = Q.defer();
+      pipe = gulp.src(p, SrcOption).pipe(confCompile()).pipe(coffee()).pipe(fileLogger());
+      if (!TasksEnvironment.isDebug) {
+        pipe = pipe.pipe(stripdDebug());
+      }
+      pipe.pipe(dest()).on("end", end(d, true));
+      return d.promise;
     },
     compileTemplate: function() {
       var d, p;
       logTask("Compiling templates", true);
       p = ["./src/**/*.partials", "./src/**/*.html", "!src/test/**/*", "!src/*.html", "!src/include/*.html"];
       d = Q.defer();
-      gulp.src(p, SrcOption).pipe(confCompile(true)).pipe(handlebars(false)).pipe(fileLogger()).pipe(dest()).on("end", end(d, true));
+      gulp.src(p, SrcOption).pipe(confCompile()).pipe(handlebars(false)).pipe(fileLogger()).pipe(dest()).on("end", end(d, true));
       return d.promise;
     },
     processHtml: function() {
@@ -166,61 +201,57 @@
       gulp.src(p).pipe(confCompile(true)).pipe(include()).pipe(variable()).pipe(dest()).on("end", end(d));
       return d.promise;
     },
-    concatJS: function(debug, outputPath) {
-      return function() {
-        var d;
-        logTask("Concating JS");
-        d = Q.defer();
-        requirejs.optimize(rjsconfig(debug, outputPath), function(buildres) {
-          if (rjsreporter(buildres)) {
-            return d.resolve();
-          } else {
-            console.log(gutil.colors.bgRed.white("Aborted due to concat error"));
-            return d.reject();
-          }
-        }, function(err) {
-          console.log(err);
+    concatJS: function() {
+      var d;
+      logTask("Concating JS");
+      d = Q.defer();
+      requirejs.optimize(rjsconfig(TasksEnvironment.isDebug, TasksEnvironment.outputPath), function(buildres) {
+        if (rjsreporter(buildres)) {
+          return d.resolve();
+        } else {
+          console.log(gutil.colors.bgRed.white("Aborted due to concat error"));
           return d.reject();
-        });
-        return d.promise;
-      };
+        }
+      }, function(err) {
+        console.log(err);
+        return d.reject();
+      });
+      return d.promise;
     },
     removeBuildFolder: function() {
       util.deleteFolderRecursive(process.cwd() + "/build");
       return true;
     },
-    fetchRepo: function(debugMode) {
-      return function() {
-        var hadError, params, result;
-        logTask("Checking out h5-ide-build");
-        if (!util.deleteFolderRecursive(process.cwd() + "/h5-ide-build")) {
-          throw new Error("Cannot delete ./h5-ide-build, please manually delete it then retry.");
+    fetchRepo: function() {
+      var hadError, params, result;
+      logTask("Checking out h5-ide-build");
+      if (!util.deleteFolderRecursive(process.cwd() + "/h5-ide-build")) {
+        throw new Error("Cannot delete ./h5-ide-build, please manually delete it then retry.");
+      }
+      params = ["clone", GLOBAL.gulpConfig.buildRepoUrl, "-v", "--progress", "--depth", "1", "-b", TasksEnvironment.repoBranch];
+      if (GLOBAL.gulpConfig.buildUsername) {
+        params.push("-c");
+        params.push("user.name=\"" + GLOBAL.gulpConfig.buildUsername + "\"");
+      }
+      if (GLOBAL.gulpConfig.buildEmail) {
+        params.push("-c");
+        params.push("user.email=\"" + GLOBAL.gulpConfig.buildEmail + "\"");
+      }
+      hadError = false;
+      result = util.runCommand("git", params, {}, function(d, type) {
+        if (d.indexOf("fatal") !== -1) {
+          console.log(d);
+          hadError = true;
         }
-        params = ["clone", GLOBAL.gulpConfig.buildRepoUrl, "-v", "--progress", "--depth", "1", "-b", debugMode ? "test" : "master"];
-        if (GLOBAL.gulpConfig.buildUsername) {
-          params.push("-c");
-          params.push("user.name=\"" + GLOBAL.gulpConfig.buildUsername + "\"");
+        process.stdout.write(d);
+        return null;
+      });
+      return result.then(function() {
+        if (hadError) {
+          throw new Error("Cannot checkout h5-ide-build");
         }
-        if (GLOBAL.gulpConfig.buildEmail) {
-          params.push("-c");
-          params.push("user.email=\"" + GLOBAL.gulpConfig.buildEmail + "\"");
-        }
-        hadError = false;
-        result = util.runCommand("git", params, {}, function(d, type) {
-          if (d.indexOf("fatal") !== -1) {
-            console.log(d);
-            hadError = true;
-          }
-          process.stdout.write(d);
-          return null;
-        });
-        return result.then(function() {
-          if (hadError) {
-            throw new Error("Cannot checkout h5-ide-build");
-          }
-          return true;
-        });
-      };
+        return true;
+      });
     },
     preCommit: function() {
       var commitData, move, option;
@@ -370,44 +401,47 @@
         return true;
       });
     },
-    test: function(qaMode) {
-      return function() {
-        var p, result, testserver;
-        p = qaMode ? "./qa" : "./deploy";
-        testserver = server.create(p, 3010, false, false);
-        logTask("Starting automated test");
-        result = unittest();
-        if (result) {
-          return result.then(function() {
-            testserver.close();
-            return true;
-          });
-        } else {
+    test: function() {
+      var p, result, testserver;
+      p = TasksEnvironment.isQa ? "./qa" : "./deploy";
+      testserver = server.create(p, 3010, false, false);
+      logTask("Starting automated test");
+      result = unittest();
+      if (result) {
+        return result.then(function() {
+          testserver.close();
           return true;
-        }
-      };
+        });
+      } else {
+        testserver.close();
+        return true;
+      }
     }
   };
 
   module.exports = {
     build: function(mode) {
-      var debugMode, deploy, outputPath, qaMode, releaseVersion, tasks;
-      deploy = mode !== "qa";
-      debugMode = mode === "qa" || mode === "debug";
-      outputPath = mode === "qa" ? "./qa" : void 0;
-      qaMode = mode === "qa";
-      ideversion.read();
-      if (mode === "release") {
-        releaseVersion = GLOBAL.gulpConfig.version.split(".");
-        releaseVersion.length = 3;
-        GLOBAL.gulpConfig.version = releaseVersion.join(".");
+      var tasks;
+      TasksEnvironment.isDebug = mode === "qa" || mode === "debug";
+      TasksEnvironment.isRelease = mode === "release" || mode === "public";
+      TasksEnvironment.isQa = mode === "qa";
+      TasksEnvironment.isPublic = mode === "public";
+      TasksEnvironment.outputPath = mode === "qa" ? "./qa" : void 0;
+      TasksEnvironment.repoBranch = "master";
+      if (TasksEnvironment.isDebug) {
+        TasksEnvironment.repoBranch = "develop";
       }
-      tasks = [Tasks.checkGitVersion, Tasks.cleanRepo, Tasks.copyAssets, Tasks.copyJs, Tasks.compileLangSrc, Tasks.compileCoffee(debugMode), Tasks.compileTemplate, Tasks.processHtml, Tasks.concatJS(debugMode, outputPath), Tasks.removeBuildFolder, Tasks.test(qaMode)];
-      if (!qaMode) {
-        tasks = tasks.concat([Tasks.fetchRepo(debugMode), Tasks.preCommit, Tasks.fileVersion, Tasks.logDeployInDevRepo, Tasks.finalCommit]);
+      if (TasksEnvironment.isPublic) {
+        TasksEnvironment.repoBranch = "public";
+      }
+      ideversion.read();
+      tasks = [Tasks.correctReleaseVersion, Tasks.checkGitVersion, Tasks.cleanRepo, Tasks.copyAssets, Tasks.copyJs, Tasks.compileLangSrc, Tasks.compileCoffee, Tasks.removeRedirectForPublic, Tasks.compileTemplate, Tasks.processHtml, Tasks.concatJS, Tasks.removeBuildFolder, Tasks.test];
+      if (!TasksEnvironment.isQa) {
+        tasks = tasks.concat([Tasks.fetchRepo, Tasks.preCommit, Tasks.fileVersion, Tasks.logDeployInDevRepo, Tasks.finalCommit]);
       }
       return tasks.reduce(Q.when, true).then(function() {
-        return console.log(gutil.colors.bgBlue.white("\n [Build Succeed] ") + "\n");
+        console.log(gutil.colors.bgBlue.white("\n [Build Succeed] ") + "\n");
+        return true;
       }, function(p) {
         console.log("[", gutil.colors.bgRed.white("Build Task Aborted"), "]", p);
         throw new Error("\n");

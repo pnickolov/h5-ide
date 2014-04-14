@@ -235,8 +235,9 @@ guid = ->
     ).toUpperCase()
 # api
 console.log guid()
+window.xhr = null
 api = (option)->
-    $.ajax(
+    window.xhr = $.ajax(
         url: API_HOST + option.url
         dataType: 'json'
         type: 'POST'
@@ -302,7 +303,7 @@ init = ->
                         $('form.box-body').find('input').eq(0).focus()
                         $('#reset-form').on 'submit' , (e)->
                             e.preventDefault();
-                            if checkPassword()
+                            if validPassword()
                                 $("#reset-password").attr('disabled',true).val langsrc.reset.reset_waiting
                                 #window.location.hash = "#success"
                                 ajaxChangePassword(hashArray, $("#reset-pw").val())
@@ -310,7 +311,7 @@ init = ->
                             return false
                     else
                         console.log "Error Verify Code!"
-                        render "#expire-template"
+                        window.location.hash = "expire"
             else if hashTarget == "expire"
                 render '#expire-template'
             else if hashTarget == "email"
@@ -363,12 +364,120 @@ init = ->
             $user.on 'keyup', checkValid
             $password.on 'keyup', checkValid
 
-        'register': (pathArray, hashArray)->
+        '_register': (pathArray, hashArray)->
+            deepth = 'register'
             console.log pathArray, hashArray
+            if hashArray[0] == 'success'
+                render "#success-template"
+                $('#register-get-start').click ->
+                    window.location = "/"
+                return false
+            render '#register-template'
+            $form = $("#register-form")
+            $username = $('#register-username')
+            $email = $('#register-email')
+            $password = $('#register-password')
+            timeOutToClear = undefined
+            $('#register-btn').attr('disabled',false)
+            checkUsername = (e,cb)->
+                username = $username.val()
+                status = $('#username-verification-status')
+                if username.trim() isnt ""
+                    if /[^A-Za-z0-9\_]{1}/.test(username) isnt true
+                        if username.length > 40
+                            e?.preventDefault()
+                            status.removeClass('verification-status').addClass('error-status').text langsrc.register.username_maxlength
+                            cb?(0)
+                        else
+                            status.hasClass('error-status') && status.removeClass('verification-status').removeClass('error-status').text ""
+                            window.xhr?.abort()
+                            window.clearTimeout(timeOutToClear)
+                            console.log('aborted!', timeOutToClear)
+                            timeOutToClear = window.setTimeout ->
+                                checkUserExist([username, null] , (statusCode)->
+                                    if !statusCode
+                                        status.removeClass('error-status').addClass('verification-status').show().text langsrc.register.username_available
+                                        cb?(1)
+                                    else
+                                        status.removeClass('verification-status').addClass('error-status').text langsrc.register.username_taken
+                                        cb?(0)
+                                )
+                            ,500
+                    else
+                        e?.preventDefault()
+                        status.removeClass('verification-status').addClass('error-status').text langsrc.register.username_not_matched
+                        cb?(0)
+                else
+                    e?.preventDefault()
+                    status.removeClass('verification-status').addClass('error-status').text langsrc.register.username_required
+                    cb?(0)
+            checkEmail = (e,cb)->
+                email = $email.val()
+                status = $("#email-verification-status")
+                reg_str = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+                if email.trim() isnt ""
+                    if reg_str.test(email)
+                        status.hasClass('error-status') && status.removeClass('verification-status').removeClass('error-status').text ""
+                        window.xhr?.abort()
+                        window.clearTimeout(timeOutToClear)
+                        timeOutToClear = window.setTimeout ->
+                            checkUserExist([null, email], (statusCode)->
+                                if !statusCode
+                                    status.removeClass('error-status').addClass('verification-status').show().text langsrc.register.email_available
+                                    cb?(1)
+                                else
+                                    status.removeClass('verification-status').addClass('error-status').text langsrc.register.email_used
+                                    cb?(0)
+                            )
+                        ,500
+                    else
+                        e.preventDefault()
+                        status.removeClass('verification-status').addClass('error-status').text langsrc.register.email_not_valid
+                        cb?(0)
+                else
+                    e.preventDefault()
+                    status.removeClass('verification-status').addClass('error-status').text langsrc.register.email_required
+                    cb?(0)
+            checkPassword = (e,cb)->
+                password = $password.val()
+                status = $("#password-verification-status")
+                if password.trim() isnt ""
+                    if password.length > 5
+                        status.removeClass('verification-status').removeClass('error-status').text ""
+                        cb?(1)
+                    else
+                        e.preventDefault()
+                        status.removeClass('verification-status').addClass('error-status').text langsrc.register.password_shorter
+                        cb?(0)
+                else
+                    e.preventDefault()
+                    status.removeClass('verification-status').addClass('error-status').text langsrc.register.password_required
+                    cb?(0)
+
+            $username.on 'keyup blur', checkUsername
+            $email.on 'keyup blur', checkEmail
+            $password.on 'keyup blur', checkPassword
+            $form.on 'submit', (e)->
+                e.preventDefault()
+                $('#register-btn').attr('disabled',true).val(langsrc.register.reginster_waiting)
+                console.log('check user input here.')
+                checkUsername(e , (usernameAvl)->
+                    checkEmail(e, (emailAvl)->
+                        checkPassword(e,(passwordAvl)->
+                            if (usernameAvl&&emailAvl&&passwordAvl)
+                                console.log('Success!!!!!')
+                                ajaxRegister([$username.val(), $password.val(), $email.val()],(statusCode)->
+                                    console.log(statusCode,"!error")
+                                    window.location = '/500'
+                                )
+                        )
+                    )
+                )
+
     )
 
 # handle reset password input
-checkPassword = ->
+validPassword = ->
     status = $("#password-verification-status")
     value =  $("#reset-pw").val().trim()
     status.removeClass 'error-status'
@@ -440,6 +549,23 @@ setCredit = (result)->
         return hash.toString CryptoJS.enc.Hex
     localStorage.setItem 'user_hash', intercom_sercure_mode_hash()
 
+# ajax register
+ajaxRegister = (params, errorCB)->
+    console.log params
+    api(
+        url: '/account/'
+        method: 'register'
+        data: params
+        success: (result, statusCode)->
+            if !statusCode
+                console.log('registered successfully')
+                setCredit(result)
+                window.location.hash = "success"
+            else
+                errorCB(statusCode)
+        error: (status)->
+            handleNetError(status)
+    )
 
 # send Email with callback
 ajaxLogin = (params, errorCB)->
@@ -460,7 +586,7 @@ ajaxLogin = (params, errorCB)->
 
     )
 sendEmail = (params)->
-    checkUserExist params, (statusCode)->
+    checkUserExist [params,null], (statusCode)->
         if !statusCode
             showErrorMessage()
             return false
@@ -483,11 +609,11 @@ sendEmail = (params)->
         )
 
 # check user exits
-checkUserExist = (username,fn)->
+checkUserExist = (params,fn)->
     api({
         url: '/account/'
         method: 'check_repeat'
-        data: [username,null]
+        data: params
         success: (result,statusCode)->
             console.log result , statusCode
             if(statusCode)

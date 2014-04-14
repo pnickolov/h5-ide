@@ -4942,7 +4942,7 @@ MC.canvas.event.keyEvent = function (event)
 			//event.target === document.body
 		)
 		{
-			if (event.ctrlKey) {
+			if (event.ctrlKey || event.metaKey) {
 				return true;
 			}
 

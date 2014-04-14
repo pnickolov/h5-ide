@@ -22,9 +22,10 @@ define ['Meteor', 'underscore', "MC"], ( Meteor, _ ) ->
 
 			Meteor.default_connection = Meteor.connect(host, true)
 
-			_.each ['subscribe', 'methods', 'call', 'apply', 'status', 'reconnect'], func = (name) ->
+			_.each ['subscribe', 'methods', 'call', 'apply', 'status', 'reconnect'], (name) ->
 
 				Meteor[name] = _.bind Meteor.default_connection[name], Meteor.default_connection
+				return
 
 
 

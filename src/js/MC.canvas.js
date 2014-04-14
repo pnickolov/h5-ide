@@ -3065,20 +3065,7 @@ MC.canvas.event.dragable = {
 				if (
 					coordinate.x > 0 &&
 					coordinate.y > 0 &&
-					match_place.is_matched // &&
-					// Disallow Instance to ASG
-					// !(
-					// 	parentGroup &&
-					// 	parentGroup.getAttribute('data-class') === 'AWS.AutoScaling.Group' &&
-					// 	target_type === 'AWS.EC2.Instance'
-					// )
-					// &&
-					// target_item.changeParent()
-					// &&
-					// (
-					// 	$canvas.trigger(BEFORE_DROP_EVENT, {'src_node': target_id, 'tgt_parent': parentGroup ? parentGroup.id : ''}) &&
-					// 	!BEFORE_DROP_EVENT.isDefaultPrevented()
-					// )
+					match_place.is_matched
 				)
 				{
 					if (event_data.canvas_body.hasClass('cloning'))

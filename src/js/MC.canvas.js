@@ -1874,59 +1874,6 @@ MC.canvas.layout = {
 	}
 };
 
-// MC.canvas.data = {
-// 	get: function (key)
-// 	{
-// 		var context = MC.canvas_data,
-// 			namespaces = key.split('.'),
-// 			last = namespaces.pop(),
-// 			i = 0,
-// 			length = namespaces.length,
-// 			context;
-
-// 		for (; i < length; i++)
-// 		{
-// 			context = context[ namespaces[ i ] ];
-// 		}
-
-// 		return context[ last ];
-// 	},
-
-// 	set: function (key, value)
-// 	{
-// 		var context = MC.canvas_data,
-// 			namespaces = key.split('.'),
-// 			last = namespaces.pop(),
-// 			i = 0,
-// 			length = namespaces.length,
-// 			context;
-
-// 		for (; i < length; i++)
-// 		{
-// 			context = context[ namespaces[ i ] ];
-// 		}
-
-// 		return context[ last ] = value;
-// 	},
-
-// 	delete: function (key)
-// 	{
-// 		var context = MC.canvas_data,
-// 			namespaces = key.split('.'),
-// 			last = namespaces.pop(),
-// 			i = 0,
-// 			length = namespaces.length,
-// 			context;
-
-// 		for (; i < length; i++)
-// 		{
-// 			context = context[ namespaces[ i ] ];
-// 		}
-
-// 		delete context[ last ];
-// 	}
-// };
-
 MC.canvas.volume = {
 	bubble: function (id, node_id, volume_type)
 	{
@@ -4798,42 +4745,10 @@ MC.canvas.event.selectNode = function (event)
 	return false;
 };
 
-// MC.canvas.event.appMove = function (event)
-// {
-// 	if (event.which === 1)
-// 	{
-// 		var target = $canvas(this.id);
-
-// 		MC.canvas.event.clearSelected();
-
-// 		if (
-// 			target.class === 'AWS.EC2.Instance' ||
-// 			target.nodeType === 'group'
-// 		)
-// 		{
-// 			MC.canvas.event.dragable.mousedown.call( this, event );
-// 		}
-// 		else
-// 		{
-// 			target.select();
-// 		}
-// 	}
-
-// 	return false;
-// };
 
 MC.canvas.event.appDrawConnection = function ()
 {
-	// if ($(this).is([
-	// 	'.port-instance-sg',
-	// 	'.port-eni-sg',
-	// 	'.port-launchconfig-sg',
-	// 	'.port-elb-sg'
-	// 	].join(', ')
-	// ))
-	// {
 	MC.canvas.event.drawConnection.mousedown.call( this, event );
-	// }
 
 	return false;
 };

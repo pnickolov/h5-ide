@@ -271,8 +271,8 @@ $.ajax({
         window.langsrc = data
         console.log 'Success', data
     error: (error)->
-        # todo: change error handler
         console.log error, "error"
+        window.location = "/500"
 }).done ->
     console.log('Loaded!', langsrc)
     init()
@@ -381,6 +381,8 @@ init = ->
             $password = $('#register-password')
             timeOutToClear = undefined
             $('#register-btn').attr('disabled',false)
+
+            # username validation
             checkUsername = (e,cb)->
                 username = $username.val()
                 status = $('#username-verification-status')
@@ -413,6 +415,8 @@ init = ->
                     e?.preventDefault()
                     status.removeClass('verification-status').addClass('error-status').text langsrc.register.username_required
                     cb?(0)
+
+            # user Email validation
             checkEmail = (e,cb)->
                 email = $email.val()
                 status = $("#email-verification-status")
@@ -440,6 +444,8 @@ init = ->
                     e.preventDefault()
                     status.removeClass('verification-status').addClass('error-status').text langsrc.register.email_required
                     cb?(0)
+
+            # password validation
             checkPassword = (e,cb)->
                 password = $password.val()
                 status = $("#password-verification-status")
@@ -578,7 +584,6 @@ ajaxLogin = (params, errorCB)->
         success: (result, statusCode)->
             if(!statusCode)
                 console.log 'Login Now!'
-                #todo: setCookie
                 setCredit(result)
                 window.location = '/'
             else

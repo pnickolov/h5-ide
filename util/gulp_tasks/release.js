@@ -153,7 +153,7 @@
     copyAssets: function() {
       var d, p;
       logTask("Copying Assets & robots.txt");
-      p = ["./src/assets/**/*", "!**/*.glyphs", "!**/*.scss", "./src/robots.txt"];
+      p = ["./src/assets/**/*", "./src/robots.txt", "!**/*.glyphs", "!**/*.scss", "!./src/assets/config.rb"];
       d = Q.defer();
       gulp.src(p, SrcOption).pipe(dest()).on("end", end(d));
       return d.promise;

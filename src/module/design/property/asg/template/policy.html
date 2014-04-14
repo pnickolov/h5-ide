@@ -8,7 +8,7 @@
 		 <div class="modal-body scroll-content" id="property-asg-policy" data-uid="{{uid}}">
 
 			<label for="asg-policy-name" class="modal-text-major">{{ i18n "PROP_ASG_POLICY_TLT_NAME"}}</label>
-			<input type="text" class="input" value="{{name}}" id="asg-policy-name" data-required-rollback="true" data-ignore="true" maxlength="255" data-required="true">
+			<input type="text" class="input" value="{{name}}" id="asg-policy-name" data-required-rollback="true" data-ignore="true" maxlength="255" data-required="true" {{#if isOld}}readonly{{/if}}>
 
 
 				<section class="modal-control-group">

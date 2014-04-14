@@ -1750,6 +1750,8 @@ MC.canvas = {
 			coordinate,
 			size;
 
+		var oldSize = null;
+
 		$.each($canvas.group(), function (key, item)
 		{
 			group_item = $canvas(item.id);
@@ -1771,9 +1773,13 @@ MC.canvas = {
 				)
 			)
 			{
-				matched = document.getElementById( item.id );
-
-				return false;
+				var newMatched = document.getElementById( item.id );
+				if ( !matched ) {
+					matched = newMatched;
+				} else if ( size[0] < oldSize[0] || size[1] < oldSize[1] ) {
+					matched = newMatched;
+				}
+				oldSize = size;
 			}
 		});
 

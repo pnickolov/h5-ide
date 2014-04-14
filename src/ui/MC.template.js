@@ -2249,9 +2249,28 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   
 
 
-  return "<div id=\"system-notice\">\n	<span>\n		<b>Notice: </b>We will drop the support for <em>EC2 Classic</em> and <em>Default VPC</em> soon, and focus on VPC, which is recommended for everyone.\n		<a href=\"http://blog.visualops.io/2014/02/18/vpc-always-forget-about-the-rest/\" class=\"notice-btn\" target=\"_blank\">Learn more</a>\n	</span>\n	<a class=\"notice-close\" href=\"javascript:void(0)\" id=\"system-notice-close\">x</a>\n</div>\n";
+  return "<div id=\"system-notice\">\n	<span>\n		<b>Notice: </b>We will drop the support for <em>EC2 Classic</em> and <em>Default VPC</em> soon, and focus on VPC, which is recommended for everyone.\n		<a href=\"http://blog.visualops.io/2014/02/18/vpc-always-forget-about-the-rest/\" class=\"notice-btn\" target=\"_blank\">Learn more</a>\n	</span>\n	<a class=\"notice-close\" href=\"javascript:void(0)\" id=\"system-notice-close\">x</a>\n</div>\n\n";
   };
 TEMPLATE.systemNotice=Handlebars.template(__TEMPLATE__);
+
+
+__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  var buffer = "", stack1, escapeExpression=this.escapeExpression, functionType="function";
+
+
+  buffer += "<div style=\"width:420px\">\n	<div class=\"modal-header\"> <h3>"
+    + escapeExpression(helpers.i18n.call(depth0, "PROP_ELB_CERT_REMOVE_CONFIRM_TITLE", {hash:{},data:data}))
+    + "</h3><i class=\"modal-close\">&times;</i> </div>\n	<div class=\"modal-body\">\n		<div class=\"modal-text-wraper\">\n			 <div class=\"modal-center-align-helper\">\n				<div class=\"modal-text-major\">"
+    + escapeExpression(helpers.i18n.call(depth0, "PROP_ELB_CERT_REMOVE_CONFIRM_MAIN", {hash:{},data:data}))
+    + escapeExpression(((stack1 = (depth0 && depth0.cert_name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "?</div>\n				<div class=\"modal-text-minor\">"
+    + escapeExpression(helpers.i18n.call(depth0, "PROP_ELB_CERT_REMOVE_CONFIRM_SUB", {hash:{},data:data}))
+    + "</div>\n			</div>\n		 </div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"modal-confirm-elb-cert-delete\" class=\"btn btn-red\">Delete</button>\n		<button id=\"modal-cancel\" class=\"btn modal-close btn-silver\">Cancel</button>\n	</div>\n</div>";
+  return buffer;
+  };
+TEMPLATE.modalDeleteELBCert=Handlebars.template(__TEMPLATE__);
 
 
 return TEMPLATE; });

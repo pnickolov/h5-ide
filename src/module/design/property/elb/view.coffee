@@ -487,11 +487,19 @@ define [ '../base/view',
             $certEditItem = $(event.currentTarget)
             $certItem = $certEditItem.parents('.item')
             certUID = $certItem.attr('data-id')
+            certModel = Design.instance().component(certUID)
 
-            if certUID
-                that.model.removeCert(certUID)
-                ide_event.trigger ide_event.REFRESH_PROPERTY
-                return false
+            if certModel
+
+                certName = certModel.get('name')
+                modal MC.template.modalDeleteELBCert {cert_name: certName}, true
+
+                $("#modal-confirm-elb-cert-delete").one 'click', ()->
+                    that.model.removeCert(certUID)
+                    ide_event.trigger ide_event.REFRESH_PROPERTY
+                    modal.close()
+            
+            return false
 
         changeSSLCert : (event) ->
 

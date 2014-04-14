@@ -1559,3 +1559,20 @@ Are you sure you want to delete {{name}}?</div>
 	</span>
 	<a class="notice-close" href="javascript:void(0)" id="system-notice-close">x</a>
 </div>
+
+<!-- {{modalDeleteELBCert}} -->
+<div style="width:420px">
+	<div class="modal-header"> <h3>{{ i18n "PROP_ELB_CERT_REMOVE_CONFIRM_TITLE"}}</h3><i class="modal-close">&times;</i> </div>
+	<div class="modal-body">
+		<div class="modal-text-wraper">
+			 <div class="modal-center-align-helper">
+				<div class="modal-text-major">{{ i18n "PROP_ELB_CERT_REMOVE_CONFIRM_MAIN"}}{{cert_name}}?</div>
+				<div class="modal-text-minor">{{ i18n "PROP_ELB_CERT_REMOVE_CONFIRM_SUB"}}</div>
+			</div>
+		 </div>
+	</div>
+	<div class="modal-footer">
+		<button id="modal-confirm-elb-cert-delete" class="btn btn-red">Delete</button>
+		<button id="modal-cancel" class="btn modal-close btn-silver">Cancel</button>
+	</div>
+</div>

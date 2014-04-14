@@ -2536,6 +2536,18 @@ module.exports =
       en: "Click to read related AWS document"
       zh: ""
 
+    PROP_ELB_CERT_REMOVE_CONFIRM_TITLE:
+      en: "Confirm to Delete Server Certificate"
+      zh: ""
+
+    PROP_ELB_CERT_REMOVE_CONFIRM_MAIN:
+      en: "Do you confirm to delete "
+      zh: ""
+
+    PROP_ELB_CERT_REMOVE_CONFIRM_SUB:
+      en: "Load Balancer currently using this server certificate will have errors."
+      zh: ""
+
     PROP_ASG_SUMMARY:
       en: "Auto Scaling Group Summary"
       zh: "自动伸缩组摘要"

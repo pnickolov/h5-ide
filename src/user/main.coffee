@@ -11,7 +11,7 @@ constant =
     COOKIE_OPTION:
         expires:1
         path: '/'
-        domain: '.visualops.io'
+        domain: '.mc3.io'
 
     LOCAL_COOKIE_OPTION:
         expires:1
@@ -145,31 +145,6 @@ setIDECookie = ( result ) ->
     #$.cookie 'madeiracloud_ide_session_id', MC.base64Encode( JSON.stringify madeiracloud_ide_session_id ), option
     null
 
-#getIDECookie = ->
-#
-#	result = null
-#
-#	madeiracloud_ide_session_id = $.cookie 'madeiracloud_ide_session_id'
-#	if madeiracloud_ide_session_id
-#		try
-#			result = JSON.parse ( MC.base64Decode madeiracloud_ide_session_id )
-#		catch err
-#			result = null
-#
-#	if result and $.type result == "array" and result.length == 8
-#		{
-#			usercode    : result[0] ,
-#			email       : result[1] ,
-#			session_id  : result[2] ,
-#			account_id  : result[3] ,
-#			mod_repo    : result[4] ,
-#			mod_tag     : result[5] ,
-#			state       : result[6] ,
-#			has_cred    : result[7] ,
-#			is_invitated: result[8] ,
-#		}
-#	else
-#		null
 
 checkAllCookie = ->
 
@@ -187,13 +162,6 @@ clearV2Cookie = ( path ) ->
         $.removeCookie cookie_name	, option
         null
 
-#clearInvalidCookie = ( ) ->
-#	#for patch
-#	option = { domain: 'ide.visualops.io', path: '/' }
-#
-#	$.each $.cookie(), ( key, cookie_name ) ->
-#		$.removeCookie cookie_name	, option
-#		null
 
 getCookieByName = ( cookie_name ) ->
 
@@ -208,8 +176,6 @@ setCookieByName = ( cookie_name, value ) ->
     else
         #domain is not *.visualops.io, maybe localhost
         option = constant.LOCAL_COOKIE_OPTION
-
-
     $.cookie cookie_name, value, option
 
 
@@ -376,6 +342,7 @@ init = ->
                 return false
             render '#register-template'
             $form = $("#register-form")
+            $form.find('input').eq(0).focus()
             $username = $('#register-username')
             $email = $('#register-email')
             $password = $('#register-password')
@@ -505,7 +472,7 @@ showErrorMessage = ->
     console.log 'showErrorMessage'
     $('#reset-pw-email').attr('disabled',false)
     $("#reset-btn").attr('disabled',false).val(window.langsrc.reset.reset_btn)
-    $("#email-verification-status").addClass("error-status").show().text(langsrc.reset.reset_error_state)
+    $("#email-verification-status").removeClass('verification-status').addClass("error-msg").show().text(langsrc.reset.reset_error_state)
     false
 
 #handleErrorCode
@@ -513,8 +480,8 @@ handleErrorCode = (statusCode)->
     console.log langsrc.service["ERROR_CODE_#{statusCode}_MESSAGE"]
 # handleNetError
 handleNetError = (status)->
-    #window.location = '/500'
     console.log status
+    window.location = '/500'
 # verify  key with callback
 checkPassKey = (keyToValid,fn)->
     api(

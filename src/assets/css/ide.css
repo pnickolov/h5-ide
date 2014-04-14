@@ -5908,8 +5908,8 @@ summary:focus {
 }
 
 .no-item .validation-counter {
-	background-color: #aaa;
-	color: #f3f3f3;
+	background-color: #4b4b4b;
+	color: #ccc;
 	box-shadow: none;
 }
 

@@ -401,7 +401,7 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
 
     if option.label
       node.append(
-        Canvon.text( width/2, height-4, MC.canvasName(option.label) ).attr({
+        Canvon.text( width/2, height-4, MC.truncate(option.label, 17) ).attr({
           'class' : 'node-label' + if option.labelBg then ' node-label-name' else ''
         })
       )

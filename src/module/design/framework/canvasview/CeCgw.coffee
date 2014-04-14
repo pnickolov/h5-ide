@@ -38,7 +38,7 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
           'data-direction': 'in'
         }),
 
-        Canvon.text(100, 95, MC.canvasName( m.get("name") ) ).attr({'class': 'node-label'})
+        Canvon.text(100, 95, MC.truncate( m.get("name"), 17 ) ).attr({'class': 'node-label'})
       )
 
       # Move the node to right place

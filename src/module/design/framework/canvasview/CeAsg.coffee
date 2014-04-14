@@ -75,7 +75,7 @@ define [ "./CanvasElement", 'i18n!nls/lang.js', "constant", "Design", "CanvasMan
         ).attr({ 'class' : 'prompt_text'}),
 
         # title
-        Canvon.text( 4, 14, MC.asgName m.get("name") ).attr({'class':'group-label'})
+        Canvon.text( 4, 14, MC.truncate(m.get("name"), 15) ).attr({'class':'group-label'})
 
       ).attr({
         'id'         : @id
@@ -90,7 +90,7 @@ define [ "./CanvasElement", 'i18n!nls/lang.js', "constant", "Design", "CanvasMan
 
     else
       node = @$element()
-      CanvasManager.update( node.children(".group-label"), MC.asgName m.get("name") )
+      CanvasManager.update( node.children(".group-label"), MC.truncate(m.get("name"), 15) )
       @__drawExpandedAsg()
 
 

@@ -72,6 +72,11 @@ MC.canvas = {
 		}
 	},
 
+	canvasName : function (string)
+	{
+		return string.length > 17 ? string.substring(0, 17 - 3) + '...' : string;
+	},
+
 	update: function (id, type, key, value)
 	{
 		var target = $('#' + id + '_' + key),
@@ -82,7 +87,7 @@ MC.canvas = {
 			case 'text':
 				if (key.indexOf("name") !== -1)
 				{
-					value = MC.canvasName( value );
+					value = MC.canvas.canvasName( value );
 				}
 
 				if (target.length === 0)

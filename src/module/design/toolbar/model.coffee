@@ -301,17 +301,17 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
                 null
 
             #####listen USER_APPLY__TRIAL_RETURN
-            me.on 'USER_APPLY__TRIAL_RETURN', (result) ->
-                console.log 'USER_APPLY__TRIAL_RETURN', result
-
-                if result and result.return_code is 0
-                    console.log 'apply trial succcess'
-                    MC.common.cookie.setCookieByName 'is_invitated', 1
-                else
-                    console.log 'apply trial succcess'
-                    MC.common.cookie.setCookieByName 'is_invitated', 0
-
-                null
+            #me.on 'USER_APPLY__TRIAL_RETURN', (result) ->
+            #    console.log 'USER_APPLY__TRIAL_RETURN', result
+            #
+            #    if result and result.return_code is 0
+            #        console.log 'apply trial succcess'
+            #        MC.common.cookie.setCookieByName 'is_invitated', 1
+            #    else
+            #        console.log 'apply trial succcess'
+            #        MC.common.cookie.setCookieByName 'is_invitated', 0
+            #
+            #    null
 
             #####listen APP_GETKEY_RETURN
             ###me.on 'APP_GET_KEY_RETURN', (result) ->
@@ -1308,9 +1308,9 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
 
           MC.aws.aws.enableStackAgent(isEnable)
 
-        getApplayTrial : ( value ) ->
-            console.log 'getApplayTrial', value
-            account_model.apply_trial { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), value
+        #getApplayTrial : ( value ) ->
+        #    console.log 'getApplayTrial', value
+        #    account_model.apply_trial { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), value
     }
 
     model = new ToolbarModel()

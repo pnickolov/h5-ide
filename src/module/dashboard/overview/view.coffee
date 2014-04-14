@@ -273,11 +273,13 @@ define [ 'event', 'i18n!nls/lang.js',
                 $( '#global-region-visualize-VPC' ).removeAttr 'disabled'
 
             # when is_invitated cookie not true hide
-            is_invitated = "" + MC.common.cookie.getCookieByName( 'is_invitated' )
-            if is_invitated is "true" or is_invitated is "2"
-                $( '#global-region-visualize-VPC' ).show()
-            else
-                $( '#global-region-visualize-VPC' ).hide()
+            #is_invitated = "" + MC.common.cookie.getCookieByName( 'is_invitated' )
+            #if is_invitated is "true" or is_invitated is "2"
+            #    $( '#global-region-visualize-VPC' ).show()
+            #else
+            #    $( '#global-region-visualize-VPC' ).hide()
+
+            $( '#global-region-visualize-VPC' ).show()
 
             null
 
@@ -530,8 +532,8 @@ define [ 'event', 'i18n!nls/lang.js',
             console.log 'unmanagedVPCClick'
 
             # when is_invitated cookie is true can click
-            if MC.common.cookie.getCookieByName( 'is_invitated' ) in [ 'true', true, 2, '2' ] and MC.common.cookie.getCookieByName( 'account_id' ) isnt 'demo_account'
-
+            #if MC.common.cookie.getCookieByName( 'is_invitated' ) in [ 'true', true, 2, '2' ] and MC.common.cookie.getCookieByName( 'account_id' ) isnt 'demo_account'
+            if MC.common.cookie.getCookieByName( 'account_id' ) isnt 'demo_account'
                 # load unmanagedvpc
                 unmanagedvpc.loadModule()
 

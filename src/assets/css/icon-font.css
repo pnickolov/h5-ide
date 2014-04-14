@@ -50,8 +50,7 @@
 .icon-time:before,
 .icon-sort:before,
 .icon-detail:before,
-.ipt-controls > .icon-del:before,
-.ipt-controls > .icon-add:before,
+.icon-del:before,
 .icon-line-shape:before,
 .icon-copy:before,
 .icon-straight:before,
@@ -213,7 +212,7 @@
 .ipt-controls > .icon-add:before {
   content: "\F13D"; }
 
-.ipt-controls > .icon-del:before, .icon-cancel-update-app:before {
+.icon-del:before, .icon-cancel-update-app:before {
   content: "\F13E"; }
 
 .icon-detail:before {

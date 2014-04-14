@@ -299,6 +299,18 @@ define [ "constant",
 
       return Number(subnetCIDR.split('/')[1]) >= Number(vpcCIDR.split('/')[1])
 
+    isValidSubnetCIDR : (subnetCIDR) ->
+
+      subnetCidrBinStr = _getCidrBinStr(subnetCIDR)
+      subnetCidrSuffix = Number(subnetCIDR.split('/')[1])
+      suffixIPBinStr = subnetCidrBinStr.slice(subnetCidrSuffix)
+      suffixNum = parseInt(suffixIPBinStr)
+      
+      if (suffixNum is 0) or (suffixIPBinStr is '')
+        return true
+
+      return false
+
     autoAssignAllCIDR : (vpcCIDR, subnetCount) ->
 
       needBinNum = Math.ceil((Math.log(subnetCount))/(Math.log(2)))

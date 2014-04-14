@@ -2462,7 +2462,7 @@ define [ 'event',
 
                     stateNum = stateIdNumMap[stateId]
 
-                    stateNumStr = 'unknown'
+                    stateNumStr = 'deleted'
                     if stateNum then stateNumStr = stateNum
 
                     $logItem.find('.state-log-item-name').text('State ' + stateNumStr)

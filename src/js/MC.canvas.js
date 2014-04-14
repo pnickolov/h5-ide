@@ -13,6 +13,8 @@
 // Variable for current tab
 // MC.canvas_property = {};
 
+define(["MC", "canvon"], function(MC){
+
 MC.canvas = {
 	getState: function ()
 	{
@@ -6303,3 +6305,5 @@ MC.canvas.benchmark = function (count)
 
 	$canvas.size(canvas_size[0], canvas_size[1]);
 };
+
+});

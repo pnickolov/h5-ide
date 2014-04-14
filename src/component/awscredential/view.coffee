@@ -262,7 +262,7 @@ define [ 'event',
 
                 $('#account-passowrd-info').show()
 
-                $('#account-passowrd-info').html lang.ide.HEAD_MSG_ERR_WRONG_PASSWORD + ' <a href="/reset" target="_blank">' + lang.ide.HEAD_MSG_INFO_FORGET_PASSWORD + '</a>'
+                $('#account-passowrd-info').html lang.ide.HEAD_MSG_ERR_WRONG_PASSWORD + ' <a href="/reset/" target="_blank">' + lang.ide.HEAD_MSG_INFO_FORGET_PASSWORD + '</a>'
             else
 
                 $('#account-passowrd-info').hide()

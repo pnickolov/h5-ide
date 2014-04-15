@@ -4395,7 +4395,7 @@ a.action-link:hover {
 #sg-protocol-select-result {
 	display    : inline-block;
 	width      : 240px;
-	margin-left: 7px;
+	margin-left: 10px;
 }
 #modal-sg-rule .protocol-icmp-sub-select.shown {
 	display: block;

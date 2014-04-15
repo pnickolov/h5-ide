@@ -290,7 +290,6 @@ init = ->
                 render '#default-template'
                 $("#reset-pw-email").focus()
                 $('#reset-pw-email').keyup ->
-                    console.log @.value
                     if @value
                         $('#reset-btn').removeAttr('disabled')
                     else
@@ -501,7 +500,7 @@ showErrorMessage = ->
 
 #handleErrorCode
 handleErrorCode = (statusCode)->
-    console.log langsrc.service["ERROR_CODE_#{statusCode}_MESSAGE"]
+    console.log 'ERROR_CODE_MESSAGE',langsrc.service["ERROR_CODE_#{statusCode}_MESSAGE"]
 # handleNetError
 handleNetError = (status)->
     console.log status
@@ -618,7 +617,6 @@ checkUserExist = (params,fn)->
                 false
             else
                 fn(statusCode)
-                handleErrorCode(statusCode)
         error: (status)->
             console.log 'Net Work Error'
             fn('error')

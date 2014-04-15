@@ -523,6 +523,12 @@ define [ 'event',
                     $('#awscredentials-remove').addClass("btn btn-red")
                     # hide submit botton
 
+            # set awscredentials-remove show|hide
+            if MC.common.cookie.getCookieByName( 'account_id' ) is 'demo_account'
+                $( '#awscredentials-remove' ).hide()
+            else
+                $( '#awscredentials-remove' ).show()
+
             null
 
     }

@@ -311,6 +311,10 @@ init = ->
             $password = $("#login-password")
             submitBtn = $("#login-btn").attr('disabled',false)
             $("#login-form input").eq(0).focus()
+            checkValid = ->
+            if $(@).val().trim() then $(@).parent().removeClass('error')
+            $user.on 'keyup', checkValid
+            $password.on 'keyup', checkValid
             $("#login-form").on 'submit', (e)->
                 e.preventDefault()
                 if $user.val()&&$password.val()
@@ -325,11 +329,6 @@ init = ->
                     if !$user.val().trim() then $user.parent().addClass('error') else $user.parent().removeClass('error')
                     if !$password.val().trim() then $password.parent().addClass('error') else $password.parent().removeClass('error')
                     return false
-
-            checkValid = ->
-                if $(@).val().trim() then $(@).parent().removeClass('error')
-            $user.on 'keyup', checkValid
-            $password.on 'keyup', checkValid
 
         'register': (pathArray, hashArray)->
             if checkAllCookie() then window.location = '/'
@@ -350,67 +349,45 @@ init = ->
             $('#register-btn').attr('disabled',false)
 
             # username validation
-            checkUsername = (e,cb)->
+            checkUsername = (e,cb,weak)->
                 username = $username.val()
                 status = $('#username-verification-status')
                 if username.trim() isnt ""
                     if /[^A-Za-z0-9\_]{1}/.test(username) isnt true
                         if username.length > 40
-                            e?.preventDefault()
                             status.removeClass('verification-status').addClass('error-status').text langsrc.register.username_maxlength
-                            cb?(0)
+                            if cb then cb(0) else return false
                         else
                             status.hasClass('error-status') && status.removeClass('verification-status').removeClass('error-status').text ""
-                            window.xhr?.abort()
-                            window.clearTimeout(timeOutToClear)
-                            console.log('aborted!', timeOutToClear)
-                            timeOutToClear = window.setTimeout ->
-                                checkUserExist([username, null] , (statusCode)->
-                                    if !statusCode
-                                        status.removeClass('error-status').addClass('verification-status').show().text langsrc.register.username_available
-                                        cb?(1)
-                                    else
-                                        status.removeClass('verification-status').addClass('error-status').text langsrc.register.username_taken
-                                        cb?(0)
-                                )
-                            ,500
+                            if cb
+                                ajaxCheckUsername username, status, cb
+                            else
+                                return true
                     else
-                        e?.preventDefault()
                         status.removeClass('verification-status').addClass('error-status').text langsrc.register.username_not_matched
-                        cb?(0)
+                        if cb then cb(0) else return false
                 else
-                    e?.preventDefault()
                     status.removeClass('verification-status').addClass('error-status').text langsrc.register.username_required
-                    cb?(0)
+                    if cb then cb(0) else return false
 
             # user Email validation
-            checkEmail = (e,cb)->
+            checkEmail = (e,cb,weak)->
                 email = $email.val()
                 status = $("#email-verification-status")
                 reg_str = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
                 if email.trim() isnt ""
                     if reg_str.test(email)
                         status.hasClass('error-status') && status.removeClass('verification-status').removeClass('error-status').text ""
-                        window.xhr?.abort()
-                        window.clearTimeout(timeOutToClear)
-                        timeOutToClear = window.setTimeout ->
-                            checkUserExist([null, email], (statusCode)->
-                                if !statusCode
-                                    status.removeClass('error-status').addClass('verification-status').show().text langsrc.register.email_available
-                                    cb?(1)
-                                else
-                                    status.removeClass('verification-status').addClass('error-status').text langsrc.register.email_used
-                                    cb?(0)
-                            )
-                        ,500
+                        if cb
+                            ajaxCheckEmail email, status, cb
+                        else
+                            return true
                     else
-                        e.preventDefault()
                         status.removeClass('verification-status').addClass('error-status').text langsrc.register.email_not_valid
-                        cb?(0)
+                        if cb then cb(0) else return false
                 else
-                    e.preventDefault()
                     status.removeClass('verification-status').addClass('error-status').text langsrc.register.email_required
-                    cb?(0)
+                    if cb then cb(0) else return false
 
             # password validation
             checkPassword = (e,cb)->
@@ -419,32 +396,78 @@ init = ->
                 if password.trim() isnt ""
                     if password.length > 5
                         status.removeClass('verification-status').removeClass('error-status').text ""
-                        cb?(1)
+                        if cb then cb(1) else return false
                     else
-                        e.preventDefault()
                         status.removeClass('verification-status').addClass('error-status').text langsrc.register.password_shorter
-                        cb?(0)
+                        if cb then cb(0) else return false
                 else
-                    e.preventDefault()
                     status.removeClass('verification-status').addClass('error-status').text langsrc.register.password_required
-                    cb?(0)
-
-            $username.on 'keyup blur', checkUsername
-            $email.on 'keyup blur', checkEmail
-            $password.on 'keyup blur', checkPassword
+                    if cb then cb() else return false
+            ajaxCheckUsername = (username, status)->
+                window.xhr?.abort()
+                window.clearTimeout(timeOutToClear)
+                console.log('aborted!', timeOutToClear)
+                timeOutToClear = window.setTimeout ->
+                    checkUserExist([username, null] , (statusCode)->
+                        if !statusCode
+                            status.removeClass('error-status').addClass('verification-status').show().text langsrc.register.username_available
+                            cb?(1)
+                        else if(statusCode == 'error')
+                            console.log 'Net Work Error while'
+                        else
+                            status.removeClass('verification-status').addClass('error-status').text langsrc.register.username_taken
+                            cb?(0)
+                    )
+                ,500
+            ajaxCheckEmail = (email, status, cb)->
+                window.xhr?.abort()
+                window.clearTimeout(timeOutToClear)
+                timeOutToClear = window.setTimeout ->
+                    checkUserExist([null, email], (statusCode)->
+                        if !statusCode
+                            status.removeClass('error-status').addClass('verification-status').show().text langsrc.register.email_available
+                            cb?(1)
+                        else if(statusCode == 'error')
+                            console.log "NetWork Error"
+                        else
+                            status.removeClass('verification-status').addClass('error-status').text langsrc.register.email_used
+                            cb?(0)
+                    )
+                ,500
+            resetRegForm = ->
+                $('#register-btn').attr('disabled',false).val(langsrc.register['register-btn'])
+            $username.on 'keyup', (e)->
+                checkUsername e, (a)->
+                    return a
+            $email.on 'keyup', (e)->
+                checkEmail e, (a)->
+                    return a
+            $password.on 'keyup', (e)->
+                checkPassword e, (a)->
+                    return a
             $form.on 'submit', (e)->
                 e.preventDefault()
                 $('#register-btn').attr('disabled',true).val(langsrc.register.reginster_waiting)
                 console.log('check user input here.')
+                if !(checkUsername()&& checkEmail()&& checkPassword())
+                    resetRegForm()
+                    return false
+                console.log(passsssss)
                 checkUsername(e , (usernameAvl)->
+                    if !usernameAvl
+                        resetRegForm()
+                        return false
                     checkEmail(e, (emailAvl)->
-                        checkPassword(e,(passwordAvl)->
+                        if !emailAvl
+                            resetRegForm()
+                            return false
+                        checkPassword(e, (passwordAvl)->
+                            if !passwordAvl
+                                resetRegForm()
+                                return false
                             if (usernameAvl&&emailAvl&&passwordAvl)
                                 console.log('Success!!!!!')
-                                ajaxRegister([$username.val(), $password.val(), $email.val()],(statusCode)->
-                                    console.log(statusCode,"!error")
-                                    window.location = '/500'
-                                )
+                                ajaxRegister([$username.val(), $password.val(), $email.val()])
                         )
                     )
                 )
@@ -557,7 +580,6 @@ ajaxLogin = (params, errorCB)->
                 errorCB(statusCode)
         error: (status)->
             handleNetError(status)
-
     )
 sendEmail = (params)->
     checkUserExist [params,null], (statusCode)->
@@ -597,7 +619,8 @@ checkUserExist = (params,fn)->
                 fn(statusCode)
                 handleErrorCode(statusCode)
         error: (status)->
-            handleNetError(status)
+            console.log 'Net Work Error'
+            fn('error')
     })
 
 # ajax to reset password

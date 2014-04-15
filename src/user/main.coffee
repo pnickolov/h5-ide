@@ -225,23 +225,24 @@ Handlebars.registerHelper 'i18n', (str)->
     i18n?(str) || str
 
 # init the page . load i18n source file
-$.ajax({
-    url: './nls/' + langu() + '/lang.js'
-    jsonp: false
-    dataType: "jsonp"
-    jsonpCallback: "define"
-    beforeSend: ->
-        template = Handlebars.compile $("#loading-template").html()
-        $("#main-body").html template()
-    success: (data)->
-        window.langsrc = data
-        console.log 'Success', data
-    error: (error)->
-        console.log error, "error"
-        window.location = "/500"
-}).done ->
-    console.log('Loaded!', langsrc)
-    init()
+loadLang = (cb)->
+    $.ajax({
+        url: './nls/' + langu() + '/lang.js'
+        jsonp: false
+        dataType: "jsonp"
+        jsonpCallback: "define"
+        beforeSend: ->
+            template = Handlebars.compile $("#loading-template").html()
+            $("#main-body").html template()
+        success: (data)->
+            window.langsrc = data
+            console.log 'Success', data
+        error: (error)->
+            console.log error, "error"
+            window.location = "/500"
+    }).done ->
+        console.log('Loaded!', langsrc)
+        cb()
 window.onhashchange = ->
     init()
 
@@ -312,7 +313,7 @@ init = ->
             submitBtn = $("#login-btn").attr('disabled',false)
             $("#login-form input").eq(0).focus()
             checkValid = ->
-            if $(@).val().trim() then $(@).parent().removeClass('error')
+                if $(@).val().trim() then $(@).parent().removeClass('error')
             $user.on 'keyup', checkValid
             $password.on 'keyup', checkValid
             $("#login-form").on 'submit', (e)->
@@ -639,3 +640,5 @@ ajaxChangePassword = (hashArray,newPw)->
             handleNetError(status)
     )
     return false
+
+loadLang(init)

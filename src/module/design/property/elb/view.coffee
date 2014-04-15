@@ -66,6 +66,8 @@ define [ '../base/view',
             'click #elb-connection-draining-select' : 'elbConnectionDrainSelectChange'
             'change #elb-connection-draining-input' : 'elbConnectionDrainTimeoutChange'
 
+            'click #elb-advanced-proxy-protocol-select' : 'elbAdvancedProxyProtocolSelectChange'
+
         render     : () ->
 
             @$el.html template @model.attributes
@@ -607,6 +609,19 @@ define [ '../base/view',
 
             if selectValue and timeoutValue
                 that.model.setConnectionDraining(true, timeoutValue)
+
+        elbAdvancedProxyProtocolSelectChange : (event) ->
+
+            that = this
+            $selectbox = that.$('#elb-advanced-proxy-protocol-select')
+            $tipBox = $('#elb-advanced-proxy-protocol-select-tip')
+            selectValue = $selectbox.prop('checked')
+            if selectValue
+                $tipBox.removeClass('hide')
+            else
+                $tipBox.addClass('hide')
+
+            that.model.setAdvancedProxyProtocol(selectValue, [80])
 
     }
 

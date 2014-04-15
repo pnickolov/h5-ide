@@ -115,9 +115,9 @@ header {
 
 .error-status, .verification-status{
     position: absolute;
-    right: 0;
     z-index: 10;
     margin-top: -10px;
+    width: 360px;
 }
 
 .error-msg {

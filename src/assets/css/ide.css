@@ -6197,6 +6197,11 @@ summary:focus {
 	width: 200px;
 }
 
+#asg-policy-name[readonly] {
+	background: none;
+	border: none;
+}
+
 #asg-termination-policy h5 {
 	color: #999;
 	font-size: 14px;

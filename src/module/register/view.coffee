@@ -3,16 +3,17 @@
 #############################
 
 define [ 'event',
-         'text!./module/register/template.html', 'text!./module/register/success.html',
+         './template', './success',
          'i18n!nls/lang.js',
+         'UI.notification',
          'backbone', 'jquery', 'handlebars' ], ( ide_event, tmpl, success_tmpl, lang ) ->
 
     RegisterView = Backbone.View.extend {
 
         el           :  '#main-body'
 
-        template     : Handlebars.compile tmpl
-        success_tmpl : Handlebars.compile success_tmpl
+        template     : tmpl
+        success_tmpl : success_tmpl
 
         is_submit    : false
 
@@ -39,8 +40,8 @@ define [ 'event',
             switch type
                 when 'normal'
                     @$el.html @template @model
-                when 'success'
-                    @$el.html @success_tmpl()
+                #when 'success'
+                #    @$el.html @success_tmpl()
                 else
                     @$el.html @template @model
 
@@ -59,6 +60,7 @@ define [ 'event',
                         status.addClass('error-status').removeClass( 'verification-status' ).show().text lang.register.username_maxlength
                         false
                     else
+                        status.removeClass( 'error-status' ).removeClass( 'verification-status' ).show().text('')
                         #status.show().text lang.register.username_available
                         #check vaild
                         this.trigger 'CHECK_REPEAT', value, null #if event and event.type is 'blur'
@@ -78,6 +80,7 @@ define [ 'event',
             reg_str = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
             if value isnt '' and reg_str.test(value)
+                status.removeClass( 'error-status' ).removeClass( 'verification-status' ).show().text('')
                 #check vaild
                 this.trigger 'CHECK_REPEAT', null, value #if event and event.type is 'blur'
                 true
@@ -175,8 +178,8 @@ define [ 'event',
 
             #if invoke failed, then reset create account button
             if $( '#register-btn' ).val() == lang.register.reginster_waiting
-                @resetCreateAccount()
-
+                $( '#register-btn' ).attr( 'disabled', false )
+                $( '#register-btn' ).attr( 'value', lang.register['register-btn'] )
 
             null
 
@@ -220,7 +223,6 @@ define [ 'event',
 
         loginEvent : ->
             console.log 'loginEvent'
-            #window.location.href = '/ide.html'
             this.trigger 'AUTO_LOGIN'
             null
 
@@ -248,16 +250,38 @@ define [ 'event',
                 $( '#register-btn' ).attr( 'disabled', true )
             null
 
-        resetCreateAccount : ->
+        otherError : () ->
+            console.log 'otherError'
+            $( '#username-verification-status' ).removeClass( 'error-status' ).removeClass( 'verification-status' ).show().text('')
+            $( '#email-verification-status' ).removeClass( 'error-status' ).removeClass( 'verification-status' ).show().text('')
+            #$( '#register-btn' ).attr( 'disabled', true )
+
+        #notifError : ( message ) ->
+        #    console.log 'notifError', message
+        #    $( '#register-btn' ).attr( 'disabled', false )
+        #    $( '#register-btn' ).attr( 'value', lang.register['register-btn'] )
+        #
+        #    label = 'ERROR_CODE_' + message + '_MESSAGE'
+        #    msg   = lang.service[ label ]
+        #    notification 'error', msg, false
+
+        resetCreateAccount :( message ) ->
             console.log 'reset account button'
 
-            #reset create account button if login failed
-            $( '#register-btn' ).attr( 'value', lang.register['register-btn'] )
+            $( '#username-verification-status' ).removeClass( 'error-status' ).removeClass( 'verification-status' ).show().text('')
+            $( '#email-verification-status' ).removeClass( 'error-status' ).removeClass( 'verification-status' ).show().text('')
             $( '#register-btn' ).attr( 'disabled', false )
+            $( '#register-btn' ).attr( 'value', lang.register['register-btn'] )
 
-            @_checkButtonDisabled()
+            label = 'ERROR_CODE_' + message + '_MESSAGE'
+            msg   = lang.service[ label ]
+            notification 'error', msg, false
 
             null
+
+        registerSuccess : ->
+            console.log 'registerSuccess'
+            @$el.html @success_tmpl()
 
     }
 

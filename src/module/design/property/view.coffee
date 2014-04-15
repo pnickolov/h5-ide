@@ -5,7 +5,7 @@
 define [ 'event',
          './base/main',
          'constant',
-         'text!./template.html'
+         './template'
          'Design'
          'backbone', 'jquery', 'handlebars'
 ], ( ide_event, PropertyBaseModule, CONST, template, Design ) ->
@@ -26,36 +26,6 @@ define [ 'event',
 
 
         initialize : ->
-
-            ##########################
-            # Handlebar helper
-            ##########################
-
-            Handlebars.registerHelper 'emptyStr', ( v1 ) ->
-                if v1 in [ '', undefined, null ]
-                    '-'
-                else
-                    new Handlebars.SafeString v1
-
-
-            Handlebars.registerHelper 'timeStr', ( v1 ) ->
-                d = new Date( v1 )
-
-                if isNaN( Date.parse( v1 ) ) or not d.toLocaleDateString or not d.toTimeString
-                    if v1
-                        return new Handlebars.SafeString v1
-                    else
-                        return '-'
-
-                d = new Date( v1 )
-                d.toLocaleDateString() + " " + d.toTimeString()
-
-            Handlebars.registerHelper "plusone", ( v1 ) ->
-                v1 = parseInt( v1, 10 )
-                if isNaN( v1 )
-                    return v1
-                else
-                    return '' + (v1 + 1)
 
             #listen
             $( document.body )
@@ -94,8 +64,8 @@ define [ 'event',
                 hideButton.click()
 
         storeLast: ( uid, type ) ->
-            @uid = uid
-            @type = type
+            @uid = uid if uid
+            @type = type if type
             null
 
         renderProperty: ( uid, type, force ) ->
@@ -151,7 +121,7 @@ define [ 'event',
 
                 else if Design.instance().modeIsApp()
                     resId = uid
-                    effective = MC.aws.instance.getEffectiveId resId
+                    effective = Design.modelClassForType(CONST.AWS_RESOURCE_TYPE.AWS_EC2_Instance).getEffectiveId resId
                     uid = effective.uid
 
 
@@ -218,12 +188,12 @@ define [ 'event',
             $(document.activeElement).filter("input, textarea").blur()
 
             $( '#property-panel .sub-property' )
-                .html( template )
+                .html( template() )
                 .removeClass( 'state state-wide' )
             @
 
         restore: ( snapshot ) ->
-            type = snapshot.activeModuleType
+            type = @type = snapshot.activeModuleType
             currentTab = @currentTab = snapshot.propertyTab
             uid = @uid = snapshot.activeModuleId
 

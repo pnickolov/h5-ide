@@ -499,8 +499,9 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
 
     isRemovable : ()->
       state = @get("state")
-      if state isnt undefined and state.length > 0
-        return MC.template.NodeStateRemoveConfirmation(name: @get("name"))
+      if (state isnt undefined and state.length > 0) or
+        ($('#state-editor-model').is(':visible') and $('#state-editor-model .state-list .state-item').length >= 1)
+          return MC.template.NodeStateRemoveConfirmation(name: @get("name"))
 
       true
 
@@ -611,6 +612,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
           ShutdownBehavior      : "terminate"
           SecurityGroup         : securitygroups
           SecurityGroupId       : securitygroupsId
+          PrivateIpAddress      : "" # After app update, the PrivateIpAddress will be set by the backend. So we always ensure PrivateIpAddress existence to suppress a faulty change in proceeding appupdate.
 
       component
 
@@ -716,6 +718,33 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
 
     handleTypes : constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
 
+    # parameter could be uid or aws id
+    # return uid and mid( memberId )
+    getEffectiveId : ( instance_id ) ->
+      design = Design.instance()
+
+      # The instance_id might be component uid or aws id
+      if design.component( instance_id ) then return {uid:instance_id, mid:null}
+
+      for instance in @allObjects()
+        if instance.get("appId") is instance_id
+          return { uid : instance.id, mid : "#{instance.id}_0" }
+        else if instance.groupMembers
+          for member, index in instance.groupMembers()
+            if member and member.appId is instance_id
+              return { uid : instance.id, mid : "#{member.id}_#{index + 1}" }
+
+      resource_list = MC.data.resource_list[ design.region() ]
+      for asg in Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group ).allObjects()
+        data = resource_list[ asg.get("appId") ]
+        if not data or not data.Instances then continue
+        data = data.Instances
+        for obj in (data.member or data)
+          if obj is instance_id or obj.InstanceId is instance_id
+            return { uid : asg.get("lc").id, mid : instance_id }
+
+      {uid:null,mid:null}
+
     diffJson : ( newData, oldData )->
       changeData = newData or oldData
 
@@ -819,6 +848,10 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
         }
 
       if layout_data.osType and layout_data.architecture and layout_data.rootDeviceType
+        #patch for old windows ami
+        if layout_data.osType is "win"
+          layout_data.osType = "windows"
+
         attr.cachedAmi = {
           osType         : layout_data.osType
           architecture   : layout_data.architecture

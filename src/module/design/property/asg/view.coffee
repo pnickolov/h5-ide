@@ -3,15 +3,11 @@
 #############################
 
 define [ '../base/view',
-         'text!./template/stack.html',
-         'text!./template/policy.html',
-         'text!./template/term.html',
+         './template/stack',
+         './template/policy',
+         './template/term',
          'i18n!nls/lang.js'
 ], ( PropertyView, template, policy_template, term_template, lang ) ->
-
-    template        = Handlebars.compile template
-    policy_template = Handlebars.compile policy_template
-    term_template   = Handlebars.compile term_template
 
     metricMap =
         "CPUUtilization"             : "CPU Utilization"
@@ -101,35 +97,54 @@ define [ '../base/view',
                 @setTitle name
 
         setSizeGroup: ( event ) ->
+            that        = @
             $min        = @$el.find '#property-asg-min'
             $max        = @$el.find '#property-asg-max'
             $capacity   = @$el.find '#property-asg-capacity'
 
             $min.parsley 'custom', ( val ) ->
-                if + val < 1
-                    return lang.ide.PARSLEY_ASG_SIZE_MUST_BE_EQUAL_OR_GREATER_THAN_1
                 if + val > + $max.val()
                     return lang.ide.PARSLEY_MINIMUM_SIZE_MUST_BE_LESSTHAN_MAXIMUM_SIZE
+                that.constantCheck val
 
             $max.parsley 'custom', ( val ) ->
-                if + val < 1
-                    return lang.ide.PARSLEY_ASG_SIZE_MUST_BE_EQUAL_OR_GREATER_THAN_1
                 if + val < + $min.val()
-                    return lang.ide.PARSLEY_MINIMUM_SIZE_MUST_BE_LESSTHAN_MAXIMUM_SIZE
+                    return lang.ide.PARSLEY_MAXIMUM_SIZE_MUST_BE_MORETHAN_MINIMUM_SIZE
+                that.constantCheck val
 
             $capacity.parsley 'custom', ( val ) ->
-                if + val < 1
-                    return lang.ide.PARSLEY_DESIRED_CAPACITY_EQUAL_OR_GREATER_1
                 if + val < + $min.val() or + val > + $max.val()
                     return lang.ide.PARSLEY_DESIRED_CAPACITY_IN_ALLOW_SCOPE
+                that.constantCheck val
 
             if $( event.currentTarget ).parsley 'validateForm'
                 @model.setASGMin $min.val()
                 @model.setASGMax $max.val()
                 @model.setASGDesireCapacity $capacity.val()
 
+        constantCheck: (val) ->
+            val = +val
+
+            if val < 1
+                return sprintf lang.ide.PARSLEY_VALUE_MUST_BE_GREATERTHAN_VAR, 1
+
+            if val > 65534
+                return sprintf lang.ide.PARSLEY_VALUE_MUST_BE_LESSTHAN_VAR, 65534
+
+            null
+
+
+
         setHealthCheckGrace : ( event ) ->
-            @model.setHealthCheckGrace event.target.value
+            $target = $ event.currentTarget
+
+            $target.parsley 'custom', ( val ) ->
+                val = + val
+                if val < 0 or val > 86400
+                    return sprintf lang.ide.PARSLEY_VALUE_MUST_IN_ALLOW_SCOPE, 0, 86400
+
+            if $target.parsley 'validate'
+                @model.setHealthCheckGrace $target.val()
 
         showTermPolicy : () ->
             data    = []
@@ -301,10 +316,21 @@ define [ '../base/view',
                     return "Duplicated policy name in this autoscaling group"
 
 
-            $("#asg-policy-periods, #asg-policy-second").on "change", ()->
+            $("#asg-policy-periods").on "change", () ->
                 val = parseInt $(this).val(), 10
                 if not val or val < 1
-                    $(this).val( "1" ).parsley("validate")
+                    $(this).val( "1" )
+                if val > 86400
+                    $(@).val 86400
+
+            $("#asg-policy-second").on "change", () ->
+                val = parseInt $(this).val(), 10
+                if not val or val < 1
+                    $(this).val( "1" )
+
+                if val > 1440
+                    $(@).val 1440
+
 
             $("#asg-policy-adjust-type").on "OPTION_CHANGE", ()->
                 type = $(this).find(".selected").data("id")
@@ -323,6 +349,12 @@ define [ '../base/view',
                         $(this).val( "0" )
                     else if val < -100
                         $(this).val( "-100" )
+
+                if val < -65534
+                    $(@).val -65534
+                else if val > 65534
+                    $(@).val 65534
+
                     # More than 100% is legal.
                     # else if val > 100
                     #     $(this).val( "100" )
@@ -339,8 +371,8 @@ define [ '../base/view',
 
                 if val < 0
                     val = 0
-                else if val > 86400
-                    val = 86400
+                else if val > 1440
+                    val = 1440
 
                 $this.val( val )
 

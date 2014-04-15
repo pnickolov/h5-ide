@@ -32,7 +32,7 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
         uid  : @id
         resource :
           CustomerGatewayId : cgw.createRef( "CustomerGatewayId" )
-          Options           : { StaticRoutesOnly : true }
+          Options           : { StaticRoutesOnly : not cgw.isDynamic() }
           Type              : "ipsec.1"
           Routes            : routes
           VpnConnectionId   : @get("appId")

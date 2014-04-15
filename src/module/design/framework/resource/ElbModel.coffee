@@ -20,7 +20,7 @@ define [ "Design",
         height   : 9
 
         internal  : if Design.instance().typeIsClassic() then false else true
-        crossZone : false
+        crossZone : true
 
         # HealthCheck
         healthyThreshold    : "9"
@@ -39,6 +39,15 @@ define [ "Design",
 
         # AvailabilityZones ( This attribute is used to store which AZ is attached to Elb in Classic ). It stores AZ's name, not reference
         AvailabilityZones : []
+
+        # Connection draining
+        ConnectionDraining: {
+          Enabled: true,
+          Timeout: 300
+        }
+
+        # Advanced
+        otherPoliciesMap: {}
       }
 
     type : constant.AWS_RESOURCE_TYPE.AWS_ELB
@@ -196,6 +205,25 @@ define [ "Design",
 
         return _.uniq azs.concat( @get("AvailabilityZones") )
 
+    # Other Policy
+    setPolicyProxyProtocol : (enable, portAry) ->
+
+      that = this
+      otherPoliciesMap = that.get('otherPoliciesMap')
+      if enable
+        otherPoliciesMap['EnableProxyProtocol'] = {
+          'PolicyName' : 'EnableProxyProtocol',
+          'PolicyTypeName' : 'ProxyProtocolPolicyType',
+          'PolicyAttributes' :{
+            'ProxyProtocol' : true
+          },
+          'InstancePort' : portAry
+        }
+      else
+        delete otherPoliciesMap['EnableProxyProtocol']
+
+      that.set('otherPoliciesMap', otherPoliciesMap)
+
     serialize : ()->
       hcTarget = @get("healthCheckTarget")
       if hcTarget.indexOf("TCP") isnt -1 or hcTarget.indexOf("SSL") isnt -1
@@ -236,6 +264,12 @@ define [ "Design",
       else
         subnets = _.map @connectionTargets( "ElbSubnetAsso" ), ( sb )-> sb.createRef("SubnetId")
 
+      otherPoliciesMap = @get('otherPoliciesMap')
+      otherPoliciesAry = _.map otherPoliciesMap, (policyObj) ->
+        return policyObj
+      if not otherPoliciesAry
+        otherPoliciesAry = []
+
       # Remove AZs in Elb JSON because VPC doesn't need it.
       component =
         type : @type
@@ -246,6 +280,7 @@ define [ "Design",
           Subnets : subnets
           Instances : []
           CrossZoneLoadBalancing : @get("crossZone")
+          ConnectionDraining: @get("ConnectionDraining")
           VpcId                  : @getVpcRef()
           LoadBalancerName       : @get("elbName") or @get("name")
           SecurityGroups         : sgs
@@ -262,7 +297,7 @@ define [ "Design",
           Policies: {
               LBCookieStickinessPolicies : [{ PolicyName : "", CookieExpirationPeriod : "" }]
               AppCookieStickinessPolicies : [{ PolicyName : "", CookieName : ""}]
-              OtherPolicies : []
+              OtherPolicies : otherPoliciesAry
             }
           BackendServerDescriptions : [ { InstantPort : "", PoliciyNames : "" } ]
 
@@ -283,6 +318,10 @@ define [ "Design",
 
         internal  : data.resource.Scheme is 'internal'
         crossZone : !!data.resource.CrossZoneLoadBalancing
+        ConnectionDraining : data.resource.ConnectionDraining || {
+          Enabled: true,
+          Timeout: 300
+        }
         listeners : []
         dnsName   : data.resource.DNSName
         elbName   : data.resource.LoadBalancerName
@@ -295,6 +334,15 @@ define [ "Design",
 
         x : layout_data.coordinate[0]
         y : layout_data.coordinate[1]
+
+        otherPoliciesMap: {}        
+
+      # Other Policies
+      if data.resource.Policies
+        if data.resource.Policies.OtherPolicies
+          _.each data.resource.Policies.OtherPolicies, (policyObj) ->
+            attr.otherPoliciesMap[policyObj.PolicyName] = policyObj
+            null
 
       # AZ is used in classic mode
       attr.AvailabilityZones = _.map data.resource.AvailabilityZones || [], ( azRef )->

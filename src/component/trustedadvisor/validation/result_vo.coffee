@@ -12,6 +12,7 @@ define [ 'event', 'MC', 'Design', 'underscore' ], ( ide_event, MC, Design ) ->
 			char = str.charCodeAt(i)
 			hash = ( ( hash<<5 ) - hash ) + char
 			hash = hash & hash # Convert to 32bit integer
+			null
 
 		"k#{hash}"
 
@@ -29,6 +30,7 @@ define [ 'event', 'MC', 'Design', 'underscore' ], ( ide_event, MC, Design ) ->
 		_.map MC.ta.list, ( obj ) ->
 			if obj.key is key
 				delete_obj = obj
+			null
 
 		if delete_obj
 			MC.ta.list = _.without( MC.ta.list, delete_obj )
@@ -46,6 +48,8 @@ define [ 'event', 'MC', 'Design', 'underscore' ], ( ide_event, MC, Design ) ->
 			if item.key is result.key
 				return result
 			item
+
+		MC.ta.list
 
 	_exist = ( key ) ->
 		_.contains( _.pluck( MC.ta.list, 'key' ) , key )
@@ -76,6 +80,7 @@ define [ 'event', 'MC', 'Design', 'underscore' ], ( ide_event, MC, Design ) ->
 	reset = () ->
 		MC.ta.list = []
 		MC.canvas_data = Design.instance().serialize()
+		null
 
 
 	result = () ->

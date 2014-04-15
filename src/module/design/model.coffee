@@ -47,7 +47,7 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'state
                     #TO-DO
 
                 # SWITCH_MAIN → GET_STATE_MODULE
-                ide_event.trigger ide_event.GET_STATE_MODULE if app_id == MC.common.other.canvasData.get( 'id' )
+                ide_event.trigger ide_event.GET_STATE_MODULE if app_id == MC.data.current_tab_id
 
                 null
 
@@ -58,19 +58,17 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'state
                 app_id = result.param[4][0]
 
                 # update canvas_data when on current tab
-
-                # old design flow
-                #if app_id == MC.canvas_data.id
-
-                # new design flow
-                if app_id == MC.common.other.canvasData.get( 'id' )
+                #if app_id == MC.common.other.canvasData.get( 'id' )
+                if app_id is MC.data.current_tab_id
 
                     # set data
                     @setCanvasData result.resolved_data[ 0 ]
                     @setOriginData result.resolved_data[ 0 ]
 
-                    # save design_model
-                    MC.common.other.canvasData.save MC.common.other.canvasData.data(true)
+                    if MC.data.running_app_list and MC.data.running_app_list[ app_id ] and MC.data.running_app_list[ app_id ].state is 'stopped'
+
+                        # save design_model
+                        MC.common.other.canvasData.save MC.common.other.canvasData.data(true)
 
                 # update MC.Tab[app_id]
                 else
@@ -151,6 +149,25 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'state
             console.log 'updateAppTabOriginDate'
             MC.tab[ tab_id ].origin_data = $.extend( true, {}, data ) if MC.tab[ tab_id ]
             null
+
+        updateTab : ( new_tab_id, old_tab_id ) ->
+            console.log 'updateTab', new_tab_id, old_tab_id
+
+            # get old tab
+            old_tab = $.extend true, {}, MC.tab[ old_tab_id ]
+
+            if old_tab
+
+                # set new tab id with Design, data and origin_data
+                old_tab.data.id        = new_tab_id
+                old_tab.origin_data.id = new_tab_id
+                old_tab.design_model.set 'id', new_tab_id
+
+                # set new tab
+                MC.tab[ new_tab_id ] = $.extend true, {}, old_tab
+
+                # delete old tab
+                delete MC.tab[ old_tab_id ]
 
         setCanvasData : ( data ) ->
             console.log 'setCanvasData'
@@ -309,7 +326,7 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'state
             region          = result.param[3]
             resource_source = result.resolved_data
 
-            if MC.data.running_app_list and MC.data.running_app_list[ app_id ]
+            if MC.data.running_app_list and MC.data.running_app_list[ app_id ] and MC.data.running_app_list[ app_id ].state is 'running'
 
                 console.log 'when OPEN_APP or stop → start app use it'
 
@@ -321,8 +338,8 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'state
                     mode : 'app'
                 new Design MC.common.other.canvasData.origin(), options
 
-                # delete current app_id
-                delete MC.data.running_app_list[ app_id ]
+            # delete current app_id
+            delete MC.data.running_app_list[ app_id ]
 
             if resource_source
 

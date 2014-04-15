@@ -2,7 +2,7 @@
 #  View(UI logic) for design
 #############################
 
-define [ 'Design', 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/lang.js', 'state_status', 'backbone', 'jquery', 'handlebars' ], ( Design, ide_event, template, constant, lang, stateStatusMain ) ->
+define [ 'Design', 'event', './module/design/template', 'constant', 'i18n!nls/lang.js', 'state_status', 'backbone', 'jquery', 'handlebars' ], ( Design, ide_event, template, constant, lang, stateStatusMain ) ->
 
     DesignView = Backbone.View.extend {
 
@@ -15,7 +15,7 @@ define [ 'Design', 'event', 'text!./module/design/template.html', 'constant', 'i
         render   : () ->
             console.log 'design render'
             #render
-            this.$el.html template
+            this.$el.html template()
             #push DESIGN_COMPLETE
             this.trigger 'DESIGN_COMPLETE'
             #
@@ -148,7 +148,7 @@ define [ 'Design', 'event', 'text!./module/design/template.html', 'constant', 'i
                 .find( '.state-failed b' )
                 .text failed
 
-        loadStateStatusBar: ->
+        loadStateStatusBar: ( state ) ->
             # Sub Event
             ide_event.offListen ide_event.UPDATE_STATE_STATUS_DATA, @updateStateBar
             ide_event.onLongListen ide_event.UPDATE_STATE_STATUS_DATA, @updateStateBar, @
@@ -156,8 +156,8 @@ define [ 'Design', 'event', 'text!./module/design/template.html', 'constant', 'i
             ide_event.offListen ide_event.UPDATE_APP_STATE, @updateStateBarWhenStateChanged
             ide_event.onLongListen ide_event.UPDATE_APP_STATE, @updateStateBarWhenStateChanged, @
 
-            #appStoped = Design.instance().get('state') is 'Stopped'
-            appStoped = MC.common.other.canvasData.data( 'origin' ).state is 'Stopped'
+            appStoped = ( state or MC.canvas_data.state ) is 'Stopped'
+            #appStoped = MC.common.other.canvasData.data( 'origin' ).state is 'Stopped'
 
             $btnState = $( '#main-statusbar .btn-state' )
 
@@ -180,15 +180,16 @@ define [ 'Design', 'event', 'text!./module/design/template.html', 'constant', 'i
         updateStateBarWhenStateChanged: ( state ) ->
             if state is 'Stopped'
                 stateList = []
-            else
+                @unloadStateStatusBar()
+            else if state is 'Running'
+                @loadStateStatusBar( state )
                 stateList = MC.data.websocket.collection.status.find().fetch()
+                @renderStateBar stateList
 
-            @renderStateBar stateList
 
         updateStateBar: ( type, idx, statusData ) ->
             stateList = MC.data.websocket.collection.status.find().fetch()
             @renderStateBar stateList
-
 
 
         unloadStateStatusBar: ->

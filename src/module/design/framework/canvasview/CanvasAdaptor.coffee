@@ -31,14 +31,13 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
     else
       return null
 
-  $canvas.lineStyle     = (ls)->
-    if ls is undefined
-      if Design.__instance
-        return Design.__instance.canvas.lineStyle
-      else
-        return 0
+  $canvas.lineStyle = (ls)->
+    # 0:straight  1:elbow line(fold)  2:bezier q,  3:bezier qt
 
-    Design.__instance.canvas.lineStyle = ls
+    if ls is undefined
+      return parseInt(localStorage.getItem("canvas/lineStyle"),10) || 2
+
+    localStorage.setItem("canvas/lineStyle", ls)
 
     if Design.__instance.shouldDraw()
       # Update SgLine
@@ -155,6 +154,9 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
     else
       return lineArray
 
+  $canvas.hasVPC = ()->
+    !!Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC ).theVPC()
+
   # CanvasEvent is used to deal with the event that will trigger by MC.canvas.js
   CanvasEvent = {
     CANVAS_NODE_SELECTED : ()->
@@ -218,7 +220,6 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
     this.sizeAry      = size || [240, 240]
     this.offsetAry    = [0, 0]
     this.scaleAry     = 1
-    this.lineStyle    = 2  # 0:straight  1:elbow line(fold)  2:bezier q,  3:bezier qt
     this.selectedNode = []
 
 

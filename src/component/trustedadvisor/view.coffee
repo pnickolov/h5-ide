@@ -3,7 +3,7 @@
 #############################
 
 define [ 'event',
-         'text!./template.html', 'text!./modal_template.html',
+         './template', './modal_template',
          'backbone', 'jquery', 'handlebars'
 ], ( ide_event, template, modal_template ) ->
 
@@ -18,14 +18,13 @@ define [ 'event',
             console.log 'pop-up:trusted advisor run render', status
 
             if type is 'stack'
-                $('#stack-run-validation-container').html Handlebars.compile( template )( @model.attributes )
+                $('#stack-run-validation-container').html template( @model.attributes )
                 $('.validating').hide()
                 @processDetails()
                 $('.stack-validation details').show()
-                # $( '#modal-wrap' ).find( '#modal-run-stack' ).find( 'summary' ).after Handlebars.compile( template )( @model.attributes )
             else if type is 'statusbar'
-                @$el.html modal_template
-                @$el.find( '#modal-validation-statusbar' ).html Handlebars.compile( template )( @model.attributes )
+                @$el.html modal_template()
+                @$el.find( '#modal-validation-statusbar' ).html template( @model.attributes )
                 @processStatusBarDetails()
                 #
                 $('#status-bar-modal').show()

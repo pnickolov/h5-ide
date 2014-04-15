@@ -60,14 +60,23 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo' ], ( constant, MC,
         _.each routeAry, (routeObj) ->
 
             routeCIDR = routeObj.DestinationCidrBlock
+
             if routeCIDR
-                routeIP = routeCIDR.split('/')[0]
-                isInAnyPubIPRange = MC.aws.aws.isValidInIPRange(routeIP, 'public')
-                isInAnyPriIPRange = MC.aws.aws.isValidInIPRange(routeIP, 'private')
 
-            if (isInAnyPubIPRange and not isInAnyPriIPRange)
+                validSubnetCIDR = Design.modelClassForType(constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet).isValidSubnetCIDR(routeCIDR)
 
-                invalidRouteCIDRAry.push(routeCIDR)
+                if not validSubnetCIDR
+                    invalidRouteCIDRAry.push(routeCIDR)
+
+                else
+
+                    routeIP = routeCIDR.split('/')[0]
+                    routeIPCIDR = routeCIDR.split('/')[1]
+                    isInAnyPubIPRange = MC.aws.aws.isValidInIPRange(routeIP, 'public')
+                    isInAnyPriIPRange = MC.aws.aws.isValidInIPRange(routeIP, 'private')
+
+                    if (isInAnyPubIPRange and not isInAnyPriIPRange) or Number(routeIPCIDR) is 0
+                        invalidRouteCIDRAry.push(routeCIDR)
 
         if invalidRouteCIDRAry.length
 

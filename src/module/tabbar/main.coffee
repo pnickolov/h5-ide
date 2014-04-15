@@ -181,8 +181,15 @@ define [ 'jquery', 'event', 'base_main',
                         model.once 'GET_STACK_COMPLETE', ( result ) ->
                             console.log 'GET_STACK_COMPLETE', result
                             console.log result
-                            ide_event.trigger ide_event.SWITCH_TAB, 'OPEN_STACK', tab_id, model.get( 'stack_region_name' ), result, result.resolved_data[0].platform
-                            ide_event.trigger ide_event.UPDATE_DESIGN_TAB_ICON, 'stack', tab_id
+
+                            # check result valid
+                            if MC.common.other.isResultRight( result ) is true
+                                ide_event.trigger ide_event.SWITCH_TAB, 'OPEN_STACK', tab_id, model.get( 'stack_region_name' ), result, result.resolved_data[0].platform
+                                ide_event.trigger ide_event.UPDATE_DESIGN_TAB_ICON, 'stack', tab_id
+                            else
+                                ide_event.trigger ide_event.CLOSE_DESIGN_TAB, result.param[4][0]
+                                ide_event.trigger ide_event.SWITCH_MAIN
+
                         model.getStackInfo tab_id
 
                     else if tab_id.split( '-' )[0] is 'import'
@@ -216,6 +223,7 @@ define [ 'jquery', 'event', 'base_main',
 
                     else
                         ide_event.trigger ide_event.CLOSE_DESIGN_TAB, result.param[4][0]
+                        ide_event.trigger ide_event.SWITCH_MAIN
 
                 model.getAppInfo tab_id
 
@@ -380,14 +388,15 @@ define [ 'jquery', 'event', 'base_main',
                 null
 
             # update current tab name id
-            ide_event.onLongListen ide_event.UPDATE_DESIGN_TAB, ( tab_id, tab_name ) ->
-                console.log 'UPDATE_DESIGN_TAB, tab_id = ' + tab_id + ', tab_name = ' + tab_name
+            ide_event.onLongListen ide_event.UPDATE_DESIGN_TAB, ( tab_id, tab_name, old_tab_id ) ->
+                console.log 'UPDATE_DESIGN_TAB', tab_id, tab_name, old_tab_id
 
                 # set current tab id
-                MC.common.other.setCurrentTabId tab_id
+                if MC.data.current_tab_id is old_tab_id or old_tab_id is undefined
+                    MC.common.other.setCurrentTabId tab_id
 
                 # get origin tab id and reset tab_id and tab_name
-                original_tab_id = view.updateCurrentTab tab_id, tab_name
+                original_tab_id = view.updateCurrentTab tab_id, tab_name, old_tab_id
                 console.log original_tab_id
 
                 # update MC.tab include ADD_TAB_DATA and DELETE_TAB_DATA
@@ -440,6 +449,11 @@ define [ 'jquery', 'event', 'base_main',
                     # delete MC.process
                     MC.common.other.deleteProcess tab_id
 
+                null
+
+            # UPDATE_TAB_DATA
+            ide_event.onLongListen ide_event.UPDATE_TAB_DATA, ( new_tab_id, old_tab_id ) ->
+                view.updateCurrentTab new_tab_id, null, old_tab_id
                 null
 
             #############################

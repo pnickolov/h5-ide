@@ -4,22 +4,21 @@
 
 define [ 'event',
          'constant'
-         'backbone', 'jquery','i18n!nls/lang.js' , 'handlebars',
+         './template',
+         './template_data',
+         'i18n!nls/lang.js', 'backbone', 'jquery', 'handlebars',
          'UI.selectbox',
          'UI.radiobuttons', 'UI.modal', 'UI.table'
-], ( ide_event, constant, Backbone, $, lang ) ->
+], ( ide_event, constant, template, template_data, lang ) ->
 
     ResourceView = Backbone.View.extend {
 
         el                     : $ '#resource-panel'
 
-        availability_zone_tmpl : Handlebars.compile $( '#availability-zone-tmpl' ).html()
-        resource_snapshot_tmpl : Handlebars.compile $( '#resoruce-snapshot-tmpl' ).html()
-        quickstart_ami_tmpl    : Handlebars.compile $( '#quickstart-ami-tmpl' ).html()
-        my_ami_tmpl            : Handlebars.compile $( '#my-ami-tmpl' ).html()
-        favorite_ami_tmpl      : Handlebars.compile $( '#favorite-ami-tmpl' ).html()
-        community_ami_tmpl     : Handlebars.compile $( '#community-ami-tmpl' ).html()
-        resource_vpc_tmpl      : Handlebars.compile $( '#resource-vpc-tmpl' ).html()
+        my_ami_tmpl            : template_data.my_ami_tmpl
+        favorite_ami_tmpl      : template_data.favorite_ami_tmpl
+        community_ami_tmpl     : template_data.community_ami_tmpl
+        resource_vpc_tmpl      : template_data.resource_vpc_tmpl
 
 
         initialize : ->
@@ -37,14 +36,15 @@ define [ 'event',
                 .on( 'click',            '#community_ami_page_next',            this, this.searchCommunityAmiNext )
                 .on( 'click',            '#community_ami_table .toggle-fav',    this, this.toggleFav )
                 .on( 'click',            '.favorite-ami-list .faved',           this, this.removeFav )
+                .on( 'click',            '.favorite-ami-list .btn-fav-ami.deleted',         this, this.addFav )
                 .on( 'keypress',         '#community-ami-input',                this, this.searchCommunityAmiCurrent)
 
             $( window ).on "resize", _.bind( this.resizeAccordion, this )
             $( "#tab-content-design" ).on "click", ".fixedaccordion-head", this.updateAccordion
 
-        render   : ( template, attrs ) ->
+        render   : () ->
             console.log 'resource render'
-            $( '#resource-panel' ).html Handlebars.compile template
+            $( '#resource-panel' ).html template()
             #
             #
             ide_event.trigger ide_event.DESIGN_SUB_COMPLETE
@@ -52,9 +52,9 @@ define [ 'event',
             this.recalcAccordion()
             null
 
-        reRender   : ( template ) ->
+        reRender   : () ->
             console.log 're-resource render'
-            if $.trim( this.$el.html() ) is 'loading...' then $( '#resource-panel' ).html Handlebars.compile template
+            if $.trim( this.$el.html() ) is 'loading...' then $( '#resource-panel' ).html template()
 
             this.recalcAccordion()
 
@@ -180,12 +180,20 @@ define [ 'event',
             $this.trigger 'mouseenter', event
 
 
+        addFav: ( event ) ->
+            resourceView = event.data
+            target = $ event.currentTarget
+            #target.trigger 'mouseleave' )
+            id = target.data( 'id' )
+            amiVO = target.data( 'amivo' )
+            resourceView.trigger 'TOGGLE_FAV', resourceView.region, 'add', id, amiVO, true
+
         removeFav : ( event ) ->
             resourceView = event.data
             target = $ event.currentTarget
             #target.trigger 'mouseleave' )
             id = target.data( 'id' )
-            resourceView.trigger 'TOGGLE_FAV', resourceView.region, 'remove', id
+            resourceView.trigger 'TOGGLE_FAV', resourceView.region, 'remove', id,
 
         toggleResourcePanel : ->
             console.log 'toggleResourcePanel'
@@ -274,14 +282,14 @@ define [ 'event',
             console.log 'availabilityZoneRender'
             console.log this.model.attributes.availability_zone
             return if !this.model.attributes.availability_zone
-            $( '.availability-zone' ).html this.availability_zone_tmpl this.model.attributes
+            $( '.availability-zone' ).html template_data.availability_zone_data( @model.attributes )
             null
 
         resourceSnapshotRender : () ->
             console.log 'resourceSnapshotRender'
             console.log this.model.attributes.resource_snapshot
             return if !this.model.attributes.resource_snapshot
-            $( '.resoruce-snapshot' ).append this.resource_snapshot_tmpl this.model.attributes
+            $( '.resoruce-snapshot' ).append template_data.resoruce_snapshot_data( @model.attributes )
             null
 
         quickstartAmiRender : () ->
@@ -290,7 +298,7 @@ define [ 'event',
             if !this.model.attributes.quickstart_ami
                 $( '.quickstart-ami-list' ).html ''
                 return
-            $( '.quickstart-ami-list' ).html this.quickstart_ami_tmpl this.model.attributes
+            $( '.quickstart-ami-list' ).html template_data.quickstart_ami_data( @model.attributes )
             null
 
         myAmiRender : () ->
@@ -299,21 +307,21 @@ define [ 'event',
             if !@model.attributes.my_ami or _.isNumber @model.attributes.my_ami
                 $( '.my-ami-list' ).html ''
                 return
-            $( '.my-ami-list' ).html this.my_ami_tmpl this.model.attributes
+            $( '.my-ami-list' ).html template_data.my_ami_data( @model.attributes )
             null
 
         favoriteAmiRender : () ->
             console.log 'favoriteAmiRender'
             console.log this.model.attributes.favorite_ami
             return if !this.model.attributes.favorite_ami
-            $( '.favorite-ami-list' ).html this.favorite_ami_tmpl this.model.attributes
+            $( '.favorite-ami-list' ).html template_data.favorite_ami_data( @model.attributes )
             null
 
         communityAmiBtnRender : () ->
             console.log 'communityAmiRender'
             console.log this.model.attributes.community_ami
             #return if !this.model.attributes.community_ami
-            $( '.community-ami' ).html this.community_ami_tmpl this
+            $( '.community-ami' ).html template_data.community_ami_btn( this )
             null
 
         openBrowseCommunityAMIsModal : ( event ) ->
@@ -386,11 +394,13 @@ define [ 'event',
             if this.model.attributes.community_ami
                 this_tr = ""
                 _.map this.model.attributes.community_ami.result, ( value, key ) ->
+                    value.favorite = false if value.delete
                     fav_class = if value.favorite then 'faved' else ''
+                    tooltip = if value.favorite then lang.ide.RES_TIT_REMOVE_FROM_FAVORITE else lang.ide.RES_TIT_ADD_TO_FAVORITE
                     bit         = if value.architecture == 'i386' then '32' else '64'
                     visibility  = if value.isPublic then 'public' else 'private'
                     this_tr += '<tr class="item" data-id="'+key+' '+value.name+'" data-publicprivate="public" data-platform="'+value.osType+'" data-ebs="'+value.rootDeviceType+'" data-bit="'+bit+'">'
-                    this_tr += '<td class="ami-table-fav"><div class="toggle-fav tooltip ' + fav_class + '" data-tooltip="Add to Favorite" data-id="'+key+'"></div></td>'
+                    this_tr += '<td class="ami-table-fav"><div class="toggle-fav tooltip ' + fav_class + '" data-tooltip="' + tooltip + '" data-id="'+key+'"></div></td>'
                     this_tr += '<td class="ami-table-id">'+key+'</td>'
                     this_tr += '<td class="ami-table-info"><span class="ami-table-name">' + value.name + '</span><div class="ami-meta"><i class="icon-' + value.osType + ' icon-ami-os"></i><span>' + visibility + ' | ' + value.architecture + ' | ' + value.rootDeviceType + '</span></div></td>'
                     this_tr += "<td class='ami-table-size'>#{value.imageSize}</td></tr>"
@@ -435,7 +445,7 @@ define [ 'event',
 
                         data.vgwIsUsed = this.model.getVgwStatus()
 
-            $list = $( '.resource-vpc-list' ).html this.resource_vpc_tmpl data
+            $list = $( '.resource-vpc-list' ).html template_data.resource_vpc_select_list( data )
             $list.toggle $list.children().length > 0
 
         searchCommunityAmi : ( pageNum ) ->

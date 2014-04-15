@@ -2,10 +2,7 @@
 #  View(UI logic) for design/property/eni(app)
 #############################
 
-define [ '../base/view', 'text!./template/app.html', 'text!./template/eni_list.html'], ( PropertyView, template, list_template ) ->
-
-    template      = Handlebars.compile template
-    list_template = Handlebars.compile list_template
+define [ '../base/view', './template/app', './template/eni_list'], ( PropertyView, template, list_template ) ->
 
     EniAppView = PropertyView.extend {
 

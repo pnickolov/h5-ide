@@ -5,7 +5,7 @@
 define [ 'event',
          'i18n!nls/lang.js',
          'constant',
-         'text!./form.html', 'text!./loading.html', 'text!./skip.html',
+         './form', './loading', './skip',
          'backbone', 'jquery', 'handlebars',
          'UI.modal', 'UI.notification'
 ], ( ide_event, lang, constant, form_tmpl, loading_tmpl, skip_tmpl ) ->
@@ -27,15 +27,24 @@ define [ 'event',
             'click #awscredentials-cancel'          : 'onAWSCredentialCancel'
             'click #awscredentials-remove'          : 'onAWSCredentialRemove'
             'click #account-setting-tab li a'       : 'onTab'
-            'click #account-update-email-link'      : 'onChangeEmail'
+            #'click #account-update-email-link'     : 'onChangeEmail'
             'click #account-change-password'        : 'onChangePassword'
             'click #account-email-update'           : 'clickUpdateEmail'
             'click #account-email-cancel'           : 'clickCancelEmail'
             'click #account-password-update'        : 'clickUpdatePassword'
             'click #account-password-cancel'        : 'clickCancelPassword'
-            'keyup #aws-credential-account-id'      : 'verificationKey'
-            'keyup #aws-credential-access-key'      : 'verificationKey'
-            'keyup #aws-credential-secret-key'      : 'verificationKey'
+
+            'input #aws-credential-account-id'     : 'verificationKey'
+            'input #aws-credential-access-key'     : 'verificationKey'
+            'input #aws-credential-secret-key'     : 'verificationKey'
+
+            'keyup #aws-credential-account-id'     : 'verificationKey'
+            'keyup #aws-credential-access-key'     : 'verificationKey'
+            'keyup #aws-credential-secret-key'     : 'verificationKey'
+
+            'change #aws-credential-account-id'     : 'verificationKey'
+            'change #aws-credential-access-key'     : 'verificationKey'
+            'change #aws-credential-secret-key'     : 'verificationKey'
 
             #welcome
             'click #awscredentials-skip'            : 'onSkinButton'
@@ -43,12 +52,12 @@ define [ 'event',
         render     : (template) ->
             console.log 'account_setting_tab render'
             #
-            modal Handlebars.compile( template )(@model.get 'account_id'), false
+            modal template(@model.get 'account_id'), false
             #
             this.setElement $( '#account-setting-wrap' ).closest '#modal-wrap'
             #
-            $( '#AWSCredential-form' ).find( 'ul' ).html Handlebars.compile( form_tmpl )
-            $( '#AWSCredentials-submiting' ).html Handlebars.compile( loading_tmpl )
+            $( '#AWSCredential-form' ).find( 'ul' ).html form_tmpl()
+            $( '#AWSCredentials-submiting' ).html loading_tmpl()
             $( '#modal-box' ).hide()
             #
             setTimeout () ->
@@ -160,7 +169,7 @@ define [ 'event',
 
             $('#AWSCredentials-remove-wrap').attr('data-type', 'remove')
 
-            if $('#awscredentials-remove').hasClass('btn btn-silver')
+            if $('#awscredentials-remove').hasClass('btn btn-red')
                 #remove credential
                 me.trigger 'REMOVE_CREDENTIAL'
                 me.showSetting('credential')
@@ -185,14 +194,14 @@ define [ 'event',
 
             null
 
-        onChangeEmail : (event) ->
-            console.log 'account_setting_tab onChangeEmail'
-
-            me = this
-
-            me.showSetting('account', 'on_email')
-
-            null
+        #onChangeEmail : (event) ->
+        #    console.log 'account_setting_tab onChangeEmail'
+        #
+        #    me = this
+        #
+        #    me.showSetting('account', 'on_email')
+        #
+        #    null
 
         clickUpdateEmail : (flag) ->
             console.log 'account_setting_tab clickUpdateEmail'
@@ -261,8 +270,7 @@ define [ 'event',
 
                 $('#account-passowrd-info').show()
 
-                #$('#account-passowrd-info').html '{{ i18n "HEAD_MSG_ERR_WRONG_PASSWORD" }} <a href="reset.html" target="_blank">{{ i18n "HEAD_MSG_INFO_FORGET_PASSWORD" }}</a>'
-                $('#account-passowrd-info').html lang.ide.HEAD_MSG_ERR_WRONG_PASSWORD + ' <a href="reset.html" target="_blank">' + lang.ide.HEAD_MSG_INFO_FORGET_PASSWORD + '</a>'
+                $('#account-passowrd-info').html lang.ide.HEAD_MSG_ERR_WRONG_PASSWORD + ' <a href="/reset/" target="_blank">' + lang.ide.HEAD_MSG_INFO_FORGET_PASSWORD + '</a>'
             else
 
                 $('#account-passowrd-info').hide()
@@ -279,6 +287,7 @@ define [ 'event',
             notification type, msg
 
         verificationKey : ->
+
             console.log 'verificationKey'
 
             right_count = 0
@@ -303,7 +312,7 @@ define [ 'event',
                 $( '#awscredentials-submit' ).text( 'Done' )
                 $( '#awscredentials-submit' ).removeAttr 'disabled'
                 #
-                $( '#AWSCredential-form' ).find( 'ul' ).html skip_tmpl
+                $( '#AWSCredential-form' ).find( 'ul' ).html skip_tmpl()
                 $( '#AWSCredential-welcome').text lang.ide.HEAD_INFO_PROVIDE_CREDENTIAL1
                 $( '#AWSCredential-info').find('p').text lang.ide.HEAD_INFO_DEMO_MODE
                 $( '#AWSCredential-welcome-img').hide()
@@ -316,7 +325,7 @@ define [ 'event',
                 $( '#awscredentials-submit' ).attr 'disabled', true
                 $( '#awscredentials-submit' ).text lang.ide.HEAD_BTN_SUBMIT
                 #
-                $( '#AWSCredential-form' ).find( 'ul' ).html Handlebars.compile( form_tmpl )
+                $( '#AWSCredential-form' ).find( 'ul' ).html form_tmpl()
                 $( '#AWSCredential-welcome').text sprintf lang.ide.HEAD_INFO_WELCOME, MC.common.cookie.getCookieByName( 'username' )
                 $( '#AWSCredential-info').find('p').text lang.ide.HEAD_INFO_PROVIDE_CREDENTIAL2
                 $( '#AWSCredential-welcome-img').show()
@@ -468,7 +477,7 @@ define [ 'event',
                     $('#aws-credential-account-id').val me.model.attributes.account_id
 
                     # set remove button style
-                    $('#awscredentials-remove').removeClass("btn btn-silver")
+                    $('#awscredentials-remove').removeClass("btn btn-red")
 
                     #clear key
                     $('#aws-credential-access-key').val(' ')
@@ -519,8 +528,14 @@ define [ 'event',
                     $('#AWSCredential-form').find('ul').hide()
 
                     # change remove button's style
-                    $('#awscredentials-remove').addClass("btn btn-silver")
+                    $('#awscredentials-remove').addClass("btn btn-red")
                     # hide submit botton
+
+            # set awscredentials-remove show|hide
+            if MC.common.cookie.getCookieByName( 'account_id' ) is 'demo_account'
+                $( '#awscredentials-remove' ).hide()
+            else
+                $( '#awscredentials-remove' ).show()
 
             null
 

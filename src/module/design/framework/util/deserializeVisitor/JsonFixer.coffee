@@ -14,6 +14,11 @@ define [ "Design"], ( Design )->
 
       # Generate Component for AZ
       if comp.type is "AWS.EC2.AvailabilityZone"
+
+        # Some very old stack use "Canvas" as the parent of AZ in classic mode.
+        # This line will fix that.
+        if comp.groupUId is "Canvas" then delete comp.groupUId
+
         azArr.push {
           uid  : uid
           type : "AWS.EC2.AvailabilityZone"

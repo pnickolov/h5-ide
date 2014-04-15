@@ -2,7 +2,7 @@
 #  View Mode for design/property/instance
 #############################
 
-define [ "Design", "constant", 'lib/forge/app' ], ( Design, constant, forge_app ) ->
+define [ "Design", "constant" ], ( Design, constant ) ->
 
 	SGListModel = Backbone.Model.extend {
 

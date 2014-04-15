@@ -133,6 +133,9 @@ define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, const
     setRoutes : ( routeId, routes ) ->
       Design.instance().component( routeId ).set( "routes", routes )
       null
+
+    isCidrConflict : ( inputValue, cidr )->
+      Design.modelClassForType(constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet).isCidrConflict( inputValue, cidr )
   }
 
   new RTBModel()

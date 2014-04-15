@@ -32,7 +32,7 @@ define [ 'backbone', 'jquery', 'underscore',
                 #SSO
                 $.cookie 'madeiracloud_ide_session_id', null, { expires: 0 }
 
-                window.location.href = "login.html"
+                window.location.href = "/login"
 
                 return false
 

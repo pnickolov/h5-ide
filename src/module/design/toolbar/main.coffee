@@ -44,7 +44,6 @@ define [ 'jquery',
 
             ide_event.onLongListen ide_event.SWITCH_TAB, () ->
                 setTimeout () ->
-                    console.log 'SWITCH_TAB toolbar id:' + MC.common.other.canvasData.get 'id'
                     model.setTabFlag(true)
                 , 500
 
@@ -114,13 +113,12 @@ define [ 'jquery',
                 console.log 'design_toolbar APP_2_APPEDIT'
 
                 if _.isObject data
-                    #data = MC.forge.stack.expandServerGroup data
                     model.saveApp(data)
                 else
                     console.log 'current is not object, data is ' + data
 
-            view.on 'APPLAY_TRIAL', ( value ) ->
-                model.getApplayTrial value
+            #view.on 'APPLAY_TRIAL', ( value ) ->
+            #    model.getApplayTrial value
 
             # model.on 'CONVERT_CLOUDFORMATION_COMPLETE', ( cf_json ) ->
             #     view.saveCloudFormation cf_json
@@ -169,6 +167,7 @@ define [ 'jquery',
 
             model.on 'TOOLBAR_HANDLE_SUCCESS', (flag, value) ->
                 console.log 'TOOLBAR_HANDLE_SUCCESS', flag, value
+
                 if flag
                     if modal and modal.isPopup()
 
@@ -201,17 +200,21 @@ define [ 'jquery',
                         else if flag is "EXPORT_CLOUDFORMATION"
                             #download
                             view.saveCloudFormation value
+                            value = ""
 
                         # start to export cf
                         else if $('#modal-export-cf')[0] isnt undefined
                             # convert cf
                             model.convertCloudformation()
 
+                    # push nofication
                     str_idx = 'TOOLBAR_HANDLE_' + flag
                     if str_idx of lang.ide
-                        msg = sprintf lang.ide.TOOL_MSG_INFO_HDL_SUCCESS, lang.ide[str_idx], value
 
+                        msg = sprintf lang.ide.TOOL_MSG_INFO_HDL_SUCCESS, lang.ide[str_idx], value
                         view.notify 'info', msg
+
+                    null
 
             model.on 'TOOLBAR_HANDLE_FAILED', (flag, value) ->
 

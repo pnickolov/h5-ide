@@ -355,7 +355,7 @@
           {
             "ValueSet": [
               {
-                "Value": "madeiracloud.com"
+                "Value": "visualops.io"
               }
             ],
             "Key": "STRING, [domain-name-servers|domain-name|ntp-servers|netbios-name-servers], required, example:domain-name"

@@ -1,4 +1,4 @@
-<article>
+<article id="stack-elb-property-panel">
 
 	<div class="option-group-head expand">{{ i18n "PROP_ELB_DETAILS" }}</div>
 	<div class="option-group" data-bind="true" >
@@ -50,7 +50,37 @@
 			<label for="elb-cross-az-select" >Enable cross-zone load balancing</label>
 			<a class="elb-info-icon tooltip icon-info" href="https://aws.amazon.com/about-aws/whats-new/2013/11/06/elastic-load-balancing-adds-cross-zone-load-balancing/" data-tooltip="{{i18n 'PROP_ELB_TIP_CLICK_TO_READ_RELATED_AWS_DOCUMENT'}}" target="_blank"></a>
 		</section>
+		<section class="property-control-group">
+			<div class="checkbox">
+				<input id="elb-connection-draining-select" type="checkbox" {{#if connectionDrainingEnabled}}checked="checked"{{/if}}/>
+				<label for="elb-connection-draining-select"></label>
+			</div>
+			<label for="elb-connection-draining-select" >Enable Connection Draining</label>
+			<a class="elb-info-icon tooltip icon-info" href="http://docs.aws.amazon.com/ElasticLoadBalancing/latest/DeveloperGuide/conﬁg-conn-drain.html" data-tooltip="{{i18n 'PROP_ELB_TIP_CLICK_TO_READ_RELATED_AWS_DOCUMENT'}}" target="_blank"></a>
+			<div class="elb-connection-draining-input-group {{#unless connectionDrainingEnabled}}hide{{/unless}}">
+				<label for="elb-connection-draining-input" class="left">Timeout</label>
+				<input id="elb-connection-draining-input" class="input parsley-validated" type="text" value="{{#if connectionDrainingTimeout}}{{connectionDrainingTimeout}}{{else}}300{{/if}}" data-ignore="true" data-required="true" data-type="number">
+				<label for="elb-connection-draining-input">seconds</label>
+			</div>
+		</section>
 	</div>
+
+	<!--
+	<div class="option-group-head">Advanced Configuration</div>
+	<div class="option-group" data-bind="true"> <ul id="elb-property-listener-list" class="property-list">
+		<section class="property-control-group">
+			<label>Proxy Protocol</label>
+			<div class="mgt5">
+				<div class="checkbox">
+					<input id="elb-advanced-proxy-protocol-select" type="checkbox" {{#if otherPoliciesMap.EnableProxyProtocol}}checked="checked"{{/if}}/>
+					<label for="elb-advanced-proxy-protocol-select"></label>
+				</div>
+				<label for="elb-advanced-proxy-protocol-select">Enable Proxy Protocol</label>
+				<div id="elb-advanced-proxy-protocol-select-tip" class="property-info {{#unless otherPoliciesMap.EnableProxyProtocol}}hide{{/unless}}">If you have a Proxy Protocol enabled proxy server in front of your load balancer, then you must not enable Proxy Protocol on your load balancer.</div>
+			</div>
+		</section>
+	</div>
+	-->
 
 	<div class="option-group-head"> {{ i18n "PROP_ELB_LISTENER_DETAIL" }} </div>
 	<div class="option-group" data-bind="true"> <ul id="elb-property-listener-list" class="property-list">

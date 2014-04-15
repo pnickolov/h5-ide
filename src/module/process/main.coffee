@@ -44,7 +44,7 @@ define [ 'event' ], ( ide_event ) ->
             ide_event.onLongListen ide_event.UPDATE_PROCESS, ( tab_id ) ->
                 console.log 'UPDATE_PROCESS', tab_id
 
-                if MC.data.current_tab_id is tab_id
+                if MC.common.other.isCurrentTab tab_id
                     model.getProcess tab_id
 
     unLoadModule = () ->

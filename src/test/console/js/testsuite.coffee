@@ -552,10 +552,10 @@ define [ 'MC', 'session_model' ,'jquery', 'apiList', 'account_model', 'log_model
                 resolveResult request_time, current_service, current_resource, current_api, forge_result
 
         if current_service.toLowerCase() == "forge" && current_resource.toLowerCase() == "stack" && current_api == "export_cloudformation"
-            stack_id = if $("#stack_id").val() != "null" then $("#stack_id").val() else null
-            stack_id = if stack_id != null and MC.isJSON(stack_id)==true then JSON.parse stack_id else stack_id
+            stack = if $("#stack").val() != "null" then $("#stack").val() else null
+            stack = if stack != null and MC.isJSON(stack)==true then JSON.parse stack else stack
             #stack.export_cloudformation
-            stack_model.export_cloudformation {sender: stack_model}, username, session_id, region_name, stack_id
+            stack_model.export_cloudformation {sender: stack_model}, username, session_id, region_name, stack
             stack_model.once "STACK_EXPORT__CLOUDFORMATION_RETURN", ( forge_result ) ->
                 resolveResult request_time, current_service, current_resource, current_api, forge_result
 
@@ -1582,6 +1582,15 @@ define [ 'MC', 'session_model' ,'jquery', 'apiList', 'account_model', 'log_model
             elb_model.DescribeLoadBalancers {sender: elb_model}, username, session_id, region_name, elb_names, marker
             elb_model.once "ELB__DESC_LBS_RETURN", ( aws_result ) ->
                 resolveResult request_time, current_service, current_resource, current_api, aws_result
+
+        if current_service.toLowerCase() == "elb" && current_resource.toLowerCase() == "elb" && current_api == "DescribeLoadBalancerAttributes"
+            elb_name = if $("#elb_name").val() != "null" then $("#elb_name").val() else null
+            elb_name = if elb_name != null and MC.isJSON(elb_name)==true then JSON.parse elb_name else elb_name
+            #elb.DescribeLoadBalancerAttributes
+            elb_model.DescribeLoadBalancerAttributes {sender: elb_model}, username, session_id, region_name, elb_name
+            elb_model.once "ELB__DESC_LB_ATTRS_RETURN", ( aws_result ) ->
+                resolveResult request_time, current_service, current_resource, current_api, aws_result
+
 
         ########## IAM ##########
         if current_service.toLowerCase() == "iam" && current_resource.toLowerCase() == "iam" && current_api == "GetServerCertificate"

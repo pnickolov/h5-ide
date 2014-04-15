@@ -2,9 +2,7 @@
 #  View(UI logic) for component/sgrule
 #############################
 
-define [ 'text!./template.html', 'i18n!nls/lang.js', "Design" ], ( template, lang, Design ) ->
-
-    template = Handlebars.compile template
+define [ './template', 'i18n!nls/lang.js', "Design" ], ( template, lang, Design ) ->
 
     SGRulePopupView = Backbone.View.extend {
 

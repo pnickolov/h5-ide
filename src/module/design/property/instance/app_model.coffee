@@ -4,11 +4,12 @@
 
 define [ '../base/model',
     'keypair_model',
+    'instance_model',
     'constant',
     'i18n!nls/lang.js'
     'Design'
 
-], ( PropertyModel, keypair_model, constant, lang, Design ) ->
+], ( PropertyModel, keypair_model, instance_model, constant, lang, Design ) ->
 
     AppInstanceModel = PropertyModel.extend {
 
@@ -142,7 +143,7 @@ define [ '../base/model',
             if myInstanceComponent
                 instance_id = myInstanceComponent.get 'appId'
             else
-                effective = MC.aws.instance.getEffectiveId instance_id
+                effective = Design.modelClassForType(constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance).getEffectiveId instance_id
                 myInstanceComponent = Design.instance().component( effective.uid )
                 @set 'uid', effective.uid
                 @set 'mid', effective.mid

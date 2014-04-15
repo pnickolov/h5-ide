@@ -16,7 +16,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo' ], ( constant, MC,
     isELBHasHealthCheck = ( uid ) ->
         asg =  MC.canvas_data.component[ uid ]
 
-        isConnectELB = MC.aws.asg.isConnectELB( uid )
+        isConnectELB = MC.canvas_data.component[ uid ].resource.LoadBalancerNames.length > 0
         if not isConnectELB or isConnectELB and asg.resource.HealthCheckType is 'ELB'
             return null
 

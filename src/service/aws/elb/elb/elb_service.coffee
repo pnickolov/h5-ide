@@ -193,6 +193,38 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 	# end of parserDescribeLoadBalancersReturn
 
 
+	#///////////////// Parser for DescribeLoadBalancerAttributes return (need resolve) /////////////////
+	#private (resolve result to vo )
+	resolveDescribeLoadBalancerAttributesResult = ( result ) ->
+		#resolve result
+		#TO-DO
+		result_set = ($.xml2json($.parseXML(result[1]))).DescribeLoadBalancerAttributesResponse.DescribeLoadBalancerAttributesResult.LoadBalancerAttributes
+		#return vo
+		#TO-DO
+		result_set
+
+
+	#private (parser DescribeLoadBalancerAttributes return)
+	parserDescribeLoadBalancerAttributesReturn = ( result, return_code, param ) ->
+
+		#1.resolve return_code
+		aws_result = result_vo.processAWSReturnHandler result, return_code, param
+
+		#2.resolve return_data when return_code is E_OK
+		if return_code == constant.RETURN_CODE.E_OK && !aws_result.is_error
+
+			resolved_data = resolveDescribeLoadBalancerAttributesResult result
+
+			aws_result.resolved_data = resolved_data
+
+		#3.return vo
+		aws_result
+
+	# end of parserDescribeLoadBalancerAttributesReturn
+
+
+
+
 	#############################################################
 
 	#def DescribeInstanceHealth(self, username, session_id, region_name, elb_name, instance_ids=None):
@@ -215,6 +247,11 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 		send_request "DescribeLoadBalancers", src, [ username, session_id, region_name, elb_names, marker ], parserDescribeLoadBalancersReturn, callback
 		true
 
+	#def DescribeLoadBalancerAttributes(self, username, session_id, region_name, elb_name):
+	DescribeLoadBalancerAttributes = ( src, username, session_id, region_name, elb_name, callback ) ->
+		send_request "DescribeLoadBalancerAttributes", src, [ username, session_id, region_name, elb_name ], parserDescribeLoadBalancerAttributesReturn, callback
+		true
+
 
 	#############################################################
 	#public
@@ -222,7 +259,8 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 	DescribeLoadBalancerPolicies : DescribeLoadBalancerPolicies
 	DescribeLoadBalancerPolicyTypes : DescribeLoadBalancerPolicyTypes
 	DescribeLoadBalancers        : DescribeLoadBalancers
+	DescribeLoadBalancerAttributes : DescribeLoadBalancerAttributes
 	#
 	resolveDescribeLoadBalancersResult : resolveDescribeLoadBalancersResult
 	resolveDescribeInstanceHealthResult: resolveDescribeInstanceHealthResult
-
+	resolveDescribeLoadBalancerAttributesResult : resolveDescribeLoadBalancerAttributesResult

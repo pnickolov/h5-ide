@@ -453,7 +453,10 @@ init = ->
                 if $username.next().hasClass('error-status') or $email.next().hasClass('error-status')
                     console.log "Error Message Exist"
                     return false
-                if !(checkUsername() && checkEmail() && checkPassword())
+                userResult = checkUsername()
+                emailResult = checkEmail()
+                passwordResult = checkPassword()
+                if !(userResult && emailResult && passwordResult)
                     return false
                 $('#register-btn').attr('disabled',true).val(langsrc.register.reginster_waiting)
                 console.log('check user input here.')

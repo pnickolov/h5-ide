@@ -396,14 +396,14 @@ init = ->
                 if password.trim() isnt ""
                     if password.length > 5
                         status.removeClass('verification-status').removeClass('error-status').text ""
-                        if cb then cb(1) else return false
+                        if cb then cb(1) else return true
                     else
                         status.removeClass('verification-status').addClass('error-status').text langsrc.register.password_shorter
                         if cb then cb(0) else return false
                 else
                     status.removeClass('verification-status').addClass('error-status').text langsrc.register.password_required
                     if cb then cb() else return false
-            ajaxCheckUsername = (username, status)->
+            ajaxCheckUsername = (username, status,cb)->
                 window.xhr?.abort()
                 window.clearTimeout(timeOutToClear)
                 console.log('aborted!', timeOutToClear)
@@ -438,21 +438,25 @@ init = ->
                 $('#register-btn').attr('disabled',false).val(langsrc.register['register-btn'])
             $username.on 'keyup', (e)->
                 checkUsername e, (a)->
+                    resetRegForm() unless a
                     return a
             $email.on 'keyup', (e)->
                 checkEmail e, (a)->
+                    resetRegForm() unless a
                     return a
             $password.on 'keyup', (e)->
                 checkPassword e, (a)->
+                    resetRegForm() unless a
                     return a
             $form.on 'submit', (e)->
                 e.preventDefault()
+                if $username.next().hasClass('error-status') or $email.next().hasClass('error-status')
+                    console.log "Error Message Exist"
+                    return false
+                if !(checkUsername() && checkEmail() && checkPassword())
+                    return false
                 $('#register-btn').attr('disabled',true).val(langsrc.register.reginster_waiting)
                 console.log('check user input here.')
-                if !(checkUsername()&& checkEmail()&& checkPassword())
-                    resetRegForm()
-                    return false
-                console.log(passsssss)
                 checkUsername(e , (usernameAvl)->
                     if !usernameAvl
                         resetRegForm()
@@ -467,7 +471,9 @@ init = ->
                                 return false
                             if (usernameAvl&&emailAvl&&passwordAvl)
                                 console.log('Success!!!!!')
-                                ajaxRegister([$username.val(), $password.val(), $email.val()])
+                                ajaxRegister([$username.val(), $password.val(), $email.val()],(status)->
+                                    resetRegForm()
+                                )
                         )
                     )
                 )

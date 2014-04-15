@@ -38,9 +38,13 @@ define [ 'event',
             'input #aws-credential-access-key'     : 'verificationKey'
             'input #aws-credential-secret-key'     : 'verificationKey'
 
-            # 'paste #aws-credential-account-id'     : 'verificationKey'
-            # 'paste #aws-credential-access-key'     : 'verificationKey'
-            # 'paste #aws-credential-secret-key'     : 'verificationKey'
+            'keyup #aws-credential-account-id'     : 'verificationKey'
+            'keyup #aws-credential-access-key'     : 'verificationKey'
+            'keyup #aws-credential-secret-key'     : 'verificationKey'
+
+            'change #aws-credential-account-id'     : 'verificationKey'
+            'change #aws-credential-access-key'     : 'verificationKey'
+            'change #aws-credential-secret-key'     : 'verificationKey'
 
             #welcome
             'click #awscredentials-skip'            : 'onSkinButton'

@@ -37,9 +37,9 @@ define [ "../ComplexResModel", "../ConnectionModel", "constant" ], ( ComplexResM
         id       : _.uniqueId( "aclrule_" )
         cidr     : r.CidrBlock
         egress   : r.Egress
-        protocol : r.Protocol
+        protocol : parseInt(r.Protocol, 10)
+        number   : parseInt(r.RuleNumber, 10)
         action   : r.RuleAction
-        number   : r.RuleNumber
         port     : ""
       }
 
@@ -49,7 +49,7 @@ define [ "../ComplexResModel", "../ConnectionModel", "constant" ], ( ComplexResM
         rule.port = r.IcmpTypeCode.Type + "/" + r.IcmpTypeCode.Code
       else if r.PortRange.From and r.PortRange.To
         if r.PortRange.From is r.PortRange.To
-          rule.port = r.PortRange.From
+          rule.port = r.PortRange.From + ""
         else
           rule.port = r.PortRange.From + "-" + r.PortRange.To
 
@@ -67,17 +67,17 @@ define [ "../ComplexResModel", "../ConnectionModel", "constant" ], ( ComplexResM
           cidr     : "0.0.0.0/0"
           egress   : true
           id       : _.uniqueId( "aclrule_" )
-          number   : "32767"
+          number   : 32767
           port     : ""
-          protocol : "-1"
+          protocol : -1
         }, {
           action   : "deny"
           cidr     : "0.0.0.0/0"
           egress   : false
           id       : _.uniqueId( "aclrule_" )
-          number   : "32767"
+          number   : 32767
           port     : ""
-          protocol : "-1"
+          protocol : -1
         }]
       }
 
@@ -98,16 +98,15 @@ define [ "../ComplexResModel", "../ConnectionModel", "constant" ], ( ComplexResM
     addRule : ( rule )->
       console.assert( rule.number isnt undefined && rule.protocol isnt undefined && rule.egress isnt undefined && rule.action isnt undefined && rule.cidr isnt undefined && rule.port isnt undefined, "Invalid ACL Rule data")
 
-      ruleExist = false
+      # Make sure protocol and number is `int`
+      rule.protocol = parseInt( rule.protocol, 10 )
+      rule.number   = parseInt( rule.number, 10 )
 
       currentRules = @get("rules")
 
       for r in currentRules
         if r.number is rule.number
-          ruleExist = true
-          break
-
-      if ruleExist then return false
+          return false
 
       # Add rule Id for the rule
       rule.id = _.uniqueId( "aclrule_" )
@@ -124,8 +123,8 @@ define [ "../ComplexResModel", "../ConnectionModel", "constant" ], ( ComplexResM
           theRule = rule
           break
 
-      if theRule.number is "32767" then return false
-      if @isDefault() and theRule.number is "100" then return false
+      if theRule.number is 32767 then return false
+      if @isDefault() and theRule.number is 100 then return false
 
       rules = rules.slice(0)
       rules.splice( idx, 1 )

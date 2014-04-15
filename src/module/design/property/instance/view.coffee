@@ -3,12 +3,10 @@
 #############################
 
 define [ '../base/view',
-         'text!./template/stack.html',
+         './template/stack',
          'i18n!nls/lang.js', 'constant' ], ( PropertyView, template, lang, constant ) ->
 
     noop = ()-> null
-
-    template =  Handlebars.compile template
 
     InstanceView = PropertyView.extend {
 

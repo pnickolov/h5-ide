@@ -2,11 +2,7 @@
 #  Controller for navigation module
 ####################################
 
-define [ 'jquery',
-         'event',
-         'base_main',
-         'constant'
-], ( $, ide_event, base_main, constant ) ->
+define [ 'event', 'base_main', 'constant' ], ( ide_event, base_main, constant ) ->
 
     #private
     initialize = ->
@@ -19,7 +15,7 @@ define [ 'jquery',
     loadModule = () ->
 
         #load remote /module/navigation/view.js
-        require [ 'navigation_view', 'navigation_model', 'UI.tooltip', 'hoverIntent' ], ( View, model ) ->
+        require [ 'navigation_view', 'navigation_model', 'UI.tooltip' ], ( View, model ) ->
 
             #view
             #view       = new View()

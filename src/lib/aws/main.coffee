@@ -1,37 +1,105 @@
-define ['MC',
-		'lib/aws/aws',
-		'lib/aws/ec2/instance',
-		'lib/aws/ec2/ebs',
-		'lib/aws/ec2/ami',
-		'lib/aws/elb/elb',
-		'lib/aws/vpn/vpn',
-		'lib/aws/vpc/networkacl',
-		'lib/aws/ec2/securitygroup',
-		'lib/aws/ec2/keypair',
-		'lib/aws/vpc/eni',
-		'lib/aws/vpc/vpc',
-		'lib/aws/vpc/subnet',
-		'lib/aws/vpc/rtb',
-		'lib/aws/autoscaling/asg',
-		'lib/aws/autoscaling/launchconfiguration',
-		'lib/aws/ec2/eip'], (MC, aws_handler, aws_handler_instance, aws_handler_ebs, aws_handler_ami, aws_handler_elb, aws_handler_vpn, aws_handler_acl, aws_handler_securitygroup, aws_handler_keypair,aws_handler_eni, aws_handler_vpc, aws_handler_subnet, aws_handler_rtb, aws_handler_asg, aws_handler_lc, aws_handler_eip) ->
-	MC.aws = {
-		instance: aws_handler_instance,
-		asg: aws_handler_asg,
-		lc : aws_handler_lc,
-		aws: aws_handler,
-		ebs: aws_handler_ebs,
-		ami: aws_handler_ami,
-		elb: aws_handler_elb,
-		vpn: aws_handler_vpn,
-		acl: aws_handler_acl,
-		sg: aws_handler_securitygroup,
-		kp: aws_handler_keypair,
-		eni: aws_handler_eni,
-		vpc: aws_handler_vpc,
-		subnet: aws_handler_subnet,
-		rtb: aws_handler_rtb,
-		eip: aws_handler_eip
-	}
+define ['MC', "constant", 'lib/aws/aws'], (MC, constant, aws_handler) ->
+  MC.aws = { aws: aws_handler }
 
-	MC.aws
+  MC.aws.ami = {
+    getOSType : ( ami ) ->
+
+      #return osType by ami.name | ami.description | ami.imageLocation
+      if !ami
+        return 'unknown'
+
+      if ami.osType
+        return ami.osType
+
+      osTypeList = ['centos', 'redhat', 'rhel', 'ubuntu', 'debian', 'fedora', 'gentoo', 'opensuse', 'suse','amazon', 'amzn']
+
+      osType = 'linux-other'
+
+      found  = []
+
+      if  ami.platform and ami.platform == 'windows'
+
+        found.push 'windows'
+
+      else
+
+        #check ami.name
+        if ami.name
+          found = osTypeList.filter (word) -> ~ami.name.toLowerCase().indexOf word
+
+        #check ami.description
+        if found.length == 0 and 'description' of ami and ami.description
+          found = osTypeList.filter (word) -> ~ami.description.toLowerCase().indexOf word
+
+        #check ami.imageLocation
+        if found.length == 0 and 'imageLocation' of ami and ami.imageLocation
+          found = osTypeList.filter (word) -> ~ami.imageLocation.toLowerCase().indexOf word
+
+      if found.length > 0
+        osType = found[0]
+
+      switch osType
+        when 'rhel' then osType = 'redhat'
+        when 'amzn' then osType = 'amazon'
+
+      osType
+
+    getInstanceType : ( ami ) ->
+
+      if not ami then return []
+
+      try
+        region = MC.canvas_data.region
+        instance_type = MC.data.instance_type[region]
+        region_instance_type = MC.data.region_instance_type
+        current_region_instance_type = null
+
+        if region_instance_type
+          current_region_instance_type = region_instance_type[region]
+
+        currentTypeData = instance_type
+
+        if current_region_instance_type and ami.osFamily
+          currentTypeData = current_region_instance_type
+
+        if !currentTypeData
+          return []
+
+        if current_region_instance_type
+          key = ami.osFamily
+          if not key
+            osType = ami.osType
+            key = constant.OS_TYPE_MAPPING[osType]
+
+          currentTypeData = currentTypeData[key]
+        else
+          if ami.osType == 'windows'
+            currentTypeData = currentTypeData.windows
+          else
+            currentTypeData = currentTypeData.linux
+
+        if ami.rootDeviceType == 'ebs'
+          currentTypeData = currentTypeData.ebs
+        else
+          currentTypeData = currentTypeData['instance store']
+        if ami.architecture == 'x86_64'
+          currentTypeData = currentTypeData["64"]
+        else
+          currentTypeData = currentTypeData["32"]
+
+        # According to property/instance/model, if ami.virtualizationType is undefined.
+        # It defaults to "paravirtual"
+        currentTypeData = currentTypeData[ami.virtualizationType || "paravirtual"]
+      catch err
+        currentTypeData = []
+
+      if not currentTypeData or currentTypeData.length <= 0
+        currentTypeData = MC.data.config[region].region_instance_type
+
+      if not currentTypeData
+        currentTypeData = []
+
+      return currentTypeData
+  }
+
+  MC.aws

@@ -419,9 +419,9 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
         send_request "list", src, [ username, session_id, region_name, stack_ids ], parserListReturn, callback
         true
 
-    #def export_cloudformation(self, username, session_id, region_name, stack_id):
-    export_cloudformation = ( src, username, session_id, region_name, stack_id, callback ) ->
-        send_request "export_cloudformation", src, [ username, session_id, region_name, stack_id ], parserExportCloudformationReturn, callback
+    #def export_cloudformation(self, username, session_id, region_name, stack):
+    export_cloudformation = ( src, username, session_id, region_name, stack, callback ) ->
+        send_request "export_cloudformation", src, [ username, session_id, region_name, stack ], parserExportCloudformationReturn, callback
         true
 
     #def verify(self, username, session_id, spec):

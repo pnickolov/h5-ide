@@ -7,11 +7,13 @@ define [ "Design", "constant" ], ( Design, constant )->
   prepareEniData = ( uid, eniArray )->
     subnet = Design.instance().component( uid )
 
+    AzModel = Design.modelClassForType constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone
+
     if subnet
       subnetCid = subnet.get("cidr")
     else
       # DefaultVpc
-      defaultSubnet = MC.aws.vpc.getAZSubnetForDefaultVPC( uid )
+      defaultSubnet = AzModel.getSubnetOfDefaultVPC( uid )
       if defaultSubnet
         subnetCid = defaultSubnet.cidrBlock
 
@@ -34,7 +36,7 @@ define [ "Design", "constant" ], ( Design, constant )->
 
 
   generateIpForEnis = ( data )->
-    validIpSet = MC.aws.eni.getAvailableIPInCIDR( data.subnetCid, data.reserveIpSet, data.ipSet.length )
+    validIpSet = Design.modelClassForType(constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface).getAvailableIPInCIDR( data.subnetCid, data.reserveIpSet, data.ipSet.length )
 
     validIpSet = _.filter validIpSet, ( ip )-> ip.available
 

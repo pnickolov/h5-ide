@@ -5,20 +5,18 @@
 define [ 'MC', 'event',
          "Design",
          'i18n!nls/lang.js',
-         'text!./stack_template.html',
-         'text!./app_template.html',
-         'text!./appview_template.html',
+         './stack_template',
+         './stack_classic_template',
+         './app_template',
+         './app_classic_template',
+         './appview_template',
          "component/exporter/JsonExporter",
          "component/exporter/Download",
          'constant'
          'backbone', 'jquery', 'handlebars',
          'UI.selectbox', 'UI.notification',
          "UI.tabbar"
-], ( MC, ide_event, Design, lang, stack_tmpl, app_tmpl, appview_tmpl, JsonExporter, download, constant ) ->
-
-    stack_tmpl   = Handlebars.compile stack_tmpl
-    app_tmpl     = Handlebars.compile app_tmpl
-    appview_tmpl = Handlebars.compile appview_tmpl
+], ( MC, ide_event, Design, lang, stack_tmpl, stack_classic_tmpl, app_tmpl, app_classic_tmpl, appview_tmpl, JsonExporter, download, constant ) ->
 
     ToolbarView = Backbone.View.extend {
 
@@ -54,7 +52,7 @@ define [ 'MC', 'event',
             'click #toolbar-cancel-edit-app' : 'clickCancelEditApp'
 
             'click .toolbar-visual-ops-switch' : 'opsOptionChanged'
-            'click #apply-visops'              : 'openExperimentalVisops'
+            #'click #apply-visops'             : 'openExperimentalVisops'
 
         # when flag = 0 not invoke opsState
         # when flag = 1 invoke opsState
@@ -90,12 +88,20 @@ define [ 'MC', 'event',
 
             this.model.attributes.lines = lines
 
+            # platform is 'classis' stack or app
+            data = MC.common.other.canvasData.data( true )
+            if Tabbar.current is 'stack' and data and data.platform in [ MC.canvas.PLATFORM_TYPE.EC2_CLASSIC, MC.canvas.PLATFORM_TYPE.DEFAULT_VPC ]
+                $( '#main-toolbar' ).html stack_classic_tmpl this.model.attributes
+
+            else if Tabbar.current is 'app' and data and data.platform in [ MC.canvas.PLATFORM_TYPE.EC2_CLASSIC, MC.canvas.PLATFORM_TYPE.DEFAULT_VPC ]
+                $( '#main-toolbar' ).html app_classic_tmpl this.model.attributes
+
             # appview
-            if Tabbar.current is 'appview'
+            else if Tabbar.current is 'appview'
                 $( '#main-toolbar' ).html appview_tmpl this.model.attributes
 
             # type include 'app' | 'stack'
-            else if type is 'app'
+            else if type in [ 'app', 'OPEN_APP' ]
                 $( '#main-toolbar' ).html app_tmpl this.model.attributes
             else
                 $( '#main-toolbar' ).html stack_tmpl this.model.attributes
@@ -118,8 +124,8 @@ define [ 'MC', 'event',
             $( document.body ).on 'click', '.modal-footer #btn-confirm', this, () -> modal.close()
 
             # experimentalVisops
-            $( document.body ).on 'click', '#experimental-visops-confirm', this, @experimentalVisopsConfirm
-            $( document.body ).on 'click', '#experimental-visops-cancel', this, () -> modal.close()
+            #$( document.body ).on 'click', '#experimental-visops-confirm', this, @experimentalVisopsConfirm
+            #$( document.body ).on 'click', '#experimental-visops-cancel', this, () -> modal.close()
 
         reRender   : ( type ) ->
             console.log 're-toolbar render'
@@ -132,6 +138,12 @@ define [ 'MC', 'event',
 
         clickRunIcon : ( event ) ->
             console.log 'clickRunIcon'
+
+            # when disabled not click
+            if $('#toolbar-run').hasClass( 'disabled' )
+                modal.close()
+                return
+
             me = this
             event.preventDefault()
             # check credential
@@ -189,7 +201,8 @@ define [ 'MC', 'event',
 
                     # disable button
                     $('#btn-confirm').attr 'disabled', true
-                    $('.modal-close').attr 'disabled', true
+                    $('.modal-header .modal-close').hide()
+                    $('#run-stack-cancel').attr 'disabled', true
 
                     # push SAVE_STACK event
                     #ide_event.trigger ide_event.SAVE_STACK, MC.common.other.canvasData.data()
@@ -200,11 +213,7 @@ define [ 'MC', 'event',
         clickSaveIcon : ->
             console.log 'clickSaveIcon'
 
-            # old design flow
-            #name = MC.canvas_data.name
-            #id = MC.canvas_data.id
-
-            # new design flow
+            # get name and id
             name = MC.common.other.canvasData.get 'name'
             id   = MC.common.other.canvasData.get 'id'
 
@@ -215,64 +224,39 @@ define [ 'MC', 'event',
                 notification 'warning', lang.ide.PROP_MSG_WARN_WHITE_SPACE
 
             else if not MC.aws.aws.checkStackName id, name
+
                 #notification 'warning', lang.ide.PROP_MSG_WARN_REPEATED_STACK_NAME
                 #show modal to re-input stack name
                 template = MC.template.modalReinputStackName {
                     stack_name : name
                 }
 
+                # popup rename dialog
                 modal template, false
+
                 $('#rename-confirm').click () ->
                     new_name = $('#new-stack-name').val()
                     console.log 'save stack new name:' + new_name
 
                     if MC.aws.aws.checkStackName id, new_name
+
+                        # close dialog
                         modal.close()
 
-                        # old design flow
-                        #MC.canvas_data.name = new_name
-
-                        # new design flow
+                        # set new name
                         MC.common.other.canvasData.set 'name', new_name
 
-                        # old design flow +++++++++++++++++++++++++++
-                        # #expand components
-                        # MC.canvas_data = MC.forge.stack.expandServerGroup MC.canvas_data
-                        # #save stack
-                        # ide_event.trigger ide_event.SAVE_STACK, MC.canvas.layout.save()
-                        # #compact and update canvas
-                        # MC.canvas_data = MC.forge.stack.compactServerGroup json_data
-                        # old design flow +++++++++++++++++++++++++++
-
-                        # old design flow
-                        #ide_event.trigger ide_event.SAVE_STACK, MC.canvas_data
-
-                        # new design flow
+                        # push event
                         ide_event.trigger ide_event.SAVE_STACK, MC.common.other.canvasData.data()
 
                         true
 
             else
 
-                # old design flow
-                #MC.canvas_data.name = name
-
-                # new design flow
+                # set new name
                 MC.common.other.canvasData.set 'name', name
 
-                # old design flow +++++++++++++++++++++++++++
-                # #expand components
-                # MC.canvas_data = MC.forge.stack.expandServerGroup MC.canvas_data
-                # #save stack
-                # ide_event.trigger ide_event.SAVE_STACK, MC.canvas.layout.save()
-                # #compact and update canvas
-                # MC.canvas_data = MC.forge.stack.compactServerGroup MC.canvas_data
-                # old design flow +++++++++++++++++++++++++++
-
-                # old design flow
-                #ide_event.trigger ide_event.SAVE_STACK, MC.canvas_data
-
-                # new design flow
+                # push event
                 ide_event.trigger ide_event.SAVE_STACK, MC.common.other.canvasData.data()
 
             true
@@ -453,8 +437,8 @@ define [ 'MC', 'event',
         #request cloudformation
         clickConvertCloudFormation : ->
             modal MC.template.exportCloudFormation()
-            # Seems like cloudfomation triggers a save event. And then trigger a export event...... Darn!
-            ide_event.trigger ide_event.SAVE_STACK, MC.common.other.canvasData.data()
+            #change export_cloudformation param stack_id to json, so no need save stack
+            @trigger "CONVERT_CLOUDFORMATION"
             null
 
         #save cloudformation
@@ -751,17 +735,17 @@ define [ 'MC', 'event',
                     $switchCheckbox.removeClass 'on'
 
             # set visual-ops-switch show/hide
-            if MC.common.cookie.getCookieByName( 'is_invitated' ) in [ 'true', true, 2, '2' ]
-
-                $applyVisops.hide()
-                $switchCheckbox.show()
-
-            else if MC.common.cookie.getCookieByName( 'is_invitated' ) in [ 'false', false, 0, '0', 1, '1' ]
-
-                $applyVisops.show()
-                $switchCheckbox.hide()
-
-                @model.setAgentEnable false
+            #if MC.common.cookie.getCookieByName( 'is_invitated' ) in [ 'true', true, 2, '2' ]
+            #
+            #    $applyVisops.hide()
+            #    $switchCheckbox.show()
+            #
+            #else if MC.common.cookie.getCookieByName( 'is_invitated' ) in [ 'false', false, 0, '0', 1, '1' ]
+            #
+            #    $applyVisops.show()
+            #    $switchCheckbox.hide()
+            #
+            #    @model.setAgentEnable false
 
         opsOptionChanged : (event) ->
 
@@ -789,33 +773,33 @@ define [ 'MC', 'event',
 
             ide_event.trigger ide_event.REFRESH_PROPERTY
 
-        openExperimentalVisops : ->
-            console.log 'openExperimentalVisops'
+        #openExperimentalVisops : ->
+        #    console.log 'openExperimentalVisops'
+        #
+        #    # modal experimentalVisops
+        #    modal MC.template.experimentalVisops()
+        #
+        #    # if is_invitated = 1, explanation audit
+        #    if MC.common.cookie.getCookieByName( 'is_invitated' ) in [ 1, '1' ]
+        #        $( '.modal-body' ).html MC.template.experimentalVisopsTrail()
+        #        $( '#experimental-visops-cancel'  ).html lang.ide.INVITE_MOD_BTN_DONE
+        #        $( '#experimental-visops-confirm' ).hide()
 
-            # modal experimentalVisops
-            modal MC.template.experimentalVisops()
-
-            # if is_invitated = 1, explanation audit
-            if MC.common.cookie.getCookieByName( 'is_invitated' ) in [ 1, '1' ]
-                $( '.modal-body' ).html MC.template.experimentalVisopsTrail()
-                $( '#experimental-visops-cancel'  ).html lang.ide.INVITE_MOD_BTN_DONE
-                $( '#experimental-visops-confirm' ).hide()
-
-        experimentalVisopsConfirm : ( event ) ->
-            console.log 'experimentalVisopsConfirm', event
-
-            # push event
-            event.data.trigger 'APPLAY_TRIAL', $( '#experimental-message' ).val()
-
-            # change modal body
-            $( '.modal-body' ).html MC.template.experimentalVisopsTrail()
-            $( '#experimental-visops-cancel'  ).html lang.ide.INVITE_MOD_BTN_DONE
-            $( '#experimental-visops-confirm' ).hide()
-
-            # set is_invitated
-            MC.common.cookie.setCookieByName 'is_invitated', 1
-
-            null
+        #experimentalVisopsConfirm : ( event ) ->
+        #    console.log 'experimentalVisopsConfirm', event
+        #
+        #    # push event
+        #    event.data.trigger 'APPLAY_TRIAL', $( '#experimental-message' ).val()
+        #
+        #    # change modal body
+        #    $( '.modal-body' ).html MC.template.experimentalVisopsTrail()
+        #    $( '#experimental-visops-cancel'  ).html lang.ide.INVITE_MOD_BTN_DONE
+        #    $( '#experimental-visops-confirm' ).hide()
+        #
+        #    # set is_invitated
+        #    MC.common.cookie.setCookieByName 'is_invitated', 1
+        #
+        #    null
     }
 
     return ToolbarView

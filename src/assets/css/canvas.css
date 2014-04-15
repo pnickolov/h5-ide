@@ -13,18 +13,11 @@
 	background: transparent;
 }
 
-#canvas_content {
-	position: relative;
-	padding: 0 65px 45px 0;
-}
-
 #canvas_container {
-	padding: 0 80px 30px 0;
 	position: relative;
 }
 
 #canvas_body {
-	border: 1px solid #ccc;
 	background: #fff url('../images/ide/grid_x1.png');
 }
 
@@ -52,16 +45,6 @@
 	}
 }
 
-/*.canvas-view-sg .line-sg,
-.canvas-view-sg .port-instance-sg {
-	visibility: visible;
-	fill-opacity: 0.1;
-}
-
-.canvas-view-sg .line path {
-	fill-opacity: 0.1 !important;
-}*/
-
 #svg_canvas .selected .port {
 	visibility: visible !important;
 }
@@ -75,45 +58,30 @@
 }
 
 .svg_resizer {
-	position        : absolute;
-	width           : 32px;
-	min-width       : 32px;
-	height          : 32px;
-	background-color: #f5f5f5;
-	box-shadow      : 1px 1px 5px rgba(0, 0, 0, 0.1);
-	cursor          : pointer;
-	line-height     : 32px;
-	text-align      : center;
-	padding         : 0;
+	position : absolute;
+	z-index  : 10;
+
+	width   : 32px;
+	height  : 32px;
+	padding : 0;
+
+	background    : #f5f5f5;
+	border        : 1px solid #ccc;
+	border-radius : 3px;
+
+	cursor      : pointer;
+	line-height : 32px;
+	text-align  : center;
 }
 
 .svg_resizer:hover {
 	color: #3781C9;
 }
 
-.svg_resizer_height {
-	bottom: -15px;
-}
-
-.svg_resizer_width {
-	right: 40px;
-}
-
-#svg_resizer_height_expand {
-	left: 5px;
-}
-
-#svg_resizer_height_shrink {
-	left: 45px;
-}
-
-#svg_resizer_width_expand {
-	top: 5px;
-}
-
-#svg_resizer_width_shrink {
-	top: 45px;
-}
+.svg_resizer.icon-resize-down  { left : 7px;  bottom : 7px; }
+.svg_resizer.icon-resize-up    { left : 47px; bottom : 7px; }
+.svg_resizer.icon-resize-right { top  : 5px;  right  : 10px; }
+.svg_resizer.icon-resize-left  { top  : 45px; right  : 10px; }
 
 #svg_canvas {
 	position: relative;
@@ -1067,8 +1035,8 @@
 	margin-right: 5px;
 }
 
-.sg-color-header {
-	margin-top: 12px;
+#property-second-title > .sg-color {
+	margin-top : 12px;
 }
 
 /* instance state */

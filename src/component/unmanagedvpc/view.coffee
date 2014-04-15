@@ -3,7 +3,7 @@
 #############################
 
 define [ 'event',
-         'text!./component/unmanagedvpc/template.html',
+         './component/unmanagedvpc/template',
          'constant',
          'backbone', 'jquery', 'handlebars',
          'UI.modal'
@@ -190,7 +190,7 @@ define [ 'event',
             console.log 'pop-up:unmanaged vpc render'
 
             # popup
-            modal Handlebars.compile( template )( @model.attributes ), true
+            modal template( @model.attributes ), true
 
             # set element
             @setElement $( '#unmanaged-VPC-modal-body' ).closest '#modal-wrap'

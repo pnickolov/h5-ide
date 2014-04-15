@@ -2,11 +2,7 @@
 #  View(UI logic) for design/property/vpn
 #############################
 
-define [ '../base/view',
-         'text!./template/stack.html'
-], ( PropertyView, template ) ->
-
-    template = Handlebars.compile template
+define [ '../base/view', './template/stack' ], ( PropertyView, template ) ->
 
     VPNView = PropertyView.extend {
         events   :
@@ -76,7 +72,7 @@ define [ '../base/view',
                 descContent = 'Please provide a valid IP range. For example, 10.0.0.1/24.'
             else
                 for cidr in allCidrAry
-                    if cidr isnt inputValue and MC.aws.subnet.isSubnetConflict( inputValue, cidr )
+                    if cidr isnt inputValue and @model.isCidrConflict( inputValue, cidr )
                         mainContent = "#{inputValue} conflicts with other IP Prefix."
                         descContent = 'Please choose a CIDR block not conflicting with existing IP Prefix.'
                         break

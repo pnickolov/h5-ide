@@ -3,7 +3,7 @@
 #############################
 
 define [ '../base/view',
-         'text!./template/stack.html'
+         './template/stack'
          'i18n!nls/lang.js'
 ], ( PropertyView, template, lang ) ->
 
@@ -25,8 +25,6 @@ define [ '../base/view',
         else
             $( '#property-amazon-dns' ).removeAttr( "disabled" )
 
-
-    template = Handlebars.compile template
 
     VPCView = PropertyView.extend {
 

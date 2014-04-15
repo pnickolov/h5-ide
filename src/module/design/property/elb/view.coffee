@@ -3,7 +3,7 @@
 #############################
 
 define [ '../base/view',
-         'text!./template/stack.html',
+         './template/stack',
          'event'
          'i18n!nls/lang.js'
 ], ( PropertyView, template, ide_event, lang ) ->
@@ -24,8 +24,6 @@ define [ '../base/view',
 
             $target.val( value )
             value
-
-    template = Handlebars.compile template
 
     ElbView = PropertyView.extend {
 
@@ -65,6 +63,10 @@ define [ '../base/view',
             'click #sslcert-select .item' : 'changeSSLCert'
             'click #sslcert-select .item .icon-edit' : 'elbSSLCertEdit'
             'click #sslcert-select .item .icon-remove' : 'elbSSLCertRemove'
+            'click #elb-connection-draining-select' : 'elbConnectionDrainSelectChange'
+            'change #elb-connection-draining-input' : 'elbConnectionDrainTimeoutChange'
+
+            'click #elb-advanced-proxy-protocol-select' : 'elbAdvancedProxyProtocolSelectChange'
 
         render     : () ->
 
@@ -487,11 +489,19 @@ define [ '../base/view',
             $certEditItem = $(event.currentTarget)
             $certItem = $certEditItem.parents('.item')
             certUID = $certItem.attr('data-id')
+            certModel = Design.instance().component(certUID)
 
-            if certUID
-                that.model.removeCert(certUID)
-                ide_event.trigger ide_event.REFRESH_PROPERTY
-                return false
+            if certModel
+
+                certName = certModel.get('name')
+                modal MC.template.modalDeleteELBCert {cert_name: certName}, true
+
+                $("#modal-confirm-elb-cert-delete").one 'click', ()->
+                    that.model.removeCert(certUID)
+                    ide_event.trigger ide_event.REFRESH_PROPERTY
+                    modal.close()
+            
+            return false
 
         changeSSLCert : (event) ->
 
@@ -560,6 +570,58 @@ define [ '../base/view',
 
                 null
             )
+
+        elbConnectionDrainSelectChange : (event) ->
+
+            that = this
+            $selectbox = that.$('#elb-connection-draining-select')
+            $inputGroup = that.$('.elb-connection-draining-input-group')
+            $timeoutInput = that.$('#elb-connection-draining-input')
+            selectValue = $selectbox.prop('checked')
+            if selectValue
+                $inputGroup.removeClass('hide')
+            else
+                $inputGroup.addClass('hide')
+
+            timeoutValue = Number($timeoutInput.val())
+            if selectValue and timeoutValue
+                that.model.setConnectionDraining(true, timeoutValue)
+            if not selectValue
+                that.model.setConnectionDraining(false)
+
+        elbConnectionDrainTimeoutChange : (event) ->
+
+            that = this
+            $timeoutInput = that.$('#elb-connection-draining-input')
+            $selectbox = that.$('#elb-connection-draining-select')
+            selectValue = $selectbox.prop('checked')
+
+            timeoutValue = Number($timeoutInput.val())
+
+            $timeoutInput.parsley 'custom', (val) ->
+                inputValue = Number($timeoutInput.val())
+                if not (inputValue >= 1 and inputValue < 3600)
+                    return lang.ide.PROP_ELB_CONNECTION_DRAIN_TIMEOUT_INVALID
+                null
+
+            if not $timeoutInput.parsley 'validate'
+                return
+
+            if selectValue and timeoutValue
+                that.model.setConnectionDraining(true, timeoutValue)
+
+        elbAdvancedProxyProtocolSelectChange : (event) ->
+
+            that = this
+            $selectbox = that.$('#elb-advanced-proxy-protocol-select')
+            $tipBox = $('#elb-advanced-proxy-protocol-select-tip')
+            selectValue = $selectbox.prop('checked')
+            if selectValue
+                $tipBox.removeClass('hide')
+            else
+                $tipBox.addClass('hide')
+
+            that.model.setAdvancedProxyProtocol(selectValue, [80])
 
     }
 

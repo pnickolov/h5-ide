@@ -72,7 +72,8 @@ define [ 'event',
             ide_event.onLongListen ide_event.SWITCH_TAB, () ->
                 #temp
                 setTimeout () ->
-                    console.log 'SWITCH_TAB header id:' + MC.common.other.canvasData.get 'id'
+                    #console.log 'SWITCH_TAB header id:' + MC.common.other.canvasData.get 'id'
+                    console.log 'SWITCH_TAB header id:' + MC.data.current_tab_id
                     model.setFlag(false)
                     view.updateNotification()
                 , 500

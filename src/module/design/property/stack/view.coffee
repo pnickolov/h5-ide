@@ -3,16 +3,12 @@
 #############################
 
 define [ '../base/view',
-         'text!./template/stack.html',
-         'text!./template/acl.html',
-         'text!./template/sub.html',
+         './template/stack',
+         './template/acl',
+         './template/sub',
          'event',
          'i18n!nls/lang.js'
 ], ( PropertyView, template, acl_template, sub_template, ide_event, lang ) ->
-
-    template     = Handlebars.compile template
-    acl_template = Handlebars.compile acl_template
-    sub_template = Handlebars.compile sub_template
 
     StackView = PropertyView.extend {
         events   :

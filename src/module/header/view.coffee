@@ -3,18 +3,16 @@
 #############################
 
 define [ 'event',
-         'text!./module/header/template/header.html',
-         'text!./module/header/template/notifyitem.html',
+         './module/header/template/header',
+         './module/header/template/notifyitem',
          'backbone', 'jquery', 'handlebars'
 ], ( ide_event, tmpl, notifyitemTmpl ) ->
-
-    notifyitemTmpl = Handlebars.compile notifyitemTmpl
 
     HeaderView = Backbone.View.extend {
 
         el       : '#header'
 
-        template : Handlebars.compile tmpl
+        template : tmpl
 
         events   :
             'click #btn-logout'                     : 'clickLogout'

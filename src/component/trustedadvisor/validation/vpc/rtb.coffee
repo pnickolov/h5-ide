@@ -1,4 +1,4 @@
-define [ 'constant', 'MC', 'validation_helper', 'Design' ], ( CONST, MC, Helper, Design ) ->
+define [ 'constant', 'MC', '../../helper', 'Design' ], ( CONST, MC, Helper, Design ) ->
 
 	i18n = Helper.i18n.short()
 
@@ -22,7 +22,37 @@ define [ 'constant', 'MC', 'validation_helper', 'Design' ], ( CONST, MC, Helper,
 
 		null
 
+	isRtbHaveConflictDestination = ( uid ) ->
 
+		rtb = MC.canvas_data.component[uid]
+		routeSet = rtb.resource.RouteSet
+		rtbName = rtb.name
 
+		routeDesAry = []
+		notices = []
+
+		_.each routeSet, (route) ->
+
+			currentRouteDes = route.DestinationCidrBlock
+
+			_.each routeDesAry, (routeDes) ->
+
+				SubnetModel = Design.modelClassForType( CONST.AWS_RESOURCE_TYPE.AWS_VPC_Subnet )
+
+				if SubnetModel.isCidrConflict(currentRouteDes, routeDes)
+
+					tipInfo = sprintf i18n.TA_MSG_ERROR_RT_HAVE_CONFLICT_DESTINATION, rtbName
+					notices.push({
+						level: CONST.TA.ERROR
+						info: tipInfo
+						uid: uid
+					})
+
+			routeDesAry.push(currentRouteDes)
+
+		return notices if notices.length
+
+		null
 
 	isRtbConnectedNatAndItConnectedSubnet : isRtbConnectedNatAndItConnectedSubnet
+	isRtbHaveConflictDestination : isRtbHaveConflictDestination

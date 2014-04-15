@@ -3,9 +3,9 @@
 #############################
 
 define [ 'event',
-         'text!./module/reset/template.html', 'text!./module/reset/email.html',
-         'text!./module/reset/password.html', 'text!./module/reset/loading.html',
-         'text!./module/reset/expire.html',   'text!./module/reset/success.html',
+         './template', './email',
+         './password', './loading',
+         './expire',   './success',
          'i18n!nls/lang.js',
          'backbone', 'jquery', 'handlebars' ], ( ide_event, tmpl, email_tmpl, password_tmpl, loading_tmpl, expire_tmpl, success_tmpl, lang ) ->
 
@@ -13,12 +13,12 @@ define [ 'event',
 
         el       :  '#main-body'
 
-        template      : Handlebars.compile tmpl
-        email_tmpl    : Handlebars.compile email_tmpl
-        password_tmpl : Handlebars.compile password_tmpl
-        loading_tmpl  : Handlebars.compile loading_tmpl
-        expire_tmpl   : Handlebars.compile expire_tmpl
-        success_tmpl  : Handlebars.compile success_tmpl
+        template      : tmpl
+        email_tmpl    : email_tmpl
+        password_tmpl : password_tmpl
+        loading_tmpl  : loading_tmpl
+        expire_tmpl   : expire_tmpl
+        success_tmpl  : success_tmpl
 
         is_submit     : false
 

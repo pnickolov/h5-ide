@@ -87,12 +87,16 @@ define [ 'constant', "Design", './SGRulePopupView', "backbone" ], ( constant, De
       null
   }
 
-  SGRulePopup = ( line_id )->
-    cnn = Design.instance().component( line_id )
+  SGRulePopup = ( line_id, port2Comp )->
+    if port2Comp
+      port1Comp  = line_id
+      line_id = ""
+    else
+      cnn = Design.instance().component( line_id )
+      port1Comp = cnn.port1Comp()
+      port2Comp = cnn.port2Comp()
 
-    model = new SGRulePopupModel({ port1 : cnn.port1Comp(), port2 : cnn.port2Comp(), lineId : line_id })
-    view  = new View()
-    view.model = model
-    view.render()
+    model = new SGRulePopupModel({ port1 : port1Comp, port2 : port2Comp, lineId : line_id })
+    (new View({model:model})).render()
 
   SGRulePopup

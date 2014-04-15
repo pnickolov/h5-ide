@@ -2,7 +2,7 @@
 #  Controller for design module
 ####################################
 
-define [ 'i18n!nls/lang.js', 'constant', 'stateeditor', 'Design', './module/design/framework/DesignBundle' ], ( lang, constant, stateeditor, Design ) ->
+define [ 'i18n!nls/lang.js', 'constant', 'component/stateeditor/stateeditor', './module/design/framework/DesignBundle' ], ( lang, constant, stateeditor, Design ) ->
 
     #private
     loadModule = () ->
@@ -68,6 +68,11 @@ define [ 'i18n!nls/lang.js', 'constant', 'stateeditor', 'Design', './module/desi
             ide_event.onLongListen ide_event.DELETE_TAB_DATA, ( tab_id ) ->
                 console.log 'DELETE_TAB_DATA, tab_id = ' + tab_id
                 model.deleteTab tab_id
+                null
+
+            # UPDATE_TAB_DATA
+            ide_event.onLongListen ide_event.UPDATE_TAB_DATA, ( new_tab_id, old_tab_id ) ->
+                model.updateTab new_tab_id, old_tab_id
                 null
 
             # SWITCH_TAB

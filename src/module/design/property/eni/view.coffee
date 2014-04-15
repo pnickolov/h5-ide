@@ -3,15 +3,12 @@
 #############################
 
 define [ '../base/view',
-         'text!./template/stack.html',
-         'text!./template/eni_list.html',
+         './template/stack',
+         './template/eni_list',
          'i18n!nls/lang.js'
 ], ( PropertyView, template, list_template, lang ) ->
 
     noop = ()-> null
-
-    template = Handlebars.compile template
-    list_template = Handlebars.compile list_template
 
     ENIView = PropertyView.extend {
 

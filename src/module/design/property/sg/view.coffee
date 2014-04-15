@@ -3,14 +3,11 @@
 #############################
 
 define [ '../base/view',
-         'text!./template/stack.html',
-         'text!./template/app.html',
+         './template/stack',
+         './template/app',
          'constant',
          'i18n!nls/lang.js'
 ], ( PropertyView, template, app_template, constant, lang ) ->
-
-    template           = Handlebars.compile template
-    app_template       = Handlebars.compile app_template
 
     SgView = PropertyView.extend {
 
@@ -31,7 +28,8 @@ define [ '../base/view',
             @$el.html tpl @model.toJSON()
             @refreshSgruleList()
 
-            $('#property-second-title').html('<span class="sg-color sg-color-header" style="background-color:' + @model.get("color") + '" ></span>' + @model.get("name") )
+            @setTitle @model.get("name")
+            @prependTitle '<span class="sg-color" style="background-color:' + @model.get("color") + '" ></span>'
 
             @forceShow()
 
@@ -98,8 +96,15 @@ define [ '../base/view',
             name = target.val()
 
             if @checkResName( target, "SG" )
+                oldName = @model.get("name")
                 @model.setName name
-                @setTitle '<span class="sg-color sg-color-header" style="background-color:' + @model.get("color") + '" ></span>' + @model.get("name")
+
+                @setTitle @model.get("name")
+                @prependTitle '<span class="sg-color" style="background-color:' + @model.get("color") + '" ></span>'
+
+                $("#sg-rule-list").children().find(".rule-reference").each ()->
+                    if $(this).text() is oldName then $(this).html( title )
+                    return
             null
 
         setSGDescription : ( event ) ->
@@ -118,7 +123,7 @@ define [ '../base/view',
                 port      : li_dom.attr('data-port')
                 protocol  : li_dom.attr('data-protocol')
                 direction : li_dom.attr('data-direction')
-                relation  : li_dom.attr("data-relation")
+                relation  : li_dom.attr("data-relationid")
 
             li_dom.remove()
 

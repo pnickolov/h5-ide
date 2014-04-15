@@ -2,9 +2,7 @@
 #  View(UI logic) for design/property/instance(app)
 #############################
 
-define [ '../base/view', 'text!./template/app.html', 'i18n!nls/lang.js', 'instance_model' ], ( PropertyView, template, lang, instance_model )->
-
-    template = Handlebars.compile template
+define [ '../base/view', './template/app', 'i18n!nls/lang.js', 'instance_model' ], ( PropertyView, template, lang, instance_model )->
 
     InstanceAppView = PropertyView.extend {
         events   :
@@ -92,31 +90,6 @@ define [ '../base/view', 'text!./template/app.html', 'i18n!nls/lang.js', 'instan
             this.trigger "OPEN_AMI", $( event.target ).data("uid")
             false
 
-        changeIPAddBtnState : () ->
-
-            disabledBtn = false
-            instanceUID = @model.get 'id'
-
-            maxIPNum = MC.aws.eni.getENIMaxIPNum(instanceUID)
-            currentENIComp = MC.aws.eni.getInstanceDefaultENI(instanceUID)
-            if !currentENIComp
-                disabledBtn = true
-                return
-
-            currentIPNum = currentENIComp.resource.PrivateIpAddressSet.length
-            if maxIPNum is currentIPNum
-                disabledBtn = true
-
-            instanceType = Design.instance().component( instanceUID ).get 'instanceType'
-
-            if disabledBtn
-                tooltipStr = sprintf(lang.ide.PROP_MSG_WARN_ENI_IP_EXTEND, instanceType, maxIPNum)
-                $('#instance-ip-add').addClass('disabled').attr('data-tooltip', tooltipStr).data('tooltip', tooltipStr)
-            else
-                $('#instance-ip-add').removeClass('disabled').attr('data-tooltip', 'Add IP Address').data('tooltip', 'Add IP Address')
-
-            null
-
         openSysLogModal : () ->
 
             instanceId = @model.get('instanceId')
@@ -147,17 +120,13 @@ define [ '../base/view', 'text!./template/app.html', 'i18n!nls/lang.js', 'instan
                 logContent = MC.base64Decode(result.output)
                 $contentElem = $('#modal-instance-sys-log .instance-sys-log-content')
 
-                logContentTpl = Handlebars.compile('{{nl2br content}}')
-                logContentHTML = logContentTpl({
-                    content: logContent
-                })
-                $contentElem.html(logContentHTML)
+                $contentElem.html MC.template.convertBreaklines({content:logContent})
                 $contentElem.show()
 
             else
 
                 $('#modal-instance-sys-log .instance-sys-log-info').show()
-                
+
             modal.position()
 
     }

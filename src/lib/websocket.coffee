@@ -1,9 +1,9 @@
 
 #Author: Ken
 
-define ['Meteor', 'underscore'], ( Meteor, _ ) ->
+define ['Meteor', 'underscore', "MC"], ( Meteor, _ ) ->
 
-	host = MC.WS_URL
+	host = "#{MC.API_HOST}/ws/"
 
 	websocketInit = () ->
 
@@ -22,9 +22,10 @@ define ['Meteor', 'underscore'], ( Meteor, _ ) ->
 
 			Meteor.default_connection = Meteor.connect(host, true)
 
-			_.each ['subscribe', 'methods', 'call', 'apply', 'status', 'reconnect'], func = (name) ->
+			_.each ['subscribe', 'methods', 'call', 'apply', 'status', 'reconnect'], (name) ->
 
 				Meteor[name] = _.bind Meteor.default_connection[name], Meteor.default_connection
+				return
 
 
 
@@ -46,7 +47,7 @@ define ['Meteor', 'underscore'], ( Meteor, _ ) ->
 				'app'				:	new Meteor.Collection "app"
 
 				'status'			:	new Meteor.Collection "status"
-				
+
 				'imports'			:	new Meteor.Collection "imports"
 
 			}

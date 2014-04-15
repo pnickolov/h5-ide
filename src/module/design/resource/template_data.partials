@@ -1,0 +1,96 @@
+<!-- {{availability_zone_data}} -->
+{{#each availability_zone.item }}
+<li class="{{#if isUsed}}{{else}}tooltip{{/if}} resource-item {{#if isUsed}}resource-disabled{{/if}}" {{#if isUsed}}data-enable="false"{{/if}} data-tooltip='{{ i18n "RES_TIP_DRAG_AZ" }}' data-component-type="group" data-type="AWS.EC2.AvailabilityZone" data-option='{"name": "{{ zoneName }}"}'>
+	<div class="resource-icon resource-icon-az">
+		{{#if zoneShortName}}
+		<div class="resource-icon-az-label">{{zoneShortName}}</div>
+		{{/if}}
+	</div>
+	<div class="resource-label">{{ zoneName }}</div>
+</li>
+{{/each}}
+
+
+<!-- {{resoruce_snapshot_data}} -->
+{{#each resource_snapshot.item }}
+<li class="resource-item bubble"  data-bubble-template="bubbleSnapshotInfo" data-bubble-data='{"snapshotId":"{{ snapshotId }}","startTime":"{{startTime}}","status":"{{status}}","size":"{{volumeSize}}"}' data-component-type="node" data-type="AWS.EC2.EBS.Volume" data-option='{"volumeSize":{{ volumeSize }}, "snapshotId": "{{ snapshotId }}"}'>
+	<div class="resource-icon resource-icon-ebs-snapshot"><span class="ebs-size">{{volumeSize}} GB</span></div>
+	<div class="resource-label">{{ snapshotId }}</div>
+</li>
+{{/each}}
+
+<!-- {{quickstart_ami_data}} -->
+{{#each quickstart_ami}}
+<li class="resource-item bubble" data-bubble-template="bubbleAMIMongoInfo" data-bubble-data='{"id":"{{imageId}}","name":"{{ name }}","description":"{{description}}","architecture":"{{architecture}}","imageLocation":"{{imageLocation}}","isPublic":"{{isPublic}}","kernelId":"{{kernelId}}","rootDeviceName":"{{rootDeviceName}}","rootDeviceType":"{{rootDeviceType}}", "imageSize":"{{imageSize}}", "instance_type":"{{instance_type}}"}' data-component-type="node" data-type="AWS.EC2.Instance" data-option='{"imageId": "{{imageId}}", "cachedAmi" : { "osType": "{{osType}}", "architecture":"{{architecture}}", "rootDeviceType":"{{rootDeviceType}}" } }'>
+	<div class="resource-icon resource-icon-instance" >
+		<img src="assets/images/ide/ami/{{osType}}.{{architecture}}.{{rootDeviceType}}.png" width='39' height='27' />
+	</div>
+	<div class="resource-label instance-label">{{name}}</div>
+</li>
+{{/each}}
+
+<!-- {{my_ami_data}} -->
+{{#each my_ami }}
+<li class="resource-item bubble"  data-bubble-template="bubbleAMIInfo" data-bubble-data='{"id":"{{imageId}}","name":"{{name}}","description":"{{description}}","architecture":"{{architecture}}","imageLocation":"{{imageLocation}}","isPublic":"{{isPublic}}","kernelId":"{{kernelId}}","rootDeviceName":"{{rootDeviceName}}","rootDeviceType":"{{rootDeviceType}}"}' data-component-type="node" data-type="AWS.EC2.Instance" data-option='{"imageId": "{{imageId}}", "osType": "{{osType}}", "architecture":"{{architecture}}", "rootDeviceType":"{{rootDeviceType}}", "virtualizationType":"{{virtualizationType}}" }'>
+	<div class="resource-icon resource-icon-instance">
+		<img src="assets/images/ide/ami/{{osType}}.{{architecture}}.{{rootDeviceType}}.png" width='39' height='27' />
+	</div>
+	<div class="resource-label instance-label">{{name}}</div>
+</li>
+{{/each}}
+
+
+<!-- {{favorite_ami_data}} -->
+{{#each favorite_ami }}
+<li class="pos-r">
+	<div class="resource-item bubble {{#if delete}}deleted{{/if}}"  data-bubble-template="bubbleAMIInfo" data-bubble-data='{"id":"{{resource_info.imageId}}","name":"{{resource_info.name}}","description":"{{resource_info.description}}","architecture":"{{resource_info.architecture}}","imageLocation":"{{resource_info.imageLocation}}","isPublic":"{{resource_info.isPublic}}","kernelId":"{{resource_info.kernelId}}","rootDeviceName":"{{resource_info.rootDeviceName}}","rootDeviceType":"{{resource_info.rootDeviceType}}"}' data-component-type="node" data-type="AWS.EC2.Instance" data-option='{"imageId": "{{resource_info.imageId}}", "osType": "{{resource_info.osType}}", "architecture":"{{resource_info.architecture}}", "rootDeviceType":"{{resource_info.rootDeviceType}}", "virtualizationType":"{{resource_info.virtualizationType}}" }'>
+		<div class="resource-icon resource-icon-instance">
+			<img src="assets/images/ide/ami/{{resource_info.osType}}.{{resource_info.architecture}}.{{resource_info.rootDeviceType}}.png" width='39' height='27' />
+		</div>
+		<div class="resource-label instance-label" >{{resource_info.name}}</div>
+	</div>
+	<div class="btn-fav-ami {{#if delete}}deleted{{else}}faved{{/if}} tooltip" data-tooltip="{{#unless delete}}{{i18n 'RES_TIT_ADD_TO_FAVORITE'}}{{/unless}}" data-id="{{resource_id}}" data-amiVO="{{amiVO}}"></div>
+</li>
+{{/each}}
+
+
+<!-- {{community_ami_btn}} -->
+<div class="btn btn-primary" data-region-name="{{region}}" id="btn-browse-community-ami">{{ i18n "RES_BTN_BROWSE_COMMUNITY_AMI" }}</div>
+
+<!-- {{resource_vpc_select_list}} -->
+{{#if isntClassic}}
+	<div class="fixedaccordion-head">{{ i18n "RES_TIT_VPC" }}</div>
+	<div class="accordion-body scroll-wrap scrollbar-auto-hide">
+		<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+		<div class="item-wrap scroll-content">
+			<ul class="resource-list">
+				{{#if isntDefaultVPC}}
+				<li class="tooltip resource-item" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_SUBNET" }}' data-component-type="group" data-type="AWS.VPC.Subnet">
+					<div class="resource-icon resource-icon-subnet"></div>
+					<div class="resource-label">{{ i18n "RES_LBL_NEW_SUBNET" }}</div>
+				</li>
+				<li class="tooltip resource-item" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_RTB" }}' data-component-type="node" data-type="AWS.VPC.RouteTable">
+					<div class="resource-icon resource-icon-rt"></div>
+					<div class="resource-label">{{ i18n "RES_LBL_NEW_RTB" }}</div>
+				</li>
+				<li class="tooltip resource-item {{#if igwIsUsed}}resource-disabled{{/if}}" {{#if igwIsUsed}}data-enable="false"{{/if}}data-tooltip='{{#if igwIsUsed}} {{ i18n "RES_TIP_DRAG_HAS_IGW" }} {{else}} {{ i18n "RES_TIP_DRAG_NEW_IGW" }} {{/if}}' data-component-type="node" data-type="AWS.VPC.InternetGateway" data-option='{"name":"Internet-gateway"}'>
+					<div class="resource-icon resource-icon-igw"></div>
+					<div class="resource-label">{{ i18n "RES_LBL_NEW_IGW" }}</div>
+				</li>
+				<li class="tooltip resource-item {{#if vgwIsUsed}}resource-disabled{{/if}}" {{#if vgwIsUsed}}data-enable="false"{{/if}} data-tooltip='{{#if vgwIsUsed}} {{ i18n "RES_TIP_DRAG_HAS_VGW" }} {{else}} {{ i18n "RES_TIP_DRAG_NEW_VGW" }} {{/if}}' data-component-type="node" data-type="AWS.VPC.VPNGateway" data-option='{"name":"VPN-gateway"}'>
+					<div class="resource-icon resource-icon-vgw"></div>
+					<div class="resource-label">{{ i18n "RES_LBL_NEW_VGW" }}</div>
+				</li>
+				<li class="tooltip resource-item" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_CGW" }}' data-component-type="node" data-type="AWS.VPC.CustomerGateway">
+					<div class="resource-icon resource-icon-cgw"></div>
+					<div class="resource-label">{{ i18n "RES_LBL_NEW_CGW" }}</div>
+				</li>
+				{{/if}}
+				<li class="tooltip resource-item" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_ENI" }}' data-component-type="node" data-type="AWS.VPC.NetworkInterface">
+					<div class="resource-icon resource-icon-eni"></div>
+					<div class="resource-label">{{ i18n "RES_LBL_NEW_ENI" }}</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+{{/if}}

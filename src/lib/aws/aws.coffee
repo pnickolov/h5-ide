@@ -1,118 +1,5 @@
 define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _, $, Design ) ->
 
-    #private
-    getNewName = (compType) ->
-
-        new_name    = ""
-        name_prefix = ""
-        name_list   = []
-
-        switch compType
-
-            when constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
-                name_prefix = "host"
-
-            when constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair
-                name_prefix = "kp"
-
-            when constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup
-                name_prefix = "custom-sg-"
-
-            when constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP
-                name_prefix = "eip"
-
-            when constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume
-                name_prefix = "vol"
-
-            when constant.AWS_RESOURCE_TYPE.AWS_ELB
-                name_prefix = "load-balancer-"
-
-            when constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC
-                name_prefix = "vpc"
-
-            when constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
-                name_prefix = "subnet"
-
-            when constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
-                name_prefix = "RT-"
-
-            when constant.AWS_RESOURCE_TYPE.AWS_VPC_CustomerGateway
-                name_prefix = "customer-gateway-"
-
-            when constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
-                name_prefix = "eni"
-
-            when constant.AWS_RESOURCE_TYPE.AWS_VPC_DhcpOptions
-                name_prefix = "dhcp"
-
-            when constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNConnection
-                name_prefix = "vpn"
-
-            when constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl
-                name_prefix = "acl"
-
-            when constant.AWS_RESOURCE_TYPE.AWS_IAM_ServerCertificate
-                name_prefix = "iam"
-
-            when constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway
-                name_prefix = "Internet-gateway"
-
-            when constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway
-                name_prefix = "VPN-gateway"
-
-            #ASG
-            when constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
-                name_prefix = "asg"
-
-            when constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
-                name_prefix = "launch-config-"
-
-            when constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_NotificationConfiguration
-                name_prefix = "asl-nc"
-
-            when constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_ScalingPolicy
-                name_prefix = "asl-sp-"
-
-            when constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_ScheduledActions
-                name_prefix = "asl-sa-"
-
-            when constant.AWS_RESOURCE_TYPE.AWS_CloudWatch_CloudWatch
-                name_prefix = "clw-"
-
-            when constant.AWS_RESOURCE_TYPE.AWS_SNS_Subscription
-                name_prefix = "sns-sub"
-
-            when constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic
-                name_prefix = "sns-topic"
-
-
-        #get exist name
-        _.each MC.canvas_data.component, (compObj) ->
-
-            if compObj.type is compType
-
-                if compObj.serverGroupName
-                    name_list.push compObj.serverGroupName
-                else
-                    name_list.push compObj.name
-
-            null
-
-
-        #find name
-        idx = 1
-        while idx <= name_list.length
-
-            if $.inArray( (name_prefix + idx), name_list ) == -1
-                #not in name_list
-                break
-
-            idx++
-
-        #return new name
-        name_prefix + idx
-
-
     cacheResource = (resources, region, need_reset) ->
 
         #cache aws resource data to MC.data.reosurce_list
@@ -151,11 +38,27 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
                     MC.data.resource_list[region][res.publicIp] = res
                     null
 
+            # merge elb cache
+            elbResMap = {}
+
             #elb
             if resources.DescribeLoadBalancers
                 _.map resources.DescribeLoadBalancers, ( res, i ) ->
-                    MC.data.resource_list[region][res.DNSName] = res
+                    if not elbResMap[res.LoadBalancerName]
+                        elbResMap[res.LoadBalancerName] = {}
+                    elbResMap[res.LoadBalancerName] = _.extend(elbResMap[res.LoadBalancerName], res)
                     null
+
+            #elb attributes (disable these code because it's already embed in ELB)
+            if resources.DescribeLoadBalancerAttributes
+                _.map resources.DescribeLoadBalancerAttributes, ( res, i ) ->
+                    if not elbResMap[res.LoadBalancerName]
+                        elbResMap[res.LoadBalancerName] = {}
+                    elbResMap[res.LoadBalancerName] = _.extend(elbResMap[res.LoadBalancerName], res)
+                    null
+
+            _.map elbResMap, (res) ->
+                MC.data.resource_list[region][res.DNSName] = res
 
             #vpn
             if resources.DescribeVpnConnections
@@ -385,193 +288,35 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
 
     getDuplicateName = (stack_name) ->
 
-        copy_name   = stack_name + "-copy-"
+        if not stack_name
+            stack_name = "untitled"
+
+        idx = 0
+        reg_name = /.*-\d+$/
+        if reg_name.test stack_name
+            #xxx-n
+            prefix = stack_name.substr(0,stack_name.lastIndexOf("-"))
+            idx = Number(stack_name.substr(stack_name.lastIndexOf("-") + 1))
+            copy_name = prefix
+        else
+            if stack_name.charAt(name.length-1) is "-"
+                #xxxx-
+                copy_name = stack_name.substr(0,stack_name.length-1)
+            else
+                copy_name = stack_name
+
         name_list   = []
         stacks      = _.flatten _.values MC.data.stack_list
 
         name_list.push i.name for i in stacks when i.name.indexOf(copy_name) == 0
 
-        idx = 1
+        idx++
         while idx <= name_list.length
-            if $.inArray( (copy_name + idx), name_list ) == -1
+            if $.inArray( (copy_name + "-" + idx), name_list ) == -1
                 break
             idx++
 
-        copy_name + idx
-
-    getCost = (data) ->
-        me = this
-
-        cost_list = []
-        total_fee = 0
-
-        region = data.region
-        feeMap = MC.data.config[region]
-
-        is_app = if data.id.indexOf('app-') == 0 then true else false
-
-        #no config data load
-        if not ( feeMap and 'price' of feeMap )
-            return { 'cost_list' : cost_list, 'total_fee' : total_fee }
-
-        currency = if 'currency' of feeMap.price then feeMap.price.currency else 'USD'
-
-        for uid of data.component
-            item = data.component[uid]
-            name = item.name
-            type = item.type
-
-            # instance
-            if item.type is 'AWS.EC2.Instance'
-                size = item.resource.InstanceType
-                number = if item.number then item.number else 1
-
-                # osType and osFamily
-                osType = osFamily = ''
-                try
-                    osType = data.layout.component.node[item.uid].osType
-                    osFamily = data.layout.component.node[item.uid].osFamily
-                    # get osFamily from cached data
-                    if not osFamily
-                        imgId = data.component[item.uid].resource.ImageId
-                        if 'osFamily' of MC.data.dict_ami[imgId]
-                            osFamily = MC.data.dict_ami[imgId].osFamily
-                catch e
-                    continue
-
-                if not osType or not osFamily
-                    osType = 'linux-other'
-                    osFamily = 'linux'
-
-                if size and osFamily and 'instance' of feeMap.price
-                    size_list = size.split('.')
-                    unit = feeMap.price['instance']['unit']
-                    fee = feeMap.price['instance'][size_list[0]][size_list[1]]['onDemand'][osFamily][currency]
-
-                    if fee and unit
-                        cost_list.push { 'resource' : name, 'size' : size, 'fee' : fee , 'unit' : (if unit is 'perhr' then '/hr' else '/mo'), 'count' : number }
-
-                        # detail monitor
-                        if item.resource.Monitoring is 'enabled'
-                            cw_fee = i.ec2Monitoring[currency] for i in feeMap.price.cloudwatch.types when 'ec2Monitoring' of i
-                            cost_list.push { 'resource' : name, 'type' : 'CloudWatch', 'fee' : cw_fee, 'unit' : '/mo', 'count' : 1 }
-
-                #attached volume
-                vols = item.resource.BlockDeviceMapping
-                if vols and 'price' of feeMap and 'ebs' of feeMap.price
-                    for vol_uid in vols
-                        volume = data.component[vol_uid.split('#')[1]]
-                        if volume.resource.VolumeType is 'standard'
-                            vol_lst = i.ebsVols for i in feeMap.price.ebs.types when 'ebsVols' of i
-                        else
-                            vol_lst = i.ebsPIOPSVols for i in feeMap.price.ebs.types when 'ebsPIOPSVols' of i
-
-                        vol_fee = i[currency] for i in vol_lst when i.unit is 'perGBmoProvStorage'
-
-                        cost_list.push { 'resource' : name + ' - ' + volume.name, 'size' :  volume.resource.Size + 'G', 'fee' : vol_fee, 'unit' : '/GB/mo', 'count' : parseInt(volume.resource.Size) }
-
-            # elb
-            else if item.type is 'AWS.ELB'
-                if 'elb' of feeMap.price and 'types' of feeMap.price.elb
-                    elb_fee = i[currency] for i in feeMap.price.elb.types when i.unit is 'perELBHour'
-
-                    cost_list.push { 'type' : type, 'resource' : name, 'fee' : elb_fee, 'unit' : '/hr', 'count' : 1 }
-
-            # asg
-            else if item.type is 'AWS.AutoScaling.Group'
-                cap = if item.resource.DesiredCapacity and is_app then item.resource.DesiredCapacity else item.resource.MinSize
-
-                config_uid = MC.extractID item.resource.LaunchConfigurationName
-                config = MC.canvas_data.component[config_uid]
-
-                if config
-
-                    asg_fee = 0
-                    size    = config.resource.InstanceType
-
-                    # osType and osFamily
-                    osType = osFamily = ''
-                    try
-                        osType = data.layout.component.node[config_uid].osType
-                        osFamily = data.layout.component.node[config_uid].osFamily
-                        # get osFamily from cached data
-                        if not osFamily
-                            imgId = data.component[config_uid].resource.ImageId
-                            if 'osFamily' of MC.data.dict_ami[imgId]
-                                osFamily = MC.data.dict_ami[imgId].osFamily
-                    catch e
-                        continue
-
-                    if not osType or not osFamily
-                        osType = 'linux-other'
-                        osFamily = 'linux'
-
-                    if size and osFamily and 'instance' of feeMap.price
-                        size_list = size.split('.')
-                        unit = feeMap.price['instance']['unit']
-                        fee = feeMap.price['instance'][size_list[0]][size_list[1]]['onDemand'][osFamily][currency]
-
-                        if not fee or not unit
-                            continue
-                        if unit is 'perhr'
-                            asg_fee += fee * 24 * 30 * cap
-                        else
-                            asg_fee += fee
-
-                    if config.resource.BlockDeviceMapping
-                        for block in config.resource.BlockDeviceMapping
-                            vol_lst = i.ebsVols for i in feeMap.price.ebs.types when 'ebsVols' of i
-                            vol_fee = i[currency] for i in vol_lst when i.unit is 'perGBmoProvStorage'
-                            asg_fee += block.Ebs.VolumeSize * vol_fee
-
-                    if asg_fee > 0
-                        cost_list.push {'resource' : name, 'size' : cap, 'fee' : asg_fee.toFixed(3), 'unit' : '/mo'}
-
-                    ## detail monitor
-                    # if config.resource.InstanceMonitoring is 'enabled'
-                    #     fee = 3.50
-                    #     cost_list.push { 'resource' : name, 'type' : 'Detailed Monitoring', 'fee' : fee, 'unit' : '/mo' }
-
-            # cloudwatch to asg
-            else if item.type is 'AWS.CloudWatch.CloudWatch'
-                period = parseInt(item.resource.Period, 10)
-                if period and period <= 300 and item.resource.Namespace == "AWS/AutoScaling"
-                    cw_fee =  i.ec2Monitoring[currency] for i in feeMap.price.cloudwatch.types when 'ec2Monitoring' of i
-                    # get capacity of the asg
-                    size = 1
-                    asg_uid = if item.resource.Dimensions.length>0 then item.resource.Dimensions[0].value
-                    if asg_uid
-                        asg = data.component[MC.extractID(asg_uid)]
-                        size = if asg.resource.DesiredCapacity and is_app then asg.resource.DesiredCapacity else asg.resource.MinSize
-                        cost_list.push {'resource' : name, 'type' : 'CloudWatch', 'count' : size, 'fee' : cw_fee/7, 'unit' : '/mo'}
-
-            null
-
-        # compute total fee
-        last_cost_list = []
-        for c in cost_list
-            fee = c.fee
-            size = if 'count' of c then c.count else c.size
-            unit = if c.unit and c.unit == '/hr' then 24*30 else 1
-
-            com_fee = fee * unit * size
-            # invalid check
-            if isNaN(com_fee)
-                continue
-
-            total_fee += com_fee
-            last_cost_list.push c
-
-        # sort with type
-        last_cost_list.sort (a, b) ->
-            if a.type > b.type
-                return 1
-            else if a.type < b.type
-                return -1
-            else
-                return if a.resource.toLowerCase() >= b.resource.toLowerCase() then 1 else -1
-
-        return { 'cost_list' : last_cost_list, 'total_fee' : total_fee.toFixed(2) }
+        copy_name + "-" + idx
 
     checkDefaultVPC = () ->
 
@@ -581,202 +326,6 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
             return accountData.default_vpc
         else
             return false
-
-    checkResource = ( uid ) ->
-        if uid
-            components =
-                uid : MC.canvas_data.component[uid]
-        else
-            components = MC.canva_data.component
-
-        res = {}
-        res_type = constant.AWS_RESOURCE_TYPE
-        data     = MC.data.resource_list[ MC.canvas_data.region ]
-        for c_uid, comp of components
-            r = true
-            switch comp.type
-                when res_type.AWS_VPC_NetworkAcl
-                    r = data[ comp.resource.NetworkAclId ]
-                when res_type.AWS_AutoScaling_Group
-                    r = data[ comp.resource.AutoScalingGroupARN ]
-                when res_type.AWS_VPC_CustomerGateway
-                    r = data[ comp.resource.CustomerGatewayId ]
-                when res_type.AWS_ELB
-                    r = data[ comp.resource.DNSName ]
-                when res_type.AWS_VPC_NetworkInterface
-                    r = data[ comp.resource.NetworkInterfaceId ]
-                when res_type.AWS_EC2_Instance
-                    r = data[ comp.resource.InstanceId ]
-                when res_type.AWS_AutoScaling_LaunchConfiguration
-                    r = data[ comp.resource.LaunchConfigurationARN ]
-                when res_type.AWS_VPC_RouteTable
-                    r = data[ comp.resource.RouteTableId ]
-                when res_type.AWS_VPC_Subnet
-                    r = data[ comp.resource.SubnetId ]
-                when res_type.AWS_EBS_Volume
-                    r = data[ comp.resource.VolumeId ]
-                when res_type.AWS_VPC_VPC
-                    r = data[ comp.resource.VpcId ]
-
-            res[ c_uid ] = if r then true else false
-
-        if uid then res[uid] else res
-    regionNameMap =
-        'us-west-1': [ 'US West', 'N. California' ]
-        'us-west-2': [ 'US West', 'Oregon' ]
-        'us-east-1': [ 'US East', 'Virginia' ]
-        'eu-west-1': [ 'EU West', 'Ireland' ]
-        'ap-southeast-1': [ 'Asia Pacific', 'Singapore' ]
-        'ap-southeast-2': [ 'Asia Pacific', 'Sydney' ]
-        'ap-northeast-1': [ 'Asia Pacific', 'Tokyo' ]
-        'sa-east-1': [ 'South America', 'Sao Paulo' ]
-
-    getRegionName = ( region, option ) ->
-        if region of regionNameMap
-            if option is 'fullname'
-                return "#{regionNameMap[ region ][ 0 ]} - #{regionNameMap[ region ][ 1 ]}"
-            regionNameMap[ region ][ 1 ]
-        else
-            null
-
-    isExistResourceInApp = ( compUID ) ->
-
-        compObj = MC.canvas_data.component[compUID]
-        if !compObj then return true
-
-        compType = compObj.type
-
-        compRes = compObj.resource
-
-        resourceId = null
-
-        switch compType
-
-            when constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
-                resourceId = compRes.InstanceId
-
-            when constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair
-                resourceId = compRes.KeyFingerprint
-
-            when constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup
-                resourceId = compRes.GroupId
-
-            when constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP
-                resourceId = compRes.PublicIp
-
-            when constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume
-                resourceId = compRes.VolumeId
-
-            when constant.AWS_RESOURCE_TYPE.AWS_ELB
-                resourceId = compRes.DNSName
-
-            when constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC
-                resourceId = compRes.VpcId
-
-            when constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
-                resourceId = compRes.SubnetId
-
-            when constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
-                resourceId = compRes.RouteTableId
-
-            when constant.AWS_RESOURCE_TYPE.AWS_VPC_CustomerGateway
-                resourceId = compRes.CustomerGatewayId
-
-            when constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
-                resourceId = compRes.NetworkInterfaceId
-
-            when constant.AWS_RESOURCE_TYPE.AWS_VPC_DhcpOptions
-                resourceId = compRes.DhcpOptionsId
-
-            when constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNConnection
-                resourceId = compRes.VpnConnectionId
-
-            when constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl
-                resourceId = compRes.NetworkAclId
-
-            when constant.AWS_RESOURCE_TYPE.AWS_IAM_ServerCertificate
-                resourceId = compRes.ServerCertificateMetadata.ServerCertificateId
-
-            when constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway
-                resourceId = compRes.InternetGatewayId
-
-            when constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway
-                resourceId = compRes.VpnGatewayId
-
-            # In stopped app, ASG doesn't have AWS Resource
-            # when constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
-                # resourceId = compRes.AutoScalingGroupARN
-
-            when constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
-                resourceId = compRes.LaunchConfigurationARN
-
-            when constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_NotificationConfiguration
-                resourceId = "asl-nc"
-
-            when constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_ScalingPolicy
-                resourceId = compRes.PolicyARN
-
-            when constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_ScheduledActions
-                resourceId = compRes.ScheduledActionARN
-
-            when constant.AWS_RESOURCE_TYPE.AWS_CloudWatch_CloudWatch
-                resourceId = compRes.AlarmArn
-
-            when constant.AWS_RESOURCE_TYPE.AWS_SNS_Subscription
-                resourceId = "sns-sub"
-
-            when constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic
-                resourceId = compRes.TopicArn
-
-        region = MC.canvas_data.region
-
-        if !resourceId or (resourceId and MC.data.resource_list[region][resourceId])
-            return true
-        else
-            return false
-
-    getChanges = (data, ori_data) ->
-        me = this
-
-        changes = {'remain':[], 'remove':[]}
-
-        # first check change
-        new_str = JSON.stringify(data)
-        ori_str = JSON.stringify(ori_data)
-        if new_str != ori_str
-            isChanged = true
-
-            for uid of ori_data.component
-                item = ori_data.component[uid]
-                if item.index != 0
-                    continue
-
-                # only instance
-                if item.type is 'AWS.EC2.Instance'
-                    if uid of data.component    # remain
-                        n_item = data.component[uid]
-                        if item.number > 1
-                            index = 0
-                            for inst_uid in ori_data.layout.component.node[uid].instanceList
-                                index = index + 1
-                                if item.resource.InstanceType isnt n_item.resource.InstanceType and index <= n_item.number
-                                    changes['remain'].push {'name':ori_data.component[inst_uid].name, 'instance_id':ori_data.component[inst_uid].resource.InstanceId}
-
-                                if index > n_item.number
-                                    changes['remove'].push {'name':ori_data.component[inst_uid].name, 'instance_id':ori_data.component[inst_uid].resource.InstanceId}
-
-                        else
-                            if item.resource.InstanceType isnt n_item.resource.InstanceType
-                                changes['remain'].push {'name':ori_data.component[uid].name, 'instance_id':ori_data.component[uid].resource.InstanceId}
-
-                    else
-                        if item.number > 1
-                            for inst_uid in ori_data.layout.component.node[uid].instanceList
-                                changes['remove'].push {'name':ori_data.component[inst_uid].name, 'instance_id':ori_data.component[inst_uid].resource.InstanceId}
-                        else
-                            changes['remove'].push {'name':item.name, 'instance_id':item.resource.InstanceId}
-
-        {'isChanged':isChanged, 'changes':changes}
 
     getOSFamily = (osType, ami) ->
         me = this
@@ -805,29 +354,6 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
                     console.info error
 
         osFamily
-
-    reference_key = [
-
-        'InstanceId',
-        'VolumeId',
-        'NetworkInterfaceId',
-        'DhcpOptionsId',
-        'VpcId',
-        'SubnetId',
-        'GroupId',
-        'DNSName',
-        'NetworkAclId',
-        'RouteTableId',
-        'KeyName',
-        'AutoScalingGroupARN',
-        'AutoScalingGroupName',
-        'LaunchConfigurationARN',
-        'LaunchConfigurationName',
-        'CustomerGatewayId',
-        'VpnGatewayId',
-        'InternetGatewayId',
-        'PolicyARN'
-    ]
 
     collectReference = ( canvas_component ) ->
 
@@ -958,22 +484,6 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
 
         return "@{#{uid}.#{attrName}}"
 
-    getDefaultStackAgentData = () ->
-
-        cookieData = $.cookie()
-
-        enableValue = false
-        repoValue = cookieData.mod_repo
-        tagValue = cookieData.mod_tag
-
-        return {
-            'enabled': enableValue,
-            'module': {
-                'repo': repoValue,
-                'tag': tagValue
-            }
-        }
-
     enableStackAgent = (isEnable) ->
 
         agentData = Design.instance().get('agent')
@@ -1042,10 +552,16 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
             currentIsASG = true
 
         currentIsISG = false
+        currentIsInstance = false
+        currentInstanceName = null
         currentISGName = null
-        if currentCompData.number and currentCompData.number > 1
-            currentIsISG = true
-            currentISGName = currentCompData.serverGroupName
+        if currentCompData.number
+            if currentCompData.number > 1
+                currentIsISG = true
+                currentISGName = currentCompData.serverGroupName
+            else
+                currentIsInstance = true
+                currentInstanceName = currentCompData.serverGroupName
 
         allCompData = allCompData or @get('allCompData')
 
@@ -1081,11 +597,6 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
 
             if compType is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
                 return
-                # if compData.serverGroupUid isnt compUID
-                #   return
-                # else
-                #   if compData.serverGroupName
-                #       compName = compData.serverGroupName
 
             # replace instance default eni name to instance name
             if compType is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
@@ -1194,9 +705,20 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
 
         # append asg/isg ref
         groupAutoCompList = []
-        if currentIsASG or currentIsISG
-            _.each autoCompList, (autoCompObj) ->
-                if autoCompObj.name.indexOf('self.') is 0
+        instanceAutoCompList = []
+        _.each autoCompList, (autoCompObj) ->
+            if autoCompObj.name.indexOf('self.') is 0
+
+                if currentIsInstance
+                    instanceCompNameStr = autoCompObj.name.replace('self', currentInstanceName)
+                    instanceCompUIDStr = autoCompObj.value.replace('self', currentInstanceName)
+                    instanceAutoCompList.push({
+                        name: instanceCompNameStr,
+                        value: instanceCompUIDStr,
+                        uid: autoCompObj.uid
+                    })
+
+                if currentIsASG or currentIsISG
                     groupCompNameStr = null
                     groupCompUIDStr = null
                     if currentIsASG
@@ -1212,6 +734,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
                     })
 
         autoCompList = autoCompList.concat(groupAutoCompList)
+        autoCompList = autoCompList.concat(instanceAutoCompList)
 
         resAttrDataAry = _.map autoCompList, (autoCompObj) ->
 
@@ -1333,22 +856,15 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
 
     #public
     collectReference            : collectReference
-    getNewName                  : getNewName
     cacheResource               : cacheResource
     checkIsRepeatName           : checkIsRepeatName
     checkStackName              : checkStackName
     checkAppName                : checkAppName
     getDuplicateName            : getDuplicateName
-    getCost                     : getCost
     checkDefaultVPC             : checkDefaultVPC
-    checkResource               : checkResource
-    getRegionName               : getRegionName
-    isExistResourceInApp        : isExistResourceInApp
-    getChanges                  : getChanges
     getOSFamily                 : getOSFamily
     genResRef                   : genResRef
     enableStackAgent            : enableStackAgent
-    getDefaultStackAgentData    : getDefaultStackAgentData
     getCompByResIdForState      : getCompByResIdForState
     genAttrRefList              : genAttrRefList
     isValidInIPRange            : isValidInIPRange

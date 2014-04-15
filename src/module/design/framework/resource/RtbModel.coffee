@@ -80,7 +80,7 @@ define [ "../ComplexResModel", "Design", "../connection/Route", "../connection/R
           AssociationSet    : []
           RouteSet          : [{
             Origin               : "CreateRouteTable"
-            DestinationCidrBlock : "10.0.0.0/16"
+            DestinationCidrBlock : @parent().get("cidr")
             InstanceId           : ""
             NetworkInterfaceId   : ""
             GatewayId            : "local"

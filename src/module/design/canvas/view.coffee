@@ -2,12 +2,12 @@
 #  View(UI logic) for design/canvas
 #############################
 
-define [ 'text!./template.html', "event", "constant", "canvas_layout", 'MC.canvas', 'backbone', 'jquery' ], ( template, ide_event, constant, canvas_layout ) ->
+define [ './template', "event", "constant", "canvas_layout", 'MC.canvas', 'backbone', 'jquery' ], ( template, ide_event, constant, canvas_layout ) ->
 
     CanvasView = Backbone.View.extend {
 
         initialize : ->
-            this.template = Handlebars.compile( template )()
+            this.template = template()
 
             #listen
             this.listenTo ide_event, 'SWITCH_TAB', ()->

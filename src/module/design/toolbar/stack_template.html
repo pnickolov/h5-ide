@@ -1,6 +1,6 @@
-<button class="btn-toolbar icon-play tooltip modal toolbar-btn-primary" id="toolbar-run" data-tooltip='{{ i18n "TOOL_TIP_BTN_RUN_STACK" }}' data-modal-template="modalRunStack" data-modal-data='{"title":"{{{ i18n "TOOL_POP_TIT_RUN_STACK" }}}", "name":"{{item_flags.name}}"}' data-modal-dismiss="false">{{ i18n "TOOL_BTN_RUN_STACK" }}</button>
+<button class="btn-toolbar icon-play tooltip modal toolbar-btn-primary {{#unless item_flags.is_enable}}disabled{{/unless}}" id="toolbar-run" data-tooltip='{{ i18n "TOOL_TIP_BTN_RUN_STACK" }}' data-modal-template="modalRunStack" data-modal-data='{"title":"{{{ i18n "TOOL_POP_TIT_RUN_STACK" }}}", "name":"{{item_flags.name}}"}' data-modal-dismiss="false">{{ i18n "TOOL_BTN_RUN_STACK" }}</button>
 
-<button class="btn-toolbar tooltip icon-save" data-tooltip='{{ i18n "TOOL_TIP_SAVE_STACK" }}'></button>
+<button class="btn-toolbar tooltip icon-save {{#unless item_flags.is_enable}}disabled{{/unless}}" data-tooltip='{{ i18n "TOOL_TIP_SAVE_STACK" }}'></button>
 
 {{#if item_flags.is_delete}}
 <button class="btn-toolbar modal icon-delete tooltip seperator" id="toolbar-delete" data-modal-template="modalApp" data-modal-data='{"title":"{{{ i18n "TOOL_POP_TIT_DELETE_STACK" }}}", "body":"{{{ i18n "TOOL_POP_BODY_DELETE_STACK" }}} {{item_flags.name}}?", "confirm":"{{{ i18n "TOOL_POP_BTN_DELETE_STACK" }}}", "color":"red" }' data-modal-dismiss="true"  data-tooltip='{{ i18n "TOOL_TIP_DELETE_STACK" }}'></button>
@@ -46,11 +46,13 @@
 <a href="javascript:dd.view();" class="btn-toolbar tooltip icon-toolbar-cloudformation seperator" data-tooltip="{{i18n 'TOOL_TIP_JSON_VIEW'}}"></a>
 <!-- env:dev:end -->
 
+<!--
 <section class="toolbar-btn-group">
 	<a href="javascript:void(0);" id="apply-visops" style="display: none;">{{ i18n "TOOL_EXPERIMENT" }}</a>
 </section>
+-->
 
-<label class="switch toolbar-visual-ops-switch tooltip" data-tooltip="{{i18n 'TOOL_TIP_CUSTOM_USER_DATA'}}" style="display: none;">
+<label class="switch toolbar-visual-ops-switch tooltip" data-tooltip="{{i18n 'TOOL_TIP_CUSTOM_USER_DATA'}}">
   <span class="switch-label" data-on="{{i18n 'TOOL_TOGGLE_VISUALOPS_ON'}}" data-off="{{i18n 'TOOL_TOGGLE_VISUALOPS_OFF'}}"></span>
   <span class="switch-handle"></span>
 </label>

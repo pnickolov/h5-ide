@@ -43,7 +43,7 @@ module.exports =
       zh: "登录"
 
     "login-register":
-      en: "New to MadeiraCloud? "
+      en: "New to VisualOps? "
       zh: "注册新用户？ "
 
     "link-register":
@@ -83,8 +83,8 @@ module.exports =
       zh: "稍等..."
 
     "madeira-offered-in":
-      en: "&copy; MadeiraCloud offered in"
-      zh: "&copy; MadeiraCloud 还提供"
+      en: "&copy; VisualOps offered in"
+      zh: "&copy; VisualOps 还提供"
 
   register:
     register:
@@ -128,8 +128,8 @@ module.exports =
       zh: "注册成功"
 
     "account-instruction":
-      en: "Thanks for signing up with MadeiraCloud."
-      zh: "非常感谢您注册 MadeiraCloud。"
+      en: "Thanks for signing up with VisualOps."
+      zh: "非常感谢您注册 VisualOps。"
 
     "register-get-start":
       en: "Get Started"
@@ -205,8 +205,8 @@ module.exports =
       zh: "登录"
 
     "email-label":
-      en: "Provide the email address or username you registered with MadeiraCloud. An email with link to reset password will be sent to you soon."
-      zh: "请提供您在MadeiraCloud注册时的邮件地址或者用户名。包含重置链接的邮件马上将会发送给您。"
+      en: "Provide the email address or username you registered with VisualOps. An email with link to reset password will be sent to you soon."
+      zh: "请提供您在VisualOps注册时的邮件地址或者用户名。包含重置链接的邮件马上将会发送给您。"
 
     "account-label":
       en: "Username or Email Address"
@@ -229,8 +229,8 @@ module.exports =
       zh: "密码重置链接非法或者过期。"
 
     "reset-relogin":
-      en: "Log in MadeiraCloud"
-      zh: "登录MadeiraCloud"
+      en: "Log in VisualOps"
+      zh: "登录VisualOps"
 
     "reset-new-password":
       en: "New Password"
@@ -261,8 +261,8 @@ module.exports =
       zh: "发送密码重置请求邮件"
 
     reset_error_state:
-      en: "The username or email address is not registered with MadeiraCloud."
-      zh: "用户名或邮件地址还没有在MadeiraCloud注册过。"
+      en: "The username or email address is not registered with VisualOps."
+      zh: "用户名或邮件地址还没有在VisualOps注册过。"
 
   ide:
 
@@ -312,6 +312,22 @@ module.exports =
 
     PARSLEY_MINIMUM_SIZE_MUST_BE_LESSTHAN_MAXIMUM_SIZE:
       en: "Minimum Size must be <= Maximum Size."
+      zh: ""
+
+    PARSLEY_MAXIMUM_SIZE_MUST_BE_MORETHAN_MINIMUM_SIZE:
+      en: "Maximum Size must be >= Minimum Size."
+      zh: ""
+
+    PARSLEY_VALUE_MUST_BE_LESSTHAN_VAR:
+      en: "This value should be < %s"
+      zh: ""
+
+    PARSLEY_VALUE_MUST_BE_GREATERTHAN_VAR:
+      en: "This value should be > %s"
+      zh: ""
+
+    PARSLEY_VALUE_MUST_IN_ALLOW_SCOPE:
+      en: "This value should be >= %s and <= %s"
       zh: ""
 
     PARSLEY_DESIRED_CAPACITY_EQUAL_OR_GREATER_1:
@@ -472,6 +488,10 @@ module.exports =
 
     RES_TIT_REMOVE_FROM_FAVORITE:
       en: "Remove from Favorite"
+      zh: ""
+
+    RES_TIT_ADD_TO_FAVORITE:
+      en: "Add to Favorite"
       zh: ""
 
     RES_TIT_VPC:
@@ -703,7 +723,7 @@ module.exports =
       zh: "删除 %s"
 
     CVS_CFM_DEL_IGW:
-      en: "Internet-facing load balancer and public IP require an internet gateway to function."
+      en: "Internet-facing load balancer or public IP requires internet gateway to function."
       zh: "面向互联网的负载均衡器和公网IP需要一个互联网网关才能工作。"
 
     CVS_CFM_DEL_GROUP:
@@ -719,7 +739,7 @@ module.exports =
       zh: "必须要有一个互联网网关"
 
     CVS_CFM_ADD_IGW_MSG:
-      en: "Automatically add an internet gateway for using EIP"
+      en: "Automatically add an internet gateway for using Elastic IP or public IP"
       zh: "为设置EIP，自动添加了一个互联网网关"
 
     CVS_MSG_ERR_ZOOMED_DROP_ERROR:
@@ -991,7 +1011,7 @@ module.exports =
       zh: "销毁应用"
 
     TOOLBAR_HANDLE_EXPORT_CLOUDFORMATION:
-      en: "Export cloud formation template"
+      en: "Convert to CloudFormation template"
       zh: "导出云编排模板"
 
     TOOL_MSG_INFO_APP_REFRESH_FINISH:
@@ -1014,9 +1034,6 @@ module.exports =
       en: "If any of the instance(s) has been automatically assigned public IP, the IP will change after restart.",
       zh: "重启后，已分配公有IP地址的实例将会被重新分配。"
 
-    TOOL_MSG_INFO_NO_CHANGES:
-      en: "This app is't any change."
-      zh: "当前App没有任何改变。"
 
     TOOL_MSG_ERR_CONVERT_CLOUDFORMATION:
       en: "Convert to stack json to CloudFormation format error"
@@ -1036,6 +1053,14 @@ module.exports =
 
     TOOL_TIP_CUSTOM_USER_DATA:
       en: "Custom User Data will be overridden and disabled to allow installing OpsAgent. (Currently only support Linux platform)"
+      zh: ""
+
+    TOOL_TIP_NO_CLASSIC_DATA_STACK:
+      en: "We will drop support for EC2 Classic and Default VPC soon. We have disabled create new stack, run app or edit app in those platforms. You can export existing stacks as CloudFormation template or as a PNG file. Click to read detailed announcement."
+      zh: ""
+
+    TOOL_TIP_NO_CLASSIC_DATA_APP:
+      en: "We will drop support for EC2 Classic and Default VPC soon. We have disabled create new stack, run app or edit app in those platforms. You can still manage the lifecycle of existing apps.  Click to read detailed announcement."
       zh: ""
 
     TOOL_TIP_LINESTYLE:
@@ -1068,6 +1093,10 @@ module.exports =
 
     TOOL_TOGGLE_VISUALOPS_OFF:
       en: "instnace state off"
+      zh: ""
+
+    TOOL_LBL_NO_CLASSIC:
+      en: "Where are the missing buttons?"
       zh: ""
 
     TOOL_EDIT_APP:
@@ -1195,8 +1224,8 @@ module.exports =
       zh: "数据在一分钟内可用需要额外的话费。 获取价格信息，请去 "
 
     PROP_AGENT_USER_DATA_URL:
-      en: "https://github.com/MadeiraCloud/OpsAgent/blob/develop/scripts/userdata.sh"
-      zh: "https://github.com/MadeiraCloud/OpsAgent/blob/develop/scripts/userdata.sh"
+      en: "https://github.com/VisualOps/OpsAgent/blob/develop/scripts/userdata.sh"
+      zh: "https://github.com/VisualOps/OpsAgent/blob/develop/scripts/userdata.sh"
 
     PROP_INSTANCE_ENI_DETAIL:
       en: "Network Interface Details"
@@ -2459,6 +2488,10 @@ module.exports =
       en: "Cross-zone Load Balancing"
       zh: "Cross-zone Load Balancing"
 
+    PROP_ELB_CONNECTION_DRAIN:
+      en: "Connection Draining"
+      zh: ""
+
     PROP_ELB_ELB_PROTOCOL:
       en: "Load Balancer Protocol"
       zh: "负载均衡器协议"
@@ -2479,6 +2512,10 @@ module.exports =
       en: "Response timeout must be less than or equal to the health check interval value"
       zh: ""
 
+    PROP_ELB_CONNECTION_DRAIN_TIMEOUT_INVALID:
+      en: "Timeout must be an integer between 1 and 3600"
+      zh: ""
+
     PROP_ELB_TIP_CLICK_TO_SELECT_ALL:
       en: "Click to select all"
       zh: ""
@@ -2497,6 +2534,18 @@ module.exports =
 
     PROP_ELB_TIP_CLICK_TO_READ_RELATED_AWS_DOCUMENT:
       en: "Click to read related AWS document"
+      zh: ""
+
+    PROP_ELB_CERT_REMOVE_CONFIRM_TITLE:
+      en: "Confirm to Delete Server Certificate"
+      zh: ""
+
+    PROP_ELB_CERT_REMOVE_CONFIRM_MAIN:
+      en: "Do you confirm to delete "
+      zh: ""
+
+    PROP_ELB_CERT_REMOVE_CONFIRM_SUB:
+      en: "Load Balancer currently using this server certificate will have errors."
       zh: ""
 
     PROP_ASG_SUMMARY:
@@ -2919,6 +2968,14 @@ module.exports =
       en : "State(s) copied to clipboard"
       zh : ""
 
+    NOTIFY_MSG_INFO_STATE_PARSE_COMMAND_FAILED:
+      en : "The states are from a different version. Some module may be incompatible."
+      zh : ""
+
+    NOTIFY_MSG_INFO_STATE_PARSE_REFRENCE_FAILED:
+      en : "The states contains @references which cannot pass on. Validate to see details."
+      zh : ""
+
     NOTIFY_MSG_WARN_OPERATE_NOT_SUPPORT_YET:
       en : "This operation is not supported yet."
       zh : ""
@@ -3128,8 +3185,8 @@ module.exports =
       zh: "您可以使用试用证书进行模板设计，但有以下缺点："
 
     HEAD_INFO_WELCOME:
-      en: "Welcome to MadeiraCloud, %s."
-      zh: "欢迎来到MadeiraCloud, %s。"
+      en: "Welcome to VisualOps, %s."
+      zh: "欢迎来到VisualOps, %s。"
 
     HEAD_INFO_PROVIDE_CREDENTIAL2:
       en: "To start designing cloud architecture, please provide your AWS credentials:"
@@ -4042,7 +4099,7 @@ module.exports =
     ## State Editor Toolbar
 
     STATE_TOOL_ADD_STATE:
-      en: "+ Add State"
+      en: "Add State"
       zh: ""
 
     STATE_TOOL_COPY_ALL:
@@ -4102,7 +4159,7 @@ module.exports =
     ## State Editor Help
 
     STATE_HELP_INTRO_LBL:
-      en: "<p>Select or input a command to see a related help document here. Read detailed <a href='http://madeiracloud-document.readthedocs.org/en/latest/' target='_blank'>documentation</a>.</p>"
+      en: "<p>Select or input a command to see a related help document here. Read detailed <a href='http://visualops.readthedocs.org/' target='_blank'>documentation</a>.</p>"
       zh: ""
 
     ##### Request Invite to Experimental Feature
@@ -4548,6 +4605,10 @@ module.exports =
       en: "Network ACL <span class='validation-tag tag-acl'>%s</span> has no ALLOW rule. The subnet(s) associate(s) with it cannot have traffic in or out."
       zh: ""
 
+    TA_MSG_ERROR_RT_HAVE_CONFLICT_DESTINATION:
+      en:"Route Table <span class='validation-tag tag-rtb'>%s</span> has routes with conflicting CIDR blocks."
+      zh:""
+
     # AZ
     TA_MSG_WARNING_SINGLE_AZ:
       en: "Only 1 Availability Zone is used. Multiple Availability Zone can improve fault tolerance."
@@ -4569,7 +4630,7 @@ module.exports =
       en:"VPN Connection of <span class='validation-tag tag-cgw'>%s</span> and <span class='validation-tag tag-vgw'>%s</span> is missing IP prefix."
       zh:""
     TA_MSG_ERROR_VPN_NOT_PUBLIC_IP:
-      en:"VPN Connection <span class='validation-tag tag-vpn'>%s</span>'s IP prefix(%s) is invalid."
+      en:"VPN Connection <span class='validation-tag tag-vpn'>%s</span>'s IP prefix <span class='validation-tag tag-ip'>%s</span> is invalid."
       zh:""
 
     # Stack
@@ -4615,7 +4676,7 @@ module.exports =
       en: "<span class='validation-tag tag-instance'>%s</span> has configured states. To make sure OpsAgent to work, it should have outbound rules on <span class='validation-tag tag-port'>80</span> and <span class='validation-tag tag-port'>443</span> ports to the outside."
       zh: ""
     TA_MSG_WARNING_OUTBOUND_NOT_TO_ALL:
-      en: "<span class='validation-tag tag-instance'>%s</span> has configured states. Suggest to set its outbound rule on <span class='validation-tag tag-port'>80</span> and <span class='validation-tag tag-port'>443</span> to <span class='validation-tag tag-ip'>0.0.0.0/0</span>. Otherwise, agent may not be able to work properly, install packages or check out source codes lacking route to MadeiraCloud's monitoring systems or required repositories."
+      en: "<span class='validation-tag tag-instance'>%s</span> has configured states. Suggest to set its outbound rule on <span class='validation-tag tag-port'>80</span> and <span class='validation-tag tag-port'>443</span> to <span class='validation-tag tag-ip'>0.0.0.0/0</span>. Otherwise, agent may not be able to work properly, install packages or check out source codes lacking route to VisualOps's monitoring systems or required repositories."
       zh: ""
 
 

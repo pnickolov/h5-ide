@@ -31,6 +31,7 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
             @.set 'error_list',   error_list
             #
             MC.ta.state_list = { 'notice_list' : notice_list, 'warning_list' : warning_list, 'error_list' : error_list }
+            return
 
     }
 

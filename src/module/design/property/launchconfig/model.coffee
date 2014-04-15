@@ -105,6 +105,8 @@ define [ '../base/model', 'keypair_model', 'constant', 'Design' ], ( PropertyMod
 
     setPublicIp : ( value )->
       @lc.set "publicIp", value
+      if value
+        Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway ).tryCreateIgw()
 
     setInstanceType  : ( value ) ->
       @lc.setInstanceType( value )
@@ -130,7 +132,7 @@ define [ '../base/model', 'keypair_model', 'constant', 'Design' ], ( PropertyMod
       @set 'instance_ami', data
 
 
-      if ami.blockDeviceMapping
+      if ami and ami.blockDeviceMapping
         deivce = ami.blockDeviceMapping[ ami.rootDeviceName ]
         rootDevice =
           name : ami.rootDeviceName

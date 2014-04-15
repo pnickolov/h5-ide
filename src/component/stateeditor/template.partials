@@ -1,0 +1,268 @@
+<!-- {{stateListTpl}} -->
+{{#each state_list}}
+	<li class="state-item view {{#ifCond cmd_value '#'}}comment{{/ifCond}}" data-command="{{cmd_value}}" data-id="{{id}}">
+		<div class="state-toolbar">
+			<div class="state-action-wrap">
+				<div class="state-remove icon-del tooltip" data-tooltip="{{i18n 'STATE_TIP_DELETE_STATE'}}"></div>
+				<div class="state-check tooltip" data-tooltip="{{i18n 'STATE_TIP_SELECT_STATE'}}">
+					<div class="checkbox">
+						<input id="state-check-{{id}}" type="checkbox" name="state-check-{{id}}">
+						<label for="state-check-{{id}}"></label>
+					</div>
+				</div>
+			</div>
+			<i class="state-status-icon status status-yellow"></i>
+			<i class="state-drag"></i>
+			<div class="state-view">
+				<div class="command-view-value"></div>
+				<div class="parameter-view-list">
+					{{> paraViewListTpl}}
+				</div>
+			</div>
+		</div>
+		<div class="state-edit clearfix">
+			<div class="command-value editable-area line">{{cmd_value}}</div>
+			<div class="parameter-list">
+				{{> paraListTpl}}
+			</div>
+		</div>
+	</li>
+{{/each}}
+
+<!-- {{paraListTpl}} -->
+{{#each parameter_list}}
+
+	{{#if type_line}}
+		<div class="parameter-item line {{#if required}}required{{else}}optional{{/if}} {{#if para_disabled}}disabled{{/if}}" data-para-name="{{para_name}}">
+			<div class="parameter-name">
+				{{para_name}}
+			</div>
+			<div class="parameter-container">
+				<div class="parameter-value editable-area line">{{para_value}}</div>
+			</div>
+		</div>
+	{{/if}}
+
+	{{#if type_dict}}
+		<div class="parameter-item dict {{#if required}}required{{else}}optional{{/if}} {{#if para_disabled}}disabled{{/if}}" data-para-name="{{para_name}}">
+			<div class="parameter-name">
+				{{para_name}}
+			</div>
+			<div class="parameter-container">
+				{{> paraDictListTpl}}
+			</div>
+		</div>
+	{{/if}}
+
+	{{#if type_array}}
+		<div class="parameter-item array {{#if required}}required{{else}}optional{{/if}} {{#if para_disabled}}disabled{{/if}}" data-para-name="{{para_name}}">
+			<div class="parameter-name">
+				{{para_name}}
+			</div>
+			<div class="parameter-container">
+				{{> paraArrayListTpl}}
+			</div>
+		</div>
+	{{/if}}
+
+	{{#if type_bool}}
+		<div class="parameter-item bool {{#if required}}required{{else}}optional{{/if}} {{#if para_disabled}}disabled{{/if}}" data-para-name="{{para_name}}">
+			<div class="parameter-name">
+				{{para_name}}
+			</div>
+			<div class="parameter-container">
+				<div class="parameter-value editable-area line">{{para_value}}</div>
+			</div>
+		</div>
+	{{/if}}
+
+	{{#if type_text}}
+		<div class="parameter-item text {{#if required}}required{{else}}optional{{/if}} {{#if para_disabled}}disabled{{/if}}" data-para-name="{{para_name}}">
+			<div class="parameter-name">
+				{{para_name}}
+			</div>
+			<div class="parameter-container">
+				<div class="parameter-value editable-area text">{{para_value}}</div>
+			</div>
+		</div>
+	{{/if}}
+
+	{{#if type_state}}
+		<div class="parameter-item state {{#if required}}required{{else}}optional{{/if}} {{#if para_disabled}}disabled{{/if}}" data-para-name="{{para_name}}">
+			<div class="parameter-name">
+				{{para_name}}
+			</div>
+			<div class="parameter-container">
+				{{> paraArrayListTpl}}
+			</div>
+		</div>
+	{{/if}}
+
+{{/each}}
+
+<!-- {{paraViewListTpl}} -->
+{{#each parameter_view_list}}
+
+	{{#if type_line}}
+		<div class="parameter-item line {{#if para_no_visible}}no-visible{{/if}}" data-para-name="{{para_name}}">
+			<div class="parameter-name">{{para_name}}</div>
+			<div class="parameter-value">{{para_value}}</div>
+		</div>
+	{{/if}}
+
+	{{#if type_dict}}
+		<div class="parameter-item dict {{#if para_no_visible}}no-visible{{/if}}" data-para-name="{{para_name}}">
+			<div class="parameter-name">{{para_name}}</div>
+			<div class="parameter-value">{{para_value}}</div>
+		</div>
+	{{/if}}
+
+	{{#if type_array}}
+		<div class="parameter-item array {{#if para_no_visible}}no-visible{{/if}}" data-para-name="{{para_name}}">
+			<div class="parameter-name">{{para_name}}</div>
+			<div class="parameter-value">{{para_value}}</div>
+		</div>
+	{{/if}}
+
+	{{#if type_bool}}
+		<div class="parameter-item bool {{#if para_no_visible}}no-visible{{/if}}" data-para-name="{{para_name}}">
+			<div class="parameter-name">{{para_name}}</div>
+			<div class="parameter-value">{{para_value}}</div>
+		</div>
+	{{/if}}
+
+	{{#if type_text}}
+		<div class="parameter-item text {{#if para_no_visible}}no-visible{{/if}}" data-para-name="{{para_name}}">
+			<div class="parameter-name">{{para_name}}</div>
+			<div class="parameter-value">{{para_value}}</div>
+		</div>
+	{{/if}}
+
+	{{#if type_state}}
+		<div class="parameter-item state {{#if para_no_visible}}no-visible{{/if}}" data-para-name="{{para_name}}">
+			<div class="parameter-name">{{para_name}}</div>
+			<div class="parameter-value">{{para_value}}</div>
+		</div>
+	{{/if}}
+
+{{/each}}
+
+<!-- {{paraDictListTpl}} -->
+{{#each para_value}}
+	<div class="parameter-dict-item">
+		<div class="parameter-value editable-area line key">{{key}}</div>
+		<div class="parameter-value editable-area line value">{{value}}</div>
+	</div>
+{{/each}}
+
+<!-- {{paraArrayListTpl}} -->
+{{#each para_value}}<div class="parameter-value editable-area line">{{this}}</div>{{/each}}
+
+<!-- {{stateEmptyTpl}} -->
+<div class="state-empty">{{tip}}</div>
+
+<!-- {{editorModalTpl}} -->
+<div id="state-editor-model" class="se-model-{{current_state}}">
+	<div class="selectbox state-editor-res-select" data-res-name="{{res_name}}">
+		{{> stateResSelectTpl}}
+	</div>
+
+	<div id="state-editor-wrap">
+		<div id="state-editor-body">
+			<div id="state-editor" spellcheck="false" class="font-mono">
+				{{#unless supported_platform}}<div class="state-warning">{{ i18n 'STATE_UNKNOWN_DISTRO_LBL' }}</div>{{/unless}}
+
+				<div class="state-no-state-container font-normal">
+					<div class="state-no-data-tip">{{ i18n 'STATE_NO_STATE_LBL' }}</div>
+					{{#if allow_add_state}}
+						<div class="state-item-add-btn btn btn-blue">{{ i18n 'STATE_NO_STATE_ADD_BTN' }}</div>
+					{{/if}}
+				</div>
+
+				<div class="state-have-state-container">
+					<div class="state-editor-toolbar clearfix font-normal">
+						<a class="tooltip state-desc-toggle icon-desc" data-tooltip="{{i18n 'STATE_TIP_DESCRIPTION'}}"></a>
+						<a class="tooltip state-log-toggle icon-log" data-tooltip="{{i18n 'STATE_TIP_STATE_LOG'}}"></a>
+						<a class="tooltip state-log-refresh icon-refresh" data-tooltip="{{i18n 'STATE_TIP_REFRESH_STATE_LOG'}}"></a>
+						<a class="tooltip state-sys-log-btn icon-syslog" data-tooltip="{{i18n 'STATE_TIP_SYSTEM_LOG'}}"></a>
+
+						<div class="state-operate">
+							<a id="state-toolbar-add" href="javascript:void(0)"><i class="icon-add icon-label"></i>{{i18n 'STATE_TOOL_ADD_STATE'}}</a>
+							<a id="state-toolbar-copy-all" href="javascript:void(0)">{{i18n 'STATE_TOOL_COPY_ALL'}}</a>
+							<a id="state-toolbar-copy" href="javascript:void(0)">{{i18n 'STATE_TOOL_COPY_SELECTED'}}(<span id="state-toolbar-copy-count"></span>)</a>
+							<a id="state-toolbar-delete" href="javascript:void(0)">{{i18n 'STATE_TOOL_DELETE'}}(<span id="state-toolbar-delete-count"></span>)</a>
+							<a id="state-toolbar-paste" class="disabled" href="javascript:void(0)">{{i18n 'STATE_TOOL_PASTE'}}</a>
+							<a id="state-toolbar-undo" href="javascript:void(0)">{{i18n 'STATE_TOOL_UNDO'}}</a>
+							<a id="state-toolbar-redo" href="javascript:void(0)">{{i18n 'STATE_TOOL_REDO'}}</a>
+
+							<div id="state-toolbar-selectAll" class="checkbox tooltip" data-tooltip="{{i18n 'STATE_TIP_SELECT_ALL_STATES'}}">
+								<input type="checkbox" name="state-toolbar-selectAll">
+								<label for="state-toolbar-selectAll"></label>
+							</div>
+						</div>
+					</div>
+
+					<ol class="state-list"></ol>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="state-description" data-command="" class="state-sidebar"></div>
+	<div id="state-log" data-state-id="" class="state-sidebar">
+		<div class="state-log-header">{{i18n 'STATE_LOG_TIT'}}<span class="state-log-loading">{{i18n 'STATE_LOG_LOADING_LBL'}}</span></div>
+		<ul class="state-log-list">
+			{{> stateLogInstanceItemTpl}}
+			{{> stateLogItemTpl}}
+		</ul>
+	</div>
+</div>
+
+<!-- {{stateResSelectTpl}} -->
+<div class="selection">{{res_selects.0.res_name}}</div>
+<ul class="dropdown" tabindex="-1">
+	{{#each res_selects}}
+		<li class="item {{#unless @index}}selected{{/unless}}" data-id="{{res_id}}">{{res_name}}</li>
+	{{/each}}
+</ul>
+
+<!-- {{stateLogItemTpl}} -->
+{{#each state_logs}}
+	<li class="state-log-item {{state_status}} {{#if view}}view{{/if}} {{#if is_state_log}}state-log{{/if}}" data-state-id="{{id}}">
+		<div class="state-log-item-header">
+			<div class="state-log-item-name">{{#if state_num}}{{state_num}}{{/if}}</div>
+			{{#if log_time}}<div class="state-log-item-time">{{log_time}}</div>{{/if}}
+			<div class="state-log-item-status">{{state_status}}</div>
+		</div>
+		<div class="state-log-item-content">
+			{{#if comment}}<div class="state-log-item-detail comment">{{breaklines comment}}</div>{{/if}}
+			{{#if stdout}}
+				{{#if long_stdout}}
+					<a class="state-log-item-view-detail">{{i18n 'STATE_LOG_VIEW_DETAIL'}}</a>
+				{{else}}
+					<div class="state-log-item-detail stdout">{{breaklines stdout}}</div>
+				{{/if}}
+			{{/if}}
+		</div>
+	</li>
+{{/each}}
+
+<!-- {{stateLogInstanceItemTpl}} -->
+<li class="state-log-item">
+	<div class="state-log-item-header">
+		<div class="state-log-item-name">{{i18n 'STATE_LOG_ITEM_INSTANCE'}}</div>
+		<div class="state-log-item-status">{{#if res_status}}{{res_status}}{{else}}{{i18n 'STATE_LOG_ITEM_UNKNOWN'}}{{/if}}</div>
+	</div>
+</li>
+
+<!-- {{stateLogDetailModal}} -->
+<div id="modal-state-log-detail" style="width: 900px;">
+	<div class="modal-header"><h3>{{i18n 'STATE_LOG_DETAIL_MOD_TIT'}}</h3><i class="modal-close">&times;</i> </div>
+	<div class="modal-body">
+		<textarea class="state-log-detail-content" readonly="readonly">{{content}}</textarea>
+	</div>
+	<div class="modal-footer">
+		<button class="btn modal-close btn-silver">{{i18n 'STATE_LOG_DETAIL_MOD_CLOSE_BTN'}}</button>
+	</div>
+</div>

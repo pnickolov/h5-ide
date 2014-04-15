@@ -395,8 +395,10 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
         uid = model.get 'uid'
 
         if restore and mid
-            MC.aws.instance.resetSelectedinGroup( uid, mid )
-
+            if mid.length is 38
+                MC.canvas.instanceList.selectById uid, mid
+            else
+                MC.canvas.asgList.selectById uid, mid
 
     PropertyModule.onUnloadSubPanel = () ->
         # Calls `onUnloadSubPanel` callback for current main property module

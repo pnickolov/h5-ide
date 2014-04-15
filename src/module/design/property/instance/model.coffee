@@ -87,6 +87,8 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 
 		setPublicIp : ( value ) ->
 			Design.instance().component( @get("uid") ).getEmbedEni().set("assoPublicIp", value)
+			if value
+				Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway ).tryCreateIgw()
 
 		getAmi : () ->
 			ami_id = @get("imageId")

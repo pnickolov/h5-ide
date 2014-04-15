@@ -111,6 +111,30 @@ define [ 'backbone', 'underscore', 'elb_service', 'base_model' ], ( Backbone, _,
 
 
 
+        #DescribeLoadBalancerAttributes api (define function)
+        DescribeLoadBalancerAttributes : ( src, username, session_id, region_name, elb_name ) ->
+
+            me = this
+
+            src.model = me
+
+            elb_service.DescribeLoadBalancerAttributes src, username, session_id, region_name, elb_name, ( aws_result ) ->
+
+                if !aws_result.is_error
+                #DescribeLoadBalancerAttributes succeed
+
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'ELB__DESC_LB_ATTRS_RETURN', aws_result
+
+                else
+                #DescribeLoadBalancerAttributes failed
+
+                    console.log 'elb.DescribeLoadBalancerAttributes failed, error is ' + aws_result.error_message
+                    me.pub aws_result
+
+
+
+
     }
 
     #############################################################

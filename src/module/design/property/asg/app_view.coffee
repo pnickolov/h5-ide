@@ -3,15 +3,11 @@
 #############################
 
 define [ '../base/view',
-         'text!./template/app.html',
-         'text!./template/policy.html',
-         'text!./template/term.html',
+         './template/app',
+         './template/policy',
+         './template/term',
          'i18n!nls/lang.js'
 ], ( PropertyView, template, policy_template, term_template, lang )->
-
-    template = Handlebars.compile template
-    policy_template = Handlebars.compile policy_template
-    term_template   = Handlebars.compile term_template
 
     metricMap =
         "CPUUtilization"             : "CPU Utilization"
@@ -172,13 +168,15 @@ define [ '../base/view',
             $li.find(".asg-p-adjust").html  data.adjustment + " " + data.adjustmentType
 
         editScalingPolicy : ( event ) ->
-
-            uid = $( event.currentTarget ).closest("li").data("uid")
+            $itemLi = $( event.currentTarget ).closest("li")
+            uid = $itemLi.data('uid')
+            isOld = $itemLi.data('old')
 
             data = @model.getPolicy(uid)
 
             data.uid   = uid
             data.title = lang.ide.PROP_ASG_ADD_POLICY_TITLE_EDIT
+            data.isOld = isOld
 
             @showScalingPolicy( data )
 
@@ -249,10 +247,20 @@ define [ '../base/view',
                     return lang.ide.PARSLEY_DUPLICATED_POLICY_NAME
 
 
-            $("#asg-policy-periods, #asg-policy-second").on "change", ()->
+            $("#asg-policy-periods").on "change", () ->
                 val = parseInt $(this).val(), 10
                 if not val or val < 1
-                    $(this).val( "1" ).parsley("validate")
+                    $(this).val( "1" )
+                if val > 86400
+                    $(@).val 86400
+
+            $("#asg-policy-second").on "change", () ->
+                val = parseInt $(this).val(), 10
+                if not val or val < 1
+                    $(this).val( "1" )
+
+                if val > 1440
+                    $(@).val 1440
 
             $("#asg-policy-adjust-type").on "OPTION_CHANGE", ()->
                 type = $(this).find(".selected").data("id")
@@ -271,6 +279,12 @@ define [ '../base/view',
                         $(this).val( "0" )
                     else if val < -100
                         $(this).val( "-100" )
+
+                if val < -65534
+                    $(@).val -65534
+                else if val > 65534
+                    $(@).val 65534
+
                     # More than 100% is legal.
                     # else if val > 100
                     #     $(this).val( "100" )
@@ -287,8 +301,8 @@ define [ '../base/view',
 
                 if val < 0
                     val = 0
-                else if val > 86400
-                    val = 86400
+                else if val > 1440
+                    val = 1440
 
                 $this.val( val )
 

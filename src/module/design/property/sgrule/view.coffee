@@ -2,12 +2,8 @@
 #  View(UI logic) for design/property/sgrule
 #############################
 
-define [ '../base/view',
-         'text!./template/stack.html',
-         "component/sgrule/SGRulePopup"
+define [ '../base/view', './template/stack', "component/sgrule/SGRulePopup"
 ], ( PropertyView, template, SGRulePopup ) ->
-
-    template = Handlebars.compile template
 
     SgRuleView = PropertyView.extend {
         events   :

@@ -1,38 +1,3 @@
-/* Fonts */
-/*@font-face
-{
-	font-family: Nunito-Light;
-	src: url('../fonts/Nunito-Light.ttf') format('truetype');
-}
-
-@font-face
-{
-	font-family: Nunito-Regular;
-	src: url('../fonts/Nunito-Regular.ttf') format('truetype');
-}*/
-
-/*@font-face
-{
-	font-family: VeraMono;
-	src: url('../fonts/VeraMono.ttf') format('truetype');
-}
-
-@font-face
-{
-	font-family: 'Ubuntu';
-	font-style: normal;
-	font-weight: 400;
-	src: local('Ubuntu'), url('../fonts/ubuntu.woff') format('woff');
-}*/
-
-/*@font-face
-{
-	font-family: 'Titillium Web';
-	font-style: normal;
-	font-weight: 400;
-	src: local('Titillium'), url('../fonts/TitilliumWeb-Regular.ttf') format('truetype');
-}
-*/
 @font-face {
 	font-family: 'Lato';
 	font-style: normal;
@@ -45,27 +10,6 @@
 	font-style: normal;
 	font-weight: 700;
 	src: local('Lato Bold'), local('Lato-Bold'), url('../fonts/Lato-Bold.woff') format('woff');
-}
-
-@font-face {
-	font-family: 'OxygenMono';
-	font-style: normal;
-	font-weight: 400;
-	src: local('Oxygen'), local('Oxygen-Regular'), url('../fonts/OxygenMono-Regular.woff') format('woff');
-}
-
-@font-face {
-	font-family: 'OxygenMono';
-	font-style: normal;
-	font-weight: 700;
-	src: local('Oxygen Bold'), local('Oxygen-Bold'), url('../fonts/OxygenMono-Bold.woff') format('woff');
-}
-
-@font-face {
-	font-family: 'Anonymous Pro';
-	font-style: normal;
-	font-weight: 400;
-	src: local('AnonymousPro Regular'), local('AnonymousPro-Regular'), url('../fonts/AnonymousPro-Regular.woff') format('woff');
 }
 
 .font-mono {
@@ -301,7 +245,6 @@ body {
 }
 
 /* Hide Selection */
-/*::selection {
+::selection {
 	background: transparent;
 }
-*/

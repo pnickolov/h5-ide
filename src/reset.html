@@ -1,24 +1,21 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-	<title>MadeiraCloud - Reset password</title>
+	<title>VisualOps - Reset password</title>
 	<meta charset="UTF-8" />
 	<link rel="shortcut icon" href="./assets/images/ide/favicon.ico">
-	<link rel="stylesheet" href="./assets/css/core.css" media="all"/>
-	<link id="css_style" rel="stylesheet" href="./assets/css/account.css" media="all"/>
-	<link id="css_style" rel="stylesheet" href="./assets/css/UI.component.css" media="all"/>
+	<link rel="stylesheet" href="./assets/css/account.css" media="all"/>
+	<link rel="stylesheet" href="./assets/css/UI.component.css" media="all"/>
 	<!--[if lt IE 9]><script>for(var a=['section','article','nav','header','footer','aside','blockquote'],i=a.length-1;i>=0;--i){document.createElement(a[i]);}</script><![endif]-->
 
-	<!-- env:prod --#>
-	<script type="text/javascript" src="./lib/analytics.js"></script>
-	<!-- env:prod -->
+	<!-- {{include/analytics.html}} -->
 </head>
-<body id="body">
+<body id="body" data-entry="reset">
 
 	<div id="container">
 
 		<header>
-			<a id="logo-link" href="http://www.madeiracloud.com/"></a>
+			<a id="logo-link" href="http://www.visualops.io/"></a>
 		</header>
 
 		<div id="main-body">
@@ -27,16 +24,12 @@
 
 		<footer id="footer">
 			<p class="pad20">1st Floor, 795 Folsom Street, San Francisco, CA., USA 94107</p>
-			<p class="pad20">© <a href="http://www.madeiracloud.com" alt="MadeiraCloud" title="MadeiraCloud">MadeiraCloud</a> 2013. <a href="http://www.madeiracloud.com/terms-conditions-privacy-policy" alt="Terms, Conditions and Privacy Policy" title="Terms, Conditions and Privacy Policy">Terms, Conditions and Privacy Policy</a>.</p>
+			<p class="pad20">© <a href="http://www.visualops.io" alt="VisualOps" title="VisualOps">VisualOps</a> 2014. <a href="http://www.visualops.io/terms-conditions-privacy-policy" alt="Terms, Conditions and Privacy Policy" title="Terms, Conditions and Privacy Policy">Terms, Conditions and Privacy Policy</a>.</p>
 		</footer>
 
 	</div>
 
-	<script type="text/javascript">
-		document.write( "<s"+"cript type='text/javascript' src='./lib/version.js?" + Math.random() + "'></scr"+"ipt>" );
-	</script>
-	<script type="text/javascript">
-		document.write( "<s"+"cript type='text/javascript' src='./vender/requirejs/require.js' data-main='./js/reset/config.js?" + 'v=' + version + "'></scr"+"ipt>" );
+	<script type="text/javascript" src='./vender/requirejs/require.js' data-main='./js/user/config.js?#{version}'>
 	</script>
 </body>
 </html>

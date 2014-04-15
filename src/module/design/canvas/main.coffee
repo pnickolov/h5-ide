@@ -134,7 +134,7 @@ define [ 'event', 'i18n!nls/lang.js', 'constant' ], ( ide_event, lang, constant 
                 # include XXXING
                 if type in [ constant.APP_STATE.APP_STATE_STARTING, constant.APP_STATE.APP_STATE_STOPPING, constant.APP_STATE.APP_STATE_TERMINATING, constant.APP_STATE.APP_STATE_UPDATING ]
 
-                    if MC.data.current_tab_id is id
+                    if MC.common.other.isCurrentTab id
                         MC.common.other.canvasData.set 'state', type
                     else
                         # TO DO

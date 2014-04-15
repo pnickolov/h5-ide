@@ -1,4 +1,4 @@
-define [ 'constant', 'MC', 'Design', 'validation_helper' ], ( constant, MC, Design, Helper ) ->
+define [ 'constant', 'MC', 'Design', '../../helper' ], ( constant, MC, Design, Helper ) ->
 
 	i18n = Helper.i18n.short()
 	isEBSOptimizedForAttachedProvisionedVolume = (instanceUID) ->

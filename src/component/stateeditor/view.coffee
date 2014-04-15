@@ -4,13 +4,17 @@
 
 define [ 'event',
          'i18n!nls/lang.js',
-         'text!./component/stateeditor/template.html',
-         './component/stateeditor/validate',
+         './template',
+         './validate',
          'constant',
          'instance_model',
+         './lib/markdown',
          'UI.errortip'
 
-], ( ide_event, lang, template , validate, constant, instance_model ) ->
+], ( ide_event, lang, template , validate, constant, instance_model, Markdown) ->
+
+    # Register Partials
+    Handlebars.registerPartial(id, tpl) for id, tpl of template
 
     StateEditorView = Backbone.View.extend {
 
@@ -21,7 +25,7 @@ define [ 'event',
 
             'keyup .parameter-item.dict .parameter-value': 'onDictInputChange'
             'paste .parameter-item.dict .parameter-value': 'onDictInputChange'
-            
+
             'keyup .parameter-item.array .parameter-value': 'onArrayInputChange'
             'paste .parameter-item.array .parameter-value': 'onArrayInputChange'
 
@@ -91,7 +95,7 @@ define [ 'event',
         editorShow: false
 
         initialize: () ->
-            this.compileTpl()
+            # this.compileTpl()
 
         initState: () ->
 
@@ -141,7 +145,7 @@ define [ 'event',
 
             tip = type and tipSet[ type ] or tipSet.default
 
-            @$el.html @stateEmptyTpl { tip: tip }
+            @$el.html $.trim(template.stateEmptyTpl { tip: tip })
             @editorShow = false
             @
 
@@ -154,14 +158,16 @@ define [ 'event',
             @editorShow = true
             that = this
 
+            that.unloadEditor()
+
             # show modal
-            @$el.html that.editorModalTpl({
+            @$el.html $.trim(template.editorModalTpl({
                 res_name: that.resName,
                 supported_platform: that.supportedPlatform,
                 current_state: that.currentState,
                 no_state: that.resNoState,
                 allow_add_state: (that.currentState in ['stack', 'appedit'])
-            }), false, null, {opacity: 0.2, conflict: 'loose'}
+            })), false, null, {opacity: 0.2, conflict: 'loose'}
 
             # setTimeout(() ->
 
@@ -240,7 +246,7 @@ define [ 'event',
                         # $('#property-panel').addClass('state-wide')
                         that.onLogToggleClick()
                     , 0)
-                    
+
                     # that.onLogToggleClick()
 
             $aceAutocompleteTip = $('.ace_autocomplete_tip')
@@ -318,44 +324,6 @@ define [ 'event',
 
             null
 
-        tplMap:
-            'state-template-editor-modal'       : 'editorModalTpl'
-            'state-template-state-list'         : 'stateListTpl'
-            'state-template-para-list'          : 'paraListTpl'
-            'state-template-para-view-list'     : 'paraViewListTpl'
-            'state-template-para-dict-item'     : 'paraDictListTpl'
-            'state-template-para-array-item'    : 'paraArrayListTpl'
-            'state-template-log-item'           : 'stateLogItemTpl'
-            'state-template-log-instance-item'  : 'stateLogInstanceItemTpl'
-            'state-template-res-select'         : 'stateResSelectTpl'
-            'state-template-editor-empty'       : 'stateEmptyTpl'
-            'state-template-log-detail-modal'   : 'stateLogDetailModal'
-
-        compileTpl: () ->
-
-            # generate template
-            tplRegex = /(\<!-- (.*) --\>)(\n|\r|.)*?(?=\<!-- (.*) --\>)/ig
-            tplHTMLAry = template.match(tplRegex)
-            htmlMap = {}
-            _.each tplHTMLAry, (tplHTML) ->
-                commentHead = tplHTML.split('\n')[0]
-                tplType = commentHead.replace(/(<!-- )|( -->)|\r|\n/g, '')
-                tplType = $.trim(tplType)
-                htmlMap[tplType] = tplHTML
-                null
-
-            for id, html of htmlMap
-                Handlebars.registerPartial(id, html)
-                @[ @tplMap[ id ] ] = Handlebars.compile html
-
-            Handlebars.registerHelper('breaklines', (text) ->
-                text = Handlebars.Utils.escapeExpression(text)
-                text = text.replace(/(\r\n|\n|\r)/gm, '<br>')
-                return new Handlebars.SafeString(text)
-            )
-
-            null
-
         genStateUID: () ->
 
             return 'state-' + MC.guid()
@@ -368,7 +336,7 @@ define [ 'event',
 
         #     if that.groupResSelectData and that.groupResSelectData.length
 
-        #         resSelectHTML = that.stateResSelectTpl({
+        #         resSelectHTML = template.stateResSelectTpl({
         #             res_selects: that.groupResSelectData
         #         })
 
@@ -452,7 +420,7 @@ define [ 'event',
                     # }]
                 }
 
-            that.$stateList.html(this.stateListTpl(stateListObj))
+            that.$stateList.html($.trim(template.stateListTpl(stateListObj)))
 
             $stateItems = that.$stateList.find('.state-item')
 
@@ -592,9 +560,9 @@ define [ 'event',
 
                 null
 
-            $paraViewListElem.html(that.paraViewListTpl({
+            $paraViewListElem.html($.trim(template.paraViewListTpl({
                 parameter_view_list: paraListViewRenderAry
-            }))
+            })))
 
         bindStateListEvent: ($stateItems) ->
 
@@ -763,7 +731,7 @@ define [ 'event',
             if cmdName
                 moduleObj = that.cmdModuleMap[cmdName]
                 if moduleObj.reference
-                    descMarkdown = moduleObj.reference['en']
+                    descMarkdown = moduleObj.reference.en
                 that.$cmdDsec.attr('data-command', cmdName)
             else
                 descHTML = that.generalTip
@@ -820,9 +788,9 @@ define [ 'event',
 
                 null
 
-            $paraListElem.html(that.paraListTpl({
+            $paraListElem.html($.trim(template.paraListTpl({
                 parameter_list: newParaAry
-            }))
+            })))
 
             # setTimeout(() ->
             that.bindParaListEvent($paraListElem, currentCMD)
@@ -863,6 +831,9 @@ define [ 'event',
 
             that = this
 
+            if that.readOnlyMode
+                return
+
             $currentInputElem = $(event.currentTarget)
 
             currentValue = that.getPlainText($currentInputElem)
@@ -885,25 +856,29 @@ define [ 'event',
                 valueInputValue = that.getPlainText($valueInput)
 
                 if keyInputValue or valueInputValue
-                    newDictItemHTML = that.paraDictListTpl({
+                    newDictItemHTML = $.trim(template.paraDictListTpl({
                         para_value: [{
                             key: '',
                             value: ''
                         }]
-                    })
+                    }))
                     $dictItemElem = $(newDictItemHTML).appendTo($currentDictItemContainer)
-                    $paraDictItem = $dictItemElem.nextAll('.parameter-dict-item')
-                    $paraValueAry = $paraDictItem.find('.parameter-value')
+                    # $paraDictItem = $dictItemElem.nextAll('.parameter-dict-item')
+                    $paraValueAry = $dictItemElem.find('.parameter-value')
                     $paraValueAry.addClass('disabled')
 
+                    $paraItem = $dictItemElem.parents('.parameter-item')
                     if not noBindEvent
-                        that.bindParaItemEvent($paraDictItem, paraObj)
+                        that.bindParaItemEvent($paraItem, paraObj)
 
         onDictInputBlur: (event) ->
 
             # remove empty dict item
 
             that = this
+
+            if that.readOnlyMode
+                return
 
             $currentInputElem = $(event.currentTarget)
 
@@ -948,14 +923,15 @@ define [ 'event',
                 currentInput = that.getPlainText($currentInputElem)
 
                 if currentInput
-                    newArrayItemHTML = that.paraArrayListTpl({
+                    newArrayItemHTML = $.trim(template.paraArrayListTpl({
                         para_value: ['']
-                    })
+                    }))
                     $arrayItemElem = $(newArrayItemHTML).appendTo($currentArrayInputContainer)
                     $arrayItemElem.addClass('disabled')
 
+                    $paraItem = $arrayItemElem.parents('.parameter-item')
                     if not noBindEvent
-                        that.bindParaItemEvent($arrayItemElem, paraObj)
+                        that.bindParaItemEvent($paraItem, paraObj)
 
         onArrayInputBlur: (event) ->
 
@@ -1106,8 +1082,8 @@ define [ 'event',
 
             # setTimeout(() ->
             that.bindParaListEvent($paraListItem, currentCMD)
-            if that.readOnlyMode
-                that.setEditorReadOnlyMode()
+            # if that.readOnlyMode
+            #     that.setEditorReadOnlyMode()
             # , 10)
 
             # $stateItem.addClass('selected')
@@ -1164,49 +1140,6 @@ define [ 'event',
 
             null
 
-        # onStateAddClick: (event) ->
-
-        #     that = this
-
-        #     $currentElem = $(event.currentTarget)
-        #     $stateItem = $currentElem.parents('.state-item')
-
-        #     stateIdStr = $stateItem.find('.state-id').text()
-        #     stateId = Number(stateIdStr)
-
-        #     newStateId = ++stateId
-
-        #     newStateHTML = that.stateListTpl({
-        #         state_list: [{
-        #             id_show: newStateId
-        #         }]
-        #     })
-
-        #     $stateItem.after(newStateHTML)
-
-        #     $newStateItem = $stateItem.next()
-
-        #     $cmdValueItem = $newStateItem.find('.command-value')
-        #     that.bindCommandEvent($cmdValueItem)
-
-        #     $stateItemList = that.$stateList.find('.state-item')
-        #     $stateItemList.addClass('view')
-
-        #     _.each $stateItemList, (otherStateItem) ->
-        #         $otherStateItem = $(otherStateItem)
-        #         if not $newStateItem.is($otherStateItem) and not $otherStateItem.hasClass('view')
-        #             that.refreshStateView($otherStateItem)
-        #         null
-
-        #     $newStateItem.removeClass('view')
-        #     cmdEditor = $cmdValueItem.data('editor')
-        #     if cmdEditor
-        #         setTimeout(() ->
-        #             cmdEditor.focus()
-        #         , 0)
-
-        #     that.refreshStateId()
-
         onStateItemAddClick: (event) ->
 
             that = this
@@ -1226,11 +1159,11 @@ define [ 'event',
 
             newStateId = that.genStateUID()
 
-            newStateHTML = that.stateListTpl({
+            newStateHTML = $.trim(template.stateListTpl({
                 state_list: [{
                     id: newStateId
                 }]
-            })
+            }))
 
             $focusState = that.$stateList.find('.state-item.focused')
             if $focusState.length
@@ -1431,7 +1364,7 @@ define [ 'event',
 
                     paraValue = arrayObj
 
-                stateItemObj['parameter'][paraName] = paraValue
+                stateItemObj.parameter[paraName] = paraValue
 
             return stateItemObj
 
@@ -1469,7 +1402,8 @@ define [ 'event',
             that = this
 
             renderObj = {
-                state_list: []
+                state_list: [],
+                err_list: []
             }
 
             _.each stateObjAry, (state, idx) ->
@@ -1477,6 +1411,10 @@ define [ 'event',
                 try
 
                     cmdName = that.moduleCMDMap[state.module]
+
+                    if not cmdName
+                        throw new Error('command')
+
                     paraModelObj = that.cmdParaObjMap[cmdName]
 
                     paraListObj = state.parameter
@@ -1504,6 +1442,9 @@ define [ 'event',
 
                         paraValue = paraListObj[paraModelName]
 
+                        if paraValue is undefined and paraModelRequired
+                            throw new Error('parameter')
+
                         if paraValue is undefined and not paraModelRequired
                             renderParaObj.para_disabled = true
                         else
@@ -1522,6 +1463,8 @@ define [ 'event',
 
                             if paraModelType in ['line', 'text']
                                 renderParaValue = that.model.replaceParaUIDToName(renderParaValue)
+                                if renderParaValue and renderParaValue.indexOf('unknown') isnt -1
+                                    renderObj.err_list.push('reference')
 
                         else if paraModelType is 'dict'
 
@@ -1532,6 +1475,8 @@ define [ 'event',
                                 _.each paraValue, (paraValueObj) ->
 
                                     paraValueObj.value = that.model.replaceParaUIDToName(paraValueObj.value)
+                                    if paraValueObj.value and paraValueObj.value.indexOf('unknown') isnt -1
+                                        renderObj.err_list.push('reference')
 
                                     renderParaValue.push({
                                         key: paraValueObj.key
@@ -1547,6 +1492,8 @@ define [ 'event',
                                 _.each paraValue, (paraValueStr, paraKey) ->
 
                                     paraValueStr = that.model.replaceParaUIDToName(paraValueStr)
+                                    if paraValueStr and paraValueStr.indexOf('unknown') isnt -1
+                                        renderObj.err_list.push('reference')
 
                                     renderParaValue.push({
                                         key: paraKey
@@ -1577,6 +1524,9 @@ define [ 'event',
                                 else
                                     paraValueStr = that.model.replaceParaUIDToName(paraValueStr)
 
+                                if paraValueStr and paraValueStr.indexOf('unknown') isnt -1
+                                    renderObj.err_list.push('reference')
+
                                 renderParaValue.push(paraValueStr)
                                 null
 
@@ -1597,7 +1547,7 @@ define [ 'event',
 
                 catch err
 
-                    console.log('state editor: resource state data parse failed')
+                    renderObj.err_list.push(err.message)
 
                 null
 
@@ -1866,7 +1816,7 @@ define [ 'event',
                     hintDataAryMap = thatEditor.hintObj
 
                     if e.command.name is "insertstring"
-                        if /^{$/.test(e.args) and hintDataAryMap['at']
+                        if /^{$/.test(e.args) and hintDataAryMap.at
 
                             editSession = thatEditor.getSession()
                             cursorPos = thatEditor.getCursorPosition()
@@ -1877,21 +1827,21 @@ define [ 'event',
                             if lastChar is '@'
                                 thatEditor.insert('}')
                                 thatEditor.moveCursorTo(editRow, editColumn)
-                                that.setEditorCompleter(thatEditor, hintDataAryMap['at'], 'reference')
+                                that.setEditorCompleter(thatEditor, hintDataAryMap.at, 'reference')
                                 thatEditor.execCommand("startAutocomplete")
 
                     if e.command.name is "backspace"
 
                         $stateItem = $editorElem.parents('.state-item')
 
-                        if hintDataAryMap['focus']
+                        if hintDataAryMap.focus
 
                             $paraItem = $editorElem.parents('.parameter-item')
 
                             if $paraItem.hasClass('bool') or $paraItem.hasClass('state')
                                 that.setPlainText($editorElem, '')
 
-                            that.setEditorCompleter(thatEditor, hintDataAryMap['focus'], 'command')
+                            that.setEditorCompleter(thatEditor, hintDataAryMap.focus, 'command')
                             thatEditor.execCommand("startAutocomplete")
 
                         if currentValue is '' and $stateItem.hasClass('comment')
@@ -1979,8 +1929,8 @@ define [ 'event',
 
                     hintDataAryMap = thatEditor.hintObj
                     currentValue = thatEditor.getValue()
-                    if not currentValue and hintDataAryMap['focus']
-                        that.setEditorCompleter(thatEditor, hintDataAryMap['focus'], 'command')
+                    if not currentValue and hintDataAryMap.focus
+                        that.setEditorCompleter(thatEditor, hintDataAryMap.focus, 'command')
                         thatEditor.execCommand("startAutocomplete")
 
                     inputPosX = $valueInput.offset().left
@@ -2012,6 +1962,9 @@ define [ 'event',
                                 that.setPlainText($valueInput, '')
                 )
 
+                if that.readOnlyMode
+                    editor.setReadOnly(true)
+
             # if $editorElem.hasClass('command-value')
 
             _initEditor()
@@ -2021,12 +1974,13 @@ define [ 'event',
             that = this
 
             that.$cmdDsec.find('.highlight').removeClass('highlight')
-            $paraNameSpan = that.$cmdDsec.find("code:contains('#{paraName}')")
-            paraNameSpan = $paraNameSpan.filter(() ->
+            $paraNameSpan = that.$cmdDsec.find("strong code:contains('#{paraName}')")
+            paraNameSpan = $paraNameSpan.filter () ->
                 return $(this).text() is paraName
-            )
-            paraParagraph = paraNameSpan.parents('li')
-            paraParagraph.addClass('highlight')
+
+            if paraNameSpan[0]
+                paraParagraph = $(paraNameSpan[0]).parents('li')
+                paraParagraph.addClass('highlight')
 
             try
 
@@ -2253,16 +2207,16 @@ define [ 'event',
                 })
                 null
 
-            renderHTML = that.stateLogItemTpl({
+            renderHTML = $.trim(template.stateLogItemTpl({
                 state_logs: stateLogViewAry
-            })
+            }))
 
             that.refreshStateItemStatus(stateStatusMap)
 
             resState = that.model.get('resState')
-            instanceStateHTML = that.stateLogInstanceItemTpl({
+            instanceStateHTML = $.trim(template.stateLogInstanceItemTpl({
                 res_status: resState
-            })
+            }))
 
             that.$stateLogList.empty().append(instanceStateHTML).append(renderHTML)
             that.refreshLogItemNum()
@@ -2270,14 +2224,6 @@ define [ 'event',
         setEditorReadOnlyMode: () ->
 
             that = this
-
-            editableAreaAry = that.$stateList.find('.editable-area')
-            _.each editableAreaAry, (editableArea) ->
-                $editableArea = $(editableArea)
-                editor = $editableArea.data('editor')
-                if editor
-                    editor.setReadOnly(true)
-                null
 
             that.$stateList.find('.state-drag').hide()
             that.$stateList.find('.state-add').hide()
@@ -2516,7 +2462,7 @@ define [ 'event',
 
                     stateNum = stateIdNumMap[stateId]
 
-                    stateNumStr = 'unknown'
+                    stateNumStr = 'deleted'
                     if stateNum then stateNumStr = stateNum
 
                     $logItem.find('.state-log-item-name').text('State ' + stateNumStr)
@@ -2527,16 +2473,19 @@ define [ 'event',
 
             that = this
 
-            $editAreaList = that.$stateList.find('.editable-area')
+            # $editAreaList = that.$stateList.find('.editable-area')
 
-            _.each $editAreaList, (editArea) ->
-                $editArea = $(editArea)
-                editor = $editArea.data('editor')
-                if editor then editor.destroy()
-                null
+            # _.each $editAreaList, (editArea) ->
+            #     $editArea = $(editArea)
+            #     editor = $editArea.data('editor')
+            #     if editor then editor.destroy()
+            #     null
 
-            $aceAutoCompList = $('.ace_editor.ace_autocomplete')
-            $aceAutoCompList.remove()
+            # $aceAutoCompList = $('.ace_editor.ace_autocomplete')
+            # $aceAutoCompList.remove()
+
+            $aceEditors = $('.ace_editor')
+            $aceEditors.remove()
 
         initUndoManager: () ->
 
@@ -2692,7 +2641,15 @@ define [ 'event',
 
             stateListObj = that.loadStateData(stateDataAry)
 
-            newStateItems = that.stateListTpl(stateListObj)
+            # resolve incompletely json data
+            parseErrList = stateListObj.err_list
+            if parseErrList.length
+                if 'command' in parseErrList or 'parameter' in parseErrList
+                    notification 'warning', lang.ide.NOTIFY_MSG_INFO_STATE_PARSE_COMMAND_FAILED
+                if 'reference' in parseErrList
+                    notification 'warning', lang.ide.NOTIFY_MSG_INFO_STATE_PARSE_REFRENCE_FAILED
+
+            newStateItems = $.trim(template.stateListTpl(stateListObj))
             $currentStateItems = that.$stateList.find('.state-item')
 
             returnInsertPos = null
@@ -2857,8 +2814,8 @@ define [ 'event',
                 return false
 
             # Disable default delete event [delete/backspace]
-            if metaKey is false and shiftKey is false and altKey is false and is_input is false and (keyCode is 46 or keyCode is 8)
-                return false
+            # if metaKey is false and shiftKey is false and altKey is false and is_input is false and (keyCode is 46 or keyCode is 8)
+            #     return false
 
         onUndo: () ->
 
@@ -2885,11 +2842,11 @@ define [ 'event',
             $('.state-list .selected').each ->
                 stack.push(that.getStateItemByData($(this)))
 
-            MC.data.stateClipboard = stack
+            if stack.length
 
-            that.updateToolbar()
-
-            notification 'info', lang.ide.NOTIFY_MSG_INFO_STATE_COPY_TO_CLIPBOARD
+                MC.data.stateClipboard = stack
+                that.updateToolbar()
+                notification 'info', lang.ide.NOTIFY_MSG_INFO_STATE_COPY_TO_CLIPBOARD
 
             return true
 
@@ -3373,11 +3330,7 @@ define [ 'event',
                 logContent = MC.base64Decode(result.output)
                 $contentElem = $('#modal-instance-sys-log .instance-sys-log-content')
 
-                logContentTpl = Handlebars.compile('{{nl2br content}}')
-                logContentHTML = logContentTpl({
-                    content: logContent
-                })
-                $contentElem.html(logContentHTML)
+                $contentElem.html  MC.template.convertBreaklines({content:logContent})
                 $contentElem.show()
 
             else
@@ -3395,10 +3348,10 @@ define [ 'event',
             if stateId
                 stateLogObj = that.stateIdLogContentMap[stateId]
                 if stateLogObj
-                    modal that.stateLogDetailModal({
+                    modal $.trim(template.stateLogDetailModal({
                         number: stateLogObj.number
                         content: stateLogObj.content
-                    }), true
+                    })), true
 
     }
 

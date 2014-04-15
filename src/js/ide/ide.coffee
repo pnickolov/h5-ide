@@ -28,23 +28,11 @@ define [ 'MC', 'event', 'handlebars'
 		#  validation cookie
 		#############################
 
-		#clear path=/v2 cookie(patch)
-		#common_handle.cookie.clearV2Cookie '/v2'
-		#common_handle.cookie.clearV2Cookie '/v2/'
-
-		#if common_handle.cookie.getIDECookie()
-		#	common_handle.cookie.setCookie common_handle.cookie.getIDECookie()
-		#else
-		#	if !common_handle.cookie.checkAllCookie()
-		#		#user session not exist, go to login page
-		#
-        #        window.location.href = "login.html"
-
 		#user session not exist, go to login page
 		if !common_handle.cookie.checkAllCookie()
-			window.location.href = "login.html"
+			window.location.href = "/login"
 
-		#clear cookie in 'ide.madeiracloud.com'
+		#clear cookie in 'ide.visualops.io'
 		#common_handle.cookie.clearInvalidCookie()
 
 		#############################
@@ -210,13 +198,12 @@ define [ 'MC', 'event', 'handlebars'
 		#  load module
 		#############################
 
-		if window.location.pathname isnt '/import-test.html'
-			#load header
-			header.loadModule()
-			#load tabbar
-			tabbar.loadModule()
-			#load dashboard
-			dashboard.loadModule()
+		#load header
+		header.loadModule()
+		#load tabbar
+		tabbar.loadModule()
+		#load dashboard
+		dashboard.loadModule()
 
 		#listen DASHBOARD_COMPLETE
 		ide_event.onListen ide_event.DASHBOARD_COMPLETE, () ->
@@ -243,70 +230,6 @@ define [ 'MC', 'event', 'handlebars'
 			#
 			#ide_event.trigger ide_event.SWITCH_MAIN
 
-		#listen RESOURCE_COMPLETE
-		#ide_event.onListen ide_event.RESOURCE_COMPLETE, () ->
-		#	console.log 'RESOURCE_COMPLETE'
-
-		#############################
-		# Handlebars helper
-		#############################
-
-		# i18n
-		Handlebars.registerHelper 'i18n', ( text ) ->
-			### env:prod ###
-			if lang.ide[ text ]
-				return new Handlebars.SafeString lang.ide[ text ]
-			### env:prod:end ###
-
-			### env:dev ###
-			new Handlebars.SafeString lang.ide[ text ]
-			### env:dev:end ###
-
-		# nl2br
-		Handlebars.registerHelper 'nl2br', (text) ->
-			nl2br = (text + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + '<br>' + '$2')
-			return new Handlebars.SafeString(nl2br)
-
-		# if equal
-		Handlebars.registerHelper 'ifCond', ( v1, v2, options ) ->
-			return options.fn this if v1 is v2
-			return options.inverse this
-
-		#############################
-		#  analytics
-		#############################
-
-		#temp disable analytics
-
-		# analytics.identify($.cookie("userid"), {
-		# 	name : $.cookie("username"),
-		# 	username : $.cookie("username"),
-		# 	email : MC.base64Decode($.cookie("email")),
-		# 	region : $.cookie("region_name"),
-		# 	created : 1328260166
-		# 	}, {
-		# 	Intercom : {
-		# 		userHash : '5add343430ecaf54f7c1a6285758fcccb87fb365d089d6e1a520b2d7fa49fb05'
-		# 	}
-		# })
-
-		# analytics.track('Loaded IDE', { })
-
-		#intercom
-		#window.intercomSettings.email      = MC.base64Decode( common_handle.cookie.getCookieByName( 'email' ))
-		#window.intercomSettings.username   = common_handle.cookie.getCookieByName( 'username' )
-		#window.intercomSettings.created_at = MC.dateFormat( new Date(), 'hh:mm MM-dd-yyyy' )
-		#intercom_sercure_mode_hash         = () ->
-		#	intercom_api_secret = '4tGsMJzq_2gJmwGDQgtP2En1rFlZEvBhWQWEOTKE'
-		#	hash = CryptoJS.HmacSHA256( MC.base64Decode($.cookie('email')), intercom_api_secret )
-		#	console.log 'hash.toString(CryptoJS.enc.Hex) = ' + hash.toString(CryptoJS.enc.Hex)
-		#	return hash.toString CryptoJS.enc.Hex
-		#if !window.intercomSettings.user_hash
-		#	localStorage.setItem 'user_hash', intercom_sercure_mode_hash()
-		#	window.intercomSettings.user_hash  = intercom_sercure_mode_hash()
-
-		#window.intercomSettings.stack_total= 0
-
 		#############################
 		#  base model
 		#############################
@@ -330,7 +253,7 @@ define [ 'MC', 'event', 'handlebars'
 					if error.param[0].url is '/aws/' and error.param[0].method is 'resource'
 						notification 'warning', lang.service["ERROR_CODE_-1_MESSAGE_AWS_RESOURCE"]
 					else
-						notification 'warning', label
+						notification 'warning', lang.service[label]
 					return null
 
 				if lang.service[ label ]
@@ -382,5 +305,26 @@ define [ 'MC', 'event', 'handlebars'
 			null
 
 		listenImportList()
+
+
+		###########################
+		# Dispaly stop supporting classic and default VPC notification
+		###########################
+		displaySystemNotice = () ->
+
+			isDisplayed = $.cookie('notice-sn')
+
+			if isDisplayed is undefined
+				$( "#wrapper" ).before MC.template.systemNotice
+
+			$('#system-notice-close').on 'click', () ->
+				$('#system-notice').remove()
+
+				# A hack to update resource panel
+				$("#resource-panel").find(".accordion-group.expanded").removeClass("expanded").children(".fixedaccordion-head").trigger("click", true)
+
+				$.cookie 'notice-sn', '1'
+
+		displaySystemNotice()
 
 		null

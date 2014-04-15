@@ -122,13 +122,20 @@ define [ "constant", "../ConnectionModel", "Design" ], ( constant, ConnectionMod
     addRawRule : ( ruleOwner, direction, rawRule ) ->
       console.assert( ruleOwner is @port1Comp().id or ruleOwner is @port2Comp().id or ruleOwner is @port1Comp().get("name") or ruleOwner is @port2Comp().get("name"), "Invalid ruleOwner, when adding a raw rule to SgRuleSet : ", ruleOwner )
       console.assert( direction is SgRuleSet.DIRECTION.BIWAY or direction is SgRuleSet.DIRECTION.IN or direction is SgRuleSet.DIRECTION.OUT, "Invalid direction, when adding a raw rule to SgRuleSet : ", rawRule )
-      console.assert( rawRule.fromPort isnt undefined and rawRule.toPort isnt undefined and typeof rawRule.protocol is "string", "Invalid rule, when adding a raw rule to SgRuleSet : ", rawRule )
+      console.assert( ("#{rawRule.protocol}" is "-1" or rawRule.protocol is "all" or parseInt(rawRule.protocol, 10) + "" is rawRule.protocol ) or rawRule.fromPort or rawRule.toPort, "Invalid rule, when adding a raw rule to SgRuleSet : ", rawRule )
+
 
       if Design.instance().typeIsClassic() and direction is SgRuleSet.DIRECTION.OUT
         console.warn( "Ignoring setting outbound rule in Classic Mode " )
         return
 
-      shouldDrawSgLine = @get("in1").length + @get("in2").length + @get("out1").length + @get("out2").length is 0
+      # Some bookkeeping to see if we need to draw some sglines.
+      shouldInitSgLine = @get("in1").length + @get("in2").length + @get("out1").length + @get("out2").length is 0
+
+      oldPort1InRuleCout  = @get("in1").length
+      oldPort2InRuleCout  = @get("in2").length
+      oldPort1OutRuleCout = @get("out1").length
+      oldPort2OutRuleCout = @get("out2").length
 
       # Ensure valid protocol and port
       rule = {
@@ -136,10 +143,14 @@ define [ "constant", "../ConnectionModel", "Design" ], ( constant, ConnectionMod
         fromPort : "" + rawRule.fromPort
         toPort   : "" + rawRule.toPort
       }
-      if rule.protocol is "-1" or rule.protocol is "all"
+      if "#{rule.protocol}" is "-1" or rule.protocol is "all"
         rule.protocol = "all"
         rule.fromPort = "0"
         rule.toPort   = "65535"
+      else if parseInt( rawRule.protocol, 10 ) + "" is rawRule.protocol
+        # Custom protocol always have empty port.
+        rule.fromPort = ""
+        rule.toPort   = ""
 
       if rule.fromPort is rule.toPort and rule.protocol isnt "icmp"
         rule.toPort   = ""
@@ -178,7 +189,7 @@ define [ "constant", "../ConnectionModel", "Design" ], ( constant, ConnectionMod
 
 
 
-      if shouldDrawSgLine
+      if shouldInitSgLine
         # Check SgModel.connect() to see why we draw the SgLine here, instead of
         # drawing SgLine in SgModel.connect()
 
@@ -187,6 +198,22 @@ define [ "constant", "../ConnectionModel", "Design" ], ( constant, ConnectionMod
         p2 = @port2Comp()
         if p1 isnt p2 and p1.type isnt "SgIpTarget" and p2.type isnt "SgIpTarget"
           p1.vlineAddBatch( p2 )
+      else
+        # One caveat of SgRuleSet is that: Most SgLines mean there are SgRule between
+        # two components, but SgLine of Elb means there are in-rule for Elb.
+        # So each time, a SgRuleSet change from 0-in-rule to 1-in-rule. We need to see
+        # if there are some Elb here. And if there's elb. update its SgLine.
+        SgModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup )
+        if (oldPort1InRuleCout + oldPort2OutRuleCout is 0) and (@get("in1").length + @get("out2").length > 0)
+          for elb in @port1Comp().connectionTargets "SgAsso"
+            if elb.type is constant.AWS_RESOURCE_TYPE.AWS_ELB
+              SgModel.tryDrawLine( elb )
+
+        if (oldPort2InRuleCout + oldPort1OutRuleCout is 0) and (@get("in2").length + @get("out1").length > 0)
+          for elb in @port2Comp().connectionTargets "SgAsso"
+            if elb.type is constant.AWS_RESOURCE_TYPE.AWS_ELB
+              SgModel.tryDrawLine( elb )
+
       null
 
     # For SG1 <=> SG2
@@ -220,6 +247,12 @@ define [ "constant", "../ConnectionModel", "Design" ], ( constant, ConnectionMod
         console.warn( "Ignoring removing outbound rule in Classic Mode " )
         return
 
+      # Some bookkeeping to see if we need to remove some sglines.
+      oldPort1InRuleCout  = @get("in1").length
+      oldPort2InRuleCout  = @get("in2").length
+      oldPort1OutRuleCout = @get("out1").length
+      oldPort2OutRuleCout = @get("out2").length
+
       if rule.protocol is "-1"        then rule.protocol = "all"
       if rule.fromPort is rule.toPort then rule.toPort   = ""
 
@@ -236,9 +269,7 @@ define [ "constant", "../ConnectionModel", "Design" ], ( constant, ConnectionMod
             if port1 then "out1"  else "out2"
           ]
 
-      checkEmpty = false
-      found      = false
-
+      found = false
       for portionName in portions
         portion = @get( portionName )
 
@@ -247,13 +278,28 @@ define [ "constant", "../ConnectionModel", "Design" ], ( constant, ConnectionMod
           if existRule.fromPort is rule.fromPort and existRule.toPort is rule.toPort and existRule.protocol is rule.protocol
             portion = portion.slice(0)
             portion.splice( idx, 1 )
-            checkEmpty = portion.length is 0
             found = true
             @set portionName, portion
             break
 
-      if checkEmpty and @attributes.in1.length is 0 and @attributes.in2.length is 0 and @attributes.out1.length is 0 and @attributes.out2.length is 0
+      if @get("in1").length + @get("in2").length + @get("out1").length + @get("out2").length is 0
         @remove()
+      else
+        # One caveat of SgRuleSet is that: Most SgLines mean there are SgRule between
+        # two components, but SgLine of Elb means there are in-rule for Elb.
+        # So each time, a SgRuleSet change from 0-in-rule to 1-in-rule. We need to see
+        # if there are some Elb here. And if there's elb. update its SgLine.
+        SgModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup )
+
+        if (@get("in1").length + @get("out2").length is 0) and (oldPort1InRuleCout + oldPort2OutRuleCout > 0)
+          for elb in @port1Comp().connectionTargets "SgAsso"
+            if elb.type is constant.AWS_RESOURCE_TYPE.AWS_ELB
+              sgline.validate() for sgline in elb.connections("SgRuleLine")
+
+        if (@get("in2").length + @get("out1").length is 0) and (oldPort2InRuleCout + oldPort1OutRuleCout > 0)
+          for elb in @port2Comp().connectionTargets "SgAsso"
+            if elb.type is constant.AWS_RESOURCE_TYPE.AWS_ELB
+              sgline.validate() for sgline in elb.connections("SgRuleLine")
 
       console.assert( found, "Rule is not found when removing SG Rule", rule )
       null
@@ -372,7 +418,7 @@ define [ "constant", "../ConnectionModel", "Design" ], ( constant, ConnectionMod
           if res1SgMap[ ruleset.getOtherTarget( sg ).id ]
             foundRuleSet.push ruleset
 
-      foundRuleSet
+      _.uniq foundRuleSet
 
     # Get plain objects from an ruleset array.
     # The objects are guaranteed to be unique

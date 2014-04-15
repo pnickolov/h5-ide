@@ -1,179 +1,142 @@
-###
-emptyFunction = ->
+(()->
 
-for key, value of console
-	if key isnt 'debug' and Object.prototype.toString.call( value ) is '[object Function]'
-		console[ key ] = emptyFunction
-###
+  # When deploying, node will load this file to get the requirejs config
+  # In such case, window is undefined.
+  if not window then return
+
+
+  # Set domain and set https
+  window.MC_DOMAIN   = "visualops.io"
+  window.MC_PROTO = "https"
+  shouldUseHttps = false
+  useHttps = false
+
+  ### env:prod ###
+  useHttps = true
+  ### env:prod:end ###
+
+  ### env:debug ###
+  window.MC_DOMAIN = "mc3.io"
+  window.MC_PROTO = "https"
+  useHttps = false
+  ### env:debug:end ###
+
+  ### env:dev ###
+  window.MC_DOMAIN = "mc3.io"
+  window.MC_PROTO = "https"
+  ### env:dev:end ###
+
+  ### AHACKFORRELEASINGPUBLICVERSION ###
+  # AHACKFORRELEASINGPUBLICVERSION is a hack to force https to be disable, and only ide/config.coffee supports it.
+  shouldUseHttps = useHttps
+  ### AHACKFORRELEASINGPUBLICVERSION ###
+
+
+  # Redirect
+  l = window.location
+  window.language = window.version = ""
+  if shouldUseHttps and l.protocol is "http:"
+    window.location = l.href.replace("http:","https:")
+    return
+
+  # Get Version and locale
+  scripts = document.getElementsByTagName("script")
+  for s in scripts
+    version = s.getAttribute("data-main")
+    if version
+      window.version = version.split("?")[1]
+      break
+  if window.version is '#{version}' then window.version = "dev"
+
+  window.language = document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + "lang\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1") || "en-us"
+  null
+)()
 
 require.config {
 
-	baseUrl                  : './'
+	baseUrl     : './'
+	waitSeconds : 30
+	locale      : language
+	urlArgs     : "v=#{version}"
+	paths       :
 
-	waitSeconds              : 30
-
-	locale                   : language
-
-	urlArgs                  : 'v=' + version
-
-	paths                    :
+		### env:dev ###
+		#############################################
+		# Requirejs lib             # Merge in deploy
+		#############################################
+		'i18n'               : 'vender/requirejs/i18n'
 
 		#############################################
-		# vender
+		# vender                    # Merge in deploy
 		#############################################
-		'jquery'             : [ current_jquery , 'vender/jquery/jquery' ]
+		'jquery'             : 'vender/jquery/jquery'
 		'canvon'             : 'vender/canvon/canvon'
 
 		'underscore'         : 'vender/underscore/underscore'
 		'backbone'           : 'vender/backbone/backbone'
-		'handlebars'         : 'vender/handlebars/handlebars'
+		'handlebars'         : 'vender/handlebars/handlebars.rt'
 
-		'domReady'           : 'vender/requirejs/domReady'
-		'text'               : 'vender/requirejs/text'
-		'i18n'               : 'vender/requirejs/i18n'
-
-		'jqpagination'       : 'vender/jqpagination/jqpagination'
 		'sprintf'            : 'vender/sprintf/sprintf'
+		'Meteor'             : 'vender/meteor/meteor'
+		'crypto'             : 'vender/crypto-js/cryptobundle'
 
 		#############################################
-		# lib
+		# MC                        # Merge in deploy
 		#############################################
-		'MC'                 : 'lib/MC.core'
-		'MC.template'        : 'lib/MC.template'
-		'MC.ide.template'    : 'lib/MC.ide.template'
-		'MC.validate'  	     : 'lib/MC.validate'
+		'MC'                 : 'js/MC.core'
+		'MC.validate'        : 'js/MC.validate'
 
-		#canvas
-		'MC.canvas'          : 'lib/MC.canvas'
-		'MC.canvas.constant' : 'lib/MC.canvas.constant'
+		'canvas_layout'      : 'js/canvas_layout'
+		'MC.canvas'          : 'js/MC.canvas'
+
+		'MC.canvas.constant' : 'js/MC.canvas.constant'
+		'constant'           : 'lib/constant'
+
+		'event'              : 'lib/ide_event'
+
+		'WS'                 : 'lib/websocket'
 
 		#############################################
-		# lib/aws logic handler
+		# lib                        # Merge in deploy
 		#############################################
 		'aws_handle'         : 'lib/aws/main'
 		'forge_handle'       : 'lib/forge/main'
-		'common_handle'       : 'lib/common/main'
-
-		#
-		'validation'         : 'component/trustedadvisor/validation'
-		'ta_conf'            : 'component/trustedadvisor/config'
-		'validation_helper'	 : 'component/trustedadvisor/lib/helper'
-
-		#statusbar state
-		'state_status'       : 'component/statestatus/main'
+		'common_handle'      : 'lib/common/main'
 
 		#############################################
-		# ui/common
+		# ui/                       # Merge in deploy
 		#############################################
-		'UI.tooltip'       : 'ui/common/UI.tooltip'
-		'UI.scrollbar'     : 'ui/common/UI.scrollbar'
-		'UI.tabbar'        : 'ui/common/UI.tabbar'
-		'UI.bubble'        : 'ui/common/UI.bubble'
-		'UI.modal'         : 'ui/common/UI.modal'
-		'UI.table'         : 'ui/common/UI.table'
-		'UI.tablist'       : 'ui/common/UI.tablist'
-		'UI.selectbox'     : 'ui/common/UI.selectbox'
-		'UI.searchbar'     : 'ui/common/UI.searchbar'
-		'UI.filter'        : 'ui/common/UI.filter'
-		'UI.radiobuttons'  : 'ui/common/UI.radiobuttons'
-		'UI.notification'  : 'ui/common/UI.notification'
-		'UI.multiinputbox' : 'ui/common/UI.multiinputbox'
-		'UI.canvg'         : 'ui/common/UI.canvg'
-		'UI.sortable'      : 'ui/common/jquery.sortable'
-		'UI.parsley'       : 'ui/common/UI.parsley'
-		'UI.errortip'      : 'ui/common/UI.errortip'
+		'UI.tooltip'         : 'ui/UI.tooltip'
+		'UI.scrollbar'       : 'ui/UI.scrollbar'
+		'UI.tabbar'          : 'ui/UI.tabbar'
+		'UI.bubble'          : 'ui/UI.bubble'
+		'UI.modal'           : 'ui/UI.modal'
+		'UI.table'           : 'ui/UI.table'
+		'UI.tablist'         : 'ui/UI.tablist'
+		'UI.selectbox'       : 'ui/UI.selectbox'
+		'UI.searchbar'       : 'ui/UI.searchbar'
+		'UI.filter'          : 'ui/UI.filter'
+		'UI.radiobuttons'    : 'ui/UI.radiobuttons'
+		'UI.notification'    : 'ui/UI.notification'
+		'UI.multiinputbox'   : 'ui/UI.multiinputbox'
+		'UI.canvg'           : 'ui/UI.canvg'
+		'UI.sortable'        : 'ui/jquery.sortable'
+		'UI.parsley'         : 'ui/UI.parsley'
+		'UI.errortip'        : 'ui/UI.errortip'
+		'bootstrap-carousel' : 'ui/bootstrap-carousel'
+		'jqpagination'       : 'ui/jqpagination'
+		"jquerysort"         : 'ui/jquery.sort'
 
-		#jquery plugin
-		'hoverIntent'        : 'ui/common/jquery.hoverIntent.minified'
-		'bootstrap-carousel' : 'ui/common/bootstrap-carousel'
-
-		#delete
-		#'parsley'           : 'ui/common/parsley.min'
-		#'bootstrap-tab'     : 'ui/common/bootstrap-tab'
-		#'bootstrap-dropdown': 'ui/common/bootstrap-dropdown'
 
 		#############################################
-		# constant
-		#############################################
-		'constant'           : 'lib/constant'
-
-		#temp
-		#'layout'            : 'js/ide/layout'
-		'canvas_layout'      : 'js/ide/canvas_layout'
-
-		#############################################
-		# design model
+		# design model              # Merge in deploy
 		#############################################
 		'Design'             : 'module/design/framework/Design'
 		'CanvasManager'      : 'module/design/framework/canvasview/CanvasManager'
 
 		#############################################
-		# module
+		# model                     # Merge in deploy
 		#############################################
-		'base_main'          : 'module/base/base_main'
-
-		'header'             : 'module/header/main'
-		'header_view'        : 'module/header/view'
-		'header_model'       : 'module/header/model'
-
-		'navigation'         : 'module/navigation/main'
-		'navigation_view'    : 'module/navigation/view'
-		'navigation_model'   : 'module/navigation/model'
-
-		'tabbar'             : 'module/tabbar/main'
-		'tabbar_view'        : 'module/tabbar/view'
-		'tabbar_model'       : 'module/tabbar/model'
-
-		'dashboard'          : 'module/dashboard/main'
-		'dashboard_view'     : 'module/dashboard/overview/view'
-		'dashboard_model'    : 'module/dashboard/overview/model'
-
-		'process'            : 'module/process/main'
-		'process_view'       : 'module/process/view'
-		'process_model'      : 'module/process/model'
-
-		'design_module'      : 'module/design/main'
-		'design_view'        : 'module/design/view'
-		'design_model'       : 'module/design/model'
-
-		#sub module with design
-		'resource'           : 'module/design/resource/main'
-		'property'           : 'module/design/property/main'
-		'canvas'             : 'module/design/canvas/main'
-		'toolbar'            : 'module/design/toolbar/main'
-
-		#############################################
-		# component
-		#############################################
-
-		'unmanagedvpc'       : 'component/unmanagedvpc/main'
-		'unmanagedvpc_view'  : 'component/unmanagedvpc/view'
-		'unmanagedvpc_model' : 'component/unmanagedvpc/model'
-
-		'jquery_sort'       : 'component/stateeditor/lib/jquery_sort'
-		'markdown'    : 'component/stateeditor/lib/markdown'
-		'ace'                : 'component/stateeditor/lib/ace/ace'
-		'ace_ext_language_tools' : 'component/stateeditor/lib/ace/ext-language_tools'
-		'stateeditor'        : 'component/stateeditor/main'
-		'stateeditor_view'   : 'component/stateeditor/view'
-		'stateeditor_model'  : 'component/stateeditor/model'
-
-		#############################################
-		# events
-		#############################################
-		'event'              : 'event/ide_event'
-
-		#############################################
-		# websocket
-		#############################################
-		'Meteor'             : 'vender/meteor/meteor'
-		'WS'                 : 'lib/websocket'
-
-		#############################################
-		# model
-		#############################################
-
-		#base_model
 		'base_model'             : 'model/base_model'
 
 		'account_model'          : 'model/account_model'
@@ -202,7 +165,7 @@ require.config {
 		'result_vo'              : 'service/result_vo'
 
 		#############################################
-		# service
+		# service                   # Merge in deploy
 		#############################################
 
 		#forge
@@ -241,114 +204,76 @@ require.config {
 		'cloudwatch_service'     : 'service/aws/cloudwatch/cloudwatch/cloudwatch_service'
 		'sns_service'            : 'service/aws/sns/sns/sns_service'
 
+		### env:dev:end ###
+
+		#############################################
+		# component                 # Merge in deploy
+		#############################################
+		'validation'         : 'component/trustedadvisor/validation'
+
+
+
+		#############################################
+		# module
+		#############################################
+		'base_main'          : 'module/base/base_main'
+
+		'header'             : 'module/header/main'
+		'header_view'        : 'module/header/view'
+		'header_model'       : 'module/header/model'
+
+		'navigation'         : 'module/navigation/main'
+		'navigation_view'    : 'module/navigation/view'
+		'navigation_model'   : 'module/navigation/model'
+
+		'tabbar'             : 'module/tabbar/main'
+		'tabbar_view'        : 'module/tabbar/view'
+		'tabbar_model'       : 'module/tabbar/model'
+
+		'dashboard'          : 'module/dashboard/main'
+		'dashboard_view'     : 'module/dashboard/overview/view'
+		'dashboard_model'    : 'module/dashboard/overview/model'
+
+		'process'            : 'module/process/main'
+		'process_view'       : 'module/process/view'
+		'process_model'      : 'module/process/model'
+
+		'design_module'      : 'module/design/main'
+		'design_view'        : 'module/design/view'
+		'design_model'       : 'module/design/model'
+
+		#sub module with design
+		'resource'           : 'module/design/resource/main'
+		'property'           : 'module/design/property/property'
+		'canvas'             : 'module/design/canvas/main'
+		'toolbar'            : 'module/design/toolbar/main'
+
+		#statusbar state
+		'state_status'       : 'component/statestatus/main'
+
+		#############################################
+		# component
+		#############################################
+
+		'unmanagedvpc'       : 'component/unmanagedvpc/main'
+		'unmanagedvpc_view'  : 'component/unmanagedvpc/view'
+		'unmanagedvpc_model' : 'component/unmanagedvpc/model'
+
 	shim               :
 
 		#############################################
 		# vender
 		#############################################
 
-		'jquery'       :
-			exports    : '$'
-
 		'canvon'       :
-			deps       : [ 'jquery', 'canvas' ]
+			deps       : [ 'jquery' ]
 			exports    : 'Canvon'
 
 		'underscore'   :
 			exports    : '_'
 
-		'backbone'     :
-			deps       : [ 'underscore', 'jquery' ]
-			exports    : 'Backbone'
-
 		'handlebars'   :
 			exports    : 'Handlebars'
-
-		#############################################
-		# MC
-		#############################################
-
-		'MC'           :
-			deps       : [ 'jquery', 'underscore', 'backbone', 'handlebars', 'sprintf' ]
-			exports    : 'MC'
-
-		'MC.validate'  :
-			deps       : [ 'MC' ]
-
-		'MC.template'  :
-			deps       : [ 'handlebars', 'MC' ]
-			exports    : 'MC.template'
-
-		'MC.ide.template'  :
-			deps       : [ 'MC', 'jquery', 'underscore' ]
-
-		'MC.canvas'    :
-			deps       : [ 'MC', 'canvon' ]
-
-		'MC.canvas.constant':
-			deps       : [ 'MC.canvas' ]
-
-		'forge_handle' :
-			deps       : [ 'Design' ]
-
-		'aws_handle'   :
-			deps       : [ 'Design' ]
-
-		#############################################
-		# UI
-		#############################################
-
-		'UI.tabbar'    :
-			deps       : [ 'MC.template', 'jquery' ]
-
-		'UI.bubble'    :
-			deps       : [ 'MC.template', 'jquery' ]
-
-		'UI.modal'     :
-			deps       : [ 'MC.template', 'jquery' ]
-
-		'UI.tooltip'   :
-			deps       : [ 'jquery' ]
-
-		'UI.scrollbar' :
-			deps       : [ 'jquery' ]
-
-		'UI.table'     :
-			deps       : [ 'jquery' ]
-
-		'UI.tablist'   :
-			deps       : [ 'jquery' ]
-
-		'UI.selectbox' :
-			deps       : [ 'jquery' ]
-
-		'UI.searchbar' :
-			deps       : [ 'jquery' ]
-
-		'UI.filter'    :
-			deps       : [ 'jquery' ]
-
-		'UI.radiobuttons' :
-			deps       : [ 'jquery' ]
-
-		'UI.notification' :
-			deps       : [ 'jquery' ]
-
-		'UI.multiinputbox' :
-			deps       : [ 'jquery' ]
-
-		'UI.sortable'  :
-			deps       : [ 'jquery' ]
-
-		'UI.parsley'   :
-			deps       : [ 'jquery', 'UI.errortip' ]
-
-		'UI.errortip'   :
-			deps       : [ 'jquery' ]
-
-
-		'bootstrap-carousel':
-			deps	   : [ 'jquery' ]
 
 		#############################################
 		# WS
@@ -357,10 +282,6 @@ require.config {
 		'Meteor'       :
 			deps       : ['underscore']
 			exports    : 'Meteor'
-
-		'WS'           :
-			deps       : [ 'Meteor', 'underscore', 'MC' ]
-			exports    : 'WS'
 
 		#############################################
 		# modules
@@ -381,28 +302,158 @@ require.config {
 		'process'      :
 			deps       : [ 'process_view', 'process_model', 'MC' ]
 
-		# unmanaged vpc
+	### env:prod ###
+	# The rule of bundles is that, if an ID defined above is ever included in a bundle
+	# Then that ID should appear in the bundle's array.
+	bundles :
+		"vender/requirejs/requirelib" : [ "i18n" ] # requirelib must be the first one.
+		"vender/vender" : [
+			"jquery"
+			"backbone"
+			"underscore"
+			"handlebars"
+			"sprintf"
+			"Meteor"
+			"canvon"
+			"crypto"
+		]
+		"lib/lib" : [
+			"MC"
+			"constant"
+			"MC.canvas"
+			"MC.canvas.constant"
+			'MC.validate'
+			"canvas_layout"
+			"lib/handlebarhelpers"
+			"event"
+			"WS"
+		]
+		"lib/deprecated" : [
+			'aws_handle'
+			'forge_handle'
+			'common_handle'
+		]
+		"ui/ui" : [
+			'UI.tooltip'
+			'UI.scrollbar'
+			'UI.tabbar'
+			'UI.bubble'
+			'UI.modal'
+			'UI.table'
+			'UI.tablist'
+			'UI.selectbox'
+			'UI.searchbar'
+			'UI.filter'
+			'UI.radiobuttons'
+			'UI.notification'
+			'UI.multiinputbox'
+			'UI.canvg'
+			'UI.sortable'
+			'UI.parsley'
+			'UI.errortip'
+			"jqpagination"
+			'bootstrap-carousel'
+			'jquerysort'
+		]
+		"model/model" : [
+			'base_model'
+			'account_model'
+			'session_model'
+			'favorite_model'
+			'app_model'
+			'stack_model'
+			'state_model'
+			'ec2_model'
+			'vpc_model'
+			'aws_model'
+			'ami_model'
+			'ebs_model'
+			'elb_model'
+			'dhcp_model'
+			'customergateway_model'
+			'vpngateway_model'
+			'keypair_model'
+			'autoscaling_model'
+			'cloudwatch_model'
+			'sns_model'
+			'subnet_model'
+			'instance_model'
+			'result_vo'
+			'favorite_service'
+			'session_service'
+			'account_service'
+			'app_service'
+			'stack_service'
+			'aws_service'
+			'state_service'
+			'ami_service'
+			'ebs_service'
+			'ec2_service'
+			'eip_service'
+			'instance_service'
+			'keypair_service'
+			'placementgroup_service'
+			'securitygroup_service'
+			'acl_service'
+			'customergateway_service'
+			'dhcp_service'
+			'eni_service'
+			'internetgateway_service'
+			'routetable_service'
+			'subnet_service'
+			'vpc_service'
+			'vpngateway_service'
+			'vpn_service'
+			'elb_service'
+			'iam_service'
+			'autoscaling_service'
+			'cloudwatch_service'
+			'sns_service'
+		]
+		"component/sgrule/SGRulePopup" : []
+		"component/exporter/Exporter"  : [ "component/exporter/Download", "component/exporter/Thumbnail", "component/exporter/JsonExporter" ]
+		"module/design/framework/DesignBundle" : [ "Design", "CanvasManager" ]
+		"validation" : []
+		"component/stateeditor/stateeditor" : []
+		"property" : []
 
-		# state editor
-		'jquery_sort' :
-			deps       : [ 'jquery', 'MC' ]
+	bundleExcludes : # This is a none requirejs option, but it's used by compiler to exclude some of the source.
+		"lib/deprecated" : ["Design"]
+		"component/sgrule/SGRulePopup" : [ "Design" ]
+		"component/stateeditor/stateeditor" : [
+			"component/stateeditor/lib/ace"
+			"component/stateeditor/lib/markdown"
+		]
+		"module/design/framework/DesignBundle" : [ "component/sgrule/SGRulePopup" ]
+		"property" : [ "component/sgrule/SGRulePopup" ]
 
-		'markdown' :
-			deps       : [ 'MC' ]
-
-		'ace_ext_language_tools' :
-			deps       : [ 'ace' ]
-
-		'stateeditor'  :
-			deps       : [ 'stateeditor_view', 'stateeditor_model', 'jquery_sort', 'markdown', 'ace_ext_language_tools', 'MC' ]
+	### env:prod:end ###
 }
 
-require [ 'domReady', './js/ide/ide' ], ( domReady, ide ) ->
+requirejs.onError = ( err )->
+	# Because there are so many **WRONG USAGE** of require()
+	# We can only try reloading the dependency if timeout
+	err = err || { requireType : "timeout" }
+	if err.requireType is "timeout"
+		for i in err.requireModules || []
+			requirejs.undef i
 
-	l = window.location
-	if l.protocol is "http:" and not l.port
-		window.location = l.href.replace("http:","https:")
-		return
+		require err.requireModules || [], ()->
+	else
+		console.log "[RequireJS Error]", err
 
-	domReady () -> ide.initialize()
-	null
+
+require ['./js/ide/ide' ], ( ide ) ->
+	$ ()-> ide.initialize()
+, ( err )->
+	err = err || { requireType : "timeout" }
+	if err.requireType is "timeout"
+		requirejs.onError = ()-> # Just use to suppress subsequent error
+		console.error "[RequireJS timeout] Reloading, error modules :", err.requireModules
+		window.location.reload()
+	else if err.requireType is "scripterror"
+		console.log "[RequireJS Error]", err
+		# requirejs.onError = ()-> # Just use to suppress subsequent error
+		# console.error "[Script Error] Redirecting to 500, error modules :", err.requireModules
+		# window.location = "/500"
+	return

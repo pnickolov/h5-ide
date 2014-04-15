@@ -2,9 +2,7 @@
 #  validation
 #############################
 
-define [ 'constant', 'event', 'ta_conf', './validation/main', './validation/result_vo',
-         'jquery', 'underscore'
-], ( constant, ide_event, config, validation_main, resultVO ) ->
+define [ 'constant', 'event', 'component/trustedadvisor/config', 'component/trustedadvisor/validation/main', 'component/trustedadvisor/validation/result_vo', 'jquery', 'underscore' ], ( constant, ide_event, config, validation_main, resultVO ) ->
 
     ########## Functional Method ##########
 

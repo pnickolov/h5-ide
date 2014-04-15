@@ -3,11 +3,11 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 	setCookie = ( result ) ->
 
 
-		if document.domain.indexOf('madeiracloud.com') != -1
-			#domain is *.madeiracloud.com
+		if document.domain.indexOf(MC.DOMAIN) != -1
+			#domain is *.visualops.io
 			option = constant.COOKIE_OPTION
 		else
-			#domain is not *.madeiracloud.com, maybe localhost
+			#domain is not *.visualops.io, maybe localhost
 			option = constant.LOCAL_COOKIE_OPTION
 
 		#set cookies
@@ -27,11 +27,11 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 	deleteCookie = ->
 
-		if document.domain.indexOf('madeiracloud.com') != -1
-			#domain is *.madeiracloud.com
+		if document.domain.indexOf(MC.DOMAIN) != -1
+			#domain is *.visualops.io
 			option = constant.COOKIE_OPTION
 		else
-			#domain is not *.madeiracloud.com, maybe localhost
+			#domain is not *.visualops.io, maybe localhost
 			option = constant.LOCAL_COOKIE_OPTION
 
 		#delete cookies
@@ -53,11 +53,11 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 	setCred = ( result ) ->
 
-		if document.domain.indexOf('madeiracloud.com') != -1
-			#domain is *.madeiracloud.com
+		if document.domain.indexOf(MC.DOMAIN) != -1
+			#domain is *.visualops.io
 			option = constant.COOKIE_OPTION
 		else
-			#domain is not *.madeiracloud.com, maybe localhost
+			#domain is not *.visualops.io, maybe localhost
 			option = constant.LOCAL_COOKIE_OPTION
 
 
@@ -65,11 +65,11 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 	setIDECookie = ( result ) ->
 
-		if document.domain.indexOf('madeiracloud.com') != -1
-			#domain is *.madeiracloud.com
+		if document.domain.indexOf(MC.DOMAIN) != -1
+			#domain is *.visualops.io
 			option = constant.COOKIE_OPTION
 		else
-			#domain is not *.madeiracloud.com, maybe localhost
+			#domain is not *.visualops.io, maybe localhost
 			option = constant.LOCAL_COOKIE_OPTION
 
 
@@ -132,7 +132,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 	#clearInvalidCookie = ( ) ->
 	#	#for patch
-	#	option = { domain: 'ide.madeiracloud.com', path: '/' }
+	#	option = { domain: 'ide.visualops.io', path: '/' }
 	#
 	#	$.each $.cookie(), ( key, cookie_name ) ->
 	#		$.removeCookie cookie_name	, option
@@ -145,11 +145,11 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 	setCookieByName = ( cookie_name, value ) ->
 
-		if document.domain.indexOf('madeiracloud.com') != -1
-			#domain is *.madeiracloud.com
+		if document.domain.indexOf(MC.DOMAIN) != -1
+			#domain is *.visualops.io
 			option = constant.COOKIE_OPTION
 		else
-			#domain is not *.madeiracloud.com, maybe localhost
+			#domain is not *.visualops.io, maybe localhost
 			option = constant.LOCAL_COOKIE_OPTION
 
 

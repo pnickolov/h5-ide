@@ -95,29 +95,28 @@ header {
 
 .verification-status {
 	margin-bottom: 10px;
- 	padding: 10px 15px;
+ 	padding: 3px 0;
  	font-size: 14px;
  	border-radius: 4px;
-	color: #14683D;
-	background-color: #BEF5BA;
+	color: #21B368;
 	display: none;
 }
 
 
 .error-msg,
 .error-status {
- 	padding: 10px 15px;
- 	font-size: 14px;
+ 	padding:       3px 0;
+ 	font-size:     14px;
  	border-radius: 4px;
-	color: #FFEBEA;
-	background-color: #BE2608
+	color:         #F53E1A;
+	margin-bottom: 10px;
 }
 
 .error-status, .verification-status{
     position: absolute;
     z-index: 10;
     margin-top: -10px;
-    width: 360px;
+    width: 370px;
 }
 
 .error-msg {
@@ -175,7 +174,7 @@ header {
 }
 
 .control-group {
-	margin: 20px 0;
+	margin: 10px 0 40px 0;
 }
 
 .control-group.error label {

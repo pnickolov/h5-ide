@@ -34,9 +34,13 @@ define [ 'event',
             'click #account-password-update'        : 'clickUpdatePassword'
             'click #account-password-cancel'        : 'clickCancelPassword'
 
-            'change #aws-credential-account-id'     : 'verificationKey'
-            'change #aws-credential-access-key'     : 'verificationKey'
-            'change #aws-credential-secret-key'     : 'verificationKey'
+            'input #aws-credential-account-id'     : 'verificationKey'
+            'input #aws-credential-access-key'     : 'verificationKey'
+            'input #aws-credential-secret-key'     : 'verificationKey'
+
+            # 'paste #aws-credential-account-id'     : 'verificationKey'
+            # 'paste #aws-credential-access-key'     : 'verificationKey'
+            # 'paste #aws-credential-secret-key'     : 'verificationKey'
 
             #welcome
             'click #awscredentials-skip'            : 'onSkinButton'

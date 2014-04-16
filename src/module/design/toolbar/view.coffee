@@ -52,7 +52,7 @@ define [ 'MC', 'event',
             'click #toolbar-cancel-edit-app' : 'clickCancelEditApp'
 
             'click .toolbar-visual-ops-switch' : 'opsOptionChanged'
-            'click #apply-visops'              : 'openExperimentalVisops'
+            #'click #apply-visops'             : 'openExperimentalVisops'
 
         # when flag = 0 not invoke opsState
         # when flag = 1 invoke opsState
@@ -124,8 +124,8 @@ define [ 'MC', 'event',
             $( document.body ).on 'click', '.modal-footer #btn-confirm', this, () -> modal.close()
 
             # experimentalVisops
-            $( document.body ).on 'click', '#experimental-visops-confirm', this, @experimentalVisopsConfirm
-            $( document.body ).on 'click', '#experimental-visops-cancel', this, () -> modal.close()
+            #$( document.body ).on 'click', '#experimental-visops-confirm', this, @experimentalVisopsConfirm
+            #$( document.body ).on 'click', '#experimental-visops-cancel', this, () -> modal.close()
 
         reRender   : ( type ) ->
             console.log 're-toolbar render'
@@ -735,17 +735,17 @@ define [ 'MC', 'event',
                     $switchCheckbox.removeClass 'on'
 
             # set visual-ops-switch show/hide
-            if MC.common.cookie.getCookieByName( 'is_invitated' ) in [ 'true', true, 2, '2' ]
-
-                $applyVisops.hide()
-                $switchCheckbox.show()
-
-            else if MC.common.cookie.getCookieByName( 'is_invitated' ) in [ 'false', false, 0, '0', 1, '1' ]
-
-                $applyVisops.show()
-                $switchCheckbox.hide()
-
-                @model.setAgentEnable false
+            #if MC.common.cookie.getCookieByName( 'is_invitated' ) in [ 'true', true, 2, '2' ]
+            #
+            #    $applyVisops.hide()
+            #    $switchCheckbox.show()
+            #
+            #else if MC.common.cookie.getCookieByName( 'is_invitated' ) in [ 'false', false, 0, '0', 1, '1' ]
+            #
+            #    $applyVisops.show()
+            #    $switchCheckbox.hide()
+            #
+            #    @model.setAgentEnable false
 
         opsOptionChanged : (event) ->
 
@@ -773,33 +773,33 @@ define [ 'MC', 'event',
 
             ide_event.trigger ide_event.REFRESH_PROPERTY
 
-        openExperimentalVisops : ->
-            console.log 'openExperimentalVisops'
+        #openExperimentalVisops : ->
+        #    console.log 'openExperimentalVisops'
+        #
+        #    # modal experimentalVisops
+        #    modal MC.template.experimentalVisops()
+        #
+        #    # if is_invitated = 1, explanation audit
+        #    if MC.common.cookie.getCookieByName( 'is_invitated' ) in [ 1, '1' ]
+        #        $( '.modal-body' ).html MC.template.experimentalVisopsTrail()
+        #        $( '#experimental-visops-cancel'  ).html lang.ide.INVITE_MOD_BTN_DONE
+        #        $( '#experimental-visops-confirm' ).hide()
 
-            # modal experimentalVisops
-            modal MC.template.experimentalVisops()
-
-            # if is_invitated = 1, explanation audit
-            if MC.common.cookie.getCookieByName( 'is_invitated' ) in [ 1, '1' ]
-                $( '.modal-body' ).html MC.template.experimentalVisopsTrail()
-                $( '#experimental-visops-cancel'  ).html lang.ide.INVITE_MOD_BTN_DONE
-                $( '#experimental-visops-confirm' ).hide()
-
-        experimentalVisopsConfirm : ( event ) ->
-            console.log 'experimentalVisopsConfirm', event
-
-            # push event
-            event.data.trigger 'APPLAY_TRIAL', $( '#experimental-message' ).val()
-
-            # change modal body
-            $( '.modal-body' ).html MC.template.experimentalVisopsTrail()
-            $( '#experimental-visops-cancel'  ).html lang.ide.INVITE_MOD_BTN_DONE
-            $( '#experimental-visops-confirm' ).hide()
-
-            # set is_invitated
-            MC.common.cookie.setCookieByName 'is_invitated', 1
-
-            null
+        #experimentalVisopsConfirm : ( event ) ->
+        #    console.log 'experimentalVisopsConfirm', event
+        #
+        #    # push event
+        #    event.data.trigger 'APPLAY_TRIAL', $( '#experimental-message' ).val()
+        #
+        #    # change modal body
+        #    $( '.modal-body' ).html MC.template.experimentalVisopsTrail()
+        #    $( '#experimental-visops-cancel'  ).html lang.ide.INVITE_MOD_BTN_DONE
+        #    $( '#experimental-visops-confirm' ).hide()
+        #
+        #    # set is_invitated
+        #    MC.common.cookie.setCookieByName 'is_invitated', 1
+        #
+        #    null
     }
 
     return ToolbarView

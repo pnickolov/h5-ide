@@ -4395,7 +4395,7 @@ a.action-link:hover {
 #sg-protocol-select-result {
 	display    : inline-block;
 	width      : 240px;
-	margin-left: 7px;
+	margin-left: 10px;
 }
 #modal-sg-rule .protocol-icmp-sub-select.shown {
 	display: block;
@@ -5908,8 +5908,8 @@ summary:focus {
 }
 
 .no-item .validation-counter {
-	background-color: #aaa;
-	color: #f3f3f3;
+	background-color: #4b4b4b;
+	color: #ccc;
 	box-shadow: none;
 }
 
@@ -6197,6 +6197,11 @@ summary:focus {
 	width: 200px;
 }
 
+#asg-policy-name[readonly] {
+	background: none;
+	border: none;
+}
+
 #asg-termination-policy h5 {
 	color: #999;
 	font-size: 14px;
@@ -6291,8 +6296,8 @@ summary:focus {
 	font-size: 12px !important;
 }
 
-#Intercom {
-	background    : #9C6DC0;
+#feedback {
+	background    : #9C6DC0 url('../images/ide/icon/icon-feedback.png') 10px 10px no-repeat;
 	border        : 1px solid #333;
 	border-bottom : none;
 	border-radius : 4px 4px 0 0;
@@ -6302,7 +6307,7 @@ summary:focus {
 	top        : 70%;
 	left       : -38px;
 	text-align : center;
-	padding    : 10px;
+	padding    : 10px 10px 10px 36px;
 	z-index    : 99;
 
 	color       : #eee;
@@ -6316,19 +6321,10 @@ summary:focus {
 	transform         : rotate(90deg);
 }
 
-#Intercom:hover {
+#feedback:hover {
 	left: -35px;
 	color: #fff;
-	background: #9F62D1;
-}
-
-.icon-feedback {
-	display: inline-block;
-	width: 20px;
-	height: 20px;
-	margin-right: 10px;
-	margin-bottom: -5px;
-	background: url('../images/ide/icon/icon-feedback.png') no-repeat;
+	background-color : #9F62D1;
 }
 
 /* modalDownloadCloudFormationTpl */

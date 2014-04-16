@@ -12,27 +12,6 @@
 	src: local('Lato Bold'), local('Lato-Bold'), url('../fonts/Lato-Bold.woff') format('woff');
 }
 
-@font-face {
-	font-family: 'OxygenMono';
-	font-style: normal;
-	font-weight: 400;
-	src: local('Oxygen'), local('Oxygen-Regular'), url('../fonts/OxygenMono-Regular.woff') format('woff');
-}
-
-@font-face {
-	font-family: 'OxygenMono';
-	font-style: normal;
-	font-weight: 700;
-	src: local('Oxygen Bold'), local('Oxygen-Bold'), url('../fonts/OxygenMono-Bold.woff') format('woff');
-}
-
-@font-face {
-	font-family: 'Anonymous Pro';
-	font-style: normal;
-	font-weight: 400;
-	src: local('AnonymousPro Regular'), local('AnonymousPro-Regular'), url('../fonts/AnonymousPro-Regular.woff') format('woff');
-}
-
 .font-mono {
 	font-family: "Monaco","Consolas", monospace;
 	/*font-family: "Lucida Console", "Monaco", monospace;*/

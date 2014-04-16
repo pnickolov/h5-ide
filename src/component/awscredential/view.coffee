@@ -34,6 +34,14 @@ define [ 'event',
             'click #account-password-update'        : 'clickUpdatePassword'
             'click #account-password-cancel'        : 'clickCancelPassword'
 
+            'input #aws-credential-account-id'     : 'verificationKey'
+            'input #aws-credential-access-key'     : 'verificationKey'
+            'input #aws-credential-secret-key'     : 'verificationKey'
+
+            'keyup #aws-credential-account-id'     : 'verificationKey'
+            'keyup #aws-credential-access-key'     : 'verificationKey'
+            'keyup #aws-credential-secret-key'     : 'verificationKey'
+
             'change #aws-credential-account-id'     : 'verificationKey'
             'change #aws-credential-access-key'     : 'verificationKey'
             'change #aws-credential-secret-key'     : 'verificationKey'
@@ -262,7 +270,7 @@ define [ 'event',
 
                 $('#account-passowrd-info').show()
 
-                $('#account-passowrd-info').html lang.ide.HEAD_MSG_ERR_WRONG_PASSWORD + ' <a href="/reset" target="_blank">' + lang.ide.HEAD_MSG_INFO_FORGET_PASSWORD + '</a>'
+                $('#account-passowrd-info').html lang.ide.HEAD_MSG_ERR_WRONG_PASSWORD + ' <a href="/reset/" target="_blank">' + lang.ide.HEAD_MSG_INFO_FORGET_PASSWORD + '</a>'
             else
 
                 $('#account-passowrd-info').hide()
@@ -392,9 +400,9 @@ define [ 'event',
                     $('#AWSCredentials-update').hide()
 
                     # set content
-                    $('#aws-credential-account-id').val(' ')
-                    $('#aws-credential-access-key').val(' ')
-                    $('#aws-credential-secret-key').val(' ')
+                    $('#aws-credential-account-id').val ''
+                    $('#aws-credential-access-key').val ''
+                    $('#aws-credential-secret-key').val ''
 
                     #$('#AWSCredential-failed').hide()
                     if @state is 'credential'
@@ -472,8 +480,8 @@ define [ 'event',
                     $('#awscredentials-remove').removeClass("btn btn-red")
 
                     #clear key
-                    $('#aws-credential-access-key').val(' ')
-                    $('#aws-credential-secret-key').val(' ')
+                    $('#aws-credential-access-key').val ''
+                    $('#aws-credential-secret-key').val ''
 
                     # check whether there are stopped/running/processing app
                     num = 0
@@ -487,7 +495,7 @@ define [ 'event',
                         $( '#awscredentials-remove' ).show()
 
                     if me.model.attributes.account_id is 'demo_account'
-                        $('#aws-credential-account-id').val ' '
+                        $('#aws-credential-account-id').val ''
                         $( '#aws-credential-account-id' ).attr 'disabled', false
 
                 else if flag is 'on_submit'
@@ -522,6 +530,12 @@ define [ 'event',
                     # change remove button's style
                     $('#awscredentials-remove').addClass("btn btn-red")
                     # hide submit botton
+
+            # set awscredentials-remove show|hide
+            if MC.common.cookie.getCookieByName( 'account_id' ) is 'demo_account'
+                $( '#awscredentials-remove' ).hide()
+            else
+                $( '#awscredentials-remove' ).show()
 
             null
 

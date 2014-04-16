@@ -2536,6 +2536,18 @@ module.exports =
       en: "Click to read related AWS document"
       zh: ""
 
+    PROP_ELB_CERT_REMOVE_CONFIRM_TITLE:
+      en: "Confirm to Delete Server Certificate"
+      zh: ""
+
+    PROP_ELB_CERT_REMOVE_CONFIRM_MAIN:
+      en: "Do you confirm to delete "
+      zh: ""
+
+    PROP_ELB_CERT_REMOVE_CONFIRM_SUB:
+      en: "Load Balancer currently using this server certificate will have errors."
+      zh: ""
+
     PROP_ASG_SUMMARY:
       en: "Auto Scaling Group Summary"
       zh: "自动伸缩组摘要"
@@ -4087,7 +4099,7 @@ module.exports =
     ## State Editor Toolbar
 
     STATE_TOOL_ADD_STATE:
-      en: "+ Add State"
+      en: "Add State"
       zh: ""
 
     STATE_TOOL_COPY_ALL:
@@ -4618,7 +4630,7 @@ module.exports =
       en:"VPN Connection of <span class='validation-tag tag-cgw'>%s</span> and <span class='validation-tag tag-vgw'>%s</span> is missing IP prefix."
       zh:""
     TA_MSG_ERROR_VPN_NOT_PUBLIC_IP:
-      en:"VPN Connection <span class='validation-tag tag-vpn'>%s</span>'s IP prefix(%s) is invalid."
+      en:"VPN Connection <span class='validation-tag tag-vpn'>%s</span>'s IP prefix <span class='validation-tag tag-ip'>%s</span> is invalid."
       zh:""
 
     # Stack

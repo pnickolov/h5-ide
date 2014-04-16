@@ -1713,6 +1713,10 @@ textarea {
 	border-bottom : 1px solid rgba(0,0,0,.5);
 }
 
+.selectbox .dropdown .item.selected:last-child {
+	border-bottom : none;
+}
+
 /* Radio Buttons */
 
 .radiobuttons {

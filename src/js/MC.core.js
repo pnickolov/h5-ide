@@ -9,6 +9,39 @@
 # **********************************************************
 */
 
+/* Define as MC module */
+define( "MC", [ "ui/MC.template", "lib/handlebarhelpers", "jquery", "sprintf" ], function ( template ) {
+
+var storage = function( instance ) {
+	var s = {
+		  set: function (name, value) {
+			instance[name] = typeof value === 'object' ? JSON.stringify(value) : value;
+		}
+
+		, get: function (name) {
+			var data = instance[name];
+
+			if (MC.isJSON(data))
+			{
+				return JSON.parse(data);
+			}
+
+			return data || '';
+		}
+
+		, remove: function (name) {
+			instance.removeItem(name);
+
+			return true;
+		}
+
+		, clear: function() {
+			instance.clear();
+		}
+	};
+	return s;
+};
+
 var MC = {
 	// Global Variable
 
@@ -16,8 +49,6 @@ var MC = {
 	API_HOST : window.MC_PROTO + "://api." + window.MC_DOMAIN,
 
 	IMG_URL: './assets/images/',
-
-	current_module : {},
 
 	_extractIDRegex : /^\s*?@?{?([-A-Z0-9a-z]+)}?/,
 
@@ -145,6 +176,10 @@ var MC = {
 			version = /msie ([0-9]{1,2})/ig.exec(ua)[1];
 		}
 
+		if (navigator.platform.toLowerCase().indexOf('mac') >= 0) {
+			doc.addClass('mac');
+		}
+
 		version = version * 1;
 
 		MC.browser = name;
@@ -195,16 +230,6 @@ var MC = {
 	capitalize: function (string)
 	{
 	    return string.charAt(0).toUpperCase() + string.slice(1);
-	},
-
-	canvasName : function (string)
-	{
-		return string.length > 17 ? string.substring(0, 17 - 3) + '...' : string;
-	},
-
-	asgName : function (string)
-	{
-		return string.length > 15 ? string.substring(0, 15 - 3) + '...' : string;
 	},
 
 	truncate: function (string, length)
@@ -461,18 +486,6 @@ var MC = {
 		return decodeURIComponent(escape(window.atob( string )));
 	},
 
-	log: function (module_name, log_level, content)
-	{
-		//log_level  info|log|debug|warn|error
-
-		if (MC.current_module !== module_name)
-		{
-			return;
-		}
-
-		console[ log_level ]('[', module_name, ']', content);
-	},
-
 	camelCase: function (string)
 	{
 		return string.replace(/-([a-z])/ig, function (match, letter)
@@ -481,111 +494,67 @@ var MC = {
 		});
 	},
 
-	getBoolean: function (string)
-	{
-		if ( string === "true"  || string === "True" )  return true;
-		if ( string === "false" || string === "False" ) return false;
-		return !!string;
-	}
-};
+	/*
+	* Storage
+	* Author: Angel & Tim
+	*
+	* Save data into local computer via HTML5 localStorage or sessionStorage.
+	*
+	* Saving data
+	* MC.[storage|session].set(name, value)
+	*
+	* Getting data
+	* MC.[storage|session].get(name)
+	*
+	* Remove data
+	* MC.[storage|session].remove(name)
+	*/
+	storage : storage( localStorage ),
+	session : storage( sessionStorage ),
 
-/*
-* Storage
-* Author: Angel & Tim
-*
-* Save data into local computer via HTML5 localStorage or sessionStorage.
-*
-* Saving data
-* MC.[storage|session].set(name, value)
-*
-* Getting data
-* MC.[storage|session].get(name)
-*
-* Remove data
-* MC.[storage|session].remove(name)
-*/
+	cacheForDev : function( key, data, callback ) {
+		/* env:dev */
 
-var storage = function( instance ) {
-	return {
-		  set: function (name, value) {
-			instance[name] = typeof value === 'object' ? JSON.stringify(value) : value;
+		if ( key && data ) {
+			// don't cache if resolved_data is null or is_error is true
+			if ( !data.is_error && (!data.hasOwnProperty('resolved_data') || data.resolved_data) )
+				MC.session.set( key, data );
+
+			return;
 		}
 
-		, get: function (name) {
-			var data = instance[name];
+		data = MC.session.get( key );
 
-			if (MC.isJSON(data))
-			{
-				return JSON.parse(data);
-			}
-
-			return data || '';
-		}
-
-		, remove: function (name) {
-			instance.removeItem(name);
-
+		if ( data && callback ){
+			callback( data );
 			return true;
 		}
 
-		, clear: function() {
-			instance.clear();
+		if ( data ) {
+			return data
 		}
+
+		/* env:dev:end */
+
+		return false;
+
+
 	}
-}
-
-MC.storage = storage( localStorage )
-MC.session = storage( sessionStorage )
-
-MC.cacheForDev = function( key, data, callback ) {
-	/* env:dev */
-
-	if ( key && data ) {
-		// don't cache if resolved_data is null or is_error is true
-		if ( !data.is_error && (!data.hasOwnProperty('resolved_data') || data.resolved_data) )
-			MC.session.set( key, data );
-
-		return;
-	}
-
-	data = MC.session.get( key );
-
-	if ( data && callback ){
-		callback( data );
-		return true;
-	}
-
-	if ( data ) {
-		return data
-	}
-
-	/* env:dev:end */
-
-	return false;
-
 
 };
 
-/* Define as MC module */
-define( "MC", [ "ui/MC.template", "lib/handlebarhelpers", "jquery", "sprintf" ], function ( template ) {
+window.MC = MC;
 
-// For event handler
-var returnTrue = function () {return true},
-	returnFalse = function () {return false};
 
-/**
- * jQuery plugin to convert a given $.ajax response xml object to json.
- *
- * @example var json = $.xml2json(response);
- * modified by Angel
- */
-(function ()
-{
-	jQuery.extend(
-	{
 
-		xml2json: function xml2json(xml)
-		{
+	/**
+	 * jQuery plugin to convert a given $.ajax response xml object to json.
+	 *
+	 * @example var json = $.xml2json(response);
+	 * modified by Angel
+	 */
+	jQuery.extend({
+		xml2json : function xml2json(xml) {
 			var result = {},
 				attribute,
 				content,
@@ -716,54 +685,20 @@ var returnTrue = function () {return true},
 			return result;
 		}
 	});
-})();
 
-/*!
- * jQuery Cookie Plugin v1.3.1
- * https://github.com/carhartl/jquery-cookie
- *
- * Copyright 2013 Klaus Hartl
- * Released under the MIT license
- */
-(function(e){function m(a){return a}function n(a){return decodeURIComponent(a.replace(j," "))}function k(a){0===a.indexOf('"')&&(a=a.slice(1,-1).replace(/\\"/g,'"').replace(/\\\\/g,"\\"));try{return d.json?JSON.parse(a):a}catch(c){}}var j=/\+/g,d=e.cookie=function(a,c,b){if(void 0!==c){b=e.extend({},d.defaults,b);if("number"===typeof b.expires){var g=b.expires,f=b.expires=new Date;f.setDate(f.getDate()+g)}c=d.json?JSON.stringify(c):String(c);return document.cookie=[d.raw?a:encodeURIComponent(a),"=",d.raw?c:encodeURIComponent(c),b.expires?"; expires="+b.expires.toUTCString():"",b.path?"; path="+b.path:"",b.domain?"; domain="+b.domain:"",b.secure?"; secure":""].join("")}c=d.raw?m:n;b=document.cookie.split("; ");for(var g=a?void 0:{},f=0,j=b.length;f<j;f++){var h=b[f].split("="),l=c(h.shift()),h=c(h.join("="));if(a&&a===l){g=k(h);break}a||(g[l]=k(h))}return g};d.defaults={};e.removeCookie=function(a,c){return void 0!==e.cookie(a)?(e.cookie(a,"",e.extend({},c,{expires:-1})),!0):!1}})(jQuery);
+	/*!
+	 * jQuery Cookie Plugin v1.3.1
+	 * https://github.com/carhartl/jquery-cookie
+	 *
+	 * Copyright 2013 Klaus Hartl
+	 * Released under the MIT license
+	 */
+	(function(e){function m(a){return a}function n(a){return decodeURIComponent(a.replace(j," "))}function k(a){0===a.indexOf('"')&&(a=a.slice(1,-1).replace(/\\"/g,'"').replace(/\\\\/g,"\\"));try{return d.json?JSON.parse(a):a}catch(c){}}var j=/\+/g,d=e.cookie=function(a,c,b){if(void 0!==c){b=e.extend({},d.defaults,b);if("number"===typeof b.expires){var g=b.expires,f=b.expires=new Date;f.setDate(f.getDate()+g)}c=d.json?JSON.stringify(c):String(c);return document.cookie=[d.raw?a:encodeURIComponent(a),"=",d.raw?c:encodeURIComponent(c),b.expires?"; expires="+b.expires.toUTCString():"",b.path?"; path="+b.path:"",b.domain?"; domain="+b.domain:"",b.secure?"; secure":""].join("")}c=d.raw?m:n;b=document.cookie.split("; ");for(var g=a?void 0:{},f=0,j=b.length;f<j;f++){var h=b[f].split("="),l=c(h.shift()),h=c(h.join("="));if(a&&a===l){g=k(h);break}a||(g[l]=k(h))}return g};d.defaults={};e.removeCookie=function(a,c){return void 0!==e.cookie(a)?(e.cookie(a,"",e.extend({},c,{expires:-1})),!0):!1}})(jQuery);
 
-/* Global initialization */
-$(document).ready(function ()
-{
-	var language = $.cookie('lang');
-
-	if (language === undefined)
-	{
-		language = navigator.language ? navigator.language : navigator.browserLanguage;
-
-		language = language.replace(/-[\w]*/ig, '');
-
-		if ( language === 'zh' ) {
-			language = 'zh-cn';
-		}
-		else if ( language === 'en' ) {
-			language = 'en-us';
-		}
-		else {
-			language = 'en-us';
-		}
-
-		// MC.storage.set( 'language', language );
-
-		// $.cookie('lang', language);
-	}
-
-	$(document.body).addClass('locale-' + language);
-
-	if (navigator.platform.toLowerCase().indexOf('mac') >= 0)
-	{
-		$(document.body).addClass('mac');
-	}
-
+	/* Global initialization */
 	// Detecting browser and add the class name on body, so that we can use specific CSS style
 	// or for specific usage.
-	MC.browserDetect();
-});
+	$(document).ready(MC.browserDetect);
 
 	MC.template = template;
 	return MC;

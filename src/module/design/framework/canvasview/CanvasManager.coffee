@@ -93,7 +93,7 @@ define [], ()->
       element = $( element )
 
       if not attr
-        element.text( value )
+        element.text( MC.truncate value, 17 )
       else if attr is "href" or attr is "image"
         value = MC.IMG_URL + value
         href = element[0].getAttributeNS("http://www.w3.org/1999/xlink", "href")

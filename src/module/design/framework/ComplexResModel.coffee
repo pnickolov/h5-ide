@@ -168,62 +168,6 @@ define [ "Design", "CanvasManager", "./ResourceModel", "constant", "./canvasview
         v.draw.apply v, args
       null
 
-    createNode : ( option )->
-      # A helper function to create a SVG Element to represent a group
-      x      = @x()
-      y      = @y()
-      width  = @width()  * MC.canvas.GRID_WIDTH
-      height = @height() * MC.canvas.GRID_HEIGHT
-
-      node = Canvon.group().append(
-
-        Canvon.rectangle(0, 0, width, height).attr({
-          'class' : 'node-background'
-          'rx'    : 5
-          'ry'    : 5
-        }),
-
-        Canvon.image( MC.IMG_URL + option.image, option.imageX, option.imageY, option.imageW, option.imageH )
-
-      ).attr({
-        'id'         : @id
-        'class'      : 'dragable node ' + @type.replace(/\./g, "-")
-        'data-type'  : 'node'
-        'data-class' : @type
-      })
-
-      if option.labelBg
-        node.append(
-          Canvon.rectangle(2, 76, 86, 13).attr({
-            'class' : 'node-label-name-bg'
-            'rx'    : 3
-            'ry'    : 3
-          })
-        )
-
-      if option.label
-        node.append(
-          Canvon.text( width / 2, height - 4, MC.canvasName( option.label ) ).attr({
-            'class' : 'node-label' + if option.labelBg then ' node-label-name' else ''
-          })
-        )
-
-      if option.sg
-        sggroup = Canvon.group().append(
-          Canvon.rectangle(10, 6, 7 , 5).attr({'class' : 'node-sg-color-border tooltip'}),
-          Canvon.rectangle(20, 6, 7 , 5).attr({'class' : 'node-sg-color-border tooltip'}),
-          Canvon.rectangle(30, 6, 7 , 5).attr({'class' : 'node-sg-color-border tooltip'}),
-          Canvon.rectangle(40, 6, 7 , 5).attr({'class' : 'node-sg-color-border tooltip'}),
-          Canvon.rectangle(50, 6, 7 , 5).attr({'class' : 'node-sg-color-border tooltip'})
-        ).attr({
-          'class'     : 'node-sg-color-group'
-          'transform' : 'translate(8, 62)'
-        })
-
-        node.append( sggroup )
-
-      node
-
     ###
      ReadOnly Infomation
     ###

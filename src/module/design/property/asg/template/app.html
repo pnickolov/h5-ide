@@ -152,7 +152,7 @@
           </div>
         </li>
         {{#each policies}}
-        <li class="pos-r" data-uid="{{id}}">
+        <li class="pos-r" data-uid="{{id}}" data-old="true">
           <h5 class="property-asg-policy-name name" title="{{i18n 'PROP_ASG_POLICY_TLT_NAME'}}">{{name}}</h5>
           <span class="asg-p-metric asg-p-tag" title="{{i18n 'PROP_ASG_POLICY_TLT_ALARM_METRIC'}}">{{alarmData.metricName}}</span>
           <span class="asg-p-eval asg-p-tag" title="{{i18n 'PROP_ASG_POLICY_TLT_THRESHOLD'}}">{{alarmData.comparisonOperator}} {{alarmData.threshold}}{{unit}}</span>

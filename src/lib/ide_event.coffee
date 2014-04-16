@@ -4,20 +4,10 @@
 
 define [ 'underscore', 'backbone' ], () ->
 
-    ###
-    #private
-    event = {
-        NAVIGATION_COMPLETE : 'NAVIGATION_COMPLETE'
-    }
-
-    #bind event to Backbone.Events
-    _.extend event, Backbone.Events
-
-    #public
-    event
-    ###
-
     class Event
+
+        constructor : ->
+            _.extend this, Backbone.Events
 
         #module
         NAVIGATION_COMPLETE    : 'NAVIGATION_COMPLETE'
@@ -193,9 +183,6 @@ define [ 'underscore', 'backbone' ], () ->
         #state editor
         SHOW_STATE_EDITOR        : 'SHOW_STATE_EDITOR'
         STATE_EDITOR_DATA_UPDATE : 'STATE_EDITOR_DATA_UPDATE'
-
-        constructor : ->
-            _.extend this, Backbone.Events
 
         onListen : ( type, callback, context ) ->
             this.once type, callback, context

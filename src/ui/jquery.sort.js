@@ -56,7 +56,7 @@ define(["jquery"], function($) {
 				},
 
 				styleDragHandlers: function(cursor) {
-					this.getItems().map(function() { return $(this).is(opts.dragSelector) ? this : $(this).find(opts.dragSelector).get(); }).css("cursor", cursor ? "pointer" : "");
+					this.getItems().map(function() { return $(this).is(opts.dragSelector) ? this : $(this).find(opts.dragSelector).get(); }); //.css("cursor", cursor ? "pointer" : "");
 				},
 
 				grabItem: function(e) {

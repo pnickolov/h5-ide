@@ -187,7 +187,7 @@
 						<a class="tooltip state-sys-log-btn icon-syslog" data-tooltip="{{i18n 'STATE_TIP_SYSTEM_LOG'}}"></a>
 
 						<div class="state-operate">
-							<a id="state-toolbar-add" href="javascript:void(0)">{{i18n 'STATE_TOOL_ADD_STATE'}}</a>
+							<a id="state-toolbar-add" href="javascript:void(0)"><i class="icon-add icon-label"></i>{{i18n 'STATE_TOOL_ADD_STATE'}}</a>
 							<a id="state-toolbar-copy-all" href="javascript:void(0)">{{i18n 'STATE_TOOL_COPY_ALL'}}</a>
 							<a id="state-toolbar-copy" href="javascript:void(0)">{{i18n 'STATE_TOOL_COPY_SELECTED'}}(<span id="state-toolbar-copy-count"></span>)</a>
 							<a id="state-toolbar-delete" href="javascript:void(0)">{{i18n 'STATE_TOOL_DELETE'}}(<span id="state-toolbar-delete-count"></span>)</a>

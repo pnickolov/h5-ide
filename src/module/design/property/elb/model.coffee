@@ -209,6 +209,11 @@ define [ '../base/model', "event", "Design", 'constant' ], ( PropertyModel, ide_
                 Enabled: enabled,
                 Timeout: timeout
             })
+
+        setAdvancedProxyProtocol : (enable, portAry) ->
+
+            elbModel = Design.instance().component( @get("uid") )
+            elbModel.setPolicyProxyProtocol(enable, portAry)
     }
 
     new ElbModel()

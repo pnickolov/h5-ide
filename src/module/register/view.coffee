@@ -60,6 +60,7 @@ define [ 'event',
                         status.addClass('error-status').removeClass( 'verification-status' ).show().text lang.register.username_maxlength
                         false
                     else
+                        status.removeClass( 'error-status' ).removeClass( 'verification-status' ).show().text('')
                         #status.show().text lang.register.username_available
                         #check vaild
                         this.trigger 'CHECK_REPEAT', value, null #if event and event.type is 'blur'
@@ -79,6 +80,7 @@ define [ 'event',
             reg_str = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
             if value isnt '' and reg_str.test(value)
+                status.removeClass( 'error-status' ).removeClass( 'verification-status' ).show().text('')
                 #check vaild
                 this.trigger 'CHECK_REPEAT', null, value #if event and event.type is 'blur'
                 true

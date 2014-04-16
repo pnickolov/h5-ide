@@ -65,6 +65,23 @@
 		</section>
 	</div>
 
+	<!--
+	<div class="option-group-head">Advanced Configuration</div>
+	<div class="option-group" data-bind="true"> <ul id="elb-property-listener-list" class="property-list">
+		<section class="property-control-group">
+			<label>Proxy Protocol</label>
+			<div class="mgt5">
+				<div class="checkbox">
+					<input id="elb-advanced-proxy-protocol-select" type="checkbox" {{#if otherPoliciesMap.EnableProxyProtocol}}checked="checked"{{/if}}/>
+					<label for="elb-advanced-proxy-protocol-select"></label>
+				</div>
+				<label for="elb-advanced-proxy-protocol-select">Enable Proxy Protocol</label>
+				<div id="elb-advanced-proxy-protocol-select-tip" class="property-info {{#unless otherPoliciesMap.EnableProxyProtocol}}hide{{/unless}}">If you have a Proxy Protocol enabled proxy server in front of your load balancer, then you must not enable Proxy Protocol on your load balancer.</div>
+			</div>
+		</section>
+	</div>
+	-->
+
 	<div class="option-group-head"> {{ i18n "PROP_ELB_LISTENER_DETAIL" }} </div>
 	<div class="option-group" data-bind="true"> <ul id="elb-property-listener-list" class="property-list">
 		{{#each listeners}}

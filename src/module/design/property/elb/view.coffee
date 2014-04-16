@@ -66,6 +66,8 @@ define [ '../base/view',
             'click #elb-connection-draining-select' : 'elbConnectionDrainSelectChange'
             'change #elb-connection-draining-input' : 'elbConnectionDrainTimeoutChange'
 
+            'click #elb-advanced-proxy-protocol-select' : 'elbAdvancedProxyProtocolSelectChange'
+
         render     : () ->
 
             @$el.html template @model.attributes
@@ -487,11 +489,19 @@ define [ '../base/view',
             $certEditItem = $(event.currentTarget)
             $certItem = $certEditItem.parents('.item')
             certUID = $certItem.attr('data-id')
+            certModel = Design.instance().component(certUID)
 
-            if certUID
-                that.model.removeCert(certUID)
-                ide_event.trigger ide_event.REFRESH_PROPERTY
-                return false
+            if certModel
+
+                certName = certModel.get('name')
+                modal MC.template.modalDeleteELBCert {cert_name: certName}, true
+
+                $("#modal-confirm-elb-cert-delete").one 'click', ()->
+                    that.model.removeCert(certUID)
+                    ide_event.trigger ide_event.REFRESH_PROPERTY
+                    modal.close()
+            
+            return false
 
         changeSSLCert : (event) ->
 
@@ -599,6 +609,19 @@ define [ '../base/view',
 
             if selectValue and timeoutValue
                 that.model.setConnectionDraining(true, timeoutValue)
+
+        elbAdvancedProxyProtocolSelectChange : (event) ->
+
+            that = this
+            $selectbox = that.$('#elb-advanced-proxy-protocol-select')
+            $tipBox = $('#elb-advanced-proxy-protocol-select-tip')
+            selectValue = $selectbox.prop('checked')
+            if selectValue
+                $tipBox.removeClass('hide')
+            else
+                $tipBox.addClass('hide')
+
+            that.model.setAdvancedProxyProtocol(selectValue, [80])
 
     }
 

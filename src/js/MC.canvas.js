@@ -13,6 +13,8 @@
 // Variable for current tab
 // MC.canvas_property = {};
 
+define(["MC", "canvon"], function(MC){
+
 MC.canvas = {
 	getState: function ()
 	{
@@ -72,6 +74,11 @@ MC.canvas = {
 		}
 	},
 
+	canvasName : function (string)
+	{
+		return string.length > 17 ? string.substring(0, 17 - 3) + '...' : string;
+	},
+
 	update: function (id, type, key, value)
 	{
 		var target = $('#' + id + '_' + key),
@@ -82,7 +89,7 @@ MC.canvas = {
 			case 'text':
 				if (key.indexOf("name") !== -1)
 				{
-					value = MC.canvasName( value );
+					value = MC.canvas.canvasName( value );
 				}
 
 				if (target.length === 0)
@@ -1743,6 +1750,8 @@ MC.canvas = {
 			coordinate,
 			size;
 
+		var oldSize = null;
+
 		$.each($canvas.group(), function (key, item)
 		{
 			group_item = $canvas(item.id);
@@ -1764,9 +1773,13 @@ MC.canvas = {
 				)
 			)
 			{
-				matched = document.getElementById( item.id );
-
-				return false;
+				var newMatched = document.getElementById( item.id );
+				if ( !matched ) {
+					matched = newMatched;
+				} else if ( size[0] < oldSize[0] || size[1] < oldSize[1] ) {
+					matched = newMatched;
+				}
+				oldSize = size;
 			}
 		});
 
@@ -1868,59 +1881,6 @@ MC.canvas.layout = {
 		return true;
 	}
 };
-
-// MC.canvas.data = {
-// 	get: function (key)
-// 	{
-// 		var context = MC.canvas_data,
-// 			namespaces = key.split('.'),
-// 			last = namespaces.pop(),
-// 			i = 0,
-// 			length = namespaces.length,
-// 			context;
-
-// 		for (; i < length; i++)
-// 		{
-// 			context = context[ namespaces[ i ] ];
-// 		}
-
-// 		return context[ last ];
-// 	},
-
-// 	set: function (key, value)
-// 	{
-// 		var context = MC.canvas_data,
-// 			namespaces = key.split('.'),
-// 			last = namespaces.pop(),
-// 			i = 0,
-// 			length = namespaces.length,
-// 			context;
-
-// 		for (; i < length; i++)
-// 		{
-// 			context = context[ namespaces[ i ] ];
-// 		}
-
-// 		return context[ last ] = value;
-// 	},
-
-// 	delete: function (key)
-// 	{
-// 		var context = MC.canvas_data,
-// 			namespaces = key.split('.'),
-// 			last = namespaces.pop(),
-// 			i = 0,
-// 			length = namespaces.length,
-// 			context;
-
-// 		for (; i < length; i++)
-// 		{
-// 			context = context[ namespaces[ i ] ];
-// 		}
-
-// 		delete context[ last ];
-// 	}
-// };
 
 MC.canvas.volume = {
 	bubble: function (id, node_id, volume_type)
@@ -3111,20 +3071,7 @@ MC.canvas.event.dragable = {
 				if (
 					coordinate.x > 0 &&
 					coordinate.y > 0 &&
-					match_place.is_matched // &&
-					// Disallow Instance to ASG
-					// !(
-					// 	parentGroup &&
-					// 	parentGroup.getAttribute('data-class') === 'AWS.AutoScaling.Group' &&
-					// 	target_type === 'AWS.EC2.Instance'
-					// )
-					// &&
-					// target_item.changeParent()
-					// &&
-					// (
-					// 	$canvas.trigger(BEFORE_DROP_EVENT, {'src_node': target_id, 'tgt_parent': parentGroup ? parentGroup.id : ''}) &&
-					// 	!BEFORE_DROP_EVENT.isDefaultPrevented()
-					// )
+					match_place.is_matched
 				)
 				{
 					if (event_data.canvas_body.hasClass('cloning'))
@@ -4793,42 +4740,10 @@ MC.canvas.event.selectNode = function (event)
 	return false;
 };
 
-// MC.canvas.event.appMove = function (event)
-// {
-// 	if (event.which === 1)
-// 	{
-// 		var target = $canvas(this.id);
-
-// 		MC.canvas.event.clearSelected();
-
-// 		if (
-// 			target.class === 'AWS.EC2.Instance' ||
-// 			target.nodeType === 'group'
-// 		)
-// 		{
-// 			MC.canvas.event.dragable.mousedown.call( this, event );
-// 		}
-// 		else
-// 		{
-// 			target.select();
-// 		}
-// 	}
-
-// 	return false;
-// };
 
 MC.canvas.event.appDrawConnection = function ()
 {
-	// if ($(this).is([
-	// 	'.port-instance-sg',
-	// 	'.port-eni-sg',
-	// 	'.port-launchconfig-sg',
-	// 	'.port-elb-sg'
-	// 	].join(', ')
-	// ))
-	// {
 	MC.canvas.event.drawConnection.mousedown.call( this, event );
-	// }
 
 	return false;
 };
@@ -6383,3 +6298,5 @@ MC.canvas.benchmark = function (count)
 
 	$canvas.size(canvas_size[0], canvas_size[1]);
 };
+
+});

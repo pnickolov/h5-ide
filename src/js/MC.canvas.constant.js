@@ -841,7 +841,12 @@ var constant_data = {
 					ToPort     : "22",
 					Groups     : [{"GroupId":"","UserId":"","GroupName":""}]
 				}],
-				IpPermissionsEgress : [],
+				IpPermissionsEgress : [{
+					FromPort: "0",
+					IpProtocol: "-1",
+					IpRanges: "0.0.0.0/0",
+					ToPort: "65535"
+				}],
 				Default             : "true",
 				GroupName           : "DefaultSG",
 				GroupDescription    : 'Default Security Group'
@@ -867,7 +872,12 @@ var constant_data = {
 					ToPort     : "22",
 					Groups     : [{"GroupId":"","UserId":"","GroupName":""}]
 				}],
-				IpPermissionsEgress : [],
+				IpPermissionsEgress : [{
+					FromPort: "0",
+					IpProtocol: "-1",
+					IpRanges: "0.0.0.0/0",
+					ToPort: "65535"
+				}],
 				Default             : "true",
 				GroupName           : "DefaultSG",
 				GroupDescription    : 'Default Security Group'
@@ -1085,9 +1095,12 @@ var constant_data = {
 						"GroupName": ""
 					}]
 				}],
-				"IpPermissionsEgress": [
-
-				],
+				"IpPermissionsEgress": [{
+					FromPort: "0",
+					IpProtocol: "-1",
+					IpRanges: "0.0.0.0/0",
+					ToPort: "65535"
+				}],
 				"GroupId": "",
 				"Default": "true",
 				"VpcId": "", //eg: @3EE0DED4-4D29-12C4-4A98-14C0BBC81A6A.resource.VpcId

@@ -168,13 +168,15 @@ define [ '../base/view',
             $li.find(".asg-p-adjust").html  data.adjustment + " " + data.adjustmentType
 
         editScalingPolicy : ( event ) ->
-
-            uid = $( event.currentTarget ).closest("li").data("uid")
+            $itemLi = $( event.currentTarget ).closest("li")
+            uid = $itemLi.data('uid')
+            isOld = $itemLi.data('old')
 
             data = @model.getPolicy(uid)
 
             data.uid   = uid
             data.title = lang.ide.PROP_ASG_ADD_POLICY_TITLE_EDIT
+            data.isOld = isOld
 
             @showScalingPolicy( data )
 

@@ -93,10 +93,6 @@ require.config {
     'handlebars'      :
       exports       : 'Handlebars'
 
-    'MC'              :
-      deps          : [ 'jquery' ]
-      exports       : 'MC'
-
   ### env:prod ###
   # The bundles is a subset of the one defined in "js/ide/config"
   # The bundle doesn't have to excately be the same as in "js/ide/config"

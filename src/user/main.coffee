@@ -3,8 +3,8 @@ API_HOST = 'https://api.mc3.io'
 
 # constant option, used in cookie lib
 COOKIE_OPTION =
-    expires:1
-    path: '/'
+    expires : 30
+    path    : '/'
 
 # variable to record $.ajax
 xhr = null

@@ -4,38 +4,38 @@
   # In such case, window is undefined.
   if not window then return
 
+  # Release : https://ide && https://api
+  # Debug   : http://ide  && https://ide
+  # Dev     : http://ide  && https://ide
+  # Public  : http://ide  && http://ide
 
-  # Set domain and set https
-  window.MC_DOMAIN   = "visualops.io"
-  window.MC_PROTO = "https"
-  shouldUseHttps = false
-  useHttps = false
-
-  ### env:prod ###
-  useHttps = true
-  ### env:prod:end ###
+  # Set domain and set http
+  window.MC_DOMAIN = "visualops.io"
+  window.MC_PROTO  = "http"
+  shouldIdeHttps   = false
+  ideHttps         = true
 
   ### env:debug ###
   window.MC_DOMAIN = "mc3.io"
-  window.MC_PROTO = "https"
-  useHttps = false
+  ideHttps = false
   ### env:debug:end ###
 
   ### env:dev ###
   window.MC_DOMAIN = "mc3.io"
-  window.MC_PROTO = "https"
+  ideHttps = false
   ### env:dev:end ###
 
   ### AHACKFORRELEASINGPUBLICVERSION ###
-  # AHACKFORRELEASINGPUBLICVERSION is a hack to force https to be disable, and only ide/config.coffee supports it.
-  shouldUseHttps = useHttps
+  # AHACKFORRELEASINGPUBLICVERSION is a hack. The block will be removed in Public Version.
+  # Only js/ide/config and user/main supports it.
+  shouldIdeHttps  = ideHttps
+  window.MC_PROTO = "https"
   ### AHACKFORRELEASINGPUBLICVERSION ###
-
 
   # Redirect
   l = window.location
   window.language = window.version = ""
-  if shouldUseHttps and l.protocol is "http:"
+  if shouldIdeHttps and l.protocol is "http:"
     window.location = l.href.replace("http:","https:")
     return
 

@@ -1,4 +1,39 @@
-API_HOST = 'https://api.mc3.io'
+
+# Release : https://ide && https://api
+# Debug   : http://ide  && https://ide
+# Dev     : http://ide  && https://ide
+# Public  : http://ide  && http://ide
+
+# Set domain and set http
+API_HOST       = "api.visualops.io"
+API_PROTO      = "http://"
+shouldIdeHttps = false
+ideHttps       = true
+
+### env:debug ###
+API_HOST = "api.mc3.io"
+ideHttps = false
+### env:debug:end ###
+
+### env:dev ###
+API_HOST = "api.mc3.io"
+ideHttps = false
+### env:dev:end ###
+
+### AHACKFORRELEASINGPUBLICVERSION ###
+# AHACKFORRELEASINGPUBLICVERSION is a hack. The block will be removed in Public Version.
+# Only js/ide/config and user/main supports it.
+shouldIdeHttps = ideHttps
+API_PROTO      = "https://"
+### AHACKFORRELEASINGPUBLICVERSION ###
+
+# Redirect
+l = window.location
+window.language = window.version = ""
+if shouldIdeHttps and l.protocol is "http:"
+    window.location = l.href.replace("http:","https:")
+    return
+
 
 
 # constant option, used in cookie lib
@@ -17,6 +52,7 @@ base64Decode = (string)->
 
 # cookie lib for jQuery
 
+### jshint ignore:start ###
 `
 /*!
  * jQuery Cookie Plugin v1.3.1
@@ -27,11 +63,8 @@ base64Decode = (string)->
  */
 (function(e){function m(a){return a}function n(a){return decodeURIComponent(a.replace(j," "))}function k(a){0===a.indexOf('"')&&(a=a.slice(1,-1).replace(/\\"/g,'"').replace(/\\\\/g,"\\"));try{return d.json?JSON.parse(a):a}catch(c){}}var j=/\+/g,d=e.cookie=function(a,c,b){if(void 0!==c){b=e.extend({},d.defaults,b);if("number"===typeof b.expires){var g=b.expires,f=b.expires=new Date;f.setDate(f.getDate()+g)}c=d.json?JSON.stringify(c):String(c);return document.cookie=[d.raw?a:encodeURIComponent(a),"=",d.raw?c:encodeURIComponent(c),b.expires?"; expires="+b.expires.toUTCString():"",b.path?"; path="+b.path:"",b.domain?"; domain="+b.domain:"",b.secure?"; secure":""].join("")}c=d.raw?m:n;b=document.cookie.split("; ");for(var g=a?void 0:{},f=0,j=b.length;f<j;f++){var h=b[f].split("="),l=c(h.shift()),h=c(h.join("="));if(a&&a===l){g=k(h);break}a||(g[l]=k(h))}return g};d.defaults={};e.removeCookie=function(a,c){return void 0!==e.cookie(a)?(e.cookie(a,"",e.extend({},c,{expires:-1})),!0):!1}})(jQuery);
 
-`
+// CryptoJS Lib in /vender/crypto-js/hmac-sha256.js
 
-# CryptoJS Lib in /vender/crypto-js/hmac-sha256.js
-
-`
 /*
 CryptoJS v3.1.2
 code.google.com/p/crypto-js
@@ -52,6 +85,7 @@ d[e>>>5]|=128<<24-e%32;d[(e+64>>>9<<4)+14]=h.floor(b/4294967296);d[(e+64>>>9<<4)
 this._hasher;f=g.finalize(f);g.reset();return g.finalize(this._oKey.clone().concat(f))}})})();
 
 `
+### jshint ignore:end ###
 
 # Supported Browser Detect
 
@@ -173,7 +207,7 @@ userRoute = (routes)->
     pathArray.shift()
     console.log pathArray , hashArray
     # run routes func
-    routes[pathArray[0]]?(pathArray, hashArray);
+    routes[pathArray[0]]?(pathArray, hashArray)
 
 # guid
 guid = ->
@@ -185,7 +219,7 @@ guid = ->
 # api
 api = (option)->
     xhr = $.ajax(
-        url: API_HOST + option.url
+        url: API_PROTO + API_HOST + option.url
         dataType: 'json'
         type: 'POST'
         data: JSON.stringify(
@@ -267,7 +301,7 @@ init = ->
                         render "#password-template"
                         $('form.box-body').find('input').eq(0).focus()
                         $('#reset-form').on 'submit' , (e)->
-                            e.preventDefault();
+                            e.preventDefault()
                             if validPassword()
                                 $("#reset-password").attr('disabled',true).val langsrc.reset.reset_waiting
                                 #window.location.hash = "#success"
@@ -483,7 +517,7 @@ init = ->
                                 ajaxRegister([$username.val(), $password.val(), $email.val()],(statusCode)->
                                     resetRegForm(true)
                                     $("#register-status").show().text langsrc.service['ERROR_CODE_'+statusCode+'_MESSAGE']
-                                    return false;
+                                    return false
                                 )
                         )
                     )

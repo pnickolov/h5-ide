@@ -85,7 +85,7 @@ Tasks =
     stripHttpsRedirectRegex = /### AHACKFORRELEASINGPUBLICVERSION ###/g
 
     d = Q.defer()
-    pipe = gulp.src( ["./src/js/**/config.coffee"], SrcOption )
+    pipe = gulp.src( ["./src/js/ide/config.coffee", "./src/user/main.coffee"], SrcOption )
       .pipe es.through (f)->
 
         newContent = f.contents.toString("utf8").replace stripHttpsRedirectRegex, "###"

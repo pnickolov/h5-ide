@@ -1,21 +1,25 @@
 API_HOST = 'https://api.mc3.io'
 
-# base64Encode and base64Decode copied from MC.core.js
-base64Encode = (string)->
-    window.btoa unescape encodeURIComponent string
-base64Decode = (string)->
-    decodeURIComponent escape window.atob string
 
 # constant option, used in cookie lib
 constant =
     COOKIE_OPTION:
         expires:1
         path: '/'
-        domain: '.mc3.io'
+        domain: '.visualops.io'
 
     LOCAL_COOKIE_OPTION:
         expires:1
         path: '/'
+
+#
+xhr = null
+
+# base64Encode and base64Decode copied from MC.core.js
+base64Encode = (string)->
+    window.btoa unescape encodeURIComponent string
+base64Decode = (string)->
+    decodeURIComponent escape window.atob string
 
 # cookie lib for jQuery
 
@@ -200,10 +204,8 @@ guid = ->
         v.toString(16)
     ).toUpperCase()
 # api
-console.log guid()
-window.xhr = null
 api = (option)->
-    window.xhr = $.ajax(
+    xhr = $.ajax(
         url: API_HOST + option.url
         dataType: 'json'
         type: 'POST'
@@ -404,12 +406,14 @@ init = ->
                     status.removeClass('verification-status').addClass('error-status').text langsrc.register.password_required
                     if cb then cb() else return false
             ajaxCheckUsername = (username, status,cb)->
-                window.xhr?.abort()
+                xhr?.abort()
                 window.clearTimeout(timeOutToClear)
                 console.log('aborted!', timeOutToClear)
                 timeOutToClear = window.setTimeout ->
                     checkUserExist([username, null] , (statusCode)->
                         if !statusCode
+                            if not checkUsername()
+                                return false
                             status.removeClass('error-status').addClass('verification-status').show().text langsrc.register.username_available
                             cb?(1)
                         else if(statusCode == 'error')
@@ -420,11 +424,13 @@ init = ->
                     )
                 ,500
             ajaxCheckEmail = (email, status, cb)->
-                window.xhr?.abort()
+                xhr?.abort()
                 window.clearTimeout(timeOutToClear)
                 timeOutToClear = window.setTimeout ->
                     checkUserExist([null, email], (statusCode)->
                         if !statusCode
+                            if not checkEmail()
+                                return false
                             status.removeClass('error-status').addClass('verification-status').show().text langsrc.register.email_available
                             cb?(1)
                         else if(statusCode == 'error')

@@ -12,7 +12,7 @@ constant =
         expires:1
         path: '/'
 
-#
+# variable to record $.ajax
 xhr = null
 
 # base64Encode and base64Decode copied from MC.core.js
@@ -184,7 +184,7 @@ setCookieByName = ( cookie_name, value ) ->
 
 
 # language detect
-langu = ->
+langType = ->
     document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + "lang\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1") || "en-us"
 deepth = 'reset'
 # route function
@@ -229,7 +229,7 @@ Handlebars.registerHelper 'i18n', (str)->
 # init the page . load i18n source file
 loadLang = (cb)->
     $.ajax({
-        url: './nls/' + langu() + '/lang.js'
+        url: './nls/' + langType() + '/lang.js'
         jsonp: false
         dataType: "jsonp"
         jsonpCallback: "define"
@@ -395,7 +395,7 @@ init = ->
             checkPassword = (e,cb)->
                 password = $password.val()
                 status = $("#password-verification-status")
-                if password.trim() isnt ""
+                if password isnt ""
                     if password.length > 5
                         status.removeClass('verification-status').removeClass('error-status').text ""
                         if cb then cb(1) else return true
@@ -459,6 +459,7 @@ init = ->
                     return a
             $form.on 'submit', (e)->
                 e.preventDefault()
+                $('.error-msg').removeAttr('style')
                 if $username.next().hasClass('error-status') or $email.next().hasClass('error-status')
                     console.log "Error Message Exist"
                     return false
@@ -485,7 +486,7 @@ init = ->
                                 console.log('Success!!!!!')
                                 ajaxRegister([$username.val(), $password.val(), $email.val()],(statusCode)->
                                     resetRegForm(true)
-                                    $("#register-status").text langsrc.service['ERROR_CODE_'+statusCode+'_MESSAGE']
+                                    $("#register-status").show().text langsrc.service['ERROR_CODE_'+statusCode+'_MESSAGE']
                                     return false;
                                 )
                         )
@@ -497,7 +498,7 @@ init = ->
 # handle reset password input
 validPassword = ->
     status = $("#password-verification-status")
-    value =  $("#reset-pw").val().trim()
+    value =  $("#reset-pw").val()
     status.removeClass 'error-status'
     if value isnt ""
         if value.length > 5

@@ -293,10 +293,10 @@ header {
 /* Unsupported Browser Notice */
 #unsupported-browser {
 	position: relative;
-	top: 60px;
+	top: 100px;
 	padding: 15px 0 5px;
 	text-align: center;
-	background: #fff9d7;
+	background: #DFCC60;
 	width: 100%;
 	color: #666;
 	font-size: 14px;

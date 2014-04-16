@@ -640,10 +640,10 @@ showErrorMessage = ->
 
 #handleErrorCode
 handleErrorCode = (statusCode)->
-    console.log 'ERROR_CODE_MESSAGE',langsrc.service["ERROR_CODE_#{statusCode}_MESSAGE"]
+    console.error 'ERROR_CODE_MESSAGE',langsrc.service["ERROR_CODE_#{statusCode}_MESSAGE"]
 # handleNetError
 handleNetError = (status)->
-    console.log status
+    console.error status
     window.location = '/500'
 # verify  key with callback
 checkPassKey = (keyToValid,fn)->

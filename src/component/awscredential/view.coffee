@@ -400,9 +400,9 @@ define [ 'event',
                     $('#AWSCredentials-update').hide()
 
                     # set content
-                    $('#aws-credential-account-id').val(' ')
-                    $('#aws-credential-access-key').val(' ')
-                    $('#aws-credential-secret-key').val(' ')
+                    $('#aws-credential-account-id').val ''
+                    $('#aws-credential-access-key').val ''
+                    $('#aws-credential-secret-key').val ''
 
                     #$('#AWSCredential-failed').hide()
                     if @state is 'credential'
@@ -480,8 +480,8 @@ define [ 'event',
                     $('#awscredentials-remove').removeClass("btn btn-red")
 
                     #clear key
-                    $('#aws-credential-access-key').val(' ')
-                    $('#aws-credential-secret-key').val(' ')
+                    $('#aws-credential-access-key').val ''
+                    $('#aws-credential-secret-key').val ''
 
                     # check whether there are stopped/running/processing app
                     num = 0
@@ -495,7 +495,7 @@ define [ 'event',
                         $( '#awscredentials-remove' ).show()
 
                     if me.model.attributes.account_id is 'demo_account'
-                        $('#aws-credential-account-id').val ' '
+                        $('#aws-credential-account-id').val ''
                         $( '#aws-credential-account-id' ).attr 'disabled', false
 
                 else if flag is 'on_submit'

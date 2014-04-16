@@ -39,6 +39,13 @@
     window.location = l.href.replace("http:","https:")
     return
 
+  # Check if there're missing cookie
+  getCookie = (sKey)-> decodeURIComponent(document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + encodeURIComponent(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1")) || null
+
+  if not (getCookie('usercode') and getCookie('username') and getCookie('session_id') and getCookie('account_id') and getCookie('mod_repo') and getCookie('mod_tag') and getCookie('state') and getCookie('has_cred'))
+  	window.location.href = "/login"
+  	return
+
   # Get Version and locale
   scripts = document.getElementsByTagName("script")
   for s in scripts
@@ -440,7 +447,7 @@ requirejs.onError = ( err )->
 
 		require err.requireModules || [], ()->
 	else
-		console.log "[RequireJS Error]", err
+		console.error "[RequireJS Error]", err
 
 
 require ['./js/ide/ide' ], ( ide ) ->
@@ -452,7 +459,7 @@ require ['./js/ide/ide' ], ( ide ) ->
 		console.error "[RequireJS timeout] Reloading, error modules :", err.requireModules
 		window.location.reload()
 	else if err.requireType is "scripterror"
-		console.log "[RequireJS Error]", err
+		console.error "[RequireJS Error]", err
 		# requirejs.onError = ()-> # Just use to suppress subsequent error
 		# console.error "[Script Error] Redirecting to 500, error modules :", err.requireModules
 		# window.location = "/500"

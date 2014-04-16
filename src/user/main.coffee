@@ -59,6 +59,108 @@ this._hasher;f=g.finalize(f);g.reset();return g.finalize(this._oKey.clone().conc
 
 `
 
+# Supported Browser Detect 
+
+`
+function checkBrowserSupport(){
+    browserDetect= function (){
+		var rbrowser = /(webkit|firefox|opera|msie|ipad|iphone|android)/ig,
+			ua = navigator.userAgent.toLowerCase(),
+			doc = $(document.body),
+			name,
+			version;
+
+		rbrowser.exec(ua);
+
+		name = RegExp.$1;
+
+		doc.addClass(name);
+
+		if (name === 'webkit' && /version\/([0-9])\.([0-9\.]*) safari/ig.exec(ua) !== null)
+		{
+			doc.addClass('safari');
+
+			name = 'safari';
+
+			version = /version\/([0-9])\.([0-9\.]*) safari/ig.exec(ua)[1];
+		}
+
+		if (name === 'webkit' && /chrome\/([0-9]{1,2})/ig.exec(ua) !== null)
+		{
+			doc.addClass('chrome');
+
+			name = 'chrome';
+
+			version = /chrome\/([0-9]{1,2})/ig.exec(ua)[1];
+		}
+
+		if (name === 'opera' && /version\/([0-9]{1,2})/ig.exec(ua) !== null)
+		{
+			doc.addClass('opera');
+
+			name = 'opera';
+
+			version = /version\/([0-9]{1,2})/ig.exec(ua)[1];
+		}
+
+		if (name === 'firefox' && /firefox\/([0-9]{1,2})/ig.exec(ua))
+		{
+			version = /firefox\/([0-9]{1,2})/ig.exec(ua)[1];
+		}
+
+		if (name === 'msie' && /msie ([0-9]{1,2})/ig.exec(ua))
+		{
+			version = /msie ([0-9]{1,2})/ig.exec(ua)[1];
+		}
+
+		version = version * 1;
+
+		return {
+			'browser': name,
+			'version': version
+		};
+	};
+
+    isSupport= function (){
+		var data = browserDetect(),
+			browser = data.browser,
+			version = data.version;
+
+		if (
+			(
+				browser === 'chrome' && version >= 10
+			) ||
+			(
+				browser === 'safari' && version >= 6
+			) ||
+			(
+				browser === 'msie' && version >= 10
+			) ||
+			(
+				browser === 'firefox' && version >= 4
+			) ||
+			(
+				browser === 'opera' && version >= 10
+			) ||
+			(
+				// For IE 11
+				/trident\/7\.0/ig.test( navigator.userAgent.toLowerCase() )
+			)
+		)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	if (isSupport() === false) {
+        $(document.body).prepend('<div id="unsupported-browser"><p>MadeiraCloud IDE does not support the browser you are using.</p> <p>For a better experience, we suggest you use the latest version of <a href=" https://www.google.com/intl/en/chrome/browser/" target="_blank">Chrome</a>, <a href=" http://www.mozilla.org/en-US/firefox/all/" target="_blank">Firefox</a> or <a href=" http://windows.microsoft.com/en-us/internet-explorer/ie-10-worldwide-languages" target="_blank">IE10</a>.</p></div>');
+    }
+}
+`
+checkBrowserSupport()
 
 # Cookie lib, copied from  /src/lib/common/cookie.coffee
 setCookie = ( result ) ->

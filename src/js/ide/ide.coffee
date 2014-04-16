@@ -28,10 +28,6 @@ define [ 'MC', 'event', 'handlebars'
 		#  validation cookie
 		#############################
 
-		#user session not exist, go to login page
-		if !common_handle.cookie.checkAllCookie()
-			window.location.href = "/login"
-
 		#clear cookie in 'ide.visualops.io'
 		#common_handle.cookie.clearInvalidCookie()
 

@@ -1,16 +1,45 @@
-API_HOST = 'https://api.mc3.io'
+
+# Release : https://ide && https://api
+# Debug   : http://ide  && https://ide
+# Dev     : http://ide  && https://ide
+# Public  : http://ide  && http://ide
+
+# Set domain and set http
+API_HOST       = "api.visualops.io"
+API_PROTO      = "http://"
+shouldIdeHttps = false
+ideHttps       = true
+
+### env:debug ###
+API_HOST = "api.mc3.io"
+ideHttps = false
+### env:debug:end ###
+
+### env:dev ###
+API_HOST = "api.mc3.io"
+ideHttps = false
+### env:dev:end ###
+
+### AHACKFORRELEASINGPUBLICVERSION ###
+# AHACKFORRELEASINGPUBLICVERSION is a hack. The block will be removed in Public Version.
+# Only js/ide/config and user/main supports it.
+shouldIdeHttps = ideHttps
+API_PROTO      = "https://"
+### AHACKFORRELEASINGPUBLICVERSION ###
+
+# Redirect
+l = window.location
+window.language = window.version = ""
+if shouldIdeHttps and l.protocol is "http:"
+    window.location = l.href.replace("http:","https:")
+    return
+
 
 
 # constant option, used in cookie lib
-constant =
-    COOKIE_OPTION:
-        expires:1
-        path: '/'
-        domain: '.visualops.io'
-
-    LOCAL_COOKIE_OPTION:
-        expires:1
-        path: '/'
+COOKIE_OPTION =
+    expires : 30
+    path    : '/'
 
 # variable to record $.ajax
 xhr = null
@@ -118,32 +147,6 @@ checkAllCookie = ->
     else
         false
 
-clearV2Cookie = ( path ) ->
-    #for patch
-    option = { path: path }
-
-
-    $.each $.cookie(), ( key, cookie_name ) ->
-        $.removeCookie cookie_name	, option
-        null
-
-
-getCookieByName = ( cookie_name ) ->
-
-    $.cookie cookie_name
-
-
-setCookieByName = ( cookie_name, value ) ->
-
-    if document.domain.indexOf('visualops.io') != -1
-        #domain is *.visualops.io
-        option = constant.COOKIE_OPTION
-    else
-        #domain is not *.visualops.io, maybe localhost
-        option = constant.LOCAL_COOKIE_OPTION
-    $.cookie cookie_name, value, option
-
-
 # language detect
 langType = ->
     document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + "lang\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1") || "en-us"
@@ -167,7 +170,7 @@ guid = ->
 # api
 api = (option)->
     xhr = $.ajax
-        url: API_HOST + option.url
+        url: API_PROTO + API_HOST + option.url
         dataType: 'json'
         type: 'POST'
         data: JSON.stringify(
@@ -220,6 +223,23 @@ render = (tempName)->
 
 # init function
 init = ->
+    ua = navigator.userAgent.toLowerCase()
+    browser = /(chrome)[ \/]([\w.]+)/.exec( ua ) ||
+            /(webkit)[ \/]([\w.]+)/.exec( ua ) ||
+            /(opera)(?:.*version|)[ \/]([\w.]+)/.exec( ua ) ||
+            /(msie) ([\w.]+)/.exec( ua ) ||
+            ua.indexOf("compatible") < 0 && /(mozilla)(?:.*? rv:([\w.]+)|)/.exec( ua ) || []
+
+    support =
+        chrome  : 10
+        safari  : 6
+        msie    : 10
+        mozilla : 4
+        opera   : 10
+
+    if not ((parseInt(browser[2], 10) || 0) >= support[browser[1]])
+      $(document.body).prepend '<div id="unsupported-browser"><p>MadeiraCloud IDE does not support the browser you are using.</p> <p>For a better experience, we suggest you use the latest version of <a href=" https://www.google.com/intl/en/chrome/browser/" target="_blank">Chrome</a>, <a href=" http://www.mozilla.org/en-US/firefox/all/" target="_blank">Firefox</a> or <a href=" http://windows.microsoft.com/en-us/internet-explorer/ie-10-worldwide-languages" target="_blank">IE10</a>.</p></div>'
+
     userRoute(
         "reset": (pathArray, hashArray)->
             deepth = 'reset'
@@ -485,11 +505,11 @@ showErrorMessage = ->
 
 #handleErrorCode
 handleErrorCode = (statusCode)->
-    console.log 'ERROR_CODE_MESSAGE',langsrc.service["ERROR_CODE_#{statusCode}_MESSAGE"]
+    console.error 'ERROR_CODE_MESSAGE',langsrc.service["ERROR_CODE_#{statusCode}_MESSAGE"]
 # handleNetError
 handleNetError = (status)->
     window.location = '/500'
-    console.log status, "Net Work Error, Redirecting..."
+    console.error status, "Net Work Error, Redirecting..."
 # verify  key with callback
 checkPassKey = (keyToValid,fn)->
     api(
@@ -508,27 +528,27 @@ checkPassKey = (keyToValid,fn)->
     )
 
 setCredit = (result)->
-    deleteCookie()
-    session_info = {}
-    #resolve result
-    session_info.usercode    = result[0]
-    session_info.email       = result[1]
-    session_info.session_id  = result[2]
-    session_info.account_id  = result[3]
-    session_info.mod_repo    = result[4]
-    session_info.mod_tag     = result[5]
-    session_info.state       = result[6]
-    session_info.has_cred    = result[7]
-    session_info.is_invitated= result[8]
-    setCookie session_info
-    setIDECookie session_info
+    session_info =
+        usercode     : result[0]
+        username     : base64Decode( result[0] )
+        email        : result[1]
+        session_id   : result[2]
+        account_id   : result[3]
+        mod_repo     : result[4]
+        mod_tag      : result[5]
+        state        : result[6]
+        has_cred     : result[7]
+        is_invitated : result[8]
 
-    localStorage.setItem 'email',     base64Decode( getCookieByName( 'email' ))
-    localStorage.setItem 'user_name', getCookieByName( 'username' )
+    for key, value of session_info
+        $.cookie key, value, COOKIE_OPTION
+
+    localStorage.setItem 'email',     base64Decode( session_info.email )
+    localStorage.setItem 'user_name', session_info.username
+
     intercom_sercure_mode_hash = () ->
         intercom_api_secret = '4tGsMJzq_2gJmwGDQgtP2En1rFlZEvBhWQWEOTKE'
         hash = CryptoJS.HmacSHA256( base64Decode($.cookie('email')), intercom_api_secret )
-        console.log 'hash.toString(CryptoJS.enc.Hex) = ' + hash.toString(CryptoJS.enc.Hex)
         return hash.toString CryptoJS.enc.Hex
     localStorage.setItem 'user_hash', intercom_sercure_mode_hash()
 
@@ -609,7 +629,7 @@ checkUserExist = (params,fn)->
 
 # ajax to reset password
 ajaxChangePassword = (hashArray,newPw)->
-    api(
+    api
         url: "/account/"
         method: "update_password"
         data: [hashArray[1],newPw]
@@ -622,7 +642,6 @@ ajaxChangePassword = (hashArray,newPw)->
                 handleErrorCode(statusCode)
         error: (status)->
             handleNetError(status)
-    )
-    return false
+    console.log 'Updating Password...'
 
 loadLang(init)

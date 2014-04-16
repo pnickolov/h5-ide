@@ -434,7 +434,10 @@ init = ->
                             cb?(0)
                     )
                 ,500
-            resetRegForm = ->
+            resetRegForm = (force)->
+                if force
+                    $(".verification-status").removeAttr('style')
+                    $('.error-status').removeClass('error-status')
                 $('#register-btn').attr('disabled',false).val(langsrc.register['register-btn'])
             $username.on 'keyup', (e)->
                 checkUsername e, (a)->
@@ -474,8 +477,10 @@ init = ->
                                 return false
                             if (usernameAvl&&emailAvl&&passwordAvl)
                                 console.log('Success!!!!!')
-                                ajaxRegister([$username.val(), $password.val(), $email.val()],(status)->
-                                    resetRegForm()
+                                ajaxRegister([$username.val(), $password.val(), $email.val()],(statusCode)->
+                                    resetRegForm(true)
+                                    $("#register-status").text langsrc.service['ERROR_CODE_'+statusCode+'_MESSAGE']
+                                    return false;
                                 )
                         )
                     )

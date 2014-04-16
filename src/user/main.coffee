@@ -2,15 +2,9 @@ API_HOST = 'https://api.mc3.io'
 
 
 # constant option, used in cookie lib
-constant =
-    COOKIE_OPTION:
-        expires:1
-        path: '/'
-        domain: '.visualops.io'
-
-    LOCAL_COOKIE_OPTION:
-        expires:1
-        path: '/'
+COOKIE_OPTION =
+    expires:1
+    path: '/'
 
 # variable to record $.ajax
 xhr = null
@@ -59,7 +53,7 @@ this._hasher;f=g.finalize(f);g.reset();return g.finalize(this._oKey.clone().conc
 
 `
 
-# Supported Browser Detect 
+# Supported Browser Detect
 
 `
 function checkBrowserSupport(){
@@ -162,128 +156,11 @@ function checkBrowserSupport(){
 `
 checkBrowserSupport()
 
-# Cookie lib, copied from  /src/lib/common/cookie.coffee
-setCookie = ( result ) ->
-
-
-    if document.domain.indexOf('visualops.io') != -1
-        #domain is *.visualops.io
-        option = constant.COOKIE_OPTION
-    else
-        #domain is not *.visualops.io, maybe localhost
-        option = constant.LOCAL_COOKIE_OPTION
-
-    #set cookies
-    #$.cookie 'userid',      result.userid,      option
-    #$.cookie 'region_name', result.region_name, option
-
-    $.cookie 'usercode',    result.usercode,    option
-    $.cookie 'username',    base64Decode( result.usercode ), option
-    $.cookie 'email',       result.email,       option
-    $.cookie 'session_id',  result.session_id,  option
-    $.cookie 'account_id',  result.account_id,  option
-    $.cookie 'mod_repo',    result.mod_repo,    option
-    $.cookie 'mod_tag',     result.mod_tag,     option
-    $.cookie 'state',       result.state,       option
-    $.cookie 'has_cred',    result.has_cred,    option
-    $.cookie 'is_invitated',result.is_invitated,option
-
-deleteCookie = ->
-
-    if document.domain.indexOf('visualops.io') != -1
-        #domain is *.visualops.io
-        option = constant.COOKIE_OPTION
-    else
-        #domain is not *.visualops.io, maybe localhost
-        option = constant.LOCAL_COOKIE_OPTION
-
-    #delete cookies
-    #$.cookie 'region_name', '', option
-    #$.cookie 'userid',      '', option
-
-    $.cookie 'usercode',    '', option
-    $.cookie 'username',    '', option
-    $.cookie 'email',       '', option
-    $.cookie 'session_id',  '', option
-    $.cookie 'account_id',	'', option
-    $.cookie 'mod_repo',    '', option
-    $.cookie 'mod_tag',     '', option
-    $.cookie 'state',       '', option
-    $.cookie 'has_cred',    '', option
-    $.cookie 'is_invitated','', option
-
-#$.cookie 'madeiracloud_ide_session_id', '', option
-
-setCred = ( result ) ->
-
-    if document.domain.indexOf('visualops.io') != -1
-        #domain is *.visualops.io
-        option = constant.COOKIE_OPTION
-    else
-        #domain is not *.visualops.io, maybe localhost
-        option = constant.LOCAL_COOKIE_OPTION
-
-
-    $.cookie 'has_cred', result, option
-
-setIDECookie = ( result ) ->
-
-    if document.domain.indexOf('visualops.io') != -1
-        #domain is *.visualops.io
-        option = constant.COOKIE_OPTION
-    else
-        #domain is not *.visualops.io, maybe localhost
-        option = constant.LOCAL_COOKIE_OPTION
-
-
-    madeiracloud_ide_session_id = [
-        result.usercode,
-        result.email,
-        result.session_id,
-        result.account_id,
-        result.mod_repo,
-        result.mod_tag,
-        result.state,
-        result.has_cred,
-        result.is_invitated
-    ]
-
-    #$.cookie 'madeiracloud_ide_session_id', MC.base64Encode( JSON.stringify madeiracloud_ide_session_id ), option
-    null
-
-
 checkAllCookie = ->
-
     if $.cookie('usercode') and $.cookie('username') and $.cookie('session_id') and $.cookie('account_id') and $.cookie('mod_repo') and $.cookie('mod_tag') and $.cookie('state') and $.cookie('has_cred') and $.cookie('is_invitated')
         true
     else
         false
-
-clearV2Cookie = ( path ) ->
-    #for patch
-    option = { path: path }
-
-
-    $.each $.cookie(), ( key, cookie_name ) ->
-        $.removeCookie cookie_name	, option
-        null
-
-
-getCookieByName = ( cookie_name ) ->
-
-    $.cookie cookie_name
-
-
-setCookieByName = ( cookie_name, value ) ->
-
-    if document.domain.indexOf('visualops.io') != -1
-        #domain is *.visualops.io
-        option = constant.COOKIE_OPTION
-    else
-        #domain is not *.visualops.io, maybe localhost
-        option = constant.LOCAL_COOKIE_OPTION
-    $.cookie cookie_name, value, option
-
 
 # language detect
 langType = ->
@@ -663,23 +540,24 @@ checkPassKey = (keyToValid,fn)->
     )
 
 setCredit = (result)->
-    deleteCookie()
-    session_info = {}
-    #resolve result
-    session_info.usercode    = result[0]
-    session_info.email       = result[1]
-    session_info.session_id  = result[2]
-    session_info.account_id  = result[3]
-    session_info.mod_repo    = result[4]
-    session_info.mod_tag     = result[5]
-    session_info.state       = result[6]
-    session_info.has_cred    = result[7]
-    session_info.is_invitated= result[8]
-    setCookie session_info
-    setIDECookie session_info
+    session_info =
+        usercode     : result[0]
+        username     : base64Decode( result[0] )
+        email        : result[1]
+        session_id   : result[2]
+        account_id   : result[3]
+        mod_repo     : result[4]
+        mod_tag      : result[5]
+        state        : result[6]
+        has_cred     : result[7]
+        is_invitated : result[8]
 
-    localStorage.setItem 'email',     base64Decode( getCookieByName( 'email' ))
-    localStorage.setItem 'user_name', getCookieByName( 'username' )
+    for key, value of session_info
+        $.cookie key, value, COOKIE_OPTION
+
+    localStorage.setItem 'email',     base64Decode( session_info.email )
+    localStorage.setItem 'user_name', session_info.username
+
     intercom_sercure_mode_hash = () ->
         intercom_api_secret = '4tGsMJzq_2gJmwGDQgtP2En1rFlZEvBhWQWEOTKE'
         hash = CryptoJS.HmacSHA256( base64Decode($.cookie('email')), intercom_api_secret )

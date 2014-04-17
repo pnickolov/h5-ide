@@ -228,7 +228,6 @@ init = ->
                     return false
 
         'register': (pathArray, hashArray)->
-            if checkAllCookie() then window.location = '/'
             deepth = 'register'
             console.log pathArray, hashArray
             if hashArray[0] == 'success'
@@ -237,13 +236,15 @@ init = ->
                     window.location = "/"
                     console.log('Getting start...')
                 return false
+            if checkAllCookie() then window.location = '/'
             render '#register-template'
             $form = $("#register-form")
             $form.find('input').eq(0).focus()
             $username = $('#register-username')
             $email = $('#register-email')
             $password = $('#register-password')
-            timeOutToClear = undefined
+            usernameTimeout = undefined
+            emailTimeout = undefined
             $('#register-btn').attr('disabled',false)
 
             # username validation
@@ -303,9 +304,9 @@ init = ->
                     if cb then cb() else return false
             ajaxCheckUsername = (username, status,cb)->
                 xhr?.abort()
-                window.clearTimeout(timeOutToClear)
-                console.log('aborted!', timeOutToClear)
-                timeOutToClear = window.setTimeout ->
+                window.clearTimeout(usernameTimeout)
+                console.log('aborted!', usernameTimeout)
+                usernameTimeout = window.setTimeout ->
                     checkUserExist([username, null] , (statusCode)->
                         if !statusCode
                             if not checkUsername()
@@ -322,8 +323,8 @@ init = ->
                 console.log 'Setup a new validation request'
             ajaxCheckEmail = (email, status, cb)->
                 xhr?.abort()
-                window.clearTimeout(timeOutToClear)
-                timeOutToClear = window.setTimeout ->
+                window.clearTimeout(emailTimeout)
+                emailTimeout = window.setTimeout ->
                     checkUserExist([null, email], (statusCode)->
                         if !statusCode
                             if not checkEmail()

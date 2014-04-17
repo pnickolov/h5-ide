@@ -82,66 +82,22 @@
       <li>
         <div class="list-row">
             <i class="status status-{{#if health}}green{{else}}red{{/if}} icon-label"></i>
-            <span class="app-panel-li-main">{{zone}} {{#if subnet}}<span class="sub">- {{subnet}}</span>{{/if}} </span>
+            <span class="app-panel-li-main">{{zone}}</span>
         </div>
-<!--         <div class="list-row">
-          <p class="app-panel-li-sub"> {{health_instance}}/{{total_instance}} instances are healthy </p>
-        </div> -->
         <div class="list-row">
           <ul class="elb-property-instance-list">
+            {{#each this.instance}}
               <li>
                 <div class="instance-info">
-                  <div class="instance-name">instance-name</div>
-                  <div class="instance-id">i-89122189</div>
+                  <div class="instance-name">{{instance_name}}</div>
+                  <div class="instance-id">({{instance_id}})</div>
                 </div>
                 <div class="instance-state">
-                  InService
-                  <a class="elb-info-icon tooltip icon-info" href="https://aws.amazon.com/about-aws/whats-new/2013/11/06/elastic-load-balancing-adds-cross-zone-load-balancing/" data-tooltip="{{i18n 'PROP_ELB_TIP_CLICK_TO_READ_RELATED_AWS_DOCUMENT'}}" target="_blank"></a>
+                  {{#if instance_state}}InService{{else}}OutOfService{{/if}}
+                  {{#unless instance_state}}<a class="elb-info-icon tooltip icon-info" data-tooltip="{{instance_state_desc}}"></a>{{/unless}}
                 </div>
               </li>
-              <li>
-                <div class="instance-info">
-                  <div class="instance-name">instance-name</div>
-                  <div class="instance-id">i-89122189</div>
-                </div>
-                <div class="instance-state">
-                  InService
-                  <a class="elb-info-icon tooltip icon-info" href="https://aws.amazon.com/about-aws/whats-new/2013/11/06/elastic-load-balancing-adds-cross-zone-load-balancing/" data-tooltip="{{i18n 'PROP_ELB_TIP_CLICK_TO_READ_RELATED_AWS_DOCUMENT'}}" target="_blank"></a>
-                </div>
-              </li>
-          </ul>
-        </div>
-      </li>
-      <li>
-        <div class="list-row">
-            <i class="status status-{{#if health}}green{{else}}red{{/if}} icon-label"></i>
-            <span class="app-panel-li-main">{{zone}} {{#if subnet}}<span class="sub">- {{subnet}}</span>{{/if}} </span>
-        </div>
-<!--         <div class="list-row">
-          <p class="app-panel-li-sub"> {{health_instance}}/{{total_instance}} instances are healthy </p>
-        </div> -->
-        <div class="list-row">
-          <ul class="elb-property-instance-list">
-              <li>
-                <div class="instance-info">
-                  <div class="instance-name">instance-name</div>
-                  <div class="instance-id">i-89122189</div>
-                </div>
-                <div class="instance-state">
-                  InService
-                  <a class="elb-info-icon tooltip icon-info" href="https://aws.amazon.com/about-aws/whats-new/2013/11/06/elastic-load-balancing-adds-cross-zone-load-balancing/" data-tooltip="{{i18n 'PROP_ELB_TIP_CLICK_TO_READ_RELATED_AWS_DOCUMENT'}}" target="_blank"></a>
-                </div>
-              </li>
-              <li>
-                <div class="instance-info">
-                  <div class="instance-name">instance-name</div>
-                  <div class="instance-id">i-89122189</div>
-                </div>
-                <div class="instance-state">
-                  InService
-                  <a class="elb-info-icon tooltip icon-info" href="https://aws.amazon.com/about-aws/whats-new/2013/11/06/elastic-load-balancing-adds-cross-zone-load-balancing/" data-tooltip="{{i18n 'PROP_ELB_TIP_CLICK_TO_READ_RELATED_AWS_DOCUMENT'}}" target="_blank"></a>
-                </div>
-              </li>
+            {{/each}}
           </ul>
         </div>
       </li>

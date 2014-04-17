@@ -391,10 +391,22 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
                 dict_name = action_name.replace /Response/i, ""
                 dict[dict_name] = [] if dict[dict_name]?
                 dict[dict_name] = responses[action_name] [null, node]
+            
             else if $.type(node) is "object"
-                data = node["DescribeLoadBalancerAttributes"]
-                if data
-                    _.each data, ( node, elb_name ) ->
+                elbAttrData = node["DescribeLoadBalancerAttributes"]
+                if elbAttrData
+                    _.each elbAttrData, ( node, elb_name ) ->
+                        action_name = ($.parseXML(node)).documentElement.localName
+                        dict_name = action_name.replace /Response/i, ""
+                        if not dict[dict_name]
+                            dict[dict_name] = []
+                        elb_data = responses[action_name] [null, node]
+                        elb_data.LoadBalancerName = elb_name
+                        dict[dict_name].push elb_data
+
+                elbHealthData = node["DescribeInstanceHealth"]
+                if elbHealthData
+                    _.each elbHealthData, ( node, elb_name ) ->
                         action_name = ($.parseXML(node)).documentElement.localName
                         dict_name = action_name.replace /Response/i, ""
                         if not dict[dict_name]

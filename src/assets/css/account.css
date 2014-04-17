@@ -22,10 +22,6 @@ a:hover {
 
 header {
 	background: rgba(102, 57, 139, 0.6);
-	position: absolute;
-	z-index: 100;
-	width: 100%;
-	top: 0;
 	padding: 10px 0 9px 0;
 }
 
@@ -54,8 +50,7 @@ header {
 }
 
 .box-wrapper {
-	position : relative;
-	margin   : 180px auto 0;
+	margin   : 80px auto 0;
 	width    : 450px;
 	padding  : 0 0 60px 0;
 

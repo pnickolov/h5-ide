@@ -1,12 +1,7 @@
 <a id="feedback" href="mailto:3rp02j1w@incoming.intercom.io" target="_blank">Feedback</a>
 <script type="text/javascript">
-var intercomSettings = {
-  email     : localStorage.getItem( 'email' ),
-  username  : localStorage.getItem( 'user_name' ),
-  user_hash : localStorage.getItem( 'user_hash' ),
-  widget    : { 'activator': '#feedback' },
-  app_id    : '3rp02j1w'
-};
 (function(){
+function c(k){return decodeURIComponent(document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + encodeURIComponent(k).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1")) || null;}
+window.intercomSettings = { email : decodeURIComponent(escape(window.atob(c('email')))), username : c('username'), user_hash : c('user_hash'), widget : { 'activator': '#feedback' }, app_id : '3rp02j1w' };
 var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',intercomSettings);}else{var d=document;var i=function(){i.c(arguments)};i.q=[];i.c=function(args){i.q.push(args)};w.Intercom=i;function l(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://static.intercomcdn.com/intercom.v1.js';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);}if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}};})()
 </script>

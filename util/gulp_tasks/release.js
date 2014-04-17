@@ -118,7 +118,7 @@
       logTask("Stripping https redirect", true);
       stripHttpsRedirectRegex = /### AHACKFORRELEASINGPUBLICVERSION ###/g;
       d = Q.defer();
-      pipe = gulp.src(["./src/js/**/config.coffee"], SrcOption).pipe(es.through(function(f) {
+      pipe = gulp.src(["./src/js/ide/config.coffee", "./src/user/main.coffee"], SrcOption).pipe(es.through(function(f) {
         var newContent;
         newContent = f.contents.toString("utf8").replace(stripHttpsRedirectRegex, "###");
         f.contents = new Buffer(newContent);

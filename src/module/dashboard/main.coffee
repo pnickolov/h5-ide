@@ -161,7 +161,6 @@ define [ "component/exporter/Thumbnail", 'jquery', 'event', 'MC', 'base_main', '
                 view.showCredential 'welcome'
                 #
                 #MC.common.cookie.setCookieByName 'state', false
-                #MC.common.cookie.setIDECookie $.cookie()
 
             #model
             model.describeAccountAttributesService()

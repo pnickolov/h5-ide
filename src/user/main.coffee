@@ -333,7 +333,7 @@ init = ->
             $('#register-btn').attr('disabled',false)
 
             # username validation
-            checkUsername = (e,cb,weak)->
+            checkUsername = (e,cb)->
                 username = $username.val()
                 status = $('#username-verification-status')
                 if username.trim() isnt ""
@@ -617,11 +617,7 @@ checkUserExist = (params,fn)->
         data: params
         success: (result,statusCode)->
             console.log result , statusCode
-            if(statusCode)
-                fn(statusCode)
-                false
-            else
-                fn(statusCode)
+            fn(statusCode)
         error: (status)->
             console.log 'Net Work Error'
             fn('error')

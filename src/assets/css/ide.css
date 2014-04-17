@@ -4663,6 +4663,44 @@ a.action-link:hover {
 	height: 50px;
 }
 
+.elb-property-instance-list li {
+	height: 30px;
+	width: 220px;
+	margin-left: 10px;
+	margin-top: 10px;
+	padding-top: 5px;
+	/*padding: 2px 10px;*/
+}
+
+.elb-property-instance-list li {
+	background-color: #333;
+	border: 0 !important;
+}
+
+.elb-property-instance-list li:hover {
+	background-color: #333;
+}
+
+.elb-property-instance-list li .instance-info {
+	float: left;
+}
+
+.elb-property-instance-list li .instance-info .instance-id {
+	color: #888;
+}
+
+.elb-property-instance-list li .instance-state {
+	float: right;
+	margin-right: 5px;
+	margin-top: 10px;
+}
+
+.elb-property-instance-list li .elb-info-icon {
+	float: right;
+	margin-top: -14px;
+	margin-left: 5px;
+}
+
 /* property-newtwork-acl */
 
 .acl-rule-list li {

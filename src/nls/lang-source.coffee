@@ -2504,9 +2504,9 @@ module.exports =
       en: "Instance Protocol"
       zh: "实例协议"
 
-    PROP_ELB_DISTRIBUTION:
-      en: "Distribution"
-      zh: "分布"
+    PROP_ELB_INSTANCES:
+      en: "Instances"
+      zh: ""
 
     PROP_ELB_HEALTH_INTERVAL_VALID:
       en: "Response timeout must be less than or equal to the health check interval value"

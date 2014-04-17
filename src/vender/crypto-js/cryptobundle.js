@@ -4,4 +4,4 @@
   Additonal algorithm can be downloaded in https://code.google.com/p/crypto-js/
 */
 
-define(["vender/crypto-js/hmac-md5", "vender/crypto-js/hmac-sha256"], function(){});
+define(["vender/crypto-js/hmac-md5"], function(){});

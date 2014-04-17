@@ -70,6 +70,9 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'state
                         # save design_model
                         MC.common.other.canvasData.save MC.common.other.canvasData.data(true)
 
+                    # set state
+                    MC.common.other.canvasData.set 'state', MC.common.other.canvasData.data('origin').state
+
                 # update MC.Tab[app_id]
                 else
                     @updateAppTabDate       result.resolved_data[ 0 ], app_id
@@ -142,6 +145,9 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'state
 
                 # set Design
                 MC.tab[ tab_id ].design_model.save data
+
+                # set state
+                MC.tab[ tab_id ].design_model.set 'state', data.state
 
             null
 

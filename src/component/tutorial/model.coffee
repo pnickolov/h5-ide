@@ -20,7 +20,6 @@ define [ 'account_model', 'backbone', 'jquery', 'underscore', 'MC' ], ( account_
                     if attributes.state is '2'
                         #
                         MC.common.cookie.setCookieByName 'state', attributes.state
-                        MC.common.cookie.setIDECookie $.cookie()
                 else
 
 

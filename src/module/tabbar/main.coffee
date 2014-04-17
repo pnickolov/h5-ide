@@ -89,9 +89,6 @@ define [ 'jquery', 'event', 'base_main',
                 model.set 'stack_region_name', view.temp_region_name
                 model.set 'current_platform', platform
 
-                if MC.data.untitled is 0 and MC.common.cookie.getCookieByName( 'state' ) is '3'
-                    require [ 'component/tutorial/main' ], ( tutorial_main ) -> tutorial_main.loadModule()
-
                 # check repeat stack name
                 MC.common.other.checkRepeatStackName()
 
@@ -254,9 +251,6 @@ define [ 'jquery', 'event', 'base_main',
                 console.log 'OPEN_STACK_TAB ' + ' tab_name = ' + tab_name + ', region_name = ' + region_name + ', stack_id = ' + stack_id
                 model.set 'stack_region_name', region_name
                 Tabbar.open stack_id.toLowerCase(), tab_name + ' - stack'
-                #
-                if _.contains( MC.data.demo_stack_list, tab_name ) and MC.common.cookie.getCookieByName( 'state' ) is '3'
-                    require [ 'component/tutorial/main' ], ( tutorial_main ) -> tutorial_main.loadModule()
                 null
 
             # open app

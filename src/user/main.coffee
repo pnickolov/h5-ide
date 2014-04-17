@@ -228,7 +228,6 @@ init = ->
                     return false
 
         'register': (pathArray, hashArray)->
-            if checkAllCookie() then window.location = '/'
             deepth = 'register'
             console.log pathArray, hashArray
             if hashArray[0] == 'success'
@@ -237,6 +236,7 @@ init = ->
                     window.location = "/"
                     console.log('Getting start...')
                 return false
+            if checkAllCookie() then window.location = '/'
             render '#register-template'
             $form = $("#register-form")
             $form.find('input').eq(0).focus()

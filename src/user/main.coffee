@@ -446,24 +446,16 @@ setCredit = (result)->
         usercode     : result[0]
         username     : base64Decode( result[0] )
         email        : result[1]
-        session_id   : result[2]
-        account_id   : result[3]
-        mod_repo     : result[4]
-        mod_tag      : result[5]
-        state        : result[6]
-        has_cred     : result[7]
+        user_hash    : result[2]
+        session_id   : result[3]
+        account_id   : result[4]
+        mod_repo     : result[5]
+        mod_tag      : result[6]
+        state        : result[7]
+        has_cred     : result[8]
 
     for key, value of session_info
         $.cookie key, value, COOKIE_OPTION
-
-    localStorage.setItem 'email',     base64Decode( session_info.email )
-    localStorage.setItem 'user_name', session_info.username
-
-    intercom_sercure_mode_hash = () ->
-        intercom_api_secret = '4tGsMJzq_2gJmwGDQgtP2En1rFlZEvBhWQWEOTKE'
-        hash = CryptoJS.HmacSHA256( base64Decode($.cookie('email')), intercom_api_secret )
-        return hash.toString CryptoJS.enc.Hex
-    localStorage.setItem 'user_hash', intercom_sercure_mode_hash()
 
 # ajax register
 ajaxRegister = (params, errorCB)->

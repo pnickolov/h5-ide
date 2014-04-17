@@ -5,19 +5,15 @@ define [ 'MC' ], ( MC ) ->
 		path    : '/'
 
 	setCookie = ( result ) ->
-		$.cookie 'usercode',    result.usercode,    COOKIE_OPTION
-		$.cookie 'username',    MC.base64Decode( result.usercode ), COOKIE_OPTION
-		$.cookie 'email',       result.email,       COOKIE_OPTION
-		$.cookie 'session_id',  result.session_id,  COOKIE_OPTION
-		$.cookie 'account_id',  result.account_id,  COOKIE_OPTION
-		$.cookie 'mod_repo',    result.mod_repo,    COOKIE_OPTION
-		$.cookie 'mod_tag',     result.mod_tag,     COOKIE_OPTION
-		$.cookie 'state',       result.state,       COOKIE_OPTION
-		$.cookie 'has_cred',    result.has_cred,    COOKIE_OPTION
+		result.username = MC.base64Decode( result.usercode )
+		for key, value of result
+        $.cookie key, value, COOKIE_OPTION
+    null
 
 	deleteCookie = ->
 		$.cookie 'usercode',    '', COOKIE_OPTION
 		$.cookie 'username',    '', COOKIE_OPTION
+		$.cookie 'user_hash',   '', COOKIE_OPTION
 		$.cookie 'email',       '', COOKIE_OPTION
 		$.cookie 'session_id',  '', COOKIE_OPTION
 		$.cookie 'account_id',	'', COOKIE_OPTION

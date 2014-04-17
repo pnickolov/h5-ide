@@ -283,15 +283,12 @@ header {
 
 /* Unsupported Browser Notice */
 #unsupported-browser {
-	position: relative;
-	top: 100px;
-	padding: 15px 0 5px;
-	text-align: center;
-	background: #DFCC60;
-	width: 100%;
-	color: #666;
-	font-size: 14px;
-	border-bottom: 1px solid #999;
+	padding       : 15px 0 5px;
+	text-align    : center;
+	background    : #DFCC60;
+	width         : 100%;
+	color         : #666;
+	font-size     : 14px;
 }
 
 /* Selection */

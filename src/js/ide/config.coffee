@@ -130,7 +130,6 @@ require.config {
 		'UI.sortable'        : 'ui/jquery.sortable'
 		'UI.parsley'         : 'ui/UI.parsley'
 		'UI.errortip'        : 'ui/UI.errortip'
-		'bootstrap-carousel' : 'ui/bootstrap-carousel'
 		'jqpagination'       : 'ui/jqpagination'
 		"jquerysort"         : 'ui/jquery.sort'
 
@@ -359,7 +358,6 @@ require.config {
 			'UI.parsley'
 			'UI.errortip'
 			"jqpagination"
-			'bootstrap-carousel'
 			'jquerysort'
 		]
 		"model/model" : [

@@ -4689,6 +4689,10 @@ a.action-link:hover {
 	color: #888;
 }
 
+.elb-property-instance-list li .instance-info .instance-id.instance-id-down {
+	margin-top: 10px;
+}
+
 .elb-property-instance-list li .instance-state {
 	float: right;
 	margin-right: 5px;

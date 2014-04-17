@@ -89,8 +89,8 @@
             {{#each this.instance}}
               <li>
                 <div class="instance-info">
-                  <div class="instance-name">{{instance_name}}</div>
-                  <div class="instance-id">({{instance_id}})</div>
+                  {{#if instance_name}}<div class="instance-name">{{instance_name}}</div>{{/if}}
+                  <div class="instance-id {{#unless instance_name}}instance-id-down{{/unless}}">({{instance_id}})</div>
                 </div>
                 <div class="instance-state">
                   {{#if instance_state}}InService{{else}}OutOfService{{/if}}

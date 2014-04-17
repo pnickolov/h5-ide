@@ -412,8 +412,9 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
                         if not dict[dict_name]
                             dict[dict_name] = []
                         elb_data = responses[action_name] [null, node]
-                        elb_data.LoadBalancerName = elb_name
-                        dict[dict_name].push elb_data
+                        if elb_data
+                            elb_data.LoadBalancerName = elb_name
+                            dict[dict_name].push elb_data
 
         dict
 

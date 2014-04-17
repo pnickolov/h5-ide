@@ -154,15 +154,20 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
                     regionName = ''
                     if instanceComp
 
+                        instanceName = instanceComp.get('name')
+
+                        if instanceName is instanceId
+                            instanceName = null
+
                         showStateObj = {
-                            instance_name: instanceComp.get('name')
+                            instance_name: instanceName
                             instance_id: instanceId
                             instance_state: (instanceState is 'InService')
                             instance_state_desc: instanceStateDescription
                         }
 
                         regionComp = null
-                        if instanceComp.parent() and regionComp.parent().parent()
+                        if instanceComp.parent() and instanceComp.parent().parent()
                             regionComp = instanceComp.parent().parent()
                             if instanceComp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
                                 regionComp = instanceComp.parent().parent().parent()

@@ -142,7 +142,7 @@ setIDECookie = ( result ) ->
 
 checkAllCookie = ->
 
-    if $.cookie('usercode') and $.cookie('username') and $.cookie('session_id') and $.cookie('account_id') and $.cookie('mod_repo') and $.cookie('mod_tag') and $.cookie('state') and $.cookie('has_cred') and $.cookie('is_invitated')
+    if $.cookie('usercode') and $.cookie('username') and $.cookie('session_id') and $.cookie('account_id') and $.cookie('mod_repo') and $.cookie('mod_tag') and $.cookie('state') and $.cookie('has_cred')
         true
     else
         false
@@ -538,7 +538,6 @@ setCredit = (result)->
         mod_tag      : result[5]
         state        : result[6]
         has_cred     : result[7]
-        is_invitated : result[8]
 
     for key, value of session_info
         $.cookie key, value, COOKIE_OPTION

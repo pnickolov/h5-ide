@@ -208,10 +208,9 @@ define [ "Design",
     # Other Policy
     setPolicyProxyProtocol : (enable, portAry) ->
 
-      that = this
-      otherPoliciesMap = that.get('otherPoliciesMap')
+      otherPoliciesMap = @get('otherPoliciesMap')
       if enable
-        otherPoliciesMap['EnableProxyProtocol'] = {
+        otherPoliciesMap.EnableProxyProtocol = {
           'PolicyName' : 'EnableProxyProtocol',
           'PolicyTypeName' : 'ProxyProtocolPolicyType',
           'PolicyAttributes' :{
@@ -220,9 +219,9 @@ define [ "Design",
           'InstancePort' : portAry
         }
       else
-        delete otherPoliciesMap['EnableProxyProtocol']
+        delete otherPoliciesMap.EnableProxyProtocol
 
-      that.set('otherPoliciesMap', otherPoliciesMap)
+      @set('otherPoliciesMap', otherPoliciesMap)
 
     serialize : ()->
       hcTarget = @get("healthCheckTarget")
@@ -335,7 +334,7 @@ define [ "Design",
         x : layout_data.coordinate[0]
         y : layout_data.coordinate[1]
 
-        otherPoliciesMap: {}        
+        otherPoliciesMap: {}
 
       # Other Policies
       if data.resource.Policies

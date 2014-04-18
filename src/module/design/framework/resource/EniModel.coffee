@@ -7,6 +7,11 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
   IpObject = ( attr )->
     if not attr then attr = {}
 
+    # If the ip is not malform, switch to autoAssign ip.
+    attr.ip = attr.ip || ""
+    if attr.ip.split(".").length != 4 or attr.ip[attr.ip.length-1] is "."
+      attr.ip = ""
+
     this.hasEip       = attr.hasEip or false
     this.autoAssign   = if attr.autoAssign isnt undefined then attr.autoAssign else true
     this.ip           = attr.ip or "x.x.x.x"

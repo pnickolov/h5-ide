@@ -1057,7 +1057,7 @@ Following rule(s) will be deleted from its(their) security group:</div>
 		<div class="modal-text-wraper">
 			<div class="modal-center-align-helper">
 				<div class="modal-text-major">Stack name <span class="resource-name-label">{{stack_name}}</span> is already used by another stack. Please use a different name.</div>
-				<div class="modal-control-group modal-control-group-bg-blue" data-bind="true">
+				<div class="modal-control-group" data-bind="true">
 					<label for="new-stack-name">Stack Name</label>
 					<input id="new-stack-name" class="input modal-input-value" type="text" value="{{stack_name}}" data-ignore="true">
 				</div>

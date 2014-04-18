@@ -4159,7 +4159,7 @@ module.exports =
     ## State Editor Help
 
     STATE_HELP_INTRO_LBL:
-      en: "<p>Select or input a command to see a related help document here. Read detailed <a href='http://visualops.readthedocs.org/' target='_blank'>documentation</a>.</p>"
+      en: "<p>Select or input a command to see a related help document here. Read detailed <a href='http://docs.visualops.io/' target='_blank'>documentation</a>.</p>"
       zh: ""
 
     ##### Request Invite to Experimental Feature

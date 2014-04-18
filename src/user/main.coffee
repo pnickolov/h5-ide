@@ -344,15 +344,15 @@ init = ->
                     $(".verification-status").removeAttr('style')
                     $('.error-status').removeClass('error-status')
                 $('#register-btn').attr('disabled',false).val(langsrc.register['register-btn'])
-            $username.on 'keyup', (e)->
+            $username.on 'keyup blur change', (e)->
                 checkUsername e, (a)->
                     resetRegForm() unless a
                     return a
-            $email.on 'keyup', (e)->
+            $email.on 'keyup blur change', (e)->
                 checkEmail e, (a)->
                     resetRegForm() unless a
                     return a
-            $password.on 'keyup', (e)->
+            $password.on 'keyup blur change', (e)->
                 checkPassword e, (a)->
                     resetRegForm() unless a
                     return a

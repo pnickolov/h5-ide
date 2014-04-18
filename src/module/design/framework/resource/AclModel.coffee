@@ -45,7 +45,7 @@ define [ "../ComplexResModel", "../ConnectionModel", "constant" ], ( ComplexResM
 
       # For ICMP rule, port will be "IcmTypeCode.Type/IcmpTypeCode.Code"
 
-      if r.Protocol is "1" and r.IcmpTypeCode and r.IcmpTypeCode.Code and r.IcmpTypeCode.Type
+      if rule.protocol is 1 and r.IcmpTypeCode and r.IcmpTypeCode.Code and r.IcmpTypeCode.Type
         rule.port = r.IcmpTypeCode.Type + "/" + r.IcmpTypeCode.Code
       else if r.PortRange.From and r.PortRange.To
         if r.PortRange.From is r.PortRange.To
@@ -161,7 +161,7 @@ define [ "../ComplexResModel", "../ConnectionModel", "constant" ], ( ComplexResM
           PortRange    : __emptyPortRange
         }
 
-        if rule.protocol is "1"
+        if rule.protocol is 1
           port = rule.port.split("/")
           r.IcmpTypeCode = { Code : port[1], Type : port[0] }
         else if rule.port

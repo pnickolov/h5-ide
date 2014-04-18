@@ -7430,8 +7430,8 @@ summary:focus {
 }*/
 
 #modal-key-short .key-item {
-	color: #666;
-	padding: 20px 24px 20px 24px;
+	color: #ccc;
+	padding: 10px 24px 10px 24px;
 }
 
 #modal-key-short .key-item:nth-child(2n+1) {

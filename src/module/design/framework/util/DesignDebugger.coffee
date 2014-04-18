@@ -1,7 +1,6 @@
 
 define [ "Design" ], ( Design )->
 
-  ### env:dev ###
   Design.debug = ()->
     componentMap = Design.instance().__componentMap
     canvasNodes  = Design.instance().__canvasNodes
@@ -102,5 +101,3 @@ define [ "Design" ], ( Design )->
   dds()        Print JSON \n
   copy(dds())  Copy JSON"
   null
-
-  ### env:dev:end ###

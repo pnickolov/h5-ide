@@ -169,7 +169,7 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
         if defaultSubnet
           cidr = defaultSubnet.cidrBlock
 
-      cidr
+      cidr || "10.0.0.1"
 
     getIpArray : ()->
 

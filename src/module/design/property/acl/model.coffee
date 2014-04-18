@@ -124,26 +124,34 @@ define [ '../base/model', "Design", 'constant', 'i18n!nls/lang.js' ], ( Property
                     when 6  then rule.protocol = "TCP"
                     when 17 then rule.protocol = "UDP"
 
-                if rule.protocol is 'ICMP'
-                    typeCodeStrAry = rule.port.split('/')
+                rule.tooltip = 'Port'
 
-                    typeStr = ''
-                    if typeCodeStrAry[0]
-                        typeStr = icmpTypeMap[typeCodeStrAry[0]]
+                try
 
-                    codeStr = ''
-                    if typeCodeStrAry[1]
-                        if icmpCodeMap[typeCodeStrAry[0]]
-                            codeStr = icmpCodeMap[typeCodeStrAry[0]][typeCodeStrAry[1]]
-                        else
-                            codeStr = "All(-1)"
+                    if rule.protocol is 'ICMP'
+                        typeCodeStrAry = rule.port.split('/')
 
-                    if typeStr and not codeStr
-                        rule.tooltip = 'Type: ' + typeStr
-                    else if typeStr and codeStr
-                        rule.tooltip = 'Type: ' + typeStr + ', ' + 'Code: ' + codeStr
-                else
-                    rule.tooltip = 'Port: ' + rule.port
+                        typeStr = ''
+                        if typeCodeStrAry[0]
+                            typeStr = icmpTypeMap[typeCodeStrAry[0]]
+
+                        codeStr = ''
+                        if typeCodeStrAry[1]
+                            if icmpCodeMap[typeCodeStrAry[0]]
+                                codeStr = icmpCodeMap[typeCodeStrAry[0]][typeCodeStrAry[1]]
+                            else
+                                codeStr = "All(-1)"
+
+                        if typeStr and not codeStr
+                            rule.tooltip = 'Type: ' + typeStr
+                        else if typeStr and codeStr
+                            rule.tooltip = 'Type: ' + typeStr + ', ' + 'Code: ' + codeStr
+                    else
+                        rule.tooltip = 'Port: ' + rule.port
+
+                catch err
+
+                    console.log 'ERR: icmp code type parse faild.'
 
                 null
 

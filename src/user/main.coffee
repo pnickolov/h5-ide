@@ -151,7 +151,7 @@ init = ->
         safari = /version\/([\d\.]+).*safari/.exec( ua )
         if safari then browser[2] = safari[1]
 
-    if not ((parseInt(browser[2], 10) || 0) >= support[browser[1]])
+    if (parseInt(browser[2], 10) || 0) < support[browser[1]]
       $("header").after '<div id="unsupported-browser"><p>MadeiraCloud IDE does not support the browser you are using.</p> <p>For a better experience, we suggest you use the latest version of <a href="https://www.google.com/intl/en/chrome/browser/" target="_blank">Chrome</a>, <a href="http://www.mozilla.org/en-US/firefox/all/" target="_blank">Firefox</a> or <a href="http://windows.microsoft.com/en-us/internet-explorer/download-ie" target="_blank">IE</a>.</p></div>'
 
     userRoute(
@@ -443,6 +443,11 @@ checkPassKey = (keyToValid,fn)->
     )
 
 setCredit = (result)->
+    # Clear any cookie that's not ours
+    domain = { "domain" : window.location.hostname.replace("ide", "") }
+    for ckey, cValue of $.cookie()
+        $.removeCookie ckey, domain
+
     session_info =
         usercode     : result[0]
         username     : base64Decode( result[0] )
@@ -457,6 +462,13 @@ setCredit = (result)->
 
     for key, value of session_info
         $.cookie key, value, COOKIE_OPTION
+
+    # Set a cookie for WWW
+    $.cookie "has_session", !!session_info.session_id, {
+        domain  : window.location.hostname.replace("ide", "")
+        path    : "/"
+        expires : 30
+    }
 
 # ajax register
 ajaxRegister = (params, errorCB)->

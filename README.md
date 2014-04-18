@@ -148,6 +148,7 @@ require.config({
 
 ### # 写详细和有用的注释和commit message
 注释不是用来解析代码的，而是用来描述为什么要写这样的代码。
+
 Bad Example:
 ```js
 // render         <--- 这TM不是废话吗？

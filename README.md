@@ -151,7 +151,7 @@ require.config({
 
 Bad Example:
 ```js
-// render         <--- 这TM不是废话吗？
+// render         <--- 这不是废话吗？
 view.render()
 ```
 

@@ -12,7 +12,7 @@ define [ 'MC' ], ( MC ) ->
 			$.cookie key, value, COOKIE_OPTION
 
 		# Set a cookie for WWW
-		$.cookie "has_session", !!session_info.session_id, {
+		$.cookie "has_session", !!result.session_id, {
 			domain  : window.location.hostname.replace("ide", "")
 			path    : "/"
 			expires : 30

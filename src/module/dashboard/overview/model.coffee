@@ -1122,6 +1122,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
          #result list
 
         updateMap : ( me, app_list, stack_list ) ->
+            console.log 'updateMap', me, app_list, stack_list
 
             #init
             total_app   = 0
@@ -1203,6 +1204,8 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
             result_list.plural_app   = if total_app > 1 then 's' else ''
             result_list.plural_aws   = if total_aws > 1 then 's' else ''
             result_list.plural_stack = if total_stack > 1 then 's' else ''
+
+            console.log 'sfsfasfffffffffffffff ', result_list
 
             #set vo
             me.set 'result_list', $.extend true, {}, result_list

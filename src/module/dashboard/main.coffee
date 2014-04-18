@@ -67,6 +67,7 @@ define [ "component/exporter/Thumbnail", 'jquery', 'event', 'MC', 'base_main', '
                 should_update_overview = true
                 #refresh view
                 view.renderMapResult()
+                view.renderRecent()
 
             model.on 'change:region_classic_list', () ->
                 console.log 'dashboard_region_classic_list'

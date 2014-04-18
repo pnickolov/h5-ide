@@ -341,9 +341,7 @@ define [ 'event', 'i18n!nls/lang.js',
 
         renderMapResult : ->
             console.log 'dashboard overview-result render', @model.attributes
-
             cur_tmpl = template_data.overview_result @model.attributes
-
             $( this.el ).find('#global-region-spot').html cur_tmpl
 
             null

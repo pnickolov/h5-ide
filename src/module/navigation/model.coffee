@@ -81,7 +81,7 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'state_model', 'aws_model', 'c
                 console.log app_list
 
                 #set vo
-                me.set 'app_list', $.extend true, {}, app_list
+                me.set 'app_list', $.extend true, [], app_list
 
                 null
 
@@ -151,7 +151,7 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'state_model', 'aws_model', 'c
                 #stack_region_list = _.keys result.resolved_data
 
                 #set vo
-                me.set 'stack_list', $.extend true, {}, stack_list
+                me.set 'stack_list', $.extend true, [], stack_list
                 #
                 stack_region_list = []
                 _.each stack_list, ( item ) ->
@@ -188,7 +188,7 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'state_model', 'aws_model', 'c
                 console.log region_list
 
                 #set vo
-                me.set 'region_list', $.extend true, {}, region_list
+                me.set 'region_list', $.extend true, [], region_list
 
                 null
 
@@ -215,7 +215,7 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'state_model', 'aws_model', 'c
             console.log region_empty_list
 
             #set vo
-            this.set 'region_empty_list', $.extend true, {}, region_empty_list
+            this.set 'region_empty_list', $.extend true, [], region_empty_list
 
             null
 

@@ -1205,7 +1205,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
             result_list.plural_stack = if total_stack > 1 then 's' else ''
 
             #set vo
-            me.set 'result_list', result_list
+            me.set 'result_list', $.extend true, {}, result_list
 
             null
 

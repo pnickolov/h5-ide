@@ -13,7 +13,7 @@ define [ '../base/view',
     StackView = PropertyView.extend {
         events   :
             'change #property-stack-name'          : 'stackNameChanged'
-
+            'change #property-stack-description'   : 'stackDescriptionChanged'
             'click #stack-property-new-acl'        : 'createAcl'
             'click #stack-property-acl-list .edit' : 'openAcl'
             'click .sg-list-delete-btn'            : 'deleteAcl'
@@ -33,7 +33,7 @@ define [ '../base/view',
                     title = "App - #{@model.get('name')}"
             else
                 title = "Stack - #{@model.get('name')}"
-
+            console.log @model.attributes
             @$el.html( template( @model.attributes ) )
 
             if title
@@ -46,6 +46,14 @@ define [ '../base/view',
 
             null
 
+        stackDescriptionChanged: () ->
+            stackDescTextarea = $ "#property-stack-description"
+            stackId = @model.get('id')
+            description = stackDescTextarea.val()
+
+            if stackDescTextarea.parsley 'validate'
+                @trigger 'STACK_DESC_CHANGED', description
+                #@setDescription description
         stackNameChanged : () ->
             stackNameInput = $ '#property-stack-name'
             stackId = @model.get( 'id' )

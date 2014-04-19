@@ -234,6 +234,7 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
       # Initialize name/appId to empty string
       if not @attributes.name  then @attributes.name  = ""
       if not @attributes.appId then @attributes.appId = ""
+      if not @attributes.description then @attributes.description = ""
 
       # Trigger Design AddResource Event here.
       # Because only at this time, the resource is fully created.

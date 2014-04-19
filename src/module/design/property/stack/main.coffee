@@ -17,6 +17,11 @@ define [ '../base/main',
         ide_event.trigger ide_event.UPDATE_DESIGN_TAB, design.get("id"), name + ' - stack'
         null
 
+    view.on 'STACK_DESC_CHANGED', (description) ->
+        design = Design.instance()
+        design.set('description', description)
+        null
+
     view.on 'OPEN_ACL', ( uid ) ->
         PropertyModule.loadSubPanel( "ACL", uid )
         null

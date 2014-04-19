@@ -3603,6 +3603,30 @@ a.sidebar-hider:before {
 	width: 230px;
 }
 
+.property-control-group textarea{
+    width: 242px;
+    padding: 7px;
+    border: 1px solid #000000;
+    background-color: #1c1c1c;
+    color: #D0D0D0;
+    height: 60px;
+    overflow: auto;
+}
+
+.property-control-group textarea:focus{
+    background-color: #000000;
+    color: #eeeeee;
+    border: 1px solid #161616;
+}
+
+.property-control-group textarea:hover{
+    background: #101010;
+}
+
+.property-wrap .property-control-group textarea{
+    resize: none;
+}
+
 .property-control-group.error > label.left {
 	color: #F74A48;
 }
@@ -3610,10 +3634,6 @@ a.sidebar-hider:before {
 .property-control-group .radio-group {
 	/*width: 260px;*/
 	float: left;
-}
-
-.property-control-group textarea {
-	width: 250px;
 }
 
 .property-control-group .ranged-input {

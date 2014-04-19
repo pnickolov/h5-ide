@@ -22,6 +22,7 @@ define ['../base/model', 'constant', "Design" ], ( PropertyModel, constant, Desi
         name      : design.get("name").replace(/\s+/g, '')
         id        : design.get("id")
         usage     : design.get("usage")
+        description: design.get('description')
         type      : typeMap[ design.type() ]
         region    : constant.REGION_SHORT_LABEL[ design.region() ]
         isApp     : @isApp

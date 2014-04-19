@@ -1391,6 +1391,10 @@ module.exports =
       en: "Stack Name"
       zh: "模版名称"
 
+    PROP_STACK_LBL_DESCRIPTION:
+      en: "Stack Description"
+      zh: "模板描述"
+
     PROP_STACK_LBL_REGION:
       en: "Region"
       zh: "地区"

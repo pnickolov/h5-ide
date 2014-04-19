@@ -16,6 +16,10 @@
 		<label class="left" for="property-stack-name">{{ i18n "PROP_STACK_LBL_NAME" }}</label>
 		<input class="input" type="text" data-ignore="true" data-required-rollback="true" value="{{name}}" id="property-stack-name">
 	</section>
+    <section class="property-control-group" data-bind="true">
+        <label for="property-stack-description">{{ i18n "PROP_STACK_LBL_DESCRIPTION"}}</label>
+        <textarea name="" id="property-stack-description" cols="30" rows="7">{{description}}</textarea>
+    </section>
 	<dl class="dl-horizontal dl-region-type property-control-group">
 		<dt><label>{{ i18n "PROP_STACK_LBL_REGION" }}</label></dt><dd>{{region}}</dd>
 		<dt><label>{{ i18n "PROP_STACK_LBL_TYPE" }}</label></dt><dd>{{type}}</dd>

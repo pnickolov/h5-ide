@@ -128,8 +128,8 @@
       return d.promise;
     },
     cleanRepo: function() {
-      logTask("Removing ignored files in src (git clean -Xf)");
-      return util.runCommand("git", ["clean", "-Xdf"], {
+      logTask("Removing ignored files in src (git clean -xdf)");
+      return util.runCommand("git", ["clean", "-xdf"], {
         cwd: process.cwd() + "/src"
       }, stdRedirect);
     },

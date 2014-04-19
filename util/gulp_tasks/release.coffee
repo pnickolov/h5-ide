@@ -102,9 +102,9 @@ Tasks =
 
 
   cleanRepo : ()->
-    logTask "Removing ignored files in src (git clean -Xf)"
+    logTask "Removing ignored files in src (git clean -xdf)"
 
-    util.runCommand "git", ["clean", "-Xdf"], { cwd : process.cwd() + "/src" }, stdRedirect
+    util.runCommand "git", ["clean", "-xdf"], { cwd : process.cwd() + "/src" }, stdRedirect
 
   checkGitVersion : ()->
     logTask "Checking Git Version"

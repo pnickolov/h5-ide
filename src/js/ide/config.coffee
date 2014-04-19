@@ -43,7 +43,7 @@
   getCookie = (sKey)-> decodeURIComponent(document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + encodeURIComponent(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1")) || null
 
   if not (getCookie('usercode') and getCookie('username') and getCookie('session_id') and getCookie('account_id') and getCookie('mod_repo') and getCookie('mod_tag') and getCookie('state') and getCookie('has_cred'))
-  	window.location.href = "/login"
+  	window.location.href = "/login/"
   	return
 
   # Get Version and locale

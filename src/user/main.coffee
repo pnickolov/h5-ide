@@ -446,7 +446,8 @@ setCredit = (result)->
     # Clear any cookie that's not ours
     domain = { "domain" : window.location.hostname.replace("ide", "") }
     for ckey, cValue of $.cookie()
-        $.removeCookie ckey, domain
+        if ckey != "notice-sn"
+            $.removeCookie ckey, domain
 
     session_info =
         usercode     : result[0]

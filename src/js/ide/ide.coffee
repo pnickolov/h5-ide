@@ -319,7 +319,8 @@ define [ 'MC', 'event', 'handlebars'
 				# A hack to update resource panel
 				$("#resource-panel").find(".accordion-group.expanded").removeClass("expanded").children(".fixedaccordion-head").trigger("click", true)
 
-				$.cookie 'notice-sn', '1'
+				$.cookie 'notice-sn', '1',
+                    expires: 365*2
 
 		displaySystemNotice()
 

@@ -189,15 +189,16 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
         for i in refArray
           if not i then continue
           if i.indexOf("PolicyARN") != -1
-            policy = resolve( MC.extractID(i) )
+            policy = resolve( MC.extractID(i) ) || new Backbone.Model()
           else if i.indexOf("TopicArn") != -1
             sendNotification = true
 
-        policy.set {
-          "alarmData" : alarmData
-          "sendNotification" : sendNotification
-          "state" : state
-        }
+        if policy
+          policy.set {
+            "alarmData" : alarmData
+            "sendNotification" : sendNotification
+            "state" : state
+          }
 
       else
         policy = new Model({
@@ -212,7 +213,7 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
         })
 
         asg = resolve( MC.extractID( data.resource.AutoScalingGroupName) )
-        asg.addScalingPolicy( policy )
+        if asg then asg.addScalingPolicy( policy )
       null
   }
 

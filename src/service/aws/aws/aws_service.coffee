@@ -165,6 +165,7 @@ define [ 'MC', 'common_handle', 'result_vo', 'constant', 'ebs_service', 'eip_ser
 			"DescribeKeyPairsResponse"             :   keypair_service.resolveDescribeKeyPairsResult
 			"DescribeSecurityGroupsResponse"       :   securitygroup_service.resolveDescribeSecurityGroupsResult
 			"DescribeLoadBalancersResponse"        :   elb_service.resolveDescribeLoadBalancersResult
+			"DescribeInstanceHealthResponse"       :   elb_service.resolveDescribeInstanceHealthResult
 			"DescribeNetworkAclsResponse"          :   acl_service.resolveDescribeNetworkAclsResult
 			"DescribeCustomerGatewaysResponse"     :   customergateway_service.resolveDescribeCustomerGatewaysResult
 			"DescribeDhcpOptionsResponse"          :   dhcp_service.resolveDescribeDhcpOptionsResult
@@ -192,17 +193,32 @@ define [ 'MC', 'common_handle', 'result_vo', 'constant', 'ebs_service', 'eip_ser
 
 		for node in result
 
-			action_name = ($.parseXML node).documentElement.localName
+			if node
 
-			dict_name = action_name.replace /Response/i, ""
+				if $.type(node) is "string"
+					
+					action_name = ($.parseXML node).documentElement.localName
+					dict_name = action_name.replace /Response/i, ""
+					dict[dict_name] = [] if dict[dict_name]?
+					# ignore no response
+					if action_name not of responses
+						continue
+					parseResult = responses[action_name] [null, node]
+					dict[dict_name] = parseResult
+				
+				else if $.type(node) is "object"
 
-			dict[dict_name] = [] if dict[dict_name]?
-
-			# ignore no response
-			if action_name not of responses
-				continue
-
-			dict[dict_name] = responses[action_name] [null, node]
+					elbHealthData = node["DescribeInstanceHealth"]
+					if elbHealthData
+						_.each elbHealthData, ( node, elb_name ) ->
+							action_name = ($.parseXML(node)).documentElement.localName
+							dict_name = action_name.replace /Response/i, ""
+							if not dict[dict_name]
+								dict[dict_name] = []
+							elb_data = responses[action_name] [null, node]
+							if elb_data
+								elb_data.LoadBalancerName = elb_name
+								dict[dict_name].push elb_data
 
 		dict
 
@@ -389,6 +405,9 @@ define [ 'MC', 'common_handle', 'result_vo', 'constant', 'ebs_service', 'eip_ser
 			app_json.region = region
 
 			for resource_type, resource_comp of nodes
+
+				if resource_type is 'DescribeInstanceHealth'
+					continue
 
 				if resource_comp
 

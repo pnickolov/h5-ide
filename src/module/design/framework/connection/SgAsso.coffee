@@ -27,6 +27,20 @@ define [ "constant", "../ConnectionModel", "CanvasManager", "Design" ], ( consta
     # Return false, so that ConnectionModel will not create an line for us.
     isVisual : ()-> false
 
+    # SgAsso doesn't have portDefs, so the basic validation implemented in ConnectionModel won't work.
+    # Here, we do our own job.
+    assignCompsToPorts : (p1Comp, p2Comp)->
+      if p1Comp.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup
+        @__port1Comp = p1Comp
+        @__port2Comp = p2Comp
+      else if p2Comp.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup
+        @__port1Comp = p2Comp
+        @__port2Comp = p1Comp
+      else
+        return false
+
+      true
+
     remove : ()->
       ConnectionModel.prototype.remove.apply this, arguments
 

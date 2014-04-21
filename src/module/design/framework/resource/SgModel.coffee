@@ -319,6 +319,8 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
         else
           ruleTarget = new SgTargetModel( rule.IpRanges )
 
+        if not ruleTarget then continue
+
         attr =
           fromPort : rule.FromPort
           toPort   : rule.ToPort

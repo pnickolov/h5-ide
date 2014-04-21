@@ -19,7 +19,6 @@ define [ 'event',
             'click #awscredential-modal'            : 'clickOpenAWSCredential'
             'DROPDOWN_CLOSE #header--notification'  : 'dropdownClosed'
             'click .dropdown-app-name'              : 'clickAppName'
-            'click #guide-tutorial'                 : 'openTutorial'
 
         render   : () ->
             console.log 'header render'
@@ -68,12 +67,6 @@ define [ 'event',
         setAlertCount : ( count ) ->
             $('#header--notification').find('span').text( count || "" )
             null
-
-        openTutorial : ->
-            console.log 'openTutorial'
-            require [ 'component/tutorial/main' ], ( tutorial_main ) ->
-                tutorial_main.loadModule()
-
     }
 
     return HeaderView

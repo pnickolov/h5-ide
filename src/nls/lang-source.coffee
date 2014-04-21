@@ -1391,6 +1391,14 @@ module.exports =
       en: "Stack Name"
       zh: "模版名称"
 
+    PROP_STACK_LBL_DESCRIPTION:
+      en: "Stack Description"
+      zh: "模板描述"
+
+    PROP_STACK_LBL_DESC:
+      en: "Description"
+      zh: "描述"
+
     PROP_STACK_LBL_REGION:
       en: "Region"
       zh: "地区"
@@ -2504,9 +2512,9 @@ module.exports =
       en: "Instance Protocol"
       zh: "实例协议"
 
-    PROP_ELB_DISTRIBUTION:
-      en: "Distribution"
-      zh: "分布"
+    PROP_ELB_INSTANCES:
+      en: "Instances"
+      zh: ""
 
     PROP_ELB_HEALTH_INTERVAL_VALID:
       en: "Response timeout must be less than or equal to the health check interval value"
@@ -4159,7 +4167,7 @@ module.exports =
     ## State Editor Help
 
     STATE_HELP_INTRO_LBL:
-      en: "<p>Select or input a command to see a related help document here. Read detailed <a href='http://visualops.readthedocs.org/' target='_blank'>documentation</a>.</p>"
+      en: "<p>Select or input a command to see a related help document here. Read detailed <a href='http://docs.visualops.io/source/reference/mod.html' target='_blank'>documentation</a>.</p>"
       zh: ""
 
     ##### Request Invite to Experimental Feature

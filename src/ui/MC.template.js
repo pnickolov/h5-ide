@@ -1550,7 +1550,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 
   buffer += "<div style=\"width:420px\">\n	<div class=\"modal-header\"> <h3>Stack Name Already in Use</h3><i class=\"modal-close\">&times;</i> </div>\n	<div class=\"modal-body\" style=\"min-height:120px;\">\n		<div class=\"modal-text-wraper\">\n			<div class=\"modal-center-align-helper\">\n				<div class=\"modal-text-major\">Stack name <span class=\"resource-name-label\">"
     + escapeExpression(((stack1 = (depth0 && depth0.stack_name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</span> is already used by another stack. Please use a different name.</div>\n				<div class=\"modal-control-group modal-control-group-bg-blue\" data-bind=\"true\">\n					<label for=\"new-stack-name\">Stack Name</label>\n					<input id=\"new-stack-name\" class=\"input modal-input-value\" type=\"text\" value=\""
+    + "</span> is already used by another stack. Please use a different name.</div>\n				<div class=\"modal-control-group\" data-bind=\"true\">\n					<label for=\"new-stack-name\">Stack Name</label>\n					<input id=\"new-stack-name\" class=\"input modal-input-value\" type=\"text\" value=\""
     + escapeExpression(((stack1 = (depth0 && depth0.stack_name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\" data-ignore=\"true\">\n				</div>\n			</div>\n		</div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"rename-confirm\" class=\"btn btn-blue\">Save</button>\n	</div>\n</div>\n\n";
   return buffer;

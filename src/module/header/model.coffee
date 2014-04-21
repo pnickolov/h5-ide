@@ -29,9 +29,6 @@ define [ 'backbone', 'jquery', 'underscore',
 
                 common_handle.cookie.deleteCookie()
 
-                #SSO
-                $.cookie 'madeiracloud_ide_session_id', null, { expires: 0 }
-
                 window.location.href = "/login"
 
                 return false

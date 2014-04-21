@@ -74,64 +74,129 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
             elb.isClassic  = Design.instance().typeIsClassic()
             elb.defaultVPC = Design.instance().typeIsDefaultVpc()
 
+            # elb.distribution = []
+
+            # subnetMap = {}
+
+            # allSubnet = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet ).allObjects()
+
+            # for subnet in allSubnet
+            #     subnetMap[ subnet.id ] = subnet.get 'name'
+
+
+            # $.each elb.AvailabilityZones.member, (i, zone_name) ->
+            #   tmp = {}
+            #   tmp.zone = zone_name
+            #   tmp.health_instance = 0
+            #   tmp.total_instance = 0
+
+            #   if not elb.isClassic
+
+            #     if elb.Subnets.member and elb.Subnets.member.constructor == Array
+
+            #         $.each elb.Subnets.member, (j, subnet_id) ->
+            #             subnet = MC.data.resource_list[Design.instance().region()][subnet_id]
+            #             if subnet and subnet.availabilityZone is zone_name
+            #                 tmp.subnet = subnetMap[ subnet_id ]
+            #                 return false
+
+            #     else if elb.Subnets.member
+
+            #         tmp.subnet = elb.Subnets.member
+
+            #   else
+            #     tmp.subnet = null
+
+            #   $.each MC.data.config[Design.instance().region()].zone.item, (i, zone) ->
+
+            #     if zone.zoneName == zone_name and zone.zoneState == 'available'
+
+            #         tmp.health = true
+
+            #     null
+
+            #   elb.distribution.push tmp
+
+            # elb.instance_state = elb.instance_state || []
+
+            # $.each elb.instance_state, ( i, instance ) ->
+
+            #     zone = MC.data.resource_list[Design.instance().region()][instance.InstanceId].placement.availabilityZone
+
+            #     $.each elb.distribution, ( j, az_detail ) ->
+
+            #         if az_detail.zone == zone and instance.State == 'InService'
+
+            #             az_detail.health_instance += 1
+
+            #         az_detail.total_instance += 1
+
+            #         return false
+
             elb.distribution = []
+            elbDistrMap = {}
 
-            subnetMap = {}
+            instanceStateObj = elb.InstanceState
 
-            allSubnet = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet ).allObjects()
+            _.each instanceStateObj, (stateObj) ->
 
-            for subnet in allSubnet
-                subnetMap[ subnet.id ] = subnet.get 'name'
+                try
 
+                    instanceId = stateObj.InstanceId
+                    instanceStateCode = stateObj.ReasonCode
+                    instanceState = stateObj.State
+                    instanceStateDescription = stateObj.Description
 
-            $.each elb.AvailabilityZones.member, (i, zone_name) ->
-              tmp = {}
-              tmp.zone = zone_name
-              tmp.health_instance = 0
-              tmp.total_instance = 0
+                    instanceCompObj = Design.modelClassForType(constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance).getEffectiveId(instanceId)
+                    instanceUID = instanceCompObj.uid
+                    instanceComp = Design.instance().component(instanceUID)
 
-              if not elb.isClassic
+                    regionName = ''
+                    if instanceComp
 
-                if elb.Subnets.member and elb.Subnets.member.constructor == Array
+                        instanceName = instanceComp.get('name')
 
-                    $.each elb.Subnets.member, (j, subnet_id) ->
-                        subnet = MC.data.resource_list[Design.instance().region()][subnet_id]
-                        if subnet and subnet.availabilityZone is zone_name
-                            tmp.subnet = subnetMap[ subnet_id ]
-                            return false
+                        if instanceName is instanceId
+                            instanceName = null
 
-                else if elb.Subnets.member
+                        showStateObj = {
+                            instance_name: instanceName
+                            instance_id: instanceId
+                            instance_state: (instanceState is 'InService')
+                            instance_state_desc: instanceStateDescription
+                        }
 
-                    tmp.subnet = elb.Subnets.member
+                        regionComp = null
+                        if instanceComp.parent() and instanceComp.parent().parent()
+                            regionComp = instanceComp.parent().parent()
+                            if instanceComp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+                                regionComp = instanceComp.parent().parent().parent()
+                        if regionComp
+                            regionName = regionComp.get('name')
 
-              else
-                tmp.subnet = null
+                    elbDistrMap[regionName] = elbDistrMap[regionName] || []
+                    elbDistrMap[regionName].push showStateObj
 
-              $.each MC.data.config[Design.instance().region()].zone.item, (i, zone) ->
+                catch err
 
-                if zone.zoneName == zone_name and zone.zoneState == 'available'
+                    console.log 'Error: ELB Instance State Parse Failed'
 
-                    tmp.health = true
+            _.each elbDistrMap, (instanceAry, azName) ->
 
-                null
+                isHealth = true
+                _.each instanceAry, (instanceObj) ->
+                    if not instanceObj.instance_state
+                        isHealth = false
+                    null
 
-              elb.distribution.push tmp
+                elb.distribution.push({
+                    zone: azName,
+                    instance: instanceAry,
+                    health: isHealth
+                })
 
-            elb.instance_state = elb.instance_state || []
-
-            $.each elb.instance_state, ( i, instance ) ->
-
-                zone = MC.data.resource_list[Design.instance().region()][instance.InstanceId].placement.availabilityZone
-
-                $.each elb.distribution, ( j, az_detail ) ->
-
-                    if az_detail.zone == zone and instance.State == 'InService'
-
-                        az_detail.health_instance += 1
-
-                    az_detail.total_instance += 1
-
-                    return false
+            elb.distribution = elb.distribution.sort (azObj1, azObj2) ->
+                return azObj1.zone > azObj2.zone
 
             @set elb
             @set "componentUid", myElbComponent.id

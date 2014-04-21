@@ -1917,7 +1917,7 @@ button {
 	height: 10px;
 	position: absolute;
 	left: 10px;
-	top: 8px;
+	top: 3px;
 }
 
 .region-resource-status.icon-pending:before {
@@ -3603,6 +3603,30 @@ a.sidebar-hider:before {
 	width: 230px;
 }
 
+.property-control-group textarea{
+    width: 242px;
+    padding: 7px;
+    border: 1px solid #000000;
+    background-color: #1c1c1c;
+    color: #D0D0D0;
+    height: 60px;
+    overflow: auto;
+}
+
+.property-control-group textarea:focus{
+    background-color: #000000;
+    color: #eeeeee;
+    border: 1px solid #161616;
+}
+
+.property-control-group textarea:hover{
+    background: #101010;
+}
+
+.property-wrap .property-control-group textarea{
+    resize: none;
+}
+
 .property-control-group.error > label.left {
 	color: #F74A48;
 }
@@ -3610,10 +3634,6 @@ a.sidebar-hider:before {
 .property-control-group .radio-group {
 	/*width: 260px;*/
 	float: left;
-}
-
-.property-control-group textarea {
-	width: 250px;
 }
 
 .property-control-group .ranged-input {
@@ -4661,6 +4681,48 @@ a.action-link:hover {
 
 .elb-property-cert-input {
 	height: 50px;
+}
+
+.elb-property-instance-list li {
+	height: 30px;
+	width: 220px;
+	margin-left: 10px;
+	margin-top: 10px;
+	padding-top: 5px;
+	/*padding: 2px 10px;*/
+}
+
+.elb-property-instance-list li {
+	background-color: #333;
+	border: 0 !important;
+}
+
+.elb-property-instance-list li:hover {
+	background-color: #333;
+}
+
+.elb-property-instance-list li .instance-info {
+	float: left;
+}
+
+.elb-property-instance-list li .instance-info .instance-id {
+	color: #888;
+}
+
+.elb-property-instance-list li .instance-info .instance-id.instance-id-down {
+	margin-top: 10px;
+}
+
+.elb-property-instance-list li .instance-state {
+	float: right;
+	margin-right: 5px;
+	margin-top: 10px;
+}
+
+.elb-property-instance-list li .elb-info-icon {
+	float: right;
+	margin-top: -14px;
+	margin-left: 5px;
 }
 
 /* property-newtwork-acl */
@@ -6296,8 +6358,8 @@ summary:focus {
 	font-size: 12px !important;
 }
 
-#Intercom {
-	background    : #9C6DC0;
+#feedback {
+	background    : #9C6DC0 url('../images/ide/icon/icon-feedback.png') 10px 10px no-repeat;
 	border        : 1px solid #333;
 	border-bottom : none;
 	border-radius : 4px 4px 0 0;
@@ -6307,7 +6369,7 @@ summary:focus {
 	top        : 70%;
 	left       : -38px;
 	text-align : center;
-	padding    : 10px;
+	padding    : 10px 10px 10px 36px;
 	z-index    : 99;
 
 	color       : #eee;
@@ -6321,19 +6383,10 @@ summary:focus {
 	transform         : rotate(90deg);
 }
 
-#Intercom:hover {
+#feedback:hover {
 	left: -35px;
 	color: #fff;
-	background: #9F62D1;
-}
-
-.icon-feedback {
-	display: inline-block;
-	width: 20px;
-	height: 20px;
-	margin-right: 10px;
-	margin-bottom: -5px;
-	background: url('../images/ide/icon/icon-feedback.png') no-repeat;
+	background-color : #9F62D1;
 }
 
 /* modalDownloadCloudFormationTpl */
@@ -7397,8 +7450,8 @@ summary:focus {
 }*/
 
 #modal-key-short .key-item {
-	color: #666;
-	padding: 20px 24px 20px 24px;
+	color: #ccc;
+	padding: 10px 24px 10px 24px;
 }
 
 #modal-key-short .key-item:nth-child(2n+1) {

@@ -734,19 +734,6 @@ define [ 'MC', 'event',
                 else
                     $switchCheckbox.removeClass 'on'
 
-            # set visual-ops-switch show/hide
-            #if MC.common.cookie.getCookieByName( 'is_invitated' ) in [ 'true', true, 2, '2' ]
-            #
-            #    $applyVisops.hide()
-            #    $switchCheckbox.show()
-            #
-            #else if MC.common.cookie.getCookieByName( 'is_invitated' ) in [ 'false', false, 0, '0', 1, '1' ]
-            #
-            #    $applyVisops.show()
-            #    $switchCheckbox.hide()
-            #
-            #    @model.setAgentEnable false
-
         opsOptionChanged : (event) ->
 
             thatModel = @model
@@ -772,34 +759,6 @@ define [ 'MC', 'event',
                 thatModel.setAgentEnable(false)
 
             ide_event.trigger ide_event.REFRESH_PROPERTY
-
-        #openExperimentalVisops : ->
-        #    console.log 'openExperimentalVisops'
-        #
-        #    # modal experimentalVisops
-        #    modal MC.template.experimentalVisops()
-        #
-        #    # if is_invitated = 1, explanation audit
-        #    if MC.common.cookie.getCookieByName( 'is_invitated' ) in [ 1, '1' ]
-        #        $( '.modal-body' ).html MC.template.experimentalVisopsTrail()
-        #        $( '#experimental-visops-cancel'  ).html lang.ide.INVITE_MOD_BTN_DONE
-        #        $( '#experimental-visops-confirm' ).hide()
-
-        #experimentalVisopsConfirm : ( event ) ->
-        #    console.log 'experimentalVisopsConfirm', event
-        #
-        #    # push event
-        #    event.data.trigger 'APPLAY_TRIAL', $( '#experimental-message' ).val()
-        #
-        #    # change modal body
-        #    $( '.modal-body' ).html MC.template.experimentalVisopsTrail()
-        #    $( '#experimental-visops-cancel'  ).html lang.ide.INVITE_MOD_BTN_DONE
-        #    $( '#experimental-visops-confirm' ).hide()
-        #
-        #    # set is_invitated
-        #    MC.common.cookie.setCookieByName 'is_invitated', 1
-        #
-        #    null
     }
 
     return ToolbarView

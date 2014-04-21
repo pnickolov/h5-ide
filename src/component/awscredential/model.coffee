@@ -27,7 +27,6 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model',
                     if attributes.state is '3'
                         #
                         MC.common.cookie.setCookieByName 'state', attributes.state
-                        MC.common.cookie.setIDECookie $.cookie()
                 else
 
                     me.trigger 'UPDATE_ACCOUNT_ATTRIBUTES_FAILED', attributes
@@ -63,7 +62,6 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model',
                         #
                         MC.common.cookie.setCookieByName 'account_id', result.resolved_data
                         MC.common.cookie.setCookieByName 'has_cred',   true
-                        MC.common.cookie.setIDECookie $.cookie()
                         #
                         me.trigger 'REFRESH_AWS_CREDENTIAL'
 
@@ -111,7 +109,6 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model',
                             me.set 'is_authenticated', true
                             MC.common.cookie.setCookieByName 'has_cred',   true
                             MC.common.cookie.setCookieByName 'account_id', account_id
-                            MC.common.cookie.setIDECookie $.cookie()
 
                             # update account attributes
                             regionAttrSet = result.resolved_data

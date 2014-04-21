@@ -85,7 +85,7 @@ Tasks =
     stripHttpsRedirectRegex = /### AHACKFORRELEASINGPUBLICVERSION ###/g
 
     d = Q.defer()
-    pipe = gulp.src( ["./src/js/**/config.coffee"], SrcOption )
+    pipe = gulp.src( ["./src/js/ide/config.coffee", "./src/user/main.coffee"], SrcOption )
       .pipe es.through (f)->
 
         newContent = f.contents.toString("utf8").replace stripHttpsRedirectRegex, "###"
@@ -102,9 +102,9 @@ Tasks =
 
 
   cleanRepo : ()->
-    logTask "Removing ignored files in src (git clean -Xf)"
+    logTask "Removing ignored files in src (git clean -xdf)"
 
-    util.runCommand "git", ["clean", "-Xdf"], { cwd : process.cwd() + "/src" }, stdRedirect
+    util.runCommand "git", ["clean", "-xdf"], { cwd : process.cwd() + "/src" }, stdRedirect
 
   checkGitVersion : ()->
     logTask "Checking Git Version"

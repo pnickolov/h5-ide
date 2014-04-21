@@ -53,6 +53,9 @@ define [ 'Design',
   ### env:dev ###
   require ["./module/design/framework/util/DesignDebugger"], ()->
   ### env:dev:end ###
+  ### env:debug ###
+  require ["./module/design/framework/util/DesignDebugger"], ()->
+  ### env:debug:end ###
 
   window.Design = Design
   Design

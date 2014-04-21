@@ -65,13 +65,13 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
         #resolve result
         session_info.usercode    = result[0]
         session_info.email       = result[1]
-        session_info.session_id  = result[2]
-        session_info.account_id  = result[3]
-        session_info.mod_repo    = result[4]
-        session_info.mod_tag     = result[5]
-        session_info.state       = result[6]
-        session_info.has_cred    = result[7]
-        session_info.is_invitated= result[8]
+        session_info.user_hash   = result[2]
+        session_info.session_id  = result[3]
+        session_info.account_id  = result[4]
+        session_info.mod_repo    = result[5]
+        session_info.mod_tag     = result[6]
+        session_info.state       = result[7]
+        session_info.has_cred    = result[8]
 
         #return session_info
         session_info

@@ -76,21 +76,34 @@
       </dl>
   </div>
 
-  <!--<div class="option-group-head">{{i18n "PROP_ELB_DISTRIBUTION"}}</div>
+  <div class="option-group-head">{{i18n "PROP_ELB_INSTANCES"}}</div>
   <ul class="option-group property-list">
     {{#each distribution}}
-    <li>
-      <div class="list-row">
-          <i class="status status-{{#if health}}green{{else}}red{{/if}} icon-label"></i>
-          <span class="app-panel-li-main">{{zone}} {{#if subnet}}<span class="sub">- {{subnet}}</span>{{/if}} </span>
-      </div>
-      <div class="list-row">
-        <p class="app-panel-li-sub"> {{health_instance}}/{{total_instance}} instances are healthy </p>
-      </div>
-    </li>
+      <li>
+        <div class="list-row">
+            <i class="status status-{{#if health}}green{{else}}red{{/if}} icon-label"></i>
+            <span class="app-panel-li-main">{{zone}}</span>
+        </div>
+        <div class="list-row">
+          <ul class="elb-property-instance-list">
+            {{#each this.instance}}
+              <li>
+                <div class="instance-info">
+                  {{#if instance_name}}<div class="instance-name">{{instance_name}}</div>{{/if}}
+                  <div class="instance-id {{#unless instance_name}}instance-id-down{{/unless}}">({{instance_id}})</div>
+                </div>
+                <div class="instance-state">
+                  {{#if instance_state}}InService{{else}}OutOfService{{/if}}
+                  {{#unless instance_state}}<a class="elb-info-icon tooltip icon-info" data-tooltip="{{instance_state_desc}}"></a>{{/unless}}
+                </div>
+              </li>
+            {{/each}}
+          </ul>
+        </div>
+      </li>
     {{/each}}
   </ul>
-  -->
+
   {{#unless isclassic}}
   <div class="option-group-head">{{i18n "PROP_ELB_SG_DETAIL"}}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span> </div>
   <div class="option-group sg-group">Loading...</div>

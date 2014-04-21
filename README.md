@@ -146,6 +146,20 @@ require.config({
 });
 ```
 
-### # 写详细和有用的注释
+### # 写详细和有用的注释和commit message
+注释不是用来解析代码的，而是用来描述为什么要写这样的代码。
+
+Bad Example:
+```js
+// render         <--- 这不是废话吗？
+view.render()
+```
+
+Good Example:
+```js
+// SgAsso doesn't have portDefs, so the basic validation implemented in ConnectionModel won't work.
+// Here, we do our own job.
+assignCompsToPorts = function(p1Comp, p2Comp) {}
+```
 ### # 不要写没意义的代码
 ### # DRY - Don't repeat yourself

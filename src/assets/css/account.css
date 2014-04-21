@@ -3,13 +3,12 @@
 html,
 body {
 	height: 100%;
-	min-width: 960px;
+	min-width: 600px;
 }
 
 #body {
-	background-color: #000;
-	color           : #222;
-	background-image: url('../images/login/bg.jpeg');
+	color      : #222;
+	background : #000 url('../images/login/bg.jpeg');
 	background-size : cover;
 }
 
@@ -23,10 +22,6 @@ a:hover {
 
 header {
 	background: rgba(102, 57, 139, 0.6);
-	position: absolute;
-	z-index: 100;
-	width: 100%;
-	top: 0;
 	padding: 10px 0 9px 0;
 }
 
@@ -55,18 +50,17 @@ header {
 }
 
 .box-wrapper {
-	position         : relative;
-	margin           : 20% auto 0;
-	width            : 450px;
-	padding: 0 0 60px 0;
+	margin   : 80px auto 0;
+	width    : 450px;
+	padding  : 0 0 60px 0;
 
 	background-color : #222;
 }
 
 .box-loading.box-wrapper {
-	background-color : #fff;
+	background-color : transparent;
 	text-align : center;
-	padding    : 40px 0;≠
+	padding    : 40px 0;
 }
 
 .box-header {
@@ -95,21 +89,28 @@ header {
 
 .verification-status {
 	margin-bottom: 10px;
- 	padding: 10px 15px;
+ 	padding: 3px 0;
  	font-size: 14px;
  	border-radius: 4px;
-	color: #14683D;
-	background-color: #BEF5BA;
+	color: #21B368;
 	display: none;
 }
 
+
 .error-msg,
 .error-status {
- 	padding: 10px 15px;
- 	font-size: 14px;
+ 	padding:       3px 0;
+ 	font-size:     14px;
  	border-radius: 4px;
-	color: #FFEBEA;
-	background-color: #BE2608
+	color:         #F53E1A;
+	margin-bottom: 10px;
+}
+
+.error-status, .verification-status{
+    position: absolute;
+    z-index: 10;
+    margin-top: -10px;
+    width: 370px;
 }
 
 .error-msg {
@@ -167,7 +168,7 @@ header {
 }
 
 .control-group {
-	margin: 20px 0;
+	margin: 10px 0 40px 0;
 }
 
 .control-group.error label {
@@ -226,12 +227,6 @@ header {
 	display: block;
 }
 
-#footer-push {
-	height: 80px;
-	clear: both;
-	color: #999;
-}
-
 #footer {
 	position: relative;
 	text-align: center;
@@ -249,10 +244,6 @@ header {
 }
 
 /* Register Special */
-#register-form-wrap {
-	margin: 12% auto 0;
-}
-
 #tos-wrap {
 	width     : 200px;
 	font-size : 12px;
@@ -292,15 +283,12 @@ header {
 
 /* Unsupported Browser Notice */
 #unsupported-browser {
-	position: relative;
-	top: 60px;
-	padding: 15px 0 5px;
-	text-align: center;
-	background: #fff9d7;
-	width: 100%;
-	color: #666;
-	font-size: 14px;
-	border-bottom: 1px solid #999;
+	padding       : 15px 0 5px;
+	text-align    : center;
+	background    : #DFCC60;
+	width         : 100%;
+	color         : #666;
+	font-size     : 14px;
 }
 
 /* Selection */
@@ -344,7 +332,7 @@ footer {
 
 .service-down-wrapper {
 	margin: 0 auto;
-	width: 500px;
+	width: 600px;
 	text-align: center;
 }
 

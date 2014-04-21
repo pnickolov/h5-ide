@@ -300,42 +300,6 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
                 #MC.data.origin_canvas_data = $.extend true, {}, result.param[4]
                 null
 
-            #####listen USER_APPLY__TRIAL_RETURN
-            #me.on 'USER_APPLY__TRIAL_RETURN', (result) ->
-            #    console.log 'USER_APPLY__TRIAL_RETURN', result
-            #
-            #    if result and result.return_code is 0
-            #        console.log 'apply trial succcess'
-            #        MC.common.cookie.setCookieByName 'is_invitated', 1
-            #    else
-            #        console.log 'apply trial succcess'
-            #        MC.common.cookie.setCookieByName 'is_invitated', 0
-            #
-            #    null
-
-            #####listen APP_GETKEY_RETURN
-            ###me.on 'APP_GET_KEY_RETURN', (result) ->
-                console.log 'APP_GET_KEY_RETURN'
-
-                region = result.param[3]
-                app_id = result.param[4]
-                app_name = result.param[5]
-
-                idx = 'process-' + region + '-' + app_name
-                data = $.extend(true, {}, process_data_map[idx])
-                delete process_data_map[idx]
-
-                if !result.is_error
-                    # trigger toolbar save png event
-                    console.log 'app key:' + result.resolved_data
-
-                    data.key = result.resolved_data
-                    data.id  = app_id
-
-                    #me.savePNG app_id, 'new'
-
-                    null###
-
         createStackCallback : ( result, old_id, name, region ) ->
             console.log 'createStackCallback', result, old_id, name, region
 

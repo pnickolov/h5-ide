@@ -106,7 +106,7 @@ Helper =
       gutil.log gutil.colors.bgBlue.white(" Watching file changes... ") + " [Polling]"
 
       watcher = new EventEmitter()
-      gulp.watch ["./src/**/*.coffee","./src/**/*.html","./src/**/*.partials","./util/gulp_tasks/**/*.partials","./src/assets/**/*"], ( event )->
+      gulp.watch ["./src/**/*.coffee","./src/**/*.html","./src/**/*.partials","./util/gulp_tasks/**/*.partials","./src/assets/**/*", "!src/include/*.html"], ( event )->
         if event.type is "added"
           type = "add"
         else if event.type is "changed"

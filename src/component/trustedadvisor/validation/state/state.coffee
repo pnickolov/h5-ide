@@ -107,7 +107,7 @@ define [ 'constant', 'MC', '../result_vo', 'Design', '../../helper' ], ( CONST, 
 
     __getSubnetRtb = ( component ) ->
         subnet = component.parent()
-        if subnet.type isnt CONST.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
+        if subnet.type isnt CONST.RESTYPE.SUBNET
             subnet = subnet.parent()
 
         subnet.connectionTargets('RTB_Asso')[ 0 ]
@@ -122,10 +122,10 @@ define [ 'constant', 'MC', '../result_vo', 'Design', '../../helper' ], ( CONST, 
         igw.length > 0
 
     __natOut = ( component ) ->
-        if component.type is CONST.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+        if component.type in [ CONST.RESTYPE.INSTANCE, CONST.RESTYPE.LC ]
             rtb = __getSubnetRtb component
             if rtb
-                instances = _.where rtb.connectionTargets('RTB_Route'), type: CONST.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+                instances = _.where rtb.connectionTargets('RTB_Route'), type: CONST.RESTYPE.INSTANCE
                 return _.some instances, ( instance ) ->
                     __isInstanceNat instance
 
@@ -176,12 +176,13 @@ define [ 'constant', 'MC', '../result_vo', 'Design', '../../helper' ], ( CONST, 
         subnetName = subnet.get 'name'
         subnetId = subnet.id
 
-        # LC could'nt be NAT so only need to validate notNat
-        if not __selfOut( lc, result, subnetName )
+        isLcNatOut = __natOut( lc )
+
+        if not (isLcNatOut or __selfOut( lc, result, subnetName ))
             result.push __genConnectedError subnetName, subnetId
 
         for asg in expandedAsgs
-            if not __selfOut( asg, result, subnetName )
+            if not ( isLcNatOut or __selfOut( asg, result, subnetName ))
                 subnetName = asg.parent().get 'name'
                 result.push __genConnectedError subnetName, subnetId
 

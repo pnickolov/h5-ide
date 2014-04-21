@@ -118,7 +118,7 @@
       logTask("Stripping https redirect", true);
       stripHttpsRedirectRegex = /### AHACKFORRELEASINGPUBLICVERSION ###/g;
       d = Q.defer();
-      pipe = gulp.src(["./src/js/**/config.coffee"], SrcOption).pipe(es.through(function(f) {
+      pipe = gulp.src(["./src/js/ide/config.coffee", "./src/user/main.coffee"], SrcOption).pipe(es.through(function(f) {
         var newContent;
         newContent = f.contents.toString("utf8").replace(stripHttpsRedirectRegex, "###");
         f.contents = new Buffer(newContent);
@@ -128,8 +128,8 @@
       return d.promise;
     },
     cleanRepo: function() {
-      logTask("Removing ignored files in src (git clean -Xf)");
-      return util.runCommand("git", ["clean", "-Xdf"], {
+      logTask("Removing ignored files in src (git clean -xdf)");
+      return util.runCommand("git", ["clean", "-xdf"], {
         cwd: process.cwd() + "/src"
       }, stdRedirect);
     },

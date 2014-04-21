@@ -24,10 +24,6 @@ define [ 'session_model', 'common_handle'
 					#set cookie
 					common_handle.cookie.setCookie result
 
-					#set madeiracloud_ide_session_id
-					#@_setMadeiracloudIDESessionID result
-					common_handle.cookie.setIDECookie result
-
 					me.trigger 'RE_LOGIN_SCUCCCESS'
 
 				else

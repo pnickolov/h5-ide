@@ -57,6 +57,16 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
                     elbResMap[res.LoadBalancerName] = _.extend(elbResMap[res.LoadBalancerName], res)
                     null
 
+            #instance health(elb)
+            if resources.DescribeInstanceHealth
+                _.map resources.DescribeInstanceHealth, ( res, i ) ->
+                    if not elbResMap[res.LoadBalancerName]
+                        elbResMap[res.LoadBalancerName] = {}
+                    elbResMap[res.LoadBalancerName] = _.extend(elbResMap[res.LoadBalancerName], {
+                        InstanceState: res
+                    })
+                    null
+
             _.map elbResMap, (res) ->
                 MC.data.resource_list[region][res.DNSName] = res
 
@@ -243,16 +253,6 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
             if resources.DescribeScalingActivities
                 _.map resources.DescribeScalingActivities, ( res, i ) ->
                     MC.data.resource_list[region][res.ActivityId] = res
-                    null
-
-            #instance health(elb)
-            if resources.DescribeInstanceHealth
-
-                if !MC.data.resource_list[region].instance_health
-                    MC.data.resource_list[region].instance_health = {}
-
-                _.map resources.DescribeInstanceHealth, ( res, i ) ->
-                    MC.data.resource_list[region].instance_health[res.InstanceId] = res
                     null
 
         catch error

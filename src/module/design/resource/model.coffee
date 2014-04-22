@@ -571,6 +571,7 @@ define [ 'i18n!nls/lang.js',
 
             else
                 #get service(model)
+                #DescribeImages : (        src,             username,              session_id,               region_name, ami_ids=null, owners=null, executable_by=null, filters=null ) ->
                 ami_model.DescribeImages { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, null, ["self"], null, null
 
             null

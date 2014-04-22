@@ -193,8 +193,8 @@ define [ 'i18n!nls/lang.js',
 
                 region_name = result.param[3]
                 console.log 'EC2_AMI_DESC_IMAGES_RETURN: ' + region_name
-
-                if !result.is_error and result.param[5] and result.param[5][0] and result.param[5][0] == 'self'
+                console.log result , '++++++++++++++++++++++'
+                if !result.is_error and result.param[6] and result.param[6][0] and result.param[6][0] == 'self'
                 #####my ami
 
                     console.log 'EC2_AMI_DESC_IMAGES_RETURN: My AMI'
@@ -210,7 +210,7 @@ define [ 'i18n!nls/lang.js',
                         _.map result.resolved_data, (value)->
                             #cache my ami item to MC.data.dict_ami
                             try
-                                if value.imageState is "available"
+                                if value.imageState is "available" and !value.isPublic
                                     value.osType = MC.aws.ami.getOSType value
                                     if not value.osFamily
                                         value.osFamily = MC.aws.aws.getOSFamily(value.osType)
@@ -571,7 +571,7 @@ define [ 'i18n!nls/lang.js',
 
             else
                 #get service(model)
-                ami_model.DescribeImages { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, null, ["self"], null, [{Name:'is-public',Value:false}]
+                ami_model.DescribeImages { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, null,null, ['self'], [{Name:'is-public',Value:false}]
 
             null
 

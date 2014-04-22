@@ -193,16 +193,18 @@ define [ 'i18n!nls/lang.js',
 
                 region_name = result.param[3]
                 console.log 'EC2_AMI_DESC_IMAGES_RETURN: ' + region_name
-
-                if !result.is_error and result.param[5] and result.param[5][0] and result.param[5][0] == 'self'
+                if !result.is_error and ((result.param[6] and result.param[6][0] and result.param[6][0] == 'self') or (result.param[5] and result.param[5][0]=='self'))
                 #####my ami
+                    if result.param[6]?[0] == 'self'
+                        MC.data.config[region_name].exec = true
+                    else if result.param[5]?[0] == 'self'
+                        MC.data.config[region_name].owner = true
 
                     console.log 'EC2_AMI_DESC_IMAGES_RETURN: My AMI'
 
                     my_ami_list = []
 
                     #cache my ami to my_ami
-                    MC.data.config[region_name].my_ami = []
 
                     if result.resolved_data
 
@@ -227,16 +229,14 @@ define [ 'i18n!nls/lang.js',
                             null
 
                         my_ami_list = ami_list
-
-                        MC.data.config[region_name].my_ami = ami_list
-
+                        MC.data.config[region_name].my_ami = MC.data.config[region_name].my_ami.concat ami_list
                     #console.log 'get my ami: -> data region: ' + region_name + ', stack region: ' + Design.instance().region()
                     #if region_name == Design.instance().region()
                     #    me.set 'my_ami', my_ami_list
 
                     console.log 'get my ami: -> data region: ' + region_name + ', stack region: ' + MC.canvas_data.region
-                    if region_name == MC.canvas_data.region
-                        me.set 'my_ami', my_ami_list
+                    if region_name == MC.canvas_data.region and MC.data.config[region_name].owner and MC.data.config[region_name].exec
+                        me.set 'my_ami', MC.data.config[region_name].my_ami
 
                 else
                 #####
@@ -570,8 +570,10 @@ define [ 'i18n!nls/lang.js',
                 me.set 'my_ami', MC.data.config[region_name].my_ami
 
             else
+                MC.data.config[region_name].my_ami = []
                 #get service(model)
-                ami_model.DescribeImages { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, null, ["self"], null, null
+                ami_model.DescribeImages { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, null,null, ['self'], [{Name:'is-public',Value:false}]
+                ami_model.DescribeImages { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, null,['self'], null, null
 
             null
 

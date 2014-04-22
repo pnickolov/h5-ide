@@ -22,9 +22,8 @@ define [ 'MC' ], ( MC ) ->
 	deleteCookie = ->
 		domain = { "domain" : window.location.hostname.replace("ide", "") }
 		for ckey, cValue of $.cookie()
-            if ckey isnt 'notice-sn'
-                $.removeCookie ckey, domain
-                $.removeCookie ckey
+			$.removeCookie ckey, domain
+			$.removeCookie ckey
 		null
 
 	setCred = ( result ) ->

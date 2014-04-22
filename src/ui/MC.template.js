@@ -2257,17 +2257,6 @@ TEMPLATE.convertBreaklines=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  
-
-
-  return "<div id=\"system-notice\">\n	<span>\n		<b>Notice: </b>We will drop the support for <em>EC2 Classic</em> and <em>Default VPC</em> soon, and focus on VPC, which is recommended for everyone.\n		<a href=\"http://blog.visualops.io/2014/02/18/vpc-always-forget-about-the-rest/\" class=\"notice-btn\" target=\"_blank\">Learn more</a>\n	</span>\n	<a class=\"notice-close\" href=\"javascript:void(0)\" id=\"system-notice-close\">x</a>\n</div>\n\n";
-  };
-TEMPLATE.systemNotice=Handlebars.template(__TEMPLATE__);
-
-
-__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, escapeExpression=this.escapeExpression, functionType="function";
 
 

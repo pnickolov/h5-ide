@@ -1557,15 +1557,6 @@ Are you sure you want to delete {{name}}?</div>
 <!-- {{convertBreaklines}} -->
 {{breaklines content}}
 
-<!-- {{systemNotice}} -->
-<div id="system-notice">
-	<span>
-		<b>Notice: </b>We will drop the support for <em>EC2 Classic</em> and <em>Default VPC</em> soon, and focus on VPC, which is recommended for everyone.
-		<a href="http://blog.visualops.io/2014/02/18/vpc-always-forget-about-the-rest/" class="notice-btn" target="_blank">Learn more</a>
-	</span>
-	<a class="notice-close" href="javascript:void(0)" id="system-notice-close">x</a>
-</div>
-
 <!-- {{modalDeleteELBCert}} -->
 <div style="width:420px">
 	<div class="modal-header"> <h3>{{ i18n "PROP_ELB_CERT_REMOVE_CONFIRM_TITLE"}}</h3><i class="modal-close">&times;</i> </div>

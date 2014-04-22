@@ -11,6 +11,9 @@
 	<script type="text/javascript" src="./prettify/prettify.js"></script>
 	<script type="text/javascript" src="./apiList.js"></script>
 
+	<script type="text/javascript" src="./lib/ZeroClipboard.min.js"></script>
+	<script type="text/javascript" src="./lib/UI.notification.js"></script>
+
 	<script type="text/javascript" data-main="/test/console/js/config" src="/vender/requirejs/require.js"></script>
 
 
@@ -92,6 +95,26 @@
 
 			prettyPrint();
 			//MC.realtimeCSS();
+
+			zeroClipboardInit('request');
+			zeroClipboardInit('response');
+		}
+
+		function zeroClipboardInit(el){
+
+			var clip = new ZeroClipboard( document.getElementById("copy-button-"+el), {
+			  moviePath: "./lib/ZeroClipboard.swf"
+			} );
+
+			clip.on( 'complete', function(client, args) {
+				id = clip.htmlBridge.title
+			  	window.notification("info", "Copied " + id + " data to clipboard: " + args.text.length + "bytes", false);
+			} );
+
+			clip.on( 'mouseup', function(client) {
+				id = clip.htmlBridge.title;
+			   	clip.setText($('#' + id + '_data').text());
+			} );
 		}
 
 		//add log to table

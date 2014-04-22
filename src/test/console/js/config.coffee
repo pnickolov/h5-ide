@@ -30,11 +30,12 @@ require.config {
         'MC'                 : 'js/MC.core'
         'constant'           : 'lib/constant'
 
+        'UI.notification'    : 'ui/UI.notification'
+
         #############################################
         # lib                        # Merge in deploy
         #############################################
         'aws_handle'         : 'lib/aws/main'
-
         'common_handle'      : 'lib/common/main'
 
         #############################################

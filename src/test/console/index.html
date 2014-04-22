@@ -103,6 +103,7 @@
 				$( "#tr_" + data.resource_name + "_" +  data.api_name ).html(
 					'<td>' + data.request_time + '</td>\
 					<td>' + data.response_time + '</td>\
+					<td>' + data.duration + '</td>\
 					<td>' + data.service_name + '</td>\
 					<td>' + data.resource_name + '</td>\
 					<td>' + data.api_name + '</td>\
@@ -117,6 +118,7 @@
 					'<tr id="tr_'+ data.resource_name + "_" + data.api_name+'" >\
 					<td>' + data.request_time + '</td>\
 					<td>' + data.response_time + '</td>\
+					<td>' + data.duration + '</td>\
 					<td>' + data.service_name + '</td>\
 					<td>' + data.resource_name + '</td>\
 					<td>' + data.api_name + '</td>\
@@ -186,6 +188,7 @@
 					<tr>
 					<th style="width:100px">Request time</th>
 					<th style="width:100px">Response time</th>
+					<th style="width:50px">Duration(s)</th>
 					<th style="width:80px">Service</th>
 					<th style="width:80px">Resource</th>
 					<th style="width:120px">API name</th>

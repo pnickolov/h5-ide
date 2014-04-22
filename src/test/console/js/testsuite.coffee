@@ -52,7 +52,6 @@ define [ 'MC', 'session_model' ,'jquery', 'apiList', 'account_model', 'log_model
 
         true
 
-
     #private
     resolveResult = ( request_time, service, resource, api, result ) ->
 
@@ -73,15 +72,18 @@ define [ 'MC', 'session_model' ,'jquery', 'apiList', 'account_model', 'log_model
             $( "#response_data" ).removeClass("prettyprinted").text JSON.stringify( result.resolved_data, null, 4 )
             prettyPrint()
 
+            response_time = new Date()
             log_data = {
                 request_time   : MC.dateFormat(request_time, "yyyy-MM-dd hh:mm:ss"),
-                response_time  : MC.dateFormat(new Date(), "yyyy-MM-dd hh:mm:ss"),
+                response_time  : MC.dateFormat(response_time, "yyyy-MM-dd hh:mm:ss"),
+                duration       : (Date.parse(response_time) - Date.parse(request_time)) / 1000
                 service_name   : service,
                 resource_name  : resource,
                 api_name       : api,
                 json_ok        : "status-green",
                 e_ok           : "status-green"
             }
+
 
             window.add_request_log log_data
 
@@ -117,6 +119,7 @@ define [ 'MC', 'session_model' ,'jquery', 'apiList', 'account_model', 'log_model
 
         request_time     = new Date()
         response_time    = null
+        window.request_time = request_time
 
         key              = current_service + "-" + current_resource + "-" + current_api
         dict_request[key]= event

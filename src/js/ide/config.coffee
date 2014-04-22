@@ -86,6 +86,7 @@ require.config {
 		'sprintf'            : 'vender/sprintf/sprintf'
 		'Meteor'             : 'vender/meteor/meteor'
 		'crypto'             : 'vender/crypto-js/cryptobundle'
+		'q'                  : 'vender/q/q'
 
 		#############################################
 		# MC                        # Merge in deploy
@@ -323,6 +324,7 @@ require.config {
 			"Meteor"
 			"canvon"
 			"crypto"
+			"q"
 		]
 		"lib/lib" : [
 			"MC"

@@ -10,10 +10,10 @@ define [ "i18n!nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "De
   # Child Element's interface.
   ###
   ChildElementProto.portPosMap = {
-    "instance-sg-left"  : [ 10, 20, MC.canvas.PORT_LEFT_ANGLE ]
-    "instance-sg-right" : [ 80, 20, MC.canvas.PORT_RIGHT_ANGLE ]
-    "instance-attach"   : [ 78, 50, MC.canvas.PORT_RIGHT_ANGLE ]
-    "instance-rtb"      : [ 45, 0,  MC.canvas.PORT_UP_ANGLE  ]
+    "instance-sg-left"  : [ 10, 20, CanvasElement.constant.PORT_LEFT_ANGLE ]
+    "instance-sg-right" : [ 80, 20, CanvasElement.constant.PORT_RIGHT_ANGLE ]
+    "instance-attach"   : [ 78, 50, CanvasElement.constant.PORT_RIGHT_ANGLE ]
+    "instance-rtb"      : [ 45, 0,  CanvasElement.constant.PORT_UP_ANGLE  ]
   }
   ChildElementProto.portDirMap = {
     "instance-sg" : "horizontal"

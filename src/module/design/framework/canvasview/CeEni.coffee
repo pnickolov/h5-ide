@@ -10,10 +10,10 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
   # Child Element's interface.
   ###
   ChildElementProto.portPosMap = {
-    "eni-sg-left"  : [ 10, 20, MC.canvas.PORT_LEFT_ANGLE  ]
-    "eni-attach"   : [ 8,  50, MC.canvas.PORT_LEFT_ANGLE  ]
-    "eni-sg-right" : [ 80, 20, MC.canvas.PORT_RIGHT_ANGLE ]
-    "eni-rtb"      : [ 45, 0,  MC.canvas.PORT_UP_ANGLE    ]
+    "eni-sg-left"  : [ 10, 20, CanvasElement.constant.PORT_LEFT_ANGLE  ]
+    "eni-attach"   : [ 8,  50, CanvasElement.constant.PORT_LEFT_ANGLE  ]
+    "eni-sg-right" : [ 80, 20, CanvasElement.constant.PORT_RIGHT_ANGLE ]
+    "eni-rtb"      : [ 45, 0,  CanvasElement.constant.PORT_UP_ANGLE    ]
   }
 
   ChildElementProto.portDirMap = {

@@ -55,12 +55,6 @@ var constant_data = {
 	PORT_PADDING: 4, //port padding (to point of junction)
 	CORNER_RADIUS: 8, //cornerRadius of fold line
 
-	//**for port, direction is position**//
-	PORT_RIGHT_ANGLE: 0, // right
-	PORT_UP_ANGLE: 90, //top
-	PORT_LEFT_ANGLE: 180, //left
-	PORT_DOWN_ANGLE: 270, //bottom
-
 	GROUP_LABEL_COORDINATE:
 	{
 		'AWS.VPC.VPC': [6, 16],

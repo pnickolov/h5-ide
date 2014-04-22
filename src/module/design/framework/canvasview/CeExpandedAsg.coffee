@@ -14,8 +14,8 @@ define [ "./CanvasElement", "constant", "CanvasManager", "./CeAsg" ], ( CanvasEl
   # Child Element's interface.
   ###
   ChildElementProto.portPosMap = {
-    "launchconfig-sg-left"  : [ 30,  50, MC.canvas.PORT_LEFT_ANGLE ]
-    "launchconfig-sg-right" : [ 100, 50, MC.canvas.PORT_RIGHT_ANGLE ]
+    "launchconfig-sg-left"  : [ 30,  50, CanvasElement.constant.PORT_LEFT_ANGLE ]
+    "launchconfig-sg-right" : [ 100, 50, CanvasElement.constant.PORT_RIGHT_ANGLE ]
   }
   ChildElementProto.portDirMap = {
     "launchconfig-sg" : "horizontal"

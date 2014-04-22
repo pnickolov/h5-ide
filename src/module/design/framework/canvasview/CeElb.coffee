@@ -10,9 +10,9 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
   # Child Element's interface.
   ###
   ChildElementProto.portPosMap = {
-    "elb-sg-in"  : [ 2,  35, MC.canvas.PORT_LEFT_ANGLE  ]
-    "elb-assoc"  : [ 79, 50, MC.canvas.PORT_RIGHT_ANGLE ]
-    "elb-sg-out" : [ 79, 20, MC.canvas.PORT_RIGHT_ANGLE ]
+    "elb-sg-in"  : [ 2,  35, CanvasElement.constant.PORT_LEFT_ANGLE  ]
+    "elb-assoc"  : [ 79, 50, CanvasElement.constant.PORT_RIGHT_ANGLE ]
+    "elb-sg-out" : [ 79, 20, CanvasElement.constant.PORT_RIGHT_ANGLE ]
   }
 
   ChildElementProto.portPosition = ( portName )->

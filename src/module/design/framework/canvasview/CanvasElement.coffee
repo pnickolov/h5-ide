@@ -59,6 +59,12 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
     PATH_PORT_BOTTOM  : "M0.5 0l5.5 0l0 2l-5.5 6l-5.5 -6l0 -2z" # ▼
     PATH_PORT_DIAMOND : "M-5 0.5l5.5 -5.5l5.5 5.5 l-5.5 5.5z" # ◆
 
+  CanvasElement.constant =
+    PORT_RIGHT_ANGLE  : 0
+    PORT_UP_ANGLE     : 90
+    PORT_LEFT_ANGLE   : 180
+    PORT_DOWN_ANGLE   : 270
+
 
   ###
   # CanvasElement Interface

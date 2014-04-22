@@ -10,7 +10,7 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
   # Child Element's interface.
   ###
   ChildElementProto.portPosMap = {
-    "cgw-vpn" : [ 6, 45, MC.canvas.PORT_LEFT_ANGLE ]
+    "cgw-vpn" : [ 6, 45, CanvasElement.constant.PORT_LEFT_ANGLE ]
   }
 
   ChildElementProto.draw = ( isCreate ) ->

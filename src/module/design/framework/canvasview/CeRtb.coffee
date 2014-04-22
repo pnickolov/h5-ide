@@ -10,10 +10,10 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
   # Child Element's interface.
   ###
   ChildElementProto.portPosMap = {
-    "rtb-tgt-left"   : [ 10, 35, MC.canvas.PORT_LEFT_ANGLE ]
-    "rtb-tgt-right"  : [ 70, 35, MC.canvas.PORT_RIGHT_ANGLE ]
-    "rtb-src-top"    : [ 40, 3,  MC.canvas.PORT_UP_ANGLE ]
-    "rtb-src-bottom" : [ 40, 77, MC.canvas.PORT_DOWN_ANGLE ]
+    "rtb-tgt-left"   : [ 10, 35, CanvasElement.constant.PORT_LEFT_ANGLE ]
+    "rtb-tgt-right"  : [ 70, 35, CanvasElement.constant.PORT_RIGHT_ANGLE ]
+    "rtb-src-top"    : [ 40, 3,  CanvasElement.constant.PORT_UP_ANGLE ]
+    "rtb-src-bottom" : [ 40, 77, CanvasElement.constant.PORT_DOWN_ANGLE ]
   }
   ChildElementProto.portDirMap = {
     "rtb-tgt" : "horizontal"

@@ -14,9 +14,9 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
     portY = m.height() * MC.canvas.GRID_HEIGHT / 2 - 5
 
     if portName is "subnet-assoc-in"
-      [ -12, portY, MC.canvas.PORT_LEFT_ANGLE ]
+      [ -12, portY, CanvasElement.constant.PORT_LEFT_ANGLE ]
     else
-      [ m.width() * MC.canvas.GRID_WIDTH + 10, portY, MC.canvas.PORT_RIGHT_ANGLE ]
+      [ m.width() * MC.canvas.GRID_WIDTH + 10, portY, CanvasElement.constant.PORT_RIGHT_ANGLE ]
 
 
   ChildElementProto.draw = ( isCreate )->

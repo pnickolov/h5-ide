@@ -105,9 +105,6 @@ define [ 'MC', 'event', 'handlebars'
 		# State clipboard
 		MC.data.stateClipboard = []
 
-		#test
-		MC.ide_event = ide_event
-
 		#temp
 		MC.data.running_app_list = {}
 

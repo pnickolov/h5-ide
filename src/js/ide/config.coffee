@@ -130,6 +130,7 @@ require.config {
 		'UI.sortable'        : 'ui/jquery.sortable'
 		'UI.parsley'         : 'ui/UI.parsley'
 		'UI.errortip'        : 'ui/UI.errortip'
+		'UI.tour'            : 'ui/UI.tour'
 		'jqpagination'       : 'ui/jqpagination'
 		"jquerysort"         : 'ui/jquery.sort'
 
@@ -357,6 +358,7 @@ require.config {
 			'UI.sortable'
 			'UI.parsley'
 			'UI.errortip'
+			'UI.tour'
 			"jqpagination"
 			'jquerysort'
 		]

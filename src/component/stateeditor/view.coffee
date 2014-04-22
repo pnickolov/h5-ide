@@ -281,6 +281,7 @@ define [ 'event',
 
             that.resName = that.model.getResName()
             that.supportedPlatform = that.model.get('supportedPlatform')
+            that.amiExist = that.model.get('amiExist')
             that.isWindowsPlatform = that.model.get('isWindowsPlatform')
 
             that.currentResId = that.model.get('resId')

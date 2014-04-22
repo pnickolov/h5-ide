@@ -6,6 +6,7 @@ define [ 'event',
          'i18n!nls/lang.js',
          'common_handle',
          'UI.notification',
+         'UI.tour',
          'backbone', 'jquery', 'handlebars', 'underscore' ], ( ide_event, lang, common_handle ) ->
 
     MainView = Backbone.View.extend {
@@ -17,8 +18,7 @@ define [ 'event',
         open_fail: false
 
         initialize : ->
-            $( window ).on 'beforeunload', @beforeunloadEvent
-
+            $(window).on 'beforeunload', @beforeunloadEvent
             $(document).on 'keydown', @globalKeyEvent
 
         showMain : ->

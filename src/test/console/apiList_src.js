@@ -1936,7 +1936,7 @@ var API_DATA_LIST = {
             "value"  : "null"
           },
           "executable_by" : {
-            "type"   : "String",
+            "type"   : "Array",
             "value"  : "null"
           },
           "filters" : {

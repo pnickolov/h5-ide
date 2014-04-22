@@ -27,31 +27,6 @@ var constant_data = {
 		'AWS.AutoScaling.Group' : [13, 13]
 	},
 
-	SG_MAX_NUM: 5,
-
-	SG_COLORS: [
-		'f26c4f',
-		'7dc476',
-		'00bef2',
-		'615ca8',
-		'fcec00',
-		'ff9900',
-		'ffcc00',
-		'ffcc99',
-		'ff99ff',
-		'00cccc',
-		'99cc99',
-		'9999ff',
-		'ffff99',
-		'ff00ff',
-		'663300',
-		'336600',
-		'660066',
-		'003300',
-		'0000ff',
-		'666600'
-	],
-
 	GROUP_PADDING: 2,
 
 	IMAGE:

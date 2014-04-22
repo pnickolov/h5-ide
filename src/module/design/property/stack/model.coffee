@@ -156,9 +156,6 @@ define ['../base/model', 'constant', "Design" ], ( PropertyModel, constant, Desi
 
     getNetworkACL : ()->
 
-      if not Design.instance().typeIsVpc()
-        return
-
       ACLModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl )
 
       networkAcls = []

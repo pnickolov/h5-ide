@@ -45,7 +45,7 @@ define [ '../base/model', 'keypair_model', 'constant', 'Design' ], ( PropertyMod
       data.app_view = Design.instance().modeIsAppView()
       @set data
 
-      @set "displayAssociatePublicIp", not Design.instance().typeIsClassic()
+      @set "displayAssociatePublicIp", true
       @set "monitorEnabled", @isMonitoringEnabled()
       @set "can_set_ebs", @lc.isEbsOptimizedEnabled()
       @getInstanceType()

@@ -131,9 +131,6 @@ define [ 'i18n!nls/lang.js',
                     # filter nat ami when in classic style
                     quickstart_amis = []
 
-                    # new design flow
-                    #if Design.instance().typeIsClassic()
-
                     # old design flow
                     if MC.canvas_data.platform is 'ec2-classic'
                         quickstart_amis.push i for i in ami_list when i.name.indexOf('ami-vpc-nat') < 0
@@ -523,7 +520,6 @@ define [ 'i18n!nls/lang.js',
                 # filter nat ami when in classic style
                 quickstart_amis = []
 
-                #if Design.instance().typeIsClassic()
                 if MC.canvas_data.platform is 'ec2-classic'
                     quickstart_amis.push i for i in ami_list when i.name.indexOf('ami-vpc-nat') < 0
                 else

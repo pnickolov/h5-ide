@@ -186,20 +186,14 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
       l = lang.ide
 
       switch param.type
-        when res_type.AWS_EBS_Volume  then info = l.CVS_MSG_WARN_NOTMATCH_VOLUME
-        when res_type.AWS_VPC_Subnet  then info = l.CVS_MSG_WARN_NOTMATCH_SUBNET
-
-        when res_type.AWS_EC2_Instance
-          if Design.instance().typeIsVpc()
-            info = l.CVS_MSG_WARN_NOTMATCH_INSTANCE_SUBNET
-          else
-            info = l.CVS_MSG_WARN_NOTMATCH_INSTANCE_AZ
-
+        when res_type.AWS_EBS_Volume            then info = l.CVS_MSG_WARN_NOTMATCH_VOLUME
+        when res_type.AWS_VPC_Subnet            then info = l.CVS_MSG_WARN_NOTMATCH_SUBNET
+        when res_type.AWS_EC2_Instance          then info = l.CVS_MSG_WARN_NOTMATCH_INSTANCE_SUBNET
         when res_type.AWS_VPC_NetworkInterface  then info = l.CVS_MSG_WARN_NOTMATCH_ENI
         when res_type.AWS_VPC_RouteTable        then info = l.CVS_MSG_WARN_NOTMATCH_RTB
         when res_type.AWS_ELB                   then info = l.CVS_MSG_WARN_NOTMATCH_ELB
         when res_type.AWS_VPC_CustomerGateway   then info = l.CVS_MSG_WARN_NOTMATCH_CGW
-        when res_type.AWS_AutoScaling_Group     then info = "Asg must be dragged to a subnet."
+        when res_type.AWS_AutoScaling_Group     then info = l.CVS_MSG_WARN_NOTMATCH_ASG
 
       if info
         notification 'warning', info , false

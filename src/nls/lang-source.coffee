@@ -646,9 +646,9 @@ module.exports =
       en: "Instances must be dragged to a subnet or auto scaling group."
       zh: "实例必须拖放到子网或Auto Scaling组。"
 
-    CVS_MSG_WARN_NOTMATCH_INSTANCE_AZ:
-      en: "Instances must be dragged to an availability zone."
-      zh: "实例必须拖放到可用区域。"
+    CVS_MSG_WARN_NOTMATCH_ASG:
+      en: "Asg must be dragged to a subnet."
+      zh: "Auto Scaling组必须拖放到子网。"
 
     CVS_MSG_WARN_NOTMATCH_ENI:
       en: "Network interfaces must be dragged to a subnet."

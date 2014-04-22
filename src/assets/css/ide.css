@@ -7597,16 +7597,3 @@ summary:focus {
 #run-stack-cancel:disabled {
 	color: #ccc;
 }
-
-/* toolbar drop support for default vpc or classic notice */
-.no-classic-toolbar {
-	float        : right;
-	background   : #ffa740;
-	color        : #fff;
-	border-radius: 4px;
-	margin-top   : 9px;
-	margin-right : 5px;
-	padding      : 4px 6px;
-	font-size    : 12px;
-}
-

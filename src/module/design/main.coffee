@@ -117,7 +117,6 @@ define [ 'i18n!nls/lang.js', 'constant', 'component/stateeditor/stateeditor', '.
                         MC.common.other.canvasData.initSet 'platform' , current_platform
                         MC.common.other.canvasData.initSet 'version'  , '2014-02-17'
 
-                        # platform is classic
                         component = $.extend true, {}, MC.canvas.DESIGN_INIT_DATA_VPC
                         layout    = MC.canvas.DESIGN_INIT_LAYOUT_VPC
 

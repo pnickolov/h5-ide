@@ -30,7 +30,7 @@ define [ "./CanvasElement", "constant" ], ( CanvasElement, constant )->
 
       node.append(
         # Port
-        Canvon.path(MC.canvas.PATH_PORT_LEFT).attr({
+        Canvon.path(this.constant.PATH_PORT_LEFT).attr({
           'class'      : 'port port-blue port-igw-tgt'
           'data-name'     : 'igw-tgt'
           'data-position' : 'right'

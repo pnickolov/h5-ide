@@ -32,7 +32,7 @@ define [ "./CanvasElement", "constant" ], ( CanvasElement, constant )->
 
       node.append(
         # Left port
-        Canvon.path(MC.canvas.PATH_PORT_RIGHT).attr({
+        Canvon.path(this.constant.PATH_PORT_RIGHT).attr({
           'class'          : 'port port-blue port-vgw-tgt'
           'data-name'      : 'vgw-tgt'
           'data-position'  : 'left'
@@ -41,7 +41,7 @@ define [ "./CanvasElement", "constant" ], ( CanvasElement, constant )->
         }),
 
         # Right port
-        Canvon.path(MC.canvas.PATH_PORT_RIGHT).attr({
+        Canvon.path(this.constant.PATH_PORT_RIGHT).attr({
           'class'          : 'port port-purple port-vgw-vpn'
           'data-name'      : 'vgw-vpn'
           'data-position'  : 'right'

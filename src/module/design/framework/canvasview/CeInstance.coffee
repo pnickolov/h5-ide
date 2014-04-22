@@ -85,7 +85,7 @@ define [ "i18n!nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "De
 
 
         # left port(blue)
-        Canvon.path(MC.canvas.PATH_PORT_DIAMOND).attr({
+        Canvon.path(this.constant.PATH_PORT_DIAMOND).attr({
           'class'          : 'port port-blue port-instance-sg port-instance-sg-left'
           'data-name'      : 'instance-sg' #for identify port
           'data-alias'     : 'instance-sg-left'
@@ -95,7 +95,7 @@ define [ "i18n!nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "De
         }),
 
         # right port(blue)
-        Canvon.path(MC.canvas.PATH_PORT_DIAMOND).attr({
+        Canvon.path(this.constant.PATH_PORT_DIAMOND).attr({
           'class'          : 'port port-blue port-instance-sg port-instance-sg-right'
           'data-name'      : 'instance-sg'
           'data-alias'     : 'instance-sg-right'
@@ -108,7 +108,7 @@ define [ "i18n!nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "De
       if not @model.design().typeIsClassic()
         # Show RTB/ENI Port in VPC Mode
         node.append(
-          Canvon.path(MC.canvas.PATH_PORT_RIGHT).attr({
+          Canvon.path(this.constant.PATH_PORT_RIGHT).attr({
             'class'      : 'port port-green port-instance-attach'
             'data-name'     : 'instance-attach'
             'data-position' : 'right'
@@ -116,7 +116,7 @@ define [ "i18n!nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "De
             'data-direction': 'out'
           })
 
-          Canvon.path(MC.canvas.PATH_PORT_BOTTOM).attr({
+          Canvon.path(this.constant.PATH_PORT_BOTTOM).attr({
             'class'      : 'port port-blue port-instance-rtb'
             'data-name'     : 'instance-rtb'
             'data-position' : 'top'

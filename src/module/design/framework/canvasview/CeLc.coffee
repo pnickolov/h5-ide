@@ -84,7 +84,7 @@ define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager" ], ( Can
         }),
 
         # left port(blue)
-        Canvon.path(MC.canvas.PATH_PORT_DIAMOND).attr({
+        Canvon.path(this.constant.PATH_PORT_DIAMOND).attr({
           'class' : 'port port-blue port-launchconfig-sg port-launchconfig-sg-left'
           'data-name'      : 'launchconfig-sg'
           'data-alias'     : 'launchconfig-sg-left'
@@ -94,7 +94,7 @@ define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager" ], ( Can
         }),
 
         # right port(blue)
-        Canvon.path(MC.canvas.PATH_PORT_DIAMOND).attr({
+        Canvon.path(this.constant.PATH_PORT_DIAMOND).attr({
           'class' : 'port port-blue port-launchconfig-sg port-launchconfig-sg-right'
           'data-name'      : 'launchconfig-sg'
           'data-alias'     : 'launchconfig-sg-right'

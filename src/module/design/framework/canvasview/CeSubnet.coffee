@@ -28,7 +28,7 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
     if isCreate
       node = @createGroup( label )
 
-      node.append( Canvon.path( MC.canvas.PATH_PORT_RIGHT ).attr({
+      node.append( Canvon.path( this.constant.PATH_PORT_RIGHT ).attr({
         'class'      : 'port port-gray port-subnet-assoc-in'
         'data-name'     : 'subnet-assoc-in'
         'data-position' : 'left'

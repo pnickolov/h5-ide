@@ -51,7 +51,7 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
       if not design.typeIsClassic()
         node.append(
           # Left
-          Canvon.path(MC.canvas.PATH_PORT_RIGHT).attr({
+          Canvon.path(this.constant.PATH_PORT_RIGHT).attr({
             'class'      : 'port port-blue port-elb-sg-in'
             'data-name'     : 'elb-sg-in'
             'data-position' : 'left'
@@ -59,7 +59,7 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
             'data-direction': "in"
           }),
           # Right gray
-          Canvon.path(MC.canvas.PATH_PORT_RIGHT).attr({
+          Canvon.path(this.constant.PATH_PORT_RIGHT).attr({
             'class'      : 'port port-gray port-elb-assoc'
             'data-name'     : 'elb-assoc'
             'data-position' : 'right'
@@ -69,7 +69,7 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
         )
 
       node.append(
-        Canvon.path(MC.canvas.PATH_PORT_RIGHT).attr({
+        Canvon.path(this.constant.PATH_PORT_RIGHT).attr({
           'class'      : 'port port-blue port-elb-sg-out'
           'data-name'     : 'elb-sg-out'
           'data-position' : 'right'

@@ -49,32 +49,8 @@ var constant_data = {
 		RT_CANVAS_NOT_MAIN: MC.IMG_URL + 'ide/icon/rt-canvas.png'
 	},
 
-	//constant for _route()
-	MINDIST: 20,
-	TOL: 0.1,
-	TOLxTOL: 0.01,
-	TOGGLE_DIST: 5,
-
 	//min padding for group
 	GROUP_MIN_PADDING: 120,
-
-	//stroke width for group ( .group-az .group-subnet .group-vpc in canvas.css )
-	STOKE_WIDTH_AZ: 2,
-	STOKE_WIDTH_SUBNET: 2,
-	STOKE_WIDTH_VPC: 4,
-
-	//strok width of line
-	//LINE_STROKE_WIDTH: 2,
-
-	//constant for MC.canvas.add
-	PATH_PORT_LEFT    : "M-8 0.5l6 -5.5l2 0 l0 11 l-2 0z", // ◀
-	PATH_PORT_TOP     : "M0.5 0l5.5 0l0 -2l-5.5 -6l-5.5 6l0 2z", // ▲
-	PATH_PORT_RIGHT   : "M8 0.5l-6 -5.5l-2 0 l0 11 l2 0z", // ▶
-	PATH_PORT_BOTTOM  : "M0.5 0l5.5 0l0 2l-5.5 6l-5.5 -6l0 -2z", // ▼
-	PATH_PORT_DIAMOND : "M-5 0.5l5.5 -5.5l5.5 5.5 l-5.5 5.5z", // ◆
-
-	PATH_ASG_TITLE: "M0 21l0 -16a5 5 0 0 1 5 -5l121 0a5 5 0 0 1 5 5l0 16z",
-
 
 	PORT_PADDING: 4, //port padding (to point of junction)
 	CORNER_RADIUS: 8, //cornerRadius of fold line

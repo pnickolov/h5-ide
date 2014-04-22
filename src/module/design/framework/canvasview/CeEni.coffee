@@ -55,7 +55,7 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
         }),
 
         # Left Port
-        Canvon.path(MC.canvas.PATH_PORT_DIAMOND).attr({
+        Canvon.path(this.constant.PATH_PORT_DIAMOND).attr({
           'class'          : 'port port-blue port-eni-sg port-eni-sg-left'
           'data-name'      : 'eni-sg'
           'data-alias'     : 'eni-sg-left'
@@ -65,7 +65,7 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
         }),
 
         # Left port
-        Canvon.path(MC.canvas.PATH_PORT_RIGHT).attr({
+        Canvon.path(this.constant.PATH_PORT_RIGHT).attr({
           'class'          : 'port port-green port-eni-attach'
           'data-name'      : 'eni-attach'
           'data-position'  : 'left'
@@ -74,7 +74,7 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
         }),
 
         # Right port
-        Canvon.path(MC.canvas.PATH_PORT_DIAMOND).attr({
+        Canvon.path(this.constant.PATH_PORT_DIAMOND).attr({
           'class'          : 'port port-blue port-eni-sg port-eni-sg-right'
           'data-name'      : 'eni-sg'
           'data-alias'     : 'eni-sg-right'
@@ -84,7 +84,7 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
         }),
 
         # Top port(blue)
-        Canvon.path(MC.canvas.PATH_PORT_BOTTOM).attr({
+        Canvon.path(this.constant.PATH_PORT_BOTTOM).attr({
           'class'      : 'port port-blue port-eni-rtb'
           'data-name'     : 'eni-rtb'
           'data-position' : 'top'

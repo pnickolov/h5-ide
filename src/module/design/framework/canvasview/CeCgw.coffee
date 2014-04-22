@@ -30,7 +30,7 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
 
       node.append(
         # Port
-        Canvon.path(MC.canvas.PATH_PORT_RIGHT).attr({
+        Canvon.path(this.constant.PATH_PORT_RIGHT).attr({
           'class'      : 'port port-purple port-cgw-vpn',
           'data-name'     : 'cgw-vpn'
           'data-position' : 'left'

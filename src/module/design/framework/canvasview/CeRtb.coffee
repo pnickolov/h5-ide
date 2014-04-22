@@ -41,7 +41,7 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
 
       node.append(
         # Left port
-        Canvon.path(MC.canvas.PATH_PORT_LEFT).attr({
+        Canvon.path(this.constant.PATH_PORT_LEFT).attr({
           'class'          : 'port port-blue port-rtb-tgt port-rtb-tgt-left'
           'data-name'      : 'rtb-tgt'
           'data-alias'     : 'rtb-tgt-left'
@@ -51,7 +51,7 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
         }),
 
         # Right port
-        Canvon.path(MC.canvas.PATH_PORT_RIGHT).attr({
+        Canvon.path(this.constant.PATH_PORT_RIGHT).attr({
           'class'          : 'port port-blue  port-rtb-tgt port-rtb-tgt-right'
           'data-name'      : 'rtb-tgt'
           'data-alias'     : 'rtb-tgt-right'
@@ -61,7 +61,7 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
         }),
 
         # Top port
-        Canvon.path(MC.canvas.PATH_PORT_BOTTOM).attr({
+        Canvon.path(this.constant.PATH_PORT_BOTTOM).attr({
           'class'          : 'port port-gray port-rtb-src port-rtb-src-top'
           'data-name'      : 'rtb-src'
           'data-alias'     : 'rtb-src-top'
@@ -71,7 +71,7 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
         }),
 
         # Bottom port
-        Canvon.path(MC.canvas.PATH_PORT_TOP).attr({
+        Canvon.path(this.constant.PATH_PORT_TOP).attr({
           'class'          : 'port port-gray port-rtb-src port-rtb-src-bottom'
           'data-name'      : 'rtb-src'
           'data-alias'     : 'rtb-src-bottom'

@@ -1,5 +1,5 @@
 
-define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, constant, CanvasManager )->
+define [ "./CanvasElement", "constant", "CanvasManager", "./CeAsg" ], ( CanvasElement, constant, CanvasManager, CeAsg )->
 
   CeExpandedAsg = ()->
     CanvasElement.apply( this, arguments )
@@ -54,7 +54,7 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
       }),
 
       # title bg
-      Canvon.path( MC.canvas.PATH_ASG_TITLE ).attr({'class':'asg-title'}),
+      Canvon.path( CeAsg.prototype.PATH_ASG_TITLE ).attr({'class':'asg-title'}),
 
       # title
       Canvon.text( 4, 14, label ).attr({'class':'group-label'})
@@ -72,7 +72,7 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
         Canvon.text( 65, 116, lcLabel ).attr({'class':'node-label'}),
 
         # left port(blue)
-        Canvon.path(MC.canvas.PATH_PORT_DIAMOND).attr({
+        Canvon.path(this.constant.PATH_PORT_DIAMOND).attr({
           'class' : 'port port-blue port-launchconfig-sg port-launchconfig-sg-left'
           'data-name'      : 'launchconfig-sg'
           'data-alias'     : 'launchconfig-sg-left'
@@ -82,7 +82,7 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
         }),
 
         # right port(blue)
-        Canvon.path(MC.canvas.PATH_PORT_DIAMOND).attr({
+        Canvon.path(this.constant.PATH_PORT_DIAMOND).attr({
           'class' : 'port port-blue port-launchconfig-sg port-launchconfig-sg-right'
           'data-name'      : 'launchconfig-sg'
           'data-alias'     : 'launchconfig-sg-right'

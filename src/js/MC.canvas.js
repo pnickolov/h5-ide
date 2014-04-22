@@ -2361,7 +2361,6 @@ MC.canvas.event.dragable = {
 				svg_canvas = $('#svg_canvas'),
 				canvas_offset = $canvas.offset(),
 				canvas_body = $('#canvas_body'),
-				platform = $canvas.platform(),
 				currentTarget = $(event.target),
 				shadow,
 				target_group_type,
@@ -3288,7 +3287,6 @@ MC.canvas.event.siderbarDrag = {
 				canvas_offset = $canvas.offset(),
 				target_type = target.data('type'),
 				node_type = target.data('component-type'),
-				platform = $canvas.platform(),
 
 				drop_zone = $('#changeAmiDropZone'),
 				drop_zone_offset,

@@ -15,8 +15,6 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
 
     view
 
-  $canvas.platform = ()-> Design.instance().type()
-
   $canvas.size = ( w, h )->
     if Design.__instance
       return Design.__instance.canvas.size( w, h )

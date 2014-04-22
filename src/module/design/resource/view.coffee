@@ -417,9 +417,6 @@ define [ 'event',
         resourceVpcRender : ( current_platform, type ) ->
             data = {}
 
-            data.isntClassic = true
-            data.isntDefaultVPC = true
-
             if type != 'NEW_STACK'
 
                 data.igwIsUsed = this.model.getIgwStatus()

@@ -128,13 +128,8 @@ define [ 'MC', 'event', 'handlebars'
 			require [ 'component/session/main' ], ( session_main ) -> session_main.loadModule()
 
 		status = () ->
-			websocket.status false, ()->
-				# do thing alert here, may trigger several time
-				console.log '---------- connection failed ----------'
-				view.disconnectedMessage 'show'
-			websocket.status true, ()->
-				console.log 'connection succeed'
-				view.disconnectedMessage 'hide'
+			websocket.status false, ()-> view.showDisconnected()
+			websocket.status true,  ()-> view.hideDisconnected()
 
 		setTimeout status, 15000
 

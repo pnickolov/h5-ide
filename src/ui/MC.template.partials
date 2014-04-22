@@ -1545,6 +1545,12 @@ Are you sure you want to delete {{name}}?</div>
 	</ul>
 </div>
 
+<!-- {{disconnectedMsg}} -->
+<section class="disconnected-msg">
+	<div>Connection lost. Attempting to reconnect…</div>
+	<div>Changes made now may not be saved.</div>
+</section>
+
 <!-- {{covertNl2br}} -->
 {{nl2br content}}
 

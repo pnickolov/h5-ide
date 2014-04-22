@@ -6210,29 +6210,22 @@ summary:focus {
 	width: 260px;
 }
 
-.reconnect-session .modal-center-align-helper {
-
+.disconnected-msg {
+	border-radius    : 2px;
+	background-color : #ec3c38;
+	box-shadow       : 1px 1px 5px rgba(0, 0, 0, .3);
+	padding          : 14px;
+	color            : #fff;
+	width            : 280px;
+	position         : absolute;
+	top              : 15px;
+	right            : 12px;
+	z-index          : 9999;
 }
 
-.disconnected-notification {
-	border-radius: 2px;
-	background-color: #ec3c38;
-	box-shadow: 1px 1px 5px rgba(0, 0, 0, .3);
-	padding: 14px;
-	color: #fff;
-	width: 280px;
-	position: absolute;
-	top: 44px;
-	right: 10px;
-	z-index: 9999;
-}
-
-.disconnected-notification:hover {
+.disconnected-msg.hovered {
 	opacity : 0.05;
-}
-
-.disconnected-notification p {
-	margin: 0;
+	pointer-events : none;
 }
 
 /* dhcp-property-detail */

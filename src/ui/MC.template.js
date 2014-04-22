@@ -2220,6 +2220,17 @@ TEMPLATE.bubbleNATreq=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  
+
+
+  return "<section class=\"disconnected-msg\">\n	<div>Connection lost. Attempting to reconnect…</div>\n	<div>Changes made now may not be saved.</div>\n</section>\n\n";
+  };
+TEMPLATE.disconnectedMsg=Handlebars.template(__TEMPLATE__);
+
+
+__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", escapeExpression=this.escapeExpression;
 
 
@@ -2267,7 +2278,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + escapeExpression(((stack1 = (depth0 && depth0.cert_name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "?</div>\n				<div class=\"modal-text-minor\">"
     + escapeExpression(helpers.i18n.call(depth0, "PROP_ELB_CERT_REMOVE_CONFIRM_SUB", {hash:{},data:data}))
-    + "</div>\n			</div>\n		 </div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"modal-confirm-elb-cert-delete\" class=\"btn btn-red\">Delete</button>\n		<button id=\"modal-cancel\" class=\"btn modal-close btn-silver\">Cancel</button>\n	</div>\n</div>";
+    + "</div>\n			</div>\n		 </div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"modal-confirm-elb-cert-delete\" class=\"btn btn-red\">Delete</button>\n		<button id=\"modal-cancel\" class=\"btn modal-close btn-silver\">Cancel</button>\n	</div>\n</div>\n";
   return buffer;
   };
 TEMPLATE.modalDeleteELBCert=Handlebars.template(__TEMPLATE__);

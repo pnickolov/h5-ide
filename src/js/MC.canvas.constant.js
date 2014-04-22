@@ -148,11 +148,6 @@ var constant_data = {
 		}
 	},
 
-	DESIGN_INIT_LAYOUT:
-	{
-		size  : [240,240],
-	},
-
 	DESIGN_INIT_LAYOUT_VPC:
 	{
 		size  : [240,240],
@@ -170,37 +165,6 @@ var constant_data = {
 			}
 		}
 
-	},
-
-	DESIGN_INIT_DATA:
-	{
-		KP : {
-			type : "AWS.EC2.KeyPair",
-			name : "DefaultKP",
-			resource : { KeyName : "DefaultKP" }
-		},
-		SG : {
-			type : "AWS.EC2.SecurityGroup",
-			name : "DefaultSG",
-			resource : {
-				IpPermissions: [{
-					IpProtocol : "tcp",
-					IpRanges   : "0.0.0.0/0",
-					FromPort   : "22",
-					ToPort     : "22",
-					Groups     : [{"GroupId":"","UserId":"","GroupName":""}]
-				}],
-				IpPermissionsEgress : [{
-					FromPort: "0",
-					IpProtocol: "-1",
-					IpRanges: "0.0.0.0/0",
-					ToPort: "65535"
-				}],
-				Default             : "true",
-				GroupName           : "DefaultSG",
-				GroupDescription    : 'Default Security Group'
-			}
-		}
 	},
 
 	DESIGN_INIT_DATA_VPC:

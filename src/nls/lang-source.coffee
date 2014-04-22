@@ -3720,6 +3720,14 @@ module.exports =
       en: "Image Location"
       zh: "映像位置"
 
+    DASH_BUB_IMAGEOWNERALIAS:
+      en: "Image Owner Alias"
+      zh: "映像所有者别名"
+
+    DASH_BUB_IMAGEOWNERID:
+      en: "Image Owner ID"
+      zh: "映像所有者ID"
+
     DASH_BUB_ISPUBLIC:
       en: "Public"
       zh: "是否公用"

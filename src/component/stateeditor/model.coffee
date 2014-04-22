@@ -189,7 +189,7 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 
 			return {
 				osPlatform: osPlatform,
-				osPlatformDistro: null,
+				osPlatformDistro: osPlatformDistro,
 				amiExist: amiExist
 			}
 

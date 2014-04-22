@@ -3889,7 +3889,6 @@ MC.canvas.event.groupResize = {
 
 			group_padding = MC.canvas.GROUP_PADDING,
 			parentGroup = event_data.parentGroup,
-			//label_coordinate = MC.canvas.GROUP_LABEL_COORDINATE[ type ],
 			group_node,
 			group_coordinate,
 			layout_connection_data,

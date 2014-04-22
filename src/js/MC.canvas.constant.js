@@ -35,18 +35,6 @@ var constant_data = {
 		INSTANCE_VOLUME_ATTACHED_ACTIVE: MC.IMG_URL + 'ide/icon/instance-volume-attached-active.png',
 		INSTANCE_VOLUME_ATTACHED_NORMAL: MC.IMG_URL + 'ide/icon/instance-volume-attached-normal.png',
 		INSTANCE_VOLUME_NOT_ATTACHED: MC.IMG_URL + 'ide/icon/instance-volume-not-attached.png',
-		//eip icon of instance/eni
-		EIP_ON: MC.IMG_URL + 'ide/icon/eip-on.png',
-		EIP_OFF: MC.IMG_URL + 'ide/icon/eip-off.png',
-		//elb icon
-		ELB_INTERNAL_CANVAS: MC.IMG_URL + 'ide/icon/elb-internal-canvas.png',
-		ELB_INTERNET_CANVAS: MC.IMG_URL + 'ide/icon/elb-internet-canvas.png',
-
-		ENI_CANVAS_ATTACHED: MC.IMG_URL + 'ide/icon/eni-canvas-attached.png',
-		ENI_CANVAS_UNATTACHED: MC.IMG_URL + 'ide/icon/eni-canvas-unattached.png',
-
-		RT_CANVAS_MAIN: MC.IMG_URL + 'ide/icon/rt-main-canvas.png',
-		RT_CANVAS_NOT_MAIN: MC.IMG_URL + 'ide/icon/rt-canvas.png'
 	},
 
 	//min padding for group
@@ -54,14 +42,6 @@ var constant_data = {
 
 	PORT_PADDING: 4, //port padding (to point of junction)
 	CORNER_RADIUS: 8, //cornerRadius of fold line
-
-	GROUP_LABEL_COORDINATE:
-	{
-		'AWS.VPC.VPC': [6, 16],
-		'AWS.EC2.AvailabilityZone': [4, 14],
-		'AWS.VPC.Subnet': [4, 14],
-		'AWS.AutoScaling.Group': [4, 14]
-	},
 
 	GROUP_WEIGHT:
 	{

@@ -442,7 +442,12 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
     width  = m.width()  * MC.canvas.GRID_WIDTH
     height = m.height() * MC.canvas.GRID_HEIGHT
 
-    text_pos = MC.canvas.GROUP_LABEL_COORDINATE[ m.type ]
+    text_pos = {
+      'AWS.VPC.VPC'              : [6, 16]
+      'AWS.EC2.AvailabilityZone' : [4, 14]
+      'AWS.VPC.Subnet'           : [4, 14]
+      'AWS.AutoScaling.Group'    : [4, 14]
+    }[ m.type ]
 
     pad = 10
 

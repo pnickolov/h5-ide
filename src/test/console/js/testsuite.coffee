@@ -2120,4 +2120,11 @@ define [ 'MC', 'session_model' ,'jquery', 'apiList', 'account_model', 'log_model
         $( '#request_form' ).submit( request )
         window.init()
 
+        window.MC_PROTO = "http"
+        window.MC_DOMAIN = "mc3.io"
+        MC.DOMAIN   = window.MC_DOMAIN
+        MC.API_HOST = window.MC_PROTO + "://api." + window.MC_DOMAIN
+        null
+
+
 

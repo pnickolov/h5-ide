@@ -51,14 +51,6 @@ var constant_data = {
 		'AWS.AutoScaling.Group': []
 	},
 
-	PLATFORM_TYPE:
-	{
-		EC2_CLASSIC: 'ec2-classic', //no vpc
-		CUSTOM_VPC: 'custom-vpc', //has vpc
-		DEFAULT_VPC: 'default-vpc', //no vpc
-		EC2_VPC: 'ec2-vpc' //has vpc
-	},
-
 	// If array, order by ASG -> Subnet -> AZ -> Canvas.
 	MATCH_PLACEMENT:
 	{

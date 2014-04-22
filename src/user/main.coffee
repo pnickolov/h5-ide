@@ -35,11 +35,14 @@ if shouldIdeHttps and l.protocol is "http:"
     return
 
 
-
-# constant option, used in cookie lib
-COOKIE_OPTION =
-    expires : 30
-    path    : '/'
+goto500 = ()->
+    hash = window.location.pathname
+    if hash.length == 1
+        hash = ""
+    else
+        hash = hash.replace("/", "#")
+    window.location = '/500/' + hash
+    return
 
 # variable to record $.ajax
 xhr = null
@@ -114,7 +117,7 @@ loadLang = (cb)->
             window.langsrc = data
             console.log 'Success', data
         error: (error)->
-            window.location = "/500"
+            goto500()
             console.log error, "error"
     }).done ->
         console.log('Loaded!', langsrc)
@@ -423,7 +426,7 @@ handleErrorCode = (statusCode)->
     console.error 'ERROR_CODE_MESSAGE',langsrc.service["ERROR_CODE_#{statusCode}_MESSAGE"]
 # handleNetError
 handleNetError = (status)->
-    window.location = '/500'
+    goto500()
     console.error status, "Net Work Error, Redirecting..."
 # verify  key with callback
 checkPassKey = (keyToValid,fn)->
@@ -460,6 +463,10 @@ setCredit = (result)->
         mod_tag      : result[6]
         state        : result[7]
         has_cred     : result[8]
+
+    COOKIE_OPTION =
+        expires : 30
+        path    : '/'
 
     for key, value of session_info
         $.cookie key, value, COOKIE_OPTION

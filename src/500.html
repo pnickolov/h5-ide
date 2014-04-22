@@ -25,7 +25,12 @@
 
   ga('create', 'UA-42793662-4', 'visualops.io');
   ga('send', 'pageview');
-
 	</script>
+	<script type="text/javascript">(function(){
+		var l = window.location, o = l.origin;
+		if (!o) { o = l.protocol + "//" + l.hostname + (l.port?':'+l.port:''); }
+		if ( l.hash && l.hash[0] == "#" ){ o += "/" + l.hash.replace("#",""); }else{ o += "/" + l.hash; }
+		if ( window.history ) { window.history.replaceState({},"",o); }
+	})();</script>
 </body>
 </html>

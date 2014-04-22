@@ -129,13 +129,7 @@ define [ 'i18n!nls/lang.js',
                             return if a.architecture >= b.architecture then 1 else -1
 
                     # filter nat ami when in classic style
-                    quickstart_amis = []
-
-                    # old design flow
-                    if MC.canvas_data.platform is 'ec2-classic'
-                        quickstart_amis.push i for i in ami_list when i.name.indexOf('ami-vpc-nat') < 0
-                    else
-                        quickstart_amis =  ami_list
+                    quickstart_amis = ami_list
 
                     #console.log 'get quistart ami: -> data region: ' + region_name + ', stack region: ' + Design.instance().region()
                     #if region_name == Design.instance().region()
@@ -517,13 +511,7 @@ define [ 'i18n!nls/lang.js',
 
                 ami_list = MC.data.config[region_name].ami_list
 
-                # filter nat ami when in classic style
-                quickstart_amis = []
-
-                if MC.canvas_data.platform is 'ec2-classic'
-                    quickstart_amis.push i for i in ami_list when i.name.indexOf('ami-vpc-nat') < 0
-                else
-                    quickstart_amis =  ami_list
+                quickstart_amis = ami_list
 
                 me.set 'quickstart_ami', quickstart_amis
 

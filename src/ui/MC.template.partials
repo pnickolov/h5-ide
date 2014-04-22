@@ -332,7 +332,11 @@
 		<dd>{{architecture}}</dd>
 		<dt>{{i18n "DASH_BUB_IMAGELOCATION"}}</dt>
 		<dd>{{imageLocation}}</dd>
-		<dt>{{i18n "DASH_BUB_ISPUBLIC"}}</dt>
+        <dt>{{i18n 'DASH_BUB_IMAGEOWNERALIAS'}}</dt>
+        <dd>{{#if imageOwnerAlias}}{{imageOwnerAlias}}{{else}}No Alias{{/if}}</dd>
+        <dt>{{i18n "DASH_BUB_IMAGEOWNERID"}}</dt>
+        <dd>{{imageOwnerId}}</dd>
+        <dt>{{i18n "DASH_BUB_ISPUBLIC"}}</dt>
 		<dd>{{isPublic}}</dd>
 		<dt>{{i18n "DASH_BUB_KERNELID"}}</dt>
 		<dd>{{kernelId}}</dd>
@@ -356,7 +360,7 @@
 		<dt>Image Location</dt>
 		<dd>{{imageLocation}}</dd>
 		<dt>Public</dt>
-		<dd>{{isPublic}}</dd>
+		<dd>{{#if isPublic}}true{{else}}false{{/if}}</dd>
 		<dt>KernelId</dt>
 		<dd>{{kernelId}}</dd>
 		<dt>Root Device Name</dt>

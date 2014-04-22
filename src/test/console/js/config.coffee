@@ -7,22 +7,101 @@ require.config {
 
     paths           :
 
-        #vender
-        'jquery'    : 'vender/jquery/jquery'
-        'underscore'   : 'vender/underscore/underscore'
-        'backbone'     : 'vender/backbone/backbone'
+        ### env:dev ###
+        #############################################
+        # Requirejs lib             # Merge in deploy
+        #############################################
+        'i18n'               : 'vender/requirejs/i18n'
 
-        #core lib
-        'MC'        : 'lib/MC.core'
+        #############################################
+        # vender                    # Merge in deploy
+        #############################################
+        'jquery'             : 'vender/jquery/jquery'
 
-        #common lib
-        'i18n'      : 'vender/requirejs/i18n'
-        'constant'  : 'lib/constant'
+        'underscore'         : 'vender/underscore/underscore'
+        'backbone'           : 'vender/backbone/backbone'
+        'handlebars'         : 'vender/handlebars/handlebars.rt'
+
+        'sprintf'            : 'vender/sprintf/sprintf'
+
+        #############################################
+        # MC                        # Merge in deploy
+        #############################################
+        'MC'                 : 'js/MC.core'
+        'constant'           : 'lib/constant'
+
+        'UI.notification'    : 'ui/UI.notification'
+
+        #############################################
+        # lib                        # Merge in deploy
+        #############################################
+        'aws_handle'         : 'lib/aws/main'
+        'common_handle'      : 'lib/common/main'
+
+        #############################################
+        # model                     # Merge in deploy
+        #############################################
+        'base_model'             : 'model/base_model'
+
+        ##################################################################################
+        #####forge#####
+        'account_model'     : 'model/account_model'
+        'log_model'         : 'model/log_model'
+        'public_model'      : 'model/public_model'
+        'request_model'     : 'model/request_model'
+        'app_model'         : 'model/app_model'
+        'favorite_model'    : 'model/favorite_model'
+        'guest_model'       : 'model/guest_model'
+        'stack_model'       : 'model/stack_model'
+        'state_model'       : 'model/state_model'
+
+
+        'aws_model'             : 'model/aws/aws_model'
+
+        #####ec2#####
+        'ami_model'             : 'model/aws/ec2/ami_model'
+        'ebs_model'             : 'model/aws/ec2/ebs_model'
+        'ec2_model'             : 'model/aws/ec2/ec2_model'
+        'eip_model'             : 'model/aws/ec2/eip_model'
+        'instance_model'        : 'model/aws/ec2/instance_model'
+        'keypair_model'         : 'model/aws/ec2/keypair_model'
+        'placementgroup_model'  : 'model/aws/ec2/placementgroup_model'
+        'securitygroup_model'   : 'model/aws/ec2/securitygroup_model'
+
+        #####elb#####
+        'elb_model'             : 'model/aws/elb/elb_model'
+
+        #####iam#####
+        'iam_model'             : 'model/aws/iam/iam_model'
+
+        #####vpc#####
+        'acl_model'             : 'model/aws/vpc/acl_model'
+        'customergateway_model' : 'model/aws/vpc/customergateway_model'
+        'dhcp_model'            : 'model/aws/vpc/dhcp_model'
+        'eni_model'             : 'model/aws/vpc/eni_model'
+        'internetgateway_model' : 'model/aws/vpc/internetgateway_model'
+        'routetable_model'      : 'model/aws/vpc/routetable_model'
+        'subnet_model'          : 'model/aws/vpc/subnet_model'
+        'vpc_model'             : 'model/aws/vpc/vpc_model'
+        'vpngateway_model'      : 'model/aws/vpc/vpngateway_model'
+        'vpn_model'             : 'model/aws/vpc/vpn_model'
+
+
+        #####autoscaling#####
+        'autoscaling_model'    : 'model/aws/autoscaling/autoscaling_model'
+
+        #####cloudwatch#####
+        'cloudwatch_model'    : 'model/aws/cloudwatch/cloudwatch_model'
+
+        #####sns#####
+        'sns_model'    : 'model/aws/sns/sns_model'
 
         #result_vo
-        'result_vo'         : 'service/result_vo'
+        'result_vo'              : 'service/result_vo'
 
-        'common_handle'         : 'lib/common/main'
+        #############################################
+        # service                   # Merge in deploy
+        #############################################
 
         #service
         'session_service'   : 'service/session/session_service'
@@ -132,83 +211,7 @@ require.config {
 
         #sns
         'sns_service'           : 'service/aws/sns/sns/sns_service'
-
-
-
-        ########## model ##########
-
-        #base_model
-        'base_model'             : 'model/base_model'
-
-
-        #####forge#####
-        'account_model'     : 'model/account_model'
-        'log_model'         : 'model/log_model'
-        'public_model'      : 'model/public_model'
-        'request_model'     : 'model/request_model'
-        'app_model'         : 'model/app_model'
-        'favorite_model'    : 'model/favorite_model'
-        'guest_model'       : 'model/guest_model'
-        'stack_model'       : 'model/stack_model'
-        'state_model'       : 'model/state_model'
-
-
-        'aws_model'             : 'model/aws/aws_model'
-
-        #####ec2#####
-        'ami_model'             : 'model/aws/ec2/ami_model'
-        'ebs_model'             : 'model/aws/ec2/ebs_model'
-        'ec2_model'             : 'model/aws/ec2/ec2_model'
-        'eip_model'             : 'model/aws/ec2/eip_model'
-        'instance_model'        : 'model/aws/ec2/instance_model'
-        'keypair_model'         : 'model/aws/ec2/keypair_model'
-        'placementgroup_model'  : 'model/aws/ec2/placementgroup_model'
-        'securitygroup_model'   : 'model/aws/ec2/securitygroup_model'
-
-        #####elb#####
-        'elb_model'             : 'model/aws/elb/elb_model'
-
-        #####iam#####
-        'iam_model'             : 'model/aws/iam/iam_model'
-
-        #####vpc#####
-        'acl_model'             : 'model/aws/vpc/acl_model'
-        'customergateway_model' : 'model/aws/vpc/customergateway_model'
-        'dhcp_model'            : 'model/aws/vpc/dhcp_model'
-        'eni_model'             : 'model/aws/vpc/eni_model'
-        'internetgateway_model' : 'model/aws/vpc/internetgateway_model'
-        'routetable_model'      : 'model/aws/vpc/routetable_model'
-        'subnet_model'          : 'model/aws/vpc/subnet_model'
-        'vpc_model'             : 'model/aws/vpc/vpc_model'
-        'vpngateway_model'      : 'model/aws/vpc/vpngateway_model'
-        'vpn_model'             : 'model/aws/vpc/vpn_model'
-
-
-        #####autoscaling#####
-        'autoscaling_model'    : 'model/aws/autoscaling/autoscaling_model'
-
-        #####cloudwatch#####
-        'cloudwatch_model'    : 'model/aws/cloudwatch/cloudwatch_model'
-
-        #####sns#####
-        'sns_model'    : 'model/aws/sns/sns_model'
-
-        #####opsworks#####
-        #'opsworks_model'    : 'model/aws/opsworks/opsworks_model'
-
-        #####rds#####
-        # 'rds_instance_model'    : 'model/aws/rds/instance_model'
-        # 'optiongroup_model'    : 'model/aws/rds/optiongroup_model'
-        # 'parametergroup_model'    : 'model/aws/rds/parametergroup_model'
-        # 'rds_model'    : 'model/aws/rds/rds_model'
-        # 'reservedinstance_model'    : 'model/aws/rds/reservedinstance_model'
-        # 'rds_securitygroup_model'    : 'model/aws/rds/securitygroup_model'
-        # 'snapshot_model'    : 'model/aws/rds/snapshot_model'
-        # 'subnetgroup_model'    : 'model/aws/rds/subnetgroup_model'
-
-        #####sdb#####
-        #'sdb_model'    : 'model/aws/sdb/sdb_model'
-
+        ##################################################################################
 
 
         #testsuite
@@ -216,21 +219,21 @@ require.config {
 
         'apiList'           : '/test/console/apiList'
 
-    shim            :
+    shim               :
 
-        'jquery'    :
-            exports : '$'
+        #############################################
+        # vender
+        #############################################
 
         'underscore'   :
             exports    : '_'
 
-        'backbone'     :
-            deps       : [ 'underscore', 'jquery' ]
-            exports    : 'Backbone'
+        'handlebars'   :
+            exports    : 'Handlebars'
 
-        'MC'        :
-            deps    : [ 'jquery','constant' ]
-            exports : 'MC'
+        #############################################
+        # modules
+        #############################################
 
         'testsuite'     :
             deps      : [ 'apiList' ]

@@ -10,7 +10,9 @@
 */
 
 /* Define as MC module */
-define( "MC", [ "ui/MC.template", "lib/handlebarhelpers", "jquery", "sprintf" ], function ( template ) {
+define( "MC", [ "ui/MC.template", "q", "lib/handlebarhelpers", "jquery", "sprintf" ], function ( template, Q ) {
+
+window.Q = Q;
 
 var storage = function( instance ) {
 	var s = {

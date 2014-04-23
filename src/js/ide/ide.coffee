@@ -293,27 +293,4 @@ define [ 'MC', 'event', 'handlebars'
 			null
 
 		listenImportList()
-
-
-		###########################
-		# Dispaly stop supporting classic and default VPC notification
-		###########################
-		displaySystemNotice = () ->
-
-			isDisplayed = $.cookie('notice-sn')
-
-			if isDisplayed is undefined
-				$( "#wrapper" ).before MC.template.systemNotice
-
-			$('#system-notice-close').on 'click', () ->
-				$('#system-notice').remove()
-
-				# A hack to update resource panel
-				$("#resource-panel").find(".accordion-group.expanded").removeClass("expanded").children(".fixedaccordion-head").trigger("click", true)
-
-				$.cookie 'notice-sn', '1',
-                    expires: 365*2
-
-		displaySystemNotice()
-
 		null

@@ -57,28 +57,15 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 		if sgOutboundRuleAry
 			sgTotalRuleNum += sgOutboundRuleAry.length
 
-		# check platform type
-		platformType = MC.canvas_data.platform
-		if platformType isnt MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
-			# have vpc
-			if sgTotalRuleNum > 50
-				sgName = sgComp.name
-				tipInfo = sprintf lang.ide.TA_MSG_WARNING_SG_RULE_EXCEED_FIT_NUM, sgName, 50
-				return {
-					level: constant.TA.WARNING,
-					info: tipInfo,
-					uid: sgUID
-				}
-		else
-			# no vpc
-			if sgTotalRuleNum > 100
-				sgName = sgComp.name
-				tipInfo = sprintf lang.ide.TA_MSG_WARNING_SG_RULE_EXCEED_FIT_NUM, sgName, 100
-				return {
-					level: constant.TA.WARNING,
-					info: tipInfo,
-					uid: sgUID
-				}
+		# have vpc
+		if sgTotalRuleNum > 50
+			sgName = sgComp.name
+			tipInfo = sprintf lang.ide.TA_MSG_WARNING_SG_RULE_EXCEED_FIT_NUM, sgName, 50
+			return {
+				level: constant.TA.WARNING,
+				info: tipInfo,
+				uid: sgUID
+			}
 
 		return null
 
@@ -243,9 +230,6 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 	isAssociatedSGNumExceedLimit = () ->
 
 		maxSGNumLimit = 5
-		platformType = MC.canvas_data.platform
-		if platformType is MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
-			maxSGNumLimit = 500
 
 		taResultAry = []
 

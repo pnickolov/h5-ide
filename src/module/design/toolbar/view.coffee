@@ -6,9 +6,7 @@ define [ 'MC', 'event',
          "Design",
          'i18n!nls/lang.js',
          './stack_template',
-         './stack_classic_template',
          './app_template',
-         './app_classic_template',
          './appview_template',
          "component/exporter/JsonExporter",
          "component/exporter/Download",
@@ -16,7 +14,7 @@ define [ 'MC', 'event',
          'backbone', 'jquery', 'handlebars',
          'UI.selectbox', 'UI.notification',
          "UI.tabbar"
-], ( MC, ide_event, Design, lang, stack_tmpl, stack_classic_tmpl, app_tmpl, app_classic_tmpl, appview_tmpl, JsonExporter, download, constant ) ->
+], ( MC, ide_event, Design, lang, stack_tmpl, app_tmpl, appview_tmpl, JsonExporter, download, constant ) ->
 
     ToolbarView = Backbone.View.extend {
 
@@ -90,14 +88,8 @@ define [ 'MC', 'event',
 
             # platform is 'classis' stack or app
             data = MC.common.other.canvasData.data( true )
-            if Tabbar.current is 'stack' and data and data.platform in [ MC.canvas.PLATFORM_TYPE.EC2_CLASSIC, MC.canvas.PLATFORM_TYPE.DEFAULT_VPC ]
-                $( '#main-toolbar' ).html stack_classic_tmpl this.model.attributes
-
-            else if Tabbar.current is 'app' and data and data.platform in [ MC.canvas.PLATFORM_TYPE.EC2_CLASSIC, MC.canvas.PLATFORM_TYPE.DEFAULT_VPC ]
-                $( '#main-toolbar' ).html app_classic_tmpl this.model.attributes
-
             # appview
-            else if Tabbar.current is 'appview'
+            if Tabbar.current is 'appview'
                 $( '#main-toolbar' ).html appview_tmpl this.model.attributes
 
             # type include 'app' | 'stack'

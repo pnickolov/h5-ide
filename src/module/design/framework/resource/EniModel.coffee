@@ -442,7 +442,7 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
             name  : "EIP"
             index : index
             resource :
-              Domain : if Design.instance().typeIsVpc() then "vpc" else "standard"
+              Domain : "vpc"
               InstanceId         : ""
               AllocationId       : eip.allocationId or ""
               NetworkInterfaceId : @createRef( "NetworkInterfaceId", memberData.id )

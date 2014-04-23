@@ -226,8 +226,6 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
       { component : component }
   }, {
 
-    getClassicElbSg : ()-> new SgTargetModel( "amazon-elb/amazon-elb-sg" )
-
     getDefaultSg : ()->
       _.find Model.allObjects(), ( obj )-> obj.isDefault()
 

@@ -103,27 +103,24 @@ define [ "i18n!nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "De
           'data-type'      : 'sg'
           'data-direction' : 'out'
         })
+
+        # RTB/ENI Port
+        Canvon.path(this.constant.PATH_PORT_RIGHT).attr({
+          'class'      : 'port port-green port-instance-attach'
+          'data-name'     : 'instance-attach'
+          'data-position' : 'right'
+          'data-type'     : 'attachment'
+          'data-direction': 'out'
+        })
+
+        Canvon.path(this.constant.PATH_PORT_BOTTOM).attr({
+          'class'      : 'port port-blue port-instance-rtb'
+          'data-name'     : 'instance-rtb'
+          'data-position' : 'top'
+          'data-type'     : 'sg'
+          'data-direction': 'in'
+        })
       )
-
-      if not @model.design().typeIsClassic()
-        # Show RTB/ENI Port in VPC Mode
-        node.append(
-          Canvon.path(this.constant.PATH_PORT_RIGHT).attr({
-            'class'      : 'port port-green port-instance-attach'
-            'data-name'     : 'instance-attach'
-            'data-position' : 'right'
-            'data-type'     : 'attachment'
-            'data-direction': 'out'
-          })
-
-          Canvon.path(this.constant.PATH_PORT_BOTTOM).attr({
-            'class'      : 'port port-blue port-instance-rtb'
-            'data-name'     : 'instance-rtb'
-            'data-position' : 'top'
-            'data-type'     : 'sg'
-            'data-direction': 'in'
-          })
-        )
 
       if not @model.design().modeIsStack() and m.get("appId")
         # instance-state

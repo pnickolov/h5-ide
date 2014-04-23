@@ -16,7 +16,7 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
       instanceType : "m1.small"
       monitoring   : false
       userData     : ""
-      publicIp     : Design.instance().typeIsDefaultVpc()
+      publicIp     : false
       state        : undefined
 
       # RootDevice

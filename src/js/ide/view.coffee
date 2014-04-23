@@ -146,10 +146,6 @@ define [ 'event',
             if !common_handle.cookie.getCookieByName( 'usercode' )
                 return
 
-            # when old stack not check
-            if MC.common.other.canvasData.data() and MC.common.other.canvasData.data().platform in [ MC.canvas.PLATFORM_TYPE.EC2_CLASSIC, MC.canvas.PLATFORM_TYPE.DEFAULT_VPC ]
-                return
-
             #return if MC.data.current_tab_id in [ 'dashboard', undefined ]
             #return if MC.data.current_tab_id.split( '-' )[0] in [ 'process' ]
 

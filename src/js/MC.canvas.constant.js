@@ -51,64 +51,21 @@ var constant_data = {
 		'AWS.AutoScaling.Group': []
 	},
 
-	PLATFORM_TYPE:
-	{
-		EC2_CLASSIC: 'ec2-classic', //no vpc
-		CUSTOM_VPC: 'custom-vpc', //has vpc
-		DEFAULT_VPC: 'default-vpc', //no vpc
-		EC2_VPC: 'ec2-vpc' //has vpc
-	},
-
 	// If array, order by ASG -> Subnet -> AZ -> Canvas.
 	MATCH_PLACEMENT:
 	{
-		'ec2-classic':
-		{
-			'AWS.ELB': ['Canvas'],
-			'AWS.EC2.AvailabilityZone': ['Canvas'],
-			'AWS.EC2.Instance': ['AWS.AutoScaling.Group', 'AWS.EC2.AvailabilityZone'],
-			'AWS.EC2.EBS.Volume': ['AWS.EC2.AvailabilityZone'],
-			'AWS.AutoScaling.Group' : ['AWS.EC2.AvailabilityZone']
-		},
-		'default-vpc':
-		{
-			'AWS.ELB': ['Canvas'],
-			'AWS.EC2.AvailabilityZone': ['Canvas'],
-			'AWS.EC2.Instance': ['AWS.AutoScaling.Group', 'AWS.EC2.AvailabilityZone'],
-			'AWS.EC2.EBS.Volume': ['AWS.EC2.AvailabilityZone'],
-			'AWS.VPC.NetworkInterface': ['AWS.EC2.AvailabilityZone'],
-			'AWS.AutoScaling.Group' : ['AWS.EC2.AvailabilityZone']
-		},
-		'custom-vpc':
-		{
-			'AWS.ELB': ['AWS.VPC.VPC'],
-			'AWS.EC2.Instance': ['AWS.AutoScaling.Group', 'AWS.VPC.Subnet'],
-			'AWS.EC2.EBS.Volume': ['AWS.VPC.Subnet'],
-			'AWS.VPC.NetworkInterface': ['AWS.VPC.Subnet'],
-			'AWS.VPC.CustomerGateway': ['Canvas'],
-			'AWS.VPC.RouteTable': ['AWS.VPC.VPC'],
-			'AWS.VPC.InternetGateway': ['AWS.VPC.VPC'],
-			'AWS.VPC.VPNGateway': ['AWS.VPC.VPC'],
-			'AWS.EC2.AvailabilityZone': ['AWS.VPC.VPC'],
-			'AWS.VPC.Subnet': ['AWS.EC2.AvailabilityZone'],
-			'AWS.VPC.VPC': ['Canvas'],
-			'AWS.AutoScaling.Group' : ['AWS.VPC.Subnet']
-		},
-		'ec2-vpc':
-		{
-			'AWS.ELB': ['AWS.VPC.VPC'],
-			'AWS.EC2.Instance': ['AWS.AutoScaling.Group', 'AWS.VPC.Subnet'],
-			'AWS.EC2.EBS.Volume': ['AWS.VPC.Subnet'],
-			'AWS.VPC.NetworkInterface': ['AWS.VPC.Subnet'],
-			'AWS.VPC.CustomerGateway': ['Canvas'],
-			'AWS.VPC.RouteTable': ['AWS.VPC.VPC'],
-			'AWS.VPC.InternetGateway': ['AWS.VPC.VPC'],
-			'AWS.VPC.VPNGateway': ['AWS.VPC.VPC'],
-			'AWS.EC2.AvailabilityZone': ['AWS.VPC.VPC'],
-			'AWS.VPC.Subnet': ['AWS.EC2.AvailabilityZone'],
-			'AWS.VPC.VPC': ['Canvas'],
-			'AWS.AutoScaling.Group' : ['AWS.VPC.Subnet']
-		}
+		'AWS.ELB': ['AWS.VPC.VPC'],
+		'AWS.EC2.Instance': ['AWS.AutoScaling.Group', 'AWS.VPC.Subnet'],
+		'AWS.EC2.EBS.Volume': ['AWS.VPC.Subnet'],
+		'AWS.VPC.NetworkInterface': ['AWS.VPC.Subnet'],
+		'AWS.VPC.CustomerGateway': ['Canvas'],
+		'AWS.VPC.RouteTable': ['AWS.VPC.VPC'],
+		'AWS.VPC.InternetGateway': ['AWS.VPC.VPC'],
+		'AWS.VPC.VPNGateway': ['AWS.VPC.VPC'],
+		'AWS.EC2.AvailabilityZone': ['AWS.VPC.VPC'],
+		'AWS.VPC.Subnet': ['AWS.EC2.AvailabilityZone'],
+		'AWS.VPC.VPC': ['Canvas'],
+		'AWS.AutoScaling.Group' : ['AWS.VPC.Subnet']
 	},
 
 	CONNECTION_OPTION:
@@ -647,11 +604,6 @@ var constant_data = {
 		}
 	},
 
-	DESIGN_INIT_LAYOUT:
-	{
-		size  : [240,240],
-	},
-
 	DESIGN_INIT_LAYOUT_VPC:
 	{
 		size  : [240,240],
@@ -669,37 +621,6 @@ var constant_data = {
 			}
 		}
 
-	},
-
-	DESIGN_INIT_DATA:
-	{
-		KP : {
-			type : "AWS.EC2.KeyPair",
-			name : "DefaultKP",
-			resource : { KeyName : "DefaultKP" }
-		},
-		SG : {
-			type : "AWS.EC2.SecurityGroup",
-			name : "DefaultSG",
-			resource : {
-				IpPermissions: [{
-					IpProtocol : "tcp",
-					IpRanges   : "0.0.0.0/0",
-					FromPort   : "22",
-					ToPort     : "22",
-					Groups     : [{"GroupId":"","UserId":"","GroupName":""}]
-				}],
-				IpPermissionsEgress : [{
-					FromPort: "0",
-					IpProtocol: "-1",
-					IpRanges: "0.0.0.0/0",
-					ToPort: "65535"
-				}],
-				Default             : "true",
-				GroupName           : "DefaultSG",
-				GroupDescription    : 'Default Security Group'
-			}
-		}
 	},
 
 	DESIGN_INIT_DATA_VPC:

@@ -1339,6 +1339,14 @@ module.exports =
       en: "Public IP cannot be associated if instance is launching with more than one network interface."
       zh: ""
 
+    PROP_AMI_STACK_NOT_AVAILABLE:
+      en: "<p>This AMI is not available. It may have been deleted by its owner or not shared with your AWS account. </p><p>Please change to another AMI.</p>"
+      zh: ""
+
+    PROP_AMI_APP_NOT_AVAILABLE:
+      en: "This AMI's infomation is unavailable."
+      zh: ""
+
     PROP_STACK_AMAZON_ARN:
       en: "Amazon ARN"
       zh: ""
@@ -4093,7 +4101,7 @@ module.exports =
     ## State Editor Special State
 
     STATE_UNKNOWN_DISTRO_LBL:
-      en: "The AMI's distro cannot be recognised. Some commands may not apply to this AMI."
+      en: "The AMI's distro cannot be recognised. Some state modules may not apply to this AMI."
       zh: ""
 
     STATE_NO_STATE_LBL:

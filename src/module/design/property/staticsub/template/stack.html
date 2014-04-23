@@ -4,14 +4,13 @@
 {{#if isApp}}
     {{#if ami.unavailable}}
     <div class="property-control-group property-ami-info">
-        <p>This AMI's infomation is unavailable</p>
+        <p>{{ i18n "PROP_AMI_APP_NOT_AVAILABLE" }}</p>
     </div>
     {{/if}}
 {{else}}
     {{#if ami.unavailable}}
     <div class="property-control-group property-ami-info">
-        <p>This AMI is deleted by its owner and not available any more.</p>
-        <p>Please change to another AMI.</p>
+        {{ i18n "PROP_AMI_STACK_NOT_AVAILABLE"}}
     </div>
     {{/if}}
     <div class="property-control-group property-ami-info">

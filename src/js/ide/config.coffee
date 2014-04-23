@@ -217,6 +217,12 @@ require.config {
 		#############################################
 		'validation'         : 'component/trustedadvisor/validation'
 
+
+		#############################################
+		# api                       # Merge in deploy
+		#############################################
+		'ApiRequest'         : 'request/ApiRequest'
+
 		### env:dev:end ###
 
 
@@ -363,6 +369,7 @@ require.config {
 			"jqpagination"
 			'jquerysort'
 		]
+		"ApiRequest" : []
 		"model/model" : [
 			'base_model'
 			'account_model'

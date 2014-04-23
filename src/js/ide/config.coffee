@@ -459,7 +459,7 @@ require ['./js/ide/ide' ], ( ide ) ->
 		requirejs.onError = ()-> # Just use to suppress subsequent error
 		console.error "[RequireJS timeout] Reloading, error modules :", err.requireModules
 		window.location.reload()
-	else if err.requireType is "scripterror"
+	else
 		console.error "[RequireJS Error]", err
 		# requirejs.onError = ()-> # Just use to suppress subsequent error
 		# console.error "[Script Error] Redirecting to 500, error modules :", err.requireModules

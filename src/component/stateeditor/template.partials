@@ -170,7 +170,7 @@
 	<div id="state-editor-wrap">
 		<div id="state-editor-body">
 			<div id="state-editor" spellcheck="false" class="font-mono">
-				{{#unless supported_platform}}<div class="state-warning">{{ i18n 'STATE_UNKNOWN_DISTRO_LBL' }}</div>{{/unless}}
+				{{#unless supported_platform}}<div class="state-warning font-normal">{{ i18n 'STATE_UNKNOWN_DISTRO_LBL' }}</div>{{/unless}}
 
 				<div class="state-no-state-container font-normal">
 					<div class="state-no-data-tip">{{ i18n 'STATE_NO_STATE_LBL' }}</div>

@@ -233,13 +233,12 @@
 }
 
 #state-editor .state-warning {
-	background-color: #ff0;
-	height: 20px;
+	background-color: #ffcb50;
+	color: #ec3c38;
 	padding: 5px;
-	font-size: 14px;
+	font-size: 12px;
 	padding-left: 12px;
 	line-height: 19px;
-	border-bottom: 1px #ddd solid;
 }
 
 .state-list {
@@ -461,7 +460,7 @@
 
 #state-toolbar-selectAll {
 	position: absolute;
-	right: 17px;
+	right: 9px;
 	top: 12px;
 }
 

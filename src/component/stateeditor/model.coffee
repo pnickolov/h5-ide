@@ -39,7 +39,7 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 
 			moduleData = {}
 
-			if osPlatform is 'linux'
+			if osPlatform is 'linux' or not osPlatformDistro
 				moduleData = _.extend(moduleData, moduleDataObj.linux) if moduleDataObj.linux
 			else if osPlatform is 'windows'
 				moduleData = _.extend(moduleData, moduleDataObj.windows) if moduleDataObj.windows
@@ -61,6 +61,9 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 
 				supportCMD = false
 				if ((not cmdDistroAry) or (cmdDistroAry and osPlatformDistro in cmdDistroAry)) and osPlatform is 'linux'
+					supportCMD = true
+
+				if not osPlatformDistro
 					supportCMD = true
 
 				cmdObj.support = supportCMD

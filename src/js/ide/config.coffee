@@ -212,13 +212,12 @@ require.config {
 		'cloudwatch_service'     : 'service/aws/cloudwatch/cloudwatch/cloudwatch_service'
 		'sns_service'            : 'service/aws/sns/sns/sns_service'
 
-		### env:dev:end ###
-
 		#############################################
 		# component                 # Merge in deploy
 		#############################################
 		'validation'         : 'component/trustedadvisor/validation'
 
+		### env:dev:end ###
 
 
 		#############################################

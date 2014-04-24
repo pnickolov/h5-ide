@@ -260,7 +260,7 @@ define [ "i18n!nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "De
 
     if data and data.blockDeviceMapping and data.blockDeviceMapping.item
       for v in data.blockDeviceMapping.item
-        if data.rootDeviceName is v.deviceName
+        if data.rootDeviceName.indexOf(v.deviceName) isnt -1
           continue
         volume = resource_list[ v.ebs.volumeId ]
         if volume

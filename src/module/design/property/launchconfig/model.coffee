@@ -133,9 +133,18 @@ define [ '../base/model', 'keypair_model', 'constant', 'Design' ], ( PropertyMod
 
 
       if ami and ami.blockDeviceMapping
-        deivce = ami.blockDeviceMapping[ ami.rootDeviceName ]
+        rdName = ami.rootDeviceName
+        rdEbs  = ami.blockDeviceMapping[ rdName ]
+        if rdName and not rdEbs
+        #rootDeviceName is partition
+          _.each ami.blockDeviceMapping, (value,key) ->
+            if rdName.indexOf(key) isnt -1 and not rdEbs
+              rdEbs  = value
+              rdName = key
+          null
+
         rootDevice =
-          name : ami.rootDeviceName
+          name : rdName
           size : parseInt( comp.get("rdSize"), 10 )
           iops : comp.get("rdIops")
 

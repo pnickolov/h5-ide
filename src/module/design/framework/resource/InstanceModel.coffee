@@ -303,8 +303,16 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
 
       # Update RootDevice Size
       if ami.blockDeviceMapping
-        rootDevice = ami.blockDeviceMapping[ ami.rootDeviceName ]
-        minRdSize  = if rootDevice then parseInt( rootDevice.volumeSize, 10 ) else 10
+        rdName = ami.rootDeviceName
+        rdEbs  = ami.blockDeviceMapping[ rdName ]
+        if not rdEbs
+        #rootDeviceName is partition
+          _.each ami.blockDeviceMapping, (value,key) ->
+            if rdName.indexOf(key) isnt -1 and not rdEbs
+              rdEbs = value
+            null
+
+        minRdSize  = if rdEbs then parseInt( rdEbs.volumeSize, 10 ) else 10
         if @get("rdSize") < minRdSize
           @set("rdSize", minRdSize)
 
@@ -329,11 +337,21 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
       ami = @getAmi() || @get("cachedAmi")
       if ami and ami.rootDeviceType is "ebs" and ami.blockDeviceMapping
 
+        rdName = ami.rootDeviceName
+        rdEbs  = ami.blockDeviceMapping[rdName]
+        if not rdEbs
+        #rootDeviceName is partition
+          _.each ami.blockDeviceMapping, (value,key) ->
+            if rdName.indexOf(key) isnt -1 and not rdEbs
+              rdEbs = value
+              rdName = key
+            null
+
         blockDeviceMapping = [{
-          DeviceName : ami.rootDeviceName
+          DeviceName : rdName
           Ebs : {
-            SnapshotId : ami.blockDeviceMapping[ami.rootDeviceName].snapshotId
-            VolumeSize : @get("rdSize") || ami.blockDeviceMapping[ ami.rootDeviceName ].volumeSize
+            SnapshotId : rdEbs.snapshotId
+            VolumeSize : @get("rdSize") || rdEbs.volumeSize
             VolumeType : "standard"
           }
         }]
@@ -351,6 +369,15 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
       if amiInfo and amiInfo.rootDeviceType is "ebs" and amiInfo.blockDeviceMapping
         rdName = amiInfo.rootDeviceName
         rdEbs = amiInfo.blockDeviceMapping[rdName]
+
+        if rdName and not rdEbs
+        #rootDeviceName is partition
+          _.each amiInfo.blockDeviceMapping, (value,key) ->
+            if rdName.indexOf(key) isnt -1 and not rdEbs
+              rdEbs  = value
+              rdName = key
+            null
+
         if rdName and rdEbs
           rd =
             "DeviceName": rdName
@@ -362,6 +389,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
           if rdEbs.volumeType is "io1"
             rd.Ebs.Iops = rdEbs.iops
         else
+
           console.warn "getAmiRootDevice(): can not found root device of AMI(" + @get("imageId") + ")", this
       rd
 

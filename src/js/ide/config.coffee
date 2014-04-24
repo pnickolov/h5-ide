@@ -430,6 +430,7 @@ require.config {
 		"module/design/framework/DesignBundle" : [ "Design", "CanvasManager" ]
 		"validation" : []
 		"component/stateeditor/stateeditor" : []
+		"component/session/SessionDialog" : []
 		"property" : []
 
 	bundleExcludes : # This is a none requirejs option, but it's used by compiler to exclude some of the source.

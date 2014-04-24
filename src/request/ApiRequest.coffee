@@ -1,5 +1,5 @@
 
-define ["./ApiRequestDefs", "MC" ], ( ApiDefination )->
+define ["request/ApiRequestDefs", "MC" ], ( ApiDefination )->
 
   ###
   # === ApiRequest ===

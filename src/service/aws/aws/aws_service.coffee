@@ -435,6 +435,9 @@ define [ 'MC', 'common_handle', 'result_vo', 'constant', 'ebs_service', 'eip_ser
 
 							for comp in resource_comp
 
+								if not comp.keyName
+									comp.keyName = "DefaultKP"
+
 								if comp.keyName not in keypair_name
 									keypair_name.push comp.keyName
 									key_obj = {}

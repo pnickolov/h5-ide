@@ -472,47 +472,55 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
     connections = []
     mockArray   = []
 
-    try
-      # ResourceModel can only add json component.
-      for uid, comp of @__componentMap
-        if comp.isRemoved()
-          console.warn( "Resource has been removed, yet it remains in cache when serializing :", comp )
-          continue
+    # ResourceModel can only add json component.
+    for uid, comp of @__componentMap
+      if comp.isRemoved()
+        console.warn( "Resource has been removed, yet it remains in cache when serializing :", comp )
+        continue
 
-        if comp.node_line
-          connections.push comp
-          continue
+      if comp.node_line
+        connections.push comp
+        continue
 
+      try
         json = comp.serialize()
-        if not json then continue
-
-        # Make json to be an array
-        if not _.isArray( json )
-          mockArray[0] = json
-          json = mockArray
-
-        for j in json
-          if j.component
-            console.assert( j.component.uid, "Serialized JSON data has no uid." )
-            console.assert( not component_data[ j.component.uid ], "ResourceModel cannot modify existing JSON data." )
-            component_data[ j.component.uid ] = j.component
-
-          if j.layout
-            layout_data[ j.layout.uid ] = j.layout
-
-      # Connection
-      for c in connections
-        p1 = c.port1Comp()
-        p2 = c.port2Comp()
-        if p1 and p2 and not p1.isRemoved() and not p2.isRemoved()
-          c.serialize( component_data, layout_data )
-        else
-          console.error "Serializing an connection while one of the port is isRemoved() or null"
-
         ### env:prod ###
-    catch error
+      catch error
         console.error "Error occur while serializing", error
         ### env:prod:end ###
+      finally
+
+      if not json then continue
+
+      # Make json to be an array
+      if not _.isArray( json )
+        mockArray[0] = json
+        json = mockArray
+
+      for j in json
+        if j.component
+          console.assert( j.component.uid, "Serialized JSON data has no uid." )
+          console.assert( not component_data[ j.component.uid ], "ResourceModel cannot modify existing JSON data." )
+          component_data[ j.component.uid ] = j.component
+
+        if j.layout
+          layout_data[ j.layout.uid ] = j.layout
+
+    # Connection
+    for c in connections
+      p1 = c.port1Comp()
+      p2 = c.port2Comp()
+      if p1 and p2 and not p1.isRemoved() and not p2.isRemoved()
+        try
+          c.serialize( component_data, layout_data )
+          ### env:prod ###
+        catch error
+          console.error "Error occur while serializing", error
+          ### env:prod:end ###
+        finally
+
+      else
+        console.error "Serializing an connection while one of the port is isRemoved() or null"
 
 
     # Seems like some other place have call Design.instance().set("layout")

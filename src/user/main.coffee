@@ -314,7 +314,9 @@ init = ->
                             status.removeClass('error-status').addClass('verification-status').show().text langsrc.register.username_available
                             cb?(1)
                         else if(statusCode == 'error')
-                            console.log 'Net Work Error while'
+                            console.log 'NetWork Error while checking username'
+                            $('.error-msg').eq(0).text(langsrc.service['NETWORK_ERROR']).show()
+                            $('#register-btn').attr('disabled',false).val(langsrc.register["register-btn"])
                         else
                             status.removeClass('verification-status').addClass('error-status').text langsrc.register.username_taken
                             cb?(0)
@@ -332,7 +334,9 @@ init = ->
                             status.removeClass('error-status').addClass('verification-status').show().text langsrc.register.email_available
                             cb?(1)
                         else if(statusCode == 'error')
-                            console.log "NetWork Error"
+                            console.log 'NetWork Error while checking username'
+                            $('.error-msg').eq(0).text(langsrc.service['NETWORK_ERROR']).show()
+                            $('#register-btn').attr('disabled',false).val(langsrc.register["register-btn"])
                         else
                             status.removeClass('verification-status').addClass('error-status').text langsrc.register.email_used
                             cb?(0)
@@ -415,7 +419,7 @@ showErrorMessage = ->
     console.log 'showErrorMessage'
     $('#reset-pw-email').attr('disabled',false)
     $("#reset-btn").attr('disabled',false).val(window.langsrc.reset.reset_btn)
-    $("#email-verification-status").removeClass('verification-status').addClass("error-msg").show().text(langsrc.reset.reset_error_state)
+    $("#reset-status").removeClass('verification-status').addClass("error-msg").show().text(langsrc.reset.reset_error_state)
     false
 
 #handleErrorCode
@@ -423,8 +427,15 @@ handleErrorCode = (statusCode)->
     console.error 'ERROR_CODE_MESSAGE',langsrc.service["ERROR_CODE_#{statusCode}_MESSAGE"]
 # handleNetError
 handleNetError = (status)->
-    window.location = '/500'
-    console.error status, "Net Work Error, Redirecting..."
+    #window.location = '/500'
+    error_message = langsrc.service['NETWORK_ERROR']
+    $("#error-msg-3").first().text(error_message).show()
+    $("#login-btn").attr('disabled',false).val langsrc.login['login-btn']
+    $('#reset-status').removeClass('verification-status').addClass('error-msg').text(error_message).show()
+    $("#reset-btn").attr('disabled',false).val langsrc.reset['reset-btn']
+    $("#reset-pw-email").attr('disabled',false)
+    $(".box-loading").size()>0 && render "#expire-template"
+    $(".account-instruction-major").text error_message
 # verify  key with callback
 checkPassKey = (keyToValid,fn)->
     api(
@@ -440,6 +451,7 @@ checkPassKey = (keyToValid,fn)->
                 fn(false)
         error: (status)->
             handleNetError(status)
+            false
     )
 
 setCredit = (result)->

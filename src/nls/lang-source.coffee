@@ -4164,6 +4164,14 @@ module.exports =
       en: "Close"
       zh: ""
 
+    STATE_TEXT_EXPAND_MODAL_SAVE_BTN:
+      en: "Save"
+      zh: ""
+
+    STATE_TEXT_EXPAND_MODAL_CLOSE_BTN:
+      en: "Close"
+      zh: ""
+
     ## State Editor Help
 
     STATE_HELP_INTRO_LBL:

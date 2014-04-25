@@ -82,6 +82,7 @@
 				{{para_name}}
 			</div>
 			<div class="parameter-container">
+				<div class="parameter-text-expand icon-pending"></div>
 				<div class="parameter-value editable-area text">{{para_value}}</div>
 			</div>
 		</div>
@@ -264,5 +265,16 @@
 	</div>
 	<div class="modal-footer">
 		<button class="btn modal-close btn-silver">{{i18n 'STATE_LOG_DETAIL_MOD_CLOSE_BTN'}}</button>
+	</div>
+</div>
+
+<!-- {{stateTextExpandModal}} -->
+<div id="modal-state-text-expand" style="width: 900px;">
+	<div class="modal-header"><h3>Edit {{cmd_name}} > {{para_name}}</h3><i class="modal-close">&times;</i> </div>
+	<div class="modal-body">
+		<div class="editable-area text-code-editor text"></div>
+	</div>
+	<div class="modal-footer">
+		<button id="modal-state-text-expand-save" class="btn btn-blue">{{i18n 'STATE_TEXT_EXPAND_MODAL_SAVE_BTN'}}</button>
 	</div>
 </div>

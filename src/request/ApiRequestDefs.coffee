@@ -17,7 +17,7 @@ define [], ()->
   ApiRequestDefs =
     login      : { url:"/session/", method:"login",      params:["username", "password"]   }
     logout     : { url:"/session/", method:"logout",     params:["usercode", "session_id"] }
-    sync_redis : { url:"/session/", method:"sync_redis", params:["usercode", "session_id"] }
+    syncRedis  : { url:"/session/", method:"sync_redis", params:["usercode", "session_id"] }
     updateCred : { url:"/session/", method:"set_credential", params:["username","session_id","access_key","secret_key","account_id"] }
 
 

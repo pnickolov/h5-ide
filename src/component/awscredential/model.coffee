@@ -35,18 +35,6 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'vpc_model', 'account_model',
 
             ###################################################
 
-            #####listen SESSION_SYNC__REDIS_RETURN
-            me.on 'SESSION_SYNC__REDIS_RETURN', (result) ->
-                console.log 'SESSION_SYNC__REDIS_RETURN'
-
-                if !result.is_error
-                    # update aws credential
-                    ide_event.trigger ide_event.UPDATE_AWS_CREDENTIAL
-
-                null
-
-            ###################################################
-
             #####listen ACCOUNT_RESET__KEY_RETURN
             me.on 'ACCOUNT_RESET__KEY_RETURN', (result) ->
                 console.log 'ACCOUNT_RESET__KEY_RETURN'
@@ -164,7 +152,8 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'vpc_model', 'account_model',
             null
 
         sync_redis : () ->
-            ApiRequest("sync_redis")
+            ApiRequest("syncRedis").then ()->
+                ide_event.trigger ide_event.UPDATE_AWS_CREDENTIAL
             null
 
         resetKey : ( flag ) ->

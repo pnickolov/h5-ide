@@ -8,16 +8,17 @@ define [], ()->
 
   ** Auto Fill List :
   username
+  usercode
   password
   session_id
   ###
 
 
   ApiRequestDefs =
-    login      : { url:"/session/", method:"login",  params:["username", "password"] }
-    logout     : { url:"/session/", method:"logout", params:["username", "session_id"] }
+    login      : { url:"/session/", method:"login",      params:["username", "password"]   }
+    logout     : { url:"/session/", method:"logout",     params:["usercode", "session_id"] }
+    sync_redis : { url:"/session/", method:"sync_redis", params:["usercode", "session_id"] }
     updateCred : { url:"/session/", method:"set_credential", params:["username","session_id","access_key","secret_key","account_id"] }
-    sync_redis : { url:"/session/", method:"sync_redis", params:["username", "session_id"]}
 
 
   ApiRequestDefs.Parsers =
@@ -36,6 +37,8 @@ define [], ()->
   ApiRequestDefs.autoFill = ( paramter_name )->
     switch paramter_name
       when "username"
+        return $.cookie('username')
+      when "usercode"
         return $.cookie('usercode')
       when "session_id"
         return $.cookie('session_id')

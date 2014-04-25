@@ -61,11 +61,12 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
           }),
           # Right gray
           Canvon.path(MC.canvas.PATH_PORT_RIGHT).attr({
-            'class'      : 'port port-gray port-elb-assoc'
+            'class'      : 'port port-gray port-elb-assoc tooltip'
             'data-name'     : 'elb-assoc'
             'data-position' : 'right'
             'data-type'     : 'association'
             'data-direction': 'out'
+            'data-tooltip'  : 'Connect a subnet for each Availability Zone'
           })
         )
 

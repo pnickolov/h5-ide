@@ -52,11 +52,12 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
         node.append(
           # Left
           Canvon.path(MC.canvas.PATH_PORT_RIGHT).attr({
-            'class'      : 'port port-blue port-elb-sg-in'
+            'class'      : 'port port-blue port-elb-sg-in tooltip'
             'data-name'     : 'elb-sg-in'
             'data-position' : 'left'
             'data-type'     : 'sg'
             'data-direction': "in"
+            'data-tooltip'  : 'Connect to instance, auto scaling group or network interface to create security group rule.'
           }),
           # Right gray
           Canvon.path(MC.canvas.PATH_PORT_RIGHT).attr({
@@ -70,11 +71,12 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
 
       node.append(
         Canvon.path(MC.canvas.PATH_PORT_RIGHT).attr({
-          'class'      : 'port port-blue port-elb-sg-out'
+          'class'      : 'port port-blue port-elb-sg-out tooltip'
           'data-name'     : 'elb-sg-out'
           'data-position' : 'right'
           'data-type'     : 'sg'
           'data-direction': 'out'
+          'data-tooltip'  : 'Connect to instance or launch conﬁguration to register behind load balancer'
         })
       )
 

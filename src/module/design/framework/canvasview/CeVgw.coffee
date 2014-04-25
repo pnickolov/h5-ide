@@ -33,20 +33,22 @@ define [ "./CanvasElement", "constant" ], ( CanvasElement, constant )->
       node.append(
         # Left port
         Canvon.path(MC.canvas.PATH_PORT_RIGHT).attr({
-          'class'          : 'port port-blue port-vgw-tgt'
+          'class'          : 'port port-blue port-vgw-tgt tooltip'
           'data-name'      : 'vgw-tgt'
           'data-position'  : 'left'
           'data-type'      : 'sg'
           'data-direction' : 'in'
+          'data-tooltip'   : 'Connect to route table to create route'
         }),
 
         # Right port
         Canvon.path(MC.canvas.PATH_PORT_RIGHT).attr({
-          'class'          : 'port port-purple port-vgw-vpn'
+          'class'          : 'port port-purple port-vgw-vpn tooltip'
           'data-name'      : 'vgw-vpn'
           'data-position'  : 'right'
           'data-type'      : 'vpn'
           'data-direction' : 'out'
+          'data-tooltip'   : 'Connect to Customer Gateway to create VPN'
         })
       )
 

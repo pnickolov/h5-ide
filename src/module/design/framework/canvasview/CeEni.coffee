@@ -56,40 +56,44 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
 
         # Left Port
         Canvon.path(MC.canvas.PATH_PORT_DIAMOND).attr({
-          'class'          : 'port port-blue port-eni-sg port-eni-sg-left'
+          'class'          : 'port port-blue port-eni-sg port-eni-sg-left tooltip'
           'data-name'      : 'eni-sg'
           'data-alias'     : 'eni-sg-left'
           'data-position'  : 'left'
           'data-type'      : 'sg'
           'data-direction' : "in"
+          'data-tooltip'   : 'Connect to instance, auto scaling group, network interface or load balancer to create security group rule.'
         }),
 
         # Left port
         Canvon.path(MC.canvas.PATH_PORT_RIGHT).attr({
-          'class'          : 'port port-green port-eni-attach'
+          'class'          : 'port port-green port-eni-attach tooltip'
           'data-name'      : 'eni-attach'
           'data-position'  : 'left'
           'data-type'      : 'attachment'
           'data-direction' : "in"
+          'data-tooltip'   : 'Connect to instance to attach.'
         }),
 
         # Right port
         Canvon.path(MC.canvas.PATH_PORT_DIAMOND).attr({
-          'class'          : 'port port-blue port-eni-sg port-eni-sg-right'
+          'class'          : 'port port-blue port-eni-sg port-eni-sg-right tooltip'
           'data-name'      : 'eni-sg'
           'data-alias'     : 'eni-sg-right'
           'data-position'  : 'right'
           'data-type'      : 'sg'
           'data-direction' : 'out'
+          'data-tooltip'   : 'Connect to instance, auto scaling group, network interface or load balancer to create security group rule.'
         }),
 
         # Top port(blue)
         Canvon.path(MC.canvas.PATH_PORT_BOTTOM).attr({
-          'class'      : 'port port-blue port-eni-rtb'
+          'class'      : 'port port-blue port-eni-rtb tooltip'
           'data-name'     : 'eni-rtb'
           'data-position' : 'top'
           'data-type'     : 'sg'
           'data-direction': 'in'
+          'data-tooltip'  : 'Connect to route table to create route.'
         }),
 
         Canvon.group().append(

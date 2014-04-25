@@ -278,8 +278,7 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
     design : ()-> @__design
 
     getAllObjects : ( awsType )->
-      if not awsType then awsType = @type
-      @design().classCacheForCid( this.prototype.classId ).slice(0)
+      @design().classCacheForCid( Design.modelClassForType(awsType||@type).prototype.classId ).slice(0)
 
     markAsRemoved : ( isRemoved )->
       if isRemoved is undefined

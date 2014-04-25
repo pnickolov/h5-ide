@@ -399,6 +399,8 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
 
       @ensureEnoughMember()
 
+      eniName = (servergroupOption.instanceName or "") + @get("name")
+
       ips = []
       if index is 0
         memberData = {
@@ -439,7 +441,7 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
           resources.push {
             uid   : eip.id or MC.guid()
             type  : constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP
-            name  : "EIP"
+            name  : "#{eniName}-eip#{idx}"
             index : index
             resource :
               Domain : if Design.instance().typeIsVpc() then "vpc" else "standard"
@@ -484,7 +486,7 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
         index           : index
         uid             : memberData.id
         type            : @type
-        name            : (servergroupOption.instanceName or "") + @get("name")
+        name            : eniName
         serverGroupUid  : @id
         serverGroupName : @get("name")
         number          : servergroupOption.number or 1

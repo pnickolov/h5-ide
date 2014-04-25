@@ -1265,10 +1265,6 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
               null
 
           MC.aws.aws.enableStackAgent(isEnable)
-
-        #getApplayTrial : ( value ) ->
-        #    console.log 'getApplayTrial', value
-        #    account_model.apply_trial { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), value
     }
 
     model = new ToolbarModel()

@@ -14,6 +14,7 @@
     Module Name
       RES     : resource panel
       PROP    : property
+
       CVS     : canvas
       TOOL    : toolbar
       HEAD    : header
@@ -4015,7 +4016,7 @@ module.exports =
       zh: ''
 
     PORT_TIP_J:
-      en: 'Connect to instance or launch conﬁguration to register behind load balancer'
+      en: 'Connect to instance or launch configuration to register behind load balancer'
       zh: ''
 
     PORT_TIP_K:

@@ -5232,6 +5232,7 @@ a.action-link:hover {
 
 .property-app {
 	/*font-size: 12px;*/
+    background-color: #383838;
 }
 
 .property-app ::selection {

@@ -4016,7 +4016,7 @@ module.exports =
       zh: ''
 
     PORT_TIP_J:
-      en: 'Connect to instance or launch configuration to register behind load balancer'
+      en: 'Connect to instance or launch configuration to register it behind load balancer'
       zh: ''
 
     PORT_TIP_K:

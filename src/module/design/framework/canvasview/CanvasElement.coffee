@@ -360,8 +360,8 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
     list
 
 
-
-
+  CanvasElement.prototype.connectionData = ( portName )->
+    Design.modelClassForType("Framework_CN").connectionData( @type, portName )
 
   ###
   # Helper functions for rendering and for model

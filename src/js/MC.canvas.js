@@ -3020,124 +3020,89 @@ MC.canvas.event.dragable = {
 MC.canvas.event.drawConnection = {
 	mousedown: function (event)
 	{
-		if (event.which === 1)
+		if ( event.which != 1 ) { return false; }
+
+		var svg_canvas = $('#svg_canvas'),
+			canvas_offset = svg_canvas.offset(),
+			target = $(this),
+			target_offset = Canvon(this).offset(),
+
+			parent = target.parent(),
+			node_id = parent.attr('id'),
+			parent_item = $canvas(node_id),
+
+			port_type = target.data('type'),
+			port_name = target.data('name'),
+			scale_ratio = $canvas.scale(),
+			target_node,
+			target_port;
+
+		//calculate point of junction
+		var offset = {
+			  left : target_offset.left + Math.round(target_offset.width / 2)
+			, top  : target_offset.top  + Math.round(target_offset.height / 2)
+		};
+
+		$(document.body).append('<div id="overlayer"></div>');
+
+		svg_canvas.append(Canvon.group().attr({
+			'class': 'draw-line-wrap line-' + port_type,
+			'id': 'draw-line-connection'
+		}));
+
+		$(document).on({
+			'mousemove': MC.canvas.event.drawConnection.mousemove,
+			'mouseup': MC.canvas.event.drawConnection.mouseup
+		}, {
+			'connect': target.data('connect'),
+			'originalTarget': target.parent(),
+			'originalX': (offset.left - canvas_offset.left) * scale_ratio,
+			'originalY': (offset.top - canvas_offset.top) * scale_ratio,
+			'draw_line': $('#draw-line-connection'),
+			'port_name': port_name,
+			'canvas_offset': canvas_offset,
+			'scale_ratio': scale_ratio
+		});
+
+		MC.canvas.event.clearSelected();
+
+		// Keep hover style on
+		$.each(parent_item.connection(), function (index, item)
 		{
-			var svg_canvas = $('#svg_canvas'),
-				canvas_offset = svg_canvas.offset(),
-				target = $(this),
-				target_offset = Canvon(this).offset(),
+			Canvon('#' + item.line).addClass('view-keephover');
+		});
 
-				parent = target.parent(),
-				node_id = parent.attr('id'),
-				parent_item = $canvas(node_id),
-				parent_type = parent_item.type,
+		// Highlight connectable port
+		var connection_option = parent_item.connectionData( port_name );
+		var reg = /\./ig;
+		for ( var i in connection_option ) {
+			$('.' + i.replace(reg, '-')).each(function (index, item) {
+				if ( item.id == node_id ) { return; }
 
-				position = target.data('position'),
-				port_type = target.data('type'),
-				port_name = target.data('name'),
-				connection_option = MC.canvas.CONNECTION_OPTION[ parent_type ],
-				scale_ratio = $canvas.scale(),
-				offset = {},
-				port_position_offset = 8 / scale_ratio,
-				node_connection = parent_item.connection(),
-				target_connection_option,
-				target_item,
-				target_data,
-				target_node,
-				target_port,
-				is_connected,
-				line_data;
+				var ports = connection_option[i];
 
-			//calculate point of junction
-			switch (position)
-			{
-				case 'left':
-					offset.left = target_offset.left;
-					offset.top  = target_offset.top + port_position_offset;
-					break;
+				for ( var j = 0; j < connection_option[i].length; ++j ) {
 
-				case 'right':
-					offset.left = target_offset.left + port_position_offset;
-					offset.top  = target_offset.top + port_position_offset;
-					break;
-
-				case 'top':
-					offset.left = target_offset.left + port_position_offset;
-					offset.top  = target_offset.top;
-					break;
-
-				case 'bottom':
-					offset.left = target_offset.left + port_position_offset;
-					offset.top  = target_offset.top + port_position_offset;
-					break;
-			}
-
-			$(document.body).append('<div id="overlayer"></div>');
-
-			svg_canvas.append(Canvon.group().attr({
-				'class': 'draw-line-wrap line-' + port_type,
-				'id': 'draw-line-connection'
-			}));
-
-			$(document).on({
-				'mousemove': MC.canvas.event.drawConnection.mousemove,
-				'mouseup': MC.canvas.event.drawConnection.mouseup
-			}, {
-				'connect': target.data('connect'),
-				'originalTarget': target.parent(),
-				'originalX': (offset.left - canvas_offset.left) * scale_ratio,
-				'originalY': (offset.top - canvas_offset.top) * scale_ratio,
-				'option': connection_option,
-				'draw_line': $('#draw-line-connection'),
-				'port_name': port_name,
-				'canvas_offset': canvas_offset,
-				'scale_ratio': scale_ratio
-			});
-
-			MC.canvas.event.clearSelected();
-
-			// Keep hover style on
-			$.each(node_connection, function (index, item)
-			{
-				Canvon('#' + item.line).addClass('view-keephover');
-			});
-
-			// Highlight connectable port
-			$.each(connection_option, function (type, option)
-			{
-				if ($.type(option) !== 'array')
-				{
-					option = [option];
-				}
-
-				$.each(option, function (index, value)
-				{
-					if (value.from === port_name)
+					if (parent_item.isConnectable( port_name, item.id, ports[j] ))
 					{
-						$('.' + type.replace(/\./ig, '-') + ':not(#' + node_id + ')').each(function (index, item)
+						target_node = this;
+
+						$(target_node).find('.port-' + ports[j]).each(function ()
 						{
-							if (parent_item.isConnectable(value.from, item.id, value.to))
+							target_port = $(this);
+
+							if (target_port.css('display') !== 'none')
 							{
-								target_node = this;
+								Canvon(target_node).addClass('connectable');
 
-								$(target_node).find('.port-' + value.to).each(function ()
-								{
-									target_port = $(this);
-
-									if (target_port.css('display') !== 'none')
-									{
-										Canvon(target_node).addClass('connectable');
-
-										Canvon(target_port).addClass("connectable-port view-show");
-									}
-								});
+								Canvon(target_port).addClass("connectable-port view-show");
 							}
 						});
 					}
-				});
+
+				}
 			});
 		}
-
 		return false;
 	},
 

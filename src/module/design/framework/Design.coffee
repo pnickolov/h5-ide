@@ -376,6 +376,17 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
 
     @__modelClassMap[ type ]
 
+  Design.lineModelClasses = ()->
+    if @__lineModelClasses then return @__lineModelClasses
+
+    @__lineModelClasses = cs = []
+    for type, modelClass of @__modelClassMap
+      # Ignore every type that has ">", because that's duplicated class for a line.
+      if modelClass.__isLineClass and type.indexOf(">") is -1
+        cs.push modelClass
+
+    @__lineModelClasses
+
   DesignImpl.prototype.reclaimGuid = ( guid )-> delete @__usedUidCache[ guid ]
   DesignImpl.prototype.guid = ()->
     newId = MC.guid()

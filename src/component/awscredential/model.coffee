@@ -2,8 +2,8 @@
 #  View Mode for component/awscredential
 #############################
 
-define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model', 'account_model', 'i18n!nls/lang.js', 'event', 'constant', 'ApiRequest', 'UI.notification'
-], (Backbone, $, _, MC, session_model, vpc_model, account_model, lang, ide_event, constant, ApiRequest) ->
+define [ 'backbone', 'jquery', 'underscore', 'MC', 'vpc_model', 'account_model', 'i18n!nls/lang.js', 'event', 'constant', 'ApiRequest', 'UI.notification'
+], (Backbone, $, _, MC, vpc_model, account_model, lang, ide_event, constant, ApiRequest) ->
 
     AWSCredentialModel = Backbone.Model.extend {
 
@@ -84,66 +84,55 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model',
 
         awsAuthenticate : (access_key, secret_key, account_id) ->
             me = this
-            option = { expires:1, path: '/' }
-            session_model.set_credential {sender: this}, $.cookie( 'usercode' ), $.cookie( 'session_id' ), access_key, secret_key, account_id
 
-            me.once 'SESSION_SET__CREDENTIAL_RETURN', (result1) ->
-                console.log 'SESSION_SET__CREDENTIAL_RETURN'
-                console.log result1
+            ApiRequest("updateCred", {
+                access_key : access_key
+                secret_key : secret_key
+                account_id : account_id
+            }).then ( result )->
+                name = 'DescribeAccountAttributes' + '_' + $.cookie( 'usercode' ) + '__' + 'supported-platforms,default-vpc'
+                if MC.session.get name
+                    MC.session.remove name
 
-                if !result1.is_error
+                # check credential
+                vpc_model.DescribeAccountAttributes { sender : vpc_model }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), '',  ["supported-platforms", "default-vpc"]
 
-                    name = 'DescribeAccountAttributes' + '_' + $.cookie( 'usercode' ) + '__' + 'supported-platforms,default-vpc'
-                    if MC.session.get name
-                        MC.session.remove name
+                vpc_model.once 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN', (result) ->
 
-                    # check credential
-                    vpc_model.DescribeAccountAttributes { sender : vpc_model }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), '',  ["supported-platforms", "default-vpc"]
-
-                    vpc_model.once 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN', (result) ->
-
-                        console.log 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN'
+                    console.log 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN'
 
 
-                        if !result.is_error
-                            me.set 'is_authenticated', true
-                            MC.common.cookie.setCookieByName 'has_cred',   true
-                            MC.common.cookie.setCookieByName 'account_id', account_id
+                    if !result.is_error
+                        me.set 'is_authenticated', true
+                        MC.common.cookie.setCookieByName 'has_cred',   true
+                        MC.common.cookie.setCookieByName 'account_id', account_id
 
-                            # update account attributes
-                            regionAttrSet = result.resolved_data
-                            _.map constant.REGION_KEYS, ( value ) ->
-                                if regionAttrSet[ value ] and regionAttrSet[ value ].accountAttributeSet
+                        # update account attributes
+                        regionAttrSet = result.resolved_data
+                        _.map constant.REGION_KEYS, ( value ) ->
+                            if regionAttrSet[ value ] and regionAttrSet[ value ].accountAttributeSet
 
-                                    #resolve support-platform
-                                    support_platform = regionAttrSet[ value ].accountAttributeSet.item[0].attributeValueSet.item
-                                    if support_platform and $.type(support_platform) == "array"
-                                        if support_platform.length == 2
-                                            MC.data.account_attribute[ value ].support_platform = support_platform[0].attributeValue + ',' + support_platform[1].attributeValue
-                                        else if support_platform.length == 1
-                                            MC.data.account_attribute[ value ].support_platform = support_platform[0].attributeValue
+                                #resolve support-platform
+                                support_platform = regionAttrSet[ value ].accountAttributeSet.item[0].attributeValueSet.item
+                                if support_platform and $.type(support_platform) == "array"
+                                    if support_platform.length == 2
+                                        MC.data.account_attribute[ value ].support_platform = support_platform[0].attributeValue + ',' + support_platform[1].attributeValue
+                                    else if support_platform.length == 1
+                                        MC.data.account_attribute[ value ].support_platform = support_platform[0].attributeValue
 
-                                    #resolve default-vpc
-                                    default_vpc = regionAttrSet[ value ].accountAttributeSet.item[1].attributeValueSet.item
-                                    if  default_vpc and $.type(default_vpc) == "array" and default_vpc.length == 1
-                                        MC.data.account_attribute[ value ].default_vpc = default_vpc[0].attributeValue
-                                null
+                                #resolve default-vpc
+                                default_vpc = regionAttrSet[ value ].accountAttributeSet.item[1].attributeValueSet.item
+                                if  default_vpc and $.type(default_vpc) == "array" and default_vpc.length == 1
+                                    MC.data.account_attribute[ value ].default_vpc = default_vpc[0].attributeValue
+                            null
 
-                        else
-                            me.set 'is_authenticated', false
+            , ( error )=>
+                @set 'is_authenticated', false
+                MC.common.cookie.setCookieByName 'has_cred', false
 
-                        me.set 'account_id', account_id
+                @set 'account_id', account_id
 
-                        me.trigger 'REFRESH_AWS_CREDENTIAL'
-
-                else
-
-                    me.set 'is_authenticated', false
-                    MC.common.cookie.setCookieByName 'has_cred', false
-
-                    me.set 'account_id', account_id
-
-                    me.trigger 'REFRESH_AWS_CREDENTIAL'
+                @trigger 'REFRESH_AWS_CREDENTIAL'
 
             null
 

@@ -1,10 +1,23 @@
 
 define [], ()->
 
+  ###
+  == Following name of the paramter is autofilled. Thus the paramter is not required.
+  == It also means that you cannot use a param name if the param is for sth. else.
+     For example, the param's name cannot be username, if it's used to represent Instance's Id.
+
+  ** Auto Fill List :
+  username
+  password
+  session_id
+  ###
+
+
   ApiRequestDefs =
-    login      : { url:"/session/", method:"login", params:["username", "password"] }
+    login      : { url:"/session/", method:"login",  params:["username", "password"] }
     logout     : { url:"/session/", method:"logout", params:["username", "session_id"] }
-    updateCred : { url:"/session/", method:"set_credential", params:["username", "session_id","access_key","secret_key","account_id"] }
+    updateCred : { url:"/session/", method:"set_credential", params:["username","session_id","access_key","secret_key","account_id"] }
+    sync_redis : { url:"/session/", method:"sync_redis", params:["username", "session_id"]}
 
 
   ApiRequestDefs.Parsers =
@@ -19,5 +32,13 @@ define [], ()->
       state       : result[7]
       has_cred    : result[8]
 
+
+  ApiRequestDefs.autoFill = ( paramter_name )->
+    switch paramter_name
+      when "username"
+        return $.cookie('usercode')
+      when "session_id"
+        return $.cookie('session_id')
+    return null
 
   ApiRequestDefs

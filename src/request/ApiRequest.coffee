@@ -11,6 +11,9 @@ define ["request/ApiRequestDefs", "MC" ], ( ApiDefination )->
   #         If an api has no param map, the apiParameters is considered as the first and only one paramter
   #         to be send with the api.
   ###
+  OneParaArray = [""]
+  EmptyArray   = []
+  EmptyObject  = {}
 
   RequestData =
     jsonrpc : '2.0'
@@ -55,6 +58,7 @@ define ["request/ApiRequestDefs", "MC" ], ( ApiDefination )->
 
   ApiRequest = ( apiName, apiParameters )->
     ApiDef = ApiDefination[ apiName ]
+    apiParameters = apiParameters || EmptyObject
 
     if not ApiDef
       console.error "Cannot find defination of the api:", apiName
@@ -64,9 +68,12 @@ define ["request/ApiRequestDefs", "MC" ], ( ApiDefination )->
     if ApiDef.params
       RequestData.params = p = []
       for i in ApiDef.params
-        p.push apiParameters[i] || null
+        p.push apiParameters[i] || ApiDef.autoFill(i)
+    else if apiParameters
+      OneParaArray[0] = apiParameters
+      RequestData.params = OneParaArray
     else
-      RequestData.params = [ apiParameters ]
+      RequestData.params = EmptyArray
 
     ajax = $.ajax {
       url      : MC.API_HOST + ApiDef.url

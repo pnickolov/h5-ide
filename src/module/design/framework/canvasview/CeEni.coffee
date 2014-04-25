@@ -1,5 +1,5 @@
 
-define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, constant, CanvasManager )->
+define [ "./CanvasElement", "constant", "CanvasManager","i18n!nls/lang.js" ], ( CanvasElement, constant, CanvasManager,lang )->
 
   CeEni = ()-> CanvasElement.apply( this, arguments )
   CanvasElement.extend( CeEni, constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface )
@@ -62,7 +62,7 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
           'data-position'  : 'left'
           'data-type'      : 'sg'
           'data-direction' : "in"
-          'data-tooltip'   : 'Connect to instance, auto scaling group, network interface or load balancer to create security group rule.'
+          'data-tooltip'   : lang.ide.PORT_TIP_D
         }),
 
         # Left port
@@ -72,7 +72,7 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
           'data-position'  : 'left'
           'data-type'      : 'attachment'
           'data-direction' : "in"
-          'data-tooltip'   : 'Connect to instance to attach.'
+          'data-tooltip'   : lang.ide.PORT_TIP_G
         }),
 
         # Right port
@@ -83,7 +83,7 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
           'data-position'  : 'right'
           'data-type'      : 'sg'
           'data-direction' : 'out'
-          'data-tooltip'   : 'Connect to instance, auto scaling group, network interface or load balancer to create security group rule.'
+          'data-tooltip'   : lang.ide.PORT_TIP_F
         }),
 
         # Top port(blue)
@@ -93,7 +93,7 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
           'data-position' : 'top'
           'data-type'     : 'sg'
           'data-direction': 'in'
-          'data-tooltip'  : 'Connect to route table to create route.'
+          'data-tooltip'  : lang.ide.PORT_TIP_C
         }),
 
         Canvon.group().append(

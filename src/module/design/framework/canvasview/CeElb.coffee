@@ -1,5 +1,5 @@
 
-define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, constant, CanvasManager )->
+define [ "./CanvasElement", "constant", "CanvasManager","i18n!nls/lang.js" ], ( CanvasElement, constant, CanvasManager,lang )->
 
   CeElb = ()-> CanvasElement.apply( this, arguments )
   CanvasElement.extend( CeElb, constant.AWS_RESOURCE_TYPE.AWS_ELB )
@@ -57,7 +57,7 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
             'data-position' : 'left'
             'data-type'     : 'sg'
             'data-direction': "in"
-            'data-tooltip'  : 'Connect to instance, auto scaling group or network interface to create security group rule.'
+            'data-tooltip'  : lang.ide.PORT_TIP_D
           }),
           # Right gray
           Canvon.path(MC.canvas.PATH_PORT_RIGHT).attr({
@@ -66,7 +66,7 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
             'data-position' : 'right'
             'data-type'     : 'association'
             'data-direction': 'out'
-            'data-tooltip'  : 'Connect a subnet for each Availability Zone'
+            'data-tooltip'  : lang.ide.PORT_TIP_K
           })
         )
 
@@ -77,7 +77,7 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
           'data-position' : 'right'
           'data-type'     : 'sg'
           'data-direction': 'out'
-          'data-tooltip'  : 'Connect to instance or launch conﬁguration to register behind load balancer'
+          'data-tooltip'  : lang.ide.PORT_TIP_J
         })
       )
 

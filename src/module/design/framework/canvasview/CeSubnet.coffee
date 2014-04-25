@@ -1,5 +1,5 @@
 
-define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, constant, CanvasManager )->
+define [ "./CanvasElement", "constant", "CanvasManager","i18n!nls/lang.js" ], ( CanvasElement, constant, CanvasManager,lang )->
 
   CeSubnet = ()-> CanvasElement.apply( this, arguments )
   CanvasElement.extend( CeSubnet, constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet )
@@ -34,7 +34,7 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
         'data-position' : 'left'
         'data-type'     : 'association'
         'data-direction': 'in'
-        'data-tooltip'  : 'Connect to associate with load balancer'
+        'data-tooltip'  : lang.ide.PORT_TIP_L
       }) )
 
       # Offset the port, because line layer is on top of group layer.
@@ -45,7 +45,7 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
         'data-position' : 'right'
         'data-type'     : 'association'
         'data-direction': 'out'
-        'data-tooltip'  : 'Connect to associate with route table'
+        'data-tooltip'  : lang.ide.PORT_TIP_M
       }) )
 
       @getLayer("subnet_layer").append node

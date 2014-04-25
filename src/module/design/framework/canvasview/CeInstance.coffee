@@ -92,7 +92,7 @@ define [ "i18n!nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "De
           'data-position'  : 'left' #port position: for calc point of junction
           'data-type'      : 'sg'   #color of line
           'data-direction' : 'in'   #direction
-          'data-tooltip'   : 'Connect to instance, auto scaling group, network interface or load balancer to create security group rule.'
+          'data-tooltip'   : lang.ide.PORT_TIP_D
         }),
 
         # right port(blue)
@@ -103,7 +103,7 @@ define [ "i18n!nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "De
           'data-position'  : 'right'
           'data-type'      : 'sg'
           'data-direction' : 'out'
-          'data-tooltip'   : 'Connect to instance, auto scaling group, network interface or load balancer to create security group rule.'
+          'data-tooltip'   : lang.ide.PORT_TIP_D
         })
       )
 
@@ -116,7 +116,7 @@ define [ "i18n!nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "De
             'data-position' : 'right'
             'data-type'     : 'attachment'
             'data-direction': 'out'
-            'data-tooltip'  : 'Connect to network interface to attach.'
+            'data-tooltip'  : lang.ide.PORT_TIP_E
           })
 
           Canvon.path(MC.canvas.PATH_PORT_BOTTOM).attr({
@@ -125,7 +125,7 @@ define [ "i18n!nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "De
             'data-position' : 'top'
             'data-type'     : 'sg'
             'data-direction': 'in'
-            'data-tooltip'  : 'Connect to route table to create route.'
+            'data-tooltip'  : lang.ide.PORT_TIP_C
           })
         )
 

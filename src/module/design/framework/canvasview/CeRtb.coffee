@@ -1,5 +1,5 @@
 
-define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, constant, CanvasManager )->
+define [ "./CanvasElement", "constant", "CanvasManager","i18n!nls/lang.js"], ( CanvasElement, constant, CanvasManager, lang )->
 
   CeRtb = ()-> CanvasElement.apply( this, arguments )
   CanvasElement.extend( CeRtb, constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable )
@@ -48,7 +48,7 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
           'data-position'  : 'left'
           'data-type'      : 'sg'
           'data-direction' : 'out'
-          'data-tooltip'   : 'Connect to Internet Gateway, VPN Gateway, instance or network interface to create route.'
+          'data-tooltip'   : lang.ide.PORT_TIP_B
         }),
 
         # Right port
@@ -59,7 +59,7 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
           'data-position'  : 'right'
           'data-type'      : 'sg'
           'data-direction' : 'out'
-          'data-tooltip'   : 'Connect to Internet Gateway, VPN Gateway, instance or network interface to create route.'
+          'data-tooltip'   : lang.ide.PORT_TIP_B
         }),
 
         # Top port
@@ -70,7 +70,7 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
           'data-position'  : 'top'
           'data-type'      : 'association'
           'data-direction' : 'in'
-          'data-tooltip'   : 'Connect to subnet to make association.'
+          'data-tooltip'   : lang.ide.PORT_TIP_A
         }),
 
         # Bottom port
@@ -81,7 +81,7 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
           'data-position'  : 'bottom'
           'data-type'      : 'association'
           'data-direction' : 'in'
-          'data-tooltip'   : 'Connect to subnet to make association.'
+          'data-tooltip'   : lang.ide.PORT_TIP_A
         }),
 
         Canvon.text(41, 27, m.get("name")).attr({'class':'node-label node-label-rtb-name'})

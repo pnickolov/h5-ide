@@ -21,9 +21,15 @@ define ["request/ApiRequestDefs", "MC" ], ( ApiDefination )->
     method  : ''
     params  : {}
 
+  logAndThrow : ( obj )->
+    ### env:dev ###
+    console.error obj
+    ### env:dev:end ###
+    throw obj
+
   AjaxHandler = (res)->
     if not res or not res.result or res.result.length != 2
-      throw {
+      logAndThrow {
         error : -1
         msg   : "Invalid JsonRpc Return Data"
       }
@@ -31,7 +37,8 @@ define ["request/ApiRequestDefs", "MC" ], ( ApiDefination )->
     if res.result[0] isnt 0
       # We can do aditional global handling for some specific error here.
       # For example, Invalid Session.
-      throw {
+
+      logAndThrow {
         error  : res.result[0]
         msg    : "Service Error"
         result : res.result[1]
@@ -41,12 +48,12 @@ define ["request/ApiRequestDefs", "MC" ], ( ApiDefination )->
 
   NetworkErrorHandler = (jqXHR, textStatus, error)->
     if !error and jqXHR.status != 200
-      throw {
+      logAndThrow {
         error : -jqXHR.status
         msg   : "Network Error"
       }
 
-    throw {
+    logAndThrow {
       error  : -2
       msg    : textStatus
       result : error

@@ -2,8 +2,7 @@
 #  View Mode for header module
 #############################
 
-define [ 'backbone', 'jquery', 'underscore',
-         'session_model', 'constant', 'event', 'common_handle' ], ( Backbone, $, _, session_model, constant, ide_event, common_handle ) ->
+define [ 'backbone', 'jquery', 'underscore', 'constant', 'event', 'common_handle', "ApiRequest" ], ( Backbone, $, _, constant, ide_event, common_handle, ApiRequest ) ->
 
     #ws = MC.data.websocket
 
@@ -16,22 +15,6 @@ define [ 'backbone', 'jquery', 'underscore',
             'has_cred'      : true      # default has credential
             'user_name'     : null
             'user_email'    : null
-
-        initialize : ->
-
-            #logout return handler (dispatch from service/session/session_model)
-            @on 'SESSION_LOGOUT_RETURN', ( forge_result ) ->
-
-                if !forge_result.is_error
-                    #logout succeed
-
-                    result = forge_result.resolved_data
-
-                common_handle.cookie.deleteCookie()
-
-                window.location.href = "/login"
-
-                return false
 
         init : ()->
             @set {
@@ -158,11 +141,14 @@ define [ 'backbone', 'jquery', 'underscore',
             null
 
         logout : () ->
-
-            #invoke session.logout api
-            session_model.logout {sender: this}, $.cookie( 'usercode' ), $.cookie( 'session_id' )
-
-
+            ApiRequest("logout", {
+                username   : $.cookie( 'usercode' )
+                session_id : $.cookie( 'session_id' )
+            }).then ()->
+                common_handle.cookie.deleteCookie()
+                window.location.href = "/login/"
+            , ()->
+                window.location.href = "/login/"
     }
 
     return new HeaderModel()

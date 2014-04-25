@@ -3984,7 +3984,7 @@ module.exports =
       zh: ''
 
     PORT_TIP_B:
-      en: 'Connect to Internet Gateway, VPN Gateway, instance or network interface to create route.'
+      en: 'Connect to Internet Gateway, Virtual Private Gateway, instance or network interface to create route.'
       zh: ''
 
     PORT_TIP_C:
@@ -4012,7 +4012,7 @@ module.exports =
       zh: ''
 
     PORT_TIP_I:
-      en: 'Connect to VPN Gateway to create VPN'
+      en: 'Connect to Virtua Private Gateway to create VPN'
       zh: ''
 
     PORT_TIP_J:
@@ -4020,15 +4020,15 @@ module.exports =
       zh: ''
 
     PORT_TIP_K:
-      en: 'Connect a subnet for each Availability Zone'
+      en: 'Connect to subnet to associate'
       zh: ''
 
     PORT_TIP_L:
-      en: 'Connect to associate with load balancer'
+      en: 'Connect to load balancer to associate'
       zh: ''
 
     PORT_TIP_M:
-      en: 'Connect to associate with route table'
+      en: 'Connect to route table to assoicate'
       zh: ''
 
   ##### Modal Confirm Stop/Terminate App

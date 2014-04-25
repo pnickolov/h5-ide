@@ -2,8 +2,8 @@
 #  View Mode for component/awscredential
 #############################
 
-define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model', 'account_model', 'i18n!nls/lang.js', 'event', 'constant', 'UI.notification'
-], (Backbone, $, _, MC, session_model, vpc_model, account_model, lang, ide_event, constant) ->
+define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model', 'account_model', 'i18n!nls/lang.js', 'event', 'constant', 'ApiRequest', 'UI.notification'
+], (Backbone, $, _, MC, session_model, vpc_model, account_model, lang, ide_event, constant, ApiRequest) ->
 
     AWSCredentialModel = Backbone.Model.extend {
 
@@ -175,10 +175,7 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model',
             null
 
         sync_redis : () ->
-            me = this
-
-            session_model.sync_redis {sender:me}, $.cookie('usercode'), $.cookie('session_id')
-
+            ApiRequest("sync_redis")
             null
 
         resetKey : ( flag ) ->

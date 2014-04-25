@@ -141,10 +141,7 @@ define [ 'backbone', 'jquery', 'underscore', 'constant', 'event', 'common_handle
             null
 
         logout : () ->
-            ApiRequest("logout", {
-                username   : $.cookie( 'usercode' )
-                session_id : $.cookie( 'session_id' )
-            }).then ()->
+            ApiRequest("logout").then ()->
                 common_handle.cookie.deleteCookie()
                 window.location.href = "/login/"
             , ()->

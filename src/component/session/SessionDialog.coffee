@@ -9,10 +9,7 @@ define [ "./SessionDialogView", "ApiRequest", "common_handle", "event" ], ( Sess
       return
 
     connect : ( password )->
-      ApiRequest("login", {
-        username : $.cookie( 'username' )
-        password : password
-      }).then ( result )=>
+      ApiRequest("login", {password:password}).then ( result )=>
         common_handle.cookie.setCookie result
 
         @trigger "CONNECTED"

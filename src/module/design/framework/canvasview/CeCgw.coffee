@@ -1,5 +1,5 @@
 
-define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, constant, CanvasManager )->
+define [ "./CanvasElement", "constant", "CanvasManager" ,"i18n!nls/lang.js"], ( CanvasElement, constant, CanvasManager ,lang)->
 
   CeCgw = ()-> CanvasElement.apply( this, arguments )
   CanvasElement.extend( CeCgw, constant.AWS_RESOURCE_TYPE.AWS_VPC_CustomerGateway )
@@ -31,11 +31,12 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
       node.append(
         # Port
         Canvon.path(MC.canvas.PATH_PORT_RIGHT).attr({
-          'class'      : 'port port-purple port-cgw-vpn',
+          'class'      : 'port port-purple port-cgw-vpn tooltip',
           'data-name'     : 'cgw-vpn'
           'data-position' : 'left'
           'data-type'     : 'vpn'
           'data-direction': 'in'
+          'data-tooltip'  :  lang.ide.PORT_TIP_I
         }),
 
         Canvon.text(100, 95, MC.truncate( m.get("name"), 17 ) ).attr({'class': 'node-label'})

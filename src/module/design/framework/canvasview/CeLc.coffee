@@ -1,5 +1,5 @@
 
-define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager" ], ( CanvasElement, CeInstance, constant, CanvasManager )->
+define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager", 'i18n!nls/lang.js' ], ( CanvasElement, CeInstance, constant, CanvasManager, lang )->
 
   CeLc = ()-> CanvasElement.apply( this, arguments )
 
@@ -85,22 +85,24 @@ define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager" ], ( Can
 
         # left port(blue)
         Canvon.path(MC.canvas.PATH_PORT_DIAMOND).attr({
-          'class' : 'port port-blue port-launchconfig-sg port-launchconfig-sg-left'
+          'class' : 'port port-blue port-launchconfig-sg port-launchconfig-sg-left tooltip'
           'data-name'      : 'launchconfig-sg'
           'data-alias'     : 'launchconfig-sg-left'
           'data-position'  : 'left'
           'data-type'      : 'sg'
           'data-direction' : 'in'
+          'data-tooltip'   : lang.ide.PORT_TIP_D
         }),
 
         # right port(blue)
         Canvon.path(MC.canvas.PATH_PORT_DIAMOND).attr({
-          'class' : 'port port-blue port-launchconfig-sg port-launchconfig-sg-right'
+          'class' : 'port port-blue port-launchconfig-sg port-launchconfig-sg-right tooltip'
           'data-name'      : 'launchconfig-sg'
           'data-alias'     : 'launchconfig-sg-right'
           'data-position'  : 'right'
           'data-type'      : 'sg'
           'data-direction' : 'out'
+          'data-tooltip'   : lang.ide.PORT_TIP_D
         })
 
         # Child number

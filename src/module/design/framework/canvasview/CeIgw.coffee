@@ -1,5 +1,5 @@
 
-define [ "./CanvasElement", "constant" ], ( CanvasElement, constant )->
+define [ "./CanvasElement", "constant","i18n!nls/lang.js" ], ( CanvasElement, constant,lang )->
 
   CeIgw = ()-> CanvasElement.apply( this, arguments )
   CanvasElement.extend( CeIgw, constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway )
@@ -31,11 +31,12 @@ define [ "./CanvasElement", "constant" ], ( CanvasElement, constant )->
       node.append(
         # Port
         Canvon.path(MC.canvas.PATH_PORT_LEFT).attr({
-          'class'      : 'port port-blue port-igw-tgt'
+          'class'      : 'port port-blue port-igw-tgt tooltip'
           'data-name'     : 'igw-tgt'
           'data-position' : 'right'
           'data-type'     : 'sg'
           'data-direction': 'in'
+          'data-tooltip'  : lang.ide.PORT_TIP_C
         })
       )
 

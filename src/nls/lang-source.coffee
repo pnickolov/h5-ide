@@ -14,6 +14,7 @@
     Module Name
       RES     : resource panel
       PROP    : property
+
       CVS     : canvas
       TOOL    : toolbar
       HEAD    : header
@@ -3976,7 +3977,61 @@ module.exports =
       en: "update"
       zh: "更新错误"
 
-    ##### Modal Confirm Stop/Terminate App
+    #  port tooltip
+
+    PORT_TIP_A:
+      en: 'Connect to subnet to make association'
+      zh: ''
+
+    PORT_TIP_B:
+      en: 'Connect to Internet Gateway, Virtual Private Gateway, instance or network interface to create route.'
+      zh: ''
+
+    PORT_TIP_C:
+        en: 'Connect to route table to create route'
+        zh: ''
+
+    PORT_TIP_D:
+        en: 'Connect to instance, auto scaling group, network interface or load balancer to create security group rule.'
+        zh: ''
+
+    PORT_TIP_E:
+      en: 'Connect to network interface to attach.'
+      zh: ''
+
+    PORT_TIP_F:
+      en: 'Connect to instance, auto scaling group or network interface to create security group rule.'
+      zh: ''
+
+    PORT_TIP_G:
+      en: 'Connect to instance to attach'
+      zh: ''
+
+    PORT_TIP_H:
+      en: 'Connect to Customer Gateway to create VPN'
+      zh: ''
+
+    PORT_TIP_I:
+      en: 'Connect to Virtua Private Gateway to create VPN'
+      zh: ''
+
+    PORT_TIP_J:
+      en: 'Connect to instance or launch configuration to register it behind load balancer'
+      zh: ''
+
+    PORT_TIP_K:
+      en: 'Connect to subnet to associate'
+      zh: ''
+
+    PORT_TIP_L:
+      en: 'Connect to load balancer to associate'
+      zh: ''
+
+    PORT_TIP_M:
+      en: 'Connect to route table to assoicate'
+      zh: ''
+
+  ##### Modal Confirm Stop/Terminate App
 
     POP_CONFIRM_STOP_ASG:
       en: "Auto scaling group in this app will be deleted when it is stopped."

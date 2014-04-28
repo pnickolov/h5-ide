@@ -86,22 +86,24 @@ define [ "i18n!nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "De
 
         # left port(blue)
         Canvon.path(MC.canvas.PATH_PORT_DIAMOND).attr({
-          'class'          : 'port port-blue port-instance-sg port-instance-sg-left'
+          'class'          : 'port port-blue port-instance-sg port-instance-sg-left tooltip'
           'data-name'      : 'instance-sg' #for identify port
           'data-alias'     : 'instance-sg-left'
           'data-position'  : 'left' #port position: for calc point of junction
           'data-type'      : 'sg'   #color of line
           'data-direction' : 'in'   #direction
+          'data-tooltip'   : lang.ide.PORT_TIP_D
         }),
 
         # right port(blue)
         Canvon.path(MC.canvas.PATH_PORT_DIAMOND).attr({
-          'class'          : 'port port-blue port-instance-sg port-instance-sg-right'
+          'class'          : 'port port-blue port-instance-sg port-instance-sg-right tooltip'
           'data-name'      : 'instance-sg'
           'data-alias'     : 'instance-sg-right'
           'data-position'  : 'right'
           'data-type'      : 'sg'
           'data-direction' : 'out'
+          'data-tooltip'   : lang.ide.PORT_TIP_D
         })
       )
 
@@ -109,19 +111,21 @@ define [ "i18n!nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "De
         # Show RTB/ENI Port in VPC Mode
         node.append(
           Canvon.path(MC.canvas.PATH_PORT_RIGHT).attr({
-            'class'      : 'port port-green port-instance-attach'
+            'class'      : 'port port-green port-instance-attach tooltip'
             'data-name'     : 'instance-attach'
             'data-position' : 'right'
             'data-type'     : 'attachment'
             'data-direction': 'out'
+            'data-tooltip'  : lang.ide.PORT_TIP_E
           })
 
           Canvon.path(MC.canvas.PATH_PORT_BOTTOM).attr({
-            'class'      : 'port port-blue port-instance-rtb'
+            'class'      : 'port port-blue port-instance-rtb tooltip'
             'data-name'     : 'instance-rtb'
             'data-position' : 'top'
             'data-type'     : 'sg'
             'data-direction': 'in'
+            'data-tooltip'  : lang.ide.PORT_TIP_C
           })
         )
 

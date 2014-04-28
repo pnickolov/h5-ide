@@ -1,5 +1,5 @@
 
-define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, constant, CanvasManager )->
+define [ "./CanvasElement", "constant", "CanvasManager","i18n!nls/lang.js" ], ( CanvasElement, constant, CanvasManager,lang )->
 
   CeElb = ()-> CanvasElement.apply( this, arguments )
   CanvasElement.extend( CeElb, constant.AWS_RESOURCE_TYPE.AWS_ELB )
@@ -52,29 +52,32 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
         node.append(
           # Left
           Canvon.path(MC.canvas.PATH_PORT_RIGHT).attr({
-            'class'      : 'port port-blue port-elb-sg-in'
+            'class'      : 'port port-blue port-elb-sg-in tooltip'
             'data-name'     : 'elb-sg-in'
             'data-position' : 'left'
             'data-type'     : 'sg'
             'data-direction': "in"
+            'data-tooltip'  : lang.ide.PORT_TIP_D
           }),
           # Right gray
           Canvon.path(MC.canvas.PATH_PORT_RIGHT).attr({
-            'class'      : 'port port-gray port-elb-assoc'
+            'class'      : 'port port-gray port-elb-assoc tooltip'
             'data-name'     : 'elb-assoc'
             'data-position' : 'right'
             'data-type'     : 'association'
             'data-direction': 'out'
+            'data-tooltip'  : lang.ide.PORT_TIP_K
           })
         )
 
       node.append(
         Canvon.path(MC.canvas.PATH_PORT_RIGHT).attr({
-          'class'      : 'port port-blue port-elb-sg-out'
+          'class'      : 'port port-blue port-elb-sg-out tooltip'
           'data-name'     : 'elb-sg-out'
           'data-position' : 'right'
           'data-type'     : 'sg'
           'data-direction': 'out'
+          'data-tooltip'  : lang.ide.PORT_TIP_J
         })
       )
 

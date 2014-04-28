@@ -1,5 +1,5 @@
 
-define [ "./CanvasElement", "constant" ], ( CanvasElement, constant )->
+define [ "./CanvasElement", "constant","i18n!nls/lang.js" ], ( CanvasElement, constant,lang )->
 
   CeVgw = ()-> CanvasElement.apply( this, arguments )
   CanvasElement.extend( CeVgw, constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway )
@@ -33,20 +33,22 @@ define [ "./CanvasElement", "constant" ], ( CanvasElement, constant )->
       node.append(
         # Left port
         Canvon.path(MC.canvas.PATH_PORT_RIGHT).attr({
-          'class'          : 'port port-blue port-vgw-tgt'
+          'class'          : 'port port-blue port-vgw-tgt tooltip'
           'data-name'      : 'vgw-tgt'
           'data-position'  : 'left'
           'data-type'      : 'sg'
           'data-direction' : 'in'
+          'data-tooltip'   : lang.ide.PORT_TIP_C
         }),
 
         # Right port
         Canvon.path(MC.canvas.PATH_PORT_RIGHT).attr({
-          'class'          : 'port port-purple port-vgw-vpn'
+          'class'          : 'port port-purple port-vgw-vpn tooltip'
           'data-name'      : 'vgw-vpn'
           'data-position'  : 'right'
           'data-type'      : 'vpn'
           'data-direction' : 'out'
+          'data-tooltip'   : lang.ide.PORT_TIP_H
         })
       )
 

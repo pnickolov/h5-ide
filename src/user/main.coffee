@@ -66,7 +66,7 @@ userRoute = (routes)->
     hashArray = window.location.hash.split('#').pop().split('/')
     pathArray = window.location.pathname.split('/')
     pathArray.shift()
-    console.log pathArray , hashArray
+    #console.log pathArray , hashArray
     # run routes func
     routes[pathArray[0]]?(pathArray, hashArray)
 
@@ -92,9 +92,10 @@ api = (option)->
         success: (res)->
             option.success(res.result[1], res.result[0])
         error: (xhr,status,error)->
-            console.log error
-            option.error(status, -1)
-    console.log 'Sending Ajax Request'
+            #console.log error
+            if status!='abort'
+                option.error(status, -1)
+    #console.log 'Sending Ajax Request'
 
 # register i18n handlebars helper
 Handlebars.registerHelper 'i18n', (str)->
@@ -112,12 +113,12 @@ loadLang = (cb)->
             $("#main-body").html template()
         success: (data)->
             window.langsrc = data
-            console.log 'Success', data
+            #console.log 'Success', data
         error: (error)->
             window.location = "/500"
-            console.log error, "error"
+            #console.log error, "error"
     }).done ->
-        console.log('Loaded!', langsrc)
+        #console.log('Loaded!', langsrc)
         cb()
 window.onhashchange = ->
     init()
@@ -162,7 +163,7 @@ init = ->
                 # check if reset link is valid
                 checkPassKey hashArray[1],(result)->
                     if result
-                        console.log 'Right Verify Code!'
+                        #console.log 'Right Verify Code!'
                         render "#password-template"
                         $('form.box-body').find('input').eq(0).focus()
                         $('#reset-form').on 'submit' , (e)->
@@ -171,11 +172,11 @@ init = ->
                                 $("#reset-password").attr('disabled',true).val langsrc.reset.reset_waiting
                                 #window.location.hash = "#success"
                                 ajaxChangePassword(hashArray, $("#reset-pw").val())
-                                console.log('jump...')
+                                #console.log('jump...')
                             return false
                     else
                         window.location.hash = "expire"
-                        console.log "Error Verify Code!"
+                        #console.log "Error Verify Code!"
             else if hashTarget == "expire"
                 render '#expire-template'
             else if hashTarget == "email"
@@ -192,7 +193,7 @@ init = ->
                     else
                         $("#reset-btn").attr('disabled',true)
                 $('#reset-form').on 'submit', ->
-                    console.log 'sendding....'
+                    #console.log 'sendding....'
                     $('#reset-pw-email').off 'keyup'
                     $("#reset-btn").attr('disabled',true)
                     $("#reset-pw-email").attr('disabled',true)
@@ -202,7 +203,7 @@ init = ->
         'login': (pathArray, hashArray)->
             if checkAllCookie() then window.location = '/'
             deepth = 'login'
-            console.log pathArray, hashArray
+            #console.log pathArray, hashArray
             render "#login-template"
             $user = $("#login-user")
             $password = $("#login-password")
@@ -229,12 +230,12 @@ init = ->
 
         'register': (pathArray, hashArray)->
             deepth = 'register'
-            console.log pathArray, hashArray
+            #console.log pathArray, hashArray
             if hashArray[0] == 'success'
                 render "#success-template"
                 $('#register-get-start').click ->
                     window.location = "/"
-                    console.log('Getting start...')
+                    #console.log('Getting start...')
                 return false
             if checkAllCookie() then window.location = '/'
             render '#register-template'
@@ -305,7 +306,7 @@ init = ->
             ajaxCheckUsername = (username, status,cb)->
                 xhr?.abort()
                 window.clearTimeout(usernameTimeout)
-                console.log('aborted!', usernameTimeout)
+                #console.log('aborted!', usernameTimeout)
                 usernameTimeout = window.setTimeout ->
                     checkUserExist([username, null] , (statusCode)->
                         if !statusCode
@@ -314,7 +315,7 @@ init = ->
                             status.removeClass('error-status').addClass('verification-status').show().text langsrc.register.username_available
                             cb?(1)
                         else if(statusCode == 'error')
-                            console.log 'NetWork Error while checking username'
+                            #console.log 'NetWork Error while checking username'
                             $('.error-msg').eq(0).text(langsrc.service['NETWORK_ERROR']).show()
                             $('#register-btn').attr('disabled',false).val(langsrc.register["register-btn"])
                         else
@@ -322,7 +323,7 @@ init = ->
                             cb?(0)
                     )
                 ,500
-                console.log 'Setup a new validation request'
+                #console.log 'Setup a new validation request'
             ajaxCheckEmail = (email, status, cb)->
                 xhr?.abort()
                 window.clearTimeout(emailTimeout)
@@ -334,7 +335,7 @@ init = ->
                             status.removeClass('error-status').addClass('verification-status').show().text langsrc.register.email_available
                             cb?(1)
                         else if(statusCode == 'error')
-                            console.log 'NetWork Error while checking username'
+                            #console.log 'NetWork Error while checking username'
                             $('.error-msg').eq(0).text(langsrc.service['NETWORK_ERROR']).show()
                             $('#register-btn').attr('disabled',false).val(langsrc.register["register-btn"])
                         else
@@ -342,7 +343,7 @@ init = ->
                             cb?(0)
                     )
                 ,500
-                console.log 'Set up a new validation request'
+                #console.log 'Set up a new validation request'
             resetRegForm = (force)->
                 if force
                     $(".verification-status").removeAttr('style')
@@ -364,7 +365,7 @@ init = ->
                 e.preventDefault()
                 $('.error-msg').removeAttr('style')
                 if $username.next().hasClass('error-status') or $email.next().hasClass('error-status')
-                    console.log "Error Message Exist"
+                    #console.log "Error Message Exist"
                     return false
                 userResult = checkUsername()
                 emailResult = checkEmail()
@@ -372,7 +373,7 @@ init = ->
                 if !(userResult && emailResult && passwordResult)
                     return false
                 $('#register-btn').attr('disabled',true).val(langsrc.register.reginster_waiting)
-                console.log('check user input here.')
+                #console.log('check user input here.')
                 checkUsername(e , (usernameAvl)->
                     if !usernameAvl
                         resetRegForm()
@@ -386,7 +387,7 @@ init = ->
                                 resetRegForm()
                                 return false
                             if (usernameAvl&&emailAvl&&passwordAvl)
-                                console.log('Success!!!!!')
+                                #console.log('Success!!!!!')
                                 ajaxRegister([$username.val(), $password.val(), $email.val()],(statusCode)->
                                     resetRegForm(true)
                                     $("#register-status").show().text langsrc.service['ERROR_CODE_'+statusCode+'_MESSAGE']
@@ -416,7 +417,7 @@ validPassword = ->
 
 # error Message
 showErrorMessage = ->
-    console.log 'showErrorMessage'
+    #console.log 'showErrorMessage'
     $('#reset-pw-email').attr('disabled',false)
     $("#reset-btn").attr('disabled',false).val(window.langsrc.reset.reset_btn)
     $("#reset-status").removeClass('verification-status').addClass("error-msg").show().text(langsrc.reset.reset_error_state)
@@ -444,7 +445,7 @@ checkPassKey = (keyToValid,fn)->
         data: [keyToValid,'reset']
         success: (result, statusCode)->
             if(!statusCode)
-                console.log result
+                #console.log result
                 fn(true)
             else
                 handleErrorCode(statusCode)
@@ -485,7 +486,7 @@ setCredit = (result)->
 
 # ajax register
 ajaxRegister = (params, errorCB)->
-    console.log params
+    #console.log params
     api(
         url: '/account/'
         method: 'register'
@@ -494,7 +495,7 @@ ajaxRegister = (params, errorCB)->
             if !statusCode
                 setCredit(result)
                 window.location.hash = "success"
-                console.log('registered successfully')
+                #console.log('registered successfully')
             else
                 errorCB(statusCode)
         error: (status)->
@@ -511,7 +512,7 @@ ajaxLogin = (params, errorCB)->
             if(!statusCode)
                 setCredit(result)
                 window.location = '/'
-                console.log 'Login Now!'
+                #console.log 'Login Now!'
             else
                 errorCB(statusCode)
         error: (status)->
@@ -528,7 +529,7 @@ sendEmail = (params)->
             data: [params]
             success: (result, statusCode)->
                 if(!statusCode)
-                    console.log(result, statusCode)
+                    #console.log(result, statusCode)
                     window.location.hash = 'email'
                     true
 
@@ -547,10 +548,10 @@ checkUserExist = (params,fn)->
         method: 'check_repeat'
         data: params
         success: (result,statusCode)->
-            console.log result , statusCode
+            #console.log result , statusCode
             fn(statusCode)
         error: (status)->
-            console.log 'Net Work Error'
+            #console.log 'Net Work Error'
             fn('error')
     })
 
@@ -561,14 +562,14 @@ ajaxChangePassword = (hashArray,newPw)->
         method: "update_password"
         data: [hashArray[1],newPw]
         success: (result, statusCode)->
-            console.log result , statusCode
+            #console.log result , statusCode
             if(!statusCode)
                 window.location.hash = 'success'
-                console.log 'Password Updated Successfully'
+                #console.log 'Password Updated Successfully'
             else
                 handleErrorCode(statusCode)
         error: (status)->
             handleNetError(status)
-    console.log 'Updating Password...'
+    #console.log 'Updating Password...'
 
 loadLang(init)

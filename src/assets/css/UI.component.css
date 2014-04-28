@@ -1460,6 +1460,7 @@ textarea {
 .dl-horizontal dd {
 	margin-left: 130px;
 	color: #666;
+    min-height: 20px;
 }
 
 .modal-body .dl-horizontal dd {

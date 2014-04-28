@@ -495,9 +495,12 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
 
   }, {
 
-    allObjects : ()->
-      # console.warn "ResourceModel.allObjects() is deprecated. Please use this.getAllObjects(awsType) instead."
-      Design.instance().classCacheForCid( this.prototype.classId ).slice(0)
+    allObjects : ( design )->
+      d = Design.instance()
+      if design and design.prototype is d.prototype
+        d = design
+
+      d.classCacheForCid( this.prototype.classId ).slice(0)
 
     deserialize : ()->
       console.error "Class '#{@.prototype.type}' doesn't implement deserialize"

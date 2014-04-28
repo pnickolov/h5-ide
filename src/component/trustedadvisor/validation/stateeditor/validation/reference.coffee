@@ -82,7 +82,7 @@ define [ 'constant', 'MC', 'i18n!nls/lang.js' ], ( CONST, MC, lang ) ->
             if comp
                 refName = "#{comp.serverGroupName or comp.name}.#{ref.attr}"
             else if __isUid ref.uid
-                refName = "unknown.#{r.attr}"
+                refName = "unknown.#{ref.attr}"
             else
                 refName = ref.ref
 

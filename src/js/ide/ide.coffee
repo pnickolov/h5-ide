@@ -122,7 +122,7 @@ define [ 'MC', 'event', 'handlebars'
 		relogin = () ->
 			console.log 'relogin'
 			ide_event.trigger ide_event.SWITCH_MAIN
-			require [ 'component/session/main' ], ( session_main ) -> session_main.loadModule()
+			require [ 'component/session/SessionDialog' ], ( SessionDialog )-> new SessionDialog()
 
 		status = () ->
 			websocket.status false, ()-> view.showDisconnected()

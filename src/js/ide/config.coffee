@@ -86,6 +86,7 @@ require.config {
 		'sprintf'            : 'vender/sprintf/sprintf'
 		'Meteor'             : 'vender/meteor/meteor'
 		'crypto'             : 'vender/crypto-js/cryptobundle'
+		'q'                  : 'vender/q/q'
 
 		#############################################
 		# MC                        # Merge in deploy
@@ -147,7 +148,6 @@ require.config {
 		'base_model'             : 'model/base_model'
 
 		'account_model'          : 'model/account_model'
-		'session_model'          : 'model/session_model'
 		'favorite_model'         : 'model/favorite_model'
 		'app_model'              : 'model/app_model'
 		'stack_model'            : 'model/stack_model'
@@ -177,7 +177,6 @@ require.config {
 
 		#forge
 		'favorite_service'       : 'service/favorite/favorite_service'
-		'session_service'        : 'service/session/session_service'
 		'account_service'        : 'service/account/account_service'
 		'app_service'            : 'service/app/app_service'
 		'stack_service'          : 'service/stack/stack_service'
@@ -211,13 +210,18 @@ require.config {
 		'cloudwatch_service'     : 'service/aws/cloudwatch/cloudwatch/cloudwatch_service'
 		'sns_service'            : 'service/aws/sns/sns/sns_service'
 
-		### env:dev:end ###
-
 		#############################################
 		# component                 # Merge in deploy
 		#############################################
 		'validation'         : 'component/trustedadvisor/validation'
 
+
+		#############################################
+		# api                       # Merge in deploy
+		#############################################
+		'ApiRequest'         : 'request/ApiRequest'
+
+		### env:dev:end ###
 
 
 		#############################################
@@ -323,6 +327,7 @@ require.config {
 			"Meteor"
 			"canvon"
 			"crypto"
+			"q"
 		]
 		"lib/lib" : [
 			"MC"
@@ -362,10 +367,10 @@ require.config {
 			"jqpagination"
 			'jquerysort'
 		]
+		"ApiRequest" : []
 		"model/model" : [
 			'base_model'
 			'account_model'
-			'session_model'
 			'favorite_model'
 			'app_model'
 			'stack_model'
@@ -387,7 +392,6 @@ require.config {
 			'instance_model'
 			'result_vo'
 			'favorite_service'
-			'session_service'
 			'account_service'
 			'app_service'
 			'stack_service'
@@ -422,6 +426,7 @@ require.config {
 		"module/design/framework/DesignBundle" : [ "Design", "CanvasManager" ]
 		"validation" : []
 		"component/stateeditor/stateeditor" : []
+		"component/session/SessionDialog" : []
 		"property" : []
 
 	bundleExcludes : # This is a none requirejs option, but it's used by compiler to exclude some of the source.
@@ -458,7 +463,7 @@ require ['./js/ide/ide' ], ( ide ) ->
 		requirejs.onError = ()-> # Just use to suppress subsequent error
 		console.error "[RequireJS timeout] Reloading, error modules :", err.requireModules
 		window.location.reload()
-	else if err.requireType is "scripterror"
+	else
 		console.error "[RequireJS Error]", err
 		# requirejs.onError = ()-> # Just use to suppress subsequent error
 		# console.error "[Script Error] Redirecting to 500, error modules :", err.requireModules

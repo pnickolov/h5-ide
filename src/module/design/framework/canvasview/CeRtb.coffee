@@ -2,7 +2,7 @@
 define [ "./CanvasElement", "constant", "CanvasManager","i18n!nls/lang.js"], ( CanvasElement, constant, CanvasManager, lang )->
 
   CeRtb = ()-> CanvasElement.apply( this, arguments )
-  CanvasElement.extend( CeRtb, constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable )
+  CanvasElement.extend( CeRtb, constant.RESTYPE.RT )
   ChildElementProto = CeRtb.prototype
 
 

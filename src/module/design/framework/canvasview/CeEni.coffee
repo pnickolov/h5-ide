@@ -2,7 +2,7 @@
 define [ "./CanvasElement", "constant", "CanvasManager","i18n!nls/lang.js" ], ( CanvasElement, constant, CanvasManager,lang )->
 
   CeEni = ()-> CanvasElement.apply( this, arguments )
-  CanvasElement.extend( CeEni, constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface )
+  CanvasElement.extend( CeEni, constant.RESTYPE.ENI )
   ChildElementProto = CeEni.prototype
 
 

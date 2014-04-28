@@ -2,7 +2,7 @@
 define [ "./CanvasElement", "constant", "CanvasManager","i18n!nls/lang.js" ], ( CanvasElement, constant, CanvasManager,lang )->
 
   CeSubnet = ()-> CanvasElement.apply( this, arguments )
-  CanvasElement.extend( CeSubnet, constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet )
+  CanvasElement.extend( CeSubnet, constant.RESTYPE.SUBNET )
   ChildElementProto = CeSubnet.prototype
 
 

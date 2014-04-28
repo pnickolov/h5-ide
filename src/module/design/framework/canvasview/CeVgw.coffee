@@ -2,7 +2,7 @@
 define [ "./CanvasElement", "constant","i18n!nls/lang.js" ], ( CanvasElement, constant,lang )->
 
   CeVgw = ()-> CanvasElement.apply( this, arguments )
-  CanvasElement.extend( CeVgw, constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway )
+  CanvasElement.extend( CeVgw, constant.RESTYPE.VGW )
   ChildElementProto = CeVgw.prototype
 
 

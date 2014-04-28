@@ -10,7 +10,7 @@ define [ "constant", "../ConnectionModel", "i18n!nls/lang.js" ], ( constant, Con
       index : 1
 
     initialize : ( attributes )->
-      ami = @getTarget constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+      ami = @getTarget constant.RESTYPE.INSTANCE
 
       # Calc the new index of this EniAttachment.
       if attributes and attributes.index
@@ -22,7 +22,7 @@ define [ "constant", "../ConnectionModel", "i18n!nls/lang.js" ], ( constant, Con
       null
 
     ensureAttachmentOrder : ()->
-      ami = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance )
+      ami = @getTarget( constant.RESTYPE.INSTANCE )
       attachments = ami.connections( "EniAttachment" )
 
       for attach in attachments
@@ -49,8 +49,8 @@ define [ "constant", "../ConnectionModel", "i18n!nls/lang.js" ], ( constant, Con
     remove : ()->
       ConnectionModel.prototype.remove.apply this, arguments
 
-      ami = @getTarget constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
-      eni = @getTarget constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+      ami = @getTarget constant.RESTYPE.INSTANCE
+      eni = @getTarget constant.RESTYPE.ENI
 
       if not ami.isRemoved()
         # When this EniAttachment is removed, we need to update all the Eni's name.
@@ -61,31 +61,31 @@ define [ "constant", "../ConnectionModel", "i18n!nls/lang.js" ], ( constant, Con
           attach = attachments[ startIdx - 1 ]
           if attach.attributes.index isnt startIdx
             attach.attributes.index = startIdx
-            attach.getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface ).updateName()
+            attach.getTarget( constant.RESTYPE.ENI ).updateName()
           ++startIdx
 
       if not ami.isRemoved() and not eni.isRemoved()
         # If both resource still exists, it means the line is delected by user
         # Then we should update try to connect sgline between eni and ami
-        SgModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup )
+        SgModel = Design.modelClassForType( constant.RESTYPE.SG )
         SgModel.tryDrawLine( ami, eni )
       null
 
     portDefs :
       port1 :
         name : "instance-attach"
-        type : constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+        type : constant.RESTYPE.INSTANCE
 
       port2 :
         name : "eni-attach"
-        type : constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+        type : constant.RESTYPE.ENI
 
   }, {
     isConnectable : ( p1Comp, p2Comp )->
       p1p = p1Comp.parent()
       p2p = p2Comp.parent()
 
-      if p1p.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
+      if p1p.type is constant.RESTYPE.SUBNET
         p1p = p1p.parent()
         p2p = p2p.parent()
 
@@ -93,7 +93,7 @@ define [ "constant", "../ConnectionModel", "i18n!nls/lang.js" ], ( constant, Con
       if p1p isnt p2p then return false
 
       # If instance has automaticAssignPublicIp. Then ask the user to comfirm
-      if p1Comp.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+      if p1Comp.type is constant.RESTYPE.INSTANCE
         instance = p1Comp
         eni      = p2Comp
       else

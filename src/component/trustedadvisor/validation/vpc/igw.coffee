@@ -6,7 +6,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo' ], ( constant, MC,
         igwId = MC.aws.aws.genResRef(uid, 'resource.InternetGatewayId')
 
         isConnectRTB = _.some components, ( component ) ->
-            if component.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
+            if component.type is constant.RESTYPE.RT
                 _.some component.resource.RouteSet, ( rt ) ->
                     if rt.GatewayId is igwId
                         RTB = component

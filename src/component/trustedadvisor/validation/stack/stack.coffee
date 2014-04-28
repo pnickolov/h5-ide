@@ -18,7 +18,7 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'stack_service', 'ami_se
 
 	generateComponentForDefaultVPC = () ->
 
-		resType = constant.AWS_RESOURCE_TYPE
+		resType = constant.RESTYPE
 
 		originComps = MC.canvas_data.component
 		currentComps = _.extend(originComps, {})
@@ -30,7 +30,7 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'stack_service', 'ami_se
 		_.each azObjAry, (azObj) ->
 			azName = azObj.zoneName
 			resultObj = {}
-			subnetObj = Design.modelClassForType(resType.AWS_EC2_AvailabilityZone).getSubnetOfDefaultVPC(azName)
+			subnetObj = Design.modelClassForType(resType.AZ).getSubnetOfDefaultVPC(azName)
 			subnetId = null
 			if subnetObj
 				subnetId = subnetObj.subnetId
@@ -44,27 +44,27 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'stack_service', 'ami_se
 			compType = compObj.type
 			compUID = compObj.uid
 
-			if compType is resType.AWS_EC2_Instance
+			if compType is resType.INSTANCE
 				instanceAZName = compObj.resource.Placement.AvailabilityZone
 				currentComps[compUID].resource.VpcId = defaultVPCId
 				currentComps[compUID].resource.SubnetId = azSubnetIdMap[instanceAZName]
 
-			else if compType is resType.AWS_VPC_NetworkInterface
+			else if compType is resType.ENI
 				eniAZName = compObj.resource.AvailabilityZone
 				currentComps[compUID].resource.VpcId = defaultVPCId
 				currentComps[compUID].resource.SubnetId = azSubnetIdMap[eniAZName]
 
-			else if compType is resType.AWS_ELB
+			else if compType is resType.ELB
 				currentComps[compUID].resource.VpcId = defaultVPCId
 				azNameAry = getAZAryForDefaultVPC(compUID)
 				subnetIdAry = _.map azNameAry, (azName) ->
 					return azSubnetIdMap[azName]
 				currentComps[compUID].resource.Subnets = subnetIdAry
 
-			else if compType is resType.AWS_EC2_SecurityGroup
+			else if compType is resType.SG
 				currentComps[compUID].resource.VpcId = defaultVPCId
 
-			else if compType is resType.AWS_AutoScaling_Group
+			else if compType is resType.ASG
 				asgAZAry = compObj.resource.AvailabilityZones
 				asgSubnetIdAry = _.map asgAZAry, (azName) ->
 					return azSubnetIdMap[azName]
@@ -186,8 +186,8 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'stack_service', 'ami_se
 			amiAry = []
 			instanceAMIMap = {}
 			_.each MC.canvas_data.component, (compObj) ->
-				if compObj.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance or
-					compObj.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+				if compObj.type is constant.RESTYPE.INSTANCE or
+					compObj.type is constant.RESTYPE.LC
 						imageId = compObj.resource.ImageId
 						if imageId
 							if not instanceAMIMap[imageId]
@@ -232,7 +232,7 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'stack_service', 'ami_se
 
 										infoObjType = 'Instance'
 										infoTagType = 'instance'
-										if instanceType is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+										if instanceType is constant.RESTYPE.LC
 											infoObjType = 'Launch Configuration'
 											infoTagType = 'lc'
 										tipInfo = sprintf lang.ide.TA_MSG_ERROR_STACK_HAVE_NOT_EXIST_AMI, infoObjType, infoTagType, instanceName, amiId
@@ -262,7 +262,7 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'stack_service', 'ami_se
 
 										infoObjType = 'Instance'
 										infoTagType = 'instance'
-										if instanceType is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+										if instanceType is constant.RESTYPE.LC
 											infoObjType = 'Launch Configuration'
 											infoTagType = 'lc'
 										tipInfo = sprintf lang.ide.TA_MSG_ERROR_STACK_HAVE_NOT_AUTHED_AMI, infoObjType, infoTagType, instanceName, amiId
@@ -294,8 +294,8 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'stack_service', 'ami_se
 		amiAry = []
 		instanceAMIMap = {}
 		_.each MC.canvas_data.component, (compObj) ->
-			if compObj.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance or
-				compObj.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+			if compObj.type is constant.RESTYPE.INSTANCE or
+				compObj.type is constant.RESTYPE.LC
 					imageId = compObj.resource.ImageId
 					if imageId
 						if not instanceAMIMap[imageId]
@@ -323,7 +323,7 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'stack_service', 'ami_se
 
 					infoObjType = 'Instance'
 					infoTagType = 'instance'
-					if instanceType is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+					if instanceType is constant.RESTYPE.LC
 						infoObjType = 'Launch Configuration'
 						infoTagType = 'lc'
 					tipInfo = sprintf lang.ide.TA_MSG_ERROR_STACK_HAVE_NOT_EXIST_AMI, infoObjType, infoTagType, instanceName, amiId

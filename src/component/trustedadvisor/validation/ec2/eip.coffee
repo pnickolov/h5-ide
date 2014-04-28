@@ -7,7 +7,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo' ], ( constant, MC,
             [MC.canvas.PLATFORM_TYPE.EC2_CLASSIC, MC.canvas.PLATFORM_TYPE.DEFAULT_VPC])
                 return null
 
-        if not _hasType(constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP) or _hasType(constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway)
+        if not _hasType(constant.RESTYPE.EIP) or _hasType(constant.RESTYPE.IGW)
             return null
 
         tipInfo = lang.ide.TA_MSG_ERROR_HAS_EIP_NOT_HAS_IGW

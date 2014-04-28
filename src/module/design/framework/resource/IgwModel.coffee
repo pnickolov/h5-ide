@@ -10,7 +10,7 @@ define [ "../ComplexResModel", "./VpcModel", "Design", "constant", "i18n!nls/lan
       height   : 8
       name     : "Internet-gateway"
 
-    type : constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway
+    type : constant.RESTYPE.IGW
 
     initialize : ()->
       @draw(true)
@@ -18,15 +18,15 @@ define [ "../ComplexResModel", "./VpcModel", "Design", "constant", "i18n!nls/lan
 
     isRemovable : ()->
       # Deleting IGW when ELB/EIP in VPC, should show error
-      ElbModel   = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_ELB )
+      ElbModel   = Design.modelClassForType( constant.RESTYPE.ELB )
       cannotDel  = ElbModel.allObjects().some ( elb )-> not elb.get("internal")
 
       if not cannotDel
-        EniModel   = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface )
+        EniModel   = Design.modelClassForType( constant.RESTYPE.ENI )
         cannotDel  = EniModel.allObjects().some ( eni )-> eni.hasEip() or eni.get("assoPublicIp")
 
       if not cannotDel
-        LcModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration )
+        LcModel = Design.modelClassForType( constant.RESTYPE.LC )
         cannotDel = LcModel.allObjects().some ( lc )-> lc.get("publicIp")
 
       if cannotDel
@@ -54,9 +54,8 @@ define [ "../ComplexResModel", "./VpcModel", "Design", "constant", "i18n!nls/lan
       if Model.allObjects().length > 0 then return
 
       notification 'info', lang.ide.CVS_CFM_ADD_IGW_MSG
-      resource_type = constant.AWS_RESOURCE_TYPE
 
-      vpc = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC ).theVPC()
+      vpc = Design.modelClassForType( constant.RESTYPE.VPC ).theVPC()
 
       igwW = Model.prototype.defaults.width
       igwH = Model.prototype.defaults.height
@@ -71,7 +70,7 @@ define [ "../ComplexResModel", "./VpcModel", "Design", "constant", "i18n!nls/lan
       })
       null
 
-    handleTypes : constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway
+    handleTypes : constant.RESTYPE.IGW
 
     deserialize : ( data, layout_data, resolve )->
 

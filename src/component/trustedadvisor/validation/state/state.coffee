@@ -41,18 +41,18 @@ define [ 'constant', 'MC', '../result_vo', 'Design', '../../helper' ], ( CONST, 
 
     __getEniByInstance = ( instance ) ->
         _.filter MC.canvas_data.component, ( component ) ->
-            if component.type is CONST.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+            if component.type is CONST.RESTYPE.ENI
                 if MC.extractID( component.resource.Attachment.InstanceId ) is instance.uid
                     true
 
     __getSg = ( component ) ->
         sgs = []
         # LC
-        if component.type is CONST.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+        if component.type is CONST.RESTYPE.LC
             for sgId in component.resource.SecurityGroups
                 sgs.push __getComp MC.extractID sgId
         # instance
-        else if component.type is CONST.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+        else if component.type is CONST.RESTYPE.INSTANCE
             enis = __getEniByInstance component
 
             for eni in enis
@@ -95,10 +95,10 @@ define [ 'constant', 'MC', '../result_vo', 'Design', '../../helper' ], ( CONST, 
             lc = component.get( 'originalAsg' ).get 'lc'
             lc.get( 'publicIp' ) is true
         # LC
-        else if component.type is CONST.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+        else if component.type is CONST.RESTYPE.LC
             component.get( 'publicIp' ) is true
         # instance
-        else if component.type is CONST.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+        else if component.type is CONST.RESTYPE.INSTANCE
 
             enis = component.connectionTargets('EniAttachment')
             enis.push component.getEmbedEni()
@@ -118,7 +118,7 @@ define [ 'constant', 'MC', '../result_vo', 'Design', '../../helper' ], ( CONST, 
         rtb = __getSubnetRtb( component )
 
         rtbConn = rtb.connectionTargets('RTB_Route')
-        igw = _.where rtbConn, type: CONST.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway
+        igw = _.where rtbConn, type: CONST.RESTYPE.IGW
         igw.length > 0
 
     __natOut = ( component ) ->
@@ -214,7 +214,7 @@ define [ 'constant', 'MC', '../result_vo', 'Design', '../../helper' ], ( CONST, 
     ### Public ###
 
     isHasIgw = ( uid ) ->
-        if __hasType CONST.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway
+        if __hasType CONST.RESTYPE.IGW
             return null
 
         Helper.message.error uid, i18n.TA_MSG_ERROR_NO_CGW
@@ -240,7 +240,7 @@ define [ 'constant', 'MC', '../result_vo', 'Design', '../../helper' ], ( CONST, 
     isConnectedOut = ( uid ) ->
         result = []
         component = __getComp uid
-        if component.type is CONST.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+        if component.type is CONST.RESTYPE.LC
             return __isLcConnectedOut( uid )
         else
             return __isInstanceConnectedOut( uid )

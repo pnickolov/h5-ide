@@ -26,7 +26,7 @@ define [ '../base/main', './model', './view', 'constant', 'event' ], ( PropertyM
 
         ideEvents : ideEvents
 
-        handleTypes : "Stack:" + constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone
+        handleTypes : "Stack:" + constant.RESTYPE.AZ
 
         setupStack : ()->
             me = this
@@ -37,7 +37,7 @@ define [ '../base/main', './model', './view', 'constant', 'event' ], ( PropertyM
                 me.model.setName newZone
 
                 # Update Resource Panel
-                res_type = constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone
+                res_type = constant.RESTYPE.AZ
                 filter   = ( data ) -> return data.option.name is name
 
                 name = oldZone

@@ -12,7 +12,7 @@ define [ "../ComplexResModel", "Design", "constant" ], ( ComplexResModel, Design
 
     newNameTmpl : "customer-gateway-"
 
-    type : constant.AWS_RESOURCE_TYPE.AWS_VPC_CustomerGateway
+    type : constant.RESTYPE.CGW
 
     isDynamic : ()-> !!@get("bgpAsn")
 
@@ -31,7 +31,7 @@ define [ "../ComplexResModel", "Design", "constant" ], ( ComplexResModel, Design
 
   }, {
 
-    handleTypes : constant.AWS_RESOURCE_TYPE.AWS_VPC_CustomerGateway
+    handleTypes : constant.RESTYPE.CGW
 
     deserialize : ( data, layout_data, resolve )->
 

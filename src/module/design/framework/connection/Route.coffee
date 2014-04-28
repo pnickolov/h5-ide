@@ -11,7 +11,7 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
       routes   : []
 
     initialize : ( attr, option )->
-      igw = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway )
+      igw = @getTarget( constant.RESTYPE.IGW )
 
       if igw and not attr.routes
         # By default add an "0.0.0.0/0" route for IGW
@@ -41,12 +41,12 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
       true
 
     setPropagate : ( propagate )->
-      console.assert( (@port1Comp().type is constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway) or (@port2Comp().type is constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway), "Propagation can only be set to VPN<==>RTB connection." )
+      console.assert( (@port1Comp().type is constant.RESTYPE.VGW) or (@port2Comp().type is constant.RESTYPE.VGW), "Propagation can only be set to VPN<==>RTB connection." )
 
       @set "propagate", propagate
 
     serialize : ( components )->
-      rtb = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable )
+      rtb = @getTarget( constant.RESTYPE.RT )
       otherTarget = @getOtherTarget( rtb )
 
       rtb_data = components[ rtb.id ]
@@ -61,19 +61,19 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
         GatewayId : ""
       }
 
-      TYPE = constant.AWS_RESOURCE_TYPE
+      TYPE = constant.RESTYPE
 
       switch otherTarget.type
-        when TYPE.AWS_VPC_NetworkInterface
+        when TYPE.ENI
           r_temp.NetworkInterfaceId = otherTarget.createRef( "NetworkInterfaceId" )
 
-        when TYPE.AWS_VPC_InternetGateway
+        when TYPE.IGW
           r_temp.GatewayId = otherTarget.createRef( "InternetGatewayId" )
 
-        when TYPE.AWS_VPC_VPNGateway
+        when TYPE.VGW
           r_temp.GatewayId = otherTarget.createRef( "VpnGatewayId" )
 
-        when TYPE.AWS_EC2_Instance
+        when TYPE.INSTANCE
           r_temp.NetworkInterfaceId = otherTarget.getEmbedEni().createRef( "NetworkInterfaceId" )
 
       for r in @get("routes")
@@ -86,34 +86,34 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
       {
         port1 :
           name : "igw-tgt"
-          type : constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway
+          type : constant.RESTYPE.IGW
         port2 :
           name : "rtb-tgt"
-          type : constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
+          type : constant.RESTYPE.RT
       }
       {
         port1 :
           name : "instance-rtb"
-          type : constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+          type : constant.RESTYPE.INSTANCE
         port2 :
           name : "rtb-tgt"
-          type : constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
+          type : constant.RESTYPE.RT
       }
       {
         port1 :
           name : "eni-rtb"
-          type : constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+          type : constant.RESTYPE.ENI
         port2 :
           name : "rtb-tgt"
-          type : constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
+          type : constant.RESTYPE.RT
       }
       {
         port1 :
           name : "vgw-tgt"
-          type : constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway
+          type : constant.RESTYPE.VGW
         port2 :
           name : "rtb-tgt"
-          type : constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
+          type : constant.RESTYPE.RT
       }
     ]
 

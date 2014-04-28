@@ -3,7 +3,7 @@ define [ "constant", "../GroupModel", "./DhcpModel" ], ( constant, GroupModel, D
 
   Model = GroupModel.extend {
 
-    type : constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC
+    type : constant.RESTYPE.VPC
 
     defaults :
       dnsSupport   : true
@@ -32,13 +32,13 @@ define [ "constant", "../GroupModel", "./DhcpModel" ], ( constant, GroupModel, D
 
       # Update all instance's tenancy
       if tenancy is "dedicated"
-        for instance in Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance ).allObjects()
+        for instance in Design.modelClassForType( constant.RESTYPE.INSTANCE ).allObjects()
           instance.setTenancy( tenancy )
 
       null
 
     setCidr : ( cidr )->
-      SubnetModel = Design.modelClassForType(constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet)
+      SubnetModel = Design.modelClassForType(constant.RESTYPE.SUBNET)
 
       subnets = SubnetModel.allObjects()
       shouldUpdateSubnetCidr = false
@@ -62,7 +62,7 @@ define [ "constant", "../GroupModel", "./DhcpModel" ], ( constant, GroupModel, D
 
     generateSubnetCidr : ( newCidr, subnetCidrAry )->
 
-      SubnetModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet )
+      SubnetModel = Design.modelClassForType( constant.RESTYPE.SUBNET )
 
       subnets = SubnetModel.allObjects()
 
@@ -102,7 +102,7 @@ define [ "constant", "../GroupModel", "./DhcpModel" ], ( constant, GroupModel, D
 
   }, {
 
-    handleTypes  : constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC
+    handleTypes  : constant.RESTYPE.VPC
     resolveFirst : true
 
     # Returns current VPC in this application.

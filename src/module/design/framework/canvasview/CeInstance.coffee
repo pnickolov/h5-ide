@@ -2,7 +2,7 @@
 define [ "i18n!nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "Design" ], ( lang, CanvasElement, constant, CanvasManager, Design )->
 
   CeInstance = ()-> CanvasElement.apply( this, arguments )
-  CanvasElement.extend( CeInstance, constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance )
+  CanvasElement.extend( CeInstance, constant.RESTYPE.INSTANCE )
   ChildElementProto = CeInstance.prototype
 
 
@@ -276,7 +276,7 @@ define [ "i18n!nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "De
             id         : volume.volumeId
           }
         else
-          if @type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+          if @type is constant.RESTYPE.LC
             #in asg,volume data maybe delay
             vl.push {
               name       : v.deviceName
@@ -309,13 +309,13 @@ define [ "i18n!nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "De
       # # # Quick Hack # # #
       Do not allow adding volume to existing LC in appUpdate
     ###
-    if Design.instance().modeIsAppEdit() and @model.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration and @model.get("appId")
+    if Design.instance().modeIsAppEdit() and @model.type is constant.RESTYPE.LC and @model.get("appId")
       notification "error", lang.ide.NOTIFY_MSG_WARN_OPERATE_NOT_SUPPORT_YET
       return false
 
     attribute = $.extend {}, attribute
     attribute.owner = @model
-    VolumeModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume )
+    VolumeModel = Design.modelClassForType( constant.RESTYPE.VOL )
     v = new VolumeModel( attribute )
     if v.id
       return {

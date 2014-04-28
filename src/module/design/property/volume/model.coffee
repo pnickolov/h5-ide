@@ -60,7 +60,7 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
 
                 lc = Design.instance().component( lcUid )
 
-                volumeModel = Design.modelClassForType constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume
+                volumeModel = Design.modelClassForType constant.RESTYPE.VOL
                 allVolume = volumeModel and volumeModel.allObjects() or []
 
                 for v in allVolume
@@ -106,7 +106,7 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
 
                 lc = Design.instance().component( lcUid )
 
-                volumeModel = Design.modelClassForType constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume
+                volumeModel = Design.modelClassForType constant.RESTYPE.VOL
                 allVolume = volumeModel and volumeModel.allObjects() or []
 
                 for v in allVolume
@@ -154,7 +154,7 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
 
             volume = Design.instance().component( uid )
 
-            volumeModel = Design.modelClassForType constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume
+            volumeModel = Design.modelClassForType constant.RESTYPE.VOL
             allVolume = volumeModel and volumeModel.allObjects() or []
 
             if not volume

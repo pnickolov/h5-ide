@@ -80,8 +80,8 @@ define [ 'event', 'constant' ], ( ide_event, constant ) ->
             #when add resource
             Design.on Design.EVENT.AddResource, ( comp )->
 
-                res_type = constant.AWS_RESOURCE_TYPE
-                if comp and comp.type in [res_type.AWS_EC2_AvailabilityZone, res_type.AWS_VPC_InternetGateway, res_type.AWS_VPC_VPNGateway]
+                res_type = constant.RESTYPE
+                if comp and comp.type in [res_type.AZ, res_type.IGW, res_type.VGW]
                     name   = comp.get("name")
                     filter = ( data ) -> data and data.option and data.option.name is name
                     view.disableItem comp.type, filter
@@ -93,8 +93,8 @@ define [ 'event', 'constant' ], ( ide_event, constant ) ->
             #when remove resource
             Design.on Design.EVENT.RemoveResource, ( comp )->
 
-                res_type = constant.AWS_RESOURCE_TYPE
-                if comp and comp.type in [res_type.AWS_EC2_AvailabilityZone, res_type.AWS_VPC_InternetGateway, res_type.AWS_VPC_VPNGateway]
+                res_type = constant.RESTYPE
+                if comp and comp.type in [res_type.AZ, res_type.IGW, res_type.VGW]
                     name   = comp.get("name")
                     filter = ( data ) -> data and data.option and data.option.name is name
                     view.enableItem comp.type, filter

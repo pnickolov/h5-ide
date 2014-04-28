@@ -32,7 +32,7 @@ define ['../base/model', 'constant', "Design" ], ( PropertyModel, constant, Desi
         opsEnable : agentData.enabled
       }
 
-      vpc = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC ).theVPC()
+      vpc = Design.modelClassForType( constant.RESTYPE.VPC ).theVPC()
       if vpc then @set "vpcid", vpc.get("appId")
 
       @getNetworkACL()
@@ -51,7 +51,7 @@ define ['../base/model', 'constant', "Design" ], ( PropertyModel, constant, Desi
 
     addSubscription : ( data ) ->
 
-      SubscriptionModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_SNS_Subscription )
+      SubscriptionModel = Design.modelClassForType( constant.RESTYPE.SUBSCRIPTION )
 
       subs = @get("subscription")
 
@@ -85,8 +85,8 @@ define ['../base/model', 'constant', "Design" ], ( PropertyModel, constant, Desi
 
     getSubscription : () ->
 
-      SubscriptionModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_SNS_Subscription )
-      TopicModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic )
+      SubscriptionModel = Design.modelClassForType( constant.RESTYPE.SUBSCRIPTION )
+      TopicModel = Design.modelClassForType( constant.RESTYPE.TOPIC )
 
 
 
@@ -106,7 +106,7 @@ define ['../base/model', 'constant', "Design" ], ( PropertyModel, constant, Desi
 
     getSubState : () ->
 
-      TopicModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic )
+      TopicModel = Design.modelClassForType( constant.RESTYPE.TOPIC )
       topic = TopicModel.allObjects()[0]
       if topic
         topic_arn = topic.get("appId")
@@ -125,7 +125,7 @@ define ['../base/model', 'constant', "Design" ], ( PropertyModel, constant, Desi
 
     getAppSubscription : () ->
 
-      TopicModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic )
+      TopicModel = Design.modelClassForType( constant.RESTYPE.TOPIC )
       topic = TopicModel.allObjects()[0]
       if topic
         topic_arn = topic.get("appId")
@@ -151,7 +151,7 @@ define ['../base/model', 'constant', "Design" ], ( PropertyModel, constant, Desi
       @set 'subscription', subscription
 
     createAcl : ()->
-      ACLModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl )
+      ACLModel = Design.modelClassForType( constant.RESTYPE.ACL )
       (new ACLModel()).id
 
     getNetworkACL : ()->
@@ -159,7 +159,7 @@ define ['../base/model', 'constant', "Design" ], ( PropertyModel, constant, Desi
       if not Design.instance().typeIsVpc()
         return
 
-      ACLModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl )
+      ACLModel = Design.modelClassForType( constant.RESTYPE.ACL )
 
       networkAcls = []
       defaultACL  = null

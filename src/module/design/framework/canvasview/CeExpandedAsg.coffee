@@ -3,7 +3,7 @@ define [ "./CanvasElement", "constant", "CanvasManager", 'i18n!nls/lang.js' ], (
 
   CeExpandedAsg = ()->
     CanvasElement.apply( this, arguments )
-    this.type = constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+    this.type = constant.RESTYPE.ASG
     null
 
   CanvasElement.extend( CeExpandedAsg, "ExpandedAsg" )

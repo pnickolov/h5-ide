@@ -79,10 +79,10 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
       delete attributes.groupUId
 
     if parent
-      if parent.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+      if parent.type is constant.RESTYPE.ASG
         attributes.x = parent.x() + 2
         attributes.y = parent.y() + 3
-        type = constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+        type = constant.RESTYPE.LC
       else if parent.type is "ExpandedAsg"
         return false
 
@@ -155,7 +155,7 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
       return lineArray
 
   $canvas.hasVPC = ()->
-    !!Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC ).theVPC()
+    !!Design.modelClassForType( constant.RESTYPE.VPC ).theVPC()
 
   # CanvasEvent is used to deal with the event that will trigger by MC.canvas.js
   CanvasEvent = {
@@ -184,24 +184,24 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
       null
 
     CANVAS_PLACE_NOT_MATCH : ( param )->
-      res_type = constant.AWS_RESOURCE_TYPE
+      res_type = constant.RESTYPE
       l = lang.ide
 
       switch param.type
-        when res_type.AWS_EBS_Volume  then info = l.CVS_MSG_WARN_NOTMATCH_VOLUME
-        when res_type.AWS_VPC_Subnet  then info = l.CVS_MSG_WARN_NOTMATCH_SUBNET
+        when res_type.VOL     then info = l.CVS_MSG_WARN_NOTMATCH_VOLUME
+        when res_type.SUBNET  then info = l.CVS_MSG_WARN_NOTMATCH_SUBNET
 
-        when res_type.AWS_EC2_Instance
+        when res_type.INSTANCE
           if Design.instance().typeIsVpc()
             info = l.CVS_MSG_WARN_NOTMATCH_INSTANCE_SUBNET
           else
             info = l.CVS_MSG_WARN_NOTMATCH_INSTANCE_AZ
 
-        when res_type.AWS_VPC_NetworkInterface  then info = l.CVS_MSG_WARN_NOTMATCH_ENI
-        when res_type.AWS_VPC_RouteTable        then info = l.CVS_MSG_WARN_NOTMATCH_RTB
-        when res_type.AWS_ELB                   then info = l.CVS_MSG_WARN_NOTMATCH_ELB
-        when res_type.AWS_VPC_CustomerGateway   then info = l.CVS_MSG_WARN_NOTMATCH_CGW
-        when res_type.AWS_AutoScaling_Group     then info = "Asg must be dragged to a subnet."
+        when res_type.ENI  then info = l.CVS_MSG_WARN_NOTMATCH_ENI
+        when res_type.RT   then info = l.CVS_MSG_WARN_NOTMATCH_RTB
+        when res_type.ELB  then info = l.CVS_MSG_WARN_NOTMATCH_ELB
+        when res_type.CGW  then info = l.CVS_MSG_WARN_NOTMATCH_CGW
+        when res_type.ASG  then info = "Asg must be dragged to a subnet."
 
       if info
         notification 'warning', info , false

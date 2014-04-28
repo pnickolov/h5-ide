@@ -24,7 +24,7 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
 
   Model = ComplexResModel.extend {
 
-    type        : constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup
+    type        : constant.RESTYPE.SG
     newNameTmpl : "custom-sg-"
     color       : "#f26c4f"
 
@@ -290,7 +290,7 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
         new SgLine( ress[0], ress[1], undefined, { detectDuplicate : false } )
       null
 
-    handleTypes : constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup
+    handleTypes : constant.RESTYPE.SG
 
     deserialize : ( data, layout_data, resolve )->
 

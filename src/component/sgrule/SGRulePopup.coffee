@@ -17,9 +17,9 @@ define [ 'constant', "Design", './SGRulePopupView', "backbone" ], ( constant, De
 
       # Get sg of each port
       if @get( "isClassic" )
-        if port1.type is constant.AWS_RESOURCE_TYPE.AWS_ELB
+        if port1.type is constant.RESTYPE.ELB
           port1 = port1.get("name")
-        else if port2.type is constant.AWS_RESOURCE_TYPE.AWS_ELB
+        else if port2.type is constant.RESTYPE.ELB
           port1 = port2.get("name")
           port2 = @get("port1")
 
@@ -59,9 +59,9 @@ define [ 'constant', "Design", './SGRulePopupView', "backbone" ], ( constant, De
       targetComp   = Design.instance().component( data.target )
       relationComp = Design.instance().component( data.relation )
 
-      if targetComp.type is constant.AWS_RESOURCE_TYPE.AWS_ELB
+      if targetComp.type is constant.RESTYPE.ELB
         # We create a mock sg for ElbSg in Classic.
-        SgModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup )
+        SgModel = Design.modelClassForType( constant.RESTYPE.SG )
         targetComp = SgModel.getClassicElbSg()
 
       SgRuleSetModel = Design.modelClassForType( "SgRuleSet" )

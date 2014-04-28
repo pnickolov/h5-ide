@@ -143,7 +143,7 @@ define [ '../base/model',
             if myInstanceComponent
                 instance_id = myInstanceComponent.get 'appId'
             else
-                effective = Design.modelClassForType(constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance).getEffectiveId instance_id
+                effective = Design.modelClassForType(constant.RESTYPE.INSTANCE).getEffectiveId instance_id
                 myInstanceComponent = Design.instance().component( effective.uid )
                 @set 'uid', effective.uid
                 @set 'mid', effective.mid
@@ -201,7 +201,7 @@ define [ '../base/model',
                     data = i
                     break
 
-            TYPE_ENI = constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+            TYPE_ENI = constant.RESTYPE.ENI
 
             if not id
                 return null

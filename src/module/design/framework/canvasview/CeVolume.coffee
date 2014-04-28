@@ -5,13 +5,13 @@ define [ "i18n!nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "ev
     if _.isString( component )
       @id = component
       @nodeType = "node"
-      @type = constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume
+      @type = constant.RESTYPE.VOL
     else
       CanvasElement.apply( this, arguments )
     null
 
 
-  CanvasElement.extend( CeVolume, constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume )
+  CanvasElement.extend( CeVolume, constant.RESTYPE.VOL )
   ChildElementProto = CeVolume.prototype
 
 
@@ -24,7 +24,7 @@ define [ "i18n!nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "ev
     # Ask the component if it supports AppEdit Mode
     #
     if @model.design().modeIsAppEdit()
-      if (@model.get("owner") || {}).type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+      if (@model.get("owner") || {}).type is constant.RESTYPE.LC
         notification "error", lang.ide.NOTIFY_MSG_WARN_OPERATE_NOT_SUPPORT_YET
         return false
     #

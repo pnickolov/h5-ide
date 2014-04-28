@@ -86,7 +86,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 
 		refSGNum = 0
 		_.each MC.canvas_data.component, (compObj) ->
-			if compObj.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup
+			if compObj.type is constant.RESTYPE.SG
 				sgUID = compObj.uid
 				allRefComp = getAllRefComp(sgUID)
 				if allRefComp.length > 0
@@ -259,22 +259,22 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 			sgAry = []
 			resTypeName = ''
 			tagName = ''
-			if compType is constant.AWS_RESOURCE_TYPE.AWS_ELB
+			if compType is constant.RESTYPE.ELB
 				sgAry = comp.resource.SecurityGroups
 				resTypeName = 'Load Balancer'
 				tagName = 'elb'
 
-			if compType is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+			if compType is constant.RESTYPE.LC
 				sgAry = comp.resource.SecurityGroups
 				resTypeName = 'Launch Configuration'
 				tagName = 'lc'
 
-			else if compType is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+			else if compType is constant.RESTYPE.INSTANCE
 				sgAry = comp.resource.SecurityGroupId
 				resTypeName = 'Instance'
 				tagName = 'instance'
 
-			else if compType is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+			else if compType is constant.RESTYPE.ENI
 				_.each comp.resource.GroupSet, (sgObj) ->
 					sgAry.push sgObj.GroupId
 					null

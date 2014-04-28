@@ -124,7 +124,7 @@ define [ 'event',
                 return that
 
             if Design.instance().get('agent').enabled
-                if compData and compData.type in [constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance, constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration]
+                if compData and compData.type in [constant.RESTYPE.INSTANCE, constant.RESTYPE.LC]
                     @__renderState()
                 else
                     @__renderEmpty()

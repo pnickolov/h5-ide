@@ -5,7 +5,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
 
   Model = ComplexResModel.extend {
 
-    type        : constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+    type        : constant.RESTYPE.INSTANCE
     newNameTmpl : "host-"
 
     defaults :
@@ -39,7 +39,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
       # Create Eni0 if necessary
       if option.createByUser and not Design.instance().typeIsClassic()
         #create eni0
-        EniModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface )
+        EniModel = Design.modelClassForType( constant.RESTYPE.ENI )
         @setEmbedEni( new EniModel({
           name : "eni0"
           assoPublicIp : Design.instance().typeIsDefaultVpc()
@@ -75,7 +75,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
           #   if vol.volumeType is "io1"
           #     attribute.iops = vol.iops
           #   attribute.owner = @
-          #   VolumeModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume )
+          #   VolumeModel = Design.modelClassForType( constant.RESTYPE.VOL )
           #   new VolumeModel( attribute, {noNeedGenName:true})
 
 
@@ -85,7 +85,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
       # Create additonal association if the instance is created by user.
       if option.createByUser and not option.cloneSource
         #assign DefaultKP
-        KpModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair )
+        KpModel = Design.modelClassForType( constant.RESTYPE.KP )
         defaultKp = KpModel.getDefaultKP()
         if defaultKp
           defaultKp.assignTo( this )
@@ -93,7 +93,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
           console.error "No DefaultKP found when initialize InstanceModel"
 
         #assign DefaultSG
-        SgModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup )
+        SgModel = Design.modelClassForType( constant.RESTYPE.SG )
         defaultSg = SgModel.getDefaultSg()
         if defaultSg
           SgAsso = Design.modelClassForType( "SgAsso" )
@@ -104,7 +104,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
 
       # Always setTenancy to insure we don't have micro type for dedicated.
       tenancy = @get("tenancy")
-      vpc = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC ).theVPC()
+      vpc = Design.modelClassForType( constant.RESTYPE.VPC ).theVPC()
       if vpc and not vpc.isDefaultTenancy() then tenancy = "dedicated"
 
       @setTenancy( tenancy )
@@ -116,7 +116,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
 
     getAvailabilityZone : ()->
       p = @parent()
-      if p.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
+      if p.type is constant.RESTYPE.SUBNET
         return p.parent()
       else
         return p
@@ -218,10 +218,10 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
       return priceObj
 
     isReparentable : ( newParent )->
-      if newParent.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+      if newParent.type is constant.RESTYPE.ASG
         return false
 
-      if newParent.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
+      if newParent.type is constant.RESTYPE.SUBNET
         if newParent.parent() isnt @parent().parent()
           check = true
       else
@@ -282,7 +282,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
       null
 
     isDefaultTenancy : ()->
-      VpcModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC )
+      VpcModel = Design.modelClassForType( constant.RESTYPE.VPC )
       vpc = VpcModel.allObjects()[0]
       if vpc and not vpc.isDefaultTenancy()
         return false
@@ -544,7 +544,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
         state.id = "state-" + @design().guid()
 
       # Copy volume
-      Volume = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume )
+      Volume = Design.modelClassForType( constant.RESTYPE.VOL )
       for v in srcTarget.get("volumeList") or []
         new Volume( { owner : this }, { cloneSource : v } )
 
@@ -584,7 +584,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
       tenancy = @get("tenancy")
 
       p = @parent()
-      if p.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
+      if p.type is constant.RESTYPE.SUBNET
         vpc      = p.parent().parent()
         if not vpc.isDefaultTenancy()
           tenancy = "dedicated"
@@ -649,7 +649,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
 
       {
         uid   : eipData.id
-        type  : constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP
+        type  : constant.RESTYPE.EIP
         index : 0
         name  : "EIP"
         resource :
@@ -744,7 +744,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
 
   }, {
 
-    handleTypes : constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+    handleTypes : constant.RESTYPE.INSTANCE
 
     # parameter could be uid or aws id
     # return uid and mid( memberId )
@@ -763,7 +763,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
               return { uid : instance.id, mid : "#{member.id}_#{index + 1}" }
 
       resource_list = MC.data.resource_list[ design.region() ]
-      for asg in Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group ).allObjects()
+      for asg in Design.modelClassForType( constant.RESTYPE.ASG ).allObjects()
         data = resource_list[ asg.get("appId") ]
         if not data or not data.Instances then continue
         data = data.Instances

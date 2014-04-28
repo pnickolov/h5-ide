@@ -74,7 +74,7 @@ define [ 'event',
 
                     _.each value.origin, ( item, type ) ->
 
-                        if type is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+                        if type is constant.RESTYPE.ENI
                             vpc_ids = _.keys item
                             if _.isArray( vpc_ids ) and vpc_ids.length > 299
                                 is_true = true
@@ -106,17 +106,17 @@ define [ 'event',
 
                         switch key
 
-                            when constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
+                            when constant.RESTYPE.SUBNET
                                 type = ' subnet'
 
-                            when constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP
+                            when constant.RESTYPE.EIP
                                 type = ' elastic ip'
 
-                            when constant.AWS_RESOURCE_TYPE.AWS_ELB
+                            when constant.RESTYPE.ELB
                                 type = ' load balancer'
 
                             # instance include running and stopped
-                            when constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+                            when constant.RESTYPE.INSTANCE
 
                                 running = 0
                                 stopped = 0
@@ -163,15 +163,15 @@ define [ 'event',
 
                         switch key
 
-                            # constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
-                            # constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP
-                            # constant.AWS_RESOURCE_TYPE.AWS_ELB
-                            # constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+                            # constant.RESTYPE.SUBNET
+                            # constant.RESTYPE.EIP
+                            # constant.RESTYPE.ELB
+                            # constant.RESTYPE.ENI
                             when type
                                 new_count = _.keys( value ).length
 
                             # instance include running and stopped
-                            when constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+                            when constant.RESTYPE.INSTANCE
 
                                 _.each _.values( value ), ( item ) ->
 

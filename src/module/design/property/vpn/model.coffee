@@ -73,8 +73,8 @@ define [ '../base/model', "Design", "constant" ], ( PropertyModel, Design, const
         init : ( uid ) ->
 
             vpn = Design.instance().component( uid )
-            vgw = vpn.getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway )
-            cgw = vpn.getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_CustomerGateway )
+            vgw = vpn.getTarget( constant.RESTYPE.VGW )
+            cgw = vpn.getTarget( constant.RESTYPE.CGW )
 
             if @isApp or @isAppEdit
                 @getAppData( vpn.get("appId") )
@@ -121,7 +121,7 @@ define [ '../base/model', "Design", "constant" ], ( PropertyModel, Design, const
             @set vpn
 
         isCidrConflict : ( inputValue, cidr )->
-            Design.modelClassForType(constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet).isCidrConflict( inputValue, cidr )
+            Design.modelClassForType(constant.RESTYPE.SUBNET).isCidrConflict( inputValue, cidr )
     }
 
     new VPNModel()

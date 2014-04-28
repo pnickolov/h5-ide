@@ -63,7 +63,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo' ], ( constant, MC,
 
             if routeCIDR
 
-                validSubnetCIDR = Design.modelClassForType(constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet).isValidSubnetCIDR(routeCIDR)
+                validSubnetCIDR = Design.modelClassForType(constant.RESTYPE.SUBNET).isValidSubnetCIDR(routeCIDR)
 
                 if not validSubnetCIDR
                     invalidRouteCIDRAry.push(routeCIDR)
@@ -88,7 +88,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo' ], ( constant, MC,
             }
 
         return returnObj
-        
+
     # public
     isVPNHaveIPForStaticCGW : isVPNHaveIPForStaticCGW
     isVPNPrefixIPNotValid : isVPNPrefixIPNotValid

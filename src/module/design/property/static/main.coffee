@@ -6,7 +6,7 @@ define [ '../base/main', './model', './view', 'constant' ], ( PropertyModule, mo
 
     StaticModule = PropertyModule.extend {
 
-        handleTypes : [ constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway, constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway ]
+        handleTypes : [ constant.RESTYPE.VGW, constant.RESTYPE.IGW ]
 
         initStack : ()->
             @model = model

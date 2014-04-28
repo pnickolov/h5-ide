@@ -3,10 +3,10 @@ define [ "constant", "../ComplexResModel", "../ConnectionModel"  ], ( constant, 
 
   KeypairUsage = ConnectionModel.extend {
     type : "KeypairUsage"
-    oneToMany : constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair
+    oneToMany : constant.RESTYPE.KP
 
     serialize : ( components )->
-      kp = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair )
+      kp = @getTarget( constant.RESTYPE.KP )
       otherTarget = @getOtherTarget( kp )
 
       components[ otherTarget.id ].resource.KeyName = kp.createRef( "KeyName" )
@@ -16,7 +16,7 @@ define [ "constant", "../ComplexResModel", "../ConnectionModel"  ], ( constant, 
 
 
   KeypairModel = ComplexResModel.extend {
-    type : constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair
+    type : constant.RESTYPE.KP
 
     defaults :
       fingerprint : ""
@@ -70,7 +70,7 @@ define [ "constant", "../ComplexResModel", "../ConnectionModel"  ], ( constant, 
 
     diffJson : ()-> # Disable diff for thie Model
 
-    handleTypes : constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair
+    handleTypes : constant.RESTYPE.KP
     deserialize : ( data, layout_data, resolve )->
       new KeypairModel({
         id          : data.uid

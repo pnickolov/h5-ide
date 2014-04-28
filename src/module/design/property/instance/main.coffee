@@ -31,7 +31,7 @@ define [ "../base/main",
 
         ideEvents : ideEvents
 
-        handleTypes : [ constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance, 'component_asg_instance' ]
+        handleTypes : [ constant.RESTYPE.INSTANCE, 'component_asg_instance' ]
 
         onUnloadSubPanel : ( id )->
             sglist_main.onUnloadSubPanel id

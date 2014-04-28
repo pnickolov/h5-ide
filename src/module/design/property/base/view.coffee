@@ -152,7 +152,7 @@ define [ 'constant',
                 resUID = @model.get 'uid'
                 if resUID
                     resComp = Design.instance().component(resUID)
-                    if resComp and resComp.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup
+                    if resComp and resComp.type is constant.RESTYPE.SG
                         return null
 
                 # all other property

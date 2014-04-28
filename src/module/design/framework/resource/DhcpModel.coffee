@@ -42,7 +42,7 @@ define [ "constant", "../ResourceModel", "Design"  ], ( constant, ResourceModel,
 
 
   Model = ResourceModel.extend {
-    type : constant.AWS_RESOURCE_TYPE.AWS_VPC_DhcpOptions
+    type : constant.RESTYPE.DHCP
 
     defaults : ()->
       dhcpType       : "" # "none" || "default" || ""
@@ -78,7 +78,7 @@ define [ "constant", "../ResourceModel", "Design"  ], ( constant, ResourceModel,
       if not @isCustom()
         return
 
-      vpc = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC ).theVPC()
+      vpc = Design.modelClassForType( constant.RESTYPE.VPC ).theVPC()
 
       configs = []
       attr    = @attributes
@@ -127,7 +127,7 @@ define [ "constant", "../ResourceModel", "Design"  ], ( constant, ResourceModel,
 
   }, {
 
-    handleTypes : constant.AWS_RESOURCE_TYPE.AWS_VPC_DhcpOptions
+    handleTypes : constant.RESTYPE.DHCP
 
     deserialize : ( data, layout_data )->
 

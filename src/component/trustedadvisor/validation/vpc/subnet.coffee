@@ -15,7 +15,7 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'eni_service' , '../resu
 			if defaultVPCId
 				currentVPCId = defaultVPCId
 			else
-				currentVPCUID = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC ).theVPC().id
+				currentVPCUID = Design.modelClassForType( constant.RESTYPE.VPC ).theVPC().id
 				currentVPCComp = MC.canvas_data.component[currentVPCUID]
 				currentVPCId = currentVPCComp.resource.VpcId
 

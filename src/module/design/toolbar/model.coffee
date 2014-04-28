@@ -4,23 +4,23 @@
 
 define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'stack_model', 'app_model', 'constant', 'account_model' ], (ThumbUtil, MC, Backbone, $, _, ide_event, stack_service, stack_model, app_model, constant, account_model) ->
 
-    AWSRes = constant.AWS_RESOURCE_TYPE
+    AWSRes = constant.RESTYPE
     AwsTypeConvertMap = {}
 
-    AwsTypeConvertMap[ AWSRes.AWS_VPC_NetworkAcl ]                  = "Network ACL"
-    AwsTypeConvertMap[ AWSRes.AWS_AutoScaling_Group ]               = "Auto Scaling Group"
-    AwsTypeConvertMap[ AWSRes.AWS_VPC_CustomerGateway ]             = "Customer Gateway"
-    AwsTypeConvertMap[ AWSRes.AWS_ELB ]                             = "Load Balancer"
-    AwsTypeConvertMap[ AWSRes.AWS_VPC_NetworkInterface ]            = "Network Interface"
-    AwsTypeConvertMap[ AWSRes.AWS_VPC_InternetGateway ]             = "Internet Gateway"
-    AwsTypeConvertMap[ AWSRes.AWS_EC2_Instance ]                    = "Instance"
-    AwsTypeConvertMap[ AWSRes.AWS_AutoScaling_LaunchConfiguration ] = "Launch Configuration"
-    AwsTypeConvertMap[ AWSRes.AWS_VPC_RouteTable ]                  = "Route Table"
-    AwsTypeConvertMap[ AWSRes.AWS_EC2_SecurityGroup ]               = "Security Group"
-    AwsTypeConvertMap[ AWSRes.AWS_SNS_Subscription ]                = "SNS Subscription"
-    AwsTypeConvertMap[ AWSRes.AWS_VPC_VPNGateway ]                  = "VPN Gateway"
-    AwsTypeConvertMap[ AWSRes.AWS_VPC_VPC ]                         = "VPC"
-    AwsTypeConvertMap[ AWSRes.AWS_VPC_VPNConnection ]               = "VPN"
+    AwsTypeConvertMap[ AWSRes.ACL ]             = "Network ACL"
+    AwsTypeConvertMap[ AWSRes.ASG ]             = "Auto Scaling Group"
+    AwsTypeConvertMap[ AWSRes.CGW ]             = "Customer Gateway"
+    AwsTypeConvertMap[ AWSRes.ELB ]             = "Load Balancer"
+    AwsTypeConvertMap[ AWSRes.ENI ]             = "Network Interface"
+    AwsTypeConvertMap[ AWSRes.IGW ]             = "Internet Gateway"
+    AwsTypeConvertMap[ AWSRes.INSTANCE ]        = "Instance"
+    AwsTypeConvertMap[ AWSRes.LC ]              = "Launch Configuration"
+    AwsTypeConvertMap[ AWSRes.RT ]              = "Route Table"
+    AwsTypeConvertMap[ AWSRes.SG ]              = "Security Group"
+    AwsTypeConvertMap[ AWSRes.SUBSCRIPTION ]    = "SNS Subscription"
+    AwsTypeConvertMap[ AWSRes.VGW ]             = "VPN Gateway"
+    AwsTypeConvertMap[ AWSRes.VPC ]             = "VPC"
+    AwsTypeConvertMap[ AWSRes.VPN ]             = "VPN"
 
     #item state map
     # {app_id:{'name':name, 'state':state, 'is_running':true|false, 'is_pending':true|false, 'is_use_ami':true|false},
@@ -1235,7 +1235,7 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
           result = true
 
           # find all instance userdata
-          InstanceModel = Design.modelClassForType(constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance)
+          InstanceModel = Design.modelClassForType(constant.RESTYPE.INSTANCE)
           instanceModels = InstanceModel.allObjects()
           _.each instanceModels, (instanceModel) ->
             userData = instanceModel.get('userData')
@@ -1243,7 +1243,7 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
             null
 
           # find all lc userdata
-          LCModel = Design.modelClassForType(constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration)
+          LCModel = Design.modelClassForType(constant.RESTYPE.LC)
           lcModels = LCModel.allObjects()
           _.each lcModels, (lcModel) ->
             userData = lcModel.get('userData')
@@ -1257,14 +1257,14 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
           if isEnable is true
 
             # clear all instance userdata
-            InstanceModel = Design.modelClassForType(constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance)
+            InstanceModel = Design.modelClassForType(constant.RESTYPE.INSTANCE)
             instanceModels = InstanceModel.allObjects()
             _.each instanceModels, (instanceModel) ->
               instanceModel.set('userData', '')
               null
 
             # clear all lc userdata
-            LCModel = Design.modelClassForType(constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration)
+            LCModel = Design.modelClassForType(constant.RESTYPE.LC)
             lcModels = LCModel.allObjects()
             _.each lcModels, (lcModel) ->
               lcModel.set('userData', '')

@@ -3,7 +3,7 @@ define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager", 'i18n!n
 
   CeLc = ()-> CanvasElement.apply( this, arguments )
 
-  CanvasElement.extend.call( CeInstance, CeLc, constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration )
+  CanvasElement.extend.call( CeInstance, CeLc, constant.RESTYPE.LC )
   ChildElementProto = CeLc.prototype
 
 
@@ -155,7 +155,7 @@ define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager", 'i18n!n
   ChildElementProto.select = ( subId )->
 
     if subId
-      type = constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+      type = constant.RESTYPE.INSTANCE
     else
       type = @model.type
 

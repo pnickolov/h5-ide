@@ -2,7 +2,7 @@
 define [ "./CanvasElement", "constant","i18n!nls/lang.js" ], ( CanvasElement, constant,lang )->
 
   CeIgw = ()-> CanvasElement.apply( this, arguments )
-  CanvasElement.extend( CeIgw, constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway )
+  CanvasElement.extend( CeIgw, constant.RESTYPE.IGW )
   ChildElementProto = CeIgw.prototype
 
 

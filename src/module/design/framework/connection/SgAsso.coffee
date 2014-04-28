@@ -18,7 +18,7 @@ define [ "constant", "../ConnectionModel", "CanvasManager", "Design" ], ( consta
         @draw = @updateLabel
 
       # Listen to Sg's name change, so that we could update the label tooltip
-      @listenTo @getTarget( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup ), "change:name", @updateLabel
+      @listenTo @getTarget( constant.RESTYPE.SG ), "change:name", @updateLabel
 
       # Update target's label after this connection is removed.
       @on "destroy", @updateLabel
@@ -30,10 +30,10 @@ define [ "constant", "../ConnectionModel", "CanvasManager", "Design" ], ( consta
     # SgAsso doesn't have portDefs, so the basic validation implemented in ConnectionModel won't work.
     # Here, we do our own job.
     assignCompsToPorts : (p1Comp, p2Comp)->
-      if p1Comp.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup
+      if p1Comp.type is constant.RESTYPE.SG
         @__port1Comp = p1Comp
         @__port2Comp = p2Comp
-      else if p2Comp.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup
+      else if p2Comp.type is constant.RESTYPE.SG
         @__port1Comp = p2Comp
         @__port2Comp = p1Comp
       else
@@ -46,7 +46,7 @@ define [ "constant", "../ConnectionModel", "CanvasManager", "Design" ], ( consta
 
       # When an SgAsso is removed because of an SecurityGroup is removed.
       # If this SgAsso is the last SgAsso of some resources, attach DefaultSg to these resources.
-      resource = @getOtherTarget( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup )
+      resource = @getOtherTarget( constant.RESTYPE.SG )
       if resource.isRemoved() # and resource.type is 'ExpandedAsg'
         return
 
@@ -61,22 +61,22 @@ define [ "constant", "../ConnectionModel", "CanvasManager", "Design" ], ( consta
       # ComplexResModel/ConnectionModel and its subclass strong coupling.
       # Maybe we could work out a better solution about this later.
 
-      resource = @getOtherTarget( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup )
+      resource = @getOtherTarget( constant.RESTYPE.SG )
       if resource.connections("SgAsso").length == 0
-        defaultSg = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup ).getDefaultSg()
+        defaultSg = Design.modelClassForType( constant.RESTYPE.SG ).getDefaultSg()
         if defaultSg
           new SgAsso( resource, defaultSg )
       null
 
     sortedSgList : ()->
 
-      resource = @getOtherTarget( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup )
+      resource = @getOtherTarget( constant.RESTYPE.SG )
 
       sgAssos = resource.connections("SgAsso")
 
       # Sort the SG
       sgs = _.map sgAssos, ( a )->
-        a.getTarget( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup )
+        a.getTarget( constant.RESTYPE.SG )
 
       sgs.sort ( a_sg, b_sg )->
         if a_sg.isDefault() then return -1
@@ -95,7 +95,7 @@ define [ "constant", "../ConnectionModel", "CanvasManager", "Design" ], ( consta
       if not Design.instance().shouldDraw()
         return
 
-      resource = @getOtherTarget( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup )
+      resource = @getOtherTarget( constant.RESTYPE.SG )
       res_node = document.getElementById( resource.id )
 
       if not res_node then return
@@ -119,7 +119,7 @@ define [ "constant", "../ConnectionModel", "CanvasManager", "Design" ], ( consta
     # After the design is deserialized, we update all resource's label at once.
     updateMap = {}
     for asso in SgAsso.allObjects()
-      updateMap[ asso.getOtherTarget( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup ).id ] = asso
+      updateMap[ asso.getOtherTarget( constant.RESTYPE.SG ).id ] = asso
 
     for resId, asso of updateMap
       asso.updateLabel()

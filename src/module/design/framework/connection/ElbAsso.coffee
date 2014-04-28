@@ -15,20 +15,20 @@ define [ "constant", "../ConnectionModel", "i18n!nls/lang.js", "Design", "compon
       {
         port1 :
           name : "elb-assoc"
-          type : constant.AWS_RESOURCE_TYPE.AWS_ELB
+          type : constant.RESTYPE.ELB
         port2 :
           name : "subnet-assoc-in"
-          type : constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
+          type : constant.RESTYPE.SUBNET
       }
     ]
 
     initialize : ()->
       # Elb can only connect to one subnet in one az
-      newSubnet = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet )
+      newSubnet = @getTarget( constant.RESTYPE.SUBNET )
       az = newSubnet.parent()
 
-      for cn in @getTarget( constant.AWS_RESOURCE_TYPE.AWS_ELB ).connections( "ElbSubnetAsso" )
-        if cn.getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet ).parent() is az
+      for cn in @getTarget( constant.RESTYPE.ELB ).connections( "ElbSubnetAsso" )
+        if cn.getTarget( constant.RESTYPE.SUBNET ).parent() is az
           if cn.hasAppUpdateRestriction()
             @setDestroyAfterInit()
           else
@@ -37,7 +37,7 @@ define [ "constant", "../ConnectionModel", "i18n!nls/lang.js", "Design", "compon
       null
 
     hasAppUpdateRestriction : ()->
-      elb = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_ELB )
+      elb = @getTarget( constant.RESTYPE.ELB )
 
       if @design().modeIsAppEdit()
         # In AppEdit, prevent the last existing asso to be deleted
@@ -55,7 +55,7 @@ define [ "constant", "../ConnectionModel", "i18n!nls/lang.js", "Design", "compon
           return { error : lang.ide.CVS_MSG_ERR_DEL_ELB_LINE_2 }
 
       else
-        elb = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_ELB )
+        elb = @getTarget( constant.RESTYPE.ELB )
         # Elb should at least connects to a subnet if it connects to some ami
         if elb.connections( "ElbAmiAsso" ).length > 0 and elb.connections( "ElbSubnetAsso" ).length <= 1
           return { error : lang.ide.CVS_MSG_ERR_DEL_ELB_LINE_1 }
@@ -64,7 +64,7 @@ define [ "constant", "../ConnectionModel", "i18n!nls/lang.js", "Design", "compon
 
   }, {
     isConnectable : ( comp1, comp2 )->
-      subnet = if comp1.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet then comp1 else comp2
+      subnet = if comp1.type is constant.RESTYPE.SUBNET then comp1 else comp2
 
       if parseInt( subnet.get("cidr").split("/")[1] , 10 ) <= 27
         return true
@@ -84,23 +84,23 @@ define [ "constant", "../ConnectionModel", "i18n!nls/lang.js", "Design", "compon
       {
         port1 :
           name : "elb-sg-out"
-          type : constant.AWS_RESOURCE_TYPE.AWS_ELB
+          type : constant.RESTYPE.ELB
         port2 :
           name : "instance-sg"
-          type : constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+          type : constant.RESTYPE.INSTANCE
       }
       {
         port1 :
           name : "elb-sg-out"
-          type : constant.AWS_RESOURCE_TYPE.AWS_ELB
+          type : constant.RESTYPE.ELB
         port2 :
           name : "launchconfig-sg"
-          type : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+          type : constant.RESTYPE.LC
       }
       {
         port1 :
           name : "elb-sg-out"
-          type : constant.AWS_RESOURCE_TYPE.AWS_ELB
+          type : constant.RESTYPE.ELB
         port2 :
           name : "launchconfig-sg"
           type : "ExpandedAsg"
@@ -115,19 +115,19 @@ define [ "constant", "../ConnectionModel", "i18n!nls/lang.js", "Design", "compon
         new SGRulePopup( this.id )
 
       # When an Elb is connected to an Instance. Make sure the Instance's AZ has at least one subnet connects to Elb
-      ami = @getOtherTarget( constant.AWS_RESOURCE_TYPE.AWS_ELB )
-      elb = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_ELB )
+      ami = @getOtherTarget( constant.RESTYPE.ELB )
+      elb = @getTarget( constant.RESTYPE.ELB )
 
       if elb.connections( "ElbSubnetAsso" ).length == 0
         subnet = ami.parent()
-        while subnet.type isnt constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
+        while subnet.type isnt constant.RESTYPE.SUBNET
           subnet = subnet.parent()
         if subnet
           new ElbSubnetAsso( elb, subnet )
 
       # If there's a ElbAsso created for Lc and Elb
       # We also try to connect the Elb to any expanded Asg
-      if ami.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+      if ami.type is constant.RESTYPE.LC
         for asg in ami.parent().get("expandedList")
           new ElbAmiAsso( asg, elb )
       null
@@ -135,7 +135,7 @@ define [ "constant", "../ConnectionModel", "i18n!nls/lang.js", "Design", "compon
     remove : ( option )->
       # If the line is not deleted by the user or because of the Lc is removed.
       # Then we do nothing.
-      if option and option.reason.type isnt constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+      if option and option.reason.type isnt constant.RESTYPE.LC
         ConnectionModel.prototype.remove.apply this, arguments
         return
 
@@ -144,16 +144,16 @@ define [ "constant", "../ConnectionModel", "i18n!nls/lang.js", "Design", "compon
       if expAsg and not expAsg.isRemoved()
         # If the user is removing an ElbAsso from Elb to ExpandedAsg.
         # Then we just delete the ElbAsso from Elb to Lc
-        elb = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_ELB )
+        elb = @getTarget( constant.RESTYPE.ELB )
         lc  = expAsg.getLc()
         (new ElbAmiAsso( elb, lc )).remove()
         return
 
-      lc = @getTarget constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+      lc = @getTarget constant.RESTYPE.LC
       if lc
         # The user is removing an ElbAsso from Elb to Lc
         # Remove all the shadow ElbAsso from Elb to ExpandedAsg
-        elb    = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_ELB )
+        elb    = @getTarget( constant.RESTYPE.ELB )
         reason = { reason : this }
 
         for asg in lc.parent().get("expandedList")
@@ -163,9 +163,9 @@ define [ "constant", "../ConnectionModel", "i18n!nls/lang.js", "Design", "compon
       null
 
     serialize : ( components )->
-      instance = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance )
+      instance = @getTarget( constant.RESTYPE.INSTANCE )
       if not instance then return
-      elb = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_ELB )
+      elb = @getTarget( constant.RESTYPE.ELB )
 
       instanceArray = components[ elb.id ].resource.Instances
 

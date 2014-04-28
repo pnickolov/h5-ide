@@ -185,7 +185,7 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
 
   DesignImpl.prototype.refreshAppUpdate = () ->
     needRefresh = [
-      constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+      constant.RESTYPE.ASG
     ]
 
     @eachComponent ( component ) ->
@@ -641,8 +641,8 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
   DesignImpl.prototype.isStoppable = ()->
     # Previous version will set canvas_data.property.stoppable to false
     # If the stack contains instance-stor ami.
-    InstanceModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance )
-    LcModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration )
+    InstanceModel = Design.modelClassForType( constant.RESTYPE.INSTANCE )
+    LcModel = Design.modelClassForType( constant.RESTYPE.LC )
     allObjects = InstanceModel.allObjects().concat LcModel.allObjects()
     for comp in allObjects
       ami = comp.getAmi() or comp.get("cachedAmi")
@@ -682,7 +682,7 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
 
       delete resource_list[ appId ]
       #delete elb attributes (disable these code because it's already embed in ELB)
-      # if comp.type is constant.AWS_RESOURCE_TYPE.AWS_ELB
+      # if comp.type is constant.RESTYPE.ELB
       #   elb_name = comp.get("name") + "---" + Design.instance().get("id")
       #   if resource_list[ elb_name ]
       #     delete resource_list[ elb_name ]

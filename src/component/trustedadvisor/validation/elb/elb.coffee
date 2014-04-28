@@ -14,7 +14,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js', '../../helper'], ( constant, MC, l
 		haveIGW = false
 		_.each MC.canvas_data.component, (compObj) ->
 			compType = compObj.type
-			if compType is constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway
+			if compType is constant.RESTYPE.IGW
 				haveIGW = true
 			null
 
@@ -40,7 +40,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js', '../../helper'], ( constant, MC, l
 		elbNameRef = MC.aws.aws.genResRef(elbUID, 'resource.LoadBalancerName')
 		_.each MC.canvas_data.component, (compObj) ->
 			compType = compObj.type
-			if compType is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+			if compType is constant.RESTYPE.ASG
 				attachedELBAry = compObj.resource.LoadBalancerNames
 				if elbNameRef in attachedELBAry
 					attachedASGNum++
@@ -112,7 +112,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js', '../../helper'], ( constant, MC, l
 	# 	elbNameRef = MC.aws.aws.genResRef(elbUID, 'resource.LoadBalancerName')
 	# 	_.each MC.canvas_data.component, (compObj) ->
 	# 		compType = compObj.type
-	# 		if compType is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+	# 		if compType is constant.RESTYPE.ASG
 	# 			attachedELBAry = compObj.resource.LoadBalancerNames
 	# 			if elbNameRef in attachedELBAry
 	# 				attachedASGAry.push()
@@ -290,7 +290,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js', '../../helper'], ( constant, MC, l
 		# find all asg
 		asgUIDAry = []
 		_.each MC.canvas_data.component, (compObj) ->
-			if compObj.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+			if compObj.type is constant.RESTYPE.ASG
 				elbRefAry = compObj.resource.LoadBalancerNames
 				_.each elbRefAry, (elbRef) ->
 					currentELBUID = MC.extractID(elbRef)

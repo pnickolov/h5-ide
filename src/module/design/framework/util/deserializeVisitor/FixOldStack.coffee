@@ -11,11 +11,11 @@ define [ "Design", "constant" ], ( Design, constant )->
     if not Design.instance().modeIsStack() then return
 
     for uid, comp of data
-      if comp.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair
+      if comp.type is constant.RESTYPE.KP
         if comp.name is "DefaultKP"
           foundKP = true
           if foundSG then break
-      else if comp.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup
+      else if comp.type is constant.RESTYPE.SG
         if comp.name is "DefaultSG"
           foundSG = true
           if foundKP then break
@@ -24,7 +24,7 @@ define [ "Design", "constant" ], ( Design, constant )->
       uid = MC.guid()
       data[ uid ] = {
         uid  : uid
-        type : constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair
+        type : constant.RESTYPE.KP
         name : "DefaultKP"
         resource : { KeyName : "DefaultKP" }
       }
@@ -33,7 +33,7 @@ define [ "Design", "constant" ], ( Design, constant )->
       uid = MC.guid()
       data[ uid ] = {
         uid  : uid
-        type : constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup
+        type : constant.RESTYPE.SG
         name : "DefaultSG"
         resource : {
           IpPermissions: [{

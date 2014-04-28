@@ -3,7 +3,7 @@ define [ "./CanvasElement", 'i18n!nls/lang.js', "constant", "Design", "CanvasMan
 
 
   CeAsg = ()-> CanvasElement.apply( this, arguments )
-  CanvasElement.extend( CeAsg, constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group )
+  CanvasElement.extend( CeAsg, constant.RESTYPE.ASG )
 
   CeAsgProto = CeAsg.prototype
 

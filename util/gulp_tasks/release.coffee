@@ -349,15 +349,15 @@ Tasks =
       d.promise
 
   logDeployInDevRepo : ()->
+    # Only auto commit version for Release/Public
+    if not TasksEnvironment.isRelease
+      return true
+
     logTask "Commit IdeVersion in h5-ide"
     # Update IDE Version to dev repo
     ideversion.read( true )
 
-    # Only auto commit version for Release/Public
-    if TasksEnvironment.isRelease
-      util.runCommand "git", ["commit", "-m", '"Deploy '+ideversion.version()+'"', "package.json"]
-    else
-      true
+    util.runCommand "git", ["commit", "-m", '"Deploy '+ideversion.version()+'"', "package.json"]
 
 
   finalCommit : ()->

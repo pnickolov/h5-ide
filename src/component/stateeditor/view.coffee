@@ -1769,8 +1769,6 @@ define [ 'event',
                 $editorElem.data('editor', editor)
 
                 editor.hintObj = hintObj
-                editor.getSession().setMode('ace/mode/javascript')
-                editor.setTheme('ace/theme/tomorrow_night')
 
                 # config editor
 
@@ -1797,21 +1795,36 @@ define [ 'event',
                     singleLine: editorSingleLine
                 })
 
-                tk = new that.Tokenizer({
-                    'start': [{
-                        token: 'res_ref_correct',
-                        regex: that.resAttrRegexStr
-                    }, {
-                        token: 'res_ref',
-                        regex: '@\\{(\\w|\\-)+(\\.(\\w+(\\[\\d+\\])*))+\\}'
-                    }]
-                })
-                # editor.session.$mode.$tokenizer = tk
-                # editor.session.bgTokenizer.setTokenizer(tk)
-                # editor.renderer.updateText()
+                resRefModeAry = [{
+                    token: 'res_ref_correct',
+                    regex: that.resAttrRegexStr
+                }, {
+                    token: 'res_ref',
+                    regex: '@\\{(\\w|\\-)+(\\.(\\w+(\\[\\d+\\])*))+\\}'
+                }]
+
+                editSession = editor.getSession()
+
+                if option.isCodeEditor
+
+                    ace.modeResRefRule = resRefModeAry
+
+                    if option.extName is 'js'
+                        editSession.setMode('ace/mode/javascript')
+                    
+                    editor.setTheme('ace/theme/tomorrow_night')
+
+                else
+
+                    tk = new that.Tokenizer({
+                        'start': resRefModeAry
+                    })
+
+                    editSession.$mode.$tokenizer = tk
+                    editSession.bgTokenizer.setTokenizer(tk)
+                    editor.renderer.updateText()
 
                 # move cursor to last
-                editSession = editor.getSession()
                 editRow = editSession.getLength()
                 editColumn = editSession.getLine(editRow - 1).length
                 editor.gotoLine(editRow, editColumn)
@@ -3374,17 +3387,31 @@ define [ 'event',
             $expandBtn = $(event.currentTarget)
             $paraValue = $expandBtn.parents('.parameter-container').find('.parameter-value')
             paraEditor = $paraValue.data('editor')
+            
             if paraEditor
-                that.openStateTextEditor(paraEditor)
+                
+                $paraItem = $paraValue.parents('.parameter-item')
+                paraName = $paraItem.attr('data-para-name')
+                $stateItem = $paraItem.parents('.state-item')
 
-        openStateTextEditor: (originEditor) ->
+                extName = ''
+                stateData = that.getStateItemByData($stateItem)
+                if stateData and stateData.parameter and stateData.parameter.path
+                    filePath = stateData.parameter.path
+                    filePathAry = filePath.split('.')
+                    extName = filePathAry[filePathAry.length - 1]
+
+                cmdName = $stateItem.attr('data-command')
+                that.openStateTextEditor(cmdName, paraName, extName, paraEditor)
+
+        openStateTextEditor: (cmdName, paraName, extName, originEditor) ->
 
             that = this
             textContent = originEditor.getValue()
 
             modal $.trim(template.stateTextExpandModal({
-                cmd_name: 'test1',
-                para_name: 'test2'
+                cmd_name: cmdName,
+                para_name: paraName
             })), false
 
             $codeArea = $('#modal-state-text-expand .editable-area')
@@ -3393,7 +3420,9 @@ define [ 'event',
             that.initCodeEditor($codeArea[0], {
                 at: that.resAttrDataAry
             }, {
-                showGutter: true
+                showGutter: true,
+                isCodeEditor: true,
+                extName: extName
             })
             codeEditor = $codeArea.data('editor')
 

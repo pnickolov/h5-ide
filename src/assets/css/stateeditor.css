@@ -1561,8 +1561,17 @@
 }
 
 /* code editor */
+#modal-state-text-expand .modal-body {
+	padding: 0;
+	padding-top: 10px;
+}
+
+#modal-state-text-expand .ace_layer.ace_gutter-layer .ace_fold-widget {
+	display: none;
+}
+
 #modal-state-text-expand .editable-area {
-	width: 875px;
+	width: 100%;
 	height: 500px;
 }
 

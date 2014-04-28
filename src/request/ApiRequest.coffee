@@ -27,7 +27,7 @@ define ["request/ApiRequestDefs", "MC" ], ( ApiDefination )->
     ### env:dev:end ###
     throw obj
 
-  AjaxHandler = (res)->
+  AjaxSuccessHandler = (res)->
     if not res or not res.result or res.result.length != 2
       logAndThrow {
         error : -1
@@ -46,7 +46,7 @@ define ["request/ApiRequestDefs", "MC" ], ( ApiDefination )->
 
     res.result[1]
 
-  NetworkErrorHandler = (jqXHR, textStatus, error)->
+  AjaxErrorHandler = (jqXHR, textStatus, error)->
     if !error and jqXHR.status != 200
       logAndThrow {
         error : -jqXHR.status
@@ -90,11 +90,11 @@ define ["request/ApiRequestDefs", "MC" ], ( ApiDefination )->
     }
 
     # Generic hanlder for the ajax request.
-    request = Q(ajax).then(AjaxHandler, NetworkErrorHandler)
+    request = Q(ajax).then(AjaxSuccessHandler, AjaxErrorHandler)
 
     # Pass result to parser if defined.
     if ApiDefination.Parsers[ apiName ]
-      request = request.then( ApiDefination.Parsers[ apiName] )
+      request = request.then( ApiDefination.Parsers[apiName] )
 
     request.abort = Abort
     request.ajax  = ajax

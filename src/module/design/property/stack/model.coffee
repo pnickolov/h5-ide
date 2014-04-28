@@ -156,7 +156,7 @@ define ['../base/model', 'constant', "Design" ], ( PropertyModel, constant, Desi
 
     getNetworkACL : ()->
 
-      ACLModel = Design.modelClassForType( constant.RESTYPE.AWS_VPC_NetworkAcl )
+      ACLModel = Design.modelClassForType( constant.RESTYPE.ACL )
 
       networkAcls = []
       defaultACL  = null

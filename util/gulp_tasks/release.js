@@ -367,7 +367,11 @@
       }
       logTask("Commit IdeVersion in h5-ide");
       ideversion.read(true);
-      return util.runCommand("git", ["commit", "-m", '"Deploy ' + ideversion.version() + '"', "package.json"]);
+      if (TasksEnvironment.isRelease) {
+        return util.runCommand("git", ["commit", "-m", '"Deploy ' + ideversion.version() + '"', "package.json"]);
+      } else {
+        return true;
+      }
     },
     finalCommit: function() {
       var devRepoV, option, task;

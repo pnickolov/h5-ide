@@ -235,7 +235,7 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
     @model.setPrimaryEip( toggle )
 
     if toggle
-      Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway ).tryCreateIgw()
+      Design.modelClassForType( constant.RESTYPE.IGW ).tryCreateIgw()
 
     ide_event.trigger ide_event.PROPERTY_REFRESH_ENI_IP_LIST
     null
@@ -321,9 +321,9 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
     ###
     # Quick hack for Lc
     ###
-    if @type isnt constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+    if @type isnt constant.RESTYPE.LC
 
-      if @type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+      if @type is constant.RESTYPE.INSTANCE
         instance_data = resource_list[ @model.get("appId") ]
         state = if instance_data then instance_data.instanceState.name else "unknown"
 
@@ -345,7 +345,7 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
     for member, idx in @model.groupMembers()
 
       state = ""
-      if @type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance or @type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+      if @type is constant.RESTYPE.INSTANCE or @type is constant.RESTYPE.LC
         instance_data = resource_list[ member.appId ]
         state = if instance_data then instance_data.instanceState.name  else "unknown"
 

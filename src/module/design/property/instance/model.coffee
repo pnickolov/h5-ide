@@ -22,7 +22,7 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 			attr.number_disable = eni and eni.connections('RTB_Route').length > 0
 
 			# If Vpc is dedicated, instance should be dedicated.
-			vpc = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC ).allObjects()[0]
+			vpc = Design.modelClassForType( constant.RESTYPE.VPC ).allObjects()[0]
 			attr.force_tenacy = vpc and not vpc.isDefaultTenancy()
 
 			# if stack enable agent
@@ -45,7 +45,7 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 
 		addKP : ( kp_name ) ->
 
-			KpModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair )
+			KpModel = Design.modelClassForType( constant.RESTYPE.KP )
 
 			for kp in KpModel.allObjects()
 				if kp.get("name") is kp_name
@@ -88,7 +88,7 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 		setPublicIp : ( value ) ->
 			Design.instance().component( @get("uid") ).getEmbedEni().set("assoPublicIp", value)
 			if value
-				Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway ).tryCreateIgw()
+				Design.modelClassForType( constant.RESTYPE.IGW ).tryCreateIgw()
 
 		getAmi : () ->
 			ami_id = @get("imageId")
@@ -110,9 +110,19 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 			@set 'instance_ami', data
 
 			if ami and ami.blockDeviceMapping
-				deivce = ami.blockDeviceMapping[ ami.rootDeviceName ]
+				rdName = ami.rootDeviceName
+				rdEbs = ami.blockDeviceMapping[ rdName ]
+
+				if rdName and not rdEbs
+				#rootDeviceName is partition
+					_.each ami.blockDeviceMapping, (value,key) ->
+						if rdName.indexOf(key) isnt -1 and not rdEbs
+							rdEbs  = value
+							rdName = key
+						null
+
 				rootDevice =
-					name : ami.rootDeviceName
+					name : rdName
 					size : parseInt( comp.get("rdSize"), 10 )
 					iops : comp.get("rdIops")
 
@@ -167,7 +177,7 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 			@attributes.eni.ips[ eip_index ].hasEip = attach
 
 			if attach
-				Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway ).tryCreateIgw()
+				Design.modelClassForType( constant.RESTYPE.IGW ).tryCreateIgw()
 			null
 
 		removeIp : ( index ) ->

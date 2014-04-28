@@ -3,7 +3,7 @@ define [ "./CanvasElement", "constant", "CanvasManager", "./CeAsg" ], ( CanvasEl
 
   CeExpandedAsg = ()->
     CanvasElement.apply( this, arguments )
-    this.type = constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+    this.type = constant.RESTYPE.ASG
     null
 
   CanvasElement.extend( CeExpandedAsg, "ExpandedAsg" )
@@ -79,6 +79,7 @@ define [ "./CanvasElement", "constant", "CanvasManager", "./CeAsg" ], ( CanvasEl
           'data-position'  : 'left'
           'data-type'      : 'sg'
           'data-direction' : 'in'
+          'data-tooltip'   : lang.ide.PORT_TIP_D
         }),
 
         # right port(blue)
@@ -89,6 +90,7 @@ define [ "./CanvasElement", "constant", "CanvasManager", "./CeAsg" ], ( CanvasEl
           'data-position'  : 'right'
           'data-type'      : 'sg'
           'data-direction' : 'out'
+          'data-tooltip'   : lang.ide.PORT_TIP_D
         })
       ]
 

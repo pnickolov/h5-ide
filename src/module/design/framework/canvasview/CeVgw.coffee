@@ -1,8 +1,8 @@
 
-define [ "./CanvasElement", "constant" ], ( CanvasElement, constant )->
+define [ "./CanvasElement", "constant","i18n!nls/lang.js" ], ( CanvasElement, constant,lang )->
 
   CeVgw = ()-> CanvasElement.apply( this, arguments )
-  CanvasElement.extend( CeVgw, constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway )
+  CanvasElement.extend( CeVgw, constant.RESTYPE.VGW )
   ChildElementProto = CeVgw.prototype
 
 
@@ -38,6 +38,7 @@ define [ "./CanvasElement", "constant" ], ( CanvasElement, constant )->
           'data-position'  : 'left'
           'data-type'      : 'sg'
           'data-direction' : 'in'
+          'data-tooltip'   : lang.ide.PORT_TIP_C
         }),
 
         # Right port
@@ -47,6 +48,7 @@ define [ "./CanvasElement", "constant" ], ( CanvasElement, constant )->
           'data-position'  : 'right'
           'data-type'      : 'vpn'
           'data-direction' : 'out'
+          'data-tooltip'   : lang.ide.PORT_TIP_H
         })
       )
 

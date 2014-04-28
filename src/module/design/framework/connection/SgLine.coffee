@@ -28,15 +28,15 @@ define [ "constant", "../ConnectionModel", "../ResourceModel", "component/sgrule
       p1Comp = @port1Comp()
       p2Comp = @port2Comp()
 
-      TYPE   = constant.AWS_RESOURCE_TYPE
+      TYPE   = constant.RESTYPE
 
       # There will never be sgline between two Elb.
       if p1Comp.type is p2Comp.type and p1Comp.type is TYPE.AWS_ELB
         return false
 
       # Sgline only exist when eni is not attached to the ami
-      ami = @getTarget TYPE.AWS_EC2_Instance
-      eni = @getTarget TYPE.AWS_VPC_NetworkInterface
+      ami = @getTarget TYPE.INSTANCE
+      eni = @getTarget TYPE.ENI
       if eni
         attachs = eni.connectionTargets( "EniAttachment" )
         # Unattached Eni doesn't have SgLine.
@@ -45,12 +45,12 @@ define [ "constant", "../ConnectionModel", "../ResourceModel", "component/sgrule
 
       # Hide sglist between lc and expandedasg
       expandAsg = @getTarget "ExpandedAsg"
-      lc        = @getTarget TYPE.AWS_AutoScaling_LaunchConfiguration
+      lc        = @getTarget TYPE.LC
       if expandAsg and lc and expandAsg.get("originalAsg").get("lc") is lc
         return false
 
       # Rules for checking sgline of elb.
-      elb = @getTarget TYPE.AWS_ELB
+      elb = @getTarget TYPE.ELB
       if elb
         # If elb is internet-facing, don't show line.
         if not elb.get("internal") then return false
@@ -135,31 +135,31 @@ define [ "constant", "../ConnectionModel", "../ResourceModel", "component/sgrule
       {
         port1 :
           name : "instance-sg"
-          type : constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+          type : constant.RESTYPE.INSTANCE
         port2 :
           name : "instance-sg"
-          type : constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+          type : constant.RESTYPE.INSTANCE
       }
       {
         port1 :
           name : "instance-sg"
-          type : constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+          type : constant.RESTYPE.INSTANCE
         port2 :
           name : "eni-sg"
-          type : constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+          type : constant.RESTYPE.ENI
       }
       {
         port1 :
           name : "instance-sg"
-          type : constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+          type : constant.RESTYPE.INSTANCE
         port2 :
           name : "launchconfig-sg"
-          type : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+          type : constant.RESTYPE.LC
       }
       {
         port1 :
           name : "instance-sg"
-          type : constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+          type : constant.RESTYPE.INSTANCE
         port2 :
           name : "launchconfig-sg"
           type : "ExpandedAsg"
@@ -167,28 +167,28 @@ define [ "constant", "../ConnectionModel", "../ResourceModel", "component/sgrule
       {
         port1 :
           name : "instance-sg"
-          type : constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+          type : constant.RESTYPE.INSTANCE
         port2 :
           name : "elb-sg-in"
-          type : constant.AWS_RESOURCE_TYPE.AWS_ELB
+          type : constant.RESTYPE.ELB
       }
 
       # Eni
       {
         port1 :
           name : "eni-sg"
-          type : constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+          type : constant.RESTYPE.ENI
         port2 :
           name : "eni-sg"
-          type : constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+          type : constant.RESTYPE.ENI
       }
       {
         port1 :
           name : "launchconfig-sg"
-          type : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+          type : constant.RESTYPE.LC
         port2 :
           name : "eni-sg"
-          type : constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+          type : constant.RESTYPE.ENI
       }
       {
         port1 :
@@ -196,30 +196,30 @@ define [ "constant", "../ConnectionModel", "../ResourceModel", "component/sgrule
           type : "ExpandedAsg"
         port2 :
           name : "eni-sg"
-          type : constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+          type : constant.RESTYPE.ENI
       }
       {
         port1 :
           name : "elb-sg-in"
-          type : constant.AWS_RESOURCE_TYPE.AWS_ELB
+          type : constant.RESTYPE.ELB
         port2 :
           name : "eni-sg"
-          type : constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+          type : constant.RESTYPE.ENI
       }
 
       # LC
       {
         port1 :
           name : "launchconfig-sg"
-          type : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+          type : constant.RESTYPE.LC
         port2 :
           name : "launchconfig-sg"
-          type : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+          type : constant.RESTYPE.LC
       }
       {
         port1 :
           name : "launchconfig-sg"
-          type : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+          type : constant.RESTYPE.LC
         port2 :
           name : "launchconfig-sg"
           type : "ExpandedAsg"
@@ -227,20 +227,20 @@ define [ "constant", "../ConnectionModel", "../ResourceModel", "component/sgrule
       {
         port1 :
           name : "launchconfig-sg"
-          type : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+          type : constant.RESTYPE.LC
         port2 :
           name : "elb-sg-in"
-          type : constant.AWS_RESOURCE_TYPE.AWS_ELB
+          type : constant.RESTYPE.ELB
       }
 
       # Elb
       {
         port1 :
           name : "launchconfig-sg"
-          type : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+          type : constant.RESTYPE.LC
         port2 :
           name : "elb-sg-in"
-          type : constant.AWS_RESOURCE_TYPE.AWS_ELB
+          type : constant.RESTYPE.ELB
       }
       {
         port1 :
@@ -248,13 +248,13 @@ define [ "constant", "../ConnectionModel", "../ResourceModel", "component/sgrule
           type : "ExpandedAsg"
         port2 :
           name : "elb-sg-in"
-          type : constant.AWS_RESOURCE_TYPE.AWS_ELB
+          type : constant.RESTYPE.ELB
       }
     ]
   }, {
     isConnectable : ( p1Comp, p2Comp )->
       tag = p1Comp.type + ">" + p2Comp.type
-      if tag.indexOf( constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance ) isnt -1 and tag.indexOf( constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface ) isnt -1
+      if tag.indexOf( constant.RESTYPE.INSTANCE ) isnt -1 and tag.indexOf( constant.RESTYPE.ENI ) isnt -1
 
         for attach in p1Comp.connectionTargets("EniAttachment")
           if attach is p2Comp

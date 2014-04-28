@@ -106,7 +106,7 @@ define [ '../base/model', 'keypair_model', 'constant', 'Design' ], ( PropertyMod
     setPublicIp : ( value )->
       @lc.set "publicIp", value
       if value
-        Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway ).tryCreateIgw()
+        Design.modelClassForType( constant.RESTYPE.IGW ).tryCreateIgw()
 
     setInstanceType  : ( value ) ->
       @lc.setInstanceType( value )
@@ -133,9 +133,18 @@ define [ '../base/model', 'keypair_model', 'constant', 'Design' ], ( PropertyMod
 
 
       if ami and ami.blockDeviceMapping
-        deivce = ami.blockDeviceMapping[ ami.rootDeviceName ]
+        rdName = ami.rootDeviceName
+        rdEbs  = ami.blockDeviceMapping[ rdName ]
+        if rdName and not rdEbs
+        #rootDeviceName is partition
+          _.each ami.blockDeviceMapping, (value,key) ->
+            if rdName.indexOf(key) isnt -1 and not rdEbs
+              rdEbs  = value
+              rdName = key
+          null
+
         rootDevice =
-          name : ami.rootDeviceName
+          name : rdName
           size : parseInt( comp.get("rdSize"), 10 )
           iops : comp.get("rdIops")
 
@@ -156,7 +165,7 @@ define [ '../base/model', 'keypair_model', 'constant', 'Design' ], ( PropertyMod
 
     addKP : ( kp_name ) ->
 
-      KpModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair )
+      KpModel = Design.modelClassForType( constant.RESTYPE.KP )
 
       for kp in KpModel.allObjects()
         if kp.get("name") is kp_name

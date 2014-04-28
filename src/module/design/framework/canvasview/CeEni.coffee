@@ -1,8 +1,8 @@
 
-define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, constant, CanvasManager )->
+define [ "./CanvasElement", "constant", "CanvasManager","i18n!nls/lang.js" ], ( CanvasElement, constant, CanvasManager,lang )->
 
   CeEni = ()-> CanvasElement.apply( this, arguments )
-  CanvasElement.extend( CeEni, constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface )
+  CanvasElement.extend( CeEni, constant.RESTYPE.ENI )
   ChildElementProto = CeEni.prototype
 
 
@@ -62,6 +62,7 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
           'data-position'  : 'left'
           'data-type'      : 'sg'
           'data-direction' : "in"
+          'data-tooltip'   : lang.ide.PORT_TIP_D
         }),
 
         # Left port
@@ -71,6 +72,7 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
           'data-position'  : 'left'
           'data-type'      : 'attachment'
           'data-direction' : "in"
+          'data-tooltip'   : lang.ide.PORT_TIP_G
         }),
 
         # Right port
@@ -81,6 +83,7 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
           'data-position'  : 'right'
           'data-type'      : 'sg'
           'data-direction' : 'out'
+          'data-tooltip'   : lang.ide.PORT_TIP_F
         }),
 
         # Top port(blue)
@@ -90,6 +93,7 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
           'data-position' : 'top'
           'data-type'     : 'sg'
           'data-direction': 'in'
+          'data-tooltip'  : lang.ide.PORT_TIP_C
         }),
 
         Canvon.group().append(

@@ -78,7 +78,7 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
 
             # subnetMap = {}
 
-            # allSubnet = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet ).allObjects()
+            # allSubnet = Design.modelClassForType( constant.RESTYPE.SUBNET ).allObjects()
 
             # for subnet in allSubnet
             #     subnetMap[ subnet.id ] = subnet.get 'name'
@@ -147,7 +147,7 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
                     instanceState = stateObj.State
                     instanceStateDescription = stateObj.Description
 
-                    instanceCompObj = Design.modelClassForType(constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance).getEffectiveId(instanceId)
+                    instanceCompObj = Design.modelClassForType(constant.RESTYPE.INSTANCE).getEffectiveId(instanceId)
                     instanceUID = instanceCompObj.uid
                     instanceComp = Design.instance().component(instanceUID)
 
@@ -169,7 +169,7 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
                         regionComp = null
                         if instanceComp.parent() and instanceComp.parent().parent()
                             regionComp = instanceComp.parent().parent()
-                            if instanceComp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+                            if instanceComp.type is constant.RESTYPE.LC
                                 regionComp = instanceComp.parent().parent().parent()
                         if regionComp
                             regionName = regionComp.get('name')

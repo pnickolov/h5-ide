@@ -39,7 +39,7 @@ define [ 'i18n!nls/lang.js', 'aws_model', 'ami_model'
                 if result and not result.is_error and result.resolved_data and result.resolved_data.length > 0
 
                     # get vpc_id
-                    vpc_id = result.param[4][ constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC ].id[0]
+                    vpc_id = result.param[4][ constant.RESTYPE.VPC ].id[0]
 
                     # set cacheMap data
                     obj = MC.common.other.setCacheMap vpc_id, result, null, null
@@ -65,7 +65,7 @@ define [ 'i18n!nls/lang.js', 'aws_model', 'ami_model'
                 else if result
 
                     # get vpc_id
-                    vpc_id = result.param[4][ constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC ].id[0]
+                    vpc_id = result.param[4][ constant.RESTYPE.VPC ].id[0]
 
                     # set cacheMap state 'ERROR'
                     obj = MC.common.other.setCacheMap vpc_id, null, 'ERROR', null, null

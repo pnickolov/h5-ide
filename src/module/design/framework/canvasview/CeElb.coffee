@@ -1,8 +1,8 @@
 
-define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, constant, CanvasManager )->
+define [ "./CanvasElement", "constant", "CanvasManager","i18n!nls/lang.js" ], ( CanvasElement, constant, CanvasManager,lang )->
 
   CeElb = ()-> CanvasElement.apply( this, arguments )
-  CanvasElement.extend( CeElb, constant.AWS_RESOURCE_TYPE.AWS_ELB )
+  CanvasElement.extend( CeElb, constant.RESTYPE.ELB )
   ChildElementProto = CeElb.prototype
 
 
@@ -64,6 +64,7 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
           'data-position' : 'right'
           'data-type'     : 'sg'
           'data-direction': 'out'
+          'data-tooltip'  : lang.ide.PORT_TIP_J
         })
       )
 

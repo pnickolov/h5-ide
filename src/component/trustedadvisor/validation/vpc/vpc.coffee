@@ -9,15 +9,15 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo' ], ( constant, MC,
 
 		_.each MC.canvas_data.component, (compObj) ->
 			compType = compObj.type
-			if compType is constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNConnection
+			if compType is constant.RESTYPE.VPN
 				isHaveVPN = true
-			if compType is constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP
+			if compType is constant.RESTYPE.EIP
 				isHaveEIP = true
-			if compType is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+			if compType is constant.RESTYPE.ENI
 				if compObj.index is 0
 					if compObj.resource.AssociatePublicIpAddress
 						isHavePubIP = true
-			if compType is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+			if compType is constant.RESTYPE.LC
 				if compObj.resource.AssociatePublicIpAddress
 					isHavePubIP = true
 			null

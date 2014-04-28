@@ -5,16 +5,16 @@ define [ "Design", "constant" ], ( Design, constant )->
 
     if version >= "2014-02-11" then return
 
-    TYPE = constant.AWS_RESOURCE_TYPE
+    TYPE = constant.RESTYPE
 
     elbs = []
     sgs  = []
 
     for uid, comp of data
       # Collect all Elb and all Sg
-      if comp.type is TYPE.AWS_ELB
+      if comp.type is TYPE.ELB
         elbs.push comp
-      else if comp.type is TYPE.AWS_EC2_SecurityGroup
+      else if comp.type is TYPE.SG
         sgs.push comp
 
     # Change #{elb}-sg to elbsg-#{elb}

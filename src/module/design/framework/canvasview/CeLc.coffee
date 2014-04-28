@@ -1,9 +1,9 @@
 
-define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager" ], ( CanvasElement, CeInstance, constant, CanvasManager )->
+define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager", 'i18n!nls/lang.js' ], ( CanvasElement, CeInstance, constant, CanvasManager, lang )->
 
   CeLc = ()-> CanvasElement.apply( this, arguments )
 
-  CanvasElement.extend.call( CeInstance, CeLc, constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration )
+  CanvasElement.extend.call( CeInstance, CeLc, constant.RESTYPE.LC )
   ChildElementProto = CeLc.prototype
 
 
@@ -91,6 +91,7 @@ define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager" ], ( Can
           'data-position'  : 'left'
           'data-type'      : 'sg'
           'data-direction' : 'in'
+          'data-tooltip'   : lang.ide.PORT_TIP_D
         }),
 
         # right port(blue)
@@ -101,6 +102,7 @@ define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager" ], ( Can
           'data-position'  : 'right'
           'data-type'      : 'sg'
           'data-direction' : 'out'
+          'data-tooltip'   : lang.ide.PORT_TIP_D
         })
 
         # Child number
@@ -153,7 +155,7 @@ define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager" ], ( Can
   ChildElementProto.select = ( subId )->
 
     if subId
-      type = constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+      type = constant.RESTYPE.INSTANCE
     else
       type = @model.type
 

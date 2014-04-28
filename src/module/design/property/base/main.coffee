@@ -89,7 +89,7 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
 
     # handleTypes : String | Array(of string, regex)
                   ( Defined by user )
-        description : This attribute is used to determine which Property should be shown. The String can be one of constant.AWS_RESOURCE_TYPE.
+        description : This attribute is used to determine which Property should be shown. The String can be one of constant.RESTYPE.
         Examples :
             "AWS.EC2.Instance",
             "App:AWS.EC2.Instance"   ( `App:` means it only open when it's app mode )

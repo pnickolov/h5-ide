@@ -22,7 +22,7 @@ define [ "Design", "constant" ], ( Design, constant ) ->
 			resource = design.component( resource_id )
 
 			if resource
-				isELBParent   = resource.type is constant.AWS_RESOURCE_TYPE.AWS_ELB
+				isELBParent   = resource.type is constant.RESTYPE.ELB
 				isStackParent = false
 				resource_id   = resource.id
 			else
@@ -38,7 +38,7 @@ define [ "Design", "constant" ], ( Design, constant ) ->
 			SgAssoModel = Design.modelClassForType( "SgAsso" )
 
 			## ## ## Get All SG
-			for sg in Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup ).allObjects()
+			for sg in Design.modelClassForType( constant.RESTYPE.SG ).allObjects()
 				# Ignore ElbSG if the property panel is not stack/elb
 				if sg.isElbSg() and not ( isELBParent or isStackParent )
 					continue
@@ -143,14 +143,14 @@ define [ "Design", "constant" ], ( Design, constant ) ->
 		getElbNameBySgId : (sgUID)->
 			sg = Design.instance().component( sgUID )
 			if sg.isElbSg()
-				for elb in Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_ELB ).allObjects()
+				for elb in Design.modelClassForType( constant.RESTYPE.ELB ).allObjects()
 					if elb.getElbSg() is sg
 						return elb.get("name")
 
 			""
 
 		createNewSG : ()->
-			SgModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup )
+			SgModel = Design.modelClassForType( constant.RESTYPE.SG )
 			model = new SgModel()
 			component = Design.instance().component( @parent_model.get("uid") )
 			if component

@@ -41,7 +41,7 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 
 			moduleData = {}
 
-			if osPlatform is 'linux'
+			if osPlatform is 'linux' or not osPlatformDistro
 				moduleData = _.extend(moduleData, moduleDataObj.linux) if moduleDataObj.linux
 			else if osPlatform is 'windows'
 				moduleData = _.extend(moduleData, moduleDataObj.windows) if moduleDataObj.windows
@@ -63,6 +63,9 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 
 				supportCMD = false
 				if ((not cmdDistroAry) or (cmdDistroAry and osPlatformDistro in cmdDistroAry)) and osPlatform is 'linux'
+					supportCMD = true
+
+				if not osPlatformDistro
 					supportCMD = true
 
 				cmdObj.support = supportCMD
@@ -197,8 +200,8 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 
 			that = this
 
-			allInstanceModel =  Design.modelClassForType(constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance).allObjects()
-			allLCModel =  Design.modelClassForType(constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration).allObjects()
+			allInstanceModel =  Design.modelClassForType(constant.RESTYPE.INSTANCE).allObjects()
+			allLCModel =  Design.modelClassForType(constant.RESTYPE.LC).allObjects()
 
 			newOldStateIdRefMap = {}
 			_.each newOldStateIdMap, (value, key) ->
@@ -267,7 +270,7 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 			compData = that.get('compData')
 			if compData and compData.name
 				resName = compData.name
-			if compData.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+			if compData.type is constant.RESTYPE.INSTANCE
 				if compData.serverGroupUid is compData.uid
 					if compData.serverGroupName
 						resName = compData.serverGroupName
@@ -296,12 +299,12 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 					if currentCompUID is compUID
 						return
 
-					if compType is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+					if compType is constant.RESTYPE.INSTANCE
 						if compObj.index isnt 0
 							return
 						compName = compObj.serverGroupName
 
-					if compType is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+					if compType is constant.RESTYPE.LC
 						compName = Design.instance().component(compUID).parent().get('name')
 
 					# find all state
@@ -379,13 +382,13 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 					stateNumMap = {}
 
 					resName = compData.name
-					if compData.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+					if compData.type is constant.RESTYPE.INSTANCE
 						if compData.number and compData.number > 1
 							resName = compData.serverGroupName
 
-					if compData.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+					if compData.type is constant.RESTYPE.LC
 						_.each allCompData, (asgCompData) ->
-							if asgCompData.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+							if asgCompData.type is constant.RESTYPE.ASG
 								lcUIDRef = asgCompData.resource.LaunchConfigurationName
 								if lcUIDRef
 									lcUID = MC.extractID(lcUIDRef)
@@ -393,7 +396,7 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 										resName = asgCompData.name
 							null
 
-					# if compData.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+					# if compData.type is constant.RESTYPE.ASG
 					# 	lcUIDRef = compData.resource.LaunchConfigurationName
 					# 	if lcUIDRef
 					# 		lcUID = MC.extractID(lcUIDRef)
@@ -434,7 +437,7 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 				if resUID and _.isNumber(stateNum)
 					compData = allCompData[resUID]
 
-					if compData.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+					if compData.type is constant.RESTYPE.ASG
 						lcUIDRef = compData.resource.LaunchConfigurationName
 						if lcUIDRef
 							lcUID = MC.extractID(lcUIDRef)
@@ -478,7 +481,7 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 				compData = allCompData[resUID]
 				if compData
 					resName = compData.name
-					if compData.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+					if compData.type is constant.RESTYPE.INSTANCE
 						if compData.number and compData.number > 1
 							resName = compData.serverGroupName
 				else
@@ -527,7 +530,7 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 			resultUID = ''
 			$.each allCompData, (uid, resObj) ->
 
-				if resObj.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+				if resObj.type is constant.RESTYPE.INSTANCE
 					if resObj.number and resObj.number > 1
 						if resObj.serverGroupName is resName
 							resultUID = uid

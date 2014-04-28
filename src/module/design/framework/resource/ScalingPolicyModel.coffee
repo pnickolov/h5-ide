@@ -2,7 +2,7 @@
 define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
 
   Model = ResourceModel.extend {
-    type : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_ScalingPolicy
+    type : constant.RESTYPE.SP
 
     defaults : ()->
       cooldown       : ""
@@ -96,7 +96,7 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
 
       if @get("sendNotification")
         # Ensure there's a SNS_Topic
-        TopicModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic )
+        TopicModel = Design.modelClassForType( constant.RESTYPE.TOPIC )
         action_arry.push( TopicModel.ensureExistence().createRef( "TopicArn" ) )
 
       if @get("state") is "ALARM"
@@ -108,7 +108,7 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
 
       alarm =
         name : @get("name") + "-alarm"
-        type : constant.AWS_RESOURCE_TYPE.AWS_CloudWatch_CloudWatch
+        type : constant.RESTYPE.CW
         uid  : alarmData.id
         resource :
           AlarmArn  : alarmData.appId
@@ -133,7 +133,7 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
 
   }, {
 
-    handleTypes : [ constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_ScalingPolicy, constant.AWS_RESOURCE_TYPE.AWS_CloudWatch_CloudWatch ]
+    handleTypes : [ constant.RESTYPE.SP, constant.RESTYPE.CW ]
 
     diffJson : ( newData, oldData )->
       if not ( newData and oldData and _.isEqual( newData, oldData ) )
@@ -143,7 +143,7 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
         if asg
           return {
             id     : asgId
-            type   : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+            type   : constant.RESTYPE.ASG
             name   : asg.get("name")
             change : "Update"
           }
@@ -152,7 +152,7 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
 
     deserialize : ( data, layout_data, resolve ) ->
 
-      if data.type is constant.AWS_RESOURCE_TYPE.AWS_CloudWatch_CloudWatch
+      if data.type is constant.RESTYPE.CW
 
         alarmData = {
           id                 : data.uid

@@ -198,15 +198,15 @@ define [ "constant", "../ConnectionModel", "Design" ], ( constant, ConnectionMod
         # two components, but SgLine of Elb means there are in-rule for Elb.
         # So each time, a SgRuleSet change from 0-in-rule to 1-in-rule. We need to see
         # if there are some Elb here. And if there's elb. update its SgLine.
-        SgModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup )
+        SgModel = Design.modelClassForType( constant.RESTYPE.SG )
         if (oldPort1InRuleCout + oldPort2OutRuleCout is 0) and (@get("in1").length + @get("out2").length > 0)
           for elb in @port1Comp().connectionTargets "SgAsso"
-            if elb.type is constant.AWS_RESOURCE_TYPE.AWS_ELB
+            if elb.type is constant.RESTYPE.ELB
               SgModel.tryDrawLine( elb )
 
         if (oldPort2InRuleCout + oldPort1OutRuleCout is 0) and (@get("in2").length + @get("out1").length > 0)
           for elb in @port2Comp().connectionTargets "SgAsso"
-            if elb.type is constant.AWS_RESOURCE_TYPE.AWS_ELB
+            if elb.type is constant.RESTYPE.ELB
               SgModel.tryDrawLine( elb )
 
       null
@@ -280,16 +280,16 @@ define [ "constant", "../ConnectionModel", "Design" ], ( constant, ConnectionMod
         # two components, but SgLine of Elb means there are in-rule for Elb.
         # So each time, a SgRuleSet change from 0-in-rule to 1-in-rule. We need to see
         # if there are some Elb here. And if there's elb. update its SgLine.
-        SgModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup )
+        SgModel = Design.modelClassForType( constant.RESTYPE.SG )
 
         if (@get("in1").length + @get("out2").length is 0) and (oldPort1InRuleCout + oldPort2OutRuleCout > 0)
           for elb in @port1Comp().connectionTargets "SgAsso"
-            if elb.type is constant.AWS_RESOURCE_TYPE.AWS_ELB
+            if elb.type is constant.RESTYPE.ELB
               sgline.validate() for sgline in elb.connections("SgRuleLine")
 
         if (@get("in2").length + @get("out1").length is 0) and (oldPort2InRuleCout + oldPort1OutRuleCout > 0)
           for elb in @port2Comp().connectionTargets "SgAsso"
-            if elb.type is constant.AWS_RESOURCE_TYPE.AWS_ELB
+            if elb.type is constant.RESTYPE.ELB
               sgline.validate() for sgline in elb.connections("SgRuleLine")
 
       console.assert( found, "Rule is not found when removing SG Rule", rule )

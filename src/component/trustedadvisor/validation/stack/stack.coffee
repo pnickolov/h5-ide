@@ -123,8 +123,8 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'stack_service', 'ami_se
 			amiAry = []
 			instanceAMIMap = {}
 			_.each MC.canvas_data.component, (compObj) ->
-				if compObj.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance or
-					compObj.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+				if compObj.type is constant.RESTYPE.INSTANCE or
+					compObj.type is constant.RESTYPE.LC
 						imageId = compObj.resource.ImageId
 						if imageId
 							if not instanceAMIMap[imageId]
@@ -169,7 +169,7 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'stack_service', 'ami_se
 
 										infoObjType = 'Instance'
 										infoTagType = 'instance'
-										if instanceType is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+										if instanceType is constant.RESTYPE.LC
 											infoObjType = 'Launch Configuration'
 											infoTagType = 'lc'
 										tipInfo = sprintf lang.ide.TA_MSG_ERROR_STACK_HAVE_NOT_EXIST_AMI, infoObjType, infoTagType, instanceName, amiId
@@ -199,7 +199,7 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'stack_service', 'ami_se
 
 										infoObjType = 'Instance'
 										infoTagType = 'instance'
-										if instanceType is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+										if instanceType is constant.RESTYPE.LC
 											infoObjType = 'Launch Configuration'
 											infoTagType = 'lc'
 										tipInfo = sprintf lang.ide.TA_MSG_ERROR_STACK_HAVE_NOT_AUTHED_AMI, infoObjType, infoTagType, instanceName, amiId
@@ -231,8 +231,8 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'stack_service', 'ami_se
 		amiAry = []
 		instanceAMIMap = {}
 		_.each MC.canvas_data.component, (compObj) ->
-			if compObj.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance or
-				compObj.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+			if compObj.type is constant.RESTYPE.INSTANCE or
+				compObj.type is constant.RESTYPE.LC
 					imageId = compObj.resource.ImageId
 					if imageId
 						if not instanceAMIMap[imageId]
@@ -260,7 +260,7 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'stack_service', 'ami_se
 
 					infoObjType = 'Instance'
 					infoTagType = 'instance'
-					if instanceType is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+					if instanceType is constant.RESTYPE.LC
 						infoObjType = 'Launch Configuration'
 						infoTagType = 'lc'
 					tipInfo = sprintf lang.ide.TA_MSG_ERROR_STACK_HAVE_NOT_EXIST_AMI, infoObjType, infoTagType, instanceName, amiId

@@ -5,7 +5,7 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
 
     type : "RTB_Asso"
 
-    oneToMany : constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
+    oneToMany : constant.RESTYPE.RT
 
     defaults :
       lineType : "association"
@@ -14,17 +14,17 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
     portDefs :
       port1 :
         name : "subnet-assoc-out"
-        type : constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
+        type : constant.RESTYPE.SUBNET
       port2 :
         name : "rtb-src"
-        type : constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
+        type : constant.RESTYPE.RT
 
     serialize : ( components )->
       # Do nothing if the line is implicit
       if @get("implicit") then return
 
-      sb  = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet )
-      rtb = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable )
+      sb  = @getTarget( constant.RESTYPE.SUBNET )
+      rtb = @getTarget( constant.RESTYPE.RT )
 
       rtb_data = components[ rtb.id ]
 
@@ -38,14 +38,14 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
     remove : ()->
       # When an RtbAsso is removed, and its subnet still remains and the subnet has no
       # other RtbAsso, connects the subnet to the mainRTB.
-      subnet = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet )
+      subnet = @getTarget( constant.RESTYPE.SUBNET )
 
       if not subnet.isRemoved()
         subnetRtbAsso = subnet.connections("RTB_Asso")
 
         if subnetRtbAsso.length is 0 or (subnetRtbAsso.length is 1 and subnetRtbAsso[0] is this)
 
-          oldRtb = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable )
+          oldRtb = @getTarget( constant.RESTYPE.RT )
 
           if oldRtb.get("main")
             # the RtbAsso will not be removed if the Rtb is MainRTB
@@ -57,7 +57,7 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
           ConnectionModel.prototype.remove.apply this, arguments
 
           # Connects to mainRTB
-          RtbModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable )
+          RtbModel = Design.modelClassForType( constant.RESTYPE.RT )
           newRtb   = RtbModel.getMainRouteTable()
 
           # If the user disconnect the subent <=> mainRtb,

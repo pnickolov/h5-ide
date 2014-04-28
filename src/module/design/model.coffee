@@ -261,7 +261,7 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'state
 
             try
 
-                asg_list = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group ).allObjects()
+                asg_list = Design.modelClassForType( constant.RESTYPE.ASG ).allObjects()
 
                 for asg in asg_list
 

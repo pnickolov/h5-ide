@@ -531,7 +531,7 @@ define [ 'event',
 
     }
 
-    res_type = constant.AWS_RESOURCE_TYPE
+    res_type = constant.RESTYPE
     itemDisableToolTip = {}
     itemEnableToolTip  = {}
 

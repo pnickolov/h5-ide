@@ -15,16 +15,16 @@ define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, const
         attr =
           name : "Instance-ENI Attachment"
           eniAsso : {
-            instance : cn.getTarget( constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance  ).get("name")
-            eni      : cn.getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface ).get("name")
+            instance : cn.getTarget( constant.RESTYPE.INSTANCE  ).get("name")
+            eni      : cn.getTarget( constant.RESTYPE.ENI ).get("name")
           }
 
       else if cn.type is "ElbSubnetAsso"
         attr =
           name : "Load Balancer-Subnet Association"
           subnetAsso : {
-            elb : cn.getTarget( constant.AWS_RESOURCE_TYPE.AWS_ELB ).get("name")
-            subnet : cn.getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet  ).get("name")
+            elb : cn.getTarget( constant.RESTYPE.ELB ).get("name")
+            subnet : cn.getTarget( constant.RESTYPE.SUBNET  ).get("name")
           }
 
       @set attr

@@ -14,7 +14,7 @@ define [ '../base/main',
 
     ElbModule = PropertyModule.extend {
 
-        handleTypes : constant.AWS_RESOURCE_TYPE.AWS_ELB
+        handleTypes : constant.RESTYPE.ELB
 
         onUnloadSubPanel : ( id )->
             sglist_main.onUnloadSubPanel id

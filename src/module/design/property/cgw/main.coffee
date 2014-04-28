@@ -12,7 +12,7 @@ define [ '../base/main',
 
     CGWModule = PropertyModule.extend {
 
-        handleTypes : constant.AWS_RESOURCE_TYPE.AWS_VPC_CustomerGateway
+        handleTypes : constant.RESTYPE.CGW
 
         setupStack : () ->
             me = this

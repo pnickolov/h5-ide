@@ -50,7 +50,7 @@ define [ "Design",
         otherPoliciesMap: {}
       }
 
-    type : constant.AWS_RESOURCE_TYPE.AWS_ELB
+    type : constant.RESTYPE.ELB
 
     newNameTmpl : "load-balancer-"
 
@@ -164,7 +164,7 @@ define [ "Design",
 
       if isInternal
         # Redraw SG Line
-        SgModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup )
+        SgModel = Design.modelClassForType( constant.RESTYPE.SG )
         SgModel.tryDrawLine( @ )
 
       else
@@ -185,7 +185,7 @@ define [ "Design",
       if fee
         return {
           resource    : @get("name")
-          type        : constant.AWS_RESOURCE_TYPE.AWS_ELB
+          type        : constant.RESTYPE.ELB
           fee         : fee * 24 * 30
           formatedFee : fee + "/hr"
         }
@@ -288,7 +288,7 @@ define [ "Design",
 
   }, {
 
-    handleTypes : constant.AWS_RESOURCE_TYPE.AWS_ELB
+    handleTypes : constant.RESTYPE.ELB
 
     deserialize : ( data, layout_data, resolve )->
 

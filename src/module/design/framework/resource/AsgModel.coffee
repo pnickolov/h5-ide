@@ -2,13 +2,13 @@
 define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "constant", "i18n!nls/lang.js" ], ( ResourceModel, ComplexResModel, GroupModel, Design, constant, lang )->
 
   NotificationModel = ResourceModel.extend {
-    type : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_NotificationConfiguration
+    type : constant.RESTYPE.NC
 
     isUsed : ()->
       @get("instanceLaunch") or @get("instanceLaunchError") or @get("instanceTerminate") or @get("instanceTerminateError") or @get("test")
 
     initialize : ()->
-      Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic ).ensureExistence()
+      Design.modelClassForType( constant.RESTYPE.TOPIC ).ensureExistence()
       null
 
     serialize : ()->
@@ -16,7 +16,7 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
         return
 
       # Ensure there's a SNS_Topic
-      topic = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic ).ensureExistence()
+      topic = Design.modelClassForType( constant.RESTYPE.TOPIC ).ensureExistence()
 
       notifies = []
       for key, name of NotificationModel.typeMap
@@ -35,7 +35,7 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
 
   }, {
 
-    handleTypes : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_NotificationConfiguration
+    handleTypes : constant.RESTYPE.NC
 
     diffJson : ()-> # Disable diff for this model
 
@@ -89,7 +89,7 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
       # Then we do not create the ExpandAsg
       list = [ attributes.originalAsg ].concat( attributes.originalAsg.get("expandedList") )
       for expanded in list
-        if attributes.parent.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
+        if attributes.parent.type is constant.RESTYPE.SUBNET
           if attributes.parent.parent() is expanded.parent().parent()
             return
         else
@@ -106,7 +106,7 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
       for expanded in [asg].concat( asg.get("expandedList") )
         if expanded is @ then continue
 
-        if newParent.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
+        if newParent.type is constant.RESTYPE.SUBNET
           if newParent.parent() is expanded.parent().parent()
             return false
         else
@@ -144,7 +144,7 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
     #   expandedList.splice( expandedList.indexOf(@), 1 )
 
     #   ElbAmiAsso = Design.modelClassForType( "ElbAmiAsso" )
-    #   lcAsso = new ElbAmiAsso( asg.get("lc"), cn.getTarget( constant.AWS_RESOURCE_TYPE.AWS_ELB ))
+    #   lcAsso = new ElbAmiAsso( asg.get("lc"), cn.getTarget( constant.RESTYPE.ELB ))
     #   lcAsso.remove()
 
     #   expandedList.push( @ )
@@ -197,12 +197,12 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
       expandedList : []
       policies : []
 
-    type : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+    type : constant.RESTYPE.ASG
     newNameTmpl : "asg"
 
     isReparentable : ( newParent )->
       for expand in @get("expandedList")
-        if newParent.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
+        if newParent.type is constant.RESTYPE.SUBNET
           if newParent.parent() is expand.parent().parent()
             return sprintf lang.ide.CVS_MSG_ERR_DROP_ASG, @get("name"), newParent.parent().get("name")
         else
@@ -215,7 +215,7 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
       lc = @get("lc")
       if not lc then return null
 
-      InstanceModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance )
+      InstanceModel = Design.modelClassForType( constant.RESTYPE.INSTANCE )
       lcPrice = InstanceModel.prototype.getCost.call( lc, priceMap, currency )
       if not lcPrice then return null
 
@@ -410,7 +410,7 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
       null
 
     getExpandSubnets : ()->
-      if @parent().type isnt constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
+      if @parent().type isnt constant.RESTYPE.SUBNET
         return []
 
       subnets = [ @parent() ]
@@ -425,7 +425,7 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
         subnets.push expand.parent()
       subnets = _.uniq subnets
 
-      if @parent().type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
+      if @parent().type is constant.RESTYPE.SUBNET
         azs = _.uniq( _.map subnets, (sb)-> sb.parent() )
       else
         azs = subnets
@@ -438,7 +438,7 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
         subnets.push expand.parent()
       subnets = _.uniq subnets
 
-      if @parent().type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
+      if @parent().type is constant.RESTYPE.SUBNET
         azs = _.uniq( _.map subnets, (sb)-> sb.parent().createRef() )
         subnets = _.map subnets, (sb)-> sb.createRef( "SubnetId" )
       else
@@ -484,7 +484,7 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
 
   }, {
 
-    handleTypes : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+    handleTypes : constant.RESTYPE.ASG
 
     deserialize : ( data, layout_data, resolve )->
 

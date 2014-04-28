@@ -14,6 +14,7 @@
     Module Name
       RES     : resource panel
       PROP    : property
+
       CVS     : canvas
       TOOL    : toolbar
       HEAD    : header
@@ -1337,6 +1338,14 @@ module.exports =
 
     PROP_INSTANCE_TIP_PUBLIC_IP_CANNOT_BE_ASSOCIATED:
       en: "Public IP cannot be associated if instance is launching with more than one network interface."
+      zh: ""
+
+    PROP_AMI_STACK_NOT_AVAILABLE:
+      en: "<p>This AMI is not available. It may have been deleted by its owner or not shared with your AWS account. </p><p>Please change to another AMI.</p>"
+      zh: ""
+
+    PROP_AMI_APP_NOT_AVAILABLE:
+      en: "This AMI's infomation is unavailable."
       zh: ""
 
     PROP_STACK_AMAZON_ARN:
@@ -3720,6 +3729,14 @@ module.exports =
       en: "Image Location"
       zh: "映像位置"
 
+    DASH_BUB_IMAGEOWNERALIAS:
+      en: "Image Owner Alias"
+      zh: "映像所有者别名"
+
+    DASH_BUB_IMAGEOWNERID:
+      en: "Image Owner ID"
+      zh: "映像所有者ID"
+
     DASH_BUB_ISPUBLIC:
       en: "Public"
       zh: "是否公用"
@@ -3960,7 +3977,61 @@ module.exports =
       en: "update"
       zh: "更新错误"
 
-    ##### Modal Confirm Stop/Terminate App
+    #  port tooltip
+
+    PORT_TIP_A:
+      en: 'Connect to subnet to make association'
+      zh: ''
+
+    PORT_TIP_B:
+      en: 'Connect to Internet Gateway, Virtual Private Gateway, instance or network interface to create route.'
+      zh: ''
+
+    PORT_TIP_C:
+        en: 'Connect to route table to create route'
+        zh: ''
+
+    PORT_TIP_D:
+        en: 'Connect to instance, auto scaling group, network interface or load balancer to create security group rule.'
+        zh: ''
+
+    PORT_TIP_E:
+      en: 'Connect to network interface to attach.'
+      zh: ''
+
+    PORT_TIP_F:
+      en: 'Connect to instance, auto scaling group or network interface to create security group rule.'
+      zh: ''
+
+    PORT_TIP_G:
+      en: 'Connect to instance to attach'
+      zh: ''
+
+    PORT_TIP_H:
+      en: 'Connect to Customer Gateway to create VPN'
+      zh: ''
+
+    PORT_TIP_I:
+      en: 'Connect to Virtua Private Gateway to create VPN'
+      zh: ''
+
+    PORT_TIP_J:
+      en: 'Connect to instance or launch configuration to register it behind load balancer'
+      zh: ''
+
+    PORT_TIP_K:
+      en: 'Connect to subnet to associate'
+      zh: ''
+
+    PORT_TIP_L:
+      en: 'Connect to load balancer to associate'
+      zh: ''
+
+    PORT_TIP_M:
+      en: 'Connect to route table to assoicate'
+      zh: ''
+
+  ##### Modal Confirm Stop/Terminate App
 
     POP_CONFIRM_STOP_ASG:
       en: "Auto scaling group in this app will be deleted when it is stopped."
@@ -4093,7 +4164,7 @@ module.exports =
     ## State Editor Special State
 
     STATE_UNKNOWN_DISTRO_LBL:
-      en: "The AMI's distro cannot be recognised. Some commands may not apply to this AMI."
+      en: "The AMI's distro cannot be recognised. Some state modules may not apply to this AMI."
       zh: ""
 
     STATE_NO_STATE_LBL:
@@ -4700,6 +4771,10 @@ module.exports =
     ##### Trust Advisor
 
   service:
+
+    NETWORK_ERROR:
+      en: "Service is temporarily unavailable. Please try again later."
+      zh: "服务暂时不可用, 请稍后重试"
 
     "ERROR_CODE_-1_MESSAGE_AWS_RESOURCE":
       en: "Sorry, we are suffering from some technical issues, please click the refresh icon at top right corner of Global tab again."

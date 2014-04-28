@@ -16,7 +16,7 @@ define [ "./CanvasElement", "CanvasManager", "constant" ], ( CanvasElement, Canv
   ChildElementProto.select = ()->
     # QuickFix for Rtb_Asso
     if @type is "RTB_Route"
-      @doSelect( @type, @model.getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable ).id, @id )
+      @doSelect( @type, @model.getTarget( constant.RESTYPE.RT ).id, @id )
     else
       @doSelect( @type, @id, @id )
     true

@@ -1,7 +1,7 @@
 define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo' ], ( constant, MC, lang, resultVO ) ->
 
     isHasIGW = () ->
-        if not _hasType(constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP) or _hasType(constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway)
+        if not _hasType(constant.RESTYPE.EIP) or _hasType(constant.RESTYPE.IGW)
             return null
 
         tipInfo = lang.ide.TA_MSG_ERROR_HAS_EIP_NOT_HAS_IGW

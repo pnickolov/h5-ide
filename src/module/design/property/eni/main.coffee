@@ -22,7 +22,7 @@ define [ "../base/main",
 
         ideEvents : ideEvents
 
-        handleTypes : [ constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface, "component_eni_group" ]
+        handleTypes : [ constant.RESTYPE.ENI, "component_eni_group" ]
 
         onUnloadSubPanel : ( id )->
             sglist_main.onUnloadSubPanel id

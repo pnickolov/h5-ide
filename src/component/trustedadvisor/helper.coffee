@@ -56,7 +56,7 @@ define [ 'constant', 'MC', 'i18n!nls/lang.js', 'Design', 'underscore' ], ( CONST
         eni:
             getByInstance: ( instance ) ->
                 _.filter MC.canvas_data.component, ( component ) ->
-                    if component.type is CONST.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+                    if component.type is CONST.RESTYPE.ENI
                         if MC.extractID( component.resource.Attachment.InstanceId ) is instance.uid
                             true
 
@@ -64,18 +64,18 @@ define [ 'constant', 'MC', 'i18n!nls/lang.js', 'Design', 'underscore' ], ( CONST
             get: ( component ) ->
                 sgs = []
                 # LC
-                if component.type is CONST.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+                if component.type is CONST.RESTYPE.LC
                     for sgId in component.resource.SecurityGroups
                         sgs.push Helper.component.get MC.extractID sgId
                 # instance
-                else if component.type is CONST.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+                else if component.type is CONST.RESTYPE.INSTANCE
                     enis = Helper.eni.getByInstance component
 
                     for eni in enis
                         for sg in eni.resource.GroupSet
                             sgs.push Helper.component.get MC.extractID sg.GroupId
                 # ELB
-                else if component.type is CONST.AWS_RESOURCE_TYPE.AWS_ELB
+                else if component.type is CONST.RESTYPE.ELB
                     for sgId in component.resource.SecurityGroups
                         sgs.push Helper.component.get MC.extractID sgId
 

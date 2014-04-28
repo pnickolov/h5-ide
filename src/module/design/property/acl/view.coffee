@@ -58,7 +58,7 @@ define [ '../base/view',
 
         showCreateRuleModal : () ->
 
-            SubnetModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet )
+            SubnetModel = Design.modelClassForType( constant.RESTYPE.SUBNET )
 
             data = {
                 classic : false

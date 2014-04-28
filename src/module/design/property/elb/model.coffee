@@ -34,11 +34,11 @@ define [ '../base/model', "event", "Design", 'constant' ], ( PropertyModel, ide_
             # Get AZ List
             if not attr.isVpc
 
-                AzModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone )
+                AzModel = Design.modelClassForType( constant.RESTYPE.AZ )
 
                 connectedAzMap = {}
                 for ami in component.connectionTargets("ElbAmiAsso")
-                    if ami.parent().type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+                    if ami.parent().type is constant.RESTYPE.ASG
                         az = ami.parent().parent()
                     else
                         az = ami.parent()
@@ -46,7 +46,7 @@ define [ '../base/model', "event", "Design", 'constant' ], ( PropertyModel, ide_
 
                 reg = /-[\w]/g
                 replaceFunc = (g)-> " " + g[1].toUpperCase()
-                filterFunc  = (ch)-> ch.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+                filterFunc  = (ch)-> ch.type is constant.RESTYPE.INSTANCE
 
                 azArr = AzModel.allPossibleAZ()
                 for az in azArr
@@ -68,7 +68,7 @@ define [ '../base/model', "event", "Design", 'constant' ], ( PropertyModel, ide_
 
             # Get SSL Cert List
             currentSSLCert = component.connectionTargets("SslCertUsage")[0]
-            allCertModelAry = Design.modelClassForType(constant.AWS_RESOURCE_TYPE.AWS_IAM_ServerCertificate).allObjects()
+            allCertModelAry = Design.modelClassForType(constant.RESTYPE.IAM).allObjects()
 
             attr.noSSLCert = true
             attr.sslCertItem = _.map allCertModelAry, (sslCertModel) ->
@@ -114,7 +114,7 @@ define [ '../base/model', "event", "Design", 'constant' ], ( PropertyModel, ide_
 
             # Trigger an event to tell canvas that we want an IGW
             if not value
-                Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway ).tryCreateIgw()
+                Design.modelClassForType( constant.RESTYPE.IGW ).tryCreateIgw()
             null
 
         setElbCrossAZ : ( value )->
@@ -162,7 +162,7 @@ define [ '../base/model', "event", "Design", 'constant' ], ( PropertyModel, ide_
             null
 
         addCert : ( value )->
-            SslCertModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_IAM_ServerCertificate )
+            SslCertModel = Design.modelClassForType( constant.RESTYPE.IAM )
             (new SslCertModel( value )).assignTo( Design.instance().component( @get("uid") ) )
             null
 
@@ -189,7 +189,7 @@ define [ '../base/model', "event", "Design", 'constant' ], ( PropertyModel, ide_
 
         getOtherCertName : (currentName) ->
 
-            allCertModelAry = Design.modelClassForType(constant.AWS_RESOURCE_TYPE.AWS_IAM_ServerCertificate).allObjects()
+            allCertModelAry = Design.modelClassForType(constant.RESTYPE.IAM).allObjects()
 
             otherCertNameAry = []
             _.each allCertModelAry, (sslCertModel) ->

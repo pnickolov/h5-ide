@@ -11,7 +11,7 @@ define [ "../ComplexResModel", "Design", "../connection/Route", "../connection/R
       height   : 8
       implicit : false
 
-    type : constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
+    type : constant.RESTYPE.RT
     newNameTmpl : "RT-"
 
     initialize : ()->
@@ -36,7 +36,7 @@ define [ "../ComplexResModel", "Design", "../connection/Route", "../connection/R
       @draw()
 
       # Update all implicitly association to subnets
-      subnets = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet ).allObjects()
+      subnets = Design.modelClassForType( constant.RESTYPE.SUBNET ).allObjects()
 
       for sb in subnets
         asso = sb.connections("RTB_Asso")[0]
@@ -56,7 +56,7 @@ define [ "../ComplexResModel", "Design", "../connection/Route", "../connection/R
       # This happens in deserializing `Resource Import` data.
       if not component then return
 
-      if component.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and component.embedInstance()
+      if component.type is constant.RESTYPE.ENI and component.embedInstance()
         component = component.embedInstance()
 
       # Find out if we already have one connection between this rtb to targetId
@@ -100,7 +100,7 @@ define [ "../ComplexResModel", "Design", "../connection/Route", "../connection/R
     getMainRouteTable : ()->
       _.find Model.allObjects(), ( obj )-> obj.get("main")
 
-    handleTypes  : constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
+    handleTypes  : constant.RESTYPE.RT
     resolveFirst : true
 
     preDeserialize : ( data, layout_data )->

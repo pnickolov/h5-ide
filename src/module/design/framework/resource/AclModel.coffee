@@ -8,14 +8,14 @@ define [ "../ComplexResModel", "../ConnectionModel", "constant" ], ( ComplexResM
   # AclAsso represent a connection between a subnet and a networkacl
   AclAsso = ConnectionModel.extend {
     type : "AclAsso"
-    oneToMany : constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl
+    oneToMany : constant.RESTYPE.ACL
 
     defaults :
       associationId : ""
 
     serialize : ( components )->
-      sb  = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet )
-      acl = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl )
+      sb  = @getTarget( constant.RESTYPE.SUBNET )
+      acl = @getTarget( constant.RESTYPE.ACL )
 
       components[ acl.id ].resource.AssociationSet.push {
         NetworkAclAssociationId : @get("associationId")
@@ -57,7 +57,7 @@ define [ "../ComplexResModel", "../ConnectionModel", "constant" ], ( ComplexResM
 
   Model = ComplexResModel.extend {
 
-    type : constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl
+    type : constant.RESTYPE.ACL
     newNameTmpl : "CustomACL-"
 
     defaults : ()->
@@ -135,7 +135,7 @@ define [ "../ComplexResModel", "../ConnectionModel", "constant" ], ( ComplexResM
     getAssoCount : ()-> @connections().length
 
     serialize : ()->
-      vpc = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC ).theVPC()
+      vpc = Design.modelClassForType( constant.RESTYPE.VPC ).theVPC()
 
       ruleSet = []
 
@@ -174,7 +174,7 @@ define [ "../ComplexResModel", "../ConnectionModel", "constant" ], ( ComplexResM
 
   }, {
 
-    handleTypes  : constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl
+    handleTypes  : constant.RESTYPE.ACL
     resolveFirst : true
 
     getDefaultAcl : ()->

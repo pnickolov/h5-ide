@@ -32,38 +32,6 @@ define ['MC', 'i18n!nls/lang.js'], ( MC, lang ) ->
 		"AWS.SNS.Topic"                 : ""
 	}
 
-	#private
-	AWS_RESOURCE_TYPE = {
-		AWS_EC2_AvailabilityZone            : "AWS.EC2.AvailabilityZone"
-		AWS_EC2_Instance                    : "AWS.EC2.Instance"
-		AWS_EC2_KeyPair                     : "AWS.EC2.KeyPair"
-		AWS_EC2_SecurityGroup               : "AWS.EC2.SecurityGroup"
-		AWS_EC2_EIP                         : "AWS.EC2.EIP"
-		AWS_EC2_AMI                         : "AWS.EC2.AMI"
-		AWS_EBS_Volume                      : "AWS.EC2.EBS.Volume"
-		AWS_EBS_Snapshot                    : "AWS.EC2.EBS.Snapshot"
-		AWS_ELB                             : "AWS.ELB"
-		AWS_VPC_VPC                         : "AWS.VPC.VPC"
-		AWS_VPC_Subnet                      : "AWS.VPC.Subnet"
-		AWS_VPC_InternetGateway             : "AWS.VPC.InternetGateway"
-		AWS_VPC_RouteTable                  : "AWS.VPC.RouteTable"
-		AWS_VPC_VPNGateway                  : "AWS.VPC.VPNGateway"
-		AWS_VPC_CustomerGateway             : "AWS.VPC.CustomerGateway"
-		AWS_VPC_NetworkInterface            : "AWS.VPC.NetworkInterface"
-		AWS_VPC_DhcpOptions                 : "AWS.VPC.DhcpOptions"
-		AWS_VPC_VPNConnection               : "AWS.VPC.VPNConnection"
-		AWS_VPC_NetworkAcl                  : "AWS.VPC.NetworkAcl"
-		AWS_IAM_ServerCertificate           : "AWS.IAM.ServerCertificate"
-		AWS_AutoScaling_Group                       : 'AWS.AutoScaling.Group'
-		AWS_AutoScaling_LaunchConfiguration         : 'AWS.AutoScaling.LaunchConfiguration'
-		AWS_AutoScaling_NotificationConfiguration   : 'AWS.AutoScaling.NotificationConfiguration'
-		AWS_AutoScaling_ScalingPolicy               : 'AWS.AutoScaling.ScalingPolicy'
-		AWS_AutoScaling_ScheduledActions            : 'AWS.AutoScaling.ScheduledActions'
-		AWS_CloudWatch_CloudWatch                   : 'AWS.CloudWatch.CloudWatch'
-		AWS_SNS_Subscription                        : 'AWS.SNS.Subscription'
-		AWS_SNS_Topic                               : 'AWS.SNS.Topic'
-	}
-
 	# A short version
 	RESTYPE =
 		AZ            						: "AWS.EC2.AvailabilityZone"
@@ -95,42 +63,6 @@ define ['MC', 'i18n!nls/lang.js'], ( MC, lang ) ->
 		SUBSCRIPTION                        : 'AWS.SNS.Subscription'
 		TOPIC                               : 'AWS.SNS.Topic'
 
-	# AWS_RESOURCE_TYPE = {}
-
-	# AWS_RESOURCE_TYPES = [
-	#   "AWS.EC2.AvailabilityZone"
-	#   "AWS.EC2.Instance"
-	#   "AWS.EC2.KeyPair"
-	#   "AWS.EC2.SecurityGroup"
-	#   "AWS.EC2.EIP"
-	#   "AWS.EC2.AMI"
-	#   "AWS.EC2.EBS.Volume"
-	#   "AWS.EC2.EBS.Snapshot"
-	#   "AWS.ELB"
-	#   "AWS.VPC.VPC"
-	#   "AWS.VPC.Subnet"
-	#   "AWS.VPC.InternetGateway"
-	#   "AWS.VPC.RouteTable"
-	#   "AWS.VPC.VPNGateway"
-	#   "AWS.VPC.CustomerGateway"
-	#   "AWS.VPC.NetworkInterface"
-	#   "AWS.VPC.DhcpOptions"
-	#   "AWS.VPC.VPNConnection"
-	#   "AWS.VPC.NetworkAcl"
-	#   "AWS.IAM.ServerCertificate"
-	#   #
-	#   "AWS.AutoScaling.Group"
-	#   "AWS.AutoScaling.LaunchConfiguration"
-	#   "AWS.AutoScaling.NotificationConfiguration"
-	#   "AWS.AutoScaling.ScalingPolicy"
-	#   "AWS.AutoScaling.ScheduledActions"
-	#   "AWS.CloudWatch.CloudWatch"
-	#   "AWS.SNS.Subscription"
-	#   "AWS.SNS.Topic"
-	# ]
-
-	# for value in AWS_RESOURCE_TYPES
-	#   AWS_RESOURCE_TYPE[ value.replace('.', '_') ] = value
 
 	#private
 	AWS_RESOURCE_SHORT_TYPE = {
@@ -409,9 +341,10 @@ use redirection server name:i:0\n"
 
 	#public
 	AWS_RESOURCE_KEY        : AWS_RESOURCE_KEY
+
 	INSTANCE_TYPE           : INSTANCE_TYPE
 	INSTANCE_STATES         : INSTANCE_STATES
-	AWS_RESOURCE_TYPE       : AWS_RESOURCE_TYPE
+
 	AWS_RESOURCE_SHORT_TYPE : AWS_RESOURCE_SHORT_TYPE
 	REGION_KEYS             : REGION_KEYS
 	REGION_SHORT_LABEL      : REGION_SHORT_LABEL

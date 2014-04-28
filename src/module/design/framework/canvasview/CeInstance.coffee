@@ -2,7 +2,7 @@
 define [ "i18n!nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "Design" ], ( lang, CanvasElement, constant, CanvasManager, Design )->
 
   CeInstance = ()-> CanvasElement.apply( this, arguments )
-  CanvasElement.extend( CeInstance, constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance )
+  CanvasElement.extend( CeInstance, constant.RESTYPE.INSTANCE )
   ChildElementProto = CeInstance.prototype
 
 
@@ -92,6 +92,7 @@ define [ "i18n!nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "De
           'data-position'  : 'left' #port position: for calc point of junction
           'data-type'      : 'sg'   #color of line
           'data-direction' : 'in'   #direction
+          'data-tooltip'   : lang.ide.PORT_TIP_D
         }),
 
         # right port(blue)
@@ -102,6 +103,7 @@ define [ "i18n!nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "De
           'data-position'  : 'right'
           'data-type'      : 'sg'
           'data-direction' : 'out'
+          'data-tooltip'   : lang.ide.PORT_TIP_D
         })
 
         # RTB/ENI Port
@@ -257,7 +259,7 @@ define [ "i18n!nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "De
 
     if data and data.blockDeviceMapping and data.blockDeviceMapping.item
       for v in data.blockDeviceMapping.item
-        if data.rootDeviceName is v.deviceName
+        if data.rootDeviceName.indexOf(v.deviceName) isnt -1
           continue
         volume = resource_list[ v.ebs.volumeId ]
         if volume
@@ -269,7 +271,7 @@ define [ "i18n!nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "De
             id         : volume.volumeId
           }
         else
-          if @type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+          if @type is constant.RESTYPE.LC
             #in asg,volume data maybe delay
             vl.push {
               name       : v.deviceName
@@ -302,13 +304,13 @@ define [ "i18n!nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "De
       # # # Quick Hack # # #
       Do not allow adding volume to existing LC in appUpdate
     ###
-    if Design.instance().modeIsAppEdit() and @model.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration and @model.get("appId")
+    if Design.instance().modeIsAppEdit() and @model.type is constant.RESTYPE.LC and @model.get("appId")
       notification "error", lang.ide.NOTIFY_MSG_WARN_OPERATE_NOT_SUPPORT_YET
       return false
 
     attribute = $.extend {}, attribute
     attribute.owner = @model
-    VolumeModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume )
+    VolumeModel = Design.modelClassForType( constant.RESTYPE.VOL )
     v = new VolumeModel( attribute )
     if v.id
       return {

@@ -184,16 +184,18 @@ define [ 'i18n!nls/lang.js',
 
                 region_name = result.param[3]
                 console.log 'EC2_AMI_DESC_IMAGES_RETURN: ' + region_name
-
-                if !result.is_error and result.param[5] and result.param[5][0] and result.param[5][0] == 'self'
+                if !result.is_error and ((result.param[6] and result.param[6][0] and result.param[6][0] == 'self') or (result.param[5] and result.param[5][0]=='self'))
                 #####my ami
+                    if result.param[6]?[0] == 'self'
+                        MC.data.config[region_name].exec = true
+                    else if result.param[5]?[0] == 'self'
+                        MC.data.config[region_name].owner = true
 
                     console.log 'EC2_AMI_DESC_IMAGES_RETURN: My AMI'
 
                     my_ami_list = []
 
                     #cache my ami to my_ami
-                    MC.data.config[region_name].my_ami = []
 
                     if result.resolved_data
 
@@ -218,16 +220,14 @@ define [ 'i18n!nls/lang.js',
                             null
 
                         my_ami_list = ami_list
-
-                        MC.data.config[region_name].my_ami = ami_list
-
+                        MC.data.config[region_name].my_ami = MC.data.config[region_name].my_ami.concat ami_list
                     #console.log 'get my ami: -> data region: ' + region_name + ', stack region: ' + Design.instance().region()
                     #if region_name == Design.instance().region()
                     #    me.set 'my_ami', my_ami_list
 
                     console.log 'get my ami: -> data region: ' + region_name + ', stack region: ' + MC.canvas_data.region
-                    if region_name == MC.canvas_data.region
-                        me.set 'my_ami', my_ami_list
+                    if region_name == MC.canvas_data.region and MC.data.config[region_name].owner and MC.data.config[region_name].exec
+                        me.set 'my_ami', MC.data.config[region_name].my_ami
 
                 else
                 #####
@@ -410,11 +410,11 @@ define [ 'i18n!nls/lang.js',
                     $.each res.item, ( idx, value ) ->
 
                         # new design flow
-                        #$.each Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone ).allObjects(), ( i, zone ) ->
+                        #$.each Design.modelClassForType( constant.RESTYPE.AZ ).allObjects(), ( i, zone ) ->
 
                         # old design flow
                         $.each MC.canvas_data.component, ( i, zone ) ->
-                            if zone.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone
+                            if zone.type is constant.RESTYPE.AZ
                                 if zone.resource.ZoneName is value.zoneName
                                     res.item[idx].isUsed = true
                                     null
@@ -448,11 +448,11 @@ define [ 'i18n!nls/lang.js',
                             $.each res.item, ( idx, value ) ->
 
                                 # new design flow
-                                #$.each Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone ).allObjects(), ( i, zone ) ->
+                                #$.each Design.modelClassForType( constant.RESTYPE.AZ ).allObjects(), ( i, zone ) ->
 
                                 # old design flow
                                 $.each MC.canvas_data.component, ( i, zone ) ->
-                                    if zone.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone
+                                    if zone.type is constant.RESTYPE.AZ
                                         if zone.resource.ZoneName is value.zoneName
                                             res.item[idx].isUsed = true
                                             null
@@ -554,8 +554,10 @@ define [ 'i18n!nls/lang.js',
                 me.set 'my_ami', MC.data.config[region_name].my_ami
 
             else
+                MC.data.config[region_name].my_ami = []
                 #get service(model)
-                ami_model.DescribeImages { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, null, ["self"], null, null
+                ami_model.DescribeImages { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, null,null, ['self'], [{Name:'is-public',Value:false}]
+                ami_model.DescribeImages { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, null,['self'], null, null
 
             null
 
@@ -569,11 +571,11 @@ define [ 'i18n!nls/lang.js',
             dict_ami = MC.data.dict_ami
             if not dict_ami then return
 
-            #for instance in Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance ).allObjects()
+            #for instance in Design.modelClassForType( constant.RESTYPE.INSTANCE ).allObjects()
             #    if not dict_ami[ instance.get("imageId") ]
             #        stack_ami_list.push instance.get("imageId")
             _.map MC.canvas_data.component, (value)->
-                if value.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+                if value.type == constant.RESTYPE.INSTANCE
 
                     if MC.data.dict_ami
 
@@ -681,12 +683,12 @@ define [ 'i18n!nls/lang.js',
                 @set 'favorite_ami', new_favorite_ami
 
         getIgwStatus : ->
-            #!!Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway ).allObjects().length
+            #!!Design.modelClassForType( constant.RESTYPE.IGW ).allObjects().length
             isUsed = false
 
             $.each MC.canvas_data.component, ( key, comp ) ->
 
-                if comp.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway
+                if comp.type == constant.RESTYPE.IGW
 
                     isUsed = true
 
@@ -695,12 +697,12 @@ define [ 'i18n!nls/lang.js',
             isUsed
 
         getVgwStatus : ->
-            #!!Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway ).allObjects().length
+            #!!Design.modelClassForType( constant.RESTYPE.VGW ).allObjects().length
             isUsed = false
 
             $.each MC.canvas_data.component, ( key, comp ) ->
 
-                if comp.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway
+                if comp.type == constant.RESTYPE.VGW
 
                     isUsed = true
 

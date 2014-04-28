@@ -197,7 +197,7 @@ define [ "Design", "CanvasManager", "./ResourceModel", "constant", "./canvasview
     getSubnetRef : ()->
       p = this
       while p
-        if p.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
+        if p.type is constant.RESTYPE.SUBNET
           break
         p = p.parent()
 
@@ -206,12 +206,12 @@ define [ "Design", "CanvasManager", "./ResourceModel", "constant", "./canvasview
     getVpcRef : ()->
       p = this
       while p
-        if p.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC
+        if p.type is constant.RESTYPE.VPC
           break
         p = p.parent()
 
       if not p
-        VpcModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC )
+        VpcModel = Design.modelClassForType( constant.RESTYPE.VPC )
         p = VpcModel.theVPC()
 
       return if p then p.createRef( "VpcId" ) else ""

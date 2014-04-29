@@ -10,7 +10,7 @@
 */
 
 /* Define as MC module */
-define( "MC", [ "ui/MC.template", "q", "lib/handlebarhelpers", "jquery", "sprintf" ], function ( template, Q ) {
+define( "MC", [ "ui/MC.template", "q", "lib/IntercomAnalytics", "lib/handlebarhelpers", "jquery", "sprintf" ], function ( template, Q, Analytics ) {
 
 window.Q = Q;
 
@@ -54,6 +54,8 @@ var MC = {
 
 	// Global data
 	data: {},
+
+	Analytics : Analytics,
 
 	/**
 	 * Generate GUID

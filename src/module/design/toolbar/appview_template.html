@@ -1,7 +1,8 @@
-<button class="btn-toolbar tooltip icon-export-png toolbar-btn-primary" data-tooltip='{{ i18n "TOOL_EXPORT_AS_PNG" }}' id="toolbar-export-png">{{ i18n "TOOL_EXPORT_AS_PNG" }}</button>
+<button class="btn-toolbar tooltip icon-export-png toolbar-btn-primary" data-tooltip='{{ i18n "TOOL_EXPORT_AS_PNG" }}' id="toolbar-export-png" data-analytics-plus="export_vis_png">{{ i18n "TOOL_EXPORT_AS_PNG" }}</button>
 
 <button class="btn-toolbar icon-zoom-in {{#if item_flags.is_zoomin}}tooltip{{else}}disabled{{/if}}" data-tooltip='{{ i18n "TOOL_TIP_ZOOM_IN" }}'></button>
 <button class="btn-toolbar  icon-zoom-out seperator {{#if item_flags.is_zoomout}}tooltip{{else}}disabled{{/if}}" data-tooltip='{{ i18n "TOOL_TIP_ZOOM_OUT" }}'></button>
+
 
 <!-- line style -->
 <div class="selectbox btn-toolbar toolbar-line-style seperator">

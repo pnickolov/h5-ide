@@ -275,6 +275,6 @@
 		<div class="editable-area text-code-editor text"></div>
 	</div>
 	<div class="modal-footer">
-		<button id="modal-state-text-expand-save" class="btn btn-blue">{{i18n 'STATE_TEXT_EXPAND_MODAL_SAVE_BTN'}}</button>
+		{{#unless read_only}}<button id="modal-state-text-expand-save" class="btn btn-blue">{{i18n 'STATE_TEXT_EXPAND_MODAL_SAVE_BTN'}}</button>{{/unless}}
 	</div>
 </div>

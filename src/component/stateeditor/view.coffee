@@ -2715,9 +2715,6 @@ define [ 'event',
             if $('.sub-stateeditor').css('display') is "none"
                 return true
 
-            if $('#modal-state-text-expand').is(':visible')
-                return true
-
             target = event.data.target
             status = target.currentState
             is_editable = status is 'appedit' or status is 'stack'
@@ -2749,6 +2746,11 @@ define [ 'event',
                 target.pasteState.call target, event
                 # return false
 
+            # Open content editor [Ctrl + E]
+            if metaKey and shiftKey is false and altKey is false and keyCode is 69
+                target.onTextParaExpandClick.call target, event
+                return false
+
             # Remove state item [Ctrl + delete/backspace]
             if metaKey and (keyCode is 46 or keyCode is 8) and shiftKey is false and altKey is false and is_editable
                 target.removeState.call target, event
@@ -2772,6 +2774,9 @@ define [ 'event',
             # CollapseItem state item [Escape]
             if metaKey is false and shiftKey is false and altKey is false and keyCode is 27
                 target.collapseItem.call target, $('.state-list .focused')
+                if $('#modal-state-text-expand').is(':visible')
+                    target.saveStateTextEditorContent()
+                    return false
                 return false
 
             # Toggle document Sidebar [Ctrl + I]
@@ -3384,25 +3389,28 @@ define [ 'event',
         onTextParaExpandClick: (event) ->
 
             that = this
-            $expandBtn = $(event.currentTarget)
-            $paraValue = $expandBtn.parents('.parameter-container').find('.parameter-value')
+            $focusElem = $(event.target)
+            $paraValue = $focusElem.parents('.parameter-container').find('.parameter-value')
             paraEditor = $paraValue.data('editor')
             
             if paraEditor
                 
                 $paraItem = $paraValue.parents('.parameter-item')
-                paraName = $paraItem.attr('data-para-name')
-                $stateItem = $paraItem.parents('.state-item')
 
-                extName = ''
-                stateData = that.getStateItemByData($stateItem)
-                if stateData and stateData.parameter and stateData.parameter.path
-                    filePath = stateData.parameter.path
-                    filePathAry = filePath.split('.')
-                    extName = filePathAry[filePathAry.length - 1]
+                if $paraItem.hasClass('text')
 
-                cmdName = $stateItem.attr('data-command')
-                that.openStateTextEditor(cmdName, paraName, extName, paraEditor)
+                    paraName = $paraItem.attr('data-para-name')
+                    $stateItem = $paraItem.parents('.state-item')
+
+                    extName = ''
+                    stateData = that.getStateItemByData($stateItem)
+                    if stateData and stateData.parameter and stateData.parameter.path
+                        filePath = stateData.parameter.path
+                        filePathAry = filePath.split('.')
+                        extName = filePathAry[filePathAry.length - 1]
+
+                    cmdName = $stateItem.attr('data-command')
+                    that.openStateTextEditor(cmdName, paraName, extName, paraEditor)
 
         openStateTextEditor: (cmdName, paraName, extName, originEditor) ->
 
@@ -3411,8 +3419,11 @@ define [ 'event',
 
             modal $.trim(template.stateTextExpandModal({
                 cmd_name: cmdName,
-                para_name: paraName
+                para_name: paraName,
+                read_only: that.readOnlyMode
             })), false
+
+            $('#modal-state-text-expand').data('origin-editor', originEditor)
 
             $codeArea = $('#modal-state-text-expand .editable-area')
 
@@ -3432,10 +3443,29 @@ define [ 'event',
                 codeEditor.clearSelection()
 
             $('#modal-state-text-expand-save').off('click').on 'click', () ->
-                codeEditorValue = codeEditor.getValue()
-                originEditor.setValue(codeEditorValue)
-                originEditor.clearSelection()
+                that.saveStateTextEditorContent()
+
+        saveStateTextEditorContent: () ->
+
+            that = this
+            
+            if that.readOnlyMode
+
                 modal.close()
+
+            else
+
+                originEditor = $('#modal-state-text-expand').data('origin-editor')
+
+                if originEditor
+
+                    $codeArea = $('#modal-state-text-expand .editable-area')
+                    codeEditor = $codeArea.data('editor')
+                    codeEditorValue = codeEditor.getValue()
+                    originEditor.setValue(codeEditorValue)
+                    originEditor.clearSelection()
+                    originEditor.focus()
+                    modal.close()
 
     }
 

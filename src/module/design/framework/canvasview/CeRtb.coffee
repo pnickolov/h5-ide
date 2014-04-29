@@ -10,10 +10,10 @@ define [ "./CanvasElement", "constant", "CanvasManager","i18n!nls/lang.js"], ( C
   # Child Element's interface.
   ###
   ChildElementProto.portPosMap = {
-    "rtb-tgt-left"   : [ 10, 35, MC.canvas.PORT_LEFT_ANGLE ]
-    "rtb-tgt-right"  : [ 70, 35, MC.canvas.PORT_RIGHT_ANGLE ]
-    "rtb-src-top"    : [ 40, 3,  MC.canvas.PORT_UP_ANGLE ]
-    "rtb-src-bottom" : [ 40, 77, MC.canvas.PORT_DOWN_ANGLE ]
+    "rtb-tgt-left"   : [ 10, 35, CanvasElement.constant.PORT_LEFT_ANGLE ]
+    "rtb-tgt-right"  : [ 70, 35, CanvasElement.constant.PORT_RIGHT_ANGLE ]
+    "rtb-src-top"    : [ 40, 3,  CanvasElement.constant.PORT_UP_ANGLE ]
+    "rtb-src-bottom" : [ 40, 77, CanvasElement.constant.PORT_DOWN_ANGLE ]
   }
   ChildElementProto.portDirMap = {
     "rtb-tgt" : "horizontal"
@@ -41,8 +41,8 @@ define [ "./CanvasElement", "constant", "CanvasManager","i18n!nls/lang.js"], ( C
 
       node.append(
         # Left port
-        Canvon.path(MC.canvas.PATH_PORT_LEFT).attr({
-          'class'          : 'port port-blue port-rtb-tgt port-rtb-tgt-left tooltip'
+        Canvon.path(this.constant.PATH_PORT_LEFT).attr({
+          'class'          : 'port port-blue port-rtb-tgt port-rtb-tgt-left'
           'data-name'      : 'rtb-tgt'
           'data-alias'     : 'rtb-tgt-left'
           'data-position'  : 'left'
@@ -52,8 +52,8 @@ define [ "./CanvasElement", "constant", "CanvasManager","i18n!nls/lang.js"], ( C
         }),
 
         # Right port
-        Canvon.path(MC.canvas.PATH_PORT_RIGHT).attr({
-          'class'          : 'port port-blue  port-rtb-tgt port-rtb-tgt-right tooltip'
+        Canvon.path(this.constant.PATH_PORT_RIGHT).attr({
+          'class'          : 'port port-blue  port-rtb-tgt port-rtb-tgt-right'
           'data-name'      : 'rtb-tgt'
           'data-alias'     : 'rtb-tgt-right'
           'data-position'  : 'right'
@@ -63,8 +63,8 @@ define [ "./CanvasElement", "constant", "CanvasManager","i18n!nls/lang.js"], ( C
         }),
 
         # Top port
-        Canvon.path(MC.canvas.PATH_PORT_BOTTOM).attr({
-          'class'          : 'port port-gray port-rtb-src port-rtb-src-top tooltip'
+        Canvon.path(this.constant.PATH_PORT_BOTTOM).attr({
+          'class'          : 'port port-gray port-rtb-src port-rtb-src-top'
           'data-name'      : 'rtb-src'
           'data-alias'     : 'rtb-src-top'
           'data-position'  : 'top'
@@ -74,8 +74,8 @@ define [ "./CanvasElement", "constant", "CanvasManager","i18n!nls/lang.js"], ( C
         }),
 
         # Bottom port
-        Canvon.path(MC.canvas.PATH_PORT_TOP).attr({
-          'class'          : 'port port-gray port-rtb-src port-rtb-src-bottom tooltip'
+        Canvon.path(this.constant.PATH_PORT_TOP).attr({
+          'class'          : 'port port-gray port-rtb-src port-rtb-src-bottom'
           'data-name'      : 'rtb-src'
           'data-alias'     : 'rtb-src-bottom'
           'data-position'  : 'bottom'

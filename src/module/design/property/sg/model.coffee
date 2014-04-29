@@ -95,7 +95,7 @@ define [ '../base/model', "Design", 'constant', 'event'  ], ( PropertyModel, Des
                 }
 
             {
-                isClassic : Design.instance().typeIsClassic()
+                isClassic : false
                 sgList    : sgList
             }
 

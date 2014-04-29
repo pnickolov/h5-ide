@@ -10,7 +10,7 @@ define [ "./CanvasElement", "constant","i18n!nls/lang.js" ], ( CanvasElement, co
   # Child Element's interface.
   ###
   ChildElementProto.portPosMap = {
-    "igw-tgt" : [ 78, 35, MC.canvas.PORT_RIGHT_ANGLE ]
+    "igw-tgt" : [ 78, 35, CanvasElement.constant.PORT_RIGHT_ANGLE ]
   }
 
   ChildElementProto.draw = ( isCreate ) ->
@@ -30,8 +30,8 @@ define [ "./CanvasElement", "constant","i18n!nls/lang.js" ], ( CanvasElement, co
 
       node.append(
         # Port
-        Canvon.path(MC.canvas.PATH_PORT_LEFT).attr({
-          'class'      : 'port port-blue port-igw-tgt tooltip'
+        Canvon.path(this.constant.PATH_PORT_LEFT).attr({
+          'class'      : 'port port-blue port-igw-tgt'
           'data-name'     : 'igw-tgt'
           'data-position' : 'right'
           'data-type'     : 'sg'

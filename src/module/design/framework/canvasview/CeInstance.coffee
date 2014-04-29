@@ -10,10 +10,10 @@ define [ "i18n!nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "De
   # Child Element's interface.
   ###
   ChildElementProto.portPosMap = {
-    "instance-sg-left"  : [ 10, 20, MC.canvas.PORT_LEFT_ANGLE ]
-    "instance-sg-right" : [ 80, 20, MC.canvas.PORT_RIGHT_ANGLE ]
-    "instance-attach"   : [ 78, 50, MC.canvas.PORT_RIGHT_ANGLE ]
-    "instance-rtb"      : [ 45, 0,  MC.canvas.PORT_UP_ANGLE  ]
+    "instance-sg-left"  : [ 10, 20, CanvasElement.constant.PORT_LEFT_ANGLE ]
+    "instance-sg-right" : [ 80, 20, CanvasElement.constant.PORT_RIGHT_ANGLE ]
+    "instance-attach"   : [ 78, 50, CanvasElement.constant.PORT_RIGHT_ANGLE ]
+    "instance-rtb"      : [ 45, 0,  CanvasElement.constant.PORT_UP_ANGLE  ]
   }
   ChildElementProto.portDirMap = {
     "instance-sg" : "horizontal"
@@ -85,8 +85,8 @@ define [ "i18n!nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "De
 
 
         # left port(blue)
-        Canvon.path(MC.canvas.PATH_PORT_DIAMOND).attr({
-          'class'          : 'port port-blue port-instance-sg port-instance-sg-left tooltip'
+        Canvon.path(this.constant.PATH_PORT_DIAMOND).attr({
+          'class'          : 'port port-blue port-instance-sg port-instance-sg-left'
           'data-name'      : 'instance-sg' #for identify port
           'data-alias'     : 'instance-sg-left'
           'data-position'  : 'left' #port position: for calc point of junction
@@ -96,8 +96,8 @@ define [ "i18n!nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "De
         }),
 
         # right port(blue)
-        Canvon.path(MC.canvas.PATH_PORT_DIAMOND).attr({
-          'class'          : 'port port-blue port-instance-sg port-instance-sg-right tooltip'
+        Canvon.path(this.constant.PATH_PORT_DIAMOND).attr({
+          'class'          : 'port port-blue port-instance-sg port-instance-sg-right'
           'data-name'      : 'instance-sg'
           'data-alias'     : 'instance-sg-right'
           'data-position'  : 'right'
@@ -105,29 +105,24 @@ define [ "i18n!nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "De
           'data-direction' : 'out'
           'data-tooltip'   : lang.ide.PORT_TIP_D
         })
+
+        # RTB/ENI Port
+        Canvon.path(this.constant.PATH_PORT_RIGHT).attr({
+          'class'      : 'port port-green port-instance-attach'
+          'data-name'     : 'instance-attach'
+          'data-position' : 'right'
+          'data-type'     : 'attachment'
+          'data-direction': 'out'
+        })
+
+        Canvon.path(this.constant.PATH_PORT_BOTTOM).attr({
+          'class'      : 'port port-blue port-instance-rtb'
+          'data-name'     : 'instance-rtb'
+          'data-position' : 'top'
+          'data-type'     : 'sg'
+          'data-direction': 'in'
+        })
       )
-
-      if not @model.design().typeIsClassic()
-        # Show RTB/ENI Port in VPC Mode
-        node.append(
-          Canvon.path(MC.canvas.PATH_PORT_RIGHT).attr({
-            'class'      : 'port port-green port-instance-attach tooltip'
-            'data-name'     : 'instance-attach'
-            'data-position' : 'right'
-            'data-type'     : 'attachment'
-            'data-direction': 'out'
-            'data-tooltip'  : lang.ide.PORT_TIP_E
-          })
-
-          Canvon.path(MC.canvas.PATH_PORT_BOTTOM).attr({
-            'class'      : 'port port-blue port-instance-rtb tooltip'
-            'data-name'     : 'instance-rtb'
-            'data-position' : 'top'
-            'data-type'     : 'sg'
-            'data-direction': 'in'
-            'data-tooltip'  : lang.ide.PORT_TIP_C
-          })
-        )
 
       if not @model.design().modeIsStack() and m.get("appId")
         # instance-state

@@ -35,11 +35,14 @@ if shouldIdeHttps and l.protocol is "http:"
     return
 
 
-
-# constant option, used in cookie lib
-COOKIE_OPTION =
-    expires : 30
-    path    : '/'
+goto500 = ()->
+    hash = window.location.pathname
+    if hash.length == 1
+        hash = ""
+    else
+        hash = hash.replace("/", "#")
+    window.location = '/500/' + hash
+    return
 
 # variable to record $.ajax
 xhr = null
@@ -115,8 +118,8 @@ loadLang = (cb)->
             window.langsrc = data
             #console.log 'Success', data
         error: (error)->
-            window.location = "/500"
-            #console.log error, "error"
+            goto500()
+            console.log error, "error"
     }).done ->
         #console.log('Loaded!', langsrc)
         cb()
@@ -428,15 +431,9 @@ handleErrorCode = (statusCode)->
     console.error 'ERROR_CODE_MESSAGE',langsrc.service["ERROR_CODE_#{statusCode}_MESSAGE"]
 # handleNetError
 handleNetError = (status)->
-    #window.location = '/500'
-    error_message = langsrc.service['NETWORK_ERROR']
-    $("#error-msg-3").first().text(error_message).show()
-    $("#login-btn").attr('disabled',false).val langsrc.login['login-btn']
-    $('#reset-status').removeClass('verification-status').addClass('error-msg').text(error_message).show()
-    $("#reset-btn").attr('disabled',false).val langsrc.reset['reset-btn']
-    $("#reset-pw-email").attr('disabled',false)
-    $(".box-loading").size()>0 && render "#expire-template"
-    $(".account-instruction-major").text error_message
+    goto500()
+    console.error status, "Net Work Error, Redirecting..."
+
 # verify  key with callback
 checkPassKey = (keyToValid,fn)->
     api(
@@ -459,8 +456,7 @@ setCredit = (result)->
     # Clear any cookie that's not ours
     domain = { "domain" : window.location.hostname.replace("ide", "") }
     for ckey, cValue of $.cookie()
-        if ckey != "notice-sn"
-            $.removeCookie ckey, domain
+        $.removeCookie ckey, domain
 
     session_info =
         usercode     : result[0]
@@ -473,6 +469,10 @@ setCredit = (result)->
         mod_tag      : result[6]
         state        : result[7]
         has_cred     : result[8]
+
+    COOKIE_OPTION =
+        expires : 30
+        path    : '/'
 
     for key, value of session_info
         $.cookie key, value, COOKIE_OPTION

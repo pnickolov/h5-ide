@@ -2,11 +2,6 @@ define [ 'constant', 'MC','i18n!nls/lang.js', '../../helper'], ( constant, MC, l
 
 	isHaveIGWForInternetELB = (elbUID) ->
 
-		# check platform
-		if !(MC.canvas_data.platform in
-			[MC.canvas.PLATFORM_TYPE.CUSTOM_VPC, MC.canvas.PLATFORM_TYPE.EC2_VPC])
-				return null
-
 		elbComp = MC.canvas_data.component[elbUID]
 		isInternetELB = (elbComp.resource.Scheme is 'internet-facing')
 

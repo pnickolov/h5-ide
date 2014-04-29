@@ -275,9 +275,31 @@ define [ "./ResourceModel", "Design", "CanvasManager", "./canvasview/CanvasEleme
 
       Design.registerModelClass protoProps.type, child
 
+      child.__isLineClass = true
+
       child
 
     isConnectable : ( comp1, comp2 )-> true
+
+    connectionData : ( type, portName )->
+      allLinePortMap = {}
+
+      for LineModel in Design.lineModelClasses()
+        if not LineModel.prototype.portDefs then continue
+
+        for def in LineModel.prototype.portDefs
+          if def.port1.type is type
+            p = def.port1; op = def.port2
+          else if def.port2.type is type
+            p = def.port2; op = def.port1
+          else
+            continue
+
+          if not portName or portName is p.name
+            arr = allLinePortMap[ op.type ] || (allLinePortMap[ op.type ] = [])
+            arr.push op.name
+
+      allLinePortMap
   }
 
   ConnectionModel

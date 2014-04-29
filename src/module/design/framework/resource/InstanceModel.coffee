@@ -37,12 +37,12 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
       option = option || {}
 
       # Create Eni0 if necessary
-      if option.createByUser and not Design.instance().typeIsClassic()
+      if option.createByUser
         #create eni0
         EniModel = Design.modelClassForType( constant.RESTYPE.ENI )
         @setEmbedEni( new EniModel({
           name : "eni0"
-          assoPublicIp : Design.instance().typeIsDefaultVpc()
+          assoPublicIp : false
         }, { instance: this }) )
 
 
@@ -475,7 +475,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
 
       # Well, LC borrows setInstanceType of Instance,
       # but LC doesn't have getEmbedEni
-      if @getEmbedEni and not Design.instance().typeIsClassic()
+      if @getEmbedEni
         # Eni's IP address count is limited by instanceType
         enis = @connectionTargets("EniAttachment")
         enis.push( @getEmbedEni() )
@@ -595,14 +595,6 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
       name = @get("name")
       if @get("count") > 1 then name += "-0"
 
-      securitygroups   = []
-      securitygroupsId = []
-      if Design.instance().typeIsClassic()
-        # In Vpc, Sg is written in Eni's JSON, not in Instance's JSON
-        for sg in @connectionTargets("SgAsso")
-          securitygroups.push( sg.createRef( "GroupName" ) )
-          securitygroupsId.push( sg.createRef( "GroupId" ) )
-
       # Generate RootDevice
       blockDeviceMapping = @getBlockDeviceMapping()
       for volume in @get("volumeList") or []
@@ -638,8 +630,8 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
           InstanceType          : @get("instanceType")
           DisableApiTermination : false
           ShutdownBehavior      : "terminate"
-          SecurityGroup         : securitygroups
-          SecurityGroupId       : securitygroupsId
+          SecurityGroup         : []
+          SecurityGroupId       : []
           PrivateIpAddress      : "" # After app update, the PrivateIpAddress will be set by the backend. So we always ensure PrivateIpAddress existence to suppress a faulty change in proceeding appupdate.
 
       component
@@ -688,12 +680,6 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
       i = instances.length
       @ensureEnoughMember()
 
-      # In non-VPC type, we should add Eip For instance
-      if @get("hasEip") and not Design.instance().typeIsVpc()
-        allResourceArray.push {
-          component : @createEipJson( @get("eipData") )
-        }
-
       while i < @get("count")
         member = $.extend true, {}, instances[0]
         member.name  = @get("name") + "-" + i
@@ -701,12 +687,6 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
         memberObj = @groupMembers()[ instances.length - 1 ]
         member.uid      = memberObj.id
         member.resource.InstanceId = memberObj.appId
-
-        # In non-VPC type, we should add Eip For instance
-        if @get("hasEip") and not Design.instance().typeIsVpc()
-          eip = @createEipJson( memberObj.eipData, memberObj.id )
-          eip.index = i
-          allResourceArray.push { component : eip }
 
         ++i
         instances.push( member )
@@ -890,16 +870,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
 
       # Add Keypair
       resolve( MC.extractID( data.resource.KeyName ) ).assignTo( model )
-
-      # Associate Sg in classic mode
-      if Design.instance().typeIsClassic() and data.resource.SecurityGroup
-        SgAsso = Design.modelClassForType( "SgAsso" )
-        for groupId in data.resource.SecurityGroup
-          new SgAsso( model, resolve( MC.extractID( groupId ) ) )
-
       null
-
-
   }
 
   Model

@@ -10,7 +10,9 @@
 */
 
 /* Define as MC module */
-define( "MC", [ "ui/MC.template", "lib/handlebarhelpers", "jquery", "sprintf" ], function ( template ) {
+define( "MC", [ "ui/MC.template", "q", "lib/IntercomAnalytics", "lib/handlebarhelpers", "jquery", "sprintf" ], function ( template, Q, Analytics ) {
+
+window.Q = Q;
 
 var storage = function( instance ) {
 	var s = {
@@ -21,12 +23,10 @@ var storage = function( instance ) {
 		, get: function (name) {
 			var data = instance[name];
 
-			if (MC.isJSON(data))
-			{
-				return JSON.parse(data);
-			}
-
-			return data || '';
+			try {
+				data = JSON.parse(data);
+			} catch (e) {}
+			return data || "";
 		}
 
 		, remove: function (name) {
@@ -42,6 +42,8 @@ var storage = function( instance ) {
 	return s;
 };
 
+var _extractIDRegex = /^\s*?@?{?([-A-Z0-9a-z]+)}?/;
+
 var MC = {
 	// Global Variable
 
@@ -50,10 +52,10 @@ var MC = {
 
 	IMG_URL: './assets/images/',
 
-	_extractIDRegex : /^\s*?@?{?([-A-Z0-9a-z]+)}?/,
-
 	// Global data
 	data: {},
+
+	Analytics : Analytics,
 
 	/**
 	 * Generate GUID
@@ -89,7 +91,6 @@ var MC = {
 			false;
 	},
 
-	api_queue: {},
 	/**
 	 * JSON-RPC API request
 	 * @param  {object} option the configuration of API request
@@ -123,108 +124,6 @@ var MC = {
 				option.error(status, -1);
 			}
 		});
-	},
-
-	browserDetect: function ()
-	{
-		var rbrowser = /(webkit|firefox|opera|msie|ipad|iphone|android)/ig,
-			ua = navigator.userAgent.toLowerCase(),
-			doc = $(document.body),
-			name,
-			version;
-
-		rbrowser.exec(ua);
-
-		name = RegExp.$1;
-
-		doc.addClass(name);
-
-		if (name === 'webkit' && /version\/([0-9])\.([0-9\.]*) safari/ig.exec(ua) !== null)
-		{
-			doc.addClass('safari');
-
-			name = 'safari';
-
-			version = /version\/([0-9])\.([0-9\.]*) safari/ig.exec(ua)[1];
-		}
-
-		if (name === 'webkit' && /chrome\/([0-9]{1,2})/ig.exec(ua) !== null)
-		{
-			doc.addClass('chrome');
-
-			name = 'chrome';
-
-			version = /chrome\/([0-9]{1,2})/ig.exec(ua)[1];
-		}
-
-		if (name === 'opera' && /version\/([0-9]{1,2})/ig.exec(ua) !== null)
-		{
-			doc.addClass('opera');
-
-			name = 'opera';
-
-			version = /version\/([0-9]{1,2})/ig.exec(ua)[1];
-		}
-
-		if (name === 'firefox' && /firefox\/([0-9]{1,2})/ig.exec(ua))
-		{
-			version = /firefox\/([0-9]{1,2})/ig.exec(ua)[1];
-		}
-
-		if (name === 'msie' && /msie ([0-9]{1,2})/ig.exec(ua))
-		{
-			version = /msie ([0-9]{1,2})/ig.exec(ua)[1];
-		}
-
-		if (navigator.platform.toLowerCase().indexOf('mac') >= 0) {
-			doc.addClass('mac');
-		}
-
-		version = version * 1;
-
-		MC.browser = name;
-		MC.browserVersion = version;
-
-		return {
-			'browser': name,
-			'version': version
-		};
-	},
-
-	isSupport: function ()
-	{
-		var data = MC.browserDetect(),
-			browser = data.browser,
-			version = data.version;
-
-		if (
-			(
-				browser === 'chrome' && version >= 10
-			) ||
-			(
-				browser === 'safari' && version >= 6
-			) ||
-			(
-				browser === 'msie' && version >= 10
-			) ||
-			(
-				browser === 'firefox' && version >= 4
-			) ||
-			(
-				browser === 'opera' && version >= 10
-			) ||
-			(
-				// For IE 11
-				/trident\/7\.0/ig.test( navigator.userAgent.toLowerCase() )
-			)
-		)
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
 	},
 
 	capitalize: function (string)
@@ -301,7 +200,7 @@ var MC = {
 	{
 		if (!uid) { return ""; }
 
-		var result = MC._extractIDRegex.exec(uid);
+		var result = _extractIDRegex.exec(uid);
 
 		return result ? result[1] : uid;
 	},
@@ -698,7 +597,35 @@ window.MC = MC;
 	/* Global initialization */
 	// Detecting browser and add the class name on body, so that we can use specific CSS style
 	// or for specific usage.
-	$(document).ready(MC.browserDetect);
+	(function () {
+		var ua  = navigator.userAgent.toLowerCase();
+
+		var ua = navigator.userAgent.toLowerCase();
+    var browser = /(chrome)[ \/]([\w.]+)/.exec( ua ) ||
+            /(webkit)[ \/]([\w.]+)/.exec( ua ) ||
+            /(opera)(?:.*version|)[ \/]([\w.]+)/.exec( ua ) ||
+            /(msie) ([\w.]+)/.exec( ua ) ||
+            ua.indexOf("compatible") < 0 && /(mozilla)(?:.*? rv:([\w.]+)|)/.exec( ua ) || [];
+    var kclass = browser[1] || "";
+
+    if ( browser[1] == "webkit" ) {
+    	var safari = /version\/([\d\.]+).*safari/.exec( ua );
+      if (safari) {
+      	kclass += " safari";
+      	browser[2] = safari[1];
+      }
+    } else if ( browser[1] == "chrome" ) {
+    	kclass += " webkit";
+    }
+    if (navigator.platform.toLowerCase().indexOf('mac') >= 0) {
+			kclass += " mac";
+		}
+
+		MC.browser = browser[1];
+		MC.browserVersion = parseInt(browser[2], 10);
+
+		$(document.body).addClass(kclass);
+	})();
 
 	MC.template = template;
 	return MC;

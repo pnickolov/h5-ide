@@ -32,6 +32,8 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 			else
 				that.set('isWindowsPlatform', false)
 
+			that.set('amiExist', platformInfo.amiExist)
+
 			if osPlatformDistro
 				that.set('supportedPlatform', true)
 			else
@@ -169,6 +171,8 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 			osPlatform = null
 			osPlatformDistro = null
 
+			amiExist = true
+
 			if imageObj
 
 				osFamily = imageObj.osFamily
@@ -182,9 +186,14 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 					osPlatform = 'linux'
 					osPlatformDistro = osType
 
+			else
+
+				amiExist = false
+
 			return {
 				osPlatform: osPlatform,
-				osPlatformDistro: osPlatformDistro
+				osPlatformDistro: osPlatformDistro,
+				amiExist: amiExist
 			}
 
 		updateAllStateRef: (newOldStateIdMap) ->

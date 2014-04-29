@@ -156,8 +156,7 @@ define [ 'event',
 
             # process direct close
             if tab_id.split( '-' )[0] in [ 'process', 'appview' ] or
-               ( tab_id is MC.data.current_tab_id and Tabbar.current is 'app' ) or
-               MC.common.other.canvasData.data().platform in [ MC.canvas.PLATFORM_TYPE.EC2_CLASSIC, MC.canvas.PLATFORM_TYPE.DEFAULT_VPC ]
+               ( tab_id is MC.data.current_tab_id and Tabbar.current is 'app' )
 
                 @directCloseTab tab_id
                 return

@@ -49,8 +49,6 @@ define [ "../ComplexResModel", "./VpcModel", "Design", "constant", "i18n!nls/lan
   }, {
 
     tryCreateIgw : ()->
-      if not Design.instance().typeIsVpc() then return
-
       if Model.allObjects().length > 0 then return
 
       notification 'info', lang.ide.CVS_CFM_ADD_IGW_MSG

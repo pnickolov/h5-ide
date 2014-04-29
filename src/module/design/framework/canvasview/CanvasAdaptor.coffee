@@ -15,8 +15,6 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
 
     view
 
-  $canvas.platform = ()-> Design.instance().type()
-
   $canvas.size = ( w, h )->
     if Design.__instance
       return Design.__instance.canvas.size( w, h )
@@ -188,20 +186,14 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
       l = lang.ide
 
       switch param.type
-        when res_type.VOL     then info = l.CVS_MSG_WARN_NOTMATCH_VOLUME
-        when res_type.SUBNET  then info = l.CVS_MSG_WARN_NOTMATCH_SUBNET
-
-        when res_type.INSTANCE
-          if Design.instance().typeIsVpc()
-            info = l.CVS_MSG_WARN_NOTMATCH_INSTANCE_SUBNET
-          else
-            info = l.CVS_MSG_WARN_NOTMATCH_INSTANCE_AZ
-
-        when res_type.ENI  then info = l.CVS_MSG_WARN_NOTMATCH_ENI
-        when res_type.RT   then info = l.CVS_MSG_WARN_NOTMATCH_RTB
-        when res_type.ELB  then info = l.CVS_MSG_WARN_NOTMATCH_ELB
-        when res_type.CGW  then info = l.CVS_MSG_WARN_NOTMATCH_CGW
-        when res_type.ASG  then info = "Asg must be dragged to a subnet."
+        when res_type.VOL       then info = l.CVS_MSG_WARN_NOTMATCH_VOLUME
+        when res_type.SUBNET    then info = l.CVS_MSG_WARN_NOTMATCH_SUBNET
+        when res_type.INSTANCE  then info = l.CVS_MSG_WARN_NOTMATCH_INSTANCE_SUBNET
+        when res_type.ENI       then info = l.CVS_MSG_WARN_NOTMATCH_ENI
+        when res_type.RT        then info = l.CVS_MSG_WARN_NOTMATCH_RTB
+        when res_type.ELB       then info = l.CVS_MSG_WARN_NOTMATCH_ELB
+        when res_type.CGW       then info = l.CVS_MSG_WARN_NOTMATCH_CGW
+        when res_type.ASG       then info = l.CVS_MSG_WARN_NOTMATCH_ASG
 
       if info
         notification 'warning', info , false

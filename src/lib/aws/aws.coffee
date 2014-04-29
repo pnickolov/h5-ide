@@ -318,15 +318,6 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
 
         copy_name + "-" + idx
 
-    checkDefaultVPC = () ->
-
-        currentRegion = MC.canvas_data.region
-        accountData = MC.data.account_attribute[currentRegion]
-        if accountData.support_platform is 'VPC' and MC.canvas_data.platform is 'default-vpc'
-            return accountData.default_vpc
-        else
-            return false
-
     getOSFamily = (osType, ami) ->
         me = this
 
@@ -859,7 +850,6 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
     checkStackName              : checkStackName
     checkAppName                : checkAppName
     getDuplicateName            : getDuplicateName
-    checkDefaultVPC             : checkDefaultVPC
     getOSFamily                 : getOSFamily
     genResRef                   : genResRef
     enableStackAgent            : enableStackAgent

@@ -14,7 +14,7 @@ define [ '../base/model', "event", "Design", 'constant' ], ( PropertyModel, ide_
 
             attr        = component.toJSON()
             attr.uid    = uid
-            attr.isVpc  = not Design.instance().typeIsClassic()
+            attr.isVpc  = true
 
             # Format ping
             pingArr  = component.getHealthCheckTarget()
@@ -113,7 +113,7 @@ define [ '../base/model', "event", "Design", 'constant' ], ( PropertyModel, ide_
             Design.instance().component( @get("uid") ).setInternal( value )
 
             # Trigger an event to tell canvas that we want an IGW
-            if not value and Design.instance().typeIsVpc()
+            if not value
                 Design.modelClassForType( constant.RESTYPE.IGW ).tryCreateIgw()
             null
 

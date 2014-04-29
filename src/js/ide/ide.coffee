@@ -105,9 +105,6 @@ define [ 'MC', 'event', 'handlebars'
 		# State clipboard
 		MC.data.stateClipboard = []
 
-		#test
-		MC.ide_event = ide_event
-
 		#temp
 		MC.data.running_app_list = {}
 
@@ -125,16 +122,11 @@ define [ 'MC', 'event', 'handlebars'
 		relogin = () ->
 			console.log 'relogin'
 			ide_event.trigger ide_event.SWITCH_MAIN
-			require [ 'component/session/main' ], ( session_main ) -> session_main.loadModule()
+			require [ 'component/session/SessionDialog' ], ( SessionDialog )-> new SessionDialog()
 
 		status = () ->
-			websocket.status false, ()->
-				# do thing alert here, may trigger several time
-				console.log '---------- connection failed ----------'
-				view.disconnectedMessage 'show'
-			websocket.status true, ()->
-				console.log 'connection succeed'
-				view.disconnectedMessage 'hide'
+			websocket.status false, ()-> view.showDisconnected()
+			websocket.status true,  ()-> view.hideDisconnected()
 
 		setTimeout status, 15000
 
@@ -301,27 +293,4 @@ define [ 'MC', 'event', 'handlebars'
 			null
 
 		listenImportList()
-
-
-		###########################
-		# Dispaly stop supporting classic and default VPC notification
-		###########################
-		displaySystemNotice = () ->
-
-			isDisplayed = $.cookie('notice-sn')
-
-			if isDisplayed is undefined
-				$( "#wrapper" ).before MC.template.systemNotice
-
-			$('#system-notice-close').on 'click', () ->
-				$('#system-notice').remove()
-
-				# A hack to update resource panel
-				$("#resource-panel").find(".accordion-group.expanded").removeClass("expanded").children(".fixedaccordion-head").trigger("click", true)
-
-				$.cookie 'notice-sn', '1',
-                    expires: 365*2
-
-		displaySystemNotice()
-
 		null

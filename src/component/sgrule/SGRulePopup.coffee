@@ -10,19 +10,8 @@ define [ 'constant', "Design", './SGRulePopupView', "backbone" ], ( constant, De
 
       design = Design.instance()
 
-      @set "isClassic", design.typeIsClassic()
-
       port1 = @get("port1")
       port2 = @get("port2")
-
-      # Get sg of each port
-      if @get( "isClassic" )
-        if port1.type is constant.RESTYPE.ELB
-          port1 = port1.get("name")
-        else if port2.type is constant.RESTYPE.ELB
-          port1 = port2.get("name")
-          port2 = @get("port1")
-
 
       map = ( sg )->
         {
@@ -59,21 +48,12 @@ define [ 'constant', "Design", './SGRulePopupView', "backbone" ], ( constant, De
       targetComp   = Design.instance().component( data.target )
       relationComp = Design.instance().component( data.relation )
 
-      if targetComp.type is constant.RESTYPE.ELB
-        # We create a mock sg for ElbSg in Classic.
-        SgModel = Design.modelClassForType( constant.RESTYPE.SG )
-        targetComp = SgModel.getClassicElbSg()
-
       SgRuleSetModel = Design.modelClassForType( "SgRuleSet" )
       sgRuleSet      = new SgRuleSetModel( targetComp, relationComp )
 
-      count = if @get("isClassic") then 1 else 2
+      count = 2
 
-      if @get("isClassic")
-        # Don't add sgrule to ElbSg in classic mode
-        sgRuleSet.addRawRule( data.relation, "inbound", data )
-      else
-        sgRuleSet.addRule( data.target, data.direction, data )
+      sgRuleSet.addRule( data.target, data.direction, data )
 
       if data.direction is "biway"
         count *= 2

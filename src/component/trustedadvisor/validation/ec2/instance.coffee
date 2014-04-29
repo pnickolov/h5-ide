@@ -55,33 +55,24 @@ define [ 'constant', 'MC', 'Design', '../../helper' ], ( constant, MC, Design, H
 		instanceType = instanceComp.type
 		isInstanceComp = instanceType is constant.RESTYPE.INSTANCE
 		# check platform type
-		platformType = MC.canvas_data.platform
-		if platformType isnt MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
-			# have vpc, count eni's sg rule number
-			sgUIDAry = []
-			if isInstanceComp
-				# get associated eni sg for instance
-				_.each MC.canvas_data.component, (compObj) ->
-					if compObj.type is constant.RESTYPE.ENI
-						associatedInstanceRef = compObj.resource.Attachment.InstanceId
-						associatedInstanceUID = MC.extractID(associatedInstanceRef)
-						if associatedInstanceUID is instanceUID
-							eniSGAry = compObj.resource.GroupSet
-							_.each eniSGAry, (sgObj) ->
-								eniSGUIDRef = sgObj.GroupId
-								eniSGUID = MC.extractID(eniSGUIDRef)
-								if !(eniSGUID in sgUIDAry)
-									sgUIDAry.push(eniSGUID)
-								null
-					null
-			else
-				# get all LSG's sg
-				lsgSGAry = instanceComp.resource.SecurityGroups
-				_.each lsgSGAry, (sgRef) ->
-					sgUID = MC.extractID(sgRef)
-					if !(sgUID in sgUIDAry)
-						sgUIDAry.push(sgUID)
-					null
+
+		# have vpc, count eni's sg rule number
+		sgUIDAry = []
+		if isInstanceComp
+			# get associated eni sg for instance
+			_.each MC.canvas_data.component, (compObj) ->
+				if compObj.type is constant.RESTYPE.ENI
+					associatedInstanceRef = compObj.resource.Attachment.InstanceId
+					associatedInstanceUID = MC.extractID(associatedInstanceRef)
+					if associatedInstanceUID is instanceUID
+						eniSGAry = compObj.resource.GroupSet
+						_.each eniSGAry, (sgObj) ->
+							eniSGUIDRef = sgObj.GroupId
+							eniSGUID = MC.extractID(eniSGUIDRef)
+							if !(eniSGUID in sgUIDAry)
+								sgUIDAry.push(eniSGUID)
+							null
+				null
 
 			# loop sg array to count rule number
 			totalSGRuleNum = 0

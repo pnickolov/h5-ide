@@ -12,7 +12,7 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 
 			attr = component.toJSON()
 			attr.uid = uid
-			attr.classic_stack  = not Design.instance().typeIsVpc()
+			attr.classic_stack  = false
 			attr.can_set_ebs    = component.isEbsOptimizedEnabled()
 			attr.instance_type  = component.getInstanceTypeList()
 			attr.tenancy        = component.isDefaultTenancy()

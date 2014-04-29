@@ -11,8 +11,8 @@ define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager", 'i18n!n
   # Child Element's interface.
   ###
   ChildElementProto.portPosMap = {
-    "launchconfig-sg-left"  : [ 10, 20, MC.canvas.PORT_LEFT_ANGLE ]
-    "launchconfig-sg-right" : [ 80, 20, MC.canvas.PORT_RIGHT_ANGLE ]
+    "launchconfig-sg-left"  : [ 10, 20, CanvasElement.constant.PORT_LEFT_ANGLE ]
+    "launchconfig-sg-right" : [ 80, 20, CanvasElement.constant.PORT_RIGHT_ANGLE ]
   }
   ChildElementProto.portDirMap = {
     "launchconfig-sg" : "horizontal"
@@ -84,8 +84,8 @@ define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager", 'i18n!n
         }),
 
         # left port(blue)
-        Canvon.path(MC.canvas.PATH_PORT_DIAMOND).attr({
-          'class' : 'port port-blue port-launchconfig-sg port-launchconfig-sg-left tooltip'
+        Canvon.path(this.constant.PATH_PORT_DIAMOND).attr({
+          'class' : 'port port-blue port-launchconfig-sg port-launchconfig-sg-left'
           'data-name'      : 'launchconfig-sg'
           'data-alias'     : 'launchconfig-sg-left'
           'data-position'  : 'left'
@@ -95,8 +95,8 @@ define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager", 'i18n!n
         }),
 
         # right port(blue)
-        Canvon.path(MC.canvas.PATH_PORT_DIAMOND).attr({
-          'class' : 'port port-blue port-launchconfig-sg port-launchconfig-sg-right tooltip'
+        Canvon.path(this.constant.PATH_PORT_DIAMOND).attr({
+          'class' : 'port port-blue port-launchconfig-sg port-launchconfig-sg-right'
           'data-name'      : 'launchconfig-sg'
           'data-alias'     : 'launchconfig-sg-right'
           'data-position'  : 'right'

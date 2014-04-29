@@ -417,33 +417,11 @@ define [ 'event',
         resourceVpcRender : ( current_platform, type ) ->
             data = {}
 
-            if not current_platform
+            if type != 'NEW_STACK'
 
-                # old design flow
-                #current_platform = MC.canvas_data.platform
+                data.igwIsUsed = this.model.getIgwStatus()
 
-                # new design flow
-                current_platform = MC.common.other.canvasData.get 'platform'
-
-            if current_platform == MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
-
-                data.isntClassic = false
-
-            else
-                data.isntClassic = true
-
-                if current_platform == MC.canvas.PLATFORM_TYPE.DEFAULT_VPC
-
-                    data.isntDefaultVPC = false
-
-                else
-                    data.isntDefaultVPC = true
-
-                    if type != 'NEW_STACK'
-
-                        data.igwIsUsed = this.model.getIgwStatus()
-
-                        data.vgwIsUsed = this.model.getVgwStatus()
+                data.vgwIsUsed = this.model.getVgwStatus()
 
             $list = $( '.resource-vpc-list' ).html template_data.resource_vpc_select_list( data )
             $list.toggle $list.children().length > 0

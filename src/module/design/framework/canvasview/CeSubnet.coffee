@@ -14,9 +14,9 @@ define [ "./CanvasElement", "constant", "CanvasManager","i18n!nls/lang.js" ], ( 
     portY = m.height() * MC.canvas.GRID_HEIGHT / 2 - 5
 
     if portName is "subnet-assoc-in"
-      [ -12, portY, MC.canvas.PORT_LEFT_ANGLE ]
+      [ -12, portY, CanvasElement.constant.PORT_LEFT_ANGLE ]
     else
-      [ m.width() * MC.canvas.GRID_WIDTH + 10, portY, MC.canvas.PORT_RIGHT_ANGLE ]
+      [ m.width() * MC.canvas.GRID_WIDTH + 10, portY, CanvasElement.constant.PORT_RIGHT_ANGLE ]
 
 
   ChildElementProto.draw = ( isCreate )->
@@ -28,8 +28,8 @@ define [ "./CanvasElement", "constant", "CanvasManager","i18n!nls/lang.js" ], ( 
     if isCreate
       node = @createGroup( label )
 
-      node.append( Canvon.path( MC.canvas.PATH_PORT_RIGHT ).attr({
-        'class'      : 'port port-gray port-subnet-assoc-in tooltip'
+      node.append( Canvon.path( this.constant.PATH_PORT_RIGHT ).attr({
+        'class'      : 'port port-gray port-subnet-assoc-in'
         'data-name'     : 'subnet-assoc-in'
         'data-position' : 'left'
         'data-type'     : 'association'

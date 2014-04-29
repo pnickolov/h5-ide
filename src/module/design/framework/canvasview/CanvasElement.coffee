@@ -52,6 +52,20 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
     new CEC( m or model )
 
 
+  CanvasElement.prototype.constant =
+    PATH_PORT_LEFT    : "M-8 0.5l6 -5.5l2 0 l0 11 l-2 0z" # ◀
+    PATH_PORT_TOP     : "M0.5 0l5.5 0l0 -2l-5.5 -6l-5.5 6l0 2z" # ▲
+    PATH_PORT_RIGHT   : "M8 0.5l-6 -5.5l-2 0 l0 11 l2 0z" # ▶
+    PATH_PORT_BOTTOM  : "M0.5 0l5.5 0l0 2l-5.5 6l-5.5 -6l0 -2z" # ▼
+    PATH_PORT_DIAMOND : "M-5 0.5l5.5 -5.5l5.5 5.5 l-5.5 5.5z" # ◆
+
+  CanvasElement.constant =
+    PORT_RIGHT_ANGLE  : 0
+    PORT_UP_ANGLE     : 90
+    PORT_LEFT_ANGLE   : 180
+    PORT_DOWN_ANGLE   : 270
+
+
   ###
   # CanvasElement Interface
   ###
@@ -346,8 +360,8 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
     list
 
 
-
-
+  CanvasElement.prototype.connectionData = ( portName )->
+    Design.modelClassForType("Framework_CN").connectionData( @type, portName )
 
   ###
   # Helper functions for rendering and for model
@@ -428,7 +442,12 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
     width  = m.width()  * MC.canvas.GRID_WIDTH
     height = m.height() * MC.canvas.GRID_HEIGHT
 
-    text_pos = MC.canvas.GROUP_LABEL_COORDINATE[ m.type ]
+    text_pos = {
+      'AWS.VPC.VPC'              : [6, 16]
+      'AWS.EC2.AvailabilityZone' : [4, 14]
+      'AWS.VPC.Subnet'           : [4, 14]
+      'AWS.AutoScaling.Group'    : [4, 14]
+    }[ m.type ]
 
     pad = 10
 

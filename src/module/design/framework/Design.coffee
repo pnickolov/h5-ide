@@ -376,6 +376,17 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
 
     @__modelClassMap[ type ]
 
+  Design.lineModelClasses = ()->
+    if @__lineModelClasses then return @__lineModelClasses
+
+    @__lineModelClasses = cs = []
+    for type, modelClass of @__modelClassMap
+      # Ignore every type that has ">", because that's duplicated class for a line.
+      if modelClass.__isLineClass and type.indexOf(">") is -1
+        cs.push modelClass
+
+    @__lineModelClasses
+
   DesignImpl.prototype.reclaimGuid = ( guid )-> delete @__usedUidCache[ guid ]
   DesignImpl.prototype.guid = ()->
     newId = MC.guid()
@@ -437,7 +448,7 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
 
   DesignImpl.prototype.isModified = ( newData )->
 
-    if Design.instance().modeIsApp() then return false
+    if @modeIsApp() then return false
 
     # Ignore id change.
     @__backingStore.id = (newData || @attributes).id
@@ -460,7 +471,8 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
     # The Design is singleton (Because the Design is created with the mind
     # that trying to affect as little as possible of the current system)
     # Which makes it unusable in work with multiple design objects in the same time.
-    # The feature version of design will be fully multiple-support.
+    # It seems like if we do want to support this feature, we need to introduce
+    # inconvenient api, which I don't want to.
     currentDesignObj = Design.instance()
     @use()
 
@@ -643,7 +655,7 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
     # If the stack contains instance-stor ami.
     InstanceModel = Design.modelClassForType( constant.RESTYPE.INSTANCE )
     LcModel = Design.modelClassForType( constant.RESTYPE.LC )
-    allObjects = InstanceModel.allObjects().concat LcModel.allObjects()
+    allObjects = InstanceModel.allObjects( @ ).concat LcModel.allObjects( @ )
     for comp in allObjects
       ami = comp.getAmi() or comp.get("cachedAmi")
       if ami and ami.rootDeviceType is 'instance-store'
@@ -692,7 +704,7 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
     subList = resource_list.Subscriptions
     idx     = 0
     while subList and idx < subList.length
-      if subList[idx].TopicArn.indexOf( Design.instance().get("id") ) > 0
+      if subList[idx].TopicArn.indexOf( @get("id") ) > 0
         subList.splice(idx,1)
       else
         idx++
@@ -701,7 +713,7 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
     lcList = resource_list.NotificationConfigurations
     idx    = 0
     while lcList and idx < lcList.length
-      if lcList[idx].TopicARN.indexOf( Design.instance().get("id") ) > 0
+      if lcList[idx].TopicARN.indexOf( @get("id") ) > 0
         lcList.splice(idx,1)
       else
         idx++
@@ -722,5 +734,12 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
   # Inject dependency, so that CanvasAdaptor won't require Design.js
   CanvasAdaptor.setDesign( Design )
 
+  # Export DesignImpl through Design, so that we can add debug code in DesignDebugger
+  ### env:dev ###
+  Design.DesignImpl = DesignImpl
+  ### env:dev:end ###
+  ### env:debug ###
+  Design.DesignImpl = DesignImpl
+  ### env:debug:end ###
 
   Design

@@ -12,7 +12,7 @@ define [ "../GroupModel", "./VpcModel", "constant", "i18n!nls/lang.js" ], ( Grou
       height : 21
 
     initialize : ( attribute, option )->
-      if option.createByUser and Design.instance().typeIsVpc()
+      if option.createByUser
         SubnetModel = Design.modelClassForType( constant.RESTYPE.SUBNET )
         m = new SubnetModel( { x : @x() + 2, y : @y() + 2, parent : this } )
         ####

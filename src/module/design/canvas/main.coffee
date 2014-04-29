@@ -23,38 +23,6 @@ define [ 'event', 'i18n!nls/lang.js', 'constant' ], ( ide_event, lang, constant 
                 #check re-render
                 view.reRender()
 
-                #### added by song, if the stack/app too old, unable to open ###
-                # if type in [ 'OPEN_STACK', 'OPEN_APP' ]
-                #     if MC.common.other.canvasData.get 'bad'
-                #         notification 'error', lang.ide.IDE_MSG_ERR_OPEN_OLD_STACK_APP_TAB, true
-                #         ide_event.trigger ide_event.SWITCH_MAIN
-                #         ide_event.trigger ide_event.CLOSE_DESIGN_TAB, tab_name if tab_name
-                #         return
-                #### added by song, if the stack/app too old, unable to open ###
-
-                # new stack
-                #if type is 'NEW_STACK'
-                #
-                #    # create MC.canvas_data
-                #    MC.common.other.canvasData.initSet 'id'       , result
-                #    MC.common.other.canvasData.initSet 'name'     , tab_name
-                #    MC.common.other.canvasData.initSet 'region'   , region_name
-                #    MC.common.other.canvasData.initSet 'platform' , current_platform
-                #    MC.common.other.canvasData.initSet 'version'  , '2014-02-17'
-                #
-                #    # platform is classic
-                #    if current_platform is Design.TYPE.Classic or current_platform is Design.TYPE.DefaultVpc
-                #        component = $.extend true, {}, MC.canvas.DESIGN_INIT_DATA
-                #        layout    = MC.canvas.DESIGN_INIT_LAYOUT
-                #
-                #    # platform is vpc
-                #    else
-                #        component = $.extend true, {}, MC.canvas.DESIGN_INIT_DATA_VPC
-                #        layout    = MC.canvas.DESIGN_INIT_LAYOUT_VPC
-                #
-                #    MC.common.other.canvasData.initSet 'component', component
-                #    MC.common.other.canvasData.initSet 'layout'   , layout
-
                 # init options
                 options =
                     mode : if Tabbar.current is 'new' then Design.MODE.Stack else Tabbar.current

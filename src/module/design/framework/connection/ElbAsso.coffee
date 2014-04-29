@@ -108,8 +108,6 @@ define [ "constant", "../ConnectionModel", "i18n!nls/lang.js", "Design", "compon
     ]
 
     initialize : ( attibutes, option )->
-      if not Design.instance().typeIsVpc() then return
-
       # If the line is created by user, show a popup to let user to add sg
       if option and option.createByUser
         new SGRulePopup( this.id )

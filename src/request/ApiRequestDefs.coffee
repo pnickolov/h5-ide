@@ -9,7 +9,6 @@ define [], ()->
   ** Auto Fill List :
   username
   usercode
-  password
   session_id
   ###
 
@@ -22,6 +21,17 @@ define [], ()->
     resetKey   : { url:"/account/", method:"reset_key", params:["usercode","session_id","flag"] }
 
 
+  ###
+  Parsers are promise's success hanlder.
+  Thus, if the parser cannot parse a result, it should throw an error !!!
+  An example would be like :
+  ```
+  throw {
+    error : 300
+    msg   : "Cannot parse the result"
+  }
+  ```
+  ###
   ApiRequestDefs.Parsers =
     login : ( result )->
       usercode    : result[0]

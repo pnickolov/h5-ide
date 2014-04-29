@@ -100,4 +100,30 @@ define [ "Design" ], ( Design )->
   dset(a,b)    Design att setter \n
   dds()        Print JSON \n
   copy(dds())  Copy JSON"
+
+
+  ###
+  In the following block of code, we hijack some design's methods to test if the design is current design. If it's not, we print a warning to console. Making it easier to debug if something goes wrong.
+  ###
+  ### jshint -W083 ###
+  DESIGN_PROTOTYPE = Design.DesignImpl.prototype
+  Design.DesignImpl.prototype = NEW_DESIGN_PROTOTYPE = {}
+  for funcName, func of DESIGN_PROTOTYPE
+    if not DESIGN_PROTOTYPE.hasOwnProperty funcName
+      continue
+
+    if not funcName.match(/refreshAppUpdate|cacheComponent|getCost|diff|onAwsResourceUpdated/)
+      NEW_DESIGN_PROTOTYPE[ funcName ] = DESIGN_PROTOTYPE[ funcName ]
+      continue
+
+    NEW_DESIGN_PROTOTYPE[ funcName ] = (()->
+      method = funcName
+      ()->
+        if @ isnt Design.instance()
+          console.warn "The context of the calling function is not current Design object. Every function in Design should only be call if the context is the current Design object. This is a tradeoff to make the API easier to use. \n\nIn order to avoid this limilation. One should change something like : \n  myDesign.#{method}(); \nto :\n  var currentDesign = Design.instance();\n  myDesign.use(); \n  myDesign.#{method}(); \n  currentDesign.use();"
+          console.warn "Context :", @, "Current Design :", Design.instance(), "Stack Trace :", (new Error()).stack.replace("Error", "")
+
+        DESIGN_PROTOTYPE[ method ].apply @, arguments
+    )()
+  ### jshint +W083 ###
   null

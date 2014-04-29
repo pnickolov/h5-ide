@@ -734,5 +734,12 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
   # Inject dependency, so that CanvasAdaptor won't require Design.js
   CanvasAdaptor.setDesign( Design )
 
+  # Export DesignImpl through Design, so that we can add debug code in DesignDebugger
+  ### env:dev ###
+  Design.DesignImpl = DesignImpl
+  ### env:dev:end ###
+  ### env:debug ###
+  Design.DesignImpl = DesignImpl
+  ### env:debug:end ###
 
   Design

@@ -1,7 +1,7 @@
 {
   "name": "madeira_cloud_ide",
   "repository": "https://github.com/MadeiraCloud/h5-ide",
-  "version": "2.38.1716",
+  "version": "2.39.1118",
   "devDependencies": {
     "gulp": "3.6.0",
     "gulp-util": "2.2.14",

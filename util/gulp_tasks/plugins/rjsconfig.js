@@ -9,7 +9,7 @@
 
   coffee = require("gulp-coffee");
 
-  ConfigFile = "./src/js/ide/config.coffee";
+  ConfigFile = "./src/ide/config.coffee";
 
   readRequirejsConfig = function(path) {
     var Context, pipeline, s;

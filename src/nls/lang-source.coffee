@@ -4872,4 +4872,14 @@ module.exports =
       en: "User has been blocked."
       zh: "对不起，此账号已被锁住"
 
+    RESET_PASSWORD_ERROR_2:
+      en: "Sorry, but your url is invalid. Please Check your url and try again."
+      zh: "对不起, 您的链接地址不正确, 请检查后重试"
 
+    RESET_PASSWORD_ERROR_12:
+      en: "Sorry, password reset URL is invalid or has expired."
+      zh: "对不起, 您的链接地址不正确或已经失效"
+
+    RESET_PASSWORD_ERROR_18:
+      en: "Sorry, but your params is invalid. Please check your url and try again."
+      zh: "对不起, 您的参数不正确, 请检查后重试"

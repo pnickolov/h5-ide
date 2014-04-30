@@ -160,8 +160,8 @@ init = ->
             hashTarget = hashArray[0]
             if hashTarget == 'password'
                 # check if reset link is valid
-                checkPassKey hashArray[1],(result)->
-                    if result
+                checkPassKey hashArray[1],(statusCode,result)->
+                    if !statusCode
                         console.log 'Right Verify Code!'
                         render "#password-template"
                         $('form.box-body').find('input').eq(0).focus()
@@ -174,6 +174,9 @@ init = ->
                                 console.log('jump...')
                             return false
                     else
+                        #console.log 'ERROR_CODE_MESSAGE',langsrc.service["ERROR_CODE_#{statusCode}_MESSAGE"]
+                        tempLang = tempLang||langsrc.reset['expired-info']
+                        langsrc.reset['expired-info'] = langsrc.service['RESET_PASSWORD_ERROR_'+statusCode] || tempLang
                         window.location.hash = "expire"
                         console.log "Error Verify Code!"
             else if hashTarget == "expire"
@@ -443,12 +446,8 @@ checkPassKey = (keyToValid,fn)->
         method: 'check_validation'
         data: [keyToValid,'reset']
         success: (result, statusCode)->
-            if(!statusCode)
-                console.log result
-                fn(true)
-            else
-                handleErrorCode(statusCode)
-                fn(false)
+            console.log(statusCode, result)
+            fn(statusCode)
         error: (status)->
             handleNetError(status)
             false

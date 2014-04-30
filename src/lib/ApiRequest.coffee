@@ -1,6 +1,5 @@
 
 define ["lib/ApiRequestDefs", "MC" ], ( ApiDefination )->
-
   ###
   # === ApiRequest ===
   #
@@ -21,7 +20,7 @@ define ["lib/ApiRequestDefs", "MC" ], ( ApiDefination )->
     method  : ''
     params  : {}
 
-  logAndThrow : ( obj )->
+  logAndThrow = ( obj )->
     ### env:dev ###
     console.error obj
     ### env:dev:end ###
@@ -29,35 +28,21 @@ define ["lib/ApiRequestDefs", "MC" ], ( ApiDefination )->
 
   AjaxSuccessHandler = (res)->
     if not res or not res.result or res.result.length != 2
-      logAndThrow {
-        error : -1
-        msg   : "Invalid JsonRpc Return Data"
-      }
+      logAndThrow McError(-1, "Invalid JsonRpc Return Data")
 
     if res.result[0] isnt 0
       # We can do aditional global handling for some specific error here.
       # For example, Invalid Session.
 
-      logAndThrow {
-        error  : res.result[0]
-        msg    : "Service Error"
-        result : res.result[1]
-      }
+      logAndThrow McError( res.result[0], "Service Error", res.result[1] )
 
     res.result[1]
 
   AjaxErrorHandler = (jqXHR, textStatus, error)->
     if !error and jqXHR.status != 200
-      logAndThrow {
-        error : -jqXHR.status
-        msg   : "Network Error"
-      }
+      logAndThrow McError(-jqXHR.status, "Network Error")
 
-    logAndThrow {
-      error  : -2
-      msg    : textStatus
-      result : error
-    }
+    logAndThrow McError(-2, textStatus, error)
     return
 
   Abort = ()-> this.ajax.abort(); return

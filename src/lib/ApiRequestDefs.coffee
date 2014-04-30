@@ -1,5 +1,16 @@
 
 define [], ()->
+  ###
+  # === McError ===
+  # McError is Object to represent an Error. Every promise handler that wants to throw error should throw an McError
+  ###
+  window.McError = ( errorNum, errorMsg, params )->
+    {
+      error  : errorNum
+      msg    : errorMsg || ""
+      result : params || undefined
+    }
+
 
   ###
   == Following name of the paramter is autofilled. Thus the paramter is not required.
@@ -12,7 +23,6 @@ define [], ()->
   session_id
   ###
 
-
   ApiRequestDefs =
     login      : { url:"/session/", method:"login",      params:["username", "password"]   }
     logout     : { url:"/session/", method:"logout",     params:["usercode", "session_id"] }
@@ -24,13 +34,7 @@ define [], ()->
   ###
   Parsers are promise's success hanlder.
   Thus, if the parser cannot parse a result, it should throw an error !!!
-  An example would be like :
-  ```
-  throw {
-    error : 300
-    msg   : "Cannot parse the result"
-  }
-  ```
+  An example would be like : `throw McError( 300, "Cannot parse the result" )`
   ###
   ApiRequestDefs.Parsers =
     login : ( result )->

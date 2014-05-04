@@ -20,12 +20,14 @@ define ["lib/ApiRequestDefs", "MC" ], ( ApiDefination )->
     method  : ''
     params  : {}
 
+  # Helpers
   logAndThrow = ( obj )->
     ### env:dev ###
     console.error obj
     ### env:dev:end ###
     throw obj
 
+  # Request Handlers
   AjaxSuccessHandler = (res)->
     if not res or not res.result or res.result.length != 2
       logAndThrow McError(-1, "Invalid JsonRpc Return Data")
@@ -33,6 +35,10 @@ define ["lib/ApiRequestDefs", "MC" ], ( ApiDefination )->
     if res.result[0] isnt 0
       # We can do aditional global handling for some specific error here.
       # For example, Invalid Session.
+      gloablHandler = GlobalErrorHandlers[ res.result[0] ]
+
+      if gloablHandler
+        return gloablHandler( res )
 
       logAndThrow McError( res.result[0], "Service Error", res.result[1] )
 
@@ -84,5 +90,23 @@ define ["lib/ApiRequestDefs", "MC" ], ( ApiDefination )->
     request.abort = Abort
     request.ajax  = ajax
     request
+
+
+
+  ###
+  # === Error Code Defination ===
+  # TODO :
+  # The Errors is just some random number at this time. Should define it when the Backend Error Code is defined.
+  ###
+  Erros = ApiRequest.Errors =
+    InvalidSession : 19
+
+
+  ###
+  # === Global Error Handlers ===
+  # These handlers are used to handle specific errors for any ajax call
+  ###
+  GlobalErrorHandlers = {}
+  # GlobalErrorHandlers[ Errors.InvalidSession ] = ( res )->
 
   ApiRequest

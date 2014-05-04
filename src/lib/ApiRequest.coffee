@@ -98,7 +98,7 @@ define ["lib/ApiRequestDefs", "MC" ], ( ApiDefination )->
   # TODO :
   # The Errors is just some random number at this time. Should define it when the Backend Error Code is defined.
   ###
-  Erros = ApiRequest.Errors =
+  Errors = ApiRequest.Errors =
     InvalidSession : 19
 
 

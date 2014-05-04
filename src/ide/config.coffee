@@ -445,7 +445,7 @@ requirejs.onError = ( err )->
 
 		require err.requireModules || [], ()->
 	else
-		console.error "[RequireJS Error]", err
+		console.error "[RequireJS Error]", err, err.stack
 
 
 require ['ide/Application', 'ide/deprecated/ide'], ( Application, ide ) ->
@@ -458,7 +458,7 @@ require ['ide/Application', 'ide/deprecated/ide'], ( Application, ide ) ->
 		console.error "[RequireJS timeout] Reloading, error modules :", err.requireModules
 		window.location.reload()
 	else
-		console.error "[RequireJS Error]", err
+		console.error "[RequireJS Error]", err, err.stack
 		# requirejs.onError = ()-> # Just use to suppress subsequent error
 		# console.error "[Script Error] Redirecting to 500, error modules :", err.requireModules
 		# window.location = "/500"

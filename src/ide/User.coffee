@@ -8,7 +8,7 @@
 ----------------------------
 ###
 
-define [ "Backbone" ], ()->
+define [ "backbone" ], ()->
 
   Backbone.Model.extend {
 

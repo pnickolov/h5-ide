@@ -173,7 +173,7 @@ define [ 'Design', 'event', './module/design/template', 'constant', 'i18n!nls/la
             else
                 $btnState.show()
 
-            stateList = MC.data.websocket.collection.status.find().fetch()
+            stateList = App.WS.collection.status.find().fetch()
             @renderStateBar stateList
 
 
@@ -183,12 +183,12 @@ define [ 'Design', 'event', './module/design/template', 'constant', 'i18n!nls/la
                 @unloadStateStatusBar()
             else if state is 'Running'
                 @loadStateStatusBar( state )
-                stateList = MC.data.websocket.collection.status.find().fetch()
+                stateList = App.WS.collection.status.find().fetch()
                 @renderStateBar stateList
 
 
         updateStateBar: ( type, idx, statusData ) ->
-            stateList = MC.data.websocket.collection.status.find().fetch()
+            stateList = App.WS.collection.status.find().fetch()
             @renderStateBar stateList
 
 

@@ -17,7 +17,9 @@ define [ "./SessionDialogView", "ApiRequest", "common_handle", "event" ], ( Sess
         # Legacy Code
         ide_event.trigger ide_event.UPDATE_APP_LIST
         ide_event.trigger ide_event.UPDATE_DASHBOARD
-        ide_event.trigger ide_event.RECONNECT_WEBSOCKET
+
+        # The Websockets subscription will be lost if we have an invalid session.
+        App.WS.subscribe()
 
         window.location.href = "/" if !MC.data.is_loading_complete
         return

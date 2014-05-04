@@ -7,10 +7,30 @@
 ----------------------------
 ###
 
-define [], ()->
+define [ "./Websocket", "./ApplicationView", "event" ], ( Websocket, ApplicationView, ide_event )->
 
   VisualOps = ()->
+    if window.App
+      console.error "Application is already created."
+      return
+
     window.App = this
 
+    @view = new ApplicationView()
+
+    @createWebsocket()
+    return
+
+  VisualOps.prototype.createWebsocket = ()->
+    @WS = new Websocket()
+
+    @WS.on "Disconnected", ()->
+      # LEGACY code
+      ide_event.trigger ide_event.SWITCH_MAIN
+      require [ 'component/session/SessionDialog' ], ( SessionDialog )-> new SessionDialog()
+
+    @WS.on "StatusChanged", ( isConnected )=>
+      console.log "Websocket Status changed, isConnected:", isConnected
+      @view.toggleWSStatus( isConnected )
 
   VisualOps

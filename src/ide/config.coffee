@@ -102,8 +102,6 @@ require.config {
 
 		'event'              : 'lib/ide_event'
 
-		'WS'                 : 'lib/websocket'
-
 		#############################################
 		# lib                        # Merge in deploy
 		#############################################
@@ -286,10 +284,6 @@ require.config {
 		'handlebars'   :
 			exports    : 'Handlebars'
 
-		#############################################
-		# WS
-		#############################################
-
 		'Meteor'       :
 			deps       : ['underscore']
 			exports    : 'Meteor'
@@ -338,7 +332,6 @@ require.config {
 			"canvas_layout"
 			"lib/handlebarhelpers"
 			"event"
-			"WS"
 		]
 		"lib/deprecated" : [
 			'aws_handle'

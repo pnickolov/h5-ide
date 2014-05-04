@@ -15,7 +15,7 @@
 {{/if}}
 <button {{#if item_flags.is_pending}}class="btn-toolbar tooltip icon-terminate disabled"{{else}}class="modal btn-toolbar tooltip icon-terminate seperator" data-modal-template="modalApp" data-modal-data='{"title":{{#if item_flags.is_production}}"{{{i18n "TOOL_POP_TIT_TERMINATE_PRD_APP"}}}"{{else}}"{{{ i18n "TOOL_POP_TIT_TERMINATE_APP" }}}"{{/if}}, "body":"{{{ i18n "TOOL_POP_BODY_TERMINATE_APP_LEFT" }}} {{item_flags.name}}{{{ i18n "TOOL_POP_BODY_TERMINATE_APP_RIGHT" }}}", "confirm":"{{{ i18n "TOOL_POP_BTN_TERMINATE_APP" }}}", "color":"red", "is_production":{{#if item_flags.is_production}}true{{else}}false{{/if}}, "app_name": "{{item_flags.name}}" }' data-modal-dismiss="true" id="toolbar-terminate-app"{{/if}} data-tooltip="{{{ i18n 'TOOL_TIP_TERMINATE_APP' }}}"></button>
 {{/unless}}
-
+<button class="modal btn-toolbar tooltip icon-duplicate seperator" data-tooltip='{{ i18n "TOOL_TIP_DUPLICATE_STACK" }}' id="toolbar-duplicate" data-modal-template="modalApp" data-modal-data='{"title":"{{{ i18n "TOOL_POP_TIT_DUPLICATE_STACK" }}}", "body":"{{{ i18n "TOOL_POP_BODY_DUPLICATE_STACK" }}}", "input":"{{item_flags.name}}", "confirm":"{{{ i18n "TOOL_POP_BTN_DUPLICATE_STACK" }}}", "color":"blue" }' data-modal-dismiss="true"></button>
 <button class="btn-toolbar icon-zoom-in {{#if item_flags.is_zoomin}}tooltip{{else}}disabled{{/if}}" data-tooltip='{{ i18n "TOOL_TIP_ZOOM_IN" }}'></button>
 <button class="btn-toolbar icon-zoom-out seperator {{#if item_flags.is_zoomout}}tooltip{{else}}disabled{{/if}}" data-tooltip='{{ i18n "TOOL_TIP_ZOOM_OUT" }}'></button>
 

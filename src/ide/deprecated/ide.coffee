@@ -5,11 +5,10 @@
 define [ 'MC', 'event', 'handlebars'
 		 'i18n!nls/lang.js',
 		 './view', 'canvas_layout',
-		 'header', 'navigation', 'tabbar', 'dashboard', 'design_module', 'process',
-		 'WS', 'constant',
+		 'header', 'navigation', 'tabbar', 'dashboard', 'design_module', 'process', 'constant',
 		 'base_model',
 		 'common_handle', 'validation', 'aws_handle'
-], ( MC, ide_event, Handlebars, lang, view, canvas_layout, header, navigation, tabbar, dashboard, design, process, WS, constant, base_model, common_handle, validation ) ->
+], ( MC, ide_event, Handlebars, lang, view, canvas_layout, header, navigation, tabbar, dashboard, design, process, constant, base_model, common_handle, validation ) ->
 
 	initialize : () ->
 
@@ -112,49 +111,6 @@ define [ 'MC', 'event', 'handlebars'
 		MC.data.open_tab_data    = {}
 
 		#############################
-		#  WebSocket
-		#############################
-
-		WS.websocketInit()
-		websocket = new WS.WebSocket()
-		initialize = true
-
-		relogin = () ->
-			console.log 'relogin'
-			ide_event.trigger ide_event.SWITCH_MAIN
-			require [ 'component/session/SessionDialog' ], ( SessionDialog )-> new SessionDialog()
-
-		status = () ->
-			websocket.status false, ()-> view.showDisconnected()
-			websocket.status true,  ()-> view.hideDisconnected()
-
-		setTimeout status, 15000
-
-		subScriptionError = ( error ) ->
-			console.log '---------- session invalid ----------'
-			console.log error
-			relogin()
-			null
-
-		subRequestReady = () ->
-			console.log 'collection request ready'
-
-			ide_event.trigger ide_event.WS_COLLECTION_READY_REQUEST
-
-		#
-		subScoket = () ->
-			console.log 'subScoket'
-			websocket.sub "request", $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, subRequestReady, subScriptionError
-			websocket.sub "stack",   $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null, null
-			websocket.sub "app",     $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null, null
-			websocket.sub "status",  $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null, null
-			websocket.sub "imports", $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null, null
-		subScoket()
-
-		#set MC.data.websocket
-		MC.data.websocket = websocket
-
-		#############################
 		#  listen ide_event
 		#############################
 
@@ -178,9 +134,6 @@ define [ 'MC', 'event', 'handlebars'
 			MC.data.ide_available_count = MC.data.ide_available_count + 1
 			console.log '----------- ide:SWITCH_MAIN -----------'
 			ide_event.trigger ide_event.SWITCH_MAIN if MC.data.ide_available_count is 4
-
-		#listen RECONNECT_WEBSOCKET
-		ide_event.onLongListen ide_event.RECONNECT_WEBSOCKET, () -> subScoket()
 
 		#############################
 		#  load module
@@ -254,43 +207,4 @@ define [ 'MC', 'event', 'handlebars'
 
 			null
 
-		###########################
-		#listen to the request list
-		###########################
-		listenRequestList = () ->
-			console.log 'listen to request list'
-
-			MC.data.websocket.collection.request.find().fetch()
-			query = MC.data.websocket.collection.request.find()
-			handle = query.observeChanges {
-				added : (idx, dag) ->
-					ide_event.trigger ide_event.UPDATE_REQUEST_ITEM, idx, dag
-
-				changed : (idx, dag) ->
-					ide_event.trigger ide_event.UPDATE_REQUEST_ITEM, idx, dag
-			}
-
-			null
-
-		listenRequestList()
-
-		###########################
-		#listen to the import list
-		###########################
-		listenImportList = () ->
-			console.log 'listen to import list'
-
-			MC.data.websocket.collection.imports.find().fetch()
-			query = MC.data.websocket.collection.imports.find()
-			handle = query.observe {
-				added : (idx, dag) ->
-					ide_event.trigger ide_event.UPDATE_IMPORT_ITEM, idx
-
-				changed : (idx, dag) ->
-					ide_event.trigger ide_event.UPDATE_IMPORT_ITEM, idx
-			}
-
-			null
-
-		listenImportList()
 		null

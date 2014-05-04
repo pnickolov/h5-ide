@@ -30,7 +30,7 @@ define [ "./Websocket", "./ApplicationView", "event" ], ( Websocket, Application
       require [ 'component/session/SessionDialog' ], ( SessionDialog )-> new SessionDialog()
 
     @WS.on "StatusChanged", ( isConnected )=>
-      console.log "Websocket Status changed, isConnected:", isConnected
+      console.info "Websocket Status changed, isConnected:", isConnected
       @view.toggleWSStatus( isConnected )
 
   VisualOps

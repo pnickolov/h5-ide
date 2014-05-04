@@ -178,7 +178,10 @@ define [ 'MC', 'event', 'handlebars'
 		base_model.sub ( error ) ->
 			console.log 'sub'
 			if error.return_code is constant.RETURN_CODE.E_SESSION
-				relogin()
+				# LEGACY code
+				ide_event.trigger ide_event.SWITCH_MAIN
+				require [ 'component/session/SessionDialog' ], ( SessionDialog )-> new SessionDialog()
+
 				if error.param[0].method is 'info'
 					if error.param[0].url in [ '/stack/', '/app/' ]
 						ide_event.trigger ide_event.CLOSE_DESIGN_TAB, error.param[4][0]

@@ -179,8 +179,7 @@ define [ 'MC', 'event', 'handlebars'
 			console.log 'sub'
 			if error.return_code is constant.RETURN_CODE.E_SESSION
 				# LEGACY code
-				ide_event.trigger ide_event.SWITCH_MAIN
-				require [ 'component/session/SessionDialog' ], ( SessionDialog )-> new SessionDialog()
+				App.acquireSession()
 
 				if error.param[0].method is 'info'
 					if error.param[0].url in [ '/stack/', '/app/' ]

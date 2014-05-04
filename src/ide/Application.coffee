@@ -7,7 +7,7 @@
 ----------------------------
 ###
 
-define [ "./Websocket", "./ApplicationView", "event" ], ( Websocket, ApplicationView, ide_event )->
+define [ "./Websocket", "./ApplicationView", "./User", "common_handle" ,"event" ], ( Websocket, ApplicationView, User, common_handle, ide_event )->
 
   VisualOps = ()->
     if window.App
@@ -18,19 +18,45 @@ define [ "./Websocket", "./ApplicationView", "event" ], ( Websocket, Application
 
     @view = new ApplicationView()
 
-    @createWebsocket()
+    @__createWebsocket()
+    @__createUser()
     return
 
-  VisualOps.prototype.createWebsocket = ()->
+  VisualOps.prototype.__createWebsocket = ()->
     @WS = new Websocket()
 
-    @WS.on "Disconnected", ()->
-      # LEGACY code
-      ide_event.trigger ide_event.SWITCH_MAIN
-      require [ 'component/session/SessionDialog' ], ( SessionDialog )-> new SessionDialog()
+    @WS.on "Disconnected", ()=> @acquireSession()
 
     @WS.on "StatusChanged", ( isConnected )=>
       console.info "Websocket Status changed, isConnected:", isConnected
       @view.toggleWSStatus( isConnected )
+
+
+  VisualOps.prototype.__createUser = ()->
+    @user = new User()
+    @user.fetch()
+
+    @user.on "SessionUpdated", ()=>
+      # Legacy Code
+      ide_event.trigger ide_event.UPDATE_APP_LIST
+      ide_event.trigger ide_event.UPDATE_DASHBOARD
+
+      # The Websockets subscription will be lost if we have an invalid session.
+      @WS.subscribe()
+
+
+  # This method will prompt a dialog to let user to re-acquire the session
+  VisualOps.prototype.acquireSession = ()->
+    # LEGACY code
+    # Seems like in the old days, someone wants to swtich to dashboard.
+    ide_event.trigger ide_event.SWITCH_MAIN
+    @view.showSessionDialog()
+    return
+
+  VisualOps.prototype.closeSession = ()->
+    common_handle.cookie.deleteCookie()
+    window.location.href = "/login/"
+    return
+
 
   VisualOps

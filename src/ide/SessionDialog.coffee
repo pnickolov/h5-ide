@@ -1,5 +1,5 @@
 
-define [ './template', 'i18n!nls/lang.js' ], ( template, lang ) ->
+define [ 'i18n!nls/lang.js' ], ( lang ) ->
 
   SessionDialogView = Backbone.View.extend {
 
@@ -11,7 +11,7 @@ define [ './template', 'i18n!nls/lang.js' ], ( template, lang ) ->
       'keypress #SessionPassword' : 'passwordChanged'
 
     render : () ->
-      modal template(), false
+      modal MC.template.sessionDialog(), false
 
       @setElement $('#modal-wrap')
       return
@@ -21,13 +21,14 @@ define [ './template', 'i18n!nls/lang.js' ], ( template, lang ) ->
       $(".invalid-session .reconnectSession").show()
       return
 
-    closeSession : ()-> @model.closeSession()
+    closeSession : ()-> App.closeSession()
 
     connect : ()->
       if $("#SessionConnect").is(":disabled") then return
 
       $("#SessionConnect").attr "disabled", "disabled"
-      @model.connect( $("#SessionPassword").val() ).then ()->
+      App.user.acquireSession( $("#SessionPassword").val() ).then ()=>
+        @remove()
         return
       , ( error )->
         $("#SessionConnect").removeAttr "disabled"

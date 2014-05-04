@@ -1,13 +1,11 @@
 
 ###
 ----------------------------
-  This is the core / entry point / controller of the whole IDE.
-  It contains some basical logics to maintain the IDE. And it holds other components
-  to provide other functionality
+  The View for application
 ----------------------------
 ###
 
-define [ "backbone" ], ( Backbone )->
+define [ "backbone", "./SessionDialog" ], ( Backbone, SessionDialog )->
 
   Backbone.View.extend {
 
@@ -30,5 +28,10 @@ define [ "backbone" ], ( Backbone )->
                     msg.removeClass "hovered"
                 return
             return
+
+    showSessionDialog : ()->
+      if $("#SessionDialog").length
+        return
+      (new SessionDialog()).render()
 
   }

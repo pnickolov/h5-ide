@@ -49,7 +49,7 @@ define [], ()->
       has_cred    : result[8]
 
 
-  ApiRequestDefs.autoFill = ( paramter_name )->
+  ApiRequestDefs.AutoFill = ( paramter_name )->
     switch paramter_name
       when "username"
         return $.cookie('username')

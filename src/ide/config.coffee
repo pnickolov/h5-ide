@@ -87,6 +87,7 @@ require.config {
 		'Meteor'             : 'vender/meteor/meteor'
 		'crypto'             : 'vender/crypto-js/cryptobundle'
 		'q'                  : 'vender/q/q'
+		'select2'			 : 'vender/select2/select2.min'
 
 		#############################################
 		# MC                        # Merge in deploy
@@ -306,6 +307,10 @@ require.config {
 
 		'process'      :
 			deps       : [ 'process_view', 'process_model', 'MC' ]
+
+		'select2'	   :
+			deps 	   : [ 'jquery' ]
+			exports    : "$"
 
 	### env:prod ###
 	# The rule of bundles is that, if an ID defined above is ever included in a bundle

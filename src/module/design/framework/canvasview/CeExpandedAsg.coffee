@@ -1,5 +1,5 @@
 
-define [ "./CanvasElement", "constant", "CanvasManager", "./CeAsg" ], ( CanvasElement, constant, CanvasManager, CeAsg )->
+define [ "./CanvasElement", "constant", "CanvasManager", "./CeAsg", "i18n!nls/lang.js" ], ( CanvasElement, constant, CanvasManager, CeAsg, lang )->
 
   CeExpandedAsg = ()->
     CanvasElement.apply( this, arguments )

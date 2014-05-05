@@ -125,6 +125,7 @@ define [ 'underscore', 'backbone' ], () ->
         TERMINATE_APP          : 'TERMINATE_APP'
         DELETE_STACK           : 'DELETE_STACK'
         DUPLICATE_STACK        : 'DUPLICATE_STACK'
+        APP_TO_STACK           : 'APP_TO_STACK'
         SAVE_STACK             : 'SAVE_STACK'
         UPDATE_APP_LIST        : 'UPDATE_APP_LIST'
         UPDATE_STACK_LIST      : 'UPDATE_STACK_LIST'

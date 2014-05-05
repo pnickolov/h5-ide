@@ -13,7 +13,8 @@ define [ 'MC', 'event',
          'constant'
          'backbone', 'jquery', 'handlebars',
          'UI.selectbox', 'UI.notification',
-         "UI.tabbar"
+         "UI.tabbar",
+         "../framework/util/serializeVisitor/AppToStack"
 ], ( MC, ide_event, Design, lang, stack_tmpl, app_tmpl, appview_tmpl, JsonExporter, download, constant ) ->
 
     ToolbarView = Backbone.View.extend {
@@ -329,15 +330,13 @@ define [ 'MC', 'event',
                     modal.close()
 
                     #TODO: Here Goes All Action.
+                    Design.instance().set('name',new_name)
+                    Design.instance().serializeAsStack()
                     ide_event.trigger ide_event.SAVE_STACK, MC.common.other.canvasData.data()
-
                     setTimeout () ->
-                        region  = MC.common.other.canvasData.get 'region'
                         id      = MC.common.other.canvasData.get 'id'
-                        name    = MC.common.other.canvasData.get 'name'
-                        ide_event.trigger ide_event.DUPLICATE_STACK, region, id, new_name, name
+                        MC.common.other.addCacheThumb id, $('#canvas_body').html(), $('#svg_canvas')[0].getBBox()
                     , 500
-
             null
 
         clickDeleteIcon : ->

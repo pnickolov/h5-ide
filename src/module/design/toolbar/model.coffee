@@ -681,7 +681,7 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
 
             # add current canvas and svg to cacheThumb
             MC.common.other.addCacheThumb id, $("#canvas_body").html(), $("#svg_canvas")[0].getBBox()
-
+            console.error id,"==========="
             stack_model.save_as { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, new_name, name
 
         #delete

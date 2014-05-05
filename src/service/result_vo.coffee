@@ -1,5 +1,52 @@
 
-define [ 'constant'] , ( constant ) ->
+define [ 'constant', 'underscore' ] , ( constant, _ ) ->
+
+    genSuccessHandler = ( api_name, src, param_ary, parser, callback ) ->
+        ( res ) ->
+            result = res.result[1]
+            return_code = res.result[0]
+            #resolve result
+            param_ary.splice 0, 0, { url:URL, method:api_name, src:src }
+            aws_result = {}
+            aws_result = parser result, return_code, param_ary
+
+            if callback
+                callback aws_result
+                null
+            else
+                aws_result
+
+    genErrorHandler = ( api_name, src, param_ary, parser, callback ) ->
+        ( res ) ->
+            result = res.result[1]
+            return_code = res.result[0]
+
+            aws_result = {}
+            aws_result.return_code      = return_code
+            aws_result.is_error         = true
+            aws_result.error_message    = result.toString()
+
+            param_ary.splice 0, 0, { url:URL, method:api_name, src:src }
+            aws_result.param = param_ary
+            if callback
+                callback aws_result
+                null
+            else
+                aws_result
+
+
+
+    genSendRequest =  ( url ) ->
+
+        ( api_name, src, param_ary, parser, callback ) ->
+            successHandler = genSuccessHandler.apply null, arguments
+            errorHandler = genErrorHandler.apply null, arguments
+
+            MC.api({
+                url     : url
+                method  : api_name
+                data    : param_ary
+            }).then successHandler, errorHandler
 
 
     #private (resolve return_code for forge api)
@@ -55,6 +102,7 @@ define [ 'constant'] , ( constant ) ->
 
     #private (resolve return_code for forge api)
     processAWSReturnHandler = ( result, return_code, param ) ->
+
 
         aws_result = {
 
@@ -152,4 +200,5 @@ define [ 'constant'] , ( constant ) ->
     #public
     processForgeReturnHandler : processForgeReturnHandler
     processAWSReturnHandler   : processAWSReturnHandler
+    genSendRequest            : genSendRequest
 

@@ -449,8 +449,9 @@ requirejs.onError = ( err )->
 
 
 require ['ide/Application', 'ide/deprecated/ide'], ( Application, ide ) ->
-	new Application()
-	$ ()-> ide.initialize()
+	(new Application()).initialize().then ()->
+		ide.initialize()
+	return
 , ( err )->
 	err = err || { requireType : "timeout" }
 	if err.requireType is "timeout"

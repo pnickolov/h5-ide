@@ -15,12 +15,17 @@ define [ "./Websocket", "./ApplicationView", "./User", "common_handle" ,"event" 
       return
 
     window.App = this
+    return
 
+  # initialize returns a promise that will be resolve when the application is ready.
+  VisualOps.prototype.initialize = ()->
     @view = new ApplicationView()
 
-    @__createWebsocket()
     @__createUser()
-    return
+    @__createWebsocket()
+
+    @user.fetch()
+
 
   VisualOps.prototype.__createWebsocket = ()->
     @WS = new Websocket()
@@ -34,7 +39,6 @@ define [ "./Websocket", "./ApplicationView", "./User", "common_handle" ,"event" 
 
   VisualOps.prototype.__createUser = ()->
     @user = new User()
-    @user.fetch()
 
     @user.on "SessionUpdated", ()=>
       # Legacy Code

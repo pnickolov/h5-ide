@@ -17,13 +17,14 @@ define [ "ApiRequest", "backbone" ], ( ApiRequest )->
     initialize : ()->
       @set {
         unfetched : true
+        usercode  : $.cookie "usercode"
         username  : MC.base64Decode $.cookie "usercode"
         session   : $.cookie "session_id"
       }
       return
 
-    hasAccount   : ()-> !!@get("account")
-    isFirstVisit : ()-> !(UserState.NotFirstTime&@get("state"))
+    hasCredential : ()-> !!@get("account")
+    isFirstVisit  : ()-> !(UserState.NotFirstTime&@get("state"))
 
     userInfoAccuired : ( result )->
       res =
@@ -40,17 +41,51 @@ define [ "ApiRequest", "backbone" ], ( ApiRequest )->
 
       @set res
 
+    bootIntercom : ()->
+      if not window.Intercom
+        intId = setInterval ()=>
+          if window.Intercom
+            console.log "Intercom Loaded, Booting Intercom"
+            clearInterval( intId )
+            @bootIntercom()
+          return
+        , 1000
+        return
+
+      window.Intercom "boot", {
+        app_id    : "3rp02j1w"
+        email     : @get("email")
+        username  : @get("username")
+        user_hash : @get("intercomHash")
+        widget    : {'activator' : '#feedback'}
+      }
+      return
+
     # Fetch additional user infomation from an api.
     fetch : ()->
       ApiRequest("login", {
-        password : $.cookie "session_id"
+        password : @get("session")
       }).then ( result )=>
+
         @unset "unfetched"
         @userInfoAccuired( result )
+        ### env:prod ###
+        @bootIntercom()
+        ### env:prod:end ###
+
       , ( err )->
+
         # We might want to do some error handling here.
         # If any error occurs while fetching user infomation. It might because the server is down or somthing.
         # But we should we do?
+
+        if err.error < 0
+          # Network Error, Try reloading
+          window.location.reload()
+        else
+          # If there's service error. I think we need to logout, because I guess it's because the session is not right.
+          App.logout()
+
         throw err
 
     # Send a request to acquire a new session

@@ -31,7 +31,7 @@ define [ 'i18n!nls/lang.js', "./SessionDialogTpl" ], ( lang, template ) ->
       $(".invalid-session .reconnectSession").show()
       return
 
-    closeSession : ()-> App.closeSession()
+    closeSession : ()-> App.logout()
 
     connect : ()->
       if $("#SessionConnect").is(":disabled") then return

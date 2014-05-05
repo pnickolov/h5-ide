@@ -52,8 +52,8 @@ define [ "./Websocket", "./ApplicationView", "./User", "common_handle" ,"event" 
     ide_event.trigger ide_event.SWITCH_MAIN
     @view.showSessionDialog()
 
-  VisualOps.prototype.closeSession = ()->
-    common_handle.cookie.deleteCookie()
+  VisualOps.prototype.logout = ()->
+    App.user.logout()
     window.location.href = "/login/"
     return
 

@@ -138,12 +138,7 @@ define [ 'backbone', 'jquery', 'underscore', 'constant', 'event', 'common_handle
 
             null
 
-        logout : () ->
-            ApiRequest("logout").then ()->
-                common_handle.cookie.deleteCookie()
-                window.location.href = "/login/"
-            , ()->
-                window.location.href = "/login/"
+        logout : () -> App.logout()
     }
 
     return new HeaderModel()

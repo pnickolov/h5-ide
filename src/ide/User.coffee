@@ -74,4 +74,10 @@ define [ "ApiRequest", "backbone" ], ( ApiRequest )->
         @trigger "SessionUpdated"
         return
 
+    logout : ()->
+      domain = { "domain" : window.location.hostname.replace("ide", "") }
+      for ckey, cValue of $.cookie()
+        $.removeCookie ckey, domain
+        $.removeCookie ckey
+      return
   }

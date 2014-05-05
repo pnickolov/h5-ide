@@ -219,7 +219,7 @@ require.config {
 		#############################################
 		# api                       # Merge in deploy
 		#############################################
-		'ApiRequest'         : 'lib/ApiRequest'
+		'ApiRequest'         : 'api/ApiRequest'
 
 
 		#############################################

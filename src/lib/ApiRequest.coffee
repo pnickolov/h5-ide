@@ -21,7 +21,7 @@ define ["lib/ApiRequestDefs", "MC" ], ( ApiDefination )->
     method  : ''
     params  : {}
 
-  logAndThrow : ( obj )->
+  logAndThrow = ( obj )->
     ### env:dev ###
     console.error obj
     ### env:dev:end ###

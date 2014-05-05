@@ -30,6 +30,7 @@ define [ 'MC', 'event',
             'click #toolbar-run'            : 'clickRunIcon'
             'click .icon-save'              : 'clickSaveIcon'
             'click #toolbar-duplicate'      : 'clickDuplicateIcon'
+            'click #toolbar-app-to-stack'   : 'appToStackClick'  #TODO: add to template
             'click #toolbar-delete'         : 'clickDeleteIcon'
             'click #toolbar-new'            : 'clickNewStackIcon'
             'click .icon-zoom-in'           : 'clickZoomInIcon'
@@ -303,6 +304,42 @@ define [ 'MC', 'event',
                     # new design flow +++++++++++++++++++++++++++
 
             true
+
+        appToStackClick: (event) ->
+            console.log "Click to save App as Stack"
+
+            name = MC.common.other.canvasData.get 'name'
+
+            #set default name
+            #todo add getStackNameFromApp
+            new_name = MC.aws.aws.getStackNameFromApp(name)
+            $('#modal-input-value').val(new_name)
+
+            $("#btn-confirm").on 'click', {target: this}, (event)->
+                console.log "Toolbar save app as stack"
+                new_name = $("#modal-input-value").val()
+
+                #Check Stack Name
+                if not new_name
+                    notification "warning", lang.ide.PROP_MSG_WARN_NO_STACK_NAME
+                else if new_name.indexOf(' ') >= 0
+                    notification 'warning', lang.ide.PROP_MSG_WARN_WHITE_SPACE
+                else if not MC.aws.aws.checkStackName null, new_name  #TODO: CHECK_STACK_NAME
+                    notification 'warning', lang.ide.PROP_MSG_WARN_REPEATED_STACK_NAME
+                else
+                    modal.close()
+
+                    ide_event.trigger ide_event.SAVE_STACK, MC.common.other.canvasData.data()
+
+                    setTimeout () ->
+                        region  = MC.common.other.canvasData.get 'region'
+                        id      = MC.common.other.canvasData.get 'id'
+                        name    = MC.common.other.canvasData.get 'name'
+                        #todo: ide_event trigger event SAVE_APP_AS_STACK
+                        ide_event.trigger ide_event.SAVE_APP_AS_STACK, region, id, new_name, name
+                    , 500
+
+            null
 
         clickDeleteIcon : ->
             me = this

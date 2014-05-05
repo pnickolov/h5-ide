@@ -89,7 +89,6 @@ define [ 'event', 'i18n!nls/lang.js',
             'modal-shown .stop-app'                     : 'stopAppClick'
             'modal-shown .terminate-app'                : 'terminateAppClick'
             'modal-shown .duplicate-stack'              : 'duplicateStackClick'
-            'modal-shown .app-to-stack'                 : 'appToStackClick'  #todo: add to template
             'modal-shown .delete-stack'                 : 'deleteStackClick'
 
             'click #global-region-visualize-VPC' : 'unmanagedVPCClick'
@@ -445,36 +444,6 @@ define [ 'event', 'i18n!nls/lang.js',
 
             null
 
-        appToStackClick: (event) ->
-            console.log "Click to save App as Stack"
-
-            id = $(event.currentTarget).attr('id')
-            name = $(event.currentTarget).attr('name')
-
-            #set default name
-
-            #todo add getStackNameFromApp
-            new_name = MC.aws.aws.getStackNameFromApp(name)
-            $('#modal-input-value').val(new_name)
-
-            $("#btn-confirm").on 'click', {target: this}, (event)->
-                console.log "dashboard save app as stack"
-                new_name = $("#modal-input-value").val()
-
-                #Check Stack Name
-                if not new_name
-                    notification "warning", lang.ide.PROP_MSG_WARN_NO_STACK_NAME
-                else if new_name.indexOf(' ') >= 0
-                    notification 'warning', lang.ide.PROP_MSG_WARN_WHITE_SPACE
-                else if not MC.aws.aws.checkStackName null, new_name  #TODO: CHECK_STACK_NAME
-                    notification 'warning', lang.ide.PROP_MSG_WARN_REPEATED_STACK_NAME
-                else
-                    modal.close()
-
-                    #todo: ide_event trigger event SAVE_APP_AS_STACK
-                    ide_event.trigger ide_event.SAVE_APP_AS_STACK, current_region, id, new_name, name
-
-            null
 
         startAppClick : (event) ->
             console.log 'click to start app'

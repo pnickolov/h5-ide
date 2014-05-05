@@ -831,9 +831,17 @@ module.exports =
       en: "New Stack Name:"
       zh: "模版名称:"
 
+    TOOL_POP_BODY_APP_To_STACK:
+      en: "New Stack Name:"
+      zh: "模版名称:"
+
     TOOL_POP_BTN_DUPLICATE_STACK:
       en: "Duplicate"
       zh: "复制"
+
+    TOOL_POP_BTN_SAVE_TO_STACK:
+        en: "Save"
+        zh: "保存"
 
     TOOL_TIP_CREATE_STACK:
       en: "Create New Stack"
@@ -843,6 +851,9 @@ module.exports =
       en: "Zoom In"
       zh: "放大"
 
+    TOOL_TIP_SAVE_APP_TO_STACK:
+      en: "Save app as Stack"
+      zh: "App 保存为 Stack"
     TOOL_TIP_ZOOM_OUT:
       en: "Zoom Out"
       zh: "缩小"
@@ -859,6 +870,9 @@ module.exports =
       en: "Export"
       zh: "导出"
 
+    TOOL_POP_TIT_APP_TO_STACK:
+      en: "Save App as Stack"
+      zh: "将 App 保存为 Stack"
     TOOL_POP_BODY_EXPORT_AS_JSON:
       en: "The stack is ready to export. Please click the Download button to save the file."
       zh: "The stack is ready to export. Please click the Download button to save the file."

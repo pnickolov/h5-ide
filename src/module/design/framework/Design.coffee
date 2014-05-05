@@ -136,8 +136,8 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
       agent : {
         enabled : false
         module  : {
-          repo : $.cookie("mod_repo")
-          tag  : $.cookie("mod_tag")
+          repo : App.user.get("mod_repo")
+          tag  : App.user.get("mod_tag")
         }
       }
     }, canvas_data

@@ -150,7 +150,7 @@ define [ 'i18n!nls/lang.js',
                     MC.data.config[region_name].vpc_limit           = result.resolved_data.vpc_limit
                     # reset az
                     MC.data.config[region_name].zone                = null
-                    if MC.common.cookie.getCookieByName('has_cred') isnt 'true'
+                    if false
                         MC.data.config[region_name].zone = {'item':[]}
                         MC.data.config[region_name].zone.item.push {'regionName':region_name, 'zoneName':i, 'zoneState':'available'} for i in result.resolved_data.zone
 
@@ -485,7 +485,7 @@ define [ 'i18n!nls/lang.js',
             me.set 'resource_snapshot', null
 
             #if demo account, not request api
-            if MC.common.cookie.getCookieByName( 'account_id' ) is 'demo_account'
+            if not App.user.hasCredential()
                 return
 
             #check cached data
@@ -545,7 +545,7 @@ define [ 'i18n!nls/lang.js',
             me.set 'my_ami' , Math.round(+new Date())
 
             #if demo account, not request api
-            if MC.common.cookie.getCookieByName( 'account_id' ) is 'demo_account'
+            if not App.user.hasCredential()
                 return
 
             #check cached data

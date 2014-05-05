@@ -139,7 +139,7 @@ define [ 'MC', 'event',
             me = this
             event.preventDefault()
             # check credential
-            if MC.common.cookie.getCookieByName('has_cred') isnt 'true'
+            if false
                 modal.close()
                 console.log 'show credential setting dialog'
                 require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
@@ -459,7 +459,7 @@ define [ 'MC', 'event',
             console.log 'click stop app'
 
             # check credential
-            if MC.common.cookie.getCookieByName('has_cred') isnt 'true'
+            if false
                 modal.close()
                 console.log 'show credential setting dialog'
                 require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
@@ -484,7 +484,7 @@ define [ 'MC', 'event',
             console.log 'click run app'
 
             # check credential
-            if MC.common.cookie.getCookieByName('has_cred') isnt 'true'
+            if false
                 modal.close()
                 console.log 'show credential setting dialog'
                 require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
@@ -509,7 +509,7 @@ define [ 'MC', 'event',
             console.log 'click terminate app'
 
             # check credential
-            if MC.common.cookie.getCookieByName('has_cred') isnt 'true'
+            if false
                 modal.close()
                 console.log 'show credential setting dialog'
                 require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
@@ -595,7 +595,7 @@ define [ 'MC', 'event',
         clickSaveEditApp : (event)->
             # 1. Send save request
             # check credential
-            if MC.common.cookie.getCookieByName('has_cred') isnt 'true'
+            if false
                 modal.close()
                 console.log 'show credential setting dialog'
                 require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()

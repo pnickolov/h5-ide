@@ -16,8 +16,8 @@ define [ 'backbone', 'jquery', 'underscore', 'constant', 'event', 'common_handle
 
         init : ()->
             @set {
-                'user_name'  : MC.base64Decode $.cookie( 'usercode' )
-                'user_email' : MC.base64Decode $.cookie( 'email' )
+                'user_name'  : App.user.get 'username'
+                'user_email' : App.user.get 'email'
             }
             null
 

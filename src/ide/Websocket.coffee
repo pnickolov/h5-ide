@@ -66,8 +66,8 @@ define [ "Meteor", "backbone", "event", "MC" ], ( Meteor, Backbone, ide_event )-
 
     subscribed = true
 
-    usercode = $.cookie 'usercode'
-    session  = $.cookie 'session_id'
+    usercode = App.user.get 'usercode'
+    session  = App.user.get 'session'
     callback = {
       onReady : _.bind @onReady, @
       onError : _.bind @onError, @

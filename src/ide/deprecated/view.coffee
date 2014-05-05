@@ -123,8 +123,7 @@ define [ 'event',
             if MC.browser is 'msie' and MC.browserVersion is 10
                 return
 
-            # when not cookie userid
-            if !common_handle.cookie.getCookieByName( 'usercode' )
+            if not ( App.user and App.user.get( "session" ) )
                 return
 
             #return if MC.data.current_tab_id in [ 'dashboard', undefined ]

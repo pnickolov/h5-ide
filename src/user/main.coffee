@@ -55,7 +55,7 @@ base64Decode = (string)->
 
 checkAllCookie = ->
 
-    if $.cookie('usercode') and $.cookie('username') and $.cookie('session_id') and $.cookie('account_id') and $.cookie('mod_repo') and $.cookie('mod_tag') and $.cookie('state') and $.cookie('has_cred')
+    if $.cookie('usercode') and $.cookie('session_id')
         true
     else
         false
@@ -458,27 +458,14 @@ setCredit = (result)->
     for ckey, cValue of $.cookie()
         $.removeCookie ckey, domain
 
-    session_info =
-        usercode     : result[0]
-        username     : base64Decode( result[0] )
-        email        : result[1]
-        user_hash    : result[2]
-        session_id   : result[3]
-        account_id   : result[4]
-        mod_repo     : result[5]
-        mod_tag      : result[6]
-        state        : result[7]
-        has_cred     : result[8]
-
     COOKIE_OPTION =
         expires : 30
         path    : '/'
-
-    for key, value of session_info
-        $.cookie key, value, COOKIE_OPTION
+    $.cookie "usercode",   result[0], COOKIE_OPTION
+    $.cookie "session_id", result[3], COOKIE_OPTION
 
     # Set a cookie for WWW
-    $.cookie "has_session", !!session_info.session_id, {
+    $.cookie "has_session", !!result[3], {
         domain  : window.location.hostname.replace("ide", "")
         path    : "/"
         expires : 30

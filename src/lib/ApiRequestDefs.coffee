@@ -52,11 +52,11 @@ define [], ()->
   ApiRequestDefs.AutoFill = ( paramter_name )->
     switch paramter_name
       when "username"
-        return $.cookie('username')
+        return App.user.get('username')
       when "usercode"
-        return $.cookie('usercode')
+        return App.user.get('usercode')
       when "session_id"
-        return $.cookie('session_id')
+        return App.user.get('session')
     return null
 
   ApiRequestDefs

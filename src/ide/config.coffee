@@ -42,7 +42,7 @@
   # Check if there're missing cookie
   getCookie = (sKey)-> decodeURIComponent(document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + encodeURIComponent(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1")) || null
 
-  if not (getCookie('usercode') and getCookie('username') and getCookie('session_id') and getCookie('account_id') and getCookie('mod_repo') and getCookie('mod_tag') and getCookie('state') and getCookie('has_cred'))
+  if not (getCookie('usercode') and getCookie('session_id'))
   	window.location.href = "/login/"
   	return
 

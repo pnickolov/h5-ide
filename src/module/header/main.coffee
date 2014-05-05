@@ -71,9 +71,7 @@ define [ 'event',
                 view.updateNotification()
 
             ide_event.onLongListen ide_event.UPDATE_AWS_CREDENTIAL, () ->
-                console.log 'UPDATE_AWS_CREDENTIAL'
-
-                model.set 'has_cred', (MC.common.cookie.getCookieByName('has_cred') is 'true')
+                model.set 'has_cred', true
                 view.update()
 
             view.on 'DROPDOWN_MENU_CLOSED', () ->

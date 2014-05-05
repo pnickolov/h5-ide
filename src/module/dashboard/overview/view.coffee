@@ -58,11 +58,9 @@ define [ 'event', 'i18n!nls/lang.js',
             scrollTo = $('#global-region-map-wrap').height() + 7
             scrollbar.scrollTo( $( '#global-region-wrap' ), { 'top': scrollTo } )
 
-        hasCredential: ->
-            MC.common.cookie.getCookieByName('has_cred') is 'true'
+        hasCredential: -> true
 
-        accountIsDemo: ->
-            $.cookie('account_id') is 'demo_account'
+        accountIsDemo: -> not App.user.hasCredential()
 
     OverviewView = Backbone.View.extend {
 
@@ -268,8 +266,7 @@ define [ 'event', 'i18n!nls/lang.js',
 
             $("#global-import-stack").removeAttr("disabled")
 
-            # $.cookie('account_id') isnt 'demo_account' remvoe disable
-            if MC.common.cookie.getCookieByName( 'account_id' ) isnt 'demo_account'
+            if App.user.hasCredential()
                 $( '#global-region-visualize-VPC' ).removeAttr 'disabled'
             null
 
@@ -451,7 +448,7 @@ define [ 'event', 'i18n!nls/lang.js',
             name    = $(event.currentTarget).attr('name')
 
             # check credential
-            if MC.common.cookie.getCookieByName('has_cred') isnt 'true'
+            if false
                 modal.close()
                 console.log 'show credential setting dialog'
                 require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
@@ -471,7 +468,7 @@ define [ 'event', 'i18n!nls/lang.js',
             name    = $(event.currentTarget).attr('name')
 
             # check credential
-            if MC.common.cookie.getCookieByName('has_cred') isnt 'true'
+            if false
                 modal.close()
                 console.log 'show credential setting dialog'
                 require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
@@ -491,7 +488,7 @@ define [ 'event', 'i18n!nls/lang.js',
             name    = $(event.currentTarget).attr('name')
 
             # check credential
-            if MC.common.cookie.getCookieByName('has_cred') isnt 'true'
+            if false
                 modal.close()
                 console.log 'show credential setting dialog'
                 require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
@@ -519,7 +516,7 @@ define [ 'event', 'i18n!nls/lang.js',
         unmanagedVPCClick : ->
             console.log 'unmanagedVPCClick'
 
-            if MC.common.cookie.getCookieByName( 'account_id' ) isnt 'demo_account'
+            if App.user.hasCredential()
                 # load unmanagedvpc
                 unmanagedvpc.loadModule()
 

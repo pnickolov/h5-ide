@@ -24,13 +24,6 @@ define [ 'MC', 'event', 'handlebars'
 		, 50 * 1000
 
 		#############################
-		#  validation cookie
-		#############################
-
-		#clear cookie in 'ide.visualops.io'
-		#common_handle.cookie.clearInvalidCookie()
-
-		#############################
 		#  initialize MC.data
 		#############################
 

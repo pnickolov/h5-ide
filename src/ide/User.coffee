@@ -17,6 +17,7 @@ define [ "ApiRequest", "backbone" ], ( ApiRequest )->
     initialize : ()->
       @set {
         unfetched : true
+        username  : MC.base64Decode $.cookie "usercode"
         session   : $.cookie "session_id"
       }
       return
@@ -25,7 +26,6 @@ define [ "ApiRequest", "backbone" ], ( ApiRequest )->
 
     userInfoAccuired : ( result )->
       res =
-        username     : MC.base64Decode result.usercode
         email        : MC.base64Decode result.email
         repo         : result.mod_repo
         tag          : result.mod_tag
@@ -42,8 +42,7 @@ define [ "ApiRequest", "backbone" ], ( ApiRequest )->
     # Fetch additional user infomation from an api.
     fetch : ()->
       ApiRequest("login", {
-        username : $.cookie "session_id"
-        password : null
+        password : $.cookie "session_id"
       }).then ( result )=>
         @unset "unfetched"
         @userInfoAccuired( result )

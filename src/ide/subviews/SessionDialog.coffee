@@ -1,6 +1,8 @@
 
 define [ 'i18n!nls/lang.js', "./SessionDialogTpl" ], ( lang, template ) ->
 
+  CurrentSessionDialog = null
+
   SessionDialogView = Backbone.View.extend {
 
     events :
@@ -10,11 +12,19 @@ define [ 'i18n!nls/lang.js', "./SessionDialogTpl" ], ( lang, template ) ->
       'click #SessionConnect'     : 'connect'
       'keypress #SessionPassword' : 'passwordChanged'
 
-    render : () ->
-      modal template(), false
+    constructor : ()->
+      if CurrentSessionDialog
+        return CurrentSessionDialog
 
+      CurrentSessionDialog = this
+
+      @defer = Q.defer()
+
+      modal template(), false
       @setElement $('#modal-wrap')
-      return
+
+
+    promise : ()-> @defer.promise
 
     showReconnect : ()->
       $(".invalid-session .confirmSession").hide()
@@ -29,6 +39,7 @@ define [ 'i18n!nls/lang.js', "./SessionDialogTpl" ], ( lang, template ) ->
       $("#SessionConnect").attr "disabled", "disabled"
       App.user.acquireSession( $("#SessionPassword").val() ).then ()=>
         @remove()
+        @defer.resolve()
         return
       , ( error )->
         $("#SessionConnect").removeAttr "disabled"

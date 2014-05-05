@@ -51,7 +51,6 @@ define [ "./Websocket", "./ApplicationView", "./User", "common_handle" ,"event" 
     # Seems like in the old days, someone wants to swtich to dashboard.
     ide_event.trigger ide_event.SWITCH_MAIN
     @view.showSessionDialog()
-    return
 
   VisualOps.prototype.closeSession = ()->
     common_handle.cookie.deleteCookie()

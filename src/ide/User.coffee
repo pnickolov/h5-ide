@@ -10,7 +10,7 @@
 define [ "ApiRequest", "backbone" ], ( ApiRequest )->
 
   UserState =
-    FirstLogin : 1
+    NotFirstTime : 2
 
   Backbone.Model.extend {
 
@@ -22,7 +22,8 @@ define [ "ApiRequest", "backbone" ], ( ApiRequest )->
       }
       return
 
-    hasAccount : ()-> !!@get("account")
+    hasAccount   : ()-> !!@get("account")
+    isFirstVisit : ()-> !(UserState.NotFirstTime&@get("state"))
 
     userInfoAccuired : ( result )->
       res =

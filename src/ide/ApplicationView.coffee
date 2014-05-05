@@ -30,8 +30,6 @@ define [ "backbone", "./subviews/SessionDialog" ], ( Backbone, SessionDialog )->
             return
 
     showSessionDialog : ()->
-      if $("#SessionDialog").length
-        return
-      (new SessionDialog()).render()
+      (new SessionDialog()).promise()
 
   }

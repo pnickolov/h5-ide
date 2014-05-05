@@ -15,7 +15,7 @@ define [ "Design" ], (Design)->
                 compo.resource.VpcId = ""
             if compo.type is 'AWS.VPC.NetworkInterface'
                 compo.resource.NetworkInterfaceId = ""
-            if compo.type is 'AWS.VPC.Instance'
+            if compo.type is 'AWS.EC2.Instance'
                 compo.resource.PrivateIpAddress = ""
                 compo.resource.InstanceId = ""
             if compo.type is 'AWS.VPC.Subnet'
@@ -25,23 +25,24 @@ define [ "Design" ], (Design)->
                 compo.resource.AllocationId = ""
                 compo.resource.PublicIp = ""
             if compo.type is 'AWS.VPC.RouteTable'
-                compo.resource.RouteTableId
+                compo.resource.RouteTableId = ""
                 compo.resource.AssociationSet.forEach (e)->
                     e.RouteTableAssociationId = ""
             if compo.type is 'AWS.EC2.SecurityGroup'
                 compo.resource.GroupId = ""
                 compo.resource.GroupName = "WebServerSG"
-            if compo.type is 'AWS.EC2.keyPair'
+            if compo.type is 'AWS.EC2.KeyPair'
                 compo.resource.KeyFingerprint = ""
                 compo.resource.KeyName = "DefaultDP"
             if compo.type is 'AWS.VPC.InternetGateway'
                 compo.resource.InternetGatewayId = ""
-            if compo.type is 'AWS.VPC.NetworkACL'
+            if compo.type is 'AWS.VPC.NetworkAcl'
+                compo.resource.NetworkAclId = ""
                 compo.resource.AssociationSet.forEach (e)->
                     e.NetworkAclAssociationId = ""
                     e.NetworkAclId = ""
             if compo.type is 'AWS.EC2.Tag'
                 delete components[comp]
-        console.info components,"<===============>"
+        console.error components,"<===============>"
     null
 

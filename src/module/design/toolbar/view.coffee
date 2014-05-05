@@ -329,14 +329,7 @@ define [ 'MC', 'event',
                 else
                     modal.close()
 
-                    #TODO: Here Goes All Action.
-                    Design.instance().set('name',new_name)
-                    Design.instance().serializeAsStack()
-                    Design.instance().set('stack_id',"")
-                    Design.instance().set('state',"Enable")
-                    Design.instance().set('usage',"")
-                    Design.instance().set('history',null)
-                    ide_event.trigger ide_event.SAVE_STACK, MC.common.other.canvasData.data()
+                    ide_event.trigger ide_event.SAVE_STACK, Design.instance().serializeAsStack(new_name)
                     console.error MC.common.other.canvasData.data()
                     setTimeout () ->
                         id      = MC.common.other.canvasData.get 'id'

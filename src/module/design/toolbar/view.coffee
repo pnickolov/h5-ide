@@ -328,14 +328,14 @@ define [ 'MC', 'event',
                 else
                     modal.close()
 
+                    #TODO: Here Goes All Action.
                     ide_event.trigger ide_event.SAVE_STACK, MC.common.other.canvasData.data()
 
                     setTimeout () ->
                         region  = MC.common.other.canvasData.get 'region'
                         id      = MC.common.other.canvasData.get 'id'
                         name    = MC.common.other.canvasData.get 'name'
-                        #todo: ide_event trigger event SAVE_APP_AS_STACK
-                        ide_event.trigger ide_event.SAVE_APP_AS_STACK, region, id, new_name, name
+                        ide_event.trigger ide_event.DUPLICATE_STACK, region, id, new_name, name
                     , 500
 
             null

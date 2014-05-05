@@ -303,7 +303,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                 @status.isAwsHandleWait = true
                 return
 
-            if $.cookie('account_id') is 'demo_account' #demo account not save data
+            if App.user.hasCredential() #demo account not save data
                 return
 
             data = result.resolved_data
@@ -1100,17 +1100,17 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
 
                 null
 
-            else
+            # else
 
-                # check whether invalid session
-                if result.return_code isnt constant.RETURN_CODE.E_SESSION && result.return_code isnt constant.RETURN_CODE.E_BUSY
+            #     # check whether invalid session
+            #     if result.return_code isnt constant.RETURN_CODE.E_SESSION && result.return_code isnt constant.RETURN_CODE.E_BUSY
 
-                    common_handle.cookie.setCred false
-                    ide_event.trigger ide_event.UPDATE_AWS_CREDENTIAL
-                    console.log '----------- dashboard:SWITCH_MAIN -----------'
-                    ide_event.trigger ide_event.SWITCH_MAIN
+            #         common_handle.cookie.setCred false
+            #         ide_event.trigger ide_event.UPDATE_AWS_CREDENTIAL
+            #         console.log '----------- dashboard:SWITCH_MAIN -----------'
+            #         ide_event.trigger ide_event.SWITCH_MAIN
 
-                me.set 'region_classic_list', region_classic_vpc_result
+            #     me.set 'region_classic_list', region_classic_vpc_result
 
          #result list
 

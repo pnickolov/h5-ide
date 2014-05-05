@@ -5,7 +5,7 @@
 ----------------------------
 ###
 
-define [ "backbone", "./SessionDialog" ], ( Backbone, SessionDialog )->
+define [ "backbone", "./subviews/SessionDialog" ], ( Backbone, SessionDialog )->
 
   Backbone.View.extend {
 

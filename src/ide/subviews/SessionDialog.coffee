@@ -1,5 +1,5 @@
 
-define [ 'i18n!nls/lang.js' ], ( lang ) ->
+define [ 'i18n!nls/lang.js', "./SessionDialogTpl" ], ( lang, template ) ->
 
   SessionDialogView = Backbone.View.extend {
 
@@ -11,7 +11,7 @@ define [ 'i18n!nls/lang.js' ], ( lang ) ->
       'keypress #SessionPassword' : 'passwordChanged'
 
     render : () ->
-      modal MC.template.sessionDialog(), false
+      modal template(), false
 
       @setElement $('#modal-wrap')
       return

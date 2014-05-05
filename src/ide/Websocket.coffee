@@ -34,13 +34,31 @@ define [ "Meteor", "backbone", "event", "MC" ], ( Meteor, Backbone, ide_event )-
       imports        : new Meteor.Collection "imports",        opts
 
     # Trigger an event when connection state changed.
-    Deps.autorun ()=>
-      @trigger "StatusChanged", @connection.status().connected
+    Deps.autorun ()=> @statusChanged()
 
     @subscribe()
     @pipeChanges()
 
+    # We start notifying in 5 seconds
+    setTimeout ()=>
+      @shouldNotify = true
+      if not @connection.status.connected
+        @statusChanged()
+    , 5000
+
     this
+
+  Websocket.prototype.statusChanged = ()->
+    status = @connection.status().connected
+
+    if status
+      @shouldNotify = true
+
+    # We should ignore some of the disconnected status at the beginning of the IDE
+    if not @shouldNotify
+      return
+
+    @trigger "StatusChanged", status
 
   # A Websocket can only subscribe once.
   Websocket.prototype.subscribe = ()->

@@ -1,5 +1,5 @@
 
-define ["lib/ApiRequestDefs", "MC" ], ( ApiDefination )->
+define ["api/ApiRequestDefs", "MC" ], ( ApiDefination )->
   ###
   # === ApiRequest ===
   #

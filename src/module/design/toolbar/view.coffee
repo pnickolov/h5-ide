@@ -30,7 +30,7 @@ define [ 'MC', 'event',
             'click #toolbar-run'            : 'clickRunIcon'
             'click .icon-save'              : 'clickSaveIcon'
             'click #toolbar-duplicate'      : 'clickDuplicateIcon'
-            'click #toolbar-app-to-stack'   : 'appToStackClick'  #TODO: add to template
+            'click #toolbar-app-to-stack'   : 'appToStackClick'
             'click #toolbar-delete'         : 'clickDeleteIcon'
             'click #toolbar-new'            : 'clickNewStackIcon'
             'click .icon-zoom-in'           : 'clickZoomInIcon'
@@ -311,8 +311,7 @@ define [ 'MC', 'event',
             name = MC.common.other.canvasData.get 'name'
 
             #set default name
-            #todo add getStackNameFromApp
-            new_name = MC.aws.aws.getStackNameFromApp(name)
+            new_name = MC.aws.aws.getDuplicateName(name)
             $('#modal-input-value').val(new_name)
 
             $("#btn-confirm").on 'click', {target: this}, (event)->
@@ -324,7 +323,7 @@ define [ 'MC', 'event',
                     notification "warning", lang.ide.PROP_MSG_WARN_NO_STACK_NAME
                 else if new_name.indexOf(' ') >= 0
                     notification 'warning', lang.ide.PROP_MSG_WARN_WHITE_SPACE
-                else if not MC.aws.aws.checkStackName null, new_name  #TODO: CHECK_STACK_NAME
+                else if not MC.aws.aws.checkStackName null, new_name
                     notification 'warning', lang.ide.PROP_MSG_WARN_REPEATED_STACK_NAME
                 else
                     modal.close()

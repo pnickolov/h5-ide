@@ -1415,6 +1415,12 @@ Are you sure you want to delete {{name}}?</div>
 						</div>
 					</li>
 					<li class="key-item">
+						<div class="key mac font-mono">{{i18n "KEY_CONTENT_EDITOR_MAC"}}</div>
+						<div class="key pc font-mono">{{i18n "KEY_CONTENT_EDITOR_PC"}}</div>
+						<div class="action">{{i18n "KEY_CONTENT_EDITOR_ACTION"}}
+						</div>
+					</li>
+					<li class="key-item">
 						<div class="key mac font-mono">{{i18n "KEY_INFO_KEY_MAC"}}</div>
 						<div class="key pc font-mono">{{i18n "KEY_INFO_KEY_PC"}}</div>
 						<div class="action">{{i18n "KEY_INFO_ACTION"}}</div>

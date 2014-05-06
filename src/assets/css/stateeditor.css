@@ -17,8 +17,7 @@
 	position: absolute;
 	margin-left: -20px;
 	cursor: pointer;
-	color: #aaa;
-	display: none;
+	color: #148BE6;
 }
 
 #state-editor .parameter-item.text:hover .parameter-text-expand {

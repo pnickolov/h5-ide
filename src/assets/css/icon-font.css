@@ -69,7 +69,8 @@
 .icon-import:before,
 .icon-drag-copy:before,
 .icon-gear:before,
-.icon-menu:before {
+.icon-menu:before,
+.icon-expand:before {
   font: 16px/1em "MCIcon";
   font-weight: normal;
   -webkit-font-smoothing: antialiased; }
@@ -268,3 +269,6 @@
 
 .icon-menu:before {
   content: "\F151"; }
+
+.icon-expand:before {
+  content: "\F152"; }

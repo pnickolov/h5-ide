@@ -77,7 +77,7 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'vpc_model', 'account_model',
                 access_key : access_key
                 secret_key : secret_key
                 account_id : account_id
-            }).then ( result )->
+            }).then ()->
                 name = 'DescribeAccountAttributes' + '_' + $.cookie( 'usercode' ) + '__' + 'supported-platforms,default-vpc'
                 if MC.session.get name
                     MC.session.remove name
@@ -113,6 +113,12 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'vpc_model', 'account_model',
                                 if  default_vpc and $.type(default_vpc) == "array" and default_vpc.length == 1
                                     MC.data.account_attribute[ value ].default_vpc = default_vpc[0].attributeValue
                             null
+                    else
+                        me.set 'is_authenticated', false
+
+                    me.set 'account_id', account_id
+
+                    me.trigger 'REFRESH_AWS_CREDENTIAL'
 
             , ( error )=>
                 @set 'is_authenticated', false

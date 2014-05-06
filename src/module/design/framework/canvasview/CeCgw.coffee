@@ -31,8 +31,7 @@ define [ "./CanvasElement", "constant", "CanvasManager" ,"i18n!nls/lang.js"], ( 
       node.append(
         # Port
         Canvon.path(this.constant.PATH_PORT_RIGHT).attr({
-          'class'      : 'port port-purple port-cgw-vpn',
-
+          'class'      : 'port port-purple port-cgw-vpn tooltip',
           'data-name'     : 'cgw-vpn'
           'data-position' : 'left'
           'data-type'     : 'vpn'

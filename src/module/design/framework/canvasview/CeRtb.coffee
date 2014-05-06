@@ -42,7 +42,7 @@ define [ "./CanvasElement", "constant", "CanvasManager","i18n!nls/lang.js"], ( C
       node.append(
         # Left port
         Canvon.path(this.constant.PATH_PORT_LEFT).attr({
-          'class'          : 'port port-blue port-rtb-tgt port-rtb-tgt-left'
+          'class'          : 'port port-blue port-rtb-tgt port-rtb-tgt-left tooltip'
           'data-name'      : 'rtb-tgt'
           'data-alias'     : 'rtb-tgt-left'
           'data-position'  : 'left'
@@ -53,7 +53,7 @@ define [ "./CanvasElement", "constant", "CanvasManager","i18n!nls/lang.js"], ( C
 
         # Right port
         Canvon.path(this.constant.PATH_PORT_RIGHT).attr({
-          'class'          : 'port port-blue  port-rtb-tgt port-rtb-tgt-right'
+          'class'          : 'port port-blue  port-rtb-tgt port-rtb-tgt-right tooltip'
           'data-name'      : 'rtb-tgt'
           'data-alias'     : 'rtb-tgt-right'
           'data-position'  : 'right'
@@ -64,7 +64,7 @@ define [ "./CanvasElement", "constant", "CanvasManager","i18n!nls/lang.js"], ( C
 
         # Top port
         Canvon.path(this.constant.PATH_PORT_BOTTOM).attr({
-          'class'          : 'port port-gray port-rtb-src port-rtb-src-top'
+          'class'          : 'port port-gray port-rtb-src port-rtb-src-top tooltip'
           'data-name'      : 'rtb-src'
           'data-alias'     : 'rtb-src-top'
           'data-position'  : 'top'
@@ -75,7 +75,7 @@ define [ "./CanvasElement", "constant", "CanvasManager","i18n!nls/lang.js"], ( C
 
         # Bottom port
         Canvon.path(this.constant.PATH_PORT_TOP).attr({
-          'class'          : 'port port-gray port-rtb-src port-rtb-src-bottom'
+          'class'          : 'port port-gray port-rtb-src port-rtb-src-bottom tooltip'
           'data-name'      : 'rtb-src'
           'data-alias'     : 'rtb-src-bottom'
           'data-position'  : 'bottom'

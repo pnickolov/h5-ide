@@ -31,7 +31,7 @@ define [ "./CanvasElement", "constant","i18n!nls/lang.js" ], ( CanvasElement, co
       node.append(
         # Port
         Canvon.path(this.constant.PATH_PORT_LEFT).attr({
-          'class'      : 'port port-blue port-igw-tgt'
+          'class'      : 'port port-blue port-igw-tgt tooltip'
           'data-name'     : 'igw-tgt'
           'data-position' : 'right'
           'data-type'     : 'sg'

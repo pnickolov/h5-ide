@@ -19,7 +19,7 @@ define [ "Design",
         width    : 9
         height   : 9
 
-        internal  : if Design.instance().typeIsClassic() then false else true
+        internal  : true
         crossZone : true
 
         # HealthCheck
@@ -50,14 +50,14 @@ define [ "Design",
         otherPoliciesMap: {}
       }
 
-    type : constant.AWS_RESOURCE_TYPE.AWS_ELB
+    type : constant.RESTYPE.ELB
 
     newNameTmpl : "load-balancer-"
 
     initialize : ( attr, option )->
       @draw(true)
 
-      if option.createByUser and not Design.instance().typeIsClassic()
+      if option.createByUser
         sg = new SgModel({
           name        : @getElbSgName()
           isElbSg     : true
@@ -164,7 +164,7 @@ define [ "Design",
 
       if isInternal
         # Redraw SG Line
-        SgModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup )
+        SgModel = Design.modelClassForType( constant.RESTYPE.SG )
         SgModel.tryDrawLine( @ )
 
       else
@@ -185,25 +185,16 @@ define [ "Design",
       if fee
         return {
           resource    : @get("name")
-          type        : constant.AWS_RESOURCE_TYPE.AWS_ELB
+          type        : constant.RESTYPE.ELB
           fee         : fee * 24 * 30
           formatedFee : fee + "/hr"
         }
 
     getAvailabilityZones : ()->
-      if Design.instance().typeIsVpc()
-        azs = _.map @connectionTargets("ElbSubnetAsso"), ( subnet )->
-          subnet.parent().createRef()
+      azs = _.map @connectionTargets("ElbSubnetAsso"), ( subnet )->
+        subnet.parent().createRef()
 
-        return _.uniq azs
-      else
-        azs = _.map @connectionTargets("ElbAmiAsso"), ( ami )->
-          if ami.parent().type is constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone
-            return ami.parent().get("name")
-          else
-            return ami.parent().parent().get("name")
-
-        return _.uniq azs.concat( @get("AvailabilityZones") )
+      return _.uniq azs
 
     # Other Policy
     setPolicyProxyProtocol : (enable, portAry) ->
@@ -254,14 +245,7 @@ define [ "Design",
 
       sgs = _.map @connectionTargets("SgAsso"), ( sg ) -> sg.createRef( "GroupId" )
 
-      if Design.instance().typeIsClassic()
-        subnets = []
-      else if Design.instance().typeIsDefaultVpc()
-        # In defaultVpc, there is not subnet component
-        subnets = _.map @connectionTargets( "ElbAmiAsso" ), ( ami )-> ami.getSubnetRef()
-        subnets = _.uniq( subnets )
-      else
-        subnets = _.map @connectionTargets( "ElbSubnetAsso" ), ( sb )-> sb.createRef("SubnetId")
+      subnets = _.map @connectionTargets( "ElbSubnetAsso" ), ( sb )-> sb.createRef("SubnetId")
 
       otherPoliciesMap = @get('otherPoliciesMap')
       otherPoliciesAry = _.map otherPoliciesMap, (policyObj) ->
@@ -304,7 +288,7 @@ define [ "Design",
 
   }, {
 
-    handleTypes : constant.AWS_RESOURCE_TYPE.AWS_ELB
+    handleTypes : constant.RESTYPE.ELB
 
     deserialize : ( data, layout_data, resolve )->
 
@@ -376,10 +360,9 @@ define [ "Design",
       for sg in data.resource.SecurityGroups || []
         new SgAsso( elb, resolve( MC.extractID(sg) ) )
 
-      if Design.instance().typeIsVpc()
-        # Elb <=> Subnet ( ElbSubnetAsso must created before ElbAmiAsso )
-        for sb in data.resource.Subnets || []
-          new ElbSubnetAsso( elb, resolve( MC.extractID(sb) ), { deserialized : true } )
+      # Elb <=> Subnet ( ElbSubnetAsso must created before ElbAmiAsso )
+      for sb in data.resource.Subnets || []
+        new ElbSubnetAsso( elb, resolve( MC.extractID(sb) ), { deserialized : true } )
 
       # Elb <=> Ami
       for ami in data.resource.Instances || []

@@ -129,16 +129,7 @@ define [ 'i18n!nls/lang.js',
                             return if a.architecture >= b.architecture then 1 else -1
 
                     # filter nat ami when in classic style
-                    quickstart_amis = []
-
-                    # new design flow
-                    #if Design.instance().typeIsClassic()
-
-                    # old design flow
-                    if MC.canvas_data.platform is 'ec2-classic'
-                        quickstart_amis.push i for i in ami_list when i.name.indexOf('ami-vpc-nat') < 0
-                    else
-                        quickstart_amis =  ami_list
+                    quickstart_amis = ami_list
 
                     #console.log 'get quistart ami: -> data region: ' + region_name + ', stack region: ' + Design.instance().region()
                     #if region_name == Design.instance().region()
@@ -419,11 +410,11 @@ define [ 'i18n!nls/lang.js',
                     $.each res.item, ( idx, value ) ->
 
                         # new design flow
-                        #$.each Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone ).allObjects(), ( i, zone ) ->
+                        #$.each Design.modelClassForType( constant.RESTYPE.AZ ).allObjects(), ( i, zone ) ->
 
                         # old design flow
                         $.each MC.canvas_data.component, ( i, zone ) ->
-                            if zone.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone
+                            if zone.type is constant.RESTYPE.AZ
                                 if zone.resource.ZoneName is value.zoneName
                                     res.item[idx].isUsed = true
                                     null
@@ -457,11 +448,11 @@ define [ 'i18n!nls/lang.js',
                             $.each res.item, ( idx, value ) ->
 
                                 # new design flow
-                                #$.each Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone ).allObjects(), ( i, zone ) ->
+                                #$.each Design.modelClassForType( constant.RESTYPE.AZ ).allObjects(), ( i, zone ) ->
 
                                 # old design flow
                                 $.each MC.canvas_data.component, ( i, zone ) ->
-                                    if zone.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone
+                                    if zone.type is constant.RESTYPE.AZ
                                         if zone.resource.ZoneName is value.zoneName
                                             res.item[idx].isUsed = true
                                             null
@@ -520,14 +511,7 @@ define [ 'i18n!nls/lang.js',
 
                 ami_list = MC.data.config[region_name].ami_list
 
-                # filter nat ami when in classic style
-                quickstart_amis = []
-
-                #if Design.instance().typeIsClassic()
-                if MC.canvas_data.platform is 'ec2-classic'
-                    quickstart_amis.push i for i in ami_list when i.name.indexOf('ami-vpc-nat') < 0
-                else
-                    quickstart_amis =  ami_list
+                quickstart_amis = ami_list
 
                 me.set 'quickstart_ami', quickstart_amis
 
@@ -587,11 +571,11 @@ define [ 'i18n!nls/lang.js',
             dict_ami = MC.data.dict_ami
             if not dict_ami then return
 
-            #for instance in Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance ).allObjects()
+            #for instance in Design.modelClassForType( constant.RESTYPE.INSTANCE ).allObjects()
             #    if not dict_ami[ instance.get("imageId") ]
             #        stack_ami_list.push instance.get("imageId")
             _.map MC.canvas_data.component, (value)->
-                if value.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+                if value.type == constant.RESTYPE.INSTANCE
 
                     if MC.data.dict_ami
 
@@ -699,12 +683,12 @@ define [ 'i18n!nls/lang.js',
                 @set 'favorite_ami', new_favorite_ami
 
         getIgwStatus : ->
-            #!!Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway ).allObjects().length
+            #!!Design.modelClassForType( constant.RESTYPE.IGW ).allObjects().length
             isUsed = false
 
             $.each MC.canvas_data.component, ( key, comp ) ->
 
-                if comp.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway
+                if comp.type == constant.RESTYPE.IGW
 
                     isUsed = true
 
@@ -713,12 +697,12 @@ define [ 'i18n!nls/lang.js',
             isUsed
 
         getVgwStatus : ->
-            #!!Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway ).allObjects().length
+            #!!Design.modelClassForType( constant.RESTYPE.VGW ).allObjects().length
             isUsed = false
 
             $.each MC.canvas_data.component, ( key, comp ) ->
 
-                if comp.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway
+                if comp.type == constant.RESTYPE.VGW
 
                     isUsed = true
 

@@ -3,13 +3,13 @@ define [ "constant", "../ComplexResModel", "../ConnectionModel"  ], ( constant, 
 
   SslCertUsage = ConnectionModel.extend {
     type : "SslCertUsage"
-    oneToMany : constant.AWS_RESOURCE_TYPE.AWS_IAM_ServerCertificate
+    oneToMany : constant.RESTYPE.IAM
   }
 
 
   SslCertModel = ComplexResModel.extend {
 
-    type : constant.AWS_RESOURCE_TYPE.AWS_IAM_ServerCertificate
+    type : constant.RESTYPE.IAM
 
     defaults :
       name   : "v"
@@ -44,7 +44,7 @@ define [ "constant", "../ComplexResModel", "../ConnectionModel"  ], ( constant, 
         this.set(key, value)
       null
   },{
-    handleTypes : constant.AWS_RESOURCE_TYPE.AWS_IAM_ServerCertificate
+    handleTypes : constant.RESTYPE.IAM
     deserialize : ( data )->
       new SslCertModel({
         id      : data.uid

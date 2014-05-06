@@ -16,14 +16,14 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
       instanceType : "m1.small"
       monitoring   : false
       userData     : ""
-      publicIp     : Design.instance().typeIsDefaultVpc()
+      publicIp     : false
       state        : undefined
 
       # RootDevice
       rdSize : 0
       rdIops : ""
 
-    type : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+    type : constant.RESTYPE.LC
     newNameTmpl : "launch-config-"
 
     constructor : ( attr, option )->
@@ -41,11 +41,11 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
         @initInstanceType()
 
         # Default Kp
-        KpModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair )
+        KpModel = Design.modelClassForType( constant.RESTYPE.KP )
         KpModel.getDefaultKP().assignTo( this )
 
         # Default Sg
-        defaultSg = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup ).getDefaultSg()
+        defaultSg = Design.modelClassForType( constant.RESTYPE.SG ).getDefaultSg()
         SgAsso = Design.modelClassForType( "SgAsso" )
         new SgAsso( defaultSg, this )
 
@@ -215,7 +215,7 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
 
   }, {
 
-    handleTypes : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+    handleTypes : constant.RESTYPE.LC
 
     deserialize : ( data, layout_data, resolve )->
 

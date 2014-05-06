@@ -10,7 +10,7 @@ define [ "../ComplexResModel", "./VpcModel", "Design", "constant" ], ( ComplexRe
       height   : 8
       name     : "VPN-gateway"
 
-    type : constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway
+    type : constant.RESTYPE.VGW
 
     initialize : ()->
       @draw(true)
@@ -31,7 +31,7 @@ define [ "../ComplexResModel", "./VpcModel", "Design", "constant" ], ( ComplexRe
 
   }, {
 
-    handleTypes : constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway
+    handleTypes : constant.RESTYPE.VGW
 
     deserialize : ( data, layout_data, resolve )->
 

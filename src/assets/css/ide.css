@@ -137,9 +137,6 @@ button {
 	     -o-transition : -o-transform 0.21s ease-in;
 					transition : transform 0.21s ease-in;
 }
-#system-notice ~ #wrapper {
-	top : 38px;
-}
 #wrapper.off-canvas {
 	-webkit-transform : translate(260px, 0);
 	   -moz-transform : translate(260px, 0);
@@ -1913,16 +1910,21 @@ button {
 }
 
 .region-resource-status {
-	width: 10px;
-	height: 10px;
-	position: absolute;
-	left: 10px;
-	top: 3px;
+	width:      10px;
+	height:     10px;
+	position:   absolute;
+	left:       10px;
+	top:        -5px;
+	margin-top: 6%;
 }
 
 .region-resource-status.icon-pending:before {
-	font-size: 10px;
-	color: #999;
+	font-size:   10px;
+	line-height: 10px;
+	height:      10px;
+	color:       #999;
+	top:         -5px;
+	position:    relative;
 }
 
 .region-resource-status-running {
@@ -5232,6 +5234,7 @@ a.action-link:hover {
 
 .property-app {
 	/*font-size: 12px;*/
+    background-color: #383838;
 }
 
 .property-app ::selection {
@@ -6210,29 +6213,26 @@ summary:focus {
 	width: 260px;
 }
 
-.reconnect-session .modal-center-align-helper {
-
+.reconnectSession .modal-input {
+	padding-top: 20px;
 }
 
-.disconnected-notification {
-	border-radius: 2px;
-	background-color: #ec3c38;
-	box-shadow: 1px 1px 5px rgba(0, 0, 0, .3);
-	padding: 14px;
-	color: #fff;
-	width: 280px;
-	position: absolute;
-	top: 44px;
-	right: 10px;
-	z-index: 9999;
+.disconnected-msg {
+	border-radius    : 2px;
+	background-color : #ec3c38;
+	box-shadow       : 1px 1px 5px rgba(0, 0, 0, .3);
+	padding          : 14px;
+	color            : #fff;
+	width            : 280px;
+	position         : absolute;
+	top              : 15px;
+	right            : 12px;
+	z-index          : 9999;
 }
 
-.disconnected-notification:hover {
+.disconnected-msg.hovered {
 	opacity : 0.05;
-}
-
-.disconnected-notification p {
-	margin: 0;
+	pointer-events : none;
 }
 
 /* dhcp-property-detail */
@@ -7604,100 +7604,6 @@ summary:focus {
 }
 
 
-/* Dispaly stop supporting classic and default VPC notification */
-#system-notice {
-	background: #b23b3b;
-	background-image: -webkit-linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent);
-	background-image: linear-gradient(45deg,rgba(255,255,255,.05) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.05) 50%,rgba(255,255,255,.05) 75%,transparent 75%,transparent);
-	color: #eee;
-	padding: 10px 0;
-	background-size: 40px 40px;
-	border-bottom: 1px solid #811414;
-	text-align: center;
-	position: relative;
-	width: 100%;
-	z-index: 70;
-	top: 0;
-}
-
-#system-notice em {
-	text-decoration: underline;
-	margin: 3px 0;
-}
-
-.notice-btn {
-	background: rgba(0, 0, 0, 0.47);
-	border-radius: 4px;
-	padding: 2px 6px 4px 6px;
-	color: #fff;
-}
-
-.notice-close {
-	position: absolute;
-	top: 50%;
-	right: 10px;
-	margin-top: -10px;
-	color: rgba(255,255,255,.8);
-}
-
-.notice-close:hover {
-	color: #fff;
-}
-
-.system-notice-header .modal-close {
-	position: absolute;
-	right: 20px;
-	top: 50%;
-	font-style: normal;
-	cursor: pointer;
-	font-size: 20px;
-	margin-top: -13px;
-}
-
-.system-notice-header .modal-close:hover {
-	color: #333;
-}
-
-.system-notice-header {
-	position: relative;
-	padding: 0 20px;
-	background: #f3f3f3;
-}
-
-.system-notice-header h3 {
-	color: #666;
-	font-size: 17px;
-	font-weight: 700;
-	padding: 4px 2px 0;
-	margin-bottom: 2px;
-}
-
-.system-notice-content p {
-	padding: 10px 25px;
-	color: #666;
-}
-
-.system-notice-footer {
-	padding: 8px 10px;
-	text-align: right;
-	background: #f6f6f6;
-	border-top: 1px solid #ddd;
-}
-
 #run-stack-cancel:disabled {
 	color: #ccc;
 }
-
-/* toolbar drop support for default vpc or classic notice */
-
-.no-classic-toolbar {
-	float        : right;
-	background   : #ffa740;
-	color        : #fff;
-	border-radius: 4px;
-	margin-top   : 9px;
-	margin-right : 5px;
-	padding      : 4px 6px;
-	font-size    : 12px;
-}
-

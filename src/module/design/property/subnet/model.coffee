@@ -15,7 +15,7 @@ define [ '../base/model', 'constant', "Design" ], ( PropertyModel, constant, Des
 
       if !subnet_component then return false
 
-      ACLModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl )
+      ACLModel = Design.modelClassForType( constant.RESTYPE.ACL )
 
       subnet_acl = subnet_component.connectionTargets( "AclAsso" )[0]
 
@@ -106,7 +106,7 @@ define [ '../base/model', 'constant', "Design" ], ( PropertyModel, constant, Des
 
 
     createAcl : ()->
-      ACLModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl )
+      ACLModel = Design.modelClassForType( constant.RESTYPE.ACL )
       acl = new ACLModel()
       # Assign acl to the newly created acl
       @setACL( acl.id )

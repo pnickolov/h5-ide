@@ -27,7 +27,7 @@ define [ "../base/main",
 
     LCModule = PropertyModule.extend {
 
-        handleTypes : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+        handleTypes : constant.RESTYPE.LC
 
         onUnloadSubPanel : ( id )->
             sglist_main.onUnloadSubPanel id

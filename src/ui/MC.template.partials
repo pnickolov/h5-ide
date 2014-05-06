@@ -1415,6 +1415,12 @@ Are you sure you want to delete {{name}}?</div>
 						</div>
 					</li>
 					<li class="key-item">
+						<div class="key mac font-mono">{{i18n "KEY_CONTENT_EDITOR_MAC"}}</div>
+						<div class="key pc font-mono">{{i18n "KEY_CONTENT_EDITOR_PC"}}</div>
+						<div class="action">{{i18n "KEY_CONTENT_EDITOR_ACTION"}}
+						</div>
+					</li>
+					<li class="key-item">
 						<div class="key mac font-mono">{{i18n "KEY_INFO_KEY_MAC"}}</div>
 						<div class="key pc font-mono">{{i18n "KEY_INFO_KEY_PC"}}</div>
 						<div class="action">{{i18n "KEY_INFO_ACTION"}}</div>
@@ -1549,20 +1555,17 @@ Are you sure you want to delete {{name}}?</div>
 	</ul>
 </div>
 
+<!-- {{disconnectedMsg}} -->
+<section class="disconnected-msg">
+	<div>Connection lost. Attempting to reconnect…</div>
+	<div>Changes made now may not be saved.</div>
+</section>
+
 <!-- {{covertNl2br}} -->
 {{nl2br content}}
 
 <!-- {{convertBreaklines}} -->
 {{breaklines content}}
-
-<!-- {{systemNotice}} -->
-<div id="system-notice">
-	<span>
-		<b>Notice: </b>We will drop the support for <em>EC2 Classic</em> and <em>Default VPC</em> soon, and focus on VPC, which is recommended for everyone.
-		<a href="http://blog.visualops.io/2014/02/18/vpc-always-forget-about-the-rest/" class="notice-btn" target="_blank">Learn more</a>
-	</span>
-	<a class="notice-close" href="javascript:void(0)" id="system-notice-close">x</a>
-</div>
 
 <!-- {{modalDeleteELBCert}} -->
 <div style="width:420px">

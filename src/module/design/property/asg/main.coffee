@@ -12,7 +12,7 @@ define [ '../base/main',
 
     AsgModule = PropertyModule.extend {
 
-        handleTypes : [ constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group, "ExpandedAsg" ]
+        handleTypes : [ constant.RESTYPE.ASG, "ExpandedAsg" ]
 
         initStack : ()->
             @model = model

@@ -58,10 +58,10 @@ define [ '../base/view',
 
         showCreateRuleModal : () ->
 
-            SubnetModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet )
+            SubnetModel = Design.modelClassForType( constant.RESTYPE.SUBNET )
 
             data = {
-                classic : Design.instance().typeIsClassic()
+                classic : false
                 subnets : _.map SubnetModel.allObjects(), ( subnet )->
                     {
                         name : subnet.get("name")

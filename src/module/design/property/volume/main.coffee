@@ -12,7 +12,7 @@ define [ "../base/main",
 
     VolumeModule = PropertyModule.extend {
 
-        handleTypes : [ constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume, "component_asg_volume" ]
+        handleTypes : [ constant.RESTYPE.VOL, "component_asg_volume" ]
 
         setupStack : () ->
             me = this

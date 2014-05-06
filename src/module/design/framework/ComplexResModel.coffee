@@ -195,61 +195,23 @@ define [ "Design", "CanvasManager", "./ResourceModel", "constant", "./canvasview
     # AWS Related Logics
     # ## ###########
     getSubnetRef : ()->
-      if Design.instance().typeIsClassic()
-        return ""
-
-      if Design.instance().typeIsDefaultVpc()
-        p = this
-        while p
-          if p.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone
-            break
-          p = p.parent()
-
-        if p
-          defautSubnet = MC.data.account_attribute[ Design.instance().region() ].default_subnet[ p.get("name") ]
-          if defautSubnet
-            return defautSubnet.subnetId || ""
-
-        return ""
-
       p = this
       while p
-        if p.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
+        if p.type is constant.RESTYPE.SUBNET
           break
         p = p.parent()
 
       return if p then p.createRef( "SubnetId" ) else ""
 
     getVpcRef : ()->
-      if Design.instance().typeIsClassic()
-        return ""
-
-      if Design.instance().typeIsDefaultVpc()
-        p = this
-        while p
-          if p.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone
-            break
-          p = p.parent()
-
-        if p
-          defautSubnet = MC.data.account_attribute[ Design.instance().region() ].default_subnet[ p.get("name") ]
-          if defautSubnet
-            return defautSubnet.vpcId || ""
-
-        else
-          for uid, obj of MC.data.account_attribute[ Design.instance().region() ].default_subnet
-            if obj.vpcId then return obj.vpcId
-
-        return ""
-
       p = this
       while p
-        if p.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC
+        if p.type is constant.RESTYPE.VPC
           break
         p = p.parent()
 
       if not p
-        VpcModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC )
+        VpcModel = Design.modelClassForType( constant.RESTYPE.VPC )
         p = VpcModel.theVPC()
 
       return if p then p.createRef( "VpcId" ) else ""

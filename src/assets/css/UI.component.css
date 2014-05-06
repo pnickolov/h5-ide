@@ -540,7 +540,6 @@ textarea {
 	width: 206px;
 	/*height: 80px;*/
 	padding: 5px;
-	margin-bottom: 10px;
 	/*border: 1px solid #999;*/
 	font-size: 14px;
 	line-height: 20px;
@@ -1460,6 +1459,7 @@ textarea {
 .dl-horizontal dd {
 	margin-left: 130px;
 	color: #666;
+    min-height: 20px;
 }
 
 .modal-body .dl-horizontal dd {
@@ -2311,4 +2311,80 @@ input.parsley-error {
 .timestamp {
 	color    : #AAA;
 	font-size: 12px;
+}
+
+/* UI.tour */
+
+@-webkit-keyframes user-tour-pointer {
+	0%   {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
+		-ms-transform: scale(3);
+		-webkit-transform: scale(3);
+		transform: scale(3);
+	}
+}
+@-moz-keyframes user-tour-pointer {
+	0%   { opacity: 0.8; }
+	100% {
+		opacity: 0;
+		-ms-transform: scale(3);
+		-webkit-transform: scale(3);
+		transform: scale(3);
+	}
+}
+@-o-keyframes user-tour-pointer {
+	0%   { opacity: 0.8; }
+	100% {
+		opacity: 0;
+		-ms-transform: scale(3);
+		-webkit-transform: scale(3);
+		transform: scale(3);
+	}
+}
+@keyframes user-tour-pointer {
+	0%   { opacity: 0.8; }
+	100% {
+		opacity: 0;
+		-ms-transform: scale(3);
+		-webkit-transform: scale(3);
+		transform: scale(3);
+	}
+}
+
+.user-tour {
+	z-index: 99999;
+	position: absolute;
+	background-color: #fff;
+	width: 200px;
+	height: 90px;
+	border: 1px solid #555;
+	border-radius: 3px;
+}
+
+.user-tour .user-tour-title {
+	color: #aaa;
+	margin: 5px;
+	font-weight: bold;
+	font-size: 12px;
+	position: absolute;
+}
+
+.user-tour .user-tour-pointer {
+	width: 10px;
+	height: 10px;
+	background-color: #00ac31;
+	border-radius: 10px;
+	position: absolute;
+	margin-left: -15px;
+	margin-top: -15px;
+}
+
+.user-tour .user-tour-pointer.animation {
+	-webkit-animation: user-tour-pointer 2s infinite; /* Safari 4+ */
+	-moz-animation: user-tour-pointer 2s infinite; /* Fx 5+ */
+	-o-animation: user-tour-pointer 2s infinite; /* Opera 12+ */
+	animation: user-tour-pointer 2s infinite; /* IE 10+ */
 }

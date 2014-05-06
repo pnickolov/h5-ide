@@ -1,8 +1,8 @@
 
-define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, constant, CanvasManager )->
+define [ "./CanvasElement", "constant", "CanvasManager","i18n!nls/lang.js" ], ( CanvasElement, constant, CanvasManager,lang )->
 
   CeEni = ()-> CanvasElement.apply( this, arguments )
-  CanvasElement.extend( CeEni, constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface )
+  CanvasElement.extend( CeEni, constant.RESTYPE.ENI )
   ChildElementProto = CeEni.prototype
 
 
@@ -10,10 +10,10 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
   # Child Element's interface.
   ###
   ChildElementProto.portPosMap = {
-    "eni-sg-left"  : [ 10, 20, MC.canvas.PORT_LEFT_ANGLE  ]
-    "eni-attach"   : [ 8,  50, MC.canvas.PORT_LEFT_ANGLE  ]
-    "eni-sg-right" : [ 80, 20, MC.canvas.PORT_RIGHT_ANGLE ]
-    "eni-rtb"      : [ 45, 0,  MC.canvas.PORT_UP_ANGLE    ]
+    "eni-sg-left"  : [ 10, 20, CanvasElement.constant.PORT_LEFT_ANGLE  ]
+    "eni-attach"   : [ 8,  50, CanvasElement.constant.PORT_LEFT_ANGLE  ]
+    "eni-sg-right" : [ 80, 20, CanvasElement.constant.PORT_RIGHT_ANGLE ]
+    "eni-rtb"      : [ 45, 0,  CanvasElement.constant.PORT_UP_ANGLE    ]
   }
 
   ChildElementProto.portDirMap = {
@@ -55,41 +55,45 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
         }),
 
         # Left Port
-        Canvon.path(MC.canvas.PATH_PORT_DIAMOND).attr({
+        Canvon.path(this.constant.PATH_PORT_DIAMOND).attr({
           'class'          : 'port port-blue port-eni-sg port-eni-sg-left'
           'data-name'      : 'eni-sg'
           'data-alias'     : 'eni-sg-left'
           'data-position'  : 'left'
           'data-type'      : 'sg'
           'data-direction' : "in"
+          'data-tooltip'   : lang.ide.PORT_TIP_D
         }),
 
         # Left port
-        Canvon.path(MC.canvas.PATH_PORT_RIGHT).attr({
+        Canvon.path(this.constant.PATH_PORT_RIGHT).attr({
           'class'          : 'port port-green port-eni-attach'
           'data-name'      : 'eni-attach'
           'data-position'  : 'left'
           'data-type'      : 'attachment'
           'data-direction' : "in"
+          'data-tooltip'   : lang.ide.PORT_TIP_G
         }),
 
         # Right port
-        Canvon.path(MC.canvas.PATH_PORT_DIAMOND).attr({
+        Canvon.path(this.constant.PATH_PORT_DIAMOND).attr({
           'class'          : 'port port-blue port-eni-sg port-eni-sg-right'
           'data-name'      : 'eni-sg'
           'data-alias'     : 'eni-sg-right'
           'data-position'  : 'right'
           'data-type'      : 'sg'
           'data-direction' : 'out'
+          'data-tooltip'   : lang.ide.PORT_TIP_F
         }),
 
         # Top port(blue)
-        Canvon.path(MC.canvas.PATH_PORT_BOTTOM).attr({
+        Canvon.path(this.constant.PATH_PORT_BOTTOM).attr({
           'class'      : 'port port-blue port-eni-rtb'
           'data-name'     : 'eni-rtb'
           'data-position' : 'top'
           'data-type'     : 'sg'
           'data-direction': 'in'
+          'data-tooltip'  : lang.ide.PORT_TIP_C
         }),
 
         Canvon.group().append(

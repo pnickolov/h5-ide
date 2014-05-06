@@ -1,8 +1,8 @@
 
-define [ "./CanvasElement", "constant" ], ( CanvasElement, constant )->
+define [ "./CanvasElement", "constant","i18n!nls/lang.js" ], ( CanvasElement, constant,lang )->
 
   CeIgw = ()-> CanvasElement.apply( this, arguments )
-  CanvasElement.extend( CeIgw, constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway )
+  CanvasElement.extend( CeIgw, constant.RESTYPE.IGW )
   ChildElementProto = CeIgw.prototype
 
 
@@ -10,7 +10,7 @@ define [ "./CanvasElement", "constant" ], ( CanvasElement, constant )->
   # Child Element's interface.
   ###
   ChildElementProto.portPosMap = {
-    "igw-tgt" : [ 78, 35, MC.canvas.PORT_RIGHT_ANGLE ]
+    "igw-tgt" : [ 78, 35, CanvasElement.constant.PORT_RIGHT_ANGLE ]
   }
 
   ChildElementProto.draw = ( isCreate ) ->
@@ -30,12 +30,13 @@ define [ "./CanvasElement", "constant" ], ( CanvasElement, constant )->
 
       node.append(
         # Port
-        Canvon.path(MC.canvas.PATH_PORT_LEFT).attr({
+        Canvon.path(this.constant.PATH_PORT_LEFT).attr({
           'class'      : 'port port-blue port-igw-tgt'
           'data-name'     : 'igw-tgt'
           'data-position' : 'right'
           'data-type'     : 'sg'
           'data-direction': 'in'
+          'data-tooltip'  : lang.ide.PORT_TIP_C
         })
       )
 

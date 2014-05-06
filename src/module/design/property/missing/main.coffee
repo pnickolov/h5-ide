@@ -7,7 +7,7 @@ define [ '../base/main', '../base/model', '../base/view', 'constant' ], ( Proper
     MissingView = PropertyView.extend {
         render : () ->
             comp = Design.instance().component @model.get 'uid'
-            if Design.instance().get('state') in ['Stopped', "Stopping" ] and comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+            if Design.instance().get('state') in ['Stopped', "Stopping" ] and comp.type is constant.RESTYPE.ASG
                 @$el.html MC.template.missingAsgWhenStop asgName: comp.get 'name'
                 return "#{comp.get 'name'} Deleted"
 

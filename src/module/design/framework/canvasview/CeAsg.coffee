@@ -3,9 +3,11 @@ define [ "./CanvasElement", 'i18n!nls/lang.js', "constant", "Design", "CanvasMan
 
 
   CeAsg = ()-> CanvasElement.apply( this, arguments )
-  CanvasElement.extend( CeAsg, constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group )
+  CanvasElement.extend( CeAsg, constant.RESTYPE.ASG )
 
   CeAsgProto = CeAsg.prototype
+
+  CeAsgProto.PATH_ASG_TITLE = "M0 21l0 -16a5 5 0 0 1 5 -5l121 0a5 5 0 0 1 5 5l0 16z"
 
   CeAsgProto.isRemovable = ()->
     # Asg is a group. But we don't check ASG's children.
@@ -53,7 +55,7 @@ define [ "./CanvasElement", 'i18n!nls/lang.js', "constant", "Design", "CanvasMan
         }),
 
         # title bg
-        Canvon.path( MC.canvas.PATH_ASG_TITLE ).attr({'class':'asg-title'})
+        Canvon.path( this.PATH_ASG_TITLE ).attr({'class':'asg-title'})
       )
 
       if not @model.design().modeIsAppView()
@@ -104,4 +106,4 @@ define [ "./CanvasElement", 'i18n!nls/lang.js', "constant", "Design", "CanvasMan
       asg.draw()
     null
 
-  null
+  CeAsg

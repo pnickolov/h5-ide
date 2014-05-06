@@ -1,8 +1,8 @@
 
-define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, constant, CanvasManager )->
+define [ "./CanvasElement", "constant", "CanvasManager","i18n!nls/lang.js" ], ( CanvasElement, constant, CanvasManager,lang )->
 
   CeElb = ()-> CanvasElement.apply( this, arguments )
-  CanvasElement.extend( CeElb, constant.AWS_RESOURCE_TYPE.AWS_ELB )
+  CanvasElement.extend( CeElb, constant.RESTYPE.ELB )
   ChildElementProto = CeElb.prototype
 
 
@@ -10,18 +10,10 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
   # Child Element's interface.
   ###
   ChildElementProto.portPosMap = {
-    "elb-sg-in"  : [ 2,  35, MC.canvas.PORT_LEFT_ANGLE  ]
-    "elb-assoc"  : [ 79, 50, MC.canvas.PORT_RIGHT_ANGLE ]
-    "elb-sg-out" : [ 79, 20, MC.canvas.PORT_RIGHT_ANGLE ]
+    "elb-sg-in"  : [ 2,  35, CanvasElement.constant.PORT_LEFT_ANGLE  ]
+    "elb-assoc"  : [ 79, 50, CanvasElement.constant.PORT_RIGHT_ANGLE ]
+    "elb-sg-out" : [ 79, 20, CanvasElement.constant.PORT_RIGHT_ANGLE ]
   }
-
-  ChildElementProto.portPosition = ( portName )->
-    pos = @portPosMap[ portName ]
-
-    if portName is "elb-sg-out" and @model.design().typeIsClassic()
-      pos[1] = 35
-
-    pos
 
   ChildElementProto.iconUrl = ()->
     if @model.get("internal")
@@ -44,37 +36,35 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
         imageW : 70
         imageH : 53
         label  : m.get "name"
-        sg     : not design.typeIsClassic()
+        sg     : true
       })
 
-      # Port
-      if not design.typeIsClassic()
-        node.append(
-          # Left
-          Canvon.path(MC.canvas.PATH_PORT_RIGHT).attr({
-            'class'      : 'port port-blue port-elb-sg-in'
-            'data-name'     : 'elb-sg-in'
-            'data-position' : 'left'
-            'data-type'     : 'sg'
-            'data-direction': "in"
-          }),
-          # Right gray
-          Canvon.path(MC.canvas.PATH_PORT_RIGHT).attr({
-            'class'      : 'port port-gray port-elb-assoc'
-            'data-name'     : 'elb-assoc'
-            'data-position' : 'right'
-            'data-type'     : 'association'
-            'data-direction': 'out'
-          })
-        )
-
       node.append(
-        Canvon.path(MC.canvas.PATH_PORT_RIGHT).attr({
+        # Left
+        Canvon.path(this.constant.PATH_PORT_RIGHT).attr({
+          'class'      : 'port port-blue port-elb-sg-in'
+          'data-name'     : 'elb-sg-in'
+          'data-position' : 'left'
+          'data-type'     : 'sg'
+          'data-direction': "in"
+        })
+
+        # Right gray
+        Canvon.path(this.constant.PATH_PORT_RIGHT).attr({
+          'class'      : 'port port-gray port-elb-assoc'
+          'data-name'     : 'elb-assoc'
+          'data-position' : 'right'
+          'data-type'     : 'association'
+          'data-direction': 'out'
+        })
+
+        Canvon.path(this.constant.PATH_PORT_RIGHT).attr({
           'class'      : 'port port-blue port-elb-sg-out'
           'data-name'     : 'elb-sg-out'
           'data-position' : 'right'
           'data-type'     : 'sg'
           'data-direction': 'out'
+          'data-tooltip'  : lang.ide.PORT_TIP_J
         })
       )
 

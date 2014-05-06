@@ -14,7 +14,7 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'customergateway_service
 			# get current stack all cgw
 			stackCGWIP = stackCGWName = stackCGWUID = null
 			_.each MC.canvas_data.component, (compObj) ->
-				if compObj.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_CustomerGateway
+				if compObj.type is constant.RESTYPE.CGW
 					stackCGWId = compObj.resource.CustomerGatewayId
 					stackCGWIP = compObj.resource.IpAddress
 					stackCGWName = compObj.name

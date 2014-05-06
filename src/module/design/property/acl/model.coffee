@@ -90,7 +90,7 @@ define [ '../base/model', "Design", 'constant', 'i18n!nls/lang.js' ], ( Property
                 isDefault    : aclObj.isDefault()
                 appId        : aclObj.get("appId")
                 name         : aclObj.get("name")
-                vpcId        : Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC ).theVPC().get("appId")
+                vpcId        : Design.modelClassForType( constant.RESTYPE.VPC ).theVPC().get("appId")
                 rules        : null
                 isApp        : @isApp
                 associations : _.sortBy assos, name

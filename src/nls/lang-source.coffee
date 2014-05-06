@@ -14,6 +14,7 @@
     Module Name
       RES     : resource panel
       PROP    : property
+
       CVS     : canvas
       TOOL    : toolbar
       HEAD    : header
@@ -646,9 +647,9 @@ module.exports =
       en: "Instances must be dragged to a subnet or auto scaling group."
       zh: "实例必须拖放到子网或Auto Scaling组。"
 
-    CVS_MSG_WARN_NOTMATCH_INSTANCE_AZ:
-      en: "Instances must be dragged to an availability zone."
-      zh: "实例必须拖放到可用区域。"
+    CVS_MSG_WARN_NOTMATCH_ASG:
+      en: "Asg must be dragged to a subnet."
+      zh: "Auto Scaling组必须拖放到子网。"
 
     CVS_MSG_WARN_NOTMATCH_ENI:
       en: "Network interfaces must be dragged to a subnet."
@@ -3976,7 +3977,61 @@ module.exports =
       en: "update"
       zh: "更新错误"
 
-    ##### Modal Confirm Stop/Terminate App
+    #  port tooltip
+
+    PORT_TIP_A:
+      en: 'Connect to subnet to make association'
+      zh: ''
+
+    PORT_TIP_B:
+      en: 'Connect to Internet Gateway, Virtual Private Gateway, instance or network interface to create route.'
+      zh: ''
+
+    PORT_TIP_C:
+        en: 'Connect to route table to create route'
+        zh: ''
+
+    PORT_TIP_D:
+        en: 'Connect to instance, auto scaling group, network interface or load balancer to create security group rule.'
+        zh: ''
+
+    PORT_TIP_E:
+      en: 'Connect to network interface to attach.'
+      zh: ''
+
+    PORT_TIP_F:
+      en: 'Connect to instance, auto scaling group or network interface to create security group rule.'
+      zh: ''
+
+    PORT_TIP_G:
+      en: 'Connect to instance to attach'
+      zh: ''
+
+    PORT_TIP_H:
+      en: 'Connect to Customer Gateway to create VPN'
+      zh: ''
+
+    PORT_TIP_I:
+      en: 'Connect to Virtua Private Gateway to create VPN'
+      zh: ''
+
+    PORT_TIP_J:
+      en: 'Connect to instance or launch configuration to register it behind load balancer'
+      zh: ''
+
+    PORT_TIP_K:
+      en: 'Connect to subnet to associate'
+      zh: ''
+
+    PORT_TIP_L:
+      en: 'Connect to load balancer to associate'
+      zh: ''
+
+    PORT_TIP_M:
+      en: 'Connect to route table to assoicate'
+      zh: ''
+
+  ##### Modal Confirm Stop/Terminate App
 
     POP_CONFIRM_STOP_ASG:
       en: "Auto scaling group in this app will be deleted when it is stopped."
@@ -4180,6 +4235,14 @@ module.exports =
       en: "Close"
       zh: ""
 
+    STATE_TEXT_EXPAND_MODAL_SAVE_BTN:
+      en: "Save"
+      zh: ""
+
+    STATE_TEXT_EXPAND_MODAL_CLOSE_BTN:
+      en: "Close"
+      zh: ""
+
     ## State Editor Help
 
     STATE_HELP_INTRO_LBL:
@@ -4355,6 +4418,18 @@ module.exports =
 
     KEY_PREV_KEY:
       en: "Shift + Tab"
+      zh: ""
+
+    KEY_CONTENT_EDITOR_MAC:
+      en: "Command + E"
+      zh: ""
+
+    KEY_CONTENT_EDITOR_PC:
+      en: "Ctrl + E"
+      zh: ""
+
+    KEY_CONTENT_EDITOR_ACTION:
+      en: "Open content editor"
       zh: ""
 
     KEY_PREV_ACTION:

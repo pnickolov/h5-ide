@@ -3,7 +3,7 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
 
   C = ConnectionModel.extend {
 
-    type : constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNConnection
+    type : constant.RESTYPE.VPN
 
     defaults : ()->
       lineType : "vpn"
@@ -12,14 +12,14 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
     portDefs :
       port1 :
         name : "vgw-vpn"
-        type : constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway
+        type : constant.RESTYPE.VGW
       port2 :
         name : "cgw-vpn"
-        type : constant.AWS_RESOURCE_TYPE.AWS_VPC_CustomerGateway
+        type : constant.RESTYPE.CGW
 
     serialize : ( component_data )->
-      vgw = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway )
-      cgw = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_CustomerGateway )
+      vgw = @getTarget( constant.RESTYPE.VGW )
+      cgw = @getTarget( constant.RESTYPE.CGW )
 
       if cgw.isDynamic()
         routes = []
@@ -42,7 +42,7 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
 
   }, {
 
-    handleTypes : constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNConnection
+    handleTypes : constant.RESTYPE.VPN
 
     deserialize : ( data, layout_data, resolve )->
 

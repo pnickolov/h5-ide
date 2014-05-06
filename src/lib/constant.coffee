@@ -32,38 +32,6 @@ define ['MC', 'i18n!nls/lang.js'], ( MC, lang ) ->
 		"AWS.SNS.Topic"                 : ""
 	}
 
-	#private
-	AWS_RESOURCE_TYPE = {
-		AWS_EC2_AvailabilityZone            : "AWS.EC2.AvailabilityZone"
-		AWS_EC2_Instance                    : "AWS.EC2.Instance"
-		AWS_EC2_KeyPair                     : "AWS.EC2.KeyPair"
-		AWS_EC2_SecurityGroup               : "AWS.EC2.SecurityGroup"
-		AWS_EC2_EIP                         : "AWS.EC2.EIP"
-		AWS_EC2_AMI                         : "AWS.EC2.AMI"
-		AWS_EBS_Volume                      : "AWS.EC2.EBS.Volume"
-		AWS_EBS_Snapshot                    : "AWS.EC2.EBS.Snapshot"
-		AWS_ELB                             : "AWS.ELB"
-		AWS_VPC_VPC                         : "AWS.VPC.VPC"
-		AWS_VPC_Subnet                      : "AWS.VPC.Subnet"
-		AWS_VPC_InternetGateway             : "AWS.VPC.InternetGateway"
-		AWS_VPC_RouteTable                  : "AWS.VPC.RouteTable"
-		AWS_VPC_VPNGateway                  : "AWS.VPC.VPNGateway"
-		AWS_VPC_CustomerGateway             : "AWS.VPC.CustomerGateway"
-		AWS_VPC_NetworkInterface            : "AWS.VPC.NetworkInterface"
-		AWS_VPC_DhcpOptions                 : "AWS.VPC.DhcpOptions"
-		AWS_VPC_VPNConnection               : "AWS.VPC.VPNConnection"
-		AWS_VPC_NetworkAcl                  : "AWS.VPC.NetworkAcl"
-		AWS_IAM_ServerCertificate           : "AWS.IAM.ServerCertificate"
-		AWS_AutoScaling_Group                       : 'AWS.AutoScaling.Group'
-		AWS_AutoScaling_LaunchConfiguration         : 'AWS.AutoScaling.LaunchConfiguration'
-		AWS_AutoScaling_NotificationConfiguration   : 'AWS.AutoScaling.NotificationConfiguration'
-		AWS_AutoScaling_ScalingPolicy               : 'AWS.AutoScaling.ScalingPolicy'
-		AWS_AutoScaling_ScheduledActions            : 'AWS.AutoScaling.ScheduledActions'
-		AWS_CloudWatch_CloudWatch                   : 'AWS.CloudWatch.CloudWatch'
-		AWS_SNS_Subscription                        : 'AWS.SNS.Subscription'
-		AWS_SNS_Topic                               : 'AWS.SNS.Topic'
-	}
-
 	# A short version
 	RESTYPE =
 		AZ            						: "AWS.EC2.AvailabilityZone"
@@ -95,42 +63,6 @@ define ['MC', 'i18n!nls/lang.js'], ( MC, lang ) ->
 		SUBSCRIPTION                        : 'AWS.SNS.Subscription'
 		TOPIC                               : 'AWS.SNS.Topic'
 
-	# AWS_RESOURCE_TYPE = {}
-
-	# AWS_RESOURCE_TYPES = [
-	#   "AWS.EC2.AvailabilityZone"
-	#   "AWS.EC2.Instance"
-	#   "AWS.EC2.KeyPair"
-	#   "AWS.EC2.SecurityGroup"
-	#   "AWS.EC2.EIP"
-	#   "AWS.EC2.AMI"
-	#   "AWS.EC2.EBS.Volume"
-	#   "AWS.EC2.EBS.Snapshot"
-	#   "AWS.ELB"
-	#   "AWS.VPC.VPC"
-	#   "AWS.VPC.Subnet"
-	#   "AWS.VPC.InternetGateway"
-	#   "AWS.VPC.RouteTable"
-	#   "AWS.VPC.VPNGateway"
-	#   "AWS.VPC.CustomerGateway"
-	#   "AWS.VPC.NetworkInterface"
-	#   "AWS.VPC.DhcpOptions"
-	#   "AWS.VPC.VPNConnection"
-	#   "AWS.VPC.NetworkAcl"
-	#   "AWS.IAM.ServerCertificate"
-	#   #
-	#   "AWS.AutoScaling.Group"
-	#   "AWS.AutoScaling.LaunchConfiguration"
-	#   "AWS.AutoScaling.NotificationConfiguration"
-	#   "AWS.AutoScaling.ScalingPolicy"
-	#   "AWS.AutoScaling.ScheduledActions"
-	#   "AWS.CloudWatch.CloudWatch"
-	#   "AWS.SNS.Subscription"
-	#   "AWS.SNS.Topic"
-	# ]
-
-	# for value in AWS_RESOURCE_TYPES
-	#   AWS_RESOURCE_TYPE[ value.replace('.', '_') ] = value
 
 	#private
 	AWS_RESOURCE_SHORT_TYPE = {
@@ -163,56 +95,6 @@ define ['MC', 'i18n!nls/lang.js'], ( MC, lang ) ->
 		AWS_CloudWatch_CloudWatch                 : 'clw'
 		AWS_SNS_Subscription                      : 'sns_sub'
 		AWS_SNS_Topic                             : 'sns_top'
-	}
-
-	#private
-	AWS_PORT_NAME = {
-		#AWS.EC2.Instance
-		INSTANCE_SG      : "instance_sg"
-		INSTANCE_ATTACH  : "instance_attach" #right bottom
-
-		#AWS.ELB
-		ELB_SG_IN        : "elb_sg_in"     #top
-		ELB_SG_OUT       : "elb_sg_out"     #top
-		ELB_ATTACH       : "elb_attach"     #bottom
-
-		#AWS.VPC.Subnet
-		SUBNET_ATTACH    : "subnet_attach"  #left
-		SUBNET_ACL       : "subnet_acl"     #right
-
-		#AWS.VPC.RouteTable
-		RTB_SRC          : "rtb_src"
-		RTB_TGT_LEFT     : "rtb_tgt_left"
-		RTB_TGT_RIGHT    : "rtb_tgt_right"
-
-		#AWS.VPC.InternetGateway
-		IGW_TGT          : "igw_tgt"  #right
-
-		#AWS.VPC.VPNGateway
-		VGW_TGT          : "vgw_tgt"  #left
-		VGW_VPN          : "vgw_vpn"  #right
-
-		#AWS.VPC.CustomGateway
-		CGW_VPN          : "cgw_vpn"
-
-		#AWS.VPC.NetworkInterface
-		ENI_ATTACH       : "eni_attach"
-		ENI_SG           : "eni_sg"
-
-	}
-
-	OS_TYPE = {
-		WINDOWS     : "windows"
-		AMAZON      : "amazon"
-		REDHAT      : "redhat"
-		CENTOS      : "centos"
-		FEDORA      : "fedora"
-		DEBIAN      : "debian"
-		UBUNTU      : "ubuntu"
-		GENTOO      : "gentoo"
-		SUSE        : "suse"
-		OPENSUSE    : "opensuse"
-		LINUX_OTHER : "linux-other"
 	}
 
 	INSTANCE_TYPE = {
@@ -342,57 +224,6 @@ define ['MC', 'i18n!nls/lang.js'], ( MC, lang ) ->
 	}
 
 	#private
-	SERVICE_REGION = []
-	SERVICE_REGION[ 'us-east-1' ] = ['cloudfront', 'cloudsearch-us-east-1', 'cloudwatch-us-east-1',  'dynamodb-us-east-1',
-		'ec2-us-east-1', 'elb-us-east-1', 'emr-us-east-1', 'elastictranscoder-us-east-1', 'elasticache-us-east-1', 'fps',
-		'glacier-us-east-1', 'mturk-requestor', 'mturk-worker', 'redshift-us-east-1', 'rds-us-east-1', 'route53',
-		'ses-us-east-1', 'sns-us-east-1', 'sqs-us-east-1', 's3-us-standard', 'swf-us-east-1', 'simpledb-us-east-1',
-		'vpc-us-east-1', 'cloudformation-us-east-1', 'cloudhsm-us-east-1', 'datapipeline-us-east-1', 'directconnect-us-east-1',
-		'elasticbeanstalk-us-east-1', 'import-export', 'management-console', 'opsworks-us-east-1', 'storagegateway-us-east-1'
-	]
-	SERVICE_REGION[ 'us-west-1' ] = [ 'cloudfront', 'cloudsearch-us-west-1', 'cloudwatch-us-west-1', 'dynamodb-us-west-1',
-		'ec2-us-west-1', 'elb-us-west-1', 'emr-us-west-1', 'elastictranscoder-us-west-1', 'elasticache-us-west-1', 'fps',
-		'glacier-us-west-1', 'mturk-requestor', 'mturk-worker', 'rds-us-west-1', 'route53', 'sns-us-west-1','sqs-us-west-1',
-		's3-us-west-1', 's3-us-standard', 'swf-us-west-1', 'simpledb-us-west-1', 'vpc-us-west-1', 'cloudformation-us-west-1',
-		'directconnect-us-west-1','elasticbeanstalk-us-west-1', 'import-export', 'management-console', 'storagegateway-us-west-1'
-	 ]
-	SERVICE_REGION[ 'us-west-2' ] = [
-		'cloudfront', 'cloudsearch-us-west-2', 'cloudwatch-us-west-2', 'dynamodb-us-west-2', 'ec2-us-west-2', 'elb-us-west-2',
-		'emr-us-west-2', 'elastictranscoder-us-west-2', 'elasticache-us-west-2', 'fps', 'glacier-us-west-2', 'mturk-requestor',
-		'mturk-worker', 'redshift-us-west-2', 'rds-us-west-2', 'route53', 'sns-us-west-2', 'sqs-us-west-2', 's3-us-west-2',
-		's3-us-standard', 'swf-us-west-2', 'simpledb-us-west-2', 'vpc-us-west-2', 'cloudformation-us-west-2', 'directconnect-us-east-1',
-		'elasticbeanstalk-us-west-2', 'import-export', 'management-console','storagegateway-us-west-2'
-	]
-	SERVICE_REGION[ 'sa-east-1' ] = ['cloudfront', 'cloudwatch-sa-east-1', 'dynamodb-sa-east-1', 'ec2-sa-east-1', 'elb-sa-east-1',
-		'emr-sa-east-1', 'elasticache-sa-east-1', 'rds-sa-east-1', 'route53', 'sns-sa-east-1', 'sqs-sa-east-1', 's3-sa-east-1',
-		'swf-sa-east-1', 'simpledb-sa-east-1', 'vpc-sa-east-1', 'cloudformation-sa-east-1', 'directconnect-sa-east-1',
-		'elasticbeanstalk-sa-east-1', 'management-console', 'storagegateway-sa-east-1'
-	]
-	SERVICE_REGION[ 'eu-west-1' ] = ['cloudfront', 'cloudsearch-eu-west-1', 'cloudwatch-eu-west-1', 'dynamodb-eu-west-1', 'ec2-eu-west-1',
-	'elb-eu-west-1', 'emr-eu-west-1', 'elastictranscoder-eu-west-1', 'elasticache-eu-west-1', 'glacier-eu-west-1', 'mturk-worker',
-	'redshift-eu-west-1', 'rds-eu-west-1', 'route53', 'sns-eu-west-1', 'sqs-eu-west-1', 's3-eu-west-1', 'swf-eu-west-1', 'simpledb-eu-west-1',
-	'vpc-eu-west-1', 'cloudformation-eu-west-1', 'cloudhsm-eu-west-1', 'directconnect-eu-west-1', 'elasticbeanstalk-eu-west-1', 'import-export',
-	'management-console', 'storagegateway-eu-west-1'
-	]
-	SERVICE_REGION[ 'ap-southeast-1' ] = ['cloudfront', 'cloudsearch-ap-southeast-1', 'cloudwatch-ap-southeast-1','dynamodb-ap-southeast-1',
-	'ec2-ap-southeast-1', 'elb-ap-southeast-1', 'emr-ap-southeast-1', 'elastictranscoder-ap-southeast-1', 'elasticache-ap-southeast-1',
-	'mturk-worker', 'rds-ap-southeast-1', 'route53', 'sns-ap-southeast-1', 'sqs-ap-southeast-1', 's3-ap-southeast-1','swf-ap-southeast-1',
-	'simpledb-ap-southeast-1', 'vpc-ap-southeast-1', 'cloudformation-ap-southeast-1', 'directconnect-ap-southeast-1',
-	'elasticbeanstalk-ap-southeast-1', 'import-export', 'management-console', 'storagegateway-ap-southeast-1'
-	]
-	SERVICE_REGION[ 'ap-southeast-2' ] = ['cloudfront', 'cloudwatch-ap-southeast-2', 'dynamodb-ap-southeast-2', 'ec2-ap-southeast-2',
-	'elb-ap-southeast-2', 'emr-ap-southeast-2', 'mturk-worker', 'rds-ap-southeast-2', 'route53', 'sns-ap-southeast-2', 'sqs-ap-southeast-2',
-	's3-ap-southeast-2', 'swf-ap-southeast-2', 'simpledb-ap-southeast-2', 'vpc-ap-southeast-2', 'cloudformation-ap-southeast-2',
-	'directconnect-ap-southeast-2', 'elasticbeanstalk-ap-southeast-2', 'import-export', 'management-console', 'storagegateway-ap-southeast-2'
-	]
-	SERVICE_REGION[ 'ap-northeast-1' ] = ['cloudfront', 'cloudwatch-ap-northeast-1', 'dynamodb-ap-northeast-1', 'ec2-ap-northeast-1',
-	'elb-ap-northeast-1', 'emr-ap-northeast-1', 'elastictranscoder-ap-northeast-1', 'elasticache-ap-northeast-1', 'glacier-ap-northeast-1',
-	'mturk-worker', 'redshift-ap-northeast-1', 'rds-ap-northeast-1', 'route53', 'sns-ap-northeast-1', 'sqs-ap-northeast-1', 's3-ap-northeast-1',
-	'swf-ap-northeast-1', 'simpledb-ap-northeast-1', 'vpc-ap-northeast-1', 'cloudformation-ap-northeast-1',
-	'directconnect-ap-northeast-1', 'elasticbeanstalk-ap-northeast-1', 'import-export', 'management-console', 'storagegateway-ap-northeast-1'
-	]
-
-	#private
 	OPS_STATE = {
 		OPS_STATE_PENDING   : "Pending"
 		OPS_STATE_INPROCESS   : "InProcess"
@@ -510,30 +341,28 @@ use redirection server name:i:0\n"
 
 	#public
 	AWS_RESOURCE_KEY        : AWS_RESOURCE_KEY
-	INSTANCE_TYPE     		: INSTANCE_TYPE
-	INSTANCE_STATES     	: INSTANCE_STATES
-	AWS_RESOURCE_TYPE   	: AWS_RESOURCE_TYPE
+
+	INSTANCE_TYPE           : INSTANCE_TYPE
+	INSTANCE_STATES         : INSTANCE_STATES
+
 	AWS_RESOURCE_SHORT_TYPE : AWS_RESOURCE_SHORT_TYPE
-	AWS_PORT_NAME     		: AWS_PORT_NAME
-	OS_TYPE         		: OS_TYPE
-	REGION_KEYS       		: REGION_KEYS
-	REGION_SHORT_LABEL    	: REGION_SHORT_LABEL
-	REGION_LABEL      		: REGION_LABEL
-	RETURN_CODE       		: RETURN_CODE
-	LINUX           		: LINUX
-	WINDOWS         		: WINDOWS
+	REGION_KEYS             : REGION_KEYS
+	REGION_SHORT_LABEL      : REGION_SHORT_LABEL
+	REGION_LABEL            : REGION_LABEL
+	RETURN_CODE             : RETURN_CODE
+	LINUX                   : LINUX
+	WINDOWS                 : WINDOWS
 	#SERVICE_ERROR_MESSAGE  : SERVICE_ERROR_MESSAGE
-	MESSAGE_E       		: MESSAGE_E
-	APP_STATE       		: APP_STATE
-	OPS_STATE       		: OPS_STATE
-	RECENT_NUM        		: RECENT_NUM
-	RECENT_DAYS       		: RECENT_DAYS
-	AWS_RESOURCE      		: AWS_RESOURCE
-	SERVICE_REGION      	: SERVICE_REGION
+	MESSAGE_E               : MESSAGE_E
+	APP_STATE               : APP_STATE
+	OPS_STATE               : OPS_STATE
+	RECENT_NUM              : RECENT_NUM
+	RECENT_DAYS             : RECENT_DAYS
+	AWS_RESOURCE            : AWS_RESOURCE
 	RDP_TMPL                : RDP_TMPL
 	DEMO_STACK_NAME_LIST    : DEMO_STACK_NAME_LIST
 	TA                      : TA
-	OS_TYPE_MAPPING     	: OS_TYPE_MAPPING
-	REGEXP          		: REGEXP
-	RESTYPE 				: RESTYPE
+	OS_TYPE_MAPPING         : OS_TYPE_MAPPING
+	REGEXP                  : REGEXP
+	RESTYPE                 : RESTYPE
 

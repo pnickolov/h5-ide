@@ -40,7 +40,7 @@ define [ 'module/design/property/base/model', "Design", 'constant' ], ( Property
 
             used_list = {}
             # Get ModelClass of AZ without requring it.
-            AZClass = Design.modelClassForType constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone
+            AZClass = Design.modelClassForType constant.RESTYPE.AZ
 
             # Get all az components.
             _.each AZClass.allObjects(), ( element )->

@@ -1,9 +1,9 @@
 
-define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, constant, CanvasManager )->
+define [ "./CanvasElement", "constant", "CanvasManager", "./CeAsg", "i18n!nls/lang.js" ], ( CanvasElement, constant, CanvasManager, CeAsg, lang )->
 
   CeExpandedAsg = ()->
     CanvasElement.apply( this, arguments )
-    this.type = constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+    this.type = constant.RESTYPE.ASG
     null
 
   CanvasElement.extend( CeExpandedAsg, "ExpandedAsg" )
@@ -14,8 +14,8 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
   # Child Element's interface.
   ###
   ChildElementProto.portPosMap = {
-    "launchconfig-sg-left"  : [ 30,  50, MC.canvas.PORT_LEFT_ANGLE ]
-    "launchconfig-sg-right" : [ 100, 50, MC.canvas.PORT_RIGHT_ANGLE ]
+    "launchconfig-sg-left"  : [ 30,  50, CanvasElement.constant.PORT_LEFT_ANGLE ]
+    "launchconfig-sg-right" : [ 100, 50, CanvasElement.constant.PORT_RIGHT_ANGLE ]
   }
   ChildElementProto.portDirMap = {
     "launchconfig-sg" : "horizontal"
@@ -54,7 +54,7 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
       }),
 
       # title bg
-      Canvon.path( MC.canvas.PATH_ASG_TITLE ).attr({'class':'asg-title'}),
+      Canvon.path( CeAsg.prototype.PATH_ASG_TITLE ).attr({'class':'asg-title'}),
 
       # title
       Canvon.text( 4, 14, label ).attr({'class':'group-label'})
@@ -72,23 +72,25 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
         Canvon.text( 65, 116, lcLabel ).attr({'class':'node-label'}),
 
         # left port(blue)
-        Canvon.path(MC.canvas.PATH_PORT_DIAMOND).attr({
+        Canvon.path(this.constant.PATH_PORT_DIAMOND).attr({
           'class' : 'port port-blue port-launchconfig-sg port-launchconfig-sg-left'
           'data-name'      : 'launchconfig-sg'
           'data-alias'     : 'launchconfig-sg-left'
           'data-position'  : 'left'
           'data-type'      : 'sg'
           'data-direction' : 'in'
+          'data-tooltip'   : lang.ide.PORT_TIP_D
         }),
 
         # right port(blue)
-        Canvon.path(MC.canvas.PATH_PORT_DIAMOND).attr({
+        Canvon.path(this.constant.PATH_PORT_DIAMOND).attr({
           'class' : 'port port-blue port-launchconfig-sg port-launchconfig-sg-right'
           'data-name'      : 'launchconfig-sg'
           'data-alias'     : 'launchconfig-sg-right'
           'data-position'  : 'right'
           'data-type'      : 'sg'
           'data-direction' : 'out'
+          'data-tooltip'   : lang.ide.PORT_TIP_D
         })
       ]
 

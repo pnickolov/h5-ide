@@ -45,7 +45,7 @@ define [ '../base/model', 'keypair_model', 'constant', 'Design' ], ( PropertyMod
       data.app_view = Design.instance().modeIsAppView()
       @set data
 
-      @set "displayAssociatePublicIp", not Design.instance().typeIsClassic()
+      @set "displayAssociatePublicIp", true
       @set "monitorEnabled", @isMonitoringEnabled()
       @set "can_set_ebs", @lc.isEbsOptimizedEnabled()
       @getInstanceType()
@@ -106,7 +106,7 @@ define [ '../base/model', 'keypair_model', 'constant', 'Design' ], ( PropertyMod
     setPublicIp : ( value )->
       @lc.set "publicIp", value
       if value
-        Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway ).tryCreateIgw()
+        Design.modelClassForType( constant.RESTYPE.IGW ).tryCreateIgw()
 
     setInstanceType  : ( value ) ->
       @lc.setInstanceType( value )
@@ -165,7 +165,7 @@ define [ '../base/model', 'keypair_model', 'constant', 'Design' ], ( PropertyMod
 
     addKP : ( kp_name ) ->
 
-      KpModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair )
+      KpModel = Design.modelClassForType( constant.RESTYPE.KP )
 
       for kp in KpModel.allObjects()
         if kp.get("name") is kp_name

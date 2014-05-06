@@ -6,6 +6,7 @@ define [ 'event',
          'i18n!nls/lang.js',
          'common_handle',
          'UI.notification',
+         'UI.tour',
          'backbone', 'jquery', 'handlebars', 'underscore' ], ( ide_event, lang, common_handle ) ->
 
     MainView = Backbone.View.extend {
@@ -17,8 +18,7 @@ define [ 'event',
         open_fail: false
 
         initialize : ->
-            $( window ).on 'beforeunload', @beforeunloadEvent
-
+            $(window).on 'beforeunload', @beforeunloadEvent
             $(document).on 'keydown', @globalKeyEvent
 
         showMain : ->
@@ -113,9 +113,24 @@ define [ 'event',
             #
             @hideStatubar()
 
-        disconnectedMessage : ( type ) ->
-            $(".disconnected-notification").toggle( type is 'show' )
-            null
+        showDisconnected : ()->
+            if $(".disconnected-msg").show().length > 0
+                return
+
+            $( MC.template.disconnectedMsg() ).appendTo("body").on "mouseover", ()->
+                $(".disconnected-msg").addClass "hovered"
+                $("body").on "mousemove.disconnectedmsg", ( e )->
+                    msg = $(".disconnected-msg")
+                    pos = msg.offset()
+                    x = e.pageX
+                    y = e.pageY
+                    if x < pos.left || y < pos.top || x >= pos.left + msg.outerWidth() || y >= pos.top + msg.outerHeight()
+                        $("body").off "mousemove.disconnectedmsg"
+                        msg.removeClass "hovered"
+                    return
+                return
+
+        hideDisconnected : ()-> $(".disconnected-msg").remove()
 
         beforeunloadEvent : ->
 
@@ -129,10 +144,6 @@ define [ 'event',
 
             # when not cookie userid
             if !common_handle.cookie.getCookieByName( 'usercode' )
-                return
-
-            # when old stack not check
-            if MC.common.other.canvasData.data() and MC.common.other.canvasData.data().platform in [ MC.canvas.PLATFORM_TYPE.EC2_CLASSIC, MC.canvas.PLATFORM_TYPE.DEFAULT_VPC ]
                 return
 
             #return if MC.data.current_tab_id in [ 'dashboard', undefined ]

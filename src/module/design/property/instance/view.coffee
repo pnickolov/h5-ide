@@ -96,8 +96,7 @@ define [ '../base/view',
         render : () ->
             @$el.html template @model.attributes
 
-            if not Design.instance().typeIsClassic()
-                @refreshIPList()
+            @refreshIPList()
 
             me = this
             # parsley bind

@@ -20,7 +20,7 @@ define [ "constant",
 
   Model = GroupModel.extend {
 
-    type    : constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
+    type    : constant.RESTYPE.SUBNET
     newNameTmpl : "subnet"
 
     defaults :
@@ -38,11 +38,11 @@ define [ "constant",
       @draw(true)
 
       # Connect to the MainRT automatically
-      RtbModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable )
+      RtbModel = Design.modelClassForType( constant.RESTYPE.RT )
       new RtbAsso( this, RtbModel.getMainRouteTable(), { implicit : true } )
 
       # Connect to the DefaultACL automatically
-      Acl = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl )
+      Acl = Design.modelClassForType( constant.RESTYPE.ACL )
       defaultAcl = Acl.getDefaultAcl()
       if defaultAcl
         AclAsso = Design.modelClassForType( "AclAsso" )
@@ -64,13 +64,13 @@ define [ "constant",
 
     isReparentable : ( newParent )->
       for child in @children()
-        if child.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance or child.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+        if child.type is constant.RESTYPE.INSTANCE or child.type is constant.RESTYPE.ENI
 
           for attach in child.connectionTargets( "EniAttachment" )
             if attach.parent() isnt this
               return lang.ide.CVS_MSG_ERR_MOVE_ATTACHED_ENI
 
-        if child.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group or child.type is "ExpandedAsg"
+        if child.type is constant.RESTYPE.ASG or child.type is "ExpandedAsg"
           if child.type is "ExpandedAsg"
             child = child.get("originalAsg")
           if child.getExpandAzs().indexOf( newParent ) != -1
@@ -102,7 +102,7 @@ define [ "constant",
       elbAsso = @connections("ElbSubnetAsso")[0]
       if not elbAsso then return
 
-      for sb in elbAsso.getTarget(constant.AWS_RESOURCE_TYPE.AWS_ELB).connectionTargets("ElbSubnetAsso")
+      for sb in elbAsso.getTarget(constant.RESTYPE.ELB).connectionTargets("ElbSubnetAsso")
         if sb.parent() is @parent()
           # Disconnect
           elbAsso.remove()
@@ -155,16 +155,16 @@ define [ "constant",
 
       ipCount = 0
       for child in @children()
-        if child.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+        if child.type is constant.RESTYPE.INSTANCE
           eni = child.getEmbedEni()
-        else if child.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+        else if child.type is constant.RESTYPE.ENI
           eni = child
         else
           continue
 
         ipCount += eni.get("ips").length
 
-      maxIpCount = Design.modelClassForType(constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface).getAvailableIPCountInCIDR( cidr )
+      maxIpCount = Design.modelClassForType(constant.RESTYPE.ENI).getAvailableIPCountInCIDR( cidr )
       maxIpCount >= ipCount
 
     generateCidr : () ->
@@ -213,7 +213,7 @@ define [ "constant",
 
   }, {
 
-    handleTypes : constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
+    handleTypes : constant.RESTYPE.SUBNET
 
     diffJson : ()-> # Disable diff for thie Model
 
@@ -305,7 +305,7 @@ define [ "constant",
       subnetCidrSuffix = Number(subnetCIDR.split('/')[1])
       suffixIPBinStr = subnetCidrBinStr.slice(subnetCidrSuffix)
       suffixNum = parseInt(suffixIPBinStr)
-      
+
       if (suffixNum is 0) or (suffixIPBinStr is '')
         return true
 

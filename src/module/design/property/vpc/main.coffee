@@ -12,7 +12,7 @@ define [ '../base/main',
 
     VPCModule = PropertyModule.extend {
 
-        handleTypes : constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC
+        handleTypes : constant.RESTYPE.VPC
 
         initStack : () ->
             @model = model

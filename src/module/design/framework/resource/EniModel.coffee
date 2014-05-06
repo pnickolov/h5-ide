@@ -37,7 +37,7 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
       width    : 9
       height   : 9
 
-    type : constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+    type : constant.RESTYPE.ENI
 
     constructor : ( attributes, option )->
 
@@ -59,7 +59,7 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
 
       if option.createByUser and not option.instance
         # DefaultSg
-        defaultSg = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup ).getDefaultSg()
+        defaultSg = Design.modelClassForType( constant.RESTYPE.SG ).getDefaultSg()
         SgAsso = Design.modelClassForType( "SgAsso" )
         new SgAsso( defaultSg, this )
 
@@ -101,7 +101,7 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
 
 
     isReparentable : ( newParent )->
-      if newParent.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
+      if newParent.type is constant.RESTYPE.SUBNET
         if newParent.parent() isnt @parent().parent()
           check = true
       else
@@ -167,7 +167,7 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
     subnetCidr : ()->
       parent = @parent() or @__embedInstance.parent()
 
-      if parent.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
+      if parent.type is constant.RESTYPE.SUBNET
         cidr = parent.get("cidr")
       else
         defaultSubnet = parent.getSubnetOfDefaultVPC()
@@ -180,7 +180,7 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
 
       cidr            = @subnetCidr()
       isServergroup   = @serverGroupCount() > 1
-      prefixSuffixAry = Design.modelClassForType(constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet).genCIDRPrefixSuffix( cidr )
+      prefixSuffixAry = Design.modelClassForType(constant.RESTYPE.SUBNET).genCIDRPrefixSuffix( cidr )
       ips             = []
 
       for ip, idx in @get("ips")
@@ -214,7 +214,7 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
       if not cidr then cidr = @subnetCidr()
       if not cidr then return ip
 
-      prefixSuffixAry = Design.modelClassForType(constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet).genCIDRPrefixSuffix( cidr )
+      prefixSuffixAry = Design.modelClassForType(constant.RESTYPE.SUBNET).genCIDRPrefixSuffix( cidr )
 
       ipAry = ip.split(".")
       if prefixSuffixAry[1] is "x.x"
@@ -232,7 +232,7 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
       cidr = @subnetCidr()
 
       # Check for subnet
-      if not Design.modelClassForType(constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet).isIPInSubnet( ip, cidr )
+      if not Design.modelClassForType(constant.RESTYPE.SUBNET).isIPInSubnet( ip, cidr )
         return 'This IP address conflicts with subnet’s IP range'
 
       realNewIp = @getRealIp( ip, cidr )
@@ -338,7 +338,7 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
       @draw()
 
       # When an Eni is attached, show SgLine for the Eni
-      SgModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup )
+      SgModel = Design.modelClassForType( constant.RESTYPE.SG )
       SgModel.tryDrawLine( @ )
       null
 
@@ -440,11 +440,11 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
 
           resources.push {
             uid   : eip.id or MC.guid()
-            type  : constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP
+            type  : constant.RESTYPE.EIP
             name  : "#{eniName}-eip#{idx}"
             index : index
             resource :
-              Domain : if Design.instance().typeIsVpc() then "vpc" else "standard"
+              Domain : "vpc"
               InstanceId         : ""
               AllocationId       : eip.allocationId or ""
               NetworkInterfaceId : @createRef( "NetworkInterfaceId", memberData.id )
@@ -474,7 +474,7 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
       else
         parent = @parent()
 
-      if parent.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
+      if parent.type is constant.RESTYPE.SUBNET
         subnetId = parent.createRef( "SubnetId" )
         vpcId    = parent.parent().parent().createRef( "VpcId" )
         az       = parent.parent()
@@ -533,7 +533,7 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
   }, {
 
     # EniModel does not handle EIP's deserialize. It only handles EIP's diffJson
-    handleTypes : [ constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface, constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP ]
+    handleTypes : [ constant.RESTYPE.ENI, constant.RESTYPE.EIP ]
 
     getAvailableIPInCIDR : (ipCidr, filter, maxNeedIPCount) ->
 
@@ -666,7 +666,7 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
     diffJson : ( newData, oldData, newComponents, oldComponents )->
       changeData = newData or oldData
 
-      if changeData.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP
+      if changeData.type is constant.RESTYPE.EIP
         return @diffEipJson( newData, oldData, newComponents, oldComponents )
 
       if changeData.index isnt 0 then return
@@ -692,7 +692,7 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
 
       change = {
         id      : changeData.uid
-        type    : constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+        type    : constant.RESTYPE.ENI
         name    : instance.serverGroupName + "-" + changeData.serverGroupName
         changes : []
       }
@@ -718,7 +718,7 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
 
     deserialize : ( data, layout_data, resolve )->
 
-      if data.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP then return
+      if data.type is constant.RESTYPE.EIP then return
 
       # deserialize ServerGroup Member Eni
       if data.serverGroupUid and data.serverGroupUid isnt data.uid
@@ -819,7 +819,7 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
       eni.remove()
 
       eniMember = @createServerGroupMember(data)
-      for instance in Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance ).allObjects()
+      for instance in Design.modelClassForType( constant.RESTYPE.INSTANCE ).allObjects()
         for m, idx in instance.groupMembers()
           if m.id is instanceId
             found = true

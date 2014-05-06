@@ -278,8 +278,7 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
     design : ()-> @__design
 
     getAllObjects : ( awsType )->
-      if not awsType then awsType = @type
-      @design().classCacheForCid( this.prototype.classId ).slice(0)
+      @design().classCacheForCid( Design.modelClassForType(awsType||@type).prototype.classId ).slice(0)
 
     markAsRemoved : ( isRemoved )->
       if isRemoved is undefined
@@ -496,9 +495,12 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
 
   }, {
 
-    allObjects : ()->
-      # console.warn "ResourceModel.allObjects() is deprecated. Please use this.getAllObjects(awsType) instead."
-      Design.instance().classCacheForCid( this.prototype.classId ).slice(0)
+    allObjects : ( design )->
+      d = Design.instance()
+      if design and design.prototype is d.prototype
+        d = design
+
+      d.classCacheForCid( this.prototype.classId ).slice(0)
 
     deserialize : ()->
       console.error "Class '#{@.prototype.type}' doesn't implement deserialize"

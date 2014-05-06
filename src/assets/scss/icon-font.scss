@@ -75,7 +75,8 @@
 .icon-import,
 .icon-drag-copy,
 .icon-gear,
-.icon-menu {
+.icon-menu,
+.icon-expand {
 	&:before{
 		font : 16px/1em "MCIcon";
 		font-weight : normal;
@@ -149,6 +150,7 @@
 .icon-drag-copy:before {content:"\F14F";}
 .icon-gear:before {content:"\F150";}
 .icon-menu:before {content:"\F151";}
+.icon-expand:before {content:"\F152";}
 
 // .icon-outbound:before {content:"out";}
 // .icon-inbound:before {content:"in";}

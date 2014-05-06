@@ -18,27 +18,6 @@ define [ 'backbone', 'underscore', 'account_service', 'base_model' ], ( Backbone
             _.extend this, base_model
 
         ###### api ######
-        #register api (define function)
-        register : ( src, username, password, email ) ->
-
-            me = this
-
-            src.model = me
-
-            account_service.register src, username, password, email, ( forge_result ) ->
-
-                if !forge_result.is_error
-                #register succeed
-
-                else
-                #register failed
-
-                    console.log 'account.register failed, error is ' + forge_result.error_message
-                    me.pub forge_result
-
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'ACCOUNT_REGISTER_RETURN', forge_result
-
         #update_account api (define function)
         update_account : ( src, username, session_id, attributes ) ->
 
@@ -61,99 +40,6 @@ define [ 'backbone', 'underscore', 'account_service', 'base_model' ], ( Backbone
                     if src.sender and src.sender.trigger then src.sender.trigger 'ACCOUNT_UPDATE__ACCOUNT_RETURN', forge_result
 
 
-
-        #reset_password api (define function)
-        reset_password : ( src, username ) ->
-
-            me = this
-
-            src.model = me
-
-            account_service.reset_password src, username, ( forge_result ) ->
-
-                if !forge_result.is_error
-                #reset_password succeed
-
-                else
-                #reset_password failed
-
-                    console.log 'account.reset_password failed, error is ' + forge_result.error_message
-                    me.pub forge_result
-
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'ACCOUNT_RESET__PWD_RETURN', forge_result
-
-
-
-        #update_password api (define function)
-        update_password : ( src, id, new_pwd ) ->
-
-            me = this
-
-            src.model = me
-
-            account_service.update_password src, id, new_pwd, ( forge_result ) ->
-
-                if !forge_result.is_error
-                #update_password succeed
-
-                else
-                #update_password failed
-
-                    console.log 'account.update_password failed, error is ' + forge_result.error_message
-                    me.pub forge_result
-
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'ACCOUNT_UPDATE__PWD_RETURN', forge_result
-
-
-
-        #check_repeat api (define function)
-        check_repeat : ( src, username, email ) ->
-
-            me = this
-
-            src.model = me
-
-            account_service.check_repeat src, username, email, ( forge_result ) ->
-
-                if !forge_result.is_error
-                #check_repeat succeed
-
-                else
-                #check_repeat failed
-
-                    console.log 'account.check_repeat failed, error is ' + forge_result.error_message
-                    me.pub forge_result
-
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'ACCOUNT_CHECK__REPEAT_RETURN', forge_result
-
-
-
-        #check_validation api (define function)
-        check_validation : ( src, key, flag ) ->
-
-            me = this
-
-            src.model = me
-
-            account_service.check_validation src, key, flag, ( forge_result ) ->
-
-                if !forge_result.is_error
-                #check_validation succeed
-
-                else
-                #check_validation failed
-
-                    console.log 'account.check_validation failed, error is ' + forge_result.error_message
-                    me.pub forge_result
-
-                #dispatch event (dispatch event whenever login succeed or failed)
-                if src.sender and src.sender.trigger then src.sender.trigger 'ACCOUNT_CHECK__VALIDATION_RETURN', forge_result
-
-
-
         #reset_key api (define function)
         reset_key : ( src, username, session_id, flag ) ->
 
@@ -174,50 +60,6 @@ define [ 'backbone', 'underscore', 'account_service', 'base_model' ], ( Backbone
 
                 #dispatch event (dispatch event whenever login succeed or failed)
                 if src.sender and src.sender.trigger then src.sender.trigger 'ACCOUNT_RESET__KEY_RETURN', forge_result
-
-
-        #is_invitated api (define function)
-        is_invitated : ( src, username, session_id ) ->
-
-            me = this
-
-            src.model = me
-
-            account_service.is_invitated src, username, session_id, ( forge_result ) ->
-
-                if !forge_result.is_error
-                #is_invitated succeed
-
-                    #dispatch event (dispatch event whenever login succeed or failed)
-                    if src.sender and src.sender.trigger then src.sender.trigger 'USER_IS__INVITATED_RETURN', forge_result
-
-                else
-                #is_invitated failed
-
-                    console.log 'user.is_invitated failed, error is ' + forge_result.error_message
-                    me.pub forge_result
-
-
-        #apply_trial api (define function)
-        apply_trial : ( src, username, session_id, message=null ) ->
-
-            me = this
-
-            src.model = me
-
-            account_service.apply_trial src, username, session_id, message, ( forge_result ) ->
-
-                if !forge_result.is_error
-                #apply_trial succeed
-
-                    #dispatch event (dispatch event whenever login succeed or failed)
-                    if src.sender and src.sender.trigger then src.sender.trigger 'USER_APPLY__TRIAL_RETURN', forge_result
-
-                else
-                #apply_trial failed
-
-                    console.error 'user.apply_trial failed, error is ' + forge_result.error_message
-                    me.pub forge_result
 
     }
 

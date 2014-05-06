@@ -25,12 +25,12 @@ define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, const
       design    = Design.instance()
 
       component = design.component( uid )
-      res_type  = constant.AWS_RESOURCE_TYPE
+      res_type  = constant.RESTYPE
 
       # uid might be a line connecting RTB and other resource
       if component.node_line
-        subnet    = component.getTarget( res_type.AWS_VPC_Subnet )
-        component = component.getTarget( res_type.AWS_VPC_RouteTable )
+        subnet    = component.getTarget( res_type.SUBNET )
+        component = component.getTarget( res_type.RT )
 
         if subnet
           @set {
@@ -41,7 +41,7 @@ define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, const
           }
           return
 
-      VPCModel = Design.modelClassForType( res_type.AWS_VPC_VPC )
+      VPCModel = Design.modelClassForType( res_type.VPC )
 
       # If this is RTB or this is RTB blue lines, show RTB property
       routes = []
@@ -57,13 +57,13 @@ define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, const
         if cn.type isnt "RTB_Route"
           continue
 
-        theOtherPort = cn.getOtherTarget( res_type.AWS_VPC_RouteTable )
+        theOtherPort = cn.getOtherTarget( res_type.RT )
 
         routes.push {
           name     : theOtherPort.get("name")
           type     : theOtherPort.type
           ref      : cn.id
-          isVgw    : theOtherPort.type is res_type.AWS_VPC_VPNGateway
+          isVgw    : theOtherPort.type is res_type.VGW
           isProp   : cn.get("propagate")
           cidr_set : cn.get("routes")
         }
@@ -101,7 +101,7 @@ define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, const
 
             aws_rt_is_main = true
 
-      now_main_rtb = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable ).getMainRouteTable()
+      now_main_rtb = Design.modelClassForType( constant.RESTYPE.RT ).getMainRouteTable()
 
       if aws_rt_is_main and now_main_rtb.id isnt component.id
 
@@ -125,7 +125,7 @@ define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, const
 
       # Only one vgw will be in a stack. So, RTB can only connects to one VPN
       cn = _.find component.connections(), ( cn )->
-        cn.getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway ) isnt null
+        cn.getTarget( constant.RESTYPE.VGW ) isnt null
 
       cn.setPropagate propagate
       null
@@ -135,7 +135,7 @@ define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, const
       null
 
     isCidrConflict : ( inputValue, cidr )->
-      Design.modelClassForType(constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet).isCidrConflict( inputValue, cidr )
+      Design.modelClassForType(constant.RESTYPE.SUBNET).isCidrConflict( inputValue, cidr )
   }
 
   new RTBModel()

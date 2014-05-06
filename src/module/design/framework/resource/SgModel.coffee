@@ -1,6 +1,8 @@
 
 define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", "../connection/SgLine", "Design", "constant" ], ( ComplexResModel, ResourceModel, SgRuleSet, SgLine, Design, constant )->
 
+  PREDEF_SG_COLORS = ['#f26c4f', '#7dc476', '#00bef2', '#615ca8', '#fcec00', '#ff9900', '#ffcc00', '#ffcc99', '#ff99ff', '#00cccc', '#99cc99', '#9999ff', '#ffff99', '#ff00ff', '#663300', '#336600', '#660066', '#003300', '#0000ff', '#666600']
+
   SgTargetModel = ComplexResModel.extend {
     type : "SgIpTarget"
 
@@ -24,7 +26,7 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
 
   Model = ComplexResModel.extend {
 
-    type        : constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup
+    type        : constant.RESTYPE.SG
     newNameTmpl : "custom-sg-"
     color       : "#f26c4f"
 
@@ -185,15 +187,15 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
 
     generateColor : ()->
       # The first color is always for DefaultSG
-      if @isDefault() then return "#" + MC.canvas.SG_COLORS[0]
+      if @isDefault() then return PREDEF_SG_COLORS[0]
 
       usedColor = {}
       for sg in Model.allObjects()
         usedColor[ sg.color ] = true
 
       i = 1
-      while i < MC.canvas.SG_COLORS.length
-        c = "#" + MC.canvas.SG_COLORS[i]
+      while i < PREDEF_SG_COLORS.length
+        c = PREDEF_SG_COLORS[i]
         if not usedColor[ c ]
           color = c
           break
@@ -223,8 +225,6 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
 
       { component : component }
   }, {
-
-    getClassicElbSg : ()-> new SgTargetModel( "amazon-elb/amazon-elb-sg" )
 
     getDefaultSg : ()->
       _.find Model.allObjects(), ( obj )-> obj.isDefault()
@@ -290,7 +290,7 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
         new SgLine( ress[0], ress[1], undefined, { detectDuplicate : false } )
       null
 
-    handleTypes : constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup
+    handleTypes : constant.RESTYPE.SG
 
     deserialize : ( data, layout_data, resolve )->
 

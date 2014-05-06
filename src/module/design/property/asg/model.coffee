@@ -30,7 +30,7 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
       n = component.getNotification()
       @set "notification", n
       @set "has_notification", n.instanceLaunch or n.instanceLaunchError or n.instanceTerminate or n.instanceTerminateError or n.test
-      @set "has_sns_sub", !!(Design.modelClassForType(constant.AWS_RESOURCE_TYPE.AWS_SNS_Subscription).allObjects().length)
+      @set "has_sns_sub", !!(Design.modelClassForType(constant.RESTYPE.SUBSCRIPTION).allObjects().length)
 
       # Policies
       @set "policies", _.map data.policies, (p) ->
@@ -103,10 +103,10 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
         asg = asg.get('originalAsg')
 
       if policy_detail.sendNotification
-        Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic ).ensureExistence()
+        Design.modelClassForType( constant.RESTYPE.TOPIC ).ensureExistence()
 
       if not policy_detail.uid
-        PolicyModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_ScalingPolicy )
+        PolicyModel = Design.modelClassForType( constant.RESTYPE.SP )
         policy = new PolicyModel( policy_detail )
         asg.addScalingPolicy( policy )
 

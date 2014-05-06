@@ -5,7 +5,7 @@ define [ 'constant', 'MC', 'Design', '../../helper' ], ( constant, MC, Design, H
 
 		instanceComp = MC.canvas_data.component[instanceUID]
 		instanceType = instanceComp.type
-		isInstanceComp = instanceType is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+		isInstanceComp = instanceType is constant.RESTYPE.INSTANCE
 		# check if the instance/lsg have provisioned volume
 		haveProvisionedVolume = false
 		instanceUIDRef = lsgName = amiId = null
@@ -15,7 +15,7 @@ define [ 'constant', 'MC', 'Design', '../../helper' ], ( constant, MC, Design, H
 			lsgName = instanceComp.resource.LaunchConfigurationName
 			amiId = instanceComp.resource.ImageId
 		_.each MC.canvas_data.component, (compObj) ->
-			if compObj.type is constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume
+			if compObj.type is constant.RESTYPE.VOL
 				if compObj.resource.VolumeType isnt 'standard'
 					# if instanceComp is instance
 					if isInstanceComp and (compObj.resource.AttachmentSet.InstanceId is instanceUIDRef)
@@ -53,35 +53,26 @@ define [ 'constant', 'MC', 'Design', '../../helper' ], ( constant, MC, Design, H
 
 		instanceComp = MC.canvas_data.component[instanceUID]
 		instanceType = instanceComp.type
-		isInstanceComp = instanceType is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+		isInstanceComp = instanceType is constant.RESTYPE.INSTANCE
 		# check platform type
-		platformType = MC.canvas_data.platform
-		if platformType isnt MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
-			# have vpc, count eni's sg rule number
-			sgUIDAry = []
-			if isInstanceComp
-				# get associated eni sg for instance
-				_.each MC.canvas_data.component, (compObj) ->
-					if compObj.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
-						associatedInstanceRef = compObj.resource.Attachment.InstanceId
-						associatedInstanceUID = MC.extractID(associatedInstanceRef)
-						if associatedInstanceUID is instanceUID
-							eniSGAry = compObj.resource.GroupSet
-							_.each eniSGAry, (sgObj) ->
-								eniSGUIDRef = sgObj.GroupId
-								eniSGUID = MC.extractID(eniSGUIDRef)
-								if !(eniSGUID in sgUIDAry)
-									sgUIDAry.push(eniSGUID)
-								null
-					null
-			else
-				# get all LSG's sg
-				lsgSGAry = instanceComp.resource.SecurityGroups
-				_.each lsgSGAry, (sgRef) ->
-					sgUID = MC.extractID(sgRef)
-					if !(sgUID in sgUIDAry)
-						sgUIDAry.push(sgUID)
-					null
+
+		# have vpc, count eni's sg rule number
+		sgUIDAry = []
+		if isInstanceComp
+			# get associated eni sg for instance
+			_.each MC.canvas_data.component, (compObj) ->
+				if compObj.type is constant.RESTYPE.ENI
+					associatedInstanceRef = compObj.resource.Attachment.InstanceId
+					associatedInstanceUID = MC.extractID(associatedInstanceRef)
+					if associatedInstanceUID is instanceUID
+						eniSGAry = compObj.resource.GroupSet
+						_.each eniSGAry, (sgObj) ->
+							eniSGUIDRef = sgObj.GroupId
+							eniSGUID = MC.extractID(eniSGUIDRef)
+							if !(eniSGUID in sgUIDAry)
+								sgUIDAry.push(eniSGUID)
+							null
+				null
 
 			# loop sg array to count rule number
 			totalSGRuleNum = 0
@@ -135,14 +126,14 @@ define [ 'constant', 'MC', 'Design', '../../helper' ], ( constant, MC, Design, H
         RTB = ''
 
         isConnectRTB = _.some components, ( component ) ->
-        	if component.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
+        	if component.type is constant.RESTYPE.RT
         		_.some component.resource.RouteSet, ( rt ) ->
         			if rt.InstanceId is instanceId
         				RTB = component
         				return true
 
         hasEIP = _.some components, ( component ) ->
-        	if component.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP and component.resource.InstanceId is instanceId
+        	if component.type is constant.RESTYPE.EIP and component.resource.InstanceId is instanceId
         			return true
 
        	if not isConnectRTB or hasEIP

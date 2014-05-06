@@ -16,66 +16,6 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'stack_service', 'ami_se
 
 		return azNameAry
 
-	generateComponentForDefaultVPC = () ->
-
-		resType = constant.AWS_RESOURCE_TYPE
-
-		originComps = MC.canvas_data.component
-		currentComps = _.extend(originComps, {})
-
-		defaultVPCId = MC.aws.aws.checkDefaultVPC()
-
-		azObjAry = MC.data.config[MC.canvas_data.region].zone.item
-		azSubnetIdMap = {}
-		_.each azObjAry, (azObj) ->
-			azName = azObj.zoneName
-			resultObj = {}
-			subnetObj = Design.modelClassForType(resType.AWS_EC2_AvailabilityZone).getSubnetOfDefaultVPC(azName)
-			subnetId = null
-			if subnetObj
-				subnetId = subnetObj.subnetId
-			else
-				subnetId = ''
-			azSubnetIdMap[azName] = subnetId
-			null
-
-		_.each currentComps, (compObj) ->
-
-			compType = compObj.type
-			compUID = compObj.uid
-
-			if compType is resType.AWS_EC2_Instance
-				instanceAZName = compObj.resource.Placement.AvailabilityZone
-				currentComps[compUID].resource.VpcId = defaultVPCId
-				currentComps[compUID].resource.SubnetId = azSubnetIdMap[instanceAZName]
-
-			else if compType is resType.AWS_VPC_NetworkInterface
-				eniAZName = compObj.resource.AvailabilityZone
-				currentComps[compUID].resource.VpcId = defaultVPCId
-				currentComps[compUID].resource.SubnetId = azSubnetIdMap[eniAZName]
-
-			else if compType is resType.AWS_ELB
-				currentComps[compUID].resource.VpcId = defaultVPCId
-				azNameAry = getAZAryForDefaultVPC(compUID)
-				subnetIdAry = _.map azNameAry, (azName) ->
-					return azSubnetIdMap[azName]
-				currentComps[compUID].resource.Subnets = subnetIdAry
-
-			else if compType is resType.AWS_EC2_SecurityGroup
-				currentComps[compUID].resource.VpcId = defaultVPCId
-
-			else if compType is resType.AWS_AutoScaling_Group
-				asgAZAry = compObj.resource.AvailabilityZones
-				asgSubnetIdAry = _.map asgAZAry, (azName) ->
-					return azSubnetIdMap[azName]
-				asgSubnetIdStr = asgSubnetIdAry.join(' , ')
-				currentComps[compUID].resource.VPCZoneIdentifier = asgSubnetIdStr
-
-			null
-
-		return currentComps
-
-
 	_getCompName = (compUID) ->
 
 		compName = ''
@@ -99,9 +39,6 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'stack_service', 'ami_se
 				callback = () ->
 
 			validData = MC.canvas_data
-
-			if MC.aws.aws.checkDefaultVPC()
-				validData.component = generateComponentForDefaultVPC()
 
 			stackService.verify {sender: this},
 				$.cookie( 'usercode' ),
@@ -186,8 +123,8 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'stack_service', 'ami_se
 			amiAry = []
 			instanceAMIMap = {}
 			_.each MC.canvas_data.component, (compObj) ->
-				if compObj.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance or
-					compObj.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+				if compObj.type is constant.RESTYPE.INSTANCE or
+					compObj.type is constant.RESTYPE.LC
 						imageId = compObj.resource.ImageId
 						if imageId
 							if not instanceAMIMap[imageId]
@@ -232,7 +169,7 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'stack_service', 'ami_se
 
 										infoObjType = 'Instance'
 										infoTagType = 'instance'
-										if instanceType is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+										if instanceType is constant.RESTYPE.LC
 											infoObjType = 'Launch Configuration'
 											infoTagType = 'lc'
 										tipInfo = sprintf lang.ide.TA_MSG_ERROR_STACK_HAVE_NOT_EXIST_AMI, infoObjType, infoTagType, instanceName, amiId
@@ -262,7 +199,7 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'stack_service', 'ami_se
 
 										infoObjType = 'Instance'
 										infoTagType = 'instance'
-										if instanceType is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+										if instanceType is constant.RESTYPE.LC
 											infoObjType = 'Launch Configuration'
 											infoTagType = 'lc'
 										tipInfo = sprintf lang.ide.TA_MSG_ERROR_STACK_HAVE_NOT_AUTHED_AMI, infoObjType, infoTagType, instanceName, amiId
@@ -294,8 +231,8 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'stack_service', 'ami_se
 		amiAry = []
 		instanceAMIMap = {}
 		_.each MC.canvas_data.component, (compObj) ->
-			if compObj.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance or
-				compObj.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+			if compObj.type is constant.RESTYPE.INSTANCE or
+				compObj.type is constant.RESTYPE.LC
 					imageId = compObj.resource.ImageId
 					if imageId
 						if not instanceAMIMap[imageId]
@@ -323,7 +260,7 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'stack_service', 'ami_se
 
 					infoObjType = 'Instance'
 					infoTagType = 'instance'
-					if instanceType is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+					if instanceType is constant.RESTYPE.LC
 						infoObjType = 'Launch Configuration'
 						infoTagType = 'lc'
 					tipInfo = sprintf lang.ide.TA_MSG_ERROR_STACK_HAVE_NOT_EXIST_AMI, infoObjType, infoTagType, instanceName, amiId

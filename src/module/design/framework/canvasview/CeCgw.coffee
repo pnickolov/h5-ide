@@ -1,8 +1,8 @@
 
-define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, constant, CanvasManager )->
+define [ "./CanvasElement", "constant", "CanvasManager" ,"i18n!nls/lang.js"], ( CanvasElement, constant, CanvasManager ,lang)->
 
   CeCgw = ()-> CanvasElement.apply( this, arguments )
-  CanvasElement.extend( CeCgw, constant.AWS_RESOURCE_TYPE.AWS_VPC_CustomerGateway )
+  CanvasElement.extend( CeCgw, constant.RESTYPE.CGW )
   ChildElementProto = CeCgw.prototype
 
 
@@ -10,7 +10,7 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
   # Child Element's interface.
   ###
   ChildElementProto.portPosMap = {
-    "cgw-vpn" : [ 6, 45, MC.canvas.PORT_LEFT_ANGLE ]
+    "cgw-vpn" : [ 6, 45, CanvasElement.constant.PORT_LEFT_ANGLE ]
   }
 
   ChildElementProto.draw = ( isCreate ) ->
@@ -30,12 +30,14 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
 
       node.append(
         # Port
-        Canvon.path(MC.canvas.PATH_PORT_RIGHT).attr({
+        Canvon.path(this.constant.PATH_PORT_RIGHT).attr({
           'class'      : 'port port-purple port-cgw-vpn',
+
           'data-name'     : 'cgw-vpn'
           'data-position' : 'left'
           'data-type'     : 'vpn'
           'data-direction': 'in'
+          'data-tooltip'  :  lang.ide.PORT_TIP_I
         }),
 
         Canvon.text(100, 95, MC.truncate( m.get("name"), 17 ) ).attr({'class': 'node-label'})

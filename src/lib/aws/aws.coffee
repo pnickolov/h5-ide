@@ -318,15 +318,6 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
 
         copy_name + "-" + idx
 
-    checkDefaultVPC = () ->
-
-        currentRegion = MC.canvas_data.region
-        accountData = MC.data.account_attribute[currentRegion]
-        if accountData.support_platform is 'VPC' and MC.canvas_data.platform is 'default-vpc'
-            return accountData.default_vpc
-        else
-            return false
-
     getOSFamily = (osType, ami) ->
         me = this
 
@@ -513,7 +504,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
                 null
             # ServerGroup
             else if groupMembers and resId in _.pluck( groupMembers, 'appId' )
-                if component.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+                if component.type is constant.RESTYPE.LC
                     result.parent = component.parent()
                 else
                     result.parent = component
@@ -530,7 +521,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
         haveEIP = false
         _.each allCompData, (compData) ->
 
-            if compData.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP
+            if compData.type is constant.RESTYPE.EIP
                 currentENIUIDRef = compData.resource.NetworkInterfaceId
                 currentENIUID = MC.extractID(currentENIUIDRef)
                 if eniUID is currentENIUID
@@ -548,7 +539,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
 
         currentIsASG = false
         currentASGName = null
-        if currentCompType is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+        if currentCompType is constant.RESTYPE.LC
             currentIsASG = true
 
         currentIsISG = false
@@ -569,8 +560,6 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
 
         awsPropertyData = MC.data.state.aws_property
 
-        # compTypeMap = constant.AWS_RESOURCE_TYPE
-
         _.each allCompData, (compData, uid) ->
 
             compName = compData.name
@@ -582,12 +571,12 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
             if compUID is currentCompUID
                 compName = 'self'
 
-            if compType is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+            if compType is constant.RESTYPE.ASG
                 lcUIDRef = compData.resource.LaunchConfigurationName
                 if lcUIDRef
                     lcUID = MC.extractID(lcUIDRef)
                     lcCompData = allCompData[lcUID]
-                    if currentCompType is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration and currentCompUID is lcUID
+                    if currentCompType is constant.RESTYPE.LC and currentCompUID is lcUID
                         currentASGName = compName
                         compName = 'self'
                         asgHaveSelf = true
@@ -595,11 +584,11 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
                     if lcCompData.resource.AssociatePublicIpAddress
                         asgHavePublicIP = true
 
-            if compType is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+            if compType is constant.RESTYPE.INSTANCE
                 return
 
             # replace instance default eni name to instance name
-            if compType is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+            if compType is constant.RESTYPE.ENI
                 if compData.index isnt 0
                     return
                 if compData.serverGroupUid isnt compUID
@@ -636,11 +625,11 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
 
                     if attrName in ['PublicIp']
 
-                        if compType is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+                        if compType is constant.RESTYPE.ASG
                             if not asgHavePublicIP
                                 return
 
-                        if compType is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+                        if compType is constant.RESTYPE.ENI
                             if (not MC.aws.aws.checkPrivateIPIfHaveEIP(allCompData, compData.uid, 0)) and
                             (not compData.resource.AssociatePublicIpAddress)
                                 instanceNoMainPublicIP = true
@@ -675,7 +664,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
                                     return
                                 if ipObjAry.length > 1
                                     _.each ipObjAry, (ipObj, idx) ->
-                                        if idx is 0 then return
+                                        # if idx is 0 then return
                                         if attrName in ['PublicIp']
                                             if not MC.aws.aws.checkPrivateIPIfHaveEIP(allCompData, compData.uid, idx)
                                                 return
@@ -861,7 +850,6 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
     checkStackName              : checkStackName
     checkAppName                : checkAppName
     getDuplicateName            : getDuplicateName
-    checkDefaultVPC             : checkDefaultVPC
     getOSFamily                 : getOSFamily
     genResRef                   : genResRef
     enableStackAgent            : enableStackAgent

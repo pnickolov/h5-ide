@@ -1,9 +1,9 @@
 
-define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager" ], ( CanvasElement, CeInstance, constant, CanvasManager )->
+define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager", 'i18n!nls/lang.js' ], ( CanvasElement, CeInstance, constant, CanvasManager, lang )->
 
   CeLc = ()-> CanvasElement.apply( this, arguments )
 
-  CanvasElement.extend.call( CeInstance, CeLc, constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration )
+  CanvasElement.extend.call( CeInstance, CeLc, constant.RESTYPE.LC )
   ChildElementProto = CeLc.prototype
 
 
@@ -11,8 +11,8 @@ define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager" ], ( Can
   # Child Element's interface.
   ###
   ChildElementProto.portPosMap = {
-    "launchconfig-sg-left"  : [ 10, 20, MC.canvas.PORT_LEFT_ANGLE ]
-    "launchconfig-sg-right" : [ 80, 20, MC.canvas.PORT_RIGHT_ANGLE ]
+    "launchconfig-sg-left"  : [ 10, 20, CanvasElement.constant.PORT_LEFT_ANGLE ]
+    "launchconfig-sg-right" : [ 80, 20, CanvasElement.constant.PORT_RIGHT_ANGLE ]
   }
   ChildElementProto.portDirMap = {
     "launchconfig-sg" : "horizontal"
@@ -84,23 +84,25 @@ define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager" ], ( Can
         }),
 
         # left port(blue)
-        Canvon.path(MC.canvas.PATH_PORT_DIAMOND).attr({
+        Canvon.path(this.constant.PATH_PORT_DIAMOND).attr({
           'class' : 'port port-blue port-launchconfig-sg port-launchconfig-sg-left'
           'data-name'      : 'launchconfig-sg'
           'data-alias'     : 'launchconfig-sg-left'
           'data-position'  : 'left'
           'data-type'      : 'sg'
           'data-direction' : 'in'
+          'data-tooltip'   : lang.ide.PORT_TIP_D
         }),
 
         # right port(blue)
-        Canvon.path(MC.canvas.PATH_PORT_DIAMOND).attr({
+        Canvon.path(this.constant.PATH_PORT_DIAMOND).attr({
           'class' : 'port port-blue port-launchconfig-sg port-launchconfig-sg-right'
           'data-name'      : 'launchconfig-sg'
           'data-alias'     : 'launchconfig-sg-right'
           'data-position'  : 'right'
           'data-type'      : 'sg'
           'data-direction' : 'out'
+          'data-tooltip'   : lang.ide.PORT_TIP_D
         })
 
         # Child number
@@ -153,7 +155,7 @@ define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager" ], ( Can
   ChildElementProto.select = ( subId )->
 
     if subId
-      type = constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+      type = constant.RESTYPE.INSTANCE
     else
       type = @model.type
 

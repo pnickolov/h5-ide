@@ -143,7 +143,7 @@
       if (GLOBAL.gulpConfig.pollingWatch) {
         gutil.log(gutil.colors.bgBlue.white(" Watching file changes... ") + " [Polling]");
         watcher = new EventEmitter();
-        gulp.watch(["./src/**/*.coffee", "./src/**/*.html", "./src/**/*.partials", "./util/gulp_tasks/**/*.partials", "./src/assets/**/*", "!src/include/*.html"], function(event) {
+        gulp.watch(["./src/**/*.coffee", "./src/**/*.html", "./src/**/*.partials", "./util/gulp_tasks/**/*.coffee", "./src/assets/**/*", "!src/include/*.html"], function(event) {
           var type;
           if (event.type === "added") {
             type = "add";

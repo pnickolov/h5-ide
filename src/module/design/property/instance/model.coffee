@@ -12,7 +12,7 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 
 			attr = component.toJSON()
 			attr.uid = uid
-			attr.classic_stack  = not Design.instance().typeIsVpc()
+			attr.classic_stack  = false
 			attr.can_set_ebs    = component.isEbsOptimizedEnabled()
 			attr.instance_type  = component.getInstanceTypeList()
 			attr.tenancy        = component.isDefaultTenancy()
@@ -22,7 +22,7 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 			attr.number_disable = eni and eni.connections('RTB_Route').length > 0
 
 			# If Vpc is dedicated, instance should be dedicated.
-			vpc = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC ).allObjects()[0]
+			vpc = Design.modelClassForType( constant.RESTYPE.VPC ).allObjects()[0]
 			attr.force_tenacy = vpc and not vpc.isDefaultTenancy()
 
 			# if stack enable agent
@@ -45,7 +45,7 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 
 		addKP : ( kp_name ) ->
 
-			KpModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair )
+			KpModel = Design.modelClassForType( constant.RESTYPE.KP )
 
 			for kp in KpModel.allObjects()
 				if kp.get("name") is kp_name
@@ -88,7 +88,7 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 		setPublicIp : ( value ) ->
 			Design.instance().component( @get("uid") ).getEmbedEni().set("assoPublicIp", value)
 			if value
-				Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway ).tryCreateIgw()
+				Design.modelClassForType( constant.RESTYPE.IGW ).tryCreateIgw()
 
 		getAmi : () ->
 			ami_id = @get("imageId")
@@ -177,7 +177,7 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 			@attributes.eni.ips[ eip_index ].hasEip = attach
 
 			if attach
-				Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway ).tryCreateIgw()
+				Design.modelClassForType( constant.RESTYPE.IGW ).tryCreateIgw()
 			null
 
 		removeIp : ( index ) ->

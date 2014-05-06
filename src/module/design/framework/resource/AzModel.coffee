@@ -3,7 +3,7 @@ define [ "../GroupModel", "./VpcModel", "constant", "i18n!nls/lang.js" ], ( Grou
 
   Model = GroupModel.extend {
 
-    type : constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone
+    type : constant.RESTYPE.AZ
 
     defaults :
       x      : 2
@@ -12,8 +12,8 @@ define [ "../GroupModel", "./VpcModel", "constant", "i18n!nls/lang.js" ], ( Grou
       height : 21
 
     initialize : ( attribute, option )->
-      if option.createByUser and Design.instance().typeIsVpc()
-        SubnetModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet )
+      if option.createByUser
+        SubnetModel = Design.modelClassForType( constant.RESTYPE.SUBNET )
         m = new SubnetModel( { x : @x() + 2, y : @y() + 2, parent : this } )
         ####
         # Quick hack to allow user to select another item,
@@ -45,16 +45,16 @@ define [ "../GroupModel", "./VpcModel", "constant", "i18n!nls/lang.js" ], ( Grou
 
       ipCount = 0
       for child in @children()
-        if child.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+        if child.type is constant.RESTYPE.INSTANCE
           eni = child.getEmbedEni()
-        else if child.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+        else if child.type is constant.RESTYPE.ENI
           eni = child
         else
           continue
 
         ipCount += eni.get("ips").length
 
-      maxIpCount = Design.modelClassForType(constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface).getAvailableIPCountInCIDR( cidr )
+      maxIpCount = Design.modelClassForType(constant.RESTYPE.ENI).getAvailableIPCountInCIDR( cidr )
       maxIpCount >= ipCount
 
     serialize : ()->
@@ -70,7 +70,7 @@ define [ "../GroupModel", "./VpcModel", "constant", "i18n!nls/lang.js" ], ( Grou
       { layout : @generateLayout(), component : component }
 
   }, {
-    handleTypes : constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone
+    handleTypes : constant.RESTYPE.AZ
 
     diffJson : ()-> # Disable diff for this Model
 

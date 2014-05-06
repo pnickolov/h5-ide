@@ -39,8 +39,8 @@ define [ '../base/model', 'Design', 'constant' ], ( PropertyModel, Design, const
 
                 vpc = $.extend true, {}, vpc
 
-                TYPE_RTB = constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
-                TYPE_ACL = constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl
+                TYPE_RTB = constant.RESTYPE.RT
+                TYPE_ACL = constant.RESTYPE.ACL
 
                 RtbModel = Design.modelClassForType( TYPE_RTB )
                 AclModel = Design.modelClassForType( TYPE_ACL )

@@ -2,7 +2,7 @@
 define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
 
   TopicModel = ResourceModel.extend {
-    type : constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic
+    type : constant.RESTYPE.TOPIC
 
     serialize : ()->
 
@@ -32,20 +32,20 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
       }
 
   }, {
-    handleTypes  : constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic
+    handleTypes  : constant.RESTYPE.TOPIC
     resolveFirst : true
 
     diffJson : ()-> # Disable diff for this Model
 
     isTopicNeeded : ()->
-      ScalingPolicyModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_ScalingPolicy )
+      ScalingPolicyModel = Design.modelClassForType( constant.RESTYPE.SP )
       for sp in ScalingPolicyModel.allObjects()
         if sp.get("sendNotification")
           useTopic = true
           break
 
       if not useTopic
-        for n in Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_NotificationConfiguration ).allObjects()
+        for n in Design.modelClassForType( constant.RESTYPE.NC ).allObjects()
           if n.isUsed()
             useTopic = true
             break
@@ -73,7 +73,7 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
 
 
   SubscriptionModel = ResourceModel.extend {
-    type : constant.AWS_RESOURCE_TYPE.AWS_SNS_Subscription
+    type : constant.RESTYPE.SUBSCRIPTION
 
     initialize : ()->
       TopicModel.ensureExistence()
@@ -96,7 +96,7 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
 
   }, {
 
-    handleTypes : constant.AWS_RESOURCE_TYPE.AWS_SNS_Subscription
+    handleTypes : constant.RESTYPE.SUBSCRIPTION
 
     deserialize : ( data, layout_data, resolve ) ->
       new SubscriptionModel({

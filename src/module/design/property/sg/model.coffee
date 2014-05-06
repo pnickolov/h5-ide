@@ -87,7 +87,7 @@ define [ '../base/model', "Design", 'constant', 'event'  ], ( PropertyModel, Des
                 return false
 
         createSGRuleData : ()->
-            sgList = _.map Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup ).allObjects(), ( sg )->
+            sgList = _.map Design.modelClassForType( constant.RESTYPE.SG ).allObjects(), ( sg )->
                 {
                     id    : sg.id
                     color : sg.color
@@ -95,7 +95,7 @@ define [ '../base/model', "Design", 'constant', 'event'  ], ( PropertyModel, Des
                 }
 
             {
-                isClassic : Design.instance().typeIsClassic()
+                isClassic : false
                 sgList    : sgList
             }
 

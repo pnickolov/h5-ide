@@ -80,6 +80,8 @@ define [ 'event',
 
             'click .parameter-item .parameter-name': 'onParaNameClick'
 
+            'click .parameter-item.text .parameter-text-expand': 'onTextParaExpandClick'
+
             'SWITCH_STATE': 'onSwitchState'
 
             'EXPAND_STATE': 'onExpandState',
@@ -124,7 +126,7 @@ define [ 'event',
                 return that
 
             if Design.instance().get('agent').enabled
-                if compData and compData.type in [constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance, constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration]
+                if compData and compData.type in [constant.RESTYPE.INSTANCE, constant.RESTYPE.LC]
                     @__renderState()
                 else
                     @__renderEmpty()
@@ -281,6 +283,7 @@ define [ 'event',
 
             that.resName = that.model.getResName()
             that.supportedPlatform = that.model.get('supportedPlatform')
+            that.amiExist = that.model.get('amiExist')
             that.isWindowsPlatform = that.model.get('isWindowsPlatform')
 
             that.currentResId = that.model.get('resId')
@@ -1744,7 +1747,7 @@ define [ 'event',
                     if $currentElem.parents('#tabbar-wrapper').length
                         that.onStateSaveClick()
 
-        initCodeEditor: (editorElem, hintObj) ->
+        initCodeEditor: (editorElem, hintObj, option) ->
 
             that = this
 
@@ -1752,6 +1755,9 @@ define [ 'event',
             $editorElem = $(editorElem)
             if $editorElem.data('editor')
                 return
+
+            if not option
+                option = {}
 
             _initEditor = () ->
 
@@ -1763,7 +1769,6 @@ define [ 'event',
                 $editorElem.data('editor', editor)
 
                 editor.hintObj = hintObj
-                editor.getSession().setMode(that.resRefHighLight)
 
                 # config editor
 
@@ -1778,33 +1783,62 @@ define [ 'event',
                     maxLines = 1
                     editorSingleLine = true
 
+                resRefModeAry = [{
+                    token: 'res_ref_correct',
+                    regex: that.resAttrRegexStr
+                }, {
+                    token: 'res_ref',
+                    regex: '@\\{(\\w|\\-)+(\\.(\\w+(\\[\\d+\\])*))+\\}'
+                }]
+
+                editSession = editor.getSession()
+
+                enableTab = false
+
+                if option.isCodeEditor
+
+                    ace.modeResRefRule = resRefModeAry
+
+                    if option.extName is 'js'
+                        editSession.setMode('ace/mode/javascript')
+
+                    else if option.extName is 'sh'
+                        editSession.setMode('ace/mode/sh')
+
+                    else if option.extName is 'rb'
+                        editSession.setMode('ace/mode/ruby')
+
+                    else if option.extName is 'py'
+                        editSession.setMode('ace/mode/python')
+                    
+                    editor.setTheme('ace/theme/tomorrow_night')
+
+                    enableTab = true
+
+                else
+
+                    tk = new that.Tokenizer({
+                        'start': resRefModeAry
+                    })
+
+                    editSession.$mode.$tokenizer = tk
+                    editSession.bgTokenizer.setTokenizer(tk)
+                    editor.renderer.updateText()
+
                 editor.setOptions({
                     enableBasicAutocompletion: true,
                     maxLines: maxLines,
-                    showGutter: false,
-                    highlightGutterLine: false,
+                    showGutter: option.showGutter || false,
+                    highlightGutterLine: true,
                     showPrintMargin: false,
                     highlightActiveLine: false,
                     highlightSelectedWord: false,
                     enableSnippets: false,
-                    singleLine: editorSingleLine
+                    singleLine: editorSingleLine,
+                    enableTab: enableTab
                 })
-
-                tk = new that.Tokenizer({
-                    'start': [{
-                        token: 'res_ref_correct',
-                        regex: that.resAttrRegexStr
-                    }, {
-                        token: 'res_ref',
-                        regex: '@\\{(\\w|\\-)+(\\.(\\w+(\\[\\d+\\])*))+\\}'
-                    }]
-                })
-                editor.session.$mode.$tokenizer = tk
-                editor.session.bgTokenizer.setTokenizer(tk)
-                editor.renderer.updateText()
 
                 # move cursor to last
-                editSession = editor.getSession()
                 editRow = editSession.getLength()
                 editColumn = editSession.getLine(editRow - 1).length
                 editor.gotoLine(editRow, editColumn)
@@ -1897,6 +1931,11 @@ define [ 'event',
                                 })
                             else if $paraItem.hasClass('line') or $paraItem.hasClass('bool') or $paraItem.hasClass('text')
                                 $paraItem.removeClass('disabled')
+
+                        else if $editorElem.hasClass('text-code-editor')
+
+                            cursorPos = thatEditor.getCursorPosition()
+                            thatEditor.moveCursorTo(cursorPos.row, cursorPos.column + 1)
 
                     if e.command.name is "autocomplete_match"
 
@@ -2721,6 +2760,11 @@ define [ 'event',
                 target.pasteState.call target, event
                 # return false
 
+            # Open content editor [Ctrl + E]
+            if metaKey and shiftKey is false and altKey is false and keyCode is 69
+                target.onTextParaExpandClick.call target, event
+                return false
+
             # Remove state item [Ctrl + delete/backspace]
             if metaKey and (keyCode is 46 or keyCode is 8) and shiftKey is false and altKey is false and is_editable
                 target.removeState.call target, event
@@ -2744,6 +2788,9 @@ define [ 'event',
             # CollapseItem state item [Escape]
             if metaKey is false and shiftKey is false and altKey is false and keyCode is 27
                 target.collapseItem.call target, $('.state-list .focused')
+                if $('#modal-state-text-expand').is(':visible')
+                    target.saveStateTextEditorContent()
+                    return false
                 return false
 
             # Toggle document Sidebar [Ctrl + I]
@@ -3352,6 +3399,87 @@ define [ 'event',
                         number: stateLogObj.number
                         content: stateLogObj.content
                     })), true
+
+        onTextParaExpandClick: (event) ->
+
+            that = this
+            $focusElem = $(event.target)
+            $paraValue = $focusElem.parents('.parameter-container').find('.parameter-value')
+            paraEditor = $paraValue.data('editor')
+            
+            if paraEditor
+                
+                $paraItem = $paraValue.parents('.parameter-item')
+
+                if $paraItem.hasClass('text')
+
+                    paraName = $paraItem.attr('data-para-name')
+                    $stateItem = $paraItem.parents('.state-item')
+
+                    extName = ''
+                    stateData = that.getStateItemByData($stateItem)
+                    if stateData and stateData.parameter and stateData.parameter.path
+                        filePath = stateData.parameter.path
+                        filePathAry = filePath.split('.')
+                        extName = filePathAry[filePathAry.length - 1]
+
+                    cmdName = $stateItem.attr('data-command')
+                    that.openStateTextEditor(cmdName, paraName, extName, paraEditor)
+
+        openStateTextEditor: (cmdName, paraName, extName, originEditor) ->
+
+            that = this
+            textContent = originEditor.getValue()
+
+            modal $.trim(template.stateTextExpandModal({
+                cmd_name: cmdName,
+                para_name: paraName,
+                read_only: that.readOnlyMode
+            })), false
+
+            $('#modal-state-text-expand').data('origin-editor', originEditor)
+
+            $codeArea = $('#modal-state-text-expand .editable-area')
+
+            # init editor
+            that.initCodeEditor($codeArea[0], {
+                at: that.resAttrDataAry
+            }, {
+                showGutter: true,
+                isCodeEditor: true,
+                extName: extName
+            })
+            codeEditor = $codeArea.data('editor')
+
+            if codeEditor
+                codeEditor.setValue(textContent)
+                codeEditor.focus()
+                codeEditor.clearSelection()
+
+            $('#modal-state-text-expand-save').off('click').on 'click', () ->
+                that.saveStateTextEditorContent()
+
+        saveStateTextEditorContent: () ->
+
+            that = this
+            
+            if that.readOnlyMode
+
+                modal.close()
+
+            else
+
+                originEditor = $('#modal-state-text-expand').data('origin-editor')
+
+                if originEditor
+
+                    $codeArea = $('#modal-state-text-expand .editable-area')
+                    codeEditor = $codeArea.data('editor')
+                    codeEditorValue = codeEditor.getValue()
+                    originEditor.setValue(codeEditorValue)
+                    originEditor.clearSelection()
+                    originEditor.focus()
+                    modal.close()
 
     }
 

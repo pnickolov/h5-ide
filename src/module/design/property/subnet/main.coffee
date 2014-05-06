@@ -19,7 +19,7 @@ define [ '../base/main',
 
     SubnetModule = PropertyModule.extend {
 
-        handleTypes : constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
+        handleTypes : constant.RESTYPE.SUBNET
 
         onUnloadSubPanel : ( id )->
             if id is "ACL" and @view.refreshACLList

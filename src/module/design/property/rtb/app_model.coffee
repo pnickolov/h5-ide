@@ -26,15 +26,15 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
           # uid might be a line connecting RTB and other resource
           rtbOrConn = Design.instance().component( rtb_uid )
 
-          if rtbOrConn.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable #routeTable
+          if rtbOrConn.type is constant.RESTYPE.RT #routeTable
             routeTable = rtbOrConn
 
           else # connection
             data = {}
-            connectedTo = rtbOrConn.getOtherTarget constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
-            routeTable = rtbOrConn.getTarget constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
+            connectedTo = rtbOrConn.getOtherTarget constant.RESTYPE.RT
+            routeTable = rtbOrConn.getTarget constant.RESTYPE.RT
 
-            if connectedTo.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
+            if connectedTo.type is constant.RESTYPE.SUBNET
               data.subnet = connectedTo.get 'name'
               has_subnet = true
 

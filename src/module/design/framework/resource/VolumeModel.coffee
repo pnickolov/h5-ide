@@ -18,7 +18,7 @@ define [ "i18n!nls/lang.js", "../ComplexResModel", "constant" ], ( lang, Complex
       iops       : ''
 
 
-    type : constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume
+    type : constant.RESTYPE.VOL
 
 
     constructor : ( attributes, options )->
@@ -71,7 +71,7 @@ define [ "i18n!nls/lang.js", "../ComplexResModel", "constant" ], ( lang, Complex
         if newParent.get("count") > 1
           return lang.ide.CVS_MSG_ERR_SERVERGROUP_VOLUME2
 
-        while parent and parent.type isnt constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone
+        while parent and parent.type isnt constant.RESTYPE.AZ
           parent    = parent.parent()
           newParent = newParent.parent()
 
@@ -107,7 +107,7 @@ define [ "i18n!nls/lang.js", "../ComplexResModel", "constant" ], ( lang, Complex
         console.warn( "This volume has not attached to any ami, found when calc-ing cost :", this )
         return
 
-      if not force and @get("owner").type isnt constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+      if not force and @get("owner").type isnt constant.RESTYPE.INSTANCE
         return
 
       standardType = @get("volumeType") is "standard"
@@ -270,7 +270,7 @@ define [ "i18n!nls/lang.js", "../ComplexResModel", "constant" ], ( lang, Complex
 
   }, {
 
-    handleTypes : constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume
+    handleTypes : constant.RESTYPE.VOL
 
     diffJson : ( newData, oldData, newComponent, oldComponent )->
       if not ( newData and oldData and _.isEqual(newData, oldData) )

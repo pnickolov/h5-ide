@@ -330,7 +330,6 @@ define [ 'MC', 'event',
                     modal.close()
 
                     ide_event.trigger ide_event.SAVE_STACK, Design.instance().serializeAsStack(new_name)
-                    console.error MC.common.other.canvasData.data()
                     setTimeout () ->
                         id      = MC.common.other.canvasData.get 'id'
                         MC.common.other.addCacheThumb id, $('#canvas_body').html(), $('#svg_canvas')[0].getBBox()

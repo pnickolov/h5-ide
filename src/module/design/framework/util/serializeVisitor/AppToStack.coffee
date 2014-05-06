@@ -11,38 +11,41 @@ define [ "Design" ], (Design)->
         for comp of components
             compo = components[comp]
             console.log compo
-            if compo.type is 'AWS.VPC.VPC'
-                compo.resource.VpcId = ""
-            if compo.type is 'AWS.VPC.NetworkInterface'
-                compo.resource.NetworkInterfaceId = ""
-            if compo.type is 'AWS.EC2.Instance'
-                compo.resource.PrivateIpAddress = ""
-                compo.resource.InstanceId = ""
-            if compo.type is 'AWS.VPC.Subnet'
-                compo.resource.SubnetId = ""
-            if compo.type is 'AWS.EC2.EIP'
-                compo.name = "EIP"
-                compo.resource.AllocationId = ""
-                compo.resource.PublicIp = ""
-            if compo.type is 'AWS.VPC.RouteTable'
-                compo.resource.RouteTableId = ""
-                compo.resource.AssociationSet.forEach (e)->
-                    e.RouteTableAssociationId = ""
-            if compo.type is 'AWS.EC2.SecurityGroup'
-                compo.resource.GroupId = ""
-                compo.resource.GroupName = "WebServerSG"
-            if compo.type is 'AWS.EC2.KeyPair'
-                compo.resource.KeyFingerprint = ""
-                compo.resource.KeyName = "DefaultDP"
-            if compo.type is 'AWS.VPC.InternetGateway'
-                compo.resource.InternetGatewayId = ""
-            if compo.type is 'AWS.VPC.NetworkAcl'
-                compo.resource.NetworkAclId = ""
-                compo.resource.AssociationSet.forEach (e)->
-                    e.NetworkAclAssociationId = ""
-                    e.NetworkAclId = ""
-            if compo.type is 'AWS.EC2.Tag'
-                delete components[comp]
-        console.error components,"<===============>"
+            switch  compo.type
+                when 'AWS.VPC.VPC' 
+                    compo.resource.VpcId = ""
+                when 'AWS.VPC.NetworkInterface' 
+                    compo.resource.NetworkInterfaceId = ""
+                when 'AWS.EC2.Instance' 
+                    compo.resource.PrivateIpAddress = ""
+                    compo.resource.InstanceId = ""
+                when 'AWS.VPC.Subnet' 
+                    compo.resource.SubnetId = ""
+                when 'AWS.EC2.EIP' 
+                    compo.name = "EIP"
+                    compo.resource.AllocationId = ""
+                    compo.resource.PublicIp = ""
+                when 'AWS.VPC.RouteTable' 
+                    compo.resource.RouteTableId = ""
+                    compo.resource.AssociationSet.forEach (e)->
+                        e.RouteTableAssociationId = ""
+                when 'AWS.EC2.SecurityGroup' 
+                    compo.resource.GroupId = ""
+                    compo.resource.GroupName = "WebServerSG"
+                when 'AWS.EC2.KeyPair' 
+                    compo.resource.KeyFingerprint = ""
+                    compo.resource.KeyName = "DefaultDP"
+                when 'AWS.VPC.InternetGateway' 
+                    compo.resource.InternetGatewayId = ""
+                when 'AWS.VPC.NetworkAcl' 
+                    compo.resource.NetworkAclId = ""
+                    compo.resource.AssociationSet.forEach (e)->
+                        e.NetworkAclAssociationId = ""
+                        e.NetworkAclId = ""
+                when 'AWS.EC2.Tag' 
+                    delete components[comp]
+                else
+
+        console.info components,"<===============>"
     null
 

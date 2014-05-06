@@ -286,6 +286,13 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
         appArray = _.flatten _.values MC.data.app_list
         not _.contains appArray, name
 
+    hasStack = (stackId)->
+        stackArray = _.flatten _.values MC.data.stack_list
+
+        targetStack = _.find stackArray, (stack)->
+            stack.id is stackId
+        targetStack
+
     getDuplicateName = (stack_name) ->
 
         if not stack_name
@@ -857,3 +864,4 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
     genAttrRefList              : genAttrRefList
     isValidInIPRange            : isValidInIPRange
     checkPrivateIPIfHaveEIP     : checkPrivateIPIfHaveEIP
+    hasStack                    : hasStack

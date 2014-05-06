@@ -313,10 +313,24 @@ define [ 'MC', 'event',
 
             #set default name
             new_name = MC.aws.aws.getDuplicateName(name)
+            originStack = Design.instance().serialize().stack_id
+            MC.aws.aws.hasStack(originStack)
             $('#modal-input-value').val(new_name)
-
+            if MC.aws.aws.hasStack(originStack)
+                $("input[type=radio]").change ->
+                    if $(@).is(":checked")
+                        $(".radio-instruction").addClass('hide')
+                        $(@).parent().parent().find('.radio-instruction').removeClass('hide')
+            else
+                $("#replace_stack").hide()
+                $("#save_new_stack").find('div.radio,label').hide()
+                $("#save_new_stack").find('.radio-instruction').removeClass('hide')
             $("#btn-confirm").on 'click', {target: this}, (event)->
                 console.log "Toolbar save app as stack"
+
+                if replace_stack #TODO: change condition
+                    ide_event.trigger ide_event.SAVE_STACK, originStack, Design.instance().serializeAsStack()
+                    return false
                 new_name = $("#modal-input-value").val()
 
                 #Check Stack Name

@@ -36,13 +36,13 @@
         <p class="modal-text-minor">{{intro-2}}</p>
         <div class="modal-center-align-helper">
             <div class="modal-control-group">
-                <div id="replace_stack">
+                <div id="replace_stack" style="padding: 10px 0">
                     <div class="radio">
                         <input id="radio-replace-stack" type="radio" name="save-stack-type" checked>
                         <label for="radio-replace-stack"></label>
                     </div>
                     <label class="modal-text-minor" for="radio-replace-stack">{{replace}}</label>
-                    <div style="padding: 10px 22px">
+                    <div style="padding: 10px 22px" class="radio-instruction">
                         {{replace-info}} "{{input}}" {{replace-info-end}}
                     </div>
                 </div>
@@ -52,9 +52,9 @@
                        <label for="radio-new-stack"></label>
                    </div>
                    <label class="modal-text-minor" for="radio-new-stack">{{save-new}}</label>
-                   <div style="padding: 10px 22px" class="hide">
+                   <div style="padding: 10px 22px" class="radio-instruction hide">
                        <p>{{instruction}}</p>
-                       <input class="input" id="modal-input-value-1" value="{{input}}" type="text"/>
+                       <input class="input" id="modal-input-value" value="{{input}}" type="text" style="width: 400px"/>
                        <div id="stack-name-exist" class="">{{error-message}}</div>
                    </div>
                 </div>

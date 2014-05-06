@@ -84,9 +84,9 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + escapeExpression(((stack1 = (depth0 && depth0['intro-1'])),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</p>\n        <p class=\"modal-text-minor\">"
     + escapeExpression(((stack1 = (depth0 && depth0['intro-2'])),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</p>\n        <div class=\"modal-center-align-helper\">\n            <div class=\"modal-control-group\">\n                <div id=\"replace_stack\">\n                    <div class=\"radio\">\n                        <input id=\"radio-replace-stack\" type=\"radio\" name=\"save-stack-type\" checked>\n                        <label for=\"radio-replace-stack\"></label>\n                    </div>\n                    <label class=\"modal-text-minor\" for=\"radio-replace-stack\">"
+    + "</p>\n        <div class=\"modal-center-align-helper\">\n            <div class=\"modal-control-group\">\n                <div id=\"replace_stack\" style=\"padding: 10px 0\">\n                    <div class=\"radio\">\n                        <input id=\"radio-replace-stack\" type=\"radio\" name=\"save-stack-type\" checked>\n                        <label for=\"radio-replace-stack\"></label>\n                    </div>\n                    <label class=\"modal-text-minor\" for=\"radio-replace-stack\">"
     + escapeExpression(((stack1 = (depth0 && depth0.replace)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</label>\n                    <div style=\"padding: 10px 22px\">\n                        "
+    + "</label>\n                    <div style=\"padding: 10px 22px\" class=\"radio-instruction\">\n                        "
     + escapeExpression(((stack1 = (depth0 && depth0['replace-info'])),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + " \""
     + escapeExpression(((stack1 = (depth0 && depth0.input)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -94,11 +94,11 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + escapeExpression(((stack1 = (depth0 && depth0['replace-info-end'])),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\n                    </div>\n                </div>\n                <div id=\"save_new_stack\">\n                   <div class=\"radio\">\n                       <input id=\"radio-new-stack\" type=\"radio\" name=\"save-stack-type\">\n                       <label for=\"radio-new-stack\"></label>\n                   </div>\n                   <label class=\"modal-text-minor\" for=\"radio-new-stack\">"
     + escapeExpression(((stack1 = (depth0 && depth0['save-new'])),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</label>\n                   <div style=\"padding: 10px 22px\" class=\"hide\">\n                       <p>"
+    + "</label>\n                   <div style=\"padding: 10px 22px\" class=\"radio-instruction hide\">\n                       <p>"
     + escapeExpression(((stack1 = (depth0 && depth0.instruction)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</p>\n                       <input class=\"input\" id=\"modal-input-value-1\" value=\""
+    + "</p>\n                       <input class=\"input\" id=\"modal-input-value\" value=\""
     + escapeExpression(((stack1 = (depth0 && depth0.input)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" type=\"text\"/>\n                       <div id=\"stack-name-exist\" class=\"\">"
+    + "\" type=\"text\" style=\"width: 400px\"/>\n                       <div id=\"stack-name-exist\" class=\"\">"
     + escapeExpression(((stack1 = (depth0 && depth0['error-message'])),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</div>\n                   </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"modal-footer\">\n        <button id=\"btn-confirm\" class=\"btn btn-"
     + escapeExpression(((stack1 = (depth0 && depth0.color)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))

@@ -62,7 +62,7 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button id="btn-confirm" class="btn btn-{{color}}">Delete</button>
+        <button id="btn-confirm" class="btn btn-{{color}}">{{confirm}}</button>
         <button class="btn modal-close btn-silver">Cancel</button>
     </div>
 </div>

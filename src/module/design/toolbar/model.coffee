@@ -351,7 +351,7 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
                 # update data
                 # update origin data
                 # update Design
-                ide_event.trigger ide_event.UPDATE_TAB_DATA, new_id, old_id
+                ide_event.trigger ide_event.OPEN_DESIGN_TAB, "OPEN_STACK", name , region, result.resolved_data
 
         saveStackCallback : ( id, name ) ->
             console.log 'saveStackCallback', id, name
@@ -557,8 +557,7 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
 
             else if flag is 'ENABLE_SAVE'
 
-                 item_state_map[ id ].is_enable = value
-
+                 item_state_map[ id ]?.is_enable = value
             # refresh toolbar
             if id == MC.common.other.canvasData.get( 'id' ) and is_tab
 

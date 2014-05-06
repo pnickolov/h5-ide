@@ -328,10 +328,11 @@ define [ 'MC', 'event',
             $("#btn-confirm").on 'click', {target: this}, (event)->
                 console.log "Toolbar save app as stack"
 
-                unless $("#save_new_stack").find(".radio-instruction").hasClass("hide")
+                if $("#save_new_stack").find(".radio-instruction").hasClass("hide")
                     modal.close()
                     stackData = Design.instance().serializeAsStack()
                     stackData.id = originStack
+                    console.warn stackData
                     ide_event.trigger ide_event.SAVE_STACK, stackData
                     setTimeout () ->
                         id      = MC.common.other.canvasData.get 'id'
@@ -349,7 +350,7 @@ define [ 'MC', 'event',
                     notification 'warning', lang.ide.PROP_MSG_WARN_REPEATED_STACK_NAME
                 else
                     modal.close()
-
+                    console.warn Design.instance().serializeAsStack(new_name), "New"
                     ide_event.trigger ide_event.SAVE_STACK, Design.instance().serializeAsStack(new_name)
                     setTimeout () ->
                         id      = MC.common.other.canvasData.get 'id'

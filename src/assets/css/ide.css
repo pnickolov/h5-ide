@@ -6213,6 +6213,10 @@ summary:focus {
 	width: 260px;
 }
 
+.reconnectSession .modal-input {
+	padding-top: 20px;
+}
+
 .disconnected-msg {
 	border-radius    : 2px;
 	background-color : #ec3c38;

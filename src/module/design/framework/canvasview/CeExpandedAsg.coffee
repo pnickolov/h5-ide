@@ -73,7 +73,7 @@ define [ "./CanvasElement", "constant", "CanvasManager", "./CeAsg", "i18n!nls/la
 
         # left port(blue)
         Canvon.path(this.constant.PATH_PORT_DIAMOND).attr({
-          'class' : 'port port-blue port-launchconfig-sg port-launchconfig-sg-left'
+          'class' : 'port port-blue port-launchconfig-sg port-launchconfig-sg-left tooltip'
           'data-name'      : 'launchconfig-sg'
           'data-alias'     : 'launchconfig-sg-left'
           'data-position'  : 'left'
@@ -84,7 +84,7 @@ define [ "./CanvasElement", "constant", "CanvasManager", "./CeAsg", "i18n!nls/la
 
         # right port(blue)
         Canvon.path(this.constant.PATH_PORT_DIAMOND).attr({
-          'class' : 'port port-blue port-launchconfig-sg port-launchconfig-sg-right'
+          'class' : 'port port-blue port-launchconfig-sg port-launchconfig-sg-right tooltip'
           'data-name'      : 'launchconfig-sg'
           'data-alias'     : 'launchconfig-sg-right'
           'data-position'  : 'right'

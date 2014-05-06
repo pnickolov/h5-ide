@@ -5288,10 +5288,12 @@ a.action-link:hover {
 
 #keypair-rdp {
 	margin-right: 10px;
+	margin-top: 10px;
 }
 
 #keypair-kp-win {
 	width: 140px;
+	margin-top: 10px;
 }
 
 .hidden-details > .dl-vertical {

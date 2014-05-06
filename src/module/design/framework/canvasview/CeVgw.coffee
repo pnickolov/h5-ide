@@ -33,7 +33,7 @@ define [ "./CanvasElement", "constant","i18n!nls/lang.js" ], ( CanvasElement, co
       node.append(
         # Left port
         Canvon.path(this.constant.PATH_PORT_RIGHT).attr({
-          'class'          : 'port port-blue port-vgw-tgt'
+          'class'          : 'port port-blue port-vgw-tgt tooltip'
           'data-name'      : 'vgw-tgt'
           'data-position'  : 'left'
           'data-type'      : 'sg'
@@ -43,7 +43,7 @@ define [ "./CanvasElement", "constant","i18n!nls/lang.js" ], ( CanvasElement, co
 
         # Right port
         Canvon.path(this.constant.PATH_PORT_RIGHT).attr({
-          'class'          : 'port port-purple port-vgw-vpn'
+          'class'          : 'port port-purple port-vgw-vpn tooltip'
           'data-name'      : 'vgw-vpn'
           'data-position'  : 'right'
           'data-type'      : 'vpn'

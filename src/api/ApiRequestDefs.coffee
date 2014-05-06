@@ -29,6 +29,7 @@ define [], ()->
     syncRedis  : { url:"/session/", method:"sync_redis", params:["usercode", "session_id"] }
     updateCred : { url:"/session/", method:"set_credential", params:["usercode","session_id","access_key","secret_key","account_id"] }
     resetKey   : { url:"/account/", method:"reset_key", params:["usercode","session_id","flag"] }
+    changePwd  : { url:"/account/", method:"update_account", params:["usercode","session_id","params"]}
 
 
   ###

@@ -3093,21 +3093,9 @@ module.exports =
       en: "New Password"
       zh: "新密码"
 
-    HEAD_LABEL_REMOVE_CREDENTIAL:
-      en: "Remove Credential"
-      zh: "移除证书"
-
     HEAD_LABEL_ACCOUNT_CHANGE:
       en: "Change"
       zh: "修改"
-
-    HEAD_LABEL_ACCOUNT_UPDATE:
-      en: "Update"
-      zh: "更新"
-
-    HEAD_LABEL_ACCOUNT_CANCEL:
-      en: "Cancel"
-      zh: "取消"
 
     HEAD_LABEL_ACCOUNT_PERIOD:
       en: "."
@@ -3128,18 +3116,6 @@ module.exports =
     HEAD_LABEL_ACCOUNT_SKIP:
       en: "Skip"
       zh: "跳过"
-
-    HEAD_LABEL_ACCOUNT_ID:
-      en: "Account Number"
-      zh: "账户编号"
-
-    HEAD_LABEL_ACCOUNT_ACCESS_KEY:
-      en: "Access Key ID"
-      zh: "访问码编号"
-
-    HEAD_LABEL_ACCOUNT_SECRET_KEY:
-      en: "Secret Key"
-      zh: "密匙"
 
     HEAD_BTN_CHANGE:
       en: "Change"
@@ -3165,9 +3141,69 @@ module.exports =
       en: "Done"
       zh: "完成"
 
-    HEAD_INFO_ACCOUNT_LIST:
+    HEAD_INFO_LOADING:
+      en: "loading..."
+      zh: "加载中..."
+
+    HEAD_INFO_LOADING_RESOURCE:
+      en: "Loading resources..."
+      zh: "加载资源中..."
+
+
+    SETTINGS_CRED_DEMO_TIT:
+      en : "You are using a demo AWS account. Set up your own credential to run stack into live resources, or visualize your existing VPC."
+      zh : "You are using a demo AWS account. Set up your own credential to run stack into live resources, or visualize your existing VPC."
+
+    SETTINGS_CRED_DEMO_TEXT:
+      en : "Some stack you build in demo mode may report error due to resource inconsistency between different accounts."
+      zh : "Some stack you build in demo mode may report error due to resource inconsistency between different accounts."
+
+    SETTINGS_CRED_DEMO_SETUP:
+      en : "Set up AWS Credentials"
+      zh : "连接AWS账号"
+
+    SETTINGS_TIP_CRED_ACCOUNTID:
+      en: "Your AWS account number is shown in the upper-right area of your browser window when you are logged into your AWS Account. e.g., 123456789000"
+      zh: "当您登陆到您的AWS账号时，您的AWS账号编号将显示在您浏览器窗口的右上角区域。 比如123456789000"
+
+    SETTINGS_TIP_CRED_ACCESSKEY:
+      en: "You will find those keys in Account > Security Credentials menu under Access Keys tab in the box at the middle of the page. e.g., ABCDEFGHIJ1LMNOPQR2S"
+      zh: "通过点击&nbsp;账号&nbsp;&gt;安全性认证&nbsp;菜单，然后切换到页面中间的&nbsp;访问码&nbsp;页面，您将能找到您的访问码。 例如ABCDEFGHIJ1LMNOPQR2S"
+
+    SETTINGS_TIP_CRED_SECRETKEY:
+      en: "You will find those keys in Account > Security Credentials menu under Access Keys tab in the box at the middle of the page. e.g., aBCDefgH/ Ijklmnopq1Rs2tUVWXY3AbcDeFGhijk"
+      zh: "通过点击&nbsp;账号&nbsp;&gt;安全性认证&nbsp;菜单，然后切换到页面中间的&nbsduplp;访问码&nbsp;页面，您将能找到您的访问码。 例如aBCDefgH/ Ijklmnopq1Rs2tUVWXY3AbcDeFGhijk"
+
+    SETTINGS_LABEL_ACCOUNTID:
+      en: "Account Number"
+      zh: "账户编号"
+
+    SETTINGS_LABEL_ACCESSKEY:
+      en: "Access Key ID"
+      zh: "访问码编号"
+
+    SETTINGS_LABEL_SECRETKEY:
+      en: "Secret Key"
+      zh: "密匙"
+
+    SETTINGS_LABEL_REMOVE_CREDENTIAL:
+      en: "Remove Credential"
+      zh: "移除证书"
+
+    SETTINGS_LABEL_ACCOUNT_CANCEL:
+      en: "Cancel"
+      zh: "取消"
+
+    SETTINGS_LABEL_ACCOUNT_UPDATE:
+      en: "Update"
+      zh: "更新"
+
+    SETTINGS_CRED_CONNECTED_TIT:
       en: "You have connected with following AWS account:"
       zh: "您已经使用如下AWS账号连接:"
+
+
+
 
     HEAD_INFO_REMOVE_CREDENTIAL1:
       en: "By removing Credentials, you will be in the demo mode."
@@ -3180,14 +3216,6 @@ module.exports =
     HEAD_INFO_REMOVE_CREDENTIAL3:
       en: "The stacks you designed in demo mode may not be able to launch with your AWS Credentials due to resource inconsistency."
       zh: "因为资源不一致的原因，在更新为可用的AWS证书后，您使用试用证书设计的模块不能被启动。"
-
-    HEAD_INFO_LOADING:
-      en: "loading..."
-      zh: "加载中..."
-
-    HEAD_INFO_LOADING_RESOURCE:
-      en: "Loading resources..."
-      zh: "加载资源中..."
 
     HEAD_WARN_UPDATE_CREDENTIAL:
       en: "Cannot change AWS Credentials now since you have unterminated app. If you want to change AWS Credentials, terminate all your apps first."
@@ -3229,18 +3257,6 @@ module.exports =
       en: "Connecting AWS Account..."
       zh: "正在连接AWS账号"
 
-    HEAD_TIP_AWS_ACCOUNT_ID:
-      en: "Your AWS account number is shown in the upper-right area of your browser window when you are logged into your AWS Account. e.g., 123456789000"
-      zh: "当您登陆到您的AWS账号时，您的AWS账号编号将显示在您浏览器窗口的右上角区域。 比如123456789000"
-
-    HEAD_TIP_ACCOUNT_ACCESS_KEY:
-      en: "You will find those keys in Account > Security Credentials menu under Access Keys tab in the box at the middle of the page. e.g., ABCDEFGHIJ1LMNOPQR2S"
-      zh: "通过点击&nbsp;账号&nbsp;&gt;安全性认证&nbsp;菜单，然后切换到页面中间的&nbsp;访问码&nbsp;页面，您将能找到您的访问码。 例如ABCDEFGHIJ1LMNOPQR2S"
-
-    HEAD_TIP_ACCOUNT_SECRET_KEY:
-      en: "You will find those keys in Account > Security Credentials menu under Access Keys tab in the box at the middle of the page. e.g., aBCDefgH/ Ijklmnopq1Rs2tUVWXY3AbcDeFGhijk"
-      zh: "通过点击&nbsp;账号&nbsp;&gt;安全性认证&nbsp;菜单，然后切换到页面中间的&nbsduplp;访问码&nbsp;页面，您将能找到您的访问码。 例如aBCDefgH/ Ijklmnopq1Rs2tUVWXY3AbcDeFGhijk"
-
     HEAD_MSG_ERR_INVALID_ACCOUNT_ID:
       en: "Invalid accout id"
       zh: "无效的帐户ID"
@@ -3265,12 +3281,15 @@ module.exports =
       en: "restore the demo key"
       zh: "恢复到演示账号"
 
+
+
+
     HEAD_MSG_ERR_NULL_PASSWORD:
       en: "Provide both current and new password to change password."
       zh: "请提供旧密码和新密码来完成重设密码操作。"
 
     HEAD_MSG_ERR_INVALID_PASSWORD:
-      en: "Password must contain at least 6 characters."
+      en: "Password cannot be empty and must contain at least 6 characters."
       zh: "密码最少6位且不能和您的用户名相同"
 
     HEAD_MSG_ERR_ERROR_PASSWORD:
@@ -3286,8 +3305,8 @@ module.exports =
       zh: "密码修改成功。"
 
     HEAD_MSG_ERR_UPDATE_PASSWORD:
-      en: "Update password failed."
-      zh: "修改密码失败。"
+      en: "Update password failed. Please retry."
+      zh: "修改密码失败。请重试。"
 
     HEAD_MSG_ERR_WRONG_PASSWORD:
       en: "Current password is wrong."

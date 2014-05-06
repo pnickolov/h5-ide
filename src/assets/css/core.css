@@ -158,6 +158,18 @@ p {
 	display: none;
 }
 
+.link-style {
+	cursor : pointer;
+}
+
+.link-style:hover {
+	text-decoration : underline;
+}
+
+.empty-hide:empty {
+	display : none;
+}
+
 .disable-event {
 	-webkit-user-select: none;
 	-moz-user-select: none;

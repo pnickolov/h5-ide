@@ -107,4 +107,11 @@ define [ "ApiRequest", "backbone" ], ( ApiRequest )->
         $.removeCookie ckey, domain
         $.removeCookie ckey
       return
+
+    changePassword : ( oldPwd, newPwd )->
+      ApiRequest "changePwd", { params : {
+        password     : oldPwd
+        new_password : newPwd
+      }}
+
   }

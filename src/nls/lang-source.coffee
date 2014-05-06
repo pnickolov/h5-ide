@@ -3946,7 +3946,8 @@ module.exports =
       zh: "最近修改时间"
 
     POP_DOWNLOAD_KP_NOT_AVAILABLE:
-      en: "Not available yet. Password generation and encryption can sometimes take more than 30 minutes. Please wait at least 15 minutes after launching an instance before trying to retrieve the generated password."
+      en: "<p>Your password is not ready. Password generation can sometimes take more than 30 minutes. Please wait at least 15 minutes after launching an instance before trying to retrieve the generated password.</p>
+<p>If you launched this instance from your own AMI, the password is the same as for the instance from which you created the AMI, unless this setting was modified in the EC2Config service settings.</p>"
       zh: "当前不可用。口令生成和加密通常需要30分钟时间。启动实例后在拿到生成的口令前，请至少等待15分钟。"
 
     POP_BTN_CLOSE:

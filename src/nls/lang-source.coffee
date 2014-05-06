@@ -4420,6 +4420,18 @@ module.exports =
       en: "Shift + Tab"
       zh: ""
 
+    KEY_CONTENT_EDITOR_MAC:
+      en: "Command + E"
+      zh: ""
+
+    KEY_CONTENT_EDITOR_PC:
+      en: "Ctrl + E"
+      zh: ""
+
+    KEY_CONTENT_EDITOR_ACTION:
+      en: "Open content editor"
+      zh: ""
+
     KEY_PREV_ACTION:
       en: "Switch back to the previous input"
       zh: ""

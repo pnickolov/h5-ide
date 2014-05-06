@@ -260,6 +260,7 @@ require.config {
 
 		#statusbar state
 		'state_status'       : 'component/statestatus/main'
+		'kp'       			 : 'component/kp/main'
 
 		#############################################
 		# component

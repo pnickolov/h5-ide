@@ -4,7 +4,7 @@
 
 define [ '../base/view',
          './template/stack',
-         'i18n!nls/lang.js', 'constant' ], ( PropertyView, template, lang, constant ) ->
+         'i18n!nls/lang.js', 'constant', 'kp' ], ( PropertyView, template, lang, constant, kp ) ->
 
     noop = ()-> null
 
@@ -99,7 +99,7 @@ define [ '../base/view',
 
         render : () ->
             @$el.html template @model.attributes
-
+            @$('#kp-placeholder').html kp.loadModule().el
             @refreshIPList()
 
             me = this

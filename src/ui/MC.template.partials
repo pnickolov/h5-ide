@@ -24,6 +24,46 @@
 	{{/if}}
 </div>
 
+
+<!-- {{modalAppToStack}} -->
+<div style="width: 520px">
+    <div class="modal-header">
+        <h3>{{title}}</h3>
+        <i class="modal-close">&times;</i>
+    </div>
+    <div class="modal-body">
+        <p class="modal-text-minor">{{intro-1}}</p>
+        <p class="modal-text-minor">{{intro-2}}</p>
+        <div class="modal-center-align-helper">
+            <div class="modal-control-group">
+                <div id="replace_stack">
+                    <div class="radio">
+                        <input id="radio-replace-stack" type="radio" name="save-stack-type" checked>
+                        <label for="radio-replace-stack"></label>
+                    </div>
+                    <label class="modal-text-minor" for="radio-replace-stack">{{replace}}</label>
+                    <div style="padding: 10px 20px">
+                        {{replace-info}}
+                    </div>
+                </div>
+                <div id="save_new_stack">
+                   <div class="radio">
+                       <input id="radio-new-stack" type="radio" name="save-stack-type">
+                       <label for="radio-new-stack"></label>
+                   </div>
+                   <label class="modal-text-minor" for="radio-new-stack">{{save-new}}</label>
+                   <div style="padding-left: 22px" class="hide">
+                       <p>{{instruction}}</p>
+                       <input class="input" id="modal-input-value-1" value="{{input}}" type="text"/>
+                       <div id="stack-name-exist" class="">{{error-message}}</div>
+                   </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <!-- {{modalApp}} -->
 <div style="width:420px">
 	<div class="modal-header">

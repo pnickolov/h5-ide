@@ -373,7 +373,7 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
                 ide_event.trigger ide_event.UPDATE_STATUS_BAR_SAVE_TIME
 
             else
-
+                ide_event.trigger ide_event.OPEN_DESIGN_TAB, "OPEN_STACK", name , region_name, id
                 # update item_state_map
                 if item_state_map and item_state_map[ id ]
 

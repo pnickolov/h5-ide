@@ -81,6 +81,8 @@ define [ "./SettingsDialogTpl", 'i18n!nls/lang.js', "backbone" ], ( SettingsTpl,
       showCredSetup : ()->
         $("#CredDemoWrap, #CredAwsWrap").hide()
         $("#CredSetupWrap").show()
+        $("#CredSetupAccount").focus()[0].select()
+        return
 
       cancelCredSetup : ()->
         $("#CredSetupWrap").hide()

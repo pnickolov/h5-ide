@@ -16,7 +16,6 @@ define [ "ApiRequest", "backbone" ], ( ApiRequest )->
 
     initialize : ()->
       @set {
-        unfetched : true
         usercode  : $.cookie "usercode"
         username  : MC.base64Decode $.cookie "usercode"
         session   : $.cookie "session_id"
@@ -67,7 +66,6 @@ define [ "ApiRequest", "backbone" ], ( ApiRequest )->
         password : @get("session")
       }).then ( result )=>
 
-        @unset "unfetched"
         @userInfoAccuired( result )
         ### env:prod ###
         @bootIntercom()
@@ -96,12 +94,6 @@ define [ "ApiRequest", "backbone" ], ( ApiRequest )->
           expires : 30
           path    : '/'
         }
-
-        # When the User fails to fetch additional user info at the beginning, due to Invalid Session.
-        # We will have an empty session. In this case, we do a full reload instead of updating resources.
-        if @get("unfetched")
-          window.location.reload()
-          return
 
         @set "session", result.session_id
         @userInfoAccuired( result )

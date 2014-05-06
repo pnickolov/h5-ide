@@ -42,8 +42,8 @@
                         <label for="radio-replace-stack"></label>
                     </div>
                     <label class="modal-text-minor" for="radio-replace-stack">{{replace}}</label>
-                    <div style="padding: 10px 20px">
-                        {{replace-info}}
+                    <div style="padding: 10px 22px">
+                        {{replace-info}} "{{input}}" {{replace-info-end}}
                     </div>
                 </div>
                 <div id="save_new_stack">
@@ -52,7 +52,7 @@
                        <label for="radio-new-stack"></label>
                    </div>
                    <label class="modal-text-minor" for="radio-new-stack">{{save-new}}</label>
-                   <div style="padding-left: 22px" class="hide">
+                   <div style="padding: 10px 22px" class="hide">
                        <p>{{instruction}}</p>
                        <input class="input" id="modal-input-value-1" value="{{input}}" type="text"/>
                        <div id="stack-name-exist" class="">{{error-message}}</div>
@@ -60,6 +60,10 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="modal-footer">
+        <button id="btn-confirm" class="btn btn-{{color}}">Delete</button>
+        <button class="btn modal-close btn-silver">Cancel</button>
     </div>
 </div>
 

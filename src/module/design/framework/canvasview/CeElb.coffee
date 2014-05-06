@@ -42,24 +42,25 @@ define [ "./CanvasElement", "constant", "CanvasManager","i18n!nls/lang.js" ], ( 
       node.append(
         # Left
         Canvon.path(this.constant.PATH_PORT_RIGHT).attr({
-          'class'      : 'port port-blue port-elb-sg-in'
-          'data-name'     : 'elb-sg-in'
-          'data-position' : 'left'
-          'data-type'     : 'sg'
-          'data-direction': "in"
-        })
-
+            'class'      : 'port port-blue port-elb-sg-in tooltip'
+            'data-name'     : 'elb-sg-in'
+            'data-position' : 'left'
+            'data-type'     : 'sg'
+            'data-direction': "in"
+            'data-tooltip'  : lang.ide.PORT_TIP_D
+          }),
         # Right gray
         Canvon.path(this.constant.PATH_PORT_RIGHT).attr({
-          'class'      : 'port port-gray port-elb-assoc'
-          'data-name'     : 'elb-assoc'
-          'data-position' : 'right'
-          'data-type'     : 'association'
-          'data-direction': 'out'
-        })
+            'class'      : 'port port-gray port-elb-assoc tooltip'
+            'data-name'     : 'elb-assoc'
+            'data-position' : 'right'
+            'data-type'     : 'association'
+            'data-direction': 'out'
+            'data-tooltip'  : lang.ide.PORT_TIP_K
+          })
 
         Canvon.path(this.constant.PATH_PORT_RIGHT).attr({
-          'class'      : 'port port-blue port-elb-sg-out'
+          'class'      : 'port port-blue port-elb-sg-out tooltip'
           'data-name'     : 'elb-sg-out'
           'data-position' : 'right'
           'data-type'     : 'sg'

@@ -29,7 +29,7 @@ define [ "./CanvasElement", "constant", "CanvasManager","i18n!nls/lang.js" ], ( 
       node = @createGroup( label )
 
       node.append( Canvon.path( this.constant.PATH_PORT_RIGHT ).attr({
-        'class'      : 'port port-gray port-subnet-assoc-in'
+        'class'      : 'port port-gray port-subnet-assoc-in tooltip'
         'data-name'     : 'subnet-assoc-in'
         'data-position' : 'left'
         'data-type'     : 'association'

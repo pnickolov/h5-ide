@@ -328,8 +328,15 @@ define [ 'MC', 'event',
             $("#btn-confirm").on 'click', {target: this}, (event)->
                 console.log "Toolbar save app as stack"
 
-                if replace_stack #TODO: change condition
-                    ide_event.trigger ide_event.SAVE_STACK, originStack, Design.instance().serializeAsStack()
+                unless $("#save_new_stack").find(".radio-instruction").hasClass("hide")
+                    modal.close()
+                    stackData = Design.instance().serializeAsStack()
+                    stackData.id = originStack
+                    ide_event.trigger ide_event.SAVE_STACK, stackData
+                    setTimeout () ->
+                        id      = MC.common.other.canvasData.get 'id'
+                        MC.common.other.addCacheThumb id, $('#canvas_body').html(), $('#svg_canvas')[0].getBBox()
+                    , 500
                     return false
                 new_name = $("#modal-input-value").val()
 

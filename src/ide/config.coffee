@@ -227,10 +227,6 @@ require.config {
 		#############################################
 		'base_main'          : 'module/base/base_main'
 
-		'header'             : 'module/header/main'
-		'header_view'        : 'module/header/view'
-		'header_model'       : 'module/header/model'
-
 		'navigation'         : 'module/navigation/main'
 		'navigation_view'    : 'module/navigation/view'
 		'navigation_model'   : 'module/navigation/model'
@@ -291,9 +287,6 @@ require.config {
 		#############################################
 		# modules
 		#############################################
-
-		'header'       :
-			deps       : [ 'header_view', 'header_model', 'MC' ]
 
 		'navigation'   :
 			deps       : [ 'navigation_view', 'navigation_model', 'MC' ]

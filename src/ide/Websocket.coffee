@@ -20,6 +20,10 @@ define [ "Meteor", "backbone", "event", "MC" ], ( Meteor, Backbone, ide_event )-
 
     singleton = @
 
+    # Create a promise to notify others that Websocket is ready.
+    @__readyDefer = Q.defer()
+    @__isReady    = false
+
     @connection = Meteor.connect WEBSOCKET_URL, true
 
     opts =
@@ -66,10 +70,14 @@ define [ "Meteor", "backbone", "event", "MC" ], ( Meteor, Backbone, ide_event )-
 
     subscribed = true
 
+    onReady = ()->
+      @__isReady = true
+      @__readyDefer.resolve()
+
     usercode = App.user.get 'usercode'
     session  = App.user.get 'session'
     callback = {
-      onReady : _.bind @onReady, @
+      onReady : _.bind onReady, @
       onError : _.bind @onError, @
     }
 
@@ -80,10 +88,10 @@ define [ "Meteor", "backbone", "event", "MC" ], ( Meteor, Backbone, ide_event )-
     @connection.subscribe "imports", usercode, session
     return
 
-  Websocket.prototype.onReady = ()->
-    # LEGACY Code
-    ide_event.trigger ide_event.WS_COLLECTION_READY_REQUEST
-    return
+  # Return a promise that will be resolve when the websocket is ready.
+  # Websocket will be ready after the first data is fetched.
+  Websocket.prototype.ready = ()-> @__readyDefer.promise
+  Websocket.prototype.isReady = ()-> @__isReady
 
   # Whenever an error posted from the backend. The subscription will be removed.
   # The error is typically the "Invalid session error".

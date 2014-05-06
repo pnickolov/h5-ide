@@ -313,50 +313,24 @@ button {
 	background-color: rgba(0,0,0,.2);
 }
 
-#notification-counter {
-	line-height: 14px;
-	top: 5px;
-	right: 5px;
-	position: absolute;
-	display: block;
-	padding: 1px 4px;
-	border-radius: 7px;
-	background-color: #ec3c38;
-	box-shadow: 0 1px rgba(0, 0, 0, 0.25);
-	background-image: -webkit-linear-gradient(bottom, #c5312d , #ec3c38);
-	background-image: -moz-linear-gradient(bottom, #c5312d , #ec3c38);
-	background-image: -o-linear-gradient(bottom, #c5312d , #ec3c38);
-	background-image: -ms-linear-gradient(bottom, #c5312d , #ec3c38);
-	background-image: linear-gradient(to top, #c5312d , #ec3c38);
-	font-size: 12px;
-	font-weight: 700;
-	color: #FFF;
-	text-align: center;
+#NotificationCounter {
+	top           : 5px;
+	right         : 4px;
+	position      : absolute;
+	padding       : 0 4px;
+	border-radius : 8px;
+	background    : #ec3c38;
+	font-size     : 12px;
+	font-weight   : bold;
+	color         : #FFF;
+	text-align    : center;
+	height        : 16px;
+	line-height   : 16px;
+	min-width     : 8px;
 }
 
-#notification-counter:empty {
+#NotificationCounter:empty {
 	display : none;
-}
-
-.no-credential {
-	display : inline-block;
-	width   : 10px;
-	height  : 10px;
-
-	position : absolute;
-
-	border-radius : 50%;
-
-	background-image : -o-linear-gradient(-90deg, #FED666 0%, #FD6E22 100%);
-	background-image : -moz-linear-gradient(-90deg, #FED666 0%, #FD6E22 100%);
-	background-image : -webkit-linear-gradient(-90deg, #FED666 0%, #FD6E22 100%);
-	background-image : -ms-linear-gradient(-90deg, #FED666 0%, #FD6E22 100%);
-	background-image : linear-gradient(-180deg, #FED666 0%, #FD6E22 100%);
-}
-
-#header--user > .no-credential {
-	top: 21px;
-	left: 15px;
 }
 
 #user-dropdown-wrapper .no-credential {
@@ -414,6 +388,10 @@ button {
 
 #notification-panel-wrapper .notification-item:hover {
 	background: #020202;
+}
+
+#notification-panel-wrapper .notification-item:last-child {
+	border-bottom : none;
 }
 
 #notification-panel-wrapper > div:last-child {
@@ -510,11 +488,11 @@ button {
 	width: 680px;
 }
 
-#header--user {
+#HeaderUser {
 	padding: 0 30px !important;
 }
 
-#header--user .icon-caret-down {
+#HeaderUser .icon-caret-down {
 	position : absolute;
 	top      : 1px;
 	right    : 10px;

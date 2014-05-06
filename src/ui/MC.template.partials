@@ -1577,3 +1577,33 @@ Are you sure you want to delete {{name}}?</div>
 		<button id="modal-cancel" class="btn modal-close btn-silver">Cancel</button>
 	</div>
 </div>
+
+<!-- {{headerNotifyItem}} -->
+<li class="notification-item {{#unless is_readed}}unread{{/unless}}">
+  <div class="notification-message">
+    {{#if error}}
+      <i class="icon-error"></i>
+      <div class="content"><span class="resource-name-label">{{name}}</span> failed to {{operation}} in {{region_label}}.</div>
+    {{/if}}
+    {{#if is_request}}
+      <i class="icon-pending"></i>
+      <div class="content">Sending request to {{operation}} <span class="resource-name-label">{{name}}</span> in {{region_label}}.</div>
+    {{/if}}
+    {{#if is_process}}
+      <i class="icon-pending"></i>
+      <div class="content">Processing request to {{operation}} <span class="resource-name-label">{{name}}</span> in {{region_label}}.</div>
+    {{/if}}
+    {{#if is_complete}}
+      <i class="icon-success"></i>
+      <div class="content"><span class="resource-name-label">{{name}} </span>{{operation}} successfully in {{region_label}}.</div>
+    {{/if}}
+  </div>
+
+  {{#if error}}
+  <div class="notification-details">{{error}}</div>
+  {{/if}}
+
+  <div class="notification-duration left">{{duration}}</div>
+  <div class="timestamp">{{time_str}}</div>
+</li>
+

@@ -4,11 +4,10 @@
 
 define [ 'MC', 'event', 'handlebars'
 		 'i18n!nls/lang.js',
-		 './view', 'canvas_layout',
-		 'header', 'navigation', 'tabbar', 'dashboard', 'design_module', 'process', 'constant',
+		 './view', 'canvas_layout', 'navigation', 'tabbar', 'dashboard', 'design_module', 'process', 'constant',
 		 'base_model',
 		 'common_handle', 'validation', 'aws_handle'
-], ( MC, ide_event, Handlebars, lang, view, canvas_layout, header, navigation, tabbar, dashboard, design, process, constant, base_model, common_handle, validation ) ->
+], ( MC, ide_event, Handlebars, lang, view, canvas_layout, navigation, tabbar, dashboard, design, process, constant, base_model, common_handle, validation ) ->
 
 	initialize : () ->
 
@@ -133,7 +132,7 @@ define [ 'MC', 'event', 'handlebars'
 		#############################
 
 		#load header
-		header.loadModule()
+		# header.loadModule()
 		#load tabbar
 		tabbar.loadModule()
 		#load dashboard

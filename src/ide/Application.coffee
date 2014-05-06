@@ -2,12 +2,13 @@
 ###
 ----------------------------
   This is the core / entry point / controller of the whole IDE.
+----------------------------
+
   It contains some basical logics to maintain the IDE. And it holds other components
   to provide other functionality
-----------------------------
 ###
 
-define [ "./Websocket", "./ApplicationView", "./User", "common_handle" ,"event" ], ( Websocket, ApplicationView, User, common_handle, ide_event )->
+define [ "./Websocket", "./ApplicationView", "./ApplicationModel", "./User", "common_handle" ,"event" ], ( Websocket, ApplicationView, ApplicationModel, User, common_handle, ide_event )->
 
   VisualOps = ()->
     if window.App
@@ -19,11 +20,15 @@ define [ "./Websocket", "./ApplicationView", "./User", "common_handle" ,"event" 
 
   # initialize returns a promise that will be resolve when the application is ready.
   VisualOps.prototype.initialize = ()->
-    @view = new ApplicationView()
 
     @__createUser()
     @__createWebsocket()
 
+    # view / model depends on User and Websocket
+    @model = new ApplicationModel()
+    @view  = new ApplicationView()
+
+    # This function returns a promise
     @user.fetch()
 
 

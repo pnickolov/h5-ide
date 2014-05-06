@@ -37,6 +37,10 @@ define [ '../base/view',
             'click #volume-type-radios input' : 'changeVolumeType'
             'keyup #iops-ranged'              : 'changeIops'
             'keyup #volume-size-ranged'       : 'sizeChanged'
+            'click #keypair-filter' : 'returnFalse'
+
+        returnFalse: ( event ) ->
+            false
 
         changeVolumeType : ( event ) ->
             $this = $( event.currentTarget )

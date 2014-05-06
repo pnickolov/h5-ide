@@ -1200,9 +1200,34 @@ module.exports =
       en: "Block Devices"
       zh: "块设备"
 
+    PROP_INSTANCE_DEFAULT_KP:
+      en: "$DefaultKeyPair"
+      zh: ""
+
+    PROP_INSTANCE_NO_KP:
+      en: "No Key Pair"
+      zh: ""
+
     PROP_INSTANCE_NEW_KP:
       en: "Create New Key Pair"
       zh: "新建秘钥"
+
+    PROP_INSTANCE_FILTER_KP:
+      en: "Filter by key pair name"
+      zh: ""
+
+    PROP_INSTANCE_MANAGE_KP:
+      en: "Manage Region Key Pairs ..."
+      zh: ""
+
+    PROP_INSTANCE_TIP_DEFAULT_KP:
+      en: "If you have used $DefaultKeyPair for any instance/launch configuration, you will be required to specify an existing key pair for $DefaultKeyPair. Or you can choose \"No Key Pair\" as $DefaultKeyPair."
+      zh: ""
+
+    PROP_INSTANCE_TIP_NO_KP:
+      en: "If you select no key pair, you will not be able to connect to the instance unless you already know the password built into this AMI."
+      zh: ""
+
 
     PROP_INSTANCE_CW_ENABLED:
       en: "Enable CloudWatch Detailed Monitoring"

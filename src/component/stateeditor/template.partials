@@ -270,11 +270,11 @@
 
 <!-- {{stateTextExpandModal}} -->
 <div id="modal-state-text-expand" style="width: 900px;">
-	<div class="modal-header"><h3>Edit {{cmd_name}} > {{para_name}}</h3><i class="modal-close">&times;</i> </div>
+	<div class="modal-header"><h3>{{#if read_only}}View{{else}}Edit{{/if}} {{cmd_name}} > {{para_name}}</h3><i class="modal-close">&times;</i> </div>
 	<div class="modal-body">
 		<div class="editable-area text-code-editor text"></div>
 	</div>
 	<div class="modal-footer">
-		<button id="modal-state-text-expand-save" class="btn btn-blue">{{i18n 'STATE_TEXT_EXPAND_MODAL_SAVE_BTN'}}</button>
+		{{#unless read_only}}<button id="modal-state-text-expand-save" class="btn btn-blue">{{i18n 'STATE_TEXT_EXPAND_MODAL_SAVE_BTN'}}</button>{{/unless}}
 	</div>
 </div>

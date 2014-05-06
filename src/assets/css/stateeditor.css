@@ -14,10 +14,19 @@
 }
 
 #state-editor .parameter-item.text .parameter-text-expand {
-	position: absolute;
+	position:    absolute;
 	margin-left: -20px;
-	cursor: pointer;
-	color: #148BE6;
+	cursor:      pointer;
+	color:       #aaa;
+	display:     none;
+	background:  rgba(0,0,0,.6);
+	padding:     4px;
+	z-index:     55;
+	right:       16px;
+}
+
+#state-editor .parameter-item.text .parameter-text-expand:before {
+	margin-right: 5px;
 }
 
 #state-editor .parameter-item.text:hover .parameter-text-expand {

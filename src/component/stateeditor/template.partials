@@ -82,7 +82,7 @@
 				{{para_name}}
 			</div>
 			<div class="parameter-container">
-				<div class="parameter-text-expand icon-expand tooltip" data-tooltip="Expand content to edit"></div>
+				<div class="parameter-text-expand icon-expand">Expand</div>
 				<div class="parameter-value editable-area text">{{para_value}}</div>
 			</div>
 		</div>

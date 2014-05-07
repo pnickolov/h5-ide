@@ -325,6 +325,43 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
 
         copy_name + "-" + idx
 
+    getStackNameFromApp = (app_name) ->
+
+        if not app_name
+            app_name = "untitled"
+
+        idx = 0
+        reg_name = /.*-\d+$/
+        if reg_name.test app_name
+            #xxx-n
+            prefix = app_name.substr(0,app_name.lastIndexOf("-"))
+            idx = Number(app_name.substr(app_name.lastIndexOf("-") + 1))
+            copy_name = prefix
+        else
+            if app_name.charAt(name.length-1) is "-"
+                #xxxx-
+                copy_name = app_name.substr(0,app_name.length-1)
+            else
+                copy_name = app_name
+
+        stack_reg = /.-stack+$/
+        if stack_reg.test copy_name
+            copy_name = copy_name
+        else
+            copy_name = copy_name + "-stack"
+        name_list   = []
+        stacks      = _.flatten _.values MC.data.stack_list
+
+        name_list.push i.name for i in stacks when i.name.indexOf(copy_name) == 0
+
+        idx++
+        while idx <= name_list.length
+            if $.inArray( (copy_name + "-" + idx), name_list ) == -1
+                break
+            idx++
+
+        copy_name + "-" + idx
+
     getOSFamily = (osType, ami) ->
         me = this
 
@@ -865,3 +902,4 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
     isValidInIPRange            : isValidInIPRange
     checkPrivateIPIfHaveEIP     : checkPrivateIPIfHaveEIP
     hasStack                    : hasStack
+    getStackNameFromApp         : getStackNameFromApp

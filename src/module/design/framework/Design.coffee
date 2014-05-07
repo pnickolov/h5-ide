@@ -570,12 +570,11 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
     json = @serialize( { toStack : true } )
 
     json.name = new_name||json.name
-    json.stack_id = ""
     json.state = "Enabled"
-    json.usage = ""
     json.id = ""
     delete json.history
-
+    delete json.stack_id
+    delete json.usage
     json
 
 

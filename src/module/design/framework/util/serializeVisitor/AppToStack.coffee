@@ -29,10 +29,10 @@ define [ "Design" ], (Design)->
                     compo.resource.RouteTableId = ""
                     compo.resource.AssociationSet.forEach (e)->
                         e.RouteTableAssociationId = ""
-                when 'AWS.EC2.SecurityGroup' 
+                when 'AWS.EC2.SecurityGroup'
                     compo.resource.GroupId = ""
                     compo.resource.GroupName = "WebServerSG"
-                when 'AWS.EC2.KeyPair' 
+                when 'AWS.EC2.KeyPair'
                     compo.resource.KeyFingerprint = ""
                     compo.resource.KeyName = "DefaultDP"
                 when 'AWS.VPC.InternetGateway' 
@@ -42,7 +42,7 @@ define [ "Design" ], (Design)->
                     compo.resource.AssociationSet.forEach (e)->
                         e.NetworkAclAssociationId = ""
                         e.NetworkAclId = ""
-                when 'AWS.EC2.Tag' 
+                when 'AWS.EC2.Tag'
                     delete components[comp]
                 else
 

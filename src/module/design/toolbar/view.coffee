@@ -312,7 +312,7 @@ define [ 'MC', 'event',
             name = MC.common.other.canvasData.get 'name'
 
             #set default name
-            new_name = MC.aws.aws.getDuplicateName(name)
+            new_name = MC.aws.aws.getStackNameFromApp(name)
             originStack = Design.instance().serialize().stack_id
             MC.aws.aws.hasStack(originStack)
             $('#modal-input-value').val(new_name)

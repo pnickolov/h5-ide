@@ -17,9 +17,9 @@ define ['MC',
         './vpc/rtb'
         './stateeditor/main'
         './state/state'
+        './ec2/ebs'
 
-
-], ( MC, stack, instance, subnet, vpc, elb, sg, asg, eip, az, vgw, vpn, igw, acl, cgw, eni, rtb, stateEditor, state ) ->
+], ( MC, stack, instance, subnet, vpc, elb, sg, asg, eip, az, vgw, vpn, igw, acl, cgw, eni, rtb, stateEditor, state, ebs ) ->
 
         stack : stack
         instance : instance
@@ -39,7 +39,4 @@ define ['MC',
         rtb : rtb
         stateEditor: stateEditor
         state: state
-
-
-
-
+        ebs: ebs

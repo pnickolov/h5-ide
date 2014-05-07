@@ -166,8 +166,6 @@ define [ "./SettingsDialogTpl", 'i18n!nls/lang.js', "backbone" ], ( SettingsTpl,
         , ()->
           $("#CredSetupMsg").text lang.ide.SETTINGS_ERR_CRED_VALIDATE
           $("#modal-box .modal-close").show()
-          $("#CredSetupAccessKey").val("")
-          $("#CredSetupSecretKey").val("")
           self.showCredSetup()
           return
 

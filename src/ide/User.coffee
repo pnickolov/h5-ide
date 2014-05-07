@@ -131,11 +131,17 @@ define [ "ApiRequest", "backbone" ], ( ApiRequest )->
         account_id : account
         force : force
       }).then ()->
-        self.set {
+        attr =
           account      : account
-          awsAccessKey : (new Array(accessKey.length-6)).join("*")+accessKey.substr(-6)
-          awsSecretKey : (new Array(accessKey.length-6)).join("*")+secretKey.substr(-6)
-        }
+          awsAccessKey : accessKey
+          awsSecretKey : secretKey
+
+        if attr.awsAccessKey.length > 6
+          attr.awsAccessKey = (new Array(accessKey.length-6)).join("*")+accessKey.substr(-6)
+        if attr.awsSecretKey.length > 6
+          attr.awsSecretKey = (new Array(secretKey.length-6)).join("*")+secretKey.substr(-6)
+
+        self.set attr
         return
 
 

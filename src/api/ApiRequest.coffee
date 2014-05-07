@@ -66,7 +66,10 @@ define ["api/ApiRequestDefs", "MC" ], ( ApiDefination )->
     if ApiDef.params
       RequestData.params = p = []
       for i in ApiDef.params
-        p.push apiParameters[i] || ApiDefination.AutoFill(i)
+        if apiParameters.hasOwnProperty( i )
+          p.push apiParameters[i]
+        else
+          p.push ApiDefination.AutoFill(i)
     else if apiParameters
       OneParaArray[0] = apiParameters
       RequestData.params = OneParaArray

@@ -10,11 +10,13 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'ebs_service' , '../resu
 			snaphostAry = []
 			snaphostMap = {}
 			_.each MC.canvas_data.component, (compObj) ->
-				if compObj.type is constant.RESTYPE.SNAP
+				if compObj.type is constant.RESTYPE.VOL
 					snaphostId = compObj.resource.SnapshotId
 					instanceUID = compObj.resource.AttachmentSet.InstanceId
 					if snaphostId and instanceUID
-						snaphostMap[snaphostId] = instanceUID
+						if not snaphostMap[snaphostId]
+							snaphostMap[snaphostId] = []
+						snaphostMap[snaphostId].push(MC.extractID(instanceUID))
 				null
 
 			snaphostAry = _.keys(snaphostMap)
@@ -26,28 +28,28 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'ebs_service' , '../resu
 				ebsService.DescribeSnapshots {sender: this},
 					$.cookie( 'usercode' ),
 					$.cookie( 'session_id' ),
-					currentRegion, null, null, null, null, (result) ->
+					currentRegion, snaphostAry, null, null, null, (result) ->
 
 						tipInfoAry = []
 
-						if result.is_error and result.aws_error_code is 'InvalidAMIID.NotFound'
+						if result.is_error and result.aws_error_code is 'InvalidSnapshot.NotFound'
+
 							# get current stack all aws ami
-							awsAMIIdAryStr = result.error_message
-							awsAMIIdAryStr = awsAMIIdAryStr.replace("The image ids '[", "").replace("]' do not exist", "")
-							.replace("The image id '[", "").replace("]' does not exist", "")
+							awsSnapshotIdAryStr = result.error_message
+							awsSnapshotIdAryStr = awsSnapshotIdAryStr.replace("The snapshot '", "").replace("' does not exist.", "")
 
-							awsAMIIdAry = awsAMIIdAryStr.split(',')
-							awsAMIIdAry = _.map awsAMIIdAry, (awsAMIId) ->
-								return $.trim(awsAMIId)
+							awsSnapshotIdAry = awsSnapshotIdAryStr.split(',')
+							awsSnapshotIdAry = _.map awsSnapshotIdAry, (awsSnapshotId) ->
+								return $.trim(awsSnapshotId)
 
-							if not awsAMIIdAry.length
+							if not awsSnapshotIdAry.length
 								callback(null)
 								return null
 
-							_.each amiAry, (amiId) ->
-								if amiId in awsAMIIdAry
+							_.each snaphostAry, (snapshotId) ->
+								if snapshotId in awsSnapshotIdAry
 									# not exist in stack
-									instanceUIDAry = instanceAMIMap[amiId]
+									instanceUIDAry = snaphostMap[snapshotId]
 									_.each instanceUIDAry, (instanceUID) ->
 										instanceObj = MC.canvas_data.component[instanceUID]
 										instanceType = instanceObj.type
@@ -58,37 +60,7 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'ebs_service' , '../resu
 										if instanceType is constant.RESTYPE.LC
 											infoObjType = 'Launch Configuration'
 											infoTagType = 'lc'
-										tipInfo = sprintf lang.ide.TA_MSG_ERROR_STACK_HAVE_NOT_EXIST_AMI, infoObjType, infoTagType, instanceName, amiId
-										tipInfoAry.push({
-											level: constant.TA.ERROR,
-											info: tipInfo,
-											uid: instanceUID
-										})
-										null
-								null
-
-						else if not result.is_error
-							descAMIIdAry = []
-							descAMIAry = result.resolved_data
-							if _.isArray descAMIAry
-								_.each descAMIAry, (amiObj) ->
-									descAMIIdAry.push(amiObj.imageId)
-									null
-							_.each amiAry, (amiId) ->
-								if amiId not in descAMIIdAry
-									# not exist in stack
-									instanceUIDAry = instanceAMIMap[amiId]
-									_.each instanceUIDAry, (instanceUID) ->
-										instanceObj = MC.canvas_data.component[instanceUID]
-										instanceType = instanceObj.type
-										instanceName = instanceObj.name
-
-										infoObjType = 'Instance'
-										infoTagType = 'instance'
-										if instanceType is constant.RESTYPE.LC
-											infoObjType = 'Launch Configuration'
-											infoTagType = 'lc'
-										tipInfo = sprintf lang.ide.TA_MSG_ERROR_STACK_HAVE_NOT_AUTHED_AMI, infoObjType, infoTagType, instanceName, amiId
+										tipInfo = sprintf lang.ide.TA_MSG_ERROR_STACK_HAVE_NOT_EXIST_SNAPSHOT, snapshotId, instanceName
 										tipInfoAry.push({
 											level: constant.TA.ERROR,
 											info: tipInfo,

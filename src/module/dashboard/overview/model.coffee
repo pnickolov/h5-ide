@@ -1452,7 +1452,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
             result.username = $.cookie 'usercode'
 
             # set name
-            result.name     = 'untitled-' + MC.data.untitled
+            result.name     = MC.aws.aws.getDuplicateName(result.name)
 
             # set id
             result.id       = 'import-' + MC.data.untitled + '-' + result.region

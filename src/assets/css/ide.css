@@ -55,7 +55,9 @@ button {
 .left  { float   : left; }
 .right { float   : right; }
 
-.tac {text-align : center}
+.tal {text-align : left;}
+.tac {text-align : center;}
+.tar {text-align : right;}
 
 .capitalize { text-transform: capitalize;}
 
@@ -567,7 +569,7 @@ button {
 	padding : 5px;
 }
 
-.modal-body .input:focus {
+#modal-box .input:focus {
 	border-color : #010101;
 }
 
@@ -694,6 +696,34 @@ button {
 	color     : #148BE6;
 	top       : 40px;
 	right     : 8px;
+}
+
+#WelcomeSettings > header {
+	background : #111;
+	padding : 10px 20px;
+}
+
+#WelcomeSettings > #CredSetupWrap {
+	padding : 20px 30px;
+}
+
+#WelcomeSettings .cred-btn-wrap {
+	margin-top : 10px;
+}
+
+#WelcomeDialog .link-style {
+	color       : #148BE6;
+	float       : left;
+	height      : 26px;
+	line-height : 26px;
+}
+
+#WelcomeSettings {
+	width : 500px;
+}
+#WelcomeSkipWarning, #WelcomeDoneWrap {
+	width : 430px;
+	padding : 20px 30px;
 }
 
 

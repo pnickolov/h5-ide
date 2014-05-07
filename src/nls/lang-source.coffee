@@ -447,10 +447,6 @@ module.exports =
       en: "Global"
       zh: "我的资源"
 
-    "account-settings":
-      en: "Account Settings"
-      zh: "Account Settings"
-
     IDE_MSG_ERR_OPEN_OLD_STACK_APP_TAB:
       en: "Sorry, the stack/app is too old, unable to open"
       zh: "抱歉，模板/应用的格式太旧了，无法打开."
@@ -3137,6 +3133,10 @@ module.exports =
       en: "Close"
       zh: "关闭"
 
+    HEAD_BTN_BACK:
+      en: "Back"
+      zh: "后退"
+
     HEAD_BTN_DONE:
       en: "Done"
       zh: "完成"
@@ -3265,6 +3265,34 @@ module.exports =
     SETTINGS_INFO_FORGET_PWD:
       en: "Forget password?"
       zh: "是否重置密码?"
+
+    WELCOME_DIALOG_TIT:
+      en: "Welcome to VisualOps"
+      zh: "欢迎使用 VisualOps"
+
+    WELCOME_TIT:
+      en: "Welcome to VisualOps, "
+      zh: "Welcome to VisualOps, "
+
+    WELCOME_DESC:
+      en: "To start designing cloud architecture, please provide your AWS credentials"
+      zh: "To start designing cloud architecture, please provide your AWS credentials"
+
+    WELCOME_SKIP_TIT:
+      en: "Skip providing AWS Credentials now?"
+      zh: "Skip providing AWS Credentials now?"
+
+    WELCOME_SKIP_SUBTIT:
+      en: "You can design stack in the demo mode. Yet, with following drawbacks:"
+      zh: "You can design stack in the demo mode. Yet, with following drawbacks:"
+
+    WELCOME_SKIP_MSG:
+      en: "- The demo mode may not reflect the real condition of resources available for your account.<br /> - If you want to provide credentials later, design previously created in demo mode may not work due to resource inconsistency."
+      zh: "- The demo mode may not reflect the real condition of resources available for your account.<br /> - If you want to provide credentials later, design previously created in demo mode may not work due to resource inconsistency."
+
+    WELCOME_SKIP_MSG_EXTRA:
+      en: "You can provide AWS Credentials later from Settings in the top-right drop down."
+      zh: "You can provide AWS Credentials later from Settings in the top-right drop down."
 
     HEAD_MSG_ERR_UPDATE_EMAIL3:
       en: "Please provide a valid email address."

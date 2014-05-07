@@ -5,12 +5,14 @@
 ----------------------------
 ###
 
-define [ "backbone", "./subviews/SessionDialog", "./subviews/HeaderView" ], ( Backbone, SessionDialog, HeaderView )->
+define [ "backbone", "./subviews/SessionDialog", "./subviews/HeaderView", "./subviews/WelcomeDialog" ], ( Backbone, SessionDialog, HeaderView, WelcomeDialog )->
 
   Backbone.View.extend {
 
     initialize : ()->
       @header = new HeaderView()
+
+      new WelcomeDialog()
       return
 
     toggleWSStatus : ( isConnected )->

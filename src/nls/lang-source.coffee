@@ -3212,15 +3212,15 @@ module.exports =
 
     SETTINGS_CRED_REMOVING:
       en : "Removing credential..."
-      zh : "Removing credential..."
+      zh : "正在移除证书..."
 
     SETTINGS_CRED_UPDATING:
       en : "Updating credential..."
-      zh : "Updating credential..."
+      zh : "正在更新证书..."
 
     SETTINGS_CRED_RES_LOADING:
       en : "Loading resources..."
-      en : "Loading resources..."
+      zh : "正在刷新资源..."
 
     SETTINGS_ERR_CRED_VALIDATE:
       en : "Fail to validate your credential, please retry."

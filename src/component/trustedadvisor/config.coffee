@@ -17,6 +17,7 @@ define({
         'AWS.VPC.NetworkAcl'                    : [ 'acl' ]
         'AWS.AutoScaling.LaunchConfiguration'   : [ 'state' ]
         'AWS.VPC.RouteTable'                    : [ 'rtb' ]
+        'AWS.EC2.EBS.Volume'                    : [ 'ebs' ]
 
     globalList:
         eip: [ 'isHasIGW' ]
@@ -25,9 +26,9 @@ define({
         vpc: [ 'isVPCAbleConnectToOutside' ]
         stack: [ '~isHaveNotExistAMI' ] # `~` means work in stack mode only.
 
-
     asyncList:
         cgw: [ 'isCGWHaveIPConflict' ]
         stack: [ 'verify', 'isHaveNotExistAMIAsync' ]
         subnet: ['getAllAWSENIForAppEditAndDefaultVPC']
+        ebs: ['isSnapshotExist']
 })

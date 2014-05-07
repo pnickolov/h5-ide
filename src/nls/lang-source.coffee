@@ -4741,7 +4741,7 @@ module.exports =
       en:"Resource %s has format problem, %s."
       zh:""
     TA_MSG_ERROR_STACK_HAVE_NOT_EXIST_AMI:
-      en:"%s <span class='validation-tag tag-%s'>%s</span>'s AMI <span class='validation-tag tag-ami'>%s</span> is not available any more. Please use another AMI by creating new instance."
+      en:"%s <span class='validation-tag tag-%s'>%s</span>'s AMI <span class='validation-tag tag-ami'>%s</span> is not available any more. Please change another AMI."
       zh:""
     TA_MSG_ERROR_STACK_HAVE_NOT_AUTHED_AMI:
       en:"You are not authorized for %s <span class='validation-tag tag-%s'>%s</span>'s AMI <span class='validation-tag tag-ami'>%s</span>. Go to AWS Marketplace to get authorized or use another AMI by creating new instance."

@@ -106,6 +106,7 @@ define [ "./SettingsDialogTpl", 'i18n!nls/lang.js', "backbone" ], ( SettingsTpl,
         $("#CredentialTab").children().hide()
         $("#CredSetupWrap").show()
         $("#CredSetupAccount").focus()[0].select()
+        $("#CredSetupRemove").toggle App.user.hasCredential()
         @updateSubmitBtn()
         return
 

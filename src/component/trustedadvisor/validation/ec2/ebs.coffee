@@ -10,6 +10,7 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'ebs_service' , '../resu
 			snaphostAry = []
 			snaphostMap = {}
 			_.each MC.canvas_data.component, (compObj) ->
+
 				if compObj.type is constant.RESTYPE.VOL
 					snaphostId = compObj.resource.SnapshotId
 					instanceUID = compObj.resource.AttachmentSet.InstanceId
@@ -17,6 +18,18 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'ebs_service' , '../resu
 						if not snaphostMap[snaphostId]
 							snaphostMap[snaphostId] = []
 						snaphostMap[snaphostId].push(MC.extractID(instanceUID))
+
+				if compObj.type is constant.RESTYPE.LC
+
+					_.each compObj.resource.BlockDeviceMapping, (blockObj) ->
+
+						snaphostId = blockObj.Ebs.SnapshotId
+						instanceUID = compObj.uid
+						if snaphostId and instanceUID
+							if not snaphostMap[snaphostId]
+								snaphostMap[snaphostId] = []
+							snaphostMap[snaphostId].push(instanceUID)
+
 				null
 
 			snaphostAry = _.keys(snaphostMap)

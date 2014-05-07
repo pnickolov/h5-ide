@@ -277,6 +277,18 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
 
 
     checkStackName = ( stackId, newName ) ->
+
+        #check in MC.tab
+        isInTab = false
+        _.each MC.tab, (tabData) ->
+            if not isInTab and (tabData.design_model.mode() is "stack") and (tabData.data.id isnt stackId) and (tabData.data.name is newName)
+                isInTab = true
+            null
+
+        if isInTab
+            return false
+
+        #check in MC.data.stack_list
         stackArray = _.flatten _.values MC.data.stack_list
 
         not _.some stackArray, ( stack ) ->

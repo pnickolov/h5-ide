@@ -3817,6 +3817,10 @@ a.sidebar-hider:before {
 	margin-right: 13px;
 }
 
+#keypair-select .manage-kp::selection {
+	background: transparent;
+}
+
 #keypair-select .manage-kp {
 	width: 100%;
 	color: #148BE6;

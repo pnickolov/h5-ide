@@ -13,8 +13,8 @@ define [ "./HeaderTpl", "./SettingsDialog", 'backbone' ], ( tmpl, SettingsDialog
             'DROPDOWN_CLOSE #HeaderNotification' : 'dropdownClosed'
 
         initialize : ()->
-            App.user.on  "change", @update
-            App.model.on "change:notification", @updateNotification, @
+            @listenTo App.user,  "change", @update
+            @listenTo App.model, "change:notification", @updateNotification
 
             @setElement $(tmpl( App.user.toJSON() )).prependTo("#header-wrapper")
             return

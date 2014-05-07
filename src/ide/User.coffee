@@ -114,4 +114,26 @@ define [ "ApiRequest", "backbone" ], ( ApiRequest )->
         new_password : newPwd
       }}
 
+    validateCredential : ( accessKey, secretKey )->
+      ApiRequest("validateCred", {
+        access_key : accessKey
+        secret_key : secretKey
+      })
+
+    changeCredential : ( account = "", accessKey = "", secretKey = "", force = false )->
+      self = this
+      ApiRequest("updateCred", {
+        access_key : accessKey
+        secret_key : secretKey
+        account_id : account
+        force : force
+      }).then ()->
+        self.set {
+          account      : account
+          awsAccessKey : (new Array(accessKey.length-6)).join("*")+accessKey.substr(-6)
+          awsSecretKey : (new Array(accessKey.length-6)).join("*")+secretKey.substr(-6)
+        }
+        return
+
+
   }

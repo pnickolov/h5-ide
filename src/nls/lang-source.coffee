@@ -3202,131 +3202,69 @@ module.exports =
       en: "You have connected with following AWS account:"
       zh: "您已经使用如下AWS账号连接:"
 
-
-
-
-    HEAD_INFO_REMOVE_CREDENTIAL1:
-      en: "By removing Credentials, you will be in the demo mode."
-      zh: "移除证书后，您还可以使用试用证书。"
-
-    HEAD_INFO_REMOVE_CREDENTIAL2:
-      en: "If you want to launch stack into app, you need to provide valid AWS Credentials."
-      zh: "如果想启动应用，您需要提供有效的AWS证书。"
-
-    HEAD_INFO_REMOVE_CREDENTIAL3:
-      en: "The stacks you designed in demo mode may not be able to launch with your AWS Credentials due to resource inconsistency."
-      zh: "因为资源不一致的原因，在更新为可用的AWS证书后，您使用试用证书设计的模块不能被启动。"
-
-    HEAD_WARN_UPDATE_CREDENTIAL:
-      en: "Cannot change AWS Credentials now since you have unterminated app. If you want to change AWS Credentials, terminate all your apps first."
-      zh: "还有没被销毁的应用，您现在不能修改当前AWS证书。如果你想修改AWS证书，首先需要销毁所有已有应用。"
-
-    HEAD_INFO_PROVIDE_CREDENTIAL1:
-      en: "Do not want to provide AWS Credentials now?"
-      zh: "现在想提供AWS证书吗？"
-
-    HEAD_INFO_DEMO_MODE:
-      en: "You can design stack in the demo mode. Yet, with following drawbacks:"
-      zh: "您可以使用试用证书进行模板设计，但有以下缺点："
-
-    HEAD_INFO_WELCOME:
-      en: "Welcome to VisualOps, %s."
-      zh: "欢迎来到VisualOps, %s。"
-
-    HEAD_INFO_PROVIDE_CREDENTIAL2:
-      en: "To start designing cloud architecture, please provide your AWS credentials:"
-      zh: "在开始您的云架构设计之前，请提供AWS证书："
-
-    HEAD_INFO_PROVIDE_CREDENTIAL3:
-      en: "To launch and manage AWS resources, please provide your AWS account credentials."
-      zh: "请提供您好AWS证书来加载和管理AWS资源。"
-
-    HEAD_ERR_AUTHENTICATION:
-      en: "Authentication failed. Please check your AWS Credentials and try again."
-      zh: "授权失败，请检查您的AWS证书并重试。"
-
-    HEAD_CHANGE_CREDENTIAL:
-      en: "If you change AWS Credentials, design previously created in current account may not work due to resource inconsistency. "
-      zh: "如果您修改AWS证书，因为资源不一致性的原因，您之前创建的设计成果将不能使用。"
-
-    HEAD_INFO_CONFIRM_REMOVE:
+    SETTINGS_CRED_REMOVE_TIT:
       en: "Do you confirm to remove AWS Credentials of account %s?"
       zh: "您确定要移除账号%s的AWS证书吗？"
 
-    HEAD_INFO_CONNECTING:
-      en: "Connecting AWS Account..."
-      zh: "正在连接AWS账号"
+    SETTINGS_CRED_REMOVE_TEXT:
+      en: "By removing Credentials, you will be in the demo mode.<br>If you want to launch stack into app, you need to provide valid AWS Credentials. <br>The stacks you designed in demo mode may not be able to launch with your AWS Credentials due to resource inconsistency.<br>If you have existing apps, they will become unmanageable and can only be forced to delete."
+      zh: "By removing Credentials, you will be in the demo mode.<br>If you want to launch stack into app, you need to provide valid AWS Credentials. <br>The stacks you designed in demo mode may not be able to launch with your AWS Credentials due to resource inconsistency.<br>If you have existing apps, they will become unmanageable and can only be forced to delete."
 
-    HEAD_MSG_ERR_INVALID_ACCOUNT_ID:
-      en: "Invalid accout id"
-      zh: "无效的帐户ID"
+    SETTINGS_CRED_REMOVING:
+      en : "Removing credential..."
+      zh : "Removing credential..."
 
-    HEAD_MSG_ERR_INVALID_ACCESS_KEY:
-      en: "Invalid access key"
-      zh: "无效的访问密钥"
+    SETTINGS_CRED_UPDATING:
+      en : "Updating credential..."
+      zh : "Updating credential..."
 
-    HEAD_MSG_ERR_INVALID_SECRET_KEY:
-      en: "Invalid secret key"
-      zh: "无效的密钥"
+    SETTINGS_CRED_RES_LOADING:
+      en : "Loading resources..."
+      en : "Loading resources..."
 
-    HEAD_MSG_ERR_INVALID_SAME_ID:
-      en: "Please use a correct account number"
-      zh: "账号相同，请输入不同的账号"
+    SETTINGS_ERR_CRED_VALIDATE:
+      en : "Fail to validate your credential, please retry."
+      zh : "Fail to validate your credential, please retry."
 
-    HEAD_MSG_ERR_KEY_UPDATE:
-      en: "Update Key error, restore the previous key"
-      zh: "修改账号失败，恢复上一个账号"
+    SETTINGS_ERR_CRED_UPDATE:
+      en : "Fail to update your credential, please retry."
+      zh : "Fail to update your credential, please retry."
 
-    HEAD_MSG_ERR_RESTORE_DEMO_KEY:
-      en: "restore the demo key"
-      zh: "恢复到演示账号"
+    SETTINGS_ERR_CRED_REMOVE:
+      en : "Fail to remove your credential, please retry."
+      zh : "Fail to remove your credential, please retry."
 
+    SETTINGS_CRED_UPDATE_CONFIRM_TIT:
+      en : "You have un-terminated app. Do you confirm to update the AWS credential?"
+      zh : "You have un-terminated app. Do you confirm to update the AWS credential?"
 
+    SETTINGS_CRED_UPDATE_CONFIRM_TEXT:
+      en : "If you continue to use the new credential, existing apps might become unmanageable. If the new AWS credential does not have sufficient privileges to manage the existing apps, we strongly recommend to TERMINATE existing apps first."
+      zh : "If you continue to use the new credential, existing apps might become unmanageable. If the new AWS credential does not have sufficient privileges to manage the existing apps, we strongly recommend to TERMINATE existing apps first."
 
+    SETTINGS_LABEL_UPDATE_CONFIRM:
+      en: "Confirm to update"
+      zh: "Confirm to update"
 
-    HEAD_MSG_ERR_NULL_PASSWORD:
-      en: "Provide both current and new password to change password."
-      zh: "请提供旧密码和新密码来完成重设密码操作。"
-
-    HEAD_MSG_ERR_INVALID_PASSWORD:
+    SETTINGS_ERR_INVALID_PWD:
       en: "Password cannot be empty and must contain at least 6 characters."
       zh: "密码最少6位且不能和您的用户名相同"
 
-    HEAD_MSG_ERR_ERROR_PASSWORD:
-      en: "Current password is wrong."
-      zh: "密码错误"
-
-    HEAD_MSG_ERR_RESET_PASSWORD:
-      en: "Forget password?"
-      zh: "忘记密码?"
-
-    HEAD_MSG_INFO_UPDATE_PASSWORD:
+    SETTINGS_UPDATE_PWD_SUCCESS:
       en: "Password has been updated."
       zh: "密码修改成功。"
 
-    HEAD_MSG_ERR_UPDATE_PASSWORD:
+    SETTINGS_UPDATE_PWD_FAILURE:
       en: "Update password failed. Please retry."
       zh: "修改密码失败。请重试。"
 
-    HEAD_MSG_ERR_WRONG_PASSWORD:
+    SETTINGS_ERR_WRONG_PWD:
       en: "Current password is wrong."
       zh: "密码错误"
 
-    HEAD_MSG_INFO_FORGET_PASSWORD:
+    SETTINGS_INFO_FORGET_PWD:
       en: "Forget password?"
       zh: "是否重置密码?"
-
-    HEAD_MSG_INFO_UPDATE_EMAIL:
-      en: "Email address has been updated."
-      zh: "电子邮件地址修改成功。"
-
-    HEAD_MSG_ERR_UPDATE_EMAIL1:
-      en: "Update email address failed."
-      zh: "修改邮箱地址失败"
-
-    HEAD_MSG_ERR_UPDATE_EMAIL2:
-      en: "The email address is already taken."
-      zh: "邮箱地址已被使用"
 
     HEAD_MSG_ERR_UPDATE_EMAIL3:
       en: "Please provide a valid email address."

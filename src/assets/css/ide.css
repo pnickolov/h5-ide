@@ -615,15 +615,23 @@ button {
 	vertical-align : middle;
 }
 
-#CredDemoWrap {
-	font-size  : 12px;
+#CredentialTab {
+	font-size  : 14px;
 	min-height : 150px;
 }
 
-#CredDemoWrap h3 {
+#CredentialTab > div {
+	display : none;
+}
+
+#CredentialTab h3 {
 	font-size     : 16px;
 	line-height   : 1.2em;
 	margin-bottom : 1em;
+}
+
+#CredentialTab .btn {
+	padding : 8px 10px;
 }
 
 #CredDemoWrap .cred-setup {
@@ -671,13 +679,13 @@ button {
 	padding   : 0;
 }
 
-#CredSetupCancel {
+.cred-setup-cancel, .cred-cancel {
 	color       : #999;
 	line-height : 30px;
 	margin-left : 10px;
 }
 
-#CredSetupBtnWrap {
+#CredentialTab .cred-btn-wrap {
 	margin-top : 8px;
 }
 

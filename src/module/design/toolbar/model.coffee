@@ -63,7 +63,7 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
                     console.log 'save stack successfully'
 
                     # call saveStackCallback
-                    me.saveStackCallback id, name
+                    me.saveStackCallback id, name, region
 
                     # trigger TOOLBAR_HANDLE_SUCCESS
                     me.trigger 'TOOLBAR_HANDLE_SUCCESS', 'SAVE_STACK', name
@@ -353,8 +353,8 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
                 # update Design
                 ide_event.trigger ide_event.OPEN_DESIGN_TAB, "OPEN_STACK", name , region, result.resolved_data
 
-        saveStackCallback : ( id, name ) ->
-            console.log 'saveStackCallback', id, name
+        saveStackCallback : ( id, name,region ) ->
+            console.log 'saveStackCallback', id, name, region
 
             # local thumbnail
             # OPEN_STACK
@@ -373,7 +373,7 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
                 ide_event.trigger ide_event.UPDATE_STATUS_BAR_SAVE_TIME
 
             else
-                ide_event.trigger ide_event.OPEN_DESIGN_TAB, "OPEN_STACK", name , region_name, id
+                ide_event.trigger ide_event.OPEN_DESIGN_TAB, "OPEN_STACK", name , region, id
                 # update item_state_map
                 if item_state_map and item_state_map[ id ]
 
@@ -656,7 +656,7 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
                             if id.split( '-' )[0] is 'stack'
 
                                 # call saveStackCallback
-                                me.saveStackCallback id, name
+                                me.saveStackCallback id, name, region
 
                                 # trigger TOOLBAR_HANDLE_SUCCESS
                                 me.trigger 'TOOLBAR_HANDLE_SUCCESS', 'SAVE_STACK_BY_RUN', name

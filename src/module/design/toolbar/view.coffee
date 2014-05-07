@@ -11,11 +11,11 @@ define [ 'MC', 'event',
          "component/exporter/JsonExporter",
          "component/exporter/Download",
          'constant'
+         'ApiRequest'
          'backbone', 'jquery', 'handlebars',
          'UI.selectbox', 'UI.notification',
-         "UI.tabbar",
-         "../framework/util/serializeVisitor/AppToStack"
-], ( MC, ide_event, Design, lang, stack_tmpl, app_tmpl, appview_tmpl, JsonExporter, download, constant ) ->
+         "UI.tabbar"
+], ( MC, ide_event, Design, lang, stack_tmpl, app_tmpl, appview_tmpl, JsonExporter, download, constant, ApiRequest ) ->
 
     ToolbarView = Backbone.View.extend {
 
@@ -325,19 +325,48 @@ define [ 'MC', 'event',
                 $("#replace_stack").hide()
                 $("#save_new_stack").find('div.radio,label').hide()
                 $("#save_new_stack").find('.radio-instruction').removeClass('hide')
+            $("#modal-input-value").keyup ()->
+                if not MC.aws.aws.checkStackName null, $(@).val()
+                    $("#stack-name-exist").removeClass('hide')
+                else
+                    $('#stack-name-exist').addClass('hide')
+            appToStackCb = (err, data, id)->
+                if err
+                    console.info err, "Error While Save Stack"
+                    return
+                if data.id
+                    notification "success", "Update"
+                else
+                    notification "success", "Create"
+
+                ide_event.trigger ide_event.UPDATE_STACK_LIST, 'SAVE_STACK', [id]
+                if MC.common.other.isCurrentTab id
+
+                    #set toolbar flag
+                    @setFlag id, 'SAVE_STACK', data.name
+
+                    # push event
+                    ide_event.trigger ide_event.OPEN_DESIGN_TAB, "RELOAD_STACK", id, data.region
+
+                else
+                    ide_event.trigger ide_event.OPEN_DESIGN_TAB, "OPEN_STACK", data.name , data.region, id
             $("#btn-confirm").on 'click', {target: this}, (event)->
                 console.log "Toolbar save app as stack"
 
                 if $("#save_new_stack").find(".radio-instruction").hasClass("hide")
+                    # save to original stack
                     modal.close()
                     stackData = Design.instance().serializeAsStack()
                     stackData.id = originStack
-                    console.warn stackData
-                    ide_event.trigger ide_event.SAVE_STACK, stackData
-                    setTimeout () ->
-                        id      = MC.common.other.canvasData.get 'id'
-                        MC.common.other.addCacheThumb id, $('#canvas_body').html(), $('#svg_canvas')[0].getBBox()
-                    , 500
+                    ApiRequest( "saveStack",
+                        username: $.cookie( 'usercode' )
+                        session_id: $.cookie( 'session_id' )
+                        region_name: stackData.region
+                        data: stackData
+                    ).then (result)->
+                        appToStackCb(null, stackData, result)
+                    , ( err )->
+                        appToStackCb(err, stackData)
                     return false
                 new_name = $("#modal-input-value").val()
 
@@ -347,15 +376,24 @@ define [ 'MC', 'event',
                 else if new_name.indexOf(' ') >= 0
                     notification 'warning', lang.ide.PROP_MSG_WARN_WHITE_SPACE
                 else if not MC.aws.aws.checkStackName null, new_name
+                    $("#stack-name-exist").addClass('error-msg').removeClass('hide')
                     notification 'warning', lang.ide.PROP_MSG_WARN_REPEATED_STACK_NAME
                 else
+                    #save to new stack
+                    $("#stack-name-exist").addClass('hide')
                     modal.close()
-                    console.warn Design.instance().serializeAsStack(new_name), "New"
-                    ide_event.trigger ide_event.SAVE_STACK, Design.instance().serializeAsStack(new_name)
-                    setTimeout () ->
-                        id      = MC.common.other.canvasData.get 'id'
-                        MC.common.other.addCacheThumb id, $('#canvas_body').html(), $('#svg_canvas')[0].getBBox()
-                    , 500
+                    newData = Design.instance().serializeAsStack()
+                    newData.name = new_name
+                    ApiRequest("createStack",
+                        username: $.cookie( 'usercode' )
+                        session_id: $.cookie( 'session_id' )
+                        region_name: newData.region
+                        data: newData
+                    ).then (result)->
+                        appToStackCb(null, newData,result)
+                    ,(err)->
+                        appToStackCb(err, newData)
+
             null
 
         clickDeleteIcon : ->

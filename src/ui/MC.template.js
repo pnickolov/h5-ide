@@ -98,7 +98,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + escapeExpression(((stack1 = (depth0 && depth0.instruction)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</p>\n                       <input class=\"input\" id=\"modal-input-value\" value=\""
     + escapeExpression(((stack1 = (depth0 && depth0.input)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" type=\"text\" style=\"width: 400px\"/>\n                       <div id=\"stack-name-exist\" class=\"\">"
+    + "\" type=\"text\" style=\"width: 400px\"/>\n                       <div id=\"stack-name-exist\" class=\"hide\" style=\"color: #ec3c38\">"
     + escapeExpression(((stack1 = (depth0 && depth0['error-message'])),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</div>\n                   </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"modal-footer\">\n        <button id=\"btn-confirm\" class=\"btn btn-"
     + escapeExpression(((stack1 = (depth0 && depth0.color)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))

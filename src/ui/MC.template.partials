@@ -55,7 +55,7 @@
                    <div style="padding: 10px 22px" class="radio-instruction hide">
                        <p>{{instruction}}</p>
                        <input class="input" id="modal-input-value" value="{{input}}" type="text" style="width: 400px"/>
-                       <div id="stack-name-exist" class="">{{error-message}}</div>
+                       <div id="stack-name-exist" class="hide" style="color: #ec3c38">{{error-message}}</div>
                    </div>
                 </div>
             </div>

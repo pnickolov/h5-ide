@@ -461,8 +461,8 @@ setCredit = (result)->
     COOKIE_OPTION =
         expires : 30
         path    : '/'
-    $.cookie "usercode",   result[0], COOKIE_OPTION
-    $.cookie "session_id", result[3], COOKIE_OPTION
+    $.cookie "usercode",   result.username, COOKIE_OPTION
+    $.cookie "session_id", result.session_id, COOKIE_OPTION
 
     # Set a cookie for WWW
     $.cookie "has_session", !!result[3], {

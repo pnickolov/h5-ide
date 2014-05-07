@@ -31,7 +31,10 @@ define [ "ApiRequest", "backbone" ], ( ApiRequest )->
         repo         : result.mod_repo
         tag          : result.mod_tag
         state        : parseInt result.state, 10
-        intercomHash : result.user_hash
+        intercomHash : result.intercom_secret
+        account      : result.account_id
+        awsAccessKey : result.access_key
+        awsSecretKey : result.secret_key
 
       if result.account_id is "demo_account"
         res.account = ""

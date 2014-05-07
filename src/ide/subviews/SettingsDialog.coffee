@@ -204,7 +204,7 @@ define [ "./SettingsDialogTpl", 'i18n!nls/lang.js', "backbone" ], ( SettingsTpl,
         self = this
         App.user.validateCredential( account, accesskey, privatekey, true ).then ()->
           self.showLoadingResource()
-        ()->
+        , ()->
           self.showCredUpdateFail()
         return
 

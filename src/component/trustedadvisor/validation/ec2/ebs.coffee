@@ -60,7 +60,7 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'ebs_service' , '../resu
 										if instanceType is constant.RESTYPE.LC
 											infoObjType = 'Launch Configuration'
 											infoTagType = 'lc'
-										tipInfo = sprintf lang.ide.TA_MSG_ERROR_STACK_HAVE_NOT_EXIST_SNAPSHOT, snapshotId, instanceName
+										tipInfo = sprintf lang.ide.TA_MSG_ERROR_STACK_HAVE_NOT_EXIST_SNAPSHOT, snapshotId, infoObjType, instanceName
 										tipInfoAry.push({
 											level: constant.TA.ERROR,
 											info: tipInfo,

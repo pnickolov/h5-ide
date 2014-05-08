@@ -12,7 +12,7 @@ define [ "backbone", "./subviews/SessionDialog", "./subviews/HeaderView", "./sub
     initialize : ()->
       @header = new HeaderView()
 
-      new WelcomeDialog()
+      @listenTo App.user, "change:state", @toggleWelcome
       return
 
     toggleWSStatus : ( isConnected )->
@@ -34,6 +34,11 @@ define [ "backbone", "./subviews/SessionDialog", "./subviews/HeaderView", "./sub
               msg.removeClass "hovered"
             return
           return
+
+    toggleWelcome : ()->
+      if App.user.isFirstVisit()
+        new WelcomeDialog()
+      return
 
     showSessionDialog : ()->
       (new SessionDialog()).promise()

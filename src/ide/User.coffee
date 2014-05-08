@@ -43,6 +43,15 @@ define [ "ApiRequest", "backbone" ], ( ApiRequest )->
 
       @set res
 
+      # Set user to already used IDE, so that next time we don't show welcome
+      if @isFirstVisit()
+        ApiRequest("updateAccount", { params : {
+          state : @get("state")|UserState.NotFirstTime
+        } })
+
+      return
+
+
     bootIntercom : ()->
       if not window.Intercom
         intId = setInterval ()=>

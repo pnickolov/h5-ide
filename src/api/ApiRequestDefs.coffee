@@ -28,6 +28,7 @@ define [], ()->
     logout     : { url:"/session/", method:"logout",     params:["usercode", "session_id"] }
     updateCred : { url:"/account/", method:"set_credential", params:["usercode","session_id","access_key","secret_key","account_id","force"] }
     validateCred : { url:"/account/", method:"validate_credential", params:["usercode","session_id","access_key","secret_key"] }
+    updateAccount : { url:"/account/", method:"update_account", params:["usercode", "session_id", "params"] }
 
 
   ###

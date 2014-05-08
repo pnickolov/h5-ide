@@ -591,8 +591,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
         if not vpc.isDefaultTenancy()
           tenancy = "dedicated"
 
-      kp = @connectionTargets( "KeypairUsage" )[0]
-      kp = if kp then kp.createRef( "KeyName" ) else @get 'keyName'
+      kp = @getKey()
 
       name = @get("name")
       if @get("count") > 1 then name += "-0"
@@ -762,6 +761,16 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
       else
         @set 'keyName', keyName
         @set 'keyType', ''
+
+    getKey: ->
+      kp = @connectionTargets( "KeypairUsage" )[0]
+      if kp
+        kp.createRef( "KeyName" )
+      else
+        if @get( 'keyType' ) is 'noKey'
+          ''
+        else
+          @get 'keyName'
 
 
 

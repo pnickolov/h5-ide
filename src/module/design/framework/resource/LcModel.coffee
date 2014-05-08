@@ -154,6 +154,12 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
         @set 'keyName', keyName
         @set 'keyType', ''
 
+    getKey: ->
+      if @get( 'keyType' ) is 'noKey'
+        ''
+      else
+        @get 'keyName'
+
 
     setAmi                : InstanceModel.prototype.setAmi
     getAmi                : InstanceModel.prototype.getAmi
@@ -209,7 +215,7 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
           ImageId                  : @get("imageId")
           EbsOptimized             : if @isEbsOptimizedEnabled() then @get("ebsOptimized") else false
           BlockDeviceMapping       : blockDevice
-          KeyName                  : @get("keyName")
+          KeyName                  : @getKey()
           SecurityGroups           : sgarray
           LaunchConfigurationName  : @get("configName") or @get("name")
           InstanceType             : @get("instanceType")

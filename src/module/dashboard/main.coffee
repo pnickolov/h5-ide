@@ -156,9 +156,6 @@ define [ "component/exporter/Thumbnail", 'jquery', 'event', 'MC', 'base_main', '
                 console.log 'UPDATE_DASHBOARD'
                 view.reloadResource( null,false ) if view  #skip_load=false, do loading resource
 
-            if App.user.isFirstVisit() # new account show welcome dialog
-                view.showCredential 'welcome'
-
             #model
             model.describeAccountAttributesService()
 

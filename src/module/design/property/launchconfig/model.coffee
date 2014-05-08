@@ -159,8 +159,8 @@ define [ '../base/model', 'keypair_model', 'constant', 'Design' ], ( PropertyMod
 
     getKeyPair : ()->
       selectedKP = Design.instance().component(@get("uid")).connectionTargets("KeypairUsage")[0]
-
-      @set "keypair", selectedKP.getKPList()
+      if selectedKP
+        @set "keypair", selectedKP.getKPList()
       null
 
     addKP : ( kp_name ) ->

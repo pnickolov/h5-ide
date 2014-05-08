@@ -7626,3 +7626,82 @@ summary:focus {
 #run-stack-cancel:disabled {
 	color: #ccc;
 }
+
+
+/* Key-pair-management modal */
+#modal-kp-manage .modal-body {
+	padding: 0;
+}
+
+#modal-kp-manage .action {
+	background: rgba(25, 25, 25, 0.9)
+}
+
+#modal-kp-manage .action #create-kp {
+	text-align: left;
+	padding: 10px;
+	border-radius: 0;
+}
+
+#modal-kp-manage .action #create-kp:before {
+	padding-right: 5px;
+}
+
+#modal-kp-manage .action .btn-group {
+	padding-left: 146px;
+	margin-top: -37px;
+	line-height: 37px;
+}
+
+#modal-kp-manage .action .btn-group button {
+	color: white;
+}
+
+#modal-kp-manage .action .btn-group button:hover {
+	color: #aaa;
+	cursor: pointer;
+}
+
+#modal-kp-manage .action #kp-refresh {
+	float: right;
+	padding-top: 8px;
+}
+
+#modal-kp-manage .action .btn-group [class^="icon-"]:before
+, #modal-kp-manage .action .btn-group [class*=" icon-"]:before {
+	font-size: 20px;
+}
+
+#modal-kp-manage .list {
+	position: relative;
+}
+
+#modal-kp-manage .slidebox {
+	transition-property: max-height;
+	transition-duration: .2s;
+	transition-timing-function: ease-in-out;
+	background: #252A2E;
+	max-height: 0;
+	overflow: hidden;
+	position: absolute;
+	width: 100%;
+	z-index: 71;
+}
+
+#modal-kp-manage .slidebox.show {
+	max-height: 210px;
+}
+
+
+.sortable::selection {
+	background: transparent;
+}
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,82 @@
+<div style="width:855px;" id="modal-kp-manage">
+    <div class="modal-header">
+        <h3>Manage Key Pairs in {{region_name}}</h3>
+        <i class="modal-close">×</i>
+    </div>
+
+    <div class="modal-body">
+        <div class="content-wrap">
+            <div class="action">
+                <button class="icon-new-stack btn btn-blue" id="create-kp">Create Key Pair</button>
+                <div class="btn-group">
+                    <button class="icon-import" id="kp-import"></button>
+                    <button class="icon-del" id="kp-delete"></button>
+                    <button class="icon-refresh" id="kp-refresh"></button>
+                </div>
+            </div>
+            <div class="list">
+                <div class="slidebox">
+                    <p>1</p>
+                    <p>1</p>
+                    <p>1</p>
+                    <p>1</p>
+                    <p>1</p>
+                    <p>1</p>
+                    <p>1</p>
+                </div>
+                <div id="ami-table-wrap" class="table-head-fix">
+                        <table class="table-head">
+                            <thead>
+                                <tr>
+                                    <th style="width: 46px;">
+                                        <div class="checkbox">
+                                            <input id="kp-select-all" type="checkbox" value="None">
+                                            <label for="kp-select-all"></label>
+                                        </div>
+                                    </th>
+                                    <th class="sortable">Name</th>
+                                    <th style="width:500px;">Fingerprint</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="scroll-wrap">
+                            <div class="scrollbar-veritical-wrap" style="display: block;"><div class="scrollbar-veritical-thumb"></div></div>
+                            <div class="scroll-content" style="display:block;">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 20px;"><div class="th-inner"></div></th>
+                                            <th><div class="th-inner"></div></th>
+                                            <th style="width: 476px;"><div class="th-inner"></div></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="community_ami_table">
+                                        <tr class="item" data-id="">
+                                            <td class="ami-table-fav">
+                                                <div class="checkbox">
+                                                    <input id="kp-select-1" type="checkbox" value="None">
+                                                    <label for="kp-select-1"></label>
+                                                </div>
+                                            </td>
+                                            <td class="ami-table-id">kp-23amfoed2</td>
+                                            <td class="ami-table-size">01:5b:8b:f3:74:6e:f1:43:16:26:d3:32:d1:e9:21:53:41:9b:29:44</td>
+                                        </tr>
+                                        <tr class="item" data-id="">
+                                            <td class="ami-table-fav">
+                                            </td>
+                                            <td class="ami-table-id">kp-dfsswe223</td>
+                                            <td class="ami-table-size">02:5b:8b:f3:74:6e:f1:43:16:26:d3:32:d1:e9:21:53:41:9b:29:44</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+            </div>
+        </div>
+    </div>
+</div>

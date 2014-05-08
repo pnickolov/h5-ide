@@ -24,4 +24,3 @@
     </div>
     <div class="manage-kp"><i class="icon-edit"></i>{{i18n "PROP_INSTANCE_MANAGE_KP"}}</div>
 </div>
-

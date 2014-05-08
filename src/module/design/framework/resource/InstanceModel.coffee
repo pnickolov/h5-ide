@@ -755,6 +755,16 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
 
       {uid:null,mid:null}
 
+    setKey: (keyName, noKey) ->
+      if noKey
+        @set 'keyName', ''
+        @set 'keyType', 'noKey'
+      else
+        @set 'keyName', keyName
+        @set 'keyType', ''
+
+
+
     diffJson : ( newData, oldData )->
       changeData = newData or oldData
 

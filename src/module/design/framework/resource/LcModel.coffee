@@ -146,6 +146,15 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
     setStateData : (stateAryData) ->
       @set("state", stateAryData)
 
+    setKey: (keyName, noKey) ->
+      if noKey
+        @set 'keyName', ''
+        @set 'keyType', 'noKey'
+      else
+        @set 'keyName', keyName
+        @set 'keyType', ''
+
+
     setAmi                : InstanceModel.prototype.setAmi
     getAmi                : InstanceModel.prototype.getAmi
     getDetailedOSFamily   : InstanceModel.prototype.getDetailedOSFamily

@@ -41,6 +41,12 @@ define [ "Design" ], (Design)->
                         e.NetworkAclAssociationId = ""
                         e.NetworkAclId = ""
                         return
+                when 'AWS.VPC.VPNGateway'
+                    compo.resource.VpnGatewayId = ""
+                when 'AWS.VPC.VPNConnection'
+                    compo.resource.VpnConnectionId = ""
+                when 'AWS.VPC.CustomerGateway'
+                    compo.resource.CustomerGatewayId = ""
                 when 'AWS.EC2.Tag'
                     delete components[comp]
                 else

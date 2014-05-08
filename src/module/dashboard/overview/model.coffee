@@ -303,7 +303,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                 @status.isAwsHandleWait = true
                 return
 
-            if App.user.hasCredential() #demo account not save data
+            if not App.user.hasCredential() #demo account not save data
                 return
 
             data = result.resolved_data

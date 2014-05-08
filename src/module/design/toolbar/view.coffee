@@ -332,32 +332,25 @@ define [ 'MC', 'event',
                     $('#stack-name-exist').addClass('hide')
             appToStackCb = (err, data, id)->
                 if err
-                    console.info err, "Error While Save Stack"
+                    #console.info err, "Error While Save Stack"
                     return
+                #console.error data, "==============="
                 if data.id
-                    notification "success", "Update"
+                    notification "warning", "Update"
                 else
-                    notification "success", "Create"
+                    notification "warning", "Create"
+                    ide_event.trigger ide_event.UPDATE_STACK_LIST, 'SAVE_STACK', [id]
 
-                ide_event.trigger ide_event.UPDATE_STACK_LIST, 'SAVE_STACK', [id]
-                if MC.common.other.isCurrentTab id
-
-                    #set toolbar flag
-                    @setFlag id, 'SAVE_STACK', data.name
-
-                    # push event
-                    ide_event.trigger ide_event.OPEN_DESIGN_TAB, "RELOAD_STACK", id, data.region
-
-                else
-                    ide_event.trigger ide_event.OPEN_DESIGN_TAB, "OPEN_STACK", data.name , data.region, id
+                ide_event.trigger ide_event.OPEN_DESIGN_TAB, "OPEN_STACK", data.name , data.region, data.id||id
             $("#btn-confirm").on 'click', {target: this}, (event)->
-                console.log "Toolbar save app as stack"
+                #console.log "Toolbar save app as stack"
 
                 if $("#save_new_stack").find(".radio-instruction").hasClass("hide")
                     # save to original stack
                     modal.close()
                     stackData = Design.instance().serializeAsStack()
                     stackData.id = originStack
+                    #console.info stackData,"====>======>======>"
                     ApiRequest( "saveStack",
                         username: $.cookie( 'usercode' )
                         session_id: $.cookie( 'session_id' )
@@ -368,6 +361,7 @@ define [ 'MC', 'event',
                     , ( err )->
                         appToStackCb(err, stackData)
                     return false
+
                 new_name = $("#modal-input-value").val()
 
                 #Check Stack Name
@@ -384,6 +378,7 @@ define [ 'MC', 'event',
                     modal.close()
                     newData = Design.instance().serializeAsStack()
                     newData.name = new_name
+                    #console.info newData,"====>======>======>"
                     ApiRequest("createStack",
                         username: $.cookie( 'usercode' )
                         session_id: $.cookie( 'session_id' )

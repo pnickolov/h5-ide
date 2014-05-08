@@ -62,6 +62,11 @@ Whenever these (rare) issue happens, close the process by hitting `Ctrl+C`, or c
 * 如果你将要push的分支的远端比本地要新，需要使用`git pull --rebase; git push`，来先将远端rebase到本地，然后再push。
 * 使用`gulp debug`和`gulp release`之后，仓库里面会多一个commit（里面包含package.json的修改），这个commit在push到远端的时候，如果和远端冲突了，不要用`git pull --rebase`来解决。只能用merge来解决。
 
+* 开发的代码直接commit到`develop`上面，除非：
+1. 你觉得你的这些commit的代码不够稳定，会影响IDE。 
+2. 你觉得你的需要一段时间才能完成一个feature。 这两种情况下，请建个feature。 
+* `gulp debug`部署mc3.io，只能在`develop`分支做（相对的，`gulp release`只能在`master`做）。这就意味着，如果你要将自己的feature功能发布到mc3。就需要先在本地确保你的feature足够稳定，然后再将你的代码merge到develop，然后再`gulp debug`
+
 
 ## Best Practice
 ### # 使用正确的方式定义模块

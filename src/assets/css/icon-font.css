@@ -70,7 +70,9 @@
 .icon-drag-copy:before,
 .icon-gear:before,
 .icon-menu:before,
-.icon-expand:before {
+.icon-expand:before,
+.icon-save-app:before,
+.icon-support:before {
   font: 16px/1em "MCIcon";
   font-weight: normal;
   -webkit-font-smoothing: antialiased; }
@@ -133,7 +135,7 @@
   content: "\F122"; }
 
 .icon-terminate:before {
-  content: "\F123"; }
+  content: "\F154"; }
 
 .icon-caret-right:before {
   content: "\F124"; }
@@ -272,3 +274,9 @@
 
 .icon-expand:before {
   content: "\F152"; }
+
+.icon-save-app:before {
+  content: "\F153"; }
+
+.icon-support:before {
+  content: "\F155"; }

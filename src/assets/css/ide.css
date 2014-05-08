@@ -296,6 +296,10 @@ button {
 	padding: 0 20px;
 }
 
+#support:before {
+	margin-right: 5px;
+}
+
 .header-menu > .dropdown > .js-toggle-dropdown,
 #user-dropdown-wrapper > li {
 	display : block;

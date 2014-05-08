@@ -84,6 +84,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
 
       # Create additonal association if the instance is created by user.
       if option.createByUser and not option.cloneSource
+        ###
         #assign DefaultKP
         KpModel = Design.modelClassForType( constant.RESTYPE.KP )
         defaultKp = KpModel.getDefaultKP()
@@ -91,6 +92,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
           defaultKp.assignTo( this )
         else
           console.error "No DefaultKP found when initialize InstanceModel"
+        ###
 
         #assign DefaultSG
         SgModel = Design.modelClassForType( constant.RESTYPE.SG )

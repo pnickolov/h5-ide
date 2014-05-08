@@ -161,11 +161,13 @@ var constant_data = {
 
 	DESIGN_INIT_DATA_VPC:
 	{
+		/*
 		KP : {
 			type : "AWS.EC2.KeyPair",
 			name : "DefaultKP",
 			resource : { KeyName : "DefaultKP" }
 		},
+		*/
 		SG : {
 			type : "AWS.EC2.SecurityGroup",
 			name : "DefaultSG",

@@ -662,6 +662,24 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
 
       @set("state", stateAryData)
 
+    setKey: (keyName, noKey) ->
+      if noKey
+        @set 'keyName', ''
+        @set 'keyType', 'noKey'
+      else
+        @set 'keyName', keyName
+        @set 'keyType', ''
+
+    getKey: ->
+      kp = @connectionTargets( "KeypairUsage" )[0]
+      if kp
+        kp.createRef( "KeyName" )
+      else
+        if @get( 'keyType' ) is 'noKey'
+          ''
+        else
+          @get 'keyName'
+
     serialize : ()->
 
       allResourceArray = []
@@ -753,24 +771,6 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
             return { uid : asg.get("lc").id, mid : instance_id }
 
       {uid:null,mid:null}
-
-    setKey: (keyName, noKey) ->
-      if noKey
-        @set 'keyName', ''
-        @set 'keyType', 'noKey'
-      else
-        @set 'keyName', keyName
-        @set 'keyType', ''
-
-    getKey: ->
-      kp = @connectionTargets( "KeypairUsage" )[0]
-      if kp
-        kp.createRef( "KeyName" )
-      else
-        if @get( 'keyType' ) is 'noKey'
-          ''
-        else
-          @get 'keyName'
 
 
 

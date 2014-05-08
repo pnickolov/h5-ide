@@ -176,7 +176,7 @@ define [ "./SettingsDialogTpl", 'i18n!nls/lang.js', "backbone" ], ( SettingsTpl,
         privatekey = $("#CredSetupSecretKey").val()
 
         self = this
-        App.user.changeCredential( account, accesskey, privatekey ).then ()->
+        App.user.changeCredential( account, accesskey, privatekey, true ).then ()->
           self.showLoadingResource()
         , ( err )->
           if err
@@ -188,7 +188,7 @@ define [ "./SettingsDialogTpl", 'i18n!nls/lang.js', "backbone" ], ( SettingsTpl,
       showCredUpdateFail : ()->
         $("#CredSetupMsg").text lang.ide.SETTINGS_ERR_CRED_UPDATE
         $("#modal-box .modal-close").show()
-        self.showCredSetup()
+        @showCredSetup()
 
       showCredConfirm : ()->
         $("#CredentialTab").children().hide()

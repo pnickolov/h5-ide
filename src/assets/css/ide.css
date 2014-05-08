@@ -711,6 +711,11 @@ button {
 	margin-top : 10px;
 }
 
+#WelcomeDialog {
+	width      : 500px;
+	min-height : 200px;
+}
+
 #WelcomeDialog .link-style {
 	color       : #148BE6;
 	float       : left;

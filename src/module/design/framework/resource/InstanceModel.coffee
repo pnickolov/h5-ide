@@ -592,7 +592,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
           tenancy = "dedicated"
 
       kp = @connectionTargets( "KeypairUsage" )[0]
-      kp = if kp then kp.createRef( "KeyName" ) else ""
+      kp = if kp then kp.createRef( "KeyName" ) else @get 'keyName'
 
       name = @get("name")
       if @get("count") > 1 then name += "-0"
@@ -871,7 +871,13 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
       model = new Model( attr )
 
       # Add Keypair
-      resolve( MC.extractID( data.resource.KeyName ) ).assignTo( model )
+      KP = resolve( MC.extractID( data.resource.KeyName ) )
+
+      if KP
+        KP.assignTo( model )
+      else
+        model.set 'keyName', data.resource.KeyName
+
       null
   }
 

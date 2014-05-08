@@ -40,10 +40,6 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
 
         @initInstanceType()
 
-        # Default Kp
-        KpModel = Design.modelClassForType( constant.RESTYPE.KP )
-        KpModel.getDefaultKP().assignTo( this )
-
         # Default Sg
         defaultSg = Design.modelClassForType( constant.RESTYPE.SG ).getDefaultSg()
         SgAsso = Design.modelClassForType( "SgAsso" )
@@ -204,7 +200,7 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
           ImageId                  : @get("imageId")
           EbsOptimized             : if @isEbsOptimizedEnabled() then @get("ebsOptimized") else false
           BlockDeviceMapping       : blockDevice
-          KeyName                  : ""
+          KeyName                  : @get("keyName")
           SecurityGroups           : sgarray
           LaunchConfigurationName  : @get("configName") or @get("name")
           InstanceType             : @get("instanceType")
@@ -269,7 +265,13 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
         new SgAsso( model, resolve( MC.extractID(sg) ) )
 
       # Add Keypair
-      resolve( MC.extractID( data.resource.KeyName ) ).assignTo( model )
+      KP = resolve( MC.extractID( data.resource.KeyName ) )
+
+      if KP
+        KP.assignTo( model )
+      else
+        model.set 'keyName', data.resource.KeyName
+
       null
   }
 

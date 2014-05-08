@@ -309,6 +309,18 @@ define [ 'MC', 'event',
         appToStackClick: (event) ->
             console.log "Click to save App as Stack"
 
+            appToStackCb = (err, data, id)->
+                if err
+                    notification 'error', sprintf lang.ide.TOOL_MSG_ERR_SAVE_FAILED, data.name
+                    return
+                if data.id
+                    notification "info", sprintf lang.ide.TOOL_MSG_INFO_HDL_SUCCESS, lang.ide.TOOLBAR_HANDLE_SAVE_STACK, data.name
+                else
+                    notification "info", sprintf lang.ide.TOOL_MSG_INFO_HDL_SUCCESS, lang.ide.TOOLBAR_HANDLE_CREATE_STACK, data.name
+                    #update stackList
+                    ide_event.trigger ide_event.UPDATE_STACK_LIST, 'SAVE_STACK', [id]
+                ide_event.trigger ide_event.OPEN_DESIGN_TAB, "OPEN_STACK", data.name , data.region, data.id||id
+
             name = MC.common.other.canvasData.get 'name'
 
             #set default name
@@ -330,27 +342,15 @@ define [ 'MC', 'event',
                     $("#stack-name-exist").removeClass('hide')
                 else
                     $('#stack-name-exist').addClass('hide')
-            appToStackCb = (err, data, id)->
-                if err
-                    #console.info err, "Error While Save Stack"
-                    return
-                #console.error data, "==============="
-                if data.id
-                    notification "warning", "Update"
-                else
-                    notification "warning", "Create"
-                    ide_event.trigger ide_event.UPDATE_STACK_LIST, 'SAVE_STACK', [id]
 
-                ide_event.trigger ide_event.OPEN_DESIGN_TAB, "OPEN_STACK", data.name , data.region, data.id||id
             $("#btn-confirm").on 'click', {target: this}, (event)->
-                #console.log "Toolbar save app as stack"
+                console.log "Toolbar save app as stack"
 
                 if $("#save_new_stack").find(".radio-instruction").hasClass("hide")
                     # save to original stack
                     modal.close()
                     stackData = Design.instance().serializeAsStack()
                     stackData.id = originStack
-                    #console.info stackData,"====>======>======>"
                     ApiRequest( "saveStack",
                         username: $.cookie( 'usercode' )
                         session_id: $.cookie( 'session_id' )
@@ -378,7 +378,6 @@ define [ 'MC', 'event',
                     modal.close()
                     newData = Design.instance().serializeAsStack()
                     newData.name = new_name
-                    #console.info newData,"====>======>======>"
                     ApiRequest("createStack",
                         username: $.cookie( 'usercode' )
                         session_id: $.cookie( 'session_id' )

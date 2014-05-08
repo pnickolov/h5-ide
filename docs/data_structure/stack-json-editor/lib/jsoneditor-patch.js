@@ -32,7 +32,7 @@
  */
 (function () {
 
-var res_list = '|$AZ0|$INSTANCE0|$VOLUME0|$DEFAULT-SG|$DEFAULT-KP|$EIP0|$ENI0|$ELB0|$SERVER-CERTIFICATE0|$VPC|$DHCP|$IGW|$VGW|$SUBNET0|$ROUTETABLE0|$DEFAULT-ACL|$VPN0|$CGW0|$ASG0|$LAUNCH-CONFIGURATION0|$CLOUD-WATCH0|$SCALING-POLICY0|$NOTIFICATION-CONFIGURATION0|$TOPIC|$SUBSCRIPTION0|$EC2-TAG|$ASG-TAG|';
+var res_list = '|$AZ0|$INSTANCE0|$VOLUME0|$DEFAULT-SG|$DEFAULT-KP|$EIP0|$ENI0|$ELB0|$SERVER-CERTIFICATE0|$VPC|$DHCP|$IGW|$VGW|$SUBNET0|$ROUTETABLE0|$DEFAULT-ACL|$VPN0|$CGW0|$ASG0|$LAUNCH-CONFIGURATION0|$CLOUD-WATCH0|$SCALING-POLICY0|$NOTIFICATION-CONFIGURATION0|$TOPIC|$SUBSCRIPTION0|$EC2-TAG|$ASG-TAG|$RDSInstance0|$RDSParameter0|$RDSParameterGroup0|$RDS-SG0|$RDSSnapshot0|$DBSubnetGroup0|$RDSEventSubscription0|$RDSOptionGroup0|$RDS-Tag|';
 var res_map = {};
 res_map['$VPC']={'desc':'stack/app', 'api':{ 'DescribeVpcs':'AWSEC2/latest/APIReference/ApiReference-query-DescribeVpcs', 'VpcType':'AWSEC2/latest/APIReference/ApiReference-ItemType-VpcType'}};
 res_map['$SUBNET0']={'desc':'stack/app', 'api':{ 'DescribeSubnets':'AWSEC2/latest/APIReference/ApiReference-query-DescribeSubnets', 'SubnetType':'AWSEC2/latest/APIReference/ApiReference-ItemType-SubnetType'}};
@@ -61,7 +61,16 @@ res_map['$SERVER-CERTIFICATE0']={'desc':'stack/app', 'api':{ 'ListServerCertific
 res_map['$EC2-TAG']={'desc':'app', 'api':{ 'DescribeTags':'AWSEC2/latest/APIReference/ApiReference-query-DescribeTags', 'TagSetItemType':'AWSEC2/latest/APIReference/ApiReference-ItemType-TagSetItemType'}};
 res_map['$ASG-TAG']={'desc':'app', 'api':{ 'DescribeTags':'AutoScaling/latest/APIReference/API_DescribeTags', 'TagDescription':'AutoScaling/latest/APIReference/API_TagDescription'}};
 res_map['$AZ0']={'desc':'stack/app', 'api':{ 'DescribeAvailabilityZones':'AWSEC2/latest/APIReference/ApiReference-query-DescribeAvailabilityZones', 'AvailabilityZoneItemType':'AWSEC2/latest/APIReference/ApiReference-ItemType-AvailabilityZoneItemType'}};
-
+//RDS
+res_map['$RDSInstance0']={'desc':'stack/app', 'api':{ 'DescribeDBInstances':'AmazonRDS/latest/APIReference/API_DescribeDBInstances', 'DBInstance':'AmazonRDS/latest/APIReference/API_DBInstance'}};
+res_map['$RDSParameter0']={'desc':'stack/app', 'api':{ 'DescribeDBParameters':'AmazonRDS/latest/APIReference/API_DescribeDBParameters', 'Parameter':'AmazonRDS/latest/APIReference/API_Parameter'}};
+res_map['$RDSParameterGroup0']={'desc':'stack/app', 'api':{ 'DescribeDBParameterGroups':'AmazonRDS/latest/APIReference/API_DescribeDBParameterGroups', 'DBParameterGroup':'AmazonRDS/latest/APIReference/API_DBParameterGroup'}};
+res_map['$RDS-SG0']={'desc':'stack/app', 'api':{ 'DescribeDBSecurityGroups':'AmazonRDS/latest/APIReference/API_DescribeDBSecurityGroups', 'DBSecurityGroup':'AmazonRDS/latest/APIReference/API_DBSecurityGroup'}};
+res_map['$RDSSnapshot0']={'desc':'stack/app', 'api':{ 'DescribeDBSnapshots':'AmazonRDS/latest/APIReference/API_DescribeDBSnapshots', 'DBSnapshot':'AmazonRDS/latest/APIReference/API_DBSnapshot'}};
+res_map['$DBSubnetGroup0']={'desc':'stack/app', 'api':{ 'DescribeDBSubnetGroups':'AmazonRDS/latest/APIReference/API_DescribeDBSubnetGroups', 'DBSubnetGroup':'AmazonRDS/latest/APIReference/API_DBSubnetGroup'}};
+res_map['$RDSEventSubscription0']={'desc':'stack/app', 'api':{ 'DescribeEventSubscriptions':'AmazonRDS/latest/APIReference/API_DescribeEventSubscriptions', 'EventSubscription':'AmazonRDS/latest/APIReference/API_EventSubscription'}};
+res_map['$RDSOptionGroup0']={'desc':'stack/app', 'api':{ 'DescribeOptionGroups':'AmazonRDS/latest/APIReference/API_DescribeOptionGroups', 'OptionGroup':'AmazonRDS/latest/APIReference/API_OptionGroup'}};
+res_map['$RDS-Tag']={'desc':'stack/app', 'api':{ 'ListTagsForResource':'AmazonRDS/latest/APIReference/API_ListTagsForResource', 'Tag':'AmazonRDS/latest/APIReference/API_Tag'}};
 
 /**
  * @constructor JSONEditor

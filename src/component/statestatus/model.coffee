@@ -9,7 +9,7 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], ( cons
         initialize: () ->
             @collection = new ( @__customCollection() )()
 
-            stateList = MC.data.websocket.collection.status.find().fetch()
+            stateList = App.WS.collection.status.find().fetch()
             @collection.set @__dispose( stateList ).models, silent: true
             @set 'items', @collection
             @set 'new', []

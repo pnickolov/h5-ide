@@ -2,7 +2,7 @@
 define [ "Design", "constant" ], ( Design, constant )->
 
   # EniIpVisitor is an util function to allow Subnet to re-assign IPs for all Eni,
-  # when deserializing.
+  # when serializing.
 
   prepareEniData = ( uid, eniArray )->
     subnet = Design.instance().component( uid )

@@ -799,6 +799,237 @@
           "Value": "tag value, STRING, example:all-aws-resource"
         }
       ]
+    },
+    "$RDSInstance0": {
+      "type": "AWS.RDS.DBInstance",
+      "name": "",
+      "uid": "",
+      "resource": {
+        "AllocatedStorage": "",
+        "AutoMinorVersionUpgrade": "",
+        "AvailabilityZone": "",
+        "BackupRetentionPeriod": "",
+        "CharacterSetName": "",
+        "DBInstanceClass": "",
+        "DBInstanceIdentifier": "",
+        "DBInstanceStatus": "",
+        "DBName": "",
+        "DBParameterGroups": {
+          "DBParameterGroupName": "",
+          "ParameterApplyStatus": ""
+        },
+        "DBSecurityGroups": [
+          {
+            "DBSecurityGroupName": "",
+            "Status": ""
+          }
+        ],
+        "DBSubnetGroup": {
+          "DBSubnetGroupDescription": "",
+          "DBSubnetGroupName": "",
+          "SubnetGroupStatus": "",
+          "Subnets": [
+            {
+              "SubnetAvailabilityZone": "",
+              "SubnetIdentifier": "",
+              "SubnetStatus": ""
+            }
+          ],
+          "VpcId": ""
+        },
+        "Endpoint": {
+          "Address": "",
+          "Port": ""
+        },
+        "Engine": "",
+        "EngineVersion": "",
+        "InstanceCreateTime": "",
+        "Iops": "",
+        "LatestRestorableTime": "",
+        "LicenseModel": "",
+        "MasterUsername": "",
+        "MasterUserPassword": "",
+        "MultiAZ": "",
+        "OptionGroupMembership": {
+          "OptionGroupName": "",
+          "Status": ""
+        },
+        "PendingModifiedValues": {
+          "AllocatedStorage": "",
+          "BackupRetentionPeriod": "",
+          "DBInstanceClass": "",
+          "EngineVersion": "",
+          "Iops": "",
+          "MasterUserPassword": "",
+          "MultiAZ": "",
+          "Port": ""
+        },
+        "PreferredBackupWindow": "",
+        "PreferredMaintenanceWindow": "",
+        "ReadReplicaDBInstanceIdentifiers": [],
+        "ReadReplicaSourceDBInstanceIdentifier": "",
+        "PubliclyAccessible": "",
+        "VpcSecurityGroups": []
+      }
+    },
+    "$RDSParameter0": {
+      "type": "AWS.RDS.Parameter",
+      "name": "",
+      "uid": "",
+      "resource": {
+        "DBParameterGroupName": "",
+        "Parameters": [
+          {
+            "AllowedValues": "",
+            "ApplyMethod": "",
+            "ApplyType": "",
+            "DataType": "",
+            "Description": "",
+            "IsModifiable": "",
+            "MinimumEngineVersion": "",
+            "ParameterName": "",
+            "ParameterValue": "",
+            "Source": ""
+          }
+        ]
+      }
+    },
+    "$RDSParameterGroup0": {
+      "type": "AWS.RDS.ParameterGroup",
+      "name": "",
+      "uid": "",
+      "resource": {
+        "DBParameterGroupFamily": "",
+        "DBParameterGroupName": "",
+        "Description": ""
+      }
+    },
+    "$RDS-SG0": {
+      "type": "AWS.RDS.SecurityGroup",
+      "name": "",
+      "uid": "",
+      "resource": {
+        "DBSecurityGroupDescription": "",
+        "DBSecurityGroupName": "",
+        "EC2SecurityGroups": [
+          {
+            "EC2SecurityGroupId": "",
+            "EC2SecurityGroupName": "",
+            "EC2SecurityGroupOwnerId": "",
+            "Status": ""
+          }
+        ],
+        "IPRanges": [
+          {
+            "CIDRIP": "",
+            "Status": ""
+          }
+        ],
+        "OwnerId": "",
+        "VpcId": ""
+      }
+    },
+    "$RDSSnapshot0": {
+      "type": "AWS.RDS.Snapshot",
+      "name": "",
+      "uid": "",
+      "resource": {
+        "AllocatedStorage": "",
+        "AvailabilityZone": "",
+        "DBInstanceIdentifier": "",
+        "DBSnapshotIdentifier": "",
+        "Engine": "",
+        "EngineVersion": "",
+        "InstanceCreateTime": "",
+        "Iops": "",
+        "LicenseModel": "",
+        "MasterUsername": "",
+        "Port": "",
+        "SnapshotCreateTime": "",
+        "SnapshotType": "",
+        "Status": "",
+        "VpcId": ""
+      }
+    },
+    "$DBSubnetGroup0": {
+      "type": "AWS.RDS.SubnetGroup",
+      "name": "",
+      "uid": "",
+      "resource": {
+        "DBSubnetGroupDescription": "",
+        "DBSubnetGroupName": "",
+        "SubnetGroupStatus": "",
+        "Subnets": [
+          {
+            "SubnetAvailabilityZone": "",
+            "SubnetIdentifier": "",
+            "SubnetStatus": ""
+          }
+        ],
+        "VpcId": ""
+      }
+    },
+    "$RDSEventSubscription0": {
+      "type": "AWS.RDS.EventSubscription",
+      "name": "",
+      "uid": "",
+      "resource": {
+        "CustSubscriptionId": "",
+        "CustomerAwsId": "",
+        "Enabled": "",
+        "EventCategoriesList": [],
+        "SnsTopicArn": "",
+        "SourceIdsList": [],
+        "SourceType": "",
+        "Status": "",
+        "SubscriptionName": "",
+        "SubscriptionCreationTime": ""
+      }
+    },
+    "$RDSOptionGroup0": {
+      "type": "AWS.RDS.OptionGroup",
+      "name": "",
+      "uid": "",
+      "resource": {
+        "AllowsVpcAndNonVpcInstanceMemberships": "",
+        "EngineName": "",
+        "MajorEngineVersion": "",
+        "OptionGroupDescription": "",
+        "OptionGroupName": "",
+        "Options": [
+          {
+            "DBSecurityGroupMembership": [
+              {
+                "DBSecurityGroupName": "",
+                "Status": ""
+              }
+            ],
+            "OptionDescription": "",
+            "OptionName": "",
+            "Port": "",
+            "ApplyImmediately": "",
+            "VpcSecurityGroupMembership": [
+              {
+                "VpcSecurityGroupId": "",
+                "Status": ""
+              }
+            ]
+          }
+        ],
+        "VpcId": ""
+      }
+    },
+    "$RDS-Tag": {
+      "type": "AWS.RDS.Tag",
+      "name": "",
+      "uid": "",
+      "resource": [
+        {
+          "ResourceIds": [],
+          "Key": "",
+          "Value": ""
+        }
+      ]
     }
   },
   "layout": {

@@ -38,9 +38,6 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
     # flag of on tab or dashboard
     is_tab = true
 
-    #websocket
-    ws = MC.data.websocket
-
     #private
     ToolbarModel = Backbone.Model.extend {
 
@@ -902,7 +899,7 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
             me = this
 
             # fetch request
-            req_list = MC.data.websocket.collection.request.find({'_id' : idx}).fetch()
+            req_list = App.WS.collection.request.find({'_id' : idx}).fetch()
 
             if req_list.length > 0
                 req = req_list[0]

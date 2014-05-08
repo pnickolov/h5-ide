@@ -69,7 +69,8 @@
 .icon-import:before,
 .icon-drag-copy:before,
 .icon-gear:before,
-.icon-menu:before {
+.icon-menu:before,
+.icon-save-app:before {
   font: 16px/1em "MCIcon";
   font-weight: normal;
   -webkit-font-smoothing: antialiased; }
@@ -132,7 +133,7 @@
   content: "\F122"; }
 
 .icon-terminate:before {
-  content: "\F123"; }
+  content: "\F152"; }
 
 .icon-caret-right:before {
   content: "\F124"; }
@@ -268,3 +269,6 @@
 
 .icon-menu:before {
   content: "\F151"; }
+
+.icon-save-app:before {
+  content: "\F153"; }

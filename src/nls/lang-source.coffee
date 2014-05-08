@@ -874,7 +874,7 @@ module.exports =
       en: "Save App as Stack"
       zh: "将 App 保存为 Stack"
     TOOL_POP_INTRO_1:
-      en: "Saving app as stack helps you to `revert` changes made during app editing back to stack."
+      en: "Saving app as stack helps you to revert changes made during app editing back to stack."
       zh: ""
     TOOL_POP_INTRO_2:
       en: "Canvas design, resource properties and instance states will be saved."

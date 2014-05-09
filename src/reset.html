@@ -21,6 +21,7 @@
 		<footer id="footer">
 			<p class="pad20">1st Floor, 795 Folsom Street, San Francisco, CA., USA 94107</p>
 			<p class="pad20">© MadeiraCloud 2014. <a href="http://www.visualops.io/terms-conditions-privacy-policy" alt="Terms, Conditions and Privacy Policy" title="Terms, Conditions and Privacy Policy">Terms, Conditions and Privacy Policy</a>.</p>
+            <div id="arn"></div>
 		</footer>
 
         <script id="expire-template" type="text/x-handlebars-template">
@@ -55,10 +56,10 @@
                     <h2>{{ i18n "reset" }}</h2>
                 </div>
                 <form id="reset-form" method="post" action="" class="box-body">
-                    <div id="password-verification-status" class="verification-status"></div>
+
                     <label for="reset-pw" class="account-label">{{ i18n "reset-new-password" }}</label>
                     <input autocomplete="off" name="password" class="account-input" type="password" id="reset-pw">
-
+                    <div id="password-verification-status" class="verification-status"></div>
                     <div class="account-btn-wrap">
                         <input class="btn btn-primary btn-large account-btn" id="reset-password" type="submit" value="{{ i18n "reset-done-btn" }}">
                     </div>

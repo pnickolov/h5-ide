@@ -56,7 +56,7 @@ define [ "./CanvasElement", "constant", "CanvasManager","i18n!nls/lang.js" ], ( 
 
         # Left Port
         Canvon.path(this.constant.PATH_PORT_DIAMOND).attr({
-          'class'          : 'port port-blue port-eni-sg port-eni-sg-left'
+          'class'          : 'port port-blue port-eni-sg port-eni-sg-left tooltip'
           'data-name'      : 'eni-sg'
           'data-alias'     : 'eni-sg-left'
           'data-position'  : 'left'
@@ -67,7 +67,7 @@ define [ "./CanvasElement", "constant", "CanvasManager","i18n!nls/lang.js" ], ( 
 
         # Left port
         Canvon.path(this.constant.PATH_PORT_RIGHT).attr({
-          'class'          : 'port port-green port-eni-attach'
+          'class'          : 'port port-green port-eni-attach tooltip'
           'data-name'      : 'eni-attach'
           'data-position'  : 'left'
           'data-type'      : 'attachment'
@@ -77,7 +77,7 @@ define [ "./CanvasElement", "constant", "CanvasManager","i18n!nls/lang.js" ], ( 
 
         # Right port
         Canvon.path(this.constant.PATH_PORT_DIAMOND).attr({
-          'class'          : 'port port-blue port-eni-sg port-eni-sg-right'
+          'class'          : 'port port-blue port-eni-sg port-eni-sg-right tooltip'
           'data-name'      : 'eni-sg'
           'data-alias'     : 'eni-sg-right'
           'data-position'  : 'right'
@@ -88,7 +88,7 @@ define [ "./CanvasElement", "constant", "CanvasManager","i18n!nls/lang.js" ], ( 
 
         # Top port(blue)
         Canvon.path(this.constant.PATH_PORT_BOTTOM).attr({
-          'class'      : 'port port-blue port-eni-rtb'
+          'class'      : 'port port-blue port-eni-rtb tooltip'
           'data-name'     : 'eni-rtb'
           'data-position' : 'top'
           'data-type'     : 'sg'

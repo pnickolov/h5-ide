@@ -23,12 +23,17 @@ define [], ()->
   session_id
   ###
 
-  ApiRequestDefs =
+  ApiRequestDefs = {}
+
+  ###
+    Some of the api defined manually, might change to use generated api.
+  ###
+  ApiRequestDefs.Defs =
     login      : { url:"/session/", method:"login",      params:["username", "password"]   }
-    logout     : { url:"/session/", method:"logout",     params:["usercode", "session_id"] }
-    updateCred : { url:"/account/", method:"set_credential", params:["usercode","session_id","access_key","secret_key","account_id","force"] }
-    validateCred : { url:"/account/", method:"validate_credential", params:["usercode","session_id","access_key","secret_key"] }
-    updateAccount : { url:"/account/", method:"update_account", params:["usercode", "session_id", "params"] }
+    logout     : { url:"/session/", method:"logout",     params:["username", "session_id"] }
+    updateCred : { url:"/account/", method:"set_credential", params:["username","session_id","access_key","secret_key","account_id","force"] }
+    validateCred : { url:"/account/", method:"validate_credential", params:["username","session_id","access_key","secret_key"] }
+    updateAccount : { url:"/account/", method:"update_account", params:["username", "session_id", "params"] }
 
 
   ###
@@ -41,9 +46,8 @@ define [], ()->
 
   ApiRequestDefs.AutoFill = ( paramter_name )->
     switch paramter_name
+      # The generated API uses the username as the usercode
       when "username"
-        return App.user.get('username')
-      when "usercode"
         return App.user.get('usercode')
       when "session_id"
         return App.user.get('session')

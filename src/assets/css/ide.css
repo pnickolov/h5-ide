@@ -271,16 +271,19 @@ button {
 	height: 49px;
 	z-index: 10;
 	position: absolute;
-	right: 0;
+	right: 112px;
 }
 
 .header-menu {
 	margin: 0;
 }
 
-.header-menu .dropdown {
-	position           : relative;
-	float              : left;
+.header-menu .dropdown,
+#support {
+	position:    relative;
+	float:       left;
+	height:      50px;
+	line-height: 49px;
 
 	border-left        : 1px solid #222;
 
@@ -289,6 +292,22 @@ button {
 	-ms-transition     : background-color 0.2s;
 	-o-transition      : background-color 0.2s;
 	transition         : background-color 0.2s;
+}
+
+#support {
+	padding  : 0 20px;
+	position : absolute;
+	top      : 0;
+	right    : 0px;
+}
+
+#support:before {
+	margin-right: 5px;
+}
+
+#support:hover {
+	color : #9C6DC0;
+	background-color: rgba(0,0,0,.2);
 }
 
 .header-menu > .dropdown > .js-toggle-dropdown,
@@ -302,7 +321,8 @@ button {
 }
 
 #user-dropdown-wrapper > li {
-	line-height : 49px !important;
+	line-height: 39px !important;
+	height:      40px;
 }
 
 
@@ -311,7 +331,8 @@ button {
 }
 
 .header-menu .dropdown:hover,
-.header-menu .dropdown.open {
+.header-menu .dropdown.open,
+#support:hover {
 	background-color: rgba(0,0,0,.2);
 }
 
@@ -507,7 +528,6 @@ button {
 #user-dropdown-wrapper li {
 	border-bottom : 1px solid #333;
 	line-height   : 36px;
-	width         : 100%;
 	position      : relative;
 }
 
@@ -735,7 +755,7 @@ button {
 /* Main Tab Bar */
 #tabbar-wrapper {
 	padding-left: 45px;
-	padding-right: 180px;
+	padding-right: 260px;
 	height: 49px;
 }
 
@@ -1712,16 +1732,21 @@ button {
 }
 
 .region-resource-status {
-	width: 10px;
-	height: 10px;
-	position: absolute;
-	left: 10px;
-	top: 3px;
+	width:      10px;
+	height:     10px;
+	position:   absolute;
+	left:       10px;
+	top:        -5px;
+	margin-top: 6%;
 }
 
 .region-resource-status.icon-pending:before {
-	font-size: 10px;
-	color: #999;
+	font-size:   10px;
+	line-height: 10px;
+	height:      10px;
+	color:       #999;
+	top:         -5px;
+	position:    relative;
 }
 
 .region-resource-status-running {
@@ -5084,10 +5109,12 @@ a.action-link:hover {
 
 #keypair-rdp {
 	margin-right: 10px;
+	margin-top: 10px;
 }
 
 #keypair-kp-win {
 	width: 140px;
+	margin-top: 10px;
 }
 
 .hidden-details > .dl-vertical {
@@ -6009,6 +6036,10 @@ summary:focus {
 	width: 260px;
 }
 
+.reconnectSession .modal-input {
+	padding-top: 20px;
+}
+
 .disconnected-msg {
 	border-radius    : 2px;
 	background-color : #ec3c38;
@@ -6148,37 +6179,6 @@ summary:focus {
 .icon-remove,
 .icon-edit {
 	font-size: 12px !important;
-}
-
-#feedback {
-	background    : #9C6DC0 url('../images/ide/icon/icon-feedback.png') 10px 10px no-repeat;
-	border        : 1px solid #333;
-	border-bottom : none;
-	border-radius : 4px 4px 0 0;
-	box-shadow    : inset 1px 1px 0 rgba(255,255,255,.2), 1px 1px 10px rgba(0,0,0,0.4);
-
-	position   : absolute;
-	top        : 70%;
-	left       : -38px;
-	text-align : center;
-	padding    : 10px 10px 10px 36px;
-	z-index    : 99;
-
-	color       : #eee;
-	text-shadow : 0 1px rgba(0,0,0,.4);
-	line-height : 20px;
-
-	-webkit-transform : rotate(90deg);
-	-moz-transform    : rotate(90deg);
-	-ms-transform     : rotate(90deg);
-	-o-transform      : rotate(90deg);
-	transform         : rotate(90deg);
-}
-
-#feedback:hover {
-	left: -35px;
-	color: #fff;
-	background-color : #9F62D1;
 }
 
 /* modalDownloadCloudFormationTpl */

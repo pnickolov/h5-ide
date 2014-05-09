@@ -2085,6 +2085,12 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + "</div>\n						<div class=\"action\">"
     + escapeExpression(helpers.i18n.call(depth0, "KEY_PREV_ACTION", {hash:{},data:data}))
     + "\n						</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key mac font-mono\">"
+    + escapeExpression(helpers.i18n.call(depth0, "KEY_CONTENT_EDITOR_MAC", {hash:{},data:data}))
+    + "</div>\n						<div class=\"key pc font-mono\">"
+    + escapeExpression(helpers.i18n.call(depth0, "KEY_CONTENT_EDITOR_PC", {hash:{},data:data}))
+    + "</div>\n						<div class=\"action\">"
+    + escapeExpression(helpers.i18n.call(depth0, "KEY_CONTENT_EDITOR_ACTION", {hash:{},data:data}))
+    + "\n						</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key mac font-mono\">"
     + escapeExpression(helpers.i18n.call(depth0, "KEY_INFO_KEY_MAC", {hash:{},data:data}))
     + "</div>\n						<div class=\"key pc font-mono\">"
     + escapeExpression(helpers.i18n.call(depth0, "KEY_INFO_KEY_PC", {hash:{},data:data}))

@@ -1,5 +1,5 @@
 
-define ["api/ApiRequestDefs", "MC" ], ( ApiDefination )->
+define ["ApiRequestDefs", "api/ApiRequestErrors", "api/ApiRequestHandlers", "api/ApiBundle", "MC" ], ( ApiDefination, ApiErrors, ApiHandlers )->
   ###
   # === ApiRequest ===
   #
@@ -35,7 +35,7 @@ define ["api/ApiRequestDefs", "MC" ], ( ApiDefination )->
     if res.result[0] isnt 0
       # We can do aditional global handling for some specific error here.
       # For example, Invalid Session.
-      gloablHandler = GlobalErrorHandlers[ res.result[0] ]
+      gloablHandler = ApiHandlers[ res.result[0] ]
 
       if gloablHandler
         return gloablHandler( res )
@@ -54,8 +54,12 @@ define ["api/ApiRequestDefs", "MC" ], ( ApiDefination )->
   Abort = ()-> this.ajax.abort(); return
 
 
+
+  ###
+   ApiRequest Defination
+  ###
   ApiRequest = ( apiName, apiParameters )->
-    ApiDef = ApiDefination[ apiName ]
+    ApiDef = ApiDefination.Defs[ apiName ]
     apiParameters = apiParameters || EmptyObject
 
     if not ApiDef
@@ -70,6 +74,7 @@ define ["api/ApiRequestDefs", "MC" ], ( ApiDefination )->
           p.push apiParameters[i]
         else
           p.push ApiDefination.AutoFill(i)
+
     else if apiParameters
       OneParaArray[0] = apiParameters
       RequestData.params = OneParaArray
@@ -95,21 +100,6 @@ define ["api/ApiRequestDefs", "MC" ], ( ApiDefination )->
     request
 
 
-
-  ###
-  # === Error Code Defination ===
-  # TODO :
-  # The Errors is just some random number at this time. Should define it when the Backend Error Code is defined.
-  ###
-  Errors = ApiRequest.Errors =
-    InvalidSession : 19
-
-
-  ###
-  # === Global Error Handlers ===
-  # These handlers are used to handle specific errors for any ajax call
-  ###
-  GlobalErrorHandlers = {}
-  # GlobalErrorHandlers[ Errors.InvalidSession ] = ( res )->
+  ApiRequest.Errors = ApiErrors
 
   ApiRequest

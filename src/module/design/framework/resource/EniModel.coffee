@@ -428,6 +428,9 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
         else
           autoAssign = ipObj.autoAssign
 
+        if ipObj.fixedIpInApp
+          autoAssign = false
+
         ips.push {
           PrivateIpAddress : @getRealIp( ipObj.ip )
           AutoAssign       : autoAssign

@@ -54,7 +54,7 @@ define [ '../base/view', './template/app', 'i18n!nls/lang.js', 'instance_model' 
                 $("#keypair-pwd").val( option.passwd )
             else
                 $("#keypair-login").hide()
-                $("#keypair-no-pwd").text lang.ide.POP_DOWNLOAD_KP_NOT_AVAILABLE
+                $("#keypair-no-pwd").html lang.ide.POP_DOWNLOAD_KP_NOT_AVAILABLE
 
             if option.cmd_line
                 $("#keypair-cmd").val( option.cmd_line )

@@ -1783,18 +1783,6 @@ define [ 'event',
                     maxLines = 1
                     editorSingleLine = true
 
-                editor.setOptions({
-                    enableBasicAutocompletion: true,
-                    maxLines: maxLines,
-                    showGutter: option.showGutter || false,
-                    highlightGutterLine: true,
-                    showPrintMargin: false,
-                    highlightActiveLine: false,
-                    highlightSelectedWord: false,
-                    enableSnippets: false,
-                    singleLine: editorSingleLine
-                })
-
                 resRefModeAry = [{
                     token: 'res_ref_correct',
                     regex: that.resAttrRegexStr
@@ -1805,14 +1793,27 @@ define [ 'event',
 
                 editSession = editor.getSession()
 
+                enableTab = false
+
                 if option.isCodeEditor
 
                     ace.modeResRefRule = resRefModeAry
 
                     if option.extName is 'js'
                         editSession.setMode('ace/mode/javascript')
+
+                    else if option.extName is 'sh'
+                        editSession.setMode('ace/mode/sh')
+
+                    else if option.extName is 'rb'
+                        editSession.setMode('ace/mode/ruby')
+
+                    else if option.extName is 'py'
+                        editSession.setMode('ace/mode/python')
                     
                     editor.setTheme('ace/theme/tomorrow_night')
+
+                    enableTab = true
 
                 else
 
@@ -1823,6 +1824,19 @@ define [ 'event',
                     editSession.$mode.$tokenizer = tk
                     editSession.bgTokenizer.setTokenizer(tk)
                     editor.renderer.updateText()
+
+                editor.setOptions({
+                    enableBasicAutocompletion: true,
+                    maxLines: maxLines,
+                    showGutter: option.showGutter || false,
+                    highlightGutterLine: true,
+                    showPrintMargin: false,
+                    highlightActiveLine: false,
+                    highlightSelectedWord: false,
+                    enableSnippets: false,
+                    singleLine: editorSingleLine,
+                    enableTab: enableTab
+                })
 
                 # move cursor to last
                 editRow = editSession.getLength()

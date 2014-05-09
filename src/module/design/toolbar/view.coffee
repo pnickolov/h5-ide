@@ -238,10 +238,17 @@ define [ 'MC', 'event',
                         # set new name
                         MC.common.other.canvasData.set 'name', new_name
 
+                        # update stack property panel
+                        if $('#property-stack-name').length isnt 0
+                            $('#property-stack-name').val new_name
+                            $('#property-title').text 'Stack - ' + new_name
+
                         # push event
                         ide_event.trigger ide_event.SAVE_STACK, MC.common.other.canvasData.data()
 
                         true
+                    else
+                        $('.resource-name-label').text new_name
 
             else
 

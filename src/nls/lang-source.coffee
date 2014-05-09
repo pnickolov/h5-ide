@@ -3951,7 +3951,8 @@ module.exports =
       zh: "最近修改时间"
 
     POP_DOWNLOAD_KP_NOT_AVAILABLE:
-      en: "Not available yet. Password generation and encryption can sometimes take more than 30 minutes. Please wait at least 15 minutes after launching an instance before trying to retrieve the generated password."
+      en: "<p>Your password is not ready. Password generation can sometimes take more than 30 minutes. Please wait at least 15 minutes after launching an instance before trying to retrieve the generated password.</p>
+<p>If you launched this instance from your own AMI, the password is the same as for the instance from which you created the AMI, unless this setting was modified in the EC2Config service settings.</p>"
       zh: "当前不可用。口令生成和加密通常需要30分钟时间。启动实例后在拿到生成的口令前，请至少等待15分钟。"
 
     POP_BTN_CLOSE:
@@ -4425,6 +4426,18 @@ module.exports =
       en: "Shift + Tab"
       zh: ""
 
+    KEY_CONTENT_EDITOR_MAC:
+      en: "Command + E"
+      zh: ""
+
+    KEY_CONTENT_EDITOR_PC:
+      en: "Ctrl + E"
+      zh: ""
+
+    KEY_CONTENT_EDITOR_ACTION:
+      en: "Open content editor"
+      zh: ""
+
     KEY_PREV_ACTION:
       en: "Switch back to the previous input"
       zh: ""
@@ -4733,7 +4746,10 @@ module.exports =
       en:"Resource %s has format problem, %s."
       zh:""
     TA_MSG_ERROR_STACK_HAVE_NOT_EXIST_AMI:
-      en:"%s <span class='validation-tag tag-%s'>%s</span>'s AMI <span class='validation-tag tag-ami'>%s</span> is not available any more. Please use another AMI by creating new instance."
+      en:"%s <span class='validation-tag tag-%s'>%s</span>'s AMI <span class='validation-tag tag-ami'>%s</span> is not available any more. Please change another AMI."
+      zh:""
+    TA_MSG_ERROR_STACK_HAVE_NOT_EXIST_SNAPSHOT:
+      en:"Snapshot <span class='validation-tag tag-snapshot'>%s</span> attached to %s <span class='validation-tag tag-instance'>%s</span> is not available or not accessible to your account. Please change another one."
       zh:""
     TA_MSG_ERROR_STACK_HAVE_NOT_AUTHED_AMI:
       en:"You are not authorized for %s <span class='validation-tag tag-%s'>%s</span>'s AMI <span class='validation-tag tag-ami'>%s</span>. Go to AWS Marketplace to get authorized or use another AMI by creating new instance."
@@ -4877,4 +4893,14 @@ module.exports =
       en: "User has been blocked."
       zh: "对不起，此账号已被锁住"
 
+    RESET_PASSWORD_ERROR_2:
+      en: "Sorry, but your url is invalid. Please Check your url and try again."
+      zh: "对不起, 您的链接地址不正确, 请检查后重试"
 
+    RESET_PASSWORD_ERROR_12:
+      en: "Sorry, password reset URL is invalid or has expired."
+      zh: "对不起, 您的链接地址不正确或已经失效"
+
+    RESET_PASSWORD_ERROR_18:
+      en: "Sorry, but your params is invalid. Please check your url and try again."
+      zh: "对不起, 您的参数不正确, 请检查后重试"

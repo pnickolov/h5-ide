@@ -303,6 +303,11 @@ button {
 	margin-right: 5px;
 }
 
+#support:hover {
+	color : #9C6DC0;
+	background-color: rgba(0,0,0,.2);
+}
+
 .header-menu > .dropdown > .js-toggle-dropdown,
 #user-dropdown-wrapper > li {
 	display : block;

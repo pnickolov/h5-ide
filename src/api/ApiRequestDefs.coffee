@@ -42,26 +42,16 @@ define [], ()->
   Thus, if the parser cannot parse a result, it should throw an error !!!
   An example would be like : `throw McError( 300, "Cannot parse the result" )`
   ###
-  ApiRequestDefs.Parsers =
-    login : ( result )->
-      usercode    : result[0]
-      email       : result[1]
-      user_hash   : result[2]
-      session_id  : result[3]
-      account_id  : result[4]
-      mod_repo    : result[5]
-      mod_tag     : result[6]
-      state       : result[7]
-      has_cred    : result[8]
+  ApiRequestDefs.Parsers = {}
 
 
   ApiRequestDefs.AutoFill = ( paramter_name )->
     switch paramter_name
       # The generated API uses the username as the usercode
       when "username"
-        return App.user.get('usercode')
+        return $.cookie('usercode')
       when "session_id"
-        return App.user.get('session')
+        return $.cookie('session_id')
     return null
 
   ApiRequestDefs

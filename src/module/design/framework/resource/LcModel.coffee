@@ -160,6 +160,13 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
       else
         @get 'keyName'
 
+    getKeyName: ->
+      kp = @connectionTargets( "KeypairUsage" )[0]
+      if kp
+        if kp.name is 'DefaultKP' then '' else "@#{kp.name}"
+      else
+        if @get( 'keyType' ) is 'noKey' then 'No Key Pair' else @get 'keyName'
+
 
     setAmi                : InstanceModel.prototype.setAmi
     getAmi                : InstanceModel.prototype.getAmi

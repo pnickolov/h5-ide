@@ -457,17 +457,17 @@ setCredit = (result)->
     for ckey, cValue of $.cookie()
         $.removeCookie ckey, domain
 
-    session_info =
-        usercode     : result[0]
-        username     : base64Decode( result[0] )
-        email        : result[1]
-        user_hash    : result[2]
-        session_id   : result[3]
-        account_id   : result[4]
-        mod_repo     : result[5]
-        mod_tag      : result[6]
-        state        : result[7]
-        has_cred     : result[8]
+    session_info = result
+        # usercode     : result[0]
+        # username     : base64Decode( result[0] )
+        # email        : result[1]
+        # user_hash    : result[2]
+        # session_id   : result[3]
+        # account_id   : result[4]
+        # mod_repo     : result[5]
+        # mod_tag      : result[6]
+        # state        : result[7]
+        # has_cred     : result[8]
 
     COOKIE_OPTION =
         expires : 30

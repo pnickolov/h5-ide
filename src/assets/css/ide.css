@@ -269,7 +269,7 @@ button {
 	height: 49px;
 	z-index: 10;
 	position: absolute;
-	right: 0;
+	right: 112px;
 }
 
 .header-menu {
@@ -293,7 +293,10 @@ button {
 }
 
 #support {
-	padding: 0 20px;
+	padding  : 0 20px;
+	position : absolute;
+	top      : 0;
+	right    : 0px;
 }
 
 #support:before {
@@ -540,7 +543,6 @@ button {
 #user-dropdown-wrapper li {
 	border-bottom : 1px solid #333;
 	line-height   : 36px;
-	width         : 100%;
 	position      : relative;
 }
 

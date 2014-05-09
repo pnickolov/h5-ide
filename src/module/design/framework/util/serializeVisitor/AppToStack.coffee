@@ -19,7 +19,6 @@ define [ "Design" ], (Design)->
                 when 'AWS.VPC.Subnet'
                     compo.resource.SubnetId = ""
                 when 'AWS.EC2.EIP'
-                    compo.name = "EIP"
                     compo.resource.AllocationId = ""
                     compo.resource.PublicIp = ""
                 when 'AWS.VPC.RouteTable'
@@ -47,6 +46,8 @@ define [ "Design" ], (Design)->
                     compo.resource.VpnConnectionId = ""
                 when 'AWS.VPC.CustomerGateway'
                     compo.resource.CustomerGatewayId = ""
+                when "AWS.EC2.EBS.Volume"
+                    compo.resource.VolumeId = ""
                 when 'AWS.EC2.Tag'
                     delete components[comp]
                 else

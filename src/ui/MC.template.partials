@@ -24,6 +24,50 @@
 	{{/if}}
 </div>
 
+
+<!-- {{modalAppToStack}} -->
+<div style="width: 520px">
+    <div class="modal-header">
+        <h3>{{title}}</h3>
+        <i class="modal-close">&times;</i>
+    </div>
+    <div class="modal-body">
+        <p class="modal-text-minor">{{intro-1}}</p>
+        <p class="modal-text-minor">{{intro-2}}</p>
+        <div class="modal-center-align-helper">
+            <div class="modal-control-group">
+                <div id="replace_stack" style="padding: 10px 0">
+                    <div class="radio">
+                        <input id="radio-replace-stack" type="radio" name="save-stack-type" checked>
+                        <label for="radio-replace-stack"></label>
+                    </div>
+                    <label class="modal-text-minor" for="radio-replace-stack">{{replace}}</label>
+                    <div style="padding: 10px 22px" class="radio-instruction">
+                        {{replace-info}} "{{input}}" {{replace-info-end}}
+                    </div>
+                </div>
+                <div id="save_new_stack">
+                   <div class="radio">
+                       <input id="radio-new-stack" type="radio" name="save-stack-type">
+                       <label for="radio-new-stack"></label>
+                   </div>
+                   <label class="modal-text-minor" for="radio-new-stack">{{save-new}}</label>
+                   <div style="padding: 10px 22px" class="radio-instruction hide">
+                       <p>{{instruction}}</p>
+                       <input class="input" id="modal-input-value" value="{{input}}" type="text" style="width: 400px"/>
+                       <div id="stack-name-exist" class="hide" style="color: #ec3c38">{{error-message}}</div>
+                   </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button id="btn-confirm" class="btn btn-{{color}}">{{confirm}}</button>
+        <button class="btn modal-close btn-silver">Cancel</button>
+    </div>
+</div>
+
+
 <!-- {{modalApp}} -->
 <div style="width:420px">
 	<div class="modal-header">

@@ -71,8 +71,7 @@
 .icon-gear:before,
 .icon-menu:before,
 .icon-expand:before,
-.icon-save-app:before,
-.icon-support:before {
+.icon-save-app:before {
   font: 16px/1em "MCIcon";
   font-weight: normal;
   -webkit-font-smoothing: antialiased; }
@@ -272,11 +271,8 @@
 .icon-menu:before {
   content: "\F151"; }
 
-.icon-expand:before {
+.icon-expand:beofore {
   content: "\F152"; }
 
 .icon-save-app:before {
   content: "\F153"; }
-
-.icon-support:before {
-  content: "\F155"; }

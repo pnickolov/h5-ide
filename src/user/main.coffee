@@ -72,7 +72,7 @@ userRoute = (routes)->
     #console.log pathArray , hashArray
     # run routes func
     routes[pathArray[0]]?(pathArray, hashArray)
-
+    return
 # guid
 guid = ->
     'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c)->
@@ -98,7 +98,7 @@ api = (option)->
             #console.log error
             if status!='abort'
                 option.error(status, -1)
-    #console.log 'Sending Ajax Request'
+    xhr
 
 # register i18n handlebars helper
 Handlebars.registerHelper 'i18n', (str)->
@@ -116,6 +116,7 @@ loadLang = (cb)->
             $("#main-body").html template()
         success: (data)->
             window.langsrc = data
+            return
             #console.log 'Success', data
         error: (error)->
             goto500()
@@ -182,6 +183,7 @@ init = ->
                         tempLang = tempLang||langsrc.reset['expired-info']
                         langsrc.reset['expired-info'] = langsrc.service['RESET_PASSWORD_ERROR_'+statusCode] || tempLang
                         window.location.hash = "expire"
+                        return
                         #console.log "Error Verify Code!"
             else if hashTarget == "expire"
                 render '#expire-template'
@@ -241,6 +243,7 @@ init = ->
                 render "#success-template"
                 $('#register-get-start').click ->
                     window.location = "/"
+                    return
                     #console.log('Getting start...')
                 return false
             if checkAllCookie() then window.location = '/'
@@ -329,6 +332,7 @@ init = ->
                             cb?(0)
                     )
                 ,500
+                return
                 #console.log 'Setup a new validation request'
             ajaxCheckEmail = (email, status, cb)->
                 xhr?.abort()
@@ -349,6 +353,7 @@ init = ->
                             cb?(0)
                     )
                 ,500
+                return
                 #console.log 'Set up a new validation request'
             resetRegForm = (force)->
                 if force
@@ -494,6 +499,7 @@ ajaxRegister = (params, errorCB)->
             if !statusCode
                 setCredit(result)
                 window.location.hash = "success"
+                return
                 #console.log('registered successfully')
             else
                 errorCB(statusCode)
@@ -511,6 +517,7 @@ ajaxLogin = (params, errorCB)->
             if(!statusCode)
                 setCredit(result)
                 window.location = '/'
+                return
                 #console.log 'Login Now!'
             else
                 errorCB(statusCode)
@@ -564,6 +571,7 @@ ajaxChangePassword = (hashArray,newPw)->
             #console.log result , statusCode
             if(!statusCode)
                 window.location.hash = 'success'
+                return
                 #console.log 'Password Updated Successfully'
             else
                 handleErrorCode(statusCode)

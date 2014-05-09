@@ -566,7 +566,16 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
     data
 
 
-  DesignImpl.prototype.serializeAsStack = ()-> @serialize( { toStack : true } )
+  DesignImpl.prototype.serializeAsStack = (new_name)->
+    json = @serialize( { toStack : true } )
+
+    json.name = new_name||json.name
+    json.state = "Enabled"
+    json.id = ""
+    delete json.history
+    delete json.stack_id
+    delete json.usage
+    json
 
 
 

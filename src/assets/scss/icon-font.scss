@@ -77,8 +77,7 @@
 .icon-gear,
 .icon-menu,
 .icon-expand,
-.icon-save-app,
-.icon-support {
+.icon-save-app, {
 	&:before{
 		font : 16px/1em "MCIcon";
 		font-weight : normal;
@@ -152,9 +151,8 @@
 .icon-drag-copy:before {content:"\F14F";}
 .icon-gear:before {content:"\F150";}
 .icon-menu:before {content:"\F151";}
-.icon-expand:before {content:"\F152";}
+.icon-expand:beofore {content:"\F152";}
 .icon-save-app:before {content:"\F153";}
-.icon-support:before {content:"\F155";}
 
 // .icon-outbound:before {content:"out";}
 // .icon-inbound:before {content:"in";}

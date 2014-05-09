@@ -271,7 +271,7 @@ button {
 	height: 49px;
 	z-index: 10;
 	position: absolute;
-	right: 112px;
+	right : 0;
 }
 
 .header-menu {
@@ -296,9 +296,6 @@ button {
 
 #support {
 	padding  : 0 20px;
-	position : absolute;
-	top      : 0;
-	right    : 0px;
 }
 
 #support:before {

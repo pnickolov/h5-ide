@@ -7,7 +7,8 @@ define [ 'MC' ], ( MC ) ->
 	setCookie = ( result ) ->
 		deleteCookie()
 
-		result.username = MC.base64Decode( result.usercode )
+		result.usercode = result.username
+		result.username = MC.base64Decode( result.username )
 		for key, value of result
 			$.cookie key, value, COOKIE_OPTION
 

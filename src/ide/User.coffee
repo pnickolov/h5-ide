@@ -156,6 +156,8 @@ define [ "ApiRequest", "event" , "backbone" ], ( ApiRequest, ide_event )->
 
         self.set attr
 
+        self.trigger "change:credential"
+
         # LEGACY code, trigger an ide event when credential is updated.
         ide_event.trigger ide_event.UPDATE_AWS_CREDENTIAL
         return

@@ -101,7 +101,10 @@ define [ "ApiRequest", "backbone" ], ( ApiRequest )->
 
     # Send a request to acquire a new session
     acquireSession : ( password )->
-      ApiRequest("login", {password:password}).then ( result )=>
+      ApiRequest("login", {
+        username : @get("username")
+        password : password
+      }).then ( result )=>
 
         $.cookie "session_id", result.session_id, {
           expires : 30

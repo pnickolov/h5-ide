@@ -75,6 +75,7 @@ define [ "ApiRequest", "backbone" ], ( ApiRequest )->
     # Fetch additional user infomation from an api.
     fetch : ()->
       ApiRequest("login", {
+        username : @get("username")
         password : @get("session")
       }).then ( result )=>
 

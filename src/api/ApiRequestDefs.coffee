@@ -23,12 +23,14 @@ define [], ()->
   session_id
   ###
 
-  ApiRequestDefs =
+  ApiRequestDefs = {}
+
+  ApiRequestDefs.Defs =
     login      : { url:"/session/", method:"login",      params:["username", "password"]   }
-    logout     : { url:"/session/", method:"logout",     params:["usercode", "session_id"] }
-    syncRedis  : { url:"/session/", method:"sync_redis", params:["usercode", "session_id"] }
-    updateCred : { url:"/session/", method:"set_credential", params:["usercode","session_id","access_key","secret_key","account_id"] }
-    resetKey   : { url:"/account/", method:"reset_key", params:["usercode","session_id","flag"] }
+    logout     : { url:"/session/", method:"logout",     params:["username", "session_id"] }
+    syncRedis  : { url:"/session/", method:"sync_redis", params:["username", "session_id"] }
+    updateCred : { url:"/session/", method:"set_credential", params:["username","session_id","access_key","secret_key","account_id"] }
+    resetKey   : { url:"/account/", method:"reset_key", params:["username","session_id","flag"] }
     saveStack  : { url:"/stack/",   method:"save",       params:["username", "session_id", "region_name", 'data'] }
     createStack: { url:"/stack/",   method:"create",     params:["username", "session_id", "region_name", "data"] }
     changePwd  : { url:"/account/", method:"update_account", params:["username","session_id","params"]}
@@ -39,23 +41,12 @@ define [], ()->
   An example would be like : `throw McError( 300, "Cannot parse the result" )`
   ###
 
-  ApiRequestDefs.Parsers =
-    login : ( result )->
-      usercode     : result.username
-      username     : MC.base64Decode( result.username )
-      email        : result.email
-      user_hash    : result.user_hash
-      session_id   : result.session_id
-      account_id   : result.account_id
-      mod_repo     : result.mod_repo
-      mod_tag      : result.mod_tag
-      state        : result.state
-      has_cred     : result.has_cred
+  ApiRequestDefs.Parsers = {}
 
 
   ApiRequestDefs.AutoFill = ( paramter_name )->
     switch paramter_name
-      # The generated API uses the username as the usercode
+      # The generated API uses the username as the username
       when "username"
         return $.cookie('usercode')
       when "session_id"

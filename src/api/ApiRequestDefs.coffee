@@ -31,6 +31,7 @@ define [], ()->
     resetKey   : { url:"/account/", method:"reset_key", params:["usercode","session_id","flag"] }
     saveStack  : { url:"/stack/",   method:"save",       params:["username", "session_id", "region_name", 'data'] }
     createStack: { url:"/stack/",   method:"create",     params:["username", "session_id", "region_name", "data"] }
+    changePwd  : { url:"/account/", method:"update_account", params:["username","session_id","params"]}
 
   ###
   Parsers are promise's success hanlder.
@@ -51,14 +52,13 @@ define [], ()->
       has_cred     : result.has_cred
 
 
-  ApiRequestDefs.autoFill = ( paramter_name )->
+  ApiRequestDefs.AutoFill = ( paramter_name )->
     switch paramter_name
+      # The generated API uses the username as the usercode
       when "username"
-        return $.cookie('username')
-      when "usercode"
-        return $.cookie('usercode')
+        return App.user.get('usercode')
       when "session_id"
-        return $.cookie('session_id')
+        return App.user.get('session')
     return null
 
   ApiRequestDefs

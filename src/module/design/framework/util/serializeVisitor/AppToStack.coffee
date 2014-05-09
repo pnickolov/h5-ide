@@ -48,6 +48,8 @@ define [ "Design" ], (Design)->
                     compo.resource.CustomerGatewayId = ""
                 when "AWS.EC2.EBS.Volume"
                     compo.resource.VolumeId = ""
+                when "AWS.VPC.DhcpOptions"
+                    compo.resource.DhcpOptionsId = ""
                 when 'AWS.EC2.Tag'
                     delete components[comp]
                 else

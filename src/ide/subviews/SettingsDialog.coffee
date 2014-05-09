@@ -7,16 +7,16 @@ define [ "./SettingsDialogTpl", 'i18n!nls/lang.js', "backbone" ], ( SettingsTpl,
     SettingsDialog = Backbone.View.extend {
 
       events :
-        "click #SettingsNav span"        : "switchTab"
-        "click #AccountPwd"              : "showPwd"
-        "click #AccountCancelPwd"        : "hidePwd"
-        "click #AccountUpdatePwd"        : "changePwd"
-        "click .cred-setup, cred-cancel" : "showCredSetup"
-        "click .cred-setup-cancel"       : "cancelCredSetup"
-        "click #CredSetupRemove"         : "showRemoveCred"
-        "click #CredRemoveConfirm"       : "removeCred"
-        "click #CredSetupSubmit"         : "submitCred"
-        "click #CredSetupConfirm"        : "confirmCred"
+        "click #SettingsNav span"         : "switchTab"
+        "click #AccountPwd"               : "showPwd"
+        "click #AccountCancelPwd"         : "hidePwd"
+        "click #AccountUpdatePwd"         : "changePwd"
+        "click .cred-setup, .cred-cancel" : "showCredSetup"
+        "click .cred-setup-cancel"        : "cancelCredSetup"
+        "click #CredSetupRemove"          : "showRemoveCred"
+        "click #CredRemoveConfirm"        : "removeCred"
+        "click #CredSetupSubmit"          : "submitCred"
+        "click #CredSetupConfirm"         : "confirmCred"
 
         "keyup #CredSetupAccount, #CredSetupAccessKey, #CredSetupSecretKey" : "updateSubmitBtn"
 
@@ -130,7 +130,7 @@ define [ "./SettingsDialogTpl", 'i18n!nls/lang.js', "backbone" ], ( SettingsTpl,
 
         self = this
         App.user.changeCredential().then ()->
-          self.showLoadingResource()
+          self.updateCredSettings()
           return
         , ()->
           $("#CredSetupMsg").text lang.ide.SETTINGS_ERR_CRED_REMOVE
@@ -161,7 +161,6 @@ define [ "./SettingsDialogTpl", 'i18n!nls/lang.js', "backbone" ], ( SettingsTpl,
         self = this
 
         App.user.validateCredential( accesskey, privatekey ).then ()->
-          self.showLoadingResource()
           self.setCred()
           return
         , ()->
@@ -176,10 +175,10 @@ define [ "./SettingsDialogTpl", 'i18n!nls/lang.js', "backbone" ], ( SettingsTpl,
         privatekey = $("#CredSetupSecretKey").val()
 
         self = this
-        App.user.changeCredential( account, accesskey, privatekey, true ).then ()->
-          self.showLoadingResource()
+        App.user.changeCredential( account, accesskey, privatekey, false ).then ()->
+          self.updateCredSettings()
         , ( err )->
-          if err
+          if err.error is 5 # Magic Number here. Might move the defination to ApiRequestErrors
             self.showCredConfirm()
           else
             self.showCredUpdateFail()
@@ -202,18 +201,11 @@ define [ "./SettingsDialogTpl", 'i18n!nls/lang.js', "backbone" ], ( SettingsTpl,
 
         # When we confirm to update. The key should be validated already.
         self = this
-        App.user.validateCredential( account, accesskey, privatekey, true ).then ()->
-          self.showLoadingResource()
+        App.user.changeCredential( account, accesskey, privatekey, true ).then ()->
+          self.updateCredSettings()
         , ()->
           self.showCredUpdateFail()
         return
-
-      showLoadingResource : ()->
-        $("#CredentialTab").children().hide()
-        $("#CredLoadingRes").show()
-        $("#modal-box .modal-close").hide()
-        return
-
     }
 
     SettingsDialog.TAB =

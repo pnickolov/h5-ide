@@ -32,7 +32,7 @@ define [ "./WelcomeTpl", 'i18n!nls/lang.js', "backbone" ], ( WelcomeTpl, lang ) 
         $("#WelcomeSkipWarning").hide()
 
       done : ()->
-        $("#WelcomeSettings, #WelcomeSkipWarning").hide()
+        $("#WelcomeSettings, #WelcomeSkipWarning, #WelcomeCredUpdate").hide()
         $("#WelcomeDoneWrap").show()
         if App.user.hasCredential()
           $("#WelcomeDoneTitDemo").hide()
@@ -66,7 +66,6 @@ define [ "./WelcomeTpl", 'i18n!nls/lang.js', "backbone" ], ( WelcomeTpl, lang ) 
         self = this
 
         App.user.validateCredential( accesskey, privatekey ).then ()->
-          self.showLoadingResource()
           self.setCred()
           return
         , ()->
@@ -82,15 +81,11 @@ define [ "./WelcomeTpl", 'i18n!nls/lang.js', "backbone" ], ( WelcomeTpl, lang ) 
 
         self = this
         App.user.changeCredential( account, accesskey, privatekey, true ).then ()->
-          self.showLoadingResource()
+          self.done()
+          return
         , ( err )->
           self.showCredUpdateFail()
           return
-
-      showLoadingResource : ()->
-        $("#WelcomeCredUpdate").hide()
-        $("#WelcomeCredLoadRes").show()
-        return
 
       showCredUpdateFail : ()->
         $("#CredSetupMsg").text lang.ide.SETTINGS_ERR_CRED_UPDATE

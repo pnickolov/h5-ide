@@ -7,7 +7,7 @@
 ----------------------------
 ###
 
-define [ "ApiRequest", "backbone" ], ( ApiRequest )->
+define [ "ApiRequest", "event" , "backbone" ], ( ApiRequest, ide_event )->
 
   UserState =
     NotFirstTime : 2
@@ -155,7 +155,8 @@ define [ "ApiRequest", "backbone" ], ( ApiRequest )->
           attr.awsSecretKey = (new Array(secretKey.length-6)).join("*")+secretKey.substr(-6)
 
         self.set attr
+
+        # LEGACY code, trigger an ide event when credential is updated.
+        ide_event.trigger ide_event.UPDATE_AWS_CREDENTIAL
         return
-
-
   }

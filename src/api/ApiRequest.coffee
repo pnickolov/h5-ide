@@ -1,5 +1,5 @@
 
-define ["api/ApiRequestDefs", "MC" ], ( ApiDefination )->
+define ["ApiRequestDefs", "api/ApiRequestErrors", "api/ApiRequestHandlers", "api/ApiBundle", "MC" ], ( ApiDefination, ApiErrors, ApiHandlers )->
   ###
   # === ApiRequest ===
   #
@@ -20,12 +20,14 @@ define ["api/ApiRequestDefs", "MC" ], ( ApiDefination )->
     method  : ''
     params  : {}
 
+  # Helpers
   logAndThrow = ( obj )->
     ### env:dev ###
     console.error obj
     ### env:dev:end ###
     throw obj
 
+  # Request Handlers
   AjaxSuccessHandler = (res)->
     if not res or not res.result or res.result.length != 2
       logAndThrow McError(-1, "Invalid JsonRpc Return Data")
@@ -33,6 +35,10 @@ define ["api/ApiRequestDefs", "MC" ], ( ApiDefination )->
     if res.result[0] isnt 0
       # We can do aditional global handling for some specific error here.
       # For example, Invalid Session.
+      gloablHandler = ApiHandlers[ res.result[0] ]
+
+      if gloablHandler
+        return gloablHandler( res )
 
       logAndThrow McError( res.result[0], "Service Error", res.result[1] )
 
@@ -48,8 +54,12 @@ define ["api/ApiRequestDefs", "MC" ], ( ApiDefination )->
   Abort = ()-> this.ajax.abort(); return
 
 
+
+  ###
+   ApiRequest Defination
+  ###
   ApiRequest = ( apiName, apiParameters )->
-    ApiDef = ApiDefination[ apiName ]
+    ApiDef = ApiDefination.Defs[ apiName ]
     apiParameters = apiParameters || EmptyObject
 
     if not ApiDef
@@ -60,7 +70,7 @@ define ["api/ApiRequestDefs", "MC" ], ( ApiDefination )->
     if ApiDef.params
       RequestData.params = p = []
       for i in ApiDef.params
-        p.push apiParameters[i] || ApiDefination.autoFill(i)
+        p.push apiParameters[i] || ApiDefination.AutoFill(i)
     else if apiParameters
       OneParaArray[0] = apiParameters
       RequestData.params = OneParaArray
@@ -84,5 +94,8 @@ define ["api/ApiRequestDefs", "MC" ], ( ApiDefination )->
     request.abort = Abort
     request.ajax  = ajax
     request
+
+
+  ApiRequest.Errors = ApiErrors
 
   ApiRequest

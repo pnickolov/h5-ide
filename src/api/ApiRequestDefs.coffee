@@ -23,12 +23,18 @@ define [], ()->
   session_id
   ###
 
-  ApiRequestDefs =
+  ApiRequestDefs = {}
+
+  ###
+    Some of the api defined manually, might change to use generated api.
+  ###
+  ApiRequestDefs.Defs =
     login      : { url:"/session/", method:"login",      params:["username", "password"]   }
-    logout     : { url:"/session/", method:"logout",     params:["usercode", "session_id"] }
-    syncRedis  : { url:"/session/", method:"sync_redis", params:["usercode", "session_id"] }
-    updateCred : { url:"/session/", method:"set_credential", params:["usercode","session_id","access_key","secret_key","account_id"] }
-    resetKey   : { url:"/account/", method:"reset_key", params:["usercode","session_id","flag"] }
+    logout     : { url:"/session/", method:"logout",     params:["username", "session_id"] }
+    syncRedis  : { url:"/session/", method:"sync_redis", params:["username", "session_id"] }
+    updateCred : { url:"/session/", method:"set_credential", params:["username","session_id","access_key","secret_key","account_id"] }
+    resetKey   : { url:"/account/", method:"reset_key", params:["username","session_id","flag"] }
+    changePwd  : { url:"/account/", method:"update_account", params:["username","session_id","params"]}
 
 
   ###
@@ -38,26 +44,24 @@ define [], ()->
   ###
   ApiRequestDefs.Parsers =
     login : ( result )->
-      usercode     : result.username
-      username     : MC.base64Decode( result.username )
-      email        : result.email
-      user_hash    : result.user_hash
-      session_id   : result.session_id
-      account_id   : result.account_id
-      mod_repo     : result.mod_repo
-      mod_tag      : result.mod_tag
-      state        : result.state
-      has_cred     : result.has_cred
+      usercode    : result[0]
+      email       : result[1]
+      user_hash   : result[2]
+      session_id  : result[3]
+      account_id  : result[4]
+      mod_repo    : result[5]
+      mod_tag     : result[6]
+      state       : result[7]
+      has_cred    : result[8]
 
 
-  ApiRequestDefs.autoFill = ( paramter_name )->
+  ApiRequestDefs.AutoFill = ( paramter_name )->
     switch paramter_name
+      # The generated API uses the username as the usercode
       when "username"
-        return $.cookie('username')
-      when "usercode"
-        return $.cookie('usercode')
+        return App.user.get('usercode')
       when "session_id"
-        return $.cookie('session_id')
+        return App.user.get('session')
     return null
 
   ApiRequestDefs

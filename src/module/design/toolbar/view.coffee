@@ -362,8 +362,6 @@ define [ 'MC', 'event',
                     stackData = Design.instance().serializeAsStack()
                     stackData.id = originStack
                     ApiRequest( "saveStack",
-                        username: $.cookie( 'usercode' )
-                        session_id: $.cookie( 'session_id' )
                         region_name: stackData.region
                         data: stackData
                     ).then (result)->
@@ -389,8 +387,6 @@ define [ 'MC', 'event',
                     newData = Design.instance().serializeAsStack()
                     newData.name = new_name
                     ApiRequest("createStack",
-                        username: $.cookie( 'usercode' )
-                        session_id: $.cookie( 'session_id' )
                         region_name: newData.region
                         data: newData
                     ).then (result)->

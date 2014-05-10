@@ -1,0 +1,161 @@
+#SettingsNav {
+  background: #0c0c0c;
+  height: 45px; }
+  #SettingsNav > span {
+    float: left;
+    min-width: 100px;
+    text-align: center;
+    color: #148BE6;
+    height: 45px;
+    line-height: 45px;
+    cursor: pointer;
+    position: relative;
+    padding: 0 10px; }
+    #SettingsNav > span.selected:before {
+      position: absolute;
+      bottom: 0px;
+      left: 50%;
+      margin-left: -6px;
+      border-right: 6px solid transparent;
+      border-bottom: 6px solid #272727;
+      border-left: 6px solid transparent;
+      content: ''; }
+
+#SettingsBody {
+  width: 430px;
+  padding: 20px 30px 30px;
+  min-height: 150px; }
+  #SettingsBody .dl-horizontal {
+    margin: 0;
+    line-height: 30px; }
+    #SettingsBody .dl-horizontal dt, #SettingsBody .dl-horizontal dd {
+      margin-top: 0; }
+
+#AccountPwdWrap {
+  display: none;
+  margin-top: 2px; }
+  #AccountPwdWrap .input {
+    width: 250px;
+    padding: 5px; }
+
+#AccountPwdWrap .dl-horizontal {
+  line-height: 36px; }
+
+#AccountPwd {
+  color: #148BE6;
+  padding: 10px 0; }
+
+#AccountInfo {
+  width: 360px;
+  padding: 0 15px;
+  font-size: 12px;
+  border-radius: 3px;
+  color: #200202;
+  background: #ec3c38;
+  height: 30px;
+  line-height: 30px;
+  margin: 10px 0; }
+
+#account-passowrd-info a {
+  color: #fff; }
+
+#AccountPwdBtns {
+  padding-left: 130px;
+  margin: 10px 0; }
+
+#AccountUpdatePwd {
+  padding: 3px;
+  min-width: 80px;
+  font-size: 12px; }
+
+#AccountCancelPwd {
+  font-size: 12px;
+  color: #999;
+  padding: 3px;
+  display: inline-block;
+  vertical-align: middle; }
+
+#CredentialTab {
+  font-size: 14px;
+  min-height: 150px; }
+  #CredentialTab > div {
+    display: none; }
+  #CredentialTab h3 {
+    font-size: 16px;
+    line-height: 1.2em;
+    margin-bottom: 1em; }
+  #CredentialTab .btn {
+    padding: 8px 10px; }
+  #CredentialTab .cred-btn-wrap {
+    margin-top: 8px; }
+
+#CredDemoWrap .cred-setup {
+  margin: 10px;
+  padding: 6px 10px; }
+
+#CredAwsWrap .cred-setup {
+  position: absolute;
+  color: #148BE6;
+  top: 40px;
+  right: 8px; }
+
+.cred-setup-msg {
+  padding: 15px;
+  background-color: #111;
+  border-radius: 4px;
+  color: #55626e;
+  margin-bottom: 20px; }
+
+#CredSetupWrap .icon-label {
+  float: right;
+  margin-right: 0;
+  color: #25a4f4;
+  line-height: 20px; }
+#CredSetupWrap label {
+  display: block;
+  font-size: 13px;
+  margin-bottom: 6px;
+  height: 1.2em;
+  line-height: 1.2em; }
+#CredSetupWrap .input {
+  width: 100%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  height: 36px;
+  padding: 10px;
+  font-size: 13px;
+  margin-bottom: 6px; }
+
+#CredSetupRemove {
+  font-size: 12px;
+  color: #ec3c38;
+  padding: 0; }
+
+.cred-setup-cancel, .cred-cancel {
+  color: #999;
+  line-height: 30px;
+  margin-left: 10px; }
+
+#WelcomeSettings {
+  width: 500px; }
+  #WelcomeSettings > header {
+    background: #111;
+    padding: 10px 20px; }
+  #WelcomeSettings > #CredSetupWrap {
+    padding: 20px 30px; }
+  #WelcomeSettings .cred-btn-wrap {
+    margin-top: 10px; }
+
+#WelcomeDialog {
+  width: 500px;
+  min-height: 200px; }
+  #WelcomeDialog .link-style {
+    color: #148BE6;
+    float: left;
+    height: 26px;
+    line-height: 26px; }
+
+#WelcomeSkipWarning, #WelcomeDoneWrap {
+  width: 430px;
+  padding: 20px 30px; }

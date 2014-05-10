@@ -140,7 +140,7 @@
 							<li class="item{{#if noSSLCert}} selected{{/if}}">None</li>
 							{{#each sslCertItem}}
 								<li class="item{{#if selected}} selected{{/if}}" data-id="{{uid}}">
-									{{name}}<span class="icon-edit"></span><span class="icon-remove"></span>
+									{{name}}{{#unless disableCertEdit}}<span class="icon-edit"></span>{{/unless}}<span class="icon-remove"></span>
 								</li>
 							{{/each}}
 						</ul>

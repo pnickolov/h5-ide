@@ -74,10 +74,15 @@ define [ '../base/model', "event", "Design", 'constant' ], ( PropertyModel, ide_
             attr.sslCertItem = _.map allCertModelAry, (sslCertModel) ->
                 if currentSSLCert is sslCertModel then attr.noSSLCert = false
 
+                disableCertEdit = false
+                if sslCertModel.get('certId') and sslCertModel.get('arn')
+                    disableCertEdit = true
+
                 {
                     uid: sslCertModel.id,
                     name: sslCertModel.get('name'),
-                    selected: currentSSLCert is sslCertModel
+                    selected: currentSSLCert is sslCertModel,
+                    disableCertEdit: disableCertEdit
                 }
 
             if attr.ConnectionDraining

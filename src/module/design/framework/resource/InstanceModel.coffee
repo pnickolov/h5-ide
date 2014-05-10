@@ -632,7 +632,6 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
           ShutdownBehavior      : "terminate"
           SecurityGroup         : []
           SecurityGroupId       : []
-          PrivateIpAddress      : "" # After app update, the PrivateIpAddress will be set by the backend. So we always ensure PrivateIpAddress existence to suppress a faulty change in proceeding appupdate.
 
       component
 
@@ -649,7 +648,6 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
           InstanceId         : @createRef( "InstanceId", instanceId )
           AllocationId       : eipData.allocationId or ""
           NetworkInterfaceId : ""
-          PrivateIpAddress   : ""
           PublicIp           : eipData.publicIp or ""
       }
 

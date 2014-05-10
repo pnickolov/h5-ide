@@ -31,7 +31,7 @@ define [ "Design" ], (Design)->
                     compo.resource.GroupName = "WebServerSG"
                 when 'AWS.EC2.KeyPair'
                     compo.resource.KeyFingerprint = ""
-                    compo.resource.KeyName = compo.resource.KeyName.split('---app-')[0]
+                    compo.resource.KeyName = compo.name
                 when 'AWS.VPC.InternetGateway'
                     compo.resource.InternetGatewayId = ""
                 when 'AWS.VPC.NetworkAcl'
@@ -55,17 +55,18 @@ define [ "Design" ], (Design)->
                 when 'AWS.AutoScaling.Tag'
                     delete components[comp]
                 when 'AWS.ELB'
-                    compo.resource.LoadBalancerName = compo.resource.LoadBalancerName.split('---app-')[0]
+                    compo.resource.DNSName = ""
+                    compo.resource.LoadBalancerName = compo.name
                 when 'AWS.IAM.ServerCertificate'
                     compo.resource.ServerCertificateMetadata.Arn = ""
                     compo.resource.ServerCertificateMetadata.ServerCertificateId = ""
-                    compo.resource.ServerCertificateMetadata.ServerCertificateName = compo.resource.ServerCertificateMetadata.ServerCertificateName.split("---app-")[0]
+                    compo.resource.ServerCertificateMetadata.ServerCertificateName = compo.name
                 when 'AWS.AutoScaling.LaunchConfiguration'
                     compo.resource.LaunchConfigurationARN = ""
-                    compo.resource.LaunchConfigurationName = compo.resource.LaunchConfigurationName.split('---app-')[0]
+                    compo.resource.LaunchConfigurationName = compo.name
                 when 'AWS.AutoScaling.Group'
                     compo.resource.AutoScalingGroupARN = ""
-                    compo.resource.AutoScalingGroupName = compo.resource.AutoScalingGroupName.split('---app-')[0]
+                    compo.resource.AutoScalingGroupName = compo.name
                 when 'AWS.AutoScaling.NotificationConfiguration'
                     console.log "Do Nothing Here"
                 when 'AWS.SNS.Subscription'
@@ -76,7 +77,7 @@ define [ "Design" ], (Design)->
                     compo.resource.PolicyARN = ""
                 when 'AWS.CloudWatch.CloudWatch'
                     compo.resource.AlarmArn = ""
-                    compo.resource.AlarmName = compo.resource.AlarmName.split('---app-')[0]
+                    compo.resource.AlarmName = compo.name
                 else
 
     null

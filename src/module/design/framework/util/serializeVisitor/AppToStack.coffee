@@ -13,6 +13,7 @@ define [ "Design" ], (Design)->
                     compo.resource.VpcId = ""
                 when 'AWS.VPC.NetworkInterface'
                     compo.resource.NetworkInterfaceId = ""
+                    compo.resource.Attachment.AttachmentId = ""
                 when 'AWS.EC2.Instance'
                     compo.resource.PrivateIpAddress = ""
                     compo.resource.InstanceId = ""

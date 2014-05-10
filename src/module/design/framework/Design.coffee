@@ -572,6 +572,7 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
     json.name = new_name||json.name
     json.state = "Enabled"
     json.id = ""
+    json.owner = ""
     delete json.history
     delete json.stack_id
     delete json.usage

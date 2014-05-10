@@ -5,12 +5,14 @@ define [ "constant", "../ComplexResModel", "../ConnectionModel"  ], ( constant, 
     type : "KeypairUsage"
     oneToMany : constant.RESTYPE.KP
 
+    ###
     serialize : ( components )->
       kp = @getTarget( constant.RESTYPE.KP )
       otherTarget = @getOtherTarget( kp )
 
       components[ otherTarget.id ].resource.KeyName = kp.createRef( "KeyName" )
       null
+    ###
   }
 
 

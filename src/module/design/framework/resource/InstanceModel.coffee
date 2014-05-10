@@ -623,6 +623,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
           InstanceId            : @get("appId")
           ImageId               : @get("imageId")
           KeyName               : kp
+          KeyType               : @get('keyType') or ''
           EbsOptimized          : if @isEbsOptimizedEnabled() then @get("ebsOptimized") else false
           VpcId                 : @getVpcRef()
           SubnetId              : @getSubnetRef()
@@ -663,6 +664,10 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
       @set("state", stateAryData)
 
     setKey: (keyName, noKey) ->
+      kp = @connectionTargets( "KeypairUsage" )[0]
+      if kp
+        kp.destroy()
+
       if noKey
         @set 'keyName', ''
         @set 'keyType', 'noKey'
@@ -671,21 +676,30 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
         @set 'keyType', ''
 
     getKey: ->
-      kp = @connectionTargets( "KeypairUsage" )[0]
-      if kp
-        kp.createRef( "KeyName" )
+      if @get( 'keyType' ) is 'noKey'
+        ''
       else
-        if @get( 'keyType' ) is 'noKey'
-          ''
-        else
-          @get 'keyName'
+        @get 'keyName'
 
     getKeyName: ->
       kp = @connectionTargets( "KeypairUsage" )[0]
+
       if kp
-        if kp.name is 'DefaultKP' then '' else "@#{kp.get('name')}"
+        if kp.name is 'DefaultKP' then '$DefaultKeyPair' else "@#{kp.get('name')}"
       else
-        if @get( 'keyType' ) is 'noKey' then 'No Key Pair' else @get 'keyName'
+        if @get( 'keyType' ) is 'noKey'
+          'No Key Pair'
+        else if not @get('keyName')
+          '$DefaultKeyPair'
+        else
+           @get 'keyName'
+
+    isDefaultKey: ->
+      @get( 'KeyType' ) isnt 'noKey' and not @get( 'KeyName' )
+
+    isNoKey: ->
+      @get( 'KeyType' ) is 'noKey'
+
 
     serialize : ()->
 
@@ -903,6 +917,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
         KP.assignTo( model )
       else
         model.set 'keyName', data.resource.KeyName
+        model.set 'keyType', data.resource.KeyType
 
       null
   }

@@ -154,6 +154,8 @@ StreamFuncs =
 
   throughLiveReload : ()->
     es.through ( file )->
+      if util.endsWith( file.path, ".scss" ) then return
+
       if Helper.lrServer
         Helper.lrServer.changed {
           body : { files : [ file.path ] }

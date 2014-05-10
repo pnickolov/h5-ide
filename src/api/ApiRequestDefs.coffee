@@ -25,16 +25,14 @@ define [], ()->
 
   ApiRequestDefs = {}
 
-  ###
-    Some of the api defined manually, might change to use generated api.
-  ###
   ApiRequestDefs.Defs =
     login      : { url:"/session/", method:"login",      params:["username", "password"]   }
     logout     : { url:"/session/", method:"logout",     params:["username", "session_id"] }
     updateCred : { url:"/account/", method:"set_credential", params:["username","session_id","access_key","secret_key","account_id","force"] }
     validateCred : { url:"/account/", method:"validate_credential", params:["username","session_id","access_key","secret_key"] }
     updateAccount : { url:"/account/", method:"update_account", params:["username", "session_id", "params"] }
-
+    saveStack  : { url:"/stack/",   method:"save",       params:["username", "session_id", "region_name", 'data'] }
+    createStack: { url:"/stack/",   method:"create",     params:["username", "session_id", "region_name", "data"] }
 
   ###
   Parsers are promise's success hanlder.
@@ -46,11 +44,11 @@ define [], ()->
 
   ApiRequestDefs.AutoFill = ( paramter_name )->
     switch paramter_name
-      # The generated API uses the username as the usercode
+      # The generated API uses the username as the username
       when "username"
-        return App.user.get('usercode')
+        return $.cookie('usercode')
       when "session_id"
-        return App.user.get('session')
+        return $.cookie('session_id')
     return null
 
   ApiRequestDefs

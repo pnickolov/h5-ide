@@ -13,6 +13,13 @@ define [ "backbone", "./subviews/SessionDialog", "./subviews/HeaderView", "./sub
       @header = new HeaderView()
 
       @listenTo App.user, "change:state", @toggleWelcome
+
+      ### env:dev ###
+      require ["./ide/subviews/DebugTool"], (DT)-> new DT()
+      ### env:dev:end ###
+      ### env:debug ###
+      require ["./ide/subviews/DebugTool"], (DT)-> new DT()
+      ### env:debug:end ###
       return
 
     toggleWSStatus : ( isConnected )->

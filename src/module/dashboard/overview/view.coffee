@@ -441,6 +441,7 @@ define [ 'event', 'i18n!nls/lang.js',
 
             null
 
+
         startAppClick : (event) ->
             console.log 'click to start app'
 

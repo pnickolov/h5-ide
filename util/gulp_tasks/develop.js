@@ -191,6 +191,9 @@
     },
     throughLiveReload: function() {
       return es.through(function(file) {
+        if (util.endsWith(file.path, ".scss")) {
+          return;
+        }
         if (Helper.lrServer) {
           Helper.lrServer.changed({
             body: {
@@ -334,7 +337,7 @@
 
   compileDev = function(allCoffee) {
     var compileStream, deferred;
-    path = ["src/**/*.coffee", "src/**/*.partials", "src/**/*.html", "!src/*.html", "!src/include/*.html", "!src/test/madeira_console/**/*", "!src/test/service/**/*", "!src/test/websocket/**/*", "!src/test/uitest/**/*", "!src/test/*.html" ];
+    path = ["src/**/*.coffee", "src/**/*.partials", "src/**/*.html", "!src/*.html", "!src/include/*.html", "!src/test/madeira_console/**/*", "!src/test/service/**/*", "!src/test/websocket/**/*", "!src/test/uitest/**/*", "!src/test/*.html"];
     if (!allCoffee && fs.existsSync("./src/service/result_vo.js")) {
       path.push("!src/service/**/*");
       path.push("!src/model/**/*");

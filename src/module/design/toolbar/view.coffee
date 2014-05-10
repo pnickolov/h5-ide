@@ -11,10 +11,11 @@ define [ 'MC', 'event',
          "component/exporter/JsonExporter",
          "component/exporter/Download",
          'constant'
+         'ApiRequest'
          'backbone', 'jquery', 'handlebars',
          'UI.selectbox', 'UI.notification',
          "UI.tabbar"
-], ( MC, ide_event, Design, lang, stack_tmpl, app_tmpl, appview_tmpl, JsonExporter, download, constant ) ->
+], ( MC, ide_event, Design, lang, stack_tmpl, app_tmpl, appview_tmpl, JsonExporter, download, constant, ApiRequest ) ->
 
     ToolbarView = Backbone.View.extend {
 
@@ -30,6 +31,7 @@ define [ 'MC', 'event',
             'click #toolbar-run'            : 'clickRunIcon'
             'click .icon-save'              : 'clickSaveIcon'
             'click #toolbar-duplicate'      : 'clickDuplicateIcon'
+            'click #toolbar-app-to-stack'   : 'appToStackClick'
             'click #toolbar-delete'         : 'clickDeleteIcon'
             'click #toolbar-new'            : 'clickNewStackIcon'
             'click .icon-zoom-in'           : 'clickZoomInIcon'
@@ -310,6 +312,93 @@ define [ 'MC', 'event',
                     # new design flow +++++++++++++++++++++++++++
 
             true
+
+        appToStackClick: (event) ->
+            console.log "Click to save App as Stack"
+
+            appToStackCb = (err, data, id)->
+                if err
+                    notification 'error', sprintf lang.ide.TOOL_MSG_ERR_SAVE_FAILED, data.name
+                    return
+                if data.id
+                    notification "info", sprintf lang.ide.TOOL_MSG_INFO_HDL_SUCCESS, lang.ide.TOOLBAR_HANDLE_SAVE_STACK, data.name
+                    ide_event.trigger ide_event.CLOSE_DESIGN_TAB, data.id
+                else
+                    notification "info", sprintf lang.ide.TOOL_MSG_INFO_HDL_SUCCESS, lang.ide.TOOLBAR_HANDLE_CREATE_STACK, data.name
+                    #update stackList
+                    ide_event.trigger ide_event.UPDATE_STACK_LIST, 'SAVE_STACK', [id]
+                window.setTimeout ()->
+                    ide_event.trigger ide_event.OPEN_DESIGN_TAB, "OPEN_STACK", data.name , data.region, data.id||id
+                ,160
+
+            name = MC.common.other.canvasData.get 'name'
+
+            #set default name
+            new_name = MC.aws.aws.getStackNameFromApp(name)
+            originStack = Design.instance().serialize().stack_id
+            MC.aws.aws.hasStack(originStack)
+            $('#modal-input-value').val(new_name)
+            if MC.aws.aws.hasStack(originStack)
+                $("input[type=radio]").change ->
+                    if $(@).is(":checked")
+                        $(".radio-instruction").addClass('hide')
+                        $(@).parent().parent().find('.radio-instruction').removeClass('hide')
+            else
+                $("#replace_stack").hide()
+                $("#save_new_stack").find('div.radio,label').hide()
+                $("#save_new_stack").find('.radio-instruction').removeClass('hide')
+            $("#modal-input-value").keyup ()->
+                if not MC.aws.aws.checkStackName null, $(@).val()
+                    $("#stack-name-exist").removeClass('hide')
+                else
+                    $('#stack-name-exist').addClass('hide')
+
+            $("#btn-confirm").on 'click', {target: this}, (event)->
+                console.log "Toolbar save app as stack"
+
+                if $("#save_new_stack").find(".radio-instruction").hasClass("hide")
+                    # save to original stack
+                    modal.close()
+                    stackData = Design.instance().serializeAsStack()
+                    stackData.id = originStack
+                    ApiRequest( "saveStack",
+                        username: $.cookie( 'usercode' )
+                        session_id: $.cookie( 'session_id' )
+                        region_name: stackData.region
+                        data: stackData
+                    ).then (result)->
+                        appToStackCb(null, stackData, result)
+                    , ( err )->
+                        appToStackCb(err, stackData)
+                    return false
+
+                new_name = $("#modal-input-value").val()
+
+                #Check Stack Name
+                if not new_name
+                    notification "warning", lang.ide.PROP_MSG_WARN_NO_STACK_NAME
+                else if new_name.indexOf(' ') >= 0
+                    notification 'warning', lang.ide.PROP_MSG_WARN_WHITE_SPACE
+                else if not MC.aws.aws.checkStackName null, new_name
+                    $("#stack-name-exist").addClass('error-msg').removeClass('hide')
+                    notification 'warning', lang.ide.PROP_MSG_WARN_REPEATED_STACK_NAME
+                else
+                    #save to new stack
+                    $("#stack-name-exist").addClass('hide')
+                    modal.close()
+                    newData = Design.instance().serializeAsStack()
+                    newData.name = new_name
+                    ApiRequest("createStack",
+                        username: $.cookie( 'usercode' )
+                        session_id: $.cookie( 'session_id' )
+                        region_name: newData.region
+                        data: newData
+                    ).then (result)->
+                        appToStackCb(null, newData,result)
+                    ,(err)->
+                        appToStackCb(err, newData)
+
+            null
 
         clickDeleteIcon : ->
             me = this

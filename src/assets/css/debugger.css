@@ -440,6 +440,17 @@
   right: 30px;
   top: 30px; }
 
+#DebugShareSession {
+  height: 200px;
+  font-size: 12px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 10px;
+  border: 1px solid #000000;
+  background: #1c1c1c;
+  color: #D0D0D0;
+  word-break: break-all; }
+
   /*
 Version: 3.4.8 Timestamp: Thu May  1 09:50:32 EDT 2014
 */

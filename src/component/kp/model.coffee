@@ -55,6 +55,14 @@ define [ 'constant', 'backbone', 'underscore', 'MC', 'keypair_service' ], ( cons
         setKey: ( name, noKey ) ->
             @resModel.setKey name, noKey
 
+        settle: ( key, value ) ->
+            if arguments.length is 1
+                @trigger "change:#{key}"
+            else
+                @set key, value
+                if _.isEqual @get( key ), value
+                    @trigger "change:#{key}"
+
 
         getKeys: ->
             that = @
@@ -62,7 +70,7 @@ define [ 'constant', 'backbone', 'underscore', 'MC', 'keypair_service' ], ( cons
             @list().then(
                 (res) ->
                     console.log('-----result-----');
-                    that.set 'keys', setSelectedKey( res, that.resModel.getKeyName() )
+                    that.settle 'keys', setSelectedKey( res, that.resModel.getKeyName() )
                     console.log(res);
                 (err) ->
 
@@ -77,7 +85,8 @@ define [ 'constant', 'backbone', 'underscore', 'MC', 'keypair_service' ], ( cons
             request( 'ImportKeyPair', name, data ).then successHandler(@), errorHandler(@)
 
         create: ( name ) ->
-            request( 'CreateKeyPair', name ).then successHandler(@), errorHandler(@)
+            request( 'CreateKeyPair', name ).then( successHandler(@), errorHandler(@) ).then ( res ) ->
+                console.log(res);
 
         remove: ( name ) ->
             request( 'DeleteKeyPair', name ).then successHandler(@), errorHandler(@)

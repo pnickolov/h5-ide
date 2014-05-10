@@ -7692,6 +7692,38 @@ summary:focus {
 	max-height: 210px;
 }
 
+#modal-kp-manage .show-create .error {
+	left: 117px;
+}
+
+#modal-kp-manage .slidebox .content {
+	margin: 16px 12px;
+}
+
+#modal-kp-manage #create-kp-name {
+	width: 289px;
+}
+
+#modal-kp-manage .slide-create label {
+	padding-right: 10px;
+}
+
+
+#kp-table-wrap .scroll-wrap {
+	height: 368px;
+}
+
+#modal-kp-manage .slidebox .error {
+	display: none;
+}
+
+#modal-kp-manage .slidebox.show .error {
+	color: #ec3c38;
+	position: absolute;
+	bottom: 2px;
+}
+
+
 #keypair-select .selection i {
 	position: absolute;
 	top: 7px;

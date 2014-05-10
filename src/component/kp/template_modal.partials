@@ -1,6 +1,7 @@
+<!-- {{frame}} -->
 <div style="width:855px;" id="modal-kp-manage">
     <div class="modal-header">
-        <h3>Manage Key Pairs in {{region_name}}</h3>
+        <h3>Manage Key Pairs in {{regionName}}</h3>
         <i class="modal-close">×</i>
     </div>
 
@@ -16,13 +17,11 @@
             </div>
             <div class="list">
                 <div class="slidebox">
-                    <p>1</p>
-                    <p>1</p>
-                    <p>1</p>
-                    <p>1</p>
-                    <p>1</p>
-                    <p>1</p>
-                    <p>1</p>
+                    <div class="content">
+                    </div>
+                    <div class="error">
+                        something wrong
+                    </div>
                 </div>
                 <div id="ami-table-wrap" class="table-head-fix">
                         <table class="table-head">
@@ -51,32 +50,45 @@
                                         </tr>
                                     </thead>
                                     <tbody id="community_ami_table">
+                                        {{#each keys}}
                                         <tr class="item" data-id="">
                                             <td class="ami-table-fav">
                                                 <div class="checkbox">
-                                                    <input id="kp-select-1" type="checkbox" value="None">
-                                                    <label for="kp-select-1"></label>
+                                                    <input id="kp-select-{{keyFingerprint}}" type="checkbox" value="None" data-name="{{keyName}}" class="one-cb">
+                                                    <label for="kp-select-{{keyFingerprint}}"></label>
                                                 </div>
                                             </td>
-                                            <td class="ami-table-id">kp-23amfoed2</td>
-                                            <td class="ami-table-size">01:5b:8b:f3:74:6e:f1:43:16:26:d3:32:d1:e9:21:53:41:9b:29:44</td>
+                                            <td class="ami-table-id">{{keyName}}</td>
+                                            <td class="ami-table-size">{{keyFingerprint}}</td>
                                         </tr>
-                                        <tr class="item" data-id="">
-                                            <td class="ami-table-fav">
-                                            </td>
-                                            <td class="ami-table-id">kp-dfsswe223</td>
-                                            <td class="ami-table-size">02:5b:8b:f3:74:6e:f1:43:16:26:d3:32:d1:e9:21:53:41:9b:29:44</td>
-                                        </tr>
+                                        {{/each}}
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
 
-
-
-
             </div>
         </div>
     </div>
 </div>
+<!-- {{loading}} -->
+<div class="loading-spinner"></div>
+
+<!-- {{slideCreate}} -->
+<div class="slide-create" data-bind="true">
+    <label>Key Pair Name</label>
+    <input class="input" type="text" id="create-kp-name" data-ignore="true" data-ignore-regexp="^[a-zA-Z0-9,_-]*$" data-required="true" maxlength="255" placeholder="allow alphanumber, _ or - up to 255 characters">
+    <button class="create btn btn-blue do-action" data-action="create">Create</button>
+    <button class="cancel btn btn-blue cancel">Cancel</button>
+</div>
+
+<!-- {{slideDelete}} -->
+<div class="slide-delete" data-bind="true">
+    <label>Confirm to delete selected 2 key pairs?</label>
+    <button class="create btn btn-red do-action" data-action="create">Delete</button>
+    <button class="cancel btn btn-blue cancel">Cancel</button>
+</div>
+<!-- {{slideImport}} -->
+Import<br/>
+Import<br/>Import<br/>Import<br/>Import<br/>

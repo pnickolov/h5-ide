@@ -11,6 +11,15 @@ define [ "backbone" ], ( Backbone )->
 
   Backbone.View.extend {
 
+    initialize : ()->
+
+      ### env:dev ###
+      require ["./ide/subviews/DebugTool"], (DT)-> new DT()
+      ### env:dev:end ###
+      ### env:debug ###
+      require ["./ide/subviews/DebugTool"], (DT)-> new DT()
+      ### env:debug:end ###
+
     toggleWSStatus : ( isConnected )->
       if isConnected
         $(".disconnected-msg").remove()

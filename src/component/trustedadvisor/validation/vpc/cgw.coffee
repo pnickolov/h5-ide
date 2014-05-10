@@ -12,7 +12,7 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'customergateway_service
 			# 	return null
 
 			# get current stack all cgw
-			stackCGWIP = stackCGWName = stackCGWUID = null
+			stackCGWIP = stackCGWName = stackCGWUID = stackCGWId = null
 			_.each MC.canvas_data.component, (compObj) ->
 				if compObj.type is constant.RESTYPE.CGW
 					stackCGWId = compObj.resource.CustomerGatewayId

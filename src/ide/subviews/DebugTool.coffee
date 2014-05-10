@@ -80,10 +80,15 @@ define [ "ApiRequest", "ApiRequestDefs", "vender/select2/select2" ], ( ApiReques
         catch e
           params[k] = v
 
+      $("#ApiDebugSend").attr("disabled", "disabled")
+      $("#ApiResult").text("Loading...")
+
       ApiRequest( api, params ).then ( result )->
         $("#ApiResult").text JSON.stringify( result, undefined, 4 )
+        $("#ApiDebugSend").removeAttr("disabled")
       , ( error )->
         $("#ApiResult").text JSON.stringify( error, undefined, 4 )
+        $("#ApiDebugSend").removeAttr("disabled")
 
 
 

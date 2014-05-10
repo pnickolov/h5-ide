@@ -22,6 +22,13 @@ define [ "ApiRequest", "ApiRequestDefs", "vender/select2/select2" ], ( ApiReques
 </div></div>
   """
 
+  SessionDialog = """
+<div class="modal-header"> <h3>Share Session</h3> <i class="modal-close">×</i> </div>
+<div class="modal-body" style="width:500px">
+  <h5>Paste & run this code to share session.</h5>
+  <textarea id="DebugShareSession" spellcheck="false"></textarea>
+</div>"""
+
   DebugTool = ()->
     $("head").append('<link rel="stylesheet" href="./assets/css/debugger.css"></link>')
     $(tmpl).appendTo("body")
@@ -102,13 +109,9 @@ define [ "ApiRequest", "ApiRequestDefs", "vender/select2/select2" ], ( ApiReques
 
   debugSession = ()->
     session = "(function(){var o = {expires:30,path:'/'}, a = #{JSON.stringify($.cookie())},k;for (k in a) { $.cookie(k,a[k],o); } window.location.reload(); })();"
-    console.log ""
-    console.log ""
-    console.log ""
-    console.log ""
-    console.log ""
-    console.log "|||||||||| Paste & run in another console to share session |||||||||"
-    console.log session
-    console.log "|||||||||||||||||||||||||||||"
+
+    modal SessionDialog
+    $("#DebugShareSession").html(session).select()
+    return
 
   DebugTool

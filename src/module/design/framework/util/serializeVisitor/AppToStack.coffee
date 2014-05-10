@@ -31,7 +31,7 @@ define [ "Design" ], (Design)->
                     compo.resource.GroupName = "WebServerSG"
                 when 'AWS.EC2.KeyPair'
                     compo.resource.KeyFingerprint = ""
-                    compo.resource.KeyName = "DefaultDP"
+                    compo.resource.KeyName = compo.resource.KeyName.split('---app-')[0]
                 when 'AWS.VPC.InternetGateway'
                     compo.resource.InternetGatewayId = ""
                 when 'AWS.VPC.NetworkAcl'
@@ -52,6 +52,31 @@ define [ "Design" ], (Design)->
                     compo.resource.DhcpOptionsId = ""
                 when 'AWS.EC2.Tag'
                     delete components[comp]
+                when 'AWS.AutoScaling.Tag'
+                    delete components[comp]
+                when 'AWS.ELB'
+                    compo.resource.LoadBalancerName = compo.resource.LoadBalancerName.split('---app-')[0]
+                when 'AWS.IAM.ServerCertificate'
+                    compo.resource.ServerCertificateMetadata.Arn = ""
+                    compo.resource.ServerCertificateMetadata.ServerCertificateId = ""
+                    compo.resource.ServerCertificateMetadata.ServerCertificateName = compo.resource.ServerCertificateMetadata.ServerCertificateName.split("---app-")[0]
+                when 'AWS.AutoScaling.LaunchConfiguration'
+                    compo.resource.LaunchConfigurationARN = ""
+                    compo.resource.LaunchConfigurationName = compo.resource.LaunchConfigurationName.split('---app-')[0]
+                when 'AWS.AutoScaling.Group'
+                    compo.resource.AutoScalingGroupARN = ""
+                    compo.resource.AutoScalingGroupName = compo.resource.AutoScalingGroupName.split('---app-')[0]
+                when 'AWS.AutoScaling.NotificationConfiguration'
+                    console.log "Do Nothing Here"
+                when 'AWS.SNS.Subscription'
+                    console.log "Do Nothing Here"
+                when "AWS.SNS.Topic"
+                    compo.resource.TopicArn = ""
+                when 'AWS.AutoScaling.ScalingPolicy'
+                    compo.resource.PolicyARN = ""
+                when 'AWS.CloudWatch.CloudWatch'
+                    compo.resource.AlarmArn = ""
+                    compo.resource.AlarmName = compo.resource.AlarmName.split('---app-')[0]
                 else
 
     null

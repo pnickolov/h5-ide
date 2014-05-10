@@ -14,48 +14,73 @@ define [ 'constant', 'backbone', 'underscore', 'MC', 'keypair_service' ], ( cons
 
             keypair_service[ api ].apply null, args
 
-    Backbone.Model.extend
-        initialize: ( options ) ->
+    successHandler = ( context ) ->
+        ( res ) ->
+            if res.is_error
+                context.trigger 'sync:error', res, context
+                throw res
+            else
+                return res.resolved_data
 
+    errorHandler = ( context ) ->
+        ( err ) ->
+            context.trigger 'sync:error', err
+            throw err
+
+    setSelectedKey = ( keys, name ) ->
+            _.each keys, ( key ) ->
+                if key.keyName is name
+                    key.selected = true
+            keys
+
+
+    Backbone.Model.extend
+        defaults:
+            keys: null
+            deleting: null
+            creating: null
+            keyName: ''
+
+        __haveGot: false
+
+        initialize: ( options ) ->
+            @resModel = options.resModel
+            @set 'keyName', @resModel.getKeyName()
+
+        haveGot: () ->
+            if arguments.length is 1
+                @__haveGot = arguments[ 0 ]
+            @__haveGot
+
+        setKey: ( name, noKey ) ->
+            @resModel.setKey name, noKey
+
+
+        getKeys: ->
+            that = @
+            @haveGot true
+            @list().then(
+                (res) ->
+                    console.log('-----result-----');
+                    that.set 'keys', setSelectedKey( res, that.resModel.getKeyName() )
+                    console.log(res);
+                (err) ->
+
+                    that.set 'keys', ''
+            )
 
 
         list: () ->
-            request( 'DescribeKeyPairs', null, null ).then(
-                (res) ->
-                    console.log(res);
-
-                (err) ->
-                    console.log(err);
-            )
+            request( 'DescribeKeyPairs', null, null ).then successHandler(@), errorHandler(@)
 
         upload: ( name, data ) ->
-            request( 'ImportKeyPair', name, data ).then(
-                (res) ->
-                    console.log(res);
-
-                (err) ->
-                    console.log(err);
-            )
-
+            request( 'ImportKeyPair', name, data ).then successHandler(@), errorHandler(@)
 
         create: ( name ) ->
-            request( 'CreateKeyPair', name ).then(
-                (res) ->
-                    console.log(res);
-
-                (err) ->
-                    console.log(err);
-            )
-
+            request( 'CreateKeyPair', name ).then successHandler(@), errorHandler(@)
 
         remove: ( name ) ->
-            request( 'DeleteKeyPair', name ).then(
-                (res) ->
-                    console.log(res);
-
-                (err) ->
-                    console.log(err);
-            )
+            request( 'DeleteKeyPair', name ).then successHandler(@), errorHandler(@)
 
         download: ( name ) ->
             request( 'download', name ).then(

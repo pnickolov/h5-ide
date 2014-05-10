@@ -7692,6 +7692,12 @@ summary:focus {
 	max-height: 210px;
 }
 
+#keypair-select .selection i {
+	position: absolute;
+	top: 7px;
+	margin-left: 5px;
+}
+
 
 .sortable::selection {
 	background: transparent;

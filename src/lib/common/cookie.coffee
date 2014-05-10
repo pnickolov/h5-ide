@@ -7,8 +7,9 @@ define [ 'MC' ], ( MC ) ->
 	setCookie = ( result ) ->
 		deleteCookie()
 
-		result.usercode = result.username
-		result.username = MC.base64Decode( result.username )
+		result.usercode  = result.username
+		result.username  = MC.base64Decode( result.username )
+		result.user_hash = result.intercom_secret
 		for key, value of result
 			$.cookie key, value, COOKIE_OPTION
 

@@ -466,7 +466,7 @@ setCredit = (result)->
         usercode     : result.username
         username     : base64Decode( result.username )
         email        : result.email
-        user_hash    : result.user_hash
+        user_hash    : result.intercom_secret
         session_id   : result.session_id
         account_id   : result.account_id
         mod_repo     : result.mod_repo

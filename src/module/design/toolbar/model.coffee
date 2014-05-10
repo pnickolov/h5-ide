@@ -695,7 +695,7 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
         runStack : (data) ->
 
             # Quick code for VisualOps statistics. Might improve later
-            for id, comp of data
+            for id, comp of data.component
                 if comp.type is "AWS.EC2.Instance" and comp.state and comp.state.length
                     MC.Analytics.increase "use_visualops"
                     break

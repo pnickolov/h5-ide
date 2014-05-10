@@ -157,7 +157,6 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 					"AvailabilityZone": "",
 					"GroupName": ""
 				},
-				"PrivateIpAddress": "",
 				"BlockDeviceMapping": [],
 				"KernelId": "",
 				"SubnetId": "",

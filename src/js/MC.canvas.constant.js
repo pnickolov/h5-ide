@@ -347,7 +347,6 @@ var constant_data = {
 					"AvailabilityZone": "", //eg: ap-northeast-1b
 					"GroupName": ""
 				},
-				"PrivateIpAddress": "",
 				"BlockDeviceMapping": [],
 				"KernelId": "",
 				"SubnetId": "",

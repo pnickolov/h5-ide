@@ -28,7 +28,7 @@ define [ "Design" ], (Design)->
                         return
                 when 'AWS.EC2.SecurityGroup'
                     compo.resource.GroupId = ""
-                    compo.resource.GroupName = "WebServerSG"
+                    compo.resource.GroupName = compo.name
                 when 'AWS.EC2.KeyPair'
                     compo.resource.KeyFingerprint = ""
                     compo.resource.KeyName = compo.name

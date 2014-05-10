@@ -55,28 +55,14 @@ define [ "./Websocket", "./ApplicationView", "./ApplicationModel", "./User", "co
       # The Websockets subscription will be lost if we have an invalid session.
       @WS.subscribe()
 
-    @user.on "change:credential", ()=> @onCredentialChanged()
+    @user.on "change:credential", ()=> @__onCredentialChanged()
     return
-
-
-  # This method will prompt a dialog to let user to re-acquire the session
-  VisualOps.prototype.acquireSession = ()->
-    # LEGACY code
-    # Seems like in the old days, someone wants to swtich to dashboard.
-    ide_event.trigger ide_event.SWITCH_MAIN
-    @view.showSessionDialog()
-
-  VisualOps.prototype.logout = ()->
-    App.user.logout()
-    window.location.href = "/login/"
-    return
-
 
 
   # LEGACY code
   # Well, first of all. The "DescribeAccountAttributes" is no longer needed because we only support vpc now. And it seems like all we have to do is to call `vpc_model.DescribeAccountAttributes`
   # Second. Forget it, just a piece of shit.
-  VisualOps.prototype.onCredentialChanged = ()->
+  VisualOps.prototype.__onCredentialChanged = ()->
     # check credential
     vpc_model.DescribeAccountAttributes { sender : vpc_model }, App.user.get( 'usercode' ), App.user.get( 'session' ), '',  ["supported-platforms", "default-vpc"]
 
@@ -103,5 +89,18 @@ define [ "./Websocket", "./ApplicationView", "./ApplicationModel", "./User", "co
           if  default_vpc and $.type(default_vpc) == "array" and default_vpc.length == 1
             MC.data.account_attribute[ value ].default_vpc = default_vpc[0].attributeValue
           null
+
+
+  # This method will prompt a dialog to let user to re-acquire the session
+  VisualOps.prototype.acquireSession = ()->
+    # LEGACY code
+    # Seems like in the old days, someone wants to swtich to dashboard.
+    ide_event.trigger ide_event.SWITCH_MAIN
+    @view.showSessionDialog()
+
+  VisualOps.prototype.logout = ()->
+    App.user.logout()
+    window.location.href = "/login/"
+    return
 
   VisualOps

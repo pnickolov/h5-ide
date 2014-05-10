@@ -15,7 +15,6 @@ define [ "Design" ], (Design)->
                     compo.resource.NetworkInterfaceId = ""
                     compo.resource.Attachment.AttachmentId = ""
                 when 'AWS.EC2.Instance'
-                    compo.resource.PrivateIpAddress = ""
                     compo.resource.InstanceId = ""
                 when 'AWS.VPC.Subnet'
                     compo.resource.SubnetId = ""
@@ -39,7 +38,6 @@ define [ "Design" ], (Design)->
                     compo.resource.NetworkAclId = ""
                     compo.resource.AssociationSet.forEach (e)->
                         e.NetworkAclAssociationId = ""
-                        e.NetworkAclId = ""
                         return
                 when 'AWS.VPC.VPNGateway'
                     compo.resource.VpnGatewayId = ""

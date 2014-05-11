@@ -20,7 +20,7 @@ define [ 'constant', 'backbone', 'underscore', 'MC', 'keypair_service' ], ( cons
                 context.trigger 'request:error', res, context
                 throw res
             else
-                return res.resolved_data
+                return res.resolved_data or res
 
     errorHandler = ( context ) ->
         ( err ) ->
@@ -94,7 +94,14 @@ define [ 'constant', 'backbone', 'underscore', 'MC', 'keypair_service' ], ( cons
 
 
         remove: ( name ) ->
-            request( 'DeleteKeyPair', name ).then successHandler(@), errorHandler(@)
+            that = @
+            request( 'DeleteKeyPair', name ).then( successHandler(@), errorHandler(@) ).then ( res ) ->
+                keys = that.get 'keys'
+                keyName = res.param[ 4 ]
+                that.set 'keys', _.reject keys, ( k ) ->
+                    k.keyName is keyName
+
+                res
 
         download: ( name ) ->
             request( 'download', name ).then(

@@ -13,21 +13,29 @@ define [ './template', './template_modal', 'backbone', 'jquery', 'constant', 'UI
             @__needDownload
 
         initialize: () ->
-            @model.on 'change:keys', @renderKeys, @
+            @model.on 'change:keys', () ->
+                if @$( '.scroll-content' ).length
+                    @renderKeys()
+                else
+                    @render true
+            , @
 
-        render: () ->
+        render: ( refresh ) ->
             data = @model.toJSON()
             region = Design.instance().get('region')
             data.regionName = constant.REGION_SHORT_LABEL[ region ]
             @$el.html template_modal.frame data
-            @open()
+            if not refresh
+                @open()
             @
 
         renderKeys: () ->
             @$( '.scroll-content tbody' ).html template_modal.keys @model.toJSON()
+            @
 
         renderLoading: () ->
             @$( '.content-wrap' ).html template_modal.loading
+            @
 
         stopPropagation: ( event ) ->
             exception = '.sortable, #download-kp'
@@ -85,6 +93,32 @@ define [ './template', './template_modal', 'backbone', 'jquery', 'constant', 'UI
                 .prop( 'href', "data://text/plain;base64,#{base64Key}" )
                 .prop( 'download', "#{name}.pem" )
 
+        genDeleteFinish: ( times ) ->
+            success = []
+            error = []
+            that = @
+
+            finHandler = _.after times, ->
+                that.cancel()
+                if success.length is 1
+                    notification 'info', "#{success[0].param[4]} is deleted."
+                else if success.length > 1
+                    notification 'info', "Selected #{success.length} key pairs are deleted."
+
+                _.each error, ( s ) ->
+                    console.log(s)
+
+            ( res ) ->
+                if not res.is_error
+                    success.push res
+                else
+                    error.push res
+
+                finHandler()
+
+
+
+
 
         create: ( invalid ) ->
             that = @
@@ -107,20 +141,22 @@ define [ './template', './template_modal', 'backbone', 'jquery', 'constant', 'UI
             @needDownload false
             true
 
+        delete: ( invalid ) ->
+            $checked = @$('.one-cb:checked')
+            count = $checked.length
 
+            onDeleteFinish = @genDeleteFinish count
+            @switchAction 'processing'
+            that = @
+            $checked.each () ->
+                that.model.remove( $(@).data 'name' ).then onDeleteFinish, onDeleteFinish
 
-
-
-        delete: () ->
 
         import: () ->
 
 
         cancel: ->
-            $content = @$( '.content-wrap' )
-            $slidebox = @$( '.slidebox' )
-            $content.removeClass( 'show-create show-import show-delete' )
-            $slidebox.removeClass 'show'
+            @preSlide()
 
         refresh: ->
             if not @needDownload()
@@ -143,12 +179,21 @@ define [ './template', './template_modal', 'backbone', 'jquery', 'constant', 'UI
             $content = @$( '.content-wrap' )
             $slidebox = @$( '.slidebox' )
             currentType = $content.hasClass "show-#{type}"
-            if not currentType
-                $content
-                    .removeClass( 'show-create show-import show-delete' )
-                    .addClass( "show-#{type}" )
 
-                $slidebox.addClass 'show'
+            # Disable checkbox on deleting mode
+            if type is 'delete' and not currentType
+                @$( 'input[type=checkbox]' ).prop 'disabled', true
+            else
+                @$( 'input[type=checkbox]' ).prop 'disabled', false
+
+
+            if not currentType
+                $content.removeClass( 'show-create show-import show-delete' )
+                if type
+                    $content.addClass( "show-#{type}" )
+                    $slidebox.addClass 'show'
+                else
+                    $slidebox.removeClass 'show'
             else
                 $content.removeClass( 'show-create show-import show-delete' )
                 $slidebox.removeClass 'show' # for transition effective
@@ -164,10 +209,22 @@ define [ './template', './template_modal', 'backbone', 'jquery', 'constant', 'UI
                 @renderSlide html
 
         renderDelete: () ->
+            $checked = @$('.one-cb:checked')
+            checkedAmount = $checked.length
+
+            if not checkedAmount
+                return
             if @preSlide 'delete'
                 tpl = template_modal.slideDelete
 
                 data = {}
+
+                if checkedAmount is 1
+                    data.selecteKeyName = $checked.data 'name'
+                else
+                    data.selectedCount = checkedAmount
+
+
                 html = tpl data
                 @renderSlide html
 
@@ -246,7 +303,7 @@ define [ './template', './template_modal', 'backbone', 'jquery', 'constant', 'UI
             @
 
         syncErrorHandler: () ->
-            @renderEmptyKey()
+            #@renderEmptyKey()
 
 
         renderKeys: () ->

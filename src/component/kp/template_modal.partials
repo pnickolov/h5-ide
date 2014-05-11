@@ -109,9 +109,14 @@
 
 <!-- {{slideDelete}} -->
 <div class="slide-delete" data-bind="true">
-    <label>Confirm to delete selected 2 key pairs?</label>
-    <button class="btn btn-red do-action" data-action="create">Delete</button>
-    <button class="btn btn-blue cancel">Cancel</button>
+    <label>Confirm to delete {{#if selecteKeyName }}{{selecteKeyName}}{{else}}selected {{selectedCount}} key pairs{{/if}}?</label>
+    <div class="init action">
+        <button class="btn btn-red do-action" data-action="delete">Delete</button>
+        <button class="btn btn-blue cancel">Cancel</button>
+    </div>
+    <div class="processing action" style="display:none;">
+        <button class="btn" disabled>Deleting...</button>
+    </div>
 </div>
 <!-- {{slideImport}} -->
 Import<br/>

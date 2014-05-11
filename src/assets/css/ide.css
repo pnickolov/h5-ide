@@ -7708,6 +7708,25 @@ summary:focus {
 	padding-right: 10px;
 }
 
+#modal-kp-manage .slide-delete .action {
+	float: right;
+}
+
+#modal-kp-manage .slide-delete:after {
+	content:'';
+	display:block;
+	clear: both;
+}
+
+#modal-kp-manage .slide-delete label {
+	float: left;
+	margin-top: 7px;
+}
+
+#modal-kp-manage .checkbox input[disabled] + label {
+	opacity : 0.3;
+}
+
 
 #kp-table-wrap .scroll-wrap {
 	height: 368px;

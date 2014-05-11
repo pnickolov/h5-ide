@@ -36,7 +36,7 @@ define [ 'constant', 'backbone', 'underscore', 'MC', 'keypair_service' ], ( cons
 
     Backbone.Model.extend
         defaults:
-            keys: null
+            keys: []
             deleting: null
             creating: null
             keyName: ''
@@ -85,7 +85,13 @@ define [ 'constant', 'backbone', 'underscore', 'MC', 'keypair_service' ], ( cons
             request( 'ImportKeyPair', name, data ).then successHandler(@), errorHandler(@)
 
         create: ( name ) ->
-            request( 'CreateKeyPair', name ).then( successHandler(@), errorHandler(@) )
+            that = @
+            request( 'CreateKeyPair', name ).then( successHandler(@), errorHandler(@) ).then ( res ) ->
+                keys = that.get 'keys'
+                keys.unshift res
+                that.settle 'keys'
+                res
+
 
         remove: ( name ) ->
             request( 'DeleteKeyPair', name ).then successHandler(@), errorHandler(@)

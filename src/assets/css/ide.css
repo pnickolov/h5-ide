@@ -7723,6 +7723,56 @@ summary:focus {
 	bottom: 2px;
 }
 
+#modal-kp-manage .slidebox .action {
+	display: inline-block;
+}
+
+
+@-webkit-keyframes pulse {
+  	0% { -webkit-transform: scale(1); }
+  	50% { -webkit-transform: scale(1.1); }
+  	100% { -webkit-transform: scale(1); }
+}
+@-moz-keyframes pulse {
+  	0% { -moz-transform: scale(1); }
+  	50% { -moz-transform: scale(1.1); }
+  	100% { -moz-transform: scale(1); }
+}
+@-o-keyframes pulse {
+  	0% { -o-transform: scale(1); }
+  	50% { -o-transform: scale(1.1); }
+  	100% { -o-transform: scale(1); }
+}
+@keyframes pulse {
+	0% { transform: scale(1); }
+	50% { transform: scale(1.1); }
+	100% { transform: scale(1); }
+}
+
+.pulse{
+	-webkit-animation-name:pulse;
+	-moz-animation-name:pulse;
+	-o-animation-name:pulse;
+	animation-name:pulse;
+
+	-webkit-animation-duration: .5s;
+	-webkit-animation-timing-function: ease;
+	-webkit-animation-fill-mode: both;
+	-webkit-animation-iteration-count: 2;
+	-moz-animation-duration: .5s;
+	-moz-animation-timing-function: ease;
+	-moz-animation-fill-mode: both;
+	-moz-animation-iteration-count: 2;
+	-ms-animation-duration: .5s;
+	-ms-animation-timing-function: ease;
+	-ms-animation-fill-mode: both;
+	-ms-animation-iteration-count: 2;
+	animation-duration: .5s;
+	animation-timing-function: ease;
+	animation-fill-mode: both;
+	animation-iteration-count: 2;
+}
+
 
 #keypair-select .selection i {
 	position: absolute;

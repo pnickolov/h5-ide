@@ -72,6 +72,21 @@
         </div>
     </div>
 </div>
+
+<!-- {{keys}} -->
+{{#each keys}}
+<tr class="item" data-id="">
+    <td class="ami-table-fav">
+        <div class="checkbox">
+            <input id="kp-select-{{keyFingerprint}}" type="checkbox" value="None" data-name="{{keyName}}" class="one-cb">
+            <label for="kp-select-{{keyFingerprint}}"></label>
+        </div>
+    </td>
+    <td class="ami-table-id">{{keyName}}</td>
+    <td class="ami-table-size">{{keyFingerprint}}</td>
+</tr>
+{{/each}}
+
 <!-- {{loading}} -->
 <div class="loading-spinner"></div>
 
@@ -79,15 +94,24 @@
 <div class="slide-create" data-bind="true">
     <label>Key Pair Name</label>
     <input class="input" type="text" id="create-kp-name" data-ignore="true" data-ignore-regexp="^[a-zA-Z0-9,_-]*$" data-required="true" maxlength="255" placeholder="allow alphanumber, _ or - up to 255 characters">
-    <button class="create btn btn-blue do-action" data-action="create">Create</button>
-    <button class="cancel btn btn-blue cancel">Cancel</button>
+    <div class="init action">
+        <button class="btn btn-blue do-action" data-action="create">Create</button>
+        <button class="btn btn-blue cancel">Cancel</button>
+    </div>
+    <div class="processing action" style="display:none;">
+        <button class="btn" disabled>Creating...</button>
+    </div>
+    <div class="download action" style="display:none;">
+        <a class="btn btn-blue do-action pulse" data-action="download" id="download-kp">Download</a>
+        <button class="btn btn-blue cancel" disabled>Cancel</button>
+    </div>
 </div>
 
 <!-- {{slideDelete}} -->
 <div class="slide-delete" data-bind="true">
     <label>Confirm to delete selected 2 key pairs?</label>
-    <button class="create btn btn-red do-action" data-action="create">Delete</button>
-    <button class="cancel btn btn-blue cancel">Cancel</button>
+    <button class="btn btn-red do-action" data-action="create">Delete</button>
+    <button class="btn btn-blue cancel">Cancel</button>
 </div>
 <!-- {{slideImport}} -->
 Import<br/>

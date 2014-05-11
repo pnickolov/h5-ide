@@ -1,9 +1,19 @@
-define [ './template', './template_modal', 'backbone', 'jquery', 'constant' ], ( template, template_modal, Backbone, $, constant ) ->
+define [ './template', './template_modal', 'backbone', 'jquery', 'constant', 'UI.notification' ], ( template, template_modal, Backbone, $, constant ) ->
     modalView = Backbone.View.extend
+        __needDownload: false
+
+        needDownload: () ->
+            if arguments.length is 1
+                @__needDownload = arguments[ 0 ]
+                if arguments[ 0 ] is false
+                    @$( '.cancel' ).prop 'disabled', false
+            else
+                if @__needDownload then notification 'warning', 'You must download the keypair.'
+
+            @__needDownload
+
         initialize: () ->
-            @model.on 'change:keys', () ->
-                @render true
-            , @
+            @model.on 'change:keys', @renderKeys, @
 
         render: (refresh) ->
             data = @model.toJSON()
@@ -14,11 +24,14 @@ define [ './template', './template_modal', 'backbone', 'jquery', 'constant' ], (
                 @open()
             @
 
+        renderKeys: () ->
+            @$( '.scroll-content tbody' ).html template_modal.keys @model.toJSON()
+
         renderLoading: () ->
             @$( '.content-wrap' ).html template_modal.loading
 
         stopPropagation: ( event ) ->
-            exception = '.sortable'
+            exception = '.sortable, #download-kp'
             if not $(event.target).is( exception )
                 event.stopPropagation()
 
@@ -48,6 +61,7 @@ define [ './template', './template_modal', 'backbone', 'jquery', 'constant' ], (
             'click .cancel': 'cancel'
 
         doAction: ( event ) ->
+            @hideErr()
             action = $( event.currentTarget ).data 'action'
             @[action] and @[action](@validate(action))
 
@@ -56,24 +70,44 @@ define [ './template', './template_modal', 'backbone', 'jquery', 'constant' ], (
                 when 'create'
                     return not @$( '#create-kp-name' ).parsley 'validate'
 
-        processing: ( action ) ->
-            switch action
-                when 'create'
-                    @$( '.do-action' )
-                        .prop( 'disabled', true )
-                        .text ( 'Creating' )
+        switchAction: ( state ) ->
+            if not state
+                state = 'init'
+
+            @$( '.slidebox .action' ).each () ->
+                if $(@).hasClass state
+                    $(@).show()
+                else
+                    $(@).hide()
+
+        genDownload: ( key, name ) ->
+            base64Key = btoa key
+            @$( '#download-kp' )
+                .prop( 'href', "data://text/plain;base64,#{base64Key}" )
+                .prop( 'download', "#{name}.pem" )
 
 
         create: ( invalid ) ->
             that = @
             if not invalid
                 keyName = @$( '#create-kp-name' ).val()
-                #@processing 'create'
+                @switchAction 'processing'
                 @model.create( keyName )
-                .progress (res) ->
-                    console(res)
-                .catch ( res ) ->
-                    console.log(res)
+                .then (res) ->
+                    console.log res
+                    that.needDownload true
+                    that.genDownload res.keyMaterial, res.keyName
+                    that.switchAction 'download'
+
+                .catch ( err ) ->
+                    console.log(err)
+                    that.showErr err.error_message
+                    that.switchAction()
+
+        download: () ->
+            @needDownload false
+            true
+
 
 
 
@@ -90,19 +124,23 @@ define [ './template', './template_modal', 'backbone', 'jquery', 'constant' ], (
             $slidebox.removeClass 'show'
 
         refresh: ->
-            @model.getKeys()
-            @renderLoading()
+            if not @needDownload()
+                @model.getKeys()
+                @renderLoading()
 
 
         renderSlide: ( html ) ->
             @$( '.slidebox .content' ).html html
-
+            @hideErr()
 
             @
 
         # if the type need rendered return true
         # or return false
         preSlide: ( type ) ->
+            if @needDownload()
+                return false
+
             $content = @$( '.content-wrap' )
             $slidebox = @$( '.slidebox' )
             currentType = $content.hasClass "show-#{type}"
@@ -163,6 +201,8 @@ define [ './template', './template_modal', 'backbone', 'jquery', 'constant' ], (
 
 
         close: ( event ) ->
+            if @needDownload()
+                return false
             $( '#modal-wrap' ).off 'click', @stopPropagation
             modal.close()
             @remove()
@@ -195,7 +235,7 @@ define [ './template', './template_modal', 'backbone', 'jquery', 'constant' ], (
 
         initialize: ( options ) ->
             @model.on 'change:keys', @renderKeys, @
-            @model.on 'sync:error', @syncErrorHandler, @
+            @model.on 'request:error', @syncErrorHandler, @
 
         show: () ->
             if not @model.haveGot()

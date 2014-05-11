@@ -152,6 +152,8 @@ define [ './template', './template_modal', 'backbone', 'jquery', 'constant', 'UI
                 that.model.remove( $(@).data 'name' ).then onDeleteFinish, onDeleteFinish
 
 
+
+
         import: () ->
 
 
@@ -235,6 +237,51 @@ define [ './template', './template_modal', 'backbone', 'jquery', 'constant', 'UI
                 data = {}
                 html = tpl data
                 @renderSlide html
+                @preImport()
+
+
+        preImport: () ->
+            that = @
+            reader = new FileReader()
+            reader.onload = ( evt )->
+                that.afterImport reader.result
+                null
+
+            reader.onerror = ()->
+                that.$("#import-json-error").html lang.ide.POP_IMPORT_ERROR
+                null
+
+            hanldeFile = ( evt )->
+                evt.stopPropagation()
+                evt.preventDefault()
+
+                that.$("#modal-import-json-dropzone").removeClass("dragover")
+                that.$("#import-json-error").html("")
+
+                evt = evt.originalEvent
+                files = (evt.dataTransfer || evt.target).files
+                if not files or not files.length then return
+                reader.readAsText( files[0] )
+                null
+
+            @$("#modal-import-json-file").on "change", hanldeFile
+            zone = @$("#modal-import-json-dropzone").on "drop", hanldeFile
+            zone.on "dragenter", ()-> $(this).closest("#modal-import-json-dropzone").toggleClass("dragover", true)
+            zone.on "dragleave", ()-> $(this).closest("#modal-import-json-dropzone").toggleClass("dragover", false)
+            zone.on "dragover", ( evt )->
+                dt = evt.originalEvent.dataTransfer
+                if dt then dt.dropEffect = "copy"
+                evt.stopPropagation()
+                evt.preventDefault()
+                null
+            null
+
+        afterImport: ( result ) ->
+            console.log result
+            @$( '#modal-import-json-dropzone' ).addClass 'filled'
+            @$( '.key-content' ).text result
+
+            @switchAction 'ready'
 
 
 

@@ -108,7 +108,7 @@
 </div>
 
 <!-- {{slideDelete}} -->
-<div class="slide-delete" data-bind="true">
+<div class="slide-delete">
     <label>Confirm to delete {{#if selecteKeyName }}{{selecteKeyName}}{{else}}selected {{selectedCount}} key pairs{{/if}}?</label>
     <div class="init action">
         <button class="btn btn-red do-action" data-action="delete">Delete</button>
@@ -119,5 +119,33 @@
     </div>
 </div>
 <!-- {{slideImport}} -->
-Import<br/>
-Import<br/>Import<br/>Import<br/>Import<br/>
+<div class="slide-import" data-bind="true">
+    <label>Key Pair Name</label>
+    <input class="input" type="text" id="create-kp-name" data-ignore="true" data-ignore-regexp="^[a-zA-Z0-9,_-]*$" data-required="true" maxlength="255" placeholder="allow alphanumber, _ or - up to 255 characters">
+    <div class="import-zone">
+
+        <div id="modal-import-json-dropzone">
+            <p class="upload-stuff">
+                Drop public key,
+                <label for="modal-import-json-file" class="select-file-link">select a file</label>
+                 or paste the key content here.
+                <input type="file" id="modal-import-json-file">
+            </p>
+            <p class="key-content"></p>
+        </div>
+    </div>
+    <div class="init action">
+        <button class="btn" disabled>Import</button>
+        <button class="btn btn-blue cancel">Cancel</button>
+    </div>
+    <div class="ready action" style="display:none;">
+        <button class="btn btn-blue do-action" data-action="import">Import</button>
+        <button class="btn btn-blue cancel">Cancel</button>
+    </div>
+    <div class="download action" style="display:none;">
+        <a class="btn btn-blue do-action pulse" data-action="download" id="download-kp">Download</a>
+        <button class="btn btn-blue cancel" disabled>Cancel</button>
+    </div>
+</div>
+
+

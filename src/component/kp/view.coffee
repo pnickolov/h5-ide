@@ -1,6 +1,7 @@
 define [ './template', './template_modal', 'backbone', 'jquery', 'constant', 'UI.notification' ], ( template, template_modal, Backbone, $, constant ) ->
     modalView = Backbone.View.extend
         __needDownload: false
+        __import: ''
 
         needDownload: () ->
             if arguments.length is 1
@@ -76,6 +77,9 @@ define [ './template', './template_modal', 'backbone', 'jquery', 'constant', 'UI
             switch action
                 when 'create'
                     return not @$( '#create-kp-name' ).parsley 'validate'
+                when 'import'
+                    return not @$( '#import-kp-name' ).parsley 'validate'
+
 
         switchAction: ( state ) ->
             if not state
@@ -116,26 +120,22 @@ define [ './template', './template_modal', 'backbone', 'jquery', 'constant', 'UI
 
                 finHandler()
 
-
-
-
-
         create: ( invalid ) ->
             that = @
             if not invalid
                 keyName = @$( '#create-kp-name' ).val()
                 @switchAction 'processing'
                 @model.create( keyName )
-                .then (res) ->
-                    console.log res
-                    that.needDownload true
-                    that.genDownload res.keyMaterial, res.keyName
-                    that.switchAction 'download'
+                    .then (res) ->
+                        console.log res
+                        that.needDownload true
+                        that.genDownload res.keyMaterial, res.keyName
+                        that.switchAction 'download'
 
-                .catch ( err ) ->
-                    console.log(err)
-                    that.showErr err.error_message
-                    that.switchAction()
+                    .catch ( err ) ->
+                        console.log(err)
+                        that.showErr err.error_message
+                        that.switchAction()
 
         download: () ->
             @needDownload false
@@ -151,11 +151,21 @@ define [ './template', './template_modal', 'backbone', 'jquery', 'constant', 'UI
             $checked.each () ->
                 that.model.remove( $(@).data 'name' ).then onDeleteFinish, onDeleteFinish
 
+        import: ( invalid ) ->
+            that = @
+            if not invalid
+                keyName = @$( '#import-kp-name' ).val()
+                @switchAction 'processing'
+                @model.import( keyName, that.__import )
+                    .then (res) ->
+                        console.log res
+                        notification 'info', "#{keyName} is imported."
+                        that.cancel()
 
-
-
-        import: () ->
-
+                    .catch ( err ) ->
+                        console.log(err)
+                        that.showErr err.error_message
+                        that.switchAction 'ready'
 
         cancel: ->
             @preSlide()
@@ -243,7 +253,9 @@ define [ './template', './template_modal', 'backbone', 'jquery', 'constant', 'UI
         preImport: () ->
             that = @
             reader = new FileReader()
+            that.__import = ''
             reader.onload = ( evt )->
+                that.__import = reader.result
                 that.afterImport reader.result
                 null
 
@@ -282,6 +294,7 @@ define [ './template', './template_modal', 'backbone', 'jquery', 'constant', 'UI
             @$( '.key-content' ).text result
 
             @switchAction 'ready'
+
 
 
 

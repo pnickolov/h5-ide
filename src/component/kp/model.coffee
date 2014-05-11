@@ -81,8 +81,9 @@ define [ 'constant', 'backbone', 'underscore', 'MC', 'keypair_service' ], ( cons
         list: () ->
             request( 'DescribeKeyPairs', null, null ).then successHandler(@), errorHandler(@)
 
-        upload: ( name, data ) ->
-            request( 'ImportKeyPair', name, data ).then successHandler(@), errorHandler(@)
+        import: ( name, data ) ->
+            request( 'ImportKeyPair', name, data ).then successHandler(@), errorHandler(@).then ( res ) ->
+
 
         create: ( name ) ->
             that = @

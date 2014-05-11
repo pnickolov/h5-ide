@@ -7778,6 +7778,7 @@ summary:focus {
 	max-width: 100%;
 	overflow: scroll;
 	text-align: left;
+	word-break: break-all;
 }
 
 #modal-kp-manage .checkbox input[disabled] + label {

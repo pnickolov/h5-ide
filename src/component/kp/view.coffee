@@ -20,6 +20,7 @@ define [ './template', './template_modal', 'backbone', 'jquery', 'constant', 'UI
             region = Design.instance().get('region')
             data.regionName = constant.REGION_SHORT_LABEL[ region ]
             @$el.html template_modal.frame data
+            @open()
             @
 
         renderKeys: () ->

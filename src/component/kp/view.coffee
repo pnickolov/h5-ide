@@ -15,13 +15,11 @@ define [ './template', './template_modal', 'backbone', 'jquery', 'constant', 'UI
         initialize: () ->
             @model.on 'change:keys', @renderKeys, @
 
-        render: (refresh) ->
+        render: () ->
             data = @model.toJSON()
             region = Design.instance().get('region')
             data.regionName = constant.REGION_SHORT_LABEL[ region ]
             @$el.html template_modal.frame data
-            if not refresh
-                @open()
             @
 
         renderKeys: () ->

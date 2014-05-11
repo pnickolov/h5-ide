@@ -17,14 +17,14 @@ define [ 'constant', 'backbone', 'underscore', 'MC', 'keypair_service' ], ( cons
     successHandler = ( context ) ->
         ( res ) ->
             if res.is_error
-                context.trigger 'sync:error', res, context
+                context.trigger 'request:error', res, context
                 throw res
             else
                 return res.resolved_data
 
     errorHandler = ( context ) ->
         ( err ) ->
-            context.trigger 'sync:error', err
+            context.trigger 'request:error', err
             throw err
 
     setSelectedKey = ( keys, name ) ->
@@ -85,8 +85,7 @@ define [ 'constant', 'backbone', 'underscore', 'MC', 'keypair_service' ], ( cons
             request( 'ImportKeyPair', name, data ).then successHandler(@), errorHandler(@)
 
         create: ( name ) ->
-            request( 'CreateKeyPair', name ).then( successHandler(@), errorHandler(@) ).then ( res ) ->
-                console.log(res);
+            request( 'CreateKeyPair', name ).then( successHandler(@), errorHandler(@) )
 
         remove: ( name ) ->
             request( 'DeleteKeyPair', name ).then successHandler(@), errorHandler(@)

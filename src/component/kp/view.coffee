@@ -68,13 +68,14 @@ define [ './template', './template_modal', 'backbone', 'jquery', 'constant' ], (
             that = @
             if not invalid
                 keyName = @$( '#create-kp-name' ).val()
-                @processing 'create'
-                @model.create( keyName ).then (
-                    ( res ) ->
-                        console.log(res)
-                    ( error ) ->
-                        console.log(error);
-                )
+                #@processing 'create'
+                @model.create( keyName )
+                .progress (res) ->
+                    console(res)
+                .catch ( res ) ->
+                    console.log(res)
+
+
 
 
         delete: () ->

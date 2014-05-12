@@ -96,7 +96,9 @@ define [ '../base/view',
         render : () ->
             @$el.html template @model.attributes
             instanceModel = Design.instance().component( @model.get 'uid' )
+
             @$('#kp-placeholder').html kp.loadModule(instanceModel).el
+
             @refreshIPList()
 
             me = this

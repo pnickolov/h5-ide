@@ -2,6 +2,7 @@ define [ './template', './template_modal', 'backbone', 'jquery', 'constant', 'UI
     modalView = Backbone.View.extend
         __needDownload: false
         __import: ''
+        __mode: 'normal'
 
         needDownload: () ->
             if arguments.length is 1
@@ -337,7 +338,7 @@ define [ './template', './template_modal', 'backbone', 'jquery', 'constant', 'UI
         tagName: 'section'
 
         events:
-            'click #keypair-filter'     : 'returnFalse'
+            'click .keypair-filter'     : 'returnFalse'
             'click .manage-kp'          : 'manageKp'
             'OPTION_SHOW .selectbox'    : 'show'
             'OPTION_CHANGE .selectbox'  : 'setKey'
@@ -360,6 +361,8 @@ define [ './template', './template_modal', 'backbone', 'jquery', 'constant', 'UI
         initialize: ( options ) ->
             @model.on 'change:keys', @renderKeys, @
             @model.on 'request:error', @syncErrorHandler, @
+            if not @model.resModel
+                @__mode = 'runtime'
 
         show: () ->
             if not @model.haveGot()
@@ -378,10 +381,13 @@ define [ './template', './template_modal', 'backbone', 'jquery', 'constant', 'UI
             keys = @model.get('keys')
             data = keys: @model.get('keys')
 
-            if @model.resModel.isNoKey()
-                data.noKey = true
-            if @model.resModel.isDefaultKey()
-                data.defaultKey = true
+            if @model.resModel
+                if @model.resModel.isNoKey()
+                    data.noKey = true
+                if @model.resModel.isDefaultKey()
+                    data.defaultKey = true
+
+            data.isRunTime = @__mode is 'runtime'
 
             @$('#kp-list').html template.keys data
             @showManageBtn()
@@ -393,6 +399,8 @@ define [ './template', './template_modal', 'backbone', 'jquery', 'constant', 'UI
                 data.defaultKey = true
             else if data.keyName is 'No Key Pair'
                 data.noKey = true
+
+            data.isRunTime = @__mode is 'runtime'
 
             @$el.html template.frame data
 

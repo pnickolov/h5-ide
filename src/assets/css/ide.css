@@ -3796,32 +3796,61 @@ a.sidebar-hider:before {
 	margin-bottom: 5px;
 }
 
-#keypair-select .selection .icon-remove {
+.keypair-select .selection .icon-remove {
 	display : none;
 }
 
-#keypair-select .dropdown {
-	top: 0;
-	position: relative;
+.keypair-select.open .dropdown {
+	top: 29px;
 }
 
-#keypair-select i {
+.keypair-select {
+	width: 260px;
+}
+
+.keypair-select.selectbox .keypair-filter {
+	width: 232px;
+	border-radius: 0;
+	border: 0;
+	padding-right: 20px;
+}
+
+.keypair-select.selectbox .keypair-filter:focus {
+	width: 232px;
+	border-radius: 0;
+	border: 0;
+	padding-right: 20px;
+}
+
+#kp-runtime-placeholder .keypair-select.open .dropdown {
+	top: 32px;
+}
+
+#kp-runtime-placeholder .selection {
+	padding-right: 19px;
+}
+
+#kp-runtime-placeholder {
+	display: inline-block;
+}
+
+.keypair-select i {
 	color: #148BE6;
 }
 
-#keypair-select li i {
+.keypair-select li i {
 	float: right;
 }
 
-#keypair-select .manage-kp i {
+.keypair-select .manage-kp i {
 	margin-right: 13px;
 }
 
-#keypair-select .manage-kp::selection {
+.keypair-select .manage-kp::selection {
 	background: transparent;
 }
 
-#keypair-select .manage-kp {
+.keypair-select .manage-kp {
 	width: 100%;
 	color: #148BE6;
 	background: #101010;
@@ -3830,11 +3859,11 @@ a.sidebar-hider:before {
 	bottom: 0;
 }
 
-#keypair-select .manage-kp:hover {
+.keypair-select .manage-kp:hover {
 	cursor: pointer;
 }
 
-#keypair-select .icon-remove {
+.keypair-select .icon-remove {
 	display: none;
 	position: absolute;
 	right: 5px;
@@ -3843,11 +3872,11 @@ a.sidebar-hider:before {
 	margin-top: -8px;
 }
 
-#keypair-select .item:hover .icon-remove {
+.keypair-select .item:hover .icon-remove {
 	display: block;
 }
 
-#keypair-select .icon-remove:hover {
+.keypair-select .icon-remove:hover {
 	color: #F74A48;
 }
 
@@ -7857,7 +7886,7 @@ summary:focus {
 }
 
 
-#keypair-select .selection i {
+.keypair-select .selection i {
 	position: absolute;
 	top: 7px;
 	margin-left: 5px;

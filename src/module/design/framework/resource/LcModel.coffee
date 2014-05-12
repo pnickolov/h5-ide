@@ -178,7 +178,7 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
            @get 'keyName'
 
     isDefaultKey: ->
-      @get( 'KeyType' ) isnt 'noKey' and not @get( 'KeyName' )
+      @get( 'KeyType' ) isnt 'noKey' and not @get( 'keyName' )
 
     isNoKey: ->
       @get( 'KeyType' ) is 'noKey'

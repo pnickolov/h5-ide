@@ -1,4 +1,4 @@
-define [ 'constant', 'backbone', 'underscore', 'MC', 'keypair_service' ], ( constant, Backbone, _, MC, keypair_service ) ->
+define [ 'constant', 'backbone', 'underscore', 'MC', 'keypair_service', 'Design' ], ( constant, Backbone, _, MC, keypair_service, Design ) ->
     # Helper
     request = ( api, name, data ) ->
             username = $.cookie "usercode"
@@ -40,12 +40,15 @@ define [ 'constant', 'backbone', 'underscore', 'MC', 'keypair_service' ], ( cons
             deleting: null
             creating: null
             keyName: ''
+            defaultKey: null
 
         __haveGot: false
 
         initialize: ( options ) ->
             @resModel = options.resModel
-            @set 'keyName', @resModel.getKeyName()
+
+            if @resModel
+                @set 'keyName', @resModel.getKeyName()
 
         haveGot: () ->
             if arguments.length is 1
@@ -53,7 +56,10 @@ define [ 'constant', 'backbone', 'underscore', 'MC', 'keypair_service' ], ( cons
             @__haveGot
 
         setKey: ( name, noKey ) ->
-            @resModel.setKey name, noKey
+            if @resModel
+                @resModel.setKey name, noKey
+            else
+                @handleResourcesWithDefaultKp name, noKey
 
         settle: ( key, value ) ->
             if arguments.length is 1
@@ -63,6 +69,18 @@ define [ 'constant', 'backbone', 'underscore', 'MC', 'keypair_service' ], ( cons
                 if _.isEqual @get( key ), value
                     @trigger "change:#{key}"
 
+        handleResourcesWithDefaultKp: ( dkp, nokp ) ->
+            resources = []
+
+            Design.instance().eachComponent ( comp ) ->
+                if comp.type in [ constant.RESTYPE.INSTANCE, constant.RESTYPE.LC ]
+                    if comp.isDefaultKey()
+                        comp.setKey dkp, nokp
+
+                    resources.push comp
+
+            resources
+
 
         getKeys: ->
             that = @
@@ -70,10 +88,11 @@ define [ 'constant', 'backbone', 'underscore', 'MC', 'keypair_service' ], ( cons
             @list().then(
                 (res) ->
                     console.log('-----result-----');
-                    that.settle 'keys', setSelectedKey( res, that.resModel.getKeyName() )
-                    console.log(res);
-                (err) ->
+                    if that.resModel
+                        setSelectedKey( res, that.resModel.getKeyName() )
 
+                    that.settle 'keys', res
+                (err) ->
                     that.set 'keys', ''
             )
 

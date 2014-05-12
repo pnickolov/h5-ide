@@ -582,6 +582,10 @@ Additional Notes and Questions
 			<label class="label" for="app-name">App Name</label>
 			<input id="app-name" class="input modal-input-value" type="text" value="{{name}}" data-ignore="true">
 		</div>
+		<div class="modal-control-group default-kp-group clearfix" style="display:none;">
+			<label for="">$DefaultKeyPair</label>
+			<div id="kp-runtime-placeholder"></div>
+		</div>
 		<div class="modal-control-group app-usage-group clearfix">
 			<label for="">App Usage</label>
 			<div id="app-usage-selectbox" class="selectbox">
@@ -591,7 +595,7 @@ Additional Notes and Questions
 					<li class="item" data-value="development"><i class="icon-app-type-development"></i>Development</li>
 					<li class="item" data-value="production"><i class="icon-app-type-production"></i>Production</li>
 					<li class="item" data-value="others"><i class="icon-app-type-others" data-value="testing"></i>Others</li>
-				<ul>
+				</ul>
 			</div>
 		</div>
 		<div class="stack-validation">

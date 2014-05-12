@@ -11,10 +11,11 @@ define [ 'MC', 'event',
          "component/exporter/JsonExporter",
          "component/exporter/Download",
          'constant'
+         'kp'
          'backbone', 'jquery', 'handlebars',
          'UI.selectbox', 'UI.notification',
          "UI.tabbar"
-], ( MC, ide_event, Design, lang, stack_tmpl, app_tmpl, appview_tmpl, JsonExporter, download, constant ) ->
+], ( MC, ide_event, Design, lang, stack_tmpl, app_tmpl, appview_tmpl, JsonExporter, download, constant, kp ) ->
 
     ToolbarView = Backbone.View.extend {
 
@@ -128,6 +129,14 @@ define [ 'MC', 'event',
                 else
                     $( '#main-toolbar' ).html app_tmpl this.model.attributes
 
+        showErr: ( id, msg ) ->
+            $( "##{id}" )
+                .text( msg )
+                .show()
+
+        hideErr: ( type ) ->
+            $( "##{id}" ).hide()
+
         clickRunIcon : ( event ) ->
             console.log 'clickRunIcon'
 
@@ -152,6 +161,11 @@ define [ 'MC', 'event',
                 # set total fee
                 cost = Design.instance().getCost()
                 $('#label-total-fee').find("b").text("$#{cost.totalFee}")
+
+                # set default kp
+                if kp.hasResourceWithDefaultKp()
+                    $('#kp-runtime-placeholder').html kp.loadModule().el
+                    $('.default-kp-group').show()
 
                 # insert ta component
                 require [ 'component/trustedadvisor/main' ], ( trustedadvisor_main ) ->

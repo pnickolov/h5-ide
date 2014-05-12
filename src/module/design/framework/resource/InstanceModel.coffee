@@ -695,7 +695,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
            @get 'keyName'
 
     isDefaultKey: ->
-      @get( 'KeyType' ) isnt 'noKey' and not @get( 'KeyName' )
+      @get( 'KeyType' ) isnt 'noKey' and not @get( 'keyName' )
 
     isNoKey: ->
       @get( 'KeyType' ) is 'noKey'

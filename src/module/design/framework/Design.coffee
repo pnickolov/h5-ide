@@ -73,6 +73,9 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
     # serialize() : Object
         description : returns a Plain JS Object that is indentical to JSON data.
 
+    # serializeAsStack() : Object
+        description : same as serialize(), but it ensure that the JSON will be a stack JSON.
+
     # getCost() : Array
         description : return an array of cost object to represent the cost of the stack.
 
@@ -465,7 +468,7 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
 
     true
 
-  DesignImpl.prototype.serialize = ()->
+  DesignImpl.prototype.serialize = ( options )->
 
     # A hack to get around the caveat of the current framework design.
     # The Design is singleton (Because the Design is created with the mind
@@ -546,9 +549,8 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
     # At this point, we allow each visitors to have full privilege to modify
     # the component data. This is necessary for visitors that wants to work on
     # many components at once. ( One use-case is Subnet would like to assign IPs. )
-    version = data.version
     for visitor in Design.__serializeVisitors
-      visitor( component_data, layout_data, version )
+      visitor( component_data, layout_data, options )
 
 
     # Quick Fix for some other property
@@ -562,6 +564,20 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
     currentDesignObj.use()
 
     data
+
+
+  DesignImpl.prototype.serializeAsStack = (new_name)->
+    json = @serialize( { toStack : true } )
+
+    json.name = new_name||json.name
+    json.state = "Enabled"
+    json.id = ""
+    json.owner = ""
+    json.usage = ""
+    delete json.history
+    delete json.stack_id
+    json
+
 
 
   ########## General Business logics ############

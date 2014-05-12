@@ -262,9 +262,9 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'state_model', 'aws_model', 'c
 
         listenStateStatusList: () ->
 
-            MC.data.websocket.collection.status.find().fetch()
+            App.WS.collection.status.find().fetch()
 
-            query = MC.data.websocket.collection.status.find()
+            query = App.WS.collection.status.find()
 
             handle = query.observe {
                 added: (idx, statusData) ->

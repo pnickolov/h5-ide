@@ -4,7 +4,7 @@ vm     = require("vm")
 es     = require("event-stream")
 coffee = require("gulp-coffee")
 
-ConfigFile = "./src/js/ide/config.coffee"
+ConfigFile = "./src/ide/config.coffee"
 
 readRequirejsConfig = ( path )->
 

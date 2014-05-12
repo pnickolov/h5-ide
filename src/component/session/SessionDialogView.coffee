@@ -33,7 +33,7 @@ define [ './template', 'i18n!nls/lang.js' ], ( template, lang ) ->
         $("#SessionConnect").removeAttr "disabled"
         notification 'error', lang.ide.NOTIFY_MSG_WARN_AUTH_FAILED
         $("#SessionPassword").toggleClass "parsley-error", true
-        console.log error
+        return
 
     passwordChanged : ( evt )->
       $("#SessionPassword").toggleClass "parsley-error", false

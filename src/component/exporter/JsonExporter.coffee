@@ -42,6 +42,12 @@ define ['./Download', 'i18n!nls/lang.js', "crypto"], ( download, lang )->
 
     signature = j.signature
     delete j.signature
+    ### env:dev ###
+    return j
+    ### env:dev:end ###
+    ### env:debug ###
+    return j
+    ### env:debug:end ###
     if CryptoJS.HmacMD5( JSON.stringify( j ) , key ).toString() isnt signature
       return lang.ide.POP_IMPORT_MODIFIED_ERROR
 

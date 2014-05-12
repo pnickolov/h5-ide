@@ -66,10 +66,48 @@ function program1(depth0,data) {
     + "</span>\n	";
   stack1 = helpers['if'].call(depth0, (depth0 && depth0.should_stay), {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n</div>\n\n";
+  buffer += "\n</div>\n\n\n";
   return buffer;
   };
 TEMPLATE.notification.item=Handlebars.template(__TEMPLATE__);
+
+
+__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
+
+
+  buffer += "<div style=\"width: 520px\">\n    <div class=\"modal-header\">\n        <h3>"
+    + escapeExpression(((stack1 = (depth0 && depth0.title)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</h3>\n        <i class=\"modal-close\">&times;</i>\n    </div>\n    <div class=\"modal-body\">\n        <p class=\"modal-text-minor\">"
+    + escapeExpression(((stack1 = (depth0 && depth0['intro-1'])),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</p>\n        <p class=\"modal-text-minor\">"
+    + escapeExpression(((stack1 = (depth0 && depth0['intro-2'])),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</p>\n        <div class=\"modal-center-align-helper\">\n            <div class=\"modal-control-group\">\n                <div id=\"replace_stack\" style=\"padding: 10px 0\">\n                    <div class=\"radio\">\n                        <input id=\"radio-replace-stack\" type=\"radio\" name=\"save-stack-type\" checked>\n                        <label for=\"radio-replace-stack\"></label>\n                    </div>\n                    <label class=\"modal-text-minor\" for=\"radio-replace-stack\">"
+    + escapeExpression(((stack1 = (depth0 && depth0.replace)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</label>\n                    <div style=\"padding: 10px 22px\" class=\"radio-instruction\">\n                        "
+    + escapeExpression(((stack1 = (depth0 && depth0['replace-info'])),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + " \""
+    + escapeExpression(((stack1 = (depth0 && depth0.input)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\" "
+    + escapeExpression(((stack1 = (depth0 && depth0['replace-info-end'])),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\n                    </div>\n                </div>\n                <div id=\"save_new_stack\">\n                   <div class=\"radio\">\n                       <input id=\"radio-new-stack\" type=\"radio\" name=\"save-stack-type\">\n                       <label for=\"radio-new-stack\"></label>\n                   </div>\n                   <label class=\"modal-text-minor\" for=\"radio-new-stack\">"
+    + escapeExpression(((stack1 = (depth0 && depth0['save-new'])),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</label>\n                   <div style=\"padding: 10px 22px\" class=\"radio-instruction hide\">\n                       <p>"
+    + escapeExpression(((stack1 = (depth0 && depth0.instruction)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</p>\n                       <input class=\"input\" id=\"modal-input-value\" value=\""
+    + escapeExpression(((stack1 = (depth0 && depth0.input)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\" type=\"text\" style=\"width: 400px\"/>\n                       <div id=\"stack-name-exist\" class=\"hide\" style=\"color: #ec3c38\">"
+    + escapeExpression(((stack1 = (depth0 && depth0['error-message'])),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</div>\n                   </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"modal-footer\">\n        <button id=\"btn-confirm\" class=\"btn btn-"
+    + escapeExpression(((stack1 = (depth0 && depth0.color)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\">"
+    + escapeExpression(((stack1 = (depth0 && depth0.confirm)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</button>\n        <button class=\"btn modal-close btn-silver\">Cancel</button>\n    </div>\n</div>\n\n\n";
+  return buffer;
+  };
+TEMPLATE.modalAppToStack=Handlebars.template(__TEMPLATE__);
 
 
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {

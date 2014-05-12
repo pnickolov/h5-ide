@@ -72,7 +72,7 @@ userRoute = (routes)->
     #console.log pathArray , hashArray
     # run routes func
     routes[pathArray[0]]?(pathArray, hashArray)
-
+    return
 # guid
 guid = ->
     'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c)->
@@ -98,7 +98,7 @@ api = (option)->
             #console.log error
             if status!='abort'
                 option.error(status, -1)
-    #console.log 'Sending Ajax Request'
+    xhr
 
 # register i18n handlebars helper
 Handlebars.registerHelper 'i18n', (str)->
@@ -116,6 +116,7 @@ loadLang = (cb)->
             $("#main-body").html template()
         success: (data)->
             window.langsrc = data
+            return
             #console.log 'Success', data
         error: (error)->
             goto500()
@@ -182,6 +183,7 @@ init = ->
                         tempLang = tempLang||langsrc.reset['expired-info']
                         langsrc.reset['expired-info'] = langsrc.service['RESET_PASSWORD_ERROR_'+statusCode] || tempLang
                         window.location.hash = "expire"
+                        return
                         #console.log "Error Verify Code!"
             else if hashTarget == "expire"
                 render '#expire-template'
@@ -241,6 +243,7 @@ init = ->
                 render "#success-template"
                 $('#register-get-start').click ->
                     window.location = "/"
+                    return
                     #console.log('Getting start...')
                 return false
             if checkAllCookie() then window.location = '/'
@@ -322,13 +325,14 @@ init = ->
                             cb?(1)
                         else if(statusCode == 'error')
                             #console.log 'NetWork Error while checking username'
-                            $('.error-msg').eq(0).text(langsrc.service['NETWORK_ERROR']).show()
+                            $('.error-msg').eq(0).text(langsrc.service.NETWORK_ERROR).show()
                             $('#register-btn').attr('disabled',false).val(langsrc.register["register-btn"])
                         else
                             status.removeClass('verification-status').addClass('error-status').text langsrc.register.username_taken
                             cb?(0)
                     )
                 ,500
+                return
                 #console.log 'Setup a new validation request'
             ajaxCheckEmail = (email, status, cb)->
                 xhr?.abort()
@@ -342,13 +346,14 @@ init = ->
                             cb?(1)
                         else if(statusCode == 'error')
                             #console.log 'NetWork Error while checking username'
-                            $('.error-msg').eq(0).text(langsrc.service['NETWORK_ERROR']).show()
+                            $('.error-msg').eq(0).text(langsrc.service.NETWORK_ERROR).show()
                             $('#register-btn').attr('disabled',false).val(langsrc.register["register-btn"])
                         else
                             status.removeClass('verification-status').addClass('error-status').text langsrc.register.email_used
                             cb?(0)
                     )
                 ,500
+                return
                 #console.log 'Set up a new validation request'
             resetRegForm = (force)->
                 if force
@@ -458,16 +463,16 @@ setCredit = (result)->
         $.removeCookie ckey, domain
 
     session_info =
-        usercode     : result[0]
-        username     : base64Decode( result[0] )
-        email        : result[1]
-        user_hash    : result[2]
-        session_id   : result[3]
-        account_id   : result[4]
-        mod_repo     : result[5]
-        mod_tag      : result[6]
-        state        : result[7]
-        has_cred     : result[8]
+        usercode     : result.username
+        username     : base64Decode( result.username )
+        email        : result.email
+        user_hash    : result.intercom_secret
+        session_id   : result.session_id
+        account_id   : result.account_id
+        mod_repo     : result.mod_repo
+        mod_tag      : result.mod_tag
+        state        : result.state
+        has_cred     : result.has_cred
 
     COOKIE_OPTION =
         expires : 30
@@ -494,6 +499,7 @@ ajaxRegister = (params, errorCB)->
             if !statusCode
                 setCredit(result)
                 window.location.hash = "success"
+                return
                 #console.log('registered successfully')
             else
                 errorCB(statusCode)
@@ -511,6 +517,7 @@ ajaxLogin = (params, errorCB)->
             if(!statusCode)
                 setCredit(result)
                 window.location = '/'
+                return
                 #console.log 'Login Now!'
             else
                 errorCB(statusCode)
@@ -564,6 +571,7 @@ ajaxChangePassword = (hashArray,newPw)->
             #console.log result , statusCode
             if(!statusCode)
                 window.location.hash = 'success'
+                return
                 #console.log 'Password Updated Successfully'
             else
                 handleErrorCode(statusCode)

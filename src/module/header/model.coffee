@@ -4,8 +4,6 @@
 
 define [ 'backbone', 'jquery', 'underscore', 'constant', 'event', 'common_handle', "ApiRequest" ], ( Backbone, $, _, constant, ide_event, common_handle, ApiRequest ) ->
 
-    #ws = MC.data.websocket
-
     HeaderModel = Backbone.Model.extend {
 
         defaults:

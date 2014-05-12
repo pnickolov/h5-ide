@@ -62,7 +62,7 @@ module.exports = ( url )->
   try
     zombie = require("zombie")
   catch e
-    console.log gutil.colors.bgYellow.black "  Cannot find zombie. Automated test is not disabled.  "
+    console.log gutil.colors.bgYellow.black "  Cannot find zombie. Automated test is disabled.  "
     return false
 
   compileTestCoffee().then runTest

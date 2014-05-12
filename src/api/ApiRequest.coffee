@@ -1,6 +1,5 @@
 
-define ["lib/ApiRequestDefs", "MC" ], ( ApiDefination )->
-
+define ["ApiRequestDefs", "api/ApiRequestErrors", "api/ApiRequestHandlers", "api/ApiBundle", "MC" ], ( ApiDefination, ApiErrors, ApiHandlers )->
   ###
   # === ApiRequest ===
   #
@@ -21,50 +20,46 @@ define ["lib/ApiRequestDefs", "MC" ], ( ApiDefination )->
     method  : ''
     params  : {}
 
+  # Helpers
   logAndThrow = ( obj )->
     ### env:dev ###
     console.error obj
     ### env:dev:end ###
     throw obj
 
+  # Request Handlers
   AjaxSuccessHandler = (res)->
     if not res or not res.result or res.result.length != 2
-      logAndThrow {
-        error : -1
-        msg   : "Invalid JsonRpc Return Data"
-      }
+      logAndThrow McError(-1, "Invalid JsonRpc Return Data")
 
     if res.result[0] isnt 0
       # We can do aditional global handling for some specific error here.
       # For example, Invalid Session.
+      gloablHandler = ApiHandlers[ res.result[0] ]
 
-      logAndThrow {
-        error  : res.result[0]
-        msg    : "Service Error"
-        result : res.result[1]
-      }
+      if gloablHandler
+        return gloablHandler( res )
+
+      logAndThrow McError( res.result[0], "Service Error", res.result[1] )
 
     res.result[1]
 
   AjaxErrorHandler = (jqXHR, textStatus, error)->
     if !error and jqXHR.status != 200
-      logAndThrow {
-        error : -jqXHR.status
-        msg   : "Network Error"
-      }
+      logAndThrow McError(-jqXHR.status, "Network Error")
 
-    logAndThrow {
-      error  : -2
-      msg    : textStatus
-      result : error
-    }
+    logAndThrow McError(-2, textStatus, error)
     return
 
   Abort = ()-> this.ajax.abort(); return
 
 
+
+  ###
+   ApiRequest Defination
+  ###
   ApiRequest = ( apiName, apiParameters )->
-    ApiDef = ApiDefination[ apiName ]
+    ApiDef = ApiDefination.Defs[ apiName ]
     apiParameters = apiParameters || EmptyObject
 
     if not ApiDef
@@ -75,7 +70,7 @@ define ["lib/ApiRequestDefs", "MC" ], ( ApiDefination )->
     if ApiDef.params
       RequestData.params = p = []
       for i in ApiDef.params
-        p.push apiParameters[i] || ApiDefination.autoFill(i)
+        p.push apiParameters[i] || ApiDefination.AutoFill(i)
     else if apiParameters
       OneParaArray[0] = apiParameters
       RequestData.params = OneParaArray
@@ -99,5 +94,8 @@ define ["lib/ApiRequestDefs", "MC" ], ( ApiDefination )->
     request.abort = Abort
     request.ajax  = ajax
     request
+
+
+  ApiRequest.Errors = ApiErrors
 
   ApiRequest

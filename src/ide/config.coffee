@@ -102,8 +102,6 @@ require.config {
 
 		'event'              : 'lib/ide_event'
 
-		'WS'                 : 'lib/websocket'
-
 		#############################################
 		# lib                        # Merge in deploy
 		#############################################
@@ -221,7 +219,8 @@ require.config {
 		#############################################
 		# api                       # Merge in deploy
 		#############################################
-		'ApiRequest'         : 'lib/ApiRequest'
+		'ApiRequest'     : 'api/ApiRequest'
+		'ApiRequestDefs' : 'api/ApiRequestDefs'
 
 
 		#############################################
@@ -286,10 +285,6 @@ require.config {
 		'handlebars'   :
 			exports    : 'Handlebars'
 
-		#############################################
-		# WS
-		#############################################
-
 		'Meteor'       :
 			deps       : ['underscore']
 			exports    : 'Meteor'
@@ -338,7 +333,6 @@ require.config {
 			"canvas_layout"
 			"lib/handlebarhelpers"
 			"event"
-			"WS"
 		]
 		"lib/deprecated" : [
 			'aws_handle'
@@ -455,7 +449,8 @@ requirejs.onError = ( err )->
 		console.error "[RequireJS Error]", err
 
 
-require ['./js/ide/ide' ], ( ide ) ->
+require ['ide/Application', 'ide/deprecated/ide'], ( Application, ide ) ->
+	new Application()
 	$ ()-> ide.initialize()
 , ( err )->
 	err = err || { requireType : "timeout" }

@@ -125,7 +125,7 @@ define ['UI.canvg', './Download'], ()->
     clone.removeChild line
 
     # Generate svg text, and remove data attributes
-    svg = (new XMLSerializer()).serializeToString(clone).replace(/data-[^=]+="[^"]*?"/g, "")
+    svg = (new XMLSerializer()).serializeToString(clone).replace(/data-[^=<>]+="[^"]*?"/g, "")
 
 
     # Insert header

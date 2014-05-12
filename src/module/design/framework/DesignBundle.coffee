@@ -31,6 +31,7 @@ define [ 'Design',
          "./util/deserializeVisitor/AsgExpandor",
          "./util/deserializeVisitor/ElbSgNamePatch",
          "./util/serializeVisitor/EniIpAssigner",
+         "./util/serializeVisitor/AppToStack",
 
          "./canvasview/CeLine"
          './canvasview/CeAz'

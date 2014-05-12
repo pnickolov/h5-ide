@@ -75,7 +75,7 @@
       zombie = require("zombie");
     } catch (_error) {
       e = _error;
-      console.log(gutil.colors.bgYellow.black("  Cannot find zombie. Automated test is not disabled.  "));
+      console.log(gutil.colors.bgYellow.black("  Cannot find zombie. Automated test is disabled.  "));
       return false;
     }
     return compileTestCoffee().then(runTest);

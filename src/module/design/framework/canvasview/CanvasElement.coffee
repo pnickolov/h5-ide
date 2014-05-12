@@ -251,7 +251,13 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
       return
 
     if @model.clone # If the model supports clone() interface, then clone the target.
-      attributes   = { parent : parent, name : @model.get("name") + "-copy" }
+      name = @model.get("name")
+      nameMatch = name.match /(.+-copy)(\d*)$/
+      if nameMatch
+        name = nameMatch[1] + ((parseInt(nameMatch[2],10) || 0) + 1)
+      else
+        name += "-copy"
+      attributes   = { parent : parent, name : name }
       pos          = { x : x, y : y }
       createOption = { cloneSource : @model }
 

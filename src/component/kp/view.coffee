@@ -254,8 +254,16 @@ define [ './template', './template_modal', 'backbone', 'jquery', 'constant', 'UI
             that = @
             reader = new FileReader()
             that.__import = ''
+
+
+            @$( '#modal-import-json-dropzone' )
+                .off( 'paste' )
+                .on 'paste', ( event ) ->
+                    pasteData = event.originalEvent.clipboardData.getData('text/plain')
+                    if pasteData
+                        that.afterImport pasteData
+
             reader.onload = ( evt )->
-                that.__import = reader.result
                 that.afterImport reader.result
                 null
 
@@ -289,7 +297,7 @@ define [ './template', './template_modal', 'backbone', 'jquery', 'constant', 'UI
             null
 
         afterImport: ( result ) ->
-            console.log result
+            @__import = result
             @$( '#modal-import-json-dropzone' ).addClass 'filled'
             @$( '.key-content' ).text result
 

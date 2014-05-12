@@ -156,7 +156,7 @@ define [ './template', './template_modal', 'backbone', 'jquery', 'constant', 'UI
             if not invalid
                 keyName = @$( '#import-kp-name' ).val()
                 @switchAction 'processing'
-                @model.import( keyName, that.__import )
+                @model.import( keyName, btoa that.__import )
                     .then (res) ->
                         console.log res
                         notification 'info', "#{keyName} is imported."

@@ -82,8 +82,13 @@ define [ 'constant', 'backbone', 'underscore', 'MC', 'keypair_service' ], ( cons
             request( 'DescribeKeyPairs', null, null ).then successHandler(@), errorHandler(@)
 
         import: ( name, data ) ->
-            request( 'ImportKeyPair', name, data ).then successHandler(@), errorHandler(@).then ( res ) ->
+            that = @
+            request( 'ImportKeyPair', name, data ).then( successHandler(@), errorHandler(@) ).then ( res ) ->
+                keys = that.get 'keys'
+                keys.unshift res
+                that.settle 'keys'
 
+                res
 
         create: ( name ) ->
             that = @

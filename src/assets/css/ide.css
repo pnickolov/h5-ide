@@ -7800,6 +7800,12 @@ summary:focus {
 	bottom: 2px;
 }
 
+#modal-kp-manage .show-import .slidebox.show .error {
+	bottom: 22px;
+	left: 13px;
+}
+
+
 #modal-kp-manage .slidebox .action {
 	display: inline-block;
 }

@@ -13,8 +13,8 @@ define [ "Design" ], (Design)->
                     compo.resource.VpcId = ""
                 when 'AWS.VPC.NetworkInterface'
                     compo.resource.NetworkInterfaceId = ""
+                    compo.resource.Attachment.AttachmentId = ""
                 when 'AWS.EC2.Instance'
-                    compo.resource.PrivateIpAddress = ""
                     compo.resource.InstanceId = ""
                 when 'AWS.VPC.Subnet'
                     compo.resource.SubnetId = ""
@@ -28,17 +28,16 @@ define [ "Design" ], (Design)->
                         return
                 when 'AWS.EC2.SecurityGroup'
                     compo.resource.GroupId = ""
-                    compo.resource.GroupName = "WebServerSG"
+                    compo.resource.GroupName = compo.name
                 when 'AWS.EC2.KeyPair'
                     compo.resource.KeyFingerprint = ""
-                    compo.resource.KeyName = "DefaultDP"
+                    compo.resource.KeyName = compo.name
                 when 'AWS.VPC.InternetGateway'
                     compo.resource.InternetGatewayId = ""
                 when 'AWS.VPC.NetworkAcl'
                     compo.resource.NetworkAclId = ""
                     compo.resource.AssociationSet.forEach (e)->
                         e.NetworkAclAssociationId = ""
-                        e.NetworkAclId = ""
                         return
                 when 'AWS.VPC.VPNGateway'
                     compo.resource.VpnGatewayId = ""
@@ -52,6 +51,32 @@ define [ "Design" ], (Design)->
                     compo.resource.DhcpOptionsId = ""
                 when 'AWS.EC2.Tag'
                     delete components[comp]
+                when 'AWS.AutoScaling.Tag'
+                    delete components[comp]
+                when 'AWS.ELB'
+                    compo.resource.DNSName = ""
+                    compo.resource.LoadBalancerName = compo.name
+                when 'AWS.IAM.ServerCertificate'
+                    compo.resource.ServerCertificateMetadata.Arn = ""
+                    compo.resource.ServerCertificateMetadata.ServerCertificateId = ""
+                    compo.resource.ServerCertificateMetadata.ServerCertificateName = compo.name
+                when 'AWS.AutoScaling.LaunchConfiguration'
+                    compo.resource.LaunchConfigurationARN = ""
+                    compo.resource.LaunchConfigurationName = compo.name
+                when 'AWS.AutoScaling.Group'
+                    compo.resource.AutoScalingGroupARN = ""
+                    compo.resource.AutoScalingGroupName = compo.name
+                when 'AWS.AutoScaling.NotificationConfiguration'
+                    console.log "Do Nothing Here"
+                when 'AWS.SNS.Subscription'
+                    console.log "Do Nothing Here"
+                when "AWS.SNS.Topic"
+                    compo.resource.TopicArn = ""
+                when 'AWS.AutoScaling.ScalingPolicy'
+                    compo.resource.PolicyARN = ""
+                when 'AWS.CloudWatch.CloudWatch'
+                    compo.resource.AlarmArn = ""
+                    compo.resource.AlarmName = compo.name
                 else
 
     null

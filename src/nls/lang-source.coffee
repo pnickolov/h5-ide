@@ -889,7 +889,7 @@ module.exports =
       zh: ""
 
     TOOL_POP_SAVE_NEW_STACK:
-      en: "Save as new Stack"
+      en: "Save as new stack"
       zh: ""
 
     TOOL_POP_SAVE_STACK_INSTRUCTION:

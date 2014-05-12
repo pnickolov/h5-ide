@@ -8,4 +8,7 @@ define [], ()->
   Errors =
     InvalidSession : 19
 
+    ChangeCredConfirm : 325 # Occurs when an user try to change credential with running apps.
+    InvalidCred       : 326 # Ocurrs when the aws credential is invalid.
+
   Errors

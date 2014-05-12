@@ -2,7 +2,7 @@
 #  View(UI logic) for dialog
 #############################
 
-define [ "./SettingsDialogTpl", 'i18n!nls/lang.js', "backbone" ], ( SettingsTpl, lang ) ->
+define [ "./SettingsDialogTpl", 'i18n!nls/lang.js', "ApiRequest", "backbone" ], ( SettingsTpl, lang, ApiRequest ) ->
 
     SettingsDialog = Backbone.View.extend {
 
@@ -17,6 +17,13 @@ define [ "./SettingsDialogTpl", 'i18n!nls/lang.js', "backbone" ], ( SettingsTpl,
         "click #CredRemoveConfirm"        : "removeCred"
         "click #CredSetupSubmit"          : "submitCred"
         "click #CredSetupConfirm"         : "confirmCred"
+
+        "click #TokenCreate"               : "createToken"
+        "click .tokenControl .icon-edit"   : "editToken"
+        "click .tokenControl .icon-delete" : "removeToken"
+        "click .tokenControl .tokenDone"   : "doneEditToken"
+        "click #TokenRemove"               : "confirmRmToken"
+        "click #TokenRmCancel"             : "cancelRmToken"
 
         "keyup #CredSetupAccount, #CredSetupAccessKey, #CredSetupSecretKey" : "updateSubmitBtn"
 
@@ -37,6 +44,8 @@ define [ "./SettingsDialogTpl", 'i18n!nls/lang.js', "backbone" ], ( SettingsTpl,
         defaultTab = 0
         if options then defaultTab = options.defaultTab || 0
         $("#SettingsNav").children().eq( defaultTab ).click()
+
+        @updateTokenTab()
         return
 
       updateCredSettings : ()->
@@ -206,10 +215,77 @@ define [ "./SettingsDialogTpl", 'i18n!nls/lang.js', "backbone" ], ( SettingsTpl,
         , ()->
           self.showCredUpdateFail()
         return
+
+      editToken : ( evt )->
+        $t = $(evt.currentTarget)
+        $p = $t.closest("li").toggleClass("editing", true)
+        $p.children(".tokenName").removeAttr("readonly").focus().select()
+        return
+
+      removeToken : ( evt )->
+        $p = $(evt.currentTarget).closest("li")
+        name = $p.children(".tokenName").val()
+        @rmToken = $p.children(".tokenToken").text()
+        $("#TokenManager").hide()
+        $("#TokenRmConfirm").show()
+        $("#TokenRmTit").text( sprintf lang.ide.SETTINGS_CONFIRM_TOKEN_RM_TIT, name )
+        return
+
+      createToken : ()->
+        $("#TokenCreate").attr "disabled", "disabled"
+
+        self = this
+        Q.defer().promise.then ()->
+          self.updateTokenTab()
+          $("#TokenCreate").removeAttr "disabled"
+        , ()->
+          $("#TokenCreate").removeAttr "disabled"
+
+        return
+
+      doneEditToken : ( evt )->
+        $p = $(evt.currentTarget).closest("li").removeClass("editing")
+        $p.children(".tokenName").attr "readonly", true
+
+        Q.defer().promise.then ()->
+          # Do nothing if update success
+          return
+        , ()->
+          # If anything goes wrong, revert the name
+          oldName = ""
+          $p.children(".tokenName").val( oldName )
+        return
+
+      confirmRmToken : ()->
+        $("#TokenRemove").attr "disabled", "disabled"
+
+        self = this
+        Q.defer().promise.then ()->
+          self.updateTokenTab()
+          self.cancelRmToken()
+        , ()->
+          notification "Fail to delete access token, please retry."
+
+        return
+
+      cancelRmToken : ()->
+        @rmToken = ""
+        $("#TokenManager").show()
+        $("#TokenRmConfirm").hide()
+        return
+
+      updateTokenTab : ()->
+        tokens = [{name:"Token1",token:"aaabbbccc"},{name:"Token2",token:"bbbdddccc"}]
+        if tokens.length
+          $("#TokenManager").children("ul").html MC.template.accessTokenTable( tokens )
+        else
+          $("#TokenManager").empty()
+        return
     }
 
     SettingsDialog.TAB =
       Normal     : 0
       Credential : 1
+      Token      : 2
 
     SettingsDialog

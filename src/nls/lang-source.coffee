@@ -3243,6 +3243,48 @@ module.exports =
       en: "Update"
       zh: "更新"
 
+    SETTINGS_LABEL_ACCESSTOKEN:
+      en: "Access Token"
+      zh: "Access Token"
+
+    SETTINGS_INFO_TOKEN:
+      en: "Use token within API calls to initiate automatic states update. "
+      zh: "Use token within API calls to initiate automatic states update. "
+
+    SETTINGS_BTN_TOKEN_CREATE:
+      en: "Generate Token"
+      zh: "Generate Token"
+
+    SETTINGS_BTN_TOKEN_REMOVE:
+      en: "Delete Token"
+      zh: "Delete Toekn"
+
+    SETTINGS_INFO_TOKEN_LINK:
+      en: "Read detailed documentation."
+      zh: "Read detailed documentation."
+
+    SETTINGS_INFO_TOKEN_EMPTY:
+      en: "You currently have no token."
+      zh: "You currently have no token."
+
+    SETTINGS_CONFIRM_TOKEN_RM_TIT:
+      en: 'Do you confirm to delete the "%s"?'
+      zh: 'Do you confirm to delete the "%s"?'
+
+    SETTINGS_LABEL_TOKENTABLE_NAME:
+      en: "Token Name"
+      zh: "Token Name"
+
+    SETTINGS_LABEL_TOKENTABLE_TOKEN:
+      en: "Access Token"
+      zh: "Access Token"
+
+    SETTINGS_CONFIRM_TOKEN_RM:
+      en: 'Any applications or scripts using this token will no longer be able to access the
+VisualOps API. You cannot UNDO this action.'
+      zh: 'Any applications or scripts using this token will no longer be able to access the
+VisualOps API. You cannot UNDO this action.'
+
     SETTINGS_CRED_CONNECTED_TIT:
       en: "You have connected with following AWS account:"
       zh: "您已经使用如下AWS账号连接:"

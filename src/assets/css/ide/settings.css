@@ -30,6 +30,14 @@
     line-height: 30px; }
     #SettingsBody .dl-horizontal dt, #SettingsBody .dl-horizontal dd {
       margin-top: 0; }
+  #SettingsBody .link-style {
+    color: #999;
+    line-height: 30px;
+    margin-left: 10px; }
+  #SettingsBody #AccountPwd {
+    color: #148BE6;
+    padding: 3px 0;
+    margin-left: 0; }
 
 #AccountPwdWrap {
   display: none;
@@ -40,10 +48,6 @@
 
 #AccountPwdWrap .dl-horizontal {
   line-height: 36px; }
-
-#AccountPwd {
-  color: #148BE6;
-  padding: 10px 0; }
 
 #AccountInfo {
   width: 360px;
@@ -132,11 +136,6 @@
   color: #ec3c38;
   padding: 0; }
 
-.cred-setup-cancel, .cred-cancel {
-  color: #999;
-  line-height: 30px;
-  margin-left: 10px; }
-
 #WelcomeSettings {
   width: 500px; }
   #WelcomeSettings > header {
@@ -159,3 +158,52 @@
 #WelcomeSkipWarning, #WelcomeDoneWrap {
   width: 430px;
   padding: 20px 30px; }
+
+.token-table {
+  position: relative;
+  height: 200px;
+  background: #111; }
+  .token-table:empty:before {
+    content: attr(data-empty);
+    width: 100%;
+    text-align: center;
+    height: 20px;
+    line-height: 20px;
+    top: 50%;
+    margin-top: -10px;
+    left: 0;
+    position: absolute; }
+  .token-table > li {
+    clear: both;
+    height: 30px; }
+  .token-table .tokenName, .token-table .tokenToken, .token-table .tokenControl {
+    margin: 0 5px;
+    line-height: 20px;
+    padding: 5px;
+    height: 20px;
+    width: 90px;
+    float: left; }
+  .token-table .tokenToken {
+    width: 180px; }
+  .token-table input.tokenName {
+    line-height: 18px;
+    width: 98px; }
+  .token-table input.tokenName[readonly] {
+    border: none;
+    background: none; }
+  .token-table .tokenControl, .token-table .tokenDone {
+    display: none; }
+  .token-table .tokenDone {
+    min-width: 80px;
+    padding: 0;
+    height: 20px;
+    line-height: 20px; }
+  .token-table > li:hover .tokenControl, .token-table > li.editing .tokenControl {
+    display: block; }
+  .token-table > li.editing .tooltip {
+    display: none; }
+  .token-table > li.editing .tokenDone {
+    display: block; }
+  .token-table .tokenControl .tooltip:before {
+    cursor: pointer;
+    color: #34A3F8; }

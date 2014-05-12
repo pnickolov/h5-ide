@@ -1034,6 +1034,10 @@ textarea {
 	/*border     : 1px solid #242424;*/
 }
 
+#modal-box .input:focus {
+  border-color : #010101;
+}
+
 #modal-box #bubble-box {
 	z-index: 80;
 }

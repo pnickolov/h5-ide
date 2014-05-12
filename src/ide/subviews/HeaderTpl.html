@@ -1,8 +1,8 @@
-<nav class="header-menu">
+<nav class="header-menu" id="header">
   <section class="dropdown">
-    <div id="header--notification" class="js-toggle-dropdown">
+    <div id="HeaderNotification" class="js-toggle-dropdown">
       <i class="icon-notification"></i>
-      <span id="notification-counter"></span>
+      <span id="NotificationCounter"></span>
     </div>
 
     <div class="dropdown-menu">
@@ -20,24 +20,18 @@
   </section>
 
   <section class="dropdown">
-    <div id="header--user" class="js-toggle-dropdown tooltip" data-tooltip="{{user_email}}">
+    <div id="HeaderUser" class="js-toggle-dropdown tooltip" data-tooltip="{{user_email}}">
       <span class="truncate" style="max-width:100px;">{{user_name}}</span>
-      <span class="no-credential" style="display:none;"></span>
       <i class="icon-caret-down"></i>
     </div>
 
-    <ul id="user-dropdown-wrapper" class="dropdown-menu" role="menu">
-      <li id="keyboard-shortcuts" class="modal" data-modal-template="shortkey">{{ i18n "HEAD_LABEL_MENUITEM_KEY_SHORT" }}</li>
-
+    <ul id="user-dropdown-wrapper" class="dropdown-menu">
+      <li id="HeaderShortcuts">{{ i18n "HEAD_LABEL_MENUITEM_KEY_SHORT" }}</li>
       <li><a href="http://docs.visualops.io" target="_blank" >{{ i18n "HEAD_LABEL_MENUITEM_DOC" }}</a></li>
-
-      <li>
-        <span class="no-credential" style="display:none;"></span>
-        <a href="javascript:void(0);" id="awscredential-modal">{{ i18n "HEAD_LABEL_MENUITEM_SETTING" }}</a>
-      </li>
-
-      <li id="btn-logout">{{ i18n "HEAD_LABEL_MENUITEM_LOGOUT" }}</li>
-
+      <li id="HeaderSettings">{{ i18n "HEAD_LABEL_MENUITEM_SETTING" }}</li>
+      <li id="HeaderLogout">{{ i18n "HEAD_LABEL_MENUITEM_LOGOUT" }}</li>
     </ul>
   </section>
+
+  <a id="support" class="icon-support" href="mailto:3rp02j1w@incoming.intercom.io" target="_blank">Support</a>
 </nav>

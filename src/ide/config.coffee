@@ -42,7 +42,7 @@
   # Check if there're missing cookie
   getCookie = (sKey)-> decodeURIComponent(document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + encodeURIComponent(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1")) || null
 
-  if not (getCookie('usercode') and getCookie('username') and getCookie('session_id') and getCookie('account_id') and getCookie('mod_repo') and getCookie('mod_tag') and getCookie('state') and getCookie('has_cred'))
+  if not (getCookie('usercode') and getCookie('session_id'))
   	window.location.href = "/login/"
   	return
 
@@ -228,10 +228,6 @@ require.config {
 		#############################################
 		'base_main'          : 'module/base/base_main'
 
-		'header'             : 'module/header/main'
-		'header_view'        : 'module/header/view'
-		'header_model'       : 'module/header/model'
-
 		'navigation'         : 'module/navigation/main'
 		'navigation_view'    : 'module/navigation/view'
 		'navigation_model'   : 'module/navigation/model'
@@ -292,9 +288,6 @@ require.config {
 		#############################################
 		# modules
 		#############################################
-
-		'header'       :
-			deps       : [ 'header_view', 'header_model', 'MC' ]
 
 		'navigation'   :
 			deps       : [ 'navigation_view', 'navigation_model', 'MC' ]
@@ -446,12 +439,13 @@ requirejs.onError = ( err )->
 
 		require err.requireModules || [], ()->
 	else
-		console.error "[RequireJS Error]", err
+		console.error "[RequireJS Error]", err, err.stack
 
 
 require ['ide/Application', 'ide/deprecated/ide'], ( Application, ide ) ->
-	new Application()
-	$ ()-> ide.initialize()
+	(new Application()).initialize().then ()->
+		ide.initialize()
+	return
 , ( err )->
 	err = err || { requireType : "timeout" }
 	if err.requireType is "timeout"
@@ -459,7 +453,7 @@ require ['ide/Application', 'ide/deprecated/ide'], ( Application, ide ) ->
 		console.error "[RequireJS timeout] Reloading, error modules :", err.requireModules
 		window.location.reload()
 	else
-		console.error "[RequireJS Error]", err
+		console.error "[RequireJS Error]", err, err.stack
 		# requirejs.onError = ()-> # Just use to suppress subsequent error
 		# console.error "[Script Error] Redirecting to 500, error modules :", err.requireModules
 		# window.location = "/500"

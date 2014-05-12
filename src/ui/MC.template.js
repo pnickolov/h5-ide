@@ -894,14 +894,28 @@ TEMPLATE.configurationDownload=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
+  var buffer = "", stack1, escapeExpression=this.escapeExpression, functionType="function", self=this;
 
+function program1(depth0,data) {
+  
+  
+  return "Run Stack";
+  }
 
-  buffer += "<div id=\"modal-run-stack\">\n	<div class=\"modal-header\">\n		<h3>Run Stack</h3>\n		<i class=\"modal-close\">×</i>\n	</div>\n	<div class=\"modal-body\">\n		<div class=\"modal-control-group clearfix\" data-bind=\"true\">\n			<label class=\"label\" for=\"app-name\">App Name</label>\n			<input id=\"app-name\" class=\"input modal-input-value\" type=\"text\" value=\""
-    + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" data-ignore=\"true\">\n		</div>\n		<div class=\"modal-control-group app-usage-group clearfix\">\n			<label for=\"\">App Usage</label>\n			<div id=\"app-usage-selectbox\" class=\"selectbox\">\n				<div class=\"selection\"><i class=\"icon-app-type-testing\"></i>Testing</div>\n				<ul class=\"dropdown\" tabindex=\"-1\">\n					<li class=\"selected item\" data-value=\"testing\"><i class=\"icon-app-type-testing\"></i>Testing</li>\n					<li class=\"item\" data-value=\"development\"><i class=\"icon-app-type-development\"></i>Development</li>\n					<li class=\"item\" data-value=\"production\"><i class=\"icon-app-type-production\"></i>Production</li>\n					<li class=\"item\" data-value=\"others\"><i class=\"icon-app-type-others\" data-value=\"testing\"></i>Others</li>\n				<ul>\n			</div>\n		</div>\n		<div class=\"stack-validation\">\n			<details open style=\"display:none;\">\n				<summary>Stack Validation</summary>\n				<div id=\"stack-run-validation-container\"></div>\n			</details>\n			<div class=\"nutshell\" style=\"display: none;\">:<label></label></div>\n			<div class=\"validating\">\n				<div class=\"loading-spinner loading-spinner-small\"></div>\n				<p>Validating your stack...</p>\n			</div>\n		</div>\n		<div class=\"estimate clearfix\">\n			<span class=\"title\">Estimated Cost</span>\n			<span class=\"price\" id=\"label-total-fee\"><b>$"
+function program3(depth0,data) {
+  
+  
+  return "Setup Credential First";
+  }
+
+  buffer += "<div id=\"modal-run-stack\">\n	<div class=\"modal-header\">\n		<h3>"
+    + escapeExpression(helpers.i18n.call(depth0, "TOOL_POP_TIT_RUN_STACK", {hash:{},data:data}))
+    + "</h3><i class=\"modal-close\">×</i>\n	</div>\n	<div class=\"modal-body\">\n		<div class=\"modal-control-group clearfix\" data-bind=\"true\">\n			<label class=\"label\" for=\"app-name\">App Name</label>\n			<input id=\"app-name\" class=\"input modal-input-value\" type=\"text\" data-ignore=\"true\">\n		</div>\n		<div class=\"modal-control-group app-usage-group clearfix\">\n			<label for=\"\">App Usage</label>\n			<div id=\"app-usage-selectbox\" class=\"selectbox\">\n				<div class=\"selection\"><i class=\"icon-app-type-testing\"></i>Testing</div>\n				<ul class=\"dropdown\" tabindex=\"-1\">\n					<li class=\"selected item\" data-value=\"testing\"><i class=\"icon-app-type-testing\"></i>Testing</li>\n					<li class=\"item\" data-value=\"development\"><i class=\"icon-app-type-development\"></i>Development</li>\n					<li class=\"item\" data-value=\"production\"><i class=\"icon-app-type-production\"></i>Production</li>\n					<li class=\"item\" data-value=\"others\"><i class=\"icon-app-type-others\" data-value=\"testing\"></i>Others</li>\n				<ul>\n			</div>\n		</div>\n		<div class=\"stack-validation\">\n			<details open style=\"display:none;\">\n				<summary>Stack Validation</summary>\n				<div id=\"stack-run-validation-container\"></div>\n			</details>\n			<div class=\"nutshell\" style=\"display: none;\">:<label></label></div>\n			<div class=\"validating\">\n				<div class=\"loading-spinner loading-spinner-small\"></div>\n				<p>Validating your stack...</p>\n			</div>\n		</div>\n		<div class=\"estimate clearfix\">\n			<span class=\"title\">Estimated Cost</span>\n			<span class=\"price\" id=\"label-total-fee\"><b>$"
     + escapeExpression(((stack1 = (depth0 && depth0.total_fee)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</b> / month</span>\n		</div>\n\n	</div>\n	<div class=\"modal-footer\">\n\n		<button class=\"btn btn-blue\" id=\"btn-confirm\" disabled>Run Stack</button>\n		<button class=\"btn btn-silver modal-close\" id=\"run-stack-cancel\">Cancel</button>\n	</div>\n</div>\n\n";
+    + "</b> / month</span>\n		</div>\n\n	</div>\n	<div class=\"modal-footer\">\n\n		<button class=\"btn btn-blue\" id=\"btn-confirm\" disabled>";
+  stack1 = helpers['if'].call(depth0, (depth0 && depth0.hasCred), {hash:{},inverse:self.program(3, program3, data),fn:self.program(1, program1, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "</button>\n		<button class=\"btn btn-silver modal-close\" id=\"run-stack-cancel\">Cancel</button>\n	</div>\n</div>\n\n";
   return buffer;
   };
 TEMPLATE.modalRunStack=Handlebars.template(__TEMPLATE__);
@@ -2343,10 +2357,110 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + escapeExpression(((stack1 = (depth0 && depth0.cert_name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "?</div>\n				<div class=\"modal-text-minor\">"
     + escapeExpression(helpers.i18n.call(depth0, "PROP_ELB_CERT_REMOVE_CONFIRM_SUB", {hash:{},data:data}))
-    + "</div>\n			</div>\n		 </div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"modal-confirm-elb-cert-delete\" class=\"btn btn-red\">Delete</button>\n		<button id=\"modal-cancel\" class=\"btn modal-close btn-silver\">Cancel</button>\n	</div>\n</div>\n";
+    + "</div>\n			</div>\n		 </div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"modal-confirm-elb-cert-delete\" class=\"btn btn-red\">Delete</button>\n		<button id=\"modal-cancel\" class=\"btn modal-close btn-silver\">Cancel</button>\n	</div>\n</div>\n\n";
   return buffer;
   };
 TEMPLATE.modalDeleteELBCert=Handlebars.template(__TEMPLATE__);
+
+
+__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
+
+function program1(depth0,data) {
+  
+  
+  return "unread";
+  }
+
+function program3(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n      <i class=\"icon-error\"></i>\n      <div class=\"content\"><span class=\"resource-name-label\">"
+    + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</span> failed to "
+    + escapeExpression(((stack1 = (depth0 && depth0.operation)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + " in "
+    + escapeExpression(((stack1 = (depth0 && depth0.region_label)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + ".</div>\n    ";
+  return buffer;
+  }
+
+function program5(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n      <i class=\"icon-pending\"></i>\n      <div class=\"content\">Sending request to "
+    + escapeExpression(((stack1 = (depth0 && depth0.operation)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + " <span class=\"resource-name-label\">"
+    + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</span> in "
+    + escapeExpression(((stack1 = (depth0 && depth0.region_label)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + ".</div>\n    ";
+  return buffer;
+  }
+
+function program7(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n      <i class=\"icon-pending\"></i>\n      <div class=\"content\">Processing request to "
+    + escapeExpression(((stack1 = (depth0 && depth0.operation)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + " <span class=\"resource-name-label\">"
+    + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</span> in "
+    + escapeExpression(((stack1 = (depth0 && depth0.region_label)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + ".</div>\n    ";
+  return buffer;
+  }
+
+function program9(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n      <i class=\"icon-success\"></i>\n      <div class=\"content\"><span class=\"resource-name-label\">"
+    + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + " </span>"
+    + escapeExpression(((stack1 = (depth0 && depth0.operation)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + " successfully in "
+    + escapeExpression(((stack1 = (depth0 && depth0.region_label)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + ".</div>\n    ";
+  return buffer;
+  }
+
+function program11(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n  <div class=\"notification-details\">"
+    + escapeExpression(((stack1 = (depth0 && depth0.error)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</div>\n  ";
+  return buffer;
+  }
+
+  buffer += "<li class=\"notification-item ";
+  stack1 = helpers.unless.call(depth0, (depth0 && depth0.is_readed), {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\">\n  <div class=\"notification-message\">\n    ";
+  stack1 = helpers['if'].call(depth0, (depth0 && depth0.error), {hash:{},inverse:self.noop,fn:self.program(3, program3, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n    ";
+  stack1 = helpers['if'].call(depth0, (depth0 && depth0.is_request), {hash:{},inverse:self.noop,fn:self.program(5, program5, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n    ";
+  stack1 = helpers['if'].call(depth0, (depth0 && depth0.is_process), {hash:{},inverse:self.noop,fn:self.program(7, program7, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n    ";
+  stack1 = helpers['if'].call(depth0, (depth0 && depth0.is_complete), {hash:{},inverse:self.noop,fn:self.program(9, program9, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n  </div>\n\n  ";
+  stack1 = helpers['if'].call(depth0, (depth0 && depth0.error), {hash:{},inverse:self.noop,fn:self.program(11, program11, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n\n  <div class=\"notification-duration left\">"
+    + escapeExpression(((stack1 = (depth0 && depth0.duration)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</div>\n  <div class=\"timestamp\">"
+    + escapeExpression(((stack1 = (depth0 && depth0.time_str)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</div>\n</li>\n\n";
+  return buffer;
+  };
+TEMPLATE.headerNotifyItem=Handlebars.template(__TEMPLATE__);
 
 
 return TEMPLATE; });

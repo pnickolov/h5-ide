@@ -127,7 +127,7 @@ define [ 'event', 'constant' ], ( ide_event, constant ) ->
                     return
 
                 # SWITCH_MAIN → GET_STATE_MODULE
-                if MC.common.cookie.getCookieByName('has_cred') is 'false' and model.get( 'check_required_service_count' ) is 1    # not set credential then use quickstart data
+                if false and model.get( 'check_required_service_count' ) is 1    # not set credential then use quickstart data
                     console.log 'not set credential and described quickstart service'
                     is_true = true
 

@@ -4,11 +4,10 @@
 
 define [ 'MC', 'event', 'handlebars'
 		 'i18n!nls/lang.js',
-		 './view', 'canvas_layout',
-		 'header', 'navigation', 'tabbar', 'dashboard', 'design_module', 'process', 'constant',
+		 './view', 'canvas_layout', 'navigation', 'tabbar', 'dashboard', 'design_module', 'process', 'constant',
 		 'base_model',
 		 'common_handle', 'validation', 'aws_handle'
-], ( MC, ide_event, Handlebars, lang, view, canvas_layout, header, navigation, tabbar, dashboard, design, process, constant, base_model, common_handle, validation ) ->
+], ( MC, ide_event, Handlebars, lang, view, canvas_layout, navigation, tabbar, dashboard, design, process, constant, base_model, common_handle, validation ) ->
 
 	initialize : () ->
 
@@ -22,13 +21,6 @@ define [ 'MC', 'event', 'handlebars'
 				ide_event.trigger ide_event.SWITCH_MAIN
 				notification 'error', lang.ide.IDE_MSG_ERR_CONNECTION, true
 		, 50 * 1000
-
-		#############################
-		#  validation cookie
-		#############################
-
-		#clear cookie in 'ide.visualops.io'
-		#common_handle.cookie.clearInvalidCookie()
 
 		#############################
 		#  initialize MC.data
@@ -140,7 +132,7 @@ define [ 'MC', 'event', 'handlebars'
 		#############################
 
 		#load header
-		header.loadModule()
+		# header.loadModule()
 		#load tabbar
 		tabbar.loadModule()
 		#load dashboard
@@ -179,8 +171,7 @@ define [ 'MC', 'event', 'handlebars'
 			console.log 'sub'
 			if error.return_code is constant.RETURN_CODE.E_SESSION
 				# LEGACY code
-				ide_event.trigger ide_event.SWITCH_MAIN
-				require [ 'component/session/SessionDialog' ], ( SessionDialog )-> new SessionDialog()
+				App.acquireSession()
 
 				if error.param[0].method is 'info'
 					if error.param[0].url in [ '/stack/', '/app/' ]

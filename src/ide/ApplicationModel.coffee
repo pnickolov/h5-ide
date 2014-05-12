@@ -30,7 +30,7 @@ define [ "backbone", "./Websocket", "event", "constant" ], ( Backbone, Websocket
       ide_event.onListen ide_event.OPEN_DESIGN, () -> return
       ###
 
-      # It seems like the toolbar doesn't even process the request_item, which can just directly listen to WS that the request item event.
+      # It seems like the toolbar doesn't even process the request_item, in which we can just directly listen to WS that the request item event.
       self = this
       ide_event.onLongListen ide_event.UPDATE_REQUEST_ITEM, (idx) -> self.__processSingleNotification idx
 
@@ -45,23 +45,21 @@ define [ "backbone", "./Websocket", "event", "constant" ], ( Backbone, Websocket
       info_list = @attributes.notification
 
       # check whether same operation
-      same_req = null
-      same_req = i for i in info_list when i.id == item.id
+      for i, idx in info_list
+        if i.id is item.id
+          same_req = i
+          break
 
       # not update when the same state
-      if same_req != null and (same_req.is_request == item.is_request and same_req.is_process == item.is_process and same_req.is_complete == item.is_complete)
+      if same_req and same_req.is_request is item.is_request and same_req.is_process is item.is_process and same_req.is_complete is item.is_complete
           return
 
       # TODO : Mark the item as read if the current tab is the item's tab.
       # Currently, the item is mark as readed if the WS is not ready.
       item.is_readed = not App.WS.isReady()
 
-      # remove the old request and new to the header
-      for i, idx in info_list
-        if i.id is item.id
-          info_list.splice idx, 1
-          break
-
+      # Prepend the item to the list.
+      info_list.splice idx, 1
       info_list.splice 0, 0, item
 
       # Notify the others that notification has changed.
@@ -70,7 +68,7 @@ define [ "backbone", "./Websocket", "event", "constant" ], ( Backbone, Websocket
           @trigger "change:notification"
           @__notifyDebounce = null
           return
-        , 400
+        , 300
       null
 
     __parseRequestInfo : (req) ->

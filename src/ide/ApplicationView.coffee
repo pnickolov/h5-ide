@@ -5,7 +5,7 @@
 ----------------------------
 ###
 
-define [ "backbone", "./subviews/SessionDialog", "./subviews/HeaderView", "./subviews/WelcomeDialog" ], ( Backbone, SessionDialog, HeaderView, WelcomeDialog )->
+define [ "backbone", "./subviews/SessionDialog", "./subviews/HeaderView", "./subviews/WelcomeDialog", "./subviews/SettingsDialog" ], ( Backbone, SessionDialog, HeaderView, WelcomeDialog, SettingsDialog )->
 
   Backbone.View.extend {
 
@@ -49,5 +49,9 @@ define [ "backbone", "./subviews/SessionDialog", "./subviews/HeaderView", "./sub
 
     showSessionDialog : ()->
       (new SessionDialog()).promise()
+
+    showSettings : ( tab )->
+      new SettingsDialog({ defaultTab:tab })
+      return
 
   }

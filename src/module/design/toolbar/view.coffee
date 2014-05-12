@@ -131,76 +131,74 @@ define [ 'MC', 'event',
                     $( '#main-toolbar' ).html app_tmpl this.model.attributes
 
         clickRunIcon : ( event ) ->
-            console.log 'clickRunIcon'
-
             # when disabled not click
             if $('#toolbar-run').hasClass( 'disabled' )
-                modal.close()
-                return
+                return false
+
+            modal MC.template.modalRunStack {
+                hasCred : App.user.hasCredential()
+            }
 
             me = this
             event.preventDefault()
-            # check credential
-            if false
-                modal.close()
-                console.log 'show credential setting dialog'
-                require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
 
-            else
+            # set app name
+            $('.modal-input-value').val MC.common.other.canvasData.get 'name'
 
-                # set app name
-                $('.modal-input-value').val MC.common.other.canvasData.get 'name'
+            # set total fee
+            cost = Design.instance().getCost()
+            $('#label-total-fee').find("b").text("$#{cost.totalFee}")
 
-                # set total fee
-                cost = Design.instance().getCost()
-                $('#label-total-fee').find("b").text("$#{cost.totalFee}")
+            # insert ta component
+            require [ 'component/trustedadvisor/main' ], ( trustedadvisor_main ) ->
+                trustedadvisor_main.loadModule 'stack'
 
-                # insert ta component
-                require [ 'component/trustedadvisor/main' ], ( trustedadvisor_main ) ->
-                    trustedadvisor_main.loadModule 'stack'
+            # click logic
+            $('#btn-confirm').on 'click', this, (event) ->
 
-                # click logic
-                $('#btn-confirm').on 'click', this, (event) ->
+                if not App.user.hasCredential()
+                    App.showSettings(1)
+                    return false
 
-                    console.log 'clickRunIcon'
+                console.log 'clickRunIcon'
 
-                    #check app name
-                    app_name = $('.modal-input-value').val()
+                #check app name
+                app_name = $('.modal-input-value').val()
 
-                    if not app_name
-                        notification 'warning', lang.ide.PROP_MSG_WARN_NO_APP_NAME
-                        return
+                if not app_name
+                    notification 'warning', lang.ide.PROP_MSG_WARN_NO_APP_NAME
+                    return
 
-                    if not MC.validate 'awsName', app_name
-                        notification 'warning', lang.ide.PROP_MSG_WARN_INVALID_APP_NAME
-                        return
+                if not MC.validate 'awsName', app_name
+                    notification 'warning', lang.ide.PROP_MSG_WARN_INVALID_APP_NAME
+                    return
 
-                    # get process tab name
-                    process_tab_name = 'process-' + MC.common.other.canvasData.get( 'region' ) + '-' + app_name
+                # get process tab name
+                process_tab_name = 'process-' + MC.common.other.canvasData.get( 'region' ) + '-' + app_name
 
-                    # delete F5 old process
-                    obj = MC.common.other.getProcess process_tab_name
-                    if obj and obj.flag_list and obj.flag_list.is_failed is true and obj.flag_list.flag is 'RUN_STACK'
+                # delete F5 old process
+                obj = MC.common.other.getProcess process_tab_name
+                if obj and obj.flag_list and obj.flag_list.is_failed is true and obj.flag_list.flag is 'RUN_STACK'
 
-                        # delete MC.process
-                        MC.common.other.deleteProcess process_tab_name
+                    # delete MC.process
+                    MC.common.other.deleteProcess process_tab_name
 
-                        # close tab if exist
-                        ide_event.trigger ide_event.CLOSE_DESIGN_TAB, process_tab_name
+                    # close tab if exist
+                    ide_event.trigger ide_event.CLOSE_DESIGN_TAB, process_tab_name
 
-                    # repeat with app list or tab name(some run failed app tabs)
-                    if (not MC.aws.aws.checkAppName app_name) or (_.contains(_.keys(MC.process), process_tab_name))
-                        notification 'warning', lang.ide.PROP_MSG_WARN_REPEATED_APP_NAME
-                        return false
+                # repeat with app list or tab name(some run failed app tabs)
+                if (not MC.aws.aws.checkAppName app_name) or (_.contains(_.keys(MC.process), process_tab_name))
+                    notification 'warning', lang.ide.PROP_MSG_WARN_REPEATED_APP_NAME
+                    return false
 
-                    # disable button
-                    $('#btn-confirm').attr 'disabled', true
-                    $('.modal-header .modal-close').hide()
-                    $('#run-stack-cancel').attr 'disabled', true
+                # disable button
+                $('#btn-confirm').attr 'disabled', true
+                $('.modal-header .modal-close').hide()
+                $('#run-stack-cancel').attr 'disabled', true
 
-                    # push SAVE_STACK event
-                    #ide_event.trigger ide_event.SAVE_STACK, MC.common.other.canvasData.data()
-                    event.data.model.syncSaveStack MC.common.other.canvasData.get( 'region' ), MC.common.other.canvasData.data()
+                # push SAVE_STACK event
+                #ide_event.trigger ide_event.SAVE_STACK, MC.common.other.canvasData.data()
+                event.data.model.syncSaveStack MC.common.other.canvasData.get( 'region' ), MC.common.other.canvasData.data()
 
             null
 

@@ -123,7 +123,7 @@ define [ 'event',
             if MC.browser is 'msie' and MC.browserVersion is 10
                 return
 
-            if not ( App.user and App.user.get( "session" ) )
+            if not ( App and App.user and App.user.get( "session" ) )
                 return
 
             #return if MC.data.current_tab_id in [ 'dashboard', undefined ]

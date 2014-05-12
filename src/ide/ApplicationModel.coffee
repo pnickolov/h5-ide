@@ -69,6 +69,7 @@ define [ "backbone", "./Websocket", "event", "constant" ], ( Backbone, Websocket
         @__notifyDebounce = setTimeout ()=>
           @trigger "change:notification"
           @__notifyDebounce = null
+          return
         , 400
       null
 

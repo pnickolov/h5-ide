@@ -25,8 +25,8 @@ define [ "./Websocket", "./ApplicationView", "./ApplicationModel", "./User", "co
     @__createWebsocket()
 
     # view / model depends on User and Websocket
-    @model = new ApplicationModel()
-    @view  = new ApplicationView()
+    @model  = new ApplicationModel()
+    @__view = new ApplicationView()
 
     # This function returns a promise
     @user.fetch()
@@ -39,7 +39,7 @@ define [ "./Websocket", "./ApplicationView", "./ApplicationModel", "./User", "co
 
     @WS.on "StatusChanged", ( isConnected )=>
       console.info "Websocket Status changed, isConnected:", isConnected
-      @view.toggleWSStatus( isConnected )
+      @__view.toggleWSStatus( isConnected )
 
     return
 
@@ -96,11 +96,13 @@ define [ "./Websocket", "./ApplicationView", "./ApplicationModel", "./User", "co
     # LEGACY code
     # Seems like in the old days, someone wants to swtich to dashboard.
     ide_event.trigger ide_event.SWITCH_MAIN
-    @view.showSessionDialog()
+    @__view.showSessionDialog()
 
   VisualOps.prototype.logout = ()->
     App.user.logout()
     window.location.href = "/login/"
     return
+
+  VisualOps.prototype.showSettings = ( tab )-> @__view.showSettings( tab )
 
   VisualOps

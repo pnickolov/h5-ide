@@ -52,6 +52,8 @@ define [ 'MC', 'event',
             'click #toolbar-cancel-edit-app' : 'clickCancelEditApp'
 
             'click .toolbar-visual-ops-switch' : 'opsOptionChanged'
+
+            'click .toolbar-visual-ops-refresh': 'clickReloadStates'
             #'click #apply-visops'             : 'openExperimentalVisops'
 
         # when flag = 0 not invoke opsState
@@ -393,6 +395,16 @@ define [ 'MC', 'event',
                         appToStackCb(err, newData)
 
             null
+
+        clickReloadStates: (event)->
+            $target = $ event.currentTarget
+            $label = $target.find('.refresh-label')
+            if $target.hasClass('disabled')
+                return false
+            console.log(event)
+            $target.toggleClass('disabled')
+            $label.html($label.attr('data-disabled'))
+            ApiRequest()
 
         clickDeleteIcon : ->
             me = this

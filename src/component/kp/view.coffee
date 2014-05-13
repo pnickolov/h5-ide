@@ -345,9 +345,9 @@ define [ './template', './template_modal', 'backbone', 'jquery', 'constant', 'UI
 
         setKey: ( event, name ) ->
             if name is '@default'
-                @model.setKey ''
-            else if name is '@no'
                 @model.setKey '', true
+            else if name is '@no'
+                @model.setKey ''
             else
                 @model.setKey name
 

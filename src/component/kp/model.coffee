@@ -55,9 +55,9 @@ define [ 'constant', 'backbone', 'underscore', 'MC', 'keypair_service', 'Design'
                 @__haveGot = arguments[ 0 ]
             @__haveGot
 
-        setKey: ( name, noKey ) ->
+        setKey: ( name, defaultKey ) ->
             if @resModel
-                @resModel.setKey name, noKey
+                @resModel.setKey name, defaultKey
             else
                 @handleResourcesWithDefaultKp name, noKey
 

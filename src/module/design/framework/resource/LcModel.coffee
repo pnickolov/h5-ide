@@ -176,7 +176,8 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
       kp and kp.isDefault()
 
     isNoKey: ->
-      not @get( 'keyName' )
+      kp = @connectionTargets( "KeypairUsage" )[0]
+      not kp and not @get( 'keyName' )
 
 
     setAmi                : InstanceModel.prototype.setAmi

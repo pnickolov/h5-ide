@@ -684,7 +684,8 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
       kp and kp.isDefault()
 
     isNoKey: ->
-      not @get( 'keyName' )
+      kp = @connectionTargets( "KeypairUsage" )[0]
+      not kp and not @get( 'keyName' )
 
 
     serialize : ()->

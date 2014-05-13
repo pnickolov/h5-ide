@@ -84,7 +84,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
 
       # Create additonal association if the instance is created by user.
       if option.createByUser and not option.cloneSource
-        ###
+
         #assign DefaultKP
         KpModel = Design.modelClassForType( constant.RESTYPE.KP )
         defaultKp = KpModel.getDefaultKP()
@@ -92,7 +92,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
           defaultKp.assignTo( this )
         else
           console.error "No DefaultKP found when initialize InstanceModel"
-        ###
+
 
         #assign DefaultSG
         SgModel = Design.modelClassForType( constant.RESTYPE.SG )
@@ -591,8 +591,6 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
         if not vpc.isDefaultTenancy()
           tenancy = "dedicated"
 
-      kp = @getKey()
-
       name = @get("name")
       if @get("count") > 1 then name += "-0"
 
@@ -622,8 +620,6 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
           }
           InstanceId            : @get("appId")
           ImageId               : @get("imageId")
-          KeyName               : kp
-          KeyType               : @get('keyType') or ''
           EbsOptimized          : if @isEbsOptimizedEnabled() then @get("ebsOptimized") else false
           VpcId                 : @getVpcRef()
           SubnetId              : @getSubnetRef()
@@ -663,42 +659,32 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
 
       @set("state", stateAryData)
 
-    setKey: (keyName, noKey) ->
-      kp = @connectionTargets( "KeypairUsage" )[0]
-      if kp
-        kp.destroy()
+    setKey: ( keyName, defaultKey ) ->
+      @set 'keyName', keyName
 
-      if noKey
-        @set 'keyName', ''
-        @set 'keyType', 'noKey'
-      else
-        @set 'keyName', keyName
-        @set 'keyType', ''
+      if defaultKey
+        KpModel = Design.modelClassForType( constant.RESTYPE.KP )
+        defaultKp = KpModel.getDefaultKP()
+        if defaultKp
+          defaultKp.assignTo( this )
+        else
+          console.error "No DefaultKP found when initialize InstanceModel"
 
-    getKey: ->
-      if @get( 'keyType' ) is 'noKey'
-        ''
-      else
-        @get 'keyName'
 
     getKeyName: ->
       kp = @connectionTargets( "KeypairUsage" )[0]
 
       if kp
-        if kp.name is 'DefaultKP' then '$DefaultKeyPair' else "@#{kp.get('name')}"
+        if kp.isDefault() then '$DefaultKeyPair' else kp.get('name')
       else
-        if @get( 'keyType' ) is 'noKey'
-          'No Key Pair'
-        else if not @get('keyName')
-          '$DefaultKeyPair'
-        else
-           @get 'keyName'
+         @get 'keyName'
 
     isDefaultKey: ->
-      @get( 'KeyType' ) isnt 'noKey' and not @get( 'keyName' )
+      kp = @connectionTargets( "KeypairUsage" )[0]
+      kp and kp.isDefault()
 
     isNoKey: ->
-      @get( 'KeyType' ) is 'noKey'
+      not @get( 'keyName' )
 
 
     serialize : ()->
@@ -917,7 +903,6 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
         KP.assignTo( model )
       else
         model.set 'keyName', data.resource.KeyName
-        model.set 'keyType', data.resource.KeyType
 
       null
   }

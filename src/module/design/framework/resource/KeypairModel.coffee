@@ -5,14 +5,18 @@ define [ "constant", "../ComplexResModel", "../ConnectionModel"  ], ( constant, 
     type : "KeypairUsage"
     oneToMany : constant.RESTYPE.KP
 
-    ###
+
     serialize : ( components )->
       kp = @getTarget( constant.RESTYPE.KP )
-      otherTarget = @getOtherTarget( kp )
+      if kp
+        otherTarget = @getOtherTarget( kp )
+        if kp.isDefault()
+          components[ otherTarget.id ].resource.KeyName = kp.createRef( "KeyName" )
+        else
+          components[ otherTarget.id ].resource.KeyName = ''
 
-      components[ otherTarget.id ].resource.KeyName = kp.createRef( "KeyName" )
       null
-    ###
+
   }
 
 
@@ -24,6 +28,9 @@ define [ "constant", "../ComplexResModel", "../ConnectionModel"  ], ( constant, 
       fingerprint : ""
 
     isVisual : ()-> false
+
+    isDefault: () ->
+      @get( 'name' ) is 'DefaultKP'
 
     remove : ()->
       # When a keypair is removed, make all usage to be DefaultKP

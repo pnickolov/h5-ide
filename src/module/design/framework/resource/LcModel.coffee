@@ -40,6 +40,10 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
 
         @initInstanceType()
 
+        # Default Kp
+        KpModel = Design.modelClassForType( constant.RESTYPE.KP )
+        KpModel.getDefaultKP().assignTo( this )
+
         # Default Sg
         defaultSg = Design.modelClassForType( constant.RESTYPE.SG ).getDefaultSg()
         SgAsso = Design.modelClassForType( "SgAsso" )
@@ -146,42 +150,33 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
     setStateData : (stateAryData) ->
       @set("state", stateAryData)
 
-    setKey: (keyName, noKey) ->
-      kp = @connectionTargets( "KeypairUsage" )[0]
-      if kp
-        kp.destroy()
 
-      if noKey
-        @set 'keyName', ''
-        @set 'keyType', 'noKey'
-      else
-        @set 'keyName', keyName
-        @set 'keyType', ''
+    setKey: ( keyName, defaultKey ) ->
+      @set 'keyName', keyName
 
-    getKey: ->
-      if @get( 'keyType' ) is 'noKey'
-        ''
-      else
-        @get 'keyName'
+      if defaultKey
+        KpModel = Design.modelClassForType( constant.RESTYPE.KP )
+        defaultKp = KpModel.getDefaultKP()
+        if defaultKp
+          defaultKp.assignTo( this )
+        else
+          console.error "No DefaultKP found when initialize InstanceModel"
+
 
     getKeyName: ->
       kp = @connectionTargets( "KeypairUsage" )[0]
 
       if kp
-        if kp.name is 'DefaultKP' then '$DefaultKeyPair' else "@#{kp.get('name')}"
+        if kp.isDefault() then '$DefaultKeyPair' else kp.get('name')
       else
-        if @get( 'keyType' ) is 'noKey'
-          'No Key Pair'
-        else if not @get('keyName')
-          '$DefaultKeyPair'
-        else
-           @get 'keyName'
+         @get 'keyName'
 
     isDefaultKey: ->
-      @get( 'KeyType' ) isnt 'noKey' and not @get( 'keyName' )
+      kp = @connectionTargets( "KeypairUsage" )[0]
+      kp and kp.isDefault()
 
     isNoKey: ->
-      @get( 'KeyType' ) is 'noKey'
+      not @get( 'keyName' )
 
 
     setAmi                : InstanceModel.prototype.setAmi
@@ -238,8 +233,6 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
           ImageId                  : @get("imageId")
           EbsOptimized             : if @isEbsOptimizedEnabled() then @get("ebsOptimized") else false
           BlockDeviceMapping       : blockDevice
-          KeyName                  : @getKey()
-          KeyType                  : @get('keyType') or ''
           SecurityGroups           : sgarray
           LaunchConfigurationName  : @get("configName") or @get("name")
           InstanceType             : @get("instanceType")
@@ -310,7 +303,6 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
         KP.assignTo( model )
       else
         model.set 'keyName', data.resource.KeyName
-        model.set 'keyType', data.resource.KeyType
 
       null
   }

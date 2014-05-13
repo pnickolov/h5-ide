@@ -8,17 +8,57 @@
 
 ###
 
-define [ "backbone", "./Websocket", "event", "constant" ], ( Backbone, Websocket, ide_event, constant )->
+define [ "./submodels/OpsCollection", "./submodels/OpsModel", "ApiRequest", "backbone",  "event", "constant" ], ( OpsCollection, OpsModel, ApiRequest, Backbone, ide_event, constant )->
 
   Backbone.Model.extend {
 
     defaults : ()->
-      notification : []
       __websocketReady : false
+      notification     : [] # An array holding the notification data
+      stackList        : new OpsCollection()
+      appList          : new OpsCollection()
 
+    markNotificationRead : ()->
+      for i in @attributes.notification
+        i.is_readed = true
+      return
+
+    # Convenient method to get the stackList and appList
+    stackList : ()-> @attributes.stackList
+    appList   : ()-> @attributes.appList
+
+
+
+    ###
+      Internal methods
+    ###
     initialize : ()->
       @__initializeNotification()
       return
+
+    # Fetches user's stacks and apps from the server, returns a promise
+    fetch : ()->
+      self = this
+      sp = ApiRequest("stack_list").then (res)-> self.get("stackList").reset self.__parseListRes( res )
+      ap = ApiRequest("app_list").then   (res)-> self.get("appList").reset   self.__parseListRes( res )
+
+      Q.all [ sp, ap ]
+
+    __parseListRes : ( res )->
+      r = []
+      stateMap =
+        "Running" : OpsModel.State.Running
+        "Stopped" : OpsModel.State.Stopped
+
+      for ops in res
+        r.push {
+          id         : ops.id
+          updateTime : ops.time_update
+          region     : ops.region
+          usage      : ops.usage
+          state      : stateMap[ ops.state ] || OpsModel.State.UnRun
+        }
+      r
 
     # In the previous version, Websocket emits changes of request things (AKA, the notification). Websocket actually holds a copy of the request things. And the request things is process by module/design/toolbar ( ridiculous, but whatever ). There's no place to actually store the notification ( Well, it's stored in module/header, But I think the notification is a data source of the Application ). So now, we store the notification here.
     __initializeNotification : ()->
@@ -114,10 +154,4 @@ define [ "backbone", "./Websocket", "event", "constant" ], ( Backbone, Websocket
       item.is_terminated = item.is_complete and item.operation is 'terminate'
 
       item
-
-    markNotificationRead : ()->
-      for i in @attributes.notification
-        i.is_readed = true
-      return
-
   }

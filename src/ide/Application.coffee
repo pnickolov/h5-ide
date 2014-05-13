@@ -29,7 +29,7 @@ define [ "./Websocket", "./ApplicationView", "./ApplicationModel", "./User", "co
     @__view = new ApplicationView()
 
     # This function returns a promise
-    @user.fetch()
+    Q.all [ @user.fetch(), @model.fetch() ]
 
 
   VisualOps.prototype.__createWebsocket = ()->

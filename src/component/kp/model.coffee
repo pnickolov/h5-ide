@@ -67,8 +67,6 @@ define [ 'constant', 'backbone', 'underscore', 'MC', 'keypair_service', 'Design'
         setKey: ( name, defaultKey ) ->
             if @resModel
                 @resModel.setKey name, defaultKey
-            else
-                @handleResourcesWithDefaultKp name
 
         settle: ( key, value ) ->
             if arguments.length is 1
@@ -77,19 +75,6 @@ define [ 'constant', 'backbone', 'underscore', 'MC', 'keypair_service', 'Design'
                 @set key, value
                 if _.isEqual @get( key ), value
                     @trigger "change:#{key}"
-
-        handleResourcesWithDefaultKp: ( dkp ) ->
-            resources = []
-
-            Design.instance().eachComponent ( comp ) ->
-                if comp.type in [ constant.RESTYPE.INSTANCE, constant.RESTYPE.LC ]
-                    if comp.isDefaultKey()
-                        comp.setKey dkp, true
-
-                    resources.push comp
-
-            resources
-
 
         getKeys: ->
             that = @

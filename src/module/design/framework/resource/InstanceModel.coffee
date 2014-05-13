@@ -620,6 +620,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
           }
           InstanceId            : @get("appId")
           ImageId               : @get("imageId")
+          KeyName               : @get("keyName")
           EbsOptimized          : if @isEbsOptimizedEnabled() then @get("ebsOptimized") else false
           VpcId                 : @getVpcRef()
           SubnetId              : @getSubnetRef()
@@ -660,15 +661,17 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
       @set("state", stateAryData)
 
     setKey: ( keyName, defaultKey ) ->
-      @set 'keyName', keyName
+      KpModel = Design.modelClassForType( constant.RESTYPE.KP )
+      defaultKp = KpModel.getDefaultKP()
 
       if defaultKey
-        KpModel = Design.modelClassForType( constant.RESTYPE.KP )
-        defaultKp = KpModel.getDefaultKP()
         if defaultKp
           defaultKp.assignTo( this )
         else
           console.error "No DefaultKP found when initialize InstanceModel"
+      else
+        defaultKp.dissociate @
+        @set 'keyName', keyName
 
 
     getKeyName: ->

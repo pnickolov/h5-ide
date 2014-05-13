@@ -150,17 +150,18 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
     setStateData : (stateAryData) ->
       @set("state", stateAryData)
 
-
     setKey: ( keyName, defaultKey ) ->
-      @set 'keyName', keyName
+      KpModel = Design.modelClassForType( constant.RESTYPE.KP )
+      defaultKp = KpModel.getDefaultKP()
 
       if defaultKey
-        KpModel = Design.modelClassForType( constant.RESTYPE.KP )
-        defaultKp = KpModel.getDefaultKP()
         if defaultKp
           defaultKp.assignTo( this )
         else
           console.error "No DefaultKP found when initialize InstanceModel"
+      else
+        defaultKp.dissociate @
+        @set 'keyName', keyName
 
 
     getKeyName: ->

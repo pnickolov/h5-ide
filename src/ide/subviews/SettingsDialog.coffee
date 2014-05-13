@@ -187,7 +187,7 @@ define [ "./SettingsDialogTpl", 'i18n!nls/lang.js', "ApiRequest", "backbone" ], 
         App.user.changeCredential( account, accesskey, privatekey, false ).then ()->
           self.updateCredSettings()
         , ( err )->
-          if err.error is ApiRequest.Errors.ChangeCrendConfirm
+          if err.error is ApiRequest.Errors.ChangeCredConfirm
             self.showCredConfirm()
           else
             self.showCredUpdateFail()

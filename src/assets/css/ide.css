@@ -294,9 +294,6 @@ button {
 
 #support {
 	padding  : 0 20px;
-	position : absolute;
-	top      : 0;
-	right    : 152px;
 }
 
 #support:before {
@@ -357,32 +354,6 @@ button {
 
 #notification-counter:empty {
 	display : none;
-}
-
-.no-credential {
-	display : inline-block;
-	width   : 10px;
-	height  : 10px;
-
-	position : absolute;
-
-	border-radius : 50%;
-
-	background-image : -o-linear-gradient(-90deg, #FED666 0%, #FD6E22 100%);
-	background-image : -moz-linear-gradient(-90deg, #FED666 0%, #FD6E22 100%);
-	background-image : -webkit-linear-gradient(-90deg, #FED666 0%, #FD6E22 100%);
-	background-image : -ms-linear-gradient(-90deg, #FED666 0%, #FD6E22 100%);
-	background-image : linear-gradient(-180deg, #FED666 0%, #FD6E22 100%);
-}
-
-#header--user > .no-credential {
-	top: 21px;
-	left: 15px;
-}
-
-#user-dropdown-wrapper .no-credential {
-	top: 15px;
-	right: 5px;
 }
 
 .avatar {
@@ -529,16 +500,6 @@ button {
 
 #alert-panel-wrapper {
 	width: 680px;
-}
-
-#header--user {
-	padding: 0 30px !important;
-}
-
-#header--user .icon-caret-down {
-	position : absolute;
-	top      : 1px;
-	right    : 10px;
 }
 
 #user-dropdown-wrapper {

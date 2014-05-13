@@ -9,6 +9,11 @@ define [ "backbone", "./subviews/SessionDialog", "./subviews/HeaderView", "./sub
 
   Backbone.View.extend {
 
+    el : "body"
+
+    events :
+      "click .click-select" : "selectText"
+
     initialize : ()->
       @header = new HeaderView()
 
@@ -53,5 +58,20 @@ define [ "backbone", "./subviews/SessionDialog", "./subviews/HeaderView", "./sub
     showSettings : ( tab )->
       new SettingsDialog({ defaultTab:tab })
       return
+
+    # This is use to select text when clicking on the text.
+    selectText : ( event )->
+      try
+        range = document.body.createTextRange()
+        range.moveToElementText event.currentTarget
+        range.select()
+        console.warn "Select text by document.body.createTextRange"
+      catch e
+        if window.getSelection
+          range = document.createRange()
+          range.selectNode event.currentTarget
+          window.getSelection().addRange range
+          console.warn "Select text by document.createRange"
+      return false
 
   }

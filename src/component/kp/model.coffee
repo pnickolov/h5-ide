@@ -33,6 +33,11 @@ define [ 'constant', 'backbone', 'underscore', 'MC', 'keypair_service', 'Design'
                     key.selected = true
             keys
 
+    filterIllegal = ( keys ) ->
+        _.reject keys, ( k ) ->
+            k.keyName[ 0 ] is '@'
+
+
 
     Backbone.Model.extend
         defaults:
@@ -49,6 +54,10 @@ define [ 'constant', 'backbone', 'underscore', 'MC', 'keypair_service', 'Design'
 
             if @resModel
                 @set 'keyName', @resModel.getKeyName()
+            else
+                KpModel = Design.modelClassForType( constant.RESTYPE.KP )
+                defaultKp = KpModel.getDefaultKP()
+                @set 'keyName', defaultKp.get( 'appId' )
 
         haveGot: () ->
             if arguments.length is 1
@@ -59,7 +68,7 @@ define [ 'constant', 'backbone', 'underscore', 'MC', 'keypair_service', 'Design'
             if @resModel
                 @resModel.setKey name, defaultKey
             else
-                @handleResourcesWithDefaultKp name, noKey
+                @handleResourcesWithDefaultKp name
 
         settle: ( key, value ) ->
             if arguments.length is 1
@@ -69,13 +78,13 @@ define [ 'constant', 'backbone', 'underscore', 'MC', 'keypair_service', 'Design'
                 if _.isEqual @get( key ), value
                     @trigger "change:#{key}"
 
-        handleResourcesWithDefaultKp: ( dkp, nokp ) ->
+        handleResourcesWithDefaultKp: ( dkp ) ->
             resources = []
 
             Design.instance().eachComponent ( comp ) ->
                 if comp.type in [ constant.RESTYPE.INSTANCE, constant.RESTYPE.LC ]
                     if comp.isDefaultKey()
-                        comp.setKey dkp, nokp
+                        comp.setKey dkp, true
 
                     resources.push comp
 
@@ -89,9 +98,14 @@ define [ 'constant', 'backbone', 'underscore', 'MC', 'keypair_service', 'Design'
                 (res) ->
                     console.log('-----result-----');
                     if that.resModel
-                        setSelectedKey( res, that.resModel.getKeyName() )
+                        keyName = that.resModel.getKeyName()
+                    else
+                        keyName = that.get 'keyName'
 
-                    that.settle 'keys', res
+                    keys = filterIllegal res
+                    keys = setSelectedKey keys, keyName
+
+                    that.settle 'keys', keys
                 (err) ->
                     that.set 'keys', ''
             )

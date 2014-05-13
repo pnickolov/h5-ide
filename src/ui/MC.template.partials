@@ -581,10 +581,12 @@ Additional Notes and Questions
 		<div class="modal-control-group clearfix" data-bind="true">
 			<label class="label" for="app-name">App Name</label>
 			<input id="app-name" class="input modal-input-value" type="text" value="{{name}}" data-ignore="true">
+			<div class="runtime-error" id="runtime-error-appname"></div>
 		</div>
 		<div class="modal-control-group default-kp-group clearfix" style="display:none;">
 			<label for="">$DefaultKeyPair</label>
 			<div id="kp-runtime-placeholder"></div>
+			<div class="runtime-error" id="runtime-error-kp"></div>
 		</div>
 		<div class="modal-control-group app-usage-group clearfix">
 			<label for="">App Usage</label>

@@ -130,12 +130,16 @@ define [ 'MC', 'event',
                     $( '#main-toolbar' ).html app_tmpl this.model.attributes
 
         showErr: ( id, msg ) ->
-            $( "##{id}" )
+            $( "#runtime-error-#{id}" )
                 .text( msg )
                 .show()
 
         hideErr: ( type ) ->
-            $( "##{id}" ).hide()
+            if type
+                $( "#runtime-error-#{id}" ).hide()
+            else
+                $( ".runtime-error" ).hide()
+
 
         clickRunIcon : ( event ) ->
             console.log 'clickRunIcon'
@@ -175,17 +179,25 @@ define [ 'MC', 'event',
                 $('#btn-confirm').on 'click', this, (event) ->
 
                     console.log 'clickRunIcon'
-
+                    me.hideErr()
                     #check app name
                     app_name = $('.modal-input-value').val()
 
                     if not app_name
-                        notification 'warning', lang.ide.PROP_MSG_WARN_NO_APP_NAME
-                        return
+                        me.showErr 'appname', lang.ide.PROP_MSG_WARN_NO_APP_NAME
+                        return false
 
                     if not MC.validate 'awsName', app_name
-                        notification 'warning', lang.ide.PROP_MSG_WARN_INVALID_APP_NAME
-                        return
+                        #notification 'warning', lang.ide.PROP_MSG_WARN_INVALID_APP_NAME
+                        me.showErr 'appname', lang.ide.PROP_MSG_WARN_INVALID_APP_NAME
+                        return false
+
+                    KpModel = Design.modelClassForType( constant.RESTYPE.KP )
+                    defaultKp = KpModel.getDefaultKP()
+
+                    if not defaultKp.isSet()
+                        me.showErr 'kp', 'Specify a key pair as $DefaultKeyPair for this app.'
+                        return false
 
                     # get process tab name
                     process_tab_name = 'process-' + MC.common.other.canvasData.get( 'region' ) + '-' + app_name

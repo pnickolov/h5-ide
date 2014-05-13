@@ -2,7 +2,11 @@
 <div class="selectbox keypair-select">
     <div class="selection">
         {{#if isRunTime}}
-            Select Key Pair as $DefaultKeyPair
+            {{#if keyName}}
+                {{keyName}}
+            {{else}}
+                Select Key Pair as $DefaultKeyPair
+            {{/if}}
         {{else}}
             {{keyName}}
             {{#if defaultKey}}
@@ -42,7 +46,6 @@
 </li>
 
 {{#each keys}}
-    <li class="item{{#if selected}} selected{{/if}}" data-id="{{keyName}}">{{keyName}}
-    {{#if @index}}<span class="icon-remove"></span>{{/if}}
+    <li class="item{{#if selected}} selected{{/if}}" data-id="{{keyName}}" data-fingerprint="{{keyFingerprint}}">{{keyName}}
     </li>
 {{/each}}

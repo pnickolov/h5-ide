@@ -343,13 +343,17 @@ define [ './template', './template_modal', 'backbone', 'jquery', 'constant', 'UI
             'OPTION_SHOW .selectbox'    : 'show'
             'OPTION_CHANGE .selectbox'  : 'setKey'
 
-        setKey: ( event, name ) ->
-            if name is '@default'
-                @model.setKey '', true
-            else if name is '@no'
-                @model.setKey ''
+        setKey: ( event, name, data ) ->
+            if @__mode is 'runtime'
+                KpModel = Design.modelClassForType( constant.RESTYPE.KP )
+                KpModel.setDefaultKP name, data.fingerprint
             else
-                @model.setKey name
+                if name is '@default'
+                    @model.setKey '', true
+                else if name is '@no'
+                    @model.setKey ''
+                else
+                    @model.setKey name
 
         returnFalse: ( event ) ->
             false

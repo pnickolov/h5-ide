@@ -1,5 +1,5 @@
 <!-- {{frame}} -->
-<div style="width:855px;" id="modal-kp-manage">
+<div id="modal-kp-manage" class="modal-toolbar">
     <div class="modal-header">
         <h3>Manage Key Pairs in {{regionName}}</h3>
         <i class="modal-close">×</i>
@@ -7,12 +7,12 @@
 
     <div class="modal-body">
         <div class="content-wrap">
-            <div class="action">
+            <div class="toolbar">
                 <button class="icon-new-stack btn btn-blue" id="create-kp">Create Key Pair</button>
                 <div class="btn-group">
-                    <button class="icon-import" id="kp-import"></button>
-                    <button class="icon-del" id="kp-delete"></button>
-                    <button class="icon-refresh" id="kp-refresh"></button>
+                    <button class="icon-import tooltip" id="kp-import" data-tooltip=""></button>
+                    <button class="icon-del tooltip" id="kp-delete" data-tooltip=""></button>
+                    <button class="icon-refresh tooltip" id="kp-refresh" data-tooltip=""></button>
                 </div>
             </div>
             <div class="list">

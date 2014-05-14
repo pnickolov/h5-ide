@@ -1,0 +1,239 @@
+/* Common Style for Modal with Toolbar */
+.modal-toolbar {
+  width: 855px; }
+  .modal-toolbar .modal-body {
+    padding: 0; }
+  .modal-toolbar .toolbar {
+    background: #222427;
+    border-bottom: 1px solid #131313;
+    height: 34px;
+    line-height: 34px; }
+    .modal-toolbar .toolbar button {
+      float: left;
+      display: inline-block;
+      padding: 8px;
+      line-height: 18px; }
+    .modal-toolbar .toolbar .btn-group button {
+      cursor: pointer;
+      color: #999;
+      border-right: 1px solid #131313;
+      -webkit-transition: background .2s;
+      -moz-transition: background .2s;
+      -ms-transition: background .2s;
+      -o-transition: background .2s;
+      transition: background .2s; }
+      .modal-toolbar .toolbar .btn-group button:hover {
+        color: #ccc;
+        background: #161616;
+        color: #9C6DC0; }
+      .modal-toolbar .toolbar .btn-group button.disabled, .modal-toolbar .toolbar .btn-group button[disabled] {
+        pointer-events: none;
+        color: #555; }
+    .modal-toolbar .toolbar .btn-blue {
+      border-radius: 0; }
+      .modal-toolbar .toolbar .btn-blue:before {
+        margin-right: 5px; }
+    .modal-toolbar .toolbar .icon-refresh {
+      float: right; }
+
+/* Key-pair-management modal */
+#modal-kp-manage .action #create-kp {
+  text-align: left;
+  padding: 10px;
+  border-radius: 0; }
+
+#modal-kp-manage .action #create-kp:before {
+  padding-right: 5px; }
+
+#modal-kp-manage .action .btn-group {
+  padding-left: 146px;
+  margin-top: -37px;
+  line-height: 37px; }
+
+#modal-kp-manage .action .btn-group button {
+  color: white; }
+
+#modal-kp-manage .action .btn-group button:hover {
+  color: #aaa;
+  cursor: pointer; }
+
+#modal-kp-manage .action #kp-refresh {
+  float: right;
+  padding-top: 8px; }
+
+#modal-kp-manage .action .btn-group [class^="icon-"]:before
+, #modal-kp-manage .action .btn-group [class*=" icon-"]:before {
+  font-size: 20px; }
+
+#modal-kp-manage .list {
+  position: relative; }
+
+#modal-kp-manage .slidebox {
+  transition-property: max-height;
+  transition-duration: .2s;
+  transition-timing-function: ease-in-out;
+  background: #252A2E;
+  max-height: 0;
+  overflow: hidden;
+  position: absolute;
+  width: 100%;
+  z-index: 71; }
+
+#modal-kp-manage .slidebox.show {
+  max-height: 300px; }
+
+#modal-kp-manage .show-create .error {
+  left: 117px; }
+
+#modal-kp-manage .slidebox .content {
+  margin: 20px auto;
+  width: 640px; }
+
+#modal-kp-manage #create-kp-name {
+  width: 289px; }
+
+#modal-kp-manage .content label {
+  padding-right: 10px; }
+
+#modal-kp-manage .slide-delete .action
+, #modal-kp-manage .slide-import .action {
+  float: right; }
+
+#modal-kp-manage .slide-delete:after
+, #modal-kp-manage .slide-import:after {
+  content: '';
+  display: block;
+  clear: both; }
+
+#modal-kp-manage .slide-delete label {
+  float: left;
+  margin-top: 7px; }
+
+#modal-kp-manage #modal-import-json-dropzone {
+  height: 123px;
+  padding: 47px 9px 9px;
+  position: relative;
+  background-color: #252A2E;
+  border-color: #888; }
+
+#modal-kp-manage #modal-import-json-dropzone.dragover {
+  background: #2E323A;
+  border-color: #148BE6; }
+
+#modal-kp-manage #modal-import-json-dropzone .upload-stuff {
+  position: absolute;
+  top: 77px;
+  left: 0px;
+  width: 100%; }
+
+#modal-kp-manage #modal-import-json-dropzone.filled .upload-stuff {
+  top: 0px;
+  background: #101010;
+  padding: 10px 0; }
+
+#modal-kp-manage #modal-import-json-dropzone .upload-stuff::selection {
+  background: transparent; }
+
+#modal-kp-manage .dragover * {
+  pointer-events: none; }
+
+#modal-kp-manage #modal-import-json-dropzone label {
+  padding-right: 0; }
+
+#modal-kp-manage #modal-import-json-dropzone label:hover {
+  text-decoration: underline; }
+
+#modal-kp-manage #modal-import-json-dropzone label::selection {
+  background: transparent; }
+
+#modal-kp-manage .key-content {
+  font-size: 12px;
+  color: #8ED72B;
+  max-height: 100%;
+  max-width: 100%;
+  overflow: scroll;
+  text-align: left;
+  word-break: break-all; }
+
+#modal-kp-manage .checkbox input[disabled] + label {
+  opacity: 0.3; }
+
+#kp-table-wrap .scroll-wrap {
+  height: 368px; }
+
+#modal-kp-manage .slidebox .error {
+  display: none; }
+
+#modal-kp-manage .slidebox.show .error {
+  color: #ec3c38;
+  position: absolute;
+  bottom: 2px; }
+
+#modal-kp-manage .show-import .slidebox.show .error {
+  bottom: 22px;
+  left: 13px; }
+
+#modal-kp-manage .slidebox .action {
+  display: inline-block; }
+
+@-webkit-keyframes pulse {
+  0% {
+    -webkit-transform: scale(1); }
+
+  50% {
+    -webkit-transform: scale(1.1); }
+
+  100% {
+    -webkit-transform: scale(1); } }
+
+@-moz-keyframes pulse {
+  0% {
+    -moz-transform: scale(1); }
+
+  50% {
+    -moz-transform: scale(1.1); }
+
+  100% {
+    -moz-transform: scale(1); } }
+
+@-o-keyframes pulse {
+  0% {
+    -o-transform: scale(1); }
+
+  50% {
+    -o-transform: scale(1.1); }
+
+  100% {
+    -o-transform: scale(1); } }
+
+@keyframes pulse {
+  0% {
+    transform: scale(1); }
+
+  50% {
+    transform: scale(1.1); }
+
+  100% {
+    transform: scale(1); } }
+
+.pulse {
+  -webkit-animation-name: pulse;
+  -moz-animation-name: pulse;
+  -o-animation-name: pulse;
+  animation-name: pulse;
+  -webkit-animation-duration: .5s;
+  -webkit-animation-timing-function: ease;
+  -webkit-animation-fill-mode: both;
+  -webkit-animation-iteration-count: 2;
+  -moz-animation-duration: .5s;
+  -moz-animation-timing-function: ease;
+  -moz-animation-fill-mode: both;
+  -moz-animation-iteration-count: 2;
+  -ms-animation-duration: .5s;
+  -ms-animation-timing-function: ease;
+  -ms-animation-fill-mode: both;
+  -ms-animation-iteration-count: 2;
+  animation-duration: .5s;
+  animation-timing-function: ease;
+  animation-fill-mode: both;
+  animation-iteration-count: 2; }

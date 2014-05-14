@@ -11,13 +11,33 @@
 define [ "./OpsModel", "constant", "backbone" ], ( OpsModel, constant )->
 
   Backbone.Collection.extend {
-    model      : OpsModel
-    comparator : ( m1, m2 )-> -(m1.attributes.updateTime - m2.attributes.updateTime)
+    model       : OpsModel
+    newNameTmpl : "untitled-"
+    comparator  : ( m1, m2 )-> -(m1.attributes.updateTime - m2.attributes.updateTime)
 
     initialize : ()->
       # Re-sort the collection when any model is updated.
       @on "change:updateTime", @sort, @
       return
+
+    # Returns a new name that can be used in a model. The name is garuntee to be identical.
+    getNewName : ( possibleName )->
+      # Collect all the resources name
+      nameMap = @groupBy "name"
+      newName = possibleName
+      base    = 0
+
+      while true
+        if nameMap[ newName ]
+          base += 1
+        else
+          break
+        newName = @newNameTmpl + base
+
+      newName
+
+    # Returns true if name is OK to be used.
+    isNameAvailable : ( name )-> !!@.findWhere({name:name})
 
     # Returns a sorted array.
     groupByRegion : ( includeEmptyRegion = false, toJSON = true, includeEveryOps = false )->

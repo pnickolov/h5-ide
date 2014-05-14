@@ -27,6 +27,18 @@ define [ "./submodels/OpsCollection", "./submodels/OpsModel", "ApiRequest", "bac
     stackList : ()-> @attributes.stackList
     appList   : ()-> @attributes.appList
 
+    # This method creates a new stack in IDE, and returns that model.
+    # The stack is not automatically stored in server.
+    # You need to call save() after that.
+    createStack : ( region )->
+      m = new OpsModel({
+        name   : @attributes.stackList.getNewName()
+        region : region
+      }, {
+        initJsonData : true
+      })
+      @attributes.stackList.add m
+      m
 
 
     ###

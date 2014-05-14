@@ -249,22 +249,14 @@ define [ './template', './template_modal', './upload', 'backbone', 'jquery', 'co
                 data = {}
                 html = tpl data
                 @renderSlide html
+                @__upload and @__upload.remove()
                 @__upload = new upload()
+                @__upload.on 'load', @afterImport, @
                 @$( '.import-zone' ).html @__upload.render().el
-
-                @preImport()
-
-
-        preImport: () ->
 
 
         afterImport: ( result ) ->
-            @__import = result
-
             @switchAction 'ready'
-
-
-
 
         checkOne: ( event ) ->
             if event.currentTarget.id isnt 'kp-select-all'

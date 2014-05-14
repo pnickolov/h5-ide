@@ -35,6 +35,39 @@
         margin-right: 5px; }
     .modal-toolbar .toolbar .icon-refresh {
       float: right; }
+  .modal-toolbar .slidebox .content {
+    width: 640px;
+    margin: 20px auto 0 auto; }
+    .modal-toolbar .slidebox .content label {
+      width: 168px;
+      display: inline-block; }
+    .modal-toolbar .slidebox .content input.input {
+      width: 440px; }
+    .modal-toolbar .slidebox .content .action {
+      float: right;
+      padding: 20px 0; }
+      .modal-toolbar .slidebox .content .action .btn-silver.cancel {
+        min-width: 80px;
+        background: none;
+        color: #666;
+        box-shadow: none; }
+        .modal-toolbar .slidebox .content .action .btn-silver.cancel:hover {
+          color: #148BE6; }
+  .modal-toolbar .slidebox {
+    transition-property: max-height;
+    transition-duration: .2s;
+    transition-timing-function: ease-in-out;
+    background: #252A2E;
+    max-height: 0;
+    overflow: hidden;
+    position: absolute;
+    width: 100%;
+    z-index: 71; }
+    .modal-toolbar .slidebox.show {
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+      max-height: 400px; }
+    .modal-toolbar .slidebox.show + .table-head-fix {
+      opacity: .4; }
 
 /* Key-pair-management modal */
 #modal-kp-manage .action #create-kp {
@@ -68,32 +101,8 @@
 #modal-kp-manage .list {
   position: relative; }
 
-#modal-kp-manage .slidebox {
-  transition-property: max-height;
-  transition-duration: .2s;
-  transition-timing-function: ease-in-out;
-  background: #252A2E;
-  max-height: 0;
-  overflow: hidden;
-  position: absolute;
-  width: 100%;
-  z-index: 71; }
-
-#modal-kp-manage .slidebox.show {
-  max-height: 300px; }
-
 #modal-kp-manage .show-create .error {
   left: 117px; }
-
-#modal-kp-manage .slidebox .content {
-  margin: 20px auto;
-  width: 640px; }
-
-#modal-kp-manage #create-kp-name {
-  width: 289px; }
-
-#modal-kp-manage .content label {
-  padding-right: 10px; }
 
 #modal-kp-manage .slide-delete .action
 , #modal-kp-manage .slide-import .action {

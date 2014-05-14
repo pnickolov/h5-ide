@@ -16,6 +16,7 @@ $toolbar-line-height: 34px;
 	.modal-body {
 		padding: 0;
 	}
+
 	.toolbar {
 		background:    #222427;
 		border-bottom: 1px solid #131313;
@@ -60,10 +61,60 @@ $toolbar-line-height: 34px;
 			float: right;
 		}
 	}
+
+	.slidebox .content {
+
+		width:  640px;
+		margin: 20px auto 0 auto;
+
+		label {
+			width:   168px;
+			display: inline-block;
+		}
+
+		input.input {
+			width: 640px - 200px;
+		}
+
+		.action {
+			float:   right;
+			padding: 20px 0;
+
+			.btn-silver.cancel {
+				min-width:  80px;
+				background: none;
+				color:      #666;
+				box-shadow: none;
+
+				&:hover {
+					color: #148BE6;
+				}
+			}
+		}
+	}
+
+	.slidebox {
+
+		transition-property:        max-height;
+		transition-duration:        .2s;
+		transition-timing-function: ease-in-out;
+		background:                 #252A2E;
+		max-height:                 0;
+		overflow:                   hidden;
+		position:                   absolute;
+		width:                      100%;
+		z-index:                    71;
+
+		&.show {
+			box-shadow: 0 4px 10px rgba(0,0,0,.6);
+			max-height: 400px;
+		}
+
+		&.show + .table-head-fix {
+			opacity: .4;
+		}
+	}
 }
-
-
-
 
 
 
@@ -109,38 +160,38 @@ $toolbar-line-height: 34px;
 	position: relative;
 }
 
-#modal-kp-manage .slidebox {
-	transition-property: max-height;
-	transition-duration: .2s;
-	transition-timing-function: ease-in-out;
-	background: #252A2E;
-	max-height: 0;
-	overflow: hidden;
-	position: absolute;
-	width: 100%;
-	z-index: 71;
-}
+// #modal-kp-manage .slidebox {
+// 	transition-property: max-height;
+// 	transition-duration: .2s;
+// 	transition-timing-function: ease-in-out;
+// 	background: #252A2E;
+// 	max-height: 0;
+// 	overflow: hidden;
+// 	position: absolute;
+// 	width: 100%;
+// 	z-index: 71;
+// }
 
-#modal-kp-manage .slidebox.show {
-	max-height: 300px;
-}
+// #modal-kp-manage .slidebox.show {
+// 	max-height: 300px;
+// }
 
 #modal-kp-manage .show-create .error {
 	left: 117px;
 }
 
-#modal-kp-manage .slidebox .content {
-	margin: 20px auto;
-	width: 640px;
-}
+// #modal-kp-manage .slidebox .content {
+// 	margin: 20px auto;
+// 	width: 640px;
+// }
 
-#modal-kp-manage #create-kp-name {
-	width: 289px;
-}
+// #modal-kp-manage #create-kp-name {
+// 	width: 289px;
+// }
 
-#modal-kp-manage .content label {
-	padding-right: 10px;
-}
+// #modal-kp-manage .content label {
+// 	padding-right: 10px;
+// }
 
 #modal-kp-manage .slide-delete .action
 , #modal-kp-manage .slide-import .action {

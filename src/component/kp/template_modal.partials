@@ -17,7 +17,7 @@
             </div>
             <div class="list">
                 <div class="slidebox">
-                    <div class="content">
+                    <div class="content clearfix">
                     </div>
                     <div class="error">
                         something wrong
@@ -92,27 +92,27 @@
 
 <!-- {{slideCreate}} -->
 <div class="slide-create" data-bind="true">
-    <label>Key Pair Name</label>
+    <label for="create-kp-name">Key Pair Name</label>
     <input class="input" type="text" id="create-kp-name" data-ignore="true" data-ignore-regexp="^[a-zA-Z0-9,_-]*$" data-required="true" maxlength="255" placeholder="allow alphanumber, _ or - up to 255 characters">
     <div class="init action">
         <button class="btn btn-blue do-action" data-action="create">Create</button>
-        <button class="btn btn-blue cancel">Cancel</button>
+        <button class="btn btn-silver cancel">Cancel</button>
     </div>
     <div class="processing action" style="display:none;">
         <button class="btn" disabled>Creating...</button>
     </div>
     <div class="download action" style="display:none;">
         <a class="btn btn-blue do-action pulse" data-action="download" id="download-kp">Download</a>
-        <button class="btn btn-blue cancel" disabled>Cancel</button>
+        <button class="btn btn-silver cancel" disabled>Cancel</button>
     </div>
 </div>
 
 <!-- {{slideDelete}} -->
 <div class="slide-delete">
-    <label>Confirm to delete {{#if selecteKeyName }}{{selecteKeyName}}{{else}}selected {{selectedCount}} key pairs{{/if}}?</label>
+    <div class="modal-text-major">Confirm to delete {{#if selecteKeyName }}{{selecteKeyName}}{{else}}selected {{selectedCount}} key pairs{{/if}}?</div>
     <div class="init action">
         <button class="btn btn-red do-action" data-action="delete">Delete</button>
-        <button class="btn btn-blue cancel">Cancel</button>
+        <button class="btn btn-silver cancel">Cancel</button>
     </div>
     <div class="processing action" style="display:none;">
         <button class="btn" disabled>Deleting...</button>
@@ -120,18 +120,18 @@
 </div>
 <!-- {{slideImport}} -->
 <div class="slide-import" data-bind="true">
-    <label>Key Pair Name</label>
+    <label for="import-kp-name">Key Pair Name</label>
     <input class="input" type="text" id="import-kp-name" data-ignore="true" data-ignore-regexp="^[a-zA-Z0-9,_-]*$" data-required="true" maxlength="255" placeholder="allow alphanumber, _ or - up to 255 characters">
     <div class="import-zone">
 
     </div>
     <div class="init action">
         <button class="btn" disabled>Import</button>
-        <button class="btn btn-blue cancel">Cancel</button>
+        <button class="btn btn-silver cancel">Cancel</button>
     </div>
     <div class="ready action" style="display:none;">
         <button class="btn btn-blue do-action" data-action="import">Import</button>
-        <button class="btn btn-blue cancel">Cancel</button>
+        <button class="btn btn-silver cancel">Cancel</button>
     </div>
     <div class="processing action" style="display:none;">
         <button class="btn" disabled>Importing...</button>

@@ -28,7 +28,7 @@ define [ "./NavigationTpl", "event", 'backbone' ], ( NavPartsTpl, ide_event ) ->
             @updateAppList()
 
             # Listen to AppList and StackList in order to update the list.
-            @listenTo App.model.stackList(), "sort reset", ()->
+            @listenTo App.model.stackList(), "sort", ()->
                 # Delay the updating until the navigation is shown next time.
                 if @showing
                     @updateStackList()
@@ -36,7 +36,7 @@ define [ "./NavigationTpl", "event", 'backbone' ], ( NavPartsTpl, ide_event ) ->
                     @stackDirty = true
                 return
 
-            @listenTo App.model.appList(), "sort reset", ()->
+            @listenTo App.model.appList(), "sort", ()->
                 if @showing
                     @updateAppList()
                 else

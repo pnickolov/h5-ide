@@ -51,8 +51,8 @@ define [ "./submodels/OpsCollection", "./submodels/OpsModel", "ApiRequest", "bac
     # Fetches user's stacks and apps from the server, returns a promise
     fetch : ()->
       self = this
-      sp = ApiRequest("stack_list").then (res)-> self.get("stackList").reset self.__parseListRes( res )
-      ap = ApiRequest("app_list").then   (res)-> self.get("appList").reset   self.__parseListRes( res )
+      sp = ApiRequest("stack_list").then (res)-> self.get("stackList").set self.__parseListRes( res )
+      ap = ApiRequest("app_list").then   (res)-> self.get("appList").set   self.__parseListRes( res )
 
       Q.all [ sp, ap ]
 

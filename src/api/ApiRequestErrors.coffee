@@ -17,9 +17,6 @@ define [], ()->
     ChangeCredConfirm : 325 # Occurs when an user try to change credential with running apps.
     InvalidCred       : 326 # Ocurrs when the aws credential is invalid.
 
-    
-    GlobalOk              : 0   ## succeed
-
     # common:  1*
     GlobalErrorInit       : 100 # Sorry, we are suffering from some technical issue, please try again later
     GlobalErrorApi        : 101 # Invalid API Parameters
@@ -29,7 +26,7 @@ define [], ()->
     GlobalErrorId         : 105 # Id mismatched
     GlobalErrorUsername   : 106 # Username mismatched
     GlobalErrorIntercom   : 107 # Failed to generate intercom secret hash
-    GlobalErrorUnknown    : 109 # 
+    GlobalErrorUnknown    : 109 #
     UserInvalidUser       : 110 # Invalid username or password
     UserInvalidUsername   : 111 # Invalid username {0}
     UserErrorUser         : 112 # user {0} missing {1}

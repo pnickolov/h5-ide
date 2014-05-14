@@ -19,7 +19,7 @@ define [ './component/kp/view', './component/kp/model', 'constant' ], ( View, Mo
         has = false
         Design.instance().eachComponent ( comp ) ->
             if comp.type in [ constant.RESTYPE.INSTANCE, constant.RESTYPE.LC ]
-                if comp.isDefaultKey()
+                if comp.isDefaultKey() and not comp.get( 'appId' )
                     has = true
                     false
 

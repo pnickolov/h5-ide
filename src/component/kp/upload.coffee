@@ -6,28 +6,58 @@ define [ './template_modal', 'backbone', 'jquery' ], ( template_modal, Backbone,
 
 
         events:
-            'paste *'     : 'returnFalse'
-            'click .manage-kp'          : 'manageKp'
-            'OPTION_SHOW .selectbox'    : 'show'
-            'OPTION_CHANGE .selectbox'  : 'setKey'
+            'paste .upload-kp-component'                       : 'onPaste'
+            'change .upload-kp-component'   : 'hanldeFile'
+            'drop .upload-kp-component'     : 'hanldeFile'
+            'dragenter .upload-kp-component': 'addDragoverClass'
+            'dragleave .upload-kp-component': 'removeDragoverClass'
+            'dragover .upload-kp-component' : 'dragoverHandler'
+
+
+        removeDragoverClass: ( event ) ->
+            $( event.currentTarget ).removeClass 'dragover'
+
+        addDragoverClass: ( event ) ->
+            $( event.currentTarget ).addClass 'dragover'
+
+        dragoverHandler: ( event) ->
+            dt = event.originalEvent.dataTransfer
+            if dt then dt.dropEffect = "copy"
+            event.stopPropagation()
+            event.preventDefault()
+            null
 
         save: ( data ) ->
             if not data then return
 
             @__data = data
             @$( '#modal-import-json-dropzone' ).addClass 'filled'
-            @$( '.key-content' ).text result
+            @$( '.key-content' ).text data
+            @trigger 'load', data
 
 
         onPaste: ( event ) ->
             pasteData = event.originalEvent.clipboardData.getData('text/plain')
             @save pasteData
 
+        hanldeFile: ( evt )->
+            evt.stopPropagation()
+            evt.preventDefault()
+
+            @$("#modal-import-json-dropzone").removeClass("dragover")
+            @$("#import-json-error").html("")
+
+            evt = evt.originalEvent
+            files = (evt.dataTransfer || evt.target).files
+            if not files or not files.length then return
+            @__reader.readAsText( files[0] )
+            null
+
         initialize: ( options ) ->
             that = @
             that.type = options and options.type or 'public key'
 
-            reader = new FileReader()
+            reader = @__reader = new FileReader()
 
             reader.onload = ( evt )->
                 that.save reader.result
@@ -37,33 +67,8 @@ define [ './template_modal', 'backbone', 'jquery' ], ( template_modal, Backbone,
                 that.trigger 'error'
                 null
 
-            hanldeFile = ( evt )->
-                evt.stopPropagation()
-                evt.preventDefault()
-
-                that.$("#modal-import-json-dropzone").removeClass("dragover")
-                that.$("#import-json-error").html("")
-
-                evt = evt.originalEvent
-                files = (evt.dataTransfer || evt.target).files
-                if not files or not files.length then return
-                reader.readAsText( files[0] )
-                null
-
-            @$("#modal-import-json-file").on "change", hanldeFile
-            zone = @$("#modal-import-json-dropzone").on "drop", hanldeFile
-            zone.on "dragenter", ()-> $(this).closest("#modal-import-json-dropzone").toggleClass("dragover", true)
-            zone.on "dragleave", ()-> $(this).closest("#modal-import-json-dropzone").toggleClass("dragover", false)
-            zone.on "dragover", ( evt )->
-                dt = evt.originalEvent.dataTransfer
-                if dt then dt.dropEffect = "copy"
-                evt.stopPropagation()
-                evt.preventDefault()
-                null
-            null
-
         getData: ->
-
+            @__data
 
         render: () ->
             data = type: @type

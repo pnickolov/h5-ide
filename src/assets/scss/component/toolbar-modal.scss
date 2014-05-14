@@ -131,10 +131,12 @@ $dark-blue: #1B7FCC;
 		label {
 			width:   168px;
 			display: inline-block;
+			color:   #ccc;
 		}
 
 		label.select-file-link {
 			width: auto;
+			color: #148BE6;
 		}
 
 		input.input {
@@ -202,8 +204,6 @@ $dark-blue: #1B7FCC;
 }
 
 
-
-
 #modal-kp-manage #modal-import-json-dropzone {
 	height: 123px;
 	padding: 47px 9px 9px;
@@ -260,9 +260,6 @@ $dark-blue: #1B7FCC;
 	word-break: break-all;
 }
 
-#modal-kp-manage .checkbox input[disabled] + label {
-	opacity : 0.3;
-}
 
 @-webkit-keyframes pulse {
   	0% { -webkit-transform: scale(1); }

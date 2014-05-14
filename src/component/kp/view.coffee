@@ -1,6 +1,7 @@
-define [ './template', './template_modal', 'backbone', 'jquery', 'constant', 'UI.notification' ], ( template, template_modal, Backbone, $, constant ) ->
+define [ './template', './template_modal', './upload', 'backbone', 'jquery', 'constant', 'UI.notification' ], ( template, template_modal, upload, Backbone, $, constant ) ->
     modalView = Backbone.View.extend
         __needDownload: false
+        __upload: null
         __import: ''
         __mode: 'normal'
 
@@ -157,7 +158,7 @@ define [ './template', './template_modal', 'backbone', 'jquery', 'constant', 'UI
             if not invalid
                 keyName = @$( '#import-kp-name' ).val()
                 @switchAction 'processing'
-                @model.import( keyName, btoa that.__import )
+                @model.import( keyName, btoa that.__upload.getData() )
                     .then (res) ->
                         console.log res
                         notification 'info', "#{keyName} is imported."
@@ -248,59 +249,17 @@ define [ './template', './template_modal', 'backbone', 'jquery', 'constant', 'UI
                 data = {}
                 html = tpl data
                 @renderSlide html
+                @__upload = new upload()
+                @$( '.import-zone' ).html @__upload.render().el
+
                 @preImport()
 
 
         preImport: () ->
-            that = @
-            reader = new FileReader()
-            that.__import = ''
 
-
-            @$( '#modal-import-json-dropzone' )
-                .off( 'paste' )
-                .on 'paste', ( event ) ->
-                    pasteData = event.originalEvent.clipboardData.getData('text/plain')
-                    if pasteData
-                        that.afterImport pasteData
-
-            reader.onload = ( evt )->
-                that.afterImport reader.result
-                null
-
-            reader.onerror = ()->
-                that.$("#import-json-error").html lang.ide.POP_IMPORT_ERROR
-                null
-
-            hanldeFile = ( evt )->
-                evt.stopPropagation()
-                evt.preventDefault()
-
-                that.$("#modal-import-json-dropzone").removeClass("dragover")
-                that.$("#import-json-error").html("")
-
-                evt = evt.originalEvent
-                files = (evt.dataTransfer || evt.target).files
-                if not files or not files.length then return
-                reader.readAsText( files[0] )
-                null
-
-            @$("#modal-import-json-file").on "change", hanldeFile
-            zone = @$("#modal-import-json-dropzone").on "drop", hanldeFile
-            zone.on "dragenter", ()-> $(this).closest("#modal-import-json-dropzone").toggleClass("dragover", true)
-            zone.on "dragleave", ()-> $(this).closest("#modal-import-json-dropzone").toggleClass("dragover", false)
-            zone.on "dragover", ( evt )->
-                dt = evt.originalEvent.dataTransfer
-                if dt then dt.dropEffect = "copy"
-                evt.stopPropagation()
-                evt.preventDefault()
-                null
-            null
 
         afterImport: ( result ) ->
             @__import = result
-            @$( '#modal-import-json-dropzone' ).addClass 'filled'
-            @$( '.key-content' ).text result
 
             @switchAction 'ready'
 

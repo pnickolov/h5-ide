@@ -1134,7 +1134,7 @@ module.exports =
       zh: ""
 
     TOOL_TOGGLE_VISUALOPS_OFF:
-      en: "instnace state off"
+      en: "instance state off"
       zh: ""
 
     TOOL_LBL_NO_CLASSIC:

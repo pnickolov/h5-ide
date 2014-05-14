@@ -1,6 +1,8 @@
 /* Common Style for Modal with Toolbar */
 .modal-toolbar {
   width: 855px; }
+  .modal-toolbar .list {
+    position: relative; }
   .modal-toolbar .modal-body {
     padding: 0; }
   .modal-toolbar .toolbar {
@@ -102,8 +104,24 @@
     bottom: 30px;
     position: absolute;
     display: none; }
-  .modal-toolbar .list {
-    position: relative; }
+  .modal-toolbar .table-head-fix .scroll-wrap {
+    height: 368px; }
+  .modal-toolbar .table-head-fix .table {
+    font-size: 12px; }
+  .modal-toolbar .table-head-fix .table-head thead th {
+    line-height: 16px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+    font-size: 12px;
+    font-weight: 500;
+    color: #F3F3F3;
+    background: #292C2E; }
+  .modal-toolbar .table-head-fix .table-head thead tr th:first-child,
+  .modal-toolbar .table-head-fix .table thead tr th:first-child {
+    width: 20px; }
+
+#modal-kp-manage .table-head-fix .table-head thead tr th:nth-child(2),
+#modal-kp-manage .table-head-fix .table thead tr th:nth-child(2) {
+  width: 40%; }
 
 #modal-kp-manage #modal-import-json-dropzone {
   height: 123px;
@@ -153,9 +171,6 @@
 
 #modal-kp-manage .checkbox input[disabled] + label {
   opacity: 0.3; }
-
-#kp-table-wrap .scroll-wrap {
-  height: 368px; }
 
 @-webkit-keyframes pulse {
   0% {

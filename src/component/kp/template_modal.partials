@@ -23,18 +23,18 @@
                         something wrong
                     </div>
                 </div>
-                <div id="ami-table-wrap" class="table-head-fix">
+                <div class="table-head-fix">
                         <table class="table-head">
                             <thead>
                                 <tr>
-                                    <th style="width: 46px;">
+                                    <th>
                                         <div class="checkbox">
                                             <input id="kp-select-all" type="checkbox" value="None">
                                             <label for="kp-select-all"></label>
                                         </div>
                                     </th>
                                     <th class="sortable">Name</th>
-                                    <th style="width:500px;">Fingerprint</th>
+                                    <th>Fingerprint</th>
                                 </tr>
                             </thead>
                         </table>
@@ -44,22 +44,22 @@
                                 <table class="table">
                                     <thead>
                                         <tr>
-                                            <th style="width: 20px;"><div class="th-inner"></div></th>
                                             <th><div class="th-inner"></div></th>
-                                            <th style="width: 476px;"><div class="th-inner"></div></th>
+                                            <th><div class="th-inner"></div></th>
+                                            <th><div class="th-inner"></div></th>
                                         </tr>
                                     </thead>
                                     <tbody id="community_ami_table">
                                         {{#each keys}}
                                         <tr class="item" data-id="">
-                                            <td class="ami-table-fav">
+                                            <td>
                                                 <div class="checkbox">
                                                     <input id="kp-select-{{keyFingerprint}}" type="checkbox" value="None" data-name="{{keyName}}" class="one-cb">
                                                     <label for="kp-select-{{keyFingerprint}}"></label>
                                                 </div>
                                             </td>
-                                            <td class="ami-table-id">{{keyName}}</td>
-                                            <td class="ami-table-size">{{keyFingerprint}}</td>
+                                            <td>{{keyName}}</td>
+                                            <td>{{keyFingerprint}}</td>
                                         </tr>
                                         {{/each}}
                                     </tbody>

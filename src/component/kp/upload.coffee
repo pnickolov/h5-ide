@@ -1,4 +1,4 @@
-define [ './template_modal', 'backbone', 'jquery' ], ( template_modal, Backbone, $ ) ->
+define [ './component/kp/template_modal', 'backbone', 'jquery' ], ( template_modal, Backbone, $ ) ->
 
     Backbone.View.extend
 

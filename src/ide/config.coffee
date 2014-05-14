@@ -261,6 +261,7 @@ require.config {
 		#statusbar state
 		'state_status'       : 'component/statestatus/main'
 		'kp'       			 : 'component/kp/main'
+		'kp_upload'       	 : 'component/kp/upload'
 
 		#############################################
 		# component

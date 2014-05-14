@@ -1,4 +1,4 @@
-define [ './template', './template_modal', './upload', 'backbone', 'jquery', 'constant', 'UI.notification' ], ( template, template_modal, upload, Backbone, $, constant ) ->
+define [ './template', './template_modal', 'kp_upload', 'backbone', 'jquery', 'constant', 'UI.notification' ], ( template, template_modal, upload, Backbone, $, constant ) ->
     modalView = Backbone.View.extend
         __needDownload: false
         __upload: null

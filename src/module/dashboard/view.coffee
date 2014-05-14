@@ -3,8 +3,8 @@
 #############################
 
 define [ 'event', 'i18n!nls/lang.js',
-         './module/dashboard/overview/template',
-         './module/dashboard/overview/template_data',
+         './module/dashboard/template',
+         './module/dashboard/template_data',
          "component/exporter/Thumbnail"
          'constant',
          'unmanagedvpc',

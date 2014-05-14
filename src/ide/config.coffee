@@ -237,8 +237,8 @@ require.config {
 		'tabbar_model'       : 'module/tabbar/model'
 
 		'dashboard'          : 'module/dashboard/main'
-		'dashboard_view'     : 'module/dashboard/overview/view'
-		'dashboard_model'    : 'module/dashboard/overview/model'
+		'dashboard_view'     : 'module/dashboard/view'
+		'dashboard_model'    : 'module/dashboard/model'
 
 		'process'            : 'module/process/main'
 		'process_view'       : 'module/process/view'

@@ -1,0 +1,41 @@
+<!-- {{navigation}} -->
+<aside id="navigation">
+  <nav>
+    <button class="off-canvas-tab" id="off-canvas-app">{{ i18n "NAV_TIT_APPS" }}</button>
+    <button class="off-canvas-tab selected" id="off-canvas-stack">{{ i18n "NAV_TIT_STACKS" }}</button>
+  </nav>
+
+  <section class="scroll-wrap">
+    <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+    <div class="scroll-content">
+      <ul class="scroll-content hide" id="nav-app-region"></ul>
+      <div class="scroll-content" id="nav-stack">
+        <ul id="nav-stack-region"></ul>
+        <div id="nav-show-empty">Show unused regions</div>
+        <ul id="nav-region-empty-list" class="hide"></ul>
+      </div>
+    </div>
+  </section>
+</aside>
+<button id="off-canvas-menu" class="icon-menu"></button>
+<div id="off-canvas-overlay"></div>
+
+<!-- {{applist}} -->
+{{#each this}}<li data-region="{{region}}">
+	<h3 class="nav-group-title">{{regionName}} ({{data.length}})</h3>
+	<ul class="nav-item-list app-list">
+	{{#each data}}<li data-id="{{id}}" class="truncate nav-truncate icon-app-{{ tolower stateDesc }}" title="{{name}} [{{stateDesc}}]">{{name}}{{#if usage}}<i class="icon-app-type-{{usage}}"></i>{{/if}}</li>{{/each}}
+	</ul>
+</li>{{else}}
+<div class="nav-empty">{{ i18n "DASH_LBL_NO_APP" }}</div>
+{{/each}}
+
+<!-- {{stacklist}} -->
+{{#each this}}{{#if data.length}}<li data-region="{{region}}">
+	<h3 class="nav-group-title">{{regionName}} ({{data.length}})<button class="icon-new-stack tooltip" data-tooltip='{{i18n "IDE_COM_CREATE_NEW_STACK"}}'></button></h3>
+	<ul class="nav-item-list stack-list">
+	{{#each data}}<li data-id="{{id}}" class="truncate nav-truncate icon-stack-nav">{{name}}</li>{{/each}}</ul>
+</li>{{/if}}{{/each}}
+
+<!-- {{regionlist}} -->
+{{#each this}}{{#unless data.length}}<li class="nav-group-title" data-region="{{region}}">{{regionName}} (0) <button class="icon-new-stack tooltip" data-tooltip='{{ i18n "IDE_COM_CREATE_NEW_STACK" }}'></button></li>{{/unless}}{{/each}}

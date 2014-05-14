@@ -5,7 +5,14 @@
 ----------------------------
 ###
 
-define [ "backbone", "./subviews/SessionDialog", "./subviews/HeaderView", "./subviews/WelcomeDialog", "./subviews/SettingsDialog" ], ( Backbone, SessionDialog, HeaderView, WelcomeDialog, SettingsDialog )->
+define [
+  "backbone"
+  "./subviews/SessionDialog"
+  "./subviews/HeaderView"
+  "./subviews/WelcomeDialog"
+  "./subviews/SettingsDialog"
+  "./subviews/Navigation"
+], ( Backbone, SessionDialog, HeaderView, WelcomeDialog, SettingsDialog, Navigation )->
 
   Backbone.View.extend {
 
@@ -16,6 +23,8 @@ define [ "backbone", "./subviews/SessionDialog", "./subviews/HeaderView", "./sub
 
     initialize : ()->
       @header = new HeaderView()
+
+      new Navigation()
 
       @listenTo App.user, "change:state", @toggleWelcome
 

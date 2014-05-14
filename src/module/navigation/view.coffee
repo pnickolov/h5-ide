@@ -144,4 +144,39 @@ define [ 'event', 'constant', 'i18n!nls/lang.js',
                 ide_event.trigger ide_event.OPEN_DESIGN_TAB, type, tab_name, region_name, tab_id
     }
 
+    NavigationView = Backbone.View.extend {
+
+        #element
+        el              : $ '#navigation'
+
+        #events
+        events   :
+            'click .stack-list li'          : 'stackListItemsClick'
+            'click .app-list li'            : 'appListItemsClick'
+            'click .show-unused-region'     : 'showEmptyRegionClick'
+            'click .create-new-stack'       : 'createNewStackClick'
+            'click .create-new-empty-stack' : 'createNewEmptyStackClick'
+
+            "click #off-canvas-app"   : "showOffCanvasApp"
+            "click #off-canvas-stack" : "showOffCanvasStack"
+
+        initialize : -> return
+        hideOffCanvas : ()-> return
+        showOffCanvasApp : ()-> return
+        showOffCanvasStack : ()-> return
+        render     : () -> ide_event.trigger ide_event.NAVIGATION_COMPLETE; return
+        appListRender : -> return
+        stackListRender : -> return
+        regionEmtpyListRender : -> return
+        regionListRender : -> return
+        stackListItemsClick : ( event ) -> return
+        appListItemsClick : ( event ) -> return
+        showEmptyRegionClick : () -> return
+        createNewStackClick  : ( event ) -> return
+        createNewEmptyStackClick  : ( event ) -> return
+        regionNameClick      : ( event ) -> return
+        dashboardGlobal : -> return
+        openDesignTab : ( type, tab_name, region_name, tab_id ) -> return
+    }
+
     return NavigationView

@@ -11,9 +11,12 @@
 define ["ApiRequest", "backbone"], ( ApiRequest )->
 
   OpsModelState =
-    UnRun   : 0
-    Running : 1
-    Stopped : 2
+    UnRun    : 0
+    Running  : 1
+    Stopped  : 2
+    Starting : 3
+
+  OpsModelStateDesc = ["", "Running", "Stopped", ""]
 
   OpsModel = Backbone.Model.extend {
 
@@ -21,14 +24,21 @@ define ["ApiRequest", "backbone"], ( ApiRequest )->
       updateTime : +(new Date())
       region     : ""
       usage      : ""
-      serverId   : "" # If a model has a serverId, then it's saved in the server.
       state      : OpsModelState.UnRun
 
-    isStack : ()-> @state is OpsModelState.UnRun
-    isApp   : ()-> @state isnt OpsModelState.UnRun
+    isStack : ()-> @attributes.state is   OpsModelState.UnRun
+    isApp   : ()-> @attributes.state isnt OpsModelState.UnRun
+
+    toJSON : ()->
+      o = Backbone.Model.prototype.toJSON.call( this )
+      o.stateDesc = OpsModelStateDesc[ o.state ]
+      o
 
     # Return true if the stack is saved in the server.
-    presisted : ()-> !!@serverId
+    isPresisted : ()-> !!@get("id")
+
+    # Return true if the stack/app should be show to the user.
+    isExisting : ()-> @get("id") && @get("state") isnt OpsModelState.Starting
 
     # Save the stack in server, returns a promise
     save : ()->
@@ -41,8 +51,8 @@ define ["ApiRequest", "backbone"], ( ApiRequest )->
     # Stop the app, returns a promise
     stop : ()->
       if not @isApp() then return @__returnErrorPromise()
-      if @state is OpsModelState.Stopped
-        console.warn "The app #{@get("serverId")} has already stopped. But we are still sending a request to the server to stop it."
+      if @attributes.state is OpsModelState.Stopped
+        console.warn "The app #{@get("id")} has already stopped. But we are still sending a request to the server to stop it."
 
     # Terminate the app, returns a promise
     terminate : ()->

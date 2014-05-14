@@ -56,6 +56,7 @@ define [ "./submodels/OpsCollection", "./submodels/OpsModel", "ApiRequest", "bac
           updateTime : ops.time_update
           region     : ops.region
           usage      : ops.usage
+          name       : ops.name
           state      : stateMap[ ops.state ] || OpsModel.State.UnRun
         }
       r

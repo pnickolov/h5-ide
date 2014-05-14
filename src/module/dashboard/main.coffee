@@ -14,10 +14,7 @@ define [ "component/exporter/Thumbnail", 'jquery', 'event', 'MC', 'base_main', '
         #extend parent
         _.extend this, base_main
 
-    Helper =
-        hasCredential: -> true
-
-        accountIsDemo: -> !App.user.hasCredential()
+    accountIsDemo = -> !App.user.hasCredential()
 
 
     initialize()
@@ -85,35 +82,27 @@ define [ "component/exporter/Thumbnail", 'jquery', 'event', 'MC', 'base_main', '
 
             # update aws credential
             ide_event.onLongListen ide_event.UPDATE_AWS_CREDENTIAL, () ->
-                if Helper.hasCredential()
-                    if Helper.accountIsDemo() #demo case
-                        view.enableSwitchRegion()
-                        ide_event.trigger ide_event.ACCOUNT_DEMONSTRATE
-                        view.hideLoadTime()
-                        $( '#global-region-visualize-VPC' ).addClass 'disabled'
-                        $( '#global-region-visualize-VPC' ).attr 'disabled', true
-                    else # normal case
-                        view.clearDemo()
-                        view.enableSwitchRegion()
-                        view.reloadResource( null, true ) if view  #skip_load=true, only show loading progress
-                        view.displayLoadTime()
-                        $( '#global-region-visualize-VPC' ).removeClass 'disabled'
-                        $( '#global-region-visualize-VPC' ).removeAttr  'disabled'
-
-                    #reset config data after chagne credential
-                    MC.data.config = {}
-                    MC.data.config[r] = {} for r in constant.REGION_KEYS
-
-                    # init unmanaged_resource_list
-                    MC.common.other.initUnmanaged()
-
-                    null
-
-                else # no credentia
-                    view.disableSwitchRegion()
-                    view.showCredential()
-                    view.renderLoadingFaild()
+                if accountIsDemo() #demo case
+                    view.enableSwitchRegion()
+                    ide_event.trigger ide_event.ACCOUNT_DEMONSTRATE
                     view.hideLoadTime()
+                    $( '#global-region-visualize-VPC' ).addClass 'disabled'
+                    $( '#global-region-visualize-VPC' ).attr 'disabled', true
+                else # normal case
+                    view.clearDemo()
+                    view.enableSwitchRegion()
+                    view.reloadResource( null, true ) if view  #skip_load=true, only show loading progress
+                    view.displayLoadTime()
+                    $( '#global-region-visualize-VPC' ).removeClass 'disabled'
+                    $( '#global-region-visualize-VPC' ).removeAttr  'disabled'
+
+                #reset config data after chagne credential
+                MC.data.config = {}
+                MC.data.config[r] = {} for r in constant.REGION_KEYS
+
+                # init unmanaged_resource_list
+                MC.common.other.initUnmanaged()
+                null
 
             ide_event.onLongListen ide_event.ACCOUNT_DEMONSTRATE, () ->
                 view.setDemo()
@@ -126,7 +115,7 @@ define [ "component/exporter/Thumbnail", 'jquery', 'event', 'MC', 'base_main', '
 
                 if !result.is_error
                     view.enableSwitchRegion()
-                    if Helper.accountIsDemo()
+                    if accountIsDemo()
                         ide_event.trigger ide_event.ACCOUNT_DEMONSTRATE
                         view.hideLoadTime()
                     else

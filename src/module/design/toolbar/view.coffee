@@ -140,6 +140,22 @@ define [ 'MC', 'event',
             else
                 $( ".runtime-error" ).hide()
 
+        defaultKpIsSet: ->
+            KpModel = Design.modelClassForType( constant.RESTYPE.KP )
+            defaultKp = KpModel.getDefaultKP()
+
+            if not defaultKp.isSet()
+                @showErr 'kp', 'Specify a key pair as $DefaultKeyPair for this app.'
+                return false
+
+            true
+
+        renderDefaultKpDropdown: ->
+            if kp.hasResourceWithDefaultKp()
+                $('#kp-runtime-placeholder').html kp.loadModule().el
+                $('.default-kp-group').show()
+            null
+
 
         clickRunIcon : ( event ) ->
             console.log 'clickRunIcon'
@@ -166,10 +182,7 @@ define [ 'MC', 'event',
                 cost = Design.instance().getCost()
                 $('#label-total-fee').find("b").text("$#{cost.totalFee}")
 
-                # set default kp
-                if kp.hasResourceWithDefaultKp()
-                    $('#kp-runtime-placeholder').html kp.loadModule().el
-                    $('.default-kp-group').show()
+                me.renderDefaultKpDropdown()
 
                 # insert ta component
                 require [ 'component/trustedadvisor/main' ], ( trustedadvisor_main ) ->
@@ -192,11 +205,7 @@ define [ 'MC', 'event',
                         me.showErr 'appname', lang.ide.PROP_MSG_WARN_INVALID_APP_NAME
                         return false
 
-                    KpModel = Design.modelClassForType( constant.RESTYPE.KP )
-                    defaultKp = KpModel.getDefaultKP()
-
-                    if not defaultKp.isSet()
-                        me.showErr 'kp', 'Specify a key pair as $DefaultKeyPair for this app.'
+                    if not me.defaultKpIsSet()
                         return false
 
                     # get process tab name
@@ -626,6 +635,8 @@ define [ 'MC', 'event',
             null
 
         clickSaveEditApp : (event)->
+
+
             # 1. Send save request
             # check credential
             if MC.common.cookie.getCookieByName('has_cred') isnt 'true'
@@ -643,6 +654,8 @@ define [ 'MC', 'event',
 
                 else
                     modal MC.template.updateApp result
+                    # Set default kp
+                    @renderDefaultKpDropdown()
 
                     require [ 'component/trustedadvisor/main' ], ( trustedadvisor_main ) ->
                         trustedadvisor_main.loadModule 'stack'

@@ -70,7 +70,6 @@ define [ "./WelcomeTpl", 'i18n!nls/lang.js', "backbone" ], ( WelcomeTpl, lang ) 
           return
         , ()->
           $("#CredSetupMsg").text lang.ide.SETTINGS_ERR_CRED_VALIDATE
-          $("#modal-box .modal-close").show()
           self.showCredSetup()
           return
 
@@ -84,18 +83,14 @@ define [ "./WelcomeTpl", 'i18n!nls/lang.js', "backbone" ], ( WelcomeTpl, lang ) 
           self.done()
           return
         , ( err )->
-          self.showCredUpdateFail()
+          $("#CredSetupMsg").text lang.ide.SETTINGS_ERR_CRED_UPDATE
+          self.showCredSetup()
           return
 
-      showCredUpdateFail : ()->
-        $("#CredSetupMsg").text lang.ide.SETTINGS_ERR_CRED_UPDATE
-        @showCredSetup()
-
       showCredSetup : ()->
-        $("#CredentialTab").children().hide()
-        $("#CredSetupWrap").show()
+        $("#WelcomeDialog").children().hide()
+        $("#WelcomeSettings").show()
         $("#CredSetupAccount").focus()[0].select()
-        $("#CredSetupRemove").toggle App.user.hasCredential()
         @updateSubmitBtn()
         return
     }

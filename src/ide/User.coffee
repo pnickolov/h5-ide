@@ -16,9 +16,11 @@ define [ "ApiRequest", "event" , "backbone" ], ( ApiRequest, ide_event )->
 
     initialize : ()->
       @set {
-        usercode  : $.cookie "usercode"
-        username  : MC.base64Decode $.cookie "usercode"
-        session   : $.cookie "session_id"
+        usercode     : $.cookie "usercode"
+        username     : MC.base64Decode $.cookie "usercode"
+        session      : $.cookie "session_id"
+        tokens       : [{name:"Token1",token:"aaabbbccc"},{name:"Token2",token:"bbbdddccc"}]
+        defaultToken : ""
       }
       return
 
@@ -160,5 +162,42 @@ define [ "ApiRequest", "event" , "backbone" ], ( ApiRequest, ide_event )->
 
         # LEGACY code, trigger an ide event when credential is updated.
         ide_event.trigger ide_event.UPDATE_AWS_CREDENTIAL
+        return
+
+    createToken : ()->
+      tmpl = "MyToken"
+      base = 1
+      nameMap = {}
+      for t in @attributes.token
+        nameMap[ t.name ] = true
+
+      while true
+        newName = @newNameTmpl + base
+        if nameMap[ newName ]
+          base += 1
+        else
+          break
+
+      ApiRequest("token_create", {token_name:newName}).then (res)->
+        @attributes.tokens.splice 0, 0, {
+          name  : res[0]
+          token : res[1]
+        }
+        return
+
+    removeToken : (token)->
+      ApiRequest("removeToken", {token:token}).then ( res )->
+        for t, idx in @attributes.tokens
+          if t.token is token
+            @attributes.tokens.splice idx, 1
+            break
+        return
+
+    updateToken : ( token, newName )->
+      ApiRequest("updateToken", {token:token, new_token_name:newName}).then ( res )->
+        for t, idx in @attributes.tokens
+          if t.token is token
+            t.name = newName
+            break
         return
   }

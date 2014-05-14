@@ -43,7 +43,7 @@ define(['ApiRequestDefs'], function( ApiRequestDefs ){
 		'state_status'            : { url:'/state/',	method:'status',	params:['username', 'session_id', 'app_id']   },
 		'state_log'               : { url:'/state/',	method:'log',	params:['username', 'session_id', 'app_id', 'res_id']   },
 		'token_create'            : { url:'/token/',	method:'create',	params:['username', 'session_id', 'token_name']   },
-		'token_update'            : { url:'/token/',	method:'update',	params:['username', 'session_id', 'token_name', 'new_token_name']   },
+		'token_update'            : { url:'/token/',	method:'update',	params:['username', 'session_id', 'token', 'new_token_name']   },
 		'token_remove'            : { url:'/token/',	method:'remove',	params:['username', 'session_id', 'token']   },
 		'token_list'              : { url:'/token/',	method:'list',	params:['username', 'session_id', 'token_names']   },
 		'token_verify'            : { url:'/token/',	method:'verify',	params:['username', 'token']   },

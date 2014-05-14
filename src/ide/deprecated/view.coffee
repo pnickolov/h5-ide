@@ -22,6 +22,9 @@ define [ 'event',
             $(document).on 'keydown', @globalKeyEvent
 
         showMain : ->
+
+            that = @
+
             console.log 'showMain'
             #
             @toggleWaiting() if $( '#waiting-bar-wrapper' ).hasClass 'waiting-bar'

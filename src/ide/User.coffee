@@ -23,7 +23,7 @@ define [ "ApiRequest", "event" , "backbone" ], ( ApiRequest, ide_event )->
       return
 
     hasCredential : ()-> !!@get("account")
-    isFirstVisit  : ()-> !(UserState.NotFirstTime&@get("state"))
+    isFirstVisit  : ()-> true #!(UserState.NotFirstTime&@get("state"))
 
     userInfoAccuired : ( result )->
       res =

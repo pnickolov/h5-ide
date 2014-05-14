@@ -43,6 +43,7 @@ define [ "./WelcomeTpl", 'i18n!nls/lang.js', "backbone" ], ( WelcomeTpl, lang ) 
 
       close : ()->
         modal.close()
+        App.openSampleStack()
 
       updateSubmitBtn : ()->
         account    = $("#CredSetupAccount").val()

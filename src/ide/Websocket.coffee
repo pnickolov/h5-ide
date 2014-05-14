@@ -126,6 +126,17 @@ define [ "Meteor", "backbone", "event", "MC" ], ( Meteor, Backbone, ide_event )-
         ide_event.trigger ide_event.UPDATE_IMPORT_ITEM, idx
     }
 
+    # state status
+    @collection.status.find().fetch()
+    @collection.status.find().observe {
+      added : (idx, statusData) ->
+        ide_event.trigger ide_event.UPDATE_STATE_STATUS_DATA, 'add', idx, statusData
+        ide_event.trigger ide_event.UPDATE_STATE_STATUS_DATA_TO_EDITOR, if idx then [idx.res_id] else []
+
+      changed: ( newDocument, oldDocument ) ->
+        ide_event.trigger ide_event.UPDATE_STATE_STATUS_DATA, 'change', newDocument, oldDocument
+        ide_event.trigger ide_event.UPDATE_STATE_STATUS_DATA_TO_EDITOR, if newDocument then [newDocument.res_id] else []
+    }
 
   _.extend Websocket.prototype, Backbone.Events
 

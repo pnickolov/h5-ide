@@ -68,7 +68,6 @@ define [ 'event', 'base_main', 'constant' ], ( ide_event, base_main, constant ) 
 
             #state not belong to navigation
             model.getStateAWSProperty()
-            model.listenStateStatusList()
 
             ide_event.onLongListen ide_event.UPDATE_APP_LIST, ( flag, ids ) ->
                 console.log 'UPDATE_APP_LIST'

@@ -259,31 +259,6 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'state_model', 'aws_model', 'c
                     ide_event.trigger ide_event.IDE_AVAILABLE
 
                 null
-
-        listenStateStatusList: () ->
-
-            App.WS.collection.status.find().fetch()
-
-            query = App.WS.collection.status.find()
-
-            handle = query.observe {
-                added: (idx, statusData) ->
-                    ide_event.trigger ide_event.UPDATE_STATE_STATUS_DATA, 'add', idx, statusData
-
-                    newStateUpdateResIdAry = []
-                    if idx then newStateUpdateResIdAry.push(idx.res_id)
-                    ide_event.trigger ide_event.UPDATE_STATE_STATUS_DATA_TO_EDITOR, newStateUpdateResIdAry
-
-                changed: ( newDocument, oldDocument ) ->
-                    ide_event.trigger ide_event.UPDATE_STATE_STATUS_DATA, 'change', newDocument, oldDocument
-
-                    newStateUpdateResIdAry = []
-                    if newDocument then newStateUpdateResIdAry.push(newDocument.res_id)
-                    ide_event.trigger ide_event.UPDATE_STATE_STATUS_DATA_TO_EDITOR, newStateUpdateResIdAry
-            }
-
-            null
-
     }
 
     model = new NavigationModel()

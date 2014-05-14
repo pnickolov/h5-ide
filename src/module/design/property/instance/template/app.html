@@ -44,7 +44,11 @@
           {{#if loginCmd}}
           <a href="#" class="icon-download" id="property-app-keypair">{{keyName}}</a>
           {{else}}
-          {{keyName}}
+            {{#if windows}}
+              <a href="#" class="icon-download" id="property-app-keypair">{{keyName}}</a>
+            {{else}}
+              {{keyName}}
+            {{/if}}
           {{/if}}
         {{else}}
           No Key Pair

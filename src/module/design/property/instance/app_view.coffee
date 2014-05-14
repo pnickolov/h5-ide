@@ -15,11 +15,10 @@ define [ '../base/view', './template/app', 'i18n!nls/lang.js', 'instance_model',
 
         kpModalClosed : false
 
-        initialize: () ->
-
-
         render : () ->
-            @$el.html template @model.attributes
+            data = @model.toJSON()
+            data.windows = @model.get( 'osType' ) is 'windows'
+            @$el.html template data
             @model.attributes.name
 
         keyPairClick: ( event ) ->

@@ -422,10 +422,10 @@ function fn_scan_handler_forge() {
     CUR_FILE=$2
 
     #for tmp test
-    #if [ "${CUR_FILE}" != "SessionHandler.py" ]
-    #then
+    # if [ "${CUR_FILE}" != "TokenHandler.py" -a "${CUR_FILE}" != "SessionHandler.py" ]
+    # then
     #    return
-    #fi
+    # fi
 
     echo "########################################################"
     echo "#Processing "`echo ${CUR_DIR} | awk 'BEGIN{FS="[/]"}{print $(NF) }' `" - "${CUR_FILE}
@@ -464,6 +464,7 @@ function fn_scan_aws() {
     # SERVICE: SNS
     # SERVICE: VPC
     # SERVICE: AutoScaling
+
 
     # if [ "${SERVICE}" != "VPC" ]
     # then
@@ -614,7 +615,7 @@ then
         cat ${LINE} | grep "method:" >> ${TGT_BASE_DIR}/service/forge.tmp
     done
     #cat ${TGT_BASE_DIR}/service/.tmp
-    sed '/session_guest/r out.tmp/service/forge.tmp' ${TGT_BASE_DIR}/service/session.js > ${TGT_BASE_DIR}/service/forge.rlt
+    sed '/session_set_credential/r out.tmp/service/forge.tmp' ${TGT_BASE_DIR}/service/session.js > ${TGT_BASE_DIR}/service/forge.rlt
     rm -rf ${TGT_BASE_DIR}/service/*.js
     mv ${TGT_BASE_DIR}/service/forge.rlt ${TGT_BASE_DIR}/service/forge.js
     rm -rf ${TGT_BASE_DIR}/service/*.tmp

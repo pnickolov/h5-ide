@@ -8,7 +8,7 @@
 
 ###
 
-define [ "./submodels/OpsCollection", "./submodels/OpsModel", "ApiRequest", "backbone",  "event", "constant" ], ( OpsCollection, OpsModel, ApiRequest, Backbone, ide_event, constant )->
+define [ "./submodels/OpsCollection", "./submodels/OpsModel", "ApiRequest", "backbone",  "event", "constant", "component/exporter/Thumbnail" ], ( OpsCollection, OpsModel, ApiRequest, Backbone, ide_event, constant, ThumbUtil )->
 
   Backbone.Model.extend {
 
@@ -54,7 +54,10 @@ define [ "./submodels/OpsCollection", "./submodels/OpsModel", "ApiRequest", "bac
       sp = ApiRequest("stack_list").then (res)-> self.get("stackList").set self.__parseListRes( res )
       ap = ApiRequest("app_list").then   (res)-> self.get("appList").set   self.__parseListRes( res )
 
-      Q.all [ sp, ap ]
+      # When app/stack list is fetched, we first cleanup unused thumbnail. Then
+      # Tell others that we are ready.
+      Q.all([ sp, ap ]).then ()->
+        ThumbUtil.cleanup self.appList().pluck("id").concat( self.stackList().pluck("id") )
 
     __parseListRes : ( res )->
       r = []

@@ -9,9 +9,6 @@ define [ "component/exporter/Thumbnail", 'jquery', 'event', 'MC', 'base_main', '
     overview_stack  = null
     should_update_overview = false
 
-    stackListGot = false
-    appListGot   = false
-
     #private
     initialize = ->
         #extend parent
@@ -21,21 +18,6 @@ define [ "component/exporter/Thumbnail", 'jquery', 'event', 'MC', 'base_main', '
         hasCredential: -> true
 
         accountIsDemo: -> !App.user.hasCredential()
-
-        cleanupThumbnail: ->
-            appListGot = stackListGot = false
-            keepArray = []
-            for id, region of MC.data.app_thumb_list
-              for app in region
-                keepArray.push app.id
-
-            for id, region of MC.data.stack_list
-              for app in region
-                keepArray.push app.id
-
-            ThumbUtil.cleanup( keepArray )
-            null
-
 
 
     initialize()
@@ -168,9 +150,6 @@ define [ "component/exporter/Thumbnail", 'jquery', 'event', 'MC', 'base_main', '
                 model.updateRecentList( model, result, 'recent_launched_apps' )
                 view.renderMapResult()
                 model.getItemList 'app', current_region, overview_app
-
-                appListGot = true
-                if stackListGot then Helper.cleanupThumbnail()
                 null
 
             ide_event.onLongListen 'RESULT_STACK_LIST', ( result ) ->
@@ -183,9 +162,6 @@ define [ "component/exporter/Thumbnail", 'jquery', 'event', 'MC', 'base_main', '
                 view.renderMapResult()
 
                 model.getItemList 'stack', current_region, overview_stack
-
-                stackListGot = true
-                if appListGot then Helper.cleanupThumbnail()
                 null
 
             ide_event.onLongListen ide_event.NAVIGATION_TO_DASHBOARD_REGION, ( result ) ->

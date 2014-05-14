@@ -869,6 +869,38 @@ Following rule(s) will be deleted from its(their) security group:</div>
 	</div>
 </div>
 
+<!-- {{modalDecryptPassword}} -->
+<div style="width:855px">
+	<div class="modal-header">
+		<h3 id='keypair-name'>Get Windows Password</h3>
+		<i class="modal-close">&times;</i>
+	</div>
+	<div class="modal-body">
+		<section class="password-hint">
+			To access this instance remotely (e.g. Remote Desktop Connection), you will need your Windows Administrator password. A default password was created when the instance was launched and is available encrypted in the system log.
+
+			<div>This instance was associated with key pair: {{name}}</div>
+		</section>
+		<section class="import-zone">
+			<div id='keypair-loading' class="loading-spinner"></div>
+		</section>
+		<section class="decrypt-action" style="display: none;">
+			<button class="btn btn-blue" id="do-kp-decrypt" disabled>Decrypt Password</button>
+			<input readonly class="input tooltip" data-tooltip="Click to select all" type="text" id="keypair-pwd" placeholder="Decripted password will appear here">
+			<span class="change-pw-recommend">Change Password Recommendation from AWS<i class="icon-info tooltip" data-tooltip="We recommend that you change your password to one that you will remember and know privately. Please note that passwords can persist through bundling phases and will not be retrievable through this tool. It is therefore important that you change your password to one that you will remember if you intend to bundle a new AMI from this instance."></i></span>
+		</section>
+		<section class="no-password" style="display: none;">
+			<p>
+				Your password is not ready. Password generation can sometimes take more than 30 minutes. Please wait at least 15 minutes after launching an instance before trying to retrieve the generated password.
+			</p>
+
+			<p>
+				If you launched this instance from your own AMI, the password is the same as for the instance from which you created the AMI, unless this setting was modified in the EC2Config service settings.
+			</p>
+		</section>
+	</div>
+</div>
+
 <!-- {{modalDownloadKP}} -->
 <div style="width:420px">
 	<div class="modal-header">

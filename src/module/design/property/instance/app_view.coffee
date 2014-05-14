@@ -2,11 +2,14 @@
 #  View(UI logic) for design/property/instance(app)
 #############################
 
-define [ '../base/view', './template/app', 'i18n!nls/lang.js', 'instance_model' ], ( PropertyView, template, lang, instance_model )->
+define [ '../base/view', './template/app', 'i18n!nls/lang.js', 'instance_model', 'kp_upload' ], ( PropertyView, template, lang, instance_model, kp_upload )->
 
     InstanceAppView = PropertyView.extend {
+        __kpUpload: null
+        __kpModal: null
+
         events   :
-            "click #property-app-keypair" : "downloadKeypair"
+            "click #property-app-keypair" : "decryptPassword"
             "click #property-app-ami" : "openAmiPanel"
             "click .property-btn-get-system-log" : "openSysLogModal"
 
@@ -16,13 +19,16 @@ define [ '../base/view', './template/app', 'i18n!nls/lang.js', 'instance_model' 
             @$el.html template @model.attributes
             @model.attributes.name
 
-        downloadKeypair : ( event ) ->
+        decryptPassword : ( event ) ->
+            me = @
+
             keypair = $( event.currentTarget ).html()
-            @model.downloadKP(keypair)
+            @model.getPasswordData null, 'check'
+            @__kpModal = MC.template.modalDecryptPassword { name  : keypair }
 
-            modal MC.template.modalDownloadKP { name  : keypair }
+            modal @__kpModal
 
-            me = this
+
             $('#modal-wrap').on "closed", ()->
                 me.kpModalClosed = true
                 null
@@ -33,58 +39,35 @@ define [ '../base/view', './template/app', 'i18n!nls/lang.js', 'instance_model' 
                 event.stopPropagation()
 
 
-            $("#keypair-show").on "click", ()->
-                $("#keypair-pwd").attr("type", "string")
-                null
-
+            $("#do-kp-decrypt").off( 'click' ).on 'click', ( event ) ->
+                me.model.getPasswordData me.__kpUpload.getData()
 
             this.kpModalClosed = false
 
             false
 
-        updateKPModal : ( data, option ) ->
-            if not data
-                modal.close()
-                return
-
+        updateKPModal : ( action, data ) ->
             if this.kpModalClosed
                 return
 
-            if option.passwd
-                $("#keypair-pwd").val( option.passwd )
-            else
-                $("#keypair-login").hide()
-                $("#keypair-no-pwd").html lang.ide.POP_DOWNLOAD_KP_NOT_AVAILABLE
+            if action is 'check'
+                if data
+                    @__kpUpload and @__kpUpload.remove()
+                    @__kpUpload = new kp_upload()
+                    @__kpUpload.on 'load', () ->
+                        $("#do-kp-decrypt").prop 'disabled', false
 
-            if option.cmd_line
-                $("#keypair-cmd").val( option.cmd_line )
-            else
-                $("#keypair-remote").hide()
-
-            if option.public_dns
-                $("#keypair-dns").val( option.public_dns )
-            else
-                $("#keypair-public").hide()
-
-            if option.rdp
-                $("#keypair-rdp")
-                    .attr("href", "data://text/plain;charset=utf8," + encodeURIComponent( option.rdp ) )
-                    .attr("download", $("#keypair-name").text() + ".rdp" )
-            else
-                $("#keypair-rdp").hide()
+                    $( '#modal-box .import-zone' ).html @__kpUpload.render().el
+                    $( '#modal-box .decrypt-action' ).show()
+                else
+                    $( '#modal-box .import-zone' ).html ''
+                    $( '#modal-box .no-password' ).show()
 
 
-            $("#keypair-kp-" + option.type )
-                .attr("href", "data://text/plain;charset=utf8," + encodeURIComponent(data) )
-                .attr("download", $("#keypair-name").text() + ".pem" )
+            else if action is 'got'
+                $("#do-kp-decrypt").prop 'disabled', true
+                $( '#modal-box .keypair-pwd' ).val data
 
-            $("#keypair-private-key").val( data )
-
-            $("#keypair-loading").hide()
-            $("#keypair-body-" + option.type ).show()
-
-            modal.position()
-            null
 
         openAmiPanel : ( event ) ->
             this.trigger "OPEN_AMI", $( event.target ).data("uid")

@@ -9,15 +9,36 @@ define [ '../base/view', './template/app', 'i18n!nls/lang.js', 'instance_model',
         __kpModal: null
 
         events   :
-            "click #property-app-keypair" : "decryptPassword"
+            "click #property-app-keypair" : "keyPairClick"
             "click #property-app-ami" : "openAmiPanel"
             "click .property-btn-get-system-log" : "openSysLogModal"
 
         kpModalClosed : false
 
+        initialize: () ->
+
+
         render : () ->
             @$el.html template @model.attributes
             @model.attributes.name
+
+        keyPairClick: ( event ) ->
+            if @model.get( 'osType' ) is 'windows'
+                @decryptPassword event
+            else
+                @loginPrompt event
+
+        loginPrompt: ( event ) ->
+            keypair = $( event.currentTarget ).html()
+            modal MC.template.modalDownloadKP name: keypair, loginCmd: @model.get 'loginCmd'
+
+            me = this
+            $( '#keypair-cmd' ).off( 'click' ).on 'click', ( event )->
+                if event.currentTarget.select
+                    event.currentTarget.select()
+                event.stopPropagation()
+
+            false
 
         decryptPassword : ( event ) ->
             me = @
@@ -33,14 +54,9 @@ define [ '../base/view', './template/app', 'i18n!nls/lang.js', 'instance_model',
                 me.kpModalClosed = true
                 null
 
-            $(".modal-body").on "click", ".click-select", ( event )->
-                if event.currentTarget.select
-                    event.currentTarget.select()
-                event.stopPropagation()
-
 
             $("#do-kp-decrypt").off( 'click' ).on 'click', ( event ) ->
-                me.model.getPasswordData me.__kpUpload.getData()
+                me.model.getPasswordData btoa me.__kpUpload.getData()
 
             this.kpModalClosed = false
 
@@ -66,7 +82,9 @@ define [ '../base/view', './template/app', 'i18n!nls/lang.js', 'instance_model',
 
             else if action is 'got'
                 $("#do-kp-decrypt").prop 'disabled', true
-                $( '#modal-box .keypair-pwd' ).val data
+                $( '#modal-box .keypair-pwd' )
+                    .val( data )
+                    .select()
 
 
         openAmiPanel : ( event ) ->

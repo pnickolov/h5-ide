@@ -37,9 +37,19 @@
 
       <dt>{{i18n "PROP_INSTANCE_KEY_PAIR"}}</dt>
       {{#if app_view}}
-      <dd>{{keyName}}</dd>
+      <dd>{{#if keyName}}{{keyName}}{{else}}No Key Pair{{/if}}</dd>
       {{else}}
-      <dd><a href="#" class="icon-download" id="property-app-keypair">{{keyName}}</a></dd>
+      <dd>
+        {{#if keyName}}
+          {{#if loginCmd}}
+          <a href="#" class="icon-download" id="property-app-keypair">{{keyName}}</a>
+          {{else}}
+          {{keyName}}
+          {{/if}}
+        {{else}}
+          No Key Pair
+        {{/if}}
+      </dd>
       {{/if}}
 
     </dl>

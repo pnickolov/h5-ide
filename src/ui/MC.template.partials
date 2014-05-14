@@ -908,42 +908,14 @@ Following rule(s) will be deleted from its(their) security group:</div>
 		<i class="modal-close">&times;</i>
 	</div>
 	<div class="modal-body">
-		<section id='keypair-loading' class="loading-spinner"></section>
-
-		<section id="keypair-body-linux" class="hide">
+		<section id="keypair-body-linux">
 			<div class="keypair-download clearfix modal-control-group">
-				<p class="modal-text-major left">Key Pair data is ready</p>
-				<a href="#" class="btn btn-blue right" id="keypair-kp-linux">Download</a>
+				<p class="modal-text-major">This instance was associated with key pair: {{name}}</p>
 			</div>
 			<div id="keypair-remote" class="modal-control-group clearfix">
 				<label for="keypair-cmd">Remote Access</label>
-				<input class="input click-select" id="keypair-cmd" type="text" readonly="readonly">
+				<input class="input" id="keypair-cmd" type="text" readonly="readonly" value="{{loginCmd}}">
 			</div>
-
-		</section>
-		<section id="keypair-body-win" class="hide">
-			<div class="modal-control-group">
-				<h4>Remote Access</h4>
-				<label for="keypair-private-key">Private Key</label>
-				<textarea id="keypair-private-key" class="click-select" readonly="readonly"></textarea>
-				<a href="#" id="keypair-rdp" class="btn btn-blue">Download RDP</a>
-				<a href="#" id="keypair-kp-win" class="btn btn-blue">Download Key Pair</a>
-			</div>
-
-			<div id="keypair-public" class="modal-control-group clearfix">
-				<label for="keypair-dns">Public DNS</label>
-				<input class="input click-select" type="text" readonly="readonly" id="keypair-dns">
-			</div>
-
-			<div class="modal-control-group clearfix">
-				<label style="width:100%;">Windows Login Password</label>
-				<div id="keypair-login">
-					<input type="password" readonly="readonly" id="keypair-pwd" class="input click-select">
-					<a href="#" class="btn btn-silver kp-copy-btn" id="keypair-show">Show password</a>
-				</div>
-				<div id="keypair-no-pwd"></div>
-			</div>
-
 		</section>
 	</div>
 

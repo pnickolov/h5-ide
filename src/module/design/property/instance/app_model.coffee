@@ -20,6 +20,35 @@ define [ '../base/model',
         initialize : () ->
 
 
+        setOsTypeAndLoginCmd: ( appId ) ->
+            region = Design.instance().region()
+            instance_data = MC.data.resource_list[ region ][ appId ]
+            if instance_data && instance_data.imageId
+                os_type = MC.data.dict_ami[ instance_data.imageId ].osType
+
+            # below code are based on os_type
+            if not os_type
+                return
+
+            if 'win|windows'.indexOf(os_type) > 0
+                @set 'osType', 'windows'
+            else
+                @set 'osType', os_type
+
+            if instance_data
+                instance_state = instance_data.instanceState.name
+
+            if instance_state == 'running'
+                switch os_type
+                    when 'amazon' then login_user = 'ec2-user'
+                    when 'ubuntu' then login_user = 'ubuntu'
+                    when 'redhat' then login_user = 'ec2-user'
+                    else
+                        login_user = 'root'
+
+            if instance_data.ipAddress
+                cmd_line = sprintf 'ssh -i %s.pem %s@%s', instance_data.keyName, login_user, instance_data.ipAddress
+                @set 'loginCmd', cmd_line
 
 
         init : ( instance_id )->
@@ -38,8 +67,10 @@ define [ '../base/model',
                 @set 'uid', effective.uid
                 @set 'mid', effective.mid
 
+
             if not myInstanceComponent
                 console.warn "instance.app_model.init(): can not find InstanceModel"
+
 
             app_data = MC.data.resource_list[ Design.instance().region() ]
 
@@ -74,6 +105,8 @@ define [ '../base/model',
                 instance.app_view = if MC.canvas.getState() is 'appview' then true else false
 
                 this.set instance
+
+                @setOsTypeAndLoginCmd myInstanceComponent.get 'appId'
 
             else
                 return false

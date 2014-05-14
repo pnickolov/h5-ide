@@ -90,6 +90,23 @@ function fn_generate_coffee() {
             else
                 RESOURCE_URL=${SERVICE_NAME}"/rds/"${_RESOURCE_l}
             fi
+        elif [ "${SERVICE}" == "VPC" ]
+        then
+            if [ "${RESOURCE}" == "VPCUtil" ]
+            then
+                RESOURCE_URL=${SERVICE_NAME}"/vpc"
+            elif [ "${_RESOURCE_l}" == "vpngateway" ]
+            then
+                RESOURCE_URL=${SERVICE_NAME}"/vpc/vgw"
+            elif [ "${_RESOURCE_l}" == "customergateway" ]
+            then
+                RESOURCE_URL=${SERVICE_NAME}"/vpc/cgw"
+            elif [ "${_RESOURCE_l}" == "internetgateway" ]
+            then
+                RESOURCE_URL=${SERVICE_NAME}"/vpc/igw"
+            else
+                RESOURCE_URL=${SERVICE_NAME}"/vpc/"${_RESOURCE_l}
+            fi
         elif [ "${SERVICE}" == "EC2" ]
         then
             if [ "${RESOURCE}" == "EC2Util" ]
@@ -120,15 +137,6 @@ function fn_generate_coffee() {
         elif [ "${_RESOURCE_l}" == "ec2" -o "${_RESOURCE_l}" == "elb" -o "${_RESOURCE_l}" == "iam" -o "${_RESOURCE_l}" == "vpc" ]
         then
             RESOURCE_URL=${SERVICE_NAME}
-        elif [ "${_RESOURCE_l}" == "vpngateway" ]
-        then
-            RESOURCE_URL=${SERVICE_NAME}"/vgw"
-        elif [ "${_RESOURCE_l}" == "customergateway" ]
-        then
-            RESOURCE_URL=${SERVICE_NAME}"/cgw"
-        elif [ "${_RESOURCE_l}" == "internetgateway" ]
-        then
-            RESOURCE_URL=${SERVICE_NAME}"/igw"
         fi
 
     elif [ "${__TYPE}" == "awsutil"  ]
@@ -457,7 +465,7 @@ function fn_scan_aws() {
     # SERVICE: VPC
     # SERVICE: AutoScaling
 
-    # if [ "${SERVICE}" != "EC2" ]
+    # if [ "${SERVICE}" != "VPC" ]
     # then
     #     return
     # fi

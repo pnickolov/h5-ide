@@ -340,6 +340,52 @@ use redirection server name:i:0\n"
 		'uid'						: /[A-Z0-9]{8}-([A-Z0-9]{4}-){3}[A-Z0-9]{12}/g
 
 
+	# A map that used by the state editor.
+	# It shows which attribute of components can be referenced.
+	STATE_REF_DICT =
+		_id : "property"
+		AWS_VPC_CustomerGateway :
+			__array   : false
+			IpAddress : false
+			Type      : false
+			BgpAsn    : false
+		AWS_EC2_Instance :
+			__array          : false
+			PublicIp         : true
+			MacAddress       : true
+			PrivateIpAddress : true
+		AWS_AutoScaling_Group :
+			__array           : true
+			PublicIp          : true
+			MacAddress        : true
+			AvailabilityZones : true
+			PrivateIpAddress  : true
+		AWS_VPC_Subnet :
+			__array                 : false
+			AvailableIpAddressCount : false
+			AvailabilityZone        : false
+			CidrBlock               : false
+		AWS_VPC_NetworkInterface :
+			__array          : true
+			PublicIp         : true
+			MacAddress       : true
+			PrivateIpAddress : true
+		AWS_ELB :
+			__array : false
+			DNSName : false
+			CanonicalHostedZoneName : false
+			CanonicalHostedZoneNameID : false
+			AvailabilityZones : true
+		AWS_VPC_VPC :
+			__array   : false
+			CidrBlock : false
+		AWS_EC2_InstanceGroup :
+			__array          : false
+			PublicIp         : true
+			MacAddress       : true
+			PrivateIpAddress : true
+
+
 	VPC_JSON_INIT_LAYOUT =
 		VPC :
 			coordinate : [5,3]

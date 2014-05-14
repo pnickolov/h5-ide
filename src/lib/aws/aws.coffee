@@ -614,7 +614,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
 
         autoCompList = []
 
-        awsPropertyData = MC.data.state.aws_property
+        awsPropertyData = constant.STATE_REF_DICT
 
         _.each allCompData, (compData, uid) ->
 

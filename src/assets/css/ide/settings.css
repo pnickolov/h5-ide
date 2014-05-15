@@ -192,16 +192,17 @@
   .token-table > .scroll-wrap {
     height: 168px; }
 
-#TokenList ul:empty:before {
-  content: attr(data-empty);
-  width: 100%;
-  text-align: center;
-  height: 20px;
-  line-height: 20px;
-  top: 50%;
-  margin-top: -10px;
-  left: 0;
-  position: absolute; }
+#TokenList:empty {
+  height: 100%; }
+  #TokenList:empty:before {
+    content: attr(data-empty);
+    width: 100%;
+    text-align: center;
+    height: 20px;
+    line-height: 20px;
+    top: 50%;
+    left: 0;
+    position: absolute; }
 #TokenList > li {
   clear: both;
   height: 30px; }

@@ -254,7 +254,8 @@
 }
 
 #TokenList {
-  ul:empty {
+  &:empty {
+    height : 100%;
     &:before {
       content     : attr(data-empty);
       width       : 100%;
@@ -262,7 +263,6 @@
       height      : 20px;
       line-height : 20px;
       top         : 50%;
-      margin-top  : -10px;
       left        : 0;
       position    : absolute;
     }

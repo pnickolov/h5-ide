@@ -279,7 +279,7 @@ define [ "./SettingsDialogTpl", 'i18n!nls/lang.js', "ApiRequest", "backbone" ], 
 
       updateTokenTab : ()->
         tokens = App.user.get("tokens")
-        $("#TokenManager").find("secion").toggleClass( "empty", tokens.length )
+        $("#TokenManager").find(".token-table").toggleClass( "empty", tokens.length )
         if tokens.length
           $("#TokenList").html MC.template.accessTokenTable( tokens )
         else

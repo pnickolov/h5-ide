@@ -55,7 +55,7 @@ define [ '../base/view', './template/app', 'i18n!nls/lang.js', 'instance_model',
 
 
             $("#do-kp-decrypt").off( 'click' ).on 'click', ( event ) ->
-                me.model.getPasswordData btoa me.__kpUpload.getData()
+                me.model.getPasswordData me.__kpUpload.getData()
 
             this.kpModalClosed = false
 
@@ -81,9 +81,13 @@ define [ '../base/view', './template/app', 'i18n!nls/lang.js', 'instance_model',
 
             else if action is 'got'
                 $("#do-kp-decrypt").prop 'disabled', true
-                $( '#modal-box .keypair-pwd' )
-                    .val( data )
-                    .select()
+                $kpPwdInput = $( '#keypair-pwd' )
+                kpPwdInput = $kpPwdInput.get(0)
+
+                $kpPwdInput.val( data )
+                kpPwdInput.select()
+                kpPwdInput.focus()
+
 
 
         openAmiPanel : ( event ) ->

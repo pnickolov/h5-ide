@@ -17,9 +17,6 @@ define [ '../base/model',
         defaults :
             'id' : null
 
-        initialize : () ->
-
-
         setOsTypeAndLoginCmd: ( appId ) ->
             region = Design.instance().region()
             instance_data = MC.data.resource_list[ region ][ appId ]

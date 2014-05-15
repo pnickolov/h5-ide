@@ -2674,6 +2674,10 @@ module.exports =
       en: "You need to connect this auto scaling group to a load balancer to enable this option."
       zh: "你需要连接AutoScaling组和一个负载均衡器来启动此选项"
 
+    PROPERTY_ASG_ELB_WARN:
+      en: "If the calls to Elastic Load Balancing health check for the instance returns any state other than InService, Auto Scaling marks the instance as Unhealthy. And if the instance is marked as Unhealthy, Auto Scaling starts the termination process for the instance."
+      zh: ""
+
     PROP_ASG_TERMINATION_POLICY:
       en: "Termination Policy"
       zh: "结束策略"
@@ -4730,6 +4734,10 @@ VisualOps API. You cannot UNDO this action.'
 
     TA_MSG_ERROR_ELB_RULE_NOT_INBOUND_TO_ELB_LISTENER:
       en: "Load balancer <span class='validation-tag tag-elb'>%s</span> should allow inbound traffic towards its Load Balancer Protocol: %s."
+      zh: ""
+
+    TA_MSG_WARNING_ELB_RULE_NOT_INBOUND_TO_ELB_PING_PORT:
+      en: "Load balancer <span class='validation-tag tag-elb'>%s</span>'s security group rule should allow inbound traffic towards its ping port: <span class='validation-tag tag-port'>%s</span>."
       zh: ""
 
     TA_MSG_ERROR_ELB_RULE_NOT_OUTBOUND_TO_INSTANCE_LISTENER:

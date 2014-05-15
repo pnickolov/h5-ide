@@ -106,7 +106,7 @@ define [ '../base/model',
 
                 this.set instance
 
-                @setOsTypeAndLoginCmd myInstanceComponent.get 'appId'
+                @setOsTypeAndLoginCmd instance_id
 
             else
                 return false

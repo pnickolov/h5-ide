@@ -223,7 +223,7 @@ define [ 'MC', 'event',
 
                     # repeat with app list or tab name(some run failed app tabs)
                     if (not MC.aws.aws.checkAppName app_name) or (_.contains(_.keys(MC.process), process_tab_name))
-                        notification 'warning', lang.ide.PROP_MSG_WARN_REPEATED_APP_NAME
+                        me.showErr 'appname', lang.ide.PROP_MSG_WARN_REPEATED_APP_NAME
                         return false
 
                     # disable button

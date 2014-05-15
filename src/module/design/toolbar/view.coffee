@@ -12,10 +12,11 @@ define [ 'MC', 'event',
          "component/exporter/Download",
          'constant'
          'ApiRequest'
+         'component/stateeditor/stateeditor'
          'backbone', 'jquery', 'handlebars',
          'UI.selectbox', 'UI.notification',
          "UI.tabbar"
-], ( MC, ide_event, Design, lang, stack_tmpl, app_tmpl, appview_tmpl, JsonExporter, download, constant, ApiRequest ) ->
+], ( MC, ide_event, Design, lang, stack_tmpl, app_tmpl, appview_tmpl, JsonExporter, download, constant, ApiRequest, stateEditor ) ->
 
     ToolbarView = Backbone.View.extend {
 
@@ -415,13 +416,19 @@ define [ 'MC', 'event',
                     200: ->
                         console.log 200,arguments
                         notification 'info', "Success!"
-
+                        #todo: reset state count
+                        appData = Design.instance().serialize()
+                        for uid of appData.component
+                            if appData.component[uid].type is "AWS.EC2.Instance" && appData.component[uid].state.length>0
+                                console.log(appData, uid)
+                                stateEditor.loadModule(appData.component, uid, null, true)
                     401: ->
                         console.log 401,arguments
                         notification 'error', "Error 401"
                     404: ->
                         console.log 404,arguments
                         notification 'error', "Error 404"
+
                     500: ->
                         console.log 500,arguments
                         notification 'error', "Error 500"

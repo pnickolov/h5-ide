@@ -680,7 +680,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
       if kp
         if kp.isDefault() then '$DefaultKeyPair' else kp.get('name')
       else
-         @get 'keyName'
+         @get( 'keyName' ) or 'No Key Pair'
 
     isDefaultKey: ->
       kp = @connectionTargets( "KeypairUsage" )[0]

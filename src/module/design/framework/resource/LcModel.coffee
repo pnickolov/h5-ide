@@ -170,7 +170,7 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
       if kp
         if kp.isDefault() then '$DefaultKeyPair' else kp.get('name')
       else
-         @get 'keyName'
+         @get( 'keyName' ) or 'No Key Pair'
 
     isDefaultKey: ->
       kp = @connectionTargets( "KeypairUsage" )[0]
@@ -233,6 +233,7 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
           LaunchConfigurationARN   : @get("appId")
           InstanceMonitoring       : @get("monitoring")
           ImageId                  : @get("imageId")
+          KeyName                  : @get("keyName")
           EbsOptimized             : if @isEbsOptimizedEnabled() then @get("ebsOptimized") else false
           BlockDeviceMapping       : blockDevice
           SecurityGroups           : sgarray

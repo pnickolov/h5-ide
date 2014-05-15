@@ -886,7 +886,8 @@ Following rule(s) will be deleted from its(their) security group:</div>
 		<section class="decrypt-action" style="display: none;">
 			<button class="btn btn-blue" id="do-kp-decrypt" disabled>Decrypt Password</button>
 			<input readonly class="input tooltip" data-tooltip="Click to select all" type="text" id="keypair-pwd" placeholder="Decripted password will appear here">
-			<div class="change-pw-recommend">Change Password Recommendation from AWS<i class="icon-info tooltip" data-tooltip="We recommend that you change your password to one that you will remember and know privately. Please note that passwords can persist through bundling phases and will not be retrievable through this tool. It is therefore important that you change your password to one that you will remember if you intend to bundle a new AMI from this instance."></i></div>
+			<div class="change-pw-recommend"  style="display: none;">Change Password Recommendation from AWS<i class="icon-info tooltip" data-tooltip="We recommend that you change your password to one that you will remember and know privately. Please note that passwords can persist through bundling phases and will not be retrievable through this tool. It is therefore important that you change your password to one that you will remember if you intend to bundle a new AMI from this instance."></i></div>
+
 		</section>
 		<section class="no-password" style="display: none;">
 			<p>

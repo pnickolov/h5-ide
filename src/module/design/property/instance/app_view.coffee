@@ -88,6 +88,9 @@ define [ '../base/view', './template/app', 'i18n!nls/lang.js', 'instance_model',
                 kpPwdInput.select()
                 kpPwdInput.focus()
 
+                $( '#do-kp-decrypt' ).text 'Decrypted'
+                $( '.change-pw-recommend' ).show()
+
 
 
         openAmiPanel : ( event ) ->

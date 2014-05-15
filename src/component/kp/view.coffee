@@ -65,7 +65,7 @@ define [ './template', './template_modal', 'kp_upload', 'backbone', 'jquery', 'c
             'click #download-kp': 'downloadKp'
 
             # actions
-            'click #create-kp': 'renderCreate'
+            'click #kp-create': 'renderCreate'
             'click #kp-import': 'renderImport'
             'click #kp-delete': 'renderDelete'
             'click #kp-refresh': 'refresh'
@@ -211,6 +211,8 @@ define [ './template', './template_modal', 'kp_upload', 'backbone', 'jquery', 'c
             if @needDownload()
                 return false
 
+            that = @
+
             $content = @$( '.content-wrap' )
             $slidebox = @$( '.slidebox' )
             currentType = $content.hasClass "show-#{type}"
@@ -224,6 +226,14 @@ define [ './template', './template_modal', 'kp_upload', 'backbone', 'jquery', 'c
 
             if not currentType
                 $content.removeClass( 'show-create show-import show-delete' )
+
+                _.each [ 'create', 'delete', 'import' ], ( action ) ->
+                    if action is type
+                        that.$( "#kp-#{action}" ).addClass 'active'
+                    else
+                        that.$( "#kp-#{action}" ).removeClass 'active'
+
+
                 if type
                     $content.addClass( "show-#{type}" )
                     $slidebox.addClass 'show'
@@ -232,6 +242,7 @@ define [ './template', './template_modal', 'kp_upload', 'backbone', 'jquery', 'c
             else
                 $content.removeClass( 'show-create show-import show-delete' )
                 $slidebox.removeClass 'show' # for transition effective
+                that.$( "#kp-#{type}" ).removeClass 'active'
 
             not currentType
 

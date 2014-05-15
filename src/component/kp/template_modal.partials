@@ -92,8 +92,11 @@
 
 <!-- {{slideCreate}} -->
 <div class="slide-create" data-bind="true">
-    <label for="create-kp-name">Key Pair Name</label>
-    <input class="input" type="text" id="create-kp-name" data-ignore="true" data-ignore-regexp="^[a-zA-Z0-9,_-]*$" data-required="true" maxlength="255" placeholder="allow alphanumber, _ or - up to 255 characters">
+    <div class="before-create">
+        <label for="create-kp-name">Key Pair Name</label>
+        <input class="input" type="text" id="create-kp-name" data-ignore="true" data-ignore-regexp="^[a-zA-Z0-9,_-]*$" data-required="true" maxlength="255" placeholder="allow alphanumber, _ or - up to 255 characters">
+    </div>
+    <div class="after-create hide"><span></span> is Created.</div>
     <div class="init action">
         <button class="btn btn-blue do-action" data-action="create">Create</button>
         <button class="btn btn-silver cancel">Cancel</button>

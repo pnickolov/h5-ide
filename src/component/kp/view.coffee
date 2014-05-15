@@ -152,6 +152,8 @@ define [ './template', './template_modal', 'kp_upload', 'backbone', 'jquery', 'c
                         that.needDownload true
                         that.genDownload "#{res.keyName}.pem", res.keyMaterial
                         that.switchAction 'download'
+                        that.$( '.before-create' ).hide()
+                        that.$( '.after-create' ).find( 'span' ).text( res.keyName ).end().show()
 
                     .catch ( err ) ->
                         console.log(err)

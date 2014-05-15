@@ -404,7 +404,33 @@ define [ 'MC', 'event',
             console.log(event)
             $target.toggleClass('disabled')
             $label.html($label.attr('data-disabled'))
-            ApiRequest()
+            $.ajax
+                url: "http://urlthatdoesnotexist.com",
+                method: "POST"
+                data:
+                    "encoded_user": App.user.get("usercode")
+                    "token": App.user.get("defaultToken")
+                dataType: 'json'
+                statusCode:
+                    200: ->
+                        console.log 200,arguments
+                        notification 'info', "Success!"
+
+                    401: ->
+                        console.log 401,arguments
+                        notification 'error', "Error 401"
+                    404: ->
+                        console.log 404,arguments
+                        notification 'error', "Error 404"
+                    500: ->
+                        console.log 500,arguments
+                        notification 'error', "Error 500"
+                error: ->
+                    console.log('Reload State Request Error.')
+                    null
+            .always ()->
+                $target.removeClass('disabled')
+                $label.html($label.attr('data-original'))
 
         clickDeleteIcon : ->
             me = this

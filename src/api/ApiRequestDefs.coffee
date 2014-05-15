@@ -33,7 +33,6 @@ define [], ()->
     updateAccount : { url:"/account/", method:"update_account", params:["username", "session_id", "params"] }
     saveStack  : { url:"/stack/",   method:"save",       params:["username", "session_id", "region_name", 'data'] }
     createStack: { url:"/stack/",   method:"create",     params:["username", "session_id", "region_name", "data"] }
-    reloadState: { url:"/states/", method:"log", params: ['username'],'session_id'}
 
   ###
   Parsers are promise's success hanlder.

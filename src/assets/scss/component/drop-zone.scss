@@ -1,0 +1,90 @@
+/* Common Style for Drop Zone */
+
+
+.drop-zone {
+  height:       140px;
+  padding:      40px 5px 5px;
+  margin:       20px 0 0 0;
+  position:     relative;
+  border-color: #888;
+  border:       3px dashed #3A3A3A;
+  background:   #141212;
+  font-size:    16px;
+  text-align:   center;
+
+  .key-content {
+    font-size:  12px;
+    color:      #8ED72B;
+    max-height: 100%;
+    max-width:  100%;
+    overflow:   scroll;
+    text-align: left;
+    word-break: break-all;
+  }
+
+  .upload-stuff {
+    position: absolute;
+    top:      77px;
+    left:     0px;
+    width:    100%;
+  }
+
+  #modal-import {
+    display: none;
+  }
+
+
+
+}
+
+.drop-zone.filled {
+  .upload-stuff {
+    top:        0px;
+    background: #101010;
+    padding:    10px 0;
+  }
+
+}
+
+
+
+#modal-kp-manage #modal-import-json-dropzone {
+  height:           140px;
+  padding:          47px 9px 9px;
+  position:         relative;
+  background-color: #252A2E;
+  border-color:     #888;
+}
+
+#modal-kp-manage #modal-import-json-dropzone.dragover {
+  background  : #2E323A;
+  border-color: #148BE6;
+}
+
+#modal-kp-manage #modal-import-json-dropzone .upload-stuff {
+
+}
+
+#modal-kp-manage #modal-import-json-dropzone.filled .upload-stuff {
+
+}
+
+#modal-kp-manage #modal-import-json-dropzone .upload-stuff::selection {
+  background: transparent;
+}
+
+#modal-kp-manage .dragover * {
+  pointer-events: none;
+}
+
+#modal-kp-manage #modal-import-json-dropzone label {
+  padding-right: 0;
+}
+
+#modal-kp-manage #modal-import-json-dropzone label:hover {
+  text-decoration: underline;
+}
+
+#modal-kp-manage #modal-import-json-dropzone label::selection {
+  background: transparent;
+}

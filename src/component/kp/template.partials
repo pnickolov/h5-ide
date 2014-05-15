@@ -28,7 +28,7 @@
             </ul>
         </div>
         {{#unless isRunTime}}
-        <div class="manage-kp btn btn-primary" style="display:none;"><i class="icon-edit"></i>{{i18n "PROP_INSTANCE_MANAGE_KP"}}</div>
+        <div class="manage-kp btn btn-primary" style="display:none;">{{i18n "PROP_INSTANCE_MANAGE_KP"}}</div>
         {{/unless}}
     </div>
 </div>

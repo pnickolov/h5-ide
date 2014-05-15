@@ -31,7 +31,7 @@ define [ './component/kp/template_modal', 'backbone', 'jquery' ], ( template_mod
             if not data then return
 
             @__data = data
-            @$( '#modal-import-json-dropzone' ).addClass 'filled'
+            @$( '.drop-zone' ).addClass 'filled'
             @$( '.key-content' ).text data
             @trigger 'load', data
 
@@ -44,7 +44,7 @@ define [ './component/kp/template_modal', 'backbone', 'jquery' ], ( template_mod
             evt.stopPropagation()
             evt.preventDefault()
 
-            @$("#modal-import-json-dropzone").removeClass("dragover")
+            @$(".drop-zone").removeClass("dragover")
             @$("#import-json-error").html("")
 
             evt = evt.originalEvent

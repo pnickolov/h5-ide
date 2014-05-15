@@ -1,0 +1,15 @@
+/* Styles for Manage KP and Decrypt PW */
+.decrypt-action {
+  margin-top: 10px; }
+
+#do-kp-decrypt {
+  width: 160px; }
+
+#keypair-pwd {
+  width: 259px;
+  margin-left: 20px; }
+
+.change-pw-recommend {
+  font-size: 12px;
+  color: #ccc;
+  float: right; }

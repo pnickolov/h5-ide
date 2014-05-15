@@ -870,16 +870,15 @@ Following rule(s) will be deleted from its(their) security group:</div>
 </div>
 
 <!-- {{modalDecryptPassword}} -->
-<div style="width:855px">
+<div style="width:500px">
 	<div class="modal-header">
-		<h3 id='keypair-name'>Get Windows Password</h3>
+		<h3>Get Windows Password</h3>
 		<i class="modal-close">&times;</i>
 	</div>
 	<div class="modal-body">
 		<section class="password-hint">
-			To access this instance remotely (e.g. Remote Desktop Connection), you will need your Windows Administrator password. A default password was created when the instance was launched and is available encrypted in the system log.
-
-			<div>This instance was associated with key pair: {{name}}</div>
+			<p class="modal-text-major">This instance was associated with key pair: <span>{{name}}</span></p>
+			<p>To access this instance remotely (e.g. Remote Desktop Connection), you will need your Windows Administrator password. A default password was created when the instance was launched and is available encrypted in the system log.</p>
 		</section>
 		<section class="import-zone">
 			<div id='keypair-loading' class="loading-spinner"></div>
@@ -887,7 +886,7 @@ Following rule(s) will be deleted from its(their) security group:</div>
 		<section class="decrypt-action" style="display: none;">
 			<button class="btn btn-blue" id="do-kp-decrypt" disabled>Decrypt Password</button>
 			<input readonly class="input tooltip" data-tooltip="Click to select all" type="text" id="keypair-pwd" placeholder="Decripted password will appear here">
-			<span class="change-pw-recommend">Change Password Recommendation from AWS<i class="icon-info tooltip" data-tooltip="We recommend that you change your password to one that you will remember and know privately. Please note that passwords can persist through bundling phases and will not be retrievable through this tool. It is therefore important that you change your password to one that you will remember if you intend to bundle a new AMI from this instance."></i></span>
+			<div class="change-pw-recommend">Change Password Recommendation from AWS<i class="icon-info tooltip" data-tooltip="We recommend that you change your password to one that you will remember and know privately. Please note that passwords can persist through bundling phases and will not be retrievable through this tool. It is therefore important that you change your password to one that you will remember if you intend to bundle a new AMI from this instance."></i></div>
 		</section>
 		<section class="no-password" style="display: none;">
 			<p>

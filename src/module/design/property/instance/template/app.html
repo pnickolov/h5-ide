@@ -41,15 +41,12 @@
       {{else}}
       <dd>
         {{#if keyName}}
-          {{#if loginCmd}}
-          <a href="#" class="icon-download" id="property-app-keypair">{{keyName}}</a>
-          {{else}}
             {{#if windows}}
-              <a href="#" class="icon-download" id="property-app-keypair">{{keyName}}</a>
+                {{keyName}}
+                <button class="icon-download btn btn-blue" id="property-app-keypair">Get Windows Password</button>
             {{else}}
-              {{keyName}}
+                <a href="#" class="icon-download" id="property-app-keypair">{{keyName}}</a>
             {{/if}}
-          {{/if}}
         {{else}}
           No Key Pair
         {{/if}}

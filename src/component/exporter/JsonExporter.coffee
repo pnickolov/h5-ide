@@ -79,6 +79,6 @@ define ['./Download', 'i18n!nls/lang.js', "crypto"], ( download, lang )->
   {
     exportJson : exportJson
     importJson : importJson
-
+    download   : download
     genericExport : genericExport
   }

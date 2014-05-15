@@ -37,6 +37,7 @@ define [ "./SettingsDialogTpl", 'i18n!nls/lang.js', "ApiRequest", "backbone" ], 
           awsSecretKey : App.user.get("awsSecretKey")
 
           credRemoveTitle : sprintf lang.ide.SETTINGS_CRED_REMOVE_TIT, App.user.get("username")
+          credNeeded : !!(_.reduce _.map(MC.data.app_list, (el)-> el.length), ((m,n)->m+n), 0)
 
         modal SettingsTpl attributes
         @setElement $("#modal-box")

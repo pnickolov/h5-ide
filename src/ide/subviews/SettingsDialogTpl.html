@@ -73,7 +73,9 @@
       </ul>
 
       <div class="cred-btn-wrap clearfix">
+        {{#unless credNeeded}}
         <button id="CredSetupRemove" class="link-style">{{ i18n 'SETTINGS_LABEL_REMOVE_CREDENTIAL' }}</button>
+        {{/unless}}
         <button class="right link-style cred-setup-cancel">{{ i18n 'SETTINGS_LABEL_ACCOUNT_CANCEL' }}</button>
         <button id="CredSetupSubmit" class="btn btn-blue right">{{ i18n 'HEAD_BTN_SUBMIT' }}</button>
       </div>

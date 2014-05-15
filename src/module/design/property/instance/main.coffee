@@ -54,6 +54,9 @@ define [ "../base/main",
         setupApp : () ->
             me = this
 
+            @model.on "KEYPAIR_DOWNLOAD", ( success, data, data2 ) ->
+                me.view.updateKPModal 'download', success, data, data2
+
             @model.on "PASSWORD_STATE", ( data ) ->
                 me.view.updateKPModal 'check', data
 

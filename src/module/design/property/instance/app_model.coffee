@@ -4,13 +4,14 @@
 
 define [ '../base/model',
     'keypair_model',
+    'keypair_service'
     'instance_model',
     'instance_service'
     'constant',
     'i18n!nls/lang.js'
     'Design'
 
-], ( PropertyModel, keypair_model, instance_model, instance_service, constant, lang, Design ) ->
+], ( PropertyModel, keypair_model, keypair_service, instance_model, instance_service, constant, lang, Design ) ->
 
     AppInstanceModel = PropertyModel.extend {
 
@@ -68,6 +69,7 @@ define [ '../base/model',
                 console.warn "instance.app_model.init(): can not find InstanceModel"
 
 
+
             app_data = MC.data.resource_list[ Design.instance().region() ]
 
             if app_data[ instance_id ]
@@ -101,6 +103,8 @@ define [ '../base/model',
                 instance.app_view = if MC.canvas.getState() is 'appview' then true else false
 
                 this.set instance
+
+                this.resModel = myInstanceComponent
 
                 @setOsTypeAndLoginCmd instance_id
 
@@ -181,8 +185,11 @@ define [ '../base/model',
 
                 if action is 'check'
                     me.trigger 'PASSWORD_STATE', !!win_passwd
+                else if action is 'download'
+                    me.trigger 'KEYPAIR_DOWNLOAD', true, win_passwd, result.param[ 5 ]
                 else
                     me.trigger "PASSWORD_GOT", win_passwd
+
 
                 null
 
@@ -195,6 +202,27 @@ define [ '../base/model',
 
             handler = @genPasswordHandler if check then 'check'
             instance_service.GetPasswordData( null, username, session, Design.instance().region(), instance_id, key_data ).then handler
+
+            null
+
+        downloadKp: ( kpName ) ->
+            that = @
+            username = $.cookie "usercode"
+            session  = $.cookie "session_id"
+            region = Design.instance().region()
+
+            handler = @genPasswordHandler 'download'
+
+            keypair_service.download( null, username, session, region, kpName ).then ( res ) ->
+                if not res.is_error
+                    if that.get( 'osType' ) is 'windows'
+                        instance_id = that.get "instanceId"
+                        key_data = res.resolved_data
+                        instance_service.GetPasswordData( null, username, session, region, instance_id, key_data ).then handler
+                    else
+                        that.trigger 'KEYPAIR_DOWNLOAD', true, res.resolved_data
+                else
+                    that.trigger 'KEYPAIR_DOWNLOAD', false, res.resolved_data
 
             null
 

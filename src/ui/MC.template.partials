@@ -907,14 +907,36 @@ Following rule(s) will be deleted from its(their) security group:</div>
 		<i class="modal-close">&times;</i>
 	</div>
 	<div class="modal-body">
-		<section id="keypair-body-linux">
+		{{#if isOldKp}}
+			<div id='keypair-loading' class="loading-spinner"></div>
+		{{/if}}
+		<section id="keypair-body" {{#if isOldKp}}class="hide"{{/if}}>
+			{{#if isOldKp}}
+			<div class="keypair-download clearfix modal-control-group">
+				<p class="modal-text-major left">Key Pair data is ready</p>
+				<a href="#" class="btn btn-blue right" id="keypair-kp-download">Download</a>
+			</div>
+			{{else}}
 			<div class="keypair-download clearfix modal-control-group">
 				<p class="modal-text-major">This instance was associated with key pair: {{name}}</p>
 			</div>
+			{{/if}}
+			{{#unless windows}}
 			<div id="keypair-remote" class="modal-control-group clearfix">
 				<label for="keypair-cmd">Remote Access</label>
 				<input class="input" id="keypair-cmd" type="text" readonly="readonly" value="{{loginCmd}}">
 			</div>
+			{{else}}
+			<div class="modal-control-group clearfix">
+				<label style="width:100%;">Windows Login Password</label>
+				<div id="keypair-login">
+					<input type="password" readonly="readonly" id="keypair-pwd-old" class="input">
+					<a href="#" class="btn btn-silver kp-copy-btn" id="keypair-show">Show password</a>
+				</div>
+				<div id="keypair-no-pwd"></div>
+			</div>
+			{{/unless}}
+
 		</section>
 	</div>
 

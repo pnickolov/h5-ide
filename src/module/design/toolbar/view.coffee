@@ -9,13 +9,12 @@ define [ 'MC', 'event',
          './app_template',
          './appview_template',
          "component/exporter/JsonExporter",
-         "component/exporter/Download",
          'constant'
          'kp'
          'backbone', 'jquery', 'handlebars',
          'UI.selectbox', 'UI.notification',
          "UI.tabbar"
-], ( MC, ide_event, Design, lang, stack_tmpl, app_tmpl, appview_tmpl, JsonExporter, download, constant, kp ) ->
+], ( MC, ide_event, Design, lang, stack_tmpl, app_tmpl, appview_tmpl, JsonExporter, constant, kp ) ->
 
     ToolbarView = Backbone.View.extend {
 
@@ -456,7 +455,7 @@ define [ 'MC', 'event',
                     #download( blob, MC.canvas_data.name + ".png" )
 
                     # new design flow
-                    download( blob, name + ".png" )
+                    JsonExporter.download( blob, name + ".png" )
 
             $( '.modal-body' ).html( "<img style='max-height:100%;display:inline-block' src='#{base64_image}' />" ).css({
                 "background":"none"

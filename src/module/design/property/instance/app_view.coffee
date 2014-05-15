@@ -2,11 +2,28 @@
 #  View(UI logic) for design/property/instance(app)
 #############################
 
-define [ '../base/view', './template/app', 'i18n!nls/lang.js', 'instance_model', 'kp_upload' ], ( PropertyView, template, lang, instance_model, kp_upload )->
+define [ '../base/view', './template/app', 'i18n!nls/lang.js', 'instance_model', 'kp_upload', 'Design', 'component/exporter/JsonExporter' ], ( PropertyView, template, lang, instance_model, kp_upload, Design, JsonExporter )->
+
+    download = JsonExporter.download
+
+    genDownload = ( name, str ) ->
+        ->
+            if $("body").hasClass("safari")
+              blob = null
+            else
+              blob = new Blob [str]
+
+            if not blob
+              return {
+                data : "data://text/plain;,#{str}"
+                name : name
+              }
+
+            download( blob, name )
+            null
 
     InstanceAppView = PropertyView.extend {
         __kpUpload: null
-        __kpModal: null
 
         events   :
             "click #property-app-keypair" : "keyPairClick"
@@ -22,14 +39,38 @@ define [ '../base/view', './template/app', 'i18n!nls/lang.js', 'instance_model',
             @model.attributes.name
 
         keyPairClick: ( event ) ->
-            if @model.get( 'osType' ) is 'windows'
-                @decryptPassword event
-            else
-                @loginPrompt event
+            @proccessKpStuff()
 
-        loginPrompt: ( event ) ->
-            keypair = $( event.currentTarget ).html()
-            modal MC.template.modalDownloadKP name: keypair, loginCmd: @model.get 'loginCmd'
+        proccessKpStuff: ( notOld ) ->
+            kpName = @model.get 'keyName'
+            isOldKp = false
+
+            if not notOld
+                kp = @model.resModel.connectionTargets( "KeypairUsage" )[0]
+                isOldDefaultKp = kp and kp.isDefault() and kp.get('appId') is "DefaultKP---#{Design.instance().get('id')}"
+                isOldOtherKp = kp and not kp.isDefault()
+
+                isOldKp = isOldDefaultKp or isOldOtherKp
+
+                if isOldKp
+                    @model.downloadKp kpName
+
+            if not isOldKp and @model.get( 'osType' ) is 'windows'
+                @decryptPassword isOldKp
+            else
+                @loginPrompt isOldKp
+
+
+
+        loginPrompt: ( isOldKp ) ->
+            keypair = @model.get 'keyName'
+
+            modal MC.template.modalDownloadKP {
+                name    : keypair
+                loginCmd: @model.get 'loginCmd'
+                isOldKp : isOldKp
+                windows : @model.get( 'osType' ) is 'windows'
+            }
 
             me = this
             $( '#keypair-cmd' ).off( 'click' ).on 'click', ( event )->
@@ -39,15 +80,14 @@ define [ '../base/view', './template/app', 'i18n!nls/lang.js', 'instance_model',
 
             false
 
-        decryptPassword : ( event ) ->
+        decryptPassword : ( isOldKp ) ->
             me = @
 
-            keypair = $( event.currentTarget ).html()
-            @model.getPasswordData null, 'check'
-            @__kpModal = MC.template.modalDecryptPassword { name  : keypair }
+            keypair = @model.get 'keyName'
+            if not isOldKp
+                @model.getPasswordData null, 'check'
 
-            modal @__kpModal
-
+            modal MC.template.modalDecryptPassword { name  : keypair, isOldKp: isOldKp }
 
             $('#modal-wrap').on "closed", ()->
                 me.kpModalClosed = true
@@ -61,7 +101,7 @@ define [ '../base/view', './template/app', 'i18n!nls/lang.js', 'instance_model',
 
             false
 
-        updateKPModal : ( action, data ) ->
+        updateKPModal : ( action, data, data2, data3 ) ->
             if this.kpModalClosed
                 return
 
@@ -90,6 +130,19 @@ define [ '../base/view', './template/app', 'i18n!nls/lang.js', 'instance_model',
 
                 $( '#do-kp-decrypt' ).text 'Decrypted'
                 $( '.change-pw-recommend' ).show()
+
+            else if action is 'download'
+                success = data
+                pwd = data2
+                kp = data3 or data2
+
+                $( '#keypair-kp-download' ).off('click').on 'click', genDownload "#{@model.get('keyName')}.pem", kp
+                $('#keypair-loading').hide()
+                $('#keypair-body').show()
+
+                if @model.get( 'osType' ) is 'windows'
+                    $('#keypair-pwd-old').val(pwd).off('click').on 'click', () -> this.select()
+                    $('#keypair-show').one 'click', () -> $('#keypair-pwd-old').prop 'type', 'input'
 
 
 

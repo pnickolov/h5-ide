@@ -26,17 +26,20 @@
 
 <div class="scroll-content">
 	<!-- Global Map -->
-	<div id="global-region-map-wrap">
-		<div id="global-region-map-content">
-			<ul id="global-region-spot">
-				<!-- will be filled -->
-			</ul>
-
-			<div id="global-region-status-widget">
-				<!-- will be filled -->
-			</div>
+	<div id="global-region-map-wrap"> <div id="global-region-map-content" class="clearfix">
+		<ul id="global-region-spot" class="pos-r"></ul>
+		<div id="global-region-status-widget">
+			<header class="clearfix">
+			  <div class="global-region-status-tab">
+			    <span>0</span><h5>{{i18n "DASH_LBL_APP"}}</h5>
+			  </div>
+			  <div class="global-region-status-tab on stack">
+		      <span>0</span><h5>{{i18n "DASH_LBL_STACK"}}</h5>
+			  </div>
+			</header>
+			<section id="global-region-recent-list"></section>
 		</div>
-	</div>
+	</div> </div>
 	<!-- Global Map -->
 
 	<div id="global-region-tabbar-wrap">

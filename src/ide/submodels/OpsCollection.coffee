@@ -20,6 +20,11 @@ define [ "./OpsModel", "constant", "backbone" ], ( OpsModel, constant )->
       @on "change:updateTime", @sort, @
       return
 
+    # override set() to trigger an change event.
+    set : ()->
+      Backbone.Collection.prototype.set.apply this, arguments
+      @trigger "change"
+
     # Returns a new name that can be used in a model. The name is garuntee to be identical.
     getNewName : ( possibleName )->
       # Collect all the resources name
@@ -63,4 +68,20 @@ define [ "./OpsModel", "constant", "backbone" ], ( OpsModel, constant )->
         }
 
       regions
+
+    # Returns an array containing models that are updated in the last 30 days.
+    filterRecent : ( toJSON = false )->
+      now = Math.round( +(new Date()) / 1000 )
+      filters = []
+      for m in @models
+        time = m.get("updateTime")
+        if now - time >= 2592000 then break
+
+        if toJSON
+          m = m.toJSON()
+          m.formatedTime = MC.intervalDate( time )
+
+        filters.push m
+
+      filters
   }

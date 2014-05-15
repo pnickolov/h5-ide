@@ -34,7 +34,6 @@ define [ "component/exporter/Thumbnail", 'jquery', 'event', 'MC', 'base_main', '
             return if !view
 
             view.model = model
-            view.render()
 
             #push DASHBOARD_COMPLETE
             ide_event.trigger ide_event.DASHBOARD_COMPLETE

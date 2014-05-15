@@ -1,25 +1,37 @@
-<!-- {{overview_result}} -->
-{{#each result_list.region_infos }}
-<li id="{{ region_name }}">
-    <i class="icon-map-spot"></i>
-    <a href="javascript:void(0)" title="{{ region_city }} Dashboard">
-        <div class="global-region-location-info">
-            <h5>{{ region_city }}</h5>
-            <div class="global-region-location-data clearfix">
-                <div class="global-region-location-data-item">
-                    <i class="global-region-location-data-icon global-region-location-app"></i>
-                    <span>{{app}}</span>
-                </div>
-
-                <div class="global-region-location-data-item">
-                    <i class="global-region-location-data-icon global-region-location-stack"></i>
-                    <span>{{ stack }}</span>
-                </div>
-            </div>
-        </div>
-    </a>
+<!-- {{globalMap}} -->
+{{#each this}}
+<li id="{{region}}" class="global-map-item" title="{{regionName}} Dashboard">
+  <h5>{{regionName}}</h5>
+  <span class="global-region-location">{{app}}</span>
+  <span class="global-region-location stack">{{stack}}</span>
 </li>
 {{/each}}
+
+<!-- {{recent}} -->
+<section class="hide">
+{{#if apps.length}}
+  <h4>{{i18n "DASH_LBL_RECENT_LAUNCHED_STACK"}}</h4>
+  <ul>{{#each apps}}<li class="recent-list-item" data-id="{{id}}">
+    <h5>{{name}} {{#if usage}}<i class="right icon-app-type-{{usage}}"></i>{{/if}}</h5>
+    <span>{{regionName}}</span>
+    <span class="recent-time">{{formatedTime}}</span>
+  </li>{{/each}}</ul>
+{{else}}
+  <span class="empty-text">No recently launched app in 30 days</span>
+{{/if}}
+</section>
+<section>
+{{#if stacks.length}}
+  <h4>{{i18n "DASH_LBL_RECENT_EDITED_STACK"}}</h4>
+  <ul>{{#each stacks}}<li class="recent-list-item" data-id="{{id}}">
+    <h5>{{name}}</h5>
+    <span>{{regionName}}</span>
+    <span class="recent-time">{{formatedTime}}</span>
+  </li>{{/each}}</ul>
+{{else}}
+  <span class="empty-text">No recently edited stack in 30 days</span>
+{{/if}}
+</section>
 
 <!-- {{global_list}} -->
 <div id="global-region-resource-data-wrap">
@@ -885,92 +897,6 @@
             </tbody>
         </table>
     </div>
-</div>
-
-<!-- {{recent}} -->
-<div id="global-region-status-tab-wrap" class="clearfix">
-    <a href="javascript:void(0)" id="global-region-status-tab-app" class="global-region-status-tab-item">
-        <h5>{{i18n "DASH_LBL_APP"}}</h5>
-        <div id="global-region-status-app" class="global-region-status-count-wrap">
-            <i class="global-region-status-icon global-region-status-icon-app"></i>
-            <span id="global-region-status-app-count" class="global-region-status-count">{{result_list.total_app}}</span>
-        </div>
-    </a>
-
-    <a href="javascript:void(0)" id="global-region-status-tab-stack" class="global-region-status-tab-item on">
-        <h5>{{i18n "DASH_LBL_STACK"}}</h5>
-        <div id="global-region-status-stack" class="global-region-status-count-wrap">
-            <i class="global-region-status-icon global-region-status-icon-stack"></i>
-            <span id="global-region-status-statck-count" class="global-region-status-count">{{result_list.total_stack}}</span>
-        </div>
-    </a>
-</div>
-
-<div id="global-region-status-content-wrap">
-
-    <div id="global-region-status-app-content" class="global-region-status-content">
-        {{#if recent_launched_apps}}
-            <div class="global-region-status-body">
-                <div class="global-region-status-list">
-                    <div class="global-region-status-header">
-                        <h4>{{i18n "DASH_LBL_RECENT_LAUNCHED_STACK"}}</h4>
-                    </div>
-                    <ul>
-                        {{#each recent_launched_apps }}
-                            <li>
-                                <a href="javascript:void(0)" id={{id}} data-option='{"name": "{{name}}", "region": "{{region}}"}'>
-                                    <h5>{{name}} {{#if usage}}<i class="icon-app-type-{{usage}}"></i>{{/if}}</h5>
-                                    <div class="global-region-status-info">
-                                        <span class="global-region-status-info-location">{{region_label}}</span>
-                                        <time>{{interval_date}}</time>
-                                    </div>
-                                </a>
-                            </li>
-                        {{/each}}
-                    </ul>
-                </div>
-            </div>
-        {{else}}
-            <div class="global-region-status-body">
-                <div class="global-region-status-empty">
-                    <span>No recently launched app in 30 days</span>
-                </div>
-            </div>
-        {{/if}}
-    </div>
-
-    <div id="global-region-status-stack-content" class="global-region-status-content">
-        {{#if recent_edited_stacks}}
-            <div class="global-region-status-body">
-                <div class="global-region-status-list">
-                    <div class="global-region-status-header">
-                        <h4>{{i18n "DASH_LBL_RECENT_EDITED_STACK"}}</h4>
-                    </div>
-                    <ul>
-                        {{#each recent_edited_stacks }}
-                            <li>
-                                <a href="javascript:void(0)" id={{id}} data-option='{"name": "{{name}}", "region": "{{region}}"}'>
-                                    <h5>{{name}}</h5>
-                                    <div class="global-region-status-info">
-                                        <span class="global-region-status-info-location">{{region_label}}</span>
-                                        <time>{{interval_date}}</time>
-                                    </div>
-                                </a>
-                            </li>
-                        {{/each}}
-                    </ul>
-                </div>
-            </div>
-        {{else}}
-            <div class="global-region-status-body">
-                <div class="global-region-status-empty">
-                    <span>No recently edited stack in 30 days</span>
-                </div>
-            </div>
-        {{/if}}
-    </div>
-
-
 </div>
 
 <!-- {{loading}} -->

@@ -69,11 +69,12 @@ define [ 'event', 'i18n!nls/lang.js',
         overview                : overview_tmpl
 
         events          :
-            'click #global-region-spot > li'            : 'gotoRegion'
+            'click .global-map-item'  : 'gotoRegion'
+            'click .recent-list-item' : 'openItem'
+
             'click #global-region-create-stack-list li' : 'createStack'
             'click #btn-create-stack'                   : 'createStack'
-            'click .global-region-status-content li a'  : 'openItem'
-            'click .global-region-status-tab-item'      : 'switchRecent'
+            'click .global-region-status-tab'           : 'switchRecent'
             'click #region-switch-list li'              : 'switchRegion'
             'click #region-resource-tab a'              : 'switchAppStack'
             'click #region-aws-resource-tab a'          : 'switchResource'
@@ -102,6 +103,65 @@ define [ 'event', 'i18n!nls/lang.js',
             $( document.body ).on 'click', '#dashboard-global',      @gotoRegion
             # work for dashboard and toolbar
             $( document.body ).on 'keyup', '#confirm-app-name', @confirmAppName
+
+            @render()
+
+            # Watch appList/stackList changes.
+            @listenTo App.model.stackList(), "change", ()->
+                console.info "Dashboard Updated due to changes in stack list."
+                @renderMapResult()
+                @renderRecent()
+                return
+
+            @listenTo App.model.appList(),   "change", ()->
+                @renderMapResult()
+                @renderRecent()
+                return
+
+        render : () ->
+            region_names = _.map constant.REGION_LABEL, ( name, id ) ->
+                long:
+                    id: id, name: name
+                short:
+                    id: id, name: constant.REGION_SHORT_LABEL[ id ]
+
+            data =
+                region_names: region_names
+
+            $( this.el ).html @overview data
+
+            @renderMapResult()
+            @renderRecent()
+            null
+
+        renderMapResult : ->
+            regionsMap = {}
+            for r in App.model.stackList().groupByRegion( false, true )
+                regionsMap[ r.region ] = r
+                r.stack = r.data.length
+                r.app   = 0
+            for r in App.model.appList().groupByRegion( false, true )
+                if not regionsMap[ r.region ]
+                    regionsMap[ r.region ] = r
+                    r.stack = 0
+                regionsMap[ r.region ].app = r.data.length
+
+            $("#global-region-spot").html template_data.globalMap regionsMap
+            null
+
+        renderRecent : ->
+            stacks = App.model.stackList().filterRecent(true)
+            apps   = App.model.appList().filterRecent(true)
+
+            if stacks.length > 5 then stacks.length = 5
+            if apps.length > 5   then apps.length = 5
+
+            $tabs = $("#global-region-status-widget").find(".global-region-status-tab")
+            $tabs.eq(0).children("span").text apps.length
+            $tabs.eq(1).children("span").text stacks.length
+
+            $( '#global-region-recent-list' ).html template_data.recent { stacks:stacks, apps:apps }
+            null
 
         confirmAppName: ( event ) ->
             confirm = $( @ ).data 'confirm'
@@ -163,7 +223,10 @@ define [ 'event', 'i18n!nls/lang.js',
                 @renderRegionAppStack()
 
         switchRecent: ( event ) ->
-            Helper.switchTab event, '#global-region-status-tab-wrap a', '#global-region-status-content-wrap > div'
+            $tgt = $(event.currentTarget)
+            if $tgt.hasClass("on") then return
+            $tgt.addClass("on").siblings().removeClass("on")
+            $("#global-region-recent-list").children().hide().eq( $tgt.index() ).show()
 
         switchAppStack: ( event ) ->
             Helper.switchTab event, '#region-resource-tab a', '.region-resource-list'
@@ -242,10 +305,6 @@ define [ 'event', 'i18n!nls/lang.js',
 
             @$el.find("#region-aws-resource-data").html template @model.get 'cur_region_resource'
 
-            null
-
-        renderRecent: ->
-            $( this.el ).find( '#global-region-status-widget' ).html template_data.recent @model.attributes
             null
 
         renderLoadingFaild: ->
@@ -336,44 +395,18 @@ define [ 'event', 'i18n!nls/lang.js',
         ############################################################################################
 
 
-        renderMapResult : ->
-            console.log 'dashboard overview-result render', @model.attributes
-            cur_tmpl = template_data.overview_result @model.attributes
-            $( this.el ).find('#global-region-spot').html cur_tmpl
-
-            null
-
-        render : () ->
-            console.log 'dashboard overview render'
-            console.log constant.REGION_LABEL
-            region_names = _.map constant.REGION_LABEL, ( name, id ) ->
-                long:
-                    id: id, name: name
-                short:
-                    id: id, name: constant.REGION_SHORT_LABEL[ id ]
-
-            data =
-                region_names: region_names
-
-            console.log data
-
-            $( this.el ).html @overview data
-            null
-
         openItem : (event) ->
-            console.log 'click item'
+            id = $(event.currentTarget).attr("data-id")
+            model = App.model.stackList().get(id)
+            if model
+                evt = "OPEN_STACK"
+            else
+                model = App.model.appList().get(id)
+                if not model then return
+                evt = "OPEN_APP"
 
-            me = this
-            id = event.currentTarget.id
-
-            if id.indexOf('app-') == 0
-                #ide_event.trigger ide_event.OPEN_APP_TAB, $("#"+id).data('option').name, $("#"+id).data('option').region, id
-                ide_event.trigger ide_event.OPEN_DESIGN_TAB, 'OPEN_APP', $("#"+id).data('option').name, $("#"+id).data('option').region, id
-            else if id.indexOf('stack-') == 0
-                #ide_event.trigger ide_event.OPEN_STACK_TAB, $("#"+id).data('option').name, $("#"+id).data('option').region, id
-                ide_event.trigger ide_event.OPEN_DESIGN_TAB, 'OPEN_STACK', $("#"+id).data('option').name, $("#"+id).data('option').region, id
-
-            null
+            ide_event.trigger ide_event.OPEN_DESIGN_TAB, evt, model.get("name"), model.get("region"), id
+            return
 
         clickRegionResourceThumbnail : (event) ->
             console.log 'click app/stack thumbnail'

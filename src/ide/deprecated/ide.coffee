@@ -4,10 +4,10 @@
 
 define [ 'MC', 'event', 'handlebars'
 		 'i18n!nls/lang.js',
-		 './view', 'canvas_layout', 'navigation', 'tabbar', 'dashboard', 'design_module', 'process', 'constant',
+		 './view', 'canvas_layout', 'tabbar', 'dashboard', 'design_module', 'process', 'constant',
 		 'base_model',
 		 'common_handle', 'validation', 'aws_handle'
-], ( MC, ide_event, Handlebars, lang, view, canvas_layout, navigation, tabbar, dashboard, design, process, constant, base_model, common_handle, validation ) ->
+], ( MC, ide_event, Handlebars, lang, view, canvas_layout, tabbar, dashboard, design, process, constant, base_model, common_handle, validation ) ->
 
 	initialize : () ->
 
@@ -125,7 +125,7 @@ define [ 'MC', 'event', 'handlebars'
 			console.log 'IDE_AVAILABLE'
 			MC.data.ide_available_count = MC.data.ide_available_count + 1
 			console.log '----------- ide:SWITCH_MAIN -----------'
-			ide_event.trigger ide_event.SWITCH_MAIN if MC.data.ide_available_count is 4
+			ide_event.trigger ide_event.SWITCH_MAIN if MC.data.ide_available_count is 3
 
 		#############################
 		#  load module
@@ -141,11 +141,6 @@ define [ 'MC', 'event', 'handlebars'
 		#listen DASHBOARD_COMPLETE
 		ide_event.onListen ide_event.DASHBOARD_COMPLETE, () ->
 			console.log 'DASHBOARD_COMPLETE'
-			navigation.loadModule()
-
-		#listen NAVIGATION_COMPLETE
-		ide_event.onListen ide_event.NAVIGATION_COMPLETE, () ->
-			console.log 'NAVIGATION_COMPLETE'
 			#load design
 			design.loadModule()
 			#temp

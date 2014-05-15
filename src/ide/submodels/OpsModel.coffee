@@ -39,7 +39,8 @@ define ["ApiRequest", "constant", "backbone"], ( ApiRequest, constant )->
     # If you want to access the JSON of the stack/app, use getJsonData() instead.
     toJSON : ()->
       o = Backbone.Model.prototype.toJSON.call( this )
-      o.stateDesc = OpsModelStateDesc[ o.state ]
+      o.stateDesc  = OpsModelStateDesc[ o.state ]
+      o.regionName = constant.REGION_SHORT_LABEL[ o.region ]
       o
 
     # Return true if the stack is saved in the server.

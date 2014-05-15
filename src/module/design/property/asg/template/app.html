@@ -80,6 +80,7 @@
           <label for="property-asg-elb"></label>
         </div>
         <label for="property-asg-elb">ELB</label>
+        <p id="property-asg-elb-warn" class="hide property-info" {{#unless isEC2HealthCheck}} style="display: block"{{/unless}}>{{i18n 'PROPERTY_ASG_ELB_WARN' }}</p>
       </div>
     </section>
 

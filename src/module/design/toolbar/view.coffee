@@ -140,10 +140,10 @@ define [ 'MC', 'event',
                 $( ".runtime-error" ).hide()
 
         defaultKpIsSet: ->
-            KpModel = Design.modelClassForType( constant.RESTYPE.KP )
-            defaultKp = KpModel.getDefaultKP()
+            #KpModel = Design.modelClassForType( constant.RESTYPE.KP )
+            #defaultKp = KpModel.getDefaultKP()
 
-            if not defaultKp.isSet() or $('#kp-list .item.selected').length is 0
+            if $('#kp-list .item.selected').length is 0
                 @showErr 'kp', 'Specify a key pair as $DefaultKeyPair for this app.'
                 return false
 
@@ -734,6 +734,12 @@ define [ 'MC', 'event',
 
         appUpdating : ( event ) ->
             console.log 'appUpdating'
+            me = event.data
+            # 0. check whether defaultKp is set
+            if not me.defaultKpIsSet()
+                return false
+
+
 
             # 1. event.data.trigger 'xxxxx'
 

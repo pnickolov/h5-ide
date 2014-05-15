@@ -347,7 +347,10 @@ define [ './template', './template_modal', 'kp_upload', 'backbone', 'jquery', 'c
         setKey: ( event, name, data ) ->
             if @__mode is 'runtime'
                 KpModel = Design.modelClassForType( constant.RESTYPE.KP )
-                KpModel.setDefaultKP name, data.fingerprint
+                if name is '@no'
+                    KpModel.setDefaultKP '', ''
+                else
+                    KpModel.setDefaultKP name, data.fingerprint
             else
                 if name is '@default'
                     @model.setKey '', true

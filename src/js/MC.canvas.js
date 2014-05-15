@@ -3439,7 +3439,7 @@ MC.canvas.event.siderbarDrag = {
 		// Change AMI event
 		var elem = document.elementFromPoint(event.pageX, event.pageY);
 
-		if (elem.id === 'changeAmiDropZone' || $(elem).parents('#changeAmiDropZone').length > 0)
+		if ( elem && (elem.id === 'changeAmiDropZone' || $(elem).parents('#changeAmiDropZone').length > 0))
 		{
 			$("#changeAmiDropZone")
 				.removeClass("hover")

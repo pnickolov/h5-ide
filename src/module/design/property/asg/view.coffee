@@ -457,9 +457,12 @@ define [ '../base/view',
 
         setHealthyCheckELBType :( event ) ->
             @model.setHealthCheckType 'ELB'
+            $("#property-asg-elb-warn").toggle( $("#property-asg-elb").is(":checked") )
 
         setHealthyCheckEC2Type :( event ) ->
             @model.setHealthCheckType 'EC2'
+            $("#property-asg-elb-warn").toggle( $("#property-asg-elb").is(":checked") )
+
 
     }
 

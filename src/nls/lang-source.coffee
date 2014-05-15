@@ -3378,8 +3378,8 @@ VisualOps API. You cannot UNDO this action.'
       zh: "You can design stack in the demo mode. Yet, with following drawbacks:"
 
     WELCOME_SKIP_MSG:
-      en: "- The demo mode may not reflect the real condition of resources available for your account.<br /> - If you want to provide credentials later, design previously created in demo mode may not work due to resource inconsistency."
-      zh: "- The demo mode may not reflect the real condition of resources available for your account.<br /> - If you want to provide credentials later, design previously created in demo mode may not work due to resource inconsistency."
+      en: "<ul><li>The demo mode may not reflect the real condition of resources available for your account.</li> <li>If you want to provide credentials later, design previously created in demo mode may not work due to resource inconsistency.</li>"
+      zh: "<ul><li>The demo mode may not reflect the real condition of resources available for your account.</li> <li>If you want to provide credentials later, design previously created in demo mode may not work due to resource inconsistency.</li>"
 
     WELCOME_SKIP_MSG_EXTRA:
       en: "You can provide AWS Credentials later from Settings in the top-right drop down."

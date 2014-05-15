@@ -107,7 +107,7 @@
   padding: 15px;
   background-color: #111;
   border-radius: 4px;
-  color: #55626e;
+  color: #ec3c38;
   margin-bottom: 20px; }
 
 #CredSetupWrap .icon-label {
@@ -137,17 +137,26 @@
   padding: 0; }
 
 #WelcomeSettings {
-  width: 500px; }
+  width: 600px; }
   #WelcomeSettings > header {
-    background: #111;
-    padding: 10px 20px; }
+    background: #180622;
+    padding: 40px 20px;
+    text-align: center; }
+    #WelcomeSettings > header h2 {
+      color: #eee;
+      font-size: 20px; }
+      #WelcomeSettings > header h2 span {
+        word-break: break-all;
+        opacity: .8; }
+    #WelcomeSettings > header p {
+      color: #9F62D1; }
   #WelcomeSettings > #CredSetupWrap {
-    padding: 20px 30px; }
+    padding: 20px 80px; }
   #WelcomeSettings .cred-btn-wrap {
     margin-top: 10px; }
 
 #WelcomeDialog {
-  width: 500px;
+  width: 600px;
   min-height: 200px; }
   #WelcomeDialog .link-style {
     color: #148BE6;
@@ -157,7 +166,68 @@
 
 #WelcomeSkipWarning, #WelcomeDoneWrap {
   width: 430px;
-  padding: 20px 30px; }
+  padding: 20px 80px;
+  color: #ccc; }
+
+#WelcomeSkipWarning h3 {
+  font-size: 18px;
+  padding: 10px 0;
+  color: #eee;
+  border-bottom: 1px solid #000;
+  margin-bottom: 20px; }
+#WelcomeSkipWarning li {
+  list-style-type: circle;
+  margin-left: 20px;
+  margin-bottom: 5px;
+  color: #ffcb50; }
+  #WelcomeSkipWarning li:last-child {
+    margin-bottom: 0; }
+
+#WelcomeDoneWrap > p {
+  font-size: 16px;
+  line-height: 24px;
+  color: #eee;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #000;
+  margin-bottom: 20px; }
+#WelcomeDoneWrap > p:before {
+  content: "\F12D";
+  font: 24px/1em "MCIcon";
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+  margin-right: 10px;
+  color: #17c249; }
+#WelcomeDoneWrap h3 {
+  font-size: 18px;
+  padding: 10px 0;
+  color: #eee;
+  margin-bottom: 10px; }
+#WelcomeDoneWrap li {
+  list-style-type: circle;
+  margin-left: 20px;
+  margin-bottom: 5px; }
+  #WelcomeDoneWrap li:last-child {
+    margin-bottom: 0; }
+#WelcomeDoneWrap a {
+  color: #148BE6; }
+#WelcomeDoneWrap a:hover {
+  text-decoration: underline; }
+
+#WelcomeCredUpdate {
+  margin: 0 auto;
+  width: 400px;
+  position: relative;
+  height: 200px; }
+  #WelcomeCredUpdate p {
+    top: 50%;
+    position: absolute;
+    margin-top: -20px;
+    color: #ccc; }
+  #WelcomeCredUpdate .loading-spinner {
+    position: absolute;
+    top: 50%;
+    margin-top: -30px;
+    right: 40px; }
 
 .token-table {
   position: relative;
@@ -207,3 +277,6 @@
   .token-table .tokenControl .tooltip:before {
     cursor: pointer;
     color: #34A3F8; }
+
+.cred-btn-wrap {
+  margin-top: 20px; }

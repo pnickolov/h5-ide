@@ -129,11 +129,12 @@
 }
 
 .cred-setup-msg {
-  padding          : 15px;
-  background-color : #111;
-  border-radius    : 4px;
-  color            : #55626e;
-  margin-bottom    : 20px;
+  padding:          15px;
+  background-color: #111;
+  border-radius:    4px;
+  // color:         #55626e;
+  color:            #ec3c38;
+  margin-bottom:    20px;
 }
 
 #CredSetupWrap {
@@ -170,16 +171,36 @@
   padding   : 0;
 }
 
+$welcome-dialog-width: 600px;
+
 #WelcomeSettings {
-  width : 500px;
+  width : $welcome-dialog-width;
 
   > header {
-    background : #111;
-    padding : 10px 20px;
+    background: #180622;
+    padding:    40px 20px;
+    text-align: center;
+    
+    h2 {
+      color:  #eee;
+      font-size: 20px;
+
+      span {
+        word-break: break-all;
+        // font-style: italic;
+        opacity:    .8;
+      }
+
+    }
+
+    p {
+      color: #9F62D1;
+    }
+
   }
 
   > #CredSetupWrap {
-    padding : 20px 30px;
+    padding : 20px 80px;
   }
 
   .cred-btn-wrap {
@@ -188,7 +209,7 @@
 }
 
 #WelcomeDialog {
-  width      : 500px;
+  width      : $welcome-dialog-width;
   min-height : 200px;
 
   .link-style {
@@ -200,8 +221,98 @@
 }
 
 #WelcomeSkipWarning, #WelcomeDoneWrap {
-  width : 430px;
-  padding : 20px 30px;
+  width:   $welcome-dialog-width - 170px;
+  padding: 20px 80px;
+  color:   #ccc;
+}
+
+#WelcomeSkipWarning {
+
+    h3 {
+      font-size:     18px;
+      padding:       10px 0;
+      color:         #eee;
+      border-bottom: 1px solid #000;
+      margin-bottom: 20px;
+    }
+
+    li {
+      list-style-type: circle;
+      margin-left:     20px;
+      margin-bottom:   5px;
+      color:           #ffcb50;
+
+      &:last-child {
+        margin-bottom: 0;
+    }
+  }
+}
+
+#WelcomeDoneWrap {
+  > p {
+    font-size:      16px;
+    line-height:    24px;
+    color:          #eee;
+    padding-bottom: 20px;
+    border-bottom:  1px solid #000;
+    margin-bottom:  20px;
+  }
+
+  > p:before {
+    content:                "\F12D";
+    font:                   24px/1em "MCIcon";
+    font-weight:            normal;
+    -webkit-font-smoothing: antialiased;
+
+    margin-right: 10px;
+    color:        #17c249;
+  }
+
+  h3 {
+    font-size:     18px;
+    padding:       10px 0;
+    color:         #eee;
+    margin-bottom: 10px;
+  }
+
+  li {
+    list-style-type: circle;
+    margin-left:     20px;
+    margin-bottom:   5px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  a {
+    color: #148BE6;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+}
+
+#WelcomeCredUpdate {
+  margin:   0 auto;
+  width:    400px;
+  position: relative;
+  height: 200px;
+
+  p {
+    top:        50%;
+    position:   absolute;
+    margin-top: -20px;
+    color:      #ccc;
+  }
+
+  .loading-spinner {
+    position:   absolute;
+    top:        50%;
+    margin-top: -30px;
+    right:      40px;
+  }
 }
 
 .token-table {
@@ -273,4 +384,8 @@
     cursor : pointer;
     color  : #34A3F8;
   }
+}
+
+.cred-btn-wrap {
+  margin-top: 20px;
 }

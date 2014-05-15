@@ -3,7 +3,7 @@ define [ 'constant', 'backbone', 'underscore', 'MC', 'keypair_service', 'Design'
     request = ( api, name, data ) ->
             username = $.cookie "usercode"
             session  = $.cookie "session_id"
-            region = 'us-east-1' #Design.instance().region()
+            region = Design.instance().region()
 
             args = [ null, username, session, region ]
             if arguments.length > 1

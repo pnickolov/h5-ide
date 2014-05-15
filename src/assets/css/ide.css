@@ -3825,7 +3825,8 @@ a.sidebar-hider:before {
 }
 
 #kp-runtime-placeholder .keypair-select.open .dropdown {
-	top: 32px;
+	top:            32px;
+	padding-bottom: 0;
 }
 
 #kp-runtime-placeholder .selection {

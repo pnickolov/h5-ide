@@ -11,7 +11,7 @@
                 <button class="icon-new-stack btn btn-blue" id="create-kp">Create Key Pair</button>
                 <div class="btn-group">
                     <button class="icon-import tooltip" id="kp-import" data-tooltip=""></button>
-                    <button class="icon-del tooltip" id="kp-delete" data-tooltip=""></button>
+                    <button class="icon-del tooltip" id="kp-delete" data-tooltip="" disabled></button>
                     <button class="icon-refresh tooltip" id="kp-refresh" data-tooltip=""></button>
                 </div>
             </div>

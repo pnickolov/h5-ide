@@ -280,21 +280,29 @@ define [ './template', './template_modal', 'kp_upload', 'backbone', 'jquery', 'c
             @switchAction 'ready'
 
         checkOne: ( event ) ->
-            if event.currentTarget.id isnt 'kp-select-all'
-                cbAll = @$ '#kp-select-all'
-                cbAmount = @model.get( 'keys' ).length
-                checkedAmount = @$('.one-cb:checked').length
-                if checkedAmount is cbAmount
-                    cbAll.prop 'checked', true
-                else if cbAmount - checkedAmount is 1
-                    cbAll.prop 'checked', false
+            @processDelBtn event
+            cbAll = @$ '#kp-select-all'
+            cbAmount = @model.get( 'keys' ).length
+            checkedAmount = @$('.one-cb:checked').length
+            if checkedAmount is cbAmount
+                cbAll.prop 'checked', true
+            else if cbAmount - checkedAmount is 1
+                cbAll.prop 'checked', false
 
 
         checkAll: ( event ) ->
+            @processDelBtn event
             if event.currentTarget.checked
                 @$('input[type="checkbox"]').prop 'checked', true
             else
                 @$('input[type="checkbox"]').prop 'checked', false
+
+        processDelBtn: ( event ) ->
+            if event.currentTarget.checked
+                @$('#kp-delete').prop 'disabled', false
+            else
+                @$('#kp-delete').prop 'disabled', true
+
 
 
         close: ( event ) ->

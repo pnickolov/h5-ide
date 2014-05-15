@@ -209,7 +209,52 @@
   height : 200px;
   background : #111;
 
-  &:empty {
+  &.empty {
+    > header { display : none; }
+  }
+
+  .tokenName, .tokenToken, .tokenControl {
+    margin      : 0 5px;
+    line-height : 20px;
+    padding     : 5px;
+    height      : 20px;
+    width       : 90px;
+    float       : left;
+  }
+
+  .tokenToken {
+    width : 180px;
+  }
+
+  input.tokenName {
+    line-height : 18px;
+  }
+
+  input.tokenName[readonly] {
+    border : none;
+    background : none;
+  }
+
+  .tokenControl, .tokenDone { display:none; }
+  .tokenDone {
+    min-width   : 80px;
+    padding     : 0;
+    height      : 20px;
+    line-height : 20px;
+  }
+
+  .tokenControl .tooltip:before {
+    cursor : pointer;
+    color  : #34A3F8;
+  }
+
+  > .scroll-wrap {
+    height : 168px;
+  }
+}
+
+#TokenList {
+  ul:empty {
     &:before {
       content     : attr(data-empty);
       width       : 100%;
@@ -228,36 +273,6 @@
     height : 30px;
   }
 
-  .tokenName, .tokenToken, .tokenControl {
-    margin      : 0 5px;
-    line-height : 20px;
-    padding     : 5px;
-    height      : 20px;
-    width       : 90px;
-    float       : left;
-  }
-
-  .tokenToken {
-    width : 180px;
-  }
-
-  input.tokenName {
-    line-height : 18px;
-    width : 98px;
-  }
-
-  input.tokenName[readonly] {
-    border : none;
-    background : none;
-  }
-
-  .tokenControl, .tokenDone { display:none; }
-  .tokenDone {
-    min-width   : 80px;
-    padding     : 0;
-    height      : 20px;
-    line-height : 20px;
-  }
   > li {
     &:hover, &.editing {
       .tokenControl { display:block; }
@@ -267,10 +282,5 @@
       .tooltip { display:none; }
       .tokenDone { display:block; }
     }
-  }
-
-  .tokenControl .tooltip:before {
-    cursor : pointer;
-    color  : #34A3F8;
   }
 }

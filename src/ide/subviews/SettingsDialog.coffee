@@ -247,7 +247,7 @@ define [ "./SettingsDialogTpl", 'i18n!nls/lang.js', "ApiRequest", "backbone" ], 
         $p = $(evt.currentTarget).closest("li").removeClass("editing")
         $p.children(".tokenName").attr "readonly", true
 
-        App.user.updateToken( $p.children(".tokenName").val(), $p.children(".tokenToken").text() ).then ()->
+        App.user.updateToken( $p.children(".tokenToken").text(), $p.children(".tokenName").val() ).then ()->
           # Do nothing if update success
           return
         , ()->
@@ -266,21 +266,24 @@ define [ "./SettingsDialogTpl", 'i18n!nls/lang.js', "ApiRequest", "backbone" ], 
           self.cancelRmToken()
         , ()->
           notification "Fail to delete token, please retry."
+          self.cancelRmToken()
 
         return
 
       cancelRmToken : ()->
         @rmToken = ""
+        $("#TokenRemove").removeAttr "disabled"
         $("#TokenManager").show()
         $("#TokenRmConfirm").hide()
         return
 
       updateTokenTab : ()->
         tokens = App.user.get("tokens")
+        $("#TokenManager").find("secion").toggleClass( "empty", tokens.length )
         if tokens.length
-          $("#TokenManager").children("ul").html MC.template.accessTokenTable( tokens )
+          $("#TokenList").html MC.template.accessTokenTable( tokens )
         else
-          $("#TokenManager").empty()
+          $("#TokenList").empty()
         return
     }
 

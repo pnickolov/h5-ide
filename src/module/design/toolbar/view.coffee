@@ -144,7 +144,7 @@ define [ 'MC', 'event',
             KpModel = Design.modelClassForType( constant.RESTYPE.KP )
             defaultKp = KpModel.getDefaultKP()
 
-            if not defaultKp.isSet()
+            if not defaultKp.isSet() or $('#kp-list .item.selected').length is 0
                 @showErr 'kp', 'Specify a key pair as $DefaultKeyPair for this app.'
                 return false
 

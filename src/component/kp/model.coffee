@@ -54,10 +54,12 @@ define [ 'constant', 'backbone', 'underscore', 'MC', 'keypair_service', 'Design'
 
             if @resModel
                 @set 'keyName', @resModel.getKeyName()
+            ###
             else
                 KpModel = Design.modelClassForType( constant.RESTYPE.KP )
                 defaultKp = KpModel.getDefaultKP()
                 @set 'keyName', defaultKp.get( 'appId' )
+            ###
 
         haveGot: () ->
             if arguments.length is 1
@@ -84,8 +86,10 @@ define [ 'constant', 'backbone', 'underscore', 'MC', 'keypair_service', 'Design'
                     console.log('-----result-----');
                     if that.resModel
                         keyName = that.resModel.getKeyName()
+                    ###
                     else
                         keyName = that.get 'keyName'
+                    ###
 
                     keys = filterIllegal res
                     keys = setSelectedKey keys, keyName

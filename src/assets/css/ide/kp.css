@@ -1,4 +1,7 @@
 /* Styles for Manage KP and Decrypt PW */
+.password-hint::selection {
+  background: transparent; }
+
 .decrypt-action {
   margin-top: 10px; }
 
@@ -11,5 +14,13 @@
 
 .change-pw-recommend {
   font-size: 12px;
-  color: #ccc;
-  float: right; }
+  margin: 5px 0 0 200px;
+  cursor: pointer;
+  position: relative; }
+  .change-pw-recommend:hover {
+    color: #eee; }
+  .change-pw-recommend:before {
+    color: #148BE6;
+    top: 1px;
+    position: absolute;
+    left: -20px; }

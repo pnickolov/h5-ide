@@ -20,71 +20,45 @@
     overflow:   scroll;
     text-align: left;
     word-break: break-all;
+
+    &::selection {
+      background: #148BE6;
+      color:      #fcfcfc;
+    }
   }
 
   .upload-stuff {
     position: absolute;
     top:      77px;
-    left:     0px;
+    left:     0;
     width:    100%;
+    background: transparent;
+
+    -webkit-transition: top .1s ease-out;
+    -moz-transition:    top .1s ease-out;
+    -ms-transition:     top .1s ease-out;
+    -o-transition:      top .1s ease-out;
+    transition:         top .1s ease-out;
   }
 
   #modal-import {
     display: none;
   }
 
+  &.dragover {
+    background  : #2E323A;
+    border-color: #148BE6;
+  }
 
-
+  label::selection {
+    background: transparent;
+  }
 }
 
 .drop-zone.filled {
   .upload-stuff {
-    top:        0px;
+    top:        0;
     background: #101010;
     padding:    10px 0;
   }
-
-}
-
-
-
-#modal-kp-manage #modal-import-json-dropzone {
-  height:           140px;
-  padding:          47px 9px 9px;
-  position:         relative;
-  background-color: #252A2E;
-  border-color:     #888;
-}
-
-#modal-kp-manage #modal-import-json-dropzone.dragover {
-  background  : #2E323A;
-  border-color: #148BE6;
-}
-
-#modal-kp-manage #modal-import-json-dropzone .upload-stuff {
-
-}
-
-#modal-kp-manage #modal-import-json-dropzone.filled .upload-stuff {
-
-}
-
-#modal-kp-manage #modal-import-json-dropzone .upload-stuff::selection {
-  background: transparent;
-}
-
-#modal-kp-manage .dragover * {
-  pointer-events: none;
-}
-
-#modal-kp-manage #modal-import-json-dropzone label {
-  padding-right: 0;
-}
-
-#modal-kp-manage #modal-import-json-dropzone label:hover {
-  text-decoration: underline;
-}
-
-#modal-kp-manage #modal-import-json-dropzone label::selection {
-  background: transparent;
 }

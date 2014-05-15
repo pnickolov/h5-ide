@@ -204,9 +204,6 @@ define [ 'MC', 'event',
                         me.showErr 'appname', lang.ide.PROP_MSG_WARN_INVALID_APP_NAME
                         return false
 
-                    if not me.defaultKpIsSet()
-                        return false
-
                     # get process tab name
                     process_tab_name = 'process-' + MC.common.other.canvasData.get( 'region' ) + '-' + app_name
 
@@ -221,8 +218,12 @@ define [ 'MC', 'event',
                         ide_event.trigger ide_event.CLOSE_DESIGN_TAB, process_tab_name
 
                     # repeat with app list or tab name(some run failed app tabs)
-                    if (not MC.aws.aws.checkAppName app_name) or (_.contains(_.keys(MC.process), process_tab_name))
+                    appNameRepeated = (not MC.aws.aws.checkAppName app_name) or (_.contains(_.keys(MC.process), process_tab_name))
+                    if appNameRepeated
                         me.showErr 'appname', lang.ide.PROP_MSG_WARN_REPEATED_APP_NAME
+
+                    # Stop the progress, if defaultKp is not set or if appName is repeated
+                    if not me.defaultKpIsSet() or appNameRepeated
                         return false
 
                     # disable button

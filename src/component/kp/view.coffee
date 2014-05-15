@@ -293,6 +293,16 @@ define [ './template', './template_modal', 'kp_upload', 'backbone', 'jquery', 'c
             'click .manage-kp'          : 'manageKp'
             'OPTION_SHOW .selectbox'    : 'show'
             'OPTION_CHANGE .selectbox'  : 'setKey'
+            'keyup .keypair-filter'    : 'filter'
+
+        filter: ( event ) ->
+            keyword = event.currentTarget.value
+
+            len = keyword.length
+            hitKeys = _.filter @model.get( 'keys' ), ( k ) ->
+                k.keyName.slice( 0, len ).toLowerCase() is keyword
+
+            @renderKeys hitKeys
 
         setKey: ( event, name, data ) ->
             if @__mode is 'runtime'
@@ -332,9 +342,11 @@ define [ './template', './template_modal', 'kp_upload', 'backbone', 'jquery', 'c
             #@renderEmptyKey()
 
 
-        renderKeys: () ->
-            keys = @model.get('keys')
-            data = keys: @model.get('keys')
+        renderKeys: ( data ) ->
+            if data
+                data =  keys: data, hideDefaultNoKey: true
+            else
+                data = keys: @model.get('keys')
 
             if @model.resModel
                 if @model.resModel.isNoKey()

@@ -34,16 +34,18 @@
 </div>
 
 <!-- {{keys}} -->
-{{#unless isRunTime}}
-<li data-id="@default" class="item{{#if defaultKey}} selected{{/if}}" tabindex="-1">
-    {{i18n "PROP_INSTANCE_DEFAULT_KP"}}
-    <i class="icon-info tooltip" data-tooltip="{{i18n 'PROP_INSTANCE_TIP_DEFAULT_KP'}}"></i>
-</li>
+{{#unless hideDefaultNoKey}}
+    {{#unless isRunTime}}
+    <li data-id="@default" class="item{{#if defaultKey}} selected{{/if}}" tabindex="-1">
+        {{i18n "PROP_INSTANCE_DEFAULT_KP"}}
+        <i class="icon-info tooltip" data-tooltip="{{i18n 'PROP_INSTANCE_TIP_DEFAULT_KP'}}"></i>
+    </li>
+    {{/unless}}
+    <li data-id="@no" class="item{{#if noKey}} selected{{/if}}" tabindex="-1">
+        {{i18n "PROP_INSTANCE_NO_KP"}}
+        <i class="icon-info tooltip" data-tooltip="{{i18n 'PROP_INSTANCE_TIP_NO_KP'}}"></i>
+    </li>
 {{/unless}}
-<li data-id="@no" class="item{{#if noKey}} selected{{/if}}" tabindex="-1">
-    {{i18n "PROP_INSTANCE_NO_KP"}}
-    <i class="icon-info tooltip" data-tooltip="{{i18n 'PROP_INSTANCE_TIP_NO_KP'}}"></i>
-</li>
 
 {{#each keys}}
     <li class="item{{#if selected}} selected{{/if}}" data-id="{{keyName}}" data-fingerprint="{{keyFingerprint}}" tabindex="-1">{{keyName}}

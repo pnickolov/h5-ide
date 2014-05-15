@@ -90,13 +90,15 @@ define [ 'constant', 'backbone', 'underscore', 'MC', 'keypair_service', 'Design'
                     else
                         keyName = that.get 'keyName'
                     ###
-
-                    keys = filterIllegal res
-                    keys = setSelectedKey keys, keyName
+                    if _.isArray res
+                        keys = filterIllegal res
+                        keys = setSelectedKey keys, keyName
+                    else
+                        keys = res.resolved_data
 
                     that.settle 'keys', keys
                 (err) ->
-                    that.set 'keys', ''
+                    that.settle 'keys', ''
             )
 
 

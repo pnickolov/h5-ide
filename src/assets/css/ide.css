@@ -3801,7 +3801,8 @@ a.sidebar-hider:before {
 }
 
 .keypair-select.open .dropdown {
-	top: 29px;
+	top:            29px;
+	padding-bottom: 33px;
 }
 
 .keypair-select {
@@ -3844,6 +3845,7 @@ a.sidebar-hider:before {
 
 .keypair-select .manage-kp i {
 	margin-right: 13px;
+	color: #eee;
 }
 
 .keypair-select .manage-kp::selection {
@@ -3851,33 +3853,10 @@ a.sidebar-hider:before {
 }
 
 .keypair-select .manage-kp {
-	width: 100%;
-	color: #148BE6;
-	background: #101010;
-	padding: 6px 0 6px 14px;
-	position: absolute;
-	bottom: 0;
-}
-
-.keypair-select .manage-kp:hover {
-	cursor: pointer;
-}
-
-.keypair-select .icon-remove {
-	display: none;
-	position: absolute;
-	right: 5px;
-	top: 50%;
-	color: #999;
-	margin-top: -8px;
-}
-
-.keypair-select .item:hover .icon-remove {
-	display: block;
-}
-
-.keypair-select .icon-remove:hover {
-	color: #F74A48;
+	width:         100%;
+	position:      absolute;
+	bottom:        0;
+	border-radius: 0;
 }
 
 /* End of Instance Property */
@@ -6071,6 +6050,13 @@ summary:focus {
 	left: 85px;
 }
 
+.runtime-error {
+	color:       #ec3c38;
+	font-size:   12px;
+	margin-left: 146px;
+	margin-top:  10px;
+}
+
 /* run stack into app process panel*/
 #process-panel {
 	position: relative;
@@ -7663,6 +7649,10 @@ summary:focus {
 	margin-left: 5px;
 }
 
+
+.keypair-select .selection i.icon-info {
+	display: none;
+}
 
 .sortable::selection {
 	background: transparent;

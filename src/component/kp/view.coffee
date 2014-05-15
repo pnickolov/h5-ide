@@ -1,4 +1,7 @@
-define [ './template', './template_modal', 'kp_upload', 'backbone', 'jquery', 'constant', 'UI.notification' ], ( template, template_modal, upload, Backbone, $, constant ) ->
+define [ './template', './template_modal', 'kp_upload', 'backbone', 'jquery', 'constant', 'component/exporter/JsonExporter', 'UI.notification' ], ( template, template_modal, upload, Backbone, $, constant, JsonExporter ) ->
+
+    download = JsonExporter.download
+
     modalView = Backbone.View.extend
         __needDownload: false
         __upload: null
@@ -59,6 +62,7 @@ define [ './template', './template_modal', 'kp_upload', 'backbone', 'jquery', 'c
             'click .modal-close' : 'close'
             'change #kp-select-all': 'checkAll'
             'change .one-cb': 'checkOne'
+            'click #download-kp': 'downloadKp'
 
             # actions
             'click #create-kp': 'renderCreate'
@@ -69,6 +73,9 @@ define [ './template', './template_modal', 'kp_upload', 'backbone', 'jquery', 'c
             # do action
             'click .do-action': 'doAction'
             'click .cancel': 'cancel'
+
+        downloadKp: ->
+            @__downloadKp and @__downloadKp()
 
         doAction: ( event ) ->
             @hideErr()
@@ -93,11 +100,23 @@ define [ './template', './template_modal', 'kp_upload', 'backbone', 'jquery', 'c
                 else
                     $(@).hide()
 
-        genDownload: ( key, name ) ->
-            base64Key = btoa key
-            @$( '#download-kp' )
-                .prop( 'href', "data://text/plain;base64,#{base64Key}" )
-                .prop( 'download', "#{name}.pem" )
+        genDownload: ( name, str ) ->
+            @__downloadKp = ->
+                if $("body").hasClass("safari")
+                  blob = null
+                else
+                  blob = new Blob [str]
+
+                if not blob
+                  return {
+                    data : "data://text/plain;,#{str}"
+                    name : name
+                  }
+
+                download( blob, name )
+                null
+
+            @__downloadKp
 
         genDeleteFinish: ( times ) ->
             success = []
@@ -131,7 +150,7 @@ define [ './template', './template_modal', 'kp_upload', 'backbone', 'jquery', 'c
                     .then (res) ->
                         console.log res
                         that.needDownload true
-                        that.genDownload res.keyMaterial, res.keyName
+                        that.genDownload "#{res.keyName}.pem", res.keyMaterial
                         that.switchAction 'download'
 
                     .catch ( err ) ->

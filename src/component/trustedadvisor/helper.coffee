@@ -118,7 +118,7 @@ define [ 'constant', 'MC', 'i18n!nls/lang.js', 'Design', 'underscore' ], ( CONST
                 portCode = Number(port)
 
                 _.each portData[direction], (portAry, proto) ->
-                    if proto is protocalCode
+                    if proto is protocalCode or proto is 'all'
                         _.each portAry, (portObj) ->
                             if portCode >= portObj.from and portCode <= portObj.to
                                 isInRangeResult = true

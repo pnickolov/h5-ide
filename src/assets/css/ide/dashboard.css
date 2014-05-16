@@ -296,7 +296,7 @@
   height: 0;
   padding-bottom: 65%;
   border-radius: 5px 5px 0 0;
-  background: #55626e url('/assets/images/ide/thumbnail-stack-placehoder@2x.png') center center no-repeat;
+  background: #55626f url('/assets/images/ide/thumbnail-stack-placehoder@2x.png') center center no-repeat;
   background-size: 100% auto;
   overflow: hidden; }
   .region-resource-list .thumbnail.app-thumbnail {
@@ -317,13 +317,51 @@
   right: 5px; }
 .region-resource-list .blank-widget {
   margin: 16px 16px 17px; }
+.region-resource-list .region-resource-info {
+  background: #323e49;
+  padding-left: 12px;
+  color: #f3f3f3;
+  border-radius: 0 0 5px 5px;
+  position: relative;
+  height: 27px;
+  line-height: 27px; }
+  .region-resource-list .region-resource-info > i {
+    float: right;
+    border-left: 1px solid #2d2d2d;
+    width: 30px;
+    height: 27px;
+    text-align: center;
+    color: #ddd; }
+    .region-resource-list .region-resource-info > i:hover {
+      background: #2d2d2d;
+      color: #fefefe; }
+    .region-resource-list .region-resource-info > i:first-child {
+      border-radius: 0 0 5px 0; }
+  .region-resource-list .region-resource-info i.icon-terminate:hover, .region-resource-list .region-resource-info i.icon-delete:hover {
+    color: #ec3c38; }
+  .region-resource-list .region-resource-info > .truncate {
+    color: #eee;
+    font-size: 12px;
+    max-width: 120px; }
+  .region-resource-list .region-resource-info > .icon-pending:before {
+    font-size: 10px;
+    line-height: 10px;
+    height: 10px;
+    color: #999;
+    margin-right: 4px; }
+  .region-resource-list .region-resource-info > .running, .region-resource-list .region-resource-info > .stopped {
+    padding-left: 14px;
+    background: url('/assets/images/ide/icon-app-running-16x16.png') left center no-repeat; }
+  .region-resource-list .region-resource-info > .stopped {
+    background-image: url('/assets/images/ide/icon-app-stopped-16x16.png'); }
 
 #region-app-stack-wrap {
   position: relative; }
   #region-app-stack-wrap .scroll-wrap {
     background: #fff;
     box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
-    border: 1px solid #bbb; }
+    border: 1px solid #bbb;
+    max-height: 370px; }
   #region-app-stack-wrap .dashboard-loading {
     padding-top: 25px;
     height: 165px; }

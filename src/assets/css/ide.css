@@ -912,36 +912,6 @@ button {
 	background-position: -35px 0;
 }
 
-.region-resource-status {
-	width:      10px;
-	height:     10px;
-	position:   absolute;
-	left:       10px;
-	top:        -5px;
-	margin-top: 6%;
-}
-
-.region-resource-status.icon-pending:before {
-	font-size:   10px;
-	line-height: 10px;
-	height:      10px;
-	color:       #999;
-	top:         -5px;
-	position:    relative;
-}
-
-.region-resource-status-running {
-	background: url('../images/ide/icon-app-running-16x16.png') no-repeat;
-}
-
-.region-resource-status-stopped {
-	background: url('../images/ide/icon-app-stopped-16x16.png') no-repeat;
-}
-
-#region-resource-app-wrap .region-resource-item-name {
-	margin-left: 15px;
-}
-
 .blank-widget {
 	margin-top : 14px;
 	text-align : center;
@@ -965,49 +935,10 @@ button {
 	margin: 0 auto;
 }
 
-.region-resource-info {
-	background    : #323e49;
-	padding       : 5px 12px;
-	color         : #f3f3f3;
-	border-radius : 0 0 5px 5px;
-	position      : relative;
-	height        : 17px;
-}
-
 .region-resource-action {
 	position: absolute;
 	right: 0;
 	top: 0;
-}
-
-.region-resource-action i {
-	border-left : 1px solid #2d2d2d;
-	/*background  : rgba(255,255,255,0.3);*/
-
-	display     : block;
-	float       : left;
-	width       : 30px;
-	height      : 27px;
-	line-height : 27px;
-
-	text-align  : center;
-	color: #ddd;
-}
-
-.region-resource-action i:hover {
-	background: rgba(0,0,0,0.4);
-	color: #fefefe;
-}
-
-.region-resource-action i.icon-terminate:hover,
-.region-resource-action i.icon-delete:hover {
-	color: #ec3c38;
-}
-
-.region-resource-item-name {
-	color: #eee;
-	font-size: 12px;
-	width: 120px;
 }
 
 #region-aws-resource-tab h5 {

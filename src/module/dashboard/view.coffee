@@ -69,7 +69,7 @@ define [ 'event', 'i18n!nls/lang.js',
 
         events          :
             'click .global-map-item'  : 'gotoRegion'
-            'click .recent-list-item, .thumbnail' : 'openItem'
+            'click .recent-list-item, .region-resource-list li' : 'openItem'
 
             'click #global-region-create-stack-list li' : 'createStack'
             'click #btn-create-stack'                   : 'createStack'

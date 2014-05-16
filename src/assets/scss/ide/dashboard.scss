@@ -370,7 +370,7 @@
     height          : 0;
     padding-bottom  : 65%;
     border-radius   : 5px 5px 0 0;
-    background      : #55626e image-url("ide/thumbnail-stack-placehoder@2x.png") center center no-repeat;
+    background      : #55626f image-url("ide/thumbnail-stack-placehoder@2x.png") center center no-repeat;
     background-size : 100% auto;
     overflow        : hidden;
 
@@ -403,6 +403,56 @@
   .blank-widget {
     margin : 16px 16px 17px;
   }
+
+  .region-resource-info {
+    background    : #323e49;
+    padding-left  : 12px;
+    color         : #f3f3f3;
+    border-radius : 0 0 5px 5px;
+    position      : relative;
+    height        : 27px;
+    line-height   : 27px;
+
+    > i {
+      float       : right;
+      border-left : 1px solid #2d2d2d;
+      width       : 30px;
+      height      : 27px;
+
+      text-align  : center;
+      color: #ddd;
+
+      &:hover {
+        background : #2d2d2d;
+        color      : #fefefe;
+      }
+
+      &:first-child { border-radius : 0 0 5px 0; }
+    }
+
+    i.icon-terminate, i.icon-delete { &:hover { color: #ec3c38; } }
+
+    > .truncate {
+      color     : #eee;
+      font-size : 12px;
+      max-width : 120px;
+    }
+
+    > .icon-pending:before {
+      font-size    : 10px;
+      line-height  : 10px;
+      height       : 10px;
+      color        : #999;
+      margin-right : 4px;
+    }
+
+    > .running, > .stopped {
+      padding-left : 14px;
+      background   : image-url('ide/icon-app-running-16x16.png') left center no-repeat; }
+    > .stopped {
+      background-image : image-url('ide/icon-app-stopped-16x16.png');
+    }
+  }
 }
 
 #region-app-stack-wrap {
@@ -412,6 +462,7 @@
     background : #fff;
     box-shadow : 1px 1px 5px rgba(0,0,0,0.1);
     border     : 1px solid #bbb;
+    max-height : 370px;
   }
 
   .dashboard-loading {

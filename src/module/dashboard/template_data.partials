@@ -176,8 +176,9 @@
 
 <div class="scroll-wrap">
 <div class="scrollbar-veritical-wrap" style="display: block;"><div class="scrollbar-veritical-thumb"></div></div>
+<div class="scroll-content">
 
-<ul id="region-resource-app-wrap" class="region-resource-list clearfix scroll-content" {{#if stack}} style="display: none;"{{/if}}>
+<ul id="region-resource-app-wrap" class="region-resource-list clearfix" {{#if stack}} style="display: none;"{{/if}}>
 
 {{#each apps}}
     {{#if ispending}}
@@ -188,34 +189,24 @@
                 <p>Processing...</p>
             </div>
         </div>
-        <div class="region-resource-info">
-            <span class="region-resource-item-name truncate">{{name}}</span>
-            <i class="region-resource-status icon-pending"></i>
-        </div>
+        <div class="region-resource-info"><span class="icon-pending truncate">{{name}}</span></div>
     </li>
     {{else}}
-    <li>
+    <li data-id="{{id}}">
         {{#if usage}}<i class="icon-app-type-{{usage}}"></i>{{/if}}
-        <div class="thumbnail app-thumbnail" data-id="{{id}}"> <img src="{{thumbnail}}" {{#unless thumbnail}}class="hide"{{/unless}}/> </div>
+        <div class="thumbnail app-thumbnail"> <img src="{{thumbnail}}" {{#unless thumbnail}}class="hide"{{/unless}}/> </div>
         <div class="region-resource-info">
-            <span class="region-resource-item-name truncate">{{name}}</span>
-            <i class="region-resource-status region-resource-status-{{#if isrunning}}running{{else}}stopped{{/if}}"></i>
-            <div class="region-resource-action clearfix">
-                {{#if has_instance_store_ami}}
-                    <i {{#unless is_running}}style="display:none;"{{/unless}} class="icon-stop modal stop-app disabled" id="{{id}}" name="{{name}}" data-modal-template="modalApp" data-modal-data='{"title":"{{{i18n "TOOL_POP_TIT_STOP_APP"}}}", "body":"{{{i18n "TOOL_POP_BODY_STOP_APP_LEFT"}}} {{name}}{{{i18n "TOOL_POP_BODY_STOP_APP_RIGHT"}}}", "confirm":"{{{i18n "TOOL_POP_BTN_STOP_APP"}}}", "color":"red" }' data-modal-dismiss="true"></i>
+            {{#if has_instance_store_ami}}
+                <i {{#unless is_running}}style="display:none;"{{/unless}} class="icon-stop stop-app disabled"></i>
+            {{else}}
+                {{#if isrunning}}
+                    <i class="icon-stop stop-app"></i>
                 {{else}}
-                    {{#if isrunning}}
-                        <i class="icon-stop modal stop-app" id="{{id}}" name="{{name}}" data-modal-template="modalApp" data-modal-data='{"title":{{#if is_production}}"{{{i18n "TOOL_POP_TIT_STOP_PRD_APP"}}}"{{else}}"{{{i18n "TOOL_POP_TIT_STOP_APP"}}}"{{/if}}, "body":"{{{i18n "TOOL_POP_BODY_STOP_APP_LEFT"}}} {{name}}{{{i18n "TOOL_POP_BODY_STOP_APP_RIGHT"}}}", "confirm":"{{{i18n "TOOL_POP_BTN_STOP_APP"}}}", "color":"red", "is_production":{{#if is_production}}true{{else}}false{{/if}},
-                        "app_name": "{{name}}", "is_stop": true
-                    }' data-modal-dismiss="true"></i>
-                    {{else}}
-                        <i class="icon-play modal start-app" id="{{id}}" name="{{name}}" data-modal-template="modalApp" data-modal-data='{"title":"{{{i18n "TOOL_POP_TIT_START_APP"}}}", "body":"{{{i18n "TOOL_POP_BODY_START_APP_LEFT"}}} {{name}}{{{i18n "TOOL_POP_BODY_START_APP_RIGHT"}}}", "confirm":"{{{i18n "TOOL_POP_BTN_START_APP"}}}", "color":"blue" }' data-modal-dismiss="true"></i>
-                    {{/if}}
+                    <i class="icon-play start-app"></i>
                 {{/if}}
-                <i class="modal icon-terminate terminate-app" id="{{id}}" name="{{name}}" data-modal-template="modalApp" data-modal-data='{"title":{{#if is_production}}"{{{i18n "TOOL_POP_TIT_TERMINATE_PRD_APP"}}}"{{else}}"{{{i18n "TOOL_POP_TIT_TERMINATE_APP"}}}"{{/if}}, "body":"{{{i18n "TOOL_POP_BODY_TERMINATE_APP_LEFT"}}} {{name}}{{{i18n "TOOL_POP_BODY_TERMINATE_APP_RIGHT"}}}", "confirm":"{{{i18n "TOOL_POP_BTN_TERMINATE_APP"}}}", "color":"red", "is_production":{{#if is_production}}true{{else}}false{{/if}},
-                "app_name": "{{name}}"
-                 }' data-modal-dismiss="true"></i>
-            </div>
+            {{/if}}
+            <i class="icon-terminate terminate-app"></i>
+            <span class="{{#if isrunning}}running{{else}}stopped{{/if}} truncate">{{name}}</span>
         </div>
     </li>
     {{/if}}
@@ -224,23 +215,21 @@
 {{/each}}
 </ul> <!-- Resource App -->
 
-<ul id="region-resource-stack-wrap" class="region-resource-list clearfix scroll-content" {{#if app}} style="display: none;"{{/if}}>
+<ul id="region-resource-stack-wrap" class="region-resource-list clearfix" {{#if app}} style="display: none;"{{/if}}>
 {{#each stacks}}
-    <li>
-        <div class="thumbnail" data-id="{{id}}"> <img src="{{thumbnail}}" {{#unless thumbnail}}class="hide"{{/unless}}/> </div>
+    <li data-id="{{id}}">
+        <div class="thumbnail"> <img src="{{thumbnail}}" {{#unless thumbnail}}class="hide"{{/unless}}/> </div>
         <div class="region-resource-info">
-            <span class="region-resource-item-name truncate">{{name}}</span>
-            <div class="region-resource-action clearfix">
-                <i class="icon-duplicate modal duplicate-stack" id="{{id}}" name="{{name}}" data-modal-template="modalApp" data-modal-data='{"title":"{{{i18n "TOOL_TIP_DUPLICATE_STACK"}}}", "body":"{{{i18n "TOOL_POP_BODY_DUPLICATE_STACK"}}}", "input":"{{name}}-copy", "confirm":"{{{i18n "TOOL_POP_BTN_DUPLICATE_STACK"}}}", "color":"blue" }' data-modal-dismiss="true"></i>
-
-                <i class="icon-delete modal delete-stack"  id="{{id}}" name="{{name}}" data-modal-template="modalApp" data-modal-data='{"title":"{{{i18n "TOOL_TIP_DELETE_STACK"}}}", "body":"{{i18n "TOOL_POP_BODY_DELETE_STACK"}} {{name}}?", "confirm":"{{{i18n "TOOL_POP_BTN_DELETE_STACK"}}}", "color":"red" }' data-modal-dismiss="true"></i>
-            </div>
+            <i class="icon-delete delete-stack"></i>
+            <i class="icon-duplicate duplicate-stack"></i>
+            <span class="truncate">{{name}}</span>
         </div>
     </li>
 {{else}}
     <div class="blank-widget">{{i18n "DASH_LBL_NO_STACK"}}</div>
 {{/each}}
 </ul> <!-- Resource Stack -->
+</div>
 </div>
 <!-- Region App & Stack -->
 

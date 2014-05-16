@@ -3478,6 +3478,20 @@ VisualOps API. You cannot UNDO this action.'
       en: "You have unsaved changes."
       zh: "您有未保存的更改。"
 
+
+    DASH_CREATE_NEW_STACK:
+      en: "Create new stack"
+      zh: "创建模板"
+
+    DASH_IMPORT_JSON:
+      en: "Import stack"
+      zh: "导入Stack"
+
+    DASH_VISUALIZE_VPC:
+      en: "Visualize existing VPC"
+      zh: "可视化VPC"
+
+
     DASH_TIT_VIEW_RESOURCE_DETAIL:
       en: "View resource detail"
       zh: ""
@@ -3993,10 +4007,6 @@ VisualOps API. You cannot UNDO this action.'
     AMI_LBL_PAGEINFO:
       en: "Showing %s-%s items of %s results"
       zh: "当前显示 %s-%s 条，共有 %s 条"
-
-    IDE_COM_CREATE_NEW_STACK:
-      en: "Create new stack"
-      zh: "创建模板"
 
     "IDE_LBL_REGION_NAME_us-east-1":
       en: "US East"

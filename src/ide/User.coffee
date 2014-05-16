@@ -37,9 +37,7 @@ define [ "ApiRequest", "event" , "backbone" ], ( ApiRequest, ide_event )->
         awsSecretKey : result.secret_key
 
       if result.account_id is "demo_account"
-        res.account = ""
-      else
-        res.account = result.account_id
+        res.account = res.awsAccessKey = res.awsSecretKey = ""
 
       @set res
 

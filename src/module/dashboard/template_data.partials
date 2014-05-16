@@ -34,66 +34,13 @@
 </section>
 
 <!-- {{global_list}} -->
-<div id="global-region-resource-data-wrap">
-    <ul id="global-region-resource-list" class="clearfix">
-        {{#with global_list.DescribeInstances}}
-            <li id="global-region-resource-instance">
-                <div class="global-region-resource-header">
-                    <h5>{{i18n "DASH_LBL_RUNNING_INSTANCE"}}</h5>
-                    <div class="global-region-resource-count-wrap">
-                        <i id="global-resource-icon-instance" class="global-resource-icon"></i>
-                        <span class="global-region-resource-count">{{total}}</span>
-                    </div>
-                </div>
-
-                <div class="global-region-resource-content">
-                    <ul>
-                        {{#each data}}
-                            <li>
-                                <a href="javascript:void(0)" data-region="{{region}}" data-resource-type="DescribeInstances">
-                                    <h4>{{city}}</h4>
-                                    <h5>{{area}}</h5>
-                                    <span class="global-region-resource-location-count">{{total}}</span>
-                                </a>
-                            </li>
-                        {{/each}}
-                    </ul>
-                </div>
-            </li>
-        {{/with}}
-
-        {{#with global_list.DescribeAddresses}}
-            <li id="global-region-resource-eip">
-                <div class="global-region-resource-header">
-                    <h5>{{i18n "DASH_LBL_ELASTIC_IP"}}</h5>
-                    <div class="global-region-resource-count-wrap">
-                        <i id="global-resource-icon-eip" class="global-resource-icon"></i>
-                        <span class="global-region-resource-count">{{total}}</span>
-                    </div>
-                </div>
-
-                <div class="global-region-resource-content">
-                    <ul>
-                        {{#each data}}
-                            <li>
-                                <a href="javascript:void(0)" data-region="{{region}}" data-resource-type="DescribeAddresses">
-                                    <h4>{{city}}</h4>
-                                    <h5>{{area}}</h5>
-                                    <span class="global-region-resource-location-count">{{total}}</span>
-                                </a>
-                            </li>
-                        {{/each}}
-                    </ul>
-                </div>
-            </li>
-        {{/with}}
-
-        {{#with global_list.DescribeVolumes}}
-        <li id="global-region-resource-volume">
+<ul id="global-region-resource-list" class="clearfix">
+    {{#with global_list.DescribeInstances}}
+        <li id="global-region-resource-instance">
             <div class="global-region-resource-header">
-                <h5>{{i18n "DASH_LBL_VOLUME"}}</h5>
+                <h5>{{i18n "DASH_LBL_RUNNING_INSTANCE"}}</h5>
                 <div class="global-region-resource-count-wrap">
-                    <i id="global-resource-icon-vol" class="global-resource-icon"></i>
+                    <i id="global-resource-icon-instance" class="global-resource-icon"></i>
                     <span class="global-region-resource-count">{{total}}</span>
                 </div>
             </div>
@@ -102,7 +49,7 @@
                 <ul>
                     {{#each data}}
                         <li>
-                            <a href="javascript:void(0)" data-region="{{region}}" data-resource-type="DescribeVolumes">
+                            <a href="javascript:void(0)" data-region="{{region}}" data-resource-type="DescribeInstances">
                                 <h4>{{city}}</h4>
                                 <h5>{{area}}</h5>
                                 <span class="global-region-resource-location-count">{{total}}</span>
@@ -112,60 +59,111 @@
                 </ul>
             </div>
         </li>
-        {{/with}}
+    {{/with}}
 
-        {{#with global_list.DescribeLoadBalancers}}
-            <li id="global-region-resource-elb">
-                <div class="global-region-resource-header">
-                    <h5>{{i18n "DASH_LBL_LOAD_BALANCER"}}</h5>
-                    <div class="global-region-resource-count-wrap">
-                        <i id="global-resource-icon-elb" class="global-resource-icon"></i>
-                        <span class="global-region-resource-count">{{total}}</span>
-                    </div>
+    {{#with global_list.DescribeAddresses}}
+        <li id="global-region-resource-eip">
+            <div class="global-region-resource-header">
+                <h5>{{i18n "DASH_LBL_ELASTIC_IP"}}</h5>
+                <div class="global-region-resource-count-wrap">
+                    <i id="global-resource-icon-eip" class="global-resource-icon"></i>
+                    <span class="global-region-resource-count">{{total}}</span>
                 </div>
+            </div>
 
-                <div class="global-region-resource-content">
-                    <ul>
-                        {{#each data}}
-                            <li>
-                                <a href="javascript:void(0)" data-region="{{region}}" data-resource-type="DescribeLoadBalancers">
-                                    <h4>{{city}}</h4>
-                                    <h5>{{area}}</h5>
-                                    <span class="global-region-resource-location-count">{{total}}</span>
-                                </a>
-                            </li>
-                        {{/each}}
-                    </ul>
-                </div>
-            </li>
-        {{/with}}
+            <div class="global-region-resource-content">
+                <ul>
+                    {{#each data}}
+                        <li>
+                            <a href="javascript:void(0)" data-region="{{region}}" data-resource-type="DescribeAddresses">
+                                <h4>{{city}}</h4>
+                                <h5>{{area}}</h5>
+                                <span class="global-region-resource-location-count">{{total}}</span>
+                            </a>
+                        </li>
+                    {{/each}}
+                </ul>
+            </div>
+        </li>
+    {{/with}}
 
-        {{#with global_list.DescribeVpnConnections}}
-            <li id="global-region-resource-vpn"> <div class="global-region-resource-header">
-                    <h5>{{i18n "DASH_LBL_VPN"}}</h5>
-                    <div class="global-region-resource-count-wrap">
-                        <i id="global-resource-icon-vpn" class="global-resource-icon"></i>
-                        <span class="global-region-resource-count">{{total}}</span>
-                    </div>
-                </div>
+    {{#with global_list.DescribeVolumes}}
+    <li id="global-region-resource-volume">
+        <div class="global-region-resource-header">
+            <h5>{{i18n "DASH_LBL_VOLUME"}}</h5>
+            <div class="global-region-resource-count-wrap">
+                <i id="global-resource-icon-vol" class="global-resource-icon"></i>
+                <span class="global-region-resource-count">{{total}}</span>
+            </div>
+        </div>
 
-                <div class="global-region-resource-content">
-                    <ul>
-                        {{#each data}}
-                            <li>
-                                <a href="javascript:void(0)" data-region="{{region}}" data-resource-type="DescribeVpnConnections">
-                                    <h4>{{city}}</h4>
-                                    <h5>{{area}}</h5>
-                                    <span class="global-region-resource-location-count">{{total}}</span>
-                                </a>
-                            </li>
-                        {{/each}}
-                    </ul>
+        <div class="global-region-resource-content">
+            <ul>
+                {{#each data}}
+                    <li>
+                        <a href="javascript:void(0)" data-region="{{region}}" data-resource-type="DescribeVolumes">
+                            <h4>{{city}}</h4>
+                            <h5>{{area}}</h5>
+                            <span class="global-region-resource-location-count">{{total}}</span>
+                        </a>
+                    </li>
+                {{/each}}
+            </ul>
+        </div>
+    </li>
+    {{/with}}
+
+    {{#with global_list.DescribeLoadBalancers}}
+        <li id="global-region-resource-elb">
+            <div class="global-region-resource-header">
+                <h5>{{i18n "DASH_LBL_LOAD_BALANCER"}}</h5>
+                <div class="global-region-resource-count-wrap">
+                    <i id="global-resource-icon-elb" class="global-resource-icon"></i>
+                    <span class="global-region-resource-count">{{total}}</span>
                 </div>
-            </li>
-        {{/with}}
-    </ul>
-</div>
+            </div>
+
+            <div class="global-region-resource-content">
+                <ul>
+                    {{#each data}}
+                        <li>
+                            <a href="javascript:void(0)" data-region="{{region}}" data-resource-type="DescribeLoadBalancers">
+                                <h4>{{city}}</h4>
+                                <h5>{{area}}</h5>
+                                <span class="global-region-resource-location-count">{{total}}</span>
+                            </a>
+                        </li>
+                    {{/each}}
+                </ul>
+            </div>
+        </li>
+    {{/with}}
+
+    {{#with global_list.DescribeVpnConnections}}
+        <li id="global-region-resource-vpn"> <div class="global-region-resource-header">
+                <h5>{{i18n "DASH_LBL_VPN"}}</h5>
+                <div class="global-region-resource-count-wrap">
+                    <i id="global-resource-icon-vpn" class="global-resource-icon"></i>
+                    <span class="global-region-resource-count">{{total}}</span>
+                </div>
+            </div>
+
+            <div class="global-region-resource-content">
+                <ul>
+                    {{#each data}}
+                        <li>
+                            <a href="javascript:void(0)" data-region="{{region}}" data-resource-type="DescribeVpnConnections">
+                                <h4>{{city}}</h4>
+                                <h5>{{area}}</h5>
+                                <span class="global-region-resource-location-count">{{total}}</span>
+                            </a>
+                        </li>
+                    {{/each}}
+                </ul>
+            </div>
+        </li>
+    {{/with}}
+</ul>
 
 
 <!-- {{region_app_stack}} -->
@@ -310,76 +308,58 @@
     {{#with cur_region_resource_info}}
         <div id="region-aws-resource-tab">
             <ul class="clearfix">
-                <li>
-                    <a href="javascript:void(0)" class="region-resource-tab-item on" data-resource-type="DescribeInstances">
-                        <i id="global-resource-icon-instance" class="global-resource-icon"></i>
-                        <span class="region-resource-count">{{Instance}}</span>
-                        <span class="region-resource-name">{{i18n "DASH_LBL_INSTANCE"}}</span>
-                    </a>
+                <li class="region-resource-tab-item on" data-resource-type="DescribeInstances">
+                    <i id="global-resource-icon-instance" class="global-resource-icon"></i>
+                    <span class="region-resource-count">{{Instance}}</span>
+                    <span class="region-resource-name">{{i18n "DASH_LBL_INSTANCE"}}</span>
                 </li>
 
-                <li>
-                    <a href="javascript:void(0)" class="region-resource-tab-item" data-resource-type="DescribeAddresses">
-                        <i id="global-resource-icon-eip" class="global-resource-icon"></i>
-                        <span class="region-resource-count">{{EIP}}</span>
-                        <span class="region-resource-name">{{i18n "DASH_LBL_ELASTIC_IP"}}</span>
-                    </a>
+                <li class="region-resource-tab-item" data-resource-type="DescribeAddresses">
+                    <i id="global-resource-icon-eip" class="global-resource-icon"></i>
+                    <span class="region-resource-count">{{EIP}}</span>
+                    <span class="region-resource-name">{{i18n "DASH_LBL_ELASTIC_IP"}}</span>
                 </li>
 
-                <li>
-                    <a href="javascript:void(0)" class="region-resource-tab-item" data-resource-type="DescribeVolumes">
-                        <i id="global-resource-icon-vol" class="global-resource-icon"></i>
-                        <span class="region-resource-count">{{Volume}}</span>
-                        <span class="region-resource-name">{{i18n "DASH_LBL_VOLUME"}}</span>
-                    </a>
+                <li class="region-resource-tab-item" data-resource-type="DescribeVolumes">
+                    <i id="global-resource-icon-vol" class="global-resource-icon"></i>
+                    <span class="region-resource-count">{{Volume}}</span>
+                    <span class="region-resource-name">{{i18n "DASH_LBL_VOLUME"}}</span>
                 </li>
 
-                <li>
-                    <a href="javascript:void(0)" class="region-resource-tab-item" data-resource-type="DescribeVpcs">
-                        <i id="global-resource-icon-vpc" class="global-resource-icon"></i>
-                        <span class="region-resource-count">{{VPC}}</span>
-                        <span class="region-resource-name">{{i18n "DASH_LBL_VPC"}}</span>
-                    </a>
+                <li class="region-resource-tab-item" data-resource-type="DescribeVpcs">
+                    <i id="global-resource-icon-vpc" class="global-resource-icon"></i>
+                    <span class="region-resource-count">{{VPC}}</span>
+                    <span class="region-resource-name">{{i18n "DASH_LBL_VPC"}}</span>
                 </li>
 
-                <li>
-                    <a href="javascript:void(0)" class="region-resource-tab-item" data-resource-type="DescribeVpnConnections">
-                        <i id="global-resource-icon-vpn" class="global-resource-icon"></i>
-                        <span class="region-resource-count">{{VPN}}</span>
-                        <span class="region-resource-name">{{i18n "DASH_LBL_VPN"}}</span>
-                    </a>
+                <li class="region-resource-tab-item" data-resource-type="DescribeVpnConnections">
+                    <i id="global-resource-icon-vpn" class="global-resource-icon"></i>
+                    <span class="region-resource-count">{{VPN}}</span>
+                    <span class="region-resource-name">{{i18n "DASH_LBL_VPN"}}</span>
                 </li>
 
-                <li>
-                    <a href="javascript:void(0)" class="region-resource-tab-item" data-resource-type="DescribeLoadBalancers">
-                        <i id="global-resource-icon-elb" class="global-resource-icon"></i>
-                        <span class="region-resource-count">{{ELB}}</span>
-                        <span class="region-resource-name">{{i18n "DASH_LBL_LOAD_BALANCER"}}</span>
-                    </a>
+                <li class="region-resource-tab-item" data-resource-type="DescribeLoadBalancers">
+                    <i id="global-resource-icon-elb" class="global-resource-icon"></i>
+                    <span class="region-resource-count">{{ELB}}</span>
+                    <span class="region-resource-name">{{i18n "DASH_LBL_LOAD_BALANCER"}}</span>
                 </li>
 
-                <li>
-                    <a href="javascript:void(0)" class="region-resource-tab-item" data-resource-type="DescribeAutoScalingGroups">
-                        <i id="global-resource-icon-asg" class="global-resource-icon"></i>
-                        <span class="region-resource-count">{{AutoScalingGroup}}</span>
-                        <span class="region-resource-name">{{i18n "DASH_LBL_AUTO_SCALING_GROUP"}}</span>
-                    </a>
+                <li class="region-resource-tab-item" data-resource-type="DescribeAutoScalingGroups">
+                    <i id="global-resource-icon-asg" class="global-resource-icon"></i>
+                    <span class="region-resource-count">{{AutoScalingGroup}}</span>
+                    <span class="region-resource-name">{{i18n "DASH_LBL_AUTO_SCALING_GROUP"}}</span>
                 </li>
 
-                <li>
-                    <a href="javascript:void(0)" class="region-resource-tab-item" data-resource-type="DescribeAlarms">
-                        <i id="global-resource-icon-cwa" class="global-resource-icon"></i>
-                        <span class="region-resource-count">{{CW}}</span>
-                        <span class="region-resource-name">{{i18n "DASH_LBL_CLOUDWATCH_ALARM"}}</span>
-                    </a>
+                <li class="region-resource-tab-item" data-resource-type="DescribeAlarms">
+                    <i id="global-resource-icon-cwa" class="global-resource-icon"></i>
+                    <span class="region-resource-count">{{CW}}</span>
+                    <span class="region-resource-name">{{i18n "DASH_LBL_CLOUDWATCH_ALARM"}}</span>
                 </li>
 
-                <li>
-                    <a href="javascript:void(0)" class="region-resource-tab-item" data-resource-type="ListSubscriptions">
-                        <i id="global-resource-icon-sns" class="global-resource-icon"></i>
-                        <span class="region-resource-count">{{SNS}}</span>
-                        <span class="region-resource-name">{{i18n "DASH_LBL_SNS_SUBSCRIPTION"}}</span>
-                    </a>
+                <li class="region-resource-tab-item" data-resource-type="ListSubscriptions">
+                    <i id="global-resource-icon-sns" class="global-resource-icon"></i>
+                    <span class="region-resource-count">{{SNS}}</span>
+                    <span class="region-resource-name">{{i18n "DASH_LBL_SNS_SUBSCRIPTION"}}</span>
                 </li>
             </ul>
         </div>

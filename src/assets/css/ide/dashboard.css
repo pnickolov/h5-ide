@@ -165,7 +165,7 @@
 /* Responsive design for dashboard */
 @media only screen and (max-width: 1280px) {
   #global-region-map-content {
-    width: 940px; }
+    max-width: 940px; }
 
   #global-region-status-widget {
     width: 100%;
@@ -210,3 +210,97 @@
     float: right;
     font-style: italic;
     color: #ccc; }
+
+#dashboard-data-wrap {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 15px 0 20px;
+  width: 95%; }
+
+#dashboard-region-switch {
+  position: relative;
+  margin-bottom: 15px; }
+
+#global-region-resource-list > li {
+  float: left;
+  width: 19.2%;
+  margin-right: 1%;
+  border: 1px solid #ccc;
+  background: #f1f1f1;
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; }
+  #global-region-resource-list > li:last-child {
+    margin-right: 0; }
+
+#region-aws-resource-tab {
+  background: #fcfcfc; }
+
+.region-resource-tab-item {
+  float: left;
+  position: relative;
+  width: 11%;
+  height: 105px;
+  padding: 10px 0 0;
+  cursor: pointer; }
+  .region-resource-tab-item:first-child {
+    margin-left: 0.5%; }
+  .region-resource-tab-item::after {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    display: none;
+    margin-left: -8px;
+    border: 8px solid transparent;
+    content: '';
+    border-bottom-color: #323E49; }
+  .region-resource-tab-item.on::after {
+    display: block; }
+  .region-resource-tab-item:hover .region-resource-tab-item::after {
+    border-bottom-color: rgba(50, 62, 73, 0.5); }
+  .region-resource-tab-item .region-resource-count {
+    border-radius: 4px;
+    padding: 2px 6px;
+    background: #F0F0F0;
+    color: #148BE6;
+    top: 8px;
+    left: 50%;
+    margin-left: 15px;
+    position: absolute;
+    font-size: 14px;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3), inset 0 1px 0px rgba(255, 255, 255, 0.8);
+    border: 1px solid #ccc;
+    text-shadow: 0 1px 0 #fff; }
+
+.region-resource-list {
+  background: #fff;
+  padding: 5px 20px 20px;
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1), 0 -1px 0 #bbbbbb;
+  border: 1px solid #bbb;
+  border-top: none; }
+  .region-resource-list > .scroll-wrap {
+    max-height: 378px; }
+  .region-resource-list li {
+    float: left;
+    margin: 15px 12px 0 12px; }
+  .region-resource-list .region-resource-list-item {
+    display: block;
+    width: 220px;
+    opacity: .95;
+    position: relative;
+    cursor: pointer; }
+    .region-resource-list .region-resource-list-item:hover {
+      opacity: 1; }
+    .region-resource-list .region-resource-list-item:disabled {
+      cursor: default;
+      opacity: .6; }
+
+#region-app-stack-wrap .dashboard-loading {
+  padding-top: 25px;
+  height: 165px; }
+
+#region-aws-resource-wrap {
+  position: relative;
+  margin-top: 17px;
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+  border: 1px solid #bbb; }

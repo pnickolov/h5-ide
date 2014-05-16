@@ -77,7 +77,7 @@ define [ 'event', 'i18n!nls/lang.js',
             'click .global-region-status-tab'           : 'switchRecent'
             'click #region-switch-list li'              : 'switchRegion'
             'click #region-resource-tab a'              : 'switchAppStack'
-            'click #region-aws-resource-tab a'          : 'switchResource'
+            'click .region-resource-tab-item'           : 'switchResource'
             'click #global-refresh'                     : 'reloadResource'
             'click .global-region-resource-content a'   : 'switchRegionAndResource'
             'click .show-credential'                    : 'showCredential'

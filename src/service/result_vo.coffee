@@ -133,7 +133,7 @@ define [ 'constant', 'underscore' ] , ( constant, _ ) ->
                 when constant.RETURN_CODE.E_INVALID then error_message = result.toString() #"Invalid username or password"
                 when constant.RETURN_CODE.E_EXPIRED then error_message = result.toString() #"Your subscription expired"
                 when constant.RETURN_CODE.E_UNKNOWN then error_message = constant.MESSAGE_E.E_UNKNOWN #"Invalid username or password"
-                when constant.RETURN_CODE.E_PARAM
+                when constant.RETURN_CODE.E_PARAM, 404
                     errObj = parseAWSError result
                     error_message = errObj.errMessage
                     aws_error_code = errObj.errCode

@@ -21,14 +21,16 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'ebs_service' , '../resu
 
 				if compObj.type is constant.RESTYPE.LC
 
-					_.each compObj.resource.BlockDeviceMapping, (blockObj) ->
+					_.each compObj.resource.BlockDeviceMapping, (blockObj, idx) ->
 
-						snaphostId = blockObj.Ebs.SnapshotId
-						instanceUID = compObj.uid
-						if snaphostId and instanceUID
-							if not snaphostMap[snaphostId]
-								snaphostMap[snaphostId] = []
-							snaphostMap[snaphostId].push(instanceUID)
+						if idx > 0
+							
+							snaphostId = blockObj.Ebs.SnapshotId
+							instanceUID = compObj.uid
+							if snaphostId and instanceUID
+								if not snaphostMap[snaphostId]
+									snaphostMap[snaphostId] = []
+								snaphostMap[snaphostId].push(instanceUID)
 
 				null
 

@@ -440,6 +440,8 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
             owner = atob $.cookie( 'usercode' )
             if describe.tagSet
                 tag = describe.tagSet
+                if tag['Created by'] is owner and !(describe.instanceState?.name is 'terminated')
+                    describe.clickAble = true
                 if tag.app
                     describe.app = tag.app
                     describe.host = tag.name

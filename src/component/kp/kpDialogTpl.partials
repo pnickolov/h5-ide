@@ -10,8 +10,8 @@
             <div class="toolbar">
                 <button class="icon-new-stack btn btn-blue" id="kp-create">Create Key Pair</button>
                 <div class="btn-group">
-                    <button class="icon-import tooltip" id="kp-import" data-tooltip=""></button>
-                    <button class="icon-del tooltip" id="kp-delete" data-tooltip="" disabled></button>
+                    <button class="icon-import tooltip" id="kp-import" data-tooltip="">Import Public Key</button>
+                    <button class="icon-del tooltip" id="kp-delete" data-tooltip="" disabled>Delete</button>
                     <button class="icon-refresh tooltip" id="kp-refresh" data-tooltip=""></button>
                 </div>
             </div>

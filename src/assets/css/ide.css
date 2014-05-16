@@ -5338,6 +5338,10 @@ a.action-link:hover {
 	border-top: 1px solid #1d1d1d;
 }
 
+#modal-run-stack .modal-footer .btn-primary {
+	padding: 8px 10px;
+}
+
 /*#modal-run-stack .selectbox {
 	width: 100px;
 }*/

@@ -3363,16 +3363,16 @@ VisualOps API. You cannot UNDO this action.'
       zh: "Confirm to update"
 
     SETTINGS_ERR_INVALID_PWD:
-      en: "Password cannot be empty and must contain at least 6 characters."
-      zh: "密码最少6位且不能和您的用户名相同"
+      en: "New password must contain at least 6 characters."
+      zh: "新密码最少6位且不能和您的用户名相同"
 
     SETTINGS_UPDATE_PWD_SUCCESS:
       en: "Password has been updated."
       zh: "密码修改成功。"
 
     SETTINGS_UPDATE_PWD_FAILURE:
-      en: "Update password failed. Please retry."
-      zh: "修改密码失败。请重试。"
+      en: "Update password failed. Make sure current password is correct."
+      zh: "修改密码失败。请确认当前密码输入正确。"
 
     SETTINGS_ERR_WRONG_PWD:
       en: "Current password is wrong."

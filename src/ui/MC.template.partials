@@ -662,7 +662,9 @@ Additional Notes and Questions
 	</div>
 	<div class="modal-footer">
 
-		<button class="btn btn-blue" id="btn-confirm" disabled>{{#if hasCred}}Run Stack{{else}}Setup Credential First{{/if}}</button>
+		{{#if hasCred}}<button class="btn btn-blue" id="btn-confirm" disabled>Run Stack</button>
+		{{else}}
+		<button class="btn btn-primary" id="btn-confirm" disabled>Set Up Credential First</button>{{/if}}
 		<button class="btn btn-silver modal-close" id="run-stack-cancel">Cancel</button>
 	</div>
 </div>

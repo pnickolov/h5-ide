@@ -160,7 +160,8 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
         else
           console.error "No DefaultKP found when initialize InstanceModel"
       else
-        defaultKp.dissociate @
+        kp = @connectionTargets( "KeypairUsage" )[0]
+        kp and kp.dissociate @
         @set 'keyName', keyName
 
 

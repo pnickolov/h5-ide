@@ -10,10 +10,7 @@ define [ "constant", "../ComplexResModel", "../ConnectionModel"  ], ( constant, 
       kp = @getTarget( constant.RESTYPE.KP )
       if kp
         otherTarget = @getOtherTarget( kp )
-        if kp.isDefault()
-          components[ otherTarget.id ].resource.KeyName = kp.createRef( "KeyName" )
-        else
-          components[ otherTarget.id ].resource.KeyName = ''
+        components[ otherTarget.id ].resource.KeyName = kp.createRef( "KeyName" )
 
       null
 
@@ -80,7 +77,7 @@ define [ "constant", "../ComplexResModel", "../ConnectionModel"  ], ( constant, 
           uid  : @id
           resource :
             KeyFingerprint : @get("fingerprint") or ''
-            KeyName        : @get("appId") or ''
+            KeyName        : @get("appId") or @get("name")
       }
 
   }, {
@@ -99,7 +96,8 @@ define [ "constant", "../ComplexResModel", "../ConnectionModel"  ], ( constant, 
       new KeypairModel({
         id          : data.uid
         name        : data.name
-        appId       : if data.resource.KeyFingerprint then data.resource.KeyName else '' #no fingerprint is old data
+        #appId       : if data.resource.KeyFingerprint then data.resource.KeyName else '' #no fingerprint is old data
+        appId       : data.resource.KeyName
         fingerprint : data.resource.KeyFingerprint
       })
       null

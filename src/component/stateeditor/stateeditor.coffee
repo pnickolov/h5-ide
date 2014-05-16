@@ -5,7 +5,7 @@
 define [ 'event', './view', './model', './lib/ace', 'UI.modal', 'jquerysort' ], ( ide_event, View, Model ) ->
 
     #private
-    loadModule = ( allCompData, uid, resId ) ->
+    loadModule = ( allCompData, uid, resId, force ) ->
 
         compData = allCompData[uid]
         resModel = Design.instance().component(uid)
@@ -33,8 +33,8 @@ define [ 'event', './view', './model', './lib/ace', 'UI.modal', 'jquerysort' ], 
         ide_event.offListen ide_event.STATE_EDITOR_SAVE_DATA
         ide_event.onLongListen ide_event.STATE_EDITOR_SAVE_DATA, (event) ->
             view.onMouseDownSaveFromOther(event)
-
-        $( '#property-panel' ).addClass 'state'
+        if not force
+            $( '#property-panel' ).addClass 'state'
         $( '#property-panel .sub-stateeditor' ).html view.render().el
 
     unLoadModule = ( view, model ) ->

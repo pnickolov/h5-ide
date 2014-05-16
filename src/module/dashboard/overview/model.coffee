@@ -443,8 +443,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                 if tag.app
                     describe.app = tag.app
                     describe.host = tag.name
-                    if tag[ 'Created by' ] is owner
-                        describe.owner = tag[ 'Created by' ]
+                    describe.owner = tag[ 'Created by' ]
             describe
 
         ############################################################################################

@@ -1,5 +1,5 @@
 
-define [ 'i18n!nls/lang.js', "./SessionDialogTpl" ], ( lang, template ) ->
+define [ 'i18n!nls/lang.js', "./SessionDialogTpl", "backbone" ], ( lang, template ) ->
 
   CurrentSessionDialog = null
 

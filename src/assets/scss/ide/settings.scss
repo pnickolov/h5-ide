@@ -1,6 +1,7 @@
 #SettingsNav {
-  background : #0c0c0c;
-  height     : 45px;
+  background:    #0c0c0c;
+  height:        45px;
+  border-bottom: 1px solid #000;
 
   > span {
     float       : left;
@@ -14,14 +15,12 @@
     padding     : 0 10px;
 
     &.selected:before {
-      position      : absolute;
-      bottom        : 0px;
-      left          : 50%;
-      margin-left   : -6px;
-      border-right  : 6px solid transparent;
-      border-bottom : 6px solid #272727;
-      border-left   : 6px solid transparent;
-      content       : '';
+      position:      absolute;
+      left:          0;
+      bottom:        0px;
+      content:       '';
+      border-bottom: 2px solid #148BE6;
+      width:         100%;
     }
   }
 }
@@ -42,6 +41,13 @@
     color       : #999;
     line-height : 30px;
     margin-left : 10px;
+  }
+
+  #CredSetupRemove {
+    font-size: 12px;
+    color:     #ec3c38;
+    padding:   0;
+    margin:    0;
   }
 
   #AccountPwd {
@@ -113,19 +119,31 @@
 
   .btn { padding : 8px 10px; }
 
-  .cred-btn-wrap { margin-top : 8px; }
+  // .cred-btn-wrap { margin-top : 20px; }
 }
 
-#CredDemoWrap .cred-setup {
-  margin : 10px;
-  padding : 6px 10px;
+#CredDemoWrap {
+
+  h3 {
+    font-size: 16px;
+    color:     #eee;
+
+    + p {
+      color: #ffcb50;
+    }
+  }
+
+  .cred-setup {
+    margin-top: 10px;
+  }
 }
 
 #CredAwsWrap .cred-setup {
-  position  : absolute;
-  color     : #148BE6;
-  top       : 40px;
-  right     : 8px;
+  position:  absolute;
+  color:     #148BE6;
+  top:       40px;
+  right:     8px;
+  font-size: 12px;
 }
 
 .cred-setup-msg {
@@ -163,12 +181,6 @@
     font-size          : 13px;
     margin-bottom      : 6px;
   }
-}
-
-#CredSetupRemove {
-  font-size : 12px;
-  color     : #ec3c38;
-  padding   : 0;
 }
 
 $welcome-dialog-width: 600px;
@@ -226,7 +238,11 @@ $welcome-dialog-width: 600px;
   color:   #ccc;
 }
 
-#WelcomeSkipWarning {
+#WelcomeSkipWarning,
+#CredRemoveWrap,
+#CredConfirmWrap {
+
+    color: #ccc;
 
     h3 {
       font-size:     18px;
@@ -234,6 +250,10 @@ $welcome-dialog-width: 600px;
       color:         #eee;
       border-bottom: 1px solid #000;
       margin-bottom: 20px;
+
+      span {
+        color: #ffcb50;
+      }
     }
 
     li {
@@ -294,7 +314,9 @@ $welcome-dialog-width: 600px;
   }
 }
 
-#WelcomeCredUpdate {
+#WelcomeCredUpdate,
+#CredRemoving,
+#CredUpdating  {
   margin:   0 auto;
   width:    400px;
   position: relative;

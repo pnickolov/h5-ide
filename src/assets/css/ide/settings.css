@@ -1,6 +1,7 @@
 #SettingsNav {
   background: #0c0c0c;
-  height: 45px; }
+  height: 45px;
+  border-bottom: 1px solid #000; }
   #SettingsNav > span {
     float: left;
     min-width: 100px;
@@ -13,13 +14,11 @@
     padding: 0 10px; }
     #SettingsNav > span.selected:before {
       position: absolute;
+      left: 0;
       bottom: 0px;
-      left: 50%;
-      margin-left: -6px;
-      border-right: 6px solid transparent;
-      border-bottom: 6px solid #272727;
-      border-left: 6px solid transparent;
-      content: ''; }
+      content: '';
+      border-bottom: 2px solid #148BE6;
+      width: 100%; }
 
 #SettingsBody {
   width: 430px;
@@ -34,6 +33,11 @@
     color: #999;
     line-height: 30px;
     margin-left: 10px; }
+  #SettingsBody #CredSetupRemove {
+    font-size: 12px;
+    color: #ec3c38;
+    padding: 0;
+    margin: 0; }
   #SettingsBody #AccountPwd {
     color: #148BE6;
     padding: 3px 0;
@@ -90,18 +94,21 @@
     margin-bottom: 1em; }
   #CredentialTab .btn {
     padding: 8px 10px; }
-  #CredentialTab .cred-btn-wrap {
-    margin-top: 8px; }
 
+#CredDemoWrap h3 {
+  font-size: 16px;
+  color: #eee; }
+  #CredDemoWrap h3 + p {
+    color: #ffcb50; }
 #CredDemoWrap .cred-setup {
-  margin: 10px;
-  padding: 6px 10px; }
+  margin-top: 10px; }
 
 #CredAwsWrap .cred-setup {
   position: absolute;
   color: #148BE6;
   top: 40px;
-  right: 8px; }
+  right: 8px;
+  font-size: 12px; }
 
 .cred-setup-msg {
   padding: 15px;
@@ -130,11 +137,6 @@
   padding: 10px;
   font-size: 13px;
   margin-bottom: 6px; }
-
-#CredSetupRemove {
-  font-size: 12px;
-  color: #ec3c38;
-  padding: 0; }
 
 #WelcomeSettings {
   width: 600px; }
@@ -169,19 +171,33 @@
   padding: 20px 80px;
   color: #ccc; }
 
-#WelcomeSkipWarning h3 {
-  font-size: 18px;
-  padding: 10px 0;
-  color: #eee;
-  border-bottom: 1px solid #000;
-  margin-bottom: 20px; }
-#WelcomeSkipWarning li {
-  list-style-type: circle;
-  margin-left: 20px;
-  margin-bottom: 5px;
-  color: #ffcb50; }
-  #WelcomeSkipWarning li:last-child {
-    margin-bottom: 0; }
+#WelcomeSkipWarning,
+#CredRemoveWrap,
+#CredConfirmWrap {
+  color: #ccc; }
+  #WelcomeSkipWarning h3,
+  #CredRemoveWrap h3,
+  #CredConfirmWrap h3 {
+    font-size: 18px;
+    padding: 10px 0;
+    color: #eee;
+    border-bottom: 1px solid #000;
+    margin-bottom: 20px; }
+    #WelcomeSkipWarning h3 span,
+    #CredRemoveWrap h3 span,
+    #CredConfirmWrap h3 span {
+      color: #ffcb50; }
+  #WelcomeSkipWarning li,
+  #CredRemoveWrap li,
+  #CredConfirmWrap li {
+    list-style-type: circle;
+    margin-left: 20px;
+    margin-bottom: 5px;
+    color: #ffcb50; }
+    #WelcomeSkipWarning li:last-child,
+    #CredRemoveWrap li:last-child,
+    #CredConfirmWrap li:last-child {
+      margin-bottom: 0; }
 
 #WelcomeDoneWrap > p {
   font-size: 16px;
@@ -213,17 +229,23 @@
 #WelcomeDoneWrap a:hover {
   text-decoration: underline; }
 
-#WelcomeCredUpdate {
+#WelcomeCredUpdate,
+#CredRemoving,
+#CredUpdating {
   margin: 0 auto;
   width: 400px;
   position: relative;
   height: 200px; }
-  #WelcomeCredUpdate p {
+  #WelcomeCredUpdate p,
+  #CredRemoving p,
+  #CredUpdating p {
     top: 50%;
     position: absolute;
     margin-top: -20px;
     color: #ccc; }
-  #WelcomeCredUpdate .loading-spinner {
+  #WelcomeCredUpdate .loading-spinner,
+  #CredRemoving .loading-spinner,
+  #CredUpdating .loading-spinner {
     position: absolute;
     top: 50%;
     margin-top: -30px;

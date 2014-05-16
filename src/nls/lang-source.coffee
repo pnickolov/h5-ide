@@ -3204,8 +3204,8 @@ module.exports =
       zh : "You are using a demo AWS account. Set up your own credential to run stack into live resources, or visualize your existing VPC."
 
     SETTINGS_CRED_DEMO_TEXT:
-      en : "Some stack you build in demo mode may report error due to resource inconsistency between different accounts."
-      zh : "Some stack you build in demo mode may report error due to resource inconsistency between different accounts."
+      en : "Some stack you build in demo mode may report error after setting up credential due to resource inconsistency between different accounts."
+      zh : "Some stack you build in demo mode may report error after setting up credential due to resource inconsistency between different accounts."
 
     SETTINGS_CRED_DEMO_SETUP:
       en : "Set up AWS Credentials"
@@ -3298,8 +3298,8 @@ VisualOps API. You cannot UNDO this action.'
       zh: "您确定要移除账号%s的AWS证书吗？"
 
     SETTINGS_CRED_REMOVE_TEXT:
-      en: "By removing Credentials, you will be in the demo mode.<br>If you want to launch stack into app, you need to provide valid AWS Credentials. <br>The stacks you designed in demo mode may not be able to launch with your AWS Credentials due to resource inconsistency.<br>If you have existing apps, they will become unmanageable and can only be forced to delete."
-      zh: "By removing Credentials, you will be in the demo mode.<br>If you want to launch stack into app, you need to provide valid AWS Credentials. <br>The stacks you designed in demo mode may not be able to launch with your AWS Credentials due to resource inconsistency.<br>If you have existing apps, they will become unmanageable and can only be forced to delete."
+      en: "<p>By removing Credentials, you will be in the demo mode.</p><p>If you want to launch stack into app, you need to provide valid AWS Credentials. </p><p>The stacks you designed in demo mode may not be able to launch with your AWS Credentials due to resource inconsistency.</p><p>If you have existing apps, they will become unmanageable and can only be forced to delete.</p>"
+      zh: "<p>By removing Credentials, you will be in the demo mode.</p><p>If you want to launch stack into app, you need to provide valid AWS Credentials. </p><p>The stacks you designed in demo mode may not be able to launch with your AWS Credentials due to resource inconsistency.</p><p>If you have existing apps, they will become unmanageable and can only be forced to delete.</p>"
 
     SETTINGS_CRED_REMOVING:
       en : "Removing credential..."
@@ -3326,8 +3326,8 @@ VisualOps API. You cannot UNDO this action.'
       zh : "Fail to remove your credential, please retry."
 
     SETTINGS_CRED_UPDATE_CONFIRM_TIT:
-      en : "You have un-terminated app. Do you confirm to update the AWS credential?"
-      zh : "You have un-terminated app. Do you confirm to update the AWS credential?"
+      en : "<span>You have running or stopped app(s).</span> Do you confirm to update the AWS credential?"
+      zh : "<span>You have running or stopped app(s).</span> Do you confirm to update the AWS credential?"
 
     SETTINGS_CRED_UPDATE_CONFIRM_TEXT:
       en : "If you continue to use the new credential, existing apps might become unmanageable. If the new AWS credential does not have sufficient privileges to manage the existing apps, we strongly recommend to TERMINATE existing apps first."

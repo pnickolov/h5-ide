@@ -965,20 +965,6 @@ button {
 	margin: 0 auto;
 }
 
-.region-resource-thumbnail img {
-	max-width     : inherit;
-	height        : 145px;
-	border        : 1px solid #55626e;
-	border-bottom : none;
-	border-radius : 5px 5px 0 0;
-	width         : 100%;
-	background    : #fff;
-
-	-webkit-box-sizing : border-box;
-	   -moz-box-sizing : border-box;
-	        box-sizing : border-box;
-}
-
 .region-resource-info {
 	background    : #323e49;
 	padding       : 5px 12px;

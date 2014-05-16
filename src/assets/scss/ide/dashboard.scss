@@ -377,6 +377,20 @@
     &.app-thumbnail {
       background-image : image-url("ide/thumbnail-app-placehoder@2x.png");
     }
+
+    img {
+      width  : 100%;
+      height : auto;
+
+      border        : 1px solid #55626e;
+      border-bottom : none;
+      border-radius : 5px 5px 0 0;
+      background    : #fff;
+
+      -webkit-box-sizing : border-box;
+         -moz-box-sizing : border-box;
+              box-sizing : border-box;
+    }
   }
 
   .blank-widget {

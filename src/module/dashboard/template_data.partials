@@ -196,7 +196,7 @@
     {{else}}
     <li>
         {{#if usage}}<i class="icon-app-type-{{usage}}"></i>{{/if}}
-        <div class="thumbnail app-thumbnail"> <img data-id="{{id}}" src="{{url}}"/> </div>
+        <div class="thumbnail app-thumbnail"> <img src="{{thumbnail}}" {{#unless thumbnail}}class="hide"{{/unless}}/> </div>
         <div class="region-resource-info">
             <span class="region-resource-item-name truncate">{{name}}</span>
             <i class="region-resource-status region-resource-status-{{#if isrunning}}running{{else}}stopped{{/if}}"></i>
@@ -227,7 +227,7 @@
 <ul id="region-resource-stack-wrap" class="region-resource-list clearfix scroll-content" {{#if app}} style="display: none;"{{/if}}>
 {{#each stacks}}
     <li>
-        <div class="thumbnail"> <img data-id="{{id}}" src="{{url}}"/> </div>
+        <div class="thumbnail"> <img src="{{thumbnail}}" {{#unless thumbnail}}class="hide"{{/unless}}/> </div>
         <div class="region-resource-info">
             <span class="region-resource-item-name truncate">{{name}}</span>
             <div class="region-resource-action clearfix">

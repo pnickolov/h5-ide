@@ -301,6 +301,16 @@
   overflow: hidden; }
   .region-resource-list .thumbnail.app-thumbnail {
     background-image: url('/assets/images/ide/thumbnail-app-placehoder@2x.png'); }
+  .region-resource-list .thumbnail img {
+    width: 100%;
+    height: auto;
+    border: 1px solid #55626e;
+    border-bottom: none;
+    border-radius: 5px 5px 0 0;
+    background: #fff;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box; }
 .region-resource-list .blank-widget {
   margin: 16px 16px 17px; }
 

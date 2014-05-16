@@ -178,11 +178,7 @@ define [ 'event', 'i18n!nls/lang.js',
                 attr.stacks = App.model.stackList().where(filter).map (m)-> m.toJSON(tojson)
                 attr.apps   = App.model.appList().where(filter).map (m)-> m.toJSON(tojson)
 
-
-            $('#region-app-stack-wrap')
-                .html( template_data.region_app_stack(attr) )
-                .find('.region-resource-thumbnail img')
-                .error Helper.thumbError
+            $('#region-app-stack-wrap').html( template_data.region_app_stack(attr) )
 
         confirmAppName: ( event ) ->
             confirm = $( @ ).data 'confirm'

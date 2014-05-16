@@ -23,7 +23,7 @@ define [ "ApiRequest", "event" , "backbone" ], ( ApiRequest, ide_event )->
       return
 
     hasCredential : ()-> !!@get("account")
-    isFirstVisit  : ()-> true #!(UserState.NotFirstTime&@get("state"))
+    isFirstVisit  : ()-> !(UserState.NotFirstTime&@get("state"))
 
     userInfoAccuired : ( result )->
       res =
@@ -120,8 +120,9 @@ define [ "ApiRequest", "event" , "backbone" ], ( ApiRequest, ide_event )->
     logout : ()->
       domain = { "domain" : window.location.hostname.replace("ide", "") }
       for ckey, cValue of $.cookie()
-        $.removeCookie ckey, domain
-        $.removeCookie ckey
+        if ckey isnt 'stack_store_id'
+          $.removeCookie ckey, domain
+          $.removeCookie ckey
       return
 
     changePassword : ( oldPwd, newPwd )->

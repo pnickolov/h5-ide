@@ -55,6 +55,7 @@ define(['ApiRequestDefs'], function( ApiRequestDefs ){
 		'account_apply_trial'     : { url:'/account/',	method:'apply_trial',	params:['username', 'session_id', 'message']   },
 		'account_set_credential'  : { url:'/account/',	method:'set_credential',	params:['username', 'session_id', 'access_key', 'secret_key', 'account_id', 'force_update']   },
 		'account_validate_credential' : { url:'/account/',	method:'validate_credential',	params:['username', 'session_id', 'access_key', 'secret_key']   },
+		'stackstore_fetch_stackstore' : { url:'/stackstore/', method:'fetch_stackstore',  params:['file_name']   }
 	}
 
 	for ( var i in Apis ) {

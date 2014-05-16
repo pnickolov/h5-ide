@@ -465,7 +465,7 @@ setCredit = (result)->
     $.cookie "session_id", result.session_id, COOKIE_OPTION
 
     # Set a cookie for WWW
-    $.cookie "has_session", !!session_info.session_id, {
+    $.cookie "has_session", !!result.session_id, {
         domain  : window.location.hostname.replace("ide", "")
         path    : "/"
         expires : 30

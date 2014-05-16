@@ -185,17 +185,8 @@ define [ "component/exporter/Thumbnail", 'jquery', 'event', 'MC', 'base_main', '
 
                 null
 
-            model.on 'change:cur_app_list', () ->
-                view.renderRegionAppStack( 'app' )
-
             ide_event.onLongListen ide_event.UPDATE_APP_INFO, ( region, id ) ->
                 model.describeAWSResourcesService region
-
-            model.on 'UPDATE_REGION_APP_LIST', () ->
-                view.renderRegionAppStack( 'app' )
-
-            model.on 'change:cur_stack_list', () ->
-                view.renderRegionAppStack( 'stack' )
 
             model.on 'REGION_RESOURCE_CHANGED', ( type, data )->
                 console.log 'region resource table render'

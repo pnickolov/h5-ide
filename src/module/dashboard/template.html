@@ -50,48 +50,28 @@
 			<i class="icon-caret-down"></i>
 		</a>
 
-		<div id="region-switch-list" class="dropdown-menu">
-			<ul>
-				<li data-region="global">
-					<a href="javascript:void(0)">{{i18n "DASH_BTN_GLOBAL"}}</a>
-				</li>
-
-				{{#each region_names}}
-					<li data-region="{{long.id}}">
-						<a href="javascript:void(0)">{{short.name}}</a>
-					</li>
-				{{/each}}
-
-			</ul>
-		</div>
+		<ul id="region-switch-list" class="dropdown-menu">
+			<li data-region="global">{{i18n "DASH_BTN_GLOBAL"}}</li>
+			{{#each region_names}}<li data-region="{{long.id}}">{{short.name}}</li>{{/each}}
+		</ul>
 	</div>
 
 	<!-- Global view -->
 		<div id="global-view">
-			<!-- loading -->
-				<div class="dashboard-loading clearfix">
-					<div class="loading-spinner"></div>
-				</div>
+			<div class="dashboard-loading"><div class="loading-spinner"></div></div>
 			<!-- will be filled -->
 		</div>
 	<!-- Global view -->
 
 	<!-- Region view -->
-		<div id="region-view" style="display:none;">
-
+		<section id="region-view" style="display:none;">
 			<div id="region-app-stack-wrap">
-				<div class="dashboard-loading clearfix">
-					<div class="loading-spinner"></div>
-				</div>
+					<div class="dashboard-loading"><div class="loading-spinner"></div></div>
 			</div>
-
 			<div id="region-resource-wrap">
-				<div class="dashboard-loading clearfix">
-					<div class="loading-spinner"></div>
-				</div>
+				<div class="dashboard-loading"><div class="loading-spinner"></div></div>
 			</div>
-
-		</div>
+		</section>
 	<!-- Region view -->
 </section>
 

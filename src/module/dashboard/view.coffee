@@ -5,11 +5,10 @@
 define [ 'event', 'i18n!nls/lang.js',
          './module/dashboard/template',
          './module/dashboard/template_data',
-         "component/exporter/Thumbnail"
          'constant',
          'unmanagedvpc',
          'backbone', 'jquery', 'handlebars', 'UI.scrollbar'
-], ( ide_event, lang, overview_tmpl, template_data, ThumbUtil, constant, unmanagedvpc ) ->
+], ( ide_event, lang, overview_tmpl, template_data, constant, unmanagedvpc ) ->
 
     current_region = null
 
@@ -76,7 +75,7 @@ define [ 'event', 'i18n!nls/lang.js',
             'click #btn-create-stack'                   : 'createStack'
             'click .global-region-status-tab'           : 'switchRecent'
             'click #region-switch-list li'              : 'switchRegion'
-            'click #region-resource-tab a'              : 'switchAppStack'
+            'click #region-resource-tab li'             : 'switchAppStack'
             'click .region-resource-tab-item'           : 'switchResource'
             'click #global-refresh'                     : 'reloadResource'
             'click .global-region-resource-content a'   : 'switchRegionAndResource'
@@ -106,16 +105,20 @@ define [ 'event', 'i18n!nls/lang.js',
 
             @render()
 
+            @regionTab = "stack"
+
             # Watch appList/stackList changes.
             @listenTo App.model.stackList(), "change", ()->
                 console.info "Dashboard Updated due to changes in stack list."
                 @renderMapResult()
                 @renderRecent()
+                @renderRegionAppStack()
                 return
 
             @listenTo App.model.appList(),   "change", ()->
                 @renderMapResult()
                 @renderRecent()
+                @renderRegionAppStack()
                 return
 
         render : () ->
@@ -132,6 +135,7 @@ define [ 'event', 'i18n!nls/lang.js',
 
             @renderMapResult()
             @renderRecent()
+            @renderRegionAppStack()
             null
 
         renderMapResult : ->
@@ -162,6 +166,14 @@ define [ 'event', 'i18n!nls/lang.js',
 
             $( '#global-region-recent-list' ).html template_data.recent { stacks:stacks, apps:apps }
             null
+
+        renderRegionAppStack: () ->
+            attr = { apps:[], stacks:[]}
+            attr[ @regionTab ] = true
+            $('#region-app-stack-wrap')
+                .html( template_data.region_app_stack(attr) )
+                .find('.region-resource-thumbnail img')
+                .error Helper.thumbError
 
         confirmAppName: ( event ) ->
             confirm = $( @ ).data 'confirm'
@@ -201,7 +213,7 @@ define [ 'event', 'i18n!nls/lang.js',
             target = $ event.currentTarget
             region = target.data 'region'
             current_region = region if region isnt 'global'
-            regionName = target.find('a').text()
+            regionName = target.text()
 
             if regionName is @$el.find( '#region-switch span' ).text()
                 return
@@ -229,7 +241,7 @@ define [ 'event', 'i18n!nls/lang.js',
             $("#global-region-recent-list").children().hide().eq( $tgt.index() ).show()
 
         switchAppStack: ( event ) ->
-            Helper.switchTab event, '#region-resource-tab a', '.region-resource-list'
+            Helper.switchTab event, '#region-resource-tab li', '.region-resource-list'
 
         switchResource: ( event ) ->
             type = $( event.currentTarget ).data 'resourceType'
@@ -251,26 +263,6 @@ define [ 'event', 'i18n!nls/lang.js',
             if current_region
                 @trigger 'SWITCH_REGION', current_region, true
             $( this.el ).find('#global-view').html tmpl
-
-        renderRegionAppStack: ( tab ) ->
-            @regionAppStackRendered = true
-            tab = 'stack' if not tab
-            context = _.extend {}, @model.toJSON()
-
-            for i in context.cur_stack_list || []
-                i.url = ThumbUtil.fetch( i.id )
-
-            for i in context.cur_app_list || []
-                i.url = ThumbUtil.fetch( i.id )
-
-
-            context[ tab ] = true
-            tmpl = template_data.region_app_stack context
-            $( this.el )
-                .find('#region-app-stack-wrap')
-                .html( tmpl )
-                .find('.region-resource-thumbnail img')
-                .error Helper.thumbError
 
         renderRegionResource: ( event ) ->
             console.log  @model.toJSON()

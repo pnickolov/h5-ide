@@ -274,10 +274,8 @@
 
 .region-resource-list {
   background: #fff;
-  padding: 5px 20px 20px;
   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1), 0 -1px 0 #bbbbbb;
-  border: 1px solid #bbb;
-  border-top: none; }
+  border: 1px solid #bbb; }
   .region-resource-list > .scroll-wrap {
     max-height: 378px; }
   .region-resource-list li {
@@ -294,13 +292,92 @@
     .region-resource-list .region-resource-list-item:disabled {
       cursor: default;
       opacity: .6; }
+  .region-resource-list .blank-widget {
+    margin: 15px; }
 
-#region-app-stack-wrap .dashboard-loading {
-  padding-top: 25px;
-  height: 165px; }
+#region-app-stack-wrap {
+  position: relative; }
+  #region-app-stack-wrap .dashboard-loading {
+    padding-top: 25px;
+    height: 165px; }
 
 #region-aws-resource-wrap {
   position: relative;
-  margin-top: 17px;
+  margin-top: 18px;
   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
   border: 1px solid #bbb; }
+
+#region-resource-tab {
+  position: absolute;
+  right: 0;
+  top: -49px;
+  border-radius: 5px 5px 0 0;
+  z-index: 5;
+  box-shadow: 3px -2px 3px rgba(0, 0, 0, 0.05); }
+  #region-resource-tab > li {
+    float: left;
+    width: 170px;
+    height: 48px;
+    line-height: 49px;
+    position: relative;
+    text-align: center;
+    border: 1px solid #bbb;
+    background: #F3F3F3;
+    cursor: pointer;
+    font-size: 21px;
+    color: #666;
+    background: #f3f3f3 url('/assets/images/ide/global-region-app-stack-m.png') 20px top no-repeat; }
+    #region-resource-tab > li > small {
+      font-size: 12px;
+      color: #ccc; }
+    #region-resource-tab > li:first-child {
+      border-radius: 3px 0 0 0; }
+    #region-resource-tab > li:last-child {
+      border-left: none;
+      border-radius: 0 3px 0 0; }
+    #region-resource-tab > li.on {
+      background-color: #fff;
+      box-shadow: none;
+      border-bottom: none;
+      height: 49px; }
+    #region-resource-tab > li.stack {
+      background-position: 20px -50px; }
+
+#btn-create-stack {
+  border: none;
+  background: none;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  margin-top: -15px;
+  color: #999;
+  cursor: pointer; }
+  #btn-create-stack:hover {
+    color: #9C6DC0; }
+
+#region-resource-stack-wrap .blank-widget:after {
+  content: " ";
+  position: absolute;
+  top: 0;
+  right: 8px;
+  width: 114px;
+  height: 119px;
+  background: url('/assets/images/ide/action-guide.png') top right no-repeat; }
+
+#region-switch-list {
+  position: absolute;
+  background: #FFF;
+  top: 46px;
+  z-index: 35;
+  border: 1px solid #CCC;
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 2px;
+  width: 163px; }
+  #region-switch-list > li {
+    display: block;
+    padding: 15px 10px;
+    font-size: 14px;
+    color: #666; }
+    #region-switch-list > li:hover {
+      background-color: #eee;
+      color: #148BE6; }

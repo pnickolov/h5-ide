@@ -679,29 +679,6 @@ button {
 	top: 9px;
 }
 
-#region-switch-list {
-	position: absolute;
-	background: #FFF;
-	top: 46px;
-	z-index: 35;
-	border: 1px solid #CCC;
-	box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
-	border-radius: 2px;
-	width: 163px;
-}
-
-#region-switch-list a {
-	display: block;
-	padding: 15px 10px;
-	font-size: 14px;
-	color: #666;
-}
-
-#region-switch-list a:hover {
-	background-color: #eee;
-	color: #148BE6;
-}
-
 .dashboard-loading {
 	background: #fff;
 	box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
@@ -906,44 +883,6 @@ button {
 /* Region view */
 #region-resource-wrap {
 	position: relative;
-}
-
-#region-resource-tab > ul {
-	float         : right;
-	background    : #fff;
-	border-radius : 5px 5px 0 0;
-	z-index       : 5;
-	box-shadow    : 3px -2px 3px rgba(0, 0, 0, 0.05);
-}
-
-#region-resource-tab li {
-	float: left;
-}
-
-#region-resource-tab a {
-	display: block;
-	padding: 14px 0 10px 5px;
-	width: 170px;
-	position: relative;
-	text-align: center;
-	border: 1px solid #bbb;
-	border-bottom: none;
-	background: #F3F3F3;
-	box-shadow: inset 0 -1px 0 #bbb;
-}
-
-#region-resource-tab li:first-child a {
-	border-radius: 3px 0 0 0;
-}
-
-#region-resource-tab li:last-child a {
-	border-left: none;
-	border-radius: 0 3px 0 0;
-}
-
-#region-resource-tab a.on {
-	background: transparent;
-	box-shadow: none;
 }
 
 .region-resource-tab-type {
@@ -1473,21 +1412,6 @@ button {
 
 .dashboard-widget-body-table.table-tall {
 	height: 140px;
-}
-
-#btn-create-stack {
-	border: none;
-	background: none;
-	position: absolute;
-	right: 10px;
-	top: 50%;
-	margin-top: -10px;
-	color: #999;
-	cursor: pointer;
-}
-
-#btn-create-stack:hover {
-	color: #9C6DC0;
 }
 
 .thumbnail-name {

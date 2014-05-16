@@ -339,10 +339,8 @@
 
 .region-resource-list {
   background : #fff;
-  padding    : 5px 20px 20px;
-  box-shadow: 1px 1px 5px rgba(0,0,0,0.1), 0 -1px 0 #bbb;
-  border: 1px solid #bbb;
-  border-top : none;
+  box-shadow : 1px 1px 5px rgba(0,0,0,0.1), 0 -1px 0 #bbb;
+  border     : 1px solid #bbb;
 
   > .scroll-wrap {
     max-height: 378px;
@@ -366,11 +364,19 @@
       opacity: .6;
     }
   }
+
+  .blank-widget {
+    margin : 15px;
+  }
 }
 
-#region-app-stack-wrap .dashboard-loading {
-  padding-top : 25px;
-  height      : 165px;
+#region-app-stack-wrap {
+  position : relative;
+
+  .dashboard-loading {
+    padding-top : 25px;
+    height      : 165px;
+  }
 }
 
 #region-aws-resource-wrap {
@@ -378,4 +384,99 @@
   margin-top: 18px;
   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
   border: 1px solid #bbb;
+}
+
+
+#region-resource-tab {
+  position      : absolute;
+  right         : 0;
+  top           : -49px;
+  border-radius : 5px 5px 0 0;
+  z-index       : 5;
+  box-shadow    : 3px -2px 3px rgba(0, 0, 0, 0.05);
+
+  > li {
+    float       : left;
+    width       : 170px;
+    height      : 48px;
+    line-height : 49px;
+    position    : relative;
+    text-align  : center;
+    border      : 1px solid #bbb;
+    background  : #F3F3F3;
+    cursor      : pointer;
+    font-size   : 21px;
+    color       : #666;
+    background  : #F3F3F3 image-url("ide/global-region-app-stack-m.png") 20px top no-repeat;
+
+    > small {
+      font-size : 12px;
+      color : #ccc;
+    }
+
+    &:first-child {
+      border-radius: 3px 0 0 0;
+    }
+
+    &:last-child {
+      border-left: none;
+      border-radius: 0 3px 0 0;
+    }
+
+    &.on {
+      background-color : #fff;
+      box-shadow       : none;
+      border-bottom    : none;
+      height           : 49px;
+    }
+
+    &.stack { background-position : 20px -50px; }
+  }
+}
+
+#btn-create-stack {
+  border     : none;
+  background : none;
+  position   : absolute;
+  right      : 10px;
+  top        : 50%;
+  margin-top : -15px;
+  color      : #999;
+  cursor     : pointer;
+
+  &:hover { color: #9C6DC0; }
+}
+
+#region-resource-stack-wrap {
+  .blank-widget {
+    &:after {
+      content    : " ";
+      position   : absolute;
+      top        : 0;
+      right      : 8px;
+      width      : image-width("ide/action-guide.png");
+      height     : image-height("ide/action-guide.png");
+      background : image-url("ide/action-guide.png") top right no-repeat;
+    }
+  }
+}
+
+#region-switch-list {
+  position      : absolute;
+  background    : #FFF;
+  top           : 46px;
+  z-index       : 35;
+  border        : 1px solid #CCC;
+  box-shadow    : 1px 1px 5px rgba(0, 0, 0, 0.1);
+  border-radius : 2px;
+  width         : 163px;
+
+  > li {
+    display: block;
+    padding: 15px 10px;
+    font-size: 14px;
+    color: #666;
+
+    &:hover { background-color: #eee; color: #148BE6; }
+  }
 }

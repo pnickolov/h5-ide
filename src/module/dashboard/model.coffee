@@ -1207,6 +1207,8 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
 
         # get current region's app/stack list
         getItemList : ( flag, region, result ) ->
+            return
+
             me = this
 
             item_list = regions.region_name_group for regions in result when constant.REGION_SHORT_LABEL[ region ] == regions.region_group

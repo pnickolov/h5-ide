@@ -8,7 +8,7 @@
 
 ###
 
-define ["ApiRequest", "constant", "backbone"], ( ApiRequest, constant )->
+define ["ApiRequest", "constant", "component/exporter/Thumbnail", "backbone"], ( ApiRequest, constant, ThumbUtil )->
 
   OpsModelState =
     UnRun    : 0
@@ -37,10 +37,14 @@ define ["ApiRequest", "constant", "backbone"], ( ApiRequest, constant )->
 
     # Returns a plain object to represent this model.
     # If you want to access the JSON of the stack/app, use getJsonData() instead.
-    toJSON : ()->
+    toJSON : ( options )->
       o = Backbone.Model.prototype.toJSON.call( this )
       o.stateDesc  = OpsModelStateDesc[ o.state ]
       o.regionName = constant.REGION_SHORT_LABEL[ o.region ]
+
+      if options
+        if options.thumbnail
+          o.thumbnail = ThumbUtil.fetch(o.id)
       o
 
     # Return true if the stack is saved in the server.

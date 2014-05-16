@@ -145,7 +145,7 @@ define [ 'MC', 'event',
             #KpModel = Design.modelClassForType( constant.RESTYPE.KP )
             #defaultKp = KpModel.getDefaultKP()
 
-            if $('#kp-list .item.selected').length is 0
+            if $('#kp-runtime-placeholder #kp-list .item.selected').length is 0
                 @showErr 'kp', 'Specify a key pair as $DefaultKeyPair for this app.'
                 return false
 
@@ -159,6 +159,7 @@ define [ 'MC', 'event',
 
 
         clickRunIcon : ( event ) ->
+            me = this
             # when disabled not click
             if $('#toolbar-run').hasClass( 'disabled' )
                 return false
@@ -167,7 +168,9 @@ define [ 'MC', 'event',
                 hasCred : App.user.hasCredential()
             }
 
-            me = this
+            # must render it after modal appeared
+            me.renderDefaultKpDropdown()
+
             event.preventDefault()
 
             # set app name
@@ -183,24 +186,23 @@ define [ 'MC', 'event',
 
             # click logic
             $('#btn-confirm').on 'click', this, (event) ->
-                me.renderDefaultKpDropdown()
                 me.hideErr()
 
                 if not App.user.hasCredential()
                     App.showSettings(1)
                     return false
 
-                    #check app name
-                    app_name = $('.modal-input-value').val()
+                #check app name
+                app_name = $('.modal-input-value').val()
 
-                    if not app_name
-                        me.showErr 'appname', lang.ide.PROP_MSG_WARN_NO_APP_NAME
-                        return false
+                if not app_name
+                    me.showErr 'appname', lang.ide.PROP_MSG_WARN_NO_APP_NAME
+                    return false
 
-                    if not MC.validate 'awsName', app_name
-                        #notification 'warning', lang.ide.PROP_MSG_WARN_INVALID_APP_NAME
-                        me.showErr 'appname', lang.ide.PROP_MSG_WARN_INVALID_APP_NAME
-                        return false
+                if not MC.validate 'awsName', app_name
+                    #notification 'warning', lang.ide.PROP_MSG_WARN_INVALID_APP_NAME
+                    me.showErr 'appname', lang.ide.PROP_MSG_WARN_INVALID_APP_NAME
+                    return false
 
                 # get process tab name
                 process_tab_name = 'process-' + MC.common.other.canvasData.get( 'region' ) + '-' + app_name
@@ -215,14 +217,14 @@ define [ 'MC', 'event',
                     # close tab if exist
                     ide_event.trigger ide_event.CLOSE_DESIGN_TAB, process_tab_name
 
-                    # repeat with app list or tab name(some run failed app tabs)
-                    appNameRepeated = (not MC.aws.aws.checkAppName app_name) or (_.contains(_.keys(MC.process), process_tab_name))
-                    if appNameRepeated
-                        me.showErr 'appname', lang.ide.PROP_MSG_WARN_REPEATED_APP_NAME
+                # repeat with app list or tab name(some run failed app tabs)
+                appNameRepeated = (not MC.aws.aws.checkAppName app_name) or (_.contains(_.keys(MC.process), process_tab_name))
+                if appNameRepeated
+                    me.showErr 'appname', lang.ide.PROP_MSG_WARN_REPEATED_APP_NAME
 
-                    # Stop the progress, if defaultKp is not set or if appName is repeated
-                    if not me.defaultKpIsSet() or appNameRepeated
-                        return false
+                # Stop the progress, if defaultKp is not set or if appName is repeated
+                if not me.defaultKpIsSet() or appNameRepeated
+                    return false
 
                 # disable button
                 $('#btn-confirm').attr 'disabled', true

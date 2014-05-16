@@ -17,15 +17,24 @@ define [ 'constant', 'backbone', 'underscore', 'MC', 'keypair_service', 'Design'
     successHandler = ( context ) ->
         ( res ) ->
             if res.is_error
-                context.trigger 'request:error', res, context
                 throw res
             else
                 return res.resolved_data or res
 
     errorHandler = ( context ) ->
         ( err ) ->
+            err = packErrorMsg err
             context.trigger 'request:error', err
             throw err
+
+    packErrorMsg = ( err ) ->
+        msg = err.error_message
+        if err.error_message
+            if msg.indexOf 'Length exceeds maximum of 2048' isnt -1
+                msg = 'Length exceeds maximum of 2048'
+
+        err.error_message = msg
+        err
 
     setSelectedKey = ( keys, name ) ->
             _.each keys, ( key ) ->
@@ -103,11 +112,11 @@ define [ 'constant', 'backbone', 'underscore', 'MC', 'keypair_service', 'Design'
 
 
         list: () ->
-            request( 'DescribeKeyPairs', null, null ).then successHandler(@), errorHandler(@)
+            request( 'DescribeKeyPairs', null, null ).then( successHandler(@) ).fail( errorHandler(@) )
 
         import: ( name, data ) ->
             that = @
-            request( 'ImportKeyPair', name, data ).then( successHandler(@), errorHandler(@) ).then ( res ) ->
+            request( 'ImportKeyPair', name, data ).then( successHandler(@) ).fail( errorHandler(@) ).then ( res ) ->
                 keys = that.get( 'keys' ) or []
                 keys.unshift res
                 that.settle 'keys'
@@ -116,7 +125,7 @@ define [ 'constant', 'backbone', 'underscore', 'MC', 'keypair_service', 'Design'
 
         create: ( name ) ->
             that = @
-            request( 'CreateKeyPair', name ).then( successHandler(@), errorHandler(@) ).then ( res ) ->
+            request( 'CreateKeyPair', name ).then( successHandler(@) ).fail( errorHandler(@) ).then ( res ) ->
                 keys = that.get( 'keys' ) or []
                 keys.unshift res
                 that.settle 'keys'
@@ -125,7 +134,7 @@ define [ 'constant', 'backbone', 'underscore', 'MC', 'keypair_service', 'Design'
 
         remove: ( name ) ->
             that = @
-            request( 'DeleteKeyPair', name ).then( successHandler(@), errorHandler(@) ).then ( res ) ->
+            request( 'DeleteKeyPair', name ).then( successHandler(@) ).fail( errorHandler(@) ).then ( res ) ->
                 keys = that.get 'keys'
                 keyName = res.param[ 4 ]
                 that.set 'keys', _.reject keys, ( k ) ->

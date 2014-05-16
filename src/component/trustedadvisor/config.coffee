@@ -18,6 +18,7 @@ define({
         'AWS.AutoScaling.LaunchConfiguration'   : [ 'state' ]
         'AWS.VPC.RouteTable'                    : [ 'rtb' ]
         'AWS.EC2.EBS.Volume'                    : [ 'ebs' ]
+        'AWS.EC2.KeyPair'                       : [ 'kp' ]
 
     globalList:
         eip: [ 'isHasIGW' ]

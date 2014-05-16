@@ -4726,6 +4726,10 @@ VisualOps API. You cannot UNDO this action.'
       en: "To allow routing to work properly, instance <span class='validation-tag tag-instance'>%s</span> should disabled Source/Destination Checking in \"Network Interface Details\""
       zh: ""
 
+    TA_MSG_ERROR_INSTANCE_REF_OLD_KEYPAIR:
+      en: "%s has associated with an nonexistient key pair <span class='validation-tag'>%s</span>. Make sure to use an existing key pair or creating a new one."
+      zh: ""
+
 
     # ENI
     TA_MSG_ERROR_ENI_NOT_ATTACH_TO_INSTANCE:

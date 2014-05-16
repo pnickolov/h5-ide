@@ -4,133 +4,49 @@
 
 define [ '../base/model',
     'keypair_model',
+    'keypair_service'
     'instance_model',
+    'instance_service'
     'constant',
     'i18n!nls/lang.js'
     'Design'
 
-], ( PropertyModel, keypair_model, instance_model, constant, lang, Design ) ->
+], ( PropertyModel, keypair_model, keypair_service, instance_model, instance_service, constant, lang, Design ) ->
 
     AppInstanceModel = PropertyModel.extend {
 
         defaults :
             'id' : null
 
-        initialize : () ->
-            me = this
+        setOsTypeAndLoginCmd: ( appId ) ->
+            region = Design.instance().region()
+            instance_data = MC.data.resource_list[ region ][ appId ]
+            if instance_data && instance_data.imageId
+                os_type = MC.data.dict_ami[ instance_data.imageId ].osType
 
-            @on 'EC2_KPDOWNLOAD_RETURN', ( result ) ->
+            # below code are based on os_type
+            if not os_type
+                return
 
-                region_name = result.param[3]
-                keypairname = result.param[4]
-                os_type     = null
-                key_data    = null
-                instance    = null
-                public_dns  = null
-                cmd_line    = null
-                login_user  = null
+            if 'win|windows'.indexOf(os_type) > 0
+                @set 'osType', 'windows'
+            else
+                @set 'osType', os_type
 
-                instance_id      = me.get "instanceId"
-                curr_keypairname = me.get "keyName"
+            if instance_data
+                instance_state = instance_data.instanceState.name
 
-                # The user has closed the dialog
-                # Do nothing
-                if curr_keypairname isnt keypairname
-                    return
+            if instance_state == 'running'
+                switch os_type
+                    when 'amazon' then login_user = 'ec2-user'
+                    when 'ubuntu' then login_user = 'ubuntu'
+                    when 'redhat' then login_user = 'ec2-user'
+                    else
+                        login_user = 'root'
 
-                ###
-                # The EC2_KPDOWNLOAD_RETURN event won't fire when the result.is_error
-                # is true. According to bugs in service models.
-                ###
+            cmd_line = sprintf 'ssh -i %s.pem %s@%s', instance_data.keyName, login_user, instance_data.ipAddress or instance_data.privateIpAddress
+            @set 'loginCmd', cmd_line
 
-                if result.is_error
-                    notification 'error', lang.ide.PROP_MSG_ERR_DOWNLOAD_KP_FAILED + keypairname
-                    key_data = null
-                else
-
-                    key_data = result.resolved_data
-
-
-                instance_data = MC.data.resource_list[ region_name ][ instance_id ]
-
-                if instance_data && instance_data.imageId
-                    os_type = MC.data.dict_ami[ instance_data.imageId ].osType
-
-                #get password for windows AMI
-                if 'win|windows'.indexOf(os_type) > 0 and key_data
-                    #me.getPasswordData instance_id, key_data.replace(/\n/g,'')
-                    me.getPasswordData instance_id, key_data
-
-                else
-                    #linux
-
-                    instance = MC.data.resource_list[ region_name ][ instance_id ]
-                    if instance
-                        instance_state = instance.instanceState.name
-
-                    if instance_state == 'running'
-                        switch os_type
-                            when 'amazon' then login_user = 'ec2-user'
-                            when 'ubuntu' then login_user = 'ubuntu'
-                            else
-                                login_user = 'root'
-
-                    if instance.ipAddress
-                        cmd_line = sprintf 'ssh -i %s.pem %s@%s', instance.keyName, login_user, instance.ipAddress
-
-
-                    option =
-                        type      : 'linux'
-                        cmd_line  : cmd_line
-
-                    me.trigger "KP_DOWNLOADED", key_data, option
-
-                null
-
-            @on 'EC2_INS_GET_PWD_DATA_RETURN', ( result ) ->
-
-                region_name    = result.param[3]
-                instance_id    = result.param[4]
-                key_data       = result.param[5]
-                instance       = null
-                instance_state = null
-                win_passwd     = null
-                rdp            = null
-
-
-                curr_instance_id = me.get "instanceId"
-
-                # The user has closed the dialog
-                # Do nothing
-                if curr_instance_id isnt instance_id
-                    return
-
-
-                if result.is_error
-                    notification 'error', lang.ide.PROP_MSG_ERR_GET_PASSWD_FAILED + instance_id
-                    key_data = null
-                else
-                    #right
-                    instance = MC.data.resource_list[ region_name ][ instance_id ]
-                    if instance
-                        instance_state = instance.instanceState.name
-
-                    if instance_state == 'running' && instance.ipAddress
-                        rdp = sprintf constant.RDP_TMPL, instance.ipAddress
-
-                    if result.resolved_data
-                        win_passwd = result.resolved_data.passwordData
-
-
-                option =
-                    type       : 'win'
-                    passwd     : win_passwd
-                    rdp        : rdp
-                    public_dns : instance.ipAddress
-
-                me.trigger "KP_DOWNLOADED", key_data, option
-
-                null
 
         init : ( instance_id )->
 
@@ -148,8 +64,11 @@ define [ '../base/model',
                 @set 'uid', effective.uid
                 @set 'mid', effective.mid
 
+
             if not myInstanceComponent
                 console.warn "instance.app_model.init(): can not find InstanceModel"
+
+
 
             app_data = MC.data.resource_list[ Design.instance().region() ]
 
@@ -184,6 +103,10 @@ define [ '../base/model',
                 instance.app_view = if MC.canvas.getState() is 'appview' then true else false
 
                 this.set instance
+
+                this.resModel = myInstanceComponent
+
+                @setOsTypeAndLoginCmd instance_id
 
             else
                 return false
@@ -234,22 +157,73 @@ define [ '../base/model',
 
             data
 
-        downloadKP : ( keypairname ) ->
-            username = $.cookie "usercode"
-            session  = $.cookie "session_id"
+        genPasswordHandler: ( action ) ->
+            me = this
+            ( result ) ->
 
-            keypair_model.download {sender:@}, username, session, Design.instance().region(), keypairname
-            null
+                region_name    = result.param[3]
+                instance_id    = result.param[4]
+                key_data       = result.param[5]
+                instance       = null
+                instance_state = null
+                win_passwd     = null
+                rdp            = null
 
+                curr_instance_id = me.get "instanceId"
+
+                # Do nothing
+                if curr_instance_id isnt instance_id
+                    return
+
+                if result.is_error
+                    notification 'error', lang.ide.PROP_MSG_ERR_GET_PASSWD_FAILED + instance_id
+                    key_data = null
+                else
+                    if result.resolved_data
+                        win_passwd = result.resolved_data.passwordData
+
+
+                if action is 'check'
+                    me.trigger 'PASSWORD_STATE', !!win_passwd
+                else if action is 'download'
+                    me.trigger 'KEYPAIR_DOWNLOAD', true, win_passwd, result.param[ 5 ]
+                else
+                    me.trigger "PASSWORD_GOT", win_passwd
+
+
+                null
 
         #get windows login password
-        getPasswordData : ( instance_id, key_data ) ->
-
+        getPasswordData : ( key_data, check ) ->
+            instance_id      = @get "instanceId"
+            #curr_keypairname = @get "keyName"
             username = $.cookie "usercode"
             session  = $.cookie "session_id"
 
-            me = this
-            instance_model.GetPasswordData {sender:me}, username, session, Design.instance().region(), instance_id, key_data
+            handler = @genPasswordHandler if check then 'check'
+            instance_service.GetPasswordData( null, username, session, Design.instance().region(), instance_id, key_data ).then handler
+
+            null
+
+        downloadKp: ( kpName ) ->
+            that = @
+            username = $.cookie "usercode"
+            session  = $.cookie "session_id"
+            region = Design.instance().region()
+
+            handler = @genPasswordHandler 'download'
+
+            keypair_service.download( null, username, session, region, kpName ).then ( res ) ->
+                if not res.is_error
+                    if that.get( 'osType' ) is 'windows'
+                        instance_id = that.get "instanceId"
+                        key_data = res.resolved_data
+                        instance_service.GetPasswordData( null, username, session, region, instance_id, key_data ).then handler
+                    else
+                        that.trigger 'KEYPAIR_DOWNLOAD', true, res.resolved_data
+                else
+                    that.trigger 'KEYPAIR_DOWNLOAD', false, res.resolved_data
+
             null
 
 

@@ -1,0 +1,188 @@
+/* Common Style for Modal with Toolbar */
+.modal-toolbar {
+  width: 855px; }
+  .modal-toolbar .list {
+    position: relative; }
+  .modal-toolbar .modal-body {
+    padding: 0; }
+  .modal-toolbar .toolbar {
+    background: #222427;
+    border-bottom: 1px solid #131313;
+    height: 34px;
+    line-height: 34px; }
+    .modal-toolbar .toolbar button {
+      float: left;
+      display: inline-block;
+      padding: 8px;
+      line-height: 18px;
+      position: relative; }
+      .modal-toolbar .toolbar button.active {
+        background: #1b7fcc;
+        color: #fff; }
+        .modal-toolbar .toolbar button.active:after {
+          content: "";
+          width: 0;
+          height: 0;
+          border-style: solid;
+          border-width: 6px 5px 0 5px;
+          border-color: #1b7fcc transparent transparent transparent;
+          position: absolute;
+          bottom: -6px;
+          left: 50%;
+          margin-left: -2.5px;
+          z-index: 80; }
+    .modal-toolbar .toolbar .btn-group button {
+      cursor: pointer;
+      color: #999;
+      border-right: 1px solid #131313;
+      -webkit-transition: background .2s;
+      -moz-transition: background .2s;
+      -ms-transition: background .2s;
+      -o-transition: background .2s;
+      transition: background .2s; }
+      .modal-toolbar .toolbar .btn-group button:hover {
+        color: #ccc;
+        background: #161616;
+        color: #9C6DC0; }
+      .modal-toolbar .toolbar .btn-group button.disabled, .modal-toolbar .toolbar .btn-group button[disabled] {
+        pointer-events: none;
+        color: #555; }
+    .modal-toolbar .toolbar .btn-blue {
+      border-radius: 0; }
+      .modal-toolbar .toolbar .btn-blue:before {
+        margin-right: 5px; }
+    .modal-toolbar .toolbar .icon-refresh {
+      float: right; }
+  .modal-toolbar .slidebox {
+    -webkit-transition: max-height .2s ease-out;
+    -moz-transition: max-height .2s ease-out;
+    -ms-transition: max-height .2s ease-out;
+    -o-transition: max-height .2s ease-out;
+    transition: max-height .2s ease-out;
+    background: #252A2E;
+    max-height: 0;
+    overflow: hidden;
+    position: absolute;
+    width: 100%;
+    z-index: 71; }
+    .modal-toolbar .slidebox.show {
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+      max-height: 400px; }
+    .modal-toolbar .slidebox.show + .table-head-fix {
+      opacity: .4;
+      pointer-events: none;
+      -webkit-transition: opacity .2s;
+      -moz-transition: opacity  .2s;
+      -ms-transition: opacity  .2s;
+      -o-transition: opacity  .2s;
+      transition: opacity  .2s; }
+  .modal-toolbar .slidebox .content {
+    width: 640px;
+    margin: 20px auto 0 auto; }
+    .modal-toolbar .slidebox .content label {
+      width: 168px;
+      display: inline-block;
+      color: #ccc; }
+    .modal-toolbar .slidebox .content label.select-file-link {
+      width: auto;
+      color: #148BE6; }
+    .modal-toolbar .slidebox .content input.input {
+      width: 440px; }
+    .modal-toolbar .slidebox .content .action {
+      float: right;
+      padding: 20px 0;
+      display: inline-block; }
+      .modal-toolbar .slidebox .content .action .btn-silver.cancel {
+        min-width: 80px;
+        background: none;
+        color: #666;
+        box-shadow: none; }
+        .modal-toolbar .slidebox .content .action .btn-silver.cancel:hover {
+          color: #148BE6; }
+  .modal-toolbar .slidebox .error {
+    color: #ec3c38;
+    width: 430px;
+    left: 107px;
+    bottom: 30px;
+    position: absolute;
+    display: none; }
+  .modal-toolbar .table-head-fix .scroll-wrap {
+    height: 368px; }
+  .modal-toolbar .table-head-fix .table {
+    font-size: 12px; }
+  .modal-toolbar .table-head-fix .table-head thead th {
+    line-height: 16px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+    font-size: 12px;
+    font-weight: 500;
+    color: #F3F3F3;
+    background: #292C2E; }
+  .modal-toolbar .table-head-fix .table-head thead tr th:first-child,
+  .modal-toolbar .table-head-fix .table thead tr th:first-child {
+    width: 20px; }
+
+#modal-kp-manage .table-head-fix .table-head thead tr th:nth-child(2),
+#modal-kp-manage .table-head-fix .table thead tr th:nth-child(2) {
+  width: 40%; }
+
+@-webkit-keyframes pulse {
+  0% {
+    -webkit-transform: scale(1); }
+
+  50% {
+    -webkit-transform: scale(1.1); }
+
+  100% {
+    -webkit-transform: scale(1); } }
+
+@-moz-keyframes pulse {
+  0% {
+    -moz-transform: scale(1); }
+
+  50% {
+    -moz-transform: scale(1.1); }
+
+  100% {
+    -moz-transform: scale(1); } }
+
+@-o-keyframes pulse {
+  0% {
+    -o-transform: scale(1); }
+
+  50% {
+    -o-transform: scale(1.1); }
+
+  100% {
+    -o-transform: scale(1); } }
+
+@keyframes pulse {
+  0% {
+    transform: scale(1); }
+
+  50% {
+    transform: scale(1.1); }
+
+  100% {
+    transform: scale(1); } }
+
+.pulse {
+  -webkit-animation-name: pulse;
+  -moz-animation-name: pulse;
+  -o-animation-name: pulse;
+  animation-name: pulse;
+  -webkit-animation-duration: .5s;
+  -webkit-animation-timing-function: ease;
+  -webkit-animation-fill-mode: both;
+  -webkit-animation-iteration-count: 2;
+  -moz-animation-duration: .5s;
+  -moz-animation-timing-function: ease;
+  -moz-animation-fill-mode: both;
+  -moz-animation-iteration-count: 2;
+  -ms-animation-duration: .5s;
+  -ms-animation-timing-function: ease;
+  -ms-animation-fill-mode: both;
+  -ms-animation-iteration-count: 2;
+  animation-duration: .5s;
+  animation-timing-function: ease;
+  animation-fill-mode: both;
+  animation-iteration-count: 2; }

@@ -9,13 +9,13 @@ define [ 'MC', 'event',
          './app_template',
          './appview_template',
          "component/exporter/JsonExporter",
-         "component/exporter/Download",
          'constant'
+         'kp'
          'ApiRequest'
          'backbone', 'jquery', 'handlebars',
          'UI.selectbox', 'UI.notification',
          "UI.tabbar"
-], ( MC, ide_event, Design, lang, stack_tmpl, app_tmpl, appview_tmpl, JsonExporter, download, constant, ApiRequest ) ->
+], ( MC, ide_event, Design, lang, stack_tmpl, app_tmpl, appview_tmpl, JsonExporter, constant, kp, ApiRequest ) ->
 
     ToolbarView = Backbone.View.extend {
 
@@ -130,6 +130,34 @@ define [ 'MC', 'event',
                 else
                     $( '#main-toolbar' ).html app_tmpl this.model.attributes
 
+        showErr: ( id, msg ) ->
+            $( "#runtime-error-#{id}" )
+                .text( msg )
+                .show()
+
+        hideErr: ( type ) ->
+            if type
+                $( "#runtime-error-#{id}" ).hide()
+            else
+                $( ".runtime-error" ).hide()
+
+        defaultKpIsSet: ->
+            #KpModel = Design.modelClassForType( constant.RESTYPE.KP )
+            #defaultKp = KpModel.getDefaultKP()
+
+            if $('#kp-list .item.selected').length is 0
+                @showErr 'kp', 'Specify a key pair as $DefaultKeyPair for this app.'
+                return false
+
+            true
+
+        renderDefaultKpDropdown: ->
+            if kp.hasResourceWithDefaultKp()
+                $('#kp-runtime-placeholder').html kp.loadModule().el
+                $('.default-kp-group').show()
+            null
+
+
         clickRunIcon : ( event ) ->
             # when disabled not click
             if $('#toolbar-run').hasClass( 'disabled' )
@@ -155,23 +183,24 @@ define [ 'MC', 'event',
 
             # click logic
             $('#btn-confirm').on 'click', this, (event) ->
+                me.renderDefaultKpDropdown()
+                me.hideErr()
 
                 if not App.user.hasCredential()
                     App.showSettings(1)
                     return false
 
-                console.log 'clickRunIcon'
+                    #check app name
+                    app_name = $('.modal-input-value').val()
 
-                #check app name
-                app_name = $('.modal-input-value').val()
+                    if not app_name
+                        me.showErr 'appname', lang.ide.PROP_MSG_WARN_NO_APP_NAME
+                        return false
 
-                if not app_name
-                    notification 'warning', lang.ide.PROP_MSG_WARN_NO_APP_NAME
-                    return
-
-                if not MC.validate 'awsName', app_name
-                    notification 'warning', lang.ide.PROP_MSG_WARN_INVALID_APP_NAME
-                    return
+                    if not MC.validate 'awsName', app_name
+                        #notification 'warning', lang.ide.PROP_MSG_WARN_INVALID_APP_NAME
+                        me.showErr 'appname', lang.ide.PROP_MSG_WARN_INVALID_APP_NAME
+                        return false
 
                 # get process tab name
                 process_tab_name = 'process-' + MC.common.other.canvasData.get( 'region' ) + '-' + app_name
@@ -186,10 +215,14 @@ define [ 'MC', 'event',
                     # close tab if exist
                     ide_event.trigger ide_event.CLOSE_DESIGN_TAB, process_tab_name
 
-                # repeat with app list or tab name(some run failed app tabs)
-                if (not MC.aws.aws.checkAppName app_name) or (_.contains(_.keys(MC.process), process_tab_name))
-                    notification 'warning', lang.ide.PROP_MSG_WARN_REPEATED_APP_NAME
-                    return false
+                    # repeat with app list or tab name(some run failed app tabs)
+                    appNameRepeated = (not MC.aws.aws.checkAppName app_name) or (_.contains(_.keys(MC.process), process_tab_name))
+                    if appNameRepeated
+                        me.showErr 'appname', lang.ide.PROP_MSG_WARN_REPEATED_APP_NAME
+
+                    # Stop the progress, if defaultKp is not set or if appName is repeated
+                    if not me.defaultKpIsSet() or appNameRepeated
+                        return false
 
                 # disable button
                 $('#btn-confirm').attr 'disabled', true
@@ -504,7 +537,7 @@ define [ 'MC', 'event',
                     #download( blob, MC.canvas_data.name + ".png" )
 
                     # new design flow
-                    download( blob, name + ".png" )
+                    JsonExporter.download( blob, name + ".png" )
 
             $( '.modal-body' ).html( "<img style='max-height:100%;display:inline-block' src='#{base64_image}' />" ).css({
                 "background":"none"
@@ -683,6 +716,8 @@ define [ 'MC', 'event',
             null
 
         clickSaveEditApp : (event)->
+
+
             # 1. Send save request
             # check credential
             if false
@@ -700,6 +735,8 @@ define [ 'MC', 'event',
 
                 else
                     modal MC.template.updateApp result
+                    # Set default kp
+                    @renderDefaultKpDropdown()
 
                     require [ 'component/trustedadvisor/main' ], ( trustedadvisor_main ) ->
                         trustedadvisor_main.loadModule 'stack'
@@ -779,6 +816,12 @@ define [ 'MC', 'event',
 
         appUpdating : ( event ) ->
             console.log 'appUpdating'
+            me = event.data
+            # 0. check whether defaultKp is set
+            if not me.defaultKpIsSet()
+                return false
+
+
 
             # 1. event.data.trigger 'xxxxx'
 

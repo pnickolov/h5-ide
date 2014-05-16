@@ -164,7 +164,7 @@ var constant_data = {
 		KP : {
 			type : "AWS.EC2.KeyPair",
 			name : "DefaultKP",
-			resource : { KeyName : "DefaultKP" }
+			resource : { KeyName : "" }
 		},
 		SG : {
 			type : "AWS.EC2.SecurityGroup",

@@ -1,0 +1,83 @@
+/* Styles for Manage KP and Decrypt PW */
+.password-hint::selection {
+  background: transparent; }
+
+.decrypt-action {
+  margin-top: 10px; }
+
+#do-kp-decrypt {
+  width: 160px; }
+
+#keypair-pwd {
+  width: 259px;
+  margin-left: 20px; }
+
+.change-pw-recommend {
+  font-size: 12px;
+  margin: 5px 0 0 200px;
+  cursor: pointer;
+  position: relative; }
+  .change-pw-recommend:hover {
+    color: #eee; }
+  .change-pw-recommend:before {
+    color: #148BE6;
+    top: 1px;
+    position: absolute;
+    left: -20px; }
+
+#modal-run-stack .modal-control-group.default-kp-group {
+  padding-top: 0; }
+
+#kp-list .loading-spinner {
+  margin-top: 45%; }
+
+.keypair-select .selection .icon-remove {
+  display: none; }
+
+.keypair-select.open .dropdown {
+  top: 29px;
+  padding-bottom: 33px; }
+
+.keypair-select {
+  width: 260px; }
+
+.keypair-select.selectbox .keypair-filter {
+  width: 232px;
+  border-radius: 0;
+  border: 0;
+  padding-right: 20px; }
+
+.keypair-select.selectbox .keypair-filter:focus {
+  width: 232px;
+  border-radius: 0;
+  border: 0;
+  padding-right: 20px; }
+
+#kp-runtime-placeholder .keypair-select.open .dropdown {
+  top: 32px;
+  padding-bottom: 0; }
+
+#kp-runtime-placeholder .selection {
+  padding-right: 19px; }
+
+#kp-runtime-placeholder {
+  display: inline-block; }
+
+.keypair-select i {
+  color: #148BE6; }
+
+.keypair-select li i {
+  float: right; }
+
+.keypair-select .manage-kp i {
+  margin-right: 13px;
+  color: #eee; }
+
+.keypair-select .manage-kp::selection {
+  background: transparent; }
+
+.keypair-select .manage-kp {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  border-radius: 0; }

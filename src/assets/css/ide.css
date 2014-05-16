@@ -942,20 +942,6 @@ button {
 	margin-left: 15px;
 }
 
-.region-resource-thumbnail {
-	width           : 220px;
-	height          : 146px;
-	border-radius   : 5px 5px 0 0;
-	background      : #55626e url("../images/ide/thumbnail-stack-placehoder@2x.png") center center no-repeat;
-	background-size : 220px auto;
-	overflow        : hidden;
-}
-
-.region-resource-thumbnail.app-thumbnail {
-	background: url("../images/ide/thumbnail-app-placehoder@2x.png") center center no-repeat;
-	background-size: 220px auto;
-}
-
 .blank-widget {
 	margin-top : 14px;
 	text-align : center;
@@ -1102,14 +1088,6 @@ button {
 
 /* Responsive design for dashboard */
 @media only screen and (min-width: 1280px) and (max-width: 1320px) {
-	.region-resource-list {
-		padding: 20px 12px;
-	}
-
-	.region-resource-list li {
-		margin: 0 5px 15px 5px;
-	}
-
 	.global-region-resource-header {
 		height: 125px;
 	}
@@ -1156,14 +1134,6 @@ button {
 		font-size: 14px;
 	}
 
-	.region-resource-list li {
-		margin: 15px 13px 0;
-	}
-
-	.region-resource-list-item {
-		width: 195px;
-	}
-
 	.blank-widget {
 		margin-top : 15px;
 		padding : 61px 0;
@@ -1174,10 +1144,6 @@ button {
 		height : 129px;
 
 		background-size: 193 auto;
-	}
-
-	.region-resource-list > .scroll-wrap {
-		max-height : 360px;
 	}
 }
 

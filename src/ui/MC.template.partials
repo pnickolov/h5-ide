@@ -313,19 +313,6 @@
 	{{description}}
 </div>
 
-<!-- {{bubbleAppInfo}} -->
-<div class="bubble-head"><i class="icon-{{status}} icon-label"></i>{{title}}</div>
-<div class="bubble-content">
-	<dl class="dl-horizontal">
-		<dt>Start Time:</dt>
-		<dd>{{start-time}}</dd>
-		<dt>Stop Time:</dt>
-		<dd>{{end-time}}</dd>
-		<!--dt>Estimated Cost:</dt>
-		<dd>{{cost}}</dd-->
-	</dl>
-</div>
-
 <!-- {{bubbleInstanceInfo}} -->
 <div class="bubble-head"><i class="status-{{status}} icon-label"></i>{{title}}-({{id}})</div>
 <div class="bubble-content">

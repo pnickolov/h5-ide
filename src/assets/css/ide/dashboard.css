@@ -272,31 +272,44 @@
     border: 1px solid #ccc;
     text-shadow: 0 1px 0 #fff; }
 
-.region-resource-list {
-  background: #fff;
-  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1), 0 -1px 0 #bbbbbb;
-  border: 1px solid #bbb; }
-  .region-resource-list > .scroll-wrap {
-    max-height: 378px; }
-  .region-resource-list li {
-    float: left;
-    margin: 15px 12px 0 12px; }
-  .region-resource-list .region-resource-list-item {
-    display: block;
-    width: 220px;
-    opacity: .95;
-    position: relative;
-    cursor: pointer; }
-    .region-resource-list .region-resource-list-item:hover {
-      opacity: 1; }
-    .region-resource-list .region-resource-list-item:disabled {
-      cursor: default;
-      opacity: .6; }
-  .region-resource-list .blank-widget {
-    margin: 15px; }
+.region-resource-list > li {
+  float: left;
+  margin-left: 1.6%;
+  margin-top: 15px;
+  display: block;
+  width: 18%;
+  opacity: .95;
+  position: relative;
+  cursor: pointer; }
+  .region-resource-list > li:hover {
+    opacity: 1; }
+  .region-resource-list > li:disabled {
+    cursor: default;
+    opacity: .6; }
+  .region-resource-list > li:last-child {
+    margin-bottom: 15px; }
+@media only screen and (max-width: 1030px) {
+  .region-resource-list > li {
+    width: 22.5%;
+    margin-left: 2%; } }
+.region-resource-list .thumbnail {
+  height: 0;
+  padding-bottom: 65%;
+  border-radius: 5px 5px 0 0;
+  background: #55626e url('/assets/images/ide/thumbnail-stack-placehoder@2x.png') center center no-repeat;
+  background-size: 100% auto;
+  overflow: hidden; }
+  .region-resource-list .thumbnail.app-thumbnail {
+    background-image: url('/assets/images/ide/thumbnail-app-placehoder@2x.png'); }
+.region-resource-list .blank-widget {
+  margin: 16px 16px 17px; }
 
 #region-app-stack-wrap {
   position: relative; }
+  #region-app-stack-wrap .scroll-wrap {
+    background: #fff;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+    border: 1px solid #bbb; }
   #region-app-stack-wrap .dashboard-loading {
     padding-top: 25px;
     height: 165px; }
@@ -377,7 +390,8 @@
     display: block;
     padding: 15px 10px;
     font-size: 14px;
-    color: #666; }
+    color: #666;
+    cursor: pointer; }
     #region-switch-list > li:hover {
       background-color: #eee;
       color: #148BE6; }

@@ -106,6 +106,7 @@ define [ 'event', 'i18n!nls/lang.js',
             @render()
 
             @regionTab = "stack"
+            @region    = "global"
 
             # Watch appList/stackList changes.
             @listenTo App.model.stackList(), "change", ()->
@@ -168,8 +169,16 @@ define [ 'event', 'i18n!nls/lang.js',
             null
 
         renderRegionAppStack: () ->
-            attr = { apps:[], stacks:[]}
+            attr = { apps:[], stacks:[] }
             attr[ @regionTab ] = true
+
+            if @region isnt "global"
+                filter = {region:@region}
+                tojson = {thumbnail:true}
+                attr.stacks = App.model.stackList().where(filter).map (m)-> m.toJSON(tojson)
+                attr.apps   = App.model.appList().where(filter).map (m)-> m.toJSON(tojson)
+
+
             $('#region-app-stack-wrap')
                 .html( template_data.region_app_stack(attr) )
                 .find('.region-resource-thumbnail img')
@@ -213,13 +222,12 @@ define [ 'event', 'i18n!nls/lang.js',
             target = $ event.currentTarget
             region = target.data 'region'
             current_region = region if region isnt 'global'
-            regionName = target.text()
 
-            if regionName is @$el.find( '#region-switch span' ).text()
-                return
+            if @region is region then return
+            @region = region
 
-            @$el.find( '#region-switch span' )
-                .text(regionName)
+            $( '#region-switch').find( 'span' )
+                .text( target.text() )
                 .data 'region', region
 
             if region is 'global'
@@ -241,6 +249,7 @@ define [ 'event', 'i18n!nls/lang.js',
             $("#global-region-recent-list").children().hide().eq( $tgt.index() ).show()
 
         switchAppStack: ( event ) ->
+            @regionTab = if $(event.currentTarget).hasClass("stack") then "stack" else "app"
             Helper.switchTab event, '#region-resource-tab li', '.region-resource-list'
 
         switchResource: ( event ) ->

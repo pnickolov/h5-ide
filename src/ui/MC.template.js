@@ -528,28 +528,6 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "<div class=\"bubble-head\"><i class=\"icon-"
-    + escapeExpression(((stack1 = (depth0 && depth0.status)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + " icon-label\"></i>"
-    + escapeExpression(((stack1 = (depth0 && depth0.title)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</div>\n<div class=\"bubble-content\">\n	<dl class=\"dl-horizontal\">\n		<dt>Start Time:</dt>\n		<dd>"
-    + escapeExpression(((stack1 = (depth0 && depth0['start-time'])),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n		<dt>Stop Time:</dt>\n		<dd>"
-    + escapeExpression(((stack1 = (depth0 && depth0['end-time'])),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n		<!--dt>Estimated Cost:</dt>\n		<dd>"
-    + escapeExpression(((stack1 = (depth0 && depth0.cost)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd-->\n	</dl>\n</div>\n\n";
-  return buffer;
-  };
-TEMPLATE.bubbleAppInfo=Handlebars.template(__TEMPLATE__);
-
-
-__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
-
-
   buffer += "<div class=\"bubble-head\"><i class=\"status-"
     + escapeExpression(((stack1 = (depth0 && depth0.status)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + " icon-label\"></i>"

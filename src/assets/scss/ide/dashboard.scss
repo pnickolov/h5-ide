@@ -338,40 +338,60 @@
 }
 
 .region-resource-list {
-  background : #fff;
-  box-shadow : 1px 1px 5px rgba(0,0,0,0.1), 0 -1px 0 #bbb;
-  border     : 1px solid #bbb;
 
-  > .scroll-wrap {
-    max-height: 378px;
-  }
-
-  li {
-    float: left;
-    margin: 15px 12px 0 12px;
-  }
-
-  .region-resource-list-item {
-    display  : block;
-    width    : 220px;
-    opacity  : .95;
-    position : relative;
-    cursor   : pointer;
+  > li {
+    float       : left;
+    margin-left : 1.6%;
+    margin-top  : 15px;
+    display     : block;
+    width       : 18%;
+    opacity     : .95;
+    position    : relative;
+    cursor      : pointer;
 
     &:hover { opacity: 1; }
     &:disabled {
       cursor: default;
       opacity: .6;
     }
+
+    &:last-child { margin-bottom : 15px; }
+  }
+
+  @media only screen and (max-width: 1030px) {
+    > li {
+      width : 22.5%;
+      margin-left : 2%;
+    }
+  }
+
+
+  .thumbnail {
+    height          : 0;
+    padding-bottom  : 65%;
+    border-radius   : 5px 5px 0 0;
+    background      : #55626e image-url("ide/thumbnail-stack-placehoder@2x.png") center center no-repeat;
+    background-size : 100% auto;
+    overflow        : hidden;
+
+    &.app-thumbnail {
+      background-image : image-url("ide/thumbnail-app-placehoder@2x.png");
+    }
   }
 
   .blank-widget {
-    margin : 15px;
+    margin : 16px 16px 17px;
   }
 }
 
 #region-app-stack-wrap {
   position : relative;
+
+  .scroll-wrap {
+    background : #fff;
+    box-shadow : 1px 1px 5px rgba(0,0,0,0.1);
+    border     : 1px solid #bbb;
+  }
 
   .dashboard-loading {
     padding-top : 25px;
@@ -448,6 +468,7 @@
 }
 
 #region-resource-stack-wrap {
+
   .blank-widget {
     &:after {
       content    : " ";
@@ -472,10 +493,11 @@
   width         : 163px;
 
   > li {
-    display: block;
-    padding: 15px 10px;
-    font-size: 14px;
-    color: #666;
+    display   : block;
+    padding   : 15px 10px;
+    font-size : 14px;
+    color     : #666;
+    cursor    : pointer;
 
     &:hover { background-color: #eee; color: #148BE6; }
   }

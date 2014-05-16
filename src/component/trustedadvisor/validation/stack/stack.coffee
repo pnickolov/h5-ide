@@ -1,4 +1,4 @@
-define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'stack_service', 'ami_service', '../result_vo' ], ( constant, $, MC, lang, stackService, amiService ) ->
+define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'ApiRequest', 'stack_service', 'ami_service', '../result_vo' ], ( constant, $, MC, lang, ApiRequest, stackService, amiService ) ->
 
 	getAZAryForDefaultVPC = (elbUID) ->
 
@@ -40,67 +40,68 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'stack_service', 'ami_se
 
 			validData = MC.canvas_data
 
-			stackService.verify {sender: this},
-				$.cookie( 'usercode' ),
-				$.cookie( 'session_id' ),
-				validData, (result) ->
+			ApiRequest('stack_verify', {
+				username: $.cookie( 'usercode' ),
+				session_id: $.cookie( 'session_id' ),
+				spec: validData
+			}).then (result) ->
 
-					checkResult = true
-					returnInfo = null
-					errInfoStr = ''
+				checkResult = true
+				returnInfo = null
+				errInfoStr = ''
 
-					if !result.is_error
-						validResultObj = result.resolved_data
-						if typeof(validResultObj) is 'object'
-							if validResultObj.result
-								callback(null)
-							else
-								checkResult = false
-
-								try
-									returnInfo = validResultObj.cause
-									returnInfoObj = JSON.parse(returnInfo)
-
-									# get api call info
-									errCompUID = returnInfoObj.uid
-
-									errCode = returnInfoObj.code
-									errKey = returnInfoObj.key
-									errMessage = returnInfoObj.message
-
-									errCompName = _getCompName(errCompUID)
-									errCompType = _getCompType(errCompUID)
-
-									errInfoStr = sprintf lang.ide.TA_MSG_ERROR_STACK_FORMAT_VALID_FAILED, errCompName, errMessage
-
-									if (errCode is 'EMPTY_VALUE' and
-										errKey is 'InstanceId' and
-										errMessage is 'Key InstanceId can not empty' and
-										errCompType is 'AWS.VPC.NetworkInterface')
-											checkResult = true
-
-									if (errCode is 'EMPTY_VALUE' and
-										errKey is 'LaunchConfigurationName' and
-										errMessage is 'Key LaunchConfigurationName can not empty' and
-										errCompType is 'AWS.AutoScaling.Group')
-											checkResult = true
-
-								catch err
-									errInfoStr = "Stack format validation error"
-						else
+				if result and result[0] is ApiRequest.Errors.StackVerifyFailed
+					validResultObj = result.resolved_data
+					if typeof(validResultObj) is 'object'
+						if validResultObj.result
 							callback(null)
-					else
-						callback(null)
+						else
+							checkResult = false
 
-					if checkResult
-						callback(null)
+							try
+								returnInfo = validResultObj.cause
+								returnInfoObj = JSON.parse(returnInfo)
+
+								# get api call info
+								errCompUID = returnInfoObj.uid
+
+								errCode = returnInfoObj.code
+								errKey = returnInfoObj.key
+								errMessage = returnInfoObj.message
+
+								errCompName = _getCompName(errCompUID)
+								errCompType = _getCompType(errCompUID)
+
+								errInfoStr = sprintf lang.ide.TA_MSG_ERROR_STACK_FORMAT_VALID_FAILED, errCompName, errMessage
+
+								if (errCode is 'EMPTY_VALUE' and
+									errKey is 'InstanceId' and
+									errMessage is 'Key InstanceId can not empty' and
+									errCompType is 'AWS.VPC.NetworkInterface')
+										checkResult = true
+
+								if (errCode is 'EMPTY_VALUE' and
+									errKey is 'LaunchConfigurationName' and
+									errMessage is 'Key LaunchConfigurationName can not empty' and
+									errCompType is 'AWS.AutoScaling.Group')
+										checkResult = true
+
+							catch err
+								errInfoStr = "Stack format validation error"
 					else
-						validResultObj = {
-							level: constant.TA.ERROR,
-							info: errInfoStr
-						}
-						callback(validResultObj)
-						console.log(validResultObj)
+						callback(null)
+				else
+					callback(null)
+
+				if checkResult
+					callback(null)
+				else
+					validResultObj = {
+						level: constant.TA.ERROR,
+						info: errInfoStr
+					}
+					callback(validResultObj)
+					console.log(validResultObj)
 
 			# immediately return
 			tipInfo = sprintf lang.ide.TA_MSG_ERROR_STACK_CHECKING_FORMAT_VALID

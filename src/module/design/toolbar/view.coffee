@@ -153,7 +153,7 @@ define [ 'MC', 'event',
 
         renderDefaultKpDropdown: ->
             if kp.hasResourceWithDefaultKp()
-                $('#kp-runtime-placeholder').html kp.loadModule().el
+                $('#kp-runtime-placeholder').html kp.load().el
                 $('.default-kp-group').show()
             null
 

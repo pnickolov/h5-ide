@@ -1,4 +1,4 @@
-define [ './template', './template_modal', 'kp_upload', 'backbone', 'jquery', 'constant', 'component/exporter/JsonExporter', 'UI.notification' ], ( template, template_modal, upload, Backbone, $, constant, JsonExporter ) ->
+define [ './kpTpl', './kpDialogTpl', 'kp_upload', 'backbone', 'jquery', 'constant', 'component/exporter/JsonExporter', 'UI.notification' ], ( template, template_modal, upload, Backbone, $, constant, JsonExporter ) ->
 
     download = JsonExporter.download
 

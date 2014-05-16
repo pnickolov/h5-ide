@@ -82,7 +82,7 @@ define [ '../base/view', './template/stack', 'event', 'constant', 'i18n!nls/lang
             @$el.html template @model.attributes
 
             instanceModel = Design.instance().component( @model.get 'uid' )
-            @$('#kp-placeholder').html kp.loadModule(instanceModel).el
+            @$('#kp-placeholder').html kp.load(instanceModel).el
 
             me = this
             # parsley bind

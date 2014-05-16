@@ -77,7 +77,7 @@ var selectbox = window.selectbox = {
 
         var evt = $.Event("OPTION_CHANGE")
 
-        $selectbox.trigger( evt, $this.attr('data-id') );
+        $selectbox.trigger( evt, [ $this.attr('data-id'), $this.data() ] );
 
         if ( evt.isDefaultPrevented() ) {
             // Revert

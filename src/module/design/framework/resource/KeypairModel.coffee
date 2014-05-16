@@ -5,12 +5,18 @@ define [ "constant", "../ComplexResModel", "../ConnectionModel"  ], ( constant, 
     type : "KeypairUsage"
     oneToMany : constant.RESTYPE.KP
 
+
     serialize : ( components )->
       kp = @getTarget( constant.RESTYPE.KP )
-      otherTarget = @getOtherTarget( kp )
+      if kp
+        otherTarget = @getOtherTarget( kp )
+        if kp.isDefault()
+          components[ otherTarget.id ].resource.KeyName = kp.createRef( "KeyName" )
+        else
+          components[ otherTarget.id ].resource.KeyName = ''
 
-      components[ otherTarget.id ].resource.KeyName = kp.createRef( "KeyName" )
       null
+
   }
 
 
@@ -23,6 +29,9 @@ define [ "constant", "../ComplexResModel", "../ConnectionModel"  ], ( constant, 
 
     isVisual : ()-> false
 
+    isDefault: () ->
+      @get( 'name' ) is 'DefaultKP'
+
     remove : ()->
       # When a keypair is removed, make all usage to be DefaultKP
       defaultKp = KeypairModel.getDefaultKP()
@@ -34,6 +43,16 @@ define [ "constant", "../ComplexResModel", "../ConnectionModel"  ], ( constant, 
       null
 
     assignTo : ( target )-> new KeypairUsage( this, target )
+
+    dissociate: ( target ) ->
+      conns = @connections()
+      _.each conns, (c) ->
+        if c.getOtherTarget( constant.RESTYPE.KP ) is target
+          c.remove()
+
+    isSet: ->
+      @get( 'appId' ) and @get( 'fingerprint' )
+
 
     getKPList : ()->
       kps = []
@@ -60,13 +79,18 @@ define [ "constant", "../ComplexResModel", "../ConnectionModel"  ], ( constant, 
           type : @type
           uid  : @id
           resource :
-            KeyFingerprint : @get("fingerprint")
-            KeyName        : @get("appId") or @get("name")
+            KeyFingerprint : @get("fingerprint") or ''
+            KeyName        : @get("appId") or ''
       }
 
   }, {
     getDefaultKP : ()->
       _.find KeypairModel.allObjects(), ( obj )-> obj.get("name") is "DefaultKP"
+
+    setDefaultKP: ( keyName, fingerprint ) ->
+      defaultKP = _.find KeypairModel.allObjects(), ( obj )-> obj.get("name") is "DefaultKP"
+      defaultKP.set( 'appId', keyName or '' )
+      defaultKP.set( 'fingerprint', fingerprint or '' )
 
     diffJson : ()-> # Disable diff for thie Model
 
@@ -75,7 +99,7 @@ define [ "constant", "../ComplexResModel", "../ConnectionModel"  ], ( constant, 
       new KeypairModel({
         id          : data.uid
         name        : data.name
-        appId       : data.resource.KeyName
+        appId       : if data.resource.KeyFingerprint then data.resource.KeyName else '' #no fingerprint is old data
         fingerprint : data.resource.KeyFingerprint
       })
       null

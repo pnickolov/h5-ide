@@ -1,5 +1,6 @@
 @import url("core.css");
 @import url("ide/settings.css");
+@import url("ide/kp.css");
 
 html,
 body {
@@ -3385,42 +3386,68 @@ a.sidebar-hider:before {
 	margin-bottom: 5px;
 }
 
-#keypair-select .selection .icon-remove {
+.keypair-select .selection .icon-remove {
 	display : none;
 }
 
-#keypair-select .dropdown {
-	top: 30px;
+.keypair-select.open .dropdown {
+	top:            29px;
+	padding-bottom: 33px;
 }
 
-#keypair-select .editor .input {
-	background-color: #f3f3f3;
-	font-size: 12px;
-	color: #999;
-	border: 1px solid #ccc;
+.keypair-select {
+	width: 260px;
 }
 
-#keypair-select .editor .input:focus {
-	color: #333 !important;
-	border: 1px solid #aaa;
-	box-shadow: none;
+.keypair-select.selectbox .keypair-filter {
+	width: 232px;
+	border-radius: 0;
+	border: 0;
+	padding-right: 20px;
 }
 
-#keypair-select .icon-remove {
-	display: none;
-	position: absolute;
-	right: 5px;
-	top: 50%;
-	color: #999;
-	margin-top: -8px;
+.keypair-select.selectbox .keypair-filter:focus {
+	width: 232px;
+	border-radius: 0;
+	border: 0;
+	padding-right: 20px;
 }
 
-#keypair-select .item:hover .icon-remove {
-	display: block;
+#kp-runtime-placeholder .keypair-select.open .dropdown {
+	top:            32px;
+	padding-bottom: 0;
 }
 
-#keypair-select .icon-remove:hover {
-	color: #F74A48;
+#kp-runtime-placeholder .selection {
+	padding-right: 19px;
+}
+
+#kp-runtime-placeholder {
+	display: inline-block;
+}
+
+.keypair-select i {
+	color: #148BE6;
+}
+
+.keypair-select li i {
+	float: right;
+}
+
+.keypair-select .manage-kp i {
+	margin-right: 13px;
+	color: #eee;
+}
+
+.keypair-select .manage-kp::selection {
+	background: transparent;
+}
+
+.keypair-select .manage-kp {
+	width:         100%;
+	position:      absolute;
+	bottom:        0;
+	border-radius: 0;
 }
 
 /* End of Instance Property */
@@ -5614,6 +5641,13 @@ summary:focus {
 	left: 85px;
 }
 
+.runtime-error {
+	color:       #ec3c38;
+	font-size:   12px;
+	margin-left: 146px;
+	margin-top:  10px;
+}
+
 /* run stack into app process panel*/
 #process-panel {
 	position: relative;
@@ -7167,3 +7201,28 @@ summary:focus {
 #run-stack-cancel:disabled {
 	color: #ccc;
 }
+
+
+.keypair-select .selection i {
+	position: absolute;
+	top: 7px;
+	margin-left: 5px;
+}
+
+
+.keypair-select .selection i.icon-info {
+	display: none;
+}
+
+.sortable::selection {
+	background: transparent;
+}
+
+
+
+
+
+
+
+
+

@@ -516,7 +516,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                                 asl.app = tag.Value
                             if tag.Key == 'app-id'
                                 asl.app_id = tag.Value
-                            if tag.Key == 'Created by' and tag.Value == owner
+                            if tag.Key == 'Created by'
                                 asl.owner = tag.Value
                             null
 
@@ -879,7 +879,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                 _.map resource.tagSet, ( tag ) ->
                     if tag.key == 'app'
                         resources[action][i].app = tag.value
-                    if tag.key == 'Created by' and tag.value == owner
+                    if tag.key == 'Created by'
                         resources[action][i].owner = tag.value
                     null
             null

@@ -131,6 +131,8 @@ define [ './kpTpl', './kpDialogTpl', 'kp_upload', 'backbone', 'jquery', 'constan
                 else if success.length > 1
                     notification 'info', "Selected #{success.length} key pairs are deleted."
 
+                that.processDelBtn()
+
                 _.each error, ( s ) ->
                     console.log(s)
 
@@ -292,7 +294,7 @@ define [ './kpTpl', './kpDialogTpl', 'kp_upload', 'backbone', 'jquery', 'constan
             @switchAction 'ready'
 
         checkOne: ( event ) ->
-            @processDelBtn event
+            @processDelBtn()
             cbAll = @$ '#kp-select-all'
             cbAmount = @model.get( 'keys' ).length
             checkedAmount = @$('.one-cb:checked').length
@@ -303,14 +305,14 @@ define [ './kpTpl', './kpDialogTpl', 'kp_upload', 'backbone', 'jquery', 'constan
 
 
         checkAll: ( event ) ->
-            @processDelBtn event
+            @processDelBtn()
             if event.currentTarget.checked
                 @$('input[type="checkbox"]').prop 'checked', true
             else
                 @$('input[type="checkbox"]').prop 'checked', false
 
-        processDelBtn: ( event ) ->
-            if event.currentTarget.checked
+        processDelBtn: () ->
+            if @$('.one-cb:checked').length
                 @$('#kp-delete').prop 'disabled', false
             else
                 @$('#kp-delete').prop 'disabled', true

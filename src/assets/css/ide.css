@@ -5630,19 +5630,6 @@ summary:focus {
 	display: inline-block;
 }
 
-.region-resource-list-item [class^="icon-app-type-"],
-.region-resource-list-item [class*=" icon-app-type-"] {
-	position: absolute;
-	top: 5px;
-	right: 5px;
-}
-
-.global-region-status-list h5 [class^="icon-app-type-"],
-.global-region-status-list h5 [class*=" icon-app-type-"]  {
-	position: absolute;
-	right: 0px;
-}
-
 .nav-region-list-items.app-list>li {
 	position: relative;
 }

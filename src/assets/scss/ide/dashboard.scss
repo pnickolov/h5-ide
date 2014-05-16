@@ -393,6 +393,13 @@
     }
   }
 
+
+  [class^="icon-app-type-"], [class*=" icon-app-type-"] {
+    position : absolute;
+    top      : 5px;
+    right    : 5px;
+  }
+
   .blank-widget {
     margin : 16px 16px 17px;
   }

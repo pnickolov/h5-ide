@@ -69,7 +69,7 @@ define [ 'event', 'i18n!nls/lang.js',
 
         events          :
             'click .global-map-item'  : 'gotoRegion'
-            'click .recent-list-item' : 'openItem'
+            'click .recent-list-item, .thumbnail' : 'openItem'
 
             'click #global-region-create-stack-list li' : 'createStack'
             'click #btn-create-stack'                   : 'createStack'
@@ -81,13 +81,13 @@ define [ 'event', 'i18n!nls/lang.js',
             'click .global-region-resource-content a'   : 'switchRegionAndResource'
             'click .show-credential'                    : 'showCredential'
 
-            'click .region-resource-thumbnail'          : 'clickRegionResourceThumbnail'
-            'click .table-app-link-clickable'           : 'openApp'
-            'modal-shown .start-app'                    : 'startAppClick'
-            'modal-shown .stop-app'                     : 'stopAppClick'
-            'modal-shown .terminate-app'                : 'terminateAppClick'
-            'modal-shown .duplicate-stack'              : 'duplicateStackClick'
-            'modal-shown .delete-stack'                 : 'deleteStackClick'
+            'click .thumbnail'                : 'clickRegionResourceThumbnail'
+            'click .table-app-link-clickable' : 'openApp'
+            'modal-shown .start-app'          : 'startAppClick'
+            'modal-shown .stop-app'           : 'stopAppClick'
+            'modal-shown .terminate-app'      : 'terminateAppClick'
+            'modal-shown .duplicate-stack'    : 'duplicateStackClick'
+            'modal-shown .delete-stack'       : 'deleteStackClick'
 
             'click #global-region-visualize-VPC' : 'unmanagedVPCClick'
             'click #global-import-stack'         : 'importJson'
@@ -394,6 +394,8 @@ define [ 'event', 'i18n!nls/lang.js',
 
         openItem : (event) ->
             id = $(event.currentTarget).attr("data-id")
+            if not id then return
+
             model = App.model.stackList().get(id)
             if model
                 evt = "OPEN_STACK"
@@ -404,30 +406,6 @@ define [ 'event', 'i18n!nls/lang.js',
 
             ide_event.trigger ide_event.OPEN_DESIGN_TAB, evt, model.get("name"), model.get("region"), id
             return
-
-        clickRegionResourceThumbnail : (event) ->
-            console.log 'click app/stack thumbnail'
-
-            # check whether pending
-            if $(event.currentTarget).children('.app-thumbnail-pending').length > 0
-                # No need to show notification
-                # notification 'warning', lang.ide.REG_MSG_WARN_APP_PENDING
-
-            else
-                item_info   = $(event.currentTarget).next('.region-resource-info')[0]
-                id          = $(item_info).find('.modal')[0].id
-                name        = $($(item_info).find('.region-resource-item-name')[0]).text()
-
-                ##check params:region, id, name
-                if id.indexOf('app-') is 0
-                    #ide_event.trigger ide_event.OPEN_APP_TAB, name, current_region, id
-                    ide_event.trigger ide_event.OPEN_DESIGN_TAB, 'OPEN_APP', name, current_region, id
-
-                else if id.indexOf('stack-') is 0
-                    #ide_event.trigger ide_event.OPEN_STACK_TAB, name, current_region, id
-                    ide_event.trigger ide_event.OPEN_DESIGN_TAB, 'OPEN_STACK', name, current_region, id
-
-            null
 
         deleteStackClick : (event) ->
             console.log 'click to delete stack'

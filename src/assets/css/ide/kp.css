@@ -25,6 +25,12 @@
     position: absolute;
     left: -20px; }
 
+.after-create {
+  color: #ccc; }
+  .after-create span {
+    font-weight: 800;
+    color: #eee; }
+
 #modal-run-stack .modal-control-group.default-kp-group {
   padding-top: 0; }
 
@@ -81,3 +87,7 @@
   position: absolute;
   bottom: 0;
   border-radius: 0; }
+
+button#property-app-keypair {
+  display: block;
+  padding: 8px 10px; }

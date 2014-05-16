@@ -10,7 +10,7 @@
             <div class="toolbar">
                 <button class="icon-new-stack btn btn-blue" id="kp-create">Create Key Pair</button>
                 <div class="btn-group">
-                    <button class="icon-import tooltip" id="kp-import" data-tooltip="">Import Public Key</button>
+                    <button class="icon-import tooltip" id="kp-import" data-tooltip="">Import Key Pair</button>
                     <button class="icon-del tooltip" id="kp-delete" data-tooltip="" disabled>Delete</button>
                     <button class="icon-refresh tooltip" id="kp-refresh" data-tooltip=""></button>
                 </div>
@@ -96,7 +96,7 @@
         <label for="create-kp-name">Key Pair Name</label>
         <input class="input" type="text" id="create-kp-name" data-ignore="true" data-ignore-regexp="^[a-zA-Z0-9,_-]*$" data-required="true" maxlength="255" placeholder="allow alphanumber, _ or - up to 255 characters">
     </div>
-    <div class="after-create hide"><span></span> is Created.</div>
+    <div class="after-create hide">Key pair <span></span> is created. You have to download the private key file (*.pem file) before you can continue. Store it in a secure and accessible location. You will not be able to download the file again after it's created.</div>
     <div class="init action">
         <button class="btn btn-blue do-action" data-action="create">Create</button>
         <button class="btn btn-silver cancel">Cancel</button>
@@ -106,7 +106,7 @@
     </div>
     <div class="download action" style="display:none;">
         <a class="btn btn-blue do-action pulse" data-action="download" id="download-kp">Download</a>
-        <button class="btn btn-silver cancel" disabled>Cancel</button>
+        <button class="btn btn-silver cancel" disabled>Close</button>
     </div>
 </div>
 

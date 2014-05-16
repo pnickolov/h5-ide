@@ -37,6 +37,7 @@ define [ './kpTpl', './kpDialogTpl', 'kp_upload', 'backbone', 'jquery', 'constan
 
         renderKeys: () ->
             @$( '.scroll-content tbody' ).html template_modal.keys @model.toJSON()
+
             @
 
         renderLoading: () ->
@@ -331,9 +332,13 @@ define [ './kpTpl', './kpDialogTpl', 'kp_upload', 'backbone', 'jquery', 'constan
         events:
             'click .keypair-filter'     : 'returnFalse'
             'click .manage-kp'          : 'manageKp'
+            'click .show-credential'    : 'showCredential'
             'OPTION_SHOW .selectbox'    : 'show'
             'OPTION_CHANGE .selectbox'  : 'setKey'
-            'keyup .keypair-filter'    : 'filter'
+            'keyup .keypair-filter'     : 'filter'
+
+        showCredential: ->
+            App.showSettings 1
 
         filter: ( event ) ->
             keyword = event.currentTarget.value
@@ -373,17 +378,33 @@ define [ './kpTpl', './kpDialogTpl', 'kp_upload', 'backbone', 'jquery', 'constan
                 @__mode = 'runtime'
 
         show: () ->
-            if not @model.haveGot()
-                @model.getKeys()
+            if App.user.hasCredential()
+                if not @model.haveGot()
+                    @renderLoading()
+                    @model.getKeys()
+            else
+                @renderNoCredential()
 
 
-        render: () ->
+        render: ->
             @renderFrame()
             @
 
-        syncErrorHandler: () ->
-            #@renderEmptyKey()
+        renderLoading: ->
+            @$('#kp-content').html template.loading
+            @toggleKpListControls false
 
+        renderNoCredential: () ->
+            @$('#kp-content').html template.nocredential
+            @toggleKpListControls false
+            @
+
+        toggleKpListControls: ( showOrHide ) ->
+            @$( '.keypair-filter, .manage-kp' ).toggle showOrHide
+
+
+        syncErrorHandler: (err) ->
+            console.error err
 
         renderKeys: ( data ) ->
             if data
@@ -399,7 +420,8 @@ define [ './kpTpl', './kpDialogTpl', 'kp_upload', 'backbone', 'jquery', 'constan
 
             data.isRunTime = @__mode is 'runtime'
 
-            @$('#kp-list').html template.keys data
+            @$('#kp-content').html template.keys data
+            @toggleKpListControls true
             @showManageBtn()
             @
 

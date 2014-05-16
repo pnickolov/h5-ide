@@ -3404,6 +3404,9 @@ a.sidebar-hider:before {
 	border-radius: 0;
 	border: 0;
 	padding-right: 20px;
+	position: absolute;
+	top: 0;
+	display: none;
 }
 
 .keypair-select.selectbox .keypair-filter:focus {
@@ -3424,6 +3427,10 @@ a.sidebar-hider:before {
 
 #kp-runtime-placeholder {
 	display: inline-block;
+}
+
+#kp-list {
+	margin-top: 31px;
 }
 
 .keypair-select i {
@@ -7222,6 +7229,14 @@ summary:focus {
 	background: transparent;
 }
 
+.kp-no-credential {
+	color: #F5F5F5;
+	padding-top: 55px;
+}
+
+.kp-no-credential a {
+	cursor: pointer;
+}
 
 
 

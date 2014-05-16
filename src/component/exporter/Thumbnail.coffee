@@ -22,12 +22,12 @@ define ['UI.canvg', './Download'], ()->
     if cWidth  > 1500 then cWidth = 1500
     if cHeight > 1000 then cWidth = 1000
 
-    ratio1 = 218 / cWidth
-    ratio2 = 144 / cHeight
+    ratio1 = 228 / cWidth
+    ratio2 = 150 / cHeight
     ratio  = if ratio1 <= ratio2 then ratio2 else ratio1
 
-    ctx.canvas.width  = 218
-    ctx.canvas.height = 144
+    ctx.canvas.width  = 228
+    ctx.canvas.height = 150
     ctx.fillStyle = ctx.createPattern(ThumbGridBackground, "repeat")
     ctx.fillRect 0, 0, cWidth, cHeight
     ctx.scale ratio, ratio

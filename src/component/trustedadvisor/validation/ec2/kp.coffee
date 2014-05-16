@@ -31,21 +31,15 @@ define [ 'constant', 'MC', 'Design', '../../helper' ], ( constant, MC, Design, H
 		message = message.slice 0, - 2
 		Helper.message.error uid, i18n.TA_MSG_ERROR_INSTANCE_REF_OLD_KEYPAIR, message, kp.get('name')
 
+	longLiveNotice = () ->
+		Helper.message.notice null, i18n.TA_MSG_NOTICE_KEYPAIR_LONE_LIVE
 
-		###
-		infoObjType = 'Instance'
-		infoTag = 'instance'
-		if instance.type is constant.RESTYPE.LC
-			infoObjType = 'Launch Configuration'
-			infoTag = 'lc'
-
-
-		###
 
 
 
 
 
 	isNotDefaultAndRefInstance: isNotDefaultAndRefInstance
+	longLiveNotice		      : longLiveNotice
 
 

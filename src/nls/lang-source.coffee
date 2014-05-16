@@ -4730,6 +4730,10 @@ VisualOps API. You cannot UNDO this action.'
       en: "%s has associated with an nonexistient key pair <span class='validation-tag'>%s</span>. Make sure to use an existing key pair or creating a new one."
       zh: ""
 
+    TA_MSG_NOTICE_KEYPAIR_LONE_LIVE:
+      en: "Make sure you have access to all private key files associated with instances or launch configurations. Without them, you won't be able to log into your instances."
+      zh: ""
+
 
     # ENI
     TA_MSG_ERROR_ENI_NOT_ATTACH_TO_INSTANCE:

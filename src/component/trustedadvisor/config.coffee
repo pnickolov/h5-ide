@@ -26,6 +26,7 @@ define({
         sg: [ 'isStackUsingOnlyOneSG', 'isAssociatedSGNumExceedLimit' ]
         vpc: [ 'isVPCAbleConnectToOutside' ]
         stack: [ '~isHaveNotExistAMI' ] # `~` means work in stack mode only.
+        kp: [ 'longLiveNotice' ]
 
     asyncList:
         cgw: [ 'isCGWHaveIPConflict' ]

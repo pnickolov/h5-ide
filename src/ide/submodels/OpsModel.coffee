@@ -83,7 +83,10 @@ define ["ApiRequest", "constant", "component/exporter/Thumbnail", "backbone"], (
       if @isApp() then return
 
       thumbnail  = ThumbUtil.fetch(@get("id"))
-      attr       = $.extend true, {}, @attributes
+      attr       = $.extend true, {}, @attributes, {
+        name       : name
+        updateTime : +(new Date())
+      }
       collection = @collection
 
       ApiRequest("stack_save_as",{
@@ -92,8 +95,7 @@ define ["ApiRequest", "constant", "component/exporter/Thumbnail", "backbone"], (
         new_name    : name || @collection.getNewName()
       }).then ( id )->
         ThumbUtil.save id, thumbnail
-        attr.id   = id
-        attr.name = name
+        attr.id = id
         collection.add( new OpsModel(attr) )
 
     # Stop the app, returns a promise

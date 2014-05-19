@@ -299,10 +299,13 @@ define [ './kpTpl', './kpDialogTpl', 'kp_upload', 'backbone', 'jquery', 'constan
             @switchAction 'ready'
 
         checkOne: ( event ) ->
+            $target = $ event.currentTarget
             @processDelBtn()
             cbAll = @$ '#kp-select-all'
             cbAmount = @model.get( 'keys' ).length
             checkedAmount = @$('.one-cb:checked').length
+            $target.closest('tr').toggleClass 'selected'
+
             if checkedAmount is cbAmount
                 cbAll.prop 'checked', true
             else if cbAmount - checkedAmount is 1
@@ -313,8 +316,10 @@ define [ './kpTpl', './kpDialogTpl', 'kp_upload', 'backbone', 'jquery', 'constan
             @processDelBtn()
             if event.currentTarget.checked
                 @$('input[type="checkbox"]').prop 'checked', true
+                @$('tr.item').addClass 'selected'
             else
                 @$('input[type="checkbox"]').prop 'checked', false
+                @$('tr.item').removeClass 'selected'
 
         processDelBtn: () ->
             that = @

@@ -565,8 +565,12 @@ define [ 'event', 'i18n!nls/lang.js',
 
             $("#modal-import-json-file").on "change", hanldeFile
             zone = $("#modal-import-json-dropzone").on "drop", hanldeFile
-            zone.on "dragenter", ()-> $(this).closest("#modal-import-json-dropzone").toggleClass("dragover", true)
-            zone.on "dragleave", ()-> $(this).closest("#modal-import-json-dropzone").toggleClass("dragover", false)
+            zone.on "dragenter", ()->
+                console.log "dragenter"
+                $(this).closest("#modal-import-json-dropzone").toggleClass("dragover", true)
+            zone.on "dragleave", ()->
+                console.log "dragleave"
+                $(this).closest("#modal-import-json-dropzone").toggleClass("dragover", false)
             zone.on "dragover", ( evt )->
                 dt = evt.originalEvent.dataTransfer
                 if dt then dt.dropEffect = "copy"

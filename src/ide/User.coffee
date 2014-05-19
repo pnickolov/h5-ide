@@ -125,7 +125,7 @@ define [ "ApiRequest", "event" , "backbone" ], ( ApiRequest, ide_event )->
       return
 
     changePassword : ( oldPwd, newPwd )->
-      ApiRequest "changePwd", { params : {
+      ApiRequest "updateAccount", { params : {
         password     : oldPwd
         new_password : newPwd
       }}

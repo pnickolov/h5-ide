@@ -91,11 +91,18 @@ define [ "ApiRequest", "ApiRequestDefs", "vender/select2/select2" ], ( ApiReques
       $("#ApiResult").text("Loading...")
 
       ApiRequest( api, params ).then ( result )->
+        if apiDef.url.indexOf("/aws/") is 0 and apiDef.url.length > 5
+          #return is xml
+          try
+            result[1] = $.xml2json ($.parseXML result[1])
+          catch e
+            console.error "[ApiRequest]Convert aws api return from XML to JSON failed!", e
         $("#ApiResult").text JSON.stringify( result, undefined, 4 )
         $("#ApiDebugSend").removeAttr("disabled")
       , ( error )->
         $("#ApiResult").text JSON.stringify( error, undefined, 4 )
         $("#ApiDebugSend").removeAttr("disabled")
+      null
 
 
 

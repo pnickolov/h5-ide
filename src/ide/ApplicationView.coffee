@@ -47,6 +47,11 @@ define [
           $(".disconnected-msg").addClass "hovered"
           $("body").on "mousemove.disconnectedmsg", ( e )->
             msg = $(".disconnected-msg")
+
+            if not msg.length
+              $("body").off "mousemove.disconnectedmsg"
+              return
+
             pos = msg.offset()
             x = e.pageX
             y = e.pageY

@@ -5,7 +5,7 @@
 <nav id="SettingsNav">
   <span data-target="AccountTab">{{ i18n "HEAD_LABEL_ACCOUNT" }}</span>
   <span data-target="CredentialTab">{{ i18n "HEAD_LABEL_CREDENTIAL" }}</span>
-  <span data-target="TokenTab">{{ i18n "SETTINGS_LABEL_ACCESSTOKEN" }}</span>
+  <!-- <span data-target="TokenTab">{{ i18n "SETTINGS_LABEL_ACCESSTOKEN" }}</span> -->
 </nav>
 
 <div class="modal-body" id="SettingsBody">
@@ -73,7 +73,9 @@
       </ul>
 
       <div class="cred-btn-wrap clearfix">
+        {{#unless credNeeded}}
         <button id="CredSetupRemove" class="link-style">{{ i18n 'SETTINGS_LABEL_REMOVE_CREDENTIAL' }}</button>
+        {{/unless}}
         <button class="right link-style cred-setup-cancel">{{ i18n 'SETTINGS_LABEL_ACCOUNT_CANCEL' }}</button>
         <button id="CredSetupSubmit" class="btn btn-blue right">{{ i18n 'HEAD_BTN_SUBMIT' }}</button>
       </div>
@@ -98,8 +100,8 @@
       </div>
     </div>
 
-    <div id="CredRemoving"><h3>{{ i18n "SETTINGS_CRED_REMOVING" }}</h3></div>
-    <div id="CredUpdating"><h3>{{ i18n "SETTINGS_CRED_UPDATING" }}</h3></div>
+    <div id="CredRemoving"><p>{{ i18n "SETTINGS_CRED_REMOVING" }}</p><div class="loading-spinner"></div></div>
+    <div id="CredUpdating"><p>{{ i18n "SETTINGS_CRED_UPDATING" }}</p><div class="loading-spinner"></div></div>
 
   </section>
 

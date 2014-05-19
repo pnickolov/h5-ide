@@ -37,6 +37,7 @@ define [ "./SettingsDialogTpl", 'i18n!nls/lang.js', "ApiRequest", "backbone" ], 
           awsSecretKey : App.user.get("awsSecretKey")
 
           credRemoveTitle : sprintf lang.ide.SETTINGS_CRED_REMOVE_TIT, App.user.get("username")
+          credNeeded : !!(_.reduce _.map(MC.data.app_list, (el)-> el.length), ((m,n)->m+n), 0)
 
         modal SettingsTpl attributes
         @setElement $("#modal-box")
@@ -82,17 +83,17 @@ define [ "./SettingsDialogTpl", 'i18n!nls/lang.js', "ApiRequest", "backbone" ], 
         $("#AccountPwd").show()
         $("#AccountPwdWrap").hide()
         $("#AccountCurrentPwd, #AccountNewPwd").val("")
-        $("#account-passowrd-info").empty()
+        $("#AccountInfo").empty()
         return
 
       changePwd : ()->
         old_pwd = $("#AccountCurrentPwd").val() || ""
         new_pwd = $("#AccountNewPwd").val() || ""
         if old_pwd.length < 6 or new_pwd.length < 6
-          $('#account-passowrd-info').text lang.ide.SETTINGS_ERR_INVALID_PWD
+          $('#AccountInfo').text lang.ide.SETTINGS_ERR_INVALID_PWD
           return
 
-        $("#account-passowrd-info").empty()
+        $("#AccountInfo").empty()
 
         $("#AccountUpdatePwd").attr "disabled", "disabled"
 
@@ -103,9 +104,9 @@ define [ "./SettingsDialogTpl", 'i18n!nls/lang.js', "ApiRequest", "backbone" ], 
           return
         , ( err )->
           if err.error is 2
-            $('#account-passowrd-info').html "#{lang.ide.SETTINGS_ERR_WRONG_PWD} <a href='/reset/' target='_blank'>#{lang.ide.SETTINGS_INFO_FORGET_PWD}</a>"
+            $('#AccountInfo').html "#{lang.ide.SETTINGS_ERR_WRONG_PWD} <a href='/reset/' target='_blank'>#{lang.ide.SETTINGS_INFO_FORGET_PWD}</a>"
           else
-            $('#account-passowrd-info').text lang.ide.SETTINGS_UPDATE_PWD_FAILURE
+            $('#AccountInfo').text lang.ide.SETTINGS_UPDATE_PWD_FAILURE
 
           $("#AccountUpdatePwd").removeAttr "disabled"
 

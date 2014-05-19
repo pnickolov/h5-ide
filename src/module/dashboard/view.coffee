@@ -106,14 +106,14 @@ define [ 'event', 'i18n!nls/lang.js',
             @region    = "global"
 
             # Watch appList/stackList changes.
-            @listenTo App.model.stackList(), "change", ()->
+            @listenTo App.model.stackList(), "update", ()->
                 console.info "Dashboard Updated due to changes in stack list."
                 @renderMapResult()
                 @renderRecent()
                 @renderRegionAppStack()
                 return
 
-            @listenTo App.model.appList(),   "change", ()->
+            @listenTo App.model.appList(),   "update", ()->
                 @renderMapResult()
                 @renderRecent()
                 @renderRegionAppStack()

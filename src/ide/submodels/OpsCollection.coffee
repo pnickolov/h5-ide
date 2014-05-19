@@ -1,10 +1,10 @@
 
 ###
 ----------------------------
-  The Model for stack / app
+  The collection for stack / app
 ----------------------------
 
-  This model represent a stack or an app. It contains serveral methods to manipulate the stack / app
+  This collection will trigger an "update" event when the list ( containing all visible items ) is changed.
 
 ###
 
@@ -18,12 +18,10 @@ define [ "./OpsModel", "constant", "backbone" ], ( OpsModel, constant )->
     initialize : ()->
       # Re-sort the collection when any model is updated.
       @on "change:updateTime", @sort, @
-      return
+      @on "add remove", @__triggerUpdate, @
 
-    # override set() to trigger an change event.
-    set : ()->
-      Backbone.Collection.prototype.set.apply this, arguments
-      @trigger "change"
+      @__debounceUpdate = _.debounce ()-> @trigger "update"
+      return
 
     # Returns a new name that can be used in a model. The name is garuntee to be identical.
     getNewName : ( possibleName )->
@@ -84,4 +82,13 @@ define [ "./OpsModel", "constant", "backbone" ], ( OpsModel, constant )->
         filters.push m
 
       filters
+
+    __triggerUpdate : ( model )->
+      if not model then return
+
+      # When a model is added to the collection, we would only trigger and "update" event
+      # if that model is visible to the list.
+      if @indexOf( model ) != -1 and not model.isExisting() then return
+      @__debounceUpdate()
+      return
   }

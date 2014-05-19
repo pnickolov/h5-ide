@@ -68,12 +68,15 @@ define ["ApiRequest", "constant", "component/exporter/Thumbnail", "backbone"], (
     remove : ()->
       if @isApp() then return @__returnErrorPromise()
 
+      self.trigger 'destroy', self, self.collection
+
       self = @
       ApiRequest("stack_remove",{
         region_name : @get("region")
         stack_id    : @get("id")
-      }).then ()->
-        self.trigger 'destroy', self, self.collection
+      }).fail ()->
+        # If we cannot delete the stack, we just add it back to the stackList.
+        App.model.stackList().add self
         self
 
     # Stop the app, returns a promise

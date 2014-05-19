@@ -30,7 +30,7 @@ define [ 'constant', 'backbone', 'underscore', 'MC', 'keypair_service', 'Design'
     packErrorMsg = ( err ) ->
         msg = err.error_message
         if err.error_message
-            if msg.indexOf 'Length exceeds maximum of 2048' isnt -1
+            if msg.indexOf( 'Length exceeds maximum of 2048' ) isnt -1
                 msg = 'Length exceeds maximum of 2048'
 
         err.error_message = msg

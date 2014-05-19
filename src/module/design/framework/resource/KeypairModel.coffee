@@ -14,7 +14,7 @@ define [ "constant", "../ComplexResModel", "../ConnectionModel"  ], ( constant, 
         components[ otherTarget.id ].resource.KeyName = ref
 
         for member in otherTarget.groupMembers()
-          components[ member.id ].resource.KeyName = ref
+          components[ member.id ] and components[ member.id ].resource.KeyName = ref
 
 
       null

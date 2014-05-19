@@ -13,8 +13,10 @@ define [ "constant", "../ComplexResModel", "../ConnectionModel"  ], ( constant, 
         ref = kp.createRef( "KeyName" )
         components[ otherTarget.id ].resource.KeyName = ref
 
-        for member in otherTarget.groupMembers()
-          components[ member.id ] and components[ member.id ].resource.KeyName = ref
+        groupMembers = if otherTarget.groupMembers then otherTarget.groupMembers() else []
+
+        for member in groupMembers
+          if components[ member.id ] then components[ member.id ].resource.KeyName = ref
 
 
       null

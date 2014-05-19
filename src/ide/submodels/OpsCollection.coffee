@@ -12,7 +12,7 @@ define [ "./OpsModel", "constant", "backbone" ], ( OpsModel, constant )->
 
   Backbone.Collection.extend {
     model       : OpsModel
-    newNameTmpl : "untitled-"
+    newNameTmpl : "untitled"
     comparator  : ( m1, m2 )-> -(m1.attributes.updateTime - m2.attributes.updateTime)
 
     initialize : ()->
@@ -28,14 +28,21 @@ define [ "./OpsModel", "constant", "backbone" ], ( OpsModel, constant )->
       # Collect all the resources name
       nameMap = @groupBy "name"
       base    = 0
-      newName = possibleName || (@newNameTmpl + base)
+
+      if possibleName
+        nameMatch = possibleName.match /(.+)(-\d*)$/
+        tmpl = if nameMatch then nameMatch[1] else possibleName
+      else
+        tmpl = @newNameTmpl
+
+      newName = tmpl + "-0"
 
       while true
         if nameMap[ newName ]
           base += 1
         else
           break
-        newName = @newNameTmpl + base
+        newName = tmpl + "-" + base
 
       newName
 

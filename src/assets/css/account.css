@@ -291,14 +291,6 @@ header {
 	font-size     : 14px;
 }
 
-/* Selection */
-
-::selection {
-	/*background: #a45686;*/
-	background: none;
-	color: #f8f8f8;
-	text-shadow: none;
-}
 
 
 footer {

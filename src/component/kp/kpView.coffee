@@ -133,6 +133,11 @@ define [ './kpTpl', './kpDialogTpl', 'kp_upload', 'backbone', 'jquery', 'constan
 
                 that.processDelBtn()
 
+                if not that.model.get( 'keys' ).length
+                    that.$( '#kp-select-all' )
+                        .get( 0 )
+                        .checked = false
+
                 _.each error, ( s ) ->
                     console.log(s)
 

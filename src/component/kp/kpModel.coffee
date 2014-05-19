@@ -105,9 +105,9 @@ define [ 'constant', 'backbone', 'underscore', 'MC', 'keypair_service', 'Design'
                     else
                         keys = res.resolved_data
 
-                    that.settle 'keys', keys
+                    that.settle 'keys', keys or []
                 (err) ->
-                    that.settle 'keys', ''
+                    that.settle 'keys', []
             )
 
 
@@ -117,7 +117,7 @@ define [ 'constant', 'backbone', 'underscore', 'MC', 'keypair_service', 'Design'
         import: ( name, data ) ->
             that = @
             request( 'ImportKeyPair', name, data ).then( successHandler(@) ).fail( errorHandler(@) ).then ( res ) ->
-                keys = that.get( 'keys' ) or []
+                keys = that.get( 'keys' )
                 keys.unshift res
                 that.settle 'keys'
 
@@ -126,7 +126,7 @@ define [ 'constant', 'backbone', 'underscore', 'MC', 'keypair_service', 'Design'
         create: ( name ) ->
             that = @
             request( 'CreateKeyPair', name ).then( successHandler(@) ).fail( errorHandler(@) ).then ( res ) ->
-                keys = that.get( 'keys' ) or []
+                keys = that.get( 'keys' )
                 keys.unshift res
                 that.settle 'keys'
                 res

@@ -72,6 +72,7 @@ define [ 'event', 'i18n!nls/lang.js',
             'click .recent-list-item, .region-resource-list li'            : 'openItem'
             'click #global-region-create-stack-list li, #btn-create-stack' : 'createStack'
             "click .region-resource-list .delete-stack"                    : "deleteStack"
+            'click .region-resource-list .duplicate-stack'                 : 'duplicateStack'
 
             'click .global-region-status-tab'           : 'switchRecent'
             'click #region-switch-list li'              : 'switchRegion'
@@ -86,7 +87,6 @@ define [ 'event', 'i18n!nls/lang.js',
             'modal-shown .start-app'          : 'startAppClick'
             'modal-shown .stop-app'           : 'stopAppClick'
             'modal-shown .terminate-app'      : 'terminateAppClick'
-            'modal-shown .duplicate-stack'    : 'duplicateStackClick'
 
             'click #global-region-visualize-VPC' : 'unmanagedVPCClick'
             'click #global-import-stack'         : 'importJson'
@@ -412,33 +412,36 @@ define [ 'event', 'i18n!nls/lang.js',
             $("#confirmRmStack").on "click", ()-> App.model.stackList().get( id ).remove(); return
             false
 
-        duplicateStackClick : (event) ->
-            console.log 'click to duplicate stack'
+        duplicateStack : (event) ->
+            id   = $( event.currentTarget ).closest("li").attr("data-id")
+            name = App.model.stackList().get( id ).get( "name" )
 
-            id      = $(event.currentTarget).attr('id')
-            name    = $(event.currentTarget).attr('name')
+            modal MC.template.dupStackConfirm {
+                newName : App.model.stackList().getNewName( name )
+            }
 
-            # set default name
-            new_name = MC.aws.aws.getDuplicateName(name)
-            $('#modal-input-value').val(new_name)
+            $("#confirmDupStackIpt").focus().select().on "keyup", ()->
+                if $("#confirmDupStackIpt").val()
+                    $("confirmDupStack").removeAttr "disabled"
+                else
+                    $("#confirmDupStack").attr "disabled", "disabled"
+                return
 
-            $('#btn-confirm').on 'click', { target : this }, (event) ->
-                console.log 'dashboard duplicate stack'
-                new_name = $('#modal-input-value').val()
+            $("#confirmDupStack").on "click", ()->
+                newName = $('#confirmDupStackIpt').val()
 
                 #check duplicate stack name
-                if not new_name
-                    notification 'warning', lang.ide.PROP_MSG_WARN_NO_STACK_NAME
-                else if new_name.indexOf(' ') >= 0
+                if newName.indexOf(' ') >= 0
                     notification 'warning', lang.ide.PROP_MSG_WARN_WHITE_SPACE
-                else if not MC.aws.aws.checkStackName null, new_name
+                else if App.model.stackList().where({name:newName}).length
                     notification 'warning', lang.ide.PROP_MSG_WARN_REPEATED_STACK_NAME
                 else
                     modal.close()
+                    m = App.model.stackList().get(id)
+                    if m then m.duplicate( newName )
+                return
 
-                    ide_event.trigger ide_event.DUPLICATE_STACK, current_region, id, new_name, name
-
-            null
+            false
 
 
         startAppClick : (event) ->

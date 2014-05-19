@@ -1697,15 +1697,29 @@ Are you sure you want to delete {{name}}?</div>
 {{/each}}
 
 <!-- {{removeStackConfirm}} -->
-<div style="width:420px">
-	<header class="modal-header"><h3>{{i18n TOOL_TIP_DELETE_STACK}}</h3><i class="modal-close">&times;</i></header>
-	<div class="modal-body modal-text-wraper">
-			<div class="modal-center-align-helper">
-					<div class="modal-text-major">{{msg}}</div>
-			</div>
-	</div>
-	<div class="modal-footer">
-		<button class="btn modal-close btn-red" id="confirmRmStack">{{i18n "TOOL_POP_BTN_DELETE_STACK"}}</button>
-		<button class="btn modal-close btn-silver">{{i18n "TOOL_POP_BTN_CANCEL"}}</button>
+<header class="modal-header"><h3>{{i18n "TOOL_TIP_DELETE_STACK"}}</h3><i class="modal-close">&times;</i></header>
+<div class="modal-body modal-text-wraper" style="width:420px;">
+	<div class="modal-center-align-helper">
+			<div class="modal-text-major">{{msg}}</div>
 	</div>
 </div>
+<div class="modal-footer">
+	<button class="btn modal-close btn-red" id="confirmRmStack">{{i18n "TOOL_POP_BTN_DELETE_STACK"}}</button>
+	<button class="btn modal-close btn-silver">{{i18n "TOOL_POP_BTN_CANCEL"}}</button>
+</div>
+
+<!-- {{dupStackConfirm}} -->
+<header class="modal-header"><h3>{{i18n "TOOL_TIP_DUPLICATE_STACK"}}</h3><i class="modal-close">&times;</i></header>
+<div class="modal-body modal-text-wraper" style="width:420px;">
+	<div class="modal-center-align-helper">
+		<div class="modal-control-group">
+			<label class="modal-text-major">{{i18n "TOOL_POP_BODY_DUPLICATE_STACK"}}</label>
+			<input id="confirmDupStackIpt" class="input" type="text" value="{{newName}}">
+		</div>
+	</div>
+</div>
+<div class="modal-footer">
+	<button class="btn btn-red" id="confirmDupStack">{{i18n "TOOL_POP_BTN_DUPLICATE_STACK"}}</button>
+	<button class="btn modal-close btn-silver">{{i18n "TOOL_POP_BTN_CANCEL"}}</button>
+</div>
+

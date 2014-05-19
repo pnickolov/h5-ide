@@ -2547,18 +2547,40 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, escapeExpression=this.escapeExpression, functionType="function";
 
 
-  buffer += "<div style=\"width:420px\">\n	<header class=\"modal-header\"><h3>"
-    + escapeExpression(helpers.i18n.call(depth0, (depth0 && depth0.TOOL_TIP_DELETE_STACK), {hash:{},data:data}))
-    + "</h3><i class=\"modal-close\">&times;</i></header>\n	<div class=\"modal-body modal-text-wraper\">\n			<div class=\"modal-center-align-helper\">\n					<div class=\"modal-text-major\">"
+  buffer += "<header class=\"modal-header\"><h3>"
+    + escapeExpression(helpers.i18n.call(depth0, "TOOL_TIP_DELETE_STACK", {hash:{},data:data}))
+    + "</h3><i class=\"modal-close\">&times;</i></header>\n<div class=\"modal-body modal-text-wraper\" style=\"width:420px;\">\n	<div class=\"modal-center-align-helper\">\n			<div class=\"modal-text-major\">"
     + escapeExpression(((stack1 = (depth0 && depth0.msg)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</div>\n			</div>\n	</div>\n	<div class=\"modal-footer\">\n		<button class=\"btn modal-close btn-red\" id=\"confirmRmStack\">"
+    + "</div>\n	</div>\n</div>\n<div class=\"modal-footer\">\n	<button class=\"btn modal-close btn-red\" id=\"confirmRmStack\">"
     + escapeExpression(helpers.i18n.call(depth0, "TOOL_POP_BTN_DELETE_STACK", {hash:{},data:data}))
-    + "</button>\n		<button class=\"btn modal-close btn-silver\">"
+    + "</button>\n	<button class=\"btn modal-close btn-silver\">"
     + escapeExpression(helpers.i18n.call(depth0, "TOOL_POP_BTN_CANCEL", {hash:{},data:data}))
-    + "</button>\n	</div>\n</div>\n";
+    + "</button>\n</div>\n\n";
   return buffer;
   };
 TEMPLATE.removeStackConfirm=Handlebars.template(__TEMPLATE__);
+
+
+__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  var buffer = "", stack1, escapeExpression=this.escapeExpression, functionType="function";
+
+
+  buffer += "<header class=\"modal-header\"><h3>"
+    + escapeExpression(helpers.i18n.call(depth0, "TOOL_TIP_DUPLICATE_STACK", {hash:{},data:data}))
+    + "</h3><i class=\"modal-close\">&times;</i></header>\n<div class=\"modal-body modal-text-wraper\" style=\"width:420px;\">\n	<div class=\"modal-center-align-helper\">\n		<div class=\"modal-control-group\">\n			<label class=\"modal-text-major\">"
+    + escapeExpression(helpers.i18n.call(depth0, "TOOL_POP_BODY_DUPLICATE_STACK", {hash:{},data:data}))
+    + "</label>\n			<input id=\"confirmDupStackIpt\" class=\"input\" type=\"text\" value=\""
+    + escapeExpression(((stack1 = (depth0 && depth0.newName)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\">\n		</div>\n	</div>\n</div>\n<div class=\"modal-footer\">\n	<button class=\"btn btn-red\" id=\"confirmDupStack\">"
+    + escapeExpression(helpers.i18n.call(depth0, "TOOL_POP_BTN_DUPLICATE_STACK", {hash:{},data:data}))
+    + "</button>\n	<button class=\"btn modal-close btn-silver\">"
+    + escapeExpression(helpers.i18n.call(depth0, "TOOL_POP_BTN_CANCEL", {hash:{},data:data}))
+    + "</button>\n</div>\n\n";
+  return buffer;
+  };
+TEMPLATE.dupStackConfirm=Handlebars.template(__TEMPLATE__);
 
 
 return TEMPLATE; });

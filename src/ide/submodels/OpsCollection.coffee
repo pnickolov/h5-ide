@@ -29,8 +29,8 @@ define [ "./OpsModel", "constant", "backbone" ], ( OpsModel, constant )->
     getNewName : ( possibleName )->
       # Collect all the resources name
       nameMap = @groupBy "name"
-      newName = possibleName
       base    = 0
+      newName = possibleName || (@newNameTmpl + base)
 
       while true
         if nameMap[ newName ]

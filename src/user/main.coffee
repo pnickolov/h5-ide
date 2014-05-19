@@ -327,8 +327,10 @@ init = ->
                             #console.log 'NetWork Error while checking username'
                             $('.error-msg').eq(0).text(langsrc.service.NETWORK_ERROR).show()
                             $('#register-btn').attr('disabled',false).val(langsrc.register["register-btn"])
-                        else
+                        else if checkUsername()
                             status.removeClass('verification-status').addClass('error-status').text langsrc.register.username_taken
+                            cb?(0)
+                        else
                             cb?(0)
                     )
                 ,500

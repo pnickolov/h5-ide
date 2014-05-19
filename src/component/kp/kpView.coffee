@@ -312,10 +312,12 @@ define [ './kpTpl', './kpDialogTpl', 'kp_upload', 'backbone', 'jquery', 'constan
                 @$('input[type="checkbox"]').prop 'checked', false
 
         processDelBtn: () ->
-            if @$('.one-cb:checked').length
-                @$('#kp-delete').prop 'disabled', false
-            else
-                @$('#kp-delete').prop 'disabled', true
+            that = @
+            _.defer () ->
+                if that.$('input:checked').length
+                    that.$('#kp-delete').prop 'disabled', false
+                else
+                    that.$('#kp-delete').prop 'disabled', true
 
 
 

@@ -31,6 +31,7 @@ define({
     asyncList:
         cgw: [ 'isCGWHaveIPConflict' ]
         stack: [ 'verify', 'isHaveNotExistAMIAsync' ]
-        subnet: ['getAllAWSENIForAppEditAndDefaultVPC']
-        ebs: ['isSnapshotExist']
+        subnet: [ 'getAllAWSENIForAppEditAndDefaultVPC' ]
+        ebs: [ 'isSnapshotExist' ]
+        kp: [ 'isKeyPairExistInAws' ]
 })

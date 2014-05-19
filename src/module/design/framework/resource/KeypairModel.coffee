@@ -10,7 +10,12 @@ define [ "constant", "../ComplexResModel", "../ConnectionModel"  ], ( constant, 
       kp = @getTarget( constant.RESTYPE.KP )
       if kp
         otherTarget = @getOtherTarget( kp )
-        components[ otherTarget.id ].resource.KeyName = kp.createRef( "KeyName" )
+        ref = kp.createRef( "KeyName" )
+        components[ otherTarget.id ].resource.KeyName = ref
+
+        for member in otherTarget.groupMembers()
+          components[ member.id ].resource.KeyName = ref
+
 
       null
 

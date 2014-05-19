@@ -23,6 +23,7 @@ define [ "constant", "../ComplexResModel", "../ConnectionModel"  ], ( constant, 
 
     defaults :
       fingerprint : ""
+      isSet: false # true if the user have set defaultKp
 
     isVisual : ()-> false
 
@@ -88,6 +89,7 @@ define [ "constant", "../ComplexResModel", "../ConnectionModel"  ], ( constant, 
       defaultKP = _.find KeypairModel.allObjects(), ( obj )-> obj.get("name") is "DefaultKP"
       defaultKP.set( 'appId', keyName or '' )
       defaultKP.set( 'fingerprint', fingerprint or '' )
+      defaultKP.set( 'isSet', true )
 
     diffJson : ()-> # Disable diff for thie Model
 

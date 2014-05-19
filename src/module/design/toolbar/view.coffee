@@ -142,10 +142,13 @@ define [ 'MC', 'event',
                 $( ".runtime-error" ).hide()
 
         defaultKpIsSet: ->
-            #KpModel = Design.modelClassForType( constant.RESTYPE.KP )
-            #defaultKp = KpModel.getDefaultKP()
+            if not kp.hasResourceWithDefaultKp()
+                return true
 
-            if $('#kp-runtime-placeholder #kp-list .item.selected').length is 0
+            KpModel = Design.modelClassForType( constant.RESTYPE.KP )
+            defaultKp = KpModel.getDefaultKP()
+
+            if not defaultKp.get 'isSet'
                 @showErr 'kp', 'Specify a key pair as $DefaultKeyPair for this app.'
                 return false
 

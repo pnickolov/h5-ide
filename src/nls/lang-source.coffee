@@ -2296,8 +2296,9 @@ module.exports =
       zh: "模板名称不能包含空格"
 
     PROP_MSG_ERR_GET_PASSWD_FAILED:
-      en: "Sorry, there was a problem getting password data for instance "
-      zh: "抱歉，获取实例口令信息时出现了问题。"
+      en: "There was an error decrypting your password. Please ensure that you have entered your private key correctly."
+      zh: "解密出错，请确认您是否上传了正确的私钥。"
+
 
     PROP_MSG_ERR_AMI_NOT_FOUND:
       en: "Can not find information for selected AMI( %s ), try to drag another AMI."

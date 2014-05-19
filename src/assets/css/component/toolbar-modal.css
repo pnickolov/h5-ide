@@ -113,6 +113,10 @@
     height: 368px; }
   .modal-toolbar .table-head-fix .table {
     font-size: 12px; }
+    .modal-toolbar .table-head-fix .table tr.selected td {
+      background: #0B4085; }
+    .modal-toolbar .table-head-fix .table tr.selected:hover td {
+      background: #0B55B4; }
   .modal-toolbar .table-head-fix .table-head thead th {
     line-height: 16px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.4);

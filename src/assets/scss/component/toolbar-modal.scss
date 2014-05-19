@@ -194,6 +194,14 @@ $dark-blue: #001324;
 
 		.table {
 			font-size: 12px;
+
+			tr.selected td {
+				background: #0B4085;
+			}
+
+			tr.selected:hover td {
+				background: #0B55B4;
+			}
 		}
 
 		.table-head thead th {
@@ -209,6 +217,7 @@ $dark-blue: #001324;
 		.table thead tr th:first-child {
 			width: 20px;
 		}
+
 	}
 }
 

@@ -26,6 +26,7 @@ define [ "./SettingsDialogTpl", 'i18n!nls/lang.js', "ApiRequest", "backbone" ], 
         "click #TokenRmCancel"             : "cancelRmToken"
 
         "keyup #CredSetupAccount, #CredSetupAccessKey, #CredSetupSecretKey" : "updateSubmitBtn"
+        "keyup #AccountCurrentPwd, #AccountNewPwd" : "updatePwdBtn"
 
       initialize : ( options )->
 
@@ -95,10 +96,20 @@ define [ "./SettingsDialogTpl", 'i18n!nls/lang.js', "ApiRequest", "backbone" ], 
         $("#AccountInfo").empty()
         return
 
+      updatePwdBtn : ()->
+        old_pwd = $("#AccountCurrentPwd").val() || ""
+        new_pwd = $("#AccountNewPwd").val() || ""
+
+        if old_pwd.length and new_pwd.length
+          $("#AccountUpdatePwd").removeAttr "disabled"
+        else
+          $("#AccountUpdatePwd").attr "disabled", "disabled"
+        return
+
       changePwd : ()->
         old_pwd = $("#AccountCurrentPwd").val() || ""
         new_pwd = $("#AccountNewPwd").val() || ""
-        if old_pwd.length < 6 or new_pwd.length < 6
+        if new_pwd.length < 6
           $('#AccountInfo').text lang.ide.SETTINGS_ERR_INVALID_PWD
           return
 

@@ -45,7 +45,7 @@ define [ "ApiRequest", "event" , "backbone" ], ( ApiRequest, ide_event )->
 
       # Set user to already used IDE, so that next time we don't show welcome
       if @isFirstVisit()
-        ApiRequest("updateAccount", { params : {
+        ApiRequest("account_update_account", { attributes : {
           state : @get("state")|UserState.NotFirstTime
         } })
 
@@ -74,7 +74,7 @@ define [ "ApiRequest", "event" , "backbone" ], ( ApiRequest, ide_event )->
 
     # Fetch additional user infomation from an api.
     fetch : ()->
-      ApiRequest("login", {
+      ApiRequest("session_login", {
         username : @get("username")
         password : @get("session")
       }).then ( result )=>
@@ -101,7 +101,7 @@ define [ "ApiRequest", "event" , "backbone" ], ( ApiRequest, ide_event )->
 
     # Send a request to acquire a new session
     acquireSession : ( password )->
-      ApiRequest("login", {
+      ApiRequest("session_login", {
         username : @get("username")
         password : password
       }).then ( result )=>
@@ -125,24 +125,24 @@ define [ "ApiRequest", "event" , "backbone" ], ( ApiRequest, ide_event )->
       return
 
     changePassword : ( oldPwd, newPwd )->
-      ApiRequest "updateAccount", { params : {
+      ApiRequest "account_update_account", { attributes : {
         password     : oldPwd
         new_password : newPwd
       }}
 
     validateCredential : ( accessKey, secretKey )->
-      ApiRequest("validateCred", {
+      ApiRequest("account_validate_credential", {
         access_key : accessKey
         secret_key : secretKey
       })
 
     changeCredential : ( account = "", accessKey = "", secretKey = "", force = false )->
       self = this
-      ApiRequest("updateCred", {
-        access_key : accessKey
-        secret_key : secretKey
-        account_id : account
-        force : force
+      ApiRequest("account_set_credential", {
+        access_key   : accessKey
+        secret_key   : secretKey
+        account_id   : account
+        force_update : force
       }).then ()->
         attr =
           account      : account

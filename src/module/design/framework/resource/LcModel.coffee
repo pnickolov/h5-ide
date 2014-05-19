@@ -101,7 +101,7 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
     isDefaultTenancy : ()-> true
 
     # Use by CanvasElement
-    groupMembers : ()->
+    members : ()->
       resource_list = MC.data.resource_list[ Design.instance().region() ]
       if not resource_list then return []
 

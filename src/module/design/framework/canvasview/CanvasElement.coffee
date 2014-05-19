@@ -316,7 +316,7 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
   # Return an connection of serverGroupMember
   CanvasElement.prototype.list = ()->
     component = @model
-    members = @model.groupMembers()
+    members = if @model.members then @model.members() else @model.groupMembers()
     if members.length is 0 then return []
 
     id   = @id

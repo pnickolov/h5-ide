@@ -273,11 +273,17 @@ define ['UI.canvg', './Download'], ()->
     null
 
   saveThumbnail = ( id, $svg_element, size )->
-    exportPNG $svg_element, {
-      id       : id
-      size     : size
-      onFinish : saveThumbnailFinish
-    }
+    if typeof $svg_element is "string"
+      saveThumbnailFinish {
+        id    : id
+        image : $svg_element
+      }
+    else
+      exportPNG $svg_element, {
+        id       : id
+        size     : size
+        onFinish : saveThumbnailFinish
+      }
     null
 
   getThumbnail = ( id )->

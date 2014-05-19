@@ -37,6 +37,11 @@
 #kp-list {
   margin-top: 32px;
   padding-bottom: 32px; }
+  #kp-list li .icon-info {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    margin-top: -8px; }
 
 #kp-content .loading-spinner {
   margin-top: 45%; }
@@ -98,3 +103,11 @@
 button#property-app-keypair {
   display: block;
   padding: 8px 10px; }
+
+.kp-no-credential {
+  color: #F5F5F5;
+  padding-top: 55px; }
+
+.kp-no-credential a {
+  cursor: pointer;
+  color: #148BE6; }

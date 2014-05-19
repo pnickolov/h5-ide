@@ -68,7 +68,7 @@ define ["ApiRequest", "constant", "component/exporter/Thumbnail", "backbone"], (
     remove : ()->
       if @isApp() then return @__returnErrorPromise()
 
-      self.trigger 'destroy', self, self.collection
+      @trigger 'destroy', @, @collection
 
       self = @
       ApiRequest("stack_remove",{

@@ -138,11 +138,11 @@ define [ 'event', 'i18n!nls/lang.js',
 
         renderMapResult : ->
             regionsMap = {}
-            for r in App.model.stackList().groupByRegion( false, true )
+            for r in App.model.stackList().groupByRegion()
                 regionsMap[ r.region ] = r
                 r.stack = r.data.length
                 r.app   = 0
-            for r in App.model.appList().groupByRegion( false, true )
+            for r in App.model.appList().groupByRegion()
                 if not regionsMap[ r.region ]
                     regionsMap[ r.region ] = r
                     r.stack = 0
@@ -169,11 +169,13 @@ define [ 'event', 'i18n!nls/lang.js',
             attr = { apps:[], stacks:[], region : @region }
             attr[ @regionTab ] = true
 
-            if @region isnt "global"
-                filter = {region:@region}
+            region = @region
+            if region isnt "global"
+                filter = (f)-> f.get("region") is region && f.isExisting()
                 tojson = {thumbnail:true}
-                attr.stacks = App.model.stackList().where(filter).map (m)-> m.toJSON(tojson)
-                attr.apps   = App.model.appList().where(filter).map (m)-> m.toJSON(tojson)
+
+                attr.stacks = App.model.stackList().filter(filter).map (m)-> m.toJSON(tojson)
+                attr.apps   = App.model.appList().filter(filter).map   (m)-> m.toJSON(tojson)
 
             $('#region-app-stack-wrap').html( template_data.region_app_stack(attr) )
 

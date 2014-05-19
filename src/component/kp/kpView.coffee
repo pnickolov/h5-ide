@@ -360,8 +360,10 @@ define [ './kpTpl', './kpDialogTpl', 'kp_upload', 'backbone', 'jquery', 'constan
             len = keyword.length
             hitKeys = _.filter @model.get( 'keys' ), ( k ) ->
                 k.keyName.slice( 0, len ).toLowerCase() is keyword
-
-            @renderKeys hitKeys
+            if keyword
+                @renderKeys hitKeys
+            else
+                @renderKeys()
 
         setKey: ( event, name, data ) ->
             if @__mode is 'runtime'

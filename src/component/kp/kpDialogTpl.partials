@@ -49,7 +49,7 @@
                                             <th><div class="th-inner"></div></th>
                                         </tr>
                                     </thead>
-                                    <tbody id="community_ami_table">
+                                    <tbody>
                                         {{#each keys}}
                                         <tr class="item" data-id="">
                                             <td>
@@ -76,14 +76,14 @@
 <!-- {{keys}} -->
 {{#each keys}}
 <tr class="item" data-id="">
-    <td class="ami-table-fav">
+    <td>
         <div class="checkbox">
             <input id="kp-select-{{keyFingerprint}}" type="checkbox" value="None" data-name="{{keyName}}" class="one-cb">
             <label for="kp-select-{{keyFingerprint}}"></label>
         </div>
     </td>
-    <td class="ami-table-id">{{keyName}}</td>
-    <td class="ami-table-size">{{keyFingerprint}}</td>
+    <td>{{keyName}}</td>
+    <td>{{keyFingerprint}}</td>
 </tr>
 {{/each}}
 

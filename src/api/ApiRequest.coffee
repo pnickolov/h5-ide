@@ -30,7 +30,7 @@ define ["ApiRequestDefs", "api/ApiRequestErrors", "api/ApiRequestHandlers", "api
   # Request Handlers
   AjaxSuccessHandler = (res)->
     if not res or not res.result or res.result.length != 2
-      logAndThrow McError(-1, "Invalid JsonRpc Return Data")
+      logAndThrow McError( ApiErrors.InvalidRpcReturn , "Invalid JsonRpc Return Data")
 
     if res.result[0] isnt 0
       # We can do aditional global handling for some specific error here.
@@ -48,7 +48,7 @@ define ["ApiRequestDefs", "api/ApiRequestErrors", "api/ApiRequestHandlers", "api
     if !error and jqXHR.status != 200
       logAndThrow McError(-jqXHR.status, "Network Error")
 
-    logAndThrow McError(-2, textStatus, error)
+    logAndThrow McError( ApiErrors.XhrFailure, textStatus, error)
     return
 
   Abort = ()-> this.ajax.abort(); return
@@ -70,7 +70,11 @@ define ["ApiRequestDefs", "api/ApiRequestErrors", "api/ApiRequestHandlers", "api
     if ApiDef.params
       RequestData.params = p = []
       for i in ApiDef.params
-        p.push apiParameters[i] || ApiDefination.AutoFill(i)
+        if apiParameters.hasOwnProperty( i )
+          p.push apiParameters[i]
+        else
+          p.push ApiDefination.AutoFill(i)
+
     else if apiParameters
       OneParaArray[0] = apiParameters
       RequestData.params = OneParaArray

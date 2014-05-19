@@ -9,13 +9,13 @@ define [ 'MC', 'event',
          './app_template',
          './appview_template',
          "component/exporter/JsonExporter",
-         "component/exporter/Download",
          'constant'
+         'kp'
          'ApiRequest'
          'backbone', 'jquery', 'handlebars',
          'UI.selectbox', 'UI.notification',
          "UI.tabbar"
-], ( MC, ide_event, Design, lang, stack_tmpl, app_tmpl, appview_tmpl, JsonExporter, download, constant, ApiRequest ) ->
+], ( MC, ide_event, Design, lang, stack_tmpl, app_tmpl, appview_tmpl, JsonExporter, constant, kp, ApiRequest ) ->
 
     ToolbarView = Backbone.View.extend {
 
@@ -130,77 +130,113 @@ define [ 'MC', 'event',
                 else
                     $( '#main-toolbar' ).html app_tmpl this.model.attributes
 
-        clickRunIcon : ( event ) ->
-            console.log 'clickRunIcon'
+        showErr: ( id, msg ) ->
+            $( "#runtime-error-#{id}" )
+                .text( msg )
+                .show()
 
+        hideErr: ( type ) ->
+            if type
+                $( "#runtime-error-#{id}" ).hide()
+            else
+                $( ".runtime-error" ).hide()
+
+        defaultKpIsSet: ->
+            if not kp.hasResourceWithDefaultKp()
+                return true
+
+            KpModel = Design.modelClassForType( constant.RESTYPE.KP )
+            defaultKp = KpModel.getDefaultKP()
+
+            if not defaultKp.get 'isSet'
+                @showErr 'kp', 'Specify a key pair as $DefaultKeyPair for this app.'
+                return false
+
+            true
+
+        renderDefaultKpDropdown: ->
+            if kp.hasResourceWithDefaultKp()
+                $('#kp-runtime-placeholder').html kp.load().el
+                $('.default-kp-group').show()
+            null
+
+
+        clickRunIcon : ( event ) ->
+            me = this
             # when disabled not click
             if $('#toolbar-run').hasClass( 'disabled' )
-                modal.close()
-                return
+                return false
 
-            me = this
+            modal MC.template.modalRunStack {
+                hasCred : App.user.hasCredential()
+            }
+
+            # must render it after modal appeared
+            me.renderDefaultKpDropdown()
+
             event.preventDefault()
-            # check credential
-            if MC.common.cookie.getCookieByName('has_cred') isnt 'true'
-                modal.close()
-                console.log 'show credential setting dialog'
-                require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
 
-            else
+            # set app name
+            $('.modal-input-value').val MC.common.other.canvasData.get 'name'
 
-                # set app name
-                $('.modal-input-value').val MC.common.other.canvasData.get 'name'
+            # set total fee
+            cost = Design.instance().getCost()
+            $('#label-total-fee').find("b").text("$#{cost.totalFee}")
 
-                # set total fee
-                cost = Design.instance().getCost()
-                $('#label-total-fee').find("b").text("$#{cost.totalFee}")
+            # insert ta component
+            require [ 'component/trustedadvisor/main' ], ( trustedadvisor_main ) ->
+                trustedadvisor_main.loadModule 'stack'
 
-                # insert ta component
-                require [ 'component/trustedadvisor/main' ], ( trustedadvisor_main ) ->
-                    trustedadvisor_main.loadModule 'stack'
+            # click logic
+            $('#btn-confirm').on 'click', this, (event) ->
+                me.hideErr()
 
-                # click logic
-                $('#btn-confirm').on 'click', this, (event) ->
+                if not App.user.hasCredential()
+                    App.showSettings( App.showSettings.TAB.Credential )
+                    return false
 
-                    console.log 'clickRunIcon'
+                #check app name
+                app_name = $('.modal-input-value').val()
 
-                    #check app name
-                    app_name = $('.modal-input-value').val()
+                if not app_name
+                    me.showErr 'appname', lang.ide.PROP_MSG_WARN_NO_APP_NAME
+                    return false
 
-                    if not app_name
-                        notification 'warning', lang.ide.PROP_MSG_WARN_NO_APP_NAME
-                        return
+                if not MC.validate 'awsName', app_name
+                    #notification 'warning', lang.ide.PROP_MSG_WARN_INVALID_APP_NAME
+                    me.showErr 'appname', lang.ide.PROP_MSG_WARN_INVALID_APP_NAME
+                    return false
 
-                    if not MC.validate 'awsName', app_name
-                        notification 'warning', lang.ide.PROP_MSG_WARN_INVALID_APP_NAME
-                        return
+                # get process tab name
+                process_tab_name = 'process-' + MC.common.other.canvasData.get( 'region' ) + '-' + app_name
 
-                    # get process tab name
-                    process_tab_name = 'process-' + MC.common.other.canvasData.get( 'region' ) + '-' + app_name
+                # delete F5 old process
+                obj = MC.common.other.getProcess process_tab_name
+                if obj and obj.flag_list and obj.flag_list.is_failed is true and obj.flag_list.flag is 'RUN_STACK'
 
-                    # delete F5 old process
-                    obj = MC.common.other.getProcess process_tab_name
-                    if obj and obj.flag_list and obj.flag_list.is_failed is true and obj.flag_list.flag is 'RUN_STACK'
+                    # delete MC.process
+                    MC.common.other.deleteProcess process_tab_name
 
-                        # delete MC.process
-                        MC.common.other.deleteProcess process_tab_name
+                    # close tab if exist
+                    ide_event.trigger ide_event.CLOSE_DESIGN_TAB, process_tab_name
 
-                        # close tab if exist
-                        ide_event.trigger ide_event.CLOSE_DESIGN_TAB, process_tab_name
+                # repeat with app list or tab name(some run failed app tabs)
+                appNameRepeated = (not MC.aws.aws.checkAppName app_name) or (_.contains(_.keys(MC.process), process_tab_name))
+                if appNameRepeated
+                    me.showErr 'appname', lang.ide.PROP_MSG_WARN_REPEATED_APP_NAME
 
-                    # repeat with app list or tab name(some run failed app tabs)
-                    if (not MC.aws.aws.checkAppName app_name) or (_.contains(_.keys(MC.process), process_tab_name))
-                        notification 'warning', lang.ide.PROP_MSG_WARN_REPEATED_APP_NAME
-                        return false
+                # Stop the progress, if defaultKp is not set or if appName is repeated
+                if not me.defaultKpIsSet() or appNameRepeated
+                    return false
 
-                    # disable button
-                    $('#btn-confirm').attr 'disabled', true
-                    $('.modal-header .modal-close').hide()
-                    $('#run-stack-cancel').attr 'disabled', true
+                # disable button
+                $('#btn-confirm').attr 'disabled', true
+                $('.modal-header .modal-close').hide()
+                $('#run-stack-cancel').attr 'disabled', true
 
-                    # push SAVE_STACK event
-                    #ide_event.trigger ide_event.SAVE_STACK, MC.common.other.canvasData.data()
-                    event.data.model.syncSaveStack MC.common.other.canvasData.get( 'region' ), MC.common.other.canvasData.data()
+                # push SAVE_STACK event
+                #ide_event.trigger ide_event.SAVE_STACK, MC.common.other.canvasData.data()
+                event.data.model.syncSaveStack MC.common.other.canvasData.get( 'region' ), MC.common.other.canvasData.data()
 
             null
 
@@ -470,7 +506,7 @@ define [ 'MC', 'event',
 
         clickExportJSONIcon : ->
             design   = Design.instance()
-            username = $.cookie('username')
+            username = App.user.get('username')
             date     = MC.dateFormat(new Date(), "yyyy-MM-dd")
             name     = [design.get("name"), username, date].join("-")
 
@@ -506,7 +542,7 @@ define [ 'MC', 'event',
                     #download( blob, MC.canvas_data.name + ".png" )
 
                     # new design flow
-                    download( blob, name + ".png" )
+                    JsonExporter.download( blob, name + ".png" )
 
             $( '.modal-body' ).html( "<img style='max-height:100%;display:inline-block' src='#{base64_image}' />" ).css({
                 "background":"none"
@@ -551,7 +587,7 @@ define [ 'MC', 'event',
             console.log 'click stop app'
 
             # check credential
-            if MC.common.cookie.getCookieByName('has_cred') isnt 'true'
+            if false
                 modal.close()
                 console.log 'show credential setting dialog'
                 require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
@@ -576,7 +612,7 @@ define [ 'MC', 'event',
             console.log 'click run app'
 
             # check credential
-            if MC.common.cookie.getCookieByName('has_cred') isnt 'true'
+            if false
                 modal.close()
                 console.log 'show credential setting dialog'
                 require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
@@ -601,7 +637,7 @@ define [ 'MC', 'event',
             console.log 'click terminate app'
 
             # check credential
-            if MC.common.cookie.getCookieByName('has_cred') isnt 'true'
+            if false
                 modal.close()
                 console.log 'show credential setting dialog'
                 require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
@@ -685,9 +721,11 @@ define [ 'MC', 'event',
             null
 
         clickSaveEditApp : (event)->
+
+
             # 1. Send save request
             # check credential
-            if MC.common.cookie.getCookieByName('has_cred') isnt 'true'
+            if false
                 modal.close()
                 console.log 'show credential setting dialog'
                 require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
@@ -702,6 +740,8 @@ define [ 'MC', 'event',
 
                 else
                     modal MC.template.updateApp result
+                    # Set default kp
+                    @renderDefaultKpDropdown()
 
                     require [ 'component/trustedadvisor/main' ], ( trustedadvisor_main ) ->
                         trustedadvisor_main.loadModule 'stack'
@@ -781,6 +821,12 @@ define [ 'MC', 'event',
 
         appUpdating : ( event ) ->
             console.log 'appUpdating'
+            me = event.data
+            # 0. check whether defaultKp is set
+            if not me.defaultKpIsSet()
+                return false
+
+
 
             # 1. event.data.trigger 'xxxxx'
 

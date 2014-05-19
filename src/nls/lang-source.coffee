@@ -447,10 +447,6 @@ module.exports =
       en: "Global"
       zh: "我的资源"
 
-    "account-settings":
-      en: "Account Settings"
-      zh: "Account Settings"
-
     IDE_MSG_ERR_OPEN_OLD_STACK_APP_TAB:
       en: "Sorry, the stack/app is too old, unable to open"
       zh: "抱歉，模板/应用的格式太旧了，无法打开."
@@ -1245,9 +1241,34 @@ module.exports =
       en: "Block Devices"
       zh: "块设备"
 
+    PROP_INSTANCE_DEFAULT_KP:
+      en: "$DefaultKeyPair"
+      zh: ""
+
+    PROP_INSTANCE_NO_KP:
+      en: "No Key Pair"
+      zh: ""
+
     PROP_INSTANCE_NEW_KP:
       en: "Create New Key Pair"
       zh: "新建秘钥"
+
+    PROP_INSTANCE_FILTER_KP:
+      en: "Filter by key pair name"
+      zh: ""
+
+    PROP_INSTANCE_MANAGE_KP:
+      en: "Manage Region Key Pairs ..."
+      zh: ""
+
+    PROP_INSTANCE_TIP_DEFAULT_KP:
+      en: 'If you have used $DefaultKeyPair for any instance/launch configuration, you will be required to specify an existing key pair for $DefaultKeyPair. Or you can choose "No Key Pair" as $DefaultKeyPair.'
+      zh: ""
+
+    PROP_INSTANCE_TIP_NO_KP:
+      en: "If you select no key pair, you will not be able to connect to the instance unless you already know the password built into this AMI."
+      zh: ""
+
 
     PROP_INSTANCE_CW_ENABLED:
       en: "Enable CloudWatch Detailed Monitoring"
@@ -2275,8 +2296,9 @@ module.exports =
       zh: "模板名称不能包含空格"
 
     PROP_MSG_ERR_GET_PASSWD_FAILED:
-      en: "Sorry, there was a problem getting password data for instance "
-      zh: "抱歉，获取实例口令信息时出现了问题。"
+      en: "There was an error decrypting your password. Please ensure that you have entered your private key correctly."
+      zh: "解密出错，请确认您是否上传了正确的私钥。"
+
 
     PROP_MSG_ERR_AMI_NOT_FOUND:
       en: "Can not find information for selected AMI( %s ), try to drag another AMI."
@@ -3142,21 +3164,9 @@ module.exports =
       en: "New Password"
       zh: "新密码"
 
-    HEAD_LABEL_REMOVE_CREDENTIAL:
-      en: "Remove Credential"
-      zh: "移除证书"
-
     HEAD_LABEL_ACCOUNT_CHANGE:
       en: "Change"
       zh: "修改"
-
-    HEAD_LABEL_ACCOUNT_UPDATE:
-      en: "Update"
-      zh: "更新"
-
-    HEAD_LABEL_ACCOUNT_CANCEL:
-      en: "Cancel"
-      zh: "取消"
 
     HEAD_LABEL_ACCOUNT_PERIOD:
       en: "."
@@ -3178,18 +3188,6 @@ module.exports =
       en: "Skip"
       zh: "跳过"
 
-    HEAD_LABEL_ACCOUNT_ID:
-      en: "Account Number"
-      zh: "账户编号"
-
-    HEAD_LABEL_ACCOUNT_ACCESS_KEY:
-      en: "Access Key ID"
-      zh: "访问码编号"
-
-    HEAD_LABEL_ACCOUNT_SECRET_KEY:
-      en: "Secret Key"
-      zh: "密匙"
-
     HEAD_BTN_CHANGE:
       en: "Change"
       zh: "修改"
@@ -3210,25 +3208,13 @@ module.exports =
       en: "Close"
       zh: "关闭"
 
+    HEAD_BTN_BACK:
+      en: "Back"
+      zh: "后退"
+
     HEAD_BTN_DONE:
       en: "Done"
       zh: "完成"
-
-    HEAD_INFO_ACCOUNT_LIST:
-      en: "You have connected with following AWS account:"
-      zh: "您已经使用如下AWS账号连接:"
-
-    HEAD_INFO_REMOVE_CREDENTIAL1:
-      en: "By removing Credentials, you will be in the demo mode."
-      zh: "移除证书后，您还可以使用试用证书。"
-
-    HEAD_INFO_REMOVE_CREDENTIAL2:
-      en: "If you want to launch stack into app, you need to provide valid AWS Credentials."
-      zh: "如果想启动应用，您需要提供有效的AWS证书。"
-
-    HEAD_INFO_REMOVE_CREDENTIAL3:
-      en: "The stacks you designed in demo mode may not be able to launch with your AWS Credentials due to resource inconsistency."
-      zh: "因为资源不一致的原因，在更新为可用的AWS证书后，您使用试用证书设计的模块不能被启动。"
 
     HEAD_INFO_LOADING:
       en: "loading..."
@@ -3238,125 +3224,212 @@ module.exports =
       en: "Loading resources..."
       zh: "加载资源中..."
 
-    HEAD_WARN_UPDATE_CREDENTIAL:
-      en: "Cannot change AWS Credentials now since you have unterminated app. If you want to change AWS Credentials, terminate all your apps first."
-      zh: "还有没被销毁的应用，您现在不能修改当前AWS证书。如果你想修改AWS证书，首先需要销毁所有已有应用。"
 
-    HEAD_INFO_PROVIDE_CREDENTIAL1:
-      en: "Do not want to provide AWS Credentials now?"
-      zh: "现在想提供AWS证书吗？"
+    SETTINGS_CRED_DEMO_TIT:
+      en : "You are using a demo AWS account. Set up your own credential to run stack into live resources, or visualize your existing VPC."
+      zh : "You are using a demo AWS account. Set up your own credential to run stack into live resources, or visualize your existing VPC."
 
-    HEAD_INFO_DEMO_MODE:
-      en: "You can design stack in the demo mode. Yet, with following drawbacks:"
-      zh: "您可以使用试用证书进行模板设计，但有以下缺点："
+    SETTINGS_CRED_DEMO_TEXT:
+      en : "Some stack you build in demo mode may report error after setting up credential due to resource inconsistency between different accounts."
+      zh : "Some stack you build in demo mode may report error after setting up credential due to resource inconsistency between different accounts."
 
-    HEAD_INFO_WELCOME:
-      en: "Welcome to VisualOps, %s."
-      zh: "欢迎来到VisualOps, %s。"
+    SETTINGS_CRED_DEMO_SETUP:
+      en : "Set up AWS Credentials"
+      zh : "连接AWS账号"
 
-    HEAD_INFO_PROVIDE_CREDENTIAL2:
-      en: "To start designing cloud architecture, please provide your AWS credentials:"
-      zh: "在开始您的云架构设计之前，请提供AWS证书："
-
-    HEAD_INFO_PROVIDE_CREDENTIAL3:
-      en: "To launch and manage AWS resources, please provide your AWS account credentials."
-      zh: "请提供您好AWS证书来加载和管理AWS资源。"
-
-    HEAD_ERR_AUTHENTICATION:
-      en: "Authentication failed. Please check your AWS Credentials and try again."
-      zh: "授权失败，请检查您的AWS证书并重试。"
-
-    HEAD_CHANGE_CREDENTIAL:
-      en: "If you change AWS Credentials, design previously created in current account may not work due to resource inconsistency. "
-      zh: "如果您修改AWS证书，因为资源不一致性的原因，您之前创建的设计成果将不能使用。"
-
-    HEAD_INFO_CONFIRM_REMOVE:
-      en: "Do you confirm to remove AWS Credentials of account %s?"
-      zh: "您确定要移除账号%s的AWS证书吗？"
-
-    HEAD_INFO_CONNECTING:
-      en: "Connecting AWS Account..."
-      zh: "正在连接AWS账号"
-
-    HEAD_TIP_AWS_ACCOUNT_ID:
+    SETTINGS_TIP_CRED_ACCOUNTID:
       en: "Your AWS account number is shown in the upper-right area of your browser window when you are logged into your AWS Account. e.g., 123456789000"
       zh: "当您登陆到您的AWS账号时，您的AWS账号编号将显示在您浏览器窗口的右上角区域。 比如123456789000"
 
-    HEAD_TIP_ACCOUNT_ACCESS_KEY:
+    SETTINGS_TIP_CRED_ACCESSKEY:
       en: "You will find those keys in Account > Security Credentials menu under Access Keys tab in the box at the middle of the page. e.g., ABCDEFGHIJ1LMNOPQR2S"
       zh: "通过点击&nbsp;账号&nbsp;&gt;安全性认证&nbsp;菜单，然后切换到页面中间的&nbsp;访问码&nbsp;页面，您将能找到您的访问码。 例如ABCDEFGHIJ1LMNOPQR2S"
 
-    HEAD_TIP_ACCOUNT_SECRET_KEY:
+    SETTINGS_TIP_CRED_SECRETKEY:
       en: "You will find those keys in Account > Security Credentials menu under Access Keys tab in the box at the middle of the page. e.g., aBCDefgH/ Ijklmnopq1Rs2tUVWXY3AbcDeFGhijk"
       zh: "通过点击&nbsp;账号&nbsp;&gt;安全性认证&nbsp;菜单，然后切换到页面中间的&nbsduplp;访问码&nbsp;页面，您将能找到您的访问码。 例如aBCDefgH/ Ijklmnopq1Rs2tUVWXY3AbcDeFGhijk"
 
-    HEAD_MSG_ERR_INVALID_ACCOUNT_ID:
-      en: "Invalid accout id"
-      zh: "无效的帐户ID"
+    SETTINGS_LABEL_ACCOUNTID:
+      en: "Account Number"
+      zh: "账户编号"
 
-    HEAD_MSG_ERR_INVALID_ACCESS_KEY:
-      en: "Invalid access key"
-      zh: "无效的访问密钥"
+    SETTINGS_LABEL_ACCESSKEY:
+      en: "Access Key ID"
+      zh: "访问码编号"
 
-    HEAD_MSG_ERR_INVALID_SECRET_KEY:
-      en: "Invalid secret key"
-      zh: "无效的密钥"
+    SETTINGS_LABEL_SECRETKEY:
+      en: "Secret Key"
+      zh: "密匙"
 
-    HEAD_MSG_ERR_INVALID_SAME_ID:
-      en: "Please use a correct account number"
-      zh: "账号相同，请输入不同的账号"
+    SETTINGS_LABEL_REMOVE_CREDENTIAL:
+      en: "Remove Credential"
+      zh: "移除证书"
 
-    HEAD_MSG_ERR_KEY_UPDATE:
-      en: "Update Key error, restore the previous key"
-      zh: "修改账号失败，恢复上一个账号"
+    SETTINGS_LABEL_ACCOUNT_CANCEL:
+      en: "Cancel"
+      zh: "取消"
 
-    HEAD_MSG_ERR_RESTORE_DEMO_KEY:
-      en: "restore the demo key"
-      zh: "恢复到演示账号"
+    SETTINGS_LABEL_ACCOUNT_UPDATE:
+      en: "Update"
+      zh: "更新"
 
-    HEAD_MSG_ERR_NULL_PASSWORD:
-      en: "Provide both current and new password to change password."
-      zh: "请提供旧密码和新密码来完成重设密码操作。"
+    SETTINGS_LABEL_ACCESSTOKEN:
+      en: "Access Token"
+      zh: "Access Token"
 
-    HEAD_MSG_ERR_INVALID_PASSWORD:
-      en: "Password must contain at least 6 characters."
-      zh: "密码最少6位且不能和您的用户名相同"
+    SETTINGS_INFO_TOKEN:
+      en: "Use token within API calls to initiate automatic states update. "
+      zh: "Use token within API calls to initiate automatic states update. "
 
-    HEAD_MSG_ERR_ERROR_PASSWORD:
-      en: "Current password is wrong."
-      zh: "密码错误"
+    SETTINGS_BTN_TOKEN_CREATE:
+      en: "Generate Token"
+      zh: "Generate Token"
 
-    HEAD_MSG_ERR_RESET_PASSWORD:
-      en: "Forget password?"
-      zh: "忘记密码?"
+    SETTINGS_BTN_TOKEN_REMOVE:
+      en: "Delete Token"
+      zh: "Delete Toekn"
 
-    HEAD_MSG_INFO_UPDATE_PASSWORD:
+    SETTINGS_INFO_TOKEN_LINK:
+      en: "Read detailed documentation."
+      zh: "Read detailed documentation."
+
+    SETTINGS_INFO_TOKEN_EMPTY:
+      en: "You currently have no token."
+      zh: "You currently have no token."
+
+    SETTINGS_CONFIRM_TOKEN_RM_TIT:
+      en: 'Do you confirm to delete the "%s"?'
+      zh: 'Do you confirm to delete the "%s"?'
+
+    SETTINGS_LABEL_TOKENTABLE_NAME:
+      en: "Token Name"
+      zh: "Token Name"
+
+    SETTINGS_LABEL_TOKENTABLE_TOKEN:
+      en: "Access Token"
+      zh: "Access Token"
+
+    SETTINGS_CONFIRM_TOKEN_RM:
+      en: 'Any applications or scripts using this token will no longer be able to access the
+VisualOps API. You cannot UNDO this action.'
+      zh: 'Any applications or scripts using this token will no longer be able to access the
+VisualOps API. You cannot UNDO this action.'
+
+    SETTINGS_CRED_CONNECTED_TIT:
+      en: "You have connected with following AWS account:"
+      zh: "您已经使用如下AWS账号连接:"
+
+    SETTINGS_CRED_REMOVE_TIT:
+      en: "Do you confirm to remove AWS Credentials of account %s?"
+      zh: "您确定要移除账号%s的AWS证书吗？"
+
+    SETTINGS_CRED_REMOVE_TEXT:
+      en: "<p>By removing Credentials, you will be in the demo mode.</p><p>If you want to launch stack into app, you need to provide valid AWS Credentials. </p><p>The stacks you designed in demo mode may not be able to launch with your AWS Credentials due to resource inconsistency.</p><p>If you have existing apps, they will become unmanageable and can only be forced to delete.</p>"
+      zh: "<p>By removing Credentials, you will be in the demo mode.</p><p>If you want to launch stack into app, you need to provide valid AWS Credentials. </p><p>The stacks you designed in demo mode may not be able to launch with your AWS Credentials due to resource inconsistency.</p><p>If you have existing apps, they will become unmanageable and can only be forced to delete.</p>"
+
+    SETTINGS_CRED_REMOVING:
+      en : "Removing credential..."
+      zh : "正在移除证书..."
+
+    SETTINGS_CRED_UPDATING:
+      en : "Updating credential..."
+      zh : "正在更新证书..."
+
+    SETTINGS_CRED_RES_LOADING:
+      en : "Loading resources..."
+      zh : "正在刷新资源..."
+
+    SETTINGS_ERR_CRED_VALIDATE:
+      en : "Fail to validate your credential."
+      zh : "Fail to validate your credential."
+
+    SETTINGS_ERR_CRED_UPDATE:
+      en : "Fail to update your credential, please retry."
+      zh : "Fail to update your credential, please retry."
+
+    SETTINGS_ERR_CRED_REMOVE:
+      en : "Fail to remove your credential, please retry."
+      zh : "Fail to remove your credential, please retry."
+
+    SETTINGS_CRED_UPDATE_CONFIRM_TIT:
+      en : "<span>You have running or stopped app(s).</span> Do you confirm to update the AWS credential?"
+      zh : "<span>You have running or stopped app(s).</span> Do you confirm to update the AWS credential?"
+
+    SETTINGS_CRED_UPDATE_CONFIRM_TEXT:
+      en : "If you continue to use the new credential, existing apps might become unmanageable. If the new AWS credential does not have sufficient privileges to manage the existing apps, we strongly recommend to TERMINATE existing apps first."
+      zh : "If you continue to use the new credential, existing apps might become unmanageable. If the new AWS credential does not have sufficient privileges to manage the existing apps, we strongly recommend to TERMINATE existing apps first."
+
+    SETTINGS_LABEL_UPDATE_CONFIRM:
+      en: "Confirm to update"
+      zh: "Confirm to update"
+
+    SETTINGS_ERR_INVALID_PWD:
+      en: "New password must contain at least 6 characters."
+      zh: "新密码最少6位且不能和您的用户名相同"
+
+    SETTINGS_UPDATE_PWD_SUCCESS:
       en: "Password has been updated."
       zh: "密码修改成功。"
 
-    HEAD_MSG_ERR_UPDATE_PASSWORD:
-      en: "Update password failed."
-      zh: "修改密码失败。"
+    SETTINGS_UPDATE_PWD_FAILURE:
+      en: "Update password failed. Make sure current password is correct."
+      zh: "修改密码失败。请确认当前密码输入正确。"
 
-    HEAD_MSG_ERR_WRONG_PASSWORD:
+    SETTINGS_ERR_WRONG_PWD:
       en: "Current password is wrong."
       zh: "密码错误"
 
-    HEAD_MSG_INFO_FORGET_PASSWORD:
+    SETTINGS_INFO_FORGET_PWD:
       en: "Forget password?"
       zh: "是否重置密码?"
 
-    HEAD_MSG_INFO_UPDATE_EMAIL:
-      en: "Email address has been updated."
-      zh: "电子邮件地址修改成功。"
+    WELCOME_DIALOG_TIT:
+      en: "Welcome to VisualOps"
+      zh: "欢迎使用 VisualOps"
 
-    HEAD_MSG_ERR_UPDATE_EMAIL1:
-      en: "Update email address failed."
-      zh: "修改邮箱地址失败"
+    WELCOME_TIT:
+      en: "Welcome to VisualOps, "
+      zh: "Welcome to VisualOps, "
 
-    HEAD_MSG_ERR_UPDATE_EMAIL2:
-      en: "The email address is already taken."
-      zh: "邮箱地址已被使用"
+    WELCOME_DESC:
+      en: "To start designing cloud architecture, please provide your AWS credentials"
+      zh: "To start designing cloud architecture, please provide your AWS credentials"
+
+    WELCOME_SKIP_TIT:
+      en: "Skip providing AWS Credentials now?"
+      zh: "Skip providing AWS Credentials now?"
+
+    WELCOME_SKIP_SUBTIT:
+      en: "You can design stack in the demo mode. Yet, with following drawbacks:"
+      zh: "You can design stack in the demo mode. Yet, with following drawbacks:"
+
+    WELCOME_SKIP_MSG:
+      en: "<ul><li>The demo mode may not reflect the real condition of resources available for your account.</li> <li>If you want to provide credentials later, design previously created in demo mode may not work due to resource inconsistency.</li>"
+      zh: "<ul><li>The demo mode may not reflect the real condition of resources available for your account.</li> <li>If you want to provide credentials later, design previously created in demo mode may not work due to resource inconsistency.</li>"
+
+    WELCOME_SKIP_MSG_EXTRA:
+      en: "You can provide AWS Credentials later from Settings in the top-right drop down."
+      zh: "You can provide AWS Credentials later from Settings in the top-right drop down."
+
+    WELCOME_DONE_TIT:
+      en: "Get started with VisualOps"
+      zh: "Get started with VisualOps"
+
+    WELCOME_DONE_HINT:
+      en: "You have connected to AWS account: "
+      zh: "You have connected to AWS account: "
+
+    WELCOME_DONE_HINT_DEMO:
+      en: "You are using a demo AWS account."
+      zh: "You are using a demo AWS account."
+
+    WELCOME_DONE_MSG:
+      en: "<li>Play with the 5 sample stacks prebuilt in Virginia region.</li>
+<li>Read <a href='http://docs.visualops.io/' target='_blank'>Documentation</a>.</li>
+<li>Watch short <a href='http://docs.visualops.io/source/tutorial/video.html' target='_blank'>Tutorial Videos</a>. </li>"
+      zh: "<li>Play with the 5 sample stacks prebuilt in Virginia region.</li>
+<li>Read <a href='http://docs.visualops.io/' target='_blank'>Documentation</a>.</li>
+<li>Watch short <a href='http://docs.visualops.io/source/tutorial/video.html' target='_blank'>Tutorial Videos</a>. </li>"
 
     HEAD_MSG_ERR_UPDATE_EMAIL3:
       en: "Please provide a valid email address."
@@ -3405,6 +3478,20 @@ module.exports =
     BEFOREUNLOAD_MESSAGE:
       en: "You have unsaved changes."
       zh: "您有未保存的更改。"
+
+
+    DASH_CREATE_NEW_STACK:
+      en: "Create new stack"
+      zh: "创建模板"
+
+    DASH_IMPORT_JSON:
+      en: "Import stack"
+      zh: "导入Stack"
+
+    DASH_VISUALIZE_VPC:
+      en: "Visualize existing VPC"
+      zh: "可视化VPC"
+
 
     DASH_TIT_VIEW_RESOURCE_DETAIL:
       en: "View resource detail"
@@ -3921,10 +4008,6 @@ module.exports =
     AMI_LBL_PAGEINFO:
       en: "Showing %s-%s items of %s results"
       zh: "当前显示 %s-%s 条，共有 %s 条"
-
-    IDE_COM_CREATE_NEW_STACK:
-      en: "Create new stack"
-      zh: "创建模板"
 
     "IDE_LBL_REGION_NAME_us-east-1":
       en: "US East"
@@ -4652,6 +4735,14 @@ module.exports =
       zh: ""
     TA_MSG_ERROR_INSTANCE_NAT_CHECKED_SOURCE_DEST:
       en: "To allow routing to work properly, instance <span class='validation-tag tag-instance'>%s</span> should disabled Source/Destination Checking in \"Network Interface Details\""
+      zh: ""
+
+    TA_MSG_ERROR_INSTANCE_REF_OLD_KEYPAIR:
+      en: "%s has associated with an nonexistient key pair <span class='validation-tag'>%s</span>. Make sure to use an existing key pair or creating a new one."
+      zh: ""
+
+    TA_MSG_NOTICE_KEYPAIR_LONE_LIVE:
+      en: "Make sure you have access to all private key files associated with instances or launch configurations. Without them, you won't be able to log into your instances."
       zh: ""
 
 

@@ -37,6 +37,7 @@ define ['./Download', 'i18n!nls/lang.js', "crypto"], ( download, lang )->
   importJson = ( json )->
     try
       j = JSON.parse( json )
+      delete j['_id']
     catch e
       return lang.ide.POP_IMPORT_FORMAT_ERROR
 
@@ -79,6 +80,6 @@ define ['./Download', 'i18n!nls/lang.js', "crypto"], ( download, lang )->
   {
     exportJson : exportJson
     importJson : importJson
-
+    download   : download
     genericExport : genericExport
   }

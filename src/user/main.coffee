@@ -327,8 +327,10 @@ init = ->
                             #console.log 'NetWork Error while checking username'
                             $('.error-msg').eq(0).text(langsrc.service.NETWORK_ERROR).show()
                             $('#register-btn').attr('disabled',false).val(langsrc.register["register-btn"])
-                        else
+                        else if checkUsername()
                             status.removeClass('verification-status').addClass('error-status').text langsrc.register.username_taken
+                            cb?(0)
+                        else
                             cb?(0)
                     )
                 ,500
@@ -466,7 +468,7 @@ setCredit = (result)->
         usercode     : result.username
         username     : base64Decode( result.username )
         email        : result.email
-        user_hash    : result.intercom_secret
+        user_hash    : result.user_hash
         session_id   : result.session_id
         account_id   : result.account_id
         mod_repo     : result.mod_repo

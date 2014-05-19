@@ -1,0 +1,37 @@
+<nav class="header-menu" id="header">
+  <a id="support" class="icon-support" href="mailto:3rp02j1w@incoming.intercom.io" target="_blank">Support</a>
+
+  <section class="dropdown">
+    <div id="HeaderNotification" class="js-toggle-dropdown">
+      <i class="icon-notification"></i>
+      <span id="NotificationCounter"></span>
+    </div>
+
+    <div class="dropdown-menu">
+      <div id="notification-panel-wrapper" class="scroll-wrap">
+        <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+        <ul class="scroll-content"></ul>
+
+        <div class="notification-empty">
+          <div class="title">{{ i18n "HEAD_LABEL_BLANK_NOTIFICATION" }}</div>
+          <div class="description">{{ i18n "HEAD_LABEL_BLANK_NOTIFICATION_DESC" }}</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="dropdown">
+    <div id="HeaderUser" class="js-toggle-dropdown tooltip" data-tooltip="{{user_email}}">
+      <span class="truncate left" style="max-width:100px;">{{user_name}}</span>
+      <i class="icon-caret-down"></i>
+    </div>
+
+    <ul id="user-dropdown-wrapper" class="dropdown-menu">
+      <li id="HeaderShortcuts">{{ i18n "HEAD_LABEL_MENUITEM_KEY_SHORT" }}</li>
+      <li><a href="http://docs.visualops.io" target="_blank" >{{ i18n "HEAD_LABEL_MENUITEM_DOC" }}</a></li>
+      <li id="HeaderSettings">{{ i18n "HEAD_LABEL_MENUITEM_SETTING" }}</li>
+      <li id="HeaderLogout">{{ i18n "HEAD_LABEL_MENUITEM_LOGOUT" }}</li>
+    </ul>
+  </section>
+</nav>

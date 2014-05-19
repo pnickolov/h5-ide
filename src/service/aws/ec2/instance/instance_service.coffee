@@ -15,46 +15,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 	URL = '/aws/ec2/instance/'
 
 	#private
-	send_request =  ( api_name, src, param_ary, parser, callback ) ->
-
-		#check callback
-		if callback is null
-			console.log "instance." + api_name + " callback is null"
-			return false
-
-		try
-
-			MC.api {
-				url     : URL
-				method  : api_name
-				data    : param_ary
-				success : ( result, return_code ) ->
-
-					#resolve result
-					param_ary.splice 0, 0, { url:URL, method:api_name, src:src }
-					aws_result = {}
-					aws_result = parser result, return_code, param_ary
-
-					callback aws_result
-
-				error : ( result, return_code ) ->
-
-					aws_result = {}
-					aws_result.return_code      = return_code
-					aws_result.is_error         = true
-					aws_result.error_message    = result.toString()
-
-					param_ary.splice 0, 0, { url:URL, method:api_name, src:src }
-					aws_result.param = param_ary
-
-					callback aws_result
-			}
-
-		catch error
-			console.log "instance." + api_name + " error:" + error.toString()
-
-
-		true
+	send_request = result_vo.genSendRequest URL
 	# end of send_request
 
 	#///////////////// Parser for RunInstances return  /////////////////
@@ -390,13 +351,14 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 		aws_result = null
 
 		#return vo
-		data = ($.xml2json($.parseXML(result[1])))["ns0:GetPasswordDataResponse"]
+		jsonData = $.xml2json($.parseXML(result[1]))
+		data = jsonData["ns0:GetPasswordDataResponse"] or jsonData["GetPasswordDataResponse"]
 		if data
 			aws_result = {
-				instanceId   : data["ns0:instanceId"]
-				passwordData : data["ns0:passwordData"]
-				requestId    : data["ns0:requestId"]
-				timestamp    : data["ns0:timestamp"]
+				instanceId   : data["ns0:instanceId"] or data["instanceId"]
+				passwordData : data["ns0:passwordData"] or data["passwordData"]
+				requestId    : data["ns0:requestId"] or data["requestId"]
+				timestamp    : data["ns0:timestamp"] or data["timestamp"]
 			}
 
 		aws_result
@@ -427,92 +389,74 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 	#def RunInstances(self, username, session_id, region_name,
 	RunInstances = ( src, username, session_id, callback ) ->
 		send_request "RunInstances", src, [ username, session_id ], parserRunInstancesReturn, callback
-		true
 
 	#def StartInstances(self, username, session_id, region_name, instance_ids=None):
 	StartInstances = ( src, username, session_id, region_name, instance_ids=null, callback ) ->
 		send_request "StartInstances", src, [ username, session_id, region_name, instance_ids ], parserStartInstancesReturn, callback
-		true
 
 	#def StopInstances(self, username, session_id, region_name, instance_ids=None, force=False):
 	StopInstances = ( src, username, session_id, region_name, instance_ids=null, force=false, callback ) ->
 		send_request "StopInstances", src, [ username, session_id, region_name, instance_ids, force ], parserStopInstancesReturn, callback
-		true
 
 	#def RebootInstances(self, username, session_id, region_name, instance_ids=None):
 	RebootInstances = ( src, username, session_id, region_name, instance_ids=null, callback ) ->
 		send_request "RebootInstances", src, [ username, session_id, region_name, instance_ids ], parserRebootInstancesReturn, callback
-		true
 
 	#def TerminateInstances(self, username, session_id, region_name, instance_ids=None):
 	TerminateInstances = ( src, username, session_id, region_name, instance_ids=null, callback ) ->
 		send_request "TerminateInstances", src, [ username, session_id, region_name, instance_ids ], parserTerminateInstancesReturn, callback
-		true
 
 	#def MonitorInstances(self, username, session_id, region_name, instance_ids):
 	MonitorInstances = ( src, username, session_id, region_name, instance_ids, callback ) ->
 		send_request "MonitorInstances", src, [ username, session_id, region_name, instance_ids ], parserMonitorInstancesReturn, callback
-		true
 
 	#def UnmonitorInstances(self, username, session_id, region_name, instance_ids):
 	UnmonitorInstances = ( src, username, session_id, region_name, instance_ids, callback ) ->
 		send_request "UnmonitorInstances", src, [ username, session_id, region_name, instance_ids ], parserUnmonitorInstancesReturn, callback
-		true
 
 	#def BundleInstance(self, username, session_id, region_name, instance_id, s3_bucket, s3_prefix, s3_access_key,
 	BundleInstance = ( src, username, session_id, region_name, instance_id, s3_bucket, callback ) ->
 		send_request "BundleInstance", src, [ username, session_id, region_name, instance_id, s3_bucket ], parserBundleInstanceReturn, callback
-		true
 
 	#def CancelBundleTask(self, username, session_id, region_name, bundle_id):
 	CancelBundleTask = ( src, username, session_id, region_name, bundle_id, callback ) ->
 		send_request "CancelBundleTask", src, [ username, session_id, region_name, bundle_id ], parserCancelBundleTaskReturn, callback
-		true
 
 	#def ModifyInstanceAttribute(self, username, session_id, region_name,
 	ModifyInstanceAttribute = ( src, username, session_id, callback ) ->
 		send_request "ModifyInstanceAttribute", src, [ username, session_id ], parserModifyInstanceAttributeReturn, callback
-		true
 
 	#def ResetInstanceAttribute(self, username, session_id, region_name, instance_id, attribute_name):
 	ResetInstanceAttribute = ( src, username, session_id, region_name, instance_id, attribute_name, callback ) ->
 		send_request "ResetInstanceAttribute", src, [ username, session_id, region_name, instance_id, attribute_name ], parserResetInstanceAttributeReturn, callback
-		true
 
 	#def ConfirmProductInstance(self, username, session_id, region_name, instance_id, product_code):
 	ConfirmProductInstance = ( src, username, session_id, region_name, instance_id, product_code, callback ) ->
 		send_request "ConfirmProductInstance", src, [ username, session_id, region_name, instance_id, product_code ], parserConfirmProductInstanceReturn, callback
-		true
 
 	#def DescribeInstances(self, username, session_id, region_name, instance_ids=None, filters=None):
 	DescribeInstances = ( src, username, session_id, region_name, instance_ids=null, filters=null, callback ) ->
 		send_request "DescribeInstances", src, [ username, session_id, region_name, instance_ids, filters ], parserDescribeInstancesReturn, callback
-		true
 
 	#def DescribeInstanceStatus(self, username, session_id, region_name, instance_ids=None, include_all_instances=False, max_results=1000, next_token=None):
 	DescribeInstanceStatus = ( src, username, session_id, region_name, instance_ids=null, include_all_instances=false, max_results=1000, next_token=null, callback ) ->
 		send_request "DescribeInstanceStatus", src, [ username, session_id, region_name, instance_ids, include_all_instances, max_results, next_token ], parserDescribeInstanceStatusReturn, callback
-		true
 
 	#def DescribeBundleTasks(self, username, session_id, region_name, bundle_ids=None, filters=None):
 	DescribeBundleTasks = ( src, username, session_id, region_name, bundle_ids=null, filters=null, callback ) ->
 		send_request "DescribeBundleTasks", src, [ username, session_id, region_name, bundle_ids, filters ], parserDescribeBundleTasksReturn, callback
-		true
 
 	#def DescribeInstanceAttribute(self, username, session_id, region_name, instance_id, attribute_name):
 	DescribeInstanceAttribute = ( src, username, session_id, region_name, instance_id, attribute_name, callback ) ->
 		send_request "DescribeInstanceAttribute", src, [ username, session_id, region_name, instance_id, attribute_name ], parserDescribeInstanceAttributeReturn, callback
-		true
 
 	#def GetConsoleOutput(self, username, session_id, region_name, instance_id):
 	GetConsoleOutput = ( src, username, session_id, region_name, instance_id, callback ) ->
 		send_request "GetConsoleOutput", src, [ username, session_id, region_name, instance_id ], parserGetConsoleOutputReturn, callback
-		true
 
 	#def GetPasswordData(self, username, session_id, region_name, instance_id, key_data=None):
 	GetPasswordData = ( src, username, session_id, region_name, instance_id, key_data=null, callback ) ->
 		send_request "GetPasswordData", src, [ username, session_id, region_name, instance_id, key_data ], parserGetPasswordDataReturn, callback
-		true
 
 
 	#############################################################

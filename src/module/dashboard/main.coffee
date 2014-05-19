@@ -18,11 +18,9 @@ define [ "component/exporter/Thumbnail", 'jquery', 'event', 'MC', 'base_main', '
         _.extend this, base_main
 
     Helper =
-        hasCredential: ->
-            MC.common.cookie.getCookieByName('has_cred') is 'true'
+        hasCredential: -> true
 
-        accountIsDemo: ->
-            $.cookie('account_id') is 'demo_account'
+        accountIsDemo: -> !App.user.hasCredential()
 
         cleanupThumbnail: ->
             appListGot = stackListGot = false
@@ -157,11 +155,6 @@ define [ "component/exporter/Thumbnail", 'jquery', 'event', 'MC', 'base_main', '
             ide_event.onLongListen ide_event.UPDATE_DASHBOARD, () ->
                 console.log 'UPDATE_DASHBOARD'
                 view.reloadResource( null,false ) if view  #skip_load=false, do loading resource
-
-            if MC.common.cookie.getCookieByName('state') is '1' # new account show welcome dialog
-                view.showCredential 'welcome'
-                #
-                #MC.common.cookie.setCookieByName 'state', false
 
             #model
             model.describeAccountAttributesService()

@@ -59,7 +59,8 @@ define [ '../base/model', 'keypair_model', 'constant', 'Design' ], ( PropertyMod
 
       if @isApp
         @getAppLaunch( uid )
-        @set 'keyName', @lc.connectionTargets( 'KeypairUsage' )[ 0 ].get("appId")
+        kp = @lc.connectionTargets( 'KeypairUsage' )[ 0 ]
+        @set 'keyName', kp and kp.get("appId") or @lc.get 'keyName'
 
         #RootDevice Data
         rootDevice = @lc.getBlockDeviceMapping()
@@ -159,8 +160,8 @@ define [ '../base/model', 'keypair_model', 'constant', 'Design' ], ( PropertyMod
 
     getKeyPair : ()->
       selectedKP = Design.instance().component(@get("uid")).connectionTargets("KeypairUsage")[0]
-
-      @set "keypair", selectedKP.getKPList()
+      if selectedKP
+        @set "keypair", selectedKP.getKPList()
       null
 
     addKP : ( kp_name ) ->

@@ -28,19 +28,17 @@ define [], ()->
   ApiRequestDefs.Defs =
     login      : { url:"/session/", method:"login",      params:["username", "password"]   }
     logout     : { url:"/session/", method:"logout",     params:["username", "session_id"] }
-    syncRedis  : { url:"/session/", method:"sync_redis", params:["username", "session_id"] }
-    updateCred : { url:"/session/", method:"set_credential", params:["username","session_id","access_key","secret_key","account_id"] }
-    resetKey   : { url:"/account/", method:"reset_key", params:["username","session_id","flag"] }
+    updateCred : { url:"/account/", method:"set_credential", params:["username","session_id","access_key","secret_key","account_id","force"] }
+    validateCred : { url:"/account/", method:"validate_credential", params:["username","session_id","access_key","secret_key"] }
+    updateAccount : { url:"/account/", method:"update_account", params:["username", "session_id", "params"] }
     saveStack  : { url:"/stack/",   method:"save",       params:["username", "session_id", "region_name", 'data'] }
     createStack: { url:"/stack/",   method:"create",     params:["username", "session_id", "region_name", "data"] }
-    changePwd  : { url:"/account/", method:"update_account", params:["username","session_id","params"]}
 
   ###
   Parsers are promise's success hanlder.
   Thus, if the parser cannot parse a result, it should throw an error !!!
   An example would be like : `throw McError( 300, "Cannot parse the result" )`
   ###
-
   ApiRequestDefs.Parsers = {}
 
 

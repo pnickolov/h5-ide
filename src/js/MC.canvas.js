@@ -2312,7 +2312,7 @@ MC.canvas.event.dblclick = function (callback)
 	if (MC.canvas.event.dblclick.timer)
 	{
 		// Double click event call
-		callback.call(this, event);
+		callback.call(this);
 
 		return true;
 	}

@@ -2,7 +2,7 @@
 #  View(UI logic) for design/property/instacne
 #############################
 
-define [ '../base/view', './template/stack', 'event', 'constant', 'i18n!nls/lang.js' ], ( PropertyView, template, ide_event, constant, lang ) ->
+define [ '../base/view', './template/stack', 'event', 'constant', 'i18n!nls/lang.js', 'kp' ], ( PropertyView, template, ide_event, constant, lang, kp ) ->
 
     LanchConfigView = PropertyView.extend {
 
@@ -81,7 +81,8 @@ define [ '../base/view', './template/stack', 'event', 'constant', 'i18n!nls/lang
 
             @$el.html template @model.attributes
 
-            $( "#keypair-select" ).on("click", ".icon-remove", _.bind(this.deleteKP, this) )
+            instanceModel = Design.instance().component( @model.get 'uid' )
+            @$('#kp-placeholder').html kp.load(instanceModel).el
 
             me = this
             # parsley bind

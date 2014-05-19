@@ -413,7 +413,7 @@
                         <td>
                             <div>
                                 {{#if app}}
-                                <span class="table-app-link truncate tooltip {{#if clickAble}}table-app-link-clickable{{/if}}" data-tooltip="{{i18n 'DASH_TIP_APP_CREATED_BY'}}{{ owner }}" data-id="{{tagSet.app-id}}" data-name="{{tagSet.Name}}">[{{ app }}]</span>
+                                <span class="table-app-link truncate tooltip {{#if clickAble}}table-app-link-clickable{{/if}}" data-tooltip="{{i18n 'DASH_TIP_APP_CREATED_BY'}}{{ owner }}" data-id="{{tagSet.app-id}}" data-name="{{tagSet.app}}">[{{ app }}]</span>
                                 {{else}}
                                 <span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip='{{ i18n "DASH_TIP_UNMANAGED_RESOURCE" }}' >{{ i18n "DASH_LBL_UNMANAGED" }}</span>
                                 {{/if}}

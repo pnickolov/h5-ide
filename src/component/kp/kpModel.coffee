@@ -83,8 +83,9 @@ define [ 'constant', 'backbone', 'underscore', 'MC', 'keypair_service', 'Design'
             if arguments.length is 1
                 @trigger "change:#{key}"
             else
+                originKeys = @get( 'keys' )
                 @set key, value
-                if _.isEqual @get( key ), value
+                if _.isEqual originKeys, value
                     @trigger "change:#{key}"
 
         getKeys: ->

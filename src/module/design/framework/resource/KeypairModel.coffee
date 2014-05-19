@@ -85,7 +85,7 @@ define [ "constant", "../ComplexResModel", "../ConnectionModel"  ], ( constant, 
           uid  : @id
           resource :
             KeyFingerprint : @get("fingerprint") or ''
-            KeyName        : @get("appId") or @get("name")
+            KeyName        : @get("appId")
       }
 
   }, {

@@ -34,7 +34,11 @@
 #modal-run-stack .modal-control-group.default-kp-group {
   padding-top: 0; }
 
-#kp-list .loading-spinner {
+#kp-list {
+  margin-top: 32px;
+  padding-bottom: 32px; }
+
+#kp-content .loading-spinner {
   margin-top: 45%; }
 
 .keypair-select .selection .icon-remove {
@@ -51,7 +55,10 @@
   width: 232px;
   border-radius: 0;
   border: 0;
-  padding-right: 20px; }
+  padding-right: 20px;
+  position: absolute;
+  top: 0;
+  display: none; }
 
 .keypair-select.selectbox .keypair-filter:focus {
   width: 232px;

@@ -421,7 +421,7 @@ define [ './kpTpl', './kpDialogTpl', 'kp_upload', 'backbone', 'jquery', 'constan
             console.error err
 
         renderKeys: ( data ) ->
-            if data
+            if data and arguments.length is 1
                 data =  keys: data, hideDefaultNoKey: true
             else
                 data = keys: @model.get('keys')

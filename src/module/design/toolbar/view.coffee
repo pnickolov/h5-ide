@@ -192,7 +192,7 @@ define [ 'MC', 'event',
                 me.hideErr()
 
                 if not App.user.hasCredential()
-                    App.showSettings(1)
+                    App.showSettings( App.showSettings.TAB.Credential )
                     return false
 
                 #check app name

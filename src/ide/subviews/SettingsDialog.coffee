@@ -42,9 +42,18 @@ define [ "./SettingsDialogTpl", 'i18n!nls/lang.js', "ApiRequest", "backbone" ], 
         modal SettingsTpl attributes
         @setElement $("#modal-box")
 
-        defaultTab = 0
-        if options then defaultTab = options.defaultTab || 0
-        $("#SettingsNav").children().eq( defaultTab ).click()
+        tab = 0
+        if options
+          tab = options.defaultTab || 0
+
+          if tab is SettingsDialog.TAB.CredentialInvalid
+            @showCredSetup()
+            $(".modal-close").hide()
+            $("#CredSetupMsg").text lang.ide.SETTINGS_ERR_CRED_VALIDATE
+
+          if tab < 0 then tab = Math.abs( defaultTab )
+
+        $("#SettingsNav").children().eq( tab ).click()
 
         @updateTokenTab()
         return
@@ -285,8 +294,9 @@ define [ "./SettingsDialogTpl", 'i18n!nls/lang.js', "ApiRequest", "backbone" ], 
     }
 
     SettingsDialog.TAB =
-      Normal     : 0
-      Credential : 1
-      Token      : 2
+      CredentialInvalid : -1
+      Normal            : 0
+      Credential        : 1
+      Token             : 2
 
     SettingsDialog

@@ -1101,17 +1101,16 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
 
                 null
 
-            # else
+            else
 
-            #     # check whether invalid session
-            #     if result.return_code isnt constant.RETURN_CODE.E_SESSION && result.return_code isnt constant.RETURN_CODE.E_BUSY
+                # check whether invalid session
+                if result.return_code isnt constant.RETURN_CODE.E_SESSION && result.return_code isnt constant.RETURN_CODE.E_BUSY
 
-            #         common_handle.cookie.setCred false
-            #         ide_event.trigger ide_event.UPDATE_AWS_CREDENTIAL
-            #         console.log '----------- dashboard:SWITCH_MAIN -----------'
-            #         ide_event.trigger ide_event.SWITCH_MAIN
+                    App.showSettings( App.showSettings.TAB.CredentialInvalid )
 
-            #     me.set 'region_classic_list', region_classic_vpc_result
+                    ide_event.trigger ide_event.SWITCH_MAIN
+
+                me.set 'region_classic_list', region_classic_vpc_result
 
          #result list
 

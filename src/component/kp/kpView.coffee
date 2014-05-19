@@ -347,7 +347,7 @@ define [ './kpTpl', './kpDialogTpl', 'kp_upload', 'backbone', 'jquery', 'constan
             'keyup .keypair-filter'     : 'filter'
 
         showCredential: ->
-            App.showSettings 1
+            App.showSettings App.showSettings.TAB.Credential
 
         filter: ( event ) ->
             keyword = event.currentTarget.value

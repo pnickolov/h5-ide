@@ -3339,8 +3339,8 @@ VisualOps API. You cannot UNDO this action.'
       zh : "正在刷新资源..."
 
     SETTINGS_ERR_CRED_VALIDATE:
-      en : "Fail to validate your credential, please retry."
-      zh : "Fail to validate your credential, please retry."
+      en : "Fail to validate your credential."
+      zh : "Fail to validate your credential."
 
     SETTINGS_ERR_CRED_UPDATE:
       en : "Fail to update your credential, please retry."

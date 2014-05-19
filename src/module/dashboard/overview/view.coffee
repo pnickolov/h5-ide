@@ -322,7 +322,7 @@ define [ 'event', 'i18n!nls/lang.js',
             #ide_event.trigger ide_event.OPEN_APP_TAB, name, current_region, id
             ide_event.trigger ide_event.OPEN_DESIGN_TAB, 'OPEN_APP', name, current_region, id
 
-        showCredential: () -> App.showSettings(1)
+        showCredential: () -> App.showSettings( App.showSettings.TAB.Credential )
 
         ############################################################################################
 

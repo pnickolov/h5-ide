@@ -176,7 +176,7 @@ define [ '../base/model',
                     return
 
                 if result.is_error
-                    notification 'error', lang.ide.PROP_MSG_ERR_GET_PASSWD_FAILED + instance_id
+                    notification 'error', lang.ide.PROP_MSG_ERR_GET_PASSWD_FAILED
                     key_data = null
                     return null
                 else

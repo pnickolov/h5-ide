@@ -54,8 +54,8 @@
                                         <tr class="item" data-id="">
                                             <td>
                                                 <div class="checkbox">
-                                                    <input id="kp-select-{{keyFingerprint}}" type="checkbox" value="None" data-name="{{keyName}}" class="one-cb">
-                                                    <label for="kp-select-{{keyFingerprint}}"></label>
+                                                    <input id="kp-select-{{keyName}}" type="checkbox" value="None" data-name="{{keyName}}" class="one-cb">
+                                                    <label for="kp-select-{{keyName}}"></label>
                                                 </div>
                                             </td>
                                             <td>{{keyName}}</td>

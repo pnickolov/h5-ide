@@ -77,7 +77,24 @@ define ["ApiRequest", "constant", "component/exporter/Thumbnail", "backbone"], (
       }).fail ()->
         # If we cannot delete the stack, we just add it back to the stackList.
         App.model.stackList().add self
-        self
+
+    # Duplicate the stack
+    duplicate : ( name )->
+      if @isApp() then return
+
+      thumbnail  = ThumbUtil.fetch(@get("id"))
+      attr       = $.extend true, {}, @attributes
+      collection = @collection
+
+      ApiRequest("stack_save_as",{
+        region_name : @get("region")
+        stack_id    : @get("id")
+        new_name    : name || @collection.getNewName()
+      }).then ( id )->
+        ThumbUtil.save id, thumbnail
+        attr.id   = id
+        attr.name = name
+        collection.add( new OpsModel(attr) )
 
     # Stop the app, returns a promise
     stop : ()->

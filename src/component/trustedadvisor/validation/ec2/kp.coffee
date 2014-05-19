@@ -46,7 +46,7 @@ define [ 'constant', 'MC', 'Design', '../../helper', 'keypair_service', 'undersc
 
 		for i in instanceLike
 			keyName = i.get( 'keyName' )
-			if keyName and keyName[0] isnt '@'
+			if keyName and keyName[0] isnt '@' and not i.connectionTargets( "KeypairUsage" ).length
 				needValidate.push i
 
 		if needValidate.length

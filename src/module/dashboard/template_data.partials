@@ -170,7 +170,7 @@
 <ul id="region-resource-tab" class="clearfix">
     <li {{#if app}}class="on"{{/if}}>{{apps.length}} <small>{{i18n "DASH_LBL_APP"}}</small></li>
     <li class="{{#if stack}}on {{/if}}stack">{{stacks.length}} <small>{{i18n "DASH_LBL_STACK"}}</small>
-        <button id="btn-create-stack" class="icon-new-stack" title="{{i18n 'TOOL_TIP_CREATE_STACK'}}"></button>
+        <button id="btn-create-stack" class="icon-new-stack" data-region="{{region}}" title="{{i18n 'TOOL_TIP_CREATE_STACK'}}"></button>
     </li>
 </ul> <!-- Resource tab -->
 

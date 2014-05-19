@@ -2535,10 +2535,30 @@ function program1(depth0,data) {
     + "</span>\n</li>\n";
   stack1 = helpers.each.call(depth0, depth0, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n";
+  buffer += "\n\n";
   return buffer;
   };
 TEMPLATE.accessTokenTable=Handlebars.template(__TEMPLATE__);
+
+
+__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  var buffer = "", stack1, escapeExpression=this.escapeExpression, functionType="function";
+
+
+  buffer += "<div style=\"width:420px\">\n	<header class=\"modal-header\"><h3>"
+    + escapeExpression(helpers.i18n.call(depth0, (depth0 && depth0.TOOL_TIP_DELETE_STACK), {hash:{},data:data}))
+    + "</h3><i class=\"modal-close\">&times;</i></header>\n	<div class=\"modal-body modal-text-wraper\">\n			<div class=\"modal-center-align-helper\">\n					<div class=\"modal-text-major\">"
+    + escapeExpression(((stack1 = (depth0 && depth0.msg)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</div>\n			</div>\n	</div>\n	<div class=\"modal-footer\">\n		<button class=\"btn modal-close btn-red\" id=\"confirmRmStack\">"
+    + escapeExpression(helpers.i18n.call(depth0, "TOOL_POP_BTN_DELETE_STACK", {hash:{},data:data}))
+    + "</button>\n		<button class=\"btn modal-close btn-silver\">"
+    + escapeExpression(helpers.i18n.call(depth0, "TOOL_POP_BTN_CANCEL", {hash:{},data:data}))
+    + "</button>\n	</div>\n</div>\n";
+  return buffer;
+  };
+TEMPLATE.removeStackConfirm=Handlebars.template(__TEMPLATE__);
 
 
 return TEMPLATE; });

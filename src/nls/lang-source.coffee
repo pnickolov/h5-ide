@@ -788,8 +788,8 @@ module.exports =
       zh: "删除模版"
 
     TOOL_POP_BODY_DELETE_STACK:
-      en: "Do you confirm to delete stack"
-      zh: "确认删除模版吗?"
+      en: "Do you confirm to delete stack '%s'?"
+      zh: "确认删除模版'%s'吗?"
 
     TOOL_POP_BTN_DELETE_STACK:
       en: "Delete"

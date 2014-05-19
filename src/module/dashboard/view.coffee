@@ -68,11 +68,11 @@ define [ 'event', 'i18n!nls/lang.js',
         overview                : overview_tmpl
 
         events          :
-            'click .global-map-item'  : 'gotoRegion'
-            'click .recent-list-item, .region-resource-list li' : 'openItem'
+            "click .global-map-item"                                       : "gotoRegion"
+            'click .recent-list-item, .region-resource-list li'            : 'openItem'
+            'click #global-region-create-stack-list li, #btn-create-stack' : 'createStack'
+            "click .region-resource-list .delete-stack"                    : "deleteStack"
 
-            'click #global-region-create-stack-list li' : 'createStack'
-            'click #btn-create-stack'                   : 'createStack'
             'click .global-region-status-tab'           : 'switchRecent'
             'click #region-switch-list li'              : 'switchRegion'
             'click #region-resource-tab li'             : 'switchAppStack'
@@ -81,13 +81,12 @@ define [ 'event', 'i18n!nls/lang.js',
             'click .global-region-resource-content a'   : 'switchRegionAndResource'
             'click .show-credential'                    : 'showCredential'
 
-            'click .thumbnail'                : 'clickRegionResourceThumbnail'
+
             'click .table-app-link-clickable' : 'openApp'
             'modal-shown .start-app'          : 'startAppClick'
             'modal-shown .stop-app'           : 'stopAppClick'
             'modal-shown .terminate-app'      : 'terminateAppClick'
             'modal-shown .duplicate-stack'    : 'duplicateStackClick'
-            'modal-shown .delete-stack'       : 'deleteStackClick'
 
             'click #global-region-visualize-VPC' : 'unmanagedVPCClick'
             'click #global-import-stack'         : 'importJson'
@@ -98,8 +97,6 @@ define [ 'event', 'i18n!nls/lang.js',
             isDemo          : false
 
         initialize: ->
-            $( document.body ).on 'click', 'div.nav-region-group a', @gotoRegion
-            $( document.body ).on 'click', '#dashboard-global',      @gotoRegion
             # work for dashboard and toolbar
             $( document.body ).on 'keyup', '#confirm-app-name', @confirmAppName
 
@@ -169,7 +166,7 @@ define [ 'event', 'i18n!nls/lang.js',
             null
 
         renderRegionAppStack: () ->
-            attr = { apps:[], stacks:[] }
+            attr = { apps:[], stacks:[], region : @region }
             attr[ @regionTab ] = true
 
             if @region isnt "global"
@@ -341,16 +338,11 @@ define [ 'event', 'i18n!nls/lang.js',
             if $target.prop 'disabled'
                 return
             #ide_event.trigger ide_event.ADD_STACK_TAB, $target.data( 'region' ) or current_region
-            ide_event.trigger ide_event.OPEN_DESIGN_TAB, 'NEW_STACK', null, $target.data( 'region' ) or current_region, null
+            ide_event.trigger ide_event.OPEN_DESIGN_TAB, 'NEW_STACK', null, $target.data( 'region' ), null
 
-        gotoRegion: ( event ) ->
-            console.log 'gotoRegion'
-            if event is Object event
-                $target = $ event.currentTarget
-                region = ( $target.attr 'id' ) || ( $target.data 'regionName' )
-                region = region.replace 'dashboard-global', 'global'
-            else
-                region = event
+        gotoRegion: ( region ) ->
+            if region.currentTarget
+                region = region.currentTarget.id
 
             $( "#region-switch-list li[data-region=#{region}]" ).click()
             Helper.scrollToResource()
@@ -407,19 +399,16 @@ define [ 'event', 'i18n!nls/lang.js',
             ide_event.trigger ide_event.OPEN_DESIGN_TAB, evt, model.get("name"), model.get("region"), id
             return
 
-        deleteStackClick : (event) ->
-            console.log 'click to delete stack'
+        deleteStack : (event) ->
+            id   = $( event.currentTarget ).closest("li").attr("data-id")
+            name = App.model.stackList().get( id ).get( "name" )
 
-            id      = $(event.currentTarget).attr('id')
-            name    = $(event.currentTarget).attr('name')
+            modal MC.template.removeStackConfirm {
+                msg : sprintf lang.ide.TOOL_POP_BODY_DELETE_STACK, name
+            }
 
-            $('#btn-confirm').on 'click', { target : this }, (event) ->
-                console.log 'dashboard delete stack'
-
-                modal.close()
-                ide_event.trigger ide_event.DELETE_STACK, current_region, id, name
-
-            null
+            $("#confirmRmStack").on "click", ()-> App.model.stackList().get( id ).remove(); return
+            false
 
         duplicateStackClick : (event) ->
             console.log 'click to duplicate stack'

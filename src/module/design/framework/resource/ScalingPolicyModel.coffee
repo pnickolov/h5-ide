@@ -56,7 +56,7 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
           fee = parseFloat( p.ec2Monitoring[ currency], 10 ) || 0
           break
 
-      if fee
+      if fee and @__asg
         asgSize = if Design.instance().modeIsStack() then @__asg.get("minSize") else @__asg.get("capacity")
 
         fee = Math.round(fee / 7 * 1000) / 1000

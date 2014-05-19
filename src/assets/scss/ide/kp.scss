@@ -23,15 +23,24 @@
   cursor:    pointer;
   position:  relative;
 
-  &:hover {
-    color: #eee;
+    &:hover {
+      color: #eee;
+    }
+
+    &:before {
+      color:    #148BE6;
+      top:      1px;
+      position: absolute;
+      left:     -20px;
+    }
   }
 
-  &:before {
-    color:    #148BE6;
-    top:      1px;
-    position: absolute;
-    left:     -20px;
+.after-create {
+  color: #ccc;
+
+  span {
+    font-weight : 800;
+    color       : #eee;
   }
 }
 
@@ -39,7 +48,19 @@
   padding-top: 0;
 }
 
-#kp-list .loading-spinner {
+#kp-list {
+  margin-top     : 32px;
+  padding-bottom : 32px;
+
+  li .icon-info {
+    position   : absolute;
+    right      : 10px;
+    top        : 50%;
+    margin-top : -8px;
+  }
+}
+
+#kp-content .loading-spinner {
   margin-top: 45%;
 }
 
@@ -48,8 +69,8 @@
 }
 
 .keypair-select.open .dropdown {
-  top:            29px;
-  padding-bottom: 33px;
+  top            : 29px;
+  padding-bottom : 33px;
 }
 
 .keypair-select {
@@ -57,17 +78,20 @@
 }
 
 .keypair-select.selectbox .keypair-filter {
-  width: 232px;
-  border-radius: 0;
-  border: 0;
-  padding-right: 20px;
+  width         : 232px;
+  border-radius : 0;
+  border        : 0;
+  padding-right : 20px;
+  position      : absolute;
+  top           : 0;
+  display       : none;
 }
 
 .keypair-select.selectbox .keypair-filter:focus {
-  width: 232px;
-  border-radius: 0;
-  border: 0;
-  padding-right: 20px;
+  width         : 232px;
+  border-radius : 0;
+  border        : 0;
+  padding-right : 20px;
 }
 
 #kp-runtime-placeholder .keypair-select.open .dropdown {
@@ -92,8 +116,8 @@
 }
 
 .keypair-select .manage-kp i {
-  margin-right: 13px;
-  color: #eee;
+  margin-right : 13px;
+  color        : #eee;
 }
 
 .keypair-select .manage-kp::selection {
@@ -105,4 +129,19 @@
   position:      absolute;
   bottom:        0;
   border-radius: 0;
+}
+
+button#property-app-keypair {
+  display: block;
+  padding: 8px 10px;
+}
+
+.kp-no-credential {
+  color: #F5F5F5;
+  padding-top: 55px;
+}
+
+.kp-no-credential a {
+  cursor : pointer;
+  color  : #148BE6;
 }

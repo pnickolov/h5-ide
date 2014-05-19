@@ -55,11 +55,9 @@
 
 #AccountInfo {
   width: 360px;
-  padding: 0 15px;
   font-size: 12px;
   border-radius: 3px;
-  color: #200202;
-  background: #ec3c38;
+  color: #ec3c38;
   height: 30px;
   line-height: 30px;
   margin: 10px 0; }

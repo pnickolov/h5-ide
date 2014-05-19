@@ -142,10 +142,13 @@ define [ 'MC', 'event',
                 $( ".runtime-error" ).hide()
 
         defaultKpIsSet: ->
-            #KpModel = Design.modelClassForType( constant.RESTYPE.KP )
-            #defaultKp = KpModel.getDefaultKP()
+            if not kp.hasResourceWithDefaultKp()
+                return true
 
-            if $('#kp-runtime-placeholder #kp-list .item.selected').length is 0
+            KpModel = Design.modelClassForType( constant.RESTYPE.KP )
+            defaultKp = KpModel.getDefaultKP()
+
+            if not defaultKp.get 'isSet'
                 @showErr 'kp', 'Specify a key pair as $DefaultKeyPair for this app.'
                 return false
 
@@ -153,7 +156,7 @@ define [ 'MC', 'event',
 
         renderDefaultKpDropdown: ->
             if kp.hasResourceWithDefaultKp()
-                $('#kp-runtime-placeholder').html kp.loadModule().el
+                $('#kp-runtime-placeholder').html kp.load().el
                 $('.default-kp-group').show()
             null
 
@@ -189,7 +192,7 @@ define [ 'MC', 'event',
                 me.hideErr()
 
                 if not App.user.hasCredential()
-                    App.showSettings(1)
+                    App.showSettings( App.showSettings.TAB.Credential )
                     return false
 
                 #check app name

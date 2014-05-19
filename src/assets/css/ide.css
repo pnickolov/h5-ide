@@ -3386,70 +3386,6 @@ a.sidebar-hider:before {
 	margin-bottom: 5px;
 }
 
-.keypair-select .selection .icon-remove {
-	display : none;
-}
-
-.keypair-select.open .dropdown {
-	top:            29px;
-	padding-bottom: 33px;
-}
-
-.keypair-select {
-	width: 260px;
-}
-
-.keypair-select.selectbox .keypair-filter {
-	width: 232px;
-	border-radius: 0;
-	border: 0;
-	padding-right: 20px;
-}
-
-.keypair-select.selectbox .keypair-filter:focus {
-	width: 232px;
-	border-radius: 0;
-	border: 0;
-	padding-right: 20px;
-}
-
-#kp-runtime-placeholder .keypair-select.open .dropdown {
-	top:            32px;
-	padding-bottom: 0;
-}
-
-#kp-runtime-placeholder .selection {
-	padding-right: 19px;
-}
-
-#kp-runtime-placeholder {
-	display: inline-block;
-}
-
-.keypair-select i {
-	color: #148BE6;
-}
-
-.keypair-select li i {
-	float: right;
-}
-
-.keypair-select .manage-kp i {
-	margin-right: 13px;
-	color: #eee;
-}
-
-.keypair-select .manage-kp::selection {
-	background: transparent;
-}
-
-.keypair-select .manage-kp {
-	width:         100%;
-	position:      absolute;
-	bottom:        0;
-	border-radius: 0;
-}
-
 /* End of Instance Property */
 #security-group-select {
 	position: absolute;
@@ -5336,6 +5272,10 @@ a.action-link:hover {
 #modal-run-stack .modal-body > div.stack-validation {
 	padding   : 15px;
 	border-top: 1px solid #1d1d1d;
+}
+
+#modal-run-stack .modal-footer .btn-primary {
+	padding: 8px 10px;
 }
 
 /*#modal-run-stack .selectbox {

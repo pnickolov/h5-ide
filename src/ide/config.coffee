@@ -257,8 +257,8 @@ require.config {
 
 		#statusbar state
 		'state_status'       : 'component/statestatus/main'
-		'kp'       			 : 'component/kp/main'
-		'kp_upload'       	 : 'component/kp/upload'
+		'kp'       			 : 'component/kp/kpMain'
+		'kp_upload'       	 : 'component/kp/kpUpload'
 
 		#############################################
 		# component
@@ -417,6 +417,8 @@ require.config {
 		]
 		"component/sgrule/SGRulePopup" : []
 		"component/exporter/Exporter"  : [ "component/exporter/Download", "component/exporter/Thumbnail", "component/exporter/JsonExporter" ]
+		"ide/Application" : []
+		"kp" : ["kp_upload"]
 		"module/design/framework/DesignBundle" : [ "Design", "CanvasManager" ]
 		"validation" : []
 		"component/stateeditor/stateeditor" : []
@@ -425,6 +427,7 @@ require.config {
 	bundleExcludes : # This is a none requirejs option, but it's used by compiler to exclude some of the source.
 		"lib/deprecated" : ["Design"]
 		"component/sgrule/SGRulePopup" : [ "Design" ]
+		"kp" : ["Design"]
 		"component/stateeditor/stateeditor" : [
 			"component/stateeditor/lib/ace"
 			"component/stateeditor/lib/markdown"

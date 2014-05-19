@@ -17,7 +17,7 @@
 }
 
 $toolbar-line-height: 34px;
-$dark-blue: #1B7FCC;
+$dark-blue: #001324;
 
 .modal-toolbar {
 	width: 855px;
@@ -43,22 +43,37 @@ $dark-blue: #1B7FCC;
 			line-height: $toolbar-line-height - 16px;
 			position:    relative;
 
+			&:before {
+				margin-right : 5px;
+				float        : left;
+				display      : inline-block;
+				margin-top   : 1px;
+			}
+
 			&.active {
 				background: $dark-blue;
-				color: #fff;
+				color: #fff !important;
 
 				&:after {
 					content: "";
-					width: 0;
-					height: 0;
-					border-style: solid;
-					border-width: 6px 5px 0 5px;
-					border-color: $dark-blue transparent transparent transparent;
+				    position      : absolute;
+				    left          : 0;
+				    bottom        : 0px;
+				    content       : '';
+				    border-bottom : 2px solid #0D49CA;
+				    width         : 100%;
+
+
+					// width: 0;
+					// height: 0;
+					// border-style: solid;
+					// border-width: 8px 6px 0 6px;
+					// border-color: $dark-blue transparent transparent transparent;
 					
-					position:    absolute;
-					bottom:      -6px;
-					left:        50%;
-					margin-left: -2.5px;
+					// position:    absolute;
+					// bottom:      -8px;
+					// left:        50%;
+					// margin-left: -4px;
 					z-index:     80;
 				}
 			}
@@ -70,9 +85,14 @@ $dark-blue: #1B7FCC;
 				border-right: 1px solid #131313;
 
 				&:hover {
-					color:      #ccc;
-					background: #161616;
-					color:      #9C6DC0;
+					color      : #ccc;
+					background : #161616;
+					color      : #9C6DC0;
+				}
+
+				&.active:hover {
+					background : $dark-blue;
+					color      : #fff !important;
 				}
 
 				&.disabled,&[disabled] {
@@ -85,10 +105,6 @@ $dark-blue: #1B7FCC;
 
 		.btn-blue {
 			border-radius: 0;
-
-			&:before {
-				margin-right: 5px;
-			}
 		}
 
 		.icon-refresh {
@@ -178,6 +194,14 @@ $dark-blue: #1B7FCC;
 
 		.table {
 			font-size: 12px;
+
+			tr.selected td {
+				background: #0B4085;
+			}
+
+			tr.selected:hover td {
+				background: #0B55B4;
+			}
 		}
 
 		.table-head thead th {
@@ -193,6 +217,7 @@ $dark-blue: #1B7FCC;
 		.table thead tr th:first-child {
 			width: 20px;
 		}
+
 	}
 }
 

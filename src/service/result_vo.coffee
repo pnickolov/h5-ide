@@ -177,7 +177,7 @@ define [ 'constant', 'underscore' ] , ( constant, _ ) ->
             errCodeXML = $($.parseXML(err_xml)).find('Error').find('Code')
             errMessageXML = $($.parseXML(err_xml)).find('Error').find('Message')
 
-            if err_code == 400 and errCodeXML.length == 1 and errMessageXML.length == 1
+            if ( 400 <= err_code < 500 ) and errCodeXML.length == 1 and errMessageXML.length == 1
 
                 errCodeStr = errCodeXML.text()
 

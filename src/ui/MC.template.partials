@@ -662,7 +662,9 @@ Additional Notes and Questions
 	</div>
 	<div class="modal-footer">
 
-		<button class="btn btn-blue" id="btn-confirm" disabled>{{#if hasCred}}Run Stack{{else}}Setup Credential First{{/if}}</button>
+		{{#if hasCred}}<button class="btn btn-blue" id="btn-confirm" disabled>Run Stack</button>
+		{{else}}
+		<button class="btn btn-primary" id="btn-confirm" disabled>Set Up Credential First</button>{{/if}}
 		<button class="btn btn-silver modal-close" id="run-stack-cancel">Cancel</button>
 	</div>
 </div>
@@ -929,7 +931,7 @@ Following rule(s) will be deleted from its(their) security group:</div>
 		<section class="decrypt-action" style="display: none;">
 			<button class="btn btn-blue" id="do-kp-decrypt" disabled>Decrypt Password</button>
 			<input readonly class="input" type="text" id="keypair-pwd" placeholder="Decripted password will appear here">
-			<div class="change-pw-recommend icon-info tooltip" data-tooltip="We recommend that you change your password to one that you will remember and know privately. Please note that passwords can persist through bundling phases and will not be retrievable through this tool. It is therefore important that you change your password to one that you will remember if you intend to bundle a new AMI from this instance.">Change Password Recommendation from AWS</div>
+			<div class="change-pw-recommend icon-info tooltip" data-tooltip="We recommend that you change your password to one that you will remember and know privately. Please note that passwords can persist through bundling phases and will not be retrievable through this tool. It is therefore important that you change your password to one that you will remember if you intend to bundle a new AMI from this instance." style="display: none;">Change Password Recommendation from AWS</div>
 		</section>
 		<section class="no-password" style="display: none;">
 			<p>

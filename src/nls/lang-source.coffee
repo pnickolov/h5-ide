@@ -1262,7 +1262,7 @@ module.exports =
       zh: ""
 
     PROP_INSTANCE_TIP_DEFAULT_KP:
-      en: "If you have used $DefaultKeyPair for any instance/launch configuration, you will be required to specify an existing key pair for $DefaultKeyPair. Or you can choose \"No Key Pair\" as $DefaultKeyPair."
+      en: 'If you have used $DefaultKeyPair for any instance/launch configuration, you will be required to specify an existing key pair for $DefaultKeyPair. Or you can choose "No Key Pair" as $DefaultKeyPair.'
       zh: ""
 
     PROP_INSTANCE_TIP_NO_KP:
@@ -2296,8 +2296,9 @@ module.exports =
       zh: "模板名称不能包含空格"
 
     PROP_MSG_ERR_GET_PASSWD_FAILED:
-      en: "Sorry, there was a problem getting password data for instance "
-      zh: "抱歉，获取实例口令信息时出现了问题。"
+      en: "There was an error decrypting your password. Please ensure that you have entered your private key correctly."
+      zh: "解密出错，请确认您是否上传了正确的私钥。"
+
 
     PROP_MSG_ERR_AMI_NOT_FOUND:
       en: "Can not find information for selected AMI( %s ), try to drag another AMI."
@@ -3339,8 +3340,8 @@ VisualOps API. You cannot UNDO this action.'
       zh : "正在刷新资源..."
 
     SETTINGS_ERR_CRED_VALIDATE:
-      en : "Fail to validate your credential, please retry."
-      zh : "Fail to validate your credential, please retry."
+      en : "Fail to validate your credential."
+      zh : "Fail to validate your credential."
 
     SETTINGS_ERR_CRED_UPDATE:
       en : "Fail to update your credential, please retry."
@@ -3363,16 +3364,16 @@ VisualOps API. You cannot UNDO this action.'
       zh: "Confirm to update"
 
     SETTINGS_ERR_INVALID_PWD:
-      en: "Password cannot be empty and must contain at least 6 characters."
-      zh: "密码最少6位且不能和您的用户名相同"
+      en: "New password must contain at least 6 characters."
+      zh: "新密码最少6位且不能和您的用户名相同"
 
     SETTINGS_UPDATE_PWD_SUCCESS:
       en: "Password has been updated."
       zh: "密码修改成功。"
 
     SETTINGS_UPDATE_PWD_FAILURE:
-      en: "Update password failed. Please retry."
-      zh: "修改密码失败。请重试。"
+      en: "Update password failed. Make sure current password is correct."
+      zh: "修改密码失败。请确认当前密码输入正确。"
 
     SETTINGS_ERR_WRONG_PWD:
       en: "Current password is wrong."
@@ -3477,6 +3478,20 @@ VisualOps API. You cannot UNDO this action.'
     BEFOREUNLOAD_MESSAGE:
       en: "You have unsaved changes."
       zh: "您有未保存的更改。"
+
+
+    DASH_CREATE_NEW_STACK:
+      en: "Create new stack"
+      zh: "创建模板"
+
+    DASH_IMPORT_JSON:
+      en: "Import stack"
+      zh: "导入Stack"
+
+    DASH_VISUALIZE_VPC:
+      en: "Visualize existing VPC"
+      zh: "可视化VPC"
+
 
     DASH_TIT_VIEW_RESOURCE_DETAIL:
       en: "View resource detail"
@@ -3993,10 +4008,6 @@ VisualOps API. You cannot UNDO this action.'
     AMI_LBL_PAGEINFO:
       en: "Showing %s-%s items of %s results"
       zh: "当前显示 %s-%s 条，共有 %s 条"
-
-    IDE_COM_CREATE_NEW_STACK:
-      en: "Create new stack"
-      zh: "创建模板"
 
     "IDE_LBL_REGION_NAME_us-east-1":
       en: "US East"
@@ -4724,6 +4735,14 @@ VisualOps API. You cannot UNDO this action.'
       zh: ""
     TA_MSG_ERROR_INSTANCE_NAT_CHECKED_SOURCE_DEST:
       en: "To allow routing to work properly, instance <span class='validation-tag tag-instance'>%s</span> should disabled Source/Destination Checking in \"Network Interface Details\""
+      zh: ""
+
+    TA_MSG_ERROR_INSTANCE_REF_OLD_KEYPAIR:
+      en: "%s has associated with an nonexistient key pair <span class='validation-tag'>%s</span>. Make sure to use an existing key pair or creating a new one."
+      zh: ""
+
+    TA_MSG_NOTICE_KEYPAIR_LONE_LIVE:
+      en: "Make sure you have access to all private key files associated with instances or launch configurations. Without them, you won't be able to log into your instances."
       zh: ""
 
 

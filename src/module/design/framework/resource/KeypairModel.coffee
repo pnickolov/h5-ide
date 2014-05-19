@@ -10,10 +10,14 @@ define [ "constant", "../ComplexResModel", "../ConnectionModel"  ], ( constant, 
       kp = @getTarget( constant.RESTYPE.KP )
       if kp
         otherTarget = @getOtherTarget( kp )
-        if kp.isDefault()
-          components[ otherTarget.id ].resource.KeyName = kp.createRef( "KeyName" )
-        else
-          components[ otherTarget.id ].resource.KeyName = ''
+        ref = kp.createRef( "KeyName" )
+        components[ otherTarget.id ].resource.KeyName = ref
+
+        groupMembers = if otherTarget.groupMembers then otherTarget.groupMembers() else []
+
+        for member in groupMembers
+          if components[ member.id ] then components[ member.id ].resource.KeyName = ref
+
 
       null
 
@@ -26,6 +30,7 @@ define [ "constant", "../ComplexResModel", "../ConnectionModel"  ], ( constant, 
 
     defaults :
       fingerprint : ""
+      isSet: false # true if the user have set defaultKp
 
     isVisual : ()-> false
 
@@ -80,7 +85,7 @@ define [ "constant", "../ComplexResModel", "../ConnectionModel"  ], ( constant, 
           uid  : @id
           resource :
             KeyFingerprint : @get("fingerprint") or ''
-            KeyName        : @get("appId") or ''
+            KeyName        : @get("appId")
       }
 
   }, {
@@ -91,6 +96,7 @@ define [ "constant", "../ComplexResModel", "../ConnectionModel"  ], ( constant, 
       defaultKP = _.find KeypairModel.allObjects(), ( obj )-> obj.get("name") is "DefaultKP"
       defaultKP.set( 'appId', keyName or '' )
       defaultKP.set( 'fingerprint', fingerprint or '' )
+      defaultKP.set( 'isSet', true )
 
     diffJson : ()-> # Disable diff for thie Model
 
@@ -99,7 +105,8 @@ define [ "constant", "../ComplexResModel", "../ConnectionModel"  ], ( constant, 
       new KeypairModel({
         id          : data.uid
         name        : data.name
-        appId       : if data.resource.KeyFingerprint then data.resource.KeyName else '' #no fingerprint is old data
+        #appId       : if data.resource.KeyFingerprint then data.resource.KeyName else '' #no fingerprint is old data
+        appId       : data.resource.KeyName
         fingerprint : data.resource.KeyFingerprint
       })
       null

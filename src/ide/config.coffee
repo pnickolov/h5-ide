@@ -134,6 +134,11 @@ require.config {
 		'jqpagination'       : 'ui/jqpagination'
 		"jquerysort"         : 'ui/jquery.sort'
 
+		#############################################
+		# cloud resources
+		#############################################
+		"CloudResources"     : "ide/cloudres/CloudResources"
+
 
 		#############################################
 		# design model              # Merge in deploy
@@ -451,7 +456,7 @@ requirejs.onError = ( err )->
 		console.error "[RequireJS Error]", err, err.stack
 
 
-require ['ide/Application', 'ide/deprecated/ide'], ( Application, ide ) ->
+require ['ide/Application', 'ide/deprecated/ide', "ide/cloudres/CrBundle"], ( Application, ide ) ->
 	(new Application()).initialize().then ()->
 		ide.initialize()
 	return

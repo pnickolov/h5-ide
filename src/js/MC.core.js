@@ -627,6 +627,16 @@ window.MC = MC;
 		$(document.body).addClass(kclass);
 	})();
 
+  /* Bugfix for jquery ready() */
+  // If jQuery is loaded after `DOMContentLoaded` is dispatched, jQuery will trigger `ready` event
+  // after `window.load` event.
+  // Since we're pretty sure the DOM is OK when this file is loaded, we just trigger an fake `DOMContentLoaded` event on document.
+  if ( window.CustomEvent ) {
+    // IE9, IE10 doesn't support CustomEvent
+  	document.dispatchEvent( new CustomEvent("DOMContentLoaded") );
+  }
+
+
 	MC.template = template;
 	return MC;
 });

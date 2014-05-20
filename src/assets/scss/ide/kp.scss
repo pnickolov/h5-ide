@@ -48,6 +48,18 @@
   padding-top: 0;
 }
 
+.default-kp-group {
+  position : relative;
+
+  .icon-info {
+    position   : absolute;
+    color      : #148BE6;
+    top        : 50%;
+    margin-top : -19px;
+    right      : 11px;
+  }
+}
+
 #kp-list {
   margin-top     : 32px;
   padding-bottom : 32px;

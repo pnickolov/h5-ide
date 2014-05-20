@@ -1261,6 +1261,7 @@ Following rule(s) will be deleted from its(their) security group:</div>
 		<div class="modal-control-group default-kp-group clearfix" style="display:none;">
 			<label for="">$DefaultKeyPair</label>
 			<div id="kp-runtime-placeholder"></div>
+			<i class="icon-info tooltip" data-tooltip="{{i18n 'TIP_KEYPAIR_USED_DEFAULT_KP'}}"></i>
 			<div class="runtime-error" id="runtime-error-kp"></div>
 		</div>
 	{{#if isRunning}}

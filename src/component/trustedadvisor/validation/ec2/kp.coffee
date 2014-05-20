@@ -49,7 +49,9 @@ define [ 'constant', 'MC', 'Design', '../../helper', 'keypair_service', 'undersc
 			if keyName and keyName[0] isnt '@' and not i.connectionTargets( "KeypairUsage" ).length
 				needValidate.push i
 
-		if needValidate.length
+		if not needValidate.length
+			callback null
+		else
 			username = $.cookie "usercode"
 			session  = $.cookie "session_id"
 			region = Design.instance().region()

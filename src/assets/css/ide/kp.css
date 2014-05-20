@@ -34,14 +34,14 @@
 #modal-run-stack .modal-control-group.default-kp-group {
   padding-top: 0; }
 
-.default-kp-group {
+.modal-control-group.default-kp-group {
+  padding-top: 0;
   position: relative; }
-  .default-kp-group .icon-info {
+  .modal-control-group.default-kp-group .icon-info {
     position: absolute;
     color: #148BE6;
-    top: 50%;
-    margin-top: -19px;
-    right: 11px; }
+    margin-top: 12px;
+    margin-left: 5px; }
 
 #kp-list {
   margin-top: 32px;

@@ -48,15 +48,16 @@
   padding-top: 0;
 }
 
-.default-kp-group {
-  position : relative;
+.modal-control-group.default-kp-group {
+  padding-top : 0;
+  position    : relative;
 
   .icon-info {
-    position   : absolute;
-    color      : #148BE6;
-    top        : 50%;
-    margin-top : -19px;
-    right      : 11px;
+    position    : absolute;
+    color       : #148BE6;
+    // top         : 50%;
+    margin-top  : 12px;
+    margin-left : 5px;
   }
 }
 

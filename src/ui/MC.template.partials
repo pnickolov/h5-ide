@@ -1706,3 +1706,27 @@ Are you sure you want to delete {{name}}?</div>
 	</span>
 </li>
 {{/each}}
+
+<!-- {{modalTemplate}} -->
+<div id="modal-wrap" class="hide">
+    <div id="modal-box" class="">
+        <div style="width: 520px">
+            <div class="modal-header">
+                <h3>{{ title }}</h3>
+                {{#if closeAble}}<i class="modal-close">×</i>{{/if}}
+            </div>
+            <div class="modal-body scroll-wrap scrollbar-auto-hide context-wrap" style="max-height: 400px;padding: 0;">
+                <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+                <div class="scroll-content" style="padding: 12px 15px">
+                    {{{ template }}}
+                </div>
+            </div>
+            {{#if hasFooter}}
+            <div class="modal-footer">
+                <button id="btn-confirm" class="btn btn-blue">{{confirm}}</button>
+                {{#if closeAble}}<button id="btn-cancel" class="btn modal-close btn-silver">{{cancel}}</button>{{/if}}
+            </div>
+            {{/if}}
+        </div>
+    </div>
+</div>

@@ -253,19 +253,8 @@
   position: relative;
   height: 200px;
   background: #111; }
-  .token-table:empty:before {
-    content: attr(data-empty);
-    width: 100%;
-    text-align: center;
-    height: 20px;
-    line-height: 20px;
-    top: 50%;
-    margin-top: -10px;
-    left: 0;
-    position: absolute; }
-  .token-table > li {
-    clear: both;
-    height: 30px; }
+  .token-table.empty > header {
+    display: none; }
   .token-table .tokenName, .token-table .tokenToken, .token-table .tokenControl {
     margin: 0 5px;
     line-height: 20px;
@@ -276,8 +265,7 @@
   .token-table .tokenToken {
     width: 180px; }
   .token-table input.tokenName {
-    line-height: 18px;
-    width: 98px; }
+    line-height: 18px; }
   .token-table input.tokenName[readonly] {
     border: none;
     background: none; }
@@ -288,15 +276,32 @@
     padding: 0;
     height: 20px;
     line-height: 20px; }
-  .token-table > li:hover .tokenControl, .token-table > li.editing .tokenControl {
-    display: block; }
-  .token-table > li.editing .tooltip {
-    display: none; }
-  .token-table > li.editing .tokenDone {
-    display: block; }
   .token-table .tokenControl .tooltip:before {
     cursor: pointer;
     color: #34A3F8; }
+  .token-table > .scroll-wrap {
+    height: 168px; }
+
+#TokenList:empty {
+  height: 100%; }
+  #TokenList:empty:before {
+    content: attr(data-empty);
+    width: 100%;
+    text-align: center;
+    height: 20px;
+    line-height: 20px;
+    top: 50%;
+    left: 0;
+    position: absolute; }
+#TokenList > li {
+  clear: both;
+  height: 30px; }
+#TokenList > li:hover .tokenControl, #TokenList > li.editing .tokenControl {
+  display: block; }
+#TokenList > li.editing .tooltip {
+  display: none; }
+#TokenList > li.editing .tokenDone {
+  display: block; }
 
 .cred-btn-wrap {
   margin-top: 20px; }

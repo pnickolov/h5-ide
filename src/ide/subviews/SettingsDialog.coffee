@@ -25,8 +25,10 @@ define [ "./SettingsDialogTpl", 'i18n!nls/lang.js', "ApiRequest", "backbone" ], 
         "click #TokenRemove"               : "confirmRmToken"
         "click #TokenRmCancel"             : "cancelRmToken"
 
-        "keyup #CredSetupAccount, #CredSetupAccessKey, #CredSetupSecretKey" : "updateSubmitBtn"
-        "keyup #AccountCurrentPwd, #AccountNewPwd" : "updatePwdBtn"
+        "keyup  #CredSetupAccount, #CredSetupAccessKey, #CredSetupSecretKey" : "updateSubmitBtn"
+        "change #CredSetupAccount, #CredSetupAccessKey, #CredSetupSecretKey" : "updateSubmitBtn"
+        "change #AccountCurrentPwd, #AccountNewPwd"                          : "updatePwdBtn"
+        "keyup  #AccountCurrentPwd, #AccountNewPwd"                          : "updatePwdBtn"
 
       initialize : ( options )->
 
@@ -52,7 +54,7 @@ define [ "./SettingsDialogTpl", 'i18n!nls/lang.js', "ApiRequest", "backbone" ], 
             $(".modal-close").hide()
             $("#CredSetupMsg").text lang.ide.SETTINGS_ERR_CRED_VALIDATE
 
-          if tab < 0 then tab = Math.abs( defaultTab )
+          if tab < 0 then tab = Math.abs( tab )
 
         $("#SettingsNav").children().eq( tab ).click()
 

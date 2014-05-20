@@ -629,6 +629,7 @@ Additional Notes and Questions
 		<div class="modal-control-group default-kp-group clearfix" style="display:none;">
 			<label for="">$DefaultKeyPair</label>
 			<div id="kp-runtime-placeholder"></div>
+			<i class="icon-info tooltip" data-tooltip="{{i18n 'TIP_KEYPAIR_USED_DEFAULT_KP'}}"></i>
 			<div class="runtime-error" id="runtime-error-kp"></div>
 		</div>
 		<div class="modal-control-group app-usage-group clearfix">

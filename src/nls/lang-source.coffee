@@ -4930,6 +4930,10 @@ VisualOps API. You cannot UNDO this action.'
 
     ##### Trust Advisor
 
+    TIP_KEYPAIR_USED_DEFAULT_KP:
+      en: "One or more instance/launch configuration has used $DefaultKeyPair. You need to specify which key pair (or no key pair) should be used for $DefaultKeyPair."
+      zh: ""
+
   service:
 
     NETWORK_ERROR:

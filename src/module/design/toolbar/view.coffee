@@ -16,8 +16,19 @@ define [ 'MC', 'event',
          'backbone', 'jquery', 'handlebars',
          'UI.selectbox', 'UI.notification',
          "UI.tabbar"
-], ( MC, ide_event, Design, lang, stack_tmpl, app_tmpl, appview_tmpl, JsonExporter, constant, kp, ApiRequest, stateeditor ) ->
+], ( MC, ide_event, Design, lang, stack_tmpl, app_tmpl, appview_tmpl, JsonExporter, constant, kp, ApiRequest, stateEditor ) ->
 
+    # Set domain and set http
+    API_HOST       = "api.visualops.io"
+
+    ### env:debug ###
+    API_HOST = "api.mc3.io"
+    ### env:debug:end ###
+
+    ### env:dev ###
+    API_HOST = "api.mc3.io"
+    ### env:dev:end ###
+    API_URL = "https://" + API_HOST + "/v1/apps/"
     ToolbarView = Backbone.View.extend {
 
         el         : document
@@ -443,8 +454,10 @@ define [ 'MC', 'event',
             console.log(event)
             $target.toggleClass('disabled')
             $label.html($label.attr('data-disabled'))
+            app_id = Design.instance().serialize().id
+            console.log API_URL + app_id
             $.ajax
-                url: "http://urlthatdoesnotexist.com",
+                url: API_URL+ app_id,
                 method: "POST"
                 data:
                     "encoded_user": App.user.get("usercode")

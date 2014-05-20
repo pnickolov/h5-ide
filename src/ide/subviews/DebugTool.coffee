@@ -63,8 +63,10 @@ define [ "ApiRequest", "ApiRequestDefs", "vender/select2/select2" ], ( ApiReques
       option += "</optgrouop>"
 
     $("#ApiSelect").html(option).select2({width:400}).on "change", ()->
-      apiDef = ApiRequestDefs.Defs[ $("#ApiSelect").select2("val") ]
+      val = $("#ApiSelect").select2("val")
+      apiDef = ApiRequestDefs.Defs[ val ]
       $("#ApiResult").empty()
+      $("#ApiSelect").siblings("label").text "Api : '#{val}'"
       if not apiDef then return $("#ApiParamsWrap").empty()
       phtml = ""
       for p in apiDef.params

@@ -30,9 +30,13 @@ define [ 'MC', 'event',
 
             'click #toolbar-run'            : 'clickRunIcon'
             'click .icon-save'              : 'clickSaveIcon'
-            'click #toolbar-duplicate'      : 'clickDuplicateIcon'
-            'click #toolbar-app-to-stack'   : 'appToStackClick'
-            'click #toolbar-delete'         : 'clickDeleteIcon'
+
+            'modal-shown #toolbar-delete'       : 'clickDeleteIcon'
+            'modal-shown #toolbar-duplicate'    : 'clickDuplicateIcon'
+            'modal-shown #toolbar-stop-app'     : 'clickStopApp'
+            'modal-shown #toolbar-start-app'    : 'clickStartApp'
+            'modal-shown #toolbar-app-to-stack' : 'appToStackClick'
+
             'click #toolbar-new'            : 'clickNewStackIcon'
             'click .icon-zoom-in'           : 'clickZoomInIcon'
             'click .icon-zoom-out'          : 'clickZoomOutIcon'
@@ -40,8 +44,6 @@ define [ 'MC', 'event',
             'click .icon-redo'              : 'clickRedoIcon'
             'click #toolbar-export-png'     : 'clickExportPngIcon'
             'click #toolbar-export-json'    : 'clickExportJSONIcon'
-            'click #toolbar-stop-app'       : 'clickStopApp'
-            'click #toolbar-start-app'      : 'clickStartApp'
             'click #toolbar-terminate-app'  : 'clickTerminateApp'
             'click #btn-app-refresh'        : 'clickRefreshApp'
             'click #toolbar-convert-cf'     : 'clickConvertCloudFormation'

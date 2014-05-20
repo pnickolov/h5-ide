@@ -1217,6 +1217,10 @@ module.exports =
       en: "Key Pair"
       zh: "秘钥"
 
+    POP_INSTANCE_KEYPAIR_INFO_TIP:
+      en: "If any instance or launch configuration uses $DefaultKeyPair, you will need to specify which key pair (or no key pair) should be used for $DefaultKeyPair when launching the instance or creating the launch configuration."
+      zh: ""
+
     PROP_INSTANCE_EBS_OPTIMIZED:
       en: "EBS Optimization"
       zh: "EBS 优化"

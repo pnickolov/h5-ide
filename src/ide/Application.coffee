@@ -145,24 +145,33 @@ define [ "ApiRequest", "component/exporter/JsonExporter", "./Websocket", "./Appl
 
     that = this
 
-    if not @hasOpenedSampleStack
+    try
 
-      isFirstVisit = @user.isFirstVisit()
+      if not @hasOpenedSampleStack
 
-      if (isFirstVisit and fromWelcome) or (not isFirstVisit and not fromWelcome)
+        isFirstVisit = @user.isFirstVisit()
 
-        stackStoreId = $.cookie('stack_store_id')
+        if (isFirstVisit and fromWelcome) or (not isFirstVisit and not fromWelcome)
 
-        if stackStoreId
-          
-          $.removeCookie('stack_store_id')
+          stackStoreIdStamp = $.cookie('stack_store_id') or ''
+          localStackStoreIdStamp = $.cookie('stack_store_id_local') or ''
 
-          ApiRequest('stackstore_fetch_stackstore', {
-            file_name: "stack/#{stackStoreId}.json"
-          }).then (result) ->
+          stackStoreId = stackStoreIdStamp.split('#')[0]
 
-            jsonDataStr = result
-            that.importJson(jsonDataStr)
-            that.hasOpenedSampleStack = true
+          if stackStoreId and stackStoreIdStamp isnt localStackStoreIdStamp
+            
+            $.setCookie('stack_store_id_local', stackStoreIdStamp)
+
+            ApiRequest('stackstore_fetch_stackstore', {
+              file_name: "stack/#{stackStoreId}.json"
+            }).then (result) ->
+
+              jsonDataStr = result
+              that.importJson(jsonDataStr)
+              that.hasOpenedSampleStack = true
+
+    catch err
+
+      console.log('Open store stack failed')
 
   VisualOps

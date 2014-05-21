@@ -270,7 +270,20 @@ define [ "./SettingsDialogTpl", 'i18n!nls/lang.js', "ApiRequest", "backbone" ], 
         $p = $(evt.currentTarget).closest("li").removeClass("editing")
         $p.children(".tokenName").attr "readonly", true
 
-        App.user.updateToken( $p.children(".tokenToken").text(), $p.children(".tokenName").val() ).then ()->
+        token        = $p.children(".tokenToken").text()
+        newTokenName = $p.children(".tokenName").val()
+
+        for t in  App.user.get("tokens")
+          if t.token is token
+            oldName = t.name
+          else if t.name is newTokenName
+            duplicate = true
+
+        if not newTokenName or duplicate
+          $p.children(".tokenName").val( oldName )
+          return
+
+        App.user.updateToken( token, newTokenName ).then ()->
           # Do nothing if update success
           return
         , ()->

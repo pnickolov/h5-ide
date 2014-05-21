@@ -5,6 +5,10 @@ define [ "./CrCollection", "./CrDhcpModel", "ApiRequest", "constant" ], ( CrColl
     type  : constant.RESTYPE.DHCP
     model : CrDhcpModel
 
+    ### env:dev ###
+    ClassName : "CrDhcpCollection"
+    ### env:dev:end ###
+
     doFetch : ()-> ApiRequest("dhcp_DescribeDhcpOptions", {region_name : @category})
     parseFetchData : (res)->
       res = res.DescribeDhcpOptionsResponse.dhcpOptionsSet.item

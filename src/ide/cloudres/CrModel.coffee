@@ -1,5 +1,5 @@
 
-define ["backbone"], ()->
+define ["./CrCollection", "backbone"], ( CrCollection )->
 
   CrModel = Backbone.Model.extend {
 
@@ -26,4 +26,8 @@ define ["backbone"], ()->
     # doSave   : ()->
     # doCreate : ()->
     # doRemove : ()->
+  }, {
+    ### env:dev ###
+    extend : CrCollection.__detailExtend
+    ### env:dev:end ###
   }

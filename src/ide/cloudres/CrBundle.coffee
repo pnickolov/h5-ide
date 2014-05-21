@@ -17,4 +17,9 @@ define [
   DhcpCollection.fetch()
   DhcpCollection.fetch()
 
+  DhcpCollection.on "update", ()->
+    console.log "=============="
+    console.log "=============="
+    console.info DhcpCollection
+
   window.CloudResources = CloudResources

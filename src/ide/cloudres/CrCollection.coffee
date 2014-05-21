@@ -1,5 +1,5 @@
 
-define ["backbone"], ()->
+define ["ApiRequest", "backbone"], ( ApiRequest )->
 
   SubCollections = {}
 
@@ -11,32 +11,33 @@ define ["backbone"], ()->
 
     constructor : ()->
       @on "add remove", @__debounceUpdate, @
-      @
+      Backbone.Collection.apply this, arguments
 
     # Fetch the data from AWS. The data is only fetched once even if called multiple time.
     fetch : ()->
-      if @fetchPromise then return @fetchPromise
+      if @__fetchPromise then return @__fetchPromise
 
       @lastFetch = +new Date()
 
       self = @
-      @fetchPromise = @doFetch().then ( res )->
+      @__fetchPromise = @doFetch().then ( res )->
         try
           self.set( self.parseFetchData(res) )
         catch e
           throw McError( ApiRequest.Errors.InvalidAwsReturn, "", res )
 
-        console.info "DHCP", self
         return self
-      , ()->
+      , ( error )->
         @lastFetch = 0
-        self.fetchPromise = null
+        self.__fetchPromise = null
+        throw error
+        return
 
-      @fetchPromise
+      @__fetchPromise
 
     # Force to fetch the data
     fetchForce : ()->
-      @fetchPromise = null
+      @__fetchPromise = null
       @fetch()
 
     # Force to fetch the data only if the data is consider to be invalid
@@ -45,7 +46,7 @@ define ["backbone"], ()->
       if (+new Date()) - lastFetch < 1800000
         console.info "The collection is not expired,", @
         return
-      @fetchPromise = null
+      @__fetchPromise = null
       @fetch()
 
     # Override this method to parse the result of the fetch.
@@ -72,12 +73,12 @@ define ["backbone"], ()->
     getClassById : ( id )-> SubCollections[id]
 
     ### env:dev ###
-    __detailExtend : ( protoProps, staticProps, funcName )->
+    __detailExtend : ( protoProps, staticProps )->
       ### jshint -W061 ###
 
       parent = this
 
-      funcName = protoProps.type.split(".").pop() + ( funcName || "Collection" )
+      funcName = protoProps.ClassName || protoProps.type.split(".").pop()
       childSpawner = eval( "(function(a) { var #{funcName} = function(){ return a.apply( this, arguments ); }; return #{funcName}; })" )
 
       if protoProps and protoProps.hasOwnProperty "constructor"
@@ -89,7 +90,7 @@ define ["backbone"], ()->
 
       _.extend(child, parent, staticProps)
 
-      funcName = "PROTO_CR_" + funcName
+      funcName = "PROTO_" + funcName
       prototypeSpawner = eval( "(function(a) { var #{funcName} = function(){ this.constructor = a }; return #{funcName}; })" )
 
       Surrogate = prototypeSpawner( child )

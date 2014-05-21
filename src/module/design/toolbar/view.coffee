@@ -910,7 +910,7 @@ define [ 'MC', 'event',
 
             # set toolbar-visual-ops-switch and apply-visops
             $switchCheckbox = $ '#main-toolbar .toolbar-visual-ops-switch'
-            $applyVisops    = $ '#apply-visops'
+            # $applyVisops    = $ '#apply-visops'
 
             # when new stack enable VisualOps else disabled
             if Tabbar.current is 'new'

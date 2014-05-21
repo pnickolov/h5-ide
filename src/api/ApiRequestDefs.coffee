@@ -54,7 +54,7 @@ define [], ()->
       when "session_id"
         return $.cookie('session_id')
       when "region_name"
-        console.warn "Autofilling region_name:'us-east-1' for ApiRequest, this is for some api who requires region_name while it doesn't care about its value."
+        console.warn "Autofilling region_name:'us-east-1' for ApiRequest, this is for some api who requires region_name while it doesn't care about its value.", { stack : ((new Error()).stack).replace(/Error\s+at.+AutoFill.+ApiRequest .+?\n/,"").replace(/^\s+/gm,"") }
         return "us-east-1"
     return null
 

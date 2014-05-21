@@ -46,5 +46,9 @@ define [ "./CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
         return
 
     doDestroy : ()->
+      ApiRequest("dhcp_DeleteDhcpOptions", {
+        region_name : @getCollection().category
+        dhcp_id : @get("id")
+      })
 
   }

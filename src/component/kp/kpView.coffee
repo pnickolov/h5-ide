@@ -1,4 +1,4 @@
-define [ './kpTpl', './kpDialogTpl', 'kp_upload', 'backbone', 'jquery', 'constant', 'component/exporter/JsonExporter', 'UI.notification' ], ( template, template_modal, upload, Backbone, $, constant, JsonExporter ) ->
+define [ 'combo_dropdown', './kpTpl', './kpDialogTpl', 'kp_upload', 'backbone', 'jquery', 'constant', 'component/exporter/JsonExporter', 'i18n!nls/lang.js', 'UI.notification' ], ( combo_dropdown, template, template_modal, upload, Backbone, $, constant, JsonExporter, lang ) ->
 
     download = JsonExporter.download
 
@@ -341,22 +341,10 @@ define [ './kpTpl', './kpDialogTpl', 'kp_upload', 'backbone', 'jquery', 'constan
 
     Backbone.View.extend
 
-        tagName: 'section'
-
-        events:
-            'click .keypair-filter'     : 'returnFalse'
-            'click .manage-kp'          : 'manageKp'
-            'click .show-credential'    : 'showCredential'
-            'OPTION_SHOW .selectbox'    : 'show'
-            'OPTION_CHANGE .selectbox'  : 'setKey'
-            'keyup .keypair-filter'     : 'filter'
-
         showCredential: ->
             App.showSettings App.showSettings.TAB.Credential
 
-        filter: ( event ) ->
-            keyword = event.currentTarget.value
-
+        filter: ( keyword ) ->
             len = keyword.length
             hitKeys = _.filter @model.get( 'keys' ), ( k ) ->
                 k.keyName.slice( 0, len ).toLowerCase() is keyword
@@ -365,7 +353,7 @@ define [ './kpTpl', './kpDialogTpl', 'kp_upload', 'backbone', 'jquery', 'constan
             else
                 @renderKeys()
 
-        setKey: ( event, name, data ) ->
+        setKey: ( name, data ) ->
             if @__mode is 'runtime'
                 KpModel = Design.modelClassForType( constant.RESTYPE.KP )
                 if name is '@no'
@@ -380,18 +368,33 @@ define [ './kpTpl', './kpDialogTpl', 'kp_upload', 'backbone', 'jquery', 'constan
                 else
                     @model.setKey name
 
-        returnFalse: ( event ) ->
-            false
-
         manageKp: ( event ) ->
             @renderModal()
             false
 
+        initDropdown: ->
+            options =
+                manageBtnValue      : lang.ide.PROP_INSTANCE_MANAGE_KP
+                filterPlaceHolder   : lang.ide.PROP_INSTANCE_FILTER_KP
+
+            if @__mode is 'runtime'
+                options.noManage = true
+
+            @dropdown = new combo_dropdown( options )
+            @dropdown.on 'open', @show, @
+            @dropdown.on 'manage', @manageKp, @
+            @dropdown.on 'change', @setKey, @
+            @dropdown.on 'filter', @filter, @
+
+
         initialize: ( options ) ->
             @model.on 'change:keys', @renderKeys, @
             @model.on 'request:error', @syncErrorHandler, @
+
             if not @model.resModel
                 @__mode = 'runtime'
+
+            @initDropdown()
 
         show: () ->
             if App.user.hasCredential()
@@ -401,23 +404,16 @@ define [ './kpTpl', './kpDialogTpl', 'kp_upload', 'backbone', 'jquery', 'constan
             else
                 @renderNoCredential()
 
-
         render: ->
-            @renderFrame()
+            @renderDropdown()
+            @el = @dropdown.el
             @
 
         renderLoading: ->
-            @$('#kp-content').html template.loading
-            @toggleKpListControls false
+            @dropdown.render('loading').toggleControls false
 
         renderNoCredential: () ->
-            @$('#kp-content').html template.nocredential
-            @toggleKpListControls false
-            @
-
-        toggleKpListControls: ( showOrHide ) ->
-            @$( '.keypair-filter, .manage-kp' ).toggle showOrHide
-
+            @dropdown.render('nocredential').toggleControls false
 
         syncErrorHandler: (err) ->
             console.error err
@@ -436,12 +432,11 @@ define [ './kpTpl', './kpDialogTpl', 'kp_upload', 'backbone', 'jquery', 'constan
 
             data.isRunTime = @__mode is 'runtime'
 
-            @$('#kp-content').html template.keys data
-            @toggleKpListControls true
-            @showManageBtn()
+            @dropdown.setContent template.keys data
+            @dropdown.toggleControls true
             @
 
-        renderFrame: () ->
+        renderDropdown: () ->
             data = @model.toJSON()
             if data.keyName is '$DefaultKeyPair'
                 data.defaultKey = true
@@ -450,14 +445,12 @@ define [ './kpTpl', './kpDialogTpl', 'kp_upload', 'backbone', 'jquery', 'constan
 
             data.isRunTime = @__mode is 'runtime'
 
-            @$el.html template.frame data
+            selection = template.selection data
+            @dropdown.setSelection selection
+
 
         renderModal: () ->
             new modalView(model: @model).render()
-
-        showManageBtn: ->
-            @$( '.manage-kp' ).show()
-
 
 
 

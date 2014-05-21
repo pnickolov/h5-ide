@@ -47,6 +47,13 @@ define ["backbone"], ()->
     # Override this method to parse the result of the fetch.
     parseFetchData : ( res )-> res
 
+    # Destroy the collection. Most of the collection should not be destroy.
+    destroy : ()-> @trigger "destroy", @id
+
+    # Returns a newly created model. The model is not saved to AWS yet, so there's not
+    # add event.
+    create : ( attributes )-> new @model( attributes )
+
   }, {
 
     # CloudResources uses this method to get the right category.

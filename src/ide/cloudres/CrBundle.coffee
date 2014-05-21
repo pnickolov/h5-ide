@@ -16,3 +16,5 @@ define [
   DhcpCollection.fetch()
   DhcpCollection.fetch()
   DhcpCollection.fetch()
+
+  window.CloudResources = CloudResources

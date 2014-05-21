@@ -9,6 +9,8 @@ define ["ide/cloudres/CrCollection"], ( CrCollection )->
 
   CachedCollections = {}
 
+  onCollectionDestroy = (id)-> delete CachedCollections[ id ]
+
   CloudResources = ( resourceType, category, platform = "AWS" )->
 
     classId    = CrCollection.classId( resourceType, platform )
@@ -23,6 +25,7 @@ define ["ide/cloudres/CrCollection"], ( CrCollection )->
       c.id = cid
       c.category = category
       CachedCollections[ cid ] = c
+      c.on "destroy", onCollectionDestroy
 
     c
 

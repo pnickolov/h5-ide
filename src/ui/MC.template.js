@@ -2542,7 +2542,9 @@ function program1(depth0,data) {
   var buffer = "", stack1;
   buffer += "\n<li>\n	<input class=\"tokenName input\" value=\""
     + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" readonly/>\n	<span class=\"tokenToken click-select truncate\">"
+    + "\" readonly/>\n	<span class=\"tokenToken click-select truncate tooltip\" data-tooltip=\""
+    + escapeExpression(helpers.i18n.call(depth0, "PROP_ELB_TIP_CLICK_TO_SELECT_ALL", {hash:{},data:data}))
+    + "\">"
     + escapeExpression(((stack1 = (depth0 && depth0.token)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</span>\n	<span class=\"tokenControl\">\n		<button class=\"tooltip icon-edit\" data-tooltip=\"\"></button>\n		<button class=\"tooltip icon-delete\" data-tooltip=\"\"></button>\n		<button class=\"btn btn-blue tokenDone\">"
     + escapeExpression(helpers.i18n.call(depth0, "HEAD_BTN_DONE", {hash:{},data:data}))

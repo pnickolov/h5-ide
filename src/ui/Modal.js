@@ -24,7 +24,7 @@
       Modal.prototype.close = function() {
         var _base;
         console.log(this.option.onClose);
-        if ((!this.subModal || (this.subModal && this.subModal.closed)) && this.close) {
+        if (!this.subModal || (this.subModal && this.subModal.closed)) {
           this.tpl.remove();
         } else {
           return false;
@@ -143,11 +143,7 @@
         return this.wrap.on('click', (function(_this) {
           return function(e) {
             e.preventDefault();
-            alert("E");
             return false;
-            if (e.target === e.currentTarget) {
-              return _this.close();
-            }
           };
         })(this));
       };

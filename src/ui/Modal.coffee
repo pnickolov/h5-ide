@@ -19,7 +19,7 @@ define [], ()->
             @
         close: ()->
             console.log @option.onClose
-            if (!@subModal or (@subModal and @subModal.closed)) and @close
+            if !@subModal or (@subModal and @subModal.closed)
                 @tpl.remove()
             else
                 return false
@@ -90,10 +90,7 @@ define [], ()->
             console.log @subModal
             @wrap.on 'click',(e)=>
                 e.preventDefault()
-                alert "E"
                 return false;
-                if(e.target == e.currentTarget)
-                    @close()
         moveLeft: ->
             console.log("Moving left")
     Modal

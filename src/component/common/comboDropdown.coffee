@@ -39,12 +39,12 @@ define [ './component/common/comboDropdownTpl', 'backbone', 'jquery' ], ( templa
             'OPTION_CHANGE .selectbox'  : 'optionChange'
 
             'keyup .combo-dd-filter'    : 'filter'
-            'keydown .combo-dd-filter'  : 'preventDefault'
+            'keydown .combo-dd-filter'  : 'stopPropagation'
             'click .combo-dd-filter'    : 'returnFalse'
 
 
-        preventDefault: ( event ) ->
-            event.preventDefault()
+        stopPropagation: ( event ) ->
+            event.stopPropagation()
 
         returnFalse: ->
             false
@@ -55,8 +55,9 @@ define [ './component/common/comboDropdownTpl', 'backbone', 'jquery' ], ( templa
         filter: ( event ) ->
             @trigger 'filter', event.currentTarget.value
 
-        manage: ->
+        manage: ( event ) ->
             @trigger 'manage'
+            event.stopPropagation()
 
         optionShow: ->
             @trigger 'open'
@@ -65,7 +66,7 @@ define [ './component/common/comboDropdownTpl', 'backbone', 'jquery' ], ( templa
             @trigger 'change', name, data
 
         initialize: ( options ) ->
-            @$el.html template.frame
+            @$el.html template.frame options
             @
 
         render: ( tpl ) ->
@@ -74,10 +75,12 @@ define [ './component/common/comboDropdownTpl', 'backbone', 'jquery' ], ( templa
 
         setSelection: ( dom ) ->
             @$( '.selection' ).html dom
+            @
 
         setContent: ( dom ) ->
             @$( '.combo-dd-content' ).html template.listframe
             @$( '.combo-dd-list' ).html dom
+            @
 
         # whichOne shoud be `filter` or `manage`
         toggleControls: ( showOrHide, whichOne ) ->
@@ -85,9 +88,11 @@ define [ './component/common/comboDropdownTpl', 'backbone', 'jquery' ], ( templa
                 @$( ".combo-dd-#{whichOne}" ).toggle showOrHide
             else
                 @$( '.combo-dd-filter, .combo-dd-manage' ).toggle showOrHide
+            @
 
         delegate: ( event, selector, handler ) ->
             @$el.on.apply arguments
+            @
 
 
 

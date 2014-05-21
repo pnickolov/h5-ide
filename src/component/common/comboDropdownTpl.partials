@@ -6,8 +6,12 @@
         <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
         <div class="scroll-content combo-dd-content">
         </div>
-        <div class="combo-dd-manage btn btn-primary" style="display:none;">{{manage_btn_value}}</div>
-        <input class="input combo-dd-filter" type="text" placeholder="{{filter_place_holder}}"/>
+        {{#unless noManage}}
+            <div class="combo-dd-manage btn btn-primary" style="display:none;">{{manageBtnValue}}</div>
+        {{/unless}}
+        {{#unless noFilter}}
+            <input class="input combo-dd-filter" type="text" placeholder="{{filterPlaceHolder}}"/>
+        {{/unless}}
     </div>
 </div>
 

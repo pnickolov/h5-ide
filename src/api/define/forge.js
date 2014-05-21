@@ -40,7 +40,7 @@ define(['ApiRequestDefs'], function( ApiRequestDefs ){
 		'stack_list'              : { url:'/stack/',	method:'list',	params:['username', 'session_id', 'region_name', 'stack_ids']   },
 		'stack_export_cloudformation' : { url:'/stack/',	method:'export_cloudformation',	params:['username', 'session_id', 'region_name', 'stack']   },
 		'stack_verify'            : { url:'/stack/',	method:'verify',	params:['username', 'session_id', 'spec']   },
-		'stackstore_fetch_stackstore' : { url:'/stackstore/',	method:'fetch_stackstore',	params:['filename']   },
+		'stackstore_fetch_stackstore' : { url:'/stackstore/',	method:'fetch_stackstore',	params:['sub_path']   },
 		'state_module'            : { url:'/state/',	method:'module',	params:['username', 'session_id', 'mod_repo', 'mod_tag']   },
 		'state_status'            : { url:'/state/',	method:'status',	params:['username', 'session_id', 'app_id']   },
 		'state_log'               : { url:'/state/',	method:'log',	params:['username', 'session_id', 'app_id', 'res_id']   },

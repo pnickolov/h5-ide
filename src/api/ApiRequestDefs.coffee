@@ -9,6 +9,10 @@ define [], ()->
       error  : errorNum
       msg    : errorMsg || ""
       result : params || undefined
+      reason : errorMsg
+      ### env:dev ###
+      stack  : (new Error()).stack.replace(/Error\s+at.+McError.+?\n/,"").replace(/^\s+at/gm,"at")
+      ### env:dev:end ###
     }
 
 
@@ -49,6 +53,9 @@ define [], ()->
         return $.cookie('usercode')
       when "session_id"
         return $.cookie('session_id')
+      when "region_name"
+        console.warn "Autofilling region_name:'us-east-1' for ApiRequest, this is for some api who requires region_name while it doesn't care about its value."
+        return "us-east-1"
     return null
 
   ApiRequestDefs

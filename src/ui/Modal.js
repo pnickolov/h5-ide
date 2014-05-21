@@ -24,18 +24,16 @@
       Modal.prototype.close = function() {
         var _base;
         console.log(this.option.onClose);
-        if (!this.subModal || (this.subModal && this.subModal.closed)) {
-          this.tpl.remove();
-        } else {
-          return false;
-        }
-        if (this.wrap.find(".modal-box").size() < 1) {
-          this.wrap.remove();
+        if (this.modalGroup.length > 1) {
+          this.modalGroup[this.modalGroup.length - 1].tpl.remove();
         }
         if (typeof (_base = this.option).onClose === "function") {
           _base.onClose(this.tpl);
         }
-        this.closed = true;
+        this.modalGroup.pop();
+        if (this.modalGroup.length < 1) {
+          this.wrap.remove();
+        }
         return null;
       };
 
@@ -136,20 +134,45 @@
         });
       };
 
-      Modal.prototype["new"] = function(optionConfig) {
-        this.moveLeft();
-        this.subModal = new Modal(optionConfig);
-        console.log(this.subModal);
-        return this.wrap.on('click', (function(_this) {
-          return function(e) {
-            e.preventDefault();
-            return false;
-          };
-        })(this));
+      Modal.prototype.modalGroup = [Modal];
+
+      Modal.prototype.next = function(optionConfig) {
+        var newModal;
+        newModal = new Modal(optionConfig);
+        newModal.parentModal = this;
+        this.modalGroup.push(newModal);
+        this.modalGroup[this.modalGroup.length - 2]._fadeOut();
+        return newModal._slideIn();
       };
 
-      Modal.prototype.moveLeft = function() {
-        return console.log("Moving left");
+      Modal.prototype.back = function(optionConfig) {
+        var length;
+        length = this.modalGroup.length;
+        this.modalGroup[length - 2]._fadeIn();
+        this.modalGroup[length - 1]._slideOut();
+        return window.setTimeout(function() {
+          return this.modalGroup[length - 1].close();
+        }, 300);
+      };
+
+      Modal.prototype._fadeOut = function() {
+        console.log("Fading out");
+        return this.tpl.addClass("fadeOut");
+      };
+
+      Modal.prototype._fadeIn = function() {
+        console.log("Fading in");
+        return this.tpl.removeClass('fadeOut');
+      };
+
+      Modal.prototype._slideIn = function() {
+        console.log('Sliding In');
+        return this.tpl.addClass('slideIn');
+      };
+
+      Modal.prototype._slideOut = function() {
+        console.log('Sliding Out');
+        return this.tpl.removeClass('slideIn');
       };
 
       return Modal;

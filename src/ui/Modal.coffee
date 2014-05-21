@@ -19,14 +19,12 @@ define [], ()->
             @
         close: ()->
             console.log @option.onClose
-            if !@subModal or (@subModal and @subModal.closed)
-                @tpl.remove()
-            else
-                return false
-            if @wrap.find(".modal-box").size() < 1
-                @wrap.remove()
+            if @modalGroup.length > 1
+                @modalGroup[@modalGroup.length-1].tpl.remove()
             @option.onClose?(@tpl)
-            @closed = true
+            @modalGroup.pop()
+            if @modalGroup.length < 1
+                @wrap.remove()
             null
         show: ()->
             @wrap.removeClass("hide")
@@ -84,15 +82,32 @@ define [], ()->
             @tpl.css
                 top:  if top > 0 then top else 10
                 left: left
-        new: (optionConfig)->
-            @.moveLeft()
-            @subModal = new Modal optionConfig
-            console.log @subModal
-            @wrap.on 'click',(e)=>
-                e.preventDefault()
-                return false;
-        moveLeft: ->
-            console.log("Moving left")
+        modalGroup: [@]
+        next: (optionConfig)->
+            newModal = new Modal optionConfig
+            newModal.parentModal = @
+            @modalGroup.push(newModal)
+            @modalGroup[@modalGroup.length-2]._fadeOut()
+            newModal._slideIn()
+        back: (optionConfig)->
+            length = @modalGroup.length
+            @modalGroup[length-2]._fadeIn()
+            @modalGroup[length-1]._slideOut()
+            window.setTimeout ()->
+                @modalGroup[length-1].close()
+            ,300
+        _fadeOut: ->
+            console.log "Fading out"
+            @tpl.addClass "fadeOut"
+        _fadeIn: ->
+            console.log "Fading in"
+            @tpl.removeClass 'fadeOut'
+        _slideIn: ->
+            console.log 'Sliding In'
+            @tpl.addClass 'slideIn'
+        _slideOut: ->
+            console.log 'Sliding Out'
+            @tpl.removeClass 'slideIn'
     Modal
 
 

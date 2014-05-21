@@ -3,6 +3,7 @@ define [
   "constant"
   "CloudResources"
   "./CrDhcpCollection"
+  "./CrSslcertCollection"
 ], ( constant, CloudResources )->
 
   # SnsCollection = CloudResources( constant.RESTYPE.SUBSCRIPTION, "us-east-1" )
@@ -21,5 +22,10 @@ define [
     console.log "=============="
     console.log "=============="
     console.info DhcpCollection
+
+  # DhcpCollection.create({
+  #   "domain-name-servers" : ["AmazonProvidedDNS"]
+  #   "id" : "dopt-aabbccdd"
+  # }).destroy()
 
   window.CloudResources = CloudResources

@@ -28,10 +28,12 @@ define ["./CrCollection", "ApiRequest", "backbone"], ( CrCollection, ApiRequest 
     getCollection : ()-> @__collection || @collection
 
     # Returns a promise which will be resolved when the model is deleted from AWS
+    # When the model is removed, the model will stop listening to any event.
     destroy : ()->
       self = @
       @doDestroy().then ()->
         self.getCollection().remove self
+        self.off()
         self
       , (err)->
         # If AWS fail to remove an resource due to `ID.NotFound`, we treat it as
@@ -53,6 +55,8 @@ define ["./CrCollection", "ApiRequest", "backbone"], ( CrCollection, ApiRequest 
 
     # Tags this resource. It should only called right after the resource is created.
     tagResource : ()->
+      if @taggable is false then return
+
       self = @
       ApiRequest("ec2_CreateTags",{
         resource_ids : [@get("id")]

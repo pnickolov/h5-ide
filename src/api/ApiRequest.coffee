@@ -67,7 +67,7 @@ define ["ApiRequestDefs", "api/ApiRequestErrors", "api/ApiRequestHandlers", "api
 
     # Try parse AWS Return result if we have correct return.
     awsresult = res.result[1]
-    if awsresult and _.isArray(awsresult) and (typeof awsresult[1] is "string") and awsresult[1].indexOf("<?xml") == 0
+    if awsresult and _.isArray(awsresult) and (typeof awsresult[1] is "string") and awsresult[1][0] is "<"
 
       if awsresult[0] is 200
         res = tryParseAws( awsresult[1] )

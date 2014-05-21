@@ -31,13 +31,13 @@ define ["./CrCollection", "ApiRequest", "backbone"], ( CrCollection, ApiRequest 
     destroy : ()->
       self = @
       @doDestroy().then ()->
-        self.collection.remove self
+        self.getCollection().remove self
         self
       , (err)->
         # If AWS fail to remove an resource due to `ID.NotFound`, we treat it as
         # the resource is removed.
         if err.awsError is 400 and err.awsErrorCode.indexOf(".NotFound") != -1
-          self.collection.remove self
+          self.getCollection().remove self
           return self
 
         throw err

@@ -264,6 +264,7 @@ require.config {
 		'state_status'       : 'component/statestatus/main'
 		'kp'       			 : 'component/kp/kpMain'
 		'kp_upload'       	 : 'component/kp/kpUpload'
+		'combo_dropdown'     : 'component/common/comboDropdown'
 
 		#############################################
 		# component

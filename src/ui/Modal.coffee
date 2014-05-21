@@ -2,8 +2,7 @@ define [], ()->
     Modal = class Modal
         constructor: (@option)->
             console.log option
-            modalTitle = @option.title || "Modal Title"
-            closeAble = @option.closeAble
+            @wrap = if $('#modal-wrap').size() > 0 then $("#modal-wrap") else $("<div id='modal-wrap'>").appendTo $('body')
             @tpl = $(MC.template.modalTemplate(
                 title: @option.title || ""
                 closeAble : !@option.disableClose
@@ -16,15 +15,17 @@ define [], ()->
                 width: @option.width||"520px"
             )
             .end()
-            .appendTo $("body")
+            .appendTo @wrap
             @show()
             @bindEvent()
+            @
         close: ()->
             console.log @option.onClose
             @tpl.remove()
+            @wrap.remove()
             @option.onClose?()
         show: ()->
-            @tpl.removeClass("hide")
+            @wrap.removeClass("hide")
             @resize()
             console.log @option.onShow
             @option.onShow?()
@@ -38,45 +39,59 @@ define [], ()->
             @tpl.find("i.modal-close").click (e)=>
                 @close()
             if(!@option.disableClose)
-                @tpl.click (e)=>
+                @wrap.click (e)=>
                     if(e.target == e.currentTarget)
                         @close()
-            diffX = 0
-            diffY = 0
-            dragable = false
-            @tpl.find(".modal-header h3").mousedown (e)=>
-                dragable = true
-                originalLayout = @tpl.find('#modal-box').offset()
-                diffX = originalLayout.top - e.clientX
-                diffY = originalLayout.left - e.clientY
-            @tpl.find('.modal-header h3').mousemove (e)=>
-                if(dragable)
-                    @tpl.find("#modal-box").css
-                        top: e.clientY + diffY
-                        left: e.clientX + diffX
-
-            $(document).mouseup (e)->
-                dragable =false
+            if(@option.dragable)
                 diffX = 0
                 diffY = 0
+                dragable = false
+                @tpl.find(".modal-header h3").mousedown (e)=>
+                    dragable = true
+                    originalLayout = @tpl.offset()
+                    diffX = originalLayout.left - e.clientX
+                    diffY = originalLayout.top - e.clientY
+                $(document).mousemove (e)=>
+                    if(dragable)
+                        @tpl.css
+                            top: e.clientY + diffY
+                            left: e.clientX + diffX
+                        if window.getSelection
+                            if window.getSelection().empty
+                                window.getSelection().empty()
+                            else if window.getSelection().removeAllRanges
+                                window.getSelection().removeAllRanges()
+                            else if (document.selection)
+                                document.selection.empty();
+                $(document).mouseup (e)->
+                    dragable =false
+                    diffX = 0
+                    diffY = 0
 
         resize: ()->
             windowWidth = $(window).width()
             windowHeight = $(window).height()
-            width = @tpl.find("#modal-box").width()
-            height= @tpl.find("#modal-box").height()
+            width = @tpl.width()
+            height= @tpl.height()
             console.info windowHeight, windowWidth, width, height
             top = (windowHeight - height) / 2
             left = (windowWidth - width) / 2
-            @tpl.find('#modal-box').css
+            @tpl.css
                 top:  if top > 0 then top else 10
                 left: left
+        new: ->
+            @.moveLeft()
+            @subModal = new Modal.apply this, arguments
+        moveLeft: ->
+            console.log("Moving left")
+
     Modal
 
 
 new Modal
     title: "Title Example"
-    disableClose: true
+    disableClose: false
+    dragable: true
     template: "<h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1>"
     onClose: ()->
         alert "Modal Closed!"
@@ -86,3 +101,4 @@ new Modal
         alert "Modal Confirm!"
     onCancel: ()->
         alert "Modal Canceled!"
+

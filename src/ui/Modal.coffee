@@ -3,17 +3,15 @@ define [], ()->
         constructor: (@option)->
             console.log option
             @wrap = if $('#modal-wrap').size() > 0 then $("#modal-wrap") else $("<div id='modal-wrap'>").appendTo $('body')
-            @tpl = $(MC.template.modalTemplate(
+            @tpl = $(MC.template.modalTemplate
                 title: @option.title || ""
                 closeAble : !@option.disableClose
                 template: @option.template||""
                 confirm: @option.confirm || "Submit"
                 cancel: @option.cancel|| "Cancel"
                 hasFooter: !@option.disableFooter
-            )).find("#modal-box>div")
-            .css(
-                width: @option.width||"520px"
-            )
+            ).find(".modal-box>div")
+            .css(width: @option.width||"520px")
             .end()
             .appendTo @wrap
             @show()
@@ -21,25 +19,31 @@ define [], ()->
             @
         close: ()->
             console.log @option.onClose
-            @tpl.remove()
-            @wrap.remove()
-            @option.onClose?()
+            if (!@subModal or (@subModal and @subModal.closed)) and @close
+                @tpl.remove()
+            else
+                return false
+            if @wrap.find(".modal-box").size() < 1
+                @wrap.remove()
+            @option.onClose?(@tpl)
+            @closed = true
+            null
         show: ()->
             @wrap.removeClass("hide")
             @resize()
             console.log @option.onShow
-            @option.onShow?()
+            @option.onShow?(@tpl)
         bindEvent: ()->
             @tpl.find('#btn-confirm').click (e)=>
-                @option.onConfirm(e)
+                @option.onConfirm?(@tpl,e)
                 @close()
             @tpl.find('#btn-cancel').click (e)=>
-                @option.onCancel(e)
+                @option.onCancel?(@tpl,e)
                 @close()
             @tpl.find("i.modal-close").click (e)=>
                 @close()
             if(!@option.disableClose)
-                @wrap.click (e)=>
+                @wrap.on 'click', (e)=>
                     if(e.target == e.currentTarget)
                         @close()
             if(@option.dragable)
@@ -51,6 +55,7 @@ define [], ()->
                     originalLayout = @tpl.offset()
                     diffX = originalLayout.left - e.clientX
                     diffY = originalLayout.top - e.clientY
+
                 $(document).mousemove (e)=>
                     if(dragable)
                         @tpl.css
@@ -79,26 +84,32 @@ define [], ()->
             @tpl.css
                 top:  if top > 0 then top else 10
                 left: left
-        new: ->
+        new: (optionConfig)->
             @.moveLeft()
-            @subModal = new Modal.apply this, arguments
+            @subModal = new Modal optionConfig
+            console.log @subModal
+            @wrap.on 'click',(e)=>
+                e.preventDefault()
+                alert "E"
+                return false;
+                if(e.target == e.currentTarget)
+                    @close()
         moveLeft: ->
             console.log("Moving left")
-
     Modal
 
 
-new Modal
-    title: "Title Example"
-    disableClose: false
-    dragable: true
-    template: "<h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1>"
-    onClose: ()->
-        alert "Modal Closed!"
-    onShow: ()->
-        alert "Modal Shown!"
-    onConfirm: ()->
-        alert "Modal Confirm!"
-    onCancel: ()->
-        alert "Modal Canceled!"
+#new Modal
+#    title: "Title Example"
+#    disableClose: false
+#    dragable: true
+#    template: "<h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1>"
+#    onClose: ()->
+#        alert "Modal Closed!"
+#    onShow: ()->
+#        alert "Modal Shown!"
+#    onConfirm: ()->
+#        alert "Modal Confirm!"
+#    onCancel: ()->
+#        alert "Modal Canceled!"
 

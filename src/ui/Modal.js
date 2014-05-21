@@ -13,7 +13,7 @@
           confirm: this.option.confirm || "Submit",
           cancel: this.option.cancel || "Cancel",
           hasFooter: !this.option.disableFooter
-        })).find("#modal-box>div").css({
+        })).find(".modal-box>div").css({
           width: this.option.width || "520px"
         }).end().appendTo(this.wrap);
         this.show();
@@ -24,9 +24,19 @@
       Modal.prototype.close = function() {
         var _base;
         console.log(this.option.onClose);
-        this.tpl.remove();
-        this.wrap.remove();
-        return typeof (_base = this.option).onClose === "function" ? _base.onClose() : void 0;
+        if ((!this.subModal || (this.subModal && this.subModal.closed)) && this.close) {
+          this.tpl.remove();
+        } else {
+          return false;
+        }
+        if (this.wrap.find(".modal-box").size() < 1) {
+          this.wrap.remove();
+        }
+        if (typeof (_base = this.option).onClose === "function") {
+          _base.onClose(this.tpl);
+        }
+        this.closed = true;
+        return null;
       };
 
       Modal.prototype.show = function() {
@@ -34,20 +44,26 @@
         this.wrap.removeClass("hide");
         this.resize();
         console.log(this.option.onShow);
-        return typeof (_base = this.option).onShow === "function" ? _base.onShow() : void 0;
+        return typeof (_base = this.option).onShow === "function" ? _base.onShow(this.tpl) : void 0;
       };
 
       Modal.prototype.bindEvent = function() {
         var diffX, diffY, dragable;
         this.tpl.find('#btn-confirm').click((function(_this) {
           return function(e) {
-            _this.option.onConfirm(e);
+            var _base;
+            if (typeof (_base = _this.option).onConfirm === "function") {
+              _base.onConfirm(_this.tpl, e);
+            }
             return _this.close();
           };
         })(this));
         this.tpl.find('#btn-cancel').click((function(_this) {
           return function(e) {
-            _this.option.onCancel(e);
+            var _base;
+            if (typeof (_base = _this.option).onCancel === "function") {
+              _base.onCancel(_this.tpl, e);
+            }
             return _this.close();
           };
         })(this));
@@ -57,7 +73,7 @@
           };
         })(this));
         if (!this.option.disableClose) {
-          this.wrap.click((function(_this) {
+          this.wrap.on('click', (function(_this) {
             return function(e) {
               if (e.target === e.currentTarget) {
                 return _this.close();
@@ -120,9 +136,20 @@
         });
       };
 
-      Modal.prototype["new"] = function() {
+      Modal.prototype["new"] = function(optionConfig) {
         this.moveLeft();
-        return this.subModal = new Modal.apply(this, arguments);
+        this.subModal = new Modal(optionConfig);
+        console.log(this.subModal);
+        return this.wrap.on('click', (function(_this) {
+          return function(e) {
+            e.preventDefault();
+            alert("E");
+            return false;
+            if (e.target === e.currentTarget) {
+              return _this.close();
+            }
+          };
+        })(this));
       };
 
       Modal.prototype.moveLeft = function() {
@@ -133,25 +160,6 @@
 
     })();
     return Modal;
-  });
-
-  new Modal({
-    title: "Title Example",
-    disableClose: false,
-    dragable: true,
-    template: "<h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1>",
-    onClose: function() {
-      return alert("Modal Closed!");
-    },
-    onShow: function() {
-      return alert("Modal Shown!");
-    },
-    onConfirm: function() {
-      return alert("Modal Confirm!");
-    },
-    onCancel: function() {
-      return alert("Modal Canceled!");
-    }
   });
 
 }).call(this);

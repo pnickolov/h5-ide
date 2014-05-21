@@ -133,6 +133,7 @@ require.config {
 		'UI.tour'            : 'ui/UI.tour'
 		'jqpagination'       : 'ui/jqpagination'
 		"jquerysort"         : 'ui/jquery.sort'
+		'Modal'              : 'ui/Modal'
 
 		#############################################
 		# cloud resources

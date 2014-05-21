@@ -56,7 +56,10 @@ define ["backbone"], ()->
 
     # Returns a newly created model. The model is not saved to AWS yet, so there's not
     # add event.
-    create : ( attributes )-> new @model( attributes )
+    create : ( attributes )->
+      m = new @model( attributes )
+      m.__collection = @
+      m
 
   }, {
 

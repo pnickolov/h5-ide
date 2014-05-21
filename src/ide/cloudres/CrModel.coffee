@@ -3,9 +3,27 @@ define ["backbone"], ()->
 
   CrModel = Backbone.Model.extend {
 
+    # Returns a promise which will be resolved when the model is saved to AWS
+    save : ()->
+      self = @
+
+      if not @get("id")
+        return @doCreate().then ()->
+          self.__collection.add self
+          delete self.__collection
+          self
+      else
+        return @doSave()
+
+    # Returns a promise which will be resolved when the model is deleted from AWS
     remove : ()->
+      self = @
+      @doRemove().then ()->
+        self.collection.remove self
+        self
 
-    # Override this method to return a promise which will be resolved when the model is removed.
-    doRemove : ()->
-
+    # Subclass needs to override these method.
+    # doSave   : ()->
+    # doCreate : ()->
+    # doRemove : ()->
   }

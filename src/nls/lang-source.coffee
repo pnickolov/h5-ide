@@ -4926,7 +4926,15 @@ VisualOps API. You cannot UNDO this action.'
       en: "<span class='validation-tag tag-instance'>%s</span> has configured states. Suggest to set its outbound rule on <span class='validation-tag tag-port'>80</span> and <span class='validation-tag tag-port'>443</span> to <span class='validation-tag tag-ip'>0.0.0.0/0</span>. Otherwise, agent may not be able to work properly, install packages or check out source codes lacking route to VisualOps's monitoring systems or required repositories."
       zh: ""
 
-
+    RELOAD_STATE_INVALID_REQUEST:
+      en: "Sorry, but the request is not valid."
+      zh: ""
+    RELOAD_STATE_NETWORKERROR:
+      en: "Network error, please try again later."
+      zh: ""
+    RELOAD_STATE_INTERNAL_SERVER_ERROR:
+      en: "Sorry, Internal server error, please try again later."
+      zh: ""
 
     ##### Trust Advisor
 

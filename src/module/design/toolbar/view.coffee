@@ -477,22 +477,24 @@ define [ 'MC', 'event',
                                 stateEditor.loadModule(appData.component, uid, null, true)
                     401: ->
                         console.log 401,arguments
-                        notification 'error', "Error 401"
+                        notification 'error', lang.ide.RELOAD_STATE_INVALID_REQUEST
                     404: ->
                         console.log 404,arguments
-                        notification 'error', "Error 404"
+                        notification 'error', lang.ide.RELOAD_STATE_NETWORKERROR
 
                     500: ->
                         console.log 500,arguments
-                        notification 'error', "Error 500"
+                        notification 'error', lang.ide.RELOAD_STATE_INTERNAL_SERVER_ERROR
                 error: ->
                     console.log('Reload State Request Error.')
                     null
                 success: ->
                     console.log('Succeeded Get Right Response.')
             .always ()->
-                $target.removeClass('disabled')
-                $label.html($label.attr('data-original'))
+                window.setTimeout ->
+                    $target.removeClass('disabled')
+                    $label.html($label.attr('data-original'))
+                , 2000
 
         clickDeleteIcon : ->
             me = this

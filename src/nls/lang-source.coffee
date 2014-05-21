@@ -4935,6 +4935,9 @@ VisualOps API. You cannot UNDO this action.'
     RELOAD_STATE_INTERNAL_SERVER_ERROR:
       en: "Sorry, Internal server error, please try again later."
       zh: ""
+    RELOAD_STATE_SUCCESS:
+      en: "States reloaded successfully!"
+      zh: ""
 
     ##### Trust Advisor
 

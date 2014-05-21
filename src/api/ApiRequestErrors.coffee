@@ -88,6 +88,9 @@ define [], ()->
     UserExistedUser       : 324 # Existed username or email
     UserExistedApp        : 325 # {0} app exists
     UserInvalidCredentia  : 326 # Invalid credential
+    TokenCreateFailed     : 330 # Create user {0} token failed
+    TokenNoneToken        : 331 # User {0} hasnot any token
+    TokenMismatchedToken  : 332 # Mismatched user {0} and token {1}
 
     # aws:  4*
     AwsErrorApi           : 400 # Sorry, AWS is suffering from some technical issue, please try again later

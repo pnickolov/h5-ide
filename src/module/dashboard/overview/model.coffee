@@ -440,11 +440,12 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
             owner = atob $.cookie( 'usercode' )
             if describe.tagSet
                 tag = describe.tagSet
+                if tag['Created by'] is owner and !(describe.instanceState?.name is 'terminated')
+                    describe.clickAble = true
                 if tag.app
                     describe.app = tag.app
                     describe.host = tag.name
-                    if tag[ 'Created by' ] is owner
-                        describe.owner = tag[ 'Created by' ]
+                    describe.owner = tag[ 'Created by' ]
             describe
 
         ############################################################################################
@@ -517,7 +518,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                                 asl.app = tag.Value
                             if tag.Key == 'app-id'
                                 asl.app_id = tag.Value
-                            if tag.Key == 'Created by' and tag.Value == owner
+                            if tag.Key == 'Created by'
                                 asl.owner = tag.Value
                             null
 
@@ -880,7 +881,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                 _.map resource.tagSet, ( tag ) ->
                     if tag.key == 'app'
                         resources[action][i].app = tag.value
-                    if tag.key == 'Created by' and tag.value == owner
+                    if tag.key == 'Created by'
                         resources[action][i].owner = tag.value
                     null
             null
@@ -1100,17 +1101,16 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
 
                 null
 
-            # else
+            else
 
-            #     # check whether invalid session
-            #     if result.return_code isnt constant.RETURN_CODE.E_SESSION && result.return_code isnt constant.RETURN_CODE.E_BUSY
+                # check whether invalid session
+                if result.return_code isnt constant.RETURN_CODE.E_SESSION && result.return_code isnt constant.RETURN_CODE.E_BUSY
 
-            #         common_handle.cookie.setCred false
-            #         ide_event.trigger ide_event.UPDATE_AWS_CREDENTIAL
-            #         console.log '----------- dashboard:SWITCH_MAIN -----------'
-            #         ide_event.trigger ide_event.SWITCH_MAIN
+                    App.showSettings( App.showSettings.TAB.CredentialInvalid )
 
-            #     me.set 'region_classic_list', region_classic_vpc_result
+                    ide_event.trigger ide_event.SWITCH_MAIN
+
+                me.set 'region_classic_list', region_classic_vpc_result
 
          #result list
 

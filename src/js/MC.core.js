@@ -107,7 +107,7 @@ var MC = {
 	 */
 	api: function (option)
 	{
-		$.ajax({
+		return Q($.ajax({
 			url: MC.API_HOST + option.url,
 			dataType: 'json',
 			type: 'POST',
@@ -118,12 +118,12 @@ var MC = {
 				params: option.data || {}
 			}),
 			success: function(res){
-				option.success(res.result[1], res.result[0]);
+				option.success && option.success(res.result[1], res.result[0]);
 			},
 			error: function(xhr, status, error){
-				option.error(status, -1);
+				option.error && option.error(status, -1);
 			}
-		});
+		}));
 	},
 
 	capitalize: function (string)
@@ -626,6 +626,16 @@ window.MC = MC;
 
 		$(document.body).addClass(kclass);
 	})();
+
+  /* Bugfix for jquery ready() */
+  // If jQuery is loaded after `DOMContentLoaded` is dispatched, jQuery will trigger `ready` event
+  // after `window.load` event.
+  // Since we're pretty sure the DOM is OK when this file is loaded, we just trigger an fake `DOMContentLoaded` event on document.
+  if ( window.CustomEvent ) {
+    // IE9, IE10 doesn't support CustomEvent
+  	document.dispatchEvent( new CustomEvent("DOMContentLoaded") );
+  }
+
 
 	MC.template = template;
 	return MC;

@@ -1,5 +1,52 @@
 
-define [ 'constant'] , ( constant ) ->
+define [ 'constant', 'underscore' ] , ( constant, _ ) ->
+
+    genSuccessHandler = ( api_name, src, param_ary, parser, callback ) ->
+        ( res ) ->
+            result = res.result[1]
+            return_code = res.result[0]
+            #resolve result
+            param_ary.splice 0, 0, { url:URL, method:api_name, src:src }
+            aws_result = {}
+            aws_result = parser result, return_code, param_ary
+
+            if callback
+                callback aws_result
+                null
+            else
+                aws_result
+
+    genErrorHandler = ( api_name, src, param_ary, parser, callback ) ->
+        ( res ) ->
+            result = res.result[1]
+            return_code = res.result[0]
+
+            aws_result = {}
+            aws_result.return_code      = return_code
+            aws_result.is_error         = true
+            aws_result.error_message    = result.toString()
+
+            param_ary.splice 0, 0, { url:URL, method:api_name, src:src }
+            aws_result.param = param_ary
+            if callback
+                callback aws_result
+                null
+            else
+                aws_result
+
+
+
+    genSendRequest =  ( url ) ->
+
+        ( api_name, src, param_ary, parser, callback ) ->
+            successHandler = genSuccessHandler.apply null, arguments
+            errorHandler = genErrorHandler.apply null, arguments
+
+            MC.api({
+                url     : url
+                method  : api_name
+                data    : param_ary
+            }).then successHandler, errorHandler
 
 
     #private (resolve return_code for forge api)
@@ -56,6 +103,7 @@ define [ 'constant'] , ( constant ) ->
     #private (resolve return_code for forge api)
     processAWSReturnHandler = ( result, return_code, param ) ->
 
+
         aws_result = {
 
             #orial
@@ -85,7 +133,7 @@ define [ 'constant'] , ( constant ) ->
                 when constant.RETURN_CODE.E_INVALID then error_message = result.toString() #"Invalid username or password"
                 when constant.RETURN_CODE.E_EXPIRED then error_message = result.toString() #"Your subscription expired"
                 when constant.RETURN_CODE.E_UNKNOWN then error_message = constant.MESSAGE_E.E_UNKNOWN #"Invalid username or password"
-                when constant.RETURN_CODE.E_PARAM
+                when constant.RETURN_CODE.E_PARAM, 404, 405
                     errObj = parseAWSError result
                     error_message = errObj.errMessage
                     aws_error_code = errObj.errCode
@@ -129,7 +177,7 @@ define [ 'constant'] , ( constant ) ->
             errCodeXML = $($.parseXML(err_xml)).find('Error').find('Code')
             errMessageXML = $($.parseXML(err_xml)).find('Error').find('Message')
 
-            if err_code == 400 and errCodeXML.length == 1 and errMessageXML.length == 1
+            if ( 400 <= err_code < 500 ) and errCodeXML.length == 1 and errMessageXML.length == 1
 
                 errCodeStr = errCodeXML.text()
 
@@ -152,4 +200,5 @@ define [ 'constant'] , ( constant ) ->
     #public
     processForgeReturnHandler : processForgeReturnHandler
     processAWSReturnHandler   : processAWSReturnHandler
+    genSendRequest            : genSendRequest
 

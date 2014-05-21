@@ -1,5 +1,6 @@
 @import url("core.css");
 @import url("ide/settings.css");
+@import url("ide/kp.css");
 
 html,
 body {
@@ -3385,44 +3386,6 @@ a.sidebar-hider:before {
 	margin-bottom: 5px;
 }
 
-#keypair-select .selection .icon-remove {
-	display : none;
-}
-
-#keypair-select .dropdown {
-	top: 30px;
-}
-
-#keypair-select .editor .input {
-	background-color: #f3f3f3;
-	font-size: 12px;
-	color: #999;
-	border: 1px solid #ccc;
-}
-
-#keypair-select .editor .input:focus {
-	color: #333 !important;
-	border: 1px solid #aaa;
-	box-shadow: none;
-}
-
-#keypair-select .icon-remove {
-	display: none;
-	position: absolute;
-	right: 5px;
-	top: 50%;
-	color: #999;
-	margin-top: -8px;
-}
-
-#keypair-select .item:hover .icon-remove {
-	display: block;
-}
-
-#keypair-select .icon-remove:hover {
-	color: #F74A48;
-}
-
 /* End of Instance Property */
 #security-group-select {
 	position: absolute;
@@ -5311,6 +5274,10 @@ a.action-link:hover {
 	border-top: 1px solid #1d1d1d;
 }
 
+#modal-run-stack .modal-footer .btn-primary {
+	padding: 8px 10px;
+}
+
 /*#modal-run-stack .selectbox {
 	width: 100px;
 }*/
@@ -5612,6 +5579,13 @@ summary:focus {
 
 #app-apply-update .nutshell {
 	left: 85px;
+}
+
+.runtime-error {
+	color:       #ec3c38;
+	font-size:   12px;
+	margin-left: 146px;
+	margin-top:  10px;
 }
 
 /* run stack into app process panel*/
@@ -7167,3 +7141,28 @@ summary:focus {
 #run-stack-cancel:disabled {
 	color: #ccc;
 }
+
+
+.keypair-select .selection i {
+	position: absolute;
+	top: 7px;
+	margin-left: 5px;
+}
+
+
+.keypair-select .selection i.icon-info {
+	display: none;
+}
+
+.sortable::selection {
+	background: transparent;
+}
+
+
+
+
+
+
+
+
+

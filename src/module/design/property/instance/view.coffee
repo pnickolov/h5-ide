@@ -4,7 +4,7 @@
 
 define [ '../base/view',
          './template/stack',
-         'i18n!nls/lang.js', 'constant' ], ( PropertyView, template, lang, constant ) ->
+         'i18n!nls/lang.js', 'constant', 'kp' ], ( PropertyView, template, lang, constant, kp ) ->
 
     noop = ()-> null
 
@@ -95,6 +95,9 @@ define [ '../base/view',
 
         render : () ->
             @$el.html template @model.attributes
+            instanceModel = Design.instance().component( @model.get 'uid' )
+
+            @$('#kp-placeholder').html kp.load(instanceModel).el
 
             @refreshIPList()
 
@@ -220,19 +223,6 @@ define [ '../base/view',
             @model.setPublicIp event.target.checked
             null
 
-        setKP : ( event, id ) ->
-            @model.setKP id
-            null
-
-        addKP : ( event, id ) ->
-            if not id then return
-
-            id = @model.addKP id
-            event.id = id
-
-            if not id
-                notification "error", lang.ide.NOTIFY_MSG_WARN_KEYPAIR_NAME_ALREADY_EXISTS
-                return id
 
         updateKPSelect : () ->
             # Add remove icon to the newly created item
@@ -243,37 +233,6 @@ define [ '../base/view',
             @trigger "OPEN_AMI", $("#property-ami").attr("data-uid")
             null
 
-        deleteKP : ( event ) ->
-            me = this
-            $li = $(event.currentTarget).closest("li")
-
-            selected = $li.hasClass("selected")
-            using = if using is "true" then true else selected
-
-            removeKP = () ->
-
-                $li.remove()
-                # If deleting selected kp, select the first one
-                if selected
-                    $("#keypair-select").find(".item").eq(0).click()
-
-                me.model.deleteKP $li.attr("data-id")
-
-            if using
-                data =
-                    title   : "Delete Key Pair"
-                    confirm : "Delete"
-                    color   : "red"
-                    body    : "<p class='modal-text-major'>Are you sure to delete #{$li.text()}?</p><p class='modal-text-minor'>Resources using this key pair will change automatically to use DefaultKP.</p>"
-                # Ask for confirm
-                modal MC.template.modalApp data
-                $("#btn-confirm").one "click", ()->
-                    removeKP()
-                    modal.close()
-            else
-                removeKP()
-
-            return false
 
         validateIpItem : ( $item ) ->
 

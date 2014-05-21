@@ -27,8 +27,6 @@ var modal = window.modal = function (template, dismiss, callback, options)
 		modal_wrap.css('background-color', 'rgba(0, 0, 0, ' + options.opacity + ')');
 	}
 
-	modal_wrap.html('<div id="modal-box">' + template + '</div>');
-
 	var newStyle = '';
 	var newClass = '';
 
@@ -51,7 +49,15 @@ var modal = window.modal = function (template, dismiss, callback, options)
 		newClass = "modal-transition-animation";
 	}
 
-	modal_wrap.html('<div id="modal-box" class="' + newClass + '" style="' + newStyle + '">' + template + '</div>');
+
+	if (template === Object(template)) {
+		modal_wrap
+			.html('<div id="modal-box" class="' + newClass + '" style="' + newStyle + '"></div>')
+			.find('#modal-box')
+			.html(template);
+	} else {
+		modal_wrap.html('<div id="modal-box" class="' + newClass + '" style="' + newStyle + '">' + template + '</div>');
+	}
 
 	$modal = $('#modal-box');
 

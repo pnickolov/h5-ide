@@ -87,6 +87,7 @@ require.config {
 		'Meteor'             : 'vender/meteor/meteor'
 		'crypto'             : 'vender/crypto-js/cryptobundle'
 		'q'                  : 'vender/q/q'
+		'select2'			 : 'vender/select2/select2.min'
 
 		#############################################
 		# MC                        # Merge in deploy
@@ -256,6 +257,8 @@ require.config {
 
 		#statusbar state
 		'state_status'       : 'component/statestatus/main'
+		'kp'       			 : 'component/kp/kpMain'
+		'kp_upload'       	 : 'component/kp/kpUpload'
 
 		#############################################
 		# component
@@ -300,6 +303,10 @@ require.config {
 
 		'process'      :
 			deps       : [ 'process_view', 'process_model', 'MC' ]
+
+		'select2'	   :
+			deps 	   : [ 'jquery' ]
+			exports    : "$"
 
 	### env:prod ###
 	# The rule of bundles is that, if an ID defined above is ever included in a bundle
@@ -410,6 +417,8 @@ require.config {
 		]
 		"component/sgrule/SGRulePopup" : []
 		"component/exporter/Exporter"  : [ "component/exporter/Download", "component/exporter/Thumbnail", "component/exporter/JsonExporter" ]
+		"ide/Application" : []
+		"kp" : ["kp_upload"]
 		"module/design/framework/DesignBundle" : [ "Design", "CanvasManager" ]
 		"validation" : []
 		"component/stateeditor/stateeditor" : []
@@ -418,6 +427,7 @@ require.config {
 	bundleExcludes : # This is a none requirejs option, but it's used by compiler to exclude some of the source.
 		"lib/deprecated" : ["Design"]
 		"component/sgrule/SGRulePopup" : [ "Design" ]
+		"kp" : ["Design"]
 		"component/stateeditor/stateeditor" : [
 			"component/stateeditor/lib/ace"
 			"component/stateeditor/lib/markdown"

@@ -164,11 +164,11 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
     deserialize : ( data, layout_data, resolve )->
 
       new ExpandedAsgModel({
-        id : layout_data.uid
+        id          : data.uid
         originalAsg : resolve( layout_data.originalId )
         parent      : resolve( layout_data.groupUId )
-        x : layout_data.coordinate[0]
-        y : layout_data.coordinate[1]
+        x           : layout_data.coordinate[0]
+        y           : layout_data.coordinate[1]
       })
       null
   }

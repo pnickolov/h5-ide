@@ -1,0 +1,64 @@
+/* Common Style for Drop Zone */
+
+
+.drop-zone {
+  height:       140px;
+  padding:      40px 5px 5px;
+  margin:       20px 0 0 0;
+  position:     relative;
+  border-color: #888;
+  border:       3px dashed #3A3A3A;
+  background:   #141212;
+  font-size:    16px;
+  text-align:   center;
+
+  .key-content {
+    font-size:  12px;
+    color:      #8ED72B;
+    max-height: 100%;
+    max-width:  100%;
+    overflow:   auto;
+    text-align: left;
+    word-break: break-all;
+
+    &::selection {
+      background: #148BE6;
+      color:      #fcfcfc;
+    }
+  }
+
+  .upload-stuff {
+    position: absolute;
+    top:      77px;
+    left:     0;
+    width:    100%;
+    background: transparent;
+
+    -webkit-transition: top .1s ease-out;
+    -moz-transition:    top .1s ease-out;
+    -ms-transition:     top .1s ease-out;
+    -o-transition:      top .1s ease-out;
+    transition:         top .1s ease-out;
+  }
+
+  #modal-import {
+    display: none;
+  }
+
+  &.dragover {
+    background  : #2E323A;
+    border-color: #148BE6;
+  }
+
+  label::selection {
+    background: transparent;
+  }
+}
+
+.drop-zone.filled {
+  .upload-stuff {
+    top:        0;
+    background: #101010;
+    padding:    10px 0;
+  }
+}

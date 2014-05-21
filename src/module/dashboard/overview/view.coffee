@@ -322,16 +322,7 @@ define [ 'event', 'i18n!nls/lang.js',
             #ide_event.trigger ide_event.OPEN_APP_TAB, name, current_region, id
             ide_event.trigger ide_event.OPEN_DESIGN_TAB, 'OPEN_APP', name, current_region, id
 
-        showCredential: ( flag ) ->
-            #flag = ''
-            #if event
-            #    if typeof(event) is 'string'
-            #        flag = event
-            #
-            #    else
-            #        event.preventDefault()
-
-            require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule(flag)
+        showCredential: () -> App.showSettings( App.showSettings.TAB.Credential )
 
         ############################################################################################
 
@@ -557,8 +548,12 @@ define [ 'event', 'i18n!nls/lang.js',
 
             $("#modal-import-json-file").on "change", hanldeFile
             zone = $("#modal-import-json-dropzone").on "drop", hanldeFile
-            zone.on "dragenter", ()-> $(this).closest("#modal-import-json-dropzone").toggleClass("dragover", true)
-            zone.on "dragleave", ()-> $(this).closest("#modal-import-json-dropzone").toggleClass("dragover", false)
+            zone.on "dragenter", ()->
+                console.log "dragenter"
+                $(this).closest("#modal-import-json-dropzone").toggleClass("dragover", true)
+            zone.on "dragleave", ()->
+                console.log "dragleave"
+                $(this).closest("#modal-import-json-dropzone").toggleClass("dragover", false)
             zone.on "dragover", ( evt )->
                 dt = evt.originalEvent.dataTransfer
                 if dt then dt.dropEffect = "copy"

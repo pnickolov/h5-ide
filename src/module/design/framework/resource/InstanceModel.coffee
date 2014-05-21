@@ -84,6 +84,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
 
       # Create additonal association if the instance is created by user.
       if option.createByUser and not option.cloneSource
+
         #assign DefaultKP
         KpModel = Design.modelClassForType( constant.RESTYPE.KP )
         defaultKp = KpModel.getDefaultKP()
@@ -91,6 +92,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
           defaultKp.assignTo( this )
         else
           console.error "No DefaultKP found when initialize InstanceModel"
+
 
         #assign DefaultSG
         SgModel = Design.modelClassForType( constant.RESTYPE.SG )
@@ -589,9 +591,6 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
         if not vpc.isDefaultTenancy()
           tenancy = "dedicated"
 
-      kp = @connectionTargets( "KeypairUsage" )[0]
-      kp = if kp then kp.createRef( "KeyName" ) else ""
-
       name = @get("name")
       if @get("count") > 1 then name += "-0"
 
@@ -621,7 +620,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
           }
           InstanceId            : @get("appId")
           ImageId               : @get("imageId")
-          KeyName               : kp
+          KeyName               : @get("keyName")
           EbsOptimized          : if @isEbsOptimizedEnabled() then @get("ebsOptimized") else false
           VpcId                 : @getVpcRef()
           SubnetId              : @getSubnetRef()
@@ -658,6 +657,38 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
     setStateData : (stateAryData) ->
 
       @set("state", stateAryData)
+
+    setKey: ( keyName, defaultKey ) ->
+      KpModel = Design.modelClassForType( constant.RESTYPE.KP )
+      defaultKp = KpModel.getDefaultKP()
+
+      if defaultKey
+        if defaultKp
+          defaultKp.assignTo( this )
+        else
+          console.error "No DefaultKP found when initialize InstanceModel"
+      else
+        kp = @connectionTargets( "KeypairUsage" )[0]
+        kp and kp.dissociate @
+        @set 'keyName', keyName
+
+
+    getKeyName: ->
+      kp = @connectionTargets( "KeypairUsage" )[0]
+
+      if kp
+        if kp.isDefault() then '$DefaultKeyPair' else kp.get('name')
+      else
+         @get( 'keyName' ) or 'No Key Pair'
+
+    isDefaultKey: ->
+      kp = @connectionTargets( "KeypairUsage" )[0]
+      kp and kp.isDefault()
+
+    isNoKey: ->
+      kp = @connectionTargets( "KeypairUsage" )[0]
+      not kp and not @get( 'keyName' )
+
 
     serialize : ()->
 
@@ -750,6 +781,8 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
             return { uid : asg.get("lc").id, mid : instance_id }
 
       {uid:null,mid:null}
+
+
 
     diffJson : ( newData, oldData )->
       changeData = newData or oldData
@@ -867,7 +900,13 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
       model = new Model( attr )
 
       # Add Keypair
-      resolve( MC.extractID( data.resource.KeyName ) ).assignTo( model )
+      KP = resolve( MC.extractID( data.resource.KeyName ) )
+
+      if KP
+        KP.assignTo( model )
+      else
+        model.set 'keyName', data.resource.KeyName
+
       null
   }
 

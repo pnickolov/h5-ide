@@ -136,8 +136,8 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
       agent : {
         enabled : false
         module  : {
-          repo : App.user.get("mod_repo")
-          tag  : App.user.get("mod_tag")
+          repo : App.user.get("repo")
+          tag  : App.user.get("tag")
         }
       }
     }, canvas_data
@@ -578,6 +578,26 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
     delete json.stack_id
     json
 
+
+  DesignImpl.prototype.getUidByProperty = ( property, value, res_type = null )->
+    # get uid by property in stack/app json
+    # example: getUidByProperty("resource.ImageId","ami-178e927e")
+    if not property then return
+    json_data = @serialize()
+    result = {}
+    if json_data and json_data.component
+      for uid, comp of json_data.component
+        if (res_type is null or comp.type is res_type )
+          context = comp
+          namespaces = property.split('.')
+          last = namespaces.pop()
+          for key in namespaces
+            context = context[ key ]
+          if context[ last ] is value
+            if not result[comp.type]
+              result[comp.type] = []
+            result[comp.type].push uid
+    result
 
 
   ########## General Business logics ############

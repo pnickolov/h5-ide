@@ -25,7 +25,10 @@ define [ "./SettingsDialogTpl", 'i18n!nls/lang.js', "ApiRequest", "backbone" ], 
         "click #TokenRemove"               : "confirmRmToken"
         "click #TokenRmCancel"             : "cancelRmToken"
 
-        "keyup #CredSetupAccount, #CredSetupAccessKey, #CredSetupSecretKey" : "updateSubmitBtn"
+        "keyup  #CredSetupAccount, #CredSetupAccessKey, #CredSetupSecretKey" : "updateSubmitBtn"
+        "change #CredSetupAccount, #CredSetupAccessKey, #CredSetupSecretKey" : "updateSubmitBtn"
+        "change #AccountCurrentPwd, #AccountNewPwd"                          : "updatePwdBtn"
+        "keyup  #AccountCurrentPwd, #AccountNewPwd"                          : "updatePwdBtn"
 
       initialize : ( options )->
 
@@ -37,13 +40,23 @@ define [ "./SettingsDialogTpl", 'i18n!nls/lang.js', "ApiRequest", "backbone" ], 
           awsSecretKey : App.user.get("awsSecretKey")
 
           credRemoveTitle : sprintf lang.ide.SETTINGS_CRED_REMOVE_TIT, App.user.get("username")
+          credNeeded : !!(_.reduce _.map(MC.data.app_list, (el)-> el.length), ((m,n)->m+n), 0)
 
         modal SettingsTpl attributes
         @setElement $("#modal-box")
 
-        defaultTab = 0
-        if options then defaultTab = options.defaultTab || 0
-        $("#SettingsNav").children().eq( defaultTab ).click()
+        tab = 0
+        if options
+          tab = options.defaultTab || 0
+
+          if tab is SettingsDialog.TAB.CredentialInvalid
+            @showCredSetup()
+            $(".modal-close").hide()
+            $("#CredSetupMsg").text lang.ide.SETTINGS_ERR_CRED_VALIDATE
+
+          if tab < 0 then tab = Math.abs( tab )
+
+        $("#SettingsNav").children().eq( tab ).click()
 
         @updateTokenTab()
         return
@@ -82,17 +95,27 @@ define [ "./SettingsDialogTpl", 'i18n!nls/lang.js', "ApiRequest", "backbone" ], 
         $("#AccountPwd").show()
         $("#AccountPwdWrap").hide()
         $("#AccountCurrentPwd, #AccountNewPwd").val("")
-        $("#account-passowrd-info").empty()
+        $("#AccountInfo").empty()
+        return
+
+      updatePwdBtn : ()->
+        old_pwd = $("#AccountCurrentPwd").val() || ""
+        new_pwd = $("#AccountNewPwd").val() || ""
+
+        if old_pwd.length and new_pwd.length
+          $("#AccountUpdatePwd").removeAttr "disabled"
+        else
+          $("#AccountUpdatePwd").attr "disabled", "disabled"
         return
 
       changePwd : ()->
         old_pwd = $("#AccountCurrentPwd").val() || ""
         new_pwd = $("#AccountNewPwd").val() || ""
-        if old_pwd.length < 6 or new_pwd.length < 6
-          $('#account-passowrd-info').text lang.ide.SETTINGS_ERR_INVALID_PWD
+        if new_pwd.length < 6
+          $('#AccountInfo').text lang.ide.SETTINGS_ERR_INVALID_PWD
           return
 
-        $("#account-passowrd-info").empty()
+        $("#AccountInfo").empty()
 
         $("#AccountUpdatePwd").attr "disabled", "disabled"
 
@@ -103,9 +126,9 @@ define [ "./SettingsDialogTpl", 'i18n!nls/lang.js', "ApiRequest", "backbone" ], 
           return
         , ( err )->
           if err.error is 2
-            $('#account-passowrd-info').html "#{lang.ide.SETTINGS_ERR_WRONG_PWD} <a href='/reset/' target='_blank'>#{lang.ide.SETTINGS_INFO_FORGET_PWD}</a>"
+            $('#AccountInfo').html "#{lang.ide.SETTINGS_ERR_WRONG_PWD} <a href='/reset/' target='_blank'>#{lang.ide.SETTINGS_INFO_FORGET_PWD}</a>"
           else
-            $('#account-passowrd-info').text lang.ide.SETTINGS_UPDATE_PWD_FAILURE
+            $('#AccountInfo').text lang.ide.SETTINGS_UPDATE_PWD_FAILURE
 
           $("#AccountUpdatePwd").removeAttr "disabled"
 
@@ -235,57 +258,62 @@ define [ "./SettingsDialogTpl", 'i18n!nls/lang.js', "ApiRequest", "backbone" ], 
         $("#TokenCreate").attr "disabled", "disabled"
 
         self = this
-        Q.defer().promise.then ()->
+        App.user.createToken().then ()->
           self.updateTokenTab()
           $("#TokenCreate").removeAttr "disabled"
         , ()->
+          notification "error", "Fail to create token, please retry."
           $("#TokenCreate").removeAttr "disabled"
-
         return
 
       doneEditToken : ( evt )->
         $p = $(evt.currentTarget).closest("li").removeClass("editing")
         $p.children(".tokenName").attr "readonly", true
 
-        Q.defer().promise.then ()->
+        App.user.updateToken( $p.children(".tokenToken").text(), $p.children(".tokenName").val() ).then ()->
           # Do nothing if update success
           return
         , ()->
           # If anything goes wrong, revert the name
           oldName = ""
           $p.children(".tokenName").val( oldName )
+          notification "error", "Fail to update token, please retry."
         return
 
       confirmRmToken : ()->
         $("#TokenRemove").attr "disabled", "disabled"
 
         self = this
-        Q.defer().promise.then ()->
+        App.user.removeToken( @rmToken ).then ()->
           self.updateTokenTab()
           self.cancelRmToken()
         , ()->
-          notification "Fail to delete access token, please retry."
+          notification "Fail to delete token, please retry."
+          self.cancelRmToken()
 
         return
 
       cancelRmToken : ()->
         @rmToken = ""
+        $("#TokenRemove").removeAttr "disabled"
         $("#TokenManager").show()
         $("#TokenRmConfirm").hide()
         return
 
       updateTokenTab : ()->
-        tokens = [{name:"Token1",token:"aaabbbccc"},{name:"Token2",token:"bbbdddccc"}]
+        tokens = App.user.get("tokens")
+        $("#TokenManager").find(".token-table").toggleClass( "empty", tokens.length is 0 )
         if tokens.length
-          $("#TokenManager").children("ul").html MC.template.accessTokenTable( tokens )
+          $("#TokenList").html MC.template.accessTokenTable( tokens )
         else
-          $("#TokenManager").empty()
+          $("#TokenList").empty()
         return
     }
 
     SettingsDialog.TAB =
-      Normal     : 0
-      Credential : 1
-      Token      : 2
+      CredentialInvalid : -1
+      Normal            : 0
+      Credential        : 1
+      Token             : 2
 
     SettingsDialog

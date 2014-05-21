@@ -65,29 +65,8 @@
 		{{/unless}}
 		<section class="property-control-group">
 			<label class="left">{{ i18n "PROP_INSTANCE_KEY_PAIR" }}</label>
-			<div class="selectbox" id="keypair-select">
-				<div class="selection"></div>
-				<div style="height: 120px; width:260px;" class="dropdown scroll-wrap scrollbar-auto-hide  clearfix">
-					<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-					<div class="scroll-content">
-						<ul> {{#each keypair}}
-							<li class="item{{#if selected}} selected{{/if}}" data-id="{{id}}" data-using="{{using}}">{{name}}
-							{{#if @index}}<span class="icon-remove"></span>{{/if}}
-							</li>
-						{{/each}} </ul>
-					</div>
-				</div>
-
-				<div class="editor">
-					<a href="#" class="editbtn">{{ i18n "PROP_INSTANCE_NEW_KP" }}</a>
-					<div class="edit">
-						<button class="btn btn-blue btn-small">OK</button>
-						<span class="fitfloat" data-bind="true">
-							<input class="input" type="text" placeholder="Key Pair Name" data-ignore="true"/>
-						</span>
-					</div>
-				</div>
-			</div>
+			<i class="icon-info tooltip default-kp-info" data-tooltip="{{i18n 'POP_INSTANCE_KEYPAIR_INFO_TIP'}}"></i>
+            <div id="kp-placeholder"></div>
 		</section>
 	</div>
 

@@ -124,12 +124,19 @@ define [ 'aws_model', 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( 
 
                         new_vpc_obj = {}
                         _.each vpc_obj, ( value, key ) ->
-                            new_key = key.replace /\|/igm, '.'
-                            new_vpc_obj[ new_key ] = value
+                            if key is "Tag" and vpc_obj[key] and vpc_obj[key].item and $.type(vpc_obj[key].item) is "array"
+                                # filter vpc created by ide
+                                tag = {}
+                                for i of vpc_obj[key].item
+                                    tag[ vpc_obj[key].item[i].key ] = vpc_obj[key].item[i].value
+                                new_vpc_obj["Tag"] = tag
+                            else
+                                new_key = key.replace /\|/igm, '.'
+                                new_vpc_obj[ new_key ] = value
                         vpc_obj = new_vpc_obj
-
+                        tag     = vpc_obj["Tag"]
                         # filter default vpc
-                        if vpc_id isnt MC.data.account_attribute[region].default_vpc
+                        if vpc_id isnt MC.data.account_attribute[region].default_vpc and not (tag and tag["app"] and tag["app-id"] and tag["Created by"])
 
                             l2_res = {
                                 'AWS.VPC.VPC'                               : {'id':[vpc_id]},

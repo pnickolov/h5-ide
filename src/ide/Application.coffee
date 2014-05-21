@@ -8,7 +8,7 @@
   to provide other functionality
 ###
 
-define [ "ApiRequest", "./Websocket", "./ApplicationView", "./ApplicationModel", "./User", "common_handle" ,"event", "vpc_model", "constant", "component/exporter/JsonExporter" ], ( ApiRequest, Websocket, ApplicationView, ApplicationModel, User, common_handle, ide_event, vpc_model, constant, JsonExporter )->
+define [ "ApiRequest", "component/exporter/JsonExporter", "./Websocket", "./ApplicationView", "./ApplicationModel", "./User", "./subviews/SettingsDialog", "common_handle" ,"event", "vpc_model", "constant" ], ( ApiRequest, JsonExporter, Websocket, ApplicationView, ApplicationModel, User, SettingsDialog, common_handle, ide_event, vpc_model, constant )->
 
   VisualOps = ()->
     if window.App
@@ -103,7 +103,8 @@ define [ "ApiRequest", "./Websocket", "./ApplicationView", "./ApplicationModel",
     window.location.href = "/login/"
     return
 
-  VisualOps.prototype.showSettings = ( tab )-> @__view.showSettings( tab )
+  VisualOps.prototype.showSettings = ( tab )-> new SettingsDialog({ defaultTab:tab })
+  VisualOps.prototype.showSettings.TAB = SettingsDialog.TAB
 
   VisualOps.prototype.importJson = ( json )->
 
@@ -157,7 +158,7 @@ define [ "ApiRequest", "./Websocket", "./ApplicationView", "./ApplicationModel",
           $.removeCookie('stack_store_id')
 
           ApiRequest('stackstore_fetch_stackstore', {
-            file_name: "#{stackStoreId}.json"
+            file_name: "stack/#{stackStoreId}.json"
           }).then (result) ->
 
             jsonDataStr = result

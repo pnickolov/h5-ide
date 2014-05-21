@@ -1217,6 +1217,10 @@ module.exports =
       en: "Key Pair"
       zh: "秘钥"
 
+    POP_INSTANCE_KEYPAIR_INFO_TIP:
+      en: "If any instance or launch configuration uses $DefaultKeyPair, you will need to specify which key pair (or no key pair) should be used for $DefaultKeyPair when launching the instance or creating the launch configuration."
+      zh: ""
+
     PROP_INSTANCE_EBS_OPTIMIZED:
       en: "EBS Optimization"
       zh: "EBS 优化"
@@ -1241,9 +1245,34 @@ module.exports =
       en: "Block Devices"
       zh: "块设备"
 
+    PROP_INSTANCE_DEFAULT_KP:
+      en: "$DefaultKeyPair"
+      zh: ""
+
+    PROP_INSTANCE_NO_KP:
+      en: "No Key Pair"
+      zh: ""
+
     PROP_INSTANCE_NEW_KP:
       en: "Create New Key Pair"
       zh: "新建秘钥"
+
+    PROP_INSTANCE_FILTER_KP:
+      en: "Filter by key pair name"
+      zh: ""
+
+    PROP_INSTANCE_MANAGE_KP:
+      en: "Manage Region Key Pairs ..."
+      zh: ""
+
+    PROP_INSTANCE_TIP_DEFAULT_KP:
+      en: 'If you have used $DefaultKeyPair for any instance/launch configuration, you will be required to specify an existing key pair for $DefaultKeyPair. Or you can choose "No Key Pair" as $DefaultKeyPair.'
+      zh: ""
+
+    PROP_INSTANCE_TIP_NO_KP:
+      en: "If you select no key pair, you will not be able to connect to the instance unless you already know the password built into this AMI."
+      zh: ""
+
 
     PROP_INSTANCE_CW_ENABLED:
       en: "Enable CloudWatch Detailed Monitoring"
@@ -2271,8 +2300,9 @@ module.exports =
       zh: "模板名称不能包含空格"
 
     PROP_MSG_ERR_GET_PASSWD_FAILED:
-      en: "Sorry, there was a problem getting password data for instance "
-      zh: "抱歉，获取实例口令信息时出现了问题。"
+      en: "There was an error decrypting your password. Please ensure that you have entered your private key correctly."
+      zh: "解密出错，请确认您是否上传了正确的私钥。"
+
 
     PROP_MSG_ERR_AMI_NOT_FOUND:
       en: "Can not find information for selected AMI( %s ), try to drag another AMI."
@@ -2673,6 +2703,10 @@ module.exports =
     PROP_ASG_HAS_ELB_WARN:
       en: "You need to connect this auto scaling group to a load balancer to enable this option."
       zh: "你需要连接AutoScaling组和一个负载均衡器来启动此选项"
+
+    PROPERTY_ASG_ELB_WARN:
+      en: "If the calls to Elastic Load Balancing health check for the instance returns any state other than InService, Auto Scaling marks the instance as Unhealthy. And if the instance is marked as Unhealthy, Auto Scaling starts the termination process for the instance."
+      zh: ""
 
     PROP_ASG_TERMINATION_POLICY:
       en: "Termination Policy"
@@ -3200,8 +3234,8 @@ module.exports =
       zh : "You are using a demo AWS account. Set up your own credential to run stack into live resources, or visualize your existing VPC."
 
     SETTINGS_CRED_DEMO_TEXT:
-      en : "Some stack you build in demo mode may report error due to resource inconsistency between different accounts."
-      zh : "Some stack you build in demo mode may report error due to resource inconsistency between different accounts."
+      en : "Some stack you build in demo mode may report error after setting up credential due to resource inconsistency between different accounts."
+      zh : "Some stack you build in demo mode may report error after setting up credential due to resource inconsistency between different accounts."
 
     SETTINGS_CRED_DEMO_SETUP:
       en : "Set up AWS Credentials"
@@ -3294,8 +3328,8 @@ VisualOps API. You cannot UNDO this action.'
       zh: "您确定要移除账号%s的AWS证书吗？"
 
     SETTINGS_CRED_REMOVE_TEXT:
-      en: "By removing Credentials, you will be in the demo mode.<br>If you want to launch stack into app, you need to provide valid AWS Credentials. <br>The stacks you designed in demo mode may not be able to launch with your AWS Credentials due to resource inconsistency.<br>If you have existing apps, they will become unmanageable and can only be forced to delete."
-      zh: "By removing Credentials, you will be in the demo mode.<br>If you want to launch stack into app, you need to provide valid AWS Credentials. <br>The stacks you designed in demo mode may not be able to launch with your AWS Credentials due to resource inconsistency.<br>If you have existing apps, they will become unmanageable and can only be forced to delete."
+      en: "<p>By removing Credentials, you will be in the demo mode.</p><p>If you want to launch stack into app, you need to provide valid AWS Credentials. </p><p>The stacks you designed in demo mode may not be able to launch with your AWS Credentials due to resource inconsistency.</p><p>If you have existing apps, they will become unmanageable and can only be forced to delete.</p>"
+      zh: "<p>By removing Credentials, you will be in the demo mode.</p><p>If you want to launch stack into app, you need to provide valid AWS Credentials. </p><p>The stacks you designed in demo mode may not be able to launch with your AWS Credentials due to resource inconsistency.</p><p>If you have existing apps, they will become unmanageable and can only be forced to delete.</p>"
 
     SETTINGS_CRED_REMOVING:
       en : "Removing credential..."
@@ -3310,8 +3344,8 @@ VisualOps API. You cannot UNDO this action.'
       zh : "正在刷新资源..."
 
     SETTINGS_ERR_CRED_VALIDATE:
-      en : "Fail to validate your credential, please retry."
-      zh : "Fail to validate your credential, please retry."
+      en : "Fail to validate your credential."
+      zh : "Fail to validate your credential."
 
     SETTINGS_ERR_CRED_UPDATE:
       en : "Fail to update your credential, please retry."
@@ -3322,8 +3356,8 @@ VisualOps API. You cannot UNDO this action.'
       zh : "Fail to remove your credential, please retry."
 
     SETTINGS_CRED_UPDATE_CONFIRM_TIT:
-      en : "You have un-terminated app. Do you confirm to update the AWS credential?"
-      zh : "You have un-terminated app. Do you confirm to update the AWS credential?"
+      en : "<span>You have running or stopped app(s).</span> Do you confirm to update the AWS credential?"
+      zh : "<span>You have running or stopped app(s).</span> Do you confirm to update the AWS credential?"
 
     SETTINGS_CRED_UPDATE_CONFIRM_TEXT:
       en : "If you continue to use the new credential, existing apps might become unmanageable. If the new AWS credential does not have sufficient privileges to manage the existing apps, we strongly recommend to TERMINATE existing apps first."
@@ -3334,16 +3368,16 @@ VisualOps API. You cannot UNDO this action.'
       zh: "Confirm to update"
 
     SETTINGS_ERR_INVALID_PWD:
-      en: "Password cannot be empty and must contain at least 6 characters."
-      zh: "密码最少6位且不能和您的用户名相同"
+      en: "New password must contain at least 6 characters."
+      zh: "新密码最少6位且不能和您的用户名相同"
 
     SETTINGS_UPDATE_PWD_SUCCESS:
       en: "Password has been updated."
       zh: "密码修改成功。"
 
     SETTINGS_UPDATE_PWD_FAILURE:
-      en: "Update password failed. Please retry."
-      zh: "修改密码失败。请重试。"
+      en: "Update password failed. Make sure current password is correct."
+      zh: "修改密码失败。请确认当前密码输入正确。"
 
     SETTINGS_ERR_WRONG_PWD:
       en: "Current password is wrong."
@@ -3374,8 +3408,8 @@ VisualOps API. You cannot UNDO this action.'
       zh: "You can design stack in the demo mode. Yet, with following drawbacks:"
 
     WELCOME_SKIP_MSG:
-      en: "- The demo mode may not reflect the real condition of resources available for your account.<br /> - If you want to provide credentials later, design previously created in demo mode may not work due to resource inconsistency."
-      zh: "- The demo mode may not reflect the real condition of resources available for your account.<br /> - If you want to provide credentials later, design previously created in demo mode may not work due to resource inconsistency."
+      en: "<ul><li>The demo mode may not reflect the real condition of resources available for your account.</li> <li>If you want to provide credentials later, design previously created in demo mode may not work due to resource inconsistency.</li>"
+      zh: "<ul><li>The demo mode may not reflect the real condition of resources available for your account.</li> <li>If you want to provide credentials later, design previously created in demo mode may not work due to resource inconsistency.</li>"
 
     WELCOME_SKIP_MSG_EXTRA:
       en: "You can provide AWS Credentials later from Settings in the top-right drop down."
@@ -3448,6 +3482,20 @@ VisualOps API. You cannot UNDO this action.'
     BEFOREUNLOAD_MESSAGE:
       en: "You have unsaved changes."
       zh: "您有未保存的更改。"
+
+
+    DASH_CREATE_NEW_STACK:
+      en: "Create new stack"
+      zh: "创建模板"
+
+    DASH_IMPORT_JSON:
+      en: "Import stack"
+      zh: "导入Stack"
+
+    DASH_VISUALIZE_VPC:
+      en: "Visualize existing VPC"
+      zh: "可视化VPC"
+
 
     DASH_TIT_VIEW_RESOURCE_DETAIL:
       en: "View resource detail"
@@ -3964,10 +4012,6 @@ VisualOps API. You cannot UNDO this action.'
     AMI_LBL_PAGEINFO:
       en: "Showing %s-%s items of %s results"
       zh: "当前显示 %s-%s 条，共有 %s 条"
-
-    IDE_COM_CREATE_NEW_STACK:
-      en: "Create new stack"
-      zh: "创建模板"
 
     "IDE_LBL_REGION_NAME_us-east-1":
       en: "US East"
@@ -4697,6 +4741,14 @@ VisualOps API. You cannot UNDO this action.'
       en: "To allow routing to work properly, instance <span class='validation-tag tag-instance'>%s</span> should disabled Source/Destination Checking in \"Network Interface Details\""
       zh: ""
 
+    TA_MSG_ERROR_INSTANCE_REF_OLD_KEYPAIR:
+      en: "%s has associated with an nonexistient key pair <span class='validation-tag'>%s</span>. Make sure to use an existing key pair or creating a new one."
+      zh: ""
+
+    TA_MSG_NOTICE_KEYPAIR_LONE_LIVE:
+      en: "Make sure you have access to all private key files associated with instances or launch configurations. Without them, you won't be able to log into your instances."
+      zh: ""
+
 
     # ENI
     TA_MSG_ERROR_ENI_NOT_ATTACH_TO_INSTANCE:
@@ -4730,6 +4782,10 @@ VisualOps API. You cannot UNDO this action.'
 
     TA_MSG_ERROR_ELB_RULE_NOT_INBOUND_TO_ELB_LISTENER:
       en: "Load balancer <span class='validation-tag tag-elb'>%s</span> should allow inbound traffic towards its Load Balancer Protocol: %s."
+      zh: ""
+
+    TA_MSG_WARNING_ELB_RULE_NOT_INBOUND_TO_ELB_PING_PORT:
+      en: "Load balancer <span class='validation-tag tag-elb'>%s</span>'s security group rule should allow inbound traffic towards its ping port: <span class='validation-tag tag-port'>%s</span>."
       zh: ""
 
     TA_MSG_ERROR_ELB_RULE_NOT_OUTBOUND_TO_INSTANCE_LISTENER:
@@ -4877,6 +4933,10 @@ VisualOps API. You cannot UNDO this action.'
 
 
     ##### Trust Advisor
+
+    TIP_KEYPAIR_USED_DEFAULT_KP:
+      en: "One or more instance/launch configuration has used $DefaultKeyPair. You need to specify which key pair (or no key pair) should be used for $DefaultKeyPair."
+      zh: ""
 
   service:
 

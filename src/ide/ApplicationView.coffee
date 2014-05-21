@@ -5,7 +5,7 @@
 ----------------------------
 ###
 
-define [ "backbone", "./subviews/SessionDialog", "./subviews/HeaderView", "./subviews/WelcomeDialog", "./subviews/SettingsDialog" ], ( Backbone, SessionDialog, HeaderView, WelcomeDialog, SettingsDialog )->
+define [ "backbone", "./subviews/SessionDialog", "./subviews/HeaderView", "./subviews/WelcomeDialog" ], ( Backbone, SessionDialog, HeaderView, WelcomeDialog )->
 
   Backbone.View.extend {
 
@@ -38,6 +38,11 @@ define [ "backbone", "./subviews/SessionDialog", "./subviews/HeaderView", "./sub
           $(".disconnected-msg").addClass "hovered"
           $("body").on "mousemove.disconnectedmsg", ( e )->
             msg = $(".disconnected-msg")
+
+            if not msg.length
+              $("body").off "mousemove.disconnectedmsg"
+              return
+
             pos = msg.offset()
             x = e.pageX
             y = e.pageY
@@ -54,10 +59,6 @@ define [ "backbone", "./subviews/SessionDialog", "./subviews/HeaderView", "./sub
 
     showSessionDialog : ()->
       (new SessionDialog()).promise()
-
-    showSettings : ( tab )->
-      new SettingsDialog({ defaultTab:tab })
-      return
 
     # This is use to select text when clicking on the text.
     selectText : ( event )->

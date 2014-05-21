@@ -334,6 +334,42 @@ define [ 'constant', 'MC','i18n!nls/lang.js', '../../helper'], ( constant, MC, l
 
 		return resultAry
 
+	isRuleInboundToELBPingPort = (elbUID) ->
+
+		elbComp = MC.canvas_data.component[elbUID]
+
+		elbName = elbComp.name
+
+		sgCompAry = taHelper.sg.get(elbComp)
+		portData = taHelper.sg.port(sgCompAry)
+
+		pingPort = null
+
+		try
+
+			pingPort = elbComp.resource.HealthCheck.Target
+			pingPort = pingPort.split(':')[1]
+			pingPort = pingPort.split('/')[0]
+
+		catch err
+
+			return null
+
+		isInRange = taHelper.sg.isInRange('tcp', pingPort, portData, 'in')
+
+		if not isInRange
+
+			elbName = elbComp.name
+			tipInfo = sprintf lang.ide.TA_MSG_WARNING_ELB_RULE_NOT_INBOUND_TO_ELB_PING_PORT, elbName, pingPort
+
+			return {
+				level: constant.TA.WARNING
+				info: tipInfo
+				uid: elbUID
+			}
+
+		return null
+
 	isHaveIGWForInternetELB : isHaveIGWForInternetELB
 	isHaveInstanceAttached : isHaveInstanceAttached
 	isAttachELBToMultiAZ : isAttachELBToMultiAZ
@@ -343,3 +379,4 @@ define [ 'constant', 'MC','i18n!nls/lang.js', '../../helper'], ( constant, MC, l
 	isRuleInboundToELBListener : isRuleInboundToELBListener
 	isRuleOutboundToInstanceListener : isRuleOutboundToInstanceListener
 	isRuleInboundInstanceForELBListener : isRuleInboundInstanceForELBListener
+	isRuleInboundToELBPingPort : isRuleInboundToELBPingPort

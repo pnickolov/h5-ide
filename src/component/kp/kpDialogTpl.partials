@@ -1,0 +1,157 @@
+<!-- {{frame}} -->
+<div id="modal-kp-manage" class="modal-toolbar">
+    <div class="modal-header">
+        <h3>Manage Key Pairs in {{regionName}}</h3>
+        <i class="modal-close">×</i>
+    </div>
+
+    <div class="modal-body">
+        <div class="content-wrap">
+            <div class="toolbar">
+                <button class="icon-new-stack btn btn-blue" id="kp-create">Create Key Pair</button>
+                <div class="btn-group">
+                    <button class="icon-import tooltip" id="kp-import" data-tooltip="">Import Key Pair</button>
+                    <button class="icon-del tooltip" id="kp-delete" data-tooltip="" disabled>Delete</button>
+                    <button class="icon-refresh tooltip" id="kp-refresh" data-tooltip=""></button>
+                </div>
+            </div>
+            <div class="list">
+                <div class="slidebox">
+                    <div class="content clearfix">
+                    </div>
+                    <div class="error">
+                        something wrong
+                    </div>
+                </div>
+                <div class="table-head-fix">
+                        <table class="table-head">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <div class="checkbox">
+                                            <input id="kp-select-all" type="checkbox" value="None">
+                                            <label for="kp-select-all"></label>
+                                        </div>
+                                    </th>
+                                    <th class="sortable">Name</th>
+                                    <th>Fingerprint</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="scroll-wrap">
+                            <div class="scrollbar-veritical-wrap" style="display: block;"><div class="scrollbar-veritical-thumb"></div></div>
+                            <div class="scroll-content" style="display:block;">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th><div class="th-inner"></div></th>
+                                            <th><div class="th-inner"></div></th>
+                                            <th><div class="th-inner"></div></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {{#each keys}}
+                                        <tr class="item" data-id="">
+                                            <td>
+                                                <div class="checkbox">
+                                                    <input id="kp-select-{{keyName}}" type="checkbox" value="None" data-name="{{keyName}}" class="one-cb">
+                                                    <label for="kp-select-{{keyName}}"></label>
+                                                </div>
+                                            </td>
+                                            <td>{{keyName}}</td>
+                                            <td>{{keyFingerprint}}</td>
+                                        </tr>
+                                        {{/each}}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- {{keys}} -->
+{{#each keys}}
+<tr class="item" data-id="">
+    <td>
+        <div class="checkbox">
+            <input id="kp-select-{{keyFingerprint}}" type="checkbox" value="None" data-name="{{keyName}}" class="one-cb">
+            <label for="kp-select-{{keyFingerprint}}"></label>
+        </div>
+    </td>
+    <td>{{keyName}}</td>
+    <td>{{keyFingerprint}}</td>
+</tr>
+{{/each}}
+
+<!-- {{loading}} -->
+<div class="loading-spinner"></div>
+
+<!-- {{slideCreate}} -->
+<div class="slide-create" data-bind="true">
+    <div class="before-create">
+        <label for="create-kp-name">Key Pair Name</label>
+        <input class="input" type="text" id="create-kp-name" data-ignore="true" data-ignore-regexp="^[a-zA-Z0-9,_-]*$" data-required="true" maxlength="255" placeholder="allow alphanumber, _ or - up to 255 characters" autofocus>
+    </div>
+    <div class="after-create hide">Key pair <span></span> is created. You have to download the private key file (*.pem file) before you can continue. Store it in a secure and accessible location. You will not be able to download the file again after it's created.</div>
+    <div class="init action">
+        <button class="btn btn-blue do-action" data-action="create">Create</button>
+        <button class="btn btn-silver cancel">Cancel</button>
+    </div>
+    <div class="processing action" style="display:none;">
+        <button class="btn" disabled>Creating...</button>
+    </div>
+    <div class="download action" style="display:none;">
+        <a class="btn btn-blue do-action pulse" data-action="download" id="download-kp">Download</a>
+        <button class="btn btn-silver cancel" disabled>Close</button>
+    </div>
+</div>
+
+<!-- {{slideDelete}} -->
+<div class="slide-delete">
+    <div class="modal-text-major">Confirm to delete {{#if selecteKeyName }}{{selecteKeyName}}{{else}}selected {{selectedCount}} key pairs{{/if}}?</div>
+    <div class="init action">
+        <button class="btn btn-red do-action" data-action="delete">Delete</button>
+        <button class="btn btn-silver cancel">Cancel</button>
+    </div>
+    <div class="processing action" style="display:none;">
+        <button class="btn" disabled>Deleting...</button>
+    </div>
+</div>
+<!-- {{slideImport}} -->
+<div class="slide-import" data-bind="true">
+    <label for="import-kp-name">Key Pair Name</label>
+    <input class="input" type="text" id="import-kp-name" data-ignore="true" data-ignore-regexp="^[a-zA-Z0-9,_-]*$" data-required="true" maxlength="255" placeholder="allow alphanumber, _ or - up to 255 characters">
+    <div class="import-zone">
+
+    </div>
+    <div class="init action">
+        <button class="btn" disabled>Import</button>
+        <button class="btn btn-silver cancel">Cancel</button>
+    </div>
+    <div class="ready action" style="display:none;">
+        <button class="btn btn-blue do-action" data-action="import">Import</button>
+        <button class="btn btn-silver cancel">Cancel</button>
+    </div>
+    <div class="processing action" style="display:none;">
+        <button class="btn" disabled>Importing...</button>
+    </div>
+</div>
+
+<!-- {{upload}} -->
+<div class="upload-kp-component drop-zone">
+    <p class="upload-stuff">
+        Drop {{type}},
+        <label for="modal-import" class="select-file-link">select a file</label>
+        <span class="display-empty">or paste the key content here.</span>
+        <span class="display-filled" style="display:none;">or paste the key content again to update.</span>
+        <input type="file" id="modal-import">
+    </p>
+    <p class="key-content"></p>
+</div>
+
+
+

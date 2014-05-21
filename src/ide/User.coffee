@@ -16,9 +16,9 @@ define [ "ApiRequest", "event" , "backbone" ], ( ApiRequest, ide_event )->
 
     initialize : ()->
       @set {
-        usercode  : $.cookie "usercode"
-        username  : MC.base64Decode $.cookie "usercode"
-        session   : $.cookie "session_id"
+        usercode     : $.cookie "usercode"
+        username     : MC.base64Decode $.cookie "usercode"
+        session      : $.cookie "session_id"
       }
       return
 
@@ -35,11 +35,17 @@ define [ "ApiRequest", "event" , "backbone" ], ( ApiRequest, ide_event )->
         account      : result.account_id
         awsAccessKey : result.access_key
         awsSecretKey : result.secret_key
+        tokens       : result.tokens || []
+        defaultToken : ""
 
       if result.account_id is "demo_account"
-        res.account = ""
-      else
-        res.account = result.account_id
+        res.account = res.awsAccessKey = res.awsSecretKey = ""
+
+      for t, idx in res.tokens
+        if not t.name
+          res.defaultToken = t.token
+          res.tokens.splice idx, 1
+          break
 
       @set res
 
@@ -126,7 +132,7 @@ define [ "ApiRequest", "event" , "backbone" ], ( ApiRequest, ide_event )->
       return
 
     changePassword : ( oldPwd, newPwd )->
-      ApiRequest "changePwd", { params : {
+      ApiRequest "updateAccount", { params : {
         password     : oldPwd
         new_password : newPwd
       }}
@@ -161,5 +167,48 @@ define [ "ApiRequest", "event" , "backbone" ], ( ApiRequest, ide_event )->
 
         # LEGACY code, trigger an ide event when credential is updated.
         ide_event.trigger ide_event.UPDATE_AWS_CREDENTIAL
+        return
+
+    createToken : ()->
+      tmpl = "MyToken"
+      base = 1
+      nameMap = {}
+      for t in @attributes.tokens
+        nameMap[ t.name ] = true
+
+      while true
+        newName = tmpl + base
+        if nameMap[ newName ]
+          base += 1
+        else
+          break
+
+      self = this
+      ApiRequest("token_create", {token_name:newName}).then (res)->
+        self.attributes.tokens.splice 0, 0, {
+          name  : res[0]
+          token : res[1]
+        }
+        return
+
+    removeToken : (token)->
+      for t, idx in @attributes.tokens
+        if t.token is token
+          break
+
+      self = this
+      ApiRequest("token_remove", {token:token,token_name:t.name}).then ( res )->
+        idx = self.attributes.tokens.indexOf t
+        if idx >= 0
+          self.attributes.tokens.splice idx, 1
+        return
+
+    updateToken : ( token, newName )->
+      self = this
+      ApiRequest("token_update", {token:token, new_token_name:newName}).then ( res )->
+        for t, idx in self.attributes.tokens
+          if t.token is token
+            t.name = newName
+            break
         return
   }

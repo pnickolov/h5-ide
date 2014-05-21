@@ -40,7 +40,8 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 		getKeyPair : ()->
 			selectedKP = Design.instance().component(@get("uid")).connectionTargets("KeypairUsage")[0]
 
-			@set "keypair", selectedKP.getKPList()
+			if selectedKP
+				@set "keypair", selectedKP.getKPList()
 			null
 
 		addKP : ( kp_name ) ->

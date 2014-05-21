@@ -100,7 +100,7 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
 
     isDefaultTenancy : ()-> true
 
-    # Use by CanvasElement
+    # Use by CanvasElement(change members to groupMembers)
     groupMembers : ()->
       resource_list = MC.data.resource_list[ Design.instance().region() ]
       if not resource_list then return []
@@ -149,6 +149,38 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
 
     setStateData : (stateAryData) ->
       @set("state", stateAryData)
+
+    setKey: ( keyName, defaultKey ) ->
+      KpModel = Design.modelClassForType( constant.RESTYPE.KP )
+      defaultKp = KpModel.getDefaultKP()
+
+      if defaultKey
+        if defaultKp
+          defaultKp.assignTo( this )
+        else
+          console.error "No DefaultKP found when initialize InstanceModel"
+      else
+        kp = @connectionTargets( "KeypairUsage" )[0]
+        kp and kp.dissociate @
+        @set 'keyName', keyName
+
+
+    getKeyName: ->
+      kp = @connectionTargets( "KeypairUsage" )[0]
+
+      if kp
+        if kp.isDefault() then '$DefaultKeyPair' else kp.get('name')
+      else
+         @get( 'keyName' ) or 'No Key Pair'
+
+    isDefaultKey: ->
+      kp = @connectionTargets( "KeypairUsage" )[0]
+      kp and kp.isDefault()
+
+    isNoKey: ->
+      kp = @connectionTargets( "KeypairUsage" )[0]
+      not kp and not @get( 'keyName' )
+
 
     setAmi                : InstanceModel.prototype.setAmi
     getAmi                : InstanceModel.prototype.getAmi
@@ -202,9 +234,9 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
           LaunchConfigurationARN   : @get("appId")
           InstanceMonitoring       : @get("monitoring")
           ImageId                  : @get("imageId")
+          KeyName                  : @get("keyName")
           EbsOptimized             : if @isEbsOptimizedEnabled() then @get("ebsOptimized") else false
           BlockDeviceMapping       : blockDevice
-          KeyName                  : ""
           SecurityGroups           : sgarray
           LaunchConfigurationName  : @get("configName") or @get("name")
           InstanceType             : @get("instanceType")
@@ -269,7 +301,13 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
         new SgAsso( model, resolve( MC.extractID(sg) ) )
 
       # Add Keypair
-      resolve( MC.extractID( data.resource.KeyName ) ).assignTo( model )
+      KP = resolve( MC.extractID( data.resource.KeyName ) )
+
+      if KP
+        KP.assignTo( model )
+      else
+        model.set 'keyName', data.resource.KeyName
+
       null
   }
 

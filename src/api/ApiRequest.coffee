@@ -53,7 +53,8 @@ define ["ApiRequestDefs", "api/ApiRequestErrors", "api/ApiRequestHandlers", "api
     if not res or not res.result or res.result.length != 2
       logAndThrow McError( ApiErrors.InvalidRpcReturn , "Invalid JsonRpc Return Data")
 
-    if res.result[0] isnt 0
+    # Some of the error involved with AWS request are considered correct return.
+    if res.result[0] isnt 0 and !(ApiErrors.AwsErrorAws <= res.result[0] <= ApiErrors.AwsErrorExternal)
       # We can do aditional global handling for some specific error here.
       # For example, Invalid Session.
       gloablHandler = ApiHandlers[ res.result[0] ]
@@ -63,7 +64,8 @@ define ["ApiRequestDefs", "api/ApiRequestErrors", "api/ApiRequestHandlers", "api
 
       logAndThrow McError( res.result[0], "Service Error", res.result[1] )
 
-    # Try parse AWS Return result
+
+    # Try parse AWS Return result if we have correct return.
     awsresult = res.result[1]
     if awsresult and _.isArray(awsresult) and (typeof awsresult[1] is "string") and awsresult[1].indexOf("<?xml") == 0
 

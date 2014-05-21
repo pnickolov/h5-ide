@@ -7,7 +7,11 @@ define ["backbone"], ()->
 
     category : ""
 
+    __debounceUpdate : _.debounce ()-> @trigger "update"
+
     constructor : ()->
+      @on "add remove", @__debounceUpdate, @
+      @
 
     # Fetch the data from AWS. The data is only fetched once even if called multiple time.
     fetch : ()->

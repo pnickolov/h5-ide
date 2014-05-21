@@ -48,6 +48,83 @@
   padding-top: 0;
 }
 
+#kp-runtime-placeholder .keypair-select.open .dropdown {
+  top:            32px;
+  padding-bottom: 0;
+}
+
+#kp-runtime-placeholder .selection {
+  padding-right: 19px;
+}
+
+#kp-runtime-placeholder {
+  display: inline-block;
+}
+
+button#property-app-keypair {
+  display: block;
+  padding: 8px 10px;
+}
+
+.kp-no-credential {
+  color: #F5F5F5;
+  padding-top: 55px;
+}
+
+.kp-no-credential a {
+  cursor : pointer;
+  color  : #148BE6;
+}
+
+
+
+
+
+
+/* Need Remove */
+
+.keypair-select .manage-kp i {
+  margin-right : 13px;
+  color        : #eee;
+}
+
+.keypair-select .manage-kp::selection {
+  background: transparent;
+}
+
+.keypair-select .manage-kp {
+  width:         100%;
+  position:      absolute;
+  bottom:        0;
+  border-radius: 0;
+}
+
+.keypair-select.selectbox .keypair-filter {
+  width         : 232px;
+  border-radius : 0;
+  border        : 0;
+  padding-right : 20px;
+  position      : absolute;
+  top           : 0;
+  display       : none;
+}
+
+.keypair-select.selectbox .keypair-filter:focus {
+  width         : 232px;
+  border-radius : 0;
+  border        : 0;
+  padding-right : 20px;
+}
+
+.keypair-select i {
+  color: #148BE6;
+}
+
+.keypair-select li i {
+  float: right;
+}
+
+
 #kp-list {
   margin-top     : 32px;
   padding-bottom : 32px;
@@ -75,73 +152,4 @@
 
 .keypair-select {
   width: 260px;
-}
-
-.keypair-select.selectbox .keypair-filter {
-  width         : 232px;
-  border-radius : 0;
-  border        : 0;
-  padding-right : 20px;
-  position      : absolute;
-  top           : 0;
-  display       : none;
-}
-
-.keypair-select.selectbox .keypair-filter:focus {
-  width         : 232px;
-  border-radius : 0;
-  border        : 0;
-  padding-right : 20px;
-}
-
-#kp-runtime-placeholder .keypair-select.open .dropdown {
-  top:            32px;
-  padding-bottom: 0;
-}
-
-#kp-runtime-placeholder .selection {
-  padding-right: 19px;
-}
-
-#kp-runtime-placeholder {
-  display: inline-block;
-}
-
-.keypair-select i {
-  color: #148BE6;
-}
-
-.keypair-select li i {
-  float: right;
-}
-
-.keypair-select .manage-kp i {
-  margin-right : 13px;
-  color        : #eee;
-}
-
-.keypair-select .manage-kp::selection {
-  background: transparent;
-}
-
-.keypair-select .manage-kp {
-  width:         100%;
-  position:      absolute;
-  bottom:        0;
-  border-radius: 0;
-}
-
-button#property-app-keypair {
-  display: block;
-  padding: 8px 10px;
-}
-
-.kp-no-credential {
-  color: #F5F5F5;
-  padding-top: 55px;
-}
-
-.kp-no-credential a {
-  cursor : pointer;
-  color  : #148BE6;
 }

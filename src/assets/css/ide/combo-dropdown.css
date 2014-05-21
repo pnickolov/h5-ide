@@ -1,0 +1,56 @@
+.combo-dd .combo-dd-manage i {
+  margin-right: 13px;
+  color: #eee; }
+
+.combo-dd .combo-dd-manage::selection {
+  background: transparent; }
+
+.combo-dd .combo-dd-manage {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  border-radius: 0;
+  display: none; }
+
+.combo-dd.selectbox .combo-dd-filter {
+  width: 232px;
+  border-radius: 0;
+  border: 0;
+  padding-right: 20px;
+  position: absolute;
+  top: 0;
+  display: none; }
+
+.combo-dd.selectbox .combo-dd-filter:focus {
+  width: 232px;
+  border-radius: 0;
+  border: 0;
+  padding-right: 20px; }
+
+.combo-dd i {
+  color: #148BE6; }
+
+.combo-dd li i {
+  float: right; }
+
+.combo-dd-list {
+  margin-top: 32px;
+  padding-bottom: 32px; }
+  .combo-dd-list li .icon-info {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    margin-top: -8px; }
+
+.combo-dd-content .loading-spinner {
+  margin-top: 45%; }
+
+.combo-dd .selection .icon-remove {
+  display: none; }
+
+.combo-dd.open .dropdown {
+  top: 29px;
+  padding-bottom: 33px; }
+
+.combo-dd {
+  width: 260px; }

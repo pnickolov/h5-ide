@@ -283,10 +283,7 @@ define [ "./SettingsDialogTpl", 'i18n!nls/lang.js', "ApiRequest", "backbone" ], 
           $p.children(".tokenName").val( oldName )
           return
 
-        App.user.updateToken( token, newTokenName ).then ()->
-          # Do nothing if update success
-          return
-        , ()->
+        App.user.updateToken( token, newTokenName ).fail ()->
           # If anything goes wrong, revert the name
           oldName = ""
           $p.children(".tokenName").val( oldName )

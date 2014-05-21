@@ -160,7 +160,7 @@ define [ "ApiRequest", "component/exporter/JsonExporter", "./Websocket", "./Appl
 
           if stackStoreId and stackStoreIdStamp isnt localStackStoreIdStamp
             
-            $.setCookie('stack_store_id_local', stackStoreIdStamp)
+            $.cookie('stack_store_id_local', stackStoreIdStamp)
 
             ApiRequest('stackstore_fetch_stackstore', {
               file_name: "stack/#{stackStoreId}.json"

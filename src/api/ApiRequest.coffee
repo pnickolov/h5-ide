@@ -64,8 +64,8 @@ define ["ApiRequestDefs", "api/ApiRequestErrors", "api/ApiRequestHandlers", "api
       logAndThrow McError( res.result[0], "Service Error", res.result[1] )
 
     # Try parse AWS Return result
-    if res.result[1] and res.result[1].length == 2 and res.result[1].pop # Fuzzy detect aws result
-      awsresult = res.result[1]
+    awsresult = res.result[1]
+    if awsresult and _.isArray(awsresult) and (typeof awsresult[1] is "string") and awsresult[1].indexOf("<?xml") == 0
 
       if awsresult[0] is 200
         res = tryParseAws( awsresult[1] )

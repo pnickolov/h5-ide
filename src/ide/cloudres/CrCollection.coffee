@@ -7,8 +7,13 @@ define ["backbone"], ()->
 
     category : ""
 
+    constructor : ()->
+
+    # Fetch the data from AWS. The data is only fetched once even if called multiple time.
     fetch : ()->
       if @fetchPromise then return @fetchPromise
+
+      @lastFetch = +new Date()
 
       self = @
       @fetchPromise = @doFetch().then ( res )->
@@ -20,10 +25,26 @@ define ["backbone"], ()->
         console.info "DHCP", self
         return self
       , ()->
+        @lastFetch = 0
         self.fetchPromise = null
 
       @fetchPromise
 
+    # Force to fetch the data
+    fetchForce : ()->
+      @fetchPromise = null
+      @fetch()
+
+    # Force to fetch the data only if the data is consider to be invalid
+    fetchIfExpired : ()->
+      lastFetch = @lastFetch || 0
+      if (+new Date()) - lastFetch < 1800000
+        console.info "The collection is not expired,", @
+        return
+      @fetchPromise = null
+      @fetch()
+
+    # Override this method to parse the result of the fetch.
     parseFetchData : ( res )-> res
 
   }, {

@@ -75,9 +75,11 @@ define ["ApiRequestDefs", "api/ApiRequestErrors", "api/ApiRequestHandlers", "api
           return res
       else
         error = McError( res.result[0], "Service Error", res.result[1] )
+        error.awsError = awsresult[0]
+
         awsresult = tryParseAws( awsresult[1], true )
-        error.awsError  = awsResult.error
-        error.awsResult = awsResult.result
+        error.awsErrorCode = "" + awsresult.error
+        error.awsresult    = awsresult.result
         logAndThrow error
 
     res.result[1]

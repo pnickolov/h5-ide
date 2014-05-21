@@ -456,12 +456,14 @@ define [ 'MC', 'event',
             $label.html($label.attr('data-disabled'))
             app_id = Design.instance().serialize().id
             console.log API_URL + app_id
+            data =
+                "encoded_user": App.user.get("usercode")
+                "token": App.user.get("defaultToken")
             $.ajax
-                url: API_URL+ app_id,
+                url: API_URL+ app_id
                 method: "POST"
-                data:
-                    "encoded_user": App.user.get("usercode")
-                    "token": App.user.get("defaultToken")
+                #contentType: 'application/json; charset=utf-8'
+                data: JSON.stringify data
                 dataType: 'json'
                 statusCode:
                     200: ->
@@ -486,6 +488,8 @@ define [ 'MC', 'event',
                 error: ->
                     console.log('Reload State Request Error.')
                     null
+                success: ->
+                    console.log('Succeeded Get Right Response.')
             .always ()->
                 $target.removeClass('disabled')
                 $label.html($label.attr('data-original'))

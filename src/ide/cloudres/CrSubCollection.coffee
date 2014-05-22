@@ -19,7 +19,7 @@ define [
     type  : constant.RESTYPE.DHCP
     model : CrDhcpModel
 
-    doFetch : ()-> ApiRequest("dhcp_DescribeDhcpOptions", {region_name : @category})
+    doFetch : ()-> ApiRequest("dhcp_DescribeDhcpOptions", {region_name : @region()})
     parseFetchData : (res)->
       res = res.DescribeDhcpOptionsResponse.dhcpOptionsSet
       if res is null then return []
@@ -75,7 +75,7 @@ define [
       @on "remove", @__clearSubscription
       CrCollection.apply this, arguments
 
-    doFetch : ()-> ApiRequest("sns_ListTopics", {region_name : @category})
+    doFetch : ()-> ApiRequest("sns_ListTopics", {region_name : @region()})
     parseFetchData : (res)->
 
       res = res.ListTopicsResponse.ListTopicsResult.Topics
@@ -91,7 +91,7 @@ define [
 
     __clearSubscription : ( removedModel, collection, options )->
       # Automatically remove all the subscription that is bound to this topic.
-      snss = CloudResources( constant.RESTYPE.SUBSCRIPTION, @category )
+      snss = CloudResources( constant.RESTYPE.SUBSCRIPTION, @region() )
       removes = []
       for sub in snss.models
         if sub.get("TopicArn") is removedModel.id
@@ -120,7 +120,7 @@ define [
     type  : constant.RESTYPE.SUBSCRIPTION
     model : CrSubscriptionModel
 
-    doFetch : ()-> ApiRequest("sns_ListSubscriptions", {region_name : @category})
+    doFetch : ()-> ApiRequest("sns_ListSubscriptions", {region_name : @region()})
     parseFetchData : (res)->
       res = res.ListSubscriptionsResponse.ListSubscriptionsResult.Subscriptions
       if res is null then return []

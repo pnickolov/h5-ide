@@ -42,7 +42,7 @@ define [ "./CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
     doCreate : ()->
       self = @
       ApiRequest("dhcp_CreateDhcpOptions", {
-        region_name  : @getCollection().category
+        region_name  : @getCollection().region()
         dhcp_configs : @toAwsAttr()
       }).then ( res )->
         try
@@ -51,13 +51,13 @@ define [ "./CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
           throw McError( ApiRequest.Errors.InvalidAwsReturn, "Dhcp created but aws returns invalid ata." )
 
         self.set( "id", id )
-        console.info "Certificate Created", self
+        console.log "Created dhcp resource", self
 
         self
 
     doDestroy : ()->
       ApiRequest("dhcp_DeleteDhcpOptions", {
-        region_name : @getCollection().category
+        region_name : @getCollection().region()
         dhcp_id : @get("id")
       })
 

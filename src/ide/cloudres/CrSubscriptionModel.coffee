@@ -25,8 +25,9 @@ define [ "./CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
       return
 
     doCreate  : ()->
+      self = @
       ApiRequest("sns_Subscribe", {
-        region_name : @getCollection().category
+        region_name : @getCollection().region()
         topic_arn   : @get("TopicArn")
         protocol    : @get("Protocol")
         endpoint    : @get("Endpoint")
@@ -40,14 +41,14 @@ define [ "./CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
           id : CrSubscriptionModel.uniqueId()
           SubscriptionArn : arn
         }
-        console.info "Subscription Created", self
+        console.log "Created subscription resource", self
 
         self
 
     doDestroy : ()->
       if @isRemovable()
         return ApiRequest("sns_Unsubscribe", {
-          region_name : @getCollection().category
+          region_name : @getCollection().region()
           sub_arn     : @get("SubscriptionArn")
         })
 

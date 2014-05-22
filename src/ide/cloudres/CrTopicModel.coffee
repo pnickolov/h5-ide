@@ -14,8 +14,10 @@ define [ "./CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
       DisplayName : ""
 
     doCreate : ()->
+      self = @
+
       ApiRequest("sns_CreateTopic",{
-        region_name : @getCollection().category
+        region_name : @getCollection().region()
         topic_name  : @get("Name")
       }).then ( res )->
         try
@@ -24,22 +26,26 @@ define [ "./CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
           throw McError( ApiRequest.Errors.InvalidAwsReturn, "Topic created but aws returns invalid ata." )
 
         self.set( "id", id )
-        console.info "Topic Created", self
+        console.info "Created topic resource", self
 
         if self.get("DisplayName")
-          ApiRequest("sns_SetTopicAttributes", {
-            region_name : self.getCollection().category
-            topic_arn   : id
-            attr_name   : "DisplayName"
-            attr_value  : self.get("DisplayName")
-          })
+          # Delay Modifying the display name, because sometimes
+          # AWS might complain that the resource not found.
+          setTimeout ()->
+            ApiRequest("sns_SetTopicAttributes", {
+              region_name : self.getCollection().region()
+              topic_arn   : id
+              attr_name   : "DisplayName"
+              attr_value  : self.get("DisplayName")
+            })
+          , 1000
 
         self
 
     doUpdate : ( displayName )->
       self = @
       ApiRequest("sns_SetTopicAttributes", {
-        region_name : @getCollection().category
+        region_name : @getCollection().region()
         topic_arn   : @get("id")
         attr_name   : "DisplayName"
         attr_value  : displayName
@@ -49,7 +55,7 @@ define [ "./CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
 
     doDestroy : ()->
       ApiRequest("sns_DeleteTopic", {
-        region_name : @getCollection().category
+        region_name : @getCollection().region()
         topic_arn   : @get("id")
       })
 

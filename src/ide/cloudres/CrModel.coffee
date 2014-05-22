@@ -67,10 +67,11 @@ define ["./CrCollection", "ApiRequest", "backbone"], ( CrCollection, ApiRequest 
 
       self = @
       ApiRequest("ec2_CreateTags",{
+        region_name  : @getCollection().region()
         resource_ids : [@get("id")]
-        tags : [{Name:"Created by",Value:App.user.get("username")}]
+        tags         : [{Name:"Created by",Value:App.user.get("username")}]
       }).then ()->
-        console.info "Success to tag resource", self.get("id")
+        console.log "Success to tag resource", self.get("id")
         return
 
   }, {

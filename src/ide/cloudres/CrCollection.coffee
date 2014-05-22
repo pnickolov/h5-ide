@@ -68,6 +68,8 @@ define ["ApiRequest", "backbone"], ( ApiRequest )->
       m.__collection = @
       m
 
+    region : ()-> @category
+
   }, {
 
     # CloudResources uses this method to get the right category.

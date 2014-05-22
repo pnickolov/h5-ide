@@ -45,7 +45,7 @@ define [ "./CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
           throw McError( ApiRequest.Errors.InvalidAwsReturn, "Ssl cert created but aws returns invalid ata." )
 
         self.set( "id", id )
-        console.info "Certificate Created", self
+        console.log "Created SslCert resource", self
 
         self
 

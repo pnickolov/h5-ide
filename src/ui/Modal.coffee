@@ -20,36 +20,41 @@ define [], ()->
             @
         close: ()->
             console.log @option.onClose
+            if @.parentModal
+                return false
             if @modalGroup.length > 1
                 @.back()
-            if @modalGroup.length == 1
+            else if @modalGroup.length == 1
                 @getLast().tpl.remove()
-            @option.onClose?(@tpl)
-            @modalGroup.pop()
+                @option.onClose?(@)
+                @modalGroup.pop()
             if @modalGroup.length < 1
                 @wrap.remove()
             null
         show: ()->
             @wrap.removeClass("hide")
             if @modalGroup.length > 1
-                @resize(1)
+                @getLast().resize(1)
+                @getLast()._slideIn()
+                @getLastButOne()._fadeOut()
             else
                 @resize()
             console.log @option.onShow
-            @option.onShow?(@tpl)
+            @option.onShow?(@)
         bindEvent: ()->
-            @tpl.find('#btn-confirm').click (e)=>
+            @tpl.find('#button-confirm').click (e)=>
                 @option.onConfirm?(@tpl,e)
-                @close()
-            @tpl.find('#btn-cancel').click (e)=>
+                console.log @modalGroup
+                @modalGroup[0].back()
+            @tpl.find('#button-cancel').click (e)=>
                 @option.onCancel?(@tpl,e)
-                @close()
+                @modalGroup[0].back()
             @tpl.find("i.modal-close").click (e)=>
-                @close()
+                @modalGroup[0].back()
             if(!@option.disableClose)
                 @wrap.on 'click', (e)=>
                     if(e.target == e.currentTarget)
-                        @close()
+                        @back()
             if(@option.dragable)
                 diffX = 0
                 diffY = 0
@@ -91,35 +96,49 @@ define [], ()->
                 top:  if top > 0 then top else 10
                 left: left
         modalGroup: []
+        getFirst: ->
+            return @modalGroup?[0]
         getLast: ->
             return @modalGroup[@modalGroup.length - 1]
         getLastButOne: ->
             return @modalGroup[@modalGroup.length - 2]
         next: (optionConfig)->
             newModal = new Modal optionConfig
-            newModal.parentModal = @
-            @modalGroup.push(newModal)
-            @getLastButOne()._fadeOut()
-            @getLast()._slideIn()
-        back: (optionConfig)->
-            length = @modalGroup.length
-            @getLastButOne()._fadeIn()
-            @getLast()._slideOut()
-            window.setTimeout ()->
-                @getLast().close()
-            ,300
+            lastModal = @.getLastButOne()
+            @.getFirst()?.option.onNext?()
+            newModal.parentModal = lastModal
+            lastModal.childModal = newModal
+        back: ()->
+            if @parentModal
+                return false
+            if @modalGroup.length == 1
+                @close()
+                return false
+            else
+                @getLastButOne()._fadeIn()
+                @getLast()._slideOut()
+                toRemove = @modalGroup.pop()
+                @getLast().childModal = null
+                toRemove.option.onClose?()
+                window.setTimeout ()=>
+                    toRemove.tpl.remove()
+                ,300
         _fadeOut: ->
             console.log "Fading out"
-            @tpl.addClass "fadeOut"
+            @tpl.animate
+                left: "-="+ $(window).width()
         _fadeIn: ->
             console.log "Fading in"
-            @tpl.removeClass 'fadeOut'
+            @tpl.animate
+                left: "+="+ $(window).width()
         _slideIn: ->
             console.log 'Sliding In'
-            @tpl.addClass 'slideIn'
+            @tpl.animate
+                left: "-="+ $(window).width()
         _slideOut: ->
             console.log 'Sliding Out'
-            @tpl.removeClass 'slideIn'
+            @tpl.animate
+                left: "+="+ $(window).width()
     Modal
 
 

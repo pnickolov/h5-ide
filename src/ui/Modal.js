@@ -25,16 +25,18 @@
       Modal.prototype.close = function() {
         var _base;
         console.log(this.option.onClose);
+        if (this.parentModal) {
+          return false;
+        }
         if (this.modalGroup.length > 1) {
           this.back();
-        }
-        if (this.modalGroup.length === 1) {
+        } else if (this.modalGroup.length === 1) {
           this.getLast().tpl.remove();
+          if (typeof (_base = this.option).onClose === "function") {
+            _base.onClose(this);
+          }
+          this.modalGroup.pop();
         }
-        if (typeof (_base = this.option).onClose === "function") {
-          _base.onClose(this.tpl);
-        }
-        this.modalGroup.pop();
         if (this.modalGroup.length < 1) {
           this.wrap.remove();
         }
@@ -45,44 +47,47 @@
         var _base;
         this.wrap.removeClass("hide");
         if (this.modalGroup.length > 1) {
-          this.resize(1);
+          this.getLast().resize(1);
+          this.getLast()._slideIn();
+          this.getLastButOne()._fadeOut();
         } else {
           this.resize();
         }
         console.log(this.option.onShow);
-        return typeof (_base = this.option).onShow === "function" ? _base.onShow(this.tpl) : void 0;
+        return typeof (_base = this.option).onShow === "function" ? _base.onShow(this) : void 0;
       };
 
       Modal.prototype.bindEvent = function() {
         var diffX, diffY, dragable;
-        this.tpl.find('#btn-confirm').click((function(_this) {
+        this.tpl.find('#button-confirm').click((function(_this) {
           return function(e) {
             var _base;
             if (typeof (_base = _this.option).onConfirm === "function") {
               _base.onConfirm(_this.tpl, e);
             }
-            return _this.close();
+            console.log(_this.modalGroup);
+            return _this.modalGroup[0].back();
           };
         })(this));
-        this.tpl.find('#btn-cancel').click((function(_this) {
+        this.tpl.find('#button-cancel').click((function(_this) {
           return function(e) {
             var _base;
             if (typeof (_base = _this.option).onCancel === "function") {
               _base.onCancel(_this.tpl, e);
             }
-            return _this.close();
+            return _this.modalGroup[0].back();
           };
         })(this));
         this.tpl.find("i.modal-close").click((function(_this) {
           return function(e) {
-            return _this.close();
+            return _this.modalGroup[0].back();
           };
         })(this));
         if (!this.option.disableClose) {
           this.wrap.on('click', (function(_this) {
             return function(e) {
               if (e.target === e.currentTarget) {
-                return _this.close();
+                return _this.back();
               }
             };
           })(this));
@@ -147,6 +152,11 @@
 
       Modal.prototype.modalGroup = [];
 
+      Modal.prototype.getFirst = function() {
+        var _ref;
+        return (_ref = this.modalGroup) != null ? _ref[0] : void 0;
+      };
+
       Modal.prototype.getLast = function() {
         return this.modalGroup[this.modalGroup.length - 1];
       };
@@ -156,42 +166,68 @@
       };
 
       Modal.prototype.next = function(optionConfig) {
-        var newModal;
+        var lastModal, newModal, _base, _ref;
         newModal = new Modal(optionConfig);
-        newModal.parentModal = this;
-        this.modalGroup.push(newModal);
-        this.getLastButOne()._fadeOut();
-        return this.getLast()._slideIn();
+        lastModal = this.getLastButOne();
+        if ((_ref = this.getFirst()) != null) {
+          if (typeof (_base = _ref.option).onNext === "function") {
+            _base.onNext();
+          }
+        }
+        newModal.parentModal = lastModal;
+        return lastModal.childModal = newModal;
       };
 
-      Modal.prototype.back = function(optionConfig) {
-        var length;
-        length = this.modalGroup.length;
-        this.getLastButOne()._fadeIn();
-        this.getLast()._slideOut();
-        return window.setTimeout(function() {
-          return this.getLast().close();
-        }, 300);
+      Modal.prototype.back = function() {
+        var toRemove, _base;
+        if (this.parentModal) {
+          return false;
+        }
+        if (this.modalGroup.length === 1) {
+          this.close();
+          return false;
+        } else {
+          this.getLastButOne()._fadeIn();
+          this.getLast()._slideOut();
+          toRemove = this.modalGroup.pop();
+          this.getLast().childModal = null;
+          if (typeof (_base = toRemove.option).onClose === "function") {
+            _base.onClose();
+          }
+          return window.setTimeout((function(_this) {
+            return function() {
+              return toRemove.tpl.remove();
+            };
+          })(this), 300);
+        }
       };
 
       Modal.prototype._fadeOut = function() {
         console.log("Fading out");
-        return this.tpl.addClass("fadeOut");
+        return this.tpl.animate({
+          left: "-=" + $(window).width()
+        });
       };
 
       Modal.prototype._fadeIn = function() {
         console.log("Fading in");
-        return this.tpl.removeClass('fadeOut');
+        return this.tpl.animate({
+          left: "+=" + $(window).width()
+        });
       };
 
       Modal.prototype._slideIn = function() {
         console.log('Sliding In');
-        return this.tpl.addClass('slideIn');
+        return this.tpl.animate({
+          left: "-=" + $(window).width()
+        });
       };
 
       Modal.prototype._slideOut = function() {
         console.log('Sliding Out');
-        return this.tpl.removeClass('slideIn');
+        return this.tpl.animate({
+          left: "+=" + $(window).width()
+        });
       };
 
       return Modal;

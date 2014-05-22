@@ -195,12 +195,18 @@ $dark-blue: #001324;
 		.table {
 			font-size: 12px;
 
+			tr td {
+				@include bg-transition;
+			}
+
 			tr.selected td {
-				background: #0B4085;
+				background : #405A7E;
+				color      : #fff;
+				border     : 1px solid #20262E;
 			}
 
 			tr.selected:hover td {
-				background: #0B55B4;
+				background: #31619E;
 			}
 		}
 

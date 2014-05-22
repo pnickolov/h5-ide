@@ -3,11 +3,60 @@
 
 # Usage:
 # 1. import this component
-# 2. new toolbarModal()
+# 2. new toolbar_modal()
 # 3. bind `slideup`, `slidedown`, `refresh` event
 # 4. fill the content and selection
 
 ### Example:
+define [ 'toolbar_modal' ], ( toolbar_modal ) ->
+
+    bindModal: () ->
+        @modal = new toolbar_modal()
+
+        @modal.on 'slideup', @donothing, @
+        @modal.on 'slidedown', @slideDown, @
+        @modal.on 'refresh', @setKey, @
+
+    initialize: () ->
+        @bindModal()
+        events =
+            'click .xxx', @youkown
+
+
+    render: () ->
+        options =
+            title: "Manage Key Pairs in #{{regionName}}"
+            buttons: [
+                {
+                    icon: 'new-stack'
+                    type: 'create'
+                    name: 'Create Key Pair'
+                }
+                {
+                    icon: 'del'
+                    type: 'delete'
+                    disalbed: true
+                    name: 'Delete'
+                }
+            ]
+            columns: [
+                {
+                    sortable: true
+                    width: 100px # or 40%
+                    name: 'Name'
+                }
+                {
+                    sortable: false
+                    width: 100px # or 40%
+                    name: 'Fingerprint'
+                }
+            ]
+
+        @modal.render(options)
+
+    open = () ->
+        @modal.setContent template
+
 
 ###
 
@@ -36,6 +85,9 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery' ], ( templat
             @options = options
 
         cancel: () ->
+            if _.isFunction( @options.validate ) and not @options.validate()
+                return @
+
             $slidebox = @$( '.slidebox' )
             $activeButton = @$( '.toolbar .active' )
 
@@ -45,6 +97,9 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery' ], ( templat
             @
 
         handleSlide: ( event ) ->
+            if _.isFunction( @options.validate ) and not @options.validate()
+                return @
+
             $button = $ event.currentTarget
             $slidebox = @$( '.slidebox' )
             button = $target.data 'btn'

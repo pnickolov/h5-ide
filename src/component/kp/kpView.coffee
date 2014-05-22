@@ -1,4 +1,4 @@
-define [ 'combo_dropdown', './kpTpl', './kpDialogTpl', 'kp_upload', 'backbone', 'jquery', 'constant', 'component/exporter/JsonExporter', 'i18n!nls/lang.js', 'UI.notification' ], ( combo_dropdown, template, template_modal, upload, Backbone, $, constant, JsonExporter, lang ) ->
+define [ 'combo_dropdown', 'toolbar_modal', './kpTpl', './kpDialogTpl', 'kp_upload', 'backbone', 'jquery', 'constant', 'component/exporter/JsonExporter', 'i18n!nls/lang.js', 'UI.notification' ], ( combo_dropdown, toolbar_modal, template, template_modal, upload, Backbone, $, constant, JsonExporter, lang ) ->
 
     download = JsonExporter.download
 
@@ -7,6 +7,9 @@ define [ 'combo_dropdown', './kpTpl', './kpDialogTpl', 'kp_upload', 'backbone', 
         __upload: null
         __import: ''
         __mode: 'normal'
+
+        modalOptions:
+            buttons: []
 
         needDownload: () ->
             if arguments.length is 1
@@ -17,6 +20,10 @@ define [ 'combo_dropdown', './kpTpl', './kpDialogTpl', 'kp_upload', 'backbone', 
                 if @__needDownload then notification 'warning', 'You must download the keypair.'
 
             @__needDownload
+
+        initModal: () ->
+            @modal = new toolbar_modal()
+
 
         initialize: () ->
             @model.on 'change:keys', () ->
@@ -30,9 +37,8 @@ define [ 'combo_dropdown', './kpTpl', './kpDialogTpl', 'kp_upload', 'backbone', 
             data = @model.toJSON()
             region = Design.instance().get('region')
             data.regionName = constant.REGION_SHORT_LABEL[ region ]
-            @$el.html template_modal.frame data
-            if not refresh
-                @open()
+            @modal.render()
+
             @
 
         renderKeys: () ->
@@ -187,7 +193,15 @@ define [ 'combo_dropdown', './kpTpl', './kpDialogTpl', 'kp_upload', 'backbone', 
             if not invalid
                 keyName = @$( '#import-kp-name' ).val()
                 @switchAction 'processing'
-                @model.import( keyName, btoa that.__upload.getData() )
+                try
+                    keyContent = btoa that.__upload.getData()
+                catch
+                    @modal.error 'Key is not in valid OpenSSH public key format'
+                    that.switchAction 'init'
+                    return
+
+
+                @model.import( keyName, keyContent)
                     .then (res) ->
                         console.log res
                         notification 'info', "#{keyName} is imported."

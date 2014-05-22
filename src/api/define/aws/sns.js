@@ -5,6 +5,8 @@ define(['ApiRequestDefs'], function( ApiRequestDefs ){
 		'sns_ListSubscriptions'                  : { url:'/aws/sns/',	method:'ListSubscriptions',	params:['username', 'session_id', 'region_name', 'next_token']   },
 		'sns_SetSubscriptionAttributes'          : { url:'/aws/sns/',	method:'SetSubscriptionAttributes',	params:['username', 'session_id', 'region_name', 'subscription_arn', 'attr_name', 'attr_value']   },
 		'sns_ListSubscriptionsByTopic'           : { url:'/aws/sns/',	method:'ListSubscriptionsByTopic',	params:['username', 'session_id', 'region_name', 'topic_arn', 'next_token']   },
+		'sns_Subscribe'                          : { url:'/aws/sns/',	method:'Subscribe',	params:['username', 'session_id', 'region_name', 'topic_arn', 'protocol', 'endpoint']   },
+		'sns_Unsubscribe'                        : { url:'/aws/sns/',	method:'Unsubscribe',	params:['username', 'session_id', 'region_name', 'sub_arn']   },
 		'sns_ListTopics'                         : { url:'/aws/sns/',	method:'ListTopics',	params:['username', 'session_id', 'region_name', 'next_token']   },
 		'sns_DeleteTopic'                        : { url:'/aws/sns/',	method:'DeleteTopic',	params:['username', 'session_id', 'region_name', 'topic_arn']   },
 		'sns_CreateTopic'                        : { url:'/aws/sns/',	method:'CreateTopic',	params:['username', 'session_id', 'region_name', 'topic_name']   },

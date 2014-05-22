@@ -522,7 +522,10 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                                 asl.owner = tag.Value
                             null
 
-                    asl.Instances = _.pluck asl.Instances.member, 'InstanceId'
+                    if asl.Instances
+                        asl.Instances = _.pluck asl.Instances.member, 'InstanceId'
+                    else
+                        asl.Instances = []
 
                     asl.detail = me.parseSourceValue 'DescribeAutoScalingGroups', asl, "detail", null
                     if resources.DescribeScalingActivities
@@ -536,7 +539,11 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
             if resources.DescribeAlarms
                    _.map resources.DescribeAlarms, ( alarm, i ) ->
                     lists.CW+=1
-                    alarm.dimension_display = alarm.Dimensions.member[0].Name + ':' + alarm.Dimensions.member[0].Value
+
+                    alarm.dimension_display = ''
+                    if alarm.Dimensions
+                        alarm.dimension_display = alarm.Dimensions.member[0].Name + ':' + alarm.Dimensions.member[0].Value
+
                     alarm.threshold_display = "#{alarm.MetricName} #{alarm.ComparisonOperator} #{alarm.Threshold} for #{alarm.Period} seconds"
                     if alarm.StateValue is 'OK'
                         alarm.state_ok = true

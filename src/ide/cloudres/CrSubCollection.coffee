@@ -65,6 +65,10 @@ define [
     type  : constant.RESTYPE.TOPIC
     model : CrTopicModel
 
+    constructor : ()->
+      @on "remove", @__clearSubscription
+      CrCollection.apply this, arguments
+
     doFetch : ()-> ApiRequest("sns_ListTopics", {region_name : @category})
     parseFetchData : (res)->
       res = res.ListTopicsResponse.ListTopicsResult.Topics.member
@@ -74,6 +78,17 @@ define [
         delete i.TopicArn
 
       res
+
+    __clearSubscription : ( removedModel, collection, options )->
+      # Automatically remove all the subscription that is bound to this topic.
+      snss = CloudResources( constant.RESTYPE.SUBSCRIPTION, @category )
+      removes = []
+      for sub in snss.models
+        if sub.get("TopicArn") is removedModel.id
+          removes.push sub
+
+      if removes.length then snns.remove( removes )
+      return
 
     # Returns an array of topic which have no subscription.
     filterEmptySubs : ()->

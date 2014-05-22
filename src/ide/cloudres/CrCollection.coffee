@@ -31,7 +31,6 @@ define ["ApiRequest", "backbone"], ( ApiRequest )->
         @lastFetch = 0
         self.__fetchPromise = null
         throw error
-        return
 
       @__fetchPromise
 

@@ -1,13 +1,14 @@
 
 define [
   "./CrCollection"
+  "CloudResources"
   "ApiRequest"
   "constant"
   "./CrDhcpModel"
   "./CrSslcertModel"
-  "./CcTopicModel"
+  "./CrTopicModel"
   "./CrSubscriptionModel"
-], ( CrCollection, ApiRequest, constant, CrDhcpModel, CrSslcertModel, CrTopicModel, CrSubscriptionModel )->
+], ( CrCollection, CloudResources, ApiRequest, constant, CrDhcpModel, CrSslcertModel, CrTopicModel, CrSubscriptionModel )->
 
   ### Dhcp ###
   CrCollection.extend {
@@ -73,6 +74,15 @@ define [
         delete i.TopicArn
 
       res
+
+    # Returns an array of topic which have no subscription.
+    filterEmptySubs : ()->
+      snss = CloudResources( constant.RESTYPE.SUBSCRIPTION, @category )
+      topicMap = {}
+      for i in snss.models
+        topicMap[ i.get("TopicArn") ] = true
+
+      @filter ( t )-> not topicMap[ t.get("id") ]
   }
 
 

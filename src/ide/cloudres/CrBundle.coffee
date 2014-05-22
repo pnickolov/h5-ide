@@ -5,22 +5,34 @@ define [
   "./CrSubCollection"
 ], ( constant, CloudResources )->
 
-  # SnsCollection = CloudResources( constant.RESTYPE.SUBSCRIPTION, "us-east-1" )
-
-  # console.info SnsCollection
-  # console.assert SnsCollection is  CloudResources( constant.RESTYPE.SUBSCRIPTION )
-
   DhcpCollection = CloudResources( constant.RESTYPE.DHCP, "us-east-1" )
-
-  DhcpCollection.fetch()
-  DhcpCollection.fetch()
-  DhcpCollection.fetch()
-  DhcpCollection.fetch()
-
   DhcpCollection.on "update", ()->
     console.log "=============="
     console.log "=============="
     console.info DhcpCollection
+
+  CertCollection = CloudResources( constant.RESTYPE.IAM, "us-east-1" )
+  CertCollection.on "update", ()->
+    console.log "=============="
+    console.log "=============="
+    console.info CertCollection
+
+  TopicCollection = CloudResources( constant.RESTYPE.TOPIC, "us-east-1" )
+  TopicCollection.on "update", ()->
+    console.log "=============="
+    console.log "=============="
+    console.info TopicCollection
+
+  SubsCollection = CloudResources( constant.RESTYPE.SUBSCRIPTION, "us-east-1" )
+  SubsCollection.on "update", ()->
+    console.log "=============="
+    console.log "=============="
+    console.info SubsCollection
+
+  DhcpCollection.fetch()
+  CertCollection.fetch()
+  TopicCollection.fetch()
+  SubsCollection.fetch()
 
   # DhcpCollection.create({
   #   "domain-name-servers" : ["AmazonProvidedDNS"]

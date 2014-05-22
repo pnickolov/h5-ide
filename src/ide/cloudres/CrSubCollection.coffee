@@ -65,10 +65,10 @@ define [
     type  : constant.RESTYPE.TOPIC
     model : CrTopicModel
 
-    doFetch : ()-> ApiRequest("sns_ListTopics")
+    doFetch : ()-> ApiRequest("sns_ListTopics", {region_name : @category})
     parseFetchData : (res)->
       res = res.ListTopicsResponse.ListTopicsResult.Topics.member
-      for i in TopicArn
+      for i in res
         i.id   = i.TopicArn
         i.Name = i.TopicArn.split(":").pop()
         delete i.TopicArn
@@ -95,13 +95,11 @@ define [
     type  : constant.RESTYPE.SUBSCRIPTION
     model : CrSubscriptionModel
 
-    doFetch : ()-> ApiRequest("sns_ListSubscriptions")
+    doFetch : ()-> ApiRequest("sns_ListSubscriptions", {region_name : @category})
     parseFetchData : (res)->
       res = res.ListSubscriptionsResponse.ListSubscriptionsResult.Subscriptions.member
       for i in res
-        i.id        = i.SubscriptionArn
-        i.TopicName = i.TopicArn.split(":").pop()
-        delete i.SubscriptionArn
+        i.id = CrSubscriptionModel.uniqueId()
 
       res
   }

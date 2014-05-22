@@ -1,6 +1,7 @@
 define [], ()->
-    Modal = class Modal
+    class Modal
         constructor: (@option)->
+            _.extend @, Backbone.Events
             console.log option
             @wrap = if $('#modal-wrap').size() > 0 then $("#modal-wrap") else $("<div id='modal-wrap'>").appendTo $('body')
             @tpl = $(MC.template.modalTemplate
@@ -15,6 +16,8 @@ define [], ()->
             .css(width: @option.width||"520px")
             @tpl.appendTo @wrap
             @modalGroup.push(@)
+            if @modalGroup.length == 1
+                @trigger "show", @
             @show()
             @bindEvent()
             @
@@ -27,6 +30,7 @@ define [], ()->
             if @modalGroup.length > 1
                 @.back()
             else if @modalGroup.length == 1
+                @trigger 'close',@
                 @getLast().tpl.remove()
                 @option.onClose?(@)
                 @modalGroup=[]
@@ -107,6 +111,7 @@ define [], ()->
         next: (optionConfig)->
             unless @modalGroup?.length < 1
                 newModal = new Modal optionConfig
+                @trigger "next", @
                 lastModal = @.getLastButOne()
                 @.getFirst()?.option.onNext?()
                 newModal.parentModal = lastModal
@@ -125,6 +130,7 @@ define [], ()->
                 @close()
                 return false
             else
+                @trigger "back", @
                 @getLastButOne()._fadeIn()
                 @getLast()._slideOut()
                 toRemove = @modalGroup.pop()

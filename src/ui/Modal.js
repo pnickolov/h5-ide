@@ -1,9 +1,10 @@
 (function() {
   define([], function() {
     var Modal;
-    Modal = Modal = (function() {
+    Modal = (function() {
       function Modal(option) {
         this.option = option;
+        _.extend(this, Backbone.Events);
         console.log(option);
         this.wrap = $('#modal-wrap').size() > 0 ? $("#modal-wrap") : $("<div id='modal-wrap'>").appendTo($('body'));
         this.tpl = $(MC.template.modalTemplate({
@@ -19,6 +20,9 @@
         });
         this.tpl.appendTo(this.wrap);
         this.modalGroup.push(this);
+        if (this.modalGroup.length === 1) {
+          this.trigger("show", this);
+        }
         this.show();
         this.bindEvent();
         this;
@@ -36,6 +40,7 @@
         if (this.modalGroup.length > 1) {
           this.back();
         } else if (this.modalGroup.length === 1) {
+          this.trigger('close', this);
           this.getLast().tpl.remove();
           if (typeof (_base = this.option).onClose === "function") {
             _base.onClose(this);
@@ -174,6 +179,7 @@
         var lastModal, newModal, _base, _ref, _ref1, _ref2;
         if (!(((_ref = this.modalGroup) != null ? _ref.length : void 0) < 1)) {
           newModal = new Modal(optionConfig);
+          this.trigger("next", this);
           lastModal = this.getLastButOne();
           if ((_ref1 = this.getFirst()) != null) {
             if (typeof (_base = _ref1.option).onNext === "function") {
@@ -205,6 +211,7 @@
           this.close();
           return false;
         } else {
+          this.trigger("back", this);
           this.getLastButOne()._fadeIn();
           this.getLast()._slideOut();
           toRemove = this.modalGroup.pop();

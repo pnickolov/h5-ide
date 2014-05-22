@@ -7,6 +7,8 @@ define [ "./CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
     ClassName : "CrTopicModel"
     ### env:dev:end ###
 
+    taggable : false
+
     defaults :
       Name        : ""
       DisplayName : ""

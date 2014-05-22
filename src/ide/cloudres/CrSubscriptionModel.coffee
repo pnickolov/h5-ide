@@ -7,7 +7,10 @@ define [ "./CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
     ClassName : "CrSubscriptionModel"
     ### env:dev:end ###
 
+    taggable : false
+
+    isPending : ()-> @attributes.SubscriptionArn is "PendingConfirmation"
+
     doCreate  : ()->
-    doUpdate  : ( displayName )->
     doDestroy : ()->
   }

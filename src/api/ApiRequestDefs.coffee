@@ -15,7 +15,7 @@ define [], ()->
       result : params || undefined
       reason : errorMsg
       ### env:dev ###
-      stack  : (new Error()).stack.replace(/Error\s+at.+McError.+?\n/,"").replace(/^\s+at/gm,"at")
+      stack  : MC.prettyStackTrace(1)
       ### env:dev:end ###
     }
 
@@ -58,7 +58,7 @@ define [], ()->
       when "session_id"
         return $.cookie('session_id')
       when "region_name"
-        console.warn "Autofilling region_name:'us-east-1' for ApiRequest, this is for some api who requires region_name while it doesn't care about its value.", { stack : ((new Error()).stack).replace(/Error\s+at.+AutoFill.+ApiRequest.+\n.+ApiRequest.+\n/,"").replace(/^\s+/gm,"") }
+        console.warn "Autofilling region_name:'us-east-1' for ApiRequest, this is for some api who requires region_name while it doesn't care about its value. %o", MC.prettyStackTrace(1)
         return "us-east-1"
     return null
 

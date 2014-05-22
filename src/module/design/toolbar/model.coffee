@@ -492,6 +492,7 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
                     'has_instance_store_ami': me.isInstanceStore(),
                     'is_asg'                : me.isAutoScaling(),
                     'is_production'         : if MC.common.other.canvasData.get( 'usage' ) isnt 'production' then false else true
+                    'has_states'            : _.some _.values(Design.instance().serialize().component), (e)-> return e.state?.length>0
                 }
 
                 is_tab = true

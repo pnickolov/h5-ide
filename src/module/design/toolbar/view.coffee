@@ -65,7 +65,7 @@ define [ 'MC', 'event',
 
             'click .toolbar-visual-ops-switch' : 'opsOptionChanged'
 
-            'click .toolbar-visual-ops-refresh': 'clickReloadStates'
+            'click .reload-states': 'clickReloadStates'
             #'click #apply-visops'             : 'openExperimentalVisops'
 
         # when flag = 0 not invoke opsState
@@ -448,7 +448,7 @@ define [ 'MC', 'event',
 
         clickReloadStates: (event)->
             $target = $ event.currentTarget
-            $label = $target.find('.refresh-label')
+            $label = $target
             if $target.hasClass('disabled')
                 return false
             console.log(event)

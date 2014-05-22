@@ -34,16 +34,6 @@
 #modal-run-stack .modal-control-group.default-kp-group {
   padding-top: 0; }
 
-#kp-runtime-placeholder .keypair-select.open .dropdown {
-  top: 32px;
-  padding-bottom: 0; }
-
-#kp-runtime-placeholder .selection {
-  padding-right: 19px; }
-
-#kp-runtime-placeholder {
-  display: inline-block; }
-
 button#property-app-keypair {
   display: block;
   padding: 8px 10px; }

@@ -54,3 +54,13 @@
 
 .combo-dd {
   width: 260px; }
+
+#kp-runtime-placeholder .combo-dd.open .dropdown {
+  top: 32px;
+  padding-bottom: 0; }
+
+#kp-runtime-placeholder .selection {
+  padding-right: 19px; }
+
+#kp-runtime-placeholder {
+  display: inline-block; }

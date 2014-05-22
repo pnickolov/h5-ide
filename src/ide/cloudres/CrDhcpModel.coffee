@@ -7,6 +7,13 @@ define [ "./CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
     ClassName : "CrDhcpModel"
     ### env:dev:end ###
 
+    defaults : ()->
+      "domain-name"          : []
+      "domain-name-servers"  : []
+      "ntp-servers"          : []
+      "netbios-name-servers" : []
+      "netbios-node-type"    : []
+
     constructor : ( attr, options )->
       attr = @tryParseDhcpAttr( attr )
       CrModel.call this, attr, options

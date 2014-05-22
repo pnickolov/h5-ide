@@ -16,9 +16,6 @@ define [ "./CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
       CertificateChain : ""
       CertificateBody  : ""
 
-    initialize : ( attr )->
-      @attributes.oldName = attr.Name
-
     doUpdate : ( newAttr )->
       self = @
       ApiRequest("iam_UpdateServerCertificate", {

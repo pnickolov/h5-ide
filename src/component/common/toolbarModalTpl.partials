@@ -1,0 +1,72 @@
+<!-- {{frame}} -->
+<div class="modal-toolbar">
+    <div class="modal-header">
+        <h3>{{title}}</h3>
+        <i class="modal-close">×</i>
+    </div>
+
+    <div class="modal-body">
+        <div class="content-wrap">
+            <div class="toolbar">
+                <button class="icon-new-stack btn btn-blue t-m-btn" data-btn="create">{{btnValueCreate}}</button>
+                <div class="btn-group">
+                    {{#each buttons}}
+                        <button class="icon-{{icon}} t-m-btn" data-btn="{{type}}" {{#if disabled}}disabled{{/if}}>{{name}}</button>
+                    {{/each}}
+                </div>
+            </div>
+            <div class="list">
+                <div class="slidebox">
+                    <div class="content clearfix">
+                    </div>
+                    <div class="error">
+                        something wrong
+                    </div>
+                </div>
+                <div class="table-head-fix">
+                    <table class="table-head">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <div class="checkbox">
+                                        <input id="t-m-select-all" type="checkbox" value="None">
+                                        <label for="t-m-select-all"></label>
+                                    </div>
+                                </th>
+                                {{#each columns}}
+                                <th class="{{#if sortable}}sortable{{/if}}" style="{{#if width}}width={{width}};{{/if}}">{{name}}</th>
+                                {{/each}}
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="scroll-wrap">
+                        <div class="scrollbar-veritical-wrap" style="display: block;"><div class="scrollbar-veritical-thumb"></div></div>
+                        <div class="scroll-content" style="display:block;">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th><div class="th-inner"></div></th>
+                                        {{#each columns}}
+                                        <th><div class="th-inner"></div></th>
+                                        {{/each}}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{#each items}}
+                                    <tr class="item">
+                                        {{this}}
+                                    </tr>
+                                    {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- {{loading}} -->
+<div class="loading-spinner"></div>

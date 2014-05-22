@@ -13,9 +13,11 @@
           confirm: this.option.confirm || "Submit",
           cancel: this.option.cancel || "Cancel",
           hasFooter: !this.option.disableFooter
-        })).find(".modal-box>div").css({
+        }));
+        this.tpl.find(".modal-body").parent().css({
           width: this.option.width || "520px"
-        }).end().appendTo(this.wrap);
+        });
+        this.tpl.appendTo(this.wrap);
         this.modalGroup.push(this);
         this.show();
         this.bindEvent();
@@ -24,6 +26,9 @@
 
       Modal.prototype.close = function() {
         var _base;
+        if (this.isMoving) {
+          return false;
+        }
         console.log(this.option.onClose);
         if (this.parentModal) {
           return false;
@@ -35,7 +40,7 @@
           if (typeof (_base = this.option).onClose === "function") {
             _base.onClose(this);
           }
-          this.modalGroup.pop();
+          this.modalGroup = [];
         }
         if (this.modalGroup.length < 1) {
           this.wrap.remove();
@@ -166,21 +171,34 @@
       };
 
       Modal.prototype.next = function(optionConfig) {
-        var lastModal, newModal, _base, _ref;
-        newModal = new Modal(optionConfig);
-        lastModal = this.getLastButOne();
-        if ((_ref = this.getFirst()) != null) {
-          if (typeof (_base = _ref.option).onNext === "function") {
-            _base.onNext();
+        var lastModal, newModal, _base, _ref, _ref1, _ref2;
+        if (!(((_ref = this.modalGroup) != null ? _ref.length : void 0) < 1)) {
+          newModal = new Modal(optionConfig);
+          lastModal = this.getLastButOne();
+          if ((_ref1 = this.getFirst()) != null) {
+            if (typeof (_base = _ref1.option).onNext === "function") {
+              _base.onNext();
+            }
           }
+          newModal.parentModal = lastModal;
+          lastModal.childModal = newModal;
+          if ((_ref2 = lastModal.parentModal) != null) {
+            _ref2.option.disableClose = true;
+          }
+          this.isMoving = true;
+          return window.setTimeout((function(_this) {
+            return function() {
+              return _this.isMoving = false;
+            };
+          })(this), 300);
+        } else {
+          return false;
         }
-        newModal.parentModal = lastModal;
-        return lastModal.childModal = newModal;
       };
 
       Modal.prototype.back = function() {
         var toRemove, _base;
-        if (this.parentModal) {
+        if (this.parentModal || this.isMoving) {
           return false;
         }
         if (this.modalGroup.length === 1) {
@@ -194,9 +212,11 @@
           if (typeof (_base = toRemove.option).onClose === "function") {
             _base.onClose();
           }
+          this.isMoving = true;
           return window.setTimeout((function(_this) {
             return function() {
-              return toRemove.tpl.remove();
+              toRemove.tpl.remove();
+              return _this.isMoving = false;
             };
           })(this), 300);
         }
@@ -206,28 +226,28 @@
         console.log("Fading out");
         return this.tpl.animate({
           left: "-=" + $(window).width()
-        });
+        }, 300);
       };
 
       Modal.prototype._fadeIn = function() {
         console.log("Fading in");
         return this.tpl.animate({
           left: "+=" + $(window).width()
-        });
+        }, 300);
       };
 
       Modal.prototype._slideIn = function() {
         console.log('Sliding In');
         return this.tpl.animate({
           left: "-=" + $(window).width()
-        });
+        }, 300);
       };
 
       Modal.prototype._slideOut = function() {
         console.log('Sliding Out');
         return this.tpl.animate({
           left: "+=" + $(window).width()
-        });
+        }, 300);
       };
 
       return Modal;

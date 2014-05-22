@@ -10,15 +10,17 @@ define [], ()->
                 confirm: @option.confirm || "Submit"
                 cancel: @option.cancel|| "Cancel"
                 hasFooter: !@option.disableFooter
-            ).find(".modal-box>div")
+            )
+            @tpl.find(".modal-body").parent()
             .css(width: @option.width||"520px")
-            .end()
-            .appendTo @wrap
+            @tpl.appendTo @wrap
             @modalGroup.push(@)
             @show()
             @bindEvent()
             @
         close: ()->
+            if @isMoving
+                return false
             console.log @option.onClose
             if @.parentModal
                 return false
@@ -27,7 +29,7 @@ define [], ()->
             else if @modalGroup.length == 1
                 @getLast().tpl.remove()
                 @option.onClose?(@)
-                @modalGroup.pop()
+                @modalGroup=[]
             if @modalGroup.length < 1
                 @wrap.remove()
             null
@@ -103,13 +105,21 @@ define [], ()->
         getLastButOne: ->
             return @modalGroup[@modalGroup.length - 2]
         next: (optionConfig)->
-            newModal = new Modal optionConfig
-            lastModal = @.getLastButOne()
-            @.getFirst()?.option.onNext?()
-            newModal.parentModal = lastModal
-            lastModal.childModal = newModal
+            unless @modalGroup?.length < 1
+                newModal = new Modal optionConfig
+                lastModal = @.getLastButOne()
+                @.getFirst()?.option.onNext?()
+                newModal.parentModal = lastModal
+                lastModal.childModal = newModal
+                lastModal.parentModal?.option.disableClose = true
+                @isMoving = true
+                window.setTimeout ()=>
+                    @isMoving = false
+                ,300
+            else
+                return false
         back: ()->
-            if @parentModal
+            if @parentModal or @isMoving
                 return false
             if @modalGroup.length == 1
                 @close()
@@ -120,39 +130,68 @@ define [], ()->
                 toRemove = @modalGroup.pop()
                 @getLast().childModal = null
                 toRemove.option.onClose?()
+                @isMoving = true
                 window.setTimeout ()=>
                     toRemove.tpl.remove()
+                    @isMoving = false;
                 ,300
         _fadeOut: ->
             console.log "Fading out"
             @tpl.animate
                 left: "-="+ $(window).width()
+            ,300
         _fadeIn: ->
             console.log "Fading in"
             @tpl.animate
                 left: "+="+ $(window).width()
+            ,300
         _slideIn: ->
             console.log 'Sliding In'
             @tpl.animate
                 left: "-="+ $(window).width()
+            ,300
         _slideOut: ->
             console.log 'Sliding Out'
             @tpl.animate
                 left: "+="+ $(window).width()
+            ,300
     Modal
 
 
-#new Modal
-#    title: "Title Example"
+#taModal = new Modal
+#    title: "TA Modal 1"
 #    disableClose: false
 #    dragable: true
-#    template: "<h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1>"
-#    onClose: ()->
-#        alert "Modal Closed!"
-#    onShow: ()->
-#        alert "Modal Shown!"
-#    onConfirm: ()->
-#        alert "Modal Confirm!"
-#    onCancel: ()->
-#        alert "Modal Canceled!"
-
+#    template: "<h1 style='font-size: 100px;line-height:125px;text-align: center'>One</h1>"
+#    onClose: ->
+#        console.log("Close!")
+#window.setTimeout ()->
+#    taModal.next
+#        title: "TA Modal 2"
+#        disableClose: false
+#        dragable: true
+#        width: "1000px"
+#        template: "<h1 style='font-size: 100px;line-height:125px;text-align: center'>Two</h1>"
+#        onClose: ->
+#            console.log("Close!")
+#        onConfirm: ->
+#            alert 2
+#,1000
+#window.setTimeout ()->
+#    taModal.next
+#        title: "Ta Modal 3"
+#        disableClose: true
+#        dragable: true
+#        template: "<h1 style='font-size: 100px;line-height:125px;text-align: center'>Three</h1>"
+#        onCancel: ->
+#            alert 3
+#,2000
+#window.setTimeout ()->
+#    taModal.next
+#        title: "Ta Modal 4"
+#        disableClose: false
+#        dragable: true
+#        template: "<h1 style='font-size: 100px;line-height:125px;text-align: center'>Four</h1>"
+#        onClose: ->
+#            console.log("Closed 4")
+#,3000

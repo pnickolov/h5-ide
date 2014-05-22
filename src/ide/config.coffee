@@ -266,6 +266,7 @@ require.config {
 		'kp'       			 : 'component/kp/kpMain'
 		'kp_upload'       	 : 'component/kp/kpUpload'
 		'combo_dropdown'     : 'component/common/comboDropdown'
+		'toolbar_modal' 	 : 'component/common/toolbarModal'
 
 		#############################################
 		# component

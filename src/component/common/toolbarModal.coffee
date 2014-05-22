@@ -4,7 +4,7 @@
 # Usage:
 # 1. import this component
 # 2. new toolbarModal()
-# 3. bind `open`, `manage`, `change`, `filter` event
+# 3. bind `slideup`, `slidedown`, `refresh` event
 # 4. fill the content and selection
 
 ### Example:
@@ -25,6 +25,7 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery' ], ( templat
 
             # actions
             'click .t-m-btn': 'handleSlide'
+            'click .cancel': 'cancel'
 
             # do action
             'click .do-action': 'doAction'
@@ -33,6 +34,15 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery' ], ( templat
 
         initialize: ( options ) ->
             @options = options
+
+        cancel: () ->
+            $slidebox = @$( '.slidebox' )
+            $activeButton = @$( '.toolbar .active' )
+
+            @trigger 'slideup', $activeButton.data 'btn'
+            $activeButton.removeClass 'active'
+            $slidebox.removeClass 'show'
+            @
 
         handleSlide: ( event ) ->
             $button = $ event.currentTarget
@@ -58,6 +68,7 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery' ], ( templat
                 @trigger 'slidedown', button
                 $button.addClass 'active'
                 $slidebox.addClass 'show'
+
 
         refresh: ->
             @renderLoading()
@@ -112,6 +123,10 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery' ], ( templat
             modal @el
             $( '#modal-wrap' ).click @stopPropagation
 
+
+
+        # ------ In Common Use ------ #
+
         render: ( refresh ) ->
             data = @options
             @$el.html template.frame data
@@ -119,19 +134,43 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery' ], ( templat
                 @open()
             @
 
-
         setContent: ( dom ) ->
-
             if not @$( '.scroll-content' ).length
                 @render true
 
             @$( '.t-m-content' ).html dom
             @
 
-        delegate: ( event, selector, handler ) ->
-            @$el.on.apply arguments
+        setSlide: ( dom ) ->
+            @$( '.slidebox .content' ).html dom
+            @error()
             @
 
+        delegate: ( events ) ->
+            if not events or not _.isObject(events) then return @
+
+            for key, method in events
+                if not method then continue
+
+                match = key.match /^(\S+)\s*(.*)$/
+                eventName = match[1]
+                selector = match[2]
+                method = _.bind(method, this);
+                eventName += '.delegateEvents' + @cid;
+                if selector is ''
+                  @$el.on eventName, method
+                else
+                  @$el.on eventName, selector, method
+
+
+            @
+
+        error: (msg) ->
+            $error = @$( '.error' )
+            if msg
+                $error.text( msg ).show()
+            else
+                $error.hide()
 
 
 

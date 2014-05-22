@@ -5,11 +5,12 @@ define [
   "ApiRequest"
   "constant"
   "./CrDhcpModel"
+  "./CrKeypairModel"
   "./CrSslcertModel"
   "./CrTopicModel"
   "./CrSubscriptionModel"
   "./CrSnapshotModel"
-], ( CrCollection, CloudResources, ApiRequest, constant, CrDhcpModel, CrSslcertModel, CrTopicModel, CrSubscriptionModel, CrSnapshotModel )->
+], ( CrCollection, CloudResources, ApiRequest, constant, CrDhcpModel, CrKeypairModel, CrSslcertModel, CrTopicModel, CrSubscriptionModel, CrSnapshotModel )->
 
   ### Dhcp ###
   CrCollection.extend {
@@ -33,6 +34,28 @@ define [
       res
   }
 
+
+  ### Keypair ###
+  CrCollection.extend {
+    ### env:dev ###
+    ClassName : "CrKeypairCollection"
+    ### env:dev:end ###
+
+    type  : constant.RESTYPE.KP
+    model : CrKeypairModel
+
+    doFetch : ()-> ApiRequest("kp_DescribeKeyPairs", {region_name : @region()})
+    parseFetchData : (res)->
+      res = res.DescribeKeyPairsResponse.keySet
+      if res is null then return []
+      res = res.item
+
+      for i in res
+        i.id = i.keyName
+        delete i.keyName
+
+      res
+  }
 
 
   ### Ssl cert ###

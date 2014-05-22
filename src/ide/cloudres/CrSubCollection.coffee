@@ -99,7 +99,8 @@ define [
     parseFetchData : (res)->
       res = res.ListSubscriptionsResponse.ListSubscriptionsResult.Subscriptions.member
       for i in res
-        i.id   = i.SubscriptionArn
+        i.id        = i.SubscriptionArn
+        i.TopicName = i.TopicArn.split(":").pop()
         delete i.SubscriptionArn
 
       res

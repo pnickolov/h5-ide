@@ -12,5 +12,7 @@ define [ "./CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
     isPending : ()-> @attributes.SubscriptionArn is "PendingConfirmation"
 
     doCreate  : ()->
+
     doDestroy : ()->
+
   }

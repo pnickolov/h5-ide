@@ -33,8 +33,7 @@ define [], ()->
                 @trigger 'close',@
                 @getLast().tpl.remove()
                 @option.onClose?(@)
-                @modalGroup=[]
-            if @modalGroup.length < 1
+                @modalGroup=null
                 @wrap.remove()
             null
         show: ()->
@@ -131,6 +130,7 @@ define [], ()->
                 return false
             else
                 @trigger "back", @
+                console.log @getLastButOne(),@modalGroup,"-=-=-=-=-=-=-=-=-"
                 @getLastButOne()._fadeIn()
                 @getLast()._slideOut()
                 toRemove = @modalGroup.pop()

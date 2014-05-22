@@ -45,9 +45,7 @@
           if (typeof (_base = this.option).onClose === "function") {
             _base.onClose(this);
           }
-          this.modalGroup = [];
-        }
-        if (this.modalGroup.length < 1) {
+          this.modalGroup = null;
           this.wrap.remove();
         }
         return null;
@@ -212,6 +210,7 @@
           return false;
         } else {
           this.trigger("back", this);
+          console.log(this.getLastButOne(), this.modalGroup, "-=-=-=-=-=-=-=-=-");
           this.getLastButOne()._fadeIn();
           this.getLast()._slideOut();
           toRemove = this.modalGroup.pop();

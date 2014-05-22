@@ -51,12 +51,8 @@
                                         {{/each}}
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    {{#each items}}
-                                    <tr class="item">
-                                        {{this}}
-                                    </tr>
-                                    {{/each}}
+                                <tbody class='t-m-content'>
+
                                 </tbody>
                             </table>
                         </div>
@@ -70,3 +66,8 @@
 
 <!-- {{loading}} -->
 <div class="loading-spinner"></div>
+
+
+
+
+

@@ -325,9 +325,9 @@ define [ 'combo_dropdown', './kpTpl', './kpDialogTpl', 'kp_upload', 'backbone', 
             that = @
             _.defer () ->
                 if that.$('input:checked').length
-                    that.$('#kp-delete').prop 'disabled', false
+                    that.$('[data-btn=delete]').prop 'disabled', false
                 else
-                    that.$('#kp-delete').prop 'disabled', true
+                    that.$('[data-btn=delete]').prop 'disabled', true
 
 
 

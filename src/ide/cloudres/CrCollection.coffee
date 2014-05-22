@@ -20,7 +20,15 @@ define ["ApiRequest", "backbone"], ( ApiRequest )->
       self = @
       @__fetchPromise = @doFetch().then ( res )->
         try
-          self.set( self.parseFetchData(res) )
+          data = self.parseFetchData(res)
+
+          if data.length is 0 and self.models.length is 0
+            # In the initial state, even if we fetches an empty array of data.
+            # We still want to trigger a `update` to broadcast that we finished fetching.
+            @trigger "update"
+          else
+            self.set data
+
         catch e
           throw McError( ApiRequest.Errors.InvalidAwsReturn, "", res )
 
@@ -35,6 +43,7 @@ define ["ApiRequest", "backbone"], ( ApiRequest )->
     # Force to fetch the data
     fetchForce : ()->
       @__fetchPromise = null
+      @reset() # Clear all the datas in the collection before fetching.
       @fetch()
 
     # Force to fetch the data only if the data is consider to be invalid

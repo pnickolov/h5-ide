@@ -27,7 +27,13 @@ define ["./CrCollection", "ApiRequest", "backbone"], ( CrCollection, ApiRequest 
     # Returns a promise which will be resolved when the model is updated.
     update : ( newAttr )->
       if not @get("id")
-      console.assert @get("id"), "The resource is not yet created, so you can't update the resource."
+        console.error "The resource is not yet created, so you can't update the resource.", @
+        return
+
+      if not @doUpdate
+        console.error "This kind of resource does not support update,", @getCollection().type
+        return
+
       @doUpdate( newAttr )
 
     # Returns a promise which will be resolved when the model is deleted from AWS
@@ -46,16 +52,14 @@ define ["./CrCollection", "ApiRequest", "backbone"], ( CrCollection, ApiRequest 
 
         throw err
 
-    getCollection : ()-> @__collection || @collection
-
     # Subclass needs to override these method.
-    # dosave    : ()->
-    # doDestroy : ()->
-    doUpdate : ()->
-      # Default impl throws an Error
-      defer = Q.defer()
-      defer.reject McError( ApiRequest.Errors.InvalidMethodCall, "This cloud resource model doesn't support doSave() api, it means you cannot modify and save the resource." )
-      defer.promise
+    ###
+    dosave    : ()->
+    doUpdate  : ( newAttr )->
+    doDestroy : ()->
+    ###
+
+    getCollection : ()-> @__collection || @collection
 
     # Tags this resource. It should only called right after the resource is created.
     tagResource : ()->

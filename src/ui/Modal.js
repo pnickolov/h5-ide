@@ -16,6 +16,7 @@
         })).find(".modal-box>div").css({
           width: this.option.width || "520px"
         }).end().appendTo(this.wrap);
+        this.modalGroup.push(this);
         this.show();
         this.bindEvent();
         this;
@@ -25,7 +26,10 @@
         var _base;
         console.log(this.option.onClose);
         if (this.modalGroup.length > 1) {
-          this.modalGroup[this.modalGroup.length - 1].tpl.remove();
+          this.back();
+        }
+        if (this.modalGroup.length === 1) {
+          this.getLast().tpl.remove();
         }
         if (typeof (_base = this.option).onClose === "function") {
           _base.onClose(this.tpl);
@@ -40,7 +44,11 @@
       Modal.prototype.show = function() {
         var _base;
         this.wrap.removeClass("hide");
-        this.resize();
+        if (this.modalGroup.length > 1) {
+          this.resize(1);
+        } else {
+          this.resize();
+        }
         console.log(this.option.onShow);
         return typeof (_base = this.option).onShow === "function" ? _base.onShow(this.tpl) : void 0;
       };
@@ -119,7 +127,7 @@
         }
       };
 
-      Modal.prototype.resize = function() {
+      Modal.prototype.resize = function(slideIn) {
         var height, left, top, width, windowHeight, windowWidth;
         windowWidth = $(window).width();
         windowHeight = $(window).height();
@@ -128,30 +136,41 @@
         console.info(windowHeight, windowWidth, width, height);
         top = (windowHeight - height) / 2;
         left = (windowWidth - width) / 2;
+        if (slideIn) {
+          left = windowWidth + left;
+        }
         return this.tpl.css({
           top: top > 0 ? top : 10,
           left: left
         });
       };
 
-      Modal.prototype.modalGroup = [Modal];
+      Modal.prototype.modalGroup = [];
+
+      Modal.prototype.getLast = function() {
+        return this.modalGroup[this.modalGroup.length - 1];
+      };
+
+      Modal.prototype.getLastButOne = function() {
+        return this.modalGroup[this.modalGroup.length - 2];
+      };
 
       Modal.prototype.next = function(optionConfig) {
         var newModal;
         newModal = new Modal(optionConfig);
         newModal.parentModal = this;
         this.modalGroup.push(newModal);
-        this.modalGroup[this.modalGroup.length - 2]._fadeOut();
-        return newModal._slideIn();
+        this.getLastButOne()._fadeOut();
+        return this.getLast()._slideIn();
       };
 
       Modal.prototype.back = function(optionConfig) {
         var length;
         length = this.modalGroup.length;
-        this.modalGroup[length - 2]._fadeIn();
-        this.modalGroup[length - 1]._slideOut();
+        this.getLastButOne()._fadeIn();
+        this.getLast()._slideOut();
         return window.setTimeout(function() {
-          return this.modalGroup[length - 1].close();
+          return this.getLast().close();
         }, 300);
       };
 

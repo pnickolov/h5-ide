@@ -14,13 +14,16 @@ define [], ()->
             .css(width: @option.width||"520px")
             .end()
             .appendTo @wrap
+            @modalGroup.push(@)
             @show()
             @bindEvent()
             @
         close: ()->
             console.log @option.onClose
             if @modalGroup.length > 1
-                @modalGroup[@modalGroup.length-1].tpl.remove()
+                @.back()
+            if @modalGroup.length == 1
+                @getLast().tpl.remove()
             @option.onClose?(@tpl)
             @modalGroup.pop()
             if @modalGroup.length < 1
@@ -28,7 +31,10 @@ define [], ()->
             null
         show: ()->
             @wrap.removeClass("hide")
-            @resize()
+            if @modalGroup.length > 1
+                @resize(1)
+            else
+                @resize()
             console.log @option.onShow
             @option.onShow?(@tpl)
         bindEvent: ()->
@@ -71,7 +77,7 @@ define [], ()->
                     diffX = 0
                     diffY = 0
 
-        resize: ()->
+        resize: (slideIn)->
             windowWidth = $(window).width()
             windowHeight = $(window).height()
             width = @tpl.width()
@@ -79,22 +85,28 @@ define [], ()->
             console.info windowHeight, windowWidth, width, height
             top = (windowHeight - height) / 2
             left = (windowWidth - width) / 2
+            if slideIn
+                left = windowWidth + left
             @tpl.css
                 top:  if top > 0 then top else 10
                 left: left
-        modalGroup: [@]
+        modalGroup: []
+        getLast: ->
+            return @modalGroup[@modalGroup.length - 1]
+        getLastButOne: ->
+            return @modalGroup[@modalGroup.length - 2]
         next: (optionConfig)->
             newModal = new Modal optionConfig
             newModal.parentModal = @
             @modalGroup.push(newModal)
-            @modalGroup[@modalGroup.length-2]._fadeOut()
-            newModal._slideIn()
+            @getLastButOne()._fadeOut()
+            @getLast()._slideIn()
         back: (optionConfig)->
             length = @modalGroup.length
-            @modalGroup[length-2]._fadeIn()
-            @modalGroup[length-1]._slideOut()
+            @getLastButOne()._fadeIn()
+            @getLast()._slideOut()
             window.setTimeout ()->
-                @modalGroup[length-1].close()
+                @getLast().close()
             ,300
         _fadeOut: ->
             console.log "Fading out"

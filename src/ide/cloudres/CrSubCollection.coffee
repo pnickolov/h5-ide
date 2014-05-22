@@ -21,7 +21,10 @@ define [
 
     doFetch : ()-> ApiRequest("dhcp_DescribeDhcpOptions", {region_name : @category})
     parseFetchData : (res)->
-      res = res.DescribeDhcpOptionsResponse.dhcpOptionsSet.item
+      res = res.DescribeDhcpOptionsResponse.dhcpOptionsSet
+      if res is null then return []
+      res = res.item
+
       for i in res
         i.id = i.dhcpOptionsId
         delete i.dhcpOptionsId
@@ -42,7 +45,10 @@ define [
 
     doFetch : ()-> ApiRequest("iam_ListServerCertificates")
     parseFetchData : (res)->
-      res = res.ListServerCertificatesResponse.ListServerCertificatesResult.ServerCertificateMetadataList.member
+      res = res.ListServerCertificatesResponse.ListServerCertificatesResult.ServerCertificateMetadataList
+      if res is null then return []
+      res = res.member
+
       for i in res
         i.id   = i.ServerCertificateId
         i.Name = i.ServerCertificateName
@@ -71,7 +77,11 @@ define [
 
     doFetch : ()-> ApiRequest("sns_ListTopics", {region_name : @category})
     parseFetchData : (res)->
-      res = res.ListTopicsResponse.ListTopicsResult.Topics.member
+
+      res = res.ListTopicsResponse.ListTopicsResult.Topics
+      if res is null then return []
+      res = res.member
+
       for i in res
         i.id   = i.TopicArn
         i.Name = i.TopicArn.split(":").pop()
@@ -112,7 +122,10 @@ define [
 
     doFetch : ()-> ApiRequest("sns_ListSubscriptions", {region_name : @category})
     parseFetchData : (res)->
-      res = res.ListSubscriptionsResponse.ListSubscriptionsResult.Subscriptions.member
+      res = res.ListSubscriptionsResponse.ListSubscriptionsResult.Subscriptions
+      if res is null then return []
+      res = res.member
+
       for i in res
         i.id = CrSubscriptionModel.uniqueId()
 

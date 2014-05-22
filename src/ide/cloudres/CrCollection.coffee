@@ -25,7 +25,7 @@ define ["ApiRequest", "backbone"], ( ApiRequest )->
           if data.length is 0 and self.models.length is 0
             # In the initial state, even if we fetches an empty array of data.
             # We still want to trigger a `update` to broadcast that we finished fetching.
-            @trigger "update"
+            self.trigger "update"
           else
             self.set data
 

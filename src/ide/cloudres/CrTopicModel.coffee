@@ -26,7 +26,7 @@ define [ "./CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
           throw McError( ApiRequest.Errors.InvalidAwsReturn, "Topic created but aws returns invalid ata." )
 
         self.set( "id", id )
-        console.info "Created topic resource", self
+        console.log "Created topic resource", self
 
         if self.get("DisplayName")
           # Delay Modifying the display name, because sometimes

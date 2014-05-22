@@ -8,7 +8,8 @@ define [
   "./CrSslcertModel"
   "./CrTopicModel"
   "./CrSubscriptionModel"
-], ( CrCollection, CloudResources, ApiRequest, constant, CrDhcpModel, CrSslcertModel, CrTopicModel, CrSubscriptionModel )->
+  "./CrSnapshotModel"
+], ( CrCollection, CloudResources, ApiRequest, constant, CrDhcpModel, CrSslcertModel, CrTopicModel, CrSubscriptionModel, CrSnapshotModel )->
 
   ### Dhcp ###
   CrCollection.extend {
@@ -97,7 +98,7 @@ define [
         if sub.get("TopicArn") is removedModel.id
           removes.push sub
 
-      if removes.length then snns.remove( removes )
+      if removes.length then snss.remove( removes )
       return
 
     # Returns an array of topic which have no subscription.
@@ -130,4 +131,84 @@ define [
         i.id = CrSubscriptionModel.uniqueId()
 
       res
+  }
+
+
+  ### Snapshot ###
+  CrCollection.extend {
+    ### env:dev ###
+    ClassName : "CrSnapshotCollection"
+    ### env:dev:end ###
+
+    type  : constant.RESTYPE.SNAP
+    model : CrSnapshotModel
+
+    initialize : ()->
+      @__pollingStatus = _.bind @__pollingStatus, @
+
+    doFetch : ()-> ApiRequest("ebs_DescribeSnapshots", {region_name:@region(), owners:["self"]})
+    parseFetchData : (res)->
+      res = res.DescribeSnapshotsResponse.snapshotSet
+      if res is null then return []
+      res = res.item
+
+      for i in res
+        i.id = i.snapshotId
+        if i.tagSet
+          i.name = i.tagSet.Name || i.tagSet.name || ""
+          delete i.tagSet
+
+        delete i.snapshotId
+
+        if i.status is "pending" then @startPollingStatus()
+
+      res
+
+    startPollingStatus : ()->
+      if @__polling then return
+      @__polling = setTimeout @__pollingStatus, 2000
+      return
+
+    stopPollingStatus : ()->
+      clearTimeout @__polling
+      @__polling = null
+      return
+
+    __pollingStatus : ()->
+      self = @
+      ApiRequest("ebs_DescribeSnapshots", {
+        region_name : @region()
+        owners      : ["self"]
+        filters     : [{"Name":"status","Value":["pending"]}]
+      }).then ( res )->
+        self.__polling = null
+        self.__parsePolling( res )
+        return
+      , ()->
+        self.__polling = null
+        self.startPollingStatus()
+
+    __parsePolling : ( res )->
+      res = res.DescribeSnapshotsResponse.snapshotSet
+      if res is null
+        # When we don't get any pending items.
+        # We set all the snapshot models as completed.
+        @where({status:"pending"}).forEach ( model )->
+          model.set {
+            progress : 100
+            status   : "completed"
+          }
+        return
+
+      for i in res.item
+        try
+          @get(i.snapshotId).set({
+            status   : i.status
+            progress : i.progress
+          })
+
+          if i.status is "pending" then @startPollingStatus()
+        catch e
+
+      return
   }

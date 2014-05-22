@@ -19,9 +19,13 @@ define [ "./CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
     isRemovable : ()->
       @attributes.SubscriptionArn isnt "PendingConfirmation" and @attributes.SubscriptionArn isnt "Deleted"
 
-    set : ()->
+    set : ( key, value, options )->
+      if key is "TopicArn"
+        @attributes.TopicName = value.split(":").pop()
+      else if key.TopicArn
+        @attributes.TopicName = key.TopicArn.split(":").pop()
+
       Backbone.Model.prototype.set.apply this, arguments
-      @attributes.TopicName = @attributes.TopicArn.split(":").pop()
       return
 
     doCreate  : ()->

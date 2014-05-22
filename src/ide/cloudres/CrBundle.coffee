@@ -2,8 +2,7 @@
 define [
   "constant"
   "CloudResources"
-  "./CrDhcpCollection"
-  "./CrSslcertCollection"
+  "./CrSubCollection"
 ], ( constant, CloudResources )->
 
   # SnsCollection = CloudResources( constant.RESTYPE.SUBSCRIPTION, "us-east-1" )

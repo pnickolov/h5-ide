@@ -16,7 +16,8 @@ define [ "./CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
       TopicArn        : ""
       SubscriptionArn : ""
 
-    isPending : ()-> @attributes.SubscriptionArn is "PendingConfirmation"
+    isRemovable : ()->
+      @attributes.SubscriptionArn isnt "PendingConfirmation" and @attributes.SubscriptionArn isnt "Deleted"
 
     set : ()->
       Backbone.Model.prototype.set.apply this, arguments
@@ -44,15 +45,15 @@ define [ "./CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
         self
 
     doDestroy : ()->
-      if @isPending()
-        defer = Q.defer()
-        defer.resolve McError( ApiRequest.Errors.InvalidMethodCall, "Cannot unsubscribe pending subscription.", self )
-        return defer.promise
+      if @isRemovable()
+        return ApiRequest("sns_Unsubscribe", {
+          region_name : @getCollection().category
+          sub_arn     : @get("SubscriptionArn")
+        })
 
-      ApiRequest("sns_Unsubscribe", {
-        region_name : @getCollection().category
-        sub_arn     : @get("SubscriptionArn")
-      })
+      defer = Q.defer()
+      defer.resolve McError( ApiRequest.Errors.InvalidMethodCall, "Cannot unsubscribe pending subscription.", self )
+      return defer.promise
 
   }, {
     uniqueId : ()-> _.uniqueId("CrSnsSub_")

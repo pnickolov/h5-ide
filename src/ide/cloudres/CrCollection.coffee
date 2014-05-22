@@ -7,10 +7,8 @@ define ["ApiRequest", "backbone"], ( ApiRequest )->
 
     category : ""
 
-    __debounceUpdate : _.debounce ()-> @trigger "update"
-
     constructor : ()->
-      @on "add remove", @__debounceUpdate, @
+      @on "add remove", (_.debounce ()-> @trigger "update"), @
       Backbone.Collection.apply this, arguments
 
     # Fetch the data from AWS. The data is only fetched once even if called multiple time.

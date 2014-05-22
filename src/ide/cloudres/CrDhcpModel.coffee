@@ -42,8 +42,11 @@ define [ "./CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
           id = res.CreateDhcpOptionsResponse.dhcpOptions.dhcpOptionsId
         catch e
           throw McError( ApiRequest.Errors.InvalidAwsReturn, "Dhcp created but aws returns invalid ata." )
+
         self.set( "id", id )
-        return
+        console.info "Certificate Created", self
+
+        self
 
     doDestroy : ()->
       ApiRequest("dhcp_DeleteDhcpOptions", {

@@ -3,29 +3,32 @@ define ["./CrCollection", "ApiRequest", "backbone"], ( CrCollection, ApiRequest 
 
   CrModel = Backbone.Model.extend {
 
-    # Returns a promise which will be resolved when the model is saved to AWS
+    # Returns a promise which will be resolved when the model is saved to AWS, the resolved data is the model itself
     save : ()->
-      self = @
+      if @get("id")
+        console.error "The resource is already created. You cannot re-create it again."
+        return
+
       # prevent saving multiple time.
-      if @__savePromise then return @__savePromise
-
-      if not @get("id")
+      if not @__savePromise
+        self = @
         @__savePromise = @doCreate().then ()->
-          self.__collection.add self
-          self.tagResource()
-          delete self.__collection
-          delete self.__savePromise
-          self
-        , ( error )->
-          delete self.__savePromise
-          throw error
+            self.__collection.add self
+            self.tagResource()
+            delete self.__collection
+            delete self.__savePromise
+            self
+          , ( error )->
+            delete self.__savePromise
+            throw error
 
-      else
-        @__savePromise = @doSave().finally ()-> delete self.__savePromise
+      @__savePromise
 
-      return @__savePromise
-
-    getCollection : ()-> @__collection || @collection
+    # Returns a promise which will be resolved when the model is updated.
+    update : ( newAttr )->
+      if not @get("id")
+      console.assert @get("id"), "The resource is not yet created, so you can't update the resource."
+      @doUpdate( newAttr )
 
     # Returns a promise which will be resolved when the model is deleted from AWS
     # When the model is removed, the model will stop listening to any event.
@@ -33,7 +36,6 @@ define ["./CrCollection", "ApiRequest", "backbone"], ( CrCollection, ApiRequest 
       self = @
       @doDestroy().then ()->
         self.getCollection().remove self
-        self.off()
         self
       , (err)->
         # If AWS fail to remove an resource due to `ID.NotFound`, we treat it as
@@ -44,10 +46,12 @@ define ["./CrCollection", "ApiRequest", "backbone"], ( CrCollection, ApiRequest 
 
         throw err
 
+    getCollection : ()-> @__collection || @collection
+
     # Subclass needs to override these method.
-    # doCreate  : ()->
+    # dosave    : ()->
     # doDestroy : ()->
-    doSave : ()->
+    doUpdate : ()->
       # Default impl throws an Error
       defer = Q.defer()
       defer.reject McError( ApiRequest.Errors.InvalidMethodCall, "This cloud resource model doesn't support doSave() api, it means you cannot modify and save the resource." )

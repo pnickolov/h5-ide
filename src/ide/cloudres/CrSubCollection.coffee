@@ -213,25 +213,22 @@ define [
 
     __parsePolling : ( res )->
       res = res.DescribeSnapshotsResponse.snapshotSet
-      if res is null
-        # When we don't get any pending items.
-        # We set all the snapshot models as completed.
-        @where({status:"pending"}).forEach ( model )->
-          model.set {
-            progress : 100
-            status   : "completed"
-          }
-        return
 
-      for i in res.item
-        try
-          @get(i.snapshotId).set({
-            status   : i.status
-            progress : i.progress
-          })
+      # When we don't get any pending items.
+      # We set all the snapshot models as completed.
+      completeStatus = {
+        progress : 100
+        status   : "completed"
+      }
+      statusMap = {}
 
-          if i.status is "pending" then @startPollingStatus()
-        catch e
+      if res isnt null and res.item
+        @startPollingStatus()
+        for i in res.item
+          statusMap[ i.snapshotId ] = { progress:i.progress }
+
+      @where({status:"pending"}).forEach ( model )->
+        model.set statusMap[ model.get("id") ] || completeStatus
 
       return
   }

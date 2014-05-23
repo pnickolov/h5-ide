@@ -150,7 +150,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                     { "key": [ "CreatedTime" ], "show_key": lang.ide.DASH_LBL_CREATE_TIME}
                     { "key": [ "DNSName" ], "show_key": "DNSName"}
                     { "key": [ "HealthCheck" ], "show_key": lang.ide.PROP_ELB_HEALTH_CHECK}
-                    { "key": [ "Instances", 'member' ], "show_key": lang.ide.DASH_LBL_DNS_NAME}
+                    { "key": [ "Instances", 'member' ], "show_key": lang.ide.DASH_LBL_INSTANCE}
                     { "key": [ "ListenerDescriptions", "member" ], "show_key": lang.ide.PROP_ELB_LBL_LISTENER_DESCRIPTIONS}
                     { "key": [ "SecurityGroups", "member"], "show_key": lang.ide.PROP_ELB_SG_DETAIL}
                     { "key": [ "Subnets", "member" ], "show_key": lang.ide.DASH_LBL_SUBNETS}

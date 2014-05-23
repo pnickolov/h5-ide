@@ -3673,6 +3673,10 @@ VisualOps API. You cannot UNDO this action.'
       en: "Customer Gateway"
       zh: "客户网关"
 
+    DASH_LBL_INSTANCE:
+      en: "Instance"
+      zh: "实例"
+
     DASH_LBL_DNS_NAME:
       en: "DNS Name"
       zh: "域名"

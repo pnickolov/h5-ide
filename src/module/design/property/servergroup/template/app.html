@@ -53,6 +53,23 @@
     {{/if}}
   </div>
 
+  <div class="option-group-head">{{ i18n "PROP_INSTANCE_ADVANCED_DETAIL" }}</div>
+  <div class="option-group">
+    <section class="property-control-group">
+      <div class="checkbox">
+        {{#if monitoring}}
+        <input id="property-instance-enable-cloudwatch" type="checkbox" checked="true" value="None" name="property-instance-enable-cloudwatch" />
+        {{else}}
+        <input id="property-instance-enable-cloudwatch" type="checkbox" value="None" name="property-instance-enable-cloudwatch" />
+        {{/if}}
+        <label for="property-instance-enable-cloudwatch"></label>
+      </div>
+      <label for="property-instance-enable-cloudwatch" >{{ i18n "PROP_INSTANCE_CW_ENABLED" }}</label>
+
+      <p class="{{#unless monitoring}}hide{{/unless}} property-info" id="property-cloudwatch-warn">{{ i18n "PROP_INSTANCE_CW_WARN" }}<a target="_blank" href="http://aws.amazon.com/cloudwatch">Amazon Cloud Watch product page</a></p>
+    </section>
+  </div>
+
   {{#if rootDevice}}
   <div class="option-group-head">Root Device</div>
   <div class="option-group">
@@ -80,6 +97,17 @@
   {{#if eni}}
   <div class="option-group-head">{{i18n "PROP_INSTANCE_ENI_DETAIL"}}</div>
   <div class="option-group">
+    <section class="property-control-group">
+      <div class="checkbox">
+        {{#if eni.sourceDestCheck}}
+        <input id="property-instance-source-check" type="checkbox" checked="true" value="None" name="property-instance-source-check" />
+        {{else}}
+        <input id="property-instance-source-check" type="checkbox" value="None" name="property-instance-source-check" />
+        {{/if}}
+        <label for="property-instance-source-check"></label>
+      </div>
+      <label for="property-instance-source-check">{{ i18n "PROP_INSTANCE_ENI_SOURCE_DEST_CHECK" }}</label>
+    </section>
     <section class="property-control-group">
       <div class="network-list-wrap">
         <div class="network-list-header clearfix">

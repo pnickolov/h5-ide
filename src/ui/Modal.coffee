@@ -21,7 +21,7 @@
 #      disableClose: if can be closed when it's a single modal.         [default: false]
 #      disableFooter: if this Modal has footer.                         [default: false]
 #      dragAble: if the modal is dragAble                               [default: false]
-#      confirm: confirm button of Modal footer.                         [default: {text: :"Submit", color: "blue"}]
+#      confirm: confirm button of Modal footer.                         [default: {text: :"Submit", color: "blue"}] (color-support: "blue, red, silver")
 #      cancel: cancel button of Modal                                   [default: "Cancel"]
 #      onClose: function to exec then the modal close.                  [Function]
 #      onConfirm: function to exec then the confirm button is clicked   [Function]
@@ -39,6 +39,12 @@
 #       tpl             ====> the jQuery Dom element of the modal
 #       modalGroup      ====> the modalGroup
 #
+#   Example:
+#       modal = new Modal
+#           title: "Modal Title"
+#           template:   "<h1>Here Goes Modal Body</h1>"
+#           width: "600px"
+#
 define [], ()->
     class Modal
         constructor: (@option)->
@@ -47,9 +53,11 @@ define [], ()->
             @tpl = $(MC.template.modalTemplate
                 title: @option.title || ""
                 closeAble : !@option.disableClose
-                template: @option.template||""
-                confirm: @option.confirm
-                cancel: @option.cancel|| "Cancel"
+                template: @option.template || ""
+                confirm:
+                    text: @option.confirm?.text || "Submit"
+                    color: @option.confirm?.color || "blue"
+                cancel: @option.cancel || "Cancel"
                 hasFooter: !@option.disableFooter
             )
             @tpl.find(".modal-body")
@@ -61,7 +69,7 @@ define [], ()->
                 @trigger "show", @
             @show()
             @bindEvent()
-            @
+            return @
         close: ()->
             if @isMoving
                 return false
@@ -99,6 +107,11 @@ define [], ()->
                         @back()
             $(window).resize =>
                 @?.getLast()?.resize()
+            $(document).keyup (e)=>
+                if (e.which == 27 or e.which == 8)
+                    if @?.getFirst()?
+                        e.preventDefault()
+                        @?.getFirst()?.back()
             if(@option.dragable)
                 diffX = 0
                 diffY = 0
@@ -108,7 +121,7 @@ define [], ()->
                     originalLayout = @getLast().tpl.offset()
                     diffX = originalLayout.left - e.clientX
                     diffY = originalLayout.top - e.clientY
-
+                    null
                 $(document).mousemove (e)=>
                     if(dragable)
                         @getLast().tpl.css
@@ -120,7 +133,7 @@ define [], ()->
                             else if window.getSelection().removeAllRanges
                                 window.getSelection().removeAllRanges()
                             else if (document.selection)
-                                document.selection.empty();
+                                document.selection.empty()
                 $(document).mouseup (e)=>
                     if dragable
                         top = e.clientY + diffY
@@ -141,7 +154,7 @@ define [], ()->
                     dragable =false
                     diffX = 0
                     diffY = 0
-
+                    null
         resize: (slideIn)->
             windowWidth = $(window).width()
             windowHeight = $(window).height()
@@ -165,7 +178,7 @@ define [], ()->
             else
                 return @modalGroup[@modalGroup.length - 2]
         next: (optionConfig)->
-            unless @modalGroup?.length < 1
+            if @modalGroup?.length >= 1
                 newModal = new Modal optionConfig
                 @trigger "next", @
                 lastModal = @.getLastButOne()
@@ -176,6 +189,7 @@ define [], ()->
                 @isMoving = true
                 window.setTimeout ()=>
                     @isMoving = false
+                    null
                 ,@option.delay || 300
                 newModal
             else
@@ -196,8 +210,8 @@ define [], ()->
                 toRemove.option.onClose?()
                 @isMoving = true
                 window.setTimeout ()=>
+                    @isMoving = false
                     toRemove.tpl.remove()
-                    @isMoving = false;
                 ,@option.delay || 300
         _fadeOut: ->
             @tpl.animate

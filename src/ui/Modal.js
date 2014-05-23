@@ -3,6 +3,7 @@
     var Modal;
     Modal = (function() {
       function Modal(option) {
+        var _ref, _ref1;
         this.option = option;
         _.extend(this, Backbone.Events);
         this.wrap = $('#modal-wrap').size() > 0 ? $("#modal-wrap") : $("<div id='modal-wrap'>").appendTo($('body'));
@@ -10,7 +11,10 @@
           title: this.option.title || "",
           closeAble: !this.option.disableClose,
           template: this.option.template || "",
-          confirm: this.option.confirm,
+          confirm: {
+            text: ((_ref = this.option.confirm) != null ? _ref.text : void 0) || "Submit",
+            color: ((_ref1 = this.option.confirm) != null ? _ref1.color : void 0) || "blue"
+          },
           cancel: this.option.cancel || "Cancel",
           hasFooter: !this.option.disableFooter
         }));
@@ -26,7 +30,7 @@
         }
         this.show();
         this.bindEvent();
-        this;
+        return this;
       }
 
       Modal.prototype.close = function() {
@@ -103,6 +107,17 @@
             return _this != null ? (_ref = _this.getLast()) != null ? _ref.resize() : void 0 : void 0;
           };
         })(this));
+        $(document).keyup((function(_this) {
+          return function(e) {
+            var _ref;
+            if (e.which === 27 || e.which === 8) {
+              if ((_this != null ? _this.getFirst() : void 0) != null) {
+                e.preventDefault();
+                return _this != null ? (_ref = _this.getFirst()) != null ? _ref.back() : void 0 : void 0;
+              }
+            }
+          };
+        })(this));
         if (this.option.dragable) {
           diffX = 0;
           diffY = 0;
@@ -113,7 +128,8 @@
               dragable = true;
               originalLayout = _this.getLast().tpl.offset();
               diffX = originalLayout.left - e.clientX;
-              return diffY = originalLayout.top - e.clientY;
+              diffY = originalLayout.top - e.clientY;
+              return null;
             };
           })(this));
           $(document).mousemove((function(_this) {
@@ -162,7 +178,8 @@
               }
               dragable = false;
               diffX = 0;
-              return diffY = 0;
+              diffY = 0;
+              return null;
             };
           })(this));
         }
@@ -206,7 +223,7 @@
 
       Modal.prototype.next = function(optionConfig) {
         var lastModal, newModal, _base, _ref, _ref1, _ref2;
-        if (!(((_ref = this.modalGroup) != null ? _ref.length : void 0) < 1)) {
+        if (((_ref = this.modalGroup) != null ? _ref.length : void 0) >= 1) {
           newModal = new Modal(optionConfig);
           this.trigger("next", this);
           lastModal = this.getLastButOne();
@@ -223,7 +240,8 @@
           this.isMoving = true;
           window.setTimeout((function(_this) {
             return function() {
-              return _this.isMoving = false;
+              _this.isMoving = false;
+              return null;
             };
           })(this), this.option.delay || 300);
           return newModal;
@@ -253,8 +271,8 @@
           this.isMoving = true;
           return window.setTimeout((function(_this) {
             return function() {
-              toRemove.tpl.remove();
-              return _this.isMoving = false;
+              _this.isMoving = false;
+              return toRemove.tpl.remove();
             };
           })(this), this.option.delay || 300);
         }

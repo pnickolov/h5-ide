@@ -151,7 +151,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                     { "key": [ "DNSName" ], "show_key": "DNSName"}
                     { "key": [ "HealthCheck" ], "show_key": lang.ide.PROP_ELB_HEALTH_CHECK}
                     { "key": [ "Instances", 'member' ], "show_key": lang.ide.DASH_LBL_INSTANCE}
-                    { "key": [ "ListenerDescriptions", "member" ], "show_key": lang.ide.PROP_ELB_LBL_LISTENER_DESCRIPTIONS}
+                    { "key": [ "ListenerDescriptions", "member", "Listener" ], "show_key": lang.ide.PROP_ELB_LBL_LISTENER_DESCRIPTIONS}
                     { "key": [ "SecurityGroups", "member"], "show_key": lang.ide.PROP_ELB_SG_DETAIL}
                     { "key": [ "Subnets", "member" ], "show_key": lang.ide.DASH_LBL_SUBNETS}
                 ]
@@ -842,10 +842,13 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                 cur_value = value_to_parse[ cur_key ]
 
 
-                _.map key_array, ( value, key ) ->
+                _.map key_array, ( attr, key ) ->
                     if cur_value
                         if key > 0
-                            cur_value = cur_value[value]
+                            if _.isArray(cur_value) and not _.isNumber(attr)
+                                cur_value = _.pluck cur_value, attr
+                            else if _.isObject cur_value
+                                cur_value = cur_value[attr]
                             #if $.type(cur_value) is "array"
                             #    cur_value = cur_value[0]
                             cur_value

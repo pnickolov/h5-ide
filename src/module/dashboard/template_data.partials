@@ -2,7 +2,7 @@
 {{#each this}}
 <li id="{{region}}" class="global-map-item" title="{{regionName}} Dashboard">
   <h5>{{regionName}}</h5>
-  <span class="global-region-location">{{app}}</span>
+  <span class="global-region-location app">{{app}}</span>
   <span class="global-region-location stack">{{stack}}</span>
 </li>
 {{/each}}
@@ -181,35 +181,28 @@
 <ul id="region-resource-app-wrap" class="region-resource-list clearfix" {{#if stack}} style="display: none;"{{/if}}>
 
 {{#each apps}}
-    {{#if ispending}}
-    <li class="disabled">
-        <div class="thumbnail app-thumbnail">
-            <div class="app-thumbnail-pending">
-                <div class="loading-spinner loading-spinner-small"></div>
-                <p>Processing...</p>
-            </div>
-        </div>
-        <div class="region-resource-info"><span class="icon-pending truncate">{{name}}</span></div>
-    </li>
-    {{else}}
-    <li data-id="{{id}}">
-        {{#if usage}}<i class="icon-app-type-{{usage}}"></i>{{/if}}
-        <div class="thumbnail app-thumbnail"> <img src="{{thumbnail}}" {{#unless thumbnail}}class="hide"{{/unless}}/> </div>
-        <div class="region-resource-info">
-            {{#if has_instance_store_ami}}
-                <i {{#unless is_running}}style="display:none;"{{/unless}} class="icon-stop stop-app disabled"></i>
+{{#if progressing}}
+<li class="disabled">
+    <div class="thumbnail app-thumbnail"></div>
+    <div class="region-resource-info icon-pending truncate"><div class="loading-spinner loading-spinner-small"></div>{{name}} - {{stateDesc}}...</div>
+</li>
+{{else}}
+<li data-id="{{id}}">
+    {{#if usage}}<i class="icon-app-type-{{usage}}"></i>{{/if}}
+    <div class="thumbnail app-thumbnail"> <img src="{{thumbnail}}" {{#unless thumbnail}}class="hide"{{/unless}}/> </div>
+    <div class="region-resource-info">
+        {{#if stoppable}}
+            {{#ifCond stateDesc 'Running'}}
+                <i class="icon-stop stop-app"></i>
             {{else}}
-                {{#if isrunning}}
-                    <i class="icon-stop stop-app"></i>
-                {{else}}
-                    <i class="icon-play start-app"></i>
-                {{/if}}
-            {{/if}}
-            <i class="icon-terminate terminate-app"></i>
-            <span class="{{#if isrunning}}running{{else}}stopped{{/if}} truncate">{{name}}</span>
-        </div>
-    </li>
-    {{/if}}
+                <i class="icon-play start-app"></i>
+            {{/ifCond}}
+        {{/if}}
+        <i class="icon-terminate terminate-app"></i>
+        <span class="{{#ifCond stateDesc 'Running'}}running{{else}}stopped{{/ifCond}} truncate">{{name}}</span>
+    </div>
+</li>
+{{/if}}
 {{else}}
     <div class="blank-widget">{{i18n "DASH_LBL_NO_APP"}}</div>
 {{/each}}

@@ -283,7 +283,7 @@
   cursor: pointer; }
   .region-resource-list > li:hover {
     opacity: 1; }
-  .region-resource-list > li:disabled {
+  .region-resource-list > li.disabled {
     cursor: default;
     opacity: .6; }
   .region-resource-list > li:last-child {
@@ -292,6 +292,12 @@
   .region-resource-list > li {
     width: 22.5%;
     margin-left: 2%; } }
+.region-resource-list .loading-spinner {
+  width: 12px;
+  height: 12px;
+  position: static;
+  float: left;
+  margin: 5px 5px 0 0; }
 .region-resource-list .thumbnail {
   height: 0;
   padding-bottom: 65%;
@@ -300,7 +306,8 @@
   background-size: 100% auto;
   overflow: hidden; }
   .region-resource-list .thumbnail.app-thumbnail {
-    background-image: url('/assets/images/ide/thumbnail-app-placehoder@2x.png'); }
+    background-image: url('/assets/images/ide/thumbnail-app-placehoder@2x.png');
+    background-size: 100% auto; }
   .region-resource-list .thumbnail img {
     width: 100%;
     height: auto;
@@ -320,16 +327,22 @@
 .region-resource-list .region-resource-info {
   background: #323e49;
   padding-left: 12px;
-  color: #f3f3f3;
   border-radius: 0 0 5px 5px;
   position: relative;
   height: 27px;
-  line-height: 27px; }
+  line-height: 27px;
+  color: #eee;
+  font-size: 12px;
+  display: block; }
+  .region-resource-list .region-resource-info:before {
+    font-size: 12px;
+    margin-right: 2px; }
   .region-resource-list .region-resource-info > i {
     float: right;
     border-left: 1px solid #2d2d2d;
     width: 30px;
     height: 27px;
+    line-height: 30px;
     text-align: center;
     color: #ddd; }
     .region-resource-list .region-resource-info > i:hover {
@@ -339,9 +352,7 @@
       border-radius: 0 0 5px 0; }
   .region-resource-list .region-resource-info i.icon-terminate:hover, .region-resource-list .region-resource-info i.icon-delete:hover {
     color: #ec3c38; }
-  .region-resource-list .region-resource-info > .truncate {
-    color: #eee;
-    font-size: 12px;
+  .region-resource-list .region-resource-info > span {
     max-width: 120px; }
   .region-resource-list .region-resource-info > .icon-pending:before {
     font-size: 10px;

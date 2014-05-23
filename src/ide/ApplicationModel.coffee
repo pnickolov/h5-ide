@@ -65,9 +65,6 @@ define [ "./submodels/OpsCollection", "./submodels/OpsModel", "ApiRequest", "bac
 
     __parseListRes : ( res )->
       r = []
-      stateMap =
-        "Running" : OpsModel.State.Running
-        "Stopped" : OpsModel.State.Stopped
 
       for ops in res
         r.push {
@@ -76,7 +73,8 @@ define [ "./submodels/OpsCollection", "./submodels/OpsModel", "ApiRequest", "bac
           region     : ops.region
           usage      : ops.usage
           name       : ops.name
-          state      : stateMap[ ops.state ] || OpsModel.State.UnRun
+          state      : OpsModel.State[ ops.state ] || OpsModel.State.UnRun
+          stoppable  : not (ops.property and ops.property.stoppable is false)
         }
       r
 
@@ -105,6 +103,8 @@ define [ "./submodels/OpsCollection", "./submodels/OpsModel", "ApiRequest", "bac
 
       item = @__parseRequestInfo req, dag
       if not item then return
+
+      @__handleRequestChange( item )
 
       info_list = @attributes.notification
 
@@ -140,7 +140,7 @@ define [ "./submodels/OpsCollection", "./submodels/OpsModel", "ApiRequest", "bac
         operation  : constant.OPS_CODE_NAME[ req.code ]
         targetId   : if dag.spec then dag.spec.id else req.rid
         targetName : if req.code is "Forge.Stack.Run" then req.brief.split(" ")[2] else ""
-        state      : {}
+        state      : { processing : true }
         readed     : true
 
       switch req.state
@@ -149,7 +149,14 @@ define [ "./submodels/OpsCollection", "./submodels/OpsModel", "ApiRequest", "bac
           request.state = { failed : true }
         when constant.OPS_STATE.OPS_STATE_INPROCESS
           request.time  = req.time_begin
-          request.state = { processing : true }
+          request.step  = 0
+          if req.dag
+            request.totalSteps = req.dag.step.length
+            for i in req.dag.step
+              if i[1] is "done" then ++request.step
+          else
+            request.totalSteps = 1
+
         when constant.OPS_STATE.OPS_STATE_DONE
           request.state = {
             completed  : true
@@ -176,4 +183,22 @@ define [ "./submodels/OpsCollection", "./submodels/OpsModel", "ApiRequest", "bac
 
       request
 
+    __handleRequestChange : ( request )->
+      # This method is used to update the state of an app OpsModel
+
+      if request.state.pending then return
+
+      theApp = @appList().get( request.targetId )
+      if not theApp
+        # If the app is newly created from an stack. It might not have an appId yet,
+        # But it should have a requestId.
+        theApp = @appList().findWhere({requestId:request.id})
+
+      if not theApp then return
+      if not request.state.processing and not theApp.isProcessing() then return
+
+      if request.state.processing
+        theApp.setStatusProgress( request.step, request.totalSteps )
+      else
+        theApp.setStatusWithWSEvent( request.operation, request.state )
   }

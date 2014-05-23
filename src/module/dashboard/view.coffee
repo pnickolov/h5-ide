@@ -68,7 +68,8 @@ define [ 'event', 'i18n!nls/lang.js',
         overview                : overview_tmpl
 
         events          :
-            "click .global-map-item"                                       : "gotoRegion"
+            "click .global-map-item"                                       : "gotoRegionFromMap"
+            "click .global-map-item .app"                                  : "gotoRegionFromMap"
             'click .recent-list-item, .region-resource-list li'            : 'openItem'
             'click #global-region-create-stack-list li, #btn-create-stack' : 'createStack'
             "click .region-resource-list .delete-stack"                    : "deleteStack"
@@ -341,6 +342,14 @@ define [ 'event', 'i18n!nls/lang.js',
                 return
             #ide_event.trigger ide_event.ADD_STACK_TAB, $target.data( 'region' ) or current_region
             ide_event.trigger ide_event.OPEN_DESIGN_TAB, 'NEW_STACK', null, $target.data( 'region' ), null
+
+        gotoRegionFromMap : ( evt )->
+            $tgt = $( evt.currentTarget )
+            region = $( evt.currentTarget ).closest("li").attr("id")
+            @gotoRegion( region )
+
+            $("#region-resource-tab").children().eq( if $tgt.hasClass("app") then 0 else 1 ).click()
+            return false
 
         gotoRegion: ( region ) ->
             if region.currentTarget

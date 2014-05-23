@@ -350,9 +350,9 @@
     cursor      : pointer;
 
     &:hover { opacity: 1; }
-    &:disabled {
-      cursor: default;
-      opacity: .6;
+    &.disabled {
+      cursor  : default;
+      opacity : .6;
     }
 
     &:last-child { margin-bottom : 15px; }
@@ -363,6 +363,14 @@
       width : 22.5%;
       margin-left : 2%;
     }
+  }
+
+  .loading-spinner {
+    width    : 12px;
+    height   : 12px;
+    position : static;
+    float    : left;
+    margin   : 5px 5px 0 0;
   }
 
 
@@ -376,6 +384,7 @@
 
     &.app-thumbnail {
       background-image : image-url("ide/thumbnail-app-placehoder@2x.png");
+      background-size  : 100% auto;
     }
 
     img {
@@ -407,17 +416,22 @@
   .region-resource-info {
     background    : #323e49;
     padding-left  : 12px;
-    color         : #f3f3f3;
     border-radius : 0 0 5px 5px;
     position      : relative;
     height        : 27px;
     line-height   : 27px;
+    color         : #eee;
+    font-size     : 12px;
+    display       : block;
+
+    &:before { font-size : 12px; margin-right : 2px; }
 
     > i {
       float       : right;
       border-left : 1px solid #2d2d2d;
       width       : 30px;
       height      : 27px;
+      line-height : 30px;
 
       text-align  : center;
       color: #ddd;
@@ -432,9 +446,7 @@
 
     i.icon-terminate, i.icon-delete { &:hover { color: #ec3c38; } }
 
-    > .truncate {
-      color     : #eee;
-      font-size : 12px;
+    > span {
       max-width : 120px;
     }
 

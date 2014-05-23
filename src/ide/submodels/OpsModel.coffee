@@ -11,20 +11,26 @@
 define ["ApiRequest", "constant", "component/exporter/Thumbnail", "backbone"], ( ApiRequest, constant, ThumbUtil )->
 
   OpsModelState =
-    UnRun    : 0
-    Running  : 1
-    Stopped  : 2
-    Starting : 3
+    UnRun        : 0
+    Running      : 1
+    Stopped      : 2
+    Initializing : 3
+    Updating     : 4
+    Stopping     : 5
+    Terminating  : 6
+    Destroyed    : 7
 
-  OpsModelStateDesc = ["", "Running", "Stopped", ""]
+  OpsModelStateDesc = ["", "Running", "Stopped", "Starting", "Updating", "Stopping", "Terminating", ""]
 
   OpsModel = Backbone.Model.extend {
 
     defaults : ()->
-      updateTime : +(new Date())
-      region     : ""
-      usage      : ""
-      state      : OpsModelState.UnRun
+      updateTime    : +(new Date())
+      region        : ""
+      usage         : ""
+      state         : OpsModelState.UnRun
+      terminateFail : false
+      stoppable     : true # If the app has instance_store_ami, stoppable is false
 
     initialize : ( attr, options )->
       if options && options.initJsonData
@@ -41,6 +47,7 @@ define ["ApiRequest", "constant", "component/exporter/Thumbnail", "backbone"], (
       o = Backbone.Model.prototype.toJSON.call( this )
       o.stateDesc  = OpsModelStateDesc[ o.state ]
       o.regionName = constant.REGION_SHORT_LABEL[ o.region ]
+      if @isProcessing() then o.progressing = true
 
       if options
         if options.thumbnail
@@ -108,6 +115,58 @@ define ["ApiRequest", "constant", "component/exporter/Thumbnail", "backbone"], (
     terminate : ()->
       if not @isApp() then return @__returnErrorPromise()
 
+
+    setStatusProgress : ( steps, totalSteps )->
+      progress = parseInt( steps * 100.0 / totalSteps )
+      if @.attributes.progress != progress
+        @set "progress", progress
+      return
+
+    isProcessing : ()->
+      state = @attributes.state
+      state is OpsModelState.Initializing || state is OpsModelState.Stopping || state is OpsModelState.Updating || state is OpsModelState.Terminating
+
+    setStatusWithApiResult : ( state )-> @set "state", OpsModelState[ state ]
+
+    setStatusWithWSEvent : ( operation, state )->
+      # operation can be ["launch", "stop", "start", "update", "terminate"]
+      # state can have "completed", "failed", "progressing", "pending"
+      switch operation
+        when "launch"
+          if state.completed
+            toState = OpsModelState.Running
+          else if state.failed
+            toState = OpsModelState.Destroyed
+        when "stop"
+          if state.completed
+            toState = OpsModelState.Stopped
+          else if state.failed
+            toState = OpsModelState.Running
+        when "update"
+          if state.completed
+            toState = OpsModelState.Running
+          else
+            @__updateStatus()
+        when "terminate"
+          if state.completed
+            toState = OpsModelState.Destroyed
+          else
+            @attributes.terminateFail = false
+            @set "terminateFail", true
+
+      if toState
+        @attributes.progress = 0
+        @set "state", toState
+
+      if toState is OpsModelState.Destroyed
+        Backbone.Model.prototype.destroy.call this
+
+      return
+
+    __updateStatus : ()->
+      ApiRequest("app_list",{app_ids:[@get("id")]}).then (res)->
+        @setStatusWithApiResult( res[0].state )
+        return
 
     ###
      Internal Methods

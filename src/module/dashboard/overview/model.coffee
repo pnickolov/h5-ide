@@ -478,7 +478,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                             #DescribeInstanceHealth succeed
                                 total = result.resolved_data.length
                                 health = 0
-                                (health++ if instance.state == "InService") for instance in result.resolved_data
+                                (health++ if instance.State == "InService") for instance in result.resolved_data
                                 _.map resources.DescribeLoadBalancers, ( elb, i ) ->
                                     if elb.LoadBalancerName == result.param[4]
                                         resources.DescribeLoadBalancers[i].state = "#{health} of #{total} instances in service"

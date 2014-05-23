@@ -162,8 +162,10 @@ define [ "ApiRequest", "component/exporter/JsonExporter", "./Websocket", "./Appl
             
             $.cookie('stack_store_id_local', stackStoreIdStamp)
 
+            gitBranch = 'hotfix/store-site'
+
             ApiRequest('stackstore_fetch_stackstore', {
-              file_name: "stack/#{stackStoreId}.json"
+              file_name: "#{gitBranch}/stack/#{stackStoreId}/#{stackStoreId}.json"
             }).then (result) ->
 
               jsonDataStr = result

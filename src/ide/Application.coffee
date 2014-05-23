@@ -8,7 +8,7 @@
   to provide other functionality
 ###
 
-define [ "./Websocket", "./ApplicationView", "./ApplicationModel", "./User", "./subviews/SettingsDialog", "common_handle" ,"event", "vpc_model", "constant" ], ( Websocket, ApplicationView, ApplicationModel, User, SettingsDialog, common_handle, ide_event, vpc_model, constant )->
+define [ "./Websocket", "./ApplicationView", "./ApplicationModel", "./User", "./subviews/SettingsDialog", "CloudResources", "common_handle" ,"event", "vpc_model", "constant" ], ( Websocket, ApplicationView, ApplicationModel, User, SettingsDialog, CloudResources, common_handle, ide_event, vpc_model, constant )->
 
   VisualOps = ()->
     if window.App
@@ -55,7 +55,9 @@ define [ "./Websocket", "./ApplicationView", "./ApplicationModel", "./User", "./
       # The Websockets subscription will be lost if we have an invalid session.
       @WS.subscribe()
 
-    @user.on "change:credential", ()=> @__onCredentialChanged()
+    @user.on "change:credential", ()=>
+      @__onCredentialChanged()
+      CloudResources.invalidate()
     return
 
 

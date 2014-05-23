@@ -150,8 +150,8 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                     { "key": [ "CreatedTime" ], "show_key": lang.ide.DASH_LBL_CREATE_TIME}
                     { "key": [ "DNSName" ], "show_key": "DNSName"}
                     { "key": [ "HealthCheck" ], "show_key": lang.ide.PROP_ELB_HEALTH_CHECK}
-                    { "key": [ "Instances", 'member' ], "show_key": lang.ide.DASH_LBL_DNS_NAME}
-                    { "key": [ "ListenerDescriptions", "member" ], "show_key": lang.ide.PROP_ELB_LBL_LISTENER_DESCRIPTIONS}
+                    { "key": [ "Instances", 'member', 'InstanceId' ], "show_key": lang.ide.DASH_LBL_INSTANCE}
+                    { "key": [ "ListenerDescriptions", "member", "Listener" ], "show_key": lang.ide.PROP_ELB_LBL_LISTENER_DESCRIPTIONS}
                     { "key": [ "SecurityGroups", "member"], "show_key": lang.ide.PROP_ELB_SG_DETAIL}
                     { "key": [ "Subnets", "member" ], "show_key": lang.ide.DASH_LBL_SUBNETS}
                 ]
@@ -478,7 +478,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                             #DescribeInstanceHealth succeed
                                 total = result.resolved_data.length
                                 health = 0
-                                (health++ if instance.state == "InService") for instance in result.resolved_data
+                                (health++ if instance.State == "InService") for instance in result.resolved_data
                                 _.map resources.DescribeLoadBalancers, ( elb, i ) ->
                                     if elb.LoadBalancerName == result.param[4]
                                         resources.DescribeLoadBalancers[i].state = "#{health} of #{total} instances in service"
@@ -522,7 +522,10 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                                 asl.owner = tag.Value
                             null
 
-                    asl.Instances = _.pluck asl.Instances.member, 'InstanceId'
+                    if asl.Instances
+                        asl.Instances = _.pluck asl.Instances.member, 'InstanceId'
+                    else
+                        asl.Instances = []
 
                     asl.detail = me.parseSourceValue 'DescribeAutoScalingGroups', asl, "detail", null
                     if resources.DescribeScalingActivities
@@ -536,7 +539,11 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
             if resources.DescribeAlarms
                    _.map resources.DescribeAlarms, ( alarm, i ) ->
                     lists.CW+=1
-                    alarm.dimension_display = alarm.Dimensions.member[0].Name + ':' + alarm.Dimensions.member[0].Value
+
+                    alarm.dimension_display = ''
+                    if alarm.Dimensions
+                        alarm.dimension_display = alarm.Dimensions.member[0].Name + ':' + alarm.Dimensions.member[0].Value
+
                     alarm.threshold_display = "#{alarm.MetricName} #{alarm.ComparisonOperator} #{alarm.Threshold} for #{alarm.Period} seconds"
                     if alarm.StateValue is 'OK'
                         alarm.state_ok = true
@@ -835,10 +842,13 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                 cur_value = value_to_parse[ cur_key ]
 
 
-                _.map key_array, ( value, key ) ->
+                _.map key_array, ( attr, key ) ->
                     if cur_value
                         if key > 0
-                            cur_value = cur_value[value]
+                            if _.isArray(cur_value) and not _.isNumber(attr)
+                                cur_value = _.pluck cur_value, attr
+                            else if _.isObject cur_value
+                                cur_value = cur_value[attr]
                             #if $.type(cur_value) is "array"
                             #    cur_value = cur_value[0]
                             cur_value

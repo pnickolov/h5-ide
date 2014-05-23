@@ -54,22 +54,41 @@ define [ "constant", "../ConnectionModel", "i18n!nls/lang.js", "Design", "compon
         if @hasAppUpdateRestriction()
           return { error : lang.ide.CVS_MSG_ERR_DEL_ELB_LINE_2 }
 
-      else
-        elb = @getTarget( constant.RESTYPE.ELB )
-        # Elb should at least connects to a subnet if it connects to some ami
-        if elb.connections( "ElbAmiAsso" ).length > 0 and elb.connections( "ElbSubnetAsso" ).length <= 1
-          return { error : lang.ide.CVS_MSG_ERR_DEL_ELB_LINE_1 }
+      elb    = @getTarget( constant.RESTYPE.ELB )
+      subnet = @getTarget( constant.RESTYPE.SUBNET )
+      az     = subnet.parent()
 
+      # 1. Find out if any child of this subnet connects to the elb
+      for child in elb.connectionTargets( "ElbAmiAsso" )
+        childAZ = child.parent()
+        while childAZ
+          if childAZ.type is constant.RESTYPE.AZ
+            break
+          childAZ = childAZ.parent()
+        if not childAZ then continue
+        if childAZ is az
+          connected = true
+          break
+
+      if not connected then return true
+
+      # 2. Find out if there's other subnet in my az connects to the elb
+      for sb in elb.connectionTargets( "ElbSubnetAsso" )
+        if sb isnt subnet and sb.parent() is az
+          connected = false
+          break
+
+      if connected then return { error : lang.ide.CVS_MSG_ERR_DEL_ELB_LINE_2 }
       true
 
   }, {
-    isConnectable : ( comp1, comp2 )->
-      subnet = if comp1.type is constant.RESTYPE.SUBNET then comp1 else comp2
+    # isConnectable : ( comp1, comp2 )->
+    #   subnet = if comp1.type is constant.RESTYPE.SUBNET then comp1 else comp2
 
-      if parseInt( subnet.get("cidr").split("/")[1] , 10 ) <= 27
-        return true
+    #   if parseInt( subnet.get("cidr").split("/")[1] , 10 ) <= 27
+    #     return true
 
-      lang.ide.CVS_MSG_WARN_CANNOT_CONNECT_SUBNET_TO_ELB
+    #   lang.ide.CVS_MSG_WARN_CANNOT_CONNECT_SUBNET_TO_ELB
   }
 
   # Elb <==> Ami
@@ -116,12 +135,23 @@ define [ "constant", "../ConnectionModel", "i18n!nls/lang.js", "Design", "compon
       ami = @getOtherTarget( constant.RESTYPE.ELB )
       elb = @getTarget( constant.RESTYPE.ELB )
 
-      if elb.connections( "ElbSubnetAsso" ).length == 0
-        subnet = ami.parent()
-        while subnet.type isnt constant.RESTYPE.SUBNET
-          subnet = subnet.parent()
-        if subnet
-          new ElbSubnetAsso( elb, subnet )
+      subnet = ami
+      while true
+        subnet = subnet.parent()
+        if not subnet then return
+        if subnet.type is constant.RESTYPE.SUBNET
+          break
+
+      connectedSbs = elb.connectionTargets("ElbSubnetAsso")
+
+      for sb in subnet.parent().children()
+        if connectedSbs.indexOf( sb ) isnt -1
+          # Found a subnet in this AZ that is connected to the Elb, do nothing
+          foundSubnet = true
+          break
+
+      if not foundSubnet
+        new ElbSubnetAsso( subnet, elb )
 
       # If there's a ElbAsso created for Lc and Elb
       # We also try to connect the Elb to any expanded Asg

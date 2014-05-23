@@ -1095,7 +1095,6 @@ the specific language governing permissions and limitations under the Apache Lic
                     this.attachEvent("onpropertychange", sync);
                 });
             }
-
             // safari, chrome, firefox, IE11
             observer = window.MutationObserver || window.WebKitMutationObserver|| window.MozMutationObserver;
             if (observer !== undefined) {

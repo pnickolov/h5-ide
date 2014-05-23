@@ -142,7 +142,7 @@ define [ 'MC', 'event',
 
         hideErr: ( type ) ->
             if type
-                $( "#runtime-error-#{id}" ).hide()
+                $( "#runtime-error-#{type}" ).hide()
             else
                 $( ".runtime-error" ).hide()
 
@@ -153,15 +153,23 @@ define [ 'MC', 'event',
             KpModel = Design.modelClassForType( constant.RESTYPE.KP )
             defaultKp = KpModel.getDefaultKP()
 
-            if not defaultKp.get 'isSet'
+            if not defaultKp.get( 'isSet' ) or not $('#kp-runtime-placeholder .item.selected').length
                 @showErr 'kp', 'Specify a key pair as $DefaultKeyPair for this app.'
                 return false
 
             true
 
+        hideDefaultKpError: (context) ->
+            () ->
+                context.hideErr 'kp'
+
         renderDefaultKpDropdown: ->
             if kp.hasResourceWithDefaultKp()
-                $('#kp-runtime-placeholder').html kp.load().el
+                kpDropdown = kp.load()
+                $('#kp-runtime-placeholder').html kpDropdown.el
+                kpDropdown.$( '.selectbox' )
+                    .on( 'OPTION_CHANGE', @hideDefaultKpError(@) )
+
                 $('.default-kp-group').show()
             null
 

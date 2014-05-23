@@ -5,7 +5,6 @@
       function Modal(option) {
         this.option = option;
         _.extend(this, Backbone.Events);
-        console.log(option);
         this.wrap = $('#modal-wrap').size() > 0 ? $("#modal-wrap") : $("<div id='modal-wrap'>").appendTo($('body'));
         this.tpl = $(MC.template.modalTemplate({
           title: this.option.title || "",
@@ -33,19 +32,17 @@
         if (this.isMoving) {
           return false;
         }
-        console.log(this.option.onClose);
         if (this.parentModal) {
           return false;
         }
         if (this.modalGroup.length > 1) {
           this.back();
-        } else if (this.modalGroup.length === 1) {
+        } else if (this.modalGroup.length <= 1) {
           this.trigger('close', this);
-          this.getLast().tpl.remove();
+          this.tpl.remove();
           if (typeof (_base = this.option).onClose === "function") {
             _base.onClose(this);
           }
-          this.modalGroup = null;
           this.wrap.remove();
         }
         return null;
@@ -61,7 +58,6 @@
         } else {
           this.resize();
         }
-        console.log(this.option.onShow);
         return typeof (_base = this.option).onShow === "function" ? _base.onShow(this) : void 0;
       };
 
@@ -73,7 +69,6 @@
             if (typeof (_base = _this.option).onConfirm === "function") {
               _base.onConfirm(_this.tpl, e);
             }
-            console.log(_this.modalGroup);
             return _this.modalGroup[0].back();
           };
         })(this));
@@ -100,6 +95,11 @@
             };
           })(this));
         }
+        $(window).resize((function(_this) {
+          return function() {
+            return _this.getLast().resize();
+          };
+        })(this));
         if (this.option.dragable) {
           diffX = 0;
           diffY = 0;
@@ -108,7 +108,7 @@
             return function(e) {
               var originalLayout;
               dragable = true;
-              originalLayout = _this.tpl.offset();
+              originalLayout = _this.getLast().tpl.offset();
               diffX = originalLayout.left - e.clientX;
               return diffY = originalLayout.top - e.clientY;
             };
@@ -116,7 +116,7 @@
           $(document).mousemove((function(_this) {
             return function(e) {
               if (dragable) {
-                _this.tpl.css({
+                _this.getLast().tpl.css({
                   top: e.clientY + diffY,
                   left: e.clientX + diffX
                 });
@@ -132,11 +132,34 @@
               }
             };
           })(this));
-          return $(document).mouseup(function(e) {
-            dragable = false;
-            diffX = 0;
-            return diffY = 0;
-          });
+          return $(document).mouseup((function(_this) {
+            return function(e) {
+              var left, maxHeight, maxRight, top;
+              dragable = false;
+              top = e.clientY + diffY;
+              left = e.clientX + diffX;
+              maxHeight = $(window).height() - _this.getLast().tpl.height();
+              maxRight = $(window).width() - _this.getLast().tpl.width();
+              if (top < 0) {
+                top = 0;
+              }
+              if (left < 0) {
+                left = 0;
+              }
+              if (top > maxHeight) {
+                top = maxHeight;
+              }
+              if (left > maxRight) {
+                left = maxRight;
+              }
+              _this.getLast().tpl.css({
+                top: top,
+                left: left
+              });
+              diffX = 0;
+              return diffY = 0;
+            };
+          })(this));
         }
       };
 
@@ -146,7 +169,6 @@
         windowHeight = $(window).height();
         width = this.tpl.width();
         height = this.tpl.height();
-        console.info(windowHeight, windowWidth, width, height);
         top = (windowHeight - height) / 2;
         left = (windowWidth - width) / 2;
         if (slideIn) {
@@ -170,7 +192,11 @@
       };
 
       Modal.prototype.getLastButOne = function() {
-        return this.modalGroup[this.modalGroup.length - 2];
+        if (this.parentModal) {
+          return this.parentModal.getLastButOne();
+        } else {
+          return this.modalGroup[this.modalGroup.length - 2];
+        }
       };
 
       Modal.prototype.next = function(optionConfig) {
@@ -206,11 +232,11 @@
           return false;
         }
         if (this.modalGroup.length === 1) {
+          this.modalGroup.pop();
           this.close();
           return false;
         } else {
           this.trigger("back", this);
-          console.log(this.getLastButOne(), this.modalGroup, "-=-=-=-=-=-=-=-=-");
           this.getLastButOne()._fadeIn();
           this.getLast()._slideOut();
           toRemove = this.modalGroup.pop();
@@ -229,28 +255,24 @@
       };
 
       Modal.prototype._fadeOut = function() {
-        console.log("Fading out");
         return this.tpl.animate({
           left: "-=" + $(window).width()
         }, 300);
       };
 
       Modal.prototype._fadeIn = function() {
-        console.log("Fading in");
         return this.tpl.animate({
           left: "+=" + $(window).width()
         }, 300);
       };
 
       Modal.prototype._slideIn = function() {
-        console.log('Sliding In');
         return this.tpl.animate({
           left: "-=" + $(window).width()
         }, 300);
       };
 
       Modal.prototype._slideOut = function() {
-        console.log('Sliding Out');
         return this.tpl.animate({
           left: "+=" + $(window).width()
         }, 300);

@@ -4800,6 +4800,10 @@ VisualOps API. You cannot UNDO this action.'
       en: "%s <span class='validation-tag tag-elb'>%s</span> should allow inbound traffic towards %s according to %s's Instance Listener Protocol."
       zh: ""
 
+    TA_MSG_ERROR_ELB_ATTACHED_SUBNET_CIDR_SUFFIX_GREATE_27:
+      en: "Load Balancer <span class='validation-tag tag-elb'>%s</span> has been associated with Subnet <span class='validation-tag tag-subnet'>%s</span>, whose CIDR mask must be smaller than /27."
+      zh: ""
+
     # SG
     TA_MSG_WARNING_SG_RULE_EXCEED_FIT_NUM:
       en: "Security Group <span class='validation-tag tag-sg'>%s</span> has more than %s rules, If a security group has a large number of rules, performance can be degraded."

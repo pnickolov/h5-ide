@@ -704,7 +704,7 @@ module.exports =
       zh: "子网必须与路由表关联。"
 
     CVS_MSG_ERR_DEL_ELB_LINE_1:
-      en: "Load balancer must attach to at least one subnet."
+      en: "Load Balancer must associate with at least 1 subnet for each Availability Zone where it has registered load balanced instances."
       zh: "负载均衡器至少需要连接一个子网。"
 
     CVS_MSG_ERR_DEL_ELB_LINE_2:

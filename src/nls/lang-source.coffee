@@ -704,7 +704,7 @@ module.exports =
       zh: "子网必须与路由表关联。"
 
     CVS_MSG_ERR_DEL_ELB_LINE_1:
-      en: "Load balancer must attach to at least one subnet."
+      en: "Load Balancer must associate with at least 1 subnet for each Availability Zone where it has registered load balanced instances."
       zh: "负载均衡器至少需要连接一个子网。"
 
     CVS_MSG_ERR_DEL_ELB_LINE_2:
@@ -3677,6 +3677,10 @@ VisualOps API. You cannot UNDO this action.'
       en: "Customer Gateway"
       zh: "客户网关"
 
+    DASH_LBL_INSTANCE:
+      en: "Instance"
+      zh: "实例"
+
     DASH_LBL_DNS_NAME:
       en: "DNS Name"
       zh: "域名"
@@ -4798,6 +4802,10 @@ VisualOps API. You cannot UNDO this action.'
 
     TA_MSG_ERROR_ELB_RULE_INSTANCE_NOT_OUTBOUND_FOR_ELB_LISTENER:
       en: "%s <span class='validation-tag tag-elb'>%s</span> should allow inbound traffic towards %s according to %s's Instance Listener Protocol."
+      zh: ""
+
+    TA_MSG_ERROR_ELB_ATTACHED_SUBNET_CIDR_SUFFIX_GREATE_27:
+      en: "Load Balancer <span class='validation-tag tag-elb'>%s</span> has been associated with Subnet <span class='validation-tag tag-subnet'>%s</span>, whose CIDR mask must be smaller than /27."
       zh: ""
 
     # SG

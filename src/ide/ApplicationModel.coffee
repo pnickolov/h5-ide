@@ -20,7 +20,7 @@ define [ "./submodels/OpsCollection", "./submodels/OpsModel", "ApiRequest", "bac
 
     markNotificationRead : ()->
       for i in @attributes.notification
-        i.is_readed = true
+        i.readed = true
       return
 
     # Convenient method to get the stackList and appList
@@ -92,18 +92,18 @@ define [ "./submodels/OpsCollection", "./submodels/OpsModel", "ApiRequest", "bac
 
       # It seems like the toolbar doesn't even process the request_item, in which we can just directly listen to WS that the request item event.
       self = this
-      ide_event.onLongListen ide_event.UPDATE_REQUEST_ITEM, (idx) -> self.__processSingleNotification idx
+      App.WS.on "requestChange", (idx, dag)-> self.__processSingleNotification idx, dag
 
-    __triggerChange : _.debounce ()->
+    __triggerNotification : _.debounce ()->
       @trigger "change:notification"
     , 300
 
-    __processSingleNotification : ( idx )->
+    __processSingleNotification : ( idx, dag )->
 
       req = App.WS.collection.request.findOne({'_id':idx})
       if not req then return
 
-      item = @__parseRequestInfo req
+      item = @__parseRequestInfo req, dag
       if not item then return
 
       info_list = @attributes.notification
@@ -114,46 +114,54 @@ define [ "./submodels/OpsCollection", "./submodels/OpsModel", "ApiRequest", "bac
           same_req = i
           break
 
-      # not update when the same state
-      if same_req and same_req.is_request is item.is_request and same_req.is_process is item.is_process and same_req.is_complete is item.is_complete
+      # Don't update the list if the request's state is not changed.
+      if same_req and _.isEqual( same_req.state, item.state )
           return
 
       # TODO : Mark the item as read if the current tab is the item's tab.
       # Currently, the item is mark as readed if the WS is not ready.
-      item.is_readed = not App.WS.isReady()
+      item.readed = not App.WS.isReady()
 
       # Prepend the item to the list.
       info_list.splice idx, 1
       info_list.splice 0, 0, item
 
       # Notify the others that notification has changed.
-      @__triggerChange()
+      @__triggerNotification()
       null
 
-    __parseRequestInfo : (req) ->
+    __parseRequestInfo : (req, dag)->
       if not req.brief then return
 
-      lst = req.brief.split ' '
-      item =
-        is_readed     : true
-        is_request    : req.state is constant.OPS_STATE.OPS_STATE_PENDING
-        is_process    : req.state is constant.OPS_STATE.OPS_STATE_INPROCESS
-        is_complete   : req.state is constant.OPS_STATE.OPS_STATE_DONE
-        operation     : lst[0].toLowerCase()
-        name          : lst[lst.length-1]
-        region_label  : constant.REGION_SHORT_LABEL[req.region]
-        time          : req.time_end
+      request =
+        id         : req.id
+        region     : constant.REGION_SHORT_LABEL[ req.region ]
+        time       : req.time_end
+        operation  : constant.OPS_CODE_NAME[ req.code ]
+        targetId   : if dag.spec then dag.spec.id else req.rid
+        targetName : if req.code is "Forge.Stack.Run" then req.brief.split(" ")[2] else ""
+        state      : {}
+        readed     : true
 
-      item = $.extend {}, req, item
+      switch req.state
+        when constant.OPS_STATE.OPS_STATE_FAILED
+          request.error = req.data
+          request.state = { failed : true }
+        when constant.OPS_STATE.OPS_STATE_INPROCESS
+          request.time  = req.time_begin
+          request.state = { processing : true }
+        when constant.OPS_STATE.OPS_STATE_DONE
+          request.state = {
+            completed  : true
+            terminated : req.code is 'Forge.App.Terminate'
+          }
+        when constant.OPS_STATE.OPS_STATE_PENDING
+          # Only format time when the request is not pending
+          request.state = { pending : true }
+          request.time  = ""
 
-      if req.state is constant.OPS_STATE.OPS_STATE_FAILED
-        item.error = req.data
-      else if req.state is constant.OPS_STATE.OPS_STATE_INPROCESS
-        item.time = req.time_begin
-
-      # Only format time when the request is not pending
-      if req.state isnt constant.OPS_STATE.OPS_STATE_PENDING
-        item.time_str = MC.dateFormat( new Date( item.time * 1000 ) , "hh:mm yyyy-MM-dd")
+      if request.time
+        request.time = MC.dateFormat( new Date( request.time * 1000 ) , "hh:mm yyyy-MM-dd")
 
         if req.state isnt constant.OPS_STATE.OPS_STATE_INPROCESS
 
@@ -162,15 +170,10 @@ define [ "./submodels/OpsCollection", "./submodels/OpsModel", "ApiRequest", "bac
           if not isNaN( time_begin ) and not isNaN( time_end ) and time_end >= time_begin
             duration = time_end - time_begin
             if duration < 60
-              item.duration = "Took #{duration} sec."
+              request.duration = "Took #{duration} sec."
             else
-              item.duration = "Took #{Math.round(duration/60)} min."
+              request.duration = "Took #{Math.round(duration/60)} min."
 
-      # rid
-      if item.rid.search('stack') == 0 # run stack
-        item.name = lst[2]
+      request
 
-      item.is_terminated = item.is_complete and item.operation is 'terminate'
-
-      item
   }

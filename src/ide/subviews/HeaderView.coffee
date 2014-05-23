@@ -38,7 +38,7 @@ define [ "./HeaderTpl", "./SettingsDialog", 'backbone' ], ( tmpl, SettingsDialog
             unread_num = 0
             for i in notification
                 html += MC.template.headerNotifyItem i
-                if not i.is_readed
+                if not i.readed
                     unread_num++
 
             @setAlertCount( unread_num )

@@ -1655,32 +1655,30 @@ Are you sure you want to delete {{name}}?</div>
 </div>
 
 <!-- {{headerNotifyItem}} -->
-<li class="notification-item {{#unless is_readed}}unread{{/unless}}">
+<li class="notification-item{{#unless readed}} unread{{/unless}}">
   <div class="notification-message">
-    {{#if error}}
+    {{#if state.failed}}
       <i class="icon-error"></i>
-      <div class="content"><span class="resource-name-label">{{name}}</span> failed to {{operation}} in {{region_label}}.</div>
+      <div class="content"><span class="resource-name-label">{{name}}</span> failed to {{operation}} in {{region}}.</div>
     {{/if}}
-    {{#if is_request}}
+    {{#if state.pending}}
       <i class="icon-pending"></i>
-      <div class="content">Sending request to {{operation}} <span class="resource-name-label">{{name}}</span> in {{region_label}}.</div>
+      <div class="content">Sending request to {{operation}} <span class="resource-name-label">{{name}}</span> in {{region}}.</div>
     {{/if}}
-    {{#if is_process}}
+    {{#if state.processing}}
       <i class="icon-pending"></i>
-      <div class="content">Processing request to {{operation}} <span class="resource-name-label">{{name}}</span> in {{region_label}}.</div>
+      <div class="content">Processing request to {{operation}} <span class="resource-name-label">{{name}}</span> in {{region}}.</div>
     {{/if}}
-    {{#if is_complete}}
+    {{#if state.completed}}
       <i class="icon-success"></i>
-      <div class="content"><span class="resource-name-label">{{name}} </span>{{operation}} successfully in {{region_label}}.</div>
+      <div class="content"><span class="resource-name-label">{{name}} </span>{{operation}} successfully in {{region}}.</div>
     {{/if}}
   </div>
 
-  {{#if error}}
-  <div class="notification-details">{{error}}</div>
-  {{/if}}
+  {{#if error}}<div class="notification-details">{{error}}</div>{{/if}}
 
   <div class="notification-duration left">{{duration}}</div>
-  <div class="timestamp">{{time_str}}</div>
+  <div class="timestamp">{{time}}</div>
 </li>
 
 <!-- {{accessTokenTable}} -->

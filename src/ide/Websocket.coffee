@@ -107,13 +107,15 @@ define [ "Meteor", "backbone", "event", "MC" ], ( Meteor, Backbone, ide_event )-
   # We can place all the watching code here, and re-pipe it to via ide_event,
   # and we can also place the watching code in the other place.
   Websocket.prototype.pipeChanges = ()->
+    self = this
+
     # request list
     @collection.request.find().fetch()
     @collection.request.find().observeChanges {
       added : (idx, dag) ->
-        ide_event.trigger ide_event.UPDATE_REQUEST_ITEM, idx, dag
+        self.trigger "requestChange", idx, dag
       changed : (idx, dag) ->
-        ide_event.trigger ide_event.UPDATE_REQUEST_ITEM, idx, dag
+        self.trigger "requestChange", idx, dag
     }
 
     # import list

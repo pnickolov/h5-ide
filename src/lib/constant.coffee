@@ -233,6 +233,13 @@ define ['MC', 'i18n!nls/lang.js'], ( MC, lang ) ->
 		OPS_STATE_FAILED    : "Failed"
 	}
 
+	OPS_CODE_NAME =
+		"Forge.Stack.Run"     : "launch"
+		"Forge.App.Stop"      : "stop"
+		"Forge.App.Start"     : "start"
+		"Forge.App.Update"    : "update"
+		"Forge.App.Terminate" : "terminate"
+
 	AWS_RESOURCE = {
 		AZ                  :   'AWS.EC2.AvailabilityZone'
 		AMI                 :   'AWS.EC2.AMI'
@@ -495,6 +502,7 @@ use redirection server name:i:0\n"
 	MESSAGE_E               : MESSAGE_E
 	APP_STATE               : APP_STATE
 	OPS_STATE               : OPS_STATE
+	OPS_CODE_NAME           : OPS_CODE_NAME
 	RECENT_NUM              : RECENT_NUM
 	RECENT_DAYS             : RECENT_DAYS
 	AWS_RESOURCE            : AWS_RESOURCE

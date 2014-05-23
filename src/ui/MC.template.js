@@ -877,25 +877,27 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 function program1(depth0,data) {
   
   
-  return "Run Stack";
+  return "<button class=\"btn btn-blue\" id=\"btn-confirm\" disabled>Run Stack</button>\n		";
   }
 
 function program3(depth0,data) {
   
   
-  return "Setup Credential First";
+  return "\n		<button class=\"btn btn-primary\" id=\"btn-confirm\" disabled>Set Up Credential First</button>";
   }
 
   buffer += "<div id=\"modal-run-stack\">\n	<div class=\"modal-header\">\n		<h3>"
     + escapeExpression(helpers.i18n.call(depth0, "TOOL_POP_TIT_RUN_STACK", {hash:{},data:data}))
     + "</h3><i class=\"modal-close\">×</i>\n	</div>\n	<div class=\"modal-body\">\n		<div class=\"modal-control-group clearfix\" data-bind=\"true\">\n			<label class=\"label\" for=\"app-name\">App Name</label>\n			<input id=\"app-name\" class=\"input modal-input-value\" type=\"text\" value=\""
     + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" data-ignore=\"true\">\n			<div class=\"runtime-error\" id=\"runtime-error-appname\"></div>\n		</div>\n		<div class=\"modal-control-group default-kp-group clearfix\" style=\"display:none;\">\n			<label for=\"\">$DefaultKeyPair</label>\n			<div id=\"kp-runtime-placeholder\"></div>\n			<div class=\"runtime-error\" id=\"runtime-error-kp\"></div>\n		</div>\n		<div class=\"modal-control-group app-usage-group clearfix\">\n			<label for=\"\">App Usage</label>\n			<div id=\"app-usage-selectbox\" class=\"selectbox\">\n				<div class=\"selection\"><i class=\"icon-app-type-testing\"></i>Testing</div>\n				<ul class=\"dropdown\" tabindex=\"-1\">\n					<li class=\"selected item\" data-value=\"testing\"><i class=\"icon-app-type-testing\"></i>Testing</li>\n					<li class=\"item\" data-value=\"development\"><i class=\"icon-app-type-development\"></i>Development</li>\n					<li class=\"item\" data-value=\"production\"><i class=\"icon-app-type-production\"></i>Production</li>\n					<li class=\"item\" data-value=\"others\"><i class=\"icon-app-type-others\" data-value=\"testing\"></i>Others</li>\n				</ul>\n			</div>\n		</div>\n		<div class=\"stack-validation\">\n			<details open style=\"display:none;\">\n				<summary>Stack Validation</summary>\n				<div id=\"stack-run-validation-container\"></div>\n			</details>\n			<div class=\"nutshell\" style=\"display: none;\">:<label></label></div>\n			<div class=\"validating\">\n				<div class=\"loading-spinner loading-spinner-small\"></div>\n				<p>Validating your stack...</p>\n			</div>\n		</div>\n		<div class=\"estimate clearfix\">\n			<span class=\"title\">Estimated Cost</span>\n			<span class=\"price\" id=\"label-total-fee\"><b>$"
+    + "\" data-ignore=\"true\">\n			<div class=\"runtime-error\" id=\"runtime-error-appname\"></div>\n		</div>\n		<div class=\"modal-control-group default-kp-group clearfix\" style=\"display:none;\">\n			<label for=\"\">$DefaultKeyPair</label>\n			<div id=\"kp-runtime-placeholder\"></div>\n			<i class=\"icon-info tooltip\" data-tooltip=\""
+    + escapeExpression(helpers.i18n.call(depth0, "TIP_KEYPAIR_USED_DEFAULT_KP", {hash:{},data:data}))
+    + "\"></i>\n			<div class=\"runtime-error\" id=\"runtime-error-kp\"></div>\n		</div>\n		<div class=\"modal-control-group app-usage-group clearfix\">\n			<label for=\"\">App Usage</label>\n			<div id=\"app-usage-selectbox\" class=\"selectbox\">\n				<div class=\"selection\"><i class=\"icon-app-type-testing\"></i>Testing</div>\n				<ul class=\"dropdown\" tabindex=\"-1\">\n					<li class=\"selected item\" data-value=\"testing\"><i class=\"icon-app-type-testing\"></i>Testing</li>\n					<li class=\"item\" data-value=\"development\"><i class=\"icon-app-type-development\"></i>Development</li>\n					<li class=\"item\" data-value=\"production\"><i class=\"icon-app-type-production\"></i>Production</li>\n					<li class=\"item\" data-value=\"others\"><i class=\"icon-app-type-others\" data-value=\"testing\"></i>Others</li>\n				</ul>\n			</div>\n		</div>\n		<div class=\"stack-validation\">\n			<details open style=\"display:none;\">\n				<summary>Stack Validation</summary>\n				<div id=\"stack-run-validation-container\"></div>\n			</details>\n			<div class=\"nutshell\" style=\"display: none;\">:<label></label></div>\n			<div class=\"validating\">\n				<div class=\"loading-spinner loading-spinner-small\"></div>\n				<p>Validating your stack...</p>\n			</div>\n		</div>\n		<div class=\"estimate clearfix\">\n			<span class=\"title\">Estimated Cost</span>\n			<span class=\"price\" id=\"label-total-fee\"><b>$"
     + escapeExpression(((stack1 = (depth0 && depth0.total_fee)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</b> / month</span>\n		</div>\n\n	</div>\n	<div class=\"modal-footer\">\n\n		<button class=\"btn btn-blue\" id=\"btn-confirm\" disabled>";
+    + "</b> / month</span>\n		</div>\n\n	</div>\n	<div class=\"modal-footer\">\n\n		";
   stack1 = helpers['if'].call(depth0, (depth0 && depth0.hasCred), {hash:{},inverse:self.program(3, program3, data),fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "</button>\n		<button class=\"btn btn-silver modal-close\" id=\"run-stack-cancel\">Cancel</button>\n	</div>\n</div>\n\n";
+  buffer += "\n		<button class=\"btn btn-silver modal-close\" id=\"run-stack-cancel\">Cancel</button>\n	</div>\n</div>\n\n";
   return buffer;
   };
 TEMPLATE.modalRunStack=Handlebars.template(__TEMPLATE__);
@@ -1286,7 +1288,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 
   buffer += "<div style=\"width:500px\">\n	<div class=\"modal-header\">\n		<h3>Get Windows Password</h3>\n		<i class=\"modal-close\">&times;</i>\n	</div>\n	<div class=\"modal-body\">\n		<section class=\"password-hint\">\n			<p class=\"modal-text-major\">This instance was associated with key pair: <span>"
     + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</span></p>\n			<p>To access this instance remotely (e.g. Remote Desktop Connection), you will need your Windows Administrator password. A default password was created when the instance was launched and is available encrypted in the system log.</p>\n		</section>\n		<section class=\"import-zone\">\n			<div id='keypair-loading' class=\"loading-spinner\"></div>\n		</section>\n		<section class=\"decrypt-action\" style=\"display: none;\">\n			<button class=\"btn btn-blue\" id=\"do-kp-decrypt\" disabled>Decrypt Password</button>\n			<input readonly class=\"input\" type=\"text\" id=\"keypair-pwd\" placeholder=\"Decripted password will appear here\">\n			<div class=\"change-pw-recommend icon-info tooltip\" data-tooltip=\"We recommend that you change your password to one that you will remember and know privately. Please note that passwords can persist through bundling phases and will not be retrievable through this tool. It is therefore important that you change your password to one that you will remember if you intend to bundle a new AMI from this instance.\">Change Password Recommendation from AWS</div>\n		</section>\n		<section class=\"no-password\" style=\"display: none;\">\n			<p>\n				Your password is not ready. Password generation can sometimes take more than 30 minutes. Please wait at least 15 minutes after launching an instance before trying to retrieve the generated password.\n			</p>\n\n			<p>\n				If you launched this instance from your own AMI, the password is the same as for the instance from which you created the AMI, unless this setting was modified in the EC2Config service settings.\n			</p>\n		</section>\n	</div>\n</div>\n\n";
+    + "</span></p>\n			<p>To access this instance remotely (e.g. Remote Desktop Connection), you will need your Windows Administrator password. A default password was created when the instance was launched and is available encrypted in the system log.</p>\n		</section>\n		<section class=\"import-zone\">\n			<div id='keypair-loading' class=\"loading-spinner\"></div>\n		</section>\n		<section class=\"decrypt-action\" style=\"display: none;\">\n			<button class=\"btn btn-blue\" id=\"do-kp-decrypt\" disabled>Decrypt Password</button>\n			<input readonly class=\"input\" type=\"text\" id=\"keypair-pwd\" placeholder=\"Decripted password will appear here\">\n			<div class=\"change-pw-recommend icon-info tooltip\" data-tooltip=\"We recommend that you change your password to one that you will remember and know privately. Please note that passwords can persist through bundling phases and will not be retrievable through this tool. It is therefore important that you change your password to one that you will remember if you intend to bundle a new AMI from this instance.\" style=\"display: none;\">Change Password Recommendation from AWS</div>\n		</section>\n		<section class=\"no-password\" style=\"display: none;\">\n			<p>\n				Your password is not ready. Password generation can sometimes take more than 30 minutes. Please wait at least 15 minutes after launching an instance before trying to retrieve the generated password.\n			</p>\n\n			<p>\n				If you launched this instance from your own AMI, the password is the same as for the instance from which you created the AMI, unless this setting was modified in the EC2Config service settings.\n			</p>\n		</section>\n	</div>\n</div>\n\n";
   return buffer;
   };
 TEMPLATE.modalDecryptPassword=Handlebars.template(__TEMPLATE__);
@@ -1902,7 +1904,9 @@ function program13(depth0,data) {
 
   buffer += "<div id=\"app-apply-update\" style=\"width:460px\">\n	<div class=\"modal-header\"><h3 class=\"truncate\" style=\"width: 380px;\">"
     + escapeExpression(helpers.i18n.call(depth0, "POP_CONFIRM_UPDATE_TIT", {hash:{},data:data}))
-    + "</h3><i class=\"modal-close\">&times;</i> </div>\n	<div class=\"modal-body\">\n		<div class=\"modal-control-group default-kp-group clearfix\" style=\"display:none;\">\n			<label for=\"\">$DefaultKeyPair</label>\n			<div id=\"kp-runtime-placeholder\"></div>\n			<div class=\"runtime-error\" id=\"runtime-error-kp\"></div>\n		</div>\n	";
+    + "</h3><i class=\"modal-close\">&times;</i> </div>\n	<div class=\"modal-body\">\n		<div class=\"modal-control-group default-kp-group clearfix\" style=\"display:none;\">\n			<label for=\"\">$DefaultKeyPair</label>\n			<div id=\"kp-runtime-placeholder\"></div>\n			<i class=\"icon-info tooltip\" data-tooltip=\""
+    + escapeExpression(helpers.i18n.call(depth0, "TIP_KEYPAIR_USED_DEFAULT_KP", {hash:{},data:data}))
+    + "\"></i>\n			<div class=\"runtime-error\" id=\"runtime-error-kp\"></div>\n		</div>\n	";
   stack1 = helpers['if'].call(depth0, (depth0 && depth0.isRunning), {hash:{},inverse:self.program(3, program3, data),fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n	";
@@ -2418,7 +2422,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 function program1(depth0,data) {
   
   
-  return "unread";
+  return " unread";
   }
 
 function program3(depth0,data) {
@@ -2429,7 +2433,7 @@ function program3(depth0,data) {
     + "</span> failed to "
     + escapeExpression(((stack1 = (depth0 && depth0.operation)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + " in "
-    + escapeExpression(((stack1 = (depth0 && depth0.region_label)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + escapeExpression(((stack1 = (depth0 && depth0.region)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + ".</div>\n    ";
   return buffer;
   }
@@ -2442,7 +2446,7 @@ function program5(depth0,data) {
     + " <span class=\"resource-name-label\">"
     + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</span> in "
-    + escapeExpression(((stack1 = (depth0 && depth0.region_label)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + escapeExpression(((stack1 = (depth0 && depth0.region)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + ".</div>\n    ";
   return buffer;
   }
@@ -2455,7 +2459,7 @@ function program7(depth0,data) {
     + " <span class=\"resource-name-label\">"
     + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</span> in "
-    + escapeExpression(((stack1 = (depth0 && depth0.region_label)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + escapeExpression(((stack1 = (depth0 && depth0.region)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + ".</div>\n    ";
   return buffer;
   }
@@ -2468,7 +2472,7 @@ function program9(depth0,data) {
     + " </span>"
     + escapeExpression(((stack1 = (depth0 && depth0.operation)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + " successfully in "
-    + escapeExpression(((stack1 = (depth0 && depth0.region_label)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + escapeExpression(((stack1 = (depth0 && depth0.region)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + ".</div>\n    ";
   return buffer;
   }
@@ -2476,26 +2480,26 @@ function program9(depth0,data) {
 function program11(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n  <div class=\"notification-details\">"
+  buffer += "<div class=\"notification-details\">"
     + escapeExpression(((stack1 = (depth0 && depth0.error)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</div>\n  ";
+    + "</div>";
   return buffer;
   }
 
-  buffer += "<li class=\"notification-item ";
-  stack1 = helpers.unless.call(depth0, (depth0 && depth0.is_readed), {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
+  buffer += "<li class=\"notification-item";
+  stack1 = helpers.unless.call(depth0, (depth0 && depth0.readed), {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\">\n  <div class=\"notification-message\">\n    ";
-  stack1 = helpers['if'].call(depth0, (depth0 && depth0.error), {hash:{},inverse:self.noop,fn:self.program(3, program3, data),data:data});
+  stack1 = helpers['if'].call(depth0, ((stack1 = (depth0 && depth0.state)),stack1 == null || stack1 === false ? stack1 : stack1.failed), {hash:{},inverse:self.noop,fn:self.program(3, program3, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n    ";
-  stack1 = helpers['if'].call(depth0, (depth0 && depth0.is_request), {hash:{},inverse:self.noop,fn:self.program(5, program5, data),data:data});
+  stack1 = helpers['if'].call(depth0, ((stack1 = (depth0 && depth0.state)),stack1 == null || stack1 === false ? stack1 : stack1.pending), {hash:{},inverse:self.noop,fn:self.program(5, program5, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n    ";
-  stack1 = helpers['if'].call(depth0, (depth0 && depth0.is_process), {hash:{},inverse:self.noop,fn:self.program(7, program7, data),data:data});
+  stack1 = helpers['if'].call(depth0, ((stack1 = (depth0 && depth0.state)),stack1 == null || stack1 === false ? stack1 : stack1.processing), {hash:{},inverse:self.noop,fn:self.program(7, program7, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n    ";
-  stack1 = helpers['if'].call(depth0, (depth0 && depth0.is_complete), {hash:{},inverse:self.noop,fn:self.program(9, program9, data),data:data});
+  stack1 = helpers['if'].call(depth0, ((stack1 = (depth0 && depth0.state)),stack1 == null || stack1 === false ? stack1 : stack1.completed), {hash:{},inverse:self.noop,fn:self.program(9, program9, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n  </div>\n\n  ";
   stack1 = helpers['if'].call(depth0, (depth0 && depth0.error), {hash:{},inverse:self.noop,fn:self.program(11, program11, data),data:data});
@@ -2503,7 +2507,7 @@ function program11(depth0,data) {
   buffer += "\n\n  <div class=\"notification-duration left\">"
     + escapeExpression(((stack1 = (depth0 && depth0.duration)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</div>\n  <div class=\"timestamp\">"
-    + escapeExpression(((stack1 = (depth0 && depth0.time_str)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + escapeExpression(((stack1 = (depth0 && depth0.time)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</div>\n</li>\n\n";
   return buffer;
   };
@@ -2520,7 +2524,7 @@ function program1(depth0,data) {
   var buffer = "", stack1;
   buffer += "\n<li>\n	<input class=\"tokenName input\" value=\""
     + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" readonly/>\n	<span class=\"tokenToken click-select\">"
+    + "\" readonly/>\n	<span class=\"tokenToken click-select truncate\">"
     + escapeExpression(((stack1 = (depth0 && depth0.token)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</span>\n	<span class=\"tokenControl\">\n		<button class=\"tooltip icon-edit\" data-tooltip=\"\"></button>\n		<button class=\"tooltip icon-delete\" data-tooltip=\"\"></button>\n		<button class=\"btn btn-blue tokenDone\">"
     + escapeExpression(helpers.i18n.call(depth0, "HEAD_BTN_DONE", {hash:{},data:data}))
@@ -2528,11 +2532,6 @@ function program1(depth0,data) {
   return buffer;
   }
 
-  buffer += "<li>\n	<span class=\"tokenName\">"
-    + escapeExpression(helpers.i18n.call(depth0, "SETTINGS_LABEL_TOKENTABLE_NAME", {hash:{},data:data}))
-    + "</span>\n	<span class=\"tokenToken\">"
-    + escapeExpression(helpers.i18n.call(depth0, "SETTINGS_LABEL_TOKENTABLE_TOKEN", {hash:{},data:data}))
-    + "</span>\n</li>\n";
   stack1 = helpers.each.call(depth0, depth0, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n\n";

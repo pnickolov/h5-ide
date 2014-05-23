@@ -8,9 +8,6 @@ define [ 'combo_dropdown', 'toolbar_modal', './kpTpl', './kpDialogTpl', 'kp_uplo
         __import: ''
         __mode: 'normal'
 
-        modalOptions:
-            buttons: []
-
         needDownload: () ->
             if arguments.length is 1
                 @__needDownload = arguments[ 0 ]
@@ -21,11 +18,49 @@ define [ 'combo_dropdown', 'toolbar_modal', './kpTpl', './kpDialogTpl', 'kp_uplo
 
             @__needDownload
 
+        getRegion: ->
+            region = Design.instance().get('region')
+            constant.REGION_SHORT_LABEL[ region ]
+
+        getModalOptions: ->
+
+            region = Design.instance().get('region')
+            regionName = constant.REGION_SHORT_LABEL[ region ]
+
+
+            title: "Manage Key Pairs in #{regionName}"
+            buttons: [
+                {
+                    icon: 'new-stack'
+                    type: 'create'
+                    name: 'Create Key Pair'
+                }
+                {
+                    icon: 'del'
+                    type: 'delete'
+                    disalbed: true
+                    name: 'Delete'
+                }
+            ]
+            columns: [
+                {
+                    sortable: true
+                    width: "100px" # or 40%
+                    name: 'Name'
+                }
+                {
+                    sortable: false
+                    width: "100px" # or 40%
+                    name: 'Fingerprint'
+                }
+            ]
+
         initModal: () ->
-            @modal = new toolbar_modal()
+            @modal = new toolbar_modal @getModalOptions()
 
 
         initialize: () ->
+            @initModal()
             @model.on 'change:keys', () ->
                 if @$( '.scroll-content' ).length
                     @renderKeys()

@@ -8,7 +8,9 @@
     <div class="modal-body">
         <div class="content-wrap">
             <div class="toolbar">
-                <button class="icon-new-stack btn btn-blue t-m-btn" data-btn="create">{{btnValueCreate}}</button>
+                {{#if btnValueCreate}}
+                    <button class="icon-new-stack btn btn-blue t-m-btn" data-btn="create">{{btnValueCreate}}</button>
+                {{/if}}
                 <div class="btn-group">
                     {{#each buttons}}
                         <button class="icon-{{icon}} t-m-btn" data-btn="{{type}}" {{#if disabled}}disabled{{/if}}>{{name}}</button>

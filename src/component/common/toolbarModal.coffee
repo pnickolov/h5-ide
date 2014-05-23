@@ -9,9 +9,36 @@
 
 ### Example:
 define [ 'toolbar_modal' ], ( toolbar_modal ) ->
+    modalOptions :
+        title: "Manage Key Pairs in #{{regionName}}"
+        buttons: [
+            {
+                icon: 'new-stack'
+                type: 'create'
+                name: 'Create Key Pair'
+            }
+            {
+                icon: 'del'
+                type: 'delete'
+                disalbed: true
+                name: 'Delete'
+            }
+        ]
+        columns: [
+            {
+                sortable: true
+                width: 100px # or 40%
+                name: 'Name'
+            }
+            {
+                sortable: false
+                width: 100px # or 40%
+                name: 'Fingerprint'
+            }
+        ]
 
     bindModal: () ->
-        @modal = new toolbar_modal()
+        @modal = new toolbar_modal @modalOptions
 
         @modal.on 'slideup', @donothing, @
         @modal.on 'slidedown', @slideDown, @
@@ -24,33 +51,7 @@ define [ 'toolbar_modal' ], ( toolbar_modal ) ->
 
 
     render: () ->
-        options =
-            title: "Manage Key Pairs in #{{regionName}}"
-            buttons: [
-                {
-                    icon: 'new-stack'
-                    type: 'create'
-                    name: 'Create Key Pair'
-                }
-                {
-                    icon: 'del'
-                    type: 'delete'
-                    disalbed: true
-                    name: 'Delete'
-                }
-            ]
-            columns: [
-                {
-                    sortable: true
-                    width: 100px # or 40%
-                    name: 'Name'
-                }
-                {
-                    sortable: false
-                    width: 100px # or 40%
-                    name: 'Fingerprint'
-                }
-            ]
+
 
         @modal.render(options)
 
@@ -79,10 +80,11 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery' ], ( templat
             # do action
             'click .do-action': 'doAction'
             'click .cancel': 'cancel'
-            'click [data-btn=delete]': 'refresh'
+            'click [data-btn=refresh]': 'refresh'
 
         initialize: ( options ) ->
-            @options = options
+            @options = options or {}
+            @options.title = 'Default Title' if not @options.title
 
         cancel: () ->
             if _.isFunction( @options.validate ) and not @options.validate()
@@ -102,7 +104,7 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery' ], ( templat
 
             $button = $ event.currentTarget
             $slidebox = @$( '.slidebox' )
-            button = $target.data 'btn'
+            button = $button.data 'btn'
             $activeButton = @$( '.toolbar .active' )
             activeButton = $activeButton and $activeButton.data 'btn'
 
@@ -184,6 +186,10 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery' ], ( templat
 
         render: ( refresh ) ->
             data = @options
+            if data.buttons and data.buttons.length
+                createBtn = _.findWhere(data.buttons, type: 'create')
+                btnValueCreate = createBtn.name
+
             @$el.html template.frame data
             if not refresh
                 @open()

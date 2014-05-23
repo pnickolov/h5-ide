@@ -139,13 +139,6 @@ define [ "constant",
           error  : "#{cidr} has not enough IP for the ENIs in this subnet."
         }
 
-      # 4. Check Elb.
-      if @connections( "ElbSubnetAsso" ).length and Number(cidr.split('/')[1]) > 27
-        return {
-          error : "The subnet is attached with a load balancer. The CIDR mask must be smaller than /27."
-          shouldRemove : false
-        }
-
       true
 
     isCidrConfilctWithSubnets : ( cidr )->

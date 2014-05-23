@@ -35,6 +35,9 @@ define [ "./CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
           throw McError( ApiRequest.Errors.InvalidAwsReturn, "Snapshot created but aws returns invalid ata." )
 
         self.set res
+
+        # Ask collection to update the status for this model.
+        self.getCollection().startPollingStatus()
         console.log "Created Snapshot resource", self
 
         self

@@ -61,12 +61,14 @@ define [ 'toolbar_modal' ], ( toolbar_modal ) ->
 
 ###
 
-define [ './component/common/toolbarModalTpl', 'backbone', 'jquery' ], ( template, Backbone, $ ) ->
+define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.notification' ], ( template, Backbone, $ ) ->
 
 
     Backbone.View.extend
 
         tagName: 'section'
+
+        __slide: null
 
         events:
             'click .modal-close' : 'close'
@@ -85,21 +87,30 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery' ], ( templat
         initialize: ( options ) ->
             @options = options or {}
             @options.title = 'Default Title' if not @options.title
+            if options.context
+                @options.context.modal = @
+                @options.context.m$ = _.bind @$, @
 
-        cancel: () ->
-            if _.isFunction( @options.validate ) and not @options.validate()
-                return @
+        doAction: ( event ) ->
+            @error()
+            action = $( event.currentTarget ).data 'action'
+            @trigger 'action', action, @__getChecked()
 
-            $slidebox = @$( '.slidebox' )
-            $activeButton = @$( '.toolbar .active' )
 
-            @trigger 'slideup', $activeButton.data 'btn'
-            $activeButton.removeClass 'active'
-            $slidebox.removeClass 'show'
-            @
+        __getChecked: () ->
+            allChecked = @$('.one-cb:checked')
+            checkedInfo = []
+            allChecked.each () ->
+                checkedInfo.push id: @id, value: @value, data: $(@).data()
+
+            checkedInfo
+
+        __slideRejct: ->
+            _.isFunction( @options.slideable ) and not @options.slideable()
+
 
         handleSlide: ( event ) ->
-            if _.isFunction( @options.validate ) and not @options.validate()
+            if @__slideRejct()
                 return @
 
             $button = $ event.currentTarget
@@ -109,35 +120,39 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery' ], ( templat
             activeButton = $activeButton and $activeButton.data 'btn'
 
 
+            # has active button
             if $activeButton
                 # slide up
-                if $activeButton is $button
+                if $activeButton.get( 0 ) is $button.get( 0 )
                     @trigger 'slideup', button
                     $button.removeClass 'active'
                     $slidebox.removeClass 'show'
+                    @__slide = null
                 #slide down
                 else
-                    @trigger 'slidedown', button
+                    @trigger 'slidedown', button, @__getChecked()
                     $activeButton.removeClass 'active'
                     $button.addClass 'active'
+                    $slidebox.addClass 'show'
+                    @__slide = button
 
             else
-                @trigger 'slidedown', button
+                @trigger 'slidedown', button, @__getChecked()
                 $button.addClass 'active'
                 $slidebox.addClass 'show'
+                @__slide = button
 
 
         refresh: ->
+            if @__slideRejct()
+                return @
             @renderLoading()
             @trigger 'refresh'
-
-        renderLoading: () ->
-            @$( '.content-wrap' ).html template.loading
-            @
 
         close: ( event ) ->
             $( '#modal-wrap' ).off 'click', @stopPropagation
             modal.close()
+            @trigger 'close'
             @remove()
             false
 
@@ -166,7 +181,7 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery' ], ( templat
         processDelBtn: () ->
             that = @
             _.defer () ->
-                if that.$('input:checked').length
+                if that.$('.one-cb:checked').length
                     that.$('[data-btn=delete]').prop 'disabled', false
                 else
                     that.$('[data-btn=delete]').prop 'disabled', true
@@ -180,16 +195,25 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery' ], ( templat
             modal @el
             $( '#modal-wrap' ).click @stopPropagation
 
+        renderLoading: () ->
+            @$( '.content-wrap' ).html template.loading
+            @
+
+        __toggleLoading: ( showOrHide ) ->
+            @$( '.loading-spinner' ).toggle not showOrHide
+            @$( '.content-wrap' ).toggle showOrHide
 
 
         # ------ In Common Use ------ #
 
         render: ( refresh ) ->
             data = @options
-            if data.buttons and data.buttons.length
-                createBtn = _.findWhere(data.buttons, type: 'create')
-                btnValueCreate = createBtn.name
 
+            data.buttons = _.reject data.buttons, ( btn ) ->
+                if btn.type is 'create'
+                    data.btnValueCreate = btn.name
+                    true
+            @__toggleLoading false
             @$el.html template.frame data
             if not refresh
                 @open()
@@ -200,6 +224,7 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery' ], ( templat
                 @render true
 
             @$( '.t-m-content' ).html dom
+            @__toggleLoading true
             @
 
         setSlide: ( dom ) ->
@@ -207,7 +232,19 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery' ], ( templat
             @error()
             @
 
-        delegate: ( events ) ->
+        cancel: () ->
+            if @__slideRejct()
+                return @
+
+            $slidebox = @$( '.slidebox' )
+            $activeButton = @$( '.toolbar .active' )
+
+            @trigger 'slideup', $activeButton.data 'btn'
+            $activeButton.removeClass 'active'
+            $slidebox.removeClass 'show'
+            @
+
+        delegate: ( events, context ) ->
             if not events or not _.isObject(events) then return @
 
             for key, method in events
@@ -216,13 +253,12 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery' ], ( templat
                 match = key.match /^(\S+)\s*(.*)$/
                 eventName = match[1]
                 selector = match[2]
-                method = _.bind(method, this);
-                eventName += '.delegateEvents' + @cid;
+                method = _.bind method, context or this
+                eventName += '.delegateEvents' + @cid
                 if selector is ''
                   @$el.on eventName, method
                 else
                   @$el.on eventName, selector, method
-
 
             @
 
@@ -232,6 +268,10 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery' ], ( templat
                 $error.text( msg ).show()
             else
                 $error.hide()
+
+
+        getSlide: ->
+            @__slide
 
 
 

@@ -6,7 +6,7 @@
     </div>
 
     <div class="modal-body">
-        <div class="content-wrap">
+        <div class="content-wrap hide">
             <div class="toolbar">
                 {{#if btnValueCreate}}
                     <button class="icon-new-stack btn btn-blue t-m-btn" data-btn="create">{{btnValueCreate}}</button>
@@ -62,6 +62,7 @@
                 </div>
             </div>
         </div>
+        <div class="loading-spinner"></div>
     </div>
 </div>
 

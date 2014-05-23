@@ -135,7 +135,7 @@ define [], ()->
                 @isMoving = true
                 window.setTimeout ()=>
                     @isMoving = false
-                ,300
+                ,@option.delay || 300
             else
                 return false
         back: ()->
@@ -156,23 +156,23 @@ define [], ()->
                 window.setTimeout ()=>
                     toRemove.tpl.remove()
                     @isMoving = false;
-                ,300
+                ,@option.delay || 300
         _fadeOut: ->
             @tpl.animate
                 left: "-="+ $(window).width()
-            ,300
+            ,@option.delay || 300
         _fadeIn: ->
             @tpl.animate
                 left: "+="+ $(window).width()
-            ,300
+            ,@option.delay || 300
         _slideIn: ->
             @tpl.animate
                 left: "-="+ $(window).width()
-            ,300
+            ,@option.delay || 300
         _slideOut: ->
             @tpl.animate
                 left: "+="+ $(window).width()
-            ,300
+            ,@option.delay || 300
     Modal
 
 
@@ -212,4 +212,4 @@ define [], ()->
 #        template: "<h1 style='font-size: 100px;line-height:125px;text-align: center'>Four</h1>"
 #        onClose: ->
 #            console.log("Closed 4")
-#,3000
+#,@option.delay || 3000

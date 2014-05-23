@@ -225,7 +225,7 @@
             return function() {
               return _this.isMoving = false;
             };
-          })(this), 300);
+          })(this), this.option.delay || 300);
         } else {
           return false;
         }
@@ -255,32 +255,32 @@
               toRemove.tpl.remove();
               return _this.isMoving = false;
             };
-          })(this), 300);
+          })(this), this.option.delay || 300);
         }
       };
 
       Modal.prototype._fadeOut = function() {
         return this.tpl.animate({
           left: "-=" + $(window).width()
-        }, 300);
+        }, this.option.delay || 300);
       };
 
       Modal.prototype._fadeIn = function() {
         return this.tpl.animate({
           left: "+=" + $(window).width()
-        }, 300);
+        }, this.option.delay || 300);
       };
 
       Modal.prototype._slideIn = function() {
         return this.tpl.animate({
           left: "-=" + $(window).width()
-        }, 300);
+        }, this.option.delay || 300);
       };
 
       Modal.prototype._slideOut = function() {
         return this.tpl.animate({
           left: "+=" + $(window).width()
-        }, 300);
+        }, this.option.delay || 300);
       };
 
       return Modal;

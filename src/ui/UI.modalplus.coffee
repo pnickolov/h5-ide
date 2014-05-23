@@ -1,15 +1,15 @@
 #
 # *********************************************************
-# Filename: UI.modalPlus
+# Filename: UI.modalplus
 # Creator: Cyril Hou
-# Description: UI.modalPlus
+# Description: UI.modalplus
 # Date: 2014-05-23
 # **********************************************************
 # (c) Copyright 2014 MadeiraCloud  All Rights Reserved
 # **********************************************************
 #
 # Usage:
-#   modal = new Modal option
+#   modal = new UI.modalplus option
 #   subModal = modal.next option
 #
 #   option:
@@ -40,7 +40,7 @@
 #       modalGroup      ====> the modalGroup
 #
 #   Example:
-#       modal = new Modal
+#       modal = new UI.modalplus
 #           title: "Modal Title"
 #           template:   "<h1>Here Goes Modal Body</h1>"
 #           width: "600px"

@@ -97,7 +97,8 @@
         }
         $(window).resize((function(_this) {
           return function() {
-            return _this.getLast().resize();
+            var _ref;
+            return _this != null ? (_ref = _this.getLast()) != null ? _ref.resize() : void 0 : void 0;
           };
         })(this));
         if (this.option.dragable) {

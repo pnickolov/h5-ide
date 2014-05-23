@@ -56,7 +56,7 @@ define [], ()->
                     if(e.target == e.currentTarget)
                         @back()
             $(window).resize =>
-                @.getLast().resize()
+                @?.getLast()?.resize()
             if(@option.dragable)
                 diffX = 0
                 diffY = 0

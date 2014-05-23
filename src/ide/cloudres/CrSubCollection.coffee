@@ -52,7 +52,6 @@ define [
 
       for i in res
         i.id = i.keyName
-        delete i.keyName
 
       res
   }

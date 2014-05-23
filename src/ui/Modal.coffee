@@ -1,3 +1,44 @@
+#
+# *********************************************************
+# Filename: UI.modalPlus
+# Creator: Cyril Hou
+# Description: UI.modalPlus
+# Date: 2014-05-23
+# **********************************************************
+# (c) Copyright 2014 MadeiraCloud  All Rights Reserved
+# **********************************************************
+#
+# Usage:
+#   modal = new Modal option
+#   subModal = modal.next option
+#
+#   option:
+#      title: Modal.header title                                        [required]
+#      template: Modal.body content                                     [required]
+#      width: set the width of modal                                    [default: 520px]
+#      maxHeight: set the Modal body "max-height" css attribute.        [default: 400px]
+#      delay: animate delay time.                                       [default: 300ms]
+#      disableClose: if can be closed when it's a single modal.         [default: false]
+#      disableFooter: if this Modal has footer.                         [default: false]
+#      dragAble: if the modal is dragAble                               [default: false]
+#      confirm: confirm button of Modal footer.                         [default: {text: :"Submit", color: "blue"}]
+#      cancel: cancel button of Modal                                   [default: "Cancel"]
+#      onClose: function to exec then the modal close.                  [Function]
+#      onConfirm: function to exec then the confirm button is clicked   [Function]
+#      onCancel: function to exec when the cancel button is clicked     [Function]
+#      onShow: function to exec then the modal is shown.                [Function]
+#   Event:
+#       on "show","next", "next", "close", "confirm", "cancel"
+#   Method:
+#       next( option )  ====> return new subModal
+#       back()          ====> remove Last modal, back to the last but one modal.
+#       getLast()       ====> return the last modal in modalGroup
+#       getFirst()      ====> return the first modal in modalGroup
+#       getLastButOne() ====> return the last but one modal in modalGroup
+#   Property:
+#       tpl             ====> the jQuery Dom element of the modal
+#       modalGroup      ====> the modalGroup
+#
 define [], ()->
     class Modal
         constructor: (@option)->
@@ -7,7 +48,7 @@ define [], ()->
                 title: @option.title || ""
                 closeAble : !@option.disableClose
                 template: @option.template||""
-                confirm: @option.confirm || "Submit"
+                confirm: @option.confirm
                 cancel: @option.cancel|| "Cancel"
                 hasFooter: !@option.disableFooter
             )
@@ -136,6 +177,7 @@ define [], ()->
                 window.setTimeout ()=>
                     @isMoving = false
                 ,@option.delay || 300
+                newModal
             else
                 return false
         back: ()->
@@ -174,42 +216,3 @@ define [], ()->
                 left: "+="+ $(window).width()
             ,@option.delay || 300
     Modal
-
-
-#taModal = new Modal
-#    title: "TA Modal 1"
-#    disableClose: false
-#    dragable: true
-#    template: "<h1 style='font-size: 100px;line-height:125px;text-align: center'>One</h1>"
-#    onClose: ->
-#        console.log("Close!")
-#window.setTimeout ()->
-#    taModal.next
-#        title: "TA Modal 2"
-#        disableClose: false
-#        dragable: true
-#        width: "1000px"
-#        template: "<h1 style='font-size: 100px;line-height:125px;text-align: center'>Two</h1>"
-#        onClose: ->
-#            console.log("Close!")
-#        onConfirm: ->
-#            alert 2
-#,1000
-#window.setTimeout ()->
-#    taModal.next
-#        title: "Ta Modal 3"
-#        disableClose: true
-#        dragable: true
-#        template: "<h1 style='font-size: 100px;line-height:125px;text-align: center'>Three</h1>"
-#        onCancel: ->
-#            alert 3
-#,2000
-#window.setTimeout ()->
-#    taModal.next
-#        title: "Ta Modal 4"
-#        disableClose: false
-#        dragable: true
-#        template: "<h1 style='font-size: 100px;line-height:125px;text-align: center'>Four</h1>"
-#        onClose: ->
-#            console.log("Closed 4")
-#,@option.delay || 3000

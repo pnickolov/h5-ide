@@ -10,7 +10,7 @@
           title: this.option.title || "",
           closeAble: !this.option.disableClose,
           template: this.option.template || "",
-          confirm: this.option.confirm || "Submit",
+          confirm: this.option.confirm,
           cancel: this.option.cancel || "Cancel",
           hasFooter: !this.option.disableFooter
         }));
@@ -221,11 +221,12 @@
             _ref2.option.disableClose = true;
           }
           this.isMoving = true;
-          return window.setTimeout((function(_this) {
+          window.setTimeout((function(_this) {
             return function() {
               return _this.isMoving = false;
             };
           })(this), this.option.delay || 300);
+          return newModal;
         } else {
           return false;
         }

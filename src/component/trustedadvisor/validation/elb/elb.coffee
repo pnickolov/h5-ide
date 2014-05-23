@@ -386,6 +386,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js', '../../helper'], ( constant, MC, l
 			if subnetComp
 
 				subnetName = subnetComp.name
+				subnetUID = subnetComp.uid
 				subnetCIDR = subnetComp.resource.CidrBlock
 				suffixNum = Number(subnetCIDR.split('/')[1])
 
@@ -396,7 +397,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js', '../../helper'], ( constant, MC, l
 					resultAry.push({
 						level: constant.TA.ERROR
 						info: tipInfo
-						uid: elbUID
+						uid: subnetUID
 					})
 
 			null

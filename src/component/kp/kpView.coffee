@@ -12,23 +12,27 @@ define [ 'combo_dropdown', 'toolbar_modal', './kpTpl', './kpDialogTpl', 'kp_uplo
             if arguments.length is 1
                 @__needDownload = arguments[ 0 ]
                 if arguments[ 0 ] is false
-                    @$( '.cancel' ).prop 'disabled', false
+                    @m$( '.cancel' ).prop 'disabled', false
             else
                 if @__needDownload then notification 'warning', 'You must download the keypair.'
 
             @__needDownload
+
+        denySlide: () ->
+            not @needDownload()
 
         getRegion: ->
             region = Design.instance().get('region')
             constant.REGION_SHORT_LABEL[ region ]
 
         getModalOptions: ->
-
+            that = @
             region = Design.instance().get('region')
             regionName = constant.REGION_SHORT_LABEL[ region ]
 
-
             title: "Manage Key Pairs in #{regionName}"
+            slideable: _.bind that.denySlide, that
+            context: that
             buttons: [
                 {
                     icon: 'new-stack'
@@ -36,10 +40,20 @@ define [ 'combo_dropdown', 'toolbar_modal', './kpTpl', './kpDialogTpl', 'kp_uplo
                     name: 'Create Key Pair'
                 }
                 {
+                    icon: 'import'
+                    type: 'import'
+                    name: 'Import Key Pair'
+                }
+                {
                     icon: 'del'
                     type: 'delete'
-                    disalbed: true
+                    disabled: true
                     name: 'Delete'
+                }
+                {
+                    icon: 'refresh'
+                    type: 'refresh'
+                    name: ''
                 }
             ]
             columns: [
@@ -56,55 +70,36 @@ define [ 'combo_dropdown', 'toolbar_modal', './kpTpl', './kpDialogTpl', 'kp_uplo
             ]
 
         initModal: () ->
-            @modal = new toolbar_modal @getModalOptions()
+            new toolbar_modal @getModalOptions()
+            @modal.on 'close', () ->
+                @remove()
+            , @
+
+            @modal.on 'slidedown', @renderSlides, @
+            @modal.on 'action', @doAction, @
+            @modal.on 'refresh', @refresh, @
 
 
         initialize: () ->
             @initModal()
-            @model.on 'change:keys', () ->
-                if @$( '.scroll-content' ).length
-                    @renderKeys()
-                else
-                    @render true
-            , @
+            @model.on 'change:keys', @renderKeys, @
+
+        renderModal: () ->
+            @modal.render()
+            @renderKeys()
+            @
 
         render: ( refresh ) ->
-            data = @model.toJSON()
-            region = Design.instance().get('region')
-            data.regionName = constant.REGION_SHORT_LABEL[ region ]
-            @modal.render()
-
+            @renderModal()
             @
 
         renderKeys: () ->
-            @$( '.scroll-content tbody' ).html template_modal.keys @model.toJSON()
+            data = @model.toJSON()
+            @modal.setContent template_modal.keys data
 
             @
 
-        renderLoading: () ->
-            @$( '.content-wrap' ).html template_modal.loading
-            @
-
-        stopPropagation: ( event ) ->
-            exception = '.sortable, #download-kp'
-            if not $(event.target).is( exception )
-                event.stopPropagation()
-
-        open: () ->
-            modal @el
-            $( '#modal-wrap' ).click @stopPropagation
-
-        showErr: (msg) ->
-            @$( '.error' ).text( msg ).show()
-
-        hideErr: () ->
-            @$( '.error' ).hide()
-
-        events:
-            'click .modal-close' : 'close'
-            'change #kp-select-all': 'checkAll'
-            'change .one-cb': 'checkOne'
-            'click #download-kp': 'downloadKp'
+        __events:
 
             # actions
             'click #kp-create': 'renderCreate'
@@ -113,30 +108,28 @@ define [ 'combo_dropdown', 'toolbar_modal', './kpTpl', './kpDialogTpl', 'kp_uplo
             'click #kp-refresh': 'refresh'
 
             # do action
-            'click .do-action': 'doAction'
+            #'click .do-action': 'doAction'
             'click .cancel': 'cancel'
 
         downloadKp: ->
             @__downloadKp and @__downloadKp()
 
-        doAction: ( event ) ->
-            @hideErr()
-            action = $( event.currentTarget ).data 'action'
-            @[action] and @[action](@validate(action))
+        doAction: ( action, checked ) ->
+            @[action] and @[action](@validate(action), checked)
 
         validate: ( action ) ->
             switch action
                 when 'create'
-                    return not @$( '#create-kp-name' ).parsley 'validate'
+                    return not @m$( '#create-kp-name' ).parsley 'validate'
                 when 'import'
-                    return not @$( '#import-kp-name' ).parsley 'validate'
+                    return not @m$( '#import-kp-name' ).parsley 'validate'
 
 
         switchAction: ( state ) ->
             if not state
                 state = 'init'
 
-            @$( '.slidebox .action' ).each () ->
+            @m$( '.slidebox .action' ).each () ->
                 if $(@).hasClass state
                     $(@).show()
                 else
@@ -175,7 +168,7 @@ define [ 'combo_dropdown', 'toolbar_modal', './kpTpl', './kpDialogTpl', 'kp_uplo
                 that.processDelBtn()
 
                 if not that.model.get( 'keys' ).length
-                    that.$( '#kp-select-all' )
+                    that.m$( '#kp-select-all' )
                         .get( 0 )
                         .checked = false
 
@@ -193,7 +186,7 @@ define [ 'combo_dropdown', 'toolbar_modal', './kpTpl', './kpDialogTpl', 'kp_uplo
         create: ( invalid ) ->
             that = @
             if not invalid
-                keyName = @$( '#create-kp-name' ).val()
+                keyName = @m$( '#create-kp-name' ).val()
                 @switchAction 'processing'
                 @model.create( keyName )
                     .then (res) ->
@@ -201,32 +194,31 @@ define [ 'combo_dropdown', 'toolbar_modal', './kpTpl', './kpDialogTpl', 'kp_uplo
                         that.needDownload true
                         that.genDownload "#{res.keyName}.pem", res.keyMaterial
                         that.switchAction 'download'
-                        that.$( '.before-create' ).hide()
-                        that.$( '.after-create' ).find( 'span' ).text( res.keyName ).end().show()
+                        that.m$( '.before-create' ).hide()
+                        that.m$( '.after-create' ).find( 'span' ).text( res.keyName ).end().show()
 
                     .catch ( err ) ->
                         console.log(err)
-                        that.showErr err.error_message
+                        that.modal.error err.error_message
                         that.switchAction()
 
         download: () ->
             @needDownload false
-            true
+            @__downloadKp and @__downloadKp()
 
-        delete: ( invalid ) ->
-            $checked = @$('.one-cb:checked')
-            count = $checked.length
+        delete: ( invalid, checked ) ->
+            count = checked.length
 
             onDeleteFinish = @genDeleteFinish count
             @switchAction 'processing'
             that = @
-            $checked.each () ->
-                that.model.remove( $(@).data 'name' ).then onDeleteFinish, onDeleteFinish
+            _.each checked, ( c ) ->
+                that.model.remove( c.data[ 'name' ] ).then onDeleteFinish, onDeleteFinish
 
         import: ( invalid ) ->
             that = @
             if not invalid
-                keyName = @$( '#import-kp-name' ).val()
+                keyName = @m$( '#import-kp-name' ).val()
                 @switchAction 'processing'
                 try
                     keyContent = btoa that.__upload.getData()
@@ -244,149 +236,61 @@ define [ 'combo_dropdown', 'toolbar_modal', './kpTpl', './kpDialogTpl', 'kp_uplo
 
                     .catch ( err ) ->
                         console.log(err)
-                        that.showErr err.error_message
+                        that.modal.error err.error_message
                         that.switchAction 'ready'
 
         cancel: ->
-            @preSlide()
+            @modal.cancel()
 
         refresh: ->
             if not @needDownload()
                 @model.getKeys()
-                @renderLoading()
 
 
-        renderSlide: ( html ) ->
-            @$( '.slidebox .content' ).html html
-            @hideErr()
+        renderSlides: ( which, checked ) ->
+            tpl = template_modal[ "slide_#{which}" ]
+            slides = @getSlides()
+            slides[ which ]?.call @, tpl, checked
 
-            @
 
-        # if the type need rendered return true
-        # or return false
-        preSlide: ( type ) ->
-            if @needDownload()
-                return false
-
+        getSlides: ->
             that = @
-
-            $content = @$( '.content-wrap' )
-            $slidebox = @$( '.slidebox' )
-            currentType = $content.hasClass "show-#{type}"
-
-            # Disable checkbox on deleting mode
-            if type is 'delete' and not currentType
-                @$( 'input[type=checkbox]' ).prop 'disabled', true
-            else
-                @$( 'input[type=checkbox]' ).prop 'disabled', false
+            modal = @modal
+            __upload = @__upload
 
 
-            if not currentType
-                $content.removeClass( 'show-create show-import show-delete' )
+            create: ( tpl, checked ) ->
+                modal.setSlide tpl
 
-                _.each [ 'create', 'delete', 'import' ], ( action ) ->
-                    if action is type
-                        that.$( "#kp-#{action}" ).addClass 'active'
-                    else
-                        that.$( "#kp-#{action}" ).removeClass 'active'
+            "delete": ( tpl, checked ) ->
+                checkedAmount = checked.length
 
-
-                if type
-                    $content.addClass( "show-#{type}" )
-                    $slidebox.addClass 'show'
-                else
-                    $slidebox.removeClass 'show'
-            else
-                $content.removeClass( 'show-create show-import show-delete' )
-                $slidebox.removeClass 'show' # for transition effective
-                that.$( "#kp-#{type}" ).removeClass 'active'
-
-            not currentType
-
-        renderCreate: () ->
-            if @preSlide 'create'
-                tpl = template_modal.slideCreate
-
-                data = {}
-                html = tpl data
-                @renderSlide html
-
-        renderDelete: () ->
-            $checked = @$('.one-cb:checked')
-            checkedAmount = $checked.length
-
-            if not checkedAmount
-                return
-            if @preSlide 'delete'
-                tpl = template_modal.slideDelete
+                if not checkedAmount
+                    return
 
                 data = {}
 
                 if checkedAmount is 1
-                    data.selecteKeyName = $checked.data 'name'
+                    data.selecteKeyName = checked[ 0 ].data[ 'name' ]
                 else
                     data.selectedCount = checkedAmount
 
+                modal.setSlide tpl data
 
-                html = tpl data
-                @renderSlide html
+            import: ( tpl, checked ) ->
+                modal.setSlide tpl
+                that.__upload and that.__upload.remove()
+                that.__upload = new upload()
+                that.__upload.on 'load', that.afterImport, @
+                that.m$( '.import-zone' ).html that.__upload.render().el
 
-        renderImport: () ->
-            if @preSlide 'import'
-                tpl = template_modal.slideImport
-
-                data = {}
-                html = tpl data
-                @renderSlide html
-                @__upload and @__upload.remove()
-                @__upload = new upload()
-                @__upload.on 'load', @afterImport, @
-                @$( '.import-zone' ).html @__upload.render().el
 
 
         afterImport: ( result ) ->
             @switchAction 'ready'
 
-        checkOne: ( event ) ->
-            $target = $ event.currentTarget
-            @processDelBtn()
-            cbAll = @$ '#kp-select-all'
-            cbAmount = @model.get( 'keys' ).length
-            checkedAmount = @$('.one-cb:checked').length
-            $target.closest('tr').toggleClass 'selected'
 
-            if checkedAmount is cbAmount
-                cbAll.prop 'checked', true
-            else if cbAmount - checkedAmount is 1
-                cbAll.prop 'checked', false
-
-
-        checkAll: ( event ) ->
-            @processDelBtn()
-            if event.currentTarget.checked
-                @$('input[type="checkbox"]').prop 'checked', true
-                @$('tr.item').addClass 'selected'
-            else
-                @$('input[type="checkbox"]').prop 'checked', false
-                @$('tr.item').removeClass 'selected'
-
-        processDelBtn: () ->
-            that = @
-            _.defer () ->
-                if that.$('input:checked').length
-                    that.$('[data-btn=delete]').prop 'disabled', false
-                else
-                    that.$('[data-btn=delete]').prop 'disabled', true
-
-
-
-        close: ( event ) ->
-            if @needDownload()
-                return false
-            $( '#modal-wrap' ).off 'click', @stopPropagation
-            modal.close()
-            @remove()
-            false
+    # ------ export ------ #
 
     Backbone.View.extend
 

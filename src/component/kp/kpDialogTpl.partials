@@ -1,8 +1,3 @@
-
-<button class="icon-import tooltip" id="kp-import" data-tooltip="">Import Key Pair</button>
-<button class="icon-del tooltip" id="kp-delete" data-tooltip="" disabled>Delete</button>
-<button class="icon-refresh tooltip" id="kp-refresh" data-tooltip=""></button>
-
 <!-- {{keys}} -->
 {{#each keys}}
 <tr class="item" data-id="">
@@ -35,7 +30,7 @@
 <!-- {{loading}} -->
 <div class="loading-spinner"></div>
 
-<!-- {{slideCreate}} -->
+<!-- {{slide_create}} -->
 <div class="slide-create" data-bind="true">
     <div class="before-create">
         <label for="create-kp-name">Key Pair Name</label>
@@ -55,7 +50,7 @@
     </div>
 </div>
 
-<!-- {{slideDelete}} -->
+<!-- {{slide_delete}} -->
 <div class="slide-delete">
     <div class="modal-text-major">Confirm to delete {{#if selecteKeyName }}{{selecteKeyName}}{{else}}selected {{selectedCount}} key pairs{{/if}}?</div>
     <div class="init action">
@@ -66,7 +61,7 @@
         <button class="btn" disabled>Deleting...</button>
     </div>
 </div>
-<!-- {{slideImport}} -->
+<!-- {{slide_import}} -->
 <div class="slide-import" data-bind="true">
     <label for="import-kp-name">Key Pair Name</label>
     <input class="input" type="text" id="import-kp-name" data-ignore="true" data-ignore-regexp="^[a-zA-Z0-9,_-]*$" data-required="true" maxlength="255" placeholder="allow alphanumber, _ or - up to 255 characters">

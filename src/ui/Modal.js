@@ -14,7 +14,9 @@
           cancel: this.option.cancel || "Cancel",
           hasFooter: !this.option.disableFooter
         }));
-        this.tpl.find(".modal-body").parent().css({
+        this.tpl.find(".modal-body").css({
+          "max-height": this.option.maxHeight || "400px"
+        }).parent().css({
           width: this.option.width || "520px"
         });
         this.tpl.appendTo(this.wrap);

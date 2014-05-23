@@ -11,8 +11,9 @@ define [], ()->
                 cancel: @option.cancel|| "Cancel"
                 hasFooter: !@option.disableFooter
             )
-            @tpl.find(".modal-body").parent()
-            .css(width: @option.width||"520px")
+            @tpl.find(".modal-body")
+            .css("max-height":@option.maxHeight||"400px")
+            .parent().css(width: @option.width||"520px")
             @tpl.appendTo @wrap
             @modalGroup.push(@)
             if @modalGroup.length == 1

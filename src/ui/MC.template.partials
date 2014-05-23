@@ -1712,7 +1712,7 @@ Are you sure you want to delete {{name}}?</div>
     <div style="width: 520px">
         <div class="modal-header">
             <h3>{{ title }}</h3>
-            {{#if closeAble}}<i class="modal-close">×</i>{{/if}}
+            {{#unless hideClose}}<i class="modal-close">×</i>{{/unless}}
         </div>
         <div class="modal-body scroll-wrap scrollbar-auto-hide context-wrap" style="max-height: 400px;padding: 0;">
             <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>

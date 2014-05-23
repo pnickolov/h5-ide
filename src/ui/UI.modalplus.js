@@ -3,13 +3,13 @@
     var Modal;
     Modal = (function() {
       function Modal(option) {
-        var _ref, _ref1;
+        var body, _ref, _ref1;
         this.option = option;
         _.extend(this, Backbone.Events);
         this.wrap = $('#modal-wrap').size() > 0 ? $("#modal-wrap") : $("<div id='modal-wrap'>").appendTo($('body'));
         this.tpl = $(MC.template.modalTemplate({
           title: this.option.title || "",
-          closeAble: !this.option.disableClose,
+          hideClose: !this.option.hideClose,
           template: typeof this.option.template === "object" ? "" : this.option.template,
           confirm: {
             text: ((_ref = this.option.confirm) != null ? _ref.text : void 0) || "Submit",
@@ -18,14 +18,20 @@
           cancel: this.option.cancel || "Cancel",
           hasFooter: !this.option.disableFooter
         }));
+        body = this.tpl.find(".modal-body");
         if (typeof this.option.template === "object") {
-          this.tpl.find('.modal-body').html(this.option.template);
+          body.html(this.option.template);
         }
-        this.tpl.find(".modal-body").css({
-          "max-height": this.option.maxHeight || "400px"
-        }).parent().css({
-          width: this.option.width || "520px"
-        });
+        if (this.option.maxHeight) {
+          body.css({
+            "max-height": this.option.maxHeight
+          });
+        }
+        if (this.option.width) {
+          body.parent().css({
+            width: this.option.width
+          });
+        }
         this.tpl.appendTo(this.wrap);
         this.modalGroup.push(this);
         if (this.modalGroup.length === 1) {

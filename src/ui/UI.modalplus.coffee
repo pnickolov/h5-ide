@@ -52,7 +52,7 @@ define [], ()->
             @wrap = if $('#modal-wrap').size() > 0 then $("#modal-wrap") else $("<div id='modal-wrap'>").appendTo $('body')
             @tpl = $(MC.template.modalTemplate
                 title: @option.title || ""
-                closeAble : !@option.disableClose
+                hideClose : !@option.hideClose
                 template: if typeof @option.template is "object" then "" else @option.template
                 confirm:
                     text: @option.confirm?.text || "Submit"
@@ -60,11 +60,11 @@ define [], ()->
                 cancel: @option.cancel || "Cancel"
                 hasFooter: !@option.disableFooter
             )
+            body = @tpl.find(".modal-body")
             if typeof @option.template is "object"
-                @tpl.find('.modal-body').html(@option.template)
-            @tpl.find(".modal-body")
-            .css("max-height":@option.maxHeight||"400px")
-            .parent().css(width: @option.width||"520px")
+                body.html(@option.template)
+            if @option.maxHeight then body.css("max-height":@option.maxHeight)
+            if @option.width then body.parent().css( width : @option.width )
             @tpl.appendTo @wrap
             @modalGroup.push(@)
             if @modalGroup.length == 1

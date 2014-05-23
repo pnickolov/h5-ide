@@ -25,10 +25,38 @@
     position: absolute;
     left: -20px; }
 
+.after-create {
+  color: #ccc; }
+  .after-create span {
+    font-weight: 800;
+    color: #eee; }
+
+.default-kp-info {
+  color: #148BE6;
+  margin-left: 5px; }
+
 #modal-run-stack .modal-control-group.default-kp-group {
   padding-top: 0; }
 
-#kp-list .loading-spinner {
+.modal-control-group.default-kp-group {
+  padding-top: 0;
+  position: relative; }
+  .modal-control-group.default-kp-group .icon-info {
+    position: absolute;
+    color: #148BE6;
+    margin-top: 12px;
+    margin-left: 5px; }
+
+#kp-list {
+  margin-top: 32px;
+  padding-bottom: 32px; }
+  #kp-list li .icon-info {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    margin-top: -8px; }
+
+#kp-content .loading-spinner {
   margin-top: 45%; }
 
 .keypair-select .selection .icon-remove {
@@ -45,7 +73,10 @@
   width: 232px;
   border-radius: 0;
   border: 0;
-  padding-right: 20px; }
+  padding-right: 20px;
+  position: absolute;
+  top: 0;
+  display: none; }
 
 .keypair-select.selectbox .keypair-filter:focus {
   width: 232px;
@@ -81,3 +112,15 @@
   position: absolute;
   bottom: 0;
   border-radius: 0; }
+
+button#property-app-keypair {
+  display: block;
+  padding: 8px 10px; }
+
+.kp-no-credential {
+  color: #F5F5F5;
+  padding-top: 55px; }
+
+.kp-no-credential a {
+  cursor: pointer;
+  color: #148BE6; }

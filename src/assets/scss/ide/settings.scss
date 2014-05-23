@@ -72,11 +72,9 @@
 
 #AccountInfo {
   width         : 360px;
-  padding       : 0 15px;
   font-size     : 12px;
   border-radius : 3px;
-  color         : #200202;
-  background    : #ec3c38;
+  color         : #ec3c38;
   height        : 30px;
   line-height   : 30px;
   margin        : 10px 0;
@@ -192,7 +190,7 @@ $welcome-dialog-width: 600px;
     background: #180622;
     padding:    40px 20px;
     text-align: center;
-    
+
     h2 {
       color:  #eee;
       font-size: 20px;
@@ -342,23 +340,8 @@ $welcome-dialog-width: 600px;
   height : 200px;
   background : #111;
 
-  &:empty {
-    &:before {
-      content     : attr(data-empty);
-      width       : 100%;
-      text-align  : center;
-      height      : 20px;
-      line-height : 20px;
-      top         : 50%;
-      margin-top  : -10px;
-      left        : 0;
-      position    : absolute;
-    }
-  }
-
-  > li {
-    clear  : both;
-    height : 30px;
+  &.empty {
+    > header { display : none; }
   }
 
   .tokenName, .tokenToken, .tokenControl {
@@ -376,7 +359,6 @@ $welcome-dialog-width: 600px;
 
   input.tokenName {
     line-height : 18px;
-    width : 98px;
   }
 
   input.tokenName[readonly] {
@@ -391,6 +373,37 @@ $welcome-dialog-width: 600px;
     height      : 20px;
     line-height : 20px;
   }
+
+  .tokenControl .tooltip:before {
+    cursor : pointer;
+    color  : #34A3F8;
+  }
+
+  > .scroll-wrap {
+    height : 168px;
+  }
+}
+
+#TokenList {
+  &:empty {
+    height : 100%;
+    &:before {
+      content     : attr(data-empty);
+      width       : 100%;
+      text-align  : center;
+      height      : 20px;
+      line-height : 20px;
+      top         : 50%;
+      left        : 0;
+      position    : absolute;
+    }
+  }
+
+  > li {
+    clear  : both;
+    height : 30px;
+  }
+
   > li {
     &:hover, &.editing {
       .tokenControl { display:block; }
@@ -400,11 +413,6 @@ $welcome-dialog-width: 600px;
       .tooltip { display:none; }
       .tokenDone { display:block; }
     }
-  }
-
-  .tokenControl .tooltip:before {
-    cursor : pointer;
-    color  : #34A3F8;
   }
 }
 

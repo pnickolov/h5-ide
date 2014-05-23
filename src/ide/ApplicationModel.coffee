@@ -94,6 +94,10 @@ define [ "./submodels/OpsCollection", "./submodels/OpsModel", "ApiRequest", "bac
       self = this
       ide_event.onLongListen ide_event.UPDATE_REQUEST_ITEM, (idx) -> self.__processSingleNotification idx
 
+    __triggerChange : _.debounce ()->
+      @trigger "change:notification"
+    , 300
+
     __processSingleNotification : ( idx )->
 
       req = App.WS.collection.request.findOne({'_id':idx})
@@ -123,12 +127,7 @@ define [ "./submodels/OpsCollection", "./submodels/OpsModel", "ApiRequest", "bac
       info_list.splice 0, 0, item
 
       # Notify the others that notification has changed.
-      if not @__notifyDebounce
-        @__notifyDebounce = setTimeout ()=>
-          @trigger "change:notification"
-          @__notifyDebounce = null
-          return
-        , 300
+      @__triggerChange()
       null
 
     __parseRequestInfo : (req) ->

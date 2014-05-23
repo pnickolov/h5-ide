@@ -102,6 +102,11 @@ define [ '../base/model',
 
                 instance.app_view = if MC.canvas.getState() is 'appview' then true else false
 
+                monitoringState = 'disabled'
+                if instance.monitoring and instance.monitoring.state
+                    monitoringState = instance.monitoring.state
+                this.set 'monitoringState', monitoringState
+
                 this.set instance
 
                 this.resModel = myInstanceComponent
@@ -176,8 +181,9 @@ define [ '../base/model',
                     return
 
                 if result.is_error
-                    notification 'error', lang.ide.PROP_MSG_ERR_GET_PASSWD_FAILED + instance_id
+                    notification 'error', lang.ide.PROP_MSG_ERR_GET_PASSWD_FAILED
                     key_data = null
+                    return null
                 else
                     if result.resolved_data
                         win_passwd = result.resolved_data.passwordData

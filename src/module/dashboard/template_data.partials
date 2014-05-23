@@ -337,11 +337,7 @@
                         <td>
                             <div>
                                 {{#if app}}
-                                {{#if owner}}
-                                <span class="table-app-link truncate tooltip {{#unless isTerminated}}table-app-link-clickable{{/unless}}" data-tooltip="{{i18n 'DASH_TIP_APP_CREATED_BY'}}{{ owner }}" data-id="{{tagSet.app-id}}" data-name="{{tabSet.name}}">[{{ app }}]</span>
-                                {{else}}
-                                <span class="table-app-link truncate tooltip" data-tooltip="{{i18n 'DASH_TIP_APP_CREATED_BY_OTHER_USER'}}" >[{{ app }}]</span>
-                                {{/if}}
+                                <span class="table-app-link truncate tooltip {{#if clickAble}}table-app-link-clickable{{/if}}" data-tooltip="{{i18n 'DASH_TIP_APP_CREATED_BY'}}{{ owner }}" data-id="{{tagSet.app-id}}" data-name="{{tagSet.app}}">[{{ app }}]</span>
                                 {{else}}
                                 <span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip='{{ i18n "DASH_TIP_UNMANAGED_RESOURCE" }}' >{{ i18n "DASH_LBL_UNMANAGED" }}</span>
                                 {{/if}}
@@ -446,11 +442,7 @@
                         <td>
                             <div>
                                 {{#if app}}
-                                {{#if owner}}
                                 <span class="table-app-link truncate tooltip" data-tooltip="{{i18n 'DASH_TIP_APP_CREATED_BY'}}{{ owner }}" >[{{ app }}]</span>
-                                {{else}}
-                                <span class="table-app-link truncate tooltip" data-tooltip="{{i18n 'DASH_TIP_APP_CREATED_BY_OTHER_USER'}}" >[{{ app }}]</span>
-                                {{/if}}
                                 {{else}}
                                 <span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip='{{ i18n "DASH_TIP_UNMANAGED_RESOURCE" }}' >{{ i18n "DASH_LBL_UNMANAGED" }}</span>
                                 {{/if}}
@@ -509,11 +501,7 @@
                         <td>
                             <div>
                                 {{#if app}}
-                                {{#if owner}}
                                 <span class="table-app-link truncate tooltip" data-tooltip="{{i18n 'DASH_TIP_APP_CREATED_BY'}}{{ owner }}" >[{{ app }}]</span>
-                                {{else}}
-                                <span class="table-app-link truncate tooltip" data-tooltip="{{i18n 'DASH_TIP_APP_CREATED_BY_OTHER_USER'}}" >[{{ app }}]</span>
-                                {{/if}}
                                 {{else}}
                                 <span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip='{{ i18n "DASH_TIP_UNMANAGED_RESOURCE" }}' >{{ i18n "DASH_LBL_UNMANAGED" }}</span>
                                 {{/if}}
@@ -576,11 +564,7 @@
                         <td>
                             <div>
                                 {{#if app}}
-                                {{#if owner}}
                                 <span class="table-app-link truncate tooltip" data-tooltip="{{i18n 'DASH_TIP_APP_CREATED_BY'}}{{ owner }}" >[{{ app }}]</span>
-                                {{else}}
-                                <span class="table-app-link truncate tooltip" data-tooltip="{{i18n 'DASH_TIP_APP_CREATED_BY_OTHER_USER'}}" >[{{ app }}]</span>
-                                {{/if}}
                                 {{else}}
                                 <span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip='{{ i18n "DASH_TIP_UNMANAGED_RESOURCE" }}' >{{ i18n "DASH_LBL_UNMANAGED" }}</span>
                                 {{/if}}
@@ -684,11 +668,7 @@
                         <td>
                             <div>
                                 {{#if app}}
-                                {{#if owner}}
                                 <span class="table-app-link truncate tooltip" id="asg-app-name" data-tooltip="{{i18n 'DASH_TIP_APP_CREATED_BY'}}{{ owner }}" >[{{ app }}]</span>
-                                {{else}}
-                                <span class="table-app-link truncate tooltip" data-tooltip="{{i18n 'DASH_TIP_APP_CREATED_BY_OTHER_USER'}}" >[{{ app }}]</span>
-                                {{/if}}
                                 {{else}}
                                 <span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip='{{ i18n "DASH_TIP_UNMANAGED_RESOURCE" }}' >[{{ i18n "DASH_LBL_UNMANAGED" }}] </span>
                                 {{/if}}

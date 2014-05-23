@@ -12,10 +12,11 @@ define [ 'MC', 'event',
          'constant'
          'kp'
          'ApiRequest'
+         'component/stateeditor/stateeditor'
          'backbone', 'jquery', 'handlebars',
          'UI.selectbox', 'UI.notification',
          "UI.tabbar"
-], ( MC, ide_event, Design, lang, stack_tmpl, app_tmpl, appview_tmpl, JsonExporter, constant, kp, ApiRequest ) ->
+], ( MC, ide_event, Design, lang, stack_tmpl, app_tmpl, appview_tmpl, JsonExporter, constant, kp, ApiRequest, stateeditor ) ->
 
     ToolbarView = Backbone.View.extend {
 
@@ -30,9 +31,13 @@ define [ 'MC', 'event',
 
             'click #toolbar-run'            : 'clickRunIcon'
             'click .icon-save'              : 'clickSaveIcon'
-            'click #toolbar-duplicate'      : 'clickDuplicateIcon'
-            'click #toolbar-app-to-stack'   : 'appToStackClick'
-            'click #toolbar-delete'         : 'clickDeleteIcon'
+
+            'modal-shown #toolbar-delete'       : 'clickDeleteIcon'
+            'modal-shown #toolbar-duplicate'    : 'clickDuplicateIcon'
+            'modal-shown #toolbar-stop-app'     : 'clickStopApp'
+            'modal-shown #toolbar-start-app'    : 'clickStartApp'
+            'modal-shown #toolbar-app-to-stack' : 'appToStackClick'
+
             'click #toolbar-new'            : 'clickNewStackIcon'
             'click .icon-zoom-in'           : 'clickZoomInIcon'
             'click .icon-zoom-out'          : 'clickZoomOutIcon'
@@ -40,8 +45,6 @@ define [ 'MC', 'event',
             'click .icon-redo'              : 'clickRedoIcon'
             'click #toolbar-export-png'     : 'clickExportPngIcon'
             'click #toolbar-export-json'    : 'clickExportJSONIcon'
-            'click #toolbar-stop-app'       : 'clickStopApp'
-            'click #toolbar-start-app'      : 'clickStartApp'
             'click #toolbar-terminate-app'  : 'clickTerminateApp'
             'click #btn-app-refresh'        : 'clickRefreshApp'
             'click #toolbar-convert-cf'     : 'clickConvertCloudFormation'
@@ -52,6 +55,8 @@ define [ 'MC', 'event',
             'click #toolbar-cancel-edit-app' : 'clickCancelEditApp'
 
             'click .toolbar-visual-ops-switch' : 'opsOptionChanged'
+
+            'click .toolbar-visual-ops-refresh': 'clickReloadStates'
             #'click #apply-visops'             : 'openExperimentalVisops'
 
         # when flag = 0 not invoke opsState
@@ -137,23 +142,34 @@ define [ 'MC', 'event',
 
         hideErr: ( type ) ->
             if type
-                $( "#runtime-error-#{id}" ).hide()
+                $( "#runtime-error-#{type}" ).hide()
             else
                 $( ".runtime-error" ).hide()
 
         defaultKpIsSet: ->
-            #KpModel = Design.modelClassForType( constant.RESTYPE.KP )
-            #defaultKp = KpModel.getDefaultKP()
+            if not kp.hasResourceWithDefaultKp()
+                return true
 
-            if $('#kp-runtime-placeholder #kp-list .item.selected').length is 0
+            KpModel = Design.modelClassForType( constant.RESTYPE.KP )
+            defaultKp = KpModel.getDefaultKP()
+
+            if not defaultKp.get( 'isSet' ) or not $('#kp-runtime-placeholder .item.selected').length
                 @showErr 'kp', 'Specify a key pair as $DefaultKeyPair for this app.'
                 return false
 
             true
 
+        hideDefaultKpError: (context) ->
+            () ->
+                context.hideErr 'kp'
+
         renderDefaultKpDropdown: ->
             if kp.hasResourceWithDefaultKp()
-                $('#kp-runtime-placeholder').html kp.loadModule().el
+                kpDropdown = kp.load()
+                $('#kp-runtime-placeholder').html kpDropdown.el
+                kpDropdown.$( '.selectbox' )
+                    .on( 'OPTION_CHANGE', @hideDefaultKpError(@) )
+
                 $('.default-kp-group').show()
             null
 
@@ -189,7 +205,7 @@ define [ 'MC', 'event',
                 me.hideErr()
 
                 if not App.user.hasCredential()
-                    App.showSettings(1)
+                    App.showSettings( App.showSettings.TAB.Credential )
                     return false
 
                 #check app name
@@ -428,6 +444,48 @@ define [ 'MC', 'event',
                         appToStackCb(err, newData)
 
             null
+
+        clickReloadStates: (event)->
+            $target = $ event.currentTarget
+            $label = $target.find('.refresh-label')
+            if $target.hasClass('disabled')
+                return false
+            console.log(event)
+            $target.toggleClass('disabled')
+            $label.html($label.attr('data-disabled'))
+            $.ajax
+                url: "http://urlthatdoesnotexist.com",
+                method: "POST"
+                data:
+                    "encoded_user": App.user.get("usercode")
+                    "token": App.user.get("defaultToken")
+                dataType: 'json'
+                statusCode:
+                    200: ->
+                        console.log 200,arguments
+                        notification 'info', "Success!"
+                        #todo: reset state count
+                        appData = Design.instance().serialize()
+                        for uid of appData.component
+                            if appData.component[uid].type is "AWS.EC2.Instance" && appData.component[uid].state.length>0
+                                console.log(appData, uid)
+                                stateEditor.loadModule(appData.component, uid, null, true)
+                    401: ->
+                        console.log 401,arguments
+                        notification 'error', "Error 401"
+                    404: ->
+                        console.log 404,arguments
+                        notification 'error', "Error 404"
+
+                    500: ->
+                        console.log 500,arguments
+                        notification 'error', "Error 500"
+                error: ->
+                    console.log('Reload State Request Error.')
+                    null
+            .always ()->
+                $target.removeClass('disabled')
+                $label.html($label.attr('data-original'))
 
         clickDeleteIcon : ->
             me = this

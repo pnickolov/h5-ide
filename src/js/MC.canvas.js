@@ -2312,7 +2312,7 @@ MC.canvas.event.dblclick = function (callback)
 	if (MC.canvas.event.dblclick.timer)
 	{
 		// Double click event call
-		callback.call(this, event);
+		callback.call(this);
 
 		return true;
 	}
@@ -3439,7 +3439,7 @@ MC.canvas.event.siderbarDrag = {
 		// Change AMI event
 		var elem = document.elementFromPoint(event.pageX, event.pageY);
 
-		if (elem.id === 'changeAmiDropZone' || $(elem).parents('#changeAmiDropZone').length > 0)
+		if ( elem && (elem.id === 'changeAmiDropZone' || $(elem).parents('#changeAmiDropZone').length > 0))
 		{
 			$("#changeAmiDropZone")
 				.removeClass("hover")

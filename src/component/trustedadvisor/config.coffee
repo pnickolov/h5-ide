@@ -18,6 +18,7 @@ define({
         'AWS.AutoScaling.LaunchConfiguration'   : [ 'state' ]
         'AWS.VPC.RouteTable'                    : [ 'rtb' ]
         'AWS.EC2.EBS.Volume'                    : [ 'ebs' ]
+        'AWS.EC2.KeyPair'                       : [ 'kp' ]
 
     globalList:
         eip: [ 'isHasIGW' ]
@@ -25,10 +26,12 @@ define({
         sg: [ 'isStackUsingOnlyOneSG', 'isAssociatedSGNumExceedLimit' ]
         vpc: [ 'isVPCAbleConnectToOutside' ]
         stack: [ '~isHaveNotExistAMI' ] # `~` means work in stack mode only.
+        kp: [ 'longLiveNotice' ]
 
     asyncList:
         cgw: [ 'isCGWHaveIPConflict' ]
         stack: [ 'verify', 'isHaveNotExistAMIAsync' ]
-        subnet: ['getAllAWSENIForAppEditAndDefaultVPC']
-        ebs: ['isSnapshotExist']
+        subnet: [ 'getAllAWSENIForAppEditAndDefaultVPC' ]
+        ebs: [ 'isSnapshotExist' ]
+        kp: [ 'isKeyPairExistInAws' ]
 })

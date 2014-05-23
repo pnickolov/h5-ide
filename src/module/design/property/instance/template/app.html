@@ -43,15 +43,18 @@
         {{#if keyName}}
             {{#if windows}}
                 {{keyName}}
-                <button class="icon-download btn btn-blue" id="property-app-keypair">Get Windows Password</button>
+                <button class="btn btn-blue" id="property-app-keypair">Get Windows Password</button>
             {{else}}
-                <a href="#" class="icon-download" id="property-app-keypair">{{keyName}}</a>
+                <a href="#" id="property-app-keypair">{{keyName}}</a>
             {{/if}}
         {{else}}
           No Key Pair
         {{/if}}
       </dd>
       {{/if}}
+
+      <dt>{{i18n "PROP_INSTANCE_CLOUDWATCH_DETAILED_MONITORING"}}</dt>
+      <dd>{{monitoringState}}</dd>
 
     </dl>
 

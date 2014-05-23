@@ -5,7 +5,7 @@
 <nav id="SettingsNav">
   <span data-target="AccountTab">{{ i18n "HEAD_LABEL_ACCOUNT" }}</span>
   <span data-target="CredentialTab">{{ i18n "HEAD_LABEL_CREDENTIAL" }}</span>
-  <!-- <span data-target="TokenTab">{{ i18n "SETTINGS_LABEL_ACCESSTOKEN" }}</span> -->
+  <span data-target="TokenTab">{{ i18n "SETTINGS_LABEL_ACCESSTOKEN" }}</span>
 </nav>
 
 <div class="modal-body" id="SettingsBody">
@@ -29,7 +29,7 @@
       <div id="AccountInfo" class="empty-hide"></div>
 
       <div id="AccountPwdBtns">
-        <button class="btn btn-blue" id="AccountUpdatePwd">{{ i18n "HEAD_BTN_UPDATE" }}</button>
+        <button class="btn btn-blue" id="AccountUpdatePwd" disabled>{{ i18n "HEAD_BTN_UPDATE" }}</button>
         <span id="AccountCancelPwd" class="link-style">{{ i18n "HEAD_BTN_CANCEL" }}</span>
       </div>
     </div>
@@ -108,7 +108,16 @@
   <section id="TokenTab">
     <div id="TokenManager">
       <p class="clearfix"> <button class="btn btn-blue right" id="TokenCreate">{{ i18n "SETTINGS_BTN_TOKEN_CREATE" }}</button>{{ i18n "SETTINGS_INFO_TOKEN" }}<a href="" target="_blank">{{ i18n 'SETTINGS_INFO_TOKEN_LINK' }}</a> </p>
-      <ul class="token-table" data-empty="{{ i18n 'SETTINGS_INFO_TOKEN_EMPTY' }}"></ul>
+      <section class="token-table">
+        <header class="clearfix">
+          <span class="tokenName">{{ i18n 'SETTINGS_LABEL_TOKENTABLE_NAME' }}</span>
+          <span class="tokenToken">{{ i18n 'SETTINGS_LABEL_TOKENTABLE_TOKEN' }}</span>
+        </header>
+        <div class="scroll-wrap">
+          <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+          <ul id="TokenList" class="scroll-content" data-empty="{{ i18n 'SETTINGS_INFO_TOKEN_EMPTY' }}"></ul>
+        </div>
+      </section>
     </div>
     <div id="TokenRmConfirm" class="hide">
       <h3 id="TokenRmTit"></h3>

@@ -100,7 +100,7 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
 
     isDefaultTenancy : ()-> true
 
-    # Use by CanvasElement
+    # Use by CanvasElement(change members to groupMembers)
     groupMembers : ()->
       resource_list = MC.data.resource_list[ Design.instance().region() ]
       if not resource_list then return []
@@ -160,7 +160,8 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
         else
           console.error "No DefaultKP found when initialize InstanceModel"
       else
-        defaultKp.dissociate @
+        kp = @connectionTargets( "KeypairUsage" )[0]
+        kp and kp.dissociate @
         @set 'keyName', keyName
 
 

@@ -69,10 +69,6 @@ define [
     showSessionDialog : ()->
       (new SessionDialog()).promise()
 
-    showSettings : ( tab )->
-      new SettingsDialog({ defaultTab:tab })
-      return
-
     # This is use to select text when clicking on the text.
     selectText : ( event )->
       try

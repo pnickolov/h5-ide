@@ -1,8 +1,8 @@
-define [ './component/kp/view', './component/kp/model', 'constant' ], ( View, Model, constant ) ->
+define [ './component/kp/kpView', './component/kp/kpModel', 'constant' ], ( View, Model, constant ) ->
 
 
     # Private
-    loadModule = ( resModel ) ->
+    load = ( resModel ) ->
 
         model = new Model resModel: resModel
         view  = new View model: model
@@ -10,7 +10,7 @@ define [ './component/kp/view', './component/kp/model', 'constant' ], ( View, Mo
         view.render()
 
 
-    unLoadModule = ->
+    unload = ->
 
         view.remove()
         model.destroy()
@@ -28,6 +28,6 @@ define [ './component/kp/view', './component/kp/model', 'constant' ], ( View, Mo
 
 
     # Public
-    loadModule                  : loadModule
-    unLoadModule                : unLoadModule
+    load                        : load
+    unload                      : unload
     hasResourceWithDefaultKp    : hasResourceWithDefaultKp

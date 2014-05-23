@@ -1,4 +1,4 @@
-define [ './template', './template_modal', 'kp_upload', 'backbone', 'jquery', 'constant', 'component/exporter/JsonExporter', 'UI.notification' ], ( template, template_modal, upload, Backbone, $, constant, JsonExporter ) ->
+define [ './kpTpl', './kpDialogTpl', 'kp_upload', 'backbone', 'jquery', 'constant', 'component/exporter/JsonExporter', 'UI.notification' ], ( template, template_modal, upload, Backbone, $, constant, JsonExporter ) ->
 
     download = JsonExporter.download
 
@@ -37,6 +37,7 @@ define [ './template', './template_modal', 'kp_upload', 'backbone', 'jquery', 'c
 
         renderKeys: () ->
             @$( '.scroll-content tbody' ).html template_modal.keys @model.toJSON()
+
             @
 
         renderLoading: () ->
@@ -129,6 +130,13 @@ define [ './template', './template_modal', 'kp_upload', 'backbone', 'jquery', 'c
                     notification 'info', "#{success[0].param[4]} is deleted."
                 else if success.length > 1
                     notification 'info', "Selected #{success.length} key pairs are deleted."
+
+                that.processDelBtn()
+
+                if not that.model.get( 'keys' ).length
+                    that.$( '#kp-select-all' )
+                        .get( 0 )
+                        .checked = false
 
                 _.each error, ( s ) ->
                     console.log(s)
@@ -291,10 +299,13 @@ define [ './template', './template_modal', 'kp_upload', 'backbone', 'jquery', 'c
             @switchAction 'ready'
 
         checkOne: ( event ) ->
-            @processDelBtn event
+            $target = $ event.currentTarget
+            @processDelBtn()
             cbAll = @$ '#kp-select-all'
             cbAmount = @model.get( 'keys' ).length
             checkedAmount = @$('.one-cb:checked').length
+            $target.closest('tr').toggleClass 'selected'
+
             if checkedAmount is cbAmount
                 cbAll.prop 'checked', true
             else if cbAmount - checkedAmount is 1
@@ -302,17 +313,21 @@ define [ './template', './template_modal', 'kp_upload', 'backbone', 'jquery', 'c
 
 
         checkAll: ( event ) ->
-            @processDelBtn event
+            @processDelBtn()
             if event.currentTarget.checked
                 @$('input[type="checkbox"]').prop 'checked', true
+                @$('tr.item').addClass 'selected'
             else
                 @$('input[type="checkbox"]').prop 'checked', false
+                @$('tr.item').removeClass 'selected'
 
-        processDelBtn: ( event ) ->
-            if event.currentTarget.checked
-                @$('#kp-delete').prop 'disabled', false
-            else
-                @$('#kp-delete').prop 'disabled', true
+        processDelBtn: () ->
+            that = @
+            _.defer () ->
+                if that.$('input:checked').length
+                    that.$('#kp-delete').prop 'disabled', false
+                else
+                    that.$('#kp-delete').prop 'disabled', true
 
 
 
@@ -329,11 +344,21 @@ define [ './template', './template_modal', 'kp_upload', 'backbone', 'jquery', 'c
         tagName: 'section'
 
         events:
-            'click .keypair-filter'     : 'returnFalse'
             'click .manage-kp'          : 'manageKp'
+            'click .show-credential'    : 'showCredential'
             'OPTION_SHOW .selectbox'    : 'show'
             'OPTION_CHANGE .selectbox'  : 'setKey'
-            'keyup .keypair-filter'    : 'filter'
+            'click .keypair-filter'     : 'returnFalse'
+            'keydown .keypair-filter'   : 'filterOnKeyDown'
+            'keyup .keypair-filter'     : 'filter'
+
+
+
+        showCredential: ->
+            App.showSettings App.showSettings.TAB.Credential
+
+        filterOnKeyDown: ( event ) ->
+            event.stopPropagation()
 
         filter: ( event ) ->
             keyword = event.currentTarget.value
@@ -341,8 +366,10 @@ define [ './template', './template_modal', 'kp_upload', 'backbone', 'jquery', 'c
             len = keyword.length
             hitKeys = _.filter @model.get( 'keys' ), ( k ) ->
                 k.keyName.slice( 0, len ).toLowerCase() is keyword
-
-            @renderKeys hitKeys
+            if keyword
+                @renderKeys hitKeys
+            else
+                @renderKeys()
 
         setKey: ( event, name, data ) ->
             if @__mode is 'runtime'
@@ -373,20 +400,36 @@ define [ './template', './template_modal', 'kp_upload', 'backbone', 'jquery', 'c
                 @__mode = 'runtime'
 
         show: () ->
-            if not @model.haveGot()
-                @model.getKeys()
+            if App.user.hasCredential()
+                if not @model.haveGot()
+                    @renderLoading()
+                    @model.getKeys()
+            else
+                @renderNoCredential()
 
 
-        render: () ->
+        render: ->
             @renderFrame()
             @
 
-        syncErrorHandler: () ->
-            #@renderEmptyKey()
+        renderLoading: ->
+            @$('#kp-content').html template.loading
+            @toggleKpListControls false
 
+        renderNoCredential: () ->
+            @$('#kp-content').html template.nocredential
+            @toggleKpListControls false
+            @
+
+        toggleKpListControls: ( showOrHide ) ->
+            @$( '.keypair-filter, .manage-kp' ).toggle showOrHide
+
+
+        syncErrorHandler: (err) ->
+            console.error err
 
         renderKeys: ( data ) ->
-            if data
+            if data and arguments.length is 1
                 data =  keys: data, hideDefaultNoKey: true
             else
                 data = keys: @model.get('keys')
@@ -399,7 +442,8 @@ define [ './template', './template_modal', 'kp_upload', 'backbone', 'jquery', 'c
 
             data.isRunTime = @__mode is 'runtime'
 
-            @$('#kp-list').html template.keys data
+            @$('#kp-content').html template.keys data
+            @toggleKpListControls true
             @showManageBtn()
             @
 

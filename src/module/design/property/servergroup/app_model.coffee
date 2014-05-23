@@ -53,6 +53,7 @@ define [ '../base/model',
 
 			@set 'number', myInstanceComponent.get 'count'
 			@set 'name',   myInstanceComponent.get 'name'
+			@set 'monitoring', myInstanceComponent.get 'monitoring'
 
 			@getGroupList()
 			@getEni()
@@ -139,6 +140,8 @@ define [ '../base/model',
 		addIp     : instance_model.addIp
 		removeIp  : instance_model.removeIp
 		attachEip : instance_model.attachEip
+		setMonitoring : instance_model.setMonitoring
+		setSourceCheck : instance_model.setSourceCheck
 	}
 
 	new ServerGroupModel()

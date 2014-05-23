@@ -668,7 +668,8 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
         else
           console.error "No DefaultKP found when initialize InstanceModel"
       else
-        defaultKp.dissociate @
+        kp = @connectionTargets( "KeypairUsage" )[0]
+        kp and kp.dissociate @
         @set 'keyName', keyName
 
 

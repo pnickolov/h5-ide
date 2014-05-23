@@ -8,7 +8,7 @@
   to provide other functionality
 ###
 
-define [ "./Websocket", "./ApplicationView", "./ApplicationModel", "./User", "common_handle" ,"event", "vpc_model", "constant" ], ( Websocket, ApplicationView, ApplicationModel, User, common_handle, ide_event, vpc_model, constant )->
+define [ "./Websocket", "./ApplicationView", "./ApplicationModel", "./User", "./subviews/SettingsDialog", "common_handle" ,"event", "vpc_model", "constant" ], ( Websocket, ApplicationView, ApplicationModel, User, SettingsDialog, common_handle, ide_event, vpc_model, constant )->
 
   VisualOps = ()->
     if window.App
@@ -103,6 +103,7 @@ define [ "./Websocket", "./ApplicationView", "./ApplicationModel", "./User", "co
     window.location.href = "/login/"
     return
 
-  VisualOps.prototype.showSettings = ( tab )-> @__view.showSettings( tab )
+  VisualOps.prototype.showSettings = ( tab )-> new SettingsDialog({ defaultTab:tab })
+  VisualOps.prototype.showSettings.TAB = SettingsDialog.TAB
 
   VisualOps

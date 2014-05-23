@@ -57,7 +57,11 @@ define [ "./submodels/OpsCollection", "./submodels/OpsModel", "ApiRequest", "bac
       # When app/stack list is fetched, we first cleanup unused thumbnail. Then
       # Tell others that we are ready.
       Q.all([ sp, ap ]).then ()->
-        ThumbUtil.cleanup self.appList().pluck("id").concat( self.stackList().pluck("id") )
+        try
+          ThumbUtil.cleanup self.appList().pluck("id").concat( self.stackList().pluck("id") )
+        catch e
+
+        return
 
     __parseListRes : ( res )->
       r = []

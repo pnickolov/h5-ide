@@ -10,7 +10,7 @@
         this.tpl = $(MC.template.modalTemplate({
           title: this.option.title || "",
           closeAble: !this.option.disableClose,
-          template: this.option.template || "",
+          template: typeof this.option.template === "object" ? "" : this.option.template,
           confirm: {
             text: ((_ref = this.option.confirm) != null ? _ref.text : void 0) || "Submit",
             color: ((_ref1 = this.option.confirm) != null ? _ref1.color : void 0) || "blue"
@@ -18,6 +18,9 @@
           cancel: this.option.cancel || "Cancel",
           hasFooter: !this.option.disableFooter
         }));
+        if (typeof this.option.template === "object") {
+          this.tpl.find('.modal-body').html(this.option.template);
+        }
         this.tpl.find(".modal-body").css({
           "max-height": this.option.maxHeight || "400px"
         }).parent().css({

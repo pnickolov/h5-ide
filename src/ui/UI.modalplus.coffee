@@ -53,13 +53,15 @@ define [], ()->
             @tpl = $(MC.template.modalTemplate
                 title: @option.title || ""
                 closeAble : !@option.disableClose
-                template: @option.template || ""
+                template: if typeof @option.template is "object" then "" else @option.template
                 confirm:
                     text: @option.confirm?.text || "Submit"
                     color: @option.confirm?.color || "blue"
                 cancel: @option.cancel || "Cancel"
                 hasFooter: !@option.disableFooter
             )
+            if typeof @option.template is "object"
+                @tpl.find('.modal-body').html(@option.template)
             @tpl.find(".modal-body")
             .css("max-height":@option.maxHeight||"400px")
             .parent().css(width: @option.width||"520px")

@@ -135,27 +135,29 @@
           return $(document).mouseup((function(_this) {
             return function(e) {
               var left, maxHeight, maxRight, top;
+              if (dragable) {
+                top = e.clientY + diffY;
+                left = e.clientX + diffX;
+                maxHeight = $(window).height() - _this.getLast().tpl.height();
+                maxRight = $(window).width() - _this.getLast().tpl.width();
+                if (top < 0) {
+                  top = 0;
+                }
+                if (left < 0) {
+                  left = 0;
+                }
+                if (top > maxHeight) {
+                  top = maxHeight;
+                }
+                if (left > maxRight) {
+                  left = maxRight;
+                }
+                _this.getLast().tpl.css({
+                  top: top,
+                  left: left
+                });
+              }
               dragable = false;
-              top = e.clientY + diffY;
-              left = e.clientX + diffX;
-              maxHeight = $(window).height() - _this.getLast().tpl.height();
-              maxRight = $(window).width() - _this.getLast().tpl.width();
-              if (top < 0) {
-                top = 0;
-              }
-              if (left < 0) {
-                left = 0;
-              }
-              if (top > maxHeight) {
-                top = maxHeight;
-              }
-              if (left > maxRight) {
-                left = maxRight;
-              }
-              _this.getLast().tpl.css({
-                top: top,
-                left: left
-              });
               diffX = 0;
               return diffY = 0;
             };

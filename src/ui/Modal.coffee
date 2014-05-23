@@ -80,22 +80,23 @@ define [], ()->
                             else if (document.selection)
                                 document.selection.empty();
                 $(document).mouseup (e)=>
+                    if dragable
+                        top = e.clientY + diffY
+                        left = e.clientX + diffX
+                        maxHeight = $(window).height() - @.getLast().tpl.height()
+                        maxRight = $(window).width() - @.getLast().tpl.width()
+                        if  top < 0
+                            top = 0
+                        if left < 0
+                            left = 0
+                        if top > maxHeight
+                            top = maxHeight
+                        if left > maxRight
+                            left = maxRight
+                        @getLast().tpl.css
+                            top: top
+                            left: left
                     dragable =false
-                    top = e.clientY + diffY
-                    left = e.clientX + diffX
-                    maxHeight = $(window).height() - @.getLast().tpl.height()
-                    maxRight = $(window).width() - @.getLast().tpl.width()
-                    if  top < 0
-                        top = 0
-                    if left < 0
-                        left = 0
-                    if top > maxHeight
-                        top = maxHeight
-                    if left > maxRight
-                        left = maxRight
-                    @getLast().tpl.css
-                        top: top
-                        left: left
                     diffX = 0
                     diffY = 0
 

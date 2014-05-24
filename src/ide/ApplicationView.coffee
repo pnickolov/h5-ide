@@ -136,7 +136,7 @@ define [
       app  = App.model.appList().get( id )
       name = app.get("name")
 
-      modal AppTpl.terminateAppConfirm {
+      modal AppTpl.stopAppConfirm {
         name       : name
         production : app.get("usage") is "production"
       }

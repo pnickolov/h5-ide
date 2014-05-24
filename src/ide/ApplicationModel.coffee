@@ -139,7 +139,7 @@ define [ "./submodels/OpsCollection", "./submodels/OpsModel", "ApiRequest", "bac
         time       : req.time_end
         operation  : constant.OPS_CODE_NAME[ req.code ]
         targetId   : if dag.spec then dag.spec.id else ""
-        targetName : if req.code is "Forge.Stack.Run" then req.brief.split(" ")[2] else ""
+        targetName : req.brief.split(" ")[2] || ""
         state      : { processing : true }
         readed     : true
 

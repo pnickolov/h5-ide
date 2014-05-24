@@ -62,7 +62,7 @@ define ["ApiRequest", "constant", "component/exporter/Thumbnail", "backbone"], (
       if state is OpsModelState.Destroyed
         console.warn "There's probably a bug existing that the destroyed opsmodel is still be using by someone."
 
-      @get("id") && state isnt OpsModelState.Initializing && state isnt OpsModelState.Destroyed
+      @get("id") && state isnt OpsModelState.Destroyed
 
     # Returns a promise that will resolve with the JSON data of the stack/app
     getJsonData : ()->
@@ -143,6 +143,7 @@ define ["ApiRequest", "constant", "component/exporter/Thumbnail", "backbone"], (
       ApiRequest("app_stop",{
         region_name : @get("region")
         app_id      : @get("id")
+        app_name    : @get("name")
       }).then ()->
         self
       , ( err )->
@@ -156,6 +157,7 @@ define ["ApiRequest", "constant", "component/exporter/Thumbnail", "backbone"], (
       ApiRequest("app_start",{
         region_name : @get("region")
         app_id      : @get("id")
+        app_name    : @get("name")
       }).then ()->
         self
       , ( err )->
@@ -171,6 +173,7 @@ define ["ApiRequest", "constant", "component/exporter/Thumbnail", "backbone"], (
       ApiRequest("app_terminate", {
         region_name : @get("region")
         app_id      : @get("id")
+        app_name    : @get("name")
         flag        : force
       }).then ()->
         self

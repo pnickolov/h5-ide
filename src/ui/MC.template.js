@@ -2418,7 +2418,7 @@ function program3(depth0,data) {
   
   var buffer = "", stack1;
   buffer += "\n      <i class=\"icon-error\"></i>\n      <div class=\"content\"><span class=\"resource-name-label\">"
-    + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + escapeExpression(((stack1 = (depth0 && depth0.targetName)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</span> failed to "
     + escapeExpression(((stack1 = (depth0 && depth0.operation)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + " in "
@@ -2433,7 +2433,7 @@ function program5(depth0,data) {
   buffer += "\n      <i class=\"icon-pending\"></i>\n      <div class=\"content\">Sending request to "
     + escapeExpression(((stack1 = (depth0 && depth0.operation)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + " <span class=\"resource-name-label\">"
-    + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + escapeExpression(((stack1 = (depth0 && depth0.targetName)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</span> in "
     + escapeExpression(((stack1 = (depth0 && depth0.region)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + ".</div>\n    ";
@@ -2446,7 +2446,7 @@ function program7(depth0,data) {
   buffer += "\n      <i class=\"icon-pending\"></i>\n      <div class=\"content\">Processing request to "
     + escapeExpression(((stack1 = (depth0 && depth0.operation)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + " <span class=\"resource-name-label\">"
-    + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + escapeExpression(((stack1 = (depth0 && depth0.targetName)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</span> in "
     + escapeExpression(((stack1 = (depth0 && depth0.region)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + ".</div>\n    ";
@@ -2457,7 +2457,7 @@ function program9(depth0,data) {
   
   var buffer = "", stack1;
   buffer += "\n      <i class=\"icon-success\"></i>\n      <div class=\"content\"><span class=\"resource-name-label\">"
-    + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + escapeExpression(((stack1 = (depth0 && depth0.targetName)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + " </span>"
     + escapeExpression(((stack1 = (depth0 && depth0.operation)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + " successfully in "

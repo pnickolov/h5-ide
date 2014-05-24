@@ -291,6 +291,10 @@
         }
       };
 
+      Modal.prototype.enableConfirm = function() {
+        return this.tpl.find(".modal-confirm").attr('disabled', false);
+      };
+
       Modal.prototype._fadeOut = function() {
         return this.tpl.animate({
           left: "-=" + $(window).width()

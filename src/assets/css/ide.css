@@ -920,10 +920,6 @@ button {
 	color      : #999;
 	background : #f8f8f8;
 }
-.disabled .app-thumbnail {
-	background : #071624;
-	text-align : center;
-}
 
 .app-thumbnail-pending {
 	padding: 60px 0;

@@ -1,0 +1,69 @@
+<!-- {{frame}} -->
+<div class="modal-toolbar">
+    <div class="content-wrap hide">
+        <div class="toolbar">
+            {{#if btnValueCreate}}
+            <button class="icon-new-stack btn btn-blue t-m-btn" data-btn="create">{{btnValueCreate}}</button>
+            {{/if}}
+            <div class="btn-group">
+                {{#each buttons}}
+                <button class="icon-{{icon}} t-m-btn" data-btn="{{type}}" {{#if disabled}}disabled{{/if}}>{{name}}</button>
+                {{/each}}
+            </div>
+        </div>
+        <div class="list">
+            <div class="slidebox">
+                <div class="content clearfix">
+                </div>
+                <div class="error">
+                    something wrong
+                </div>
+            </div>
+            <div class="table-head-fix">
+                <table class="table-head">
+                    <thead>
+                        <tr>
+                            <th>
+                                <div class="checkbox">
+                                    <input id="t-m-select-all" type="checkbox" value="None">
+                                    <label for="t-m-select-all"></label>
+                                </div>
+                            </th>
+                            {{#each columns}}
+                            <th class="{{#if sortable}}sortable{{/if}}" style="{{#if width}}width={{width}};{{/if}}">{{name}}</th>
+                            {{/each}}
+                        </tr>
+                    </thead>
+                </table>
+                <div class="scroll-wrap">
+                    <div class="scrollbar-veritical-wrap" style="display: block;"><div class="scrollbar-veritical-thumb"></div></div>
+                    <div class="scroll-content" style="display:block;">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th><div class="th-inner"></div></th>
+                                    {{#each columns}}
+                                    <th><div class="th-inner"></div></th>
+                                    {{/each}}
+                                </tr>
+                            </thead>
+                            <tbody class='t-m-content'>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="loading-spinner"></div>
+</div>
+
+
+<!-- {{loading}} -->
+<div class="loading-spinner"></div>
+
+
+
+
+

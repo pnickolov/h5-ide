@@ -603,59 +603,46 @@ Additional Notes and Questions
 
 
 <!-- {{modalRunStack}} -->
-<div id="modal-run-stack">
-	<div class="modal-header">
-		<h3>{{ i18n 'TOOL_POP_TIT_RUN_STACK' }}</h3><i class="modal-close">×</i>
+<section id="modal-run-stack">
+	<div class="modal-control-group clearfix" data-bind="true">
+		<label class="label" for="app-name">App Name</label>
+		<input id="app-name" class="input modal-input-value" type="text" value="{{name}}" data-ignore="true">
+		<div class="runtime-error" id="runtime-error-appname"></div>
 	</div>
-	<div class="modal-body">
-		<div class="modal-control-group clearfix" data-bind="true">
-			<label class="label" for="app-name">App Name</label>
-			<input id="app-name" class="input modal-input-value" type="text" value="{{name}}" data-ignore="true">
-			<div class="runtime-error" id="runtime-error-appname"></div>
+	<div class="modal-control-group default-kp-group clearfix" style="display:none;">
+		<label for="">$DefaultKeyPair</label>
+		<div id="kp-runtime-placeholder"></div>
+		<div class="runtime-error" id="runtime-error-kp"></div>
+	</div>
+	<div class="modal-control-group app-usage-group clearfix">
+		<label for="">App Usage</label>
+		<div id="app-usage-selectbox" class="selectbox">
+			<div class="selection"><i class="icon-app-type-testing"></i>Testing</div>
+			<ul class="dropdown" tabindex="-1">
+				<li class="selected item" data-value="testing"><i class="icon-app-type-testing"></i>Testing</li>
+				<li class="item" data-value="development"><i class="icon-app-type-development"></i>Development</li>
+				<li class="item" data-value="production"><i class="icon-app-type-production"></i>Production</li>
+				<li class="item" data-value="others"><i class="icon-app-type-others" data-value="testing"></i>Others</li>
+			</ul>
 		</div>
-		<div class="modal-control-group default-kp-group clearfix" style="display:none;">
-			<label for="">$DefaultKeyPair</label>
-			<div id="kp-runtime-placeholder"></div>
-			<i class="icon-info tooltip" data-tooltip="{{i18n 'TIP_KEYPAIR_USED_DEFAULT_KP'}}"></i>
-			<div class="runtime-error" id="runtime-error-kp"></div>
+	</div>
+	<div class="stack-validation">
+		<details open style="display:none;">
+			<summary>Stack Validation</summary>
+			<div id="stack-run-validation-container"></div>
+		</details>
+		<div class="nutshell" style="display: none;">:<label></label></div>
+		<div class="validating">
+			<div class="loading-spinner loading-spinner-small"></div>
+			<p>Validating your stack...</p>
 		</div>
-		<div class="modal-control-group app-usage-group clearfix">
-			<label for="">App Usage</label>
-			<div id="app-usage-selectbox" class="selectbox">
-				<div class="selection"><i class="icon-app-type-testing"></i>Testing</div>
-				<ul class="dropdown" tabindex="-1">
-					<li class="selected item" data-value="testing"><i class="icon-app-type-testing"></i>Testing</li>
-					<li class="item" data-value="development"><i class="icon-app-type-development"></i>Development</li>
-					<li class="item" data-value="production"><i class="icon-app-type-production"></i>Production</li>
-					<li class="item" data-value="others"><i class="icon-app-type-others" data-value="testing"></i>Others</li>
-				</ul>
-			</div>
-		</div>
-		<div class="stack-validation">
-			<details open style="display:none;">
-				<summary>Stack Validation</summary>
-				<div id="stack-run-validation-container"></div>
-			</details>
-			<div class="nutshell" style="display: none;">:<label></label></div>
-			<div class="validating">
-				<div class="loading-spinner loading-spinner-small"></div>
-				<p>Validating your stack...</p>
-			</div>
-		</div>
-		<div class="estimate clearfix">
-			<span class="title">Estimated Cost</span>
-			<span class="price" id="label-total-fee"><b>${{total_fee}}</b> / month</span>
-		</div>
+	</div>
+	<div class="estimate clearfix">
+		<span class="title">Estimated Cost</span>
+		<span class="price" id="label-total-fee"><b>${{total_fee}}</b> / month</span>
+	</div>
+</section>
 
-	</div>
-	<div class="modal-footer">
-
-		{{#if hasCred}}<button class="btn btn-blue" id="btn-confirm" disabled>Run Stack</button>
-		{{else}}
-		<button class="btn btn-primary" id="btn-confirm" disabled>Set Up Credential First</button>{{/if}}
-		<button class="btn btn-silver modal-close" id="run-stack-cancel">Cancel</button>
-	</div>
-</div>
 
 <!-- {{sgRuleList}} -->
 {{#each this}}
@@ -1687,3 +1674,29 @@ Are you sure you want to delete {{name}}?</div>
 	</span>
 </li>
 {{/each}}
+
+<!-- {{modalTemplate}} -->
+<div id="modal-box" class="modal-box">
+    <div style="width: 520px">
+        <div class="modal-header">
+            <h3>{{ title }}</h3>
+            {{#unless hideClose}}<i class="modal-close">×</i>{{/unless}}
+        </div>
+        <div class="modal-body  context-wrap{{#if hasScroll}} scroll-wrap scrollbar-auto-hide{{/if}}" {{#if hasScroll}}style="padding: 0;"{{else}}{{#if compact}} style="padding: 0;"{{/if}}{{/if}}>
+            {{#if hasScroll}}
+            <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+                <div class="scroll-content" {{#if compact}} style="padding: 0;"{{else}}style="padding: 12px 15px"{{/if}}>
+                    {{{ template }}}
+                </div>
+            {{else}}
+            {{{template}}}
+            {{/if}}
+            </div>
+        {{#if hasFooter}}
+        <div class="modal-footer">
+            <button class="btn modal-confirm btn-{{confirm.color}}" {{#if confirm.disabled}} disabled {{/if}}>{{confirm.text}}</button>
+            {{#unless hideClose}}<button class="btn modal-close btn-silver">{{cancel}}</button>{{/unless}}
+        </div>
+        {{/if}}
+    </div>
+</div>

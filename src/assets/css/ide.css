@@ -3,6 +3,8 @@
 @import url("./ide/navigation.css");
 @import url("./ide/dashboard.css");
 @import url("./ide/kp.css");
+@import url("./ide/combo-dropdown.css");
+@import url("./ide/modal.css");
 
 html,
 body {
@@ -4339,12 +4341,6 @@ a.action-link:hover {
 
 /* run stack */
 
-#modal-run-stack .modal-body {
-	width: 450px;
-	margin: 0;
-	padding: 0;
-}
-
 #modal-run-stack #app-name {
 	width   : 265px;
 	padding : 7px 5px;
@@ -4352,15 +4348,16 @@ a.action-link:hover {
 }
 
 #modal-run-stack .modal-control-group {
-	padding: 15px;
+	padding: 0 0 15px;
 }
 
-#modal-run-stack .modal-body > div.stack-validation {
+#modal-run-stack > div.stack-validation {
 	padding   : 15px;
+	margin    : 0 -15px;
 	border-top: 1px solid #1d1d1d;
 }
 
-#modal-run-stack .modal-footer .btn-primary {
+#modal-run-stack .btn-primary {
 	padding: 8px 10px;
 }
 
@@ -4558,11 +4555,12 @@ summary:focus {
 	min-height: 80px;
 }
 
-#modal-run-stack .modal-body div.estimate {
+#modal-run-stack div.estimate {
 	background-color : #0f0f0f;
 	position         : relative;
 	padding          : 5px 15px;
 	height           : 58px;
+	margin           : 0 -15px;
 }
 
 #modal-run-stack .estimate .title {

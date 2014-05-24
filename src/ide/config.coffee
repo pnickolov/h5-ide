@@ -104,7 +104,7 @@ require.config {
 		'event'              : 'lib/ide_event'
 
 		#############################################
-		# lib                        # Merge in deploy
+		# lib                       # Merge in deploy
 		#############################################
 		'aws_handle'         : 'lib/aws/main'
 		'forge_handle'       : 'lib/forge/main'
@@ -133,6 +133,12 @@ require.config {
 		'UI.tour'            : 'ui/UI.tour'
 		'jqpagination'       : 'ui/jqpagination'
 		"jquerysort"         : 'ui/jquery.sort'
+		'UI.modalplus'       : 'ui/UI.modalplus'
+
+		#############################################
+		# cloud resources           # Merge in deploy
+		#############################################
+		"CloudResources"     : "ide/cloudres/CloudResources"
 
 
 		#############################################
@@ -259,6 +265,8 @@ require.config {
 		'state_status'       : 'component/statestatus/main'
 		'kp'       			 : 'component/kp/kpMain'
 		'kp_upload'       	 : 'component/kp/kpUpload'
+		'combo_dropdown'     : 'component/common/comboDropdown'
+		'toolbar_modal' 	 : 'component/common/toolbarModal'
 
 		#############################################
 		# component
@@ -360,6 +368,7 @@ require.config {
 			'UI.tour'
 			"jqpagination"
 			'jquerysort'
+			"UI.modalplus"
 		]
 		"ApiRequest" : []
 		"model/model" : [
@@ -417,7 +426,9 @@ require.config {
 		]
 		"component/sgrule/SGRulePopup" : []
 		"component/exporter/Exporter"  : [ "component/exporter/Download", "component/exporter/Thumbnail", "component/exporter/JsonExporter" ]
+		"ide/cloudres/CrBundle"  : ["CloudResources"]
 		"ide/Application" : []
+		'combo_dropdown'  : ["toolbar_modal"]
 		"kp" : ["kp_upload"]
 		"module/design/framework/DesignBundle" : [ "Design", "CanvasManager" ]
 		"validation" : []
@@ -451,7 +462,7 @@ requirejs.onError = ( err )->
 		console.error "[RequireJS Error]", err, err.stack
 
 
-require ['ide/Application', 'ide/deprecated/ide'], ( Application, ide ) ->
+require ['ide/Application', 'ide/deprecated/ide', "ide/cloudres/CrBundle"], ( Application, ide ) ->
 	(new Application()).initialize().then ()->
 		ide.initialize()
 	return

@@ -1,79 +1,19 @@
-<!-- {{frame}} -->
-<div id="modal-kp-manage" class="modal-toolbar">
-    <div class="modal-header">
-        <h3>Manage Key Pairs in {{regionName}}</h3>
-        <i class="modal-close">×</i>
-    </div>
-
-    <div class="modal-body">
-        <div class="content-wrap">
-            <div class="toolbar">
-                <button class="icon-new-stack btn btn-blue" id="kp-create">Create Key Pair</button>
-                <div class="btn-group">
-                    <button class="icon-import tooltip" id="kp-import" data-tooltip="">Import Key Pair</button>
-                    <button class="icon-del tooltip" id="kp-delete" data-tooltip="" disabled>Delete</button>
-                    <button class="icon-refresh tooltip" id="kp-refresh" data-tooltip=""></button>
-                </div>
-            </div>
-            <div class="list">
-                <div class="slidebox">
-                    <div class="content clearfix">
-                    </div>
-                    <div class="error">
-                        something wrong
-                    </div>
-                </div>
-                <div class="table-head-fix">
-                        <table class="table-head">
-                            <thead>
-                                <tr>
-                                    <th>
-                                        <div class="checkbox">
-                                            <input id="kp-select-all" type="checkbox" value="None">
-                                            <label for="kp-select-all"></label>
-                                        </div>
-                                    </th>
-                                    <th class="sortable">Name</th>
-                                    <th>Fingerprint</th>
-                                </tr>
-                            </thead>
-                        </table>
-                        <div class="scroll-wrap">
-                            <div class="scrollbar-veritical-wrap" style="display: block;"><div class="scrollbar-veritical-thumb"></div></div>
-                            <div class="scroll-content" style="display:block;">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th><div class="th-inner"></div></th>
-                                            <th><div class="th-inner"></div></th>
-                                            <th><div class="th-inner"></div></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {{#each keys}}
-                                        <tr class="item" data-id="">
-                                            <td>
-                                                <div class="checkbox">
-                                                    <input id="kp-select-{{keyName}}" type="checkbox" value="None" data-name="{{keyName}}" class="one-cb">
-                                                    <label for="kp-select-{{keyName}}"></label>
-                                                </div>
-                                            </td>
-                                            <td>{{keyName}}</td>
-                                            <td>{{keyFingerprint}}</td>
-                                        </tr>
-                                        {{/each}}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-
-            </div>
-        </div>
-    </div>
-</div>
-
 <!-- {{keys}} -->
+{{#each keys}}
+<tr class="item" data-id="">
+    <td>
+        <div class="checkbox">
+            <input id="kp-select-{{keyName}}" type="checkbox" value="None" data-name="{{keyName}}" class="one-cb">
+            <label for="kp-select-{{keyName}}"></label>
+        </div>
+    </td>
+    <td>{{keyName}}</td>
+    <td>{{keyFingerprint}}</td>
+</tr>
+{{/each}}
+
+
+<!-- {{keys_backup}} -->
 {{#each keys}}
 <tr class="item" data-id="">
     <td>
@@ -90,7 +30,7 @@
 <!-- {{loading}} -->
 <div class="loading-spinner"></div>
 
-<!-- {{slideCreate}} -->
+<!-- {{slide_create}} -->
 <div class="slide-create" data-bind="true">
     <div class="before-create">
         <label for="create-kp-name">Key Pair Name</label>
@@ -110,7 +50,7 @@
     </div>
 </div>
 
-<!-- {{slideDelete}} -->
+<!-- {{slide_delete}} -->
 <div class="slide-delete">
     <div class="modal-text-major">Confirm to delete {{#if selecteKeyName }}{{selecteKeyName}}{{else}}selected {{selectedCount}} key pairs{{/if}}?</div>
     <div class="init action">
@@ -121,7 +61,7 @@
         <button class="btn" disabled>Deleting...</button>
     </div>
 </div>
-<!-- {{slideImport}} -->
+<!-- {{slide_import}} -->
 <div class="slide-import" data-bind="true">
     <label for="import-kp-name">Key Pair Name</label>
     <input class="input" type="text" id="import-kp-name" data-ignore="true" data-ignore-regexp="^[a-zA-Z0-9,_-]*$" data-required="true" maxlength="255" placeholder="allow alphanumber, _ or - up to 255 characters">
@@ -152,6 +92,7 @@
     </p>
     <p class="key-content"></p>
 </div>
+
 
 
 

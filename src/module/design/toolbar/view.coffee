@@ -246,7 +246,7 @@ define [ 'MC', 'event',
 
                 # disable button
 
-                modalplus.toggleConfirm true
+                modalPlus.toggleConfirm true
                 $('.modal-header .modal-close').hide()
                 $('#run-stack-cancel').attr 'disabled', true
 
@@ -256,7 +256,7 @@ define [ 'MC', 'event',
                 canvasData = MC.common.other.canvasData.data()
                 that = @
                 me.model.syncSaveStack( region, canvasData ).then () ->
-                    if not modalplus.isOpen
+                    if not modalPlus.isOpen
                         return
                     data = canvasData
                     # set app name

@@ -56,16 +56,17 @@ define [], ()->
             _.extend @, Backbone.Events
             @wrap = if $('#modal-wrap').size() > 0 then $("#modal-wrap") else $("<div id='modal-wrap'>").appendTo $('body')
             @tpl = $(MC.template.modalTemplate
-                title: @option.title || ""
-                hideClose : @option.hideClose
-                template: if typeof @option.template is "object" then "" else @option.template
+                title       : @option.title || ""
+                hideClose   : @option.hideClose
+                template    : if typeof @option.template is "object" then "" else @option.template
                 confirm:
-                    text: @option.confirm?.text || "Submit"
-                    color: @option.confirm?.color || "blue"
+                    text    : @option.confirm?.text || "Submit"
+                    color   : @option.confirm?.color || "blue"
                     disabled: @option.confirm?.disabled
-                cancel: @option.cancel || "Cancel"
-                hasFooter: !@option.disableFooter
-                hasScroll: !!@option.maxHeight
+                cancel      : @option.cancel || "Cancel"
+                hasFooter   : !@option.disableFooter
+                hasScroll   : !!@option.maxHeight
+                compact     : @option.compact
             )
             body = @tpl.find(".modal-body")
             if typeof @option.template is "object"

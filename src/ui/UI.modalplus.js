@@ -22,7 +22,8 @@
           },
           cancel: this.option.cancel || "Cancel",
           hasFooter: !this.option.disableFooter,
-          hasScroll: !!this.option.maxHeight
+          hasScroll: !!this.option.maxHeight,
+          compact: this.option.compact
         }));
         body = this.tpl.find(".modal-body");
         if (typeof this.option.template === "object") {

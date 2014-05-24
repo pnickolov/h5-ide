@@ -133,8 +133,23 @@ define [
       return
 
     stopApp : ( id )->
-      modal AppTpl.stopAppConfirm { name : App.model.appList().get( id ).get("name") }
-      $("#confirmStopApp").on "click", ()-> App.model.appList().get( id ).stop(); return
+      app  = App.model.appList().get( id )
+      name = app.get("name")
+
+      modal AppTpl.terminateAppConfirm {
+        name       : name
+        production : app.get("usage") is "production"
+      }
+
+      $("#confirmStopApp").on "click", ()-> app.stop(); return
+
+      $("#appNameConfirmIpt").on "keyup change", ()->
+        if $("#appNameConfirmIpt").val() is name
+          $("#confirmStopApp").removeAttr "disabled"
+        else
+          $("#confirmStopApp").attr "disabled", "disabled"
+        return
+
       return
 
     terminateApp : ( id )->

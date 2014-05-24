@@ -1,6 +1,6 @@
 <!-- {{removeStackConfirm}} -->
 <header class="modal-header"><h3>{{i18n "TOOL_TIP_DELETE_STACK"}}</h3><i class="modal-close">&times;</i></header>
-<div class="modal-body modal-text-wraper" style="width:420px;">
+<div class="modal-body modal-text-wraper" style="width:390px;">
   <div class="modal-center-align-helper">
       <div class="modal-text-major">{{msg}}</div>
   </div>
@@ -12,7 +12,7 @@
 
 <!-- {{dupStackConfirm}} -->
 <header class="modal-header"><h3>{{i18n "TOOL_TIP_DUPLICATE_STACK"}}</h3><i class="modal-close">&times;</i></header>
-<div class="modal-body modal-text-wraper" style="width:420px;">
+<div class="modal-body modal-text-wraper" style="width:390px;">
   <div class="modal-center-align-helper">
     <div class="modal-control-group">
       <label class="modal-text-major">{{i18n "TOOL_POP_BODY_DUPLICATE_STACK"}}</label>
@@ -27,7 +27,7 @@
 
 <!-- {{startAppConfirm}} -->
 <header class="modal-header"><h3>{{i18n "TOOL_TIP_START_APP"}}</h3><i class="modal-close">&times;</i></header>
-<div class="modal-body modal-text-wraper" style="width:420px;">
+<div class="modal-body modal-text-wraper" style="width:390px;">
   <div class="modal-center-align-helper">
       <div class="modal-text-major">{{i18n "TOOL_POP_BODY_START_APP_LEFT"}} {{name}} {{i18n "TOOL_POP_BODY_START_APP_RIGHT"}}</div>
   </div>
@@ -39,13 +39,21 @@
 
 <!-- {{stopAppConfirm}} -->
 <header class="modal-header"><h3>{{i18n "TOOL_POP_TIT_STOP_APP"}}</h3><i class="modal-close">&times;</i></header>
-<div class="modal-body modal-text-wraper" style="width:420px;">
-  <div class="modal-center-align-helper">
-      <div class="modal-text-major">{{i18n "TOOL_POP_BODY_STOP_APP_LEFT"}} {{name}} {{i18n "TOOL_POP_BODY_STOP_APP_RIGHT"}}</div>
+
+{{#if production}}
+  <div class="modal-body" style="color:#667;width:390px;">
+    <p><b style="color:#ec3c38;">{{name}} {{ i18n 'POP_CONFIRM_PROD_APP_WARNING_MSG' }}</b>{{ i18n 'POP_CONFIRM_TERMINATE_PROD_APP_MSG' }} {{ i18n 'POP_CONFIRM_STOP_ASG' }}</p>
+    <p>{{ i18n 'POP_CONFIRM_STOP_PROD_APP_INPUT_LBL' }}</p>
+    <div><input class="input" style="width:351px;" id="appNameConfirmIpt"/></div>
   </div>
-</div>
+{{else}}
+  <div class="modal-body modal-text-wraper" style="width:390px;"> <div class="modal-center-align-helper">
+    <div class="modal-text-major">{{i18n "TOOL_POP_BODY_STOP_APP_LEFT"}} {{name}} {{i18n "TOOL_POP_BODY_STOP_APP_RIGHT"}}</div>
+  </div> </div>
+{{/if}}
+
 <div class="modal-footer">
-  <button class="btn modal-close btn-red" id="confirmStopApp">{{i18n "TOOL_POP_BTN_STOP_APP"}}</button>
+  <button class="btn modal-close btn-red" id="confirmStopApp" {{#if production}}disabled{{/if}}>{{i18n "TOOL_POP_BTN_STOP_APP"}}</button>
   <button class="btn modal-close btn-silver">{{i18n "TOOL_POP_BTN_CANCEL"}}</button>
 </div>
 
@@ -59,7 +67,7 @@
     <div><input class="input" style="width:351px;" id="appNameConfirmIpt"/></div>
   </div>
 {{else}}
-  <div class="modal-body modal-text-wraper" style="width:420px;">
+  <div class="modal-body modal-text-wraper" style="width:390px;">
     <div class="modal-center-align-helper"> <div class="modal-text-major">{{i18n "TOOL_POP_BODY_TERMINATE_APP_LEFT"}} {{name}} {{i18n "TOOL_POP_BODY_TERMINATE_APP_RIGHT"}}</div>
   </div> </div>
 {{/if}}

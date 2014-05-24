@@ -4175,7 +4175,7 @@ VisualOps API. You cannot UNDO this action.'
   ##### Modal Confirm Stop/Terminate App
 
     POP_CONFIRM_STOP_ASG:
-      en: "Auto scaling group in this app will be deleted when it is stopped."
+      en: "Any auto scaling group will be deleted when application is stopped."
       zh: ""
 
     POP_CONFIRM_PROD_APP_WARNING_MSG:

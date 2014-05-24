@@ -204,7 +204,7 @@
 </li>
 {{/if}}
 {{else}}
-    <div class="blank-widget">{{i18n "DASH_LBL_NO_APP"}}</div>
+    <div class="blank-widget"><div>{{i18n "DASH_LBL_NO_APP"}}</div></div>
 {{/each}}
 </ul> <!-- Resource App -->
 
@@ -219,7 +219,7 @@
         </div>
     </li>
 {{else}}
-    <div class="blank-widget">{{i18n "DASH_LBL_NO_STACK"}}</div>
+    <div class="blank-widget"><div>{{i18n "DASH_LBL_NO_STACK"}}</div></div>
 {{/each}}
 </ul> <!-- Resource Stack -->
 </div>

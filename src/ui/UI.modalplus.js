@@ -21,7 +21,8 @@
             disabled: this.option.disabled
           },
           cancel: this.option.cancel || "Cancel",
-          hasFooter: !this.option.disableFooter
+          hasFooter: !this.option.disableFooter,
+          hasScroll: !!this.option.maxHeight
         }));
         body = this.tpl.find(".modal-body");
         if (typeof this.option.template === "object") {

@@ -62,6 +62,7 @@ define [], ()->
                     disabled: @option.disabled
                 cancel: @option.cancel || "Cancel"
                 hasFooter: !@option.disableFooter
+                hasScroll: !!@option.maxHeight
             )
             body = @tpl.find(".modal-body")
             if typeof @option.template is "object"

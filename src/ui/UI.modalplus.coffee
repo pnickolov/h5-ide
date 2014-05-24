@@ -20,7 +20,7 @@
 #      delay: animate delay time.                                       [default: 300ms]
 #      disableClose: if can be closed when it's a single modal.         [default: false]
 #      disableFooter: if this Modal has footer.                         [default: false]
-#      dragAble: if the modal is dragAble                               [default: false]
+#      disableDrag: if the modal is dragAble                               [default: false]
 #      hideClose: if the close button on the right corner is hidden.    [default: false]
 #      cancel: cancel button of Modal                                   [default: "Cancel"]
 #      confirm: confirm button of Modal footer.                         [default: {text: :"Submit", color: "blue", disabled: false}] (color-support: "blue, red, silver")
@@ -119,7 +119,7 @@ define [], ()->
                     if @?.getFirst()?
                         e.preventDefault()
                         @?.getFirst()?.back()
-            if(@option.dragable)
+            if not @option.disableDrag
                 diffX = 0
                 diffY = 0
                 dragable = false

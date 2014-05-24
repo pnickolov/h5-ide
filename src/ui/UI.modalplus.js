@@ -134,7 +134,7 @@
             }
           };
         })(this));
-        if (this.option.dragable) {
+        if (!this.option.disableDrag) {
           diffX = 0;
           diffY = 0;
           dragable = false;

@@ -46,6 +46,7 @@
 #           template:   "<h1>Here Goes Modal Body</h1>"
 #           width: "600px"
 #
+modalGroup = []
 define [], ()->
     class Modal
         constructor: (@option)->
@@ -68,8 +69,8 @@ define [], ()->
             if @option.maxHeight then body.css("max-height":@option.maxHeight)
             if @option.width then body.parent().css( width : @option.width )
             @tpl.appendTo @wrap
-            @modalGroup.push(@)
-            if @modalGroup.length == 1
+            modalGroup.push(@)
+            if modalGroup.length == 1
                 @trigger "show", @
             @show()
             @bindEvent()
@@ -79,9 +80,9 @@ define [], ()->
                 return false
             if @.parentModal
                 return false
-            if @modalGroup.length > 1
+            if modalGroup.length > 1
                 @.back()
-            else if @modalGroup.length <= 1
+            else if modalGroup.length <= 1
                 @trigger 'close',@
                 @tpl.remove()
                 @option.onClose?(@)
@@ -89,7 +90,7 @@ define [], ()->
             null
         show: ()->
             @wrap.removeClass("hide")
-            if @modalGroup.length > 1
+            if modalGroup.length > 1
                 @getLast().resize(1)
                 @getLast()._slideIn()
                 @getLastButOne()._fadeOut()
@@ -100,16 +101,17 @@ define [], ()->
             @tpl.find('.modal-confirm').click (e)=>
                 @option.onConfirm?(@tpl,e)
                 @.trigger 'confirm', @
-                @modalGroup[0].back()
+                modalGroup[0].back()
             @tpl.find('.btn.modal-close').click (e)=>
                 @option.onCancel?(@tpl,e)
-                @modalGroup[0].back()
+                modalGroup[0].back()
             @tpl.find("i.modal-close").click (e)=>
-                @modalGroup[0].back()
+                modalGroup[0].back()
             if(!@option.disableClose)
-                @wrap.on 'click', (e)=>
+                @getFirst().wrap.off 'click'
+                @getFirst().wrap.on 'click', (e)=>
                     if(e.target == e.currentTarget)
-                        @back()
+                        @getFirst().back()
             $(window).resize =>
                 @?.getLast()?.resize()
             $(document).keyup (e)=>
@@ -172,18 +174,17 @@ define [], ()->
             @tpl.css
                 top:  if top > 0 then top else 10
                 left: left
-        modalGroup: []
         getFirst: ->
-            return @modalGroup?[0]
+            return modalGroup?[0]
         getLast: ->
-            return @modalGroup[@modalGroup.length - 1]
+            return modalGroup[modalGroup.length - 1]
         getLastButOne: ->
             if @.parentModal
                 return @.parentModal.getLastButOne()
             else
-                return @modalGroup[@modalGroup.length - 2]
+                return modalGroup[modalGroup.length - 2]
         next: (optionConfig)->
-            if @modalGroup?.length >= 1
+            if modalGroup?.length >= 1
                 newModal = new Modal optionConfig
                 @trigger "next", @
                 lastModal = @.getLastButOne()
@@ -202,15 +203,15 @@ define [], ()->
         back: ()->
             if @parentModal or @isMoving
                 return false
-            if @modalGroup.length == 1
-                @modalGroup.pop()
+            if modalGroup.length == 1
+                modalGroup.pop()
                 @close()
                 return false
             else
                 @trigger "back", @
                 @getLastButOne()._fadeIn()
                 @getLast()._slideOut()
-                toRemove = @modalGroup.pop()
+                toRemove = modalGroup.pop()
                 @getLast().childModal = null
                 toRemove.option.onClose?()
                 @isMoving = true

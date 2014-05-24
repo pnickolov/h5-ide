@@ -1,4 +1,8 @@
 (function() {
+  var modalGroup;
+
+  modalGroup = [];
+
   define([], function() {
     var Modal;
     Modal = (function() {
@@ -34,8 +38,8 @@
           });
         }
         this.tpl.appendTo(this.wrap);
-        this.modalGroup.push(this);
-        if (this.modalGroup.length === 1) {
+        modalGroup.push(this);
+        if (modalGroup.length === 1) {
           this.trigger("show", this);
         }
         this.show();
@@ -51,9 +55,9 @@
         if (this.parentModal) {
           return false;
         }
-        if (this.modalGroup.length > 1) {
+        if (modalGroup.length > 1) {
           this.back();
-        } else if (this.modalGroup.length <= 1) {
+        } else if (modalGroup.length <= 1) {
           this.trigger('close', this);
           this.tpl.remove();
           if (typeof (_base = this.option).onClose === "function") {
@@ -67,7 +71,7 @@
       Modal.prototype.show = function() {
         var _base;
         this.wrap.removeClass("hide");
-        if (this.modalGroup.length > 1) {
+        if (modalGroup.length > 1) {
           this.getLast().resize(1);
           this.getLast()._slideIn();
           this.getLastButOne()._fadeOut();
@@ -86,7 +90,7 @@
               _base.onConfirm(_this.tpl, e);
             }
             _this.trigger('confirm', _this);
-            return _this.modalGroup[0].back();
+            return modalGroup[0].back();
           };
         })(this));
         this.tpl.find('.btn.modal-close').click((function(_this) {
@@ -95,19 +99,20 @@
             if (typeof (_base = _this.option).onCancel === "function") {
               _base.onCancel(_this.tpl, e);
             }
-            return _this.modalGroup[0].back();
+            return modalGroup[0].back();
           };
         })(this));
         this.tpl.find("i.modal-close").click((function(_this) {
           return function(e) {
-            return _this.modalGroup[0].back();
+            return modalGroup[0].back();
           };
         })(this));
         if (!this.option.disableClose) {
-          this.wrap.on('click', (function(_this) {
+          this.getFirst().wrap.off('click');
+          this.getFirst().wrap.on('click', (function(_this) {
             return function(e) {
               if (e.target === e.currentTarget) {
-                return _this.back();
+                return _this.getFirst().back();
               }
             };
           })(this));
@@ -213,40 +218,37 @@
         });
       };
 
-      Modal.prototype.modalGroup = [];
-
       Modal.prototype.getFirst = function() {
-        var _ref;
-        return (_ref = this.modalGroup) != null ? _ref[0] : void 0;
+        return modalGroup != null ? modalGroup[0] : void 0;
       };
 
       Modal.prototype.getLast = function() {
-        return this.modalGroup[this.modalGroup.length - 1];
+        return modalGroup[modalGroup.length - 1];
       };
 
       Modal.prototype.getLastButOne = function() {
         if (this.parentModal) {
           return this.parentModal.getLastButOne();
         } else {
-          return this.modalGroup[this.modalGroup.length - 2];
+          return modalGroup[modalGroup.length - 2];
         }
       };
 
       Modal.prototype.next = function(optionConfig) {
-        var lastModal, newModal, _base, _ref, _ref1, _ref2;
-        if (((_ref = this.modalGroup) != null ? _ref.length : void 0) >= 1) {
+        var lastModal, newModal, _base, _ref, _ref1;
+        if ((modalGroup != null ? modalGroup.length : void 0) >= 1) {
           newModal = new Modal(optionConfig);
           this.trigger("next", this);
           lastModal = this.getLastButOne();
-          if ((_ref1 = this.getFirst()) != null) {
-            if (typeof (_base = _ref1.option).onNext === "function") {
+          if ((_ref = this.getFirst()) != null) {
+            if (typeof (_base = _ref.option).onNext === "function") {
               _base.onNext();
             }
           }
           newModal.parentModal = lastModal;
           lastModal.childModal = newModal;
-          if ((_ref2 = lastModal.parentModal) != null) {
-            _ref2.option.disableClose = true;
+          if ((_ref1 = lastModal.parentModal) != null) {
+            _ref1.option.disableClose = true;
           }
           this.isMoving = true;
           window.setTimeout((function(_this) {
@@ -266,15 +268,15 @@
         if (this.parentModal || this.isMoving) {
           return false;
         }
-        if (this.modalGroup.length === 1) {
-          this.modalGroup.pop();
+        if (modalGroup.length === 1) {
+          modalGroup.pop();
           this.close();
           return false;
         } else {
           this.trigger("back", this);
           this.getLastButOne()._fadeIn();
           this.getLast()._slideOut();
-          toRemove = this.modalGroup.pop();
+          toRemove = modalGroup.pop();
           this.getLast().childModal = null;
           if (typeof (_base = toRemove.option).onClose === "function") {
             _base.onClose();

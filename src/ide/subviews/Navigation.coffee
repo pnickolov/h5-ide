@@ -100,6 +100,8 @@ define [ "./NavigationTpl", "event", 'backbone' ], ( NavPartsTpl, ide_event ) ->
         openStack : ( event ) -> @openDesignTab 'OPEN_STACK', $(event.currentTarget)
         openApp   : ( event ) -> @openDesignTab 'OPEN_APP', $(event.currentTarget)
         openDesignTab : ( type, $tgt ) ->
+            if not $tgt.attr('data-id') then return
+
             @hideOffCanvas()
             if MC.data.design_submodule_count isnt -1
                 return notification 'warning', lang.ide.NAV_DESMOD_NOT_FINISH_LOAD , false

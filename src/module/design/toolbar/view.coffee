@@ -176,7 +176,7 @@ define [ 'MC', 'event',
                 template        : MC.template.modalRunStack
                 disableClose    : true
                 width           : '450px'
-                height          : '346px'
+                height          : '515px'
                 confirm         :
                     text: 'Run Stack'
                     disabled: true

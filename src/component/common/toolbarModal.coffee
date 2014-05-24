@@ -73,7 +73,6 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalpl
         __modalplus: null
 
         events:
-            'click .modal-close' : 'close'
             'change #t-m-select-all': 'checkAll'
             'change .one-cb': 'checkOne'
 
@@ -206,6 +205,7 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalpl
 
 
             @__modalplus = new modalplus options
+            @__modalplus.on 'close', @close, @
             $( '#modal-wrap' ).click @stopPropagation
 
         renderLoading: () ->

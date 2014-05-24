@@ -13,10 +13,11 @@ define [ 'MC', 'event',
          'kp'
          'ApiRequest'
          'component/stateeditor/stateeditor'
+         'UI.modalplus'
          'backbone', 'jquery', 'handlebars',
          'UI.selectbox', 'UI.notification',
          "UI.tabbar"
-], ( MC, ide_event, Design, lang, stack_tmpl, app_tmpl, appview_tmpl, JsonExporter, constant, kp, ApiRequest, stateeditor ) ->
+], ( MC, ide_event, Design, lang, stack_tmpl, app_tmpl, appview_tmpl, JsonExporter, constant, kp, ApiRequest, stateeditor, modalplus ) ->
 
     ToolbarView = Backbone.View.extend {
 
@@ -170,9 +171,19 @@ define [ 'MC', 'event',
             if $('#toolbar-run').hasClass( 'disabled' )
                 return false
 
-            modal MC.template.modalRunStack {
-                hasCred : App.user.hasCredential()
-            }
+            options =
+                title           : 'Run Stack'
+                template        : MC.template.modalRunStack
+                disableClose    : true
+                width           : '450px'
+                height          : '346px'
+                confirm         :
+                    text: 'Run Stack'
+                    disabled: true
+
+            options.confirm.text = 'Set Up Credential First' if not App.user.hasCredential()
+
+            modalPlus = new modalplus options
 
             # must render it after modal appeared
             me.renderDefaultKpDropdown()
@@ -188,10 +199,11 @@ define [ 'MC', 'event',
 
             # insert ta component
             require [ 'component/trustedadvisor/main' ], ( trustedadvisor_main ) ->
-                trustedadvisor_main.loadModule 'stack'
+                trustedadvisor_main.loadModule( 'stack' ).then () ->
+                    modalPlus.toggleConfirm false
 
             # click logic
-            $('#btn-confirm').on 'click', this, (event) ->
+            modalPlus.on 'confirm', () ->
                 me.hideErr()
 
                 if not App.user.hasCredential()
@@ -239,7 +251,9 @@ define [ 'MC', 'event',
 
                 # push SAVE_STACK event
                 #ide_event.trigger ide_event.SAVE_STACK, MC.common.other.canvasData.data()
-                event.data.model.syncSaveStack MC.common.other.canvasData.get( 'region' ), MC.common.other.canvasData.data()
+                @model.syncSaveStack MC.common.other.canvasData.get( 'region' ), MC.common.other.canvasData.data()
+                modalPlus.close()
+            , @
 
             null
 

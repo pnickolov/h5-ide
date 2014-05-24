@@ -199,9 +199,9 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalpl
                 title           : @options.title
                 disableFooter   : true
                 disableClose    : true
-                dragable        : true
                 width           : '855px'
                 height          : '473px'
+
 
 
             @__modalplus = new modalplus options

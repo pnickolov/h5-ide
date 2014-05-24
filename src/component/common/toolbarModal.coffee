@@ -201,6 +201,7 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalpl
                 disableClose    : true
                 width           : '855px'
                 height          : '473px'
+                compact         : true
 
 
 

@@ -1,5 +1,5 @@
 <!-- {{removeStackConfirm}} -->
-<header class="modal-header"><h3>{{i18n "TOOL_TIP_DELETE_STACK"}}</h3><i class="modal-close">&times;</i></header>
+<header class="modal-header" style="width:390px;"><h3>{{i18n "TOOL_TIP_DELETE_STACK"}}</h3><i class="modal-close">&times;</i></header>
 <div class="modal-body modal-text-wraper" style="width:390px;">
   <div class="modal-center-align-helper">
       <div class="modal-text-major">{{msg}}</div>
@@ -11,7 +11,7 @@
 </div>
 
 <!-- {{dupStackConfirm}} -->
-<header class="modal-header"><h3>{{i18n "TOOL_TIP_DUPLICATE_STACK"}}</h3><i class="modal-close">&times;</i></header>
+<header class="modal-header" style="width:390px;"><h3>{{i18n "TOOL_TIP_DUPLICATE_STACK"}}</h3><i class="modal-close">&times;</i></header>
 <div class="modal-body modal-text-wraper" style="width:390px;">
   <div class="modal-center-align-helper">
     <div class="modal-control-group">
@@ -26,7 +26,7 @@
 </div>
 
 <!-- {{startAppConfirm}} -->
-<header class="modal-header"><h3>{{i18n "TOOL_TIP_START_APP"}}</h3><i class="modal-close">&times;</i></header>
+<header class="modal-header" style="width:390px;"><h3>{{i18n "TOOL_TIP_START_APP"}}</h3><i class="modal-close">&times;</i></header>
 <div class="modal-body modal-text-wraper" style="width:390px;">
   <div class="modal-center-align-helper">
       <div class="modal-text-major">{{i18n "TOOL_POP_BODY_START_APP_LEFT"}} {{name}} {{i18n "TOOL_POP_BODY_START_APP_RIGHT"}}</div>
@@ -38,7 +38,7 @@
 </div>
 
 <!-- {{stopAppConfirm}} -->
-<header class="modal-header"><h3>{{i18n "TOOL_POP_TIT_STOP_APP"}}</h3><i class="modal-close">&times;</i></header>
+<header class="modal-header" style="width:390px;"><h3>{{i18n "TOOL_POP_TIT_STOP_APP"}}</h3><i class="modal-close">&times;</i></header>
 
 {{#if production}}
   <div class="modal-body" style="color:#667;width:390px;">
@@ -58,7 +58,7 @@
 </div>
 
 <!-- {{terminateAppConfirm}} -->
-<header class="modal-header"><h3>{{i18n "TOOL_POP_TIT_TERMINATE_PRD_APP"}}</h3><i class="modal-close">&times;</i></header>
+<header class="modal-header" style="width:390px;"><h3>{{i18n "TOOL_POP_TIT_TERMINATE_PRD_APP"}}</h3><i class="modal-close">&times;</i></header>
 
 {{#if production}}
   <div class="modal-body" style="color:#667;width:390px;">
@@ -83,3 +83,15 @@
   <div>Connection lost. Attempting to reconnect…</div>
   <div>Changes made now may not be saved.</div>
 </section>
+
+<!-- {{forceTerminateApp}} -->
+<header class="modal-header" style="width:390px;"><h3>Force to delete app</h3><i class="modal-close">&times;</i></header>
+<div class="modal-body modal-text-wraper" style="width:390px;">
+  <div class="modal-center-align-helper">
+      <div class="modal-text-major">The app {{name}} failed to terminate. Do you want to force deleting it? After force deleting it, you need to manually manage the resource in aws console.</div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button class="btn modal-close btn-red" id="forceTerminateApp">{{i18n "TOOL_POP_BTN_DELETE_STACK"}}</button>
+  <button class="btn modal-close btn-silver">{{i18n "TOOL_POP_BTN_CANCEL"}}</button>
+</div>

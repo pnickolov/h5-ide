@@ -128,8 +128,15 @@ define [
       return
 
     startApp : ( id )->
-      modal AppTpl.startAppConfirm { name : App.model.appList().get( id ).get("name") }
-      $("#confirmStartApp").on "click", ()-> App.model.appList().get( id ).start(); return
+      name = App.model.appList().get( id ).get("name")
+      modal AppTpl.startAppConfirm { name : name }
+      $("#confirmStartApp").on "click", ()->
+        App.model.appList().get( id ).start().fail ( err )->
+          error = if err.awsError then err.error + "." + err.awsError else err.error
+          notification "Fail to start your app \"#{name}\". (ErrorCode: #{error})"
+          return
+        return
+
       return
 
     stopApp : ( id )->
@@ -141,7 +148,12 @@ define [
         production : app.get("usage") is "production"
       }
 
-      $("#confirmStopApp").on "click", ()-> app.stop(); return
+      $("#confirmStopApp").on "click", ()->
+        app.stop().fail ( err )->
+          error = if err.awsError then err.error + "." + err.awsError else err.error
+          notification "Fail to stop your app \"#{name}\". (ErrorCode: #{error})"
+          return
+        return
 
       $("#appNameConfirmIpt").on "keyup change", ()->
         if $("#appNameConfirmIpt").val() is name
@@ -168,6 +180,21 @@ define [
           $("#appTerminateConfirm").attr "disabled", "disabled"
         return
 
-      $("#appTerminateConfirm").on "click", ()-> app.terminate(); return
+      $("#appTerminateConfirm").on "click", ()->
+        app.terminate().fail ( err )->
+          error = if err.awsError then err.error + "." + err.awsError else err.error
+          notification "Fail to terminate your app \"#{name}\". (ErrorCode: #{error})"
 
+          modal AppTpl.forceTerminateApp {
+            name : name
+          }
+
+          $("#forceTerminateApp").on "click", ()->
+            app.terminate().fail (err)->
+              error = if err.awsError then err.error + "." + err.awsError else err.error
+              notification "Fail to terminate your app \"#{name}\". (ErrorCode: #{error})"
+            false
+        return
+
+      return
   }

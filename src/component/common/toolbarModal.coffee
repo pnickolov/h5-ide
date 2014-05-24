@@ -152,7 +152,6 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalpl
 
         close: ( event ) ->
             $( '#modal-wrap' ).off 'click', @stopPropagation
-            modal.close()
             @trigger 'close'
             @remove()
             false

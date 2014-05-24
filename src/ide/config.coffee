@@ -104,7 +104,7 @@ require.config {
 		'event'              : 'lib/ide_event'
 
 		#############################################
-		# lib                        # Merge in deploy
+		# lib                       # Merge in deploy
 		#############################################
 		'aws_handle'         : 'lib/aws/main'
 		'forge_handle'       : 'lib/forge/main'
@@ -136,7 +136,7 @@ require.config {
 		'UI.modalplus'       : 'ui/UI.modalplus'
 
 		#############################################
-		# cloud resources
+		# cloud resources           # Merge in deploy
 		#############################################
 		"CloudResources"     : "ide/cloudres/CloudResources"
 
@@ -368,6 +368,7 @@ require.config {
 			'UI.tour'
 			"jqpagination"
 			'jquerysort'
+			"UI.modalplus"
 		]
 		"ApiRequest" : []
 		"model/model" : [
@@ -425,6 +426,7 @@ require.config {
 		]
 		"component/sgrule/SGRulePopup" : []
 		"component/exporter/Exporter"  : [ "component/exporter/Download", "component/exporter/Thumbnail", "component/exporter/JsonExporter" ]
+		"ide/cloudres/CrBundle"  : ["CloudResources"]
 		"ide/Application" : []
 		'combo_dropdown'  : ["toolbar_modal"]
 		"kp" : ["kp_upload"]

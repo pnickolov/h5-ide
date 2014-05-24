@@ -126,6 +126,10 @@ define [ "./submodels/OpsCollection", "./submodels/OpsModel", "ApiRequest", "bac
       info_list.splice idx, 1
       info_list.splice 0, 0, item
 
+      # Limit the notificaiton queue
+      if info_list.length > 30
+        info_list.length = 30
+
       # Notify the others that notification has changed.
       @__triggerNotification()
       null

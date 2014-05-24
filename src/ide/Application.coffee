@@ -147,30 +147,27 @@ define [ "ApiRequest", "component/exporter/JsonExporter", "./Websocket", "./Appl
 
     try
 
-      if not @hasOpenedSampleStack
+      isFirstVisit = @user.isFirstVisit()
 
-        isFirstVisit = @user.isFirstVisit()
+      if (isFirstVisit and fromWelcome) or (not isFirstVisit and not fromWelcome)
 
-        if (isFirstVisit and fromWelcome) or (not isFirstVisit and not fromWelcome)
+        stackStoreIdStamp = $.cookie('stack_store_id') or ''
+        localStackStoreIdStamp = $.cookie('stack_store_id_local') or ''
 
-          stackStoreIdStamp = $.cookie('stack_store_id') or ''
-          localStackStoreIdStamp = $.cookie('stack_store_id_local') or ''
+        stackStoreId = stackStoreIdStamp.split('#')[0]
 
-          stackStoreId = stackStoreIdStamp.split('#')[0]
+        if stackStoreId and stackStoreIdStamp isnt localStackStoreIdStamp
+          
+          $.cookie('stack_store_id_local', stackStoreIdStamp, {expires: 30})
 
-          if stackStoreId and stackStoreIdStamp isnt localStackStoreIdStamp
-            
-            $.cookie('stack_store_id_local', stackStoreIdStamp)
+          gitBranch = 'hotfix/store-site'
 
-            gitBranch = 'hotfix/store-site'
+          ApiRequest('stackstore_fetch_stackstore', {
+            file_name: "#{gitBranch}/stack/#{stackStoreId}/#{stackStoreId}.json"
+          }).then (result) ->
 
-            ApiRequest('stackstore_fetch_stackstore', {
-              file_name: "#{gitBranch}/stack/#{stackStoreId}/#{stackStoreId}.json"
-            }).then (result) ->
-
-              jsonDataStr = result
-              that.importJson(jsonDataStr)
-              that.hasOpenedSampleStack = true
+            jsonDataStr = result
+            that.importJson(jsonDataStr)
 
     catch err
 

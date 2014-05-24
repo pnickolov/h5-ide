@@ -126,7 +126,7 @@ define [ "ApiRequest", "event" , "backbone" ], ( ApiRequest, ide_event )->
     logout : ()->
       domain = { "domain" : window.location.hostname.replace("ide", "") }
       for ckey, cValue of $.cookie()
-        if ckey isnt 'stack_store_id_local'
+        if ckey isnt 'stack_store_id_local' and ckey isnt 'stack_store_id'
           $.removeCookie ckey, domain
           $.removeCookie ckey
       return

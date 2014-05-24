@@ -21,6 +21,11 @@ define [ 'event',
             $(window).on 'beforeunload', @beforeunloadEvent
             $(document).on 'keydown', @globalKeyEvent
 
+            # for stack store open
+            $(window).on 'focus', () ->
+                if App and App.openSampleStack
+                    App.openSampleStack()
+
         showMain : ->
 
             that = @

@@ -183,6 +183,10 @@ define [], ()->
                 return @.parentModal.getLastButOne()
             else
                 return modalGroup[modalGroup.length - 2]
+        isOpen: ()->
+            return !@isClosed
+        isCurrent: ()->
+            return @ == @getLast()
         next: (optionConfig)->
             if modalGroup?.length >= 1
                 newModal = new Modal optionConfig
@@ -206,12 +210,14 @@ define [], ()->
             if modalGroup.length == 1
                 modalGroup.pop()
                 @close()
+                @isClosed = true
                 return false
             else
                 @trigger "back", @
                 @getLastButOne()._fadeIn()
                 @getLast()._slideOut()
                 toRemove = modalGroup.pop()
+                toRemove.isClosed = true
                 @getLast().childModal = null
                 toRemove.option.onClose?()
                 @isMoving = true

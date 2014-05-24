@@ -234,6 +234,14 @@
         }
       };
 
+      Modal.prototype.isOpen = function() {
+        return !this.isClosed;
+      };
+
+      Modal.prototype.isCurrent = function() {
+        return this === this.getLast();
+      };
+
       Modal.prototype.next = function(optionConfig) {
         var lastModal, newModal, _base, _ref, _ref1;
         if ((modalGroup != null ? modalGroup.length : void 0) >= 1) {
@@ -271,12 +279,14 @@
         if (modalGroup.length === 1) {
           modalGroup.pop();
           this.close();
+          this.isClosed = true;
           return false;
         } else {
           this.trigger("back", this);
           this.getLastButOne()._fadeIn();
           this.getLast()._slideOut();
           toRemove = modalGroup.pop();
+          toRemove.isClosed = true;
           this.getLast().childModal = null;
           if (typeof (_base = toRemove.option).onClose === "function") {
             _base.onClose();

@@ -144,8 +144,7 @@ define ["ApiRequest", "constant", "component/exporter/Thumbnail", "backbone"], (
         region_name : @get("region")
         app_id      : @get("id")
       }).then ()->
-        self.set "state", OpsModelState.Stopped
-        return self
+        self
       , ( err )->
         self.set "state", OpsModelState.Running
         throw err
@@ -158,8 +157,7 @@ define ["ApiRequest", "constant", "component/exporter/Thumbnail", "backbone"], (
         region_name : @get("region")
         app_id      : @get("id")
       }).then ()->
-        self.set "state", OpsModelState.Running
-        return self
+        self
       , ( err )->
         self.set "state", OpsModelState.Stopped
         throw err
@@ -175,8 +173,7 @@ define ["ApiRequest", "constant", "component/exporter/Thumbnail", "backbone"], (
         app_id      : @get("id")
         flag        : force
       }).then ()->
-        self.__destroy()
-        return self
+        self
       , ( err )->
         self.attributes.terminateFail = false
         self.set {

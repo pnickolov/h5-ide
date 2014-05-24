@@ -107,7 +107,12 @@
   width: 100%;
   background: #F9F5EF; }
 
-#diffInnerWrap, #ApiDebugger {
+#diffInnerWrap {
+  max-height: 100%;
+  width: 100%;
+  overflow: scroll; }
+
+#ApiDebugger {
   height: 100%;
   width: 100%;
   overflow: scroll; }

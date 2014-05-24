@@ -61,7 +61,7 @@ define [ 'toolbar_modal' ], ( toolbar_modal ) ->
 
 ###
 
-define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.notification' ], ( template, Backbone, $ ) ->
+define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalplus', 'UI.notification' ], ( template, Backbone, $, modalplus ) ->
 
 
     Backbone.View.extend
@@ -69,6 +69,8 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.notific
         tagName: 'section'
 
         __slide: null
+
+        __modalplus: null
 
         events:
             'click .modal-close' : 'close'
@@ -192,7 +194,17 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.notific
                 event.stopPropagation()
 
         open: () ->
-            modal @el
+            options =
+                template        : @el
+                title           : @options.title
+                disableFooter   : true
+                disableClose    : true
+                dragable        : true
+                width           : '855px'
+                height          : '473px'
+
+
+            @__modalplus = new modalplus options
             $( '#modal-wrap' ).click @stopPropagation
 
         renderLoading: () ->

@@ -169,8 +169,8 @@ define [], ()->
         resize: (slideIn)->
             windowWidth = $(window).width()
             windowHeight = $(window).height()
-            width = @option.width.toLowerCase().replace('px','') || @tpl.width()
-            height= @option.height.toLowerCase().replace('px','') || @tpl.height()
+            width = @option.width?.toLowerCase().replace('px','') || @tpl.width()
+            height= @option.height?.toLowerCase().replace('px','') || @tpl.height()
             top = (windowHeight - height) / 2
             left = (windowWidth - width) / 2
             if slideIn
@@ -217,7 +217,7 @@ define [], ()->
                 @isClosed = true
                 return false
             else
-                @trigger "back", @
+                @getLast().trigger "close", @getLast()
                 @getLastButOne()._fadeIn()
                 @getLast()._slideOut()
                 toRemove = modalGroup.pop()

@@ -203,11 +203,11 @@
       };
 
       Modal.prototype.resize = function(slideIn) {
-        var height, left, top, width, windowHeight, windowWidth;
+        var height, left, top, width, windowHeight, windowWidth, _ref, _ref1;
         windowWidth = $(window).width();
         windowHeight = $(window).height();
-        width = this.option.width.toLowerCase().replace('px', '') || this.tpl.width();
-        height = this.option.height.toLowerCase().replace('px', '') || this.tpl.height();
+        width = ((_ref = this.option.width) != null ? _ref.toLowerCase().replace('px', '') : void 0) || this.tpl.width();
+        height = ((_ref1 = this.option.height) != null ? _ref1.toLowerCase().replace('px', '') : void 0) || this.tpl.height();
         top = (windowHeight - height) / 2;
         left = (windowWidth - width) / 2;
         if (slideIn) {
@@ -283,7 +283,7 @@
           this.isClosed = true;
           return false;
         } else {
-          this.trigger("back", this);
+          this.getLast().trigger("close", this.getLast());
           this.getLastButOne()._fadeIn();
           this.getLast()._slideOut();
           toRemove = modalGroup.pop();

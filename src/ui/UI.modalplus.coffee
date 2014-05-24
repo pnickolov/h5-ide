@@ -36,6 +36,9 @@
 #       getLast()       ====> return the last modal in modalGroup
 #       getFirst()      ====> return the first modal in modalGroup
 #       getLastButOne() ====> return the last but one modal in modalGroup
+#       isOpen()        ====> return if the modal is Opened(exist)
+#       isCurrent()     ====> return if the modal is current modal.
+#       toggleConfirm   ====> toggle if the confirm button is disabled.
 #   Property:
 #       tpl             ====> the jQuery Dom element of the modal
 #       modalGroup      ====> the modalGroup

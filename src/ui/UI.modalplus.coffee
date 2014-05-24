@@ -116,7 +116,7 @@ define [], ()->
             $(window).resize =>
                 @?.getLast()?.resize()
             $(document).keyup (e)=>
-                if (e.which == 27 or e.which == 8)
+                if (e.which == 27)
                     if @?.getFirst()?
                         e.preventDefault()
                         @?.getFirst()?.back()

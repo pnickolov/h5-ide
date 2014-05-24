@@ -272,6 +272,15 @@ define ['UI.canvg', './Download'], ()->
     localStorage.setItem "tn/#{data.id}", data.image
     null
 
+  createThumbnail = ( $svg_element, size )->
+    defer = Q.defer()
+    exportPNG $svg_element, {
+      size     : size
+      onFinish : ( data )-> defer.resolve( data.image || "" )
+    }
+
+    defer.promise
+
   saveThumbnail = ( id, $svg_element, size )->
     if typeof $svg_element is "string"
       saveThumbnailFinish {
@@ -324,6 +333,9 @@ define ['UI.canvg', './Download'], ()->
 
   {
     exportPNG : exportPNG
+
+    # Returns a promise when the thumbnail is created.
+    generate  : createThumbnail
 
     save      : saveThumbnail
     fetch     : getThumbnail

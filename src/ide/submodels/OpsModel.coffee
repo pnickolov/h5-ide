@@ -68,14 +68,36 @@ define ["ApiRequest", "constant", "component/exporter/Thumbnail", "backbone"], (
       # TODO :
 
     # Save the stack in server, returns a promise
-    save : ()->
-      if @isApp() then return @__returnErrorPromise()
+    save : ( newJson, thumbnail )->
+      if @isApp() and @__saving then return @__returnErrorPromise()
+      @__saving = true
+
+      self = @
+      ApiRequest("stack_save", {
+        region_name : @get("region")
+        spec        : newJson
+      }).then ()->
+
+        if thumbnail then ThumbUtil.save( self.id, thumbnail )
+
+        self.set {
+          name       : newJson.name
+          updateTime : +(new Date())
+          stoppable  : newJson.property.stoppable
+        }
+        self.__jsonData = newJson
+        self.__saving   = false
+
+        return self
+      , ( err )->
+        self.__saving = false
+        throw err
 
     # Delete the stack in server, returns a promise
     remove : ()->
       if @isApp() then return @__returnErrorPromise()
 
-      @trigger 'destroy', @, @collection
+      Backbone.Model.prototype.destroy.call @
 
       self = @
       ApiRequest("stack_remove",{
@@ -84,6 +106,8 @@ define ["ApiRequest", "constant", "component/exporter/Thumbnail", "backbone"], (
       }).fail ()->
         # If we cannot delete the stack, we just add it back to the stackList.
         App.model.stackList().add self
+
+
 
     # Duplicate the stack
     duplicate : ( name )->
@@ -107,13 +131,54 @@ define ["ApiRequest", "constant", "component/exporter/Thumbnail", "backbone"], (
 
     # Stop the app, returns a promise
     stop : ()->
-      if not @isApp() then return @__returnErrorPromise()
-      if @attributes.state is OpsModelState.Stopped
-        console.warn "The app #{@get("id")} has already stopped. But we are still sending a request to the server to stop it."
+      if not @isApp() or @get("state") isnt OpsModelState.Running then return @__returnErrorPromise()
+
+      self = @
+      @set "state", OpsModelState.Stopping
+      ApiRequest("app_stop",{
+        region_name : @get("region")
+        app_id      : @get("id")
+      }).then ()->
+        self.set "state", OpsModelState.Stopped
+        return self
+      , ( err )->
+        self.set "state", OpsModelState.Running
+        throw err
+
+    start : ()->
+      if not @isApp() or @get("state") isnt OpsModelState.Stopped then return @__returnErrorPromise()
+      self = @
+      @set "state", OpsModelState.Starting
+      ApiRequest("app_start",{
+        region_name : @get("region")
+        app_id      : @get("id")
+      }).then ()->
+        self.set "state", OpsModelState.Running
+        return self
+      , ( err )->
+        self.set "state", OpsModelState.Stopped
+        throw err
 
     # Terminate the app, returns a promise
     terminate : ()->
       if not @isApp() then return @__returnErrorPromise()
+      oldState = @get("state")
+      @set("state", OpsModelState.Terminating)
+      self = @
+      ApiRequest("app_terminate", {
+        region_name : @get("region")
+        app_id      : @get("id")
+      }).then ()->
+        self.attributes.state = OpsModelState.Destroyed
+        Backbone.Model.prototype.destroy.call self
+        return self
+      , ( err )->
+        self.attributes.terminateFail = false
+        self.set {
+          state         : oldState
+          terminateFail : true
+        }
+        throw err
 
 
     setStatusProgress : ( steps, totalSteps )->

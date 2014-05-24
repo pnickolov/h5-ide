@@ -184,7 +184,10 @@
 {{#if progressing}}
 <li class="disabled">
     <div class="thumbnail app-thumbnail"></div>
-    <div class="region-resource-info truncate"><div class="loading-spinner loading-spinner-small"></div>{{name}} - {{stateDesc}}...</div>
+    <div class="region-resource-progess{{#unless progress}} hide{{/unless}}" style="width:{{progress}}%;"></div>
+    <div class="region-resource-info truncate">
+        <div class="loading-spinner loading-spinner-small"></div>{{name}} - {{stateDesc}}...
+    </div>
 </li>
 {{else}}
 <li data-id="{{id}}">

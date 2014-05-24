@@ -280,12 +280,17 @@
   width: 18%;
   opacity: .95;
   position: relative;
-  cursor: pointer; }
+  cursor: pointer;
+  background: #323e49;
+  border-radius: 5px;
+  overflow: hidden; }
   .region-resource-list > li:hover {
     opacity: 1; }
   .region-resource-list > li.disabled {
     cursor: default;
-    opacity: .6; }
+    opacity: .8; }
+    .region-resource-list > li.disabled:hover {
+      opacity: .8; }
   .region-resource-list > li:last-child {
     margin-bottom: 15px; }
 .region-resource-list .loading-spinner {
@@ -297,10 +302,8 @@
 .region-resource-list .thumbnail {
   height: 0;
   padding-bottom: 65%;
-  border-radius: 5px 5px 0 0;
   background: #55626f url('/assets/images/ide/thumbnail-stack-placehoder@2x.png') center center no-repeat;
-  background-size: 100% auto;
-  overflow: hidden; }
+  background-size: 100% auto; }
   .region-resource-list .thumbnail.app-thumbnail {
     background-image: url('/assets/images/ide/thumbnail-app-placehoder@2x.png');
     background-size: 100% auto; }
@@ -337,10 +340,28 @@
       margin-left: 2%; }
     .region-resource-list .blank-widget .blank-widget {
       padding: 14.55% 0 27px 0; } }
+.region-resource-list .region-resource-progess {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 27px;
+  background-image: -webkit-gradient(linear, 0 0, 100% 100%, color-stop(0.25, #ad77d7), color-stop(0.25, #9e62d4), color-stop(0.5, #9e62d4), color-stop(0.5, #ad77d7), color-stop(0.75, #ad77d7), color-stop(0.75, #9e62d4), to(#9e62d4));
+  background-image: -webkit-linear-gradient(135deg, #ad77d7 25%, #9e62d4 25%, #9e62d4 50%, #ad77d7 50%, #ad77d7 75%, #9e62d4 75%, #9e62d4);
+  background-image: -moz-linear-gradient(135deg, #ad77d7 25%, transparent 25%, transparent 50%, #ad77d7 50%, #ad77d7 75%, transparent 75%, transparent);
+  background-image: linear-gradient(135deg, #ad77d7 25%, #9e62d4 25%, #9e62d4 50%, #ad77d7 50%, #ad77d7 75%, #9e62d4 75%, #9e62d4);
+  -webkit-background-size: 40px 40px;
+  -moz-background-size: 40px 40px;
+  -o-background-size: 40px 40px;
+  background-size: 40px 40px;
+  -webkit-transition: width 0.3s;
+  -moz-transition: width 0.3s;
+  -o-transition: width 0.3s;
+  transition: width 0.3s;
+  -webkit-animation: progress-bar 2s linear infinite;
+  -moz-animation: progress-bar 2s linear infinite;
+  animation: progress-bar 2s linear infinite; }
 .region-resource-list .region-resource-info {
-  background: #323e49;
   padding-left: 12px;
-  border-radius: 0 0 5px 5px;
   position: relative;
   height: 27px;
   line-height: 27px;
@@ -471,3 +492,24 @@
     #region-switch-list > li:hover {
       background-color: #eee;
       color: #148BE6; }
+
+@-webkit-keyframes progress-bar {
+  from {
+    background-position: 0 0; }
+
+  to {
+    background-position: 40px 0; } }
+
+@-moz-keyframes progress-bar {
+  from {
+    background-position: 0 0; }
+
+  to {
+    background-position: 40px 0; } }
+
+@keyframes progress-bar {
+  from {
+    background-position: 0 0; }
+
+  to {
+    background-position: 40px 0; } }

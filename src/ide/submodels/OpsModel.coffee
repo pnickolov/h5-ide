@@ -32,6 +32,7 @@ define ["ApiRequest", "constant", "component/exporter/Thumbnail", "backbone"], (
       state         : OpsModelState.UnRun
       terminateFail : false
       stoppable     : true # If the app has instance_store_ami, stoppable is false
+      progress      : 0
 
     initialize : ( attr, options )->
       if options && options.initJsonData

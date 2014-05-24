@@ -73,17 +73,14 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalpl
         __modalplus: null
 
         events:
-            'change #t-m-select-all': 'checkAll'
-            'change .one-cb': 'checkOne'
+            'change #t-m-select-all': '__checkAll'
+            'change .one-cb': '__checkOne'
 
-            # actions
-            'click .t-m-btn': 'handleSlide'
+            'click .t-m-btn': '__handleSlide'
             'click .cancel': 'cancel'
 
-            # do action
-            'click .do-action': 'doAction'
-            'click .cancel': 'cancel'
-            'click [data-btn=refresh]': 'refresh'
+            'click .do-action': '__doAction'
+            'click [data-btn=refresh]': '__refresh'
 
         initialize: ( options ) ->
             @options = options or {}
@@ -92,7 +89,7 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalpl
                 @options.context.modal = @
                 @options.context.m$ = _.bind @$, @
 
-        doAction: ( event ) ->
+        __doAction: ( event ) ->
             @error()
             action = $( event.currentTarget ).data 'action'
             @trigger 'action', action, @__getChecked()
@@ -110,7 +107,7 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalpl
             _.isFunction( @options.slideable ) and not @options.slideable()
 
 
-        handleSlide: ( event ) ->
+        __handleSlide: ( event ) ->
             if @__slideRejct()
                 return @
 
@@ -122,7 +119,7 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalpl
 
 
             # has active button
-            if $activeButton
+            if $activeButton.length
                 # slide up
                 if $activeButton.get( 0 ) is $button.get( 0 )
                     @trigger 'slideup', button
@@ -144,21 +141,21 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalpl
                 @__slide = button
 
 
-        refresh: ->
+        __refresh: ->
             if @__slideRejct()
                 return @
-            @renderLoading()
+            @__renderLoading()
             @trigger 'refresh'
 
-        close: ( event ) ->
-            $( '#modal-wrap' ).off 'click', @stopPropagation
+        __close: ( event ) ->
+            $( '#modal-wrap' ).off 'click', @__stopPropagation
             @trigger 'close'
             @remove()
             false
 
-        checkOne: ( event ) ->
+        __checkOne: ( event ) ->
             $target = $ event.currentTarget
-            @processDelBtn()
+            @__processDelBtn()
             cbAll = @$ '#t-m-select-all'
             cbAmount = @$('.one-cb').length
             checkedAmount = @$('.one-cb:checked').length
@@ -169,8 +166,8 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalpl
             else if cbAmount - checkedAmount is 1
                 cbAll.prop 'checked', false
 
-        checkAll: ( event ) ->
-            @processDelBtn()
+        __checkAll: ( event ) ->
+            @__processDelBtn()
             if event.currentTarget.checked
                 @$('input[type="checkbox"]').prop 'checked', true
                 @$('tr.item').addClass 'selected'
@@ -178,7 +175,7 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalpl
                 @$('input[type="checkbox"]').prop 'checked', false
                 @$('tr.item').removeClass 'selected'
 
-        processDelBtn: () ->
+        __processDelBtn: () ->
             that = @
             _.defer () ->
                 if that.$('.one-cb:checked').length
@@ -186,12 +183,12 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalpl
                 else
                     that.$('[data-btn=delete]').prop 'disabled', true
 
-        stopPropagation: ( event ) ->
+        __stopPropagation: ( event ) ->
             exception = '.sortable, #download-kp'
             if not $(event.target).is( exception )
                 event.stopPropagation()
 
-        open: () ->
+        __open: () ->
             options =
                 template        : @el
                 title           : @options.title
@@ -204,10 +201,10 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalpl
 
 
             @__modalplus = new modalplus options
-            @__modalplus.on 'close', @close, @
-            $( '#modal-wrap' ).click @stopPropagation
+            @__modalplus.on 'close', @__close, @
+            $( '#modal-wrap' ).click @__stopPropagation
 
-        renderLoading: () ->
+        __renderLoading: () ->
             @$( '.content-wrap' ).html template.loading
             @
 
@@ -228,7 +225,7 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalpl
             @__toggleLoading false
             @$el.html template.frame data
             if not refresh
-                @open()
+                @__open()
             @
 
         setContent: ( dom ) ->

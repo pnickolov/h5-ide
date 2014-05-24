@@ -1,0 +1,80 @@
+<!-- {{removeStackConfirm}} -->
+<header class="modal-header"><h3>{{i18n "TOOL_TIP_DELETE_STACK"}}</h3><i class="modal-close">&times;</i></header>
+<div class="modal-body modal-text-wraper" style="width:420px;">
+  <div class="modal-center-align-helper">
+      <div class="modal-text-major">{{msg}}</div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button class="btn modal-close btn-red" id="confirmRmStack">{{i18n "TOOL_POP_BTN_DELETE_STACK"}}</button>
+  <button class="btn modal-close btn-silver">{{i18n "TOOL_POP_BTN_CANCEL"}}</button>
+</div>
+
+<!-- {{dupStackConfirm}} -->
+<header class="modal-header"><h3>{{i18n "TOOL_TIP_DUPLICATE_STACK"}}</h3><i class="modal-close">&times;</i></header>
+<div class="modal-body modal-text-wraper" style="width:420px;">
+  <div class="modal-center-align-helper">
+    <div class="modal-control-group">
+      <label class="modal-text-major">{{i18n "TOOL_POP_BODY_DUPLICATE_STACK"}}</label>
+      <input id="confirmDupStackIpt" class="input" type="text" value="{{newName}}">
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-red" id="confirmDupStack">{{i18n "TOOL_POP_BTN_DUPLICATE_STACK"}}</button>
+  <button class="btn modal-close btn-silver">{{i18n "TOOL_POP_BTN_CANCEL"}}</button>
+</div>
+
+<!-- {{startAppConfirm}} -->
+<header class="modal-header"><h3>{{i18n "TOOL_TIP_START_APP"}}</h3><i class="modal-close">&times;</i></header>
+<div class="modal-body modal-text-wraper" style="width:420px;">
+  <div class="modal-center-align-helper">
+      <div class="modal-text-major">{{i18n "TOOL_POP_BODY_START_APP_LEFT"}} {{name}} {{i18n "TOOL_POP_BODY_START_APP_RIGHT"}}</div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button class="btn modal-close btn-blue" id="confirmStartApp">{{i18n "TOOL_POP_BTN_START_APP"}}</button>
+  <button class="btn modal-close btn-silver">{{i18n "TOOL_POP_BTN_CANCEL"}}</button>
+</div>
+
+<!-- {{stopAppConfirm}} -->
+<header class="modal-header"><h3>{{i18n "TOOL_POP_TIT_STOP_APP"}}</h3><i class="modal-close">&times;</i></header>
+<div class="modal-body modal-text-wraper" style="width:420px;">
+  <div class="modal-center-align-helper">
+      <div class="modal-text-major">{{i18n "TOOL_POP_BODY_STOP_APP_LEFT"}} {{name}} {{i18n "TOOL_POP_BODY_STOP_APP_RIGHT"}}</div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button class="btn modal-close btn-red" id="confirmStopApp">{{i18n "TOOL_POP_BTN_STOP_APP"}}</button>
+  <button class="btn modal-close btn-silver">{{i18n "TOOL_POP_BTN_CANCEL"}}</button>
+</div>
+
+<!-- {{terminateAppConfirm}} -->
+<header class="modal-header"><h3>{{i18n "TOOL_POP_TIT_TERMINATE_PRD_APP"}}</h3><i class="modal-close">&times;</i></header>
+
+{{#if production}}
+  <div class="modal-body production-confirm">
+    <b>{{app_name}}{{ i18n 'POP_CONFIRM_PROD_APP_WARNING_MSG' }}</b>
+  </div>
+  <div class="terminate-pro-app-confirm">
+    <p><b>{{app_name}} {{ i18n 'POP_CONFIRM_PROD_APP_WARNING_MSG' }}</b>{{ i18n 'POP_CONFIRM_TERMINATE_PROD_APP_MSG' }}</p>
+    <p>{{ i18n 'POP_CONFIRM_TERMINATE_PROD_APP_INPUT_LBL' }}</p>
+    <div class="confirm-area"><input class="input" id="appNameConfirmIpt"/></div>
+  </div>
+{{else}}
+  <div class="modal-body modal-text-wraper" style="width:420px;">
+    <div class="modal-center-align-helper"> <div class="modal-text-major">{{i18n "TOOL_POP_BODY_TERMINATE_APP_LEFT"}} {{name}} {{i18n "TOOL_POP_BODY_TERMINATE_APP_RIGHT"}}</div>
+  </div> </div>
+{{/if}}
+
+<div class="modal-footer">
+  <button id="appTerminateConfirm" class="btn btn-red" {{#if production}}disabled{{/if}}>{{i18n "TOOL_POP_BTN_TERMINATE_APP"}}</button>
+  <button class="btn modal-close btn-silver">{{i18n "TOOL_POP_BTN_CANCEL"}}</button>
+</div>
+
+
+<!-- {{disconnectedMsg}} -->
+<section class="disconnected-msg">
+  <div>Connection lost. Attempting to reconnect…</div>
+  <div>Changes made now may not be saved.</div>
+</section>

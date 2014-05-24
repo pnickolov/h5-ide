@@ -12,7 +12,8 @@ define [
   "./subviews/WelcomeDialog"
   "./subviews/SettingsDialog"
   "./subviews/Navigation"
-], ( Backbone, SessionDialog, HeaderView, WelcomeDialog, SettingsDialog, Navigation )->
+  "./subviews/AppTpl"
+], ( Backbone, SessionDialog, HeaderView, WelcomeDialog, SettingsDialog, Navigation, AppTpl )->
 
   Backbone.View.extend {
 
@@ -43,7 +44,7 @@ define [
         if $(".disconnected-msg").show().length > 0
           return
 
-        $( MC.template.disconnectedMsg() ).appendTo("body").on "mouseover", ()->
+        $( AppTpl.disconnectedMsg() ).appendTo("body").on "mouseover", ()->
           $(".disconnected-msg").addClass "hovered"
           $("body").on "mousemove.disconnectedmsg", ( e )->
             msg = $(".disconnected-msg")
@@ -83,5 +84,75 @@ define [
           window.getSelection().addRange range
           console.warn "Select text by document.createRange"
       return false
+
+
+
+    deleteStack : ( id ) ->
+      name = App.model.stackList().get( id ).get( "name" )
+
+      modal AppTpl.removeStackConfirm {
+          msg : sprintf lang.ide.TOOL_POP_BODY_DELETE_STACK, name
+      }
+
+      $("#confirmRmStack").on "click", ()-> App.model.stackList().get( id ).remove(); return
+      return
+
+    duplicateStack : (id) ->
+      name = App.model.stackList().get( id ).get( "name" )
+
+      modal AppTpl.dupStackConfirm {
+        newName : App.model.stackList().getNewName( name )
+      }
+
+      $("#confirmDupStackIpt").focus().select().on "keyup", ()->
+        if $("#confirmDupStackIpt").val()
+          $("confirmDupStack").removeAttr "disabled"
+        else
+          $("#confirmDupStack").attr "disabled", "disabled"
+        return
+
+      $("#confirmDupStack").on "click", ()->
+        newName = $('#confirmDupStackIpt').val()
+
+        #check duplicate stack name
+        if newName.indexOf(' ') >= 0
+          notification 'warning', lang.ide.PROP_MSG_WARN_WHITE_SPACE
+        else if App.model.stackList().where({name:newName}).length
+          notification 'warning', lang.ide.PROP_MSG_WARN_REPEATED_STACK_NAME
+        else
+          modal.close()
+          m = App.model.stackList().get(id)
+          if m then m.duplicate( newName )
+        return
+
+      return
+
+    startApp : ( id )->
+      modal AppTpl.startAppConfirm { name : App.model.appList().get( id ).get("name") }
+      $("#confirmStartApp").on "click", ()-> App.model.appList().get( id ).start(); return
+      return
+
+    stopApp : ( id )->
+      modal AppTpl.stopAppConfirm { name : App.model.appList().get( id ).get("name") }
+      $("#confirmStopApp").on "click", ()-> App.model.appList().get( id ).stop(); return
+      return
+
+    terminateApp : ( id )->
+      app  = App.model.appList().get( id )
+      name = app.get("name")
+
+      modal AppTpl.terminateAppConfirm {
+        name       : name
+        production : app.get("usage") is "production"
+      }
+
+      $("#appNameConfirmIpt").on "keyup change", ()->
+        if $("#appNameConfirmIpt").val() is name
+          $("#appTerminateConfirm").removeAttr "disabled"
+        else
+          $("#appTerminateConfirm").attr "disabled", "disabled"
+        return
+
+      $("#appTerminateConfirm").on "click", ()-> app.terminate(); return
 
   }

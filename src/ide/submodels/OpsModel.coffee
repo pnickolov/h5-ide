@@ -165,7 +165,7 @@ define ["ApiRequest", "constant", "component/exporter/Thumbnail", "backbone"], (
         throw err
 
     # Terminate the app, returns a promise
-    terminate : ()->
+    terminate : ( force = false )->
       if not @isApp() then return @__returnErrorPromise()
       oldState = @get("state")
       @set("state", OpsModelState.Terminating)
@@ -173,6 +173,7 @@ define ["ApiRequest", "constant", "component/exporter/Thumbnail", "backbone"], (
       ApiRequest("app_terminate", {
         region_name : @get("region")
         app_id      : @get("id")
+        flag        : force
       }).then ()->
         self.attributes.state = OpsModelState.Destroyed
         Backbone.Model.prototype.destroy.call self

@@ -191,6 +191,7 @@
     {{#if usage}}<i class="icon-app-type-{{usage}}"></i>{{/if}}
     <div class="thumbnail app-thumbnail"> <img src="{{thumbnail}}" {{#unless thumbnail}}class="hide"{{/unless}}/> </div>
     <div class="region-resource-info">
+        <i class="icon-terminate terminate-app"></i>
         {{#if stoppable}}
             {{#ifCond stateDesc 'Running'}}
                 <i class="icon-stop stop-app"></i>
@@ -198,7 +199,6 @@
                 <i class="icon-play start-app"></i>
             {{/ifCond}}
         {{/if}}
-        <i class="icon-terminate terminate-app"></i>
         <span class="{{#ifCond stateDesc 'Running'}}running{{else}}stopped{{/ifCond}} truncate">{{name}}</span>
     </div>
 </li>

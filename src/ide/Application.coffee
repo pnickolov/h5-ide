@@ -106,4 +106,12 @@ define [ "./Websocket", "./ApplicationView", "./ApplicationModel", "./User", "./
   VisualOps.prototype.showSettings = ( tab )-> new SettingsDialog({ defaultTab:tab })
   VisualOps.prototype.showSettings.TAB = SettingsDialog.TAB
 
+
+  # These functions are for consistent behavoir of managing stacks/apps
+  VisualOps.prototype.deleteStack    = (id)-> @__view.deleteStack(id)
+  VisualOps.prototype.duplicateStack = (id)-> @__view.duplicateStack(id)
+  VisualOps.prototype.startApp       = (id)-> @__view.startApp(id)
+  VisualOps.prototype.stopApp        = (id)-> @__view.stopApp(id)
+  VisualOps.prototype.terminateApp   = (id)-> @__view.terminateApp(id)
+
   VisualOps

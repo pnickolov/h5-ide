@@ -72,8 +72,12 @@ define [ 'event', 'i18n!nls/lang.js',
             "click .global-map-item .app"                                  : "gotoRegionFromMap"
             'click .recent-list-item, .region-resource-list li'            : 'openItem'
             'click #global-region-create-stack-list li, #btn-create-stack' : 'createStack'
-            "click .region-resource-list .delete-stack"                    : "deleteStack"
-            'click .region-resource-list .duplicate-stack'                 : 'duplicateStack'
+
+            "click .region-resource-list .delete-stack"    : "deleteStack"
+            'click .region-resource-list .duplicate-stack' : 'duplicateStack'
+            "click .region-resource-list .start-app"       : "startApp"
+            'click .region-resource-list .stop-app'        : 'stopApp'
+            'click .region-resource-list .terminate-app'   : 'terminateApp'
 
             'click .global-region-status-tab'           : 'switchRecent'
             'click #region-switch-list li'              : 'switchRegion'
@@ -85,9 +89,6 @@ define [ 'event', 'i18n!nls/lang.js',
 
 
             'click .table-app-link-clickable' : 'openApp'
-            'modal-shown .start-app'          : 'startAppClick'
-            'modal-shown .stop-app'           : 'stopAppClick'
-            'modal-shown .terminate-app'      : 'terminateAppClick'
 
             'click #global-region-visualize-VPC' : 'unmanagedVPCClick'
             'click #global-import-stack'         : 'importJson'
@@ -402,107 +403,24 @@ define [ 'event', 'i18n!nls/lang.js',
             return
 
         deleteStack : (event) ->
-            id   = $( event.currentTarget ).closest("li").attr("data-id")
-            name = App.model.stackList().get( id ).get( "name" )
-
-            modal MC.template.removeStackConfirm {
-                msg : sprintf lang.ide.TOOL_POP_BODY_DELETE_STACK, name
-            }
-
-            $("#confirmRmStack").on "click", ()-> App.model.stackList().get( id ).remove(); return
+            App.deleteStack $( event.currentTarget ).closest("li").attr("data-id")
             false
 
         duplicateStack : (event) ->
-            id   = $( event.currentTarget ).closest("li").attr("data-id")
-            name = App.model.stackList().get( id ).get( "name" )
-
-            modal MC.template.dupStackConfirm {
-                newName : App.model.stackList().getNewName( name )
-            }
-
-            $("#confirmDupStackIpt").focus().select().on "keyup", ()->
-                if $("#confirmDupStackIpt").val()
-                    $("confirmDupStack").removeAttr "disabled"
-                else
-                    $("#confirmDupStack").attr "disabled", "disabled"
-                return
-
-            $("#confirmDupStack").on "click", ()->
-                newName = $('#confirmDupStackIpt').val()
-
-                #check duplicate stack name
-                if newName.indexOf(' ') >= 0
-                    notification 'warning', lang.ide.PROP_MSG_WARN_WHITE_SPACE
-                else if App.model.stackList().where({name:newName}).length
-                    notification 'warning', lang.ide.PROP_MSG_WARN_REPEATED_STACK_NAME
-                else
-                    modal.close()
-                    m = App.model.stackList().get(id)
-                    if m then m.duplicate( newName )
-                return
-
+            App.duplicateStack $( event.currentTarget ).closest("li").attr("data-id")
             false
 
+        startApp : ( event )->
+            App.startApp $( event.currentTarget ).closest("li").attr("data-id")
+            false
 
-        startAppClick : (event) ->
-            console.log 'click to start app'
+        stopApp : ( event )->
+            App.stopApp $( event.currentTarget ).closest("li").attr("data-id")
+            false
 
-            id      = $(event.currentTarget).attr('id')
-            name    = $(event.currentTarget).attr('name')
-
-            # check credential
-            if false
-                modal.close()
-                console.log 'show credential setting dialog'
-                require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
-
-            else
-                $('#btn-confirm').on 'click', { target : this }, (event) ->
-                    console.log 'dashboard region start app'
-                    modal.close()
-                    ide_event.trigger ide_event.START_APP, current_region, id, name
-
-            null
-
-        stopAppClick : (event) ->
-            console.log 'click to stop app'
-
-            id      = $(event.currentTarget).attr('id')
-            name    = $(event.currentTarget).attr('name')
-
-            # check credential
-            if false
-                modal.close()
-                console.log 'show credential setting dialog'
-                require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
-
-            else
-                $('#btn-confirm').on 'click', { target : this }, (event) ->
-                    console.log 'dashboard region stop app'
-                    modal.close()
-                    ide_event.trigger ide_event.STOP_APP, current_region, id, name
-
-            null
-
-        terminateAppClick : (event) ->
-            console.log 'click to terminate app'
-
-            id      = $(event.currentTarget).attr('id')
-            name    = $(event.currentTarget).attr('name')
-
-            # check credential
-            if false
-                modal.close()
-                console.log 'show credential setting dialog'
-                require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
-
-            else
-                $('#btn-confirm').on 'click', { target : this }, (event) ->
-                    console.log 'dashboard region terminal app'
-                    modal.close()
-                    ide_event.trigger ide_event.TERMINATE_APP, current_region, id, name
-
-            null
+        terminateApp : ( event )->
+            App.terminateApp $( event.currentTarget ).closest("li").attr("data-id")
+            false
 
         updateThumbnail : ( url, id ) ->
             console.log 'updateThumbnail, url = ' + url + ', id = ' + id

@@ -8,55 +8,7 @@
 # 4. fill the content and selection
 
 ### Example:
-define [ 'toolbar_modal' ], ( toolbar_modal ) ->
-    modalOptions :
-        title: "Manage Key Pairs in #{{regionName}}"
-        buttons: [
-            {
-                icon: 'new-stack'
-                type: 'create'
-                name: 'Create Key Pair'
-            }
-            {
-                icon: 'del'
-                type: 'delete'
-                disalbed: true
-                name: 'Delete'
-            }
-        ]
-        columns: [
-            {
-                sortable: true
-                width: 100px # or 40%
-                name: 'Name'
-            }
-            {
-                sortable: false
-                width: 100px # or 40%
-                name: 'Fingerprint'
-            }
-        ]
-
-    bindModal: () ->
-        @modal = new toolbar_modal @modalOptions
-
-        @modal.on 'slideup', @donothing, @
-        @modal.on 'slidedown', @slideDown, @
-        @modal.on 'refresh', @setKey, @
-
-    initialize: () ->
-        @bindModal()
-        events =
-            'click .xxx', @youkown
-
-
-    render: () ->
-
-
-        @modal.render(options)
-
-    open = () ->
-        @modal.setContent template
+Refer to kpView.coffee
 
 
 ###
@@ -213,7 +165,7 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalpl
             @$( '.content-wrap' ).toggle showOrHide
 
 
-        # ------ In Common Use ------ #
+        # ------ INTERFACE ------ #
 
         render: ( refresh ) ->
             data = @options

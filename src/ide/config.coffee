@@ -426,6 +426,7 @@ require.config {
 		"component/sgrule/SGRulePopup" : []
 		"component/exporter/Exporter"  : [ "component/exporter/Download", "component/exporter/Thumbnail", "component/exporter/JsonExporter" ]
 		"ide/Application" : []
+		'combo_dropdown'  : ["toolbar_modal"]
 		"kp" : ["kp_upload"]
 		"module/design/framework/DesignBundle" : [ "Design", "CanvasManager" ]
 		"validation" : []

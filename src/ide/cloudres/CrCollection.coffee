@@ -112,7 +112,7 @@ define ["ApiRequest", "backbone"], ( ApiRequest )->
       ### jshint +W061 ###
 
       child
-    ### env:dev ###
+    ### env:dev:end ###
 
     extend : ( protoProps, staticProps ) ->
       console.assert protoProps.type, "Subclass of CloudResourceCollection does not specifying a type"

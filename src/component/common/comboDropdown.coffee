@@ -90,8 +90,22 @@ define [ './component/common/comboDropdownTpl', 'backbone', 'jquery' ], ( templa
                 @$( '.combo-dd-filter, .combo-dd-manage' ).toggle showOrHide
             @
 
-        delegate: ( event, selector, handler ) ->
-            @$el.on.apply arguments
+        delegate: ( events, context ) ->
+            if not events or not _.isObject(events) then return @
+
+            for key, method in events
+                if not method then continue
+
+                match = key.match /^(\S+)\s*(.*)$/
+                eventName = match[1]
+                selector = match[2]
+                method = _.bind method, context or this
+                eventName += '.delegateEvents' + @cid
+                if selector is ''
+                  @$el.on eventName, method
+                else
+                  @$el.on eventName, selector, method
+
             @
 
 

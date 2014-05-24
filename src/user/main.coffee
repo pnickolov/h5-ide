@@ -53,12 +53,7 @@ base64Encode = (string)->
 base64Decode = (string)->
     decodeURIComponent escape window.atob string
 
-checkAllCookie = ->
-
-    if $.cookie('usercode') and $.cookie('username') and $.cookie('session_id') and $.cookie('account_id') and $.cookie('mod_repo') and $.cookie('mod_tag') and $.cookie('state') and $.cookie('has_cred')
-        true
-    else
-        false
+checkAllCookie = -> $.cookie('usercode') and $.cookie('session_id')
 
 # language detect
 langType = ->
@@ -464,27 +459,15 @@ setCredit = (result)->
     for ckey, cValue of $.cookie()
         $.removeCookie ckey, domain
 
-    session_info =
-        usercode     : result.username
-        username     : base64Decode( result.username )
-        email        : result.email
-        user_hash    : result.user_hash
-        session_id   : result.session_id
-        account_id   : result.account_id
-        mod_repo     : result.mod_repo
-        mod_tag      : result.mod_tag
-        state        : result.state
-        has_cred     : result.has_cred
-
     COOKIE_OPTION =
         expires : 30
         path    : '/'
 
-    for key, value of session_info
-        $.cookie key, value, COOKIE_OPTION
+    $.cookie "usercode", result.username, COOKIE_OPTION
+    $.cookie "session_id", result.session_id, COOKIE_OPTION
 
     # Set a cookie for WWW
-    $.cookie "has_session", !!session_info.session_id, {
+    $.cookie "has_session", !!result.session_id, {
         domain  : window.location.hostname.replace("ide", "")
         path    : "/"
         expires : 30

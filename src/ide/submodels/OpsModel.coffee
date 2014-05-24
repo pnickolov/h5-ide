@@ -15,12 +15,13 @@ define ["ApiRequest", "constant", "component/exporter/Thumbnail", "backbone"], (
     Running      : 1
     Stopped      : 2
     Initializing : 3
-    Updating     : 4
-    Stopping     : 5
-    Terminating  : 6
-    Destroyed    : 7
+    Starting     : 4
+    Updating     : 5
+    Stopping     : 6
+    Terminating  : 7
+    Destroyed    : 8
 
-  OpsModelStateDesc = ["", "Running", "Stopped", "Starting", "Updating", "Stopping", "Terminating", ""]
+  OpsModelStateDesc = ["", "Running", "Stopped", "Starting", "Starting", "Updating", "Stopping", "Terminating", ""]
 
   OpsModel = Backbone.Model.extend {
 
@@ -194,7 +195,7 @@ define ["ApiRequest", "constant", "component/exporter/Thumbnail", "backbone"], (
 
     isProcessing : ()->
       state = @attributes.state
-      state is OpsModelState.Initializing || state is OpsModelState.Stopping || state is OpsModelState.Updating || state is OpsModelState.Terminating
+      state is OpsModelState.Initializing || state is OpsModelState.Stopping || state is OpsModelState.Updating || state is OpsModelState.Terminating || state is OpsModelState.Starting
 
     setStatusWithApiResult : ( state )-> @set "state", OpsModelState[ state ]
 
@@ -223,6 +224,11 @@ define ["ApiRequest", "constant", "component/exporter/Thumbnail", "backbone"], (
           else
             @attributes.terminateFail = false
             @set "terminateFail", true
+        when "start"
+          if state.completed
+            toState = OpsModelState.Running
+          else
+            toState = OpsModelState.Stopped
 
       if toState is OpsModelState.Destroyed
         @__destroy()

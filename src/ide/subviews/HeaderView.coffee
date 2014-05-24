@@ -30,7 +30,7 @@ define [ "./HeaderTpl", "./SettingsDialog", 'backbone' ], ( tmpl, SettingsDialog
         setAlertCount : ( count ) -> $('#NotificationCounter').text( count || "" )
 
         updateNotification : ()->
-            console.info "Notification Updated"
+            console.info "Notification Updated, Websocket isReady:", App.WS.isReady()
 
             notification = App.model.get "notification"
 

@@ -121,6 +121,13 @@ define [ 'event', 'i18n!nls/lang.js',
                 @renderRegionAppStack()
                 return
 
+            self = @
+            @listenTo App.model.appList(), "change:state", ( model )->
+                console.info "Dashboard Updated due to state changes in app list."
+                if model.get("region") is self.region and @regionTab is "app"
+                    @renderRegionAppStack()
+                return
+
         render : () ->
             region_names = _.map constant.REGION_LABEL, ( name, id ) ->
                 long:

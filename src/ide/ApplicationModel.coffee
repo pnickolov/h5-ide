@@ -94,7 +94,7 @@ define [ "./submodels/OpsCollection", "./submodels/OpsModel", "ApiRequest", "bac
 
     __triggerNotification : _.debounce ()->
       @trigger "change:notification"
-    , 300
+    , 400
 
     __processSingleNotification : ( idx )->
 

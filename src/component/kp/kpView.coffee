@@ -330,9 +330,6 @@ define [ 'combo_dropdown', 'toolbar_modal', './kpTpl', './kpDialogTpl', 'kp_uplo
                 manageBtnValue      : lang.ide.PROP_INSTANCE_MANAGE_KP
                 filterPlaceHolder   : lang.ide.PROP_INSTANCE_FILTER_KP
 
-            if @__mode is 'runtime'
-                options.noManage = true
-
             @dropdown = new combo_dropdown( options )
             @dropdown.on 'open', @show, @
             @dropdown.on 'manage', @manageKp, @

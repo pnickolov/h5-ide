@@ -292,8 +292,8 @@
         }
       };
 
-      Modal.prototype.enableConfirm = function() {
-        return this.tpl.find(".modal-confirm").attr('disabled', false);
+      Modal.prototype.toggleConfirm = function(really) {
+        return this.tpl.find(".modal-confirm").attr('disabled', really);
       };
 
       Modal.prototype._fadeOut = function() {

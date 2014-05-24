@@ -206,8 +206,8 @@
         var height, left, top, width, windowHeight, windowWidth;
         windowWidth = $(window).width();
         windowHeight = $(window).height();
-        width = this.tpl.width();
-        height = this.tpl.height();
+        width = this.option.width || this.tpl.width();
+        height = this.option.height || this.tpl.height();
         top = (windowHeight - height) / 2;
         left = (windowWidth - width) / 2;
         if (slideIn) {

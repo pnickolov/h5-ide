@@ -169,8 +169,8 @@ define [], ()->
         resize: (slideIn)->
             windowWidth = $(window).width()
             windowHeight = $(window).height()
-            width = @tpl.width()
-            height= @tpl.height()
+            width = @option.width || @tpl.width()
+            height= @option.height || @tpl.height()
             top = (windowHeight - height) / 2
             left = (windowWidth - width) / 2
             if slideIn

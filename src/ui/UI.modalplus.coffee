@@ -88,7 +88,9 @@ define [], ()->
             if modalGroup.length > 1
                 @.back()
             else if modalGroup.length <= 1
+                modalGroup = []
                 @trigger 'close',@
+                @trigger 'closed', @ # Last Modal doesn't support Animation. when trigger close, it's closed.
                 @tpl.remove()
                 @option.onClose?(@)
                 @wrap.remove()
@@ -218,6 +220,9 @@ define [], ()->
                 return false
             else
                 @getLast().trigger "close", @getLast()
+                window.setTimeout ->
+                    @getLast().trigger "closed", @getLast()
+                , @option.delay || 300
                 @getLastButOne()._fadeIn()
                 @getLast()._slideOut()
                 toRemove = modalGroup.pop()

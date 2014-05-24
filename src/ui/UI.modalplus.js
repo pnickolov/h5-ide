@@ -60,7 +60,9 @@
         if (modalGroup.length > 1) {
           this.back();
         } else if (modalGroup.length <= 1) {
+          modalGroup = [];
           this.trigger('close', this);
+          this.trigger('closed', this);
           this.tpl.remove();
           if (typeof (_base = this.option).onClose === "function") {
             _base.onClose(this);
@@ -284,6 +286,9 @@
           return false;
         } else {
           this.getLast().trigger("close", this.getLast());
+          window.setTimeout(function() {
+            return this.getLast().trigger("closed", this.getLast());
+          }, this.option.delay || 300);
           this.getLastButOne()._fadeIn();
           this.getLast()._slideOut();
           toRemove = modalGroup.pop();

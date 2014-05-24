@@ -219,12 +219,14 @@ define ["ApiRequest", "constant", "component/exporter/Thumbnail", "backbone"], (
             @attributes.terminateFail = false
             @set "terminateFail", true
 
-      if toState
+      if toState is OpsModelState.Destroyed
+        # Directly modify the attr to avoid sending an event, becase destroy would trigger an update event
+        @attributes.state = toState
+        Backbone.Model.prototype.destroy.call this
+
+      else if toState
         @attributes.progress = 0
         @set "state", toState
-
-      if toState is OpsModelState.Destroyed
-        Backbone.Model.prototype.destroy.call this
 
       return
 

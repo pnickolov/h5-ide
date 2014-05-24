@@ -175,8 +175,7 @@ define ["ApiRequest", "constant", "component/exporter/Thumbnail", "backbone"], (
         app_id      : @get("id")
         flag        : force
       }).then ()->
-        self.attributes.state = OpsModelState.Destroyed
-        Backbone.Model.prototype.destroy.call self
+        self.__destroy()
         return self
       , ( err )->
         self.attributes.terminateFail = false
@@ -226,9 +225,7 @@ define ["ApiRequest", "constant", "component/exporter/Thumbnail", "backbone"], (
             @set "terminateFail", true
 
       if toState is OpsModelState.Destroyed
-        # Directly modify the attr to avoid sending an event, becase destroy would trigger an update event
-        @attributes.state = toState
-        Backbone.Model.prototype.destroy.call this
+        @__destroy()
 
       else if toState
         @attributes.progress = 0
@@ -247,6 +244,11 @@ define ["ApiRequest", "constant", "component/exporter/Thumbnail", "backbone"], (
     # Overriden model methods so that user won't call it acidentally
     destroy : ()->
       console.info "OpsModel's destroy() doesn't do anything. You probably want to call remove(), stop() or terminate()"
+
+    __destroy : ()->
+      # Directly modify the attr to avoid sending an event, becase destroy would trigger an update event
+      @attributes.state = OpsModelState.Destroyed
+      @trigger 'destroy', @, @collection
 
     __returnErrorPromise : ()->
       d = Q.defer()

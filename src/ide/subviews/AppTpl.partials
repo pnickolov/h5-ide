@@ -53,13 +53,10 @@
 <header class="modal-header"><h3>{{i18n "TOOL_POP_TIT_TERMINATE_PRD_APP"}}</h3><i class="modal-close">&times;</i></header>
 
 {{#if production}}
-  <div class="modal-body production-confirm">
-    <b>{{app_name}}{{ i18n 'POP_CONFIRM_PROD_APP_WARNING_MSG' }}</b>
-  </div>
-  <div class="terminate-pro-app-confirm">
-    <p><b>{{app_name}} {{ i18n 'POP_CONFIRM_PROD_APP_WARNING_MSG' }}</b>{{ i18n 'POP_CONFIRM_TERMINATE_PROD_APP_MSG' }}</p>
+  <div class="modal-body" style="color:#667;width:390px;">
+    <p><b style="color:#ec3c38;">{{name}} {{ i18n 'POP_CONFIRM_PROD_APP_WARNING_MSG' }}</b>{{ i18n 'POP_CONFIRM_TERMINATE_PROD_APP_MSG' }}</p>
     <p>{{ i18n 'POP_CONFIRM_TERMINATE_PROD_APP_INPUT_LBL' }}</p>
-    <div class="confirm-area"><input class="input" id="appNameConfirmIpt"/></div>
+    <div><input class="input" style="width:351px;" id="appNameConfirmIpt"/></div>
   </div>
 {{else}}
   <div class="modal-body modal-text-wraper" style="width:420px;">
@@ -68,7 +65,7 @@
 {{/if}}
 
 <div class="modal-footer">
-  <button id="appTerminateConfirm" class="btn btn-red" {{#if production}}disabled{{/if}}>{{i18n "TOOL_POP_BTN_TERMINATE_APP"}}</button>
+  <button id="appTerminateConfirm" class="btn btn-red modal-close" {{#if production}}disabled{{/if}}>{{i18n "TOOL_POP_BTN_TERMINATE_APP"}}</button>
   <button class="btn modal-close btn-silver">{{i18n "TOOL_POP_BTN_CANCEL"}}</button>
 </div>
 

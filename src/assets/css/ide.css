@@ -5539,23 +5539,6 @@ summary:focus {
 	position: relative;
 }
 
-/* App Useage: Confirm Terminate App for Production */
-.terminate-pro-app-confirm {
-	color: #666;
-}
-
-.terminate-pro-app-confirm b {
-	color: #ec3c38;
-}
-
-.terminate-pro-app-confirm .confirm-area {
-
-}
-
-.terminate-pro-app-confirm .confirm-area input {
-	width: 351px;
-}
-
 /* Node state remove confirmation */
 #node-state-remove-confirm-wrap {
 	padding: 20px 25px 5px;

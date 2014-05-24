@@ -1722,8 +1722,8 @@ Are you sure you want to delete {{name}}?</div>
         </div>
         {{#if hasFooter}}
         <div class="modal-footer">
-            <button id="button-confirm" class="btn btn-{{confirm.color}}">{{confirm.text}}</button>
-            {{#if closeAble}}<button id="button-cancel" class="btn modal-close btn-silver">{{cancel}}</button>{{/if}}
+            <button class="btn modal-confirm btn-{{confirm.color}}" {{#if confirm.disabled}} disabled {{/if}}>{{confirm.text}}</button>
+            {{#unless hideClose}}<button class="btn modal-close btn-silver">{{cancel}}</button>{{/unless}}
         </div>
         {{/if}}
     </div>

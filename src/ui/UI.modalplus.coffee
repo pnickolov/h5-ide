@@ -21,8 +21,9 @@
 #      disableClose: if can be closed when it's a single modal.         [default: false]
 #      disableFooter: if this Modal has footer.                         [default: false]
 #      dragAble: if the modal is dragAble                               [default: false]
-#      confirm: confirm button of Modal footer.                         [default: {text: :"Submit", color: "blue"}] (color-support: "blue, red, silver")
+#      hideClose: if the close button on the right corner is hidden.    [default: false]
 #      cancel: cancel button of Modal                                   [default: "Cancel"]
+#      confirm: confirm button of Modal footer.                         [default: {text: :"Submit", color: "blue", disabled: false}] (color-support: "blue, red, silver")
 #      onClose: function to exec then the modal close.                  [Function]
 #      onConfirm: function to exec then the confirm button is clicked   [Function]
 #      onCancel: function to exec when the cancel button is clicked     [Function]
@@ -52,11 +53,12 @@ define [], ()->
             @wrap = if $('#modal-wrap').size() > 0 then $("#modal-wrap") else $("<div id='modal-wrap'>").appendTo $('body')
             @tpl = $(MC.template.modalTemplate
                 title: @option.title || ""
-                hideClose : !@option.hideClose
+                hideClose : @option.hideClose
                 template: if typeof @option.template is "object" then "" else @option.template
                 confirm:
                     text: @option.confirm?.text || "Submit"
                     color: @option.confirm?.color || "blue"
+                    disabled: @option.disabled
                 cancel: @option.cancel || "Cancel"
                 hasFooter: !@option.disableFooter
             )
@@ -95,10 +97,11 @@ define [], ()->
                 @resize()
             @option.onShow?(@)
         bindEvent: ()->
-            @tpl.find('#button-confirm').click (e)=>
+            @tpl.find('.modal-confirm').click (e)=>
                 @option.onConfirm?(@tpl,e)
+                @.trigger 'confirm', @
                 @modalGroup[0].back()
-            @tpl.find('#button-cancel').click (e)=>
+            @tpl.find('.btn.modal-close').click (e)=>
                 @option.onCancel?(@tpl,e)
                 @modalGroup[0].back()
             @tpl.find("i.modal-close").click (e)=>

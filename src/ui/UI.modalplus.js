@@ -9,11 +9,12 @@
         this.wrap = $('#modal-wrap').size() > 0 ? $("#modal-wrap") : $("<div id='modal-wrap'>").appendTo($('body'));
         this.tpl = $(MC.template.modalTemplate({
           title: this.option.title || "",
-          hideClose: !this.option.hideClose,
+          hideClose: this.option.hideClose,
           template: typeof this.option.template === "object" ? "" : this.option.template,
           confirm: {
             text: ((_ref = this.option.confirm) != null ? _ref.text : void 0) || "Submit",
-            color: ((_ref1 = this.option.confirm) != null ? _ref1.color : void 0) || "blue"
+            color: ((_ref1 = this.option.confirm) != null ? _ref1.color : void 0) || "blue",
+            disabled: this.option.disabled
           },
           cancel: this.option.cancel || "Cancel",
           hasFooter: !this.option.disableFooter
@@ -78,16 +79,17 @@
 
       Modal.prototype.bindEvent = function() {
         var diffX, diffY, dragable;
-        this.tpl.find('#button-confirm').click((function(_this) {
+        this.tpl.find('.modal-confirm').click((function(_this) {
           return function(e) {
             var _base;
             if (typeof (_base = _this.option).onConfirm === "function") {
               _base.onConfirm(_this.tpl, e);
             }
+            _this.trigger('confirm', _this);
             return _this.modalGroup[0].back();
           };
         })(this));
-        this.tpl.find('#button-cancel').click((function(_this) {
+        this.tpl.find('.btn.modal-close').click((function(_this) {
           return function(e) {
             var _base;
             if (typeof (_base = _this.option).onCancel === "function") {

@@ -7,7 +7,7 @@
     var Modal;
     Modal = (function() {
       function Modal(option) {
-        var body, _ref, _ref1;
+        var body, _ref, _ref1, _ref2;
         this.option = option;
         _.extend(this, Backbone.Events);
         this.wrap = $('#modal-wrap').size() > 0 ? $("#modal-wrap") : $("<div id='modal-wrap'>").appendTo($('body'));
@@ -18,7 +18,7 @@
           confirm: {
             text: ((_ref = this.option.confirm) != null ? _ref.text : void 0) || "Submit",
             color: ((_ref1 = this.option.confirm) != null ? _ref1.color : void 0) || "blue",
-            disabled: this.option.disabled
+            disabled: (_ref2 = this.option.confirm) != null ? _ref2.disabled : void 0
           },
           cancel: this.option.cancel || "Cancel",
           hasFooter: !this.option.disableFooter,

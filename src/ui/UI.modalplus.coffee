@@ -59,7 +59,7 @@ define [], ()->
                 confirm:
                     text: @option.confirm?.text || "Submit"
                     color: @option.confirm?.color || "blue"
-                    disabled: @option.disabled
+                    disabled: @option.confirm?.disabled
                 cancel: @option.cancel || "Cancel"
                 hasFooter: !@option.disableFooter
                 hasScroll: !!@option.maxHeight

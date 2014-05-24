@@ -358,13 +358,6 @@
     &:last-child { margin-bottom : 15px; }
   }
 
-  @media only screen and (max-width: 1030px) {
-    > li {
-      width : 22.5%;
-      margin-left : 2%;
-    }
-  }
-
   .loading-spinner {
     width    : 12px;
     height   : 12px;
@@ -424,6 +417,17 @@
       -webkit-transform : translate(0, -50%);
          -moz-transform : translate(0, -50%);
               transform : translate(0, -50%);
+    }
+
+    @media only screen and (max-width: 1030px) {
+      > li {
+        width : 22.5%;
+        margin-left : 2%;
+      }
+
+      .blank-widget {
+        padding  : 14.55% 0 27px 0;
+      }
     }
   }
 

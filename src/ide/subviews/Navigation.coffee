@@ -29,7 +29,6 @@ define [ "./NavigationTpl", "event", 'backbone' ], ( NavPartsTpl, ide_event ) ->
 
             # Listen to AppList and StackList in order to update the list.
             @listenTo App.model.stackList(), "update", ()->
-                console.info "Navigation updated due to stacklist update"
                 # Delay the updating until the navigation is shown next time.
                 if @showing
                     @updateStackList()
@@ -37,7 +36,8 @@ define [ "./NavigationTpl", "event", 'backbone' ], ( NavPartsTpl, ide_event ) ->
                     @stackDirty = true
                 return
 
-            @listenTo App.model.appList(), "update", ()->
+            @listenTo App.model.appList(), "update change:state", ()->
+                console.info "Navigation updated due to appList update", arguments
                 if @showing
                     @updateAppList()
                 else

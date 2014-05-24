@@ -57,7 +57,12 @@ define ["ApiRequest", "constant", "component/exporter/Thumbnail", "backbone"], (
     # Return true if the stack is saved in the server.
     isPresisted : ()-> !!@get("id")
     # Return true if the stack/app should be show to the user.
-    isExisting : ()-> @get("id") && @get("state") isnt OpsModelState.Starting
+    isExisting : ()->
+      state = @get("state")
+      if state is OpsModelState.Destroyed
+        console.warn "There's probably a bug existing that the destroyed opsmodel is still be using by someone."
+
+      @get("id") && state isnt OpsModelState.Initializing && state isnt OpsModelState.Destroyed
 
     # Returns a promise that will resolve with the JSON data of the stack/app
     getJsonData : ()->

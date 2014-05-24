@@ -5,6 +5,8 @@ define [
   "./CrSubCollection"
 ], ( constant, CloudResources )->
 
+  return
+
   DhcpCollection = CloudResources( constant.RESTYPE.DHCP, "us-west-2" )
   DhcpCollection.on "update", ()->
     console.log "=============="

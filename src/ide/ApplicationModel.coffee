@@ -96,12 +96,12 @@ define [ "./submodels/OpsCollection", "./submodels/OpsModel", "ApiRequest", "bac
       @trigger "change:notification"
     , 300
 
-    __processSingleNotification : ( idx, dag )->
+    __processSingleNotification : ( idx )->
 
       req = App.WS.collection.request.findOne({'_id':idx})
       if not req then return
 
-      item = @__parseRequestInfo req, dag
+      item = @__parseRequestInfo req
       if not item then return
 
       @__handleRequestChange( item )
@@ -134,15 +134,17 @@ define [ "./submodels/OpsCollection", "./submodels/OpsModel", "ApiRequest", "bac
       @__triggerNotification()
       null
 
-    __parseRequestInfo : (req, dag)->
+    __parseRequestInfo : (req)->
       if not req.brief then return
+
+      dag = req.dag
 
       request =
         id         : req.id
         region     : constant.REGION_SHORT_LABEL[ req.region ]
         time       : req.time_end
         operation  : constant.OPS_CODE_NAME[ req.code ]
-        targetId   : if dag.spec then dag.spec.id else ""
+        targetId   : if dag and dag.spec then dag.spec.id else req.rid
         targetName : req.brief.split(" ")[2] || ""
         state      : { processing : true }
         readed     : true

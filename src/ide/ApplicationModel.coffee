@@ -192,6 +192,8 @@ define [ "./submodels/OpsCollection", "./submodels/OpsModel", "ApiRequest", "bac
     __handleRequestChange : ( request )->
       # This method is used to update the state of an app OpsModel
 
+      if not App.WS.isReady() then return # only updates when WS has finished pushing the initial data.
+
       if request.state.pending then return
 
       theApp = @appList().get( request.targetId )

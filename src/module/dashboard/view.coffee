@@ -99,9 +99,6 @@ define [ 'event', 'i18n!nls/lang.js',
             isDemo          : false
 
         initialize: ->
-            # work for dashboard and toolbar
-            $( document.body ).on 'keyup', '#confirm-app-name', @confirmAppName
-
             @render()
 
             @regionTab = "stack"
@@ -109,23 +106,27 @@ define [ 'event', 'i18n!nls/lang.js',
 
             # Watch appList/stackList changes.
             @listenTo App.model.stackList(), "update", ()->
-                console.info "Dashboard Updated due to changes in stack list."
                 @renderMapResult()
                 @renderRecent()
                 @renderRegionAppStack()
                 return
 
-            @listenTo App.model.appList(),   "update", ()->
+            @listenTo App.model.appList(), "update", ()->
                 @renderMapResult()
                 @renderRecent()
                 @renderRegionAppStack()
                 return
 
-            self = @
             @listenTo App.model.appList(), "change:state", ( model )->
-                console.info "Dashboard Updated due to state changes in app list."
-                if model.get("region") is self.region and @regionTab is "app"
+                console.log "Dashboard Updated due to state changes in app list."
+                if model.get("region") is @region and @regionTab is "app"
                     @renderRegionAppStack()
+                return
+
+            @listenTo App.model.appList(), "change:progress", ( model )->
+                if model.get("region") is @region and @regionTab is "app"
+                    console.log "Dashboard Updated due to app progress changes."
+                    @updateAppProgress( model )
                 return
 
         render : () ->
@@ -188,13 +189,11 @@ define [ 'event', 'i18n!nls/lang.js',
 
             $('#region-app-stack-wrap').html( template_data.region_app_stack(attr) )
 
-        confirmAppName: ( event ) ->
-            confirm = $( @ ).data 'confirm'
-            if $( @ ).val() is confirm
-                $( '#btn-confirm' ).removeAttr 'disabled'
-            else
-                $( '#btn-confirm' ).attr 'disabled', 'disabled'
-
+        updateAppProgress : ( model )->
+            $li = $("#region-resource-app-wrap").children("[data-appid='#{model.id}']")
+            if not $li.length then return
+            $li.children(".region-resource-progess").show().css({width:model.get("progress")+"%"})
+            return
 
         setDemo: ->
             @status.isDemo = true

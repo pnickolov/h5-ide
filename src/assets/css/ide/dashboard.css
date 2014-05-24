@@ -345,6 +345,7 @@
   left: 0;
   bottom: 0;
   height: 27px;
+  z-index: -1;
   background-image: -webkit-gradient(linear, 0 0, 100% 100%, color-stop(0.25, #ad77d7), color-stop(0.25, #9e62d4), color-stop(0.5, #9e62d4), color-stop(0.5, #ad77d7), color-stop(0.75, #ad77d7), color-stop(0.75, #9e62d4), to(#9e62d4));
   background-image: -webkit-linear-gradient(135deg, #ad77d7 25%, #9e62d4 25%, #9e62d4 50%, #ad77d7 50%, #ad77d7 75%, #9e62d4 75%, #9e62d4);
   background-image: -moz-linear-gradient(135deg, #ad77d7 25%, transparent 25%, transparent 50%, #ad77d7 50%, #ad77d7 75%, transparent 75%, transparent);

@@ -182,7 +182,7 @@
 
 {{#each apps}}
 {{#if progressing}}
-<li class="disabled">
+<li class="disabled" data-appid="{{id}}">
     <div class="thumbnail app-thumbnail"></div>
     <div class="region-resource-progess{{#unless progress}} hide{{/unless}}" style="width:{{progress}}%;"></div>
     <div class="region-resource-info truncate">

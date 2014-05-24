@@ -142,6 +142,7 @@ define ["ApiRequest", "constant", "component/exporter/Thumbnail", "backbone"], (
 
       self = @
       @set "state", OpsModelState.Stopping
+      @attributes.progress = 0
       ApiRequest("app_stop",{
         region_name : @get("region")
         app_id      : @get("id")
@@ -156,6 +157,7 @@ define ["ApiRequest", "constant", "component/exporter/Thumbnail", "backbone"], (
       if not @isApp() or @get("state") isnt OpsModelState.Stopped then return @__returnErrorPromise()
       self = @
       @set "state", OpsModelState.Starting
+      @attributes.progress = 0
       ApiRequest("app_start",{
         region_name : @get("region")
         app_id      : @get("id")
@@ -171,6 +173,7 @@ define ["ApiRequest", "constant", "component/exporter/Thumbnail", "backbone"], (
       if not @isApp() then return @__returnErrorPromise()
       oldState = @get("state")
       @set("state", OpsModelState.Terminating)
+      @attributes.progress = 0
       self = @
       ApiRequest("app_terminate", {
         region_name : @get("region")

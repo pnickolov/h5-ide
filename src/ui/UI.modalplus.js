@@ -90,8 +90,7 @@
             if (typeof (_base = _this.option).onConfirm === "function") {
               _base.onConfirm(_this.tpl, e);
             }
-            _this.trigger('confirm', _this);
-            return modalGroup[0].back();
+            return _this.trigger('confirm', _this);
           };
         })(this));
         this.tpl.find('.btn.modal-close').click((function(_this) {

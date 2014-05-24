@@ -102,7 +102,6 @@ define [], ()->
             @tpl.find('.modal-confirm').click (e)=>
                 @option.onConfirm?(@tpl,e)
                 @.trigger 'confirm', @
-                modalGroup[0].back()
             @tpl.find('.btn.modal-close').click (e)=>
                 @option.onCancel?(@tpl,e)
                 modalGroup[0].back()

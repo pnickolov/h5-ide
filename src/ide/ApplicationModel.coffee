@@ -138,7 +138,7 @@ define [ "./submodels/OpsCollection", "./submodels/OpsModel", "ApiRequest", "bac
         region     : constant.REGION_SHORT_LABEL[ req.region ]
         time       : req.time_end
         operation  : constant.OPS_CODE_NAME[ req.code ]
-        targetId   : if dag.spec then dag.spec.id else req.rid
+        targetId   : if dag.spec then dag.spec.id else ""
         targetName : if req.code is "Forge.Stack.Run" then req.brief.split(" ")[2] else ""
         state      : { processing : true }
         readed     : true
@@ -193,6 +193,8 @@ define [ "./submodels/OpsCollection", "./submodels/OpsModel", "ApiRequest", "bac
         # If the app is newly created from an stack. It might not have an appId yet,
         # But it should have a requestId.
         theApp = @appList().findWhere({requestId:request.id})
+        if theApp and request.targetId
+          theApp.set "id", request.targetId
 
       if not theApp then return
       if not request.state.processing and not theApp.isProcessing() then return

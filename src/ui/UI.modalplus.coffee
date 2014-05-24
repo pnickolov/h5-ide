@@ -220,8 +220,8 @@ define [], ()->
                     @isMoving = false
                     toRemove.tpl.remove()
                 ,@option.delay || 300
-        toggleConfirm: (really)->
-            @.tpl.find(".modal-confirm").attr('disabled', really)
+        toggleConfirm: (disabled)->
+            @.tpl.find(".modal-confirm").attr('disabled', !!disabled)
         _fadeOut: ->
             @tpl.animate
                 left: "-="+ $(window).width()

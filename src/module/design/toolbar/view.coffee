@@ -245,14 +245,38 @@ define [ 'MC', 'event',
                     return false
 
                 # disable button
-                $('#btn-confirm').attr 'disabled', true
+
+                modalplus.toggleConfirm true
                 $('.modal-header .modal-close').hide()
                 $('#run-stack-cancel').attr 'disabled', true
 
                 # push SAVE_STACK event
                 #ide_event.trigger ide_event.SAVE_STACK, MC.common.other.canvasData.data()
-                @model.syncSaveStack MC.common.other.canvasData.get( 'region' ), MC.common.other.canvasData.data()
-                modalPlus.close()
+                region = MC.common.other.canvasData.get( 'region' )
+                canvasData = MC.common.other.canvasData.data()
+                that = @
+                me.model.syncSaveStack( region, canvasData ).then () ->
+                    if not modalplus.isOpen
+                        return
+                    data = canvasData
+                    # set app name
+                    app_name  = $('.modal-input-value').val()
+                    data.name = app_name
+
+                    # set usage
+                    data.usage = 'others'
+                    usage = $('#app-usage-selectbox .selected').data 'value'
+                    if usage
+                        data.usage = usage
+
+                    # call api
+                    me.model.runStack data
+
+                    # update MC.data.app_list
+                    MC.data.app_list[ region ].push app_name
+
+                    # close run stack dialog
+                    modalPlus.close()
             , @
 
             null

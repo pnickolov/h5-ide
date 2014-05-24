@@ -206,7 +206,7 @@
         var height, left, top, width, windowHeight, windowWidth;
         windowWidth = $(window).width();
         windowHeight = $(window).height();
-        width = this.option.width || this.tpl.width();
+        width = this.option.width.toLowerCase().replace('px', '') || this.tpl.width();
         height = this.option.height.toLowerCase().replace('px', '') || this.tpl.height();
         top = (windowHeight - height) / 2;
         left = (windowWidth - width) / 2;

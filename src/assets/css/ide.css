@@ -1096,14 +1096,10 @@ button {
 }
 
 /* Main Content */
-.main-content {
-	display: none;
-	height: 100%;
-	width: 100%;
-}
-
-.main-content.active {
-	display: block;
+#main > div {
+	display : none;
+	height  : 100%;
+	width   : 100%;
 }
 
 /* Dashboard Main Content */

@@ -7,7 +7,7 @@ define [ "./subviews/WorkspaceView", "underscore" ], ( WorkspaceView )->
       @view = new WorkspaceView()
 
       self = @
-      @view.on "orderChanged", ()-> self.__updateOrder()
+      @view.on "orderChanged", (order)-> self.__updateOrder(order)
       @view.on "click",        (id)-> self.awakeWorkspace( id )
       @view.on "close",        (id)-> self.remove( id )
 
@@ -15,6 +15,11 @@ define [ "./subviews/WorkspaceView", "underscore" ], ( WorkspaceView )->
       @__spacesById = {}
       @__awakeSpace = null
       @
+
+    __updateOrder : (order)->
+      self = @
+      @__spaces = order.map (id)-> self.__spacesById[id]
+      return
 
     spaces : ()-> @__spaces.splice 0
 

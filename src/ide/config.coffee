@@ -252,9 +252,9 @@ require.config {
 		# 'dashboard_view'     : 'module/dashboard/view'
 		# 'dashboard_model'    : 'module/dashboard/model'
 
-		'process'            : 'module/process/main'
-		'process_view'       : 'module/process/view'
-		'process_model'      : 'module/process/model'
+		# 'process'            : 'module/process/main'
+		# 'process_view'       : 'module/process/view'
+		# 'process_model'      : 'module/process/model'
 
 		'design_module'      : 'module/design/main'
 		'design_view'        : 'module/design/view'

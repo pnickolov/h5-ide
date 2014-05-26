@@ -16,8 +16,6 @@ define ['module/dashboard/template', 'module/dashboard/template_data',"constant"
 
   Backbone.View.extend {
 
-    el : $("#tab-content-dashboard")[0]
-
     events :
       "click .global-map-item"                                       : "gotoRegionFromMap"
       "click .global-map-item .app"                                  : "gotoRegionFromMap"
@@ -55,7 +53,7 @@ define ['module/dashboard/template', 'module/dashboard/template_data',"constant"
         name : name
         shortName : constant.REGION_SHORT_LABEL[ id ]
 
-      @$el.html template data
+      @setElement( $(template(data)).appendTo("#main") )
 
       # Need to do a init update because the data might arrive first
       @updateOpsList()

@@ -14,16 +14,16 @@
     background-color: #404040;
     background-position: 8px 8px;
     padding: 0 12px 0 38px;
-    border: 1px solid #404040;
+    border: 1px solid #010101;
     border-bottom: none;
-    cursor: default; }
+    cursor: default;
+    margin-left: -1px; }
     #tabbar-wrapper > ul > li.activate {
       line-height: 41px;
       background-color: #202020;
       background-position: 8px 11px;
       color: #fff;
       font-weight: bold;
-      border-color: #010101;
       box-shadow: inset 0 3px 0 #9F62D1; }
     #tabbar-wrapper > ul > li.activate .icon-close, #tabbar-wrapper > ul > li:hover .icon-close {
       visibility: inherit; }
@@ -36,6 +36,9 @@
       visibility: hidden; }
       #tabbar-wrapper > ul > li .icon-close:hover {
         color: #F09595; }
+    #tabbar-wrapper > ul > li[data-placeholder] {
+      background: none;
+      border: none; }
 
 #tab-bar {
   display: none; }

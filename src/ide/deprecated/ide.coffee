@@ -4,10 +4,10 @@
 
 define [ 'MC', 'event', 'handlebars'
 		 'i18n!nls/lang.js',
-		 './view', 'canvas_layout', 'design_module', 'process', 'constant',
+		 './view', 'canvas_layout', 'design_module', 'constant',
 		 'base_model',
 		 'common_handle', 'validation', 'aws_handle'
-], ( MC, ide_event, Handlebars, lang, view, canvas_layout, design, process, constant, base_model, common_handle, validation ) ->
+], ( MC, ide_event, Handlebars, lang, view, canvas_layout, design, constant, base_model, common_handle, validation ) ->
 
 	initialize : () ->
 
@@ -15,12 +15,12 @@ define [ 'MC', 'event', 'handlebars'
 		#  check network
 		#############################
 
-		_.delay () ->
-			console.log '---------- check network ----------'
-			if !MC.data.is_loading_complete and $( '#loading-bar-wrapper' ).html().trim() isnt ''
-				ide_event.trigger ide_event.SWITCH_MAIN
-				notification 'error', lang.ide.IDE_MSG_ERR_CONNECTION, true
-		, 50 * 1000
+		# _.delay () ->
+		# 	console.log '---------- check network ----------'
+		# 	if !MC.data.is_loading_complete and $( '#loading-bar-wrapper' ).html().trim() isnt ''
+		# 		ide_event.trigger ide_event.SWITCH_MAIN
+		# 		notification 'error', lang.ide.IDE_MSG_ERR_CONNECTION, true
+		# , 50 * 1000
 
 		#############################
 		#  initialize MC.data
@@ -152,11 +152,11 @@ define [ 'MC', 'event', 'handlebars'
 			, 2000
 
 		#listen DESIGN_COMPLETE
-		ide_event.onListen ide_event.DESIGN_COMPLETE, () ->
-			console.log 'DESIGN_COMPLETE'
-			process.loadModule()
-			#
-			#ide_event.trigger ide_event.SWITCH_MAIN
+		# ide_event.onListen ide_event.DESIGN_COMPLETE, () ->
+		# 	console.log 'DESIGN_COMPLETE'
+		# 	process.loadModule()
+		# 	#
+		# 	#ide_event.trigger ide_event.SWITCH_MAIN
 
 		#############################
 		#  base model

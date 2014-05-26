@@ -47,10 +47,10 @@ define ["backbone"], ()->
     # This method will be called when the tab is switched to.
     # If this method returns a promise, WorkspaceManager will show a loading until
     # the promise is resolved.
-    awake : ()-> console.info "awake", this
+    awake : ()-> if @view then @view.$el.show()
 
     # This method will be called when the tab is switched to something else.
-    sleep : ()-> console.info "sleep", this
+    sleep : ()-> if @view then @view.$el.hide()
 
     # Override this method to check if the tab is closable. Return false to prevent closing.
     isRemovable : ()-> true

@@ -29,7 +29,7 @@
 #      onCancel: function to exec when the cancel button is clicked     [Function]
 #      onShow: function to exec then the modal is shown.                [Function]
 #   Event:
-#       on "show","next", "next", "close", "confirm", "cancel"
+#       on "show","next", "next", "close", "confirm", "cancel", "shown", "closed"
 #   Method:
 #       next( option )  ====> return new subModal
 #       back()          ====> remove Last modal, back to the last but one modal.
@@ -77,6 +77,7 @@ define [], ()->
             modalGroup.push(@)
             if modalGroup.length == 1
                 @trigger "show", @
+                @trigger 'shown', @
             @show()
             @bindEvent()
             return @
@@ -101,6 +102,9 @@ define [], ()->
                 @getLast().resize(1)
                 @getLast()._slideIn()
                 @getLastButOne()._fadeOut()
+                window.setTimeout ->
+                    @.trigger 'shown', @
+                , @option.delay || 300
             else
                 @resize()
             @option.onShow?(@)

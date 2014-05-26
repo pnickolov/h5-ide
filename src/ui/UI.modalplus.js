@@ -43,6 +43,7 @@
         modalGroup.push(this);
         if (modalGroup.length === 1) {
           this.trigger("show", this);
+          this.trigger('shown', this);
         }
         this.show();
         this.bindEvent();
@@ -79,6 +80,9 @@
           this.getLast().resize(1);
           this.getLast()._slideIn();
           this.getLastButOne()._fadeOut();
+          window.setTimeout(function() {
+            return this.trigger('shown', this);
+          }, this.option.delay || 300);
         } else {
           this.resize();
         }

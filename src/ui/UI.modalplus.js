@@ -80,11 +80,6 @@
           this.getLast().resize(1);
           this.getLast()._slideIn();
           this.getLastButOne()._fadeOut();
-          window.setTimeout((function(_this) {
-            return function() {
-              return _this.trigger('shown', _this);
-            };
-          })(this), this.option.delay || 300);
         } else {
           this.resize();
         }
@@ -271,6 +266,7 @@
           window.setTimeout((function(_this) {
             return function() {
               _this.isMoving = false;
+              newModal.trigger('shown', newModal);
               return null;
             };
           })(this), this.option.delay || 300);
@@ -292,11 +288,6 @@
           return false;
         } else {
           this.getLast().trigger("close", this.getLast());
-          window.setTimeout((function(_this) {
-            return function() {
-              return _this.getLast().trigger("closed", _this.getLast());
-            };
-          })(this), this.option.delay || 300);
           this.getLastButOne()._fadeIn();
           this.getLast()._slideOut();
           toRemove = modalGroup.pop();
@@ -309,7 +300,8 @@
           return window.setTimeout((function(_this) {
             return function() {
               _this.isMoving = false;
-              return toRemove.tpl.remove();
+              toRemove.tpl.remove();
+              return toRemove.trigger('closed', toRemove);
             };
           })(this), this.option.delay || 300);
         }

@@ -102,9 +102,6 @@ define [], ()->
                 @getLast().resize(1)
                 @getLast()._slideIn()
                 @getLastButOne()._fadeOut()
-                window.setTimeout =>
-                    @.trigger 'shown', @
-                , @option.delay || 300
             else
                 @resize()
             @option.onShow?(@)
@@ -209,6 +206,7 @@ define [], ()->
                 @isMoving = true
                 window.setTimeout ()=>
                     @isMoving = false
+                    newModal.trigger 'shown', newModal
                     null
                 ,@option.delay || 300
                 newModal
@@ -224,9 +222,6 @@ define [], ()->
                 return false
             else
                 @getLast().trigger "close", @getLast()
-                window.setTimeout =>
-                    @getLast().trigger "closed", @getLast()
-                , @option.delay || 300
                 @getLastButOne()._fadeIn()
                 @getLast()._slideOut()
                 toRemove = modalGroup.pop()
@@ -237,6 +232,7 @@ define [], ()->
                 window.setTimeout ()=>
                     @isMoving = false
                     toRemove.tpl.remove()
+                    toRemove.trigger 'closed', toRemove
                 ,@option.delay || 300
         toggleConfirm: (disabled)->
             @.tpl.find(".modal-confirm").attr('disabled', !!disabled)

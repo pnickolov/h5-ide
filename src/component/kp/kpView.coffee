@@ -349,7 +349,6 @@ define [ 'combo_dropdown', 'toolbar_modal', './kpTpl', './kpDialogTpl', 'kp_uplo
         show: () ->
             if App.user.hasCredential()
                 if not @model.haveGot()
-                    @renderLoading()
                     @model.getKeys()
             else
                 @renderNoCredential()

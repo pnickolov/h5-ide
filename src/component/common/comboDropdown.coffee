@@ -48,6 +48,9 @@ define [ './component/common/comboDropdownTpl', 'backbone', 'jquery' ], ( templa
             event.stopPropagation()
 
         __optionShow: ->
+            if not @$('.combo-dd-content').html().trim()
+                @render 'loading'
+
             @trigger 'open'
 
         __optionChange: ( event, name, data ) ->

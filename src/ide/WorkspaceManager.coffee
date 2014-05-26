@@ -1,13 +1,19 @@
 
-define [ "./subviews/WorkspaceView" ], ( WorkspaceView )->
+define [ "./subviews/WorkspaceView", "underscore" ], ( WorkspaceView )->
 
   class WorkspaceManager
 
     constructor : ()->
       @view = new WorkspaceView()
 
+      self = @
+      @view.on "orderChanged", ()-> self.__updateOrder()
+      @view.on "click",        (id)-> self.awakeWorkspace( id )
+      @view.on "close",        (id)-> self.remove( id )
+
       @__spaces     = []
       @__spacesById = {}
+      @__awakeSpace = null
       @
 
     spaces : ()-> @__spaces.splice 0
@@ -31,24 +37,42 @@ define [ "./subviews/WorkspaceView" ], ( WorkspaceView )->
       workspace
 
     awakeWorkspace : ( workspace )->
-      workspace.awake()
+      if _.isString(workspace) then workspace = @__spacesById[workspace]
+
+      if @__awakeSpace then @__awakeSpace.sleep()
+
+      @__awakeSpace = workspace
+
       @view.activateTab( workspace.id )
+
+      promise = workspace.awake()
+      if promise and promise.then and promise.isFulfilled and not promise.isFulfilled()
+        promise.then ()=> @view.hideLoading()
+        @view.showLoading()
       return
 
     update : ( workspace )->
       @view.updateTab workspace.id, workspace.title(), workspace.tabClass()
       workspace
 
-    remove: ( id, force )->
-      if not force and not @__spacesById[ id ].isRemovable()
+    remove: ( workspace, force )->
+
+      if _.isString(workspace) then workspace = @__spacesById[workspace]
+
+      if not force and not workspace.isRemovable()
         return
 
-      @view.removeTab( id )
-      space = @__spacesById[id]
-      delete @__spacesById[id]
-      @__spaces.splice (@__spaces.indexOf space), 1
+      id = workspace.id
 
-      space
+      @view.removeTab( id )
+      delete @__spacesById[id]
+      @__spaces.splice (@__spaces.indexOf workspace), 1
+
+      if @__awakeSpace is workspace
+        @__awakeSpace = null
+        @awakeWorkspace( @__spaces[ @__spaces.length - 1 ] )
+
+      workspace
 
 
   WorkspaceManager

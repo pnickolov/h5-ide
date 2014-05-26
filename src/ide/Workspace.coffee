@@ -8,7 +8,7 @@ define ["backbone"], ()->
 
     constructor : ( attributes )->
       @id = "space_" + _.uniqueId()
-      @initialize()
+      @initialize attributes
       App.workspaces.add @
       @
 
@@ -25,6 +25,9 @@ define ["backbone"], ()->
 
     # Call this method to update the tab's data.
     updateTab : ()-> App.workspaces.update @
+
+    # Call this method to activate/awake the workspace
+    activate : ()-> App.workspaces.awakeWorkspace @
 
     ###
       Methods that should be override
@@ -44,10 +47,10 @@ define ["backbone"], ()->
     # This method will be called when the tab is switched to.
     # If this method returns a promise, WorkspaceManager will show a loading until
     # the promise is resolved.
-    awake : ()->
+    awake : ()-> console.info "awake", this
 
     # This method will be called when the tab is switched to something else.
-    sleep : ()->
+    sleep : ()-> console.info "sleep", this
 
     # Override this method to check if the tab is closable. Return false to prevent closing.
     isRemovable : ()-> true

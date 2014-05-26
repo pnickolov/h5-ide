@@ -1,10 +1,20 @@
 
 define ["Workspace"], ( Workspace )->
 
-  class Dashboard extends Workspace
+  class DesignEditor extends Workspace
 
     isFixed  : ()-> false
     tabClass : ()-> "icon-stack-tabbar"
-    title    : ()-> "untitled-2 - stack"
+    title    : ()-> @name or @opsModel.get("name")
 
-  Dashboard
+    initialize : ( attribute )->
+      @opsModel = App.model.stackList().get( attribute )
+      if not @opsModel
+        @opsModel = App.model.appList().get( attribute )
+
+      if not @opsModel
+        @remove()
+        throw new Error("Cannot find opsmodel while openning workspace.")
+        return
+
+  DesignEditor

@@ -11,11 +11,10 @@ define [ "./NavigationTpl", "event", 'backbone' ], ( NavPartsTpl, ide_event ) ->
             "click #off-canvas-app"   : "showNavApp"
             "click #off-canvas-stack" : "showNavStack"
 
-            'click .stack-list li' : 'openStack'
-            'click .app-list li'   : 'openApp'
+            'click .stack-list li, .app-list li' : 'openOps'
 
             'click #nav-show-empty' : 'showEmptyRegion'
-            'click .icon-new-stack' : 'createNewStack'
+            'click .icon-new-stack' : 'createStack'
 
         initialize : ()->
             @setElement $(NavPartsTpl.navigation()).appendTo("#wrapper").eq(0)
@@ -96,23 +95,13 @@ define [ "./NavigationTpl", "event", 'backbone' ], ( NavPartsTpl, ide_event ) ->
         updateAppList : ()->
             $('#nav-app-region').html NavPartsTpl.applist( App.model.appList().groupByRegion() )
 
-        # LEGACY code
-        openStack : ( event ) -> @openDesignTab 'OPEN_STACK', $(event.currentTarget)
-        openApp   : ( event ) -> @openDesignTab 'OPEN_APP', $(event.currentTarget)
-        openDesignTab : ( type, $tgt ) ->
-            if not $tgt.attr('data-id') then return
+        openOps : ( event ) -> App.openOps $(event.currentTarget).attr("data-id")
 
-            @hideOffCanvas()
-            if MC.data.design_submodule_count isnt -1
-                return notification 'warning', lang.ide.NAV_DESMOD_NOT_FINISH_LOAD , false
-
-            ide_event.trigger ide_event.OPEN_DESIGN_TAB, type, $tgt.text(), $tgt.parent().parent().attr('data-region'), $tgt.attr('data-id')
-
-        createNewStack  : ( event ) ->
+        createStack  : ( event ) ->
             region = $(event.currentTarget).closest("li").attr("data-region")
-            if region
-                @hideOffCanvas()
-                ide_event.trigger ide_event.OPEN_DESIGN_TAB, "NEW_STACK", null, region, null
+            if not region then return
+            @hideOffCanvas()
+            App.createOps( region )
             return
 
     }

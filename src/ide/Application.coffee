@@ -16,8 +16,14 @@ define [
   "./subviews/SettingsDialog"
   "CloudResources"
   "./WorkspaceManager"
+  "module/DesignEditor"
   "component/exporter/JsonExporter"
-  "common_handle" ,"event", "vpc_model", "constant" ], ( Websocket, ApplicationView, ApplicationModel, User, SettingsDialog, CloudResources, WorkspaceManager, JsonExporter, common_handle, ide_event, vpc_model, constant )->
+  "common_handle",
+  "event",
+  "vpc_model",
+  "constant",
+  "underscore"
+], ( Websocket, ApplicationView, ApplicationModel, User, SettingsDialog, CloudResources, WorkspaceManager, DesignEditor, JsonExporter, common_handle, ide_event, vpc_model, constant )->
 
   VisualOps = ()->
     if window.App
@@ -139,7 +145,17 @@ define [
 
   # This is a convenient method to open an editor for the ops model.
   VisualOps.prototype.openOps = ( opsModel )->
-    # TODO:
+    if not opsModel then return
+    editor = new DesignEditor( if _.isString(opsModel) then opsModel else opsModel.cid )
+    editor.activate()
+    editor
+
+  # This is a convenient method to create a stack and then open an editor for it.
+  VisualOps.prototype.createOps = ( region )->
+    if not region then return
+    editor = new DesignEditor( @model.createStack(region).cid )
+    editor.activate()
+    editor
 
 
   VisualOps

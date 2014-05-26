@@ -214,6 +214,9 @@ define ['module/dashboard/template', 'module/dashboard/template_data',"constant"
           null
       null
 
+    openItem    : ( event )-> App.openOps( $(event.currentTarget).attr("data-id") )
+    createStack : ( event )-> App.createOps( $(event.currentTarget).attr("data-id") )
+
     reloadResource : ()->
       $("#global-refresh").addClass "loading"
       @trigger "reloadResource"

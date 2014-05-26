@@ -460,11 +460,10 @@ requirejs.onError = ( err )->
 		console.error "[RequireJS Error]", err, err.stack
 
 
-require ['ide/Application', 'ide/deprecated/ide', "ide/cloudres/CrBundle", "module/Dashboard", "module/DesignEditor"], ( Application, ide, bundle, Dashboard, DesignEditor ) ->
+require ['ide/Application', 'ide/deprecated/ide', "ide/cloudres/CrBundle", "module/Dashboard"], ( Application, ide, bundle, Dashboard ) ->
 	(new Application()).initialize().then ()->
 		ide.initialize()
 		new Dashboard()
-		new DesignEditor()
 	return
 , ( err )->
 	err = err || { requireType : "timeout" }

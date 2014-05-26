@@ -12,10 +12,11 @@ define [ 'MC', 'event',
          'constant'
          'kp'
          'ApiRequest'
+         'component/stateeditor/stateeditor'
          'backbone', 'jquery', 'handlebars',
          'UI.selectbox', 'UI.notification',
          "UI.tabbar"
-], ( MC, ide_event, Design, lang, stack_tmpl, app_tmpl, appview_tmpl, JsonExporter, constant, kp, ApiRequest ) ->
+], ( MC, ide_event, Design, lang, stack_tmpl, app_tmpl, appview_tmpl, JsonExporter, constant, kp, ApiRequest, stateeditor ) ->
 
     ToolbarView = Backbone.View.extend {
 
@@ -54,6 +55,8 @@ define [ 'MC', 'event',
             'click #toolbar-cancel-edit-app' : 'clickCancelEditApp'
 
             'click .toolbar-visual-ops-switch' : 'opsOptionChanged'
+
+            'click .toolbar-visual-ops-refresh': 'clickReloadStates'
             #'click #apply-visops'             : 'openExperimentalVisops'
 
         # when flag = 0 not invoke opsState
@@ -441,6 +444,48 @@ define [ 'MC', 'event',
                         appToStackCb(err, newData)
 
             null
+
+        clickReloadStates: (event)->
+            $target = $ event.currentTarget
+            $label = $target.find('.refresh-label')
+            if $target.hasClass('disabled')
+                return false
+            console.log(event)
+            $target.toggleClass('disabled')
+            $label.html($label.attr('data-disabled'))
+            $.ajax
+                url: "http://urlthatdoesnotexist.com",
+                method: "POST"
+                data:
+                    "encoded_user": App.user.get("usercode")
+                    "token": App.user.get("defaultToken")
+                dataType: 'json'
+                statusCode:
+                    200: ->
+                        console.log 200,arguments
+                        notification 'info', "Success!"
+                        #todo: reset state count
+                        appData = Design.instance().serialize()
+                        for uid of appData.component
+                            if appData.component[uid].type is "AWS.EC2.Instance" && appData.component[uid].state.length>0
+                                console.log(appData, uid)
+                                stateEditor.loadModule(appData.component, uid, null, true)
+                    401: ->
+                        console.log 401,arguments
+                        notification 'error', "Error 401"
+                    404: ->
+                        console.log 404,arguments
+                        notification 'error', "Error 404"
+
+                    500: ->
+                        console.log 500,arguments
+                        notification 'error', "Error 500"
+                error: ->
+                    console.log('Reload State Request Error.')
+                    null
+            .always ()->
+                $target.removeClass('disabled')
+                $label.html($label.attr('data-original'))
 
         clickDeleteIcon : ->
             me = this

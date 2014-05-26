@@ -4,7 +4,7 @@
 
 define [ 'MC', 'event', 'constant', 'vpc_model',
          'aws_model', 'app_model', 'stack_model', 'ami_service', 'elb_service', 'dhcp_service', 'vpngateway_service', 'customergateway_service',
-         'i18n!nls/lang.js', 'common_handle', "component/exporter/JsonExporter"
+         'i18n!nls/lang.js', 'common_handle'
 ], ( MC, ide_event, constant, vpc_model, aws_model, app_model, stack_model, ami_service, elb_service, dhcp_service, vpngateway_service, customergateway_service, lang, common_handle, JsonExporter ) ->
 
     #private
@@ -1436,40 +1436,6 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                             cur_app_list[idx].ispending = true
 
                         me.set 'cur_app_list', cur_app_list
-
-            null
-
-        importJson : ( json )->
-            result = JsonExporter.importJson json
-
-            if _.isString result
-                return result
-
-            # The result is a valid json
-            console.log "Imported JSON: ", result, result.region
-
-            # check repeat stack name
-            MC.common.other.checkRepeatStackName()
-
-            # set username
-            result.username = $.cookie 'usercode'
-
-            # set name
-            result.name     = MC.aws.aws.getDuplicateName(result.name)
-
-            # set id
-            result.id       = 'import-' + MC.data.untitled + '-' + result.region
-
-            # create new result
-            new_result      = {}
-            new_result.resolved_data = []
-            new_result.resolved_data.push result
-
-            # formate json
-            console.log "Formate JSON: ", new_result
-
-            # push IMPORT_STACK
-            ide_event.trigger ide_event.OPEN_DESIGN_TAB, 'IMPORT_STACK', new_result
 
             null
 

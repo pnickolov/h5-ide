@@ -77,6 +77,8 @@ define [ "./subviews/WorkspaceView", "underscore" ], ( WorkspaceView )->
         @__awakeSpace = null
         @awakeWorkspace( @__spaces[ @__spaces.length - 1 ] )
 
+      workspace.cleanup()
+
       workspace
 
 

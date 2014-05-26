@@ -52,6 +52,10 @@ define ["backbone"], ()->
     # This method will be called when the tab is switched to something else.
     sleep : ()-> if @view then @view.$el.hide()
 
+    # This method will be called when the workspace is remove. One should override this method
+    # to do necessary cleanup.
+    cleanup : ()-> if @view then @view.remove()
+
     # Override this method to check if the tab is closable. Return false to prevent closing.
     isRemovable : ()-> true
 

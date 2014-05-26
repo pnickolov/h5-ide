@@ -263,10 +263,11 @@ require.config {
 
 		#statusbar state
 		'state_status'       : 'component/statestatus/main'
-		'kp'       			 : 'component/kp/kpMain'
-		'kp_upload'       	 : 'component/kp/kpUpload'
+		'kp'                 : 'component/kp/kpMain'
+		'kp_upload'          : 'component/kp/kpUpload'
+		'sns'                : 'component/sns/snsMain'
 		'combo_dropdown'     : 'component/common/comboDropdown'
-		'toolbar_modal' 	 : 'component/common/toolbarModal'
+		'toolbar_modal'      : 'component/common/toolbarModal'
 		'dhcp'               : 'component/dhcp/dhcpMain'
 
 		#############################################

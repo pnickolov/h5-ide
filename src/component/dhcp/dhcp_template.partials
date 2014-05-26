@@ -7,12 +7,30 @@
     {{/if}}
 {{else}}
     {{#if autoAssign}}
-    Auto-assigned Set <i class="icon-info tooltip" data-tooltip="{{i18n 'PROP_VPC_TIP_AUTO_DHCP'}}"></i>
+    {{i18n 'PROP_VPC_AUTO_DHCP'}} <i class="icon-info tooltip" data-tooltip="{{i18n 'PROP_VPC_TIP_AUTO_DHCP'}}"></i>
     {{/if}}
     {{#if default}}
-    Default <i class="icon-info tooltip" data-tooltip="{{i18n 'PROP_VPC_TIP_DEFAULT_DHCP'}}"></i>
+    {{i18n 'PROP_VPC_DEFAULT_DHCP'}} <i class="icon-info tooltip" data-tooltip="{{i18n 'PROP_VPC_TIP_DEFAULT_DHCP'}}"></i>
     {{/if}}
 {{/unless}}
+
+<!-- {{keys}} -->
+{{#unless hideDefaultNoKey}}
+{{#unless isRunTime}}
+<li data-id="@auto" class="item{{#if defaultKey}} selected{{/if}}" tabindex="-1">
+    {{i18n "PROP_VPC_AUTO_DHCP"}}
+    <i class="icon-info tooltip" data-tooltip='{{i18n "PROP_VPC_TIP_AUTO_DHCP"}}'></i>
+</li>
+{{/unless}}
+<li data-id="@no" class="item{{#if noKey}} selected{{/if}}" tabindex="-1">
+    {{i18n "PROP_VPC_DEFAULT_DHCP"}}
+    <i class="icon-info tooltip" data-tooltip="{{i18n 'PROP_VPC_TIP_DEFAULT_DHCP'}}"></i>
+</li>
+{{/unless}}
+
+{{#each keys}}
+<li class="item{{#if selected}} selected{{/if}}" data-id="{{id}}" tabindex="-1">{{id}}</li>
+{{/each}}
 
 <!-- {{edit}} -->
 <div class="option-group" id="dhcp-property-detail" data-type="true">

@@ -1678,6 +1678,14 @@ module.exports =
       en: "The VPC will use no DHCP options."
       zh: "The VPC will use no DHCP options."
 
+    PROP_VPC_AUTO_DHCP:
+      en: "Auto-assigned Set"
+      zh: ""
+
+    PROP_VPC_DEFAULT_DHCP:
+      en: "Default"
+      zh: "Default"
+
     PROP_SUBNET_TIP_CIDR_BLOCK:
       en: "e.g. 10.0.0.0/24. The range of IP addresses in the subnet must be a subset of the IP address in the VPC. Block sizes must be between a /16 netmask and /28 netmask. The size of the subnet can equal the size of the VPC."
       zh: ""

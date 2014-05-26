@@ -8,6 +8,7 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
                 manageBtnValue: lang.ide.PROP_VPC_MANAGE_DHCP
                 filterPlaceHolder: lang.ide.PROP_VPC_FILTER_DHCP
             @dropdown = new comboDropdown option
+            @dropdown.setSelection "Auto-assigned Set"
             @dropdown.on 'open', @show , @
             @dropdown.on 'manage', @manageDHCP, @
             @dropdown.on 'change', @setDHCP, @
@@ -21,10 +22,7 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
             @renderDropdown()
         show: ->
             if App.user.hasCredential()
-                if not @fetched
-                    @collection.fetch()
-                    @fetched = true
-                    null
+                @collection.fetch()
             else
                 @renderNoCredential()
         renderNoCredential: ->
@@ -34,5 +32,7 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
         renderDropdown: ->
             data = @collection.toJSON()
             selection = template.selection data
+            content = template.keys data
             @dropdown.setSelection "Auto-assigned Set"
+            @dropdown.setContent content
     dhcpView

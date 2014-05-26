@@ -300,7 +300,7 @@ define [ 'combo_dropdown', 'toolbar_modal', './kpTpl', './kpDialogTpl', 'kp_uplo
         filter: ( keyword ) ->
             len = keyword.length
             hitKeys = _.filter @model.get( 'keys' ), ( k ) ->
-                k.keyName.slice( 0, len ).toLowerCase() is keyword
+                k.keyName.slice( 0, len ).toLowerCase() is keyword.toLowerCase()
             if keyword
                 @renderKeys hitKeys
             else
@@ -357,9 +357,6 @@ define [ 'combo_dropdown', 'toolbar_modal', './kpTpl', './kpDialogTpl', 'kp_uplo
             @renderDropdown()
             @el = @dropdown.el
             @
-
-        renderLoading: ->
-            @dropdown.render('loading').toggleControls false
 
         renderNoCredential: () ->
             @dropdown.render('nocredential').toggleControls false

@@ -1,7 +1,7 @@
 @import url("core.css");
 @import url("ide/settings.css");
-@import url("ide/kp.css");
-@import url("ide/combo-dropdown.css");
+@import url("ide/shareres/kp.css");
+@import url("ide/shareres/sns.css");
 @import url("ide/modal.css");
 
 html,

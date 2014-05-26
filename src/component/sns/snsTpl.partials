@@ -1,0 +1,11 @@
+<!-- {{dropdown_selection}} -->
+{{TopicName}}
+
+
+<!-- {{dropdown_list}} -->
+{{#each this}}
+    <li class="item{{#if selected}} selected{{/if}}" data-id="{{id}}" data-name="{{Name}}" tabindex="-1">
+        {{Name}}
+        <p><span class="icon-tag-sub">{{subCount}} sub</span> {{DisplayName}}</p>
+    </li>
+{{/each}}

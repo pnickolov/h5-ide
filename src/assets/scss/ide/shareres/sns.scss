@@ -1,0 +1,36 @@
+@mixin tag($backgroudColor: #417505) {
+    display: inline-block;
+    height: 13px;
+    width: 40px;
+    padding-bottom: 2px;
+    border-radius: 2px;
+    font-size: 12px;
+    line-height: 13px;
+    color: #fff;
+    text-align: center;
+    background: $backgroudColor
+}
+
+.icon-tag-sub {
+    @include tag
+}
+
+.icon-tag-email {
+    @include tag(#F5A623)
+}
+
+.combo-dd-list > p {
+    margin: 0
+}
+
+#sns-placeholder {
+    .selection > p {
+        display: none;
+    }
+
+    li.item > p {
+        margin: 0;
+    }
+
+}
+

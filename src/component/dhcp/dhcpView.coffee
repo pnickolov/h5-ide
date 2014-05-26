@@ -18,11 +18,15 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
             @.isRemoved = true
             Backbone.View::remove.call @
         render: ->
+            if not @collection.fetched
+                @collection.fetched = true
+                @collection.fetch().then(@render)
+                console.log "Fetching....."
             console.log @collection.toJSON()
             @renderDropdown()
         show: ->
             if App.user.hasCredential()
-                @collection.fetch()
+                @render()
             else
                 @renderNoCredential()
         renderNoCredential: ->
@@ -32,7 +36,10 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
         renderDropdown: ->
             data = @collection.toJSON()
             selection = template.selection data
-            content = template.keys data
+            content = template.keys
+                isRuntime: false
+                keys: data
+            @dropdown.toggleControls true
             @dropdown.setSelection "Auto-assigned Set"
             @dropdown.setContent content
     dhcpView

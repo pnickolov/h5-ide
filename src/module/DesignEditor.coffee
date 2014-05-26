@@ -1,5 +1,5 @@
 
-define ["Workspace"], ( Workspace )->
+define [ "Workspace", "./design/ProgressView" ], ( Workspace, ProgressView )->
 
   class DesignEditor extends Workspace
 
@@ -16,5 +16,17 @@ define ["Workspace"], ( Workspace )->
         @remove()
         throw new Error("Cannot find opsmodel while openning workspace.")
         return
+
+      @createProperView()
+      return
+
+    createProperView : ()->
+      @opsModel.attributes.state = 3
+      @opsModel.attributes.progress = 20
+
+      if @opsModel.isProcessing()
+        @view = new ProgressView( @opsModel )
+
+      return
 
   DesignEditor

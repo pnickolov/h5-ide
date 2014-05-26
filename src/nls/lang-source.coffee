@@ -3013,7 +3013,7 @@ module.exports =
       zh: "抱歉，设计模块正在加载，请稍后重试。"
 
     PROC_TITLE:
-      en: "Starting your app..."
+      en: "Gearing up your awesomeness..."
       zh: "启动您的应用..."
 
     PROC_RLT_DONE_TITLE:

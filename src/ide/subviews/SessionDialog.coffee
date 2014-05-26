@@ -6,11 +6,11 @@ define [ 'i18n!nls/lang.js', "./SessionDialogTpl", "backbone" ], ( lang, templat
   SessionDialogView = Backbone.View.extend {
 
     events :
-      'click #SessionReconnect'   : 'showReconnect'
-      'click #SessionClose'       : 'closeSession'
-      'click #SessionClose2'      : 'closeSession'
-      'click #SessionConnect'     : 'connect'
-      'keypress #SessionPassword' : 'passwordChanged'
+      'click #SessionReconnect' : 'showReconnect'
+      'click #SessionClose'     : 'closeSession'
+      'click #SessionClose2'    : 'closeSession'
+      'click #SessionConnect'   : 'connect'
+      'keyup #SessionPassword'  : 'passwordChanged'
 
     constructor : ()->
       if CurrentSessionDialog

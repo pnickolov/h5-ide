@@ -12,7 +12,7 @@
       <label class="left" for="property-eni-desc">{{ i18n "PROP_ENI_LBL_DESC" }}</label>
       <textarea id="property-eni-desc" data-type="ascii" data-ignore="true" class="input">{{desc}}</textarea>
     </section>
-
+{{/unless}}
     <section class="property-control-group">
       <div class="checkbox">
         <input id="property-eni-source-check" type="checkbox" {{#if sourceDestCheck}}checked="checked"{{/if}} />
@@ -20,7 +20,6 @@
       </div>
       <label for="property-eni-source-check">{{ i18n "PROP_ENI_SOURCE_DEST_CHECK"}}</label>
     </section>
-{{/unless}}
 
     <section class="property-control-group">
       <div class="network-list-wrap">

@@ -8,7 +8,7 @@
   to provide other functionality
 ###
 
-define [ "./Websocket", "./ApplicationView", "./ApplicationModel", "./User", "./subviews/SettingsDialog", "common_handle" ,"event", "vpc_model", "constant" ], ( Websocket, ApplicationView, ApplicationModel, User, SettingsDialog, common_handle, ide_event, vpc_model, constant )->
+define [ "ApiRequest", "component/exporter/JsonExporter", "./Websocket", "./ApplicationView", "./ApplicationModel", "./User", "./subviews/SettingsDialog", "common_handle" ,"event", "vpc_model", "constant" ], ( ApiRequest, JsonExporter, Websocket, ApplicationView, ApplicationModel, User, SettingsDialog, common_handle, ide_event, vpc_model, constant )->
 
   VisualOps = ()->
     if window.App
@@ -105,5 +105,72 @@ define [ "./Websocket", "./ApplicationView", "./ApplicationModel", "./User", "./
 
   VisualOps.prototype.showSettings = ( tab )-> new SettingsDialog({ defaultTab:tab })
   VisualOps.prototype.showSettings.TAB = SettingsDialog.TAB
+
+  VisualOps.prototype.importJson = ( json )->
+
+      result = JsonExporter.importJson json
+
+      if _.isString result
+          return result
+
+      # The result is a valid json
+      console.log "Imported JSON: ", result, result.region
+
+      # check repeat stack name
+      MC.common.other.checkRepeatStackName()
+
+      # set username
+      result.username = $.cookie 'usercode'
+
+      # set name
+      result.name     = MC.aws.aws.getDuplicateName(result.name)
+
+      # set id
+      result.id       = 'import-' + MC.data.untitled + '-' + result.region
+
+      # create new result
+      new_result      = {}
+      new_result.resolved_data = []
+      new_result.resolved_data.push result
+
+      # formate json
+      console.log "Formate JSON: ", new_result
+
+      # push IMPORT_STACK
+      ide_event.trigger ide_event.OPEN_DESIGN_TAB, 'IMPORT_STACK', new_result
+
+      null
+
+  VisualOps.prototype.openSampleStack = (fromWelcome) ->
+
+    that = this
+
+    try
+
+      isFirstVisit = @user.isFirstVisit()
+
+      if (isFirstVisit and fromWelcome) or (not isFirstVisit and not fromWelcome)
+
+        stackStoreIdStamp = $.cookie('stack_store_id') or ''
+        localStackStoreIdStamp = $.cookie('stack_store_id_local') or ''
+
+        stackStoreId = stackStoreIdStamp.split('#')[0]
+
+        if stackStoreId and stackStoreIdStamp isnt localStackStoreIdStamp
+          
+          $.cookie('stack_store_id_local', stackStoreIdStamp, {expires: 30})
+
+          gitBranch = 'master'
+
+          ApiRequest('stackstore_fetch_stackstore', {
+            sub_path: "#{gitBranch}/stack/#{stackStoreId}/#{stackStoreId}.json"
+          }).then (result) ->
+
+            jsonDataStr = result
+            that.importJson(jsonDataStr)
+
+    catch err
+
+      console.log('Open store stack failed')
 
   VisualOps

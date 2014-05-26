@@ -704,7 +704,7 @@ module.exports =
       zh: "子网必须与路由表关联。"
 
     CVS_MSG_ERR_DEL_ELB_LINE_1:
-      en: "Load balancer must attach to at least one subnet."
+      en: "Load Balancer must associate with at least 1 subnet for each Availability Zone where it has registered load balanced instances."
       zh: "负载均衡器至少需要连接一个子网。"
 
     CVS_MSG_ERR_DEL_ELB_LINE_2:
@@ -1216,6 +1216,14 @@ module.exports =
     PROP_INSTANCE_KEY_PAIR:
       en: "Key Pair"
       zh: "秘钥"
+
+    PROP_INSTANCE_CLOUDWATCH_DETAILED_MONITORING:
+      en: "CloudWatch Detailed Monitoring"
+      zh: ""
+
+    POP_INSTANCE_KEYPAIR_INFO_TIP:
+      en: "If any instance or launch configuration uses $DefaultKeyPair, you will need to specify which key pair (or no key pair) should be used for $DefaultKeyPair when launching the instance or creating the launch configuration."
+      zh: ""
 
     PROP_INSTANCE_EBS_OPTIMIZED:
       en: "EBS Optimization"
@@ -3669,6 +3677,10 @@ VisualOps API. You cannot UNDO this action.'
       en: "Customer Gateway"
       zh: "客户网关"
 
+    DASH_LBL_INSTANCE:
+      en: "Instance"
+      zh: "实例"
+
     DASH_LBL_DNS_NAME:
       en: "DNS Name"
       zh: "域名"
@@ -4792,6 +4804,10 @@ VisualOps API. You cannot UNDO this action.'
       en: "%s <span class='validation-tag tag-elb'>%s</span> should allow inbound traffic towards %s according to %s's Instance Listener Protocol."
       zh: ""
 
+    TA_MSG_ERROR_ELB_ATTACHED_SUBNET_CIDR_SUFFIX_GREATE_27:
+      en: "Load Balancer <span class='validation-tag tag-elb'>%s</span> has been associated with Subnet <span class='validation-tag tag-subnet'>%s</span>, whose CIDR mask must be smaller than /27."
+      zh: ""
+
     # SG
     TA_MSG_WARNING_SG_RULE_EXCEED_FIT_NUM:
       en: "Security Group <span class='validation-tag tag-sg'>%s</span> has more than %s rules, If a security group has a large number of rules, performance can be degraded."
@@ -4940,6 +4956,10 @@ VisualOps API. You cannot UNDO this action.'
       zh: ""
 
     ##### Trust Advisor
+
+    TIP_KEYPAIR_USED_DEFAULT_KP:
+      en: "One or more instance/launch configuration has used $DefaultKeyPair. You need to specify which key pair (or no key pair) should be used for $DefaultKeyPair."
+      zh: ""
 
   service:
 

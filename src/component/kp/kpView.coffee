@@ -344,15 +344,21 @@ define [ './kpTpl', './kpDialogTpl', 'kp_upload', 'backbone', 'jquery', 'constan
         tagName: 'section'
 
         events:
-            'click .keypair-filter'     : 'returnFalse'
             'click .manage-kp'          : 'manageKp'
             'click .show-credential'    : 'showCredential'
             'OPTION_SHOW .selectbox'    : 'show'
             'OPTION_CHANGE .selectbox'  : 'setKey'
+            'click .keypair-filter'     : 'returnFalse'
+            'keydown .keypair-filter'   : 'filterOnKeyDown'
             'keyup .keypair-filter'     : 'filter'
+
+
 
         showCredential: ->
             App.showSettings App.showSettings.TAB.Credential
+
+        filterOnKeyDown: ( event ) ->
+            event.stopPropagation()
 
         filter: ( event ) ->
             keyword = event.currentTarget.value

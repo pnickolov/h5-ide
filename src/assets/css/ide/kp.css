@@ -31,8 +31,21 @@
     font-weight: 800;
     color: #eee; }
 
+.default-kp-info {
+  color: #148BE6;
+  margin-left: 5px; }
+
 #modal-run-stack .modal-control-group.default-kp-group {
   padding-top: 0; }
+
+.modal-control-group.default-kp-group {
+  padding-top: 0;
+  position: relative; }
+  .modal-control-group.default-kp-group .icon-info {
+    position: absolute;
+    color: #148BE6;
+    margin-top: 12px;
+    margin-left: 5px; }
 
 #kp-list {
   margin-top: 32px;

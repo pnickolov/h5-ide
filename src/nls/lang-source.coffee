@@ -1654,6 +1654,14 @@ module.exports =
       en: "DHCP Options Set ID"
       zh: "DHCP选项标识"
 
+    PROP_VPC_MANAGE_DHCP:
+      en: "Manage Region DHCP options"
+      zh: ""
+
+    PROP_VPC_FILTER_DHCP:
+      en: "Filter by DHCP name"
+      zh: ""
+
     PROP_SUBNET_TIP_CIDR_BLOCK:
       en: "e.g. 10.0.0.0/24. The range of IP addresses in the subnet must be a subset of the IP address in the VPC. Block sizes must be between a /16 netmask and /28 netmask. The size of the subnet can equal the size of the VPC."
       zh: ""

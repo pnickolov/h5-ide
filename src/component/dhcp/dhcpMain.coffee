@@ -1,2 +1,2 @@
-define ['./dhcpView'], (dhcpView)->
-    new dhcpView.initialize('us-east-1')
+define ['./component/dhcp/dhcpView'], (dhcpView)->
+    return dhcpView

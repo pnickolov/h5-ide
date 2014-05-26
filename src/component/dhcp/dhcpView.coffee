@@ -1,10 +1,9 @@
-define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_modal'], ( CloudResources, constant, comboDropdown, modalPlus, toolbarModal )->
-    dhcpManager = Backbone.View.extend
-        constructor:(region_name)->
-            @collection = CloudResources constant.RESTYPE.DHCP, region_name
-            @collection.fetch ()=>
-                @renderDhcpList()
-            @listenTo dhcpColl, 'change', @renderDhcpList
+define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_modal', 'i18n!nls/lang.js', './dhcp_template.js'], ( CloudResources, constant, comboDropdown, modalPlus, toolbarModal, lang, template )->
+    dhcpView = Backbone.View.extend
+        constructor:->
+            @collection = CloudResources constant.RESTYPE.DHCP, Design.instance().region()
+            @listenTo @collection, 'change', @render
+            @listenTo @collection, 'update', @render
             option =
                 manageBtnValue: lang.ide.PROP_VPC_MANAGE_DHCP
                 filterPlaceHolder: lang.ide.PROP_VPC_FILTER_DHCP
@@ -17,17 +16,23 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
         remove: ()->
             @.isRemoved = true
             Backbone.View::remove.call @
-        renderDhcpList: ->
+        render: ->
             console.log @collection.toJSON()
+            @renderDropdown()
         show: ->
             if App.user.hasCredential()
                 if not @fetched
                     @collection.fetch()
+                    @fetched = true
+                    null
             else
                 @renderNoCredential()
         renderNoCredential: ->
-            @dropdown.render('no-credential').toggleControls false
+            @dropdown.render('nocredential').toggleControls false
         renderLoading: ->
             @dropdown.render('loading').toggleControls false
-        
-    dhcpManager
+        renderDropdown: ->
+            data = @collection.toJSON()
+            selection = template.selection data
+            @dropdown.setSelection "Auto-assigned Set"
+    dhcpView

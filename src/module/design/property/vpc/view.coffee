@@ -5,7 +5,8 @@
 define [ '../base/view',
          './template/stack'
          'i18n!nls/lang.js'
-], ( PropertyView, template, lang ) ->
+         'dhcp'
+], ( PropertyView, template, lang, dhcp ) ->
 
     # Helpers
     mapFilterInput = ( selector ) ->
@@ -64,6 +65,9 @@ define [ '../base/view',
             multiinputbox.update( $("#property-domain-server") )
 
             data.name
+            dhcpdropdown = new dhcp
+            console.log dhcpdropdown.dropdown.el
+            @$el.find('#dhcp-dropdown').html(dhcpdropdown.dropdown.el)
 
         processParsley: ( event ) ->
             $( event.currentTarget )

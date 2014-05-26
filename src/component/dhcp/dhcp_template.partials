@@ -1,3 +1,19 @@
+<!-- {{selection}} -->
+{{#unless autoOrDefault}}
+    {{#if hasDhcp}}
+        {{id}}
+    {{else}}
+        Select or Create a DHCP option
+    {{/if}}
+{{else}}
+    {{#if autoAssign}}
+    Auto-assigned Set <i class="icon-info tooltip" data-tooltip="{{i18n 'PROP_VPC_TIP_AUTO_DHCP'}}"></i>
+    {{/if}}
+    {{#if default}}
+    Default <i class="icon-info tooltip" data-tooltip="{{i18n 'PROP_VPC_TIP_DEFAULT_DHCP'}}"></i>
+    {{/if}}
+{{/unless}}
+
 <!-- {{edit}} -->
 <div class="option-group" id="dhcp-property-detail" data-type="true">
     <section class="property-control-group">

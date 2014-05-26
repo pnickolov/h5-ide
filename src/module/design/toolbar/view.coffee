@@ -16,8 +16,19 @@ define [ 'MC', 'event',
          'backbone', 'jquery', 'handlebars',
          'UI.selectbox', 'UI.notification',
          "UI.tabbar"
-], ( MC, ide_event, Design, lang, stack_tmpl, app_tmpl, appview_tmpl, JsonExporter, constant, kp, ApiRequest, stateeditor ) ->
+], ( MC, ide_event, Design, lang, stack_tmpl, app_tmpl, appview_tmpl, JsonExporter, constant, kp, ApiRequest, stateEditor ) ->
 
+    # Set domain and set http
+    API_HOST       = "api.visualops.io"
+
+    ### env:debug ###
+    API_HOST = "api.mc3.io"
+    ### env:debug:end ###
+
+    ### env:dev ###
+    API_HOST = "api.mc3.io"
+    ### env:dev:end ###
+    API_URL = "https://" + API_HOST + "/v1/apps/"
     ToolbarView = Backbone.View.extend {
 
         el         : document
@@ -56,7 +67,7 @@ define [ 'MC', 'event',
 
             'click .toolbar-visual-ops-switch' : 'opsOptionChanged'
 
-            'click .toolbar-visual-ops-refresh': 'clickReloadStates'
+            'click .reload-states': 'clickReloadStates'
             #'click #apply-visops'             : 'openExperimentalVisops'
 
         # when flag = 0 not invoke opsState
@@ -447,45 +458,53 @@ define [ 'MC', 'event',
 
         clickReloadStates: (event)->
             $target = $ event.currentTarget
-            $label = $target.find('.refresh-label')
+            $label = $target
             if $target.hasClass('disabled')
                 return false
             console.log(event)
             $target.toggleClass('disabled')
             $label.html($label.attr('data-disabled'))
+            app_id = Design.instance().serialize().id
+            console.log API_URL + app_id
+            data =
+                "encoded_user": App.user.get("usercode")
+                "token": App.user.get("defaultToken")
             $.ajax
-                url: "http://urlthatdoesnotexist.com",
+                url: API_URL+ app_id
                 method: "POST"
-                data:
-                    "encoded_user": App.user.get("usercode")
-                    "token": App.user.get("defaultToken")
+                #contentType: 'application/json; charset=utf-8'
+                data: JSON.stringify data
                 dataType: 'json'
                 statusCode:
                     200: ->
                         console.log 200,arguments
-                        notification 'info', "Success!"
                         #todo: reset state count
                         appData = Design.instance().serialize()
                         for uid of appData.component
                             if appData.component[uid].type is "AWS.EC2.Instance" && appData.component[uid].state.length>0
                                 console.log(appData, uid)
                                 stateEditor.loadModule(appData.component, uid, null, true)
+                                notification 'info', lang.ide.RELOAD_STATE_SUCCESS
                     401: ->
                         console.log 401,arguments
-                        notification 'error', "Error 401"
+                        notification 'error', lang.ide.RELOAD_STATE_INVALID_REQUEST
                     404: ->
                         console.log 404,arguments
-                        notification 'error', "Error 404"
+                        notification 'error', lang.ide.RELOAD_STATE_NETWORKERROR
 
                     500: ->
                         console.log 500,arguments
-                        notification 'error', "Error 500"
+                        notification 'error', lang.ide.RELOAD_STATE_INTERNAL_SERVER_ERROR
                 error: ->
                     console.log('Reload State Request Error.')
                     null
+                success: ->
+                    console.log('Succeeded Get Right Response.')
             .always ()->
-                $target.removeClass('disabled')
-                $label.html($label.attr('data-original'))
+                window.setTimeout ->
+                    $target.removeClass('disabled')
+                    $label.html($label.attr('data-original'))
+                , 2000
 
         clickDeleteIcon : ->
             me = this
@@ -901,7 +920,7 @@ define [ 'MC', 'event',
 
             # set toolbar-visual-ops-switch and apply-visops
             $switchCheckbox = $ '#main-toolbar .toolbar-visual-ops-switch'
-            $applyVisops    = $ '#apply-visops'
+            # $applyVisops    = $ '#apply-visops'
 
             # when new stack enable VisualOps else disabled
             if Tabbar.current is 'new'

@@ -106,11 +106,9 @@
             return modalGroup[0].back();
           };
         })(this));
-        this.tpl.find("i.modal-close").click((function(_this) {
-          return function(e) {
-            return modalGroup[0].back();
-          };
-        })(this));
+        this.tpl.find("i.modal-close").click(function(e) {
+          return modalGroup[0].back();
+        });
         if (!this.option.disableClose) {
           this.getFirst().wrap.off('click');
           this.getFirst().wrap.on('click', (function(_this) {

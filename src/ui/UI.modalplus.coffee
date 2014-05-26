@@ -112,7 +112,7 @@ define [], ()->
             @tpl.find('.btn.modal-close').click (e)=>
                 @option.onCancel?(@tpl,e)
                 modalGroup[0].back()
-            @tpl.find("i.modal-close").click (e)=>
+            @tpl.find("i.modal-close").click (e)->
                 modalGroup[0].back()
             if(!@option.disableClose)
                 @getFirst().wrap.off 'click'

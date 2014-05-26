@@ -59,6 +59,10 @@ define ["backbone"], ()->
     # Override this method to check if the tab is closable. Return false to prevent closing.
     isRemovable : ()-> true
 
+    # Override this method so that we can locate a particular workspace.
+    # The attributes is the same as the initialize()
+    isWorkingOn : ( attributes )-> false
+
   _.extend Workspace.prototype, Backbone.Events
 
   Workspace

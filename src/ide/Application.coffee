@@ -146,7 +146,13 @@ define [
   # This is a convenient method to open an editor for the ops model.
   VisualOps.prototype.openOps = ( opsModel )->
     if not opsModel then return
-    editor = new DesignEditor( if _.isString(opsModel) then opsModel else opsModel.cid )
+    modelId = if _.isString(opsModel) then opsModel else opsModel.cid
+    space = @workspaces.find(modelId)
+    if space
+      space.activate()
+      return
+
+    editor = new DesignEditor( modelId )
     editor.activate()
     editor
 

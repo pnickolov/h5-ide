@@ -81,5 +81,7 @@ define [ "./subviews/WorkspaceView", "underscore" ], ( WorkspaceView )->
 
       workspace
 
+    find : ( attribute )-> _.find @__spaces, ( space )-> space.isWorkingOn( attribute )
+
 
   WorkspaceManager

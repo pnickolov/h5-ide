@@ -521,7 +521,7 @@ define [ 'event', 'i18n!nls/lang.js',
 
             reader = new FileReader()
             reader.onload = ( evt )->
-                error = model.importJson( reader.result )
+                error = App.importJson( reader.result )
                 if error
                     $("#import-json-error").html error
                 else

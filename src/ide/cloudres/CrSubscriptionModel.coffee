@@ -68,3 +68,5 @@ define [ "./CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
   }, {
     uniqueId : ()-> _.uniqueId("CrSnsSub_")
   }
+
+  CrSubscriptionModel

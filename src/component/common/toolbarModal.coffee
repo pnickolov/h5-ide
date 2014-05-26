@@ -153,7 +153,7 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalpl
 
 
             @__modalplus = new modalplus options
-            @__modalplus.on 'close', @__close, @
+            @__modalplus.on 'closed', @__close, @
             $( '#modal-wrap' ).click @__stopPropagation
 
         __renderLoading: () ->

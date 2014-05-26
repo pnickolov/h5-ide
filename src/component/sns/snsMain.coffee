@@ -55,7 +55,7 @@ define [ 'constant', 'CloudResources', 'combo_dropdown', 'toolbar_modal', './com
                 if filter
                     len = keyword.length
                     data = _.filter data, ( d ) ->
-                        d.Name.slice( 0, len ).toLowerCase() is keyword.toLowerCase()
+                        d.Name.toLowerCase().indexOf( keyword.toLowerCase() ) isnt -1
 
 
                 @renderDropdownList data

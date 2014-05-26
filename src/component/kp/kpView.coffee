@@ -298,9 +298,8 @@ define [ 'combo_dropdown', 'toolbar_modal', './kpTpl', './kpDialogTpl', 'kp_uplo
             App.showSettings App.showSettings.TAB.Credential
 
         filter: ( keyword ) ->
-            len = keyword.length
             hitKeys = _.filter @model.get( 'keys' ), ( k ) ->
-                k.keyName.slice( 0, len ).toLowerCase() is keyword.toLowerCase()
+                k.keyName.toLowerCase().indexOf( keyword.toLowerCase() ) isnt -1
             if keyword
                 @renderKeys hitKeys
             else

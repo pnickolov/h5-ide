@@ -185,7 +185,7 @@ var constant_data = {
 				}],
 				Default             : "true",
 				GroupName           : "DefaultSG",
-				GroupDescription    : 'Default Security Group'
+				GroupDescription    : 'default VPC security group'
 			}
 		},
 		ACL : {

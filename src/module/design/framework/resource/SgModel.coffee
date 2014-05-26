@@ -300,7 +300,7 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
         appId     : data.resource.GroupId
         groupName : data.resource.GroupName
 
-        description : data.resource.GroupDescription
+        description : if data.name is "DefaultSG" then "default VPC security group" else data.resource.GroupDescription
       }, { isDeserialize : true} )
 
       rules = []

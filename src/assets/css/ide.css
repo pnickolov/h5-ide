@@ -5,6 +5,7 @@
 @import url("./ide/kp.css");
 @import url("./ide/combo-dropdown.css");
 @import url("./ide/modal.css");
+@import url("./ide/header.css");
 
 html,
 body {
@@ -375,12 +376,6 @@ button {
 }
 
 /* Main Tab Bar */
-#tabbar-wrapper {
-	padding-left: 45px;
-	padding-right: 260px;
-	height: 49px;
-}
-
 #tab-bar {
 	font-size: 14px;
 	padding: 11px 20px 0 0;
@@ -1112,9 +1107,6 @@ button {
 }
 
 /* Dashboard Main Content */
-#tab-content-dashboard {
-}
-
 .dashboard-header {
 	margin-bottom: 10px;
 }

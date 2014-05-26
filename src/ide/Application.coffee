@@ -8,7 +8,7 @@
   to provide other functionality
 ###
 
-define [ "./Websocket", "./ApplicationView", "./ApplicationModel", "./User", "./subviews/SettingsDialog", "CloudResources", "common_handle" ,"event", "vpc_model", "constant" ], ( Websocket, ApplicationView, ApplicationModel, User, SettingsDialog, CloudResources, common_handle, ide_event, vpc_model, constant )->
+define [ "./Websocket", "./ApplicationView", "./ApplicationModel", "./User", "./subviews/SettingsDialog", "CloudResources", "./WorkspaceManager", "common_handle" ,"event", "vpc_model", "constant" ], ( Websocket, ApplicationView, ApplicationModel, User, SettingsDialog, CloudResources, WorkspaceManager, common_handle, ide_event, vpc_model, constant )->
 
   VisualOps = ()->
     if window.App
@@ -23,6 +23,8 @@ define [ "./Websocket", "./ApplicationView", "./ApplicationModel", "./User", "./
 
     @__createUser()
     @__createWebsocket()
+
+    @workspaces = new WorkspaceManager()
 
     # view / model depends on User and Websocket
     @model  = new ApplicationModel()

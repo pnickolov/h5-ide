@@ -2,6 +2,8 @@
 // Website: http://dragsort.codeplex.com/
 // License: http://dragsort.codeplex.com/license
 
+// Modified version. This plugin can only drag horizontally or vertically.
+
 define(["jquery"], function($) {
 
 	$.browser = $.support;
@@ -212,7 +214,10 @@ define(["jquery"], function($) {
 					list.scroll.moveY = y == 0 ? 0 : y * opts.scrollSpeed / Math.abs(y);
 
 					//move draggedItem to new mouse cursor location
-					this.draggedItem.css({ top: top + $(this.container).scrollTop() });
+					if (opts.horizontal)
+						this.draggedItem.css({ left: left + $(this.container).scrollLeft() });
+					else
+						this.draggedItem.css({ top: top + $(this.container).scrollTop() });
 				},
 
 				//if scroll container is a div allow mouse wheel to scroll div instead of window when mouse is hovering over

@@ -303,7 +303,8 @@
   height: 0;
   padding-bottom: 65%;
   background: #55626f url('/assets/images/ide/thumbnail-stack-placehoder@2x.png') center center no-repeat;
-  background-size: 100% auto; }
+  background-size: 100% auto;
+  overflow: hidden; }
   .region-resource-list .thumbnail.app-thumbnail {
     background-image: url('/assets/images/ide/thumbnail-app-placehoder@2x.png');
     background-size: 100% auto; }

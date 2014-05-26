@@ -1,0 +1,61 @@
+
+#tabbar-wrapper {
+  padding : 10px 0 0 45px;
+  width   : 10000px;
+}
+
+#tabbar-wrapper {
+
+  white-space : nowrap;
+
+  > ul {
+    float : left;
+  }
+
+  > ul > li {
+    float       : left;
+    height      : 38px;
+    line-height : 38px;
+
+    color : #8b8b8b;
+    background-color : #404040;
+    background-position : 8px 8px;
+
+    padding    : 0 12px 0 38px;
+
+    border        : 1px solid #404040;
+    border-bottom : none;
+    cursor        : default;
+
+    &.activate {
+      line-height : 41px;
+      background-color : #202020;
+      background-position : 8px 11px;
+      color : #fff;
+      font-weight : bold;
+      border-color : #010101;
+      box-shadow : inset 0 3px 0 #9F62D1;
+    }
+
+    &.activate, &:hover {
+      .icon-close { visibility: inherit; }
+    }
+
+    .icon-close {
+      margin-left : 7px;
+      margin-top  : 12px;
+      height      : 17px;
+      line-height : 17px;
+      float       : right;
+      visibility  : hidden;
+
+      &:hover {
+        color : #F09595;
+      }
+    }
+  }
+}
+
+#tab-bar {
+  display : none;
+}

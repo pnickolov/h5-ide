@@ -22,6 +22,8 @@ define [ "component/exporter/Thumbnail", 'jquery', 'event', 'MC', 'base_main', '
     # private
     loadModule = () ->
 
+        return
+
         #set MC.data.dashboard_type default
         MC.data.dashboard_type = 'OVERVIEW_TAB'
         #load remote ./module/dashboard/overview/view.js
@@ -36,14 +38,14 @@ define [ "component/exporter/Thumbnail", 'jquery', 'event', 'MC', 'base_main', '
             view.model = model
 
             #push DASHBOARD_COMPLETE
-            ide_event.trigger ide_event.DASHBOARD_COMPLETE
+            # ide_event.trigger ide_event.DASHBOARD_COMPLETE
 
-            model.on 'change:result_list', () ->
-                console.log 'dashboard_change:result_list'
-                should_update_overview = true
-                #refresh view
-                view.renderMapResult()
-                view.renderRecent()
+            # model.on 'change:result_list', () ->
+            #     console.log 'dashboard_change:result_list'
+            #     should_update_overview = true
+            #     #refresh view
+            #     view.renderMapResult()
+            #     view.renderRecent()
 
             model.on 'change:region_classic_list', () ->
                 console.log 'dashboard_region_classic_list'
@@ -56,23 +58,23 @@ define [ "component/exporter/Thumbnail", 'jquery', 'event', 'MC', 'base_main', '
                     ide_event.trigger ide_event.IDE_AVAILABLE
 
 
-            model.on 'change:recent_edited_stacks', () ->
-                console.log 'dashboard_change:recent_eidted_stacks'
-                #model.get 'recent_edited_stacks'
-                view.renderRecent()
+            # model.on 'change:recent_edited_stacks', () ->
+            #     console.log 'dashboard_change:recent_eidted_stacks'
+            #     #model.get 'recent_edited_stacks'
+            #     view.renderRecent()
 
-            model.on 'change:recent_launched_apps', () ->
-                console.log 'dashboard_change:recent_launched_apps'
-                #model.get 'recent_launched_apps'
-                view.renderRecent()
+            # model.on 'change:recent_launched_apps', () ->
+            #     console.log 'dashboard_change:recent_launched_apps'
+            #     #model.get 'recent_launched_apps'
+            #     view.renderRecent()
 
             # global view
-            model.on 'change:global_list', () ->
-                view.renderGlobalList()
+            # model.on 'change:global_list', () ->
+            #     view.renderGlobalList()
 
             # region view
-            model.on 'change:cur_region_resource', () ->
-                view.renderRegionResource()
+            # model.on 'change:cur_region_resource', () ->
+            #     view.renderRegionResource()
 
             ide_event.onLongListen ide_event.SWITCH_MAIN, () ->
                 if MC.data.supported_platforms and MC.data.supported_platforms.length
@@ -130,44 +132,44 @@ define [ "component/exporter/Thumbnail", 'jquery', 'event', 'MC', 'base_main', '
             model.describeAccountAttributesService()
 
 
-            ide_event.onLongListen 'RESULT_APP_LIST', ( result ) ->
-                overview_app = result
-                #model.describeAWSResourcesService()
+            # ide_event.onLongListen 'RESULT_APP_LIST', ( result ) ->
+            #     overview_app = result
+            #     #model.describeAWSResourcesService()
 
-                model.updateMap model, overview_app, overview_stack
-                model.updateRecentList( model, result, 'recent_launched_apps' )
-                view.renderMapResult()
-                model.getItemList 'app', current_region, overview_app
-                null
+            #     model.updateMap model, overview_app, overview_stack
+            #     model.updateRecentList( model, result, 'recent_launched_apps' )
+            #     view.renderMapResult()
+            #     model.getItemList 'app', current_region, overview_app
+            #     null
 
-            ide_event.onLongListen 'RESULT_STACK_LIST', ( result ) ->
-                console.log 'overview RESULT_STACK_LIST'
+            # ide_event.onLongListen 'RESULT_STACK_LIST', ( result ) ->
+            #     console.log 'overview RESULT_STACK_LIST'
 
-                overview_stack = result
+            #     overview_stack = result
 
-                model.updateMap model, overview_app, overview_stack
-                model.updateRecentList( model, result, 'recent_edited_stacks' )
-                view.renderMapResult()
+            #     model.updateMap model, overview_app, overview_stack
+            #     model.updateRecentList( model, result, 'recent_edited_stacks' )
+            #     view.renderMapResult()
 
-                model.getItemList 'stack', current_region, overview_stack
-                null
+            #     model.getItemList 'stack', current_region, overview_stack
+            #     null
 
-            ide_event.onLongListen ide_event.NAVIGATION_TO_DASHBOARD_REGION, ( result ) ->
-                console.log 'NAVIGATION_TO_DASHBOARD_REGION'
-                if result is 'global'
-                    ide_event.trigger ide_event.RETURN_OVERVIEW_TAB
-                #else
-                #    view.trigger 'RETURN_REGION_TAB', result
-                null
+            # ide_event.onLongListen ide_event.NAVIGATION_TO_DASHBOARD_REGION, ( result ) ->
+            #     console.log 'NAVIGATION_TO_DASHBOARD_REGION'
+            #     if result is 'global'
+            #         ide_event.trigger ide_event.RETURN_OVERVIEW_TAB
+            #     #else
+            #     #    view.trigger 'RETURN_REGION_TAB', result
+            #     null
 
             # switch region tab
-            view.on 'SWITCH_REGION', ( region, fakeSwitch ) ->
-                current_region = region
-                model.loadResource region
-                #model.describeAWSStatusService region
-                if not fakeSwitch
-                    @model.getItemList 'app', region, overview_app
-                    @model.getItemList 'stack', region, overview_stack
+            # view.on 'SWITCH_REGION', ( region, fakeSwitch ) ->
+            #     current_region = region
+            #     model.loadResource region
+            #     #model.describeAWSStatusService region
+            #     if not fakeSwitch
+            #         @model.getItemList 'app', region, overview_app
+            #         @model.getItemList 'stack', region, overview_stack
 
             # reload resource
             view.on 'RELOAD_RESOURCE', ( region ) ->

@@ -1,22 +1,15 @@
 <header id="global-region-header">
 	<button id="global-refresh" class="icon-refresh">just now</button>
 
-	<button id="global-create-stack" class="btn btn-primary icon-new-stack" disabled>{{i18n "DASH_CREATE_NEW_STACK"}}<i class="icon-caret-down"></i></button>
+	<button id="global-create-stack" class="btn btn-primary icon-new-stack js-toggle-dropdown">{{i18n "DASH_CREATE_NEW_STACK"}}<i class="icon-caret-down"></i></button>
 	<div class="dropdown-menu">
-		<ul id="global-region-create-stack-list">{{#each region_names}}
-			<li data-region="{{long.id}}">{{long.name}} - {{short.name}}</li>
-		{{/each}}</ul>
+		<ul id="global-region-create-stack-list">
+		{{#each this}}<li data-region="{{id}}">{{name}} - {{shortName}}</li>{{/each}}</ul>
 	</div>
 
-	<button id="global-import-stack" class="btn btn-primary icon-import" disabled data-analytics-plus="import_json">{{i18n "DASH_IMPORT_JSON"}}</button>
+	<button id="global-import-stack" class="btn btn-primary icon-import" data-analytics-plus="import_json">{{i18n "DASH_IMPORT_JSON"}}</button>
 
-	<!-- Visualize unmanaged VPC -->
-	<button id="global-region-visualize-VPC" class="btn btn-blue icon-visualize" disabled data-analytics-plus="visualize_vpc">{{i18n "DASH_VISUALIZE_VPC"}}
-<!-- 	<div class="help-tip-body">
-		<p><b>Visualize custom VPC resources you have created outside VisualOps.</b></p>
-		<p>Once the VPC you select has been visualized, you can manually fine-tune the auto-generated diagram.
-		<p>Currently we support to save the visualization as PNG. Future version will include the feature to import VPC resource as an app.</p>
-	</div> -->
+	<button id="global-region-visualize-VPC" class="btn btn-blue icon-visualize" data-analytics-plus="visualize_vpc">{{i18n "DASH_VISUALIZE_VPC"}}
 	</button>
 </header>
 
@@ -45,33 +38,31 @@
 <section id="dashboard-data-wrap">
 
 	<div id="dashboard-region-switch">
-		<a id="region-switch" class="disabled btn-blue btn" href="javascript:void(0)">
-			<span>{{i18n "DASH_BTN_GLOBAL"}}</span>
-			<i class="icon-caret-down"></i>
-		</a>
+		<button id="region-switch" class="btn-blue btn js-toggle-dropdown">
+			<span>{{i18n "DASH_BTN_GLOBAL"}}</span><i class="icon-caret-down"></i>
+		</button>
 
 		<ul id="region-switch-list" class="dropdown-menu">
 			<li data-region="global">{{i18n "DASH_BTN_GLOBAL"}}</li>
-			{{#each region_names}}<li data-region="{{long.id}}">{{short.name}}</li>{{/each}}
+			{{#each this}}<li data-region="{{id}}">{{shortName}}</li>{{/each}}
 		</ul>
 	</div>
 
 	<!-- Global view -->
-		<div id="global-view">
-			<div class="dashboard-loading"><div class="loading-spinner"></div></div>
-			<!-- will be filled -->
-		</div>
+	<div id="global-view">
+		<div class="dashboard-loading"><div class="loading-spinner"></div></div>
+	</div>
 	<!-- Global view -->
 
 	<!-- Region view -->
-		<section id="region-view" style="display:none;">
-			<div id="region-app-stack-wrap">
-					<div class="dashboard-loading"><div class="loading-spinner"></div></div>
-			</div>
-			<div id="region-resource-wrap">
-				<div class="dashboard-loading"><div class="loading-spinner"></div></div>
-			</div>
-		</section>
+	<section id="region-view" style="display:none;">
+		<div id="region-app-stack-wrap">
+			<div class="dashboard-loading"><div class="loading-spinner"></div></div>
+		</div>
+		<div id="region-resource-wrap">
+			<div class="dashboard-loading"><div class="loading-spinner"></div></div>
+		</div>
+	</section>
 	<!-- Region view -->
 </section>
 

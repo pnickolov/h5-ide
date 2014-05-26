@@ -377,6 +377,7 @@
     padding-bottom  : 65%;
     background      : #55626f image-url("ide/thumbnail-stack-placehoder@2x.png") center center no-repeat;
     background-size : 100% auto;
+    overflow        : hidden;
 
     &.app-thumbnail {
       background-image : image-url("ide/thumbnail-app-placehoder@2x.png");

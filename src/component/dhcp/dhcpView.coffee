@@ -8,7 +8,10 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
                 manageBtnValue: lang.ide.PROP_VPC_MANAGE_DHCP
                 filterPlaceHolder: lang.ide.PROP_VPC_FILTER_DHCP
             @dropdown = new comboDropdown option
-            @dropdown.setSelection "Auto-assigned Set"
+            selection = template.selection
+                isDefault: false
+                isAuto: true
+            @dropdown.setSelection selection
             @dropdown.on 'open', @show , @
             @dropdown.on 'manage', @manageDHCP, @
             @dropdown.on 'change', @setDHCP, @
@@ -20,8 +23,10 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
         render: ->
             if not @collection.fetched
                 @collection.fetched = true
+                @renderLoading()
                 @collection.fetch().then(@render)
                 console.log "Fetching....."
+                return false
             console.log @collection.toJSON()
             @renderDropdown()
         show: ->
@@ -35,11 +40,13 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
             @dropdown.render('loading').toggleControls false
         renderDropdown: ->
             data = @collection.toJSON()
-            selection = template.selection data
+            selection = template.selection
+                isDefault: false
+                isAuto: true
             content = template.keys
                 isRuntime: false
                 keys: data
             @dropdown.toggleControls true
-            @dropdown.setSelection "Auto-assigned Set"
+            @dropdown.setSelection selection
             @dropdown.setContent content
     dhcpView

@@ -1,18 +1,14 @@
 <!-- {{selection}} -->
-{{#unless autoOrDefault}}
-    {{#if hasDhcp}}
-        {{id}}
-    {{else}}
-        Select or Create a DHCP option
-    {{/if}}
+{{#if isAuto}}
+    {{i18n "PROP_VPC_AUTO_DHCP"}}<i class="icon-info tooltip" data-tooltip='{{i18n "PROP_VPC_TIP_AUTO_DHCP"}}'></i>
 {{else}}
-    {{#if autoAssign}}
-    {{i18n 'PROP_VPC_AUTO_DHCP'}} <i class="icon-info tooltip" data-tooltip="{{i18n 'PROP_VPC_TIP_AUTO_DHCP'}}"></i>
+    {{#if isDefault}}
+        {{i18n "PROP_VPC_DEFAULT_DHCP"}} <i class="icon-info tooltip" data-tooltip="{{i18n 'PROP_VPC_TIP_DEFAULT_DHCP'}}"></i>
+    {{else}}
+        {{keyName}}
     {{/if}}
-    {{#if default}}
-    {{i18n 'PROP_VPC_DEFAULT_DHCP'}} <i class="icon-info tooltip" data-tooltip="{{i18n 'PROP_VPC_TIP_DEFAULT_DHCP'}}"></i>
-    {{/if}}
-{{/unless}}
+{{/if}}
+
 
 <!-- {{keys}} -->
 {{#unless hideDefaultNoKey}}

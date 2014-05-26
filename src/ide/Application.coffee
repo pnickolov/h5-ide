@@ -163,7 +163,7 @@ define [ "ApiRequest", "component/exporter/JsonExporter", "./Websocket", "./Appl
           gitBranch = 'master'
 
           ApiRequest('stackstore_fetch_stackstore', {
-            file_name: "#{gitBranch}/stack/#{stackStoreId}/#{stackStoreId}.json"
+            sub_path: "#{gitBranch}/stack/#{stackStoreId}/#{stackStoreId}.json"
           }).then (result) ->
 
             jsonDataStr = result

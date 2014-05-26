@@ -1,6 +1,8 @@
+$navHeight : 38px;
+
 #SettingsNav {
   background:    #0c0c0c;
-  height:        45px;
+  height:        $navHeight;
   border-bottom: 1px solid #000;
 
   > span {
@@ -8,11 +10,12 @@
     min-width   : 100px;
     text-align  : center;
     color       : #148BE6;
-    height      : 45px;
-    line-height : 45px;
+    height      : $navHeight;
+    line-height : $navHeight;
     cursor      : pointer;
     position    : relative;
     padding     : 0 10px;
+    font-size   : 12px;
 
     &.selected:before {
       position:      absolute;
@@ -29,6 +32,14 @@
   width      : 430px;
   padding    : 20px 30px 30px;
   min-height : 150px;
+
+  a {
+    color: #148BE6;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
 
   .dl-horizontal {
     margin : 0;
@@ -336,9 +347,10 @@ $welcome-dialog-width: 600px;
 }
 
 .token-table {
-  position : relative;
-  height : 200px;
-  background : #111;
+  position   : relative;
+  height     : 200px;
+  background : rgba(0,0,0,.1);
+  font-size  : 12px;
 
   &.empty {
     > header { display : none; }
@@ -354,7 +366,30 @@ $welcome-dialog-width: 600px;
   }
 
   .tokenToken {
-    width : 180px;
+    width : 230px;
+  }
+
+  .tokenControl { 
+    width      : 60px;
+    padding    : 0;
+    margin-top : 3px;
+
+    button.tooltip {
+      cursor  : pointer;
+      padding : 0;
+      color   : #666;
+
+      &.icon-edit {
+        margin-right: 12px;
+      }
+
+      &.icon-edit:hover {
+        color: #148BE6;
+      }
+      &.icon-delete:hover {
+        color: #ec3c38;
+      }
+    }
   }
 
   input.tokenName {
@@ -366,18 +401,17 @@ $welcome-dialog-width: 600px;
     background : none;
   }
 
-  .tokenControl, .tokenDone { display:none; }
+  .tokenDone { display:none; }
   .tokenDone {
     min-width   : 80px;
-    padding     : 0;
-    height      : 20px;
+    padding     : 4px 0;
     line-height : 20px;
   }
 
-  .tokenControl .tooltip:before {
-    cursor : pointer;
-    color  : #34A3F8;
-  }
+  // .tokenControl .tooltip:before {
+  //   cursor : pointer;
+  //   color  : #34A3F8;
+  // }
 
   > .scroll-wrap {
     height : 168px;
@@ -414,6 +448,29 @@ $welcome-dialog-width: 600px;
       .tokenDone { display:block; }
     }
   }
+
+  .tokenToken {
+    color: #eee;
+  }
+
+  .tokenName.input {
+    font-size: 12px;
+  }
+  
+}
+
+#TokenRmConfirm {
+  h3 {
+      font-size     : 18px;
+      padding       : 10px 0;
+      color         : #eee;
+      margin-bottom : 10px;
+  }
+
+  p {
+    color : #ccc;
+  }
+
 }
 
 .cred-btn-wrap {

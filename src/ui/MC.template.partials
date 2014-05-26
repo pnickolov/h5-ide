@@ -1700,7 +1700,7 @@ Are you sure you want to delete {{name}}?</div>
 {{#each this}}
 <li>
 	<input class="tokenName input" value="{{name}}" readonly/>
-	<span class="tokenToken click-select truncate">{{token}}</span>
+	<span class="tokenToken click-select truncate tooltip" data-tooltip="{{ i18n 'PROP_ELB_TIP_CLICK_TO_SELECT_ALL'}}">{{token}}</span>
 	<span class="tokenControl">
 		<button class="tooltip icon-edit" data-tooltip=""></button>
 		<button class="tooltip icon-delete" data-tooltip=""></button>

@@ -1,5 +1,5 @@
 
-define ['module/dashboard/template', 'module/dashboard/template_data',"constant", "backbone"], ( template, tplPartials, constant )->
+define ['module/dashboard/template', 'module/dashboard/template_data',"constant", "backbone", "UI.scrollbar"], ( template, tplPartials, constant )->
 
   Helper = {
     scrollToResource: ->
@@ -56,6 +56,9 @@ define ['module/dashboard/template', 'module/dashboard/template_data',"constant"
         shortName : constant.REGION_SHORT_LABEL[ id ]
 
       @$el.html template data
+
+      # Need to do a init update because the data might arrive first
+      @updateOpsList()
 
     ###
       rendering

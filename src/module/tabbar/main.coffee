@@ -3,8 +3,7 @@
 ####################################
 
 define [ 'jquery', 'event', 'base_main',
-         'constant'
-         'UI.tabbar', 'UI.modal'
+         'constant', 'UI.modal'
 ], ( $, ide_event, base_main, constant ) ->
 
     #private

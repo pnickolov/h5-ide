@@ -4,7 +4,7 @@
 
 define [ 'event',
          './module/tabbar/template',
-         'backbone', 'jquery', 'handlebars', 'UI.tabbar'
+         'backbone', 'jquery', 'handlebars'
 ], ( ide_event, tmpl ) ->
 
     TabBarView = Backbone.View.extend {

@@ -15,8 +15,7 @@ define [ 'MC', 'event',
          'component/stateeditor/stateeditor'
          'UI.modalplus'
          'backbone', 'jquery', 'handlebars',
-         'UI.selectbox', 'UI.notification',
-         "UI.tabbar"
+         'UI.selectbox', 'UI.notification'
 ], ( MC, ide_event, Design, lang, stack_tmpl, app_tmpl, appview_tmpl, JsonExporter, constant, kp, ApiRequest, stateeditor, modalplus ) ->
 
     ToolbarView = Backbone.View.extend {
@@ -97,14 +96,14 @@ define [ 'MC', 'event',
             # platform is 'classis' stack or app
             data = MC.common.other.canvasData.data( true )
             # appview
-            if Tabbar.current is 'appview'
-                $( '#main-toolbar' ).html appview_tmpl this.model.attributes
+            # if Tabbar.current is 'appview'
+            #     $( '#main-toolbar' ).html appview_tmpl this.model.attributes
 
-            # type include 'app' | 'stack'
-            else if type in [ 'app', 'OPEN_APP' ]
-                $( '#main-toolbar' ).html app_tmpl this.model.attributes
-            else
-                $( '#main-toolbar' ).html stack_tmpl this.model.attributes
+            # # type include 'app' | 'stack'
+            # else if type in [ 'app', 'OPEN_APP' ]
+            #     $( '#main-toolbar' ).html app_tmpl this.model.attributes
+            # else
+            #     $( '#main-toolbar' ).html stack_tmpl this.model.attributes
 
             if type and flag is 1
                 # vispos state

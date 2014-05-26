@@ -31,9 +31,11 @@ define ['module/dashboard/template', 'module/dashboard/template_data',"constant"
       'click .region-resource-list .stop-app'        : 'stopApp'
       'click .region-resource-list .terminate-app'   : 'terminateApp'
 
-      'click .global-region-status-tab'           : 'switchRecent'
-      'click #region-switch-list li'              : 'switchRegion'
-      'click #region-resource-tab li'             : 'switchAppStack'
+      'click .global-region-status-tab' : 'switchRecent'
+      'click #region-switch-list li'    : 'switchRegion'
+      'click #region-resource-tab li'   : 'switchAppStack'
+
+      'click #global-import-stack'      : 'importJson'
 
       'click #global-refresh' : 'reloadResource'
 
@@ -42,7 +44,6 @@ define ['module/dashboard/template', 'module/dashboard/template_data',"constant"
 
       'click .show-credential'             : 'showCredential'
       'click #global-region-visualize-VPC' : 'unmanagedVPCClick'
-      'click #global-import-stack'         : 'importJson'
 
 
     initialize : ()->
@@ -163,6 +164,52 @@ define ['module/dashboard/template', 'module/dashboard/template_data',"constant"
 
       @regionOpsTab = if $target.hasClass("stack") then "stack" else "app"
       $("#region-view").find(".region-resource-list").hide().eq( $target.index() ).show()
+
+    importJson : ()->
+      modal MC.template.importJSON()
+
+      reader = new FileReader()
+      reader.onload = ( evt )->
+          error = App.importJson( reader.result )
+          if error
+              $("#import-json-error").html error
+          else
+              modal.close()
+              reader = null
+          null
+
+      reader.onerror = ()->
+          $("#import-json-error").html lang.ide.POP_IMPORT_ERROR
+          null
+
+      hanldeFile = ( evt )->
+          evt.stopPropagation()
+          evt.preventDefault()
+
+          $("#modal-import-json-dropzone").removeClass("dragover")
+          $("#import-json-error").html("")
+
+          evt = evt.originalEvent
+          files = (evt.dataTransfer || evt.target).files
+          if not files or not files.length then return
+          reader.readAsText( files[0] )
+          null
+
+      $("#modal-import-json-file").on "change", hanldeFile
+      zone = $("#modal-import-json-dropzone").on "drop", hanldeFile
+      zone.on "dragenter", ()->
+          console.log "dragenter"
+          $(this).closest("#modal-import-json-dropzone").toggleClass("dragover", true)
+      zone.on "dragleave", ()->
+          console.log "dragleave"
+          $(this).closest("#modal-import-json-dropzone").toggleClass("dragover", false)
+      zone.on "dragover", ( evt )->
+          dt = evt.originalEvent.dataTransfer
+          if dt then dt.dropEffect = "copy"
+          evt.stopPropagation()
+          evt.preventDefault()
+          null
+      null
 
     reloadResource : ()->
       $("#global-refresh").addClass "loading"

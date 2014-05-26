@@ -40,6 +40,16 @@ define [ "./submodels/OpsCollection", "./submodels/OpsModel", "ApiRequest", "bac
       @attributes.stackList.add m
       m
 
+    createStackByJson : ( json )->
+      json.name = @attributes.stackList.getNewName()
+      m = new OpsModel({
+        name : json.name
+      }, {
+        jsonData : json
+      })
+      @attributes.stackList.add m
+      m
+
 
     ###
       Internal methods

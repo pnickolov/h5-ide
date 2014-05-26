@@ -35,8 +35,11 @@ define ["ApiRequest", "constant", "component/exporter/Thumbnail", "backbone"], (
       progress      : 0
 
     initialize : ( attr, options )->
-      if options && options.initJsonData
-        @__initJsonData()
+      if options
+        if options.initJsonData
+          @__initJsonData()
+        if options.jsonData
+          @__jsonData = options.jsonData
       return
 
 

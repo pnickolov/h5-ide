@@ -8,7 +8,16 @@
   to provide other functionality
 ###
 
-define [ "./Websocket", "./ApplicationView", "./ApplicationModel", "./User", "./subviews/SettingsDialog", "CloudResources", "./WorkspaceManager", "common_handle" ,"event", "vpc_model", "constant" ], ( Websocket, ApplicationView, ApplicationModel, User, SettingsDialog, CloudResources, WorkspaceManager, common_handle, ide_event, vpc_model, constant )->
+define [
+  "./Websocket"
+  "./ApplicationView"
+  "./ApplicationModel"
+  "./User"
+  "./subviews/SettingsDialog"
+  "CloudResources"
+  "./WorkspaceManager"
+  "component/exporter/JsonExporter"
+  "common_handle" ,"event", "vpc_model", "constant" ], ( Websocket, ApplicationView, ApplicationModel, User, SettingsDialog, CloudResources, WorkspaceManager, JsonExporter, common_handle, ide_event, vpc_model, constant )->
 
   VisualOps = ()->
     if window.App
@@ -117,5 +126,20 @@ define [ "./Websocket", "./ApplicationView", "./ApplicationModel", "./User", "./
   VisualOps.prototype.startApp       = (id)-> @__view.startApp(id)
   VisualOps.prototype.stopApp        = (id)-> @__view.stopApp(id)
   VisualOps.prototype.terminateApp   = (id)-> @__view.terminateApp(id)
+
+  # Creates a stack from the "json" and open it.
+  # If it cannot import the json data, returns a string to represent the result.
+  VisualOps.prototype.importJson = ( json )->
+    result = JsonExporter.importJson json
+
+    if _.isString result then return result
+
+    @openOps( @model.createStackByJson(result) )
+    return
+
+  # This is a convenient method to open an editor for the ops model.
+  VisualOps.prototype.openOps = ( opsModel )->
+    # TODO:
+
 
   VisualOps

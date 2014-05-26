@@ -267,6 +267,7 @@ require.config {
 		'kp_upload'       	 : 'component/kp/kpUpload'
 		'combo_dropdown'     : 'component/common/comboDropdown'
 		'toolbar_modal' 	 : 'component/common/toolbarModal'
+		'dhcp'               : 'component/dhcp/dhcpMain'
 
 		#############################################
 		# component

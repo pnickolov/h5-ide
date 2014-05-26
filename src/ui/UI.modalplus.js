@@ -80,9 +80,11 @@
           this.getLast().resize(1);
           this.getLast()._slideIn();
           this.getLastButOne()._fadeOut();
-          window.setTimeout(function() {
-            return this.trigger('shown', this);
-          }, this.option.delay || 300);
+          window.setTimeout((function(_this) {
+            return function() {
+              return _this.trigger('shown', _this);
+            };
+          })(this), this.option.delay || 300);
         } else {
           this.resize();
         }
@@ -290,9 +292,11 @@
           return false;
         } else {
           this.getLast().trigger("close", this.getLast());
-          window.setTimeout(function() {
-            return this.getLast().trigger("closed", this.getLast());
-          }, this.option.delay || 300);
+          window.setTimeout((function(_this) {
+            return function() {
+              return _this.getLast().trigger("closed", _this.getLast());
+            };
+          })(this), this.option.delay || 300);
           this.getLastButOne()._fadeIn();
           this.getLast()._slideOut();
           toRemove = modalGroup.pop();

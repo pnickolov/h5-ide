@@ -102,7 +102,7 @@ define [], ()->
                 @getLast().resize(1)
                 @getLast()._slideIn()
                 @getLastButOne()._fadeOut()
-                window.setTimeout ->
+                window.setTimeout =>
                     @.trigger 'shown', @
                 , @option.delay || 300
             else
@@ -224,7 +224,7 @@ define [], ()->
                 return false
             else
                 @getLast().trigger "close", @getLast()
-                window.setTimeout ->
+                window.setTimeout =>
                     @getLast().trigger "closed", @getLast()
                 , @option.delay || 300
                 @getLastButOne()._fadeIn()

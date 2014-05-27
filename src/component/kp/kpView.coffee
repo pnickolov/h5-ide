@@ -59,12 +59,11 @@ define [ 'combo_dropdown', 'toolbar_modal', './kpTpl', './kpDialogTpl', 'kp_uplo
             columns: [
                 {
                     sortable: true
-                    width: "100px" # or 40%
+                    width: "40%" # or 40%
                     name: 'Name'
                 }
                 {
                     sortable: false
-                    width: "100px" # or 40%
                     name: 'Fingerprint'
                 }
             ]

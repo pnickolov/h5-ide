@@ -41,17 +41,16 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
             columns: [
                 {
                     sortable: true
-                    width: "100px" # or 40%
+                    width: "25%" # or 40%
                     name: 'Topic'
                 }
                 {
                     sortable: true
-                    width: "100px" # or 40%
                     name: 'Topic ARN'
                 }
                 {
                     sortable: false
-                    width: "100px" # or 40%
+                    width: "20%" # or 40%
                     name: 'Subscription'
                 }
             ]

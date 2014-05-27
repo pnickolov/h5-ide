@@ -1,4 +1,4 @@
-define [ 'constant', 'CloudResources', 'combo_dropdown', 'toolbar_modal', './component/sns/snsTpl', 'i18n!nls/lang.js' ], ( constant, CloudResources, combo_dropdown, toolbar_modal, template, lang ) ->
+define [ 'constant', 'CloudResources','sns_manage', 'combo_dropdown', './component/sns/snsTpl', 'i18n!nls/lang.js' ], ( constant, CloudResources, snsManage, comboDropdown, template, lang ) ->
 
 
     subCol = CloudResources constant.RESTYPE.SUBSCRIPTION, 'us-east-1'
@@ -25,7 +25,7 @@ define [ 'constant', 'CloudResources', 'combo_dropdown', 'toolbar_modal', './com
                 manageBtnValue      : lang.ide.PROP_INSTANCE_MANAGE_SNS
                 filterPlaceHolder   : lang.ide.PROP_INSTANCE_FILTER_SNS
 
-            @dropdown = new combo_dropdown( options )
+            @dropdown = new comboDropdown( options )
             @dropdown.on 'open', @show, @
             @dropdown.on 'manage', @manage, @
             @dropdown.on 'change', @set, @

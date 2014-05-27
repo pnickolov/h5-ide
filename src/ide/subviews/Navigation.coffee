@@ -95,7 +95,10 @@ define [ "./NavigationTpl", "event", 'backbone' ], ( NavPartsTpl, ide_event ) ->
         updateAppList : ()->
             $('#nav-app-region').html NavPartsTpl.applist( App.model.appList().groupByRegion() )
 
-        openOps : ( event ) -> App.openOps $(event.currentTarget).attr("data-id")
+        openOps : ( event ) ->
+            @hideOffCanvas()
+            App.openOps $(event.currentTarget).attr("data-id")
+            return
 
         createStack  : ( event ) ->
             region = $(event.currentTarget).closest("li").attr("data-region")

@@ -61,8 +61,8 @@ define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone",  "ev
     # Fetches user's stacks and apps from the server, returns a promise
     fetch : ()->
       self = this
-      sp = ApiRequest("stack_list").then (res)-> self.get("stackList").set self.__parseListRes( res )
-      ap = ApiRequest("app_list").then   (res)-> self.get("appList").set   self.__parseListRes( res )
+      sp = ApiRequest("stack_list", {region_name:null}).then (res)-> self.get("stackList").set self.__parseListRes( res )
+      ap = ApiRequest("app_list",   {region_name:null}).then (res)-> self.get("appList").set   self.__parseListRes( res )
 
       # When app/stack list is fetched, we first cleanup unused thumbnail. Then
       # Tell others that we are ready.

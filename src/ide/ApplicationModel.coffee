@@ -8,7 +8,7 @@
 
 ###
 
-define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone",  "event", "constant", "component/exporter/Thumbnail" ], ( OpsCollection, OpsModel, ApiRequest, Backbone, ide_event, constant, ThumbUtil )->
+define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone", "constant", "component/exporter/Thumbnail" ], ( OpsCollection, OpsModel, ApiRequest, Backbone, constant, ThumbUtil )->
 
   Backbone.Model.extend {
 
@@ -93,9 +93,9 @@ define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone",  "ev
       # LEGACY Code. When switching between tabs, we automatically mark notification of that tab as read.
       # Temporary removed right now. Because I think this kind of trigger is too buggy.
       ###
-      ide_event.onLongListen ide_event.SWITCH_DASHBOARD, () -> return
-      ide_event.onLongListen ide_event.SWITCH_TAB, () -> return
-      ide_event.onListen ide_event.OPEN_DESIGN, () -> return
+      ideevent.onLongListen ideevent.SWITCH_DASHBOARD, () -> return
+      ideevent.onLongListen ideevent.SWITCH_TAB, () -> return
+      ideevent.onListen ideevent.OPEN_DESIGN, () -> return
       ###
 
       # It seems like the toolbar doesn't even process the request_item, in which we can just directly listen to WS that the request item event.

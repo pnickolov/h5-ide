@@ -19,11 +19,10 @@ define [
   "./WorkspaceManager"
   "module/OpsEditor"
   "component/exporter/JsonExporter"
-  "event",
   "vpc_model",
   "constant",
   "underscore"
-], ( ApiRequest, Websocket, ApplicationView, ApplicationModel, User, SettingsDialog, CloudResources, WorkspaceManager, DesignEditor, JsonExporter, ide_event, vpc_model, constant )->
+], ( ApiRequest, Websocket, ApplicationView, ApplicationModel, User, SettingsDialog, CloudResources, WorkspaceManager, DesignEditor, JsonExporter, vpc_model, constant )->
 
   VisualOps = ()->
     if window.App
@@ -64,10 +63,9 @@ define [
   VisualOps.prototype.__createUser = ()->
     @user = new User()
 
-    @user.on "SessionUpdated", ()=>
-      # Legacy Code
-      ide_event.trigger ide_event.UPDATE_APP_LIST
-      ide_event.trigger ide_event.UPDATE_DASHBOARD
+    @user.on "SessionUpdated", ()->
+      # In the previous version of IDE, we update the applist and dashboard when the
+      # session is updated. But I don't think it's necessary.
 
       # The Websockets subscription will be lost if we have an invalid session.
       @WS.subscribe()
@@ -76,11 +74,7 @@ define [
     return
 
   # This method will prompt a dialog to let user to re-acquire the session
-  VisualOps.prototype.acquireSession = ()->
-    # LEGACY code
-    # Seems like in the old days, someone wants to swtich to dashboard.
-    ide_event.trigger ide_event.SWITCH_MAIN
-    @__view.showSessionDialog()
+  VisualOps.prototype.acquireSession = ()-> @__view.showSessionDialog()
 
   VisualOps.prototype.logout = ()->
     App.user.logout()

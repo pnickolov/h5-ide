@@ -3,7 +3,7 @@
 #  View(UI logic) for navigation
 ################################
 
-define [ "./NavigationTpl", "event", 'backbone' ], ( NavPartsTpl, ide_event ) ->
+define [ "./NavigationTpl", 'backbone' ], ( NavPartsTpl ) ->
 
     Backbone.View.extend {
 

@@ -1,5 +1,5 @@
 
-define ["Workspace", "module/DashboardView", "event"], ( Workspace, DashboardView, ide_event )->
+define ["Workspace", "module/DashboardView"], ( Workspace, DashboardView )->
 
   class Dashboard extends Workspace
 
@@ -9,9 +9,6 @@ define ["Workspace", "module/DashboardView", "event"], ( Workspace, DashboardVie
 
 
     initialize : ()->
-      # LEGACY CODE, would remove this stupid code.
-      ide_event.trigger ide_event.DASHBOARD_COMPLETE
-
       @view = new DashboardView()
 
       # Watch changes in applist/stacklist

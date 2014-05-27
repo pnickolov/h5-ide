@@ -20,7 +20,6 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
             title: "Manage SNS in #{regionName}"
             #slideable: _.bind that.denySlide, that
             context: that
-            slideStyle: 'overflow: visible'
             buttons: [
                 {
                     icon: 'new-stack'
@@ -76,9 +75,9 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
         validate: ( action ) ->
             switch action
                 when 'create'
-                    return not @m$( '#create-kp-name' ).parsley 'validate'
+                    return not @M$( '#create-kp-name' ).parsley 'validate'
                 when 'import'
-                    return not @m$( '#import-kp-name' ).parsley 'validate'
+                    return not @M$( '#import-kp-name' ).parsley 'validate'
 
         genDeleteFinish: ( times ) ->
             success = []
@@ -93,7 +92,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
                     notification 'info', "Selected #{success.length} SNS topic are deleted."
 
                 if not that.model.get( 'keys' ).length
-                    that.m$( '#kp-select-all' )
+                    that.M$( '#kp-select-all' )
                         .get( 0 )
                         .checked = false
 
@@ -126,7 +125,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
             if not state
                 state = 'init'
 
-            @m$( '.slidebox .action' ).each () ->
+            @M$( '.slidebox .action' ).each () ->
                 if $(@).hasClass state
                     $(@).show()
                 else
@@ -162,6 +161,8 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
             slides = @getSlides()
             slides[ which ]?.call @, tpl, checked
 
+        processSlideCreate: ->
+
 
         getSlides: ->
             that = @
@@ -169,6 +170,60 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
 
             create: ( tpl, checked ) ->
                 modal.setSlide tpl
+                # Setup the endpoint
+                updateEndpoint = ( protocol ) ->
+                    $input  = $(".property-asg-ep")#.removeClass("https http")
+                    switch $modal.find(".selected").data("id")
+
+                        when "sqs"
+                            placeholder = lang.ide.PROP_STACK_AMAZON_ARN
+                            type        = lang.ide.PROP_STACK_SQS
+                            errorMsg    = lang.ide.PARSLEY_PLEASE_PROVIDE_A_VALID_AMAZON_SQS_ARN
+
+                        when "arn"
+                            placeholder = lang.ide.PROP_STACK_AMAZON_ARN
+                            type        = lang.ide.PROP_STACK_ARN
+                            errorMsg    = lang.ide.PARSLEY_PLEASE_PROVIDE_A_VALID_APPLICATION_ARN
+
+                        when "email"
+                            placeholder = lang.ide.PROP_STACK_EXAMPLE_EMAIL
+                            type        = lang.ide.PROP_STACK_EMAIL
+                            errorMsg    = lang.ide.HEAD_MSG_ERR_UPDATE_EMAIL3
+
+                        when "email-json"
+                            placeholder = lang.ide.PROP_STACK_EXAMPLE_EMAIL
+                            type        = lang.ide.PROP_STACK_EMAIL
+                            errorMsg    = lang.ide.HEAD_MSG_ERR_UPDATE_EMAIL3
+
+                        when "sms"
+                            placeholder = lang.ide.PROP_STACK_E_G_1_206_555_6423
+                            type        = lang.ide.PROP_STACK_USPHONE
+                            errorMsg    = lang.ide.PARSLEY_PLEASE_PROVIDE_A_VALID_PHONE_NUMBER
+
+                        when "http"
+                            #$input.addClass "http"
+                            placeholder = lang.ide.PROP_STACK_HTTP_WWW_EXAMPLE_COM
+                            type        = lang.ide.PROP_STACK_HTTP
+                            errorMsg    = lang.ide.PARSLEY_PLEASE_PROVIDE_A_VALID_URL
+
+                        when "https"
+                            #$input.addClass "https"
+                            placeholder = lang.ide.PROP_STACK_HTTPS_WWW_EXAMPLE_COM
+                            type        = lang.ide.PROP_STACK_HTTPS
+                            errorMsg    = lang.ide.PARSLEY_PLEASE_PROVIDE_A_VALID_URL
+
+                    endPoint = @M$ '#create-sns-endpoint'
+                    endPoint.attr "placeholder", placeholder
+
+                    endPoint.parsley 'custom', ( value ) ->
+                        if type and value and ( not MC.validate type, value )
+                            return errorMsg
+
+                    if endPoint.val().length
+                        endPoint.parsley 'validate'
+                    null
+
+                @M$( '.dd-protocol' ).on "OPTION_CHANGE", updateEndpoint
 
             "delete": ( tpl, checked ) ->
                 checkedAmount = checked.length
@@ -190,7 +245,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
                 that.__upload and that.__upload.remove()
                 that.__upload = new upload()
                 that.__upload.on 'load', that.afterImport, @
-                that.m$( '.import-zone' ).html that.__upload.render().el
+                that.M$( '.import-zone' ).html that.__upload.render().el
 
 
         show: ->

@@ -12,7 +12,7 @@ define [ 'combo_dropdown', 'toolbar_modal', './kpTpl', './kpDialogTpl', 'kp_uplo
             if arguments.length is 1
                 @__needDownload = arguments[ 0 ]
                 if arguments[ 0 ] is false
-                    @m$( '.cancel' ).prop 'disabled', false
+                    @M$( '.cancel' ).prop 'disabled', false
             else
                 if @__needDownload then notification 'warning', 'You must download the keypair.'
 
@@ -119,16 +119,16 @@ define [ 'combo_dropdown', 'toolbar_modal', './kpTpl', './kpDialogTpl', 'kp_uplo
         validate: ( action ) ->
             switch action
                 when 'create'
-                    return not @m$( '#create-kp-name' ).parsley 'validate'
+                    return not @M$( '#create-kp-name' ).parsley 'validate'
                 when 'import'
-                    return not @m$( '#import-kp-name' ).parsley 'validate'
+                    return not @M$( '#import-kp-name' ).parsley 'validate'
 
 
         switchAction: ( state ) ->
             if not state
                 state = 'init'
 
-            @m$( '.slidebox .action' ).each () ->
+            @M$( '.slidebox .action' ).each () ->
                 if $(@).hasClass state
                     $(@).show()
                 else
@@ -165,7 +165,7 @@ define [ 'combo_dropdown', 'toolbar_modal', './kpTpl', './kpDialogTpl', 'kp_uplo
                     notification 'info', "Selected #{success.length} key pairs are deleted."
 
                 if not that.model.get( 'keys' ).length
-                    that.m$( '#kp-select-all' )
+                    that.M$( '#kp-select-all' )
                         .get( 0 )
                         .checked = false
 
@@ -183,7 +183,7 @@ define [ 'combo_dropdown', 'toolbar_modal', './kpTpl', './kpDialogTpl', 'kp_uplo
         create: ( invalid ) ->
             that = @
             if not invalid
-                keyName = @m$( '#create-kp-name' ).val()
+                keyName = @M$( '#create-kp-name' ).val()
                 @switchAction 'processing'
                 @model.create( keyName )
                     .then (res) ->
@@ -191,8 +191,8 @@ define [ 'combo_dropdown', 'toolbar_modal', './kpTpl', './kpDialogTpl', 'kp_uplo
                         that.needDownload true
                         that.genDownload "#{res.keyName}.pem", res.keyMaterial
                         that.switchAction 'download'
-                        that.m$( '.before-create' ).hide()
-                        that.m$( '.after-create' ).find( 'span' ).text( res.keyName ).end().show()
+                        that.M$( '.before-create' ).hide()
+                        that.M$( '.after-create' ).find( 'span' ).text( res.keyName ).end().show()
 
                     .catch ( err ) ->
                         console.log(err)
@@ -215,7 +215,7 @@ define [ 'combo_dropdown', 'toolbar_modal', './kpTpl', './kpDialogTpl', 'kp_uplo
         import: ( invalid ) ->
             that = @
             if not invalid
-                keyName = @m$( '#import-kp-name' ).val()
+                keyName = @M$( '#import-kp-name' ).val()
                 @switchAction 'processing'
                 try
                     keyContent = btoa that.__upload.getData()
@@ -279,7 +279,7 @@ define [ 'combo_dropdown', 'toolbar_modal', './kpTpl', './kpDialogTpl', 'kp_uplo
                 that.__upload and that.__upload.remove()
                 that.__upload = new upload()
                 that.__upload.on 'load', that.afterImport, @
-                that.m$( '.import-zone' ).html that.__upload.render().el
+                that.M$( '.import-zone' ).html that.__upload.render().el
 
 
 

@@ -39,7 +39,7 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalpl
             @options.title = 'Default Title' if not @options.title
             if options.context
                 @options.context.modal = @
-                @options.context.m$ = _.bind @$, @
+                @options.context.M$ = _.bind @$, @
 
         __doAction: ( event ) ->
             @error()

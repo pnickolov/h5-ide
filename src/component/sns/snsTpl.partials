@@ -31,7 +31,7 @@
     <div class="before-create">
         <div>
           <label class="left">Select Topic</label>
-            <div class="selectbox selectbox-mega">
+            <div class="selectbox dd-topic-name">
                 <div class="selection">New Topic</div>
                 <ul class="dropdown" tabindex="-1">
                   <li class="item selected" data-id="@new">New Topic</li>
@@ -50,7 +50,7 @@
         </div>
         <div>
             <label>Protocol</label>
-            <div class="selectbox">
+            <div class="selectbox dd-protocol">
                 <div class="selection">email</div>
                 <ul class="dropdown" tabindex="-1">
                     <li class="item" data-id="https">HTTPS</li>

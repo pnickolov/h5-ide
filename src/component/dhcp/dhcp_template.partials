@@ -10,6 +10,20 @@
 {{/if}}
 
 
+<!-- {{content}} -->
+{{#each items}}
+<tr class="item" data-id="">
+    <td>
+        <div class="checkbox">
+            <input id="kp-select-{{id}}" type="checkbox" value="None" data-id="{{id}}" class="one-cb">
+            <label for="kp-select-{{id}}"></label>
+        </div>
+    </td>
+    <td>{{id}}</td>
+    <td>{{id}}</td>
+</tr>
+{{/each}}
+
 <!-- {{keys}} -->
 {{#unless hideDefaultNoKey}}
 {{#unless isRunTime}}

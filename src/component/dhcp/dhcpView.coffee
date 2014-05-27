@@ -66,7 +66,15 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
         manageDhcp: ->
             console.log @manager
             @manager.render()
+            @renderManager()
             @.trigger 'manage'
+        renderManager: ->
+            if not @collection.fetched
+                @collection.fetch().then(@renderManager)
+                return false
+            console.log @collection.toJSON(),"content Data"
+            content = template.content items:@collection.toJSON()
+            @manager.setContent content
         getModalOptions: ->
             that = @
             region = Design.instance().get('region')
@@ -79,12 +87,7 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
                 {
                     icon: 'new-stack'
                     type: 'create'
-                    name: 'Create Key Pair'
-                }
-                {
-                    icon: 'import'
-                    type: 'import'
-                    name: 'Import Key Pair'
+                    name: 'Create DHCP Options Set'
                 }
                 {
                     icon: 'del'
@@ -110,6 +113,5 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
                     name: 'Domain-name'
                 }
             ]
-
 
     dhcpView

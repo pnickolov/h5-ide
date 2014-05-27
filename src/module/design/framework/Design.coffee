@@ -658,7 +658,7 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
       changeObj.change = "Create"
     # Only compare resources.
     else if not _.isEqual newComp.resource, oldComp.resource
-      changeObj.change = "Update"
+      changeObj.change = "Modify"
 
     if changeObj.change
       result.push changeObj

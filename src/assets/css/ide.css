@@ -3,6 +3,7 @@
 @import url("ide/shareres/kp.css");
 @import url("ide/shareres/sns.css");
 @import url("ide/modal.css");
+@import url("ide/toolbar.css");
 
 html,
 body {
@@ -1662,7 +1663,7 @@ button {
 .region-resource-item-name {
 	color: #eee;
 	font-size: 12px;
-	width: 120px;
+	width: 110px;
 }
 
 #region-aws-resource-wrap {
@@ -2540,198 +2541,7 @@ td.table-action a.btn {
 	position: absolute;
 }
 
-/* App/Stack Toolbar */
-#main-toolbar {
-	position : relative;
-	top      : 0;
-	z-index  : 2;
 
-	height    : 40px;
-	width     : 100%;
-	min-width : 610px;
-
-	box-shadow    : 0 2px 5px rgba(0, 0, 0, 0.1);
-	border-bottom : 1px solid #111;
-}
-
-.toolbar-btn-group {
-	float         : left;
-	border-right: 1px solid #ddd;
-}
-
-.btn-toolbar {
-	text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
-	width       : 34px;
-	height      : 32px;
-
-	position    : relative;
-	float       : left;
-
-	line-height: 32px;
-	text-align : center;
-	color      : #ccc;
-	font-size  : 16px;
-
-	padding     : 4px;
-
-	cursor : pointer;
-	box-sizing : content-box;
-}
-
-.btn-toolbar:not(:empty):before {
-	margin-right : 15px;
-}
-.btn-toolbar.seperator {
-	border-right : 1px solid #222;
-}
-
-.toolbar-btn-group .icon-update-app {
-	border-right : 1px solid #CFCFCF;
-}
-
-.btn-toolbar:hover {
-	color: #9F62D1;
-	background-color: rgba(0,0,0,.3);
-}
-
-.btn-toolbar.disabled {
-	color : #666;
-}
-
-.btn-toolbar.disabled:hover {
-	background-color: transparent;
-	box-shadow      : none;
-	cursor          : default;
-}
-
-.btn-toolbar.open {
-	background-color: #0f0f0f;
-}
-
-.btn-toolbar:hover .selection, .btn-toolbar.open .selection {
-	color : #9F62D1 !important;
-}
-
-.btn-toolbar.selectbox {
-	width  : 52px;
-	padding: 0;
-	height : 40px;
-}
-
-.btn-toolbar.selectbox .selection {
-	font-size    : 16px;
-	color        : #ccc;
-	padding      : 0 18px 0 10px;
-	float        : left;
-
-	border       : none;
-	border-radius: 0;
-	background   : transparent;
-	box-shadow   : none;
-
-	line-height  : 40px;
-	display      : inline-block;
-	width        : 24px;
-	height       : 40px;
-	margin       : 0;
-	box-sizing   : content-box;
-}
-
-.btn-toolbar.selectbox .selection:hover {
-	background: transparent;
-}
-
-.btn-toolbar.selectbox .dropdown {
-	top       : 39px;
-	width     : auto;
-	min-width : initial;
-}
-
-.btn-toolbar .dropdown > li > i, .btn-toolbar .dropdown > li:before {
-	padding-right : 0.5em;
-	vertical-align: -1px;
-}
-
-.btn-toolbar .dropdown > li:last-child {
-	border-bottom: none;
-}
-
-.btn-toolbar .dropdown > li:hover {
-	/*background-color: #f3f3f3;*/
-}
-
-#toolbar-cancel-edit-app {
-	color: #ec3c38;
-}
-
-#toolbar-cancel-edit-app:hover {
-	color: #fff;
-	background-color: #ec3c38;
-	border-bottom: 1px solid #ec3c38;
-}
-
-.toolbar-btn-primary {
-	width : 112px;
-	color : #f3f3f3;
-	background: #17c249;
-	border-right: 1px solid #17a03a;
-	border-bottom: 1px solid #17a03a;
-}
-
-.toolbar-btn-primary.disabled,
-.toolbar-btn-primary.disabled:hover,
-.toolbar-btn-primary.disabled:active {
-	background   : rgb(75, 75, 75);
-	border-right : #ccc;
-	border-bottom: 1px solid transparent;
-	color        : #ccc;
-}
-
-#toolbar-export-png.toolbar-btn-primary {
-	background: #148BE6;
-	border-right: 1px solid #1B7FCC;
-	border-bottom: 1px solid #1B7FCC;
-	width: 160px;
-}
-
-#toolbar-export-png.toolbar-btn-primary:hover {
-	background: #1B7FCC;
-}
-
-#toolbar-save-edit-app {
-}
-
-.toolbar-btn-primary:hover {
-	color : #fff;
-	background: #17a03a;
-}
-
-#toolbar-line-style > span {
-	display: none;
-}
-
-.btn-toolbar .dropdown > li {
-	line-height   : 24px;
-	padding-bottom: 6px !important;
-	cursor        : pointer;
-	text-align    : left;
-}
-
-#apply-visops {
-	background   : #9C6DC0;
-	position     : absolute;
-	display      : inline-block;
-	right        : 10px;
-	top          : 11px;
-	font-size    : 12px;
-	color        : #fff;
-	border-radius: 2px;
-	padding      : 2px 4px;
-}
-
-#apply-visops:hover {
-	background   : #66398b;
-}
 
 /* Sidebars, including Resource Panle and Property Panel */
 .sidebar {

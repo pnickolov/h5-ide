@@ -102,6 +102,11 @@ define [ '../base/model',
 
                 instance.app_view = if MC.canvas.getState() is 'appview' then true else false
 
+                monitoringState = 'disabled'
+                if instance.monitoring and instance.monitoring.state
+                    monitoringState = instance.monitoring.state
+                this.set 'monitoringState', monitoringState
+
                 this.set instance
 
                 this.resModel = myInstanceComponent

@@ -23,7 +23,8 @@ define [ '../base/view',
             'click #property-network-list .icon-remove' : "removeIp"
             'change .input-ip'                          : 'syncIPList'
 
-
+            'change #property-instance-enable-cloudwatch' : 'cloudwatchSelect'
+            'change #property-instance-source-check'      : 'sourceCheckChange'
 
         render : ( ) ->
             # Render
@@ -65,6 +66,9 @@ define [ '../base/view',
             null
 
         instanceTypeSelect  : instance_view.instanceTypeSelect
+
+        cloudwatchSelect : instance_view.cloudwatchSelect
+        sourceCheckChange : instance_view.sourceCheckChange
 
         addIp               : instance_view.addIp
         removeIp            : instance_view.removeIp

@@ -46,7 +46,7 @@ define [ "Design", "constant" ], ( Design, constant )->
           IpPermissionsEgress : [],
           Default             : "true",
           GroupName           : "DefaultSG",
-          GroupDescription    : 'Default Security Group'
+          GroupDescription    : 'default VPC security group'
         }
       }
 

@@ -78,22 +78,30 @@ define [ "constant",
       true
 
     isRemovable : ()->
+
+      az = @parent()
+
       # The subnet is only un-removable if it connects to elb and the ElbAsso is not removable
       for cn in @connections("ElbSubnetAsso")
         if cn.isRemovable() isnt true
 
           # In stack mode, we allow the subnet to be deleted, if the Elb only connects
           # to resource that are children of this subnet
-          notRemovable = true
-          if @design().modeIsStack()
-            notRemovable = false
-            for ami in cn.getOtherTarget( @ ).connectionTargets("ElbAmiAsso")
-              if ami.parent() isnt @ and ami.parent().parent() isnt @
-                notRemovable = true
-                break
-
-          if notRemovable
+          if not @design().modeIsStack()
             return { error : lang.ide.CVS_MSG_ERR_DEL_LINKED_ELB }
+
+          for ami in cn.getOtherTarget( @ ).connectionTargets("ElbAmiAsso")
+            if ami.parent() is @ or ami.parent().parent() is @
+              # This ami/lc is child of the subnet. Ignore it.
+              continue
+
+            # The ami is not child of the subnet, finds out if its az is the
+            # same as this subnet's
+            childAZ = ami.parent()
+            while childAZ
+              if childAZ is az
+                return { error : lang.ide.CVS_MSG_ERR_DEL_LINKED_ELB }
+              childAZ = childAZ.parent()
 
       true
 
@@ -129,13 +137,6 @@ define [ "constant",
       if not @isCidrEnoughForIps( cidr )
         return {
           error  : "#{cidr} has not enough IP for the ENIs in this subnet."
-        }
-
-      # 4. Check Elb.
-      if @connections( "ElbSubnetAsso" ).length and Number(cidr.split('/')[1]) > 27
-        return {
-          error : "The subnet is attached with a load balancer. The CIDR mask must be smaller than /27."
-          shouldRemove : false
         }
 
       true

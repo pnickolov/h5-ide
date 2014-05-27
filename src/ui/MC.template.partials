@@ -1242,12 +1242,24 @@ Following rule(s) will be deleted from its(their) security group:</div>
 </div>
 
 <!-- {{updateApp}} -->
+<<<<<<< HEAD
 <div id="app-apply-update">
 	<div class="modal-control-group default-kp-group clearfix" style="display:none;">
 		<label for="">$DefaultKeyPair</label>
 		<div id="kp-runtime-placeholder"></div>
 		<div class="runtime-error" id="runtime-error-kp"></div>
 	</div>
+=======
+<div id="app-apply-update" style="width:460px">
+	<div class="modal-header"><h3 class="truncate" style="width: 380px;">{{ i18n 'POP_CONFIRM_UPDATE_TIT'}}</h3><i class="modal-close">&times;</i> </div>
+	<div class="modal-body">
+		<div class="modal-control-group default-kp-group clearfix" style="display:none;">
+			<label for="">$DefaultKeyPair</label>
+			<div id="kp-runtime-placeholder"></div>
+			<i class="icon-info tooltip" data-tooltip="{{i18n 'TIP_KEYPAIR_USED_DEFAULT_KP'}}"></i>
+			<div class="runtime-error" id="runtime-error-kp"></div>
+		</div>
+>>>>>>> develop
 	{{#if isRunning}}
 	<h3 class="modal-text-major">{{ i18n 'POP_CONFIRM_UPDATE_MAJOR_TEXT_RUNNING'}}</h3>
 	{{else}}
@@ -1680,7 +1692,7 @@ Are you sure you want to delete {{name}}?</div>
 {{#each this}}
 <li>
 	<input class="tokenName input" value="{{name}}" readonly/>
-	<span class="tokenToken click-select truncate">{{token}}</span>
+	<span class="tokenToken click-select truncate tooltip" data-tooltip="{{ i18n 'PROP_ELB_TIP_CLICK_TO_SELECT_ALL'}}">{{token}}</span>
 	<span class="tokenControl">
 		<button class="tooltip icon-edit" data-tooltip=""></button>
 		<button class="tooltip icon-delete" data-tooltip=""></button>

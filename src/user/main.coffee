@@ -457,7 +457,8 @@ setCredit = (result)->
     # Clear any cookie that's not ours
     domain = { "domain" : window.location.hostname.replace("ide", "") }
     for ckey, cValue of $.cookie()
-        $.removeCookie ckey, domain
+        if ckey isnt 'stack_store_id_local' and ckey isnt 'stack_store_id'
+            $.removeCookie ckey, domain
 
     COOKIE_OPTION =
         expires : 30

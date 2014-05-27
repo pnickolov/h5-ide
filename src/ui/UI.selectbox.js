@@ -58,7 +58,7 @@ var selectbox = window.selectbox = {
         var removeOpen = function( event ){
             var needRemove = true;
 
-            if (silentClose && $(event.target).closest(silentClose).size())
+            if (silentClose && ($(event.target).closest(silentClose).size() || $(event.target).is(':hidden')) )
                 needRemove = false
 
             if (needRemove) {

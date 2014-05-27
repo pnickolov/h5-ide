@@ -15,7 +15,6 @@ define [ "Workspace", "./design/ProgressView" ], ( Workspace, ProgressView )->
       if not @opsModel
         @remove()
         throw new Error("Cannot find opsmodel while openning workspace.")
-        return
 
       @createProperView()
       return

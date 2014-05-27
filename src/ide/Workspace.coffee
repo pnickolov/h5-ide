@@ -7,10 +7,17 @@ define ["backbone"], ()->
   class Workspace
 
     constructor : ( attributes )->
+      # Find out if there's any workspace already working on this data.
+      for ws in App.workspaces.spaces()
+        if ws instanceof this.constructor and ws.isWorkingOn( attributes )
+          console.info "Found a workspace that is working on, ", attributes, ws
+          return ws
+
       @id = "space_" + _.uniqueId()
       @initialize attributes
       App.workspaces.add @
-      @
+
+      return @
 
     isAwake : ()-> !!@__awake
 

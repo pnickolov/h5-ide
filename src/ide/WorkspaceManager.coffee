@@ -14,14 +14,15 @@ define [ "./subviews/WorkspaceView", "underscore" ], ( WorkspaceView )->
       @__spaces     = []
       @__spacesById = {}
       @__awakeSpace = null
-      @
+
+      return @
 
     __updateOrder : (order)->
       self = @
       @__spaces = order.map (id)-> self.__spacesById[id]
       return
 
-    spaces : ()-> @__spaces.splice 0
+    spaces : ()-> @__spaces.splice 0, 0
 
     get : ( id )-> @__spacesById[ id ]
 
@@ -42,6 +43,8 @@ define [ "./subviews/WorkspaceView", "underscore" ], ( WorkspaceView )->
       workspace
 
     awakeWorkspace : ( workspace )->
+      if not workspace then return
+
       if _.isString(workspace) then workspace = @__spacesById[workspace]
 
       if @__awakeSpace then @__awakeSpace.sleep()
@@ -54,13 +57,18 @@ define [ "./subviews/WorkspaceView", "underscore" ], ( WorkspaceView )->
       if promise and promise.then and promise.isFulfilled and not promise.isFulfilled()
         promise.then ()=> @view.hideLoading()
         @view.showLoading()
+      else
+        @view.hideLoading()
       return
 
     update : ( workspace )->
+      if not workspace then return
+
       @view.updateTab workspace.id, workspace.title(), workspace.tabClass()
       workspace
 
     remove: ( workspace, force )->
+      if not workspace then return
 
       if _.isString(workspace) then workspace = @__spacesById[workspace]
 

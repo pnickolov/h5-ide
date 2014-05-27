@@ -7,8 +7,8 @@ define [ '../base/view',
          './template/policy',
          './template/term',
          'i18n!nls/lang.js'
-         'sns'
-], ( PropertyView, template, policy_template, term_template, lang, sns ) ->
+         'sns_dropdown'
+], ( PropertyView, template, policy_template, term_template, lang, snsDropdown ) ->
 
     metricMap =
         "CPUUtilization"             : "CPU Utilization"
@@ -76,7 +76,7 @@ define [ '../base/view',
 
             @$el.html template data
 
-            @$( '#sns-placeholder' ).html new sns().render().el
+            @$( '#sns-placeholder' ).html new snsDropdown().render().el
 
             data.name
 

@@ -4,7 +4,7 @@
 
 define [ '../base/view',
          './template/stack',
-         'i18n!nls/lang.js', 'constant', 'kp', 'sns' ], ( PropertyView, template, lang, constant, kp ) ->
+         'i18n!nls/lang.js', 'constant', 'kp' ], ( PropertyView, template, lang, constant, kp ) ->
 
     noop = ()-> null
 

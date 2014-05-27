@@ -70,7 +70,8 @@
     z-index: 71; }
     .modal-toolbar .slidebox.show {
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
-      max-height: 400px; }
+      max-height: 400px;
+      overflow: visible; }
     .modal-toolbar .slidebox.show + .table-head-fix {
       opacity: .4;
       pointer-events: none;

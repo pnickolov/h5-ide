@@ -29,10 +29,45 @@
 <!-- {{slide_create}} -->
 <div class="slide-create" data-bind="true">
     <div class="before-create">
-        <label for="create-kp-name">Key Pair Name</label>
-        <input class="input" type="text" id="create-kp-name" data-ignore="true" data-ignore-regexp="^[a-zA-Z0-9,_-]*$" data-required="true" maxlength="255" placeholder="allow alphanumber, _ or - up to 255 characters" autofocus>
+        <div>
+          <label class="left">Select Topic</label>
+            <div class="selectbox selectbox-mega">
+                <div class="selection">New Topic</div>
+                <ul class="dropdown" tabindex="-1">
+                  <li class="item selected" data-id="@new">New Topic</li>
+                  <li class="item" data-id="dedicated">Dedicated</li>
+                </ul>
+            </div>
+
+        </div>
+        <div>
+            <label for="topic-name">Topic Name</label>
+            <input class="input" type="text" id="topic-name" data-ignore="true" data-ignore-regexp="^[a-zA-Z0-9,_-]*$" data-required="true" maxlength="255" placeholder="Required. Up to 256 characters">
+        </div>
+        <div>
+            <label for="create-sns-name">Display Name</label>
+            <input class="input" type="text" id="create-sns-name" data-ignore="true" data-ignore-regexp="^[a-zA-Z0-9,_-]*$" data-required="true" maxlength="255" placeholder="Required for SMS subscriptions (up to 10 characters)">
+        </div>
+        <div>
+            <label>Protocol</label>
+            <div class="selectbox">
+                <div class="selection">email</div>
+                <ul class="dropdown" tabindex="-1">
+                    <li class="item" data-id="https">HTTPS</li>
+                    <li class="item" data-id="http">HTTP</li>
+                    <li class="item" data-id="email">Email</li>
+                    <li class="item" data-id="email-json">Email-JSON</li>
+                    <li class="item" data-id="sms">SMS</li>
+                    <li class="item" data-id="arn">Application</li>
+                    <li class="item" data-id="sqs">Amazon SQS</li>
+                </ul>
+            </div>
+        </div>
+        <div>
+            <label for="create-sns-endpoint">Endpoint</label>
+            <input type="text" class="input" id="create-sns-endpoint" max-length="255" data-required="true" data-trigger="change">
+        </div>
     </div>
-    <div class="after-create hide">Key pair <span></span> is created. You have to download the private key file (*.pem file) before you can continue. Store it in a secure and accessible location. You will not be able to download the file again after it's created.</div>
     <div class="init action">
         <button class="btn btn-blue do-action" data-action="create">Create</button>
         <button class="btn btn-silver cancel">Cancel</button>

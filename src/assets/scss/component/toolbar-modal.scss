@@ -130,6 +130,7 @@ $dark-blue: #001324;
 		&.show {
 			box-shadow: 0 4px 10px rgba(0,0,0,.6);
 			max-height: 400px;
+			overflow: visible;
 		}
 
 		&.show + .table-head-fix {

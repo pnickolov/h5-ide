@@ -81,6 +81,12 @@ define ["OpsModel", "./OpsEditorBase", "./OpsProgressTpl", "backbone"], ( OpsMod
 
       self = @
       @view.on "close", ()-> self.remove()
+      @view.on "done", ()->
+        index = self.index()
+        self.remove()
+        ws = App.openOps( self.opsModel )
+        ws.setIndex index
+        return
 
       return
 

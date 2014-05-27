@@ -26,9 +26,13 @@ define [ "./subviews/WorkspaceView", "underscore" ], ( WorkspaceView )->
 
     get : ( id )-> @__spacesById[ id ]
 
+    setIndex : ( workspace, idx )->
+      @view.setTabIndex workspace.id, workspace.isFixed(), idx
+      @__updateOrder @view.tabOrder()
+      return
+
     add : ( workspace )->
       @__spacesById[ workspace.id ] = workspace
-      @__spaces.push workspace
 
       @view.addTab {
         title    : workspace.title()
@@ -36,6 +40,8 @@ define [ "./subviews/WorkspaceView", "underscore" ], ( WorkspaceView )->
         closable : not workspace.isFixed()
         klass    : workspace.tabClass()
       }, -1, workspace.isFixed()
+
+      @__updateOrder @view.tabOrder()
 
       if @__spaces.length is 1
         @awakeWorkspace( workspace )

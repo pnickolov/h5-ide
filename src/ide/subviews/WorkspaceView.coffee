@@ -24,7 +24,26 @@ define [ "backbone", "UI.sortable", "jquerysort" ], () ->
         }
         return
 
-      updateTabOrder : ()-> @trigger "orderChanged", (_.map @$el.find("li"), ( li )-> li.id)
+      updateTabOrder : ()-> @trigger "orderChanged", @tabOrder()
+      tabOrder : ()-> _.map @$el.find("li"), ( li )-> li.id
+
+      setTabIndex : ( id, isFixed, idx )->
+        $tgt = @$el.find("##{id}")
+        if not $tgt.length then return
+
+        if isFixed
+          $group = $("#ws-fixed-tabs")
+        else
+          $group = $("#ws-tabs")
+          idx   -= $("#ws-fixed-tabs").children().length
+
+        $after = $group.children().eq( idx )
+        if $after.length
+          $tgt.insertBefore( $after )
+        else
+          $group.append($tgt)
+        return
+
 
       addTab : ( data, index = -1, fixed = false )->
         # data = {

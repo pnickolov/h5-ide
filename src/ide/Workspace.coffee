@@ -22,10 +22,10 @@ define ["backbone"], ()->
     isAwake : ()-> !!@__awake
 
     # Returns the index of current tab.
-    index : ()->
+    index : ()-> App.workspaces.spaces().indexOf @
 
     # Set the index of the current tab.
-    setIndex : ( idx )->
+    setIndex : ( idx )-> App.workspaces.setIndex @, idx
 
     # Call this method to remove the workspace from the ide.
     remove : ()-> App.workspaces.remove(@, true)

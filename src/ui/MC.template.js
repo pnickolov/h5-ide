@@ -1,52 +1,4 @@
-define(['handlebars'], function(Handlebars){ var __TEMPLATE__, TEMPLATE={"tab":{},"notification":{}};
-
-__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
-
-
-  buffer += "<li id=\"tab-bar-"
-    + escapeExpression(((stack1 = (depth0 && depth0.tab_id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" data-tab-type=\""
-    + escapeExpression(((stack1 = (depth0 && depth0.tab_type)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\">\n	<a href=\"#tab-content-"
-    + escapeExpression(((stack1 = (depth0 && depth0.tab_id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" title=\""
-    + escapeExpression(((stack1 = (depth0 && depth0.tab_name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" data-tab-id=\""
-    + escapeExpression(((stack1 = (depth0 && depth0.tab_id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" class=\"truncate tab-bar-truncate\">\n		<i class=\"icon-tabbar-label\"></i>\n		"
-    + escapeExpression(((stack1 = (depth0 && depth0.tab_name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\n	</a>\n	<a href=\"javascript:void(0)\" class=\"close-restriction icon-close\" title=\""
-    + escapeExpression(helpers.i18n.call(depth0, "TOOL_TIT_CLOSE_TAB", {hash:{},data:data}))
-    + "\"></a>\n</li>\n\n";
-  return buffer;
-  };
-TEMPLATE.tab.item=Handlebars.template(__TEMPLATE__);
-
-
-__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
-
-
-  buffer += "<li id=\"tab-bar-"
-    + escapeExpression(((stack1 = (depth0 && depth0.target_id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\">\n	<a href=\"#tab-content-"
-    + escapeExpression(((stack1 = (depth0 && depth0.target_id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" data-toggle=\"tab\" class=\"truncate tab-bar-truncate\" title=\""
-    + escapeExpression(((stack1 = (depth0 && depth0.target_id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\">\n		<i class=\"icon-dashboard-tabbar icon-tabbar-label\"></i>\n		"
-    + escapeExpression(((stack1 = (depth0 && depth0.target_id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\n	</a>\n	<a href=\"javascript:void(0)\" class=\"icon-close close-tab\" title=\""
-    + escapeExpression(helpers.i18n.call(depth0, "TOOL_TIT_CLOSE_TAB", {hash:{},data:data}))
-    + "\"></a>\n</li>\n\n";
-  return buffer;
-  };
-TEMPLATE.tab.dashboard=Handlebars.template(__TEMPLATE__);
-
+define(['handlebars'], function(Handlebars){ var __TEMPLATE__, TEMPLATE={"notification":{}};
 
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
@@ -56,7 +8,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 function program1(depth0,data) {
   
   
-  return "\n		<i class=\"notification_close\">&times;</i>\n	";
+  return "<i class=\"notification_close\">&times;</i>";
   }
 
   buffer += "<div class=\"notification_item "
@@ -1793,7 +1745,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 function program1(depth0,data) {
   
   var buffer = "";
-  buffer += "\n		<h3 class=\"modal-text-major\">"
+  buffer += "\n	<h3 class=\"modal-text-major\">"
     + escapeExpression(helpers.i18n.call(depth0, "POP_CONFIRM_UPDATE_MAJOR_TEXT_RUNNING", {hash:{},data:data}))
     + "</h3>\n	";
   return buffer;
@@ -1802,9 +1754,9 @@ function program1(depth0,data) {
 function program3(depth0,data) {
   
   var buffer = "";
-  buffer += "\n		<h3 class=\"modal-text-major\">"
+  buffer += "\n	<h3 class=\"modal-text-major\">"
     + escapeExpression(helpers.i18n.call(depth0, "POP_CONFIRM_UPDATE_MAJOR_TEXT_STOPPED", {hash:{},data:data}))
-    + "</h3>\n		<p class=\"modal-text-minor\" style=\"margin-top:10px;\">"
+    + "</h3>\n	<p class=\"modal-text-minor\" style=\"margin-top:10px;\">"
     + escapeExpression(helpers.i18n.call(depth0, "POP_CONFIRM_UPDATE_MINOR_TEXT_STOPPED", {hash:{},data:data}))
     + "</p>\n	";
   return buffer;
@@ -1813,32 +1765,32 @@ function program3(depth0,data) {
 function program5(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n		<table class=\"table-head-fix table app-update-summary-table-header\" data-target=\"app-update-summary-table\">\n			<thead> <tr class=\"header-row\">\n				<th class=\"sortable active\" width=\"30%\">"
+  buffer += "\n	<table class=\"table-head-fix table app-update-summary-table-header\" data-target=\"app-update-summary-table\">\n		<thead> <tr class=\"header-row\">\n			<th class=\"sortable active\" width=\"30%\">"
     + escapeExpression(helpers.i18n.call(depth0, "POP_CONFIRM_UPDATE_TABLE_TYPE", {hash:{},data:data}))
-    + "</th>\n				<th class=\"sortable\" width=\"30%\">"
+    + "</th>\n			<th class=\"sortable\" width=\"30%\">"
     + escapeExpression(helpers.i18n.call(depth0, "POP_CONFIRM_UPDATE_TABLE_NAME", {hash:{},data:data}))
-    + "</th>\n				<th class=\"sortable\" width=\"40%\">"
+    + "</th>\n			<th class=\"sortable\" width=\"40%\">"
     + escapeExpression(helpers.i18n.call(depth0, "POP_CONFIRM_UPDATE_TABLE_CHANGE", {hash:{},data:data}))
-    + "</th> </tr>\n			</thead>\n		</table>\n		<div class=\"scroll-wrap\" style=\"max-height:256px;\">\n			<div class=\"scrollbar-veritical-wrap\"><div class=\"scrollbar-veritical-thumb\"></div></div>\n			<table class=\"table scroll-content\" id=\"app-update-summary-table\">\n				<tbody>\n				";
+    + "</th> </tr>\n		</thead>\n	</table>\n	<div class=\"scroll-wrap\" style=\"max-height:256px;\">\n		<div class=\"scrollbar-veritical-wrap\"><div class=\"scrollbar-veritical-thumb\"></div></div>\n		<table class=\"table scroll-content\" id=\"app-update-summary-table\">\n			<tbody>\n				";
   stack1 = helpers.each.call(depth0, (depth0 && depth0.result), {hash:{},inverse:self.noop,fn:self.program(6, program6, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n				</tbody>\n			</table>\n		</div>\n	";
+  buffer += "\n			</tbody>\n		</table>\n	</div>\n	";
   return buffer;
   }
 function program6(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += " <tr>\n					<td width=\"30%\">"
+  buffer += " <tr>\n				<td width=\"30%\">"
     + escapeExpression(((stack1 = (depth0 && depth0.type)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</td>\n					<td width=\"30%\">"
+    + "</td>\n				<td width=\"30%\">"
     + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</td>\n					<td width=\"40%\">\n						";
+    + "</td>\n				<td width=\"40%\">\n					";
   stack1 = helpers.each.call(depth0, (depth0 && depth0.changes), {hash:{},inverse:self.program(9, program9, data),fn:self.program(7, program7, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n						";
+  buffer += "\n					";
   stack1 = helpers['if'].call(depth0, (depth0 && depth0.extra), {hash:{},inverse:self.noop,fn:self.program(11, program11, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n						";
+  buffer += "\n					";
   stack1 = helpers['if'].call(depth0, (depth0 && depth0.info), {hash:{},inverse:self.noop,fn:self.program(13, program13, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "</td>\n				</tr> ";
@@ -1847,22 +1799,22 @@ function program6(depth0,data) {
 function program7(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n						<span class=\"au-summary-label au-summary-"
+  buffer += "\n					<span class=\"au-summary-label au-summary-"
     + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\">"
     + escapeExpression(((stack1 = (depth0 && depth0.info)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</span>\n						";
+    + "</span>\n					";
   return buffer;
   }
 
 function program9(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n						<span class=\"au-summary-label au-summary-"
+  buffer += "\n					<span class=\"au-summary-label au-summary-"
     + escapeExpression(((stack1 = (depth0 && depth0.change)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\">"
     + escapeExpression(((stack1 = (depth0 && depth0.change)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</span>\n						";
+    + "</span>\n					";
   return buffer;
   }
 
@@ -1884,25 +1836,21 @@ function program13(depth0,data) {
   return buffer;
   }
 
-  buffer += "<div id=\"app-apply-update\" style=\"width:460px\">\n	<div class=\"modal-header\"><h3 class=\"truncate\" style=\"width: 380px;\">"
+  buffer += "<<<<<<< HEAD\n<div id=\"app-apply-update\">\n	<div class=\"modal-control-group default-kp-group clearfix\" style=\"display:none;\">\n		<label for=\"\">$DefaultKeyPair</label>\n		<div id=\"kp-runtime-placeholder\"></div>\n		<div class=\"runtime-error\" id=\"runtime-error-kp\"></div>\n	</div>\n=======\n<div id=\"app-apply-update\" style=\"width:460px\">\n	<div class=\"modal-header\"><h3 class=\"truncate\" style=\"width: 380px;\">"
     + escapeExpression(helpers.i18n.call(depth0, "POP_CONFIRM_UPDATE_TIT", {hash:{},data:data}))
     + "</h3><i class=\"modal-close\">&times;</i> </div>\n	<div class=\"modal-body\">\n		<div class=\"modal-control-group default-kp-group clearfix\" style=\"display:none;\">\n			<label for=\"\">$DefaultKeyPair</label>\n			<div id=\"kp-runtime-placeholder\"></div>\n			<i class=\"icon-info tooltip\" data-tooltip=\""
     + escapeExpression(helpers.i18n.call(depth0, "TIP_KEYPAIR_USED_DEFAULT_KP", {hash:{},data:data}))
-    + "\"></i>\n			<div class=\"runtime-error\" id=\"runtime-error-kp\"></div>\n		</div>\n	";
+    + "\"></i>\n			<div class=\"runtime-error\" id=\"runtime-error-kp\"></div>\n		</div>\n>>>>>>> develop\n	";
   stack1 = helpers['if'].call(depth0, (depth0 && depth0.isRunning), {hash:{},inverse:self.program(3, program3, data),fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n	";
   stack1 = helpers['if'].call(depth0, ((stack1 = (depth0 && depth0.result)),stack1 == null || stack1 === false ? stack1 : stack1.length), {hash:{},inverse:self.noop,fn:self.program(5, program5, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n		<div class=\"stack-validation\">\n			<details open style=\"display:none;\">\n				<summary>"
+  buffer += "\n	<div class=\"stack-validation\">\n		<details open style=\"display:none;\">\n			<summary>"
     + escapeExpression(helpers.i18n.call(depth0, "POP_CONFIRM_UPDATE_VALIDATION", {hash:{},data:data}))
-    + "</summary>\n				<div id=\"stack-run-validation-container\"></div>\n			</details>\n			<div class=\"nutshell\" style=\"display: none;\">:<label></label></div>\n			<div class=\"validating\">\n				<div class=\"loading-spinner loading-spinner-small\"></div>\n				<p>"
+    + "</summary>\n			<div id=\"stack-run-validation-container\"></div>\n		</details>\n		<div class=\"nutshell\" style=\"display: none;\">:<label></label></div>\n		<div class=\"validating\">\n			<div class=\"loading-spinner loading-spinner-small\"></div>\n			<p>"
     + escapeExpression(helpers.i18n.call(depth0, "POP_CONFIRM_UPDATE_VALIDATING", {hash:{},data:data}))
-    + "</p>\n			</div>\n		</div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"confirm-update-app\" class=\"btn btn-blue\" style=\"width:160px;\" disabled>"
-    + escapeExpression(helpers.i18n.call(depth0, "POP_CONFIRM_UPDATE_CONFIRM_BTN", {hash:{},data:data}))
-    + "</button>\n		<button class=\"btn modal-close btn-silver\">"
-    + escapeExpression(helpers.i18n.call(depth0, "POP_CONFIRM_UPDATE_CANCEL_BTN", {hash:{},data:data}))
-    + "</button>\n	</div>\n</div>\n\n";
+    + "</p>\n		</div>\n	</div>\n\n</div>\n\n";
   return buffer;
   };
 TEMPLATE.updateApp=Handlebars.template(__TEMPLATE__);
@@ -2495,7 +2443,9 @@ function program1(depth0,data) {
   var buffer = "", stack1;
   buffer += "\n<li>\n	<input class=\"tokenName input\" value=\""
     + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" readonly/>\n	<span class=\"tokenToken click-select truncate\">"
+    + "\" readonly/>\n	<span class=\"tokenToken click-select truncate tooltip\" data-tooltip=\""
+    + escapeExpression(helpers.i18n.call(depth0, "PROP_ELB_TIP_CLICK_TO_SELECT_ALL", {hash:{},data:data}))
+    + "\">"
     + escapeExpression(((stack1 = (depth0 && depth0.token)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</span>\n	<span class=\"tokenControl\">\n		<button class=\"tooltip icon-edit\" data-tooltip=\"\"></button>\n		<button class=\"tooltip icon-delete\" data-tooltip=\"\"></button>\n		<button class=\"btn btn-blue tokenDone\">"
     + escapeExpression(helpers.i18n.call(depth0, "HEAD_BTN_DONE", {hash:{},data:data}))

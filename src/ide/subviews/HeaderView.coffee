@@ -16,7 +16,7 @@ define [ "./HeaderTpl", "./SettingsDialog", 'backbone' ], ( tmpl, SettingsDialog
             @listenTo App.user,  "change", @update
             @listenTo App.model, "change:notification", @updateNotification
 
-            @setElement $(tmpl( App.user.toJSON() )).prependTo("#header-wrapper")
+            @setElement $(tmpl( App.user.toJSON() )).prependTo("#wrapper")
             return
 
         logout : () -> App.logout()

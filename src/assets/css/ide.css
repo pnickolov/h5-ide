@@ -21,7 +21,7 @@ body {
 	font-size  : 14px;
 	color      : #666;
 	overflow   : hidden;
-	background : #303030;
+	background : #232226;
 
 	position   : relative;
 }
@@ -121,99 +121,6 @@ button {
 }
 
 /* Header */
-#header-wrapper {
-	background-color: #232226;
-	position: relative;
-	height: 49px;
-}
-
-#header {
-	height: 49px;
-	z-index: 10;
-	position: absolute;
-	right: 0;
-}
-
-.header-menu {
-	margin: 0;
-}
-
-.header-menu .dropdown,
-#support {
-	position:    relative;
-	float:       left;
-	height:      50px;
-	line-height: 49px;
-
-	border-left        : 1px solid #222;
-
-	-webkit-transition : background-color 0.2s;
-	-moz-transition    : background-color 0.2s;
-	-ms-transition     : background-color 0.2s;
-	-o-transition      : background-color 0.2s;
-	transition         : background-color 0.2s;
-}
-
-#support {
-	padding  : 0 20px;
-}
-
-#support:before {
-	margin-right: 5px;
-}
-
-#support:hover {
-	color : #9C6DC0;
-	background-color: rgba(0,0,0,.2);
-}
-
-.header-menu > .dropdown > .js-toggle-dropdown,
-#user-dropdown-wrapper > li {
-	display : block;
-	padding : 0 20px;
-	color   : #ddd;
-	cursor  : pointer;
-	height  : 50px;
-	line-height: 49px;
-}
-
-#user-dropdown-wrapper > li {
-	line-height: 39px !important;
-	height:      40px;
-}
-
-
-.header-menu > .dropdown > .js-toggle-dropdown:hover {
-	color: #9C6DC0;
-}
-
-.header-menu .dropdown:hover,
-.header-menu .dropdown.open,
-#support:hover {
-	background-color: rgba(0,0,0,.2);
-}
-
-#NotificationCounter {
-	top           : 5px;
-	right         : 4px;
-	position      : absolute;
-	padding       : 0 4px;
-	border-radius : 8px;
-	background    : #ec3c38;
-	font-size     : 12px;
-	font-weight   : bold;
-	color         : #FFF;
-	text-align    : center;
-	height        : 16px;
-	line-height   : 16px;
-	min-width     : 8px;
-
-}
-
-#NotificationCounter:empty {
-	display : none;
-}
-
 .avatar {
 	display: inline-block;
 	border-radius: 50%;
@@ -1041,43 +948,6 @@ button {
 
 		background-size: 193 auto;
 	}
-}
-
-.close-tab, .close-restriction {
-	display     : none;
-
-	position    : absolute;
-	top         : 50%;
-	right       : 5px;
-	margin-top  : -6px;
-
-	width       : 16px;
-	height      : 16px;
-
-	text-align  : center;
-	line-height : 16px;
-	color       : #999;
-}
-
-.close-tab:hover, .close-restriction:hover {
-	color: #F09595 !important;
-}
-
-#tab-bar li:hover a.close-tab, #tab-bar li:hover a.close-restriction {
-	display: block;
-}
-
-#tab-bar li.unsaved a.close-restriction,
-#tab-bar li.active.unsaved a.close-restriction
-#tab-bar li.unsaved a.close-tab,
-#tab-bar li.active.unsaved a.close-tab {
-	color: #fad6cf;
-}
-
-#tab-bar li.active a.close-tab, #tab-bar li.active a.close-restriction {
-	color: #666;
-	display : block;
-	font-weight: normal;
 }
 
 /* Main Content */

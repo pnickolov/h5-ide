@@ -1,27 +1,7 @@
-<!-- {{tab.item}} -->
-<li id="tab-bar-{{tab_id}}" data-tab-type="{{tab_type}}">
-	<a href="#tab-content-{{tab_id}}" title="{{tab_name}}" data-tab-id="{{tab_id}}" class="truncate tab-bar-truncate">
-		<i class="icon-tabbar-label"></i>
-		{{tab_name}}
-	</a>
-	<a href="javascript:void(0)" class="close-restriction icon-close" title="{{i18n 'TOOL_TIT_CLOSE_TAB'}}"></a>
-</li>
-
-<!-- {{tab.dashboard}} -->
-<li id="tab-bar-{{target_id}}">
-	<a href="#tab-content-{{target_id}}" data-toggle="tab" class="truncate tab-bar-truncate" title="{{target_id}}">
-		<i class="icon-dashboard-tabbar icon-tabbar-label"></i>
-		{{target_id}}
-	</a>
-	<a href="javascript:void(0)" class="icon-close close-tab" title="{{i18n 'TOOL_TIT_CLOSE_TAB'}}"></a>
-</li>
-
 <!-- {{notification.item}} -->
 <div class="notification_item {{type}}_item">
 	<span>{{template}}</span>
-	{{#if should_stay}}
-		<i class="notification_close">&times;</i>
-	{{/if}}
+	{{#if should_stay}}<i class="notification_close">&times;</i>{{/if}}
 </div>
 
 

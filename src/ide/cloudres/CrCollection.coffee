@@ -11,7 +11,7 @@ define ["ApiRequest", "backbone"], ( ApiRequest )->
       @on "add remove", (_.debounce ()-> @trigger "update"), @
       Backbone.Collection.apply this, arguments
 
-    isReady : ()-> @__fetchPromise && !!@__isReady
+    isReady : ()-> @__fetchPromise && @__fetchPromise.isFulfilled()
 
     # Fetch the data from AWS. The data is only fetched once even if called multiple time.
     fetch : ()->
@@ -34,12 +34,10 @@ define ["ApiRequest", "backbone"], ( ApiRequest )->
         catch e
           throw McError( ApiRequest.Errors.InvalidAwsReturn, "", res )
 
-        self.__isReady = true
         return self
 
       , ( error )->
         self.lastFetch = 0
-        self.__isReady = false
         self.__fetchPromise = null
         throw error
 

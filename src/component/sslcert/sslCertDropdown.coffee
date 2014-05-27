@@ -30,7 +30,9 @@ define [ 'constant', 'CloudResources','sns_manage', 'combo_dropdown', './compone
 
 
         render: ->
-            selection = 'test-cert'
+            selection = 'None'
+            if @sslCertName and @sslCertCol.isReady()
+                selection = @sslCertName
             @dropdown.setSelection selection
             @el = @dropdown.el
             @

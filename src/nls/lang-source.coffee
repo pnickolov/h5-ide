@@ -1490,6 +1490,14 @@ module.exports =
       en: "Type"
       zh: "类型"
 
+    PROP_STACK_LBL_ID:
+      en: "Stack ID"
+      zh: "模板标识"
+
+    PROP_APP_LBL_ID:
+      en: "App ID"
+      zh: "应用标识"
+
     PROP_STACK_LBL_USAGE:
       en: "Usage"
       zh: "用途"

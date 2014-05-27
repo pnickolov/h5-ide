@@ -105,7 +105,7 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalpl
             @trigger 'refresh'
 
         __close: ( event ) ->
-            $( '#modal-wrap' ).off 'click', @__stopPropagation
+            #$( '#modal-wrap' ).off 'click', @__stopPropagation
             @trigger 'close'
             @remove()
             false
@@ -159,7 +159,7 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalpl
 
             @__modalplus = new modalplus options
             @__modalplus.on 'closed', @__close, @
-            $( '#modal-wrap' ).click @__stopPropagation
+            #$( '#modal-wrap' ).click @__stopPropagation
 
         __renderLoading: () ->
             @$( '.content-wrap' ).html template.loading

@@ -6966,8 +6966,18 @@ summary:focus {
 	background: transparent;
 }
 
+#create-new-dhcp .control-group>div{
+    width: 468px;
+    display: inline-block;
+    margin-bottom: 10px;
+}
 
-
+#create-new-dhcp .control-group>label{
+    width: 168px;
+    float: left;
+    display: inline-block;
+    line-height: 32px;
+}
 
 
 

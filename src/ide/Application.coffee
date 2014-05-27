@@ -17,7 +17,7 @@ define [
   "./subviews/SettingsDialog"
   "CloudResources"
   "./WorkspaceManager"
-  "module/opsEditor"
+  "module/OpsEditor"
   "component/exporter/JsonExporter"
   "event",
   "vpc_model",

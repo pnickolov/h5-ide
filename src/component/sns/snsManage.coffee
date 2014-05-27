@@ -79,9 +79,57 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
                 when 'import'
                     return not @m$( '#import-kp-name' ).parsley 'validate'
 
+        genDeleteFinish: ( times ) ->
+            success = []
+            error = []
+            that = @
+
+            finHandler = _.after times, ->
+                that.modal.cancel()
+                if success.length is 1
+                    notification 'info', "#{success[0].get 'Name'} is deleted."
+                else if success.length > 1
+                    notification 'info', "Selected #{success.length} SNS topic are deleted."
+
+                if not that.model.get( 'keys' ).length
+                    that.m$( '#kp-select-all' )
+                        .get( 0 )
+                        .checked = false
+
+                _.each error, ( s ) ->
+                    console.log(s)
+
+            ( res ) ->
+                if res instanceof Backbone.Model
+                    success.push res
+                else
+                    error.push res
+
+                finHandler()
+
+        # actions
+        delete: ( invalid, checked ) ->
+            count = checked.length
+
+            onDeleteFinish = @genDeleteFinish count
+            @switchAction 'processing'
+            _.each checked, ( c ) ->
+                m = @topicCol.get c.data.id
+                m?.destroy().then onDeleteFinish, onDeleteFinish
+
         refresh: ->
             @subCol.fetchForce()
             @topicCol.fetchForce()
+
+        switchAction: ( state ) ->
+            if not state
+                state = 'init'
+
+            @m$( '.slidebox .action' ).each () ->
+                if $(@).hasClass state
+                    $(@).show()
+                else
+                    $(@).hide()
 
         render: ->
             @modal.render()
@@ -109,7 +157,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
             @modal.render('nocredential').toggleControls false
 
         renderSlides: ( which, checked ) ->
-            tpl = template_modal[ "slide_#{which}" ]
+            tpl = template[ "slide_#{which}" ]
             slides = @getSlides()
             slides[ which ]?.call @, tpl, checked
 
@@ -117,8 +165,6 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
         getSlides: ->
             that = @
             modal = @modal
-            __upload = @__upload
-
 
             create: ( tpl, checked ) ->
                 modal.setSlide tpl

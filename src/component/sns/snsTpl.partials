@@ -15,8 +15,8 @@
 <tr class="item" data-id="">
     <td>
         <div class="checkbox">
-            <input id="kp-select-{{id}}" type="checkbox" value="None" data-name="{{Name}}" class="one-cb">
-            <label for="kp-select-{{id}}"></label>
+            <input id="kp-select-{{Name}}" type="checkbox" value="None" data-name="{{Name}}" data-id="{{id}}" class="one-cb">
+            <label for="kp-select-{{Name}}"></label>
         </div>
     </td>
     <td>{{Name}}</td>
@@ -24,3 +24,55 @@
     <td>{{subCount}} Subscriptions</td>
 </tr>
 {{/each}}
+
+
+<!-- {{slide_create}} -->
+<div class="slide-create" data-bind="true">
+    <div class="before-create">
+        <label for="create-kp-name">Key Pair Name</label>
+        <input class="input" type="text" id="create-kp-name" data-ignore="true" data-ignore-regexp="^[a-zA-Z0-9,_-]*$" data-required="true" maxlength="255" placeholder="allow alphanumber, _ or - up to 255 characters" autofocus>
+    </div>
+    <div class="after-create hide">Key pair <span></span> is created. You have to download the private key file (*.pem file) before you can continue. Store it in a secure and accessible location. You will not be able to download the file again after it's created.</div>
+    <div class="init action">
+        <button class="btn btn-blue do-action" data-action="create">Create</button>
+        <button class="btn btn-silver cancel">Cancel</button>
+    </div>
+    <div class="processing action" style="display:none;">
+        <button class="btn" disabled>Creating...</button>
+    </div>
+    <div class="download action" style="display:none;">
+        <a class="btn btn-blue do-action pulse" data-action="download" id="download-kp">Download</a>
+        <button class="btn btn-silver cancel" disabled>Close</button>
+    </div>
+</div>
+
+<!-- {{slide_delete}} -->
+<div class="slide-delete">
+    <div class="modal-text-major">Confirm to delete {{#if selecteKeyName }}SNS Topic {{selecteKeyName}}{{else}}selected {{selectedCount}} SNS Topics{{/if}} and all associated subscriptions?</div>
+    <div class="init action">
+        <button class="btn btn-red do-action" data-action="delete">Delete</button>
+        <button class="btn btn-silver cancel">Cancel</button>
+    </div>
+    <div class="processing action" style="display:none;">
+        <button class="btn" disabled>Deleting...</button>
+    </div>
+</div>
+<!-- {{slide_import}} -->
+<div class="slide-import" data-bind="true">
+    <label for="import-kp-name">Key Pair Name</label>
+    <input class="input" type="text" id="import-kp-name" data-ignore="true" data-ignore-regexp="^[a-zA-Z0-9,_-]*$" data-required="true" maxlength="255" placeholder="allow alphanumber, _ or - up to 255 characters">
+    <div class="import-zone">
+
+    </div>
+    <div class="init action">
+        <button class="btn" disabled>Import</button>
+        <button class="btn btn-silver cancel">Cancel</button>
+    </div>
+    <div class="ready action" style="display:none;">
+        <button class="btn btn-blue do-action" data-action="import">Import</button>
+        <button class="btn btn-silver cancel">Cancel</button>
+    </div>
+    <div class="processing action" style="display:none;">
+        <button class="btn" disabled>Importing...</button>
+    </div>
+</div>

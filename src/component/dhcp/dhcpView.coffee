@@ -19,11 +19,6 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
             @dropdown.on 'manage', @manageDhcp, @
             @dropdown.on 'change', @setDHCP, @
             @dropdown.on 'filter', @filter, @
-            @manager = new toolbarModal @getModalOptions()
-            @manager.on 'refresh', @refreshManager, @
-            @manager.on 'slidedown', @renderSlides, @
-            @manager.on 'action', @doAction, @
-            #@manager.on 'close', @manager.remove()
             @
         remove: ()->
             @.isRemoved = true
@@ -33,10 +28,8 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
                 @renderLoading()
                 @collection.fetch().then =>
                     @render()
-                console.log "Fetching....."
                 fetched = true
                 return false
-            console.log @collection.toJSON()
             @renderDropdown()
         show: ->
             if App.user.hasCredential()
@@ -49,14 +42,10 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
             @dropdown.render('loading').toggleControls false
         renderDropdown: ->
             data = @collection.toJSON()
-            selection = template.selection
-                isDefault: false
-                isAuto: true
             content = template.keys
                 isRuntime: false
                 keys: data
             @dropdown.toggleControls true
-            @dropdown.setSelection selection
             @dropdown.setContent content
         setDHCP: (e)->
             if e is '@auto'
@@ -72,7 +61,12 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
             selection = template.selection e
             @dropdown.setSelection selection
         manageDhcp: ->
-            console.log @manager
+            @manager = new toolbarModal @getModalOptions()
+            @manager.on 'refresh', @refreshManager, @
+            @manager.on 'slidedown', @renderSlides, @
+            @manager.on 'action', @doAction, @
+            @manager.on 'close', =>
+                @manager.remove()
             @manager.render()
             @renderManager()
             @.trigger 'manage'
@@ -82,7 +76,6 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
         renderManager: ->
             if not fetched
                 fetched = true
-                console.log 'Fetching For Manager......'
                 @collection.fetchForce().then =>
                     @renderManager()
                 return false

@@ -19,12 +19,11 @@ define [
   "./WorkspaceManager"
   "module/opsEditor"
   "component/exporter/JsonExporter"
-  "common_handle",
   "event",
   "vpc_model",
   "constant",
   "underscore"
-], ( ApiRequest, Websocket, ApplicationView, ApplicationModel, User, SettingsDialog, CloudResources, WorkspaceManager, DesignEditor, JsonExporter, common_handle, ide_event, vpc_model, constant )->
+], ( ApiRequest, Websocket, ApplicationView, ApplicationModel, User, SettingsDialog, CloudResources, WorkspaceManager, DesignEditor, JsonExporter, ide_event, vpc_model, constant )->
 
   VisualOps = ()->
     if window.App

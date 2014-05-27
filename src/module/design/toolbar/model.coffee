@@ -2,7 +2,7 @@
 #  View Mode for design/toolbar module
 #############################
 
-define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'stack_model', 'app_model', 'constant', 'account_model' ], (ThumbUtil, MC, Backbone, $, _, ide_event, stack_service, stack_model, app_model, constant, account_model) ->
+define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'stack_model', 'app_model', 'constant' ], (ThumbUtil, MC, Backbone, $, _, ide_event, stack_service, stack_model, app_model, constant) ->
 
     AWSRes = constant.RESTYPE
     AwsTypeConvertMap = {}

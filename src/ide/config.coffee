@@ -151,7 +151,6 @@ require.config {
 		#############################################
 		'base_model'             : 'model/base_model'
 
-		'account_model'          : 'model/account_model'
 		'favorite_model'         : 'model/favorite_model'
 		'app_model'              : 'model/app_model'
 		'stack_model'            : 'model/stack_model'
@@ -375,7 +374,6 @@ require.config {
 		"ApiRequest" : []
 		"model/model" : [
 			'base_model'
-			'account_model'
 			'favorite_model'
 			'app_model'
 			'stack_model'

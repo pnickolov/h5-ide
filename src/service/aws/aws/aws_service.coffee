@@ -10,11 +10,11 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'MC', 'common_handle', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_service'
+define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_service'
 		 'keypair_service', 'securitygroup_service', 'elb_service', 'iam_service', 'acl_service'
 		 'customergateway_service', 'dhcp_service', 'eni_service', 'internetgateway_service', 'routetable_service'
 		 'autoscaling_service', 'cloudwatch_service', 'sns_service',
-		 'subnet_service', 'vpc_service', 'vpn_service', 'vpngateway_service', 'ec2_service', 'ami_service' ], (MC, common_handle, result_vo, constant, ebs_service, eip_service, instance_service
+		 'subnet_service', 'vpc_service', 'vpn_service', 'vpngateway_service', 'ec2_service', 'ami_service' ], (MC, result_vo, constant, ebs_service, eip_service, instance_service
 		 keypair_service, securitygroup_service, elb_service, iam_service, acl_service
 		 customergateway_service, dhcp_service, eni_service, internetgateway_service, routetable_service,
 		 autoscaling_service, cloudwatch_service, sns_service,
@@ -196,7 +196,7 @@ define [ 'MC', 'common_handle', 'result_vo', 'constant', 'ebs_service', 'eip_ser
 			if node
 
 				if $.type(node) is "string"
-					
+
 					action_name = ($.parseXML node).documentElement.localName
 					dict_name = action_name.replace /Response/i, ""
 					dict[dict_name] = [] if dict[dict_name]?
@@ -205,7 +205,7 @@ define [ 'MC', 'common_handle', 'result_vo', 'constant', 'ebs_service', 'eip_ser
 						continue
 					parseResult = responses[action_name] [null, node]
 					dict[dict_name] = parseResult
-				
+
 				else if $.type(node) is "object"
 
 					elbHealthData = node["DescribeInstanceHealth"]

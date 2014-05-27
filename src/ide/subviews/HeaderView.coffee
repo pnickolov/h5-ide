@@ -2,7 +2,7 @@
 #  View(UI logic) for dialog
 #############################
 
-define [ "./HeaderTpl", "./SettingsDialog", 'backbone' ], ( tmpl, SettingsDialog ) ->
+define [ "./HeaderTpl", "./SettingsDialog", 'backbone', "UI.selectbox" ], ( tmpl, SettingsDialog ) ->
 
     HeaderView = Backbone.View.extend {
 

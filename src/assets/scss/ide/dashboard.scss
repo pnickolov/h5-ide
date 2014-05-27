@@ -644,3 +644,114 @@
   from { background-position: 0 0; }
   to   { background-position: 40px 0; }
 }
+
+
+/*unmanaged-VPC-modal*/
+#VisualizeVpcDialog {
+  background : #fff;
+  position   : relative;
+  min-height : 100%;
+
+  .loading-spinner {
+    position    : absolute;
+    top         : 100px;
+    left        : 50%;
+    margin-left : -21px;
+  }
+
+  .unmanaged-vpc-empty {
+    padding    : 160px 10px;
+    text-align : center;
+    color      : #aaa;
+    display    : none;
+  }
+
+  .region-header {
+    padding       : 10px 15px;
+    border-bottom : 1px solid #ddd;
+    font-size     : 12px;
+  }
+
+  .region-name {
+    font-size: 20px;
+    font-weight: 700;
+    color: #333;
+    margin-right: 5px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
+  }
+
+  .region-group {
+    padding: 10px 0 10px 10px;
+  }
+
+  .visualize-vpc {
+    float         : left;
+    margin        : 0 10px 10px 0;
+    color         : #999;
+    width         : 240px;
+    height        : 190px;
+    font-size     : 12px;
+    display       : block;
+    background    : #f5f5f5;
+    border        : 1px solid #ccc;
+    border-radius : 2px;
+    cursor        : pointer;
+
+    &:hover {
+      background: #fff;
+      box-shadow: 1px 1px 5px rgba(0,0,0,.2);
+    }
+
+     h5 {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 5px;
+      padding: 10px;
+      background: rgba(0, 0, 0, 0.05);
+    }
+
+    &.disabled {
+      h5 { color: #999; }
+
+      cursor: default;
+      background: #e9e9e9;
+      border: 1px solid #e0e0e0;
+
+      &:hover {
+        background: #e9e9e9;
+        border: 1px solid #e0e0e0;
+        box-shadow: none;
+      }
+
+      .vis-res-number { color : #999; }
+    }
+  }
+
+  .visualize-res {
+    display     : inline-block;
+    width       : 69px;
+    height      : 60px;
+    margin      : 5px 0 5px 0;
+    text-align  : center;
+    border-left : 1px solid #ddd;
+    float       : left;
+    padding     : 0 5px;
+
+    &:nth-child(3n+1) { border: none; }
+  }
+
+  .vis-res-num {
+    font-size   : 24px;
+    color       : #148BE6;
+  }
+
+  .vis-res-name {
+    font-size    : 12px;
+    font-variant : small-caps;
+  }
+}
+
+#VisualizeReload {
+  display: block;
+  margin: 20px auto;
+}

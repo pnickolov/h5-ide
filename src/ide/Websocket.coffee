@@ -122,10 +122,9 @@ define [ "Meteor", "backbone", "event", "MC" ], ( Meteor, Backbone, ide_event )-
     @collection.imports.find().fetch()
     @collection.imports.find().observe {
       added : (idx, dag) ->
-        ide_event.trigger ide_event.UPDATE_IMPORT_ITEM, idx
-
+        self.trigger "visualizeUpdate", idx
       changed : (idx, dag) ->
-        ide_event.trigger ide_event.UPDATE_IMPORT_ITEM, idx
+        self.trigger "visualizeUpdate", idx
     }
 
     # state status

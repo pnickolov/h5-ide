@@ -1,5 +1,14 @@
 
-define ['module/dashboard/template', 'module/dashboard/template_data',"constant", "backbone", "UI.scrollbar"], ( template, tplPartials, constant )->
+define [
+  'module/dashboard/DashboardTpl'
+  'module/dashboard/DashboardTplData'
+  'module/dashboard/VisualizeVpcTpl'
+  "UI.modalplus"
+  "constant"
+  "backbone"
+  "UI.scrollbar"
+  "UI.tooltip"
+], ( template, tplPartials, VisualizeVpcTpl, Modal, constant )->
 
   Helper = {
     scrollToResource: ->
@@ -33,15 +42,15 @@ define ['module/dashboard/template', 'module/dashboard/template_data',"constant"
       'click #region-switch-list li'    : 'switchRegion'
       'click #region-resource-tab li'   : 'switchAppStack'
 
-      'click #global-import-stack'      : 'importJson'
+      'click #ImportStack'  : 'importJson'
+      'click #VisualizeVPC' : 'visualizeVPC'
 
-      'click #global-refresh' : 'reloadResource'
+      'click #global-refresh'  : 'reloadResource'
+      'click .show-credential' : 'showCredential'
 
       'click .region-resource-tab-item'           : 'switchResource'
       'click .global-region-resource-content a'   : 'switchRegionAndResource'
 
-      'click .show-credential'             : 'showCredential'
-      'click #global-region-visualize-VPC' : 'unmanagedVPCClick'
 
 
     initialize : ()->
@@ -114,11 +123,11 @@ define ['module/dashboard/template', 'module/dashboard/template_data',"constant"
 
       region = @region
       if region isnt "global"
-          filter = (f)-> f.get("region") is region && f.isExisting()
-          tojson = {thumbnail:true}
+        filter = (f)-> f.get("region") is region && f.isExisting()
+        tojson = {thumbnail:true}
 
-          attr.stacks = App.model.stackList().filter(filter).map (m)-> m.toJSON(tojson)
-          attr.apps   = App.model.appList().filter(filter).map   (m)-> m.toJSON(tojson)
+        attr.stacks = App.model.stackList().filter(filter).map (m)-> m.toJSON(tojson)
+        attr.apps   = App.model.appList().filter(filter).map   (m)-> m.toJSON(tojson)
 
       $('#region-app-stack-wrap').html( tplPartials.region_app_stack(attr) )
       return
@@ -149,8 +158,8 @@ define ['module/dashboard/template', 'module/dashboard/template_data',"constant"
       @region = region
 
       $( '#region-switch').find( 'span' )
-          .text( target.text() )
-          .data 'region', region
+        .text( target.text() )
+        .data 'region', region
 
       isntGlobal = region isnt 'global'
       @$el.find( '#global-view' ).toggle( not isntGlobal )
@@ -171,45 +180,41 @@ define ['module/dashboard/template', 'module/dashboard/template_data',"constant"
 
       reader = new FileReader()
       reader.onload = ( evt )->
-          error = App.importJson( reader.result )
-          if error
-              $("#import-json-error").html error
-          else
-              modal.close()
-              reader = null
-          null
+        error = App.importJson( reader.result )
+        if error
+          $("#import-json-error").html error
+        else
+          modal.close()
+          reader = null
+        null
 
       reader.onerror = ()->
-          $("#import-json-error").html lang.ide.POP_IMPORT_ERROR
-          null
+        $("#import-json-error").html lang.ide.POP_IMPORT_ERROR
+        null
 
       hanldeFile = ( evt )->
-          evt.stopPropagation()
-          evt.preventDefault()
+        evt.stopPropagation()
+        evt.preventDefault()
 
-          $("#modal-import-json-dropzone").removeClass("dragover")
-          $("#import-json-error").html("")
+        $("#modal-import-json-dropzone").removeClass("dragover")
+        $("#import-json-error").html("")
 
-          evt = evt.originalEvent
-          files = (evt.dataTransfer || evt.target).files
-          if not files or not files.length then return
-          reader.readAsText( files[0] )
-          null
+        evt = evt.originalEvent
+        files = (evt.dataTransfer || evt.target).files
+        if not files or not files.length then return
+        reader.readAsText( files[0] )
+        null
 
       $("#modal-import-json-file").on "change", hanldeFile
       zone = $("#modal-import-json-dropzone").on "drop", hanldeFile
-      zone.on "dragenter", ()->
-          console.log "dragenter"
-          $(this).closest("#modal-import-json-dropzone").toggleClass("dragover", true)
-      zone.on "dragleave", ()->
-          console.log "dragleave"
-          $(this).closest("#modal-import-json-dropzone").toggleClass("dragover", false)
+      zone.on "dragenter", ()-> $(this).closest("#modal-import-json-dropzone").toggleClass("dragover", true)
+      zone.on "dragleave", ()-> $(this).closest("#modal-import-json-dropzone").toggleClass("dragover", false)
       zone.on "dragover", ( evt )->
-          dt = evt.originalEvent.dataTransfer
-          if dt then dt.dropEffect = "copy"
-          evt.stopPropagation()
-          evt.preventDefault()
-          null
+        dt = evt.originalEvent.dataTransfer
+        if dt then dt.dropEffect = "copy"
+        evt.stopPropagation()
+        evt.preventDefault()
+        null
       null
 
     openItem    : ( event )-> App.openOps( $(event.currentTarget).attr("data-id") )
@@ -219,24 +224,53 @@ define ['module/dashboard/template', 'module/dashboard/template_data',"constant"
       $("#global-refresh").addClass "loading"
       @trigger "reloadResource"
 
-    deleteStack : (event) ->
-        App.deleteStack $( event.currentTarget ).closest("li").attr("data-id")
-        false
+    deleteStack    : (event)-> App.deleteStack $( event.currentTarget ).closest("li").attr("data-id"); false
+    duplicateStack : (event)-> App.duplicateStack $( event.currentTarget ).closest("li").attr("data-id"); false
+    startApp       : (event)-> App.startApp $( event.currentTarget ).closest("li").attr("data-id"); false
+    stopApp        : (event)-> App.stopApp $( event.currentTarget ).closest("li").attr("data-id"); false
+    terminateApp   : (event)-> App.terminateApp $( event.currentTarget ).closest("li").attr("data-id"); false
 
-    duplicateStack : (event) ->
-        App.duplicateStack $( event.currentTarget ).closest("li").attr("data-id")
-        false
+    visualizeVPC : ()->
+      data = [{
+        id      : "region1"
+        name    : "Region1"
+        subname : "US east"
+        vpcs    : [{
+          id           : "vpc-123"
+          disabled     : true
+          subnetCount  : 12
+          eniCount     : 1
+          amiCount     : 0
+          stoppedCount : 12
+          eipCount     : 23
+          elbCount     : 0
+        }, {
+          id           : "vpc-123"
+          empty        : true
+          subnetCount  : 12
+          eniCount     : 1
+          amiCount     : 0
+          stoppedCount : 12
+          eipCount     : 23
+          elbCount     : 0
+        },{
+          id           : "vpc-123"
+          subnetCount  : 12
+          eniCount     : 1
+          amiCount     : 0
+          stoppedCount : 12
+          eipCount     : 23
+          elbCount     : 0
+        }]
+      }]
 
-    startApp : ( event )->
-        App.startApp $( event.currentTarget ).closest("li").attr("data-id")
-        false
+      visModal = new Modal {
+        title         : "Select a VPC to be visualized:"
+        width         : "770"
+        template      : VisualizeVpcTpl( data )
+        disableFooter : true
+        compact       : true
+      }
 
-    stopApp : ( event )->
-        App.stopApp $( event.currentTarget ).closest("li").attr("data-id")
-        false
-
-    terminateApp : ( event )->
-        App.terminateApp $( event.currentTarget ).closest("li").attr("data-id")
-        false
 
   }

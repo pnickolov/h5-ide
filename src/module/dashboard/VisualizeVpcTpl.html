@@ -1,0 +1,36 @@
+<div class="scroll-wrap scrollbar-auto-hide" style="height:400px;">
+	<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+	<div id="VisualizeVpcDialog" class="scroll-content">
+
+		<div class="loading-spinner hide"></div>
+
+		<div class="unmanaged-vpc-empty" id="VisualizeFail">Oops, loading VPC failed.
+			<button class="btn btn-blue" id="VisualizeReload">Retry</button>
+		</div>
+
+		<div class="unmanaged-vpc-empty" id="VisualizeEmpty">There is no unmanaged VPC to visualize.</div>
+
+<ul>{{#each this}}<li>
+	<div class="region-header"><span class="region-name">{{name}}</span>{{subname}}</div>
+
+	<ul class="region-group clearfix" data-region="{{id}}">
+		{{#each vpcs}}
+		<li data-vpcid="{{id}}" class="visualize-vpc {{#if disabled}} disabled tooltip{{/if}}"
+			{{#if disabled}} data-tooltip="{{i18n 'IDE_TIP_VISUALIZE_MORE_THAN_100_ENI'}}"{{/if}}>
+			<h5>{{id}}</h5>
+			<ol class="tac"> {{#if empty}} There is no resource inside this VPC. {{else}}
+				<li class="visualize-res"><div class="vis-res-num">{{subnetCount}}</div><span class="vis-res-name">subnet</span></li>
+				<li class="visualize-res"><div class="vis-res-num">{{amiCount}}</div><span class="vis-res-name">running instance</span></li>
+				<li class="visualize-res"><div class="vis-res-num">{{stoppedCount}}</div><span class="vis-res-name">stopped instance</span></li>
+				<li class="visualize-res"><div class="vis-res-num">{{eniCount}}</div><span class="vis-res-name">network interface</span></li>
+				<li class="visualize-res"><div class="vis-res-num">{{eipCount}}</div><span class="vis-res-name">elastic ip</span></li>
+				<li class="visualize-res"><div class="vis-res-num">{{elbCount}}</div><span class="vis-res-name">load balancer</span></li>
+			{{/if}}
+			</ol>
+		</li>
+		{{/each}}
+	</ul>
+</li>{{/each}}</ul>
+
+	</div>
+</div>

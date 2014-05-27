@@ -1,5 +1,5 @@
 
-define ["Workspace", "module/DashboardView"], ( Workspace, DashboardView )->
+define ["Workspace", "module/DashboardView", "module/DashboardModel"], ( Workspace, DashboardView, DashboardModel )->
 
   class Dashboard extends Workspace
 
@@ -9,7 +9,8 @@ define ["Workspace", "module/DashboardView"], ( Workspace, DashboardView )->
 
 
     initialize : ()->
-      @view = new DashboardView()
+      @model = new DashboardModel()
+      @view  = new DashboardView({model:@model})
 
       # Watch changes in applist/stacklist
       @listenTo App.model.stackList(), "update", ()-> @view.updateOpsList()

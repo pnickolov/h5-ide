@@ -126,6 +126,9 @@ define [
   VisualOps.prototype.showSettings = ( tab )-> new SettingsDialog({ defaultTab:tab })
   VisualOps.prototype.showSettings.TAB = SettingsDialog.TAB
 
+  # Show a popup to ask the user to enter a credential
+  VisualOps.prototype.askForAwsCredential = ()-> @__view.askForAwsCredential()
+
   # These functions are for consistent behavoir of managing stacks/apps
   VisualOps.prototype.deleteStack    = (id)-> @__view.deleteStack(id)
   VisualOps.prototype.duplicateStack = (id)-> @__view.duplicateStack(id)

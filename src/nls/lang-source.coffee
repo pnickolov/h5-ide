@@ -3435,6 +3435,14 @@ VisualOps API. You cannot UNDO this action.'
       en: "Welcome to VisualOps"
       zh: "欢迎使用 VisualOps"
 
+    WELCOME_PROVIDE_CRED_TIT:
+      en: "Please provide new AWS credentials"
+      zh: "Please provide new AWS credentials"
+
+    WELCOME_PROVIDE_CRED_DESC:
+      en: "We cannot validate your AWS credentials, please provide new ones."
+      zh: "We cannot validate your AWS credentials, please provide new ones."
+
     WELCOME_TIT:
       en: "Welcome to VisualOps, "
       zh: "Welcome to VisualOps, "

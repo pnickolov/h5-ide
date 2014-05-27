@@ -57,10 +57,8 @@ define ["ApiRequestDefs", "api/ApiRequestErrors", "api/ApiRequestHandlers", "api
     if res.result[0] isnt 0 and !(ApiErrors.AwsErrorAws <= res.result[0] <= ApiErrors.AwsErrorExternal)
       # We can do aditional global handling for some specific error here.
       # For example, Invalid Session.
-      gloablHandler = ApiHandlers[ res.result[0] ]
-
-      if gloablHandler
-        return gloablHandler( res )
+      globalHandler = ApiHandlers[ res.result[0] ]
+      if globalHandler then return globalHandler( res )
 
       logAndThrow McError( res.result[0], "Service Error", res.result[1] )
 
@@ -82,6 +80,10 @@ define ["ApiRequestDefs", "api/ApiRequestErrors", "api/ApiRequestHandlers", "api
         awsresult = tryParseAws( awsresult[1], true )
         error.awsErrorCode = "" + awsresult.error
         error.awsresult    = awsresult.result
+
+        globalHandler = ApiHandlers.AwsHandlers[ error.awsError ]
+        if globalHandler then return globalHandler( error )
+
         logAndThrow error
 
     res.result[1]

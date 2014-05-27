@@ -67,6 +67,8 @@ define [
         new WelcomeDialog()
       return
 
+    askForAwsCredential : ()-> new WelcomeDialog({ askForCredential : true })
+
     showSessionDialog : ()->
       (new SessionDialog()).promise()
 

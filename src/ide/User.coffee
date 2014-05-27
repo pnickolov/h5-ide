@@ -78,17 +78,25 @@ define [ "ApiRequest", "event" , "backbone" ], ( ApiRequest, ide_event )->
       }
       return
 
-    # Fetch additional user infomation from an api.
     fetch : ()->
+      self = @
+
       ApiRequest("session_login", {
         username : @get("username")
         password : @get("session")
-      }).then ( result )=>
+      }).then ( result )->
 
-        @userInfoAccuired( result )
+        self.userInfoAccuired( result )
         ### env:prod ###
-        @bootIntercom()
+        self.bootIntercom()
         ### env:prod:end ###
+
+        if self.hasCredential()
+          # Just pick a fast aws api to validate if the user's credential is valid before launching IDE.
+          # Even if this method fails, ApiRequest will hanlde it for us. We would still launch IDE.
+          return ApiRequest("ec2_DescribeRegions").fail ()-> return
+
+        return
 
       , ( err )->
 
@@ -151,6 +159,9 @@ define [ "ApiRequest", "event" , "backbone" ], ( ApiRequest, ide_event )->
         access_key : accessKey
         secret_key : secretKey
       })
+      d = Q.defer()
+      d.resolve()
+      d.promise
 
     changeCredential : ( account = "", accessKey = "", secretKey = "", force = false )->
       self = this

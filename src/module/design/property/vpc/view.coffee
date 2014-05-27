@@ -6,7 +6,8 @@ define [ '../base/view',
          './template/stack'
          'i18n!nls/lang.js'
          'dhcp'
-], ( PropertyView, template, lang, dhcp ) ->
+         'UI.modalplus'
+], ( PropertyView, template, lang, dhcp, modalPlus ) ->
 
     # Helpers
     mapFilterInput = ( selector ) ->
@@ -67,14 +68,13 @@ define [ '../base/view',
             @dhcp = new dhcp()
             @dhcp.off 'change'
             @dhcp.on 'change', (e)=>
-                if e.id is 'default'
-                    @model.removeDhcp false
-                else if e.id is 'auto'
-                    @model.removeDhcp true
-                else
-                    @model.useDhcp()
-                    @model.setDHCPOptions e
+                @changeDhcp(e)
+            @dhcp.on 'manage', =>
+                console.log @dhcp.manager
             @$el.find('#dhcp-dropdown').html(@dhcp.dropdown.el)
+            @initDhcpSelection()
+            data.name
+        initDhcpSelection: ->
             currentVal = @model.toJSON().dhcp
             if currentVal.dhcpType is 'default'
                 selection = isAuto : true
@@ -83,7 +83,14 @@ define [ '../base/view',
             else
                 selection = currentVal
             @dhcp.setSelection selection
-            data.name
+        changeDhcp: (e)->
+            if e.id is 'default'
+                @model.removeDhcp false
+            else if e.id is 'auto'
+                @model.removeDhcp true
+            else
+                @model.useDhcp()
+                @model.setDHCPOptions e
 
         processParsley: ( event ) ->
             $( event.currentTarget )

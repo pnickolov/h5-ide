@@ -13,9 +13,10 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
                 isAuto: true
             @dropdown.setSelection selection
             @dropdown.on 'open', @show , @
-            @dropdown.on 'manage', @manageDHCP, @
+            @dropdown.on 'manage', @manageDhcp, @
             @dropdown.on 'change', @setDHCP, @
             @dropdown.on 'filter', @filter, @
+            @manager = new toolbarModal @getModalOptions()
             @
         remove: ()->
             @.isRemoved = true
@@ -62,5 +63,53 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
         setSelection: (e)->
             selection = template.selection e
             @dropdown.setSelection selection
+        manageDhcp: ->
+            console.log @manager
+            @manager.render()
+            @.trigger 'manage'
+        getModalOptions: ->
+            that = @
+            region = Design.instance().get('region')
+            regionName = constant.REGION_SHORT_LABEL[ region ]
+
+            title: "Manage DHCP Options in #{regionName}"
+            slideable: true
+            context: that
+            buttons: [
+                {
+                    icon: 'new-stack'
+                    type: 'create'
+                    name: 'Create Key Pair'
+                }
+                {
+                    icon: 'import'
+                    type: 'import'
+                    name: 'Import Key Pair'
+                }
+                {
+                    icon: 'del'
+                    type: 'delete'
+                    disabled: true
+                    name: 'Delete'
+                }
+                {
+                    icon: 'refresh'
+                    type: 'refresh'
+                    name: ''
+                }
+            ]
+            columns: [
+                {
+                    sortable: true
+                    width: "100px" # or 40%
+                    name: 'Name'
+                }
+                {
+                    sortable: false
+                    width: "100px" # or 40%
+                    name: 'Domain-name'
+                }
+            ]
+
 
     dhcpView

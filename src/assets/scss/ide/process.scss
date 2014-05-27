@@ -1,12 +1,12 @@
 @import "compass";
 
-#process-container {
+.ops-process {
   width       : 100%;
   padding-top : 10%;
   height      : 90%;
   background  : #0a0a0a;
 
-  > header {
+  header {
     text-align    : center;
     font-size     : 16px;
     color         : #eee;
@@ -15,6 +15,27 @@
 
   .process-info {
     margin-left : 10px;
+  }
+
+  > div {
+    max-width: 580px;
+    margin: 0 auto;
+  }
+
+  .fail .result-error-info {
+    margin-bottom : 15px;
+  }
+
+  .sub-title {
+    font-size  : 14px;
+    color      : #999;
+    text-align : center;
+    margin     : 0;
+    padding    : 10px;
+  }
+
+  .title {
+    color: #999;
   }
 }
 

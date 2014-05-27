@@ -8,7 +8,7 @@
 
 ###
 
-define [ "./submodels/OpsCollection", "./submodels/OpsModel", "ApiRequest", "backbone",  "event", "constant", "component/exporter/Thumbnail" ], ( OpsCollection, OpsModel, ApiRequest, Backbone, ide_event, constant, ThumbUtil )->
+define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone",  "event", "constant", "component/exporter/Thumbnail" ], ( OpsCollection, OpsModel, ApiRequest, Backbone, ide_event, constant, ThumbUtil )->
 
   Backbone.Model.extend {
 
@@ -220,5 +220,5 @@ define [ "./submodels/OpsCollection", "./submodels/OpsModel", "ApiRequest", "bac
       if request.state.processing
         theApp.setStatusProgress( request.step, request.totalSteps )
       else
-        theApp.setStatusWithWSEvent( request.operation, request.state )
+        theApp.setStatusWithWSEvent( request.operation, request.state, request.error )
   }

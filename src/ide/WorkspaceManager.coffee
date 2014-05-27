@@ -22,7 +22,7 @@ define [ "./subviews/WorkspaceView", "underscore" ], ( WorkspaceView )->
       @__spaces = order.map (id)-> self.__spacesById[id]
       return
 
-    spaces : ()-> @__spaces.splice 0, 0
+    spaces : ()-> @__spaces.slice 0
 
     get : ( id )-> @__spacesById[ id ]
 

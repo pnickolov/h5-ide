@@ -26,13 +26,14 @@ define ["ApiRequest", "constant", "component/exporter/Thumbnail", "backbone"], (
   OpsModel = Backbone.Model.extend {
 
     defaults : ()->
-      updateTime    : +(new Date())
-      region        : ""
-      usage         : ""
-      state         : OpsModelState.UnRun
-      terminateFail : false
-      stoppable     : true # If the app has instance_store_ami, stoppable is false
-      progress      : 0
+      updateTime     : +(new Date())
+      region         : ""
+      state          : OpsModelState.UnRun
+      stoppable      : true # If the app has instance_store_ami, stoppable is false
+      # usage          : ""
+      # terminateFail  : false
+      # progress       : 0
+      # opsActionError : ""
 
     initialize : ( attr, options )->
       if options
@@ -206,7 +207,7 @@ define ["ApiRequest", "constant", "component/exporter/Thumbnail", "backbone"], (
 
     setStatusWithApiResult : ( state )-> @set "state", OpsModelState[ state ]
 
-    setStatusWithWSEvent : ( operation, state )->
+    setStatusWithWSEvent : ( operation, state, error )->
       # operation can be ["launch", "stop", "start", "update", "terminate"]
       # state can have "completed", "failed", "progressing", "pending"
       switch operation
@@ -236,6 +237,9 @@ define ["ApiRequest", "constant", "component/exporter/Thumbnail", "backbone"], (
             toState = OpsModelState.Running
           else
             toState = OpsModelState.Stopped
+
+      if error
+        @attributes.opsActionError = error
 
       if toState is OpsModelState.Destroyed
         @__destroy()

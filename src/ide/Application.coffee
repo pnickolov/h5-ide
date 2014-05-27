@@ -16,7 +16,7 @@ define [
   "./subviews/SettingsDialog"
   "CloudResources"
   "./WorkspaceManager"
-  "module/DesignEditor"
+  "module/opsEditor"
   "component/exporter/JsonExporter"
   "common_handle",
   "event",

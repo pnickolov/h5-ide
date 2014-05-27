@@ -8,7 +8,7 @@
 
 ###
 
-define [ "./OpsModel", "constant", "backbone" ], ( OpsModel, constant )->
+define [ "OpsModel", "constant", "backbone" ], ( OpsModel, constant )->
 
   Backbone.Collection.extend {
     model       : OpsModel

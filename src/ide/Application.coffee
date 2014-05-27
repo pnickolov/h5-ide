@@ -73,43 +73,8 @@ define [
       # The Websockets subscription will be lost if we have an invalid session.
       @WS.subscribe()
 
-    @user.on "change:credential", ()=>
-      @__onCredentialChanged()
-      CloudResources.invalidate()
+    @user.on "change:credential", ()-> CloudResources.invalidate()
     return
-
-
-  # LEGACY code
-  # Well, first of all. The "DescribeAccountAttributes" is no longer needed because we only support vpc now. And it seems like all we have to do is to call `vpc_model.DescribeAccountAttributes`
-  # Second. Forget it, just a piece of shit.
-  VisualOps.prototype.__onCredentialChanged = ()->
-    # check credential
-    vpc_model.DescribeAccountAttributes { sender : vpc_model }, App.user.get( 'usercode' ), App.user.get( 'session' ), '',  ["supported-platforms", "default-vpc"]
-
-    vpc_model.once 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN', (result) ->
-      console.log 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN'
-
-      if result.is_error then return
-
-      # update account attributes
-      regionAttrSet = result.resolved_data
-      _.map constant.REGION_KEYS, ( value ) ->
-        if regionAttrSet[ value ] and regionAttrSet[ value ].accountAttributeSet
-
-          #resolve support-platform
-          support_platform = regionAttrSet[ value ].accountAttributeSet.item[0].attributeValueSet.item
-          if support_platform and $.type(support_platform) == "array"
-            if support_platform.length == 2
-              MC.data.account_attribute[ value ].support_platform = support_platform[0].attributeValue + ',' + support_platform[1].attributeValue
-            else if support_platform.length == 1
-              MC.data.account_attribute[ value ].support_platform = support_platform[0].attributeValue
-
-          #resolve default-vpc
-          default_vpc = regionAttrSet[ value ].accountAttributeSet.item[1].attributeValueSet.item
-          if  default_vpc and $.type(default_vpc) == "array" and default_vpc.length == 1
-            MC.data.account_attribute[ value ].default_vpc = default_vpc[0].attributeValue
-          null
-
 
   # This method will prompt a dialog to let user to re-acquire the session
   VisualOps.prototype.acquireSession = ()->

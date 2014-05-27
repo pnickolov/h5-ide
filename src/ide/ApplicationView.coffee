@@ -13,11 +13,12 @@ define [
   "./subviews/SettingsDialog"
   "./subviews/Navigation"
   "./subviews/AppTpl"
-], ( Backbone, SessionDialog, HeaderView, WelcomeDialog, SettingsDialog, Navigation, AppTpl )->
+  'i18n!nls/lang.js'
+], ( Backbone, SessionDialog, HeaderView, WelcomeDialog, SettingsDialog, Navigation, AppTpl, lang )->
 
   Backbone.View.extend {
 
-    el : "body"
+    el : $("body")[0]
 
     events :
       "click .click-select" : "selectText"
@@ -35,6 +36,25 @@ define [
       ### env:debug ###
       require ["./ide/subviews/DebugTool"], (DT)-> new DT()
       ### env:debug:end ###
+
+      $(window).on "beforeunload", @checkUnload
+      $(document).on 'keydown', @globalKeyEvent
+      $(window).once 'focus', () -> App.openSampleStack()
+      return
+
+    checkUnload : ()-> if App.canQuit() then undefined else lang.ide.BEFOREUNLOAD_MESSAGE
+
+    globalKeyEvent: (event) ->
+      nodeName = event.target.nodeName.toLowerCase()
+      if nodeName is "input" or nodeName is "textarea" or event.target.contentEditable is 'true'
+        return
+
+      switch event.which
+        when 8 then return false
+        when 191
+          modal MC.template.shortkey(), true
+          return false
+
       return
 
     toggleWSStatus : ( isConnected )->

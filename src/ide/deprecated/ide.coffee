@@ -3,24 +3,12 @@
 #############################
 
 define [ 'MC', 'event', 'handlebars'
-		 'i18n!nls/lang.js',
-		 './view', 'canvas_layout', 'design_module', 'constant',
+		 'i18n!nls/lang.js', 'canvas_layout', 'design_module', 'constant',
 		 'base_model',
 		 'common_handle', 'validation', 'aws_handle'
-], ( MC, ide_event, Handlebars, lang, view, canvas_layout, design, constant, base_model, common_handle, validation ) ->
+], ( MC, ide_event, Handlebars, lang, canvas_layout, design, constant, base_model, common_handle, validation ) ->
 
 	initialize : () ->
-
-		#############################
-		#  check network
-		#############################
-
-		# _.delay () ->
-		# 	console.log '---------- check network ----------'
-		# 	if !MC.data.is_loading_complete and $( '#loading-bar-wrapper' ).html().trim() isnt ''
-		# 		ide_event.trigger ide_event.SWITCH_MAIN
-		# 		notification 'error', lang.ide.IDE_MSG_ERR_CONNECTION, true
-		# , 50 * 1000
 
 		#############################
 		#  initialize MC.data
@@ -70,11 +58,6 @@ define [ 'MC', 'event', 'handlebars'
 
 		#save resouce service name
 		MC.data.resouceapi = []
-		#dependency MC.data.is_loading_complete and MC.data.design_submodule_count = -1
-		MC.data.ide_available_count = 0
-
-		#temp
-		#MC.data.IDEView = view
 
 		MC.data.account_attribute = {}
 		MC.data.account_attribute[r] = { 'support_platform':'', 'default_vpc':'', 'default_subnet':{} } for r in constant.REGION_KEYS
@@ -119,13 +102,6 @@ define [ 'MC', 'event', 'handlebars'
 		ide_event.onLongListen ide_event.SWITCH_LOADING_BAR,  ( tab_id, is_transparent ) -> view.showLoading tab_id, is_transparent
 		ide_event.onLongListen ide_event.SWITCH_WAITING_BAR,  () -> view.toggleWaiting()
 		ide_event.onLongListen ide_event.HIDE_STATUS_BAR,     () -> view.hideStatubar()
-
-		#listen IDE_AVAILABLE
-		ide_event.onLongListen ide_event.IDE_AVAILABLE, () ->
-			console.log 'IDE_AVAILABLE'
-			MC.data.ide_available_count = MC.data.ide_available_count + 1
-			console.log '----------- ide:SWITCH_MAIN -----------'
-			ide_event.trigger ide_event.SWITCH_MAIN if MC.data.ide_available_count is 3
 
 		#############################
 		#  load module

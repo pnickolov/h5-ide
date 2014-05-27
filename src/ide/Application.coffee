@@ -87,6 +87,10 @@ define [
     window.location.href = "/login/"
     return
 
+  # Return true if the ide can quit now.
+  VisualOps.prototype.canQuit = ()-> !@workspaces.hasUnsaveSpaces()
+
+
   VisualOps.prototype.showSettings = ( tab )-> new SettingsDialog({ defaultTab:tab })
   VisualOps.prototype.showSettings.TAB = SettingsDialog.TAB
 

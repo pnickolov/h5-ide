@@ -45,6 +45,9 @@ define ["backbone"], ()->
     # Override this method to tell the ide if the tab should be fixed.
     isFixed : ()-> false
 
+    # Override this method to tell the ide that this tab is un-saved.
+    isModified : ()-> false
+
     # Override this method to return a class string that can be use to decorate the tab.
     tabClass : ()-> ""
 

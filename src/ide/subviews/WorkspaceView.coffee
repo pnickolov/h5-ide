@@ -88,9 +88,7 @@ define [ "backbone", "UI.sortable", "jquerysort" ], () ->
         @trigger "close", $(evt.currentTarget).closest("li")[0].id
         false
 
-      showLoading : ()->
-        $("#loading-bar-wrapper").show().html('<div class="loading-wrapper"><div class="gear-loading"></div></div>')
-
+      showLoading : ()-> $("#loading-bar-wrapper").show()
       hideLoading : ()-> $("#loading-bar-wrapper").hide()
 
     }

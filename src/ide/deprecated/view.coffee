@@ -10,8 +10,6 @@ define [ 'event',
 
     MainView = Backbone.View.extend {
 
-        el       : $ '#main'
-
         delay    : null
 
         open_fail: false
@@ -25,102 +23,14 @@ define [ 'event',
                 if App and App.openSampleStack
                     App.openSampleStack()
 
-        showMain : ->
-
-            that = @
-
-            console.log 'showMain'
-            #
-            @toggleWaiting() if $( '#waiting-bar-wrapper' ).hasClass 'waiting-bar'
-            #
-            clearTimeout @delay if @delay
-            #
-            MC.data.loading_wrapper_html = $( '#loading-bar-wrapper' ).html() if !MC.data.loading_wrapper_html
-            #
-            return if $( '#loading-bar-wrapper' ).html().trim() is ''
-            #
-            target = $('#loading-bar-wrapper').find( 'div' )
-            target.fadeOut 'normal', () ->
-                target.remove()
-                $( '#wrapper' ).removeClass 'main-content'
-            #
-            delete MC.open_failed_list[ MC.data.current_tab_id ] if not @open_fail
-            @open_fail = false
-            #
-            null
-
-        showLoading : ( tab_id, is_transparent ) ->
-            console.log 'showLoading, tab_id = ' + tab_id + ' , is_transparent = ' + is_transparent
-            $( '#loading-bar-wrapper' ).html if !is_transparent then MC.data.loading_wrapper_html else MC.template.loadingTransparent()
-            #
-            me = this
-            #
-            @delay = setTimeout () ->
-                console.log 'setTimeout close loading'
-                if $( '#loading-bar-wrapper' ).html().trim() isnt ''
-                    me.open_fail = true
-                    ide_event.trigger ide_event.SWITCH_MAIN
-                    #ide_event.trigger ide_event.CLOSE_DESIGN_TAB, tab_id if tab_id
-                    #notification 'error', lang.ide.IDE_MSG_ERR_OPEN_TAB, true
-                    ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, 'OPEN_TAB_FAIL', tab_id
-            , 1000 * 30
-            #
-            null
-
         toggleWaiting : () ->
             console.log 'toggleWaiting'
             $( '#waiting-bar-wrapper' ).removeClass 'waiting-bar'
             #
             @hideStatubar()
 
-        showDashbaordTab : () ->
-            console.log 'showDashbaordTab'
-            console.log 'MC.data.dashboard_type = ' + MC.data.dashboard_type
-            if MC.data.dashboard_type is 'OVERVIEW_TAB' then this.showOverviewTab() else this.showRegionTab()
-            #
-            @hideStatubar()
-
-        showOverviewTab : () ->
-            console.log 'showOverviewTab'
-            #
-            $( '#tab-content-dashboard' ).addClass  'active'
-            $( '#tab-content-region' ).removeClass  'active'
-            $( '#tab-content-design' ).removeClass  'active'
-            $( '#tab-content-process' ).removeClass 'active'
-            #
-
-        showRegionTab : () ->
-            console.log 'showRegionTab'
-            #
-            $( '#tab-content-region' ).addClass       'active'
-            $( '#tab-content-dashboard' ).removeClass 'active'
-            $( '#tab-content-design' ).removeClass    'active'
-            $( '#tab-content-process' ).removeClass   'active'
-            #
-
-        showTab : () ->
-            console.log 'showTab'
-            #
-            $( '#tab-content-design' ).addClass       'active'
-            $( '#tab-content-dashboard' ).removeClass 'active'
-            $( '#tab-content-region' ).removeClass    'active'
-            $( '#tab-content-process' ).removeClass   'active'
-            #
-            @hideStatubar()
-            #
-            null
-
-        showProcessTab : () ->
-            console.log 'showProcessTab'
-            #
-            $( '#tab-content-process' ).addClass      'active'
-            $( '#tab-content-dashboard' ).removeClass 'active'
-            $( '#tab-content-region' ).removeClass    'active'
-            $( '#tab-content-design' ).removeClass    'active'
-            #
-            @hideStatubar()
-
         beforeunloadEvent : ->
+            return
 
             # ie 10 not check
             if MC.browser is 'msie' and MC.browserVersion is 10
@@ -222,6 +132,4 @@ define [ 'event',
 
     }
 
-    view = new MainView()
-
-    return view
+    new MainView()

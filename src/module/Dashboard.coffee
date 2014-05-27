@@ -9,11 +9,8 @@ define ["Workspace", "module/DashboardView", "event"], ( Workspace, DashboardVie
 
 
     initialize : ()->
-
       # LEGACY CODE, would remove this stupid code.
       ide_event.trigger ide_event.DASHBOARD_COMPLETE
-      ide_event.trigger ide_event.IDE_AVAILABLE
-      ide_event.trigger ide_event.SWITCH_MAIN
 
       @view = new DashboardView()
 

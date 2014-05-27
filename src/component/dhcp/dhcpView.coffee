@@ -81,6 +81,33 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
                 return false
             content = template.content items:@collection.toJSON()
             @manager.setContent content
+
+        renderSlides: (which, checked)->
+            tpl = template['slide_'+ which]
+            slides = @getSlides()
+            slides[which]?.call @, tpl, checked
+            console.log which, checked
+        getSlides: ->
+            "delete": (tpl, checked)->
+                checkedAmount = checked.length
+                if not checkedAmount
+                    return
+                data = {}
+
+                if checkedAmount is 1
+                    data.selectedId = checked[0].data['id']
+                    console.log ' IS one'
+                else
+                    data.selectedCount = checkedAmount
+                    console.log "IS Not One"
+                console.log checkedAmount, checked[0].data['id']
+                @manager.setSlide tpl data
+
+            'create': (tpl)->
+                console.log tpl()
+                data = {}
+                @manager.setSlide tpl()
+
         getModalOptions: ->
             that = @
             region = Design.instance().get('region')

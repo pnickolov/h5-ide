@@ -5,6 +5,7 @@
   padding-top : 10%;
   height      : 90%;
   background  : #0a0a0a;
+  position    : relative;
 
   header {
     text-align    : center;
@@ -18,8 +19,8 @@
   }
 
   > div {
-    max-width: 580px;
-    margin: 0 auto;
+    width  : 580px;
+    margin : 0 auto;
   }
 
   .fail .result-error-info {
@@ -35,7 +36,37 @@
   }
 
   .title {
-    color: #999;
+    color : #999;
+  }
+
+  .processing, .success {
+    @include transition( all .2s ease-in );
+  }
+
+  .fadeout {
+    opacity : 0;
+    margin-top : -20px;
+  }
+
+  .success {
+    opacity     : 0;
+    margin-top  : 20px;
+    position    : absolute;
+    top         : 0;
+    left        : 0;
+    width       : 100%;
+    padding-top : 10%;
+
+    .title {
+      font-size  : 18px;
+      color      : #676767;
+      text-align : center;
+    }
+  }
+
+  .fadein {
+    opacity: 1;
+    margin-top : 0;
   }
 }
 

@@ -41,7 +41,7 @@
 <header class="modal-header" style="width:390px;"><h3>{{i18n "TOOL_POP_TIT_STOP_APP"}}</h3><i class="modal-close">&times;</i></header>
 
 {{#if production}}
-  <div class="modal-body" style="color:#667;width:390px;">
+  <div class="modal-body" style="color:#676767;width:390px;">
     <p><b style="color:#ec3c38;">{{name}} {{ i18n 'POP_CONFIRM_PROD_APP_WARNING_MSG' }}</b>{{ i18n 'POP_CONFIRM_TERMINATE_PROD_APP_MSG' }} {{ i18n 'POP_CONFIRM_STOP_ASG' }}</p>
     <p>{{ i18n 'POP_CONFIRM_STOP_PROD_APP_INPUT_LBL' }}</p>
     <div><input class="input" style="width:351px;" id="appNameConfirmIpt"/></div>
@@ -61,7 +61,7 @@
 <header class="modal-header" style="width:390px;"><h3>{{i18n "TOOL_POP_TIT_TERMINATE_PRD_APP"}}</h3><i class="modal-close">&times;</i></header>
 
 {{#if production}}
-  <div class="modal-body" style="color:#667;width:390px;">
+  <div class="modal-body" style="color:#676767;width:390px;">
     <p><b style="color:#ec3c38;">{{name}} {{ i18n 'POP_CONFIRM_PROD_APP_WARNING_MSG' }}</b>{{ i18n 'POP_CONFIRM_TERMINATE_PROD_APP_MSG' }}</p>
     <p>{{ i18n 'POP_CONFIRM_TERMINATE_PROD_APP_INPUT_LBL' }}</p>
     <div><input class="input" style="width:351px;" id="appNameConfirmIpt"/></div>

@@ -20,11 +20,27 @@ define ["OpsModel", "./OpsEditorBase", "./OpsProgressTpl", "backbone"], ( OpsMod
       @$el.html OpsProgressTpl( @model.toJSON() )
       return
 
+    switchToDone : ()->
+      @$el.find(".success").show()
+      self = @
+      setTimeout ()->
+        self.$el.find(".processing").addClass("fadeout")
+        self.$el.find(".success").addClass("fadein")
+        return
+      , 10
+      setTimeout ()->
+        self.trigger "done"
+      , 2000
+      return
+
     updateState : ()->
       switch @model.get("state")
-        when OpsModel.State.running
-          @$el.children().hide()
-          @$el.find("success").show()
+        when OpsModel.State.Running
+          if @isAwake
+            @switchToDone()
+          else
+            @done = true
+
         when OpsModel.State.Destroyed
           @$el.children().hide()
           @$el.find(".fail").show()
@@ -42,6 +58,19 @@ define ["OpsModel", "./OpsEditorBase", "./OpsProgressTpl", "backbone"], ( OpsMod
 
     close : ()-> @trigger "close"
 
+    awake : ()->
+      @$el.show()
+      @isAwake = true
+      if @done
+        @done = false
+        @switchToDone()
+      return
+
+    sleep : ()->
+      @$el.hide()
+      @isAwake = false
+      return
+
   }
 
   # Controller
@@ -54,5 +83,8 @@ define ["OpsModel", "./OpsEditorBase", "./OpsProgressTpl", "backbone"], ( OpsMod
       @view.on "close", ()-> self.remove()
 
       return
+
+    awake : ()-> @view.awake()
+    sleep : ()-> @view.sleep()
 
   OpsProgress

@@ -20,6 +20,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
             title: "Manage SNS in #{regionName}"
             #slideable: _.bind that.denySlide, that
             context: that
+            slideStyle: 'overflow: visible'
             buttons: [
                 {
                     icon: 'new-stack'

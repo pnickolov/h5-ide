@@ -12,7 +12,7 @@
             </div>
         </div>
         <div class="list">
-            <div class="slidebox">
+            <div class="slidebox" style="{{slideStyle}}">
                 <div class="content clearfix">
                 </div>
                 <div class="error">

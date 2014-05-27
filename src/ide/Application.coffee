@@ -31,7 +31,6 @@ define [ "ApiRequest", "component/exporter/JsonExporter", "./Websocket", "./Appl
     # This function returns a promise
     @user.fetch()
 
-
   VisualOps.prototype.__createWebsocket = ()->
     @WS = new Websocket()
 

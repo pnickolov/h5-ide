@@ -51,12 +51,16 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
             @dropdown.setContent content
         setDHCP: (e)->
             if e is '@auto'
-                targetDhcp = e
-            else if e is @default
-                targetDhcp = e
+                targetDhcp = id: 'auto'
+            else if e is '@default'
+                targetDhcp = id: "default"
             else
-                targetDhcp = @collection.findWhere
+                targetModel = @collection.findWhere
                     id: e
-            console.log targetDhcp, e
+                targetDhcp = targetModel.toJSON()
             @trigger 'change', targetDhcp
+        setSelection: (e)->
+            selection = template.selection e
+            @dropdown.setSelection selection
+
     dhcpView

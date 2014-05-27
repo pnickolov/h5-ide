@@ -5,7 +5,7 @@
     {{#if isDefault}}
         {{i18n "PROP_VPC_DEFAULT_DHCP"}} <i class="icon-info tooltip" data-tooltip="{{i18n 'PROP_VPC_TIP_DEFAULT_DHCP'}}"></i>
     {{else}}
-        {{keyName}}
+        {{id}}
     {{/if}}
 {{/if}}
 

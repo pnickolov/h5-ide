@@ -30,7 +30,7 @@
                                 </div>
                             </th>
                             {{#each columns}}
-                            <th class="{{#if sortable}}sortable{{/if}}" style="{{#if width}}width={{width}};{{/if}}">{{name}}</th>
+                            <th class="{{#if sortable}}sortable{{/if}}" style="{{#if width}}width:{{width}};{{/if}}">{{name}}</th>
                             {{/each}}
                         </tr>
                     </thead>
@@ -43,7 +43,7 @@
                                 <tr>
                                     <th><div class="th-inner"></div></th>
                                     {{#each columns}}
-                                    <th><div class="th-inner"></div></th>
+                                    <th style="{{#if width}}width:{{width}};{{/if}}"><div class="th-inner"></div></th>
                                     {{/each}}
                                 </tr>
                             </thead>

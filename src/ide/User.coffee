@@ -97,8 +97,17 @@ define [ "ApiRequest", "event" , "backbone" ], ( ApiRequest, ide_event )->
         # But we should we do?
 
         if err.error < 0
-          # Network Error, Try reloading
-          window.location.reload()
+          if err.error is ApiRequest.Errors.Network500
+            # Server down
+            # Actually this logic should be done in Application, not in User
+            # But we don't have a unified api to get the user's global data,
+            # thus the Application do no fetching.
+            # So we can only handle this situation here.
+            # TODO : Maybe we should move this to ApiRequest's global handling.
+            window.location = "/500"
+          else
+            # Network Error, Try reloading
+            window.location.reload()
         else
           # If there's service error. I think we need to logout, because I guess it's because the session is not right.
           App.logout()

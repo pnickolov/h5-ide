@@ -49,4 +49,14 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
             @dropdown.toggleControls true
             @dropdown.setSelection selection
             @dropdown.setContent content
+        setDHCP: (e)->
+            if e is '@auto'
+                targetDhcp = e
+            else if e is @default
+                targetDhcp = e
+            else
+                targetDhcp = @collection.findWhere
+                    id: e
+            console.log targetDhcp, e
+            @trigger 'change', targetDhcp
     dhcpView

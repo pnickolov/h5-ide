@@ -186,8 +186,8 @@ a.table-link {
 /* Button */
 .btn {
 	display      : inline-block;
-	padding      : 8px 0;
-	min-width    : 115px;
+	padding      : 8px 10px;
+	min-width    : 100px;
 	margin-bottom: 0;
 	box-sizing   : border-box;
 

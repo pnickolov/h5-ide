@@ -66,6 +66,11 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalpl
             $button = $ event.currentTarget
             $slidebox = @$( '.slidebox' )
             button = $button.data 'btn'
+
+            # refresh has no slide
+            if button is 'refresh'
+                return @
+
             $activeButton = @$( '.toolbar .active' )
             activeButton = $activeButton and $activeButton.data 'btn'
 

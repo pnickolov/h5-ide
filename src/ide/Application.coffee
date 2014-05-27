@@ -56,7 +56,7 @@ define [
 
     @WS.on "StatusChanged", ( isConnected )=>
       console.info "Websocket Status changed, isConnected:", isConnected
-      @__view.toggleWSStatus( isConnected )
+      if @__view then @__view.toggleWSStatus( isConnected )
 
     return
 

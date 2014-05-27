@@ -2,11 +2,7 @@
 #  main for ide
 #############################
 
-define [ 'MC', 'event', 'handlebars'
-		 'i18n!nls/lang.js', 'canvas_layout', 'design_module', 'constant',
-		 'base_model',
-		 'common_handle', 'validation', 'aws_handle'
-], ( MC, ide_event, Handlebars, lang, canvas_layout, design, constant, base_model, common_handle, validation ) ->
+define [ 'MC', 'constant', 'common_handle', 'validation', 'aws_handle' ], ( MC, constant, common_handle, validation ) ->
 
 	initialize : () ->
 
@@ -85,6 +81,13 @@ define [ 'MC', 'event', 'handlebars'
 		# include 'NEW_STACK' 'OPEN_STACK' 'OPEN_APP'
 		MC.data.open_tab_data    = {}
 
+
+
+		return
+
+
+
+
 		#############################
 		#  listen ide_event
 		#############################
@@ -102,37 +105,6 @@ define [ 'MC', 'event', 'handlebars'
 		ide_event.onLongListen ide_event.SWITCH_LOADING_BAR,  ( tab_id, is_transparent ) -> view.showLoading tab_id, is_transparent
 		ide_event.onLongListen ide_event.SWITCH_WAITING_BAR,  () -> view.toggleWaiting()
 		ide_event.onLongListen ide_event.HIDE_STATUS_BAR,     () -> view.hideStatubar()
-
-		#############################
-		#  load module
-		#############################
-
-		#load header
-		# header.loadModule()
-		#load tabbar
-		# tabbar.loadModule()
-		#load dashboard
-		# dashboard.loadModule()
-
-		#listen DASHBOARD_COMPLETE
-		ide_event.onListen ide_event.DASHBOARD_COMPLETE, () ->
-			console.log 'DASHBOARD_COMPLETE'
-			#load design
-			design.loadModule()
-			#temp
-			setTimeout () ->
-				#load layout
-				console.log 'layout'
-				#layout.ready()
-				canvas_layout.canvas_initialize()
-			, 2000
-
-		#listen DESIGN_COMPLETE
-		# ide_event.onListen ide_event.DESIGN_COMPLETE, () ->
-		# 	console.log 'DESIGN_COMPLETE'
-		# 	process.loadModule()
-		# 	#
-		# 	#ide_event.trigger ide_event.SWITCH_MAIN
 
 		#############################
 		#  base model

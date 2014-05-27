@@ -1,5 +1,5 @@
 
-define( ['event', 'jquery', 'MC.canvas', 'MC.canvas.constant', 'canvon'], function(ide_event) {
+define( ['jquery', 'MC.canvas', 'MC.canvas.constant', 'canvon'], function() {
 var listen = function ()
 {
 	var canvas_state = MC.canvas.getState(),
@@ -93,15 +93,8 @@ var canvas_initialize = function ()
 
 };
 
-// Dom Ready
-var connect = function ()
-{
-
-};
-
 	return {
 		'listen'     : listen,
 		'canvas_initialize' : canvas_initialize,
-		'connect'    : connect
 	};
 });

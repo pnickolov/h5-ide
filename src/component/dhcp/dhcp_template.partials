@@ -20,7 +20,7 @@
         </div>
     </td>
     <td>{{id}}</td>
-    <td>{{id}}</td>
+    <td>{{#if domain-name.length}}{{#each domain-name}}{{this}}&nbsp;&nbsp;&nbsp;&nbsp;{{/each}}{{else}}&nbsp;Not set{{/if}}</td>
 </tr>
 {{/each}}
 

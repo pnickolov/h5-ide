@@ -1,4 +1,5 @@
 define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_modal', 'i18n!nls/lang.js', './dhcp_template.js'], ( CloudResources, constant, comboDropdown, modalPlus, toolbarModal, lang, template )->
+    fetched = false
     dhcpView = Backbone.View.extend
         constructor:->
             @collection = CloudResources constant.RESTYPE.DHCP, Design.instance().region()
@@ -19,16 +20,21 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
             @dropdown.on 'change', @setDHCP, @
             @dropdown.on 'filter', @filter, @
             @manager = new toolbarModal @getModalOptions()
+            @manager.on 'refresh', @refreshManager, @
+            @manager.on 'slidedown', @renderSlides, @
+            @manager.on 'action', @doAction, @
+            #@manager.on 'close', @manager.remove()
             @
         remove: ()->
             @.isRemoved = true
             Backbone.View::remove.call @
         render: ->
-            if not @collection.fetched
-                @collection.fetched = true
+            if not fetched
                 @renderLoading()
-                @collection.fetch().then(@render)
+                @collection.fetch().then =>
+                    @render()
                 console.log "Fetching....."
+                fetched = true
                 return false
             console.log @collection.toJSON()
             @renderDropdown()
@@ -70,18 +76,22 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
             @manager.render()
             @renderManager()
             @.trigger 'manage'
+        refreshManager: ->
+            fetched = false
+            @renderManager()
         renderManager: ->
-            if not @collection.fetched
-                @collection.fetch().then(@renderManager)
+            if not fetched
+                fetched = true
+                console.log 'Fetching For Manager......'
+                @collection.fetchForce().then =>
+                    @renderManager()
                 return false
-            console.log @collection.toJSON(),"content Data"
             content = template.content items:@collection.toJSON()
             @manager.setContent content
         getModalOptions: ->
             that = @
             region = Design.instance().get('region')
             regionName = constant.REGION_SHORT_LABEL[ region ]
-
             title: "Manage DHCP Options in #{regionName}"
             slideable: true
             context: that
@@ -106,12 +116,12 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
             columns: [
                 {
                     sortable: true
-                    width: "100px" # or 40%
+                    width: "30%" # or 40%
                     name: 'Name'
                 }
                 {
-                    sortable: false
-                    width: "100px" # or 40%
+                    sortable: true
+                    width: "60%" # or 40%
                     name: 'Domain-name'
                 }
             ]

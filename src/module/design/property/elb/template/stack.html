@@ -88,7 +88,7 @@
 		<li class="elb-property-listener">
 			<div class="elb-property-listener-item-remove icon-remove tooltip" data-tooltip="{{i18n 'PROP_ELB_TIP_REMOVE_LISTENER'}}" {{#unless @index}}style="display:none;"{{/unless}}></div>
 
-			<div class="property-control-group clearfix">
+			<div class="property-control-group listener-item clearfix">
 				<div class="elb-property-listener-item-1">
 					<label class="left">Load Balancer Protocol</label>
 					<div class="selectbox elb-property-elb-protocol">
@@ -107,7 +107,7 @@
 				</div>
 			</div>
 
-			<div class="property-control-group clearfix">
+			<div class="property-control-group listener-item clearfix">
 				<div class="left elb-property-listener-item-1">
 					<label class="left">Instance Protocol</label>
 					<div class="selectbox elb-property-instance-protocol">
@@ -124,6 +124,11 @@
 					<label class="left">Port</label>
 					<input class="input elb-property-instance-port tooltip" data-tooltip="{{i18n 'PROP_ELB_TIP_1_65535'}}" type="text" value="{{instancePort}}" data-ignore="true" data-required="true" data-type="digits" maxlength="5"/>
 				</div>
+			</div>
+
+			<div class="property-control-group clearfix">
+				<label for="sslcert-placeholder">Select Server Certificate</label>
+				<div class="sslcert-placeholder"></div>
 			</div>
 		</li>
 		{{/each}}
@@ -151,12 +156,6 @@
 				</div>
 			</div>
 		</section>
-
-		<div class="property-control-group">
-			<label for="sslcert-placeholder">Select Server Certificate</label>
-			<div class="sslcert-placeholder"></div>
-		</div>
-
 	</div>
 
 	<div class="option-group-head"> {{ i18n "PROP_ELB_HEALTH_CHECK_DETAILS" }} </div>

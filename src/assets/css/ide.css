@@ -3968,11 +3968,11 @@ a.action-link:hover {
 	width: 280px;
 }
 
-.elb-property-listener .selectbox {
+.elb-property-listener .listener-item .selectbox {
 	width: 130px !important;
 }
 
-.elb-property-listener .selectbox .item {
+.elb-property-listener .listener-item .selectbox .item {
 	width: 142px;
 }
 
@@ -3987,7 +3987,7 @@ a.action-link:hover {
 	margin-left: 10px;
 }
 
-.elb-property-listener input {
+.elb-property-listener .listener-item input {
 	width: 40px !important;
 }
 

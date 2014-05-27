@@ -1,9 +1,9 @@
-@import url("core.css");
-@import url("ide/settings.css");
-@import url("ide/shareres/kp.css");
-@import url("ide/shareres/sns.css");
-@import url("ide/modal.css");
-@import url("ide/toolbar.css");
+@import url("./core.css");
+@import url("./ide/settings.css");
+@import url("./ide/shareres/kp.css");
+@import url("./ide/shareres/sns.css");
+@import url("./ide/modal.css");
+@import url("./ide/toolbar.css");
 
 html,
 body {

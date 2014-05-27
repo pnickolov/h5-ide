@@ -78,6 +78,7 @@ define [ 'constant', 'CloudResources','sns_manage', 'combo_dropdown', './compone
                 @renderNoCredential()
 
         manage: ->
+            new snsManage().render()
 
         set: ->
 

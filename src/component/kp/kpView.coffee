@@ -164,8 +164,6 @@ define [ 'combo_dropdown', 'toolbar_modal', './kpTpl', './kpDialogTpl', 'kp_uplo
                 else if success.length > 1
                     notification 'info', "Selected #{success.length} key pairs are deleted."
 
-                that.processDelBtn()
-
                 if not that.model.get( 'keys' ).length
                     that.m$( '#kp-select-all' )
                         .get( 0 )

@@ -122,10 +122,6 @@ define [ 'event',
 
         beforeunloadEvent : ->
 
-            # temp when proces tab return
-            #if Tabbar.current is 'process'
-            #    return
-
             # ie 10 not check
             if MC.browser is 'msie' and MC.browserVersion is 10
                 return
@@ -144,33 +140,8 @@ define [ 'event',
             has_refresh = true
             checked_tab_id = null
 
-            #if Tabbar.current is 'dashboard'
-            #    _.each MC.tab, ( item, id ) ->
-            #        if not _.isEqual( item.data, item.origin_data ) and id.split('-') isnt 'appview'
-            #            has_refresh = false
-            #            null
-            #else
-            #
-            #    # MC.tab is {}
-            #    if not MC.tab[ MC.data.current_tab_id ]
-            #
-            #        if not _.isEqual( MC.canvas_data, MC.data.origin_canvas_data ) and MC.canvas_data.id and MC.canvas_data.id isnt 'appview'
-            #            has_refresh = false
-            #
-            #    # MC.tab isnt {}
-            #    _.each MC.tab, ( item, id ) ->
-            #        console.log 'sdfasdfasdf', id, item
-            #        if not _.isEqual( item.data, item.origin_data ) and id.split('-') isnt 'appview'
-            #            has_refresh = false
-            #            null
-
-            # when current tab not 'dashboard' 'appview' 'process' and MC.canvas_data not {} MC.data.origin_canvas_data not {}
-
-            # old design flow
-            #if not _.isEmpty( MC.canvas_data ) and not _.isEmpty( MC.data.origin_canvas_data ) and Tabbar.current not in [ 'dashboard', 'appview', 'process' ]
-
             # new design flow
-            if not _.isEmpty( MC.common.other.canvasData.data() ) and not _.isEmpty( MC.common.other.canvasData.origin() ) and Tabbar.current not in [ 'dashboard', 'appview', 'process' ]
+            if not true
 
                 # old design flow +++++++++++++++++++++++++++
                 #data        = $.extend true, {}, MC.canvas_data

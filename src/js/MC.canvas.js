@@ -18,28 +18,8 @@ define(["MC", "canvon"], function(MC){
 MC.canvas = {
 	getState: function ()
 	{
-		//return Tabbar.current;
-		//return MC.canvas_data.stack_id !== undefined ? 'app' : 'stack';
-		var state = '',
-			current = Tabbar.current;
-
-		if (
-			current === 'new' ||
-			current === 'stack'
-		)
-		{
-			state = 'stack';
-		}
-		else if (
-			current === 'app' ||
-			current === 'appedit' ||
-			current === 'appview'
-		)
-		{
-			state = current;
-		}
-
-		return state;
+		// Quick hack to make this shit work.
+		return Design.instance() ? Design.instance().mode() : "dashboard";
 	},
 
 	display: function (id, key, is_visible)

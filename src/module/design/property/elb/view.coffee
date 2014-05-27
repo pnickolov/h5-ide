@@ -4,9 +4,10 @@
 
 define [ '../base/view',
          './template/stack',
-         'event'
-         'i18n!nls/lang.js'
-], ( PropertyView, template, ide_event, lang ) ->
+         'event',
+         'i18n!nls/lang.js',
+         'sslcert_dropdown'
+], ( PropertyView, template, ide_event, lang, sslCertDropdown ) ->
 
     Helper =
         makeInRange: ( value, range , $target, deflt ) ->
@@ -74,6 +75,8 @@ define [ '../base/view',
 
             @updateSlider( $('#elb-property-slider-unhealthy'), @model.get('unHealthyThreshold') - 2)
             @updateSlider( $('#elb-property-slider-healthy'), @model.get('healthyThreshold') - 2)
+
+            @$('.sslcert-placeholder').html new sslCertDropdown().render().el
 
             @updateCertView()
 
@@ -468,7 +471,7 @@ define [ '../base/view',
             null
 
         elbSSLCertAdd : (event) ->
-
+            
             that = this
             that.popSSLCertModal(false)
             return false

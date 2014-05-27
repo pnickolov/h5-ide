@@ -78,7 +78,8 @@
 .icon-menu,
 .icon-expand,
 .icon-save-app,
-.icon-support {
+.icon-support,
+.icon-reload {
 	&:before{
 		font : 16px/1em "MCIcon";
 		font-weight : normal;
@@ -155,6 +156,7 @@
 .icon-expand:before {content:"\F152";}
 .icon-save-app:before {content:"\F153";}
 .icon-support:before {content:"\F155";}
+.icon-reload:before {content:"\F156";}
 
 // .icon-outbound:before {content:"out";}
 // .icon-inbound:before {content:"in";}

@@ -43,6 +43,7 @@
         modalGroup.push(this);
         if (modalGroup.length === 1) {
           this.trigger("show", this);
+          this.trigger('shown', this);
         }
         this.show();
         this.bindEvent();
@@ -60,7 +61,9 @@
         if (modalGroup.length > 1) {
           this.back();
         } else if (modalGroup.length <= 1) {
+          modalGroup = [];
           this.trigger('close', this);
+          this.trigger('closed', this);
           this.tpl.remove();
           if (typeof (_base = this.option).onClose === "function") {
             _base.onClose(this);
@@ -103,11 +106,9 @@
             return modalGroup[0].back();
           };
         })(this));
-        this.tpl.find("i.modal-close").click((function(_this) {
-          return function(e) {
-            return modalGroup[0].back();
-          };
-        })(this));
+        this.tpl.find("i.modal-close").click(function(e) {
+          return modalGroup[0].back();
+        });
         if (!this.option.disableClose) {
           this.getFirst().wrap.off('click');
           this.getFirst().wrap.on('click', (function(_this) {
@@ -263,6 +264,7 @@
           window.setTimeout((function(_this) {
             return function() {
               _this.isMoving = false;
+              newModal.trigger('shown', newModal);
               return null;
             };
           })(this), this.option.delay || 300);
@@ -296,7 +298,8 @@
           return window.setTimeout((function(_this) {
             return function() {
               _this.isMoving = false;
-              return toRemove.tpl.remove();
+              toRemove.tpl.remove();
+              return toRemove.trigger('closed', toRemove);
             };
           })(this), this.option.delay || 300);
         }

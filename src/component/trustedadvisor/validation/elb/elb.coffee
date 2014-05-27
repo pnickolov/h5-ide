@@ -370,6 +370,40 @@ define [ 'constant', 'MC','i18n!nls/lang.js', '../../helper'], ( constant, MC, l
 
 		return null
 
+	isELBSubnetCIDREnough = (elbUID) ->
+
+		elbComp = MC.canvas_data.component[elbUID]
+		elbSubnetAry = elbComp.resource.Subnets
+		elbName = elbComp.name
+
+		resultAry = []
+
+		_.each elbSubnetAry, (subnetRef) ->
+
+			subnetUID = MC.extractID(subnetRef)
+			subnetComp = MC.canvas_data.component[subnetUID]
+
+			if subnetComp
+
+				subnetName = subnetComp.name
+				subnetUID = subnetComp.uid
+				subnetCIDR = subnetComp.resource.CidrBlock
+				suffixNum = Number(subnetCIDR.split('/')[1])
+
+				if suffixNum > 27
+
+					tipInfo = sprintf lang.ide.TA_MSG_ERROR_ELB_ATTACHED_SUBNET_CIDR_SUFFIX_GREATE_27, elbName, subnetName
+
+					resultAry.push({
+						level: constant.TA.ERROR
+						info: tipInfo
+						uid: subnetUID
+					})
+
+			null
+
+		return resultAry
+
 	isHaveIGWForInternetELB : isHaveIGWForInternetELB
 	isHaveInstanceAttached : isHaveInstanceAttached
 	isAttachELBToMultiAZ : isAttachELBToMultiAZ
@@ -380,3 +414,4 @@ define [ 'constant', 'MC','i18n!nls/lang.js', '../../helper'], ( constant, MC, l
 	isRuleOutboundToInstanceListener : isRuleOutboundToInstanceListener
 	isRuleInboundInstanceForELBListener : isRuleInboundInstanceForELBListener
 	isRuleInboundToELBPingPort : isRuleInboundToELBPingPort
+	isELBSubnetCIDREnough : isELBSubnetCIDREnough

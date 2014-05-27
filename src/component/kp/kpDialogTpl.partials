@@ -13,23 +13,6 @@
 {{/each}}
 
 
-<!-- {{keys_backup}} -->
-{{#each keys}}
-<tr class="item" data-id="">
-    <td>
-        <div class="checkbox">
-            <input id="kp-select-{{keyFingerprint}}" type="checkbox" value="None" data-name="{{keyName}}" class="one-cb">
-            <label for="kp-select-{{keyFingerprint}}"></label>
-        </div>
-    </td>
-    <td>{{keyName}}</td>
-    <td>{{keyFingerprint}}</td>
-</tr>
-{{/each}}
-
-<!-- {{loading}} -->
-<div class="loading-spinner"></div>
-
 <!-- {{slide_create}} -->
 <div class="slide-create" data-bind="true">
     <div class="before-create">

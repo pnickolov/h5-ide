@@ -1,0 +1,26 @@
+<!-- {{dropdown_selection}} -->
+{{TopicName}}
+
+
+<!-- {{dropdown_list}} -->
+{{#each this}}
+    <li class="item{{#if selected}} selected{{/if}}" data-id="{{id}}" data-name="{{Name}}" tabindex="-1">
+        {{Name}}
+        <p><span class="icon-tag-sub">{{subCount}} sub</span> {{DisplayName}}</p>
+    </li>
+{{/each}}
+
+<!-- {{modal_list}} -->
+{{#each this}}
+<tr class="item" data-id="">
+    <td>
+        <div class="checkbox">
+            <input id="kp-select-{{id}}" type="checkbox" value="None" data-name="{{Name}}" class="one-cb">
+            <label for="kp-select-{{id}}"></label>
+        </div>
+    </td>
+    <td>{{Name}}</td>
+    <td>{{id}}</td>
+    <td>{{subCount}} Subscriptions</td>
+</tr>
+{{/each}}

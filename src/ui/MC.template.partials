@@ -1229,6 +1229,14 @@ Following rule(s) will be deleted from its(their) security group:</div>
 </div>
 
 <!-- {{updateApp}} -->
+<<<<<<< HEAD
+<div id="app-apply-update">
+	<div class="modal-control-group default-kp-group clearfix" style="display:none;">
+		<label for="">$DefaultKeyPair</label>
+		<div id="kp-runtime-placeholder"></div>
+		<div class="runtime-error" id="runtime-error-kp"></div>
+	</div>
+=======
 <div id="app-apply-update" style="width:460px">
 	<div class="modal-header"><h3 class="truncate" style="width: 380px;">{{ i18n 'POP_CONFIRM_UPDATE_TIT'}}</h3><i class="modal-close">&times;</i> </div>
 	<div class="modal-body">
@@ -1238,56 +1246,53 @@ Following rule(s) will be deleted from its(their) security group:</div>
 			<i class="icon-info tooltip" data-tooltip="{{i18n 'TIP_KEYPAIR_USED_DEFAULT_KP'}}"></i>
 			<div class="runtime-error" id="runtime-error-kp"></div>
 		</div>
+>>>>>>> develop
 	{{#if isRunning}}
-		<h3 class="modal-text-major">{{ i18n 'POP_CONFIRM_UPDATE_MAJOR_TEXT_RUNNING'}}</h3>
+	<h3 class="modal-text-major">{{ i18n 'POP_CONFIRM_UPDATE_MAJOR_TEXT_RUNNING'}}</h3>
 	{{else}}
-		<h3 class="modal-text-major">{{ i18n 'POP_CONFIRM_UPDATE_MAJOR_TEXT_STOPPED'}}</h3>
-		<p class="modal-text-minor" style="margin-top:10px;">{{ i18n 'POP_CONFIRM_UPDATE_MINOR_TEXT_STOPPED'}}</p>
+	<h3 class="modal-text-major">{{ i18n 'POP_CONFIRM_UPDATE_MAJOR_TEXT_STOPPED'}}</h3>
+	<p class="modal-text-minor" style="margin-top:10px;">{{ i18n 'POP_CONFIRM_UPDATE_MINOR_TEXT_STOPPED'}}</p>
 	{{/if}}
 	{{#if result.length}}
-		<table class="table-head-fix table app-update-summary-table-header" data-target="app-update-summary-table">
-			<thead> <tr class="header-row">
-				<th class="sortable active" width="30%">{{ i18n 'POP_CONFIRM_UPDATE_TABLE_TYPE'}}</th>
-				<th class="sortable" width="30%">{{ i18n 'POP_CONFIRM_UPDATE_TABLE_NAME'}}</th>
-				<th class="sortable" width="40%">{{ i18n 'POP_CONFIRM_UPDATE_TABLE_CHANGE'}}</th> </tr>
-			</thead>
-		</table>
-		<div class="scroll-wrap" style="max-height:256px;">
-			<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-			<table class="table scroll-content" id="app-update-summary-table">
-				<tbody>
+	<table class="table-head-fix table app-update-summary-table-header" data-target="app-update-summary-table">
+		<thead> <tr class="header-row">
+			<th class="sortable active" width="30%">{{ i18n 'POP_CONFIRM_UPDATE_TABLE_TYPE'}}</th>
+			<th class="sortable" width="30%">{{ i18n 'POP_CONFIRM_UPDATE_TABLE_NAME'}}</th>
+			<th class="sortable" width="40%">{{ i18n 'POP_CONFIRM_UPDATE_TABLE_CHANGE'}}</th> </tr>
+		</thead>
+	</table>
+	<div class="scroll-wrap" style="max-height:256px;">
+		<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+		<table class="table scroll-content" id="app-update-summary-table">
+			<tbody>
 				{{#each result}} <tr>
-					<td width="30%">{{type}}</td>
-					<td width="30%">{{name}}</td>
-					<td width="40%">
-						{{#each changes}}
-						<span class="au-summary-label au-summary-{{name}}">{{info}}</span>
-						{{else}}
-						<span class="au-summary-label au-summary-{{change}}">{{change}}</span>
-						{{/each}}
-						{{#if extra}}<p class="au-summary-extra">{{extra}}</p>{{/if}}
-						{{#if info}}<span class="tooltip icon-warning" data-tooltip="{{info}}"></span>{{/if}}</td>
+				<td width="30%">{{type}}</td>
+				<td width="30%">{{name}}</td>
+				<td width="40%">
+					{{#each changes}}
+					<span class="au-summary-label au-summary-{{name}}">{{info}}</span>
+					{{else}}
+					<span class="au-summary-label au-summary-{{change}}">{{change}}</span>
+					{{/each}}
+					{{#if extra}}<p class="au-summary-extra">{{extra}}</p>{{/if}}
+					{{#if info}}<span class="tooltip icon-warning" data-tooltip="{{info}}"></span>{{/if}}</td>
 				</tr> {{/each}}
-				</tbody>
-			</table>
-		</div>
+			</tbody>
+		</table>
+	</div>
 	{{/if}}
-		<div class="stack-validation">
-			<details open style="display:none;">
-				<summary>{{ i18n 'POP_CONFIRM_UPDATE_VALIDATION'}}</summary>
-				<div id="stack-run-validation-container"></div>
-			</details>
-			<div class="nutshell" style="display: none;">:<label></label></div>
-			<div class="validating">
-				<div class="loading-spinner loading-spinner-small"></div>
-				<p>{{ i18n 'POP_CONFIRM_UPDATE_VALIDATING'}}</p>
-			</div>
+	<div class="stack-validation">
+		<details open style="display:none;">
+			<summary>{{ i18n 'POP_CONFIRM_UPDATE_VALIDATION'}}</summary>
+			<div id="stack-run-validation-container"></div>
+		</details>
+		<div class="nutshell" style="display: none;">:<label></label></div>
+		<div class="validating">
+			<div class="loading-spinner loading-spinner-small"></div>
+			<p>{{ i18n 'POP_CONFIRM_UPDATE_VALIDATING'}}</p>
 		</div>
 	</div>
-	<div class="modal-footer">
-		<button id="confirm-update-app" class="btn btn-blue" style="width:160px;" disabled>{{ i18n 'POP_CONFIRM_UPDATE_CONFIRM_BTN'}}</button>
-		<button class="btn modal-close btn-silver">{{ i18n 'POP_CONFIRM_UPDATE_CANCEL_BTN'}}</button>
-	</div>
+
 </div>
 
 <!-- {{openTabFail}} -->
@@ -1666,7 +1671,7 @@ Are you sure you want to delete {{name}}?</div>
 {{#each this}}
 <li>
 	<input class="tokenName input" value="{{name}}" readonly/>
-	<span class="tokenToken click-select truncate">{{token}}</span>
+	<span class="tokenToken click-select truncate tooltip" data-tooltip="{{ i18n 'PROP_ELB_TIP_CLICK_TO_SELECT_ALL'}}">{{token}}</span>
 	<span class="tokenControl">
 		<button class="tooltip icon-edit" data-tooltip=""></button>
 		<button class="tooltip icon-delete" data-tooltip=""></button>

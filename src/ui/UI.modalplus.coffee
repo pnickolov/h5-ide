@@ -29,7 +29,7 @@
 #      onCancel: function to exec when the cancel button is clicked     [Function]
 #      onShow: function to exec then the modal is shown.                [Function]
 #   Event:
-#       on "show","next", "next", "close", "confirm", "cancel"
+#       on "show","next", "next", "close", "confirm", "cancel", "shown", "closed"
 #   Method:
 #       next( option )  ====> return new subModal
 #       back()          ====> remove Last modal, back to the last but one modal.
@@ -77,6 +77,7 @@ define [], ()->
             modalGroup.push(@)
             if modalGroup.length == 1
                 @trigger "show", @
+                @trigger 'shown', @
             @show()
             @bindEvent()
             return @
@@ -88,7 +89,9 @@ define [], ()->
             if modalGroup.length > 1
                 @.back()
             else if modalGroup.length <= 1
+                modalGroup = []
                 @trigger 'close',@
+                @trigger 'closed', @ # Last Modal doesn't support Animation. when trigger close, it's closed.
                 @tpl.remove()
                 @option.onClose?(@)
                 @wrap.remove()
@@ -109,7 +112,7 @@ define [], ()->
             @tpl.find('.btn.modal-close').click (e)=>
                 @option.onCancel?(@tpl,e)
                 modalGroup[0].back()
-            @tpl.find("i.modal-close").click (e)=>
+            @tpl.find("i.modal-close").click (e)->
                 modalGroup[0].back()
             if(!@option.disableClose)
                 @getFirst().wrap.off 'click'
@@ -203,6 +206,7 @@ define [], ()->
                 @isMoving = true
                 window.setTimeout ()=>
                     @isMoving = false
+                    newModal.trigger 'shown', newModal
                     null
                 ,@option.delay || 300
                 newModal
@@ -228,6 +232,7 @@ define [], ()->
                 window.setTimeout ()=>
                     @isMoving = false
                     toRemove.tpl.remove()
+                    toRemove.trigger 'closed', toRemove
                 ,@option.delay || 300
         toggleConfirm: (disabled)->
             @.tpl.find(".modal-confirm").attr('disabled', !!disabled)

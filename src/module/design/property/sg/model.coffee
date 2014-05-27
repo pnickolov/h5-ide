@@ -42,9 +42,7 @@ define [ '../base/model', "Design", 'constant', 'event'  ], ( PropertyModel, Des
 
             if inputReadOnly or component.isDefault()
                 @set 'nameReadOnly', true
-            if inputReadOnly
                 @set 'descReadOnly', true
-
 
             null
 

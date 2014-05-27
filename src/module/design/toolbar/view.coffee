@@ -16,8 +16,19 @@ define [ 'MC', 'event',
          'UI.modalplus'
          'backbone', 'jquery', 'handlebars',
          'UI.selectbox', 'UI.notification'
-], ( MC, ide_event, Design, lang, stack_tmpl, app_tmpl, appview_tmpl, JsonExporter, constant, kp, ApiRequest, stateeditor, modalplus ) ->
+], ( MC, ide_event, Design, lang, stack_tmpl, app_tmpl, appview_tmpl, JsonExporter, constant, kp, ApiRequest, stateEditor, modalplus ) ->
 
+    # Set domain and set http
+    API_HOST       = "api.visualops.io"
+
+    ### env:debug ###
+    API_HOST = "api.mc3.io"
+    ### env:debug:end ###
+
+    ### env:dev ###
+    API_HOST = "api.mc3.io"
+    ### env:dev:end ###
+    API_URL = "https://" + API_HOST + "/v1/apps/"
     ToolbarView = Backbone.View.extend {
 
         el         : document
@@ -56,7 +67,7 @@ define [ 'MC', 'event',
 
             'click .toolbar-visual-ops-switch' : 'opsOptionChanged'
 
-            'click .toolbar-visual-ops-refresh': 'clickReloadStates'
+            'click .reload-states': 'clickReloadStates'
             #'click #apply-visops'             : 'openExperimentalVisops'
 
         # when flag = 0 not invoke opsState
@@ -192,7 +203,7 @@ define [ 'MC', 'event',
 
             options.confirm.text = 'Set Up Credential First' if not App.user.hasCredential()
 
-            modalPlus = new modalplus options
+            me.modalPlus = new modalplus options
 
             # must render it after modal appeared
             me.renderDefaultKpDropdown()
@@ -209,10 +220,10 @@ define [ 'MC', 'event',
             # insert ta component
             require [ 'component/trustedadvisor/main' ], ( trustedadvisor_main ) ->
                 trustedadvisor_main.loadModule( 'stack' ).then () ->
-                    modalPlus.toggleConfirm false
+                    me.modalPlus and me.modalPlus.toggleConfirm false
 
             # click logic
-            modalPlus.on 'confirm', () ->
+            me.modalPlus.on 'confirm', () ->
                 me.hideErr()
 
                 if not App.user.hasCredential()
@@ -255,7 +266,7 @@ define [ 'MC', 'event',
 
                 # disable button
 
-                modalPlus.toggleConfirm true
+                me.modalPlus.toggleConfirm true
                 $('.modal-header .modal-close').hide()
                 $('#run-stack-cancel').attr 'disabled', true
 
@@ -265,7 +276,7 @@ define [ 'MC', 'event',
                 canvasData = MC.common.other.canvasData.data()
                 that = @
                 me.model.syncSaveStack( region, canvasData ).then () ->
-                    if not modalPlus.isOpen
+                    if not me.modalPlus or not me.modalPlus.isOpen
                         return
                     data = canvasData
                     # set app name
@@ -285,7 +296,7 @@ define [ 'MC', 'event',
                     MC.data.app_list[ region ].push app_name
 
                     # close run stack dialog
-                    modalPlus.close()
+                    me.modalPlus and me.modalPlus.close()
             , @
 
             null
@@ -484,45 +495,53 @@ define [ 'MC', 'event',
 
         clickReloadStates: (event)->
             $target = $ event.currentTarget
-            $label = $target.find('.refresh-label')
+            $label = $target
             if $target.hasClass('disabled')
                 return false
             console.log(event)
             $target.toggleClass('disabled')
             $label.html($label.attr('data-disabled'))
+            app_id = Design.instance().serialize().id
+            console.log API_URL + app_id
+            data =
+                "encoded_user": App.user.get("usercode")
+                "token": App.user.get("defaultToken")
             $.ajax
-                url: "http://urlthatdoesnotexist.com",
+                url: API_URL+ app_id
                 method: "POST"
-                data:
-                    "encoded_user": App.user.get("usercode")
-                    "token": App.user.get("defaultToken")
+                #contentType: 'application/json; charset=utf-8'
+                data: JSON.stringify data
                 dataType: 'json'
                 statusCode:
                     200: ->
                         console.log 200,arguments
-                        notification 'info', "Success!"
                         #todo: reset state count
                         appData = Design.instance().serialize()
                         for uid of appData.component
                             if appData.component[uid].type is "AWS.EC2.Instance" && appData.component[uid].state.length>0
                                 console.log(appData, uid)
                                 stateEditor.loadModule(appData.component, uid, null, true)
+                                notification 'info', lang.ide.RELOAD_STATE_SUCCESS
                     401: ->
                         console.log 401,arguments
-                        notification 'error', "Error 401"
+                        notification 'error', lang.ide.RELOAD_STATE_INVALID_REQUEST
                     404: ->
                         console.log 404,arguments
-                        notification 'error', "Error 404"
+                        notification 'error', lang.ide.RELOAD_STATE_NETWORKERROR
 
                     500: ->
                         console.log 500,arguments
-                        notification 'error', "Error 500"
+                        notification 'error', lang.ide.RELOAD_STATE_INTERNAL_SERVER_ERROR
                 error: ->
                     console.log('Reload State Request Error.')
                     null
+                success: ->
+                    console.log('Succeeded Get Right Response.')
             .always ()->
-                $target.removeClass('disabled')
-                $label.html($label.attr('data-original'))
+                window.setTimeout ->
+                    $target.removeClass('disabled')
+                    $label.html($label.attr('data-original'))
+                , 2000
 
         clickDeleteIcon : ->
             me = this
@@ -814,29 +833,38 @@ define [ 'MC', 'event',
 
         clickSaveEditApp : (event)->
 
-
+            me = @
             # 1. Send save request
             # check credential
-            if false
-                modal.close()
-                console.log 'show credential setting dialog'
-                require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
+            result = @model.diff()
+
+            if not result.isModified
+                # no changes and return to app modal
+                @appedit2App()
+                return
 
             else
-                result = @model.diff()
+                options =
+                    title           : 'Run Stack'
+                    template        : MC.template.updateApp result
+                    disableClose    : true
+                    width           : '460px'
+                    height          : '515px'
+                    confirm         :
+                        text: lang.ide.POP_CONFIRM_UPDATE_CONFIRM_BTN
+                        disabled: true
 
-                if not result.isModified
-                    # no changes and return to app modal
-                    @appedit2App()
-                    return
 
-                else
-                    modal MC.template.updateApp result
-                    # Set default kp
-                    @renderDefaultKpDropdown()
+                me.modalPlus = new modalplus options
 
-                    require [ 'component/trustedadvisor/main' ], ( trustedadvisor_main ) ->
-                        trustedadvisor_main.loadModule 'stack'
+                me.modalPlus.on 'confirm', me.appUpdating, @
+                #modal MC.template.updateApp result
+                # Set default kp
+                @renderDefaultKpDropdown()
+
+                require [ 'component/trustedadvisor/main' ], ( trustedadvisor_main ) ->
+                    trustedadvisor_main.loadModule( 'stack' ).then () ->
+                        me.modalPlus and me.modalPlus.toggleConfirm false
             null
 
         clickCancelEditApp : ->
@@ -913,7 +941,7 @@ define [ 'MC', 'event',
 
         appUpdating : ( event ) ->
             console.log 'appUpdating'
-            me = event.data
+            me = @
             # 0. check whether defaultKp is set
             if not me.defaultKpIsSet()
                 return false
@@ -926,10 +954,11 @@ define [ 'MC', 'event',
             #event.data.trigger 'APP_UPDATING', MC.canvas_data
 
             # new design flow
-            event.data.trigger 'APP_UPDATING', MC.common.other.canvasData.data()
+            @trigger 'APP_UPDATING', MC.common.other.canvasData.data()
 
             # 2. close modal
-            modal.close()
+            # modal.close()
+            @modalPlus and @modalPlus.close()
 
             null
 
@@ -938,7 +967,7 @@ define [ 'MC', 'event',
 
             # set toolbar-visual-ops-switch and apply-visops
             $switchCheckbox = $ '#main-toolbar .toolbar-visual-ops-switch'
-            $applyVisops    = $ '#apply-visops'
+            # $applyVisops    = $ '#apply-visops'
 
             # when new stack enable VisualOps else disabled
             if Tabbar.current is 'new'

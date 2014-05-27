@@ -80,6 +80,7 @@ define [ "component/exporter/Thumbnail", 'jquery', 'event', 'MC', 'base_main', '
                 if MC.data.supported_platforms and MC.data.supported_platforms.length
                     model.set 'supported_platforms', true
                     view.enableCreateStack()
+                    App.openSampleStack()
 
             # update aws credential
             ide_event.onLongListen ide_event.UPDATE_AWS_CREDENTIAL, () ->

@@ -167,6 +167,7 @@ define [
 
     initialize : ()->
       @__pollingStatus = _.bind @__pollingStatus, @
+      return
 
     doFetch : ()-> ApiRequest("ebs_DescribeSnapshots", {region_name:@region(), owners:["self"]})
     parseFetchData : (res)->

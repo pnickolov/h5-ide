@@ -1,7 +1,7 @@
 
 define ["./CrCollection", "ApiRequest", "backbone"], ( CrCollection, ApiRequest )->
 
-  CrModel = Backbone.Model.extend {
+  Backbone.Model.extend {
 
     # Returns a promise which will be resolved when the model is saved to AWS, the resolved data is the model itself
     save : ()->

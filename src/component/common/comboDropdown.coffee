@@ -8,20 +8,8 @@
 # 4. fill the content and selection
 
 ### Example:
-define [ 'combo_dropdown' ], ( combo_dropdown ) ->
-    dropdown = new combo_dropdown()
-    @dropdown = dropdown
+Refer to kpView.coffee
 
-    @dropdown.on 'open', @open, @
-    @dropdown.on 'manage', @manageKp, @
-    @dropdown.on 'change', @setKey, @
-    @dropdown.on 'filter', @filter, @
-
-    render: () ->
-        @dropdown.setSelection '$defaultKp'
-
-    open = () ->
-        @dropdown.setContent template
 ###
 
 define [ './component/common/comboDropdownTpl', 'backbone', 'jquery' ], ( template, Backbone, $ ) ->
@@ -32,42 +20,48 @@ define [ './component/common/comboDropdownTpl', 'backbone', 'jquery' ], ( templa
         tagName: 'section'
 
         events:
-            'click .combo-dd-manage'    : 'manage'
-            'click .show-credential'    : 'showCredential'
+            'click .combo-dd-manage'    : '__manage'
+            'click .show-credential'    : '__showCredential'
 
-            'OPTION_SHOW .selectbox'    : 'optionShow'
-            'OPTION_CHANGE .selectbox'  : 'optionChange'
+            'OPTION_SHOW .selectbox'    : '__optionShow'
+            'OPTION_CHANGE .selectbox'  : '__optionChange'
 
-            'keyup .combo-dd-filter'    : 'filter'
-            'keydown .combo-dd-filter'  : 'stopPropagation'
-            'click .combo-dd-filter'    : 'returnFalse'
+            'keyup .combo-dd-filter'    : '__filter'
+            'keydown .combo-dd-filter'  : '__stopPropagation'
+            'click .combo-dd-filter'    : '__returnFalse'
 
 
-        stopPropagation: ( event ) ->
+        __stopPropagation: ( event ) ->
             event.stopPropagation()
 
-        returnFalse: ->
+        __returnFalse: ->
             false
 
-        showCredential: ->
+        __showCredential: ->
             App.showSettings App.showSettings.TAB.Credential
 
-        filter: ( event ) ->
+        __filter: ( event ) ->
             @trigger 'filter', event.currentTarget.value
 
-        manage: ( event ) ->
+        __manage: ( event ) ->
             @trigger 'manage'
             event.stopPropagation()
 
-        optionShow: ->
+        __optionShow: ->
+            if not @$('.combo-dd-content').html().trim()
+                @render 'loading'
+
             @trigger 'open'
 
-        optionChange: ( event, name, data ) ->
+        __optionChange: ( event, name, data ) ->
             @trigger 'change', name, data
 
         initialize: ( options ) ->
             @$el.html template.frame options
             @
+
+
+        # ------ INTERFACE ------ #
 
         render: ( tpl ) ->
             @$( '.combo-dd-content' ).html template[ tpl ] or tpl
@@ -82,7 +76,7 @@ define [ './component/common/comboDropdownTpl', 'backbone', 'jquery' ], ( templa
             @$( '.combo-dd-list' ).html dom
             @
 
-        # whichOne shoud be `filter` or `manage`
+        # Parameter whichOne shoud be `filter` or `manage`
         toggleControls: ( showOrHide, whichOne ) ->
             if whichOne
                 @$( ".combo-dd-#{whichOne}" ).toggle showOrHide

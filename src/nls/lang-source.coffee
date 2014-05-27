@@ -704,7 +704,7 @@ module.exports =
       zh: "子网必须与路由表关联。"
 
     CVS_MSG_ERR_DEL_ELB_LINE_1:
-      en: "Load balancer must attach to at least one subnet."
+      en: "Load Balancer must associate with at least 1 subnet for each Availability Zone where it has registered load balanced instances."
       zh: "负载均衡器至少需要连接一个子网。"
 
     CVS_MSG_ERR_DEL_ELB_LINE_2:
@@ -1269,6 +1269,14 @@ module.exports =
       en: "Manage Region Key Pairs ..."
       zh: ""
 
+    PROP_INSTANCE_FILTER_SNS:
+      en: "Filter by SNS Topic name"
+      zh: ""
+
+    PROP_INSTANCE_MANAGE_SNS:
+      en: "Manage SNS Topic ..."
+      zh: ""
+
     PROP_INSTANCE_TIP_DEFAULT_KP:
       en: 'If you have used $DefaultKeyPair for any instance/launch configuration, you will be required to specify an existing key pair for $DefaultKeyPair. Or you can choose "No Key Pair" as $DefaultKeyPair.'
       zh: ""
@@ -1490,6 +1498,14 @@ module.exports =
       en: "Type"
       zh: "类型"
 
+    PROP_STACK_LBL_ID:
+      en: "Stack ID"
+      zh: "模板标识"
+
+    PROP_APP_LBL_ID:
+      en: "App ID"
+      zh: "应用标识"
+
     PROP_STACK_LBL_USAGE:
       en: "Usage"
       zh: "用途"
@@ -1661,6 +1677,30 @@ module.exports =
     PROP_VPC_DHCP_OPTION_SET_ID:
       en: "DHCP Options Set ID"
       zh: "DHCP选项标识"
+
+    PROP_VPC_MANAGE_DHCP:
+      en: "Manage Region DHCP options"
+      zh: ""
+
+    PROP_VPC_FILTER_DHCP:
+      en: "Filter by DHCP name"
+      zh: ""
+
+    PROP_VPC_TIP_AUTO_DHCP:
+      en: "A DHCP Options set will be automatically assigned for the VPC by AWS."
+      zh: ""
+
+    PROP_VPC_TIP_DEFAULT_DHCP:
+      en: "The VPC will use no DHCP options."
+      zh: "The VPC will use no DHCP options."
+
+    PROP_VPC_AUTO_DHCP:
+      en: "Auto-assigned Set"
+      zh: ""
+
+    PROP_VPC_DEFAULT_DHCP:
+      en: "Default"
+      zh: "Default"
 
     PROP_SUBNET_TIP_CIDR_BLOCK:
       en: "e.g. 10.0.0.0/24. The range of IP addresses in the subnet must be a subset of the IP address in the VPC. Block sizes must be between a /16 netmask and /28 netmask. The size of the subnet can equal the size of the VPC."
@@ -3677,6 +3717,10 @@ VisualOps API. You cannot UNDO this action.'
       en: "Customer Gateway"
       zh: "客户网关"
 
+    DASH_LBL_INSTANCE:
+      en: "Instance"
+      zh: "实例"
+
     DASH_LBL_DNS_NAME:
       en: "DNS Name"
       zh: "域名"
@@ -4800,6 +4844,10 @@ VisualOps API. You cannot UNDO this action.'
       en: "%s <span class='validation-tag tag-elb'>%s</span> should allow inbound traffic towards %s according to %s's Instance Listener Protocol."
       zh: ""
 
+    TA_MSG_ERROR_ELB_ATTACHED_SUBNET_CIDR_SUFFIX_GREATE_27:
+      en: "Load Balancer <span class='validation-tag tag-elb'>%s</span> has been associated with Subnet <span class='validation-tag tag-subnet'>%s</span>, whose CIDR mask must be smaller than /27."
+      zh: ""
+
     # SG
     TA_MSG_WARNING_SG_RULE_EXCEED_FIT_NUM:
       en: "Security Group <span class='validation-tag tag-sg'>%s</span> has more than %s rules, If a security group has a large number of rules, performance can be degraded."
@@ -4934,7 +4982,18 @@ VisualOps API. You cannot UNDO this action.'
       en: "<span class='validation-tag tag-instance'>%s</span> has configured states. Suggest to set its outbound rule on <span class='validation-tag tag-port'>80</span> and <span class='validation-tag tag-port'>443</span> to <span class='validation-tag tag-ip'>0.0.0.0/0</span>. Otherwise, agent may not be able to work properly, install packages or check out source codes lacking route to VisualOps's monitoring systems or required repositories."
       zh: ""
 
-
+    RELOAD_STATE_INVALID_REQUEST:
+      en: "Sorry, but the request is not valid."
+      zh: ""
+    RELOAD_STATE_NETWORKERROR:
+      en: "Network error, please try again later."
+      zh: ""
+    RELOAD_STATE_INTERNAL_SERVER_ERROR:
+      en: "Sorry, Internal server error, please try again later."
+      zh: ""
+    RELOAD_STATE_SUCCESS:
+      en: "States reloaded successfully!"
+      zh: ""
 
     ##### Trust Advisor
 

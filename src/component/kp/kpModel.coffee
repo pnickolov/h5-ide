@@ -40,6 +40,7 @@ define [ 'constant', 'backbone', 'underscore', 'MC', 'keypair_service', 'Design'
             _.each keys, ( key ) ->
                 if key.keyName is name
                     key.selected = true
+                return
             keys
 
     filterIllegal = ( keys ) ->
@@ -93,7 +94,7 @@ define [ 'constant', 'backbone', 'underscore', 'MC', 'keypair_service', 'Design'
             @haveGot true
             @list().then(
                 (res) ->
-                    console.log('-----result-----');
+                    console.log('-----result-----')
                     if that.resModel
                         keyName = that.resModel.getKeyName()
                     ###
@@ -146,10 +147,10 @@ define [ 'constant', 'backbone', 'underscore', 'MC', 'keypair_service', 'Design'
         download: ( name ) ->
             request( 'download', name ).then(
                 (res) ->
-                    console.log(res);
+                    console.log(res)
 
                 (err) ->
-                    console.log(err);
+                    console.log(err)
             )
 
 

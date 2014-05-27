@@ -16,6 +16,11 @@ define [ "./CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
       TopicArn        : ""
       SubscriptionArn : ""
 
+    initialize : ( attributes )->
+      if attributes.TopicArn
+        @attributes.TopicName = attributes.TopicArn.split(":").pop()
+      return
+
     isRemovable : ()->
       @attributes.SubscriptionArn isnt "PendingConfirmation" and @attributes.SubscriptionArn isnt "Deleted"
 
@@ -63,3 +68,5 @@ define [ "./CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
   }, {
     uniqueId : ()-> _.uniqueId("CrSnsSub_")
   }
+
+  CrSubscriptionModel

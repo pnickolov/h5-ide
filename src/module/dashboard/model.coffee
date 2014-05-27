@@ -4,7 +4,7 @@
 
 define [ 'MC', 'event', 'constant', 'vpc_model',
          'aws_model', 'app_model', 'stack_model', 'ami_service', 'elb_service', 'dhcp_service', 'vpngateway_service', 'customergateway_service',
-         'i18n!nls/lang.js', 'common_handle', "component/exporter/JsonExporter"
+         'i18n!nls/lang.js', 'common_handle'
 ], ( MC, ide_event, constant, vpc_model, aws_model, app_model, stack_model, ami_service, elb_service, dhcp_service, vpngateway_service, customergateway_service, lang, common_handle, JsonExporter ) ->
 
     #private
@@ -150,8 +150,8 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                     { "key": [ "CreatedTime" ], "show_key": lang.ide.DASH_LBL_CREATE_TIME}
                     { "key": [ "DNSName" ], "show_key": "DNSName"}
                     { "key": [ "HealthCheck" ], "show_key": lang.ide.PROP_ELB_HEALTH_CHECK}
-                    { "key": [ "Instances", 'member' ], "show_key": lang.ide.DASH_LBL_DNS_NAME}
-                    { "key": [ "ListenerDescriptions", "member" ], "show_key": lang.ide.PROP_ELB_LBL_LISTENER_DESCRIPTIONS}
+                    { "key": [ "Instances", 'member', 'InstanceId' ], "show_key": lang.ide.DASH_LBL_INSTANCE}
+                    { "key": [ "ListenerDescriptions", "member", "Listener" ], "show_key": lang.ide.PROP_ELB_LBL_LISTENER_DESCRIPTIONS}
                     { "key": [ "SecurityGroups", "member"], "show_key": lang.ide.PROP_ELB_SG_DETAIL}
                     { "key": [ "Subnets", "member" ], "show_key": lang.ide.DASH_LBL_SUBNETS}
                 ]
@@ -842,10 +842,13 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                 cur_value = value_to_parse[ cur_key ]
 
 
-                _.map key_array, ( value, key ) ->
+                _.map key_array, ( attr, key ) ->
                     if cur_value
                         if key > 0
-                            cur_value = cur_value[value]
+                            if _.isArray(cur_value) and not _.isNumber(attr)
+                                cur_value = _.pluck cur_value, attr
+                            else if _.isObject cur_value
+                                cur_value = cur_value[attr]
                             #if $.type(cur_value) is "array"
                             #    cur_value = cur_value[0]
                             cur_value
@@ -1435,40 +1438,6 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                             cur_app_list[idx].ispending = true
 
                         me.set 'cur_app_list', cur_app_list
-
-            null
-
-        importJson : ( json )->
-            result = JsonExporter.importJson json
-
-            if _.isString result
-                return result
-
-            # The result is a valid json
-            console.log "Imported JSON: ", result, result.region
-
-            # check repeat stack name
-            MC.common.other.checkRepeatStackName()
-
-            # set username
-            result.username = $.cookie 'usercode'
-
-            # set name
-            result.name     = MC.aws.aws.getDuplicateName(result.name)
-
-            # set id
-            result.id       = 'import-' + MC.data.untitled + '-' + result.region
-
-            # create new result
-            new_result      = {}
-            new_result.resolved_data = []
-            new_result.resolved_data.push result
-
-            # formate json
-            console.log "Formate JSON: ", new_result
-
-            # push IMPORT_STACK
-            ide_event.trigger ide_event.OPEN_DESIGN_TAB, 'IMPORT_STACK', new_result
 
             null
 

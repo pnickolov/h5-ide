@@ -183,7 +183,7 @@ define [ 'MC', 'event',
 
             options.confirm.text = 'Set Up Credential First' if not App.user.hasCredential()
 
-            modalPlus = new modalplus options
+            me.modalPlus = new modalplus options
 
             # must render it after modal appeared
             me.renderDefaultKpDropdown()
@@ -200,10 +200,10 @@ define [ 'MC', 'event',
             # insert ta component
             require [ 'component/trustedadvisor/main' ], ( trustedadvisor_main ) ->
                 trustedadvisor_main.loadModule( 'stack' ).then () ->
-                    modalPlus.toggleConfirm false
+                    me.modalPlus and me.modalPlus.toggleConfirm false
 
             # click logic
-            modalPlus.on 'confirm', () ->
+            me.modalPlus.on 'confirm', () ->
                 me.hideErr()
 
                 if not App.user.hasCredential()
@@ -246,7 +246,7 @@ define [ 'MC', 'event',
 
                 # disable button
 
-                modalPlus.toggleConfirm true
+                me.modalPlus.toggleConfirm true
                 $('.modal-header .modal-close').hide()
                 $('#run-stack-cancel').attr 'disabled', true
 
@@ -256,7 +256,7 @@ define [ 'MC', 'event',
                 canvasData = MC.common.other.canvasData.data()
                 that = @
                 me.model.syncSaveStack( region, canvasData ).then () ->
-                    if not modalPlus.isOpen
+                    if not me.modalPlus or not me.modalPlus.isOpen
                         return
                     data = canvasData
                     # set app name
@@ -276,7 +276,7 @@ define [ 'MC', 'event',
                     MC.data.app_list[ region ].push app_name
 
                     # close run stack dialog
-                    modalPlus.close()
+                    me.modalPlus and me.modalPlus.close()
             , @
 
             null
@@ -805,29 +805,38 @@ define [ 'MC', 'event',
 
         clickSaveEditApp : (event)->
 
-
+            me = @
             # 1. Send save request
             # check credential
-            if false
-                modal.close()
-                console.log 'show credential setting dialog'
-                require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
+            result = @model.diff()
+
+            if not result.isModified
+                # no changes and return to app modal
+                @appedit2App()
+                return
 
             else
-                result = @model.diff()
+                options =
+                    title           : 'Run Stack'
+                    template        : MC.template.updateApp result
+                    disableClose    : true
+                    width           : '460px'
+                    height          : '515px'
+                    confirm         :
+                        text: lang.ide.POP_CONFIRM_UPDATE_CONFIRM_BTN
+                        disabled: true
 
-                if not result.isModified
-                    # no changes and return to app modal
-                    @appedit2App()
-                    return
 
-                else
-                    modal MC.template.updateApp result
-                    # Set default kp
-                    @renderDefaultKpDropdown()
+                me.modalPlus = new modalplus options
 
-                    require [ 'component/trustedadvisor/main' ], ( trustedadvisor_main ) ->
-                        trustedadvisor_main.loadModule 'stack'
+                me.modalPlus.on 'confirm', me.appUpdating, @
+                #modal MC.template.updateApp result
+                # Set default kp
+                @renderDefaultKpDropdown()
+
+                require [ 'component/trustedadvisor/main' ], ( trustedadvisor_main ) ->
+                    trustedadvisor_main.loadModule( 'stack' ).then () ->
+                        me.modalPlus and me.modalPlus.toggleConfirm false
             null
 
         clickCancelEditApp : ->
@@ -904,7 +913,7 @@ define [ 'MC', 'event',
 
         appUpdating : ( event ) ->
             console.log 'appUpdating'
-            me = event.data
+            me = @
             # 0. check whether defaultKp is set
             if not me.defaultKpIsSet()
                 return false
@@ -917,10 +926,11 @@ define [ 'MC', 'event',
             #event.data.trigger 'APP_UPDATING', MC.canvas_data
 
             # new design flow
-            event.data.trigger 'APP_UPDATING', MC.common.other.canvasData.data()
+            @trigger 'APP_UPDATING', MC.common.other.canvasData.data()
 
             # 2. close modal
-            modal.close()
+            # modal.close()
+            @modalPlus and @modalPlus.close()
 
             null
 

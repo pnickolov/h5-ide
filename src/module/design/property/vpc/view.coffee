@@ -78,10 +78,10 @@ define [ '../base/view',
             currentVal = @model.toJSON().dhcp
             if currentVal.dhcpType is 'default'
                 selection = isAuto : true
-            else if currentVal.dhcpType is "none"
+            else if currentVal.dhcpType is "none" or currentVal.dhcpType is ""
                 selection = isDefault : true
             else
-                selection = currentVal
+                selection = id: currentVal.DhcpOptionsId
             @dhcp.setSelection selection
         changeDhcp: (e)->
             if e.id is 'default'
@@ -90,7 +90,7 @@ define [ '../base/view',
                 @model.removeDhcp true
             else
                 @model.useDhcp()
-                @model.setDHCPOptions e
+                @model.setDHCPOptions e, true
 
         processParsley: ( event ) ->
             $( event.currentTarget )

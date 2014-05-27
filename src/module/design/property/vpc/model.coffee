@@ -97,10 +97,10 @@ define [ '../base/model', 'Design', 'constant' ], ( PropertyModel, Design, const
             Design.instance().component( uid ).get("dhcp").setCustom()
             null
 
-        setDHCPOptions : ( options ) ->
+        setDHCPOptions : ( options , force) ->
             uid = @get("uid")
             dhcp = Design.instance().component( uid ).get("dhcp")
-            dhcp.set( options )
+            dhcp.set( options , force)
             null
     }
 

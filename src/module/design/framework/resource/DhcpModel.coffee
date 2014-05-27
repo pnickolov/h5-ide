@@ -62,6 +62,8 @@ define [ "constant", "../ResourceModel", "Design"  ], ( constant, ResourceModel,
     setCustom  : ()-> @set "dhcpType", ""
 
     set : ()->
+      if Array::slice.call(arguments)[1] is true
+          @newId = @design().guid()
       if @design().modeIsAppEdit() and not @__newIdForAppEdit
         @__newIdForAppEdit = @design().guid()
 
@@ -69,7 +71,7 @@ define [ "constant", "../ResourceModel", "Design"  ], ( constant, ResourceModel,
 
     createRef : ( refName, isResourceNS, id )->
       if not id
-        id = @__newIdForAppEdit or @id
+        id = @__newIdForAppEdit or @newId or @id
 
       ResourceModel.prototype.createRef.call this, refName, isResourceNS, id
 
@@ -86,6 +88,9 @@ define [ "constant", "../ResourceModel", "Design"  ], ( constant, ResourceModel,
       if @__newIdForAppEdit
         id = @__newIdForAppEdit
         appId = ""
+      else if @newId
+          id = @newId
+          appId = @get('appId')
       else
         id = @id
         appId = @get("appId")
@@ -95,7 +100,7 @@ define [ "constant", "../ResourceModel", "Design"  ], ( constant, ResourceModel,
         type : @type
         uid  : id
         resource :
-          DhcpOptionsId        : appId
+          DhcpOptionsId        : if @newId then @id else appId
           VpcId                : vpc.createRef( "VpcId" )
           DhcpConfigurationSet : configs
 

@@ -138,7 +138,7 @@
 
         </section>
         <div class="init action">
-            <button class="btn btn-red do-action" data-action="delete">Delete</button>
+            <button class="btn btn-blue do-action" data-action="delete">Create</button>
             <button class="btn btn-silver cancel">Cancel</button>
         </div>
         <div class="processing action" style="display:none;">

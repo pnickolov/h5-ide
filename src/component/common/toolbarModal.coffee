@@ -141,7 +141,7 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalpl
                     that.$('[data-btn=delete]').prop 'disabled', true
 
         __stopPropagation: ( event ) ->
-            exception = '.sortable, #download-kp'
+            exception = '.sortable, #download-kp, .selection, .item'
             if not $(event.target).is( exception )
                 event.stopPropagation()
 

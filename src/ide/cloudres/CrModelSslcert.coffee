@@ -11,7 +11,7 @@ define [ "./CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
 
     defaults :
       Path             : ""
-      Name             : ""
+      Name             : "" # == "ServerCertificateName"
       PrivateKey       : ""
       CertificateChain : ""
       CertificateBody  : ""
@@ -40,11 +40,14 @@ define [ "./CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
         self.attributes.PrivateKey       = ""
 
         try
-          id = res.UploadServerCertificateResponse.UploadServerCertificateResult.ServerCertificateMetadata.ServerCertificateId
-        catch e
-          throw McError( ApiRequest.Errors.InvalidAwsReturn, "Ssl cert created but aws returns invalid ata." )
+          res = res.UploadServerCertificateResponse.UploadServerCertificateResult.ServerCertificateMetadata
 
-        self.set( "id", id )
+          res.id   = res.ServerCertificateId
+          res.Name = res.ServerCertificateName
+        catch e
+          throw McError( ApiRequest.Errors.InvalidAwsReturn, "Ssl cert created but aws returns invalid data." )
+
+        self.set res
         console.log "Created SslCert resource", self
 
         self

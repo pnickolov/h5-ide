@@ -75,13 +75,13 @@ define [ '../base/view',
             @initDhcpSelection()
             data.name
         initDhcpSelection: ->
-            currentVal = @model.toJSON().dhcp
-            if currentVal.dhcpType is 'default'
+            currentVal = @model.toJSON().dhcp.dhcpOptionId
+            if currentVal is ''
                 selection = isAuto : true
-            else if currentVal.dhcpType is "none" or currentVal.dhcpType is ""
+            else if currentVal is "default"
                 selection = isDefault : true
             else
-                selection = id: currentVal.DhcpOptionsId
+                selection = id: currentVal
             @dhcp.setSelection selection
         changeDhcp: (e)->
             if e.id is 'default'
@@ -89,8 +89,7 @@ define [ '../base/view',
             else if e.id is 'auto'
                 @model.removeDhcp true
             else
-                @model.useDhcp()
-                @model.setDHCPOptions e, true
+                @model.setDhcp(e.id)
 
         processParsley: ( event ) ->
             $( event.currentTarget )
@@ -130,16 +129,6 @@ define [ '../base/view',
 
         onChangeDnsHostname : ( event ) ->
             @model.setDnsHosts event.target.checked
-            null
-
-        onRemoveDhcp : ( event ) ->
-
-            isDefault = $( event.currentTarget ).closest("section").find("input").attr("id") is "property-dhcp-default"
-
-            $("#property-dhcp-desc").show()
-            $("#property-dhcp-options").hide()
-
-            @model.removeDhcp isDefault
             null
 
         onChangeAmazonDns : ( event ) ->

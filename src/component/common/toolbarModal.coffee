@@ -10,7 +10,6 @@
 ### Example:
 Refer to kpView.coffee
 
-
 ###
 
 define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalplus', 'UI.notification' ], ( template, Backbone, $, modalplus ) ->
@@ -29,6 +28,7 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalpl
             'change .one-cb': '__checkOne'
 
             'click .t-m-btn': '__handleSlide'
+            'click tr .show-detail': '__handleDetail'
             'click .cancel': 'cancel'
 
             'click .do-action': '__doAction'
@@ -40,6 +40,7 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalpl
             if options.context
                 @options.context.modal = @
                 @options.context.M$ = _.bind @$, @
+            null
 
         __doAction: ( event ) ->
             @error()
@@ -96,6 +97,22 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalpl
                 $button.addClass 'active'
                 $slidebox.addClass 'show'
                 @__slide = button
+
+            null
+
+
+        __handleDetail: ( event ) ->
+            $target = $ event.currentTarget
+            $tr = $target.closest 'tr'
+            if $tr.hasClass 'detailed'
+                $tr.removeClass 'detailed'
+                $tr.next('.tr-detail').remove()
+            else
+                $tr
+                    .addClass( 'detailed' )
+                    .after template.tr_detail columnCount: @options.columns.length + 1
+                @trigger 'detail', event, $target.data(), $tr
+
 
 
         __refresh: ->
@@ -201,6 +218,9 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalpl
             @$( '.slidebox .content' ).html dom
             @error()
             @
+
+        setDetail: ( $tr, dom ) ->
+            $tr.next( '.tr-detail' ).html dom
 
         cancel: () ->
             if @__slideRejct()

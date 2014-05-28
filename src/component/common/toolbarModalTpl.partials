@@ -69,5 +69,9 @@
     <a class="show-credential">Provide AWS Credential <br/>to manage key pairs</a>
 </div>
 
-
+<!-- {{tr_detail}} -->
+<tr class="tr-detail">
+    <td colspan="{{columnCount}}">
+    </td>
+</tr>
 

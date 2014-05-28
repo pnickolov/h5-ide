@@ -23,6 +23,14 @@
 	-moz-user-select: $value;
 }
 
+@mixin slide {
+	-webkit-transition: max-height .2s ease-out;
+	-moz-transition: max-height .2s ease-out;
+	-ms-transition: max-height .2s ease-out;
+	-o-transition: max-height .2s ease-out;
+	transition: max-height .2s ease-out;
+}
+
 $toolbar-line-height: 34px;
 $dark-blue: #001324;
 
@@ -121,12 +129,7 @@ $dark-blue: #001324;
 	}
 
 	.slidebox {
-
-		-webkit-transition: max-height .2s ease-out;
-		-moz-transition: max-height .2s ease-out;
-		-ms-transition: max-height .2s ease-out;
-		-o-transition: max-height .2s ease-out;
-		transition: max-height .2s ease-out;
+		@include slide;
 
 		background:                 #252A2E;
 		max-height:                 0;
@@ -216,6 +219,15 @@ $dark-blue: #001324;
 
 			tr.selected:hover td {
 				background: #31619E;
+			}
+
+			tr td.show-detail {
+				@include user-select;
+				cursor: pointer;
+			}
+
+			tr.tr-detail {
+				@include slide;
 			}
 		}
 

@@ -226,7 +226,9 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalpl
             @
 
         setDetail: ( $tr, dom ) ->
-            $tr.next( '.tr-detail' ).find( 'td' ).html dom
+            $trDetail = $tr.next( '.tr-detail' )
+            $trDetail.find( 'td' ).html dom
+            $trDetail
 
         cancel: () ->
             if @__slideRejct()

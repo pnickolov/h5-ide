@@ -63,7 +63,7 @@ define [
   VisualOps.prototype.__createUser = ()->
     @user = new User()
 
-    @user.on "SessionUpdated", ()->
+    @user.on "SessionUpdated", ()=>
       # In the previous version of IDE, we update the applist and dashboard when the
       # session is updated. But I don't think it's necessary.
 

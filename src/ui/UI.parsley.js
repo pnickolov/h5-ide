@@ -1634,7 +1634,7 @@ define(["jquery"], function(){
       }
 
       // form is invalid, focus an error field depending on focus policy
-      if ( this.focusedField && !valid ) {
+      if ( this.focusedField && !valid && errorBubbling ) {
         this.focusedField.focus();
       }
 

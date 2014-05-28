@@ -81,7 +81,7 @@ define ["ApiRequestDefs", "api/ApiRequestErrors", "api/ApiRequestHandlers", "api
 
         awsresult = tryParseAws( awsresult[1], true )
         error.awsErrorCode = "" + awsresult.error
-        error.awsresult    = awsresult.result
+        error.awsResult    = awsresult.result
         logAndThrow error
 
     res.result[1]

@@ -352,7 +352,6 @@ define [ "Design",
           return azRef
 
       # listener
-      sslCert = null
       for l, idx in data.resource.ListenerDescriptions || []
         l = l.Listener
         attr.listeners.push {
@@ -361,11 +360,11 @@ define [ "Design",
           instanceProtocol : l.InstanceProtocol
           instancePort     : l.InstancePort
         }
-        if l.SSLCertificateId and not sslCert
+        if l.SSLCertificateId
           # Cannot resolve the same component multiple times within one deserialize.
           # Because Design might consider it as recursive dependency.
           sslCert = resolve( MC.extractID( l.SSLCertificateId ) )
-          attr.listeners[idx].sslCert = sslCert
+          attr.listeners[idx].sslCert = sslCert if sslCert
 
       elb = new Model( attr )
       # if sslCert then sslCert.assignTo( elb )

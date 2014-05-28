@@ -4589,9 +4589,13 @@ a.action-link:hover {
 	float : left;
 	width : 40%;
 }
+.app-panel-li-col2-full  {
+	width : 100%;
+}
 
 .app-panel-li-col2-1 label,
-.app-panel-li-col2-2 label {
+.app-panel-li-col2-2 label,
+.app-panel-li-col2-full label {
 	font-size : 12px;
 	color     : #999;
 }

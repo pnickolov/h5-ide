@@ -52,6 +52,17 @@ define [
     parseFetchData : ( data )-> data.DescribeVolumesResponse.volumeSet?.item
   }
 
+  ### VPC ###
+  CrCommonCollection.extend {
+    ### env:dev ###
+    ClassName : "CrVpcCollection"
+    ### env:dev:end ###
+
+    type  : constant.RESTYPE.VPC
+    modelIdAttribute : "vpcId"
+    parseFetchData : ( data )-> data.DescribeVpcsResponse.vpcSet?.item
+  }
+
   ### AMI ###
   CrCommonCollection.extend {
     ### env:dev ###
@@ -59,7 +70,7 @@ define [
     ### env:dev:end ###
 
     type  : constant.RESTYPE.INSTANCE
-    modelIdAttribute : "volumeId"
+    modelIdAttribute : "instanceId"
     parseFetchData : ( data )->
       itemset = data.DescribeInstancesResponse.reservationSet
       if not itemset then return

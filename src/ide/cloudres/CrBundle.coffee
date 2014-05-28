@@ -3,5 +3,5 @@ define [
   "constant"
   "CloudResources"
   "./CrClnSharedRes"
-], ( constant, CloudResources )->
-  return
+  "./CrClnCommonRes"
+], ( constant, CloudResources )-> return

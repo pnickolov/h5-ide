@@ -1,4 +1,4 @@
-define [ 'constant', 'CloudResources','sns_manage', 'combo_dropdown', './component/sslcert/sslCertTpl', 'i18n!nls/lang.js' ], ( constant, CloudResources, snsManage, comboDropdown, template, lang ) ->
+define [ 'constant', 'CloudResources','sslcert_manage', 'combo_dropdown', './component/sslcert/sslCertTpl', 'i18n!nls/lang.js' ], ( constant, CloudResources, sslCertManage, comboDropdown, template, lang ) ->
 
 
     sslCertCol = CloudResources constant.RESTYPE.IAM

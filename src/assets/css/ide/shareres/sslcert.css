@@ -1,0 +1,4 @@
+.modal-ssl-cert-create .modal-ssl-cert-item {
+  margin-bottom: 10px; }
+  .modal-ssl-cert-create .modal-ssl-cert-item input, .modal-ssl-cert-create .modal-ssl-cert-item textarea {
+    width: 440px; }

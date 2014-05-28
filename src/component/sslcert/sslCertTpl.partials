@@ -1,5 +1,5 @@
 <!-- {{dropdown_selection}} -->
-{{TopicName}}
+{{Name}}
 
 <!-- {{dropdown_list}} -->
 {{#each this}}
@@ -18,7 +18,51 @@
         </div>
     </td>
     <td>{{Name}}</td>
-    <td>{{id}}</td>
-    <td>{{subCount}} Subscriptions</td>
+    <td>{{UploadDate}}</td>
 </tr>
 {{/each}}
+
+<!-- {{slide_create}} -->
+<div class="slide-create" data-bind="true">
+    <div class="modal-ssl-cert-create">
+        <div class="modal-ssl-cert-item clearfix">
+            <label class="left">{{ i18n "PROP_ELB_LBL_LISTENER_NAME"}}</label>
+            <input class="input" value="{{sslCert.name}}" type="text" data-required="true" data-ignore="true" id="elb-ssl-cert-name-input"/>
+        </div>
+        <div class="modal-ssl-cert-item clearfix">
+            <label class="left">{{ i18n "PROP_ELB_LBL_LISTENER_PRIVATE_KEY"}}</label>
+            <textarea class="input elb-ssl-cert-input tooltip" data-tooltip="{{i18n 'POP_TIP_PEM_ENCODED'}}" data-required="true" data-ignore="true" id="elb-ssl-cert-privatekey-input">{{sslCert.key}}</textarea>
+        </div>
+        <div class="modal-ssl-cert-item clearfix">
+            <label class="left"  >{{ i18n "PROP_ELB_LBL_LISTENER_PUBLIC_KEY"}}</label>
+            <textarea class="input elb-ssl-cert-input tooltip" data-tooltip="{{i18n 'POP_TIP_PEM_ENCODED'}}" data-required="true" data-ignore="true" id="elb-ssl-cert-publickey-input">{{sslCert.body}}</textarea>
+        </div>
+        <div class="modal-ssl-cert-item clearfix">
+            <label class="left"  >{{ i18n "PROP_ELB_LBL_LISTENER_CERTIFICATE_CHAIN"}}</label>
+            <textarea class="input elb-ssl-cert-input tooltip" data-tooltip="{{i18n 'POP_TIP_PEM_ENCODED'}}" id="elb-ssl-cert-chain-input">{{sslCert.chain}}</textarea>
+        </div>
+    </div>
+    <div class="init action">
+        <button class="btn btn-blue do-action" data-action="create" disabled>Create</button>
+        <button class="btn btn-silver cancel">Cancel</button>
+    </div>
+    <div class="processing action" style="display:none;">
+        <button class="btn" disabled>Creating...</button>
+    </div>
+    <div class="download action" style="display:none;">
+        <a class="btn btn-blue do-action pulse" data-action="download" id="download-kp">Download</a>
+        <button class="btn btn-silver cancel" disabled>Close</button>
+    </div>
+</div>
+
+<!-- {{slide_delete}} -->
+<div class="slide-delete">
+    <div class="modal-text-major">Confirm to delete {{#if selecteKeyName }}SNS Topic {{selecteKeyName}}{{else}}selected {{selectedCount}} SNS Topics{{/if}} and all associated subscriptions?</div>
+    <div class="init action">
+        <button class="btn btn-red do-action" data-action="delete">Delete</button>
+        <button class="btn btn-silver cancel">Cancel</button>
+    </div>
+    <div class="processing action" style="display:none;">
+        <button class="btn" disabled>Deleting...</button>
+    </div>
+</div>

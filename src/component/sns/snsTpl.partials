@@ -21,7 +21,7 @@
     </td>
     <td>{{Name}}</td>
     <td>{{id}}</td>
-    <td>{{subCount}} Subscriptions</td>
+    <td {{#if subCount}}class="show-detail"{{/if}} data-topic-arn="{{id}}"><b>{{subCount}}</b> Subscriptions</td>
 </tr>
 {{/each}}
 
@@ -44,11 +44,11 @@
         </div>
         <div class="create-sns-topic">
             <label for="create-topic-name">Topic Name</label>
-            <input class="input" type="text" id="create-topic-name" data-ignore="true" data-ignore-regexp="^[a-zA-Z0-9,_-]*$" data-required="true" maxlength="255" placeholder="Required. Up to 256 characters" required>
+            <input class="input" type="text" id="create-topic-name" data-ignore="true" data-ignore-regexp="^[a-zA-Z0-9,_-]*$" data-required="true" maxlength="255" placeholder="Required. Up to 256 characters">
         </div>
         <div>
             <label for="create-display-name">Display Name</label>
-            <input class="input" type="text" id="create-display-name" data-ignore="true" data-ignore-regexp="^[a-zA-Z0-9,_-]*$" data-required="true" maxlength="255" placeholder="Required for SMS subscriptions (up to 10 characters)">
+            <input class="input" type="text" id="create-display-name" data-ignore="true" data-ignore-regexp="^[a-zA-Z0-9,_-]*$" maxlength="255" placeholder="Required for SMS subscriptions (up to 10 characters)">
         </div>
         <div>
             <label>Protocol</label>
@@ -94,22 +94,35 @@
         <button class="btn" disabled>Deleting...</button>
     </div>
 </div>
-<!-- {{slide_import}} -->
-<div class="slide-import" data-bind="true">
-    <label for="import-kp-name">Key Pair Name</label>
-    <input class="input" type="text" id="import-kp-name" data-ignore="true" data-ignore-regexp="^[a-zA-Z0-9,_-]*$" data-required="true" maxlength="255" placeholder="allow alphanumber, _ or - up to 255 characters">
-    <div class="import-zone">
 
-    </div>
-    <div class="init action">
-        <button class="btn" disabled>Import</button>
-        <button class="btn btn-silver cancel">Cancel</button>
-    </div>
-    <div class="ready action" style="display:none;">
-        <button class="btn btn-blue do-action" data-action="import">Import</button>
-        <button class="btn btn-silver cancel">Cancel</button>
-    </div>
-    <div class="processing action" style="display:none;">
-        <button class="btn" disabled>Importing...</button>
-    </div>
-</div>
+
+<!-- {{detail}} -->
+<table class="table sns-detail">
+    <thead>
+        <tr>
+            <th style="width: 48px;">Protocol </th>
+            <th>- Endpoint</th>
+            <th style="wdith: 30%;">Subscription ARN</th>
+            <th style="width: 103px;"></th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each this}}
+        <tr>
+            <td>{{Protocol}}</td>
+            <td>{{Endpoint}}</td>
+            <td>{{SubscriptionArn}}</td>
+            <td>
+                {{#if isRemovable}}
+                    <a class="icon-delete remove"></a>
+                    <div class="do-remove-panel">
+                        <button class="btn btn-blue btn-small do-remove" data-id="{{SubscriptionArn}}">Delete</button>
+                        <button class="btn btn-link btn-small cancel">Cancel</button>
+                    </div>
+                {{/if}}
+            </td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+

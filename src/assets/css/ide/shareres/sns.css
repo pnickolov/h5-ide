@@ -35,3 +35,18 @@
   width: 456px; }
 .sns-manage .slide-create .new-topic {
   border-bottom: 1px solid #0f0f0f; }
+.sns-manage .tr-detail > td {
+  padding: 0; }
+.sns-manage .tr-detail table.sns-detail thead tr th {
+  padding: 8px 12px;
+  background: #111; }
+.sns-manage .tr-detail table.sns-detail tr td {
+  border: 0;
+  background: #222; }
+  .sns-manage .tr-detail table.sns-detail tr td a.remove {
+    color: #D0021B;
+    cursor: pointer; }
+  .sns-manage .tr-detail table.sns-detail tr td div.do-remove-panel {
+    display: none; }
+.sns-manage .tr-detail table.sns-detail tr:hover td {
+  background: #000; }

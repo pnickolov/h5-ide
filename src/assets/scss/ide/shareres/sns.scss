@@ -48,6 +48,44 @@
             border-bottom: 1px solid #0f0f0f;
 
         }
+
+    }
+
+
+    .tr-detail {
+        & > td {
+            padding: 0;
+        }
+        table.sns-detail {
+            thead tr th {
+                padding: 8px 12px;
+                background: #111;
+            }
+
+            tr {
+
+                td {
+                    border: 0;
+                    background: #222;
+
+                    a.remove {
+                        color: #D0021B;
+                        cursor: pointer;
+                    }
+
+                    div.do-remove-panel {
+                        display: none;
+                    }
+                }
+
+                &:hover td {
+                    background: #000;
+                }
+
+            }
+
+        }
+
     }
 }
 

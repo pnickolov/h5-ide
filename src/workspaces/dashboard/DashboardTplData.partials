@@ -779,20 +779,11 @@
     <a href="###" class="btn btn-blue show-credential" style="width: 182px;">Enter AWS credentials</a>
 </div>
 
-<!-- {{demo_global}} -->
+<!-- {{demo}} -->
 <div class="dashboard-demo">
-    <div class="enter-credential">
-        <p class="info">This is only sample data of global resource sumary.</p>
-        <p class="link"><a class="show-credential">Provide your AWS Credential</a> to see real data</p>
-    </div>
-    <img src="./assets/images/ide/global-demo.png"/>
-</div>
-
-<!-- {{demo_region}} -->
-<div class="dashboard-demo">
-    <div class="enter-credential">
-        <p class="info">This is only sample data of regional resource sumary.</p>
-        <p class="link"><a class="show-credential">Provide your AWS Credential</a> to see real data</p>
-    </div>
-    <img src="./assets/images/ide/region-demo.png"/>
+  <div class="enter-credential">
+    This is only sample data of global resource sumary.</br>
+    <a class="show-credential">Provide your AWS Credential</a> to see real data
+  </div>
+  <img src="./assets/images/ide/global-demo.png"/>
 </div>

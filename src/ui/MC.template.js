@@ -2556,7 +2556,7 @@ function program18(depth0,data) {
   return buffer;
   }
 
-  buffer += "<div id=\"modal-box\" class=\"modal-box\">\n    <div style=\"width: 520px\">\n        <div class=\"modal-header\">\n            <h3>"
+  buffer += "<div class=\"modal-box\">\n    <div style=\"width: 520px\">\n        <div class=\"modal-header\">\n            <h3>"
     + escapeExpression(((stack1 = (depth0 && depth0.title)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</h3>\n            ";
   stack1 = helpers.unless.call(depth0, (depth0 && depth0.hideClose), {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});

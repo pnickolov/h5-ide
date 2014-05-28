@@ -66,8 +66,7 @@ define [
 
       # Need to do a init update because the data might arrive first
       @updateOpsList()
-
-      @listenTo @model, "change:visualizeData", @updateVisModel
+      @updateDemoView()
 
     ###
       rendering
@@ -272,4 +271,21 @@ define [
         self.visModal.tpl.find(".loading-spinner").show()
         false
       return
+
+    updateDemoView : ()->
+      if App.user.hasCredential()
+        $("#dashboard-data-wrap").removeClass("demo")
+        $("#dashboard-data-wrap").find(".dashboard-demo").remove()
+        $("#VisualizeVPC").removeAttr "disabled"
+      else
+        $("#VisualizeVPC").attr "disabled", "disabled"
+        $("#dashboard-data-wrap").toggleClass("demo", true)
+        if $("#dashboard-data-wrap").find(".dashboard-demo").show().length is 0
+          $(tplPartials.demo()).appendTo($("#dashboard-data-wrap"))
+      return
+
+    showCredential : ()-> App.showSettings App.showSettings.TAB.Credential
+
+    updateGlobalResource : ()->
+
   }

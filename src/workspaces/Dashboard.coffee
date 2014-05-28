@@ -12,11 +12,25 @@ define ["Workspace", "workspaces/DashboardView", "workspaces/DashboardModel"], (
       @model = new DashboardModel()
       @view  = new DashboardView({model:@model})
 
-      # Watch changes in applist/stacklist
-      @listenTo App.model.stackList(), "update", ()-> @view.updateOpsList()
-      @listenTo App.model.appList(),   "update", ()-> @view.updateOpsList()
+      # For consistent, put every event listening here.
+      # So that the view doesn't depend on any other modules.
+      # Notice that the dependencies are not reduced, just transferred.
 
-      @listenTo App.model.appList(), "change:state",    ( model )-> @view.updateRegionList( model )
-      @listenTo App.model.appList(), "change:progress", ( model )-> @view.updateAppProgress( model )
+      # Watch changes in applist/stacklist
+      @view.listenTo App.model.stackList(), "update", @view.updateOpsList
+      @view.listenTo App.model.appList(),   "update", @view.updateOpsList
+
+      @view.listenTo App.model.appList(), "change:state",    @view.updateRegionList
+      @view.listenTo App.model.appList(), "change:progress", @view.updateAppProgress
+
+      # Watch changes in user
+      @listenTo App.user, "change:credential", ()->
+        self.fetchAwsResources()
+        self.view.updateDemoView()
+
+      fetchAwsResources()
+      return
+
+    fetchAwsResources : ()->
 
   Dashboard

@@ -1,5 +1,28 @@
 @import "compass";
 
+.dashboard-demo {
+  .enter-credential {
+    text-align       : center;
+    border           : 1px solid #b4d5ed;
+    background-color : #EDF9FF;
+    border-radius    : 3px;
+    padding          : 10px 0;
+    margin-bottom    : 10px;
+    line-height      : 1.5em;
+    font-size        : 16px;
+  }
+
+  .show-credential {
+    color: #148BE6;
+    cursor: pointer;
+    &:hover { text-decoration: underline; }
+  }
+}
+
+#dashboard-data-wrap.demo {
+  #global-view, #region-resource-wrap { display : none !important; }
+}
+
 .global-map-item {
   position      : absolute;
   cursor        : pointer;

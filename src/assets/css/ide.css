@@ -524,32 +524,6 @@ button {
 	transition: transform .1s;
 }
 
-.dashboard-demo .enter-credential {
-	text-align: center;
-	border: 1px solid #b4d5ed;
-	background-color: #EDF9FF;
-	border-radius: 3px;
-	padding: 10px 0;
-	margin-bottom: 10px;
-}
-
-.dashboard-demo .enter-credential p {
-	margin-bottom: 0;
-}
-
-.dashboard-demo .enter-credential p.info {
-	font-size: 16px;
-}
-
-.dashboard-demo .enter-credential p.link a {
-	color: #148BE6;
-	cursor: pointer;
-}
-
-.dashboard-demo .enter-credential p.link a:hover {
-	text-decoration: underline;
-}
-
 #global-view .dashboard-loading {
 	height: 811px;
 	margin-top: 20px;

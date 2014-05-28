@@ -27,19 +27,19 @@
     <div class="modal-ssl-cert-create">
         <div class="modal-ssl-cert-item clearfix">
             <label class="left">{{ i18n "PROP_ELB_LBL_LISTENER_NAME"}}</label>
-            <input class="input" value="{{sslCert.name}}" type="text" data-required="true" data-ignore="true" id="ssl-cert-name-input"/>
+            <input class="input" type="text" data-required="true" data-ignore="true" id="ssl-cert-name-input"/>
         </div>
         <div class="modal-ssl-cert-item clearfix">
             <label class="left">{{ i18n "PROP_ELB_LBL_LISTENER_PRIVATE_KEY"}}</label>
-            <textarea class="input ssl-cert-input tooltip" data-tooltip="{{i18n 'POP_TIP_PEM_ENCODED'}}" data-required="true" id="ssl-cert-privatekey-input">{{sslCert.key}}</textarea>
+            <textarea class="input ssl-cert-input tooltip" data-tooltip="{{i18n 'POP_TIP_PEM_ENCODED'}}" data-required="true" id="ssl-cert-privatekey-input"></textarea>
         </div>
         <div class="modal-ssl-cert-item clearfix">
             <label class="left"  >{{ i18n "PROP_ELB_LBL_LISTENER_PUBLIC_KEY"}}</label>
-            <textarea class="input ssl-cert-input tooltip" data-tooltip="{{i18n 'POP_TIP_PEM_ENCODED'}}" data-required="true" id="ssl-cert-publickey-input">{{sslCert.body}}</textarea>
+            <textarea class="input ssl-cert-input tooltip" data-tooltip="{{i18n 'POP_TIP_PEM_ENCODED'}}" data-required="true" id="ssl-cert-publickey-input"></textarea>
         </div>
         <div class="modal-ssl-cert-item clearfix">
             <label class="left"  >{{ i18n "PROP_ELB_LBL_LISTENER_CERTIFICATE_CHAIN"}}</label>
-            <textarea class="input ssl-cert-input tooltip" data-tooltip="{{i18n 'POP_TIP_PEM_ENCODED'}}" id="ssl-cert-chain-input">{{sslCert.chain}}</textarea>
+            <textarea class="input ssl-cert-input tooltip" data-tooltip="{{i18n 'POP_TIP_PEM_ENCODED'}}" id="ssl-cert-chain-input"></textarea>
         </div>
     </div>
     <div class="init action">
@@ -48,10 +48,6 @@
     </div>
     <div class="processing action" style="display:none;">
         <button class="btn" disabled>Creating...</button>
-    </div>
-    <div class="download action" style="display:none;">
-        <a class="btn btn-blue do-action pulse" data-action="download" id="download-kp">Download</a>
-        <button class="btn btn-silver cancel" disabled>Close</button>
     </div>
 </div>
 
@@ -64,5 +60,22 @@
     </div>
     <div class="processing action" style="display:none;">
         <button class="btn" disabled>Deleting...</button>
+    </div>
+</div>
+
+<!-- {{slide_update}} -->
+<div class="slide-update">
+    <div class="modal-ssl-cert-update">
+        <div class="modal-ssl-cert-item clearfix">
+            <label class="left">Certificate Name</label>
+            <input class="input" value="{{cert_name}}" type="text" data-required="true" data-ignore="true" id="ssl-cert-name-update-input"/>
+        </div>
+    </div>
+    <div class="init action">
+        <button class="btn btn-blue do-action" data-action="update">Update</button>
+        <button class="btn btn-silver cancel">Cancel</button>
+    </div>
+    <div class="processing action" style="display:none;">
+        <button class="btn" disabled>Creating...</button>
     </div>
 </div>

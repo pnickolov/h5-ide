@@ -62,6 +62,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sslcert/ssl
             @modal.on 'slidedown', @renderSlides, @
             @modal.on 'action', @doAction, @
             @modal.on 'refresh', @refresh, @
+            @modal.on 'checked', @checked, @
 
         initialize: () ->
             @initCol()
@@ -137,8 +138,33 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sslcert/ssl
                 m = @sslCertCol.get c.data.id
                 m?.destroy().then onDeleteFinish, onDeleteFinish
 
+        update: ( invalid, checked ) ->
+
+            that = @
+            @switchAction 'processing'
+
+            if checked and checked[0]
+
+                sslCertId = checked[0].data.id
+                sslCertModel = that.sslCertCol.get(sslCertId)
+                newCertName = $('#ssl-cert-name-update-input').val()
+                sslCertModel.update(
+                    Name: newCertName
+                ).then (result) ->
+                    notification 'info', 'Update SSL Certificate Succeed'
+                    that.modal.cancel()
+                , (result) ->
+                    notification 'error', result.awsresult
+
         refresh: ->
             @sslCertCol.fetchForce()
+
+        checked: ( event, checkedAry ) ->
+            $editBtn = @M$('.toolbar .icon-edit')
+            if checkedAry.length is 1
+                $editBtn.removeAttr('disabled')
+            else
+                $editBtn.attr('disabled', 'disabled')
 
         switchAction: ( state ) ->
             if not state
@@ -182,6 +208,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sslcert/ssl
 
 
         getSlides: ->
+
             that = @
             modal = @modal
 
@@ -199,7 +226,8 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sslcert/ssl
 
                 allTextBox.on 'keyup', processCreateBtn
 
-            "delete": ( tpl, checked ) ->
+            delete: ( tpl, checked ) ->
+
                 checkedAmount = checked.length
 
                 if not checkedAmount
@@ -214,18 +242,29 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sslcert/ssl
 
                 modal.setSlide tpl data
 
-            import: ( tpl, checked ) ->
-                modal.setSlide tpl
-                that.__upload and that.__upload.remove()
-                that.__upload = new upload()
-                that.__upload.on 'load', that.afterImport, @
-                that.M$( '.import-zone' ).html that.__upload.render().el
+            update: ( tpl, checked ) ->
 
+                that = this
+
+                if checked and checked[0]
+
+                    certName = checked[0].data.name
+                    modal.setSlide tpl({
+                        cert_name: certName
+                    })
+
+                allTextBox = that.M$( '.slide-update input' )
+
+                processCreateBtn = ( event ) ->
+                    if $(event.currentTarget).parsley 'validateForm', false
+                        that.M$( '.slide-update .do-action' ).prop 'disabled', false
+                    else
+                        that.M$( '.slide-update .do-action' ).prop 'disabled', true
+
+                allTextBox.on 'keyup', processCreateBtn
 
         show: ->
             if App.user.hasCredential()
-                @topicCol.fetch()
-                @subCol.fetch()
                 @processCol()
             else
                 @renderNoCredential()

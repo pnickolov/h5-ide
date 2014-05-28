@@ -6,3 +6,17 @@
 		}
 	}
 }
+.modal-ssl-cert-update {
+	.modal-ssl-cert-item {
+		margin-top: 10px;
+		margin-left: 80px;
+		input, textarea {
+			float: left;
+			width: 300px !important;
+		}
+		.left {
+			width: 130px !important;
+			margin-top: 7px;
+		}
+	}
+}

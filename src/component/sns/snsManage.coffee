@@ -18,6 +18,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
             regionName = constant.REGION_SHORT_LABEL[ region ]
 
             title: "Manage SNS in #{regionName}"
+            classList: 'sns-manage'
             #slideable: _.bind that.denySlide, that
             context: that
             buttons: [
@@ -75,9 +76,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
         validate: ( action ) ->
             switch action
                 when 'create'
-                    return not @M$( '#create-kp-name' ).parsley 'validate'
-                when 'import'
-                    return not @M$( '#import-kp-name' ).parsley 'validate'
+                    true
 
         genDeleteFinish: ( times ) ->
             success = []
@@ -108,6 +107,8 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
                 finHandler()
 
         # actions
+        create: ( invalid ) ->
+
         delete: ( invalid, checked ) ->
             count = checked.length
 
@@ -170,11 +171,10 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
 
             create: ( tpl, checked ) ->
                 modal.setSlide tpl
-                # Setup the endpoint
-                updateEndpoint = ( protocol ) ->
-                    $input  = $(".property-asg-ep")#.removeClass("https http")
-                    switch $modal.find(".selected").data("id")
 
+                updateEndpoint = ( protocol ) ->
+                    selectedProto = that.M$('.dd-protocol .selected').data 'id'
+                    switch selectedProto
                         when "sqs"
                             placeholder = lang.ide.PROP_STACK_AMAZON_ARN
                             type        = lang.ide.PROP_STACK_SQS
@@ -212,7 +212,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
                             type        = lang.ide.PROP_STACK_HTTPS
                             errorMsg    = lang.ide.PARSLEY_PLEASE_PROVIDE_A_VALID_URL
 
-                    endPoint = @M$ '#create-sns-endpoint'
+                    endPoint = that.M$ '#create-sns-endpoint'
                     endPoint.attr "placeholder", placeholder
 
                     endPoint.parsley 'custom', ( value ) ->
@@ -223,7 +223,28 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
                         endPoint.parsley 'validate'
                     null
 
-                @M$( '.dd-protocol' ).on "OPTION_CHANGE", updateEndpoint
+                updateEndpoint 'email'
+
+                that.M$( '#create-topic-name' ).parsley 'custom', ( value ) ->
+                    selectedProto = that.M$('.dd-protocol .selected').data 'id'
+                    if selectedProto is 'sms'
+                        return 'This value is required'
+                    null
+
+
+                allTextBox = that.M$( '.slide-create input[type=text]' )
+
+                processCreateBtn = ( event ) ->
+                    if $(event.currentTarget).parsley 'validateForm', false
+                        that.M$( '.slide-create .do-action' ).prop 'disabled', false
+                    else
+                        that.M$( '.slide-create .do-action' ).prop 'disabled', true
+
+
+                allTextBox.on 'keyup', processCreateBtn
+
+
+                that.M$( '.dd-protocol' ).on "OPTION_CHANGE", updateEndpoint
 
             "delete": ( tpl, checked ) ->
                 checkedAmount = checked.length

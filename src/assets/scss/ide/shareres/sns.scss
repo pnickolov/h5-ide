@@ -8,22 +8,21 @@
     line-height: 13px;
     color: #fff;
     text-align: center;
-    background: $backgroudColor
+    background: $backgroudColor;
 }
 
 .icon-tag-sub {
-    @include tag
+    @include tag;
 }
 
 .icon-tag-email {
-    @include tag(#F5A623)
-}
-
-.combo-dd-list > p {
-    margin: 0
+    @include tag(#F5A623);
 }
 
 #sns-placeholder {
+    .combo-dd-list > p {
+        margin: 0;
+    }
     .selection > p {
         display: none;
     }
@@ -33,4 +32,22 @@
     }
 
 }
+
+
+
+.sns-manage {
+    .slide-create {
+        .before-create > div {
+            margin: 5px 0;
+        }
+        .selection {
+            width: 456px;
+        }
+    }
+}
+
+
+
+
+
 

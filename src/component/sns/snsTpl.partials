@@ -30,7 +30,7 @@
 <div class="slide-create" data-bind="true">
     <div class="before-create">
         <div>
-          <label class="left">Select Topic</label>
+          <label>Select Topic</label>
             <div class="selectbox dd-topic-name">
                 <div class="selection">New Topic</div>
                 <ul class="dropdown" tabindex="-1">
@@ -41,8 +41,8 @@
 
         </div>
         <div>
-            <label for="topic-name">Topic Name</label>
-            <input class="input" type="text" id="topic-name" data-ignore="true" data-ignore-regexp="^[a-zA-Z0-9,_-]*$" data-required="true" maxlength="255" placeholder="Required. Up to 256 characters">
+            <label for="create-topic-name">Topic Name</label>
+            <input class="input" type="text" id="create-topic-name" data-ignore="true" data-ignore-regexp="^[a-zA-Z0-9,_-]*$" data-required="true" maxlength="255" placeholder="Required. Up to 256 characters" required>
         </div>
         <div>
             <label for="create-sns-name">Display Name</label>
@@ -55,7 +55,7 @@
                 <ul class="dropdown" tabindex="-1">
                     <li class="item" data-id="https">HTTPS</li>
                     <li class="item" data-id="http">HTTP</li>
-                    <li class="item" data-id="email">Email</li>
+                    <li class="item selected" data-id="email">Email</li>
                     <li class="item" data-id="email-json">Email-JSON</li>
                     <li class="item" data-id="sms">SMS</li>
                     <li class="item" data-id="arn">Application</li>
@@ -65,11 +65,11 @@
         </div>
         <div>
             <label for="create-sns-endpoint">Endpoint</label>
-            <input type="text" class="input" id="create-sns-endpoint" max-length="255" data-required="true" data-trigger="change">
+            <input type="text" class="input" id="create-sns-endpoint" max-length="255" data-required="true" data-trigger="change" placeholder="example@mail.com">
         </div>
     </div>
     <div class="init action">
-        <button class="btn btn-blue do-action" data-action="create">Create</button>
+        <button class="btn btn-blue do-action" data-action="create" disabled>Create</button>
         <button class="btn btn-silver cancel">Cancel</button>
     </div>
     <div class="processing action" style="display:none;">

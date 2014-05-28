@@ -460,7 +460,7 @@ module.exports =
       zh: "无法加载部分IDE内容，请重试"
 
     IDE_TIP_VISUALIZE_MORE_THAN_100_ENI:
-      en: "Currently we do not support to visualize system has more than 100 network interfaces. Contact us by the Feedback button for details."
+      en: "Currently we do not support to visualize system has more than 300 network interfaces. Contact us by the Feedback button for details."
       zh: ""
 
     RES_TIT_RESOURCES:

@@ -462,7 +462,7 @@ requirejs.onError = ( err )->
 		console.error "[RequireJS Error]", err, err.stack
 
 
-require ['ide/Application', 'ide/deprecated/ide', "ide/cloudres/CrBundle", "module/Dashboard"], ( Application, ide, bundle, Dashboard ) ->
+require ['ide/Application', 'ide/deprecated/ide', "ide/cloudres/CrBundle", "workspaces/Dashboard"], ( Application, ide, bundle, Dashboard ) ->
 	(new Application()).initialize().then ()->
 		ide.initialize()
 		new Dashboard()

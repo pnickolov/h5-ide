@@ -17,7 +17,7 @@ define [
   "./subviews/SettingsDialog"
   "CloudResources"
   "./WorkspaceManager"
-  "module/OpsEditor"
+  "workspaces/OpsEditor"
   "component/exporter/JsonExporter"
   "vpc_model",
   "constant",

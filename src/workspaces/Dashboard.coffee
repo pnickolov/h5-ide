@@ -1,5 +1,5 @@
 
-define ["Workspace", "module/DashboardView", "module/DashboardModel"], ( Workspace, DashboardView, DashboardModel )->
+define ["Workspace", "workspaces/DashboardView", "workspaces/DashboardModel"], ( Workspace, DashboardView, DashboardModel )->
 
   class Dashboard extends Workspace
 

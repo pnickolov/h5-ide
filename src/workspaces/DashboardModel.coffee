@@ -1,9 +1,13 @@
 
 
-define ["ApiRequest", "backbone"], ( ApiRequest )->
+define ["ApiRequest", "constant", "backbone"], ( ApiRequest, constant )->
 
   VisualizeVpcParams =
-    'AWS.VPC.VPC'      : {}
+    'AWS.VPC.VPC'      : {
+      'filter' : {
+        'isDefault' : false # ignore default VPC
+      }
+    }
     'AWS.ELB'          : {}
     'AWS.EC2.Instance' : {
       'filter' : {
@@ -30,6 +34,9 @@ define ["ApiRequest", "backbone"], ( ApiRequest )->
     Dashboard Model
   ###
   Backbone.Model.extend {
+
+    defaults :
+      visualizeData : []
 
     initialize : ()->
       # Watch websocket, so that we will know when the import is done.
@@ -60,15 +67,48 @@ define ["ApiRequest", "backbone"], ( ApiRequest )->
       @__visVpcDefer.promise
 
     onVisualizeUpdated : ( result )->
-      if not @__visVpcDefer then @__visVpcDefer = Q.defer()
+      # Discards any data if we didn't fires a request.
+      if not @__visVpcDefer then return
 
       # Parse data that comes from websocket
       @set "visualizeData", @parseVisData( result )
       @__visVpcDefer.resolve()
       return
 
+    isVisualizeTimeout : ()->
+      # This method has sideeffect which will make the promise to be null
+      if @__visRequestTime - (new Date()) > 60*10*1000
+        @__visVpcDefer = null
+        return true
+
+      false
+
     parseVisData : ( data ) ->
-      resource_map = {}
+      delete data._id
+      delete data.username
+      delete data.timestamp
+
+      regions = []
+      for region, vpcMap of data
+        vpcs = []
+        regions.push {
+          id      : region
+          name    : constant.REGION_SHORT_LABE[ region ]
+          subname : constant.REGION_LABEL[ text ]
+          vpcs    : vpcs
+        }
+        for vpc, resources of vpcMap
+          # Ingore app that is created by us.
+          tags = _.map resources.Tag.item, (i)-> i.key
+          if tags.indexOf("Created by")>=0 and tags.indexOf("app-id")>=0
+            continue
+
+          obj = {
+
+          }
+          obj.disabled = obj.eni.length > 300
+          vpc.push obj
+      debugger
 
       # try
       #     _.each data, ( obj, region ) ->

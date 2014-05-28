@@ -1,8 +1,8 @@
 
 define [
-  'module/dashboard/DashboardTpl'
-  'module/dashboard/DashboardTplData'
-  'module/dashboard/VisualizeVpcTpl'
+  './dashboard/DashboardTpl'
+  './dashboard/DashboardTplData'
+  './dashboard/VisualizeVpcTpl'
   "UI.modalplus"
   "constant"
   "backbone"
@@ -66,6 +66,8 @@ define [
 
       # Need to do a init update because the data might arrive first
       @updateOpsList()
+
+      @listenTo @model, "change:visualizeData", @updateVisModel
 
     ###
       rendering
@@ -230,8 +232,27 @@ define [
     stopApp        : (event)-> App.stopApp $( event.currentTarget ).closest("li").attr("data-id"); false
     terminateApp   : (event)-> App.terminateApp $( event.currentTarget ).closest("li").attr("data-id"); false
 
+    updateVisModel : ()->
+      if not @visModal then return
+
+      promise = @model.visualizeVpc()
+      attributes = {
+        isReady : promise?.isFulfilled()
+        timeout : @model.isVisualizeTimeout()
+        data    : @model.get("visualizeData")
+      }
+      @visModal.tpl.find(".modal-body").html VisualizeVpcTpl( attributes )
+      return
+
     visualizeVPC : ()->
-      data = [{
+      promise = @model.visualizeVpc()
+      attributes = {
+        isReady : promise.isFulfilled()
+        timeout : @model.isVisualizeTimeout()
+        data    : @model.get("visualizeData")
+      }
+
+      attributes.data = [{
         id      : "region1"
         name    : "Region1"
         subname : "US east"
@@ -264,13 +285,27 @@ define [
         }]
       }]
 
-      visModal = new Modal {
+      self = @
+      TO = setTimeout ()->
+        self.updateVisModel()
+      , 60*8*1000 + 1000
+
+      @visModal = new Modal {
         title         : "Select a VPC to be visualized:"
         width         : "770"
-        template      : VisualizeVpcTpl( data )
+        template      : VisualizeVpcTpl( attributes )
         disableFooter : true
         compact       : true
+        onClose       : ()->
+          self.visModal = null
+          clearTimeout(TO)
+          return
       }
 
-
+      @visModal.tpl.on "click", "#VisualizeReload", ()->
+        self.model.visualizeVpc(true)
+        self.visModal.tpl.find(".unmanaged-vpc-empty").hide()
+        self.visModal.tpl.find(".loading-spinner").show()
+        false
+      return
   }

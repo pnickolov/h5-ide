@@ -1,11 +1,19 @@
 /* Common Style for Modal with Toolbar */
 .modal-toolbar {
-  width: 855px; }
+  width: 855px;
+  -webkit-user-select: none;
+  -o-user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none; }
   .modal-toolbar .list {
     position: relative; }
   .modal-toolbar .modal-body {
     padding: 0; }
   .modal-toolbar .toolbar {
+    -webkit-user-select: none;
+    -o-user-select: none;
+    -ms-user-select: none;
+    -moz-user-select: none;
     background: #222427;
     border-bottom: 1px solid #131313;
     height: 34px;

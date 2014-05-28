@@ -46,6 +46,8 @@ define [ "./CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
         catch e
           throw McError( ApiRequest.Errors.InvalidAwsReturn, "Subscription created but aws returns invalid ata." )
 
+        if arn is "pending confirmation" then arn = "PendingConfirmation"
+
         self.set {
           id : CrSubscriptionModel.uniqueId()
           SubscriptionArn : arn

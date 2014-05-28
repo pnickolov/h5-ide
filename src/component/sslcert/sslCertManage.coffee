@@ -106,13 +106,35 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sslcert/ssl
         # actions
         create: ( invalid ) ->
 
+            that = @
+            @switchAction 'processing'
+
+            $certName = $('#ssl-cert-name-input')
+            $certPrikey = $('#ssl-cert-privatekey-input')
+            $certPubkey = $('#ssl-cert-publickey-input')
+            $certChain = $('#ssl-cert-chain-input')
+
+            @sslCertCol.create(
+                Name: $certName.val(),
+                CertificateBody: $certPubkey.val(),
+                PrivateKey: $certPrikey.val(),
+                CertificateChain: $certChain.val(),
+                Path: ''
+            ).save().then (result) ->
+                notification 'info', 'Create SSL Certificate Succeed'
+                that.modal.cancel()
+            , (result) ->
+                that.switchAction()
+                if result.awsresult
+                    notification 'error', result.awsresult
+
         delete: ( invalid, checked ) ->
             count = checked.length
 
             onDeleteFinish = @genDeleteFinish count
             @switchAction 'processing'
             _.each checked, ( c ) ->
-                m = @topicCol.get c.data.id
+                m = @sslCertCol.get c.data.id
                 m?.destroy().then onDeleteFinish, onDeleteFinish
 
         refresh: ->
@@ -167,17 +189,15 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sslcert/ssl
                 
                 modal.setSlide tpl
 
-                that.M$( '#create-topic-name' ).parsley 'custom', ( value ) ->
-                    selectedProto = that.M$('.dd-protocol .selected').data 'id'
-                    if selectedProto is 'sms'
-                        return 'This value is required'
-                    null
+                allTextBox = that.M$( '.slide-create input, .slide-create textarea' )
 
                 processCreateBtn = ( event ) ->
                     if $(event.currentTarget).parsley 'validateForm', false
                         that.M$( '.slide-create .do-action' ).prop 'disabled', false
                     else
                         that.M$( '.slide-create .do-action' ).prop 'disabled', true
+
+                allTextBox.on 'keyup', processCreateBtn
 
             "delete": ( tpl, checked ) ->
                 checkedAmount = checked.length

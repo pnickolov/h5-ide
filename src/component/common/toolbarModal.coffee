@@ -10,7 +10,6 @@
 ### Example:
 Refer to kpView.coffee
 
-
 ###
 
 define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalplus', 'UI.notification' ], ( template, Backbone, $, modalplus ) ->
@@ -29,6 +28,7 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalpl
             'change .one-cb': '__checkOne'
 
             'click .t-m-btn': '__handleSlide'
+            'click tr .show-detail': '__handleDetail'
             'click .cancel': 'cancel'
 
             'click .do-action': '__doAction'
@@ -39,7 +39,8 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalpl
             @options.title = 'Default Title' if not @options.title
             if options.context
                 @options.context.modal = @
-                @options.context.m$ = _.bind @$, @
+                @options.context.M$ = _.bind @$, @
+            null
 
         __doAction: ( event ) ->
             @error()
@@ -97,6 +98,22 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalpl
                 $slidebox.addClass 'show'
                 @__slide = button
 
+            null
+
+
+        __handleDetail: ( event ) ->
+            $target = $ event.currentTarget
+            $tr = $target.closest 'tr'
+            if $tr.hasClass 'detailed'
+                $tr.removeClass 'detailed'
+                $tr.next('.tr-detail').remove()
+            else
+                $tr
+                    .addClass( 'detailed' )
+                    .after template.tr_detail columnCount: @options.columns.length + 1
+                @trigger 'detail', event, $target.data(), $tr
+
+
 
         __refresh: ->
             if @__slideRejct()
@@ -105,7 +122,7 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalpl
             @trigger 'refresh'
 
         __close: ( event ) ->
-            $( '#modal-wrap' ).off 'click', @__stopPropagation
+            #$( '#modal-wrap' ).off 'click', @__stopPropagation
             @trigger 'close'
             @remove()
             false
@@ -123,6 +140,8 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalpl
             else if cbAmount - checkedAmount is 1
                 cbAll.prop 'checked', false
 
+            @trigger 'checked', event, @__getChecked()
+
         __checkAll: ( event ) ->
             @__processDelBtn()
             if event.currentTarget.checked
@@ -131,6 +150,8 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalpl
             else
                 @$('input[type="checkbox"]').prop 'checked', false
                 @$('tr.item').removeClass 'selected'
+
+            @trigger 'checked', event, @__getChecked()
 
         __processDelBtn: () ->
             that = @
@@ -141,7 +162,7 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalpl
                     that.$('[data-btn=delete]').prop 'disabled', true
 
         __stopPropagation: ( event ) ->
-            exception = '.sortable, #download-kp'
+            exception = '.sortable, #download-kp, .selection, .item'
             if not $(event.target).is( exception )
                 event.stopPropagation()
 
@@ -159,7 +180,7 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalpl
 
             @__modalplus = new modalplus options
             @__modalplus.on 'closed', @__close, @
-            $( '#modal-wrap' ).click @__stopPropagation
+            #$( '#modal-wrap' ).click @__stopPropagation
 
         __renderLoading: () ->
             @$( '.content-wrap' ).html template.loading
@@ -197,6 +218,9 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalpl
             @$( '.slidebox .content' ).html dom
             @error()
             @
+
+        setDetail: ( $tr, dom ) ->
+            $tr.next( '.tr-detail' ).html dom
 
         cancel: () ->
             if @__slideRejct()

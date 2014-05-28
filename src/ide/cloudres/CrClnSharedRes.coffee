@@ -4,12 +4,12 @@ define [
   "CloudResources"
   "ApiRequest"
   "constant"
-  "./CrDhcpModel"
-  "./CrKeypairModel"
-  "./CrSslcertModel"
-  "./CrTopicModel"
-  "./CrSubscriptionModel"
-  "./CrSnapshotModel"
+  "./CrModelDhcp"
+  "./CrModelKeypair"
+  "./CrModelSslcert"
+  "./CrModelTopic"
+  "./CrModelSubscription"
+  "./CrModelSnapshot"
 ], ( CrCollection, CloudResources, ApiRequest, constant, CrDhcpModel, CrKeypairModel, CrSslcertModel, CrTopicModel, CrSubscriptionModel, CrSnapshotModel )->
 
   ### Dhcp ###

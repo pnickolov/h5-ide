@@ -1,5 +1,5 @@
 <!-- {{frame}} -->
-<div class="selectbox combo-dd">
+<div class="selectbox combo-dd multiopen" data-silent-close="#modal-wrap">
     <div class="selection"></div>
 
     <div style="height: 300px; width:260px;" class="dropdown scroll-wrap scrollbar-auto-hide  clearfix">

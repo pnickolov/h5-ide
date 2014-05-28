@@ -1,5 +1,5 @@
 <!-- {{frame}} -->
-<div class="modal-toolbar">
+<div class="modal-toolbar {{classList}}">
     <div class="content-wrap hide">
         <div class="toolbar">
             {{#if btnValueCreate}}
@@ -12,7 +12,7 @@
             </div>
         </div>
         <div class="list">
-            <div class="slidebox">
+            <div class="slidebox" style="{{slideStyle}}">
                 <div class="content clearfix">
                 </div>
                 <div class="error">
@@ -30,7 +30,7 @@
                                 </div>
                             </th>
                             {{#each columns}}
-                            <th class="{{#if sortable}}sortable{{/if}}" style="{{#if width}}width={{width}};{{/if}}">{{name}}</th>
+                            <th class="{{#if sortable}}sortable{{/if}}" style="{{#if width}}width:{{width}};{{/if}}">{{name}}</th>
                             {{/each}}
                         </tr>
                     </thead>
@@ -43,7 +43,7 @@
                                 <tr>
                                     <th><div class="th-inner"></div></th>
                                     {{#each columns}}
-                                    <th><div class="th-inner"></div></th>
+                                    <th style="{{#if width}}width:{{width}};{{/if}}"><div class="th-inner"></div></th>
                                     {{/each}}
                                 </tr>
                             </thead>
@@ -69,5 +69,9 @@
     <a class="show-credential">Provide AWS Credential <br/>to manage key pairs</a>
 </div>
 
-
+<!-- {{tr_detail}} -->
+<tr class="tr-detail">
+    <td colspan="{{columnCount}}">
+    </td>
+</tr>
 

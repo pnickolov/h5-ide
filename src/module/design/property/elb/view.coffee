@@ -4,7 +4,7 @@
 
 define [ '../base/view',
          './template/stack',
-         'event'
+         'event',
          'i18n!nls/lang.js'
 ], ( PropertyView, template, ide_event, lang ) ->
 
@@ -70,10 +70,17 @@ define [ '../base/view',
 
         render     : () ->
 
+            that = this
+
             @$el.html template @model.attributes
 
             @updateSlider( $('#elb-property-slider-unhealthy'), @model.get('unHealthyThreshold') - 2)
             @updateSlider( $('#elb-property-slider-healthy'), @model.get('healthyThreshold') - 2)
+
+            _.each @$('.sslcert-placeholder'), (sslCertPlaceHolder, idx) ->
+                $sslCertPlaceHolder = $(sslCertPlaceHolder)
+                sslCertDropDown = that.model.initNewSSLCertDropDown(idx)
+                $sslCertPlaceHolder.html sslCertDropDown.render().el
 
             @updateCertView()
 
@@ -169,6 +176,8 @@ define [ '../base/view',
                 @model.setHealthHealth value
 
         listenerItemAddClicked : ( event ) ->
+
+            that = this
             $li = $("#elb-property-listener-list").children().eq(0).clone()
             $li.find(".elb-property-listener-item-remove").show()
             $selectbox = $li.find("ul")
@@ -177,6 +186,11 @@ define [ '../base/view',
             $selectbox.prev(".selection").text("HTTP")
             $('#elb-property-listener-list').append $li
             @updateListener( $li )
+
+            $sslCertPlaceHolder = $li.find('.sslcert-placeholder')
+            sslCertDropDown = that.model.initNewSSLCertDropDown($li.index())
+            $sslCertPlaceHolder.html sslCertDropDown.render().el
+
             return false
 
         updateListener : ( $li )->
@@ -374,20 +388,14 @@ define [ '../base/view',
             null
 
         updateCertView : ()->
-            show = false
 
             $("#elb-property-listener-list").children().each ()->
                 protocol = $(this).find(".elb-property-elb-protocol .selected").text()
+                $certPanel = $(this).find(".sslcert-select")
                 if protocol is "HTTPS" or protocol is "SSL"
-                    show = true
-                    return false
-
-            $certPanel = $('#property-control-group-cert-setting')
-            if show
-                $certPanel.show()
-            else
-                $certPanel.hide()
-
+                    $certPanel.show()
+                else
+                    $certPanel.hide()
             null
 
         azCheckChanged : ( event ) ->
@@ -468,7 +476,7 @@ define [ '../base/view',
             null
 
         elbSSLCertAdd : (event) ->
-
+            
             that = this
             that.popSSLCertModal(false)
             return false

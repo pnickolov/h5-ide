@@ -86,21 +86,23 @@ define [ '../base/model', 'Design', 'constant' ], ( PropertyModel, Design, const
         removeDhcp : ( isDefault )->
             uid = @get("uid")
             dhcp = Design.instance().component( uid ).get("dhcp")
+            console.log dhcp.setDefault
             if isDefault
                 dhcp.setDefault()
             else
                 dhcp.setNone()
             null
 
-        useDhcp : ()->
-            uid = @get("uid")
-            Design.instance().component( uid ).get("dhcp").setCustom()
-            null
-
-        setDHCPOptions : ( options ) ->
+        setDhcp : (val)->
             uid = @get("uid")
             dhcp = Design.instance().component( uid ).get("dhcp")
-            dhcp.set( options )
+            dhcp.setDhcp(val)
+            null
+
+        setDHCPOptions : ( options , force) ->
+            uid = @get("uid")
+            dhcp = Design.instance().component( uid ).get("dhcp")
+            dhcp.set( options , force)
             null
     }
 

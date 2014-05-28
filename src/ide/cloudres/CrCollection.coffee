@@ -20,19 +20,20 @@ define ["ApiRequest", "backbone"], ( ApiRequest )->
       @lastFetch = +new Date()
 
       self = @
-      @__fetchPromise = @doFetch().then ( res )->
-        try
-          data = self.parseFetchData(res)
+      @__fetchPromise = @doFetch().then ( data )->
 
-          if data.length is 0 and self.models.length is 0
-            # In the initial state, even if we fetches an empty array of data.
-            # We still want to trigger a `update` to broadcast that we finished fetching.
-            self.trigger "update"
-          else
-            self.set data
+        if not self.__selfParseData
+          try
+            data = self.parseFetchData( data )
+          catch e
+            throw McError( ApiRequest.Errors.InvalidAwsReturn, "", data )
 
-        catch e
-          throw McError( ApiRequest.Errors.InvalidAwsReturn, "", res )
+        if data.length is 0 and self.models.length is 0
+          # In the initial state, even if we fetches an empty array of data.
+          # We still want to trigger a `update` to broadcast that we finished fetching.
+          self.trigger "update"
+        else
+          self.set data
 
         return self
 

@@ -15,8 +15,8 @@
 <tr class="item" data-id="">
     <td>
         <div class="checkbox">
-            <input id="kp-select-{{id}}" type="checkbox" value="None" data-name="{{Name}}" class="one-cb">
-            <label for="kp-select-{{id}}"></label>
+            <input id="kp-select-{{Name}}" type="checkbox" value="None" data-name="{{Name}}" data-id="{{id}}" class="one-cb">
+            <label for="kp-select-{{Name}}"></label>
         </div>
     </td>
     <td>{{Name}}</td>
@@ -24,3 +24,92 @@
     <td>{{subCount}} Subscriptions</td>
 </tr>
 {{/each}}
+
+
+<!-- {{slide_create}} -->
+<div class="slide-create" data-bind="true">
+    <div class="before-create">
+        <div>
+          <label>Select Topic</label>
+            <div class="selectbox dd-topic-name">
+                <div class="selection">New Topic</div>
+                <ul class="dropdown" tabindex="-1">
+                  <li class="item selected new-topic" data-id="@new">New Topic</li>
+                  {{#each this}}
+                    <li class="item" data-id="{{id}}" data-display-name="{{DisplayName}}">{{Name}}</li>
+                  {{/each}}
+                </ul>
+            </div>
+
+        </div>
+        <div class="create-sns-topic">
+            <label for="create-topic-name">Topic Name</label>
+            <input class="input" type="text" id="create-topic-name" data-ignore="true" data-ignore-regexp="^[a-zA-Z0-9,_-]*$" data-required="true" maxlength="255" placeholder="Required. Up to 256 characters" required>
+        </div>
+        <div>
+            <label for="create-display-name">Display Name</label>
+            <input class="input" type="text" id="create-display-name" data-ignore="true" data-ignore-regexp="^[a-zA-Z0-9,_-]*$" data-required="true" maxlength="255" placeholder="Required for SMS subscriptions (up to 10 characters)">
+        </div>
+        <div>
+            <label>Protocol</label>
+            <div class="selectbox dd-protocol">
+                <div class="selection">email</div>
+                <ul class="dropdown" tabindex="-1">
+                    <li class="item" data-id="https">HTTPS</li>
+                    <li class="item" data-id="http">HTTP</li>
+                    <li class="item selected" data-id="email">Email</li>
+                    <li class="item" data-id="email-json">Email-JSON</li>
+                    <li class="item" data-id="sms">SMS</li>
+                    <li class="item" data-id="arn">Application</li>
+                    <li class="item" data-id="sqs">Amazon SQS</li>
+                </ul>
+            </div>
+        </div>
+        <div>
+            <label for="create-endpoint">Endpoint</label>
+            <input type="text" class="input" id="create-endpoint" max-length="255" data-required="true" data-trigger="change" placeholder="example@mail.com">
+        </div>
+    </div>
+    <div class="init action">
+        <button class="btn btn-blue do-action" data-action="create" disabled>Create</button>
+        <button class="btn btn-silver cancel">Cancel</button>
+    </div>
+    <div class="processing action" style="display:none;">
+        <button class="btn" disabled>Creating...</button>
+    </div>
+    <div class="download action" style="display:none;">
+        <a class="btn btn-blue do-action pulse" data-action="download" id="download-kp">Download</a>
+        <button class="btn btn-silver cancel" disabled>Close</button>
+    </div>
+</div>
+
+<!-- {{slide_delete}} -->
+<div class="slide-delete">
+    <div class="modal-text-major">Confirm to delete {{#if selecteKeyName }}SNS Topic {{selecteKeyName}}{{else}}selected {{selectedCount}} SNS Topics{{/if}} and all associated subscriptions?</div>
+    <div class="init action">
+        <button class="btn btn-red do-action" data-action="delete">Delete</button>
+        <button class="btn btn-silver cancel">Cancel</button>
+    </div>
+    <div class="processing action" style="display:none;">
+        <button class="btn" disabled>Deleting...</button>
+    </div>
+</div>
+<!-- {{slide_import}} -->
+<div class="slide-import" data-bind="true">
+    <label for="import-kp-name">Key Pair Name</label>
+    <input class="input" type="text" id="import-kp-name" data-ignore="true" data-ignore-regexp="^[a-zA-Z0-9,_-]*$" data-required="true" maxlength="255" placeholder="allow alphanumber, _ or - up to 255 characters">
+    <div class="import-zone">
+
+    </div>
+    <div class="init action">
+        <button class="btn" disabled>Import</button>
+        <button class="btn btn-silver cancel">Cancel</button>
+    </div>
+    <div class="ready action" style="display:none;">
+        <button class="btn btn-blue do-action" data-action="import">Import</button>
+        <button class="btn btn-silver cancel">Cancel</button>
+    </div>
+    <div class="processing action" style="display:none;">
+        <button class="btn" disabled>Importing...</button>
+    </div>
+</div>

@@ -1661,7 +1661,7 @@ Are you sure you want to delete {{name}}?</div>
 {{/each}}
 
 <!-- {{modalTemplate}} -->
-<div id="modal-box" class="modal-box">
+<div class="modal-box">
     <div style="width: 520px">
         <div class="modal-header">
             <h3>{{ title }}</h3>

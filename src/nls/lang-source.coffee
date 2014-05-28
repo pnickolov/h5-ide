@@ -1277,6 +1277,14 @@ module.exports =
       en: "Manage SNS Topic ..."
       zh: ""
 
+    PROP_INSTANCE_FILTER_SSL_CERT:
+      en: "Filter by Server Certificate name"
+      zh: ""
+
+    PROP_INSTANCE_MANAGE_SSL_CERT:
+      en: "Manage Server Certificate ..."
+      zh: ""
+
     PROP_INSTANCE_TIP_DEFAULT_KP:
       en: 'If you have used $DefaultKeyPair for any instance/launch configuration, you will be required to specify an existing key pair for $DefaultKeyPair. Or you can choose "No Key Pair" as $DefaultKeyPair.'
       zh: ""

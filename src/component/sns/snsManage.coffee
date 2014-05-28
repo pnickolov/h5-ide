@@ -18,6 +18,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
             regionName = constant.REGION_SHORT_LABEL[ region ]
 
             title: "Manage SNS in #{regionName}"
+            classList: 'sns-manage'
             #slideable: _.bind that.denySlide, that
             context: that
             buttons: [
@@ -41,17 +42,16 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
             columns: [
                 {
                     sortable: true
-                    width: "100px" # or 40%
+                    width: "25%" # or 40%
                     name: 'Topic'
                 }
                 {
                     sortable: true
-                    width: "100px" # or 40%
                     name: 'Topic ARN'
                 }
                 {
                     sortable: false
-                    width: "100px" # or 40%
+                    width: "20%" # or 40%
                     name: 'Subscription'
                 }
             ]
@@ -76,20 +76,93 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
         validate: ( action ) ->
             switch action
                 when 'create'
-                    return not @m$( '#create-kp-name' ).parsley 'validate'
-                when 'import'
-                    return not @m$( '#import-kp-name' ).parsley 'validate'
+                    true
+
+        genDeleteFinish: ( times ) ->
+            success = []
+            error = []
+            that = @
+
+            finHandler = _.after times, ->
+                that.modal.cancel()
+                if success.length is 1
+                    notification 'info', "#{success[0].get 'Name'} is deleted."
+                else if success.length > 1
+                    notification 'info', "Selected #{success.length} SNS topic are deleted."
+
+                if not that.model.get( 'keys' ).length
+                    that.M$( '#kp-select-all' )
+                        .get( 0 )
+                        .checked = false
+
+                _.each error, ( s ) ->
+                    console.log(s)
+
+            ( res ) ->
+                if res instanceof Backbone.Model
+                    success.push res
+                else
+                    error.push res
+
+                finHandler()
+
+
+        # actions
+        create: ( invalid ) ->
+            that = @
+            @switchAction 'processing'
+            topicId = @M$( '.dd-topic-name .selected' ).data 'id'
+            protocol = @M$( '.dd-protocol .selection' ).text()
+            topicName = @M$( '#create-topic-name' ).val()
+            displayName = @M$( '#create-display-name' ).val()
+            endpoint = @M$( '#create-endpoint' ).val()
+
+            createSub = ( newTopic ) ->
+                @subCol.create( TopicArn: newTopic and newTopic.id or topicId, Endpoint: endpoint, Protocol: protocol )
+                    .save()
+                    .then ( newSub ) ->
+                        notification 'info', 'Create Subscription Succeed'
+                        that.modal.cancel()
+
+            if topicId is '@new'
+                @topicCol.create( Name: topicName, DisplayName: displayName ).save().then createSub
+            else
+                topicModel = @topicCol.get topicId
+                if displayName is topicModel.get 'displayName'
+                    createSub()
+                else
+                    topicModel.update( displayName ).then createSub
+
+
+        delete: ( invalid, checked ) ->
+            count = checked.length
+
+            onDeleteFinish = @genDeleteFinish count
+            @switchAction 'processing'
+            _.each checked, ( c ) ->
+                m = @topicCol.get c.data.id
+                m?.destroy().then onDeleteFinish, onDeleteFinish
 
         refresh: ->
             @subCol.fetchForce()
             @topicCol.fetchForce()
+
+        switchAction: ( state ) ->
+            if not state
+                state = 'init'
+
+            @M$( '.slidebox .action' ).each () ->
+                if $(@).hasClass state
+                    $(@).show()
+                else
+                    $(@).hide()
 
         render: ->
             @modal.render()
             @processCol()
             @
 
-        processCol: () ->
+        processCol: ( noRender ) ->
             if @topicCol.isReady() and @subCol.isReady()
 
                 data = @topicCol.map ( tModel ) ->
@@ -99,9 +172,10 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
                     tData.subCount = tData.sub.length
                     tData
 
-                @renderList data
+                if not noRender
+                    @renderList data
 
-            false
+            data
 
         renderList: ( data ) ->
             @modal.setContent( template.modal_list data )
@@ -110,19 +184,97 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
             @modal.render('nocredential').toggleControls false
 
         renderSlides: ( which, checked ) ->
-            tpl = template_modal[ "slide_#{which}" ]
+            tpl = template[ "slide_#{which}" ]
             slides = @getSlides()
             slides[ which ]?.call @, tpl, checked
-
 
         getSlides: ->
             that = @
             modal = @modal
-            __upload = @__upload
-
 
             create: ( tpl, checked ) ->
-                modal.setSlide tpl
+                modal.setSlide tpl @processCol true
+
+                updateEndpoint = ( protocol ) ->
+                    selectedProto = that.M$('.dd-protocol .selected').data 'id'
+                    switch selectedProto
+                        when "sqs"
+                            placeholder = lang.ide.PROP_STACK_AMAZON_ARN
+                            type        = lang.ide.PROP_STACK_SQS
+                            errorMsg    = lang.ide.PARSLEY_PLEASE_PROVIDE_A_VALID_AMAZON_SQS_ARN
+
+                        when "arn"
+                            placeholder = lang.ide.PROP_STACK_AMAZON_ARN
+                            type        = lang.ide.PROP_STACK_ARN
+                            errorMsg    = lang.ide.PARSLEY_PLEASE_PROVIDE_A_VALID_APPLICATION_ARN
+
+                        when "email"
+                            placeholder = lang.ide.PROP_STACK_EXAMPLE_EMAIL
+                            type        = lang.ide.PROP_STACK_EMAIL
+                            errorMsg    = lang.ide.HEAD_MSG_ERR_UPDATE_EMAIL3
+
+                        when "email-json"
+                            placeholder = lang.ide.PROP_STACK_EXAMPLE_EMAIL
+                            type        = lang.ide.PROP_STACK_EMAIL
+                            errorMsg    = lang.ide.HEAD_MSG_ERR_UPDATE_EMAIL3
+
+                        when "sms"
+                            placeholder = lang.ide.PROP_STACK_E_G_1_206_555_6423
+                            type        = lang.ide.PROP_STACK_USPHONE
+                            errorMsg    = lang.ide.PARSLEY_PLEASE_PROVIDE_A_VALID_PHONE_NUMBER
+
+                        when "http"
+                            #$input.addClass "http"
+                            placeholder = lang.ide.PROP_STACK_HTTP_WWW_EXAMPLE_COM
+                            type        = lang.ide.PROP_STACK_HTTP
+                            errorMsg    = lang.ide.PARSLEY_PLEASE_PROVIDE_A_VALID_URL
+
+                        when "https"
+                            #$input.addClass "https"
+                            placeholder = lang.ide.PROP_STACK_HTTPS_WWW_EXAMPLE_COM
+                            type        = lang.ide.PROP_STACK_HTTPS
+                            errorMsg    = lang.ide.PARSLEY_PLEASE_PROVIDE_A_VALID_URL
+
+                    endPoint = that.M$ '#create-endpoint'
+                    endPoint.attr "placeholder", placeholder
+
+                    endPoint.parsley 'custom', ( value ) ->
+                        if type and value and ( not MC.validate type, value )
+                            return errorMsg
+
+                    if endPoint.val().length
+                        endPoint.parsley 'validate'
+
+                    null
+
+                updateEndpoint 'email'
+
+                that.M$( '#create-topic-name' ).parsley 'custom', ( value ) ->
+                    selectedProto = that.M$('.dd-protocol .selected').data 'id'
+                    if selectedProto is 'sms'
+                        return 'Display Name is required if subscription uses SMS protocol.'
+                    null
+
+                allTextBox = that.M$( '.slide-create input[type=text]' )
+
+                processCreateBtn = ( event ) ->
+                    if $(event.currentTarget).parsley 'validateForm', false
+                        that.M$( '.slide-create .do-action' ).prop 'disabled', false
+                    else
+                        that.M$( '.slide-create .do-action' ).prop 'disabled', true
+
+                allTextBox.on 'keyup', processCreateBtn
+
+                that.M$( '.dd-protocol' ).off( 'OPTION_CHANGE' ).on 'OPTION_CHANGE', updateEndpoint
+
+                that.M$( '.dd-topic-name' ).off( 'OPTION_CHANGE' ).on 'OPTION_CHANGE', ( event, id, data ) ->
+                    if id is '@new'
+                        that.M$( '.create-sns-topic' ).show()
+                    else
+                        that.M$( '#create-display-name').val data.displayName
+                        that.M$( '.create-sns-topic' ).hide()
+
+
 
             "delete": ( tpl, checked ) ->
                 checkedAmount = checked.length
@@ -133,7 +285,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
                 data = {}
 
                 if checkedAmount is 1
-                    data.selecteKeyName = checked[ 0 ].data[ 'name' ]
+                    data.selecteKeyName = checked[ 0 ].data.name
                 else
                     data.selectedCount = checkedAmount
 
@@ -144,7 +296,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
                 that.__upload and that.__upload.remove()
                 that.__upload = new upload()
                 that.__upload.on 'load', that.afterImport, @
-                that.m$( '.import-zone' ).html that.__upload.render().el
+                that.M$( '.import-zone' ).html that.__upload.render().el
 
 
         show: ->

@@ -35,6 +35,7 @@ define [ "Design",
           protocol         : "HTTP"
           instanceProtocol : "HTTP"
           instancePort     : "80"
+          sslCertName      : null
         } ]
 
         # AvailabilityZones ( This attribute is used to store which AZ is attached to Elb in Classic ). It stores AZ's name, not reference
@@ -130,6 +131,22 @@ define [ "Design",
       @set "listeners", listeners
       null
 
+    setSSLCert : ( idx, sslCertId ) ->
+
+      listeners = @get("listeners")
+      sslCertData = sslCertCol.get(sslCertId)
+      listeners[idx].sslCert = SslCertModel.createNew(sslCertData)
+
+    removeSSLCert : ( idx ) ->
+
+      listeners = @get("listeners")
+      listeners[idx].sslCert = null
+
+    getSSLCert : ( idx ) ->
+
+      listeners = @get("listeners")
+      return listeners[idx].sslCert
+
     getHealthCheckTarget : ()->
       # Format ping
       target = @attributes.healthCheckTarget
@@ -221,17 +238,16 @@ define [ "Design",
         hcTarget = hcTarget.split("/")[0]
 
       listeners = []
-      ssl = @connectionTargets("SslCertUsage")[0]
-      if ssl
-        sslcertId = ssl.createRef("ServerCertificateMetadata.Arn")
-      else
-        sslcertId = ""
+      # ssl = @connectionTargets("SslCertUsage")[0]
+      # if ssl
+      #   sslcertId = ssl.createRef("ServerCertificateMetadata.Arn")
+      # else
+      #   sslcertId = ""
 
       for l in @get("listeners")
-        if l.protocol is "SSL" or l.protocol is "HTTPS"
-          id = sslcertId
-        else
-          id = ""
+        id = ""
+        if (l.protocol is "SSL" or l.protocol is "HTTPS") and l.sslCert
+          id = l.sslCert.createRef("ServerCertificateMetadata.Arn")
 
         listeners.push {
           PolicyNames : ""
@@ -336,8 +352,7 @@ define [ "Design",
           return azRef
 
       # listener
-      sslCert = null
-      for l in data.resource.ListenerDescriptions || []
+      for l, idx in data.resource.ListenerDescriptions || []
         l = l.Listener
         attr.listeners.push {
           port             : l.LoadBalancerPort
@@ -345,13 +360,14 @@ define [ "Design",
           instanceProtocol : l.InstanceProtocol
           instancePort     : l.InstancePort
         }
-        if l.SSLCertificateId and not sslCert
+        if l.SSLCertificateId
           # Cannot resolve the same component multiple times within one deserialize.
           # Because Design might consider it as recursive dependency.
           sslCert = resolve( MC.extractID( l.SSLCertificateId ) )
+          attr.listeners[idx].sslCert = sslCert if sslCert
 
       elb = new Model( attr )
-      if sslCert then sslCert.assignTo( elb )
+      # if sslCert then sslCert.assignTo( elb )
 
       ElbAmiAsso    = Design.modelClassForType( "ElbAmiAsso" )
       ElbSubnetAsso = Design.modelClassForType( "ElbSubnetAsso" )

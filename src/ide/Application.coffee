@@ -47,7 +47,6 @@ define [
     # This function returns a promise
     Q.all [ @user.fetch(), @model.fetch() ]
 
-
   VisualOps.prototype.__createWebsocket = ()->
     @WS = new Websocket()
 

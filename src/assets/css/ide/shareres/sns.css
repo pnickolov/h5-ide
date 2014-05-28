@@ -22,10 +22,16 @@
   text-align: center;
   background: #f5a623; }
 
-.combo-dd-list > p {
+#sns-placeholder .combo-dd-list > p {
   margin: 0; }
-
 #sns-placeholder .selection > p {
   display: none; }
 #sns-placeholder li.item > p {
   margin: 0; }
+
+.sns-manage .slide-create .before-create > div {
+  margin: 5px 0; }
+.sns-manage .slide-create .selection {
+  width: 456px; }
+.sns-manage .slide-create .new-topic {
+  border-bottom: 1px solid #0f0f0f; }

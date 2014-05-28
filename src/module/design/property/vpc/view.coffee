@@ -6,7 +6,8 @@ define [ '../base/view',
          './template/stack'
          'i18n!nls/lang.js'
          'dhcp'
-], ( PropertyView, template, lang, dhcp ) ->
+         'UI.modalplus'
+], ( PropertyView, template, lang, dhcp, modalPlus ) ->
 
     # Helpers
     mapFilterInput = ( selector ) ->
@@ -36,10 +37,10 @@ define [ '../base/view',
             'change #property-dns-hostname'   : 'onChangeDnsHostname'
             'OPTION_CHANGE #property-tenancy' : 'onChangeTenancy'
 
-            'click #property-dhcp-none'    : 'onRemoveDhcp'
-            'click #property-dhcp-default' : 'onRemoveDhcp'
-            'click #property-dhcp-spec'    : 'onUseDHCP'
-            'click #property-amazon-dns'   : 'onChangeAmazonDns'
+#            'click #property-dhcp-none'    : 'onRemoveDhcp'
+#            'click #property-dhcp-default' : 'onRemoveDhcp'
+#            'click #property-dhcp-spec'    : 'onUseDHCP'
+#            'click #property-amazon-dns'   : 'onChangeAmazonDns'
 
             'change .property-control-group-sub .input' : 'onChangeDhcpOptions'
             'OPTION_CHANGE #property-netbios-type'      : 'onChangeDhcpOptions'
@@ -48,7 +49,7 @@ define [ '../base/view',
 
         render   : () ->
 
-            data = @model.attributes
+            data = @model.toJSON()
 
             selectedType = data.dhcp.netbiosType || 0
             data.dhcp.netbiosTypes = [
@@ -64,10 +65,31 @@ define [ '../base/view',
             updateAmazonCB()
             multiinputbox.update( $("#property-domain-server") )
 
+            @dhcp = new dhcp()
+            @dhcp.off 'change'
+            @dhcp.on 'change', (e)=>
+                @changeDhcp(e)
+            @dhcp.on 'manage', =>
+                console.log @dhcp.manager
+            @$el.find('#dhcp-dropdown').html(@dhcp.dropdown.el)
+            @initDhcpSelection()
             data.name
-            dhcpdropdown = new dhcp
-            console.log dhcpdropdown.dropdown.el
-            @$el.find('#dhcp-dropdown').html(dhcpdropdown.dropdown.el)
+        initDhcpSelection: ->
+            currentVal = @model.toJSON().dhcp.dhcpOptionId
+            if currentVal is ''
+                selection = isAuto : true
+            else if currentVal is "default"
+                selection = isDefault : true
+            else
+                selection = id: currentVal
+            @dhcp.setSelection selection
+        changeDhcp: (e)->
+            if e.id is 'default'
+                @model.removeDhcp false
+            else if e.id is 'auto'
+                @model.removeDhcp true
+            else
+                @model.setDhcp(e.id)
 
         processParsley: ( event ) ->
             $( event.currentTarget )
@@ -109,16 +131,6 @@ define [ '../base/view',
             @model.setDnsHosts event.target.checked
             null
 
-        onRemoveDhcp : ( event ) ->
-
-            isDefault = $( event.currentTarget ).closest("section").find("input").attr("id") is "property-dhcp-default"
-
-            $("#property-dhcp-desc").show()
-            $("#property-dhcp-options").hide()
-
-            @model.removeDhcp isDefault
-            null
-
         onChangeAmazonDns : ( event ) ->
             useAmazonDns = $("#property-amazon-dns").is(":checked")
             allowRows    = if useAmazonDns then 3 else 4
@@ -150,8 +162,6 @@ define [ '../base/view',
                 ntpServers     : mapFilterInput "#property-ntp-server .input"
                 netbiosServers : mapFilterInput "#property-netbios-server .input"
                 netbiosType    : parseInt( $("#property-netbios-type .selection").html(), 10 ) || 0
-
-            console.log "DHCP Options Changed", data
 
             @model.setDHCPOptions data
             null

@@ -1,6 +1,6 @@
-@import url("component/toolbar-modal.css");
-@import url("component/combo-dropdown.css");
-@import url("component/drop-zone.css");
+@import url("./component/toolbar-modal.css");
+@import url("./component/combo-dropdown.css");
+@import url("./component/drop-zone.css");
 
 /* Table */
 .table {
@@ -952,6 +952,14 @@ textarea {
 	box-shadow   : 1px 1px 5px rgba(0, 0, 0, .4);
 	color        : #999;
 	/*border     : 1px solid #242424;*/
+}
+.modal-box{
+    position     : absolute;
+    z-index      : 70;
+    border-radius: 3px;
+    background   : rgba(32,32,32,0.9);
+    box-shadow   : 1px 1px 5px rgba(0,0,0,0.4);
+    color        : #999999;
 }
 
 #modal-box .input:focus {

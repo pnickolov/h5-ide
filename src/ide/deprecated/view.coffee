@@ -20,7 +20,7 @@ define [ 'event',
 
             # for stack store open
             $(window).on 'focus', () ->
-                if App and App.openSampleStack
+                if window.App and App.openSampleStack
                     App.openSampleStack()
 
         toggleWaiting : () ->

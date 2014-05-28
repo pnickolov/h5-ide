@@ -275,6 +275,8 @@ require.config {
 		'combo_dropdown'     : 'component/common/comboDropdown'
 		'toolbar_modal'      : 'component/common/toolbarModal'
 		'dhcp'               : 'component/dhcp/dhcpMain'
+		'sslcert_manage'     : 'component/sslcert/sslCertManage'
+		'sslcert_dropdown'     : 'component/sslcert/sslCertDropdown'
 
 		#############################################
 		# component

@@ -2896,11 +2896,11 @@ a.action-link:hover {
 	width: 280px;
 }
 
-.elb-property-listener .selectbox {
+.elb-property-listener .listener-item .selectbox {
 	width: 130px !important;
 }
 
-.elb-property-listener .selectbox .item {
+.elb-property-listener .listener-item .selectbox .item {
 	width: 142px;
 }
 
@@ -2915,7 +2915,7 @@ a.action-link:hover {
 	margin-left: 10px;
 }
 
-.elb-property-listener input {
+.elb-property-listener .listener-item input {
 	width: 40px !important;
 }
 
@@ -3517,9 +3517,13 @@ a.action-link:hover {
 	float : left;
 	width : 40%;
 }
+.app-panel-li-col2-full  {
+	width : 100%;
+}
 
 .app-panel-li-col2-1 label,
-.app-panel-li-col2-2 label {
+.app-panel-li-col2-2 label,
+.app-panel-li-col2-full label {
 	font-size : 12px;
 	color     : #999;
 }
@@ -5599,8 +5603,18 @@ summary:focus {
 	background: transparent;
 }
 
+#create-new-dhcp .control-group>div{
+    width: 468px;
+    display: inline-block;
+    margin-bottom: 10px;
+}
 
-
+#create-new-dhcp .control-group>label{
+    width: 168px;
+    float: left;
+    display: inline-block;
+    line-height: 32px;
+}
 
 
 

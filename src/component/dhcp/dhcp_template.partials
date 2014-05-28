@@ -73,7 +73,7 @@
                     <div class="modal-right" style="margin: 10px 0">
                         <div class="checkbox">
                             <input id="property-amazon-dns" {{#if dhcp.amazonDNS}}checked="checked"{{/if}}type="checkbox">
-                            <label style="width: 16px" for="property-amazon-dns"></label>
+                            <label style="width: 14px" for="property-amazon-dns"></label>
                         </div>
                         <label for="property-amazon-dns">{{ i18n "PROP_VPC_DHCP_SPECIFIED_LBL_AMZN_PROVIDED_DNS" }}</label>
                     </div>

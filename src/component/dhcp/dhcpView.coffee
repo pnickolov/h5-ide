@@ -100,13 +100,50 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
                 @manager.setSlide tpl data
 
             'create': (tpl)->
-                data = {}
-                @manager.setSlide tpl()
+                data =
+                    dhcp: {}
+
+                selectedType = 0
+                data.dhcp.netbiosTypes = [
+                    { id : "default" , value : lang.ide.PROP_VPC_DHCP_SPECIFIED_LBL_NETBIOS_NODE_TYPE_NOT_SPECIFIED, selected : selectedType == 0 }
+                , { id : 1 , value : 1, selected : selectedType == 1 }
+                , { id : 2 , value : 2, selected : selectedType == 2 }
+                , { id : 4 , value : 4, selected : selectedType == 4 }
+                , { id : 8 , value : 8, selected : selectedType == 8 }
+                ]
+                @manager.setSlide tpl data
+                @manager.$el.find("#property-amazon-dns").change (e)=> @onChangeAmazonDns(e)
+                @manager.$el.find('.multi-input').on 'ADD_ROW',  (e)=> @processParsley(e)
+                @manager.$el.find(".control-group .input").change (e)=> @onChangeDhcpOptions(e)
+                @manager.$el.find('#create-new-dhcp').on 'OPTION_CHANGE REMOVE_ROW', (e)=>@onChangeDhcpOptions(e)
+        processParsley: ( event ) ->
+            console.log 'Triggerd ProcessParsley'
+            $( event.currentTarget )
+            .find( 'input' )
+            .last()
+            .removeClass( 'parsley-validated' )
+            .removeClass( 'parsley-error' )
+            .next( '.parsley-error-list' )
+            .remove()
+        onChangeAmazonDns : ->
+            useAmazonDns = $("#property-amazon-dns").is(":checked")
+            allowRows    = if useAmazonDns then 3 else 4
+            $inputbox    = $("#property-domain-server").attr( "data-max-row", allowRows )
+            $rows        = $inputbox.children()
+            $inputbox.toggleClass "max", $rows.length >= allowRows
+
+            #@model.setAmazonDns useAmazonDns
+            null
+
+        onChangeDhcpOptions : ( event ) ->
+            if event and not $( event.currentTarget ).closest( '[data-bind=true]' ).parsley( 'validate' )
+                return
 
         getModalOptions: ->
             that = @
             region = Design.instance().get('region')
             regionName = constant.REGION_SHORT_LABEL[ region ]
+
             title: "Manage DHCP Options in #{regionName}"
             slideable: true
             context: that

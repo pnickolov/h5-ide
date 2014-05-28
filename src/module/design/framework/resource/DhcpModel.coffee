@@ -5,15 +5,18 @@ define [ "constant", "../ResourceModel", "Design"  ], ( constant, ResourceModel,
     type : constant.RESTYPE.DHCP
 
     defaults : ()->
-      dhcpOptionId: ""
+      dhcpOptionsId: ""
 
-    isNone     : ()-> @attributes.dhcpOptionId is "none"
-    isDefault  : ()-> @attributes.dhcpOptionId is "default"
-    isCustom   : ()-> not @isNone() and not @isDefault()
+    isNone     : ()-> @attributes.dhcpOptionsId is "none"
+    isDefault  : ()-> @attributes.dhcpOptionsId is "default"
+    isCustom   : ()-> not (@attributes.dhcpOptionsId is 'none' or @attributes.dhcpOptionsId is 'default')
 
-    setNone    : ()-> @set "dhcpOptionId", "none"
-    setDefault : ()-> @set "dhcpOptionId", "default"
-    setDhcp    : (val)-> @set "dhcpOptionId", val
+    setNone    : ()-> @set "dhcpOptionsId", "none"
+    setDefault : ()-> @set "dhcpOptionsId", "default"
+    setDhcp    : (val)->
+        if @get('dhcpOptionsId') isnt val
+            @newId = @design().guid()
+            @set "dhcpOptionsId", val
     set : ()->
       if Array::slice.call(arguments)[1] is true
           @newId = @design().guid()
@@ -32,7 +35,6 @@ define [ "constant", "../ResourceModel", "Design"  ], ( constant, ResourceModel,
 
       if not @isCustom()
         return
-
       vpc = Design.modelClassForType( constant.RESTYPE.VPC ).theVPC()
 
       if @__newIdForAppEdit
@@ -44,13 +46,12 @@ define [ "constant", "../ResourceModel", "Design"  ], ( constant, ResourceModel,
       else
         id = @id
         appId = @get("appId")
-
       component =
         name : "DhcpOption"
         type : @type
         uid  : id
         resource :
-          DhcpOptionsId        : if @newId then @toJSON().dhcpOptionsId else appId
+          DhcpOptionsId        : @toJSON().dhcpOptionsId
           VpcId                : vpc.createRef( "VpcId" )
 
       { component : component }
@@ -58,9 +59,9 @@ define [ "constant", "../ResourceModel", "Design"  ], ( constant, ResourceModel,
   }, {
 
     handleTypes : constant.RESTYPE.DHCP
-
     deserialize : ( data, layout_data )->
       attr = {}
+      attr.dhcpOptionsId = data.resource.DhcpOptionsId
       attr.id    = data.uid
       attr.appId = data.resource.DhcpOptionsId
       new Model( attr )

@@ -1,13 +1,13 @@
 <div class="scroll-wrap scrollbar-auto-hide" style="height:400px;">
 	<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
 	<div id="VisualizeVpcDialog" class="scroll-content">
-{{#if timeout}}
+{{#if fail}}
 <div class="unmanaged-vpc-empty">Oops, loading VPC failed.
 	<button class="btn btn-blue" id="VisualizeReload">Retry</button>
 </div>
 <div class="loading-spinner hide"></div>
 {{else}}
-	{{#if isReady}}<div class="loading-spinner"></div>{{else}}
+	{{#unless ready}}<div class="loading-spinner"></div>{{else}}
 		{{#each data}}<section>
 			<header class="region-header"><span class="region-name">{{name}}</span>{{subname}}</header>
 
@@ -30,7 +30,7 @@
 			</ul>
 		</section>
 		{{else}}<div class="unmanaged-vpc-empty">There is no unmanaged VPC to visualize.</div>{{/each}}
-	{{/if}}
+	{{/unless}}
 
 {{/if}}
 

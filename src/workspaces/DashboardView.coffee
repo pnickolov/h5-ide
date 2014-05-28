@@ -234,56 +234,20 @@ define [
 
     updateVisModel : ()->
       if not @visModal then return
-
-      promise = @model.visualizeVpc()
-      attributes = {
-        isReady : promise?.isFulfilled()
-        timeout : @model.isVisualizeTimeout()
-        data    : @model.get("visualizeData")
-      }
-      @visModal.tpl.find(".modal-body").html VisualizeVpcTpl( attributes )
+      @visModal.tpl.find(".modal-body").html VisualizeVpcTpl({
+        ready : @model.isVisualizeReady()
+        fail  : @model.isVisualizeTimeout() || @model.isVisualizeFailed()
+        data  : @model.get("visualizeData")
+      })
       return
 
     visualizeVPC : ()->
-      promise = @model.visualizeVpc()
+      @model.visualizeVpc()
       attributes = {
-        isReady : promise.isFulfilled()
-        timeout : @model.isVisualizeTimeout()
-        data    : @model.get("visualizeData")
+        ready : @model.isVisualizeReady()
+        fail  : @model.isVisualizeTimeout() || @model.isVisualizeFailed()
+        data  : @model.get("visualizeData")
       }
-
-      attributes.data = [{
-        id      : "region1"
-        name    : "Region1"
-        subname : "US east"
-        vpcs    : [{
-          id           : "vpc-123"
-          disabled     : true
-          subnetCount  : 12
-          eniCount     : 1
-          amiCount     : 0
-          stoppedCount : 12
-          eipCount     : 23
-          elbCount     : 0
-        }, {
-          id           : "vpc-123"
-          empty        : true
-          subnetCount  : 12
-          eniCount     : 1
-          amiCount     : 0
-          stoppedCount : 12
-          eipCount     : 23
-          elbCount     : 0
-        },{
-          id           : "vpc-123"
-          subnetCount  : 12
-          eniCount     : 1
-          amiCount     : 0
-          stoppedCount : 12
-          eipCount     : 23
-          elbCount     : 0
-        }]
-      }]
 
       self = @
       TO = setTimeout ()->

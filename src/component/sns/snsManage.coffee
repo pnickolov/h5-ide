@@ -106,8 +106,33 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
 
                 finHandler()
 
+
         # actions
         create: ( invalid ) ->
+            that = @
+            @switchAction 'processing'
+            topicId = @M$( '.dd-topic-name .selected' ).data 'id'
+            protocol = @M$( '.dd-protocol .selection' ).text()
+            topicName = @M$( '#create-topic-name' ).val()
+            displayName = @M$( '#create-display-name' ).val()
+            endpoint = @M$( '#create-endpoint' ).val()
+
+            createSub = ( newTopic ) ->
+                @subCol.create( TopicArn: newTopic and newTopic.id or topicId, Endpoint: endpoint, Protocol: protocol )
+                    .save()
+                    .then ( newSub ) ->
+                        notification 'info', 'Create Subscription Succeed'
+                        that.modal.cancel()
+
+            if topicId is '@new'
+                @topicCol.create( Name: topicName, DisplayName: displayName ).save().then createSub
+            else
+                topicModel = @topicCol.get topicId
+                if displayName is topicModel.get 'displayName'
+                    createSub()
+                else
+                    topicModel.update( displayName ).then createSub
+
 
         delete: ( invalid, checked ) ->
             count = checked.length
@@ -137,7 +162,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
             @processCol()
             @
 
-        processCol: () ->
+        processCol: ( noRender ) ->
             if @topicCol.isReady() and @subCol.isReady()
 
                 data = @topicCol.map ( tModel ) ->
@@ -147,9 +172,10 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
                     tData.subCount = tData.sub.length
                     tData
 
-                @renderList data
+                if not noRender
+                    @renderList data
 
-            false
+            data
 
         renderList: ( data ) ->
             @modal.setContent( template.modal_list data )
@@ -162,15 +188,12 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
             slides = @getSlides()
             slides[ which ]?.call @, tpl, checked
 
-        processSlideCreate: ->
-
-
         getSlides: ->
             that = @
             modal = @modal
 
             create: ( tpl, checked ) ->
-                modal.setSlide tpl
+                modal.setSlide tpl @processCol true
 
                 updateEndpoint = ( protocol ) ->
                     selectedProto = that.M$('.dd-protocol .selected').data 'id'
@@ -212,7 +235,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
                             type        = lang.ide.PROP_STACK_HTTPS
                             errorMsg    = lang.ide.PARSLEY_PLEASE_PROVIDE_A_VALID_URL
 
-                    endPoint = that.M$ '#create-sns-endpoint'
+                    endPoint = that.M$ '#create-endpoint'
                     endPoint.attr "placeholder", placeholder
 
                     endPoint.parsley 'custom', ( value ) ->
@@ -221,6 +244,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
 
                     if endPoint.val().length
                         endPoint.parsley 'validate'
+
                     null
 
                 updateEndpoint 'email'
@@ -228,9 +252,8 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
                 that.M$( '#create-topic-name' ).parsley 'custom', ( value ) ->
                     selectedProto = that.M$('.dd-protocol .selected').data 'id'
                     if selectedProto is 'sms'
-                        return 'This value is required'
+                        return 'Display Name is required if subscription uses SMS protocol.'
                     null
-
 
                 allTextBox = that.M$( '.slide-create input[type=text]' )
 
@@ -240,11 +263,18 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
                     else
                         that.M$( '.slide-create .do-action' ).prop 'disabled', true
 
-
                 allTextBox.on 'keyup', processCreateBtn
 
+                that.M$( '.dd-protocol' ).off( 'OPTION_CHANGE' ).on 'OPTION_CHANGE', updateEndpoint
 
-                that.M$( '.dd-protocol' ).on "OPTION_CHANGE", updateEndpoint
+                that.M$( '.dd-topic-name' ).off( 'OPTION_CHANGE' ).on 'OPTION_CHANGE', ( event, id, data ) ->
+                    if id is '@new'
+                        that.M$( '.create-sns-topic' ).show()
+                    else
+                        that.M$( '#create-display-name').val data.displayName
+                        that.M$( '.create-sns-topic' ).hide()
+
+
 
             "delete": ( tpl, checked ) ->
                 checkedAmount = checked.length
@@ -255,7 +285,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
                 data = {}
 
                 if checkedAmount is 1
-                    data.selecteKeyName = checked[ 0 ].data[ 'name' ]
+                    data.selecteKeyName = checked[ 0 ].data.name
                 else
                     data.selectedCount = checkedAmount
 

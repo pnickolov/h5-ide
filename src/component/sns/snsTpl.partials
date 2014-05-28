@@ -34,19 +34,21 @@
             <div class="selectbox dd-topic-name">
                 <div class="selection">New Topic</div>
                 <ul class="dropdown" tabindex="-1">
-                  <li class="item selected" data-id="@new">New Topic</li>
-                  <li class="item" data-id="dedicated">Dedicated</li>
+                  <li class="item selected new-topic" data-id="@new">New Topic</li>
+                  {{#each this}}
+                    <li class="item" data-id="{{id}}" data-display-name="{{DisplayName}}">{{Name}}</li>
+                  {{/each}}
                 </ul>
             </div>
 
         </div>
-        <div>
+        <div class="create-sns-topic">
             <label for="create-topic-name">Topic Name</label>
             <input class="input" type="text" id="create-topic-name" data-ignore="true" data-ignore-regexp="^[a-zA-Z0-9,_-]*$" data-required="true" maxlength="255" placeholder="Required. Up to 256 characters" required>
         </div>
         <div>
-            <label for="create-sns-name">Display Name</label>
-            <input class="input" type="text" id="create-sns-name" data-ignore="true" data-ignore-regexp="^[a-zA-Z0-9,_-]*$" data-required="true" maxlength="255" placeholder="Required for SMS subscriptions (up to 10 characters)">
+            <label for="create-display-name">Display Name</label>
+            <input class="input" type="text" id="create-display-name" data-ignore="true" data-ignore-regexp="^[a-zA-Z0-9,_-]*$" data-required="true" maxlength="255" placeholder="Required for SMS subscriptions (up to 10 characters)">
         </div>
         <div>
             <label>Protocol</label>
@@ -64,8 +66,8 @@
             </div>
         </div>
         <div>
-            <label for="create-sns-endpoint">Endpoint</label>
-            <input type="text" class="input" id="create-sns-endpoint" max-length="255" data-required="true" data-trigger="change" placeholder="example@mail.com">
+            <label for="create-endpoint">Endpoint</label>
+            <input type="text" class="input" id="create-endpoint" max-length="255" data-required="true" data-trigger="change" placeholder="example@mail.com">
         </div>
     </div>
     <div class="init action">

@@ -33,3 +33,5 @@
   margin: 5px 0; }
 .sns-manage .slide-create .selection {
   width: 456px; }
+.sns-manage .slide-create .new-topic {
+  border-bottom: 1px solid #0f0f0f; }

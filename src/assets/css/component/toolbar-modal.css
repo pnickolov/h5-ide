@@ -1,10 +1,6 @@
 /* Common Style for Modal with Toolbar */
 .modal-toolbar {
-  width: 855px;
-  -webkit-user-select: none;
-  -o-user-select: none;
-  -ms-user-select: none;
-  -moz-user-select: none; }
+  width: 855px; }
   .modal-toolbar .list {
     position: relative; }
   .modal-toolbar .modal-body {

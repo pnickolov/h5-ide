@@ -3,8 +3,7 @@ define [
   "./CrCommonCollection"
   "ApiRequest"
   "constant"
-  "./CrModelElb"
-], ( CrCommonCollection, ApiRequest, constant, CrElbModel )->
+], ( CrCommonCollection, ApiRequest, constant )->
 
   ### Elb ###
   CrCommonCollection.extend {

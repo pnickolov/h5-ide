@@ -1,5 +1,5 @@
 <!-- {{frame}} -->
-<div class="modal-toolbar">
+<div class="modal-toolbar {{classList}}">
     <div class="content-wrap hide">
         <div class="toolbar">
             {{#if btnValueCreate}}

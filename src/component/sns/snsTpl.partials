@@ -1,5 +1,5 @@
-<!-- {{dropdown_selection}} -->
-{{TopicName}}
+<!-- {{dropdown_no_selection}} -->
+<span>None</span>
 
 
 <!-- {{dropdown_list}} -->

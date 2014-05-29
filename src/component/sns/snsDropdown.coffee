@@ -31,13 +31,24 @@ define [ 'constant', 'CloudResources','sns_manage', 'combo_dropdown', './compone
             @dropdown.on 'change', @set, @
             @dropdown.on 'filter', @filter, @
 
-        initialize: () ->
+        initialize: ( options ) ->
+            if options and options.selection
+                @selection = options.selection
             @initCol()
             @initDropdown()
+            if not @selection and App.user.hasCredential()
+                @topicCol.fetch()
+                @subCol.fetch()
 
+        render: ( needInit ) ->
+            selection = @selection
+            if not selection
+                if needInit and @topicCol.first()
+                    @selection = selection = @topicCol.first().get( 'Name' )
+                    @trigger 'change', @topicCol.first().id, selection
+                else
+                    selection = template.dropdown_no_selection()
 
-        render: ->
-            selection = 'FOO'
             @dropdown.setSelection selection
             @el = @dropdown.el
             @
@@ -57,6 +68,11 @@ define [ 'constant', 'CloudResources','sns_manage', 'combo_dropdown', './compone
                     data = _.filter data, ( d ) ->
                         d.Name.toLowerCase().indexOf( keyword.toLowerCase() ) isnt -1
 
+                selection = @selection
+                _.each data, ( d ) ->
+                    if d.Name and d.Name is selection
+                        d.selected = true
+
 
                 @renderDropdownList data
 
@@ -73,14 +89,16 @@ define [ 'constant', 'CloudResources','sns_manage', 'combo_dropdown', './compone
             if App.user.hasCredential()
                 @topicCol.fetch()
                 @subCol.fetch()
-                @processCol()
+                if not @dropdown.$( '.item' ).length
+                    @processCol()
             else
                 @renderNoCredential()
 
         manage: ->
             new snsManage().render()
 
-        set: ->
+        set: ( id, data ) ->
+            @trigger 'change', id, data.name
 
         filter: ( keyword ) ->
             @processCol( true, keyword )

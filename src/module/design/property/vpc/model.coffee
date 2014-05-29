@@ -86,7 +86,6 @@ define [ '../base/model', 'Design', 'constant' ], ( PropertyModel, Design, const
         removeDhcp : ( isDefault )->
             uid = @get("uid")
             dhcp = Design.instance().component( uid ).get("dhcp")
-            console.log dhcp.setDefault
             if isDefault
                 dhcp.setDefault()
             else

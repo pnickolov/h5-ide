@@ -6,7 +6,7 @@ define [], ()->
   # If McError contains aws result error, it will have 3 additional members:
     awsError     : Number
     awsErrorCode : String
-    awsResult    : Object
+    awsResult    : String or Object
   ###
   window.McError = ( errorNum, errorMsg, params )->
     {

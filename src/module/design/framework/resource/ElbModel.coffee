@@ -120,7 +120,8 @@ define [ "Design",
       if idx >= listeners.length
         listeners.push value
       else
-        listeners[ idx ] = $.extend {}, value
+        listeners[idx] = {} if not listeners[idx]
+        listeners[idx] = $.extend listeners[idx], value
 
       null
 

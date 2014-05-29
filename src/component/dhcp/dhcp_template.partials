@@ -27,12 +27,12 @@
 <!-- {{keys}} -->
 {{#unless hideDefaultNoKey}}
 {{#unless isRunTime}}
-<li data-id="@auto" class="item{{#if defaultKey}} selected{{/if}}" tabindex="-1">
+<li data-id="@auto" class="item{{#if auto}} selected{{/if}}" tabindex="-1">
     {{i18n "PROP_VPC_AUTO_DHCP"}}
     <i class="icon-info tooltip" data-tooltip='{{i18n "PROP_VPC_TIP_AUTO_DHCP"}}'></i>
 </li>
 {{/unless}}
-<li data-id="@default" class="item{{#if noKey}} selected{{/if}}" tabindex="-1">
+<li data-id="@default" class="item{{#if default}} selected{{/if}}" tabindex="-1">
     {{i18n "PROP_VPC_DEFAULT_DHCP"}}
     <i class="icon-info tooltip" data-tooltip="{{i18n 'PROP_VPC_TIP_DEFAULT_DHCP'}}"></i>
 </li>
@@ -62,8 +62,11 @@
         <section data-bind="true">
             <div class="control-group clearfix">
                 <label for="property-dhcp-domain">{{ i18n "PROP_VPC_DHCP_SPECIFIED_LBL_DOMAIN_NAME" }}</label>
-                <div>
-                    <input class="input tooltip" type="text" value="{{dhcp.domainName}}" data-tooltip="{{i18n 'PROP_VPC_TIP_ENTER_THE_DOMAIN_NAME'}}" id="property-dhcp-domain" maxlength="255" data-type="domain" data-ignore="true"/>
+                <div id="property-dhcp-domain" class="multi-input" data-max-row="100">
+                    <div class="multi-ipt-row">
+                        <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
+                        <span class="ipt-wrapper"><input class="input tooltip" data-tooltip="{{i18n 'PROP_VPC_TIP_ENTER_THE_DOMAIN_NAME'}}" type="text" maxlength="255" data-type="domain" data-ignore="true"></span>
+                    </div>
                 </div>
             </div>
 
@@ -141,11 +144,11 @@
 
         </section>
         <div class="init action">
-            <button class="btn btn-blue do-action" data-action="delete">Create</button>
+            <button class="btn btn-blue do-action" data-action="create">Create</button>
             <button class="btn btn-silver cancel">Cancel</button>
         </div>
         <div class="processing action" style="display:none;">
-            <button class="btn" disabled>Deleting...</button>
+            <button class="btn" disabled>Creating...</button>
         </div>
     </div>
 </div>

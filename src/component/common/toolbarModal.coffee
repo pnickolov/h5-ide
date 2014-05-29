@@ -34,6 +34,8 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalpl
             'click .do-action': '__doAction'
             'click [data-btn=refresh]': '__refresh'
 
+            'click .table-head .sortable': 'sort'
+
         initialize: ( options ) ->
             @options = options or {}
             @options.title = 'Default Title' if not @options.title
@@ -41,6 +43,10 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalpl
                 @options.context.modal = @
                 @options.context.M$ = _.bind @$, @
             null
+
+        sort: ->
+            # detail tr will disturb the sort, so details must be removed when sort trigger
+            @$( '.tr-detail' ).remove()
 
         __doAction: ( event ) ->
             @error()
@@ -111,7 +117,7 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalpl
                 $tr
                     .addClass( 'detailed' )
                     .after template.tr_detail columnCount: @options.columns.length + 1
-                @trigger 'detail', event, $target.data(), $tr
+                @trigger 'detail', event, $tr.data(), $tr
 
 
 
@@ -220,7 +226,9 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalpl
             @
 
         setDetail: ( $tr, dom ) ->
-            $tr.next( '.tr-detail' ).html dom
+            $trDetail = $tr.next( '.tr-detail' )
+            $trDetail.find( 'td' ).html dom
+            $trDetail
 
         cancel: () ->
             if @__slideRejct()

@@ -1,7 +1,7 @@
 
 define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "constant", "i18n!nls/lang.js" ], ( ResourceModel, ComplexResModel, GroupModel, Design, constant, lang )->
 
-  NotificationModel = ResourceModel.extend {
+  NotificationModel = ComplexResModel.extend {
     type : constant.RESTYPE.NC
 
     isUsed : ()->
@@ -11,12 +11,21 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
       Design.modelClassForType( constant.RESTYPE.TOPIC ).ensureExistence()
       null
 
+    isVisual: () -> false
+
+    getTopic: () -> @connectionTargets('TopicUsage')[ 0 ]
+
+    getTopicName: () -> @getTopic()?.get 'name'
+
+    setTopic: ( appId, name ) ->
+      TopicModel = Design.modelClassForType( constant.RESTYPE.TOPIC )
+      TopicModel.get( appId, name ).assignTo @
+
     serialize : ()->
       if not @isUsed() or not @get("asg")
         return
 
-      # Ensure there's a SNS_Topic
-      topic = Design.modelClassForType( constant.RESTYPE.TOPIC ).ensureExistence()
+      topic = @getTopic()
 
       notifies = []
       for key, name of NotificationModel.typeMap
@@ -29,7 +38,7 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
           uid      : @id
           resource :
             AutoScalingGroupName : @get("asg").createRef( "AutoScalingGroupName" )
-            TopicARN : topic.createRef( "TopicArn" )
+            TopicARN : topic?.createRef( "TopicArn" )
             NotificationType : notifies
       }
 
@@ -61,6 +70,9 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
       if asg
         asg.set("notification", notify)
         notify.set("asg", asg)
+
+      resolve( MC.extractID( data.resource.TopicARN ) )?.assignTo notify
+
       null
   }
 
@@ -287,6 +299,9 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
       n = @get("notification")
       if n then n.toJSON() else {}
 
+    getNotiObject: () ->
+      @get("notification")
+
     setNotification : ( data )->
       n = @get("notification")
       if n
@@ -295,7 +310,19 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
         data.asg = this
         n = new NotificationModel( data )
         @set("notification", n)
+
+      n
+
+    setNotificationTopic: ( appId, name ) ->
+      n = @get("notification")
+      n?.setTopic appId, name
+
+    getNotificationTopicName: ->
+      n = @get("notification")
+      if n
+        return n.getTopicName()
       null
+
 
     updateExpandedAsgAsso : ( elb, isRemove )->
 

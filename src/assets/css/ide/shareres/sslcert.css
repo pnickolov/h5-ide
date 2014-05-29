@@ -1,0 +1,14 @@
+.modal-ssl-cert-create .modal-ssl-cert-item {
+  margin-bottom: 10px; }
+  .modal-ssl-cert-create .modal-ssl-cert-item input, .modal-ssl-cert-create .modal-ssl-cert-item textarea {
+    width: 440px; }
+
+.modal-ssl-cert-update .modal-ssl-cert-item {
+  margin-top: 10px;
+  margin-left: 80px; }
+  .modal-ssl-cert-update .modal-ssl-cert-item input, .modal-ssl-cert-update .modal-ssl-cert-item textarea {
+    float: left;
+    width: 300px !important; }
+  .modal-ssl-cert-update .modal-ssl-cert-item .left {
+    width: 130px !important;
+    margin-top: 7px; }

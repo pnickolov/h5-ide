@@ -9,8 +9,11 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
             @subCol = CloudResources constant.RESTYPE.SUBSCRIPTION, region
             @topicCol = CloudResources constant.RESTYPE.TOPIC, region
             @topicCol.on 'update', @processCol, @
-            @subCol.on 'update', @processCol, @
+            @subCol.on 'update', @processSubUpdate, @
 
+        processSubUpdate: ->
+            if not @M$( '.tr-detail' ).length
+                @processCol()
 
         getModalOptions: ->
             that = @
@@ -65,6 +68,54 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
             @modal.on 'slidedown', @renderSlides, @
             @modal.on 'action', @doAction, @
             @modal.on 'refresh', @refresh, @
+            @modal.on 'detail', @detail, @
+
+        detail: ( event, data, $tr ) ->
+            subModels =  @getSubs data.topicArn
+            data = _.map subModels, ( m ) ->
+                attrs = m.toJSON()
+                attrs.isRemovable = m.isRemovable()
+                attrs
+
+            $trDetail = @modal.setDetail $tr, template.detail data
+            @processDetail $trDetail, $tr
+
+        processDetail: ( $trDetail, $tr ) ->
+            that = @
+            $trDetail
+                .on( 'click', '.remove', () ->
+                    $(@).hide()
+                    $trDetail.find( '.do-remove-panel' ).show()
+                )
+                .on( 'click', '.cancel', () ->
+                    $(@).closest( '.do-remove-panel' ).hide()
+                    $trDetail.find( '.remove' ).show()
+                )
+                .on( 'click', '.do-remove', () ->
+                    $removeBtn = $(@)
+                    that.removeSub( $removeBtn.data('id') ).then () ->
+                        $removeBtn.closest( 'tr' ).remove()
+                        subCount = $trDetail.find( '.sns-detail tbody tr' ).length
+                        # Update subscription count
+                        $tr.find( '.show-detail b' ).text( subCount )
+                        # fold the detail if there is no subscription
+                        if subCount is 0
+                           $tr.find( '.show-detail' ).click()
+
+                )
+
+        removeSub: ( subId ) ->
+            m = @subCol.findWhere SubscriptionArn: subId
+            m?.destroy()
+                .then( ( deletedModel )->
+                    notification 'info', "Remove Subscription Succeed."
+                    return deletedModel
+                )
+                .fail ( err ) ->
+                    notification 'error', err.awsResult
+                    throw err
+
+
 
         initialize: () ->
             @initCol()
@@ -176,6 +227,9 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
                     @renderList data
 
             data
+
+        getSubs: ( topicArn ) ->
+            @subCol.where TopicArn: topicArn
 
         renderList: ( data ) ->
             @modal.setContent( template.modal_list data )

@@ -1,12 +1,30 @@
 define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_modal', 'i18n!nls/lang.js', './dhcp_template.js'], ( CloudResources, constant, comboDropdown, modalPlus, toolbarModal, lang, template )->
     fetched = false
+    updateAmazonCB = () ->
+        rowLength = $( "#property-domain-server" ).children().length
+        if rowLength > 3
+            $( '#property-amazon-dns' ).attr( "disabled", true )
+        else
+            $( '#property-amazon-dns' ).removeAttr( "disabled" )
+    mapFilterInput = ( selector ) ->
+        $inputs = $( selector )
+        result  = []
+
+        for ipt in $inputs
+            if ipt.value
+                result.push ipt.value
+
+        result
+    deleteCount = 0
+    deleteErrorCount = 0
     dhcpView = Backbone.View.extend
-        constructor:->
+        constructor:(options)->
+            @resModel = options.resModel
             @collection = CloudResources constant.RESTYPE.DHCP, Design.instance().region()
             @listenTo @collection, 'change', @render
             @listenTo @collection, 'update', @render
             @listenTo @collection, 'change', @renderManager
-            @listenTo @collection, 'change', @renderManager
+            @listenTo @collection, 'update', @renderManager
             option =
                 manageBtnValue: lang.ide.PROP_VPC_MANAGE_DHCP
                 filterPlaceHolder: lang.ide.PROP_VPC_FILTER_DHCP
@@ -23,7 +41,7 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
         remove: ()->
             @.isRemoved = true
             Backbone.View::remove.call @
-        render: ->
+        render: ()->
             if not fetched
                 @renderLoading()
                 @collection.fetch().then =>
@@ -36,26 +54,53 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
                 @render()
             else
                 @renderNoCredential()
+
         renderNoCredential: ->
             @dropdown.render('nocredential').toggleControls false
+
         renderLoading: ->
             @dropdown.render('loading').toggleControls false
-        renderDropdown: ->
+
+        renderDropdown: (keys)->
+            selected = @resModel.toJSON().dhcp.dhcpOptionsId
             data = @collection.toJSON()
-            content = template.keys
+            if selected
+                _.each data, (key)->
+                    if key.id is selected
+                        key.selected = true
+                    return
+            datas =
                 isRuntime: false
                 keys: data
+            if selected is ""
+                datas.auto = true
+            else if selected and selected is 'default'
+                datas.default = true
+            if keys
+                datas.keys = keys
+                datas.hideDefaultNoKey = true
+            content = template.keys datas
             @dropdown.toggleControls true
             @dropdown.setContent content
+
+        filter: ( keyword ) ->
+            hitKeys = _.filter @collection.toJSON(), ( data ) ->
+                data.id.toLowerCase().indexOf( keyword.toLowerCase() ) isnt -1
+            if keyword
+                @renderDropdown hitKeys
+            else
+                @renderDropdown()
+
         setDHCP: (e)->
             if e is '@auto'
-                targetDhcp = id: 'auto'
+                targetDhcp = id: ''
             else if e is '@default'
                 targetDhcp = id: "default"
             else
                 targetModel = @collection.findWhere
                     id: e
                 targetDhcp = targetModel.toJSON()
+            @resModel.toJSON().dhcp.dhcpOptionsId = targetDhcp.id
             @trigger 'change', targetDhcp
         setSelection: (e)->
             selection = template.selection e
@@ -80,7 +125,7 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
                     @renderManager()
                 return false
             content = template.content items:@collection.toJSON()
-            @manager.setContent content
+            @manager?.setContent content
 
         renderSlides: (which, checked)->
             tpl = template['slide_'+ which]
@@ -94,7 +139,7 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
                 data = {}
 
                 if checkedAmount is 1
-                    data.selectedId = checked[0].data['id']
+                    data.selectedId = checked[0].data.id
                 else
                     data.selectedCount = checkedAmount
                 @manager.setSlide tpl data
@@ -116,8 +161,9 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
                 @manager.$el.find('.multi-input').on 'ADD_ROW',  (e)=> @processParsley(e)
                 @manager.$el.find(".control-group .input").change (e)=> @onChangeDhcpOptions(e)
                 @manager.$el.find('#create-new-dhcp').on 'OPTION_CHANGE REMOVE_ROW', (e)=>@onChangeDhcpOptions(e)
+                @manager.$el.find('#property-domain-server').on( 'ADD_ROW REMOVE_ROW', updateAmazonCB )
+                updateAmazonCB()
         processParsley: ( event ) ->
-            console.log 'Triggerd ProcessParsley'
             $( event.currentTarget )
             .find( 'input' )
             .last()
@@ -125,14 +171,80 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
             .removeClass( 'parsley-error' )
             .next( '.parsley-error-list' )
             .remove()
+            $(".parsley-error-list").remove()
+        doAction: (action, checked)->
+            @[action] and @[action](@validate(action),checked)
+        create: (invalid, checked)->
+            if not invalid
+                domainNameServers = mapFilterInput "#property-domain-server .input"
+                if $("#property-amazon-dns").is(":checked")
+                    domainNameServers.push("AmazonProvidedDNS")
+                data =
+                    "domain-name"           : mapFilterInput "#property-dhcp-domain .input"
+                    "domain-name-servers"   : domainNameServers
+                    "ntp-servers"           : mapFilterInput "#property-ntp-server .input"
+                    "netbios-name-servers"  : mapFilterInput "#property-netbios-server .input"
+                    "netbios-node-type"     : [parseInt( $("#property-netbios-type .selection").html(), 10 ) || 0]
+                validate = (value, key)->
+                    if value.length < 1
+                        notification 'error', key + " value can't be empty."
+                        return false
+                    else
+                        return true
+                if not _.every data, validate
+                    return false
+                @switchAction 'processing'
+                afterCreated = @afterCreated.bind @
+                @collection.create(data).save().then afterCreated,afterCreated
+
+        delete: (invalid, checked)->
+            that = @
+            deleteCount += checked.length
+            @switchAction 'processing'
+            afterDeleted = that.afterDeleted.bind that
+            _.each checked, (data)=>
+                @collection.findWhere(id: data.data.id).destroy().then afterDeleted, afterDeleted
+
+        afterDeleted: (result)->
+            deleteCount--
+            if result.error
+                deleteErrorCount++
+                return false
+            if deleteCount is 0
+                if deleteErrorCount > 0
+                    notification 'error', deleteErrorCount+" DhcpOptions failed to delete, Please try again later."
+                else
+                    notification 'info', "Delete Successfully"
+                deleteErrorCount = 0
+                @manager.cancel()
+        afterCreated: (result)->
+            @manager.cancel()
+            if result.error
+                notification 'error', "Create failed because of: "+result.msg
+                return false
+            notification 'info', "New DHCP Option is created successfully"
+
+        validate: (action)->
+            switch action
+                when 'create'
+                    #@manager.$el.find('input').parsley 'validate'
+                    return @manager.$el.find(".parsley-error").size()>0
+
+        switchAction: ( state ) ->
+            if not state
+                state = 'init'
+
+            @M$( '.slidebox .action' ).each () ->
+                if $(@).hasClass state
+                    $(@).show()
+                else
+                    $(@).hide()
         onChangeAmazonDns : ->
             useAmazonDns = $("#property-amazon-dns").is(":checked")
             allowRows    = if useAmazonDns then 3 else 4
             $inputbox    = $("#property-domain-server").attr( "data-max-row", allowRows )
             $rows        = $inputbox.children()
             $inputbox.toggleClass "max", $rows.length >= allowRows
-
-            #@model.setAmazonDns useAmazonDns
             null
 
         onChangeDhcpOptions : ( event ) ->

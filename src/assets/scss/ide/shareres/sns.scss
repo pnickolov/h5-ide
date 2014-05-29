@@ -11,6 +11,21 @@
     background: $backgroudColor;
 }
 
+@mixin user-select($value: none) {
+    -webkit-user-select: $value;
+    -o-user-select: $value;
+    -ms-user-select: $value;
+    -moz-user-select: $value;
+}
+
+#asg-policy-notify-label {
+    @include user-select;
+}
+
+.sns-policy-field {
+    display: none;
+}
+
 .icon-tag-sub {
     @include tag;
 }
@@ -48,6 +63,44 @@
             border-bottom: 1px solid #0f0f0f;
 
         }
+
+    }
+
+
+    .tr-detail {
+        & > td {
+            padding: 0;
+        }
+        table.sns-detail {
+            thead tr th {
+                padding: 8px 12px;
+                background: #111;
+            }
+
+            tr {
+
+                td {
+                    border: 0;
+                    background: #222;
+
+                    a.remove {
+                        color: #D0021B;
+                        cursor: pointer;
+                    }
+
+                    div.do-remove-panel {
+                        display: none;
+                    }
+                }
+
+                &:hover td {
+                    background: #000;
+                }
+
+            }
+
+        }
+
     }
 }
 

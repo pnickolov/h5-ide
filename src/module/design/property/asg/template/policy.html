@@ -139,9 +139,11 @@
 						</div>
 						<label id="asg-policy-notify-label" for="asg-policy-notify">{{i18n "PROP_ASG_LBL_SEND_NOTIFICATION_D"}}</label>
 
-						{{#if noSNS}}
-						<p class="{{#unless sendNotification}}hide{{/unless}} property-warning" id="asg-policy-no-sns">{{ i18n "PROP_ASG_MSG_SNS_WARN" }}</p>
-						{{/if}}
+						<div class="sns-policy-field">
+							<label>Select SNS Topic</label>
+							<div class="policy-sns-placeholder"></div>
+						</div>
+
 					</section>
 				</div>
 		 </div>

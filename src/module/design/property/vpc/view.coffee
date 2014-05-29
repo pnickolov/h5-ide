@@ -20,13 +20,6 @@ define [ '../base/view',
 
         result
 
-    updateAmazonCB = () ->
-        rowLength = $( "#property-domain-server" ).children().length
-        if rowLength > 3
-            $( '#property-amazon-dns' ).attr( "disabled", true )
-        else
-            $( '#property-amazon-dns' ).removeAttr( "disabled" )
-
 
     VPCView = PropertyView.extend {
 
@@ -37,11 +30,6 @@ define [ '../base/view',
             'change #property-dns-hostname'   : 'onChangeDnsHostname'
             'OPTION_CHANGE #property-tenancy' : 'onChangeTenancy'
 
-#            'click #property-dhcp-none'    : 'onRemoveDhcp'
-#            'click #property-dhcp-default' : 'onRemoveDhcp'
-#            'click #property-dhcp-spec'    : 'onUseDHCP'
-#            'click #property-amazon-dns'   : 'onChangeAmazonDns'
-
             'change .property-control-group-sub .input' : 'onChangeDhcpOptions'
             'OPTION_CHANGE #property-netbios-type'      : 'onChangeDhcpOptions'
             'REMOVE_ROW #property-dhcp-options'         : 'onChangeDhcpOptions'
@@ -51,21 +39,9 @@ define [ '../base/view',
 
             data = @model.toJSON()
 
-            selectedType = data.dhcp.netbiosType || 0
-            data.dhcp.netbiosTypes = [
-                  { id : "default" , value : lang.ide.PROP_VPC_DHCP_SPECIFIED_LBL_NETBIOS_NODE_TYPE_NOT_SPECIFIED, selected : selectedType == 0 }
-                , { id : 1 , value : 1, selected : selectedType == 1 }
-                , { id : 2 , value : 2, selected : selectedType == 2 }
-                , { id : 4 , value : 4, selected : selectedType == 4 }
-                , { id : 8 , value : 8, selected : selectedType == 8 }
-            ]
-
             @$el.html( template( data ) )
-            $( '#property-domain-server' ).on( 'ADD_ROW REMOVE_ROW', updateAmazonCB )
-            updateAmazonCB()
             multiinputbox.update( $("#property-domain-server") )
-
-            @dhcp = new dhcp()
+            @dhcp = new dhcp(resModel: @model)
             @dhcp.off 'change'
             @dhcp.on 'change', (e)=>
                 @changeDhcp(e)
@@ -75,7 +51,7 @@ define [ '../base/view',
             @initDhcpSelection()
             data.name
         initDhcpSelection: ->
-            currentVal = @model.toJSON().dhcp.dhcpOptionId
+            currentVal = @model.toJSON().dhcp.dhcpOptionsId
             if currentVal is ''
                 selection = isAuto : true
             else if currentVal is "default"
@@ -85,20 +61,11 @@ define [ '../base/view',
             @dhcp.setSelection selection
         changeDhcp: (e)->
             if e.id is 'default'
-                @model.removeDhcp false
-            else if e.id is 'auto'
                 @model.removeDhcp true
+            else if e.id is ''
+                @model.removeDhcp false
             else
                 @model.setDhcp(e.id)
-
-        processParsley: ( event ) ->
-            $( event.currentTarget )
-                .find( 'input' )
-                .last()
-                .removeClass( 'parsley-validated' )
-                .removeClass( 'parsley-error' )
-                .next( '.parsley-error-list' )
-                .remove()
 
         onChangeName : ( event ) ->
             target = $ event.currentTarget

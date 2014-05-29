@@ -48,6 +48,7 @@ define [ "./subviews/WorkspaceView", "underscore" ], ( WorkspaceView )->
 
       workspace
 
+    getAwakenSpace : ()-> @__awakeSpace
     awakeWorkspace : ( workspace )->
       if not workspace then return
 

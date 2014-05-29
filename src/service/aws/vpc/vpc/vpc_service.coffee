@@ -188,4 +188,6 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 	DescribeVpcAttribute         : DescribeVpcAttribute
 	#
 	resolveDescribeVpcsResult : resolveDescribeVpcsResult
+	resolveDescribeVpcAttributeResult : resolveDescribeVpcAttributeResult
+
 

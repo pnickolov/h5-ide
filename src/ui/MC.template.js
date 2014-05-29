@@ -1836,11 +1836,7 @@ function program13(depth0,data) {
   return buffer;
   }
 
-  buffer += "<<<<<<< HEAD\n<div id=\"app-apply-update\">\n	<div class=\"modal-control-group default-kp-group clearfix\" style=\"display:none;\">\n		<label for=\"\">$DefaultKeyPair</label>\n		<div id=\"kp-runtime-placeholder\"></div>\n		<div class=\"runtime-error\" id=\"runtime-error-kp\"></div>\n	</div>\n=======\n<div id=\"app-apply-update\" style=\"width:460px\">\n	<div class=\"modal-header\"><h3 class=\"truncate\" style=\"width: 380px;\">"
-    + escapeExpression(helpers.i18n.call(depth0, "POP_CONFIRM_UPDATE_TIT", {hash:{},data:data}))
-    + "</h3><i class=\"modal-close\">&times;</i> </div>\n	<div class=\"modal-body\">\n		<div class=\"modal-control-group default-kp-group clearfix\" style=\"display:none;\">\n			<label for=\"\">$DefaultKeyPair</label>\n			<div id=\"kp-runtime-placeholder\"></div>\n			<i class=\"icon-info tooltip\" data-tooltip=\""
-    + escapeExpression(helpers.i18n.call(depth0, "TIP_KEYPAIR_USED_DEFAULT_KP", {hash:{},data:data}))
-    + "\"></i>\n			<div class=\"runtime-error\" id=\"runtime-error-kp\"></div>\n		</div>\n>>>>>>> develop\n	";
+  buffer += "<div id=\"app-apply-update\">\n	<div class=\"modal-control-group default-kp-group clearfix\" style=\"display:none;\">\n		<label for=\"\">$DefaultKeyPair</label>\n		<div id=\"kp-runtime-placeholder\"></div>\n		<div class=\"runtime-error\" id=\"runtime-error-kp\"></div>\n	</div>\n	";
   stack1 = helpers['if'].call(depth0, (depth0 && depth0.isRunning), {hash:{},inverse:self.program(3, program3, data),fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n	";

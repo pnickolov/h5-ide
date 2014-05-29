@@ -48,6 +48,7 @@ define ["ApiRequest", "CloudResources", "constant", "backbone"], ( ApiRequest, C
       @listenTo CloudResources( constant.RESTYPE.ELB ), "update", @onGlobalResChanged
       @listenTo CloudResources( constant.RESTYPE.VPN ), "update", @onGlobalResChanged
 
+    ### Visualize ###
     visualizeTimestamp : ()-> @__visRequestTime
 
     # Returns a promise that will be fullfiled after the vpc's data is fetched.
@@ -147,29 +148,44 @@ define ["ApiRequest", "CloudResources", "constant", "backbone"], ( ApiRequest, C
 
       regions
 
+
+    ### Cloud Resources ###
+    onGlobalResChanged : ()-> @trigger "change:globalResources", @isAwsResReady()
     fetchAwsResources : ( region )->
-      if not region then return @__fetchAwsGlobalRes()
+      if not region
+        CloudResources( constant.RESTYPE.INSTANCE ).fetch()
+        CloudResources( constant.RESTYPE.EIP ).fetch()
+        CloudResources( constant.RESTYPE.VOL ).fetch()
+        CloudResources( constant.RESTYPE.ELB ).fetch()
+        CloudResources( constant.RESTYPE.VPN ).fetch()
+        return
 
+    isAwsResReady : (region)->
+      ready = CloudResources( constant.RESTYPE.INSTANCE ).isReady() && CloudResources( constant.RESTYPE.EIP ).isReady() && CloudResources( constant.RESTYPE.VOL ).isReady() && CloudResources( constant.RESTYPE.ELB ).isReady() && CloudResources( constant.RESTYPE.VPN ).isReady()
+      if not region then return ready
 
-    isAwsGlobalResReady : ()->
-      CloudResources( constant.RESTYPE.INSTANCE ).isReady() && CloudResources( constant.RESTYPE.EIP ).isReady() && CloudResources( constant.RESTYPE.VOL ).isReady() && CloudResources( constant.RESTYPE.ELB ).isReady() && CloudResources( constant.RESTYPE.VPN ).isReady()
+      ready
 
-    onGlobalResChanged : ()-> @trigger "change:globalResources", @isAwsGlobalResReady()
-    getGlobalResData : ()->
+    getAwsResData : ( region )->
+      if not region
+        return {
+          instances : CloudResources( constant.RESTYPE.INSTANCE ).groupByCategory()
+          eips      : CloudResources( constant.RESTYPE.EIP ).groupByCategory()
+          volumes   : CloudResources( constant.RESTYPE.VOL ).groupByCategory()
+          elbs      : CloudResources( constant.RESTYPE.ELB ).groupByCategory()
+          vpns      : CloudResources( constant.RESTYPE.VPN ).groupByCategory()
+        }
+
+      filter = { category : region }
       {
-        instances : CloudResources( constant.RESTYPE.INSTANCE ).groupByCategory()
-        eips      : CloudResources( constant.RESTYPE.EIP ).groupByCategory()
-        volumes   : CloudResources( constant.RESTYPE.VOL ).groupByCategory()
-        elbs      : CloudResources( constant.RESTYPE.ELB ).groupByCategory()
-        vpns      : CloudResources( constant.RESTYPE.VPN ).groupByCategory()
+        instances    : CloudResources( constant.RESTYPE.INSTANCE ).where(filter)
+        eips         : CloudResources( constant.RESTYPE.EIP ).where(filter)
+        volumes      : CloudResources( constant.RESTYPE.VOL ).where(filter)
+        elbs         : CloudResources( constant.RESTYPE.ELB ).where(filter)
+        vpns         : CloudResources( constant.RESTYPE.VPN ).where(filter)
+        vpcs         : []
+        asgs         : []
+        cloudwatches : []
+        snss         : []
       }
-
-    __fetchAwsGlobalRes : ()->
-      CloudResources( constant.RESTYPE.INSTANCE ).fetch()
-      CloudResources( constant.RESTYPE.EIP ).fetch()
-      CloudResources( constant.RESTYPE.VOL ).fetch()
-      CloudResources( constant.RESTYPE.ELB ).fetch()
-      CloudResources( constant.RESTYPE.VPN ).fetch()
-      return
-
   }

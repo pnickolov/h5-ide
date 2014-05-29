@@ -340,6 +340,19 @@
   .elbs      .resource-count { background-position : left -55px * 6 - 2; }
 }
 
+#region-switch {
+  z-index    : 35;
+  display    : block;
+  width      : 125px;
+  text-align : left;
+  padding    : 10px;
+  font-size  : 16px;
+
+  &:hover { background: #34A3F8; }
+}
+
+
+
 #global-view, #region-view { margin-top : 15px; }
 #global-view {
   > li {
@@ -407,6 +420,11 @@
   }
 }
 
+#region-resource-wrap {
+  margin-top : 18px;
+  box-shadow : 1px 1px 5px rgba(0, 0, 0, 0.1);
+  border     : 1px solid #bbb;
+}
 
 #region-aws-resource-tab {
   background : #fcfcfc;
@@ -637,13 +655,6 @@
     border     : 1px solid #bbb;
     max-height : 370px;
   }
-}
-
-#region-aws-resource-wrap {
-  position: relative;
-  margin-top: 18px;
-  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
-  border: 1px solid #bbb;
 }
 
 

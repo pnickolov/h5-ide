@@ -131,74 +131,65 @@
 <!-- Region App & Stack -->
 
 
-<!-- {{region_resource_head}} -->
-<!-- Region AWS resource -->
-<div id="region-aws-resource-wrap">
-    {{#with cur_region_resource_info}}
-        <div id="region-aws-resource-tab">
-            <ul class="clearfix">
-                <li class="region-resource-tab-item on" data-resource-type="DescribeInstances">
-                    <i id="global-resource-icon-instance" class="global-resource-icon"></i>
-                    <span class="region-resource-count">{{Instance}}</span>
-                    <span class="region-resource-name">{{i18n "DASH_LBL_INSTANCE"}}</span>
-                </li>
+<!-- {{regionResourceTab}} -->
+<nav class="clearfix">
 
-                <li class="region-resource-tab-item" data-resource-type="DescribeAddresses">
-                    <i id="global-resource-icon-eip" class="global-resource-icon"></i>
-                    <span class="region-resource-count">{{EIP}}</span>
-                    <span class="region-resource-name">{{i18n "DASH_LBL_ELASTIC_IP"}}</span>
-                </li>
+  <div class="region-resource-tab-item on" data-resource-type="DescribeInstances">
+    <i id="global-resource-icon-instance" class="global-resource-icon"></i>
+    <span class="region-resource-count">{{Instance}}</span>
+    <span class="region-resource-name">{{i18n "DASH_LBL_INSTANCE"}}</span>
+  </div>
 
-                <li class="region-resource-tab-item" data-resource-type="DescribeVolumes">
-                    <i id="global-resource-icon-vol" class="global-resource-icon"></i>
-                    <span class="region-resource-count">{{Volume}}</span>
-                    <span class="region-resource-name">{{i18n "DASH_LBL_VOLUME"}}</span>
-                </li>
+  <div class="region-resource-tab-item" data-resource-type="DescribeAddresses">
+    <i id="global-resource-icon-eip" class="global-resource-icon"></i>
+    <span class="region-resource-count">{{EIP}}</span>
+    <span class="region-resource-name">{{i18n "DASH_LBL_ELASTIC_IP"}}</span>
+  </div>
 
-                <li class="region-resource-tab-item" data-resource-type="DescribeVpcs">
-                    <i id="global-resource-icon-vpc" class="global-resource-icon"></i>
-                    <span class="region-resource-count">{{VPC}}</span>
-                    <span class="region-resource-name">{{i18n "DASH_LBL_VPC"}}</span>
-                </li>
+  <div class="region-resource-tab-item" data-resource-type="DescribeVolumes">
+    <i id="global-resource-icon-vol" class="global-resource-icon"></i>
+    <span class="region-resource-count">{{Volume}}</span>
+    <span class="region-resource-name">{{i18n "DASH_LBL_VOLUME"}}</span>
+  </div>
 
-                <li class="region-resource-tab-item" data-resource-type="DescribeVpnConnections">
-                    <i id="global-resource-icon-vpn" class="global-resource-icon"></i>
-                    <span class="region-resource-count">{{VPN}}</span>
-                    <span class="region-resource-name">{{i18n "DASH_LBL_VPN"}}</span>
-                </li>
+  <div class="region-resource-tab-item" data-resource-type="DescribeVpcs">
+    <i id="global-resource-icon-vpc" class="global-resource-icon"></i>
+    <span class="region-resource-count">{{VPC}}</span>
+    <span class="region-resource-name">{{i18n "DASH_LBL_VPC"}}</span>
+  </div>
 
-                <li class="region-resource-tab-item" data-resource-type="DescribeLoadBalancers">
-                    <i id="global-resource-icon-elb" class="global-resource-icon"></i>
-                    <span class="region-resource-count">{{ELB}}</span>
-                    <span class="region-resource-name">{{i18n "DASH_LBL_LOAD_BALANCER"}}</span>
-                </li>
+  <div class="region-resource-tab-item" data-resource-type="DescribeVpnConnections">
+    <i id="global-resource-icon-vpn" class="global-resource-icon"></i>
+    <span class="region-resource-count">{{VPN}}</span>
+    <span class="region-resource-name">{{i18n "DASH_LBL_VPN"}}</span>
+  </div>
 
-                <li class="region-resource-tab-item" data-resource-type="DescribeAutoScalingGroups">
-                    <i id="global-resource-icon-asg" class="global-resource-icon"></i>
-                    <span class="region-resource-count">{{AutoScalingGroup}}</span>
-                    <span class="region-resource-name">{{i18n "DASH_LBL_AUTO_SCALING_GROUP"}}</span>
-                </li>
+  <div class="region-resource-tab-item" data-resource-type="DescribeLoadBalancers">
+    <i id="global-resource-icon-elb" class="global-resource-icon"></i>
+    <span class="region-resource-count">{{ELB}}</span>
+    <span class="region-resource-name">{{i18n "DASH_LBL_LOAD_BALANCER"}}</span>
+  </div>
 
-                <li class="region-resource-tab-item" data-resource-type="DescribeAlarms">
-                    <i id="global-resource-icon-cwa" class="global-resource-icon"></i>
-                    <span class="region-resource-count">{{CW}}</span>
-                    <span class="region-resource-name">{{i18n "DASH_LBL_CLOUDWATCH_ALARM"}}</span>
-                </li>
+  <div class="region-resource-tab-item" data-resource-type="DescribeAutoScalingGroups">
+    <i id="global-resource-icon-asg" class="global-resource-icon"></i>
+    <span class="region-resource-count">{{AutoScalingGroup}}</span>
+    <span class="region-resource-name">{{i18n "DASH_LBL_AUTO_SCALING_GROUP"}}</span>
+  </div>
 
-                <li class="region-resource-tab-item" data-resource-type="ListSubscriptions">
-                    <i id="global-resource-icon-sns" class="global-resource-icon"></i>
-                    <span class="region-resource-count">{{SNS}}</span>
-                    <span class="region-resource-name">{{i18n "DASH_LBL_SNS_SUBSCRIPTION"}}</span>
-                </li>
-            </ul>
-        </div>
-    {{/with}}
+  <div class="region-resource-tab-item" data-resource-type="DescribeAlarms">
+    <i id="global-resource-icon-cwa" class="global-resource-icon"></i>
+    <span class="region-resource-count">{{CW}}</span>
+    <span class="region-resource-name">{{i18n "DASH_LBL_CLOUDWATCH_ALARM"}}</span>
+  </div>
 
-    <div id="region-aws-resource-data">
+  <div class="region-resource-tab-item" data-resource-type="ListSubscriptions">
+    <i id="global-resource-icon-sns" class="global-resource-icon"></i>
+    <span class="region-resource-count">{{SNS}}</span>
+    <span class="region-resource-name">{{i18n "DASH_LBL_SNS_SUBSCRIPTION"}}</span>
+  </div>
+</nav>
 
-    </div>
-
-</div>
+<div id="region-aws-resource-data"></div>
 
 <!-- {{DescribeInstances}} -->
 <div class="table-head-fix" id="DescribeInstances">

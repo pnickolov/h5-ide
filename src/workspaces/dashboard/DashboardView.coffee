@@ -158,14 +158,20 @@ define [
       if @region is region then return
       @region = region
 
-      $( '#region-switch').find( 'span' )
-        .text( target.text() )
-        .data 'region', region
+      $( '#region-switch').find('span').text( target.text() )
 
-      isntGlobal = region isnt 'global'
-      @$el.find( '#global-view' ).toggle( not isntGlobal )
-      @$el.find( '#region-view' ).toggle( isntGlobal )
-      if isntGlobal then @updateRegionAppStack()
+      if region is "global"
+        isDataReady = @model.isAwsResReady()
+        $("#region-view" ).hide()
+        $("#global-view" ).toggle( isDataReady )
+        $("#dashboard-loading").toggle( not isDataReady )
+      else
+        isDataReady = @model.isAwsResReady( region )
+        $("#global-view" ).hide()
+        $("#region-view" ).toggle( isDataReady )
+        $("#dashboard-loading").toggle( not isDataReady )
+        @updateRegionAppStack()
+
       return
 
     switchAppStack: ( evt ) ->
@@ -285,12 +291,22 @@ define [
 
     updateGlobalResources : ( isDataReady )->
       if not isDataReady
-        $("#dashboard-loading").show()
+        if @region is global then $("#dashboard-loading").show()
         $("#global-view").empty().hide()
       else
-        $("#global-view").html( tplPartials.globalResources( @model.getGlobalResData() ) )
+        $("#global-view").html( tplPartials.globalResources( @model.getAwsResData() ) )
         if @region is "global"
           $("#dashboard-loading").hide()
           $("#global-view").show()
       return
+
+    updateRegionResources : ( region )->
+      if @region isnt region then return
+
+      if not isDataReady
+        $("#dashboard-loading").show()
+        $("#region-resource-wrap").empty().hide()
+      else
+        data = @model.getAwsResData( region )
+        $("#region-resource-wrap").html(tplPartials.regionResourceTab( data )).show()
   }

@@ -364,18 +364,6 @@ button {
 }
 
 
-#region-switch.disabled,
-#region-switch.disabled:hover
- {
-	cursor           : default;
-	background-image : none;
-	text-shadow      : none;
-	color            : #D4D4D4;
-	background       : #9C9FA2;
-	border           : 1px solid #999;
-	box-shadow       : none;
-}
-
 #global-region-create-stack-list {
 	position : absolute;
 	left     : 10px;
@@ -409,26 +397,6 @@ button {
 }
 
 
-#region-switch {
-	z-index          : 35;
-	position         : relative;
-	display          : block;
-	width            : 125px;
-	text-align       : left;
-	padding          : 10px;
-	font-size        : 16px;
-}
-
-#region-switch:hover {
-	background-color: 34A3F8;
-}
-
-#region-switch .icon-caret-down {
-	position: absolute;
-	right: 6px;
-	top: 9px;
-}
-
 .scroll-transition {
 	-webkit-transition: -webkit-transform .1s;
 	-moz-transition: -moz-transform .1s;
@@ -437,79 +405,7 @@ button {
 	transition: transform .1s;
 }
 
-.global-resource-icon {
-	position: absolute;
-	width: 55px;
-	height: 55px;
-	background-repeat: no-repeat;
-	background-image: url('../images/ide/global-region-icon.png');
-	display: inline;
-}
-
-#global-resource-icon-eip {
-	background-position: -55px 0;
-}
-
-#global-resource-icon-vol {
-	background-position: -110px 0;
-}
-
-#global-resource-icon-vpc {
-	background-position: -165px 0;
-}
-
-#global-resource-icon-vpn {
-	background-position: -220px 0;
-}
-
-#global-resource-icon-asg {
-	background-position: -275px 0;
-}
-
-#global-resource-icon-elb {
-	background-position: -330px 0;
-}
-
-#global-resource-icon-cwa {
-	background-position: -385px 0;
-}
-
-#global-resource-icon-sns {
-	background-position: -440px 0;
-}
-
 /* Region view */
-#region-resource-wrap {
-	position: relative;
-}
-
-.region-resource-tab-type {
-	font-size: 12px;
-}
-
-.region-resource-tab-icon {
-	top: 11px;
-	width: 35px;
-	height: 35px;
-	display: block;
-	left: 22px;
-	position: absolute;
-	background: url('../images/ide/global-region-app-stack-m.png') no-repeat;
-}
-
-.region-resource-tab-number {
-	font-size: 21px;
-	color: #666;
-}
-
-.region-resource-tab-type {
-	font-size: 12px;
-}
-
-.region-resource-icon-stack {
-	background-position: -35px 0;
-}
-
 .blank-widget {
 	margin-top : 14px;
 	text-align : center;
@@ -518,123 +414,10 @@ button {
 	background : #f8f8f8;
 }
 
-.app-thumbnail-pending {
-	padding: 60px 0;
-	position: relative;
-	top: 0;
-	left: 0;
-}
-
-.region-resource-thumbnail .loading-spinner {
-	margin: 0 auto;
-}
-
 .region-resource-action {
 	position: absolute;
 	right: 0;
 	top: 0;
-}
-
-.region-resource-action i {
-	border-left : 1px solid #2d2d2d;
-	/*background  : rgba(255,255,255,0.3);*/
-
-	display     : block;
-	float       : left;
-	width       : 30px;
-	height      : 27px;
-	line-height : 27px;
-
-	text-align  : center;
-	color: #ddd;
-}
-
-.region-resource-action i:hover {
-	background: rgba(0,0,0,0.4);
-	color: #fefefe;
-}
-
-.region-resource-action i.icon-terminate:hover,
-.region-resource-action i.icon-delete:hover {
-	color: #ec3c38;
-}
-
-.region-resource-item-name {
-	color: #eee;
-	font-size: 12px;
-	width: 110px;
-}
-
-#region-aws-resource-wrap {
-	position: relative;
-	margin-top: 30px;
-	box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
-	border: 1px solid #bbb;
-}
-
-#region-aws-resource-tab {
-	background-color: #fcfcfc;
-}
-
-#region-aws-resource-tab li {
-	float: left;
-}
-
-.region-resource-tab-item {
-	display: block;
-	position: relative;
-	width: 142px;
-	padding: 10px 0 20px;
-}
-
-.region-resource-tab-item:after {
-	position: absolute;
-	left: 62px;
-	bottom: 0;
-	display: inline-block;
-	border-right: 8px solid transparent;
-	border-bottom: 8px solid transparent;
-	border-left: 8px solid transparent;
-	content: '';
-}
-
-#region-aws-resource-tab .on:after {
-	border-bottom: 8px solid #323E49;
-}
-
-#region-aws-resource-tab li:hover .region-resource-tab-item:after {
-	border-bottom: 8px solid rgba(50, 62, 73, 0.5);
-}
-
-#region-aws-resource-tab h5 {
-	display: block;
-	text-align: center;
-	color: #ccc;
-	position: absolute;
-	font-size: 12px;
-	color: #666;
-	top: 70px;
-	width: 100%;
-}
-
-#region-aws-resource-tab .global-resource-icon {
-	margin: 10px auto 0;
-	position: relative;
-	display: block;
-}
-
-.region-resource-count-wrap {
-	position: relative;
-	top: -10px;
-	text-align: center;
-}
-
-.region-resource-name {
-	color: #999;
-	font-size: 12px;
-	display: block;
-	text-align: center;
-/*	width: 80px;*/
 }
 
 #region-aws-resource-data .table td {

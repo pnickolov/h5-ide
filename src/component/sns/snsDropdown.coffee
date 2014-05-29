@@ -42,11 +42,15 @@ define [ 'constant', 'CloudResources','sns_manage', 'combo_dropdown', './compone
 
         render: ( needInit ) ->
             selection = @selection
-            if not selection
-                if needInit and @topicCol.first()
+            if needInit
+                if @topicCol.first()
                     @selection = selection = @topicCol.first().get( 'Name' )
+                    @processCol()
                     @trigger 'change', @topicCol.first().id, selection
                 else
+                    selection = template.dropdown_no_selection()
+            else
+                if not selection
                     selection = template.dropdown_no_selection()
 
             @dropdown.setSelection selection

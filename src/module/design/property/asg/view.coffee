@@ -85,7 +85,7 @@ define [ '../base/view',
 
         wheatherHasNoti: ->
             n = @model.notiObject?.toJSON()
-            n.instanceLaunch or n.instanceLaunchError or n.instanceTerminate or n.instanceTerminateError or n.test
+            n and (n.instanceLaunch or n.instanceLaunchError or n.instanceTerminate or n.instanceTerminateError or n.test)
 
         processNotiTopic: ( originHasNoti, render ) ->
             hasNoti = @wheatherHasNoti()

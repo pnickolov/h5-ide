@@ -28,6 +28,7 @@ define ["Workspace", "workspaces/dashboard/DashboardView", "workspaces/dashboard
       @view.listenTo @model, "change:regionResources", @view.updateRegionResources
 
       # Watch changes in user
+      self = @
       @listenTo App.user, "change:credential", ()->
         self.model.fetchAwsResources()
         self.view.updateDemoView()

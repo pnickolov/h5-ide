@@ -198,7 +198,7 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
         afterCreated: (result)->
             @manager.cancel()
             if result.error
-                notification 'error', result.msg
+                notification 'error', "Create failed because of: "+result.msg
                 return false
             notification 'info', "New DHCP Option is created successfully"
 

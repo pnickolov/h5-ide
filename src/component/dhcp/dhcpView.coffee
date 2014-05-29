@@ -175,7 +175,6 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
             @[action] and @[action](@validate(action),checked)
         create: (invalid, checked)->
             if not invalid
-                @switchAction 'processing'
                 domainNameServers = mapFilterInput "#property-domain-server .input"
                 if $("#property-amazon-dns").is(":checked")
                     domainNameServers.push("AmazonProvidedDNS")
@@ -185,6 +184,16 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
                     "ntp-servers"           : mapFilterInput "#property-ntp-server .input"
                     "netbios-name-servers"  : mapFilterInput "#property-netbios-server .input"
                     "netbios-node-type"     : [parseInt( $("#property-netbios-type .selection").html(), 10 ) || 0]
+                validate = (value, key)->
+                    console.error value
+                    if value.length < 1
+                        notification 'error', key + " value can't be empty."
+                        return false
+                    else
+                        return true
+                if not _.every data, validate
+                    return false
+                @switchAction 'processing'
                 console.info data,"<----data to create."
                 afterCreated = @afterCreated.bind @
                 @collection.create(data).save().then afterCreated,afterCreated
@@ -218,6 +227,7 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
                 when 'create'
                     #@manager.$el.find('input').parsley 'validate'
                     return @manager.$el.find(".parsley-error").size()>0
+
         switchAction: ( state ) ->
             if not state
                 state = 'init'

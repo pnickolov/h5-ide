@@ -63,8 +63,9 @@ define [ '../base/view',
 
         render     : () ->
             selectTopicName = @model.getNotificationTopicName()
-            @snsDropdown = new snsDropdown selection: selectTopicName
-            @snsDropdown.on 'change', @model.setNotificationTopic, @model
+            @snsNotiDropdown = new snsDropdown selection: selectTopicName
+            @snsNotiDropdown.on 'change', @model.setNotificationTopic, @model
+
 
             data = @model.toJSON()
 
@@ -78,7 +79,7 @@ define [ '../base/view',
             data.can_add_policy = data.policies.length < 25
 
             @$el.html template data
-            @processTopic null, true
+            @processNotiTopic null, true
 
             data.name
 
@@ -86,16 +87,23 @@ define [ '../base/view',
             n = @model.notiObject.toJSON()
             n.instanceLaunch or n.instanceLaunchError or n.instanceTerminate or n.instanceTerminateError or n.test
 
-        processTopic: ( originHasNoti, render ) ->
+        processNotiTopic: ( originHasNoti, render ) ->
             hasNoti = @wheatherHasNoti()
             if render and hasNoti
-                @$( '#sns-placeholder' ).html @snsDropdown.render().el
+                @$( '#sns-placeholder' ).html @snsNotiDropdown.render().el
                 @$( '.sns-group' ).show()
             else if not originHasNoti and hasNoti
-                @$( '#sns-placeholder' ).html @snsDropdown.render( true ).el
+                @$( '#sns-placeholder' ).html @snsNotiDropdown.render( true ).el
                 @$( '.sns-group' ).show()
             else if originHasNoti and not hasNoti
                 @$( '.sns-group' ).hide()
+
+        processPolicyTopic: ( display, dropdown ) ->
+            if display
+                $( '.policy-sns-placeholder' ).html dropdown.render(true).el
+                $( '.sns-policy-field' ).show()
+            else
+                $( '.sns-policy-field' ).hide()
 
 
         setASGCoolDown : ( event ) ->
@@ -311,16 +319,19 @@ define [ '../base/view',
                         evaluationPeriods : 2
                         period : 5
                     }
+            if data.uid
+                policyObject = Design.instance().component data.uid
 
             if data.alarmData and data.alarmData.metricName
                 data.unit = unitMap[ data.alarmData.metricName ]
             else
                 data.unit = '%'
 
-            data.noSNS = not this.model.attributes.has_sns_sub
             data.detail_monitor = this.model.attributes.detail_monitor
 
             modal policy_template(data), true
+
+
 
             self = this
             $("#property-asg-policy-done").on "click", ()->
@@ -421,10 +432,15 @@ define [ '../base/view',
                     else if val > 100
                         $(this).val( "100" )
 
+            selection = if policyObject then policyObject.getTopicName() else null
+            snsPolicyDropdown = new snsDropdown selection: selection
 
-            $("#asg-policy-notify").on "click", ( evt )->
-                $("#asg-policy-no-sns").toggle( $("#asg-policy-notify").is(":checked") )
+            @processPolicyTopic $( '#asg-policy-notify' ).prop( 'checked' ), snsPolicyDropdown
+            $("#asg-policy-notify").off("click").on "click", ( evt )->
                 evt.stopPropagation()
+                self.processPolicyTopic evt.target.checked, snsPolicyDropdown
+
+
                 null
 
             $("#asg-policy-metric").on "OPTION_CHANGE", ()->
@@ -454,6 +470,10 @@ define [ '../base/view',
                     threshold          : $("#asg-policy-threshold").val()
                 }
 
+            if data.sendNotification
+                selectedTopicData = $('.policy-sns-placeholder .selected').data()
+                data.topic = appId: selectedTopicData.id, name: selectedTopicData.name
+
             @model.setPolicy data
             @updateScalingPolicy data
             null
@@ -476,7 +496,7 @@ define [ '../base/view',
 
             originHasNoti = @wheatherHasNoti()
             @model.setNotification checkMap
-            @processTopic originHasNoti
+            @processNotiTopic originHasNoti
 
         setHealthyCheckELBType :( event ) ->
             @model.setHealthCheckType 'ELB'

@@ -30,7 +30,6 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
       n = component.getNotification()
       @set "notification", n
       @set "has_notification", n.instanceLaunch or n.instanceLaunchError or n.instanceTerminate or n.instanceTerminateError or n.test
-      @set "has_sns_sub", !!(Design.modelClassForType(constant.RESTYPE.SUBSCRIPTION).allObjects().length)
 
       @notiObject = component.getNotiObject()
       # Policies
@@ -111,9 +110,6 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
       if asg.type is "ExpandedAsg"
         asg = asg.get('originalAsg')
 
-      if policy_detail.sendNotification
-        Design.modelClassForType( constant.RESTYPE.TOPIC ).ensureExistence()
-
       if not policy_detail.uid
         PolicyModel = Design.modelClassForType( constant.RESTYPE.SP )
         policy = new PolicyModel( policy_detail )
@@ -129,6 +125,11 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
         delete policy_detail.alarmData
         policy.set policy_detail
         policy_detail.alarmData = alarmData
+
+      if policy_detail.sendNotification
+        policy.setTopic policy_detail.topic.appId, policy_detail.topic.name
+
+
       null
   }
 

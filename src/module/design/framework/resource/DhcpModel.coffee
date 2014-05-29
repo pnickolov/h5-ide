@@ -7,11 +7,11 @@ define [ "constant", "../ResourceModel", "Design"  ], ( constant, ResourceModel,
     defaults : ()->
       dhcpOptionsId: ""
 
-    isNone     : ()-> @attributes.dhcpOptionsId is "none"
+    isNone     : ()-> @attributes.dhcpOptionsId is ""
     isDefault  : ()-> @attributes.dhcpOptionsId is "default"
-    isCustom   : ()-> not (@attributes.dhcpOptionsId is 'none' or @attributes.dhcpOptionsId is 'default')
+    isCustom   : ()-> not (@attributes.dhcpOptionsId is '' or @attributes.dhcpOptionsId is 'default')
 
-    setNone    : ()-> @set "dhcpOptionsId", "none"
+    setNone    : ()-> @set "dhcpOptionsId", ""
     setDefault : ()-> @set "dhcpOptionsId", "default"
     setDhcp    : (val)->
         if @get('dhcpOptionsId') isnt val

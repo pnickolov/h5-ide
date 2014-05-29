@@ -27,12 +27,12 @@
 <!-- {{keys}} -->
 {{#unless hideDefaultNoKey}}
 {{#unless isRunTime}}
-<li data-id="@auto" class="item{{#if defaultKey}} selected{{/if}}" tabindex="-1">
+<li data-id="@auto" class="item{{#if auto}} selected{{/if}}" tabindex="-1">
     {{i18n "PROP_VPC_AUTO_DHCP"}}
     <i class="icon-info tooltip" data-tooltip='{{i18n "PROP_VPC_TIP_AUTO_DHCP"}}'></i>
 </li>
 {{/unless}}
-<li data-id="@default" class="item{{#if noKey}} selected{{/if}}" tabindex="-1">
+<li data-id="@default" class="item{{#if default}} selected{{/if}}" tabindex="-1">
     {{i18n "PROP_VPC_DEFAULT_DHCP"}}
     <i class="icon-info tooltip" data-tooltip="{{i18n 'PROP_VPC_TIP_DEFAULT_DHCP'}}"></i>
 </li>

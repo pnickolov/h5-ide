@@ -1,7 +1,8 @@
 define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_modal', 'i18n!nls/lang.js', './dhcp_template.js'], ( CloudResources, constant, comboDropdown, modalPlus, toolbarModal, lang, template )->
     fetched = false
     dhcpView = Backbone.View.extend
-        constructor:->
+        constructor:(options)->
+            @resModel = options.resModel
             @collection = CloudResources constant.RESTYPE.DHCP, Design.instance().region()
             @listenTo @collection, 'change', @render
             @listenTo @collection, 'update', @render
@@ -23,7 +24,7 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
         remove: ()->
             @.isRemoved = true
             Backbone.View::remove.call @
-        render: ->
+        render: ()->
             if not fetched
                 @renderLoading()
                 @collection.fetch().then =>
@@ -36,26 +37,42 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
                 @render()
             else
                 @renderNoCredential()
+
         renderNoCredential: ->
             @dropdown.render('nocredential').toggleControls false
+
         renderLoading: ->
             @dropdown.render('loading').toggleControls false
-        renderDropdown: ->
+
+        renderDropdown: ()->
+            selected = @resModel.toJSON().dhcp.dhcpOptionsId
             data = @collection.toJSON()
-            content = template.keys
+            if selected
+                _.each data, (key)->
+                    if key.id is selected
+                        key.selected = true
+                    return
+            datas =
                 isRuntime: false
                 keys: data
+            if selected is ""
+                datas.auto = true
+            else if selected and selected is 'default'
+                datas.default = true
+            content = template.keys datas
             @dropdown.toggleControls true
             @dropdown.setContent content
+
         setDHCP: (e)->
             if e is '@auto'
-                targetDhcp = id: 'auto'
+                targetDhcp = id: ''
             else if e is '@default'
                 targetDhcp = id: "default"
             else
                 targetModel = @collection.findWhere
                     id: e
                 targetDhcp = targetModel.toJSON()
+            @resModel.toJSON().dhcp.dhcpOptionsId = targetDhcp.id
             @trigger 'change', targetDhcp
         setSelection: (e)->
             selection = template.selection e
@@ -94,7 +111,7 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
                 data = {}
 
                 if checkedAmount is 1
-                    data.selectedId = checked[0].data['id']
+                    data.selectedId = checked[0].data.id
                 else
                     data.selectedCount = checkedAmount
                 @manager.setSlide tpl data
@@ -117,7 +134,6 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
                 @manager.$el.find(".control-group .input").change (e)=> @onChangeDhcpOptions(e)
                 @manager.$el.find('#create-new-dhcp').on 'OPTION_CHANGE REMOVE_ROW', (e)=>@onChangeDhcpOptions(e)
         processParsley: ( event ) ->
-            console.log 'Triggerd ProcessParsley'
             $( event.currentTarget )
             .find( 'input' )
             .last()

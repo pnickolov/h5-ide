@@ -64,8 +64,7 @@ define [ '../base/view',
             $( '#property-domain-server' ).on( 'ADD_ROW REMOVE_ROW', updateAmazonCB )
             updateAmazonCB()
             multiinputbox.update( $("#property-domain-server") )
-
-            @dhcp = new dhcp()
+            @dhcp = new dhcp(resModel: @model)
             @dhcp.off 'change'
             @dhcp.on 'change', (e)=>
                 @changeDhcp(e)
@@ -85,9 +84,9 @@ define [ '../base/view',
             @dhcp.setSelection selection
         changeDhcp: (e)->
             if e.id is 'default'
-                @model.removeDhcp false
-            else if e.id is 'auto'
                 @model.removeDhcp true
+            else if e.id is ''
+                @model.removeDhcp false
             else
                 @model.setDhcp(e.id)
 

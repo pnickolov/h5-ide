@@ -11,13 +11,14 @@ define ["ApiRequest", "backbone"], ( ApiRequest )->
       @on "add remove", (_.debounce ()-> @trigger "update"), @
       Backbone.Collection.apply this, arguments
 
-    isReady : ()-> @__fetchPromise && @__fetchPromise.isFulfilled()
+    isReady : ()-> @__fetchPromise && self.__ready
 
     # Fetch the data from AWS. The data is only fetched once even if called multiple time.
     fetch : ()->
       if @__fetchPromise then return @__fetchPromise
 
       @lastFetch = +new Date()
+      @__ready = false
 
       self = @
       @__fetchPromise = @doFetch().then ( data )->
@@ -28,6 +29,7 @@ define ["ApiRequest", "backbone"], ( ApiRequest )->
           catch e
             throw McError( ApiRequest.Errors.InvalidAwsReturn, "", data )
 
+        self.__ready = true
         if data.length is 0 and self.models.length is 0
           # In the initial state, even if we fetches an empty array of data.
           # We still want to trigger a `update` to broadcast that we finished fetching.
@@ -48,6 +50,7 @@ define ["ApiRequest", "backbone"], ( ApiRequest )->
     fetchForce : ()->
       @__fetchPromise = null
       @reset() # Clear all the datas in the collection before fetching.
+      @trigger "update" # Also trigger an update event for others know that the collection is emptied.
       @fetch()
 
     # Force to fetch the data only if the data is consider to be invalid

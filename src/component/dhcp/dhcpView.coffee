@@ -159,11 +159,12 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
             .removeClass( 'parsley-error' )
             .next( '.parsley-error-list' )
             .remove()
+            $(".parsley-error-list").remove()
         doAction: (action, checked)->
             @[action] and @[action](@validate(action),checked)
         create: (invalid, checked)->
             console.error invalid, "invalid"
-            if true
+            if not invalid
                 @switchAction 'processing'
                 data =
                     "domain-name"           : mapFilterInput "#property-dhcp-domain .input"
@@ -198,7 +199,8 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
         validate: (action)->
             switch action
                 when 'create'
-                    return not @manager.$el.find('input').parsley 'validate'
+                    #@manager.$el.find('input').parsley 'validate'
+                    return @manager.$el.find(".parsley-error").size()>0
         switchAction: ( state ) ->
             if not state
                 state = 'init'

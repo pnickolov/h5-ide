@@ -45,12 +45,17 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sslcert/ssl
             columns: [
                 {
                     sortable: true
-                    width: "25%" # or 40%
+                    width: "50%"
                     name: 'Name'
                 }
                 {
                     sortable: true
+                    width: "33%"
                     name: 'Upload Date'
+                }
+                {
+                    sortable: false
+                    name: 'View Details'
                 }
             ]
 
@@ -64,6 +69,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sslcert/ssl
             @modal.on 'action', @doAction, @
             @modal.on 'refresh', @refresh, @
             @modal.on 'checked', @checked, @
+            @modal.on 'detail', @detail, @
 
         initialize: () ->
             @initCol()
@@ -158,6 +164,16 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sslcert/ssl
                     that.switchAction()
                     if result.awsResult
                         notification 'error', result.awsResult
+
+        detail: (event, data, $tr) ->
+
+            that = this
+            sslCertId = data.id
+            sslCertData = sslCertCol.get(sslCertId).toJSON()
+            sslCertData.Expiration = MC.dateFormat(new Date(sslCertData.Expiration), 'yyyy-MM-dd hh:mm:ss')
+            
+            detailTpl = template['detail_info']
+            @modal.setDetail($tr, detailTpl(sslCertData))
 
         refresh: ->
             @sslCertCol.fetchForce()

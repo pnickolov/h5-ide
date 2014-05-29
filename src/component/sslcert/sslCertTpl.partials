@@ -10,7 +10,7 @@
 
 <!-- {{modal_list}} -->
 {{#each this}}
-<tr class="item" data-id="">
+<tr class="item" data-id="{{id}}">
     <td>
         <div class="checkbox">
             <input id="sslcert-select-{{id}}" type="checkbox" data-id="{{id}}" data-name="{{Name}}" class="one-cb">
@@ -19,6 +19,7 @@
     </td>
     <td>{{Name}}</td>
     <td>{{UploadDate}}</td>
+    <td class="show-detail icon-toolbar-cloudformation"></td>
 </tr>
 {{/each}}
 
@@ -77,5 +78,29 @@
     </div>
     <div class="processing action" style="display:none;">
         <button class="btn" disabled>Creating...</button>
+    </div>
+</div>
+
+<!-- {{detail_info}} -->
+<div class="detail-info">
+    <div class="detail-info-row">
+        <section class="property-control-group">
+            <label>Server Certificate ID</label>
+            <div>{{id}}</div>
+        </section>
+        <section class="property-control-group">
+            <label>Server Certificate ARN</label>
+            <div>{{Arn}}</div>
+        </section>
+    </div>
+    <div class="detail-info-row">
+        <section class="property-control-group">
+            <label>Expiration</label>
+            <div>{{Expiration}}</div>
+        </section>
+        <section class="property-control-group">
+            <label>Path</label>
+            <div>{{Path}}</div>
+        </section>
     </div>
 </div>

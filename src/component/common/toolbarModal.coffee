@@ -117,7 +117,7 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalpl
                 $tr
                     .addClass( 'detailed' )
                     .after template.tr_detail columnCount: @options.columns.length + 1
-                @trigger 'detail', event, $target.data(), $tr
+                @trigger 'detail', event, $tr.data(), $tr
 
 
 

@@ -45,6 +45,13 @@
 .combo-dd-content .loading-spinner {
   margin-top: 45%; }
 
+.combo-dd-no-data {
+  text-align: center;
+  margin-top: 115px;
+  color: #F5F5F5; }
+  .combo-dd-no-data a {
+    cursor: pointer; }
+
 .combo-dd .selection .icon-remove {
   display: none; }
 

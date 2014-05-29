@@ -126,3 +126,8 @@
     </tbody>
 </table>
 
+<!-- {{nosns}} -->
+<div class="combo-dd-no-data">
+    <p>No SNS Topic in {{regionName}}.</p>
+    <a class="create-one">Create SNS Topic</a>
+</div>

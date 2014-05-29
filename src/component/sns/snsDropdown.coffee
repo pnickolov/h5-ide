@@ -84,7 +84,12 @@ define [ 'constant', 'CloudResources','sns_manage', 'combo_dropdown', './compone
 
 
         renderDropdownList: ( data ) ->
-            @dropdown.setContent( template.dropdown_list data ).toggleControls true
+            if _.isEmpty data
+                region = Design.instance().region()
+                regionName = constant.REGION_SHORT_LABEL[ region ]
+                @dropdown.setContent( template.nosns regionName: regionName ).toggleControls true
+            else
+                @dropdown.setContent( template.dropdown_list data ).toggleControls true
 
         renderNoCredential: () ->
             @dropdown.render('nocredential').toggleControls false

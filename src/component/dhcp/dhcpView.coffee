@@ -1,5 +1,21 @@
 define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_modal', 'i18n!nls/lang.js', './dhcp_template.js'], ( CloudResources, constant, comboDropdown, modalPlus, toolbarModal, lang, template )->
     fetched = false
+    updateAmazonCB = () ->
+        rowLength = $( "#property-domain-server" ).children().length
+        if rowLength > 3
+            $( '#property-amazon-dns' ).attr( "disabled", true )
+        else
+            $( '#property-amazon-dns' ).removeAttr( "disabled" )
+    mapFilterInput = ( selector ) ->
+        $inputs = $( selector )
+        result  = []
+
+        for ipt in $inputs
+            if ipt.value
+                result.push ipt.value
+
+        result
+    deleteCount = 0
     dhcpView = Backbone.View.extend
         constructor:(options)->
             @resModel = options.resModel
@@ -7,7 +23,7 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
             @listenTo @collection, 'change', @render
             @listenTo @collection, 'update', @render
             @listenTo @collection, 'change', @renderManager
-            @listenTo @collection, 'change', @renderManager
+            @listenTo @collection, 'update', @renderManager
             option =
                 manageBtnValue: lang.ide.PROP_VPC_MANAGE_DHCP
                 filterPlaceHolder: lang.ide.PROP_VPC_FILTER_DHCP
@@ -97,7 +113,7 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
                     @renderManager()
                 return false
             content = template.content items:@collection.toJSON()
-            @manager.setContent content
+            @manager?.setContent content
 
         renderSlides: (which, checked)->
             tpl = template['slide_'+ which]
@@ -133,6 +149,8 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
                 @manager.$el.find('.multi-input').on 'ADD_ROW',  (e)=> @processParsley(e)
                 @manager.$el.find(".control-group .input").change (e)=> @onChangeDhcpOptions(e)
                 @manager.$el.find('#create-new-dhcp').on 'OPTION_CHANGE REMOVE_ROW', (e)=>@onChangeDhcpOptions(e)
+                @manager.$el.find('#property-domain-server').on( 'ADD_ROW REMOVE_ROW', updateAmazonCB )
+                updateAmazonCB()
         processParsley: ( event ) ->
             $( event.currentTarget )
             .find( 'input' )
@@ -141,14 +159,61 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
             .removeClass( 'parsley-error' )
             .next( '.parsley-error-list' )
             .remove()
+        doAction: (action, checked)->
+            @[action] and @[action](@validate(action),checked)
+        create: (invalid, checked)->
+            console.error invalid, "invalid"
+            if true
+                @switchAction 'processing'
+                data =
+                    "domain-name"           : mapFilterInput "#property-dhcp-domain .input"
+                    "domain-name-servers"   : mapFilterInput "#property-domain-server .input"
+                    "ntp-servers"           : mapFilterInput "#property-ntp-server .input"
+                    "netbios-name-servers"  : mapFilterInput "#property-netbios-server .input"
+                    "netbios-node-type"     : [parseInt( $("#property-netbios-type .selection").html(), 10 ) || 0]
+                console.info data,"<----data to create."
+                afterCreated = @afterCreated.bind @
+                @collection.create(data).save().then afterCreated,afterCreated
+
+        delete: (invalid, checked)->
+            that = @
+            deleteCount += checked.length
+            @switchAction 'processing'
+            console.info deleteCount, checked, "<===== Data to Delete."
+            afterDeleted = that.afterDeleted.bind that
+            _.each checked, (data)=>
+                @collection.findWhere(id: data.data.id).destroy().then afterDeleted, afterDeleted
+
+        afterDeleted: ->
+            that = @
+            deleteCount--
+            if deleteCount is 0
+                notification 'info', "Delete Successfully"
+                console.log 'DDDDEEEELLLLLEEEEEETTTTTEEEEEEDDDDDD'
+                that.manager.cancel()
+        afterCreated: ->
+            that = @
+            notification 'info', "New DHCP options created successfully"
+            @manager.cancel()
+        validate: (action)->
+            switch action
+                when 'create'
+                    return not @manager.$el.find('input').parsley 'validate'
+        switchAction: ( state ) ->
+            if not state
+                state = 'init'
+
+            @M$( '.slidebox .action' ).each () ->
+                if $(@).hasClass state
+                    $(@).show()
+                else
+                    $(@).hide()
         onChangeAmazonDns : ->
             useAmazonDns = $("#property-amazon-dns").is(":checked")
             allowRows    = if useAmazonDns then 3 else 4
             $inputbox    = $("#property-domain-server").attr( "data-max-row", allowRows )
             $rows        = $inputbox.children()
             $inputbox.toggleClass "max", $rows.length >= allowRows
-
-            #@model.setAmazonDns useAmazonDns
             null
 
         onChangeDhcpOptions : ( event ) ->

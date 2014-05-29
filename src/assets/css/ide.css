@@ -6976,7 +6976,9 @@ summary:focus {
     display: inline-block;
     margin-bottom: 10px;
 }
-
+#create-new-dhcp .control-group>div.selectbox{
+    width: 160px
+}
 #create-new-dhcp .control-group>label{
     width: 168px;
     float: left;

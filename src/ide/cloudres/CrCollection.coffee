@@ -48,6 +48,7 @@ define ["ApiRequest", "backbone"], ( ApiRequest )->
     fetchForce : ()->
       @__fetchPromise = null
       @reset() # Clear all the datas in the collection before fetching.
+      @trigger "update" # Also trigger an update event for others know that the collection is emptied.
       @fetch()
 
     # Force to fetch the data only if the data is consider to be invalid

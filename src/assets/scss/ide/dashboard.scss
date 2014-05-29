@@ -37,11 +37,11 @@
   }
 }
 
-#global-refresh {
+#RefreshResource {
   font-size : 12px;
   position  : absolute;
   right     : 25px;
-  top       : 20px;
+  top       : 18px;
   color     : #aaa;
   display   : block;
   cursor    : pointer;
@@ -51,6 +51,14 @@
     margin-right: 4px;
     font-size   : 12px;
     line-height : 18px;
+  }
+
+  &.reloading {
+    &:before { margin : 0; }
+    -webkit-animation: rotation .6s infinite linear;
+       -moz-animation: rotation .6s infinite linear;
+         -o-animation: rotation .6s infinite linear;
+            animation: rotation .6s infinite linear;
   }
 }
 
@@ -461,14 +469,15 @@
       margin-left   : -8px;
       border        : 8px solid transparent;
       content       : '';
-
-      border-bottom-color : #323E49;
     }
 
-    &.on::after, &:hover::after { display:block; }
-
     &:hover::after {
-      border-bottom-color : rgba(50, 62, 73, 0.5);
+      display : block;
+      border-bottom-color : lighten(#323E49, 40%);
+    }
+    &.on::after {
+      display: block;
+      border-bottom-color : #323E49;
     }
 
     .count-bubble {
@@ -488,7 +497,57 @@
   }
 }
 
-#region-aws-resource-data .scroll-wrap { height: 420px; }
+/* Region view */
+.blank-widget {
+  margin-top : 14px;
+  text-align : center;
+  padding    : 70px 0;
+  color      : #999;
+  background : #f8f8f8;
+}
+
+#region-aws-resource-data {
+  .table-app-link {
+    cursor : pointer;
+    color : #148BE6;
+    max-width : 200px;
+    &:hover { text-decoration: underline; }
+  }
+  .icon-detail {
+    color  : #666;
+    cursor : pointer;
+    &:hover { color: #148BE6; }
+  }
+
+  .dashboard-bubble { text-decoration: underline; cursor : default; }
+
+  .scroll-wrap { height: 420px; }
+
+
+  .table td { vertical-align: middle; }
+  .table-head th {
+    padding     : 10px 15px;
+    font-size   : 12px;
+    background  : #323e49;
+    font-weight : 500;
+    border      : none;
+  }
+
+  th:hover {
+    background : #55626e;
+  }
+
+  td {
+    padding: 15px;
+    background : #edf1f3;
+    border: none;
+    color: #666;
+  }
+
+  tr:nth-child(odd) > td {
+    background : #e8ebed;
+  }
+}
 
 .region-resource-list {
 

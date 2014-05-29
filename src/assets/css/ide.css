@@ -405,48 +405,6 @@ button {
 	transition: transform .1s;
 }
 
-/* Region view */
-.blank-widget {
-	margin-top : 14px;
-	text-align : center;
-	padding    : 70px 0;
-	color      : #999;
-	background : #f8f8f8;
-}
-
-.region-resource-action {
-	position: absolute;
-	right: 0;
-	top: 0;
-}
-
-#region-aws-resource-data .table td {
-	vertical-align: middle;
-}
-
-#region-aws-resource-data .table-head th {
-	padding: 10px 15px;
-	font-size: 12px;
-	background-color: #323e49;
-	font-weight: 500;
-	border: none;
-}
-
-#region-aws-resource-data th:hover {
-	background-color: #55626e;
-}
-
-#region-aws-resource-data td {
-	padding: 15px 20px;
-	background-color: #edf1f3;
-	border: none;
-	color: #666;
-}
-
-#region-aws-resource-data tr:nth-child(odd) > td {
-	background-color: #e8ebed;
-}
-
 /* Main Content */
 #main > div {
 	display : none;
@@ -561,24 +519,6 @@ button {
 	height: 140px;
 }
 
-.thumbnail-name {
-	position: absolute;
-	bottom: 0;
-	left: 0;
-	padding: 2px 4px;
-	background: #e2e2e2;
-	border-top: 1px solid #ccc;
-	width: 100%;
-	color: #333;
-	box-sizing: border-box;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-}
-
-.thumbnail-name i {
-	margin-right: 5px;
-}
-
 .dashboard-widget-body a .bubble-title {
 	color: #666;
 	font-size: 14px;
@@ -586,28 +526,6 @@ button {
 
 .dashboard-widget-body a:hover .bubble {
 	display: block;
-}
-
-.table-app-link {
-	margin-right: 5px;
-	display: inline-block;
-	width: 120px;
-}
-
-.table-app-link-unmanaged {
-	color: #bbb;
-}
-
-.table-app-link-clickable {
-	cursor: pointer;
-}
-
-.table-action a.icon-detail {
-	color: #666;
-}
-
-.table-action a.icon-detail:hover {
-	color: #148BE6;
 }
 
 #region-aws-resource-data td.table-action {

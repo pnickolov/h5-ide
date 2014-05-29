@@ -25,6 +25,7 @@ define ["Workspace", "workspaces/dashboard/DashboardView", "workspaces/dashboard
 
       # Watch changes in aws resources
       @view.listenTo @model, "change:globalResources", @view.updateGlobalResources
+      @view.listenTo @model, "change:regionResources", @view.updateRegionResources
 
       # Watch changes in user
       @listenTo App.user, "change:credential", ()->

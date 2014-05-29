@@ -8,6 +8,7 @@ define [
   "backbone"
   "UI.scrollbar"
   "UI.tooltip"
+  "UI.table"
 ], ( template, tplPartials, VisualizeVpcTpl, Modal, constant )->
 
   Helper = {
@@ -41,15 +42,13 @@ define [
       'click .global-region-status-tab' : 'switchRecent'
       'click #region-switch-list li'    : 'switchRegion'
       'click #region-resource-tab li'   : 'switchAppStack'
+      'click .resource-tab'             : 'switchResource'
 
-      'click #ImportStack'  : 'importJson'
-      'click #VisualizeVPC' : 'visualizeVPC'
-
-      'click #global-refresh'  : 'reloadResource'
+      'click #ImportStack'     : 'importJson'
+      'click #VisualizeVPC'    : 'visualizeVPC'
       'click .show-credential' : 'showCredential'
+      'click #RefreshResource' : 'reloadResource'
 
-      'click .region-resource-tab-item'           : 'switchResource'
-      'click .global-region-resource-content a'   : 'switchRegionAndResource'
 
 
 
@@ -167,10 +166,12 @@ define [
         $("#global-view" ).toggle( isDataReady )
         $("#dashboard-loading").toggle( not isDataReady )
       else
+        # Ask model to get datas for us.
+        @model.fetchAwsResources( region )
         $("#region-view" ).show()
         $("#global-view" ).hide()
         @updateRegionAppStack()
-        @updateRegionResources( region )
+        @updateRegionResources()
       return
 
     switchAppStack: ( evt ) ->
@@ -180,6 +181,15 @@ define [
 
       @regionOpsTab = if $target.hasClass("stack") then "stack" else "app"
       $("#region-view").find(".region-resource-list").hide().eq( $target.index() ).show()
+      return
+
+    switchResource : ( evt )->
+      $("#region-resource-wrap").children("nav").children().removeClass("on")
+      @resourcesTab = $(evt.currentTarget).addClass("on").attr("data-type")
+      data = @model.getAwsResData( @region )
+      $("#region-aws-resource-data").html( tplPartials["resource#{@resourcesTab}"](data) )
+      console.log data
+      return
 
     importJson : ()->
       modal MC.template.importJSON()
@@ -226,9 +236,10 @@ define [
     openItem    : ( event )-> App.openOps( $(event.currentTarget).attr("data-id") )
     createStack : ( event )-> App.createOps( $(event.currentTarget).attr("data-id") )
 
+    markUpdated    : ()-> $("#RefreshResource").removeClass("reloading").text("just now")
     reloadResource : ()->
-      $("#global-refresh").addClass "loading"
-      @trigger "reloadResource"
+      $("#RefreshResource").addClass("reloading").text("")
+      @model.reloadResource()
 
     deleteStack    : (event)-> App.deleteStack $( event.currentTarget ).closest("li").attr("data-id"); false
     duplicateStack : (event)-> App.duplicateStack $( event.currentTarget ).closest("li").attr("data-id"); false
@@ -293,21 +304,23 @@ define [
         if @region is "global" then $("#dashboard-loading").show()
         $("#global-view").empty().hide()
       else
+        @markUpdated()
         $("#global-view").html( tplPartials.globalResources( @model.getAwsResData() ) )
         if @region is "global"
           $("#dashboard-loading").hide()
           $("#global-view").show()
       return
 
-    updateRegionResources : ( region )->
-      if @region isnt region then return
+    updateRegionResources : ()->
+      if @region is "global" then return
 
-      if not @model.isAwsResReady( region )
+      if not @model.isAwsResReady( @region )
         $("#dashboard-loading").show()
         $("#region-resource-wrap").empty().hide()
       else
+        @markUpdated()
         $("#dashboard-loading").hide()
-        data = @model.getAwsResData( region )
+        data = @model.getAwsResData( @region )
         $("#region-resource-wrap").html(tplPartials.regionResourceTab( data )).show()
         $("#region-resource-wrap").children("nav").children("[data-type='#{@resourcesTab}']").addClass("on")
         $("#region-aws-resource-data").html( tplPartials["resource#{@resourcesTab}"](data) )

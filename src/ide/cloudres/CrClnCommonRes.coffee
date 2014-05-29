@@ -16,7 +16,13 @@ define [
     modelIdAttribute : "LoadBalancerName"
 
     parseFetchData : ( data )->
-      data.DescribeLoadBalancersResponse.DescribeLoadBalancersResult.LoadBalancerDescriptions?.member
+      elbs = data.DescribeLoadBalancersResponse.DescribeLoadBalancersResult.LoadBalancerDescriptions?.member
+      for elb in elbs || []
+        elb.AvailabilityZones = elb.AvailabilityZones || []
+        elb.AvailabilityZones = elb.AvailabilityZones.member || []
+        elb.Instances = elb.Instances || []
+        elb.Instances = elb.Instances.member || []
+      elbs
   }
 
   ### VPN ###
@@ -49,7 +55,12 @@ define [
 
     type  : constant.RESTYPE.VOL
     modelIdAttribute : "volumeId"
-    parseFetchData : ( data )-> data.DescribeVolumesResponse.volumeSet?.item
+    parseFetchData : ( data )->
+      volumes = data.DescribeVolumesResponse.volumeSet?.item
+      for vol in volumes || []
+        vol.attachmentSet = vol.attachmentSet || []
+        vol.attachmentSet = vol.attachmentSet.item || []
+      volumes
   }
 
   ### VPC ###
@@ -61,6 +72,38 @@ define [
     type  : constant.RESTYPE.VPC
     modelIdAttribute : "vpcId"
     parseFetchData : ( data )-> data.DescribeVpcsResponse.vpcSet?.item
+  }
+
+  ### ASG ###
+  CrCommonCollection.extend {
+    ### env:dev ###
+    ClassName : "CrCloudWatchCollection"
+    ### env:dev:end ###
+
+    type  : constant.RESTYPE.ASG
+    modelIdAttribute : "AutoScalingGroupARN"
+    parseFetchData : ( data )->
+      asgs = data.DescribeAutoScalingGroupsResponse.DescribeAutoScalingGroupsResult.AutoScalingGroups?.member
+      for asg in asgs ||[]
+        asg.Instances = asg.Instances || []
+        asg.Instances = asg.Instances.member || []
+      asgs
+  }
+
+  ### CloudWatch ###
+  CrCommonCollection.extend {
+    ### env:dev ###
+    ClassName : "CrAsgCollection"
+    ### env:dev:end ###
+
+    type  : constant.RESTYPE.CW
+    modelIdAttribute : "AlarmArn"
+    parseFetchData : ( data )->
+      cws = data.DescribeAlarmsResponse.DescribeAlarmsResult.MetricAlarms?.member
+      for cw in cws || []
+        cw.Dimensions = cw.Dimensions || []
+        cw.Dimensions = cw.Dimensions.member || []
+      cws
   }
 
   ### AMI ###

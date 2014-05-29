@@ -48,6 +48,13 @@ define ["ApiRequest", "CloudResources", "constant", "backbone"], ( ApiRequest, C
       @listenTo CloudResources( constant.RESTYPE.ELB ), "update", @onGlobalResChanged
       @listenTo CloudResources( constant.RESTYPE.VPN ), "update", @onGlobalResChanged
 
+      @listenTo CloudResources( constant.RESTYPE.VPC ), "update", @onRegionResChanged
+      @listenTo CloudResources( constant.RESTYPE.ASG ), "update", @onRegionResChanged
+      @listenTo CloudResources( constant.RESTYPE.CW ),  "update", @onRegionResChanged
+
+      for region in constant.REGION_KEYS
+        @listenTo CloudResources( constant.RESTYPE.SUBSCRIPTION, region ), "update", @onRegionResChanged
+
     ### Visualize ###
     visualizeTimestamp : ()-> @__visRequestTime
 
@@ -150,7 +157,13 @@ define ["ApiRequest", "CloudResources", "constant", "backbone"], ( ApiRequest, C
 
 
     ### Cloud Resources ###
-    onGlobalResChanged : ()-> @trigger "change:globalResources", @isAwsResReady()
+    reloadResource : ()-> CloudResources.invalidate()
+
+    onRegionResChanged : ()-> @trigger "change:regionResources"
+    onGlobalResChanged : ()->
+      @trigger "change:globalResources", @isAwsResReady()
+      @trigger "change:regionResources"
+
     fetchAwsResources : ( region )->
       if not region
         CloudResources( constant.RESTYPE.INSTANCE ).fetch()
@@ -160,11 +173,36 @@ define ["ApiRequest", "CloudResources", "constant", "backbone"], ( ApiRequest, C
         CloudResources( constant.RESTYPE.VPN ).fetch()
         return
 
-    isAwsResReady : (region)->
-      ready = CloudResources( constant.RESTYPE.INSTANCE ).isReady() && CloudResources( constant.RESTYPE.EIP ).isReady() && CloudResources( constant.RESTYPE.VOL ).isReady() && CloudResources( constant.RESTYPE.ELB ).isReady() && CloudResources( constant.RESTYPE.VPN ).isReady()
-      if not region then return ready
+      CloudResources( constant.RESTYPE.SUBSCRIPTION, region ).fetch()
+      CloudResources( constant.RESTYPE.VPC ).fetch()
+      CloudResources( constant.RESTYPE.ASG ).fetch()
+      CloudResources( constant.RESTYPE.CW ).fetch()
+      return
 
-      ready
+
+    isAwsResReady : (region)->
+      datasource = [
+        CloudResources( constant.RESTYPE.INSTANCE )
+        CloudResources( constant.RESTYPE.EIP )
+        CloudResources( constant.RESTYPE.VOL )
+        CloudResources( constant.RESTYPE.ELB )
+        CloudResources( constant.RESTYPE.VPN )
+      ]
+      for i in datasource
+        if not i.isReady() then return false
+
+      if region
+        datasource = [
+          CloudResources( constant.RESTYPE.SUBSCRIPTION, region )
+          CloudResources( constant.RESTYPE.VPC )
+          CloudResources( constant.RESTYPE.ASG )
+          CloudResources( constant.RESTYPE.CW )
+        ]
+
+        for i in datasource
+          if not i.isReady() then return false
+
+      true
 
     getAwsResData : ( region )->
       if not region
@@ -185,9 +223,9 @@ define ["ApiRequest", "CloudResources", "constant", "backbone"], ( ApiRequest, C
         volumes      : CloudResources( constant.RESTYPE.VOL ).where(filter)
         elbs         : CloudResources( constant.RESTYPE.ELB ).where(filter)
         vpns         : CloudResources( constant.RESTYPE.VPN ).where(filter)
-        vpcs         : []
-        asgs         : []
-        cloudwatches : []
-        snss         : []
+        vpcs         : CloudResources( constant.RESTYPE.VPC ).where(filter)
+        asgs         : CloudResources( constant.RESTYPE.ASG ).where(filter)
+        cloudwatches : CloudResources( constant.RESTYPE.CW ).where(filter)
+        snss         : CloudResources( constant.RESTYPE.SUBSCRIPTION, region ).models
       }
   }

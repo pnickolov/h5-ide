@@ -379,6 +379,7 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
             #
             "DescribeInstanceHealthResponse"       : elb_service.resolveDescribeInstanceHealthResult
             "DescribeLoadBalancerAttributesResponse" :  elb_service.resolveDescribeLoadBalancerAttributesResult
+            "DescribeVpcAttributeResponse"           :  vpc_service.resolveDescribeVpcAttributeResult
 
         }
 
@@ -389,8 +390,22 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
             if $.type(node) is "string"
                 action_name = ($.parseXML node).documentElement.localName
                 dict_name = action_name.replace /Response/i, ""
-                dict[dict_name] = [] if dict[dict_name]?
-                dict[dict_name] = responses[action_name] [null, node]
+
+                if not responses[action_name]
+                    console.warn "[resourceMap] can not find action_name [" + action_name + "]"
+                    continue
+
+                if action_name is "DescribeVpcAttributeResponse"
+                    if not dict[dict_name]
+                        dict[dict_name] = {}
+                    vpcAttr = responses[action_name] [null, node]
+                    if vpcAttr.enableDnsSupport
+                        dict[dict_name]['enableDnsSupport'] = vpcAttr.enableDnsSupport.value
+                    else if vpcAttr.enableDnsHostnames
+                        dict[dict_name]['enableDnsHostnames'] = vpcAttr.enableDnsHostnames.value
+                else
+                    dict[dict_name] = [] if dict[dict_name]?
+                    dict[dict_name] = responses[action_name] [null, node]
             
             else if $.type(node) is "object"
                 elbAttrData = node["DescribeLoadBalancerAttributes"]

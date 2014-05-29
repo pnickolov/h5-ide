@@ -60,7 +60,7 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
         renderLoading: ->
             @dropdown.render('loading').toggleControls false
 
-        renderDropdown: ()->
+        renderDropdown: (keys)->
             selected = @resModel.toJSON().dhcp.dhcpOptionsId
             data = @collection.toJSON()
             if selected
@@ -75,9 +75,20 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
                 datas.auto = true
             else if selected and selected is 'default'
                 datas.default = true
+            if keys
+                datas.keys = keys
+                datas.hideDefaultNoKey = true
             content = template.keys datas
             @dropdown.toggleControls true
             @dropdown.setContent content
+
+        filter: ( keyword ) ->
+            hitKeys = _.filter @collection.toJSON(), ( data ) ->
+                data.id.toLowerCase().indexOf( keyword.toLowerCase() ) isnt -1
+            if keyword
+                @renderDropdown hitKeys
+            else
+                @renderDropdown()
 
         setDHCP: (e)->
             if e is '@auto'

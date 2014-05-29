@@ -5002,6 +5002,23 @@ VisualOps API. You cannot UNDO this action.'
       en: "<span class='validation-tag tag-instance'>%s</span> has configured states. Suggest to set its outbound rule on <span class='validation-tag tag-port'>80</span> and <span class='validation-tag tag-port'>443</span> to <span class='validation-tag tag-ip'>0.0.0.0/0</span>. Otherwise, agent may not be able to work properly, install packages or check out source codes lacking route to VisualOps's monitoring systems or required repositories."
       zh: ""
 
+    # Share Resource
+    TA_MSG_ERROR_ASG_NOTIFICATION_NO_TOPIC:
+      en: "Auto Scaling Group %s has configured notification. Please select a SNS Topic for it."
+      zh: ""
+
+    TA_MSG_ERROR_ASG_POLICY_NO_TOPIC:
+      en: "Auto Scaling Group %s's Scaling Policy %s has configured notification. Please select a SNS Topic for it."
+      zh: ""
+
+    TA_MSG_ERROR_ASG_NOTIFICITION_TOPIC_NONEXISTIENT:
+      en: "Auto Scaling Group %s is using a nonexistient SNS Topic %s. Please change to an existing SNS Topic to make notification work."
+      zh: ""
+
+    TA_MSG_ERROR_ASG_POLICY_TOPIC_NONEXISTIENT:
+      en: "Auto Scaling Group %s's Scaling Policy %s is using a nonexistent SNS Topic %s. Please change to an existing SNS Topic to make notification work."
+      zh: ""
+
     RELOAD_STATE_INVALID_REQUEST:
       en: "Sorry, but the request is not valid."
       zh: ""

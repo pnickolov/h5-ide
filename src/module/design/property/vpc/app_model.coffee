@@ -37,6 +37,7 @@ define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, const
 
             else
               dhcpData = appData[myVPCComponent.toJSON().dhcp.toJSON().dhcpOptionsId].dhcpConfigurationSet.item
+              vpc.dhcpOptionsId = myVPCComponent.toJSON().dhcp.toJSON().dhcpOptionsId
               dhcp = {}
 
               for i in dhcpData

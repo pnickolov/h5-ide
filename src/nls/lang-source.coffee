@@ -4856,6 +4856,10 @@ VisualOps API. You cannot UNDO this action.'
       en: "Load Balancer <span class='validation-tag tag-elb'>%s</span> has been associated with Subnet <span class='validation-tag tag-subnet'>%s</span>, whose CIDR mask must be smaller than /27."
       zh: ""
 
+    TA_MSG_ERROR_ELB_SSL_CERT_NOT_EXIST_FROM_AWS:
+      en: "Load Balancer <span class='validation-tag tag-elb'>%s</span>'s Listener is configured with nonexistent Server Certificate <span class='validation-tag tag-cert'>%s</span>."
+      zh: ""
+
     # SG
     TA_MSG_WARNING_SG_RULE_EXCEED_FIT_NUM:
       en: "Security Group <span class='validation-tag tag-sg'>%s</span> has more than %s rules, If a security group has a large number of rules, performance can be degraded."

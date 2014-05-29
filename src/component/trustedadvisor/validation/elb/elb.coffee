@@ -1,4 +1,4 @@
-define [ 'constant', 'MC','i18n!nls/lang.js', '../../helper'], ( constant, MC, lang, taHelper ) ->
+define [ 'constant', 'MC','i18n!nls/lang.js', '../../helper', 'CloudResources'], ( constant, MC, lang, taHelper, CloudResources ) ->
 
 	isHaveIGWForInternetELB = (elbUID) ->
 
@@ -404,6 +404,91 @@ define [ 'constant', 'MC','i18n!nls/lang.js', '../../helper'], ( constant, MC, l
 
 		return resultAry
 
+	isSSLCertExist = (callback) ->
+
+		elbNameUIDMap = {}
+
+		eachListener = (iterator) ->
+
+			_.each MC.canvas_data.component, (compObj) ->
+
+				if compObj.type is constant.RESTYPE.ELB
+
+					elbName = compObj.name
+
+					elbNameUIDMap[elbName] = compObj.uid
+
+					listenerAry = compObj.resource.ListenerDescriptions
+
+					for listenerItem in listenerAry
+
+						listenerObj = listenerItem.Listener
+						listenerCertRef = listenerObj.SSLCertificateId
+
+						if not listenerCertRef
+							continue
+
+						listenerCertUID = MC.extractID(listenerCertRef)
+						sslCertComp = MC.canvas_data.component[listenerCertUID]
+
+						if sslCertComp
+						
+							sslCertName = sslCertComp.name
+							iterator(elbName, sslCertName)
+
+				null
+
+		elbNotExistCertMap = {}
+		allExistCertAry = []
+
+		validResultAry = []
+
+		haveCert = false
+		eachListener () -> haveCert = true
+
+		# if have cert, fetch aws cert res and check if exist
+		if haveCert
+
+			if not window.sslCertCol
+				window.sslCertCol = CloudResources constant.RESTYPE.IAM
+
+			window.sslCertCol.fetch().then (result) ->
+				
+				sslCertAry = window.sslCertCol.toJSON()
+				_.each sslCertAry, (sslCertData) ->
+					allExistCertAry.push sslCertData.Name
+
+				eachListener (elbName, sslCertName) ->
+
+					if sslCertName not in allExistCertAry
+						elbNotExistCertMap[elbName] = [] if not elbNotExistCertMap[elbName]
+						elbNotExistCertMap[elbName].push(sslCertName)
+
+				_.each elbNotExistCertMap, (sslCertNameAry, elbName) ->
+
+					tipInfo = sprintf lang.ide.TA_MSG_ERROR_ELB_SSL_CERT_NOT_EXIST_FROM_AWS, elbName, sslCertNameAry.join(', ')
+					validResultAry.push {
+						level: constant.TA.ERROR,
+						info: tipInfo,
+						uid: elbNameUIDMap[elbName]
+					}
+
+				if validResultAry.length
+					callback(validResultAry)
+					return
+
+				callback(null)
+
+			, () ->
+
+				callback(null)
+
+		else
+
+			callback(null)
+
+		return null
+
 	isHaveIGWForInternetELB : isHaveIGWForInternetELB
 	isHaveInstanceAttached : isHaveInstanceAttached
 	isAttachELBToMultiAZ : isAttachELBToMultiAZ
@@ -415,3 +500,4 @@ define [ 'constant', 'MC','i18n!nls/lang.js', '../../helper'], ( constant, MC, l
 	isRuleInboundInstanceForELBListener : isRuleInboundInstanceForELBListener
 	isRuleInboundToELBPingPort : isRuleInboundToELBPingPort
 	isELBSubnetCIDREnough : isELBSubnetCIDREnough
+	isSSLCertExist : isSSLCertExist

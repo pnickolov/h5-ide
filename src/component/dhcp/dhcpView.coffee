@@ -163,12 +163,14 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
         doAction: (action, checked)->
             @[action] and @[action](@validate(action),checked)
         create: (invalid, checked)->
-            console.error invalid, "invalid"
             if not invalid
                 @switchAction 'processing'
+                domainNameServers = mapFilterInput "#property-domain-server .input"
+                if $("#property-amazon-dns").is(":checked")
+                    domainNameServers.push("AmazonProvidedDNS")
                 data =
                     "domain-name"           : mapFilterInput "#property-dhcp-domain .input"
-                    "domain-name-servers"   : mapFilterInput "#property-domain-server .input"
+                    "domain-name-servers"   : domainNameServers
                     "ntp-servers"           : mapFilterInput "#property-ntp-server .input"
                     "netbios-name-servers"  : mapFilterInput "#property-netbios-server .input"
                     "netbios-node-type"     : [parseInt( $("#property-netbios-type .selection").html(), 10 ) || 0]
@@ -186,16 +188,20 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
                 @collection.findWhere(id: data.data.id).destroy().then afterDeleted, afterDeleted
 
         afterDeleted: ->
-            that = @
             deleteCount--
+            if result.error
+                notification 'info', "Delete Failed, Please try again later."
+                return false
             if deleteCount is 0
                 notification 'info', "Delete Successfully"
-                console.log 'DDDDEEEELLLLLEEEEEETTTTTEEEEEEDDDDDD'
-                that.manager.cancel()
-        afterCreated: ->
-            that = @
-            notification 'info', "New DHCP options created successfully"
+                @manager.cancel()
+        afterCreated: (result)->
             @manager.cancel()
+            if result.error
+                notification 'error', result.msg
+                return false
+            notification 'info', "New DHCP Option is created successfully"
+
         validate: (action)->
             switch action
                 when 'create'

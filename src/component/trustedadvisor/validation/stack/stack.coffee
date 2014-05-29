@@ -127,7 +127,12 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'ApiRequest', 'stack_ser
 				if compObj.type is constant.RESTYPE.INSTANCE or
 					compObj.type is constant.RESTYPE.LC
 						imageId = compObj.resource.ImageId
-						if imageId
+						instanceId = ''
+						if compObj.type is constant.RESTYPE.INSTANCE
+							instanceId = compObj.resource.InstanceId
+						else if compObj.type is constant.RESTYPE.LC
+							instanceId = compObj.resource.LaunchConfigurationARN
+						if imageId and (not instanceId)
 							if not instanceAMIMap[imageId]
 								instanceAMIMap[imageId] = []
 								amiAry.push imageId
@@ -235,7 +240,12 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'ApiRequest', 'stack_ser
 			if compObj.type is constant.RESTYPE.INSTANCE or
 				compObj.type is constant.RESTYPE.LC
 					imageId = compObj.resource.ImageId
-					if imageId
+					instanceId = ''
+					if compObj.type is constant.RESTYPE.INSTANCE
+						instanceId = compObj.resource.InstanceId
+					else if compObj.type is constant.RESTYPE.LC
+						instanceId = compObj.resource.LaunchConfigurationARN
+					if imageId and (not instanceId)
 						if not instanceAMIMap[imageId]
 							instanceAMIMap[imageId] = []
 							amiAry.push imageId

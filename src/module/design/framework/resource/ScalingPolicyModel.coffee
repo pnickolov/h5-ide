@@ -1,7 +1,7 @@
 
-define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
+define [ "../ResourceModel", "../ComplexResModel", "constant" ], ( ResourceModel, ComplexResModel, constant ) ->
 
-  Model = ResourceModel.extend {
+  Model = ComplexResModel.extend {
     type : constant.RESTYPE.SP
 
     defaults : ()->
@@ -26,6 +26,8 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
         unit               : ""
         appId              : ""
       }
+
+    isVisual: () -> false
 
     constructor : ( attribute, option )->
       defaults  = this.defaults()
@@ -69,6 +71,10 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
         }
       null
 
+    getTopic: () -> @connectionTargets('TopicUsage')[ 0 ]
+
+    getTopicName: () -> @getTopic()?.get 'name'
+
     serialize : ()->
 
       if not @__asg
@@ -96,8 +102,9 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
 
       if @get("sendNotification")
         # Ensure there's a SNS_Topic
-        TopicModel = Design.modelClassForType( constant.RESTYPE.TOPIC )
-        action_arry.push( TopicModel.ensureExistence().createRef( "TopicArn" ) )
+        topic = @getTopic()
+        if topic
+          action_arry.push( topic.createRef( "TopicArn" ) )
 
       if @get("state") is "ALARM"
         act_alarm = action_arry
@@ -191,7 +198,12 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
           if i.indexOf("PolicyARN") != -1
             policy = resolve( MC.extractID(i) ) || new Backbone.Model()
           else if i.indexOf("TopicArn") != -1
+            topic = resolve( MC.extractID(i) )
             sendNotification = true
+
+        topic?.assignTo policy
+
+
 
         if policy
           policy.set {

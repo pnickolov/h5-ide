@@ -1,18 +1,19 @@
 
-define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
+define [ "../ResourceModel", "../ComplexResModel", "constant", "../ConnectionModel" ], ( ResourceModel, ComplexResModel, constant, ConnectionModel ) ->
 
-  TopicModel = ResourceModel.extend {
+  TopicUsage = ConnectionModel.extend {
+    type : "TopicUsage"
+    oneToMany : constant.RESTYPE.TOPIC
+  }
+
+  TopicModel = ComplexResModel.extend {
     type : constant.RESTYPE.TOPIC
+
+    isVisual: () -> false
 
     serialize : ()->
 
-      useTopic = TopicModel.isTopicNeeded()
-
-      if not useTopic
-        useTopic = SubscriptionModel.allObjects().length > 0
-
-      if not useTopic
-        useTopic = !!@get("appId")
+      useTopic = !! @connections().length
 
       if not useTopic
         console.debug( "Sns Topic is not serialized, because nothing use it and it doesn't have appId." )
@@ -22,14 +23,16 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
 
       {
         component :
-          name : "sns-topic"
-          type : @type
-          uid  : @id
+          name        : @get( "name" )
+          type        : @type
+          uid         : @id
           resource :
-            DisplayName : name
-            Name        : name
-            TopicArn    : @get("appId")
+            TopicArn    : @get( "appId" )
       }
+
+    assignTo: ( target ) ->
+      if @get 'appId'
+        new TopicUsage( @, target )
 
   }, {
     handleTypes  : constant.RESTYPE.TOPIC
@@ -57,11 +60,18 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
         new TopicModel()
       @allObjects()[0]
 
+    get: ( appId, name ) ->
+      topic = _.findWhere @allObjects(), appId: appId
+      topic or new TopicModel appId: appId, name: name
+
+
+
+
     preDeserialize : ( data, layout_data ) ->
       new TopicModel({
-        id    : data.uid
-        appId : data.resource.TopicArn
-        name  : data.resource.DisplayName or data.resource.Name
+        id          : data.uid
+        appId       : data.resource.TopicArn
+        name        : data.resource.Name or data.name
       })
       null
 

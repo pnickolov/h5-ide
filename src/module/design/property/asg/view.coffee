@@ -472,7 +472,8 @@ define [ '../base/view',
 
             if data.sendNotification
                 selectedTopicData = $('.policy-sns-placeholder .selected').data()
-                data.topic = appId: selectedTopicData.id, name: selectedTopicData.name
+                if selectedTopicData and selectedTopicData.id and selectedTopicData.name
+                    data.topic = appId: selectedTopicData.id, name: selectedTopicData.name
 
             @model.setPolicy data
             @updateScalingPolicy data

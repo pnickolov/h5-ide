@@ -1,5 +1,5 @@
 
-define ["Workspace", "workspaces/DashboardView", "workspaces/DashboardModel"], ( Workspace, DashboardView, DashboardModel )->
+define ["Workspace", "workspaces/dashboard/DashboardView", "workspaces/dashboard/DashboardModel"], ( Workspace, DashboardView, DashboardModel )->
 
   class Dashboard extends Workspace
 
@@ -23,14 +23,15 @@ define ["Workspace", "workspaces/DashboardView", "workspaces/DashboardModel"], (
       @view.listenTo App.model.appList(), "change:state",    @view.updateRegionList
       @view.listenTo App.model.appList(), "change:progress", @view.updateAppProgress
 
+      # Watch changes in aws resources
+      @view.listenTo @model, "change:globalResources", @view.updateGlobalResources
+
       # Watch changes in user
       @listenTo App.user, "change:credential", ()->
-        self.fetchAwsResources()
+        self.model.fetchAwsResources()
         self.view.updateDemoView()
 
-      fetchAwsResources()
+      @model.fetchAwsResources()
       return
-
-    fetchAwsResources : ()->
 
   Dashboard

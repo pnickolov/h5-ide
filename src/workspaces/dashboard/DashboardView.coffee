@@ -1,8 +1,8 @@
 
 define [
-  './dashboard/DashboardTpl'
-  './dashboard/DashboardTplData'
-  './dashboard/VisualizeVpcTpl'
+  './DashboardTpl'
+  './DashboardTplData'
+  './VisualizeVpcTpl'
   "UI.modalplus"
   "constant"
   "backbone"
@@ -275,17 +275,22 @@ define [
     updateDemoView : ()->
       if App.user.hasCredential()
         $("#dashboard-data-wrap").removeClass("demo")
-        $("#dashboard-data-wrap").find(".dashboard-demo").remove()
         $("#VisualizeVPC").removeAttr "disabled"
       else
         $("#VisualizeVPC").attr "disabled", "disabled"
         $("#dashboard-data-wrap").toggleClass("demo", true)
-        if $("#dashboard-data-wrap").find(".dashboard-demo").show().length is 0
-          $(tplPartials.demo()).appendTo($("#dashboard-data-wrap"))
       return
 
     showCredential : ()-> App.showSettings App.showSettings.TAB.Credential
 
-    updateGlobalResource : ()->
-
+    updateGlobalResources : ( isDataReady )->
+      if not isDataReady
+        $("#dashboard-loading").show()
+        $("#global-view").empty().hide()
+      else
+        $("#global-view").html( tplPartials.globalResources( @model.getGlobalResData() ) )
+        if @region is "global"
+          $("#dashboard-loading").hide()
+          $("#global-view").show()
+      return
   }

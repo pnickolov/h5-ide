@@ -34,117 +34,41 @@
 </section>
 
 <!-- {{globalResources}} -->
-<ul id="global-region-resource-list" class="clearfix">
-  <li id="global-region-resource-instance">
-    <div class="global-region-resource-header">
-      <h5>{{i18n "DASH_LBL_RUNNING_INSTANCE"}}</h5>
-      <div class="global-region-resource-count-wrap">
-        <i id="global-resource-icon-instance" class="global-resource-icon"></i>
-        <span class="global-region-resource-count">{{instances.total}}</span>
-      </div>
-    </div>
-
-    <div class="global-region-resource-content">
-      <ul>
-        {{#each instances.data}}
-          <li data-region="region">
-            <h4>{{city}}</h4>
-            <h5>{{area}}</h5>
-            <span class="global-region-resource-location-count">{{count}}</span>
-          </li>
-        {{/each}}
-      </ul>
-    </div>
-  </li>
-
-  <li id="global-region-resource-eip">
-    <div class="global-region-resource-header">
-      <h5>{{i18n "DASH_LBL_ELASTIC_IP"}}</h5>
-      <div class="global-region-resource-count-wrap">
-        <i id="global-resource-icon-eip" class="global-resource-icon"></i>
-        <span class="global-region-resource-count">{{eip.total}}</span>
-      </div>
-    </div>
-
-    <div class="global-region-resource-content">
-      <ul>
-        {{#each eip.data}}
-          <li>
-            <h4>{{city}}</h4>
-            <h5>{{area}}</h5>
-            <span class="global-region-resource-location-count">{{count}}</span>
-          </li>
-        {{/each}}
-      </ul>
-    </div>
-  </li>
-
-  <li id="global-region-resource-volume">
-    <div class="global-region-resource-header">
-      <h5>{{i18n "DASH_LBL_VOLUME"}}</h5>
-      <div class="global-region-resource-count-wrap">
-        <i id="global-resource-icon-vol" class="global-resource-icon"></i>
-        <span class="global-region-resource-count">{{volume.total}}</span>
-      </div>
-    </div>
-
-    <div class="global-region-resource-content">
-      <ul>
-        {{#each volume.data}}
-          <li>
-            <h4>{{city}}</h4>
-            <h5>{{area}}</h5>
-            <span class="global-region-resource-location-count">{{count}}</span>
-          </li>
-        {{/each}}
-      </ul>
-    </div>
-  </li>
-
-  <li id="global-region-resource-elb">
-    <div class="global-region-resource-header">
-      <h5>{{i18n "DASH_LBL_LOAD_BALANCER"}}</h5>
-      <div class="global-region-resource-count-wrap">
-        <i id="global-resource-icon-elb" class="global-resource-icon"></i>
-        <span class="global-region-resource-count">{{elb.total}}</span>
-      </div>
-    </div>
-
-    <div class="global-region-resource-content">
-      <ul>
-        {{#each elb.data}}
-          <li>
-            <h4>{{city}}</h4>
-            <h5>{{area}}</h5>
-            <span class="global-region-resource-location-count">{{count}}</span>
-          </li>
-        {{/each}}
-      </ul>
-    </div>
-  </li>
-
-  <li id="global-region-resource-vpn">
-    <div class="global-region-resource-header">
-      <h5>{{i18n "DASH_LBL_VPN"}}</h5>
-      <div class="global-region-resource-count-wrap">
-          <i id="global-resource-icon-vpn" class="global-resource-icon"></i>
-          <span class="global-region-resource-count">{{vpn.total}}</span>
-      </div>
-    </div>
-
-    <div class="global-region-resource-content">
-      <ul>
-        {{#each vpn.data}}
-          <li>
-            <h4>{{city}}</h4>
-            <h5>{{area}}</h5>
-            <span class="global-region-resource-location-count">{{count}}</span>
-          </li>
-        {{/each}}
-      </ul>
-    </div>
-  </li>
-</ul>
+<li class="instances">
+  <hgroup><span class="resource-count">{{instances.totalCount}}</span><h5>{{i18n "DASH_LBL_RUNNING_INSTANCE"}}</h5></hgroup>
+  <ul>{{#each instances}}<li data-region="{{region}}" class="global-resource-li">
+    <span class="count">{{data.length}}</span>
+    <h4>{{regionName}}</h4><h5>{{regionArea}}</h5>
+  </li>{{/each}}</ul>
+</li>
+<li class="eips">
+  <hgroup><span class="resource-count">{{eips.totalCount}}</span><h5>{{i18n "DASH_LBL_ELASTIC_IP"}}</h5></hgroup>
+  <ul>{{#each eips}}<li data-region="{{region}}" class="global-resource-li">
+    <span class="count">{{data.length}}</span>
+    <h4>{{regionName}}</h4><h5>{{regionArea}}</h5>
+  </li>{{/each}}</ul>
+</li>
+<li class="volumes">
+  <hgroup><span class="resource-count">{{volumes.totalCount}}</span><h5>{{i18n "DASH_LBL_VOLUME"}}</h5></hgroup>
+  <ul>{{#each volumes}}<li data-region="{{region}}" class="global-resource-li">
+    <span class="count">{{data.length}}</span>
+    <h4>{{regionName}}</h4><h5>{{regionArea}}</h5>
+  </li>{{/each}}</ul>
+</li>
+<li class="elbs">
+  <hgroup><span class="resource-count">{{elbs.totalCount}}</span><h5>{{i18n "DASH_LBL_LOAD_BALANCER"}}</h5></hgroup>
+  <ul>{{#each elbs}}<li data-region="{{region}}" class="global-resource-li">
+    <span class="count">{{data.length}}</span>
+    <h4>{{regionName}}</h4><h5>{{regionArea}}</h5>
+  </li>{{/each}}</ul>
+</li>
+<li class="vpns">
+  <hgroup><span class="resource-count">{{vpns.totalCount}}</span><h5>{{i18n "DASH_LBL_VPN"}}</h5></hgroup>
+  <ul>{{#each vpns}}<li data-region="{{region}}" class="global-resource-li">
+    <span class="count">{{data.length}}</span>
+    <h4>{{regionName}}</h4><h5>{{regionArea}}</h5>
+  </li>{{/each}}</ul>
+</li>
 
 
 <!-- {{region_app_stack}} -->
@@ -172,19 +96,15 @@
 </li>
 {{else}}
 <li data-id="{{id}}">
-    {{#if usage}}<i class="icon-app-type-{{usage}}"></i>{{/if}}
-    <div class="thumbnail app-thumbnail"> <img src="{{thumbnail}}" {{#unless thumbnail}}class="hide"{{/unless}}/> </div>
-    <div class="region-resource-info">
-        <i class="icon-terminate terminate-app"></i>
-        {{#if stoppable}}
-            {{#ifCond stateDesc 'Running'}}
-                <i class="icon-stop stop-app"></i>
-            {{else}}
-                <i class="icon-play start-app"></i>
-            {{/ifCond}}
-        {{/if}}
-        <span class="{{#ifCond stateDesc 'Running'}}running{{else}}stopped{{/ifCond}} truncate">{{name}}</span>
-    </div>
+  {{#if usage}}<i class="icon-app-type-{{usage}}"></i>{{/if}}
+  <div class="thumbnail app-thumbnail"> <img src="{{thumbnail}}" {{#unless thumbnail}}class="hide"{{/unless}}/> </div>
+  <div class="region-resource-info">
+    <i class="icon-terminate terminate-app"></i>
+    {{#if stoppable}}
+      {{#ifCond stateDesc 'Running'}}<i class="icon-stop stop-app"></i>{{else}}<i class="icon-play start-app"></i>{{/ifCond}}
+    {{/if}}
+    <span class="{{#ifCond stateDesc 'Running'}}running{{else}}stopped{{/ifCond}} truncate">{{name}}</span>
+  </div>
 </li>
 {{/if}}
 {{else}}
@@ -194,14 +114,14 @@
 
 <ul id="region-resource-stack-wrap" class="region-resource-list clearfix" {{#if app}} style="display: none;"{{/if}}>
 {{#each stacks}}
-    <li data-id="{{id}}">
-        <div class="thumbnail"> <img src="{{thumbnail}}" {{#unless thumbnail}}class="hide"{{/unless}}/> </div>
-        <div class="region-resource-info">
-            <i class="icon-delete delete-stack"></i>
-            <i class="icon-duplicate duplicate-stack"></i>
-            <span class="truncate">{{name}}</span>
-        </div>
-    </li>
+  <li data-id="{{id}}">
+    <div class="thumbnail"> <img src="{{thumbnail}}" {{#unless thumbnail}}class="hide"{{/unless}}/> </div>
+    <div class="region-resource-info">
+      <i class="icon-delete delete-stack"></i>
+      <i class="icon-duplicate duplicate-stack"></i>
+      <span class="truncate">{{name}}</span>
+    </div>
+  </li>
 {{else}}
     <div class="blank-widget"><div>{{i18n "DASH_LBL_NO_STACK"}}</div></div>
 {{/each}}
@@ -766,24 +686,4 @@
             </tbody>
         </table>
     </div>
-</div>
-
-<!-- {{loading}} -->
-<div class="dashboard-loading clearfix">
-   <div class="loading-spinner"></div>
-</div>
-
-<!-- {{loading_failed}} -->
-<div class="dashboard-loading aws-loading-faild clearfix">
-    <p>Loading resource failed. The AWS Credential key is incorrect.</p>
-    <a href="###" class="btn btn-blue show-credential" style="width: 182px;">Enter AWS credentials</a>
-</div>
-
-<!-- {{demo}} -->
-<div class="dashboard-demo">
-  <div class="enter-credential">
-    This is only sample data of global resource sumary.</br>
-    <a class="show-credential">Provide your AWS Credential</a> to see real data
-  </div>
-  <img src="./assets/images/ide/global-demo.png"/>
 </div>

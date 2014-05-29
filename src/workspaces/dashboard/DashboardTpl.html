@@ -39,7 +39,7 @@
 
 <section id="dashboard-data-wrap">
 
-	<div id="dashboard-region-switch">
+	<nav class="pos-r">
 		<button id="region-switch" class="btn-blue btn js-toggle-dropdown">
 			<span>{{i18n "DASH_BTN_GLOBAL"}}</span><i class="icon-caret-down"></i>
 		</button>
@@ -48,24 +48,26 @@
 			<li data-region="global">{{i18n "DASH_BTN_GLOBAL"}}</li>
 			{{#each this}}<li data-region="{{id}}">{{shortName}}</li>{{/each}}
 		</ul>
-	</div>
+	</nav>
 
-	<!-- Global view -->
-	<div id="global-view">
-		<div class="dashboard-loading"><div class="loading-spinner"></div></div>
-	</div>
-	<!-- Global view -->
+	<!-- Global view --><ul id="global-view" class="clearfix" style="display:none;"></ul><!-- Global view -->
 
-	<!-- Region view -->
-	<section id="region-view" style="display:none;">
+	<!-- Region view --><section id="region-view" style="display:none;">
 		<div id="region-app-stack-wrap">
 			<div class="dashboard-loading"><div class="loading-spinner"></div></div>
 		</div>
-		<div id="region-resource-wrap">
-			<div class="dashboard-loading"><div class="loading-spinner"></div></div>
-		</div>
-	</section>
-	<!-- Region view -->
+		<div id="region-resource-wrap"></div>
+	</section><!-- Region view -->
+
+	<div id="dashboard-loading"><div class="loading-spinner"></div></div>
+
+	<div id="dashboard-demo">
+	  <div class="enter-credential">
+	    This is only sample data of global resource sumary.</br>
+	    <a class="show-credential">Provide your AWS Credential</a> to see real data
+	  </div>
+	  <img src="./assets/images/ide/global-demo.png"/>
+	</div>
 </section>
 
 </div></div></div>

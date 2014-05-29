@@ -1,12 +1,12 @@
 
 
-define ["ApiRequest", "constant", "backbone"], ( ApiRequest, constant )->
+define ["ApiRequest", "CloudResources", "constant", "backbone"], ( ApiRequest, CloudResources, constant )->
 
   VisualizeVpcParams =
     'AWS.VPC.VPC'    : {
-      # 'filter' : {
-      #   'isDefault' : false # ignore default VPC
-      # }
+      'filter' : {
+        'isDefault' : "false" # ignore default VPC
+      }
     }
     'AWS.VPC.Subnet' : {}
     'AWS.EC2.Instance' : {
@@ -41,6 +41,12 @@ define ["ApiRequest", "constant", "backbone"], ( ApiRequest, constant )->
     initialize : ()->
       # Watch websocket, so that we will know when the import is done.
       @listenTo App.WS, "visualizeUpdate", @onVisualizeUpdated
+
+      @listenTo CloudResources( constant.RESTYPE.INSTANCE ), "update", @onGlobalResChanged
+      @listenTo CloudResources( constant.RESTYPE.EIP ), "update", @onGlobalResChanged
+      @listenTo CloudResources( constant.RESTYPE.VOL ), "update", @onGlobalResChanged
+      @listenTo CloudResources( constant.RESTYPE.ELB ), "update", @onGlobalResChanged
+      @listenTo CloudResources( constant.RESTYPE.VPN ), "update", @onGlobalResChanged
 
     visualizeTimestamp : ()-> @__visRequestTime
 
@@ -140,4 +146,30 @@ define ["ApiRequest", "constant", "backbone"], ( ApiRequest, constant )->
             catch e
 
       regions
+
+    fetchAwsResources : ( region )->
+      if not region then return @__fetchAwsGlobalRes()
+
+
+    isAwsGlobalResReady : ()->
+      CloudResources( constant.RESTYPE.INSTANCE ).isReady() && CloudResources( constant.RESTYPE.EIP ).isReady() && CloudResources( constant.RESTYPE.VOL ).isReady() && CloudResources( constant.RESTYPE.ELB ).isReady() && CloudResources( constant.RESTYPE.VPN ).isReady()
+
+    onGlobalResChanged : ()-> @trigger "change:globalResources", @isAwsGlobalResReady()
+    getGlobalResData : ()->
+      {
+        instances : CloudResources( constant.RESTYPE.INSTANCE ).groupByCategory()
+        eips      : CloudResources( constant.RESTYPE.EIP ).groupByCategory()
+        volumes   : CloudResources( constant.RESTYPE.VOL ).groupByCategory()
+        elbs      : CloudResources( constant.RESTYPE.ELB ).groupByCategory()
+        vpns      : CloudResources( constant.RESTYPE.VPN ).groupByCategory()
+      }
+
+    __fetchAwsGlobalRes : ()->
+      CloudResources( constant.RESTYPE.INSTANCE ).fetch()
+      CloudResources( constant.RESTYPE.EIP ).fetch()
+      CloudResources( constant.RESTYPE.VOL ).fetch()
+      CloudResources( constant.RESTYPE.ELB ).fetch()
+      CloudResources( constant.RESTYPE.VPN ).fetch()
+      return
+
   }

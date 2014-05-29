@@ -1,5 +1,5 @@
 
-define ["ApiRequest", "./CrCollection", "./CrModel"], ( ApiRequest, CrCollection, CrModel )->
+define ["ApiRequest", "./CrCollection", "./CrModel", "constant"], ( ApiRequest, CrCollection, CrModel, constant )->
 
   # Common Collection is a base class for all the non-shared resources.
   # For example, elb / volume / ami / eip things
@@ -17,6 +17,44 @@ define ["ApiRequest", "./CrCollection", "./CrModel"], ( ApiRequest, CrCollection
 
     type : "CrCommonCollection"
     __selfParseData : true
+
+    # Returns an array of datas that are grouped by category(a.k.a region)
+    groupByCategory : ( opts )->
+      opts = opts || {
+        includeEmptyRegion : true
+        calcSum            : true
+        toJSON             : false
+      }
+
+      # Group model by region
+      regionMap = {}
+      for m in @models
+        r = m.attributes.category
+        list = regionMap[r] || (regionMap[r] = [])
+        list.push(if opts.toJSON then m.toJSON() else m)
+
+      # Sort group
+      totalCount = 0
+      regions = []
+      for R in constant.REGION_KEYS
+        models = regionMap[ R ]
+
+        if models
+          totalCount += models.length
+        else if not opts.includeEmptyRegion
+          continue
+
+        regions.push {
+          region : R
+          regionName : constant.REGION_SHORT_LABEL[ R ]
+          regionArea : constant.REGION_LABEL[ R ]
+          data : models || []
+        }
+
+      if opts.calcSum then regions.totalCount = totalCount
+      regions
+
+
 
     doFetch : ()->
       param = {}

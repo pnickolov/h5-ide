@@ -64,11 +64,11 @@
 </div>
 
 <!-- {{slide_update}} -->
-<div class="slide-update">
+<div class="slide-update" data-bind="true">
     <div class="modal-ssl-cert-update">
         <div class="modal-ssl-cert-item clearfix">
             <label class="left">Certificate Name</label>
-            <input class="input" value="{{cert_name}}" type="text" data-required="true" data-ignore="true" id="ssl-cert-name-update-input"/>
+            <input class="input" value="{{cert_name}}" type="text" data-required="true" id="ssl-cert-name-update-input"/>
         </div>
     </div>
     <div class="init action">

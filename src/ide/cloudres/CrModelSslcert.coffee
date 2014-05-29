@@ -40,10 +40,16 @@ define [ "./CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
         self.attributes.PrivateKey       = ""
 
         try
+
           res = res.UploadServerCertificateResponse.UploadServerCertificateResult.ServerCertificateMetadata
 
+          res.Arn = res.Arn
+          res.Expiration = res.Expiration
+          res.Path = res.Path
           res.id   = res.ServerCertificateId
           res.Name = res.ServerCertificateName
+          res.UploadDate = res.UploadDate
+          
         catch e
           throw McError( ApiRequest.Errors.InvalidAwsReturn, "Ssl cert created but aws returns invalid data." )
 

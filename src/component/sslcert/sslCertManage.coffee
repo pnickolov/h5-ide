@@ -7,6 +7,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sslcert/ssl
         initCol: ->
             @sslCertCol = CloudResources constant.RESTYPE.IAM
             @sslCertCol.on 'update', @processCol, @
+            @sslCertCol.on 'change', @processCol, @
 
         getModalOptions: ->
             that = @
@@ -126,8 +127,8 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sslcert/ssl
                 that.modal.cancel()
             , (result) ->
                 that.switchAction()
-                if result.awsresult
-                    notification 'error', result.awsresult
+                if result.awsResult
+                    notification 'error', result.awsResult
 
         delete: ( invalid, checked ) ->
             count = checked.length
@@ -154,7 +155,9 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sslcert/ssl
                     notification 'info', 'Update SSL Certificate Succeed'
                     that.modal.cancel()
                 , (result) ->
-                    notification 'error', result.awsresult
+                    that.switchAction()
+                    if result.awsResult
+                        notification 'error', result.awsResult
 
         refresh: ->
             @sslCertCol.fetchForce()

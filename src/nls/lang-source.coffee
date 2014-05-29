@@ -1282,7 +1282,7 @@ module.exports =
       zh: ""
 
     PROP_INSTANCE_MANAGE_SSL_CERT:
-      en: "Manage Server Certificate ..."
+      en: "Manage SSL Certificate..."
       zh: ""
 
     PROP_INSTANCE_TIP_DEFAULT_KP:
@@ -2549,7 +2549,7 @@ module.exports =
       zh: "添加服务器认证"
 
     PROP_ELB_SERVER_CERTIFICATE:
-      en: "Server Certificate"
+      en: "SSL Certificate"
       zh: "服务器认证"
 
     PROP_ELB_LBL_LISTENER_NAME:
@@ -2559,6 +2559,10 @@ module.exports =
     PROP_ELB_LBL_LISTENER_DESCRIPTIONS:
       en: "Listener Descriptions"
       zh: "监听器描述"
+
+    PROP_ELB_LBL_LISTENER_CERT_NAME:
+      en: "Certificate Name"
+      zh: ""
 
     PROP_ELB_LBL_LISTENER_PRIVATE_KEY:
       en: "Private Key"

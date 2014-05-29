@@ -122,14 +122,15 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sslcert/ssl
             $certPubkey = $('#ssl-cert-publickey-input')
             $certChain = $('#ssl-cert-chain-input')
 
+            certName = $certName.val()
             @sslCertCol.create(
-                Name: $certName.val(),
+                Name: certName,
                 CertificateBody: $certPubkey.val(),
                 PrivateKey: $certPrikey.val(),
                 CertificateChain: $certChain.val(),
                 Path: ''
             ).save().then (result) ->
-                notification 'info', 'Create SSL Certificate Succeed'
+                notification 'info', "Certificate #{certName} is uploaded"
                 that.modal.cancel()
             , (result) ->
                 that.switchAction()
@@ -158,7 +159,8 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sslcert/ssl
                 sslCertModel.update(
                     Name: newCertName
                 ).then (result) ->
-                    notification 'info', 'Update SSL Certificate Succeed'
+                    certName = newCertName
+                    notification 'info', "Certificate #{certName} is updated"
                     that.modal.cancel()
                 , (result) ->
                     that.switchAction()

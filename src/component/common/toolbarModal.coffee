@@ -146,7 +146,7 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalpl
             else if cbAmount - checkedAmount is 1
                 cbAll.prop 'checked', false
 
-            @trigger 'checked', event, @__getChecked()
+            @__triggerChecked event
 
         __checkAll: ( event ) ->
             @__processDelBtn()
@@ -157,7 +157,10 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalpl
                 @$('input[type="checkbox"]').prop 'checked', false
                 @$('tr.item').removeClass 'selected'
 
-            @trigger 'checked', event, @__getChecked()
+            @__triggerChecked event
+
+        __triggerChecked: ( param ) ->
+            @trigger 'checked', param, @__getChecked()
 
         __processDelBtn: () ->
             that = @
@@ -218,6 +221,8 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalpl
 
             @$( '.t-m-content' ).html dom
             @__toggleLoading true
+            @__triggerChecked null
+
             @
 
         setSlide: ( dom ) ->

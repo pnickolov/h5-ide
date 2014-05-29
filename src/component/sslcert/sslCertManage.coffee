@@ -155,17 +155,25 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sslcert/ssl
 
                 sslCertId = checked[0].data.id
                 sslCertModel = that.sslCertCol.get(sslCertId)
+                oldCerName = sslCertModel.get('Name')
                 newCertName = $('#ssl-cert-name-update-input').val()
-                sslCertModel.update(
-                    Name: newCertName
-                ).then (result) ->
-                    certName = newCertName
-                    notification 'info', "Certificate #{certName} is updated"
+
+                if newCertName is oldCerName
+                    
                     that.modal.cancel()
-                , (result) ->
-                    that.switchAction()
-                    if result.awsResult
-                        notification 'error', result.awsResult
+
+                else
+
+                    sslCertModel.update(
+                        Name: newCertName
+                    ).then (result) ->
+                        certName = newCertName
+                        notification 'info', "Certificate #{certName} is updated"
+                        that.modal.cancel()
+                    , (result) ->
+                        that.switchAction()
+                        if result.awsResult
+                            notification 'error', result.awsResult
 
         detail: (event, data, $tr) ->
 

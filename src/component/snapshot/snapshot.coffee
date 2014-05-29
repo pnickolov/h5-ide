@@ -3,7 +3,7 @@ define ['CloudResources', 'constant', 'combo_dropdown', "UI.modalplus", 'toolbar
     fetched = false
     snapshotRes = Backbone.view.extend
         constructor: (options)->
-            @collection = CloudResources constant.RESTYPE.DHCP, Design.instance().region()
+            @collection = CloudResources constant.RESTYPE.SNAPSHOT, Design.instance().region()
             @listenTo @collection, 'change', @render
             @listenTo @collection, 'update', @render
         remove: ()->
@@ -35,11 +35,29 @@ define ['CloudResources', 'constant', 'combo_dropdown', "UI.modalplus", 'toolbar
             @dropdown.on 'change', @selectSnapshot, @
             @dropdown
 
-        openDropdown: ->
-            if App.user.hasCredential()
+        openDropdown: (keySet)->
+            data = @collection.toJSON()
+            dataSet =
+                isRuntime: false
+                data: data
+            if keySet
+                dataSet.data = keySet
+                dataSet.hideDefaultNoKey = true
+            content = template.keys dataSet
+            @dropdown.toggleControls true
+            @dropdown.setContent content
 
+        filterDropdown: (keyword)->
+            hitKeys = _.filter @collection.toJSON(), ( data ) ->
+                data.id.toLowerCase().indexOf( keyword.toLowerCase() ) isnt -1
+            if keyword
+                @openDropdown hitKeys
             else
-                @renderNoCredential()
+                @openDropdown()
+        selectSnapshot: (e)->
+            targetSnapshot = @collection.findWhere
+                id: e
+            @trigger 'change', targetSnapshot.toJSON()
 
         renderNoCredential: ->
             new modalPlus(

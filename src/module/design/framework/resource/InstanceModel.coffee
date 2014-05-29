@@ -30,7 +30,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
 
       cachedAmi : null
 
-      state : undefined
+      state : null
 
     initialize : ( attr, option )->
 
@@ -529,7 +529,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
 
     isRemovable : ()->
       state = @get("state")
-      if (state isnt undefined and state.length > 0) or
+      if (state and _.isArray(state) and state.length > 0) or
         ($('#state-editor-model').is(':visible') and $('#state-editor-model .state-list .state-item').length >= 1)
           return MC.template.NodeStateRemoveConfirmation(name: @get("name"))
 
@@ -855,6 +855,9 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
             VolumeSize : 0
             Iops : ""
 
+      #old format state support
+      if not (_.isArray(data.state) and data.state.length)
+        data.state = null
 
       attr =
         id    : data.uid

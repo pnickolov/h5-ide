@@ -108,7 +108,7 @@ define ["ApiRequest", "constant", "component/exporter/Thumbnail", "backbone"], (
     remove : ()->
       if @isApp() then return @__returnErrorPromise()
 
-      Backbone.Model.prototype.destroy.call @
+      @trigger 'destroy', @, @collection
 
       self = @
       ApiRequest("stack_remove",{

@@ -2396,6 +2396,10 @@ module.exports =
       en: "Snapshot ID"
       zh: "快照ID"
 
+    PROP_VOLUME_SNAPSHOT_SELECT:
+      en: "Select volume from which to create snapshot"
+      zh: ""
+
     PROP_VOLUME_SNAPSHOT:
       en: "Snapshot"
       zh: "快照"

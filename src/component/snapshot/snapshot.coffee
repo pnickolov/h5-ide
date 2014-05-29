@@ -1,5 +1,5 @@
 define ['CloudResources', 'constant', 'combo_dropdown', "UI.modalplus", 'toolbar_modal', "i18n!nls/lang.js", './snapshot_template.js'],
-    (CloudResources, constant, combo_dropdown, modalPlus, toolbar_modal, langsrc, template)->
+    (CloudResources, constant, combo_dropdown, modalPlus, toolbar_modal, lang, template)->
     fetched = false
     snapshotRes = Backbone.view.extend
         constructor: (options)->
@@ -11,17 +11,41 @@ define ['CloudResources', 'constant', 'combo_dropdown', "UI.modalplus", 'toolbar
             Backbone.View::remove.call @
 
         render: ()->
-            if not fetched
-                @collection.fetch().then =>
-                    @render()
-                fetched = true
-                return false
-            @renderManager()
+            if App.user.hasCredential()
+                if not fetched
+                    @collection.fetch().then =>
+                        @render()
+                    fetched = true
+                    return false
+                @renderManager()
+            else
+                @renderNoCredential()
 
         renderDropdown: ()->
+            option =
+                manageBtnValue: lang.ide.PROP_VPC_MANAGE_SNAPSHOT
+                filterPlaceHolder: lang.ide.PROP_VPC_FILTER_SNAPSHOT
             @dropdown = new combo_dropdown(option)
+
+            selection = lang.ide.PROP_VOLUME_SNAPSHOT_SELECT
+            @dropdown.setSelection selection
+
+            @dropdown.on 'open', @openDropdown, @
+            @dropdown.on 'filter', @filterDropdown, @
+            @dropdown.on 'change', @selectSnapshot, @
             @dropdown
 
+        openDropdown: ->
+            if App.user.hasCredential()
+
+            else
+                @renderNoCredential()
+
+        renderNoCredential: ->
+            new modalPlus(
+                title: lang.ide.SETTINGS_CRED_DEMO_SETUP
+                template: lang.ide.SETTINGS_CRED_DEMO_TIT
+            )
         renderManager: ()->
             @manager = new toolbar_modal @getModalOptions()
             @manager.on 'refresh', @refreshManager, @

@@ -333,11 +333,15 @@
     background   : image-url("ide/global-region-icon2.png") left top no-repeat;
   }
 
-  .instances .resource-count { background-position : left -55px * 0 - 2; }
-  .eips      .resource-count { background-position : left -55px * 1 - 2; }
-  .volumes   .resource-count { background-position : left -55px * 2 - 2; }
-  .vpns      .resource-count { background-position : left -55px * 4 - 2; }
-  .elbs      .resource-count { background-position : left -55px * 6 - 2; }
+  .instances    .resource-count { background-position : left -55px * 0 - 2; }
+  .eips         .resource-count { background-position : left -55px * 1 - 2; }
+  .volumes      .resource-count { background-position : left -55px * 2 - 2; }
+  .vpcs         .resource-count { background-position : left -55px * 3 - 2; }
+  .vpns         .resource-count { background-position : left -55px * 4 - 2; }
+  .asgs         .resource-count { background-position : left -55px * 5 - 2; }
+  .elbs         .resource-count { background-position : left -55px * 6 - 2; }
+  .cloudwatches .resource-count { background-position : left -55px * 7 - 2; }
+  .snss         .resource-count { background-position : left -55px * 8 - 2; }
 }
 
 #region-switch {
@@ -424,55 +428,67 @@
   margin-top : 18px;
   box-shadow : 1px 1px 5px rgba(0, 0, 0, 0.1);
   border     : 1px solid #bbb;
+
+  > nav { background : #fcfcfc; }
+
+  .resource-tab {
+    float    : left;
+    position : relative;
+    width    : 11%;
+    padding  : 1.3% 0;
+    cursor   : pointer;
+
+    .resource-count {
+      padding-left : 0;
+      padding-top  : 55px;
+      height       : 5px;
+      font-size    : 12px;
+      display      : block;
+      text-align   : center;
+      margin       : 0 auto 10px;
+      color        : #999;
+
+      background-position-x : center;
+    }
+
+    &:first-child { margin-left : 0.5%; }
+
+    &::after {
+      position      : absolute;
+      left          : 50%;
+      bottom        : 0;
+      display       : none;
+      margin-left   : -8px;
+      border        : 8px solid transparent;
+      content       : '';
+
+      border-bottom-color : #323E49;
+    }
+
+    &.on::after, &:hover::after { display:block; }
+
+    &:hover::after {
+      border-bottom-color : rgba(50, 62, 73, 0.5);
+    }
+
+    .count-bubble {
+      border-radius : 4px;
+      padding       : 2px 6px;
+      background    : #F0F0F0;
+      color         : #148BE6;
+      top           : 8px;
+      left          : 50%;
+      margin-left   : 15px;
+      position      : absolute;
+      font-size     : 14px;
+      box-shadow    : 1px 1px 5px rgba(0, 0, 0, 0.3),inset 0 1px 0px rgba(255,255,255,.8);
+      border        : 1px solid #ccc;
+      text-shadow   : 0 1px 0 #fff;
+    }
+  }
 }
 
-#region-aws-resource-tab {
-  background : #fcfcfc;
-}
-
-.region-resource-tab-item {
-  float    : left;
-  position : relative;
-  width    : 11%;
-  height   : 105px;
-  padding  : 10px 0 0;
-  cursor   : pointer;
-
-  &:first-child { margin-left : 0.5%; }
-
-  &::after {
-    position      : absolute;
-    left          : 50%;
-    bottom        : 0;
-    display       : none;
-    margin-left   : -8px;
-    border        : 8px solid transparent;
-    content       : '';
-
-    border-bottom-color : #323E49;
-  }
-
-  &.on::after { display:block; }
-
-  &:hover &::after {
-    border-bottom-color : rgba(50, 62, 73, 0.5);
-  }
-
-  .region-resource-count {
-    border-radius : 4px;
-    padding       : 2px 6px;
-    background    : #F0F0F0;
-    color         : #148BE6;
-    top           : 8px;
-    left          : 50%;
-    margin-left   : 15px;
-    position      : absolute;
-    font-size     : 14px;
-    box-shadow    : 1px 1px 5px rgba(0, 0, 0, 0.3),inset 0 1px 0px rgba(255,255,255,.8);
-    border        : 1px solid #ccc;
-    text-shadow   : 0 1px 0 #fff;
-  }
-}
+#region-aws-resource-data .scroll-wrap { height: 420px; }
 
 .region-resource-list {
 

@@ -168,8 +168,10 @@ define ["ApiRequest", "CloudResources", "constant", "backbone"], ( ApiRequest, C
 
     getAwsResData : ( region )->
       if not region
+        filter = ( m )-> if m.attributes.instanceState then m.attributes.instanceState.name is "running" else false
+
         return {
-          instances : CloudResources( constant.RESTYPE.INSTANCE ).groupByCategory()
+          instances : CloudResources( constant.RESTYPE.INSTANCE ).groupByCategory(undefined, filter)
           eips      : CloudResources( constant.RESTYPE.EIP ).groupByCategory()
           volumes   : CloudResources( constant.RESTYPE.VOL ).groupByCategory()
           elbs      : CloudResources( constant.RESTYPE.ELB ).groupByCategory()

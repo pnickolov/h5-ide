@@ -133,128 +133,101 @@
 
 <!-- {{regionResourceTab}} -->
 <nav class="clearfix">
-
-  <div class="region-resource-tab-item on" data-resource-type="DescribeInstances">
-    <i id="global-resource-icon-instance" class="global-resource-icon"></i>
-    <span class="region-resource-count">{{Instance}}</span>
-    <span class="region-resource-name">{{i18n "DASH_LBL_INSTANCE"}}</span>
+  <div class="resource-tab instances" data-type="INSTANCE">
+    <span class="resource-count">{{i18n "DASH_LBL_INSTANCE"}}</span>
+    <span class="count-bubble">{{instances.length}}</span>
   </div>
 
-  <div class="region-resource-tab-item" data-resource-type="DescribeAddresses">
-    <i id="global-resource-icon-eip" class="global-resource-icon"></i>
-    <span class="region-resource-count">{{EIP}}</span>
-    <span class="region-resource-name">{{i18n "DASH_LBL_ELASTIC_IP"}}</span>
+  <div class="resource-tab eips" data-type="EIP">
+    <span class="resource-count">{{i18n "DASH_LBL_ELASTIC_IP"}}</span>
+    <span class="count-bubble">{{eips.length}}</span>
   </div>
 
-  <div class="region-resource-tab-item" data-resource-type="DescribeVolumes">
-    <i id="global-resource-icon-vol" class="global-resource-icon"></i>
-    <span class="region-resource-count">{{Volume}}</span>
-    <span class="region-resource-name">{{i18n "DASH_LBL_VOLUME"}}</span>
+  <div class="resource-tab volumes" data-type="VOL">
+    <span class="resource-count">{{i18n "DASH_LBL_VOLUME"}}</span>
+    <span class="count-bubble">{{volumes.length}}</span>
   </div>
 
-  <div class="region-resource-tab-item" data-resource-type="DescribeVpcs">
-    <i id="global-resource-icon-vpc" class="global-resource-icon"></i>
-    <span class="region-resource-count">{{VPC}}</span>
-    <span class="region-resource-name">{{i18n "DASH_LBL_VPC"}}</span>
+  <div class="resource-tab vpcs" data-type="VPC">
+    <span class="resource-count">{{i18n "DASH_LBL_VPC"}}</span>
+    <span class="count-bubble">{{vpcs.length}}</span>
   </div>
 
-  <div class="region-resource-tab-item" data-resource-type="DescribeVpnConnections">
-    <i id="global-resource-icon-vpn" class="global-resource-icon"></i>
-    <span class="region-resource-count">{{VPN}}</span>
-    <span class="region-resource-name">{{i18n "DASH_LBL_VPN"}}</span>
+  <div class="resource-tab vpns" data-type="VPN">
+    <span class="resource-count">{{i18n "DASH_LBL_VPN"}}</span>
+    <span class="count-bubble">{{vpns.length}}</span>
   </div>
 
-  <div class="region-resource-tab-item" data-resource-type="DescribeLoadBalancers">
-    <i id="global-resource-icon-elb" class="global-resource-icon"></i>
-    <span class="region-resource-count">{{ELB}}</span>
-    <span class="region-resource-name">{{i18n "DASH_LBL_LOAD_BALANCER"}}</span>
+  <div class="resource-tab elbs" data-type="ELB">
+    <span class="resource-count">{{i18n "DASH_LBL_LOAD_BALANCER"}}</span>
+    <span class="count-bubble">{{elbs.length}}</span>
   </div>
 
-  <div class="region-resource-tab-item" data-resource-type="DescribeAutoScalingGroups">
-    <i id="global-resource-icon-asg" class="global-resource-icon"></i>
-    <span class="region-resource-count">{{AutoScalingGroup}}</span>
-    <span class="region-resource-name">{{i18n "DASH_LBL_AUTO_SCALING_GROUP"}}</span>
+  <div class="resource-tab asgs" data-type="ASG">
+    <span class="resource-count">{{i18n "DASH_LBL_AUTO_SCALING_GROUP"}}</span>
+    <span class="count-bubble">{{asgs.length}}</span>
   </div>
 
-  <div class="region-resource-tab-item" data-resource-type="DescribeAlarms">
-    <i id="global-resource-icon-cwa" class="global-resource-icon"></i>
-    <span class="region-resource-count">{{CW}}</span>
-    <span class="region-resource-name">{{i18n "DASH_LBL_CLOUDWATCH_ALARM"}}</span>
+  <div class="resource-tab cloudwatches" data-type="CW">
+    <span class="resource-count">{{i18n "DASH_LBL_CLOUDWATCH_ALARM"}}</span>
+    <span class="count-bubble">{{cloudwatches.length}}</span>
   </div>
 
-  <div class="region-resource-tab-item" data-resource-type="ListSubscriptions">
-    <i id="global-resource-icon-sns" class="global-resource-icon"></i>
-    <span class="region-resource-count">{{SNS}}</span>
-    <span class="region-resource-name">{{i18n "DASH_LBL_SNS_SUBSCRIPTION"}}</span>
+  <div class="resource-tab snss" data-type="SUBSCRIPTION">
+    <span class="resource-count">{{i18n "DASH_LBL_SNS_SUBSCRIPTION"}}</span>
+    <span class="count-bubble">{{snss.length}}</span>
   </div>
-</nav>
+</nav><div id="region-aws-resource-data" class="table-head-fix"></div>
 
-<div id="region-aws-resource-data"></div>
+<!-- {{resourceINSTANCE}} -->
+<table class="table-head">
+  <thead><tr>
+    <th class="sortable" style="width: 25%">{{i18n "DASH_LBL_INSTANCE_NAME"}}/{{i18n "DASH_LBL_ID"}}</th>
+    <th class="sortable" style="width: 17%">{{i18n "DASH_LBL_STATUS"}}</th>
+    <th class="sortable" style="width: 20%" data-row-type="datetime">{{i18n "DASH_LBL_LAUNCH_TIME"}}</th>
+    <th class="sortable" style="width: 15%">{{i18n "DASH_LBL_AMI"}}</th>
+    <th class="sortable" style="width: 15%">{{i18n "DASH_LBL_AVAILABILITY_ZONE"}}</th>
+    <th class="sortable" style="width: 8%">{{i18n "DASH_LBL_DETAIL"}}</th>
+  </tr></thead>
+</table>
+<div class="scroll-wrap"> <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+<div class="scroll-content">
+  <table class="table">
+    <thead> <tr>
+      <th style="width: 25%"><span class="th-inner"></span></th>
+      <th style="width: 17%"><span class="th-inner"></span></th>
+      <th style="width: 20%"><span class="th-inner"></span></th>
+      <th style="width: 15%"><span class="th-inner"></span></th>
+      <th style="width: 15%"><span class="th-inner"></span></th>
+      <th style="width: 8%"><span class="th-inner"></span></th>
+    </tr> </thead>
+    <tbody>
+    {{#each instances}}{{#with attributes}}
+      <tr>
+        <td>
+          <div>{{#doubleIf tagSet tagSet.app }}
+            <span class="table-app-link truncate tooltip" data-tooltip="{{i18n 'DASH_TIP_APP_CREATED_BY'}}{{getInvalidKey tagSet 'Created by'}}" data-id="{{tagSet.app-id}}">[{{tagSet.app}}]</span>
+            {{else}}
+            <span class="truncate tooltip" data-tooltip='{{ i18n "DASH_TIP_UNMANAGED_RESOURCE" }}' >{{ i18n "DASH_LBL_UNMANAGED" }}</span>
+          {{/doubleIf}}</div>
+          <div>{{#if tagSet}}{{or tagSet.name tagSet.Name}}{{/if}}<span class="resource-id">( {{id}} )</span></div>
+        </td>
+        <td><i class="status status-{{instanceState.name}} icon-label"></i>{{ instanceState.name }}</td>
+        <td>{{simpleTime launchTime}}</td>
+        <td class="bubble table-link" data-bubble-template="bubbleAMIInfo" data-bubble-data='{"id":"{{imageId}}","name":"{{ image.name }}","description":"{{image.description}}","architecture":"{{image.architecture}}","imageLocation":"{{image.imageLocation}}","isPublic":"{{image.isPublic}}","kernelId":"{{image.kernelId}}","rootDeviceName":"{{image.rootDeviceName}}","rootDeviceType":"{{image.rootDeviceType}}"}'>{{ imageId }}</td>
+        <td>{{placement.availabilityZone}}</td>
+        <td class="table-action"><i title="{{i18n 'DASH_TIT_VIEW_RESOURCE_DETAIL'}}" class="icon-detail"></i></td>
+      </tr>{{/with}}
+    {{else}}
+      <div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
+        <p>{{i18n "DASH_TIP_NO_RESOURCE_LEFT"}}{{i18n "DASH_LBL_INSTANCE"}}{{i18n "DASH_TIP_NO_RESOURCE_RIGHT"}}.</p>
+      </div>
+    {{/each}} </tbody>
+  </table>
+</div> </div>
 
-<!-- {{DescribeInstances}} -->
-<div class="table-head-fix" id="DescribeInstances">
-    <table class="table-head">
-        <thead>
-            <tr>
-                <th class="sortable" style="width: 25%">{{i18n "DASH_LBL_INSTANCE_NAME"}}/{{i18n "DASH_LBL_ID"}}</th>
-                <th class="sortable" style="width: 17%">{{i18n "DASH_LBL_STATUS"}}</th>
-                <th class="sortable" style="width: 20%" data-row-type="datetime">{{i18n "DASH_LBL_LAUNCH_TIME"}}</th>
-                <th class="sortable" style="width: 15%">{{i18n "DASH_LBL_AMI"}}</th>
-                <th class="sortable" style="width: 15%">{{i18n "DASH_LBL_AVAILABILITY_ZONE"}}</th>
-                <th class="sortable" style="width: 8%">{{i18n "DASH_LBL_DETAIL"}}</th>
-            </tr>
-        </thead>
-    </table>
-    <div class="scroll-wrap">
-        <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-        <div class="scroll-content">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th style="width: 25%"><span class="th-inner"></span></th>
-                        <th style="width: 17%"><span class="th-inner"></span></th>
-                        <th style="width: 20%"><span class="th-inner"></span></th>
-                        <th style="width: 15%"><span class="th-inner"></span></th>
-                        <th style="width: 15%"><span class="th-inner"></span></th>
-                        <th style="width: 8%"><span class="th-inner"></span></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {{#each DescribeInstances }}
-                    <tr>
-                        <td>
-                            <div>
-                                {{#if app}}
-                                <span class="table-app-link truncate tooltip {{#if clickAble}}table-app-link-clickable{{/if}}" data-tooltip="{{i18n 'DASH_TIP_APP_CREATED_BY'}}{{ owner }}" data-id="{{tagSet.app-id}}" data-name="{{tagSet.app}}">[{{ app }}]</span>
-                                {{else}}
-                                <span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip='{{ i18n "DASH_TIP_UNMANAGED_RESOURCE" }}' >{{ i18n "DASH_LBL_UNMANAGED" }}</span>
-                                {{/if}}
-                            </div>
-                            <div>
-                                {{ host }}
-                                <span class="resource-id">( {{ instanceId }} )</span>
-                            </div>
-                        </td>
-                        <td><i class="status status-{{instanceState.name}} icon-label"></i>{{ instanceState.name }}</td>
-                        <td>{{ launchTime }}</td>
-                        <td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleAMIInfo" data-bubble-data='{"id":"{{imageId}}","name":"{{ image.name }}","description":"{{image.description}}","architecture":"{{image.architecture}}","imageLocation":"{{image.imageLocation}}","isPublic":"{{image.isPublic}}","kernelId":"{{image.kernelId}}","rootDeviceName":"{{image.rootDeviceName}}","rootDeviceType":"{{image.rootDeviceType}}"}'>{{ imageId }}</a></td>
-                        <td>{{ placement.availabilityZone}}</td>
-                        <td class="table-action"><a href="javascript:void(0)" title="{{i18n 'DASH_TIT_VIEW_RESOURCE_DETAIL'}}" class="icon-detail modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
-                    </tr>
-                    {{else}}
-                    <div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
-                        <p>{{i18n "DASH_TIP_NO_RESOURCE_LEFT"}}{{i18n "DASH_LBL_INSTANCE"}}{{i18n "DASH_TIP_NO_RESOURCE_RIGHT"}}.</p>
-                    </div>
-                    {{/each}}
-
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-
-<!-- {{DescribeAddresses}} -->
-<div class="table-head-fix" id="DescribeAddresses">
+<!-- {{resourceEIP}} -->
+<div class="table-head-fix">
     <table class="table-head">
         <thead>
             <tr>
@@ -296,8 +269,8 @@
     </div>
 </div>
 
-<!-- {{DescribeVolumes}} -->
-<div class="table-head-fix" id="DescribeVolumes">
+<!-- {{resourceVOL}} -->
+<div class="table-head-fix">
     <table class="table-head">
         <thead>
             <tr>
@@ -357,8 +330,8 @@
     </div>
 </div>
 
-<!-- {{DescribeVpcs}} -->
-<div class="table-head-fix" id="DescribeVpcs">
+<!-- {{resourceVPC}} -->
+<div class="table-head-fix">
     <table class="table-head">
         <thead>
             <tr>
@@ -419,8 +392,8 @@
     </div>
 </div>
 
-<!-- {{DescribeVpnConnections}} -->
-<div class="table-head-fix" id="DescribeVpnConnections">
+<!-- {{resourceVPN}} -->
+<div class="table-head-fix">
     <table class="table-head">
         <thead>
             <tr>
@@ -478,8 +451,8 @@
     </div>
 </div>
 
-<!-- {{DescribeLoadBalancers}} -->
-<div class="table-head-fix" id="DescribeLoadBalancers">
+<!-- {{resourceELB}} -->
+<div class="table-head-fix">
     <table class="table-head">
         <thead>
             <tr>
@@ -526,8 +499,8 @@
     </div>
 </div>
 
-<!-- {{DescribeAutoScalingGroups}} -->
-<div class="table-head-fix" id="DescribeAutoScalingGroups">
+<!-- {{resourceASG}} -->
+<div class="table-head-fix">
     <table class="table-head">
         <thead>
             <tr>
@@ -582,8 +555,8 @@
     </div>
 </div>
 
-<!-- {{DescribeAlarms}} -->
-<div class="table-head-fix" id="DescribeAlarms">
+<!-- {{resourceCW}} -->
+<div class="table-head-fix">
     <table class="table-head">
         <thead>
             <tr>
@@ -632,8 +605,8 @@
     </div>
 </div>
 
-<!-- {{ListSubscriptions}} -->
-<div class="table-head-fix" id="ListSubscriptions">
+<!-- {{resourceSUBSCRIPTION}} -->
+<div class="table-head-fix">
     <table class="table-head">
     <thead>
         <tr>

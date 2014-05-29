@@ -59,4 +59,14 @@ define ["handlebars", "i18n!nls/lang.js"], ( Handlebars, lang )->
           return v1
       else
           return '' + (v1 + 1)
+
+  Handlebars.registerHelper "getInvalidKey", ( v1, v2 ) -> return v1[v2]
+
+  Handlebars.registerHelper "doubleIf", ( v1, v2, options ) ->
+    return options.fn this if v1 and v2
+    return options.inverse this
+
+  Handlebars.registerHelper "or", ( v1, v2 ) -> v1 || v2
+
+  Handlebars.registerHelper "simpleTime", ( time ) -> MC.dateFormat(new Date(time), "yyyy-MM-dd hh:mm:ss")
   null

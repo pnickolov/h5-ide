@@ -55,7 +55,8 @@ define [
 
     initialize : ()->
       @regionOpsTab = "stack"
-      @region = "global"
+      @region       = "global"
+      @resourcesTab = "INSTANCE"
 
       data = _.map constant.REGION_LABEL, ( name, id )->
         id   : id
@@ -166,12 +167,10 @@ define [
         $("#global-view" ).toggle( isDataReady )
         $("#dashboard-loading").toggle( not isDataReady )
       else
-        isDataReady = @model.isAwsResReady( region )
+        $("#region-view" ).show()
         $("#global-view" ).hide()
-        $("#region-view" ).toggle( isDataReady )
-        $("#dashboard-loading").toggle( not isDataReady )
         @updateRegionAppStack()
-
+        @updateRegionResources( region )
       return
 
     switchAppStack: ( evt ) ->
@@ -291,7 +290,7 @@ define [
 
     updateGlobalResources : ( isDataReady )->
       if not isDataReady
-        if @region is global then $("#dashboard-loading").show()
+        if @region is "global" then $("#dashboard-loading").show()
         $("#global-view").empty().hide()
       else
         $("#global-view").html( tplPartials.globalResources( @model.getAwsResData() ) )
@@ -303,10 +302,13 @@ define [
     updateRegionResources : ( region )->
       if @region isnt region then return
 
-      if not isDataReady
+      if not @model.isAwsResReady( region )
         $("#dashboard-loading").show()
         $("#region-resource-wrap").empty().hide()
       else
+        $("#dashboard-loading").hide()
         data = @model.getAwsResData( region )
         $("#region-resource-wrap").html(tplPartials.regionResourceTab( data )).show()
+        $("#region-resource-wrap").children("nav").children("[data-type='#{@resourcesTab}']").addClass("on")
+        $("#region-aws-resource-data").html( tplPartials["resource#{@resourcesTab}"](data) )
   }

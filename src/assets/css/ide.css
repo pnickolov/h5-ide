@@ -424,10 +424,6 @@ button {
 	vertical-align: middle;
 }
 
-#region-aws-resource-data .scroll-wrap {
-	height: 340px;
-}
-
 #region-aws-resource-data .table-head th {
 	padding: 10px 15px;
 	font-size: 12px;

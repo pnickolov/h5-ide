@@ -19,7 +19,7 @@ define ["ApiRequest", "./CrCollection", "./CrModel", "constant"], ( ApiRequest, 
     __selfParseData : true
 
     # Returns an array of datas that are grouped by category(a.k.a region)
-    groupByCategory : ( opts )->
+    groupByCategory : ( opts, filter )->
       opts = opts || {
         includeEmptyRegion : true
         calcSum            : true
@@ -29,6 +29,8 @@ define ["ApiRequest", "./CrCollection", "./CrModel", "constant"], ( ApiRequest, 
       # Group model by region
       regionMap = {}
       for m in @models
+        if filter and filter( m ) is false then continue
+
         r = m.attributes.category
         list = regionMap[r] || (regionMap[r] = [])
         list.push(if opts.toJSON then m.toJSON() else m)

@@ -185,7 +185,6 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
                     "netbios-name-servers"  : mapFilterInput "#property-netbios-server .input"
                     "netbios-node-type"     : [parseInt( $("#property-netbios-type .selection").html(), 10 ) || 0]
                 validate = (value, key)->
-                    console.error value
                     if value.length < 1
                         notification 'error', key + " value can't be empty."
                         return false
@@ -194,7 +193,6 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
                 if not _.every data, validate
                     return false
                 @switchAction 'processing'
-                console.info data,"<----data to create."
                 afterCreated = @afterCreated.bind @
                 @collection.create(data).save().then afterCreated,afterCreated
 
@@ -202,7 +200,6 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
             that = @
             deleteCount += checked.length
             @switchAction 'processing'
-            console.info deleteCount, checked, "<===== Data to Delete."
             afterDeleted = that.afterDeleted.bind that
             _.each checked, (data)=>
                 @collection.findWhere(id: data.data.id).destroy().then afterDeleted, afterDeleted

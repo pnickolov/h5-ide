@@ -32,6 +32,11 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 			else
 				that.set('isWindowsPlatform', false)
 
+			currentCompData = that.get('compData')
+			compLayout = MC.canvas_data.layout[currentCompData.uid]
+			if compLayout and compLayout.osType and compLayout.osType is 'windows'
+				that.set('isWindowsPlatform', true)
+
 			that.set('amiExist', platformInfo.amiExist)
 
 			if osPlatformDistro
@@ -122,7 +127,6 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 
 			that.genStateRefList(allCompData)
 
-			currentCompData = that.get('compData')
 			resAttrDataAry = MC.aws.aws.genAttrRefList(currentCompData, allCompData)
 			that.set('resAttrDataAry', resAttrDataAry)
 

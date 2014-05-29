@@ -15,6 +15,10 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
 
     getTopic: () -> @connectionTargets('TopicUsage')[ 0 ]
 
+    isEffective: ->
+      n = @toJSON()
+      n.instanceLaunch or n.instanceLaunchError or n.instanceTerminate or n.instanceTerminateError or n.test
+
     getTopicName: () -> @getTopic()?.get 'name'
 
     setTopic: ( appId, name ) ->

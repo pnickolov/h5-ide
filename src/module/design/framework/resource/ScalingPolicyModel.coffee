@@ -44,6 +44,7 @@ define [ "../ResourceModel", "../ComplexResModel", "constant" ], ( ResourceModel
       }, alarmData
       null
 
+    isNotificate: -> @get 'sendNotification'
 
     getCost : ( priceMap, currency )->
 

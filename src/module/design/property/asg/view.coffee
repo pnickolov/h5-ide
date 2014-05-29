@@ -61,8 +61,11 @@ define [ '../base/view',
             "click #property-asg-policies .icon-edit"      : "editScalingPolicy"
             "click #property-asg-policies .icon-del"       : "delScalingPolicy"
 
-
         render     : () ->
+            selectTopicName = @model.getNotificationTopicName()
+            @snsDropdown = new snsDropdown selection: selectTopicName
+            @snsDropdown.on 'change', @model.setNotificationTopic, @model
+
             data = @model.toJSON()
 
             for p in data.policies
@@ -75,10 +78,25 @@ define [ '../base/view',
             data.can_add_policy = data.policies.length < 25
 
             @$el.html template data
-
-            @$( '#sns-placeholder' ).html new snsDropdown().render().el
+            @processTopic null, true
 
             data.name
+
+        wheatherHasNoti: ->
+            n = @model.notiObject.toJSON()
+            n.instanceLaunch or n.instanceLaunchError or n.instanceTerminate or n.instanceTerminateError or n.test
+
+        processTopic: ( originHasNoti, render ) ->
+            hasNoti = @wheatherHasNoti()
+            if render and hasNoti
+                @$( '#sns-placeholder' ).html @snsDropdown.render().el
+                @$( '.sns-group' ).show()
+            else if not originHasNoti and hasNoti
+                @$( '#sns-placeholder' ).html @snsDropdown.render( true ).el
+                @$( '.sns-group' ).show()
+            else if originHasNoti and not hasNoti
+                @$( '.sns-group' ).hide()
+
 
         setASGCoolDown : ( event ) ->
             $target = $ event.target
@@ -456,7 +474,9 @@ define [ '../base/view',
             else
                 $("#property-asg-sns-info").hide()
 
+            originHasNoti = @wheatherHasNoti()
             @model.setNotification checkMap
+            @processTopic originHasNoti
 
         setHealthyCheckELBType :( event ) ->
             @model.setHealthCheckType 'ELB'

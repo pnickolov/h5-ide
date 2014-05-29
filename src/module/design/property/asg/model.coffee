@@ -32,6 +32,7 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
       @set "has_notification", n.instanceLaunch or n.instanceLaunchError or n.instanceTerminate or n.instanceTerminateError or n.test
       @set "has_sns_sub", !!(Design.modelClassForType(constant.RESTYPE.SUBSCRIPTION).allObjects().length)
 
+      @notiObject = component.getNotiObject()
       # Policies
       @set "policies", _.map data.policies, (p) ->
         data = $.extend true, {}, p.attributes
@@ -60,7 +61,15 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
       Design.instance().component( @get("uid") ).set( "healthCheckGracePeriod", value )
 
     setNotification : ( notification )->
-      Design.instance().component( @get("uid") ).setNotification( notification )
+      n = Design.instance().component( @get("uid") ).setNotification( notification )
+      @notiObject = n
+
+    getNotificationTopicName: () ->
+      Design.instance().component( @get("uid") ).getNotificationTopicName()
+
+    setNotificationTopic: ( appId, name ) ->
+      Design.instance().component( @get("uid") ).setNotificationTopic( appId, name )
+
 
     setTerminatePolicy : ( policies ) ->
       Design.instance().component( @get("uid") ).set("terminationPolicies", policies)

@@ -30,7 +30,7 @@ define [
       "click .global-map-item"                                       : "gotoRegionFromMap"
       "click .global-map-item .app"                                  : "gotoRegionFromMap"
       'click .recent-list-item, .region-resource-list li'            : 'openItem'
-      'click .table-app-link-clickable'                              : 'openItem'
+      'click .table-app-link'                                        : 'openItem'
       'click #global-region-create-stack-list li, #btn-create-stack' : 'createStack'
 
       "click .region-resource-list .delete-stack"    : "deleteStack"
@@ -188,7 +188,6 @@ define [
       @resourcesTab = $(evt.currentTarget).addClass("on").attr("data-type")
       data = @model.getAwsResData( @region )
       $("#region-aws-resource-data").html( tplPartials["resource#{@resourcesTab}"](data) )
-      console.log data
       return
 
     importJson : ()->

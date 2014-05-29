@@ -27,6 +27,8 @@ define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone", "con
     stackList : ()-> @attributes.stackList
     appList   : ()-> @attributes.appList
 
+    getOpsModelById : ( opsId )-> @attributes.appList.get(opsId) || @attributes.stackList.get(opsId)
+
     # This method creates a new stack in IDE, and returns that model.
     # The stack is not automatically stored in server.
     # You need to call save() after that.

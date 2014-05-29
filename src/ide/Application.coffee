@@ -116,6 +116,11 @@ define [
       space.activate()
       return
 
+    opsModel = @model.getOpsModelById( modelId )
+    if not opsModel
+      console.warn "The OpsModel `#{modelId}` is not found."
+      return
+
     editor = new DesignEditor( modelId )
     editor.activate()
     editor

@@ -318,7 +318,7 @@
         {{#doubleIf tagSet tagSet.app }}
           <div class="table-app-link truncate tooltip" data-tooltip="{{i18n 'DASH_TIP_APP_CREATED_BY'}}{{getInvalidKey tagSet 'Created by'}}" data-id="{{tagSet.app-id}}">[{{tagSet.app}}]</div>
         {{else}}
-    "truncate">{{ i18n "DASH_LBL_UNMANAGED" }}</div>
+          <div>{{ i18n "DASH_LBL_UNMANAGED" }}</div>
         {{/doubleIf}}
         <div>{{id}}</div>
         </td>

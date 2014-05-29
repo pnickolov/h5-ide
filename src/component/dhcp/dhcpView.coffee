@@ -16,6 +16,7 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
 
         result
     deleteCount = 0
+    deleteErrorCount = 0
     dhcpView = Backbone.View.extend
         constructor:(options)->
             @resModel = options.resModel
@@ -204,13 +205,17 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
             _.each checked, (data)=>
                 @collection.findWhere(id: data.data.id).destroy().then afterDeleted, afterDeleted
 
-        afterDeleted: ->
+        afterDeleted: (result)->
             deleteCount--
             if result.error
-                notification 'info', "Delete Failed, Please try again later."
+                deleteErrorCount++
                 return false
             if deleteCount is 0
-                notification 'info', "Delete Successfully"
+                if deleteErrorCount > 0
+                    notification 'error', deleteErrorCount+" DhcpOptions failed to delete, Please try again later."
+                else
+                    notification 'info', "Delete Successfully"
+                deleteErrorCount = 0
                 @manager.cancel()
         afterCreated: (result)->
             @manager.cancel()

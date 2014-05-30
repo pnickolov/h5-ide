@@ -225,20 +225,6 @@ $dark-blue: #001324;
 				@include user-select;
 				text-align: center;
 				cursor: pointer;
-				&::before {
-					content: '\F124';
-					font: 16px/1em "MCIcon";
-  					font-weight: normal;
-  					-webkit-font-smoothing: antialiased;
-  					margin-left: -15px;
-  					margin-right: 4px;
-				}
-			}
-
-			tr.detailed td.show-detail {
-				&::before {
-					content: '\F121';
-				}
 			}
 
 			tr.tr-detail {

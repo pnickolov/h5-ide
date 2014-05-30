@@ -44,6 +44,15 @@
   width: 456px; }
 .sns-manage .slide-create .new-topic {
   border-bottom: 1px solid #0f0f0f; }
+.sns-manage .table-head-fix .table tr td.show-detail::before {
+  content: '\F124';
+  font: 16px/1em "MCIcon";
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+  margin-left: -15px;
+  margin-right: 4px; }
+.sns-manage .table-head-fix .table tr.detailed td.show-detail::before {
+  content: '\F121'; }
 .sns-manage .t-m-content tr > td:nth-of-type(4)
 , .sns-manage .table-head tr > th:nth-of-type(4) {
   text-align: center; }

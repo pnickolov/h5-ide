@@ -69,6 +69,28 @@
 
     }
 
+    .table-head-fix .table tr {
+
+         td.show-detail {
+            &::before {
+                content: '\F124';
+                font: 16px/1em "MCIcon";
+                font-weight: normal;
+                -webkit-font-smoothing: antialiased;
+                margin-left: -15px;
+                margin-right: 4px;
+            }
+
+        }
+
+        &.detailed td.show-detail {
+            &::before {
+                content: '\F121';
+            }
+        }
+    }
+
+
     .t-m-content tr > td:nth-of-type(4)
     , .table-head tr > th:nth-of-type(4)
      {

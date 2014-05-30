@@ -310,8 +310,8 @@ define [
 
     showCredential : ()-> App.showSettings App.showSettings.TAB.Credential
 
-    updateGlobalResources : ( isDataReady )->
-      if not isDataReady
+    updateGlobalResources : ()->
+      if not @model.isAwsResReady()
         if @region is "global" then $("#dashboard-loading").show()
         $("#global-view").empty().hide()
       else

@@ -17,26 +17,47 @@ define ["Workspace", "workspaces/dashboard/DashboardView", "workspaces/dashboard
       # Notice that the dependencies are not reduced, just transferred.
 
       # Watch changes in applist/stacklist
-      @view.listenTo App.model.stackList(), "update", @view.updateOpsList
-      @view.listenTo App.model.appList(),   "update", @view.updateOpsList
+      self = @
+      @listenTo App.model.stackList(), "update", ()-> self.__renderControl "updateOpsList"
+      @listenTo App.model.appList(),   "update", ()-> self.__renderControl "updateOpsList"
 
       @view.listenTo App.model.appList(), "change:state",    @view.updateRegionList
       @view.listenTo App.model.appList(), "change:progress", @view.updateAppProgress
 
       # Watch changes in aws resources
-      @view.listenTo @model, "change:globalResources", @view.updateGlobalResources
-      @view.listenTo @model, "change:regionResources", @view.updateRegionResources
+      @listenTo @model, "change:globalResources", ()-> self.__renderControl "updateGlobalResources"
+      @listenTo @model, "change:regionResources", ()-> self.__renderControl "updateRegionResources"
 
       # Watch updates of visualize unmanaged vpc
-      @view.listenTo @model, "change:visualizeData", @view.updateVisModel
+      @listenTo @model, "change:visualizeData", ()-> self.__renderControl "updateVisModel"
 
       # Watch changes in user
-      self = @
       @listenTo App.user, "change:credential", ()->
         self.model.fetchAwsResources()
         self.view.updateDemoView()
 
       @model.fetchAwsResources()
+
+      @__renderControlMap = {}
+      return
+
+    sleep : ()->
+      @__renderControlMap = {}
+      @view.$el.hide()
+      return
+
+    awake : ()->
+      @view[method]() for method of @__renderControlMap
+      @__renderControlMap = null
+      @view.$el.show()
+      return
+
+    __renderControl : ( method )->
+      if @__renderControlMap
+        console.log "DashboardView's render is throttled, method name: #{method}"
+        @__renderControlMap[ method ] = true
+      else
+        @view[method]()
       return
 
   Dashboard

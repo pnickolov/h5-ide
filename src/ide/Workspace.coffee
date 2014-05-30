@@ -70,7 +70,7 @@ define ["backbone"], ()->
     isRemovable : ()-> true
 
     # Override this method so that we can locate a particular workspace.
-    # The attributes is the same as the initialize()
+    # The attributes should be the same as the initialize(), but can also be anything.
     isWorkingOn : ( attributes )-> false
 
   _.extend Workspace.prototype, Backbone.Events

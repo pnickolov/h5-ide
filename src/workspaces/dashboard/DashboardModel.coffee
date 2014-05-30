@@ -161,7 +161,7 @@ define ["ApiRequest", "CloudResources", "constant", "backbone"], ( ApiRequest, C
 
     onRegionResChanged : ()-> @trigger "change:regionResources"
     onGlobalResChanged : ()->
-      @trigger "change:globalResources", @isAwsResReady()
+      @trigger "change:globalResources"
       @trigger "change:regionResources"
 
     fetchAwsResources : ( region )->

@@ -1113,6 +1113,14 @@ a.sidebar-hider:before {
 	border-radius: 0;
 }
 
+#btn-snapshot-manager{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    border: none;
+    border-radius: 0;
+}
 /* Property Panel */
 #property-panel {
 	right        : 0;
@@ -3824,6 +3832,17 @@ summary:focus {
 #asg-termination-policy .selection {
 	display: inline-block;
 	padding: 4px 20px 4px 5px;
+}
+
+#asg-termination-policy .policy-sns-placeholder {
+	margin-top: 8px;
+}
+#asg-termination-policy .policy-sns-placeholder .selectbox {
+	margin-left: 0;
+}
+
+#asg-termination-policy .policy-sns-placeholder .selection {
+	width: 234px;
 }
 
 #asg-termination-policy .selectbox .dropdown {

@@ -44,6 +44,7 @@ define [ "../ResourceModel", "../ComplexResModel", "constant" ], ( ResourceModel
       }, alarmData
       null
 
+    isNotificate: -> @get 'sendNotification'
 
     getCost : ( priceMap, currency )->
 
@@ -74,6 +75,9 @@ define [ "../ResourceModel", "../ComplexResModel", "constant" ], ( ResourceModel
     setTopic: ( appId, name ) ->
       TopicModel = Design.modelClassForType( constant.RESTYPE.TOPIC )
       TopicModel.get( appId, name ).assignTo @
+
+    removeTopic: ->
+      @connections('TopicUsage')[ 0 ]?.remove()
 
     getTopic: () -> @connectionTargets('TopicUsage')[ 0 ]
 

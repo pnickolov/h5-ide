@@ -79,10 +79,10 @@ define [ "constant", "../GroupModel", "./DhcpModel" ], ( constant, GroupModel, D
       console.assert( @get("tenancy") is "default" or @get("tenancy") is "dedicated", "Invalid value for Vpc.attributes.tenancy" )
 
       dhcp = @get("dhcp")
-      if dhcp.isNone()
-        dhcp = "default"
-      else if dhcp.isDefault()
+      if dhcp.isAuto()
         dhcp = ""
+      else if dhcp.isDefault()
+        dhcp = "default"
       else
         dhcp = dhcp.createRef( "DhcpOptionsId" )
 

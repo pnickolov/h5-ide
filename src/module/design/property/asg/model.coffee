@@ -63,6 +63,11 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
       n = Design.instance().component( @get("uid") ).setNotification( notification )
       @notiObject = n
 
+    removeTopic: ->
+      n = Design.instance().component( @get("uid") ).setNotification( notification )
+      n?.removeTopic()
+
+
     getNotificationTopicName: () ->
       Design.instance().component( @get("uid") ).getNotificationTopicName()
 
@@ -126,7 +131,7 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
         policy.set policy_detail
         policy_detail.alarmData = alarmData
 
-      if policy_detail.sendNotification
+      if policy_detail.sendNotification and policy_detail.topic
         policy.setTopic policy_detail.topic.appId, policy_detail.topic.name
 
 

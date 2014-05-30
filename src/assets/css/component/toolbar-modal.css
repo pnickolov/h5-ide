@@ -137,6 +137,15 @@
       -moz-user-select: none;
       text-align: center;
       cursor: pointer; }
+      .modal-toolbar .table-head-fix .table tr td.show-detail::before {
+        content: '\F124';
+        font: 16px/1em "MCIcon";
+        font-weight: normal;
+        -webkit-font-smoothing: antialiased;
+        margin-left: -15px;
+        margin-right: 4px; }
+    .modal-toolbar .table-head-fix .table tr.detailed td.show-detail::before {
+      content: '\F121'; }
     .modal-toolbar .table-head-fix .table tr.tr-detail td {
       background-color: #273544 !important; }
     .modal-toolbar .table-head-fix .table tr .detail-info {

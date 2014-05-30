@@ -2136,50 +2136,46 @@ input.parsley-error {
 /* Loading Gear */
 
 .gear-loading {
-  position: relative;
-  width: 80px;
-  height: 80px;
-  margin: auto;
-  top: 40%;
+  position : relative;
+  width    : 80px;
+  height   : 80px;
+  margin   : auto;
+  top      : 40%;
 }
 
 
 .gear-loading:before,
 .gear-loading:after {
-  content: "\F150";
-  background-repeat: no-repeat;
-
+	content  : " ";
   position : absolute;
   top      : 10px;
   left     : 10px;
-  width    : 1em;
-  height   : 1em;
+  width    : 40px;
+  height   : 40px;
 
-  font : 40px/1em "MCIcon";
-  font-weight : normal;
-  -webkit-font-smoothing: antialiased;
-
-  color   : #9C6DC0;
   opacity : .8;
+  background : url("../images/ide/gearbig.svg");
+  background-size : 100% 100%;
 
   -webkit-animation : gear 2s linear infinite;
      -moz-animation : gear 2s linear infinite;
        -o-animation : gear 2s linear infinite;
-  		  animation : gear 2s linear infinite;
+  		    animation : gear 2s linear infinite;
 
 }
 
 .gear-loading:after {
-  font-size : 30px;
-  color     : #9F62D1;
   top       : 38px;
   left      : 39px;
+  width     : 30px;
+  height    : 30px;
   opacity   : .6;
+  background-image : url("../images/ide/gearsmall.svg");
 
-  -webkit-animation-name : smallgear;
-     -moz-animation-name : smallgear;
-       -o-animation-name : smallgear;
-          animation-name : smallgear;
+  -webkit-animation : smallgear 1.5s linear infinite;
+     -moz-animation : smallgear 1.5s linear infinite;
+       -o-animation : smallgear 1.5s linear infinite;
+          animation : smallgear 1.5s linear infinite;
 }
 
 @-webkit-keyframes gear {
@@ -2200,20 +2196,20 @@ input.parsley-error {
 }
 
 @-webkit-keyframes smallgear {
-	from {-webkit-transform: rotate(339deg);}
-	to {-webkit-transform: rotate(-20deg);}
+	from {-webkit-transform: rotate(359deg);}
+	to {-webkit-transform: rotate(0deg);}
 }
 @-moz-keyframes smallgear {
-	from {-moz-transform: rotate(339deg);}
-	to {-moz-transform: rotate(-20deg);}
+	from {-moz-transform: rotate(359deg);}
+	to {-moz-transform: rotate(0deg);}
 }
 @-o-keyframes smallgear {
-	from {-o-transform: rotate(339deg);}
-	to {-o-transform: rotate(-20deg);}
+	from {-o-transform: rotate(359deg);}
+	to {-o-transform: rotate(0deg);}
 }
 @keyframes smallgear {
-	from {transform: rotate(339deg);}
-	to {transform: rotate(-20deg);}
+	from {transform: rotate(359deg);}
+	to {transform: rotate(0deg);}
 }
 
 .timestamp {

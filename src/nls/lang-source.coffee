@@ -479,6 +479,10 @@ module.exports =
       en: "Volume and Snapshots"
       zh: "虚拟磁盘和快照"
 
+    RES_TIT_SNAPSHOT_MANAGE:
+      en: "Manage EBS Snapshot"
+      zh: "管理 EBS 快照"
+
     RES_TIT_ELB_ASG:
       en: "Load Balancer and Auto Scaling"
       zh: "负载均衡器和自动伸缩组"
@@ -1282,7 +1286,7 @@ module.exports =
       zh: ""
 
     PROP_INSTANCE_MANAGE_SSL_CERT:
-      en: "Manage Server Certificate ..."
+      en: "Manage SSL Certificate..."
       zh: ""
 
     PROP_INSTANCE_TIP_DEFAULT_KP:
@@ -2396,6 +2400,10 @@ module.exports =
       en: "Snapshot ID"
       zh: "快照ID"
 
+    PROP_VOLUME_SNAPSHOT_SELECT:
+      en: "Select volume from which to create snapshot"
+      zh: ""
+
     PROP_VOLUME_SNAPSHOT:
       en: "Snapshot"
       zh: "快照"
@@ -2545,7 +2553,7 @@ module.exports =
       zh: "添加服务器认证"
 
     PROP_ELB_SERVER_CERTIFICATE:
-      en: "Server Certificate"
+      en: "SSL Certificate"
       zh: "服务器认证"
 
     PROP_ELB_LBL_LISTENER_NAME:
@@ -2555,6 +2563,10 @@ module.exports =
     PROP_ELB_LBL_LISTENER_DESCRIPTIONS:
       en: "Listener Descriptions"
       zh: "监听器描述"
+
+    PROP_ELB_LBL_LISTENER_CERT_NAME:
+      en: "Certificate Name"
+      zh: ""
 
     PROP_ELB_LBL_LISTENER_PRIVATE_KEY:
       en: "Private Key"
@@ -5000,6 +5012,23 @@ VisualOps API. You cannot UNDO this action.'
       zh: ""
     TA_MSG_WARNING_OUTBOUND_NOT_TO_ALL:
       en: "<span class='validation-tag tag-instance'>%s</span> has configured states. Suggest to set its outbound rule on <span class='validation-tag tag-port'>80</span> and <span class='validation-tag tag-port'>443</span> to <span class='validation-tag tag-ip'>0.0.0.0/0</span>. Otherwise, agent may not be able to work properly, install packages or check out source codes lacking route to VisualOps's monitoring systems or required repositories."
+      zh: ""
+
+    # Share Resource
+    TA_MSG_ERROR_ASG_NOTIFICATION_NO_TOPIC:
+      en: "Auto Scaling Group %s has configured notification. Please select a SNS Topic for it."
+      zh: ""
+
+    TA_MSG_ERROR_ASG_POLICY_NO_TOPIC:
+      en: "Auto Scaling Group %s's Scaling Policy %s has configured notification. Please select a SNS Topic for it."
+      zh: ""
+
+    TA_MSG_ERROR_ASG_NOTIFICITION_TOPIC_NONEXISTIENT:
+      en: "Auto Scaling Group %s is using a nonexistient SNS Topic %s. Please change to an existing SNS Topic to make notification work."
+      zh: ""
+
+    TA_MSG_ERROR_ASG_POLICY_TOPIC_NONEXISTIENT:
+      en: "Auto Scaling Group %s's Scaling Policy %s is using a nonexistent SNS Topic %s. Please change to an existing SNS Topic to make notification work."
       zh: ""
 
     RELOAD_STATE_INVALID_REQUEST:

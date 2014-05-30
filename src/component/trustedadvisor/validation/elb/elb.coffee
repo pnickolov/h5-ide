@@ -406,88 +406,94 @@ define [ 'constant', 'MC','i18n!nls/lang.js', '../../helper', 'CloudResources'],
 
 	isSSLCertExist = (callback) ->
 
-		elbNameUIDMap = {}
+		try
+			if !callback
+				callback = () ->
 
-		eachListener = (iterator) ->
+			elbNameUIDMap = {}
 
-			_.each MC.canvas_data.component, (compObj) ->
+			eachListener = (iterator) ->
 
-				if compObj.type is constant.RESTYPE.ELB
+				_.each MC.canvas_data.component, (compObj) ->
 
-					elbName = compObj.name
+					if compObj.type is constant.RESTYPE.ELB
 
-					elbNameUIDMap[elbName] = compObj.uid
+						elbName = compObj.name
 
-					listenerAry = compObj.resource.ListenerDescriptions
+						elbNameUIDMap[elbName] = compObj.uid
 
-					for listenerItem in listenerAry
+						listenerAry = compObj.resource.ListenerDescriptions
 
-						listenerObj = listenerItem.Listener
-						listenerCertRef = listenerObj.SSLCertificateId
+						for listenerItem in listenerAry
 
-						if not listenerCertRef
-							continue
+							listenerObj = listenerItem.Listener
+							listenerCertRef = listenerObj.SSLCertificateId
 
-						listenerCertUID = MC.extractID(listenerCertRef)
-						sslCertComp = MC.canvas_data.component[listenerCertUID]
+							if not listenerCertRef
+								continue
 
-						if sslCertComp
-						
-							sslCertName = sslCertComp.name
-							iterator(elbName, sslCertName)
+							listenerCertUID = MC.extractID(listenerCertRef)
+							sslCertComp = MC.canvas_data.component[listenerCertUID]
 
-				null
+							if sslCertComp
+							
+								sslCertName = sslCertComp.name
+								iterator(elbName, sslCertName)
 
-		elbNotExistCertMap = {}
-		allExistCertAry = []
+					null
 
-		validResultAry = []
+			elbNotExistCertMap = {}
+			allExistCertAry = []
 
-		haveCert = false
-		eachListener () -> haveCert = true
+			validResultAry = []
 
-		# if have cert, fetch aws cert res and check if exist
-		if haveCert
+			haveCert = false
+			eachListener () -> haveCert = true
 
-			if not window.sslCertCol
-				window.sslCertCol = CloudResources constant.RESTYPE.IAM
+			# if have cert, fetch aws cert res and check if exist
+			if haveCert
 
-			window.sslCertCol.fetch().then (result) ->
-				
-				sslCertAry = window.sslCertCol.toJSON()
-				_.each sslCertAry, (sslCertData) ->
-					allExistCertAry.push sslCertData.Name
+				if not window.sslCertCol
+					window.sslCertCol = CloudResources constant.RESTYPE.IAM
 
-				eachListener (elbName, sslCertName) ->
+				window.sslCertCol.fetchForce().then (result) ->
+					
+					sslCertAry = window.sslCertCol.toJSON()
+					_.each sslCertAry, (sslCertData) ->
+						allExistCertAry.push sslCertData.Name
 
-					if sslCertName not in allExistCertAry
-						elbNotExistCertMap[elbName] = [] if not elbNotExistCertMap[elbName]
-						elbNotExistCertMap[elbName].push(sslCertName)
+					eachListener (elbName, sslCertName) ->
 
-				_.each elbNotExistCertMap, (sslCertNameAry, elbName) ->
+						if sslCertName not in allExistCertAry
+							elbNotExistCertMap[elbName] = [] if not elbNotExistCertMap[elbName]
+							elbNotExistCertMap[elbName].push(sslCertName)
 
-					tipInfo = sprintf lang.ide.TA_MSG_ERROR_ELB_SSL_CERT_NOT_EXIST_FROM_AWS, elbName, sslCertNameAry.join(', ')
-					validResultAry.push {
-						level: constant.TA.ERROR,
-						info: tipInfo,
-						uid: elbNameUIDMap[elbName]
-					}
+					_.each elbNotExistCertMap, (sslCertNameAry, elbName) ->
 
-				if validResultAry.length
-					callback(validResultAry)
-					return
+						tipInfo = sprintf lang.ide.TA_MSG_ERROR_ELB_SSL_CERT_NOT_EXIST_FROM_AWS, elbName, sslCertNameAry.join(', ')
+						validResultAry.push {
+							level: constant.TA.ERROR,
+							info: tipInfo,
+							uid: elbNameUIDMap[elbName]
+						}
+
+					if validResultAry.length
+						callback(validResultAry)
+						return
+
+					callback(null)
+
+				, () ->
+
+					callback(null)
+
+			else
 
 				callback(null)
 
-			, () ->
-
-				callback(null)
-
-		else
+		catch err
 
 			callback(null)
-
-		return null
 
 	isHaveIGWForInternetELB : isHaveIGWForInternetELB
 	isHaveInstanceAttached : isHaveInstanceAttached

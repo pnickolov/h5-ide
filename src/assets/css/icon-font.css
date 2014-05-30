@@ -73,7 +73,8 @@
 .icon-expand:before,
 .icon-save-app:before,
 .icon-support:before,
-.icon-reload:before {
+.icon-reload:before,
+.icon-resources:before {
   font: 16px/1em "MCIcon";
   font-weight: normal;
   -webkit-font-smoothing: antialiased; }
@@ -284,3 +285,6 @@
 
 .icon-reload:before {
   content: "\F156"; }
+
+.icon-resources:before {
+  content: "\F157"; }

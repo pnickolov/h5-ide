@@ -12,7 +12,7 @@
 
 <!-- {{modal_list}} -->
 {{#each this}}
-<tr class="item" data-id="">
+<tr class="item" data-topic-arn="{{id}}">
     <td>
         <div class="checkbox">
             <input id="kp-select-{{Name}}" type="checkbox" value="None" data-name="{{Name}}" data-id="{{id}}" class="one-cb">
@@ -21,7 +21,7 @@
     </td>
     <td>{{Name}}</td>
     <td>{{id}}</td>
-    <td {{#if subCount}}class="show-detail"{{/if}} data-topic-arn="{{id}}"><b>{{subCount}}</b> Subscriptions</td>
+    <td {{#if subCount}}class="show-detail"{{/if}}><b>{{subCount}}</b> Subscriptions</td>
 </tr>
 {{/each}}
 
@@ -100,8 +100,8 @@
 <table class="table sns-detail">
     <thead>
         <tr>
-            <th style="width: 48px;">Protocol </th>
-            <th>- Endpoint</th>
+            <th style="width: 48px;">Protocol</th>
+            <th>Endpoint</th>
             <th style="wdith: 30%;">Subscription ARN</th>
             <th style="width: 103px;"></th>
         </tr>
@@ -126,3 +126,8 @@
     </tbody>
 </table>
 
+<!-- {{nosns}} -->
+<div class="combo-dd-no-data">
+    <p>No SNS Topic in {{regionName}}.</p>
+    <a class="create-one">Create SNS Topic</a>
+</div>

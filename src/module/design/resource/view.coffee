@@ -6,10 +6,10 @@ define [ 'event',
          'constant'
          './template',
          './template_data',
-         'i18n!nls/lang.js', 'backbone', 'jquery', 'handlebars',
+         'i18n!nls/lang.js', 'snapshotManager', 'backbone', 'jquery', 'handlebars',
          'UI.selectbox',
          'UI.radiobuttons', 'UI.modal', 'UI.table'
-], ( ide_event, constant, template, template_data, lang ) ->
+], ( ide_event, constant, template, template_data, lang, snapshotManager ) ->
 
     ResourceView = Backbone.View.extend {
 
@@ -31,6 +31,7 @@ define [ 'event',
                 # .on( 'SEARCHBAR_HIDE',   '#resource-select',                          this.searchBarHideEvent )
                 # .on( 'SEARCHBAR_CHANGE', '#resource-select',                          this.searchBarChangeEvent )
                 .on( 'click',            '#btn-browse-community-ami',           this, this.openBrowseCommunityAMIsModal )
+                .on( 'click',            '#btn-snapshot-manager',           this, this.openSnapshotManager )
                 .on( 'click',            '#btn-search-ami',                     this, this.searchCommunityAmiCurrent )
                 .on( 'click',            '#community_ami_page_preview',         this, this.searchCommunityAmiPreview )
                 .on( 'click',            '#community_ami_page_next',            this, this.searchCommunityAmiNext )
@@ -284,6 +285,16 @@ define [ 'event',
             return if !this.model.attributes.availability_zone
             $( '.availability-zone' ).html template_data.availability_zone_data( @model.attributes )
             null
+
+        openSnapshotManager: ->
+            @snapshotManager ||= new snapshotManager()
+            @snapshotManager.off 'datachange', @refreshSnapshotRender
+            @snapshotManager.on 'datachange', @refreshSnapshotRender
+            @snapshotManager.render()
+
+        refreshSnapshotRender: ()->
+            console.log 'Change detected, Updating Snapshot Resource.'
+            @resourceSnapshotRender()
 
         resourceSnapshotRender : () ->
             console.log 'resourceSnapshotRender'

@@ -48,6 +48,9 @@
 
 }
 
+.policy-sns-placeholder {
+    @extend #sns-placeholder;
+}
 
 
 .sns-manage {
@@ -66,6 +69,11 @@
 
     }
 
+    .t-m-content tr > td:nth-of-type(4)
+    , .table-head tr > th:nth-of-type(4)
+     {
+        text-align: center;
+    }
 
     .tr-detail {
         & > td {

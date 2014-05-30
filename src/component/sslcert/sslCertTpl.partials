@@ -27,28 +27,28 @@
 <div class="slide-create" data-bind="true">
     <div class="modal-ssl-cert-create">
         <div class="modal-ssl-cert-item clearfix">
-            <label class="left">{{ i18n "PROP_ELB_LBL_LISTENER_NAME"}}</label>
-            <input class="input" type="text" data-required="true" data-ignore="true" id="ssl-cert-name-input"/>
+            <label class="left">{{ i18n "PROP_ELB_LBL_LISTENER_CERT_NAME"}}</label>
+            <input placeholder="Required. Up to 128 characters" class="input" type="text" data-required="true" data-ignore="true" id="ssl-cert-name-input"/>
         </div>
         <div class="modal-ssl-cert-item clearfix">
             <label class="left">{{ i18n "PROP_ELB_LBL_LISTENER_PRIVATE_KEY"}}</label>
-            <textarea class="input ssl-cert-input tooltip" data-tooltip="{{i18n 'POP_TIP_PEM_ENCODED'}}" data-required="true" id="ssl-cert-privatekey-input"></textarea>
+            <textarea placeholder="Required. PEM Encoded" class="input ssl-cert-input" data-required="true" id="ssl-cert-privatekey-input"></textarea>
         </div>
         <div class="modal-ssl-cert-item clearfix">
             <label class="left"  >{{ i18n "PROP_ELB_LBL_LISTENER_PUBLIC_KEY"}}</label>
-            <textarea class="input ssl-cert-input tooltip" data-tooltip="{{i18n 'POP_TIP_PEM_ENCODED'}}" data-required="true" id="ssl-cert-publickey-input"></textarea>
+            <textarea placeholder="Required. PEM Encoded" class="input ssl-cert-input" data-required="true" id="ssl-cert-publickey-input"></textarea>
         </div>
         <div class="modal-ssl-cert-item clearfix">
             <label class="left"  >{{ i18n "PROP_ELB_LBL_LISTENER_CERTIFICATE_CHAIN"}}</label>
-            <textarea class="input ssl-cert-input tooltip" data-tooltip="{{i18n 'POP_TIP_PEM_ENCODED'}}" id="ssl-cert-chain-input"></textarea>
+            <textarea placeholder="Optional. PEM Encoded" class="input ssl-cert-input" id="ssl-cert-chain-input"></textarea>
         </div>
     </div>
     <div class="init action">
-        <button class="btn btn-blue do-action" data-action="create" disabled>Create</button>
+        <button class="btn btn-blue do-action" data-action="create" disabled>Upload</button>
         <button class="btn btn-silver cancel">Cancel</button>
     </div>
     <div class="processing action" style="display:none;">
-        <button class="btn" disabled>Creating...</button>
+        <button class="btn" disabled>Upload...</button>
     </div>
 </div>
 
@@ -77,7 +77,7 @@
         <button class="btn btn-silver cancel">Cancel</button>
     </div>
     <div class="processing action" style="display:none;">
-        <button class="btn" disabled>Creating...</button>
+        <button class="btn" disabled>Updating...</button>
     </div>
 </div>
 
@@ -95,7 +95,7 @@
     </div>
     <div class="detail-info-row">
         <section class="property-control-group">
-            <label>Expiration</label>
+            <label>Expiration Date</label>
             <div>{{Expiration}}</div>
         </section>
         <section class="property-control-group">

@@ -8,7 +8,8 @@ define [ '../base/view',
          './template/term',
          'i18n!nls/lang.js'
          'sns_dropdown'
-], ( PropertyView, template, policy_template, term_template, lang, snsDropdown ) ->
+         'UI.modalplus'
+], ( PropertyView, template, policy_template, term_template, lang, snsDropdown, modalplus ) ->
 
     metricMap =
         "CPUUtilization"             : "CPU Utilization"
@@ -84,8 +85,8 @@ define [ '../base/view',
             data.name
 
         wheatherHasNoti: ->
-            n = @model.notiObject.toJSON()
-            n.instanceLaunch or n.instanceLaunchError or n.instanceTerminate or n.instanceTerminateError or n.test
+            n = @model.notiObject?.toJSON()
+            n and (n.instanceLaunch or n.instanceLaunchError or n.instanceTerminate or n.instanceTerminateError or n.test)
 
         processNotiTopic: ( originHasNoti, render ) ->
             hasNoti = @wheatherHasNoti()
@@ -96,6 +97,7 @@ define [ '../base/view',
                 @$( '#sns-placeholder' ).html @snsNotiDropdown.render( true ).el
                 @$( '.sns-group' ).show()
             else if originHasNoti and not hasNoti
+                @model.removeTopic()
                 @$( '.sns-group' ).hide()
 
         processPolicyTopic: ( display, dropdown ) ->
@@ -308,6 +310,26 @@ define [ '../base/view',
             @showScalingPolicy()
             false
 
+        openPolicyModal: ( data ) ->
+            options =
+                template        : policy_template data
+                title           : lang.ide.PROP_ASG_ADD_POLICY_TITLE_ADD
+                width           : '480px'
+                compact         : true
+                confirm         :
+                    text: 'Done'
+
+            modalPlus = new modalplus options
+            that = @
+            modalPlus.on 'confirm', () ->
+
+                result = $("#asg-termination-policy").parsley("validate")
+                if result is false
+                    return false
+                that.onPolicyDone()
+                modalPlus.close()
+
+            ,@
 
         showScalingPolicy : ( data ) ->
             if !data
@@ -329,8 +351,8 @@ define [ '../base/view',
 
             data.detail_monitor = this.model.attributes.detail_monitor
 
-            modal policy_template(data), true
-
+            #modal policy_template(data), true
+            @openPolicyModal data
 
 
             self = this
@@ -472,7 +494,8 @@ define [ '../base/view',
 
             if data.sendNotification
                 selectedTopicData = $('.policy-sns-placeholder .selected').data()
-                data.topic = appId: selectedTopicData.id, name: selectedTopicData.name
+                if selectedTopicData and selectedTopicData.id and selectedTopicData.name
+                    data.topic = appId: selectedTopicData.id, name: selectedTopicData.name
 
             @model.setPolicy data
             @updateScalingPolicy data

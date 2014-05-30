@@ -1,0 +1,15 @@
+<!-- {{content}} -->
+{{#each items}}
+<tr class="item" data-id="">
+    <td>
+        <div class="checkbox">
+            <input id="{{id}}" type="checkbox" value="None" data-name="{{name}}" class="one-cb">
+            <label for="{{id}}"></label>
+        </div>
+    </td>
+    <td>{{name}}<span>{{id}}</span></td>
+    <td>{{volumeSize}} GiB</td>
+    <td>{{#if completed}}<i class="status status-green icon-label"></i> Completed{{else}}<i class="status status-yellow icon-label"></i> Pending - {{progress}}%{{/if}}</td>
+    <td>{{description}}</td>
+</tr>
+{{/each}}

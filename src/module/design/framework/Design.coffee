@@ -664,6 +664,7 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
       result.push changeObj
     null
 
+  DesignImpl.prototype.backingStore = ()-> @__backingStore
   DesignImpl.prototype.diff = ()->
     # Get an detailed diff of the current state of the Design and the last save state.
     newData = @serialize()

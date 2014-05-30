@@ -50,7 +50,7 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'ApiRequest', 'stack_ser
 				returnInfo = null
 				errInfoStr = ''
 
-				if result
+				if result isnt true
 
 					checkResult = false
 

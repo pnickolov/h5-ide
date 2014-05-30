@@ -1,14 +1,13 @@
-define ['CloudResources', 'constant', 'combo_dropdown', "UI.modalplus", 'toolbar_modal', "i18n!nls/lang.js", './snapshot_template.js'],
-    (CloudResources, constant, combo_dropdown, modalPlus, toolbar_modal, lang, template)->
+define ['CloudResources', 'constant', 'combo_dropdown', "UI.modalplus", 'toolbar_modal', "i18n!nls/lang.js", './component/snapshot/snapshot_template.js'], (CloudResources, constant, combo_dropdown, modalPlus, toolbar_modal, lang, template)->
     fetched = false
     snapshotRes = Backbone.View.extend
-        constructor: (options)->
-            @collection = CloudResources constant.RESTYPE.SNAPSHOT, Design.instance().region()
+        constructor: ()->
+            @collection = CloudResources constant.RESTYPE.SNAP, Design.instance().region()
             @listenTo @collection, 'change', @render
             @listenTo @collection, 'update', @render
             @collection.on 'change', @onChange
             @collection.on 'update', @onChange
-
+            @
         onChange: ->
             @trigger 'datachange', @
 
@@ -18,11 +17,6 @@ define ['CloudResources', 'constant', 'combo_dropdown', "UI.modalplus", 'toolbar
 
         render: ()->
             if App.user.hasCredential()
-                if not fetched
-                    @collection.fetch().then =>
-                        @render()
-                    fetched = true
-                    return false
                 @renderManager()
             else
                 @renderNoCredential()
@@ -72,18 +66,31 @@ define ['CloudResources', 'constant', 'combo_dropdown', "UI.modalplus", 'toolbar
             )
         renderManager: ()->
             @manager = new toolbar_modal @getModalOptions()
-            @manager.on 'refresh', @refreshManager, @
+            @manager.on 'refresh', @initManager, @
             @manager.on "slidedown", @renderSlides, @
             @manager.on 'action', @doAction, @
             @manager.on 'close', =>
                 @manager.remove()
             @manager.render()
+            if not fetched
+                @collection.fetch().then =>
+                    @initManager()
+                fetched = true
+            else
+                @initManager()
 
         initManager: ()->
             if not fetched
                 fetched = true
                 @collection.fetchForce().then @renderManager, @renderManager
                 return false
+            console.log @collection.toJSON()
+            data = @collection.toJSON()
+            _.each data, (e,f)->
+                if e.progress is 100
+                    data[f].completed = true
+            dataSet =
+                items: data
             content = template.content items:@collection.toJSON()
             @manager?.setContent content
 

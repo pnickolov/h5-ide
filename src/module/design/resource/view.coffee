@@ -288,7 +288,9 @@ define [ 'event',
 
         openSnapshotManager: ->
             @snapshotManager ||= new snapshotManager()
+            @snapshotManager.off 'datachange', @refreshSnapshotRender
             @snapshotManager.on 'datachange', @refreshSnapshotRender
+            @snapshotManager.render()
 
         refreshSnapshotRender: ()->
             console.log 'Change detected, Updating Snapshot Resource.'

@@ -31,11 +31,11 @@
   text-align: center;
   background: #f5a623; }
 
-#sns-placeholder .combo-dd-list > p {
+#sns-placeholder .combo-dd-list > p, .policy-sns-placeholder .combo-dd-list > p {
   margin: 0; }
-#sns-placeholder .selection > p {
+#sns-placeholder .selection > p, .policy-sns-placeholder .selection > p {
   display: none; }
-#sns-placeholder li.item > p {
+#sns-placeholder li.item > p, .policy-sns-placeholder li.item > p {
   margin: 0; }
 
 .sns-manage .slide-create .before-create > div {

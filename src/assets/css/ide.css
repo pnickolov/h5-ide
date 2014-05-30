@@ -5682,6 +5682,17 @@ summary:focus {
 	padding: 4px 20px 4px 5px;
 }
 
+#asg-termination-policy .policy-sns-placeholder {
+	margin-top: 8px;
+}
+#asg-termination-policy .policy-sns-placeholder .selectbox {
+	margin-left: 0;
+}
+
+#asg-termination-policy .policy-sns-placeholder .selection {
+	width: 234px;
+}
+
 #asg-termination-policy .selectbox .dropdown {
 	margin-top: -5px;
 }

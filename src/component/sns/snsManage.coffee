@@ -124,11 +124,15 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
                     notification 'error', err.awsResult
                     throw err
 
-
+        fetch: ->
+            if App.user.hasCredential()
+                @topicCol.fetch()
+                @subCol.fetch()
 
         initialize: () ->
             @initCol()
             @initModal()
+            @fetch()
 
         doAction: ( action, checked ) ->
             @[action] and @[action](@validate(action), checked)

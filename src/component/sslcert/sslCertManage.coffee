@@ -6,6 +6,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sslcert/ssl
 
         initCol: ->
             @sslCertCol = CloudResources constant.RESTYPE.IAM
+            @sslCertCol.fetch()
             @sslCertCol.on 'update', @processCol, @
             @sslCertCol.on 'change', @processCol, @
 

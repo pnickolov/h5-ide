@@ -378,6 +378,38 @@ button {
 	display: block;
 }
 
+.resources-dropdown-wrapper {
+	position: absolute;
+	left: 206px;
+	width: 90%;
+	min-width: 160px;
+	margin-top: 1px;
+	z-index: 80;
+	box-sizing: border-box;
+	box-shadow: 1px 1px 5px rgba(0,0,0,.3);
+	/*background: #000;*/
+	border: 1px solid #0f0f0f;
+	color: #257de0;
+}
+
+.resources-dropdown-wrapper li {
+	border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+	padding: 8px;
+	font-size: 12px;
+	position: relative;
+	cursor: pointer;
+	display: block;
+	background-color: #232323;
+}
+
+.resources-dropdown-wrapper li:hover {
+	background-color: #000;
+}
+
+.opem > .resources-dropdown-wrapper {
+	display: block;
+}
+
 #header .dropdown-menu {
 	font-size  : 12px;
 	position   : absolute;
@@ -2582,6 +2614,12 @@ td.table-action a.btn {
 	text-align: center;
 	width: 40px;
 	float: right;
+	color: #257de0;
+	cursor: pointer;
+}
+
+.sidebar-title .menu-manage-shard-res:hover {
+	color: #4990e2;
 }
 
 a.sidebar-hider:before {

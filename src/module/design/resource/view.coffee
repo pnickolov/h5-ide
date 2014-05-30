@@ -6,10 +6,10 @@ define [ 'event',
          'constant'
          './template',
          './template_data',
-         'i18n!nls/lang.js', 'snapshotManager', 'backbone', 'jquery', 'handlebars',
+         'i18n!nls/lang.js', 'snapshotManager', 'sslcert_manage', 'dhcp', 'sns_manage', 'kp', 'backbone', 'jquery', 'handlebars',
          'UI.selectbox',
          'UI.radiobuttons', 'UI.modal', 'UI.table'
-], ( ide_event, constant, template, template_data, lang, snapshotManager ) ->
+], ( ide_event, constant, template, template_data, lang, snapshotManager, sslCertManage, dhcpManage, snsManage, kpManage ) ->
 
     ResourceView = Backbone.View.extend {
 
@@ -39,6 +39,7 @@ define [ 'event',
                 .on( 'click',            '.favorite-ami-list .faved',           this, this.removeFav )
                 .on( 'click',            '.favorite-ami-list .btn-fav-ami.deleted',         this, this.addFav )
                 .on( 'keypress',         '#community-ami-input',                this, this.searchCommunityAmiCurrent)
+                .on( 'click',            '.resources-dropdown-wrapper li',      this, this.resourcesMenuClick )
 
             $( window ).on "resize", _.bind( this.resizeAccordion, this )
             $( "#tab-content-design" ).on "click", ".fixedaccordion-head", this.updateAccordion
@@ -539,6 +540,33 @@ define [ 'event',
                     else
                         $item.toggleClass("tooltip", false)
             null
+
+        resourcesMenuClick : (event) ->
+
+            $currentDom = $(event.currentTarget)
+            currentAction = $currentDom.data('action')
+
+            switch currentAction
+
+                when 'keypair'
+
+                    new kpManage().render()
+
+                when 'snapshot'
+
+                    new snapshotManager().render()
+
+                when 'sns'
+
+                    new snsManage().render()
+
+                when 'sslcert'
+
+                    new sslCertManage().render()
+
+                when 'dhcp'
+
+                    new dhcpManage().render()
 
     }
 

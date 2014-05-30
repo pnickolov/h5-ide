@@ -150,8 +150,8 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
                 else if success.length > 1
                     notification 'info', "Selected #{success.length} SNS topic are deleted."
 
-                if not that.model.get( 'keys' ).length
-                    that.M$( '#kp-select-all' )
+                if not that.modal.getChecked().length
+                    that.M$( '#t-m-select-all' )
                         .get( 0 )
                         .checked = false
 

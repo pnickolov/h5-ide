@@ -100,8 +100,8 @@
 <table class="table sns-detail">
     <thead>
         <tr>
-            <th style="width: 48px;">Protocol </th>
-            <th>- Endpoint</th>
+            <th style="width: 48px;">Protocol</th>
+            <th>Endpoint</th>
             <th style="wdith: 30%;">Subscription ARN</th>
             <th style="width: 103px;"></th>
         </tr>

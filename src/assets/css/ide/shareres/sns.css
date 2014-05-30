@@ -44,6 +44,9 @@
   width: 456px; }
 .sns-manage .slide-create .new-topic {
   border-bottom: 1px solid #0f0f0f; }
+.sns-manage .t-m-content tr > td:nth-of-type(4)
+, .sns-manage .table-head tr > th:nth-of-type(4) {
+  text-align: center; }
 .sns-manage .tr-detail > td {
   padding: 0; }
 .sns-manage .tr-detail table.sns-detail thead tr th {

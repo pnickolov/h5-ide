@@ -15,6 +15,9 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
 
     getTopic: () -> @connectionTargets('TopicUsage')[ 0 ]
 
+    removeTopic: ->
+      @connections('TopicUsage')[ 0 ]?.remove()
+
     isEffective: ->
       n = @toJSON()
       n.instanceLaunch or n.instanceLaunchError or n.instanceTerminate or n.instanceTerminateError or n.test

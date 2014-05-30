@@ -76,6 +76,9 @@ define [ "../ResourceModel", "../ComplexResModel", "constant" ], ( ResourceModel
       TopicModel = Design.modelClassForType( constant.RESTYPE.TOPIC )
       TopicModel.get( appId, name ).assignTo @
 
+    removeTopic: ->
+      @connections('TopicUsage')[ 0 ]?.remove()
+
     getTopic: () -> @connectionTargets('TopicUsage')[ 0 ]
 
     getTopicName: () -> @getTopic()?.get 'name'

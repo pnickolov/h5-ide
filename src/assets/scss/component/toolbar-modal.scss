@@ -37,6 +37,16 @@ $dark-blue: #001324;
 .modal-toolbar {
 	width: 855px;
 
+	.no-credential {
+		color: #F5F5F5;
+		margin: 55px auto;
+	}
+
+	.no-credential a {
+		cursor : pointer;
+		color  : #148BE6;
+	}
+
 	.list {
 		position: relative;
 	}

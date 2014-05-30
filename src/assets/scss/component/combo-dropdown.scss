@@ -86,16 +86,15 @@
 
 .combo-dd {
   width: 260px;
+
+  .no-credential {
+    color: #F5F5F5;
+    padding-top: 55px;
+  }
+
+  .no-credential a {
+    cursor : pointer;
+    color  : #148BE6;
+  }
 }
 
-#kp-runtime-placeholder .combo-dd.open .dropdown {
-  top             :32px;
-}
-
-#kp-runtime-placeholder .selection {
-  padding-right: 19px;
-}
-
-#kp-runtime-placeholder {
-  display: inline-block;
-}

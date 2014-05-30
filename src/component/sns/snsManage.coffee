@@ -237,7 +237,10 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
 
         render: ->
             @modal.render()
-            @processCol()
+            if App.user.hasCredential()
+                @processCol()
+            else
+                @modal.render 'nocredential'
             @
 
         processCol: ( noRender ) ->

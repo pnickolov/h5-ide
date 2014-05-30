@@ -24,17 +24,18 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalpl
         __modalplus: null
 
         events:
-            'change #t-m-select-all': '__checkAll'
-            'change .one-cb': '__checkOne'
+            'change #t-m-select-all'        : '__checkAll'
+            'change .one-cb'                : '__checkOne'
 
-            'click .t-m-btn': '__handleSlide'
-            'click tr .show-detail': '__handleDetail'
-            'click .cancel': 'cancel'
+            'click .t-m-btn'                : '__handleSlide'
+            'click tr .show-detail'         : '__handleDetail'
+            'click .cancel'                 : 'cancel'
 
-            'click .do-action': '__doAction'
-            'click [data-btn=refresh]': '__refresh'
+            'click .do-action'              : '__doAction'
+            'click [data-btn=refresh]'      : '__refresh'
 
-            'click .table-head .sortable': 'sort'
+            'click .table-head .sortable'   : '__sort'
+            'click .show-credential'        : '__showCredential'
 
         initialize: ( options ) ->
             @options = options or {}
@@ -44,7 +45,10 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalpl
                 @options.context.M$ = _.bind @$, @
             null
 
-        sort: ->
+        __showCredential: ->
+            App.showSettings App.showSettings.TAB.Credential
+
+        __sort: ->
             # detail tr will disturb the sort, so details must be removed when sort trigger
             @$( '.tr-detail' ).remove()
 
@@ -118,7 +122,6 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalpl
                     .addClass( 'detailed' )
                     .after template.tr_detail columnCount: @options.columns.length + 1
                 @trigger 'detail', event, $tr.data(), $tr
-
 
 
         __refresh: ->
@@ -195,32 +198,36 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalpl
             @$( '.content-wrap' ).html template.loading
             @
 
-        __toggleLoading: ( showOrHide ) ->
-            @$( '.loading-spinner' ).toggle not showOrHide
-            @$( '.content-wrap' ).toggle showOrHide
-
-
-        # ------ INTERFACE ------ #
-
-        render: ( refresh ) ->
+        __renderContent: ->
             data = @options
 
             data.buttons = _.reject data.buttons, ( btn ) ->
                 if btn.type is 'create'
                     data.btnValueCreate = btn.name
                     true
-            @__toggleLoading false
-            @$el.html template.frame data
+
+            @$( '.content-wrap' ).html template.content data
+            @
+
+
+        # ------ INTERFACE ------ #
+
+        render: ( refresh ) ->
+            @$el.html template.frame @options
+
+            if _.isString refresh
+                tpl = refresh
+                @$( '.content-wrap' ).html template[ tpl ] and template[ tpl ]() or tpl
+            else
+                @__renderLoading()
+
             if not refresh
                 @__open()
             @
 
         setContent: ( dom ) ->
-            if not @$( '.scroll-content' ).length
-                @render true
-
+            @__renderContent()
             @$( '.t-m-content' ).html dom
-            @__toggleLoading true
             @__triggerChecked null
 
             @

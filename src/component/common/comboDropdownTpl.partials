@@ -25,7 +25,7 @@
 
 
 <!-- {{nocredential}} -->
-<div class="kp-no-credential tac">
+<div class="no-credential tac">
     <p>You are using a demo AWS account.</p>
     <a class="show-credential">Provide AWS Credential <br/>to manage key pairs</a>
 </div>

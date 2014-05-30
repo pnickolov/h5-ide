@@ -64,7 +64,7 @@ define [ './component/common/comboDropdownTpl', 'backbone', 'jquery' ], ( templa
         # ------ INTERFACE ------ #
 
         render: ( tpl ) ->
-            @$( '.combo-dd-content' ).html template[ tpl ] or tpl
+            @$( '.combo-dd-content' ).html template[ tpl ] and template[ tpl ]() or tpl
             @
 
         setSelection: ( dom ) ->

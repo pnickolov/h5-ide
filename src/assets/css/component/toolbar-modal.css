@@ -1,6 +1,12 @@
 /* Common Style for Modal with Toolbar */
 .modal-toolbar {
   width: 855px; }
+  .modal-toolbar .no-credential {
+    color: #F5F5F5;
+    margin: 55px auto; }
+  .modal-toolbar .no-credential a {
+    cursor: pointer;
+    color: #148BE6; }
   .modal-toolbar .list {
     position: relative; }
   .modal-toolbar .modal-body {

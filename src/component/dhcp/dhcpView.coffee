@@ -19,7 +19,7 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
     deleteErrorCount = 0
     dhcpView = Backbone.View.extend
         constructor:(options)->
-            @resModel = options.resModel
+            @resModel = options?.resModel
             @collection = CloudResources constant.RESTYPE.DHCP, Design.instance().region()
             @listenTo @collection, 'change', @render
             @listenTo @collection, 'update', @render
@@ -62,7 +62,7 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
             @dropdown.render('loading').toggleControls false
 
         renderDropdown: (keys)->
-            selected = @resModel.toJSON().dhcp.dhcpOptionsId
+            selected = @resModel?.toJSON().dhcp.dhcpOptionsId
             data = @collection.toJSON()
             if selected
                 _.each data, (key)->

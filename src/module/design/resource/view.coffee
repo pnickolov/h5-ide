@@ -566,7 +566,7 @@ define [ 'event',
 
                 when 'dhcp'
 
-                    new dhcpManage().render()
+                    (new dhcpManage()).manageDhcp()
 
     }
 

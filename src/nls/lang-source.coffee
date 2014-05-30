@@ -479,6 +479,10 @@ module.exports =
       en: "Volume and Snapshots"
       zh: "虚拟磁盘和快照"
 
+    RES_TIT_SNAPSHOT_MANAGE:
+      en: "Manage EBS Snapshot"
+      zh: "管理 EBS 快照"
+
     RES_TIT_ELB_ASG:
       en: "Load Balancer and Auto Scaling"
       zh: "负载均衡器和自动伸缩组"

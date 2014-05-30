@@ -1,11 +1,17 @@
 define ['CloudResources', 'constant', 'combo_dropdown', "UI.modalplus", 'toolbar_modal', "i18n!nls/lang.js", './snapshot_template.js'],
     (CloudResources, constant, combo_dropdown, modalPlus, toolbar_modal, lang, template)->
     fetched = false
-    snapshotRes = Backbone.view.extend
+    snapshotRes = Backbone.View.extend
         constructor: (options)->
             @collection = CloudResources constant.RESTYPE.SNAPSHOT, Design.instance().region()
             @listenTo @collection, 'change', @render
             @listenTo @collection, 'update', @render
+            @collection.on 'change', @onChange
+            @collection.on 'update', @onChange
+
+        onChange: ->
+            @trigger 'datachange', @
+
         remove: ()->
             @.isRemoved = ture
             Backbone.View::remove.call @
@@ -103,7 +109,6 @@ define ['CloudResources', 'constant', 'combo_dropdown', "UI.modalplus", 'toolbar
                 @dropdown = @dropdown or @renderDropdown()
                 @manager.$el.find('#select_vol').html(@dropdown.$el)
 
-
         getModalOptions: ->
             that = @
             region = Design.instance().get('region')
@@ -158,3 +163,5 @@ define ['CloudResources', 'constant', 'combo_dropdown', "UI.modalplus", 'toolbar
                     name: 'Description'
                 }
             ]
+
+    snapshotRes

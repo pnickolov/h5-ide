@@ -2846,6 +2846,14 @@ a.sidebar-hider:before {
 	border-radius: 0;
 }
 
+#btn-snapshot-manager{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    border: none;
+    border-radius: 0;
+}
 /* Property Panel */
 #property-panel {
 	right        : 0;

@@ -109,6 +109,12 @@ define [ "./WelcomeTpl", "UI.modalplus", 'i18n!nls/lang.js', "backbone" ], ( Wel
         accesskey  = $("#CredSetupAccessKey").val()
         privatekey = $("#CredSetupSecretKey").val()
 
+        # A quickfix to avoid the limiation of the api.
+        # Avoid user setting the account to demo_account
+        if account is "demo_account"
+          account = "user_demo_account"
+          $("#CredSetupAccount").val(account)
+
         self = this
         App.user.changeCredential( account, accesskey, privatekey, true ).then ()->
           self.done()

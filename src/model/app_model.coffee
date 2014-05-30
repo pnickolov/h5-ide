@@ -42,13 +42,13 @@ define [ 'backbone', 'underscore', 'app_service', 'base_model' ], ( Backbone, _,
 
 
         #update api (define function)
-        update : ( src, username, session_id, region_name, spec, app_id ) ->
+        update : ( src, username, session_id, region_name, spec, app_id, fast_update ) ->
 
             me = this
 
             src.model = me
 
-            app_service.update src, username, session_id, region_name, spec, app_id, ( forge_result ) ->
+            app_service.update src, username, session_id, region_name, spec, app_id, fast_update, ( forge_result ) ->
 
                 if !forge_result.is_error
                 #update succeed

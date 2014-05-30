@@ -15,6 +15,15 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
             if not @M$( '.tr-detail' ).length
                 @processCol()
 
+        processSubCreate: ( newSub ) ->
+            topicArn = newSub.get 'TopicArn'
+            that = @
+            @M$( '.detailed' ).each () ->
+                if $(@).data( 'topicArn' ) is topicArn
+                    that.detail null, $(@).data(), $(@)
+                    return false
+
+
         getModalOptions: ->
             that = @
             region = Design.instance().get('region')
@@ -157,6 +166,8 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
 
                 finHandler()
 
+        errorHandler: ( awsError ) ->
+            notification 'error', awsError.awsResult
 
         # actions
         create: ( invalid ) ->
@@ -172,11 +183,23 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
                 @subCol.create( TopicArn: newTopic and newTopic.id or topicId, Endpoint: endpoint, Protocol: protocol )
                     .save()
                     .then ( newSub ) ->
+                        that.processSubCreate newSub
                         notification 'info', 'Create Subscription Succeed'
                         that.modal.cancel()
+                    .fail ( awsError ) ->
+                        that.modal.cancel()
+                        errorHandler awsError
+
 
             if topicId is '@new'
-                @topicCol.create( Name: topicName, DisplayName: displayName ).save().then createSub
+                @topicCol
+                    .create( Name: topicName, DisplayName: displayName )
+                    .save()
+                    .then(createSub)
+                    .fail ( awsError ) ->
+                        that.modal.cancel()
+                        errorHandler awsError
+
             else
                 topicModel = @topicCol.get topicId
                 if displayName is topicModel.get 'displayName'

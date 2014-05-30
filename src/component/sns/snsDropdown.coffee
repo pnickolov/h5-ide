@@ -18,6 +18,7 @@ define [ 'constant', 'CloudResources','sns_manage', 'combo_dropdown', './compone
             @subCol = CloudResources constant.RESTYPE.SUBSCRIPTION, region
             @topicCol = CloudResources constant.RESTYPE.TOPIC, region
             @topicCol.on 'update', @processCol, @
+            @topicCol.on 'change', @processCol, @
             @subCol.on 'update', @processCol, @
 
         initDropdown: ->

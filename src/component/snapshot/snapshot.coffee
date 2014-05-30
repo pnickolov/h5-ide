@@ -3,8 +3,8 @@ define ['CloudResources', 'constant', 'combo_dropdown', "UI.modalplus", 'toolbar
     snapshotRes = Backbone.View.extend
         constructor: ()->
             @collection = CloudResources constant.RESTYPE.SNAP, Design.instance().region()
-            @listenTo @collection, 'change', @render
-            @listenTo @collection, 'update', @render
+            @listenTo @collection, 'change', @initManager
+            @listenTo @collection, 'update', @initManager
             @collection.on 'change', @onChange
             @collection.on 'update', @onChange
             @
@@ -66,18 +66,17 @@ define ['CloudResources', 'constant', 'combo_dropdown', "UI.modalplus", 'toolbar
             )
         renderManager: ()->
             @manager = new toolbar_modal @getModalOptions()
-            @manager.on 'refresh', @initManager, @
+            @manager.on 'refresh', @refresh, @
             @manager.on "slidedown", @renderSlides, @
             @manager.on 'action', @doAction, @
             @manager.on 'close', =>
                 @manager.remove()
             @manager.render()
-            if not fetched
-                @collection.fetch().then =>
-                    @initManager()
-                fetched = true
-            else
-                @initManager()
+            @initManager()
+
+        refresh: ->
+            fetched = false
+            @initManager()
 
         initManager: ()->
             if not fetched
@@ -91,7 +90,7 @@ define ['CloudResources', 'constant', 'combo_dropdown', "UI.modalplus", 'toolbar
                     data[f].completed = true
             dataSet =
                 items: data
-            content = template.content items:@collection.toJSON()
+            content = template.content dataSet
             @manager?.setContent content
 
         renderSlides: (which, checked)->

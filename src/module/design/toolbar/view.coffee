@@ -478,12 +478,7 @@ define [ 'MC', 'event',
                 statusCode:
                     200: ->
                         console.log 200,arguments
-                        #todo: reset state count
-                        appData = Design.instance().serialize()
-                        for uid of appData.component
-                            if appData.component[uid].type is "AWS.EC2.Instance" && appData.component[uid].state.length>0
-                                # stateEditor.loadModule(appData.component, uid, null, true)
-                                notification 'info', lang.ide.RELOAD_STATE_SUCCESS
+                        notification 'info', lang.ide.RELOAD_STATE_SUCCESS
                         ide_event.trigger(ide_event.REFRESH_PROPERTY)
                     401: ->
                         console.log 401,arguments

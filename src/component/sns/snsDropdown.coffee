@@ -87,7 +87,10 @@ define [ 'constant', 'CloudResources','sns_manage', 'combo_dropdown', './compone
             if _.isEmpty data
                 region = Design.instance().region()
                 regionName = constant.REGION_SHORT_LABEL[ region ]
-                @dropdown.setContent( template.nosns regionName: regionName ).toggleControls true
+                @dropdown
+                    .setContent( template.nosns regionName: regionName )
+                    .toggleControls( true, 'manage')
+                    .toggleControls( false, 'filter' )
             else
                 @dropdown.setContent( template.dropdown_list data ).toggleControls true
 

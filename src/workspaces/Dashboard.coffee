@@ -33,6 +33,7 @@ define ["Workspace", "workspaces/dashboard/DashboardView", "workspaces/dashboard
 
       # Watch changes in user
       @listenTo App.user, "change:credential", ()->
+        self.model.clearVisualizeData()
         self.model.fetchAwsResources()
         self.view.updateDemoView()
 

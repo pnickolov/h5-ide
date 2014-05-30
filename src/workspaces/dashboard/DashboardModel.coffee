@@ -69,7 +69,7 @@ define ["ApiRequest", "CloudResources", "constant", "backbone"], ( ApiRequest, C
       @__visRequestTime = +(new Date())
 
       self = @
-      ApiRequest("aws_resource",{
+      ApiRequest("aws_resource", {
         region_name : null
         resources   : VisualizeVpcParams
         addition    : "statistic"

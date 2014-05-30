@@ -27,6 +27,9 @@ define ["Workspace", "workspaces/dashboard/DashboardView", "workspaces/dashboard
       @view.listenTo @model, "change:globalResources", @view.updateGlobalResources
       @view.listenTo @model, "change:regionResources", @view.updateRegionResources
 
+      # Watch updates of visualize unmanaged vpc
+      @view.listenTo @model, "change:visualizeData", @view.updateVisModel
+
       # Watch changes in user
       self = @
       @listenTo App.user, "change:credential", ()->

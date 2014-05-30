@@ -56,6 +56,7 @@ define [
       @regionOpsTab = "stack"
       @region       = "global"
       @resourcesTab = "INSTANCE"
+      @lastUpdate   = +(new Date())
 
       data = _.map constant.REGION_LABEL, ( name, id )->
         id   : id
@@ -67,6 +68,14 @@ define [
       # Need to do a init update because the data might arrive first
       @updateOpsList()
       @updateDemoView()
+
+      self = @
+      setInterval ()->
+        if not $("#RefreshResource").hasClass("reloading")
+          $("#RefreshResource").text( MC.intervalDate(self.lastUpdate/1000) )
+        return
+      , 1000 * 60
+      return
 
     ###
       rendering
@@ -235,7 +244,10 @@ define [
     openItem    : ( event )-> App.openOps( $(event.currentTarget).attr("data-id") )
     createStack : ( event )-> App.createOps( $(event.currentTarget).attr("data-id") )
 
-    markUpdated    : ()-> $("#RefreshResource").removeClass("reloading").text("just now")
+    markUpdated    : ()->
+      @lastUpdate = +(new Date())
+      $("#RefreshResource").removeClass("reloading").text("just now")
+
     reloadResource : ()->
       $("#RefreshResource").addClass("reloading").text("")
       @model.reloadResource()

@@ -15,7 +15,7 @@ define [ '../base/model', 'Design', 'constant' ], ( PropertyModel, Design, const
             dhcp_comp = component.get("dhcp")
             dhcp = $.extend {}, dhcp_comp.attributes
 
-            dhcp.none    = dhcp_comp.isNone()
+            dhcp.none    = dhcp_comp.isAuto()
             dhcp.default = dhcp_comp.isDefault()
             dhcp.hasDhcp = (not dhcp.none) and (not dhcp.default)
 

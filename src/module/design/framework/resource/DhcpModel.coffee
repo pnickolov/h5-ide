@@ -7,7 +7,7 @@ define [ "constant", "../ResourceModel", "Design"  ], ( constant, ResourceModel,
     defaults : ()->
       dhcpOptionsId: ""
 
-    isNone     : ()-> @attributes.dhcpOptionsId is ""
+    isAuto     : ()-> @attributes.dhcpOptionsId is ""
     isDefault  : ()-> @attributes.dhcpOptionsId is "default"
     isCustom   : ()-> not (@attributes.dhcpOptionsId is '' or @attributes.dhcpOptionsId is 'default')
 
@@ -15,11 +15,8 @@ define [ "constant", "../ResourceModel", "Design"  ], ( constant, ResourceModel,
     setDefault : ()-> @set "dhcpOptionsId", "default"
     setDhcp    : (val)->
         if @get('dhcpOptionsId') isnt val
-            @newId = @design().guid()
             @set "dhcpOptionsId", val
     set : ()->
-      if Array::slice.call(arguments)[1] is true
-          @newId = @design().guid()
       if @design().modeIsAppEdit() and not @__newIdForAppEdit
         @__newIdForAppEdit = @design().guid()
 
@@ -27,7 +24,7 @@ define [ "constant", "../ResourceModel", "Design"  ], ( constant, ResourceModel,
 
     createRef : ( refName, isResourceNS, id )->
       if not id
-        id = @__newIdForAppEdit or @newId or @id
+        id = @__newIdForAppEdit or @id
 
       ResourceModel.prototype.createRef.call this, refName, isResourceNS, id
 
@@ -40,9 +37,6 @@ define [ "constant", "../ResourceModel", "Design"  ], ( constant, ResourceModel,
       if @__newIdForAppEdit
         id = @__newIdForAppEdit
         appId = ""
-      else if @newId
-          id = @newId
-          appId = @get('appId')
       else
         id = @id
         appId = @get("appId")
@@ -52,7 +46,6 @@ define [ "constant", "../ResourceModel", "Design"  ], ( constant, ResourceModel,
         uid  : id
         resource :
           DhcpOptionsId        : @toJSON().dhcpOptionsId
-          VpcId                : vpc.createRef( "VpcId" )
 
       { component : component }
 

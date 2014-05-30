@@ -19,8 +19,6 @@ define [ "../ResourceModel", "../ComplexResModel", "constant", "../ConnectionMod
         console.debug( "Sns Topic is not serialized, because nothing use it and it doesn't have appId." )
         return
 
-      name = "sns-topic"
-
       {
         component :
           name        : @get( "name" )

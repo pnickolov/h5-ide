@@ -131,7 +131,7 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
         policy.set policy_detail
         policy_detail.alarmData = alarmData
 
-      if policy_detail.sendNotification and policy.topic
+      if policy_detail.sendNotification and policy_detail.topic
         policy.setTopic policy_detail.topic.appId, policy_detail.topic.name
 
 

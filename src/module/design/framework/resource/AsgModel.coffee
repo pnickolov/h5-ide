@@ -45,7 +45,7 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
           uid      : @id
           resource :
             AutoScalingGroupName : @get("asg").createRef( "AutoScalingGroupName" )
-            TopicARN : topic?.createRef( "TopicArn" )
+            TopicARN : topic and topic.createRef( "TopicArn" ) or ''
             NotificationType : notifies
       }
 

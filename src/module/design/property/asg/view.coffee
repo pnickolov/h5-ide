@@ -96,6 +96,7 @@ define [ '../base/view',
                 @$( '#sns-placeholder' ).html @snsNotiDropdown.render( true ).el
                 @$( '.sns-group' ).show()
             else if originHasNoti and not hasNoti
+                @model.removeTopic()
                 @$( '.sns-group' ).hide()
 
         processPolicyTopic: ( display, dropdown ) ->

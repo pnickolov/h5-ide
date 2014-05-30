@@ -17,29 +17,20 @@ define [ "constant", "../ResourceModel", "Design"  ], ( constant, ResourceModel,
         if @get('dhcpOptionsId') isnt val
             @set "dhcpOptionsId", val
     set : ()->
-      if @design().modeIsAppEdit() and not @__newIdForAppEdit
-        @__newIdForAppEdit = @design().guid()
 
       Backbone.Model.prototype.set.apply this, arguments
 
     createRef : ( refName, isResourceNS, id )->
       if not id
-        id = @__newIdForAppEdit or @id
+        id = @id
 
       ResourceModel.prototype.createRef.call this, refName, isResourceNS, id
 
     serialize : ()->
-
       if not @isCustom()
         return
-      vpc = Design.modelClassForType( constant.RESTYPE.VPC ).theVPC()
 
-      if @__newIdForAppEdit
-        id = @__newIdForAppEdit
-        appId = ""
-      else
-        id = @id
-        appId = @get("appId")
+      id = @id
       component =
         name : "DhcpOption"
         type : @type

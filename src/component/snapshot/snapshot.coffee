@@ -3,8 +3,6 @@ define ['CloudResources', 'constant', 'combo_dropdown', "UI.modalplus", 'toolbar
     snapshotRes = Backbone.View.extend
         constructor: ()->
             @collection = CloudResources constant.RESTYPE.SNAP, Design.instance().region()
-            @listenTo @collection, 'change', @initManager
-            @listenTo @collection, 'update', @initManager
             @collection.on 'change', @onChange
             @collection.on 'update', @onChange
             @
@@ -78,11 +76,7 @@ define ['CloudResources', 'constant', 'combo_dropdown', "UI.modalplus", 'toolbar
             fetched = false
             @initManager()
 
-        initManager: ()->
-            if not fetched
-                fetched = true
-                @collection.fetchForce().then @renderManager, @renderManager
-                return false
+        setContent: ->
             console.log @collection.toJSON()
             data = @collection.toJSON()
             _.each data, (e,f)->
@@ -92,6 +86,17 @@ define ['CloudResources', 'constant', 'combo_dropdown', "UI.modalplus", 'toolbar
                 items: data
             content = template.content dataSet
             @manager?.setContent content
+
+        initManager: ()->
+            console.log "Reloading......"
+            setContent = @setContent.bind @
+            if not fetched
+                console.log "Fetching...."
+                fetched = true
+                @collection.fetchForce().then setContent, setContent
+            else
+                console.log 'Setcontent....'
+                @setContent()
 
         renderSlides: (which, checked)->
             tpl = template['slide_'+ which]

@@ -181,23 +181,23 @@
 
 <!-- {{resourceINSTANCE}} -->
 <table class="table-head"> <thead><tr>
-  <th class="sortable" style="width: 25%">{{i18n "DASH_LBL_INSTANCE_NAME"}}/{{i18n "DASH_LBL_ID"}}</th>
-  <th class="sortable" style="width: 17%">{{i18n "DASH_LBL_STATUS"}}</th>
-  <th class="sortable" style="width: 20%" data-row-type="datetime">{{i18n "DASH_LBL_LAUNCH_TIME"}}</th>
-  <th class="sortable" style="width: 15%">{{i18n "DASH_LBL_AMI"}}</th>
-  <th class="sortable" style="width: 15%">{{i18n "DASH_LBL_AVAILABILITY_ZONE"}}</th>
-  <th class="sortable" style="width: 8%">{{i18n "DASH_LBL_DETAIL"}}</th>
+  <th class="sortable">{{i18n "DASH_LBL_INSTANCE_NAME"}}/{{i18n "DASH_LBL_ID"}}</th>
+  <th class="sortable" style="width:17%">{{i18n "DASH_LBL_STATUS"}}</th>
+  <th class="sortable" style="width:20%" data-row-type="datetime">{{i18n "DASH_LBL_LAUNCH_TIME"}}</th>
+  <th class="sortable" style="width:15%">{{i18n "DASH_LBL_AMI"}}</th>
+  <th class="sortable" style="width:15%">{{i18n "DASH_LBL_AVAILABILITY_ZONE"}}</th>
+  <th style="width:40px">{{i18n "DASH_LBL_DETAIL"}}</th>
 </tr></thead> </table>
 <div class="scroll-wrap"> <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
 <div class="scroll-content">
   <table class="table">
     <thead> <tr>
-      <th style="width: 25%"><span class="th-inner"></span></th>
-      <th style="width: 17%"><span class="th-inner"></span></th>
-      <th style="width: 20%"><span class="th-inner"></span></th>
-      <th style="width: 15%"><span class="th-inner"></span></th>
-      <th style="width: 15%"><span class="th-inner"></span></th>
-      <th style="width: 8%"><span class="th-inner"></span></th>
+      <th></th>
+      <th style="width: 17%"></th>
+      <th style="width: 20%"></th>
+      <th style="width: 15%"></th>
+      <th style="width: 15%"></th>
+      <th style="width: 40px"></th>
     </tr> </thead>
     <tbody>
     {{#each instances}}{{#with attributes}}<tr>
@@ -225,18 +225,14 @@
 
 <!-- {{resourceEIP}} -->
 <table class="table-head"> <thead><tr>
-  <th style="width:40%">{{i18n "DASH_LBL_IP"}}</th>
-  <th class="sortable" style="width:40%">{{i18n "DASH_LBL_ASSOCIATED_INSTANCE"}}</th>
-  <th style="width:20%">{{i18n "DASH_LBL_DETAIL"}}</th>
+  <th class="sortable" style="width:40%">{{i18n "DASH_LBL_IP"}}</th>
+  <th class="sortable">{{i18n "DASH_LBL_ASSOCIATED_INSTANCE"}}</th>
+  <th style="width:40px">{{i18n "DASH_LBL_DETAIL"}}</th>
 </tr></thead> </table>
 <div class="scroll-wrap"> <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
 <div class="scroll-content">
   <table class="table">
-    <thead> <tr>
-      <th style="width: 40%"><span class="th-inner"></span></th>
-      <th style="width: 40%"><span class="th-inner"></span></th>
-      <th style="width: 20%"><span class="th-inner"></span></th>
-    </tr> </thead>
+    <thead> <tr> <th style="width:40%"></th><th></th><th style="width:40px"></th> </tr> </thead>
     <tbody>{{#each eips}}{{#with attributes}} <tr>
         <td>{{ publicIp }}</td>
         <td>{{ instanceId }}</td>
@@ -253,23 +249,23 @@
 
 <!-- {{resourceVOL}} -->
 <table class="table-head"> <thead> <tr>
-  <th class="sortable" style="width:16%">{{i18n "DASH_LBL_NAME"}}/{{i18n "DASH_LBL_ID"}}</th>
+  <th class="sortable">{{i18n "DASH_LBL_NAME"}}/{{i18n "DASH_LBL_ID"}}</th>
   <th class="sortable" style="width:18%">{{i18n "DASH_LBL_STATUS"}}</th>
   <th class="sortable" style="width:21%" data-row-type="datetime">{{i18n "DASH_LBL_CREATE_TIME"}}</th>
   <th class="sortable" style="width:15%">{{i18n "DASH_LBL_DEVICE_NAME"}}</th>
   <th class="sortable" style="width:15%">{{i18n "DASH_LBL_ATTACHMENT_STATUS"}}</th>
-  <th style="width:15%">{{i18n "DASH_LBL_DETAIL"}}</th>
+  <th style="width:40px">{{i18n "DASH_LBL_DETAIL"}}</th>
 </tr> </thead> </table>
 <div class="scroll-wrap"> <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
 <div class="scroll-content">
   <table class="table">
     <thead> <tr>
-      <th style="width: 16%"><span class="th-inner"></span></th>
-      <th style="width: 18%"><span class="th-inner"></span></th>
-      <th style="width: 21%"><span class="th-inner"></span></th>
-      <th style="width: 15%"><span class="th-inner"></span></th>
-      <th style="width: 15%"><span class="th-inner"></span></th>
-      <th style="width: 15%"><span class="th-inner"></span></th>
+      <th></th>
+      <th style="width: 18%"></th>
+      <th style="width: 21%"></th>
+      <th style="width: 15%"></th>
+      <th style="width: 15%"></th>
+      <th style="width:40px"></th>
     </tr> </thead>
     <tbody> {{#each volumes}}{{#with attributes}} <tr>
         <td>
@@ -297,21 +293,17 @@
 
 <!-- {{resourceVPC}} -->
 <table class="table-head"> <thead> <tr>
-  <th class="sortable" style="width:25%">{{i18n "DASH_LBL_NAME"}}/{{i18n "DASH_LBL_ID"}}</th>
+  <th class="sortable">{{i18n "DASH_LBL_NAME"}}/{{i18n "DASH_LBL_ID"}}</th>
   <th class="sortable" style="width:20%">{{i18n "DASH_LBL_STATUS"}}</th>
   <th class="sortable" style="width:25%">{{i18n "DASH_LBL_CIDR"}}</th>
   <th class="sortable" style="width:20%">{{i18n "DASH_LBL_DHCP_SETTINGS"}}</th>
-  <th style="width:10%">{{i18n "DASH_LBL_DETAIL"}}</th>
+  <th style="width:40px">{{i18n "DASH_LBL_DETAIL"}}</th>
 </tr> </thead> </table>
 <div class="scroll-wrap"> <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
 <div class="scroll-content">
   <table class="table">
     <thead> <tr>
-      <th style="width: 25%"><span class="th-inner"></span></th>
-      <th style="width: 20%"><span class="th-inner"></span></th>
-      <th style="width: 25%"><span class="th-inner"></span></th>
-      <th style="width: 20%"><span class="th-inner"></span></th>
-      <th style="width: 10%"><span class="th-inner"></span></th>
+<th></th><th style="width:20%"></th><th style="width:25%"></th><th style="width:20%"></th><th style="width:40px"></th>
     </tr> </thead>
     <tbody> {{#each vpcs}}{{#with attributes}} <tr>
         <td>
@@ -341,20 +333,20 @@
 
 <!-- {{resourceVPN}} -->
 <table class="table-head"> <thead> <tr>
-  <th class="sortable" style="width:25%">{{i18n "DASH_LBL_NAME"}}/{{i18n "DASH_LBL_ID"}}</th>
+  <th class="sortable">{{i18n "DASH_LBL_NAME"}}/{{i18n "DASH_LBL_ID"}}</th>
   <th class="sortable" style="width:20%">{{i18n "DASH_LBL_STATUS"}}</th>
   <th class="sortable" style="width:25%">{{i18n "DASH_LBL_VIRTUAL_PRIVATE_GATEWAY"}}</th>
   <th class="sortable" style="width:20%">{{i18n "DASH_LBL_CUSTOMER_GATEWAY"}}</th>
-  <th style="width:10%">{{i18n "DASH_LBL_DETAIL"}}</th>
+  <th style="width:40px">{{i18n "DASH_LBL_DETAIL"}}</th>
 </tr> </thead> </table>
 <div class="scroll-wrap"> <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
 <div class="scroll-content">
     <table class="table"> <thead> <tr>
-      <th style="width: 25%"><span class="th-inner"></span></th>
-      <th style="width: 20%"><span class="th-inner"></span></th>
-      <th style="width: 25%"><span class="th-inner"></span></th>
-      <th style="width: 20%"><span class="th-inner"></span></th>
-      <th style="width: 10%"><span class="th-inner"></span></th>
+      <th></th>
+      <th style="width: 20%"></th>
+      <th style="width: 25%"></th>
+      <th style="width: 20%"></th>
+      <th style="width: 40px"></th>
     </tr> </thead>
     <tbody>{{#each vpns}}{{#with attributes}}
       <tr>
@@ -383,21 +375,21 @@
 
 <!-- {{resourceELB}} -->
 <table class="table-head"> <thead> <tr>
-  <th class="sortable" style="width:25%">{{i18n "DASH_LBL_DNS_NAME"}}</th>
+  <th class="sortable">{{i18n "DASH_LBL_DNS_NAME"}}</th>
   <th class="sortable" style="width:20%" data-row-type="datetime">{{i18n "DASH_LBL_CREATE_TIME"}}</th>
   <th class="sortable" style="width:25%">{{i18n "DASH_LBL_AVAILABILITY_ZONE"}}</th>
   <th class="sortable" style="width:20%">{{i18n "DASH_LBL_STATUS"}}</th>
-  <th style="width:10%">{{i18n "DASH_LBL_DETAIL"}}</th>
+  <th style="width:40px">{{i18n "DASH_LBL_DETAIL"}}</th>
 </tr> </thead> </table>
 <div class="scroll-wrap"> <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
 <div class="scroll-content">
   <table class="table">
     <thead> <tr>
-      <th style="width: 25%"><span class="th-inner"></span></th>
-      <th style="width: 20%"><span class="th-inner"></span></th>
-      <th style="width: 25%"><span class="th-inner"></span></th>
-      <th style="width: 20%"><span class="th-inner"></span></th>
-      <th style="width: 10%"><span class="th-inner"></span></th>
+      <th></th>
+      <th style="width: 20%"></th>
+      <th style="width: 25%"></th>
+      <th style="width: 20%"></th>
+      <th style="width: 40px"></th>
     </tr> </thead>
     <tbody> {{#each elbs}}{{#with attributes}} <tr>
         <td>{{ DNSName }}</td>
@@ -418,18 +410,18 @@
 
 <!-- {{resourceASG}} -->
 <table class="table-head"> <thead> <tr>
-  <th class="sortable" style="width:20%">{{i18n "DASH_LBL_NAME"}}</th>
+  <th class="sortable">{{i18n "DASH_LBL_NAME"}}</th>
   <th class="sortable" style="width:50%">{{i18n "DASH_LBL_CURRENT"}}/{{i18n "DASH_LBL_LAST_ACTIVITY"}}</th>
   <th class="sortable" style="width:20%">{{i18n "DASH_LBL_ACTIVITY_STATUS"}}</th>
-  <th style="width:10%">{{i18n "DASH_LBL_DETAIL"}}</th>
+  <th style="width:40px">{{i18n "DASH_LBL_DETAIL"}}</th>
 </tr> </thead> </table>
 <div class="scroll-wrap"> <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
   <div class="scroll-content">
     <table class="table"> <thead> <tr>
-      <th style="width: 20%"><span class="th-inner"></span></th>
-      <th style="width: 50%"><span class="th-inner"></span></th>
-      <th style="width: 20%"><span class="th-inner"></span></th>
-      <th style="width: 10%"><span class="th-inner"></span></th>
+      <th></th>
+      <th style="width: 50%"></th>
+      <th style="width: 20%"></th>
+      <th style="width:40px"></th>
     </tr> </thead>
     <tbody>
       {{#each asgs}}{{#with attributes}}
@@ -458,21 +450,21 @@
 
 <!-- {{resourceCW}} -->
 <table class="table-head"> <thead> <tr>
-  <th class="sortable" style="width:20%">{{i18n "DASH_LBL_NAME"}}</th>
+  <th class="sortable">{{i18n "DASH_LBL_NAME"}}</th>
   <th class="sortable" style="width:30%">{{i18n "DASH_LBL_DIMENSION"}}</th>
   <th class="sortable" style="width:30%">{{i18n "DASH_LBL_THRESHOLD"}}</th>
   <th class="sortable" style="width:10%">{{i18n "DASH_LBL_STATE"}}</th>
-  <th style="width:10%">{{i18n "DASH_LBL_DETAIL"}}</th>
+  <th style="width:40px">{{i18n "DASH_LBL_DETAIL"}}</th>
 </tr> </thead> </table>
 <div class="scroll-wrap"> <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
 <div class="scroll-content">
     <table class="table">
       <thead> <tr>
-        <th style="width: 20%"><span class="th-inner"></span></th>
-        <th style="width: 30%"><span class="th-inner"></span></th>
-        <th style="width: 30%"><span class="th-inner"></span></th>
-        <th style="width: 10%"><span class="th-inner"></span></th>
-        <th style="width: 10%"><span class="th-inner"></span></th>
+        <th></th>
+        <th style="width: 30%"></th>
+        <th style="width: 30%"></th>
+        <th style="width: 10%"></th>
+        <th style="width:40px"></th>
       </tr> </thead>
       <tbody>
         {{#each cloudwatches}}{{#with attributes}}
@@ -480,7 +472,7 @@
           <td>{{AlarmName}}</td>
           <td>{{#doubleIf Dimensions Dimensions.length}}{{Dimensions.[0].Name}}:{{Dimensions.[0].Value}}{{/doubleIf}}</td>
           <td>{{MetricName}} {{ComparisonOperator}} {{Threshold}} for {{Period}} seconds</td>
-          <td><i class="status {{#if state_ok}}status-green{{/if}} {{#if state_alarm}}status-red{{/if}} {{#if state_insufficient}}status-grey{{/if}} icon-label"></i>{{StateValue}}</td>
+          <td><i class="status {{#ifCond StateValue "OK"}}status-green{{else}}{{#ifCond StateValue "ALARM"}}status-yellow{{else}}status-grey{{/ifCond}}{{/ifCond}} icon-label"></i>{{StateValue}}</td>
           <td><i title="{{i18n 'DASH_TIT_VIEW_RESOURCE_DETAIL'}}" class="icon-detail" data-id="{{id}}"></i></td>
         </tr>{{/with}}
         {{else}}
@@ -496,18 +488,18 @@
 <!-- {{resourceSUBSCRIPTION}} -->
 <table class="table-head"> <thead> <tr>
   <th class="sortable" style="width:20%">{{i18n "DASH_LBL_TOPIC_NAME"}}</th>
-  <th class="sortable" style="width:40%">{{i18n "DASH_LBL_ENDPOINT_AND_PROTOCOL"}}</th>
+  <th class="sortable">{{i18n "DASH_LBL_ENDPOINT_AND_PROTOCOL"}}</th>
   <th class="sortable" style="width:30%">{{i18n "DASH_LBL_CONFIRMATION"}}</th>
-  <th style="width:10%">{{i18n "DASH_LBL_DETAIL"}}</th>
+  <th style="width:40px">{{i18n "DASH_LBL_DETAIL"}}</th>
 </tr> </thead> </table>
 <div class="scroll-wrap"> <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
 <div class="scroll-content">
   <table class="table">
     <thead> <tr>
-      <th style="width: 20%"><span class="th-inner"></span></th>
-      <th style="width: 40%"><span class="th-inner"></span></th>
-      <th style="width: 30%"><span class="th-inner"></span></th>
-      <th style="width: 10%"><span class="th-inner"></span></th>
+      <th style="width:20%"></th>
+      <th></th>
+      <th style="width:30%"></th>
+      <th style="width:40px"></th>
     </tr> </thead>
 
     <tbody>

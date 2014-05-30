@@ -29,18 +29,22 @@
 
 .combo-dd i {
   color: #148BE6; }
+.combo-dd .dropdown {
+  height: 300px;
+  border-top: 0; }
+.combo-dd .scroll-wrap {
+  height: 232px;
+  width: 258px;
+  top: 32px; }
 
 .combo-dd li i {
   float: right; }
 
-.combo-dd-list {
-  margin-top: 32px;
-  padding-bottom: 32px; }
-  .combo-dd-list li .icon-info {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    margin-top: -8px; }
+.combo-dd-list li .icon-info {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  margin-top: -8px; }
 
 .combo-dd-content .loading-spinner {
   margin-top: 45%; }

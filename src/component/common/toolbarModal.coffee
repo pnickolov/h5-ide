@@ -51,10 +51,10 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalpl
         __doAction: ( event ) ->
             @error()
             action = $( event.currentTarget ).data 'action'
-            @trigger 'action', action, @__getChecked()
+            @trigger 'action', action, @getChecked()
 
 
-        __getChecked: () ->
+        getChecked: () ->
             allChecked = @$('.one-cb:checked')
             checkedInfo = []
             allChecked.each () ->
@@ -92,14 +92,14 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalpl
                     @__slide = null
                 #slide down
                 else
-                    @trigger 'slidedown', button, @__getChecked()
+                    @trigger 'slidedown', button, @getChecked()
                     $activeButton.removeClass 'active'
                     $button.addClass 'active'
                     $slidebox.addClass 'show'
                     @__slide = button
 
             else
-                @trigger 'slidedown', button, @__getChecked()
+                @trigger 'slidedown', button, @getChecked()
                 $button.addClass 'active'
                 $slidebox.addClass 'show'
                 @__slide = button
@@ -160,7 +160,7 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalpl
             @__triggerChecked event
 
         __triggerChecked: ( param ) ->
-            @trigger 'checked', param, @__getChecked()
+            @trigger 'checked', param, @getChecked()
 
         __processDelBtn: () ->
             that = @

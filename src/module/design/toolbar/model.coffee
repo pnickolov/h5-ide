@@ -840,7 +840,34 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
             # loacl thumbnail
             MC.common.other.addCacheThumb id, $("#canvas_body").html(), $("#svg_canvas")[0].getBBox()
 
-            app_model.update { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, data, id
+            # HACK! Check if component is not modified.
+            backingStore = Design.instance().backingStore()
+
+            __bsBackup = $.extend true, {}, backingStore
+            __dtBackup = $.extend true, {}, data
+
+            backingStoreState = {}
+            dataState = {}
+            for uid, comp of backingStore.component
+                if comp.type is "AWS.AutoScaling.LaunchConfiguration" or comp.type is "AWS.EC2.Instance"
+                    backingStoreState[ uid ] = comp.state
+                    delete comp.state
+            for uid, comp of data.component
+                if comp.type is "AWS.AutoScaling.LaunchConfiguration" or comp.type is "AWS.EC2.Instance"
+                    dataState[ uid ] = comp.state
+                    delete comp.state
+
+            fastUpdate = _.isEqual( backingStore.component, data.component )
+            # Restore
+            for uid, state of backingStoreState
+                backingStore.component[ uid ].state = state
+            for uid, state of dataState
+                data.component[ uid ].state = state
+
+            console.assert _.isEqual( backingStore, __bsBackup ), "BackingStore Modified."
+            console.assert _.isEqual( data, __dtBackup ), "Data Modified."
+
+            app_model.update { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, data, id, fastUpdate
 
             # save app data for generating png
             idx = 'process-' + region + '-' + name

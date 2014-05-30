@@ -307,13 +307,9 @@
 </div>
 
 <!-- {{bubbleRegionResourceInfo}} -->
-<div class="bubble-head"><i class="status-{{status}} icon-label"></i>{{title}}</div>
+<div class="bubble-head">{{id}}</div>
 <div class="bubble-content">
-<dl class="dl-horizontal">
-	{{#each sub_info}}
-		{{{this}}}
-	{{/each}}
-</dl>
+<dl class="dl-horizontal">{{#eachObj this}}<dd>key</dd><dt>value</dt>{{/eachObj}}</dl>
 </div>
 
 <!-- {{bubbleSnapshotInfo}} -->

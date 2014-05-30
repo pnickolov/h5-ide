@@ -9,6 +9,7 @@ define [
   "UI.scrollbar"
   "UI.tooltip"
   "UI.table"
+  "UI.bubble"
 ], ( template, tplPartials, VisualizeVpcTpl, Modal, constant )->
 
   Helper = {
@@ -50,8 +51,6 @@ define [
       'click #RefreshResource' : 'reloadResource'
 
 
-
-
     initialize : ()->
       @regionOpsTab = "stack"
       @region       = "global"
@@ -75,7 +74,18 @@ define [
           $("#RefreshResource").text( MC.intervalDate(self.lastUpdate/1000) )
         return
       , 1000 * 60
+
+      # Add a custom template to the MC.template, so that the UI.bubble can use it to render.
+      MC.template.dashboardBubble = @getBubbleTemplate
       return
+
+    getBubbleTemplate = ( data )->
+      if data.type is "INSTANCE"
+        templateName = "bubbleAMIInfo"
+      else
+        templateName = "bubbleRegionResourceInfo"
+
+      return MC.template[templateName]()
 
     ###
       rendering

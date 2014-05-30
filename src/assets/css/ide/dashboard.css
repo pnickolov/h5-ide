@@ -425,15 +425,20 @@
 #region-aws-resource-data .table-app-link {
   cursor: pointer;
   color: #148BE6;
-  max-width: 200px; }
+  max-width: 200px;
+  float: left; }
   #region-aws-resource-data .table-app-link:hover {
     text-decoration: underline; }
+#region-aws-resource-data .table-app-link-wrap:after {
+  content: " ";
+  clear: both;
+  display: block; }
 #region-aws-resource-data .icon-detail {
   color: #666;
   cursor: pointer; }
   #region-aws-resource-data .icon-detail:hover {
     color: #148BE6; }
-#region-aws-resource-data .dashboard-bubble {
+#region-aws-resource-data .bubble {
   text-decoration: underline;
   cursor: default; }
 #region-aws-resource-data .scroll-wrap {

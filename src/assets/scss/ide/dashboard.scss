@@ -511,15 +511,17 @@
     cursor : pointer;
     color : #148BE6;
     max-width : 200px;
+    float : left;
     &:hover { text-decoration: underline; }
   }
+  .table-app-link-wrap:after { content:" "; clear:both; display:block; }
   .icon-detail {
     color  : #666;
     cursor : pointer;
     &:hover { color: #148BE6; }
   }
 
-  .dashboard-bubble { text-decoration: underline; cursor : default; }
+  .bubble { text-decoration: underline; cursor : default; }
 
   .scroll-wrap { height: 420px; }
 

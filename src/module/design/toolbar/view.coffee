@@ -482,7 +482,6 @@ define [ 'MC', 'event',
                         appData = Design.instance().serialize()
                         for uid of appData.component
                             if appData.component[uid].type is "AWS.EC2.Instance" && appData.component[uid].state.length>0
-                                console.log(appData, uid)
                                 # stateEditor.loadModule(appData.component, uid, null, true)
                                 notification 'info', lang.ide.RELOAD_STATE_SUCCESS
                         ide_event.trigger(ide_event.REFRESH_PROPERTY)

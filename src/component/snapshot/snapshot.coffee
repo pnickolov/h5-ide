@@ -37,12 +37,13 @@ define ['CloudResources', 'constant', 'combo_dropdown', "UI.modalplus", 'toolbar
             data = @collection.toJSON()
             dataSet =
                 isRuntime: false
-                data: data
+                volumes: data
             if keySet
                 dataSet.data = keySet
                 dataSet.hideDefaultNoKey = true
             content = template.keys dataSet
-            @dropdown.toggleControls true
+            @dropdown.toggleControls false, 'manage'
+            @dropdown.toggleControls true, 'filter'
             @dropdown.setContent content
 
         filterDropdown: (keyword)->
@@ -116,16 +117,16 @@ define ['CloudResources', 'constant', 'combo_dropdown', "UI.modalplus", 'toolbar
                 @manager.setSlide tpl data
             'create':(tpl)->
                 data =
-                    snapshot : {}
+                    volumes : {}
+                @manager.setSlide tpl data
                 @dropdown = @dropdown or @renderDropdown()
-                @manager.$el.find('#select_vol').html(@dropdown.$el)
-
+                @manager.$el.find('#property-volume-choose').html(@dropdown.$el)
         getModalOptions: ->
             that = @
             region = Design.instance().get('region')
             regionName = constant.REGION_SHORT_LABEL[ region ]
 
-            title: "Manage DHCP Options in #{regionName}"
+            title: "Manage Snapshots in #{regionName}"
             slideable: true
             context: that
             buttons: [

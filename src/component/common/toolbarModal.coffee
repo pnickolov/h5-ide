@@ -172,6 +172,10 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalpl
                     that.$('[data-btn=delete]').prop 'disabled', false
                 else
                     that.$('[data-btn=delete]').prop 'disabled', true
+                if that.$('.one-cb:checked').length is 1
+                    that.$('[data-btn=duplicate]').prop 'disabled', false
+                else
+                    that.$('[data-btn=duplicate]').prop 'disabled', true
 
         __stopPropagation: ( event ) ->
             exception = '.sortable, #download-kp, .selection, .item'

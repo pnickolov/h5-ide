@@ -3104,6 +3104,22 @@ module.exports =
       en: "Close"
       zh: "关闭标签"
 
+    PROP_SNAPSHOT_SET_NAME:
+      en: "Snapshot Name"
+      zh: ""
+
+    PROP_SNAPSHOT_SET_VOLUME:
+      en: "Volume"
+      zh: ""
+
+    PROP_SNAPSHOT_SET_DESC:
+      en: "Description"
+      zh: ""
+
+    PROP_SNAPSHOT_SET_DESC_TIP:
+      en: "Fill in the Description"
+      zh: ""
+
     PROC_STEP_REQUEST:
       en: "Processing"
       zh: "处理中"

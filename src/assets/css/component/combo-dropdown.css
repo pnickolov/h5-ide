@@ -10,7 +10,7 @@
   border-radius: 0;
   display: none; }
 
-.combo-dd.selectbox .combo-dd-filter {
+.combo-dd.selectbox .combo-dd-filter.input {
   width: 232px;
   border-radius: 0;
   border: 0;

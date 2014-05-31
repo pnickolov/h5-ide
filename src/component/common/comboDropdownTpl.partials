@@ -3,6 +3,9 @@
     <div class="selection"></div>
 
     <div class="dropdown">
+        {{#unless noFilter}}
+            <input class="input combo-dd-filter" type="text" placeholder="{{filterPlaceHolder}}"/>
+        {{/unless}}
         <div class="scroll-wrap scrollbar-auto-hide clearfix">
             <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
             <div class="scroll-content combo-dd-content">
@@ -10,9 +13,6 @@
         </div>
         {{#unless noManage}}
             <div class="combo-dd-manage btn btn-primary" style="display:none;">{{manageBtnValue}}</div>
-        {{/unless}}
-        {{#unless noFilter}}
-            <input class="input combo-dd-filter" type="text" placeholder="{{filterPlaceHolder}}"/>
         {{/unless}}
     </div>
 </div>

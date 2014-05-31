@@ -7,8 +7,6 @@
 
 .combo-dd .combo-dd-manage {
   width: 100%;
-  position: absolute;
-  bottom: 0;
   border-radius: 0;
   display: none; }
 
@@ -17,8 +15,6 @@
   border-radius: 0;
   border: 0;
   padding-right: 20px;
-  position: absolute;
-  top: 0;
   display: none; }
 
 .combo-dd.selectbox .combo-dd-filter:focus {
@@ -29,13 +25,17 @@
 
 .combo-dd i {
   color: #148BE6; }
-.combo-dd .dropdown {
-  height: 300px;
-  border-top: 0; }
-.combo-dd .scroll-wrap {
-  height: 232px;
-  width: 258px;
-  top: 32px; }
+.combo-dd.selectbox {
+  position: static; }
+  .combo-dd.selectbox .dropdown {
+    border-top: 0;
+    position: relative;
+    top: 0; }
+  .combo-dd.selectbox .scroll-wrap {
+    width: 258px;
+    top: 0;
+    position: relative;
+    max-height: 200px; }
 
 .combo-dd li i {
   float: right; }
@@ -46,9 +46,6 @@
   top: 50%;
   margin-top: -8px; }
 
-.combo-dd-content .loading-spinner {
-  margin-top: 45%; }
-
 .combo-dd-no-data {
   text-align: center;
   margin-top: 115px;
@@ -58,10 +55,6 @@
 
 .combo-dd .selection .icon-remove {
   display: none; }
-
-.combo-dd.open .dropdown {
-  top: 29px;
-  padding-bottom: 33px; }
 
 .combo-dd {
   width: 260px; }

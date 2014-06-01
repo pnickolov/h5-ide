@@ -22,7 +22,7 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
         renderDropdown: ()->
             option =
                 manageBtnValue: lang.ide.PROP_VPC_MANAGE_SNAPSHOT
-                filterPlaceHolder: lang.ide.PROP_VPC_FILTER_SNAPSHOT
+                filterPlaceHolder: lang.ide.PROP_SNAPSHOT_FILTER_SNAPSHOT
             @dropdown = new combo_dropdown(option)
             @volumes = CloudResources constant.RESTYPE.VOL, Design.instance().region()
             selection = lang.ide.PROP_VOLUME_SNAPSHOT_SELECT
@@ -35,17 +35,36 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
 
         renderRegionDropdown: ()->
             option =
-                filterPlaceHolder: lang.ide.PROP_VPC_FILTER_DHCP
+                filterPlaceHolder: lang.ide.PROP_SNAPSHOT_FILTER_REGION
             @regionsDropdown = new combo_dropdown(option)
-            @regions =
+            @regions = _.keys constant.REGION_LABEL
+            selection = lang.ide.PROP_VOLUME_SNAPSHOT_SELECT_REGION
+            @regionsDropdown.setSelection selection
+            @regionsDropdown.on 'open', @openRegionDropdown, @
+            @regionsDropdown.on 'filter', @filterRegionDropdown, @
+            @regionsDropdown.on 'change', @selectRegion, @
+            @regionsDropdown
+
+        openRegionDropdown: (keySet)->
+            data = @regions
+            @regionsDropdown.setContent content
+            dataSet =
+                isRuntime: false
+                data: data
+            if keySet
+                dataSet.data = keySet
+                dataSet.hideDefaultNoKey = true
+            content = template.keys dataSet
+            @regionsDropdown.toggleControls false, 'manage'
+            @regionsDropdown.toggleControls true, 'filter'
+            @regionsDropdown.setContent content
 
         openDropdown: (keySet)->
             @volumes.fetch().then =>
                 data = @volumes.toJSON()
-                @dropdown.setContent content
                 dataSet =
                     isRuntime: false
-                    volumes: data
+                    data: data
                 if keySet
                     dataSet.data = keySet
                     dataSet.hideDefaultNoKey = true
@@ -61,10 +80,22 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
                 @openDropdown hitKeys
             else
                 @openDropdown()
+
+
+        filterRegionDropdown: (keyword)->
+            hitKeys = _.filter @regions, ( data ) ->
+                data.toLowerCase().indexOf( keyword.toLowerCase() ) isnt -1
+            if keyword
+                @openRegionDropdown hitKeys
+            else
+                @openRegionDropdown()
+
+
         selectSnapshot: (e)->
-            targetSnapshot = @volumes.findWhere
-                id: e
-            @trigger 'change', targetSnapshot.toJSON()
+            @manager.$el.find('[data-action="create"]').prop 'disabled', false
+
+        selectRegion: (e)->
+            @manager.$el.find('[data-action="duplicate"]').prop 'disabled', false
 
         renderNoCredential: ->
             new modalPlus(
@@ -86,25 +117,22 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
             @initManager()
 
         setContent: ->
-            console.log @collection.toJSON()
             data = @collection.toJSON()
             _.each data, (e,f)->
                 if e.progress is 100
                     data[f].completed = true
+                    null
             dataSet =
                 items: data
             content = template.content dataSet
             @manager?.setContent content
 
         initManager: ()->
-            console.log "Reloading......"
             setContent = @setContent.bind @
             if not fetched
-                console.log "Fetching...."
                 fetched = true
                 @collection.fetchForce().then setContent, setContent
             else
-                console.log 'Setcontent....'
                 @setContent()
 
         renderSlides: (which, checked)->
@@ -128,18 +156,15 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
                     volumes : {}
                 @manager.setSlide tpl data
                 @dropdown = @dropdown or @renderDropdown()
-                @dropdown.on 'change', =>
-                    @manager.$el.find('[data-action="create"]').prop 'disabled', false
-
 
                 @manager.$el.find('#property-volume-choose').html(@dropdown.$el)
             'duplicate': (tpl, checked)->
                 data = {}
-                data.checked = checked[0]
+                data.originSnapshot = checked[0]
                 if not checked
                     return
-                @manager.getSlide tpl data
-                @regionsDropdown = @regionsDropdown or @renderRegions()
+                @manager.setSlide tpl data
+                @regionsDropdown = @regionsDropdown or @renderRegionDropdown()
                 @regionsDropdown.on 'change', =>
                     @manager.$el.find('[data-action="duplicate"]').prop 'disabled', false
 

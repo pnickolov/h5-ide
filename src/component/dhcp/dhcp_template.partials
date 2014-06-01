@@ -58,7 +58,7 @@
 
 <!-- {{slide_create}} -->
 <div class="slide-create" data-bind="true">
-    <div id="create-new-dhcp" data-type="true">
+    <div class="formart_toolbar_modal" data-type="true">
         <section data-bind="true">
             <div class="control-group clearfix">
                 <label for="property-dhcp-domain">{{ i18n "PROP_VPC_DHCP_SPECIFIED_LBL_DOMAIN_NAME" }}</label>

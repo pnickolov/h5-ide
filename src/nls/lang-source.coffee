@@ -2376,6 +2376,14 @@ module.exports =
       en: "%d rules have been created in %s to allow %s send and receive traffic within itself."
       zh: "%d条规则被创建到 %s 来允许 %s 它内部的收发通信."
 
+    PROP_SNAPSHOT_FILTER_REGION:
+      en: "Filter by region name"
+      zh: ""
+
+    PROP_SNAPSHOT_FILTER_SNAPSHOT:
+      en: "Filter by Snapshot id"
+      zh: ""
+
     PROP_VOLUME_DEVICE_NAME:
       en: "Device Name"
       zh: "挂载设备名"
@@ -2402,6 +2410,10 @@ module.exports =
 
     PROP_VOLUME_SNAPSHOT_SELECT:
       en: "Select volume from which to create snapshot"
+      zh: ""
+
+    PROP_VOLUME_SNAPSHOT_SELECT_REGION:
+      en: "Select Destination Region"
       zh: ""
 
     PROP_VOLUME_SNAPSHOT:

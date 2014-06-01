@@ -160,7 +160,7 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
                 @manager.$el.find("#property-amazon-dns").change (e)=> @onChangeAmazonDns(e)
                 @manager.$el.find('.multi-input').on 'ADD_ROW',  (e)=> @processParsley(e)
                 @manager.$el.find(".control-group .input").change (e)=> @onChangeDhcpOptions(e)
-                @manager.$el.find('#create-new-dhcp').on 'OPTION_CHANGE REMOVE_ROW', (e)=>@onChangeDhcpOptions(e)
+                @manager.$el.find('.formart_toolbar_modal').on 'OPTION_CHANGE REMOVE_ROW', (e)=>@onChangeDhcpOptions(e)
                 @manager.$el.find('#property-domain-server').on( 'ADD_ROW REMOVE_ROW', updateAmazonCB )
                 updateAmazonCB()
         processParsley: ( event ) ->

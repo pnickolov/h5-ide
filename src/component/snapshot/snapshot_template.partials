@@ -1,6 +1,6 @@
 <!-- {{keys}} -->
-{{#each volumes}}
-<li class="item{{#if selected}} selected{{/if}}" data-id="{{id}}" tabindex="-1">{{id}}</li>
+{{#each data}}
+<li class="item{{#if selected}} selected{{/if}}" data-id="{{id}}" tabindex="-1">{{#if id}}{{id}}{{else}}{{this}}{{/if}}</li>
 {{/each}}
 
 
@@ -36,7 +36,7 @@
 
 <!-- {{slide_create}} -->
 <div class="slide-create" data-bind="true">
-    <div id="create-new-snapshot" data-type="true">
+    <div class="formart_toolbar_modal" data-type="true">
         <section data-bind="true">
             <div class="control-group clearfix">
                 <label for="property-dhcp-domain">{{ i18n "PROP_SNAPSHOT_SET_NAME" }}</label>
@@ -72,7 +72,7 @@
 
 <!-- {{slide_duplicate}} -->
 <div class="slide-duplicate" data-bind="true">
-    <div id="duplicate_snapshot" data-type="true">
+    <div class="formart_toolbar_modal" data-type="true">
         <section data-bind="true">
             <div class="control-group clearfix">
                 <label for="property-snapshot-source">{{ i18n "PROP_SNAPSHOT_SOURCE_SNAPSHOT" }}</label>

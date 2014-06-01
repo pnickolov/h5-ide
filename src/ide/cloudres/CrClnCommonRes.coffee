@@ -17,10 +17,12 @@ define [
     parseFetchData : ( data )->
       elbs = data.DescribeLoadBalancersResponse.DescribeLoadBalancersResult.LoadBalancerDescriptions?.member
       for elb in elbs || []
-        elb.AvailabilityZones = elb.AvailabilityZones || []
-        elb.AvailabilityZones = elb.AvailabilityZones.member || []
-        elb.Instances = elb.Instances || []
-        elb.Instances = elb.Instances.member || []
+        elb.AvailabilityZones = elb.AvailabilityZones?.member || []
+        elb.Instances         = elb.Instances?.member || []
+        elb.SecurityGroups    = elb.SecurityGroups?.member || []
+        elb.Subnets           = elb.Subnets?.member || []
+        for i, idx in elb.Instances
+          elb.Instances[ idx ] = i.InstanceId
       elbs
   }
 
@@ -57,8 +59,7 @@ define [
     parseFetchData : ( data )->
       volumes = data.DescribeVolumesResponse.volumeSet?.item
       for vol in volumes || []
-        vol.attachmentSet = vol.attachmentSet || []
-        vol.attachmentSet = vol.attachmentSet.item || []
+        vol.attachmentSet = vol.attachmentSet?.item || []
       volumes
   }
 
@@ -84,8 +85,9 @@ define [
     parseFetchData : ( data )->
       asgs = data.DescribeAutoScalingGroupsResponse.DescribeAutoScalingGroupsResult.AutoScalingGroups?.member
       for asg in asgs ||[]
-        asg.Instances = asg.Instances || []
-        asg.Instances = asg.Instances.member || []
+        asg.AvailabilityZones   = asg.AvailabilityZones?.member || []
+        asg.Instances           = asg.Instances?.member || []
+        asg.TerminationPolicies = asg.TerminationPolicies?.member || []
       asgs
   }
 
@@ -100,8 +102,7 @@ define [
     parseFetchData : ( data )->
       cws = data.DescribeAlarmsResponse.DescribeAlarmsResult.MetricAlarms?.member
       for cw in cws || []
-        cw.Dimensions = cw.Dimensions || []
-        cw.Dimensions = cw.Dimensions.member || []
+        cw.Dimensions = cw.Dimensions?.member || []
       cws
   }
 
@@ -124,6 +125,11 @@ define [
             instances.push ami
         catch e
           console.error "Fail to parse instance data", i
+
+      for ami in instances
+        ami.blockDeviceMapping  = ami.blockDeviceMapping?.item || []
+        ami.networkInterfaceSet = ami.networkInterfaceSet?.item || []
+        ami.groupSet            = ami.groupSet?.item || []
 
       instances
   }

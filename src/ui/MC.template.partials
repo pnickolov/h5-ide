@@ -220,54 +220,6 @@
 	</div>
 </div>
 
-<!-- {{modalRegionResourceDetail}} -->
-{{#if detail_table}}
-<div class="modal-resource-detail" style="width:800px">
-{{else}}
-<div class="modal-resource-detail" style="width:420px">
-{{/if}}
-	<div class="modal-header">
-		<h3>{{title}}</h3>
-		<i class="modal-close">&times;</i>
-	</div>
-	<div class="modal-body">
-		<dl class="dl-horizontal">
-		{{#each sub_info}}
-			{{{this}}}
-		{{/each}}
-		</dl>
-		{{#if detail_table}}
-		<br />
-		<br />
-		<table class="table table-light">
-			<thead>
-				<tr>
-					{{#each detail_table.th_set}}
-					<th style="width:160px">{{this}}</th>
-					{{/each}}
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-				{{#each detail_table.tr1_set}}
-					<td>{{this}}</td>
-				{{/each}}
-				</tr>
-
-				<tr>
-				{{#each detail_table.tr2_set}}
-					<td>{{this}}</td>
-				{{/each}}
-				</tr>
-			</tbody>
-		</table>
-		{{/if}}
-	</div>
-	<div class="modal-footer">
-		<button class="btn modal-close btn-silver">{{i18n "POP_BTN_CLOSE"}}</button>
-	</div>
-</div>
-
 <!-- {{bubbleTest}} -->
 <div class="bubble-head">{{title}}</div>
 <div class="bubble-content">

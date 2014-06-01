@@ -25,8 +25,13 @@ define ["Workspace", "workspaces/dashboard/DashboardView", "workspaces/dashboard
       @view.listenTo App.model.appList(), "change:progress", @view.updateAppProgress
 
       # Watch changes in aws resources
-      @listenTo @model, "change:globalResources", ()-> self.__renderControl "updateGlobalResources"
-      @listenTo @model, "change:regionResources", ()-> self.__renderControl "updateRegionResources"
+      @listenTo @model, "change:globalResources", ()->
+        self.view.@markUpdated()
+        self.__renderControl "updateGlobalResources"
+
+      @listenTo @model, "change:regionResources", ()->
+        self.view.@markUpdated()
+        self.__renderControl "updateRegionResources"
 
       # Watch updates of visualize unmanaged vpc
       @listenTo @model, "change:visualizeData", ()-> self.__renderControl "updateVisModel"

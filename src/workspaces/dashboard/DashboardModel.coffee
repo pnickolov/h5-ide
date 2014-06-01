@@ -182,31 +182,26 @@ define ["ApiRequest", "CloudResources", "constant", "backbone"], ( ApiRequest, C
       return
 
 
-    isAwsResReady : (region)->
-      datasource = [
-        CloudResources( constant.RESTYPE.INSTANCE )
-        CloudResources( constant.RESTYPE.EIP )
-        CloudResources( constant.RESTYPE.VOL )
-        CloudResources( constant.RESTYPE.ELB )
-        CloudResources( constant.RESTYPE.VPN )
-      ]
-      for i in datasource
-        if not i.isReady() then return false
-
-      if region
+    isAwsResReady : ( region, type )->
+      if not region
         datasource = [
-          CloudResources( constant.RESTYPE.SUBSCRIPTION, region )
-          CloudResources( constant.RESTYPE.VPC )
-          CloudResources( constant.RESTYPE.ASG )
-          CloudResources( constant.RESTYPE.CW )
+          CloudResources( constant.RESTYPE.INSTANCE )
+          CloudResources( constant.RESTYPE.EIP )
+          CloudResources( constant.RESTYPE.VOL )
+          CloudResources( constant.RESTYPE.ELB )
+          CloudResources( constant.RESTYPE.VPN )
         ]
-
         for i in datasource
           if not i.isReady() then return false
 
-      true
+        return true
 
-    getAwsResData : ( region )->
+      if type is constant.RESTYPE.SUBSCRIPTION
+        return CloudResources( type, region ).isReady()
+      else
+        return CloudResources( type ).isReady()
+
+    getAwsResData : ( region, type )->
       if not region
         filter = ( m )-> if m.attributes.instanceState then m.attributes.instanceState.name is "running" else false
 
@@ -218,16 +213,37 @@ define ["ApiRequest", "CloudResources", "constant", "backbone"], ( ApiRequest, C
           vpns      : CloudResources( constant.RESTYPE.VPN ).groupByCategory()
         }
 
+      if type is constant.RESTYPE.SUBSCRIPTION
+        return CloudResources( type, region ).models
+      else
+        return CloudResources( type ).where({ category : region })
+
+    getResourcesCount : ( region )->
       filter = { category : region }
-      {
-        instances    : CloudResources( constant.RESTYPE.INSTANCE ).where(filter)
-        eips         : CloudResources( constant.RESTYPE.EIP ).where(filter)
-        volumes      : CloudResources( constant.RESTYPE.VOL ).where(filter)
-        elbs         : CloudResources( constant.RESTYPE.ELB ).where(filter)
-        vpns         : CloudResources( constant.RESTYPE.VPN ).where(filter)
-        vpcs         : CloudResources( constant.RESTYPE.VPC ).where(filter)
-        asgs         : CloudResources( constant.RESTYPE.ASG ).where(filter)
-        cloudwatches : CloudResources( constant.RESTYPE.CW ).where(filter)
-        snss         : CloudResources( constant.RESTYPE.SUBSCRIPTION, region ).models
+      data = {
+        instances    : "INSTANCE"
+        eips         : "EIP"
+        volumes      : "VOL"
+        elbs         : "ELB"
+        vpns         : "VPN"
+        vpcs         : "VPC"
+        asgs         : "ASG"
+        cloudwatches : "CW"
       }
+      d = {}
+      for key, type of data
+        collection = CloudResources( constant.RESTYPE[type] )
+        if collection.isReady()
+          d[ key ] = collection.length
+        else
+          d[ key ] = ""
+
+      collection = CloudResources( constant.RESTYPE.SUBSCRIPTION, region )
+      if collection.isReady()
+        d.snss = collection.models.length
+      else
+        d.snss = ""
+      d
+
+    getResourceData : ( region, type, id )-> CloudResources( type, region ).get( id )
   }

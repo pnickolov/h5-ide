@@ -365,8 +365,17 @@
 
 
 
-#global-view, #region-view { margin-top : 15px; }
-#global-view {
+#GlobalView, #RegionView { margin-top : 15px; }
+#GlobalView {
+
+  .dashboard-loading {
+    background : #fff;
+    box-shadow : 1px 1px 5px rgba(0, 0, 0, 0.1);
+    border     : 1px solid #ccc;
+    position   : relative;
+    height     : 600px;
+  }
+
   > li {
     float        : left;
     width        : 19.2%;
@@ -432,14 +441,12 @@
   }
 }
 
-#region-resource-wrap {
-  margin-top : 18px;
-  box-shadow : 1px 1px 5px rgba(0, 0, 0, 0.1);
-  border     : 1px solid #bbb;
+#RegionResourceNav {
+  border-bottom : 1px solid #323E49;
+  margin-bottom : -1px;
+  background    : #fcfcfc;
 
-  > nav { background : #fcfcfc; }
-
-  .resource-tab {
+  > .resource-tab {
     float    : left;
     position : relative;
     width    : 11%;
@@ -497,16 +504,24 @@
   }
 }
 
+#RegionViewWrap {
+  margin-top : 18px;
+  box-shadow : 1px 1px 5px rgba(0, 0, 0, 0.1);
+  border     : 1px solid #bbb;
+  background : #edf1f3;
+}
+
 /* Region view */
 .blank-widget {
   margin-top : 14px;
   text-align : center;
   padding    : 70px 0;
   color      : #999;
-  background : #f8f8f8;
 }
 
-#region-aws-resource-data {
+#RegionResourceData {
+  min-height : 460px;
+
   .table-app-link {
     cursor : pointer;
     color : #148BE6;
@@ -957,7 +972,7 @@
 }
 
 /* demo And loading */
-#dashboard-demo {
+#DashboardDemo {
   display    : none;
   margin-top : 15px;
 
@@ -978,24 +993,7 @@
     &:hover { text-decoration: underline; }
   }
 }
-
-#dashboard-loading {
-  background : #fff;
-  box-shadow : 1px 1px 5px rgba(0, 0, 0, 0.1);
-  border     : 1px solid #ccc;
-  position   : relative;
-  height     : 600px;
-  margin-top : 15px;
-
-  .loading-spinner {
-    position    : absolute;
-    left        : 50%;
-    top         : 120px;
-    margin-left : -21px;
-  }
-}
-
 #dashboard-data-wrap.demo {
-  #global-view, #region-resource-wrap, #dashboard-demo { display : none !important; }
-  #dashboard-demo { display : block; }
+  #GlobalView, #regionResourceNav, #RegionResourceData, #DashboardDemo { display : none !important; }
+  #DashboardDemo { display : block; }
 }

@@ -49,6 +49,7 @@ define [
       'click #VisualizeVPC'    : 'visualizeVPC'
       'click .show-credential' : 'showCredential'
       'click #RefreshResource' : 'reloadResource'
+      "click .icon-detail"     : "showResourceDetail"
 
 
     initialize : ()->
@@ -67,6 +68,7 @@ define [
       # Need to do a init update because the data might arrive first
       @updateOpsList()
       @updateDemoView()
+      @updateGlobalResources()
 
       self = @
       setInterval ()->
@@ -79,7 +81,7 @@ define [
       MC.template.dashboardBubble = @getBubbleTemplate
       return
 
-    getBubbleTemplate = ( data )->
+    getBubbleTemplate : ( data )->
       if data.type is "INSTANCE"
         templateName = "bubbleAMIInfo"
       else
@@ -180,15 +182,13 @@ define [
       $( '#region-switch').find('span').text( target.text() )
 
       if region is "global"
-        isDataReady = @model.isAwsResReady()
-        $("#region-view" ).hide()
-        $("#global-view" ).toggle( isDataReady )
-        $("#dashboard-loading").toggle( not isDataReady )
+        $("#RegionView" ).hide()
+        $("#GlobalView" ).show()
       else
         # Ask model to get datas for us.
         @model.fetchAwsResources( region )
-        $("#region-view" ).show()
-        $("#global-view" ).hide()
+        $("#RegionView" ).show()
+        $("#GlobalView" ).hide()
         @updateRegionAppStack()
         @updateRegionResources()
       return
@@ -199,14 +199,13 @@ define [
       $target.addClass("on").siblings().removeClass("on")
 
       @regionOpsTab = if $target.hasClass("stack") then "stack" else "app"
-      $("#region-view").find(".region-resource-list").hide().eq( $target.index() ).show()
+      $("#RegionView").find(".region-resource-list").hide().eq( $target.index() ).show()
       return
 
     switchResource : ( evt )->
-      $("#region-resource-wrap").children("nav").children().removeClass("on")
+      $("#RegionResourceNav").children().removeClass("on")
       @resourcesTab = $(evt.currentTarget).addClass("on").attr("data-type")
-      data = @model.getAwsResData( @region )
-      $("#region-aws-resource-data").html( tplPartials["resource#{@resourcesTab}"](data) )
+      @updateRegionResources()
       return
 
     importJson : ()->
@@ -322,27 +321,133 @@ define [
 
     updateGlobalResources : ()->
       if not @model.isAwsResReady()
-        if @region is "global" then $("#dashboard-loading").show()
-        $("#global-view").empty().hide()
+        data = { loading : true }
       else
-        @markUpdated()
-        $("#global-view").html( tplPartials.globalResources( @model.getAwsResData() ) )
-        if @region is "global"
-          $("#dashboard-loading").hide()
-          $("#global-view").show()
+        data = @model.getAwsResData()
+
+      $("#GlobalView").html( tplPartials.globalResources( data ) )
+      if @region is "global"
+        $("#GlobalView").show()
+      return
+
+    updateRegionTabCount : ()->
+      resourceCount = @model.getResourcesCount( @region )
+      $nav = $("#RegionResourceNav")
+      for r, count of resourceCount
+        $nav.children(".#{r}").children(".count-bubble").text( count || "-" )
       return
 
     updateRegionResources : ()->
       if @region is "global" then return
 
-      if not @model.isAwsResReady( @region )
-        $("#dashboard-loading").show()
-        $("#region-resource-wrap").empty().hide()
+      @updateRegionTabCount()
+
+      type = constant.RESTYPE[ @resourcesTab ]
+      if not @model.isAwsResReady( @region, type )
+        tpl = '<div class="dashboard-loading"><div class="loading-spinner"></div></div>'
       else
-        @markUpdated()
-        $("#dashboard-loading").hide()
-        data = @model.getAwsResData( @region )
-        $("#region-resource-wrap").html(tplPartials.regionResourceTab( data )).show()
-        $("#region-resource-wrap").children("nav").children("[data-type='#{@resourcesTab}']").addClass("on")
-        $("#region-aws-resource-data").html( tplPartials["resource#{@resourcesTab}"](data) )
+        tpl = tplPartials["resource#{@resourcesTab}"]( @model.getAwsResData( @region, type ) )
+
+      $("#RegionResourceData").html( tpl )
+
+    formateDetail : ( type, data )->
+      switch type
+        when "SUBSCRIPTION"
+          return {
+            title    : data.Endpoint
+            Endpoint : data.Endpoint
+            Owner    : data.Owner
+            Protocol : data.Protocol
+            "Subscription ARN" : data.SubscriptionArn
+            "Topic ARN" : data.TopicArn
+          }
+        when "VPC"
+          return {
+            State   : data.state
+            CIDR    : data.cidrBlock
+            Tenancy : data.instanceTenancy
+          }
+        when "ASG"
+          return {
+            title : data.AutoScalingGroupName
+            Name  : data.AutoScalingGroupName
+            Arn   : data.id
+            "Availability Zone" : data.AvailabilityZones.join(", ")
+            "Create Time" : data.CreatedTime
+            "Default Cooldown" : data.DefaultCooldown
+            "Desired Capacity" : data.DesiredCapacity
+            "Max Size"         : data.MaxSize
+            "Min Size"         : data.MinSize
+            "HealthCheck Grace Period" : data.HealthCheckGracePeriod
+            "Health Check Type" : data.HealthCheckType
+            #Instance : data.Instances
+            "Launch Configuration" : data.LaunchConfigurationName
+            "Termination Policy"   : data.TerminationPolicies.join(", ")
+          }
+        when "ELB"
+          return {
+            "Availability Zone"       : data.AvailabilityZones.join(", ")
+            "Create Time"             : data.CreatedTime
+            "DNSName"                 : data.DNSName
+            # "Health Check"          : "Health Check"
+            "Instance"                : data.Instances.join(", ")
+            # "Listener Descriptions" : ""
+            "Security Groups"         : data.SecurityGroups.join(", ")
+            Subnets                   : data.Subnets.join(", ")
+          }
+        when "VPN"
+          return {
+            State    : data.state
+            "VGW Id" : data.vpnGatewayId
+            "CGW Id" : data.customerGatewayId
+            Type     : data.type
+          }
+        when "VOL"
+          attachmentSet = data.attachmentSet[0] || {}
+          return {
+            "Volume ID"         : data.id
+            "Device Name"       : attachmentSet.device
+            "Snapshot ID"       : data.snapshotId
+            "Volume Size(GiB)"  : data.size
+            "Create Time"       : data.createTime
+            # "AttachmentSet"   : ""
+            State               : data.status
+            AttachmentSet       : if data.attachmentSet.length then "attached" else "detached"
+            "Availability Zone" : data.availabilityZone
+            "Volume Type"       : data.volumeType
+          }
+        when "INSTANCE"
+          return {
+            Status               : data.instanceState.name
+            Monitoring           : data.monitoring.state
+            "Primary Private IP" : data.privateIpAddress
+            "Private DNS"        : data.privateDnsName
+            "Launch Time"        : data.launchTime
+            "Availability Zone"  : data.placement.availabilityZone
+            "AMI Launch Index"   : data.amiLaunchIndex
+            "Instance Type"      : data.instanceType
+            "Block Device Type"  : data.rootDeviceType
+            "Block Devices"      : _.map data.blockDeviceMapping, (i)-> i.deviceName
+            "Network Interface"  : _.map data.networkInterfaceSet, (i)-> i.networkInterfaceId
+          }
+
+    showResourceDetail : ( evt )->
+      $tgt = $( evt.currentTarget )
+      id   = $tgt.attr("data-id")
+      type = constant.RESTYPE[ @resourcesTab ]
+
+      resModel     = @model.getResourceData( @region, type, id )
+      formatedData = @formateDetail( @resourcesTab, resModel.attributes )
+
+      if formatedData.title
+        id = formatedData.title
+        delete formatedData.title
+
+      new Modal({
+        title         : id
+        width         : "450"
+        template      : tplPartials.resourceDetail( formatedData )
+        disableFooter : true
+      })
+      return
   }

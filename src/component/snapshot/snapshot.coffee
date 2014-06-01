@@ -198,11 +198,22 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
                 console.log @collection.findWhere(id: data.data.id)
                 @collection.findWhere(id: data.data.id).destroy().then afterDeleted, afterDeleted
 
-        do_duplicate: (validate: checked)->
-            that = @
+        do_duplicate: (invalid, checked)->
+            console.log checked
+            sourceSnapshot = checked[0]
+            sourceRegion = Design.instance().get('region')
+            targetRegion = $('#property-region-choose').find('.selectbox .selection').text()
+            if (@regions.indexOf targetRegion) < 0
+                console.log targetRegion, @regions
+                return false
             data =
-                'volumeId': ""
-            console.log 'a'
+                'sourceRegion': sourceRegion
+                'sourceSnapshotId': sourceSnapshot.data.id
+                'description': $('#property-snapshot-desc').val()
+                'destinationRegion': targetRegion
+
+            ApiRequest('ebs_CopySnapshot',data).then @afterDuplicate, @afterDuplicate
+
 
         afterCreated: (result)->
             @manager.cancel()
@@ -212,6 +223,7 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
             notification 'info', "New DHCP Option is created successfully!"
 
         afterDuplicate: (result)->
+            console.log result, '----------'
             @manager.calcel()
             if result.error
                 notification 'error', "Duplicate failed because of: "+ result.msg

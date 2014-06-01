@@ -1,12 +1,15 @@
 define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalplus", 'toolbar_modal', "i18n!nls/lang.js", './component/snapshot/snapshot_template.js'], (CloudResources, ApiRequest , constant, combo_dropdown, modalPlus, toolbar_modal, lang, template)->
     fetched = false
+    deleteCount = 0
+    deleteErrorCount = 0
     snapshotRes = Backbone.View.extend
         constructor: ()->
             @collection = CloudResources constant.RESTYPE.SNAP, Design.instance().region()
-            @collection.on 'change', @onChange
-            @collection.on 'update', @onChange
+            @collection.on 'change', (@onChange.bind @)
+            @collection.on 'update', (@onChange.bind @)
             @
         onChange: ->
+            @initManager()
             @trigger 'datachange', @
 
         remove: ()->
@@ -47,7 +50,6 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
 
         openRegionDropdown: (keySet)->
             data = @regions
-            @regionsDropdown.setContent content
             dataSet =
                 isRuntime: false
                 data: data
@@ -155,7 +157,7 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
                 data =
                     volumes : {}
                 @manager.setSlide tpl data
-                @dropdown = @dropdown or @renderDropdown()
+                @dropdown = @renderDropdown()
 
                 @manager.$el.find('#property-volume-choose').html(@dropdown.$el)
             'duplicate': (tpl, checked)->
@@ -164,12 +166,78 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
                 if not checked
                     return
                 @manager.setSlide tpl data
-                @regionsDropdown = @regionsDropdown or @renderRegionDropdown()
+                @regionsDropdown = @renderRegionDropdown()
                 @regionsDropdown.on 'change', =>
                     @manager.$el.find('[data-action="duplicate"]').prop 'disabled', false
 
                 @manager.$el.find('#property-region-choose').html(@regionsDropdown.$el)
 
+        doAction: (action, checked)->
+            @["do_"+action] and @["do_"+action]('do_'+action,checked)
+
+        do_create: (validate, checked)->
+            console.log checked
+            volume = @volumes.findWhere('id': $('#property-volume-choose').find('.selectbox .selection').text())
+            if not volume
+                return false
+            data =
+                "name": $("#property-snapshot-name-create").val()
+                'volumeId': volume.id
+                'description': $('#property-snapshot-desc-create').val()
+            @switchAction 'processing'
+            afterCreated = @afterCreated.bind @
+            @collection.create(data).save().then afterCreated, afterCreated
+
+        do_delete: (invalid, checked)->
+            that = @
+            deleteCount += checked.length
+            @switchAction 'processing'
+            afterDeleted = that.afterDeleted.bind that
+            _.each checked, (data)=>
+                console.log data, '========'
+                console.log @collection.findWhere(id: data.data.id)
+                @collection.findWhere(id: data.data.id).destroy().then afterDeleted, afterDeleted
+
+        do_duplicate: (validate: checked)->
+            that = @
+            data =
+                'volumeId': ""
+            console.log 'a'
+
+        afterCreated: (result)->
+            @manager.cancel()
+            if result.error
+                notification 'error', "Create failed because of: "+result.msg
+                return false
+            notification 'info', "New DHCP Option is created successfully!"
+
+        afterDuplicate: (result)->
+            @manager.calcel()
+            if result.error
+                notification 'error', "Duplicate failed because of: "+ result.msg
+                return false
+            notification 'info', "New Snapshot is duplicated successfully!"
+
+        afterDeleted: (result)->
+            deleteCount--
+            if result.error
+                deleteErrorCount++
+            if deleteCount is 0
+                if deleteErrorCount > 0
+                    notification 'error', deleteErrorCount+" Snapshot failed to delete, Please try again later."
+                else
+                    notification 'info', "Delete Successfully"
+                deleteErrorCount = 0
+                @manager.cancel()
+
+        switchAction: ( state ) ->
+            if not state
+                state = 'init'
+            @M$( '.slidebox .action' ).each () ->
+                if $(@).hasClass state
+                    $(@).show()
+                else
+                    $(@).hide()
 
         getModalOptions: ->
             that = @

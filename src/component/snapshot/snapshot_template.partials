@@ -9,7 +9,7 @@
 <tr class="item" data-id="">
     <td>
         <div class="checkbox">
-            <input id="{{id}}" type="checkbox" value="None" data-name="{{name}}" class="one-cb">
+            <input id="{{id}}" type="checkbox" value="None" data-id="{{id}}" data-name="{{name}}" class="one-cb">
             <label for="{{id}}"></label>
         </div>
     </td>
@@ -23,7 +23,7 @@
 
 <!-- {{slide_delete}} -->
 <div class="slide-delete">
-    <div class="modal-text-major">Confirm to delete {{#if selectedId}}{{selectedId}}{{else}}selected {{selectedCount}} DHCP Options set{{/if}}?</div>
+    <div class="modal-text-major">Confirm to delete {{#if selectedId}}{{selectedId}}{{else}}selected {{selectedCount}} Snapshot {{/if}}?</div>
     <div class="init action">
         <button class="btn btn-red do-action" data-action="delete">Delete</button>
         <button class="btn btn-silver cancel">Cancel</button>
@@ -39,9 +39,9 @@
     <div class="formart_toolbar_modal" data-type="true">
         <section data-bind="true">
             <div class="control-group clearfix">
-                <label for="property-dhcp-domain">{{ i18n "PROP_SNAPSHOT_SET_NAME" }}</label>
+                <label for="property-snapshot-name-create">{{ i18n "PROP_SNAPSHOT_SET_NAME" }}</label>
                 <div>
-                    <input id="property-dhcp-domain" class="input tooltip" data-tooltip="{{i18n 'PROP_VPC_TIP_ENTER_THE_DOMAIN_NAME'}}" type="text" maxlength="255" data-type="domain" data-ignore="true">
+                    <input id="property-snapshot-name-create" class="input tooltip" data-tooltip="{{i18n 'PROP_SNAPSHOT_SET_NAME_TIP'}}" type="text" maxlength="255" data-type="domain" data-ignore="true">
                 </div>
             </div>
 
@@ -53,9 +53,9 @@
             </div>
 
             <div class="control-group clearfix property-content" style="background: none">
-                <label for="property-snapshot-desc">{{ i18n "PROP_SNAPSHOT_SET_DESC"}}</label>
+                <label for="property-snapshot-desc-create">{{ i18n "PROP_SNAPSHOT_SET_DESC"}}</label>
                 <div>
-                    <input id='property-snapshot-desc' class="input tooltip" data-tooltip="{{i18n 'PROP_SNAPSHOT_SET_DESC_TIP'}}" type="text"/>
+                    <input id='property-snapshot-desc-create' class="input tooltip" data-tooltip="{{i18n 'PROP_SNAPSHOT_SET_DESC_TIP'}}" type="text"/>
                 </div>
             </div>
 

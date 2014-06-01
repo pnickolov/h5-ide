@@ -209,7 +209,6 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
             deleteCount--
             if result.error
                 deleteErrorCount++
-                return false
             if deleteCount is 0
                 if deleteErrorCount > 0
                     notification 'error', deleteErrorCount+" DhcpOptions failed to delete, Please try again later."

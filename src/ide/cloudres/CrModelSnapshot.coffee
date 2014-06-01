@@ -54,7 +54,7 @@ define [ "./CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
     doDestroy : ()->
       ApiRequest("ebs_DeleteSnapshot", {
         region_name : @getCollection().region()
-        dhcp_id : @get("id")
+        snapshot_id : @get("id")
       })
 
     # Tags this resource. It should only called right after the resource is created.

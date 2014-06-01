@@ -3120,6 +3120,10 @@ module.exports =
       en: "Snapshot Name"
       zh: ""
 
+    PROP_SNAPSHOT_SET_NAME_TIP:
+      en: "Enter the name of the snapshot that you will create."
+      zh: ""
+
     PROP_SNAPSHOT_SOURCE_SNAPSHOT:
       en: "Source Snapshot"
       zh: ""
@@ -3138,6 +3142,10 @@ module.exports =
 
     PROP_SNAPSHOT_SET_DESC:
       en: "Description"
+      zh: ""
+
+    PROP_VPC_TIP_ENTER_THE_NEW_SNAPSHOT_NAME:
+      en: "Please fill with the name of the new snapshot you will create."
       zh: ""
 
     PROP_SNAPSHOT_SET_DESC_TIP:

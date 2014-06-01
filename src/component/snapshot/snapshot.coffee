@@ -5,7 +5,6 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
     snapshotRes = Backbone.View.extend
         constructor: ()->
             @collection = CloudResources constant.RESTYPE.SNAP, Design.instance().region()
-            @collection.on 'change', (@onChange.bind @)
             @collection.on 'update', (@onChange.bind @)
             @
         onChange: ->
@@ -163,6 +162,7 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
             'duplicate': (tpl, checked)->
                 data = {}
                 data.originSnapshot = checked[0]
+                data.region = Design.instance().get('region')
                 if not checked
                     return
                 @manager.setSlide tpl data
@@ -176,7 +176,6 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
             @["do_"+action] and @["do_"+action]('do_'+action,checked)
 
         do_create: (validate, checked)->
-            console.log checked
             volume = @volumes.findWhere('id': $('#property-volume-choose').find('.selectbox .selection').text())
             if not volume
                 return false
@@ -194,17 +193,13 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
             @switchAction 'processing'
             afterDeleted = that.afterDeleted.bind that
             _.each checked, (data)=>
-                console.log data, '========'
-                console.log @collection.findWhere(id: data.data.id)
                 @collection.findWhere(id: data.data.id).destroy().then afterDeleted, afterDeleted
 
         do_duplicate: (invalid, checked)->
-            console.log checked
             sourceSnapshot = checked[0]
             sourceRegion = Design.instance().get('region')
             targetRegion = $('#property-region-choose').find('.selectbox .selection').text()
             if (@regions.indexOf targetRegion) < 0
-                console.log targetRegion, @regions
                 return false
             data =
                 'sourceRegion': sourceRegion
@@ -215,15 +210,16 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
             ApiRequest('ebs_CopySnapshot',data).then @afterDuplicate, @afterDuplicate
 
 
-        afterCreated: (result)->
+        afterCreated: (result,newSnapshot)->
             @manager.cancel()
             if result.error
                 notification 'error', "Create failed because of: "+result.msg
                 return false
             notification 'info', "New DHCP Option is created successfully!"
+            @collection.fetchForce()
+            #@collection.add newSnapshot
 
         afterDuplicate: (result)->
-            console.log result, '----------'
             @manager.calcel()
             if result.error
                 notification 'error', "Duplicate failed because of: "+ result.msg

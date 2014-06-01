@@ -7049,8 +7049,14 @@ summary:focus {
     display: inline-block;
     line-height: 32px;
 }
-
-
+.manager-content-sub{
+    color: #999999;
+    font-size: 12px;
+}
+.manager-content-main{
+    color: #dadada;
+    line-height: 1;
+}
 
 
 

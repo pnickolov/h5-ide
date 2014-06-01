@@ -423,28 +423,6 @@ TEMPLATE.bubbleInstanceInfo=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
-
-function program1(depth0,data) {
-  
-  
-  return "<dd>key</dd><dt>value</dt>";
-  }
-
-  buffer += "<div class=\"bubble-head\">"
-    + escapeExpression(((stack1 = (depth0 && depth0.id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</div>\n<div class=\"bubble-content\">\n<dl class=\"dl-horizontal\">";
-  stack1 = helpers.eachObj.call(depth0, depth0, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "</dl>\n</div>\n\n";
-  return buffer;
-  };
-TEMPLATE.bubbleRegionResourceInfo=Handlebars.template(__TEMPLATE__);
-
-
-__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 

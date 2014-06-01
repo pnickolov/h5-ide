@@ -264,7 +264,7 @@
         </td>
         <td><i class="status status-{{ state }} icon-label"></i>{{ state }}</td>
         <td>{{ cidrBlock }}</td>
-        <td>{{#if dhcpOptionsId}}<span class="dashboard-bubble" data-bubble-template="dashboardBubble" data-bubble-data="{type:'DHCP',id:'{{dhcpOptionsId}}'}">{{ dhcpOptionsId }}</span>{{else}}None{{/if}}</td>
+        <td>{{#if dhcpOptionsId}}<span class="bubble" data-bubble-template="dashboardBubble" data-bubble-data="{type:'DHCP',id:'{{dhcpOptionsId}}'}">{{ dhcpOptionsId }}</span>{{else}}None{{/if}}</td>
         <td><i title="{{i18n 'DASH_TIT_VIEW_RESOURCE_DETAIL'}}" class="icon-detail" data-id="{{id}}"></i></td>
       </tr>{{/with}}
       {{else}}
@@ -457,3 +457,9 @@
 
 <!-- {{resourceDetail}} -->
 <dl class="dl-horizontal" style="margin-top:0px;">{{#each this}}<dt>{{@key}}:</dt><dd>{{this}}</dd>{{/each}}</dl>
+
+<!-- {{bubbleResourceInfo}} -->
+<div class="bubble-head">{{id}}</div>
+<div class="bubble-content">
+<dl class="dl-horizontal">{{#each data}}<dd>{{@key}}</dd><dt>{{this}}</dt>{{/each}}</dl>
+</div>

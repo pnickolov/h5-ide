@@ -78,16 +78,16 @@ define [
       , 1000 * 60
 
       # Add a custom template to the MC.template, so that the UI.bubble can use it to render.
-      MC.template.dashboardBubble = @getBubbleTemplate
+      MC.template.dashboardBubble = _.bind @dashboardBubble, @
       return
 
-    getBubbleTemplate : ( data )->
+    dashboardBubble : ( data )->
       if data.type is "INSTANCE"
-        templateName = "bubbleAMIInfo"
-      else
-        templateName = "bubbleRegionResourceInfo"
+        return MC.template.bubbleAMIInfo()
 
-      return MC.template[templateName]()
+      data.data = @model.getAwsResDataById( @region, constant.RESTYPE[data.type], data.id )
+
+      return tplPartials.bubbleResourceInfo( data )
 
     ###
       rendering

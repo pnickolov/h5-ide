@@ -177,6 +177,7 @@ define ["ApiRequest", "CloudResources", "constant", "backbone"], ( ApiRequest, C
 
       CloudResources( constant.RESTYPE.SUBSCRIPTION, region ).fetch()
       CloudResources( constant.RESTYPE.VPC ).fetch()
+      CloudResources( constant.RESTYPE.DHCP, region ).fetch()
       CloudResources( constant.RESTYPE.ASG ).fetch()
       CloudResources( constant.RESTYPE.CW ).fetch()
       return
@@ -196,10 +197,14 @@ define ["ApiRequest", "CloudResources", "constant", "backbone"], ( ApiRequest, C
 
         return true
 
-      if type is constant.RESTYPE.SUBSCRIPTION
-        return CloudResources( type, region ).isReady()
-      else
-        return CloudResources( type ).isReady()
+      switch type
+        when constant.RESTYPE.SUBSCRIPTION
+          return CloudResources( type, region ).isReady()
+        when constant.RESTYPE.VPC
+          return CloudResources( type ).isReady() && CloudResources( constant.RESTYPE.DHCP, region ).isReady()
+        else
+          return CloudResources( type ).isReady()
+      return
 
     getAwsResData : ( region, type )->
       if not region
@@ -217,6 +222,8 @@ define ["ApiRequest", "CloudResources", "constant", "backbone"], ( ApiRequest, C
         return CloudResources( type, region ).models
       else
         return CloudResources( type ).where({ category : region })
+
+    getAwsResDataById : ( region, type, id )-> CloudResources( type, region ).get(id)
 
     getResourcesCount : ( region )->
       filter = { category : region }

@@ -68,16 +68,16 @@ define ["handlebars", "i18n!nls/lang.js"], ( Handlebars, lang )->
 
   Handlebars.registerHelper "or", ( v1, v2 ) -> v1 || v2
 
-  Handlebars.registerHelper "eachObj", ( obj, fn )->
-    buffer = ""
-    data = { key : "", value : "" }
+  # Handlebars.registerHelper "eachObj", ( obj, fn )->
+  #   buffer = ""
+  #   data = { key : "", value : "" }
 
-    for key, value of obj
-      if obj.hasOwnProperty key
-        data.key   = key
-        data.value = value
-        buffer += fn(data)
-    buffer
+  #   for key, value of obj
+  #     if obj.hasOwnProperty key
+  #       data.key   = key
+  #       data.value = value
+  #       buffer += fn(data)
+  #   buffer
 
   Handlebars.registerHelper "simpleTime", ( time ) -> MC.dateFormat(new Date(time), "yyyy-MM-dd hh:mm:ss")
   null

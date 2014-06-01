@@ -36,7 +36,7 @@
 
 <!-- {{slide_create}} -->
 <div class="slide-create" data-bind="true">
-    <div id="create-new-dhcp" data-type="true">
+    <div id="create-new-snapshot" data-type="true">
         <section data-bind="true">
             <div class="control-group clearfix">
                 <label for="property-dhcp-domain">{{ i18n "PROP_SNAPSHOT_SET_NAME" }}</label>
@@ -61,11 +61,53 @@
 
         </section>
         <div class="init action">
-            <button class="btn btn-blue do-action" data-action="create">Create</button>
+            <button class="btn btn-blue do-action" data-action="create" disabled>Create</button>
             <button class="btn btn-silver cancel">Cancel</button>
         </div>
         <div class="processing action" style="display:none;">
             <button class="btn" disabled>Creating...</button>
+        </div>
+    </div>
+</div>
+
+<!-- {{slide_duplicate}} -->
+<div class="slide-duplicate" data-bind="true">
+    <div id="duplicate_snapshot" data-type="true">
+        <section data-bind="true">
+            <div class="control-group clearfix">
+                <label for="property-snapshot-source">{{ i18n "PROP_SNAPSHOT_SOURCE_SNAPSHOT" }}</label>
+                <div>
+                    <p id="property-snapshot-source">{{originSnapshot.id}}</p>
+                </div>
+            </div>
+            <div class="control-group clearfix">
+                <label for="property-snapshot-name">{{ i18n "PROP_SNAPSHOT_SET_NEW_NAME" }}</label>
+                <div>
+                    <input id="property-snapshot-name" class="input tooltip" data-tooltip="{{i18n 'PROP_VPC_TIP_ENTER_THE_NEW_SNAPSHOT_NAME'}}" type="text" maxlength="255" data-type="domain" data-ignore="true">
+                </div>
+            </div>
+
+            <div class="control-group clearfix property-content" style="background: none">
+                <label for="property-region-choose">{{ i18n "PROP_SNAPSHOT_DESTINATION_REGION"}}</label>
+                <div>
+                    <div id="property-region-choose"></div>
+                </div>
+            </div>
+
+            <div class="control-group clearfix property-content" style="background: none">
+                <label for="property-snapshot-desc">{{ i18n "PROP_SNAPSHOT_SET_DESC"}}</label>
+                <div>
+                    <input id='property-snapshot-desc' class="input tooltip" data-tooltip="{{i18n 'PROP_SNAPSHOT_SET_DESC_TIP'}}" type="text"/>
+                </div>
+            </div>
+
+        </section>
+        <div class="init action">
+            <button class="btn btn-blue do-action" data-action="duplicate" disabled>Duplicate</button>
+            <button class="btn btn-silver cancel">Cancel</button>
+        </div>
+        <div class="processing action" style="display:none;">
+            <button class="btn" disabled>Duplicating...</button>
         </div>
     </div>
 </div>

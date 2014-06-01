@@ -3108,6 +3108,18 @@ module.exports =
       en: "Snapshot Name"
       zh: ""
 
+    PROP_SNAPSHOT_SOURCE_SNAPSHOT:
+      en: "Source Snapshot"
+      zh: ""
+
+    PROP_SNAPSHOT_SET_NEW_NAME:
+      en: "New Snapshot Name"
+      zh: ""
+
+    PROP_SNAPSHOT_DESTINATION_REGION:
+      en: "Destination Region"
+      zh: ""
+
     PROP_SNAPSHOT_SET_VOLUME:
       en: "Volume"
       zh: ""

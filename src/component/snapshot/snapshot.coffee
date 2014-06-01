@@ -1,4 +1,4 @@
-define ['CloudResources', 'constant', 'combo_dropdown', "UI.modalplus", 'toolbar_modal', "i18n!nls/lang.js", './component/snapshot/snapshot_template.js'], (CloudResources, constant, combo_dropdown, modalPlus, toolbar_modal, lang, template)->
+define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalplus", 'toolbar_modal', "i18n!nls/lang.js", './component/snapshot/snapshot_template.js'], (CloudResources, ApiRequest , constant, combo_dropdown, modalPlus, toolbar_modal, lang, template)->
     fetched = false
     snapshotRes = Backbone.View.extend
         constructor: ()->
@@ -24,7 +24,7 @@ define ['CloudResources', 'constant', 'combo_dropdown', "UI.modalplus", 'toolbar
                 manageBtnValue: lang.ide.PROP_VPC_MANAGE_SNAPSHOT
                 filterPlaceHolder: lang.ide.PROP_VPC_FILTER_SNAPSHOT
             @dropdown = new combo_dropdown(option)
-
+            @volumes = CloudResources constant.RESTYPE.VOL, Design.instance().region()
             selection = lang.ide.PROP_VOLUME_SNAPSHOT_SELECT
             @dropdown.setSelection selection
 
@@ -33,28 +33,36 @@ define ['CloudResources', 'constant', 'combo_dropdown', "UI.modalplus", 'toolbar
             @dropdown.on 'change', @selectSnapshot, @
             @dropdown
 
+        renderRegionDropdown: ()->
+            option =
+                filterPlaceHolder: lang.ide.PROP_VPC_FILTER_DHCP
+            @regionsDropdown = new combo_dropdown(option)
+            @regions =
+
         openDropdown: (keySet)->
-            data = @collection.toJSON()
-            dataSet =
-                isRuntime: false
-                volumes: data
-            if keySet
-                dataSet.data = keySet
-                dataSet.hideDefaultNoKey = true
-            content = template.keys dataSet
-            @dropdown.toggleControls false, 'manage'
-            @dropdown.toggleControls true, 'filter'
-            @dropdown.setContent content
+            @volumes.fetch().then =>
+                data = @volumes.toJSON()
+                @dropdown.setContent content
+                dataSet =
+                    isRuntime: false
+                    volumes: data
+                if keySet
+                    dataSet.data = keySet
+                    dataSet.hideDefaultNoKey = true
+                content = template.keys dataSet
+                @dropdown.toggleControls false, 'manage'
+                @dropdown.toggleControls true, 'filter'
+                @dropdown.setContent content
 
         filterDropdown: (keyword)->
-            hitKeys = _.filter @collection.toJSON(), ( data ) ->
+            hitKeys = _.filter @volumes.toJSON(), ( data ) ->
                 data.id.toLowerCase().indexOf( keyword.toLowerCase() ) isnt -1
             if keyword
                 @openDropdown hitKeys
             else
                 @openDropdown()
         selectSnapshot: (e)->
-            targetSnapshot = @collection.findWhere
+            targetSnapshot = @volumes.findWhere
                 id: e
             @trigger 'change', targetSnapshot.toJSON()
 
@@ -120,7 +128,24 @@ define ['CloudResources', 'constant', 'combo_dropdown', "UI.modalplus", 'toolbar
                     volumes : {}
                 @manager.setSlide tpl data
                 @dropdown = @dropdown or @renderDropdown()
+                @dropdown.on 'change', =>
+                    @manager.$el.find('[data-action="create"]').prop 'disabled', false
+
+
                 @manager.$el.find('#property-volume-choose').html(@dropdown.$el)
+            'duplicate': (tpl, checked)->
+                data = {}
+                data.checked = checked[0]
+                if not checked
+                    return
+                @manager.getSlide tpl data
+                @regionsDropdown = @regionsDropdown or @renderRegions()
+                @regionsDropdown.on 'change', =>
+                    @manager.$el.find('[data-action="duplicate"]').prop 'disabled', false
+
+                @manager.$el.find('#property-region-choose').html(@regionsDropdown.$el)
+
+
         getModalOptions: ->
             that = @
             region = Design.instance().get('region')

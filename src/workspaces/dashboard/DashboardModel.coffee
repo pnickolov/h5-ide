@@ -159,8 +159,6 @@ define ["ApiRequest", "CloudResources", "constant", "backbone"], ( ApiRequest, C
 
 
     ### Cloud Resources ###
-    reloadResource : ()-> CloudResources.invalidate()
-
     onRegionResChanged : ()-> @trigger "change:regionResources"
     onGlobalResChanged : ()->
       @trigger "change:globalResources"

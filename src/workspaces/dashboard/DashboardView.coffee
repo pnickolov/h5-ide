@@ -259,7 +259,9 @@ define [
 
     reloadResource : ()->
       $("#RefreshResource").addClass("reloading").text("")
-      @model.reloadResource()
+      @model.clearVisualizeData()
+      App.discardAwsCache()
+      return
 
     deleteStack    : (event)-> App.deleteStack $( event.currentTarget ).closest("li").attr("data-id"); false
     duplicateStack : (event)-> App.duplicateStack $( event.currentTarget ).closest("li").attr("data-id"); false

@@ -69,7 +69,7 @@ define [
       # The Websockets subscription will be lost if we have an invalid session.
       @WS.subscribe()
 
-    @user.on "change:credential", ()-> CloudResources.invalidate()
+    @user.on "change:credential", ()=> @discardAwsCache()
     return
 
   # This method will prompt a dialog to let user to re-acquire the session
@@ -96,6 +96,11 @@ define [
   VisualOps.prototype.startApp       = (id)-> @__view.startApp(id)
   VisualOps.prototype.stopApp        = (id)-> @__view.stopApp(id)
   VisualOps.prototype.terminateApp   = (id)-> @__view.terminateApp(id)
+
+  VisualOps.prototype.discardAwsCache = ()->
+    CloudResources.invalidate()
+    App.model.clearImportOps()
+    return
 
   # Creates a stack from the "json" and open it.
   # If it cannot import the json data, returns a string to represent the result.

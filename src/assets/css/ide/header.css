@@ -1,8 +1,6 @@
 #tabbar-wrapper {
   padding: 10px 0 0 45px;
-  width: 10000px; }
-
-#tabbar-wrapper {
+  width: 10000px;
   white-space: nowrap; }
   #tabbar-wrapper > ul {
     float: left; }
@@ -39,6 +37,8 @@
     #tabbar-wrapper > ul > li[data-placeholder] {
       background: none;
       border: none; }
+  #tabbar-wrapper .truncate {
+    max-width: 160px; }
 
 #header {
   height: 49px;

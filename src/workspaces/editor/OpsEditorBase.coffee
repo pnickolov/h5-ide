@@ -25,4 +25,11 @@ define [ "Workspace" ], ( Workspace )->
 
       return Workspace.apply @, arguments
 
+    awake : ()->
+      @view.render()
+      @view.$el.show()
+      return
+
+    sleep : ()-> @view.$el.remove()
+
   OpsEditorBase

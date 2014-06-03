@@ -77,12 +77,12 @@ define [ '../base/view',
             @updateSlider( $('#elb-property-slider-unhealthy'), @model.get('unHealthyThreshold') - 2)
             @updateSlider( $('#elb-property-slider-healthy'), @model.get('healthyThreshold') - 2)
 
+            @updateCertView()
+
             _.each @$('.sslcert-placeholder'), (sslCertPlaceHolder, idx) ->
                 $sslCertPlaceHolder = $(sslCertPlaceHolder)
                 sslCertDropDown = that.model.initNewSSLCertDropDown(idx)
                 $sslCertPlaceHolder.html sslCertDropDown.render().el
-
-            @updateCertView()
 
             @model.attributes.name
 

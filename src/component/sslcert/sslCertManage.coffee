@@ -76,6 +76,9 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sslcert/ssl
             @initCol()
             @initModal()
 
+        quickCreate: ->
+            @modal.triggerSlide 'create'
+
         doAction: ( action, checked ) ->
             @[action] and @[action](@validate(action), checked)
 

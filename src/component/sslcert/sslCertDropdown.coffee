@@ -23,24 +23,46 @@ define [ 'constant', 'CloudResources','sslcert_manage', 'combo_dropdown', './com
             @dropdown.on 'manage', @manage, @
             @dropdown.on 'change', @set, @
             @dropdown.on 'filter', @filter, @
+            @dropdown.on 'quick_create', @quickCreate, @
 
         initialize: () ->
             @initCol()
             @initDropdown()
 
+        quickCreate: () ->
+            new sslCertManage().render().quickCreate()
 
         render: ->
-            @dropdown.setSelection (@sslCertName or 'None')
+
+            selectionName = @sslCertName or 'None'
+
             @el = @dropdown.el
+
+            if selectionName is 'None'
+                $(@el).addClass('empty')
+                @sslCertCol.fetch()
+
+            @dropdown.setSelection selectionName
+
+            if @sslCertCol.isReady()
+
+                data = @sslCertCol.toJSON()
+                if data and data[0]
+                    @dropdown.trigger 'change', data[0].id
+                    @dropdown.setSelection data[0].Name
+                    $(@el).removeClass('empty')
+
             @
 
         processCol: ( filter, keyword ) ->
 
             if @sslCertCol.isReady()
 
-                data = @sslCertCol.map (sslCertModel) ->
-                    sslCertData = sslCertModel.toJSON()
-                    return sslCertData
+                data = @sslCertCol.toJSON()
+                if data and data[0]
+                    @dropdown.trigger 'change', data[0].id
+                    @dropdown.setSelection data[0].Name
+                    $(@el).removeClass('empty')
 
                 if filter
                     len = keyword.length
@@ -52,7 +74,10 @@ define [ 'constant', 'CloudResources','sslcert_manage', 'combo_dropdown', './com
             false
 
         renderDropdownList: ( data ) ->
-            @dropdown.setContent(template.dropdown_list data).toggleControls true
+            if data.length
+                @dropdown.setContent(template.dropdown_list data).toggleControls true
+            else
+                @dropdown.setContent(template.no_sslcert({})).toggleControls true
 
         renderNoCredential: () ->
             @dropdown.render('nocredential').toggleControls false

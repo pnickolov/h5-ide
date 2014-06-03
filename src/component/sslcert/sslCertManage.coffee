@@ -1,4 +1,4 @@
-define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sslcert/sslCertTpl', 'i18n!nls/lang.js' ], ( constant, CloudResources, toolbar_modal, template, lang ) ->
+define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sslcert/sslCertTpl', 'i18n!nls/lang.js', 'event' ], ( constant, CloudResources, toolbar_modal, template, lang, ide_event ) ->
 
     Backbone.View.extend
 
@@ -170,6 +170,18 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sslcert/ssl
                     ).then (result) ->
                         certName = newCertName
                         notification 'info', "Certificate #{certName} is updated"
+
+                        # refresh ssl cert related
+                        sslCertModelAry = Design.modelClassForType(constant.RESTYPE.IAM).allObjects()
+                        _.each sslCertModelAry, (sslCertModel) ->
+                            if sslCertModel.get('name') is oldCerName
+                                sslCertModel.set('name', newCertName)
+                            null
+                        # $selectCertItem = $('.sslcert-placeholder .selection').filter () ->
+                        #     return $(this).text() == oldCerName
+                        # $selectCertItem.text(newCertName)
+                        ide_event.trigger ide_event.REFRESH_PROPERTY
+
                         that.modal.cancel()
                     , (result) ->
                         that.switchAction()

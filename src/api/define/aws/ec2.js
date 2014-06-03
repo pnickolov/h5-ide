@@ -25,7 +25,6 @@ define(['ApiRequestDefs'], function( ApiRequestDefs ){
 		'ebs_DeleteSnapshot'                     : { url:'/aws/ec2/ebs/snapshot/',	method:'DeleteSnapshot',	params:['username', 'session_id', 'region_name', 'snapshot_id']   },
 		'ebs_ModifySnapshotAttribute'            : { url:'/aws/ec2/ebs/snapshot/',	method:'ModifySnapshotAttribute',	params:['username', 'session_id', 'region_name', 'snapshot_id', 'user_ids', 'group_names']   },
 		'ebs_ResetSnapshotAttribute'             : { url:'/aws/ec2/ebs/snapshot/',	method:'ResetSnapshotAttribute',	params:['username', 'session_id', 'region_name', 'snapshot_id', 'attribute_name']   },
-		'ebs_CopySnapshot'                       : { url:'/aws/ec2/ebs/snapshot/',	method:'CopySnapshot',	params:['username', 'session_id', 'source_region', 'source_snapshot_id', 'description', 'destination_region', 'presigned_url']   },
 		'ebs_DescribeSnapshots'                  : { url:'/aws/ec2/ebs/snapshot/',	method:'DescribeSnapshots',	params:['username', 'session_id', 'region_name', 'snapshot_ids', 'owners', 'restorable_by', 'filters']   },
 		'ebs_DescribeSnapshotAttribute'          : { url:'/aws/ec2/ebs/snapshot/',	method:'DescribeSnapshotAttribute',	params:['username', 'session_id', 'region_name', 'snapshot_id', 'attribute_name']   },
 		'ebs_CopySnapshot'                       : { url:'/aws/ec2/ebs/snapshot/',	method:'CopySnapshot',	params:['username', 'session_id', 'region_name', 'snapshot_id', 'dst_region_name', 'description', 'pre_signed_url']   },

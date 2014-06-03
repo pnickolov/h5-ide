@@ -125,7 +125,9 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
             _.each data, (e,f)->
                 if e.progress is 100
                     data[f].completed = true
-                    null
+                if e.startTime
+                    data[f].started = (new Date(e.startTime)).toString()
+                null
             dataSet =
                 items: data
             content = template.content dataSet
@@ -205,9 +207,10 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
             if (@regions.indexOf targetRegion) < 0
                 return false
             data =
+                'name': @manager.$el.find('#property-snapshot-name').val()
                 'sourceRegion': sourceRegion
                 'sourceSnapshotId': sourceSnapshot.data.id
-                'description': $('#property-snapshot-desc').val()
+                'description': @manager.$el.find('#property-snapshot-desc').val()
                 'destinationRegion': targetRegion
 
             ApiRequest('ebs_CopySnapshot',data).then @afterDuplicate, @afterDuplicate
@@ -289,12 +292,12 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
                 }
                 {
                     sortable: true
-                    width: "20%" # or 40%
+                    width: "10%" # or 40%
                     name: 'Capicity'
                 }
                 {
                     sortable: true
-                    width: "30%" # or 40%
+                    width: "40%" # or 40%
                     name: 'status'
                 }
                 {

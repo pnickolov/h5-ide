@@ -17,7 +17,7 @@
     <td>{{volumeSize}} GiB</td>
     <td>
         <div class="manager-content-main">{{#if completed}}<i class="status status-green icon-label"></i> Completed{{else}}<i class="status status-yellow icon-label"></i> Pending - {{progress}}%{{/if}}</div>
-        <span class="manager-content-sub">Started: {{startTime}}</span>
+        <span class="manager-content-sub">Started: {{started}}</span>
     </td>
     <td>{{description}}</td>
 </tr>

@@ -1,19 +1,21 @@
-<div class="processing">
-	<header>{{ i18n "PROC_TITLE" }}<span class="process-info">{{progress}}%</span></header>
-	<div class="progress"> <div class="bar" style="width:{{progress}}%;"></div> </div>
-</div>
+<div class='ops-process'>
+  <section class="processing">
+  	<header>{{ i18n "PROC_TITLE" }}<span class="process-info">{{progress}}%</span></header>
+  	<div class="progress"> <div class="bar" style="width:{{progress}}%;"></div> </div>
+  </section>
 
-<div class="success hide">
-  <p class="title">{{ i18n "PROC_RLT_DONE_TITLE" }}</p>
-  <p class="sub-title">{{ i18n "PROC_RLT_DONE_SUB_TITLE" }}</p>
-</div>
+  <section class="success hide">
+    <p class="title">{{ i18n "PROC_RLT_DONE_TITLE" }}</p>
+    <p class="sub-title">{{ i18n "PROC_RLT_DONE_SUB_TITLE" }}</p>
+  </section>
 
-<div class="fail hide error-info-block">
-  <header>{{ i18n "PROC_FAILED_TITLE" }}</header>
-  <p class="sub-title">{{ i18n "PROC_RLT_FAILED_SUB_TITLE" }}</p>
-  <div class="result-error-info">
-    <p class="title">{{ i18n "PROC_ERR_INFO" }}</p>
-    <p class="detail"></p>
-  </div>
-  <button class="btn btn-silver btn-close-process right">{{ i18n "PROC_CLOSE_TAB" }}</button>
+  <section class="fail hide error-info-block">
+    <header>{{ i18n "PROC_FAILED_TITLE" }}</header>
+    <p class="sub-title">{{ i18n "PROC_RLT_FAILED_SUB_TITLE" }}</p>
+    <div class="result-error-info">
+      <p class="title">{{ i18n "PROC_ERR_INFO" }}</p>
+      <p class="detail"></p>
+    </div>
+    <button class="btn btn-silver btn-close-process right">{{ i18n "PROC_CLOSE_TAB" }}</button>
+  </section>
 </div>

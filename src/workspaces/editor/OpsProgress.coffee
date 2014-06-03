@@ -16,8 +16,7 @@ define ["OpsModel", "./OpsEditorBase", "./OpsProgressTpl", "backbone"], ( OpsMod
       @listenTo @model, "change:state",    @updateState
       @listenTo @model, "change:progress", @updateProgress
 
-      @setElement $("<div class='ops-process'></div>").appendTo("#main")
-      @$el.html OpsProgressTpl( @model.toJSON() )
+      @setElement $(OpsProgressTpl( @model.toJSON() )).appendTo("#main")
       return
 
     switchToDone : ()->

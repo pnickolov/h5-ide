@@ -1,5 +1,5 @@
 
-define [ "./CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
+define [ "./CrModel", "CloudResources", "ApiRequest" ], ( CrModel, CloudResources, ApiRequest )->
 
   CrModel.extend {
 
@@ -52,6 +52,31 @@ define [ "./CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
 
       Backbone.Model.prototype.set.apply this, arguments
       return
+
+    copyTo : ( destRegion, newName, description )->
+      self = @
+
+      ApiRequest("ebs_CopySnapshot",{
+        region_name     : @getCollection().region()
+        snapshot_id     : @get("id")
+        dst_region_name : destRegion
+        description     : description
+      }).then ( data )->
+
+        id = data.CopySnapshotResponse?.snapshotId
+        if not id
+          throw McError( ApiRequest.Errors.InvalidAwsReturn, "Snapshot copied but aws returns invalid data." )
+
+        thatCln = CloudResources( @collection().type, destRegion )
+        # The model is not saved, because we would w
+        clones = self.toJSON()
+        clones.name = newName
+        clones.description = description
+        clones.id = id
+        model = thatCln.create(clones)
+        thatCln.add(model)
+        model.tagResource()
+        return model
 
     doDestroy : ()->
       ApiRequest("ebs_DeleteSnapshot", {

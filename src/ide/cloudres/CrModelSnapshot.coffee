@@ -28,8 +28,10 @@ define [ "./CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
         description  : @get("description")
       }).then ( res )->
         try
-          id = res.CreateSnapshotResponse.snapshotId
-          delete res.requestId
+          res          = res.CreateSnapshotResponse
+          res.id       = res.snapshotId
+          res.progress = res.progress || 0
+          delete res.snapshotId
           delete res["@attributes"]
         catch e
           throw McError( ApiRequest.Errors.InvalidAwsReturn, "Snapshot created but aws returns invalid ata." )

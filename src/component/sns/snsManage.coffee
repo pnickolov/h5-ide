@@ -186,7 +186,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
             endpoint = @M$( '#create-endpoint' ).val()
 
             createSub = ( newTopic ) ->
-                @subCol.create( TopicArn: newTopic and newTopic.id or topicId, Endpoint: endpoint, Protocol: protocol )
+                that.subCol.create( TopicArn: newTopic and newTopic.id or topicId, Endpoint: endpoint, Protocol: protocol )
                     .save()
                     .then ( newSub ) ->
                         that.processSubCreate newSub
@@ -208,7 +208,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
 
             else
                 topicModel = @topicCol.get topicId
-                if displayName is topicModel.get 'displayName'
+                if displayName is topicModel.get 'DisplayName'
                     createSub()
                 else
                     topicModel.update( displayName ).then createSub

@@ -49,7 +49,10 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
             @regionsDropdown
 
         openRegionDropdown: (keySet)->
-            data = @regions
+            currentRegion = Design.instance().get 'region'
+            data = _.map @regions, (region)->
+                {name: region, selected: region == currentRegion}
+            console.log data
             dataSet =
                 isRuntime: false
                 data: data
@@ -64,6 +67,9 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
         openDropdown: (keySet)->
             @volumes.fetch().then =>
                 data = @volumes.toJSON()
+                currentRegion = Design.instance().get('region')
+                data = _.filter data, (volume)->
+                    volume.category == currentRegion
                 dataSet =
                     isRuntime: false
                     data: data

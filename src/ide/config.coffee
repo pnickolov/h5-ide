@@ -435,17 +435,27 @@ require.config {
 		"component/exporter/Exporter"  : [ "component/exporter/Download", "component/exporter/Thumbnail", "component/exporter/JsonExporter" ]
 		"ide/cloudres/CrBundle"  : ["CloudResources"]
 		"ide/Application" : []
-		'combo_dropdown'  : ["toolbar_modal"]
-		"kp" : ["kp_upload"]
 		"module/design/framework/DesignBundle" : [ "Design", "CanvasManager" ]
 		"validation" : []
 		"component/stateeditor/stateeditor" : []
+		"component/sharedrescomp" : [
+			'kp_dropdown'
+			'kp_manage'
+			'kp_upload'
+			'sns_dropdown'
+			'sns_manage'
+			'combo_dropdown'
+			'toolbar_modal'
+			'dhcp'
+			'snapshotManager'
+			'sslcert_manage'
+			'sslcert_dropdown'
+		]
 		"property" : []
 
 	bundleExcludes : # This is a none requirejs option, but it's used by compiler to exclude some of the source.
 		"lib/deprecated" : ["Design"]
 		"component/sgrule/SGRulePopup" : [ "Design" ]
-		"kp" : ["Design"]
 		"component/stateeditor/stateeditor" : [
 			"component/stateeditor/lib/ace"
 			"component/stateeditor/lib/markdown"

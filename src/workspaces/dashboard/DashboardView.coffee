@@ -308,6 +308,13 @@ define [
         self.visModal.tpl.find(".unmanaged-vpc-empty").hide()
         self.visModal.tpl.find(".loading-spinner").show()
         false
+
+      @visModal.tpl.on "click", ".visualize-vpc", ()->
+        $tgt = $(this)
+        if $tgt.hasClass(".disabled") then return false
+        self.visModal.close()
+        App.openOps App.model.createImportOps( $tgt.attr("data-vpcid") )
+        false
       return
 
     updateDemoView : ()->

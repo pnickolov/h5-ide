@@ -62,6 +62,21 @@ define ["ApiRequest", "backbone"], ( ApiRequest )->
       @__fetchPromise = null
       @fetch()
 
+    # This method is used by CloudResources to provide an external api to parse data coming from aws.
+    # It parse data and the cached them in this collection and returns parsed models.
+    parseExternalData : ( awsData )->
+      try
+        awsData = @parseFetchData( awsData )
+      catch e
+        return null
+
+      @set data
+      models = []
+      for d in awsData
+        models.push @get(d.id)
+
+      models
+
     # Override this method to parse the result of the fetch.
     parseFetchData : ( res )-> res
 

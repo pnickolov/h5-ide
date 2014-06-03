@@ -34,6 +34,7 @@ define ["ApiRequest", "constant", "component/exporter/Thumbnail", "backbone"], (
       # terminateFail  : false
       # progress       : 0
       # opsActionError : ""
+      # importVpcId    : ""
 
     initialize : ( attr, options )->
       if options
@@ -44,8 +45,9 @@ define ["ApiRequest", "constant", "component/exporter/Thumbnail", "backbone"], (
       return
 
 
-    isStack : ()-> @attributes.state is   OpsModelState.UnRun
-    isApp   : ()-> @attributes.state isnt OpsModelState.UnRun
+    isStack    : ()-> @attributes.state is   OpsModelState.UnRun
+    isApp      : ()-> @attributes.state isnt OpsModelState.UnRun
+    isImported : ()-> !!@attributes.importVpcId
 
     # Returns a plain object to represent this model.
     # If you want to access the JSON of the stack/app, use getJsonData() instead.
@@ -77,6 +79,7 @@ define ["ApiRequest", "constant", "component/exporter/Thumbnail", "backbone"], (
         d.resolve @__jsonData
         return d.promise
       # TODO :
+      if @isImported() then return @__getImportJsonData()
 
     # Save the stack in server, returns a promise
     save : ( newJson, thumbnail )->
@@ -306,6 +309,33 @@ define ["ApiRequest", "constant", "component/exporter/Thumbnail", "backbone"], (
 
       @__jsonData = json
       return
+
+    # This method is used to generated a json for unmanaged vpc.
+    __getImportJsonData : ()->
+      vpcid   = @get "importVpcId"
+      filter  = { "vpc-id" : vpcid }
+      filter2 = { "attachment.vpc-id": vpcid }
+      param   =
+        "AWS.VPC.VPC"              : { id: [vpcid] }
+        "AWS.EC2.Instance"         : { filter: filter }
+        "AWS.VPC.RouteTable"       : { filter: filter }
+        "AWS.VPC.Subnet"           : { filter: filter }
+        "AWS.EC2.SecurityGroup"    : { filter: filter }
+        "AWS.VPC.NetworkAcl"       : { filter: filter }
+        "AWS.VPC.NetworkInterface" : { filter: filter }
+        "AWS.VPC.VPNGateway"       : { filter: filter2 }
+        "AWS.VPC.InternetGateway"  : { filter: filter2 }
+        "AWS.EC2.AvailabilityZone" : { filter: { "region-name": @get("region") } }
+
+      ApiRequest("aws_resource",{
+        region_name : @get("region")
+        resources   : param
+        addition    : "vpc"
+        retry_times : 1
+      }).then ( data )->
+        console.log data
+
+
   }
 
   OpsModel.State = OpsModelState

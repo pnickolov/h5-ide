@@ -29,6 +29,19 @@ define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone", "con
 
     getOpsModelById : ( opsId )-> @attributes.appList.get(opsId) || @attributes.stackList.get(opsId)
 
+    clearImportOps : ()-> @attributes.appList.remove @attributes.appList.find ( m )-> m.isImported()
+
+    createImportOps : ( region, vpcId )->
+      m = @attributes.appList.findWhere({importVpcId:vpcId})
+      if m then return m
+      m = new OpsModel({
+        importVpcId : vpcId
+        region      : region
+        state       : OpsModel.State.Running
+      })
+      @attributes.appList.add m
+      m
+
     # This method creates a new stack in IDE, and returns that model.
     # The stack is not automatically stored in server.
     # You need to call save() after that.

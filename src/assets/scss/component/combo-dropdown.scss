@@ -30,17 +30,18 @@
 }
 
 .combo-dd {
+
   i {
   color: #148BE6;
   }
+
   &.selectbox {
 
-    position: static;
+    position: relative;
 
     .dropdown {
-      border-top: 0;
-      position: relative;
-      top: 0;
+      position: absolute;
+      top: 29px;
     }
     .scroll-wrap {
       width: 258px;

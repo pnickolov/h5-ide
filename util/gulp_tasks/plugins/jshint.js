@@ -11,7 +11,8 @@
 
   jshintOption = {
     "-W099": true,
-    "-W041": true
+    "-W041": true,
+    "-W030": true
   };
 
   problemSign = process.platform === "win32" ? "x " : "✖ ";

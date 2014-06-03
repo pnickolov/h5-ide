@@ -61,7 +61,7 @@ define [ 'constant', 'backbone', 'underscore', 'MC', 'keypair_service', 'Design'
         __haveGot: false
 
         initialize: ( options ) ->
-            @resModel = options.resModel
+            @resModel = options.resModel if options
 
             if @resModel
                 @set 'keyName', @resModel.getKeyName()

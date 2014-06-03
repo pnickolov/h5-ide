@@ -45,7 +45,7 @@ define [ 'Design', 'kp_manage', './component/kp/kpModel', 'combo_dropdown', './c
 
 
         initialize: ( options ) ->
-            @model = new kpModel resModel: options.resModel
+            @model = new kpModel resModel: ( if options then options.resModel else null )
             @model.on 'change:keys', @renderKeys, @
             @model.on 'request:error', @syncErrorHandler, @
 

@@ -27,7 +27,7 @@ define(['ApiRequestDefs'], function( ApiRequestDefs ){
 		'ebs_ResetSnapshotAttribute'             : { url:'/aws/ec2/ebs/snapshot/',	method:'ResetSnapshotAttribute',	params:['username', 'session_id', 'region_name', 'snapshot_id', 'attribute_name']   },
 		'ebs_DescribeSnapshots'                  : { url:'/aws/ec2/ebs/snapshot/',	method:'DescribeSnapshots',	params:['username', 'session_id', 'region_name', 'snapshot_ids', 'owners', 'restorable_by', 'filters']   },
 		'ebs_DescribeSnapshotAttribute'          : { url:'/aws/ec2/ebs/snapshot/',	method:'DescribeSnapshotAttribute',	params:['username', 'session_id', 'region_name', 'snapshot_id', 'attribute_name']   },
-		'ebs_CopySnapshot'                       : { url:'/aws/ec2/ebs/snapshot/',	method:'CopySnapshot',	params:['username', 'session_id', 'region_name', 'snapshot_id', 'dst_region_name', 'description', 'pre_signed_url']   },
+		'ebs_CopySnapshot'                       : { url:'/aws/ec2/ebs/snapshot/',	method:'CopySnapshot',	params:['username', 'session_id', 'region_name', 'snapshot_id', 'description', 'dst_region_name', 'pre_signed_url']   },
 		'eip_AllocateAddress'                    : { url:'/aws/ec2/elasticip/',	method:'AllocateAddress',	params:['username', 'session_id', 'region_name', 'domain']   },
 		'eip_ReleaseAddress'                     : { url:'/aws/ec2/elasticip/',	method:'ReleaseAddress',	params:['username', 'session_id', 'region_name', 'ip', 'allocation_id']   },
 		'eip_AssociateAddress'                   : { url:'/aws/ec2/elasticip/',	method:'AssociateAddress',	params:['username', 'session_id', 'region_name', 'ip', 'instance_id', 'allocation_id', 'nif_id', 'private_ip', 'allow_reassociation']   },

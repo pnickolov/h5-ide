@@ -207,18 +207,14 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
 
         do_duplicate: (invalid, checked)->
             sourceSnapshot = checked[0]
-            sourceRegion = Design.instance().get('region')
             targetRegion = $('#property-region-choose').find('.selectbox .selection').text()
             if (@regions.indexOf targetRegion) < 0
                 return false
-            data =
-                'name': @manager.$el.find('#property-snapshot-name').val()
-                'sourceRegion': sourceRegion
-                'sourceSnapshotId': sourceSnapshot.data.id
-                'description': @manager.$el.find('#property-snapshot-desc').val()
-                'destinationRegion': targetRegion
+            @switchAction 'processing'
+            newName = @manager.$el.find('#property-snapshot-name').val()
+            description =  @manager.$el.find('#property-snapshot-desc').val()
             afterDuplicate = @afterDuplicate.bind @
-            ApiRequest('ebs_CopySnapshot',data).then afterDuplicate, afterDuplicate
+            @collection.findWhere(id: sourceSnapshot.data.id).copyTo( targetRegion, newName, description).then afterDuplicate, afterDuplicate
 
 
         afterCreated: (result,newSnapshot)->
@@ -230,11 +226,18 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
             #@collection.add newSnapshot
 
         afterDuplicate: (result)->
+            currentRegion = Design.instance().get('region')
             @manager.cancel()
             if result.error
                 notification 'error', "Duplicate failed because of: "+ result.msg
                 return false
-            notification 'info', "New Snapshot is duplicated successfully!"
+            #cancelselect && fetch
+            if result.region is currentRegion
+                @collection.add result
+                notification 'info', "New Snapshot is duplicated successfully!"
+            else
+                @initManager()
+                notification 'info', 'New Snapshot is duplicated to another region, you need to switch region to check the snapshot you just created.'
 
         afterDeleted: (result)->
             deleteCount--

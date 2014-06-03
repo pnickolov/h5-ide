@@ -78,7 +78,7 @@ define [ "../ResourceModel", "../ComplexResModel", "constant", "../ConnectionMod
       null
   }
 
-
+  ###
 
   SubscriptionModel = ResourceModel.extend {
     type : constant.RESTYPE.SUBSCRIPTION
@@ -115,5 +115,7 @@ define [ "../ResourceModel", "../ComplexResModel", "constant", "../ConnectionMod
       })
       null
   }
+
+  ###
 
   null

@@ -323,8 +323,11 @@ define [
 
     updateGlobalResources : ()->
       if not @model.isAwsResReady()
+        if @__globalLoading then return
+        @__globalLoading = true # Avoid re-rendering the global resource view.
         data = { loading : true }
       else
+        @__globalLoading = false
         data = @model.getAwsResData()
 
       $("#GlobalView").html( tplPartials.globalResources( data ) )
@@ -336,7 +339,7 @@ define [
       resourceCount = @model.getResourcesCount( @region )
       $nav = $("#RegionResourceNav")
       for r, count of resourceCount
-        $nav.children(".#{r}").children(".count-bubble").text( count || "-" )
+        $nav.children(".#{r}").children(".count-bubble").text( if count is "" then "-" else count )
       return
 
     updateRegionResources : ()->

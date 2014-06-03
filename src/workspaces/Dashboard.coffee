@@ -26,11 +26,11 @@ define ["Workspace", "workspaces/dashboard/DashboardView", "workspaces/dashboard
 
       # Watch changes in aws resources
       @listenTo @model, "change:globalResources", ()->
-        self.view.@markUpdated()
+        self.view.markUpdated()
         self.__renderControl "updateGlobalResources"
 
       @listenTo @model, "change:regionResources", ()->
-        self.view.@markUpdated()
+        self.view.markUpdated()
         self.__renderControl "updateRegionResources"
 
       # Watch updates of visualize unmanaged vpc

@@ -53,7 +53,7 @@ define [ "backbone", "UI.sortable", "jquerysort" ], () ->
         #   klass    : ""
         # }
         $parent = if fixed then $("#ws-fixed-tabs") else $("#ws-tabs")
-        tpl = "<li class='#{data.klass}' id='#{data.id}'><span>#{data.title}</span>"
+        tpl = "<li class='#{data.klass}' id='#{data.id}'><span class='truncate'>#{data.title}</span>"
         if data.closable
           tpl += '<i class="icon-close" title="Close Tab"></i>'
 

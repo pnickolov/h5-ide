@@ -1,5 +1,6 @@
 define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_modal', 'i18n!nls/lang.js', './component/dhcp/dhcp_template.js'], ( CloudResources, constant, comboDropdown, modalPlus, toolbarModal, lang, template )->
     fetched = false
+    fetching  = false
     updateAmazonCB = () ->
         rowLength = $( "#property-domain-server" ).children().length
         if rowLength > 3
@@ -119,13 +120,18 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
             fetched = false
             @renderManager()
         renderManager: ->
-            if not fetched
-                fetched = true
-                @collection.fetchForce().then =>
-                    @renderManager()
-                return false
+            initManager = @initManager.bind @
+            if not fetched and not fetching
+                fetching = true
+                @collection.fetchForce().then initManager, initManager
+            #content = template.content items:@collection.toJSON()
+            else if not fetching
+                initManager()
+        initManager: ->
+            fetching = false
+            fetched = true
             content = template.content items:@collection.toJSON()
-            @manager?.setContent content
+            @manager.setContent content
 
         renderSlides: (which, checked)->
             tpl = template['slide_'+ which]

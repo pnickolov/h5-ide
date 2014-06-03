@@ -58,11 +58,11 @@ define [ 'constant', 'CloudResources','sns_manage', 'combo_dropdown', './compone
             new snsManage().render().quickCreate()
 
         processCol: ( filter, keyword ) ->
+            that = @
             if @topicCol.isReady() and @subCol.isReady()
-
                 data = @topicCol.map ( tModel ) ->
                     tData = tModel.toJSON()
-                    sub = @subCol.where TopicArn: tData.id
+                    sub = that.subCol.where TopicArn: tData.id
                     tData.sub = sub.map ( sModel ) -> sModel.toJSON()
                     tData.subCount = tData.sub.length
                     tData

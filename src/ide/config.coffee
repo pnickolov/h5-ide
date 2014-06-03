@@ -270,7 +270,7 @@ require.config {
 		'sns_manage'		 : 'component/sns/snsManage'
 		'combo_dropdown'     : 'component/common/comboDropdown'
 		'toolbar_modal'      : 'component/common/toolbarModal'
-		'dhcp'               : 'component/dhcp/dhcpMain'
+		'dhcp'               : 'component/dhcp/dhcp'
 		'snapshotManager'    : 'component/snapshot/snapshot'
 		'sslcert_manage'     : 'component/sslcert/sslCertManage'
 		'sslcert_dropdown'     : 'component/sslcert/sslCertDropdown'

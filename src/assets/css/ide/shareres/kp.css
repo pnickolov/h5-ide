@@ -43,3 +43,7 @@ button#property-app-keypair {
 
 #kp-runtime-placeholder {
   display: inline-block; }
+
+.default-kp-info {
+  color: #34A3F8;
+  margin-left: 3px; }

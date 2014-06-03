@@ -76,7 +76,7 @@ define [ 'constant', 'CloudResources','sns_manage', 'combo_dropdown', './compone
                 _.each data, ( d ) ->
                     if d.Name and d.Name is selection
                         d.selected = true
-
+                        null
 
                 @renderDropdownList data
 

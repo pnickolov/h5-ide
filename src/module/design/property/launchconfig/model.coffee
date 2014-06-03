@@ -142,6 +142,7 @@ define [ '../base/model', 'keypair_model', 'constant', 'Design' ], ( PropertyMod
             if rdName.indexOf(key) isnt -1 and not rdEbs
               rdEbs  = value
               rdName = key
+              null
           null
 
         rootDevice =

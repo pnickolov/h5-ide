@@ -62,6 +62,7 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
     setNotification : ( notification )->
       n = Design.instance().component( @get("uid") ).setNotification( notification )
       @notiObject = n
+      null
 
     removeTopic: ->
       n = Design.instance().component( @get("uid") ).setNotification( notification )

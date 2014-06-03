@@ -4317,7 +4317,7 @@ VisualOps API. You cannot UNDO this action.'
     ## State Editor Special State
 
     STATE_UNKNOWN_DISTRO_LBL:
-      en: "The AMI's distro cannot be recognised. Some state modules may not apply to this AMI."
+      en: "The instance's distro cannot be recognised. Some state modules may not apply to this instance."
       zh: ""
 
     STATE_NO_STATE_LBL:

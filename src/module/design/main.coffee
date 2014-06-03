@@ -306,9 +306,6 @@ define [ 'i18n!nls/lang.js', 'constant', 'component/stateeditor/stateeditor', '.
                     # delete tab id object
                     delete MC.data.open_tab_data[ MC.data.current_tab_id ]
 
-                else
-                    console.error 'design:RESOURCE_API_COMPLETE'
-
             #listen GET_STATE_MODULE
             ide_event.onLongListen ide_event.GET_STATE_MODULE, () ->
                 console.log 'design:GET_STATE_MODULE'

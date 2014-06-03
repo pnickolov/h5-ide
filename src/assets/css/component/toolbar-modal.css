@@ -100,7 +100,7 @@
     .modal-toolbar .slidebox .content label.select-file-link {
       width: auto;
       color: #148BE6; }
-    .modal-toolbar .slidebox .content .input {
+    .modal-toolbar .slidebox .content input.input {
       width: 440px; }
     .modal-toolbar .slidebox .content .action {
       float: right;

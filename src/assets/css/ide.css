@@ -2610,7 +2610,7 @@ td.table-action a.btn {
 }
 
 .sidebar-title .menu-manage-shard-res {
-	background-color: #000;
+	background-color: rgba(0, 0, 0, 0.3);
 	text-align: center;
 	width: 40px;
 	float: right;
@@ -2620,6 +2620,29 @@ td.table-action a.btn {
 
 .sidebar-title .menu-manage-shard-res:hover {
 	color: #4990e2;
+}
+
+.sidebar-title .refresh-resource-panel {
+	text-align: center;
+	width: 40px;
+	float: right;
+	color: #ccc;
+	cursor: pointer;
+}
+
+.sidebar-title .refresh-resource-panel:hover {
+	color: #9F62D1;
+	background-color: rgba(0, 0, 0, 0.3);
+}
+
+.sidebar-title .refresh-resource-panel.disabled {
+	color: #666;
+	cursor: default;
+}
+
+.sidebar-title .refresh-resource-panel.disabled:hover {
+	color: #666;
+	background-color: transparent;
 }
 
 a.sidebar-hider:before {

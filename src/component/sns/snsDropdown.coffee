@@ -19,6 +19,7 @@ define [ 'constant', 'CloudResources','sns_manage', 'combo_dropdown', './compone
             options =
                 manageBtnValue      : lang.ide.PROP_INSTANCE_MANAGE_SNS
                 filterPlaceHolder   : lang.ide.PROP_INSTANCE_FILTER_SNS
+                classList           : 'sns-dropdown'
 
             @dropdown = new comboDropdown( options )
             @dropdown.on 'open', @show, @

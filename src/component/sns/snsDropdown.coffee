@@ -25,6 +25,8 @@ define [ 'constant', 'CloudResources','sns_manage', 'combo_dropdown', './compone
             @dropdown.on 'manage', @manage, @
             @dropdown.on 'change', @set, @
             @dropdown.on 'filter', @filter, @
+            @dropdown.on 'quick_create', @quickCreate, @
+
 
         initialize: ( options ) ->
             if options and options.selection
@@ -51,6 +53,9 @@ define [ 'constant', 'CloudResources','sns_manage', 'combo_dropdown', './compone
             @dropdown.setSelection selection
             @el = @dropdown.el
             @
+
+        quickCreate: ->
+            new snsManage().render().quickCreate()
 
         processCol: ( filter, keyword ) ->
             if @topicCol.isReady() and @subCol.isReady()

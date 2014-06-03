@@ -23,6 +23,8 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
                     that.detail null, $(@).data(), $(@)
                     return false
 
+        quickCreate: ->
+            @modal.triggerSlide 'create'
 
         getModalOptions: ->
             that = @

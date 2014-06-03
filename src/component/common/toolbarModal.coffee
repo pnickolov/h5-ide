@@ -246,6 +246,9 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalpl
             $trDetail.find( 'td' ).html dom
             $trDetail
 
+        triggerSlide: ( which ) ->
+            @$( "[data-btn=#{which}]" ).click()
+
         cancel: () ->
             if @__slideRejct()
                 return @

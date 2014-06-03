@@ -100,9 +100,9 @@ define [ '../base/view',
                 @model.removeTopic()
                 @$( '.sns-group' ).hide()
 
-        processPolicyTopic: ( display, dropdown ) ->
+        processPolicyTopic: ( display, dropdown, needInit ) ->
             if display
-                $( '.policy-sns-placeholder' ).html dropdown.render(true).el
+                $( '.policy-sns-placeholder' ).html dropdown.render(needInit).el
                 $( '.sns-policy-field' ).show()
             else
                 $( '.sns-policy-field' ).hide()
@@ -457,10 +457,10 @@ define [ '../base/view',
             selection = if policyObject then policyObject.getTopicName() else null
             snsPolicyDropdown = new snsDropdown selection: selection
 
-            @processPolicyTopic $( '#asg-policy-notify' ).prop( 'checked' ), snsPolicyDropdown
+            @processPolicyTopic $( '#asg-policy-notify' ).prop( 'checked' ), snsPolicyDropdown, false
             $("#asg-policy-notify").off("click").on "click", ( evt )->
                 evt.stopPropagation()
-                self.processPolicyTopic evt.target.checked, snsPolicyDropdown
+                self.processPolicyTopic evt.target.checked, snsPolicyDropdown, true
 
 
                 null

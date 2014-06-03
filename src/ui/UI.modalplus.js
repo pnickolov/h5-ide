@@ -128,7 +128,7 @@
         $(document).keyup((function(_this) {
           return function(e) {
             var _ref;
-            if (e.which === 27) {
+            if (e.which === 27 && !_this.option.disableClose) {
               if ((_this != null ? _this.getFirst() : void 0) != null) {
                 e.preventDefault();
                 return _this != null ? (_ref = _this.getFirst()) != null ? _ref.back() : void 0 : void 0;

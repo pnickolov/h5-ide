@@ -122,7 +122,7 @@ define [], ()->
             $(window).resize =>
                 @?.getLast()?.resize()
             $(document).keyup (e)=>
-                if (e.which == 27)
+                if (e.which == 27 and not @option.disableClose)
                     if @?.getFirst()?
                         e.preventDefault()
                         @?.getFirst()?.back()

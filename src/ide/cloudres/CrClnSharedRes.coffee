@@ -150,7 +150,7 @@ define [
       res = res.member
 
       for i in res
-        i.id = CrSubscriptionModel.uniqueId()
+        i.id = CrSubscriptionModel.getIdFromData( i )
 
       res
   }

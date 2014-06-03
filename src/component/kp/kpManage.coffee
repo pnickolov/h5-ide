@@ -1,8 +1,8 @@
-define [ 'combo_dropdown', 'toolbar_modal', './kpTpl', './kpDialogTpl', 'kp_upload', 'backbone', 'jquery', 'constant', 'component/exporter/JsonExporter', 'i18n!nls/lang.js', 'UI.notification' ], ( combo_dropdown, toolbar_modal, template, template_modal, upload, Backbone, $, constant, JsonExporter, lang ) ->
+define [ 'toolbar_modal', './component/kp/kpModel', './component/kp/kpDialogTpl', 'kp_upload', 'backbone', 'jquery', 'constant', 'component/exporter/JsonExporter', 'i18n!nls/lang.js', 'UI.notification' ], ( toolbar_modal, kpModel, template, upload, Backbone, $, constant, JsonExporter, lang ) ->
 
     download = JsonExporter.download
 
-    modalView = Backbone.View.extend
+    Backbone.View.extend
         __needDownload: false
         __upload: null
         __import: ''
@@ -79,22 +79,27 @@ define [ 'combo_dropdown', 'toolbar_modal', './kpTpl', './kpDialogTpl', 'kp_uplo
             @modal.on 'refresh', @refresh, @
 
 
-        initialize: () ->
+        initialize: ( options ) ->
+            options = {} if not options
+            @model = options.model or new kpModel( resModel: options.resModel )
+            if App.user.hasCredential()
+                if not @model.haveGot()
+                    @model.getKeys()
+            else
+                @modal.render 'nocredential'
+
             @initModal()
             @model.on 'change:keys', @renderKeys, @
 
-        renderModal: () ->
-            @modal.render()
-            @renderKeys()
-            @
-
         render: ( refresh ) ->
-            @renderModal()
+            @modal.render()
+            if @model.haveGot()
+                @renderKeys()
             @
 
         renderKeys: () ->
             data = @model.toJSON()
-            @modal.setContent template_modal.keys data
+            @modal.setContent template.keys data
 
             @
 
@@ -210,7 +215,7 @@ define [ 'combo_dropdown', 'toolbar_modal', './kpTpl', './kpDialogTpl', 'kp_uplo
             @switchAction 'processing'
             that = @
             _.each checked, ( c ) ->
-                that.model.remove( c.data[ 'name' ] ).then onDeleteFinish, onDeleteFinish
+                that.model.remove( c.data.name ).then onDeleteFinish, onDeleteFinish
 
         import: ( invalid ) ->
             that = @
@@ -243,9 +248,8 @@ define [ 'combo_dropdown', 'toolbar_modal', './kpTpl', './kpDialogTpl', 'kp_uplo
             if not @needDownload()
                 @model.getKeys()
 
-
         renderSlides: ( which, checked ) ->
-            tpl = template_modal[ "slide_#{which}" ]
+            tpl = template[ "slide_#{which}" ]
             slides = @getSlides()
             slides[ which ]?.call @, tpl, checked
 
@@ -253,8 +257,6 @@ define [ 'combo_dropdown', 'toolbar_modal', './kpTpl', './kpDialogTpl', 'kp_uplo
         getSlides: ->
             that = @
             modal = @modal
-            __upload = @__upload
-
 
             create: ( tpl, checked ) ->
                 modal.setSlide tpl
@@ -268,7 +270,7 @@ define [ 'combo_dropdown', 'toolbar_modal', './kpTpl', './kpDialogTpl', 'kp_uplo
                 data = {}
 
                 if checkedAmount is 1
-                    data.selecteKeyName = checked[ 0 ].data[ 'name' ]
+                    data.selecteKeyName = checked[ 0 ].data.name
                 else
                     data.selectedCount = checkedAmount
 
@@ -282,119 +284,7 @@ define [ 'combo_dropdown', 'toolbar_modal', './kpTpl', './kpDialogTpl', 'kp_uplo
                 that.M$( '.import-zone' ).html that.__upload.render().el
 
 
-
         afterImport: ( result ) ->
             @switchAction 'ready'
-
-
-    # ------ export ------ #
-
-    Backbone.View.extend
-
-        showCredential: ->
-            App.showSettings App.showSettings.TAB.Credential
-
-        filter: ( keyword ) ->
-            hitKeys = _.filter @model.get( 'keys' ), ( k ) ->
-                k.keyName.toLowerCase().indexOf( keyword.toLowerCase() ) isnt -1
-            if keyword
-                @renderKeys hitKeys
-            else
-                @renderKeys()
-
-        setKey: ( name, data ) ->
-            if @__mode is 'runtime'
-                KpModel = Design.modelClassForType( constant.RESTYPE.KP )
-                if name is '@no'
-                    KpModel.setDefaultKP '', ''
-                else
-                    KpModel.setDefaultKP name, data.fingerprint
-            else
-                if name is '@default'
-                    @model.setKey '', true
-                else if name is '@no'
-                    @model.setKey ''
-                else
-                    @model.setKey name
-
-        manageKp: ( event ) ->
-            @renderModal()
-            false
-
-        initDropdown: ->
-            options =
-                manageBtnValue      : lang.ide.PROP_INSTANCE_MANAGE_KP
-                filterPlaceHolder   : lang.ide.PROP_INSTANCE_FILTER_KP
-
-            @dropdown = new combo_dropdown( options )
-            @dropdown.on 'open', @show, @
-            @dropdown.on 'manage', @manageKp, @
-            @dropdown.on 'change', @setKey, @
-            @dropdown.on 'filter', @filter, @
-
-
-        initialize: ( options ) ->
-            @model.on 'change:keys', @renderKeys, @
-            @model.on 'request:error', @syncErrorHandler, @
-
-            if not @model.resModel
-                @__mode = 'runtime'
-
-            @initDropdown()
-
-        show: () ->
-            if App.user.hasCredential()
-                if not @model.haveGot()
-                    @model.getKeys()
-            else
-                @renderNoCredential()
-
-        render: ->
-            @renderDropdown()
-            @el = @dropdown.el
-            @
-
-        renderNoCredential: () ->
-            @dropdown.render('nocredential').toggleControls false
-
-        syncErrorHandler: (err) ->
-            console.error err
-
-        renderKeys: ( data ) ->
-            if data and arguments.length is 1
-                data =  keys: data, hideDefaultNoKey: true
-            else
-                data = keys: @model.get('keys')
-
-            if @model.resModel
-                if @model.resModel.isNoKey()
-                    data.noKey = true
-                if @model.resModel.isDefaultKey()
-                    data.defaultKey = true
-
-            data.isRunTime = @__mode is 'runtime'
-
-            @dropdown.setContent template.keys data
-            @dropdown.toggleControls true
-            @
-
-        renderDropdown: () ->
-            data = @model.toJSON()
-            if data.keyName is '$DefaultKeyPair'
-                data.defaultKey = true
-            else if data.keyName is 'No Key Pair'
-                data.noKey = true
-
-            data.isRunTime = @__mode is 'runtime'
-
-            selection = template.selection data
-            @dropdown.setSelection selection
-
-
-        renderModal: () ->
-            new modalView(model: @model).render()
-
-
-
 
 

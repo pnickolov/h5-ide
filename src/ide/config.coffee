@@ -263,7 +263,8 @@ require.config {
 
 		#statusbar state
 		'state_status'       : 'component/statestatus/main'
-		'kp'                 : 'component/kp/kpMain'
+		'kp_dropdown'        : 'component/kp/kpDropdown'
+		'kp_manage'          : 'component/kp/kpManage'
 		'kp_upload'          : 'component/kp/kpUpload'
 		'sns_dropdown'       : 'component/sns/snsDropdown'
 		'sns_manage'		 : 'component/sns/snsManage'

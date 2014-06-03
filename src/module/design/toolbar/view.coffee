@@ -10,14 +10,14 @@ define [ 'MC', 'event',
          './appview_template',
          "component/exporter/JsonExporter",
          'constant'
-         'kp'
+         'kp_dropdown'
          'ApiRequest'
          'component/stateeditor/stateeditor'
          'UI.modalplus'
          'backbone', 'jquery', 'handlebars',
          'UI.selectbox', 'UI.notification',
          "UI.tabbar"
-], ( MC, ide_event, Design, lang, stack_tmpl, app_tmpl, appview_tmpl, JsonExporter, constant, kp, ApiRequest, stateEditor, modalplus ) ->
+], ( MC, ide_event, Design, lang, stack_tmpl, app_tmpl, appview_tmpl, JsonExporter, constant, kpDropdown, ApiRequest, stateEditor, modalplus ) ->
 
     # Set domain and set http
     API_HOST       = "api.visualops.io"
@@ -159,7 +159,7 @@ define [ 'MC', 'event',
                 $( ".runtime-error" ).hide()
 
         defaultKpIsSet: ->
-            if not kp.hasResourceWithDefaultKp()
+            if not kpDropdown.hasResourceWithDefaultKp()
                 return true
 
             KpModel = Design.modelClassForType( constant.RESTYPE.KP )
@@ -176,10 +176,10 @@ define [ 'MC', 'event',
                 context.hideErr 'kp'
 
         renderDefaultKpDropdown: ->
-            if kp.hasResourceWithDefaultKp()
-                kpDropdown = kp.load()
-                $('#kp-runtime-placeholder').html kpDropdown.el
-                kpDropdown.$( '.selectbox' )
+            if kpDropdown.hasResourceWithDefaultKp()
+                kpDd = new kpDropdown()
+                $('#kp-runtime-placeholder').html kpDd.render().el
+                kpDd.$( '.selectbox' )
                     .on( 'OPTION_CHANGE', @hideDefaultKpError(@) )
 
                 $('.default-kp-group').show()

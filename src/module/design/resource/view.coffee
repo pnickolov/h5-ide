@@ -6,7 +6,7 @@ define [ 'event',
          'constant'
          './template',
          './template_data',
-         'i18n!nls/lang.js', 'snapshotManager', 'sslcert_manage', 'dhcp', 'sns_manage', 'kp', 'backbone', 'jquery', 'handlebars',
+         'i18n!nls/lang.js', 'snapshotManager', 'sslcert_manage', 'dhcp', 'sns_manage', 'kp_manage', 'backbone', 'jquery', 'handlebars',
          'UI.selectbox',
          'UI.radiobuttons', 'UI.modal', 'UI.table'
 ], ( ide_event, constant, template, template_data, lang, snapshotManager, sslCertManage, dhcpManage, snsManage, kpManage ) ->

@@ -4,7 +4,7 @@
 
 define [ '../base/view',
          './template/stack',
-         'i18n!nls/lang.js', 'constant', 'kp' ], ( PropertyView, template, lang, constant, kp ) ->
+         'i18n!nls/lang.js', 'constant', 'kp_dropdown' ], ( PropertyView, template, lang, constant, kp ) ->
 
     noop = ()-> null
 
@@ -97,7 +97,7 @@ define [ '../base/view',
             @$el.html template @model.attributes
             instanceModel = Design.instance().component( @model.get 'uid' )
 
-            @$('#kp-placeholder').html kp.load(instanceModel).el
+            @$('#kp-placeholder').html new kp(resModel: instanceModel).render().el
 
             @refreshIPList()
 

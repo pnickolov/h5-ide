@@ -2,6 +2,7 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
     fetched = false
     deleteCount = 0
     deleteErrorCount = 0
+    fetching = false
     snapshotRes = Backbone.View.extend
         constructor: ()->
             @collection = CloudResources constant.RESTYPE.SNAP, Design.instance().region()
@@ -118,6 +119,8 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
             @initManager()
 
         setContent: ->
+            fetching = false
+            fetched = true
             data = @collection.toJSON()
             _.each data, (e,f)->
                 if e.progress is 100
@@ -130,10 +133,10 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
 
         initManager: ()->
             setContent = @setContent.bind @
-            if not fetched
-                fetched = true
+            if not fetched and not fetching
+                fetching = true
                 @collection.fetchForce().then setContent, setContent
-            else
+            else if not fetching
                 @setContent()
 
         renderSlides: (which, checked)->
@@ -216,7 +219,6 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
                 notification 'error', "Create failed because of: "+result.msg
                 return false
             notification 'info', "New DHCP Option is created successfully!"
-            @collection.fetchForce()
             #@collection.add newSnapshot
 
         afterDuplicate: (result)->

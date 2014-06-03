@@ -1282,7 +1282,7 @@ module.exports =
       zh: ""
 
     PROP_INSTANCE_FILTER_SSL_CERT:
-      en: "Filter by Server Certificate name"
+      en: "Filter by SSL Certificate name"
       zh: ""
 
     PROP_INSTANCE_MANAGE_SSL_CERT:
@@ -2561,7 +2561,7 @@ module.exports =
       zh: "添加监听器"
 
     PROP_ELB_BTN_ADD_SERVER_CERTIFICATE:
-      en: "Add Server Certificate"
+      en: "Add SSL Certificate"
       zh: "添加服务器认证"
 
     PROP_ELB_SERVER_CERTIFICATE:
@@ -2701,7 +2701,7 @@ module.exports =
       zh: ""
 
     PROP_ELB_CERT_REMOVE_CONFIRM_TITLE:
-      en: "Confirm to Delete Server Certificate"
+      en: "Confirm to Delete SSL Certificate"
       zh: ""
 
     PROP_ELB_CERT_REMOVE_CONFIRM_MAIN:

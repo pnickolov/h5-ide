@@ -155,8 +155,8 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sslcert/ssl
             if checked and checked[0]
 
                 sslCertId = checked[0].data.id
-                sslCertModel = that.sslCertCol.get(sslCertId)
-                oldCerName = sslCertModel.get('Name')
+                sslCertData = that.sslCertCol.get(sslCertId)
+                oldCerName = sslCertData.get('Name')
                 newCertName = $('#ssl-cert-name-update-input').val()
 
                 if newCertName is oldCerName
@@ -165,7 +165,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sslcert/ssl
 
                 else
 
-                    sslCertModel.update(
+                    sslCertData.update(
                         Name: newCertName
                     ).then (result) ->
                         certName = newCertName
@@ -176,6 +176,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sslcert/ssl
                         _.each sslCertModelAry, (sslCertModel) ->
                             if sslCertModel.get('name') is oldCerName
                                 sslCertModel.set('name', newCertName)
+                                sslCertModel.set('arn', sslCertData.get('Arn'))
                             null
                         # $selectCertItem = $('.sslcert-placeholder .selection').filter () ->
                         #     return $(this).text() == oldCerName

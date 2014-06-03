@@ -64,7 +64,7 @@ define [
   ### ASG ###
   CrCommonCollection.extend {
     ### env:dev ###
-    ClassName : "CrCloudWatchCollection"
+    ClassName : "CrAsgCollection"
     ### env:dev:end ###
 
     type  : constant.RESTYPE.ASG
@@ -81,7 +81,7 @@ define [
   ### CloudWatch ###
   CrCommonCollection.extend {
     ### env:dev ###
-    ClassName : "CrAsgCollection"
+    ClassName : "CrCloudwatchCollection"
     ### env:dev:end ###
 
     type  : constant.RESTYPE.CW
@@ -194,6 +194,79 @@ define [
       volumes
   }
 
+  ### LC ###
+  CrCommonCollection.extend {
+    ### env:dev ###
+    ClassName : "CrLcCollection"
+    ### env:dev:end ###
+
+    type  : constant.RESTYPE.LC
+    AwsResponseType : "DescribeLaunchConfigurationsResponse"
+    modelIdAttribute : "LaunchConfigurationARN"
+    parseFetchData : ( data )-> data.DescribeLaunchConfigurationsResponse.DescribeLaunchConfigurationsResult.LaunchConfigurations?.member
+  }
+
+  ### ScalingPolicy ###
+  CrCommonCollection.extend {
+    ### env:dev ###
+    ClassName : "CrScalingPolicyCollection"
+    ### env:dev:end ###
+
+    type  : constant.RESTYPE.SP
+    AwsResponseType : "DescribePoliciesResponse"
+    modelIdAttribute : "PolicyARN"
+    parseFetchData : ( data )-> data.DescribePoliciesResponse.DescribePoliciesResult.ScalingPolicies?.member
+  }
+
+  ### NotificationConfiguartion ###
+  CrCommonCollection.extend {
+    ### env:dev ###
+    ClassName : "CrNotificationCollection"
+    ### env:dev:end ###
+
+    type  : constant.RESTYPE.NC
+    AwsResponseType : "DescribeNotificationConfigurationsResponse"
+    modelIdAttribute : "PolicyARN"
+    parseFetchData : ( data )->
+      ncs = data.DescribeNotificationConfigurationsResponse.DescribeNotificationConfigurationsResult.NotificationConfigurations?.member
+      for nc in ncs || []
+        nc.id = nc.TopicARN + ":" + nc.AutoScalingGroupName + ":" + nc.NotificationType
+      ncs
+  }
+
+
+  ### ACL ###
+  CrCommonCollection.extend {
+    ### env:dev ###
+    ClassName : "CrAclCollection"
+    ### env:dev:end ###
+
+    type  : constant.RESTYPE.ACL
+    AwsResponseType : "DescribeNetworkAclsResponse"
+    parseFetchData : ( data )->
+      acls = data.DescribeNetworkAclsResponse.networkAclSet?.item
+      for acl in acls || []
+        acl.id = acl.networkAclId
+        delete acl.networkAclId
+        acl.entrySet = acl.entrySet?.item || []
+        acl.associationSet = acl.associationSet?.item || []
+      acls
+  }
+
+  ### ENI ###
+  CrCollection.extend {
+    ### env:dev ###
+    ClassName : "CrEniCollection"
+    ### env:dev:end ###
+
+    type  : constant.RESTYPE.ENI
+    modelIdAttribute : "networkInterfaceId"
+    AwsResponseType : "DescribeNetworkInterfacesResponse"
+    doFetch : ()-> ApiRequest("eni_DescribeNetworkInterfaces", {region_name : @region()})
+    parseFetchData : ( data )-> data.DescribeNetworkInterfacesResponse.networkInterfaceSet?.item
+  }
+
+
   ### SUBNET ###
   CrCollection.extend {
     ### env:dev ###
@@ -213,6 +286,7 @@ define [
     ### env:dev:end ###
 
     type  : constant.RESTYPE.SG
+    AwsResponseType : "DescribeSecurityGroupsResponse"
     doFetch : ()-> ApiRequest("sg_DescribeSecurityGroups", {region_name : @region()})
     parseFetchData : ( data )->
       sgs = data.DescribeSecurityGroupsResponse.securityGroupInfo?.item

@@ -37,16 +37,4 @@ define ["ide/cloudres/CrCollection"], ( CrCollection )->
     collection.fetchForce() for id, collection of CachedCollections
     return
 
-  # A convenient method that can be used to parse response from aws.
-  # It's not garunteed that the data can be parse. If it cannot parse the data, it returns null.
-  # If the data can be parsed, then the item in the data would be added to current collection.
-  # And returns an array of the parsed model.
-  CloudResources.parseResponse = ( type, data )->
-    cln = CloudResources( type, "" )
-    if not cln then return null
-    try
-      return cln.parseExternalData( data )
-    catch e
-      return null
-
   CloudResources

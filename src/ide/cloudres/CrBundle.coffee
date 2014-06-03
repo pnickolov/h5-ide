@@ -4,4 +4,5 @@ define [
   "CloudResources"
   "./CrClnSharedRes"
   "./CrClnCommonRes"
+  "./CloudImportVpc"
 ], ( constant, CloudResources )-> return

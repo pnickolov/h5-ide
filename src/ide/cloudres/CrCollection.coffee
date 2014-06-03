@@ -3,12 +3,14 @@ define ["ApiRequest", "./CrModel", "backbone"], ( ApiRequest, CrModel )->
 
   SubCollections = {}
   emptyArr = []
+  SubColsByAwsResType = {}
 
   Backbone.Collection.extend {
 
     category : ""
     model    : CrModel
     #modelIdAttribute : ""
+    #AwsResponseType  : ""
 
     constructor : ()->
       @on "add remove", (_.debounce ()-> @trigger "update"), @
@@ -79,12 +81,8 @@ define ["ApiRequest", "./CrModel", "backbone"], ( ApiRequest, CrModel )->
       catch e
         return null
 
-      @set data
-      models = []
-      for d in awsData
-        models.push @get(d.id)
-
-      models
+      @set awsData
+      return
 
     # Override this method to parse the result of the fetch.
     parseFetchData : ( res )-> res
@@ -111,13 +109,26 @@ define ["ApiRequest", "./CrModel", "backbone"], ( ApiRequest, CrModel )->
     classId      : ( resourceType, platform )-> (platform || "AWS") + "_" + resourceType
     getClassById : ( id )-> SubCollections[id]
 
+    # The typeString should be something like "DescribeNetworkInterfacesResponse"
+    getClassByAwsResponseType : ( typeString )-> SubColsByAwsResType[ typeString ]
+
+
     extend : ( protoProps, staticProps ) ->
       console.assert protoProps.type, "Subclass of CloudResourceCollection does not specifying a type"
+
+      if protoProps.AwsResponseType
+        AwsResponseType = protoProps.AwsResponseType
+        delete protoProps.AwsResponseType
+
+      staticProps = staticProps || {}
+      staticProps.type = protoProps.type
 
       # Create subclass
       subClass = CrModel.extend.call( this, protoProps, staticProps )
 
       SubCollections[ @classId( protoProps.type, protoProps.platform ) ] = subClass
+      if AwsResponseType
+        SubColsByAwsResType[ AwsResponseType ] = subClass
 
       subClass
   }

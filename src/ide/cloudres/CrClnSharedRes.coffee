@@ -20,18 +20,10 @@ define [
 
     type  : constant.RESTYPE.DHCP
     model : CrDhcpModel
+    modelIdAttribute : "dhcpOptionsId"
 
     doFetch : ()-> ApiRequest("dhcp_DescribeDhcpOptions", {region_name : @region()})
-    parseFetchData : (res)->
-      res = res.DescribeDhcpOptionsResponse.dhcpOptionsSet
-      if res is null then return []
-      res = res.item
-
-      for i in res
-        i.id = i.dhcpOptionsId
-        delete i.dhcpOptionsId
-
-      res
+    parseFetchData : (res)-> res.DescribeDhcpOptionsResponse.dhcpOptionsSet?.item
   }
 
 

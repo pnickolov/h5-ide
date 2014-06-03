@@ -1,11 +1,14 @@
 
-define ["ApiRequest", "backbone"], ( ApiRequest )->
+define ["ApiRequest", "./CrModel", "backbone"], ( ApiRequest, CrModel )->
 
   SubCollections = {}
+  emptyArr = []
 
   Backbone.Collection.extend {
 
     category : ""
+    model    : CrModel
+    #modelIdAttribute : ""
 
     constructor : ()->
       @on "add remove", (_.debounce ()-> @trigger "update"), @
@@ -25,9 +28,15 @@ define ["ApiRequest", "backbone"], ( ApiRequest )->
 
         if not self.__selfParseData
           try
-            data = self.parseFetchData( data )
+            data = self.parseFetchData( data ) || emptyArr
           catch e
             throw McError( ApiRequest.Errors.InvalidAwsReturn, "", data )
+
+          # Transform the data id if the Collection has defined it.
+          if self.modelIdAttribute
+            for d in data
+              d.id = d[ self.modelIdAttribute ]
+              delete d[ self.modelIdAttribute ]
 
         self.__ready = true
         if data.length is 0 and self.models.length is 0
@@ -102,45 +111,11 @@ define ["ApiRequest", "backbone"], ( ApiRequest )->
     classId      : ( resourceType, platform )-> (platform || "AWS") + "_" + resourceType
     getClassById : ( id )-> SubCollections[id]
 
-    ### env:dev ###
-    __detailExtend : ( protoProps, staticProps )->
-      ### jshint -W061 ###
-
-      parent = this
-
-      funcName = protoProps.ClassName || protoProps.type.split(".").pop()
-      childSpawner = eval( "(function(a) { var #{funcName} = function(){ return a.apply( this, arguments ); }; return #{funcName}; })" )
-
-      if protoProps and protoProps.hasOwnProperty "constructor"
-        cstr = protoProps.constructor
-      else
-        cstr = ()-> return parent.apply( this, arguments )
-
-      child = childSpawner( cstr )
-
-      _.extend(child, parent, staticProps)
-
-      funcName = "PROTO_" + funcName
-      prototypeSpawner = eval( "(function(a) { var #{funcName} = function(){ this.constructor = a }; return #{funcName}; })" )
-
-      Surrogate = prototypeSpawner( child )
-      Surrogate.prototype = parent.prototype
-      child.prototype = new Surrogate()
-
-      if protoProps
-        _.extend(child.prototype, protoProps)
-
-      child.__super__ = parent.prototype
-      ### jshint +W061 ###
-
-      child
-    ### env:dev:end ###
-
     extend : ( protoProps, staticProps ) ->
       console.assert protoProps.type, "Subclass of CloudResourceCollection does not specifying a type"
 
       # Create subclass
-      subClass = (@__detailExtend || Backbone.Collection.extend).call( this, protoProps, staticProps )
+      subClass = CrModel.extend.call( this, protoProps, staticProps )
 
       SubCollections[ @classId( protoProps.type, protoProps.platform ) ] = subClass
 

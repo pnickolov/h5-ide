@@ -33,8 +33,8 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 				that.set('isWindowsPlatform', false)
 
 			currentCompData = that.get('compData')
-			compLayout = MC.canvas_data.layout[currentCompData.uid]
-			if compLayout and compLayout.osType and compLayout.osType is 'windows'
+			cachedAmi = Design.instance().component(currentCompData.uid).get('cachedAmi')
+			if cachedAmi and cachedAmi.osType and cachedAmi.osType is 'windows'
 				that.set('isWindowsPlatform', true)
 
 			that.set('amiExist', platformInfo.amiExist)
@@ -177,18 +177,28 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 
 			amiExist = true
 
-			if imageObj
+			layoutOSType = ''
+			cachedAmi = Design.instance().component(compData.uid).get('cachedAmi')
+			if cachedAmi
+				layoutOSType = cachedAmi.osType
 
-				osFamily = imageObj.osFamily
-				osType = imageObj.osType
+			if (imageObj and imageObj.osType) or layoutOSType
 
-				linuxDistroRange = ['centos', 'redhat',  'rhel', 'ubuntu', 'debian', 'fedora', 'gentoo', 'opensuse', 'suse', 'sles', 'amazon', 'amaz', 'linux-other']
+				if not imageObj
+					imageObj = {}
+
+				osType = imageObj.osType or layoutOSType
+
+				linuxDistroRange = ['centos', 'redhat',  'rhel', 'ubuntu', 'debian', 'fedora', 'gentoo', 'opensuse', 'suse', 'sles', 'amazon', 'amaz']
 
 				if osType is 'windows'
 					osPlatform = 'windows'
 				else if osType in linuxDistroRange
 					osPlatform = 'linux'
 					osPlatformDistro = osType
+				else if layoutOSType in linuxDistroRange
+					osPlatform = 'linux'
+					osPlatformDistro = layoutOSType
 
 			else
 

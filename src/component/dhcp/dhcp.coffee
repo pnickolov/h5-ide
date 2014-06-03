@@ -131,7 +131,7 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
             fetching = false
             fetched = true
             content = template.content items:@collection.toJSON()
-            @manager.setContent content
+            @manager?.setContent content
 
         renderSlides: (which, checked)->
             tpl = template['slide_'+ which]

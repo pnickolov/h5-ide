@@ -1,0 +1,45 @@
+
+define [ "./CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
+
+  CrModel.extend {
+
+    ### env:dev ###
+    ClassName : "CrKeypairModel"
+    ### env:dev:end ###
+
+    defaults :
+      keyName        : ""
+      keyData        : "" # If keyData is not null, it will use kp_ImportKeyPair to create the keypair.
+      keyMaterial    : "" # When a keypair is created, this might contain the private key data.
+      keyFingerprint : ""
+
+    doCreate : ()->
+      self = @
+      if @get("keyData")
+        promise = ApiRequest("kp_ImportKeyPair", {
+          region_name : @getCollection().region()
+          key_name    : @get("keyName")
+          key_data    : @get("keyData")
+        })
+      else
+        promise = ApiRequest("kp_CreateKeyPair", {
+          region_name : @getCollection().region()
+          key_name    : @get("keyName")
+        })
+
+      promise.then ( res )->
+        try
+          self.set res.CreateKeyPairResponse
+        catch e
+          throw McError( ApiRequest.Errors.InvalidAwsReturn, "Keypair created but aws returns invalid ata." )
+
+        console.log "Created keypair resource", self
+        self
+
+    doDestroy : ()->
+      ApiRequest("kp_DeleteKeyPair", {
+        region_name : @getCollection().region()
+        key_name    : @get("id")
+      })
+
+  }

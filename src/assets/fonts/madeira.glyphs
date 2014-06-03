@@ -1,6 +1,7 @@
 {
 DisplayStrings = (
-""
+/uniF157,
+/uniF111
 );
 copyright = MedeiraCloud;
 customParameters = (
@@ -6226,10 +6227,59 @@ width = 960;
 }
 );
 unicode = F156;
+},
+{
+glyphname = uniF157;
+lastChange = "2014-05-30 17:35:38 +0800";
+layers = (
+{
+layerId = "8F1B665C-F854-4941-BE6D-BEE4265743FC";
+name = Regular;
+paths = (
+{
+closed = 1;
+nodes = (
+"540 420 LINE",
+"840 420 LINE",
+"840 720 LINE",
+"540 720 LINE"
+);
+},
+{
+closed = 1;
+nodes = (
+"120 0 LINE",
+"420 0 LINE",
+"420 300 LINE",
+"120 300 LINE"
+);
+},
+{
+closed = 1;
+nodes = (
+"120 420 LINE",
+"420 420 LINE",
+"420 720 LINE",
+"120 720 LINE"
+);
+},
+{
+closed = 1;
+nodes = (
+"540 0 LINE",
+"840 0 LINE",
+"840 300 LINE",
+"540 300 LINE"
+);
+}
+);
+width = 960;
+}
+);
+unicode = F157;
 }
 );
 gridLength = 60;
-gridSubDevision = 60;
 disablesNiceNames = 1;
 instances = (
 {

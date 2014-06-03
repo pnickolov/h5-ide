@@ -1,0 +1,65 @@
+.combo-dd .combo-dd-manage i {
+  margin-right: 13px;
+  color: #eee; }
+
+.combo-dd .combo-dd-manage::selection {
+  background: transparent; }
+
+.combo-dd .combo-dd-manage {
+  width: 100%;
+  border-radius: 0;
+  display: none; }
+
+.combo-dd.selectbox .combo-dd-filter {
+  width: 232px;
+  border-radius: 0;
+  border: 0;
+  padding-right: 20px;
+  display: none; }
+
+.combo-dd.selectbox .combo-dd-filter:focus {
+  width: 232px;
+  border-radius: 0;
+  border: 0;
+  padding-right: 20px; }
+
+.combo-dd i {
+  color: #148BE6; }
+.combo-dd.selectbox {
+  position: relative; }
+  .combo-dd.selectbox .dropdown {
+    position: absolute;
+    top: 29px; }
+  .combo-dd.selectbox .scroll-wrap {
+    width: 258px;
+    top: 0;
+    position: relative;
+    max-height: 200px; }
+
+.combo-dd li i {
+  float: right; }
+
+.combo-dd-list li .icon-info {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  margin-top: -8px; }
+
+.combo-dd-no-data {
+  text-align: center;
+  margin: 50px auto;
+  color: #F5F5F5; }
+  .combo-dd-no-data a {
+    cursor: pointer; }
+
+.combo-dd .selection .icon-remove {
+  display: none; }
+
+.combo-dd {
+  width: 260px; }
+  .combo-dd .no-credential {
+    color: #F5F5F5;
+    padding-top: 55px; }
+  .combo-dd .no-credential a {
+    cursor: pointer;
+    color: #148BE6; }

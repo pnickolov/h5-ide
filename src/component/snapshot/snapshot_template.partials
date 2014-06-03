@@ -1,0 +1,116 @@
+<!-- {{keys}} -->
+{{#each data}}
+<li class="item{{#if selected}} selected{{/if}}" data-id="{{id}}" tabindex="-1">{{#if id}}{{id}}{{else}}{{this}}{{/if}}</li>
+{{/each}}
+
+
+<!-- {{content}} -->
+{{#each items}}
+<tr class="item" data-id="">
+    <td>
+        <div class="checkbox">
+            <input id="{{id}}" type="checkbox" value="None" data-id="{{id}}" data-name="{{name}}" class="one-cb">
+            <label for="{{id}}"></label>
+        </div>
+    </td>
+    <td><div class="manager-content-main">{{id}}</div><span class="manager-content-sub">{{name}}</span></td>
+    <td>{{volumeSize}} GiB</td>
+    <td>
+        <div class="manager-content-main">{{#if completed}}<i class="status status-green icon-label"></i> Completed{{else}}<i class="status status-yellow icon-label"></i> Pending - {{progress}}%{{/if}}</div>
+        <span class="manager-content-sub">Started: {{startTime}}</span>
+    </td>
+    <td>{{description}}</td>
+</tr>
+{{/each}}
+
+
+<!-- {{slide_delete}} -->
+<div class="slide-delete">
+    <div class="modal-text-major">Confirm to delete {{#if selectedId}}{{selectedId}}{{else}}selected {{selectedCount}} Snapshot {{/if}}?</div>
+    <div class="init action">
+        <button class="btn btn-red do-action" data-action="delete">Delete</button>
+        <button class="btn btn-silver cancel">Cancel</button>
+    </div>
+    <div class="processing action" style="display:none;">
+        <button class="btn" disabled>Deleting...</button>
+    </div>
+</div>
+
+
+<!-- {{slide_create}} -->
+<div class="slide-create" data-bind="true">
+    <div class="formart_toolbar_modal" data-type="true">
+        <section data-bind="true">
+            <div class="control-group clearfix">
+                <label for="property-snapshot-name-create">{{ i18n "PROP_SNAPSHOT_SET_NAME" }}</label>
+                <div>
+                    <input id="property-snapshot-name-create" class="input tooltip" data-tooltip="{{i18n 'PROP_SNAPSHOT_SET_NAME_TIP'}}" type="text" maxlength="255" data-type="domain" data-ignore="true" placeholder="Allow alpha number, _ or - up to 255 characters.">
+                </div>
+            </div>
+
+            <div class="control-group clearfix property-content" style="background: none">
+                <label for="property-volume-choose">{{ i18n "PROP_SNAPSHOT_SET_VOLUME"}}</label>
+                <div>
+                    <div id="property-volume-choose"></div>
+                </div>
+            </div>
+
+            <div class="control-group clearfix property-content" style="background: none">
+                <label for="property-snapshot-desc-create">{{ i18n "PROP_SNAPSHOT_SET_DESC"}}</label>
+                <div>
+                    <input id='property-snapshot-desc-create' class="input tooltip" placeholder="Up to 255 characters" data-tooltip="{{i18n 'PROP_SNAPSHOT_SET_DESC_TIP'}}" type="text"/>
+                </div>
+            </div>
+
+        </section>
+        <div class="init action">
+            <button class="btn btn-blue do-action" data-action="create" disabled>Create</button>
+            <button class="btn btn-silver cancel">Cancel</button>
+        </div>
+        <div class="processing action" style="display:none;">
+            <button class="btn" disabled>Creating...</button>
+        </div>
+    </div>
+</div>
+
+<!-- {{slide_duplicate}} -->
+<div class="slide-duplicate" data-bind="true">
+    <div class="formart_toolbar_modal" data-type="true">
+        <section data-bind="true">
+            <div class="control-group clearfix">
+                <label for="property-snapshot-source">{{ i18n "PROP_SNAPSHOT_SOURCE_SNAPSHOT" }}</label>
+                <div>
+                    <p id="property-snapshot-source">{{originSnapshot.id}}</p>
+                </div>
+            </div>
+            <div class="control-group clearfix">
+                <label for="property-snapshot-name">{{ i18n "PROP_SNAPSHOT_SET_NEW_NAME" }}</label>
+                <div>
+                    <input id="property-snapshot-name" class="input tooltip" data-tooltip="{{i18n 'PROP_VPC_TIP_ENTER_THE_NEW_SNAPSHOT_NAME'}}" type="text" maxlength="255" data-type="domain" value="{{originSnapshot.id}}-copy" data-ignore="true">
+                </div>
+            </div>
+
+            <div class="control-group clearfix property-content" style="background: none">
+                <label for="property-region-choose">{{ i18n "PROP_SNAPSHOT_DESTINATION_REGION"}}</label>
+                <div>
+                    <div id="property-region-choose"></div>
+                </div>
+            </div>
+
+            <div class="control-group clearfix property-content" style="background: none">
+                <label for="property-snapshot-desc">{{ i18n "PROP_SNAPSHOT_SET_DESC"}}</label>
+                <div>
+                    <input id='property-snapshot-desc' class="input tooltip" data-tooltip="{{i18n 'PROP_SNAPSHOT_SET_DESC_TIP'}}" value="[Copied {{originSnapshot.id}} from {{region}}]" type="text"/>
+                </div>
+            </div>
+
+        </section>
+        <div class="init action">
+            <button class="btn btn-blue do-action" data-action="duplicate" disabled>Duplicate</button>
+            <button class="btn btn-silver cancel">Cancel</button>
+        </div>
+        <div class="processing action" style="display:none;">
+            <button class="btn" disabled>Duplicating...</button>
+        </div>
+    </div>
+</div>

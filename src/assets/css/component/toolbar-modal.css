@@ -1,11 +1,21 @@
 /* Common Style for Modal with Toolbar */
 .modal-toolbar {
   width: 855px; }
+  .modal-toolbar .no-credential {
+    color: #F5F5F5;
+    margin: 55px auto; }
+  .modal-toolbar .no-credential a {
+    cursor: pointer;
+    color: #148BE6; }
   .modal-toolbar .list {
     position: relative; }
   .modal-toolbar .modal-body {
     padding: 0; }
   .modal-toolbar .toolbar {
+    -webkit-user-select: none;
+    -o-user-select: none;
+    -ms-user-select: none;
+    -moz-user-select: none;
     background: #222427;
     border-bottom: 1px solid #131313;
     height: 34px;
@@ -70,7 +80,8 @@
     z-index: 71; }
     .modal-toolbar .slidebox.show {
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
-      max-height: 400px; }
+      max-height: 400px;
+      overflow: auto; }
     .modal-toolbar .slidebox.show + .table-head-fix {
       opacity: .4;
       pointer-events: none;
@@ -89,7 +100,7 @@
     .modal-toolbar .slidebox .content label.select-file-link {
       width: auto;
       color: #148BE6; }
-    .modal-toolbar .slidebox .content input.input {
+    .modal-toolbar .slidebox .content .input {
       width: 440px; }
     .modal-toolbar .slidebox .content .action {
       float: right;
@@ -113,10 +124,42 @@
     height: 368px; }
   .modal-toolbar .table-head-fix .table {
     font-size: 12px; }
+    .modal-toolbar .table-head-fix .table tr td {
+      -webkit-transition: background .2s;
+      -moz-transition: background .2s;
+      -ms-transition: background .2s;
+      -o-transition: background .2s;
+      transition: background .2s; }
     .modal-toolbar .table-head-fix .table tr.selected td {
-      background: #0B4085; }
+      background: #405A7E;
+      color: #fff;
+      border: 1px solid #374A63; }
     .modal-toolbar .table-head-fix .table tr.selected:hover td {
-      background: #0B55B4; }
+      background: #31619E; }
+    .modal-toolbar .table-head-fix .table tr td.show-detail {
+      -webkit-user-select: none;
+      -o-user-select: none;
+      -ms-user-select: none;
+      -moz-user-select: none;
+      text-align: center;
+      cursor: pointer; }
+    .modal-toolbar .table-head-fix .table tr.tr-detail td {
+      background-color: #273544 !important; }
+    .modal-toolbar .table-head-fix .table tr .detail-info {
+      background-color: #273544; }
+      .modal-toolbar .table-head-fix .table tr .detail-info .detail-info-row {
+        margin-left: 100px;
+        /* text-align: center; */
+        float: left !important;
+        width: 275px !important; }
+    .modal-toolbar .table-head-fix .table tr td.show-detail:hover {
+      color: #34A3F8; }
+    .modal-toolbar .table-head-fix .table tr.tr-detail {
+      -webkit-transition: max-height .2s ease-out;
+      -moz-transition: max-height .2s ease-out;
+      -ms-transition: max-height .2s ease-out;
+      -o-transition: max-height .2s ease-out;
+      transition: max-height .2s ease-out; }
   .modal-toolbar .table-head-fix .table-head thead th {
     line-height: 16px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.4);

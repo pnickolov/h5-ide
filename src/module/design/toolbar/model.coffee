@@ -618,7 +618,7 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
             @setFlag id, 'ENABLE_SAVE', false
 
         syncSaveStack : ( region, data ) ->
-            console.log 'syncSaveStack', region, data
+            deferred = Q.defer()
 
             me         = this
             src        = {}
@@ -660,7 +660,8 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
                                 me.saveStackCallback id, name, region
 
                                 # trigger TOOLBAR_HANDLE_SUCCESS
-                                me.trigger 'TOOLBAR_HANDLE_SUCCESS', 'SAVE_STACK_BY_RUN', name
+                                #me.trigger 'TOOLBAR_HANDLE_SUCCESS', 'SAVE_STACK_BY_RUN', name
+                                deferred.resolve name
 
                             # create api
                             else if id.split( '-' )[0] is 'new'
@@ -669,10 +670,14 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
                                 me.createStackCallback aws_result, id, name, region
 
                                 # trigger TOOLBAR_HANDLE_SUCCESS
-                                me.trigger 'TOOLBAR_HANDLE_SUCCESS', 'SAVE_STACK_BY_RUN', name
+                                #me.trigger 'TOOLBAR_HANDLE_SUCCESS', 'SAVE_STACK_BY_RUN', name
+                                deferred.resolve name
 
                         else
-                            console.log 'stack_service.save_stack, error is ' + aws_result.error_message
+                            console.error 'stack_service.save_stack, error is ' + aws_result.error_message
+                            deferred.reject aws_result
+
+            deferred.promise
 
         #duplicate
         duplicateStack : (region, id, new_name, name) ->

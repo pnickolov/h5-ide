@@ -34,4 +34,6 @@ define({
         subnet: [ 'getAllAWSENIForAppEditAndDefaultVPC' ]
         ebs: [ 'isSnapshotExist' ]
         kp: [ 'isKeyPairExistInAws' ]
+        elb: [ 'isSSLCertExist' ]
+        asg: [ 'isTopicNonexist' ]
 })

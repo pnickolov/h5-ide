@@ -41,6 +41,7 @@ define [ 'constant', 'event', 'component/trustedadvisor/config', 'component/trus
                 hasRun = true
                 _pushResult null, method, filename
                 done()
+                console.error 'Async TA Timeout'
         , config.syncTimeout
 
         ( result ) ->

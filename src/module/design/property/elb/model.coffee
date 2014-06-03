@@ -2,7 +2,7 @@
 #  View Mode for design/property/instance
 #############################
 
-define [ '../base/model', "event", "Design", 'constant' ], ( PropertyModel, ide_event, Design, constant ) ->
+define [ '../base/model', "event", "Design", 'constant', 'sslcert_dropdown' ], ( PropertyModel, ide_event, Design, constant, SSLCertDropdown ) ->
 
     ElbModel = PropertyModel.extend {
 
@@ -219,6 +219,22 @@ define [ '../base/model', "event", "Design", 'constant' ], ( PropertyModel, ide_
 
             elbModel = Design.instance().component( @get("uid") )
             elbModel.setPolicyProxyProtocol(enable, portAry)
+
+        initNewSSLCertDropDown : (idx) ->
+
+            that = this
+            elbModel = Design.instance().component( @get("uid") )
+            sslCertDropDown = new SSLCertDropdown()
+            sslCertModel = elbModel.getSSLCert(idx)
+            if sslCertModel
+                sslCertDropDown.sslCertName = sslCertModel.get('name')
+            sslCertDropDown.dropdown.on 'change', (sslCertId) ->
+                listenerNum = $(this.el).parents('.elb-property-listener').index()
+                Design.instance().component(that.get("uid")).setSSLCert(listenerNum, sslCertId)
+            , sslCertDropDown
+
+            return sslCertDropDown
+
     }
 
     new ElbModel()

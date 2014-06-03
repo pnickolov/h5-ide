@@ -8,7 +8,7 @@
   to provide other functionality
 ###
 
-define [ "ApiRequest", "component/exporter/JsonExporter", "./Websocket", "./ApplicationView", "./ApplicationModel", "./User", "./subviews/SettingsDialog", "common_handle" ,"event", "vpc_model", "constant" ], ( ApiRequest, JsonExporter, Websocket, ApplicationView, ApplicationModel, User, SettingsDialog, common_handle, ide_event, vpc_model, constant )->
+define [ "ApiRequest", "component/exporter/JsonExporter", "./Websocket", "./ApplicationView", "./ApplicationModel", "./User", "./subviews/SettingsDialog", "CloudResources", "common_handle" ,"event", "vpc_model", "constant" ], ( ApiRequest, JsonExporter, Websocket, ApplicationView, ApplicationModel, User, SettingsDialog, CloudResources, common_handle, ide_event, vpc_model, constant )->
 
   VisualOps = ()->
     if window.App
@@ -30,7 +30,6 @@ define [ "ApiRequest", "component/exporter/JsonExporter", "./Websocket", "./Appl
 
     # This function returns a promise
     @user.fetch()
-
 
   VisualOps.prototype.__createWebsocket = ()->
     @WS = new Websocket()
@@ -55,7 +54,9 @@ define [ "ApiRequest", "component/exporter/JsonExporter", "./Websocket", "./Appl
       # The Websockets subscription will be lost if we have an invalid session.
       @WS.subscribe()
 
-    @user.on "change:credential", ()=> @__onCredentialChanged()
+    @user.on "change:credential", ()=>
+      @__onCredentialChanged()
+      CloudResources.invalidate()
     return
 
 
@@ -157,7 +158,7 @@ define [ "ApiRequest", "component/exporter/JsonExporter", "./Websocket", "./Appl
         stackStoreId = stackStoreIdStamp.split('#')[0]
 
         if stackStoreId and stackStoreIdStamp isnt localStackStoreIdStamp
-          
+
           $.cookie('stack_store_id_local', stackStoreIdStamp, {expires: 30})
 
           gitBranch = 'master'

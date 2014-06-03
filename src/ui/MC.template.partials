@@ -616,59 +616,46 @@ Additional Notes and Questions
 
 
 <!-- {{modalRunStack}} -->
-<div id="modal-run-stack">
-	<div class="modal-header">
-		<h3>{{ i18n 'TOOL_POP_TIT_RUN_STACK' }}</h3><i class="modal-close">×</i>
+<section id="modal-run-stack">
+	<div class="modal-control-group clearfix" data-bind="true">
+		<label class="label" for="app-name">App Name</label>
+		<input id="app-name" class="input modal-input-value" type="text" value="{{name}}" data-ignore="true">
+		<div class="runtime-error" id="runtime-error-appname"></div>
 	</div>
-	<div class="modal-body">
-		<div class="modal-control-group clearfix" data-bind="true">
-			<label class="label" for="app-name">App Name</label>
-			<input id="app-name" class="input modal-input-value" type="text" value="{{name}}" data-ignore="true">
-			<div class="runtime-error" id="runtime-error-appname"></div>
+	<div class="modal-control-group default-kp-group clearfix" style="display:none;">
+		<label for="">$DefaultKeyPair</label>
+		<div id="kp-runtime-placeholder"></div>
+		<div class="runtime-error" id="runtime-error-kp"></div>
+	</div>
+	<div class="modal-control-group app-usage-group clearfix">
+		<label for="">App Usage</label>
+		<div id="app-usage-selectbox" class="selectbox">
+			<div class="selection"><i class="icon-app-type-testing"></i>Testing</div>
+			<ul class="dropdown" tabindex="-1">
+				<li class="selected item" data-value="testing"><i class="icon-app-type-testing"></i>Testing</li>
+				<li class="item" data-value="development"><i class="icon-app-type-development"></i>Development</li>
+				<li class="item" data-value="production"><i class="icon-app-type-production"></i>Production</li>
+				<li class="item" data-value="others"><i class="icon-app-type-others" data-value="testing"></i>Others</li>
+			</ul>
 		</div>
-		<div class="modal-control-group default-kp-group clearfix" style="display:none;">
-			<label for="">$DefaultKeyPair</label>
-			<div id="kp-runtime-placeholder"></div>
-			<i class="icon-info tooltip" data-tooltip="{{i18n 'TIP_KEYPAIR_USED_DEFAULT_KP'}}"></i>
-			<div class="runtime-error" id="runtime-error-kp"></div>
+	</div>
+	<div class="stack-validation">
+		<details open style="display:none;">
+			<summary>Stack Validation</summary>
+			<div id="stack-run-validation-container"></div>
+		</details>
+		<div class="nutshell" style="display: none;">:<label></label></div>
+		<div class="validating">
+			<div class="loading-spinner loading-spinner-small"></div>
+			<p>Validating your stack...</p>
 		</div>
-		<div class="modal-control-group app-usage-group clearfix">
-			<label for="">App Usage</label>
-			<div id="app-usage-selectbox" class="selectbox">
-				<div class="selection"><i class="icon-app-type-testing"></i>Testing</div>
-				<ul class="dropdown" tabindex="-1">
-					<li class="selected item" data-value="testing"><i class="icon-app-type-testing"></i>Testing</li>
-					<li class="item" data-value="development"><i class="icon-app-type-development"></i>Development</li>
-					<li class="item" data-value="production"><i class="icon-app-type-production"></i>Production</li>
-					<li class="item" data-value="others"><i class="icon-app-type-others" data-value="testing"></i>Others</li>
-				</ul>
-			</div>
-		</div>
-		<div class="stack-validation">
-			<details open style="display:none;">
-				<summary>Stack Validation</summary>
-				<div id="stack-run-validation-container"></div>
-			</details>
-			<div class="nutshell" style="display: none;">:<label></label></div>
-			<div class="validating">
-				<div class="loading-spinner loading-spinner-small"></div>
-				<p>Validating your stack...</p>
-			</div>
-		</div>
-		<div class="estimate clearfix">
-			<span class="title">Estimated Cost</span>
-			<span class="price" id="label-total-fee"><b>${{total_fee}}</b> / month</span>
-		</div>
+	</div>
+	<div class="estimate clearfix">
+		<span class="title">Estimated Cost</span>
+		<span class="price" id="label-total-fee"><b>${{total_fee}}</b> / month</span>
+	</div>
+</section>
 
-	</div>
-	<div class="modal-footer">
-
-		{{#if hasCred}}<button class="btn btn-blue" id="btn-confirm" disabled>Run Stack</button>
-		{{else}}
-		<button class="btn btn-primary" id="btn-confirm" disabled>Set Up Credential First</button>{{/if}}
-		<button class="btn btn-silver modal-close" id="run-stack-cancel">Cancel</button>
-	</div>
-</div>
 
 <!-- {{sgRuleList}} -->
 {{#each this}}
@@ -1255,65 +1242,58 @@ Following rule(s) will be deleted from its(their) security group:</div>
 </div>
 
 <!-- {{updateApp}} -->
-<div id="app-apply-update" style="width:460px">
-	<div class="modal-header"><h3 class="truncate" style="width: 380px;">{{ i18n 'POP_CONFIRM_UPDATE_TIT'}}</h3><i class="modal-close">&times;</i> </div>
-	<div class="modal-body">
-		<div class="modal-control-group default-kp-group clearfix" style="display:none;">
-			<label for="">$DefaultKeyPair</label>
-			<div id="kp-runtime-placeholder"></div>
-			<i class="icon-info tooltip" data-tooltip="{{i18n 'TIP_KEYPAIR_USED_DEFAULT_KP'}}"></i>
-			<div class="runtime-error" id="runtime-error-kp"></div>
-		</div>
+<div id="app-apply-update">
+	<div class="modal-control-group default-kp-group clearfix" style="display:none;">
+		<label for="">$DefaultKeyPair</label>
+		<div id="kp-runtime-placeholder"></div>
+		<div class="runtime-error" id="runtime-error-kp"></div>
+	</div>
 	{{#if isRunning}}
-		<h3 class="modal-text-major">{{ i18n 'POP_CONFIRM_UPDATE_MAJOR_TEXT_RUNNING'}}</h3>
+	<h3 class="modal-text-major">{{ i18n 'POP_CONFIRM_UPDATE_MAJOR_TEXT_RUNNING'}}</h3>
 	{{else}}
-		<h3 class="modal-text-major">{{ i18n 'POP_CONFIRM_UPDATE_MAJOR_TEXT_STOPPED'}}</h3>
-		<p class="modal-text-minor" style="margin-top:10px;">{{ i18n 'POP_CONFIRM_UPDATE_MINOR_TEXT_STOPPED'}}</p>
+	<h3 class="modal-text-major">{{ i18n 'POP_CONFIRM_UPDATE_MAJOR_TEXT_STOPPED'}}</h3>
+	<p class="modal-text-minor" style="margin-top:10px;">{{ i18n 'POP_CONFIRM_UPDATE_MINOR_TEXT_STOPPED'}}</p>
 	{{/if}}
 	{{#if result.length}}
-		<table class="table-head-fix table app-update-summary-table-header" data-target="app-update-summary-table">
-			<thead> <tr class="header-row">
-				<th class="sortable active" width="30%">{{ i18n 'POP_CONFIRM_UPDATE_TABLE_TYPE'}}</th>
-				<th class="sortable" width="30%">{{ i18n 'POP_CONFIRM_UPDATE_TABLE_NAME'}}</th>
-				<th class="sortable" width="40%">{{ i18n 'POP_CONFIRM_UPDATE_TABLE_CHANGE'}}</th> </tr>
-			</thead>
-		</table>
-		<div class="scroll-wrap" style="max-height:256px;">
-			<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-			<table class="table scroll-content" id="app-update-summary-table">
-				<tbody>
+	<table class="table-head-fix table app-update-summary-table-header" data-target="app-update-summary-table">
+		<thead> <tr class="header-row">
+			<th class="sortable active" width="30%">{{ i18n 'POP_CONFIRM_UPDATE_TABLE_TYPE'}}</th>
+			<th class="sortable" width="30%">{{ i18n 'POP_CONFIRM_UPDATE_TABLE_NAME'}}</th>
+			<th class="sortable" width="40%">{{ i18n 'POP_CONFIRM_UPDATE_TABLE_CHANGE'}}</th> </tr>
+		</thead>
+	</table>
+	<div class="scroll-wrap" style="max-height:256px;">
+		<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+		<table class="table scroll-content" id="app-update-summary-table">
+			<tbody>
 				{{#each result}} <tr>
-					<td width="30%">{{type}}</td>
-					<td width="30%">{{name}}</td>
-					<td width="40%">
-						{{#each changes}}
-						<span class="au-summary-label au-summary-{{name}}">{{info}}</span>
-						{{else}}
-						<span class="au-summary-label au-summary-{{change}}">{{change}}</span>
-						{{/each}}
-						{{#if extra}}<p class="au-summary-extra">{{extra}}</p>{{/if}}
-						{{#if info}}<span class="tooltip icon-warning" data-tooltip="{{info}}"></span>{{/if}}</td>
+				<td width="30%">{{type}}</td>
+				<td width="30%">{{name}}</td>
+				<td width="40%">
+					{{#each changes}}
+					<span class="au-summary-label au-summary-{{name}}">{{info}}</span>
+					{{else}}
+					<span class="au-summary-label au-summary-{{change}}">{{change}}</span>
+					{{/each}}
+					{{#if extra}}<p class="au-summary-extra">{{extra}}</p>{{/if}}
+					{{#if info}}<span class="tooltip icon-warning" data-tooltip="{{info}}"></span>{{/if}}</td>
 				</tr> {{/each}}
-				</tbody>
-			</table>
-		</div>
+			</tbody>
+		</table>
+	</div>
 	{{/if}}
-		<div class="stack-validation">
-			<details open style="display:none;">
-				<summary>{{ i18n 'POP_CONFIRM_UPDATE_VALIDATION'}}</summary>
-				<div id="stack-run-validation-container"></div>
-			</details>
-			<div class="nutshell" style="display: none;">:<label></label></div>
-			<div class="validating">
-				<div class="loading-spinner loading-spinner-small"></div>
-				<p>{{ i18n 'POP_CONFIRM_UPDATE_VALIDATING'}}</p>
-			</div>
+	<div class="stack-validation">
+		<details open style="display:none;">
+			<summary>{{ i18n 'POP_CONFIRM_UPDATE_VALIDATION'}}</summary>
+			<div id="stack-run-validation-container"></div>
+		</details>
+		<div class="nutshell" style="display: none;">:<label></label></div>
+		<div class="validating">
+			<div class="loading-spinner loading-spinner-small"></div>
+			<p>{{ i18n 'POP_CONFIRM_UPDATE_VALIDATING'}}</p>
 		</div>
 	</div>
-	<div class="modal-footer">
-		<button id="confirm-update-app" class="btn btn-blue" style="width:160px;" disabled>{{ i18n 'POP_CONFIRM_UPDATE_CONFIRM_BTN'}}</button>
-		<button class="btn modal-close btn-silver">{{ i18n 'POP_CONFIRM_UPDATE_CANCEL_BTN'}}</button>
-	</div>
+
 </div>
 
 <!-- {{openTabFail}} -->
@@ -1708,3 +1688,29 @@ Are you sure you want to delete {{name}}?</div>
 	</span>
 </li>
 {{/each}}
+
+<!-- {{modalTemplate}} -->
+<div class="modal-box">
+    <div style="width: 520px">
+        <div class="modal-header">
+            <h3>{{ title }}</h3>
+            {{#unless hideClose}}<i class="modal-close">×</i>{{/unless}}
+        </div>
+        <div class="modal-body  context-wrap{{#if hasScroll}} scroll-wrap scrollbar-auto-hide{{/if}}" {{#if hasScroll}}style="padding: 0;"{{else}}{{#if compact}} style="padding: 0;"{{/if}}{{/if}}>
+            {{#if hasScroll}}
+            <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+                <div class="scroll-content" {{#if compact}} style="padding: 0;"{{else}}style="padding: 12px 15px"{{/if}}>
+                    {{{ template }}}
+                </div>
+            {{else}}
+            {{{template}}}
+            {{/if}}
+            </div>
+        {{#if hasFooter}}
+        <div class="modal-footer">
+            <button class="btn modal-confirm btn-{{confirm.color}}" {{#if confirm.disabled}} disabled {{/if}}>{{confirm.text}}</button>
+            {{#unless hideClose}}<button class="btn modal-close btn-silver">{{cancel}}</button>{{/unless}}
+        </div>
+        {{/if}}
+    </div>
+</div>

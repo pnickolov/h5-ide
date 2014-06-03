@@ -479,6 +479,10 @@ module.exports =
       en: "Volume and Snapshots"
       zh: "虚拟磁盘和快照"
 
+    RES_TIT_SNAPSHOT_MANAGE:
+      en: "Manage EBS Snapshot"
+      zh: "管理 EBS 快照"
+
     RES_TIT_ELB_ASG:
       en: "Load Balancer and Auto Scaling"
       zh: "负载均衡器和自动伸缩组"
@@ -1269,6 +1273,22 @@ module.exports =
       en: "Manage Region Key Pairs ..."
       zh: ""
 
+    PROP_INSTANCE_FILTER_SNS:
+      en: "Filter by SNS Topic name"
+      zh: ""
+
+    PROP_INSTANCE_MANAGE_SNS:
+      en: "Manage SNS Topic ..."
+      zh: ""
+
+    PROP_INSTANCE_FILTER_SSL_CERT:
+      en: "Filter by Server Certificate name"
+      zh: ""
+
+    PROP_INSTANCE_MANAGE_SSL_CERT:
+      en: "Manage SSL Certificate..."
+      zh: ""
+
     PROP_INSTANCE_TIP_DEFAULT_KP:
       en: 'If you have used $DefaultKeyPair for any instance/launch configuration, you will be required to specify an existing key pair for $DefaultKeyPair. Or you can choose "No Key Pair" as $DefaultKeyPair.'
       zh: ""
@@ -1669,6 +1689,30 @@ module.exports =
     PROP_VPC_DHCP_OPTION_SET_ID:
       en: "DHCP Options Set ID"
       zh: "DHCP选项标识"
+
+    PROP_VPC_MANAGE_DHCP:
+      en: "Manage Region DHCP options"
+      zh: ""
+
+    PROP_VPC_FILTER_DHCP:
+      en: "Filter by DHCP name"
+      zh: ""
+
+    PROP_VPC_TIP_AUTO_DHCP:
+      en: "A DHCP Options set will be automatically assigned for the VPC by AWS."
+      zh: ""
+
+    PROP_VPC_TIP_DEFAULT_DHCP:
+      en: "The VPC will use no DHCP options."
+      zh: "The VPC will use no DHCP options."
+
+    PROP_VPC_AUTO_DHCP:
+      en: "Auto-assigned Set"
+      zh: ""
+
+    PROP_VPC_DEFAULT_DHCP:
+      en: "Default"
+      zh: "Default"
 
     PROP_SUBNET_TIP_CIDR_BLOCK:
       en: "e.g. 10.0.0.0/24. The range of IP addresses in the subnet must be a subset of the IP address in the VPC. Block sizes must be between a /16 netmask and /28 netmask. The size of the subnet can equal the size of the VPC."
@@ -2332,6 +2376,14 @@ module.exports =
       en: "%d rules have been created in %s to allow %s send and receive traffic within itself."
       zh: "%d条规则被创建到 %s 来允许 %s 它内部的收发通信."
 
+    PROP_SNAPSHOT_FILTER_REGION:
+      en: "Filter by region name"
+      zh: ""
+
+    PROP_SNAPSHOT_FILTER_SNAPSHOT:
+      en: "Filter by Snapshot id"
+      zh: ""
+
     PROP_VOLUME_DEVICE_NAME:
       en: "Device Name"
       zh: "挂载设备名"
@@ -2355,6 +2407,14 @@ module.exports =
     PROP_VOLUME_SNAPSHOT_ID:
       en: "Snapshot ID"
       zh: "快照ID"
+
+    PROP_VOLUME_SNAPSHOT_SELECT:
+      en: "Select volume from which to create snapshot"
+      zh: ""
+
+    PROP_VOLUME_SNAPSHOT_SELECT_REGION:
+      en: "Select Destination Region"
+      zh: ""
 
     PROP_VOLUME_SNAPSHOT:
       en: "Snapshot"
@@ -2505,7 +2565,7 @@ module.exports =
       zh: "添加服务器认证"
 
     PROP_ELB_SERVER_CERTIFICATE:
-      en: "Server Certificate"
+      en: "SSL Certificate"
       zh: "服务器认证"
 
     PROP_ELB_LBL_LISTENER_NAME:
@@ -2515,6 +2575,10 @@ module.exports =
     PROP_ELB_LBL_LISTENER_DESCRIPTIONS:
       en: "Listener Descriptions"
       zh: "监听器描述"
+
+    PROP_ELB_LBL_LISTENER_CERT_NAME:
+      en: "Certificate Name"
+      zh: ""
 
     PROP_ELB_LBL_LISTENER_PRIVATE_KEY:
       en: "Private Key"
@@ -3051,6 +3115,42 @@ module.exports =
     PROC_CLOSE_TAB:
       en: "Close"
       zh: "关闭标签"
+
+    PROP_SNAPSHOT_SET_NAME:
+      en: "Snapshot Name"
+      zh: ""
+
+    PROP_SNAPSHOT_SET_NAME_TIP:
+      en: "Enter the name of the snapshot that you will create."
+      zh: ""
+
+    PROP_SNAPSHOT_SOURCE_SNAPSHOT:
+      en: "Source Snapshot"
+      zh: ""
+
+    PROP_SNAPSHOT_SET_NEW_NAME:
+      en: "New Snapshot Name"
+      zh: ""
+
+    PROP_SNAPSHOT_DESTINATION_REGION:
+      en: "Destination Region"
+      zh: ""
+
+    PROP_SNAPSHOT_SET_VOLUME:
+      en: "Volume"
+      zh: ""
+
+    PROP_SNAPSHOT_SET_DESC:
+      en: "Description"
+      zh: ""
+
+    PROP_VPC_TIP_ENTER_THE_NEW_SNAPSHOT_NAME:
+      en: "Please fill with the name of the new snapshot you will create."
+      zh: ""
+
+    PROP_SNAPSHOT_SET_DESC_TIP:
+      en: "Fill in the Description"
+      zh: ""
 
     PROC_STEP_REQUEST:
       en: "Processing"
@@ -4816,6 +4916,10 @@ VisualOps API. You cannot UNDO this action.'
       en: "Load Balancer <span class='validation-tag tag-elb'>%s</span> has been associated with Subnet <span class='validation-tag tag-subnet'>%s</span>, whose CIDR mask must be smaller than /27."
       zh: ""
 
+    TA_MSG_ERROR_ELB_SSL_CERT_NOT_EXIST_FROM_AWS:
+      en: "Load Balancer <span class='validation-tag tag-elb'>%s</span>'s Listener is configured with nonexistent Server Certificate <span class='validation-tag tag-cert'>%s</span>."
+      zh: ""
+
     # SG
     TA_MSG_WARNING_SG_RULE_EXCEED_FIT_NUM:
       en: "Security Group <span class='validation-tag tag-sg'>%s</span> has more than %s rules, If a security group has a large number of rules, performance can be degraded."
@@ -4948,6 +5052,23 @@ VisualOps API. You cannot UNDO this action.'
       zh: ""
     TA_MSG_WARNING_OUTBOUND_NOT_TO_ALL:
       en: "<span class='validation-tag tag-instance'>%s</span> has configured states. Suggest to set its outbound rule on <span class='validation-tag tag-port'>80</span> and <span class='validation-tag tag-port'>443</span> to <span class='validation-tag tag-ip'>0.0.0.0/0</span>. Otherwise, agent may not be able to work properly, install packages or check out source codes lacking route to VisualOps's monitoring systems or required repositories."
+      zh: ""
+
+    # Share Resource
+    TA_MSG_ERROR_ASG_NOTIFICATION_NO_TOPIC:
+      en: "Auto Scaling Group %s has configured notification. Please select a SNS Topic for it."
+      zh: ""
+
+    TA_MSG_ERROR_ASG_POLICY_NO_TOPIC:
+      en: "Auto Scaling Group %s's Scaling Policy %s has configured notification. Please select a SNS Topic for it."
+      zh: ""
+
+    TA_MSG_ERROR_ASG_NOTIFICITION_TOPIC_NONEXISTIENT:
+      en: "Auto Scaling Group %s is using a nonexistient SNS Topic %s. Please change to an existing SNS Topic to make notification work."
+      zh: ""
+
+    TA_MSG_ERROR_ASG_POLICY_TOPIC_NONEXISTIENT:
+      en: "Auto Scaling Group %s's Scaling Policy %s is using a nonexistent SNS Topic %s. Please change to an existing SNS Topic to make notification work."
       zh: ""
 
     RELOAD_STATE_INVALID_REQUEST:

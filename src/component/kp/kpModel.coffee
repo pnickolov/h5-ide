@@ -1,4 +1,5 @@
 define [ 'constant', 'backbone', 'underscore', 'MC', 'keypair_service', 'Design' ], ( constant, Backbone, _, MC, keypair_service, Design ) ->
+
     # Helper
     request = ( api, name, data ) ->
             username = $.cookie "usercode"
@@ -40,6 +41,7 @@ define [ 'constant', 'backbone', 'underscore', 'MC', 'keypair_service', 'Design'
             _.each keys, ( key ) ->
                 if key.keyName is name
                     key.selected = true
+                return
             keys
 
     filterIllegal = ( keys ) ->
@@ -59,7 +61,7 @@ define [ 'constant', 'backbone', 'underscore', 'MC', 'keypair_service', 'Design'
         __haveGot: false
 
         initialize: ( options ) ->
-            @resModel = options.resModel
+            @resModel = options.resModel if options
 
             if @resModel
                 @set 'keyName', @resModel.getKeyName()
@@ -90,10 +92,10 @@ define [ 'constant', 'backbone', 'underscore', 'MC', 'keypair_service', 'Design'
 
         getKeys: ->
             that = @
-            @haveGot true
             @list().then(
                 (res) ->
-                    console.log('-----result-----');
+                    that.haveGot true
+                    console.log('-----result-----')
                     if that.resModel
                         keyName = that.resModel.getKeyName()
                     ###
@@ -108,6 +110,7 @@ define [ 'constant', 'backbone', 'underscore', 'MC', 'keypair_service', 'Design'
 
                     that.settle 'keys', keys or []
                 (err) ->
+                    that.haveGot true
                     that.settle 'keys', []
             )
 
@@ -146,15 +149,11 @@ define [ 'constant', 'backbone', 'underscore', 'MC', 'keypair_service', 'Design'
         download: ( name ) ->
             request( 'download', name ).then(
                 (res) ->
-                    console.log(res);
+                    console.log(res)
 
                 (err) ->
-                    console.log(err);
+                    console.log(err)
             )
-
-
-
-
 
 
 

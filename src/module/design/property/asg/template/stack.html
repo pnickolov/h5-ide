@@ -134,11 +134,13 @@
 			</div>
 			<label for="property-asg-sns5">{{ i18n "PROP_ASG_LBL_VALIDATE_SNS" }}</label></div>
 
-	    {{#unless has_sns_sub}}
-			<p class="property-warning {{#unless has_notification}}hide{{/unless}}" id="property-asg-sns-info"> {{ i18n "PROP_ASG_MSG_SNS_WARN" }} </p>
-	    {{/unless}}
-
 		</div>
+
+		<div class="property-control-group sns-group" style="display:none;">
+			<label for="sns-placeholder">Select SNS Topic</label>
+			<div id="sns-placeholder"></div>
+		</div>
+
 	</div>
 	{{/if}}
 

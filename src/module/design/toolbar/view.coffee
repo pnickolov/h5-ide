@@ -10,13 +10,14 @@ define [ 'MC', 'event',
          './appview_template',
          "component/exporter/JsonExporter",
          'constant'
-         'kp'
+         'kp_dropdown'
          'ApiRequest'
          'component/stateeditor/stateeditor'
+         'UI.modalplus'
          'backbone', 'jquery', 'handlebars',
          'UI.selectbox', 'UI.notification',
          "UI.tabbar"
-], ( MC, ide_event, Design, lang, stack_tmpl, app_tmpl, appview_tmpl, JsonExporter, constant, kp, ApiRequest, stateEditor ) ->
+], ( MC, ide_event, Design, lang, stack_tmpl, app_tmpl, appview_tmpl, JsonExporter, constant, kpDropdown, ApiRequest, stateEditor, modalplus ) ->
 
     # Set domain and set http
     API_HOST       = "api.visualops.io"
@@ -158,7 +159,7 @@ define [ 'MC', 'event',
                 $( ".runtime-error" ).hide()
 
         defaultKpIsSet: ->
-            if not kp.hasResourceWithDefaultKp()
+            if not kpDropdown.hasResourceWithDefaultKp()
                 return true
 
             KpModel = Design.modelClassForType( constant.RESTYPE.KP )
@@ -175,10 +176,10 @@ define [ 'MC', 'event',
                 context.hideErr 'kp'
 
         renderDefaultKpDropdown: ->
-            if kp.hasResourceWithDefaultKp()
-                kpDropdown = kp.load()
-                $('#kp-runtime-placeholder').html kpDropdown.el
-                kpDropdown.$( '.selectbox' )
+            if kpDropdown.hasResourceWithDefaultKp()
+                kpDd = new kpDropdown()
+                $('#kp-runtime-placeholder').html kpDd.render().el
+                kpDd.$( '.selectbox' )
                     .on( 'OPTION_CHANGE', @hideDefaultKpError(@) )
 
                 $('.default-kp-group').show()
@@ -191,9 +192,19 @@ define [ 'MC', 'event',
             if $('#toolbar-run').hasClass( 'disabled' )
                 return false
 
-            modal MC.template.modalRunStack {
-                hasCred : App.user.hasCredential()
-            }
+            options =
+                title           : 'Run Stack'
+                template        : MC.template.modalRunStack
+                disableClose    : true
+                width           : '450px'
+                height          : '515px'
+                confirm         :
+                    text: 'Run Stack'
+                    disabled: true
+
+            options.confirm.text = 'Set Up Credential First' if not App.user.hasCredential()
+
+            me.modalPlus = new modalplus options
 
             # must render it after modal appeared
             me.renderDefaultKpDropdown()
@@ -209,10 +220,11 @@ define [ 'MC', 'event',
 
             # insert ta component
             require [ 'component/trustedadvisor/main' ], ( trustedadvisor_main ) ->
-                trustedadvisor_main.loadModule 'stack'
+                trustedadvisor_main.loadModule( 'stack' ).then () ->
+                    me.modalPlus and me.modalPlus.toggleConfirm false
 
             # click logic
-            $('#btn-confirm').on 'click', this, (event) ->
+            me.modalPlus.on 'confirm', () ->
                 me.hideErr()
 
                 if not App.user.hasCredential()
@@ -254,13 +266,39 @@ define [ 'MC', 'event',
                     return false
 
                 # disable button
-                $('#btn-confirm').attr 'disabled', true
+
+                me.modalPlus.toggleConfirm true
                 $('.modal-header .modal-close').hide()
                 $('#run-stack-cancel').attr 'disabled', true
 
                 # push SAVE_STACK event
                 #ide_event.trigger ide_event.SAVE_STACK, MC.common.other.canvasData.data()
-                event.data.model.syncSaveStack MC.common.other.canvasData.get( 'region' ), MC.common.other.canvasData.data()
+                region = MC.common.other.canvasData.get( 'region' )
+                canvasData = MC.common.other.canvasData.data()
+                that = @
+                me.model.syncSaveStack( region, canvasData ).then () ->
+                    if not me.modalPlus or not me.modalPlus.isOpen
+                        return
+                    data = canvasData
+                    # set app name
+                    app_name  = $('.modal-input-value').val()
+                    data.name = app_name
+
+                    # set usage
+                    data.usage = 'others'
+                    usage = $('#app-usage-selectbox .selected').data 'value'
+                    if usage
+                        data.usage = usage
+
+                    # call api
+                    me.model.runStack data
+
+                    # update MC.data.app_list
+                    MC.data.app_list[ region ].push app_name
+
+                    # close run stack dialog
+                    me.modalPlus and me.modalPlus.close()
+            , @
 
             null
 
@@ -791,29 +829,38 @@ define [ 'MC', 'event',
 
         clickSaveEditApp : (event)->
 
-
+            me = @
             # 1. Send save request
             # check credential
-            if false
-                modal.close()
-                console.log 'show credential setting dialog'
-                require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
+            result = @model.diff()
+
+            if not result.isModified
+                # no changes and return to app modal
+                @appedit2App()
+                return
 
             else
-                result = @model.diff()
+                options =
+                    title           : 'Run Stack'
+                    template        : MC.template.updateApp result
+                    disableClose    : true
+                    width           : '460px'
+                    height          : '515px'
+                    confirm         :
+                        text: lang.ide.POP_CONFIRM_UPDATE_CONFIRM_BTN
+                        disabled: true
 
-                if not result.isModified
-                    # no changes and return to app modal
-                    @appedit2App()
-                    return
 
-                else
-                    modal MC.template.updateApp result
-                    # Set default kp
-                    @renderDefaultKpDropdown()
+                me.modalPlus = new modalplus options
 
-                    require [ 'component/trustedadvisor/main' ], ( trustedadvisor_main ) ->
-                        trustedadvisor_main.loadModule 'stack'
+                me.modalPlus.on 'confirm', me.appUpdating, @
+                #modal MC.template.updateApp result
+                # Set default kp
+                @renderDefaultKpDropdown()
+
+                require [ 'component/trustedadvisor/main' ], ( trustedadvisor_main ) ->
+                    trustedadvisor_main.loadModule( 'stack' ).then () ->
+                        me.modalPlus and me.modalPlus.toggleConfirm false
             null
 
         clickCancelEditApp : ->
@@ -890,7 +937,7 @@ define [ 'MC', 'event',
 
         appUpdating : ( event ) ->
             console.log 'appUpdating'
-            me = event.data
+            me = @
             # 0. check whether defaultKp is set
             if not me.defaultKpIsSet()
                 return false
@@ -903,10 +950,11 @@ define [ 'MC', 'event',
             #event.data.trigger 'APP_UPDATING', MC.canvas_data
 
             # new design flow
-            event.data.trigger 'APP_UPDATING', MC.common.other.canvasData.data()
+            @trigger 'APP_UPDATING', MC.common.other.canvasData.data()
 
             # 2. close modal
-            modal.close()
+            # modal.close()
+            @modalPlus and @modalPlus.close()
 
             null
 

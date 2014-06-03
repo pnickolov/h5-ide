@@ -1,0 +1,106 @@
+<!-- {{dropdown_selection}} -->
+{{Name}}
+
+<!-- {{dropdown_list}} -->
+{{#each this}}
+    <li class="item{{#if selected}} selected{{/if}}" data-id="{{id}}" data-name="{{Name}}" tabindex="-1">
+        {{Name}}
+    </li>
+{{/each}}
+
+<!-- {{modal_list}} -->
+{{#each this}}
+<tr class="item" data-id="{{id}}">
+    <td>
+        <div class="checkbox">
+            <input id="sslcert-select-{{id}}" type="checkbox" data-id="{{id}}" data-name="{{Name}}" class="one-cb">
+            <label for="sslcert-select-{{id}}"></label>
+        </div>
+    </td>
+    <td>{{Name}}</td>
+    <td>{{UploadDate}}</td>
+    <td class="show-detail icon-toolbar-cloudformation"></td>
+</tr>
+{{/each}}
+
+<!-- {{slide_create}} -->
+<div class="slide-create" data-bind="true">
+    <div class="modal-ssl-cert-create">
+        <div class="modal-ssl-cert-item clearfix">
+            <label class="left">{{ i18n "PROP_ELB_LBL_LISTENER_CERT_NAME"}}</label>
+            <input placeholder="Required. Up to 128 characters" class="input" type="text" data-required="true" data-ignore="true" id="ssl-cert-name-input"/>
+        </div>
+        <div class="modal-ssl-cert-item clearfix">
+            <label class="left">{{ i18n "PROP_ELB_LBL_LISTENER_PRIVATE_KEY"}}</label>
+            <textarea placeholder="Required. PEM Encoded" class="input ssl-cert-input" data-required="true" id="ssl-cert-privatekey-input"></textarea>
+        </div>
+        <div class="modal-ssl-cert-item clearfix">
+            <label class="left"  >{{ i18n "PROP_ELB_LBL_LISTENER_PUBLIC_KEY"}}</label>
+            <textarea placeholder="Required. PEM Encoded" class="input ssl-cert-input" data-required="true" id="ssl-cert-publickey-input"></textarea>
+        </div>
+        <div class="modal-ssl-cert-item clearfix">
+            <label class="left"  >{{ i18n "PROP_ELB_LBL_LISTENER_CERTIFICATE_CHAIN"}}</label>
+            <textarea placeholder="Optional. PEM Encoded" class="input ssl-cert-input" id="ssl-cert-chain-input"></textarea>
+        </div>
+    </div>
+    <div class="init action">
+        <button class="btn btn-blue do-action" data-action="create" disabled>Upload</button>
+        <button class="btn btn-silver cancel">Cancel</button>
+    </div>
+    <div class="processing action" style="display:none;">
+        <button class="btn" disabled>Upload...</button>
+    </div>
+</div>
+
+<!-- {{slide_delete}} -->
+<div class="slide-delete">
+    <div class="modal-text-major">Confirm to delete {{#if selecteKeyName }}SSL Certificate {{selecteKeyName}}{{else}}selected {{selectedCount}} SSL Certificates{{/if}} ?</div>
+    <div class="init action">
+        <button class="btn btn-red do-action" data-action="delete">Delete</button>
+        <button class="btn btn-silver cancel">Cancel</button>
+    </div>
+    <div class="processing action" style="display:none;">
+        <button class="btn" disabled>Deleting...</button>
+    </div>
+</div>
+
+<!-- {{slide_update}} -->
+<div class="slide-update" data-bind="true">
+    <div class="modal-ssl-cert-update">
+        <div class="modal-ssl-cert-item clearfix">
+            <label class="left">Certificate Name</label>
+            <input class="input" value="{{cert_name}}" type="text" data-required="true" id="ssl-cert-name-update-input"/>
+        </div>
+    </div>
+    <div class="init action">
+        <button class="btn btn-blue do-action" data-action="update">Update</button>
+        <button class="btn btn-silver cancel">Cancel</button>
+    </div>
+    <div class="processing action" style="display:none;">
+        <button class="btn" disabled>Updating...</button>
+    </div>
+</div>
+
+<!-- {{detail_info}} -->
+<div class="detail-info">
+    <div class="detail-info-row">
+        <section class="property-control-group">
+            <label>Server Certificate ID</label>
+            <div>{{id}}</div>
+        </section>
+        <section class="property-control-group">
+            <label>Server Certificate ARN</label>
+            <div>{{Arn}}</div>
+        </section>
+    </div>
+    <div class="detail-info-row">
+        <section class="property-control-group">
+            <label>Expiration Date</label>
+            <div>{{Expiration}}</div>
+        </section>
+        <section class="property-control-group">
+            <label>Path</label>
+            <div>{{Path}}</div>
+        </section>
+    </div>
+</div>

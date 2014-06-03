@@ -216,11 +216,12 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
 
         delete: ( invalid, checked ) ->
             count = checked.length
+            that = @
 
             onDeleteFinish = @genDeleteFinish count
             @switchAction 'processing'
             _.each checked, ( c ) ->
-                m = @topicCol.get c.data.id
+                m = that.topicCol.get c.data.id
                 m?.destroy().then onDeleteFinish, onDeleteFinish
 
         refresh: ->

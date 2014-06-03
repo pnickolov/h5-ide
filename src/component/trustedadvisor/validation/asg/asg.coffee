@@ -63,7 +63,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo', '../../helper', '
             notification = asg.getNotiObject()
             notiValid = false
 
-            if not notification or notification.isEffective()
+            if not notification or not notification.isEffective()
                 notiValid = true
 
             topic = notification.getTopic()

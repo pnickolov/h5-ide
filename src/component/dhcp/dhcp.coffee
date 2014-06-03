@@ -217,7 +217,7 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
                 deleteErrorCount++
             if deleteCount is 0
                 if deleteErrorCount > 0
-                    notification 'error', deleteErrorCount+" DhcpOptions failed to delete, Please try again later."
+                    notification 'error', deleteErrorCount+" DhcpOptions failed to delete because of: \"#{result.awsResult}\""
                 else
                     notification 'info', "Delete Successfully"
                 deleteErrorCount = 0
@@ -225,7 +225,7 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
         afterCreated: (result)->
             @manager.cancel()
             if result.error
-                notification 'error', "Create failed because of: "+result.msg
+                notification 'error', "Create failed because of: "+result.awsResult
                 return false
             notification 'info', "New DHCP Option is created successfully"
 

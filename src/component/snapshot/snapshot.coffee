@@ -52,7 +52,6 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
             currentRegion = Design.instance().get 'region'
             data = _.map @regions, (region)->
                 {name: region, selected: region == currentRegion}
-            console.log data
             dataSet =
                 isRuntime: false
                 data: data
@@ -218,8 +217,8 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
                 'sourceSnapshotId': sourceSnapshot.data.id
                 'description': @manager.$el.find('#property-snapshot-desc').val()
                 'destinationRegion': targetRegion
-
-            ApiRequest('ebs_CopySnapshot',data).then @afterDuplicate, @afterDuplicate
+            afterDuplicate = @afterDuplicate.bind @
+            ApiRequest('ebs_CopySnapshot',data).then afterDuplicate, afterDuplicate
 
 
         afterCreated: (result,newSnapshot)->
@@ -231,7 +230,7 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
             #@collection.add newSnapshot
 
         afterDuplicate: (result)->
-            @manager.calcel()
+            @manager.cancel()
             if result.error
                 notification 'error', "Duplicate failed because of: "+ result.msg
                 return false

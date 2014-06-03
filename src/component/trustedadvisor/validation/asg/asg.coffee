@@ -79,7 +79,8 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo', '../../helper', '
             policies = asg.get("policies") or []
 
             for p in policies
-                if p.isNotificate() and p.getTopic()
+                topic = p.getTopic()
+                if p.isNotificate() and topic
                     needTa.push [ topic, asg, p ]
 
 
@@ -99,10 +100,10 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo', '../../helper', '
                 if not topicCol.get topic.get 'appId'
 
                     if obj.type is constant.RESTYPE.SP
-                        result.push Helper.message.error p.id, i18n.TA_MSG_ERROR_ASG_POLICY_TOPIC_NONEXISTIENT, asg.get('name'), obj.get('name'), topic.get('name')
+                        result.push Helper.message.error obj.id, i18n.TA_MSG_ERROR_ASG_POLICY_TOPIC_NONEXISTIENT, asg.get('name'), obj.get('name'), topic.get('name')
 
                     else if obj.type is constant.RESTYPE.NC
-                        result.push Helper.message.error p.id, i18n.TA_MSG_ERROR_ASG_NOTIFICITION_TOPIC_NONEXISTIENT, asg.get('name'), topic.get('name')
+                        result.push Helper.message.error obj.id, i18n.TA_MSG_ERROR_ASG_NOTIFICITION_TOPIC_NONEXISTIENT, asg.get('name'), topic.get('name')
 
 
             callback result

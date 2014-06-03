@@ -5071,6 +5071,10 @@ VisualOps API. You cannot UNDO this action.'
       en: "Auto Scaling Group %s's Scaling Policy %s is using a nonexistent SNS Topic %s. Please change to an existing SNS Topic to make notification work."
       zh: ""
 
+    TA_MSG_ERROR_VPC_DHCP_NONEXISTENT:
+      en: "VPC is using a nonexistent DHCP option set. Please specify default, auto-assigned or an existing DHCP option set."
+      zh: ""
+
     RELOAD_STATE_INVALID_REQUEST:
       en: "Sorry, but the request is not valid."
       zh: ""

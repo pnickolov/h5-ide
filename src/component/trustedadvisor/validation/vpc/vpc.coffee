@@ -1,4 +1,6 @@
-define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo' ], ( constant, MC, lang ) ->
+define [ 'constant', 'MC', 'i18n!nls/lang.js' , 'Design', 'CloudResources', '../../helper', '../result_vo' ], ( constant, MC, lang, Design, CloudResources, Helper ) ->
+
+	i18n = Helper.i18n.short()
 
 	isVPCAbleConnectToOutside = () ->
 
@@ -31,5 +33,23 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo' ], ( constant, MC,
 		level: constant.TA.WARNING
 		info: tipInfo
 
+	isVPCUsingNonexistentDhcp = ( callback ) ->
+		vpc = Design.modelClassForType(constant.RESTYPE.VPC).theVPC()
+		dhcpId = vpc.get( 'dhcp' ).get( 'dhcpOptionsId' )
+		if not dhcpId or dhcpId is 'default'
+			callback null
+			return
+
+		dhcpCol = CloudResources constant.RESTYPE.DHCP, Design.instance().region()
+
+		dhcpCol.fetch().fin ->
+			if dhcpCol.get dhcpId
+				callback null
+			else
+				callback Helper.message.error vpc.id, i18n.TA_MSG_ERROR_VPC_DHCP_NONEXISTENT
+
+
+
 
 	isVPCAbleConnectToOutside : isVPCAbleConnectToOutside
+	isVPCUsingNonexistentDhcp : isVPCUsingNonexistentDhcp

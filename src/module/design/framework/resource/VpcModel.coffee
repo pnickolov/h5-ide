@@ -145,8 +145,10 @@ define [ "constant", "../GroupModel", "./DhcpModel" ], ( constant, GroupModel, D
       # DhcpOptionsId is "default" means use no dhcp
       # DhcpOPtionsId is "" means use default dhcp
       dhcp = data.resource.DhcpOptionsId
-
-      if not dhcp
+      console.error dhcp
+      if dhcp is undefined
+        vpc.get('dhcp').setNone()
+      else if not dhcp
         vpc.get("dhcp").setDefault()
       else if dhcp is "default"
         vpc.get("dhcp").setNone()

@@ -48,6 +48,8 @@ define [ 'event',
         render   : () ->
             console.log 'resource render'
             $( '#resource-panel' ).html template()
+            # for new volume in snapshot list
+            $( '.resoruce-snapshot' ).html template_data.resoruce_snapshot_new_data({})
             #
             #
             ide_event.trigger ide_event.DESIGN_SUB_COMPLETE
@@ -302,7 +304,8 @@ define [ 'event',
             console.log 'resourceSnapshotRender'
             console.log this.model.attributes.resource_snapshot
             return if !this.model.attributes.resource_snapshot
-            $( '.resoruce-snapshot' ).html template_data.resoruce_snapshot_data( @model.attributes )
+            $( '.resoruce-snapshot' ).html template_data.resoruce_snapshot_new_data({})
+            $( '.resoruce-snapshot' ).append template_data.resoruce_snapshot_data( @model.attributes )
             null
 
         quickstartAmiRender : () ->

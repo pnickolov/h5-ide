@@ -786,10 +786,10 @@ define [ 'i18n!nls/lang.js',
             if MC.data.config[regionName] and MC.data.config[regionName].ami_list
                 MC.data.config[regionName].ami_list = null
 
-            if MC.data.config[regionName] and MC.data.config[regionName].snapshot_list
+            if MC.data.config[regionName] and MC.data.config[regionName].my_ami
                 MC.data.config[regionName].my_ami = null
 
-            if MC.data.config[regionName] and MC.data.config[regionName].snapshot_list
+            if MC.data.config[regionName] and MC.data.config[regionName].favorite_ami
                 MC.data.config[regionName].favorite_ami = null
 
             if MC.data.config[regionName] and MC.data.config[regionName].snapshot_list
@@ -809,10 +809,12 @@ define [ 'i18n!nls/lang.js',
         checkRefreshResourceList : () ->
 
             that = this
+
             refreshResourceCount = that.get('refresh_resource_count')
             if refreshResourceCount >= 0
                 that.set('refresh_resource_count', ++refreshResourceCount)
-            if refreshResourceCount is 5
+
+            if (refreshResourceCount is 5) or (window.App and (not App.user.hasCredential()) and refreshResourceCount is 2)
                 that.trigger('refresh_resource_finish')
                 that.set('refresh_resource_count', null)
 

@@ -193,7 +193,7 @@ define [ "../ComplexResModel", "../ConnectionModel", "constant" ], ( ComplexResM
     deserialize : ( data, layout_data, resolve )->
       acl = resolve( data.uid )
 
-      for asso in data.resource.AssociationSet
+      for asso in data.resource.AssociationSet || []
         c = new AclAsso( acl, resolve( MC.extractID(asso.SubnetId) ) )
         # Must use set. Because new AclAsso might return an object that already exists.
         # Resulting the associationId is not set.

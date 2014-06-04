@@ -312,8 +312,10 @@ define [
       @visModal.tpl.on "click", ".visualize-vpc", ()->
         $tgt = $(this)
         if $tgt.hasClass(".disabled") then return false
+        id = $tgt.attr("data-vpcid")
+        region = $tgt.parent().attr("data-region")
         self.visModal.close()
-        App.openOps App.model.createImportOps( $tgt.attr("data-vpcid") )
+        App.openOps App.model.createImportOps( region, id )
         false
       return
 

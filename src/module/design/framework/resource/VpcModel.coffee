@@ -150,11 +150,12 @@ define [ "constant", "../GroupModel", "./DhcpModel" ], ( constant, GroupModel, D
         vpc.get("dhcp").setDefault()
       else if dhcp is "default"
         vpc.get("dhcp").setNone()
-      else
+      else if dhcp[0] is "@"
         oldDhcp = vpc.get("dhcp")
         if oldDhcp then oldDhcp.remove()
-
         vpc.set( "dhcp", resolve( MC.extractID(dhcp) ) )
+      else
+        vpc.get('dhcp').setDefault()
       null
   }
 

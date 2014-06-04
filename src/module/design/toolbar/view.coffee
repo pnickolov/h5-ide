@@ -528,7 +528,9 @@ define [ 'MC', 'event',
                     404: ->
                         console.log 404,arguments
                         notification 'error', lang.ide.RELOAD_STATE_NETWORKERROR
-
+                    429: ->
+                        console.log 429,arguments
+                        notification 'error', lang.ide.RELOAD_STATE_NOT_READY
                     500: ->
                         console.log 500,arguments
                         notification 'error', lang.ide.RELOAD_STATE_INTERNAL_SERVER_ERROR

@@ -5092,7 +5092,9 @@ VisualOps API. You cannot UNDO this action.'
     RELOAD_STATE_SUCCESS:
       en: "States reloaded successfully!"
       zh: ""
-
+    RELOAD_STATE_NOT_READY:
+      en: "App Agent is not ready yet, Please try again later."
+      zh: ""
     ##### Trust Advisor
 
     TIP_KEYPAIR_USED_DEFAULT_KP:

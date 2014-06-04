@@ -13,7 +13,7 @@ define [ '../base/view', './template/app' ], ( PropertyView, template ) ->
             else if not data.dhcpOptionsId
                 data.autoDhcp = true
             else if data.dhcpOptionsId[0] isnt "@"
-                data.autoDhcp = true
+                data.autoDhcp = false
             @$el.html template data
             @model.attributes.name
     }

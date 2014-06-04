@@ -36,9 +36,9 @@ define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, const
               vpc.default_dhcp = true
 
             else
-              dhcpData = appData[myVPCComponent.toJSON().dhcp.toJSON().appId].dhcpConfigurationSet.item
+              dhcpData = appData[myVPCComponent.toJSON().dhcp.toJSON().appId]?.dhcpConfigurationSet.item
               vpc.dhcpOptionsId = myVPCComponent.toJSON().dhcp.toJSON().appId
-              dhcp = {}
+              if dhcpData then dhcp = {}
 
               for i in dhcpData
                 if i.key is 'domain-name-servers'

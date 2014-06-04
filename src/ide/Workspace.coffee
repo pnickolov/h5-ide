@@ -19,7 +19,7 @@ define ["backbone"], ()->
 
       return @
 
-    isAwake : ()-> !!@__awake
+    isAwake : ()-> App.workspaces.getAwakenSpace() is this
 
     # Returns the index of current tab.
     index : ()-> App.workspaces.spaces().indexOf @

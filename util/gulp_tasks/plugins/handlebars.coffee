@@ -18,6 +18,7 @@ DefaultKnownHelpers =
   is_vpc_disabled  : true
   vpc_list         : true
   vpc_sub_item     : true
+  vpc_sub_title    : true
 
 HandlebarsOptions =
   knownHelpersOnly : true

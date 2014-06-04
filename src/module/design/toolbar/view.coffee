@@ -61,6 +61,9 @@ define [ 'MC', 'event',
             'click #btn-app-refresh'        : 'clickRefreshApp'
             'click #toolbar-convert-cf'     : 'clickConvertCloudFormation'
 
+            #app view
+            'click #toolbar-save-as-app'    : 'clickSaveAsApp'
+
             #app edit
             'click #toolbar-edit-app'        : 'clickEditApp'
             'click #toolbar-save-edit-app'   : 'clickSaveEditApp'
@@ -1006,6 +1009,73 @@ define [ 'MC', 'event',
                 thatModel.setAgentEnable(false)
 
             ide_event.trigger ide_event.REFRESH_PROPERTY
+
+
+        clickSaveAsApp : (event) ->
+
+
+            spec = Design.instance().serialize()
+            resource = []
+
+            app_id   = ""
+            app_name = ""
+            if MC.data.app_info and MC.data.app_info[spec.id] and MC.data.app_info[spec.id].id
+                vpc_id = spec.id
+                spec.id   = MC.data.app_info[vpc_id].id
+                spec.name = MC.data.app_info[vpc_id].name
+            else
+                spec.id   = ""
+
+            timestamp = Math.round(new Date().getTime()/1000)
+            for key, comp of spec.component
+
+                resKey = constant.AWS_RESOURCE_KEY[comp.type]
+                resId  = comp.resource[ resKey ]
+
+
+                if comp.type not in [ "AWS.EC2.AvailabilityZone", "AWS.EC2.KeyPair" ]
+                    #generate data for resource in mongo
+                    res_data =
+                        "username"    : spec.username
+                        "resource_id" : resId
+                        "region"      : spec.region
+                        "app_id"      : spec.id
+                        "version"     : "1.0"
+                        "time"        : timestamp
+                        "new"         : true
+                        "type"        : comp.type
+
+                    resource.push res_data
+
+
+            if not (spec and resource)
+                notification 'error', 'format error, can not save app!'
+                return null
+
+            ApiRequest("app_save_info", {
+                    username   : $.cookie( 'usercode' )
+                    session_id : $.cookie( 'session_id' )
+                    spec       : spec
+                    resource   : resource
+                }).then ( result )=>
+
+                    console.info result
+                    notification 'info', 'save as app succeed!'
+
+                , ( err )->
+
+                    notification 'error', 'save as app failed!'
+
+                    # if err.error < 0
+                    #   # Network Error, Try reloading
+                    #   window.location.reload()
+                    # else
+                    #   # If there's service error. I think we need to logout, because I guess it's because the session is not right.
+                    #   App.logout()
+
+                    throw err
+
+
     }
 
     return ToolbarView

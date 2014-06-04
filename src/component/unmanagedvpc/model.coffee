@@ -135,8 +135,20 @@ define [ 'aws_model', 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( 
                                 new_vpc_obj[ new_key ] = value
                         vpc_obj = new_vpc_obj
                         tag     = vpc_obj["Tag"]
-                        # filter default vpc
-                        if vpc_id isnt MC.data.account_attribute[region].default_vpc and not (tag and tag["app"] and tag["app-id"] and tag["Created by"])
+
+                        vpc_type = ""
+                        # if vpc_id is MC.data.account_attribute[region].default_vpc
+                        #     vpc_type = "default"
+                        if not (tag and tag["app"] and tag["app-id"] and tag["Created by"])
+                            vpc_type = "unmanaged"
+                            is_unmanaged = true
+                        else if tag and tag["app"] and tag["app-id"] and tag["Created by"] and tag["Created by"] is atob($.cookie( 'usercode' ))
+                            vpc_type = "managed"
+                            is_unmanaged = false
+                        else
+                            console.info "unknown vpc type"
+
+                        if vpc_type and vpc_type in [ "unmanaged" ]
 
                             l2_res = {
                                 'AWS.VPC.VPC'                               : {'id':[vpc_id]},
@@ -144,14 +156,15 @@ define [ 'aws_model', 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( 
                                 'AWS.AutoScaling.Group'                     : {'id':[]},
                                 'AWS.ELB'                                   : {'id':[]},
                                 'AWS.VPC.DhcpOptions'                       : {'id':[]},
+                                #'AWS.VPC.CustomerGateway'                   : {'id':[], 'filter':{'state':['pending','available']}},
                                 'AWS.VPC.CustomerGateway'                   : {'id':[]},
                                 'AWS.AutoScaling.LaunchConfiguration'       : {'id':[]},    # asg name
                                 'AWS.AutoScaling.NotificationConfiguration' : {'id':[]},    # asg name
 
-                                'AWS.EC2.Instance'                          : {'filter':{'vpc-id':vpc_id}},
+                                'AWS.EC2.Instance'                          : {'filter':{'vpc-id':vpc_id, 'instance-state-name':['running','stopped','stopping','pending']}},
                                 'AWS.VPC.RouteTable'                        : {'filter':{'vpc-id':vpc_id}},
                                 'AWS.VPC.Subnet'                            : {'filter':{'vpc-id':vpc_id}},
-                                'AWS.VPC.VPNGateway'                        : {'filter':{'attachment.vpc-id':vpc_id}},
+                                'AWS.VPC.VPNGateway'                        : {'filter':{'attachment.vpc-id':vpc_id, 'state':['pending','available']}},
                                 'AWS.EC2.SecurityGroup'                     : {'filter':{'vpc-id':vpc_id}},
                                 'AWS.VPC.NetworkAcl'                        : {'filter':{'vpc-id':vpc_id}},
                                 'AWS.VPC.NetworkInterface'                  : {'filter':{'vpc-id':vpc_id}},
@@ -160,7 +173,7 @@ define [ 'aws_model', 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( 
 
                                 'AWS.EC2.EBS.Volume'                        : {'filter':{'attachment.instance-id':[]}},
                                 'AWS.EC2.EIP'                               : {'filter':{'instance-id':[]}},
-                                'AWS.VPC.VPNConnection'                     : {'filter':{'vpn-gateway-id':''}},
+                                'AWS.VPC.VPNConnection'                     : {'filter':{'vpn-gateway-id':'', 'state':['pending','available']}},
                                 'AWS.AutoScaling.ScalingPolicy'             : {'filter':{'AutoScalingGroupName':[]}},
 
                                 # 'AWS.CloudWatch.CloudWatch'                 : {'id':[]},
@@ -233,6 +246,7 @@ define [ 'aws_model', 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( 
                                 vpcs[ vpc_id ] = new_value
 
                             # add origin item
+                            vpc_obj[ "is_unmanaged" ] = is_unmanaged
                             vpcs[ vpc_id ].origin = vpc_obj
 
                             # add resource_map

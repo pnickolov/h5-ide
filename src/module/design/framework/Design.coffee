@@ -225,7 +225,7 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
       component_data = json_data[ uid ]
 
       if not component_data
-        console.error "Unknown uid for resolving component :", uid, json_data
+        console.warn "Unknown uid for resolving component :", uid, json_data
         return
 
       ModelClass = Design.modelClassForType( component_data.type )

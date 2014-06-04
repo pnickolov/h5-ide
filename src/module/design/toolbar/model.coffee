@@ -493,6 +493,9 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
                     'is_asg'                : me.isAutoScaling(),
                     'is_production'         : if MC.common.other.canvasData.get( 'usage' ) isnt 'production' then false else true
                     'has_states'            : Design.instance().serialize().agent.enabled and (_.some _.values(Design.instance().serialize().component), (e)-> return e.state?.length>0)
+
+                    #if only contain EC2 and VPC resource, then can save as app
+                    'can_save_as_app'       : me.canSaveAsApp()
                 }
 
                 is_tab = true
@@ -1225,6 +1228,24 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
 
         isAutoScaling : () ->
             !!Design.modelClassForType( "AWS.AutoScaling.Group" ).allObjects().length
+
+        canSaveAsApp :() ->
+            i = 0
+            if Design.instance().mode() is 'appview'
+                #if only contain EC2 and VPC resource, then return true
+                i+=Design.modelClassForType( "AWS.ELB" ).allObjects().length
+                i+=Design.modelClassForType( "AWS.IAM.ServerCertificate" ).allObjects().length
+                i+=Design.modelClassForType( "AWS.AutoScaling.Group" ).allObjects().length
+                i+=Design.modelClassForType( "AWS.AutoScaling.LaunchConfiguration" ).allObjects().length
+                i+=Design.modelClassForType( "AWS.AutoScaling.NotificationConfiguration" ).allObjects().length
+                i+=Design.modelClassForType( "AWS.AutoScaling.ScalingPolicy" ).allObjects().length
+                i+=Design.modelClassForType( "AWS.CloudWatch.CloudWatch" ).allObjects().length
+                i+=Design.modelClassForType( "AWS.SNS.Topic" ).allObjects().length
+            if i is 0
+                true
+            else
+                false
+
 
         diff : ()->
             dedupResult = []

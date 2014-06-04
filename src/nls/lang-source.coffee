@@ -916,6 +916,11 @@ module.exports =
       en: "Export to PNG"
       zh: "导出图片"
 
+    TOOL_SAVE_AS_APP:
+      en: "Save as App"
+      zh: "保存为应用"
+
+
     TOOL_EXPORT_AS_CF:
       en: "Convert to CloudFormation Format"
       zh: "导出JSON文件"

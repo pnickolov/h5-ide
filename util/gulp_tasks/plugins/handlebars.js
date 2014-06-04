@@ -23,7 +23,8 @@
     convert_string: true,
     is_vpc_disabled: true,
     vpc_list: true,
-    vpc_sub_item: true
+    vpc_sub_item: true,
+    vpc_sub_title: true
   };
 
   HandlebarsOptions = {
@@ -104,6 +105,7 @@
   tryCompile = function(data, file) {
     var e, result;
     try {
+      data = data.replace(/^\s+|\s+$/g, '');
       result = handlebars.precompile(data, HandlebarsOptions);
     } catch (_error) {
       e = _error;

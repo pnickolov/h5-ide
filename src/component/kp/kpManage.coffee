@@ -248,8 +248,7 @@ define [ 'toolbar_modal', './component/kp/kpModel', './component/kp/kpDialogTpl'
             @modal.cancel()
 
         refresh: ->
-            if not @needDownload()
-                @model.getKeys()
+            @model.getKeys()
 
         renderSlides: ( which, checked ) ->
             tpl = template[ "slide_#{which}" ]

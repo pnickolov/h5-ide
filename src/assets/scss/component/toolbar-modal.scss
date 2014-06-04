@@ -195,6 +195,9 @@ $dark-blue: #001324;
 				&:hover {
 					color: #148BE6;
 				}
+				&[disabled]:hover {
+					color: #666;
+				}
 			}
 		}
 	}

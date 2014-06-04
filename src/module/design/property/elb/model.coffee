@@ -220,11 +220,15 @@ define [ '../base/model', "event", "Design", 'constant', 'sslcert_dropdown' ], (
             elbModel = Design.instance().component( @get("uid") )
             elbModel.setPolicyProxyProtocol(enable, portAry)
 
-        initNewSSLCertDropDown : (idx) ->
+        initNewSSLCertDropDown : (idx, $listenerItem) ->
 
             that = this
             elbModel = Design.instance().component( @get("uid") )
+
             sslCertDropDown = new SSLCertDropdown()
+            sslCertDropDown.uid = @get('uid')
+            sslCertDropDown.listenerNum = idx
+
             sslCertModel = elbModel.getSSLCert(idx)
             if sslCertModel
                 sslCertDropDown.sslCertName = sslCertModel.get('name')
@@ -233,6 +237,8 @@ define [ '../base/model', "event", "Design", 'constant', 'sslcert_dropdown' ], (
                 listenerNum = $(this.el).parents('.elb-property-listener').index()
                 Design.instance().component(that.get("uid")).setSSLCert(listenerNum, sslCertId)
             , sslCertDropDown
+
+            $listenerItem.data('sslCertDropDown', sslCertDropDown)
 
             return sslCertDropDown
 

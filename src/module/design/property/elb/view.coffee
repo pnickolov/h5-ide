@@ -81,7 +81,8 @@ define [ '../base/view',
 
             _.each @$('.sslcert-placeholder'), (sslCertPlaceHolder, idx) ->
                 $sslCertPlaceHolder = $(sslCertPlaceHolder)
-                sslCertDropDown = that.model.initNewSSLCertDropDown(idx)
+                $listenerItem = $sslCertPlaceHolder.parents('.elb-property-listener')
+                sslCertDropDown = that.model.initNewSSLCertDropDown(idx, $listenerItem)
                 $sslCertPlaceHolder.html sslCertDropDown.render().el
 
             @model.attributes.name
@@ -188,7 +189,8 @@ define [ '../base/view',
             @updateListener( $li )
 
             $sslCertPlaceHolder = $li.find('.sslcert-placeholder')
-            sslCertDropDown = that.model.initNewSSLCertDropDown($li.index())
+            $listenerItem = $sslCertPlaceHolder.parents('.elb-property-listener')
+            sslCertDropDown = that.model.initNewSSLCertDropDown($li.index(), $listenerItem)
             $sslCertPlaceHolder.html sslCertDropDown.render().el
 
             return false
@@ -393,7 +395,12 @@ define [ '../base/view',
                 protocol = $(this).find(".elb-property-elb-protocol .selected").text()
                 $certPanel = $(this).find(".sslcert-select")
                 if protocol is "HTTPS" or protocol is "SSL"
+                    $listenerItem = $(this)
+                    sslCertDropDown = $listenerItem.data('sslCertDropDown')
+                    if sslCertDropDown
+                        sslCertDropDown.setDefault()
                     $certPanel.show()
+
                 else
                     $certPanel.hide()
             null

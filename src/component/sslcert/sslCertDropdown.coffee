@@ -44,6 +44,12 @@ define [ 'constant', 'CloudResources','sslcert_manage', 'combo_dropdown', './com
 
             @dropdown.setSelection selectionName
 
+            @setDefault()
+
+            @
+
+        setDefault: ->
+
             if @sslCertCol.isReady()
 
                 data = @sslCertCol.toJSON()
@@ -51,20 +57,15 @@ define [ 'constant', 'CloudResources','sslcert_manage', 'combo_dropdown', './com
                     if @dropdown.getSelection() is 'None'
                         @dropdown.trigger 'change', data[0].id
                         @dropdown.setSelection data[0].Name
+                        Design.instance().component(@uid).setSSLCert(@listenerNum, data[0].id)
                         $(@el).removeClass('empty')
-
-            @
 
         processCol: ( filter, keyword ) ->
 
             if @sslCertCol.isReady()
 
                 data = @sslCertCol.toJSON()
-                if data and data[0]
-                    if @dropdown.getSelection() is 'None'
-                        @dropdown.trigger 'change', data[0].id
-                        @dropdown.setSelection data[0].Name
-                        $(@el).removeClass('empty')
+                @setDefault()
 
                 if filter
                     len = keyword.length
@@ -102,12 +103,12 @@ define [ 'constant', 'CloudResources','sslcert_manage', 'combo_dropdown', './com
 
         set: ( id, data ) ->
 
-            sslCertData = @sslCertCol.get(id)
-            if sslCertData and sslCertData.get('Name')
+            # sslCertData = @sslCertCol.get(id)
+            # if sslCertData and sslCertData.get('Name')
 
-                sslCertName = sslCertData.get('Name')
-                $(@el).find('.combo-dd-list .item').removeClass('selected')
-                $(@el).find(".combo-dd-list .item[data-name='#{sslCertName}']").addClass('selected')
+            #     sslCertName = sslCertData.get('Name')
+            #     $(@el).find('.combo-dd-list .item').removeClass('selected')
+            #     $(@el).find(".combo-dd-list .item[data-name='#{sslCertName}']").addClass('selected')
 
         filter: (keyword) ->
             @processCol( true, keyword )

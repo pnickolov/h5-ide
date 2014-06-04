@@ -7,7 +7,14 @@ define [ '../base/view', './template/app' ], ( PropertyView, template ) ->
     VPCAppView = PropertyView.extend {
 
         render : () ->
-            @$el.html template @model.attributes
+            data = @model.attributes
+            if data.dhcpOptionsId is 'default'
+                data.defaultDhcp = true
+            else if not data.dhcpOptionsId
+                data.autoDhcp = true
+            else if data.dhcpOptionsId[0] isnt "@"
+                data.autoDhcp = true
+            @$el.html template data
             @model.attributes.name
     }
 

@@ -21,11 +21,12 @@
   <div class="option-group-head expand">{{ i18n "PROP_VPC_TIT_DHCP_OPTION" }}</div>
   <div class="option-group">
 
-  {{#if default_dhcp}}
+
   <div class="property-control-group">
+  {{#if autoDhcp}}
     <p>{{ i18n "PROP_VPC_DHCP_LBL_DEFAULT" }}</p>
   {{else}}
-  {{#unless dhcp}}
+  {{#if defaultDhcp}}
     <p>{{ i18n "PROP_VPC_DHCP_LBL_NONE" }}</p>
  </div>
     {{else}}
@@ -65,7 +66,7 @@
 
   </dl>
 
-  {{/unless}}
+  {{/if}}
   {{/if}}
 
   </div>

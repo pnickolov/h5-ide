@@ -1632,11 +1632,11 @@ module.exports =
       zh: "DHCP 选项"
 
     PROP_VPC_DHCP_LBL_NONE:
-      en: "None"
+      en: "Default"
       zh: "无"
 
     PROP_VPC_DHCP_LBL_DEFAULT:
-      en: "Default DHCP"
+      en: "Auto-assigned Set"
       zh: "缺省"
 
     PROP_VPC_DHCP_LBL_SPECIFIED:

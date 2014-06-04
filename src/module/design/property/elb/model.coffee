@@ -225,6 +225,7 @@ define [ '../base/model', "event", "Design", 'constant', 'sslcert_dropdown' ], (
             that = this
             elbModel = Design.instance().component( @get("uid") )
 
+
             sslCertDropDown = new SSLCertDropdown()
             sslCertDropDown.uid = @get('uid')
             sslCertDropDown.listenerNum = idx
@@ -232,13 +233,6 @@ define [ '../base/model', "event", "Design", 'constant', 'sslcert_dropdown' ], (
             sslCertModel = elbModel.getSSLCert(idx)
             if sslCertModel
                 sslCertDropDown.sslCertName = sslCertModel.get('name')
-
-            sslCertDropDown.dropdown.on 'change', (sslCertId) ->
-                listenerNum = $(this.el).parents('.elb-property-listener').index()
-                Design.instance().component(that.get("uid")).setSSLCert(listenerNum, sslCertId)
-            , sslCertDropDown
-
-            $listenerItem.data('sslCertDropDown', sslCertDropDown)
 
             return sslCertDropDown
 

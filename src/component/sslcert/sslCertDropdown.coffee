@@ -44,7 +44,7 @@ define [ 'constant', 'CloudResources','sslcert_manage', 'combo_dropdown', './com
 
             @dropdown.setSelection selectionName
 
-            @setDefault()
+            # @setDefault()
 
             @
 
@@ -53,7 +53,7 @@ define [ 'constant', 'CloudResources','sslcert_manage', 'combo_dropdown', './com
             if @sslCertCol.isReady()
 
                 data = @sslCertCol.toJSON()
-                if data and data[0]
+                if data and data[0] and @uid
                     if @dropdown.getSelection() is 'None'
                         @dropdown.trigger 'change', data[0].id
                         @dropdown.setSelection data[0].Name
@@ -103,12 +103,8 @@ define [ 'constant', 'CloudResources','sslcert_manage', 'combo_dropdown', './com
 
         set: ( id, data ) ->
 
-            # sslCertData = @sslCertCol.get(id)
-            # if sslCertData and sslCertData.get('Name')
-
-            #     sslCertName = sslCertData.get('Name')
-            #     $(@el).find('.combo-dd-list .item').removeClass('selected')
-            #     $(@el).find(".combo-dd-list .item[data-name='#{sslCertName}']").addClass('selected')
+            if @uid and id
+                Design.instance().component(@uid).setSSLCert(@listenerNum, id)
 
         filter: (keyword) ->
             @processCol( true, keyword )

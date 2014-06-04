@@ -77,13 +77,14 @@ define [ '../base/view',
             @updateSlider( $('#elb-property-slider-unhealthy'), @model.get('unHealthyThreshold') - 2)
             @updateSlider( $('#elb-property-slider-healthy'), @model.get('healthyThreshold') - 2)
 
-            @updateCertView()
-
             _.each @$('.sslcert-placeholder'), (sslCertPlaceHolder, idx) ->
                 $sslCertPlaceHolder = $(sslCertPlaceHolder)
                 $listenerItem = $sslCertPlaceHolder.parents('.elb-property-listener')
-                sslCertDropDown = that.model.initNewSSLCertDropDown(idx, $listenerItem)
+                sslCertDropDown = that.model.initNewSSLCertDropDown(idx)
+                $listenerItem.data('sslCertDropDown', sslCertDropDown)
                 $sslCertPlaceHolder.html sslCertDropDown.render().el
+
+            @updateCertView()
 
             @model.attributes.name
 
@@ -182,6 +183,8 @@ define [ '../base/view',
             $li = $("#elb-property-listener-list").children().eq(0).clone()
             $li.find(".elb-property-listener-item-remove").show()
             $selectbox = $li.find("ul")
+            $portInput = $li.find('input.input')
+            $portInput.val('80')
             $selectbox.children(".selected").removeClass("selected")
             $selectbox.children(":first-child").addClass("selected")
             $selectbox.prev(".selection").text("HTTP")
@@ -190,7 +193,8 @@ define [ '../base/view',
 
             $sslCertPlaceHolder = $li.find('.sslcert-placeholder')
             $listenerItem = $sslCertPlaceHolder.parents('.elb-property-listener')
-            sslCertDropDown = that.model.initNewSSLCertDropDown($li.index(), $listenerItem)
+            sslCertDropDown = that.model.initNewSSLCertDropDown($li.index())
+            $listenerItem.data('sslCertDropDown', sslCertDropDown)
             $sslCertPlaceHolder.html sslCertDropDown.render().el
 
             return false

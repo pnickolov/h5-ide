@@ -34,7 +34,7 @@ define [ 'constant', 'CloudResources','sns_manage', 'combo_dropdown', './compone
                 @selection = options.selection
             @initCol()
             @initDropdown()
-            if not @selection and App.user.hasCredential()
+            if App.user.hasCredential()
                 @topicCol.fetch()
                 @subCol.fetch()
 

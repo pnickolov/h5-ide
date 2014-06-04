@@ -97,14 +97,18 @@ define [ '../base/view',
                 @$( '#sns-placeholder' ).html @snsNotiDropdown.render( true ).el
                 @$( '.sns-group' ).show()
             else if originHasNoti and not hasNoti
+                @snsNotiDropdown = new snsDropdown()
                 @model.removeTopic()
                 @$( '.sns-group' ).hide()
 
-        processPolicyTopic: ( display, dropdown, needInit ) ->
+        processPolicyTopic: ( display, policyObject, needInit ) ->
+            selection = if policyObject then policyObject.getTopicName() else null
+            dropdown = new snsDropdown selection: selection
             if display
                 $( '.policy-sns-placeholder' ).html dropdown.render(needInit).el
                 $( '.sns-policy-field' ).show()
             else
+                dropdown = new snsDropdown()
                 $( '.sns-policy-field' ).hide()
 
 
@@ -454,13 +458,11 @@ define [ '../base/view',
                     else if val > 100
                         $(this).val( "100" )
 
-            selection = if policyObject then policyObject.getTopicName() else null
-            snsPolicyDropdown = new snsDropdown selection: selection
 
-            @processPolicyTopic $( '#asg-policy-notify' ).prop( 'checked' ), snsPolicyDropdown, false
+            @processPolicyTopic $( '#asg-policy-notify' ).prop( 'checked' ), policyObject, false
             $("#asg-policy-notify").off("click").on "click", ( evt )->
                 evt.stopPropagation()
-                self.processPolicyTopic evt.target.checked, snsPolicyDropdown, true
+                self.processPolicyTopic evt.target.checked, policyObject, true
 
 
                 null

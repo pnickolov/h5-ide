@@ -5061,19 +5061,19 @@ VisualOps API. You cannot UNDO this action.'
 
     # Share Resource
     TA_MSG_ERROR_ASG_NOTIFICATION_NO_TOPIC:
-      en: "Auto Scaling Group %s has configured notification. Please select a SNS Topic for it."
+      en: "Auto Scaling Group <span class='validation-tag tag-asg'>%s</span> has configured notification. Please select a SNS Topic for it."
       zh: ""
 
     TA_MSG_ERROR_ASG_POLICY_NO_TOPIC:
-      en: "Auto Scaling Group %s's Scaling Policy %s has configured notification. Please select a SNS Topic for it."
+      en: "Auto Scaling Group %s's Scaling Policy <span class='validation-tag'>%s</span> has configured notification. Please select a SNS Topic for it."
       zh: ""
 
     TA_MSG_ERROR_ASG_NOTIFICITION_TOPIC_NONEXISTIENT:
-      en: "Auto Scaling Group %s is using a nonexistient SNS Topic %s. Please change to an existing SNS Topic to make notification work."
+      en: "Auto Scaling Group <span class='validation-tag tag-asg'>%s</span> is using a nonexistient SNS Topic <span class='validation-tag'>%s</span>. Please change to an existing SNS Topic to make notification work."
       zh: ""
 
     TA_MSG_ERROR_ASG_POLICY_TOPIC_NONEXISTIENT:
-      en: "Auto Scaling Group %s's Scaling Policy %s is using a nonexistent SNS Topic %s. Please change to an existing SNS Topic to make notification work."
+      en: "Auto Scaling Group <span class='validation-tag tag-asg'>%s</span>'s Scaling Policy %s is using a nonexistent SNS Topic <span class='validation-tag'>%s</span>. Please change to an existing SNS Topic to make notification work."
       zh: ""
 
     TA_MSG_ERROR_VPC_DHCP_NONEXISTENT:

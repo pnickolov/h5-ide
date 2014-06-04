@@ -8,7 +8,7 @@
 
 ###
 
-define ["ApiRequest", "constant", "component/exporter/Thumbnail", "backbone"], ( ApiRequest, constant, ThumbUtil )->
+define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnail", "backbone"], ( ApiRequest, constant, CloudResources, ThumbUtil )->
 
   OpsModelState =
     UnRun        : 0
@@ -49,6 +49,8 @@ define ["ApiRequest", "constant", "component/exporter/Thumbnail", "backbone"], (
     isApp      : ()-> @attributes.state isnt OpsModelState.UnRun
     isImported : ()-> !!@attributes.importVpcId
 
+    testState : ( state )-> @attributes.state is state
+
     # Returns a plain object to represent this model.
     # If you want to access the JSON of the stack/app, use getJsonData() instead.
     toJSON : ( options )->
@@ -72,14 +74,43 @@ define ["ApiRequest", "constant", "component/exporter/Thumbnail", "backbone"], (
 
       @get("id") && state isnt OpsModelState.Destroyed
 
+    hasJsonData : ()-> !!@__jsonData
+    getJsonData : ()-> @__jsonData
     # Returns a promise that will resolve with the JSON data of the stack/app
-    getJsonData : ()->
+    # Calling this method will trigger an "jsonDataLoaded" event
+    fetchJsonData : ()->
       if @__jsonData
         d = Q.defer()
         d.resolve @__jsonData
+        @trigger "jsonDataLoaded"
         return d.promise
+
       # TODO :
-      if @isImported() then return @__getImportJsonData()
+      self = @
+      if @isImported()
+        return ApiRequest("stack_info", {
+          stack_ids   : ["stack-6a1ef155"]
+        }).then (ds)-> self.__setJsonData( ds[0] )
+
+        return CloudResources.getAllResourcesForVpc( @get("region"), @get("importVpcId") ).then ( res )-> self.__setJsonData( res )
+
+      else if @isStack()
+        ApiRequest("stack_info", {
+          region_name : @get("region")
+          stack_ids   : [@get("id")]
+        }).then (ds)-> self.__setJsonData( ds[0] )
+
+      else
+        ApiRequest("app_info", {
+          region_name : @get("region")
+          app_ids     : [@get("id")]
+        }).then (ds)-> self.__setJsonData( ds[0] )
+
+    __setJsonData : ( json )->
+      @__jsonData = json
+      @trigger "jsonDataLoaded"
+      @
+
 
     # Save the stack in server, returns a promise
     save : ( newJson, thumbnail )->
@@ -276,67 +307,130 @@ define ["ApiRequest", "constant", "component/exporter/Thumbnail", "backbone"], (
       d.promise
 
     # This method init a json for a newly created stack.
+    __createRawJson : ()->
+      id          : @get("id") or ""
+      name        : @get("name")
+      description : ""
+      region      : @get("region")
+      platform    : "ec2-vpc"
+      state       : "Enabled"
+      version     : "2014-02-17"
+      component   : {}
+      layout      : { size : [240, 240] }
+      agent :
+        enabled : false
+        module  :
+          repo : App.user.get("mod_repo")
+          tag  : App.user.get("mod_tag")
+      property :
+        policy : { ha : "" }
+        lease  : { action: "", length: null, due: null }
+        schedule :
+          stop   : { run: null, when: null, during: null }
+          backup : { when : null, day : null }
+          start  : { when : null }
+
     __initJsonData : ()->
-      json =
-        id          : ""
-        name        : @get("name")
-        description : ""
-        region      : @get("region")
-        platform    : "ec2-vpc"
-        state       : "Enabled"
-        version     : "2014-02-17"
-        component   : {}
-        layout      : { size : [240, 240] }
-        agent :
-          enabled : false
-          module  :
-            repo : App.user.get("mod_repo")
-            tag  : App.user.get("mod_tag")
-        property    :
-          policy : { ha : "" }
-          lease  : { action: "", length: null, due: null }
-          schedule :
-            stop   : { run: null, when: null, during: null }
-            backup : { when : null, day : null }
-            start  : { when : null }
+      json = @__createRawJson()
+
+      layout =
+        VPC :
+          coordinate : [5,3]
+          size       : [60,60]
+        RTB :
+          coordinate : [50,5]
+
+      component =
+        KP :
+          type : "AWS.EC2.KeyPair"
+          name : "DefaultKP"
+          resource : { KeyName : "DefaultKP" }
+        SG :
+          type : "AWS.EC2.SecurityGroup"
+          name : "DefaultSG"
+          resource :
+            IpPermissions: [{
+              IpProtocol : "tcp",
+              IpRanges   : "0.0.0.0/0",
+              FromPort   : "22",
+              ToPort     : "22",
+              Groups     : [{"GroupId":"","UserId":"","GroupName":""}]
+            }],
+            IpPermissionsEgress : [{
+              FromPort: "0",
+              IpProtocol: "-1",
+              IpRanges: "0.0.0.0/0",
+              ToPort: "65535"
+            }],
+            Default             : "true",
+            GroupName           : "DefaultSG",
+            GroupDescription    : 'Default Security Group'
+        ACL :
+          type : "AWS.VPC.NetworkAcl"
+          name : "DefaultACL"
+          resource :
+            EntrySet : [
+              {
+                RuleAction : "allow"
+                Protocol   : -1
+                CidrBlock  : "0.0.0.0/0"
+                Egress     : true
+                IcmpTypeCode : { Type : "", Code : "" }
+                PortRange    : { To   : "", From : "" }
+                RuleNumber   : 100
+              }
+              {
+                RuleAction : "allow"
+                Protocol   : -1
+                CidrBlock  : "0.0.0.0/0"
+                Egress     : false
+                IcmpTypeCode : { Type : "", Code : "" }
+                PortRange    : { To   : "", From : "" }
+                RuleNumber   : 100
+              }
+              {
+                RuleAction : "deny"
+                Protocol   : -1
+                CidrBlock  : "0.0.0.0/0"
+                Egress     : true
+                IcmpTypeCode : { Type : "", Code : "" }
+                PortRange    : { To   : "", From : "" }
+                RuleNumber   : 32767
+              }
+              {
+                RuleAction : "deny"
+                Protocol   : -1
+                CidrBlock  : "0.0.0.0/0"
+                Egress     : false
+                IcmpTypeCode : { Type : "", Code : "" }
+                PortRange    : { To   : "", From : "" }
+                RuleNumber   : 32767
+              }
+            ]
+        VPC :
+          type : "AWS.VPC.VPC"
+          name : "vpc"
+          resource : {}
+        RTB :
+          type     : "AWS.VPC.RouteTable"
+          resource :
+            AssociationSet : [{Main:"true"}]
+            RouteSet       : [{
+                State                : 'active',
+                Origin               : 'CreateRouteTable',
+                GatewayId            : 'local',
+                DestinationCidrBlock : '10.0.0.0/16'
+            }],
 
       # Generate new GUID for each component
-      for id, comp of constant.VPC_JSON_INIT_COMP
+      for id, comp of component
         newId = MC.guid()
-        json.component[ newId ] = $.extend true, {}, comp
-        if constant.VPC_JSON_INIT_LAYOUT[ id ]
-          json.layout[ newId ] = $.extend true, {}, constant.VPC_JSON_INIT_LAYOUT[ id ]
+        json.component[ newId ] = component
+        if layout[ id ] then json.layout[ newId ] = layout[ id ]
 
       @__jsonData = json
       return
-
-    # This method is used to generated a json for unmanaged vpc.
-    __getImportJsonData : ()->
-      vpcid   = @get "importVpcId"
-      filter  = { "vpc-id" : vpcid }
-      filter2 = { "attachment.vpc-id": vpcid }
-      param   =
-        "AWS.VPC.VPC"              : { id: [vpcid] }
-        "AWS.EC2.Instance"         : { filter: filter }
-        "AWS.VPC.RouteTable"       : { filter: filter }
-        "AWS.VPC.Subnet"           : { filter: filter }
-        "AWS.EC2.SecurityGroup"    : { filter: filter }
-        "AWS.VPC.NetworkAcl"       : { filter: filter }
-        "AWS.VPC.NetworkInterface" : { filter: filter }
-        "AWS.VPC.VPNGateway"       : { filter: filter2 }
-        "AWS.VPC.InternetGateway"  : { filter: filter2 }
-        "AWS.EC2.AvailabilityZone" : { filter: { "region-name": @get("region") } }
-
-      ApiRequest("aws_resource",{
-        region_name : @get("region")
-        resources   : param
-        addition    : "vpc"
-        retry_times : 1
-      }).then ( data )->
-        console.log data
-
-
-  }
+    }
 
   OpsModel.State = OpsModelState
 

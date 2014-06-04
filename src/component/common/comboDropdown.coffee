@@ -75,6 +75,9 @@ define [ './component/common/comboDropdownTpl', 'backbone', 'jquery' ], ( templa
             @$( '.selection' ).html dom
             @
 
+        getSelection: ( dom ) ->
+            $.trim(@$( '.selection' ).text())
+
         setContent: ( dom ) ->
             @$( '.combo-dd-content' ).html template.listframe
             @$( '.combo-dd-list' ).html dom

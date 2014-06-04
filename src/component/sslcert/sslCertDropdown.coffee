@@ -48,9 +48,10 @@ define [ 'constant', 'CloudResources','sslcert_manage', 'combo_dropdown', './com
 
                 data = @sslCertCol.toJSON()
                 if data and data[0]
-                    @dropdown.trigger 'change', data[0].id
-                    @dropdown.setSelection data[0].Name
-                    $(@el).removeClass('empty')
+                    if @dropdown.getSelection() is 'None'
+                        @dropdown.trigger 'change', data[0].id
+                        @dropdown.setSelection data[0].Name
+                        $(@el).removeClass('empty')
 
             @
 
@@ -60,9 +61,10 @@ define [ 'constant', 'CloudResources','sslcert_manage', 'combo_dropdown', './com
 
                 data = @sslCertCol.toJSON()
                 if data and data[0]
-                    @dropdown.trigger 'change', data[0].id
-                    @dropdown.setSelection data[0].Name
-                    $(@el).removeClass('empty')
+                    if @dropdown.getSelection() is 'None'
+                        @dropdown.trigger 'change', data[0].id
+                        @dropdown.setSelection data[0].Name
+                        $(@el).removeClass('empty')
 
                 if filter
                     len = keyword.length
@@ -74,7 +76,13 @@ define [ 'constant', 'CloudResources','sslcert_manage', 'combo_dropdown', './com
             false
 
         renderDropdownList: ( data ) ->
+
             if data.length
+                selection = @dropdown.getSelection()
+                _.each data, ( d ) ->
+                    if d.Name and d.Name is selection
+                        d.selected = true
+                    null
                 @dropdown.setContent(template.dropdown_list data).toggleControls true
             else
                 @dropdown.setContent(template.no_sslcert({})).toggleControls true
@@ -92,7 +100,14 @@ define [ 'constant', 'CloudResources','sslcert_manage', 'combo_dropdown', './com
         manage: ->
             new sslCertManage().render()
 
-        set: ->
+        set: ( id, data ) ->
+
+            sslCertData = @sslCertCol.get(id)
+            if sslCertData and sslCertData.get('Name')
+
+                sslCertName = sslCertData.get('Name')
+                $(@el).find('.combo-dd-list .item').removeClass('selected')
+                $(@el).find(".combo-dd-list .item[data-name='#{sslCertName}']").addClass('selected')
 
         filter: (keyword) ->
             @processCol( true, keyword )

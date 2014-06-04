@@ -55,10 +55,14 @@ define [ 'constant', 'CloudResources','sslcert_manage', 'combo_dropdown', './com
                 data = @sslCertCol.toJSON()
                 if data and data[0] and @uid
                     if @dropdown.getSelection() is 'None'
-                        @dropdown.trigger 'change', data[0].id
-                        @dropdown.setSelection data[0].Name
-                        Design.instance().component(@uid).setSSLCert(@listenerNum, data[0].id)
-                        $(@el).removeClass('empty')
+
+                        listenerAry = Design.instance().component(@uid).get('listeners')
+                        currentListenerObj = listenerAry[@listenerNum]
+                        if currentListenerObj and currentListenerObj.protocol in ['HTTPS', 'SSL']
+                            Design.instance().component(@uid).setSSLCert(@listenerNum, data[0].id)
+                            @dropdown.trigger 'change', data[0].id
+                            @dropdown.setSelection data[0].Name
+                            $(@el).removeClass('empty')
 
         processCol: ( filter, keyword ) ->
 
@@ -104,7 +108,11 @@ define [ 'constant', 'CloudResources','sslcert_manage', 'combo_dropdown', './com
         set: ( id, data ) ->
 
             if @uid and id
-                Design.instance().component(@uid).setSSLCert(@listenerNum, id)
+
+                listenerAry = Design.instance().component(@uid).get('listeners')
+                currentListenerObj = listenerAry[@listenerNum]
+                if currentListenerObj and currentListenerObj.protocol in ['HTTPS', 'SSL']
+                    Design.instance().component(@uid).setSSLCert(@listenerNum, id)
 
         filter: (keyword) ->
             @processCol( true, keyword )

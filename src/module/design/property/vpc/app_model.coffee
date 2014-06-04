@@ -36,8 +36,8 @@ define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, const
               vpc.default_dhcp = true
 
             else
-              dhcpData = appData[myVPCComponent.toJSON().dhcp.toJSON().dhcpOptionsId].dhcpConfigurationSet.item
-              vpc.dhcpOptionsId = myVPCComponent.toJSON().dhcp.toJSON().dhcpOptionsId
+              dhcpData = appData[myVPCComponent.toJSON().dhcp.toJSON().appId].dhcpConfigurationSet.item
+              vpc.dhcpOptionsId = myVPCComponent.toJSON().dhcp.toJSON().appId
               dhcp = {}
 
               for i in dhcpData

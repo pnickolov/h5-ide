@@ -82,19 +82,22 @@ define [ 'toolbar_modal', './component/kp/kpModel', './component/kp/kpDialogTpl'
         initialize: ( options ) ->
             options = {} if not options
             @model = options.model or new kpModel( resModel: options.resModel )
+
             if App.user.hasCredential()
                 if not @model.haveGot()
                     @model.getKeys()
-            else
-                @modal.render 'nocredential'
 
             @initModal()
             @model.on 'change:keys', @renderKeys, @
 
         render: ( refresh ) ->
             @modal.render()
-            if @model.haveGot()
-                @renderKeys()
+
+            if App.user.hasCredential()
+                if @model.haveGot()
+                    @renderKeys()
+            else
+                @modal.render 'nocredential'
             @
 
         renderKeys: () ->

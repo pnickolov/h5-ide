@@ -1696,11 +1696,11 @@ module.exports =
       zh: "DHCP选项标识"
 
     PROP_VPC_MANAGE_DHCP:
-      en: "Manage Region DHCP options"
+      en: "Manage DHCP Options Set"
       zh: ""
 
     PROP_VPC_FILTER_DHCP:
-      en: "Filter by DHCP name"
+      en: "Filter by DHCP Options Set ID"
       zh: ""
 
     PROP_VPC_TIP_AUTO_DHCP:

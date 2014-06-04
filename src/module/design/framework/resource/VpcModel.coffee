@@ -148,9 +148,9 @@ define [ "constant", "../GroupModel", "./DhcpModel" ], ( constant, GroupModel, D
       if dhcp is undefined
         vpc.get('dhcp').setNone()
       else if not dhcp
-        vpc.get("dhcp").setDefault()
-      else if dhcp is "default"
         vpc.get("dhcp").setNone()
+      else if dhcp is "default"
+        vpc.get("dhcp").setDefault()
       else if dhcp[0] is "@"
         oldDhcp = vpc.get("dhcp")
         if oldDhcp then oldDhcp.remove()

@@ -1,17 +1,32 @@
 
 ###
-  OpsEditorBase is the base class of a concrete OpsEditor
+  OpsViewer is a readonly viewer to show the app ( Basically it shows the visualize vpc )
 ###
 
-define [ "Workspace" ], ( Workspace )->
+define [ "Workspace", "./OpsEditorModel", "./OpsEditorView", "OpsModel" ], ( Workspace, OpsEditorModel, OpsEditorView, OpsModel )->
 
-  class OpsEditorBase extends Workspace
+  class OpsViewer extends Workspace
 
     isFixed     : ()-> false
     isWorkingOn : ( attribute )-> @opsModel.cid is attribute
-    title       : ()-> @name or @opsModel.get("name")
+    title : ()->
+      if @opsModel.isImported()
+        @opsModel.get("importVpcId") + " - visualization"
+      else if @opsModel.isApp()
+        @opsModel.get("name") + " - app"
+      else
+        @opsModel.get("name") + " - stack"
 
-    tabClass    : ()-> "icon-stack-tabbar" # TODO
+    tabClass : ()->
+      if @opsModel.isImported()
+        "icon-visualization-tabbar"
+      else if @opsModel.isApp()
+        if @opsModel.testState( OpsModel.State.Running )
+          "icon-app-running"
+        else
+          "icon-app-stopped"
+      else
+        "icon-stack-tabbar"
 
     constructor : ( attribute )->
       # Set opsModel
@@ -25,6 +40,28 @@ define [ "Workspace" ], ( Workspace )->
 
       return Workspace.apply @, arguments
 
+    initialize : ()->
+      @__jsonLoaded = false
+      @__awsResourceLoaded = true # TODO :
+
+      @model = new OpsEditorModel()
+
+      @view = new OpsEditorView()
+      @view.opsModel  = @opsModel
+      @view.model     = @model
+      @view.workspace = @
+
+      @listenTo @opsModel, "jsonDataLoaded", @jsonLoaded
+
+      @opsModel.getJsonData()
+      return
+
+    # Override parent's method to do cleaning.
+    cleanup : ()->
+      @stopListening()
+      @view.remove()
+      return
+
     awake : ()->
       @view.render()
       @view.$el.show()
@@ -32,4 +69,14 @@ define [ "Workspace" ], ( Workspace )->
 
     sleep : ()-> @view.$el.remove()
 
-  OpsEditorBase
+    jsonLoaded : ()->
+      @__jsonLoaded = true
+      @view.setDataLoaded( @__jsonLoaded && @__awsResourceLoaded )
+      if @isAwake() then @view.render()
+
+    awsResourceLoaded : ()->
+      @__awsResourceLoaded = true
+      @view.setDataLoaded( @__jsonLoaded && @__awsResourceLoaded )
+      if @isAwake() then @view.render()
+
+  OpsViewer

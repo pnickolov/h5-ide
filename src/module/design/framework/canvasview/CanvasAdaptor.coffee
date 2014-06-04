@@ -1,4 +1,4 @@
-define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasElement, ide_event, lang, constant )->
+define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant", "canvon" ], ( CanvasElement, ide_event, lang, constant )->
 
   Design = null
 
@@ -221,12 +221,13 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
     # This is part of the MC.canvas.layout.init()
     # #
     # # #
+    window.MC.paper = Canvon('#svg_canvas')
     attr =
       'width' : this.sizeAry[0] * MC.canvas.GRID_WIDTH
       'height': this.sizeAry[1] * MC.canvas.GRID_HEIGHT
 
     $('#svg_canvas').attr( attr )
-    $('#canvas_container').css( attr )
+    $('#canvas_body').css( attr )
 
     this
 

@@ -1,7 +1,7 @@
 
 # This view is used to show the running status of an ops
 
-define ["OpsModel", "./OpsEditorBase", "./OpsProgressTpl", "backbone"], ( OpsModel, OpsEditorBase, OpsProgressTpl )->
+define ["OpsModel", "./OpsEditorBase", "./TplOpsProgress", "backbone"], ( OpsModel, OpsEditorBase, OpsProgressTpl )->
 
 
   # View

@@ -1430,24 +1430,6 @@ MC.canvas = {
 	}
 };
 
-MC.canvas.layout = {
-	init: function ()
-	{
-		MC.paper = Canvon('#svg_canvas');
-
-		var canvas_size = $canvas.size(),
-			attr = {
-				'width' : canvas_size[0] * MC.canvas.GRID_WIDTH,
-				'height': canvas_size[1] * MC.canvas.GRID_HEIGHT
-			};
-
-		$('#svg_canvas').attr( attr );
-		$('#canvas_container').css( attr );
-
-		return true;
-	}
-};
-
 MC.canvas.volume = {
 	bubble: function (id, node_id, volume_type)
 	{

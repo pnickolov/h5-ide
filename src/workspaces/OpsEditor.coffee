@@ -7,8 +7,9 @@
   OpsProgress : For starting app.
 ###
 
-define [ "Workspace", "./editor/OpsProgress" ], ( Workspace, OpsProgress )->
+define [ "Workspace", "./editor/OpsProgress", "./editor/OpsViewer", 'module/design/framework/DesignBundle' ], ( Workspace, OpsProgress, OpsViewer )->
 
+  # OpsEditor defination
   class OpsEditor extends Workspace
 
     constructor : ( attribute )->
@@ -18,12 +19,12 @@ define [ "Workspace", "./editor/OpsProgress" ], ( Workspace, OpsProgress )->
       if not opsModel
         throw new Error("Cannot find opsmodel while openning workspace.")
 
-      opsModel.attributes.state = 3
-      opsModel.attributes.progress = 20
+      if opsModel.isImported()
+        return new OpsViewer attribute
 
       if opsModel.isProcessing()
         return new OpsProgress attribute
 
-      return
+      return new OpsViewer attribute
 
   OpsEditor

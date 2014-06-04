@@ -1,0 +1,66 @@
+#OEPanelLeft, #OEPanelRight {
+  position: absolute;
+  height: 100%;
+  z-index: 3;
+  background: #313131; }
+
+#OEPanelLeft {
+  width: 246px;
+  left: 0;
+  -webkit-transition: left 0.1s;
+  -moz-transition: left 0.1s;
+  -o-transition: left 0.1s;
+  transition: left 0.1s; }
+  #OEPanelLeft.hidden {
+    left: -246px; }
+
+#OEPanelRight {
+  right: 0;
+  width: 280px; }
+  #OEPanelRight.hidden {
+    right: -280px; }
+  #OEPanelRight.transition {
+    -webkit-transition: right 0.1s;
+    -moz-transition: right 0.1s;
+    -o-transition: right 0.1s;
+    transition: right 0.1s; }
+
+#OEMiddleWrap {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0; }
+
+#OEPanelTop {
+  height: 40px;
+  width: 100%;
+  min-width: 610px;
+  background: #313131; }
+
+#OEPanelBottom {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background: #505050;
+  height: 24px;
+  line-height: 24px;
+  color: #999;
+  font-size: 12px;
+  box-sizing: border-box;
+  border-top: 1px solid #212121; }
+  #OEPanelBottom ~ #OEPanelCenter {
+    bottom: 24px; }
+
+#OEPanelCenter {
+  position: absolute;
+  width: 100%;
+  top: 40px;
+  bottom: 0; }
+
+#OEPanelRight:not(.hidden) ~ #OEMiddleWrap {
+  right: 280px; }
+
+#OEPanelLeft:not(.hidden) ~ #OEMiddleWrap {
+  left: 246px; }

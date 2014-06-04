@@ -1,0 +1,62 @@
+
+<!-- {{loading}} -->
+<div class="ops-process">
+  <header class="processing">Loading resources...</header>
+  <section class="loading-spinner"></section>
+</div>
+
+<!-- {{toolbar.BtnActionPng}} -->
+<button class="btn-toolbar tooltip icon-export-png toolbar-btn-primary" data-tooltip='{{ i18n "TOOL_EXPORT_AS_PNG" }}' data-analytics-plus="export_vis_png">{{ i18n "TOOL_EXPORT_AS_PNG" }}</button>
+
+<!-- {{toolbar.BtnZoom}} -->
+<button class="btn-toolbar icon-zoom-in tooltip" data-tooltip='{{ i18n "TOOL_TIP_ZOOM_IN" }}'></button>
+<button class="btn-toolbar icon-zoom-out seperator tooltip" data-tooltip='{{ i18n "TOOL_TIP_ZOOM_OUT" }}'></button>
+
+<!-- {{toolbar.BtnLinestyle}} -->
+<div class="selectbox btn-toolbar toolbar-line-style seperator">
+  <button class="selection tooltip" data-tooltip="{{i18n 'TOOL_TIP_LINESTYLE'}}" id="ToolbarLinestyle"></button>
+  <ul class="dropdown">
+    <li class='item'><span class="icon-straight">{{ i18n "TOOL_LBL_LINESTYLE_STRAIGHT" }}</span></li>
+    <li class='item'><span class="icon-elbow">{{ i18n "TOOL_LBL_LINESTYLE_ELBOW" }}</span></li>
+    <li class='item'><span class="icon-bezier-q">{{ i18n "TOOL_LBL_LINESTYLE_QUADRATIC_BELZIER" }}</span></li>
+    <li class='item'><span class="icon-bezier-qt">{{ i18n "TOOL_LBL_LINESTYLE_SMOOTH_QUADRATIC_BELZIER" }}</span></li>
+  </ul>
+</div>
+
+<!-- {{toolbar.BtnRunStack}} -->
+<button class="btn-toolbar icon-play tooltip toolbar-btn-primary" data-tooltip='{{ i18n "TOOL_TIP_BTN_RUN_STACK" }}'>{{ i18n "TOOL_BTN_RUN_STACK" }}</button>
+
+<!-- {{toolbar.BtnStackOps}} -->
+<button class="btn-toolbar tooltip icon-save" data-tooltip='{{ i18n "TOOL_TIP_SAVE_STACK" }}'></button>
+<button class="btn-toolbar icon-delete tooltip seperator" data-tooltip='{{ i18n "TOOL_TIP_DELETE_NEW_STACK" }}'></button>
+<button class="btn-toolbar tooltip icon-duplicate" data-tooltip='{{ i18n "TOOL_TIP_DUPLICATE_STACK" }}'></button>
+<button class="btn-toolbar icon-new-stack tooltip seperator" data-tooltip='{{ i18n "TOOL_TIP_CREATE_STACK" }}'></button>
+
+<!-- {{toolbar.BtnExport}} -->
+<div class="selectbox btn-toolbar seperator">
+  <button class="selection tooltip icon-send" data-tooltip='{{ i18n "TOOL_EXPORT" }}'></button>
+  <ul class="dropdown">
+    <li data-analytics-plus="export_png" class="icon-export-png">{{ i18n "TOOL_EXPORT_AS_PNG" }}</li>
+    <li data-analytics-plus="export_json" class="icon-export-json">{{ i18n "TOOL_EXPORT_AS_JSON" }}</li>
+    <li data-analytics-plus="cloudformation" class="icon-toolbar-cloudformation">{{ i18n "TOOL_EXPORT_AS_CF" }}</li>
+  </ul>
+</div>
+
+<!-- {{toolbar.BtnEditApp}} -->
+<button class="tooltip btn-toolbar icon-update-app toolbar-btn-primary" data-tooltip="{{ i18n 'TOOL_TIP_UPDATE_APP' }}">{{ i18n 'TOOL_EDIT_APP' }}</button>
+
+<!-- {{toolbar.BtnAppOps}} -->
+<button class="tooltip btn-toolbar icon-stop" data-tooltip="{{ i18n 'TOOL_TIP_STOP_APP' }}"></button>
+<button class="tooltip btn-toolbar icon-play" data-tooltip="{{ i18n 'TOOL_TIP_START_APP' }}"></button>
+<button class="btn-toolbar tooltip icon-terminate seperator" data-tooltip="{{{i18n 'TOOL_TIP_TERMINATE_APP'}}}"></button>
+<button class="btn-toolbar tooltip icon-save-app seperator" data-tooltip='{{ i18n "TOOL_TIP_SAVE_APP_TO_STACK" }}'></button>
+
+<!-- {{toolbar.BtnPng}} -->
+<button class="btn-toolbar icon-export-png tooltip seperator" data-analytics-plus="export_png" data-tooltip='{{ i18n "TOOL_EXPORT_AS_PNG" }}'></button>
+
+<!-- {{toolbar.BtnReloadRes}} -->
+<button class="btn-toolbar tooltip icon-refresh seperator" data-tooltip="{{i18n 'TOOL_TIP_REFRESH_REOURCES'}}" id="btn-app-refresh"></button>
+
+<!-- {{toolbar.BtnApply}} -->
+<button class="tooltip btn-toolbar icon-apply-app toolbar-btn-primary" data-tooltip="{{ i18n 'TOOL_TIP_SAVE_UPDATE_APP' }}">{{ i18n 'TOOL_APPLY_EDIT' }}</button>
+<button class="tooltip btn-toolbar icon-cancel-update-app seperator" data-tooltip="{{ i18n 'TOOL_TIP_CANCEL_UPDATE_APP' }}"></button>

@@ -9,6 +9,7 @@
 @import url("./ide/toolbar.css");
 @import url("./ide/header.css");
 @import url("./ide/process.css");
+@import url("./ide/editor.css");
 
 html,
 body {
@@ -854,34 +855,6 @@ a.sidebar-hider:before {
 }
 
 /* Resource Panel */
-#resource-panel {
-	background-color: #555;
-	border-right    : 1px solid #111;
-
-	width              : 246px;
-	left               : 0;
-	margin-left        : 0;
-
-	-webkit-transition : margin-left 0.1s;
-	-moz-transition    : margin-left 0.1s;
-	-ms-transition     : margin-left 0.1s;
-	-o-transition      : margin-left 0.1s;
-	transition         : margin-left 0.1s;
-}
-
-#resource-panel.hidden {
-	margin-left: -246px;
-}
-
-#hide-resource-panel {
-	left: 247px;
-	border-radius: 0 3px 3px 0;
-}
-
-#resource-panel .scrollbar-veritical-thumb {
-	/*background-color: #888;*/
-}
-
 .resource-list {
 	width: 100%;
 	padding: 0 0 10px 0;

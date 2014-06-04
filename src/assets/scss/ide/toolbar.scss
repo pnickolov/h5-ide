@@ -32,7 +32,7 @@
   color      : #ccc;
   font-size  : 16px;
 
-  padding     : 4px;
+  padding : 4px 4px 3px;
 
   cursor : pointer;
   box-sizing : content-box;
@@ -116,10 +116,6 @@
   border-bottom: none;
 }
 
-.btn-toolbar .dropdown > li:hover {
-  /*background-color: #f3f3f3;*/
-}
-
 #toolbar-cancel-edit-app {
   color: #ec3c38;
 }
@@ -134,40 +130,26 @@
   width : 112px;
   color : #f3f3f3;
   background: #17c249;
-  border-right: 1px solid #17a03a;
   border-bottom: 1px solid #17a03a;
-}
 
-.toolbar-btn-primary.disabled,
-.toolbar-btn-primary.disabled:hover,
-.toolbar-btn-primary.disabled:active {
-  background   : rgb(75, 75, 75);
-  border-right : #ccc;
-  border-bottom: 1px solid transparent;
-  color        : #ccc;
-}
+  &:hover {
+    color : #fff;
+    background: #17a03a;
+  }
 
-#toolbar-export-png.toolbar-btn-primary {
-  background: #148BE6;
-  border-right: 1px solid #1B7FCC;
-  border-bottom: 1px solid #1B7FCC;
-  width: 160px;
-}
+  &[disabled] {
+    background    : rgb(75, 75, 75);
+    border-right  : #ccc;
+    border-bottom : 1px solid transparent;
+    color         : #ccc;
+  }
 
-#toolbar-export-png.toolbar-btn-primary:hover {
-  background: #1B7FCC;
-}
-
-#toolbar-save-edit-app {
-}
-
-.toolbar-btn-primary:hover {
-  color : #fff;
-  background: #17a03a;
-}
-
-#toolbar-line-style > span {
-  display: none;
+  &.icon-export-png {
+    background    : #148BE6;
+    border-bottom : 1px solid #1B7FCC;
+    width         : 160px;
+    &:hover { background: #1B7FCC; }
+  }
 }
 
 .btn-toolbar .dropdown > li {
@@ -190,6 +172,16 @@
   &:before {
     margin-right: 5px;
   }
+}
+
+#OEPanelTop .selectbox > .selection > span:before {
+  margin-left  : 4px;
+  margin-right : 80px;
+}
+
+#OEPanelTop .dropdown > li > span::before {
+  margin-left  : 2px;
+  margin-right : 8px;
 }
 
 /* switch button style */

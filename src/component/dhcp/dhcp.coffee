@@ -120,6 +120,9 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
             fetched = false
             @renderManager()
         renderManager: ->
+            if not App.user.hasCredential()
+                @manager?.render 'nocredential'
+                return false
             initManager = @initManager.bind @
             if not fetched and not fetching
                 fetching = true

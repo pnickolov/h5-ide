@@ -17,10 +17,7 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
             Backbone.View::remove.call @
 
         render: ()->
-            if App.user.hasCredential()
-                @renderManager()
-            else
-                @renderNoCredential()
+            @renderManager()
 
         renderDropdown: ()->
             option =
@@ -104,11 +101,6 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
         selectRegion: (e)->
             @manager.$el.find('[data-action="duplicate"]').prop 'disabled', false
 
-        renderNoCredential: ->
-            new modalPlus(
-                title: lang.ide.SETTINGS_CRED_DEMO_SETUP
-                template: lang.ide.SETTINGS_CRED_DEMO_TIT
-            )
         renderManager: ()->
             @manager = new toolbar_modal @getModalOptions()
             @manager.on 'refresh', @refresh, @
@@ -117,6 +109,9 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
             @manager.on 'close', =>
                 @manager.remove()
             @manager.render()
+            if not App.user.hasCredential()
+                @manager?.render 'nocredential'
+                return false
             @initManager()
 
         refresh: ->

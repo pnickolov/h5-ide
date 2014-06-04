@@ -293,8 +293,8 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
                 }
                 {
                     sortable: true
-                    width: "60%" # or 40%
-                    name: 'Domain-name'
+                    width: "70%" # or 40%
+                    name: 'Options'
                 }
             ]
 

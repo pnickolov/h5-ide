@@ -1,6 +1,6 @@
 <!-- {{keys}} -->
 {{#each data}}
-<li class="item{{#if selected}} selected{{/if}}" data-id="{{id}}" tabindex="-1">{{#if id}}{{id}}{{else}}{{name}}{{/if}}</li>
+<li class="item{{#if selected}} selected{{/if}}" data-id="{{id}}" tabindex="-1"><div class="manager-content-main">{{#if id}}{{id}}{{else}}{{name}}{{/if}}</div><div class="manager-content-sub">Size: {{size}} &nbsp;&nbsp;&nbsp;&nbsp;Device: {{attachmentSet.item.0.device}}</div></li>
 {{/each}}
 
 

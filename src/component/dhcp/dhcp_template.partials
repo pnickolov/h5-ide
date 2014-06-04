@@ -19,8 +19,8 @@
             <label for="{{id}}"></label>
         </div>
     </td>
-    <td>{{id}}</td>
-    <td>{{#if domain-name.length}}{{#each domain-name}}{{this}}&nbsp;&nbsp;&nbsp;&nbsp;{{/each}}{{else}}&nbsp;Not set{{/if}}</td>
+    <td><div class="manager-content-main"></div>{{id}}</td>
+    <td>{{#if domain-name.length}}domain-name = {{#each domain-name}}{{this}} {{/each}};{{/if}}{{#if domain-name-servers.length}}domain-name-servers = {{#each domain-name-servers}}{{this}} {{/each}};{{/if}}{{#if ntp-servers.length}}ntp-servers = {{#each ntp-servers}}{{this}} {{/each}};{{/if}}{{#if netbios-name-servers.length}}netbios-name-servers = {{#each netbios-name-servers}}{{this}} {{/each}};{{/if}}{{#if netbios-node-type}}netbios-node-type = {{netbios-node-type}}{{/if}}</td>
 </tr>
 {{/each}}
 

@@ -393,98 +393,6 @@ use redirection server name:i:0\n"
 			PrivateIpAddress : true
 
 
-	VPC_JSON_INIT_LAYOUT =
-		VPC :
-			coordinate : [5,3]
-			size       : [60,60]
-		RTB :
-			coordinate : [50,5]
-
-	VPC_JSON_INIT_COMP =
-		KP :
-			type : "AWS.EC2.KeyPair"
-			name : "DefaultKP"
-			resource : { KeyName : "DefaultKP" }
-		SG :
-			type : "AWS.EC2.SecurityGroup"
-			name : "DefaultSG"
-			resource :
-				IpPermissions: [{
-					IpProtocol : "tcp",
-					IpRanges   : "0.0.0.0/0",
-					FromPort   : "22",
-					ToPort     : "22",
-					Groups     : [{"GroupId":"","UserId":"","GroupName":""}]
-				}],
-				IpPermissionsEgress : [{
-					FromPort: "0",
-					IpProtocol: "-1",
-					IpRanges: "0.0.0.0/0",
-					ToPort: "65535"
-				}],
-				Default             : "true",
-				GroupName           : "DefaultSG",
-				GroupDescription    : 'Default Security Group'
-		ACL :
-			type : "AWS.VPC.NetworkAcl"
-			name : "DefaultACL"
-			resource :
-				AssociationSet: []
-				EntrySet : [
-					{
-						RuleAction : "allow"
-						Protocol   : -1
-						CidrBlock  : "0.0.0.0/0"
-						Egress     : true
-						IcmpTypeCode : { Type : "", Code : "" }
-						PortRange    : { To   : "", From : "" }
-						RuleNumber   : 100
-					}
-					{
-						RuleAction : "allow"
-						Protocol   : -1
-						CidrBlock  : "0.0.0.0/0"
-						Egress     : false
-						IcmpTypeCode : { Type : "", Code : "" }
-						PortRange    : { To   : "", From : "" }
-						RuleNumber   : 100
-					}
-					{
-						RuleAction : "deny"
-						Protocol   : -1
-						CidrBlock  : "0.0.0.0/0"
-						Egress     : true
-						IcmpTypeCode : { Type : "", Code : "" }
-						PortRange    : { To   : "", From : "" }
-						RuleNumber   : 32767
-					}
-					{
-						RuleAction : "deny"
-						Protocol   : -1
-						CidrBlock  : "0.0.0.0/0"
-						Egress     : false
-						IcmpTypeCode : { Type : "", Code : "" }
-						PortRange    : { To   : "", From : "" }
-						RuleNumber   : 32767
-					}
-				]
-		VPC :
-			type : "AWS.VPC.VPC"
-			name : "vpc"
-			resource : {}
-		RTB :
-			type     : "AWS.VPC.RouteTable"
-			resource :
-				PropagatingVgwSet : [],
-				RouteSet          : [{
-						State                : 'active',
-						Origin               : 'CreateRouteTable',
-						GatewayId            : 'local',
-						DestinationCidrBlock : '10.0.0.0/16'
-				}],
-				AssociationSet : [{Main:"true"}]
-
-
 	#public
 	AWS_RESOURCE_KEY        : AWS_RESOURCE_KEY
 
@@ -512,7 +420,3 @@ use redirection server name:i:0\n"
 	OS_TYPE_MAPPING         : OS_TYPE_MAPPING
 	REGEXP                  : REGEXP
 	RESTYPE                 : RESTYPE
-
-	VPC_JSON_INIT_COMP   : VPC_JSON_INIT_COMP
-	VPC_JSON_INIT_LAYOUT : VPC_JSON_INIT_LAYOUT
-

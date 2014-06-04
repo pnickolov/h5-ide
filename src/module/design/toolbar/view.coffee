@@ -279,7 +279,7 @@ define [ 'MC', 'event',
                 region = MC.common.other.canvasData.get( 'region' )
                 canvasData = MC.common.other.canvasData.data()
                 that = @
-                me.model.syncSaveStack( region, canvasData ).then () ->
+                me.model.syncSaveStack( region, canvasData ).then (stackId) ->
                     if not me.modalPlus or not me.modalPlus.isOpen
                         return
                     data = canvasData
@@ -294,6 +294,7 @@ define [ 'MC', 'event',
                         data.usage = usage
 
                     # call api
+                    data.id = stackId
                     me.model.runStack data
 
                     # update MC.data.app_list

@@ -353,6 +353,8 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
                 # update Design
                 ide_event.trigger ide_event.OPEN_DESIGN_TAB, "OPEN_STACK", name , region, result.resolved_data
 
+            return new_id
+
         saveStackCallback : ( id, name,region ) ->
             console.log 'saveStackCallback', id, name, region
 
@@ -664,17 +666,17 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
 
                                 # trigger TOOLBAR_HANDLE_SUCCESS
                                 #me.trigger 'TOOLBAR_HANDLE_SUCCESS', 'SAVE_STACK_BY_RUN', name
-                                deferred.resolve name
+                                deferred.resolve id
 
                             # create api
                             else if id.split( '-' )[0] is 'new'
 
                                 # call createStackCallback
-                                me.createStackCallback aws_result, id, name, region
+                                newStackId = me.createStackCallback aws_result, id, name, region
 
                                 # trigger TOOLBAR_HANDLE_SUCCESS
                                 #me.trigger 'TOOLBAR_HANDLE_SUCCESS', 'SAVE_STACK_BY_RUN', name
-                                deferred.resolve name
+                                deferred.resolve newStackId
 
                         else
                             console.error 'stack_service.save_stack, error is ' + aws_result.error_message

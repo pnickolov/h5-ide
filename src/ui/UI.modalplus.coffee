@@ -54,7 +54,14 @@ define [], ()->
     class Modal
         constructor: (@option)->
             _.extend @, Backbone.Events
-            @wrap = if $('#modal-wrap').size() > 0 then $("#modal-wrap") else $("<div id='modal-wrap'>").appendTo $('body')
+            isFirst = false
+            if $('#modal-wrap').size() > 0
+                isFirst = false
+                @wrap = $("#modal-wrap")
+            else
+                isFirst = true
+                @wrap = $("<div id='modal-wrap'>").appendTo $('body')
+            if isFirst then modalGroup = []
             @tpl = $(MC.template.modalTemplate
                 title       : @option.title || ""
                 hideClose   : @option.hideClose

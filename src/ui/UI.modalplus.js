@@ -7,10 +7,20 @@
     var Modal;
     Modal = (function() {
       function Modal(option) {
-        var body, _ref, _ref1, _ref2;
+        var body, isFirst, _ref, _ref1, _ref2;
         this.option = option;
         _.extend(this, Backbone.Events);
-        this.wrap = $('#modal-wrap').size() > 0 ? $("#modal-wrap") : $("<div id='modal-wrap'>").appendTo($('body'));
+        isFirst = false;
+        if ($('#modal-wrap').size() > 0) {
+          isFirst = false;
+          this.wrap = $("#modal-wrap");
+        } else {
+          isFirst = true;
+          this.wrap = $("<div id='modal-wrap'>").appendTo($('body'));
+        }
+        if (isFirst) {
+          modalGroup = [];
+        }
         this.tpl = $(MC.template.modalTemplate({
           title: this.option.title || "",
           hideClose: this.option.hideClose,
@@ -340,3 +350,7 @@
   });
 
 }).call(this);
+
+/*
+//# sourceMappingURL=UI.modalplus.js.map
+*/

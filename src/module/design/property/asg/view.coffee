@@ -360,12 +360,6 @@ define [ '../base/view',
 
 
             self = this
-            $("#property-asg-policy-done").on "click", ()->
-                result = $("#asg-termination-policy").parsley("validate")
-                if result is false
-                    return false
-                self.onPolicyDone()
-                modal.close()
 
             $("#asg-policy-name").parsley 'custom', ( name ) ->
                 uid  = $("#property-asg-policy").data("uid")

@@ -65,7 +65,8 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
             n = component.getNotification()
             @set "notification", n
             @set "has_notification", n.instanceLaunch or n.instanceLaunchError or n.instanceTerminate or n.instanceTerminateError or n.test
-            @set "has_sns_sub", !!(Design.modelClassForType(constant.RESTYPE.SUBSCRIPTION).allObjects().length)
+
+            @notiObject = component.getNotiObject()
 
             # Policies
             @set "policies", _.map data.policies, ( p )->
@@ -221,7 +222,20 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
       Design.instance().component( @get("uid") ).set( "healthCheckGracePeriod", value )
 
     setNotification : ( notification )->
-      Design.instance().component( @get("uid") ).setNotification( notification )
+      n = Design.instance().component( @get("uid") ).setNotification( notification )
+      @notiObject = n
+      null
+
+    removeTopic: ->
+      n = Design.instance().component( @get("uid") ).setNotification( notification )
+      n?.removeTopic()
+
+
+    getNotificationTopicName: () ->
+      Design.instance().component( @get("uid") ).getNotificationTopicName()
+
+    setNotificationTopic: ( appId, name ) ->
+      Design.instance().component( @get("uid") ).setNotificationTopic( appId, name )
 
     setTerminatePolicy : ( policies ) ->
       Design.instance().component( @get("uid") ).set("terminationPolicies", policies)
@@ -280,6 +294,10 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
         delete policy_detail.alarmData
         policy.set policy_detail
         policy_detail.alarmData = alarmData
+
+      if policy_detail.sendNotification and policy_detail.topic
+        policy.setTopic policy_detail.topic.appId, policy_detail.topic.name
+
       null
 
   }

@@ -7,7 +7,9 @@ define [ '../base/view',
          './template/policy',
          './template/term',
          'i18n!nls/lang.js'
-], ( PropertyView, template, policy_template, term_template, lang )->
+         'sns_dropdown'
+         'UI.modalplus'
+], ( PropertyView, template, policy_template, term_template, lang, snsDropdown, modalplus )->
 
     metricMap =
         "CPUUtilization"             : "CPU Utilization"
@@ -210,6 +212,27 @@ define [ '../base/view',
             @showScalingPolicy()
             false
 
+        openPolicyModal: ( data ) ->
+            options =
+                template        : policy_template data
+                title           : lang.ide.PROP_ASG_ADD_POLICY_TITLE_ADD
+                width           : '480px'
+                compact         : true
+                confirm         :
+                    text: 'Done'
+
+            modalPlus = new modalplus options
+            that = @
+            modalPlus.on 'confirm', () ->
+
+                result = $("#asg-termination-policy").parsley("validate")
+                if result is false
+                    return false
+                that.onPolicyDone()
+                modalPlus.close()
+
+            ,@
+
 
         showScalingPolicy : ( data ) ->
             if !data
@@ -222,23 +245,20 @@ define [ '../base/view',
                         period : 5
                     }
 
+            if data.uid
+                policyObject = Design.instance().component data.uid
+
             if data.alarmData and data.alarmData.metricName
                 data.unit = unitMap[ data.alarmData.metricName ]
             else
                 data.unit = '%'
 
-            data.noSNS = not this.model.attributes.has_sns_sub
             data.detail_monitor = this.model.attributes.detail_monitor
 
-            modal policy_template(data), true
+            #modal policy_template(data), true
+            @openPolicyModal data
 
             self = this
-            $("#property-asg-policy-done").on "click", ()->
-                result = $("#asg-termination-policy").parsley("validate")
-                if result is false
-                    return false
-                self.onPolicyDone()
-                modal.close()
 
             $("#asg-policy-name").parsley 'custom', ( name ) ->
                 uid  = $("#property-asg-policy").data("uid")
@@ -330,10 +350,15 @@ define [ '../base/view',
                     else if val > 100
                         $(this).val( "100" )
 
+            selection = if policyObject then policyObject.getTopicName() else null
+            snsPolicyDropdown = new snsDropdown selection: selection
 
-            $("#asg-policy-notify").on "click", ( evt )->
-                $("#asg-policy-no-sns").toggle( $("#asg-policy-notify").is(":checked") )
+            @processPolicyTopic $( '#asg-policy-notify' ).prop( 'checked' ), snsPolicyDropdown, false
+            $("#asg-policy-notify").off("click").on "click", ( evt )->
                 evt.stopPropagation()
+                self.processPolicyTopic evt.target.checked, snsPolicyDropdown, true
+
+
                 null
 
             $("#asg-policy-metric").on "OPTION_CHANGE", ()->
@@ -363,6 +388,11 @@ define [ '../base/view',
                     threshold          : $("#asg-policy-threshold").val()
                 }
 
+            if data.sendNotification
+                selectedTopicData = $('.policy-sns-placeholder .selected').data()
+                if selectedTopicData and selectedTopicData.id and selectedTopicData.name
+                    data.topic = appId: selectedTopicData.id, name: selectedTopicData.name
+
             @model.setPolicy data
             @updateScalingPolicy data
             null
@@ -383,7 +413,9 @@ define [ '../base/view',
             else
                 $("#property-asg-sns-info").hide()
 
+            originHasNoti = @wheatherHasNoti()
             @model.setNotification checkMap
+            @processNotiTopic originHasNoti
 
         setHealthyCheckELBType :( event ) ->
             @model.setHealthCheckType 'ELB'
@@ -394,6 +426,10 @@ define [ '../base/view',
             $("#property-asg-elb-warn").toggle($("#property-asg-elb").is(":checked") )
 
         render : () ->
+            selectTopicName = @model.getNotificationTopicName()
+            @snsNotiDropdown = new snsDropdown selection: selectTopicName
+            @snsNotiDropdown.on 'change', @model.setNotificationTopic, @model
+
             data = @model.toJSON()
             if data.isEditable
                 for p in data.policies
@@ -407,7 +443,32 @@ define [ '../base/view',
 
             @$el.html template data
 
+            @processNotiTopic null, true
+
             data.name
+
+        wheatherHasNoti: ->
+            n = @model.notiObject?.toJSON()
+            n and (n.instanceLaunch or n.instanceLaunchError or n.instanceTerminate or n.instanceTerminateError or n.test)
+
+        processNotiTopic: ( originHasNoti, render ) ->
+            hasNoti = @wheatherHasNoti()
+            if render and hasNoti
+                @$( '#sns-placeholder' ).html @snsNotiDropdown.render().el
+                @$( '.sns-group' ).show()
+            else if not originHasNoti and hasNoti
+                @$( '#sns-placeholder' ).html @snsNotiDropdown.render( true ).el
+                @$( '.sns-group' ).show()
+            else if originHasNoti and not hasNoti
+                @model.removeTopic()
+                @$( '.sns-group' ).hide()
+
+        processPolicyTopic: ( display, dropdown, needInit ) ->
+            if display
+                $( '.policy-sns-placeholder' ).html dropdown.render(needInit).el
+                $( '.sns-policy-field' ).show()
+            else
+                $( '.sns-policy-field' ).hide()
 
 
         setSizeGroup: ( event ) ->

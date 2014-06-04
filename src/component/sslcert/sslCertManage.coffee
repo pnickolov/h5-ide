@@ -6,7 +6,8 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sslcert/ssl
 
         initCol: ->
             @sslCertCol = CloudResources constant.RESTYPE.IAM
-            @sslCertCol.fetch()
+            if App.user.hasCredential()
+                @sslCertCol.fetch()
             @sslCertCol.on 'update', @processCol, @
             @sslCertCol.on 'change', @processCol, @
 
@@ -223,8 +224,12 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sslcert/ssl
                     $(@).hide()
 
         render: ->
+
             @modal.render()
-            @processCol()
+            if App.user.hasCredential()
+                @processCol()
+            else
+                @modal.render 'nocredential'
             @
 
         processCol: () ->
@@ -310,7 +315,9 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sslcert/ssl
                 allTextBox.on 'keyup', processCreateBtn
 
         show: ->
+
             if App.user.hasCredential()
+                @sslCertCol.fetch()
                 @processCol()
             else
                 @renderNoCredential()

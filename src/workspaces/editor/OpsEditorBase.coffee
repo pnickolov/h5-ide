@@ -81,7 +81,7 @@ define [ "Workspace", "./OpsViewBase", "./template/TplOpsEditor", "OpsModel", "D
         @view.remove()
         @view = null
 
-      if @isAwake
+      if @isAwake()
         @initEditor()
         @__inited = true
 

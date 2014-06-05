@@ -3,6 +3,7 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
     deleteCount = 0
     deleteErrorCount = 0
     fetching = false
+    regionsMark = {}
     snapshotRes = Backbone.View.extend
         constructor: ()->
             @collection = CloudResources constant.RESTYPE.SNAP, Design.instance().region()
@@ -136,8 +137,10 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
 
         initManager: ()->
             setContent = @setContent.bind @
-            if not fetched and not fetching
+            currentRegion = Design.instance().get('region')
+            if (not fetched and not fetching) or (not regionsMark[currentRegion])
                 fetching = true
+                regionsMark[currentRegion] = true
                 @collection.fetchForce().then setContent, setContent
             else if not fetching
                 @setContent()

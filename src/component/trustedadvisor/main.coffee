@@ -24,14 +24,19 @@ define [ 'jquery', 'event', './view', './model' ], ( $, ide_event, View, Model )
             view.render type, status
 
         processRun = ->
+            deferred = Q.defer()
             ide_event.onListen ide_event.TA_SYNC_FINISH, () ->
                 console.log 'TA_SYNC_FINISH'
                 model.createList()
                 view.render type, status
                 if model.get('error_list').length is 0
-                    view.restoreRun()
+                    deferred.resolve()
+                else
+                    deferred.reject()
 
             MC.ta.validRun()
+
+            deferred.promise
 
         ide_event.onLongListen ide_event.UNLOAD_TA_MODAL, () ->
             console.log 'UNLOAD_TA_MODAL'
@@ -39,7 +44,7 @@ define [ 'jquery', 'event', './view', './model' ], ( $, ide_event, View, Model )
 
         if type is 'stack'
             view.closedPopup()
-            processRun()
+            return processRun()
         else
             processBar()
 

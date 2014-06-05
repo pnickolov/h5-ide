@@ -15,7 +15,7 @@ define [ '../base/model', 'Design', 'constant' ], ( PropertyModel, Design, const
             dhcp_comp = component.get("dhcp")
             dhcp = $.extend {}, dhcp_comp.attributes
 
-            dhcp.none    = dhcp_comp.isNone()
+            dhcp.none    = dhcp_comp.isAuto()
             dhcp.default = dhcp_comp.isDefault()
             dhcp.hasDhcp = (not dhcp.none) and (not dhcp.default)
 
@@ -92,15 +92,16 @@ define [ '../base/model', 'Design', 'constant' ], ( PropertyModel, Design, const
                 dhcp.setNone()
             null
 
-        useDhcp : ()->
-            uid = @get("uid")
-            Design.instance().component( uid ).get("dhcp").setCustom()
-            null
-
-        setDHCPOptions : ( options ) ->
+        setDhcp : (val)->
             uid = @get("uid")
             dhcp = Design.instance().component( uid ).get("dhcp")
-            dhcp.set( options )
+            dhcp.setDhcp(val)
+            null
+
+        setDHCPOptions : ( options , force) ->
+            uid = @get("uid")
+            dhcp = Design.instance().component( uid ).get("dhcp")
+            dhcp.set( options , force)
             null
     }
 

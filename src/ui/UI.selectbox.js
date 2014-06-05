@@ -35,6 +35,7 @@ var selectbox = window.selectbox = {
     function toggle ( event ) {
 
         var $selectbox = $( event.currentTarget ).closest(".selectbox");
+        var silentClose = $selectbox.data('silent-close');
 
         if ( $selectbox.hasClass('open') ) {
             $selectbox.removeClass('open');
@@ -42,7 +43,7 @@ var selectbox = window.selectbox = {
         }
 
         // Close other opened dropdown
-        $(".selectbox.open").removeClass('open');
+        $(".selectbox.open").not('.multiopen').removeClass('open');
 
         var $dropdown  = $selectbox.addClass('open')
                                    .find(".dropdown");
@@ -54,10 +55,21 @@ var selectbox = window.selectbox = {
                  .focus().addClass('focused');
 
 
+        var removeOpen = function( event ){
+            var needRemove = true;
+
+            if (silentClose && ($(event.target).closest(silentClose).size() || $(event.target).is(':hidden')) )
+                needRemove = false
+
+            if (needRemove) {
+                $selectbox.removeClass('open');
+                $(document.body).off('click', removeOpen);
+            }
+
+        };
+
         // Close dropdown during next click.
-        $(document.body).one('click', function( event ){
-            $selectbox.removeClass('open');
-        });
+        $(document.body).on('click', removeOpen);
 
         $selectbox.trigger("OPTION_SHOW");
         return false;

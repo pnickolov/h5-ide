@@ -27,12 +27,34 @@ define ["ApiRequestDefs", "api/ApiRequestErrors", "api/ApiRequestHandlers", "api
     ### env:dev:end ###
     throw obj
 
+  tryParseAws = ( xml, findError )->
+    try
+      xml  = $.parseXML xml
+      json = $.xml2json xml
+    catch e
+      if findError
+        return {
+          error  : ApiErrors.InvalidAwsReturn
+          result : awsResult
+        }
+      else
+        return null
+
+    if not findError then return json
+
+    xml = $(xml).find("Error")
+    {
+      error  : xml.find("Code").text()    || ""
+      result : xml.find("Message").text() || ""
+    }
+
   # Request Handlers
   AjaxSuccessHandler = (res)->
     if not res or not res.result or res.result.length != 2
       logAndThrow McError( ApiErrors.InvalidRpcReturn , "Invalid JsonRpc Return Data")
 
-    if res.result[0] isnt 0
+    # Some of the error involved with AWS request are considered correct return.
+    if res.result[0] isnt 0 and !(ApiErrors.AwsErrorAws <= res.result[0] <= ApiErrors.AwsErrorExternal)
       # We can do aditional global handling for some specific error here.
       # For example, Invalid Session.
       gloablHandler = ApiHandlers[ res.result[0] ]
@@ -41,6 +63,26 @@ define ["ApiRequestDefs", "api/ApiRequestErrors", "api/ApiRequestHandlers", "api
         return gloablHandler( res )
 
       logAndThrow McError( res.result[0], "Service Error", res.result[1] )
+
+
+    # Try parse AWS Return result if we have correct return.
+    awsresult = res.result[1]
+    if awsresult and _.isArray(awsresult) and (typeof awsresult[1] is "string") and awsresult[1][0] is "<"
+
+      if awsresult[0] is 200
+        res = tryParseAws( awsresult[1] )
+        if not res
+          logAndThrow McError( ApiErrors.InvalidAwsReturn, "Aws returns invalid xml data.", res.result )
+        else
+          return res
+      else
+        error = McError( res.result[0], "Service Error", res.result[1] )
+        error.awsError = awsresult[0]
+
+        awsresult = tryParseAws( awsresult[1], true )
+        error.awsErrorCode = "" + awsresult.error
+        error.awsResult    = awsresult.result
+        logAndThrow error
 
     res.result[1]
 
@@ -85,6 +127,7 @@ define ["ApiRequestDefs", "api/ApiRequestErrors", "api/ApiRequestHandlers", "api
       url      : MC.API_HOST + ApiDef.url
       dataType : "json"
       type     : "POST"
+      jsonp    : false
       data     : JSON.stringify RequestData
     }
 

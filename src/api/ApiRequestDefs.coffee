@@ -3,12 +3,20 @@ define [], ()->
   ###
   # === McError ===
   # McError is Object to represent an Error. Every promise handler that wants to throw error should throw an McError
+  # If McError contains aws result error, it will have 3 additional members:
+    awsError     : Number
+    awsErrorCode : String
+    awsResult    : String or Object
   ###
   window.McError = ( errorNum, errorMsg, params )->
     {
       error  : errorNum
       msg    : errorMsg || ""
       result : params || undefined
+      reason : errorMsg
+      ### env:dev ###
+      stack  : MC.prettyStackTrace(1)
+      ### env:dev:end ###
     }
 
 
@@ -49,6 +57,9 @@ define [], ()->
         return $.cookie('usercode')
       when "session_id"
         return $.cookie('session_id')
+      when "region_name"
+        console.warn "Autofilling region_name:'us-east-1' for ApiRequest, this is for some api who requires region_name while it doesn't care about its value. %o", MC.prettyStackTrace(1)
+        return "us-east-1"
     return null
 
   ApiRequestDefs

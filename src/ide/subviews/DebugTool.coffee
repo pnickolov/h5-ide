@@ -63,8 +63,10 @@ define [ "ApiRequest", "ApiRequestDefs", "vender/select2/select2" ], ( ApiReques
       option += "</optgrouop>"
 
     $("#ApiSelect").html(option).select2({width:400}).on "change", ()->
-      apiDef = ApiRequestDefs.Defs[ $("#ApiSelect").select2("val") ]
+      val = $("#ApiSelect").select2("val")
+      apiDef = ApiRequestDefs.Defs[ val ]
       $("#ApiResult").empty()
+      $("#ApiSelect").siblings("label").text "Api : '#{val}'"
       if not apiDef then return $("#ApiParamsWrap").empty()
       phtml = ""
       for p in apiDef.params
@@ -91,12 +93,12 @@ define [ "ApiRequest", "ApiRequestDefs", "vender/select2/select2" ], ( ApiReques
       $("#ApiResult").text("Loading...")
 
       ApiRequest( api, params ).then ( result )->
-        if apiDef.url.indexOf("/aws/") is 0 and apiDef.url.length > 5
+        if apiDef.url.indexOf("/aws/") is 0 and apiDef.url.length > 5 and (typeof result[1] is "string")
           #return is xml
           try
             result[1] = $.xml2json ($.parseXML result[1])
-          catch e
-            console.error "[ApiRequest]Convert aws api return from XML to JSON failed!", e
+          catch
+
         $("#ApiResult").text JSON.stringify( result, undefined, 4 )
         $("#ApiDebugSend").removeAttr("disabled")
       , ( error )->
@@ -112,6 +114,9 @@ define [ "ApiRequest", "ApiRequestDefs", "vender/select2/select2" ], ( ApiReques
       top    : "1%"
       left   : "1%"
     })
+
+    $("#ApiSelect").select2("open")
+    $("#s2id_autogen1_search").focus()
 
 
   debugSession = ()->

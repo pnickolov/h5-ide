@@ -1,0 +1,29 @@
+.modal-ssl-cert-create {
+	.modal-ssl-cert-item {
+		margin-bottom: 10px;
+		input, textarea {
+			width: 440px;
+		}
+	}
+}
+.modal-ssl-cert-update {
+	.modal-ssl-cert-item {
+		margin-top: 10px;
+		margin-left: 80px;
+		input, textarea {
+			float: left;
+			width: 300px !important;
+		}
+		.left {
+			width: 130px !important;
+			margin-top: 7px;
+		}
+	}
+}
+.sslcert-placeholder {
+	section.empty {
+		.selection {
+			color: #f00;
+		}
+	}
+}

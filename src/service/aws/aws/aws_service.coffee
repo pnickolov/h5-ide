@@ -186,7 +186,8 @@ define [ 'MC', 'common_handle', 'result_vo', 'constant', 'ebs_service', 'eip_ser
 			"DescribeAlarmsResponse"                       :   cloudwatch_service.resolveDescribeAlarmsResult
 			"ListSubscriptionsResponse"                    :   sns_service.resolveListSubscriptionsResult
 			"ListTopicsResponse"                           :   sns_service.resolveListTopicsResult
-
+			#
+			"DescribeVpcAttributeResponse"        :  vpc_service.resolveDescribeVpcAttributeResult
 		}
 
 		dict = {}
@@ -199,13 +200,23 @@ define [ 'MC', 'common_handle', 'result_vo', 'constant', 'ebs_service', 'eip_ser
 					
 					action_name = ($.parseXML node).documentElement.localName
 					dict_name = action_name.replace /Response/i, ""
-					dict[dict_name] = [] if dict[dict_name]?
-					# ignore no response
-					if action_name not of responses
+
+					if not responses[action_name]
+						console.warn "[resourceMap] can not find action_name [" + action_name + "]"
 						continue
-					parseResult = responses[action_name] [null, node]
-					dict[dict_name] = parseResult
-				
+
+					if action_name is "DescribeVpcAttributeResponse"
+						if not dict[dict_name]
+							dict[dict_name] = {}
+						vpcAttr = responses[action_name] [null, node]
+						if vpcAttr.enableDnsSupport
+							dict[dict_name]['enableDnsSupport'] = vpcAttr.enableDnsSupport.value
+						else if vpcAttr.enableDnsHostnames
+							dict[dict_name]['enableDnsHostnames'] = vpcAttr.enableDnsHostnames.value
+					else
+						dict[dict_name] = [] if dict[dict_name]?
+						dict[dict_name] = responses[action_name] [null, node]
+
 				else if $.type(node) is "object"
 
 					elbHealthData = node["DescribeInstanceHealth"]
@@ -364,7 +375,9 @@ define [ 'MC', 'common_handle', 'result_vo', 'constant', 'ebs_service', 'eip_ser
 		#"DescribeAlarmsResponse"                       :   if MC.common then cloudwatch_service.resolveDescribeAlarmsResult else {}
 		#"ListSubscriptionsResponse"                    :   if MC.common then sns_service.resolveListSubscriptionsResult else {}
 		#"ListTopicsResponse"                           :   if MC.common then sns_service.resolveListTopicsResult else {}
-
+		'resolveEC2Tag'                        :   if MC.common then MC.common.convert.resolveEC2Tag else {}
+		'removeAppId'                          :   if MC.common then MC.common.convert.removeAppId else {}
+		'resourceId2CompUid'                   :   if MC.common then MC.common.convert.resourceId2CompUid else {}
 	}
 
 	#///////////////// Parser for vpc_resource return (need resolve) /////////////////
@@ -392,6 +405,7 @@ define [ 'MC', 'common_handle', 'result_vo', 'constant', 'ebs_service', 'eip_ser
 
 		res[region] = resourceMap nodes for region, nodes of result
 
+		#generate app json from Stack template
 		app_json = $.extend true, {}, MC.canvas.STACK_JSON
 
 		vpc_id = ""
@@ -403,6 +417,53 @@ define [ 'MC', 'common_handle', 'result_vo', 'constant', 'ebs_service', 'eip_ser
 			MC.aws.aws.cacheResource nodes, region, false
 
 			app_json.region = region
+			app_json.username = $.cookie( 'usercode' )
+			app_json.owner    = $.cookie( 'usercode' )
+			app_json.state    = "Running"
+			app_json.stack_id = ""
+			app_json.description = "This app is created by visualops"
+			app_json.history  = {
+					event: {}
+					time :
+						created  : Math.round(new Date().getTime()/1000)
+						last     : Math.round(new Date().getTime()/1000)
+						run      : 0
+						terminate: ""
+				}
+
+			# default sg cache
+			default_sg   = {}
+			default_kp   = null
+			vpc_tag      = {}
+			resource2uid = {}
+			vpc_attr_data= null
+
+			#describe vpc first
+			for resource_type, resource_comp of nodes
+				if resource_type not in [ "DescribeVpcs", "DescribeVpcAttribute" ]
+					continue
+				if resource_comp and resource_type is "DescribeVpcs"
+					vpc_id = resource_comp[0].vpcId
+					vpc_tag= vpc_resource_map["resolveEC2Tag"] resource_comp[0].tagSet
+				else if resource_comp and resource_type is "DescribeVpcAttribute"
+					vpc_attr_data = resource_comp
+
+			#check app by vpc_id
+			if vpc_id and MC.data.app_info and MC.data.app_info[vpc_id]
+				resource2uid = vpc_resource_map["resourceId2CompUid"] MC.data.app_info[vpc_id].component
+
+				#generate app json from original app
+				app_json = $.extend true, {}, MC.data.app_info[vpc_id]
+				app_json.id = ""
+				app_json.component = {}
+				app_json.layout =
+					component :
+						group  : {}
+						node   : {}
+				#find DefaultKP
+				for _uid,_comp of MC.data.app_info[vpc_id].component
+					if _comp.type is 'AWS.EC2.KeyPair' and _comp.name is 'DefaultKP'
+						default_kp = _comp
 
 			for resource_type, resource_comp of nodes
 
@@ -417,7 +478,12 @@ define [ 'MC', 'common_handle', 'result_vo', 'constant', 'ebs_service', 'eip_ser
 
 							c = vpc_resource_map[resource_type] comp
 
+							resKey = constant.AWS_RESOURCE_KEY[c.type]
+							resId = c.resource[ resKey ]
+							if resKey and resId and resource2uid[resId]
+								c.uid = resource2uid[resId]
 							app_json.component[c.uid] = c
+
 							# layout = vpc_resource_layout_map[c.type].layout
 
 							# layout.name = c.name
@@ -428,30 +494,6 @@ define [ 'MC', 'common_handle', 'result_vo', 'constant', 'ebs_service', 'eip_ser
 							# app_json.layout.component.group[c.uid] = layout
 
 					else
-						# add keypair
-						if resource_type is 'DescribeInstances'
-
-							keypair_name = []
-
-							for comp in resource_comp
-
-								if not comp.keyName
-									comp.keyName = "DefaultKP"
-
-								if comp.keyName not in keypair_name
-									keypair_name.push comp.keyName
-									key_obj = {}
-									key_obj.keyName = comp.keyName
-									key_obj.keyFingerprint = 'resource_import'
-									c = vpc_resource_map["DescribeKeyPairs"] key_obj
-
-									if c
-
-										app_json.component[c.uid] = c
-
-						if resource_type is "DescribeVpcs"
-
-							vpc_id = resource_comp[0].vpcId
 
 						if resource_type is 'DescribeLaunchConfigurations'
 
@@ -484,11 +526,73 @@ define [ 'MC', 'common_handle', 'result_vo', 'constant', 'ebs_service', 'eip_ser
 
 						for comp in resource_comp
 
-							c = vpc_resource_map[resource_type] comp
+							if not vpc_resource_map[resource_type]
+								console.warn "[resolveVpcResourceResult] not found resource_type " + resource_type + " in vpc_resource_map" 
+								continue
+
+							if resource_type is "DescribeVpcs"
+								c = vpc_resource_map[resource_type]( comp, vpc_attr_data )
+							else if resource_type is "DescribeVolumes"
+								c = vpc_resource_map[resource_type]( comp, region )
+							else if resource_type is "DescribeInstances"
+								c= vpc_resource_map[resource_type]( comp, default_kp )
+							else
+								c = vpc_resource_map[resource_type]( comp )
 
 							if c
-
+								resKey = constant.AWS_RESOURCE_KEY[c.type]
+								resId = c.resource[ resKey ]
+								if resKey and resId and resource2uid[resId]
+									c.uid = resource2uid[resId]
 								app_json.component[c.uid] = c
+
+								#set back state info to instance
+								if resource_type is "DescribeInstances"
+									if vpc_tag.isApp and MC.data.app_info and MC.data.app_info[vpc_id] and MC.data.app_info[vpc_id].component[c.uid]
+										c.state = MC.data.app_info[vpc_id].component[c.uid].state
+
+								#remember default SG
+								if resource_type is 'DescribeSecurityGroups'
+									if vpc_tag.isApp
+										#set sg name by tagSet
+										prefix = "VPC-" + vpc_tag.app + "-"
+										c.name = c.resource.GroupName.substr(0,c.resource.GroupName.lastIndexOf("-app-")).substr(prefix.length)
+									if c.resource.GroupName.indexOf("DefaultSG") isnt -1
+										#default sg is "DefaultSG"
+										default_sg["DefaultSG"] = c.uid
+									else if c.resource.GroupName is "default"
+										#default sg is "default"
+										default_sg["default"] = c.uid
+
+
+			# find default SG
+			if default_sg["DefaultSG"]
+				#old app
+				app_json.component[ default_sg["DefaultSG"] ].resource.Default = true
+				app_json.component[ default_sg["DefaultSG"] ].name = "DefaultSG"
+				if default_sg["default"]
+					#delete "default" SG component
+					delete app_json.component[ default_sg["default"] ]
+			else if default_sg["default"]
+				#new app
+				app_json.component[ default_sg["default"] ].resource.Default   = true
+				app_json.component[ default_sg["default"] ].resource.GroupName = "DefaultSG" #do not use 'default' as GroupName
+				app_json.component[ default_sg["default"] ].name = "DefaultSG"
+
+			#add DefaultKP
+			if not default_kp
+				# add new DefaultKP
+				key_obj = {}
+				key_obj.keyName = ''
+				key_obj.keyFingerprint = ''
+				c = vpc_resource_map["DescribeKeyPairs"] key_obj
+			else
+				# use orial DefaultKP
+				c = default_kp
+			if c
+				c.name = "DefaultKP"
+				app_json.component[c.uid] = c
+
 
 		app_json.name = app_json.id = vpc_id
 		#remove_asg_instance
@@ -704,6 +808,7 @@ define [ 'MC', 'common_handle', 'result_vo', 'constant', 'ebs_service', 'eip_ser
 						app_json.layout.component.node[c.uid] = layout
 
 		console.log app_json
+
 
 		#app_json.component = MC.aws.aws.collectReference app_json.component
 

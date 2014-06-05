@@ -76,11 +76,12 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 			"number": 1,
 			"index": 0,
 			"resource" : {
+				"AssociatePublicIpAddress" : false
 				"PrivateIpAddressSet" : [],
 				"Status" : '',
 				"GroupSet"	:	[],
 				"PrivateDnsName": "",
-				"SourceDestCheck": "",
+				"SourceDestCheck": true,
 				"RequestId": "",
 				"MacAddress": "",
 				"OwnerId": "",
@@ -102,14 +103,32 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 			}
 		}
 
+
 		if aws_eni.attachment and aws_eni.attachment.instanceOwnerId is "amazon-elb"
 
 			return false
 
+
+		if aws_eni.tagSet
+			tag = resolveEC2Tag aws_eni.tagSet
+			if tag.isApp
+				eni_json.name = tag.name
+			else if tag.Name
+				eni_json.name = tag.Name
+
+		#check Automatically assign Public IP
+		if aws_eni.association and aws_eni.association.publicIp
+			eni_json.resource.AssociatePublicIpAddress = true
+
+		#check Enable Source/Destination Checking
+		eni_json.resource.SourceDestCheck = aws_eni.sourceDestCheck
+
 		if aws_eni.attachment
 			eni_json.resource.Attachment.DeviceIndex = aws_eni.attachment.deviceIndex
+			if aws_eni.attachment.deviceIndex isnt "0"
+				#eni0 no need attachmentId
+				eni_json.resource.Attachment.AttachmentId = aws_eni.attachment.attachmentId
 			eni_json.resource.Attachment.InstanceId = aws_eni.attachment.instanceId
-			eni_json.resource.Attachment.AttachmentId = aws_eni.attachment.attachmentId
 			eni_json.resource.Attachment.AttachTime = aws_eni.attachment.attachTime
 
 		for ip in aws_eni.privateIpAddressesSet.item
@@ -128,7 +147,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 
 		eni_json
 
-	convertInstance = ( aws_instance ) ->
+	convertInstance = ( aws_instance, default_kp ) ->
 
 		instance_json = {
 			"uid": MC.guid(),
@@ -138,7 +157,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 			"serverGroupName": "",
 			"number": 1,
 			"index": 0,
-			"state": "",
+			"state": undefined,
 			"software":	{},
 			"resource":	{
 				"RamdiskId": "",
@@ -169,6 +188,14 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 			}
 		}
 
+		if aws_instance.tagSet
+			tag = resolveEC2Tag aws_instance.tagSet
+			if tag.isApp
+				instance_json.name = tag.name
+			else if tag.Name
+				instance_json.name = tag.Name
+
+
 		# for group in aws_eni.groupSet.item
 
 		# 	eni_json.resource.GroupSet.push {
@@ -181,9 +208,16 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 
 		instance_json.resource.Placement.AvailabilityZone = aws_instance.placement.availabilityZone
 
+		if aws_instance.monitoring and aws_instance.monitoring
+			instance_json.resource.Monitoring = aws_instance.monitoring.state
+
 		instance_json.resource.Placement.Tenancy = aws_instance.placement.tenancy
 
 		instance_json = mapProperty aws_instance, instance_json
+
+		# default_kp
+		if default_kp and default_kp.resource and aws_instance.keyName is default_kp.resource.KeyName
+			instance_json.resource.KeyName = "@{" + default_kp.uid + ".resource.KeyName}"
 
 		instance_json
 
@@ -199,7 +233,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 				"IpPermissionsEgress": [
 				],
 				"GroupId": "",
-				"Default": "",
+				"Default": false,
 				"VpcId": "",
 				"GroupName": "",
 				"OwnerId": "",
@@ -287,6 +321,11 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 			}
 		}
 
+		elb_json.name = @.removeAppId(aws_elb.LoadBalancerName)
+		if elb_json.name isnt aws_elb.LoadBalancerName
+			elb_json.name = elb_json.name.substr(0, elb_json.name.length-2)
+
+		elb_json.resource.CrossZoneLoadBalancing = aws_elb.CrossZoneLoadBalancing
 		elb_json.resource.HealthCheck.Timeout = aws_elb.HealthCheck.Timeout
 		elb_json.resource.HealthCheck.Interval = aws_elb.HealthCheck.Interval
 		elb_json.resource.HealthCheck.UnhealthyThreshold = aws_elb.HealthCheck.UnhealthyThreshold
@@ -339,11 +378,19 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 				"RouteTableId": "",
 				"NetworkAclId": "",
 				"VpcId": "",
-				"Default": "",
+				"Default": false,
 				"EntrySet": [],
 				"AssociationSet": []
 			}
 		}
+
+		if aws_acl.tagSet
+			tag = resolveEC2Tag aws_acl.tagSet
+			if tag.isApp
+				acl_json.name = tag.name
+			else if tag.Name
+				acl_json.name = tag.Name
+
 
 		for acl in aws_acl.entrySet.item
 
@@ -392,6 +439,14 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 				"AssociationSet": []
 			}
 		}
+
+		if aws_rtb.tagSet
+			tag = resolveEC2Tag aws_rtb.tagSet
+			if tag.isApp
+				rtb_json.name = tag.name
+			else if tag.Name
+				rtb_json.name = tag.Name
+
 		if aws_rtb.associationSet
 
 			for asso in aws_rtb.associationSet.item
@@ -438,28 +493,49 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 			}
 		}
 
+		if aws_subnet.tagSet
+			tag = resolveEC2Tag aws_subnet.tagSet
+			if tag.isApp
+				subnet_json.name = tag.name
+			else if tag.Name
+				subnet_json.name = tag.Name
+
 		subnet_json = mapProperty aws_subnet, subnet_json
 
 		subnet_json
 
-	convertVPC = ( aws_vpc ) ->
+	convertVPC = ( aws_vpc, vpc_attr_data ) ->
 
 		vpc_json = {
 			"uid": MC.guid(),
 			"type": "AWS.VPC.VPC",
 			"name": if aws_vpc.tagSet and aws_vpc.tagSet.Name then aws_vpc.tagSet.Name else aws_vpc.vpcId,
 			"resource":	{
-				"EnableDnsHostnames": "",
+				"EnableDnsHostnames": true,
 				"DhcpOptionsId": "",
 				"CidrBlock": "",
 				"State": "",
 				"InstanceTenancy": "",
 				"VpcId": "",
 				"IsDefault": "",
-				"EnableDnsSupport": ""
+				"EnableDnsSupport": true
 			}
 		}
+
+		if aws_vpc.tagSet
+			tag = resolveEC2Tag aws_vpc.tagSet
+			if tag.isApp
+				vpc_json.name = tag.name
+			else if tag.Name
+				vpc_json.name = tag.Name
+
 		vpc_json = mapProperty aws_vpc, vpc_json
+
+		if vpc_attr_data
+			if vpc_attr_data.enableDnsHostnames
+				vpc_json.resource.EnableDnsHostnames = vpc_attr_data.enableDnsHostnames
+			if vpc_attr_data.enableDnsSupport
+				vpc_json.resource.EnableDnsSupport = vpc_attr_data.enableDnsSupport
 
 		vpc_json
 
@@ -477,7 +553,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 
 		kp_json
 
-	convertVolume = ( aws_vol ) ->
+	convertVolume = ( aws_vol, region ) ->
 
 		vol_json = {
 			"uid": MC.guid(),
@@ -491,7 +567,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 				"VolumeId": "",
 				"CreateTime": "",
 				"AvailabilityZone": "",
-				"Size": "1",
+				"Size": 1,
 				"Status": "",
 				"SnapshotId": "",
 				"Iops": "",
@@ -509,6 +585,18 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 
 		if aws_vol.attachmentSet
 
+			#check rootDevice
+			if MC.data.resource_list[ region ]
+				res_cache  = MC.data.resource_list[ region ]
+				instanceId = aws_vol.attachmentSet.item[0].instanceId
+				if res_cache[ instanceId ]
+					rootDeviceName = res_cache[ instanceId ].rootDeviceName
+					deviceName     = aws_vol.attachmentSet.item[0].device
+					if rootDeviceName.indexOf(deviceName) is 0
+						#is root device
+						return null
+
+
 			vol_json.resource.AttachmentSet.AttachTime = aws_vol.attachmentSet.item[0].attachTime
 			vol_json.resource.AttachmentSet.Status = aws_vol.attachmentSet.item[0].status
 			vol_json.resource.AttachmentSet.VolumeId = aws_vol.attachmentSet.item[0].volumeId
@@ -517,6 +605,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 			vol_json.resource.AttachmentSet.Device = aws_vol.attachmentSet.item[0].device
 
 		vol_json = mapProperty aws_vol, vol_json
+		vol_json.resource.Size = Number(vol_json.resource.Size)
 
 		vol_json
 
@@ -631,6 +720,13 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 			}
 		}
 
+		if aws_cgw.tagSet
+			tag = resolveEC2Tag aws_cgw.tagSet
+			if tag.isApp
+				cgw_json.name = tag.name
+			else if tag.Name
+				cgw_json.name = tag.Name
+
 		cgw_json = mapProperty aws_cgw, cgw_json
 
 		cgw_json
@@ -640,7 +736,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 		igw_json = {
 			"uid": MC.guid(),
 			"type": "AWS.VPC.InternetGateway",
-			"name": "InternetGateway",
+			"name": "Internet-gateway",
 			"resource":	{
 				"InternetGatewayId": aws_igw.internetGatewayId,
 				"AttachmentSet": [{
@@ -649,6 +745,13 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 				}]
 			}
 		}
+
+		# if aws_igw.tagSet
+		# 	tag = resolveEC2Tag aws_igw.tagSet
+		# 	if tag.isApp
+		# 		igw_json.name = tag.name
+		# 	else if tag.Name
+		# 		igw_json.name = tag.Name
 
 		#igw_json = mapProperty aws_igw, igw_json
 
@@ -660,7 +763,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 		vgw_json = {
 			"uid": MC.guid(),
 			"type": "AWS.VPC.VPNGateway",
-			"name": "VirtualPrivateGateway",
+			"name": "VPN-gateway",
 			"resource":	{
 				"Attachments": [{
 					"VpcId": aws_vgw.attachments.item[0].vpcId,
@@ -672,6 +775,13 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 				"State": aws_vgw.state
 			}
 		}
+
+		# if aws_vgw.tagSet
+		# 	tag = resolveEC2Tag aws_vgw.tagSet
+		# 	if tag.isApp
+		# 		vgw_json.name = tag.name
+		# 	else if tag.Name
+		# 		vgw_json.name = tag.Name
 
 		vgw_json
 
@@ -694,6 +804,14 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 				"VpnConnectionId": ""
 			}
 		}
+
+		if aws_vpn.tagSet
+			tag = resolveEC2Tag aws_vpn.tagSet
+			if tag.isApp
+				vpn_json.name = tag.name
+			else if tag.Name
+				vpn_json.name = tag.Name
+
 		if aws_vpn.options and aws_vpn.options.staticRoutesOnly
 			vpn_json.resource.Options.StaticRoutesOnly = aws_vpn.options.staticRoutesOnly
 		if aws_vpn.routes
@@ -759,6 +877,12 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 			}
 		}
 
+		if aws_dhcp.tagSet
+			tag = resolveEC2Tag aws_dhcp.tagSet
+			if tag.isApp
+				dhcp_json.name = tag.name
+			else if tag.Name
+				dhcp_json.name = tag.Name
 
 		if aws_dhcp.dhcpConfigurationSet
 
@@ -769,10 +893,13 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 						"Value": valueset
 					}
 
+				if dhcp.key is "netbios-node-type"
+					value[0].Value = Number(value[0].Value)
 				dhcp_json.resource.DhcpConfigurationSet.push {
 					"Key": dhcp.key,
 					"ValueSet": value
 				}
+
 
 		dhcp_json
 
@@ -789,6 +916,49 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 		}
 
 		az_json
+
+
+	resolveEC2Tag = (tagSet) ->
+
+		if not tagSet
+			null
+
+		result =
+			"Created by": tagSet["Created by"]
+			"Name"		: tagSet["Name"]
+			"app"		: tagSet["app"]
+			"app-id"	: tagSet["app-id"]
+			"name"		: tagSet["name"]
+			"isApp"		: false
+
+		if tagSet["Created by"] and ["Name"] and tagSet["app"] and tagSet["app-id"] and tagSet["name"]
+			result.isApp = true
+
+		result
+
+	removeAppId = ( name ) ->
+
+		reg_name = /.*app-[a-z0-9]{8}$/  #????app-dddddddd
+		if reg_name.test name
+			#include app-id
+			name.substr(0,name.lastIndexOf("-app-"))
+		else
+			#not include app-id
+			name
+
+	resourceId2CompUid = ( components ) ->
+
+		result = {}
+		if components
+			for uid, comp of components
+				resKey = constant.AWS_RESOURCE_KEY[comp.type]
+				resId = comp.resource[ resKey ]
+				if resKey and resId
+					result[ resId ] = uid
+				else
+					console.warn "[resourceId2CompUid]can not find resource id of resource type [" + comp.type + "], uid ["  + uid +  "]"
+
+		result
 
 
 	convertAZ : convertAZ
@@ -812,3 +982,6 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 	convertSGGroup : convertSGGroup
 	convertEni : convertEni
 	convertInstance : convertInstance
+	resolveEC2Tag : resolveEC2Tag
+	removeAppId : removeAppId
+	resourceId2CompUid : resourceId2CompUid

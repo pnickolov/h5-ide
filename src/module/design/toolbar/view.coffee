@@ -10,13 +10,14 @@ define [ 'MC', 'event',
          './appview_template',
          "component/exporter/JsonExporter",
          'constant'
-         'kp'
+         'kp_dropdown'
          'ApiRequest'
          'component/stateeditor/stateeditor'
+         'UI.modalplus'
          'backbone', 'jquery', 'handlebars',
          'UI.selectbox', 'UI.notification',
          "UI.tabbar"
-], ( MC, ide_event, Design, lang, stack_tmpl, app_tmpl, appview_tmpl, JsonExporter, constant, kp, ApiRequest, stateEditor ) ->
+], ( MC, ide_event, Design, lang, stack_tmpl, app_tmpl, appview_tmpl, JsonExporter, constant, kpDropdown, ApiRequest, stateEditor, modalplus ) ->
 
     # Set domain and set http
     API_HOST       = "api.visualops.io"
@@ -59,6 +60,9 @@ define [ 'MC', 'event',
             'click #toolbar-terminate-app'  : 'clickTerminateApp'
             'click #btn-app-refresh'        : 'clickRefreshApp'
             'click #toolbar-convert-cf'     : 'clickConvertCloudFormation'
+
+            #app view
+            'click #toolbar-save-as-app'    : 'clickSaveAsApp'
 
             #app edit
             'click #toolbar-edit-app'        : 'clickEditApp'
@@ -158,7 +162,7 @@ define [ 'MC', 'event',
                 $( ".runtime-error" ).hide()
 
         defaultKpIsSet: ->
-            if not kp.hasResourceWithDefaultKp()
+            if not kpDropdown.hasResourceWithDefaultKp()
                 return true
 
             KpModel = Design.modelClassForType( constant.RESTYPE.KP )
@@ -175,10 +179,10 @@ define [ 'MC', 'event',
                 context.hideErr 'kp'
 
         renderDefaultKpDropdown: ->
-            if kp.hasResourceWithDefaultKp()
-                kpDropdown = kp.load()
-                $('#kp-runtime-placeholder').html kpDropdown.el
-                kpDropdown.$( '.selectbox' )
+            if kpDropdown.hasResourceWithDefaultKp()
+                kpDd = new kpDropdown()
+                $('#kp-runtime-placeholder').html kpDd.render().el
+                kpDd.$( '.selectbox' )
                     .on( 'OPTION_CHANGE', @hideDefaultKpError(@) )
 
                 $('.default-kp-group').show()
@@ -191,9 +195,19 @@ define [ 'MC', 'event',
             if $('#toolbar-run').hasClass( 'disabled' )
                 return false
 
-            modal MC.template.modalRunStack {
-                hasCred : App.user.hasCredential()
-            }
+            options =
+                title           : 'Run Stack'
+                template        : MC.template.modalRunStack
+                disableClose    : true
+                width           : '450px'
+                height          : '515px'
+                confirm         :
+                    text: 'Run Stack'
+                    disabled: true
+
+            options.confirm.text = 'Set Up Credential First' if not App.user.hasCredential()
+
+            me.modalPlus = new modalplus options
 
             # must render it after modal appeared
             me.renderDefaultKpDropdown()
@@ -209,10 +223,11 @@ define [ 'MC', 'event',
 
             # insert ta component
             require [ 'component/trustedadvisor/main' ], ( trustedadvisor_main ) ->
-                trustedadvisor_main.loadModule 'stack'
+                trustedadvisor_main.loadModule( 'stack' ).then () ->
+                    me.modalPlus and me.modalPlus.toggleConfirm false
 
             # click logic
-            $('#btn-confirm').on 'click', this, (event) ->
+            me.modalPlus.on 'confirm', () ->
                 me.hideErr()
 
                 if not App.user.hasCredential()
@@ -254,13 +269,40 @@ define [ 'MC', 'event',
                     return false
 
                 # disable button
-                $('#btn-confirm').attr 'disabled', true
+
+                me.modalPlus.toggleConfirm true
                 $('.modal-header .modal-close').hide()
                 $('#run-stack-cancel').attr 'disabled', true
 
                 # push SAVE_STACK event
                 #ide_event.trigger ide_event.SAVE_STACK, MC.common.other.canvasData.data()
-                event.data.model.syncSaveStack MC.common.other.canvasData.get( 'region' ), MC.common.other.canvasData.data()
+                region = MC.common.other.canvasData.get( 'region' )
+                canvasData = MC.common.other.canvasData.data()
+                that = @
+                me.model.syncSaveStack( region, canvasData ).then (stackId) ->
+                    if not me.modalPlus or not me.modalPlus.isOpen
+                        return
+                    data = canvasData
+                    # set app name
+                    app_name  = $('.modal-input-value').val()
+                    data.name = app_name
+
+                    # set usage
+                    data.usage = 'others'
+                    usage = $('#app-usage-selectbox .selected').data 'value'
+                    if usage
+                        data.usage = usage
+
+                    # call api
+                    data.id = stackId
+                    me.model.runStack data
+
+                    # update MC.data.app_list
+                    MC.data.app_list[ region ].push app_name
+
+                    # close run stack dialog
+                    me.modalPlus and me.modalPlus.close()
+            , @
 
             null
 
@@ -475,6 +517,7 @@ define [ 'MC', 'event',
                 #contentType: 'application/json; charset=utf-8'
                 data: JSON.stringify data
                 dataType: 'json'
+                jsonp: false
                 statusCode:
                     200: ->
                         console.log 200,arguments
@@ -486,7 +529,9 @@ define [ 'MC', 'event',
                     404: ->
                         console.log 404,arguments
                         notification 'error', lang.ide.RELOAD_STATE_NETWORKERROR
-
+                    429: ->
+                        console.log 429,arguments
+                        notification 'error', lang.ide.RELOAD_STATE_NOT_READY
                     500: ->
                         console.log 500,arguments
                         notification 'error', lang.ide.RELOAD_STATE_INTERNAL_SERVER_ERROR
@@ -791,29 +836,38 @@ define [ 'MC', 'event',
 
         clickSaveEditApp : (event)->
 
-
+            me = @
             # 1. Send save request
             # check credential
-            if false
-                modal.close()
-                console.log 'show credential setting dialog'
-                require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
+            result = @model.diff()
+
+            if not result.isModified
+                # no changes and return to app modal
+                @appedit2App()
+                return
 
             else
-                result = @model.diff()
+                options =
+                    title           : 'Run Stack'
+                    template        : MC.template.updateApp result
+                    disableClose    : true
+                    width           : '460px'
+                    height          : '515px'
+                    confirm         :
+                        text: lang.ide.POP_CONFIRM_UPDATE_CONFIRM_BTN
+                        disabled: true
 
-                if not result.isModified
-                    # no changes and return to app modal
-                    @appedit2App()
-                    return
 
-                else
-                    modal MC.template.updateApp result
-                    # Set default kp
-                    @renderDefaultKpDropdown()
+                me.modalPlus = new modalplus options
 
-                    require [ 'component/trustedadvisor/main' ], ( trustedadvisor_main ) ->
-                        trustedadvisor_main.loadModule 'stack'
+                me.modalPlus.on 'confirm', me.appUpdating, @
+                #modal MC.template.updateApp result
+                # Set default kp
+                @renderDefaultKpDropdown()
+
+                require [ 'component/trustedadvisor/main' ], ( trustedadvisor_main ) ->
+                    trustedadvisor_main.loadModule( 'stack' ).then () ->
+                        me.modalPlus and me.modalPlus.toggleConfirm false
             null
 
         clickCancelEditApp : ->
@@ -890,7 +944,7 @@ define [ 'MC', 'event',
 
         appUpdating : ( event ) ->
             console.log 'appUpdating'
-            me = event.data
+            me = @
             # 0. check whether defaultKp is set
             if not me.defaultKpIsSet()
                 return false
@@ -903,10 +957,11 @@ define [ 'MC', 'event',
             #event.data.trigger 'APP_UPDATING', MC.canvas_data
 
             # new design flow
-            event.data.trigger 'APP_UPDATING', MC.common.other.canvasData.data()
+            @trigger 'APP_UPDATING', MC.common.other.canvasData.data()
 
             # 2. close modal
-            modal.close()
+            # modal.close()
+            @modalPlus and @modalPlus.close()
 
             null
 
@@ -958,6 +1013,73 @@ define [ 'MC', 'event',
                 thatModel.setAgentEnable(false)
 
             ide_event.trigger ide_event.REFRESH_PROPERTY
+
+
+        clickSaveAsApp : (event) ->
+
+
+            spec = Design.instance().serialize()
+            resource = []
+
+            app_id   = ""
+            app_name = ""
+            if MC.data.app_info and MC.data.app_info[spec.id] and MC.data.app_info[spec.id].id
+                vpc_id = spec.id
+                spec.id   = MC.data.app_info[vpc_id].id
+                spec.name = MC.data.app_info[vpc_id].name
+            else
+                spec.id   = ""
+
+            timestamp = Math.round(new Date().getTime()/1000)
+            for key, comp of spec.component
+
+                resKey = constant.AWS_RESOURCE_KEY[comp.type]
+                resId  = comp.resource[ resKey ]
+
+
+                if comp.type not in [ "AWS.EC2.AvailabilityZone", "AWS.EC2.KeyPair" ]
+                    #generate data for resource in mongo
+                    res_data =
+                        "username"    : spec.username
+                        "resource_id" : resId
+                        "region"      : spec.region
+                        "app_id"      : spec.id
+                        "version"     : "1.0"
+                        "time"        : timestamp
+                        "new"         : true
+                        "type"        : comp.type
+
+                    resource.push res_data
+
+
+            if not (spec and resource)
+                notification 'error', 'format error, can not save app!'
+                return null
+
+            ApiRequest("app_save_info", {
+                    username   : $.cookie( 'usercode' )
+                    session_id : $.cookie( 'session_id' )
+                    spec       : spec
+                    resource   : resource
+                }).then ( result )=>
+
+                    console.info result
+                    notification 'info', 'save as app succeed!'
+
+                , ( err )->
+
+                    notification 'error', 'save as app failed!'
+
+                    # if err.error < 0
+                    #   # Network Error, Try reloading
+                    #   window.location.reload()
+                    # else
+                    #   # If there's service error. I think we need to logout, because I guess it's because the session is not right.
+                    #   App.logout()
+
+                    throw err
+
+
     }
 
     return ToolbarView

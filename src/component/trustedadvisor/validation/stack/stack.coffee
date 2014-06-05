@@ -83,6 +83,12 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'ApiRequest', 'stack_ser
 							errCompType is 'AWS.AutoScaling.Group')
 								checkResult = true
 
+						if (errCode is 'EMPTY_VALUE' and
+							errKey is 'TopicARN' and
+							errMessage is 'Key TopicARN can not empty' and
+							errCompType is 'AWS.AutoScaling.NotificationConfiguration')
+								checkResult = true
+
 					catch err
 						errInfoStr = "Stack format validation error"
 				else

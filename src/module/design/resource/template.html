@@ -1,12 +1,23 @@
 <a href="javascript:void(0)" id="hide-resource-panel" class="tooltip sidebar-hider icon-caret-left" data-tooltip='{{ i18n "RES_TIP_TOGGLE_RESOURCE_PANEL" }}'>
 </a>
-<div class="sidebar-title">{{ i18n "RES_TIT_RESOURCES" }}</div>
+<div class="sidebar-title">
+	{{ i18n "RES_TIT_RESOURCES" }}
+	<i class="js-toggle-dropdown menu-manage-shard-res icon-resources"></i>
+	<ul class="dropdown-menu resources-dropdown-wrapper">
+		<li data-action="keypair">Manage Key Pairs...</li>
+		<li data-action="snapshot">Manage EBS Snapshots...</li>
+		<li data-action="sns">Manage SNS Topic & Subscriptions...</li>
+		<li data-action="sslcert">Manage Server Certificates...</li>
+		<li data-action="dhcp">Manage DHCP Option Sets...</li>
+	</ul>
+	<i class="refresh-resource-panel icon-refresh tooltip" data-tooltip="Refresh resource list"></i>
+</div>
 
 <div class="fixedaccordion accordion-default">
 	<div class="accordion-group">
 		<div class="fixedaccordion-head">{{ i18n "RES_TIT_AZ" }}</div>
 		<div class="accordion-body">
-			<ul class="availability-zone resource-list clearfix">loading...</ul>
+			<ul class="availability-zone resource-list clearfix"></ul>
 		</div>
 	</div>
 
@@ -23,11 +34,11 @@
 		<div class="accordion-body scroll-wrap scrollbar-auto-hide">
 			<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
 			<div class="item-wrap scroll-content">
-				<ul class="quickstart-ami-list resource-list">loading...</ul>
-				<ul class="my-ami-list resource-list hide">loading...</ul>
-				<ul class="favorite-ami-list resource-list hide">loading...</ul>
+				<ul class="quickstart-ami-list resource-list"></ul>
+				<ul class="my-ami-list resource-list hide"></ul>
+				<ul class="favorite-ami-list resource-list hide"></ul>
 			</div>
-			<div class="community-ami">loading...</div>
+			<div class="community-ami"></div>
 		</div>
 	</div>
 
@@ -37,12 +48,9 @@
 			<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
 			<div class="item-wrap scroll-content">
 				<ul class="resoruce-snapshot resource-list">
-					<li class="tooltip resource-item" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_VOLUME" }}' data-component-type="node" data-type="AWS.EC2.EBS.Volume" data-option='' >
-						<div class="resource-icon resource-icon-volume"></div>
-						<div class="resource-label">{{i18n "RES_LBL_NEW_VOL"}}</div>
-					</li>
 				</ul>
 			</div>
+            <div class="btn btn-primary" id="btn-snapshot-manager">{{ i18n "RES_TIT_SNAPSHOT_MANAGE"}}</div>
 		</div>
 	</div>
 	<div class="accordion-group">

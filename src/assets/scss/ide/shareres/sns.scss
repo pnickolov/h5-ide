@@ -1,0 +1,147 @@
+@mixin tag($backgroudColor: #417505) {
+    display: inline-block;
+    height: 13px;
+    width: 40px;
+    padding-bottom: 2px;
+    border-radius: 2px;
+    font-size: 12px;
+    line-height: 13px;
+    color: #fff;
+    text-align: center;
+    background: $backgroudColor;
+}
+
+@mixin user-select($value: none) {
+    -webkit-user-select: $value;
+    -o-user-select: $value;
+    -ms-user-select: $value;
+    -moz-user-select: $value;
+}
+
+#asg-policy-notify-label {
+    @include user-select;
+}
+
+.sns-policy-field {
+    display: none;
+}
+
+.icon-tag-sub {
+    @include tag;
+}
+
+.icon-tag-email {
+    @include tag(#F5A623);
+}
+
+#sns-placeholder {
+    .combo-dd-list > p {
+        margin: 0;
+    }
+    .selection > p {
+        display: none;
+    }
+
+    li.item > p {
+        margin: 0;
+    }
+
+}
+
+.policy-sns-placeholder {
+    @extend #sns-placeholder;
+}
+
+
+.sns-manage {
+    .slide-create {
+        .before-create > div {
+            margin: 5px 0;
+        }
+        .selection {
+            width: 456px;
+        }
+
+        .new-topic {
+            border-bottom: 1px solid #0f0f0f;
+
+        }
+
+    }
+
+    .table-head-fix .table tr {
+
+         td.show-detail {
+            &::before {
+                content: '\F124';
+                font: 16px/1em "MCIcon";
+                font-weight: normal;
+                -webkit-font-smoothing: antialiased;
+                margin-left: -15px;
+                margin-right: 4px;
+            }
+
+        }
+
+        &.detailed td.show-detail {
+            &::before {
+                content: '\F121';
+            }
+        }
+    }
+
+
+    .t-m-content tr > td:nth-of-type(4)
+    , .table-head tr > th:nth-of-type(4)
+     {
+        text-align: center;
+    }
+
+    .tr-detail {
+        & > td {
+            padding: 0;
+        }
+        table.sns-detail {
+            thead tr th {
+                padding: 8px 12px;
+                background: #111;
+            }
+
+            tr {
+
+                td {
+                    border: 0;
+                    background: #222;
+
+                    a.remove {
+                        color: #D0021B;
+                        cursor: pointer;
+                    }
+
+                    div.do-remove-panel {
+                        display: none;
+                    }
+                }
+
+                &:hover td {
+                    background: #000;
+                }
+
+            }
+
+        }
+
+    }
+}
+
+.sns-dropdown {
+    .selection > span {
+        color: #ec3c38;
+    }
+}
+
+
+
+
+
+

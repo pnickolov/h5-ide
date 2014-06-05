@@ -1091,7 +1091,7 @@ define(["jquery"], function(){
       return valid;
     }
 
-    , validateForm: function () {
+    , validateForm: function ( errorBubbling ) {
       var parent = this.getParent();
       if ( parent ) {
         parent = parent[ 0 ];
@@ -1105,7 +1105,7 @@ define(["jquery"], function(){
         var item = parent.items[ i ];
         item.options.validateIfUnchanged = true;
       }
-      return parent.validate();
+      return parent.validate( 'undefined' !== typeof errorBubbling ? errorBubbling : this.options.showErrors );
     }
     /**
     * Check if value has changed since previous validation
@@ -1619,10 +1619,12 @@ define(["jquery"], function(){
       var valid = true;
       this.focusedField = false;
 
+      var errorBubbling = event === true || event === false  ? event : true
+
       for ( var item = 0; item < this.items.length; item++ ) {
         if ( this.items[ item ].$element.is( ':hidden' ) )
           continue;
-        if ( 'undefined' !== typeof this.items[ item ] && false === this.items[ item ].validate() ) {
+        if ( 'undefined' !== typeof this.items[ item ] && false === this.items[ item ].validate( errorBubbling ) ) {
           valid = false;
 
           if ( !this.focusedField && 'first' === this.options.focus || 'last' === this.options.focus ) {
@@ -1632,7 +1634,7 @@ define(["jquery"], function(){
       }
 
       // form is invalid, focus an error field depending on focus policy
-      if ( this.focusedField && !valid ) {
+      if ( this.focusedField && !valid && errorBubbling ) {
         this.focusedField.focus();
       }
 

@@ -39,7 +39,7 @@
 							data-vpc-id="{{ @key }}"
 							data-vpc-obj='{{ convert_string @key this }}'>
 							<a href="javascript:void(0)">
-								<h5>{{ @key }}</h5>
+								<h5>{{ @key }} {{#unless this.origin.is_unmanaged}} <i class="icon-info tooltip default-kp-info" data-tooltip="{{ vpc_sub_title this.origin @key }}"></i>{{/unless}} </h5>
 								<ol class="unmanaged-resource-data">
 									<li class="unmanaged-resource-item">
 										<span class="unmanaged-resource-number">{{ vpc_sub_item this.origin 'AWS.VPC.Subnet' }}</span>

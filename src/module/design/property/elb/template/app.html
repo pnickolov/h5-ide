@@ -44,14 +44,14 @@
           <label>{{i18n "PROP_ELB_PORT"}}</label>
           <div>{{Listener.InstancePort}}</div>
         </div>
+        {{#if Listener.server_certificate}}
+        <div class="app-panel-li-col2-full">
+          <label>{{i18n "PROP_ELB_SERVER_CERTIFICATE"}}</label>
+          <div>{{Listener.server_certificate}}</div>
+        </div>
+        {{/if}}
       </li>
     {{/each}}
-    {{#if server_certificate}}
-      <li class="clearfix">
-        <p class="app-panel-li-main">{{i18n "PROP_ELB_SERVER_CERTIFICATE"}}</p>
-        <p class="app-panel-li-sub">{{server_certificate}}</p>
-      </li>
-    {{/if}}
     </ul>
   </div>
 

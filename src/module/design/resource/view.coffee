@@ -6,10 +6,10 @@ define [ 'event',
          'constant'
          './template',
          './template_data',
-         'i18n!nls/lang.js', 'backbone', 'jquery', 'handlebars',
+         'i18n!nls/lang.js', 'snapshotManager', 'sslcert_manage', 'dhcp', 'sns_manage', 'kp_manage', 'backbone', 'jquery', 'handlebars',
          'UI.selectbox',
          'UI.radiobuttons', 'UI.modal', 'UI.table'
-], ( ide_event, constant, template, template_data, lang ) ->
+], ( ide_event, constant, template, template_data, lang, snapshotManager, sslCertManage, dhcpManage, snsManage, kpManage ) ->
 
     ResourceView = Backbone.View.extend {
 
@@ -31,6 +31,7 @@ define [ 'event',
                 # .on( 'SEARCHBAR_HIDE',   '#resource-select',                          this.searchBarHideEvent )
                 # .on( 'SEARCHBAR_CHANGE', '#resource-select',                          this.searchBarChangeEvent )
                 .on( 'click',            '#btn-browse-community-ami',           this, this.openBrowseCommunityAMIsModal )
+                .on( 'click',            '#btn-snapshot-manager',           this, this.openSnapshotManager )
                 .on( 'click',            '#btn-search-ami',                     this, this.searchCommunityAmiCurrent )
                 .on( 'click',            '#community_ami_page_preview',         this, this.searchCommunityAmiPreview )
                 .on( 'click',            '#community_ami_page_next',            this, this.searchCommunityAmiNext )
@@ -38,6 +39,8 @@ define [ 'event',
                 .on( 'click',            '.favorite-ami-list .faved',           this, this.removeFav )
                 .on( 'click',            '.favorite-ami-list .btn-fav-ami.deleted',         this, this.addFav )
                 .on( 'keypress',         '#community-ami-input',                this, this.searchCommunityAmiCurrent)
+                .on( 'click',            '.resources-dropdown-wrapper li',      this, this.resourcesMenuClick )
+                .on( 'click',            '.refresh-resource-panel',             this, $.proxy(this.refreshResourcePanel, this) )
 
             $( window ).on "resize", _.bind( this.resizeAccordion, this )
             $( "#tab-content-design" ).on "click", ".fixedaccordion-head", this.updateAccordion
@@ -45,6 +48,8 @@ define [ 'event',
         render   : () ->
             console.log 'resource render'
             $( '#resource-panel' ).html template()
+            # for new volume in snapshot list
+            $( '.resoruce-snapshot' ).html template_data.resoruce_snapshot_new_data({})
             #
             #
             ide_event.trigger ide_event.DESIGN_SUB_COMPLETE
@@ -285,10 +290,21 @@ define [ 'event',
             $( '.availability-zone' ).html template_data.availability_zone_data( @model.attributes )
             null
 
+        openSnapshotManager: ->
+            @snapshotManager ||= new snapshotManager()
+            @snapshotManager.off 'datachange', @refreshSnapshotRender
+            @snapshotManager.on 'datachange', @refreshSnapshotRender
+            @snapshotManager.render()
+
+        refreshSnapshotRender: ()->
+            console.log 'Change detected, Updating Snapshot Resource.'
+            @resourceSnapshotRender()
+
         resourceSnapshotRender : () ->
             console.log 'resourceSnapshotRender'
             console.log this.model.attributes.resource_snapshot
             return if !this.model.attributes.resource_snapshot
+            $( '.resoruce-snapshot' ).html template_data.resoruce_snapshot_new_data({})
             $( '.resoruce-snapshot' ).append template_data.resoruce_snapshot_data( @model.attributes )
             null
 
@@ -528,6 +544,49 @@ define [ 'event',
                     else
                         $item.toggleClass("tooltip", false)
             null
+
+        resourcesMenuClick : (event) ->
+
+            $currentDom = $(event.currentTarget)
+            currentAction = $currentDom.data('action')
+
+            switch currentAction
+
+                when 'keypair'
+
+                    new kpManage().render()
+
+                when 'snapshot'
+
+                    new snapshotManager().render()
+
+                when 'sns'
+
+                    new snsManage().render()
+
+                when 'sslcert'
+
+                    new sslCertManage().render()
+
+                when 'dhcp'
+
+                    (new dhcpManage()).manageDhcp()
+
+        refreshResourcePanel : (event) ->
+
+            $refreshBtn = $('.sidebar-title .refresh-resource-panel')
+
+            if not $refreshBtn.hasClass('disabled')
+
+                resourceView = event.data
+                regionName = resourceView.region
+                this.model.refreshResourceList(regionName)
+                $refreshBtn.addClass('disabled')
+
+        stopRefreshResourcePanel : () ->
+
+            $('.sidebar-title .refresh-resource-panel').removeClass('disabled')
+            notification 'info', 'Refresh resource list success'
 
     }
 

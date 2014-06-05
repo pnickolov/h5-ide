@@ -6,7 +6,7 @@ define [ './component/kp/kpDialogTpl', 'backbone', 'jquery' ], ( template_modal,
 
 
         events:
-            'paste .upload-kp-component'                       : 'onPaste'
+            'paste .upload-kp-component'    : 'onPaste'
             'change .upload-kp-component'   : 'hanldeFile'
             'drop .upload-kp-component'     : 'hanldeFile'
             'dragenter .upload-kp-component': 'addDragoverClass'
@@ -66,6 +66,8 @@ define [ './component/kp/kpDialogTpl', 'backbone', 'jquery' ], ( template_modal,
             reader.onerror = ()->
                 that.trigger 'error'
                 null
+
+            null
 
         getData: ->
             @__data

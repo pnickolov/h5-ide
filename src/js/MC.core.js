@@ -57,6 +57,19 @@ var MC = {
 
 	Analytics : Analytics,
 
+	prettyStackTrace : function ( popLevel )
+	{
+		function StackTrace (){}
+		var stack = new Error().stack.split("\n");
+		popLevel = (popLevel || 0) + 2;
+		var pretty = new StackTrace();
+		for ( var i = 0; i < stack.length - popLevel; ++i ) {
+			pretty[ "@"+i ] = stack[i+popLevel].replace(/^\s+at\s+/,"");
+		}
+		return pretty;
+	},
+
+
 	/**
 	 * Generate GUID
 	 * @return {string} the guid
@@ -111,6 +124,7 @@ var MC = {
 			url: MC.API_HOST + option.url,
 			dataType: 'json',
 			type: 'POST',
+			jsonp: false,
 			data: JSON.stringify({
 				jsonrpc: '2.0',
 				id: MC.guid(),

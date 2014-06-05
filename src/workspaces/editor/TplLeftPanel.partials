@@ -1,0 +1,163 @@
+<!-- {{panel}} -->
+<button id="HideOEPanelLeft" class="tooltip sidebar-hider icon-caret-left" data-tooltip='{{ i18n "RES_TIP_TOGGLE_RESOURCE_PANEL" }}'></button>
+
+<header class="sidebar-title"> {{ i18n "RES_TIT_RESOURCES" }}
+  <i class="js-toggle-dropdown menu-manage-shard-res icon-resources"></i>
+  <ul class="dropdown-menu resources-dropdown-wrapper">
+    <li data-action="keypair">Manage Key Pairs...</li>
+    <li data-action="snapshot">Manage EBS Snapshots...</li>
+    <li data-action="sns">Manage SNS Topic & Subscriptions...</li>
+    <li data-action="sslcert">Manage Server Certificates...</li>
+    <li data-action="dhcp">Manage DHCP Option Sets...</li>
+  </ul>
+  <i class="refresh-resource-panel icon-refresh tooltip" data-tooltip="Refresh resource list"></i>
+</header>
+
+<div class="fixedaccordion accordion-default">
+  <section class="accordion-group">
+    <header class="fixedaccordion-head">{{ i18n "RES_TIT_AZ" }}</header>
+    <ul class="availability-zone resource-list clearfix accordion-body">
+      {{#each az}}
+      <li class="tooltip resource-item" data-tooltip='{{ i18n "RES_TIP_DRAG_AZ" }}' data-component-type="group" data-type="AWS.EC2.AvailabilityZone" data-option='{"name":"{{name}}"}'>
+        <div class="resource-icon resource-icon-az">
+          <div class="resource-icon-az-label">{{lastChar name}}</div>
+        </div>
+        <div class="resource-label">{{name}}</div>
+      </li>
+      {{/each}}
+    </ul>
+  </section>
+
+  <section class="accordion-group">
+    <header class="fixedaccordion-head">{{ i18n "RES_TIT_AMI" }}
+      <div class="selectbox resource-select dark" id="AmiTypeSelect">
+        <div class="selection">{{ i18n "RES_LBL_QUICK_START_AMI" }}</div>
+        <ul class="dropdown">
+          <li class="item selected" data-id="quickstart-ami">{{ i18n "RES_LBL_QUICK_START_AMI" }}</li>
+          <li class="item" data-id="my-ami">{{ i18n "RES_LBL_MY_AMI" }}</li>
+          <li class="item" data-id="favorite-ami">{{ i18n "RES_LBL_FAVORITE_AMI" }}</li>
+        </ul>
+      </div>
+    </header>
+    <div class="accordion-body scroll-wrap scrollbar-auto-hide">
+      <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+      <div class="item-wrap scroll-content">
+        <ul class="quickstart-ami-list resource-list"></ul>
+        <ul class="my-ami-list resource-list hide"></ul>
+        <ul class="favorite-ami-list resource-list hide"></ul>
+      </div>
+
+      <button class="btn btn-primary" id="BrowseCommunityAmi">{{ i18n "RES_BTN_BROWSE_COMMUNITY_AMI" }}</button>
+    </div>
+  </section>
+
+  <section class="accordion-group">
+    <header class="fixedaccordion-head">{{ i18n "RES_TIT_VOL" }}</header>
+    <div class="accordion-body scroll-wrap scrollbar-auto-hide">
+      <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+      <ul class="resoruce-snapshot resource-list scroll-content">
+        <li class="tooltip resource-item" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_VOLUME" }}' data-component-type="node" data-type="AWS.EC2.EBS.Volume" data-option='' >
+          <div class="resource-icon resource-icon-volume"></div>
+          <div class="resource-label">{{i18n "RES_LBL_NEW_VOL"}}</div>
+        </li>
+
+      </ul>
+      <button class="btn btn-primary" id="ManageSnapshot">{{ i18n "RES_TIT_SNAPSHOT_MANAGE"}}</button>
+    </div>
+  </section>
+
+  <section class="accordion-group">
+    <header class="fixedaccordion-head">{{ i18n "RES_TIT_ELB_ASG" }}</header>
+    <ul class="resource-list clearfix accordion-body">
+      <li class="tooltip resource-item" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_ELB" }}' data-component-type="node" data-type="AWS.ELB">
+        <div class="resource-icon resource-icon-elb"></div>
+        <div class="resource-label">{{ i18n "RES_LBL_NEW_ELB" }}</div>
+      </li>
+      <li class="tooltip resource-item" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_ASG" }}' data-component-type="group" data-type="AWS.AutoScaling.Group">
+        <div class="resource-icon resource-icon-asg"></div>
+        <div class="resource-label">{{ i18n "RES_LBL_NEW_ASG" }}</div>
+      </li>
+    </ul>
+  </section>
+
+  <section class='accordion-group'>
+    <header class="fixedaccordion-head">{{ i18n "RES_TIT_VPC" }}</header>
+    <article class="accordion-body scroll-wrap scrollbar-auto-hide">
+      <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+      <ul class="resource-list scroll-content">
+        <li class="tooltip resource-item" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_SUBNET" }}' data-component-type="group" data-type="AWS.VPC.Subnet">
+          <div class="resource-icon resource-icon-subnet"></div>
+          <div class="resource-label">{{ i18n "RES_LBL_NEW_SUBNET" }}</div>
+        </li>
+
+        <li class="tooltip resource-item" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_RTB" }}' data-component-type="node" data-type="AWS.VPC.RouteTable">
+          <div class="resource-icon resource-icon-rt"></div>
+          <div class="resource-label">{{ i18n "RES_LBL_NEW_RTB" }}</div>
+        </li>
+
+        <li class="tooltip resource-item" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_IGW" }}' data-component-type="node" data-type="AWS.VPC.InternetGateway" data-option='{"name":"Internet-gateway"}'>
+          <div class="resource-icon resource-icon-igw"></div>
+          <div class="resource-label">{{ i18n "RES_LBL_NEW_IGW" }}</div>
+        </li>
+
+        <li class="tooltip resource-item" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_VGW" }}' data-component-type="node" data-type="AWS.VPC.VPNGateway" data-option='{"name":"VPN-gateway"}'>
+          <div class="resource-icon resource-icon-vgw"></div>
+          <div class="resource-label">{{ i18n "RES_LBL_NEW_VGW" }}</div>
+        </li>
+
+        <li class="tooltip resource-item" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_CGW" }}' data-component-type="node" data-type="AWS.VPC.CustomerGateway">
+          <div class="resource-icon resource-icon-cgw"></div>
+          <div class="resource-label">{{ i18n "RES_LBL_NEW_CGW" }}</div>
+        </li>
+
+        <li class="tooltip resource-item" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_ENI" }}' data-component-type="node" data-type="AWS.VPC.NetworkInterface">
+          <div class="resource-icon resource-icon-eni"></div>
+          <div class="resource-label">{{ i18n "RES_LBL_NEW_ENI" }}</div>
+        </li>
+      </ul>
+    </article>
+  </section>
+</div>
+
+<!-- {{snapshot}} -->
+{{#each this}}
+<li class="resource-item bubble"  data-bubble-template="bubbleSnapshotInfo" data-bubble-data='{"snapshotId":"{{ snapshotId }}","startTime":"{{startTime}}","status":"{{status}}","size":"{{volumeSize}}"}' data-component-type="node" data-type="AWS.EC2.EBS.Volume" data-option='{"volumeSize":{{ volumeSize }}, "snapshotId": "{{ snapshotId }}"}'>
+  <div class="resource-icon resource-icon-ebs-snapshot"><span class="ebs-size">{{volumeSize}} GB</span></div>
+  <div class="resource-label">{{ snapshotId }}</div>
+</li>
+{{/each}}
+
+
+<!-- {{quickstart_ami_data}} -->
+{{#each quickstart_ami}}
+<li class="resource-item bubble" data-bubble-template="bubbleAMIMongoInfo" data-bubble-data='{"id":"{{imageId}}","name":"{{ name }}","description":"{{description}}","architecture":"{{architecture}}","imageLocation":"{{imageLocation}}","isPublic":"{{#if isPublic}}true{{else}}false{{/if}}","kernelId":"{{kernelId}}","rootDeviceName":"{{rootDeviceName}}","rootDeviceType":"{{rootDeviceType}}", "imageSize":"{{imageSize}}", "instance_type":"{{instance_type}}"}' data-component-type="node" data-type="AWS.EC2.Instance" data-option='{"imageId": "{{imageId}}", "cachedAmi" : { "osType": "{{osType}}", "architecture":"{{architecture}}", "rootDeviceType":"{{rootDeviceType}}" } }'>
+  <div class="resource-icon resource-icon-instance" >
+    <img src="assets/images/ide/ami/{{osType}}.{{architecture}}.{{rootDeviceType}}.png" width='39' height='27' />
+  </div>
+  <div class="resource-label instance-label">{{name}}</div>
+</li>
+{{/each}}
+
+<!-- {{my_ami_data}} -->
+{{#each my_ami }}
+<li class="resource-item bubble"  data-bubble-template="bubbleAMIInfo" data-bubble-data='{"id":"{{imageId}}","name":"{{name}}","description":"{{description}}","architecture":"{{architecture}}","imageLocation":"{{imageLocation}}","imageOwnerAlias":"{{imageOwnerAlias}}","imageOwnerId":"{{imageOwnerId}}","isPublic":"{{#if isPublic}}true{{else}}false{{/if}}","kernelId":"{{kernelId}}","rootDeviceName":"{{rootDeviceName}}","rootDeviceType":"{{rootDeviceType}}"}' data-component-type="node" data-type="AWS.EC2.Instance" data-option='{"imageId": "{{imageId}}", "osType": "{{osType}}", "architecture":"{{architecture}}", "rootDeviceType":"{{rootDeviceType}}", "virtualizationType":"{{virtualizationType}}" }'>
+  <div class="resource-icon resource-icon-instance">
+    <img src="assets/images/ide/ami/{{osType}}.{{architecture}}.{{rootDeviceType}}.png" width='39' height='27' />
+  </div>
+  <div class="resource-label instance-label">{{name}}</div>
+</li>
+{{/each}}
+
+
+<!-- {{favorite_ami_data}} -->
+{{#each favorite_ami }}
+<li class="pos-r">
+  <div class="resource-item bubble {{#if delete}}deleted{{/if}}"  data-bubble-template="bubbleAMIInfo" data-bubble-data='{"id":"{{resource_info.imageId}}","name":"{{resource_info.name}}","description":"{{resource_info.description}}","architecture":"{{resource_info.architecture}}","imageLocation":"{{resource_info.imageLocation}}","imageOwnerAlias":"{{resource_info.imageOwnerAlias}}","imageOwnerId":"{{resource_info.imageOwnerId}}","isPublic":"{{#if resource_info.isPublic}}true{{else}}false{{/if}}","kernelId":"{{resource_info.kernelId}}","rootDeviceName":"{{resource_info.rootDeviceName}}","rootDeviceType":"{{resource_info.rootDeviceType}}"}' data-component-type="node" data-type="AWS.EC2.Instance" data-option='{"imageId": "{{resource_info.imageId}}", "osType": "{{resource_info.osType}}", "architecture":"{{resource_info.architecture}}", "rootDeviceType":"{{resource_info.rootDeviceType}}", "virtualizationType":"{{resource_info.virtualizationType}}" }'>
+    <div class="resource-icon resource-icon-instance">
+      <img src="assets/images/ide/ami/{{resource_info.osType}}.{{resource_info.architecture}}.{{resource_info.rootDeviceType}}.png" width='39' height='27' />
+    </div>
+    <div class="resource-label instance-label" >{{resource_info.name}}</div>
+  </div>
+  <div class="btn-fav-ami {{#if delete}}deleted{{else}}faved{{/if}} tooltip" data-tooltip="{{#unless delete}}{{i18n 'RES_TIT_ADD_TO_FAVORITE'}}{{/unless}}" data-id="{{resource_id}}" data-amiVO="{{amiVO}}"></div>
+</li>
+{{/each}}

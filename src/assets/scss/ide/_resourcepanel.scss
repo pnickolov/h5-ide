@@ -1,0 +1,154 @@
+
+#AmiTypeSelect {
+  position    : absolute;
+  top         : 0;
+  right       : 0;
+  line-height : 20px;
+
+  &:hover .selection { background: #234F77; }
+}
+
+.resource-item {
+  width         : 70px;
+  margin        : 0 5px 7px 0;
+  border-radius : 4px;
+  cursor        : pointer;
+  float         : left;
+
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+  cursor: grab;
+
+  &.deleted { opacity : .5; }
+  &:hover {
+    background: rgba(255,255,255,.2);
+  }
+
+  &.resource-disabled {
+    cursor     : default;
+    opacity    : .6;
+    background : none;
+  }
+}
+
+.resource-icon {
+  height     : 60px;
+  background : transparent center no-repeat;
+}
+
+.resource-label {
+  font-size   : 12px;
+  text-align  : center;
+  height      : 3em;
+  word-wrap   : break-word;
+  overflow    : hidden;
+  line-height : 1.2em;
+  color       : #eee;
+}
+
+.resource-icon-az     { background-image: image-url('ide/icon/az-resource.png'); }
+.resource-icon-volume { background-image: image-url('ide/icon/volume-resource-1109.png'); }
+.resource-icon-eni    { background-image: image-url('ide/icon/eni-resource.png'); }
+.resource-icon-subnet { background-image: image-url('ide/icon/subnet-resource.png'); }
+.resource-icon-rt     { background-image: image-url('ide/icon/rt-resource.png'); }
+.resource-icon-igw    { background-image: image-url('ide/icon/igw-resource.png'); }
+.resource-icon-vgw    { background-image: image-url('ide/icon/vgw-resource.png'); }
+.resource-icon-cgw    { background-image: image-url('ide/icon/cgw-resource.png'); }
+.resource-icon-asg    { background-image: image-url('ide/icon/asg-resource.png'); }
+.resource-icon-elb    { background-image: image-url('ide/icon/elb-resource.png'); }
+.resource-icon-instance     { background-image: image-url('ide/icon/instance-resource.png'); }
+.resource-icon-ebs-snapshot { background-image: image-url('ide/icon/ebs-snapshot-resource-1109.png'); }
+
+.resource-icon-az-label {
+  /*cursor: pointer;*/
+  font-size: 16px;
+  color: #999;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  line-height: 55px;
+}
+
+.resource-icon-asg-label {
+  font-size: 12px;
+  color: #999;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+
+.instance-label {
+  height: 64px;
+}
+
+.ebs-size {
+  font-size: 12px;
+  position: absolute;
+  margin-top: 40px;
+  width: 100%;
+  display: block;
+  text-align: center;
+}
+
+.resource-select.selectbox .selection {
+  background        : #143553;
+  color             : #F3F3F3;
+  height            : 17px;
+  border            : none;
+  border-left       : 1px solid #161616;
+  border-radius     : 0;
+  padding           : 10px 20px 10px 10px;
+  -webkit-transition: background .2s ease-in-out;
+  -moz-transition   : background .2s ease-in-out;
+  -ms-transition    : background .2s ease-in-out;
+  -o-transition     : background .2s ease-in-out;
+  transition        : background .2s ease-in-out;
+}
+
+.resource-select.selectbox .selection:after {
+  border-top-color: #fff;
+}
+
+.resource-select.selectbox .dropdown {
+  background: #4f4f4f;
+  border: 1px solid #333;
+}
+
+.resource-list > li:hover .btn-fav-ami {
+  display: block;
+}
+
+.btn-fav-ami {
+  position: absolute;
+  top: -2px;
+  right: 5px;
+  display: none;
+  width: 16px;
+  height: 16px;
+  background: url('../images/ide/btn-fav-ami-unfaved-normal.png');
+}
+
+.btn-fav-ami:hover {
+  top        : -3px;
+  right      : 3px;
+  width      : 20px;
+  height     : 20px;
+  background : url('../images/ide/btn-fav-ami-unfaved-hover.png');
+}
+
+.btn-fav-ami.faved {
+  background: url('../images/ide/btn-fav-ami-faved-normal.png');
+}
+
+.btn-fav-ami.faved:hover {
+  background: url('../images/ide/btn-fav-ami-faved-hover.png');
+}
+
+#BrowseCommunityAmi, #ManageSnapshot {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  border: none;
+  border-radius: 0;
+}

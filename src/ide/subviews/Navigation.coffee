@@ -36,7 +36,7 @@ define [ "./NavigationTpl", 'backbone' ], ( NavPartsTpl ) ->
                 return
 
             @listenTo App.model.appList(), "update change:state", ()->
-                console.info "Navigation updated due to appList update", arguments
+                console.log "Navigation updated due to appList update", arguments
                 if @showing
                     @updateAppList()
                 else

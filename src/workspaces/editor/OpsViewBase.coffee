@@ -101,6 +101,8 @@ define [
     renderSubviews : ()->
       @recalcAccordion()
       @renderRightPanel()
+      $("#OEPanelRight").toggleClass("hidden", @__rightPanelHidden || false)
+      $("#OEPanelLeft").toggleClass("hidden",  @__leftPanelHidden  || false)
       return
 
 
@@ -134,7 +136,9 @@ define [
 
 
     ### Resource Panel Related ###
-    toggleLeftPanel : ()-> $("#OEPanelLeft").toggleClass("hidden"); false
+    toggleLeftPanel : ()->
+      @__leftPanelHidden = $("#OEPanelLeft").toggleClass("hidden").hasClass("hidden")
+      false
 
     updateAccordion : ( event, noAnimate ) ->
       $target    = $( event.currentTarget )
@@ -193,9 +197,10 @@ define [
 
 
     ### Property Panel Related ###
-    toggleRightPanel : ()-> $("#OEPanelRight").toggleClass("hidden"); false
+    toggleRightPanel : ()->
+      @__rightPanelHidden = $("#OEPanelRight").toggleClass("hidden").hasClass("hidden")
+      false
 
-    renderRightPanel : ()->
-      $("#OEPanelRight").html RightPanelTpl()
+    renderRightPanel : ()-> $("#OEPanelRight").html RightPanelTpl(); false
 
   }

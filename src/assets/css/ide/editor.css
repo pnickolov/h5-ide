@@ -7,11 +7,7 @@
 #OEPanelLeft {
   width: 246px;
   background: #242424;
-  left: 0;
-  -webkit-transition: left 0.1s;
-  -moz-transition: left 0.1s;
-  -o-transition: left 0.1s;
-  transition: left 0.1s; }
+  left: 0; }
   #OEPanelLeft.hidden {
     left: -246px; }
     #OEPanelLeft.hidden > #HideOEPanelLeft:before {
@@ -29,11 +25,7 @@
   top: 0;
   left: 0;
   bottom: 0;
-  right: 0;
-  -webkit-transition: left 0.1s;
-  -moz-transition: left 0.1s;
-  -o-transition: left 0.1s;
-  transition: left 0.1s; }
+  right: 0; }
 
 #OEPanelTop {
   height: 40px;

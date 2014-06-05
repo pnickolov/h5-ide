@@ -16,10 +16,10 @@ $BottomPanelHeight : 24px;
   background : #242424;
   left       : 0;
 
-  -webkit-transition : left 0.1s;
-     -moz-transition : left 0.1s;
-       -o-transition : left 0.1s;
-          transition : left 0.1s;
+  // -webkit-transition : left 0.1s;
+  //    -moz-transition : left 0.1s;
+  //      -o-transition : left 0.1s;
+  //         transition : left 0.1s;
 
   &.hidden {
     left : -$LeftPanelWidth;
@@ -54,10 +54,10 @@ $BottomPanelHeight : 24px;
   left     : 0;
   bottom   : 0;
   right    : 0;
-  -webkit-transition: left 0.1s;
-     -moz-transition: left 0.1s;
-       -o-transition: left 0.1s;
-          transition: left 0.1s;
+  // -webkit-transition: left 0.1s;
+  //    -moz-transition: left 0.1s;
+  //      -o-transition: left 0.1s;
+  //         transition: left 0.1s;
 }
 
 #OEPanelTop {

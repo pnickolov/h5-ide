@@ -14,15 +14,13 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'ebs_service' , '../resu
 				if compObj.type is constant.RESTYPE.VOL
 					snaphostId = compObj.resource.SnapshotId
 					instanceUID = compObj.resource.AttachmentSet.InstanceId
-					instanceId = compObj.resource.InstanceId
+					
 					if snaphostId and instanceUID
 						if not snaphostMap[snaphostId]
 							snaphostMap[snaphostId] = []
-						if not instanceId
-							snaphostMap[snaphostId].push(MC.extractID(instanceUID))
 
 				if compObj.type is constant.RESTYPE.LC
-					instanceId = compObj.resource.LaunchConfigurationARN
+					
 					_.each compObj.resource.BlockDeviceMapping, (blockObj, idx) ->
 
 						if idx > 0
@@ -32,8 +30,6 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'ebs_service' , '../resu
 							if snaphostId and instanceUID
 								if not snaphostMap[snaphostId]
 									snaphostMap[snaphostId] = []
-								if not instanceId
-									snaphostMap[snaphostId].push(instanceUID)
 
 				null
 
@@ -75,15 +71,25 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'ebs_service' , '../resu
 
 										infoObjType = 'Instance'
 										infoTagType = 'instance'
+
+										instanceId = null
+
 										if instanceType is constant.RESTYPE.LC
 											infoObjType = 'Launch Configuration'
 											infoTagType = 'lc'
-										tipInfo = sprintf lang.ide.TA_MSG_ERROR_STACK_HAVE_NOT_EXIST_SNAPSHOT, snapshotId, infoObjType, instanceName
-										tipInfoAry.push({
-											level: constant.TA.ERROR,
-											info: tipInfo,
-											uid: instanceUID
-										})
+											instanceId = instanceObj.resource.LaunchConfigurationARN
+										else
+											instanceId = instanceObj.resource.InstanceId
+
+										if not instanceId
+
+											tipInfo = sprintf lang.ide.TA_MSG_ERROR_STACK_HAVE_NOT_EXIST_SNAPSHOT, snapshotId, infoObjType, instanceName
+											tipInfoAry.push({
+												level: constant.TA.ERROR,
+												info: tipInfo,
+												uid: instanceUID
+											})
+
 										null
 								null
 

@@ -80,6 +80,8 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
             if keys
                 datas.keys = keys
                 datas.hideDefaultNoKey = true
+            if Design.instance().modeIsApp() or Design.instance().modeIsAppEdit()
+                datas.isRunTime = true
             content = template.keys datas
             @dropdown.toggleControls true
             @dropdown.setContent content
@@ -111,6 +113,7 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
             @manager.on 'refresh', @refreshManager, @
             @manager.on 'slidedown', @renderSlides, @
             @manager.on 'action', @doAction, @
+            @manager.on 'detail', @detail, @
             @manager.on 'close', =>
                 @manager.remove()
             @manager.render()
@@ -140,6 +143,14 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
             tpl = template['slide_'+ which]
             slides = @getSlides()
             slides[which]?.call @, tpl, checked
+
+        detail: (event, data, $tr) ->
+            that = this
+            dhcpId = data.id
+            dhcpData = @collection.get(dhcpId).toJSON()
+            detailTpl = template['detail_info']
+            @manager.setDetail($tr, detailTpl(dhcpData))
+
         getSlides: ->
             "delete": (tpl, checked)->
                 checkedAmount = checked.length
@@ -288,13 +299,18 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
             columns: [
                 {
                     sortable: true
-                    width: "30%" # or 40%
+                    width: "200px" # or 40%
                     name: 'Name'
                 }
                 {
-                    sortable: true
-                    width: "70%" # or 40%
+                    sortable: false
+                    width: "480px" # or 40%
                     name: 'Options'
+                }
+                {
+                    sortable: false
+                    width: "56px"
+                    name: "Details"
                 }
             ]
 

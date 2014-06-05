@@ -32,10 +32,16 @@ define [ 'event', 'constant' ], ( ide_event, constant ) ->
                 ide_event.onListen ide_event.RESOURCE_QUICKSTART_READY, ( region_name ) ->
                     console.log 'resource:RESOURCE_QUICKSTART_READY'
                     model.describeAvailableZonesService region_name
-                    model.describeSnapshotsService      region_name
 
-                # model
-                model.quickstartService                 region_name
+                #get quickstart AMI
+                model.quickstartService region_name
+                #get my AMI
+                model.myAmiService region_name
+                #get favorite AMI
+                model.favoriteAmiService region_name
+                #get snapshot
+                model.describeSnapshotsService region_name
+
                 model.describeSubnetInDefaultVpc        region_name
 
                 # view
@@ -141,6 +147,10 @@ define [ 'event', 'constant' ], ( ide_event, constant ) ->
                     model.service_count = 0
 
                 null
+
+            model.on 'refresh_resource_finish', () ->
+
+                view.stopRefreshResourcePanel()
 
     unLoadModule = () ->
         #view.remove()

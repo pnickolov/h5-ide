@@ -38,7 +38,9 @@
 <button class="btn-toolbar tooltip icon-refresh seperator" data-tooltip="{{i18n 'TOOL_TIP_REFRESH_REOURCES'}}" id="btn-app-refresh"></button>
 {{#if item_flags.has_states}}
 {{#if item_flags.is_running}}
-<button class="icon-reload tooltip btn btn-blue reload-states" data-original="Reload States" data-disabled="Initiating…"  data-tooltip="Instantly rerun all states in this app.">Reload States</button>
+    {{#unless item_flags.is_app_updating}}
+        <button class="icon-reload tooltip btn btn-blue reload-states" data-original="Reload States" data-disabled="Initiating…"  data-tooltip="Instantly rerun all states in this app.">Reload States</button>
+    {{/unless}}
 {{/if}}
 {{/if}}
 </label>

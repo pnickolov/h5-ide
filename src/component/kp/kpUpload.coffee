@@ -67,6 +67,8 @@ define [ './component/kp/kpDialogTpl', 'backbone', 'jquery' ], ( template_modal,
                 that.trigger 'error'
                 null
 
+            null
+
         getData: ->
             @__data
 

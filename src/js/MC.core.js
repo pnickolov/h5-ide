@@ -124,6 +124,7 @@ var MC = {
 			url: MC.API_HOST + option.url,
 			dataType: 'json',
 			type: 'POST',
+			jsonp: false,
 			data: JSON.stringify({
 				jsonrpc: '2.0',
 				id: MC.guid(),

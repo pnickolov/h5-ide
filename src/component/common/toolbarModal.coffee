@@ -71,8 +71,6 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalpl
 
 
         __handleSlide: ( event ) ->
-            if @__slideRejct()
-                return @
 
             $button = $ event.currentTarget
             $slidebox = @$( '.slidebox' )
@@ -80,6 +78,9 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalpl
 
             # refresh has no slide
             if button is 'refresh'
+                return @
+
+            if @__slideRejct()
                 return @
 
             $activeButton = @$( '.toolbar .active' )
@@ -203,15 +204,17 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalpl
             @
 
         __renderContent: ->
-            data = @options
+            $contentWrap = @$ '.content-wrap'
+            if not $contentWrap.find( '.toolbar' ).size()
+                data = @options
 
-            data.buttons = _.reject data.buttons, ( btn ) ->
-                if btn.type is 'create'
-                    data.btnValueCreate = btn.name
-                    true
+                data.buttons = _.reject data.buttons, ( btn ) ->
+                    if btn.type is 'create'
+                        data.btnValueCreate = btn.name
+                        true
 
-            @$( '.content-wrap' ).html template.content data
-            @
+                @$( '.content-wrap' ).html template.content data
+                @
 
 
         # ------ INTERFACE ------ #
@@ -245,6 +248,9 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalpl
             $trDetail = $tr.next( '.tr-detail' )
             $trDetail.find( 'td' ).html dom
             $trDetail
+
+        triggerSlide: ( which ) ->
+            @$( "[data-btn=#{which}]" ).click()
 
         cancel: () ->
             if @__slideRejct()

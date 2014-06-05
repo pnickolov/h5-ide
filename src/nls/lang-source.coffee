@@ -916,6 +916,11 @@ module.exports =
       en: "Export to PNG"
       zh: "导出图片"
 
+    TOOL_SAVE_AS_APP:
+      en: "Save as App"
+      zh: "保存为应用"
+
+
     TOOL_EXPORT_AS_CF:
       en: "Convert to CloudFormation Format"
       zh: "导出JSON文件"
@@ -1282,7 +1287,7 @@ module.exports =
       zh: ""
 
     PROP_INSTANCE_FILTER_SSL_CERT:
-      en: "Filter by Server Certificate name"
+      en: "Filter by SSL Certificate name"
       zh: ""
 
     PROP_INSTANCE_MANAGE_SSL_CERT:
@@ -1627,11 +1632,11 @@ module.exports =
       zh: "DHCP 选项"
 
     PROP_VPC_DHCP_LBL_NONE:
-      en: "None"
+      en: "Default"
       zh: "无"
 
     PROP_VPC_DHCP_LBL_DEFAULT:
-      en: "Default DHCP"
+      en: "Auto-assigned Set"
       zh: "缺省"
 
     PROP_VPC_DHCP_LBL_SPECIFIED:
@@ -1691,11 +1696,11 @@ module.exports =
       zh: "DHCP选项标识"
 
     PROP_VPC_MANAGE_DHCP:
-      en: "Manage Region DHCP options"
+      en: "Manage DHCP Options Set"
       zh: ""
 
     PROP_VPC_FILTER_DHCP:
-      en: "Filter by DHCP name"
+      en: "Filter by DHCP Options Set ID"
       zh: ""
 
     PROP_VPC_TIP_AUTO_DHCP:
@@ -2561,7 +2566,7 @@ module.exports =
       zh: "添加监听器"
 
     PROP_ELB_BTN_ADD_SERVER_CERTIFICATE:
-      en: "Add Server Certificate"
+      en: "Add SSL Certificate"
       zh: "添加服务器认证"
 
     PROP_ELB_SERVER_CERTIFICATE:
@@ -2701,7 +2706,7 @@ module.exports =
       zh: ""
 
     PROP_ELB_CERT_REMOVE_CONFIRM_TITLE:
-      en: "Confirm to Delete Server Certificate"
+      en: "Confirm to Delete SSL Certificate"
       zh: ""
 
     PROP_ELB_CERT_REMOVE_CONFIRM_MAIN:
@@ -4858,7 +4863,7 @@ VisualOps API. You cannot UNDO this action.'
       zh: ""
 
     TA_MSG_ERROR_INSTANCE_REF_OLD_KEYPAIR:
-      en: "%s has associated with an nonexistient key pair <span class='validation-tag'>%s</span>. Make sure to use an existing key pair or creating a new one."
+      en: "%s has associated with an nonexistent key pair <span class='validation-tag'>%s</span>. Make sure to use an existing key pair or creating a new one."
       zh: ""
 
     TA_MSG_NOTICE_KEYPAIR_LONE_LIVE:
@@ -5056,19 +5061,27 @@ VisualOps API. You cannot UNDO this action.'
 
     # Share Resource
     TA_MSG_ERROR_ASG_NOTIFICATION_NO_TOPIC:
-      en: "Auto Scaling Group %s has configured notification. Please select a SNS Topic for it."
+      en: "Auto Scaling Group <span class='validation-tag tag-asg'>%s</span> has configured notification. Please select a SNS Topic for it."
       zh: ""
 
     TA_MSG_ERROR_ASG_POLICY_NO_TOPIC:
-      en: "Auto Scaling Group %s's Scaling Policy %s has configured notification. Please select a SNS Topic for it."
+      en: "Auto Scaling Group %s's Scaling Policy <span class='validation-tag'>%s</span> has configured notification. Please select a SNS Topic for it."
       zh: ""
 
-    TA_MSG_ERROR_ASG_NOTIFICITION_TOPIC_NONEXISTIENT:
-      en: "Auto Scaling Group %s is using a nonexistient SNS Topic %s. Please change to an existing SNS Topic to make notification work."
+    TA_MSG_ERROR_ASG_NOTIFICITION_TOPIC_NONEXISTENT:
+      en: "Auto Scaling Group <span class='validation-tag tag-asg'>%s</span> is using a nonexistent SNS Topic <span class='validation-tag'>%s</span>. Please change to an existing SNS Topic to make notification work."
       zh: ""
 
-    TA_MSG_ERROR_ASG_POLICY_TOPIC_NONEXISTIENT:
-      en: "Auto Scaling Group %s's Scaling Policy %s is using a nonexistent SNS Topic %s. Please change to an existing SNS Topic to make notification work."
+    TA_MSG_ERROR_ASG_POLICY_TOPIC_NONEXISTENT:
+      en: "Auto Scaling Group <span class='validation-tag tag-asg'>%s</span>'s Scaling Policy %s is using a nonexistent SNS Topic <span class='validation-tag'>%s</span>. Please change to an existing SNS Topic to make notification work."
+      zh: ""
+
+    TA_MSG_ERROR_VPC_DHCP_NONEXISTENT:
+      en: "VPC is using a nonexistent DHCP option set. Please specify default, auto-assigned or an existing DHCP option set."
+      zh: ""
+
+    TA_MSG_WARNING_VPC_CANNOT_USE_DEFAULT_DHCP_WHEN_USE_VISUALOPS:
+      en: "vpc can not use default(none) dhcpoptions when use visualops"
       zh: ""
 
     RELOAD_STATE_INVALID_REQUEST:
@@ -5083,7 +5096,9 @@ VisualOps API. You cannot UNDO this action.'
     RELOAD_STATE_SUCCESS:
       en: "States reloaded successfully!"
       zh: ""
-
+    RELOAD_STATE_NOT_READY:
+      en: "App Agent is not ready yet, Please try again later."
+      zh: ""
     ##### Trust Advisor
 
     TIP_KEYPAIR_USED_DEFAULT_KP:

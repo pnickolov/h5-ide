@@ -32,7 +32,6 @@ define [ 'constant', 'event', 'component/trustedadvisor/config', 'component/trus
     _genSyncFinish = ( times ) ->
         _.after times, () ->
             ide_event.trigger ide_event.TA_SYNC_FINISH
-            console.log resultVO.result()
 
     _asyncCallback = ( method, filename, done ) ->
         hasRun = false
@@ -99,7 +98,6 @@ define [ 'constant', 'event', 'component/trustedadvisor/config', 'component/trus
 
     _validAsync = ->
         finishTimes = _.reduce config.asyncList, ( memo, arr ) ->
-            console.log memo, arr
             return memo + arr.length
         ,0
 

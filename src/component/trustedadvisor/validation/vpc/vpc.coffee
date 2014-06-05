@@ -1,4 +1,24 @@
-define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo' ], ( constant, MC, lang ) ->
+define [ 'constant', 'MC', 'i18n!nls/lang.js' , 'Design', 'CloudResources', '../../helper', '../result_vo' ], ( constant, MC, lang, Design, CloudResources, Helper ) ->
+
+	i18n = Helper.i18n.short()
+
+	__hasState = ( uid ) ->
+		if Design.instance().get('agent').enabled is false
+			return false
+		if uid
+			component = Design.instance().component uid
+			if component
+				state = component.get 'state'
+				state and state.length
+			else
+				false
+		else
+			had = false
+			Design.instance().eachComponent ( component ) ->
+				if __hasState component.id
+					had = true
+					false
+			had
 
 	isVPCAbleConnectToOutside = () ->
 
@@ -31,5 +51,40 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo' ], ( constant, MC,
 		level: constant.TA.WARNING
 		info: tipInfo
 
+	isVPCUsingNoneDHCPAndVisualops = ( uid ) ->
+		if not __hasState()
+			return null
 
-	isVPCAbleConnectToOutside : isVPCAbleConnectToOutside
+		vpc = Design.modelClassForType(constant.RESTYPE.VPC).theVPC()
+		dhcpId = vpc.get( 'dhcp' ).get( 'appId' )
+		if dhcpId isnt 'default'
+			return null
+
+		Helper.message.warning vpc.id, i18n.TA_MSG_WARNING_VPC_CANNOT_USE_DEFAULT_DHCP_WHEN_USE_VISUALOPS
+
+
+
+
+	isVPCUsingNonexistentDhcp = ( callback ) ->
+		vpc = Design.modelClassForType(constant.RESTYPE.VPC).theVPC()
+		dhcpId = vpc.get( 'dhcp' ).get 'appId'
+		if not dhcpId or dhcpId is 'default'
+			callback null
+			return
+
+		dhcpCol = CloudResources constant.RESTYPE.DHCP, Design.instance().region()
+
+		dhcpCol.fetchForce().fin ->
+			if dhcpCol.get dhcpId
+				callback null
+			else
+				callback Helper.message.error vpc.id, i18n.TA_MSG_ERROR_VPC_DHCP_NONEXISTENT
+
+		null
+
+
+
+
+	isVPCAbleConnectToOutside 		: isVPCAbleConnectToOutside
+	isVPCUsingNonexistentDhcp 		: isVPCUsingNonexistentDhcp
+	isVPCUsingNoneDHCPAndVisualops 	: isVPCUsingNoneDHCPAndVisualops

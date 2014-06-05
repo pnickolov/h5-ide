@@ -145,16 +145,18 @@ define [ "constant", "../GroupModel", "./DhcpModel" ], ( constant, GroupModel, D
       # DhcpOptionsId is "default" means use no dhcp
       # DhcpOPtionsId is "" means use default dhcp
       dhcp = data.resource.DhcpOptionsId
-
-      if not dhcp
-        vpc.get("dhcp").setDefault()
-      else if dhcp is "default"
+      if dhcp is undefined
+        vpc.get('dhcp').setNone()
+      else if not dhcp
         vpc.get("dhcp").setNone()
-      else
+      else if dhcp is "default"
+        vpc.get("dhcp").setDefault()
+      else if dhcp[0] is "@"
         oldDhcp = vpc.get("dhcp")
         if oldDhcp then oldDhcp.remove()
-
         vpc.set( "dhcp", resolve( MC.extractID(dhcp) ) )
+      else
+        vpc.get('dhcp').setNone()
       null
   }
 

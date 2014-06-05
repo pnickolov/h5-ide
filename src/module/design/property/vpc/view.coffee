@@ -51,7 +51,7 @@ define [ '../base/view',
             @initDhcpSelection()
             data.name
         initDhcpSelection: ->
-            currentVal = @model.toJSON().dhcp.dhcpOptionsId
+            currentVal = @model.toJSON().dhcp.appId
             if currentVal is ''
                 selection = isAuto : true
             else if currentVal is "default"
@@ -116,10 +116,7 @@ define [ '../base/view',
             null
 
         onChangeDhcpOptions : ( event ) ->
-
-            if event and not $( event.currentTarget )
-                            .closest( '[data-bind=true]' )
-                            .parsley( 'validate' )
+            if event and not $( event.currentTarget ).closest( '[data-bind=true]' ).parsley( 'validate' )
                 return
 
             # Gather all the infomation to submit

@@ -43,6 +43,7 @@ define [ 'i18n!nls/lang.js',
 
                     me.set 'resource_snapshot', result.resolved_data
                     MC.data.config[region_name].snapshot_list = result.resolved_data
+                    me.checkRefreshResourceList()
 
                 null
 
@@ -137,7 +138,9 @@ define [ 'i18n!nls/lang.js',
 
                     console.log 'get quistart ami: -> data region: ' + region_name + ', stack region: ' + MC.canvas_data.region
                     if region_name == MC.canvas_data.region
+                        me.set 'quickstart_ami', null
                         me.set 'quickstart_ami', quickstart_amis
+                        me.checkRefreshResourceList()
 
                     #cache config data for current region
                     MC.data.config[region_name].ami                 = result.resolved_data.ami
@@ -155,15 +158,6 @@ define [ 'i18n!nls/lang.js',
                         MC.data.config[region_name].zone.item.push {'regionName':region_name, 'zoneName':i, 'zoneState':'available'} for i in result.resolved_data.zone
 
                     MC.data.config[region_name].ami_list = ami_list
-
-                    MC.data.config[region_name].favorite_ami = null
-                    MC.data.config[region_name].my_ami = null
-
-                    #get my AMI
-                    me.myAmiService region_name
-
-                    #get favorite AMI
-                    me.favoriteAmiService region_name
 
                     # service_count +1
                     me.stackLoadDepend 'quickstartService:NEW'
@@ -220,7 +214,20 @@ define [ 'i18n!nls/lang.js',
                             null
 
                         my_ami_list = ami_list
+                        if not MC.data.config[region_name].my_ami
+                            MC.data.config[region_name].my_ami = []
                         MC.data.config[region_name].my_ami = MC.data.config[region_name].my_ami.concat ami_list
+
+                        # my ami sort
+                        newMyAMIAry = MC.data.config[region_name].my_ami.sort (a, b) ->
+                            if a.name > b.name
+                                return 1
+                            else if a.name < b.name
+                                return -1
+                            return 0
+
+                        MC.data.config[region_name].my_ami = newMyAMIAry
+
                     #console.log 'get my ami: -> data region: ' + region_name + ', stack region: ' + Design.instance().region()
                     #if region_name == Design.instance().region()
                     #    me.set 'my_ami', my_ami_list
@@ -228,6 +235,7 @@ define [ 'i18n!nls/lang.js',
                     console.log 'get my ami: -> data region: ' + region_name + ', stack region: ' + MC.canvas_data.region
                     if region_name == MC.canvas_data.region and MC.data.config[region_name].owner and MC.data.config[region_name].exec
                         me.set 'my_ami', MC.data.config[region_name].my_ami
+                        me.checkRefreshResourceList()
 
                 else
                 #####
@@ -328,6 +336,7 @@ define [ 'i18n!nls/lang.js',
                 if region_name == MC.canvas_data.region
                     me.set 'favorite_ami', null
                     me.set 'favorite_ami', legalData
+                    me.checkRefreshResourceList()
 
                 #cache favorite_ami
                 MC.data.config[region_name].favorite_ami = {}
@@ -491,6 +500,7 @@ define [ 'i18n!nls/lang.js',
             #check cached data
             if (MC.data.config[region_name] and MC.data.config[region_name].snapshot_list )
 
+                me.set 'resource_snapshot', null
                 me.set 'resource_snapshot', MC.data.config[region_name].snapshot_list
 
             else
@@ -504,7 +514,7 @@ define [ 'i18n!nls/lang.js',
             me = this
 
             #init
-            me.set 'quickstart_ami', null
+            # me.set 'quickstart_ami', null
 
             #check cached data
             if (MC.data.config[region_name] and MC.data.config[region_name].ami_list )
@@ -513,13 +523,14 @@ define [ 'i18n!nls/lang.js',
 
                 quickstart_amis = ami_list
 
+                me.set 'quickstart_ami', null
                 me.set 'quickstart_ami', quickstart_amis
 
                 #get my AMI
-                me.myAmiService region_name
+                # me.myAmiService region_name
 
                 #get favorite AMI
-                me.favoriteAmiService region_name
+                # me.favoriteAmiService region_name
 
                 # service_count +1
                 me.stackLoadDepend 'quickstartService:OLD'
@@ -542,7 +553,7 @@ define [ 'i18n!nls/lang.js',
             me = this
 
             #init
-            me.set 'my_ami' , Math.round(+new Date())
+            # me.set 'my_ami' , Math.round(+new Date())
 
             #if demo account, not request api
             if not App.user.hasCredential()
@@ -551,6 +562,7 @@ define [ 'i18n!nls/lang.js',
             #check cached data
             if MC.data.config[region_name] and MC.data.config[region_name].my_ami
 
+                me.set 'my_ami', null
                 me.set 'my_ami', MC.data.config[region_name].my_ami
 
             else
@@ -768,6 +780,43 @@ define [ 'i18n!nls/lang.js',
                 console.warn "convertBlockDeviceMapping(): nothing to convert"
             null
 
+        refreshResourceList : (regionName) ->
+
+            # clean cache
+            if MC.data.config[regionName] and MC.data.config[regionName].ami_list
+                MC.data.config[regionName].ami_list = null
+
+            if MC.data.config[regionName] and MC.data.config[regionName].my_ami
+                MC.data.config[regionName].my_ami = null
+
+            if MC.data.config[regionName] and MC.data.config[regionName].favorite_ami
+                MC.data.config[regionName].favorite_ami = null
+
+            if MC.data.config[regionName] and MC.data.config[regionName].snapshot_list
+                MC.data.config[regionName].snapshot_list = null
+
+            #get quickstart AMI
+            this.quickstartService regionName
+            #get my AMI
+            this.myAmiService regionName
+            #get favorite AMI
+            this.favoriteAmiService regionName
+            #get snapshot
+            this.describeSnapshotsService regionName
+
+            this.set('refresh_resource_count', 0)
+
+        checkRefreshResourceList : () ->
+
+            that = this
+
+            refreshResourceCount = that.get('refresh_resource_count')
+            if refreshResourceCount >= 0
+                that.set('refresh_resource_count', ++refreshResourceCount)
+
+            if (refreshResourceCount is 5) or (window.App and (not App.user.hasCredential()) and refreshResourceCount is 2)
+                that.trigger('refresh_resource_finish')
+                that.set('refresh_resource_count', null)
 
     }
 

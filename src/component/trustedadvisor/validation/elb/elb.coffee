@@ -470,7 +470,8 @@ define [ 'constant', 'MC','i18n!nls/lang.js', '../../helper', 'CloudResources'],
 
 					_.each elbNotExistCertMap, (sslCertNameAry, elbName) ->
 
-						tipInfo = sprintf lang.ide.TA_MSG_ERROR_ELB_SSL_CERT_NOT_EXIST_FROM_AWS, elbName, sslCertNameAry.join(', ')
+						uniqSSLCertNameAry = _.uniq(sslCertNameAry)
+						tipInfo = sprintf lang.ide.TA_MSG_ERROR_ELB_SSL_CERT_NOT_EXIST_FROM_AWS, elbName, uniqSSLCertNameAry.join(', ')
 						validResultAry.push {
 							level: constant.TA.ERROR,
 							info: tipInfo,

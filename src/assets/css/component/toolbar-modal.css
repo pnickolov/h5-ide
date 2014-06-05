@@ -100,7 +100,7 @@
     .modal-toolbar .slidebox .content label.select-file-link {
       width: auto;
       color: #148BE6; }
-    .modal-toolbar .slidebox .content .input {
+    .modal-toolbar .slidebox .content input.input {
       width: 440px; }
     .modal-toolbar .slidebox .content .action {
       float: right;
@@ -113,6 +113,8 @@
         box-shadow: none; }
         .modal-toolbar .slidebox .content .action .btn-silver.cancel:hover {
           color: #148BE6; }
+        .modal-toolbar .slidebox .content .action .btn-silver.cancel[disabled]:hover {
+          color: #666; }
   .modal-toolbar .slidebox .error {
     color: #ec3c38;
     width: 430px;

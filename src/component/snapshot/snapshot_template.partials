@@ -1,6 +1,13 @@
 <!-- {{keys}} -->
 {{#each data}}
-<li class="item{{#if selected}} selected{{/if}}" data-id="{{id}}" tabindex="-1">{{#if id}}{{id}}{{else}}{{this}}{{/if}}</li>
+<li class="item{{#if selected}} selected{{/if}}" data-id="{{id}}" tabindex="-1">
+    {{#if id}}
+    <div class="manager-content-main" data-id="{{id}}">{{#if tagSet}}{{tagSet.Name}}{{else}}&lt;No Name&gt;{{/if}}</div>
+    <div class="manager-content-sub">{{#if id}}{{id}}{{else}}{{name}}{{/if}} &nbsp;&nbsp;&nbsp;&nbsp;Size: {{size}} GiB</div>
+    {{else}}
+    <div class="manager-content-main" data-id="{{region}}">{{name}}</div>
+    {{/if}}
+</li>
 {{/each}}
 
 
@@ -17,7 +24,7 @@
     <td>{{volumeSize}} GiB</td>
     <td>
         <div class="manager-content-main">{{#if completed}}<i class="status status-green icon-label"></i> Completed{{else}}<i class="status status-yellow icon-label"></i> Pending - {{progress}}%{{/if}}</div>
-        <span class="manager-content-sub">Started: {{startTime}}</span>
+        <span class="manager-content-sub">Started: {{started}}</span>
     </td>
     <td>{{description}}</td>
 </tr>

@@ -9,6 +9,8 @@ jshintGlobals = {}
 jshintOption =
   "-W099" : true # Allow mixed tabs and spaces
   "-W041" : true # Allow comparing null using ==
+  "-W030" : true # Allow assignment with logical expression
+
 
 
 problemSign = if process.platform is "win32" then "x " else "✖ "

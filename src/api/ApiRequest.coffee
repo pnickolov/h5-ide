@@ -127,6 +127,7 @@ define ["ApiRequestDefs", "api/ApiRequestErrors", "api/ApiRequestHandlers", "api
       url      : MC.API_HOST + ApiDef.url
       dataType : "json"
       type     : "POST"
+      jsonp    : false
       data     : JSON.stringify RequestData
     }
 

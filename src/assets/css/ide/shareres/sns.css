@@ -71,3 +71,6 @@
     display: none; }
 .sns-manage .tr-detail table.sns-detail tr:hover td {
   background: #000; }
+
+.sns-dropdown .selection > span {
+  color: #ec3c38; }

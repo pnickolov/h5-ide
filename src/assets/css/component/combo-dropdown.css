@@ -23,6 +23,8 @@
   border: 0;
   padding-right: 20px; }
 
+.combo-dd a {
+  color: #34A3F8; }
 .combo-dd i {
   color: #148BE6; }
 .combo-dd.selectbox {
@@ -59,7 +61,7 @@
   width: 260px; }
   .combo-dd .no-credential {
     color: #F5F5F5;
-    padding-top: 55px; }
+    margin: 50px auto; }
   .combo-dd .no-credential a {
     cursor: pointer;
     color: #148BE6; }

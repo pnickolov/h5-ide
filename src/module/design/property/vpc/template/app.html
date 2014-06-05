@@ -21,22 +21,25 @@
   <div class="option-group-head expand">{{ i18n "PROP_VPC_TIT_DHCP_OPTION" }}</div>
   <div class="option-group">
 
-  {{#if default_dhcp}}
+
   <div class="property-control-group">
+  {{#if autoDhcp}}
     <p>{{ i18n "PROP_VPC_DHCP_LBL_DEFAULT" }}</p>
   {{else}}
-  {{#unless dhcp}}
+  {{#if defaultDhcp}}
     <p>{{ i18n "PROP_VPC_DHCP_LBL_NONE" }}</p>
- </div>
-    {{else}}
+  </div>
+  {{/if}}
+  {{/if}}
 
+  {{#unless defaultDhcp}}
   <dl class="dl-vertical">
     <dt>{{ i18n "PROP_VPC_DHCP_OPTION_SET_ID" }}</dt>
     <dd>{{dhcpOptionsId}}</dd>
 
     {{#if dhcp.domainName}}
     <dt>{{ i18n "PROP_VPC_DHCP_SPECIFIED_LBL_DOMAIN_NAME" }}</dt>
-    <dd>{{dhcp.domainName.[0]}}</dd>
+    <dd>{{#each dhcp.domainName}}<p>{{this}}</p>{{/each}}</dd>
     {{/if}}
 
     {{#if dhcp.domainNameServers.length}}
@@ -64,9 +67,7 @@
     {{/if}}
 
   </dl>
-
   {{/unless}}
-  {{/if}}
 
   </div>
 </article>

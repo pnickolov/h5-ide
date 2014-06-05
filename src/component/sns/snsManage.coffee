@@ -23,6 +23,8 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
                     that.detail null, $(@).data(), $(@)
                     return false
 
+        quickCreate: ->
+            @modal.triggerSlide 'create'
 
         getModalOptions: ->
             that = @
@@ -184,7 +186,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
             endpoint = @M$( '#create-endpoint' ).val()
 
             createSub = ( newTopic ) ->
-                @subCol.create( TopicArn: newTopic and newTopic.id or topicId, Endpoint: endpoint, Protocol: protocol )
+                that.subCol.create( TopicArn: newTopic and newTopic.id or topicId, Endpoint: endpoint, Protocol: protocol )
                     .save()
                     .then ( newSub ) ->
                         that.processSubCreate newSub
@@ -206,7 +208,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
 
             else
                 topicModel = @topicCol.get topicId
-                if displayName is topicModel.get 'displayName'
+                if displayName is topicModel.get 'DisplayName'
                     createSub()
                 else
                     topicModel.update( displayName ).then createSub
@@ -214,11 +216,12 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
 
         delete: ( invalid, checked ) ->
             count = checked.length
+            that = @
 
             onDeleteFinish = @genDeleteFinish count
             @switchAction 'processing'
             _.each checked, ( c ) ->
-                m = @topicCol.get c.data.id
+                m = that.topicCol.get c.data.id
                 m?.destroy().then onDeleteFinish, onDeleteFinish
 
         refresh: ->
@@ -244,11 +247,11 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
             @
 
         processCol: ( noRender ) ->
+            that = @
             if @topicCol.isReady() and @subCol.isReady()
-
                 data = @topicCol.map ( tModel ) ->
                     tData = tModel.toJSON()
-                    sub = @subCol.where TopicArn: tData.id
+                    sub = that.subCol.where TopicArn: tData.id
                     tData.sub = sub.map ( sModel ) -> sModel.toJSON()
                     tData.subCount = tData.sub.length
                     tData

@@ -1,13 +1,7 @@
 define [ 'constant', 'CloudResources','sns_manage', 'combo_dropdown', './component/sns/snsTpl', 'i18n!nls/lang.js' ], ( constant, CloudResources, snsManage, comboDropdown, template, lang ) ->
 
-
     subCol = CloudResources constant.RESTYPE.SUBSCRIPTION, 'us-east-1'
     topicCol = CloudResources constant.RESTYPE.TOPIC, 'us-east-1'
-
-
-    window.subCol = subCol
-    window.topicCol = topicCol
-
 
     Backbone.View.extend
 
@@ -25,19 +19,22 @@ define [ 'constant', 'CloudResources','sns_manage', 'combo_dropdown', './compone
             options =
                 manageBtnValue      : lang.ide.PROP_INSTANCE_MANAGE_SNS
                 filterPlaceHolder   : lang.ide.PROP_INSTANCE_FILTER_SNS
+                classList           : 'sns-dropdown'
 
             @dropdown = new comboDropdown( options )
             @dropdown.on 'open', @show, @
             @dropdown.on 'manage', @manage, @
             @dropdown.on 'change', @set, @
             @dropdown.on 'filter', @filter, @
+            @dropdown.on 'quick_create', @quickCreate, @
+
 
         initialize: ( options ) ->
             if options and options.selection
                 @selection = options.selection
             @initCol()
             @initDropdown()
-            if not @selection and App.user.hasCredential()
+            if App.user.hasCredential()
                 @topicCol.fetch()
                 @subCol.fetch()
 
@@ -58,12 +55,15 @@ define [ 'constant', 'CloudResources','sns_manage', 'combo_dropdown', './compone
             @el = @dropdown.el
             @
 
-        processCol: ( filter, keyword ) ->
-            if @topicCol.isReady() and @subCol.isReady()
+        quickCreate: ->
+            new snsManage().render().quickCreate()
 
+        processCol: ( filter, keyword ) ->
+            that = @
+            if @topicCol.isReady() and @subCol.isReady()
                 data = @topicCol.map ( tModel ) ->
                     tData = tModel.toJSON()
-                    sub = @subCol.where TopicArn: tData.id
+                    sub = that.subCol.where TopicArn: tData.id
                     tData.sub = sub.map ( sModel ) -> sModel.toJSON()
                     tData.subCount = tData.sub.length
                     tData
@@ -77,7 +77,7 @@ define [ 'constant', 'CloudResources','sns_manage', 'combo_dropdown', './compone
                 _.each data, ( d ) ->
                     if d.Name and d.Name is selection
                         d.selected = true
-
+                        null
 
                 @renderDropdownList data
 

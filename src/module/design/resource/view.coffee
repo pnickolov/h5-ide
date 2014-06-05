@@ -40,6 +40,7 @@ define [ 'event',
                 .on( 'click',            '.favorite-ami-list .btn-fav-ami.deleted',         this, this.addFav )
                 .on( 'keypress',         '#community-ami-input',                this, this.searchCommunityAmiCurrent)
                 .on( 'click',            '.resources-dropdown-wrapper li',      this, this.resourcesMenuClick )
+                .on( 'click',            '.refresh-resource-panel',             this, $.proxy(this.refreshResourcePanel, this) )
 
             $( window ).on "resize", _.bind( this.resizeAccordion, this )
             $( "#tab-content-design" ).on "click", ".fixedaccordion-head", this.updateAccordion
@@ -47,6 +48,8 @@ define [ 'event',
         render   : () ->
             console.log 'resource render'
             $( '#resource-panel' ).html template()
+            # for new volume in snapshot list
+            $( '.resoruce-snapshot' ).html template_data.resoruce_snapshot_new_data({})
             #
             #
             ide_event.trigger ide_event.DESIGN_SUB_COMPLETE
@@ -301,6 +304,7 @@ define [ 'event',
             console.log 'resourceSnapshotRender'
             console.log this.model.attributes.resource_snapshot
             return if !this.model.attributes.resource_snapshot
+            $( '.resoruce-snapshot' ).html template_data.resoruce_snapshot_new_data({})
             $( '.resoruce-snapshot' ).append template_data.resoruce_snapshot_data( @model.attributes )
             null
 
@@ -567,6 +571,22 @@ define [ 'event',
                 when 'dhcp'
 
                     (new dhcpManage()).manageDhcp()
+
+        refreshResourcePanel : (event) ->
+
+            $refreshBtn = $('.sidebar-title .refresh-resource-panel')
+
+            if not $refreshBtn.hasClass('disabled')
+
+                resourceView = event.data
+                regionName = resourceView.region
+                this.model.refreshResourceList(regionName)
+                $refreshBtn.addClass('disabled')
+
+        stopRefreshResourcePanel : () ->
+
+            $('.sidebar-title .refresh-resource-panel').removeClass('disabled')
+            notification 'info', 'Refresh resource list success'
 
     }
 

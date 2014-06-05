@@ -1,4 +1,4 @@
-define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo', '../../helper', 'CloudResources' ], ( constant, MC, lang, resultVO, Helper, CloudResources ) ->
+define [ 'constant', 'MC', 'i18n!nls/lang.js', '../result_vo', '../../helper', 'CloudResources' ], ( constant, MC, lang, resultVO, Helper, CloudResources ) ->
 
     i18n = Helper.i18n.short()
 
@@ -63,13 +63,13 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo', '../../helper', '
             notification = asg.getNotiObject()
             notiValid = false
 
-            if not notification or notification.isEffective()
+            if not notification or not notification.isEffective()
                 notiValid = true
+            else
+                topic = notification.getTopic()
 
-            topic = notification.getTopic()
-
-            if not topic
-                notiValid = true
+                if not topic
+                    notiValid = true
 
             if not notiValid
                 needTa.push [ topic, asg, notification ]
@@ -79,18 +79,20 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo', '../../helper', '
             policies = asg.get("policies") or []
 
             for p in policies
-                if p.isNotificate() and p.getTopic()
+                topic = p.getTopic()
+                if p.isNotificate() and topic
                     needTa.push [ topic, asg, p ]
 
 
         if _.isEmpty needTa
             callback null
+            return
 
         region = Design.instance().region()
         topicCol = CloudResources constant.RESTYPE.TOPIC, region
 
         result = []
-        topicCol.fetch().fin ->
+        topicCol.fetchForce().fin ->
             for ta in needTa
                 topic = ta[0]
                 asg = ta[1]
@@ -99,10 +101,10 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo', '../../helper', '
                 if not topicCol.get topic.get 'appId'
 
                     if obj.type is constant.RESTYPE.SP
-                        result.push Helper.message.error p.id, i18n.TA_MSG_ERROR_ASG_POLICY_TOPIC_NONEXISTIENT, asg.get('name'), obj.get('name'), topic.get('name')
+                        result.push Helper.message.error obj.id, i18n.TA_MSG_ERROR_ASG_POLICY_TOPIC_NONEXISTENT, asg.get('name'), obj.get('name'), topic.get('name')
 
                     else if obj.type is constant.RESTYPE.NC
-                        result.push Helper.message.error p.id, i18n.TA_MSG_ERROR_ASG_NOTIFICITION_TOPIC_NONEXISTIENT, asg.get('name'), topic.get('name')
+                        result.push Helper.message.error obj.id, i18n.TA_MSG_ERROR_ASG_NOTIFICITION_TOPIC_NONEXISTENT, asg.get('name'), topic.get('name')
 
 
             callback result

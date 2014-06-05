@@ -2,20 +2,20 @@
 define [ "constant", "../ResourceModel", "Design"  ], ( constant, ResourceModel, Design )->
 
   Model = ResourceModel.extend {
-    type : constant.RESTYPE.DHCP
+    type       : constant.RESTYPE.DHCP
 
-    defaults : ()->
-      dhcpOptionsId: ""
+    defaults   : ()->
+      appId: ""
 
-    isAuto     : ()-> @attributes.dhcpOptionsId is ""
-    isDefault  : ()-> @attributes.dhcpOptionsId is "default"
-    isCustom   : ()-> not (@attributes.dhcpOptionsId is '' or @attributes.dhcpOptionsId is 'default')
+    isAuto     : ()-> @attributes.appId is ""
+    isDefault  : ()-> @attributes.appId is "default"
+    isCustom   : ()-> not (@attributes.appId is '' or @attributes.appId is 'default')
 
-    setNone    : ()-> @set "dhcpOptionsId", ""
-    setDefault : ()-> @set "dhcpOptionsId", "default"
+    setNone    : ()-> @set "appId", ""
+    setDefault : ()-> @set "appId", "default"
     setDhcp    : (val)->
-        if @get('dhcpOptionsId') isnt val
-            @set "dhcpOptionsId", val
+        if @get('appId') isnt val
+            @set "appId", val
     set : ()->
 
       Backbone.Model.prototype.set.apply this, arguments
@@ -36,7 +36,7 @@ define [ "constant", "../ResourceModel", "Design"  ], ( constant, ResourceModel,
         type : @type
         uid  : id
         resource :
-          DhcpOptionsId        : @toJSON().dhcpOptionsId
+          DhcpOptionsId        : @get "appId"
 
       { component : component }
 
@@ -45,7 +45,6 @@ define [ "constant", "../ResourceModel", "Design"  ], ( constant, ResourceModel,
     handleTypes : constant.RESTYPE.DHCP
     deserialize : ( data, layout_data )->
       attr = {}
-      attr.dhcpOptionsId = data.resource.DhcpOptionsId
       attr.id    = data.uid
       attr.appId = data.resource.DhcpOptionsId
       new Model( attr )

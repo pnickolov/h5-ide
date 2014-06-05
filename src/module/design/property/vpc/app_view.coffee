@@ -11,7 +11,7 @@ define [ '../base/view', './template/app' ], ( PropertyView, template ) ->
             if data.dhcpOptionsId is 'default'
                 data.defaultDhcp = true
                 data.autoDhcp = false
-            else if not data.dhcpOptionsId
+            else if not data.dhcpOptionsId or not data.dhcp
                 data.autoDhcp = true
                 data.defaultDhcp = false
             else if data.dhcpOptionsId[0] isnt "@"

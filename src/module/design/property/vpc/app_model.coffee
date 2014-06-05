@@ -38,18 +38,18 @@ define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, const
             else
               dhcpData = appData[myVPCComponent.toJSON().dhcp.toJSON().appId]?.dhcpConfigurationSet.item
               vpc.dhcpOptionsId = myVPCComponent.toJSON().dhcp.toJSON().appId
-              if dhcpData then dhcp = {}
-
-              for i in dhcpData
-                if i.key is 'domain-name-servers'
-                  for j, idx in i.valueSet
-                    if j is 'AmazonProvidedDNS'
-                      tmp = i.valueSet[0]
-                      i.valueSet[0]   = j
-                      i.valueSet[idx] = tmp
-                      break
-                dhcp[ MC.camelCase( i.key ) ] = i.valueSet
-
+              dhcp = null
+              if dhcpData
+                  dhcp = {}
+                  for i in dhcpData
+                    if i.key is 'domain-name-servers'
+                      for j, idx in i.valueSet
+                        if j is 'AmazonProvidedDNS'
+                          tmp = i.valueSet[0]
+                          i.valueSet[0]   = j
+                          i.valueSet[idx] = tmp
+                          break
+                    dhcp[ MC.camelCase( i.key ) ] = i.valueSet
               vpc.dhcp = dhcp
 
           @set vpc

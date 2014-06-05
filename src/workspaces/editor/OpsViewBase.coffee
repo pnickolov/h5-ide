@@ -2,12 +2,12 @@
 define [
   "./template/TplOpsEditor"
   "./template/TplCanvas"
-  "./template/TplRightPanel"
   "OpsModel"
+  "./property/PropertyPanel"
   "backbone"
   "UI.selectbox"
   "MC.canvas"
-], ( OpsEditorTpl, CanvasTpl, RightPanelTpl, OpsModel )->
+], ( OpsEditorTpl, CanvasTpl, OpsModel, PropertyPanel )->
 
   # Update Left Panel when window size changes
   __resizeAccdTO = null
@@ -36,7 +36,9 @@ define [
       "click .fixedaccordion-head"   : "updateAccordion"
       "RECALC #OEPanelLeft"          : "recalcAccordion"
 
-      "click #HideOEPanelRight"      : "toggleRightPanel"
+    initialize : ()->
+      @propertyPanel = new PropertyPanel()
+      return
 
     render : ()->
       # 1. Generate basic dom structure.
@@ -55,6 +57,14 @@ define [
 
       # 4. OtherSubviews
       @renderSubviews()
+      return
+
+    clearDom : ()->
+      # Remove the DOM to free memories. But we don't call setElement(), because
+      # setElement() will transfer events to the new element.
+      @view.$el.remove()
+      @view.$el = null
+      @propertyPanel.$el = null
       return
 
     ###
@@ -100,8 +110,7 @@ define [
 
     renderSubviews : ()->
       @recalcAccordion()
-      @renderRightPanel()
-      $("#OEPanelRight").toggleClass("hidden", @__rightPanelHidden || false)
+      @propertyPanel.render()
       $("#OEPanelLeft").toggleClass("hidden",  @__leftPanelHidden  || false)
       return
 
@@ -194,13 +203,4 @@ define [
     manageSnapshot : ()->
 
     refreshPanelData : ()->
-
-
-    ### Property Panel Related ###
-    toggleRightPanel : ()->
-      @__rightPanelHidden = $("#OEPanelRight").toggleClass("hidden").hasClass("hidden")
-      false
-
-    renderRightPanel : ()-> $("#OEPanelRight").html RightPanelTpl(); false
-
   }

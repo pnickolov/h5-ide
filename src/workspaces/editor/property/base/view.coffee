@@ -57,7 +57,7 @@ define [ 'constant',
             return
 
         forceShow : () ->
-            PropertyView.event.trigger PropertyView.event.FORCE_SHOW
+            $("#OEPanelRight").trigger "FORCE_SHOW"
             null
 
         disabledAllOperabilityArea : ( disabled ) ->
@@ -117,9 +117,9 @@ define [ 'constant',
             # will create dependency hell, for example, you have no idea who will use your ide_event.
             # Instead, we use our own event
             if @__restore
-                PropertyView.event.trigger PropertyView.event.OPEN_SUBPANEL_IMM
+                $("#OEPanelRight").trigger("OPEN_SUBPANEL_IMM")
             else
-                PropertyView.event.trigger PropertyView.event.OPEN_SUBPANEL
+                $("#OEPanelRight").trigger("OPEN_SUBPANEL")
 
 
             # Set the element to Second Panel Wrapper
@@ -175,14 +175,6 @@ define [ 'constant',
                 , 0)
             null
     }
-
-    # The event object is used to communicate with design/property/view
-    # So that we don't have a reference to desing/property/view, avoiding
-    # a strong dependency on it.
-    PropertyView.event = _.extend {}, Backbone.Events
-    PropertyView.event.FORCE_SHOW        = "forceshow"
-    PropertyView.event.OPEN_SUBPANEL     = "opensubpanel"
-    PropertyView.event.OPEN_SUBPANEL_IMM = "opensubpanelimm"
 
     PropertyView.extend = ( protoProps, staticProps ) ->
 

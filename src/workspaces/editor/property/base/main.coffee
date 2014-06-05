@@ -3,7 +3,7 @@
 #  Base Class for Property Module
 ####################################
 
-define [ 'event', 'backbone' ], ( ide_event, Backbone )->
+define [ 'event' ], ( ide_event )->
 
     activeModule        = null
     activeSubModule     = null
@@ -435,18 +435,9 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
             PropertyModule.loadSubPanel snapshot.activeSubModuleType, snapshot.activeSubModuleId, true
             PropertyModule.__restore = false
         else
-            PropertyModule.event.trigger PropertyModule.event.HIDE_SUB_PANEL
+            $("#OEPanelRight").trigger "HIDE_SUBPANEL"
 
         null
-
-
-    # The event object is used to communicate with design/property/view
-    # So that we don't have a reference to desing/property/view, avoiding
-    # a strong dependency on it.
-    PropertyModule.event = _.extend {}, Backbone.Events
-    PropertyModule.event.FORCE_SHOW     = "forceshow"
-    PropertyModule.event.HIDE_SUB_PANEL = "hidesubpanel"
-
 
     # Export PropertyModule
     PropertyModule

@@ -159,10 +159,7 @@ define [ "Workspace", "./OpsViewBase", "./template/TplOpsEditor", "OpsModel", "D
       console.assert( $("#OpsEditor").attr("data-workspace") is @id && $("#OpsEditor")[0] is @view.$el[0], "The #OpsEditor DOM is not this editor's", $("#OpsEditor"), @ )
 
       @__backupSvg = $("#OEPanelCenter").html()
-      # Remove the DOM to free memories. But we don't call setElement(), because
-      # setElement() will transfer events to the new element.
-      @view.$el.remove()
-      @view.$el = null
+      @view.clearDom()
       return
 
   OpsEditorBase

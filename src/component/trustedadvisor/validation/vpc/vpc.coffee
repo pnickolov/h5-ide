@@ -57,7 +57,7 @@ define [ 'constant', 'MC', 'i18n!nls/lang.js' , 'Design', 'CloudResources', '../
 
 		vpc = Design.modelClassForType(constant.RESTYPE.VPC).theVPC()
 		dhcpId = vpc.get( 'dhcp' ).get( 'appId' )
-		if dhcpId
+		if dhcpId isnt 'default'
 			return null
 
 		Helper.message.warning vpc.id, i18n.TA_MSG_WARNING_VPC_CANNOT_USE_DEFAULT_DHCP_WHEN_USE_VISUALOPS

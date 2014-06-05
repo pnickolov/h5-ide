@@ -517,6 +517,7 @@ define [ 'MC', 'event',
                 #contentType: 'application/json; charset=utf-8'
                 data: JSON.stringify data
                 dataType: 'json'
+                jsonp: false
                 statusCode:
                     200: ->
                         console.log 200,arguments

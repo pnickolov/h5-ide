@@ -3,7 +3,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo' ], ( constant, MC,
     isConnectToRTB = ( uid ) ->
         components = MC.canvas_data.component
         igw = components[ uid ]
-        igwId = MC.aws.aws.genResRef(uid, 'resource.InternetGatewayId')
+        igwId = MC.genResRef(uid, 'resource.InternetGatewayId')
 
         isConnectRTB = _.some components, ( component ) ->
             if component.type is constant.RESTYPE.RT

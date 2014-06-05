@@ -3,7 +3,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo' ], ( constant, MC,
     isConnectToRTB = ( uid ) ->
         components = MC.canvas_data.component
         vpn = components[ uid ]
-        vpnId = MC.aws.aws.genResRef(uid, 'resource.VpnGatewayId')
+        vpnId = MC.genResRef(uid, 'resource.VpnGatewayId')
 
         isConnectRTB = _.some components, ( component ) ->
             if component.type is constant.RESTYPE.RT

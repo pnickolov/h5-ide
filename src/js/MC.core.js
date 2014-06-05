@@ -84,6 +84,11 @@ var MC = {
    		}).toUpperCase();
 	},
 
+	genResRef: function(uid, attrName)
+	{
+		return "@{" + uid + "." + attrName + "}"
+	},
+
 	/**
 	 * Determine the string is JSON or not
 	 * @param  {string}  string the string will be determined

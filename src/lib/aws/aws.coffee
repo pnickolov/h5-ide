@@ -411,26 +411,26 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
 
             if constant.AWS_RESOURCE_KEY[comp.type] and comp.resource[constant.AWS_RESOURCE_KEY[comp.type]]
 
-                key[comp.resource[constant.AWS_RESOURCE_KEY[comp.type]]] = MC.aws.aws.genResRef(uid, "resource.#{constant.AWS_RESOURCE_KEY[comp.type]}")
+                key[comp.resource[constant.AWS_RESOURCE_KEY[comp.type]]] = MC.genResRef(uid, "resource.#{constant.AWS_RESOURCE_KEY[comp.type]}")
 
                 # if comp.type is "AWS.EC2.KeyPair"
 
-                #     key[comp.resource.KeyName + '-keypair'] = MC.aws.aws.genResRef(uid, 'resource.KeyName')
+                #     key[comp.resource.KeyName + '-keypair'] = MC.genResRef(uid, 'resource.KeyName')
 
                 if comp.type is "AWS.AutoScaling.Group"
 
-                    key[comp.resource.AutoScalingGroupName + '-asg'] = MC.aws.aws.genResRef(uid, 'resource.AutoScalingGroupName')
+                    key[comp.resource.AutoScalingGroupName + '-asg'] = MC.genResRef(uid, 'resource.AutoScalingGroupName')
 
                 if comp.type is "AWS.AutoScaling.LaunchConfiguration"
 
-                    key[comp.resource.LaunchConfigurationName + '-lc'] = MC.aws.aws.genResRef(uid, 'resource.LaunchConfigurationName')
+                    key[comp.resource.LaunchConfigurationName + '-lc'] = MC.genResRef(uid, 'resource.LaunchConfigurationName')
 
                 ## no need for app ##
                 # if comp.type is 'AWS.VPC.NetworkInterface'
 
                 #     for idx, ipset of comp.resource.PrivateIpAddressSet
 
-                #         key[ipset.PrivateIpAddress] = MC.aws.aws.genResRef(uid, "resource.PrivateIpAddressSet.#{idx}.PrivateIpAddress")
+                #         key[ipset.PrivateIpAddress] = MC.genResRef(uid, "resource.PrivateIpAddressSet.#{idx}.PrivateIpAddress")
 
         #replace reference
         for uid, comp of canvas_component
@@ -527,10 +527,6 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
             #     when 'AWS.VPC.SecurityGroup'
 
             #         key[comp.resource.GroupId] = "@#{uid}.resource.GroupId"
-
-    genResRef = (uid, attrName) ->
-
-        return "@{#{uid}.#{attrName}}"
 
     enableStackAgent = (isEnable) ->
 

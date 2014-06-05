@@ -5,26 +5,24 @@
   other concrete class :
 
   OpsProgress : For starting app.
+  OpsViewer   : For viewing visualize app
 ###
 
-define [ "Workspace", "./editor/OpsProgress", "./editor/OpsViewer", 'module/design/framework/DesignBundle' ], ( Workspace, OpsProgress, OpsViewer )->
+define [ "./editor/OpsProgress", "./editor/OpsViewer", 'module/design/framework/DesignBundle' ], ( OpsProgress, OpsViewer )->
 
   # OpsEditor defination
-  class OpsEditor extends Workspace
+  class OpsEditor
 
-    constructor : ( attribute )->
-      opsModel = App.model.stackList().get( attribute )
-      if not opsModel then opsModel = App.model.appList().get( attribute )
-
+    constructor : ( opsModel )->
       if not opsModel
         throw new Error("Cannot find opsmodel while openning workspace.")
 
       if opsModel.isImported()
-        return new OpsViewer attribute
+        return new OpsViewer opsModel
 
       if opsModel.isProcessing()
-        return new OpsProgress attribute
+        return new OpsProgress opsModel
 
-      return new OpsViewer attribute
+      return new OpsViewer opsModel
 
   OpsEditor

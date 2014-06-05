@@ -3,22 +3,22 @@ define [ "./TplOpsEditor", "./TplCanvas", "OpsModel", "backbone", "UI.selectbox"
 
   Backbone.View.extend {
 
-    render : ()->
-      console.assert( not @$el or @$el.attr("id") isnt "OpsEditor", "In OpsEditorView.render(), the opsEditorView's $el should not be #OpsEditor." )
+    initialize : ( options )->
+      @opsModel  = options.opsModel
+      @workspace = options.workspace
+      return
 
+    render : ()->
       # 1. Generate basic dom structure.
-      if @workspace.isDataReady()
-        tpl = CanvasTpl({
-          noLeftPane   : true
-          noBottomPane : true
-        })
-      else
-        tpl = OpsEditorTpl.loading()
+      tpl = CanvasTpl({
+        noLeftPane   : true
+        noBottomPane : true
+      })
+
+      console.assert( not @$el or @$el.attr("id") isnt "OpsEditor", "There should be no #OpsEditor when an editor view is rendered." )
 
       if @$el then @$el.remove()
       @setElement $(tpl).appendTo("#main").show()[0]
-
-      if not @workspace.isDataReady() then return
 
       # 1.5 Update subviews
       @renderToolbar()
@@ -29,8 +29,6 @@ define [ "./TplOpsEditor", "./TplCanvas", "OpsModel", "backbone", "UI.selectbox"
 
     # Canvas Events
     bindEventForViewer : ()->
-      console.assert( $("#canvas_body").parents("#OpsEditor")[0] is @$el[0], "Fatal Error, the #OpsEditor is not current workspace's view, workspace:", this.workspace )
-
       $("#canvas_body")
         .addClass("canvas_state_appview")
         .on('mousedown', '.instance-volume, .instanceList-item-volume, .asgList-item-volume', MC.canvas.volume.show)
@@ -43,7 +41,6 @@ define [ "./TplOpsEditor", "./TplCanvas", "OpsModel", "backbone", "UI.selectbox"
         .on('mousedown', '#svg_canvas', MC.canvas.event.clickBlank)
         .on('mousedown', MC.canvas.event.ctrlMove.mousedown)
         .on('selectstart', false)
-
       return
 
 

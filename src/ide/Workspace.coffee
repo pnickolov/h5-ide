@@ -4,6 +4,8 @@
 
 define ["backbone"], ()->
 
+  wsid = 0
+
   class Workspace
 
     constructor : ( attributes )->
@@ -13,7 +15,7 @@ define ["backbone"], ()->
           console.info "Found a workspace that is working on, ", attributes, ws
           return ws
 
-      @id = "space_" + _.uniqueId()
+      @id = "space_" + (++wsid)
       @initialize attributes
       App.workspaces.add @
 
@@ -64,7 +66,9 @@ define ["backbone"], ()->
 
     # This method will be called when the workspace is remove. One should override this method
     # to do necessary cleanup.
-    cleanup : ()-> if @view then @view.remove()
+    cleanup : ()->
+      console.assert( @view, "Cannot find @view when workspace is about to remove:", @ )
+      @view.remove()
 
     # Override this method to check if the tab is closable. Return false to prevent closing.
     isRemovable : ()-> true

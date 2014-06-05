@@ -1,7 +1,7 @@
 
 # This view is used to show the running status of an ops
 
-define ["OpsModel", "./OpsEditorBase", "./TplOpsProgress", "backbone"], ( OpsModel, OpsEditorBase, OpsProgressTpl )->
+define ["OpsModel", "Workspace", "./TplOpsProgress", "backbone"], ( OpsModel, Workspace, OpsProgressTpl )->
 
 
   # View
@@ -35,7 +35,7 @@ define ["OpsModel", "./OpsEditorBase", "./TplOpsProgress", "backbone"], ( OpsMod
     updateState : ()->
       switch @model.get("state")
         when OpsModel.State.Running
-          if @isAwake
+          if @__awake
             @switchToDone()
           else
             @done = true
@@ -59,7 +59,7 @@ define ["OpsModel", "./OpsEditorBase", "./TplOpsProgress", "backbone"], ( OpsMod
 
     awake : ()->
       @$el.show()
-      @isAwake = true
+      @__awake = true
       if @done
         @done = false
         @switchToDone()
@@ -67,13 +67,26 @@ define ["OpsModel", "./OpsEditorBase", "./TplOpsProgress", "backbone"], ( OpsMod
 
     sleep : ()->
       @$el.hide()
-      @isAwake = false
+      @__awake = false
       return
 
   }
 
   # Controller
-  class OpsProgress extends OpsEditorBase
+  class OpsProgress extends Workspace
+
+    isFixed     : ()-> false
+    isWorkingOn : ( attribute )-> @opsModel is attribute
+    tabClass    : ()-> "icon-app-pending"
+
+    constructor : ( opsModel )->
+      if not opsModel
+        @remove()
+        throw new Error("Cannot find opsmodel while openning workspace.")
+
+      @opsModel = opsModel
+
+      return Workspace.apply @, arguments
 
     initialize : ()->
       @view = new OpsProgressView({model:@opsModel})

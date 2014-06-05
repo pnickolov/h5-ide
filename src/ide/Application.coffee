@@ -115,18 +115,20 @@ define [
   # This is a convenient method to open an editor for the ops model.
   VisualOps.prototype.openOps = ( opsModel )->
     if not opsModel then return
-    modelId = if _.isString(opsModel) then opsModel else opsModel.cid
-    space = @workspaces.find(modelId)
-    if space
-      space.activate()
-      return
 
-    opsModel = @model.getOpsModelById( modelId )
+    if _.isString( opsModel )
+      opsModel = @model.getOpsModelById( opsModel )
+
     if not opsModel
       console.warn "The OpsModel `#{modelId}` is not found."
       return
 
-    editor = new DesignEditor( modelId )
+    space = @workspaces.find( opsModel )
+    if space
+      space.activate()
+      return space
+
+    editor = new DesignEditor( opsModel )
     editor.activate()
     editor
 

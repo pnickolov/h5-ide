@@ -28,15 +28,7 @@ define [ '../base/main',
 
 
     # ide_events handlers are called with the scope ( this ) of current property.
-    ideEvents = {}
-
-    ideEvents[ ide_event.RESOURCE_QUICKSTART_READY ] = ()->
-        ide_event.trigger ide_event.OPEN_PROPERTY
-        null
-
     StackModule = PropertyModule.extend {
-
-        ideEvents : ideEvents
 
         handleTypes : [ "Stack", "default" ]
 

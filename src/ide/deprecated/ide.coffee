@@ -91,19 +91,6 @@ define [ 'MC', 'constant', 'common_handle', 'validation', 'aws_handle' ], ( MC, 
 		#############################
 		#  listen ide_event
 		#############################
-
-		#listen main view event
-		#listen RETURN_OVERVIEW_TAB and RETURN_REGION_TAB
-		ide_event.onLongListen ide_event.RETURN_OVERVIEW_TAB, () -> view.showOverviewTab()
-		ide_event.onLongListen ide_event.RETURN_REGION_TAB,   () -> view.showRegionTab()
-		#listen SWITCH_TAB and SWITCH_DASHBOARD
-		ide_event.onLongListen ide_event.SWITCH_TAB,          () -> view.showTab()
-		ide_event.onLongListen ide_event.SWITCH_DASHBOARD,    () -> view.showDashbaordTab()
-		ide_event.onLongListen ide_event.SWITCH_PROCESS,      () -> view.showProcessTab()
-		#
-		ide_event.onLongListen ide_event.SWITCH_MAIN,         () -> view.showMain()
-		ide_event.onLongListen ide_event.SWITCH_LOADING_BAR,  ( tab_id, is_transparent ) -> view.showLoading tab_id, is_transparent
-		ide_event.onLongListen ide_event.SWITCH_WAITING_BAR,  () -> view.toggleWaiting()
 		ide_event.onLongListen ide_event.HIDE_STATUS_BAR,     () -> view.hideStatubar()
 
 		#############################

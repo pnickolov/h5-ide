@@ -108,9 +108,9 @@ define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone", "con
       # LEGACY Code. When switching between tabs, we automatically mark notification of that tab as read.
       # Temporary removed right now. Because I think this kind of trigger is too buggy.
       ###
-      ideevent.onLongListen ideevent.SWITCH_DASHBOARD, () -> return
-      ideevent.onLongListen ideevent.SWITCH_TAB, () -> return
-      ideevent.onListen ideevent.OPEN_DESIGN, () -> return
+      ideevent.onLongListen ideevent.SWITCH|_DASHBOARD, () -> return
+      ideevent.onLongListen ideevent.SWITCH|_TAB, () -> return
+      ideevent.onListen ideevent.OPEN|_DESIGN, () -> return
       ###
 
       # It seems like the toolbar doesn't even process the request_item, in which we can just directly listen to WS that the request item event.

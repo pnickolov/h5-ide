@@ -8,7 +8,12 @@
   OpsViewer   : For viewing visualize app
 ###
 
-define [ "./editor/OpsProgress", "./editor/OpsViewer", 'module/design/framework/DesignBundle' ], ( OpsProgress, OpsViewer )->
+define [
+  "./editor/OpsProgress"
+  "./editor/UnmanagedViewer"
+  "./editor/StackEditor"
+  'module/design/framework/DesignBundle'
+], ( OpsProgress, OpsViewer, StackEditor )->
 
   # OpsEditor defination
   class OpsEditor
@@ -18,11 +23,14 @@ define [ "./editor/OpsProgress", "./editor/OpsViewer", 'module/design/framework/
         throw new Error("Cannot find opsmodel while openning workspace.")
 
       if opsModel.isImported()
-        return new OpsViewer opsModel
+        return new UnmanagedViewer opsModel
 
       if opsModel.isProcessing()
         return new OpsProgress opsModel
 
-      return new OpsViewer opsModel
+      if opsModel.isStack()
+        return new StackEditor opsModel
+
+      return new StackEditor opsModel
 
   OpsEditor

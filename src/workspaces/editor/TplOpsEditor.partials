@@ -1,7 +1,7 @@
 
 <!-- {{loading}} -->
 <div class="ops-process">
-  <header class="processing">Loading resources...</header>
+  <header class="processing">Loading data...</header>
   <section class="loading-spinner"></section>
 </div>
 

@@ -3,32 +3,36 @@ define [ "./TplOpsEditor", "./TplCanvas", "OpsModel", "backbone", "UI.selectbox"
 
   Backbone.View.extend {
 
-    initialize : ( options )->
-      @opsModel  = options.opsModel
-      @workspace = options.workspace
-      return
-
     render : ()->
       # 1. Generate basic dom structure.
-      tpl = CanvasTpl({
-        noLeftPane   : true
-        noBottomPane : true
-      })
+      tpl = @createTpl()
 
       console.assert( not @$el or @$el.attr("id") isnt "OpsEditor", "There should be no #OpsEditor when an editor view is rendered." )
 
       if @$el then @$el.remove()
       @setElement $(tpl).appendTo("#main").show()[0]
 
-      # 1.5 Update subviews
+      # 2. Bind Events for MC.canvas.js
+      @bindUserEvent()
+
+      # 3 Update subviews
       @renderToolbar()
 
-      # 2. Bind Events for MC.canvas.js
-      @bindEventForViewer()
+      # 4. OtherSubviews
+      @renderSubviews()
       return
 
-    # Canvas Events
-    bindEventForViewer : ()->
+    ###
+      Override these methods in subclasses.
+    ###
+    createTpl : ()->
+      CanvasTpl({
+        noLeftPane   : true
+        noBottomPane : true
+      })
+
+    bindUserEvent : ()->
+      # Events
       $("#canvas_body")
         .addClass("canvas_state_appview")
         .on('mousedown', '.instance-volume, .instanceList-item-volume, .asgList-item-volume', MC.canvas.volume.show)
@@ -43,9 +47,29 @@ define [ "./TplOpsEditor", "./TplCanvas", "OpsModel", "backbone", "UI.selectbox"
         .on('selectstart', false)
       return
 
+    updateTbBtns : ( $toolbar )->
+      # LineStyle Btn
+      $toolbar.children(".toolbar-line-style").children(".dropdown").children().eq(parseInt(localStorage.getItem("canvas/lineStyle"),10) || 2).click()
 
-    # Toolbar
+      # App Run & Stop
+      if @opsModel.isApp()
+        $stopBtn = $toolbar.children(".icon-stop")
+        if @opsModel.get("stoppable") or not @opsModel.testState( OpsModel.State.Running )
+          $stopBtn.hide()
+        else
+          $stopBtn.show()
+
+        $toolbar.children(".icon-play").toggle( not @opsModel.testState( OpsModel.State.Stopped ) )
+      return
+
+    renderSubviews : ()->
+
+
+    ###
+      Internal methods
+    ###
     renderToolbar : ()->
+      # Toolbar
       if @opsModel.isImported()
         btns = ["BtnActionPng", "BtnZoom", "BtnLinestyle"]
       else if @opsModel.isStack()
@@ -60,26 +84,9 @@ define [ "./TplOpsEditor", "./TplCanvas", "OpsModel", "backbone", "UI.selectbox"
       for btn in btns
         tpl += OpsEditorTpl.toolbar[ btn ]()
 
-      @$el.children("#OEMiddleWrap").children("#OEPanelTop").html( tpl )
+      $toolbar = @$el.children("#OEMiddleWrap").children("#OEPanelTop").html( tpl )
 
-      @updateTbBtns()
-      return
-
-    updateTbBtns : ()->
-      $toolbar = @$el.children("#OEMiddleWrap").children("#OEPanelTop")
-
-      # LineStyle Btn
-      $toolbar.children(".toolbar-line-style").children(".dropdown").children().eq(parseInt(localStorage.getItem("canvas/lineStyle"),10) || 2).click()
-
-      # App Run & Stop
-      if not @opsModel.isApp() then return
-      $stopBtn = $toolbar.children(".icon-stop")
-      if @opsModel.get("stoppable") or @opsModel.testState( OpsModel.State.Stopped )
-        $stopBtn.hide()
-      else
-        $stopBtn.show()
-
-      $toolbar.children(".icon-play").toggle( @opsModel.testState( OpsModel.State.Running ) )
+      @updateTbBtns( $toolbar )
       return
 
     setTbLineStyle : ( ls )->

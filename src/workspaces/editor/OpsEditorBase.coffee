@@ -1,6 +1,6 @@
 
 ###
-  OpsViewer is a readonly viewer to show the app ( Basically it shows the visualize vpc )
+  OpsEditorBase is a base class for all the OpsEditor
 ###
 
 define [ "Workspace", "./OpsEditorView", "./TplOpsEditor", "OpsModel", "Design" ], ( Workspace, OpsEditorView, OpsEditorTpl, OpsModel, Design )->
@@ -20,12 +20,33 @@ define [ "Workspace", "./OpsEditorView", "./TplOpsEditor", "OpsModel", "Design" 
       2. Its have a render() method which will create and set its element to #OpsEditor.
       3. It needs to re-bind every events in render()
   ###
-  class OpsViewer extends Workspace
+  class OpsEditorBase extends Workspace
 
-    title       : ()-> @opsModel.get("importVpcId") + " - visualization"
-    tabClass    : ()-> "icon-visualization-tabbar"
+    ###
+      Override these methods to implement subclasses.
+    ###
+    title    : ()-> @opsModel.get("name")
+    tabClass : ()-> "icon-stack-tabbar"
+
+    # Returns a promise that will be fulfilled when all the data is ready.
+    # This will be called after the OpsModel's json is fetched.
+    fetchAdditionalData : ()->
+      d = Q.defer()
+      d.resolve()
+      d.promise
+
+    # Returns a new View
+    createView : ()-> new OpsEditorView()
+    # Returns a new Design object.
+    createDesign : ()-> new Design( @opsModel.getJsonData() )
+
+    # Return true if the data is ready.
+    isReady : ()-> @__isJsonLoaded && @__hasAdditionalData
+
+    ###
+      Internal methods.
+    ###
     isWorkingOn : ( attribute )-> @opsModel is attribute
-
     constructor : ( opsModel )->
       if not opsModel
         @remove()
@@ -42,31 +63,6 @@ define [ "Workspace", "./OpsEditorView", "./TplOpsEditor", "OpsModel", "Design" 
 
       return Workspace.apply @, arguments
 
-    ###
-      Override these methods to implement subclasses.
-    ###
-    fetchAdditionalData : ()->
-      d = Q.defer()
-      d.resolve()
-      d.promise
-
-    createView : ()->
-      new OpsEditorView({
-        opsModel  : @opsModel
-        workspace : @
-      })
-
-
-    createDesign : ()->
-      design = new Design( @opsModel.getJsonData(), {autoFinish : false})
-      MC.canvas.analysis()
-      design.finishDeserialization()
-      design
-
-    ###
-      Internal methods.
-    ###
-    isReady : ()-> @__isJsonLoaded && @__hasAdditionalData
     jsonLoaded : ()->
       self = @
       @__isJsonLoaded = true
@@ -87,8 +83,8 @@ define [ "Workspace", "./OpsEditorView", "./TplOpsEditor", "OpsModel", "Design" 
 
       if @isAwake
         @initEditor()
-      else
-        @__postponeInit = true
+        @__inited = true
+
       return
 
     awake : ()->
@@ -101,7 +97,7 @@ define [ "Workspace", "./OpsEditorView", "./TplOpsEditor", "OpsModel", "Design" 
       # So we don't have to worried about the LoadingView.
 
       # The Editor is not inited. Do it now.
-      if @__postponeInit
+      if not @__inited
         @initEditor()
       else
         @showEditor()
@@ -121,6 +117,9 @@ define [ "Workspace", "./OpsEditorView", "./TplOpsEditor", "OpsModel", "Design" 
 
     initEditor : ()->
       @view = @createView()
+      @view.opsModel  = @opsModel
+      @view.workspace = @
+
       @showEditor()
 
       @design = @createDesign()
@@ -165,4 +164,4 @@ define [ "Workspace", "./OpsEditorView", "./TplOpsEditor", "OpsModel", "Design" 
       @view.$el = null
       return
 
-  OpsViewer
+  OpsEditorBase

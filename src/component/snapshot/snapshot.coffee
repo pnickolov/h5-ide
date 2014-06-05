@@ -7,6 +7,7 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
         constructor: ()->
             @collection = CloudResources constant.RESTYPE.SNAP, Design.instance().region()
             @collection.on 'update', (@onChange.bind @)
+            @collection.on 'change', (@onChange.bind @)
             @
         onChange: ->
             @initManager()

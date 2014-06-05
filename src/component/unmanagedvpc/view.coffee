@@ -186,6 +186,25 @@ define [ 'event',
                 finally
                     new Handlebars.SafeString new_count
 
+
+            # vpc_sub_item
+            Handlebars.registerHelper 'vpc_sub_title', ( items, vpc_id ) ->
+
+                title = ""
+
+                try
+                    if items["Tag"] and not items["is_unmanaged"]
+                        title += items["Tag"]["app-id"] + "(" + items["Tag"]["app"] + ")"
+
+                    new Handlebars.SafeString title
+
+                catch error
+                    console.log 'unmanagedvpc title vpc_id', vpc_id
+
+                finally
+                    new Handlebars.SafeString title
+
+
         render     :  ->
             console.log 'pop-up:unmanaged vpc render'
 

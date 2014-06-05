@@ -18,7 +18,7 @@ function program1(depth0,data) {
     + "</span>\n	";
   stack1 = helpers['if'].call(depth0, (depth0 && depth0.should_stay), {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n</div>\n\n\n";
+  buffer += "\n</div>";
   return buffer;
   };
 TEMPLATE.notification.item=Handlebars.template(__TEMPLATE__);
@@ -56,7 +56,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + escapeExpression(((stack1 = (depth0 && depth0.color)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\">"
     + escapeExpression(((stack1 = (depth0 && depth0.confirm)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</button>\n        <button class=\"btn modal-close btn-silver\">Cancel</button>\n    </div>\n</div>\n\n\n";
+    + "</button>\n        <button class=\"btn modal-close btn-silver\">Cancel</button>\n    </div>\n</div>";
   return buffer;
   };
 TEMPLATE.modalAppToStack=Handlebars.template(__TEMPLATE__);
@@ -179,7 +179,7 @@ function program13(depth0,data) {
     + escapeExpression(((stack1 = (depth0 && depth0.confirm)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</button>\n		<button class=\"btn modal-close btn-silver\">"
     + escapeExpression(helpers.i18n.call(depth0, "TOOL_POP_BTN_CANCEL", {hash:{},data:data}))
-    + "</button>\n	</div>\n</div>\n\n";
+    + "</button>\n	</div>\n</div>";
   return buffer;
   };
 TEMPLATE.modalApp=Handlebars.template(__TEMPLATE__);
@@ -204,7 +204,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + escapeExpression(((stack1 = (depth0 && depth0.confirm)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</a>\n		<button class=\"btn modal-close btn-silver\">"
     + escapeExpression(helpers.i18n.call(depth0, "TOOL_POP_BTN_CANCEL", {hash:{},data:data}))
-    + "</button>\n	</div>\n</div>\n\n";
+    + "</button>\n	</div>\n</div>";
   return buffer;
   };
 TEMPLATE.modalToolbar=Handlebars.template(__TEMPLATE__);
@@ -224,7 +224,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + escapeExpression(helpers.i18n.call(depth0, "TOOL_POP_BTN_EXPORT_CF", {hash:{},data:data}))
     + "</a>\n		<button class=\"btn modal-close btn-silver\">"
     + escapeExpression(helpers.i18n.call(depth0, "TOOL_POP_BTN_CANCEL", {hash:{},data:data}))
-    + "</button>\n	</div>\n</div>\n\n";
+    + "</button>\n	</div>\n</div>";
   return buffer;
   };
 TEMPLATE.exportCloudFormation=Handlebars.template(__TEMPLATE__);
@@ -248,7 +248,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + escapeExpression(helpers.i18n.call(depth0, "TOOL_POP_BTN_DOWNLOAD", {hash:{},data:data}))
     + "</a>\n		<button id=\"tpl-cancel\" class=\"btn modal-close btn-silver\">"
     + escapeExpression(helpers.i18n.call(depth0, "TOOL_POP_BTN_CANCEL", {hash:{},data:data}))
-    + "</button>\n	</div>\n</div>\n\n";
+    + "</button>\n	</div>\n</div>";
   return buffer;
   };
 TEMPLATE.exportJSON=Handlebars.template(__TEMPLATE__);
@@ -266,7 +266,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + escapeExpression(helpers.i18n.call(depth0, "POP_IMPORT_DROP_LBL", {hash:{},data:data}))
     + "<label for=\"modal-import-json-file\" class=\"select-file-link\">"
     + escapeExpression(helpers.i18n.call(depth0, "POP_IMPORT_SELECT_LBL", {hash:{},data:data}))
-    + "</label><input type=\"file\" id=\"modal-import-json-file\"></div>\n		<div id=\"import-json-error\"></div>\n	</div>\n</div>\n\n";
+    + "</label><input type=\"file\" id=\"modal-import-json-file\"></div>\n		<div id=\"import-json-error\"></div>\n	</div>\n</div>";
   return buffer;
   };
 TEMPLATE.importJSON=Handlebars.template(__TEMPLATE__);
@@ -286,7 +286,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + escapeExpression(((stack1 = (depth0 && depth0.confirm)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</a>\n		<button class=\"btn modal-close btn-silver\">"
     + escapeExpression(helpers.i18n.call(depth0, "TOOL_POP_BTN_CANCEL", {hash:{},data:data}))
-    + "</button>\n	</div>\n</div>\n\n";
+    + "</button>\n	</div>\n</div>";
   return buffer;
   };
 TEMPLATE.exportPNG=Handlebars.template(__TEMPLATE__);
@@ -338,7 +338,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + escapeExpression(((stack1 = (depth0 && depth0.rootDeviceType)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</dd>\n		</dl>\n	</div>\n\n	<div class=\"modal-footer\">\n		<button class=\"btn modal-close btn-silver\">"
     + escapeExpression(helpers.i18n.call(depth0, "POP_BTN_CLOSE", {hash:{},data:data}))
-    + "</button>\n	</div>\n</div>\n\n";
+    + "</button>\n	</div>\n</div>";
   return buffer;
   };
 TEMPLATE.modalResourceInstanceDetail=Handlebars.template(__TEMPLATE__);
@@ -358,7 +358,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + escapeExpression(((stack1 = (depth0 && depth0['end-time'])),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</dd>\n		<dt>Estimated Cost:</dt>\n		<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.cost)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n	</dl>\n</div>\n\n";
+    + "</dd>\n	</dl>\n</div>";
   return buffer;
   };
 TEMPLATE.bubbleTest=Handlebars.template(__TEMPLATE__);
@@ -374,7 +374,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + escapeExpression(((stack1 = (depth0 && depth0.title)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</div>\n<div class=\"bubble-content\">\n	"
     + escapeExpression(((stack1 = (depth0 && depth0.description)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\n</div>\n\n";
+    + "\n</div>";
   return buffer;
   };
 TEMPLATE.bubbleAlert=Handlebars.template(__TEMPLATE__);
@@ -390,7 +390,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + escapeExpression(((stack1 = (depth0 && depth0.title)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</div>\n<div class=\"bubble-content\">\n	"
     + escapeExpression(((stack1 = (depth0 && depth0.description)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\n</div>\n\n";
+    + "\n</div>";
   return buffer;
   };
 TEMPLATE.bubbleSuggest=Handlebars.template(__TEMPLATE__);
@@ -414,7 +414,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + escapeExpression(((stack1 = (depth0 && depth0.az)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</dd>\n		<dt>Instance Type:</dt>\n		<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0['instance-type'])),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n	</dl>\n</div>\n\n";
+    + "</dd>\n	</dl>\n</div>";
   return buffer;
   };
 TEMPLATE.bubbleInstanceInfo=Handlebars.template(__TEMPLATE__);
@@ -436,7 +436,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + escapeExpression(((stack1 = (depth0 && depth0.status)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</dd>\n		<dt>Size</dt>\n		<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.size)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n	</dl>\n</div>\n\n";
+    + "</dd>\n	</dl>\n</div>";
   return buffer;
   };
 TEMPLATE.bubbleSnapshotInfo=Handlebars.template(__TEMPLATE__);
@@ -502,7 +502,7 @@ function program3(depth0,data) {
     + escapeExpression(helpers.i18n.call(depth0, "DASH_BUB_ROOTDEVICETYPE", {hash:{},data:data}))
     + "</dt>\n		<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.rootDeviceType)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n	</dl>\n</div>\n\n";
+    + "</dd>\n	</dl>\n</div>";
   return buffer;
   };
 TEMPLATE.bubbleAMIInfo=Handlebars.template(__TEMPLATE__);
@@ -548,7 +548,7 @@ function program3(depth0,data) {
     + escapeExpression(((stack1 = (depth0 && depth0.imageSize)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</dd>\n		<dt>Support Instance Type</dt>\n		<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.instance_type)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n	</dl>\n</div>\n\n";
+    + "</dd>\n	</dl>\n</div>";
   return buffer;
   };
 TEMPLATE.bubbleAMIMongoInfo=Handlebars.template(__TEMPLATE__);
@@ -570,7 +570,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + escapeExpression(helpers.i18n.call(depth0, "DASH_POP_CREATE_STACK_VPC", {hash:{},data:data}))
     + "</h4>\n						<p>"
     + escapeExpression(helpers.i18n.call(depth0, "DASH_POP_CREATE_STACK_VPC_INTRO", {hash:{},data:data}))
-    + ".</p>\n					</a>\n				</li>\n			</ul>\n		</div>\n	</div>\n</div>\n\n";
+    + ".</p>\n					</a>\n				</li>\n			</ul>\n		</div>\n	</div>\n</div>";
   return buffer;
   };
 TEMPLATE.createNewStackClassic=Handlebars.template(__TEMPLATE__);
@@ -588,7 +588,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + escapeExpression(helpers.i18n.call(depth0, "DASH_POP_FALE_LOAD_RESOURCE_PLEASE_RETRY", {hash:{},data:data}))
     + "</p>\n			<button class=\"btn btn-blue\" id=\"reload-account-attributes\">"
     + escapeExpression(helpers.i18n.call(depth0, "DASH_POP_BTN_RETRY", {hash:{},data:data}))
-    + "</button>\n		</div>\n	</div>\n</div>\n\n";
+    + "</button>\n		</div>\n	</div>\n</div>";
   return buffer;
   };
 TEMPLATE.createNewStackErrorAndReload=Handlebars.template(__TEMPLATE__);
@@ -610,7 +610,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + escapeExpression(helpers.i18n.call(depth0, "DASH_POP_CREATE_STACK_CUSTOM_VPC", {hash:{},data:data}))
     + "</h4>\n						<p>"
     + escapeExpression(helpers.i18n.call(depth0, "DASH_POP_CREATE_STACK_VPC_INTRO", {hash:{},data:data}))
-    + ".</p>\n					</a>\n				</li>\n			</ul>\n		</div>\n	</div>\n</div>\n\n";
+    + ".</p>\n					</a>\n				</li>\n			</ul>\n		</div>\n	</div>\n</div>";
   return buffer;
   };
 TEMPLATE.createNewStackVPC=Handlebars.template(__TEMPLATE__);
@@ -709,7 +709,7 @@ function program4(depth0,data) {
     + "\n\nA VPN Connection consists of a pair of IPSec tunnel security associations (SAs).\nIt is important that both tunnel security associations be configured.\n\n";
   stack1 = helpers.each.call(depth0, (depth0 && depth0.tunnel), {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n\n\n\nAdditional Notes and Questions\n================================================================================\n\n  - Amazon Virtual Private Cloud Getting Started Guide:\n      http://docs.amazonwebservices.com/AmazonVPC/latest/GettingStartedGuide\n  - Amazon Virtual Private Cloud Network Administrator Guide:\n      http://docs.amazonwebservices.com/AmazonVPC/latest/NetworkAdminGuide\n  - XSL Version: 2009-07-15-1119716\n\n\n";
+  buffer += "\n\n\n\nAdditional Notes and Questions\n================================================================================\n\n  - Amazon Virtual Private Cloud Getting Started Guide:\n      http://docs.amazonwebservices.com/AmazonVPC/latest/GettingStartedGuide\n  - Amazon Virtual Private Cloud Network Administrator Guide:\n      http://docs.amazonwebservices.com/AmazonVPC/latest/NetworkAdminGuide\n  - XSL Version: 2009-07-15-1119716";
   return buffer;
   };
 TEMPLATE.configurationDownload=Handlebars.template(__TEMPLATE__);
@@ -725,7 +725,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\" data-ignore=\"true\">\n		<div class=\"runtime-error\" id=\"runtime-error-appname\"></div>\n	</div>\n	<div class=\"modal-control-group default-kp-group clearfix\" style=\"display:none;\">\n		<label for=\"\">$DefaultKeyPair</label>\n		<div id=\"kp-runtime-placeholder\"></div>\n		<div class=\"runtime-error\" id=\"runtime-error-kp\"></div>\n	</div>\n	<div class=\"modal-control-group app-usage-group clearfix\">\n		<label for=\"\">App Usage</label>\n		<div id=\"app-usage-selectbox\" class=\"selectbox\">\n			<div class=\"selection\"><i class=\"icon-app-type-testing\"></i>Testing</div>\n			<ul class=\"dropdown\" tabindex=\"-1\">\n				<li class=\"selected item\" data-value=\"testing\"><i class=\"icon-app-type-testing\"></i>Testing</li>\n				<li class=\"item\" data-value=\"development\"><i class=\"icon-app-type-development\"></i>Development</li>\n				<li class=\"item\" data-value=\"production\"><i class=\"icon-app-type-production\"></i>Production</li>\n				<li class=\"item\" data-value=\"others\"><i class=\"icon-app-type-others\" data-value=\"testing\"></i>Others</li>\n			</ul>\n		</div>\n	</div>\n	<div class=\"stack-validation\">\n		<details open style=\"display:none;\">\n			<summary>Stack Validation</summary>\n			<div id=\"stack-run-validation-container\"></div>\n		</details>\n		<div class=\"nutshell\" style=\"display: none;\">:<label></label></div>\n		<div class=\"validating\">\n			<div class=\"loading-spinner loading-spinner-small\"></div>\n			<p>Validating your stack...</p>\n		</div>\n	</div>\n	<div class=\"estimate clearfix\">\n		<span class=\"title\">Estimated Cost</span>\n		<span class=\"price\" id=\"label-total-fee\"><b>$"
     + escapeExpression(((stack1 = (depth0 && depth0.total_fee)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</b> / month</span>\n	</div>\n</section>\n\n\n";
+    + "</b> / month</span>\n	</div>\n</section>";
   return buffer;
   };
 TEMPLATE.modalRunStack=Handlebars.template(__TEMPLATE__);
@@ -734,7 +734,7 @@ TEMPLATE.modalRunStack=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
+  var stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
 
 function program1(depth0,data,depth1) {
   
@@ -836,9 +836,8 @@ function program16(depth0,data) {
   }
 
   stack1 = helpers.each.call(depth0, depth0, {hash:{},inverse:self.noop,fn:self.programWithDepth(1, program1, data, depth0),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n\n";
-  return buffer;
+  if(stack1 || stack1 === 0) { return stack1; }
+  else { return ''; }
   };
 TEMPLATE.sgRuleList=Handlebars.template(__TEMPLATE__);
 
@@ -846,7 +845,7 @@ TEMPLATE.sgRuleList=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
+  var stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
 
 function program1(depth0,data) {
   
@@ -863,9 +862,8 @@ function program1(depth0,data) {
   }
 
   stack1 = helpers.each.call(depth0, (depth0 && depth0.groups), {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n\n";
-  return buffer;
+  if(stack1 || stack1 === 0) { return stack1; }
+  else { return ''; }
   };
 TEMPLATE.groupedSgRuleList=Handlebars.template(__TEMPLATE__);
 
@@ -892,7 +890,7 @@ function program1(depth0,data) {
   buffer += "Following rule(s) will be deleted from its(their) security group:</div>\n<article class=\"scroll-wrap delete-sgrule-dialog\">\n<div class=\"scrollbar-veritical-wrap\"><div class=\"scrollbar-veritical-thumb\"></div></div>\n<div class=\"scroll-content\">\n";
   stack1 = helpers.each.call(depth0, depth0, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n</div>\n</article>\n\n";
+  buffer += "\n</div>\n</article>";
   return buffer;
   };
 TEMPLATE.groupedSgRuleListDelConfirm=Handlebars.template(__TEMPLATE__);
@@ -913,7 +911,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + escapeExpression(helpers.i18n.call(depth0, "CFM_BTN_DELETE", {hash:{},data:data}))
     + "</button>\n		<button class=\"btn modal-close btn-silver\">"
     + escapeExpression(helpers.i18n.call(depth0, "CFM_BTN_CANCEL", {hash:{},data:data}))
-    + "</button>\n	</div>\n</div>\n\n";
+    + "</button>\n	</div>\n</div>";
   return buffer;
   };
 TEMPLATE.canvasOpConfirm=Handlebars.template(__TEMPLATE__);
@@ -922,7 +920,7 @@ TEMPLATE.canvasOpConfirm=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, escapeExpression=this.escapeExpression, self=this, functionType="function";
+  var stack1, escapeExpression=this.escapeExpression, self=this, functionType="function";
 
 function program1(depth0,data) {
   
@@ -996,9 +994,8 @@ function program14(depth0,data) {
   }
 
   stack1 = helpers.each.call(depth0, depth0, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n\n";
-  return buffer;
+  if(stack1 || stack1 === 0) { return stack1; }
+  else { return ''; }
   };
 TEMPLATE.propertyIpList=Handlebars.template(__TEMPLATE__);
 
@@ -1102,7 +1099,7 @@ function program11(depth0,data) {
     + escapeExpression(helpers.i18n.call(depth0, "POP_SGRULE_BTN_SAVE", {hash:{},data:data}))
     + "</button>\n		<button class=\"btn btn-silver modal-close\">"
     + escapeExpression(helpers.i18n.call(depth0, "POP_SGRULE_BTN_CANCEL", {hash:{},data:data}))
-    + "</button>\n	</div>\n</div>\n\n";
+    + "</button>\n	</div>\n</div>";
   return buffer;
   };
 TEMPLATE.modalSGRule=Handlebars.template(__TEMPLATE__);
@@ -1116,7 +1113,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 
   buffer += "<div style=\"width:500px\">\n	<div class=\"modal-header\">\n		<h3>Get Windows Password</h3>\n		<i class=\"modal-close\">&times;</i>\n	</div>\n	<div class=\"modal-body\">\n		<section class=\"password-hint\">\n			<p class=\"modal-text-major\">This instance was associated with key pair: <span>"
     + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</span></p>\n			<p>To access this instance remotely (e.g. Remote Desktop Connection), you will need your Windows Administrator password. A default password was created when the instance was launched and is available encrypted in the system log.</p>\n		</section>\n		<section class=\"import-zone\">\n			<div id='keypair-loading' class=\"loading-spinner\"></div>\n		</section>\n		<section class=\"decrypt-action\" style=\"display: none;\">\n			<button class=\"btn btn-blue\" id=\"do-kp-decrypt\" disabled>Decrypt Password</button>\n			<input readonly class=\"input\" type=\"text\" id=\"keypair-pwd\" placeholder=\"Decripted password will appear here\">\n			<div class=\"change-pw-recommend icon-info tooltip\" data-tooltip=\"We recommend that you change your password to one that you will remember and know privately. Please note that passwords can persist through bundling phases and will not be retrievable through this tool. It is therefore important that you change your password to one that you will remember if you intend to bundle a new AMI from this instance.\" style=\"display: none;\">Change Password Recommendation from AWS</div>\n		</section>\n		<section class=\"no-password\" style=\"display: none;\">\n			<p>\n				Your password is not ready. Password generation can sometimes take more than 30 minutes. Please wait at least 15 minutes after launching an instance before trying to retrieve the generated password.\n			</p>\n\n			<p>\n				If you launched this instance from your own AMI, the password is the same as for the instance from which you created the AMI, unless this setting was modified in the EC2Config service settings.\n			</p>\n		</section>\n	</div>\n</div>\n\n";
+    + "</span></p>\n			<p>To access this instance remotely (e.g. Remote Desktop Connection), you will need your Windows Administrator password. A default password was created when the instance was launched and is available encrypted in the system log.</p>\n		</section>\n		<section class=\"import-zone\">\n			<div id='keypair-loading' class=\"loading-spinner\"></div>\n		</section>\n		<section class=\"decrypt-action\" style=\"display: none;\">\n			<button class=\"btn btn-blue\" id=\"do-kp-decrypt\" disabled>Decrypt Password</button>\n			<input readonly class=\"input\" type=\"text\" id=\"keypair-pwd\" placeholder=\"Decripted password will appear here\">\n			<div class=\"change-pw-recommend icon-info tooltip\" data-tooltip=\"We recommend that you change your password to one that you will remember and know privately. Please note that passwords can persist through bundling phases and will not be retrievable through this tool. It is therefore important that you change your password to one that you will remember if you intend to bundle a new AMI from this instance.\" style=\"display: none;\">Change Password Recommendation from AWS</div>\n		</section>\n		<section class=\"no-password\" style=\"display: none;\">\n			<p>\n				Your password is not ready. Password generation can sometimes take more than 30 minutes. Please wait at least 15 minutes after launching an instance before trying to retrieve the generated password.\n			</p>\n\n			<p>\n				If you launched this instance from your own AMI, the password is the same as for the instance from which you created the AMI, unless this setting was modified in the EC2Config service settings.\n			</p>\n		</section>\n	</div>\n</div>";
   return buffer;
   };
 TEMPLATE.modalDecryptPassword=Handlebars.template(__TEMPLATE__);
@@ -1183,7 +1180,7 @@ function program11(depth0,data) {
   buffer += "\n			";
   stack1 = helpers.unless.call(depth0, (depth0 && depth0.windows), {hash:{},inverse:self.program(11, program11, data),fn:self.program(9, program9, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n\n		</section>\n	</div>\n\n	<div class=\"modal-footer\">\n		<button class=\"btn modal-close btn-silver\">Close</button>\n	</div>\n</div>\n\n";
+  buffer += "\n\n		</section>\n	</div>\n\n	<div class=\"modal-footer\">\n		<button class=\"btn modal-close btn-silver\">Close</button>\n	</div>\n</div>";
   return buffer;
   };
 TEMPLATE.modalDownloadKP=Handlebars.template(__TEMPLATE__);
@@ -1195,7 +1192,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   
 
 
-  return "<article>\n	<div class=\"property-control-group\">This resource is not available. It may have been deleted from other source or terminated in previous app editing.</div>\n</article>\n\n";
+  return "<article>\n	<div class=\"property-control-group\">This resource is not available. It may have been deleted from other source or terminated in previous app editing.</div>\n</article>";
   };
 TEMPLATE.missingPropertyPanel=Handlebars.template(__TEMPLATE__);
 
@@ -1208,7 +1205,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 
   buffer += "<article>\n	<div class=\"property-control-group\">"
     + escapeExpression(((stack1 = (depth0 && depth0.asgName)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + " is deleted in stopped app. The auto scaling group will be created when the app is started.</div>\n</article>\n\n";
+    + " is deleted in stopped app. The auto scaling group will be created when the app is started.</div>\n</article>";
   return buffer;
   };
 TEMPLATE.missingAsgWhenStop=Handlebars.template(__TEMPLATE__);
@@ -1255,7 +1252,7 @@ function program4(depth0,data) {
     + "</span>)</div>\n<div id=\"instance_volume_wrap\" class=\"scroll-wrap\">\n	<div class=\"scrollbar-veritical-wrap\"><div class=\"scrollbar-veritical-thumb\"></div></div>\n	<ul id=\"instance_volume_list\" class=\"clearfix bubble-content scroll-content\">\n		";
   stack1 = helpers.each.call(depth0, depth0, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n	</ul>\n</div>\n\n";
+  buffer += "\n	</ul>\n</div>";
   return buffer;
   };
 TEMPLATE.instanceVolume=Handlebars.template(__TEMPLATE__);
@@ -1294,7 +1291,7 @@ function program1(depth0,data,depth1) {
     + "</span>\n		<a id=\"asgList-close\" href=\"javascript:void(0)\" onclick=\"MC.canvas.asgList.close()\">&times;</a>\n	</div>\n	<ul id=\"asgList\" class=\"clearfix\">\n		";
   stack1 = helpers.each.call(depth0, depth0, {hash:{},inverse:self.noop,fn:self.programWithDepth(1, program1, data, depth0),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n	</ul>\n</div>\n\n";
+  buffer += "\n	</ul>\n</div>";
   return buffer;
   };
 TEMPLATE.asgList=Handlebars.template(__TEMPLATE__);
@@ -1343,7 +1340,7 @@ function program1(depth0,data,depth1) {
     + "</span>\n		<a id=\"instanceList-close\" href=\"javascript:void(0)\" onclick=\"MC.canvas.instanceList.close()\">&times;</a>\n	</div>\n	<ul id=\"instanceList\" class=\"clearfix\">\n		";
   stack1 = helpers.each.call(depth0, depth0, {hash:{},inverse:self.noop,fn:self.programWithDepth(1, program1, data, depth0),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n	</ul>\n</div>\n\n";
+  buffer += "\n	</ul>\n</div>";
   return buffer;
   };
 TEMPLATE.instanceList=Handlebars.template(__TEMPLATE__);
@@ -1373,7 +1370,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + escapeExpression(((stack1 = (depth0 && depth0.volume)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</span>\n		</div>\n		<span class=\"instanceList-item-label\">"
     + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</span>\n	</a>\n</li>\n\n";
+    + "</span>\n	</a>\n</li>";
   return buffer;
   };
 TEMPLATE.instanceListItem=Handlebars.template(__TEMPLATE__);
@@ -1414,7 +1411,7 @@ function program2(depth0,data) {
     + "</span>\n		<a id=\"eniList-close\" href=\"javascript:void(0)\" onclick=\"MC.canvas.eniList.close()\">&times;</a>\n	</div>\n	<ul id=\"eniList\" class=\"clearfix\">\n		";
   stack1 = helpers.each.call(depth0, depth0, {hash:{},inverse:self.noop,fn:self.programWithDepth(1, program1, data, depth0),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n	</ul>\n</div>\n\n";
+  buffer += "\n	</ul>\n</div>";
   return buffer;
   };
 TEMPLATE.eniList=Handlebars.template(__TEMPLATE__);
@@ -1442,7 +1439,7 @@ function program1(depth0,data) {
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\"></i>\n		<span class=\"eniList-item-label\">"
     + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</span>\n	</a>\n</li>\n\n";
+    + "</span>\n	</a>\n</li>";
   return buffer;
   };
 TEMPLATE.eniListItem=Handlebars.template(__TEMPLATE__);
@@ -1460,7 +1457,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + escapeExpression(((stack1 = (depth0 && depth0.desc_content)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</div>\n		</div> </div>\n	</div>\n	<div class=\"modal-footer\">\n		<a id=\"cidr-remove\" class=\"link-red left link-modal-danger\">"
     + escapeExpression(((stack1 = (depth0 && depth0.remove_content)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</a>\n		<button id=\"cidr-return\" class=\"btn modal-close btn-blue\">OK</button>\n	</div>\n</div>\n\n";
+    + "</a>\n		<button id=\"cidr-return\" class=\"btn modal-close btn-blue\">OK</button>\n	</div>\n</div>";
   return buffer;
   };
 TEMPLATE.setupCIDRConfirm=Handlebars.template(__TEMPLATE__);
@@ -1480,7 +1477,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + escapeExpression(((stack1 = (depth0 && depth0.eni)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + " to "
     + escapeExpression(((stack1 = (depth0 && depth0.host)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + " and remove the Public IP?</p>\n	</div>\n</div>\n\n";
+    + " and remove the Public IP?</p>\n	</div>\n</div>";
   return buffer;
   };
 TEMPLATE.modalAttachingEni=Handlebars.template(__TEMPLATE__);
@@ -1497,7 +1494,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n	<div class=\"modal-footer\">\n		<button class=\"btn modal-close btn-blue\" id=\"canvas-op-confirm\" style=\"width:200px;\">"
     + escapeExpression(((stack1 = (depth0 && depth0.action)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</button>\n		<button class=\"btn modal-close btn-silver\">Cancel</button>\n	</div>\n</div>\n\n";
+    + "</button>\n		<button class=\"btn modal-close btn-silver\">Cancel</button>\n	</div>\n</div>";
   return buffer;
   };
 TEMPLATE.modalCanvasConfirm=Handlebars.template(__TEMPLATE__);
@@ -1513,7 +1510,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + escapeExpression(((stack1 = (depth0 && depth0.stack_name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</span> is already used by another stack. Please use a different name.</div>\n				<div class=\"modal-control-group\" data-bind=\"true\">\n					<label for=\"new-stack-name\">Stack Name</label>\n					<input id=\"new-stack-name\" class=\"input modal-input-value\" type=\"text\" value=\""
     + escapeExpression(((stack1 = (depth0 && depth0.stack_name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" data-ignore=\"true\">\n				</div>\n			</div>\n		</div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"rename-confirm\" class=\"btn btn-blue\">Save</button>\n	</div>\n</div>\n\n";
+    + "\" data-ignore=\"true\">\n				</div>\n			</div>\n		</div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"rename-confirm\" class=\"btn btn-blue\">Save</button>\n	</div>\n</div>";
   return buffer;
   };
 TEMPLATE.modalReinputStackName=Handlebars.template(__TEMPLATE__);
@@ -1531,7 +1528,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + escapeExpression(((stack1 = (depth0 && depth0.tab_name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + " has unsaved changes.</div>\n			<div class=\"modal-text-major\">Do you confirm to close it?</div>\n		</div> </div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"close-tab-confirm\" class=\"btn btn-red\" data-tab-id=\""
     + escapeExpression(((stack1 = (depth0 && depth0.tab_id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\">Close Tab</button>\n		<button class=\"btn modal-close btn-silver\">Cancel</button>\n	</div>\n</div>\n\n";
+    + "\">Close Tab</button>\n		<button class=\"btn modal-close btn-silver\">Cancel</button>\n	</div>\n</div>";
   return buffer;
   };
 TEMPLATE.closeTabRestriction=Handlebars.template(__TEMPLATE__);
@@ -1543,7 +1540,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   
 
 
-  return "<div style=\"width:420px\">\n	<div class=\"modal-header\"><h3 class=\"truncate\" style=\"width: 380px;\">Changes not applied</h3><i class=\"modal-close\">&times;</i> </div>\n	<div class=\"modal-body\">\n		<div class=\"modal-text-wraper\"> <div class=\"modal-center-align-helper\">\n			<div class=\"modal-text-major\">This app has been changed.</div>\n			<div class=\"modal-text-major\">Do you conﬁrm to discard the changes?</div>\n		</div> </div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"return-app-confirm\" class=\"btn btn-red\">Discard</button>\n		<button class=\"btn modal-close btn-silver\">Cancel</button>\n	</div>\n</div>\n\n";
+  return "<div style=\"width:420px\">\n	<div class=\"modal-header\"><h3 class=\"truncate\" style=\"width: 380px;\">Changes not applied</h3><i class=\"modal-close\">&times;</i> </div>\n	<div class=\"modal-body\">\n		<div class=\"modal-text-wraper\"> <div class=\"modal-center-align-helper\">\n			<div class=\"modal-text-major\">This app has been changed.</div>\n			<div class=\"modal-text-major\">Do you conﬁrm to discard the changes?</div>\n		</div> </div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"return-app-confirm\" class=\"btn btn-red\">Discard</button>\n		<button class=\"btn modal-close btn-silver\">Cancel</button>\n	</div>\n</div>";
   };
 TEMPLATE.cancelAppEdit2App=Handlebars.template(__TEMPLATE__);
 
@@ -1560,7 +1557,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + escapeExpression(((stack1 = (depth0 && depth0.main_content)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</div>\n				<div class=\"modal-text-minor\">"
     + escapeExpression(((stack1 = (depth0 && depth0.desc_content)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</div>\n			</div>\n		 </div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"modal-confirm-delete\" class=\"btn btn-red\">Delete</button>\n		<button id=\"modal-cancel\" class=\"btn modal-close btn-silver\">Cancel</button>\n	</div>\n</div>\n\n";
+    + "</div>\n			</div>\n		 </div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"modal-confirm-delete\" class=\"btn btn-red\">Delete</button>\n		<button id=\"modal-cancel\" class=\"btn modal-close btn-silver\">Cancel</button>\n	</div>\n</div>";
   return buffer;
   };
 TEMPLATE.modalDeleteSGOrACL=Handlebars.template(__TEMPLATE__);
@@ -1572,7 +1569,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   
 
 
-  return "<div id=\"loading-modal-wrap\">\n	<div class=\"loading-modal\" id=\"modal-box\">\n		<div class=\"loading-spinner loading-spinner-mid\"></div>\n		<div>Refreshing resources...</div>\n	</div>\n</div>\n\n";
+  return "<div id=\"loading-modal-wrap\">\n	<div class=\"loading-modal\" id=\"modal-box\">\n		<div class=\"loading-spinner loading-spinner-mid\"></div>\n		<div>Refreshing resources...</div>\n	</div>\n</div>";
   };
 TEMPLATE.loadingTransparent=Handlebars.template(__TEMPLATE__);
 
@@ -1589,7 +1586,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + escapeExpression(((stack1 = (depth0 && depth0.main_content)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</div>\n				<div class=\"modal-text-minor\">"
     + escapeExpression(((stack1 = (depth0 && depth0.desc_content)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</div>\n			</div>\n		 </div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"modal-confirm-delete\" class=\"btn btn-red\">Delete</button>\n		<button id=\"modal-cancel\" class=\"btn modal-close btn-silver\">Cancel</button>\n	</div>\n</div>\n\n";
+    + "</div>\n			</div>\n		 </div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"modal-confirm-delete\" class=\"btn btn-red\">Delete</button>\n		<button id=\"modal-cancel\" class=\"btn modal-close btn-silver\">Cancel</button>\n	</div>\n</div>";
   return buffer;
   };
 TEMPLATE.modalForceDeleteApp=Handlebars.template(__TEMPLATE__);
@@ -1601,7 +1598,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   
 
 
-  return "<div>\n	<div class=\"info\">Last saved: <span class=\"stack-save-time\">-<span></div>\n	<ul class=\"statusbar-btn-list\">\n		<li class=\"statusbar-btn btn-state\">\n			<span class=\"state-success\"><i class=\"status status-green icon-label\"></i><b>0</b></span>\n			<span class=\"state-failed\"><i class=\"status status-red icon-label\"></i><b>0</b></span>\n		</li>\n		<li class=\"statusbar-btn btn-ta-valid\">Validate</li>\n	</ul>\n</div>\n\n";
+  return "<div>\n	<div class=\"info\">Last saved: <span class=\"stack-save-time\">-<span></div>\n	<ul class=\"statusbar-btn-list\">\n		<li class=\"statusbar-btn btn-state\">\n			<span class=\"state-success\"><i class=\"status status-green icon-label\"></i><b>0</b></span>\n			<span class=\"state-failed\"><i class=\"status status-red icon-label\"></i><b>0</b></span>\n		</li>\n		<li class=\"statusbar-btn btn-ta-valid\">Validate</li>\n	</ul>\n</div>";
   };
 TEMPLATE.statusbar=Handlebars.template(__TEMPLATE__);
 
@@ -1625,7 +1622,7 @@ function program1(depth0,data) {
   buffer += "<div style=\"width:420px\">\n	<div class=\"modal-header\"><h3 class=\"truncate\" style=\"width: 380px;\">Need to Restart Instance</h3><i class=\"modal-close\">&times;</i> </div>\n	<div class=\"modal-body\" style=\"height:150px;\">\n		<div class=\"modal-text-wraper\">\n			<div class=\"modal-text-major\">To update the properties you have changed, following instances need to restart:</div>\n			<ul class=\"clearfix\">\n				";
   stack1 = helpers.each.call(depth0, (depth0 && depth0.instance_list), {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n			</ul>\n			<div id=\"instance-type\" class=\"modal-text-major\"></div>\n		</div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"confirm-update-app\" class=\"btn btn-blue\" style=\"width:160px;\">Continue to Update</button>\n		<button class=\"btn modal-close btn-silver\">Cancel</button>\n	</div>\n</div>\n\n";
+  buffer += "\n			</ul>\n			<div id=\"instance-type\" class=\"modal-text-major\"></div>\n		</div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"confirm-update-app\" class=\"btn btn-blue\" style=\"width:160px;\">Continue to Update</button>\n		<button class=\"btn modal-close btn-silver\">Cancel</button>\n	</div>\n</div>";
   return buffer;
   };
 TEMPLATE.restartInstance=Handlebars.template(__TEMPLATE__);
@@ -1740,7 +1737,7 @@ function program13(depth0,data) {
     + escapeExpression(helpers.i18n.call(depth0, "POP_CONFIRM_UPDATE_VALIDATION", {hash:{},data:data}))
     + "</summary>\n			<div id=\"stack-run-validation-container\"></div>\n		</details>\n		<div class=\"nutshell\" style=\"display: none;\">:<label></label></div>\n		<div class=\"validating\">\n			<div class=\"loading-spinner loading-spinner-small\"></div>\n			<p>"
     + escapeExpression(helpers.i18n.call(depth0, "POP_CONFIRM_UPDATE_VALIDATING", {hash:{},data:data}))
-    + "</p>\n		</div>\n	</div>\n\n</div>\n\n";
+    + "</p>\n		</div>\n	</div>\n\n</div>";
   return buffer;
   };
 TEMPLATE.updateApp=Handlebars.template(__TEMPLATE__);
@@ -1752,7 +1749,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   
 
 
-  return "<div class=\"overlay-content-wrap\">\n	<div class=\"overlay-text\">Oops! There has been some issue loading the tab.</div>\n	<button class=\"btn btn-blue\" id=\"btn-fail-reload\">Reload</button>\n</div>\n\n";
+  return "<div class=\"overlay-content-wrap\">\n	<div class=\"overlay-text\">Oops! There has been some issue loading the tab.</div>\n	<button class=\"btn btn-blue\" id=\"btn-fail-reload\">Reload</button>\n</div>";
   };
 TEMPLATE.openTabFail=Handlebars.template(__TEMPLATE__);
 
@@ -1763,7 +1760,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   
 
 
-  return "<div class=\"overlay-content-wrap\">\n	<div class=\"overlay-text\">Starting app...</div>\n	<div class=\"loading-spinner\"></div>\n</div>\n\n";
+  return "<div class=\"overlay-content-wrap\">\n	<div class=\"overlay-text\">Starting app...</div>\n	<div class=\"loading-spinner\"></div>\n</div>";
   };
 TEMPLATE.appStarting=Handlebars.template(__TEMPLATE__);
 
@@ -1774,7 +1771,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   
 
 
-  return "<div class=\"overlay-content-wrap\">\n	<div class=\"overlay-text\">Stopping app...</div>\n	<div class=\"loading-spinner\"></div>\n</div>\n\n";
+  return "<div class=\"overlay-content-wrap\">\n	<div class=\"overlay-text\">Stopping app...</div>\n	<div class=\"loading-spinner\"></div>\n</div>";
   };
 TEMPLATE.appStopping=Handlebars.template(__TEMPLATE__);
 
@@ -1785,7 +1782,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   
 
 
-  return "<div class=\"overlay-content-wrap\">\n	<div class=\"overlay-text\">Terminating app...</div>\n	<div class=\"loading-spinner\"></div>\n</div>\n\n";
+  return "<div class=\"overlay-content-wrap\">\n	<div class=\"overlay-text\">Terminating app...</div>\n	<div class=\"loading-spinner\"></div>\n</div>";
   };
 TEMPLATE.appTerminating=Handlebars.template(__TEMPLATE__);
 
@@ -1811,7 +1808,7 @@ function program1(depth0,data) {
   buffer += "<div class=\"overlay-content-wrap\">\n	<div class=\"overlay-text\">Updating app...</div>\n	<div class=\"loading-spinner\"></div>\n	";
   stack1 = helpers['if'].call(depth0, (depth0 && depth0.is_show), {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n</div>\n\n";
+  buffer += "\n</div>";
   return buffer;
   };
 TEMPLATE.appUpdating=Handlebars.template(__TEMPLATE__);
@@ -1823,7 +1820,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   
 
 
-  return "<div class=\"overlay-content-wrap\">\n	<div class=\"overlay-text\">App has updated successfully.</div>\n	<button class=\"btn btn-blue\" id=\"btn-updated-success\">Done</button>\n</div>\n\n";
+  return "<div class=\"overlay-content-wrap\">\n	<div class=\"overlay-text\">App has updated successfully.</div>\n	<button class=\"btn btn-blue\" id=\"btn-updated-success\">Done</button>\n</div>";
   };
 TEMPLATE.appUpdatedSuccess=Handlebars.template(__TEMPLATE__);
 
@@ -1860,7 +1857,7 @@ function program2(depth0,data) {
     + ".</div>\n	";
   stack1 = helpers['if'].call(depth0, (depth0 && depth0.is_show), {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n	<button class=\"btn btn-silver\" id=\"btn-changedfail\">Done</button>\n</div>\n\n";
+  buffer += "\n	<button class=\"btn btn-silver\" id=\"btn-changedfail\">Done</button>\n</div>";
   return buffer;
   };
 TEMPLATE.appChangedfail=Handlebars.template(__TEMPLATE__);
@@ -1874,7 +1871,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 
   buffer += "<div id=\"node-action-wrap\">\n	<div id=\"node-action-state\">\n		<div id=\"node-action-state-btn\">\n			<i id=\"node-state-icon\"></i>\n			<span id=\"node-state-number\">"
     + escapeExpression(((stack1 = (depth0 && depth0.state_num)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</span>\n		</div>\n		<div class=\"node-action-tooltip\">Edit State</div>\n	</div>\n</div>\n\n";
+    + "</span>\n		</div>\n		<div class=\"node-action-tooltip\">Edit State</div>\n	</div>\n</div>";
   return buffer;
   };
 TEMPLATE.nodeAction=Handlebars.template(__TEMPLATE__);
@@ -1890,7 +1887,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + escapeExpression(((stack1 = (depth0 && depth0.instance_id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</h3><i class=\"modal-close\">&times;</i> </div>\n	<div class=\"modal-body\">\n		<section class=\"instance-sys-log-loading loading-spinner\"></section>\n		<div class=\"instance-sys-log-content font-mono\">"
     + escapeExpression(((stack1 = (depth0 && depth0.log_content)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</div>\n		<div class=\"instance-sys-log-info modal-text-minor\">System log is not ready yet. Please try in a short while.</div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"modal-instance-sys-log-cancel\" class=\"btn modal-close btn-silver\">Close</button>\n	</div>\n</div>\n\n";
+    + "</div>\n		<div class=\"instance-sys-log-info modal-text-minor\">System log is not ready yet. Please try in a short while.</div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"modal-instance-sys-log-cancel\" class=\"btn modal-close btn-silver\">Close</button>\n	</div>\n</div>";
   return buffer;
   };
 TEMPLATE.modalInstanceSysLog=Handlebars.template(__TEMPLATE__);
@@ -1906,7 +1903,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "?</div>\n<div class=\"modal-text-minor\">Once deleted, the states of "
     + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "'s configuration will be lost.</div>\n\n";
+    + "'s configuration will be lost.</div>";
   return buffer;
   };
 TEMPLATE.NodeStateRemoveConfirmation=Handlebars.template(__TEMPLATE__);
@@ -1922,7 +1919,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "?</div>\n<div class=\"modal-text-minor\">The security group "
     + escapeExpression(((stack1 = (depth0 && depth0.sg)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + " will also be deleted. Other load balancer using this security group will be affected.</div>\n\n";
+    + " will also be deleted. Other load balancer using this security group will be affected.</div>";
   return buffer;
   };
 TEMPLATE.ElbRemoveConfirmation=Handlebars.template(__TEMPLATE__);
@@ -1934,7 +1931,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   
 
 
-  return "<div style=\"width:420px\">\n	<div class=\"modal-header\"><h3>Conﬁrm to Enable VisualOps</h3><i class=\"modal-close\">&times;</i></div>\n	<div class=\"modal-body\">\n		<div class=\"modal-text-wraper\">\n			<div class=\"modal-center-align-helper\">\n				<div class=\"modal-text-major\">Enable VisualOps will override your custom User Data. Are you sure to continue?</div>\n			</div>\n		</div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"modal-stack-agent-enable-confirm\" style=\"width:145px;\" class=\"btn modal-confirm btn-blue\">Enable VisualOps</button>\n		<button id=\"modal-stack-agent-enable-cancel\" class=\"btn modal-close btn-silver\">Cancel</button>\n	</div>\n</div>\n\n";
+  return "<div style=\"width:420px\">\n	<div class=\"modal-header\"><h3>Conﬁrm to Enable VisualOps</h3><i class=\"modal-close\">&times;</i></div>\n	<div class=\"modal-body\">\n		<div class=\"modal-text-wraper\">\n			<div class=\"modal-center-align-helper\">\n				<div class=\"modal-text-major\">Enable VisualOps will override your custom User Data. Are you sure to continue?</div>\n			</div>\n		</div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"modal-stack-agent-enable-confirm\" style=\"width:145px;\" class=\"btn modal-confirm btn-blue\">Enable VisualOps</button>\n		<button id=\"modal-stack-agent-enable-cancel\" class=\"btn modal-close btn-silver\">Cancel</button>\n	</div>\n</div>";
   };
 TEMPLATE.modalStackAgentEnable=Handlebars.template(__TEMPLATE__);
 
@@ -2083,7 +2080,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + escapeExpression(helpers.i18n.call(depth0, "KEY_REDO_STATE_ACTION", {hash:{},data:data}))
     + "</div>\n					</li>\n				</ul>\n			</section>\n		</div>\n	</div>\n	<div class=\"modal-footer\">\n		<button class=\"btn modal-close btn-silver\">"
     + escapeExpression(helpers.i18n.call(depth0, "KEY_MODAL_BTN_CLOSE", {hash:{},data:data}))
-    + "</button>\n	</div>\n</div>\n\n";
+    + "</button>\n	</div>\n</div>";
   return buffer;
   };
 TEMPLATE.shortkey=Handlebars.template(__TEMPLATE__);
@@ -2117,7 +2114,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + escapeExpression(helpers.i18n.call(depth0, "POP_TIP_PEM_ENCODED", {hash:{},data:data}))
     + "\" id=\"elb-ssl-cert-chain-input\">"
     + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.sslCert)),stack1 == null || stack1 === false ? stack1 : stack1.chain)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</textarea>\n		</div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"elb-ssl-cert-confirm\" class=\"btn btn-blue\">Save</button>\n		<button id=\"elb-ssl-cert-cancel\" class=\"btn modal-close btn-silver\">Cancel</button>\n	</div>\n</div>\n\n";
+    + "</textarea>\n		</div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"elb-ssl-cert-confirm\" class=\"btn btn-blue\">Save</button>\n		<button id=\"elb-ssl-cert-cancel\" class=\"btn modal-close btn-silver\">Cancel</button>\n	</div>\n</div>";
   return buffer;
   };
 TEMPLATE.modalSSLCertSetting=Handlebars.template(__TEMPLATE__);
@@ -2145,7 +2142,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + escapeExpression(helpers.i18n.call(depth0, "INVITE_MOD_BTN_REQUEST", {hash:{},data:data}))
     + "</button>\n		<button id=\"experimental-visops-cancel\" class=\"btn modal-close btn-silver\">"
     + escapeExpression(helpers.i18n.call(depth0, "INVITE_MOD_BTN_CANCEL", {hash:{},data:data}))
-    + "</button>\n	</div>\n</div>\n\n";
+    + "</button>\n	</div>\n</div>";
   return buffer;
   };
 TEMPLATE.experimentalVisops=Handlebars.template(__TEMPLATE__);
@@ -2161,7 +2158,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + escapeExpression(helpers.i18n.call(depth0, "INVITE_MOD_THANK_LBL", {hash:{},data:data}))
     + "</h3>\n<div class=\"modal-text-major tac\">"
     + escapeExpression(helpers.i18n.call(depth0, "INVITE_MOD_THANK_MORE", {hash:{},data:data}))
-    + "</div>\n\n";
+    + "</div>";
   return buffer;
   };
 TEMPLATE.experimentalVisopsTrail=Handlebars.template(__TEMPLATE__);
@@ -2173,7 +2170,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   
 
 
-  return "<div class=\"bubble-head\">A NAT instance must meet following requirements:</div>\n<div class=\"bubble-content\">\n	<ul class=\"bubble-NAT-req-list\">\n		<li>Should have a route targeting the instance itself with destination to 0.0.0.0/0.</li>\n		<li>Should belong to a subnet which routes traffic with destination 0.0.0.0/0 to Internet Gateway.</li>\n		<li>Should disable Source/Destination Checking in \"Network Interface Details\".</li>\n		<li>Should have public IP or Elastic IP.</li>\n		<li>Should have outbound rule to the outside.</li>\n		<li>Should have inbound rule from within the VPC.</li>\n	</ul>\n</div>\n\n";
+  return "<div class=\"bubble-head\">A NAT instance must meet following requirements:</div>\n<div class=\"bubble-content\">\n	<ul class=\"bubble-NAT-req-list\">\n		<li>Should have a route targeting the instance itself with destination to 0.0.0.0/0.</li>\n		<li>Should belong to a subnet which routes traffic with destination 0.0.0.0/0 to Internet Gateway.</li>\n		<li>Should disable Source/Destination Checking in \"Network Interface Details\".</li>\n		<li>Should have public IP or Elastic IP.</li>\n		<li>Should have outbound rule to the outside.</li>\n		<li>Should have inbound rule from within the VPC.</li>\n	</ul>\n</div>";
   };
 TEMPLATE.bubbleNATreq=Handlebars.template(__TEMPLATE__);
 
@@ -2181,12 +2178,10 @@ TEMPLATE.bubbleNATreq=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", escapeExpression=this.escapeExpression;
+  var escapeExpression=this.escapeExpression;
 
 
-  buffer += escapeExpression(helpers.nl2br.call(depth0, (depth0 && depth0.content), {hash:{},data:data}))
-    + "\n\n";
-  return buffer;
+  return escapeExpression(helpers.nl2br.call(depth0, (depth0 && depth0.content), {hash:{},data:data}));
   };
 TEMPLATE.covertNl2br=Handlebars.template(__TEMPLATE__);
 
@@ -2194,12 +2189,10 @@ TEMPLATE.covertNl2br=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", escapeExpression=this.escapeExpression;
+  var escapeExpression=this.escapeExpression;
 
 
-  buffer += escapeExpression(helpers.breaklines.call(depth0, (depth0 && depth0.content), {hash:{},data:data}))
-    + "\n\n";
-  return buffer;
+  return escapeExpression(helpers.breaklines.call(depth0, (depth0 && depth0.content), {hash:{},data:data}));
   };
 TEMPLATE.convertBreaklines=Handlebars.template(__TEMPLATE__);
 
@@ -2217,7 +2210,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + escapeExpression(((stack1 = (depth0 && depth0.cert_name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "?</div>\n				<div class=\"modal-text-minor\">"
     + escapeExpression(helpers.i18n.call(depth0, "PROP_ELB_CERT_REMOVE_CONFIRM_SUB", {hash:{},data:data}))
-    + "</div>\n			</div>\n		 </div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"modal-confirm-elb-cert-delete\" class=\"btn btn-red\">Delete</button>\n		<button id=\"modal-cancel\" class=\"btn modal-close btn-silver\">Cancel</button>\n	</div>\n</div>\n\n";
+    + "</div>\n			</div>\n		 </div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"modal-confirm-elb-cert-delete\" class=\"btn btn-red\">Delete</button>\n		<button id=\"modal-cancel\" class=\"btn modal-close btn-silver\">Cancel</button>\n	</div>\n</div>";
   return buffer;
   };
 TEMPLATE.modalDeleteELBCert=Handlebars.template(__TEMPLATE__);
@@ -2317,7 +2310,7 @@ function program11(depth0,data) {
     + escapeExpression(((stack1 = (depth0 && depth0.duration)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</div>\n  <div class=\"timestamp\">"
     + escapeExpression(((stack1 = (depth0 && depth0.time)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</div>\n</li>\n\n";
+    + "</div>\n</li>";
   return buffer;
   };
 TEMPLATE.headerNotifyItem=Handlebars.template(__TEMPLATE__);
@@ -2326,7 +2319,7 @@ TEMPLATE.headerNotifyItem=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
+  var stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
 
 function program1(depth0,data) {
   
@@ -2344,9 +2337,8 @@ function program1(depth0,data) {
   }
 
   stack1 = helpers.each.call(depth0, depth0, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n\n";
-  return buffer;
+  if(stack1 || stack1 === 0) { return stack1; }
+  else { return ''; }
   };
 TEMPLATE.accessTokenTable=Handlebars.template(__TEMPLATE__);
 
@@ -2463,7 +2455,7 @@ function program18(depth0,data) {
   buffer += "\n            </div>\n        ";
   stack1 = helpers['if'].call(depth0, (depth0 && depth0.hasFooter), {hash:{},inverse:self.noop,fn:self.program(15, program15, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n    </div>\n</div>\n";
+  buffer += "\n    </div>\n</div>";
   return buffer;
   };
 TEMPLATE.modalTemplate=Handlebars.template(__TEMPLATE__);

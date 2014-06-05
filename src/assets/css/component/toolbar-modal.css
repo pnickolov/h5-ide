@@ -1,6 +1,12 @@
 /* Common Style for Modal with Toolbar */
 .modal-toolbar {
   width: 855px; }
+  .modal-toolbar .no-credential {
+    color: #F5F5F5;
+    margin: 55px auto; }
+  .modal-toolbar .no-credential a {
+    cursor: pointer;
+    color: #148BE6; }
   .modal-toolbar .list {
     position: relative; }
   .modal-toolbar .modal-body {
@@ -107,6 +113,8 @@
         box-shadow: none; }
         .modal-toolbar .slidebox .content .action .btn-silver.cancel:hover {
           color: #148BE6; }
+        .modal-toolbar .slidebox .content .action .btn-silver.cancel[disabled]:hover {
+          color: #666; }
   .modal-toolbar .slidebox .error {
     color: #ec3c38;
     width: 430px;
@@ -137,21 +145,12 @@
       -moz-user-select: none;
       text-align: center;
       cursor: pointer; }
-      .modal-toolbar .table-head-fix .table tr td.show-detail::before {
-        content: '\F124';
-        font: 16px/1em "MCIcon";
-        font-weight: normal;
-        -webkit-font-smoothing: antialiased;
-        margin-left: -15px;
-        margin-right: 4px; }
-    .modal-toolbar .table-head-fix .table tr.detailed td.show-detail::before {
-      content: '\F121'; }
     .modal-toolbar .table-head-fix .table tr.tr-detail td {
       background-color: #273544 !important; }
     .modal-toolbar .table-head-fix .table tr .detail-info {
       background-color: #273544; }
       .modal-toolbar .table-head-fix .table tr .detail-info .detail-info-row {
-        margin-left: 120px;
+        margin-left: 100px;
         /* text-align: center; */
         float: left !important;
         width: 275px !important; }

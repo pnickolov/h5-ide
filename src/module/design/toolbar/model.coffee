@@ -353,6 +353,8 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
                 # update Design
                 ide_event.trigger ide_event.OPEN_DESIGN_TAB, "OPEN_STACK", name , region, result.resolved_data
 
+            return new_id
+
         saveStackCallback : ( id, name,region ) ->
             console.log 'saveStackCallback', id, name, region
 
@@ -493,6 +495,9 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
                     'is_asg'                : me.isAutoScaling(),
                     'is_production'         : if MC.common.other.canvasData.get( 'usage' ) isnt 'production' then false else true
                     'has_states'            : Design.instance().serialize().agent.enabled and (_.some _.values(Design.instance().serialize().component), (e)-> return e.state?.length>0)
+
+                    #if only contain EC2 and VPC resource, then can save as app
+                    'can_save_as_app'       : me.canSaveAsApp()
                 }
 
                 is_tab = true
@@ -661,17 +666,17 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
 
                                 # trigger TOOLBAR_HANDLE_SUCCESS
                                 #me.trigger 'TOOLBAR_HANDLE_SUCCESS', 'SAVE_STACK_BY_RUN', name
-                                deferred.resolve name
+                                deferred.resolve id
 
                             # create api
                             else if id.split( '-' )[0] is 'new'
 
                                 # call createStackCallback
-                                me.createStackCallback aws_result, id, name, region
+                                newStackId = me.createStackCallback aws_result, id, name, region
 
                                 # trigger TOOLBAR_HANDLE_SUCCESS
                                 #me.trigger 'TOOLBAR_HANDLE_SUCCESS', 'SAVE_STACK_BY_RUN', name
-                                deferred.resolve name
+                                deferred.resolve newStackId
 
                         else
                             console.error 'stack_service.save_stack, error is ' + aws_result.error_message
@@ -845,7 +850,34 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
             # loacl thumbnail
             MC.common.other.addCacheThumb id, $("#canvas_body").html(), $("#svg_canvas")[0].getBBox()
 
-            app_model.update { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, data, id
+            # HACK! Check if component is not modified.
+            backingStore = Design.instance().backingStore()
+
+            __bsBackup = $.extend true, {}, backingStore
+            __dtBackup = $.extend true, {}, data
+
+            backingStoreState = {}
+            dataState = {}
+            for uid, comp of backingStore.component
+                if comp.type is "AWS.AutoScaling.LaunchConfiguration" or comp.type is "AWS.EC2.Instance"
+                    backingStoreState[ uid ] = comp.state
+                    delete comp.state
+            for uid, comp of data.component
+                if comp.type is "AWS.AutoScaling.LaunchConfiguration" or comp.type is "AWS.EC2.Instance"
+                    dataState[ uid ] = comp.state
+                    delete comp.state
+
+            fastUpdate = _.isEqual( backingStore.component, data.component )
+            # Restore
+            for uid, state of backingStoreState
+                backingStore.component[ uid ].state = state
+            for uid, state of dataState
+                data.component[ uid ].state = state
+
+            console.assert _.isEqual( backingStore, __bsBackup ), "BackingStore Modified."
+            console.assert _.isEqual( data, __dtBackup ), "Data Modified."
+
+            app_model.update { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, data, id, fastUpdate
 
             # save app data for generating png
             idx = 'process-' + region + '-' + name
@@ -1198,6 +1230,24 @@ define [ "component/exporter/Thumbnail", 'MC', 'backbone', 'jquery', 'underscore
 
         isAutoScaling : () ->
             !!Design.modelClassForType( "AWS.AutoScaling.Group" ).allObjects().length
+
+        canSaveAsApp :() ->
+            i = 0
+            if Design.instance().mode() is 'appview'
+                #if only contain EC2 and VPC resource, then return true
+                i+=Design.modelClassForType( "AWS.ELB" ).allObjects().length
+                i+=Design.modelClassForType( "AWS.IAM.ServerCertificate" ).allObjects().length
+                i+=Design.modelClassForType( "AWS.AutoScaling.Group" ).allObjects().length
+                i+=Design.modelClassForType( "AWS.AutoScaling.LaunchConfiguration" ).allObjects().length
+                i+=Design.modelClassForType( "AWS.AutoScaling.NotificationConfiguration" ).allObjects().length
+                i+=Design.modelClassForType( "AWS.AutoScaling.ScalingPolicy" ).allObjects().length
+                i+=Design.modelClassForType( "AWS.CloudWatch.CloudWatch" ).allObjects().length
+                i+=Design.modelClassForType( "AWS.SNS.Topic" ).allObjects().length
+            if i is 0
+                true
+            else
+                false
+
 
         diff : ()->
             dedupResult = []

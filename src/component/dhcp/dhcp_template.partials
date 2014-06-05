@@ -12,15 +12,16 @@
 
 <!-- {{content}} -->
 {{#each items}}
-<tr class="item" data-id="">
+<tr class="item" data-id="{{id}}">
     <td>
         <div class="checkbox">
             <input id="{{id}}" type="checkbox" value="None" data-id="{{id}}" class="one-cb">
             <label for="{{id}}"></label>
         </div>
     </td>
-    <td>{{id}}</td>
-    <td>{{#if domain-name.length}}{{#each domain-name}}{{this}}&nbsp;&nbsp;&nbsp;&nbsp;{{/each}}{{else}}&nbsp;Not set{{/if}}</td>
+    <td><div class="manager-content-main"></div>{{id}}</td>
+    <td>{{#if domain-name.length}}domain-name = {{#each domain-name}}{{this}} {{/each}};{{/if}}{{#if domain-name-servers.length}}domain-name-servers = {{#each domain-name-servers}}{{this}} {{/each}};{{/if}}{{#if ntp-servers.length}}ntp-servers = {{#each ntp-servers}}{{this}} {{/each}};{{/if}}{{#if netbios-name-servers.length}}netbios-name-servers = {{#each netbios-name-servers}}{{this}} {{/each}};{{/if}}{{#if netbios-node-type}}netbios-node-type = {{netbios-node-type}}{{/if}}</td>
+    <td class="show-detail icon-toolbar-cloudformation"></td>
 </tr>
 {{/each}}
 
@@ -58,7 +59,7 @@
 
 <!-- {{slide_create}} -->
 <div class="slide-create" data-bind="true">
-    <div id="create-new-dhcp" data-type="true">
+    <div class="formart_toolbar_modal" data-type="true">
         <section data-bind="true">
             <div class="control-group clearfix">
                 <label for="property-dhcp-domain">{{ i18n "PROP_VPC_DHCP_SPECIFIED_LBL_DOMAIN_NAME" }}</label>
@@ -150,5 +151,31 @@
         <div class="processing action" style="display:none;">
             <button class="btn" disabled>Creating...</button>
         </div>
+    </div>
+</div>
+
+
+<!-- {{detail_info}} -->
+<div class="detail-info">
+    <div class="detail-info-row">
+        <section class="property-control-group">
+            <label>Domain Name</label>
+            <div>{{#each domain-name}}{{this}}<br>{{/each}}</div>
+        </section>
+        <section class="property-control-group">
+            <label>Domain Name Server</label>
+            <div>{{#each domain-name-servers}}{{this}}<br>{{/each}}</div>
+        </section>
+    </div>
+    <div class="detail-info-row">
+        <section class="property-control-group">
+            <label>NTP Server</label>
+            <div>{{#each ntp-servers}}{{this}}<br>{{/each}}</div>
+        </section>
+        <section class="property-control-group">
+
+            <label>NetBIOS Node Type</label>
+            <div>{{netbios-node-type}}</div>
+        </section>
     </div>
 </div>

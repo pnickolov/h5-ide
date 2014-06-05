@@ -104,3 +104,9 @@
         </section>
     </div>
 </div>
+
+<!-- {{no_sslcert}} -->
+<div class="combo-dd-no-data">
+    <p>No SSL Certificate.</p>
+    <a class="create-one">Create SSL Certificate</a>
+</div>

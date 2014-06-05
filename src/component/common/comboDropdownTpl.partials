@@ -1,16 +1,18 @@
 <!-- {{frame}} -->
-<div class="selectbox combo-dd multiopen" data-silent-close="#modal-wrap">
+<div class="selectbox combo-dd multiopen {{classList}}" data-silent-close="#modal-wrap">
     <div class="selection"></div>
 
-    <div style="height: 300px; width:260px;" class="dropdown scroll-wrap scrollbar-auto-hide  clearfix">
-        <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-        <div class="scroll-content combo-dd-content">
+    <div class="dropdown">
+        {{#unless noFilter}}
+            <input class="input combo-dd-filter" type="text" placeholder="{{filterPlaceHolder}}"/>
+        {{/unless}}
+        <div class="scroll-wrap scrollbar-auto-hide clearfix">
+            <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+            <div class="scroll-content combo-dd-content">
+            </div>
         </div>
         {{#unless noManage}}
             <div class="combo-dd-manage btn btn-primary" style="display:none;">{{manageBtnValue}}</div>
-        {{/unless}}
-        {{#unless noFilter}}
-            <input class="input combo-dd-filter" type="text" placeholder="{{filterPlaceHolder}}"/>
         {{/unless}}
     </div>
 </div>
@@ -23,7 +25,7 @@
 
 
 <!-- {{nocredential}} -->
-<div class="kp-no-credential tac">
+<div class="no-credential tac">
     <p>You are using a demo AWS account.</p>
     <a class="show-credential">Provide AWS Credential <br/>to manage key pairs</a>
 </div>

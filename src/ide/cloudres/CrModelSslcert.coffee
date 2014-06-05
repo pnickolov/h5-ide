@@ -22,7 +22,10 @@ define [ "./CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
         servercer_name     : @get("Name")
         new_servercer_name : newAttr.Name
         new_path           : newAttr.Path
-      }).then ()->
+      }).then ( res )->
+        oldArn = self.get('Arn')
+        newArn = "#{oldArn.split('/')[0]}/#{newAttr.Name}"
+        self.set 'Arn', newArn
         self.set newAttr
         self
 

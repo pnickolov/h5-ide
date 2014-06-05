@@ -9,8 +9,6 @@
 
 .combo-dd .combo-dd-manage {
   width         : 100%;
-  position      : absolute;
-  bottom        : 0;
   border-radius : 0;
   display       : none;
 }
@@ -21,8 +19,6 @@
   border-radius : 0;
   border        : 0;
   padding-right : 20px;
-  position      : absolute;
-  top           : 0;
   display       : none;
 }
 
@@ -33,8 +29,32 @@
   padding-right : 20px;
 }
 
-.combo-dd i {
+.combo-dd {
+
+  a {
+    color: #34A3F8;
+  }
+
+  i {
   color: #148BE6;
+  }
+
+  &.selectbox {
+
+    position: relative;
+
+    .dropdown {
+      position: absolute;
+      top: 29px;
+    }
+    .scroll-wrap {
+      width: 258px;
+      top: 0;
+      position: relative;
+      max-height: 200px;
+    }
+  }
+
 }
 
 .combo-dd li i {
@@ -42,9 +62,6 @@
 }
 
 .combo-dd-list {
-  margin-top     : 32px;
-  padding-bottom : 32px;
-
   li .icon-info {
     position   : absolute;
     right      : 10px;
@@ -54,12 +71,11 @@
 }
 
 .combo-dd-content .loading-spinner {
-  margin-top: 45%;
 }
 
 .combo-dd-no-data {
   text-align: center;
-  margin-top: 115px;
+  margin: 50px auto;
   color: #F5F5F5;
 
   a {
@@ -71,23 +87,17 @@
   display : none;
 }
 
-.combo-dd.open .dropdown {
-  top            : 29px;
-  padding-bottom : 33px;
-}
-
 .combo-dd {
   width: 260px;
+
+  .no-credential {
+    color: #F5F5F5;
+    margin: 50px auto;
+  }
+
+  .no-credential a {
+    cursor : pointer;
+    color  : #148BE6;
+  }
 }
 
-#kp-runtime-placeholder .combo-dd.open .dropdown {
-  top             :32px;
-}
-
-#kp-runtime-placeholder .selection {
-  padding-right: 19px;
-}
-
-#kp-runtime-placeholder {
-  display: inline-block;
-}

@@ -17,7 +17,7 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
       monitoring   : false
       userData     : ""
       publicIp     : false
-      state        : undefined
+      state        : null
 
       # RootDevice
       rdSize : 0
@@ -93,8 +93,9 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
         return error : lang.ide.CVS_MSG_ERR_DEL_LC
 
       state = @get("state")
-      if state isnt undefined and state.length > 0
-        return MC.template.NodeStateRemoveConfirmation(name: @get("name"))
+      if (state and _.isArray(state) and state.length > 0) or
+        ($('#state-editor-model').is(':visible') and $('#state-editor-model .state-list .state-item').length >= 1)
+          return MC.template.NodeStateRemoveConfirmation(name: @get("name"))
 
       true
 
@@ -250,6 +251,10 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
     handleTypes : constant.RESTYPE.LC
 
     deserialize : ( data, layout_data, resolve )->
+
+      #old format state support
+      if not (_.isArray(data.state) and data.state.length)
+        data.state = null
 
       attr = {
         id    : data.uid

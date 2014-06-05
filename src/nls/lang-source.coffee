@@ -916,6 +916,11 @@ module.exports =
       en: "Export to PNG"
       zh: "导出图片"
 
+    TOOL_SAVE_AS_APP:
+      en: "Save as App"
+      zh: "保存为应用"
+
+
     TOOL_EXPORT_AS_CF:
       en: "Convert to CloudFormation Format"
       zh: "导出JSON文件"
@@ -1282,7 +1287,7 @@ module.exports =
       zh: ""
 
     PROP_INSTANCE_FILTER_SSL_CERT:
-      en: "Filter by Server Certificate name"
+      en: "Filter by SSL Certificate name"
       zh: ""
 
     PROP_INSTANCE_MANAGE_SSL_CERT:
@@ -1627,11 +1632,11 @@ module.exports =
       zh: "DHCP 选项"
 
     PROP_VPC_DHCP_LBL_NONE:
-      en: "None"
+      en: "Default"
       zh: "无"
 
     PROP_VPC_DHCP_LBL_DEFAULT:
-      en: "Default DHCP"
+      en: "Auto-assigned Set"
       zh: "缺省"
 
     PROP_VPC_DHCP_LBL_SPECIFIED:
@@ -1691,11 +1696,11 @@ module.exports =
       zh: "DHCP选项标识"
 
     PROP_VPC_MANAGE_DHCP:
-      en: "Manage Region DHCP options"
+      en: "Manage DHCP Options Set"
       zh: ""
 
     PROP_VPC_FILTER_DHCP:
-      en: "Filter by DHCP name"
+      en: "Filter by DHCP Options Set ID"
       zh: ""
 
     PROP_VPC_TIP_AUTO_DHCP:
@@ -2376,6 +2381,14 @@ module.exports =
       en: "%d rules have been created in %s to allow %s send and receive traffic within itself."
       zh: "%d条规则被创建到 %s 来允许 %s 它内部的收发通信."
 
+    PROP_SNAPSHOT_FILTER_REGION:
+      en: "Filter by region name"
+      zh: ""
+
+    PROP_SNAPSHOT_FILTER_SNAPSHOT:
+      en: "Filter by Snapshot id"
+      zh: ""
+
     PROP_VOLUME_DEVICE_NAME:
       en: "Device Name"
       zh: "挂载设备名"
@@ -2402,6 +2415,10 @@ module.exports =
 
     PROP_VOLUME_SNAPSHOT_SELECT:
       en: "Select volume from which to create snapshot"
+      zh: ""
+
+    PROP_VOLUME_SNAPSHOT_SELECT_REGION:
+      en: "Select Destination Region"
       zh: ""
 
     PROP_VOLUME_SNAPSHOT:
@@ -2549,7 +2566,7 @@ module.exports =
       zh: "添加监听器"
 
     PROP_ELB_BTN_ADD_SERVER_CERTIFICATE:
-      en: "Add Server Certificate"
+      en: "Add SSL Certificate"
       zh: "添加服务器认证"
 
     PROP_ELB_SERVER_CERTIFICATE:
@@ -2689,7 +2706,7 @@ module.exports =
       zh: ""
 
     PROP_ELB_CERT_REMOVE_CONFIRM_TITLE:
-      en: "Confirm to Delete Server Certificate"
+      en: "Confirm to Delete SSL Certificate"
       zh: ""
 
     PROP_ELB_CERT_REMOVE_CONFIRM_MAIN:
@@ -3103,6 +3120,42 @@ module.exports =
     PROC_CLOSE_TAB:
       en: "Close"
       zh: "关闭标签"
+
+    PROP_SNAPSHOT_SET_NAME:
+      en: "Snapshot Name"
+      zh: ""
+
+    PROP_SNAPSHOT_SET_NAME_TIP:
+      en: "Enter the name of the snapshot that you will create."
+      zh: ""
+
+    PROP_SNAPSHOT_SOURCE_SNAPSHOT:
+      en: "Source Snapshot"
+      zh: ""
+
+    PROP_SNAPSHOT_SET_NEW_NAME:
+      en: "New Snapshot Name"
+      zh: ""
+
+    PROP_SNAPSHOT_DESTINATION_REGION:
+      en: "Destination Region"
+      zh: ""
+
+    PROP_SNAPSHOT_SET_VOLUME:
+      en: "Volume"
+      zh: ""
+
+    PROP_SNAPSHOT_SET_DESC:
+      en: "Description"
+      zh: ""
+
+    PROP_VPC_TIP_ENTER_THE_NEW_SNAPSHOT_NAME:
+      en: "Please fill with the name of the new snapshot you will create."
+      zh: ""
+
+    PROP_SNAPSHOT_SET_DESC_TIP:
+      en: "Fill in the Description"
+      zh: ""
 
     PROC_STEP_REQUEST:
       en: "Processing"
@@ -5016,19 +5069,23 @@ VisualOps API. You cannot UNDO this action.'
 
     # Share Resource
     TA_MSG_ERROR_ASG_NOTIFICATION_NO_TOPIC:
-      en: "Auto Scaling Group %s has configured notification. Please select a SNS Topic for it."
+      en: "Auto Scaling Group <span class='validation-tag tag-asg'>%s</span> has configured notification. Please select a SNS Topic for it."
       zh: ""
 
     TA_MSG_ERROR_ASG_POLICY_NO_TOPIC:
-      en: "Auto Scaling Group %s's Scaling Policy %s has configured notification. Please select a SNS Topic for it."
+      en: "Auto Scaling Group %s's Scaling Policy <span class='validation-tag'>%s</span> has configured notification. Please select a SNS Topic for it."
       zh: ""
 
     TA_MSG_ERROR_ASG_NOTIFICITION_TOPIC_NONEXISTIENT:
-      en: "Auto Scaling Group %s is using a nonexistient SNS Topic %s. Please change to an existing SNS Topic to make notification work."
+      en: "Auto Scaling Group <span class='validation-tag tag-asg'>%s</span> is using a nonexistient SNS Topic <span class='validation-tag'>%s</span>. Please change to an existing SNS Topic to make notification work."
       zh: ""
 
     TA_MSG_ERROR_ASG_POLICY_TOPIC_NONEXISTIENT:
-      en: "Auto Scaling Group %s's Scaling Policy %s is using a nonexistent SNS Topic %s. Please change to an existing SNS Topic to make notification work."
+      en: "Auto Scaling Group <span class='validation-tag tag-asg'>%s</span>'s Scaling Policy %s is using a nonexistent SNS Topic <span class='validation-tag'>%s</span>. Please change to an existing SNS Topic to make notification work."
+      zh: ""
+
+    TA_MSG_ERROR_VPC_DHCP_NONEXISTENT:
+      en: "VPC is using a nonexistent DHCP option set. Please specify default, auto-assigned or an existing DHCP option set."
       zh: ""
 
     RELOAD_STATE_INVALID_REQUEST:
@@ -5043,7 +5100,9 @@ VisualOps API. You cannot UNDO this action.'
     RELOAD_STATE_SUCCESS:
       en: "States reloaded successfully!"
       zh: ""
-
+    RELOAD_STATE_NOT_READY:
+      en: "App Agent is not ready yet, Please try again later."
+      zh: ""
     ##### Trust Advisor
 
     TIP_KEYPAIR_USED_DEFAULT_KP:

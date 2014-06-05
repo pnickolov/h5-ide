@@ -38,10 +38,12 @@ button#property-app-keypair {
   display: block;
   padding: 8px 10px; }
 
-.kp-no-credential {
-  color: #F5F5F5;
-  padding-top: 55px; }
+#kp-runtime-placeholder .selection {
+  padding-right: 19px; }
 
-.kp-no-credential a {
-  cursor: pointer;
-  color: #148BE6; }
+#kp-runtime-placeholder {
+  display: inline-block; }
+
+.default-kp-info {
+  color: #34A3F8;
+  margin-left: 3px; }

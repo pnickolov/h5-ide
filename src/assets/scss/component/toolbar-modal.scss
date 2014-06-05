@@ -37,6 +37,16 @@ $dark-blue: #001324;
 .modal-toolbar {
 	width: 855px;
 
+	.no-credential {
+		color: #F5F5F5;
+		margin: 55px auto;
+	}
+
+	.no-credential a {
+		cursor : pointer;
+		color  : #148BE6;
+	}
+
 	.list {
 		position: relative;
 	}
@@ -185,6 +195,9 @@ $dark-blue: #001324;
 				&:hover {
 					color: #148BE6;
 				}
+				&[disabled]:hover {
+					color: #666;
+				}
 			}
 		}
 	}
@@ -225,20 +238,6 @@ $dark-blue: #001324;
 				@include user-select;
 				text-align: center;
 				cursor: pointer;
-				&::before {
-					content: '\F124';
-					font: 16px/1em "MCIcon";
-  					font-weight: normal;
-  					-webkit-font-smoothing: antialiased;
-  					margin-left: -15px;
-  					margin-right: 4px;
-				}
-			}
-
-			tr.detailed td.show-detail {
-				&::before {
-					content: '\F121';
-				}
 			}
 
 			tr.tr-detail {
@@ -250,7 +249,7 @@ $dark-blue: #001324;
 			tr .detail-info {
 				background-color: #273544;
 				.detail-info-row {
-					margin-left: 120px;
+					margin-left: 100px;
 					/* text-align: center; */
 					float: left !important;
 					width: 275px !important;

@@ -10,6 +10,11 @@
 </li>
 {{/each}}
 
+<!-- {{resoruce_snapshot_new_data}} -->
+<li class="tooltip resource-item" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_VOLUME" }}' data-component-type="node" data-type="AWS.EC2.EBS.Volume" data-option='' >
+	<div class="resource-icon resource-icon-volume"></div>
+	<div class="resource-label">{{i18n "RES_LBL_NEW_VOL"}}</div>
+</li>
 
 <!-- {{resoruce_snapshot_data}} -->
 {{#each resource_snapshot.item }}

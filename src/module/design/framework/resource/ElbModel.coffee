@@ -123,6 +123,9 @@ define [ "Design",
         listeners[idx] = {} if not listeners[idx]
         listeners[idx] = $.extend listeners[idx], value
 
+      if not (listeners[idx].protocol in ['HTTPS', 'SSL'])
+        listeners[idx].sslCert = null
+
       null
 
     removeListener : ( idx ) ->
@@ -134,9 +137,11 @@ define [ "Design",
 
     setSSLCert : ( idx, sslCertId ) ->
 
-      listeners = @get("listeners")
-      sslCertData = sslCertCol.get(sslCertId)
-      listeners[idx].sslCert = SslCertModel.createNew(sslCertData)
+      if idx >= 0
+        
+        listeners = @get("listeners")
+        sslCertData = sslCertCol.get(sslCertId)
+        listeners[idx].sslCert = SslCertModel.createNew(sslCertData)
 
     removeSSLCert : ( idx ) ->
 

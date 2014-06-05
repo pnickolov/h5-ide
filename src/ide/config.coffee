@@ -268,13 +268,14 @@ require.config {
 
 		#statusbar state
 		'state_status'       : 'component/statestatus/main'
-		'kp'                 : 'component/kp/kpMain'
+		'kp_dropdown'        : 'component/kp/kpDropdown'
+		'kp_manage'          : 'component/kp/kpManage'
 		'kp_upload'          : 'component/kp/kpUpload'
 		'sns_dropdown'       : 'component/sns/snsDropdown'
 		'sns_manage'		 : 'component/sns/snsManage'
 		'combo_dropdown'     : 'component/common/comboDropdown'
 		'toolbar_modal'      : 'component/common/toolbarModal'
-		'dhcp'               : 'component/dhcp/dhcpMain'
+		'dhcp'               : 'component/dhcp/dhcp'
 		'snapshotManager'    : 'component/snapshot/snapshot'
 		'sslcert_manage'     : 'component/sslcert/sslCertManage'
 		'sslcert_dropdown'     : 'component/sslcert/sslCertDropdown'
@@ -431,17 +432,27 @@ require.config {
 		"component/exporter/Exporter"  : [ "component/exporter/Download", "component/exporter/Thumbnail", "component/exporter/JsonExporter" ]
 		"ide/cloudres/CrBundle"  : ["CloudResources"]
 		"ide/Application" : [ "Workspace" ]
-		'combo_dropdown'  : ["toolbar_modal"]
-		"kp" : ["kp_upload"]
 		"module/design/framework/DesignBundle" : [ "Design", "CanvasManager" ]
 		"validation" : []
 		"component/stateeditor/stateeditor" : []
+		"component/sharedrescomp" : [
+			'kp_dropdown'
+			'kp_manage'
+			'kp_upload'
+			'sns_dropdown'
+			'sns_manage'
+			'combo_dropdown'
+			'toolbar_modal'
+			'dhcp'
+			'snapshotManager'
+			'sslcert_manage'
+			'sslcert_dropdown'
+		]
 		"property" : []
 
 	bundleExcludes : # This is a none requirejs option, but it's used by compiler to exclude some of the source.
 		"lib/deprecated" : ["Design"]
 		"component/sgrule/SGRulePopup" : [ "Design" ]
-		"kp" : ["Design"]
 		"component/stateeditor/stateeditor" : [
 			"component/stateeditor/lib/ace"
 			"component/stateeditor/lib/markdown"

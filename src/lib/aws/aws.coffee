@@ -409,13 +409,13 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
         #collect reference
         for uid, comp of canvas_component
 
-            if constant.AWS_RESOURCE_KEY[comp.type]
+            if constant.AWS_RESOURCE_KEY[comp.type] and comp.resource[constant.AWS_RESOURCE_KEY[comp.type]]
 
                 key[comp.resource[constant.AWS_RESOURCE_KEY[comp.type]]] = MC.aws.aws.genResRef(uid, "resource.#{constant.AWS_RESOURCE_KEY[comp.type]}")
 
-                if comp.type is "AWS.EC2.KeyPair"
+                # if comp.type is "AWS.EC2.KeyPair"
 
-                    key[comp.resource.KeyName + '-keypair'] = MC.aws.aws.genResRef(uid, 'resource.KeyName')
+                #     key[comp.resource.KeyName + '-keypair'] = MC.aws.aws.genResRef(uid, 'resource.KeyName')
 
                 if comp.type is "AWS.AutoScaling.Group"
 
@@ -425,11 +425,12 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
 
                     key[comp.resource.LaunchConfigurationName + '-lc'] = MC.aws.aws.genResRef(uid, 'resource.LaunchConfigurationName')
 
-                if comp.type is 'AWS.VPC.NetworkInterface'
+                ## no need for app ##
+                # if comp.type is 'AWS.VPC.NetworkInterface'
 
-                    for idx, ipset of comp.resource.PrivateIpAddressSet
+                #     for idx, ipset of comp.resource.PrivateIpAddressSet
 
-                        key[ipset.PrivateIpAddress] = MC.aws.aws.genResRef(uid, "resource.PrivateIpAddressSet.#{idx}.PrivateIpAddress")
+                #         key[ipset.PrivateIpAddress] = MC.aws.aws.genResRef(uid, "resource.PrivateIpAddressSet.#{idx}.PrivateIpAddress")
 
         #replace reference
         for uid, comp of canvas_component

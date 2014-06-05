@@ -1,4 +1,4 @@
-define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sslcert/sslCertTpl', 'i18n!nls/lang.js' ], ( constant, CloudResources, toolbar_modal, template, lang ) ->
+define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sslcert/sslCertTpl', 'i18n!nls/lang.js', 'event' ], ( constant, CloudResources, toolbar_modal, template, lang, ide_event ) ->
 
     Backbone.View.extend
 
@@ -6,6 +6,8 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sslcert/ssl
 
         initCol: ->
             @sslCertCol = CloudResources constant.RESTYPE.IAM
+            if App.user.hasCredential()
+                @sslCertCol.fetch()
             @sslCertCol.on 'update', @processCol, @
             @sslCertCol.on 'change', @processCol, @
 
@@ -74,6 +76,9 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sslcert/ssl
         initialize: () ->
             @initCol()
             @initModal()
+
+        quickCreate: ->
+            @modal.triggerSlide 'create'
 
         doAction: ( action, checked ) ->
             @[action] and @[action](@validate(action), checked)
@@ -154,8 +159,8 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sslcert/ssl
             if checked and checked[0]
 
                 sslCertId = checked[0].data.id
-                sslCertModel = that.sslCertCol.get(sslCertId)
-                oldCerName = sslCertModel.get('Name')
+                sslCertData = that.sslCertCol.get(sslCertId)
+                oldCerName = sslCertData.get('Name')
                 newCertName = $('#ssl-cert-name-update-input').val()
 
                 if newCertName is oldCerName
@@ -164,11 +169,24 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sslcert/ssl
 
                 else
 
-                    sslCertModel.update(
+                    sslCertData.update(
                         Name: newCertName
                     ).then (result) ->
                         certName = newCertName
                         notification 'info', "Certificate #{certName} is updated"
+
+                        # refresh ssl cert related
+                        sslCertModelAry = Design.modelClassForType(constant.RESTYPE.IAM).allObjects()
+                        _.each sslCertModelAry, (sslCertModel) ->
+                            if sslCertModel.get('name') is oldCerName
+                                sslCertModel.set('name', newCertName)
+                                sslCertModel.set('arn', sslCertData.get('Arn'))
+                            null
+                        # $selectCertItem = $('.sslcert-placeholder .selection').filter () ->
+                        #     return $(this).text() == oldCerName
+                        # $selectCertItem.text(newCertName)
+                        ide_event.trigger ide_event.REFRESH_PROPERTY
+
                         that.modal.cancel()
                     , (result) ->
                         that.switchAction()
@@ -206,8 +224,12 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sslcert/ssl
                     $(@).hide()
 
         render: ->
+
             @modal.render()
-            @processCol()
+            if App.user.hasCredential()
+                @processCol()
+            else
+                @modal.render 'nocredential'
             @
 
         processCol: () ->
@@ -293,7 +315,9 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sslcert/ssl
                 allTextBox.on 'keyup', processCreateBtn
 
         show: ->
+
             if App.user.hasCredential()
+                @sslCertCol.fetch()
                 @processCol()
             else
                 @renderNoCredential()

@@ -1,4 +1,5 @@
 define [ 'constant', 'backbone', 'underscore', 'MC', 'keypair_service', 'Design' ], ( constant, Backbone, _, MC, keypair_service, Design ) ->
+
     # Helper
     request = ( api, name, data ) ->
             username = $.cookie "usercode"
@@ -60,7 +61,7 @@ define [ 'constant', 'backbone', 'underscore', 'MC', 'keypair_service', 'Design'
         __haveGot: false
 
         initialize: ( options ) ->
-            @resModel = options.resModel
+            @resModel = options.resModel if options
 
             if @resModel
                 @set 'keyName', @resModel.getKeyName()
@@ -91,9 +92,9 @@ define [ 'constant', 'backbone', 'underscore', 'MC', 'keypair_service', 'Design'
 
         getKeys: ->
             that = @
-            @haveGot true
             @list().then(
                 (res) ->
+                    that.haveGot true
                     console.log('-----result-----')
                     if that.resModel
                         keyName = that.resModel.getKeyName()
@@ -109,6 +110,7 @@ define [ 'constant', 'backbone', 'underscore', 'MC', 'keypair_service', 'Design'
 
                     that.settle 'keys', keys or []
                 (err) ->
+                    that.haveGot true
                     that.settle 'keys', []
             )
 
@@ -152,10 +154,6 @@ define [ 'constant', 'backbone', 'underscore', 'MC', 'keypair_service', 'Design'
                 (err) ->
                     console.log(err)
             )
-
-
-
-
 
 
 

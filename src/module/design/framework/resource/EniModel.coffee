@@ -629,7 +629,7 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
         ipObj = new IpObject({
           autoAssign   : ip.AutoAssign
           ip           : ip.PrivateIpAddress
-          fixedIpInApp : Design.instance().modeIsApp()
+          fixedIpInApp : Design.instance().modeIsApp() || Design.instance().modeIsAppView()
         })
         if ip.EipResource
           ipObj.eipData =
@@ -764,7 +764,7 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
         ipObj = new IpObject({
           autoAssign   : autoAssign
           ip           : ip.PrivateIpAddress
-          fixedIpInApp : Design.instance().modeIsApp()
+          fixedIpInApp : Design.instance().modeIsApp() || Design.instance().modeIsAppView()
         })
         if ip.EipResource
           ipObj.hasEip  = true

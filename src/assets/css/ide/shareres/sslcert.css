@@ -12,3 +12,6 @@
   .modal-ssl-cert-update .modal-ssl-cert-item .left {
     width: 130px !important;
     margin-top: 7px; }
+
+.sslcert-placeholder section.empty .selection {
+  color: #f00; }

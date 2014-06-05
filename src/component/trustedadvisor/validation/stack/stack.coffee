@@ -50,46 +50,47 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'ApiRequest', 'stack_ser
 				returnInfo = null
 				errInfoStr = ''
 
-				if result and result[0] is ApiRequest.Errors.StackVerifyFailed
-					validResultObj = result.resolved_data
-					if typeof(validResultObj) is 'object'
-						if validResultObj.result
-							callback(null)
-						else
-							checkResult = false
+				if result isnt true
 
-							try
-								returnInfo = validResultObj.cause
-								returnInfoObj = JSON.parse(returnInfo)
+					checkResult = false
 
-								# get api call info
-								errCompUID = returnInfoObj.uid
+					try
+						
+						returnInfo = result
+						returnInfoObj = JSON.parse(returnInfo)
 
-								errCode = returnInfoObj.code
-								errKey = returnInfoObj.key
-								errMessage = returnInfoObj.message
+						# get api call info
+						errCompUID = returnInfoObj.uid
 
-								errCompName = _getCompName(errCompUID)
-								errCompType = _getCompType(errCompUID)
+						errCode = returnInfoObj.code
+						errKey = returnInfoObj.key
+						errMessage = returnInfoObj.message
 
-								errInfoStr = sprintf lang.ide.TA_MSG_ERROR_STACK_FORMAT_VALID_FAILED, errCompName, errMessage
+						errCompName = _getCompName(errCompUID)
+						errCompType = _getCompType(errCompUID)
 
-								if (errCode is 'EMPTY_VALUE' and
-									errKey is 'InstanceId' and
-									errMessage is 'Key InstanceId can not empty' and
-									errCompType is 'AWS.VPC.NetworkInterface')
-										checkResult = true
+						errInfoStr = sprintf lang.ide.TA_MSG_ERROR_STACK_FORMAT_VALID_FAILED, errCompName, errMessage
 
-								if (errCode is 'EMPTY_VALUE' and
-									errKey is 'LaunchConfigurationName' and
-									errMessage is 'Key LaunchConfigurationName can not empty' and
-									errCompType is 'AWS.AutoScaling.Group')
-										checkResult = true
+						if (errCode is 'EMPTY_VALUE' and
+							errKey is 'InstanceId' and
+							errMessage is 'Key InstanceId can not empty' and
+							errCompType is 'AWS.VPC.NetworkInterface')
+								checkResult = true
 
-							catch err
-								errInfoStr = "Stack format validation error"
-					else
-						callback(null)
+						if (errCode is 'EMPTY_VALUE' and
+							errKey is 'LaunchConfigurationName' and
+							errMessage is 'Key LaunchConfigurationName can not empty' and
+							errCompType is 'AWS.AutoScaling.Group')
+								checkResult = true
+
+						if (errCode is 'EMPTY_VALUE' and
+							errKey is 'TopicARN' and
+							errMessage is 'Key TopicARN can not empty' and
+							errCompType is 'AWS.AutoScaling.NotificationConfiguration')
+								checkResult = true
+
+					catch err
+						errInfoStr = "Stack format validation error"
 				else
 					callback(null)
 
@@ -102,6 +103,10 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'ApiRequest', 'stack_ser
 					}
 					callback(validResultObj)
 					console.log(validResultObj)
+
+			, (result) ->
+
+				callback(null)
 
 			# immediately return
 			tipInfo = sprintf lang.ide.TA_MSG_ERROR_STACK_CHECKING_FORMAT_VALID
@@ -127,7 +132,12 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'ApiRequest', 'stack_ser
 				if compObj.type is constant.RESTYPE.INSTANCE or
 					compObj.type is constant.RESTYPE.LC
 						imageId = compObj.resource.ImageId
-						if imageId
+						instanceId = ''
+						if compObj.type is constant.RESTYPE.INSTANCE
+							instanceId = compObj.resource.InstanceId
+						else if compObj.type is constant.RESTYPE.LC
+							instanceId = compObj.resource.LaunchConfigurationARN
+						if imageId and (not instanceId)
 							if not instanceAMIMap[imageId]
 								instanceAMIMap[imageId] = []
 								amiAry.push imageId
@@ -235,7 +245,12 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'ApiRequest', 'stack_ser
 			if compObj.type is constant.RESTYPE.INSTANCE or
 				compObj.type is constant.RESTYPE.LC
 					imageId = compObj.resource.ImageId
-					if imageId
+					instanceId = ''
+					if compObj.type is constant.RESTYPE.INSTANCE
+						instanceId = compObj.resource.InstanceId
+					else if compObj.type is constant.RESTYPE.LC
+						instanceId = compObj.resource.LaunchConfigurationARN
+					if imageId and (not instanceId)
 						if not instanceAMIMap[imageId]
 							instanceAMIMap[imageId] = []
 							amiAry.push imageId

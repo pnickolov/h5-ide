@@ -225,7 +225,7 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
       component_data = json_data[ uid ]
 
       if not component_data
-        console.error "Unknown uid for resolving component :", uid, json_data
+        console.warn "Unknown uid for resolving component :", uid, json_data
         return
 
       ModelClass = Design.modelClassForType( component_data.type )
@@ -664,6 +664,7 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( con
       result.push changeObj
     null
 
+  DesignImpl.prototype.backingStore = ()-> @__backingStore
   DesignImpl.prototype.diff = ()->
     # Get an detailed diff of the current state of the Design and the last save state.
     newData = @serialize()

@@ -29,7 +29,11 @@ define [ './component/common/comboDropdownTpl', 'backbone', 'jquery' ], ( templa
             'keyup .combo-dd-filter'    : '__filter'
             'keydown .combo-dd-filter'  : '__stopPropagation'
             'click .combo-dd-filter'    : '__returnFalse'
+            'click .create-one'         : '__quickCreate'
 
+
+        __quickCreate: () ->
+            @trigger 'quick_create'
 
         __stopPropagation: ( event ) ->
             event.stopPropagation()
@@ -64,12 +68,15 @@ define [ './component/common/comboDropdownTpl', 'backbone', 'jquery' ], ( templa
         # ------ INTERFACE ------ #
 
         render: ( tpl ) ->
-            @$( '.combo-dd-content' ).html template[ tpl ] or tpl
+            @$( '.combo-dd-content' ).html template[ tpl ] and template[ tpl ]() or tpl
             @
 
         setSelection: ( dom ) ->
             @$( '.selection' ).html dom
             @
+
+        getSelection: ( dom ) ->
+            $.trim(@$( '.selection' ).text())
 
         setContent: ( dom ) ->
             @$( '.combo-dd-content' ).html template.listframe

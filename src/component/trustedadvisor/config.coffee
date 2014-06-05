@@ -36,4 +36,7 @@ define({
         kp: [ 'isKeyPairExistInAws' ]
         elb: [ 'isSSLCertExist' ]
         asg: [ 'isTopicNonexist' ]
+        vpc: [ 'isVPCUsingNonexistentDhcp' ]
+
+
 })

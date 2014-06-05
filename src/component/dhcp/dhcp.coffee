@@ -1,5 +1,6 @@
-define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_modal', 'i18n!nls/lang.js', './dhcp_template.js'], ( CloudResources, constant, comboDropdown, modalPlus, toolbarModal, lang, template )->
+define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_modal', 'i18n!nls/lang.js', './component/dhcp/dhcp_template.js'], ( CloudResources, constant, comboDropdown, modalPlus, toolbarModal, lang, template )->
     fetched = false
+    fetching  = false
     updateAmazonCB = () ->
         rowLength = $( "#property-domain-server" ).children().length
         if rowLength > 3
@@ -19,12 +20,12 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
     deleteErrorCount = 0
     dhcpView = Backbone.View.extend
         constructor:(options)->
-            @resModel = options.resModel
+            @resModel = options?.resModel
             @collection = CloudResources constant.RESTYPE.DHCP, Design.instance().region()
             @listenTo @collection, 'change', @render
             @listenTo @collection, 'update', @render
-            @listenTo @collection, 'change', @renderManager
-            @listenTo @collection, 'update', @renderManager
+            @listenTo @collection, 'change', -> @renderManager()
+            @listenTo @collection, 'update', -> @renderManager()
             option =
                 manageBtnValue: lang.ide.PROP_VPC_MANAGE_DHCP
                 filterPlaceHolder: lang.ide.PROP_VPC_FILTER_DHCP
@@ -62,7 +63,7 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
             @dropdown.render('loading').toggleControls false
 
         renderDropdown: (keys)->
-            selected = @resModel.toJSON().dhcp.dhcpOptionsId
+            selected = @resModel?.toJSON().dhcp.dhcpOptionsId
             data = @collection.toJSON()
             if selected
                 _.each data, (key)->
@@ -79,6 +80,8 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
             if keys
                 datas.keys = keys
                 datas.hideDefaultNoKey = true
+            if Design.instance().modeIsApp() or Design.instance().modeIsAppEdit()
+                datas.isRunTime = true
             content = template.keys datas
             @dropdown.toggleControls true
             @dropdown.setContent content
@@ -110,6 +113,7 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
             @manager.on 'refresh', @refreshManager, @
             @manager.on 'slidedown', @renderSlides, @
             @manager.on 'action', @doAction, @
+            @manager.on 'detail', @detail, @
             @manager.on 'close', =>
                 @manager.remove()
             @manager.render()
@@ -119,11 +123,19 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
             fetched = false
             @renderManager()
         renderManager: ->
-            if not fetched
-                fetched = true
-                @collection.fetchForce().then =>
-                    @renderManager()
+            if not App.user.hasCredential()
+                @manager?.render 'nocredential'
                 return false
+            initManager = @initManager.bind @
+            if not fetched and not fetching
+                fetching = true
+                @collection.fetchForce().then initManager, initManager
+            #content = template.content items:@collection.toJSON()
+            else if not fetching
+                initManager()
+        initManager: ->
+            fetching = false
+            fetched = true
             content = template.content items:@collection.toJSON()
             @manager?.setContent content
 
@@ -131,6 +143,14 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
             tpl = template['slide_'+ which]
             slides = @getSlides()
             slides[which]?.call @, tpl, checked
+
+        detail: (event, data, $tr) ->
+            that = this
+            dhcpId = data.id
+            dhcpData = @collection.get(dhcpId).toJSON()
+            detailTpl = template['detail_info']
+            @manager.setDetail($tr, detailTpl(dhcpData))
+
         getSlides: ->
             "delete": (tpl, checked)->
                 checkedAmount = checked.length
@@ -160,7 +180,7 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
                 @manager.$el.find("#property-amazon-dns").change (e)=> @onChangeAmazonDns(e)
                 @manager.$el.find('.multi-input').on 'ADD_ROW',  (e)=> @processParsley(e)
                 @manager.$el.find(".control-group .input").change (e)=> @onChangeDhcpOptions(e)
-                @manager.$el.find('#create-new-dhcp').on 'OPTION_CHANGE REMOVE_ROW', (e)=>@onChangeDhcpOptions(e)
+                @manager.$el.find('.formart_toolbar_modal').on 'OPTION_CHANGE REMOVE_ROW', (e)=>@onChangeDhcpOptions(e)
                 @manager.$el.find('#property-domain-server').on( 'ADD_ROW REMOVE_ROW', updateAmazonCB )
                 updateAmazonCB()
         processParsley: ( event ) ->
@@ -209,10 +229,9 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
             deleteCount--
             if result.error
                 deleteErrorCount++
-                return false
             if deleteCount is 0
                 if deleteErrorCount > 0
-                    notification 'error', deleteErrorCount+" DhcpOptions failed to delete, Please try again later."
+                    notification 'error', deleteErrorCount+" DhcpOptions failed to delete because of: \"#{result.awsResult}\""
                 else
                     notification 'info', "Delete Successfully"
                 deleteErrorCount = 0
@@ -220,7 +239,7 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
         afterCreated: (result)->
             @manager.cancel()
             if result.error
-                notification 'error', "Create failed because of: "+result.msg
+                notification 'error', "Create failed because of: "+result.awsResult
                 return false
             notification 'info', "New DHCP Option is created successfully"
 
@@ -280,13 +299,18 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
             columns: [
                 {
                     sortable: true
-                    width: "30%" # or 40%
+                    width: "200px" # or 40%
                     name: 'Name'
                 }
                 {
-                    sortable: true
-                    width: "60%" # or 40%
-                    name: 'Domain-name'
+                    sortable: false
+                    width: "480px" # or 40%
+                    name: 'Options'
+                }
+                {
+                    sortable: false
+                    width: "56px"
+                    name: "Details"
                 }
             ]
 

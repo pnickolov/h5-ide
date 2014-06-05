@@ -3,10 +3,10 @@
 #############################
 
 define [ 'i18n!nls/lang.js', 'aws_model', 'ami_model'
-         'event', 'constant', 'forge_handle'
+         'event', 'constant', 'forge_handle', 'ApiRequest'
          'UI.notification',
          'backbone', 'jquery', 'underscore'
-], ( lang, aws_model, ami_model, ide_event, constant, forge_handle ) ->
+], ( lang, aws_model, ami_model, ide_event, constant, forge_handle, ApiRequest ) ->
 
     ProcessModel = Backbone.Model.extend {
 
@@ -276,8 +276,38 @@ define [ 'i18n!nls/lang.js', 'aws_model', 'ami_model'
                 # delete session
                 MC.session.remove 'aws_resource_' + region
 
-                # call api
-                aws_model.resource { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, resources, 'vpc', 1
+                #cache original app json
+                MC.data.app_info = {}
+                ApiRequest("app_get_info", {
+                    username   : $.cookie( 'usercode' )
+                    session_id : $.cookie( 'session_id' )
+                    vpc_ids    : [vpc_id]
+                }).then ( result )=>
+                    console.info result
+                    if result.length is 0
+                        console.warn "can not get app by vpc_id [" + vpc_id + "]"
+                    else if result.length is 1
+                        if result[0] and result[0].id
+                            MC.data.app_info[ vpc_id ] = result[0]
+                        else
+                            console.warn "can not get app info by vpc_id [" + vpc_id + "]"
+                    else
+                        console.warn "can not get more than one app by one vpc_id [" + vpc_id + "]"
+
+                    # call api
+                    aws_model.resource { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, resources, 'vpc', 1
+
+
+                , ( err )->
+                    if err.error < 0
+                      # Network Error, Try reloading
+                      window.location.reload()
+                    else
+                      # If there's service error. I think we need to logout, because I guess it's because the session is not right.
+                      App.logout()
+
+                    throw err
+
 
                 # set state 'OLD'
                 MC.common.other.setCacheMap vpc_id, null, 'OLD', null

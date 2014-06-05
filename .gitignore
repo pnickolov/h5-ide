@@ -36,3 +36,4 @@ util/gen_apilist/**/*.js
 
 .idea/*
 *.styl
+src/ui/UI.modalplus.js

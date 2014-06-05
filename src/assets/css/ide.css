@@ -140,6 +140,38 @@ button {
 	display: block;
 }
 
+.resources-dropdown-wrapper {
+	position: absolute;
+	left: 206px;
+	width: 90%;
+	min-width: 160px;
+	margin-top: 1px;
+	z-index: 80;
+	box-sizing: border-box;
+	box-shadow: 1px 1px 5px rgba(0,0,0,.3);
+	/*background: #000;*/
+	border: 1px solid #0f0f0f;
+	color: #257de0;
+}
+
+.resources-dropdown-wrapper li {
+	border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+	padding: 8px;
+	font-size: 12px;
+	position: relative;
+	cursor: pointer;
+	display: block;
+	background-color: #232323;
+}
+
+.resources-dropdown-wrapper li:hover {
+	background-color: #000;
+}
+
+.opem > .resources-dropdown-wrapper {
+	display: block;
+}
+
 #header .dropdown-menu {
 	font-size  : 12px;
 	position   : absolute;
@@ -832,7 +864,7 @@ td.table-action a.btn {
 }
 
 .sidebar-title {
-	padding : 0 10px;
+	padding-left : 10px;
 	height  : 39px;
 
 	font-size   : 16px;
@@ -843,6 +875,42 @@ td.table-action a.btn {
 	background-color : #313131;
 	border-bottom    : 1px solid #202020;
 	box-shadow       : inset 0 1px 0 rgba(255,255,255,.05);
+}
+
+.sidebar-title .menu-manage-shard-res {
+	background-color: rgba(0, 0, 0, 0.3);
+	text-align: center;
+	width: 40px;
+	float: right;
+	color: #257de0;
+	cursor: pointer;
+}
+
+.sidebar-title .menu-manage-shard-res:hover {
+	color: #4990e2;
+}
+
+.sidebar-title .refresh-resource-panel {
+	text-align: center;
+	width: 40px;
+	float: right;
+	color: #ccc;
+	cursor: pointer;
+}
+
+.sidebar-title .refresh-resource-panel:hover {
+	color: #9F62D1;
+	background-color: rgba(0, 0, 0, 0.3);
+}
+
+.sidebar-title .refresh-resource-panel.disabled {
+	color: #666;
+	cursor: default;
+}
+
+.sidebar-title .refresh-resource-panel.disabled:hover {
+	color: #666;
+	background-color: transparent;
 }
 
 a.sidebar-hider:before {
@@ -4935,22 +5003,28 @@ summary:focus {
 	background: transparent;
 }
 
-#create-new-dhcp .control-group>div{
+.formart_toolbar_modal .control-group>div{
     width: 468px;
     display: inline-block;
     margin-bottom: 10px;
 }
-#create-new-dhcp .control-group>div.selectbox{
+.formart_toolbar_modal .control-group>div.selectbox{
     width: 160px
 }
-#create-new-dhcp .control-group>label{
+.formart_toolbar_modal .control-group>label{
     width: 168px;
     float: left;
     display: inline-block;
     line-height: 32px;
 }
-
-
+.manager-content-sub{
+    color: #999999;
+    font-size: 12px;
+}
+.manager-content-main{
+    color: #dadada;
+    line-height: 1;
+}
 
 
 

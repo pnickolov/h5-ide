@@ -15,6 +15,17 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
             if not @M$( '.tr-detail' ).length
                 @processCol()
 
+        processSubCreate: ( newSub ) ->
+            topicArn = newSub.get 'TopicArn'
+            that = @
+            @M$( '.detailed' ).each () ->
+                if $(@).data( 'topicArn' ) is topicArn
+                    that.detail null, $(@).data(), $(@)
+                    return false
+
+        quickCreate: ->
+            @modal.triggerSlide 'create'
+
         getModalOptions: ->
             that = @
             region = Design.instance().get('region')
@@ -115,11 +126,15 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
                     notification 'error', err.awsResult
                     throw err
 
-
+        fetch: ->
+            if App.user.hasCredential()
+                @topicCol.fetch()
+                @subCol.fetch()
 
         initialize: () ->
             @initCol()
             @initModal()
+            @fetch()
 
         doAction: ( action, checked ) ->
             @[action] and @[action](@validate(action), checked)
@@ -141,8 +156,8 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
                 else if success.length > 1
                     notification 'info', "Selected #{success.length} SNS topic are deleted."
 
-                if not that.model.get( 'keys' ).length
-                    that.M$( '#kp-select-all' )
+                if not that.modal.getChecked().length
+                    that.M$( '#t-m-select-all' )
                         .get( 0 )
                         .checked = false
 
@@ -157,6 +172,8 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
 
                 finHandler()
 
+        errorHandler: ( awsError ) ->
+            notification 'error', awsError.awsResult
 
         # actions
         create: ( invalid ) ->
@@ -169,17 +186,29 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
             endpoint = @M$( '#create-endpoint' ).val()
 
             createSub = ( newTopic ) ->
-                @subCol.create( TopicArn: newTopic and newTopic.id or topicId, Endpoint: endpoint, Protocol: protocol )
+                that.subCol.create( TopicArn: newTopic and newTopic.id or topicId, Endpoint: endpoint, Protocol: protocol )
                     .save()
                     .then ( newSub ) ->
+                        that.processSubCreate newSub
                         notification 'info', 'Create Subscription Succeed'
                         that.modal.cancel()
+                    .fail ( awsError ) ->
+                        that.modal.cancel()
+                        errorHandler awsError
+
 
             if topicId is '@new'
-                @topicCol.create( Name: topicName, DisplayName: displayName ).save().then createSub
+                @topicCol
+                    .create( Name: topicName, DisplayName: displayName )
+                    .save()
+                    .then(createSub)
+                    .fail ( awsError ) ->
+                        that.modal.cancel()
+                        errorHandler awsError
+
             else
                 topicModel = @topicCol.get topicId
-                if displayName is topicModel.get 'displayName'
+                if displayName is topicModel.get 'DisplayName'
                     createSub()
                 else
                     topicModel.update( displayName ).then createSub
@@ -187,11 +216,12 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
 
         delete: ( invalid, checked ) ->
             count = checked.length
+            that = @
 
             onDeleteFinish = @genDeleteFinish count
             @switchAction 'processing'
             _.each checked, ( c ) ->
-                m = @topicCol.get c.data.id
+                m = that.topicCol.get c.data.id
                 m?.destroy().then onDeleteFinish, onDeleteFinish
 
         refresh: ->
@@ -210,15 +240,18 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
 
         render: ->
             @modal.render()
-            @processCol()
+            if App.user.hasCredential()
+                @processCol()
+            else
+                @modal.render 'nocredential'
             @
 
         processCol: ( noRender ) ->
+            that = @
             if @topicCol.isReady() and @subCol.isReady()
-
                 data = @topicCol.map ( tModel ) ->
                     tData = tModel.toJSON()
-                    sub = @subCol.where TopicArn: tData.id
+                    sub = that.subCol.where TopicArn: tData.id
                     tData.sub = sub.map ( sModel ) -> sModel.toJSON()
                     tData.subCount = tData.sub.length
                     tData

@@ -74,7 +74,7 @@ define [ "ApiRequest", "backbone" ], ( ApiRequest )->
         email     : @get("email")
         username  : @get("username")
         user_hash : @get("intercomHash")
-        widget    : {'activator' : '#feedback'}
+        widget    : {'activator':'#support'}
       }
       return
 

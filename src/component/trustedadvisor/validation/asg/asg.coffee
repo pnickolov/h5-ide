@@ -65,11 +65,11 @@ define [ 'constant', 'MC', 'i18n!nls/lang.js', '../result_vo', '../../helper', '
 
             if not notification or not notification.isEffective()
                 notiValid = true
+            else
+                topic = notification.getTopic()
 
-            topic = notification.getTopic()
-
-            if not topic
-                notiValid = true
+                if not topic
+                    notiValid = true
 
             if not notiValid
                 needTa.push [ topic, asg, notification ]

@@ -74,7 +74,7 @@ define [ 'constant', 'MC', 'i18n!nls/lang.js' , 'Design', 'CloudResources', '../
 
 		dhcpCol = CloudResources constant.RESTYPE.DHCP, Design.instance().region()
 
-		dhcpCol.fetch().fin ->
+		dhcpCol.fetchForce().fin ->
 			if dhcpCol.get dhcpId
 				callback null
 			else

@@ -92,7 +92,7 @@ define [ 'constant', 'MC', 'i18n!nls/lang.js', '../result_vo', '../../helper', '
         topicCol = CloudResources constant.RESTYPE.TOPIC, region
 
         result = []
-        topicCol.fetch().fin ->
+        topicCol.fetchForce().fin ->
             for ta in needTa
                 topic = ta[0]
                 asg = ta[1]

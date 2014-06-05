@@ -52,6 +52,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sslcert/ssl
                 }
                 {
                     sortable: true
+                    rowType: 'datetime'
                     width: "33%"
                     name: 'Upload Date'
                 }
@@ -164,7 +165,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sslcert/ssl
                 newCertName = $('#ssl-cert-name-update-input').val()
 
                 if newCertName is oldCerName
-                    
+
                     that.modal.cancel()
 
                 else
@@ -199,7 +200,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sslcert/ssl
             sslCertId = data.id
             sslCertData = sslCertCol.get(sslCertId).toJSON()
             sslCertData.Expiration = MC.dateFormat(new Date(sslCertData.Expiration), 'yyyy-MM-dd hh:mm:ss')
-            
+
             detailTpl = template['detail_info']
             @modal.setDetail($tr, detailTpl(sslCertData))
 
@@ -264,7 +265,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sslcert/ssl
             modal = @modal
 
             create: ( tpl, checked ) ->
-                
+
                 modal.setSlide tpl
 
                 allTextBox = that.M$( '.slide-create input, .slide-create textarea' )

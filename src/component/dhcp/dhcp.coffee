@@ -63,16 +63,18 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
             @dropdown.render('loading').toggleControls false
 
         renderDropdown: (keys)->
-            selected = @resModel?.toJSON().dhcp.dhcpOptionsId
+            selected = @resModel?.toJSON().dhcp.appId
             data = @collection.toJSON()
+            datas =
+                isRuntime: false
+                keys: data
             if selected
                 _.each data, (key)->
                     if key.id is selected
                         key.selected = true
                     return
-            datas =
-                isRuntime: false
-                keys: data
+            else
+                datas.auto = true
             if selected is ""
                 datas.auto = true
             else if selected and selected is 'default'

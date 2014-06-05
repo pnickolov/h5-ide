@@ -88,11 +88,11 @@ define [ "./subviews/WorkspaceView", "underscore" ], ( WorkspaceView )->
       delete @__spacesById[id]
       @__spaces.splice (@__spaces.indexOf workspace), 1
 
+      workspace.cleanup()
+
       if @__awakeSpace is workspace
         @__awakeSpace = null
         @awakeWorkspace( @__spaces[ @__spaces.length - 1 ] )
-
-      workspace.cleanup()
 
       workspace
 

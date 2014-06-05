@@ -33,13 +33,18 @@ $BottomPanelHeight : 24px;
   right : 0;
   width : $RightPanelWidth;
 
-  &.hidden { right : -$RightPanelWidth; }
-  &.transition {
-    -webkit-transition: right 0.1s;
-       -moz-transition: right 0.1s;
-         -o-transition: right 0.1s;
-            transition: right 0.1s;
+  &.hidden {
+    #HideOEPanelRight:before {
+      content : "\F125";
+    }
   }
+
+  // &.transition {
+  //   -webkit-transition: right 0.1s;
+  //      -moz-transition: right 0.1s;
+  //        -o-transition: right 0.1s;
+  //           transition: right 0.1s;
+  // }
 }
 
 #OEMiddleWrap {
@@ -49,10 +54,10 @@ $BottomPanelHeight : 24px;
   left     : 0;
   bottom   : 0;
   right    : 0;
-  -webkit-transition: right 0.1s, left 0.1s;
-     -moz-transition: right 0.1s, left 0.1s;
-       -o-transition: right 0.1s, left 0.1s;
-          transition: right 0.1s, left 0.1s;
+  -webkit-transition: left 0.1s;
+     -moz-transition: left 0.1s;
+       -o-transition: left 0.1s;
+          transition: left 0.1s;
 }
 
 #OEPanelTop {
@@ -93,13 +98,28 @@ $BottomPanelHeight : 24px;
 #OEPanelRight:not(.hidden) ~ #OEMiddleWrap { right : $RightPanelWidth; }
 #OEPanelLeft:not(.hidden)  ~ #OEMiddleWrap { left  : $LeftPanelWidth; }
 
+.sidebar-hider {
+  position   : absolute;
+  top        : 50%;
+  margin-top : -27px;
+  padding    : 18px 3px;
+  box-shadow : 0 0 6px rgba(0, 0, 0, 0.3), inset 1px 1px 0 rgba(255,255,255,.1);
+  border     : 1px solid #676767;
+  color      : #fff;
+  background : #747474;
+  &:before { font-size : 14px; }
+}
 
 #HideOEPanelLeft {
   left          : 100%;
-  color         : #fff;
+  border-left   : none;
   border-radius : 0 3px 3px 0;
+}
 
-  &:before { font-size : 14px; }
+#HideOEPanelRight {
+  right         : 100%;
+  border-right  : none;
+  border-radius : 3px 0 0 3px;
 }
 
 @import "resourcepanel";

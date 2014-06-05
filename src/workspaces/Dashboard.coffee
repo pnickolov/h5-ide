@@ -66,4 +66,6 @@ define ["Workspace", "workspaces/dashboard/DashboardView", "workspaces/dashboard
         @view[method]()
       return
 
+    isDashboard : ()-> true
+
   Dashboard

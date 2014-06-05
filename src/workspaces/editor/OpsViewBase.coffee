@@ -2,11 +2,12 @@
 define [
   "./template/TplOpsEditor"
   "./template/TplCanvas"
+  "./template/TplRightPanel"
   "OpsModel"
   "backbone"
   "UI.selectbox"
   "MC.canvas"
-], ( OpsEditorTpl, CanvasTpl, OpsModel )->
+], ( OpsEditorTpl, CanvasTpl, RightPanelTpl, OpsModel )->
 
   # Update Left Panel when window size changes
   __resizeAccdTO = null
@@ -99,6 +100,7 @@ define [
 
     renderSubviews : ()->
       @recalcAccordion()
+      @renderRightPanel()
       return
 
 
@@ -192,5 +194,8 @@ define [
 
     ### Property Panel Related ###
     toggleRightPanel : ()-> $("#OEPanelRight").toggleClass("hidden"); false
+
+    renderRightPanel : ()->
+      $("#OEPanelRight").html RightPanelTpl()
 
   }

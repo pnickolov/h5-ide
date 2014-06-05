@@ -845,24 +845,6 @@ td.table-action a.btn {
 
 
 /* Sidebars, including Resource Panle and Property Panel */
-.sidebar {
-	position     : absolute;
-	width        : 280px;
-	height       : 100%;
-	overflow     : visible;
-	z-index      : 3;
-}
-
-.sidebar-hider {
-	position   : absolute;
-	top        : 40%;
-	z-index    : 20;
-	padding    : 18px 3px;
-	background : #747474;
-	box-shadow : 0 0 6px rgba(0, 0, 0, 0.3), inset 1px 1px 0 rgba(255,255,255,.1);
-	border     : 1px solid #666;
-}
-
 .sidebar-title {
 	padding-left : 10px;
 	height  : 39px;

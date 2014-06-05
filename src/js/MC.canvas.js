@@ -4323,7 +4323,7 @@ MC.canvas.event.keyEvent = function (event)
 	if (
 		$('#modal-wrap')[0] !== undefined ||
 		($('.sub-stateeditor').css('display') === "block" && (event.which !== 46 && event.which !== 8)) ||
-		Tabbar.current === 'dashboard'
+		App.workspaces.getAwakenSpace().isDashboard
 	)
 	{
 		return true;

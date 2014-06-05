@@ -49,7 +49,7 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
         openRegionDropdown: (keySet)->
             currentRegion = Design.instance().get 'region'
             data = _.map @regions, (region)->
-                {name: region, selected: region == currentRegion}
+                {name: constant.REGION_LABEL[region]+" - "+constant.REGION_SHORT_LABEL[ region ], selected: region == currentRegion, region: region}
             dataSet =
                 isRuntime: false
                 data: data
@@ -203,7 +203,7 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
 
         do_duplicate: (invalid, checked)->
             sourceSnapshot = checked[0]
-            targetRegion = $('#property-region-choose').find('.selectbox .selection').text().trim()
+            targetRegion = $('#property-region-choose').find('.selectbox .selection .manager-content-main').data('id')
             if (@regions.indexOf targetRegion) < 0
                 return false
             @switchAction 'processing'

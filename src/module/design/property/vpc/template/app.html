@@ -28,9 +28,11 @@
   {{else}}
   {{#if defaultDhcp}}
     <p>{{ i18n "PROP_VPC_DHCP_LBL_NONE" }}</p>
- </div>
-    {{else}}
+  </div>
+  {{/if}}
+  {{/if}}
 
+  {{#unless defaultDhcp}}
   <dl class="dl-vertical">
     <dt>{{ i18n "PROP_VPC_DHCP_OPTION_SET_ID" }}</dt>
     <dd>{{dhcpOptionsId}}</dd>
@@ -65,9 +67,7 @@
     {{/if}}
 
   </dl>
-
-  {{/if}}
-  {{/if}}
+  {{/unless}}
 
   </div>
 </article>

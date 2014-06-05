@@ -1,5 +1,5 @@
 
-define [ "./OpsEditorBase", "./OpsEditorView", "Design" ], ( OpsEditorBase, OpsEditorView, Design )->
+define [ "./OpsEditorBase", "./OpsViewBase", "Design" ], ( OpsEditorBase, OpsEditorView, Design )->
 
   ###
     UnmanagedViewer is mainly used to show visualize vpc

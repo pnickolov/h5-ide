@@ -4,16 +4,16 @@
   This class is implemented as a class cluster. Actually implementation is seperated in
   other concrete class :
 
-  OpsProgress : For starting app.
-  OpsViewer   : For viewing visualize app
+  ProgressViewer  : For starting app.
+  UnmanagedViewer : For viewing visualize app
 ###
 
 define [
-  "./editor/OpsProgress"
+  "./editor/ProgressViewer"
   "./editor/UnmanagedViewer"
   "./editor/StackEditor"
   './editor/framework/DesignBundle'
-], ( OpsProgress, OpsViewer, StackEditor )->
+], ( ProgressViewer, UnmanagedViewer, StackEditor )->
 
   # OpsEditor defination
   class OpsEditor
@@ -26,7 +26,7 @@ define [
         return new UnmanagedViewer opsModel
 
       if opsModel.isProcessing()
-        return new OpsProgress opsModel
+        return new ProgressViewer opsModel
 
       if opsModel.isStack()
         return new StackEditor opsModel

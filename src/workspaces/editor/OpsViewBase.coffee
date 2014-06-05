@@ -1,7 +1,7 @@
 
 define [
-  "./TplOpsEditor"
-  "./TplCanvas"
+  "./template/TplOpsEditor"
+  "./template/TplCanvas"
   "OpsModel"
   "backbone"
   "UI.selectbox"

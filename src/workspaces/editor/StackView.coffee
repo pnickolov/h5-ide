@@ -1,16 +1,15 @@
 
 define [
-  "./OpsEditorView"
-  "./TplOpsEditor"
-  "./TplLeftPanel"
-  "./TplCanvas"
+  "./OpsViewBase"
+  "./template/TplLeftPanel"
+  "./template/TplCanvas"
   "OpsModel"
   "backbone"
   "UI.selectbox"
   "MC.canvas"
-], ( OpsEditorView, OpsEditorTpl, LeftPanelTpl, CanvasTpl, OpsModel )->
+], ( OpsViewBase, LeftPanelTpl, CanvasTpl, OpsModel )->
 
-  OpsEditorView.extend {
+  OpsViewBase.extend {
 
     createTpl : ()-> CanvasTpl({})
 
@@ -34,14 +33,14 @@ define [
       return
 
     updateTbBtns : ( $toolbar )->
-      OpsEditorView.prototype.updateTbBtns.call( this , $toolbar )
+      OpsViewBase.prototype.updateTbBtns.call( this , $toolbar )
       return
 
     renderSubviews : ()->
       # Resource Panel
       $("#OEPanelLeft").html LeftPanelTpl.panel({})
 
-      OpsEditorView.prototype.renderSubviews.call( this )
+      OpsViewBase.prototype.renderSubviews.call( this )
       return
 
   }

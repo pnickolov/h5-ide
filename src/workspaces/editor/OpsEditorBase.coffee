@@ -3,7 +3,7 @@
   OpsEditorBase is a base class for all the OpsEditor
 ###
 
-define [ "Workspace", "./OpsEditorView", "./TplOpsEditor", "OpsModel", "Design" ], ( Workspace, OpsEditorView, OpsEditorTpl, OpsModel, Design )->
+define [ "Workspace", "./OpsViewBase", "./template/TplOpsEditor", "OpsModel", "Design" ], ( Workspace, OpsEditorView, OpsEditorTpl, OpsModel, Design )->
 
   # A view that used to show loading state of editor
   LoadingView = Backbone.View.extend {

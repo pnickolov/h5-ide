@@ -181,7 +181,7 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
             @["do_"+action] and @["do_"+action]('do_'+action,checked)
 
         do_create: (validate, checked)->
-            volume = @volumes.findWhere('id': $('#property-volume-choose').find('.selectbox .selection').text())
+            volume = @volumes.findWhere('id': $('#property-volume-choose').find('.selectbox .selection .manager-content-main').data('id'))
             if not volume
                 return false
             data =

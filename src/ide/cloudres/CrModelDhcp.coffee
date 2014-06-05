@@ -32,7 +32,7 @@ define [ "./CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
     toAwsAttr : ()->
       awsAttr = []
       for key, value of @attributes
-        if key isnt "id" and key isnt "tagSet"
+        if key isnt "id" and key isnt "tagSet" and (value.length > 0)
           awsAttr.push {
             Name  : key
             Value : value

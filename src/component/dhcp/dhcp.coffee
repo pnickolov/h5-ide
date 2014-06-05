@@ -206,12 +206,14 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
                     "netbios-name-servers"  : mapFilterInput "#property-netbios-server .input"
                     "netbios-node-type"     : [parseInt( $("#property-netbios-type .selection").html(), 10 ) || 0]
                 validate = (value, key)->
+                    if key is 'netbios-node-type'
+                        return false
                     if value.length < 1
-                        notification 'error', key + " value can't be empty."
                         return false
                     else
                         return true
-                if not _.every data, validate
+                if not _.some data, validate
+                    notification 'error', "You should fill at least one blank."
                     return false
                 @switchAction 'processing'
                 afterCreated = @afterCreated.bind @

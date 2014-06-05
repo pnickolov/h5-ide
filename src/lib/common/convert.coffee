@@ -103,16 +103,18 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 			}
 		}
 
+
+		if aws_eni.attachment and aws_eni.attachment.instanceOwnerId is "amazon-elb"
+
+			return false
+
+
 		if aws_eni.tagSet
 			tag = resolveEC2Tag aws_eni.tagSet
 			if tag.isApp
 				eni_json.name = tag.name
 			else if tag.Name
 				eni_json.name = tag.Name
-
-		if aws_eni.attachment and aws_eni.attachment.instanceOwnerId is "amazon-elb"
-
-			return false
 
 		#check Automatically assign Public IP
 		if aws_eni.association and aws_eni.association.publicIp

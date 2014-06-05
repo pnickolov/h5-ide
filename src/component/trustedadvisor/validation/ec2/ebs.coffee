@@ -14,13 +14,15 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'ebs_service' , '../resu
 				if compObj.type is constant.RESTYPE.VOL
 					snaphostId = compObj.resource.SnapshotId
 					instanceUID = compObj.resource.AttachmentSet.InstanceId
+					instanceId = compObj.resource.InstanceId
 					if snaphostId and instanceUID
 						if not snaphostMap[snaphostId]
 							snaphostMap[snaphostId] = []
-						snaphostMap[snaphostId].push(MC.extractID(instanceUID))
+						if not instanceId
+							snaphostMap[snaphostId].push(MC.extractID(instanceUID))
 
 				if compObj.type is constant.RESTYPE.LC
-
+					instanceId = compObj.resource.LaunchConfigurationARN
 					_.each compObj.resource.BlockDeviceMapping, (blockObj, idx) ->
 
 						if idx > 0
@@ -30,7 +32,8 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'ebs_service' , '../resu
 							if snaphostId and instanceUID
 								if not snaphostMap[snaphostId]
 									snaphostMap[snaphostId] = []
-								snaphostMap[snaphostId].push(instanceUID)
+								if not instanceId
+									snaphostMap[snaphostId].push(instanceUID)
 
 				null
 

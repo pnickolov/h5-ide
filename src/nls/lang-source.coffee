@@ -4863,7 +4863,7 @@ VisualOps API. You cannot UNDO this action.'
       zh: ""
 
     TA_MSG_ERROR_INSTANCE_REF_OLD_KEYPAIR:
-      en: "%s has associated with an nonexistient key pair <span class='validation-tag'>%s</span>. Make sure to use an existing key pair or creating a new one."
+      en: "%s has associated with an nonexistent key pair <span class='validation-tag'>%s</span>. Make sure to use an existing key pair or creating a new one."
       zh: ""
 
     TA_MSG_NOTICE_KEYPAIR_LONE_LIVE:
@@ -5068,16 +5068,20 @@ VisualOps API. You cannot UNDO this action.'
       en: "Auto Scaling Group %s's Scaling Policy <span class='validation-tag'>%s</span> has configured notification. Please select a SNS Topic for it."
       zh: ""
 
-    TA_MSG_ERROR_ASG_NOTIFICITION_TOPIC_NONEXISTIENT:
-      en: "Auto Scaling Group <span class='validation-tag tag-asg'>%s</span> is using a nonexistient SNS Topic <span class='validation-tag'>%s</span>. Please change to an existing SNS Topic to make notification work."
+    TA_MSG_ERROR_ASG_NOTIFICITION_TOPIC_NONEXISTENT:
+      en: "Auto Scaling Group <span class='validation-tag tag-asg'>%s</span> is using a nonexistent SNS Topic <span class='validation-tag'>%s</span>. Please change to an existing SNS Topic to make notification work."
       zh: ""
 
-    TA_MSG_ERROR_ASG_POLICY_TOPIC_NONEXISTIENT:
+    TA_MSG_ERROR_ASG_POLICY_TOPIC_NONEXISTENT:
       en: "Auto Scaling Group <span class='validation-tag tag-asg'>%s</span>'s Scaling Policy %s is using a nonexistent SNS Topic <span class='validation-tag'>%s</span>. Please change to an existing SNS Topic to make notification work."
       zh: ""
 
     TA_MSG_ERROR_VPC_DHCP_NONEXISTENT:
       en: "VPC is using a nonexistent DHCP option set. Please specify default, auto-assigned or an existing DHCP option set."
+      zh: ""
+
+    TA_MSG_WARNING_VPC_CANNOT_USE_DEFAULT_DHCP_WHEN_USE_VISUALOPS:
+      en: "vpc can not use default(none) dhcpoptions when use visualops"
       zh: ""
 
     RELOAD_STATE_INVALID_REQUEST:

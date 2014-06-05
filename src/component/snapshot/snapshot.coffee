@@ -296,11 +296,13 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
                 }
                 {
                     sortable: true
+                    rowType: 'number'
                     width: "10%" # or 40%
                     name: 'Capicity'
                 }
                 {
                     sortable: true
+                    rowType: 'datetime'
                     width: "40%" # or 40%
                     name: 'status'
                 }

@@ -39,7 +39,7 @@
 
     {{#if dhcp.domainName}}
     <dt>{{ i18n "PROP_VPC_DHCP_SPECIFIED_LBL_DOMAIN_NAME" }}</dt>
-    <dd>{{dhcp.domainName.[0]}}</dd>
+    <dd>{{#each dhcp.domainName}}<p>{{this}}</p>{{/each}}</dd>
     {{/if}}
 
     {{#if dhcp.domainNameServers.length}}

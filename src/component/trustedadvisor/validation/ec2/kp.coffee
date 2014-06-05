@@ -45,6 +45,10 @@ define [ 'constant', 'MC', 'Design', '../../helper', 'keypair_service', 'undersc
 		results = []
 
 		for i in instanceLike
+			# Don't check instance has appId( means exsit ) and hasn't added member
+			if i.type is constant.RESTYPE.INSTANCE and i.get( 'appId' ) and i.get( 'count' ) is i.groupMembers().length + 1
+				continue;
+
 			keyName = i.get( 'keyName' )
 			if keyName and keyName[0] isnt '@' and not i.connectionTargets( "KeypairUsage" ).length
 				needValidate.push i

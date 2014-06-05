@@ -215,6 +215,7 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
                 if not _.some data, validate
                     notification 'error', "You should fill at least one blank."
                     return false
+                if data['netbios-node-type'][0] is 0 then data['netbios-node-type'] = []
                 @switchAction 'processing'
                 afterCreated = @afterCreated.bind @
                 @collection.create(data).save().then afterCreated,afterCreated

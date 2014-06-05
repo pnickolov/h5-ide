@@ -202,7 +202,7 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
 
         do_duplicate: (invalid, checked)->
             sourceSnapshot = checked[0]
-            targetRegion = $('#property-region-choose').find('.selectbox .selection').text()
+            targetRegion = $('#property-region-choose').find('.selectbox .selection').text().trim()
             if (@regions.indexOf targetRegion) < 0
                 return false
             @switchAction 'processing'
@@ -227,7 +227,7 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
                 notification 'error', "Duplicate failed because of: "+ result.msg
                 return false
             #cancelselect && fetch
-            if result.region is currentRegion
+            if result.attributes.region is currentRegion
                 @collection.add result
                 notification 'info', "New Snapshot is duplicated successfully!"
             else

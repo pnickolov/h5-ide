@@ -48,10 +48,10 @@ define [ 'event',
             @renderStateCount Design.instance().component( @uid )
 
         showProperty: () ->
-            $( '#property-panel' ).removeClass 'state'
+            $( '#OEPanelRight' ).removeClass 'state'
 
         showState: () ->
-            $( '#property-panel' ).addClass 'state'
+            $( '#OEPanelRight' ).addClass 'state'
 
         __hideResourcePanel: () ->
             hideButton = $ '#hide-resource-panel'
@@ -64,7 +64,7 @@ define [ 'event',
             null
 
         renderProperty: ( uid, type, force ) ->
-            $( '#property-panel' ).removeClass('state').removeClass('state-wide')
+            $( '#OEPanelRight' ).removeClass('state').removeClass('state-wide')
             if not type and uid
                 comp = Design.instance().component uid
                 type = comp.type if comp
@@ -182,7 +182,7 @@ define [ 'event',
             # Better than $("input:focus")
             $(document.activeElement).filter("input, textarea").blur()
 
-            $( '#property-panel .sub-property' )
+            $( '#OEPanelRight .sub-property' )
                 .html( template() )
                 .removeClass( 'state state-wide' )
             @
@@ -222,7 +222,7 @@ define [ 'event',
             modeAvai
 
         processState: ( uid, type ) ->
-            propertyPanel = $ '#property-panel'
+            propertyPanel = $ '#OEPanelRight'
 
             if uid
                 component = Design.instance().component uid
@@ -260,7 +260,7 @@ define [ 'event',
 
         togglePropertyPanel : ( event ) ->
             console.log 'togglePropertyPanel'
-            $( '#property-panel' ).toggleClass( 'hidden' ).toggleClass( 'transition', true )
+            $( '#OEPanelRight' ).toggleClass( 'hidden' ).toggleClass( 'transition', true )
             $( '#hide-property-panel' ).toggleClass 'icon-caret-left'
             $( '#hide-property-panel' ).toggleClass 'icon-caret-right'
             $( '#status-bar-modal' ).toggleClass 'toggle'
@@ -289,7 +289,7 @@ define [ 'event',
             if $('#property-second-panel').is(':hidden')
                 # added by song ######################################
                 # record head state
-                headElemAry = $('#property-panel').find('.option-group-head')
+                headElemAry = $('#OEPanelRight').find('.option-group-head')
                 headExpandStateAry = []
                 headCompUID = @getCurrentCompUid()
                 if !headCompUID then headCompUID = stackId
@@ -328,7 +328,7 @@ define [ 'event',
             else if tab is 'state'
                 @showState()
 
-            $( '#property-panel' ).removeClass 'hidden transition'
+            $( '#OEPanelRight' ).removeClass 'hidden transition'
             $( '#hide-property-panel' ).removeClass( 'icon-caret-left' ).addClass( 'icon-caret-right' )
 
             null
@@ -395,7 +395,7 @@ define [ 'event',
                         headExpandStateAry = stackMap[ component.type ]
 
                 if headExpandStateAry
-                    headElemAry = $('#property-panel').find('.option-group-head')
+                    headElemAry = $('#OEPanelRight').find('.option-group-head')
                     _.each headElemAry, (headElem, i) ->
                         $headElem = $(headElem)
                         if headExpandStateAry[i]

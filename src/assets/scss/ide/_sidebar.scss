@@ -1,4 +1,5 @@
 
+// Resource Panel
 #AmiTypeSelect {
   position    : absolute;
   top         : 0;
@@ -151,4 +152,77 @@
   width: 100%;
   border: none;
   border-radius: 0;
+}
+
+// Property Panel
+#OEPanelRight{
+
+  .property-switcher {
+    height        : 30px;
+    background    : #313131;
+    box-shadow    : 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-bottom : 1px solid #111;
+    border-left   : 1px solid #111;
+    padding       : 4px 0 5px;
+    overflow      : hidden;
+  }
+
+  .property-switcher .btn-toolbar {
+    width         : 124px;
+    padding       : 0 4px;
+    border-radius : 4px;
+    margin-right  : 5px;
+  }
+
+  &.no-state {
+    #btn-switch-state {
+      display: none;
+    }
+
+    #btn-switch-property {
+      float : left;
+      width : auto;
+      background: none;
+      text-align: left;
+      padding-left: 10px;
+    }
+  }
+
+  &.state {
+    #btn-switch-property {
+      background: #313131;
+      color: #606060;
+      &:hover {
+        color      : #9F62D1;
+        background : rgba(0,0,0,.05);
+      }
+    }
+
+    #btn-switch-state {
+      background : rgba(0,0,0,.4);
+      color      : #FEFEFE;
+    }
+  }
+}
+
+.property-sidebar-title {
+  font-size   : 16px;
+  text-shadow : none;
+
+  height     : 32px;
+  line-height: 32px;
+  position   : relative;
+  z-index    : 2;
+  display    : block !important;
+
+  cursor : default;
+}
+
+.property-panel-wrapper {
+  width      : 100%;
+  left       : 0;
+  top        : 40px;
+  bottom     : 0;
+  position   : absolute;
+  background : #313131; /* for zoomed out */
 }

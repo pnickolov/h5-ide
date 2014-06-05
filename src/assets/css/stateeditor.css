@@ -1448,11 +1448,11 @@
 	height: 0px;
 }
 
-#property-panel.state:not(.hidden) + #canvas-panel {
+#OEPanelRight.state:not(.hidden) + #canvas-panel {
 	margin-right: 654px;
 }
 
-/*#property-panel.state-wide:not(.hidden) + #canvas-panel {
+/*#OEPanelRight.state-wide:not(.hidden) + #canvas-panel {
 	margin-right: 900px;
 }*/
 

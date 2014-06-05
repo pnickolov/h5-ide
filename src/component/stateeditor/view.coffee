@@ -245,7 +245,7 @@ define [ 'event',
                 else
 
                     setTimeout(() ->
-                        # $('#property-panel').addClass('state-wide')
+                        # $('#OEPanelRight').addClass('state-wide')
                         that.onLogToggleClick()
                     , 0)
 
@@ -260,7 +260,7 @@ define [ 'event',
 
             that.updateToolbar()
 
-            # if $( '#property-panel' ).hasClass('state-wide')
+            # if $( '#OEPanelRight' ).hasClass('state-wide')
             #     that.onDescToggleClick()
             @
 
@@ -1629,7 +1629,7 @@ define [ 'event',
             $descPanelToggle = that.$editorModal.find('.state-desc-toggle')
             $logPanelToggle = that.$editorModal.find('.state-log-toggle')
 
-            expandPanel = $('#property-panel').hasClass('state-wide')
+            expandPanel = $('#OEPanelRight').hasClass('state-wide')
             if expandPanel and $descPanel.hasClass('show')
 
                 $stateEditor.addClass('full')
@@ -1638,7 +1638,7 @@ define [ 'event',
                 $logPanel.removeClass('show')
                 $descPanel.removeClass('show')
                 $descPanelToggle.removeClass('active')
-                $('#property-panel').removeClass 'state-wide'
+                $('#OEPanelRight').removeClass 'state-wide'
 
             else
 
@@ -1648,7 +1648,7 @@ define [ 'event',
                 $logPanel.removeClass('show')
                 $descPanel.addClass('show')
                 $descPanelToggle.addClass('active')
-                $('#property-panel').addClass 'state-wide'
+                $('#OEPanelRight').addClass 'state-wide'
 
             $logPanelToggle.removeClass('active')
 
@@ -1668,7 +1668,7 @@ define [ 'event',
             $descPanelToggle = that.$editorModal.find('.state-desc-toggle')
             $logPanelToggle = that.$editorModal.find('.state-log-toggle')
 
-            expandPanel = $('#property-panel').hasClass('state-wide')
+            expandPanel = $('#OEPanelRight').hasClass('state-wide')
             if expandPanel and $logPanel.hasClass('show')
 
                 $stateEditor.addClass('full')
@@ -1677,7 +1677,7 @@ define [ 'event',
                 $descPanel.removeClass('show')
                 $logPanel.removeClass('show')
                 $logPanelToggle.removeClass('active')
-                $('#property-panel').removeClass 'state-wide'
+                $('#OEPanelRight').removeClass 'state-wide'
 
             else
 
@@ -1687,7 +1687,7 @@ define [ 'event',
                 $descPanel.removeClass('show')
                 $logPanel.addClass('show')
                 $logPanelToggle.addClass('active')
-                $('#property-panel').addClass 'state-wide'
+                $('#OEPanelRight').addClass 'state-wide'
 
             $descPanelToggle.removeClass('active')
 
@@ -1740,7 +1740,7 @@ define [ 'event',
             $parentEditorModel = $currentElem.parents('#state-editor-model')
             if $stateEditorModel.length and (not $parentEditorModel.length)
                 # if $stateEditorModel.is(':visible')
-                $propertyPanel = $('#property-panel')
+                $propertyPanel = $('#OEPanelRight')
                 if $stateEditorModel.length and not $propertyPanel.hasClass('no-state')
                     that.onStateSaveClick()
                 else
@@ -1810,7 +1810,7 @@ define [ 'event',
 
                     else if option.extName is 'py'
                         editSession.setMode('ace/mode/python')
-                    
+
                     editor.setTheme('ace/theme/tomorrow_night')
 
                     enableTab = true
@@ -3406,9 +3406,9 @@ define [ 'event',
             $focusElem = $(event.target)
             $paraValue = $focusElem.parents('.parameter-container').find('.parameter-value')
             paraEditor = $paraValue.data('editor')
-            
+
             if paraEditor
-                
+
                 $paraItem = $paraValue.parents('.parameter-item')
 
                 if $paraItem.hasClass('text')
@@ -3462,7 +3462,7 @@ define [ 'event',
         saveStateTextEditorContent: () ->
 
             that = this
-            
+
             if that.readOnlyMode
 
                 modal.close()

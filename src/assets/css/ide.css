@@ -929,15 +929,6 @@ a.sidebar-hider:before {
 	overflow: visible;
 }
 
-.property-panel-wrapper {
-	width    : 100%;
-	left     : 0;
-	top      : 41px;
-	bottom   : 0;
-	position : absolute;
-	background: #313131; /* for zoomed out */
-}
-
 .property-wrap .scroll-wrap {
 	position : absolute;
 	top      : 33px;
@@ -985,19 +976,6 @@ a.sidebar-hider:before {
 
 .property-content .icon-add {
 	font-size : 16px;
-}
-
-.property-sidebar-title {
-	font-size   : 16px;
-	text-shadow : none;
-
-	width      : 260px;
-	height     : 32px;
-	line-height: 32px;
-	position   : relative;
-	z-index    : 2;
-
-	cursor : default;
 }
 
 .property-group-head {
@@ -4263,41 +4241,6 @@ summary:focus {
 }
 
 /* property switcher */
-.property-wrap .property-switcher {
-	height    : 30px;
-	/*width     : 100%;*/
-	background      : #313131;
-	box-shadow    : 0 2px 5px rgba(0, 0, 0, 0.1);
-	border-bottom : 1px solid #111;
-	border-left : 1px solid #111;
-	padding:  4px 5px 6px 5px;
-}
-
-.property-switcher .btn-toolbar {
-	width: 124px;
-	padding: 0 4px;
-	border-radius: 4px;
-}
-
-.property-switcher .btn-toolbar:first-child {
-	margin-right: 5px;
-}
-
-#OEPanelRight.state #btn-switch-property {
-	background:	#313131;
-	color: #606060;
-}
-
-#OEPanelRight.state #btn-switch-property:hover {
-	color: #9F62D1;
-	background-color: rgba(0,0,0,.05);
-}
-
-#OEPanelRight.state #btn-switch-state {
-	background-color: rgba(0,0,0,.4);
-	color: #FEFEFE;
-}
-
 #btn-switch-state .count {
 	font-size: 12px;
 	color: #666;
@@ -4324,11 +4267,6 @@ summary:focus {
 	padding-top: 30%;
 }
 
-#OEPanelRight #btn-switch-property {
-    background-color: rgba(0,0,0,.4);
-    color: #FEFEFE;
-}
-
 #state-editor-model {
 	border-left: 1px solid #999;
 	position: absolute;
@@ -4350,11 +4288,6 @@ summary:focus {
 
 #OEPanelRight.state-wide {
 	/*width: 900px;*/
-}
-
-#OEPanelRight .property-switcher .switch-btns {
-	position: absolute;
-	right: 5px;
 }
 
 #OEPanelRight.state:not(.hidden) ~ #status-bar-modal {
@@ -4513,28 +4446,6 @@ summary:focus {
 	right: 4px;
 	top: 50%;
 	margin-top: -8px;
-}
-
-#OEPanelRight.no-state #btn-switch-state {
-	display: none;
-}
-
-#OEPanelRight.no-state #btn-switch-property {
-	width: 100%;
-	background: none;
-	text-align: left;
-	padding-left: 10px;
-}
-
-#OEPanelRight.no-state .property-switcher {
-	width: 100%;
-}
-
-#OEPanelRight.no-state .switch-btns {
-	width: 100%;
-	height: 100%;
-	position: relative;
-
 }
 
 /* Keyboard Shortcuts Cheatsheet */

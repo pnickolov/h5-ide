@@ -12,7 +12,7 @@ define [
   "./editor/OpsProgress"
   "./editor/UnmanagedViewer"
   "./editor/StackEditor"
-  'module/design/framework/DesignBundle'
+  './editor/framework/DesignBundle'
 ], ( OpsProgress, OpsViewer, StackEditor )->
 
   # OpsEditor defination

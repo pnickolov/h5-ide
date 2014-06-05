@@ -94,10 +94,7 @@ require.config {
 		#############################################
 		'MC'                 : 'js/MC.core'
 		'MC.validate'        : 'js/MC.validate'
-
-		'canvas_layout'      : 'js/canvas_layout'
 		'MC.canvas'          : 'js/MC.canvas'
-
 		'MC.canvas.constant' : 'js/MC.canvas.constant'
 		'constant'           : 'lib/constant'
 
@@ -143,8 +140,8 @@ require.config {
 		#############################################
 		# design model              # Merge in deploy
 		#############################################
-		'Design'             : 'module/design/framework/Design'
-		'CanvasManager'      : 'module/design/framework/canvasview/CanvasManager'
+		'Design'             : 'workspaces/editor/framework/Design'
+		'CanvasManager'      : 'workspaces/editor/framework/canvasview/CanvasManager'
 
 		#############################################
 		# model                     # Merge in deploy
@@ -234,38 +231,6 @@ require.config {
 		"OpsModel"  : "ide/submodels/OpsModel"
 		"Workspace" : "ide/Workspace"
 
-
-		#############################################
-		# module
-		#############################################
-		'base_main'          : 'module/base/base_main'
-
-		# 'navigation'         : 'module/navigation/main'
-		# 'navigation_view'    : 'module/navigation/view'
-		# 'navigation_model'   : 'module/navigation/model'
-
-		# 'tabbar'             : 'module/tabbar/main'
-		# 'tabbar_view'        : 'module/tabbar/view'
-		# 'tabbar_model'       : 'module/tabbar/model'
-
-		# 'dashboard'          : 'module/dashboard/main'
-		# 'dashboard_view'     : 'module/dashboard/view'
-		# 'dashboard_model'    : 'module/dashboard/model'
-
-		# 'process'            : 'module/process/main'
-		# 'process_view'       : 'module/process/view'
-		# 'process_model'      : 'module/process/model'
-
-		'design_module'      : 'module/design/main'
-		'design_view'        : 'module/design/view'
-		'design_model'       : 'module/design/model'
-
-		#sub module with design
-		'resource'           : 'module/design/resource/main'
-		'property'           : 'module/design/property/property'
-		'canvas'             : 'module/design/canvas/main'
-		'toolbar'            : 'module/design/toolbar/main'
-
 		#statusbar state
 		'state_status'       : 'component/statestatus/main'
 		'kp_dropdown'        : 'component/kp/kpDropdown'
@@ -279,14 +244,6 @@ require.config {
 		'snapshotManager'    : 'component/snapshot/snapshot'
 		'sslcert_manage'     : 'component/sslcert/sslCertManage'
 		'sslcert_dropdown'     : 'component/sslcert/sslCertDropdown'
-
-		#############################################
-		# component
-		#############################################
-
-		'unmanagedvpc'       : 'component/unmanagedvpc/main'
-		'unmanagedvpc_view'  : 'component/unmanagedvpc/view'
-		'unmanagedvpc_model' : 'component/unmanagedvpc/model'
 
 	shim               :
 

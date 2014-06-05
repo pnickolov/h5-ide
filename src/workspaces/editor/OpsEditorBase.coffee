@@ -101,6 +101,7 @@ define [ "Workspace", "./OpsEditorView", "./TplOpsEditor", "OpsModel", "Design" 
         @initEditor()
       else
         @showEditor()
+        @design.use()
       return
 
     # Override parent's method to do cleaning when the tab is removed.

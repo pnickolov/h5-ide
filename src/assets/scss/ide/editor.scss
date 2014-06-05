@@ -12,15 +12,21 @@ $BottomPanelHeight : 24px;
 }
 
 #OEPanelLeft {
-  width : $LeftPanelWidth;
-  left  : 0;
+  width      : $LeftPanelWidth;
+  background : #242424;
+  left       : 0;
 
   -webkit-transition : left 0.1s;
      -moz-transition : left 0.1s;
        -o-transition : left 0.1s;
           transition : left 0.1s;
 
-  &.hidden { left : -$LeftPanelWidth; }
+  &.hidden {
+    left : -$LeftPanelWidth;
+    > #HideOEPanelLeft:before {
+      content : "\F124";
+    }
+  }
 }
 
 #OEPanelRight {
@@ -43,6 +49,10 @@ $BottomPanelHeight : 24px;
   left     : 0;
   bottom   : 0;
   right    : 0;
+  -webkit-transition: right 0.1s, left 0.1s;
+     -moz-transition: right 0.1s, left 0.1s;
+       -o-transition: right 0.1s, left 0.1s;
+          transition: right 0.1s, left 0.1s;
 }
 
 #OEPanelTop {
@@ -82,3 +92,14 @@ $BottomPanelHeight : 24px;
 
 #OEPanelRight:not(.hidden) ~ #OEMiddleWrap { right : $RightPanelWidth; }
 #OEPanelLeft:not(.hidden)  ~ #OEMiddleWrap { left  : $LeftPanelWidth; }
+
+
+#HideOEPanelLeft {
+  left          : 100%;
+  color         : #fff;
+  border-radius : 0 3px 3px 0;
+
+  &:before { font-size : 14px; }
+}
+
+@import "resourcepanel";

@@ -1,5 +1,14 @@
 
-define [ "./OpsEditorView", "./TplOpsEditor", "./TplCanvas", "OpsModel", "backbone", "UI.selectbox", "MC.canvas" ], ( OpsEditorView, OpsEditorTpl, CanvasTpl, OpsModel )->
+define [
+  "./OpsEditorView"
+  "./TplOpsEditor"
+  "./TplLeftPanel"
+  "./TplCanvas"
+  "OpsModel"
+  "backbone"
+  "UI.selectbox"
+  "MC.canvas"
+], ( OpsEditorView, OpsEditorTpl, LeftPanelTpl, CanvasTpl, OpsModel )->
 
   OpsEditorView.extend {
 
@@ -7,8 +16,7 @@ define [ "./OpsEditorView", "./TplOpsEditor", "./TplCanvas", "OpsModel", "backbo
 
     bindUserEvent : ()->
       # Events
-      $("#canvas_body")
-        .addClass("canvas_state_stack")
+      $("#OEPanelCenter")
         .on('mousedown',             '.port',             MC.canvas.event.drawConnection.mousedown)
         .on('mousedown',             '.dragable',         MC.canvas.event.dragable.mousedown)
         .on('mousedown',             '.group-resizer',    MC.canvas.event.groupResize.mousedown)
@@ -19,6 +27,10 @@ define [ "./OpsEditorView", "./TplOpsEditor", "./TplCanvas", "OpsModel", "backbo
         .on('mousedown',   MC.canvas.event.ctrlMove.mousedown)
         .on('mousedown',   MC.canvas.event.clearSelected)
         .on('selectstart', false)
+
+      $("#canvas_body").addClass("canvas_state_stack")
+
+      $("#OEPanelLeft").on('mousedown', '.resource-item', MC.canvas.event.siderbarDrag.mousedown)
       return
 
     updateTbBtns : ( $toolbar )->
@@ -26,4 +38,10 @@ define [ "./OpsEditorView", "./TplOpsEditor", "./TplCanvas", "OpsModel", "backbo
       return
 
     renderSubviews : ()->
+      # Resource Panel
+      $("#OEPanelLeft").html LeftPanelTpl.panel({})
+
+      OpsEditorView.prototype.renderSubviews.call( this )
+      return
+
   }

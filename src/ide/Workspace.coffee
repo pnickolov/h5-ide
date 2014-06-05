@@ -62,7 +62,11 @@ define ["backbone"], ()->
     awake : ()-> if @view then @view.$el.show()
 
     # This method will be called when the tab is switched to something else.
-    sleep : ()-> if @view then @view.$el.hide()
+    sleep : ()->
+      # Blur any focused input
+      # Better than $("input:focus")
+      $(document.activeElement).filter("input, textarea").blur()
+      if @view then @view.$el.hide()
 
     # This method will be called when the workspace is remove. One should override this method
     # to do necessary cleanup.

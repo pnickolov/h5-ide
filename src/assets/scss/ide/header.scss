@@ -60,6 +60,10 @@
   .truncate { max-width : 160px; }
 }
 
+#ws-tabs > li {
+  cursor : default !important;
+}
+
 #header {
   height     : 49px;
   z-index    : 10;

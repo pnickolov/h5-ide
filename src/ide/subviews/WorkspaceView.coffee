@@ -2,7 +2,7 @@
 #  View(UI logic) for dialog
 #############################
 
-define [ "backbone", "UI.sortable", "jquerysort" ], () ->
+define [ "backbone", "jquerysort" ], () ->
 
     Backbone.View.extend {
 

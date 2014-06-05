@@ -59,10 +59,12 @@ define [ 'constant', 'CloudResources','sslcert_manage', 'combo_dropdown', './com
                         listenerAry = Design.instance().component(@uid).get('listeners')
                         currentListenerObj = listenerAry[@listenerNum]
                         if currentListenerObj and currentListenerObj.protocol in ['HTTPS', 'SSL']
-                            Design.instance().component(@uid).setSSLCert(@listenerNum, data[0].id)
-                            @dropdown.trigger 'change', data[0].id
-                            @dropdown.setSelection data[0].Name
-                            $(@el).removeClass('empty')
+                            compModel = Design.instance().component(@uid)
+                            if compModel
+                                compModel.setSSLCert(@listenerNum, data[0].id)
+                                @dropdown.trigger 'change', data[0].id
+                                @dropdown.setSelection data[0].Name
+                                $(@el).removeClass('empty')
 
         processCol: ( filter, keyword ) ->
 

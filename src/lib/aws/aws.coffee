@@ -904,7 +904,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
     checkAppName                : checkAppName
     getDuplicateName            : getDuplicateName
     getOSFamily                 : getOSFamily
-    genResRef                   : genResRef
+    genResRef                   : MC.genResRef
     enableStackAgent            : enableStackAgent
     getCompByResIdForState      : getCompByResIdForState
     genAttrRefList              : genAttrRefList

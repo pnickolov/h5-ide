@@ -578,8 +578,7 @@ define [ 'event',
 
             if not $refreshBtn.hasClass('disabled')
 
-                resourceView = event.data
-                regionName = resourceView.region
+                regionName = MC.canvas_data.region
                 this.model.refreshResourceList(regionName)
                 $refreshBtn.addClass('disabled')
 

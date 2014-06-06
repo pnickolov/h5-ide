@@ -387,9 +387,9 @@ button {
 	z-index: 80;
 	box-sizing: border-box;
 	box-shadow: 1px 1px 5px rgba(0,0,0,.3);
-	/*background: #000;*/
+	background-color: #353535;
 	border: 1px solid #0f0f0f;
-	color: #257de0;
+	color: #D0D0D0;
 }
 
 .resources-dropdown-wrapper li {
@@ -399,11 +399,10 @@ button {
 	position: relative;
 	cursor: pointer;
 	display: block;
-	background-color: #232323;
 }
 
 .resources-dropdown-wrapper li:hover {
-	background-color: #000;
+	background-color: rgba(255, 255, 255, 0.1);
 }
 
 .opem > .resources-dropdown-wrapper {

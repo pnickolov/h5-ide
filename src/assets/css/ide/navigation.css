@@ -91,12 +91,14 @@
   color: #ccc;
   font-size: 13px;
   cursor: pointer;
-  background-position: 20px 11px; }
+  background-position: 18px 11px; }
   .nav-item-list > li:hover {
     background-color: rgba(0, 0, 0, 0.5); }
   .nav-item-list > li > i {
     float: right;
     margin-top: 15px; }
+  .nav-item-list > li.icon-stack-nav {
+    background-position: 20px 11px; }
 
 #nav-stack-region:empty + #nav-show-empty {
   display: none; }

@@ -25,13 +25,13 @@ define [ "./OpsEditorBase", "./OpsViewBase", "Design" ], ( OpsEditorBase, OpsEdi
 
     createDesign : ()->
       design = new Design( @opsModel.getJsonData(), {
-        mode       : Design.Mode.AppView
+        mode       : Design.MODE.AppView
         autoFinish : false
       })
       MC.canvas.analysis()
       design.finishDeserialization()
       design
 
-    isReady : ()-> @__isJsonLoaded && @__hasAdditionalData
+    isReady : ()-> @opsModel.hasJsonData()
 
   UnmanagedViewer

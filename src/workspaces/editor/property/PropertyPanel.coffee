@@ -1,5 +1,5 @@
 
-define [ "../template/TplRightPanel", "backbone" ], ( RightPanelTpl )->
+define [ "../template/TplRightPanel", "event", "backbone" ], ( RightPanelTpl, ide_event )->
 
   ide_event.onLongListen ide_event.REFRESH_PROPERTY, ()->
     $("#OEPanelRight").trigger "REFRESH"; return
@@ -103,6 +103,12 @@ define [ "../template/TplRightPanel", "backbone" ], ( RightPanelTpl )->
 
       return false
 
+    openPanel : ( type, uid, force, tab )->
+
+
     refreshRightPanel : ()->
+
+
+    showStateEditor : ()->
 
   }

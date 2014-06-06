@@ -108,7 +108,7 @@
   color       : #ccc;
   font-size   : 13px;
   cursor      : pointer;
-  background-position : 20px 11px;
+  background-position : 18px 11px;
 
   &:hover { background-color : rgba(0,0,0,.5); }
 
@@ -116,6 +116,8 @@
     float      : right;
     margin-top : 15px;
   }
+
+  &.icon-stack-nav { background-position : 20px 11px; }
 }
 
 #nav-stack-region:empty {

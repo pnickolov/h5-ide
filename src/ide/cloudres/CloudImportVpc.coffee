@@ -2,7 +2,6 @@
 define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"], ( CloudResources, CrCollection, constant, ApiRequest )->
 
   # Helpers
-  CrPartials = ( type )-> CloudResources( constant.RESTYPE[type], ConverterData.region )
   CREATE_REF = ( comp )-> "@{#{comp.uid}.r.p}"
   UID        = MC.guid
   NAME       = ( res_attributes )->
@@ -12,11 +11,14 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
 
   # Class used to collect components / layouts
   class ConverterData
+    CrPartials : ( type )-> CloudResources( constant.RESTYPE[type], @region )
+
     constructor : ( region, vpcId )->
       # @theVpc  = null
       @region    = region
       @vpcId     = vpcId
-      @theAz     = {}
+      @azs       = {}
+      @subnets   = {}
       @component = {}
       @layout    = {}
 
@@ -37,25 +39,25 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
       if isGroupLayout then l.size = [0,0]
       if parentComp    then l.groupUId = parentComp.uid
 
-      layout[ l.uid ] = l
+      @layout[ l.uid ] = l
       return
 
     addAz : ( azName )->
-      az = @theAZ[ azName ]
+      az = @azs[ azName ]
       if az then return az
       az = @add( "AZ", { id : azName }, undefined )
       @addLayout( az, true, @theVpc )
-      @theAZ[ azName ] = az
+      @azs[ azName ] = az
       az
 
   # The order of Converters functions are important!
   # Some converter must be behind other converters.
   Converters = [
     ()-> # Vpc & Dhcp
-      vpc = CrPartials( "VPC" ).get( @vpcId ).attributes
+      vpc = @CrPartials( "VPC" ).get( @vpcId ).attributes
       if vpc.dhcpOptionsId
         dhcp = @add("DHCP", { id : "DhcpOption" }, {
-          DhcpOptionsId : dhcpOptionsId
+          DhcpOptionsId : vpc.dhcpOptionsId
         })
 
       # Cache the vpc so that other can use it.
@@ -72,7 +74,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
       return
 
     ()-> # Subnets
-      for sb, idx in CrPartials( "SUBNET" ).findWhere({vpcId:@vpcId})
+      for sb, idx in @CrPartials( "SUBNET" ).where({vpcId:@vpcId}) || []
         sb = sb.attributes
         azComp = @addAz(sb.availabilityZone)
         sbComp = @add( "SUBNET", sb, {
@@ -81,6 +83,8 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
           SubnetId         : sb.id
           VpcId            : CREATE_REF( @theVpc )
         })
+
+        @subnets[ sb.id ] = sb
 
         @addLayout( sbComp, true, azComp )
       return
@@ -94,7 +98,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
     # getVPN : ()->
 
     ()-> # Rtbs
-      for rtb in CrPartials( "RT" ).findWhere({vpcId:@vpcId})
+      for rtb in @CrPartials( "RT" ).where({vpcId:@vpcId}) || []
         rtb = rtb.attributes
         rtbRes = {
           RouteTableId : rtb.id
@@ -103,11 +107,13 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         }
 
         for i in rtb.associationSet
-          rtbRes.AssociationSet.push {
+          asso =
             Main : if i.main is false then false else "true"
             RouteTableAssociationId : i.routeTableAssociationId
-            SubnetId : i.subnetId
-          }
+
+          if i.subnetId
+            asso.SubnetId = CREATE_REF( @subnets[i.subnetId] )
+          rtbRes.AssociationSet.push asso
 
         rtbComp = @add( "RT", rtb, rtbRes )
         @addLayout( rtbComp, true, @theVpc )

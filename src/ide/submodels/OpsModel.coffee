@@ -88,10 +88,6 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
       # TODO :
       self = @
       if @isImported()
-        return ApiRequest("stack_info", {
-          stack_ids   : ["stack-6a1ef155"]
-        }).then (ds)-> self.__setJsonData( ds[0] )
-
         return CloudResources.getAllResourcesForVpc( @get("region"), @get("importVpcId") ).then ( res )-> self.__setJsonData( res )
 
       else if @isStack()
@@ -170,7 +166,7 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
         stack_id    : @get("id")
         new_name    : name || @collection.getNewName()
       }).then ( id )->
-        ThumbUtil.save id, thumbnail
+        if thumbnail then ThumbUtil.save id, thumbnail
         attr.id = id
         collection.add( new OpsModel(attr) )
 

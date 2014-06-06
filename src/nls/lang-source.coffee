@@ -467,6 +467,26 @@ module.exports =
       en: "Resources"
       zh: "资源"
 
+    RES_TIT_RESOURCES_MENU_KEYPAIR:
+      en: "Manage Key Pairs..."
+      zh: ""
+
+    RES_TIT_RESOURCES_MENU_SNAPSHOT:
+      en: "Manage EBS Snapshots..."
+      zh: ""
+
+    RES_TIT_RESOURCES_MENU_SNS:
+      en: "Manage SNS Topic & Subscriptions..."
+      zh: ""
+
+    RES_TIT_RESOURCES_MENU_SSLCERT:
+      en: "Manage Server Certificates..."
+      zh: ""
+
+    RES_TIT_RESOURCES_MENU_DHCP:
+      en: "Manage DHCP Option Sets..."
+      zh: ""
+
     RES_TIT_AZ:
       en: "Availability Zones"
       zh: "可用区域"

@@ -9,8 +9,7 @@ define [ '../base/main',
          './app_view',
          "../sglist/main",
          'constant',
-         'event'
-], ( PropertyModule, model, view, app_model, app_view, sglist_main, constant, ide_event ) ->
+], ( PropertyModule, model, view, app_model, app_view, sglist_main, constant ) ->
 
     ElbModule = PropertyModule.extend {
 

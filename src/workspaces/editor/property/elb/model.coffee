@@ -2,7 +2,7 @@
 #  View Mode for design/property/instance
 #############################
 
-define [ '../base/model', "event", "Design", 'constant', 'sslcert_dropdown' ], ( PropertyModel, ide_event, Design, constant, SSLCertDropdown ) ->
+define [ '../base/model', "Design", 'constant', 'sslcert_dropdown' ], ( PropertyModel, Design, constant, SSLCertDropdown ) ->
 
     ElbModel = PropertyModel.extend {
 

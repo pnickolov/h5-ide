@@ -4,24 +4,6 @@
 
 define [ '../base/main', './model', './view', 'constant', 'event' ], ( PropertyModule, model, view, constant, ide_event ) ->
 
-    ideEvents = {}
-    ideEvents[ ide_event.RELOAD_AZ ] = ( new_az_data ) ->
-
-        if !new_az_data
-            return
-
-        me = this
-
-        # wait for 'Resouce Panel Module' to process the data
-        # the processed data will be stored at MC.data.config.zone
-        setTimeout ()->
-            me.model.reInit()
-            me.view.render()
-        , 0
-
-        null
-
-
     AZModule = PropertyModule.extend {
 
         ideEvents : ideEvents

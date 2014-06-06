@@ -2,7 +2,7 @@
 #  View Mode for design/property/instance
 #############################
 
-define [ '../base/model', "Design", 'constant', 'event'  ], ( PropertyModel, Design, constant, ide_event ) ->
+define [ '../base/model', "Design", 'constant'  ], ( PropertyModel, Design, constant ) ->
 
     SgModel = PropertyModel.extend {
 

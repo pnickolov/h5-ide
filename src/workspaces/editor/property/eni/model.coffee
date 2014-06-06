@@ -2,7 +2,7 @@
 #  View Mode for design/property/eni
 #############################
 
-define [ '../base/model', 'constant', "Design", "event", 'i18n!nls/lang.js'  ], ( PropertyModel, constant, Design, ide_event, lang ) ->
+define [ '../base/model', 'constant', "Design", 'i18n!nls/lang.js'  ], ( PropertyModel, constant, Design, lang ) ->
 
 	ENIModel = PropertyModel.extend {
 

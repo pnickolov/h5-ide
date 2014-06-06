@@ -4,9 +4,8 @@
 
 define [ '../base/main',
          './model',
-         './view',
-         'event'
-], ( PropertyModel, model, view, ide_event ) ->
+         './view'
+], ( PropertyModel, model, view ) ->
 
     view.on 'OPEN_SG', (sgUID) ->
         PropertyModel.loadSubPanel "SG", sgUID

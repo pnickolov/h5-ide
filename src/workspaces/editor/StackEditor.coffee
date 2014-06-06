@@ -16,18 +16,16 @@ define [
     tabClass    : ()-> "icon-stack-tabbar"
 
     createView : ()->
-      new StackView({
-        opsModel  : @opsModel
-        workspace : this
-      })
+      new StackView({workspace:this})
 
     isReady : ()->
       @opsModel.hasJsonData() && CloudResources( constant.RESTYPE.AZ, @opsModel.get("region") ).isReady() && CloudResources( constant.RESTYPE.SNAP, @opsModel.get("region") ).isReady()
 
     fetchAdditionalData : ()->
+      region = @opsModel.get("region")
       Q.all [
-        CloudResources( constant.RESTYPE.AZ, @opsModel.get("region") ).fetch()
-        CloudResources( constant.RESTYPE.SNAP, @opsModel.get("region") ).fetch()
+        CloudResources( constant.RESTYPE.AZ,   region ).fetch()
+        CloudResources( constant.RESTYPE.SNAP, region ).fetch()
       ]
 
   StackEditor

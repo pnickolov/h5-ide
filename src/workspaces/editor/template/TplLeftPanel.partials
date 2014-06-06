@@ -16,16 +16,7 @@
 <div class="fixedaccordion accordion-default">
   <section class="accordion-group">
     <header class="fixedaccordion-head">{{ i18n "RES_TIT_AZ" }}</header>
-    <ul class="availability-zone resource-list clearfix accordion-body">
-      {{#each az}}
-      <li class="tooltip resource-item" data-tooltip='{{ i18n "RES_TIP_DRAG_AZ" }}' data-component-type="group" data-type="AWS.EC2.AvailabilityZone" data-option='{"name":"{{name}}"}'>
-        <div class="resource-icon resource-icon-az">
-          <div class="resource-icon-az-label">{{lastChar name}}</div>
-        </div>
-        <div class="resource-label">{{name}}</div>
-      </li>
-      {{/each}}
-    </ul>
+    <ul class="availability-zone resource-list clearfix accordion-body"></ul>
   </section>
 
   <section class="accordion-group">
@@ -55,13 +46,7 @@
     <header class="fixedaccordion-head">{{ i18n "RES_TIT_VOL" }}</header>
     <div class="accordion-body scroll-wrap scrollbar-auto-hide">
       <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-      <ul class="resoruce-snapshot resource-list scroll-content">
-        <li class="tooltip resource-item" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_VOLUME" }}' data-component-type="node" data-type="AWS.EC2.EBS.Volume" data-option='' >
-          <div class="resource-icon resource-icon-volume"></div>
-          <div class="resource-label">{{i18n "RES_LBL_NEW_VOL"}}</div>
-        </li>
-
-      </ul>
+      <ul class="resoruce-snapshot resource-list scroll-content"></ul>
       <button class="btn btn-primary" id="ManageSnapshot">{{ i18n "RES_TIT_SNAPSHOT_MANAGE"}}</button>
     </div>
   </section>
@@ -69,14 +54,8 @@
   <section class="accordion-group">
     <header class="fixedaccordion-head">{{ i18n "RES_TIT_ELB_ASG" }}</header>
     <ul class="resource-list clearfix accordion-body">
-      <li class="tooltip resource-item" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_ELB" }}' data-component-type="node" data-type="AWS.ELB">
-        <div class="resource-icon resource-icon-elb"></div>
-        <div class="resource-label">{{ i18n "RES_LBL_NEW_ELB" }}</div>
-      </li>
-      <li class="tooltip resource-item" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_ASG" }}' data-component-type="group" data-type="AWS.AutoScaling.Group">
-        <div class="resource-icon resource-icon-asg"></div>
-        <div class="resource-label">{{ i18n "RES_LBL_NEW_ASG" }}</div>
-      </li>
+      <li class="tooltip resource-item resource-icon-elb" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_ELB" }}' data-component-type="node" data-type="AWS.ELB">{{ i18n "RES_LBL_NEW_ELB" }}</li>
+      <li class="tooltip resource-item resource-icon-asg" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_ASG" }}' data-component-type="group" data-type="AWS.AutoScaling.Group">{{ i18n "RES_LBL_NEW_ASG" }}</li>
     </ul>
   </section>
 
@@ -85,47 +64,30 @@
     <article class="accordion-body scroll-wrap scrollbar-auto-hide">
       <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
       <ul class="resource-list scroll-content">
-        <li class="tooltip resource-item" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_SUBNET" }}' data-component-type="group" data-type="AWS.VPC.Subnet">
-          <div class="resource-icon resource-icon-subnet"></div>
-          <div class="resource-label">{{ i18n "RES_LBL_NEW_SUBNET" }}</div>
-        </li>
+        <li class="tooltip resource-item resource-icon-subnet" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_SUBNET" }}' data-component-type="group" data-type="AWS.VPC.Subnet">{{ i18n "RES_LBL_NEW_SUBNET" }}</li>
 
-        <li class="tooltip resource-item" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_RTB" }}' data-component-type="node" data-type="AWS.VPC.RouteTable">
-          <div class="resource-icon resource-icon-rt"></div>
-          <div class="resource-label">{{ i18n "RES_LBL_NEW_RTB" }}</div>
-        </li>
+        <li class="tooltip resource-item resource-icon-rt" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_RTB" }}' data-component-type="node" data-type="AWS.VPC.RouteTable">{{ i18n "RES_LBL_NEW_RTB" }}</li>
 
-        <li class="tooltip resource-item" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_IGW" }}' data-component-type="node" data-type="AWS.VPC.InternetGateway" data-option='{"name":"Internet-gateway"}'>
-          <div class="resource-icon resource-icon-igw"></div>
-          <div class="resource-label">{{ i18n "RES_LBL_NEW_IGW" }}</div>
-        </li>
+        <li class="tooltip resource-item resource-icon-igw" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_IGW" }}' data-component-type="node" data-type="AWS.VPC.InternetGateway" data-option='{"name":"Internet-gateway"}'>{{ i18n "RES_LBL_NEW_IGW" }}</li>
 
-        <li class="tooltip resource-item" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_VGW" }}' data-component-type="node" data-type="AWS.VPC.VPNGateway" data-option='{"name":"VPN-gateway"}'>
-          <div class="resource-icon resource-icon-vgw"></div>
-          <div class="resource-label">{{ i18n "RES_LBL_NEW_VGW" }}</div>
-        </li>
+        <li class="tooltip resource-item resource-icon-vgw" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_VGW" }}' data-component-type="node" data-type="AWS.VPC.VPNGateway" data-option='{"name":"VPN-gateway"}'>{{ i18n "RES_LBL_NEW_VGW" }}</li>
 
-        <li class="tooltip resource-item" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_CGW" }}' data-component-type="node" data-type="AWS.VPC.CustomerGateway">
-          <div class="resource-icon resource-icon-cgw"></div>
-          <div class="resource-label">{{ i18n "RES_LBL_NEW_CGW" }}</div>
-        </li>
+        <li class="tooltip resource-item resource-icon-cgw" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_CGW" }}' data-component-type="node" data-type="AWS.VPC.CustomerGateway">{{ i18n "RES_LBL_NEW_CGW" }}</li>
 
-        <li class="tooltip resource-item" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_ENI" }}' data-component-type="node" data-type="AWS.VPC.NetworkInterface">
-          <div class="resource-icon resource-icon-eni"></div>
-          <div class="resource-label">{{ i18n "RES_LBL_NEW_ENI" }}</div>
-        </li>
+        <li class="tooltip resource-item resource-icon-eni" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_ENI" }}' data-component-type="node" data-type="AWS.VPC.NetworkInterface">{{ i18n "RES_LBL_NEW_ENI" }}</li>
       </ul>
     </article>
   </section>
 </div>
 
+<!-- {{az}} -->
+{{#each this}}{{#with attributes}}
+<li class="tooltip resource-item resource-icon-az" data-tooltip='{{ i18n "RES_TIP_DRAG_AZ" }}' data-component-type="group" data-type="AWS.EC2.AvailabilityZone" data-option='{"name":"{{id}}"}'><div class="az-name">{{lastChar id}}</div>{{id}}</li>{{/with}}{{/each}}
+
 <!-- {{snapshot}} -->
-{{#each this}}
-<li class="resource-item bubble"  data-bubble-template="bubbleSnapshotInfo" data-bubble-data='{"snapshotId":"{{ snapshotId }}","startTime":"{{startTime}}","status":"{{status}}","size":"{{volumeSize}}"}' data-component-type="node" data-type="AWS.EC2.EBS.Volume" data-option='{"volumeSize":{{ volumeSize }}, "snapshotId": "{{ snapshotId }}"}'>
-  <div class="resource-icon resource-icon-ebs-snapshot"><span class="ebs-size">{{volumeSize}} GB</span></div>
-  <div class="resource-label">{{ snapshotId }}</div>
-</li>
-{{/each}}
+<li class="tooltip resource-item resource-icon-volume" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_VOLUME" }}' data-component-type="node" data-type="AWS.EC2.EBS.Volume" data-option=''>{{i18n "RES_LBL_NEW_VOL"}}</li>
+{{#each this}}{{#with attributes}}
+<li class="resource-item bubble resource-icon-ebs-snapshot" data-bubble-template="bubbleSnapshotInfo" data-bubble-data='{"snapshotId":"{{id}}", "startTime":"{{startTime}}","status":"{{status}}","size":"{{volumeSize}}"}' data-component-type="node" data-type="AWS.EC2.EBS.Volume" data-option='{"volumeSize":{{volumeSize}}, "snapshotId": "{{id}}"}'><div class="ebs-size">{{volumeSize}} GB</div>{{id}}</li>{{/with}}{{/each}}
 
 
 <!-- {{quickstart_ami_data}} -->

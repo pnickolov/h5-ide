@@ -99,6 +99,21 @@ define ["ApiRequest", "./CrModel", "backbone"], ( ApiRequest, CrModel )->
 
     region : ()-> @category
 
+    # Override Backbone.Collection.where
+    where : ( option )->
+      if option.category and option.category is @category
+        delete option.category
+
+      for key of option
+        if option.hasOwnProperty( key )
+          hasOtherAttr = true
+          break
+
+      if hasOtherAttr
+        Backbone.Collection.prototype.where.call this, option
+      else
+        @models.slice(0)
+
   }, {
 
     # CloudResources uses this method to get the right category.

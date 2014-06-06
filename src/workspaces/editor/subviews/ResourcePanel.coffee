@@ -1,5 +1,10 @@
 
-define [ "../template/TplLeftPanel", "backbone" ], ( LeftPanelTpl )->
+define [
+  "CloudResources"
+  "../template/TplLeftPanel"
+  "constant"
+  "backbone"
+], ( CloudResources, LeftPanelTpl, constant )->
 
   # Update Left Panel when window size changes
   __resizeAccdTO = null
@@ -21,10 +26,33 @@ define [ "../template/TplLeftPanel", "backbone" ], ( LeftPanelTpl )->
       "click .fixedaccordion-head"   : "updateAccordion"
       "RECALC"                       : "recalcAccordion"
 
+    initialize : (options)->
+      @workspace = options.workspace
+      region = @workspace.opsModel.get("region")
+      @listenTo CloudResources( constant.RESTYPE.AZ,   region ), "update", @updateAZ
+      @listenTo CloudResources( constant.RESTYPE.SNAP, region ), "update", @updateSnapshot
+      return
+
     render : ()->
       @setElement $("#OEPanelLeft").html LeftPanelTpl.panel({})
       $("#OEPanelLeft").toggleClass("hidden", @__rightPanelHidden || false)
       @recalcAccordion()
+
+      @updateAZ()
+      @updateSnapshot()
+      return
+
+    updateAZ : ()->
+      if not @workspace.isAwake() then return
+      region = @workspace.opsModel.get("region")
+
+      $("#OEPanelLeft").find(".resource-list.availability-zone").html LeftPanelTpl.az(CloudResources( constant.RESTYPE.AZ, region ).where({category:region}) || [])
+      return
+
+    updateSnapshot : ()->
+      if not @workspace.isAwake() then return
+      region = @workspace.opsModel.get("region")
+      $("#OEPanelLeft").find(".resource-list.resoruce-snapshot").html LeftPanelTpl.snapshot(CloudResources( constant.RESTYPE.SNAP, region ).where({category:region}) || [])
       return
 
     clearDom : ()->

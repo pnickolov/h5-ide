@@ -37,10 +37,7 @@ define [ "Workspace", "./OpsViewBase", "./template/TplOpsEditor", "OpsModel", "D
 
     # Returns a new View
     createView : ()->
-      new OpsEditorView({
-        opsModel  : @opsModel
-        workspace : this
-      })
+      new OpsEditorView({workspace:this})
 
     # Returns a new Design object.
     initDesign : ()-> @design.finishDeserialization()

@@ -8,8 +8,7 @@ define [
   OpsViewBase.extend {
 
     initialize : ()->
-      @resourcePanel = new ResourcePanel()
-      @resourcePanel.workspace = @workspace
+      @resourcePanel = new ResourcePanel({workspace:@workspace})
       return
 
     bindUserEvent : ()->

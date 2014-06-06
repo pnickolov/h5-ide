@@ -438,6 +438,9 @@ define [
 
   DesignImpl.prototype.component = ( uid )-> @__componentMap[ uid ]
 
+  DesignImpl.prototype.componentsOfType = ( type )->
+    @classCacheForCid( Design.modelClassForType(type).prototype.classId ).slice(0)
+
   DesignImpl.prototype.eachComponent = ( func, context )->
     console.assert( _.isFunction(func), "User must pass in a function for Design.instance().eachComponent()" )
 

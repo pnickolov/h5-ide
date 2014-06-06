@@ -1,6 +1,5 @@
 
 define [
-  "OpsModel"
   "./template/TplCanvas"
   "./subviews/PropertyPanel"
   "./subviews/Toolbar"
@@ -8,7 +7,7 @@ define [
   "backbone"
   "UI.selectbox"
   "MC.canvas"
-], ( OpsModel, CanvasTpl, PropertyPanel, Toolbar )->
+], ( CanvasTpl, PropertyPanel, Toolbar )->
 
   # LEGACY code
   # Should remove this in the future.

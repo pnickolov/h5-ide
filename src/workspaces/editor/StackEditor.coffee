@@ -15,7 +15,11 @@ define [
     title       : ()-> @opsModel.get("name") + " - stack"
     tabClass    : ()-> "icon-stack-tabbar"
 
-    createView   : ()-> new StackView({workspace:this})
+    createView : ()->
+      new StackView({
+        opsModel  : @opsModel
+        workspace : this
+      })
 
     isReady : ()->
       @opsModel.hasJsonData() && CloudResources( constant.RESTYPE.AZ, @opsModel.get("region") ).isReady() && CloudResources( constant.RESTYPE.SNAP, @opsModel.get("region") ).isReady()

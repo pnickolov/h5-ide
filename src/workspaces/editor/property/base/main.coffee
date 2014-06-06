@@ -353,9 +353,9 @@ define [ 'event' ], ( ide_event )->
     PropertyModule.restore  = ( ss, propertyView ) ->
         PropertyModule.load( ss.activeModuleType, ss.activeModuleId, ss.tab_type, true )
 
-        if snapshot.activeSubModuleType
+        if ss.activeSubModuleType
             PropertyModule.__restore = true
-            PropertyModule.loadSubPanel snapshot.activeSubModuleType, snapshot.activeSubModuleId, true
+            PropertyModule.loadSubPanel ss.activeSubModuleType, ss.activeSubModuleId, true
             PropertyModule.__restore = false
         null
 

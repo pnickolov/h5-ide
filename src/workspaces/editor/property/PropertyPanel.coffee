@@ -75,10 +75,20 @@ define [
       @setElement $("#OEPanelRight").html( RightPanelTpl() )
       $("#OEPanelRight").toggleClass("hidden", @__rightPanelHidden || false)
 
-      @openPanel( @__panelType, @__panelId )
+      if @__backup
+        PropertyBaseModule.restore( @__backup )
+      else
+        @openPanel()
+
       if @__showingState
         @showStateEditor()
       return
+
+    clearDom : ()->
+      @$el = null
+      @__backup = PropertyBaseModule.snapshot()
+      return
+
 
     toggleRightPanel : ()->
       @__rightPanelHidden = $("#OEPanelRight").toggleClass("hidden").hasClass("hidden")

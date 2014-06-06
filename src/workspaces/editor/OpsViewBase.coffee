@@ -69,7 +69,7 @@ define [
       # setElement() will transfer events to the new element.
       @$el.remove()
       @$el = null
-      @propertyPanel.$el = null
+      @propertyPanel.clearDom()
       return
 
     ###

@@ -920,19 +920,25 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 
 	resolveEC2Tag = (tagSet) ->
 
-		if not tagSet
-			null
-
 		result =
-			"Created by": tagSet["Created by"]
-			"Name"		: tagSet["Name"]
-			"app"		: tagSet["app"]
-			"app-id"	: tagSet["app-id"]
-			"name"		: tagSet["name"]
+			"Created by": ''
+			"Name"		: ''
+			"app"		: ''
+			"app-id"	: ''
+			"name"		: ''
 			"isApp"		: false
 
-		if tagSet["Created by"] and ["Name"] and tagSet["app"] and tagSet["app-id"] and tagSet["name"]
-			result.isApp = true
+		if tagSet
+			result =
+				"Created by": if tagSet["Created by"] then tagSet["Created by"] else ''
+				"Name"		: if tagSet["Name"] then tagSet["Name"] else ''
+				"app"		: if tagSet["app"]  then tagSet["app"] else ''
+				"app-id"	: if tagSet["app-id"]  then tagSet["app-id"] else ''
+				"name"		: if tagSet["name"]  then tagSet["name"] else ''
+				"isApp"		: false
+
+			if tagSet["Created by"] and tagSet["Name"] and tagSet["app"] and tagSet["app-id"]
+				result.isApp = true
 
 		result
 

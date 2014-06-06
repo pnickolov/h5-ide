@@ -15,9 +15,6 @@ define [ 'underscore', 'backbone' ], () ->
         REFRESH_PROPERTY       : "REFRESH_PROPERTY"
         RELOAD_AZ              : 'RELOAD_AZ'
 
-        #tabbar
-        UPDATE_DESIGN_TAB      : 'UPDATE_DESIGN_TAB'
-
         #status bar & ta
         HIDE_STATUS_BAR        : 'HIDE_STATUS_BAR'
         UPDATE_STATUS_BAR      : 'UPDATE_STATUS_BAR'

@@ -14,7 +14,7 @@ define [ '../base/main',
     view.on 'STACK_NAME_CHANGED', ( name ) ->
         design = Design.instance()
         design.set("name", name)
-        ide_event.trigger ide_event.UPDATE_DESIGN_TAB, design.get("id"), name + ' - stack'
+        App.workspaces.getAwakeSpace().updateTab()
         null
 
     view.on 'STACK_DESC_CHANGED', (description) ->

@@ -1,4 +1,8 @@
-define [ "constant", "workspaces/editor/framework/canvasview/CanvasAdaptor" ], ( constant, CanvasAdaptor ) ->
+define [
+  "constant"
+  "OpsModel"
+  "workspaces/editor/framework/canvasview/CanvasAdaptor"
+], ( constant, OpsModel, CanvasAdaptor ) ->
 
   PropertyDefination =
     policy : { ha : "" }
@@ -83,11 +87,18 @@ define [ "constant", "workspaces/editor/framework/canvasview/CanvasAdaptor" ], (
 
   ###
 
-  Design = ( canvas_data, options )->
+  Design = ( opsModel )->
 
-    design = (new DesignImpl( canvas_data, options )).use()
-    design.canvas = new CanvasAdaptor( canvas_data.layout.size )
+    canvas_data = opsModel.getJsonData()
 
+    design = (new DesignImpl( canvas_data )).use()
+
+    if opsModel.testState( OpsModel.State.UnRun )
+      design.__mode = Design.MODE.Stack
+    else if opsModel.isImported()
+      design.__mode = Design.MODE.AppView
+    else
+      design.__mode = Design.MODE.App
 
     ###########################
     # Deserialize
@@ -100,10 +111,6 @@ define [ "constant", "workspaces/editor/framework/canvasview/CanvasAdaptor" ], (
     design.deserialize( canvas_data.component, canvas_data.layout )
     canvas_data.layout = oldLayout
 
-
-    if options.autoFinish isnt false
-      design.finishDeserialization()
-
     design
 
 
@@ -115,7 +122,7 @@ define [ "constant", "workspaces/editor/framework/canvasview/CanvasAdaptor" ], (
   Design.__instance            = null
 
 
-  DesignImpl = ( canvas_data, options )->
+  DesignImpl = ( canvas_data )->
     @__componentMap = {}
     @__canvasNodes  = {}
     @__canvasLines  = {}
@@ -124,7 +131,7 @@ define [ "constant", "workspaces/editor/framework/canvasview/CanvasAdaptor" ], (
     @__backingStore = {}
     @__usedUidCache = {}
 
-    @__mode = options.mode
+    @canvas = new CanvasAdaptor( canvas_data.layout.size )
 
     # Delete these two attr before copying canvas_data.
     component = canvas_data.component
@@ -426,6 +433,7 @@ define [ "constant", "workspaces/editor/framework/canvasview/CanvasAdaptor" ], (
   DesignImpl.prototype.shouldDraw = ()-> @__shoulddraw
   DesignImpl.prototype.use = ()->
     Design.__instance = @
+    @canvas.init()
     @
 
   DesignImpl.prototype.component = ( uid )-> @__componentMap[ uid ]

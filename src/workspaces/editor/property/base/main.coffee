@@ -6,6 +6,7 @@
 define [ 'event' ], ( ide_event )->
 
     activeModule        = null
+    activeModuleType    = null
     activeSubModule     = null
     activeSubModuleType = null
     slice               = [].slice
@@ -158,17 +159,7 @@ define [ 'event' ], ( ide_event )->
 
 
     PropertyModule.prototype.loadSubPanel = ( subPanelID, componentUid ) ->
-        subPanel = propertySubTypeMap[ subPanelID ]
-        if not subPanel
-            return
-        panel = new Panel()
-        panel.uid = componentUid
-        panel.property = subPanel
-        panel.type = subPanelID
-        panel.tabType = activeModule.type
-
-        __loadProperty panel
-        null
+        __loadProperty( propertySubTypeMap[ subPanelID ], subPanelID, componentUid, activeModule.type )
 
     PropertyModule.extend = ( protoProps, staticProps ) ->
         ### env:dev ###
@@ -226,84 +217,33 @@ define [ 'event' ], ( ide_event )->
         # 3. Return the Property Class
         newPropertyClass
 
-    PropertyModule.prototype.activeModule = () ->
-        activeModule
-
-    PropertyModule.prototype.activeSubModule = () ->
-        activeSubModule
-
-    PropertyModule.activeModule = PropertyModule.prototype.activeModule
+    PropertyModule.prototype.activeModule    = () -> activeModule
+    PropertyModule.prototype.activeSubModule = () -> activeSubModule
+    PropertyModule.activeModule    = PropertyModule.prototype.activeModule
     PropertyModule.activeSubModule = PropertyModule.prototype.activeSubModule
-    PropertyModule.loadSubPanel = PropertyModule.prototype.loadSubPanel
-
-    Panel = () ->
-        that = @
-        _.each
-            _type    : propertyTypeMap.DEFAULT_TYPE
-            _uid     : null
-            tabType : ''
-            restore : false
-            property: null
-            , ( v, k ) ->
-                that[ k ] = v
-                null
-        Object.defineProperty @, 'type',
-            # Keep default value and set uid to '' when type is nonsense
-            set: ( v ) ->
-                if v
-                    @_type = v
-                    null
-                else
-                    @_uid = ''
-                    null
-            get: () -> @_type
-
-        Object.defineProperty @, 'uid',
-            # Set _uid when it isn't ''
-            set: ( v ) -> if @_uid isnt ''
-                @_uid = v
-                null
-            get: () -> @_uid
-
-        undefined
-
+    PropertyModule.loadSubPanel    = PropertyModule.prototype.loadSubPanel
 
     # Class methods. They're used by design/property/main.
-    PropertyModule.load  = ( componentType, componentUid, tab_type ) ->
-        panel = new Panel()
-        # Support object argument
-        if arguments.length > 1
-            panel.type      = componentType
-            panel.uid       = componentUid
-            panel.tabType   = tab_type
-        else if arguments.length is 1 and _.isObject( arguments[ 0 ] )
-            _.each arguments[ 0 ], ( v, k ) ->
-                panel[ k ] = v
-                null
-        else
-            return
+    PropertyModule.load  = ( componentType, componentUid, tab_type, restore ) ->
+        property   = __getProperty( componentType, componentUid, tab_type )
+        loadResult = __loadProperty( property, componentType, componentUid, tab_type, restore )
 
-        panel.property = __getProperty panel
-
-        loadResult = __loadProperty panel
-
-        if loadResult is true
-            return
-        else
+        if loadResult isnt true
             if loadResult is false
                 # Cannot load the property due to data issue. Display the missing property
-                panel.type = 'missing_resource'
+                componentType = 'missing_resource'
             else
                 # The property doesn't handle current tab_type. Display the stack property
+                componentType = ""
                 console.warn "Cannot open component for type: #{ componentType }, data : #{componentUid }"
 
-            panel.property = __getProperty panel
-            __loadProperty panel
+            property = __getProperty( componentType, componentUid, tab_type )
+            return __loadProperty( property, componentType, componentUid, tab_type, restore )
+        true
 
-    __getProperty = ( panel ) ->
-        componentType = panel.type
-        componentUid = panel.uid
-        tab_type = panel.tabType
+    __getProperty = ( componentType, componentUid, tab_type ) ->
+
+        if not componentType then componentType = propertyTypeMap.DEFAULT_TYPE
 
         handle = componentType
         # 1. Find the corresponding property
@@ -328,14 +268,8 @@ define [ 'event' ], ( ide_event )->
         property.handle = handle
         property
 
-    __loadProperty = ( panel ) ->
-        componentType = panel.type
-        property = panel.property
-        componentUid = panel.uid
-        tab_type = panel.tabType
-
-        if not property
-            return false
+    __loadProperty = ( property, componentType, componentUid, tab_type, restore ) ->
+        if not property then return false
 
         # 1. Set the property type to "App" or "Stack"
         property.type = tab_type
@@ -363,7 +297,7 @@ define [ 'event' ], ( ide_event )->
             activeSubModule     = null
             activeSubModuleType = null
             activeModule        = property
-            activeModule.comType   = componentType
+            activeModuleType    = componentType
         # 5. Re-init the `model` and `view`
         # Since the model is singleton, need to clear all the attributes.
         property.model.clear( { silent : true } )
@@ -371,7 +305,7 @@ define [ 'event' ], ( ide_event )->
         if property.model.init( componentUid ) is false
             return false
 
-        __resetSelectedinGroup panel.restore, property.model
+        __resetSelectedinGroup restore, property.model
         # Injects the model to the view. So that the view doesn't have hard dependency
         # to the model. Thus they're decoupled.
         property.view.model      = property.model
@@ -407,36 +341,22 @@ define [ 'event' ], ( ide_event )->
 
         activeSubModule     = null
         activeSubModuleType = null
-
         null
 
-    PropertyModule.snapshot = ( propertyView ) ->
-        data =
-            activeModuleType    : activeModule.comType
-            activeSubModuleType : activeSubModuleType
-            activeModuleId      : activeModule.uid
-            activeSubModuleId   : if activeSubModule then activeSubModule.uid else null
-            tab_type            : activeModule.type
-            propertyTab         : propertyView.currentTab
+    PropertyModule.snapshot = () ->
+        activeModuleId      : activeModule.uid
+        activeModuleType    : activeModuleType
+        activeSubModuleId   : if activeSubModule then activeSubModule.uid else null
+        activeSubModuleType : activeSubModuleType
+        tab_type            : activeModule.type
 
-        data
-
-    PropertyModule.restore  = ( snapshot, propertyView ) ->
-        param =
-            type    : snapshot.activeModuleType
-            uid     : snapshot.activeModuleId
-            tabType : snapshot.tab_type
-            restore : true
-
-        PropertyModule.load param
+    PropertyModule.restore  = ( ss, propertyView ) ->
+        PropertyModule.load( ss.activeModuleType, ss.activeModuleId, ss.tab_type, true )
 
         if snapshot.activeSubModuleType
             PropertyModule.__restore = true
             PropertyModule.loadSubPanel snapshot.activeSubModuleType, snapshot.activeSubModuleId, true
             PropertyModule.__restore = false
-        else
-            $("#OEPanelRight").trigger "HIDE_SUBPANEL"
-
         null
 
     # Export PropertyModule

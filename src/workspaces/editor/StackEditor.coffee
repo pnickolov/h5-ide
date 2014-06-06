@@ -9,8 +9,7 @@ define [ "./OpsEditorBase", "./StackView", "Design" ], ( OpsEditorBase, StackVie
     title       : ()-> @opsModel.get("name") + " - stack"
     tabClass    : ()-> "icon-stack-tabbar"
 
-    createView   : ()-> new StackView()
-    createDesign : ()-> new Design( @opsModel.getJsonData(), { mode : Design.MODE.Stack } )
+    createView   : ()-> new StackView({workspace:this})
 
     isReady : ()-> @opsModel.hasJsonData()
 

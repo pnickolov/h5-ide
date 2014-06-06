@@ -6,8 +6,6 @@ define [ '../base/main', './model', './view', 'constant', 'event' ], ( PropertyM
 
     AZModule = PropertyModule.extend {
 
-        ideEvents : ideEvents
-
         handleTypes : "Stack:" + constant.RESTYPE.AZ
 
         setupStack : ()->

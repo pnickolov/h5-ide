@@ -1,5 +1,37 @@
 
-define [ "../template/TplRightPanel", "event", "backbone" ], ( RightPanelTpl, ide_event )->
+define [
+  "../template/TplRightPanel"
+  "./base/main"
+  'component/stateeditor/stateeditor'
+  "constant"
+  "Design"
+  "OpsModel"
+  "event"
+  "backbone"
+
+  './stack/main'
+  './instance/main'
+  './servergroup/main'
+  './connection/main'
+  './staticsub/main'
+  './missing/main'
+  './sg/main'
+  './sgrule/main'
+  './volume/main'
+  './elb/main'
+  './az/main'
+  './subnet/main'
+  './vpc/main'
+  './rtb/main'
+  './static/main'
+  './cgw/main'
+  './vpn/main'
+  './eni/main'
+  './acl/main'
+  './launchconfig/main'
+  './asg/main'
+
+], ( RightPanelTpl, PropertyBaseModule, stateeditor, CONST, Design, OpsModel, ide_event )->
 
   ide_event.onLongListen ide_event.REFRESH_PROPERTY, ()->
     $("#OEPanelRight").trigger "REFRESH"; return
@@ -8,10 +40,16 @@ define [ "../template/TplRightPanel", "event", "backbone" ], ( RightPanelTpl, id
     $("#OEPanelRight").trigger "FORCE_SHOW"; return
 
   ide_event.onLongListen ide_event.SHOW_STATE_EDITOR, (uid)->
-    $("OEPanelRight").trigger "SHOW_STATEEDITOR", uid, null, true; return
+    $("#OEPanelRight").trigger "SHOW_STATEEDITOR", [uid]; return
 
-  ide_event.onLongListen ide_event.OPEN_PROPERTY, ( type, uid, force, tab )->
-    $("OEPanelRight").trigger "OPEN", type, uid, force, tab; return
+  ide_event.onLongListen ide_event.OPEN_PROPERTY, ( type, uid )->
+    $("#OEPanelRight").trigger "OPEN", [type, uid]; return
+
+  trimmedJqEventHandler = ( funcName )->
+    ()->
+      trim = Array.prototype.slice.call arguments, 0
+      trim.shift()
+      @[funcName].apply @, trim
 
 
   Backbone.View.extend {
@@ -22,31 +60,38 @@ define [ "../template/TplRightPanel", "event", "backbone" ], ( RightPanelTpl, id
       "click .option-group-head"        : "updateRightPanelOption"
 
       # Events
-      "OPEN_SUBPANEL #OEPanelRight"     : "showSecondPanel"
-      "HIDE_SUBPANEL #OEPanelRight"     : "immHideSecondPanel"
-      "FORCE_SHOW    #OEPanelRight"     : "forceShow"
-      "OPEN_SUBPANEL_IMM #OEPanelRight" : "immShowSecondPanel"
+      "OPEN_SUBPANEL"     : trimmedJqEventHandler("showSecondPanel")
+      "HIDE_SUBPANEL"     : trimmedJqEventHandler("immHideSecondPanel")
+      "OPEN_SUBPANEL_IMM" : trimmedJqEventHandler("immShowSecondPanel")
+      "OPEN"              : trimmedJqEventHandler("openPanel")
+      "SHOW_STATEEDITOR"  : "showStateEditor"
+      "FORCE_SHOW"        : "forceShow"
+      "REFRESH"           : "refresh"
 
-      "OPEN    #OEPanelRight"           : "openPanel"
-      "REFRESH #OEPanelRight"           : "refreshRightPanel"
-      "SHOW_STATEEDITOR #OEPanelRight"  : "showStateEditor"
+      "click #btn-switch-property" : "switchToProperty"
+      "click #btn-switch-state"    : "showStateEditor"
 
     render : ()->
       @setElement $("#OEPanelRight").html( RightPanelTpl() )
       $("#OEPanelRight").toggleClass("hidden", @__rightPanelHidden || false)
+
+      @openPanel( @__panelType, @__panelId )
+      if @__showingState
+        @showStateEditor()
       return
 
     toggleRightPanel : ()->
       @__rightPanelHidden = $("#OEPanelRight").toggleClass("hidden").hasClass("hidden")
+      $( '#status-bar-modal' ).toggleClass 'toggle', @__rightPanelHidden
       false
 
-    showSecondPanel : () ->
+    showSecondPanel : ( type, id ) ->
       $("#hide-second-panel").data("tooltip", "Back to " + $("#property-title").text())
       $("#property-second-panel").show().animate({left:"0%"}, 200)
       $("#property-first-panel").animate {left:"-30%"}, 200, ()->
         $("#property-first-panel").hide()
 
-    immShowSecondPanel : ()->
+    immShowSecondPanel : ( type , id )->
       $("#hide-second-panel").data("tooltip", "Back to " + $("#property-title").text())
       $("#property-second-panel").show().css({left:"0%"})
       $("#property-first-panel").css({left:"-30%",display:"none"})
@@ -87,13 +132,13 @@ define [ "../template/TplRightPanel", "event", "backbone" ], ( RightPanelTpl, id
           $target.slideDown(200)
       $toggle.toggleClass("expand")
 
-      if not $('#property-second-panel').is(':hidden') then return
+      if not $toggle.parents("#property-first-panel").length then return
 
       @__optionStates = @__optionStates || {}
 
       # added by song ######################################
       # record head state
-      comp = @__selectedComp || "stack"
+      comp = PropertyBaseModule.activeModule().uid || "Stack"
       status = _.map $('#property-first-panel').find('.option-group-head'), ( el )-> $(el).hasClass("expand")
       @__optionStates[ comp ] = status
 
@@ -103,12 +148,142 @@ define [ "../template/TplRightPanel", "event", "backbone" ], ( RightPanelTpl, id
 
       return false
 
-    openPanel : ( type, uid, force, tab )->
+    openPanel : ( type, uid )->
+
+      if @__lastOpenType is type and @__lastOpenId is uid and @__showingState
+        return
+
+      @__lastOpenType = type
+      @__lastOpenId   = uid
+
+      # Blur any focused input
+      # Better than $("input:focus")
+      $(document.activeElement).filter("input, textarea").blur()
+
+      @immHideSecondPanel()
+
+      # Load property
+      # Format `type` so that PropertyBaseModule knows about it.
+      # Here, type can be : ( according to the previous version of property/main )
+      # - "component_asg_volume"   => Volume Property
+      # - "component_asg_instance" => Instance main
+      # - "component"
+      # - "stack"
+
+      design = @workspace.design
+      if not design then return
+
+      # If type is "component", type should be changed to ResourceModel's type
+      if uid
+        component = design.component( uid )
+        if component and component.type is type and design.modeIsApp() and component.get( 'appId' ) and not component.hasAppResource()
+          type = 'Missing_Resource'
+      else
+        type = "Stack"
 
 
-    refreshRightPanel : ()->
+      # Get current model of design
+      if design.modeIsApp() or design.modeIsAppView()
+        tab_type = PropertyBaseModule.TYPE.App
+
+      else if design.modeIsStack()
+        tab_type = PropertyBaseModule.TYPE.Stack
+
+      else
+        # If component has associated aws resource (a.k.a has appId), it's AppEdit mode ( Partially Editable )
+        # Otherwise, it's Stack mode ( Fully Editable )
+        if not component or component.get("appId")
+          tab_type = PropertyBaseModule.TYPE.AppEdit
+        else
+          tab_type = PropertyBaseModule.TYPE.Stack
 
 
-    showStateEditor : ()->
+      # Tell `PropertyBaseModule` to load corresponding property panel.
+      try
+        PropertyBaseModule.load type, uid, tab_type
+        ### env:prod ###
+      catch error
+        console.error error
+        ### env:prod:end ###
+      finally
 
+      # Restore accordion
+      if @__optionStates
+        states = @__optionStates[ uid ]
+        if not states then states = @__optionStates[ type ]
+        if states
+          for el, idx in $('#property-first-panel').find('.option-group-head')
+            $(el).toggleClass("expand", states[idx])
+
+          for uid, states of @__optionStates
+            if not uid or design.component( uid ) or uid.indexOf("i-") is 0 or uid is "Stack"
+              continue
+            delete @__optionStates[ uid ]
+
+      # Update state switcher
+      @updateStateSwitcher( type, uid )
+
+      $("#OEPanelRight").toggleClass("state", false)
+      return
+
+    updateStateSwitcher : ( type, uid )->
+      supports = false
+      design   = @workspace.design
+
+      if type is "component_server_group" or type is CONST.RESTYPE.LC or type is CONST.RESTYPE.INSTANCE
+        supports = true
+        if design.modeIsApp()
+          if type is "component_server_group"
+            supports = false
+          if type is CONST.RESTYPE.LC
+            supports = @workspace.opsModel.testState( OpsModel.State.Stopped )
+
+      $("#OEPanelRight").toggleClass( "no-state", not supports )
+      if supports
+        count = design.component( uid )
+        count = count?.get("state") or 0
+        $( '#btn-switch-state' ).find("b").text "(#{count})"
+      supports
+
+    forceShow : ()->
+      if @__rightPanelHidden
+        $("#HideOEPanelRight").click()
+      return
+
+    refresh : ()->
+      active = PropertyBaseModule.activeModule() || {}
+      @openPanel( active.handle, active.uid )
+      return
+
+    switchToProperty : ()->
+      # if not @__showingState then return
+      @__showingState = false
+      $("#OEPanelRight").toggleClass("state", false)
+      @refresh()
+      return
+
+    showStateEditor : ( jqueryEvent, uid )->
+      if not uid then uid = PropertyBaseModule.activeModule().uid
+      design = @workspace.design
+      comp   = design.component( uid )
+      if not comp then return
+
+      if not @updateStateSwitcher( comp.type, uid )
+        @openPanel( comp.type, uid )
+        return
+
+      @__showingState = true
+      $("#OEPanelRight").toggleClass("state", true)
+
+      if design.modeIsApp()
+        resId = uid
+        uid   = Design.modelClassForType(CONST.RESTYPE.INSTANCE).getEffectiveId(uid).uid
+
+
+      allCompData = design.serialize().component
+      compData    = allCompData[uid]
+      stateeditor.loadModule(allCompData, uid, resId)
+
+      @forceShow()
+      return
   }

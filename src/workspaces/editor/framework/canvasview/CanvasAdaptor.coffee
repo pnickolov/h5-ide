@@ -1,4 +1,4 @@
-define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant", "canvon", "UI.notification" ], ( CanvasElement, ide_event, lang, constant )->
+define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant", "UI.notification" ], ( CanvasElement, ide_event, lang, constant )->
 
   Design = null
 
@@ -154,8 +154,8 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant", "canvon", "
       ide_event.trigger ide_event.OPEN_PROPERTY
       null
 
-    SHOW_STATE_EDITOR : ()->
-      ide_event.trigger ide_event.SHOW_STATE_EDITOR
+    SHOW_STATE_EDITOR : ( uid )->
+      ide_event.trigger ide_event.SHOW_STATE_EDITOR, uid
       null
 
     SHOW_PROPERTY_PANEL : () ->
@@ -206,23 +206,16 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant", "canvon", "
     this.offsetAry    = [0, 0]
     this.scaleAry     = 1
     this.selectedNode = []
+    this
 
-
-    # # #
-    # #
-    # Quick fix, might improve latter.
-    # This is part of the MC.canvas.layout.init()
-    # #
-    # # #
-    window.MC.paper = Canvon('#svg_canvas')
+  Canvas.prototype.init = ()->
     attr =
       'width' : this.sizeAry[0] * MC.canvas.GRID_WIDTH
       'height': this.sizeAry[1] * MC.canvas.GRID_HEIGHT
 
     $('#svg_canvas').attr( attr )
     $('#canvas_body').css( attr )
-
-    this
+    return
 
   Canvas.prototype.scale = ( ratio )->
     if ratio is undefined then return this.scaleAry

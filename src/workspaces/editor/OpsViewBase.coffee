@@ -36,8 +36,13 @@ define [
       "click .fixedaccordion-head"   : "updateAccordion"
       "RECALC #OEPanelLeft"          : "recalcAccordion"
 
+    constructor : ( options )->
+      _.extend this, options
+      @initialize()
+
     initialize : ()->
       @propertyPanel = new PropertyPanel()
+      @propertyPanel.workspace = @workspace
       return
 
     render : ()->

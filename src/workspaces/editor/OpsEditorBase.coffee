@@ -36,9 +36,9 @@ define [ "Workspace", "./OpsViewBase", "./template/TplOpsEditor", "OpsModel", "D
       d.promise
 
     # Returns a new View
-    createView : ()-> new OpsEditorView()
+    createView : ()-> new OpsEditorView({ workspace : workspace })
     # Returns a new Design object.
-    createDesign : ()-> new Design( @opsModel.getJsonData() )
+    initDesign : ()-> @design.finishDeserialization()
 
     # Return true if the data is ready.
     isReady : ()-> @__isJsonLoaded && @__hasAdditionalData
@@ -117,13 +117,15 @@ define [ "Workspace", "./OpsViewBase", "./template/TplOpsEditor", "OpsModel", "D
       return
 
     initEditor : ()->
+      @design = new Design( @opsModel )
+
       @view = @createView()
       @view.opsModel  = @opsModel
       @view.workspace = @
 
       @showEditor()
 
-      @design = @createDesign()
+      @initDesign()
       return
 
     showEditor : ()->

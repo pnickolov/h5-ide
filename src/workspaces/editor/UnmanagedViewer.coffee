@@ -23,14 +23,10 @@ define [ "./OpsEditorBase", "./OpsViewBase", "Design" ], ( OpsEditorBase, OpsEdi
         workspace : @
       })
 
-    createDesign : ()->
-      design = new Design( @opsModel.getJsonData(), {
-        mode       : Design.MODE.AppView
-        autoFinish : false
-      })
+    initDesign : ()->
       MC.canvas.analysis()
-      design.finishDeserialization()
-      design
+      @design.finishDeserialization()
+      return
 
     isReady : ()-> @opsModel.hasJsonData()
 

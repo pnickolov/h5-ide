@@ -174,17 +174,23 @@
     margin-right  : 5px;
   }
 
+  #btn-switch-property {
+    background : rgba(0,0,0,.4);
+    color      : #FEFEFE;
+  }
+
   &.no-state {
     #btn-switch-state {
       display: none;
     }
 
     #btn-switch-property {
-      float : left;
-      width : auto;
-      background: none;
-      text-align: left;
-      padding-left: 10px;
+      float        : left;
+      width        : auto;
+      background   : none;
+      text-align   : left;
+      padding-left : 10px;
+      cursor       : default;
     }
   }
 
@@ -225,4 +231,11 @@
   bottom     : 0;
   position   : absolute;
   background : #313131; /* for zoomed out */
+
+  .scroll-wrap {
+    position : absolute;
+    top      : 40px;
+    bottom   : 0;
+    width    : 100%;
+  }
 }

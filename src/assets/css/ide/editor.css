@@ -250,6 +250,9 @@
   padding: 0 4px;
   border-radius: 4px;
   margin-right: 5px; }
+#OEPanelRight #btn-switch-property {
+  background: rgba(0, 0, 0, 0.4);
+  color: #FEFEFE; }
 #OEPanelRight.no-state #btn-switch-state {
   display: none; }
 #OEPanelRight.no-state #btn-switch-property {
@@ -257,7 +260,8 @@
   width: auto;
   background: none;
   text-align: left;
-  padding-left: 10px; }
+  padding-left: 10px;
+  cursor: default; }
 #OEPanelRight.state #btn-switch-property {
   background: #313131;
   color: #606060; }
@@ -286,3 +290,8 @@
   position: absolute;
   background: #313131;
   /* for zoomed out */ }
+  .property-panel-wrapper .scroll-wrap {
+    position: absolute;
+    top: 40px;
+    bottom: 0;
+    width: 100%; }

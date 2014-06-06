@@ -106,7 +106,7 @@ define ['UI.canvg', './Download'], ()->
       # Get each layouts BBox and calc the best origin of the export image.
       origin = { x : size.width, y : size.height }
       for ch in ($svg_canvas_element[0].children or $svg_canvas_element[0].childNodes)
-        if ch.tagName.toLowerCase() isnt "g" then continue
+        if (not ch.tagName) or (ch.tagName.toLowerCase() isnt "g") then continue
         bbox = ch.getBBox()
         if bbox.x < origin.x then origin.x = bbox.x
         if bbox.y < origin.y then origin.y = bbox.y

@@ -1,17 +1,16 @@
 
 define [
   "./OpsViewBase"
-  "./template/TplLeftPanel"
-  "./template/TplCanvas"
+  "./subviews/ResourcePanel"
   "OpsModel"
-  "backbone"
-  "UI.selectbox"
-  "MC.canvas"
-], ( OpsViewBase, LeftPanelTpl, CanvasTpl, OpsModel )->
+], ( OpsViewBase, ResourcePanel, OpsModel )->
 
   OpsViewBase.extend {
 
-    createTpl : ()-> CanvasTpl({})
+    initialize : ()->
+      @resourcePanel = new ResourcePanel()
+      @resourcePanel.workspace = @workspace
+      return
 
     bindUserEvent : ()->
       # Events
@@ -32,15 +31,12 @@ define [
       $("#OEPanelLeft").on('mousedown', '.resource-item', MC.canvas.event.siderbarDrag.mousedown)
       return
 
-    updateTbBtns : ( $toolbar )->
-      OpsViewBase.prototype.updateTbBtns.call( this , $toolbar )
+    renderSubviews : ()->
+      @resourcePanel.render()
       return
 
-    renderSubviews : ()->
-      # Resource Panel
-      $("#OEPanelLeft").html LeftPanelTpl.panel({})
-
-      OpsViewBase.prototype.renderSubviews.call( this )
+    clearSubviewsDom : ()->
+      @resourcePanel.clearDom()
       return
 
   }

@@ -1,7 +1,7 @@
 
 define [
   "../template/TplRightPanel"
-  "./base/main"
+  "../property/base/main"
   'component/stateeditor/stateeditor'
   "constant"
   "Design"
@@ -9,27 +9,27 @@ define [
   "event"
   "backbone"
 
-  './stack/main'
-  './instance/main'
-  './servergroup/main'
-  './connection/main'
-  './staticsub/main'
-  './missing/main'
-  './sg/main'
-  './sgrule/main'
-  './volume/main'
-  './elb/main'
-  './az/main'
-  './subnet/main'
-  './vpc/main'
-  './rtb/main'
-  './static/main'
-  './cgw/main'
-  './vpn/main'
-  './eni/main'
-  './acl/main'
-  './launchconfig/main'
-  './asg/main'
+  '../property/stack/main'
+  '../property/instance/main'
+  '../property/servergroup/main'
+  '../property/connection/main'
+  '../property/staticsub/main'
+  '../property/missing/main'
+  '../property/sg/main'
+  '../property/sgrule/main'
+  '../property/volume/main'
+  '../property/elb/main'
+  '../property/az/main'
+  '../property/subnet/main'
+  '../property/vpc/main'
+  '../property/rtb/main'
+  '../property/static/main'
+  '../property/cgw/main'
+  '../property/vpn/main'
+  '../property/eni/main'
+  '../property/acl/main'
+  '../property/launchconfig/main'
+  '../property/asg/main'
 
 ], ( RightPanelTpl, PropertyBaseModule, stateeditor, CONST, Design, OpsModel, ide_event )->
 

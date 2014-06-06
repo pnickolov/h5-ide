@@ -1,5 +1,5 @@
 
-define [ "../template/TplOpsEditor", "backbone" ], ( OpsEditorTpl )->
+define [ "OpsModel", "../template/TplOpsEditor", "backbone" ], ( OpsModel, OpsEditorTpl )->
 
   Backbone.View.extend {
 

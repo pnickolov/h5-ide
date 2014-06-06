@@ -1,5 +1,11 @@
 
-define [ "./OpsEditorBase", "./StackView", "Design" ], ( OpsEditorBase, StackView, Design )->
+define [
+  "./OpsEditorBase"
+  "./StackView"
+  "Design"
+  "CloudResources"
+  "constant"
+], ( OpsEditorBase, StackView, Design, CloudResources, constant )->
 
   ###
     StackEditor is mainly for editing a stack
@@ -11,11 +17,13 @@ define [ "./OpsEditorBase", "./StackView", "Design" ], ( OpsEditorBase, StackVie
 
     createView   : ()-> new StackView({workspace:this})
 
-    isReady : ()-> @opsModel.hasJsonData()
+    isReady : ()->
+      @opsModel.hasJsonData() && CloudResources( constant.RESTYPE.AZ, @opsModel.get("region") ).isReady() && CloudResources( constant.RESTYPE.SNAP, @opsModel.get("region") ).isReady()
 
     fetchAdditionalData : ()->
-      d = Q.defer()
-      d.resolve()
-      d.promise
+      Q.all [
+        CloudResources( constant.RESTYPE.AZ, @opsModel.get("region") ).fetch()
+        CloudResources( constant.RESTYPE.SNAP, @opsModel.get("region") ).fetch()
+      ]
 
   StackEditor

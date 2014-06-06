@@ -219,6 +219,19 @@ define [
     parseFetchData : ( data )-> data.DescribePoliciesResponse.DescribePoliciesResult.ScalingPolicies?.member
   }
 
+  ### AvailabilityZone ###
+  CrCommonCollection.extend {
+    ### env:dev ###
+    ClassName : "CrAzCollection"
+    ### env:dev:end ###
+
+    type : constant.RESTYPE.AZ
+    AwsResponseType  : "DescribeAvailabilityZonesResponse"
+    modelIdAttribute : "zoneName"
+    parseFetchData : ( data )-> data.DescribeAvailabilityZonesResponse.availabilityZoneInfo?.item
+  }
+
+
   ### NotificationConfiguartion ###
   CrCommonCollection.extend {
     ### env:dev ###

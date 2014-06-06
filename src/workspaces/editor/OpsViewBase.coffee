@@ -62,8 +62,8 @@ define [
     clearDom : ()->
       # Remove the DOM to free memories. But we don't call setElement(), because
       # setElement() will transfer events to the new element.
-      @view.$el.remove()
-      @view.$el = null
+      @$el.remove()
+      @$el = null
       @propertyPanel.$el = null
       return
 

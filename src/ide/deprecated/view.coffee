@@ -39,9 +39,6 @@ define [ 'event',
             if not ( window.App and App.user and App.user.get( "session" ) )
                 return
 
-            #return if MC.data.current_tab_id in [ 'dashboard', undefined ]
-            #return if MC.data.current_tab_id.split( '-' )[0] in [ 'process' ]
-
             #if _.isEqual( MC.canvas_data, MC.data.origin_canvas_data )
             #    return undefined
             #else
@@ -61,8 +58,6 @@ define [ 'event',
                 # old design flow +++++++++++++++++++++++++++
 
                 # new design flow
-                if not MC.common.other.canvasData.isModified()
-
                     #has_refresh = true
                     console.log 'current equal #1'
                 else
@@ -72,9 +67,6 @@ define [ 'event',
 
                 # old design flow
                 #checked_tab_id = MC.canvas_data.id
-
-                # new design flow
-                checked_tab_id = MC.common.other.canvasData.get 'id'
 
             else
                 #has_refresh = true

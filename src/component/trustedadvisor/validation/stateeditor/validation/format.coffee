@@ -165,7 +165,7 @@ define [ 'Design', 'constant', 'i18n!nls/lang.js', 'jquery', 'underscore', 'MC' 
             uid     : "format_#{type}:#{stateId}"
 
         getModule: () ->
-            agentData = MC.common.other.canvasData.get('agent')
+            agentData = Design.instance().get('agent')
             modRepo = agentData.module.repo
             modTag = agentData.module.tag
 

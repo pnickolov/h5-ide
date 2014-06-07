@@ -167,14 +167,8 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
     subnetCidr : ()->
       parent = @parent() or @__embedInstance.parent()
 
-      if parent.type is constant.RESTYPE.SUBNET
-        cidr = parent.get("cidr")
-      else
-        defaultSubnet = parent.getSubnetOfDefaultVPC()
-        if defaultSubnet
-          cidr = defaultSubnet.cidrBlock
-
-      cidr || "10.0.0.1"
+      console.assert( parent.type is constant.RESTYPE.SUBNET, "Eni's parent must be subnet" )
+      parent.get("cidr") || "10.0.0.1"
 
     getIpArray : ()->
 

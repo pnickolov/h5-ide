@@ -104,19 +104,19 @@ define(["MC"], function( MC ) {
 
 	// helper
 
-	MC.validate.preventDupname = function( target, id, name, type ) {
-		$target = target instanceof $ ? target : $( target )
-		if ( arguments.length === 3 ) type = name;
+	// MC.validate.preventDupname = function( target, id, name, type ) {
+	// 	$target = target instanceof $ ? target : $( target )
+	// 	if ( arguments.length === 3 ) type = name;
 
-		$target.parsley('custom', function( val ) {
-			if ( val && !MC.validate( 'awsName',  val ) ) {
-				return 'This value should be a valid ' + type + ' name.';
-			}
-            if ( !MC.aws.aws.checkIsRepeatName( id, val ) ) {
-                return type + ' name " ' + val + ' " is already in using. Please use another one.';
-            }
-		})
-	};
+	// 	$target.parsley('custom', function( val ) {
+	// 		if ( val && !MC.validate( 'awsName',  val ) ) {
+	// 			return 'This value should be a valid ' + type + ' name.';
+	// 		}
+ //            if ( !MC.aws.aws.checkIsRepeatName( id, val ) ) {
+ //                return type + ' name " ' + val + ' " is already in using. Please use another one.';
+ //            }
+	// 	})
+	// };
 
 	MC.validate.portRange = function ( value ) {
 		var portAry = []

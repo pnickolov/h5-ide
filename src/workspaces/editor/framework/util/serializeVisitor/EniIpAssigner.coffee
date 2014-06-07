@@ -9,13 +9,9 @@ define [ "Design", "constant" ], ( Design, constant )->
 
     AzModel = Design.modelClassForType constant.RESTYPE.AZ
 
-    if subnet
-      subnetCid = subnet.get("cidr")
-    else
-      # DefaultVpc
-      defaultSubnet = AzModel.getSubnetOfDefaultVPC( uid )
-      if defaultSubnet
-        subnetCid = defaultSubnet.cidrBlock
+    console.assert subnet, "Cannot find eni's subnet when assigning Eni's ip."
+
+    subnetCid = subnet.get("cidr")
 
     if not subnetCid
       console.error "Cannot found cidr when assigning Eni Ip"

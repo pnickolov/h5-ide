@@ -52,11 +52,13 @@ define [ '../base/view',
             stackId = @model.get( 'id' )
             name = stackNameInput.val()
 
+            if name is @model.get("name") then return
+
             stackNameInput.parsley 'custom', ( val ) ->
                 if not MC.validate 'awsName',  val
                     return lang.ide.PARSLEY_SHOULD_BE_A_VALID_STACK_NAME
 
-                if not MC.aws.aws.checkStackName stackId, val
+                if not App.model.stackList().isNameAvailable( val )
                     return sprintf lang.ide.PARSLEY_TYPE_NAME_CONFLICT, 'Stack', name
 
             if stackNameInput.parsley 'validate'

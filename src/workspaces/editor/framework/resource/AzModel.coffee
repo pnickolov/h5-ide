@@ -35,18 +35,11 @@ define [ "../GroupModel", "./VpcModel", "constant", "i18n!nls/lang.js", "Design"
         return sprintf lang.ide.CVS_CFM_DEL_GROUP, @get("name")
       true
 
-    getSubnetOfDefaultVPC : ()-> Model.getSubnetOfDefaultVPC( @get("name") )
-
     createRef : ()-> Model.__super__.createRef( "ZoneName", true, @id )
 
     isCidrEnoughForIps : ( cidr )->
 
-      if not cidr
-        defaultSubnet = @getSubnetOfDefaultVPC()
-        if defaultSubnet
-          cidr = defaultSubnet.cidrBlock
-        else
-          return true
+      if not cidr then return true
 
       ipCount = 0
       for child in @children()
@@ -78,9 +71,6 @@ define [ "../GroupModel", "./VpcModel", "constant", "i18n!nls/lang.js", "Design"
     handleTypes : constant.RESTYPE.AZ
 
     diffJson : ()-> # Disable diff for this Model
-
-    getSubnetOfDefaultVPC : (azName) ->
-      MC.data.account_attribute[ Design.instance().region() ].default_subnet[ azName ]
 
     deserialize : ( data, layout_data, resolve )->
       new Model({

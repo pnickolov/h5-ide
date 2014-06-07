@@ -281,6 +281,8 @@ define [ 'MC', 'common_handle', 'result_vo', 'constant', 'ebs_service', 'eip_ser
 
 					aws_result.return_code = 15
 
+					console.error aws_result.error_message, if error.message then error.message else error
+
 		#3.return vo
 		aws_result
 

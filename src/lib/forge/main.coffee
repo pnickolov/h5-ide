@@ -30,10 +30,10 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 		amis = []
 
 		_.each data.component, ( item ) ->
-			if item.type is 'AWS.EC2.Instance' and item.resource and item.resource.ImageId
+			if item.type is 'AWS.EC2.Instance' and item.resource and item.resource.ImageId and not (item.resource.ImageId in amis)
 				amis.push item.resource.ImageId
 
-			if item.type is 'AWS.AutoScaling.LaunchConfiguration' and item.resource and item.resource.ImageId
+			if item.type is 'AWS.AutoScaling.LaunchConfiguration' and item.resource and item.resource.ImageId and not (item.resource.ImageId in amis)
 				amis.push item.resource.ImageId
 
 		amis

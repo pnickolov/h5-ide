@@ -1,9 +1,11 @@
 
 #tabbar-wrapper {
 
-  padding : 10px 0 0 45px;
-  width   : 10000px;
+  padding     : 10px 0 0 45px;
+  width       : 10000px;
   white-space : nowrap;
+  position    : relative;
+  height      : 39px;
 
   > ul {
     float : left;

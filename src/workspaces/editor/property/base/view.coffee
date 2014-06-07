@@ -62,11 +62,11 @@ define [ 'constant',
 
         disabledAllOperabilityArea : ( disabled ) ->
             if disabled
-                if $("#resource-panel").children(".disabled-event-layout").length
+                if $("#OEPanelLeft").children(".disabled-event-layout").length
                     return
                 divTmpl = '<div class="disabled-event-layout"></div>'
-                $('#resource-panel').append(divTmpl)
-                $('#canvas').append(divTmpl)
+                $('#OEPanelLeft').append(divTmpl)
+                $('#OEMiddleWrap').append(divTmpl)
                 $('#tabbar-wrapper').append(divTmpl)
             else
                 $('.disabled-event-layout').remove()

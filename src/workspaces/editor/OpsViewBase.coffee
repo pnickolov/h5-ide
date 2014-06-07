@@ -66,7 +66,7 @@ define [
 
       @removeSubviews()
 
-      Backbone.View.remove.call this
+      Backbone.View.prototype.remove.call this
       return
 
     ###

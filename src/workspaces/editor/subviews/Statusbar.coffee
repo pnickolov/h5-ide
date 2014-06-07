@@ -4,17 +4,25 @@ define [
   "../template/TplStatusBar"
   "constant"
   "backbone"
-], ( Design, template, constant )->
 
+  "state_status"
+], ( Design, template, constant, Backbone, stateStatus )->
+
+# Just define item below and import need file above
+# name used for template, the template you put in TplStatusBar file
+# visible can be a boolean or a function
+# updateEvent is an array [context, event] or a function return the array
+# update is triggerd by updateEvent
 
   items = [
     {
       name: 'lastSaved'
+      className: 'info'
       visible: true
       updateEvent: (workspace) -> [ workspace.opsModel, 'jsonDataSaved' ]
       update: ( $ ) ->
         # 1.set current time
-        save_time = $.now() / 1000
+        save_time = jQuery.now() / 1000
 
         # 2.clear interval
         clearInterval @timer
@@ -36,17 +44,50 @@ define [
         #
         null
       click: ( event ) ->
-
+        null
     }
     {
       name: 'ta'
-      visible: true
-      update: ( $ ) ->
-    }
+      className: 'status-bar-btn'
+      visible: ( toggle, workspace ) ->
+        mode = workspace.design.mode()
+        # hide
+        if mode in [ 'app', 'appview' ]
+          toggle false
+        else
+          toggle true
+      click: ( event ) ->
+        btnDom = $(event.currentTarget)
+        currentText = 'Validate'
+        btnDom.text('Validating...')
 
+        setTimeout () ->
+            MC.ta.validAll()
+            btnDom.text(currentText)
+            require [ 'component/trustedadvisor/main' ], ( trustedadvisor_main ) -> trustedadvisor_main.loadModule 'statusbar', null
+        , 50
+
+    }
+    {
+      name: 'state'
+      className: 'status-bar-btn'
+      visible: ( toggle, workspace ) ->
+        mode = workspace.design.mode()
+        if mode in [ 'app', 'appview', 'appedit' ]
+          toggle true
+        else
+          toggle false
+
+      click: ( event ) ->
+        stateStatus.loadModule()
+
+    }
   ]
 
   itemView =  Backbone.View.extend
+    tagName: 'li'
+    initialize: () ->
+      _.bindAll @, 'render', 'toggle'
     render: ->
       @$el.html @template()
       @
@@ -72,35 +113,42 @@ define [
       @
 
     renderItem: () ->
-      for item, index in items
+      for item, index in items.reverse()
         view = new itemView()
         view.delegateEvents click: item.click
         view.template = template[ item.name ]
 
-        if _.isArray view.updateEvent
-          updateEvent = view.updateEvent
-        else if _.isFunction view.updateEvent
-          updateEvent = view.updateEvent @workspace
+        view.$el.addClass item.className
+
+        updateEvent = null
+        if _.isArray item.updateEvent
+          updateEvent = item.updateEvent
+        else if _.isFunction item.updateEvent
+          updateEvent = item.updateEvent @workspace
 
         if updateEvent
-          view.listenTo updateEvent[ 0 ], updateEvent[ 1 ], item.update
+          wrap$ = _.bind view.$, view
+          wrapUpdate = _.bind item.update, item, wrap$
+
+          view.listenTo updateEvent[ 0 ], updateEvent[ 1 ], wrapUpdate
+          window.tmpView = view
 
         if _.isFunction item.visible
-          item.visible(view.toggle)
+          item.visible(view.toggle, @workspace)
         else
           view.toggle item.visible
 
         null
 
 
-        @$el.append view.render().el
+        @$('ul').append view.render().el
         @
 
     updateStatusBarSaveTime : () ->
       console.log 'updateStatusBarSaveTime'
 
       # 1.set current time
-      save_time = $.now() / 1000
+      save_time = jQuery.now() / 1000
 
       # 2.clear interval
       clearInterval @timer
@@ -134,9 +182,6 @@ define [
               #status = _.last $(event.currentTarget).attr( 'class' ).split '-'
               require [ 'component/trustedadvisor/main' ], ( trustedadvisor_main ) -> trustedadvisor_main.loadModule 'statusbar', null
           , 50
-
-    statusBarClick : ( event ) ->
-        stateStatusMain.loadModule()
 
     updateStatusbar : ( type, level ) ->
         console.log 'updateStatusbar, level = ' + level + ', type = ' + type

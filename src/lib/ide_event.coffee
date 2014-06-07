@@ -13,7 +13,6 @@ define [ 'underscore', 'backbone' ], () ->
         OPEN_PROPERTY          : 'OPEN_PROPERTY'
         FORCE_OPEN_PROPERTY    : "FORCE_OPEN_PROPERTY"
         REFRESH_PROPERTY       : "REFRESH_PROPERTY"
-        RELOAD_AZ              : 'RELOAD_AZ'
 
         #status bar & ta
         HIDE_STATUS_BAR        : 'HIDE_STATUS_BAR'
@@ -23,17 +22,8 @@ define [ 'underscore', 'backbone' ], () ->
         TA_SYNC_START          : 'TA_SYNC_START'
         TA_SYNC_FINISH         : 'TA_SYNC_FINISH'
 
-        # User Input Change Event
-        ENABLE_RESOURCE_ITEM   : 'ENABLE_RESOURCE_ITEM'
-        DISABLE_RESOURCE_ITEM  : 'DISABLE_RESOURCE_ITEM'
-
         # property
-        SHOW_PROPERTY_PANEL    : 'SHOW_PROPERTY_PANEL'
         PROPERTY_REFRESH_ENI_IP_LIST : 'PROPERTY_REFRESH_ENI_IP_LIST'
-        PROPERTY_DISABLE_USER_DATA_INPUT : 'PROPERTY_DISABLE_USER_DATA_INPUT'
-
-        #app/stack operation
-        START_APP              : 'START_APP'
 
         #app/stack state
         UPDATE_APP_STATE       : 'UPDATE_APP_STATE'

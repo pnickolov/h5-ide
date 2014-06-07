@@ -23,10 +23,6 @@ define [ "../base/main",
             @view.refreshIPList()
         null
 
-    # ideEvents[ ide_event.PROPERTY_DISABLE_USER_DATA_INPUT ] = (flag) ->
-    #     @view.disableUserDataInput(flag)
-    #     null
-
     InstanceModule = PropertyModule.extend {
 
         ideEvents : ideEvents

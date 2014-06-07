@@ -21,10 +21,6 @@ define [ "../base/main",
     view.on "OPEN_AMI", (id)->
         PropertyModule.loadSubPanel "STATIC", id
 
-    # ide_event.onLongListen ide_event.PROPERTY_DISABLE_USER_DATA_INPUT, (flag) ->
-    #     view.disableUserDataInput(flag)
-    #     null
-
     LCModule = PropertyModule.extend {
 
         handleTypes : constant.RESTYPE.LC

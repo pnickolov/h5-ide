@@ -84,7 +84,8 @@ define [
       return
 
     dashboardBubbleSub: (data)->
-        renderData = data: data
+        renderData = {}
+        renderData.data = _.clone data
         renderData.title = data.id || data.name || data._title
         delete renderData.data._title
         return tplPartials.bubbleResourceSub renderData
@@ -428,9 +429,9 @@ define [
             "Availability Zone"       : data.AvailabilityZones.join(", ")
             "Create Time"             : data.CreatedTime
             "DNSName"                 : data.DNSName
-            # "Health Check"          : "Health Check"
+            "Health Check"            : @formartDetail('HealthCheck', [data.HealthCheck], "Health Check", true)
             "Instance"                : data.Instances.join(", ")
-            # "Listener Descriptions" : ""
+            "Listener Descriptions"   : @formartDetail('ListenerDescriptions', [data.ListenerDescriptions], "Listener Descriptions", true)
             "Security Groups"         : data.SecurityGroups.join(", ")
             Subnets                   : data.Subnets.join(", ")
           }
@@ -472,9 +473,10 @@ define [
 
 
     # some format to the data so it can show in handlebars template
-    formartDetail: (type,array,key)->
-        #resolve 'BlockDevice' todo: render another template "#dashboardBubbleSub"
-        if ['BlockDevice', "AttachmentSet"].indexOf type > -1
+    formartDetail: (type, array, key, force)->
+        console.log array
+        #resolve 'BlockDevice' AttachmentSet HealthCheck and so on.
+        if (['BlockDevice', "AttachmentSet","HealthCheck"].indexOf type) > -1
             _.map array, (blockDevice, index)->
                 # combine ebs attribute
                 _.map blockDevice, (e, key)->
@@ -489,8 +491,11 @@ define [
                         blockDevice[key] = e.toString()
                         null
             _.map array , (data)->
-                data._title  = data[key]
-                data.bubble = value: data[key], data: (JSON.stringify data), template: "dashboardBubbleSub"
+                if force then data._title = key else data._title  = data[key]
+                data.bubble =
+                    value: if force then key else data[key]
+                    data: (JSON.stringify data)
+                    template: "dashboardBubbleSub"
                 return data
             array.bubble = true
             return array

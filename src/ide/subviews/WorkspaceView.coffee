@@ -4,13 +4,18 @@
 
 define [ "backbone", "jquerysort" ], () ->
 
+    noPropagate = ( event )->
+      event.stopPropagation()
+      return
+
     Backbone.View.extend {
 
       el : $("#tabbar-wrapper")[0]
 
       events :
-        "click li"          : "onClick"
-        "click .icon-close" : "onClose"
+        "click li"              : "onClick"
+        "click .icon-close"     : "onClose"
+        "mousedown .icon-close" : noPropagate
 
       initialize : ( options )->
         self = this

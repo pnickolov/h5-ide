@@ -21,7 +21,7 @@ define [
   "component/exporter/JsonExporter"
   "constant",
   "underscore"
-], ( ApiRequest, Websocket, ApplicationView, ApplicationModel, User, SettingsDialog, CloudResources, WorkspaceManager, DesignEditor, JsonExporter, constant )->
+], ( ApiRequest, Websocket, ApplicationView, ApplicationModel, User, SettingsDialog, CloudResources, WorkspaceManager, OpsEditor, JsonExporter, constant )->
 
   VisualOps = ()->
     if window.App
@@ -127,14 +127,14 @@ define [
       space.activate()
       return space
 
-    editor = new DesignEditor( opsModel )
+    editor = new OpsEditor( opsModel )
     editor.activate()
     editor
 
   # This is a convenient method to create a stack and then open an editor for it.
   VisualOps.prototype.createOps = ( region )->
     if not region then return
-    editor = new DesignEditor( @model.createStack(region).cid )
+    editor = new OpsEditor( @model.createStack(region) )
     editor.activate()
     editor
 

@@ -46,6 +46,7 @@ define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone", "con
     # The stack is not automatically stored in server.
     # You need to call save() after that.
     createStack : ( region )->
+      console.assert( constant.REGION_KEYS.indexOf(region) >= 0, "Region is not recongnised when creating stack:", region )
       m = new OpsModel({
         name   : @attributes.stackList.getNewName()
         region : region

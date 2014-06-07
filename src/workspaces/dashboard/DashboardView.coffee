@@ -279,7 +279,7 @@ define [
       null
 
     openItem    : ( event )-> App.openOps( $(event.currentTarget).attr("data-id") )
-    createStack : ( event )-> App.createOps( $(event.currentTarget).attr("data-id") )
+    createStack : ( event )-> App.createOps( $(event.currentTarget).attr("data-region") || @region )
 
     markUpdated    : ()->
       @lastUpdate = +(new Date())

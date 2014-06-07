@@ -57,7 +57,7 @@ define [
       @propertyPanel.clearDom()
       @toolbar.clearDom()
 
-      @clearSubviewDom()
+      @clearSubviewsDom()
       return
 
     remove : ()->

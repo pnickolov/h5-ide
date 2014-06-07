@@ -128,6 +128,7 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
         }
         self.__jsonData = newJson
         self.__saving   = false
+        self.trigger "jsonDataSaved", self
 
         return self
       , ( err )->

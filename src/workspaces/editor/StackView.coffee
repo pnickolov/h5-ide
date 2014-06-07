@@ -2,13 +2,15 @@
 define [
   "./OpsViewBase"
   "./subviews/ResourcePanel"
+  "./subviews/Statusbar"
   "OpsModel"
-], ( OpsViewBase, ResourcePanel, OpsModel )->
+], ( OpsViewBase, ResourcePanel, Statusbar, OpsModel )->
 
   OpsViewBase.extend {
 
     initialize : ()->
       @resourcePanel = new ResourcePanel({workspace:@workspace})
+      @statusbar = new Statusbar({workspace:@workspace})
       return
 
     bindUserEvent : ()->
@@ -32,6 +34,7 @@ define [
 
     renderSubviews : ()->
       @resourcePanel.render()
+      @statusbar.render()
       return
 
     clearSubviewsDom : ()->

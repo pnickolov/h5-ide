@@ -105,7 +105,12 @@ define [
       _.each data.data, (e,key)->
           if _.isBoolean e
               data.data[key] = e.toString()
-              null
+          if e == ""
+              data.data[key] = "None"
+          if (_.isArray e) and e.length is 0
+              data.data[key] = ['None']
+          if (_.isObject e) and (not _.isArray e)
+              delete data.data[key]
 
       return tplPartials.bubbleResourceInfo  data
 

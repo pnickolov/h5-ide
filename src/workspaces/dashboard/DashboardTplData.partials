@@ -304,8 +304,8 @@
           <div>{{id}}</div>
         </td>
         <td><i class="status status-{{ state }} icon-label"></i>{{ state }}</td>
-        <td><span class="dashboard-bubble" data-bubble-template="dashboardBubble" data-bubble-data="{type:'VGW',id:'{{vpnGatewayId}}'}">{{ vpnGatewayId }}</span></td>
-        <td><span class="dashboard-bubble" data-bubble-template="dashboardBubble" data-bubble-data="{type:'CGW',id:'{{customerGatewayId}}'}">{{ customerGatewayId }}</span></td>
+        <td><span class="bubble" data-bubble-template="dashboardBubble" data-bubble-data="{&quot;type&quot;:&quot;VGW&quot;,&quot;id&quot;:&quot;{{vpnGatewayId}}&quot;}">{{ vpnGatewayId }}</span></td>
+        <td><span class="bubble" data-bubble-template="dashboardBubble" data-bubble-data="{&quot;type&quot;:&quot;CGW&quot;,&quot;id&quot;:&quot;{{customerGatewayId}}&quot;}">{{ customerGatewayId }}</span></td>
         <td><i title="{{i18n 'DASH_TIT_VIEW_RESOURCE_DETAIL'}}" class="icon-detail" data-id='{{id}}'></i></td>
       </tr>{{/with}}
       {{else}}

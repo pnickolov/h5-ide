@@ -29,7 +29,7 @@ define [
 
       $("#canvas_body").addClass("canvas_state_stack")
 
-      $("#OEPanelLeft").on('mousedown', '.resource-item', MC.canvas.event.siderbarDrag.mousedown)
+      # $("#OEPanelLeft").on('mousedown', '.resource-item', MC.canvas.event.siderbarDrag.mousedown)
       return
 
     renderSubviews : ()->

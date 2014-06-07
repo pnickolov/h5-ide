@@ -55,7 +55,6 @@
 .resource-icon-instance     { background-image: image-url('ide/icon/instance-resource.png'); }
 .resource-icon-ebs-snapshot { background-image: image-url('ide/icon/ebs-snapshot-resource-1109.png'); }
 
-
 .ebs-size {
   margin-top  : -1.5em;
   font-size   : 12px;
@@ -71,6 +70,73 @@
   line-height    : 60px;
   margin-top     : -60px;
   text-transform : uppercase;
+}
+
+#ResourceDragItem {
+  position         : absolute;
+  background-color : rgba(255,255,255,0.3);
+  opacity          : 0.8;
+  z-index          : 100;
+  border-radius    : 4px;
+  color            : transparent;
+
+  cursor: -webkit-grabbing;
+  cursor: -moz-grabbing;
+  cursor: grabbing;
+
+  margin  : 0;
+  padding : 0;
+  height  : 70px;
+  margin-top : -5px;
+
+  background-position : center;
+
+  -webkit-transition : all ease-in 0.2s;
+     -moz-transition : all ease-in 0.2s;
+          transition : all ease-in 0.2s;
+
+  -webkit-transition-property : line-height, padding-left, width, height;
+     -moz-transition-property : line-height, padding-left, width, height;
+          transition-property : line-height, padding-left, width, height;
+
+  &.resource-icon-az {
+    color            : #eee;
+    background-image : none;
+    position         : relative;
+    line-height      : 133px;
+    text-align       : left;
+    padding-left     : 7px;
+    height           : 90px;
+    margin-top       : 0;
+
+    .az-name {
+      position      : absolute;
+      left          : 0;
+      top           : 0;
+      color         : transparent;
+      border        : 3px dashed #f69300;
+      border-radius : 4px;
+      margin        : 10px 14px;
+      height        : 34px;
+      width         : 30px;
+
+      -webkit-transition : all ease-in 0.2s;
+         -moz-transition : all ease-in 0.2s;
+              transition : all ease-in 0.2s;
+    }
+    &.add-to-dom {
+      color        : #f69300;
+      width        : 185px;
+      height       : 210px;
+      line-height  : 50px;
+      padding-left : 25px;
+
+      .az-name {
+        width  : 180px;
+        height : 180px;
+      }
+    }
+  }
 }
 
 .resource-select.selectbox .selection {

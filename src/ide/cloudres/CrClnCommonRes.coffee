@@ -277,7 +277,21 @@ define [
     modelIdAttribute : "networkInterfaceId"
     AwsResponseType : "DescribeNetworkInterfacesResponse"
     doFetch : ()-> ApiRequest("eni_DescribeNetworkInterfaces", {region_name : @region()})
-    parseFetchData : ( data )-> data.DescribeNetworkInterfacesResponse.networkInterfaceSet?.item
+    parseFetchData : ( data )->
+        enis = data.DescribeNetworkInterfacesResponse.networkInterfaceSet?.item
+
+        # Format Object in some typical data resource.
+        # format attachment and groupSet in "ENI"
+        _.each enis, (eni, index)->
+            _.each eni, (e,key)->
+                if key is "attachment"
+                    _.extend enis[index], e
+                if key is "groupSet"
+                    _.extend enis[index], e.item[0]
+                # Remove All Object in data resource to remove [Object, Object]
+                if _.isObject e
+                    delete enis[index][key]
+        enis
   }
 
 

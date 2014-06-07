@@ -84,8 +84,10 @@ define [
       return
 
     dashboardBubbleSub: (data)->
-        data.title = data.id || data.name
-        return tplPartials.bubbleResourceSub data
+        renderData = data: data
+        renderData.title = data.id || data.name || data._title
+        delete renderData.data._title
+        return tplPartials.bubbleResourceSub renderData
 
     dashboardBubble : ( data )->
 
@@ -99,21 +101,11 @@ define [
 
       data.id = data.data.id
 
-      # Format Object in some typical data resource.
-      # format attachment and groupSet in "ENI"
-      _.each data.data, (e,key)->
-          if key is "attachment"
-              _.extend data.data, e
-          if key is "groupSet"
-              _.extend data.data, e.item[0]
-          # Remove All Object in data resource to remove [Object, Object]
-          if _.isObject e
-              delete data.data[key]
-
       # Make Boolean to String to show in handlebarsjs
       _.each data.data, (e,key)->
           if _.isBoolean e
-              data.data[key] = data.data[key].toString()
+              data.data[key] = e.toString()
+              null
 
       return tplPartials.bubbleResourceInfo  data
 
@@ -454,7 +446,7 @@ define [
             "Create Time"       : data.createTime
             # "AttachmentSet"   : ""
             State               : data.status
-            AttachmentSet       : if data.attachmentSet.length then "attached" else "detached"
+            AttachmentSet       : if data.attachmentSet.length then @formartDetail("AttachmentSet",data.attachmentSet,"volumeId") else "detached"
             "Availability Zone" : data.availabilityZone
             "Volume Type"       : data.volumeType
           }
@@ -477,20 +469,38 @@ define [
     # some format to the data so it can show in handlebars template
     formartDetail: (type,array,key)->
         #resolve 'BlockDevice' todo: render another template "#dashboardBubbleSub"
-        if type is 'BlockDevice'
-            return _.map array, (i)-> i[key]
-
-        #resolve Other resource
-        result = _.map array, (i)->
-            i.bubble = {}
-            i.bubble.value = i[key]
-            i.bubble.data = JSON.stringify {
-                type: type
-                id: i[key]
-            }
-            return i
-        result.bubble = true
-        result
+        if ['BlockDevice', "AttachmentSet"].indexOf type > -1
+            _.map array, (blockDevice, index)->
+                # combine ebs attribute
+                _.map blockDevice, (e, key)->
+                    if key is "ebs"
+                        _.extend blockDevice, e
+                    # remove Object value
+                    if _.isObject e
+                        delete blockDevice[key]
+                # format boolean value
+                _.map blockDevice, (e, key)->
+                    if _.isBoolean e
+                        blockDevice[key] = e.toString()
+                        null
+            _.map array , (data)->
+                data._title  = data[key]
+                data.bubble = value: data[key], data: (JSON.stringify data), template: "dashboardBubbleSub"
+                return data
+            array.bubble = true
+            return array
+        else
+            #resolve Other resource
+            result = _.map array, (i)->
+                i.bubble = {}
+                i.bubble.value = i[key]
+                i.bubble.data = JSON.stringify {
+                    type: type
+                    id: i[key]
+                }
+                return i
+            result.bubble = true
+            result
 
     showResourceDetail : ( evt )->
       $tgt = $( evt.currentTarget )

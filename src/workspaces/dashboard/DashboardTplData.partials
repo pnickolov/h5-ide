@@ -459,7 +459,7 @@
 <dl class="dl-horizontal" style="margin-top:0;">
     {{#each this}}
     <dt>{{@key}}:</dt>
-    <dd>{{#if this.bubble}}{{#each this}}{{#if @index}}, {{/if}}<a href="javascript:void(0)" class="bubble table-link" data-bubble-template="dashboardBubble" data-bubble-data="{{bubble.data}}">{{bubble.value}}</a>{{/each}}{{else}}{{this}}{{/if}}</dd>
+        <dd>{{#if this.bubble}}{{#each this}}{{#if @index}}, {{/if}}<a href="javascript:void(0)" class="bubble table-link" data-bubble-template="{{#if bubble.template}}{{bubble.template}}{{else}}dashboardBubble{{/if}}" data-bubble-data="{{bubble.data}}">{{bubble.value}}</a>{{/each}}{{else}}{{this}}{{/if}}</dd>
     {{/each}}
 </dl>
 
@@ -469,9 +469,9 @@
 <dl class="dl-horizontal">{{#each data}}<dt>{{@key}}</dt><dd>{{this}}</dd>{{/each}}</dl>
 </div>
 
-    <!-- {{bubbleResourceSub}} -->
-    <div class="bubble-head">{{title}}</div>
-    <div class="bubble-content">
-        <dl class="dl-horizontal">{{#each data}}<dt>{{@key}}</dt><dd>{{this}}</dd>{{/each}}</dl>
-    </div>
+<!-- {{bubbleResourceSub}} -->
+<div class="bubble-head">{{title}}</div>
+<div class="bubble-content">
+    <dl class="dl-horizontal">{{#each data}}<dt>{{@key}}</dt><dd>{{this}}</dd>{{/each}}</dl>
+</div>
 

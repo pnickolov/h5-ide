@@ -50,6 +50,7 @@ define [
       'click .show-credential' : 'showCredential'
       'click #RefreshResource' : 'reloadResource'
       "click .icon-detail"     : "showResourceDetail"
+      'mouseover .dashboard-bubble': 'showBubble'
 
 
     initialize : ()->
@@ -79,15 +80,42 @@ define [
 
       # Add a custom template to the MC.template, so that the UI.bubble can use it to render.
       MC.template.dashboardBubble = _.bind @dashboardBubble, @
+      MC.template.dashboardBubbleSub = _.bind @dashboardBubbleSub, @
       return
 
+    dashboardBubbleSub: (data)->
+        data.title = data.id || data.name
+        return tplPartials.bubbleResourceSub data
+
     dashboardBubble : ( data )->
+
+      # handle INSTANCE TYPE todo:'Wait for API'
       if data.type is "INSTANCE"
-        return MC.template.bubbleAMIInfo()
+        data.data = _.filter @model.getAwsResDataById(@region, constant.RESTYPE.AMI, data.id)
+        return MC.template.bubbleAMIInfo data.data
 
-      data.data = @model.getAwsResDataById( @region, constant.RESTYPE[data.type], data.id )
+      # get Resource Data
+      data.data = @model.getAwsResDataById( @region, constant.RESTYPE[data.type], data.id ).toJSON()
 
-      return tplPartials.bubbleResourceInfo( data )
+      data.id = data.data.id
+
+      # Format Object in some typical data resource.
+      # format attachment and groupSet in "ENI"
+      _.each data.data, (e,key)->
+          if key is "attachment"
+              _.extend data.data, e
+          if key is "groupSet"
+              _.extend data.data, e.item[0]
+          # Remove All Object in data resource to remove [Object, Object]
+          if _.isObject e
+              delete data.data[key]
+
+      # Make Boolean to String to show in handlebarsjs
+      _.each data.data, (e,key)->
+          if _.isBoolean e
+              data.data[key] = data.data[key].toString()
+
+      return tplPartials.bubbleResourceInfo  data
 
     ###
       rendering
@@ -441,9 +469,28 @@ define [
             "AMI Launch Index"   : data.amiLaunchIndex
             "Instance Type"      : data.instanceType
             "Block Device Type"  : data.rootDeviceType
-            "Block Devices"      : _.map data.blockDeviceMapping, (i)-> i.deviceName
-            "Network Interface"  : _.map data.networkInterfaceSet, (i)-> i.networkInterfaceId
+            "Block Devices"      : @formartDetail "BlockDevice", data.blockDeviceMapping, "deviceName"
+            "Network Interface"  : @formartDetail "ENI", data.networkInterfaceSet, "networkInterfaceId"
           }
+
+
+    # some format to the data so it can show in handlebars template
+    formartDetail: (type,array,key)->
+        #resolve 'BlockDevice' todo: render another template "#dashboardBubbleSub"
+        if type is 'BlockDevice'
+            return _.map array, (i)-> i[key]
+
+        #resolve Other resource
+        result = _.map array, (i)->
+            i.bubble = {}
+            i.bubble.value = i[key]
+            i.bubble.data = JSON.stringify {
+                type: type
+                id: i[key]
+            }
+            return i
+        result.bubble = true
+        result
 
     showResourceDetail : ( evt )->
       $tgt = $( evt.currentTarget )

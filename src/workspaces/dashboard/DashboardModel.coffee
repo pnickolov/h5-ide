@@ -178,6 +178,7 @@ define ["ApiRequest", "CloudResources", "constant", "backbone"], ( ApiRequest, C
       CloudResources( constant.RESTYPE.DHCP, region ).fetch()
       CloudResources( constant.RESTYPE.ASG ).fetch()
       CloudResources( constant.RESTYPE.CW ).fetch()
+      CloudResources( constant.RESTYPE.ENI, region ).fetch()
       return
 
 
@@ -200,6 +201,8 @@ define ["ApiRequest", "CloudResources", "constant", "backbone"], ( ApiRequest, C
           return CloudResources( type, region ).isReady()
         when constant.RESTYPE.VPC
           return CloudResources( type ).isReady() && CloudResources( constant.RESTYPE.DHCP, region ).isReady()
+        when constant.RESTYPE.INSTANCE
+          return CloudResources( type ).isReady() && CloudResources( constant.RESTYPE.ENI , region ).isReady()
         else
           return CloudResources( type ).isReady()
       return

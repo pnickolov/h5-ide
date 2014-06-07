@@ -104,7 +104,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 		}
 
 
-		if aws_eni.attachment and aws_eni.attachment.instanceOwnerId is "amazon-elb"
+		if aws_eni.attachment and aws_eni.attachment.instanceOwnerId and aws_eni.attachment.instanceOwnerId in [ "amazon-elb", "amazon-rds" ]
 
 			return false
 

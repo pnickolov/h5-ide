@@ -22,7 +22,12 @@ define [ '../base/model',
             region = Design.instance().region()
             instance_data = MC.data.resource_list[ region ][ appId ]
             if instance_data && instance_data.imageId
-                os_type = MC.data.dict_ami[ instance_data.imageId ].osType
+                if MC.data.dict_ami[ instance_data.imageId ]
+                    os_type = MC.data.dict_ami[ instance_data.imageId ].osType
+                if instance_data.platform and instance_data.platform is 'windows'
+                    os_type = 'windows'
+                else
+                    os_type = 'linux-other'
 
             # below code are based on os_type
             if not os_type

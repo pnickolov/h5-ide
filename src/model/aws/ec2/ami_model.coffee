@@ -173,9 +173,14 @@ define [ 'backbone', 'underscore', 'ami_service', 'base_model' ], ( Backbone, _,
 
                 else
                 #DescribeImages failed
-
-                    console.log 'ami.DescribeImages failed, error is ' + aws_result.error_message
-                    me.pub aws_result
+                    if aws_result.aws_error_code isnt "InvalidAMIID.NotFound"
+                        console.log 'ami.DescribeImages failed, error is ' + aws_result.error_message
+                        me.pub aws_result
+                    else
+                        aws_result.is_error = false
+                        aws_result.resolved_data = []
+                        aws_result.return_code = 0
+                        if src.sender and src.sender.trigger then src.sender.trigger 'EC2_AMI_DESC_IMAGES_RETURN', aws_result
 
 
 

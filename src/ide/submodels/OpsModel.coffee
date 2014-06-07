@@ -138,6 +138,7 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
     remove : ()->
       if @isApp() then return @__returnErrorPromise()
 
+      @set "state", OpsModelState.Destroyed
       @trigger 'destroy', @, @collection
 
       self = @
@@ -145,6 +146,7 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
         region_name : @get("region")
         stack_id    : @get("id")
       }).fail ()->
+        @set "state", OpsModelState.UnRun
         # If we cannot delete the stack, we just add it back to the stackList.
         App.model.stackList().add self
 

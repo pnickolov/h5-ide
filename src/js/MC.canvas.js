@@ -3226,7 +3226,7 @@ MC.canvas.event.siderbarDrag = {
 				target_group_type,
 				size;
 
-			if (target.data('enable') === false)
+			if ( target.hasClass("resource-disabled") )
 			{
 				return false;
 			}

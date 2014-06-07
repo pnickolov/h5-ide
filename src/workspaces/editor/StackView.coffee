@@ -38,4 +38,7 @@ define [
       @resourcePanel.clearDom()
       return
 
+    removeSubviews : ()->
+      @resourcePanel.remove()
+      return
   }

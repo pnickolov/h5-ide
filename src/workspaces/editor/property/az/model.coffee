@@ -2,41 +2,22 @@
 #  View Mode for design/property/az
 #############################
 
-define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, constant ) ->
+define [ '../base/model', "Design", 'constant', "CloudResources" ], ( PropertyModel, Design, constant, CloudResources ) ->
 
     AZModel = PropertyModel.extend {
 
-        reInit : () ->
-            @init @get "uid"
-            null
-
         init : ( id ) ->
 
-            az_list   = MC.data.config[ Design.instance().region() ]
-            component = Design.instance().component( id )
+            design = Design.instance()
+
+            az_list = CloudResources( constant.RESTYPE.AZ, Design.instance().region() ).where({category:design.get("region")})
+
+            component = design.component( id )
 
             if not component or not az_list
                 return false
 
-            az_name = component.get("name")
-            data    =
-                uid : id
-                name : az_name
-
-            if az_list and az_list.zone
-                data.az_list = @possibleAZList( az_list.zone.item, az_name )
-            else
-                data.az_list = [{
-                    name      : az_name
-                    selected  : true
-                }]
-
-            @set data
-            null
-
-        possibleAZList : ( datalist, selectedItemName ) ->
-            if !datalist
-                return
+            selectedItemName = component.get("name")
 
             used_list = {}
             # Get ModelClass of AZ without requring it.
@@ -48,13 +29,19 @@ define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, const
                 null
 
             possible_list = []
-            for az in datalist
-                if az.zoneName is selectedItemName or !used_list[az.zoneName]
+            for az in az_list
+                az = az.attributes
+                if az.id is selectedItemName or !used_list[az.id]
                     possible_list.push
-                        name      : az.zoneName
-                        selected  : az.zoneName  is selectedItemName
+                        name      : az.id
+                        selected  : az.id  is selectedItemName
 
-            possible_list
+            @set {
+                uid  : id
+                name : selectedItemName
+                list : possible_list
+            }
+            null
     }
 
     new AZModel()

@@ -13,8 +13,7 @@ define [ '../base/view', './template/stack' ], ( PropertyView, template ) ->
             @$el.html template @model.attributes
             "Availability Zone"
 
-        azSelect : ( event, newAZName ) ->
-            this.trigger "SELECT_AZ", newAZName
+        azSelect : ( event, newAZName ) -> @model.setName(newAZName); return
     }
 
     new AZView()

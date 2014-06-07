@@ -239,6 +239,7 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
       # Trigger Design AddResource Event here.
       # Because only at this time, the resource is fully created.
       Design.trigger Design.EVENT.AddResource, this
+      design.trigger Design.EVENT.AddResource, this
 
       this
 
@@ -344,6 +345,7 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
       # Trigger Design RemoveResource Event here.
       # Because only at this time, the resource is fully removed.
       Design.trigger Design.EVENT.RemoveResource, this
+      design.trigger Design.EVENT.RemoveResource, this
       null
 
     createRef : ( refName, isResourceNS, id )->

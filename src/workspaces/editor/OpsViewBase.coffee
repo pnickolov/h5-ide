@@ -60,11 +60,24 @@ define [
       @clearSubviewDom()
       return
 
+    remove : ()->
+      @toolbar.remove()
+      @propertyPanel.remove()
+
+      @removeSubviews()
+
+      Backbone.View.remove.call this
+      return
+
     ###
       Override these methods in subclasses.
     ###
     createTpl        : ()-> CanvasTpl({})
     bindUserEvent    : ()-> return
+    # Called when the OpsEditor awakes up.
     renderSubviews   : ()-> return
+    # Called when the OpsEditor is put to sleep
     clearSubviewsDom : ()-> return
+    # Called when the OpsEditor is closed.
+    removeSubviews   : ()-> return
   }

@@ -185,12 +185,15 @@ define [
 
   Design.EVENT = {
     # Events that will trigger using Design.trigger
-    AddResource    : "ADD_RESOURCE"
-    RemoveResource : "REMOVE_RESOURCE"
     Deserialized   : "DESERIALIZED"
 
     # Events that will trigger using Design.instance().trigger
     AwsResourceUpdated : "AWS_RESOURCE_UPDATED"
+    AzUpdated          : "AZ_UPDATED"
+
+    # Events that will trigger both using Design.trigger and Design.instance().trigger
+    AddResource    : "ADD_RESOURCE"
+    RemoveResource : "REMOVE_RESOURCE"
   }
 
   DesignImpl.prototype.refreshAppUpdate = () ->

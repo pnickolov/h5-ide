@@ -1,5 +1,5 @@
 
-define [ "../GroupModel", "./VpcModel", "constant", "i18n!nls/lang.js" ], ( GroupModel, VpcModel, constant, lang )->
+define [ "../GroupModel", "./VpcModel", "constant", "i18n!nls/lang.js", "Design" ], ( GroupModel, VpcModel, constant, lang, Design )->
 
   Model = GroupModel.extend {
 
@@ -23,6 +23,11 @@ define [ "../GroupModel", "./VpcModel", "constant", "i18n!nls/lang.js" ], ( Grou
 
       @draw(true)
       null
+
+    setName : ()->
+      GroupModel.prototype.setName.apply this, arguments
+      @design().trigger Design.EVENT.AzUpdated
+      return
 
     isRemovable : ()->
       if @children().length > 0

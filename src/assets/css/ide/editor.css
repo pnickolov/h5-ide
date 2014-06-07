@@ -114,7 +114,7 @@
   .resource-item.resource-disabled {
     cursor: default;
     opacity: .6;
-    background: none; }
+    background-color: transparent; }
 
 .resource-icon-az {
   background-image: url('/assets/images/ide/icon/az-resource.png'); }
@@ -268,8 +268,8 @@
 
 .property-panel-wrapper {
   width: 100%;
+  height: 100%;
   left: 0;
-  top: 40px;
   bottom: 0;
   position: absolute;
   background: #313131;

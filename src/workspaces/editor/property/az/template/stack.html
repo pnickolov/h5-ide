@@ -1,11 +1,9 @@
 <section class="property-control-group">
   <label class="left">{{ i18n "PROP_AZ_LBL_SWITCH" }}</label>
   <div class="selectbox selectbox-mega" id="az-quick-select">
-    <div class="selection">{{component.name}}</div>
+    <div class="selection">{{name}}</div>
     <ul class="dropdown" tabindex="-1">
-      {{#each az_list}}
-        <li class="item{{#if selected}} selected{{/if}}" data-id="{{name}}">{{name}}</li>
-      {{/each}}
+      {{#each list}}<li class="item{{#if selected}} selected{{/if}}" data-id="{{name}}">{{name}}</li>{{/each}}
     </ul>
   </div>
 </section>

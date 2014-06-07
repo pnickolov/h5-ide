@@ -1,10 +1,11 @@
 
 define [
   "CloudResources"
+  "Design"
   "../template/TplLeftPanel"
   "constant"
   "backbone"
-], ( CloudResources, LeftPanelTpl, constant )->
+], ( CloudResources, Design, LeftPanelTpl, constant )->
 
   # Update Left Panel when window size changes
   __resizeAccdTO = null
@@ -31,6 +32,10 @@ define [
       region = @workspace.opsModel.get("region")
       @listenTo CloudResources( constant.RESTYPE.AZ,   region ), "update", @updateAZ
       @listenTo CloudResources( constant.RESTYPE.SNAP, region ), "update", @updateSnapshot
+
+      @listenTo @workspace.design, Design.EVENT.AzUpdated,      @updateDisableItems
+      @listenTo @workspace.design, Design.EVENT.AddResource,    @updateDisableItems
+      @listenTo @workspace.design, Design.EVENT.RemoveResource, @updateDisableItems
       return
 
     render : ()->
@@ -40,6 +45,8 @@ define [
 
       @updateAZ()
       @updateSnapshot()
+
+      @updateDisableItems()
       return
 
     updateAZ : ()->
@@ -47,6 +54,7 @@ define [
       region = @workspace.opsModel.get("region")
 
       $("#OEPanelLeft").find(".resource-list.availability-zone").html LeftPanelTpl.az(CloudResources( constant.RESTYPE.AZ, region ).where({category:region}) || [])
+      @updateDisabledAz()
       return
 
     updateSnapshot : ()->
@@ -54,6 +62,31 @@ define [
       region = @workspace.opsModel.get("region")
       $("#OEPanelLeft").find(".resource-list.resoruce-snapshot").html LeftPanelTpl.snapshot(CloudResources( constant.RESTYPE.SNAP, region ).where({category:region}) || [])
       return
+
+    updateDisableItems : ()->
+      if not @workspace.isAwake() then return
+      @updateDisabledAz()
+      @updateDisabledVpcRes()
+      return
+
+    updateDisabledAz : ()->
+      $azs = @$el.find(".availability-zone").children().removeClass("resource-disabled")
+      for az in @workspace.design.componentsOfType( constant.RESTYPE.AZ )
+        azName = az.get("name")
+        for i in $azs
+          if $(i).text().indexOf(azName) != -1
+            $(i).addClass("resource-disabled")
+            break
+      return
+
+    updateDisabledVpcRes : ()->
+      $ul = @$el.find(".resource-icon-igw").parent()
+      design = @workspace.design
+      $ul.children(".resource-icon-igw").toggleClass("resource-disabled", design.componentsOfType(constant.RESTYPE.IGW).length > 0)
+      $ul.children(".resource-icon-vgw").toggleClass("resource-disabled", design.componentsOfType(constant.RESTYPE.VGW).length > 0)
+      $ul.children(".resource-icon-cgw").toggleClass("resource-disabled", design.componentsOfType(constant.RESTYPE.CGW).length > 0)
+      return
+
 
     clearDom : ()->
       @$el = null

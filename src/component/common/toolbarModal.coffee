@@ -166,17 +166,20 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalpl
         __triggerChecked: ( param ) ->
             @trigger 'checked', param, @getChecked()
 
-        __processDelBtn: () ->
-            that = @
-            _.defer () ->
-                if that.$('.one-cb:checked').length
-                    that.$('[data-btn=delete]').prop 'disabled', false
-                else
-                    that.$('[data-btn=delete]').prop 'disabled', true
-                if that.$('.one-cb:checked').length is 1
-                    that.$('[data-btn=duplicate]').prop 'disabled', false
-                else
-                    that.$('[data-btn=duplicate]').prop 'disabled', true
+        __processDelBtn: ( enable ) ->
+            if arguments.length is 1
+                that.$('[data-btn=delete]').prop enable
+            else
+                that = @
+                _.defer () ->
+                    if that.$('.one-cb:checked').length
+                        that.$('[data-btn=delete]').prop 'disabled', false
+                    else
+                        that.$('[data-btn=delete]').prop 'disabled', true
+                    if that.$('.one-cb:checked').length is 1
+                        that.$('[data-btn=duplicate]').prop 'disabled', false
+                    else
+                        that.$('[data-btn=duplicate]').prop 'disabled', true
 
         __stopPropagation: ( event ) ->
             exception = '.sortable, #download-kp, .selection, .item'
@@ -263,6 +266,12 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalpl
             $activeButton.removeClass 'active'
             $slidebox.removeClass 'show'
             @
+
+        unCheckSelectAll: ->
+            @$( '#t-m-select-all' )
+                .get( 0 )
+                .checked = false
+            @__processDelBtn false
 
         delegate: ( events, context ) ->
             if not events or not _.isObject(events) then return @

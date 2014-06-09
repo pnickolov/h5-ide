@@ -21,7 +21,9 @@ define ["Workspace", "workspaces/dashboard/DashboardView", "workspaces/dashboard
       @listenTo App.model.stackList(), "update", ()-> self.__renderControl "updateOpsList"
       @listenTo App.model.appList(),   "update", ()-> self.__renderControl "updateOpsList"
 
-      @view.listenTo App.model.appList(), "change:state",    @view.updateRegionList
+      @listenTo App.model.stackList(), "change", ()-> self.__renderControl "updateRegionList", arguments
+      @listenTo App.model.appList(),   "change", ()-> self.__renderControl "updateRegionList", arguments
+
       @view.listenTo App.model.appList(), "change:progress", @view.updateAppProgress
 
       # Watch changes in aws resources
@@ -58,12 +60,12 @@ define ["Workspace", "workspaces/dashboard/DashboardView", "workspaces/dashboard
       @view.$el.show()
       return
 
-    __renderControl : ( method )->
+    __renderControl : ( method, args )->
       if @__renderControlMap
         console.log "DashboardView's render is throttled, method name: #{method}"
         @__renderControlMap[ method ] = true
       else
-        @view[method]()
+        @view[method].apply(@view, args)
       return
 
     isDashboard : ()-> true

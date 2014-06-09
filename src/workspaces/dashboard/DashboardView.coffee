@@ -152,7 +152,7 @@ define [
     updateRegionList  : ( model )->
       console.log "Dashboard Updated due to state changes in app list."
 
-      if model.get("region") is @region and @regionOpsTab is "app"
+      if not model or model.get("region") is @region
         @updateRegionAppStack()
 
     updateAppProgress : ( model )->

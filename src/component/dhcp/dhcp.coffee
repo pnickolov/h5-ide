@@ -1,6 +1,7 @@
 define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_modal', 'i18n!nls/lang.js', './component/dhcp/dhcp_template.js'], ( CloudResources, constant, comboDropdown, modalPlus, toolbarModal, lang, template )->
     fetched = false
     fetching  = false
+    regionsMark = {}
     updateAmazonCB = () ->
         rowLength = $( "#property-domain-server" ).children().length
         if rowLength > 3
@@ -129,8 +130,10 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
                 @manager?.render 'nocredential'
                 return false
             initManager = @initManager.bind @
-            if not fetched and not fetching
+            currentRegion = Design.instance().get('region')
+            if (not fetched and not fetching) or (not regionsMark[currentRegion])
                 fetching = true
+                regionsMark[currentRegion] = true
                 @collection.fetchForce().then initManager, initManager
             #content = template.content items:@collection.toJSON()
             else if not fetching

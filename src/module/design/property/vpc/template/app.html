@@ -35,7 +35,7 @@
   {{#unless defaultDhcp}}
   <dl class="dl-vertical">
     <dt>{{ i18n "PROP_VPC_DHCP_OPTION_SET_ID" }}</dt>
-    <dd>{{dhcpOptionsId}}</dd>
+    <dd>{{#if dhcpOptionsId}}{{dhcpOptionsId}}{{else}}{{dhcp.dhcpOptionsId}}{{/if}}</dd>
 
     {{#if dhcp.domainName}}
     <dt>{{ i18n "PROP_VPC_DHCP_SPECIFIED_LBL_DOMAIN_NAME" }}</dt>

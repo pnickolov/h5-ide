@@ -30,17 +30,16 @@ define [ '../base/model', "Design", 'constant', "CloudResources" ], ( PropertyMo
           vpc.defaultACL = AclModel.getDefaultAcl()
           if vpc.defaultACL
             vpc.defaultACL = vpc.defaultACL.get("appId")
-
           if vpc.dhcpOptionsId
             if not appData[ vpc.dhcpOptionsId ]
               vpc.default_dhcp = true
 
             else
-              dhcpData = appData[myVPCComponent.toJSON().dhcp.toJSON().appId]?.dhcpConfigurationSet.item
-              vpc.dhcpOptionsId = myVPCComponent.toJSON().dhcp.toJSON().appId
-              dhcp = null
+              dhcpOptionsId = myVPCComponent.get('dhcp').get('appId')
+              dhcpData = appData[vpc.dhcpOptionsId]?.dhcpConfigurationSet.item
+              dhcp = dhcpOptionsId: (dhcpOptionsId||vpc.dhcpOptionsId)
+              vpc.dhcpOptionsId = dhcpOptionsId
               if dhcpData
-                  dhcp = {}
                   for i in dhcpData
                     if i.key is 'domain-name-servers'
                       for j, idx in i.valueSet
@@ -51,7 +50,6 @@ define [ '../base/model', "Design", 'constant', "CloudResources" ], ( PropertyMo
                           break
                     dhcp[ MC.camelCase( i.key ) ] = i.valueSet
               vpc.dhcp = dhcp
-
           @set vpc
           null
     }

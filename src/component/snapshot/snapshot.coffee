@@ -23,8 +23,7 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
 
         renderDropdown: ()->
             option =
-                manageBtnValue: lang.ide.PROP_VPC_MANAGE_SNAPSHOT
-                filterPlaceHolder: lang.ide.PROP_SNAPSHOT_FILTER_SNAPSHOT
+                filterPlaceHolder: lang.ide.PROP_SNAPSHOT_FILTER_VOLUME
             @dropdown = new combo_dropdown(option)
             @volumes = CloudResources constant.RESTYPE.VOL, Design.instance().region()
             selection = lang.ide.PROP_VOLUME_SNAPSHOT_SELECT

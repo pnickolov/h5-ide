@@ -3023,6 +3023,7 @@ a.sidebar-hider:before {
 .property-sidebar-title {
 	font-size   : 16px;
 	text-shadow : none;
+
 	width      : 100%;
 	height     : 32px;
 	line-height: 32px;
@@ -7077,6 +7078,9 @@ summary:focus {
 .manager-content-main{
     color: #dadada;
     line-height: 1;
+}
+.modal-toolbar .slidebox .combo-dd.selectbox .combo-dd-filter{
+    width: 232px;
 }
 
 

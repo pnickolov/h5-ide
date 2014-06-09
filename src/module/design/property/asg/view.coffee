@@ -386,7 +386,12 @@ define [ '../base/view',
 
             $("#asg-policy-adjust-type").on "OPTION_CHANGE", ()->
                 type = $(this).find(".selected").data("id")
-                $(".pecentcapcity").toggle( type == "PercentChangeInCapacity" )
+                if type is 'PercentChangeInCapacity'
+                    $(".pecentcapcity").toggle true
+                    $('#asg-policy-step').val 1 if $('#asg-policy-step').val() is ''
+                else
+                    $(".pecentcapcity").toggle false
+
                 $("#asg-policy-adjust").attr("placeholder", adjustdefault[type] ).data("tooltip", adjustTooltip[ type ] ).trigger("change")
 
             $("#asg-policy-adjust").on "change", ()->

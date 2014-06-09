@@ -254,6 +254,7 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
                     notification 'error', deleteErrorCount+" Snapshot failed to delete, Please try again later."
                 else
                     notification 'info', "Delete Successfully"
+                @manager.unCheckSelectAll()
                 deleteErrorCount = 0
                 @manager.cancel()
 

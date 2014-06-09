@@ -30,19 +30,15 @@ define [], ()->
   usercode
   session_id
   ###
-
-  ApiRequestDefs = {}
-
-  ApiRequestDefs.Defs =
-    saveStack  : { url:"/stack/",   method:"save",       params:["username", "session_id", "region_name", 'data'] }
-    createStack: { url:"/stack/",   method:"create",     params:["username", "session_id", "region_name", "data"] }
-
-  ###
-  Parsers are promise's success hanlder.
-  Thus, if the parser cannot parse a result, it should throw an error !!!
-  An example would be like : `throw McError( 300, "Cannot parse the result" )`
-  ###
-  ApiRequestDefs.Parsers = {}
+  ApiRequestDefs = {
+    Defs    : {}
+    ###
+    Parsers are promise's success hanlder.
+    Thus, if the parser cannot parse a result, it should throw an error !!!
+    An example would be like : `throw McError( 300, "Cannot parse the result" )`
+    ###
+    Parsers : {}
+  }
 
 
   ApiRequestDefs.AutoFill = ( paramter_name )->

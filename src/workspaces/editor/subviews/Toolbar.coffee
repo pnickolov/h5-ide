@@ -1,10 +1,27 @@
 
-define [ "OpsModel", "../template/TplOpsEditor", "backbone" ], ( OpsModel, OpsEditorTpl )->
+define [
+  "OpsModel"
+  "../template/TplOpsEditor"
+  "component/exporter/Thumbnail"
+  "ApiRequest"
+  "i18n!nls/lang.js"
+  "UI.notification"
+  "backbone"
+], ( OpsModel, OpsEditorTpl, Thumbnail, ApiRequest, lang )->
 
   Backbone.View.extend {
 
-    # events :
-    #   "click" : ""
+    events :
+      "click .icon-save"                   : "saveStack"
+      "click .icon-delete"                 : "deleteStack"
+      "click .icon-duplicate"              : "duplicateStack"
+      "click .icon-new-stack"              : "createStack"
+      "click .icon-zoom-in"                : "zoomIn"
+      "click .icon-zoom-out"               : "zoomOut"
+      "click .icon-export-png"             : "exportPng"
+      "click .icon-export-json"            : "exportJson"
+      "click .icon-toolbar-cloudformation" : "exportCF"
+      "OPTION_CHANGE .toolbar-line-style"  : "setTbLineStyle"
 
     render : ()->
       opsModel = @workspace.opsModel
@@ -48,10 +65,44 @@ define [ "OpsModel", "../template/TplOpsEditor", "backbone" ], ( OpsModel, OpsEd
           $stopBtn.show()
 
         @$el.children(".icon-play").toggle( not opsModel.testState( OpsModel.State.Stopped ) )
+
+      if @__saving
+        @$el.children(".icon-save").attr("disabled", "disabled")
+      else
+        @$el.children(".icon-save").removeAttr("disabled")
       return
 
     setTbLineStyle : ( ls )->
       localStorage.setItem("canvas/lineStyle", ls)
       $canvas.updateLineStyle( ls )
-      return
+
+    saveStack : ( evt )->
+      $( evt.currentTarget ).attr("disabled", "disabled")
+
+      self = @
+      @__saving = true
+
+      newJson = @workspace.design.serialize()
+
+      Thumbnail.generate( $("#svg_canvas") ).catch( ()->
+        return null
+      ).then ( thumbnail )->
+        self.workspace.opsModel.save( newJson, thumbnail ).then ()->
+          self.__saving = false
+          $( evt.currentTarget ).removeAttr("disabled")
+          notification "info", sprintf(lang.ide.TOOL_MSG_ERR_SAVE_SUCCESS, newJson.name)
+        , ( err )->
+          self.__saving = false
+          $( evt.currentTarget ).removeAttr("disabled")
+          notification "error", sprintf(lang.ide.TOOL_MSG_ERR_SAVE_FAILED, newJson.name)
+        return
+
+    deleteStack : ()->
+    duplicateStack : ()->
+    createStack : ()->
+    zoomIn : ()->
+    zoomOut : ()->
+    exportPng : ()->
+    exportJson : ()->
+    exportCF : ()->
   }

@@ -1029,6 +1029,10 @@ module.exports =
       en: "Save stack %s failed, please check and save it again."
       zh: "保存模块 %s 失败，请您检查并重新保存。"
 
+    TOOL_MSG_ERR_SAVE_SUCCESS:
+      en: "Save stack %s successfully."
+      zh: "保存 %s 成功。"
+
     TOOLBAR_HANDLE_SAVE_STACK:
       en: "Save stack"
       zh: "保存模块"

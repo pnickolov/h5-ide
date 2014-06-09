@@ -88,7 +88,12 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
       # TODO :
       self = @
       if @isImported()
-        return CloudResources.getAllResourcesForVpc( @get("region"), @get("importVpcId") ).then ( res )-> self.__setJsonData( res )
+        return CloudResources.getAllResourcesForVpc( @get("region"), @get("importVpcId") ).then ( res )->
+          json = self.__createRawJson()
+          json.component = res.component
+          json.layout    = res.layout
+          self.__jsonData = json
+          self
 
       else if @isStack()
         ApiRequest("stack_info", {

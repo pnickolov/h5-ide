@@ -239,6 +239,7 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
                     notification 'error', deleteErrorCount+" DhcpOptions failed to delete because of: \"#{result.awsResult}\""
                 else
                     notification 'info', "Delete Successfully"
+                @manager.unCheckSelectAll()
                 deleteErrorCount = 0
                 @manager.cancel()
         afterCreated: (result)->

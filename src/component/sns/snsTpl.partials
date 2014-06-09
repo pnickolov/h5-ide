@@ -44,11 +44,11 @@
         </div>
         <div class="create-sns-topic">
             <label for="create-topic-name">Topic Name</label>
-            <input class="input" type="text" id="create-topic-name" data-ignore="true" data-ignore-regexp="^[a-zA-Z0-9,_-]*$" data-required="true" maxlength="255" placeholder="Required. Up to 256 characters">
+            <input class="input" type="text" id="create-topic-name" data-ignore="true" data-ignore-regexp="^[a-zA-Z0-9,_-]*$" data-required="true" maxlength="255" placeholder="Required. Up to 256 characters" data-event-trigger="false">
         </div>
         <div>
             <label for="create-display-name">Display Name</label>
-            <input class="input" type="text" id="create-display-name" maxlength="255" placeholder="Required for SMS subscriptions (up to 10 characters)">
+            <input class="input" type="text" id="create-display-name" maxlength="255" placeholder="Required for SMS subscriptions (up to 10 characters)" data-event-trigger="false">
         </div>
         <div>
             <label>Protocol</label>
@@ -67,7 +67,7 @@
         </div>
         <div>
             <label for="create-endpoint">Endpoint</label>
-            <input type="text" class="input" id="create-endpoint" max-length="255" data-required="true" data-trigger="change" placeholder="example@mail.com">
+            <input type="text" class="input" id="create-endpoint" max-length="255" data-required="true" placeholder="example@mail.com" data-event-trigger="false">
         </div>
     </div>
     <div class="init action">

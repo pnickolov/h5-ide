@@ -431,7 +431,7 @@ define [
             "DNSName"                 : data.DNSName
             "Health Check"            : @formartDetail('HealthCheck', [data.HealthCheck], "Health Check", true)
             "Instance"                : data.Instances.join(", ")
-            "Listener Descriptions"   : @formartDetail('ListenerDescriptions', [data.ListenerDescriptions], "Listener Descriptions", true)
+            "Listener Descriptions"   : @formartDetail('ListenerDescriptions', _.pluck(data.ListenerDescriptions.member,"Listener"), "Listener Descriptions", true)
             "Security Groups"         : data.SecurityGroups.join(", ")
             Subnets                   : data.Subnets.join(", ")
           }
@@ -474,9 +474,8 @@ define [
 
     # some format to the data so it can show in handlebars template
     formartDetail: (type, array, key, force)->
-        console.log array
         #resolve 'BlockDevice' AttachmentSet HealthCheck and so on.
-        if (['BlockDevice', "AttachmentSet","HealthCheck"].indexOf type) > -1
+        if (['BlockDevice', "AttachmentSet","HealthCheck", "ListenerDescriptions"].indexOf type) > -1
             _.map array, (blockDevice, index)->
                 # combine ebs attribute
                 _.map blockDevice, (e, key)->
@@ -493,7 +492,7 @@ define [
             _.map array , (data)->
                 if force then data._title = key else data._title  = data[key]
                 data.bubble =
-                    value: if force then key else data[key]
+                    value: if force then key else data[key] # override the value of title
                     data: (JSON.stringify data)
                     template: "dashboardBubbleSub"
                 return data

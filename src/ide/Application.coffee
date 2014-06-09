@@ -90,7 +90,7 @@ define [
   VisualOps.prototype.askForAwsCredential = ()-> @__view.askForAwsCredential()
 
   # These functions are for consistent behavoir of managing stacks/apps
-  VisualOps.prototype.deleteStack    = (id)-> @__view.deleteStack(id)
+  VisualOps.prototype.deleteStack    = (id, name)-> @__view.deleteStack(id, name)
   VisualOps.prototype.duplicateStack = (id)-> @__view.duplicateStack(id)
   VisualOps.prototype.startApp       = (id)-> @__view.startApp(id)
   VisualOps.prototype.stopApp        = (id)-> @__view.stopApp(id)

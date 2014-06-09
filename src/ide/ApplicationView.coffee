@@ -109,45 +109,59 @@ define [
 
 
 
-    deleteStack : ( id ) ->
-      name = App.model.stackList().get( id ).get( "name" )
+    deleteStack : ( id, name ) ->
+      name = name || App.model.stackList().get( id ).get( "name" )
 
       modal AppTpl.removeStackConfirm {
           msg : sprintf lang.ide.TOOL_POP_BODY_DELETE_STACK, name
       }
 
-      $("#confirmRmStack").on "click", ()-> App.model.stackList().get( id ).remove(); return
+      $("#confirmRmStack").on "click", ()->
+        opsModel = App.model.stackList().get( id )
+        p = opsModel.remove()
+        if opsModel.isPresisted()
+          p.then ()->
+            notification "info", sprintf(lang.ide.TOOL_MSG_ERR_DEL_STACK_SUCCESS, name)
+          , ()->
+            notification "error", sprintf(lang.ide.TOOL_MSG_ERR_DEL_STACK_FAILED, name)
       return
 
     duplicateStack : (id) ->
-      name = App.model.stackList().get( id ).get( "name" )
-
-      modal AppTpl.dupStackConfirm {
-        newName : App.model.stackList().getNewName( name )
-      }
-
-      $("#confirmDupStackIpt").focus().select().on "keyup", ()->
-        if $("#confirmDupStackIpt").val()
-          $("confirmDupStack").removeAttr "disabled"
-        else
-          $("#confirmDupStack").attr "disabled", "disabled"
-        return
-
-      $("#confirmDupStack").on "click", ()->
-        newName = $('#confirmDupStackIpt').val()
-
-        #check duplicate stack name
-        if newName.indexOf(' ') >= 0
-          notification 'warning', lang.ide.PROP_MSG_WARN_WHITE_SPACE
-        else if App.model.stackList().where({name:newName}).length
-          notification 'warning', lang.ide.PROP_MSG_WARN_REPEATED_STACK_NAME
-        else
-          modal.close()
-          m = App.model.stackList().get(id)
-          if m then m.duplicate( newName )
-        return
-
+      opsModel = App.model.stackList().get(id)
+      if not opsModel then return
+      opsModel.fetchJsonData().then ()->
+        App.openOps( App.model.createStackByJson opsModel.getJsonData() )
+      , ()->
+        notification "error", "Cannot duplicate the stack, please retry."
       return
+      # name = App.model.stackList().get( id ).get( "name" )
+
+      # modal AppTpl.dupStackConfirm {
+      #   newName : App.model.stackList().getNewName( name )
+      # }
+
+      # $("#confirmDupStackIpt").focus().select().on "keyup", ()->
+      #   if $("#confirmDupStackIpt").val()
+      #     $("confirmDupStack").removeAttr "disabled"
+      #   else
+      #     $("#confirmDupStack").attr "disabled", "disabled"
+      #   return
+
+      # $("#confirmDupStack").on "click", ()->
+      #   newName = $('#confirmDupStackIpt').val()
+
+      #   #check duplicate stack name
+      #   if newName.indexOf(' ') >= 0
+      #     notification 'warning', lang.ide.PROP_MSG_WARN_WHITE_SPACE
+      #   else if App.model.stackList().where({name:newName}).length
+      #     notification 'warning', lang.ide.PROP_MSG_WARN_REPEATED_STACK_NAME
+      #   else
+      #     modal.close()
+      #     m = App.model.stackList().get(id)
+      #     if m then m.duplicate( newName )
+      #   return
+
+      # return
 
     startApp : ( id )->
       name = App.model.appList().get( id ).get("name")

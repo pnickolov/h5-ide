@@ -97,9 +97,13 @@ define [
           notification "error", sprintf(lang.ide.TOOL_MSG_ERR_SAVE_FAILED, newJson.name)
         return
 
-    deleteStack : ()->
+    deleteStack    : ()-> App.deleteStack( @workspace.opsModel.cid, @workspace.design.get("name") )
+    createStack    : ()-> App.createOps( @workspace.opsModel.get("region") )
     duplicateStack : ()->
-    createStack : ()->
+      newOps = App.model.createStackByJson( @workspace.design.serialize() )
+      App.openOps newOps
+      return
+
     zoomIn : ()->
     zoomOut : ()->
     exportPng : ()->

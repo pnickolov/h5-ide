@@ -1033,6 +1033,14 @@ module.exports =
       en: "Save stack %s successfully."
       zh: "保存 %s 成功。"
 
+    TOOL_MSG_ERR_DEL_STACK_SUCCESS:
+      en: "Delete stack %s successfully."
+      zh: "删除 %s 成功。"
+
+    TOOL_MSG_ERR_DEL_STACK_FAILED:
+      en: "Delete stack %s failed."
+      zh: "删除 %s 失败。"
+
     TOOLBAR_HANDLE_SAVE_STACK:
       en: "Save stack"
       zh: "保存模块"

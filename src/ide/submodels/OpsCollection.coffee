@@ -47,7 +47,7 @@ define [ "OpsModel", "constant", "backbone" ], ( OpsModel, constant )->
       newName
 
     # Returns true if name is OK to be used.
-    isNameAvailable : ( name )-> !!@.findWhere({name:name})
+    isNameAvailable : ( name )-> !@.findWhere({name:name})
 
     # Returns a sorted array.
     groupByRegion : ( includeEmptyRegion = false, toJSON = true, includeEveryOps = false )->

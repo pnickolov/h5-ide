@@ -61,6 +61,10 @@ define [
       return
 
     remove : ()->
+      # Hack, the toolbar/propertyPanel's $el might be null here.
+      @toolbar.$el = @toolbar.$el || $()
+      @propertyPanel.$el = @propertyPanel.$el || $()
+
       @toolbar.remove()
       @propertyPanel.remove()
 

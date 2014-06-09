@@ -118,6 +118,12 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
       if @isApp() and @__saving then return @__returnErrorPromise()
       @__saving = true
 
+      nameClash = @collection.where({name:newJson.name}) || []
+      if nameClash.length > 1 or nameClash[0] isnt @
+        d = Q.promise()
+        d.reject(McError( ApiRequest.Errors.StackRepeatedStack, "Stack name has already been used." ))
+        return d.promise
+
       api = if @get("id") then "stack_save" else "stack_create"
 
       self = @
@@ -152,6 +158,11 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
 
       @set "state", OpsModelState.Destroyed
       @trigger 'destroy', @, @collection
+
+      if not @get("id")
+        d = Q.defer()
+        d.resolve()
+        return d.promise
 
       self = @
       ApiRequest("stack_remove",{
@@ -437,7 +448,7 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
       # Generate new GUID for each component
       for id, comp of component
         newId = MC.guid()
-        json.component[ newId ] = component
+        json.component[ newId ] = comp
         if layout[ id ] then json.layout[ newId ] = layout[ id ]
 
       @__jsonData = json

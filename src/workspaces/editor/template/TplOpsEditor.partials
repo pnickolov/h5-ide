@@ -28,7 +28,7 @@
 
 <!-- {{toolbar.BtnStackOps}} -->
 <button class="btn-toolbar tooltip icon-save" data-tooltip='{{ i18n "TOOL_TIP_SAVE_STACK" }}'></button>
-<button class="btn-toolbar icon-delete tooltip seperator" data-tooltip='{{ i18n "TOOL_TIP_DELETE_NEW_STACK" }}'></button>
+<button class="btn-toolbar icon-delete tooltip seperator" data-tooltip='{{ i18n "TOOL_TIP_DELETE_STACK" }}'></button>
 <button class="btn-toolbar tooltip icon-duplicate" data-tooltip='{{ i18n "TOOL_TIP_DUPLICATE_STACK" }}'></button>
 <button class="btn-toolbar icon-new-stack tooltip seperator" data-tooltip='{{ i18n "TOOL_TIP_CREATE_STACK" }}'></button>
 

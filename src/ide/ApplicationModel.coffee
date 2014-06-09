@@ -57,9 +57,12 @@ define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone", "con
       m
 
     createStackByJson : ( json )->
-      json.name = @attributes.stackList.getNewName()
+      if not @attributes.stackList.isNameAvailable( json.name )
+        json.name = @attributes.stackList.getNewName()
+
       m = new OpsModel({
-        name : json.name
+        name   : json.name
+        region : json.region
       }, {
         jsonData : json
       })

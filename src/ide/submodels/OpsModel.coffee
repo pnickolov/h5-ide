@@ -118,19 +118,25 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
       if @isApp() and @__saving then return @__returnErrorPromise()
       @__saving = true
 
+      api = if @get("id") then "stack_save" else "stack_create"
+
       self = @
-      ApiRequest("stack_save", {
+      ApiRequest(api, {
         region_name : @get("region")
         spec        : newJson
-      }).then ()->
+      }).then ( res )->
 
-        if thumbnail then ThumbUtil.save( self.id, thumbnail )
-
-        self.set {
+        attr = {
           name       : newJson.name
           updateTime : +(new Date())
           stoppable  : newJson.property.stoppable
         }
+
+        if not self.get("id") then attr.id = res
+
+        if thumbnail then ThumbUtil.save( self.id || attr.id, thumbnail )
+
+        self.set attr
         self.__jsonData = newJson
         self.__saving   = false
         self.trigger "jsonDataSaved", self

@@ -386,7 +386,12 @@ define [ '../base/view',
 
             $("#asg-policy-adjust-type").on "OPTION_CHANGE", ()->
                 type = $(this).find(".selected").data("id")
-                $(".pecentcapcity").toggle( type == "PercentChangeInCapacity" )
+                if type is 'PercentChangeInCapacity'
+                    $(".pecentcapcity").toggle true
+                    $('#asg-policy-step').val 1 if $('#asg-policy-step').val() is ''
+                else
+                    $(".pecentcapcity").toggle false
+
                 $("#asg-policy-adjust").attr("placeholder", adjustdefault[type] ).data("tooltip", adjustTooltip[ type ] ).trigger("change")
 
             $("#asg-policy-adjust").on "change", ()->
@@ -473,7 +478,7 @@ define [ '../base/view',
                 uid              : $("#property-asg-policy").data("uid")
                 name             : $("#asg-policy-name").val()
                 cooldown         : $("#asg-policy-cooldown").val() * 60
-                minAdjustStep    : $("#asg-policy-step").val()
+                minAdjustStep    : ""
                 adjustment       : $("#asg-policy-adjust").val()
                 adjustmentType   : $("#asg-policy-adjust-type .selected").data("id")
                 state            : $("#asg-policy-trigger .selected").data("id")
@@ -487,6 +492,9 @@ define [ '../base/view',
                     statistic          : $("#asg-policy-statistics .selected").data("id")
                     threshold          : $("#asg-policy-threshold").val()
                 }
+
+            if data.adjustmentType is 'PercentChangeInCapacity'
+                data.minAdjustStep = $("#asg-policy-step").val()
 
             if data.sendNotification
                 selectedTopicData = $('.policy-sns-placeholder .selected').data()

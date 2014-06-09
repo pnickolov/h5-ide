@@ -171,14 +171,14 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
                 finHandler()
 
         errorHandler: ( awsError ) ->
-            notification 'error', awsError.awsResult
+            @modal.error awsError.awsResult
 
         # actions
         create: ( invalid ) ->
             that = @
             @switchAction 'processing'
             topicId = @M$( '.dd-topic-name .selected' ).data 'id'
-            protocol = @M$( '.dd-protocol .selection' ).text()
+            protocol = @M$( '.dd-protocol .selected ' ).data 'id'
             topicName = @M$( '#create-topic-name' ).val()
             displayName = @M$( '#create-display-name' ).val()
             endpoint = @M$( '#create-endpoint' ).val()
@@ -191,8 +191,8 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
                         notification 'info', 'Create Subscription Succeed'
                         that.modal.cancel()
                     .fail ( awsError ) ->
-                        that.modal.cancel()
-                        errorHandler awsError
+                        that.errorHandler awsError
+
 
 
             if topicId is '@new'
@@ -201,8 +201,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
                     .save()
                     .then(createSub)
                     .fail ( awsError ) ->
-                        that.modal.cancel()
-                        errorHandler awsError
+                        that.errorHandler awsError
 
             else
                 topicModel = @topicCol.get topicId

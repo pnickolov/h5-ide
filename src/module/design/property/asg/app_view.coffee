@@ -373,7 +373,7 @@ define [ '../base/view',
                 uid              : $("#property-asg-policy").data("uid")
                 name             : $("#asg-policy-name").val()
                 cooldown         : $("#asg-policy-cooldown").val() * 60
-                minAdjustStep    : $("#asg-policy-step").val()
+                minAdjustStep    : ""
                 adjustment       : $("#asg-policy-adjust").val()
                 adjustmentType   : $("#asg-policy-adjust-type .selected").data("id")
                 state            : $("#asg-policy-trigger .selected").data("id")
@@ -387,6 +387,10 @@ define [ '../base/view',
                     statistic          : $("#asg-policy-statistics .selected").data("id")
                     threshold          : $("#asg-policy-threshold").val()
                 }
+
+
+            if data.adjustmentType is 'PercentChangeInCapacity'
+                data.minAdjustStep = $("#asg-policy-step").val()
 
             if data.sendNotification
                 selectedTopicData = $('.policy-sns-placeholder .selected').data()

@@ -142,7 +142,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
         validate: ( action ) ->
             switch action
                 when 'create'
-                    true
+                    return not @M$( '#create-topic-name' ).parsley 'validateForm'
 
         genDeleteFinish: ( times ) ->
             success = []
@@ -175,6 +175,8 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
 
         # actions
         create: ( invalid ) ->
+            if invalid then return false
+
             that = @
             @switchAction 'processing'
             topicId = @M$( '.dd-topic-name .selected' ).data 'id'
@@ -336,20 +338,36 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
                         return 'Display Name is required if subscription uses SMS protocol.'
                     null
 
+                that.M$( '#create-topic-name' ).parsley 'custom', ( value ) ->
+                    if that.topicCol.where( Name: value ).length
+                        return 'Topic name is already taken.'
+                    null
 
 
-                allTextBox = that.M$( '.slide-create input[type=text]' )
+
+                $allTextBox = that.M$( '.slide-create input[type=text]' )
+
+                validateRequired = ->
+                    pass = true
+
+                    $allTextBox.each ->
+                        if @id is 'create-display-name'
+                            selectedProto = that.M$('.dd-protocol .selected').data 'id'
+                            if selectedProto is 'sms'
+                                pass = false if not @value.trim().length
+                        else
+                            pass = false if not @value.trim().length
+                    pass
 
                 processCreateBtn = ( event, showError ) ->
                     $target = event and $( event.currentTarget ) or $( '#create-topic-name' )
-                    showError = false if not showError
 
-                    if $target.parsley 'validateForm', showError
+                    if validateRequired()
                         that.M$( '.slide-create .do-action' ).prop 'disabled', false
                     else
                         that.M$( '.slide-create .do-action' ).prop 'disabled', true
 
-                allTextBox.on 'keyup', processCreateBtn
+                $allTextBox.on 'keyup', processCreateBtn
 
                 that.M$( '.dd-protocol' ).off( 'OPTION_CHANGE' ).on 'OPTION_CHANGE', ( id ) ->
                     updateEndpoint id

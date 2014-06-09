@@ -2405,8 +2405,8 @@ module.exports =
       en: "Filter by region name"
       zh: ""
 
-    PROP_SNAPSHOT_FILTER_SNAPSHOT:
-      en: "Filter by Snapshot id"
+    PROP_SNAPSHOT_FILTER_VOLUME:
+      en: "Filter by volume id"
       zh: ""
 
     PROP_VOLUME_DEVICE_NAME:

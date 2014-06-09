@@ -2406,7 +2406,7 @@ module.exports =
       zh: ""
 
     PROP_SNAPSHOT_FILTER_VOLUME:
-      en: "Filter by volume id"
+      en: "Filter by Volume ID"
       zh: ""
 
     PROP_VOLUME_DEVICE_NAME:

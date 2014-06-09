@@ -20,7 +20,7 @@
             <label for="{{id}}"></label>
         </div>
     </td>
-    <td><div class="manager-content-main">{{id}}</div><span class="manager-content-sub">{{name}}</span></td>
+    <td><div class="manager-content-main">{{#if name}}{{name}}{{else}}&lt;No Name&gt;{{/if}}</div><span class="manager-content-sub">{{id}}</span></td>
     <td>{{volumeSize}} GiB</td>
     <td>
         <div class="manager-content-main">{{#if completed}}<i class="status status-green icon-label"></i> Completed{{else}}<i class="status status-yellow icon-label"></i> Pending - {{progress}}%{{/if}}</div>
@@ -51,7 +51,7 @@
             <div class="control-group clearfix">
                 <label for="property-snapshot-name-create">{{ i18n "PROP_SNAPSHOT_SET_NAME" }}</label>
                 <div>
-                    <input id="property-snapshot-name-create" class="input tooltip" data-tooltip="{{i18n 'PROP_SNAPSHOT_SET_NAME_TIP'}}" type="text" maxlength="255" data-type="domain" data-ignore="true" placeholder="Allow alpha number, _ or - up to 255 characters.">
+                    <input id="property-snapshot-name-create" class="input" type="text" maxlength="255" data-type="domain" data-ignore="true" placeholder="Allow alpha number, _ or - up to 255 characters.">
                 </div>
             </div>
 
@@ -65,7 +65,7 @@
             <div class="control-group clearfix property-content" style="background: none">
                 <label for="property-snapshot-desc-create">{{ i18n "PROP_SNAPSHOT_SET_DESC"}}</label>
                 <div>
-                    <input id='property-snapshot-desc-create' class="input tooltip" placeholder="Up to 255 characters" data-tooltip="{{i18n 'PROP_SNAPSHOT_SET_DESC_TIP'}}" type="text"/>
+                    <input id='property-snapshot-desc-create' class="input" placeholder="Up to 255 characters" type="text"/>
                 </div>
             </div>
 
@@ -93,7 +93,7 @@
             <div class="control-group clearfix">
                 <label for="property-snapshot-name">{{ i18n "PROP_SNAPSHOT_SET_NEW_NAME" }}</label>
                 <div>
-                    <input id="property-snapshot-name" class="input tooltip" data-tooltip="{{i18n 'PROP_VPC_TIP_ENTER_THE_NEW_SNAPSHOT_NAME'}}" type="text" maxlength="255" data-type="domain" value="{{originSnapshot.id}}-copy" data-ignore="true">
+                    <input id="property-snapshot-name" class="input" type="text" maxlength="255" data-type="domain" value="{{originSnapshot.id}}-copy" data-ignore="true">
                 </div>
             </div>
 
@@ -107,7 +107,7 @@
             <div class="control-group clearfix property-content" style="background: none">
                 <label for="property-snapshot-desc">{{ i18n "PROP_SNAPSHOT_SET_DESC"}}</label>
                 <div>
-                    <input id='property-snapshot-desc' class="input tooltip" data-tooltip="{{i18n 'PROP_SNAPSHOT_SET_DESC_TIP'}}" value="[Copied {{originSnapshot.id}} from {{region}}]" type="text"/>
+                    <input id='property-snapshot-desc' class="input" value="[Copied {{originSnapshot.id}} from {{region}}]" type="text"/>
                 </div>
             </div>
 

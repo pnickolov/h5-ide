@@ -156,10 +156,8 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
                 else if success.length > 1
                     notification 'info', "Selected #{success.length} SNS topic are deleted."
 
-                if not that.modal.getChecked().length
-                    that.M$( '#t-m-select-all' )
-                        .get( 0 )
-                        .checked = false
+                if not that.topicCol.length
+                    that.modal.unCheckSelectAll()
 
                 _.each error, ( s ) ->
                     console.log(s)
@@ -173,14 +171,14 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
                 finHandler()
 
         errorHandler: ( awsError ) ->
-            notification 'error', awsError.awsResult
+            @modal.error awsError.awsResult
 
         # actions
         create: ( invalid ) ->
             that = @
             @switchAction 'processing'
             topicId = @M$( '.dd-topic-name .selected' ).data 'id'
-            protocol = @M$( '.dd-protocol .selection' ).text()
+            protocol = @M$( '.dd-protocol .selected ' ).data 'id'
             topicName = @M$( '#create-topic-name' ).val()
             displayName = @M$( '#create-display-name' ).val()
             endpoint = @M$( '#create-endpoint' ).val()
@@ -193,8 +191,8 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
                         notification 'info', 'Create Subscription Succeed'
                         that.modal.cancel()
                     .fail ( awsError ) ->
-                        that.modal.cancel()
-                        errorHandler awsError
+                        that.errorHandler awsError
+
 
 
             if topicId is '@new'
@@ -203,8 +201,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
                     .save()
                     .then(createSub)
                     .fail ( awsError ) ->
-                        that.modal.cancel()
-                        errorHandler awsError
+                        that.errorHandler awsError
 
             else
                 topicModel = @topicCol.get topicId
@@ -329,30 +326,34 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
                         if type and value and ( not MC.validate type, value )
                             return errorMsg
 
-                    if endPoint.val().length
-                        endPoint.parsley 'validate'
-
                     null
 
                 updateEndpoint 'email'
 
-                that.M$( '#create-topic-name' ).parsley 'custom', ( value ) ->
+                that.M$( '#create-display-name' ).parsley 'custom', ( value ) ->
                     selectedProto = that.M$('.dd-protocol .selected').data 'id'
-                    if selectedProto is 'sms'
+                    if selectedProto is 'sms' and not value
                         return 'Display Name is required if subscription uses SMS protocol.'
                     null
 
+
+
                 allTextBox = that.M$( '.slide-create input[type=text]' )
 
-                processCreateBtn = ( event ) ->
-                    if $(event.currentTarget).parsley 'validateForm', false
+                processCreateBtn = ( event, showError ) ->
+                    $target = event and $( event.currentTarget ) or $( '#create-topic-name' )
+                    showError = false if not showError
+
+                    if $target.parsley 'validateForm', showError
                         that.M$( '.slide-create .do-action' ).prop 'disabled', false
                     else
                         that.M$( '.slide-create .do-action' ).prop 'disabled', true
 
                 allTextBox.on 'keyup', processCreateBtn
 
-                that.M$( '.dd-protocol' ).off( 'OPTION_CHANGE' ).on 'OPTION_CHANGE', updateEndpoint
+                that.M$( '.dd-protocol' ).off( 'OPTION_CHANGE' ).on 'OPTION_CHANGE', ( id ) ->
+                    updateEndpoint id
+                    processCreateBtn null, true
 
                 that.M$( '.dd-topic-name' ).off( 'OPTION_CHANGE' ).on 'OPTION_CHANGE', ( event, id, data ) ->
                     if id is '@new'

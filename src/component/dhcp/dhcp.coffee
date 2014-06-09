@@ -215,7 +215,7 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
                     else
                         return true
                 if not _.some data, validate
-                    notification 'error', "Please provide at least one field."
+                    @manager.error "Please provide at least one field."
                     return false
                 if data['netbios-node-type'][0] is 0 then data['netbios-node-type'] = []
                 @switchAction 'processing'
@@ -242,12 +242,12 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
                 deleteErrorCount = 0
                 @manager.cancel()
         afterCreated: (result)->
-            @manager.cancel()
             if result.error
-                notification 'error', "Create failed because of: "+result.awsResult
+                @manager.error "Create failed because of: "+ (result.awsResult || result.msg)
+                @switchAction()
                 return false
             notification 'info', "New DHCP Option is created successfully"
-
+            @manager.cancel()
         validate: (action)->
             switch action
                 when 'create'

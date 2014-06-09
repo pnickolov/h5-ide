@@ -48,7 +48,7 @@
         </div>
         <div>
             <label for="create-display-name">Display Name</label>
-            <input class="input" type="text" id="create-display-name" data-ignore="true" data-ignore-regexp="^[a-zA-Z0-9,_-]*$" maxlength="255" placeholder="Required for SMS subscriptions (up to 10 characters)">
+            <input class="input" type="text" id="create-display-name" maxlength="255" placeholder="Required for SMS subscriptions (up to 10 characters)">
         </div>
         <div>
             <label>Protocol</label>

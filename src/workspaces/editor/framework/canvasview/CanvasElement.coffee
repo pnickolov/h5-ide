@@ -1,4 +1,4 @@
-define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.constant" ], ( CanvasManager, ide_event, constant, lang )->
+define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "CloudResources", "MC.canvas.constant" ], ( CanvasManager, ide_event, constant, lang, CloudResources )->
 
   Design = null
 
@@ -506,12 +506,18 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
     CanvasManager.removeClass @element(), "deleted"
 
     # Get resource data
-    if not MC.data.resource_list[ design.region() ][ m.get("appId") ]
-      CanvasManager.addClass @element(), "deleted"
+    if m.type and design.region()
+      res_list = CloudResources( m.type, design.region() )
+      if res_list and res_list.length > 0
+        data = res_list.get(m.get('appId'))
+      if not data
+        CanvasManager.addClass @element(), "deleted"
     null
 
   CanvasElement.prototype.updatexGWAppState = ()->
     m = @model
+    design = m.design()
+
     if m.design().modeIsStack() or not m.get("appId")
       return
 
@@ -520,7 +526,10 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
     CanvasManager.removeClass el, "deleted"
 
     # Get xGW state
-    data = MC.data.resource_list[ m.design().region() ][ m.get("appId") ]
+    if m.type and design.region()
+      res_list = CloudResources( m.type, design.region() )
+      if res_list and res_list.length > 0
+        data = res_list.get(m.get('appId'))
 
     if data
       if m.get("appId").indexOf("igw-") is 0

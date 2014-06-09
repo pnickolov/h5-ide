@@ -16,6 +16,9 @@ define ['../base/model', 'constant', "Design" ], ( PropertyModel, constant, Desi
 
       design = Design.instance()
 
+      if not design.get("name")
+        return null
+
       agentData = design.get('agent')
 
       @set {

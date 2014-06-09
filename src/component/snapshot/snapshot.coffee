@@ -110,11 +110,19 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
             @manager.on 'action', @doAction, @
             @manager.on 'close', =>
                 @manager.remove()
+            @manager.on 'checked', @processDuplicate, @
+
             @manager.render()
             if not App.user.hasCredential()
                 @manager?.render 'nocredential'
                 return false
             @initManager()
+
+        processDuplicate: ( event, checked ) ->
+            if checked.length is 1
+                @M$('[data-btn=duplicate]').prop 'disabled', false
+            else
+                @M$('[data-btn=duplicate]').prop 'disabled', true
 
         refresh: ->
             fetched = false

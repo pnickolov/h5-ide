@@ -4,10 +4,12 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
   # Helpers
   CREATE_REF = ( comp )-> "@{#{comp.uid}.r.p}"
   UID        = MC.guid
+  DEFAULT_SG = {}
   NAME       = ( res_attributes )->
     if res_attributes.tagSet
       name = res_attributes.tagSet.name || res_attributes.tagSet.Name
     name || res_attributes.id
+
 
   # Class used to collect components / layouts
   class ConverterData
@@ -22,10 +24,10 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
       @component = {}
       @layout    = {}
 
-    add : ( type_string, res_attributes, component_resources )->
+    add : ( type_string, res_attributes, component_resources, default_name )->
       comp =
         uid  : UID()
-        name : NAME( res_attributes )
+        name : if default_name then default_name else NAME( res_attributes )
         type : constant.RESTYPE[ type_string ]
         resource : component_resources
       @component[ comp.uid ] = comp
@@ -49,6 +51,12 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
       @addLayout( az, true, @theVpc )
       @azs[ azName ] = az
       az
+
+    _mapProperty : ( aws_json, madeira_json ) ->
+      for k, v of aws_json
+        if typeof(v) is "string" and madeira_json.resource[k[0].toUpperCase() + k.slice(1)] isnt undefined
+          madeira_json.resource[k[0].toUpperCase() + k.slice(1)] = v
+      madeira_json
 
   # The order of Converters functions are important!
   # Some converter must be behind other converters.
@@ -119,6 +127,68 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         @addLayout( rtbComp, true, @theVpc )
       return
 
+
+    ()-> # SG
+      for aws_sg in @CrPartials( "SG" ).where({vpcId:@vpcId}) || []
+        aws_sg = aws_sg.attributes
+
+        sg_json =
+          "resource":
+            "IpPermissions": []
+            "IpPermissionsEgress": []
+            "GroupId": ""
+            "Default": false
+            "VpcId": ""
+            "GroupName": ""
+            "OwnerId": ""
+            "GroupDescription": ""
+
+        sg_json = @_mapProperty aws_sg, sg_json
+        #generate ipPermissions
+        if aws_sg.ipPermissions
+          for sg_rule in aws_sg.ipPermissions || []
+            ipranges = ''
+            if sg_rule.groups and sg_rule.groups.item and sg_rule.groups.item.length>0 and sg_rule.groups.item[0].groupId
+              ipranges = sg_rule.groups.item[0].groupId
+            else if sg_rule.ipRanges and sg_rule.ipRanges.item and sg_rule.ipRanges.item.length>0
+              ipranges = sg_rule.ipRanges.item[0].cidrIp
+
+            if ipranges
+              sg_json.resource.IpPermissions.push {
+                "IpProtocol": sg_rule.ipProtocol,
+                "IpRanges": ipranges,
+                "FromPort": if sg_rule.fromPort then sg_rule.fromPort else "",
+                "ToPort": if sg_rule.toPort then sg_rule.toPort else ""
+              }
+        #generate ipPermissionEgress
+        if aws_sg.ipPermissionsEgress
+          for sg_rule in aws_sg.ipPermissionsEgress || []
+            ipranges = ''
+            if sg_rule.groups and sg_rule.groups.item and sg_rule.groups.item.length>0 and sg_rule.groups.item[0].groupId
+              ipranges = sg_rule.groups.item[0].groupId
+            else if sg_rule.ipRanges and sg_rule.ipRanges.item and sg_rule.ipRanges.item.length>0
+              ipranges = sg_rule.ipRanges.item[0].cidrIp
+
+            if ipranges
+              sg_json.resource.IpPermissionsEgress.push {
+                "IpProtocol": sg_rule.ipProtocol,
+                "IpRanges": ipranges,
+                "FromPort": if sg_rule.fromPort then sg_rule.fromPort else "",
+                "ToPort": if sg_rule.toPort then sg_rule.toPort else ""
+              }
+
+        sgComp = @add( "SG", aws_sg, sg_json.resource, aws_sg.groupName )
+        if aws_sg.groupName is "default"
+          DEFAULT_SG["default"] = sgComp
+        else if aws_sg.groupName.indexOf("-DefaultSG-app-") isnt -1
+          DEFAULT_SG["DefaultSG"] = sgComp
+        return
+
+    ()-> # KP
+      for kp in @CrPartials( "KP" ) || []
+        kp = kp.attributes
+        return
+
   ]
 
   # getVOL      : ()->
@@ -155,6 +225,27 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
 
     cd = new ConverterData( region, vpcId )
     func.call( cd ) for func in Converters
+
+    # find default SG
+    if DEFAULT_SG["DefaultSG"]
+      #old app
+      default_sg = cd.component[ DEFAULT_SG["DefaultSG"].uid ]
+      if default_sg
+        default_sg.name = "DefaultSG"
+        default_sg.resource.Default = true
+      #delete "default" SG component
+      if DEFAULT_SG["default"] and cd.component[ DEFAULT_SG["default"].uid ]
+        delete cd.component[ DEFAULT_SG["default"].uid ]
+    else if DEFAULT_SG["default"]
+      #new app
+      default_sg = cd.component[ DEFAULT_SG["default"].uid ]
+      if default_sg
+        default_sg.name = "DefaultSG"
+        default_sg.resource.Default   = true
+        default_sg.resource.GroupName = "DefaultSG" #do not use 'default' as GroupName
+      else
+        console.warn "can not found default sg in component"
+
     cd
 
   __createRequestParam = ( region, vpcId )->

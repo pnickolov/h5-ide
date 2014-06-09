@@ -242,8 +242,8 @@ define [
         null
         event_data.target_type
         event_data.node_type
-        Math.round((evt.pageX - canvas_offset.left) / 10)
-        Math.round((evt.pageY - canvas_offset.top)  / 10)
+        Math.round((evt.pageX - event_data.offsetX + 10 - canvas_offset.left) / 10)
+        Math.round((evt.pageY - event_data.offsetY + 10 - canvas_offset.top)  / 10)
         event_data.comp_size[0]
         event_data.comp_size[1]
       )
@@ -286,12 +286,11 @@ define [
       node_type      = event_data.node_type
       target_type    = event_data.target_type
       canvas_offset  = event_data.canvas_offset
-      shadow_offset  = $item.position()
       node_option    = event_data.target.data('option') || {}
       component_size = event_data.comp_size
       coordinate     = {
-        x : (shadow_offset.left - canvas_offset.left) / 10
-        y : (shadow_offset.top - canvas_offset.top) / 10
+        x : Math.round((event.pageX - event_data.offsetX + 10 - canvas_offset.left) / 10)
+        y : Math.round((event.pageY - event_data.offsetY + 10 - canvas_offset.top) / 10)
       }
       if coordinate.x > 0 && coordinate.y > 0
         if node_type is "node"

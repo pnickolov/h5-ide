@@ -97,10 +97,11 @@ define [ "../ResourceModel", "../ComplexResModel", "constant" ], ( ResourceModel
           ScalingAdjustment    : @get("adjustment")
           PolicyName           : @get("name")
           PolicyARN            : @get("appId")
-          MinAdjustmentStep    : @get("minAdjustStep")
           Cooldown             : Math.round( @get("cooldown") / 60 ) * 60
           AutoScalingGroupName : @__asg.createRef( "AutoScalingGroupName" )
           AdjustmentType       : @get("adjustmentType")
+          # Correct old wrong json
+          MinAdjustmentStep    : if @get("adjustmentType") is 'PercentChangeInCapacity' then @get("minAdjustStep") else ''
 
 
       alarmData = @get("alarmData")

@@ -470,7 +470,13 @@ define [
             "Block Devices"      : @formartDetail "BlockDevice", data.blockDeviceMapping, "deviceName"
             "Network Interface"  : @formartDetail "ENI", data.networkInterfaceSet, "networkInterfaceId"
           }
-
+        when 'EIP'
+            return {
+                'Public IP' : data.publicIp
+                'Domain'    : data.domain
+                'EIP Id'    : data.id
+                'Category'  : data.category
+            }
 
     # some format to the data so it can show in handlebars template
     formartDetail: (type, array, key, force)->

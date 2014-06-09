@@ -188,7 +188,7 @@
     <tbody>{{#each this}}{{#with attributes}} <tr>
         <td>{{ publicIp }}</td>
         <td>{{ instanceId }}</td>
-        <td><i title="{{i18n 'DASH_TIT_VIEW_RESOURCE_DETAIL'}}" class="icon-detail"></i></td>
+        <td><i title="{{i18n 'DASH_TIT_VIEW_RESOURCE_DETAIL'}}" class="icon-detail" data-id="{{id}}"></i></td>
       </tr>{{/with}}
       {{else}}
       <div class="blank-widget">{{i18n "DASH_TIP_NO_RESOURCE_LEFT"}}{{i18n "DASH_LBL_ELASTIC_IP"}}{{i18n "DASH_TIP_NO_RESOURCE_RIGHT"}}.</div>

@@ -168,7 +168,7 @@ define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalpl
 
         __processDelBtn: ( enable ) ->
             if arguments.length is 1
-                that.$('[data-btn=delete]').prop enable
+                @$('[data-btn=delete]').prop 'disabled', not enable
             else
                 that = @
                 _.defer () ->

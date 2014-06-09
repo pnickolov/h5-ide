@@ -191,7 +191,7 @@ define [
         region : design.get("region")
         stack  : design.serialize()
       }).then ( data )->
-        btn = modal.tpl.find("a.btn-blue").text(lang.ide.HEAD_INFO_LOADING).removeClass("disabled")
+        btn = modal.tpl.find("a.btn-blue").text(lang.ide.TOOL_POP_BTN_EXPORT_CF).removeClass("disabled")
         JsonExporter.genericExport btn, data, "#{name}.json"
         return
       , ( err )->

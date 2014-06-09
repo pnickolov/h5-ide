@@ -11,10 +11,10 @@
 		<div class="scrollbar-horizontal-wrap"><div class="scrollbar-horizontal-thumb"></div></div>
 
 		<div id="canvas_body" class="canvas-view-normal pos-r scroll-content">
-			<button class="svg_resizer icon-resize-down tooltip" data-tooltip='{{{ i18n "CVS_TIP_EXPAND_H" }}}'></button>
-			<button class="svg_resizer icon-resize-up tooltip" data-tooltip='{{{ i18n "CVS_TIP_SHRINK_H" }}}'></button>
-			<button class="svg_resizer icon-resize-right tooltip" data-tooltip='{{{ i18n "CVS_TIP_EXPAND_W" }}}'></button>
-			<button class="svg_resizer icon-resize-left tooltip" data-tooltip='{{{ i18n "CVS_TIP_SHRINK_W" }}}'></button>
+			<button class="svg_resizer icon-resize-down tooltip" data-tooltip='{{{ i18n "CVS_TIP_EXPAND_H" }}}' onclick="MC.canvas.resize('height', 'expand')"></button>
+			<button class="svg_resizer icon-resize-up tooltip" data-tooltip='{{{ i18n "CVS_TIP_SHRINK_H" }}}' onclick="MC.canvas.resize('height', 'shrink')"></button>
+			<button class="svg_resizer icon-resize-right tooltip" data-tooltip='{{{ i18n "CVS_TIP_EXPAND_W" }}}' onclick="MC.canvas.resize('width', 'expand')"></button>
+			<button class="svg_resizer icon-resize-left tooltip" data-tooltip='{{{ i18n "CVS_TIP_SHRINK_W" }}}' onclick="MC.canvas.resize('width', 'shrink')"></button>
 
 			<svg id="svg_canvas" xmlns="http://www.w3.org/2000/svg" version="1.2">
 				<line id="svg_padding_line" x1="0" y1="0" x2="1" y2="1"/>

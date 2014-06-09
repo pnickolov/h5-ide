@@ -127,8 +127,7 @@ MC.canvas = {
 		if (type === 'expand')
 		{
 			canvas_size[ key ] += 60;
-
-			$('#svg_resizer_' + target + '_shrink').show();
+			$("#canvas_body").children(".svg_resizer.icon-resize-" + (key ? "up" : "left")).show();
 		}
 
 		if (type === 'shrink')
@@ -160,7 +159,7 @@ MC.canvas = {
 			{
 				canvas_size[ key ] = 20 + target_value;
 
-				$('#svg_resizer_' + target + '_shrink').hide();
+				$("#canvas_body").children(".svg_resizer.icon-resize-" + (key ? "up" : "left")).hide();
 			}
 			else
 			{
@@ -168,7 +167,7 @@ MC.canvas = {
 
 				if (canvas_size[ key ] === 20 + target_value)
 				{
-					$('#svg_resizer_' + target + '_shrink').hide();
+					$("#canvas_body").children(".svg_resizer.icon-resize-" + (key ? "up" : "left")).hide();
 				}
 			}
 		}

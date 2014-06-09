@@ -45,6 +45,12 @@ define [ "Workspace", "./OpsViewBase", "./template/TplOpsEditor", "OpsModel", "D
     # Return true if the data is ready.
     isReady : ()-> @__isJsonLoaded && @__hasAdditionalData
 
+    onOpsModelStateChanged : ()->
+      switch @opsModel.get("state")
+        when OpsModel.State.Destroyed
+          @remove()
+          return
+
     ###
       Internal methods.
     ###
@@ -56,6 +62,10 @@ define [ "Workspace", "./OpsViewBase", "./template/TplOpsEditor", "OpsModel", "D
 
       @opsModel = opsModel
       @listenTo @opsModel, "jsonDataLoaded", @jsonLoaded
+      # OpsModel's State
+      # OpsModel doesn't trigger "change:state" when a opsModel is set to "destroyed"
+      @listenTo @opsModel, "destroy",      @onOpsModelStateChanged
+      @listenTo @opsModel, "change:state", @onOpsModelStateChanged
 
       # Load Datas
       self = @

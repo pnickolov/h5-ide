@@ -19,7 +19,7 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
     Updating     : 5
     Stopping     : 6
     Terminating  : 7
-    Destroyed    : 8
+    Destroyed    : 8 # When OpsModel changes to this State, it doesn't trigger "change:state" event, instead, it triggers "destroy" event and its collection will trigger "update" event.
 
   OpsModelStateDesc = ["", "Running", "Stopped", "Starting", "Starting", "Updating", "Stopping", "Terminating", ""]
 
@@ -147,6 +147,10 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
         self.__saving   = false
         self.trigger "jsonDataSaved", self
 
+        # The stack is a newly created stack. We would like to trigger "update" in the collection
+        # So that other's can update their view.
+        if attr.id then self.collection.__triggerUpdate self
+
         return self
       , ( err )->
         self.__saving = false
@@ -156,8 +160,7 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
     remove : ()->
       if @isApp() then return @__returnErrorPromise()
 
-      @set "state", OpsModelState.Destroyed
-      @trigger 'destroy', @, @collection
+      @__destroy()
 
       if not @get("id")
         d = Q.defer()

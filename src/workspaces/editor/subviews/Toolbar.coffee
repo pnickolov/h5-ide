@@ -3,11 +3,13 @@ define [
   "OpsModel"
   "../template/TplOpsEditor"
   "component/exporter/Thumbnail"
+  "component/exporter/JsonExporter"
   "ApiRequest"
   "i18n!nls/lang.js"
+  "UI.modalplus"
   "UI.notification"
   "backbone"
-], ( OpsModel, OpsEditorTpl, Thumbnail, ApiRequest, lang )->
+], ( OpsModel, OpsEditorTpl, Thumbnail, JsonExporter, ApiRequest, lang, Modal )->
 
   Backbone.View.extend {
 
@@ -18,7 +20,7 @@ define [
       "click .icon-new-stack"              : "createStack"
       "click .icon-zoom-in"                : "zoomIn"
       "click .icon-zoom-out"               : "zoomOut"
-      "click .icon-export-png"             : "exportPng"
+      "click .icon-export-png"             : "exportPNG"
       "click .icon-export-json"            : "exportJson"
       "click .icon-toolbar-cloudformation" : "exportCF"
       "OPTION_CHANGE .toolbar-line-style"  : "setTbLineStyle"
@@ -122,7 +124,78 @@ define [
         @$el.find(".icon-zoom-out").removeAttr("disabled")
       return
 
-    exportPng : ()->
+    exportPNG : ()->
+      modal = new Modal {
+        title         : "Export PNG"
+        template      : OpsEditorTpl.export.PNG()
+        width         : "470"
+        disableFooter : true
+        compact       : true
+        onClose : ()-> modal = null; return
+      }
+
+      design = @workspace.design
+      name   = design.get("name")
+      Thumbnail.exportPNG $("#svg_canvas"), {
+          isExport   : true
+          createBlob : true
+          name       : name
+          id         : design.get("id")
+          onFinish   : ( data ) ->
+            if not modal then return
+            modal.tpl.find(".loading-spinner").remove()
+            modal.tpl.find("section").show().prepend("<img style='max-height:100%;display:inline-block;' src='#{data.image}' />")
+            btn = modal.tpl.find("a.btn-blue")
+            if data.blob
+              btn.click ()-> JsonExporter.download( data.blob, "#{name}.png" ); false
+            else
+              btn.attr {
+                href     : data.image
+                download : "#{name}.png"
+              }
+            modal.resize()
+            return
+      }
+      return
+
     exportJson : ()->
+      design   = @workspace.design
+      username = App.user.get('username')
+      date     = MC.dateFormat(new Date(), "yyyy-MM-dd")
+      name     = [design.get("name"), username, date].join("-")
+
+      data = JsonExporter.exportJson design.serialize(), "#{name}.json"
+      if data
+        # The browser doesn't support Blob. Fallback to show a dialog to
+        # allow user to download the file.
+        new Modal {
+          title         : lang.ide.TOOL_EXPORT_AS_JSON
+          template      : OpsEditorTpl.export.JSON( data )
+          width         : "470"
+          disableFooter : true
+          compact       : true
+        }
+
     exportCF : ()->
+      modal = new Modal {
+        title         : lang.ide.TOOL_POP_EXPORT_CF
+        template      : OpsEditorTpl.export.CF()
+        width         : "470"
+        disableFooter : true
+      }
+
+      design = @workspace.design
+      name   = design.get("name")
+
+      ApiRequest("stack_export_cloudformation", {
+        region : design.get("region")
+        stack  : design.serialize()
+      }).then ( data )->
+        btn = modal.tpl.find("a.btn-blue").text(lang.ide.HEAD_INFO_LOADING).removeClass("disabled")
+        JsonExporter.genericExport btn, data, "#{name}.json"
+        return
+      , ( err )->
+        modal.tpl.find("a.btn-blue").text("Fail to export...")
+        notification "error", "Fail to export to AWS CloudFormation Template, Error code:#{err.error}"
+        return
   }

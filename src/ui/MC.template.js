@@ -216,50 +216,6 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", escapeExpression=this.escapeExpression;
 
 
-  buffer += "<div id=\"modal-export-cf\" style=\"width:468px\">\n	<div class=\"modal-header\"> <h3>"
-    + escapeExpression(helpers.i18n.call(depth0, "TOOL_POP_EXPORT_CF", {hash:{},data:data}))
-    + "</h3><i class=\"modal-close\">&times;</i> </div>\n	<div class=\"modal-body\">\n		<div class=\"modal-text-wraper\"> <div class=\"modal-center-align-helper\">\n			<div class=\"modal-text-major\"></div>\n			<div class=\"modal-text-minor\">"
-    + escapeExpression(helpers.i18n.call(depth0, "TOOL_POP_EXPORT_CF_INFO", {hash:{},data:data}))
-    + "</div>\n		</div> </div>\n	</div>\n	<div class=\"modal-footer\">\n		<a id=\"tpl-download\" class=\"btn btn-blue modal-close disabled\" target=\"_blank\">"
-    + escapeExpression(helpers.i18n.call(depth0, "TOOL_POP_BTN_EXPORT_CF", {hash:{},data:data}))
-    + "</a>\n		<button class=\"btn modal-close btn-silver\">"
-    + escapeExpression(helpers.i18n.call(depth0, "TOOL_POP_BTN_CANCEL", {hash:{},data:data}))
-    + "</button>\n	</div>\n</div>";
-  return buffer;
-  };
-TEMPLATE.exportCloudFormation=Handlebars.template(__TEMPLATE__);
-
-
-__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, escapeExpression=this.escapeExpression, functionType="function";
-
-
-  buffer += "<div style=\"width:468px\">\n	<div class=\"modal-header\"> <h3>"
-    + escapeExpression(helpers.i18n.call(depth0, "TOOL_EXPORT_AS_JSON", {hash:{},data:data}))
-    + "</h3><i class=\"modal-close\">&times;</i> </div>\n	<div class=\"modal-body\">\n		<div class=\"modal-text-wraper\"> <div class=\"modal-center-align-helper\">\n			<div class=\"modal-text-major\"></div>\n			<div class=\"modal-text-minor\">"
-    + escapeExpression(helpers.i18n.call(depth0, "TOOL_POP_BODY_EXPORT_AS_JSON", {hash:{},data:data}))
-    + "</div>\n		</div> </div>\n	</div>\n	<div class=\"modal-footer\">\n		<a class=\"btn btn-blue modal-close\" href=\""
-    + escapeExpression(((stack1 = (depth0 && depth0.data)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" target=\"_blank\" download=\""
-    + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\">"
-    + escapeExpression(helpers.i18n.call(depth0, "TOOL_POP_BTN_DOWNLOAD", {hash:{},data:data}))
-    + "</a>\n		<button id=\"tpl-cancel\" class=\"btn modal-close btn-silver\">"
-    + escapeExpression(helpers.i18n.call(depth0, "TOOL_POP_BTN_CANCEL", {hash:{},data:data}))
-    + "</button>\n	</div>\n</div>";
-  return buffer;
-  };
-TEMPLATE.exportJSON=Handlebars.template(__TEMPLATE__);
-
-
-__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", escapeExpression=this.escapeExpression;
-
-
   buffer += "<div style=\"width:468px\">\n	<div class=\"modal-header\"> <h3>"
     + escapeExpression(helpers.i18n.call(depth0, "POP_IMPORT_JSON_TIT", {hash:{},data:data}))
     + "</h3><i class=\"modal-close\">&times;</i> </div>\n	<div class=\"modal-body\" style=\"min-height:0px;\">\n		<div id=\"modal-import-json-dropzone\">"
@@ -270,26 +226,6 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return buffer;
   };
 TEMPLATE.importJSON=Handlebars.template(__TEMPLATE__);
-
-
-__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
-
-
-  buffer += "<div style=\"width:420px\">\n	<div class=\"modal-header\">\n		<h3>"
-    + escapeExpression(((stack1 = (depth0 && depth0.title)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</h3>\n		<i class=\"modal-close\">&times;</i>\n	</div>\n\n	<div class=\"modal-body\">\n		<div class=\"loading-spinner\"></div>\n	</div>\n\n	<div class=\"modal-footer\">\n		<a id=\"btn-confirm\" class=\"btn btn-"
-    + escapeExpression(((stack1 = (depth0 && depth0.color)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" >"
-    + escapeExpression(((stack1 = (depth0 && depth0.confirm)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</a>\n		<button class=\"btn modal-close btn-silver\">"
-    + escapeExpression(helpers.i18n.call(depth0, "TOOL_POP_BTN_CANCEL", {hash:{},data:data}))
-    + "</button>\n	</div>\n</div>";
-  return buffer;
-  };
-TEMPLATE.exportPNG=Handlebars.template(__TEMPLATE__);
 
 
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {

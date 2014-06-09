@@ -111,59 +111,12 @@
 	</div>
 </div>
 
-<!-- {{exportCloudFormation}} -->
-<div id="modal-export-cf" style="width:468px">
-	<div class="modal-header"> <h3>{{i18n "TOOL_POP_EXPORT_CF"}}</h3><i class="modal-close">&times;</i> </div>
-	<div class="modal-body">
-		<div class="modal-text-wraper"> <div class="modal-center-align-helper">
-			<div class="modal-text-major"></div>
-			<div class="modal-text-minor">{{i18n "TOOL_POP_EXPORT_CF_INFO"}}</div>
-		</div> </div>
-	</div>
-	<div class="modal-footer">
-		<a id="tpl-download" class="btn btn-blue modal-close disabled" target="_blank">{{i18n "TOOL_POP_BTN_EXPORT_CF"}}</a>
-		<button class="btn modal-close btn-silver">{{i18n "TOOL_POP_BTN_CANCEL"}}</button>
-	</div>
-</div>
-
-<!-- {{exportJSON}} -->
-<div style="width:468px">
-	<div class="modal-header"> <h3>{{i18n "TOOL_EXPORT_AS_JSON"}}</h3><i class="modal-close">&times;</i> </div>
-	<div class="modal-body">
-		<div class="modal-text-wraper"> <div class="modal-center-align-helper">
-			<div class="modal-text-major"></div>
-			<div class="modal-text-minor">{{i18n "TOOL_POP_BODY_EXPORT_AS_JSON"}}</div>
-		</div> </div>
-	</div>
-	<div class="modal-footer">
-		<a class="btn btn-blue modal-close" href="{{data}}" target="_blank" download="{{name}}">{{i18n "TOOL_POP_BTN_DOWNLOAD"}}</a>
-		<button id="tpl-cancel" class="btn modal-close btn-silver">{{i18n "TOOL_POP_BTN_CANCEL"}}</button>
-	</div>
-</div>
-
 <!-- {{importJSON}} -->
 <div style="width:468px">
 	<div class="modal-header"> <h3>{{i18n "POP_IMPORT_JSON_TIT"}}</h3><i class="modal-close">&times;</i> </div>
 	<div class="modal-body" style="min-height:0px;">
 		<div id="modal-import-json-dropzone">{{i18n "POP_IMPORT_DROP_LBL"}}<label for="modal-import-json-file" class="select-file-link">{{i18n "POP_IMPORT_SELECT_LBL"}}</label><input type="file" id="modal-import-json-file"></div>
 		<div id="import-json-error"></div>
-	</div>
-</div>
-
-<!-- {{exportPNG}} -->
-<div style="width:420px">
-	<div class="modal-header">
-		<h3>{{title}}</h3>
-		<i class="modal-close">&times;</i>
-	</div>
-
-	<div class="modal-body">
-		<div class="loading-spinner"></div>
-	</div>
-
-	<div class="modal-footer">
-		<a id="btn-confirm" class="btn btn-{{color}}" >{{confirm}}</a>
-		<button class="btn modal-close btn-silver">{{i18n "TOOL_POP_BTN_CANCEL"}}</button>
 	</div>
 </div>
 

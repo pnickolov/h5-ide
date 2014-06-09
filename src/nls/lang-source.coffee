@@ -808,8 +808,8 @@ module.exports =
       zh: "导出为亚马逊云编排模板"
 
     TOOL_POP_EXPORT_CF_INFO:
-      en: "This stack has been converted to AWS CloudFormation Template format. Download the template file and upload it in AWS console to create CloudFormation Stack."
-      zh: "这个模块已经被转换成为亚马逊云编排模板格式。请下载这个云编排模板文件并把它上传到亚马逊管理控制台来创建云编排模块。"
+      en: "Download the template file when it's ready, then you can upload it in AWS console to create CloudFormation Stack."
+      zh: "请在数据转换后下载这个云编排模板文件，并把它上传到亚马逊管理控制台来创建云编排模块。"
 
     TOOL_POP_BTN_EXPORT_CF:
       en: "Download Template File"

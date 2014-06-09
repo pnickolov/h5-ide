@@ -60,3 +60,32 @@
 <!-- {{toolbar.BtnApply}} -->
 <button class="tooltip btn-toolbar icon-apply-app toolbar-btn-primary" data-tooltip="{{ i18n 'TOOL_TIP_SAVE_UPDATE_APP' }}">{{ i18n 'TOOL_APPLY_EDIT' }}</button>
 <button class="tooltip btn-toolbar icon-cancel-update-app seperator" data-tooltip="{{ i18n 'TOOL_TIP_CANCEL_UPDATE_APP' }}"></button>
+
+
+<!-- {{export.CF}} -->
+<div class="modal-text-wraper"> <div class="modal-center-align-helper">
+  <div class="modal-text-major"></div>
+  <div class="modal-text-minor">{{i18n "TOOL_POP_EXPORT_CF_INFO"}}</div>
+</div> </div>
+<div style="padding-top:20px;text-align:right;">
+  <a class="btn btn-blue disabled">{{i18n "HEAD_INFO_LOADING"}}</a>
+  <button class="btn modal-close btn-silver">{{i18n "TOOL_POP_BTN_CANCEL"}}</button>
+</div>
+
+<!-- {{export.JSON}} -->
+<div class="modal-text-wraper"> <div class="modal-center-align-helper" style="padding:40px 20px;">
+  <div class="modal-text-major"></div>
+  <div class="modal-text-minor">{{i18n "TOOL_POP_BODY_EXPORT_AS_JSON"}}</div>
+</div> </div>
+<div class="modal-footer">
+  <a class="btn btn-blue modal-close" href="{{data}}" target="_blank" download="{{name}}">{{i18n "TOOL_POP_BTN_DOWNLOAD"}}</a>
+  <button id="tpl-cancel" class="btn modal-close btn-silver">{{i18n "TOOL_POP_BTN_CANCEL"}}</button>
+</div>
+
+<!-- {{export.PNG}} -->
+<div class="loading-spinner"></div>
+<section style="margin:10px 10px 0;max-height:420px;overflow:hidden;text-align:center;display:none;"></section>
+<div class="modal-footer">
+  <a class="btn btn-blue" style="display: inline-block;">Download</a>
+  <button class="btn modal-close btn-silver">Cancel</button>
+</div>

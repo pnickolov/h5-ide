@@ -182,12 +182,14 @@
   height: 70px;
   margin-top: -5px;
   background-position: center;
-  -webkit-transition: all ease-in 0.2s;
-  -moz-transition: all ease-in 0.2s;
-  transition: all ease-in 0.2s;
-  -webkit-transition-property: line-height, padding-left, width, height;
-  -moz-transition-property: line-height, padding-left, width, height;
-  transition-property: line-height, padding-left, width, height; }
+  -webkit-transition: all ease-in 0.15s;
+  -moz-transition: all ease-in 0.15s;
+  transition: all ease-in 0.15s;
+  -webkit-transition-property: line-height, padding-left, width, height, color;
+  -moz-transition-property: line-height, padding-left, width, height, color;
+  transition-property: line-height, padding-left, width, height, color; }
+  #ResourceDragItem.add-to-dom {
+    opacity: 1; }
   #ResourceDragItem.resource-icon-az {
     color: #eee;
     background-image: none;
@@ -207,9 +209,9 @@
       margin: 10px 14px;
       height: 34px;
       width: 30px;
-      -webkit-transition: all ease-in 0.2s;
-      -moz-transition: all ease-in 0.2s;
-      transition: all ease-in 0.2s; }
+      -webkit-transition: all ease-in 0.15s;
+      -moz-transition: all ease-in 0.15s;
+      transition: all ease-in 0.15s; }
     #ResourceDragItem.resource-icon-az.add-to-dom {
       color: #f69300;
       width: 185px;
@@ -219,6 +221,37 @@
       #ResourceDragItem.resource-icon-az.add-to-dom .az-name {
         width: 180px;
         height: 180px; }
+  #ResourceDragItem.resource-icon-asg, #ResourceDragItem.resource-icon-subnet {
+    background-image: none; }
+    #ResourceDragItem.resource-icon-asg:before, #ResourceDragItem.resource-icon-subnet:before {
+      content: " ";
+      display: block;
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: transparent;
+      border: 3px dashed #76d6ff;
+      border-radius: 4px;
+      margin: 10px;
+      height: 44px;
+      width: 44px;
+      -webkit-transition: all ease-in 0.15s;
+      -moz-transition: all ease-in 0.15s;
+      transition: all ease-in 0.15s; }
+    #ResourceDragItem.resource-icon-asg.add-to-dom, #ResourceDragItem.resource-icon-subnet.add-to-dom {
+      width: 150px;
+      height: 150px; }
+      #ResourceDragItem.resource-icon-asg.add-to-dom:before, #ResourceDragItem.resource-icon-subnet.add-to-dom:before {
+        width: 124px;
+        height: 124px; }
+  #ResourceDragItem.resource-icon-subnet:before {
+    border-color: #e0e0e0; }
+  #ResourceDragItem.resource-icon-subnet.add-to-dom {
+    width: 190px;
+    height: 190px; }
+    #ResourceDragItem.resource-icon-subnet.add-to-dom:before {
+      width: 164px;
+      height: 164px; }
 
 .resource-select.selectbox .selection {
   background: #143553;

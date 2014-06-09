@@ -113,7 +113,14 @@ define [
 
     type  : constant.RESTYPE.VGW
     modelIdAttribute : "vpnGatewayId"
-    parseFetchData : ( data )-> data.DescribeVpnGatewaysResponse.vpnGatewaySet?.item
+    parseFetchData : ( data )-> 
+      vgws = data.DescribeVpnGatewaysResponse.vpnGatewaySet?.item
+      for vgw in vgws || []
+        vgw.attachments = vgw.attachments?.item || []
+        vgw.id = vgw.vpnGatewayId
+        if vgw.attachments and vgw.attachments.length>0
+          vgw.vpcId = vgw.attachments[0].vpcId
+      vgws
   }
 
   ### IGW ###
@@ -132,7 +139,6 @@ define [
         #delete igw.internetGatewayId
         if igw.attachmentSet and igw.attachmentSet.length>0
           igw.vpcId = igw.attachmentSet[0].vpcId
-
       igws
   }
 

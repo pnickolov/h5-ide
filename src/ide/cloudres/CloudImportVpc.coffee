@@ -97,7 +97,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         @addLayout( sbComp, true, azComp )
       return
 
-    ()-> # Igw
+    ()-> # IGW
       for aws_igw in @CrPartials( "IGW" ).where({vpcId:@vpcId}) || []
         aws_igw = aws_igw.attributes
         if aws_igw.attachmentSet and aws_igw.attachmentSet.length > 0
@@ -112,7 +112,25 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         igwComp = @add( "IGW", aws_igw, igwRes, "Internet-gateway" )
         @addLayout( igwComp, true, @theVpc )
 
-    # getVGW : ()->
+    ()-> # VGW
+      for aws_vgw in @CrPartials( "VGW" ).where({vpcId:@vpcId}) || []
+        aws_vgw = aws_vgw.attributes
+        if aws_vgw.attachments and aws_vgw.attachments.length > 0
+          vgwAttach = aws_vgw.attachments[0]
+        vgwRes =
+          "resource":
+            "Attachments": [
+              "VpcId": vgwAttach.vpcId
+              "State": vgwAttach.state
+            ]
+            "Type": aws_vgw.type
+            #"AvailabilityZone": "",
+            "VpnGatewayId": aws_vgw.vpnGatewayId
+            "State": aws_vgw.state
+
+        vgwComp = @add( "VGW", aws_vgw, vgwRes, "VPN-gateway" )
+        @addLayout( vgwComp, true, @theVpc )
+
     # getCGW : ()->
     # getVPN : ()->
 

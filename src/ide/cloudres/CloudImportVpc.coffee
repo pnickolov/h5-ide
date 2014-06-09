@@ -98,9 +98,20 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
       return
 
     ()-> # Igw
+      for aws_igw in @CrPartials( "IGW" ).where({vpcId:@vpcId}) || []
+        aws_igw = aws_igw.attributes
+        if aws_igw.attachmentSet and aws_igw.attachmentSet.length > 0
+          igwAttach = aws_igw.attachmentSet[0]
+        igwRes =
+          "resource":
+            "InternetGatewayId": aws_igw.id
+            "AttachmentSet": [
+              "VpcId": if igwAttach then igwAttach.vpcId else ""
+              "State": if igwAttach then igwAttach.state else ""
+            ]
+        igwComp = @add( "IGW", aws_igw, igwRes, "Internet-gateway" )
+        @addLayout( igwComp, true, @theVpc )
 
-
-    # getIGW : ()->
     # getVGW : ()->
     # getCGW : ()->
     # getVPN : ()->
@@ -132,7 +143,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
       for aws_sg in @CrPartials( "SG" ).where({vpcId:@vpcId}) || []
         aws_sg = aws_sg.attributes
 
-        sg_json =
+        sgRes =
           "resource":
             "IpPermissions": []
             "IpPermissionsEgress": []
@@ -143,7 +154,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
             "OwnerId": ""
             "GroupDescription": ""
 
-        sg_json = @_mapProperty aws_sg, sg_json
+        sgRes = @_mapProperty aws_sg, sgRes
         #generate ipPermissions
         if aws_sg.ipPermissions
           for sg_rule in aws_sg.ipPermissions || []
@@ -154,7 +165,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
               ipranges = sg_rule.ipRanges.item[0].cidrIp
 
             if ipranges
-              sg_json.resource.IpPermissions.push {
+              sgRes.resource.IpPermissions.push {
                 "IpProtocol": sg_rule.ipProtocol,
                 "IpRanges": ipranges,
                 "FromPort": if sg_rule.fromPort then sg_rule.fromPort else "",
@@ -170,14 +181,14 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
               ipranges = sg_rule.ipRanges.item[0].cidrIp
 
             if ipranges
-              sg_json.resource.IpPermissionsEgress.push {
+              sgRes.resource.IpPermissionsEgress.push {
                 "IpProtocol": sg_rule.ipProtocol,
                 "IpRanges": ipranges,
                 "FromPort": if sg_rule.fromPort then sg_rule.fromPort else "",
                 "ToPort": if sg_rule.toPort then sg_rule.toPort else ""
               }
 
-        sgComp = @add( "SG", aws_sg, sg_json.resource, aws_sg.groupName )
+        sgComp = @add( "SG", aws_sg, sgRes.resource, aws_sg.groupName )
         if aws_sg.groupName is "default"
           DEFAULT_SG["default"] = sgComp
         else if aws_sg.groupName.indexOf("-DefaultSG-app-") isnt -1

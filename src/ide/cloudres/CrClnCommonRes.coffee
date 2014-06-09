@@ -129,7 +129,10 @@ define [
       for igw in igws || []
         igw.attachmentSet = igw.attachmentSet?.item || []
         igw.id = igw.internetGatewayId
-        delete igw.internetGatewayId
+        #delete igw.internetGatewayId
+        if igw.attachmentSet and igw.attachmentSet.length>0
+          igw.vpcId = igw.attachmentSet[0].vpcId
+
       igws
   }
 

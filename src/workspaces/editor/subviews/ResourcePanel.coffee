@@ -222,6 +222,7 @@ define [
           'offsetX'        : evt.offsetX
           'offsetY'        : evt.offsetY
           'target'         : $tgt
+          "scale"          : $canvas.scale()
         })
 
         $('#canvas_body').addClass('node-dragging')
@@ -242,8 +243,8 @@ define [
         null
         event_data.target_type
         event_data.node_type
-        Math.round((evt.pageX - event_data.offsetX + 10 - canvas_offset.left) / 10)
-        Math.round((evt.pageY - event_data.offsetY + 10 - canvas_offset.top)  / 10)
+        (evt.pageX - event_data.offsetX + 10 - canvas_offset.left) / 10 * event_data.scale
+        (evt.pageY - event_data.offsetY + 10 - canvas_offset.top)  / 10 * event_data.scale
         event_data.comp_size[0]
         event_data.comp_size[1]
       )
@@ -289,8 +290,8 @@ define [
       node_option    = event_data.target.data('option') || {}
       component_size = event_data.comp_size
       coordinate     = {
-        x : Math.round((event.pageX - event_data.offsetX + 10 - canvas_offset.left) / 10)
-        y : Math.round((event.pageY - event_data.offsetY + 10 - canvas_offset.top) / 10)
+        x : (event.pageX - event_data.offsetX + 10 - canvas_offset.left) / 10 * event_data.scale
+        y : (event.pageY - event_data.offsetY + 10 - canvas_offset.top)  / 10 * event_data.scale
       }
       if coordinate.x > 0 && coordinate.y > 0
         if node_type is "node"

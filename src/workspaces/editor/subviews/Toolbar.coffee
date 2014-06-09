@@ -44,6 +44,7 @@ define [
       @setElement $("#OEPanelTop").html( tpl )
 
       @updateTbBtns()
+      @updateZoomButtons()
       return
 
     clearDom : ()->
@@ -70,6 +71,8 @@ define [
         @$el.children(".icon-save").attr("disabled", "disabled")
       else
         @$el.children(".icon-save").removeAttr("disabled")
+
+      @updateZoomButtons()
       return
 
     setTbLineStyle : ( ls )->
@@ -104,8 +107,21 @@ define [
       App.openOps newOps
       return
 
-    zoomIn : ()->
-    zoomOut : ()->
+    zoomIn  : ()-> MC.canvas.zoomIn();  @updateZoomButtons()
+    zoomOut : ()-> MC.canvas.zoomOut(); @updateZoomButtons()
+    updateZoomButtons : ()->
+      scale = $canvas.scale()
+      if scale <= 1
+        @$el.find(".icon-zoom-in").attr("disabled", "disabled")
+      else
+        @$el.find(".icon-zoom-in").removeAttr("disabled")
+
+      if scale >= 1.6
+        @$el.find(".icon-zoom-out").attr("disabled", "disabled")
+      else
+        @$el.find(".icon-zoom-out").removeAttr("disabled")
+      return
+
     exportPng : ()->
     exportJson : ()->
     exportCF : ()->

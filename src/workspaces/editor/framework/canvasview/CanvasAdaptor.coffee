@@ -61,7 +61,7 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant", "UI.notific
 
   $canvas.add = ( type, attributes, pos, createOption )->
 
-    attributes = $.extend { x : pos.x, y : pos.y }, attributes
+    attributes = $.extend { x : Math.round(pos.x), y : Math.round(pos.y) }, attributes
 
     parent = attributes.parent
     if not parent

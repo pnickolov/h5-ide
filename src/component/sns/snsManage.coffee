@@ -156,7 +156,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
                 else if success.length > 1
                     notification 'info', "Selected #{success.length} SNS topic are deleted."
 
-                if not that.topicCol.length
+                if not error.length
                     that.modal.unCheckSelectAll()
 
                 _.each error, ( s ) ->

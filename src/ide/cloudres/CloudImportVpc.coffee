@@ -220,6 +220,11 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
       for aws_ins in @CrPartials( "INSTANCE" ).where({vpcId:@vpcId}) || []
         aws_ins = aws_ins.attributes
         azComp = @addAz(aws_ins.placement.availabilityZone)
+
+        subnet = @subnets[aws_ins.subnetId]
+        if not subnet
+          continue
+
         insRes =
           "resource":
             "RamdiskId" : ""
@@ -264,7 +269,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
 
         insRes = @_mapProperty aws_ins, insRes
 
-        insRes.resource.Subnet = CREATE_REF( @subnets[aws_ins.subnetId] )
+        insRes.resource.Subnet = CREATE_REF( subnet )
         insRes.resource.VpcId  = CREATE_REF( @theVpc )
         insRes.resource.Placement.AvailabilityZone = CREATE_REF( azComp )
 
@@ -280,7 +285,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         #   insRes.resource.KeyName = "@{" + default_kp.uid + ".resource.KeyName}"
 
         insComp = @add( "INSTANCE", aws_ins, insRes.resource )
-        @addLayout( insComp, false, @subnets[aws_ins.subnetId] )
+        @addLayout( insComp, false, subnet )
 
         @instances[ aws_ins.id ] = insComp
       return
@@ -290,6 +295,15 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
       for aws_eni in @CrPartials( "ENI" ).where({vpcId:@vpcId}) || []
         aws_eni = aws_eni.attributes
         azComp = @addAz(aws_eni.availabilityZone)
+
+        instance = @instances[aws_eni.instanceId]
+        if not instance
+          continue
+
+        subnet = @subnets[aws_eni.subnetId]
+        if not subnet
+          continue
+
         eniRes =
           "resource" :
             "AssociatePublicIpAddress" : false
@@ -323,13 +337,13 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
           eniRes.resource.AssociatePublicIpAddress = true
 
         eniRes.resource.AvailabilityZone = CREATE_REF( azComp )
-        eniRes.resource.SubnetId         = CREATE_REF( @subnets[aws_eni.subnetId] )
+        eniRes.resource.SubnetId         = CREATE_REF( subnet )
         eniRes.resource.VpcId            = CREATE_REF( @theVpc )
         
         if aws_eni.deviceIndex isnt "0"
           #eni0 no need attachmentId
           eniRes.resource.Attachment.AttachmentId = aws_eni.attachmentId
-        eniRes.resource.Attachment.InstanceId = CREATE_REF( @instances[aws_eni.instanceId] )
+        eniRes.resource.Attachment.InstanceId = CREATE_REF( instance )
         eniRes.resource.Attachment.DeviceIndex = aws_eni.deviceIndex
 
         for ip in aws_eni.privateIpAddressesSet
@@ -342,7 +356,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
 
         eniComp = @add( "ENI", aws_eni, eniRes.resource, "eni" + aws_eni.deviceIndex )
         if aws_eni.deviceIndex isnt "0"
-          @addLayout( eniComp, false, @subnets[aws_eni.subnetId] )
+          @addLayout( eniComp, false, subnet )
 
         @enis[ aws_eni.id ] = eniComp
       return
@@ -403,7 +417,8 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
             "AllocationId": ""
 
         eipRes = @_mapProperty aws_eip, eipRes
-        eipRes.resource.InstanceId = ""
+        eipRes.resource.AllocationId = eip.id
+        eipRes.resource.InstanceId   = ""
         eipRes.resource.NetworkInterfaceId = CREATE_REF( eni )
         eipRes.resource.PrivateIpAddress   = CREATE_REF( eni )
 
@@ -427,31 +442,36 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
           asso =
             Main : if i.main is false then false else "true"
             RouteTableAssociationId : i.routeTableAssociationId
-
-          if i.subnetId
-            asso.SubnetId = CREATE_REF( @subnets[i.subnetId] )
+          subnet = @subnets[i.subnetId]
+          if i.subnetId and subnet
+            asso.SubnetId = CREATE_REF( subnet )
           rtbRes.resource.AssociationSet.push asso
 
         #routeSet
         for i in aws_rtb.routeSet
+          instance = @instances[i.instanceId]
+          eni      = @enis[i.networkInterfaceId]
+          gw       = @gateways[i.gatewayId]
           route =
             "State" : i.state
             "Origin": i.origin
-            "InstanceId"     : if i.instanceId then CREATE_REF( @instances[i.instanceId] ) else ""
+            "InstanceId"     : if i.instanceId and instance then CREATE_REF( instance ) else ""
             "InstanceOwnerId": if i.instanceOwnerId then i.instanceOwnerId else ""
             "GatewayId"      : ""
-            "NetworkInterfaceId"   : if i.networkInterfaceId then CREATE_REF( @enis[i.networkInterfaceId] ) else ""
+            "NetworkInterfaceId"   : if i.networkInterfaceId and eni then CREATE_REF( eni ) else ""
             "DestinationCidrBlock" : i.destinationCidrBlock
           if i.gatewayId
-            if i.gatewayId isnt "local" and @gateways[i.gatewayId]
-              route.GatewayId = CREATE_REF( @gateways[i.gatewayId] )
+            if i.gatewayId isnt "local" and gw
+              route.GatewayId = CREATE_REF( gw )
             else
               route.GatewayId = i.gatewayId
           rtbRes.resource.RouteSet.push route
 
         #propagatingVgwSet
         for i in aws_rtb.propagatingVgwSet
-          rtbRes.resource.PropagatingVgwSet.push CREATE_REF( @gateways[i.gatewayId] )
+          gw = @gateways[i.gatewayId]
+          if gw
+            rtbRes.resource.PropagatingVgwSet.push CREATE_REF( gw )
 
         rtbComp = @add( "RT", aws_rtb, rtbRes.resource )
         @addLayout( rtbComp, true, @theVpc )

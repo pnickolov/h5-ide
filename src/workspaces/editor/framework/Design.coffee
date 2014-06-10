@@ -35,6 +35,8 @@ define [
     robj
   ### env:dev:end ###
 
+  noop = ()-> return
+
   ###
     -------------------------------
      Design is the main controller of the framework. It handles the input / ouput of the Application ( a.k.a the DesignCanvas ).
@@ -88,25 +90,11 @@ define [
   ###
 
   Design = ( opsModel )->
-
-    canvas_data = opsModel.getJsonData()
-
-    design = (new DesignImpl( canvas_data )).use()
-
-    if opsModel.testState( OpsModel.State.UnRun )
-      design.__mode = Design.MODE.Stack
-    else if opsModel.isImported()
-      design.__mode = Design.MODE.AppView
-    else
-      design.__mode = Design.MODE.App
-
-    ###########################
+    design = (new DesignImpl( opsModel )).use()
     # Deserialize
-    ###########################
-    design.deserialize( canvas_data.component, canvas_data.layout )
-
+    json = opsModel.getJsonData()
+    design.deserialize( json.component, json.layout )
     design
-
 
   _.extend( Design, Backbone.Events )
   Design.__modelClassMap       = {}
@@ -122,11 +110,19 @@ define [
     @__canvasLines  = {}
     @__canvasGroups = {}
     @__classCache   = {}
-    @__backingStore = {}
     @__usedUidCache = {}
     @__opsModel     = opsModel
+    @__shoulddraw   = false # Disable drawing for deserializing, delay it until everything is deserialized
 
+    canvas_data = opsModel.getJsonData()
     @canvas = new CanvasAdaptor( canvas_data.layout.size )
+
+    # Mode
+    @__mode = Design.MODE.App
+    if opsModel.testState( OpsModel.State.UnRun )
+      @__mode = Design.MODE.Stack
+    else if opsModel.isImported()
+      @__mode = Design.MODE.AppView
 
     # Delete these two attr before copying canvas_data.
     component = canvas_data.component
@@ -148,21 +144,10 @@ define [
     canvas_data.component = component
     canvas_data.layout    = layout
 
-    # Normalize stack version in case some old stack is not using date as the version
-    # The version will be updated after serialize
-    if (canvas_data.version or "").split("-").length < 3
-      @attributes.version = "2013-09-13"
-
-    # Disable drawing for deserializing, delay it until everything is deserialized
-    @__shoulddraw = false
-
-    @save( canvas_data )
-
     @on Design.EVENT.AwsResourceUpdated, @onAwsResourceUpdated
     null
 
 
-  noop = ()->
 
 
   Design.TYPE = {
@@ -320,8 +305,6 @@ define [
     # Restore Design.trigger
     Design.trigger = Backbone.Events.trigger
     Design.trigger Design.EVENT.Deserialized
-
-    @save()
     null
 
   ### Private Interface ###
@@ -405,34 +388,26 @@ define [
     @__usedUidCache[ newId ] = true
     newId
 
-  DesignImpl.prototype.get = ( key )-> @attributes[key]
-  DesignImpl.prototype.set = ( key, value )->
-    @attributes[key] = value
-    null
+  DesignImpl.prototype.set = ( key, value )-> @attributes[key] = value; return
+  DesignImpl.prototype.get = ( key )->
+    if key is "id"
+      @__opsModel.get("id")
+    else
+      @attributes[key]
 
-  DesignImpl.prototype.region = ()-> @.attributes.region
-  DesignImpl.prototype.mode   = ()->
-    console.warn("Better not to use Design.instance().mode() directly.")
-    @__mode
+  DesignImpl.prototype.type   = ()-> Design.TYPE.Vpc
+  DesignImpl.prototype.region = ()-> @attributes.region
 
-  DesignImpl.prototype.modeIsStack   = ()-> @__mode == Design.MODE.Stack
-  DesignImpl.prototype.modeIsApp     = ()-> @__mode == Design.MODE.App
-  DesignImpl.prototype.modeIsAppView = ()-> @__mode == Design.MODE.AppView
-  DesignImpl.prototype.modeIsAppEdit = ()-> @__mode == Design.MODE.AppEdit
-  DesignImpl.prototype.setMode = (m)->
-    @__mode = m
-    null
+  DesignImpl.prototype.modeIsStack   = ()->  @__mode == Design.MODE.Stack
+  DesignImpl.prototype.modeIsApp     = ()->  @__mode == Design.MODE.App
+  DesignImpl.prototype.modeIsAppView = ()->  @__mode == Design.MODE.AppView
+  DesignImpl.prototype.modeIsAppEdit = ()->  @__mode == Design.MODE.AppEdit
+  DesignImpl.prototype.setMode = (m)-> @__mode = m; return
+  DesignImpl.prototype.mode    = ()->  console.warn("Better not to use Design.instance().mode() directly."); @__mode
 
-  DesignImpl.prototype.type             = ()-> @attributes.platform
-  DesignImpl.prototype.typeIsClassic    = ()-> @attributes.platform == Design.TYPE.Classic
-  DesignImpl.prototype.typeIsDefaultVpc = ()-> @attributes.platform == Design.TYPE.DefaultVpc
-  DesignImpl.prototype.typeIsVpc        = ()-> @attributes.platform == Design.TYPE.Vpc or @attributes.platform is Design.TYPE.CustomVpc
 
   DesignImpl.prototype.shouldDraw = ()-> @__shoulddraw
-  DesignImpl.prototype.use = ()->
-    Design.__instance = @
-    @canvas.init()
-    @
+  DesignImpl.prototype.use = ()-> Design.__instance = @; @
 
   DesignImpl.prototype.component = ( uid )-> @__componentMap[ uid ]
 
@@ -448,31 +423,26 @@ define [
         break
     null
 
-  DesignImpl.prototype.save = ( canvas_data )->
-    # save() no-longer modifies the attributes of design
-    # because the save() is being misused in somewhere.
-
-    # save() now only store the data as backingstore.
-    # The canvas_data is not copied.
-    # So make sure the canvas_data is not modified by other.
-    @__backingStore = if canvas_data then canvas_data else @serialize()
-    return
-
   DesignImpl.prototype.isModified = ( newData )->
 
-    if @modeIsApp() then return false
+    if @modeIsApp() or @modeIsAppView()
+      conole.warn "Testing Design.isModified() in app mode and visualize mode. This should not be happening."
+      return false
 
-    # Ignore id change.
-    @__backingStore.id = (newData || @attributes).id
+    dataToCompare = newData || @attributes
+    backing = @__opsModel.getJsonData()
 
-    for key, value in (newData || @attributes)
-      if not _.isEqual( @__backingStore[key], value )
-        return false
+    for key, value of dataToCompare
+      # Ignore id change.
+      if key is "id" or key is "component" or key is "layout"
+        continue
+      if not value is backing[key] and not _.isEqual( value, backing[key] )
+        return true
 
     if not newData
       newData = @serialize()
-      if _.isEqual( @__backingStore.component, newData.component )
-        if _.isEqual( @__backingStore.layout, newData.layout )
+      if _.isEqual( backing.component, newData.component )
+        if _.isEqual( backing.layout, newData.layout )
           return false
 
     true
@@ -673,11 +643,10 @@ define [
       result.push changeObj
     null
 
-  DesignImpl.prototype.backingStore = ()-> @__backingStore
   DesignImpl.prototype.diff = ()->
     # Get an detailed diff of the current state of the Design and the last save state.
     newData = @serialize()
-    oldData = @__backingStore
+    oldData = @__opsModel.getJsonData()
 
     ### Diff the Component first ###
     isModified = not _.isEqual( newData.component, oldData.component )

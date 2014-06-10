@@ -125,6 +125,10 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
         newLayout.size = json.layout.size
         json.layout    = newLayout
 
+      # Normalize stack version in case some old stack is not using date as the version
+      # The version will be updated after serialize
+      if (json.version or "").split("-").length < 3 then json.version = "2013-09-13"
+
       @__jsonData = json
       @trigger "jsonDataLoaded"
       @
@@ -155,7 +159,9 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
           stoppable  : newJson.property.stoppable
         }
 
-        if not self.get("id") then attr.id = res
+        if not self.get("id")
+          attr.id    = res
+          newJson.id = res # In newly created stack, the newJSON won't have id when saving.
 
         if thumbnail then ThumbUtil.save( self.id || attr.id, thumbnail )
 

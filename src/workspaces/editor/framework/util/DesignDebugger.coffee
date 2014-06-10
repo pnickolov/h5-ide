@@ -45,7 +45,7 @@ define [ "Design" ], ( Design )->
   Design.debug.diff = ( e )->
     require ["component/jsonviewer/JsonViewer"], ( JsonViewer )->
       d = Design.instance()
-      JsonViewer.showDiffDialog( d.__backingStore, d.serialize() )
+      JsonViewer.showDiffDialog( d.__opsModel.getJsonData(), d.serialize() )
     null
 
   Design.debug.json = ()->

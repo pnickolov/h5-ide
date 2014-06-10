@@ -46,6 +46,10 @@ define [
       @propertyPanel.render()
 
       @renderSubviews()
+
+      # 4. Hack, ask the canvas to init the canvas.
+      # Should decouple the canvas from design.
+      @workspace.design.canvas.init()
       return
 
     clearDom : ()->

@@ -5,8 +5,13 @@ define [
   "../template/TplLeftPanel"
   "constant"
   "ResDiff"
+  'dhcp'
+  'snapshotManager'
+  'sslcert_manage'
+  'sns_manage'
+  'kp_manage'
   "backbone"
-], ( CloudResources, Design, LeftPanelTpl, constant, ResDiff )->
+], ( CloudResources, Design, LeftPanelTpl, constant, ResDiff, dhcpManager, snapshotManager, sslCertManager, snsManager, keypairManager )->
 
   # Update Left Panel when window size changes
   __resizeAccdTO = null
@@ -29,6 +34,7 @@ define [
       "RECALC"                       : "recalcAccordion"
       "mousedown .resource-item"     : "startDrag"
       "click .refresh-resource-panel": "refreshResourcePanel"
+      'click .resources-dropdown-wrapper li' : 'resourcesMenuClick'
 
     initialize : (options)->
       @workspace = options.workspace
@@ -158,6 +164,20 @@ define [
 
     refreshPanelData : ()->
 
+    resourcesMenuClick : (event) ->
+          $currentDom = $(event.currentTarget)
+          currentAction = $currentDom.data('action')
+          switch currentAction
+              when 'keypair'
+                  new keypairManager().render()
+              when 'snapshot'
+                  new snapshotManager().render()
+              when 'sns'
+                  new snsManager().render()
+              when 'sslcert'
+                  new sslCertManager().render()
+              when 'dhcp'
+                  (new dhcpManager()).manageDhcp()
     # Copied and enhanced from MC.canvas.js
     startDrag : ( evt )->
       $tgt = $( evt.currentTarget )

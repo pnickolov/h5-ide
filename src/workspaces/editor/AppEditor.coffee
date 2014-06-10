@@ -46,4 +46,4 @@ define [
 
       StackEditor.prototype.onOpsModelStateChanged.call this
 
-  StackEditor
+  AppEditor

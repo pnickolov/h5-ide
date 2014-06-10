@@ -3,7 +3,7 @@
   width: 568px;
   height: 600px;
   padding: 20px;
-  background-color: #fff;
+  background-color: white;
   position: absolute; }
   .res_diff_tree ul {
     list-style: none; }
@@ -43,7 +43,7 @@
       background-color: #ff8400;
       border-radius: 2px;
       padding: 3px 7px;
-      color: #fff;
+      color: white;
       position: relative;
       z-index: 1;
       font-size: 12px;
@@ -75,11 +75,12 @@
     .res_diff_tree .tree .item {
       margin-bottom: 25px;
       padding-left: 18px;
+      position: relative;
       border-left: 1px #ddd solid; }
       .res_diff_tree .tree .item::before {
-        margin-top: -27px;
         border-left: 1px #ddd solid;
         border-bottom: 1px #ddd solid;
+        margin-top: -27px;
         content: "";
         display: block;
         width: 17px;
@@ -87,6 +88,17 @@
         position: absolute;
         margin-left: -19px;
         z-index: 0; }
+      .res_diff_tree .tree .item::after {
+        display: block;
+        content: "";
+        height: 8px;
+        width: 8px;
+        border: #69b0ff 1px solid;
+        border-radius: 50%;
+        position: absolute;
+        left: -5.5px;
+        top: 2px;
+        background: white; }
       .res_diff_tree .tree .item:last-child {
         border-left: 1px solid transparent !important; }
   .res_diff_tree .group > ul.tree > .item:last-child {

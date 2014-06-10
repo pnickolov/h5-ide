@@ -2,12 +2,14 @@
 	border-#{$side}: 1px #ddd solid;
 }
 
+$bg_body : #fff;
+
 .res_diff_tree {
 	overflow: auto;
 	width: 568px;
 	height: 600px;
 	padding: 20px;
-	background-color: #fff;
+	background-color: $bg_body;
 	position: absolute;
 
 	ul {
@@ -60,7 +62,7 @@
 			background-color: #ff8400;
 			border-radius: 2px;
 			padding: 3px 7px;
-			color: #fff;
+			color: $bg_body;
 			position: relative;
 			z-index: 1;
 			font-size: 12px;
@@ -98,12 +100,13 @@
 		.item {
 			margin-bottom: 25px;
 			padding-left: 18px;
+			position: relative;
 			@include tierline;
 
 			&::before {
-				margin-top: -27px;
 				@include tierline;
 				@include tierline(bottom);
+				margin-top: -27px;
 				content: "";
 				display: block;
 				width: 17px;
@@ -111,6 +114,19 @@
 				position: absolute;
 				margin-left: -19px;
 				z-index: 0;
+			}
+
+			&::after {
+				display: block;
+				content: "";
+				height: 8px;
+				width: 8px;
+				border: #69b0ff 1px solid;
+				border-radius: 50%;
+				position: absolute;
+				left: -5.5px;
+				top: 2px;
+				background: $bg_body;
 			}
 
 			&:last-child {

@@ -2,7 +2,7 @@
 #  View Mode for design/property/cgw
 #############################
 
-define [ '../base/model', 'Design', 'constant' ], ( PropertyModel, Design, constant ) ->
+define [ '../base/model', 'Design', 'constant', 'CloudResources' ], ( PropertyModel, Design, constant, CloudResources ) ->
 
     CGWAppModel = PropertyModel.extend {
 
@@ -11,9 +11,7 @@ define [ '../base/model', 'Design', 'constant' ], ( PropertyModel, Design, const
           # cgw assignment
           myCGWComponent = Design.instance().component( uid )
 
-          appData = MC.data.resource_list[ Design.instance().region() ]
-
-          cgw = appData[ myCGWComponent.get 'appId' ]
+          cgw = CloudResources(constant.RESTYPE.CGW, Design.instance.region()).get(myCGWComponent.get('appId')).toJSON()
           if not cgw
             return false
 

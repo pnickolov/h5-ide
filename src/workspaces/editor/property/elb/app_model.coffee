@@ -2,7 +2,7 @@
 #  View Mode for design/property/elb
 #############################
 
-define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Design ) ->
+define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyModel, constant, Design, CloudResources ) ->
 
     ElbAppModel = PropertyModel.extend {
 
@@ -17,9 +17,7 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
             myElbComponent = Design.instance().component( uid )
 
 
-            appData = MC.data.resource_list[ Design.instance().region() ]
-            elb     = appData[ myElbComponent.get 'appId' ]
-
+            elb = CloudResources(constant.RESTYPE.ELB, Degign.instance().region()).get(myElbComponent.get("appId")).toJSON()
             if elb.ConnectionDraining
                 if elb.ConnectionDraining.Enabled
                     elb.ConnectionDrainingInfo = "Enabled; Timeout: #{elb.ConnectionDraining.Timeout} seconds"

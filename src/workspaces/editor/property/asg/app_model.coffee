@@ -2,7 +2,7 @@
 #  View(UI logic) for design/property/instacne
 #############################
 
-define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Design ) ->
+define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyModel, constant, Design, CloudResources ) ->
 
   ASGModel = PropertyModel.extend {
 
@@ -20,9 +20,8 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
 
         @set data
 
-        resource_list = MC.data.resource_list[Design.instance().region()]
-
-        asg_data = resource_list[ asg_comp.get( 'appId' ) ]
+        resource_list = CloudResources(constant.RESTYPE.ASG, Design.instance().region())
+        asg_data = resource_list.get(asg_comp.get('appId')).toJSON()
 
         if asg_data
             @set 'hasData', true
@@ -33,7 +32,7 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
             if asg_data.TerminationPolicies and asg_data.TerminationPolicies.member
                 @set 'term_policy_brief', asg_data.TerminationPolicies.member.join(" > ")
 
-            @handleInstance asg_comp, resource_list, asg_data
+            @handleInstance asg_comp, resource_list.toJSON(), asg_data
 
         if not @isAppEdit
             if not asg_data
@@ -43,8 +42,8 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
             @set 'healCheckType', asg_data.HealthCheckType
             @set 'healthCheckGracePeriod', asg_data.HealthCheckGracePeriod
 
-            @handlePolicy asg_comp, resource_list, asg_data
-            @handleNotify asg_comp, resource_list, asg_data
+            @handlePolicy asg_comp, resource_list.toJSON(), asg_data
+            @handleNotify asg_comp, resource_list.toJSON(), asg_data
 
 
         else

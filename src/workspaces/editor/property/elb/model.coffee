@@ -2,7 +2,7 @@
 #  View Mode for design/property/instance
 #############################
 
-define [ '../base/model', "Design", 'constant', 'sslcert_dropdown' ], ( PropertyModel, Design, constant, SSLCertDropdown ) ->
+define [ '../base/model', "Design", 'constant', 'sslcert_dropdown', "CloudResources" ], ( PropertyModel, Design, constant, SSLCertDropdown, CloudResources ) ->
 
     ElbModel = PropertyModel.extend {
 
@@ -100,8 +100,7 @@ define [ '../base/model', "Design", 'constant', 'sslcert_dropdown' ], ( Property
 
             myElbComponent = Design.instance().component( uid )
 
-            appData = MC.data.resource_list[ Design.instance().region() ]
-            elb     = appData[ myElbComponent.get 'appId' ]
+            elb = CloudResources(constant.RESTYPE.ELB, Design.instance().region()).get(myElbComponent.get('appId')).toJSON()
 
             if not elb then return
 

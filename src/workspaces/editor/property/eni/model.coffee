@@ -65,7 +65,8 @@ define [ '../base/model', 'constant', "Design", 'i18n!nls/lang.js', 'CloudResour
 		getEniGroup : ( eni_uid ) ->
 
 			eniComp       = Design.instance().component( eni_uid )
-			appData = CloudResources(constant.RESTYPE.ENI, Design.instance().region()).get(eniComp.get('appId')).toJSON()
+			resource_list = CloudResources(constant.RESTYPE.ENI, Design.instance().region())
+			appData = resource_list.get(eniComp.get('appId')).toJSON()
 			name          = eniComp.get("name")
 
 			group = [{
@@ -89,7 +90,7 @@ define [ '../base/model', 'constant', "Design", 'i18n!nls/lang.js', 'CloudResour
 				group.push {
 					name   : name + "-" + (index+1)
 					appId  : member.appId
-					status : if resource_list[ member.appId ] then resource_list[ member.appId ].status else "Unknown"
+					status : if resource_list?.get(member.appId)?.toJSON()  then resource_list.get(member.appId).toJSON().status else "Unknown"
 					isNew  : not member.appId
 					isOld  : member.appId and ( index + 1 >= count )
 				}

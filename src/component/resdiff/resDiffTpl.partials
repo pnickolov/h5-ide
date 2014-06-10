@@ -3,7 +3,6 @@
 	<div class="head">New Resource<span class="count"> (4)</span></div>
 	<ul class="tree tree-1">
 		<li class="item">
-			<span class="before"></span>
 			<div class="meta">
 				<span class="type">Instance</span>
 				<span class="name"><span class="old">old: </span>test12 <span class="new"> new: </span>test23</span>
@@ -11,7 +10,6 @@
 			</div>
 			<ul class="tree tree-2">
 				<li class="item">
-					<span class="before"></span>
 					<div class="meta">
 						<span class="type">PropertyName</span>
 						<span class="name">arn:aws:autoscaling:us-east-1:994554139310:autoScalingGroup:ad6f888f-f98e-40e3-b19a-fcfceb542dd9:autoScalingGroupName/asg0---app-dea4e3ee</span>
@@ -19,7 +17,6 @@
 					</div>
 					<ul class="tree tree-3">
 						<li class="item">
-							<span class="before"></span>
 							<div class="meta">
 								<span class="type">SubPropertyName</span>
 								<span class="name">Sub Property Value</span>
@@ -27,7 +24,7 @@
 							</div>
 						</li>
 						<li class="item">
-							<span class="before"></span>
+
 							<div class="meta">
 								<span class="type">SubPropertyName</span>
 								<span class="name">Sub Property Value</span>
@@ -35,7 +32,7 @@
 							</div>
 						</li>
 						<li class="item">
-							<span class="before"></span>
+
 							<div class="meta">
 								<span class="type">SubPropertyName</span>
 								<span class="name">Sub Property Value</span>
@@ -43,7 +40,6 @@
 							</div>
 						</li>
 						<li class="item">
-							<span class="before"></span>
 							<div class="meta">
 								<span class="type">SubPropertyName</span>
 								<span class="name">Sub Property Value</span>
@@ -53,7 +49,6 @@
 					</ul>
 				</li>
 				<li class="item">
-					<span class="before"></span>
 					<div class="meta">
 						<span class="type">PropertyName</span>
 						<span class="name">Single Property Value</span>
@@ -61,7 +56,6 @@
 					</div>
 					<ul class="tree tree-3">
 						<li class="item">
-							<span class="before"></span>
 							<div class="meta">
 								<span class="type">SubPropertyName</span>
 								<span class="name">Sub Property Value</span>
@@ -69,7 +63,6 @@
 							</div>
 						</li>
 						<li class="item">
-							<span class="before"></span>
 							<div class="meta">
 								<span class="type">SubPropertyName</span>
 								<span class="name">Sub Property Value</span>
@@ -79,7 +72,6 @@
 					</ul>
 				</li>
 				<li class="item">
-					<span class="before"></span>
 					<div class="meta">
 						<span class="type">PropertyName</span>
 						<span class="name">Single Property Value</span>
@@ -87,7 +79,6 @@
 					</div>
 				</li>
 				<li class="item">
-					<span class="before"></span>
 					<div class="meta">
 						<span class="type">PropertyName</span>
 						<span class="name">Single Property Value</span>
@@ -95,7 +86,6 @@
 					</div>
 				</li>
 				<li class="item">
-					<span class="before"></span>
 					<div class="meta">
 						<span class="type">PropertyName</span>
 						<span class="name">Single Property Value</span>
@@ -105,7 +95,6 @@
 			</ul>
 		</li>
 		<li class="item">
-			<span class="before"></span>
 			<div class="meta">
 				<span class="type">Instance</span>
 				<span class="name">host-1</span>
@@ -113,7 +102,6 @@
 			</div>
 			<ul class="tree tree-2">
 				<li class="item">
-					<span class="before"></span>
 					<div class="meta">
 						<span class="type">PropertyName</span>
 						<span class="name">Single Property Value</span>
@@ -121,7 +109,6 @@
 					</div>
 					<ul class="tree tree-3">
 						<li class="item">
-							<span class="before"></span>
 							<div class="meta">
 								<span class="type">SubPropertyName</span>
 								<span class="name">Sub Property Value</span>
@@ -133,7 +120,6 @@
 			</ul>
 		</li>
 		<li class="item">
-			<span class="before"></span>
 			<div class="meta">
 				<span class="type">Instance</span>
 				<span class="name">host-1</span>
@@ -141,7 +127,6 @@
 			</div>
 		</li>
 		<li class="item">
-			<span class="before"></span>
 			<div class="meta">
 				<span class="type">Instance</span>
 				<span class="name">host-1</span>
@@ -149,7 +134,6 @@
 			</div>
 		</li>
 		<li class="item">
-			<span class="before"></span>
 			<div class="meta">
 				<span class="type">Instance</span>
 				<span class="name">host-1</span>

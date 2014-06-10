@@ -471,12 +471,22 @@ define [
             "Network Interface"  : @formartDetail "ENI", data.networkInterfaceSet, "networkInterfaceId"
           }
         when 'EIP'
-            return {
+            result = {
                 'Public IP' : data.publicIp
                 'Domain'    : data.domain
-                'EIP Id'    : data.id
+                'Allocation ID' : data.id
                 'Category'  : data.category
+                'title'     : data.publicIp
             }
+            if data.associationId
+                result['Association Id'] = data.associationId
+            if data.networkInterfaceId
+                result['NetworkInterface Id'] = data.networkInterfaceId
+            if data.instanceId
+                result['Instance Id'] = data.instanceId
+            if data.privateIpAddresse
+                result['Private Ip Address'] = data.privateIpAddresses
+            return result
         when 'CW'
             return {
                 'Actions Enabled'   : if data.ActionsEnabled then "true" else 'false'
@@ -497,13 +507,12 @@ define [
                 'Statistic'         : data.Statistic
                 'Threshold'         : data.Threshold
                 'Category'          : data.category
-                'id'                : data.id
                 'title'             : 'CloudWatch - '+ data.AlarmName
             }
     # some format to the data so it can show in handlebars template
     formartDetail: (type, array, key, force)->
         #resolve 'BlockDevice' AttachmentSet HealthCheck and so on.
-        if (['BlockDevice', "AttachmentSet","HealthCheck", "ListenerDescriptions"].indexOf type) > -1
+        if (['BlockDevice', "AttachmentSet","HealthCheck", "ListenerDescriptions",'Dimensions'].indexOf type) > -1
             _.map array, (blockDevice, index)->
                 # combine ebs attribute
                 _.map blockDevice, (e, key)->

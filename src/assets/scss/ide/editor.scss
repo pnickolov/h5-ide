@@ -21,6 +21,10 @@ $BottomPanelHeight : 24px;
   //      -o-transition : left 0.1s;
   //         transition : left 0.1s;
 
+  &.force-hidden {
+    display : none;
+  }
+
   &.hidden {
     left : -$LeftPanelWidth;
     > #HideOEPanelLeft:before {
@@ -97,6 +101,7 @@ $BottomPanelHeight : 24px;
 
 #OEPanelRight:not(.hidden) ~ #OEMiddleWrap { right : $RightPanelWidth; }
 #OEPanelLeft:not(.hidden)  ~ #OEMiddleWrap { left  : $LeftPanelWidth; }
+#OEPanelLeft.force-hidden  ~ #OEMiddleWrap { left  : 0; }
 
 .sidebar-hider {
   position   : absolute;

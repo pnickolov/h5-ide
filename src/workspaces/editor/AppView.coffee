@@ -21,4 +21,13 @@ define [
 
       $("#canvas_body").addClass("canvas_state_stack")
       return
+
+    renderSubviews : ()->
+      if @workspace.isAppEditMode()
+        @resourcePanel.render()
+
+      $("#OEPanelLeft").toggleClass "force-hidden", !@workspace.isAppEditMode()
+
+      @statusbar.render()
+      return
   }

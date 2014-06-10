@@ -8,6 +8,8 @@
   width: 246px;
   background: #242424;
   left: 0; }
+  #OEPanelLeft.force-hidden {
+    display: none; }
   #OEPanelLeft.hidden {
     left: -246px; }
     #OEPanelLeft.hidden > #HideOEPanelLeft:before {
@@ -58,6 +60,9 @@
 
 #OEPanelLeft:not(.hidden) ~ #OEMiddleWrap {
   left: 246px; }
+
+#OEPanelLeft.force-hidden ~ #OEMiddleWrap {
+  left: 0; }
 
 .sidebar-hider {
   position: absolute;

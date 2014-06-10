@@ -25,6 +25,9 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
       @layout    = {}
 
     add : ( type_string, res_attributes, component_resources, default_name )->
+      if not res_attributes and not default_name
+        console.error "[ConverterData.add] if res_attributes is null, then must specify default_name"
+        return null
       comp =
         uid  : UID()
         name : if default_name then default_name else NAME( res_attributes )
@@ -92,7 +95,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
           VpcId            : CREATE_REF( @theVpc )
         })
 
-        @subnets[ sb.id ] = sb
+        @subnets[ sb.id ] = sbComp
 
         @addLayout( sbComp, true, azComp )
       return
@@ -214,14 +217,78 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         return
 
     ()-> # KP
-      for kp in @CrPartials( "KP" ) || []
-        kp = kp.attributes
-        return
+      kpRes =
+        "resource":
+          "KeyFingerprint": ""
+          "KeyName": "DefaultKP"
+      @add( "KP", null, kpRes.resource, 'DefaultKP' )
+      return
+
+    ()-> # Instance
+      for aws_ins in @CrPartials( "INSTANCE" ).where({vpcId:@vpcId}) || []
+        aws_ins = aws_ins.attributes
+        azComp = @addAz(aws_ins.placement.availabilityZone)
+        insRes =
+          "resource":
+            "RamdiskId" : ""
+            "InstanceId": ""
+            "DisableApiTermination": ""
+            "ShutdownBehavior": ""
+            "SecurityGroupId" : []
+            "SecurityGroup"   : []
+            "UserData":
+              "Base64Encoded": ""
+              "Data"         : ""
+            "ImageId"  : ""
+            "Placement":
+              "Tenancy"          : ""
+              "AvailabilityZone" : CREATE_REF( azComp )
+              "GroupName"        : ""
+            "BlockDeviceMapping": []
+            "KernelId": ""
+            "KeyName" : ""
+            "SubnetId": CREATE_REF( @subnets[aws_ins.subnetId] )
+            "VpcId"   : CREATE_REF( @theVpc )
+            "InstanceType": ""
+            "Monitoring"  : ""
+            "EbsOptimized": ""
+            "NetworkInterface":[]
+
+
+        # if aws_ins.tagSet
+        #   tag = resolveEC2Tag aws_ins.tagSet
+        #   if tag.isApp
+        #     insRes.name = tag.name
+        #   else if tag.Name
+        #     insRes.name = tag.Name
+
+
+        # for group in aws_eni.groupSet.item
+
+        #   eni_json.resource.GroupSet.push
+        #     "GroupId": group.groupId,
+        #     "GroupName": group.groupName
+        #
+
+        insRes = @_mapProperty aws_ins, insRes
+
+        if aws_ins.monitoring and aws_ins.monitoring
+          insRes.resource.Monitoring = aws_ins.monitoring.state
+
+        insRes.resource.Placement.Tenancy = aws_ins.placement.tenancy
+        insRes.resource.InstanceId        = aws_ins.id
+        insRes.resource.EbsOptimized      = aws_ins.ebsOptimized
+
+        # # default_kp
+        # if default_kp and default_kp.resource and aws_ins.keyName is default_kp.resource.KeyName
+        #   insRes.resource.KeyName = "@{" + default_kp.uid + ".resource.KeyName}"
+
+        insComp = @add( "INSTANCE", aws_ins, insRes.resource )
+        @addLayout( insComp, false, @subnets[aws_ins.subnetId] )
 
   ]
 
   # getVOL      : ()->
-  # getINSTANCE : ()->
   # getSG       : ()->
   # getELB      : ()->
   # getACL      : ()->

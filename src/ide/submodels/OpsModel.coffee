@@ -323,6 +323,9 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
       console.info "OpsModel's destroy() doesn't do anything. You probably want to call remove(), stop() or terminate()"
 
     __destroy : ()->
+      if @attributes.state is OpsModelState.Destroyed
+        return
+
       # Directly modify the attr to avoid sending an event, becase destroy would trigger an update event
       @attributes.state = OpsModelState.Destroyed
       @trigger 'destroy', @, @collection

@@ -28,4 +28,13 @@ define [
         CloudResources( constant.RESTYPE.SNAP, region ).fetch()
       ]
 
+    cleanup : ()->
+      # Ask parent to cleanup first, so that removing opsModel won't trigger change event.
+      OpsEditorBase.prototype.cleanup.call this
+
+      # If the OpsModel doesn't exist in server, we would destroy it when the editor is closed.
+      if not @opsModel.isPresisted()
+        @opsModel.remove()
+      return
+
   StackEditor

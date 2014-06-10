@@ -476,9 +476,12 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
 
       # Generate new GUID for each component
       for id, comp of component
-        newId = MC.guid()
-        json.component[ newId ] = comp
-        if layout[ id ] then json.layout[ newId ] = layout[ id ]
+        comp.uid = MC.guid()
+        json.component[ comp.uid ] = comp
+        if layout[ id ]
+          l = layout[id]
+          l.uid = comp.uid
+          json.layout[ comp.uid ] = l
 
       @__jsonData = json
       return

@@ -37,6 +37,6 @@ define [
         @opsModel.remove()
       return
 
-    isModified : ()-> not @opsModel.isPresisted() or @workspace.design.isModified()
+    isModified : ()-> not @opsModel.isPresisted() or @design.isModified()
 
   StackEditor

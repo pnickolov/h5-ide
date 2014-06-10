@@ -7,6 +7,7 @@ define [ "Workspace", "./OpsViewBase", "./template/TplOpsEditor", "OpsModel", "D
 
   # A view that used to show loading state of editor
   LoadingView = Backbone.View.extend {
+    isLoadingView : true
     initialize : ( options )-> @setElement $(OpsEditorTpl.loading()).appendTo("#main").show()[0]
   }
 
@@ -89,13 +90,12 @@ define [ "Workspace", "./OpsViewBase", "./template/TplOpsEditor", "OpsModel", "D
       return
 
     switchToReady : ()->
-      if @view
+      if @view and @view.isLoadingView
         @view.remove()
         @view = null
 
-      if @isAwake()
+      if @isAwake() and not @__inited
         @initEditor()
-        @__inited = true
 
       return
 
@@ -129,6 +129,7 @@ define [ "Workspace", "./OpsViewBase", "./template/TplOpsEditor", "OpsModel", "D
       return
 
     initEditor : ()->
+      @__inited = true
       @design = new Design( @opsModel )
 
       @view = @createView()

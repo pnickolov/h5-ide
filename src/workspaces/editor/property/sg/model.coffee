@@ -108,7 +108,7 @@ define [ '../base/model', "Design", 'constant', "CloudResources"  ], ( PropertyM
             currentRegion = Design.instance().region()
             currentSGID = @component.get 'appId'
 
-            currentAppSG = CloudResources(constant.RESTYPE.SG, currentRegion).get(currentSGID)
+            currentAppSG = CloudResources(constant.RESTYPE.SG, currentRegion).get(currentSGID).toJSON()
 
             rules = []
             for rule in @component.connections("SgRuleSet")

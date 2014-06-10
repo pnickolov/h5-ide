@@ -191,7 +191,7 @@ define [ '../base/model', 'keypair_model', 'constant', 'Design', "CloudResources
         true
 
     getAppLaunch : ( uid ) ->
-      lc_data = CloudResources(constant.RESTYPE.LC, Design.instance().region()).get(@lc.get('appId'))
+      lc_data = CloudResources(constant.RESTYPE.LC, Design.instance().region()).get(@lc.get('appId')).toJSON()
 
       this.set "ebsOptimized", @lc.get("ebsOptimized") + ""
       this.set 'name', @lc.get 'name'

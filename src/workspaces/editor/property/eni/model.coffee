@@ -65,7 +65,7 @@ define [ '../base/model', 'constant', "Design", 'i18n!nls/lang.js', 'CloudResour
 		getEniGroup : ( eni_uid ) ->
 
 			eniComp       = Design.instance().component( eni_uid )
-			appData = CloudResources(constant.RESTYPE.ENI, Design.instance().region()).get(eniComp.get('appId'))
+			appData = CloudResources(constant.RESTYPE.ENI, Design.instance().region()).get(eniComp.get('appId')).toJSON()
 			name          = eniComp.get("name")
 
 			group = [{

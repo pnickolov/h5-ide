@@ -87,7 +87,7 @@ define [ '../base/model', "Design", 'constant', "CloudResources" ], ( PropertyMo
 
       component = Design.instance().component(uid)
 
-      appData = CloudResources(constant.RESTYPE.RT, Design.instance().region()).get(component.get('appId'))
+      appData = CloudResources(constant.RESTYPE.RT, Design.instance().region()).get(component.get('appId')).toJSON()
       aws_rt_is_main = false
 
       if appData and appData.associationSet and appData.associationSet.item

@@ -73,7 +73,7 @@ define [ '../base/model',
 			uid = @get( 'uid' )
 
 			comp          = Design.instance().component( uid )
-			appData       = CloudResources(constant.RESTYPE.AMI, Design.instance().region()).get(comp.get('appId'))
+			appData       = CloudResources(constant.RESTYPE.AMI, Design.instance().region()).get(comp.get('appId')).toJSON()
 			name          = comp.get("name")
 
 			group = [{

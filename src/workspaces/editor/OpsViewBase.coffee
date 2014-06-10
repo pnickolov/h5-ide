@@ -1,13 +1,15 @@
 
 define [
   "./template/TplCanvas"
+  "./template/TplOpsEditor"
   "./subviews/PropertyPanel"
   "./subviews/Toolbar"
+  "UI.modalplus"
 
   "backbone"
   "UI.selectbox"
   "MC.canvas"
-], ( CanvasTpl, PropertyPanel, Toolbar )->
+], ( CanvasTpl, OpsEditorTpl, PropertyPanel, Toolbar, Modal )->
 
   # LEGACY code
   # Should remove this in the future.
@@ -75,6 +77,21 @@ define [
       @removeSubviews()
 
       Backbone.View.prototype.remove.call this
+      return
+
+    showCloseConfirm : ()->
+      name = @workspace.design.get('name')
+      self = @
+      modal = new Modal {
+        title    : "Confirm to close #{name}"
+        width    : "420"
+        template : OpsEditorTpl.modal.onClose(name)
+        confirm  : {text:"Close Tab", color:"red"}
+        onConfirm  : ()->
+          modal.close()
+          self.workspace.remove()
+          return
+      }
       return
 
     ###

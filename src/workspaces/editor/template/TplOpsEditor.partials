@@ -89,3 +89,9 @@
   <a class="btn btn-blue" style="display: inline-block;">Download</a>
   <button class="btn modal-close btn-silver">Cancel</button>
 </div>
+
+<!-- {{modal.onClose}} -->
+<div class="modal-text-wraper"> <div class="modal-center-align-helper">
+  <div class="modal-text-major">{{this}} has unsaved changes.</div>
+  <div class="modal-text-major">Do you confirm to close it?</div>
+</div> </div>

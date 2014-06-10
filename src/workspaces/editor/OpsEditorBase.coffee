@@ -177,4 +177,11 @@ define [ "Workspace", "./OpsViewBase", "./template/TplOpsEditor", "OpsModel", "D
       @view.clearDom()
       return
 
+    isRemovable : ()->
+      if not @__inited or not @isModified()
+        return true
+
+      @view.showCloseConfirm()
+      false
+
   OpsEditorBase

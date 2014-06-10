@@ -2134,24 +2134,23 @@ input.parsley-error {
 
 
 /* Loading Gear */
-
-.gear-loading {
-  position : relative;
-  width    : 80px;
-  height   : 80px;
-  margin   : auto;
-  top      : 40%;
+#GlobalLoading {
+	position   : fixed;
+	width      : 100%;
+	height     : 100%;
+	z-index    : 100000;
+	background : rgba(0,0,0,.9);
 }
 
-
-.gear-loading:before,
-.gear-loading:after {
+#GlobalLoading:before,
+#GlobalLoading:after {
 	content  : " ";
   position : absolute;
-  top      : 10px;
-  left     : 10px;
   width    : 40px;
   height   : 40px;
+  top      : 45%;
+  left     : 50%;
+  margin   : -40px 0 0 -40px;
 
   opacity : .8;
   background : url("../images/ide/gearbig.svg");
@@ -2164,12 +2163,11 @@ input.parsley-error {
 
 }
 
-.gear-loading:after {
-  top       : 38px;
-  left      : 39px;
+#GlobalLoading:after {
   width     : 30px;
   height    : 30px;
   opacity   : .6;
+  margin    : -11px 0 0 -11px;
   background-image : url("../images/ide/gearsmall.svg");
 
   -webkit-animation : smallgear 1.5s linear infinite;

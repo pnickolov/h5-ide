@@ -234,13 +234,13 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
             "ImageId"  : ""
             "Placement":
               "Tenancy"          : ""
-              "AvailabilityZone" : CREATE_REF( azComp )
+              "AvailabilityZone" : ""
               "GroupName"        : ""
             "BlockDeviceMapping": []
             "KernelId": ""
             "KeyName" : ""
-            "SubnetId": CREATE_REF( @subnets[aws_ins.subnetId] )
-            "VpcId"   : CREATE_REF( @theVpc )
+            "SubnetId": ""
+            "VpcId"   : ""
             "InstanceType": ""
             "Monitoring"  : ""
             "EbsOptimized": ""
@@ -263,6 +263,10 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         #
 
         insRes = @_mapProperty aws_ins, insRes
+
+        insRes.resource.Subnet = CREATE_REF( @subnets[aws_ins.subnetId] )
+        insRes.resource.VpcId  = CREATE_REF( @theVpc )
+        insRes.resource.Placement.AvailabilityZone = CREATE_REF( azComp )
 
         if aws_ins.monitoring and aws_ins.monitoring
           insRes.resource.Monitoring = aws_ins.monitoring.state
@@ -301,13 +305,11 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
             "SecondPriIpCount": ""
             "Attachment":
                 "DeviceIndex"  : ""
-                "InstanceId"   : CREATE_REF( @instances[aws_eni.instanceId] )
-                "AttachmentId" : ""
-                "AttachTime"   : ""
-            "AvailabilityZone": CREATE_REF( azComp )
+                "InstanceId"   : ""
+            "AvailabilityZone": ""
             "Description": ""
-            "SubnetId"   : CREATE_REF( @subnets[aws_eni.subnetId] )
-            "VpcId"      : CREATE_REF( @theVpc )
+            "SubnetId"   : ""
+            "VpcId"      : ""
             "PrivateIpAddress"  : ""
             "NetworkInterfaceId": ""
 
@@ -320,12 +322,15 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         if aws_eni.association and aws_eni.association.publicIp
           eniRes.resource.AssociatePublicIpAddress = true
 
-        eniRes.resource.Attachment.DeviceIndex = aws_eni.deviceIndex
+        eniRes.resource.AvailabilityZone = CREATE_REF( azComp )
+        eniRes.resource.SubnetId         = CREATE_REF( @subnets[aws_eni.subnetId] )
+        eniRes.resource.VpcId            = CREATE_REF( @theVpc )
+        
         if aws_eni.deviceIndex isnt "0"
           #eni0 no need attachmentId
           eniRes.resource.Attachment.AttachmentId = aws_eni.attachmentId
-        eniRes.resource.Attachment.InstanceId = aws_eni.instanceId
-        eniRes.resource.Attachment.AttachTime = aws_eni.attachTime
+        eniRes.resource.Attachment.InstanceId = CREATE_REF( @instances[aws_eni.instanceId] )
+        eniRes.resource.Attachment.DeviceIndex = aws_eni.deviceIndex
 
         for ip in aws_eni.privateIpAddressesSet
           eniRes.resource.PrivateIpAddressSet.push {"PrivateIpAddress": ip.privateIpAddress, "AutoAssign" : "false", "Primary" : ip.primary}
@@ -379,6 +384,32 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
 
         volComp = @add( "VOL", aws_vol, volRes.resource, "vol" + aws_vol.attachmentSet[0].device )
         #@vols[ aws_vol.id ] = volComp
+
+    ()-> #EIP
+      for aws_eip in @CrPartials( "EIP" ).where({category:@region}) || []
+        aws_eip = aws_eip.attributes
+
+        eni = @enis[ aws_eip.networkInterfaceId ]
+        if not eni
+          continue
+
+        eipRes =
+          "resource":
+            "InstanceId": ""
+            "PrivateIpAddress": ""
+            "NetworkInterfaceId": ""
+            "Domain": ""
+            "PublicIp": ""
+            "AllocationId": ""
+
+        eipRes = @_mapProperty aws_eip, eipRes
+        eipRes.resource.InstanceId = ""
+        eipRes.resource.NetworkInterfaceId = CREATE_REF( eni )
+        eipRes.resource.PrivateIpAddress   = CREATE_REF( eni )
+
+        eipComp = @add( "EIP", aws_eip, eipRes.resource )
+      return
+
 
 
     ()-> # Rtbs

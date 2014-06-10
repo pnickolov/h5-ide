@@ -2,7 +2,7 @@
 #  View Mode for design/property/volume
 #############################
 
-define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Design ) ->
+define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyModel, constant, Design, CloudResources ) ->
 
     VolumeModel = PropertyModel.extend {
 
@@ -31,13 +31,10 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
 
             # Snapshot
             if volume_detail.snapshot_id
-                snapshot_list = MC.data.config[Design.instance().region()].snapshot_list
-                if snapshot_list and snapshot_list.item
-                    for item in snapshot_list.item
-                        if item.snapshotId is volume_detail.snapshot_id
-                            volume_detail.snapshot_size = item.volumeSize
-                            volume_detail.snapshot_desc = item.description
-                            break
+                snapshot = CloudResources( constant.RESTYPE.SNAP, Design.instance().region() ).get( volume_detail.snapshot_id )
+                if snapshot
+                    volume_detail.snapshot_size = snapshot.get('volumeSize')
+                    volume_detail.snapshot_desc = snapshot.get('description')
 
             if volume_detail.volume_size < 10
                 volume_detail.iopsDisabled = true

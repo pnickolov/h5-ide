@@ -2,7 +2,7 @@
 #  View Mode for design/property/cgw
 #############################
 
-define [ '../base/model', 'constant', "../base/main" ], ( PropertyModel, constant, PropertyModule ) ->
+define [ '../base/model', 'constant', "../base/main", "CloudResources" ], ( PropertyModel, constant, PropertyModule, CloudResources ) ->
 
   StaticSubModel = PropertyModel.extend {
 
@@ -25,14 +25,10 @@ define [ '../base/model', 'constant', "../base/main" ], ( PropertyModel, constan
 
       @set "name", uid
       # If this uid is snapshot uid
-      snapshot_list = MC.data.config[Design.instance().region()].snapshot_list
-      if snapshot_list and snapshot_list.item
-        for item in snapshot_list.item
-          if item.snapshotId is uid
-            @set item
-            return
-
-      false
+      item = CloudResources( constant.RESTYPE.SNAP, Design.instance().region() ).get( uid )
+      if not item then return false
+      @set item.attibutes
+      true
 
     canChangeAmi : ( amiId )->
       component = Design.instance().component( PropertyModule.activeModule().uid )

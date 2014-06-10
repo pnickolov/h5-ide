@@ -85,24 +85,23 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
         @trigger "jsonDataLoaded"
         return d.promise
 
-      # TODO :
       self = @
       if @isImported()
         return CloudResources.getAllResourcesForVpc( @get("region"), @get("importVpcId") ).then ( res )->
           json = self.__createRawJson()
           json.component = res.component
           json.layout    = res.layout
-          self.__jsonData = json
+          self.__setJsonData json
           self
 
       else if @isStack()
-        ApiRequest("stack_info", {
+        return ApiRequest("stack_info", {
           region_name : @get("region")
           stack_ids   : [@get("id")]
         }).then (ds)-> self.__setJsonData( ds[0] )
 
       else
-        ApiRequest("app_info", {
+        return ApiRequest("app_info", {
           region_name : @get("region")
           app_ids     : [@get("id")]
         }).then (ds)-> self.__setJsonData( ds[0] )

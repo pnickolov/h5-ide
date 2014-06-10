@@ -226,7 +226,7 @@ define ["ApiRequest", "CloudResources", "constant", "backbone"], ( ApiRequest, C
       if type is constant.RESTYPE.SUBSCRIPTION
         return CloudResources( type, region ).models
       else
-        return CloudResources( type ).where({ category : region })
+        return CloudResources( type, region ).where({ category : region })
 
     getAwsResDataById : ( region, type, id )-> CloudResources( type, region ).get(id)
 

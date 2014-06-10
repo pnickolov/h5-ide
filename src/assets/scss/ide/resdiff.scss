@@ -1,0 +1,124 @@
+.res_diff_tree {
+	overflow: auto;
+	height: 600px;
+	ul {
+		list-style: none;
+	}
+	.title {
+		font-size: 24px;
+		margin-bottom: 30px;
+		text-align: center;
+	}
+	.header .info {
+		margin-bottom: 10px;
+		font-size: 14px;
+	}
+	.group {
+		margin-top: 20px;
+		margin-bottom: 50px;
+		width: 100%;
+		text-align: left;
+	}
+	.group .head {
+		padding: 10px;
+		color: #009800;
+		font-size: 16px;
+		width: 530px;
+		background-color: #f2f2f2;
+		border-left: 3px #009800 solid;
+	}
+	.group .deleted-head {
+		color: #c40000;
+		border-left: 3px #c40000 solid;
+	}
+	.group .modified-head {
+		color: #ff7901;
+		border-left: 3px #ff7901 solid;
+	}
+	.group .count {
+		color: #aaa;
+	}
+	.tree {
+		padding: 20px 10px 0px 10px;
+		padding-left: 10px;
+		font-size: 14px;
+	}
+	.tree .type {
+		background-color: #ff8400;
+		border-radius: 2px;
+		padding: 3px 7px;
+		color: #fff;
+		position: relative;
+		z-index: 1;
+		font-size: 12px;
+		float: left;
+		margin-top: -4px;
+	}
+	.tree .name {
+		font-weight: bold;
+		margin-left: 10px;
+		line-height: 11px;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		display: inline-block;
+		max-width: 297px;
+		height: 12px;
+		font-size: 12px;
+		float: left;
+		margin-top: 2px;
+	}
+	.tree .name .old {
+		color: #4a90e2;
+		font-style: italic;
+	}
+	.tree .name .new {
+		color: #4a90e2;
+		font-style: italic;
+	}
+	.tree .id {
+		color: #888;
+		margin-left: 4px;
+		font-size: 12px;
+	}
+	.tree .tree-2 {
+		margin-left: 15px;
+		font-size: 12px;
+	}
+	.tree .item .before {
+		margin-top: -27px;
+		border-bottom: 1px #aaa dashed;
+		content: "";
+		display: block;
+		width: 17px;
+		height: 33px;
+		position: absolute;
+		margin-left: -19px;
+		z-index: 0;
+		border-left: 1px #aaa dashed;
+	}
+	.tree .item {
+		margin-bottom: 25px;
+		padding-left: 18px;
+		border-left: 1px #aaa dashed;
+	}
+	.tree-3 > .item {
+		border-left: 1px transparent dashed;
+	}
+	.tree-1 > .item:last-child {
+		border-left: 1px transparent dashed;
+	}
+	.tree-2 > .item:last-child {
+		border-left: 1px transparent dashed;
+	}
+	.tree .tree-2 .type {
+		background-color: #4a90e2;
+	}
+	.tree .tree-3 {
+		margin-left: 15px;
+		font-size: 12px;
+	}
+	.tree .tree-3 .type {
+		background-color: #69b0ff;
+	}
+}

@@ -4,8 +4,9 @@ define [
   "Design"
   "../template/TplLeftPanel"
   "constant"
+  "ResDiff"
   "backbone"
-], ( CloudResources, Design, LeftPanelTpl, constant )->
+], ( CloudResources, Design, LeftPanelTpl, constant, ResDiff )->
 
   # Update Left Panel when window size changes
   __resizeAccdTO = null
@@ -27,6 +28,7 @@ define [
       "click .fixedaccordion-head"   : "updateAccordion"
       "RECALC"                       : "recalcAccordion"
       "mousedown .resource-item"     : "startDrag"
+      "click .refresh-resource-panel": "refreshResourcePanel"
 
     initialize : (options)->
       @workspace = options.workspace
@@ -49,6 +51,10 @@ define [
 
       @updateDisableItems()
       return
+
+    refreshResourcePanel : () ->
+
+      resDiff = new ResDiff()
 
     updateAZ : ()->
       if not @workspace.isAwake() then return

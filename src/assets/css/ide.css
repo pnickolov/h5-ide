@@ -10,6 +10,7 @@
 @import url("./ide/header.css");
 @import url("./ide/process.css");
 @import url("./ide/editor.css");
+@import url("./ide/resdiff.css");
 
 html,
 body {

@@ -1,7 +1,7 @@
 
 define [
   "Design"
-  "../template/TplStatusBar"
+  "../template/TplStatusbar"
   "constant"
   "backbone"
 

@@ -245,6 +245,9 @@ require.config {
 		'sslcert_manage'     : 'component/sslcert/sslCertManage'
 		'sslcert_dropdown'     : 'component/sslcert/sslCertDropdown'
 
+		#resource diff
+		'ResDiff'            : 'component/resdiff/ResDiff'
+
 	shim               :
 
 		#############################################

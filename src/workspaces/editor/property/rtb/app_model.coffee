@@ -8,7 +8,7 @@ define [ '../base/model', 'constant', 'Design', 'CloudResources' ], ( PropertyMo
 
         processTarget : ( rtb )->
           console.log rtb
-          rtb.routeSet.item = _.map rtb.routeSet.item, ( item ) ->
+          rtb.routeSet = _.map rtb.routeSet, ( item ) ->
             item.target = item.instanceId || item.networkInterfaceId || item.gatewayId
 
             if item.target isnt "local"
@@ -59,9 +59,9 @@ define [ '../base/model', 'constant', 'Design', 'CloudResources' ], ( PropertyMo
 
           has_main = false
 
-          if rtb.associationSet and rtb.associationSet.item
+          if rtb.associationSet and rtb.associationSet
 
-            for asso in rtb.associationSet.item
+            for asso in rtb.associationSet
 
               if asso.main is true
 
@@ -72,18 +72,18 @@ define [ '../base/model', 'constant', 'Design', 'CloudResources' ], ( PropertyMo
           else
             rtb.main = "No"
 
-          for i in rtb.routeSet.item
+          for i in rtb.routeSet
             if i.state == "active"
               i.active = true
 
           propagate = {}
 
           # Find out which route is propagated.
-          if rtb.propagatingVgwSet and rtb.propagatingVgwSet.item
-            for i in rtb.propagatingVgwSet.item
+          if rtb.propagatingVgwSet and rtb.propagatingVgwSet
+            for i in rtb.propagatingVgwSet
               propagate[ i.gatewayId ] = true
 
-          for value, key in rtb.routeSet.item
+          for value, key in rtb.routeSet
             if propagate[ value.gatewayId ]
               value.propagate = true
 

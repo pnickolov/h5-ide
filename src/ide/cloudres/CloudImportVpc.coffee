@@ -22,6 +22,8 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
       @azs       = {}
       @subnets   = {} # res id => comp
       @instances = {} # res id => comp
+      @enis      = {} # res id => comp
+      @gateways  = {} # res id => comp
       @component = {}
       @layout    = {}
 
@@ -117,6 +119,8 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
             ]
         igwComp = @add( "IGW", aws_igw, igwRes, "Internet-gateway" )
         @addLayout( igwComp, true, @theVpc )
+
+        @gateways[ aws_igw.id ] = igwComp
       return
 
 
@@ -138,33 +142,13 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
 
         vgwComp = @add( "VGW", aws_vgw, vgwRes, "VPN-gateway" )
         @addLayout( vgwComp, true, @theVpc )
+
+        @gateways[ aws_vgw.id ] = vgwComp
       return
 
 
     # getCGW : ()->
     # getVPN : ()->
-
-    ()-> # Rtbs
-      for rtb in @CrPartials( "RT" ).where({vpcId:@vpcId}) || []
-        rtb = rtb.attributes
-        rtbRes = {
-          RouteTableId : rtb.id
-          VpcId        : CREATE_REF( @theVpc )
-          AssociationSet : []
-        }
-
-        for i in rtb.associationSet
-          asso =
-            Main : if i.main is false then false else "true"
-            RouteTableAssociationId : i.routeTableAssociationId
-
-          if i.subnetId
-            asso.SubnetId = CREATE_REF( @subnets[i.subnetId] )
-          rtbRes.AssociationSet.push asso
-
-        rtbComp = @add( "RT", rtb, rtbRes )
-        @addLayout( rtbComp, true, @theVpc )
-      return
 
 
     ()-> # SG
@@ -293,6 +277,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
 
         insComp = @add( "INSTANCE", aws_ins, insRes.resource )
         @addLayout( insComp, false, @subnets[aws_ins.subnetId] )
+
         @instances[ aws_ins.id ] = insComp
       return
 
@@ -353,6 +338,54 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         eniComp = @add( "ENI", aws_eni, eniRes.resource, "eni" + aws_eni.deviceIndex )
         if aws_eni.deviceIndex isnt "0"
           @addLayout( eniComp, false, @subnets[aws_eni.subnetId] )
+
+        @enis[ aws_eni.id ] = eniComp
+      return
+
+
+    ()-> # Rtbs
+      for aws_rtb in @CrPartials( "RT" ).where({vpcId:@vpcId}) || []
+        aws_rtb = aws_rtb.attributes
+        rtbRes =
+          "resource" :
+            "RouteTableId"   : aws_rtb.id
+            "VpcId"          : CREATE_REF( @theVpc )
+            "AssociationSet" : []
+            "RouteSet"       : []
+            "PropagatingVgwSet" : []
+        #associationSet
+        for i in aws_rtb.associationSet
+          asso =
+            Main : if i.main is false then false else "true"
+            RouteTableAssociationId : i.routeTableAssociationId
+
+          if i.subnetId
+            asso.SubnetId = CREATE_REF( @subnets[i.subnetId] )
+          rtbRes.resource.AssociationSet.push asso
+
+        #routeSet
+        for i in aws_rtb.routeSet
+          route =
+            "State" : i.state
+            "Origin": i.origin
+            "InstanceId"     : if i.instanceId then CREATE_REF( @instances[i.instanceId] ) else ""
+            "InstanceOwnerId": if i.instanceOwnerId then i.instanceOwnerId else ""
+            "GatewayId"      : ""
+            "NetworkInterfaceId"   : if i.networkInterfaceId then CREATE_REF( @enis[i.networkInterfaceId] ) else ""
+            "DestinationCidrBlock" : i.destinationCidrBlock
+          if i.gatewayId
+            if i.gatewayId isnt "local" and @gateways[i.gatewayId]
+              route.GatewayId = CREATE_REF( @gateways[i.gatewayId] )
+            else
+              route.GatewayId = i.gatewayId
+          rtbRes.resource.RouteSet.push route
+
+        #propagatingVgwSet
+        for i in aws_rtb.propagatingVgwSet
+          rtbRes.resource.PropagatingVgwSet.push CREATE_REF( @gateways[i.gatewayId] )
+
+        rtbComp = @add( "RT", aws_rtb, rtbRes.resource )
+        @addLayout( rtbComp, true, @theVpc )
       return
 
 

@@ -2,7 +2,7 @@
 #  View Mode for design/property/vpn
 #############################
 
-define [ '../base/model', "Design", "constant" ], ( PropertyModel, Design, constant ) ->
+define [ '../base/model', "Design", "constant", 'CloudResources' ], ( PropertyModel, Design, constant, CloudResources ) ->
 
     generateDownload = ( configs, vpn_data ) ->
 
@@ -93,10 +93,9 @@ define [ '../base/model', "Design", "constant" ], ( PropertyModel, Design, const
 
         getAppData : ( vpnAppId )->
             # get vpn
-            appData = MC.data.resource_list[ Design.instance().region() ]
+            vpn = CloudResources(constant.RESTYPE.VPN, Desing.instance().region()).get(vpnAppId)
 
-            vpn = $.extend true, {}, appData[ vpnAppId ]
-
+            vpn = _.clone vpn
             #temp
             if vpn
                 vpncfg_str = generateDownload( [{"type":"download_configuration","name":"Download Configuration"}], vpn )

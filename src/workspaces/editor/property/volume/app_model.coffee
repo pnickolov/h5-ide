@@ -2,7 +2,7 @@
 #  View Mode for design/property/volume
 #############################
 
-define [ '../base/model', 'Design' ], ( PropertyModel, Design ) ->
+define [ '../base/model', 'Design', 'CloudResources', 'constant' ], ( PropertyModel, Design, CloudResources, constant ) ->
 
     VolumeAppModel = PropertyModel.extend {
 
@@ -15,7 +15,7 @@ define [ '../base/model', 'Design' ], ( PropertyModel, Design ) ->
           else
             appId = uid
 
-          volume = MC.data.resource_list[Design.instance().region()][ appId ]
+          volume = CloudResources(constant.RESTYPE.VOL, Design.instance().region()).get(appId)
           if volume
             if volume.attachmentSet
               volume.name = volume.attachmentSet.item[0].device

@@ -2,7 +2,7 @@
 #  View Mode for design/property/vpc
 #############################
 
-define [ '../base/model', 'Design', 'constant' ], ( PropertyModel, Design, constant ) ->
+define [ '../base/model', 'Design', 'constant', "CloudResources" ], ( PropertyModel, Design, constant, CloudResources ) ->
 
     VPCModel = PropertyModel.extend {
 
@@ -34,10 +34,9 @@ define [ '../base/model', 'Design', 'constant' ], ( PropertyModel, Design, const
 
                 myVPCComponent = Design.instance().component( uid )
 
-                appData = MC.data.resource_list[ Design.instance().region() ]
-                vpc     = appData[ myVPCComponent.get 'appId' ]
+                vpc = CloudResources(constant.RESTYPE.VPC, Design.instance().region()).get(myVPCComponent.get('appId'))
 
-                vpc = $.extend true, {}, vpc
+                vpc = _.clone vpc
 
                 TYPE_RTB = constant.RESTYPE.RT
                 TYPE_ACL = constant.RESTYPE.ACL

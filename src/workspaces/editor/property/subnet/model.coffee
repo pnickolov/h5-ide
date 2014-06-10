@@ -2,7 +2,7 @@
 #  View Mode for design/property/subnet
 #############################
 
-define [ '../base/model', 'constant', "Design" ], ( PropertyModel, constant, Design ) ->
+define [ '../base/model', 'constant', "Design", "CloudResources" ], ( PropertyModel, constant, Design, CloudResources ) ->
 
   SubnetModel = PropertyModel.extend {
 
@@ -50,11 +50,9 @@ define [ '../base/model', 'constant', "Design" ], ( PropertyModel, constant, Des
 
       if @isAppEdit
 
-        appData = MC.data.resource_list[ Design.instance().region() ]
+        subnet = CloudResources(constant.RESTYPE.ACL, Design.instance().region()).get(subnet_component.get('appId'))
 
-        subnet  = appData[ subnet_component.get 'appId' ]
-
-        subnet      = $.extend true, {}, subnet
+        subnet = _.clone subnet
         #subnet.name = subnet_component.get 'name'
         #subnet.acl  = this.getACL( uid )
         #subnet.uid  = uid

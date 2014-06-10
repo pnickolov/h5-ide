@@ -2,7 +2,7 @@
 #  View Mode for design/property/vpc (app)
 #############################
 
-define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, constant ) ->
+define [ '../base/model', "Design", 'constant', 'CloudResources' ], ( PropertyModel, Design, constant, CloudResources ) ->
 
     VPCAppModel = PropertyModel.extend {
 
@@ -10,8 +10,7 @@ define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, const
 
           myVPCComponent = Design.instance().component( vpc_uid )
 
-          appData = MC.data.resource_list[ Design.instance().region() ]
-          vpc     = appData[ myVPCComponent.get 'appId' ]
+          appData = CloudResources(constant.RESTYPE.VPC, Design.instance().region()).get(myVPCComponent.get('appId'))
 
           if not vpc then return false
 

@@ -477,7 +477,29 @@ define [
                 'EIP Id'    : data.id
                 'Category'  : data.category
             }
-
+        when 'CW'
+            return {
+                'Actions Enabled'   : if data.ActionsEnabled then "true" else 'false'
+                'Alarm Actions'     : data.AlarmActions.member
+                'Alarm Arn'         : data.AlarmArn
+                'Alarm Name'        : data.AlarmName
+                'Comparison Operator': data.ComparisonOperator
+                'Dimensions'        : @formartDetail 'Dimensions', data.Dimensions, 'Dimensions', true
+                'Evaluation Periods': data.EvaluationPeriods
+                'Insufficient Data Actions': data.InsufficientDataActions
+                'Metric Name'       : data.MetricName
+                "Name Space"        : data.Namespace
+                'OK Actions'        : data.OKActions
+                'Period'            : data.Period
+                'State Reason'      : data.StateReason
+                'State Updated Timestamp': data.StateUpdatedTimestamp
+                'State Value'       : data.StateValue
+                'Statistic'         : data.Statistic
+                'Threshold'         : data.Threshold
+                'Category'          : data.category
+                'id'                : data.id
+                'title'             : 'CloudWatch - '+ data.AlarmName
+            }
     # some format to the data so it can show in handlebars template
     formartDetail: (type, array, key, force)->
         #resolve 'BlockDevice' AttachmentSet HealthCheck and so on.

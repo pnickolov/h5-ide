@@ -246,7 +246,7 @@ define ["ApiRequest", "CloudResources", "constant", "backbone"], ( ApiRequest, C
       for key, type of data
         collection = CloudResources( constant.RESTYPE[type] )
         if collection.isReady()
-          d[ key ] = collection.length
+          d[ key ] = collection.where(filter).length
         else
           d[ key ] = ""
 

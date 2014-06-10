@@ -110,10 +110,8 @@ define [ "constant", "../GroupModel", "./DhcpModel" ], ( constant, GroupModel, D
       Design.instance().classCacheForCid( this.prototype.classId )[0]
 
     preDeserialize : ( data, layout_data )->
-
       # Create VPC
-      vpc = new Model({
-
+      new Model({
         id    : data.uid
         name  : data.name
         appId : data.resource.VpcId
@@ -128,11 +126,6 @@ define [ "constant", "../GroupModel", "./DhcpModel" ], ( constant, GroupModel, D
         width  : layout_data.size[0]
         height : layout_data.size[1]
       })
-
-      # When creating a new VPC stack, the data has no id.
-      # This is a hack, and it should be remove in the future.
-      data.uid = vpc.id
-
       null
 
     deserialize : ( data, layout, resolve )->

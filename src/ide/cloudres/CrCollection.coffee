@@ -81,7 +81,13 @@ define ["ApiRequest", "./CrModel", "backbone"], ( ApiRequest, CrModel )->
       catch e
         return null
 
-      @set awsData
+      # Transform the data id if the Collection has defined it.
+      if @modelIdAttribute
+        for d in awsData
+          d.id = d[ @modelIdAttribute ]
+          delete d[ @modelIdAttribute ]
+
+      @add awsData
       return
 
     # Override this method to parse the result of the fetch.

@@ -508,8 +508,7 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "CloudResourc
     # Get resource data
     if m.type and design.region()
       res_list = CloudResources( m.type, design.region() )
-      if res_list and res_list.length > 0
-        data = res_list.get(m.get('appId'))
+      data = res_list.get(m.get('appId'))
       if not data
         CanvasManager.addClass @element(), "deleted"
     null

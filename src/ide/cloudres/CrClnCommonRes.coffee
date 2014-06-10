@@ -287,19 +287,21 @@ define [
     AwsResponseType : "DescribeNetworkInterfacesResponse"
     doFetch : ()-> ApiRequest("eni_DescribeNetworkInterfaces", {region_name : @region()})
     parseFetchData : ( data )->
-        enis = data.DescribeNetworkInterfacesResponse.networkInterfaceSet?.item
+      enis = data.DescribeNetworkInterfacesResponse.networkInterfaceSet?.item || []
 
-        # Format Object in some typical data resource.
-        # format attachment and groupSet in "ENI"
-        _.each enis, (eni, index)->
-            _.each eni, (e,key)->
-                if key is "attachment"
-                    _.extend enis[index], e
-                if key is "groupSet"
-                    _.extend enis[index], e.item[0]
-                # Remove All Object in data resource to remove [Object, Object]
-                if _.isObject e
-                    delete enis[index][key]
+      # Format Object in some typical data resource.
+      # format attachment and groupSet in "ENI"
+      _.each enis, (eni, index)->
+          _.each eni, (e,key)->
+            if key is "attachment"
+              _.extend enis[index], e
+            if key is "groupSet"
+              _.extend enis[index], e.item[0]
+            if key is "privateIpAddressesSet"
+              enis[index].privateIpAddressesSet = enis[index].privateIpAddressesSet?.item || []
+            # Remove All Object in data resource to remove [Object, Object]
+            if _.isObject(e) and key isnt "privateIpAddressesSet"
+              delete enis[index][key]
         enis
   }
 
@@ -329,7 +331,17 @@ define [
       sgs = data.DescribeSecurityGroupsResponse.securityGroupInfo?.item
       for sg in sgs || []
         sg.ipPermissions       = sg.ipPermissions?.item || []
+        _.each sg.ipPermissions, (rule,idx)->
+          _.each rule, (e,key)->
+            if key in ["groups","ipRanges"]
+              sg.ipPermissions[idx][key] = e?.item || []
+
         sg.ipPermissionsEgress = sg.ipPermissionsEgress?.item || []
+        _.each sg.ipPermissionsEgress, (rule,idx)->
+          _.each rule, (e,key)->
+            if key in ["groups","ipRanges"]
+              sg.ipPermissionsEgress[idx][key] = e?.item || []
+
         sg.id = sg.groupId
         delete sg.groupId
       sgs

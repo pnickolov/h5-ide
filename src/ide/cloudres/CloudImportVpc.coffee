@@ -20,7 +20,8 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
       @region    = region
       @vpcId     = vpcId
       @azs       = {}
-      @subnets   = {}
+      @subnets   = {} # res id => comp
+      @instances = {} # res id => comp
       @component = {}
       @layout    = {}
 
@@ -84,6 +85,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
       @addLayout( vpcComp, true )
       return
 
+
     ()-> # Subnets
       for sb, idx in @CrPartials( "SUBNET" ).where({vpcId:@vpcId}) || []
         sb = sb.attributes
@@ -100,6 +102,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         @addLayout( sbComp, true, azComp )
       return
 
+
     ()-> # IGW
       for aws_igw in @CrPartials( "IGW" ).where({vpcId:@vpcId}) || []
         aws_igw = aws_igw.attributes
@@ -114,6 +117,8 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
             ]
         igwComp = @add( "IGW", aws_igw, igwRes, "Internet-gateway" )
         @addLayout( igwComp, true, @theVpc )
+      return
+
 
     ()-> # VGW
       for aws_vgw in @CrPartials( "VGW" ).where({vpcId:@vpcId}) || []
@@ -133,6 +138,8 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
 
         vgwComp = @add( "VGW", aws_vgw, vgwRes, "VPN-gateway" )
         @addLayout( vgwComp, true, @theVpc )
+      return
+
 
     # getCGW : ()->
     # getVPN : ()->
@@ -180,10 +187,10 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         if aws_sg.ipPermissions
           for sg_rule in aws_sg.ipPermissions || []
             ipranges = ''
-            if sg_rule.groups and sg_rule.groups.item and sg_rule.groups.item.length>0 and sg_rule.groups.item[0].groupId
-              ipranges = sg_rule.groups.item[0].groupId
-            else if sg_rule.ipRanges and sg_rule.ipRanges.item and sg_rule.ipRanges.item.length>0
-              ipranges = sg_rule.ipRanges.item[0].cidrIp
+            if sg_rule.groups.length>0 and sg_rule.groups[0].groupId
+              ipranges = sg_rule.groups[0].groupId
+            else if sg_rule.ipRanges and sg_rule.ipRanges.length>0
+              ipranges = sg_rule.ipRanges[0].cidrIp
 
             if ipranges
               sgRes.resource.IpPermissions.push {
@@ -196,10 +203,10 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         if aws_sg.ipPermissionsEgress
           for sg_rule in aws_sg.ipPermissionsEgress || []
             ipranges = ''
-            if sg_rule.groups and sg_rule.groups.item and sg_rule.groups.item.length>0 and sg_rule.groups.item[0].groupId
-              ipranges = sg_rule.groups.item[0].groupId
-            else if sg_rule.ipRanges and sg_rule.ipRanges.item and sg_rule.ipRanges.item.length>0
-              ipranges = sg_rule.ipRanges.item[0].cidrIp
+            if sg_rule.groups.length>0 and sg_rule.groups[0].groupId
+              ipranges = sg_rule.groups[0].groupId
+            else if sg_rule.ipRanges and sg_rule.ipRanges.length>0
+              ipranges = sg_rule.ipRanges[0].cidrIp
 
             if ipranges
               sgRes.resource.IpPermissionsEgress.push {
@@ -214,7 +221,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
           DEFAULT_SG["default"] = sgComp
         else if aws_sg.groupName.indexOf("-DefaultSG-app-") isnt -1
           DEFAULT_SG["DefaultSG"] = sgComp
-        return
+      return
 
     ()-> # KP
       kpRes =
@@ -223,6 +230,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
           "KeyName": "DefaultKP"
       @add( "KP", null, kpRes.resource, 'DefaultKP' )
       return
+
 
     ()-> # Instance
       for aws_ins in @CrPartials( "INSTANCE" ).where({vpcId:@vpcId}) || []
@@ -285,14 +293,77 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
 
         insComp = @add( "INSTANCE", aws_ins, insRes.resource )
         @addLayout( insComp, false, @subnets[aws_ins.subnetId] )
+        @instances[ aws_ins.id ] = insComp
+      return
+
+
+    ()-> #ENI
+      for aws_eni in @CrPartials( "ENI" ).where({vpcId:@vpcId}) || []
+        aws_eni = aws_eni.attributes
+        azComp = @addAz(aws_eni.availabilityZone)
+        eniRes =
+          "resource" :
+            "AssociatePublicIpAddress" : false
+            "PrivateIpAddressSet" : []
+            "Status"    : ''
+            "GroupSet"  : []
+            "PrivateDnsName" : ""
+            "SourceDestCheck": true
+            "RequestId" : ""
+            "MacAddress": ""
+            "OwnerId"   : ""
+            "RequestManaged"  : ""
+            "SecondPriIpCount": ""
+            "Attachment":
+                "DeviceIndex"  : ""
+                "InstanceId"   : CREATE_REF( @instances[aws_eni.instanceId] )
+                "AttachmentId" : ""
+                "AttachTime"   : ""
+            "AvailabilityZone": CREATE_REF( azComp )
+            "Description": ""
+            "SubnetId"   : CREATE_REF( @subnets[aws_eni.subnetId] )
+            "VpcId"      : CREATE_REF( @theVpc )
+            "PrivateIpAddress"  : ""
+            "NetworkInterfaceId": ""
+
+        if aws_eni.instanceOwnerId and aws_eni.instanceOwnerId in [ "amazon-elb", "amazon-rds" ]
+          return null
+
+        eniRes = @_mapProperty aws_eni, eniRes
+
+        #check Automatically assign Public IP
+        if aws_eni.association and aws_eni.association.publicIp
+          eniRes.resource.AssociatePublicIpAddress = true
+
+        eniRes.resource.Attachment.DeviceIndex = aws_eni.deviceIndex
+        if aws_eni.deviceIndex isnt "0"
+          #eni0 no need attachmentId
+          eniRes.resource.Attachment.AttachmentId = aws_eni.attachmentId
+        eniRes.resource.Attachment.InstanceId = aws_eni.instanceId
+        eniRes.resource.Attachment.AttachTime = aws_eni.attachTime
+
+        for ip in aws_eni.privateIpAddressesSet
+          eniRes.resource.PrivateIpAddressSet.push {"PrivateIpAddress": ip.privateIpAddress, "AutoAssign" : "false", "Primary" : ip.primary}
+
+        eniRes.resource.GroupSet.push {
+          "GroupId": aws_eni.groupId,
+          "GroupName": aws_eni.groupName
+          }
+
+        eniComp = @add( "ENI", aws_eni, eniRes.resource, "eni" + aws_eni.deviceIndex )
+        if aws_eni.deviceIndex isnt "0"
+          @addLayout( eniComp, false, @subnets[aws_eni.subnetId] )
+      return
+
+
 
   ]
+
 
   # getVOL      : ()->
   # getSG       : ()->
   # getELB      : ()->
   # getACL      : ()->
-  # getENI      : ()->
   # getASG      : ()->
   # getLC       : ()->
   # getNC       : ()->

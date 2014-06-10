@@ -436,7 +436,7 @@ requirejs.onError = ( err )->
 		console.error "[RequireJS Error]", err, err.stack
 
 
-require ["constant", 'ide/Application', "workspaces/Dashboard", "ide/cloudres/CrBundle", 'validation', "MC", 'aws_handle'], ( constant, Application, Dashboard, CrBundle, validation ) ->
+require ["constant", 'ide/Application', "workspaces/Dashboard", "ide/cloudres/CrBundle", "MC", 'aws_handle'], ( constant, Application, Dashboard, CrBundle ) ->
 
 	##########################################################
 	# Deprecated Global shit. Doesn't anyone dare to add more of these. They will be removed in the future.
@@ -452,11 +452,6 @@ require ["constant", 'ide/Application', "workspaces/Dashboard", "ide/cloudres/Cr
 	#global resource data (Describe* return)
 	MC.data.resource_list = {}
 	MC.data.resource_list[r] = {} for r in constant.REGION_KEYS
-
-	#trusted advisor
-	MC.ta = validation
-	MC.ta.list       = []
-	MC.ta.state_list = {}
 
 	#state editor
 	MC.data.state = {}

@@ -34,17 +34,13 @@ define [
         # 3.set textTime
         $item    = $('.stack-save-time')
         $item.text MC.intervalDate save_time
-        $item.attr 'data-tab-id',    MC.data.current_tab_id
         $item.attr 'data-save-time', save_time
 
         # 4.loop
-        @timer = setInterval ( ->
-
-            $item    = $('.stack-save-time')
-            if $item.attr( 'data-tab-id' ) is MC.data.current_tab_id
-                $item.text MC.intervalDate $item.attr 'data-save-time'
-
-        ), 500
+        @timer = setInterval ()->
+          $item    = $('.stack-save-time')
+          $item.text MC.intervalDate $item.attr 'data-save-time'
+        , 500
         #
         null
       click: ( event ) ->

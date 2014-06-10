@@ -72,34 +72,36 @@
       color: #888;
       margin-left: 4px;
       font-size: 12px; }
-    .res_diff_tree .tree .tree-2 {
-      margin-left: 15px;
-      font-size: 12px; }
     .res_diff_tree .tree .item {
       margin-bottom: 25px;
       padding-left: 18px;
-      border-left: 1px #aaa dashed; }
+      border-left: 1px #ddd solid; }
       .res_diff_tree .tree .item::before {
         margin-top: -27px;
-        border-bottom: 1px #aaa dashed;
+        border-left: 1px #ddd solid;
+        border-bottom: 1px #ddd solid;
         content: "";
         display: block;
         width: 17px;
         height: 33px;
         position: absolute;
         margin-left: -19px;
-        z-index: 0;
-        border-left: 1px #aaa dashed; }
-  .res_diff_tree .tree-3 > .item {
-    border-left: 1px transparent dashed; }
-  .res_diff_tree .tree-1 > .item:last-child {
-    border-left: 1px transparent dashed; }
-  .res_diff_tree .tree-2 > .item:last-child {
-    border-left: 1px transparent dashed; }
-  .res_diff_tree .tree .tree-2 .type {
-    background-color: #4a90e2; }
-  .res_diff_tree .tree .tree-3 {
+        z-index: 0; }
+      .res_diff_tree .tree .item:last-child {
+        border-left: 1px solid transparent !important; }
+  .res_diff_tree .group > ul.tree > .item:last-child {
+    border-left: 1px #ddd solid; }
+  .res_diff_tree .group > ul.tree > li > ul.tree {
     margin-left: 15px;
     font-size: 12px; }
-  .res_diff_tree .tree .tree-3 .type {
-    background-color: #69b0ff; }
+    .res_diff_tree .group > ul.tree > li > ul.tree .type {
+      background-color: #4a90e2; }
+    .res_diff_tree .group > ul.tree > li > ul.tree > .item:last-child {
+      border-left: 1px #ddd solid; }
+    .res_diff_tree .group > ul.tree > li > ul.tree > li > ul.tree {
+      margin-left: 15px;
+      font-size: 12px; }
+      .res_diff_tree .group > ul.tree > li > ul.tree > li > ul.tree .type {
+        background-color: #69b0ff; }
+      .res_diff_tree .group > ul.tree > li > ul.tree > li > ul.tree .item {
+        border-left: 1px #ddd solid; }

@@ -1,5 +1,8 @@
-.res_diff_tree {
+@mixin tierline($side: left) {
+	border-#{$side}: 1px #ddd solid;
+}
 
+.res_diff_tree {
 	overflow: auto;
 	width: 568px;
 	height: 600px;
@@ -92,18 +95,15 @@
 			margin-left: 4px;
 			font-size: 12px;
 		}
-		.tree-2 {
-			margin-left: 15px;
-			font-size: 12px;
-		}
 		.item {
 			margin-bottom: 25px;
 			padding-left: 18px;
-			border-left: 1px #aaa dashed;
+			@include tierline;
 
 			&::before {
 				margin-top: -27px;
-				border-bottom: 1px #aaa dashed;
+				@include tierline;
+				@include tierline(bottom);
 				content: "";
 				display: block;
 				width: 17px;
@@ -111,29 +111,48 @@
 				position: absolute;
 				margin-left: -19px;
 				z-index: 0;
-				border-left: 1px #aaa dashed;
+			}
+
+			&:last-child {
+				border-left: 1px solid transparent !important;
 			}
 		}
 
+
 	}
 
-	.tree-3 > .item {
-		border-left: 1px transparent dashed;
+	// tree-1
+	.group > ul.tree {
+		& > .item:last-child {
+			@include tierline;
+		}
+		// tree-2
+		& > li > ul.tree {
+			margin-left: 15px;
+			font-size: 12px;
+
+			.type {
+				background-color: #4a90e2;
+			}
+
+			& > .item:last-child {
+				@include tierline;
+			}
+
+			// tree-3
+			& > li >ul.tree {
+				margin-left: 15px;
+				font-size: 12px;
+
+				.type {
+					background-color: #69b0ff;
+				}
+
+				.item {
+					@include tierline;
+				}
+			}
+		}
 	}
-	.tree-1 > .item:last-child {
-		border-left: 1px transparent dashed;
-	}
-	.tree-2 > .item:last-child {
-		border-left: 1px transparent dashed;
-	}
-	.tree .tree-2 .type {
-		background-color: #4a90e2;
-	}
-	.tree .tree-3 {
-		margin-left: 15px;
-		font-size: 12px;
-	}
-	.tree .tree-3 .type {
-		background-color: #69b0ff;
-	}
+
 }

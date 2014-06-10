@@ -1,5 +1,6 @@
 
 define [
+  "OpsModel"
   "Design"
   "../template/TplStatusbar"
   "constant"
@@ -7,7 +8,7 @@ define [
   "event"
 
   "state_status"
-], ( Design, template, constant, Backbone, ide_event, stateStatus )->
+], ( OpsModel, Design, template, constant, Backbone, ide_event, stateStatus )->
 
 # Just define item below and import need file above
 # name used for template, the template you put in TplStatusBar file
@@ -79,7 +80,7 @@ define [
       className: 'status-bar-btn'
       visible: ( toggle ) ->
         mode = workspace.design.mode()
-        appStoped = workspace.design.get( 'state' ) is 'Stopped'
+        appStoped = workspace.opsModel.testState( OpsModel.State.Stopped )
         isVisible = false
 
         if mode in ['app', 'appedit']

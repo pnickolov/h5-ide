@@ -1,5 +1,5 @@
 
-define [ "i18n!nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "Design" ], ( lang, CanvasElement, constant, CanvasManager, Design )->
+define [ "i18n!nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "Design", "CloudResources" ], ( lang, CanvasElement, constant, CanvasManager, Design, CloudResources )->
 
   CeInstance = ()-> CanvasElement.apply( this, arguments )
   CanvasElement.extend( CeInstance, constant.RESTYPE.INSTANCE )
@@ -144,6 +144,7 @@ define [ "i18n!nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "De
       # update label
       CanvasManager.update node.children(".node-label-name"), m.get("name")
 
+    if not @model.design().modeIsStack() and m.get("appId")
       # Update Instance State in app
       @updateAppState()
 
@@ -209,9 +210,13 @@ define [ "i18n!nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "De
     CanvasManager.removeClass el, "deleted"
 
     # Get instance state
-    instance_data = MC.data.resource_list[ m.design().region() ][ m.get("appId") ]
+
+    if m.type and m.design().region()
+      res_list = CloudResources( m.type, m.design().region() )
+      instance_data = res_list.get(m.get('appId'))
+
     if instance_data
-      instanceState = instance_data.instanceState.name
+      instanceState = instance_data.get("instanceState").name
       CanvasManager.addClass el, "deleted" if instanceState is "terminated"
     else
       #instance data not found, or maybe instance already terminated

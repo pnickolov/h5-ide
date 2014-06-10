@@ -436,11 +436,37 @@ requirejs.onError = ( err )->
 		console.error "[RequireJS Error]", err, err.stack
 
 
-require ['ide/Application', 'ide/deprecated/ide', "ide/cloudres/CrBundle", "workspaces/Dashboard"], ( Application, ide, bundle, Dashboard ) ->
-	(new Application()).initialize().then ()->
-		ide.initialize()
-		new Dashboard()
-	return
+require ["constant", 'ide/Application', "workspaces/Dashboard", "ide/cloudres/CrBundle", 'validation', "MC", 'aws_handle'], ( constant, Application, Dashboard, CrBundle, validation ) ->
+
+	##########################################################
+	# Deprecated Global shit. Doesn't anyone dare to add more of these. They will be removed in the future.
+	MC.data = MC.data || {}
+
+	#global config data by region
+	MC.data.config = {}
+	MC.data.config[r] = {} for r in constant.REGION_KEYS
+
+	#global cache for all ami
+	MC.data.dict_ami = {}
+
+	#global resource data (Describe* return)
+	MC.data.resource_list = {}
+	MC.data.resource_list[r] = {} for r in constant.REGION_KEYS
+
+	#trusted advisor
+	MC.ta = validation
+	MC.ta.list       = []
+	MC.ta.state_list = {}
+
+	#state editor
+	MC.data.state = {}
+
+	# State clipboard
+	MC.data.stateClipboard = []
+	##########################################################
+
+	(new Application()).initialize().then ()-> new Dashboard(); return
+
 , ( err )->
 	err = err || { requireType : "timeout" }
 	if err.requireType is "timeout"

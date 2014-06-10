@@ -15,7 +15,6 @@ define [ 'underscore', 'backbone' ], () ->
         REFRESH_PROPERTY       : "REFRESH_PROPERTY"
 
         #status bar & ta
-        HIDE_STATUS_BAR        : 'HIDE_STATUS_BAR'
         UPDATE_STATUS_BAR      : 'UPDATE_STATUS_BAR'
         UPDATE_TA_MODAL        : 'UPDATE_TA_MODAL'
         UNLOAD_TA_MODAL        : 'UNLOAD_TA_MODAL'

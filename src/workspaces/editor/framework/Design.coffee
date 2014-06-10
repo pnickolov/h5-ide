@@ -426,7 +426,7 @@ define [
   DesignImpl.prototype.isModified = ( newData )->
 
     if @modeIsApp() or @modeIsAppView()
-      conole.warn "Testing Design.isModified() in app mode and visualize mode. This should not be happening."
+      console.warn "Testing Design.isModified() in app mode and visualize mode. This should not be happening."
       return false
 
     dataToCompare = newData || @attributes

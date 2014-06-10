@@ -99,9 +99,9 @@
         left: -5.5px;
         top: 2px;
         background: white; }
-      .res_diff_tree .tree .item .meta {
+      .res_diff_tree .tree .item .meta .type {
         cursor: pointer; }
-      .res_diff_tree .tree .item.end .meta {
+      .res_diff_tree .tree .item.end .meta .type {
         cursor: auto; }
       .res_diff_tree .tree .item.end::after {
         display: none; }

@@ -8,11 +8,11 @@ define ['UI.modalplus', './component/resdiff/resDiffTpl'], (modalplus, template)
             @render()
 
         events:
-            'click .item': '__toggleTab'
+            'click .item .type': '__toggleTab'
 
         __toggleTab: ( e ) ->
-            e.stopPropagation()
-            $target = $ e.currentTarget
+            $target = $( e.currentTarget ).closest '.item'
+
             if $target.hasClass 'end'
                 return
             $target.toggleClass 'closed'
@@ -22,14 +22,20 @@ define ['UI.modalplus', './component/resdiff/resDiffTpl'], (modalplus, template)
             options =
 
                 template: @el
-                title: 'Resource diff'
-                disableFooter: true
+                title: 'App Changes'
                 disableClose: true
+                disableCancel: true
+                confirm:
+                    text: 'OK, got it'
+
                 width: '608px'
                 height: '681px'
                 compact: true
 
             @modal = new modalplus options
+            @modal.on 'confirm', () ->
+                @modal.close()
+            @modal
 
         render: () ->
 

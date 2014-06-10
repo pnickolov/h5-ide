@@ -129,11 +129,11 @@ $bg_body : #fff;
 				background: $bg_body;
 			}
 
-			.meta {
+			.meta .type {
 				cursor: pointer;
 			}
 
-			&.end .meta {
+			&.end .meta .type {
 				cursor: auto;
 			}
 

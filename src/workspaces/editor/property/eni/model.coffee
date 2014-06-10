@@ -2,7 +2,7 @@
 #  View Mode for design/property/eni
 #############################
 
-define [ '../base/model', 'constant', "Design", 'i18n!nls/lang.js'  ], ( PropertyModel, constant, Design, lang ) ->
+define [ '../base/model', 'constant', "Design", 'i18n!nls/lang.js', 'CloudResources'  ], ( PropertyModel, constant, Design, lang, CloudResources ) ->
 
 	ENIModel = PropertyModel.extend {
 
@@ -65,8 +65,7 @@ define [ '../base/model', 'constant', "Design", 'i18n!nls/lang.js'  ], ( Propert
 		getEniGroup : ( eni_uid ) ->
 
 			eniComp       = Design.instance().component( eni_uid )
-			resource_list = MC.data.resource_list[ Design.instance().region() ]
-			appData       = resource_list[ eniComp.get("appId") ]
+			appData = CloudResources(constant.RESTYPE.ENI, Design.instance().region()).get(eniComp.get('appId'))
 			name          = eniComp.get("name")
 
 			group = [{

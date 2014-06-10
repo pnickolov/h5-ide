@@ -10,8 +10,9 @@ define [ '../base/model',
     'constant',
     'i18n!nls/lang.js'
     'Design'
+    'CloudResources'
 
-], ( PropertyModel, keypair_model, keypair_service, instance_model, instance_service, constant, lang, Design ) ->
+], ( PropertyModel, keypair_model, keypair_service, instance_model, instance_service, constant, lang, Design, CloudResources ) ->
 
     AppInstanceModel = PropertyModel.extend {
 
@@ -20,7 +21,7 @@ define [ '../base/model',
 
         setOsTypeAndLoginCmd: ( appId ) ->
             region = Design.instance().region()
-            instance_data = MC.data.resource_list[ region ][ appId ]
+            instance_data = CloudResources(constant.RESTYPE.INSTANCE, region).get(appId)
             if instance_data && instance_data.imageId
                 os_type = MC.data.dict_ami[ instance_data.imageId ].osType
 
@@ -70,11 +71,11 @@ define [ '../base/model',
 
 
 
-            app_data = MC.data.resource_list[ Design.instance().region() ]
+            app_data = CloudResources(constant.RESTYPE.INSTANCE, Design.instance().region())
 
-            if app_data[ instance_id ]
+            if app_data.get(instance_id)
 
-                instance = $.extend true, {}, app_data[ instance_id ]
+                instance = $.extend true, {}, app_data.get(instance_id)
                 instance.name = if myInstanceComponent then myInstanceComponent.get 'name' else instance_id
                 rdName = myInstanceComponent.getAmiRootDeviceName()
 
@@ -91,7 +92,7 @@ define [ '../base/model',
 
                     #RootDevice Data
                     if rootDevice
-                        volume = MC.data.resource_list[Design.instance().region()][ rootDevice.ebs.volumeId ]
+                        volume = CloudResources(constant.RESTYPE.VOL, Design.instance().region()).get(rootDevice.ebs.volumeId)
                         if volume
                             if volume.attachmentSet
                                 volume.name = volume.attachmentSet.item[0].device
@@ -142,14 +143,14 @@ define [ '../base/model',
                     component = eni
                     break
 
-            appData = MC.data.resource_list[ Design.instance().region() ]
+            appData = CloudResources(constant.RESTYPE.ENI, Design.instance().region())
 
-            if not appData[id]
+            if not appData.get(id)
                 # Use data inside networkInterfaceSet
                 data = $.extend true, {}, data
             else
                 # Use data inside appData
-                data = $.extend true, {}, appData[ id ]
+                data = $.extend true, {}, appData.get('id')
 
             data.name = if component then component.get 'name' else id
             if data.status == "in-use"

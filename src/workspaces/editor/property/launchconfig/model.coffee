@@ -2,7 +2,7 @@
 #  View Mode for design/property/instance
 #############################
 
-define [ '../base/model', 'keypair_model', 'constant', 'Design' ], ( PropertyModel, keypair_model, constant, Design ) ->
+define [ '../base/model', 'keypair_model', 'constant', 'Design', "CloudResources" ], ( PropertyModel, keypair_model, constant, Design, CloudResources ) ->
 
   LaunchConfigModel = PropertyModel.extend {
 
@@ -191,7 +191,7 @@ define [ '../base/model', 'keypair_model', 'constant', 'Design' ], ( PropertyMod
         true
 
     getAppLaunch : ( uid ) ->
-      lc_data   = MC.data.resource_list[Design.instance().region()][ @lc.get 'appId' ]
+      lc_data = CloudResources(constant.RESTYPE.LC, Design.instance().region()).get(@lc.get('appId'))
 
       this.set "ebsOptimized", @lc.get("ebsOptimized") + ""
       this.set 'name', @lc.get 'name'

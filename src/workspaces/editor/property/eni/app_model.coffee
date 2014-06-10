@@ -2,7 +2,7 @@
 #  View Mode for design/property/eni
 #############################
 
-define [ '../base/model', 'Design', 'constant' ], ( PropertyModel, Design, constant ) ->
+define [ '../base/model', 'Design', 'constant', "CloudResources" ], ( PropertyModel, Design, constant, CloudResources ) ->
 
     EniAppModel = PropertyModel.extend {
 
@@ -30,7 +30,7 @@ define [ '../base/model', 'Design', 'constant' ], ( PropertyModel, Design, const
           else
             myEniComponentJSON = myEniComponent.toJSON()
 
-          appData        = MC.data.resource_list[ Design.instance().region() ]
+          appData = CloudResources(constant.RESTYPE.ENI,Design.instance().region()).get(eni_comp.appId)
 
           if @isGroupMode
             group = [ myEniComponentJSON ].concat myEniComponent.groupMembers()
@@ -45,8 +45,8 @@ define [ '../base/model', 'Design', 'constant' ], ( PropertyModel, Design, const
 
           for index, eni_comp of group
 
-            if appData[ eni_comp.appId ]
-              eni = $.extend true, {}, appData[ eni_comp.appId ]
+            if appData
+              eni = $.extend true, {}, appData
             else
               eni = { privateIpAddressesSet : { item : [] } }
 

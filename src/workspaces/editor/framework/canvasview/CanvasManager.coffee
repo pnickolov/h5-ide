@@ -1,5 +1,5 @@
 
-define [], ()->
+define ['CloudResources'], (CloudResources)->
 
   CanvasManager = {
 
@@ -65,8 +65,8 @@ define [], ()->
         imgUrl    = 'ide/icon/eip-off.png'
 
       if targetModel.design().modeIsApp() or targetModel.design().modeIsAppView()
-        resource_list = MC.data.resource_list[ targetModel.design().region() ]
-        res = resource_list[ targetModel.get("appId") ]
+        resource_list = CloudResources(targetModel.type, targetModel.design().region())
+        res = resource_list.get(targetModel.get('appId')).toJSON()
         if toggle and res
           if res.privateIpAddressesSet and res.privateIpAddressesSet.item and res.privateIpAddressesSet.item.length
             res = res.privateIpAddressesSet.item[0]

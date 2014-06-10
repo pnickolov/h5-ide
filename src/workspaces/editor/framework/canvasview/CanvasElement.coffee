@@ -322,15 +322,14 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "CloudResourc
     id   = @id
     name = @model.get("name")
 
-    resource_list = MC.data.resource_list[ @model.design().region() ]
-
+    resource_list = CloudResources(@model.type, @model.design().region())
     ###
     # Quick hack for Lc
     ###
     if @type isnt constant.RESTYPE.LC
 
       if @type is constant.RESTYPE.INSTANCE
-        instance_data = resource_list[ @model.get("appId") ]
+        instance_data = resource_list.get(@model.get("appId")).toJSON()
         state = if instance_data then instance_data.instanceState.name else "unknown"
 
       list = [{

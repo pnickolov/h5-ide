@@ -2,7 +2,8 @@ define [
   "constant"
   "OpsModel"
   "workspaces/editor/framework/canvasview/CanvasAdaptor"
-], ( constant, OpsModel, CanvasAdaptor ) ->
+  'CloudResources'
+], ( constant, OpsModel, CanvasAdaptor, CloudResources ) ->
 
   PropertyDefination =
     policy : { ha : "" }
@@ -691,23 +692,23 @@ define [
 
   DesignImpl.prototype.clearResourceInCache = ()->
     # module/design/model would like to clear all the data in the data.resource_list
-    resource_list = MC.data.resource_list[ @region() ]
+    resource_list = CloudResources(@type, @region())
     if not resource_list then return
 
     @eachComponent ( comp )->
       appId = comp.get("appId")
 
-      if appId and appId.indexOf(":autoScalingGroup:")>0 and resource_list[ appId ]
+      if appId and appId.indexOf(":autoScalingGroup:")>0 and resource_list.get(appId)
         #appId is asg, need delete instance in asg
-        member = resource_list[ appId ].Instances
+        member = resource_list.get(appId).toJSON().Instances
         if member.member then member = member.member
         for val,key in member
           if _.isString( val )
-            delete resource_list[ val ]
+            resource_list.remove resource_list.get(val)
           else
-            delete resource_list[ val.InstanceId ]
+            resource_list.remove resource_list.get(val.InstanceId)
 
-      delete resource_list[ appId ]
+      resource_list.remove resource_list.get(appId)
       #delete elb attributes (disable these code because it's already embed in ELB)
       # if comp.type is constant.RESTYPE.ELB
       #   elb_name = comp.get("name") + "---" + Design.instance().get("id")
@@ -716,23 +717,22 @@ define [
 
 
     #clear Subscriptions in current app
-    subList = resource_list.Subscriptions
+    subList = CloudResources( constant.RESTYPE.SUBSCRIPTION, @region() )
     idx     = 0
-    while subList and idx < subList.length
-      if subList[idx].TopicArn.indexOf( @get("id") ) > 0
-        subList.splice(idx,1)
+    _.each subList.toJSON(), (e,index)=>
+      if subList.at(index).toJSON().TopicArn.indexOf( @get("id") ) > 0
+        subList.remove subList.at(index)
       else
         idx++
 
     #clear NotificationConfigurations in current app
-    lcList = resource_list.NotificationConfigurations
+    lcList = CloudResources( constant.RESTYPE.NC , @region() )
     idx    = 0
-    while lcList and idx < lcList.length
-      if lcList[idx].TopicARN.indexOf( @get("id") ) > 0
-        lcList.splice(idx,1)
+    _.each lcList.toJSON(), (e,index)=>
+      if lcList.at(index).toJSON().TopicARN.indexOf( @get("id") ) > 0
+          lcList.remove lcList.at(index)
       else
-        idx++
-
+          idx++
 
     console.debug "data.resource_list has been cleared", resource_list
     null

@@ -1,5 +1,5 @@
 
-define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
+define [ "Design", "event", "backbone", 'CloudResources' ], ( Design, ideEvent , Backbone, CloudResources)->
 
   deepClone = ( base )->
 
@@ -270,7 +270,7 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
 
     hasAppResource : ()->
       if not Design.instance().modeIsStack() and @.get("appId")
-        !!@get("appId") and MC.data.resource_list[ Design.instance().region() ][ @get("appId") ]
+        !!@get('appId') and CloudResources(@type,@design().region()).get(@get('appId')).toJSON()
       else
         true
 

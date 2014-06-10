@@ -1,5 +1,5 @@
 
-define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./VolumeModel", 'i18n!nls/lang.js' ], ( ComplexResModel, InstanceModel, Design, constant, VolumeModel, lang )->
+define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./VolumeModel", 'i18n!nls/lang.js', 'CloudResources' ], ( ComplexResModel, InstanceModel, Design, constant, VolumeModel, lang, CloudResources )->
 
   emptyArray = []
 
@@ -72,7 +72,7 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
         null
 
       if Design.instance().modeIsAppEdit()
-        resource_list = MC.data.resource_list[Design.instance().region()]
+        resource_list = CloudResources(constant.RESTYPE.LC, Design.instance().region()).toJSON()
         for id, rl of resource_list
           if rl.LaunchConfigurationName
             nameMap[ _.first rl.LaunchConfigurationName.split( '---' ) ] = true
@@ -103,7 +103,7 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
 
     # Use by CanvasElement(change members to groupMembers)
     groupMembers : ()->
-      resource_list = MC.data.resource_list[ Design.instance().region() ]
+      resource_list = CloudResources(constant.RESTYPE.LC, Design.instance().region())?.toJSON()
       if not resource_list then return []
 
       resource = resource_list[ @parent().get("appId") ]

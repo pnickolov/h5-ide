@@ -259,16 +259,16 @@ define [ "i18n!nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "De
     vl = []
     design = @model.design()
 
-    resource_list = MC.data.resource_list[ design.region() ]
+    resource_list = CloudResources(@model.type, design.region())
     if not resource_list then return vl
 
-    data = resource_list[ appId ]
+    data = resource_list.get(appId).toJSON()
 
     if data and data.blockDeviceMapping and data.blockDeviceMapping.item
       for v in data.blockDeviceMapping.item
         if data.rootDeviceName.indexOf(v.deviceName) isnt -1
           continue
-        volume = resource_list[ v.ebs.volumeId ]
+        volume = resource_list.get( v.ebs.volumeId ).toJSON()
         if volume
           #volume exist
           vl.push {

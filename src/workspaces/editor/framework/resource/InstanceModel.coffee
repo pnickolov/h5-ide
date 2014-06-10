@@ -1,5 +1,5 @@
 
-define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( ComplexResModel, Design, constant, lang )->
+define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js", 'CloudResources' ], ( ComplexResModel, Design, constant, lang, CloudResources )->
 
   emptyArray = []
 
@@ -771,9 +771,9 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( Com
             if member and member.appId is instance_id
               return { uid : instance.id, mid : "#{member.id}_#{index + 1}" }
 
-      resource_list = MC.data.resource_list[ design.region() ]
+      resource_list = CloudResources(constant.RESTYPE.ASG, Design.instance().region())
       for asg in Design.modelClassForType( constant.RESTYPE.ASG ).allObjects()
-        data = resource_list[ asg.get("appId") ]
+        data = resource_list.get(asg.get('appId')).toJSON()
         if not data or not data.Instances then continue
         data = data.Instances
         for obj in (data.member or data)

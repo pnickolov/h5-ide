@@ -2,7 +2,7 @@
 #  View Mode for component/stateeditor
 #############################
 
-define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], (MC, constant, state_model) ->
+define [ 'MC', 'constant', 'state_model', 'CloudResources', 'backbone', 'jquery', 'underscore' ], (MC, constant, state_model, CloudResources) ->
 
 	StateEditorModel = Backbone.Model.extend {
 
@@ -551,7 +551,7 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 
 			that = this
 			currentRegion = MC.canvas_data.region
-			resObj = MC.data.resource_list[currentRegion][resId]
+			resObj = CloudResources(that.type, currentRegion).get(resId).toJSON()
 			resState = 'unknown'
 			if resObj and resObj.instanceState and resObj.instanceState.name
 				resState = resObj.instanceState.name
@@ -672,7 +672,7 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 					if lsgUID is originCompUID
 
 						# find asg name's all instance
-						$.each MC.data.resource_list[MC.canvas_data.region], (idx, resObj) ->
+						$.each CloudResources(constant.RESTYPE.ASG,MC.canvas_data.region).toJSON(), (idx, resObj) ->
 							if resObj and resObj.AutoScalingGroupName and resObj.Instances
 								if resObj.AutoScalingGroupName is asgName
 									$.each resObj.Instances.member, (idx, instanceObj) ->

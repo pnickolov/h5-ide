@@ -88,6 +88,7 @@ require.config {
 		'crypto'             : 'vender/crypto-js/cryptobundle'
 		'q'                  : 'vender/q/q'
 		'select2'			 : 'vender/select2/select2.min'
+		'jsondiffpatch'      : 'vender/jsondiffpatch/bundle'
 
 		#############################################
 		# MC                        # Merge in deploy
@@ -290,6 +291,7 @@ require.config {
 			"canvon"
 			"crypto"
 			"q"
+			"jsondiffpatch"
 		]
 		"lib/lib" : [
 			"MC"

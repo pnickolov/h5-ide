@@ -312,7 +312,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
             "NetworkInterfaceId": ""
 
         if aws_eni.instanceOwnerId and aws_eni.instanceOwnerId in [ "amazon-elb", "amazon-rds" ]
-          return null
+          continue
 
         eniRes = @_mapProperty aws_eni, eniRes
 
@@ -341,6 +341,44 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
 
         @enis[ aws_eni.id ] = eniComp
       return
+
+
+    ()-> #Volume
+      for aws_vol in @CrPartials( "VOL" ).where({category:@region}) || []
+        aws_vol = aws_vol.attributes
+        if aws_vol.attachmentSet.length is 0
+          continue
+
+        instance = @instances[ aws_vol.attachmentSet[0].instanceId ]
+        if not instance
+          continue
+
+        azComp = @addAz(aws_vol.availabilityZone)
+        volRes =
+          "resource":
+            "VolumeId"     : aws_vol.id
+            "AvailabilityZone": CREATE_REF( azComp )
+            "Size"         : Number(aws_vol.size)
+            "SnapshotId"   : if aws_vol.snapshotId then aws_vol.snapshotId else ""
+            "Iops"         : if aws_vol.iops then aws_vol.iops else ""
+            "AttachmentSet":
+              "Device"       : aws_vol.attachmentSet[0].device
+              "InstanceId"   : CREATE_REF( instance )
+            "VolumeType"   : aws_vol.volumeType
+
+        #volRes = @_mapProperty aws_vol, volRes
+        #check rootDevice
+
+        # instanceId = aws_vol.attachmentSet.instanceId
+        # if res_cache[ instanceId ]
+        #   rootDeviceName = @instances[ instanceId ].rootDeviceName
+        #   deviceName     = aws_vol.attachmentSet.item[0].device
+        #   if rootDeviceName.indexOf(deviceName) is 0
+        #     #is root device
+        #     return null
+
+        volComp = @add( "VOL", aws_vol, volRes.resource, "vol" + aws_vol.attachmentSet[0].device )
+        #@vols[ aws_vol.id ] = volComp
 
 
     ()-> # Rtbs

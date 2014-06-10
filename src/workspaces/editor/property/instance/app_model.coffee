@@ -82,9 +82,9 @@ define [ '../base/model',
                 # Possible value : running, stopped, pending...
                 instance.state = MC.capitalize instance.instanceState.name
                 instance.blockDevice = ""
-                if instance.blockDeviceMapping && instance.blockDeviceMapping.item
+                if instance.blockDeviceMapping && instance.blockDeviceMapping
                     deviceName = []
-                    for i in instance.blockDeviceMapping.item
+                    for i in instance.blockDeviceMapping
                         deviceName.push i.deviceName
                         if rdName is i.deviceName
                             rootDevice = i
@@ -95,7 +95,7 @@ define [ '../base/model',
                         volume = CloudResources(constant.RESTYPE.VOL, Design.instance().region()).get(rootDevice.ebs.volumeId).toJSON()
                         if volume
                             if volume.attachmentSet
-                                volume.name = volume.attachmentSet.item[0].device
+                                volume.name = volume.attachmentSet[0].device
                             @set "rootDevice", volume
 
                 # Eni Data
@@ -124,7 +124,7 @@ define [ '../base/model',
             if not instance_data.networkInterfaceSet
                 return null
 
-            for i in instance_data.networkInterfaceSet.item
+            for i in instance_data.networkInterfaceSet
                 if i.attachment.deviceIndex == "0"
                     id = i.networkInterfaceId
                     data = i
@@ -158,7 +158,7 @@ define [ '../base/model',
 
             data.sourceDestCheck = if data.sourceDestCheck then "enabled" else "disabled"
 
-            for i in data.privateIpAddressesSet.item
+            for i in data.privateIpAddressesSet
                 i.primary = i.primary == true
 
             data

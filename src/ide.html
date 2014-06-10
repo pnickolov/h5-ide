@@ -1,33 +1,22 @@
-<!DOCTYPE HTML>
-<html>
-<head>
+<!DOCTYPE HTML><html><head>
 	<title>VisualOps - Ensure your app always runs as you designed</title>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<meta charset="UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 	<meta name="description" content="VisualOps - Visual Cloud Computing IDE"/>
-	<link rel="shortcut icon" href="./assets/images/ide/favicon.ico" type="image/x-icon" />
+	<link rel="shortcut icon" href="./assets/images/ide/favicon.ico" type="image/x-icon"/>
 
 	<link rel="stylesheet" href="./assets/css/icon-font.css"/>
 	<link rel="stylesheet" href="./assets/css/ide.css"/>
 	<link rel="stylesheet" href="./assets/css/UI.component.css"/>
 	<link rel="stylesheet" href="./assets/css/canvas.css"/>
 	<link rel="stylesheet" href="./assets/css/stateeditor.css"/>
-
 	<!-- {{include/analytics.html}} -->
-</head>
-<body id="body">
-	<!-- Loading bar -->
-	<div id="loading-bar-wrapper" class="loading-wrapper"><div class="gear-loading"></div></div>
-
-	<!-- Waiting bar -->
-	<div id="waiting-bar-wrapper"></div>
-
-	<div id="wrapper">
+</head> <body id="body">
+	<div id="GlobalLoading" class="loading-wrapper"><div class="gear-loading"></div></div>
+	<section id="wrapper">
 		<div id="tabbar-wrapper"><ul id="ws-fixed-tabs"></ul><ul id="ws-tabs"></ul></div>
 		<div id="main"></div>
-	</div>
-
+	</section>
 	<!-- {{include/intercom.html}} -->
 	<script type="text/javascript" src='./vender/requirejs/require.js' data-main='./ide/config.js?#{version}'></script>
-</body>
-</html>
+</body></html>

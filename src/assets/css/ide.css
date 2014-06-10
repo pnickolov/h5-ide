@@ -3434,7 +3434,7 @@ summary:focus {
 }
 
 /* Loading */
-#loading-bar-wrapper {
+#GlobalLoading {
 	position: fixed;
 	width: 100%;
 	height: 100%;

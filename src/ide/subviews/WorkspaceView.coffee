@@ -93,7 +93,7 @@ define [ "backbone", "jquerysort" ], () ->
         @trigger "close", $(evt.currentTarget).closest("li")[0].id
         false
 
-      showLoading : ()-> $("#loading-bar-wrapper").show()
-      hideLoading : ()-> $("#loading-bar-wrapper").hide()
+      showLoading : ()-> $("#GlobalLoading").show()
+      hideLoading : ()-> $("#GlobalLoading").hide()
 
     }

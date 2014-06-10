@@ -7,6 +7,16 @@ define ['UI.modalplus', './component/resdiff/resDiffTpl'], (modalplus, template)
         initialize: () ->
             @render()
 
+        events:
+            'click .item': '__toggleTab'
+
+        __toggleTab: ( e ) ->
+            e.stopPropagation()
+            $target = $ e.currentTarget
+            if $target.hasClass 'end'
+                return
+            $target.toggleClass 'closed'
+
         _open: () ->
 
             options =

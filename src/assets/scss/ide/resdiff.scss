@@ -129,9 +129,32 @@ $bg_body : #fff;
 				background: $bg_body;
 			}
 
+			.meta {
+				cursor: pointer;
+			}
+
+			&.end .meta {
+				cursor: auto;
+			}
+
+			&.end::after {
+				display: none;
+			}
+
+			&.closed::after {
+				background: #69b0ff;
+			}
+
+			&.closed {
+				& > .tree {
+					display: none;
+				}
+			}
+
 			&:last-child {
 				border-left: 1px solid transparent !important;
 			}
+
 		}
 
 

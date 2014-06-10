@@ -99,6 +99,16 @@
         left: -5.5px;
         top: 2px;
         background: white; }
+      .res_diff_tree .tree .item .meta {
+        cursor: pointer; }
+      .res_diff_tree .tree .item.end .meta {
+        cursor: auto; }
+      .res_diff_tree .tree .item.end::after {
+        display: none; }
+      .res_diff_tree .tree .item.closed::after {
+        background: #69b0ff; }
+      .res_diff_tree .tree .item.closed > .tree {
+        display: none; }
       .res_diff_tree .tree .item:last-child {
         border-left: 1px solid transparent !important; }
   .res_diff_tree .group > ul.tree > .item:last-child {

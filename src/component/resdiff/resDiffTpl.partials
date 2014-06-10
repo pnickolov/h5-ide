@@ -8,61 +8,36 @@
 				<span class="name"><span class="old">old: </span>test12 <span class="new"> new: </span>test23</span>
 				<span class="id">(i-xxxxxx)</span>
 			</div>
-			<ul class="tree ">
-				<li class="item">
+			<ul class="tree">
+				<li class="item closed">
 					<div class="meta">
 						<span class="type">PropertyName</span>
 						<span class="name">arn:aws:autoscaling:us-east-1:994554139310:autoScalingGroup:ad6f888f-f98e-40e3-b19a-fcfceb542dd9:autoScalingGroupName/asg0---app-dea4e3ee</span>
 						<span class="id">(i-xxxxxx)</span>
 					</div>
-					<ul class="tree ">
-						<li class="item">
+					<ul class="tree">
+						<li class="item end">
 							<div class="meta">
 								<span class="type">SubPropertyName</span>
 								<span class="name">Sub Property Value</span>
 								<span class="id">(i-xxxxxx)</span>
 							</div>
 						</li>
-						<li class="item">
-
+						<li class="item end">
 							<div class="meta">
 								<span class="type">SubPropertyName</span>
 								<span class="name">Sub Property Value</span>
 								<span class="id">(i-xxxxxx)</span>
 							</div>
 						</li>
-						<li class="item">
-
+						<li class="item end">
 							<div class="meta">
 								<span class="type">SubPropertyName</span>
 								<span class="name">Sub Property Value</span>
 								<span class="id">(i-xxxxxx)</span>
 							</div>
 						</li>
-						<li class="item">
-							<div class="meta">
-								<span class="type">SubPropertyName</span>
-								<span class="name">Sub Property Value</span>
-								<span class="id">(i-xxxxxx)</span>
-							</div>
-						</li>
-					</ul>
-				</li>
-				<li class="item">
-					<div class="meta">
-						<span class="type">PropertyName</span>
-						<span class="name">Single Property Value</span>
-						<span class="id">(i-xxxxxx)</span>
-					</div>
-					<ul class="tree ">
-						<li class="item">
-							<div class="meta">
-								<span class="type">SubPropertyName</span>
-								<span class="name">Sub Property Value</span>
-								<span class="id">(i-xxxxxx)</span>
-							</div>
-						</li>
-						<li class="item">
+						<li class="item end">
 							<div class="meta">
 								<span class="type">SubPropertyName</span>
 								<span class="name">Sub Property Value</span>
@@ -73,42 +48,65 @@
 				</li>
 				<li class="item">
 					<div class="meta">
-						<span class="type">PropertyName</span>
-						<span class="name">Single Property Value</span>
-						<span class="id">(i-xxxxxx)</span>
-					</div>
-				</li>
-				<li class="item">
-					<div class="meta">
-						<span class="type">PropertyName</span>
-						<span class="name">Single Property Value</span>
-						<span class="id">(i-xxxxxx)</span>
-					</div>
-				</li>
-				<li class="item">
-					<div class="meta">
-						<span class="type">PropertyName</span>
-						<span class="name">Single Property Value</span>
-						<span class="id">(i-xxxxxx)</span>
-					</div>
-				</li>
-			</ul>
-		</li>
-		<li class="item">
-			<div class="meta">
-				<span class="type">Instance</span>
-				<span class="name">host-1</span>
-				<span class="id">(i-xxxxxx)</span>
-			</div>
-			<ul class="tree ">
-				<li class="item">
-					<div>
 						<span class="type">PropertyName</span>
 						<span class="name">Single Property Value</span>
 						<span class="id">(i-xxxxxx)</span>
 					</div>
 					<ul class="tree">
-						<li class="item">
+						<li class="item end">
+							<div class="meta">
+								<span class="type">SubPropertyName</span>
+								<span class="name">Sub Property Value</span>
+								<span class="id">(i-xxxxxx)</span>
+							</div>
+						</li>
+						<li class="item end">
+							<div class="meta">
+								<span class="type">SubPropertyName</span>
+								<span class="name">Sub Property Value</span>
+								<span class="id">(i-xxxxxx)</span>
+							</div>
+						</li>
+					</ul>
+				</li>
+				<li class="item end">
+					<div class="meta">
+						<span class="type">PropertyName</span>
+						<span class="name">Single Property Value</span>
+						<span class="id">(i-xxxxxx)</span>
+					</div>
+				</li>
+				<li class="item end">
+					<div class="meta">
+						<span class="type">PropertyName</span>
+						<span class="name">Single Property Value</span>
+						<span class="id">(i-xxxxxx)</span>
+					</div>
+				</li>
+				<li class="item end">
+					<div class="meta">
+						<span class="type">PropertyName</span>
+						<span class="name">Single Property Value</span>
+						<span class="id">(i-xxxxxx)</span>
+					</div>
+				</li>
+			</ul>
+		</li>
+		<li class="item">
+			<div class="meta">
+				<span class="type">Instance</span>
+				<span class="name">host-1</span>
+				<span class="id">(i-xxxxxx)</span>
+			</div>
+			<ul class="tree">
+				<li class="item">
+					<div class="meta">
+						<span class="type">PropertyName</span>
+						<span class="name">Single Property Value</span>
+						<span class="id">(i-xxxxxx)</span>
+					</div>
+					<ul class="tree">
+						<li class="item end">
 							<div class="meta">
 								<span class="type">SubPropertyName</span>
 								<span class="name">Sub Property Value</span>
@@ -119,21 +117,21 @@
 				</li>
 			</ul>
 		</li>
-		<li class="item">
+		<li class="item end">
 			<div class="meta">
 				<span class="type">Instance</span>
 				<span class="name">host-1</span>
 				<span class="id">(i-xxxxxx)</span>
 			</div>
 		</li>
-		<li class="item">
+		<li class="item end">
 			<div class="meta">
 				<span class="type">Instance</span>
 				<span class="name">host-1</span>
 				<span class="id">(i-xxxxxx)</span>
 			</div>
 		</li>
-		<li class="item">
+		<li class="item end">
 			<div class="meta">
 				<span class="type">Instance</span>
 				<span class="name">host-1</span>

@@ -101,13 +101,6 @@ require.config {
 		'event'              : 'lib/ide_event'
 
 		#############################################
-		# lib                       # Merge in deploy
-		#############################################
-		'aws_handle'         : 'lib/aws/main'
-		'forge_handle'       : 'lib/forge/main'
-		'common_handle'      : 'lib/common/main'
-
-		#############################################
 		# ui/                       # Merge in deploy
 		#############################################
 		'UI.tooltip'         : 'ui/UI.tooltip'
@@ -308,11 +301,6 @@ require.config {
 			"lib/handlebarhelpers"
 			"event"
 		]
-		"lib/deprecated" : [
-			'aws_handle'
-			'forge_handle'
-			'common_handle'
-		]
 		"ui/ui" : [
 			'UI.tooltip'
 			'UI.scrollbar'
@@ -436,7 +424,7 @@ requirejs.onError = ( err )->
 		console.error "[RequireJS Error]", err, err.stack
 
 
-require ["constant", 'ide/Application', "workspaces/Dashboard", "ide/cloudres/CrBundle", "MC", 'aws_handle'], ( constant, Application, Dashboard, CrBundle ) ->
+require ["constant", 'ide/Application', "workspaces/Dashboard", "ide/cloudres/CrBundle", "MC", 'lib/aws/main'], ( constant, Application, Dashboard, CrBundle ) ->
 
 	##########################################################
 	# Deprecated Global shit. Doesn't anyone dare to add more of these. They will be removed in the future.

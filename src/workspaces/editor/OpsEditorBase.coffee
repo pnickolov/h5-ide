@@ -128,6 +128,7 @@ define [ "Workspace", "./OpsViewBase", "./template/TplOpsEditor", "OpsModel", "D
         @view.remove()
       return
 
+    isInited : ()-> !!@__inited
     initEditor : ()->
       @__inited = true
       @design = new Design( @opsModel )

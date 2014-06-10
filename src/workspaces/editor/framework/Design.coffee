@@ -103,13 +103,7 @@ define [
     ###########################
     # Deserialize
     ###########################
-    oldLayout = canvas_data.layout
-    # Merge node/group
-    if oldLayout.component
-      canvas_data.layout = $.extend {}, oldLayout.component.node, oldLayout.component.group
-
     design.deserialize( canvas_data.component, canvas_data.layout )
-    canvas_data.layout = oldLayout
 
     design
 
@@ -122,7 +116,7 @@ define [
   Design.__instance            = null
 
 
-  DesignImpl = ( canvas_data )->
+  DesignImpl = ( opsModel )->
     @__componentMap = {}
     @__canvasNodes  = {}
     @__canvasLines  = {}
@@ -130,6 +124,7 @@ define [
     @__classCache   = {}
     @__backingStore = {}
     @__usedUidCache = {}
+    @__opsModel     = opsModel
 
     @canvas = new CanvasAdaptor( canvas_data.layout.size )
 

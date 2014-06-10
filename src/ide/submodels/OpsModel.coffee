@@ -107,6 +107,24 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
         }).then (ds)-> self.__setJsonData( ds[0] )
 
     __setJsonData : ( json )->
+
+      ###
+      Old JSON will have structure like :
+      layout : {
+        component : { node : {}, group : {} }
+        size : []
+      }
+      New JSON will have structure like :
+      layout : {
+        xxx  : {}
+        size : []
+      }
+      ###
+      if json.layout and json.layout.component
+        newLayout      = $.extend {}, json.layout.component.node, json.layout.component.group
+        newLayout.size = json.layout.size
+        json.layout    = newLayout
+
       @__jsonData = json
       @trigger "jsonDataLoaded"
       @

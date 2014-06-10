@@ -4154,6 +4154,10 @@ VisualOps API. You cannot UNDO this action.'
       en: "Showing %s-%s items of %s results"
       zh: "当前显示 %s-%s 条，共有 %s 条"
 
+    IDE_COM_CREATE_NEW_STACK:
+      en: "Create new stack"
+      zh: "创建模板"
+
     "IDE_LBL_REGION_NAME_us-east-1":
       en: "US East"
       zh: "美国东部"

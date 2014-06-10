@@ -2,7 +2,7 @@
 #  View Mode for design/property/rtb
 #############################
 
-define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, constant ) ->
+define [ '../base/model', "Design", 'constant', "CloudResources" ], ( PropertyModel, Design, constant, CloudResources ) ->
 
   RTBModel = PropertyModel.extend {
 
@@ -87,10 +87,7 @@ define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, const
 
       component = Design.instance().component(uid)
 
-      resource_list = MC.data.resource_list[ Design.instance().region() ]
-
-      appData       = resource_list[ component.get("appId") ]
-
+      appData = CloudResources(constant.RESTYPE.RT, Design.instance().region()).get(component.get('appId'))
       aws_rt_is_main = false
 
       if appData and appData.associationSet and appData.associationSet.item

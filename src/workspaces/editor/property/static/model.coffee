@@ -2,7 +2,7 @@
 #  View Mode for design/property/vgw
 #############################
 
-define [ "../base/model", "Design", "constant" ], ( PropertyModel, Design, constant ) ->
+define [ "../base/model", "Design", "constant", 'CloudResources' ], ( PropertyModel, Design, constant, CloudResources ) ->
 
     StaticModel = PropertyModel.extend {
 
@@ -17,11 +17,9 @@ define [ "../base/model", "Design", "constant" ], ( PropertyModel, Design, const
 
           @set "readOnly", true
 
-          appData = MC.data.resource_list[ Design.instance().region() ]
           appId   = component.get("appId")
 
-          data    = appData[ appId ]
-
+          data = CloudResources(constant.RESTYPE.IGW, Design.instance().region()).get(appId)
           if data
             if isIGW
               if data.attachmentSet and data.attachmentSet.item.length

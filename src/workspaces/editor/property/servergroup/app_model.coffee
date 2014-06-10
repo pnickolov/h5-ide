@@ -7,7 +7,8 @@ define [ '../base/model',
 	'constant',
 	'i18n!nls/lang.js'
 	'Design'
-], ( PropertyModel, instance_model, constant, lang, Design ) ->
+    'CloudResources'
+], ( PropertyModel, instance_model, constant, lang, Design, CloudResources ) ->
 
 	ServerGroupModel = PropertyModel.extend {
 
@@ -72,8 +73,7 @@ define [ '../base/model',
 			uid = @get( 'uid' )
 
 			comp          = Design.instance().component( uid )
-			resource_list = MC.data.resource_list[ Design.instance().region() ]
-			appData       = resource_list[ comp.get("appId") ]
+			appData       = CloudResources(constant.RESTYPE.AMI, Design.instance().region()).get(comp.get('appId'))
 			name          = comp.get("name")
 
 			group = [{

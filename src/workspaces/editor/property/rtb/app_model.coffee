@@ -2,7 +2,7 @@
 #  View Mode for design/property/rtb
 #############################
 
-define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Design ) ->
+define [ '../base/model', 'constant', 'Design', 'CloudResources' ], ( PropertyModel, constant, Design, CloudResources ) ->
 
     RTBAppModel = PropertyModel.extend {
 
@@ -49,8 +49,7 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
 
 
 
-          appData = MC.data.resource_list[ Design.instance().region() ]
-          rtb     = appData[ routeTable.get 'appId' ]
+          rtb  = CloudResources(constant.RESTYPE.RT, Design.instance().region()).get(routeTable.get('appId'))
 
           if not rtb
             return false

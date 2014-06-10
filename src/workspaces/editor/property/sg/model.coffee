@@ -2,7 +2,7 @@
 #  View Mode for design/property/instance
 #############################
 
-define [ '../base/model', "Design", 'constant'  ], ( PropertyModel, Design, constant ) ->
+define [ '../base/model', "Design", 'constant', "CloudResources"  ], ( PropertyModel, Design, constant, CloudResources ) ->
 
     SgModel = PropertyModel.extend {
 
@@ -107,7 +107,8 @@ define [ '../base/model', "Design", 'constant'  ], ( PropertyModel, Design, cons
             # get sg obj
             currentRegion = Design.instance().region()
             currentSGID = @component.get 'appId'
-            currentAppSG = MC.data.resource_list[ currentRegion ][ currentSGID ]
+
+            currentAppSG = CloudResources(constant.RESTYPE.SG, currentRegion).get(currentSGID)
 
             rules = []
             for rule in @component.connections("SgRuleSet")

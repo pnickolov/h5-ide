@@ -1,5 +1,5 @@
 
-define [ "../GroupModel", "./VpcModel", "constant", "i18n!nls/lang.js", "Design" ], ( GroupModel, VpcModel, constant, lang, Design )->
+define [ "../GroupModel", "./VpcModel", "constant", "i18n!nls/lang.js", "Design", "CloudResources" ], ( GroupModel, VpcModel, constant, lang, Design, CloudResources )->
 
   Model = GroupModel.extend {
 
@@ -89,25 +89,14 @@ define [ "../GroupModel", "./VpcModel", "constant", "i18n!nls/lang.js", "Design"
     # Get all az, including unused az.
     allPossibleAZ : ()->
       azMap = {}
-
       for az in Model.allObjects()
         azMap[ az.get("name") ] = az.id
 
-      zones = MC.data.config[ Design.instance().region() ].zone
-      if zones
-        for z in zones.item
-          if not azMap.hasOwnProperty( z.zoneName )
-            azMap[ z.zoneName ] = ""
-
-      azArr = []
-      for azName, id of azMap
-        azArr.push {
-          name : azName
-          id   : id
+      CloudResources( constant.RESTYPE.AZ, region ).where({category:region}).map (az)->
+        {
+          name : az.attributes.id
+          id   : azMap[ az.attributes.id ] || ""
         }
-
-      azArr
-
 
     getAzByName : ( name )->
       for az in Model.allObjects()

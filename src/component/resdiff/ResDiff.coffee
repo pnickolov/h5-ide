@@ -15,8 +15,8 @@ define ['UI.modalplus', './component/resdiff/resDiffTpl'], (modalplus, template)
                 title: 'Resource diff'
                 disableFooter: true
                 disableClose: true
-                width: '855px'
-                height: '473px'
+                width: '608px'
+                height: '681px'
                 compact: true
 
             @modal = new modalplus options

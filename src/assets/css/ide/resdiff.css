@@ -1,6 +1,10 @@
 .res_diff_tree {
   overflow: auto;
-  height: 600px; }
+  width: 568px;
+  height: 600px;
+  padding: 20px;
+  background-color: #fff;
+  position: absolute; }
   .res_diff_tree ul {
     list-style: none; }
   .res_diff_tree .title {
@@ -11,11 +15,12 @@
     margin-bottom: 10px;
     font-size: 14px; }
   .res_diff_tree .group {
-    margin-top: 20px;
     margin-bottom: 50px;
     width: 100%;
     text-align: left; }
   .res_diff_tree .group .head {
+    position: relative;
+    z-index: 2;
     padding: 10px;
     color: #009800;
     font-size: 16px;

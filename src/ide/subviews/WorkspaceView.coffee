@@ -81,8 +81,8 @@ define [ "backbone", "jquerysort" ], () ->
         return
 
       activateTab : ( id )->
-        @$el.find(".activate").removeClass("activate")
-        @$el.find("##{id}").addClass("activate")
+        @$el.find(".active").removeClass("active")
+        @$el.find("##{id}").addClass("active")
         return
 
       onClick : ( evt )->

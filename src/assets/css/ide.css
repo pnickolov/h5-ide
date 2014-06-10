@@ -3866,10 +3866,6 @@ summary:focus {
 	border-radius    : 4px 4px 0 0;
 }
 
-#status-bar-modal.toggle {
-	right: 0;
-}
-
 #status-bar-modal .modal-header {
 	background    : none;
 	box-shadow    : none;
@@ -4256,14 +4252,14 @@ summary:focus {
 	/*width: 900px;*/
 }
 
-#OEPanelRight.state:not(.hidden) ~ #status-bar-modal {
+/*#OEPanelRight.state:not(.hidden) ~ #status-bar-modal {
 	right: 654px;
 }
 
 #OEPanelRight.state-wide:not(.hidden) ~ #status-bar-modal {
 	display: none;
 }
-
+*/
 
 #resource-panel.hidden ~ #canvas-panel {
 	margin-left: 0;

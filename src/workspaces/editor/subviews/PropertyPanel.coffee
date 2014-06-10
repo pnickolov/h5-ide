@@ -92,7 +92,6 @@ define [
 
     toggleRightPanel : ()->
       @__rightPanelHidden = $("#OEPanelRight").toggleClass("hidden").hasClass("hidden")
-      $( '#status-bar-modal' ).toggleClass 'toggle', @__rightPanelHidden
       false
 
     showSecondPanel : ( type, id ) ->

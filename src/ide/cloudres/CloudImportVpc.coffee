@@ -26,6 +26,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
       @gateways  = {} # res id => comp
       @volumes   = {} # res id => comp
       @sgs       = {} # res id => comp
+      @iams      = {} # res id => comp
       @component = {}
       @layout    = {}
 
@@ -59,6 +60,26 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
       @addLayout( az, true, @theVpc )
       @azs[ azName ] = az
       az
+
+    addIAM : ( arn ) ->
+      iamComp = @iams[ arn ]
+      if iamComp then return iamComp
+
+      for aws_iam in @CrPartials( "IAM" ).where({Arn:arn}) || []
+        aws_iam = aws_iam.attributes
+        iamRes =
+          "resource" :
+            "CertificateBody" : ""
+            "CertificateChain": ""
+            "PrivateKey"      : ""
+            "ServerCertificateMetadata": 
+              "Arn"                  : aws_iam.Arn
+              "ServerCertificateId"  : aws_iam.id
+              "ServerCertificateName": aws_iam.Name
+        iamComp = @add( "IAM", aws_iam, iamRes.resource, aws_iam.Name )
+        @iams[ aws_iam.Arn ] = iamComp
+        return iamComp
+      return null
 
     _mapProperty : ( aws_json, madeira_json ) ->
       for k, v of aws_json
@@ -623,7 +644,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
 
         if aws_elb.ListenerDescriptions
           for listener in aws_elb.ListenerDescriptions
-            elbRes.resource.ListenerDescriptions.push
+            data =
               "PolicyNames": if listener.PolicyNames then listener.PolicyNames else ''
               "Listener":
                 "LoadBalancerPort": listener.Listener.LoadBalancerPort
@@ -631,6 +652,12 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
                 "Protocol"        : listener.Listener.Protocol
                 "SSLCertificateId": if listener.Listener.SSLCertificateId then listener.Listener.SSLCertificateId else ""
                 "InstancePort"    : listener.Listener.InstancePort
+            #add ServerCertificate component
+            if listener.Listener.SSLCertificateId
+              iamComp = @addIAM( listener.Listener.SSLCertificateId )
+              data.Listener.SSLCertificateId = CREATE_REF( iamComp )
+            elbRes.resource.ListenerDescriptions.push data
+
 
         if aws_elb.Instances
           for instanceId in aws_elb.Instances
@@ -638,6 +665,11 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
 
         elbComp = @add( "ELB", aws_elb, elbRes.resource, aws_elb.id )
         @addLayout( elbComp, false, @theVpc )
+      return
+
+    ()-> #IAM
+      for aws_iam in @CrPartials( "ACL" ).where({vpcId:@vpcId}) || []
+        aws_iam    = aws_iam.attributes
 
 
   ]
@@ -669,6 +701,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
       "LC"
       "NC"
       "SP"
+      "IAM"
     ].map (t)-> CloudResources( constant.RESTYPE[t], region )
 
     cd = new ConverterData( region, vpcId )
@@ -750,9 +783,10 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
       RESTYPE.IGW
       RESTYPE.VGW
       RESTYPE.VPN
-      # RESTYPE.EIP
+      RESTYPE.EIP
       RESTYPE.VOL
       RESTYPE.INSTANCE
+      RESTYPE.IAM
     ]
 
     # When we get all the asgs and subnets, we can start loading other resources.

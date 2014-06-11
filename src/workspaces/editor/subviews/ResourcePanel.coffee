@@ -160,7 +160,7 @@ define [
 
     browseCommunityAmi : ()->
 
-    manageSnapshot : ()->
+    manageSnapshot : ()-> new snapshotManager().render()
 
     refreshPanelData : ()->
 

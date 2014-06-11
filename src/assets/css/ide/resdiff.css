@@ -1,10 +1,6 @@
 .res_diff_tree {
   overflow: auto;
-  width: 568px;
-  height: 600px;
-  padding: 20px;
-  background-color: white;
-  position: absolute; }
+  background-color: white; }
   .res_diff_tree ul {
     list-style: none; }
   .res_diff_tree .title {
@@ -15,7 +11,7 @@
     margin-bottom: 10px;
     font-size: 14px; }
   .res_diff_tree .group {
-    margin-bottom: 50px;
+    margin-bottom: 26px;
     width: 100%;
     text-align: left; }
     .res_diff_tree .group .head {
@@ -24,9 +20,10 @@
       padding: 10px;
       color: #009800;
       font-size: 16px;
-      width: 530px;
       background-color: #f2f2f2;
-      border-left: 3px #009800 solid; }
+      border-left: 3px #009800 solid;
+      width: 100%;
+      box-sizing: border-box; }
     .res_diff_tree .group .deleted-head {
       color: #c40000;
       border-left: 3px #c40000 solid; }
@@ -111,19 +108,21 @@
         display: none; }
       .res_diff_tree .tree .item:last-child {
         border-left: 1px solid transparent !important; }
-  .res_diff_tree .group > ul.tree > .item:last-child {
-    border-left: 1px #ddd solid; }
-  .res_diff_tree .group > ul.tree > li > ul.tree {
-    margin-left: 15px;
-    font-size: 12px; }
-    .res_diff_tree .group > ul.tree > li > ul.tree .type {
-      background-color: #4a90e2; }
-    .res_diff_tree .group > ul.tree > li > ul.tree > .item:last-child {
+  .res_diff_tree .group > ul.tree {
+    margin-left: 20px; }
+    .res_diff_tree .group > ul.tree > .item:last-child {
       border-left: 1px #ddd solid; }
-    .res_diff_tree .group > ul.tree > li > ul.tree > li > ul.tree {
+    .res_diff_tree .group > ul.tree > li > ul.tree {
       margin-left: 15px;
       font-size: 12px; }
-      .res_diff_tree .group > ul.tree > li > ul.tree > li > ul.tree .type {
-        background-color: #69b0ff; }
-      .res_diff_tree .group > ul.tree > li > ul.tree > li > ul.tree .item {
+      .res_diff_tree .group > ul.tree > li > ul.tree .type {
+        background-color: #4a90e2; }
+      .res_diff_tree .group > ul.tree > li > ul.tree > .item:last-child {
         border-left: 1px #ddd solid; }
+      .res_diff_tree .group > ul.tree > li > ul.tree > li > ul.tree {
+        margin-left: 15px;
+        font-size: 12px; }
+        .res_diff_tree .group > ul.tree > li > ul.tree > li > ul.tree .type {
+          background-color: #69b0ff; }
+        .res_diff_tree .group > ul.tree > li > ul.tree > li > ul.tree .item {
+          border-left: 1px #ddd solid; }

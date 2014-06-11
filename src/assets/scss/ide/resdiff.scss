@@ -6,11 +6,7 @@ $bg_body : #fff;
 
 .res_diff_tree {
 	overflow: auto;
-	width: 568px;
-	height: 600px;
-	padding: 20px;
 	background-color: $bg_body;
-	position: absolute;
 
 	ul {
 		list-style: none;
@@ -25,7 +21,7 @@ $bg_body : #fff;
 		font-size: 14px;
 	}
 	.group {
-		margin-bottom: 50px;
+		margin-bottom: 26px;
 		width: 100%;
 		text-align: left;
 
@@ -35,9 +31,10 @@ $bg_body : #fff;
 			padding: 10px;
 			color: #009800;
 			font-size: 16px;
-			width: 530px;
 			background-color: #f2f2f2;
 			border-left: 3px #009800 solid;
+			width: 100%;
+			box-sizing: border-box;
 		}
 		.deleted-head {
 			color: #c40000;
@@ -162,6 +159,7 @@ $bg_body : #fff;
 
 	// tree-1
 	.group > ul.tree {
+		margin-left: 20px;
 		& > .item:last-child {
 			@include tierline;
 		}

@@ -1455,17 +1455,6 @@ TEMPLATE.modalReinputStackName=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  
-
-
-  return "<div style=\"width:420px\">\n	<div class=\"modal-header\"><h3 class=\"truncate\" style=\"width: 380px;\">Changes not applied</h3><i class=\"modal-close\">&times;</i> </div>\n	<div class=\"modal-body\">\n		<div class=\"modal-text-wraper\"> <div class=\"modal-center-align-helper\">\n			<div class=\"modal-text-major\">This app has been changed.</div>\n			<div class=\"modal-text-major\">Do you conﬁrm to discard the changes?</div>\n		</div> </div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"return-app-confirm\" class=\"btn btn-red\">Discard</button>\n		<button class=\"btn modal-close btn-silver\">Cancel</button>\n	</div>\n</div>";
-  };
-TEMPLATE.cancelAppEdit2App=Handlebars.template(__TEMPLATE__);
-
-
-__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 

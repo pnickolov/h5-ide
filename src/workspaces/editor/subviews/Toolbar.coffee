@@ -284,5 +284,19 @@ define [
     refreshResource : ()-> @workspace.refreshResource(); false
     switchToAppEdit : ()-> @workspace.switchMode( true ); false
     applyAppEdit    : ()-> @workspace.applyAppEdit(); false
-    cancelAppEdit   : ()-> @workspace.switchMode( false ); false
+
+    cancelAppEdit : ()->
+      if not @workspace.switchMode( false )
+        self  = @
+        modal = new Modal {
+          title    : "Changes not applied"
+          template : OpsEditorTpl.modal.cancelUpdate()
+          width    : "400"
+          confirm  : { text : "Discard", color : "red" }
+          onConfirm : ()->
+            modal.close()
+            self.workspace.switchMode( false, true )
+            return
+        }
+      return false
   }

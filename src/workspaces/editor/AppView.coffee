@@ -92,4 +92,8 @@ define [
       @propertyPanel.refresh()
       @bindUserEvent()
       return
+
+    emptyCanvas : ()->
+      $("#vpc_layer, #az_layer, #subnet_layer, #asg_layer, #line_layer, #node_layer").empty()
+      return
   }

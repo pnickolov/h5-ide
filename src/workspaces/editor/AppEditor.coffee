@@ -32,12 +32,22 @@ define [
       ]
 
     isAppEditMode : ()-> !!@__appEdit
-    switchMode : ( toAppEdit )->
-      if @isAppEditMode() is toAppEdit then return
+    switchMode : ( toAppEdit, force )->
+      if @isAppEditMode() is toAppEdit then return true
+
+      if not toAppEdit and not force and @design.isModified()
+        return false
+
       @__appEdit = toAppEdit
       @view.switchMode( toAppEdit )
       @design.setMode( if toAppEdit then Design.MODE.AppEdit else Design.MODE.App )
-      return
+
+      if not toAppEdit and @design.isModified()
+        # Layout and component changes, need to construct a new Design.
+        @view.emptyCanvas()
+        @design = new Design( @opsModel )
+        @initDesign()
+      true
 
     isModified : ()-> @isAppEditMode() && @design && @design.isModified()
 
@@ -45,7 +55,6 @@ define [
       if @isInited()
         @view.toggleProcessing()
         @updateTab()
-        # Switch Mode
 
       StackEditor.prototype.onOpsModelStateChanged.call this
 

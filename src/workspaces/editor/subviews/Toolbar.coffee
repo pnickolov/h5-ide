@@ -92,6 +92,13 @@ define [
       localStorage.setItem("canvas/lineStyle", ls)
       $canvas.updateLineStyle( ls )
 
+    hideError: (type)->
+        selector = if type then "#runtime-error-#{type}" else ".runtime-error"
+        $(selector).hide()
+
+    showError: (id, msg)->
+        $("#runtime-error-#{id}").text(msg).show()
+
     runStack: (event)->
         console.debug "Run Stack Start.", new Date()
         console.debug 'CurrentTarget', event.currentTarget
@@ -125,7 +132,7 @@ define [
 
         # click Logic
         @modal.on 'confirm', ()=>
-            @hideError() # todo: complete it
+            @hideError()
 
             if not App.user.hasCredential()
                 App.showSettings(App.showSettings.TAB.Credential)
@@ -134,7 +141,7 @@ define [
             app_name = $('.modal-input-value').val()
 
             if not app_name
-                @showError 'appname', lang.ide.PROP_MSG_WARN_NO_APP_NAME   #todo: Complete it
+                @showError 'appname', lang.ide.PROP_MSG_WARN_NO_APP_NAME
                 return false
 
             if not MC.validate 'awsName', app_name
@@ -186,9 +193,8 @@ define [
         if kpDropdown.hasResourceWithDefaultKp()
             kpDrop = new kpDropdown()
             $('#kp-runtime-placeholder').html kpDrop.render().el
-            removeNoKpError = ()->
-                console.debug "Remove No KP Error"
-                #todo: Remove KP Error
+            removeNoKpError = ()=>
+                @hideError('kp')
             kpDrop.on 'change', removeNoKpError
             $(".default-kp-group").show()
         null

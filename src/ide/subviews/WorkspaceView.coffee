@@ -76,8 +76,9 @@ define [ "backbone", "jquerysort" ], () ->
           $tgt.children("span").text( title )
 
         if klass isnt undefined or klass isnt null
+          if $tgt.hasClass("active")
+            klass += " active"
           $tgt.attr("class", klass )
-
         return
 
       activateTab : ( id )->

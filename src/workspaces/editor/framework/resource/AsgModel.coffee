@@ -1,5 +1,13 @@
 
-define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "constant", "i18n!nls/lang.js" ], ( ResourceModel, ComplexResModel, GroupModel, Design, constant, lang )->
+define [
+  "../ResourceModel"
+  "../ComplexResModel"
+  "../GroupModel"
+  '../connection/LcAsso'
+  "Design"
+  "constant"
+  "i18n!nls/lang.js"
+], ( ResourceModel, ComplexResModel, GroupModel, LcAsso, Design, constant, lang )->
 
   NotificationModel = ComplexResModel.extend {
     type : constant.RESTYPE.NC
@@ -150,7 +158,7 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
       @get("originalAsg").__addExpandedAsg( this )
       null
 
-    getLc : ()-> @attributes.originalAsg.get("lc")
+    getLc : ()-> @attributes.originalAsg.getLc()
 
     # disconnect : ( cn )->
     #   if cn.type isnt "ElbAmiAsso" then return
@@ -260,27 +268,27 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
       lcPrice.formatedFee = lcPrice.fee + "/mo"
       return lcPrice
 
-    addChild : ( lc )->
-
-      GroupModel.prototype.addChild.call this, lc
-
-      oldLc = @get("lc")
-      if oldLc
-        @stopListening( oldLc )
+    attatchLc: ( lc ) ->
+      oldConn = @connections( 'LcAsso' )
+      for c in oldConn
+        oldLc = c.getOtherTarget @
         for elb in oldLc.connectionTargets("ElbAmiAsso")
           @updateExpandedAsgAsso( elb, true )
 
-      @set "lc", lc
+        @stopListening( oldLc )
+        c.remove()
+
       @listenTo lc, "change:name change:imageId", @drawExpanedAsg
       @listenTo lc, "destroy", @removeChild
 
       for elb in lc.connectionTargets("ElbAmiAsso")
         @updateExpandedAsgAsso( elb )
 
-      @draw()
-      @drawExpanedAsg false
+      new LcAsso lc, @
 
       null
+
+    getLc: -> @connectionTargets('LcAsso')[0]
 
     removeChild: ( lc ) ->
       GroupModel.prototype.removeChild.call this, lc
@@ -547,7 +555,7 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
       # Associate with LC
       if data.resource.LaunchConfigurationName
         lc = resolve( MC.extractID(data.resource.LaunchConfigurationName) )
-        asg.addChild( lc )
+        asg.attatchLc( lc )
 
         # Elb Association to LC
         ElbAsso = Design.modelClassForType( "ElbAmiAsso" )

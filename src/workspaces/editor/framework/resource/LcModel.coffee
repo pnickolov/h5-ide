@@ -1,5 +1,13 @@
-
-define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./VolumeModel", 'i18n!nls/lang.js', 'CloudResources' ], ( ComplexResModel, InstanceModel, Design, constant, VolumeModel, lang, CloudResources )->
+define [
+  '../ComplexResModel'
+  './InstanceModel'
+  '../connection/LcAsso'
+  'Design'
+  'constant'
+  './VolumeModel'
+  'i18n!nls/lang.js'
+  'CloudResources'
+], ( ComplexResModel, InstanceModel, LcAsso, Design, constant, VolumeModel, lang, CloudResources )->
 
   emptyArray = []
 

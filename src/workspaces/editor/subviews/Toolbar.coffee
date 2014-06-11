@@ -25,6 +25,14 @@ define [
       "click .icon-toolbar-cloudformation" : "exportCF"
       "OPTION_CHANGE .toolbar-line-style"  : "setTbLineStyle"
 
+      "click .icon-stop"              : "stopApp"
+      "click .icon-play"              : "startApp"
+      "click .icon-terminate"         : "terminateApp"
+      "click .icon-refresh"           : "refreshResource"
+      "click .icon-update-app"        : "switchToAppEdit"
+      "click .icon-apply-app"         : "applyAppEdit"
+      "click .icon-cancel-update-app" : "cancelAppEdit"
+
     render : ()->
       opsModel = @workspace.opsModel
 
@@ -61,13 +69,14 @@ define [
 
       # App Run & Stop
       if opsModel.isApp()
-        $stopBtn = @$el.children(".icon-stop")
-        if opsModel.get("stoppable") or not opsModel.testState( OpsModel.State.Running )
-          $stopBtn.hide()
+        @$el.children(".icon-update-app").toggle( not @workspace.isAppEditMode() )
+        @$el.children(".icon-apply-app, .icon-cancel-update-app").toggle( @workspace.isAppEditMode() )
+        if @workspace.isAppEditMode()
+          @$el.children(".icon-terminate, .icon-stop, .icon-play").hide()
         else
-          $stopBtn.show()
-
-        @$el.children(".icon-play").toggle( not opsModel.testState( OpsModel.State.Stopped ) )
+          @$el.children(".icon-terminate").show()
+          @$el.children(".icon-stop").toggle( opsModel.get("stoppable") and opsModel.testState(OpsModel.State.Running) )
+          @$el.children(".icon-play").toggle( opsModel.testState( OpsModel.State.Stopped ) )
 
       if @__saving
         @$el.children(".icon-save").attr("disabled", "disabled")
@@ -198,4 +207,12 @@ define [
         modal.tpl.find("a.btn-blue").text("Fail to export...")
         notification "error", "Fail to export to AWS CloudFormation Template, Error code:#{err.error}"
         return
+
+    startApp        : ()-> App.startApp( @workspace.opsModel.id ); false
+    stopApp         : ()-> App.stopApp( @workspace.opsModel.id );  false
+    terminateApp    : ()-> App.terminateApp( @workspace.opsModel.id ); false
+    refreshResource : ()-> @workspace.refreshResource(); false
+    switchToAppEdit : ()-> @workspace.switchMode( true ); false
+    applyAppEdit    : ()-> @workspace.applyAppEdit(); false
+    cancelAppEdit   : ()-> @workspace.switchMode( false ); false
   }

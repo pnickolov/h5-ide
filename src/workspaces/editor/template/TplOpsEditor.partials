@@ -1,7 +1,7 @@
 
 <!-- {{loading}} -->
 <div class="ops-process">
-  <header class="processing">Loading data...</header>
+  <header class="processing">{{#if this}}{{this}}{{else}}Loading data...{{/if}}</header>
   <section class="loading-spinner"></section>
 </div>
 
@@ -44,6 +44,8 @@
 
 <!-- {{toolbar.BtnEditApp}} -->
 <button class="tooltip btn-toolbar icon-update-app toolbar-btn-primary" data-tooltip="{{ i18n 'TOOL_TIP_UPDATE_APP' }}">{{ i18n 'TOOL_EDIT_APP' }}</button>
+<button class="tooltip btn-toolbar icon-apply-app toolbar-btn-primary" data-tooltip="{{ i18n 'TOOL_TIP_SAVE_UPDATE_APP' }}">{{ i18n 'TOOL_APPLY_EDIT' }}</button>
+<button class="tooltip btn-toolbar icon-cancel-update-app seperator" data-tooltip="{{ i18n 'TOOL_TIP_CANCEL_UPDATE_APP' }}"></button>
 
 <!-- {{toolbar.BtnAppOps}} -->
 <button class="tooltip btn-toolbar icon-stop" data-tooltip="{{ i18n 'TOOL_TIP_STOP_APP' }}"></button>
@@ -57,9 +59,6 @@
 <!-- {{toolbar.BtnReloadRes}} -->
 <button class="btn-toolbar tooltip icon-refresh seperator" data-tooltip="{{i18n 'TOOL_TIP_REFRESH_REOURCES'}}" id="btn-app-refresh"></button>
 
-<!-- {{toolbar.BtnApply}} -->
-<button class="tooltip btn-toolbar icon-apply-app toolbar-btn-primary" data-tooltip="{{ i18n 'TOOL_TIP_SAVE_UPDATE_APP' }}">{{ i18n 'TOOL_APPLY_EDIT' }}</button>
-<button class="tooltip btn-toolbar icon-cancel-update-app seperator" data-tooltip="{{ i18n 'TOOL_TIP_CANCEL_UPDATE_APP' }}"></button>
 
 
 <!-- {{export.CF}} -->

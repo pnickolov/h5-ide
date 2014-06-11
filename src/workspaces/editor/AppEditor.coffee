@@ -34,16 +34,22 @@ define [
     isAppEditMode : ()-> !!@__appEdit
     switchMode : ( toAppEdit )->
       if @isAppEditMode() is toAppEdit then return
+      @__appEdit = toAppEdit
+      @view.switchMode( toAppEdit )
+      @design.setMode( if toAppEdit then Design.MODE.AppEdit else Design.MODE.App )
+      return
 
     isModified : ()-> @isAppEditMode() && @design && @design.isModified()
 
     onOpsModelStateChanged : ()->
       if @isInited()
         @view.toggleProcessing()
-        @view.updateTab()
-
+        @updateTab()
         # Switch Mode
 
       StackEditor.prototype.onOpsModelStateChanged.call this
+
+    refreshResource : ()->
+
 
   AppEditor

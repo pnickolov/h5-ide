@@ -76,9 +76,9 @@
 .btn-toolbar .dropdown > li:last-child {
   border-bottom: none; }
 
-#toolbar-cancel-edit-app {
+.btn-toolbar.icon-cancel-update-app {
   color: #ec3c38; }
-  #toolbar-cancel-edit-app:hover {
+  .btn-toolbar.icon-cancel-update-app:hover {
     color: #fff;
     background-color: #ec3c38;
     border-bottom: 1px solid #ec3c38; }

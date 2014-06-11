@@ -1,6 +1,7 @@
 .res_diff_tree {
   overflow: auto;
-  background-color: white; }
+  background-color: white;
+  height: 681px; }
   .res_diff_tree ul {
     list-style: none; }
   .res_diff_tree .title {

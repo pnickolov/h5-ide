@@ -34,7 +34,6 @@ define [
                     text: 'OK, got it'
 
                 width: '608px'
-                height: '681px'
                 compact: true
 
             @modal = new modalplus options

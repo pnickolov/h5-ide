@@ -11,6 +11,14 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
       lineType : "association"
       implicit : false
 
+    portDefs :
+      port1 :
+        name : "subnet-assoc-out"
+        type : constant.RESTYPE.SUBNET
+      port2 :
+        name : "rtb-src"
+        type : constant.RESTYPE.RT
+
     serialize : ( components )->
       # Do nothing if the line is implicit
       if @get("implicit") then return

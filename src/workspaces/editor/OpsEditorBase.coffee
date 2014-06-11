@@ -3,7 +3,14 @@
   OpsEditorBase is a base class for all the OpsEditor
 ###
 
-define [ "Workspace", "./OpsViewBase", "./template/TplOpsEditor", "OpsModel", "Design" ], ( Workspace, OpsEditorView, OpsEditorTpl, OpsModel, Design )->
+define [
+  "Workspace"
+  "./OpsViewBase"
+  "./template/TplOpsEditor"
+  "OpsModel"
+  "Design"
+  "ApiRequest"
+], ( Workspace, OpsEditorView, OpsEditorTpl, OpsModel, Design, ApiRequest )->
 
   # A view that used to show loading state of editor
   LoadingView = Backbone.View.extend {
@@ -70,7 +77,11 @@ define [ "Workspace", "./OpsViewBase", "./template/TplOpsEditor", "OpsModel", "D
 
       # Load Datas
       self = @
-      @opsModel.fetchJsonData().fail ()->
+      @opsModel.fetchJsonData().fail ( err )->
+        if err.error is ApiRequest.Errors.MissingDataInServer
+          # When we got this error, the opsmodel will destroy itself, resulting removal of the editor.
+          return
+
         notifcation "Fail to load data, please retry."
         self.remove()
 

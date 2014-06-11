@@ -30,7 +30,10 @@ define ["backbone"], ()->
     setIndex : ( idx )-> App.workspaces.setIndex @, idx
 
     # Call this method to remove the workspace from the ide.
-    remove : ()-> App.workspaces.remove(@, true)
+    remove : ()->
+      if @__isRemoved then return
+      @__isRemoved = true
+      App.workspaces.remove(@, true)
 
     # Call this method to update the tab's data.
     updateTab : ()-> App.workspaces.update @

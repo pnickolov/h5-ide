@@ -109,6 +109,10 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
 
     __setJsonData : ( json )->
 
+      if not json
+        @__destroy()
+        throw new McError( ApiRequest.Errors.MissingDataInServer, "Stack/App doesn't exist." )
+
       ###
       Old JSON will have structure like :
       layout : {

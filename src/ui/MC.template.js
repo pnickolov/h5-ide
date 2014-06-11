@@ -2349,9 +2349,16 @@ function program16(depth0,data) {
 
 function program18(depth0,data) {
   
+  var stack1;
+  stack1 = helpers.unless.call(depth0, ((stack1 = (depth0 && depth0.cancel)),stack1 == null || stack1 === false ? stack1 : stack1.hide), {hash:{},inverse:self.noop,fn:self.program(19, program19, data),data:data});
+  if(stack1 || stack1 === 0) { return stack1; }
+  else { return ''; }
+  }
+function program19(depth0,data) {
+  
   var buffer = "", stack1;
   buffer += "<button class=\"btn modal-close btn-silver\">"
-    + escapeExpression(((stack1 = (depth0 && depth0.cancel)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.cancel)),stack1 == null || stack1 === false ? stack1 : stack1.text)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</button>";
   return buffer;
   }

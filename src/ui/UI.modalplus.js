@@ -30,7 +30,11 @@
             color: ((_ref1 = this.option.confirm) != null ? _ref1.color : void 0) || "blue",
             disabled: (_ref2 = this.option.confirm) != null ? _ref2.disabled : void 0
           },
-          cancel: this.option.cancel || "Cancel",
+          cancel: _.isString(this.option.cancel) ? {
+            text: this.option.cancel || "Cancel"
+          } : _.isObject(this.option.cancel) ? this.option.cancel : {
+            text: "Cancel"
+          },
           hasFooter: !this.option.disableFooter,
           hasScroll: !!this.option.maxHeight,
           compact: this.option.compact

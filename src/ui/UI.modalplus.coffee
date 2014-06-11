@@ -22,8 +22,8 @@
 #      disableFooter: if this Modal has footer.                         [default: false]
 #      disableDrag: if the modal is dragAble                               [default: false]
 #      hideClose: if the close button on the right corner is hidden.    [default: false]
-#      cancel: cancel button of Modal                                   [default: "Cancel"]
-#      confirm: confirm button of Modal footer.                         [default: {text: :"Submit", color: "blue", disabled: false}] (color-support: "blue, red, silver")
+#      cancel: cancel button of Modal                                   [default: "Cancel"/ {text: 'Cancel', hide: false} Both String and Object are accepted]
+#      confirm: confirm button of Modal footer.                         [default: {text: :"Submit", color: "blue", disabled: false, hide: false}] (color-support: "blue, red, silver")
 #      onClose: function to exec then the modal close.                  [Function]
 #      onConfirm: function to exec then the confirm button is clicked   [Function]
 #      onCancel: function to exec when the cancel button is clicked     [Function]
@@ -70,7 +70,7 @@ define [], ()->
                     text    : @option.confirm?.text || "Submit"
                     color   : @option.confirm?.color || "blue"
                     disabled: @option.confirm?.disabled
-                cancel      : @option.cancel || "Cancel"
+                cancel      : if _.isString @option.cancel then {text: @option.cancel|| "Cancel"} else if _.isObject @option.cancel then @option.cancel else {text: "Cancel"}
                 hasFooter   : !@option.disableFooter
                 hasScroll   : !!@option.maxHeight
                 compact     : @option.compact

@@ -24,6 +24,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
       @instances = {} # res id => comp
       @enis      = {} # res id => comp
       @gateways  = {} # res id => comp
+      @volumes   = {} # res id => comp
       @component = {}
       @layout    = {}
 
@@ -269,6 +270,33 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
       return
 
 
+    ()-> #Volume
+      for aws_vol in @CrPartials( "VOL" ).where({category:@region}) || []
+        aws_vol = aws_vol.attributes
+        if not aws_vol.instanceId
+          #not attached
+          continue
+
+        azComp = @addAz(aws_vol.availabilityZone)
+        volRes =
+          "resource":
+            "VolumeId"     : aws_vol.id
+            "Size"         : Number(aws_vol.size)
+            "SnapshotId"   : if aws_vol.snapshotId then aws_vol.snapshotId else ""
+            "Iops"         : if aws_vol.iops then aws_vol.iops else ""
+            "AttachmentSet":
+              "Device"        : aws_vol.device
+              "InstanceId"    : ""
+            "VolumeType"   : aws_vol.volumeType
+            "AvailabilityZone": CREATE_REF( azComp )
+
+        #create volume component, but add with instance
+        volComp = @add( "VOL", aws_vol, volRes.resource, "vol" + aws_vol.device )
+        delete @component[ volComp.uid ]
+        @volumes[ aws_vol.id ] = volComp
+      return
+
+
     ()-> # Instance
       for aws_ins in @CrPartials( "INSTANCE" ).where({vpcId:@vpcId}) || []
         aws_ins = aws_ins.attributes
@@ -303,21 +331,6 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
               "Data"         : ""
             "VpcId"   : ""
 
-        # if aws_ins.tagSet
-        #   tag = resolveEC2Tag aws_ins.tagSet
-        #   if tag.isApp
-        #     insRes.name = tag.name
-        #   else if tag.Name
-        #     insRes.name = tag.Name
-
-
-        # for group in aws_eni.groupSet.item
-
-        #   eni_json.resource.GroupSet.push
-        #     "GroupId": group.groupId,
-        #     "GroupName": group.groupName
-        #
-
         insRes = @_mapProperty aws_ins, insRes
 
         insRes.resource.Subnet = CREATE_REF( subnetComp )
@@ -331,13 +344,38 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         insRes.resource.InstanceId        = aws_ins.id
         insRes.resource.EbsOptimized      = aws_ins.ebsOptimized
 
-        # # default_kp
-        # if default_kp and default_kp.resource and aws_ins.keyName is default_kp.resource.KeyName
-        #   insRes.resource.KeyName = "@{" + default_kp.uid + ".resource.KeyName}"
-
+        #generate instance component
         insComp = @add( "INSTANCE", aws_ins, insRes.resource )
-        @addLayout( insComp, false, subnetComp )
 
+        #generate BlockDeviceMapping for instance
+        me = @
+        bdm = insComp.resource.BlockDeviceMapping
+        _.each aws_ins.blockDeviceMapping, (e,key)->
+          volComp = me.volumes[ e.ebs.volumeId ]
+          volRes = volComp.resource
+          if aws_ins.rootDeviceName.indexOf( e.deviceName ) isnt -1
+            # rootDevice
+            data =
+              "DeviceName": volRes.AttachmentSet.Device
+              "Ebs":
+                "SnapshotId": if volRes.SnapshotId then volRes.SnapshotId else ""
+                "VolumeSize": Number(volRes.Size)
+                "VolumeType": volRes.VolumeType
+            if data.Ebs.VolumeType is "io1"
+              data.Ebs.Iops = volRes.Iops
+            bdm.push data
+          else
+            # not rootDevice
+            bdm.push "#" + volComp.uid
+            #add volume component
+            volComp.resource.AttachmentSet.InstanceId = CREATE_REF( insComp )
+            me.component[ volComp.uid ] = volComp
+
+        # # default_kp # TODO :
+        # if default_kp and default_kp.resource and aws_ins.keyName is default_kp.resource.KeyName
+        #   insComp.resource.KeyName = "@{" + default_kp.uid + ".resource.KeyName}"
+
+        @addLayout( insComp, false, subnetComp )
         @instances[ aws_ins.id ] = insComp
       return
 
@@ -405,45 +443,6 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         @enis[ aws_eni.id ] = eniComp
       return
 
-
-    ()-> #Volume
-      for aws_vol in @CrPartials( "VOL" ).where({category:@region}) || []
-        aws_vol = aws_vol.attributes
-        if not aws_vol.instanceId
-          #not attached
-          continue
-
-        insComp = @instances[ aws_vol.instanceId ]
-        if not insComp
-          continue
-
-        azComp = @addAz(aws_vol.availabilityZone)
-        volRes =
-          "resource":
-            "VolumeId"     : aws_vol.id
-            "Size"         : Number(aws_vol.size)
-            "SnapshotId"   : if aws_vol.snapshotId then aws_vol.snapshotId else ""
-            "Iops"         : if aws_vol.iops then aws_vol.iops else ""
-            "AttachmentSet":
-              "Device"        : aws_vol.device
-              "InstanceId"    : CREATE_REF( insComp )
-            "VolumeType"   : aws_vol.volumeType
-            "AvailabilityZone": CREATE_REF( azComp )
-
-        aws_ins = @CrPartials( "INSTANCE" ).where({ id:aws_vol.instanceId }) || []
-        if aws_ins.length > 0
-          aws_ins = aws_ins[0].attributes
-          root_devicename = aws_ins.rootDeviceName
-
-        if root_devicename
-          #current volume is root device
-          if root_devicename.indexOf(aws_vol.device) is 0
-            continue
-        else
-          console.error "[ConverterData] can not find rootDeviceName"
-
-        volComp = @add( "VOL", aws_vol, volRes.resource, "vol" + aws_vol.device )
-      return
 
     ()-> #EIP
       for aws_eip in @CrPartials( "EIP" ).where({category:@region}) || []

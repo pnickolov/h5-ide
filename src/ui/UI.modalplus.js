@@ -7,7 +7,7 @@
     var Modal;
     Modal = (function() {
       function Modal(option) {
-        var body, isFirst, _ref, _ref1, _ref2;
+        var body, isFirst, _ref, _ref1, _ref2, _ref3;
         this.option = option;
         _.extend(this, Backbone.Events);
         isFirst = false;
@@ -28,7 +28,8 @@
           confirm: {
             text: ((_ref = this.option.confirm) != null ? _ref.text : void 0) || "Submit",
             color: ((_ref1 = this.option.confirm) != null ? _ref1.color : void 0) || "blue",
-            disabled: (_ref2 = this.option.confirm) != null ? _ref2.disabled : void 0
+            disabled: (_ref2 = this.option.confirm) != null ? _ref2.disabled : void 0,
+            hide: (_ref3 = this.option.confirm) != null ? _ref3.hide : void 0
           },
           cancel: _.isString(this.option.cancel) ? {
             text: this.option.cancel || "Cancel"

@@ -231,7 +231,7 @@ define [ 'event' ], ( ide_event )->
         if loadResult isnt true
             if loadResult is false
                 # Cannot load the property due to data issue. Display the missing property
-                componentType = 'missing_resource'
+                componentType = 'Missing_Resource'
             else
                 # The property doesn't handle current tab_type. Display the stack property
                 componentType = ""

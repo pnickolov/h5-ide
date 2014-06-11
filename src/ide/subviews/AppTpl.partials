@@ -38,7 +38,7 @@
 </div>
 
 <!-- {{stopAppConfirm}} -->
-<header class="modal-header" style="width:390px;"><h3>{{i18n "TOOL_POP_TIT_STOP_APP"}}</h3><i class="modal-close">&times;</i></header>
+<header class="modal-header" style="width:390px;"><h3>{{#if production}}{{i18n "TOOL_POP_TIT_STOP_PRD_APP"}}{{else}}{{i18n "TOOL_POP_TIT_STOP_APP"}}{{/if}}</h3><i class="modal-close">&times;</i></header>
 
 {{#if production}}
   <div class="modal-body" style="color:#676767;width:390px;">
@@ -58,7 +58,7 @@
 </div>
 
 <!-- {{terminateAppConfirm}} -->
-<header class="modal-header" style="width:390px;"><h3>{{i18n "TOOL_POP_TIT_TERMINATE_PRD_APP"}}</h3><i class="modal-close">&times;</i></header>
+<header class="modal-header" style="width:390px;"><h3>{{#if production}}{{i18n "TOOL_POP_TIT_TERMINATE_PRD_APP"}}{{else}}{{i18n "TOOL_POP_TIT_TERMINATE_APP"}}{{/if}}</h3><i class="modal-close">&times;</i></header>
 
 {{#if production}}
   <div class="modal-body" style="color:#676767;width:390px;">

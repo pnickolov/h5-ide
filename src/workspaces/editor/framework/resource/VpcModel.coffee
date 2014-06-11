@@ -149,7 +149,7 @@ define [ "constant", "../GroupModel", "./DhcpModel" ], ( constant, GroupModel, D
         if oldDhcp then oldDhcp.remove()
         vpc.set( "dhcp", resolve( MC.extractID(dhcp) ) )
       else
-        vpc.get('dhcp').setNone()
+        vpc.get("dhcp").set('appId', dhcp)
       null
   }
 

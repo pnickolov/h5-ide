@@ -170,7 +170,7 @@ define [ 'constant', 'event', 'component/trustedadvisor/config', 'component/trus
         validAll    : validAll
         validRun    : validRun
         stateEditor : validation_main.stateEditor
-        list        ：[]
+        list        : []
         state_list  : {}
 
     MC.ta = V

@@ -56,7 +56,20 @@ define [
 
       opsModel = @workspace.opsModel
       if opsModel.isProcessing()
-        @$el.append OpsEditorTpl.loading({ content : text })
+        switch opsModel.get("state")
+          when OpsModel.State.Starting
+            text = "Starting your app..."
+          when OpsModel.State.Stopping
+            text = "Stopping your app..."
+          when OpsModel.State.Terminating
+            text = "Terminating your app.."
+          when OpsModel.State.Updating
+            text = "Applying changes to your app..."
+          else
+            console.warn "Unknown opsmodel state when showing loading in AppEditor,", opsModel
+            text = "Processing your request..."
+
+        @$el.append OpsEditorTpl.loading(text)
       return
 
     switchMode : ( isAppEditMode )->

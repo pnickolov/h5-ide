@@ -12,9 +12,11 @@
     margin-bottom: 10px;
     font-size: 14px; }
   .res_diff_tree .group {
-    margin-bottom: 26px;
+    margin-bottom: 6px;
     width: 100%;
     text-align: left; }
+    .res_diff_tree .group.closed .tree {
+      display: none; }
     .res_diff_tree .group .head {
       position: relative;
       z-index: 2;
@@ -24,7 +26,8 @@
       background-color: #f2f2f2;
       border-left: 3px #009800 solid;
       width: 100%;
-      box-sizing: border-box; }
+      box-sizing: border-box;
+      cursor: pointer; }
     .res_diff_tree .group .deleted-head {
       color: #c40000;
       border-left: 3px #c40000 solid; }

@@ -1,9 +1,11 @@
 define [
     'UI.modalplus'
     './component/resdiff/resDiffTpl'
+    'jsondiffpatch'
     './component/resdiff/a'
     './component/resdiff/b'
-], ( modalplus, template, a, b ) ->
+
+], ( modalplus, template, jsondiffpatch, a, b ) ->
 
     Backbone.View.extend
 
@@ -13,23 +15,33 @@ define [
             @render()
 
         events:
-            'click .item .type': '__toggleTab'
+            'click .item .type': 'toggleTab'
+            'click .head': 'toggleItem'
 
-        __toggleTab: ( e ) ->
+        toggleItem: ( e ) ->
+            $target = $( e.currentTarget ).closest '.group'
+            $target.toggleClass 'closed'
+
+        toggleTab: ( e ) ->
             $target = $( e.currentTarget ).closest '.item'
 
             if $target.hasClass 'end'
                 return
             $target.toggleClass 'closed'
 
-        _open: () ->
-            console.log(a, b);
-            options =
+        getDelta: ->
+            jsondiffpatch.diff a, b
 
+
+        open: () ->
+            options =
                 template: @el
                 title: 'App Changes'
+                hideClose: true
                 disableClose: true
                 disableCancel: true
+                cancel:
+                    hide: true
                 confirm:
                     text: 'OK, got it'
 
@@ -39,10 +51,12 @@ define [
             @modal = new modalplus options
             @modal.on 'confirm', () ->
                 @modal.close()
-            @modal
+            , @
+
+            console.log @getDelta()
 
         render: () ->
 
             @$el.html template.resDiffTree {}
-            @_open()
+            @open()
             @

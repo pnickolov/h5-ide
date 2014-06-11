@@ -27,23 +27,23 @@ define [ "constant", "../ResourceModel", "Design"  ], ( constant, ResourceModel,
       ResourceModel.prototype.createRef.call this, refName, isResourceNS, id
 
     serialize : ()->
-      if not @isCustom()
-        return
+#      if not @isCustom()
+       return
 
-      id = @id
-      component =
-        name : "DhcpOption"
-        type : @type
-        uid  : id
-        resource :
-          DhcpOptionsId        : @get "appId"
-
-      { component : component }
+#      id = @id
+#      component =
+#        name : "DhcpOption"
+#        type : @type
+#        uid  : id
+#        resource :
+#          DhcpOptionsId : @get "appId"
+#
+#      { component : component }
 
   }, {
 
     handleTypes : constant.RESTYPE.DHCP
-    deserialize : ( data, layout_data )->
+    deserialize : ( data )->
       attr = {}
       attr.id    = data.uid
       attr.appId = data.resource.DhcpOptionsId

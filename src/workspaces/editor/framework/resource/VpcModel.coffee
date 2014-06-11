@@ -79,12 +79,13 @@ define [ "constant", "../GroupModel", "./DhcpModel" ], ( constant, GroupModel, D
       console.assert( @get("tenancy") is "default" or @get("tenancy") is "dedicated", "Invalid value for Vpc.attributes.tenancy" )
 
       dhcp = @get("dhcp")
+      console.error dhcp
       if dhcp.isAuto()
         dhcp = ""
       else if dhcp.isDefault()
         dhcp = "default"
       else
-        dhcp = dhcp.createRef( "DhcpOptionsId" )
+        dhcp = dhcp.get("appId")
 
       component =
         name : @get("name")
@@ -149,7 +150,7 @@ define [ "constant", "../GroupModel", "./DhcpModel" ], ( constant, GroupModel, D
         if oldDhcp then oldDhcp.remove()
         vpc.set( "dhcp", resolve( MC.extractID(dhcp) ) )
       else
-        vpc.get("dhcp").set('appId', dhcp)
+        vpc.get("dhcp").setDhcp(dhcp)
       null
   }
 

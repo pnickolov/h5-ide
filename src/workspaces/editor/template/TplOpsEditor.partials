@@ -1,8 +1,15 @@
 
 <!-- {{loading}} -->
 <div class="ops-process">
-  <header class="processing">{{#if this}}{{this}}{{else}}Loading data...{{/if}}</header>
+  <header class="processing">Loading data...</header>
   <section class="loading-spinner"></section>
+</div>
+
+<!-- {{appProcessing}} -->
+<div class="ops-process">
+  <header class="processing">{{this}}<span class="process-info">0%</span></header>
+  <section class="loading-spinner"></section>
+  <div class="progress"> <div class="bar" style="width:0%;"></div> </div>
 </div>
 
 <!-- {{toolbar.BtnActionPng}} -->

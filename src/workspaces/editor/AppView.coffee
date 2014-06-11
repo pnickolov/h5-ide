@@ -6,6 +6,11 @@ define [
 ], ( StackView, OpsModel, OpsEditorTpl )->
 
   StackView.extend {
+    initialize : ()->
+      StackView.prototype.initialize.apply this, arguments
+      @listenTo @workspace.opsModel, "change:progress", @updateProgress
+      return
+
     bindUserEvent : ()->
       # Events
       if @workspace.isAppEditMode()
@@ -69,7 +74,15 @@ define [
             console.warn "Unknown opsmodel state when showing loading in AppEditor,", opsModel
             text = "Processing your request..."
 
-        @$el.append OpsEditorTpl.loading(text)
+        @$el.append OpsEditorTpl.appProcessing(text)
+      return
+
+    updateProgress : ()->
+      $p = @$el.find(".ops-process")
+      $p.toggleClass("has-progess", true)
+      pro = @workspace.opsModel.get("progress") + "%"
+      $p.find(".process-info").text( pro )
+      $p.find(".bar").css { width : pro }
       return
 
     switchMode : ( isAppEditMode )->

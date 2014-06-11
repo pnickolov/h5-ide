@@ -304,7 +304,7 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
       progress = parseInt( steps * 100.0 / totalSteps )
       if @.attributes.progress != progress
         # Disable Backbone's auto triggering change event. Because I don't wan't that changing progress will trigger `change:progress` and `change`
-        @set "progress", progress, {silent:true}
+        @attributes.progress = progress
         @trigger "change:progress", @, progress
       return
 

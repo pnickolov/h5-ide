@@ -108,18 +108,16 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
     ()-> # IGW
       for aws_igw in @CrPartials( "IGW" ).where({vpcId:@vpcId}) || []
         aws_igw = aws_igw.attributes
-        if aws_igw.attachmentSet and aws_igw.attachmentSet.length > 0
-          igwAttach = aws_igw.attachmentSet[0]
+        if not (aws_igw.attachmentSet and aws_igw.attachmentSet.length>0)
+          continue
         igwRes =
           "resource":
+            "AttachmentSet"    :
+              "VpcId": CREATE_REF( @theVpc )
             "InternetGatewayId": aws_igw.id
-            "AttachmentSet": [
-              "VpcId": if igwAttach then igwAttach.vpcId else ""
-              "State": if igwAttach then igwAttach.state else ""
-            ]
-        igwComp = @add( "IGW", aws_igw, igwRes, "Internet-gateway" )
-        @addLayout( igwComp, true, @theVpc )
 
+        igwComp = @add( "IGW", aws_igw, igwRes.resource, "Internet-gateway" )
+        @addLayout( igwComp, true, @theVpc )
         @gateways[ aws_igw.id ] = igwComp
       return
 
@@ -127,28 +125,84 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
     ()-> # VGW
       for aws_vgw in @CrPartials( "VGW" ).where({vpcId:@vpcId}) || []
         aws_vgw = aws_vgw.attributes
+        if aws_vgw.state in [ "deleted","deleting" ]
+          continue
         if aws_vgw.attachments and aws_vgw.attachments.length > 0
           vgwAttach = aws_vgw.attachments[0]
         vgwRes =
           "resource":
             "Attachments": [
-              "VpcId": vgwAttach.vpcId
-              "State": vgwAttach.state
+              "VpcId": CREATE_REF( @theVpc )
             ]
             "Type": aws_vgw.type
-            #"AvailabilityZone": "",
-            "VpnGatewayId": aws_vgw.vpnGatewayId
-            "State": aws_vgw.state
+            "VpnGatewayId": ""
 
-        vgwComp = @add( "VGW", aws_vgw, vgwRes, "VPN-gateway" )
+        vgwRes.resource.VpnGatewayId = aws_vgw.id
+        vgwComp = @add( "VGW", aws_vgw, vgwRes.resource, "VPN-gateway" )
         @addLayout( vgwComp, true, @theVpc )
 
         @gateways[ aws_vgw.id ] = vgwComp
       return
 
 
-    # getCGW : ()->
-    # getVPN : ()->
+    ()-> #CGW
+      for aws_cgw in @CrPartials( "CGW" ).where({category:@region}) || []
+        aws_cgw = aws_cgw.attributes
+        if aws_cgw.state in [ "deleted","deleting" ]
+          continue
+        cgwRes  =
+            "resource":
+              "BgpAsn"   : ""
+              "CustomerGatewayId": ""
+              "IpAddress": ""
+              "Type"     : ""
+
+        cgwRes = @_mapProperty aws_cgw, cgwRes
+        cgwRes.CustomerGatewayId = aws_cgw.id
+        #create cgw component, but add with vpn
+        cgwComp = @add( "CGW", aws_cgw, cgwRes.resource, aws_cgw.id )
+        delete @component[ cgwComp.uid ]
+        @gateways[ aws_cgw.id ] = cgwComp
+      return
+
+
+    ()-> #VPN
+      for aws_vpn in @CrPartials( "VPN" ).where({category:@region}) || []
+        aws_vpn = aws_vpn.attributes
+        if aws_vpn.state in [ "deleted","deleting" ]
+          continue
+        vgwComp = @gateways[ aws_vpn.vpnGatewayId ]
+        cgwComp = @gateways[ aws_vpn.customerGatewayId ]
+        if not (cgwComp and vgwComp)
+          continue
+        vpnRes =
+          "resource":
+            "CustomerGatewayId" : ""
+            "Options"     :
+              "StaticRoutesOnly": "true"
+            "Routes": []
+            "Type"  : "ipsec.1"
+            "VpnConnectionId"   : ""
+            "VpnGatewayId": ""
+            "CustomerGatewayConfiguration": ""
+
+        vpnRes = @_mapProperty aws_vpn, vpnRes
+        vpnRes.resource.VpnGatewayId      = CREATE_REF( vgwComp )
+        vpnRes.resource.CustomerGatewayId = CREATE_REF( cgwComp )
+        if aws_vpn.options and aws_vpn.options.staticRoutesOnly
+          vpnRes.resource.Options.StaticRoutesOnly = aws_vpn.options.staticRoutesOnly
+        if aws_vpn.routes
+          for route in aws_vpn.routes
+            vpnRes.resource.Routes.push
+              "DestinationCidrBlock" : route.destinationCidrBlock
+              "Source" : route.source
+
+        vpnComp = @add( "VPN", aws_vpn, vpnRes.resource, aws_vpn.id )
+        #add CGW to layout
+        @component[ cgwComp.uid ] = cgwComp
+        @addLayout( cgwComp, false )
+
+      return
 
 
     ()-> # SG
@@ -157,14 +211,13 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
 
         sgRes =
           "resource":
+            "Default": false
+            "GroupDescription": ""
+            "GroupId": ""
+            "GroupName": ""
             "IpPermissions": []
             "IpPermissionsEgress": []
-            "GroupId": ""
-            "Default": false
             "VpcId": ""
-            "GroupName": ""
-            "OwnerId": ""
-            "GroupDescription": ""
 
         sgRes = @_mapProperty aws_sg, sgRes
         #generate ipPermissions
@@ -178,9 +231,9 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
 
             if ipranges
               sgRes.resource.IpPermissions.push {
+                "FromPort": if sg_rule.fromPort then sg_rule.fromPort else "",
                 "IpProtocol": sg_rule.ipProtocol,
                 "IpRanges": ipranges,
-                "FromPort": if sg_rule.fromPort then sg_rule.fromPort else "",
                 "ToPort": if sg_rule.toPort then sg_rule.toPort else ""
               }
         #generate ipPermissionEgress
@@ -194,9 +247,9 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
 
             if ipranges
               sgRes.resource.IpPermissionsEgress.push {
+                "FromPort": if sg_rule.fromPort then sg_rule.fromPort else "",
                 "IpProtocol": sg_rule.ipProtocol,
                 "IpRanges": ipranges,
-                "FromPort": if sg_rule.fromPort then sg_rule.fromPort else "",
                 "ToPort": if sg_rule.toPort then sg_rule.toPort else ""
               }
 
@@ -219,38 +272,36 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
     ()-> # Instance
       for aws_ins in @CrPartials( "INSTANCE" ).where({vpcId:@vpcId}) || []
         aws_ins = aws_ins.attributes
+        if aws_ins.instanceState.name in [ "shutting-down", "terminated " ]
+          continue
         azComp = @addAz(aws_ins.placement.availabilityZone)
 
-        subnet = @subnets[aws_ins.subnetId]
-        if not subnet
+        subnetComp = @subnets[aws_ins.subnetId]
+        if not subnetComp
           continue
 
         insRes =
           "resource":
-            "RamdiskId" : ""
-            "InstanceId": ""
+            "BlockDeviceMapping": []
             "DisableApiTermination": ""
-            "ShutdownBehavior": ""
-            "SecurityGroupId" : []
-            "SecurityGroup"   : []
-            "UserData":
-              "Base64Encoded": ""
-              "Data"         : ""
+            "EbsOptimized": ""
             "ImageId"  : ""
+            "InstanceId": ""
+            "InstanceType": ""
+            "KeyName" : ""
+            "Monitoring"  : ""
+            "NetworkInterface":[]
             "Placement":
               "Tenancy"          : ""
               "AvailabilityZone" : ""
-              "GroupName"        : ""
-            "BlockDeviceMapping": []
-            "KernelId": ""
-            "KeyName" : ""
+            "SecurityGroup"   : []
+            "SecurityGroupId" : []
+            "ShutdownBehavior": ""
             "SubnetId": ""
+            "UserData":
+              "Base64Encoded": ""
+              "Data"         : ""
             "VpcId"   : ""
-            "InstanceType": ""
-            "Monitoring"  : ""
-            "EbsOptimized": ""
-            "NetworkInterface":[]
-
 
         # if aws_ins.tagSet
         #   tag = resolveEC2Tag aws_ins.tagSet
@@ -269,7 +320,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
 
         insRes = @_mapProperty aws_ins, insRes
 
-        insRes.resource.Subnet = CREATE_REF( subnet )
+        insRes.resource.Subnet = CREATE_REF( subnetComp )
         insRes.resource.VpcId  = CREATE_REF( @theVpc )
         insRes.resource.Placement.AvailabilityZone = CREATE_REF( azComp )
 
@@ -285,7 +336,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         #   insRes.resource.KeyName = "@{" + default_kp.uid + ".resource.KeyName}"
 
         insComp = @add( "INSTANCE", aws_ins, insRes.resource )
-        @addLayout( insComp, false, subnet )
+        @addLayout( insComp, false, subnetComp )
 
         @instances[ aws_ins.id ] = insComp
       return
@@ -295,37 +346,30 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
       for aws_eni in @CrPartials( "ENI" ).where({vpcId:@vpcId}) || []
         aws_eni = aws_eni.attributes
         azComp = @addAz(aws_eni.availabilityZone)
-
-        instance = @instances[aws_eni.instanceId]
-        if not instance
+        insComp = @instances[aws_eni.instanceId]
+        if not insComp
           continue
 
-        subnet = @subnets[aws_eni.subnetId]
-        if not subnet
+        subnetComp = @subnets[aws_eni.subnetId]
+        if not subnetComp
           continue
 
         eniRes =
           "resource" :
             "AssociatePublicIpAddress" : false
-            "PrivateIpAddressSet" : []
-            "Status"    : ''
-            "GroupSet"  : []
-            "PrivateDnsName" : ""
-            "SourceDestCheck": true
-            "RequestId" : ""
-            "MacAddress": ""
-            "OwnerId"   : ""
-            "RequestManaged"  : ""
-            "SecondPriIpCount": ""
             "Attachment":
+                "AttachmentId" : ""
                 "DeviceIndex"  : ""
                 "InstanceId"   : ""
             "AvailabilityZone": ""
             "Description": ""
-            "SubnetId"   : ""
-            "VpcId"      : ""
-            "PrivateIpAddress"  : ""
-            "NetworkInterfaceId": ""
+            "GroupSet"   : []
+            "NetworkInterfaceId"  : ""
+            "PrivateIpAddressSet" : []
+            "SourceDestCheck": true
+            "SubnetId"       : ""
+            "PrivateDnsName" : ""
+            "VpcId"          : ""
 
         if aws_eni.instanceOwnerId and aws_eni.instanceOwnerId in [ "amazon-elb", "amazon-rds" ]
           continue
@@ -337,13 +381,13 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
           eniRes.resource.AssociatePublicIpAddress = true
 
         eniRes.resource.AvailabilityZone = CREATE_REF( azComp )
-        eniRes.resource.SubnetId         = CREATE_REF( subnet )
+        eniRes.resource.SubnetId         = CREATE_REF( subnetComp )
         eniRes.resource.VpcId            = CREATE_REF( @theVpc )
         
         if aws_eni.deviceIndex isnt "0"
           #eni0 no need attachmentId
           eniRes.resource.Attachment.AttachmentId = aws_eni.attachmentId
-        eniRes.resource.Attachment.InstanceId = CREATE_REF( instance )
+        eniRes.resource.Attachment.InstanceId = CREATE_REF( insComp )
         eniRes.resource.Attachment.DeviceIndex = aws_eni.deviceIndex
 
         for ip in aws_eni.privateIpAddressesSet
@@ -356,7 +400,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
 
         eniComp = @add( "ENI", aws_eni, eniRes.resource, "eni" + aws_eni.deviceIndex )
         if aws_eni.deviceIndex isnt "0"
-          @addLayout( eniComp, false, subnet )
+          @addLayout( eniComp, false, subnetComp )
 
         @enis[ aws_eni.id ] = eniComp
       return
@@ -368,8 +412,8 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         if aws_vol.attachmentSet.length is 0
           continue
 
-        instance = @instances[ aws_vol.attachmentSet[0].instanceId ]
-        if not instance
+        insComp = @instances[ aws_vol.attachmentSet[0].instanceId ]
+        if not insComp
           continue
 
         azComp = @addAz(aws_vol.availabilityZone)
@@ -382,7 +426,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
             "Iops"         : if aws_vol.iops then aws_vol.iops else ""
             "AttachmentSet":
               "Device"       : aws_vol.attachmentSet[0].device
-              "InstanceId"   : CREATE_REF( instance )
+              "InstanceId"   : CREATE_REF( insComp )
             "VolumeType"   : aws_vol.volumeType
 
         #volRes = @_mapProperty aws_vol, volRes
@@ -409,12 +453,12 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
 
         eipRes =
           "resource":
-            "InstanceId": ""
-            "PrivateIpAddress": ""
-            "NetworkInterfaceId": ""
-            "Domain": ""
-            "PublicIp": ""
             "AllocationId": ""
+            "Domain": ""
+            "InstanceId": ""
+            "NetworkInterfaceId": ""
+            "PrivateIpAddress": ""
+            "PublicIp": ""
 
         eipRes = @_mapProperty aws_eip, eipRes
         eipRes.resource.AllocationId = eip.id
@@ -432,46 +476,45 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         aws_rtb = aws_rtb.attributes
         rtbRes =
           "resource" :
+            "AssociationSet" : []
+            "PropagatingVgwSet" : []
+            "RouteSet"       : []
             "RouteTableId"   : aws_rtb.id
             "VpcId"          : CREATE_REF( @theVpc )
-            "AssociationSet" : []
-            "RouteSet"       : []
-            "PropagatingVgwSet" : []
+
         #associationSet
         for i in aws_rtb.associationSet
           asso =
             Main : if i.main is false then false else "true"
             RouteTableAssociationId : i.routeTableAssociationId
-          subnet = @subnets[i.subnetId]
-          if i.subnetId and subnet
-            asso.SubnetId = CREATE_REF( subnet )
+          subnetComp = @subnets[i.subnetId]
+          if i.subnetId and subnetComp
+            asso.SubnetId = CREATE_REF( subnetComp )
           rtbRes.resource.AssociationSet.push asso
 
         #routeSet
         for i in aws_rtb.routeSet
-          instance = @instances[i.instanceId]
-          eni      = @enis[i.networkInterfaceId]
-          gw       = @gateways[i.gatewayId]
+          insComp = @instances[i.instanceId]
+          eniComp = @enis[i.networkInterfaceId]
+          gwComp  = @gateways[i.gatewayId]
           route =
-            "State" : i.state
-            "Origin": i.origin
-            "InstanceId"     : if i.instanceId and instance then CREATE_REF( instance ) else ""
-            "InstanceOwnerId": if i.instanceOwnerId then i.instanceOwnerId else ""
-            "GatewayId"      : ""
-            "NetworkInterfaceId"   : if i.networkInterfaceId and eni then CREATE_REF( eni ) else ""
             "DestinationCidrBlock" : i.destinationCidrBlock
+            "GatewayId"      : ""
+            "InstanceId"     : if i.instanceId and insComp then CREATE_REF( insComp ) else ""
+            "NetworkInterfaceId"   : if i.networkInterfaceId and eniComp then CREATE_REF( eniComp ) else ""
+            "Origin"         : i.origin
           if i.gatewayId
-            if i.gatewayId isnt "local" and gw
-              route.GatewayId = CREATE_REF( gw )
+            if i.gatewayId isnt "local" and gwComp
+              route.GatewayId = CREATE_REF( gwComp )
             else
               route.GatewayId = i.gatewayId
           rtbRes.resource.RouteSet.push route
 
         #propagatingVgwSet
         for i in aws_rtb.propagatingVgwSet
-          gw = @gateways[i.gatewayId]
-          if gw
-            rtbRes.resource.PropagatingVgwSet.push CREATE_REF( gw )
+          gwComp = @gateways[i.gatewayId]
+          if gwComp
+            rtbRes.resource.PropagatingVgwSet.push CREATE_REF( gwComp )
 
         rtbComp = @add( "RT", aws_rtb, rtbRes.resource )
         @addLayout( rtbComp, true, @theVpc )
@@ -480,15 +523,15 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
 
     ()-> #ACL
       for aws_acl in @CrPartials( "ACL" ).where({vpcId:@vpcId}) || []
-        aws_acl = aws_acl.attributes
+        aws_acl    = aws_acl.attributes
+        subnetComp = @subnets[aws_acl.subnetId]
         aclRes =
           "resource":
-            "NetworkAclId": ""
-            "VpcId"   : ""
+            "AssociationSet": []
             "Default" : false
             "EntrySet": []
-            "AssociationSet": []
-
+            "NetworkAclId": ""
+            "VpcId"   : ""
         aclRes = @_mapProperty aws_acl, aclRes
 
         aclRes.resource.VpcId = CREATE_REF( @theVpc )
@@ -511,7 +554,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         for acl in aws_acl.associationSet
           aclRes.resource.AssociationSet.push
             "NetworkAclAssociationId": acl.networkAclAssociationId
-            "SubnetId": CREATE_REF( @subnets[acl.subnetId] )
+            "SubnetId": CREATE_REF( subnetComp )
 
         aclComp = @add( "ACL", aws_acl, aclRes.resource )
 

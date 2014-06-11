@@ -36,7 +36,11 @@ define [
 
     type  : constant.RESTYPE.VPN
     modelIdAttribute : "vpnConnectionId"
-    parseFetchData : ( data )-> data.DescribeVpnConnectionsResponse.vpnConnectionSet?.item
+    parseFetchData : ( data )->
+      vpns = data.DescribeVpnConnectionsResponse.vpnConnectionSet = data.DescribeVpnConnectionsResponse.vpnConnectionSet?.item
+      for vpn in vpns || []
+        vpn.vgwTelemetry = vpn.vgwTelemetry?.item
+      vpns
   }
 
   ### EIP ###
@@ -120,6 +124,7 @@ define [
         vgw.id = vgw.vpnGatewayId
         if vgw.attachments and vgw.attachments.length>0
           vgw.vpcId = vgw.attachments[0].vpcId
+          vgw.attachmentState = vgw.attachments[0].state
       vgws
   }
 
@@ -139,6 +144,7 @@ define [
         #delete igw.internetGatewayId
         if igw.attachmentSet and igw.attachmentSet.length>0
           igw.vpcId = igw.attachmentSet[0].vpcId
+          igw.state = igw.attachmentSet[0].state
       igws
   }
 
@@ -273,6 +279,8 @@ define [
         delete acl.networkAclId
         acl.entrySet = acl.entrySet?.item || []
         acl.associationSet = acl.associationSet?.item || []
+        if acl.associationSet.length > 0
+          acl.subnetId = acl.associationSet[0].subnetId
       acls
   }
 

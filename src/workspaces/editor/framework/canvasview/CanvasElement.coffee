@@ -526,24 +526,23 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "CloudResourc
     # Get xGW state
     if m.type and design.region()
       res_list = CloudResources( m.type, design.region() )
-      if res_list and res_list.length > 0
-        data = res_list.get(m.get('appId'))
+      data = res_list.get(m.get('appId'))
 
     if data
       if m.get("appId").indexOf("igw-") is 0
         #igw attachment.state: available | unavailable
-        if not ( data.attachmentSet isnt null and data.attachmentSet.item[0].state is "available" and data.attachmentSet.item[0].vpcId is m.parent().get("appId") )
+        if not ( data.get("state") is "available" and data.get("vpcId") is m.parent().get("appId") )
           CanvasManager.addClass el, "deleted"
 
       else if m.get("appId").indexOf("vgw-") is 0
         #vgw            state: pending | available | deleting | deleted
         #    attachment.state: attaching | attached | detaching | detached
-        if not ( data.state is "available" and data.attachments.item[0].state is "attached" and data.attachments.item[0].vpcId is m.parent().get("appId") )
+        if not ( data.get("state") is "available" and data.get("attachmentState") is "attached" and data.get("vpcId") is m.parent().get("appId") )
           CanvasManager.addClass el, "deleted"
 
       else if m.get("appId").indexOf("cgw-") is 0
         #cgw state: pending | available | deleting | deleted
-        if data.state isnt "available"
+        if data.get("state") isnt "available"
           CanvasManager.addClass el, "deleted"
     else
       CanvasManager.addClass el, "deleted"

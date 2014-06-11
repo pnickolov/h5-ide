@@ -223,8 +223,8 @@ define [
                 text: if App.user.hasCredential() then lang.ide.RUN_STACK else lang.ide.RUN_STACK_MODAL_NEED_CREDENTIAL
                 disabled: true
         @renderKpDropdown()
-        @modal.tpl.find('.modal-input-val').val MC.common.other.canvasData.get('name')
         cost = Design.instance().getCost()
+        @modal.tpl.find('.modal-input-value').val @workspace.opsModel.get("name")
         @modal.tpl.find("#label-total-fee").find('b').text("$#{cost.totalFee}")
 
         # load TA
@@ -234,7 +234,7 @@ define [
 
         @modal.on 'confirm', ()=>
             @hideError()
-            if nt App.user.hasCredential()
+            if not App.user.hasCredential()
                 App.showSettings App.showSettings.TAB.Credential
                 return false
 

@@ -80,11 +80,11 @@ define [ "constant", "../GroupModel", "./DhcpModel" ], ( constant, GroupModel, D
 
       dhcp = @get("dhcp")
       if dhcp.isAuto()
-        dhcp = ""
+        dhcpValue = ""
       else if dhcp.isDefault()
-        dhcp = "default"
+        dhcpValue = "default"
       else
-        dhcp = dhcp.get("appId")
+        dhcpValue = dhcp.get("appId")
 
       component =
         name : @get("name")
@@ -94,7 +94,7 @@ define [ "constant", "../GroupModel", "./DhcpModel" ], ( constant, GroupModel, D
           EnableDnsSupport   : @get("dnsSupport")
           InstanceTenancy    : @get("tenancy")
           EnableDnsHostnames : @get("dnsHostnames")
-          DhcpOptionsId      : dhcp
+          DhcpOptionsId      : dhcpValue
           VpcId              : @get("appId")
           CidrBlock          : @get("cidr")
 

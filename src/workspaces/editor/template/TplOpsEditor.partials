@@ -31,7 +31,7 @@
 </div>
 
 <!-- {{toolbar.BtnRunStack}} -->
-<button class="btn-toolbar icon-play tooltip toolbar-btn-primary" data-tooltip='{{ i18n "TOOL_TIP_BTN_RUN_STACK" }}'>{{ i18n "TOOL_BTN_RUN_STACK" }}</button>
+<button class="btn-toolbar icon-play tooltip toolbar-btn-primary runApp" data-tooltip='{{ i18n "TOOL_TIP_BTN_RUN_STACK" }}'>{{ i18n "TOOL_BTN_RUN_STACK" }}</button>
 
 <!-- {{toolbar.BtnStackOps}} -->
 <button class="btn-toolbar tooltip icon-save" data-tooltip='{{ i18n "TOOL_TIP_SAVE_STACK" }}'></button>

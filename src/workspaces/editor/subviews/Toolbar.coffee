@@ -24,7 +24,7 @@ define [
       "click .icon-export-png"             : "exportPNG"
       "click .icon-export-json"            : "exportJson"
       "click .icon-toolbar-cloudformation" : "exportCF"
-      "click .icon-play"                   : 'runStack'
+      "click .runApp"                      : 'runStack'
       "OPTION_CHANGE .toolbar-line-style"  : "setTbLineStyle"
 
       "click .icon-stop"              : "stopApp"

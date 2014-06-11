@@ -478,6 +478,45 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
       return
 
 
+    ()-> #ACL
+      for aws_acl in @CrPartials( "ACL" ).where({vpcId:@vpcId}) || []
+        aws_acl = aws_acl.attributes
+        aclRes =
+          "resource":
+            "NetworkAclId": ""
+            "VpcId"   : ""
+            "Default" : false
+            "EntrySet": []
+            "AssociationSet": []
+
+        aclRes = @_mapProperty aws_acl, aclRes
+
+        aclRes.resource.VpcId = CREATE_REF( @theVpc )
+        aclRes.resource.NetworkAclId = aws_acl.id
+
+        for acl in aws_acl.entrySet
+          aclRes.resource.EntrySet.push
+            "RuleAction": acl.ruleAction
+            "Protocol"  : acl.protocol
+            "CidrBlock" : acl.cidrBlock
+            "Egress"    : acl.egress
+            "IcmpTypeCode":
+              "Type": if acl.icmpTypeCode then acl.icmpTypeCode.type else ""
+              "Code": if acl.icmpTypeCode then acl.icmpTypeCode.code else ""
+            "PortRange":
+              "To"  : if acl.portRange then acl.portRange.to else ""
+              "From": if acl.portRange then acl.portRange.from else ""
+            "RuleNumber": acl.ruleNumber
+        
+        for acl in aws_acl.associationSet
+          aclRes.resource.AssociationSet.push
+            "NetworkAclAssociationId": acl.networkAclAssociationId
+            "SubnetId": CREATE_REF( @subnets[acl.subnetId] )
+
+        aclComp = @add( "ACL", aws_acl, aclRes.resource )
+
+      return
+
 
   ]
 
@@ -485,7 +524,6 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
   # getVOL      : ()->
   # getSG       : ()->
   # getELB      : ()->
-  # getACL      : ()->
   # getASG      : ()->
   # getLC       : ()->
   # getNC       : ()->

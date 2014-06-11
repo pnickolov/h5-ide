@@ -81,7 +81,10 @@ define [
       for asg in asgs ||[]
         asg.AvailabilityZones   = asg.AvailabilityZones?.member || []
         asg.Instances           = asg.Instances?.member || []
+        asg.LoadBalancerNames   = asg.LoadBalancerNames?.member || []
         asg.TerminationPolicies = asg.TerminationPolicies?.member || []
+        asg.Subnets             = asg.VPCZoneIdentifier.split(",")
+        delete asg.VPCZoneIdentifier
       asgs
   }
 
@@ -229,7 +232,12 @@ define [
     type  : constant.RESTYPE.LC
     AwsResponseType : "DescribeLaunchConfigurationsResponse"
     modelIdAttribute : "LaunchConfigurationARN"
-    parseFetchData : ( data )-> data.DescribeLaunchConfigurationsResponse.DescribeLaunchConfigurationsResult.LaunchConfigurations?.member
+    parseFetchData : ( data )->
+      lcs = data.DescribeLaunchConfigurationsResponse.DescribeLaunchConfigurationsResult.LaunchConfigurations?.member
+      for lc in lcs || []
+        lc.BlockDeviceMappings = lc.BlockDeviceMappings?.member
+        lc.SecurityGroups      = lc.SecurityGroups?.member
+      lcs
   }
 
   ### ScalingPolicy ###

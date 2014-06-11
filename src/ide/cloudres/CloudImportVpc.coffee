@@ -27,6 +27,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
       @volumes   = {} # res id => comp
       @sgs       = {} # res id => comp
       @iams      = {} # res id => comp
+      @lcs       = {} # res id => comp
       @component = {}
       @layout    = {}
 
@@ -653,12 +654,112 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
       return
 
 
+    ()-> #LC
+      for aws_lc in @CrPartials( "LC" ).where({category:@region}) || []
+        aws_lc = aws_lc.attributes
+        lcRes =
+          'BlockDeviceMapping': []
+          'CreatedTime': ''
+          'EbsOptimized': ''
+          'IamInstanceProfile': ''
+          'ImageId': ''
+          'InstanceMonitoring': ''
+          'InstanceType': ''
+          'KernelId': ''
+          'KeyName': ''
+          'LaunchConfigurationARN': ''
+          'LaunchConfigurationName': ''
+          'RamdiskId': ''
+          'SecurityGroups': []
+          'SpotPrice': ''
+          'UserData': ''
+
+        lcRes = @_mapProperty aws_lc, lcRes
+
+        lcRes.SecurityGroups = aws_lc.SecurityGroups
+        if aws_lc.BlockDeviceMappings
+          lcRes.BlockDeviceMapping = aws_lc.BlockDeviceMappings
+        lcRes.InstanceMonitoring = aws_lc.InstanceMonitoring.Enabled
+
+        lcComp = @add( "LC", aws_lc, lcRes, aws_lc.LaunchConfigurationName )
+        delete @component[ aws_lc.id ]
+        @lcs[ aws_lc.id ] = lcComp
+      return
+
+
+    ()-> #ASG
+      for aws_asg in @CrPartials( "ASG" ).where({category:@region}) || []
+        aws_asg = aws_asg.attributes
+
+        asgRes =
+          'AutoScalingGroupARN' : ''
+          'AutoScalingGroupName': ''
+          'AvailabilityZones'   : []
+          'CreatedTime'    : ''
+          'DefaultCooldown': ""
+          'DesiredCapacity': ""
+          'EnabledMetrics' : []
+          'HealthCheckGracePeriod': ""
+          'HealthCheckType': ""
+          'Instances'      : []
+          'LaunchConfigurationName': ''
+          'LoadBalancerNames': []
+          'MaxSize': ""
+          'MinSize': ""
+          'PlacementGroup': ''
+          'Status' : ''
+          'SuspendedProcesses' : []
+          'TerminationPolicies': []
+          'VPCZoneIdentifier'  : ''
+          'InstanceId': ''
+          'ShouldDecrementDesiredCapacity': ''
+
+        asgRes = @_mapProperty aws_asg, asgRes
+
+        asgRes.TerminationPolicies = aws_asg.TerminationPolicies
+        asgRes.LoadBalancerNames = aws_asg.LoadBalancerNames
+
+        me = @
+        az = []
+        _.each aws_asg.AvailabilityZones, (e,key)->
+          azComp = me.addAz( e )
+          az.push CREATE_REF( azComp )
+        asgRes.AvailabilityZones = az
+
+        vpcZoneIdentifier = []
+        _.each aws_asg.Subnets, (e,key)->
+          subnetComp = me.subnets[e]
+          vpcZoneIdentifier.push CREATE_REF( subnetComp )
+        asgRes.VPCZoneIdentifier = vpcZoneIdentifier.join( "," )
+
+        asgComp = @add( "ASG", aws_asg, asgRes, aws_asg.AutoScalingGroupName )
+      return
+
+    ()-> #Topic
+      for aws_topic in @CrPartials( "TOPIC" ).where({category:@region}) || []
+        aws_topic = aws_topic.attributes
+      return
+
+    ()-> #NC
+      for aws_nc in @CrPartials( "NC" ).where({category:@region}) || []
+        aws_nc = aws_nc.attributes
+
+      return
+
+    ()-> #SP
+      for aws_sp in @CrPartials( "SP" ).where({category:@region}) || []
+        aws_sp = aws_sp.attributes
+      return
+
+    ()-> #CW
+      for aws_cw in @CrPartials( "CW" ).where({category:@region}) || []
+        aws_cw = aws_cw.attributes
+      return
+
 
   ]
 
 
-
-  # getASG      : ()->
   # getNC       : ()->
   # getSP       : ()->
 
@@ -769,6 +870,10 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
       RESTYPE.IAM
       RESTYPE.LC
       RESTYPE.ASG
+      RESTYPE.TOPIC
+      RESTYPE.NC
+      RESTYPE.SP
+      RESTYPE.CW
     ]
 
     # When we get all the asgs and subnets, we can start loading other resources.

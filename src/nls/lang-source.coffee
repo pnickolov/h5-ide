@@ -4247,6 +4247,10 @@ VisualOps API. You cannot UNDO this action.'
       en: "Set Up Credential First"
       zh: "请先设置 AWS 凭证"
 
+    RUN_STACK_MODAL_KP_WARNNING:
+      en: "Specify a key pair as $DefaultKeyPair for this app."
+      zh: ""
+
     RUN_STACK:
       en: "run stack"
       zh: "运行"

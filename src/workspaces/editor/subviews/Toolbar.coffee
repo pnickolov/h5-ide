@@ -210,7 +210,7 @@ define [
         notification "error", "Fail to export to AWS CloudFormation Template, Error code:#{err.error}"
         return
 
-    startApp        : (event)->
+    runStack: (event)->
         if $(event.currentTarget).attr('disabled')
             return false
         @modal = new Modal
@@ -220,12 +220,63 @@ define [
             width: '450px'
             height: "515px"
             confirm:
-                text: lang.ide.RUN_STACK
+                text: if App.user.hasCredential() then lang.ide.RUN_STACK else lang.ide.RUN_STACK_MODAL_NEED_CREDENTIAL
                 disabled: true
+        @renderKpDropdown()
+        @modal.tpl.find('.modal-input-val').val MC.common.other.canvasData.get('name')
+        cost = Design.instance().getCost()
+        @modal.tpl.find("#label-total-fee").find('b').text("$#{cost.totalFee}")
+
+        # load TA
+        require ['component/trustedadvisor/main'], (trustedadvisor_main)=>
+            trustedadvisor_main.loadModule('stack').then ()=>
+                @modal?.toggleConfirm false
+
+        @modal.on 'confirm', ()=>
+            @hideError()
+            if nt App.user.hasCredential()
+                App.showSettings App.showSettings.TAB.Credential
+                return false
+
+
+
+
+
+
 
 
         #App.startApp( @workspace.opsModel.id ); false
 
+    renderKpDropdown: ()->
+        if kpDropdown.hasResourceWithDefaultKp()
+            keyPairDropdown = new kpDropdown()
+            @modal.tpl.find("#kp-runtime-placeholder").html keyPairDropdown.render().el
+            keyPairDropdown.on 'change', @hideDefaultKpError(@)
+            @modal.tpl.find('.default-kp-group').show()
+        null
+        
+    hideDefaultKpError: (context)->
+        context.hideError 'kp'
+
+    hideError: (type)->
+        selector = if type then $("#runtime-error-#{type}") else $(".runtime-error")
+        selector.hide()
+
+    showError: (id, msg)->
+        $("#runtime-error-#{id}").text(msg).show()
+
+    defaultKpIsSet: ->
+        if not kpDropdown.hasResourceWithDefaultKp()
+            return true
+        kpModal = Design.modelClassForType( constant.RESTYPE.KP )
+        defaultKP = kpModal.getDefaultKP()
+        if not defaultKP.get('isSet') or not @modal.tpl.find("#kp-runtime-placeholder .items.selected").size()
+            @showError('kp', lang.ide.RUN_STACK_MODAL_KP_WARNNING)
+            return false
+
+        true
+
+    startApp        : ()-> App.startApp( @workspace.opsModel.id ); false
     stopApp         : ()-> App.stopApp( @workspace.opsModel.id );  false
     terminateApp    : ()-> App.terminateApp( @workspace.opsModel.id ); false
     refreshResource : ()-> @workspace.refreshResource(); false

@@ -119,7 +119,7 @@ define [
       opsModel = @model.getOpsModelById( opsModel )
 
     if not opsModel
-      console.warn "The OpsModel `#{modelId}` is not found."
+      console.warn "The OpsModel is not found when opening."
       return
 
     space = @workspaces.find( opsModel )

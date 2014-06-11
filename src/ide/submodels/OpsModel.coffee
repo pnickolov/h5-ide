@@ -237,9 +237,7 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
         region_name : @get("region")
         app_id      : @get("id")
         app_name    : @get("name")
-      }).then ()->
-        self
-      , ( err )->
+      }).fail ( err )->
         self.set "state", OpsModelState.Running
         throw err
 
@@ -252,9 +250,7 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
         region_name : @get("region")
         app_id      : @get("id")
         app_name    : @get("name")
-      }).then ()->
-        self
-      , ( err )->
+      }).fail ( err )->
         self.set "state", OpsModelState.Stopped
         throw err
 

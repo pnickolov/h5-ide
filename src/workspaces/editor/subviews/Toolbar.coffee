@@ -8,9 +8,10 @@ define [
   "i18n!nls/lang.js"
   "UI.modalplus"
   'kp_dropdown'
+  'constant'
   "UI.notification"
   "backbone"
-], ( OpsModel, OpsEditorTpl, Thumbnail, JsonExporter, ApiRequest, lang, Modal, kpDropdown )->
+], ( OpsModel, OpsEditorTpl, Thumbnail, JsonExporter, ApiRequest, lang, Modal, kpDropdown, constant )->
 
   Backbone.View.extend {
 
@@ -237,21 +238,22 @@ define [
             if not App.user.hasCredential()
                 App.showSettings App.showSettings.TAB.Credential
                 return false
-
-
-
-
-
-
-
+            app_name = @modal.tpl.find('.modal-input-value').val()
+            appNameRepeated = @checkAppNameRepeat(app_name)
+            if not @defaultKpIsSet() or appNameRepeated
+                return false
 
         #App.startApp( @workspace.opsModel.id ); false
+
+    checkAppNameRepeat: ->
+        console.log(@workspace.opsModel.appList) #todo: not finished yet.
+        return false
 
     renderKpDropdown: ()->
         if kpDropdown.hasResourceWithDefaultKp()
             keyPairDropdown = new kpDropdown()
             @modal.tpl.find("#kp-runtime-placeholder").html keyPairDropdown.render().el
-            keyPairDropdown.on 'change', @hideDefaultKpError(@)
+            keyPairDropdown.on 'change', @hideError('kp')
             @modal.tpl.find('.default-kp-group').show()
         null
         

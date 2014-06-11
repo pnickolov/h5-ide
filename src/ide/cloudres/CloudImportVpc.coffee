@@ -409,10 +409,11 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
     ()-> #Volume
       for aws_vol in @CrPartials( "VOL" ).where({category:@region}) || []
         aws_vol = aws_vol.attributes
-        if aws_vol.attachmentSet.length is 0
+        if not aws_vol.instanceId
+          #not attached
           continue
 
-        insComp = @instances[ aws_vol.attachmentSet[0].instanceId ]
+        insComp = @instances[ aws_vol.instanceId ]
         if not insComp
           continue
 
@@ -420,28 +421,29 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         volRes =
           "resource":
             "VolumeId"     : aws_vol.id
-            "AvailabilityZone": CREATE_REF( azComp )
             "Size"         : Number(aws_vol.size)
             "SnapshotId"   : if aws_vol.snapshotId then aws_vol.snapshotId else ""
             "Iops"         : if aws_vol.iops then aws_vol.iops else ""
             "AttachmentSet":
-              "Device"       : aws_vol.attachmentSet[0].device
-              "InstanceId"   : CREATE_REF( insComp )
+              "Device"        : aws_vol.device
+              "InstanceId"    : CREATE_REF( insComp )
             "VolumeType"   : aws_vol.volumeType
+            "AvailabilityZone": CREATE_REF( azComp )
 
-        #volRes = @_mapProperty aws_vol, volRes
-        #check rootDevice
+        aws_ins = @CrPartials( "INSTANCE" ).where({ id:aws_vol.instanceId }) || []
+        if aws_ins.length > 0
+          aws_ins = aws_ins[0].attributes
+          root_devicename = aws_ins.rootDeviceName
 
-        # instanceId = aws_vol.attachmentSet.instanceId
-        # if res_cache[ instanceId ]
-        #   rootDeviceName = @instances[ instanceId ].rootDeviceName
-        #   deviceName     = aws_vol.attachmentSet.item[0].device
-        #   if rootDeviceName.indexOf(deviceName) is 0
-        #     #is root device
-        #     return null
+        if root_devicename
+          #current volume is root device
+          if root_devicename.indexOf(aws_vol.device) is 0
+            continue
+        else
+          console.error "[ConverterData] can not find rootDeviceName"
 
-        volComp = @add( "VOL", aws_vol, volRes.resource, "vol" + aws_vol.attachmentSet[0].device )
-        #@vols[ aws_vol.id ] = volComp
+        volComp = @add( "VOL", aws_vol, volRes.resource, "vol" + aws_vol.device )
+      return
 
     ()-> #EIP
       for aws_eip in @CrPartials( "EIP" ).where({category:@region}) || []

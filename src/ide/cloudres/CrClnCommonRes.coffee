@@ -207,6 +207,13 @@ define [
         vol.id = vol.volumeId
         delete vol.volumeId
         vol.attachmentSet = vol.attachmentSet?.item || []
+        _.each vol.attachmentSet, (e,key)->
+          status = vol.status
+          attachmentStatus = e.status
+          _.extend vol, e
+          vol.status = status
+          vol.attachmentStatus = attachmentStatus
+        delete vol.attachmentSet
       volumes
   }
 

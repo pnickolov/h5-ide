@@ -88,7 +88,10 @@ define [
     switchMode : ( isAppEditMode )->
       @toolbar.updateTbBtns()
       $("#OEPanelLeft").toggleClass "force-hidden", !isAppEditMode
-      @resourcePanel.render()
+      if isAppEditMode
+        @resourcePanel.render()
+      else
+        $("#OEPanelLeft").empty()
       @propertyPanel.refresh()
       @bindUserEvent()
       return

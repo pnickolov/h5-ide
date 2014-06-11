@@ -482,6 +482,8 @@ define [
     console.assert _.isEqual( newData, __dtBackup ), "Data Modified."
 
     if result.attribute or result.component or result.layout or result.instanceState
+      result.diffResult = @diff( newData, oldData )
+      result.newData    = newData
       return result
     else
       return false
@@ -683,14 +685,11 @@ define [
       result.push changeObj
     null
 
-  DesignImpl.prototype.diff = ()->
+  DesignImpl.prototype.diff = ( newData, oldData )->
     # Get an detailed diff of the current state of the Design and the last save state.
-    newData = @serialize()
-    oldData = @__opsModel.getJsonData()
 
     ### Diff the Component first ###
-    isModified = not _.isEqual( newData.component, oldData.component )
-    result     = []
+    result = []
     for uid, comp of newData.component
       diffHelper( comp, oldData.component[uid], result, newData.component, oldData.component )
 
@@ -698,12 +697,7 @@ define [
       if newData.component[ uid ] then continue
       diffHelper( undefined, comp, result, newData.component, oldData.component )
 
-    {
-      result     : result
-      isRunning  : newData.state is constant.APP_STATE.APP_STATE_RUNNING
-      isModified : isModified || not _.isEqual( oldData.layout, newData.layout )
-    }
-
+    result
 
   DesignImpl.prototype.isStoppable = ()->
     # Previous version will set canvas_data.property.stoppable to false

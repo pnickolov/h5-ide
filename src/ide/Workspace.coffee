@@ -30,6 +30,7 @@ define ["backbone"], ()->
     setIndex : ( idx )-> App.workspaces.setIndex @, idx
 
     # Call this method to remove the workspace from the ide.
+    isRemoved : ()-> !!@__isRemoved
     remove : ()->
       if @__isRemoved then return
       @__isRemoved = true

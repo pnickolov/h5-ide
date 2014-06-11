@@ -256,7 +256,7 @@ define [
             keyPairDropdown.on 'change', @hideError('kp')
             @modal.tpl.find('.default-kp-group').show()
         null
-        
+
     hideDefaultKpError: (context)->
         context.hideError 'kp'
 
@@ -282,11 +282,11 @@ define [
     stopApp         : ()-> App.stopApp( @workspace.opsModel.id );  false
     terminateApp    : ()-> App.terminateApp( @workspace.opsModel.id ); false
     refreshResource : ()-> @workspace.refreshResource(); false
-    switchToAppEdit : ()-> @workspace.switchMode( true ); false
+    switchToAppEdit : ()-> @workspace.switchToEditMode(); false
     applyAppEdit    : ()-> @workspace.applyAppEdit(); false
 
     cancelAppEdit : ()->
-      if not @workspace.switchMode( false )
+      if not @workspace.cancelEditMode()
         self  = @
         modal = new Modal {
           title    : "Changes not applied"
@@ -295,7 +295,7 @@ define [
           confirm  : { text : "Discard", color : "red" }
           onConfirm : ()->
             modal.close()
-            self.workspace.switchMode( false, true )
+            self.workspace.cancelEditMode(true)
             return
         }
       return false

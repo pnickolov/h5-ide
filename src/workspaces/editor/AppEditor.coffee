@@ -32,24 +32,43 @@ define [
       ]
 
     isAppEditMode : ()-> !!@__appEdit
-    switchMode : ( toAppEdit, force )->
-      if @isAppEditMode() is toAppEdit then return true
 
-      if not toAppEdit and not force and @design.isModified()
-        return false
+    switchToEditMode : ()->
+      if @isAppEditMode() then return
+      @__appEdit = true
+      @design.setMode( Design.MODE.AppEdit )
+      @view.switchMode( true )
+      return
 
-      @__appEdit = toAppEdit
-      @view.switchMode( toAppEdit )
-      @design.setMode( if toAppEdit then Design.MODE.AppEdit else Design.MODE.App )
+    cancelEditMode : ( force )->
+      modfied = if force then true else @design.isModified()
 
-      if not toAppEdit and @design.isModified()
+      if modfied and not force then return false
+
+      @__appEdit = false
+      if modfied
         # Layout and component changes, need to construct a new Design.
         @view.emptyCanvas()
         @design = new Design( @opsModel )
         @initDesign()
+      else
+        @design.setMode( Design.MODE.App )
+
+      @view.switchMode( false )
       true
 
     isModified : ()-> @isAppEditMode() && @design && @design.isModified()
+
+    applyAppEdit : ( modfiedData, force )->
+      modfied = modfiedData or @design.isModified( undefined, true )
+
+      if modfied and not force then return modfied
+
+      @design.setMode( Design.MODE.App )
+      @view.switchMode( false )
+
+      @opsModel.update( modfiedData.newData, !modfiedData.component )
+      true
 
     onOpsModelStateChanged : ()->
       if @isInited()

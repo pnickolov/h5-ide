@@ -228,6 +228,19 @@ define [
     type : constant.RESTYPE.ASG
     newNameTmpl : "asg"
 
+    initialize : ( options, createOption ) ->
+
+      ComplexResModel.prototype.initialize.apply @, arguments
+
+      if options.lcId
+        lc = Design.instance().component(options.lcId)
+        lc and @attachLc lc
+
+
+
+      null
+
+
     isReparentable : ( newParent )->
       for expand in @get("expandedList")
         if newParent.type is constant.RESTYPE.SUBNET
@@ -268,7 +281,7 @@ define [
       lcPrice.formatedFee = lcPrice.fee + "/mo"
       return lcPrice
 
-    attatchLc: ( lc ) ->
+    attachLc: ( lc ) ->
       oldConn = @connections( 'Lc_Asso' )
       for c in oldConn
         oldLc = c.getOtherTarget @
@@ -550,7 +563,7 @@ define [
       # Associate with LC
       if data.resource.LaunchConfigurationName
         lc = resolve( MC.extractID(data.resource.LaunchConfigurationName) )
-        asg.attatchLc( lc )
+        asg.attachLc( lc )
 
         # Elb Association to LC
         ElbAsso = Design.modelClassForType( "ElbAmiAsso" )

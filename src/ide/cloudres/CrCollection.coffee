@@ -106,7 +106,7 @@ define ["ApiRequest", "./CrModel", "backbone"], ( ApiRequest, CrModel )->
     region : ()-> @category
 
     # Override Backbone.Collection.where
-    where : ( option )->
+    where : ( option, first )->
       if option.category and option.category is @category
         delete option.category
 
@@ -116,9 +116,11 @@ define ["ApiRequest", "./CrModel", "backbone"], ( ApiRequest, CrModel )->
           break
 
       if hasOtherAttr
-        Backbone.Collection.prototype.where.call( this, option ) || []
+        res = Backbone.Collection.prototype.where.call( this, option, first ) || []
       else
-        @models.slice(0)
+        res = @models.slice(0)
+
+      if first then res[0] else res
 
   }, {
 

@@ -2,8 +2,8 @@ define [
     'UI.modalplus'
     './component/resdiff/resDiffTpl'
     'jsondiffpatch'
-    './component/resdiff/a'
-    './component/resdiff/b'
+    'jsona'
+    'jsonb'
 
 ], ( modalplus, template, jsondiffpatch, a, b ) ->
 

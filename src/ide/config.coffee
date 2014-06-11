@@ -211,6 +211,10 @@ require.config {
 		#############################################
 		'validation'         : 'component/trustedadvisor/validation'
 
+		# tmp will delete in 2 days
+		'jsona'				 : 'component/resdiff/a'
+		'jsonb'				 : 'component/resdiff/b'
+
 
 		#############################################
 		# api                       # Merge in deploy

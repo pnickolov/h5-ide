@@ -222,7 +222,7 @@ define [
         app.terminate().fail ( err )->
           error = if err.awsError then err.error + "." + err.awsError else err.error
           notification "Fail to terminate your app \"#{name}\". (ErrorCode: #{error})"
-        false
+        return
       return
 
     askForForceTerminate : ( model )->
@@ -236,6 +236,6 @@ define [
         modal.terminate().fail (err)->
           error = if err.awsError then err.error + "." + err.awsError else err.error
           notification "Fail to terminate your app \"#{name}\". (ErrorCode: #{error})"
-        false
+        return
       return
   }

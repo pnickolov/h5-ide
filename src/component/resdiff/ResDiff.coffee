@@ -1,4 +1,9 @@
-define ['UI.modalplus', './component/resdiff/resDiffTpl'], (modalplus, template) ->
+define [
+    'UI.modalplus'
+    './component/resdiff/resDiffTpl'
+    './component/resdiff/a'
+    './component/resdiff/b'
+], ( modalplus, template, a, b ) ->
 
     Backbone.View.extend
 
@@ -18,7 +23,7 @@ define ['UI.modalplus', './component/resdiff/resDiffTpl'], (modalplus, template)
             $target.toggleClass 'closed'
 
         _open: () ->
-
+            console.log(a, b);
             options =
 
                 template: @el

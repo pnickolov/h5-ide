@@ -35,7 +35,7 @@ define [
     newNameTmpl : "launch-config-"
 
     constructor : ( attr, option )->
-      if option and option.createByUser and attr.parent.get("lc")
+      if option and option.createByUser and attr.parent.getLc()
           return
 
       ComplexResModel.call( this, attr, option )
@@ -96,6 +96,8 @@ define [
 
       newName
 
+    getAsg: () -> @connectionTargets('Lc_Asso')[0]
+
     isRemovable : () ->
       if @design().modeIsAppEdit() and @get("appId")
         return error : lang.ide.CVS_MSG_ERR_DEL_LC
@@ -114,7 +116,7 @@ define [
       resource_list = CloudResources(constant.RESTYPE.LC, Design.instance().region())?.toJSON()
       if not resource_list then return []
 
-      resource = resource_list[ @parent().get("appId") ]
+      resource = resource_list[ @getAsg().get("appId") ]
 
       if resource and resource.Instances and resource.Instances.member
         amis = []
@@ -136,21 +138,21 @@ define [
       null
 
     connect : ( cn )->
-      if @parent() and cn.type is "SgRuleLine"
+      if @getAsg() and cn.type is "SgRuleLine"
         # Create duplicate sgline for each expanded asg
-        @parent().updateExpandedAsgSgLine( cn.getOtherTarget(@) )
+        @getAsg().updateExpandedAsgSgLine( cn.getOtherTarget(@) )
 
       null
 
     disconnect : ( cn )->
-      if @parent()
+      if @getAsg()
         if cn.type is "ElbAmiAsso"
           # No need to reset Asg's healthCheckType to EC2, when disconnected from Elb
           # Because user might just want to asso another Elb right after disconnected.
-          # @parent().updateExpandedAsgAsso( cn.getOtherTarget(@), true )
+          # @getAsg().updateExpandedAsgAsso( cn.getOtherTarget(@), true )
 
         else if cn.type is "SgRuleLine"
-          @parent().updateExpandedAsgSgLine( cn.getOtherTarget(@), true )
+          @getAsg().updateExpandedAsgSgLine( cn.getOtherTarget(@), true )
       null
 
     getStateData : () ->

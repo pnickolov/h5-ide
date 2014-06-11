@@ -89,7 +89,7 @@ define [ '../base/model', 'keypair_model', 'constant', 'Design', "CloudResources
       null
 
     isMonitoringEnabled : ()->
-      for p in @lc.parent().get("policies")
+      for p in @lc.getAsg().get("policies")
         if p.get("alarmData").metricName is "StatusCheckFailed"
           return false
 

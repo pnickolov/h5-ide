@@ -269,7 +269,7 @@ define [
       return lcPrice
 
     attatchLc: ( lc ) ->
-      oldConn = @connections( 'LcAsso' )
+      oldConn = @connections( 'Lc_Asso' )
       for c in oldConn
         oldLc = c.getOtherTarget @
         for elb in oldLc.connectionTargets("ElbAmiAsso")
@@ -288,7 +288,7 @@ define [
 
       null
 
-    getLc: -> @connectionTargets('LcAsso')[0]
+    getLc: -> @connectionTargets('Lc_Asso')[0]
 
     removeChild: ( lc ) ->
       GroupModel.prototype.removeChild.call this, lc

@@ -205,7 +205,7 @@ define [
 
 
 
-  Model = GroupModel.extend {
+  Model = ComplexResModel.extend {
 
     defaults : ()->
       x            : 0
@@ -279,7 +279,7 @@ define [
         c.remove()
 
       @listenTo lc, "change:name change:imageId", @drawExpanedAsg
-      @listenTo lc, "destroy", @removeChild
+      @listenTo lc, "destroy", @removeLc
 
       for elb in lc.connectionTargets("ElbAmiAsso")
         @updateExpandedAsgAsso( elb )
@@ -288,19 +288,14 @@ define [
 
       null
 
-    getLc: -> @connectionTargets('Lc_Asso')[0]
-
-    removeChild: ( lc ) ->
-      GroupModel.prototype.removeChild.call this, lc
-
-      # disconnect all asso of expanded asg
+    removeLc: ->
       @removeExpandedAsso()
-
-      # Remove lc from parent ASG
-      @unset "lc"
       @draw()
 
       null
+
+    getLc: -> @connectionTargets('Lc_Asso')[0]
+
 
     drawExpanedAsg: ( isCreate ) ->
       lc = @get 'lc'

@@ -109,14 +109,6 @@ define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone", "con
 
     # In the previous version, Websocket emits changes of request things (AKA, the notification). Websocket actually holds a copy of the request things. And the request things is process by module/design/toolbar ( ridiculous, but whatever ). There's no place to actually store the notification ( Well, it's stored in module/header, But I think the notification is a data source of the Application ). So now, we store the notification here.
     __initializeNotification : ()->
-      # LEGACY Code. When switching between tabs, we automatically mark notification of that tab as read.
-      # Temporary removed right now. Because I think this kind of trigger is too buggy.
-      ###
-      ideevent.onLongListen ideevent.SWITCH|_DASHBOARD, () -> return
-      ideevent.onLongListen ideevent.SWITCH|_TAB, () -> return
-      ideevent.onListen ideevent.OPEN|_DESIGN, () -> return
-      ###
-
       # It seems like the toolbar doesn't even process the request_item, in which we can just directly listen to WS that the request item event.
       self = this
       App.WS.on "requestChange", (idx, dag)-> self.__processSingleNotification idx, dag
@@ -147,9 +139,14 @@ define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone", "con
       if same_req and _.isEqual( same_req.state, item.state )
           return
 
-      # TODO : Mark the item as read if the current tab is the item's tab.
       # Currently, the item is mark as readed if the WS is not ready.
       item.readed = not App.WS.isReady()
+
+      # Mark the item as read if the current tab is the item's tab.
+      if not item.readed and App.workspaces
+        space = App.workspaces.getAwakeSpace()
+        ops = @appList().get( item.targetId ) or @stackList().get( item.targetId )
+        item.readed = space.isWorkingOn( ops )
 
       # Prepend the item to the list.
       info_list.splice idx, 1

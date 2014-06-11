@@ -32,6 +32,7 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
       stoppable      : true # If the app has instance_store_ami, stoppable is false
       # usage          : ""
       # terminateFail  : false
+      # updateFail     : false
       # progress       : 0
       # opsActionError : ""
       # importVpcId    : ""
@@ -259,22 +260,45 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
       oldState = @get("state")
       @set("state", OpsModelState.Terminating)
       @attributes.progress = 0
+      @attributes.terminateFail = false
       self = @
       ApiRequest("app_terminate", {
         region_name : @get("region")
         app_id      : @get("id")
         app_name    : @get("name")
         flag        : force
-      }).then ()->
-        self
-      , ( err )->
-        self.attributes.terminateFail = false
+      }).fail ( err )->
+        if err.error < 0
+          throw err
+
         self.set {
           state         : oldState
           terminateFail : true
         }
         throw err
 
+    # Update the app, returns a promise
+    update : ( newJson, fastUpdate )->
+      if not @isApp() then return @__returnErrorPromise()
+      oldState = @get("state")
+      @set("state", OpsModelState.Updating)
+      @attributes.progress = 0
+      @attributes.updateFail = false
+      self = @
+      ApiRequest("app_update", {
+        region_name : @get("region")
+        spec        : newJson
+        app_id      : @get("id")
+        fast_update : fastUpdate
+      }).fail ( err )->
+        if err.error < 0
+          throw err
+
+        self.set {
+          state      : oldState
+          updateFail : true
+        }
+        throw err
 
     setStatusProgress : ( steps, totalSteps )->
       progress = parseInt( steps * 100.0 / totalSteps )
@@ -308,6 +332,8 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
           if state.completed
             toState = OpsModelState.Running
           else
+            @attributes.updateFail = false
+            @set "updateFail", true
             @__updateStatus()
         when "terminate"
           if state.completed

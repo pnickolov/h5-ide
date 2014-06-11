@@ -30,6 +30,8 @@ define [
 
       @listenTo App.user, "change:state", @toggleWelcome
 
+      @listenTo App.model.appList(), "change:terminateFail", @askForForceTerminate
+
       ### env:dev ###
       require ["./ide/subviews/DebugTool"], (DT)-> new DT()
       ### env:dev:end ###
@@ -220,17 +222,20 @@ define [
         app.terminate().fail ( err )->
           error = if err.awsError then err.error + "." + err.awsError else err.error
           notification "Fail to terminate your app \"#{name}\". (ErrorCode: #{error})"
+        false
+      return
 
-          modal AppTpl.forceTerminateApp {
-            name : name
-          }
+    askForForceTerminate : ( model )->
+      if not model.get("terminateFail") then return
 
-          $("#forceTerminateApp").on "click", ()->
-            app.terminate().fail (err)->
-              error = if err.awsError then err.error + "." + err.awsError else err.error
-              notification "Fail to terminate your app \"#{name}\". (ErrorCode: #{error})"
-            false
-        return
+      modal AppTpl.forceTerminateApp {
+        name : model.get("name")
+      }
 
+      $("#forceTerminateApp").on "click", ()->
+        modal.terminate().fail (err)->
+          error = if err.awsError then err.error + "." + err.awsError else err.error
+          notification "Fail to terminate your app \"#{name}\". (ErrorCode: #{error})"
+        false
       return
   }

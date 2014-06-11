@@ -116,7 +116,7 @@ define ["ApiRequest", "./CrModel", "backbone"], ( ApiRequest, CrModel )->
           break
 
       if hasOtherAttr
-        res = Backbone.Collection.prototype.where.call( this, option, first ) || []
+        res = Backbone.Collection.prototype.where.call( this, option ) || []
       else
         res = @models.slice(0)
 

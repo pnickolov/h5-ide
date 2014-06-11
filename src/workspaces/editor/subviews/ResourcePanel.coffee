@@ -45,10 +45,13 @@ define [
       @listenTo @workspace.design, Design.EVENT.AzUpdated,      @updateDisableItems
       @listenTo @workspace.design, Design.EVENT.AddResource,    @updateDisableItems
       @listenTo @workspace.design, Design.EVENT.RemoveResource, @updateDisableItems
+
+      @subEventForUpdateReuse()
       return
 
     render : ()->
       @setElement $("#OEPanelLeft").html LeftPanelTpl.panel({})
+
       $("#OEPanelLeft").toggleClass("hidden", @__rightPanelHidden || false)
       @recalcAccordion()
 
@@ -56,7 +59,56 @@ define [
       @updateSnapshot()
 
       @updateDisableItems()
+
+      @renderReuse()
       return
+
+    reuseLc: Backbone.View.extend
+      tagName: 'li'
+      className: 'tooltip resource-item resource-icon-asg resource-reuse'
+      inDom: false
+      defaultAttr: ->
+        'data-type': 'ASG'
+
+      defaultData: ->
+        that = @
+
+        'option':
+          lcId: that.model.id
+
+
+      initialize: ( options ) ->
+        options = {} if not options
+
+        @$el.attr _.extend {}, options.attr, @defaultAttr()
+        @$el.data _.extend {}, options.data, @defaultData()
+
+        @listenTo @model, 'change', @render
+        @listenTo @model, 'destroy', @remove
+
+      render: ->
+        @$el.html LeftPanelTpl.reuse_lc @model.toJSON()
+
+        if not @inDom
+          @inDom = true
+          $("#OEPanelLeft").find( '.resource-list.elb-asg' ).append @el
+
+        @
+
+
+    renderReuse: ->
+      allLc = Design.modelClassForType( constant.RESTYPE.LC ).allObjects()
+
+      for lc in allLc
+        new @reuseLc( model: lc ).render()
+
+      @
+
+    subEventForUpdateReuse: ->
+      Design.on Design.EVENT.AddResource, ( resModel ) ->
+        if resModel.type is constant.RESTYPE.LC
+          new @reuseLc( model: resModel ).render()
+      , @
 
     refreshResourcePanel : () ->
 

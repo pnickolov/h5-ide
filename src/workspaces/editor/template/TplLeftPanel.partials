@@ -53,7 +53,7 @@
 
   <section class="accordion-group">
     <header class="fixedaccordion-head">{{ i18n "RES_TIT_ELB_ASG" }}</header>
-    <ul class="resource-list clearfix accordion-body">
+    <ul class="resource-list clearfix accordion-body elb-asg">
       <li class="tooltip resource-item resource-icon-elb" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_ELB" }}' data-type="ELB">{{ i18n "RES_LBL_NEW_ELB" }}</li>
       <li class="tooltip resource-item resource-icon-asg" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_ASG" }}' data-type="ASG">{{ i18n "RES_LBL_NEW_ASG" }}</li>
     </ul>
@@ -123,3 +123,9 @@
   <div class="btn-fav-ami {{#if delete}}deleted{{else}}faved{{/if}} tooltip" data-tooltip="{{#unless delete}}{{i18n 'RES_TIT_ADD_TO_FAVORITE'}}{{/unless}}" data-id="{{resource_id}}" data-amiVO="{{amiVO}}"></div>
 </li>
 {{/each}}
+
+<!-- {{reuse_lc}} -->
+<div class="resource-icon resource-icon-instance" >
+    <img src="assets/images/ide/ami/{{cachedAmi.osType}}.{{cachedAmi.architecture}}.{{cachedAmi.rootDeviceType}}.png"/>
+  </div>
+<div class="resource-label instance-label">Auto Scaling Group ({{name}})</div>

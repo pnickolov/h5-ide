@@ -109,6 +109,31 @@
   #AmiTypeSelect:hover .selection {
     background: #234F77; }
 
+.resource-icon {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  background: #ccc;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-color: transparent; }
+
+.resource-reuse {
+  position: relative; }
+  .resource-reuse .resource-icon {
+    position: absolute;
+    top: 0;
+    left: 5px;
+    background-size: 72%; }
+  .resource-reuse img {
+    position: absolute;
+    top: 17px;
+    left: 14px;
+    width: 32px; }
+
+.elb-asg .resource-item {
+  height: 5em; }
+
 .resource-item {
   width: 70px;
   padding-top: 60px;

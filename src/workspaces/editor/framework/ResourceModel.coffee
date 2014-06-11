@@ -270,7 +270,7 @@ define [ "Design", "event", "backbone", 'CloudResources' ], ( Design, ideEvent ,
 
     hasAppResource : ()->
       if not Design.instance().modeIsStack() and @.get("appId")
-        !!@get('appId') and CloudResources(@type,@design().region()).get(@get('appId')).toJSON()
+        !!@get('appId') and CloudResources(@type,@design().region()).get(@get('appId'))
       else
         true
 

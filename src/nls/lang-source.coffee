@@ -4239,6 +4239,14 @@ VisualOps API. You cannot UNDO this action.'
       en: "PEM Encoded"
       zh: ""
 
+    RUN_STACK_MODAL_TITLE:
+      en: "Run Stack"
+      zh: "运行"
+
+    RUN_STACK_MODAL_NEED_CREDENTIAL:
+      en: "Set Up Credential First"
+      zh: "请先设置 AWS 凭证"
+
     RUN_STACK:
       en: "run stack"
       zh: "运行"

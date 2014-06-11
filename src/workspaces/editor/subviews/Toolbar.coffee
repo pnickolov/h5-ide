@@ -7,9 +7,10 @@ define [
   "ApiRequest"
   "i18n!nls/lang.js"
   "UI.modalplus"
+  'kp_dropdown'
   "UI.notification"
   "backbone"
-], ( OpsModel, OpsEditorTpl, Thumbnail, JsonExporter, ApiRequest, lang, Modal )->
+], ( OpsModel, OpsEditorTpl, Thumbnail, JsonExporter, ApiRequest, lang, Modal, kpDropdown )->
 
   Backbone.View.extend {
 
@@ -23,6 +24,7 @@ define [
       "click .icon-export-png"             : "exportPNG"
       "click .icon-export-json"            : "exportJson"
       "click .icon-toolbar-cloudformation" : "exportCF"
+      "click .icon-play"                   : 'runStack'
       "OPTION_CHANGE .toolbar-line-style"  : "setTbLineStyle"
 
       "click .icon-stop"              : "stopApp"
@@ -89,6 +91,107 @@ define [
     setTbLineStyle : ( ls )->
       localStorage.setItem("canvas/lineStyle", ls)
       $canvas.updateLineStyle( ls )
+
+    runStack: (event)->
+        console.debug "Run Stack Start.", new Date()
+        console.debug 'CurrentTarget', event.currentTarget
+        if $(event.currentTarget).attr('disabled')
+            console.debug 'Target Disabled, Can not run.'
+            return false
+        options =
+            title: lang.ide.RUN_STACK_MODAL_TITLE
+            template: MC.template.modalRunStack
+            disableClose: true
+            width: '450px'
+            height: '515px'
+            confirm:
+                text: if App.user.hasCredential() then lang.ide.RUN_STACK else lang.ide.RUN_STACK_MODAL_NEED_CREDENTIAL
+                disabled: true
+        @modal = new Modal(options)
+
+        # render KPDropDown after the modal has shown
+        @renderKpDropdown()
+        event.preventDefault()
+        @modal.tpl.find('.modal-input-value').val MC.common.other.canvasData.get 'name'
+
+        cost = Design.instance().getCost()
+
+        $('#label-total-fee').find('b').text "$#{cost.totalFee}"
+
+        # insert TA component
+        require ['component/trustedadvisor/main'], (trustedadvisor_main)->
+            trustedadvisor_main.loadModule('stack').then ()->
+                @modal and @modal.toggleConfirm(false)
+
+        # click Logic
+        @modal.on 'confirm', ()=>
+            @hideError() # todo: complete it
+
+            if not App.user.hasCredential()
+                App.showSettings(App.showSettings.TAB.Credential)
+                return false
+
+            app_name = $('.modal-input-value').val()
+
+            if not app_name
+                @showError 'appname', lang.ide.PROP_MSG_WARN_NO_APP_NAME   #todo: Complete it
+                return false
+
+            if not MC.validate 'awsName', app_name
+                @showError 'appname', lang.ide.PROP_MSG_WARN_INVALID_APP_NAME
+                return false
+
+            process_tab_name = "process-" + MC.common.other.canvasData.get('region') + "-" + app_name
+
+            obj = MC.common.other.getProcess process_tab_name
+            if obj and obj.flag_list and obj.flag_list.is_failed is true and obj.flag_list.flat is "RUN_STACK"
+
+                MC.common.other.deleteProcess process_tab_name
+
+                ide_event.trigger ide_event.CLOSE_DESIGN_TAB, process_tab_name
+
+            appNameRepeated = (not MC.aws.aws.checkAppName app_name) or (_.contains(_.key(MC.process), process_tab_name))
+            if appNameRepeated
+                @showError 'appname', lang.ide.PROP_MSG_WARN_REPEATED_APP_NAME
+
+            if not @defaultKpIsSet()  or appNameRepeated
+                return false
+
+            @modal.toggleConfirm true
+            @modal.tpl.find('.modal-header .modal-close').hide()
+            @modal.tpl.find('#run-stack-cancel').attr 'disabled', true
+
+            region = MC.common.other.canvasData.get('region')
+            canvasData = MC.common.other.canvasData.data()
+            @model.syncSaveStack( region , canvasData ).then (stackId)=>
+                if not @modal or not @modal.isOpen()
+                    return
+                data = canvasData
+                data.name = app_name
+
+                data.usage = 'others'
+                usage = @modal.tpl.find('#app-usage-selectbox .selected').data 'value'
+                if usage
+                    data.usage = usage
+
+                data.id = stackId
+                @model.runStack data
+
+                MC.data.app_list[region].push(app_name)
+                @modal? @modal.close()
+        , @
+        null
+
+    renderKpDropdown: ->
+        if kpDropdown.hasResourceWithDefaultKp()
+            kpDrop = new kpDropdown()
+            $('#kp-runtime-placeholder').html kpDrop.render().el
+            removeNoKpError = ()->
+                console.debug "Remove No KP Error"
+                #todo: Remove KP Error
+            kpDrop.on 'change', removeNoKpError
+            $(".default-kp-group").show()
+        null
 
     saveStack : ( evt )->
       $( evt.currentTarget ).attr("disabled", "disabled")

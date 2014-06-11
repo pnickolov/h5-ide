@@ -25,6 +25,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
       @enis      = {} # res id => comp
       @gateways  = {} # res id => comp
       @volumes   = {} # res id => comp
+      @sgs       = {} # res id => comp
       @component = {}
       @layout    = {}
 
@@ -259,6 +260,8 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
           DEFAULT_SG["default"] = sgComp
         else if aws_sg.groupName.indexOf("-DefaultSG-app-") isnt -1
           DEFAULT_SG["DefaultSG"] = sgComp
+
+        @sgs[ aws_sg.id ] = sgComp
       return
 
     ()-> # KP
@@ -558,15 +561,89 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
             "SubnetId": CREATE_REF( subnetComp )
 
         aclComp = @add( "ACL", aws_acl, aclRes.resource )
-
       return
+
+    ()-> #ELB
+      for aws_elb in @CrPartials( "ELB" ).where({vpcId:@vpcId}) || []
+        aws_elb = aws_elb.attributes
+
+        elbRes =
+          "resource":
+            "HealthCheck":
+              "Timeout": "5",
+              "Target" : "HTTP:80/index.html"
+              "HealthyThreshold"  : "9"
+              "UnhealthyThreshold": "4"
+              "Interval": "30"
+            "Policies":
+              "AppCookieStickinessPolicies": []
+              "OtherPolicies"              : []
+              "LBCookieStickinessPolicies" : []
+            "BackendServerDescriptions": []
+            "SecurityGroups": []
+            "CreatedTime"   : ""
+            "CanonicalHostedZoneNameID": ""
+            "ListenerDescriptions"     : []
+            "DNSName": ""
+            "Scheme" : ""
+            "CanonicalHostedZoneName": ""
+            "Instances": []
+            "SourceSecurityGroup":
+              "OwnerAlias": ""
+              "GroupName" : ""
+            "Subnets": []
+            "VpcId"  : ""
+            "LoadBalancerName" : ""
+            "AvailabilityZones": []
+            "CrossZoneLoadBalancing": "false"
+
+
+        elbRes = @_mapProperty aws_elb, elbRes
+
+        elbRes.resource.CrossZoneLoadBalancing = if aws_elb.CrossZoneLoadBalancing then aws_elb.CrossZoneLoadBalancing else ""
+        elbRes.resource.HealthCheck.Timeout    = aws_elb.HealthCheck.Timeout
+        elbRes.resource.HealthCheck.Interval   = aws_elb.HealthCheck.Interval
+        elbRes.resource.HealthCheck.UnhealthyThreshold = aws_elb.HealthCheck.UnhealthyThreshold
+        elbRes.resource.HealthCheck.Target             = aws_elb.HealthCheck.Target
+        elbRes.resource.HealthCheck.HealthyThreshold   = aws_elb.HealthCheck.HealthyThreshold
+
+        if aws_elb.SecurityGroups
+          for sgId in aws_elb.SecurityGroups
+            elbRes.resource.SecurityGroups.push CREATE_REF( @sgs[sgId] )
+
+        elbRes.resource.VpcId = CREATE_REF( @theVpc )
+        if aws_elb.Subnets
+          for subnetId in aws_elb.Subnets
+            elbRes.resource.Subnets.push CREATE_REF( @subnets[subnetId])
+
+        # if aws_elb.AvailabilityZones
+        #   for az in aws_elb.AvailabilityZones
+        #     azComp = @addAz(sb.availabilityZone)
+        #     elbRes.resource.AvailabilityZones.push CREATE_REF( azComp )
+
+        if aws_elb.ListenerDescriptions
+          for listener in aws_elb.ListenerDescriptions
+            elbRes.resource.ListenerDescriptions.push
+              "PolicyNames": if listener.PolicyNames then listener.PolicyNames else ''
+              "Listener":
+                "LoadBalancerPort": listener.Listener.LoadBalancerPort
+                "InstanceProtocol": listener.Listener.InstanceProtocol
+                "Protocol"        : listener.Listener.Protocol
+                "SSLCertificateId": if listener.Listener.SSLCertificateId then listener.Listener.SSLCertificateId else ""
+                "InstancePort"    : listener.Listener.InstancePort
+
+        if aws_elb.Instances
+          for instanceId in aws_elb.Instances
+            elbRes.resource.Instances.push CREATE_REF( @instances[ instanceId ] )
+
+        elbComp = @add( "ELB", aws_elb, elbRes.resource, aws_elb.id )
+        @addLayout( elbComp, false, @theVpc )
 
 
   ]
 
 
-  # getVOL      : ()->
-  # getSG       : ()->
+
   # getELB      : ()->
   # getASG      : ()->
   # getLC       : ()->

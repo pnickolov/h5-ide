@@ -23,8 +23,11 @@ define [
         elb.Instances         = elb.Instances?.member || []
         elb.SecurityGroups    = elb.SecurityGroups?.member || []
         elb.Subnets           = elb.Subnets?.member || []
+        elb.ListenerDescriptions = elb.ListenerDescriptions?.member || []
         for i, idx in elb.Instances
           elb.Instances[ idx ] = i.InstanceId
+        elb.vpcId = elb.VPCId
+        delete elb.VPCId
       elbs
   }
 

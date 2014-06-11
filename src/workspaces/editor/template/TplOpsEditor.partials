@@ -56,7 +56,7 @@
 
 <!-- {{toolbar.BtnAppOps}} -->
 <button class="tooltip btn-toolbar icon-stop" data-tooltip="{{ i18n 'TOOL_TIP_STOP_APP' }}"></button>
-<button class="tooltip btn-toolbar icon-play" data-tooltip="{{ i18n 'TOOL_TIP_START_APP' }}"></button>
+<button class="tooltip btn-toolbar icon-play startApp" data-tooltip="{{ i18n 'TOOL_TIP_START_APP' }}"></button>
 <button class="btn-toolbar tooltip icon-terminate seperator" data-tooltip="{{{i18n 'TOOL_TIP_TERMINATE_APP'}}}"></button>
 <button class="btn-toolbar tooltip icon-save-app seperator" data-tooltip='{{ i18n "TOOL_TIP_SAVE_APP_TO_STACK" }}'></button>
 

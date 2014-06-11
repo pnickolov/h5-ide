@@ -28,7 +28,7 @@ define [
       "OPTION_CHANGE .toolbar-line-style"  : "setTbLineStyle"
 
       "click .icon-stop"              : "stopApp"
-      "click .icon-play"              : "startApp"
+      "click .startApp"               : "startApp"
       "click .icon-terminate"         : "terminateApp"
       "click .icon-refresh"           : "refreshResource"
       "click .icon-update-app"        : "switchToAppEdit"

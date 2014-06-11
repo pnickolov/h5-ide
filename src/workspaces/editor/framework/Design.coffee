@@ -424,29 +424,68 @@ define [
         break
     null
 
-  DesignImpl.prototype.isModified = ( newData )->
+  DesignImpl.prototype.isModified = ( newData, showDetail )->
+
+    # This api only compares name / component / layout
 
     if @modeIsApp() or @modeIsAppView()
       console.warn "Testing Design.isModified() in app mode and visualize mode. This should not be happening."
       return false
 
     dataToCompare = newData || @attributes
-    backing = @__opsModel.getJsonData()
+    backing       = @__opsModel.getJsonData()
 
-    for key, value of dataToCompare
-      # Ignore id change.
-      if key is "id" or key is "component" or key is "layout"
-        continue
-      if not value is backing[key] and not _.isEqual( value, backing[key] )
-        return true
+    # Detailed Compare.
+    if showDetail then return @__isModifiedDetail( dataToCompare, backing )
 
-    if not newData
-      newData = @serialize()
-      if _.isEqual( backing.component, newData.component )
-        if _.isEqual( backing.layout, newData.layout )
-          return false
+    # Shallow Compare.
+    if dataToCompare.name isnt backing.name then return true
 
+    if not newData then newData = @serialize()
+
+    if _.isEqual( backing.component, newData.component )
+      if _.isEqual( backing.layout, newData.layout )
+        return false
     true
+
+  DesignImpl.prototype.__isModifiedDetail = ( newData, oldData )->
+    console.assert( __bsBackup = $.extend true, {}, oldData )
+    console.assert( __dtBackup = $.extend true, {}, newData )
+
+    backingState = {}
+    dataState    = {}
+
+    if not newData.component then newData = @serialize()
+
+    for uid, comp of oldData.component
+      if comp.type is constant.RESTYPE.LC or comp.type is constant.RESTYPE.INSTANCE
+        backingState[ uid ] = comp.state
+        delete comp.state
+
+    for uid, comp of newData.component
+      if comp.type is constant.RESTYPE.LC or comp.type is constant.RESTYPE.INSTANCE
+        dataState[ uid ] = comp.state
+        delete comp.state
+
+    result = {
+      attribute     : newData.name isnt oldData.name
+      component     : _.isEqual( oldData.component, newData.component )
+      layout        : _.isEqual( oldData.layout,    newData.layout )
+      instanceState : _.isEqual( backingState,      dataState )
+    }
+
+    # Restore
+    oldData.component[ uid ].state = state for uid, state of backingState
+    newData.component[ uid ].state = state for uid, state of dataState
+
+    console.assert _.isEqual( oldData, __bsBackup ), "BackingStore Modified."
+    console.assert _.isEqual( newData, __dtBackup ), "Data Modified."
+
+    if result.attribute or result.component or result.layout or result.instanceState
+      return result
+    else
+      return false
+
 
   DesignImpl.prototype.serialize = ( options )->
 

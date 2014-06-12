@@ -11,6 +11,8 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
 
     ceType: "Lc_Asso"
 
+    node_line: false
+
     oneToMany : constant.RESTYPE.LC
 
     defaults:

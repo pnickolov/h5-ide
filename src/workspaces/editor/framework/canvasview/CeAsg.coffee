@@ -106,4 +106,5 @@ define [ "./CanvasElement", 'i18n!nls/lang.js', "constant", "Design", "CanvasMan
       asg.draw()
     null
 
+
   CeAsg

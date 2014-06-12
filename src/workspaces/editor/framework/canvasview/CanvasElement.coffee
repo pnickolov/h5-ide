@@ -75,8 +75,7 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "CloudResourc
   CanvasElement.prototype.getModel = ()-> @model
 
   CanvasElement.prototype.element  = ( id )->
-    if not id
-      id = @id
+    id = @id if not id
 
     document.getElementById( id )
 

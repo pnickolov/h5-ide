@@ -227,6 +227,7 @@ define [
 
     type : constant.RESTYPE.ASG
     newNameTmpl : "asg"
+    node_group : true
 
     initialize : ( options, createOption ) ->
       if options.lcId

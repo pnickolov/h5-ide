@@ -1,14 +1,14 @@
 
 define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager", 'i18n!nls/lang.js', "CloudResources" ], ( CanvasElement, CeInstance, constant, CanvasManager, lang, CloudResources )->
 
-  CeLc = ()-> CanvasElement.apply( this, arguments )
+  CeLc = ()->
+    CanvasElement.apply( this, arguments )
+    @asg = @model.getAsg()
+    @lc = @model.getLc()
+    @
 
-  CanvasElement.extend.call( CeInstance, CeLc, constant.RESTYPE.LC )
+  CanvasElement.extend.call( CeInstance, CeLc, 'Lc_Asso')
   ChildElementProto = CeLc.prototype
-
-  # offset of asg
-  offsetX = 2
-  offsetY = 3
 
   ###
   # Child Element's interface.
@@ -31,16 +31,17 @@ define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager", 'i18n!n
     list = CanvasElement.prototype.list.call(this)
     for ins in list
       ins.background = @iconUrl( ins.appId )
-    list.volume = (@model.get("volumeList") || []).length
+    list.volume = (@lc.get("volumeList") || []).length
     list
 
   ChildElementProto.iconUrl = ( instanceId )->
+
     if instanceId
       ami = CloudResources(constant.RESTYPE.AMI, Design.instance().region()).get(instanceId).toJSON()
       if ami then ami = MC.data.dict_ami[ ami.imageId ]
 
     if not ami
-      ami = @model.getAmi() || @model.get("cachedAmi")
+      ami = @lc.getAmi() || @lc.get("cachedAmi")
 
     if not ami
       "ide/ami/ami-not-available.png"
@@ -51,107 +52,106 @@ define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager", 'i18n!n
 
     m = @model
 
-    for asg in m.getAsgs()
-      if isCreate
+    if isCreate
 
-        # Call parent's createNode to do basic creation
-        node = @createNode({
-          id      : "#{m.id}_#{asg.id}"
-          image   : "ide/icon/instance-canvas.png"
-          imageX  : 15
-          imageY  : 9
-          imageW  : 61
-          imageH  : 62
-          label   : MC.truncate m.get('name'), 15
-          labelBg : true
-          sg      : true
+      # Call parent's createNode to do basic creation
+      node = @createNode({
+        id      : m.id
+        image   : "ide/icon/instance-canvas.png"
+        imageX  : 15
+        imageY  : 9
+        imageW  : 61
+        imageH  : 62
+        label   : MC.truncate @lc.get('name'), 15
+        labelBg : true
+        sg      : true
+      })
+
+      # Insert Volume / Eip / Port
+      node.append(
+        # Ami Icon
+        Canvon.image( MC.IMG_URL + @iconUrl(), 30, 15, 39, 27 ).attr({'class':"ami-image"}),
+
+        # Volume Image
+        Canvon.image( "" , 31, 44, 29, 24 ).attr({
+            'id': "#{@id}_volume_status"
+            'class':'volume-image'
+          }),
+        # Volume Label
+        Canvon.text( 45, 56, "" ).attr({'class':'node-label volume-number'}),
+
+        # Volume Hotspot
+        Canvon.rectangle(31, 44, 29, 24).attr({
+          'data-target-id' : @id
+          'class'          : 'instance-volume'
+          'fill'           : 'none'
+        }),
+
+        # left port(blue)
+        Canvon.path(this.constant.PATH_PORT_DIAMOND).attr({
+          'class' : 'port port-blue port-launchconfig-sg port-launchconfig-sg-left tooltip'
+          'data-name'      : 'launchconfig-sg'
+          'data-alias'     : 'launchconfig-sg-left'
+          'data-position'  : 'left'
+          'data-type'      : 'sg'
+          'data-direction' : 'in'
+          'data-tooltip'   : lang.ide.PORT_TIP_D
+        }),
+
+        # right port(blue)
+        Canvon.path(this.constant.PATH_PORT_DIAMOND).attr({
+          'class' : 'port port-blue port-launchconfig-sg port-launchconfig-sg-right tooltip'
+          'data-name'      : 'launchconfig-sg'
+          'data-alias'     : 'launchconfig-sg-right'
+          'data-position'  : 'right'
+          'data-type'      : 'sg'
+          'data-direction' : 'out'
+          'data-tooltip'   : lang.ide.PORT_TIP_D
         })
 
-        # Insert Volume / Eip / Port
-        node.append(
-          # Ami Icon
-          Canvon.image( MC.IMG_URL + @iconUrl(), 30, 15, 39, 27 ).attr({'class':"ami-image"}),
+        # Child number
+        Canvon.group().append(
+          Canvon.rectangle(36, 1, 20, 16).attr({'class':'server-number-bg','rx':4,'ry':4}),
+          Canvon.text(46, 13, "0").attr({'class':'node-label server-number'})
+        ).attr({
+          'id'      : "#{@id}_instance-number-group"
+          'class'   : 'instance-number-group'
+          "display" : "none"
+        })
+      )
 
-          # Volume Image
-          Canvon.image( "" , 31, 44, 29, 24 ).attr({
-              'id': "#{@id}_volume_status"
-              'class':'volume-image'
-            }),
-          # Volume Label
-          Canvon.text( 45, 56, "" ).attr({'class':'node-label volume-number'}),
+      @getLayer("node_layer").append node
 
-          # Volume Hotspot
-          Canvon.rectangle(31, 44, 29, 24).attr({
-            'data-target-id' : @id
-            'class'          : 'instance-volume'
-            'fill'           : 'none'
-          }),
+      @initNode node, m.x(), m.y()
 
-          # left port(blue)
-          Canvon.path(this.constant.PATH_PORT_DIAMOND).attr({
-            'class' : 'port port-blue port-launchconfig-sg port-launchconfig-sg-left tooltip'
-            'data-name'      : 'launchconfig-sg'
-            'data-alias'     : 'launchconfig-sg-left'
-            'data-position'  : 'left'
-            'data-type'      : 'sg'
-            'data-direction' : 'in'
-            'data-tooltip'   : lang.ide.PORT_TIP_D
-          }),
+    else
+      node = @$element @lc.id
 
-          # right port(blue)
-          Canvon.path(this.constant.PATH_PORT_DIAMOND).attr({
-            'class' : 'port port-blue port-launchconfig-sg port-launchconfig-sg-right tooltip'
-            'data-name'      : 'launchconfig-sg'
-            'data-alias'     : 'launchconfig-sg-right'
-            'data-position'  : 'right'
-            'data-type'      : 'sg'
-            'data-direction' : 'out'
-            'data-tooltip'   : lang.ide.PORT_TIP_D
-          })
+      # Node Label
+      CanvasManager.update node.children(".node-label-name"), MC.truncate @lc.get('name'), 15
 
-          # Child number
-          Canvon.group().append(
-            Canvon.rectangle(36, 1, 20, 16).attr({'class':'server-number-bg','rx':4,'ry':4}),
-            Canvon.text(46, 13, "0").attr({'class':'node-label server-number'})
-          ).attr({
-            'id'      : "#{@id}_instance-number-group"
-            'class'   : 'instance-number-group'
-            "display" : "none"
-          })
-        )
+    # Update Ami Image
+    CanvasManager.update node.children(".ami-image"), @iconUrl(), "href"
 
-        @getLayer("node_layer").append node
+    # Volume Number
+    volumeCount = (@lc.get("volumeList") || []).length
+    CanvasManager.update node.children(".volume-number"), volumeCount
+    if volumeCount > 0
+      volumeImage = 'ide/icon/instance-volume-attached-normal.png'
+    else
+      volumeImage = 'ide/icon/instance-volume-not-attached.png'
+    CanvasManager.update node.children(".volume-image"), volumeImage, "href"
 
-        @initNode node, asg.x() + offsetX, asg.y() + offsetY
 
+    # In app mode, show number
+    if not @lc.design().modeIsStack() and @asg
+      data = CloudResources(@lc.type, @lc.design.region()).get(@lc.parent().get('appId')).toJSON()
+      numberGroup = node.children(".instance-number-group")
+      if data and data.Instances and data.Instances.member and data.Instances.member.length > 0
+        CanvasManager.toggle numberGroup, true
+        CanvasManager.update numberGroup.children("text"), data.Instances.member.length
       else
-        node = @$element m.id
-
-        # Node Label
-        CanvasManager.update node.children(".node-label-name"), MC.truncate m.get('name'), 15
-
-      # Update Ami Image
-      CanvasManager.update node.children(".ami-image"), @iconUrl(), "href"
-
-      # Volume Number
-      volumeCount = (m.get("volumeList") || []).length
-      CanvasManager.update node.children(".volume-number"), volumeCount
-      if volumeCount > 0
-        volumeImage = 'ide/icon/instance-volume-attached-normal.png'
-      else
-        volumeImage = 'ide/icon/instance-volume-not-attached.png'
-      CanvasManager.update node.children(".volume-image"), volumeImage, "href"
-
-
-      # In app mode, show number
-      if not m.design().modeIsStack() and m.parent()
-        data = CloudResources(m.type, m.design.region()).get(m.parent().get('appId')).toJSON()
-        numberGroup = node.children(".instance-number-group")
-        if data and data.Instances and data.Instances.member and data.Instances.member.length > 0
-          CanvasManager.toggle numberGroup, true
-          CanvasManager.update numberGroup.children("text"), data.Instances.member.length
-        else
-          CanvasManager.toggle numberGroup, false
+        CanvasManager.toggle numberGroup, false
     null
 
 
@@ -160,8 +160,8 @@ define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager", 'i18n!n
     if subId
       type = constant.RESTYPE.INSTANCE
     else
-      type = @model.type
+      type = @lc.type
 
-    @doSelect( type, subId or @containerId, "#{@id}_#{@containerId}" )
+    @doSelect( type, subId or @id, @id )
 
   null

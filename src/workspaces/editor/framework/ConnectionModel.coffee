@@ -225,7 +225,7 @@ define [ "./ResourceModel", "Design", "CanvasManager", "./canvasview/CanvasEleme
       if not @isVisual() then return null
 
       if @__view is undefined
-        @__view = CanvasElement.createView( "Line", @ )
+        @__view = CanvasElement.createView( @ceType or "Line", @ )
       @__view
 
     isVisual : ()->

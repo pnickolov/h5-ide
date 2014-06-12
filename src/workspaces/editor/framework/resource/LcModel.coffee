@@ -41,8 +41,6 @@ define [
       ComplexResModel.call( this, attr, option )
 
     initialize : ( attr, option )->
-      # Draw before create SgAsso
-      @draw(true)
 
       if option and option.createByUser
 
@@ -199,22 +197,7 @@ define [
       kp = @connectionTargets( "KeypairUsage" )[0]
       not kp and not @get( 'keyName' )
 
-    draw : ( isCreate )->
-      if not @isVisual() or not Design.instance().shouldDraw() then return
-
-      asgs = @getAsgs()
-
-      for asg in asgs
-        v = @getCanvasView asg.id
-        if v
-          args = arguments
-          args[ 0 ] = args[ 0 ] is true
-
-          if isCreate then v.nodeCreated = true
-          if not isCreate and not v.nodeCreated then return
-
-          v.draw.apply v, args
-      null
+    isVisual : () -> false
 
 
     setAmi                : InstanceModel.prototype.setAmi

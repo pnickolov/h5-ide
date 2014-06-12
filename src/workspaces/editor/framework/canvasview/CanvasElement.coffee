@@ -72,13 +72,11 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "CloudResourc
   ###
   CanvasElement.prototype.draw = ()-> null # do nothing
 
-  CanvasElement.prototype.getEid = -> if @containerId then "#{@id}_#{@containerId}" else @id
-
   CanvasElement.prototype.getModel = ()-> @model
 
   CanvasElement.prototype.element  = ( id )->
     if not id
-      id = @getEid()
+      id = @id
 
     document.getElementById( id )
 

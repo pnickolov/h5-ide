@@ -36,9 +36,10 @@ define [ '../base/model', 'keypair_model', 'constant', 'Design', "CloudResources
         null
 
 
-    init  : ( asgUid ) ->
-      @asg = Design.instance().component( asgUid )
-      @lc = @asg.getLc()
+    init  : ( lcAssoId ) ->
+      lcAsso = Design.instance().component( lcAssoId )
+      @asg = lcAsso.getAsg()
+      @lc = lcAsso.getLc()
 
       data = @lc.toJSON()
       data.uid = @lc.id

@@ -32,13 +32,18 @@ define [
       ]
 
       opsRes = CloudResources( "OpsResource", @opsModel.getVpcId() ).init( @opsModel.get("region") )
-      if @opsModel.appHasChanged()
+      if @opsModel.appHasChanged() or true
         @view.setText "Your app has been changed. Automatically sync-ing your changes."
         jobs.push opsRes.fetchForce()
       else
         jobs.push opsRes.fetch()
 
-      Q.all jobs
+      # Hack, immediately apply changes when we get data if the app is changed.
+      # Will move it to somewhere else if the process is upgraded.
+      self = @
+      Q.all(jobs).then ()->
+        newJson = self.opsModel.generateJsonFromRes()
+        self.opsModel.saveApp newJson
 
     isAppEditMode : ()-> !!@__appEdit
 
@@ -47,7 +52,10 @@ define [
         return StackEditor.prototype.initDesign.call this
 
       # The app has changed. We would want to apply changes.
-      CloudResources
+      # Hot replace the @design.
+      @design = new Design( @opsModel )
+      MC.canvas.analysis()
+      @design.finishDeserialization()
 
     switchToEditMode : ()->
       if @isAppEditMode() then return

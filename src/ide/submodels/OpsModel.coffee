@@ -91,7 +91,7 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
     # Calling this method will trigger an "jsonDataLoaded" event
     fetchJsonData : ()->
       self = @
-      # For app, if we have json already, we only need to check if the app is changed or not.
+      # For app, if we have json already, we still need to check if the app is changed or not.
       if not @isImported() and @isApp()
         if @__jsonData
           return ApiRequest("resource_check_change", {
@@ -99,14 +99,14 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
             app_id      : @get("id")
           }).then ( res )->
             self.__jsonData.changed = !!res
-            self.__jsonData.changed = true
+            self.__jsonData.changed = true ###################### REMOVE
         else
           return ApiRequest("app_info", {
             region_name : @get("region")
             app_ids     : [@get("id")]
           }).then (ds)->
+            ds[0].changed = true ###################### REMOVE
             self.__setJsonData( ds[0] )
-            self.__jsonData.changed = true
 
       if @__jsonData
         d = Q.defer()
@@ -240,6 +240,7 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
         # If we cannot delete the stack, we just add it back to the stackList.
         App.model.stackList().add self
 
+    # Runs a stack into app, returns a promise that will fullfiled with a new OpsModel.
     run : ( toRunJson )->
       ApiRequest("stack_run",{
         region_name : @get("region")
@@ -340,6 +341,18 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
           updateFail : err.msg
         }
         throw err
+
+    # Replace the data in mongo with new data. This method doesn't trigger an app update.
+    saveApp : ( newJson )->
+      d = Q.defer()
+      d.resolve()
+      self = @
+      d.promise.then ()->
+        self.__jsonData = newJson
+        self
+      # ApiRequest("app_save_info", {
+
+      # })
 
     setStatusProgress : ( steps, totalSteps )->
       progress = parseInt( steps * 100.0 / totalSteps )

@@ -72,9 +72,10 @@ define [
 
       # App Run & Stop
       if opsModel.isApp()
-        @$el.children(".icon-update-app").toggle( not @workspace.isAppEditMode() )
-        @$el.children(".icon-apply-app, .icon-cancel-update-app").toggle( @workspace.isAppEditMode() )
-        if @workspace.isAppEditMode()
+        isAppEdit = @workspace.isAppEditMode and @workspace.isAppEditMode()
+        @$el.children(".icon-update-app").toggle( not isAppEdit )
+        @$el.children(".icon-apply-app, .icon-cancel-update-app").toggle( isAppEdit )
+        if isAppEdit
           @$el.children(".icon-terminate, .icon-stop, .icon-play").hide()
         else
           @$el.children(".icon-terminate").show()

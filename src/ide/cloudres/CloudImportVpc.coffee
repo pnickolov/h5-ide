@@ -15,7 +15,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
   class ConverterData
     CrPartials : ( type )-> CloudResources( constant.RESTYPE[type], @region )
 
-    constructor : ( region, vpcId, sampleJson )->
+    constructor : ( region, vpcId, originalJson )->
       # @theVpc  = null
       @region    = region
       @vpcId     = vpcId
@@ -34,13 +34,16 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
       @ins_in_asg= [] # instances in asg
       @component = {}
       @layout    = {}
+      @originalJson = originalJson #original app json
 
-      # Use the sampleJson to generate uid for a existing resource.
-      @uidMap = {}
+      # Use the originalJson to generate uid for a existing resource.
+      @compMap = {}
+      if originalJson
+        @compMap = @_genCompMap(originalJson)
       ###
-      if sampleJson
-        for uid, comp of sampleJson
-          @uidMap[ comp.resource.xxx ] = uid
+      if originalJson
+        for uid, comp of originalJson
+          @compMap[ comp.resource.xxx ] = uid
       ###
       return @
 
@@ -49,10 +52,20 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         console.error "[ConverterData.add] if res_attributes is null, then must specify default_name"
         return null
       comp =
-        uid  : UID()
-        name : if default_name then default_name else NAME( res_attributes )
+        uid  : ""
+        name : ""
         type : constant.RESTYPE[ type_string ]
         resource : component_resources
+      #generate uid
+      if res_attributes and @compMap[ res_attributes.id ]
+        #existed resource
+        comp.uid = @compMap[ res_attributes.id ].uid
+        comp.name = @compMap[ res_attributes.id ].name
+      else
+        #new resource
+        comp.uid  = UID()
+        comp.name = if default_name then default_name else NAME( res_attributes )
+
       @component[ comp.uid ] = comp
       comp
 
@@ -112,6 +125,17 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         if typeof(v) is "string" and resource[k[0].toUpperCase() + k.slice(1)] isnt undefined
           resource[k[0].toUpperCase() + k.slice(1)] = v
       resource
+
+    _genCompMap : ( originalJson ) ->
+      compMap = {}
+      for uid, comp of originalJson.component
+        key = constant.AWS_RESOURCE_KEY[ comp.type ]
+        if not comp.resource[key]
+          console.error "not found id " + key + " for resource", comp
+        compMap[ comp.resource[key] ] =
+          "uid" : uid
+          "name": comp.name
+      compMap
 
   # The order of Converters functions are important!
   # Some converter must be behind other converters.
@@ -926,7 +950,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
   # getNC       : ()->
   # getSP       : ()->
 
-  convertResToJson = ( region, vpcId, sampleJson )->
+  convertResToJson = ( region, vpcId, originalJson )->
     console.log [
       "VOL"
       "INSTANCE"
@@ -948,7 +972,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
       "IAM"
     ].map (t)-> CloudResources( constant.RESTYPE[t], region )
 
-    cd = new ConverterData( region, vpcId, sampleJson )
+    cd = new ConverterData( region, vpcId, originalJson )
     func.call( cd ) for func in Converters
 
     # find default SG
@@ -1014,7 +1038,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
     return
 
   # Returns a promise that will resolve once every resource in the vpc is fetched.
-  CloudResources.getAllResourcesForVpc = ( region, vpcId, sampleJson )->
+  CloudResources.getAllResourcesForVpc = ( region, vpcId, originalJson )->
     RESTYPE = constant.RESTYPE
 
     # These resources are fetched first, because most of them are already fetched by dashboard.
@@ -1055,6 +1079,6 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
       }).then ( data )-> __parseAndCache( region, data )
 
     # When all the resources are fetched, we create component out of the resources.
-    Q.all( requests ).then ()-> convertResToJson( region, vpcId, sampleJson )
+    Q.all( requests ).then ()-> convertResToJson( region, vpcId, originalJson )
 
   return

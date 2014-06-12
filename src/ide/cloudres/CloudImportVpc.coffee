@@ -20,14 +20,18 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
       @region    = region
       @vpcId     = vpcId
       @azs       = {}
-      @subnets   = {} # res id => comp
-      @instances = {} # res id => comp
-      @enis      = {} # res id => comp
-      @gateways  = {} # res id => comp
-      @volumes   = {} # res id => comp
-      @sgs       = {} # res id => comp
-      @iams      = {} # res id => comp
-      @lcs       = {} # res id => comp
+      @subnets   = {} # res id   => comp
+      @instances = {} # res id   => comp
+      @enis      = {} # res id   => comp
+      @gateways  = {} # res id   => comp
+      @volumes   = {} # res id   => comp
+      @sgs       = {} # res id   => comp
+      @iams      = {} # res arn  => comp
+      @elbs      = {} # res id   => comp
+      @lcs       = {} # res name => comp
+      @asgs      = {} # res name => comp
+      @topics    = {} # res arn  => comp
+      @ins_in_asg= [] # instances in asg
       @component = {}
       @layout    = {}
 
@@ -88,6 +92,19 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         iamComp = @add( "IAM", aws_iam, iamRes, aws_iam.Name )
         @iams[ aws_iam.Arn ] = iamComp
         return iamComp
+      return null
+
+    addTopic : ( arn ) ->
+      topicComp = @topics[ arn ]
+      if topicComp then return topicComp
+
+      for aws_topic in @CrPartials( "TOPIC" ).where({id:arn}) || []
+        aws_topic = aws_topic.attributes
+        topicRes =
+          "TopicArn" : aws_topic.id
+        topicComp = @add( "TOPIC", aws_topic, topicRes, aws_topic.Name )
+        @topics[ aws_topic.id ] = topicComp
+        return topicComp
       return null
 
     _mapProperty : ( aws_json, resource ) ->
@@ -324,10 +341,23 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
 
 
     ()-> # Instance
+      me = @
+      #get all instances in asg
+      for aws_asg in @CrPartials( "ASG" ).where({category:@region}) || []
+        aws_asg = aws_asg.attributes
+        _.each aws_asg.Instances, (e,key)->
+          me.ins_in_asg.push e.InstanceId
+
       for aws_ins in @CrPartials( "INSTANCE" ).where({vpcId:@vpcId}) || []
         aws_ins = aws_ins.attributes
+
+        #skip invalid instance
         if aws_ins.instanceState.name in [ "shutting-down", "terminated " ]
           continue
+        #skip instances in asg
+        if aws_ins.id in @ins_in_asg
+          continue
+
         azComp = @addAz(aws_ins.placement.availabilityZone)
 
         subnetComp = @subnets[aws_ins.subnetId]
@@ -373,7 +403,6 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         insComp = @add( "INSTANCE", aws_ins, insRes )
 
         #generate BlockDeviceMapping for instance
-        me = @
         bdm = insComp.resource.BlockDeviceMapping
         _.each aws_ins.blockDeviceMapping, (e,key)->
           volComp = me.volumes[ e.ebs.volumeId ]
@@ -383,10 +412,11 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
             data =
               "DeviceName": volRes.AttachmentSet.Device
               "Ebs":
-                "SnapshotId": if volRes.SnapshotId then volRes.SnapshotId else ""
                 "VolumeSize": Number(volRes.Size)
                 "VolumeType": volRes.VolumeType
-            if data.Ebs.VolumeType is "io1"
+            if volRes.SnapshotId
+              data.Ebs.SnapshotId = volRes.SnapshotId
+            if volRes.VolumeType is "io1"
               data.Ebs.Iops = volRes.Iops
             bdm.push data
           else
@@ -581,6 +611,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
       return
 
     ()-> #ELB
+      me = @
       for aws_elb in @CrPartials( "ELB" ).where({vpcId:@vpcId}) || []
         aws_elb = aws_elb.attributes
 
@@ -652,116 +683,240 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
               data.Listener.SSLCertificateId = CREATE_REF( iamComp )
             elbRes.ListenerDescriptions.push data
 
-
         if aws_elb.Instances
           for instanceId in aws_elb.Instances
-            elbRes.Instances.push CREATE_REF( @instances[ instanceId ] )
+            #skip instances in asg
+            if not (instanceId in me.ins_in_asg)
+              elbRes.Instances.push CREATE_REF( @instances[ instanceId ] )
 
         elbComp = @add( "ELB", aws_elb, elbRes, aws_elb.id )
         @addLayout( elbComp, false, @theVpc )
+        @elbs[ aws_elb.id ] = elbComp
       return
 
 
     ()-> #LC
+      me = @
       for aws_lc in @CrPartials( "LC" ).where({category:@region}) || []
         aws_lc = aws_lc.attributes
         lcRes =
-          'BlockDeviceMapping': []
-          'CreatedTime': ''
-          'EbsOptimized': ''
-          'IamInstanceProfile': ''
-          'ImageId': ''
-          'InstanceMonitoring': ''
-          'InstanceType': ''
-          'KernelId': ''
-          'KeyName': ''
-          'LaunchConfigurationARN': ''
-          'LaunchConfigurationName': ''
-          'RamdiskId': ''
-          'SecurityGroups': []
-          'SpotPrice': ''
-          'UserData': ''
+          "AssociatePublicIpAddress": false
+          "BlockDeviceMapping"      :[]
+          # 0: Object
+          #   DeviceName: "/dev/sda1"
+          #   Ebs:
+          #     SnapshotId: "snap-ef432332"
+          #     VolumeSize: 8
+          #     VolumeType: "standard"
+          "EbsOptimized"      : false
+          "ImageId"           : ""
+          "InstanceMonitoring": false
+          "InstanceType"      : ""
+          "KeyName"           : "" #"@{uid.resource.KeyName}"
+          "LaunchConfigurationARN" : "" #"arn:aws:autoscaling:us-east-1:994554139310:launchConfiguration:20c7629d-a192-42b3-9b7a-f319ec648b9a:launchConfigurationName/launch-config-0---app-aae6fe2f"
+          "LaunchConfigurationName": "" #"launch-config-0---app-aae6fe2f"
+          "SecurityGroups"    : []
+          #0: "@{uid.resource.GroupId}"
+          "UserData" : ""
 
         lcRes = @_mapProperty aws_lc, lcRes
 
-        lcRes.SecurityGroups = aws_lc.SecurityGroups
-        if aws_lc.BlockDeviceMappings
-          lcRes.BlockDeviceMapping = aws_lc.BlockDeviceMappings
+        lcRes.LaunchConfigurationARN  = aws_lc.id
+        lcRes.LaunchConfigurationName = aws_lc.Name
         lcRes.InstanceMonitoring = aws_lc.InstanceMonitoring.Enabled
 
-        lcComp = @add( "LC", aws_lc, lcRes, aws_lc.LaunchConfigurationName )
+        #convert SecurityGroups to REF
+        sg = []
+        _.each aws_lc.SecurityGroups, (e,key)->
+          sgComp = me.sgs[ e ]
+          if sgComp
+            sg.push CREATE_REF( sgComp )
+        if sg.length is 0
+          #sg of LC is not in current VPC, means this lc is not in this VPC
+          continue
+
+        lcRes.SecurityGroups = sg
+
+        #generate BlockDeviceMappings
+        bdm = lcRes.BlockDeviceMapping
+        _.each aws_lc.BlockDeviceMappings, (e,key)->
+          data =
+            "DeviceName": e.DeviceName
+            "Ebs":
+              "VolumeSize": Number(e.Ebs.VolumeSize)
+              "VolumeType": e.Ebs.VolumeType
+          if e.Ebs.SnapshotId
+            data.Ebs.SnapshotId = e.Ebs.SnapshotId
+          if data.Ebs.VolumeType is "io1"
+            data.Ebs.Iops = e.Ebs.Iops
+          bdm.push data
+
+        lcComp = @add( "LC", aws_lc, lcRes, aws_lc.Name )
         delete @component[ aws_lc.id ]
-        @lcs[ aws_lc.id ] = lcComp
+        @lcs[ aws_lc.Name ] = lcComp
       return
 
 
     ()-> #ASG
+      me = @
       for aws_asg in @CrPartials( "ASG" ).where({category:@region}) || []
         aws_asg = aws_asg.attributes
 
         asgRes =
-          'AutoScalingGroupARN' : ''
-          'AutoScalingGroupName': ''
-          'AvailabilityZones'   : []
-          'CreatedTime'    : ''
-          'DefaultCooldown': ""
-          'DesiredCapacity': ""
-          'EnabledMetrics' : []
-          'HealthCheckGracePeriod': ""
-          'HealthCheckType': ""
-          'Instances'      : []
-          'LaunchConfigurationName': ''
-          'LoadBalancerNames': []
-          'MaxSize': ""
-          'MinSize': ""
-          'PlacementGroup': ''
-          'Status' : ''
-          'SuspendedProcesses' : []
-          'TerminationPolicies': []
-          'VPCZoneIdentifier'  : ''
-          'InstanceId': ''
-          'ShouldDecrementDesiredCapacity': ''
+          "AutoScalingGroupARN" : ""
+          "AutoScalingGroupName": ""
+          "AvailabilityZones"   : []
+            # 0: "@{uid.resource.ZoneName}"
+            # 1: "@{uid.resource.ZoneName}"
+          "DefaultCooldown"        : 0
+          "DesiredCapacity"        : 0
+          "HealthCheckGracePeriod" : 0
+          "HealthCheckType"        : ""
+          "LaunchConfigurationName": "" #"@{uid.resource.LaunchConfigurationName}"
+          "LoadBalancerNames"      : []
+            #0: "@{uid.resource.LoadBalancerName}"
+            #1: "@{uid.resource.LoadBalancerName}"
+          MaxSize: 0
+          MinSize: 0
+          TerminationPolicies: []
+            #0: "Default"
+          VPCZoneIdentifier: "" #"@{uid.resource.SubnetId} , @{uid.resource.SubnetId}"
 
         asgRes = @_mapProperty aws_asg, asgRes
 
-        asgRes.TerminationPolicies = aws_asg.TerminationPolicies
-        asgRes.LoadBalancerNames = aws_asg.LoadBalancerNames
+        asgRes.AutoScalingGroupARN  = aws_asg.id
+        asgRes.AutoScalingGroupName = aws_asg.Name
+        asgRes.TerminationPolicies  = aws_asg.TerminationPolicies
 
-        me = @
+        #convert LaunchConfigurationName to REF
+        asgRes.LaunchConfigurationName = CREATE_REF( @lcs[ aws_asg.LaunchConfigurationName ] )
+
+        #convert VPCZoneIdentifier to REF
+        vpcZoneIdentifier = []
+        firstSubnetComp = ""
+        _.each aws_asg.Subnets, (e,key)->
+          subnetComp = me.subnets[e]
+          if subnetComp
+            if not firstSubnetComp
+              firstSubnetComp = subnetComp
+            vpcZoneIdentifier.push CREATE_REF( subnetComp )
+        if vpcZoneIdentifier.length is 0
+          #asg is not in current VPC
+          continue
+        asgRes.VPCZoneIdentifier = vpcZoneIdentifier.join( "," )
+
+        #convert ELB to REF
+        elb = []
+        _.each aws_asg.LoadBalancerNames, (e,key)->
+          elbComp = me.elbs[e]
+          elb.push CREATE_REF( elbComp )
+        asgRes.LoadBalancerNames = elb
+
+        #convert AZ to REF
         az = []
         _.each aws_asg.AvailabilityZones, (e,key)->
           azComp = me.addAz( e )
           az.push CREATE_REF( azComp )
         asgRes.AvailabilityZones = az
 
-        vpcZoneIdentifier = []
-        _.each aws_asg.Subnets, (e,key)->
-          subnetComp = me.subnets[e]
-          vpcZoneIdentifier.push CREATE_REF( subnetComp )
-        asgRes.VPCZoneIdentifier = vpcZoneIdentifier.join( "," )
-
-        asgComp = @add( "ASG", aws_asg, asgRes, aws_asg.AutoScalingGroupName )
-      return
-
-    ()-> #Topic
-      for aws_topic in @CrPartials( "TOPIC" ).where({category:@region}) || []
-        aws_topic = aws_topic.attributes
+        asgComp = @add( "ASG", aws_asg, asgRes, aws_asg.Name )
+        @addLayout( asgComp, true, firstSubnetComp )
+        @asgs[ aws_asg.Name ] = asgComp
       return
 
     ()-> #NC
       for aws_nc in @CrPartials( "NC" ).where({category:@region}) || []
         aws_nc = aws_nc.attributes
+        ncRes =
+          "AutoScalingGroupName": "" #"@{uid.resource.AutoScalingGroupName}"
+          "NotificationType": []
+          "TopicARN": "" #"@{uid.resource.TopicArn}"
+        ncRes = @_mapProperty aws_nc, ncRes
 
+        #convert AutoScalingGroupName to REF
+        asgComp = @asgs[aws_nc.AutoScalingGroupName]
+        if asgComp
+          ncRes.AutoScalingGroupName = CREATE_REF( asgComp )
+        else
+          continue
+
+        #convert Topic to REF
+        topicComp = @addTopic( aws_nc.TopicARN )
+        ncRes.TopicARN = CREATE_REF( topicComp )
+
+        ncComp = @add( "NC", aws_nc, ncRes, "SnsNotification")
       return
 
     ()-> #SP
       for aws_sp in @CrPartials( "SP" ).where({category:@region}) || []
         aws_sp = aws_sp.attributes
+        spRes =
+          "AdjustmentType"      : "" #"ChangeInCapacity"
+          "AutoScalingGroupName": "" #"@{uid.resource.AutoScalingGroupName}"
+          "Cooldown"  : 0
+          "MinAdjustmentStep": ""
+          "PolicyARN" : "" #"arn:aws:autoscaling:us-east-1:994554139310:scalingPolicy:69df7c02-ed5f-42cf-870a-d649206cb169:autoScalingGroupName/asg0---app-aae6fe2f:policyName/asg0-policy-0"
+          "PolicyName": "" #"asg0-policy-0"
+          "ScalingAdjustment": ""
+
+        spRes = @_mapProperty aws_sp, spRes
+
+        #convert AutoScalingGroupName to REF
+        asgComp = @asgs[aws_sp.AutoScalingGroupName]
+        if asgComp
+          spRes.AutoScalingGroupName = CREATE_REF( asgComp )
+        else
+          continue
+
+        spRes.PolicyARN = aws_sp.id
+        spRes.PolicyName = aws_sp.Name
+        spComp = @add( "SP", aws_sp, spRes, aws_sp.Name )
       return
 
     ()-> #CW
+      me = @
       for aws_cw in @CrPartials( "CW" ).where({category:@region}) || []
         aws_cw = aws_cw.attributes
+        cwRes =
+          "AlarmActions": []
+            # 0: "@{8634BFD3-6E51-4231-BF38-BD310D4A4925.resource.PolicyARN}"
+            # 1: "@{52ADA7AD-8486-49E8-A959-5A427B2D6113.resource.TopicArn}"
+          "AlarmArn" : "" #"arn:aws:cloudwatch:us-east-1:994554139310:alarm:asg0-policy-0-alarm---app-aae6fe2f"
+          "AlarmName": "" #"asg0-policy-0-alarm---app-aae6fe2f"
+          "ComparisonOperator": ""
+          "Dimensions": []
+             # 0:
+              # "name" : "AutoScalingGroupName"
+              # "value": "" #"@{uid.resource.AutoScalingGroupName}"
+          "EvaluationPeriods"      : ""
+          "InsufficientDataActions": []
+          "MetricName": "" #"CPUUtilization"
+          "Namespace" : "" #"AWS/AutoScaling"
+          "OKAction"  : []
+          "Period"    : 0
+          "Statistic" : "" #"Average"
+          "Threshold" : ""
+          "Unit"      : ""
+
+        cwRes = @_mapProperty aws_cw, cwRes
+
+        dimension = []
+        _.each aws_cw.Dimensions, (e,key)->
+          if e.Name is "AutoScalingGroupName"
+            asgComp = me.asgs[ e.Value ]
+            if asgComp
+              data =
+                "name" : e.Name
+                "value": CREATE_REF( asgComp )
+              dimension.push data
+        if dimension.length is 0
+          #CW is not for asg in current VPC
+          continue
+
+        cwRes.AlarmArn  = aws_cw.id
+        cwRes.AlarmName = aws_cw.Name
+
+        cwComp = @add( "CW", aws_cw, cwRes, aws_cw.Name )
       return
 
 

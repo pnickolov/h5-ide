@@ -79,6 +79,8 @@ define [
     parseFetchData : ( data )->
       asgs = data.DescribeAutoScalingGroupsResponse.DescribeAutoScalingGroupsResult.AutoScalingGroups?.member
       for asg in asgs ||[]
+        asg.Name = asg.AutoScalingGroupName
+        delete asg.AutoScalingGroupName
         asg.AvailabilityZones   = asg.AvailabilityZones?.member || []
         asg.Instances           = asg.Instances?.member || []
         asg.LoadBalancerNames   = asg.LoadBalancerNames?.member || []
@@ -98,9 +100,13 @@ define [
     parseFetchData : ( data )->
       cws = data.DescribeAlarmsResponse.DescribeAlarmsResult.MetricAlarms?.member
       for cw in cws || []
-        cw.Dimensions = cw.Dimensions?.member || []
-        cw.id = cw.AlarmArn
+        cw.Dimensions   = cw.Dimensions?.member || []
+        cw.AlarmActions = cw.AlarmActions?.member || []
+        cw.id   = cw.AlarmArn
+        cw.Name = cw.AlarmName
         delete cw.AlarmArn
+        delete cw.AlarmName
+
       cws
   }
 
@@ -235,6 +241,8 @@ define [
     parseFetchData : ( data )->
       lcs = data.DescribeLaunchConfigurationsResponse.DescribeLaunchConfigurationsResult.LaunchConfigurations?.member
       for lc in lcs || []
+        lc.Name = lc.LaunchConfigurationName
+        delete lc.LaunchConfigurationName
         lc.BlockDeviceMappings = lc.BlockDeviceMappings?.member
         lc.SecurityGroups      = lc.SecurityGroups?.member
       lcs
@@ -249,7 +257,12 @@ define [
     type  : constant.RESTYPE.SP
     AwsResponseType : "DescribePoliciesResponse"
     modelIdAttribute : "PolicyARN"
-    parseFetchData : ( data )-> data.DescribePoliciesResponse.DescribePoliciesResult.ScalingPolicies?.member
+    parseFetchData : ( data )->
+      sps = data.DescribePoliciesResponse.DescribePoliciesResult.ScalingPolicies?.member
+      for sp in sps || []
+        sp.Name = sp.PolicyName
+        delete sp.PolicyName
+      sps
   }
 
   ### AvailabilityZone ###

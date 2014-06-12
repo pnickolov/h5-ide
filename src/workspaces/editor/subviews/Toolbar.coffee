@@ -233,28 +233,34 @@ define [
         require ['component/trustedadvisor/main'], (trustedadvisor_main)=>
             trustedadvisor_main.loadModule('stack').then ()=>
                 @modal?.toggleConfirm false
-
+        appNameDom = @modal.tpl.find('.modal-input-value')
+        appNameDom.change ()->
+            @checkAppNameRepeat(appNameDom.val())
+            null
         @modal.on 'confirm', ()=>
             @hideError()
             if not App.user.hasCredential()
                 App.showSettings App.showSettings.TAB.Credential
                 return false
-            app_name = @modal.tpl.find('.modal-input-value').val()
-            appNameRepeated = @checkAppNameRepeat(app_name)
-            if not @defaultKpIsSet() or appNameRepeated
+            if not @defaultKpIsSet() or @checkAppNameRepeat(appNameDom.val())
                 return false
 
         #App.startApp( @workspace.opsModel.id ); false
 
-    checkAppNameRepeat: ->
-        console.log(@workspace.opsModel.appList) #todo: not finished yet.
-        return false
+    checkAppNameRepeat: (nameVal)->
+        if App.model.appList().findWhere(name: nameVal)
+            @showError('appname', lang.ide.PROP_MSG_WARN_REPEATED_APP_NAME)
+            return true
+        else
+            return false
 
     renderKpDropdown: ()->
         if kpDropdown.hasResourceWithDefaultKp()
             keyPairDropdown = new kpDropdown()
             @modal.tpl.find("#kp-runtime-placeholder").html keyPairDropdown.render().el
-            keyPairDropdown.on 'change', @hideError('kp')
+            hideKpError = @hideError.bind @
+            keyPairDropdown.dropdown.on 'change', ->
+                hideKpError('kp')
             @modal.tpl.find('.default-kp-group').show()
         null
 
@@ -273,7 +279,7 @@ define [
             return true
         kpModal = Design.modelClassForType( constant.RESTYPE.KP )
         defaultKP = kpModal.getDefaultKP()
-        if not defaultKP.get('isSet') or not @modal.tpl.find("#kp-runtime-placeholder .items.selected").size()
+        if not defaultKP.get('isSet') or not @modal.tpl.find("#kp-runtime-placeholder .item.selected").size()
             @showError('kp', lang.ide.RUN_STACK_MODAL_KP_WARNNING)
             return false
 

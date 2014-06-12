@@ -233,16 +233,17 @@ define [
         require ['component/trustedadvisor/main'], (trustedadvisor_main)=>
             trustedadvisor_main.loadModule('stack').then ()=>
                 @modal?.toggleConfirm false
-        appNameDom = @modal.tpl.find('.modal-input-value')
-        appNameDom.change ()->
-            @checkAppNameRepeat(appNameDom.val())
-            null
+        appNameDom = @modal.tpl.find('#app-name')
+        checkAppNameRepeat = @checkAppNameRepeat.bind @
+        appNameDom.keyup ->
+            checkAppNameRepeat(appNameDom.val())
         @modal.on 'confirm', ()=>
             @hideError()
             if not App.user.hasCredential()
                 App.showSettings App.showSettings.TAB.Credential
                 return false
-            if not @defaultKpIsSet() or @checkAppNameRepeat(appNameDom.val())
+            appNameRepeated = @checkAppNameRepeat(appNameDom.val())
+            if not @defaultKpIsSet() or appNameRepeated
                 return false
 
         #App.startApp( @workspace.opsModel.id ); false
@@ -251,7 +252,11 @@ define [
         if App.model.appList().findWhere(name: nameVal)
             @showError('appname', lang.ide.PROP_MSG_WARN_REPEATED_APP_NAME)
             return true
+        else if not nameVal
+            @showError('appname', lang.ide.PROP_MSG_WARN_NO_APP_NAME)
+            return true
         else
+            @hideError('appname')
             return false
 
     renderKpDropdown: ()->

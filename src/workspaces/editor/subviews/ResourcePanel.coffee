@@ -10,8 +10,10 @@ define [
   'sslcert_manage'
   'sns_manage'
   'kp_manage'
+  'jsona'
+  'jsonb'
   "backbone"
-], ( CloudResources, Design, LeftPanelTpl, constant, ResDiff, dhcpManager, snapshotManager, sslCertManager, snsManager, keypairManager )->
+], ( CloudResources, Design, LeftPanelTpl, constant, ResDiff, dhcpManager, snapshotManager, sslCertManager, snsManager, keypairManager, oldAppJSON, newAppJSON )->
 
   # Update Left Panel when window size changes
   __resizeAccdTO = null
@@ -112,7 +114,11 @@ define [
 
     refreshResourcePanel : () ->
 
-      resDiff = new ResDiff()
+      resDiff = new ResDiff({
+        old: oldAppJSON,
+        new: newAppJSON
+      })
+      resDiff.popup()
 
     updateAZ : ()->
       if not @workspace.isAwake() then return

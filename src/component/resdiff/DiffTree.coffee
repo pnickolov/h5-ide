@@ -1,6 +1,6 @@
 define [], () ->
 
-    DiffTree = (callback) ->
+    DiffTree = () ->
 
         isArray = (value) ->
             return value and typeof value is 'object' and value.constructor is Array

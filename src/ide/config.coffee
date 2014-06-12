@@ -85,7 +85,6 @@ require.config {
 		'Meteor'             : 'vender/meteor/meteor'
 		'crypto'             : 'vender/crypto-js/cryptobundle'
 		'q'                  : 'vender/q/q'
-		'jsondiffpatch'      : 'vender/jsondiffpatch/bundle'
 
 		#############################################
 		# MC                        # Merge in deploy
@@ -223,7 +222,6 @@ require.config {
 			"canvon"
 			"crypto"
 			"q"
-			"jsondiffpatch"
 		]
 		"lib/lib" : [
 			"MC"

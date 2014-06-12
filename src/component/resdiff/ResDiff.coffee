@@ -1,43 +1,39 @@
 define [
     'UI.modalplus'
     './component/resdiff/resDiffTpl'
-    'jsondiffpatch'
-    'jsona'
-    'jsonb'
     './component/resdiff/DiffTree'
-], ( modalplus, template, jsondiffpatch, a, b, DiffTree ) ->
+], ( modalplus, template, DiffTree ) ->
 
     Backbone.View.extend
 
         className: 'res_diff_tree'
 
-        initialize: () ->
+        initialize: (option) ->
 
-            @diffTree = new DiffTree (para, data) ->
-                if _.isArray(para.parentA) or _.isArray(para.parentB)
-                    data.key = 'item ' + (Number(data.key) + 1)
-                return data
-            @render()
+            @oldAppJSON = option.old
+            @newAppJSON = option.new
+            @_genDiffInfo(@oldAppJSON.component, @newAppJSON.component)
 
         events:
-            'click .item .type': 'toggleTab'
-            'click .head': 'toggleItem'
+            'click .item .type': '_toggleTab'
+            'click .head': '_toggleItem'
 
-        toggleItem: ( e ) ->
+        _toggleItem: ( e ) ->
 
             $target = $( e.currentTarget ).closest '.group'
             $target.toggleClass 'closed'
 
-        toggleTab: ( e ) ->
+        _toggleTab: ( e ) ->
 
             $target = $( e.currentTarget ).closest '.item'
             if $target.hasClass 'end'
                 return
             $target.toggleClass 'closed'
 
-        open: () ->
+        popup: () ->
 
             options =
+        
                 template: @el
                 title: 'App Changes'
                 hideClose: true
@@ -56,18 +52,15 @@ define [
                 @modal.close()
             , @
 
-            @genResGroup(a.component, b.component)
+            @_genResGroup(@oldAppJSON.component, @newAppJSON.component)
 
-        render: () ->
+        _genDiffInfo: (oldComps, newComps) ->
 
-            @open()
-            @
+            that = this
 
-        genResGroup: (oldComps, newComps) ->
-
-            addedComps = {}
-            removedComps = {}
-            modifiedComps = {}
+            that.addedComps = {}
+            that.removedComps = {}
+            that.modifiedComps = {}
 
             unionOldComps = {}
             unionNewComps = {}
@@ -77,25 +70,30 @@ define [
                     unionOldComps[uid] = oldComps[uid]
                     unionNewComps[uid] = newComps[uid]
                 else
-                    removedComps[uid] = oldComps[uid]
+                    that.removedComps[uid] = oldComps[uid]
                 null
 
             _.each _.keys(newComps), (uid) ->
                 if not oldComps[uid]
-                    addedComps[uid] = newComps[uid]
+                    that.addedComps[uid] = newComps[uid]
                 null
 
-            modifiedComps = @diffTree.compare unionOldComps, unionNewComps
+            diffTree = new DiffTree()
+            that.modifiedComps = diffTree.compare unionOldComps, unionNewComps
+
+        _genResGroup: () ->
+
+            that = this
 
             groupData = [{
                 title: 'Added Resource',
-                diffComps: addedComps
+                diffComps: that.addedComps
             }, {
                 title: 'Removed Resource',
-                diffComps: removedComps
+                diffComps: that.removedComps
             }, {
                 title: 'Modified Resource',
-                diffComps: modifiedComps
+                diffComps: that.modifiedComps
             }]
 
             for data in groupData
@@ -104,9 +102,9 @@ define [
                     title: data.title
                 })).appendTo(@$el)
 
-                @genResTree($group.find('.content'), data.diffComps)
+                @_genResTree($group.find('.content'), data.diffComps)
 
-        genResTree: ($container, diffComps) ->
+        _genResTree: ($container, diffComps) ->
 
             _genTree = (value, key, $parent) ->
 
@@ -144,3 +142,16 @@ define [
                         $parent.addClass('end')
 
             _genTree(diffComps, null, $container)
+
+        getChangeInfo: () ->
+
+            hasResChange = false
+            if _.keys(that.addedComps).length or
+                _.keys(that.removedComps).length or
+                _.keys(that.modifiedComps).length
+                    hasResChange = true
+
+            return {
+                hasResChange: hasResChange,
+                needUpdateLayout: true
+            }

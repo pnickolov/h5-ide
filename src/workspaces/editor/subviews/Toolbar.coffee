@@ -35,6 +35,7 @@ define [
       "click .icon-update-app"        : "switchToAppEdit"
       "click .icon-apply-app"         : "applyAppEdit"
       "click .icon-cancel-update-app" : "cancelAppEdit"
+      'click .toolbar-visual-ops-switch' : 'opsOptionChanged'
 
     render : ()->
       opsModel = @workspace.opsModel
@@ -43,10 +44,10 @@ define [
       if opsModel.isImported()
         btns = ["BtnActionPng", "BtnZoom", "BtnLinestyle"]
       else if opsModel.isStack()
-        btns = ["BtnRunStack", "BtnStackOps", "BtnZoom", "BtnExport", "BtnLinestyle"]
+        btns = ["BtnRunStack", "BtnStackOps", "BtnZoom", "BtnExport", "BtnLinestyle", "BtnSwitchStates"]
       else
         if @__editMode
-          btns = ["BtnApply", "BtnZoom", "BtnPng", "BtnLinestyle", "BtnReloadRes"]
+          btns = ["BtnApply", "BtnZoom", "BtnPng", "BtnLinestyle", "BtnReloadRes", "BtnSwitchStates"]
         else
           btns = ["BtnEditApp", "BtnAppOps", "BtnZoom", "BtnPng", "BtnLinestyle", "BtnReloadRes"]
 
@@ -58,6 +59,7 @@ define [
 
       @updateTbBtns()
       @updateZoomButtons()
+      @initState()
       return
 
     clearDom : ()->
@@ -215,6 +217,7 @@ define [
     runStack: (event)->
         if $(event.currentTarget).attr('disabled')
             return false
+        @json = @workspace.design.serialize()
         @modal = new Modal
             title: lang.ide.RUN_STACK_MODAL_TITLE
             template: MC.template.modalRunStack
@@ -242,11 +245,14 @@ define [
             if not App.user.hasCredential()
                 App.showSettings App.showSettings.TAB.Credential
                 return false
+            # setUsage
+            @json.usage = $("#app-usage-selectbox").find(".dropdown .item.selected").data('value')
+            @json.name = appNameDom.val()
             appNameRepeated = @checkAppNameRepeat(appNameDom.val())
             if not @defaultKpIsSet() or appNameRepeated
                 return false
             @modal.close()
-            @workspace.opsModel.run().fail (err)=>
+            @workspace.opsModel.run(@json).fail (err)=>
                 error = if err.awsError then err.error + "." + err.awsError else "#{err.error} - #{err.result}"
                 notification 'error', sprintf(lang.ide.PROP_MSG_WARN_FAILA_TO_RUN_BECAUSE,@workspace.opsModel.get('name'),error)
 
@@ -266,7 +272,9 @@ define [
             keyPairDropdown = new kpDropdown()
             @modal.tpl.find("#kp-runtime-placeholder").html keyPairDropdown.render().el
             hideKpError = @hideError.bind @
-            keyPairDropdown.dropdown.on 'change', ->
+            keyPairDropdown.dropdown.on 'change', =>
+                #setKp
+                #@json
                 hideKpError('kp')
             @modal.tpl.find('.default-kp-group').show()
         null
@@ -298,6 +306,33 @@ define [
     refreshResource : ()-> @workspace.refreshResource(); false
     switchToAppEdit : ()-> @workspace.switchToEditMode(); false
     applyAppEdit    : ()-> @workspace.applyAppEdit(); false
+
+    initState: ->
+        console.log "Initialize State Switcher."
+        $switcher = $(".toolbar-visual-ops-switch")
+        if @workspace.design.attributes.state is 'Enabled'
+            $switcher.addClass('on')
+        else
+            $switcher.removeClass 'on'
+
+    opsOptionChanged: -> #todo: Not finished yet.
+        $switcher = $(".toolbar-visual-ops-switch").toggleClass('on')
+        stateEnabled = $switcher.hasClass("on")
+        if stateEnabled
+            instancesNoUserData = @workspace.opsModel.instancesNoUserData()
+            workspace = @workspace
+            if not instancesNoUserData
+                debuger
+                $switcher.removeClass 'on'
+                new Modal(
+                    title: "Conﬁrm to Enable VisualOps"
+                    width: "420px"
+                    template: OpsEditorTpl.confirm.enableState()
+                    onConfirm: -> workspace.design.set('state',"Enabled")
+                )
+            else
+
+
 
     cancelAppEdit : ()->
       if not @workspace.cancelEditMode()

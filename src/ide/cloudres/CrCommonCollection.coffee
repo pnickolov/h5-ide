@@ -75,7 +75,12 @@ define ["ApiRequest", "./CrCollection", "./CrModel", "constant"], ( ApiRequest, 
         transformed = []
         for regionId, dataXml of data
           try
-            for d in self.parseFetchData( $.xml2json( $.parseXML(dataXml[0]) ) ) || EmptyArr
+            xml = $.xml2json( $.parseXML(dataXml[0]) )
+
+            if self.trAwsXml then xml = self.trAwsXml( xml )
+            if self.parseFetchData and xml then xml = self.parseFetchData( xml )
+
+            for d in xml || EmptyArr
               if self.modelIdAttribute
                 d.id = d[ self.modelIdAttribute ]
                 delete d[ self.modelIdAttribute ]

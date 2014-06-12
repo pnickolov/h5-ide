@@ -32,7 +32,7 @@ define [
       ]
 
       opsRes = CloudResources( "OpsResource", @opsModel.getVpcId() ).init( @opsModel.get("region") )
-      if @opsModel.appHasChanged() or true
+      if @opsModel.appHasChanged()
         @view.setText "Your app has been changed. Automatically sync-ing your changes."
         jobs.push opsRes.fetchForce()
       else

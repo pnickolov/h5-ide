@@ -23,7 +23,7 @@ define [
     modelIdAttribute : "dhcpOptionsId"
 
     doFetch : ()-> ApiRequest("dhcp_DescribeDhcpOptions", {region_name : @region()})
-    parseFetchData : (res)-> res.DescribeDhcpOptionsResponse.dhcpOptionsSet?.item
+    trAwsXml : (res)-> res.DescribeDhcpOptionsResponse.dhcpOptionsSet?.item
   }
 
 
@@ -37,14 +37,10 @@ define [
     model : CrKeypairModel
 
     doFetch : ()-> ApiRequest("kp_DescribeKeyPairs", {region_name : @region()})
+    trAwsXml : (res)-> res.DescribeKeyPairsResponse.keySet?.item
     parseFetchData : (res)->
-      res = res.DescribeKeyPairsResponse.keySet
-      if res is null then return []
-      res = res.item
-
       for i in res
         i.id = i.keyName
-
       res
   }
 
@@ -59,11 +55,8 @@ define [
     model : CrSslcertModel
 
     doFetch : ()-> ApiRequest("iam_ListServerCertificates")
+    trAwsXml : (res)-> res.ListServerCertificatesResponse.ListServerCertificatesResult.ServerCertificateMetadataList?.member
     parseFetchData : (res)->
-      res = res.ListServerCertificatesResponse.ListServerCertificatesResult.ServerCertificateMetadataList
-      if res is null then return []
-      res = res.member
-
       for i in res
         i.id   = i.ServerCertificateId
         i.Name = i.ServerCertificateName
@@ -91,12 +84,8 @@ define [
       CrCollection.apply this, arguments
 
     doFetch : ()-> ApiRequest("sns_ListTopics", {region_name : @region()})
+    trAwsXml : (res)-> res.ListTopicsResponse.ListTopicsResult.Topics?.member
     parseFetchData : (res)->
-
-      res = res.ListTopicsResponse.ListTopicsResult.Topics
-      if res is null then return []
-      res = res.member
-
       for i in res
         i.id   = i.TopicArn
         i.Name = i.TopicArn.split(":").pop()
@@ -136,11 +125,8 @@ define [
     model : CrSubscriptionModel
 
     doFetch : ()-> ApiRequest("sns_ListSubscriptions", {region_name : @region()})
+    trAwsXml : (res)-> res.ListSubscriptionsResponse.ListSubscriptionsResult.Subscriptions?.member
     parseFetchData : (res)->
-      res = res.ListSubscriptionsResponse.ListSubscriptionsResult.Subscriptions
-      if res is null then return []
-      res = res.member
-
       for i in res
         i.id = CrSubscriptionModel.getIdFromData( i )
 
@@ -162,11 +148,8 @@ define [
       return
 
     doFetch : ()-> ApiRequest("ebs_DescribeSnapshots", {region_name:@region(), owners:["self"]})
+    trAwsXml : (res)-> res.DescribeSnapshotsResponse.snapshotSet?.item
     parseFetchData : (res)->
-      res = res.DescribeSnapshotsResponse.snapshotSet
-      if res is null then return []
-      res = res.item
-
       for i in res
         i.id = i.snapshotId
         if i.tagSet

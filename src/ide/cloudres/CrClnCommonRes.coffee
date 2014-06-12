@@ -16,9 +16,9 @@ define [
     type  : constant.RESTYPE.ELB
     modelIdAttribute : "LoadBalancerName"
 
-    parseFetchData : ( data )->
-      elbs = data.DescribeLoadBalancersResponse.DescribeLoadBalancersResult.LoadBalancerDescriptions?.member
-      for elb in elbs || []
+    trAwsXml : ( data )-> data.DescribeLoadBalancersResponse.DescribeLoadBalancersResult.LoadBalancerDescriptions?.member
+    parseFetchData : ( elbs )->
+      for elb in elbs
         elb.AvailabilityZones = elb.AvailabilityZones?.member || []
         elb.Instances         = elb.Instances?.member || []
         elb.SecurityGroups    = elb.SecurityGroups?.member || []
@@ -39,10 +39,11 @@ define [
 
     type  : constant.RESTYPE.VPN
     modelIdAttribute : "vpnConnectionId"
-    parseFetchData : ( data )->
-      vpns = data.DescribeVpnConnectionsResponse.vpnConnectionSet = data.DescribeVpnConnectionsResponse.vpnConnectionSet?.item
+
+    trAwsXml : ( data )-> data.DescribeVpnConnectionsResponse.vpnConnectionSet?.item
+    parseFetchData : ( vpns )->
       for vpn in vpns || []
-        vpn.vgwTelemetry = vpn.vgwTelemetry?.item
+        vpn.vgwTelemetry = vpn.vgwTelemetry?.item || []
       vpns
   }
 
@@ -54,7 +55,7 @@ define [
 
     type  : constant.RESTYPE.EIP
     modelIdAttribute : "allocationId"
-    parseFetchData : ( data )-> data.DescribeAddressesResponse.addressesSet?.item
+    trAwsXml : ( data )-> data.DescribeAddressesResponse.addressesSet?.item
   }
 
   ### VPC ###
@@ -65,7 +66,7 @@ define [
 
     type  : constant.RESTYPE.VPC
     modelIdAttribute : "vpcId"
-    parseFetchData : ( data )-> data.DescribeVpcsResponse.vpcSet?.item
+    trAwsXml : ( data )-> data.DescribeVpcsResponse.vpcSet?.item
   }
 
   ### ASG ###
@@ -76,9 +77,9 @@ define [
 
     type  : constant.RESTYPE.ASG
     modelIdAttribute : "AutoScalingGroupARN"
-    parseFetchData : ( data )->
-      asgs = data.DescribeAutoScalingGroupsResponse.DescribeAutoScalingGroupsResult.AutoScalingGroups?.member
-      for asg in asgs ||[]
+    trAwsXml : ( data )-> data.DescribeAutoScalingGroupsResponse.DescribeAutoScalingGroupsResult.AutoScalingGroups?.member
+    parseFetchData : ( asgs )->
+      for asg in asgs
         asg.Name = asg.AutoScalingGroupName
         delete asg.AutoScalingGroupName
         asg.AvailabilityZones   = asg.AvailabilityZones?.member || []
@@ -97,9 +98,9 @@ define [
     ### env:dev:end ###
 
     type  : constant.RESTYPE.CW
-    parseFetchData : ( data )->
-      cws = data.DescribeAlarmsResponse.DescribeAlarmsResult.MetricAlarms?.member
-      for cw in cws || []
+    trAwsXml : ( data )-> data.DescribeAlarmsResponse.DescribeAlarmsResult.MetricAlarms?.member
+    parseFetchData : ( cws )->
+      for cw in cws
         cw.Dimensions   = cw.Dimensions?.member || []
         cw.AlarmActions = cw.AlarmActions?.member || []
         cw.id   = cw.AlarmArn
@@ -118,7 +119,7 @@ define [
 
     type  : constant.RESTYPE.CGW
     modelIdAttribute : "customerGatewayId"
-    parseFetchData : ( data )-> data.DescribeCustomerGatewaysResponse.customerGatewaySet?.item
+    trAwsXml : ( data )-> data.DescribeCustomerGatewaysResponse.customerGatewaySet?.item
   }
 
   ### VGW ###
@@ -129,9 +130,9 @@ define [
 
     type  : constant.RESTYPE.VGW
     modelIdAttribute : "vpnGatewayId"
-    parseFetchData : ( data )-> 
-      vgws = data.DescribeVpnGatewaysResponse.vpnGatewaySet?.item
-      for vgw in vgws || []
+    trAwsXml : ( data )-> data.DescribeVpnGatewaysResponse.vpnGatewaySet?.item
+    parseFetchData : ( vgws )->
+      for vgw in vgws
         vgw.attachments = vgw.attachments?.item || []
         vgw.id = vgw.vpnGatewayId
         if vgw.attachments and vgw.attachments.length>0
@@ -148,9 +149,9 @@ define [
 
     type  : constant.RESTYPE.IGW
     modelIdAttribute : "internetGatewayId"
-    parseFetchData : ( data )->
-      igws = data.DescribeInternetGatewaysResponse.internetGatewaySet?.item
-      for igw in igws || []
+    trAwsXml : ( data )-> data.DescribeInternetGatewaysResponse.internetGatewaySet?.item
+    parseFetchData : ( igws )->
+      for igw in igws
         igw.attachmentSet = igw.attachmentSet?.item || []
         igw.id = igw.internetGatewayId
         #delete igw.internetGatewayId
@@ -167,9 +168,9 @@ define [
     ### env:dev:end ###
 
     type  : constant.RESTYPE.RT
-    parseFetchData : ( data )->
-      rtbs = data.DescribeRouteTablesResponse.routeTableSet?.item
-      for rtb in rtbs || []
+    trAwsXml : ( data )-> data.DescribeRouteTablesResponse.routeTableSet?.item
+    parseFetchData : ( rtbs )->
+      for rtb in rtbs
         rtb.routeSet = rtb.routeSet?.item || []
         rtb.associationSet = rtb.associationSet?.item || []
         rtb.propagatingVgwSet = rtb.propagatingVgwSet?.item || []
@@ -185,25 +186,22 @@ define [
     ### env:dev:end ###
 
     type  : constant.RESTYPE.INSTANCE
-    parseFetchData : ( data )->
-      itemset = data.DescribeInstancesResponse.reservationSet
-      if not itemset then return
-
+    trAwsXml : ( data )->
       instances = []
-      for i in itemset.item
-        try
-          for ami in i.instancesSet.item
-            ami.blockDeviceMapping  = ami.blockDeviceMapping?.item || []
-            ami.networkInterfaceSet = ami.networkInterfaceSet?.item || []
-            ami.groupSet            = ami.groupSet?.item || []
-
-            ami.id = ami.instanceId
-            delete ami.instanceId
-            instances.push ami
-        catch e
-          console.error "Fail to parse instance data", i
-
+      for i in data.DescribeInstancesResponse.reservationSet?.item || []
+        for ami in i.instancesSet?.item || []
+          instances.push ami
       instances
+
+    parseFetchData : ( data )->
+      for ami in data
+        ami.blockDeviceMapping  = ami.blockDeviceMapping?.item || []
+        ami.networkInterfaceSet = ami.networkInterfaceSet?.item || []
+        ami.groupSet            = ami.groupSet?.item || []
+
+        ami.id = ami.instanceId
+        delete ami.instanceId
+      data
   }
 
   ### VOLUME ###
@@ -213,9 +211,9 @@ define [
     ### env:dev:end ###
 
     type  : constant.RESTYPE.VOL
-    parseFetchData : ( data )->
-      volumes = data.DescribeVolumesResponse.volumeSet?.item
-      for vol in volumes || []
+    trAwsXml : ( data )-> data.DescribeVolumesResponse.volumeSet?.item
+    parseFetchData : ( volumes )->
+      for vol in volumes
         vol.id = vol.volumeId
         delete vol.volumeId
         vol.attachmentSet = vol.attachmentSet?.item || []
@@ -238,9 +236,9 @@ define [
     type  : constant.RESTYPE.LC
     AwsResponseType : "DescribeLaunchConfigurationsResponse"
     modelIdAttribute : "LaunchConfigurationARN"
-    parseFetchData : ( data )->
-      lcs = data.DescribeLaunchConfigurationsResponse.DescribeLaunchConfigurationsResult.LaunchConfigurations?.member
-      for lc in lcs || []
+    trAwsXml : ( data )-> data.DescribeLaunchConfigurationsResponse.DescribeLaunchConfigurationsResult.LaunchConfigurations?.member
+    parseFetchData : ( lcs )->
+      for lc in lcs
         lc.Name = lc.LaunchConfigurationName
         delete lc.LaunchConfigurationName
         lc.BlockDeviceMappings = lc.BlockDeviceMappings?.member
@@ -257,9 +255,9 @@ define [
     type  : constant.RESTYPE.SP
     AwsResponseType : "DescribePoliciesResponse"
     modelIdAttribute : "PolicyARN"
-    parseFetchData : ( data )->
-      sps = data.DescribePoliciesResponse.DescribePoliciesResult.ScalingPolicies?.member
-      for sp in sps || []
+    trAwsXml : ( data )-> data.DescribePoliciesResponse.DescribePoliciesResult.ScalingPolicies?.member
+    parseFetchData : ( sps )->
+      for sp in sps
         sp.Name = sp.PolicyName
         delete sp.PolicyName
       sps
@@ -274,7 +272,7 @@ define [
     type : constant.RESTYPE.AZ
     AwsResponseType  : "DescribeAvailabilityZonesResponse"
     modelIdAttribute : "zoneName"
-    parseFetchData : ( data )-> data.DescribeAvailabilityZonesResponse.availabilityZoneInfo?.item
+    trAwsXml : ( data )-> data.DescribeAvailabilityZonesResponse.availabilityZoneInfo?.item
   }
 
 
@@ -287,9 +285,9 @@ define [
     type  : constant.RESTYPE.NC
     AwsResponseType : "DescribeNotificationConfigurationsResponse"
     modelIdAttribute : "PolicyARN"
-    parseFetchData : ( data )->
-      ncs = data.DescribeNotificationConfigurationsResponse.DescribeNotificationConfigurationsResult.NotificationConfigurations?.member
-      for nc in ncs || []
+    trAwsXml : ( data )-> data.DescribeNotificationConfigurationsResponse.DescribeNotificationConfigurationsResult.NotificationConfigurations?.member
+    parseFetchData : ( ncs )->
+      for nc in ncs
         nc.id = nc.TopicARN + ":" + nc.AutoScalingGroupName + ":" + nc.NotificationType
       ncs
   }
@@ -303,9 +301,9 @@ define [
 
     type  : constant.RESTYPE.ACL
     AwsResponseType : "DescribeNetworkAclsResponse"
-    parseFetchData : ( data )->
-      acls = data.DescribeNetworkAclsResponse.networkAclSet?.item
-      for acl in acls || []
+    trAwsXml : ( data )-> data.DescribeNetworkAclsResponse.networkAclSet?.item
+    parseFetchData : ( acls )->
+      for acl in acls
         acl.id = acl.networkAclId
         delete acl.networkAclId
         acl.entrySet = acl.entrySet?.item || []
@@ -325,9 +323,8 @@ define [
     modelIdAttribute : "networkInterfaceId"
     AwsResponseType : "DescribeNetworkInterfacesResponse"
     doFetch : ()-> ApiRequest("eni_DescribeNetworkInterfaces", {region_name : @region()})
-    parseFetchData : ( data )->
-      enis = data.DescribeNetworkInterfacesResponse.networkInterfaceSet?.item || []
-
+    trAwsXml : ( data )-> data.DescribeNetworkInterfacesResponse.networkInterfaceSet?.item
+    parseFetchData : ( enis )->
       # Format Object in some typical data resource.
       # format attachment and groupSet in "ENI"
       _.each enis, (eni, index)->
@@ -354,7 +351,7 @@ define [
     type  : constant.RESTYPE.SUBNET
     modelIdAttribute : "subnetId"
     doFetch : ()-> ApiRequest("subnet_DescribeSubnets", {region_name : @region()})
-    parseFetchData : ( data )-> data.DescribeSubnetsResponse.subnetSet?.item
+    trAwsXml : ( data )-> data.DescribeSubnetsResponse.subnetSet?.item
   }
 
   ### SG ###
@@ -366,9 +363,9 @@ define [
     type  : constant.RESTYPE.SG
     AwsResponseType : "DescribeSecurityGroupsResponse"
     doFetch : ()-> ApiRequest("sg_DescribeSecurityGroups", {region_name : @region()})
-    parseFetchData : ( data )->
-      sgs = data.DescribeSecurityGroupsResponse.securityGroupInfo?.item
-      for sg in sgs || []
+    trAwsXml : ( data )-> data.DescribeSecurityGroupsResponse.securityGroupInfo?.item
+    parseFetchData : ( sgs )->
+      for sg in sgs
         sg.ipPermissions       = sg.ipPermissions?.item || []
         _.each sg.ipPermissions, (rule,idx)->
           _.each rule, (e,key)->

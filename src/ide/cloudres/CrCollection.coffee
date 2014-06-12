@@ -30,7 +30,13 @@ define ["ApiRequest", "./CrModel", "backbone"], ( ApiRequest, CrModel )->
 
         if not self.__selfParseData
           try
-            data = self.parseFetchData( data ) || emptyArr
+            if self.trAwsXml
+              data = self.trAwsXml( data )
+
+            if self.parseFetchData and data
+              data = self.parseFetchData( data )
+
+            if not data then data = emptyArr
           catch e
             throw McError( ApiRequest.Errors.InvalidAwsReturn, "", data )
 

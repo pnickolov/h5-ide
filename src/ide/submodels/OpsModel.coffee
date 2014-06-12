@@ -413,6 +413,10 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
 
       return
 
+
+    instancesNoUserData: ()-> #todo: Not done yet.
+        return true
+
     __updateStatus : ()->
       ApiRequest("app_list",{app_ids:[@get("id")]}).then (res)->
         @setStatusWithApiResult( res[0].state )

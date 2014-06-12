@@ -310,14 +310,15 @@ define [
     initState: ->
         console.log "Initialize State Switcher."
         $switcher = $(".toolbar-visual-ops-switch")
-        if @workspace.design.attributes.state is 'Enabled'
+        if @workspace.design.attributes.agent.enabled
             $switcher.addClass('on')
         else
             $switcher.removeClass 'on'
 
-    opsOptionChanged: -> #todo: Not finished yet.
+    opsOptionChanged: -> #todo: Almost Done.
         $switcher = $(".toolbar-visual-ops-switch").toggleClass('on')
         stateEnabled = $switcher.hasClass("on")
+        agent = @workspace.design.get('agent')
         if stateEnabled
             instancesNoUserData = @workspace.opsModel.instancesNoUserData()
             workspace = @workspace
@@ -328,9 +329,14 @@ define [
                     title: "Conﬁrm to Enable VisualOps"
                     width: "420px"
                     template: OpsEditorTpl.confirm.enableState()
-                    onConfirm: -> workspace.design.set('state',"Enabled")
+                    onConfirm: -> agent.enabled = true; workspace.design.set('agent', agent)
                 )
             else
+                agent.enabled = true
+                @workspace.design.set("agent",agent)
+        else
+            agent.enabled = false
+            @workspace.design.set('agent', agent)
 
 
 

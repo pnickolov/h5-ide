@@ -11,16 +11,15 @@ define ["ide/cloudres/CrCollection"], ( CrCollection )->
 
   onCollectionDestroy = (id)-> delete CachedCollections[ id ]
 
-  CloudResources = ( resourceType, category, platform = "AWS" )->
+  CloudResources = ( resourceType, category )->
 
-    classId    = CrCollection.classId( resourceType, platform )
-    Collection = CrCollection.getClassById( classId )
+    Collection = CrCollection.getClassByType( resourceType )
 
     if not Collection then return null
 
-    category   = Collection.category( category )
+    category = Collection.category( category )
 
-    cid = classId + "_" + category
+    cid = resourceType + "_" + category
 
     c = CachedCollections[ cid ]
     if not c

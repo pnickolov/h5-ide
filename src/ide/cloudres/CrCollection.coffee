@@ -129,9 +129,7 @@ define ["ApiRequest", "./CrModel", "backbone"], ( ApiRequest, CrModel )->
     category : ( category )-> category
 
     # CloudResources uses these method to get the right Class of Collection.
-    classId      : ( resourceType, platform )-> (platform || "AWS") + "_" + resourceType
-    getClassById : ( id )-> SubCollections[id]
-
+    getClassByType : ( id )-> SubCollections[id]
     # The typeString should be something like "DescribeNetworkInterfacesResponse"
     getClassByAwsResponseType : ( typeString )-> SubColsByAwsResType[ typeString ]
 
@@ -149,7 +147,7 @@ define ["ApiRequest", "./CrModel", "backbone"], ( ApiRequest, CrModel )->
       # Create subclass
       subClass = CrModel.extend.call( this, protoProps, staticProps )
 
-      SubCollections[ @classId( protoProps.type, protoProps.platform ) ] = subClass
+      SubCollections[ protoProps.type ] = subClass
       if AwsResponseType
         SubColsByAwsResType[ AwsResponseType ] = subClass
 

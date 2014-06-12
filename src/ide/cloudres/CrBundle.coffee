@@ -1,8 +1,8 @@
 
 define [
-  "constant"
   "CloudResources"
   "./CrClnSharedRes"
   "./CrClnCommonRes"
+  "./CrClnOpsResource"
   "./CloudImportVpc"
-], ( constant, CloudResources )-> return
+], ( CloudResources )-> CloudResources

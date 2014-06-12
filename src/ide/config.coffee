@@ -126,9 +126,20 @@ require.config {
 		#############################################
 		"CloudResources"     : "ide/cloudres/CloudResources"
 
+		#############################################
+		# api                       # Merge in deploy
+		#############################################
+		'ApiRequest'     : 'api/ApiRequest'
+		'ApiRequestDefs' : 'api/ApiRequestDefs'
 
 		#############################################
-		# design model              # Merge in deploy
+		# ide                       # Merge in deploy
+		#############################################
+		"OpsModel"  : "ide/submodels/OpsModel"
+		"Workspace" : "ide/Workspace"
+
+		#############################################
+		# opseditor                 # Merge in deploy
 		#############################################
 		'Design'             : 'workspaces/editor/framework/Design'
 		'CanvasManager'      : 'workspaces/editor/framework/canvasview/CanvasManager'
@@ -159,19 +170,6 @@ require.config {
 		'jsona'				 : 'component/resdiff/a'
 		'jsonb'				 : 'component/resdiff/b'
 
-
-		#############################################
-		# api                       # Merge in deploy
-		#############################################
-		'ApiRequest'     : 'api/ApiRequest'
-		'ApiRequestDefs' : 'api/ApiRequestDefs'
-
-
-		#############################################
-		# ide                       # Merge in deploy
-		#############################################
-		"OpsModel"  : "ide/submodels/OpsModel"
-		"Workspace" : "ide/Workspace"
 
 		#statusbar state
 		'state_status'       : 'component/statestatus/main'
@@ -237,6 +235,7 @@ require.config {
 			"lib/handlebarhelpers"
 			"event"
 		]
+		"lib/aws/main" : []
 		"ui/ui" : [
 			'UI.tooltip'
 			'UI.scrollbar'
@@ -276,9 +275,9 @@ require.config {
 		]
 		"component/sgrule/SGRulePopup" : []
 		"component/exporter/Exporter"  : [ "component/exporter/Download", "component/exporter/Thumbnail", "component/exporter/JsonExporter" ]
-		"ide/cloudres/CrBundle"  : ["CloudResources"]
-		"ide/Application" : [ "Workspace" ]
 		"module/design/framework/DesignBundle" : [ "Design", "CanvasManager" ]
+		"CloudResources"  : []
+		"ide/Application" : [ "Workspace", "OpsModel" ]
 		"validation" : []
 		"component/stateeditor/stateeditor" : []
 		"component/sharedrescomp" : [
@@ -294,17 +293,17 @@ require.config {
 			'sslcert_manage'
 			'sslcert_dropdown'
 		]
-		"property" : []
+		"workspaces/editor/subviews/PropertyPanel" : []
 
 	bundleExcludes : # This is a none requirejs option, but it's used by compiler to exclude some of the source.
-		"lib/deprecated" : ["Design"]
+		"lib/aws/main" : ["Design"]
 		"component/sgrule/SGRulePopup" : [ "Design" ]
 		"component/stateeditor/stateeditor" : [
 			"component/stateeditor/lib/ace"
 			"component/stateeditor/lib/markdown"
 		]
-		"module/design/framework/DesignBundle" : [ "component/sgrule/SGRulePopup" ]
-		"property" : [ "component/sgrule/SGRulePopup" ]
+		"Design"   : [ "component/sgrule/SGRulePopup" ]
+		"workspaces/editor/subviews/PropertyPanel" : [ "component/sgrule/SGRulePopup" ]
 
 	### env:prod:end ###
 }

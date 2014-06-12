@@ -75,17 +75,25 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
 
       @get("id") && state isnt OpsModelState.Destroyed
 
-    hasJsonData : ()->
-      # For app, we need to check with the server if any changes happend. So we always returns false
-      if @isStack() or @isImported()
-        !!@__jsonData
-      else
-        false
-
+    hasJsonData : ()-> !!@__jsonData
     getJsonData : ()-> @__jsonData
     # Returns a promise that will resolve with the JSON data of the stack/app
     # Calling this method will trigger an "jsonDataLoaded" event
     fetchJsonData : ()->
+      # For app, if we have json already, we only need to check if the app is changed or not.
+      if not @isImported() and @isApp()
+        if @__jsonData
+          return ApiRequest("resource_check_change", {
+            region_name : @get("region")
+            app_id      : @get("id")
+          }).then ( res )->
+            debugger
+        else
+          return ApiRequest("app_info", {
+            region_name : @get("region")
+            app_ids     : [@get("id")]
+          }).then (ds)-> self.__setJsonData( ds[0] )
+
       if @__jsonData
         d = Q.defer()
         d.resolve @__jsonData
@@ -105,12 +113,6 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
         return ApiRequest("stack_info", {
           region_name : @get("region")
           stack_ids   : [@get("id")]
-        }).then (ds)-> self.__setJsonData( ds[0] )
-
-      else
-        return ApiRequest("app_info", {
-          region_name : @get("region")
-          app_ids     : [@get("id")]
         }).then (ds)-> self.__setJsonData( ds[0] )
 
     __setJsonData : ( json )->

@@ -52,7 +52,7 @@ define [
     initDesign : ()-> @design.finishDeserialization()
 
     # Return true if the data is ready.
-    isReady : ()-> @__isJsonLoaded && @__hasAdditionalData
+    isReady : ()-> !!@__hasAdditionalData
 
     onOpsModelStateChanged : ()->
       switch @opsModel.get("state")
@@ -83,20 +83,23 @@ define [
           # When we got this error, the opsmodel will destroy itself, resulting removal of the editor.
           return
 
-        notifcation "Fail to load data, please retry."
+        notification "error", "Fail to load data, please retry."
         self.remove()
 
       return Workspace.apply @, arguments
 
     jsonLoaded : ()->
-      self = @
-      @__isJsonLoaded = true
+      if @isRemoved() then return
 
+      self = @
       @fetchAdditionalData().then ()->
+
+        if @isRemoved() then return
+
         self.__hasAdditionalData = true
         self.switchToReady()
       , ()->
-        notifcation "Fail to load aws data, please retry."
+        notification "error", "Fail to load aws data, please retry."
         self.remove()
 
       return

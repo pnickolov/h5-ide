@@ -75,8 +75,7 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
 
       @get("id") && state isnt OpsModelState.Destroyed
 
-    appHasChanged : ()-> !!(@__jsonData and @__jsonData.changed)
-    getVpcId      : ()->
+    getVpcId : ()->
       if @get("importVpcId") then return @get("importVpcId")
       if not @__jsonData then return undefined
       for uid, comp of @__jsonData.component
@@ -347,6 +346,7 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
       d = Q.defer()
       d.resolve()
       self = @
+      newJson.changed = false
       d.promise.then ()->
         self.__jsonData = newJson
         self

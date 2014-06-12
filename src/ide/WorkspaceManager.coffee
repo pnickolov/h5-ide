@@ -54,6 +54,8 @@ define [ "./subviews/WorkspaceView", "underscore" ], ( WorkspaceView )->
 
       if _.isString(workspace) then workspace = @__spacesById[workspace]
 
+      # if @__awakeSpace is workspace then return
+
       if @__awakeSpace then @__awakeSpace.sleep()
 
       @__awakeSpace = workspace

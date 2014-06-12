@@ -75,7 +75,13 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
 
       @get("id") && state isnt OpsModelState.Destroyed
 
-    hasJsonData : ()-> !!@__jsonData
+    hasJsonData : ()->
+      # For app, we need to check with the server if any changes happend. So we always returns false
+      if @isStack() or @isImported()
+        !!@__jsonData
+      else
+        false
+
     getJsonData : ()-> @__jsonData
     # Returns a promise that will resolve with the JSON data of the stack/app
     # Calling this method will trigger an "jsonDataLoaded" event
@@ -295,6 +301,7 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
           throw err
 
         self.set {
+          name       : newJson.name
           state      : oldState
           updateFail : true
         }

@@ -15,7 +15,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
   class ConverterData
     CrPartials : ( type )-> CloudResources( constant.RESTYPE[type], @region )
 
-    constructor : ( region, vpcId )->
+    constructor : ( region, vpcId, sampleJson )->
       # @theVpc  = null
       @region    = region
       @vpcId     = vpcId
@@ -30,6 +30,15 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
       @lcs       = {} # res id => comp
       @component = {}
       @layout    = {}
+
+      # Use the sampleJson to generate uid for a existing resource.
+      @uidMap = {}
+      ###
+      if sampleJson
+        for uid, comp of sampleJson
+          @uidMap[ comp.resource.xxx ] = uid
+      ###
+      return @
 
     add : ( type_string, res_attributes, component_resources, default_name )->
       if not res_attributes and not default_name
@@ -436,7 +445,6 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         eniRes.AvailabilityZone = CREATE_REF( azComp )
         eniRes.SubnetId         = CREATE_REF( subnetComp )
         eniRes.VpcId            = CREATE_REF( @theVpc )
-        
         if aws_eni.deviceIndex isnt "0"
           #eni0 no need attachmentId
           eniRes.Attachment.AttachmentId = aws_eni.attachmentId
@@ -563,7 +571,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
               "To"  : if acl.portRange then acl.portRange.to else ""
               "From": if acl.portRange then acl.portRange.from else ""
             "RuleNumber": acl.ruleNumber
-        
+
         for acl in aws_acl.associationSet
           aclRes.AssociationSet.push
             "NetworkAclAssociationId": acl.networkAclAssociationId
@@ -763,7 +771,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
   # getNC       : ()->
   # getSP       : ()->
 
-  convertResToJson = ( region, vpcId )->
+  convertResToJson = ( region, vpcId, sampleJson )->
     console.log [
       "VOL"
       "INSTANCE"
@@ -785,7 +793,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
       "IAM"
     ].map (t)-> CloudResources( constant.RESTYPE[t], region )
 
-    cd = new ConverterData( region, vpcId )
+    cd = new ConverterData( region, vpcId, sampleJson )
     func.call( cd ) for func in Converters
 
     # find default SG
@@ -851,7 +859,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
     return
 
   # Returns a promise that will resolve once every resource in the vpc is fetched.
-  CloudResources.getAllResourcesForVpc = ( region, vpcId )->
+  CloudResources.getAllResourcesForVpc = ( region, vpcId, sampleJson )->
     RESTYPE = constant.RESTYPE
 
     # These resources are fetched first, because most of them are already fetched by dashboard.
@@ -892,6 +900,6 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
       }).then ( data )-> __parseAndCache( region, data )
 
     # When all the resources are fetched, we create component out of the resources.
-    Q.all( requests ).then ()-> convertResToJson( region, vpcId )
+    Q.all( requests ).then ()-> convertResToJson( region, vpcId, sampleJson )
 
   return

@@ -1,5 +1,5 @@
 
-define ["ApiRequest", "./CrCollection", "constant"], ( ApiRequest, CrCollection, constant )->
+define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequest, CrCollection, constant, CloudResources )->
 
   ### This Connection is used to fetch all the resource of an vpc ###
   CrCollection.extend {
@@ -20,18 +20,16 @@ define ["ApiRequest", "./CrCollection", "constant"], ( ApiRequest, CrCollection,
 
     parseFetchData : ( data )->
       # OpsResource doesn't return anything, Instead, it injects the data to other collection.
-      debugger
+      delete data.vpc
 
-    __parseAndCache : ( region, data )->
-      # Parse and cached additional datas.
-      for d in data[ region ]
-        d = $.xml2json( $.parseXML(d) )
-        for resType of d
-          if d.hasOwnProperty( resType )
-            Collection = CrCollection.getClassByAwsResponseType( resType )
-            if Collection then break
+      for type, d of data
+        cln = CloudResources( type, @__region )
+        if not cln
+          console.warn "Cannot find cloud resource collection for type:", type
+          continue
+        cln.parseExternalData d
 
-        col = CloudResources( Collection.type, region )
-        col.parseExternalData( d )
+      # Nasty, but it should work.
+      # Describe instances belongs to ASG.
       return
   }

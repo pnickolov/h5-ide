@@ -937,6 +937,11 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
           #CW is not for asg in current VPC
           continue
 
+        #convert AlarmActions to REF: TODO
+
+        #OKAction: TODO
+
+
         cwRes.AlarmArn  = aws_cw.id
         cwRes.AlarmName = aws_cw.Name
 

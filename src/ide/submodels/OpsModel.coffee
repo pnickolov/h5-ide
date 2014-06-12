@@ -77,7 +77,7 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
 
     appHasChanged : ()-> !!(@__jsonData and @__jsonData.changed)
     getVpcId      : ()->
-      if @importVpcId then return @importVpcId
+      if @get("importVpcId") then return @get("importVpcId")
       if not @__jsonData then return undefined
       for uid, comp of @__jsonData.component
         if comp.type is constant.RESTYPE.VPC

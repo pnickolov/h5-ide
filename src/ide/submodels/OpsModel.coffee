@@ -75,11 +75,22 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
 
       @get("id") && state isnt OpsModelState.Destroyed
 
+    appHasChanged : ()-> !!(@__jsonData and @__jsonData.changed)
+    getVpcId      : ()->
+      if @importVpcId then return @importVpcId
+      if not @__jsonData then return undefined
+      for uid, comp of @__jsonData.component
+        if comp.type is constant.RESTYPE.VPC
+          return comp.resource.VpcId
+
+      undefined
+
     hasJsonData : ()-> !!@__jsonData
     getJsonData : ()-> @__jsonData
     # Returns a promise that will resolve with the JSON data of the stack/app
     # Calling this method will trigger an "jsonDataLoaded" event
     fetchJsonData : ()->
+      self = @
       # For app, if we have json already, we only need to check if the app is changed or not.
       if not @isImported() and @isApp()
         if @__jsonData
@@ -87,12 +98,15 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
             region_name : @get("region")
             app_id      : @get("id")
           }).then ( res )->
-            debugger
+            self.__jsonData.changed = !!res
+            self.__jsonData.changed = true
         else
           return ApiRequest("app_info", {
             region_name : @get("region")
             app_ids     : [@get("id")]
-          }).then (ds)-> self.__setJsonData( ds[0] )
+          }).then (ds)->
+            self.__setJsonData( ds[0] )
+            self.__jsonData.changed = true
 
       if @__jsonData
         d = Q.defer()
@@ -100,12 +114,9 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
         @trigger "jsonDataLoaded"
         return d.promise
 
-      self = @
       if @isImported()
-        return CloudResources.getAllResourcesForVpc( @get("region"), @get("importVpcId") ).then ( res )->
-          json = self.__createRawJson()
-          json.component = res.component
-          json.layout    = res.layout
+        return CloudResources( "OpsResource", @getVpcId() ).init( @get("region") ).fetch ()->
+          json = self.generateJsonFromRes()
           self.__setJsonData json
           self
 
@@ -146,6 +157,23 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
       @trigger "jsonDataLoaded"
       @
 
+    generateJsonFromRes : ()->
+      res = CloudResources.getAllResourcesForVpc( @get("region"), @getVpcId(), @__jsonData )
+      if @__jsonData
+        c = @__jsonData.component
+        l = @__jsonData.layout
+        delete @__jsonData.component
+        delete @__jsonData.layout
+        json = $.extend true, {}, @__jsonData
+        @__jsonData.component = c
+        @__jsonData.layout = l
+      else
+        json = @__createRawJson()
+
+      json.component = res.component
+      json.layout    = res.layout
+
+      json
 
     # Save the stack in server, returns a promise
     save : ( newJson, thumbnail )->

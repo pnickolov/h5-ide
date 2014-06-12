@@ -26,12 +26,28 @@ define [
 
     fetchAdditionalData : ()->
       region = @opsModel.get("region")
-      Q.all [
+      jobs = [
         CloudResources( constant.RESTYPE.AZ,   region ).fetch()
         CloudResources( constant.RESTYPE.SNAP, region ).fetch()
       ]
 
+      opsRes = CloudResources( "OpsResource", @opsModel.getVpcId() ).init( @opsModel.get("region") )
+      if @opsModel.appHasChanged()
+        @view.setText "Your app has been changed. Automatically sync-ing your changes."
+        jobs.push opsRes.fetchForce()
+      else
+        jobs.push opsRes.fetch()
+
+      Q.all jobs
+
     isAppEditMode : ()-> !!@__appEdit
+
+    initDesign : ()->
+      if not @opsModel.appHasChanged()
+        return StackEditor.prototype.initDesign.call this
+
+      # The app has changed. We would want to apply changes.
+      CloudResources
 
     switchToEditMode : ()->
       if @isAppEditMode() then return

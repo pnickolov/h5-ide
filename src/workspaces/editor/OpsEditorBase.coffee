@@ -16,6 +16,7 @@ define [
   LoadingView = Backbone.View.extend {
     isLoadingView : true
     initialize : ( options )-> @setElement $(OpsEditorTpl.loading()).appendTo("#main").show()[0]
+    setText : ( text )-> @$el.find(".processing").text( text )
   }
 
   ###

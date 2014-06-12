@@ -78,16 +78,13 @@ require.config {
 		#############################################
 		'jquery'             : 'vender/jquery/jquery'
 		'canvon'             : 'vender/canvon/canvon'
-
 		'underscore'         : 'vender/underscore/underscore'
 		'backbone'           : 'vender/backbone/backbone'
 		'handlebars'         : 'vender/handlebars/handlebars.rt'
-
 		'sprintf'            : 'vender/sprintf/sprintf'
 		'Meteor'             : 'vender/meteor/meteor'
 		'crypto'             : 'vender/crypto-js/cryptobundle'
 		'q'                  : 'vender/q/q'
-		'select2'			 : 'vender/select2/select2.min'
 		'jsondiffpatch'      : 'vender/jsondiffpatch/bundle'
 
 		#############################################
@@ -98,7 +95,6 @@ require.config {
 		'MC.canvas'          : 'js/MC.canvas'
 		'MC.canvas.constant' : 'js/MC.canvas.constant'
 		'constant'           : 'lib/constant'
-
 		'event'              : 'lib/ide_event'
 
 		#############################################
@@ -138,72 +134,20 @@ require.config {
 		'CanvasManager'      : 'workspaces/editor/framework/canvasview/CanvasManager'
 
 		#############################################
-		# model                     # Merge in deploy
+		# deprecated service        # Merge in deploy
 		#############################################
-		'base_model'             : 'model/base_model'
-
-		'favorite_model'         : 'model/favorite_model'
-		'app_model'              : 'model/app_model'
-		'stack_model'            : 'model/stack_model'
-		'state_model'            : 'model/state_model'
-		'ec2_model'              : 'model/aws/ec2/ec2_model'
-		'vpc_model'              : 'model/aws/vpc/vpc_model'
-		'aws_model'              : 'model/aws/aws_model'
-		'ami_model'              : 'model/aws/ec2/ami_model'
-		'ebs_model'              : 'model/aws/ec2/ebs_model'
-		'elb_model'              : 'model/aws/elb/elb_model'
-		'dhcp_model'             : 'model/aws/vpc/dhcp_model'
-		'customergateway_model'  : 'model/aws/vpc/customergateway_model'
-		'vpngateway_model'       : 'model/aws/vpc/vpngateway_model'
-		'keypair_model'          : 'model/aws/ec2/keypair_model'
-		'autoscaling_model'      : 'model/aws/autoscaling/autoscaling_model'
-		'cloudwatch_model'       : 'model/aws/cloudwatch/cloudwatch_model'
-		'sns_model'              : 'model/aws/sns/sns_model'
-		'subnet_model'           : 'model/aws/vpc/subnet_model'
-		'instance_model'         : 'model/aws/ec2/instance_model'
-
-		#result_vo
+		'base_model'             : 'service/base_model'
+		'state_model'            : 'service/state_model'
+		'keypair_model'          : 'service/keypair_model'
+		'instance_model'         : 'service/instance_model'
 		'result_vo'              : 'service/result_vo'
-
-		#############################################
-		# service                   # Merge in deploy
-		#############################################
-
-		#forge
-		'favorite_service'       : 'service/favorite/favorite_service'
-		'account_service'        : 'service/account/account_service'
-		'app_service'            : 'service/app/app_service'
-		'stack_service'          : 'service/stack/stack_service'
-		'aws_service'            : 'service/aws/aws/aws_service'
-		'state_service'          : 'service/state/state_service'
-
-		#aws
-		'ami_service'            : 'service/aws/ec2/ami/ami_service'
-		'ebs_service'            : 'service/aws/ec2/ebs/ebs_service'
-		'ec2_service'            : 'service/aws/ec2/ec2/ec2_service'
-		'eip_service'            : 'service/aws/ec2/eip/eip_service'
-		'instance_service'       : 'service/aws/ec2/instance/instance_service'
-		'keypair_service'        : 'service/aws/ec2/keypair/keypair_service'
-		'placementgroup_service' : 'service/aws/ec2/placementgroup/placementgroup_service'
-		'securitygroup_service'  : 'service/aws/ec2/securitygroup/securitygroup_service'
-		'acl_service'            : 'service/aws/vpc/acl/acl_service'
-		'customergateway_service': 'service/aws/vpc/customergateway/customergateway_service'
-		'dhcp_service'           : 'service/aws/vpc/dhcp/dhcp_service'
-		'eni_service'            : 'service/aws/vpc/eni/eni_service'
-		'internetgateway_service': 'service/aws/vpc/internetgateway/internetgateway_service'
-		'routetable_service'     : 'service/aws/vpc/routetable/routetable_service'
-		'subnet_service'         : 'service/aws/vpc/subnet/subnet_service'
-		'vpc_service'            : 'service/aws/vpc/vpc/vpc_service'
-		'vpngateway_service'     : 'service/aws/vpc/vpngateway/vpngateway_service'
-		'vpn_service'            : 'service/aws/vpc/vpn/vpn_service'
-		'elb_service'            : 'service/aws/elb/elb/elb_service'
-		'iam_service'            : 'service/aws/iam/iam/iam_service'
-
-		#
-		'autoscaling_service'    : 'service/aws/autoscaling/autoscaling/autoscaling_service'
-		'cloudwatch_service'     : 'service/aws/cloudwatch/cloudwatch/cloudwatch_service'
-		'sns_service'            : 'service/aws/sns/sns/sns_service'
-
+		'stack_service'          : 'service/stack_service'
+		'state_service'          : 'service/state_service'
+		'ami_service'            : 'service/ami_service'
+		'ebs_service'            : 'service/ebs_service'
+		'instance_service'       : 'service/instance_service'
+		'keypair_service'        : 'service/keypair_service'
+		'customergateway_service': 'service/customergateway_service'
 		### env:dev:end ###
 
 		#############################################
@@ -266,20 +210,6 @@ require.config {
 			deps       : ['underscore']
 			exports    : 'Meteor'
 
-		#############################################
-		# modules
-		#############################################
-
-		'navigation'   :
-			deps       : [ 'navigation_view', 'navigation_model', 'MC' ]
-
-		'process'      :
-			deps       : [ 'process_view', 'process_model', 'MC' ]
-
-		'select2'	   :
-			deps 	   : [ 'jquery' ]
-			exports    : "$"
-
 	### env:prod ###
 	# The rule of bundles is that, if an ID defined above is ever included in a bundle
 	# Then that ID should appear in the bundle's array.
@@ -330,57 +260,19 @@ require.config {
 			"UI.modalplus"
 		]
 		"ApiRequest" : []
-		"model/model" : [
+		"service" : [
 			'base_model'
-			'favorite_model'
-			'app_model'
-			'stack_model'
 			'state_model'
-			'ec2_model'
-			'vpc_model'
-			'aws_model'
-			'ami_model'
-			'ebs_model'
-			'elb_model'
-			'dhcp_model'
-			'customergateway_model'
-			'vpngateway_model'
 			'keypair_model'
-			'autoscaling_model'
-			'cloudwatch_model'
-			'sns_model'
-			'subnet_model'
 			'instance_model'
 			'result_vo'
-			'favorite_service'
-			'account_service'
-			'app_service'
 			'stack_service'
-			'aws_service'
 			'state_service'
 			'ami_service'
 			'ebs_service'
-			'ec2_service'
-			'eip_service'
 			'instance_service'
 			'keypair_service'
-			'placementgroup_service'
-			'securitygroup_service'
-			'acl_service'
 			'customergateway_service'
-			'dhcp_service'
-			'eni_service'
-			'internetgateway_service'
-			'routetable_service'
-			'subnet_service'
-			'vpc_service'
-			'vpngateway_service'
-			'vpn_service'
-			'elb_service'
-			'iam_service'
-			'autoscaling_service'
-			'cloudwatch_service'
-			'sns_service'
 		]
 		"component/sgrule/SGRulePopup" : []
 		"component/exporter/Exporter"  : [ "component/exporter/Download", "component/exporter/Thumbnail", "component/exporter/JsonExporter" ]

@@ -106,7 +106,14 @@ Helper =
       gutil.log gutil.colors.bgBlue.white(" Watching file changes... ") + " [Polling]"
 
       watcher = new EventEmitter()
-      gulp.watch ["./src/**/*.coffee","./src/**/*.html","./src/**/*.partials","./util/gulp_tasks/**/*.coffee","./src/assets/**/*", "!src/include/*.html"], ( event )->
+      gulp.watch [
+        "./src/**/*.coffee"
+        "./src/**/*.html"
+        "./src/**/*.partials"
+        "./util/gulp_tasks/**/*.coffee"
+        "./src/assets/**/*"
+        "!src/include/*.html"
+      ], ( event )->
         if event.type is "added"
           type = "add"
         else if event.type is "changed"
@@ -318,16 +325,20 @@ watch = ()->
 
 
 compileDev = ( allCoffee )->
-  path = ["src/**/*.coffee", "src/**/*.partials", "src/**/*.html", "!src/*.html", "!src/include/*.html", "!src/test/madeira_console/**/*", "!src/test/service/**/*", "!src/test/websocket/**/*", "!src/test/uitest/**/*", "!src/test/*.html" ]
-  if not allCoffee and fs.existsSync("./src/service/result_vo.js")
-    path.push "!src/service/**/*"
-    path.push "!src/model/**/*"
+  p = [
+    "src/**/*.coffee"
+    "src/**/*.partials"
+    "src/**/*.html"
+    "!src/*.html"
+    "!src/include/*.html"
+    "!src/test/**/*"
+  ]
 
   deferred = Q.defer()
 
   StreamFuncs.createStreamObject()
 
-  compileStream = gulp.src( path, {cwdbase:true} ).pipe es.through ( f )->
+  compileStream = gulp.src( p, {cwdbase:true} ).pipe es.through ( f )->
     # Re-pipe the data to the workStream
     StreamFuncs.workStream.emit "data", f
     null

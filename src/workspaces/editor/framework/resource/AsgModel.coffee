@@ -229,14 +229,11 @@ define [
     newNameTmpl : "asg"
 
     initialize : ( options, createOption ) ->
-
-      ComplexResModel.prototype.initialize.apply @, arguments
-
       if options.lcId
         lc = Design.instance().component(options.lcId)
         lc and @attachLc lc
 
-
+      ComplexResModel.prototype.initialize.apply @, arguments
 
       null
 

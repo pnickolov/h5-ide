@@ -11,7 +11,7 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
 
     ceType: "Lc_Asso"
 
-    oneToMany : constant.RESTYPE.ASG
+    oneToMany : constant.RESTYPE.LC
 
     defaults:
       x        : 0
@@ -36,4 +36,5 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
 
     connections: ->
       @getLc().connections()
+
 

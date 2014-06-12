@@ -245,8 +245,10 @@ define [
             appNameRepeated = @checkAppNameRepeat(appNameDom.val())
             if not @defaultKpIsSet() or appNameRepeated
                 return false
-
-        #App.startApp( @workspace.opsModel.id ); false
+            @modal.close()
+            @workspace.opsModel.run().fail (err)=>
+                error = if err.awsError then err.error + "." + err.awsError else "#{err.error} - #{err.result}"
+                notification 'error', sprintf(lang.ide.PROP_MSG_WARN_FAILA_TO_RUN_BECAUSE,@workspace.opsModel.get('name'),error)
 
     checkAppNameRepeat: (nameVal)->
         if App.model.appList().findWhere(name: nameVal)

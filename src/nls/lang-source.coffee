@@ -2348,6 +2348,10 @@ module.exports =
       en: "This app name is already in use."
       zh: "这个应用名称已被占用This app name is already in use."
 
+    PROP_MSG_WARN_FAILA_TO_RUN_BECAUSE:
+      en: "Failed to run your stack %s because of %s"
+      zh: ""
+
     PROP_MSG_WARN_INVALID_APP_NAME:
       en: "App name is invalid."
       zh: "无效的应用名称。"

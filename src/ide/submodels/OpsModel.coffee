@@ -32,7 +32,7 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
       stoppable      : true # If the app has instance_store_ami, stoppable is false
       # usage          : ""
       # terminateFail  : false
-      # updateFail     : false
+      # updateFail     : ""
       # progress       : 0
       # opsActionError : ""
       # importVpcId    : ""
@@ -240,7 +240,11 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
         # If we cannot delete the stack, we just add it back to the stackList.
         App.model.stackList().add self
 
-
+    run : ( toRunJson )->
+      ApiRequest("stack_run",{
+        region_name : @get("region")
+        stack       : toRunJson
+      }).then ( res )-> self
 
     # Duplicate the stack
     duplicate : ( name )->
@@ -319,7 +323,7 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
       oldState = @get("state")
       @set("state", OpsModelState.Updating)
       @attributes.progress = 0
-      @attributes.updateFail = false
+      @attributes.updateFail = ""
       self = @
       ApiRequest("app_update", {
         region_name : @get("region")
@@ -333,7 +337,7 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
         self.set {
           name       : newJson.name
           state      : oldState
-          updateFail : true
+          updateFail : err.msg
         }
         throw err
 
@@ -369,8 +373,8 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
           if state.completed
             toState = OpsModelState.Running
           else
-            @attributes.updateFail = false
-            @set "updateFail", true
+            @attributes.updateFail = ""
+            @set "updateFail", error
             @__updateStatus()
         when "terminate"
           if state.completed

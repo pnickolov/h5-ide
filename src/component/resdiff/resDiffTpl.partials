@@ -1,150 +1,22 @@
+<!-- {{resDiffGroup}} -->
+<div class="group">
+	<div class="head">{{title}}<span class="count"></span></div>
+	<div class="content"></div>
+</div>
+
 <!-- {{resDiffTree}} -->
-<div class="group">
-	<div class="head">New Resource<span class="count"> (4)</span></div>
-	<ul class="tree ">
-		<li class="item">
-			<div class="meta">
-				<span class="type">Instance</span>
-				<span class="name"><span class="old">old: </span>test12 <span class="new"> new: </span>test23</span>
-				<span class="id">(i-xxxxxx)</span>
-			</div>
-			<ul class="tree">
-				<li class="item closed">
-					<div class="meta">
-						<span class="type">PropertyName</span>
-						<span class="name">arn:aws:autoscaling:us-east-1:994554139310:autoScalingGroup:ad6f888f-f98e-40e3-b19a-fcfceb542dd9:autoScalingGroupName/asg0---app-dea4e3ee</span>
-						<span class="id">(i-xxxxxx)</span>
-					</div>
-					<ul class="tree">
-						<li class="item end">
-							<div class="meta">
-								<span class="type">SubPropertyName</span>
-								<span class="name">Sub Property Value</span>
-								<span class="id">(i-xxxxxx)</span>
-							</div>
-						</li>
-						<li class="item end">
-							<div class="meta">
-								<span class="type">SubPropertyName</span>
-								<span class="name">Sub Property Value</span>
-								<span class="id">(i-xxxxxx)</span>
-							</div>
-						</li>
-						<li class="item end">
-							<div class="meta">
-								<span class="type">SubPropertyName</span>
-								<span class="name">Sub Property Value</span>
-								<span class="id">(i-xxxxxx)</span>
-							</div>
-						</li>
-						<li class="item end">
-							<div class="meta">
-								<span class="type">SubPropertyName</span>
-								<span class="name">Sub Property Value</span>
-								<span class="id">(i-xxxxxx)</span>
-							</div>
-						</li>
-					</ul>
-				</li>
-				<li class="item">
-					<div class="meta">
-						<span class="type">PropertyName</span>
-						<span class="name">Single Property Value</span>
-						<span class="id">(i-xxxxxx)</span>
-					</div>
-					<ul class="tree">
-						<li class="item end">
-							<div class="meta">
-								<span class="type">SubPropertyName</span>
-								<span class="name">Sub Property Value</span>
-								<span class="id">(i-xxxxxx)</span>
-							</div>
-						</li>
-						<li class="item end">
-							<div class="meta">
-								<span class="type">SubPropertyName</span>
-								<span class="name">Sub Property Value</span>
-								<span class="id">(i-xxxxxx)</span>
-							</div>
-						</li>
-					</ul>
-				</li>
-				<li class="item end">
-					<div class="meta">
-						<span class="type">PropertyName</span>
-						<span class="name">Single Property Value</span>
-						<span class="id">(i-xxxxxx)</span>
-					</div>
-				</li>
-				<li class="item end">
-					<div class="meta">
-						<span class="type">PropertyName</span>
-						<span class="name">Single Property Value</span>
-						<span class="id">(i-xxxxxx)</span>
-					</div>
-				</li>
-				<li class="item end">
-					<div class="meta">
-						<span class="type">PropertyName</span>
-						<span class="name">Single Property Value</span>
-						<span class="id">(i-xxxxxx)</span>
-					</div>
-				</li>
-			</ul>
-		</li>
-		<li class="item">
-			<div class="meta">
-				<span class="type">Instance</span>
-				<span class="name">host-1</span>
-				<span class="id">(i-xxxxxx)</span>
-			</div>
-			<ul class="tree">
-				<li class="item">
-					<div class="meta">
-						<span class="type">PropertyName</span>
-						<span class="name">Single Property Value</span>
-						<span class="id">(i-xxxxxx)</span>
-					</div>
-					<ul class="tree">
-						<li class="item end">
-							<div class="meta">
-								<span class="type">SubPropertyName</span>
-								<span class="name">Sub Property Value</span>
-								<span class="id">(i-xxxxxx)</span>
-							</div>
-						</li>
-					</ul>
-				</li>
-			</ul>
-		</li>
-		<li class="item end">
-			<div class="meta">
-				<span class="type">Instance</span>
-				<span class="name">host-1</span>
-				<span class="id">(i-xxxxxx)</span>
-			</div>
-		</li>
-		<li class="item end">
-			<div class="meta">
-				<span class="type">Instance</span>
-				<span class="name">host-1</span>
-				<span class="id">(i-xxxxxx)</span>
-			</div>
-		</li>
-		<li class="item end">
-			<div class="meta">
-				<span class="type">Instance</span>
-				<span class="name">host-1</span>
-				<span class="id">(i-xxxxxx)</span>
-			</div>
-		</li>
-	</ul>
-</div>
-<div class="group">
-	<div class="head deleted-head">Deleted Resource<span class="count"> (4)</span></div>
-	<div class="tree"></div>
-</div>
-<div class="group">
-	<div class="head modified-head">Modified Resource<span class="count"> (4)</span></div>
-	<div class="tree"></div>
+<ul class="tree"></ul>
+
+<!-- {{resDiffTreeItem}} -->
+<li class="item">
+	<div class="meta">
+		<span class="type">{{key}}</span>
+		<span class="name">{{value}}</span>
+	</div>
+</li>
+
+<!-- {{resDiffTreeMeta}} -->
+<div class="meta">
+	<span class="type">{{key}}</span>
+	<span class="name">{{value}}</span>
 </div>

@@ -71,6 +71,8 @@ $bg_body : #fff;
 			font-size: 12px;
 			float: left;
 			margin-top: -4px;
+			text-align: center;
+			min-width: 35px;
 		}
 		.name {
 			font-weight: bold;
@@ -81,10 +83,13 @@ $bg_body : #fff;
 			overflow: hidden;
 			display: inline-block;
 			max-width: 297px;
-			height: 12px;
+			// height: 12px;
 			font-size: 12px;
-			float: left;
+			// float: left;
 			margin-top: 2px;
+
+			text-align: center;
+			min-width: 35px;
 
 			.old {
 				color: #4a90e2;
@@ -95,13 +100,16 @@ $bg_body : #fff;
 				font-style: italic;
 			}
 		}
+		.to {
+			color: #4a90e2;
+		}
 		.id {
 			color: #888;
 			margin-left: 4px;
 			font-size: 12px;
 		}
 		.item {
-			margin-bottom: 25px;
+			margin-bottom: 20px;
 			padding-left: 18px;
 			position: relative;
 			@include tierline;
@@ -164,7 +172,7 @@ $bg_body : #fff;
 	}
 
 	// tree-1
-	.group > ul.tree {
+	.group ul.tree {
 		margin-left: 20px;
 		& > .item:last-child {
 			@include tierline;

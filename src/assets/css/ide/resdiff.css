@@ -49,7 +49,9 @@
       z-index: 1;
       font-size: 12px;
       float: left;
-      margin-top: -4px; }
+      margin-top: -4px;
+      text-align: center;
+      min-width: 35px; }
     .res_diff_tree .tree .name {
       font-weight: bold;
       margin-left: 10px;
@@ -59,22 +61,24 @@
       overflow: hidden;
       display: inline-block;
       max-width: 297px;
-      height: 12px;
       font-size: 12px;
-      float: left;
-      margin-top: 2px; }
+      margin-top: 2px;
+      text-align: center;
+      min-width: 35px; }
       .res_diff_tree .tree .name .old {
         color: #4a90e2;
         font-style: italic; }
       .res_diff_tree .tree .name .new {
         color: #4a90e2;
         font-style: italic; }
+    .res_diff_tree .tree .to {
+      color: #4a90e2; }
     .res_diff_tree .tree .id {
       color: #888;
       margin-left: 4px;
       font-size: 12px; }
     .res_diff_tree .tree .item {
-      margin-bottom: 25px;
+      margin-bottom: 20px;
       padding-left: 18px;
       position: relative;
       border-left: 1px #ddd solid; }
@@ -112,21 +116,21 @@
         display: none; }
       .res_diff_tree .tree .item:last-child {
         border-left: 1px solid transparent !important; }
-  .res_diff_tree .group > ul.tree {
+  .res_diff_tree .group ul.tree {
     margin-left: 20px; }
-    .res_diff_tree .group > ul.tree > .item:last-child {
+    .res_diff_tree .group ul.tree > .item:last-child {
       border-left: 1px #ddd solid; }
-    .res_diff_tree .group > ul.tree > li > ul.tree {
+    .res_diff_tree .group ul.tree > li > ul.tree {
       margin-left: 15px;
       font-size: 12px; }
-      .res_diff_tree .group > ul.tree > li > ul.tree .type {
+      .res_diff_tree .group ul.tree > li > ul.tree .type {
         background-color: #4a90e2; }
-      .res_diff_tree .group > ul.tree > li > ul.tree > .item:last-child {
+      .res_diff_tree .group ul.tree > li > ul.tree > .item:last-child {
         border-left: 1px #ddd solid; }
-      .res_diff_tree .group > ul.tree > li > ul.tree > li > ul.tree {
+      .res_diff_tree .group ul.tree > li > ul.tree > li > ul.tree {
         margin-left: 15px;
         font-size: 12px; }
-        .res_diff_tree .group > ul.tree > li > ul.tree > li > ul.tree .type {
+        .res_diff_tree .group ul.tree > li > ul.tree > li > ul.tree .type {
           background-color: #69b0ff; }
-        .res_diff_tree .group > ul.tree > li > ul.tree > li > ul.tree .item {
+        .res_diff_tree .group ul.tree > li > ul.tree > li > ul.tree .item {
           border-left: 1px #ddd solid; }

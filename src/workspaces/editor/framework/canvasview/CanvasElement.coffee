@@ -7,10 +7,11 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "CloudResourc
   ###
   # Canvas interface of CanvasElement
   ###
-  CanvasElement = ( model )->
+  CanvasElement = ( model, containerId )->
     @id         = model.id
     @model      = model
     @type       = model.type
+    @containerId = containerId
 
     if model.parent
       @parentId = model.parent()
@@ -40,7 +41,7 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "CloudResourc
     CanvasElementConstructors[ ElementType ] = Child
     null
 
-  CanvasElement.createView = ( type, model )->
+  CanvasElement.createView = ( type, model, containerId )->
     CEC = CanvasElementConstructors[ type ]
     if not CEC
       CEC = CanvasElement
@@ -49,7 +50,7 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "CloudResourc
         id   : model
       }
 
-    new CEC( m or model )
+    new CEC( m or model, containerId )
 
 
   CanvasElement.prototype.constant =
@@ -71,10 +72,18 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "CloudResourc
   ###
   CanvasElement.prototype.draw = ()-> null # do nothing
 
+  CanvasElement.prototype.getEid = -> if @containerId then "#{@id}_#{@containerId}" else @id
+
   CanvasElement.prototype.getModel = ()-> @model
 
-  CanvasElement.prototype.element  = ( id )-> document.getElementById( id or @id )
-  CanvasElement.prototype.$element = ( id )-> $( document.getElementById( id or @id ) )
+  CanvasElement.prototype.element  = ( id )->
+    if not id
+      id = @getEid()
+
+    document.getElementById( id )
+
+  CanvasElement.prototype.$element = ( id )->
+    $ @element()
 
   CanvasElement.prototype.move = ( x, y )->
     if x is @model.x() and y is @model.y() then return

@@ -16,13 +16,13 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
       data.uid = uid
       @set( data )
 
-      lc = component.get("lc")
+      lc = component.getLc()
 
       if not lc
         @set "emptyAsg", true
         return
 
-      @set "has_elb", !!component.get("lc").connections("ElbAmiAsso").length
+      @set "has_elb", !!component.getLc().connections("ElbAmiAsso").length
       @set "isEC2HealthCheck", component.isEC2HealthCheckType()
       @set 'detail_monitor', !!lc.get( 'monitoring' )
 

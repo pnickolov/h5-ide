@@ -1384,7 +1384,7 @@ MC.canvas = {
 				)
 			)
 			{
-				matched.push(document.getElementById( item.id ));
+				matched.push(document.getElementById( item.getEid() ));
 			}
 		});
 
@@ -1405,7 +1405,7 @@ MC.canvas = {
 				end_y >= coordinate[1]
 			)
 			{
-				matched.push(document.getElementById( item.id ));
+				matched.push(document.getElementById( item.getEid() ));
 			}
 		});
 

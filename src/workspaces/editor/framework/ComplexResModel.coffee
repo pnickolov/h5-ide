@@ -141,9 +141,9 @@ define [ "Design", "CanvasManager", "./ResourceModel", "constant", "./canvasview
 
     isVisual : ()-> true
 
-    getCanvasView : ()->
+    getCanvasView : ( containerId )->
       if @__view is undefined and @isVisual()
-        @__view = CanvasElement.createView( @type, @ )
+        @__view = CanvasElement.createView( @type, @, containerId )
         ### env:dev ###
         if not @__view
           console.warn "isVisual() is true, but cannot find corresponding canvasView for ComplexResModel : #{@type}"

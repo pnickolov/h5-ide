@@ -500,8 +500,8 @@ define [
           if sbRef then newSubnets.push sbRef
         subnets = newSubnets
 
-      if @get("lc")
-        lcId = @get('lc').createRef( "LaunchConfigurationName" )
+      if @getLc()
+        lcId = @getLc().createRef( "LaunchConfigurationName" )
       else
         lcId = ""
 

@@ -4,14 +4,18 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant", "UI.notific
 
   ### $canvas is a adaptor for MC.canvas.js ###
   $canvas = ( id, defaultType )->
-    component = Design.__instance.component(id)
+    ids = id.split '_'
+    targetId = ids[ 0 ]
+    containerId = ids[ 1 ]
+
+    component = Design.__instance.component(targetId)
     if component
       view = component.getCanvasView()
 
     if not view
-      console.debug "Creating an view for an unfound component : ", defaultType, id
+      console.debug "Creating an view for an unfound component : ", defaultType, targetId
       type = if component then component.type else defaultType
-      view = CanvasElement.createView( type, component or id )
+      view = CanvasElement.createView( type, component or targetId, containerId )
 
     view
 

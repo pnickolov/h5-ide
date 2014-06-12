@@ -63,6 +63,8 @@ define [
 
       null
 
+    getAsgs: -> @connectionTargets('Lc_Asso')
+
     getNewName : ( base )->
       if not @newNameTmpl
         newName = if @defaults then @defaults.name
@@ -96,8 +98,6 @@ define [
 
       newName
 
-    getAsg: () -> @connectionTargets('Lc_Asso')[0]
-
     isRemovable : () ->
       if @design().modeIsAppEdit() and @get("appId")
         return error : lang.ide.CVS_MSG_ERR_DEL_LC
@@ -116,18 +116,21 @@ define [
       resource_list = CloudResources(constant.RESTYPE.LC, Design.instance().region())?.toJSON()
       if not resource_list then return []
 
-      resource = resource_list[ @getAsg().get("appId") ]
+      amis = []
+      asgs = @getAsgs()
 
-      if resource and resource.Instances and resource.Instances.member
-        amis = []
-        for i in resource.Instances.member
-          amis.push {
-            id    : i.InstanceId
-            appId : i.InstanceId
-            state : i.HealthStatus
-          }
+      for asg in asgs
+        resource = resource_list[ asg.get("appId") ]
 
-      amis || []
+        if resource and resource.Instances and resource.Instances.member
+          for i in resource.Instances.member
+            amis.push {
+              id    : i.InstanceId
+              appId : i.InstanceId
+              state : i.HealthStatus
+            }
+
+      amis
 
     remove : ()->
       # Remove attached volumes
@@ -138,21 +141,25 @@ define [
       null
 
     connect : ( cn )->
-      if @getAsg() and cn.type is "SgRuleLine"
+      asgs = @getAsgs()
+
+      if asgs and cn.type is "SgRuleLine"
         # Create duplicate sgline for each expanded asg
-        @getAsg().updateExpandedAsgSgLine( cn.getOtherTarget(@) )
+        _.invoke asgs, 'updateExpandedAsgSgLine', cn.getOtherTarget(@)
 
       null
 
     disconnect : ( cn )->
-      if @getAsg()
+      asgs = @getAsgs()
+
+      if asgs
         if cn.type is "ElbAmiAsso"
           # No need to reset Asg's healthCheckType to EC2, when disconnected from Elb
           # Because user might just want to asso another Elb right after disconnected.
           # @getAsg().updateExpandedAsgAsso( cn.getOtherTarget(@), true )
 
         else if cn.type is "SgRuleLine"
-          @getAsg().updateExpandedAsgSgLine( cn.getOtherTarget(@), true )
+          _.invoke asgs, 'updateExpandedAsgSgLine', cn.getOtherTarget(@), true
       null
 
     getStateData : () ->
@@ -191,6 +198,23 @@ define [
     isNoKey: ->
       kp = @connectionTargets( "KeypairUsage" )[0]
       not kp and not @get( 'keyName' )
+
+    draw : ( isCreate )->
+      if not @isVisual() or not Design.instance().shouldDraw() then return
+
+      asgs = @getAsgs()
+
+      for asg in asgs
+        v = @getCanvasView asg.id
+        if v
+          args = arguments
+          args[ 0 ] = args[ 0 ] is true
+
+          if isCreate then v.nodeCreated = true
+          if not isCreate and not v.nodeCreated then return
+
+          v.draw.apply v, args
+      null
 
 
     setAmi                : InstanceModel.prototype.setAmi

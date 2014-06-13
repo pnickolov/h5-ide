@@ -275,8 +275,13 @@ $dark-blue: #001324;
 		}
 
 		.table-head thead tr th:first-child,
-		.table thead tr th:first-child {
-			width: 20px;
+		.table tbody tr td:first-child {
+			width   : 20px;
+			// padding : 5px 8px 5px 13px;
+			.checkbox {
+				margin-left: 5px;
+			}
+
 		}
 
 	}

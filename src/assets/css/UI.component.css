@@ -980,7 +980,7 @@ textarea {
 	width        : 20px;
 	height       : 20px;
 	border-radius: 2px;
-	color        : #eee;
+	color        : #999;
 	text-align   : center;
 	font-style   : normal;
 	font-size    : 16px;
@@ -1011,7 +1011,7 @@ textarea {
 .modal-header {
 	position     : relative;
 	padding      : 6px 15px;
-	border-bottom: 1px solid #111;
+	border-bottom: 1px solid #1a1a1a;
 	color        : #F1F1F1;
 }
 
@@ -1020,6 +1020,7 @@ textarea {
 	font-size  : 18px;
 	cursor     : move;
 	display    : block;
+	color      : #999;
 }
 
 .modal-body {

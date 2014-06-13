@@ -2,7 +2,7 @@
 <button id="HideOEPanelLeft" class="tooltip sidebar-hider icon-caret-left" data-tooltip='{{ i18n "RES_TIP_TOGGLE_RESOURCE_PANEL" }}'></button>
 
 <header class="sidebar-title"> {{ i18n "RES_TIT_RESOURCES" }}
-  <i class="js-toggle-dropdown menu-manage-shard-res icon-resources"></i>
+  <i class="icon-resources js-toggle-dropdown menu-manage-shard-res"></i>
   <ul class="dropdown-menu resources-dropdown-wrapper">
     <li data-action="keypair">Manage Key Pairs...</li>
     <li data-action="snapshot">Manage EBS Snapshots...</li>

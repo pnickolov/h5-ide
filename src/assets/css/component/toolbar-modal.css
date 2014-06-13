@@ -170,8 +170,11 @@
     color: #F3F3F3;
     background: #292C2E; }
   .modal-toolbar .table-head-fix .table-head thead tr th:first-child,
-  .modal-toolbar .table-head-fix .table thead tr th:first-child {
+  .modal-toolbar .table-head-fix .table tbody tr td:first-child {
     width: 20px; }
+    .modal-toolbar .table-head-fix .table-head thead tr th:first-child .checkbox,
+    .modal-toolbar .table-head-fix .table tbody tr td:first-child .checkbox {
+      margin-left: 5px; }
 
 #modal-kp-manage .table-head-fix .table-head thead tr th:nth-child(2),
 #modal-kp-manage .table-head-fix .table thead tr th:nth-child(2) {

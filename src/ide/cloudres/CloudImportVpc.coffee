@@ -34,12 +34,12 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
       @ins_in_asg= [] # instances in asg
       @component = {}
       @layout    = {}
-      @originalJson = originalJson #original app json
+      @originalJson = jQuery.extend(true, {}, originalJson); #original app json
 
       # Use the originalJson to generate uid for a existing resource.
       @compMap = {}
-      if originalJson
-        @compMap = @_genCompMap(originalJson)
+      if @originalJson
+        @compMap = @_genCompMap(@originalJson)
       ###
       if originalJson
         for uid, comp of originalJson
@@ -51,6 +51,11 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
       if not res_attributes and not default_name
         console.error "[ConverterData.add] if res_attributes is null, then must specify default_name"
         return null
+
+      if component_resources and component_resources.uid
+        @component[ component_resources.uid ] = component_resources
+        return component_resources
+
       comp =
         uid  : ""
         name : ""
@@ -70,12 +75,15 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
       comp
 
     addLayout : ( component, isGroupLayout, parentComp )->
-      l =
-        uid : component.uid
-        coordinate : [0,0]
+      l = @originalJson.layout[ component.uid ]
 
-      if isGroupLayout then l.size = [0,0]
-      if parentComp    then l.groupUId = parentComp.uid
+      if not l
+        l =
+          uid : component.uid
+          coordinate : [0,0]
+
+        if isGroupLayout then l.size = [0,0]
+        if parentComp    then l.groupUId = parentComp.uid
 
       @layout[ l.uid ] = l
       return
@@ -120,6 +128,19 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         return topicComp
       return null
 
+    getComp: ( json, type ) ->
+      for uid, comp of @originalJson.component
+        if comp.type isnt type then continue
+
+        key = constant.AWS_RESOURCE_KEY[ comp.type ]
+
+        if not comp.resource then continue;
+
+        if ( comp.resource[key] is json[key] )
+          return comp
+
+      {}
+
     _mapProperty : ( aws_json, resource ) ->
       for k, v of aws_json
         if typeof(v) is "string" and resource[k[0].toUpperCase() + k.slice(1)] isnt undefined
@@ -143,22 +164,21 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
           "name": comp.name
       compMap
 
+
+
   # The order of Converters functions are important!
   # Some converter must be behind other converters.
   Converters = [
     ()-> # Vpc & Dhcp
       vpc = @CrPartials( "VPC" ).get( @vpcId ).attributes
-      if vpc.dhcpOptionsId
-        dhcp = @add("DHCP", { id : "DhcpOption" }, {
-          DhcpOptionsId : vpc.dhcpOptionsId
-        })
 
+      vpc.VpcId = @vpcId
       # Cache the vpc so that other can use it.
-      @theVpc = vpcComp = @add("VPC", vpc, {
+      @theVpc = vpcComp = @add("VPC", vpc, _.extend @getComp( vpc, constant.RESTYPE.VPC ), {
         CidrBlock       : vpc.cidrBlock
-        DhcpOptionsId   : if dhcp then CREATE_REF(dhcp) else ""
+        DhcpOptionsId   : vpc.dhcpOptionsId
         InstanceTenancy : vpc.instanceTenancy
-        VpcId           : vpc.id
+
         # EnableDnsHostnames : false # TODO :
         # EnableDnsSupport   : true  # TODO :
       })

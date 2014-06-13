@@ -83,6 +83,7 @@ define [
     isFixed     : ()-> false
     isWorkingOn : ( attribute )-> @opsModel is attribute
     tabClass    : ()-> "icon-app-pending"
+    title       : ()-> @opsModel.get("name") + " - Launching"
 
     constructor : ( opsModel )->
       if not opsModel

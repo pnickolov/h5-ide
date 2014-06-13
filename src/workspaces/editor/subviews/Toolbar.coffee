@@ -248,13 +248,12 @@ define [
                 return false
             # setUsage
             @json.usage = $("#app-usage-selectbox").find(".dropdown .item.selected").data('value')
-            @json.name = appNameDom.val()
             appNameRepeated = @checkAppNameRepeat(appNameDom.val())
             if not @defaultKpIsSet() or appNameRepeated
                 return false
             @modal.close()
-            @workspace.opsModel.run(@json).fail (err)=>
-                error = if err.awsError then err.error + "." + err.awsError else "#{err.error} - #{err.result}"
+            @workspace.opsModel.run(@json, appNameDom.val()).fail (err)=>
+                error = if err.awsError then err.error + "." + err.awsError else " #{err.error} : #{err.result || err.msg}"
                 notification 'error', sprintf(lang.ide.PROP_MSG_WARN_FAILA_TO_RUN_BECAUSE,@workspace.opsModel.get('name'),error)
 
     checkAppNameRepeat: (nameVal)->

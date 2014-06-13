@@ -228,10 +228,11 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
         App.model.stackList().add self
 
     # Runs a stack into app, returns a promise that will fullfiled with a new OpsModel.
-    run : ( toRunJson )->
-      ApiRequest("stack_run",{
+    run : ( toRunJson, appName )->
+      ApiRequest("stack_run_v2",{
         region_name : @get("region")
         stack       : toRunJson
+        app_name    : appName
       }).then ( res )-> self
 
     # Duplicate the stack

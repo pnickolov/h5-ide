@@ -8,8 +8,25 @@
 <!-- {{appProcessing}} -->
 <div class="ops-process">
   <header class="processing">{{this}}<span class="process-info">0%</span></header>
+  <header class="processing rolling-back-content">Rolling back.</header>
   <section class="loading-spinner"></section>
   <div class="progress"> <div class="bar" style="width:0%;"></div> </div>
+</div>
+
+<!-- {{appUpdateStatus}} -->
+<div class="ops-process">
+  <header class="processing">{{#unless error}}App has updated successfully.{{else}}The app failed to update.{{/unless}}</header>
+  {{#if error}}
+  <div class="error-info-block">
+    <div class="result-sub-title">{{i18n 'PROC_RLT_FAILED_SUB_TITLE'}}</div>
+    <div class="result-error-info">
+      <p class="title">{{ i18n "PROC_ERR_INFO" }}</p>
+      <p class="detail">{{{error}}}</p>
+    </div>
+    <div class="result-error-notice">The state of your app has been rolled back, except for the already deleted resources.</div>
+  </div>
+  {{/if}}
+  <button class="btn btn-silver" id="processDoneBtn">Done</button>
 </div>
 
 <!-- {{toolbar.BtnActionPng}} -->
@@ -64,7 +81,7 @@
 <button class="btn-toolbar icon-export-png tooltip seperator" data-analytics-plus="export_png" data-tooltip='{{ i18n "TOOL_EXPORT_AS_PNG" }}'></button>
 
 <!-- {{toolbar.BtnReloadRes}} -->
-<button class="btn-toolbar tooltip icon-refresh seperator" data-tooltip="{{i18n 'TOOL_TIP_REFRESH_REOURCES'}}" id="btn-app-refresh"></button>
+<button class="btn-toolbar tooltip icon-refresh seperator" data-tooltip="{{i18n 'TOOL_TIP_REFRESH_REOURCES'}}"></button>
 
 
 <!-- {{toolbar.BtnSwitchStates}} -->

@@ -6,11 +6,6 @@ define [
 ], ( StackView, OpsModel, OpsEditorTpl )->
 
   StackView.extend {
-    initialize : ()->
-      StackView.prototype.initialize.apply this, arguments
-      @listenTo @workspace.opsModel, "change:progress", @updateProgress
-      return
-
     bindUserEvent : ()->
       # Events
       if @workspace.isAppEditMode()
@@ -53,34 +48,52 @@ define [
       $("#OEPanelLeft").toggleClass "force-hidden", !@workspace.isAppEditMode()
 
       @statusbar.render()
+
+      pp = @__progress
+      @toggleProcessing()
+      @__progress = pp
+      @updateProgress()
+      @restoreUpdateStatus()
       return
 
     toggleProcessing : ()->
+      if not @$el then return
+
       @toolbar.updateTbBtns()
       @$el.children(".ops-process").remove()
 
       opsModel = @workspace.opsModel
-      if opsModel.isProcessing()
-        switch opsModel.get("state")
-          when OpsModel.State.Starting
-            text = "Starting your app..."
-          when OpsModel.State.Stopping
-            text = "Stopping your app..."
-          when OpsModel.State.Terminating
-            text = "Terminating your app.."
-          when OpsModel.State.Updating
-            text = "Applying changes to your app..."
-          else
-            console.warn "Unknown opsmodel state when showing loading in AppEditor,", opsModel
-            text = "Processing your request..."
+      if not opsModel.isProcessing() then return
 
-        @$el.append OpsEditorTpl.appProcessing(text)
+      switch opsModel.get("state")
+        when OpsModel.State.Starting
+          text = "Starting your app..."
+        when OpsModel.State.Stopping
+          text = "Stopping your app..."
+        when OpsModel.State.Terminating
+          text = "Terminating your app.."
+        when OpsModel.State.Updating
+          text = "Applying changes to your app..."
+        else
+          console.warn "Unknown opsmodel state when showing loading in AppEditor,", opsModel
+          text = "Processing your request..."
+
+      @__progress = 0
+      @$el.append OpsEditorTpl.appProcessing(text)
       return
 
     updateProgress : ()->
+      pp = @workspace.opsModel.get("progress")
+
       $p = @$el.find(".ops-process")
-      $p.toggleClass("has-progess", true)
-      pro = @workspace.opsModel.get("progress") + "%"
+      $p.toggleClass("has-progess", !!pp)
+
+      if @__progress > pp
+        $p.toggleClass("rolling-back", true)
+      @__progress = pp
+
+      pro = "#{pp}%"
+
       $p.find(".process-info").text( pro )
       $p.find(".bar").css { width : pro }
       return
@@ -92,11 +105,30 @@ define [
         @resourcePanel.render()
       else
         $("#OEPanelLeft").empty()
-      @propertyPanel.refresh()
+      @propertyPanel.openPanel()
       @bindUserEvent()
       return
+
 
     emptyCanvas : ()->
       $("#vpc_layer, #az_layer, #subnet_layer, #asg_layer, #line_layer, #node_layer").empty()
       return
+
+    showUpdateStatus : ( error )->
+      @__appUpdateStatus = { error : error }
+      @$el.find(".ops-process").remove()
+
+      self = @
+      $(OpsEditorTpl.appUpdateStatus(@__appUpdateStatus))
+        .appendTo(@$el)
+        .find("#processDoneBtn")
+        .click ()->
+          self.__appUpdateStatus = null
+          self.$el.find(".ops-process").remove()
+
+    restoreUpdateStatus : ()->
+      if not @__appUpdateStatus then return
+      @showUpdateStatus( @__appUpdateStatus.error )
+      return
+
   }

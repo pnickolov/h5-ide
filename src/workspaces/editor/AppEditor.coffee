@@ -48,12 +48,16 @@ define [
           self.differ = undefined
         return
 
+    isModified : ()-> @isAppEditMode() && @design && @design.isModified()
+
     isAppEditMode : ()-> !!@__appEdit
 
     initDesign : ()->
       StackEditor.prototype.initDesign.call this
       if @differ then @differ.popup()
       return
+
+    refreshResource : ()->
 
     switchToEditMode : ()->
       if @isAppEditMode() then return
@@ -79,26 +83,54 @@ define [
       @view.switchMode( false )
       true
 
-    isModified : ()-> @isAppEditMode() && @design && @design.isModified()
-
     applyAppEdit : ( modfiedData, force )->
       modfied = modfiedData or @design.isModified( undefined, true )
 
       if modfied and not force then return modfied
 
-      @design.setMode( Design.MODE.App )
-      @view.switchMode( false )
+      if not modfied
+        @__appEdit = false
+        @design.setMode( Design.MODE.App )
+        @view.switchMode( false )
+        return true
 
-      @opsModel.update( modfiedData.newData, !modfiedData.component )
+      self = @
+      @__applyingUpdate = true
+
+      @opsModel.update( modfied.newData, !modfied.component ).then ()->
+        self.__applyingUpdate = false
+        self.__appEdit = false
+
+        self.stopListening self.opsModel, "change:progress", self.updateProgress
+
+        self.design.setMode( Design.MODE.App )
+        self.view.showUpdateStatus()
+
+        if self.isAwake()
+          self.view.switchMode( false )
+
+        return
+
+      , ( err )->
+        self.__applyingUpdate = false
+        self.stopListening self.opsModel, "change:progress", self.updateProgress
+
+        self.view.showUpdateStatus( err.msg )
+        return
+
+      @listenTo @opsModel, "change:progress", @updateProgress
+
       true
 
+    updateProgress : ()-> if @isAwake() then @view.updateProgress()
+
     onOpsModelStateChanged : ()->
-      if @isInited()
-        @view.toggleProcessing()
-        @updateTab()
+      if not @isInited() then return
+
+      @updateTab()
+      @view.toggleProcessing()
 
       StackEditor.prototype.onOpsModelStateChanged.call this
 
-    refreshResource : ()->
 
   AppEditor

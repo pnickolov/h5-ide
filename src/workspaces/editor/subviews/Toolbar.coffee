@@ -79,9 +79,9 @@ define [
         @$el.children(".icon-update-app").toggle( not isAppEdit )
         @$el.children(".icon-apply-app, .icon-cancel-update-app").toggle( isAppEdit )
         if isAppEdit
-          @$el.children(".icon-terminate, .icon-stop, .icon-play").hide()
+          @$el.children(".icon-terminate, .icon-stop, .icon-play, .icon-refresh").hide()
         else
-          @$el.children(".icon-terminate").show()
+          @$el.children(".icon-terminate, .icon-refresh").show()
           @$el.children(".icon-stop").toggle( opsModel.get("stoppable") and opsModel.testState(OpsModel.State.Running) )
           @$el.children(".icon-play").toggle( opsModel.testState( OpsModel.State.Stopped ) )
 
@@ -305,7 +305,14 @@ define [
     terminateApp    : ()-> App.terminateApp( @workspace.opsModel.id ); false
     refreshResource : ()-> @workspace.refreshResource(); false
     switchToAppEdit : ()-> @workspace.switchToEditMode(); false
-    applyAppEdit    : ()-> @workspace.applyAppEdit(); false
+    applyAppEdit    : ()->
+      result = @workspace.applyAppEdit()
+      if result isnt true
+        # Show popup dialog
+
+        # Call this method when user confirm to update
+        @workspace.applyAppEdit( result, true )
+        return
 
     opsOptionChanged: -> #todo: Almost Done.
         $switcher = $(".toolbar-visual-ops-switch").toggleClass('on')

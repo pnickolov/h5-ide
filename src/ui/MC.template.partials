@@ -908,18 +908,6 @@ Following rule(s) will be deleted from its(their) security group:</div>
 	</ul>
 </div>
 
-<!-- {{instanceListItem}} -->
-<li>
-	<a href="#" class="instanceList-item" id="{{id}}_{{@index}}" data-id="{{appId}}">
-		<i class="instanceList-item-status tooltip status status-{{status}}"></i>
-		<span class="instanceList-item-icon" style="background-image:url('./assets/images/ide/ami/{{../background}}.png')"></span>
-		<div class="instanceList-item-volume" data-target-id="{{id}}_{{@index}}">
-			<span class="instanceList-item-number">{{volume}}</span>
-		</div>
-		<span class="instanceList-item-label">{{name}}</span>
-	</a>
-</li>
-
 <!-- {{eniList}} -->
 <div id="eniList-wrap">
 	<div id="eniList-header">
@@ -937,14 +925,6 @@ Following rule(s) will be deleted from its(their) security group:</div>
 		{{/each}}
 	</ul>
 </div>
-
-<!-- {{eniListItem}} -->
-<li>
-	<a href="#" class="eniList-item" id="{{id}}_{{@index}}" data-id="{{id}}">
-		<i class="eniList-item-eip-status{{#if ../eip}} on{{/if}}"></i>
-		<span class="eniList-item-label">{{name}}</span>
-	</a>
-</li>
 
 <!-- {{setupCIDRConfirm}} -->
 <div style="width:420px">
@@ -1126,69 +1106,6 @@ Following rule(s) will be deleted from its(their) security group:</div>
 		</div>
 	</div>
 
-</div>
-
-<!-- {{openTabFail}} -->
-<div class="overlay-content-wrap">
-	<div class="overlay-text">Oops! There has been some issue loading the tab.</div>
-	<button class="btn btn-blue" id="btn-fail-reload">Reload</button>
-</div>
-
-<!-- {{appStarting}} -->
-<div class="overlay-content-wrap">
-	<div class="overlay-text">Starting app...</div>
-	<div class="loading-spinner"></div>
-</div>
-
-<!-- {{appStopping}} -->
-<div class="overlay-content-wrap">
-	<div class="overlay-text">Stopping app...</div>
-	<div class="loading-spinner"></div>
-</div>
-
-<!-- {{appTerminating}} -->
-<div class="overlay-content-wrap">
-	<div class="overlay-text">Terminating app...</div>
-	<div class="loading-spinner"></div>
-</div>
-
-<!-- {{appUpdating}} -->
-<div class="overlay-content-wrap">
-	<div class="overlay-text">Updating app...</div>
-	<div class="loading-spinner"></div>
-	{{# if is_show }}
-	<div class="progress">
-		<div class="bar" id="progress_bar" style="width: {{ rate }}%;"></div>
-	</div>
-	<p class="process-info">
-		<span><b class="num" id="progress_num">{{ dones }}</b> of</span>
-		<span><b class="total" id="progress_total">{{ steps }}</b> tasks</span>
-	</p>
-	{{/if}}
-</div>
-
-<!-- {{appUpdatedSuccess}} -->
-<div class="overlay-content-wrap">
-	<div class="overlay-text">App has updated successfully.</div>
-	<button class="btn btn-blue" id="btn-updated-success">Done</button>
-</div>
-
-<!-- {{appChangedfail}} -->
-<div class="overlay-content-wrap app-change-fail">
-	<div class="overlay-text">Oops! The app failed to {{ state }}.</div>
-	{{#if is_show}}
-	<div class="error-info-block">
-		<div class="result-sub-title">{{ i18n "PROC_RLT_FAILED_SUB_TITLE" }}</div>
-		<div class="result-error-info">
-			<p class="title">{{ i18n "PROC_ERR_INFO" }}</p>
-			<p class="detail">{{{ detail }}}</p>
-		</div>
-		{{#if update_detail}}
-		<div class="result-error-notice">The state of your app has been rolled back, except for the already deleted resources.</div>
-		{{/if}}
-	</div>
-	{{/if}}
-	<button class="btn btn-silver" id="btn-changedfail">Done</button>
 </div>
 
 <!-- {{nodeAction}} -->

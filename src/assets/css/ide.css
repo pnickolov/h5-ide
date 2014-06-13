@@ -3927,40 +3927,6 @@ summary:focus {
 	color: #eee;
 }
 
-/** App Update Fail **/
-
-.error-info-block {
-	text-align: left;
-	margin-bottom: 20px;
-}
-
-.error-info-block .result-sub-title {
-	font-size: 16px;
-	color: #eee;
-	background: rgba(0, 0, 0, 0.2);
-	padding: 10px;
-}
-
-.error-info-block .result-error-info {
-	padding: 10px;
-	color: #ccc;
-	background-color: rgba(40,40,40,.5);
-	margin-bottom: 5px;
-}
-
-.error-info-block .title {
-	font-weight: bold;
-}
-
-.error-info-block .detail {
-	color: #ec3c38;
-}
-
-.error-info-block .result-error-notice {
-	padding: 5px;
-	color: #aaa;
-}
-
 /** Server Group Member **/
 
 .subtitle {

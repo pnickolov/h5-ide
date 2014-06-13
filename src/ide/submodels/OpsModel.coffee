@@ -32,7 +32,6 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
       stoppable      : true # If the app has instance_store_ami, stoppable is false
       # usage          : ""
       # terminateFail  : false
-      # updateFail     : ""
       # progress       : 0
       # opsActionError : ""
       # importVpcId    : ""
@@ -312,22 +311,22 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
       oldState = @get("state")
       @set("state", OpsModelState.Updating)
       @attributes.progress = 0
-      @attributes.updateFail = ""
+
       self = @
       ApiRequest("app_update", {
         region_name : @get("region")
         spec        : newJson
         app_id      : @get("id")
         fast_update : fastUpdate
-      }).fail ( err )->
-        if err.error < 0
-          throw err
-
-        self.set {
-          name       : newJson.name
-          state      : oldState
-          updateFail : err.msg
-        }
+      }).then ()->
+        self.__updateAppDefer = d = Q.defer()
+        d.promise.then ()->
+          self.__jsonData = newJson
+          self.set {
+            name  : newJson.name
+            state : OpsModelState.Running
+          }
+      , ( err )->
         throw err
 
     # Replace the data in mongo with new data. This method doesn't trigger an app update.
@@ -372,12 +371,17 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
           else if state.failed
             toState = OpsModelState.Running
         when "update"
-          if state.completed
-            toState = OpsModelState.Running
+          if not @__updateAppDefer
+            console.warn "UpdateAppDefer is null when setStatusWithWSEvent with `update` event."
           else
-            @attributes.updateFail = ""
-            @set "updateFail", error
-            @__updateStatus()
+            if state.completed
+              @__updateAppDefer.resolve()
+              @__updateAppDefer = null
+            else
+              ApiRequest("app_list",{app_ids:[@get("id")]}).then (res)=>
+                @setStatusWithApiResult( res[0].state )
+                @__updateAppDefer.reject McError( ApiRequest.Errors.OperationFailure, error )
+                @__updateAppDefer = null
         when "terminate"
           if state.completed
             toState = OpsModelState.Destroyed
@@ -402,11 +406,6 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
 
       return
 
-
-    __updateStatus : ()->
-      ApiRequest("app_list",{app_ids:[@get("id")]}).then (res)=>
-        @setStatusWithApiResult( res[0].state )
-        return
 
     ###
      Internal Methods

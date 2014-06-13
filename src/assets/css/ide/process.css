@@ -74,3 +74,40 @@
     -webkit-animation: progress-bar 2s linear infinite;
     -moz-animation: progress-bar 2s linear infinite;
     animation: progress-bar 2s linear infinite; }
+
+#OpsEditor .ops-process {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 3;
+  background: rgba(0, 0, 0, 0.8);
+  text-align: center; }
+  #OpsEditor .ops-process:not(.has-progess) .process-info, #OpsEditor .ops-process:not(.has-progess) .progress {
+    display: none; }
+  #OpsEditor .ops-process.has-progess .loading-spinner {
+    display: none; }
+  #OpsEditor .ops-process .error-info-block {
+    text-align: left;
+    max-width: 600px;
+    margin: 20px auto; }
+  #OpsEditor .ops-process .result-sub-title {
+    font-size: 16px;
+    color: #eee;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 10px; }
+  #OpsEditor .ops-process .result.error-info {
+    padding: 10px;
+    color: #ccc;
+    background: rgba(40, 40, 40, 0.5);
+    margin-bottom: 5px; }
+  #OpsEditor .ops-process .result-error-notice {
+    padding: 5px;
+    color: #aaa; }
+  #OpsEditor .ops-process .rolling-back-content {
+    display: none; }
+  #OpsEditor .ops-process.rolling-back .processing {
+    display: none; }
+  #OpsEditor .ops-process.rolling-back .rolling-back-content {
+    display: block; }

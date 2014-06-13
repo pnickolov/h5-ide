@@ -1282,36 +1282,6 @@ function program1(depth0,data,depth1) {
 TEMPLATE.instanceList=Handlebars.template(__TEMPLATE__);
 
 
-__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data,depth1) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
-
-
-  buffer += "<li>\n	<a href=\"#\" class=\"instanceList-item\" id=\""
-    + escapeExpression(((stack1 = (depth0 && depth0.id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "_"
-    + escapeExpression(((stack1 = (data == null || data === false ? data : data.index)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" data-id=\""
-    + escapeExpression(((stack1 = (depth0 && depth0.appId)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\">\n		<i class=\"instanceList-item-status tooltip status status-"
-    + escapeExpression(((stack1 = (depth0 && depth0.status)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\"></i>\n		<span class=\"instanceList-item-icon\" style=\"background-image:url('./assets/images/ide/ami/"
-    + escapeExpression(((stack1 = (depth1 && depth1.background)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + ".png')\"></span>\n		<div class=\"instanceList-item-volume\" data-target-id=\""
-    + escapeExpression(((stack1 = (depth0 && depth0.id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "_"
-    + escapeExpression(((stack1 = (data == null || data === false ? data : data.index)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\">\n			<span class=\"instanceList-item-number\">"
-    + escapeExpression(((stack1 = (depth0 && depth0.volume)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</span>\n		</div>\n		<span class=\"instanceList-item-label\">"
-    + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</span>\n	</a>\n</li>";
-  return buffer;
-  };
-TEMPLATE.instanceListItem=Handlebars.template(__TEMPLATE__);
-
-
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -1351,34 +1321,6 @@ function program2(depth0,data) {
   return buffer;
   };
 TEMPLATE.eniList=Handlebars.template(__TEMPLATE__);
-
-
-__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data,depth1) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
-
-function program1(depth0,data) {
-  
-  
-  return " on";
-  }
-
-  buffer += "<li>\n	<a href=\"#\" class=\"eniList-item\" id=\""
-    + escapeExpression(((stack1 = (depth0 && depth0.id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "_"
-    + escapeExpression(((stack1 = (data == null || data === false ? data : data.index)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" data-id=\""
-    + escapeExpression(((stack1 = (depth0 && depth0.id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\">\n		<i class=\"eniList-item-eip-status";
-  stack1 = helpers['if'].call(depth0, (depth1 && depth1.eip), {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\"></i>\n		<span class=\"eniList-item-label\">"
-    + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</span>\n	</a>\n</li>";
-  return buffer;
-  };
-TEMPLATE.eniListItem=Handlebars.template(__TEMPLATE__);
 
 
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
@@ -1648,126 +1590,6 @@ function program13(depth0,data) {
   return buffer;
   };
 TEMPLATE.updateApp=Handlebars.template(__TEMPLATE__);
-
-
-__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  
-
-
-  return "<div class=\"overlay-content-wrap\">\n	<div class=\"overlay-text\">Oops! There has been some issue loading the tab.</div>\n	<button class=\"btn btn-blue\" id=\"btn-fail-reload\">Reload</button>\n</div>";
-  };
-TEMPLATE.openTabFail=Handlebars.template(__TEMPLATE__);
-
-
-__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  
-
-
-  return "<div class=\"overlay-content-wrap\">\n	<div class=\"overlay-text\">Starting app...</div>\n	<div class=\"loading-spinner\"></div>\n</div>";
-  };
-TEMPLATE.appStarting=Handlebars.template(__TEMPLATE__);
-
-
-__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  
-
-
-  return "<div class=\"overlay-content-wrap\">\n	<div class=\"overlay-text\">Stopping app...</div>\n	<div class=\"loading-spinner\"></div>\n</div>";
-  };
-TEMPLATE.appStopping=Handlebars.template(__TEMPLATE__);
-
-
-__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  
-
-
-  return "<div class=\"overlay-content-wrap\">\n	<div class=\"overlay-text\">Terminating app...</div>\n	<div class=\"loading-spinner\"></div>\n</div>";
-  };
-TEMPLATE.appTerminating=Handlebars.template(__TEMPLATE__);
-
-
-__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
-
-function program1(depth0,data) {
-  
-  var buffer = "", stack1;
-  buffer += "\n	<div class=\"progress\">\n		<div class=\"bar\" id=\"progress_bar\" style=\"width: "
-    + escapeExpression(((stack1 = (depth0 && depth0.rate)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "%;\"></div>\n	</div>\n	<p class=\"process-info\">\n		<span><b class=\"num\" id=\"progress_num\">"
-    + escapeExpression(((stack1 = (depth0 && depth0.dones)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</b> of</span>\n		<span><b class=\"total\" id=\"progress_total\">"
-    + escapeExpression(((stack1 = (depth0 && depth0.steps)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</b> tasks</span>\n	</p>\n	";
-  return buffer;
-  }
-
-  buffer += "<div class=\"overlay-content-wrap\">\n	<div class=\"overlay-text\">Updating app...</div>\n	<div class=\"loading-spinner\"></div>\n	";
-  stack1 = helpers['if'].call(depth0, (depth0 && depth0.is_show), {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n</div>";
-  return buffer;
-  };
-TEMPLATE.appUpdating=Handlebars.template(__TEMPLATE__);
-
-
-__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  
-
-
-  return "<div class=\"overlay-content-wrap\">\n	<div class=\"overlay-text\">App has updated successfully.</div>\n	<button class=\"btn btn-blue\" id=\"btn-updated-success\">Done</button>\n</div>";
-  };
-TEMPLATE.appUpdatedSuccess=Handlebars.template(__TEMPLATE__);
-
-
-__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, escapeExpression=this.escapeExpression, functionType="function", self=this;
-
-function program1(depth0,data) {
-  
-  var buffer = "", stack1;
-  buffer += "\n	<div class=\"error-info-block\">\n		<div class=\"result-sub-title\">"
-    + escapeExpression(helpers.i18n.call(depth0, "PROC_RLT_FAILED_SUB_TITLE", {hash:{},data:data}))
-    + "</div>\n		<div class=\"result-error-info\">\n			<p class=\"title\">"
-    + escapeExpression(helpers.i18n.call(depth0, "PROC_ERR_INFO", {hash:{},data:data}))
-    + "</p>\n			<p class=\"detail\">";
-  stack1 = ((stack1 = (depth0 && depth0.detail)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1);
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "</p>\n		</div>\n		";
-  stack1 = helpers['if'].call(depth0, (depth0 && depth0.update_detail), {hash:{},inverse:self.noop,fn:self.program(2, program2, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n	</div>\n	";
-  return buffer;
-  }
-function program2(depth0,data) {
-  
-  
-  return "\n		<div class=\"result-error-notice\">The state of your app has been rolled back, except for the already deleted resources.</div>\n		";
-  }
-
-  buffer += "<div class=\"overlay-content-wrap app-change-fail\">\n	<div class=\"overlay-text\">Oops! The app failed to "
-    + escapeExpression(((stack1 = (depth0 && depth0.state)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + ".</div>\n	";
-  stack1 = helpers['if'].call(depth0, (depth0 && depth0.is_show), {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n	<button class=\"btn btn-silver\" id=\"btn-changedfail\">Done</button>\n</div>";
-  return buffer;
-  };
-TEMPLATE.appChangedfail=Handlebars.template(__TEMPLATE__);
 
 
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {

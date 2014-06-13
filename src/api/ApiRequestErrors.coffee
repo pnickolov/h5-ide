@@ -10,6 +10,7 @@ define [], ()->
     InvalidMethodCall   : -3 # Occurs when an method is not supposed to be call ( e.g. calling OpsModel.stop() while the model doesn't stands for an app )
     InvalidAwsReturn    : -4
     MissingDataInServer : -5
+    OperationFailure    : -6
 
     Network404 : -404
     Network500 : -500

@@ -9,9 +9,10 @@ define [
   "UI.modalplus"
   'kp_dropdown'
   'constant'
+  'event'
   "UI.notification"
   "backbone"
-], ( OpsModel, OpsEditorTpl, Thumbnail, JsonExporter, ApiRequest, lang, Modal, kpDropdown, constant )->
+], ( OpsModel, OpsEditorTpl, Thumbnail, JsonExporter, ApiRequest, lang, Modal, kpDropdown, constant, ide_event )->
 
   Backbone.View.extend {
 
@@ -323,20 +324,28 @@ define [
             instancesNoUserData = @workspace.opsModel.instancesNoUserData()
             workspace = @workspace
             if not instancesNoUserData
-                debuger
                 $switcher.removeClass 'on'
-                new Modal(
+                confirmModal = new Modal(
                     title: "Conﬁrm to Enable VisualOps"
                     width: "420px"
                     template: OpsEditorTpl.confirm.enableState()
-                    onConfirm: -> agent.enabled = true; workspace.design.set('agent', agent)
+                    confirm: text: "Enable VisualOps"
+                    onConfirm: ->
+                        agent.enabled = true;
+                        confirmModal.close()
+                        $switcher.addClass 'on'
+                        workspace.design.set('agent', agent)
+                        ide_event.trigger ide_event.REFRESH_PROPERTY
+
                 )
             else
                 agent.enabled = true
                 @workspace.design.set("agent",agent)
+                ide_event.trigger ide_event.REFRESH_PROPERTY
         else
             agent.enabled = false
             @workspace.design.set('agent', agent)
+            ide_event.trigger ide_event.REFRESH_PROPERTY
 
 
 

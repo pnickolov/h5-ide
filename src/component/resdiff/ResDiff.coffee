@@ -15,6 +15,7 @@ define [
             @_genDiffInfo(@oldAppJSON.component, @newAppJSON.component)
 
         events:
+
             'click .item .type': '_toggleTab'
             'click .head': '_toggleItem'
 
@@ -106,7 +107,9 @@ define [
 
         _genResTree: ($container, diffComps) ->
 
-            _genTree = (value, key, $parent) ->
+            that = this
+
+            _genTree = (value, key, path, $parent) ->
 
                 if _.isObject(value)
 
@@ -117,34 +120,116 @@ define [
 
                         for _key, _value of value
 
-                            if _.isArray(value)
-                                _key = 'item ' + _key
-
                             __value = if _.isObject(_value) then '' else _value
 
-                            # $treeItem is <li class="item">
-                            $treeItem = $(template.resDiffTreeItem {
+                            nextPath = path.concat([_key])
+                            data = that._processRes(nextPath, {
                                 key: _key,
                                 value: __value
-                            }).appendTo($diffTree)
+                            })
 
-                            if not _.isObject(_value)
-                                $treeItem.addClass('end')
+                            if data.key
 
-                            _genTree(_value, _key, $treeItem)
+                                # $treeItem is <li class="item">
+                                $treeItem = $(template.resDiffTreeItem {
+                                    key: data.key,
+                                    value: data.value
+                                }).appendTo($diffTree)
+
+                                if not _.isObject(_value)
+                                    $treeItem.addClass('end')
+
+                                _genTree(_value, _key, nextPath, $treeItem)
+
                     else
                         
-                        # $parent is <li class="item">
-                        $parent.html template.resDiffTreeMeta({
+                        data = that._processRes(path, {
                             key: key,
-                            value: "#{value.old} -> #{value.new}"
+                            value: value
                         })
-                        $parent.addClass('end')
 
-            _genTree(diffComps, null, $container)
+                        if data.key
+
+                            # $parent is <li class="item">
+                            $parent.html template.resDiffTreeMeta({
+                                key: data.key,
+                                value: data.value
+                            })
+                            $parent.addClass('end')
+
+                        else
+
+                            $parent.remove()
+
+            _genTree(diffComps, null, [], $container)
+
+        _getCompAttr: (path) ->
+
+            oldComp = @oldAppJSON.component
+            newComp = @newAppJSON.component
+
+            oldCompAttr = _.extend(oldComp, {})
+            newCompAttr = _.extend(newComp, {})
+
+            _.each path, (attr) ->
+
+                if oldCompAttr
+
+                    if _.isUndefined(oldCompAttr[attr])
+                        oldCompAttr = undefined
+                    else
+                        oldCompAttr = oldCompAttr[attr]
+
+                if newCompAttr
+
+                    if _.isUndefined(newCompAttr[attr])
+                        newCompAttr = undefined
+                    else
+                        newCompAttr = newCompAttr[attr]
+
+                null
+
+            return {
+                oldAttr: oldCompAttr,
+                newAttr: newCompAttr
+            }
+
+        _processRes: (path, data) ->
+
+            that = this
+
+            if _.isObject(data.value) # process end node
+
+                # default
+                newValue = data.value
+                data.value = "#{newValue.old} -> #{newValue.new}"
+
+            else
+
+                compAttrObj = that._getCompAttr(path)
+                oldAttr = compAttrObj.oldAttr
+                newAttr = compAttrObj.newAttr
+
+                if path.length is 1
+
+                    compUID = path[0]
+                    compName = oldAttr.name
+                    compType = oldAttr.type
+                    data.key = compType
+                    data.value = compName
+
+            if path.length is 2
+
+                if path[1] in ['type', 'uid', 'name']
+
+                    delete data.key
+
+            return data
 
         getChangeInfo: () ->
 
+            that = this
+            
             hasResChange = false
             if _.keys(that.addedComps).length or
                 _.keys(that.removedComps).length or

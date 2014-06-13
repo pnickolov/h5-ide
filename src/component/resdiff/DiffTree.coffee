@@ -88,8 +88,7 @@ define [], () ->
         this.compare = (json1, json2) ->
 
             resultJSON = {}
-            _compare(json1, json2, 'result',resultJSON)
-            console.log(resultJSON.result)
+            _compare(json1, json2, 'result', resultJSON)
             return resultJSON.result
 
         null

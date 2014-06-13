@@ -2,7 +2,7 @@
 define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"], ( CloudResources, CrCollection, constant, ApiRequest )->
 
   # Helpers
-  CREATE_REF = ( comp )-> "@{#{comp.uid}.r.p}"
+  CREATE_REF = ( compOrUid )-> "@{#{compOrUid.uid or compOrUid}.r.p}"
   UID        = MC.guid
   DEFAULT_SG = {}
   NAME       = ( res_attributes )->
@@ -373,7 +373,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
           #not attached
           continue
 
-        azComp = @addAz(aws_vol.availabilityZone)
+        #azComp = @addAz(aws_vol.availabilityZone)
         volRes =
           "VolumeId"     : aws_vol.id
           "Size"         : Number(aws_vol.size)
@@ -383,7 +383,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
             "Device"      : aws_vol.device
             "InstanceId"  : ""
           "VolumeType"      : aws_vol.volumeType
-          "AvailabilityZone": CREATE_REF( azComp )
+          "AvailabilityZone": CREATE_REF( aws_vol.availabilityZone )
 
         #create volume component, but add with instance
         volComp = @add( "VOL", aws_vol, volRes, "vol" + aws_vol.device )

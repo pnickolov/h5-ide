@@ -89,30 +89,13 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
     # Returns a promise that will resolve with the JSON data of the stack/app
     # Calling this method will trigger an "jsonDataLoaded" event
     fetchJsonData : ()->
-      self = @
-      # For app, if we have json already, we still need to check if the app is changed or not.
-      if not @isImported() and @isApp()
-        if @__jsonData
-          return ApiRequest("resource_check_change", {
-            region_name : @get("region")
-            app_id      : @get("id")
-          }).then ( res )->
-            self.__jsonData.changed = !!res
-            self.__jsonData.changed = true ###################### REMOVE
-        else
-          return ApiRequest("app_info", {
-            region_name : @get("region")
-            app_ids     : [@get("id")]
-          }).then (ds)->
-            ds[0].changed = true ###################### REMOVE
-            self.__setJsonData( ds[0] )
-
       if @__jsonData
         d = Q.defer()
         d.resolve @__jsonData
         @trigger "jsonDataLoaded"
         return d.promise
 
+      self = @
       if @isImported()
         return CloudResources( "OpsResource", @getVpcId() ).init( @get("region") ).fetch ()->
           json = self.generateJsonFromRes()
@@ -123,6 +106,11 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
         return ApiRequest("stack_info", {
           region_name : @get("region")
           stack_ids   : [@get("id")]
+        }).then (ds)-> self.__setJsonData( ds[0] )
+      else
+        return ApiRequest("app_info", {
+          region_name : @get("region")
+          app_ids     : [@get("id")]
         }).then (ds)-> self.__setJsonData( ds[0] )
 
     __setJsonData : ( json )->

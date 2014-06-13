@@ -83,7 +83,7 @@ define ["ApiRequest", "./CrModel", "backbone"], ( ApiRequest, CrModel )->
     # It parse data and the cached them in this collection and returns parsed models.
     parseExternalData : ( awsData )->
       try
-        awsData = @parseFetchData( awsData )
+        awsData = @parseFetchData @unifyApi awsData
       catch e
         return null
 
@@ -95,6 +95,25 @@ define ["ApiRequest", "./CrModel", "backbone"], ( ApiRequest, CrModel )->
 
       @add awsData
       return
+
+    unifyReplace:
+      networkInterfaces: 'networkInterfaceSet'
+      associations: 'associationSet'
+      privateIpAddresses: 'privateIpAddressesSet'
+      groups: 'groupSet'
+
+    unifyApi: ( data ) ->
+      if _.isObject data
+        for k, v of data
+          if k in _.keys( @unifyReplace )
+            data[ @unifyReplace[ k ] ] = item: data[ k ]
+            v = data[ @unifyReplace[ k ] ].item
+            delete data[ k ]
+          if _.isObject v
+            @unifyApi v
+
+      data
+
 
     # Override this method to parse the result of the fetch.
     parseFetchData : ( res )-> res

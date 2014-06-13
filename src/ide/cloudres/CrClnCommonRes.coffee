@@ -337,8 +337,6 @@ define [
               _.extend enis[index], e.item[0]
             if key is "privateIpAddressesSet"
               enis[index].privateIpAddressesSet = enis[index].privateIpAddressesSet?.item || []
-            if key is 'privateIpAddresses'
-              enis[index].privateIpAddressesSet = enis[index].privateIpAddresses || []
 
             # Remove All Object in data resource to remove [Object, Object]
             if _.isObject(e) and key isnt "privateIpAddressesSet"

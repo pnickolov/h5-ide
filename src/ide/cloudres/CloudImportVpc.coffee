@@ -130,8 +130,12 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
       compMap = {}
       for uid, comp of originalJson.component
         key = constant.AWS_RESOURCE_KEY[ comp.type ]
+
+        if not comp.resource then continue;
+
         if not comp.resource[key]
           console.error "not found id " + key + " for resource", comp
+
         compMap[ comp.resource[key] ] =
           "uid" : uid
           "name": comp.name
@@ -508,10 +512,10 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         for ip in aws_eni.privateIpAddressesSet
           eniRes.PrivateIpAddressSet.push {"PrivateIpAddress": ip.privateIpAddress, "AutoAssign" : "false", "Primary" : ip.primary}
 
-        eniRes.GroupSet.push {
-          "GroupId": aws_eni.groupId,
+        eniRes.GroupSet.push
+          "GroupId": CREATE_REF @sgs[ aws_eni.groupId ]
           "GroupName": aws_eni.groupName
-          }
+
 
         eniComp = @add( "ENI", aws_eni, eniRes, "eni" + aws_eni.deviceIndex )
         if aws_eni.deviceIndex isnt "0"

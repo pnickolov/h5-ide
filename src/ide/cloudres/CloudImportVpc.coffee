@@ -358,14 +358,6 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         @sgs[ aws_sg.id ] = sgComp
       return
 
-    ()-> # KP
-      kpRes =
-        "KeyFingerprint": ""
-        "KeyName": "DefaultKP"
-      @add( "KP", null, kpRes, 'DefaultKP' )
-      return
-
-
     ()-> #Volume
       for aws_vol in @CrPartials( "VOL" ).where({category:@region}) || []
         aws_vol = aws_vol.attributes
@@ -898,8 +890,8 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
           continue
 
         #convert Topic to REF
-        topicComp = @addTopic( aws_nc.TopicARN )
-        ncRes.TopicARN = CREATE_REF( topicComp )
+        #topicComp = @addTopic( aws_nc.TopicARN )
+        ncRes.TopicARN = CREATE_REF( aws_nc.TopicARN )
 
         ncComp = @add( "NC", aws_nc, ncRes, "SnsNotification")
       return

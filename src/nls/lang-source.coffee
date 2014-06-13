@@ -4255,6 +4255,10 @@ VisualOps API. You cannot UNDO this action.'
       en: "Specify a key pair as $DefaultKeyPair for this app."
       zh: ""
 
+    RUN_STACK_MODAL_CONFIRM_BTN:
+      en: "Run Stack"
+      zh: "运行"
+
     RUN_STACK:
       en: "run stack"
       zh: "运行"

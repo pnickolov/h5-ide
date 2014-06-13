@@ -226,7 +226,7 @@ define [
             width: '450px'
             height: "515px"
             confirm:
-                text: if App.user.hasCredential() then lang.ide.RUN_STACK else lang.ide.RUN_STACK_MODAL_NEED_CREDENTIAL
+                text: if App.user.hasCredential() then lang.ide.RUN_STACK_MODAL_CONFIRM_BTN else lang.ide.RUN_STACK_MODAL_NEED_CREDENTIAL
                 disabled: true
         @renderKpDropdown()
         cost = Design.instance().getCost()

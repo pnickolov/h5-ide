@@ -186,7 +186,7 @@ define [
       if uid
         component = design.component( uid )
         if component and component.type is type and design.modeIsApp() and component.get( 'appId' ) and not component.hasAppResource()
-          type = 'Missing_Resource'
+          type = component.type || 'Missing_Resource'
       else
         type = "Stack"
 

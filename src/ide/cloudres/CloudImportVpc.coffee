@@ -133,6 +133,8 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
 
         if not comp.resource then continue;
 
+        if not key then continue
+
         if not comp.resource[key]
           console.error "not found id " + key + " for resource", comp
 

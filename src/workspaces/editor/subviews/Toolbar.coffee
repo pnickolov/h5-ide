@@ -241,6 +241,8 @@ define [
         checkAppNameRepeat = @checkAppNameRepeat.bind @
         appNameDom.keyup ->
             checkAppNameRepeat(appNameDom.val())
+
+        self = @
         @modal.on 'confirm', ()=>
             @hideError()
             if not App.user.hasCredential()
@@ -251,10 +253,15 @@ define [
             appNameRepeated = @checkAppNameRepeat(appNameDom.val())
             if not @defaultKpIsSet() or appNameRepeated
                 return false
-            @modal.close()
-            @workspace.opsModel.run(@json, appNameDom.val()).fail (err)=>
+
+            self.mdoal.find(".btn.modal-confirm").attr("disabled", "disabled")
+            @workspace.opsModel.run(@json, appNameDom.val()).then ( ops )->
+                self.modal.close()
+                App.openOps( ops )
+            , (err)->
+                self.modal.close()
                 error = if err.awsError then err.error + "." + err.awsError else " #{err.error} : #{err.result || err.msg}"
-                notification 'error', sprintf(lang.ide.PROP_MSG_WARN_FAILA_TO_RUN_BECAUSE,@workspace.opsModel.get('name'),error)
+                notification 'error', sprintf(lang.ide.PROP_MSG_WARN_FAILA_TO_RUN_BECAUSE,self.workspace.opsModel.get('name'),error)
 
     checkAppNameRepeat: (nameVal)->
         if App.model.appList().findWhere(name: nameVal)

@@ -40,7 +40,7 @@ define [
           old : self.opsModel.getJsonData()
           new : newJson
         })
-        result = differ.getChangeInfo()
+        result = self.differ.getChangeInfo()
         if result.hasResChange
           return self.opsModel.saveApp( newJson )
         else

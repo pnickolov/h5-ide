@@ -191,6 +191,7 @@ define [
       for i in data.DescribeInstancesResponse.reservationSet?.item || []
         for ami in i.instancesSet?.item || []
           instances.push ami
+
       instances
 
     parseFetchData : ( data )->
@@ -200,6 +201,7 @@ define [
         ami.groupSet            = ami.groupSet?.item || []
 
         ami.id = ami.instanceId
+        ami.instanceState = ami.state if ami.state
         delete ami.instanceId
       data
   }
@@ -335,6 +337,9 @@ define [
               _.extend enis[index], e.item[0]
             if key is "privateIpAddressesSet"
               enis[index].privateIpAddressesSet = enis[index].privateIpAddressesSet?.item || []
+            if key is 'privateIpAddresses'
+              enis[index].privateIpAddressesSet = enis[index].privateIpAddresses || []
+
             # Remove All Object in data resource to remove [Object, Object]
             if _.isObject(e) and key isnt "privateIpAddressesSet"
               delete enis[index][key]

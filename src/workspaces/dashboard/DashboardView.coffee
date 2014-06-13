@@ -450,11 +450,11 @@ define [
             "Volume Size(GiB)"  : data.size
             "Status"            : data.status
             "Instance Id"       : data.instanceId
-            "Create Time"       : data.createTime
-            "Attach Time"       : data.attachTime
             'Delete on Termination' : data.deleteOnTermination
             "Availability Zone" : data.availabilityZone
             "Volume Type"       : data.volumeType
+            "Create Time"       : data.createTime
+            "Attach Time"       : data.attachTime
           }
         when "INSTANCE"
           return {

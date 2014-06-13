@@ -91,7 +91,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
     addAz : ( azName )->
       az = @azs[ azName ]
       if az then return az
-      az = @add( "AZ", { id : azName }, undefined )
+      az = @add( "AZ", { id : azName }, @getComp azName )
       @addLayout( az, true, @theVpc )
       @azs[ azName ] = az
       az

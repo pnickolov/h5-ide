@@ -26,19 +26,15 @@ define [
 
     fetchAdditionalData : ()->
       region = @opsModel.get("region")
-      jobs = [
+      Q.all([
         CloudResources( constant.RESTYPE.AZ,   region ).fetch()
         CloudResources( constant.RESTYPE.SNAP, region ).fetch()
-      ]
-
-      opsRes = CloudResources( "OpsResource", @opsModel.getVpcId() ).init( @opsModel.get("region") )
-      jobs.push opsRes.fetchForce()
-
-      # Hack, immediately apply changes when we get data if the app is changed.
-      # Will move it to somewhere else if the process is upgraded.
-      self = @
-      Q.all(jobs).then ()->
+        CloudResources( "OpsResource", @opsModel.getVpcId() ).init( @opsModel.get("region") ).fetchForce()
+      ]).then ()->
+        # Hack, immediately apply changes when we get data if the app is changed.
+        # Will move it to somewhere else if the process is upgraded.
         if self.isRemoved() then return
+
         newJson = self.opsModel.generateJsonFromRes()
         self.differ = new ResDiff({
           old : self.opsModel.getJsonData()
@@ -46,8 +42,7 @@ define [
         })
         result = differ.getChangeInfo()
         if result.hasResChange
-          return self.opsModel.saveApp( newJson ).then ()->
-            if self.isRemoved() then return
+          return self.opsModel.saveApp( newJson )
         else
           self.differ = undefined
         return

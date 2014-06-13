@@ -130,16 +130,26 @@ define [
 
                             if data.key
 
-                                # $treeItem is <li class="item">
-                                $treeItem = $(template.resDiffTreeItem {
-                                    key: data.key,
-                                    value: data.value
-                                }).appendTo($diffTree)
+                                if data.skip
 
-                                if not _.isObject(_value)
-                                    $treeItem.addClass('end')
+                                    $treeItem = $parent
+                                    $diffTree.remove()
 
-                                _genTree(_value, _key, nextPath, $treeItem)
+                                else
+
+                                    # $treeItem is <li class="item">
+                                    $treeItem = $(template.resDiffTreeItem {
+                                        key: data.key,
+                                        value: data.value
+                                    }).appendTo($diffTree)
+
+                                    if not _.isObject(_value)
+                                        $treeItem.addClass('end')
+
+                                if _.isArray(_value) and _value.length is 0
+                                    $treeItem.remove()
+                                else
+                                    _genTree(_value, _key, nextPath, $treeItem)
 
                     else
                         
@@ -164,6 +174,8 @@ define [
             _genTree(diffComps, null, [], $container)
 
         _getCompAttr: (path) ->
+
+            path = path.split('.') if _.isString(path)
 
             oldComp = @oldAppJSON.component
             newComp = @newAppJSON.component
@@ -198,11 +210,41 @@ define [
 
             that = this
 
+            _genValue = (oldValue, newValue) ->
+
+                result = ''
+
+                if oldValue
+                    result = oldValue
+                    if newValue and oldValue isnt newValue
+                        result += (' -> ' + newValue)
+                else
+                    result = newValue
+
+                return result
+
+            _getRef = (value) ->
+
+                if _.isString(value) and value.indexOf('@{') is 0
+
+                    refRegex = /@\{.*\}/g
+                    refMatchAry = value.match(refRegex)
+                    if refMatchAry and refMatchAry.length
+                        return value.slice(2, value.length - 1)
+
+                return null
+
             if _.isObject(data.value) # process end node
 
                 # default
                 newValue = data.value
-                data.value = "#{newValue.old} -> #{newValue.new}"
+                oldRef = _getRef(newValue.old)
+                newRef = _getRef(newValue.new)
+                
+                newValue.old = that._getCompAttr(oldRef).oldAttr if oldRef
+                newValue.new = that._getCompAttr(newRef).oldAttr if newRef
+
+                data.value = _genValue(newValue.old, newValue.new)
 
             else
 
@@ -210,19 +252,28 @@ define [
                 oldAttr = compAttrObj.oldAttr
                 newAttr = compAttrObj.newAttr
 
+                valueRef = _getRef(data.value)
+                data.value = that._getCompAttr(valueRef).oldAttr if valueRef
+
                 if path.length is 1
 
                     compUID = path[0]
-                    compName = oldAttr.name
-                    compType = oldAttr.type
-                    data.key = compType
-                    data.value = compName
+                    oldCompName = (oldAttr.name if oldAttr) or ''
+                    newCompName = (newAttr.name if newAttr) or ''
+                    
+                    if oldAttr
+                        data.key = oldAttr.type
+                    else
+                        data.key = newAttr.type
+
+                    data.value = _genValue(oldCompName, newCompName)
 
             if path.length is 2
 
                 if path[1] in ['type', 'uid', 'name']
-
                     delete data.key
+                else if path[1] is 'resource'
+                    data.skip = true
 
             return data
 

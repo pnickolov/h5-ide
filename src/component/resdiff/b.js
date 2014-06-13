@@ -14,6 +14,49 @@ define ( [], function() {
   "platform": "ec2-vpc",
   "version": "2014-02-17",
   "component": {
+    "B8F9F506-53E8-4908-8DA8-28D10A2BB93F": {
+      "type": "AWS.EC2.Instance",
+      "uid": "B8F9F506-53E8-4908-8DA8-28D10A2BB93F",
+      "name": "host-3",
+      "index": 0,
+      "number": 1,
+      "serverGroupUid": "B8F9F506-53E8-4908-8DA8-28D10A2BB93F",
+      "serverGroupName": "host-3",
+      "state": null,
+      "resource": {
+        "UserData": {
+          "Base64Encoded": false,
+          "Data": ""
+        },
+        "BlockDeviceMapping": [
+          {
+            "DeviceName": "/dev/sda1",
+            "Ebs": {
+              "SnapshotId": "snap-ef432332",
+              "VolumeSize": 8,
+              "VolumeType": "standard"
+            }
+          }
+        ],
+        "Placement": {
+          "Tenancy": "",
+          "AvailabilityZone": "@{AC3BBD64-DECB-485F-8C0A-664058A1D533.resource.ZoneName}"
+        },
+        "InstanceId": "",
+        "ImageId": "ami-178e927e",
+        "KeyName": "@{DB21A1D2-3DF3-4E30-8830-8870CB4D2FC9.resource.KeyName}",
+        "EbsOptimized": false,
+        "VpcId": "@{2AAF2E66-24C2-475E-8ADB-311D8EBAF4E9.resource.VpcId}",
+        "SubnetId": "@{B6C491EA-E696-4532-AA3E-78E4899CCEDA.resource.SubnetId}",
+        "Monitoring": "disabled",
+        "NetworkInterface": [],
+        "InstanceType": "m1.small",
+        "DisableApiTermination": false,
+        "ShutdownBehavior": "terminate",
+        "SecurityGroup": [],
+        "SecurityGroupId": []
+      }
+    },
     "B1648523-2C81-4868-B985-F83317861A26": {
       "name": "DefaultACL",
       "type": "AWS.VPC.NetworkAcl",

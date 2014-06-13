@@ -7,10 +7,11 @@ define [
   "Workspace"
   "./OpsViewBase"
   "./template/TplOpsEditor"
+  "component/exporter/Thumbnail"
   "OpsModel"
   "Design"
   "ApiRequest"
-], ( Workspace, OpsEditorView, OpsEditorTpl, OpsModel, Design, ApiRequest )->
+], ( Workspace, OpsEditorView, OpsEditorTpl, Thumbnail, OpsModel, Design, ApiRequest )->
 
   # A view that used to show loading state of editor
   LoadingView = Backbone.View.extend {
@@ -117,7 +118,10 @@ define [
     awake : ()->
       if not @isReady()
         # If we are in Loading state, ensure we have a LoadingView
-        if not @view then @view = new LoadingView()
+        if not @view
+          @view = new LoadingView()
+        else
+          @view.$el.show()
         return
 
       # Whenever we awake in Ready state, LoadingView should have been removed or never exists.
@@ -155,6 +159,10 @@ define [
       @showEditor()
 
       @initDesign()
+
+      # If the OpsModel doesn't have thumbnail, generate one for it.
+      if @opsModel.isPresisted() and not @opsModel.getThumbnail()
+        Thumbnail.generate( $("#svg_canvas") ).then ( thumbnail )=> @opsModel.saveThumbnail( thumbnail )
       return
 
     showEditor : ()->

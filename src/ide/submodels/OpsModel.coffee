@@ -83,6 +83,13 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
 
       undefined
 
+    getThumbnail  : ()-> ThumbUtil.fetch(@get("id"))
+    saveThumbnail : ( thumb )->
+      if thumb
+        ThumbUtil.save( @get("id"), thumb )
+        @trigger "change"
+      return
+
     hasJsonData : ()-> !!@__jsonData
     getJsonData : ()-> @__jsonData
     # Returns a promise that will resolve with the JSON data of the stack/app

@@ -313,7 +313,7 @@ define [
         stateEnabled = $switcher.hasClass("on")
         agent = @workspace.design.get('agent')
         if stateEnabled
-            instancesNoUserData = @workspace.opsModel.instancesNoUserData()
+            instancesNoUserData = @workspace.design.instancesNoUserData()
             workspace = @workspace
             if not instancesNoUserData
                 $switcher.removeClass 'on'

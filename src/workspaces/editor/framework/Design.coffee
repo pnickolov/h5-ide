@@ -723,6 +723,18 @@ define [
         comp.draw()
     null
 
+  DesignImpl::instancesNoUserData = ()->
+    result = true
+    instanceModels = Design.modelClassForType(constant.RESTYPE.INSTANCE).allObjects()
+    _.each instanceModels , (instanceModel)->
+      result = if  instanceModel.get('userData') then false else true
+      null
+    lcModels = Design.modelClassForType( constant.RESTYPE.LC ).allObjects()
+    _.each lcModels , (lcModel)->
+      result = if lcModel.get('userData') then false else true
+      null
+    return result
+
   DesignImpl.prototype.clearResourceInCache = ()->
     # module/design/model would like to clear all the data in the data.resource_list
     resource_list = CloudResources(@type, @region())

@@ -402,18 +402,6 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
       return
 
 
-    instancesNoUserData: ()-> 
-        result = true
-        instanceModels = Design.modelClassForType(constant.RESTYPE.INSTANCE).allObjects()
-        _.each instanceModels , (instanceModel)->
-            result = if  instanceModel.get('userData') then false else true
-            null
-        lcModels = Design.modelClassForType( constant.RESTYPE.LC ).allObjects()
-        _.each lcModels , (lcModel)->
-            result = if lcModel.get('userData') then false else true
-            null
-        return result
-
     __updateStatus : ()->
       ApiRequest("app_list",{app_ids:[@get("id")]}).then (res)->
         @setStatusWithApiResult( res[0].state )

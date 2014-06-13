@@ -648,7 +648,7 @@ module.exports =
       zh: "实例必须拖放到子网或Auto Scaling组。"
 
     CVS_MSG_WARN_NOTMATCH_ASG:
-      en: "Asg must be dragged to a subnet."
+      en: "Auto Scaling Group must be dropped in a subnet."
       zh: "Auto Scaling组必须拖放到子网。"
 
     CVS_MSG_WARN_NOTMATCH_ENI:

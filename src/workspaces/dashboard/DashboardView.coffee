@@ -443,16 +443,16 @@ define [
             Type     : data.type
           }
         when "VOL"
-          attachmentSet = data.attachmentSet[0] || {}
           return {
             "Volume ID"         : data.id
-            "Device Name"       : attachmentSet.device
+            "Device Name"       : data.device
             "Snapshot ID"       : data.snapshotId
             "Volume Size(GiB)"  : data.size
+            "Status"            : data.status
+            "Instance Id"       : data.instanceId
             "Create Time"       : data.createTime
-            # "AttachmentSet"   : ""
-            State               : data.status
-            AttachmentSet       : if data.attachmentSet.length then @formartDetail("AttachmentSet",data.attachmentSet,"volumeId") else "detached"
+            "Attach Time"       : data.attachTime
+            'Delete on Termination' : data.deleteOnTermination
             "Availability Zone" : data.availabilityZone
             "Volume Type"       : data.volumeType
           }

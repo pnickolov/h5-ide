@@ -10,7 +10,7 @@ define [ '../base/model', 'constant', 'Design', 'CloudResources' ], ( PropertyMo
 
             mySubnetComponent = Design.instance().component( uid )
 
-            subnet = CloudResources(constant.RESTYPE.ACL, Design.instance().region()).get(mySubnetComponent.get('appId'))
+            subnet = CloudResources(constant.RESTYPE.SUBNET, Design.instance().region()).get(mySubnetComponent.get('appId'))
             if not subnet
                 return false
 

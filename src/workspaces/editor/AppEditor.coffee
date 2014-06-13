@@ -25,6 +25,7 @@ define [
     isReady : ()-> !!@__hasAdditionalData
 
     fetchAdditionalData : ()->
+      self = @
       region = @opsModel.get("region")
       Q.all([
         CloudResources( constant.RESTYPE.AZ,   region ).fetch()

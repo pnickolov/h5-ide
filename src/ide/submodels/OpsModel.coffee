@@ -404,7 +404,7 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
 
 
     __updateStatus : ()->
-      ApiRequest("app_list",{app_ids:[@get("id")]}).then (res)->
+      ApiRequest("app_list",{app_ids:[@get("id")]}).then (res)=>
         @setStatusWithApiResult( res[0].state )
         return
 

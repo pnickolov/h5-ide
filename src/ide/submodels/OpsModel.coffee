@@ -35,6 +35,7 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
       # progress       : 0
       # opsActionError : ""
       # importVpcId    : ""
+      # requestId      : ""
 
     initialize : ( attr, options )->
       if options
@@ -72,7 +73,7 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
       if state is OpsModelState.Destroyed
         console.warn "There's probably a bug existing that the destroyed opsmodel is still be using by someone."
 
-      @get("id") && state isnt OpsModelState.Destroyed
+      !!(@get("id") && state isnt OpsModelState.Destroyed)
 
     getVpcId : ()->
       if @get("importVpcId") then return @get("importVpcId")
@@ -235,11 +236,24 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
 
     # Runs a stack into app, returns a promise that will fullfiled with a new OpsModel.
     run : ( toRunJson, appName )->
+      region = @get("region")
       ApiRequest("stack_run_v2",{
-        region_name : @get("region")
+        region_name : region
         stack       : toRunJson
         app_name    : appName
-      }).then ( res )-> self
+      }).then ( res )->
+        m = new OpsModel({
+          name       : appName
+          requestId  : res[0]
+          state      : OpsModelState.Initializing
+          progress   : 0
+          region     : region
+          usage      : toRunJson.usage
+          updateTime : +(new Date())
+          stoppable  : toRunJson.property.stoppable
+        })
+        App.model.appList().add m
+        m
 
     # Duplicate the stack
     duplicate : ( name )->
@@ -410,7 +424,6 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
       else if toState
         @attributes.progress = 0
         @set "state", toState
-
       return
 
 

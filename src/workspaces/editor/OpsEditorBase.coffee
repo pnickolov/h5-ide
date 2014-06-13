@@ -94,7 +94,7 @@ define [
       self = @
       @fetchAdditionalData().then ()->
 
-        if @isRemoved() then return
+        if self.isRemoved() then return
 
         self.__hasAdditionalData = true
         self.switchToReady()

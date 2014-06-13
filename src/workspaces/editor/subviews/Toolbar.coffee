@@ -53,14 +53,14 @@ define [
           btns = ["BtnEditApp", "BtnAppOps", "BtnZoom", "BtnPng", "BtnLinestyle", "BtnReloadRes"]
 
       tpl = ""
+      workspace = @workspace
       for btn in btns
-        tpl += OpsEditorTpl.toolbar[ btn ]()
+        tpl += OpsEditorTpl.toolbar[ btn ](stateOn: workspace.design.attributes.agent.enabled)
 
       @setElement $("#OEPanelTop").html( tpl )
 
       @updateTbBtns()
       @updateZoomButtons()
-      @initState()
       return
 
     clearDom : ()->
@@ -307,14 +307,6 @@ define [
     refreshResource : ()-> @workspace.refreshResource(); false
     switchToAppEdit : ()-> @workspace.switchToEditMode(); false
     applyAppEdit    : ()-> @workspace.applyAppEdit(); false
-
-    initState: ->
-        console.log "Initialize State Switcher."
-        $switcher = $(".toolbar-visual-ops-switch")
-        if @workspace.design.attributes.agent.enabled
-            $switcher.addClass('on')
-        else
-            $switcher.removeClass 'on'
 
     opsOptionChanged: -> #todo: Almost Done.
         $switcher = $(".toolbar-visual-ops-switch").toggleClass('on')

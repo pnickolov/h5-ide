@@ -68,7 +68,7 @@
 
 
 <!-- {{toolbar.BtnSwitchStates}} -->
-<label class="switch toolbar-visual-ops-switch tooltip" data-tooltip="{{i18n 'TOOL_TIP_CUSTOM_USER_DATA'}}">
+<label class="switch toolbar-visual-ops-switch tooltip{{#if stateOn}} on{{/if}}" data-tooltip="{{i18n 'TOOL_TIP_CUSTOM_USER_DATA'}}">
     <span class="switch-label" data-on="{{i18n 'TOOL_TOGGLE_VISUALOPS_ON'}}" data-off="{{i18n 'TOOL_TOGGLE_VISUALOPS_OFF'}}"></span>
     <span class="switch-handle"></span>
 </label>

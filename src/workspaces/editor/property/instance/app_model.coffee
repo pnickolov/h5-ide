@@ -150,7 +150,7 @@ define [ '../base/model',
                 data = $.extend true, {}, data
             else
                 # Use data inside appData
-                data = $.extend true, {}, appData.get('id').toJSON()
+                data = $.extend true, {}, appData.get( id ).toJSON()
 
             data.name = if component then component.get 'name' else id
             if data.status == "in-use"

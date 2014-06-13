@@ -94,7 +94,7 @@ define [
     design = (new DesignImpl( opsModel )).use()
     # Deserialize
     json = opsModel.getJsonData()
-    design.deserialize( json.component, json.layout )
+    design.deserialize( $.extend(true, {}, json.component), $.extend(true, {}, json.layout) )
     design
 
   _.extend( Design, Backbone.Events )
@@ -449,13 +449,13 @@ define [
     true
 
   DesignImpl.prototype.__isModifiedDetail = ( newData, oldData )->
-    console.assert( __bsBackup = $.extend true, {}, oldData )
-    console.assert( __dtBackup = $.extend true, {}, newData )
-
     backingState = {}
     dataState    = {}
 
     if not newData.component then newData = @serialize()
+
+    console.assert( __bsBackup = $.extend true, {}, oldData )
+    console.assert( __dtBackup = $.extend true, {}, newData )
 
     for uid, comp of oldData.component
       if comp.type is constant.RESTYPE.LC or comp.type is constant.RESTYPE.INSTANCE
@@ -469,9 +469,9 @@ define [
 
     result = {
       attribute     : newData.name isnt oldData.name
-      component     : _.isEqual( oldData.component, newData.component )
-      layout        : _.isEqual( oldData.layout,    newData.layout )
-      instanceState : _.isEqual( backingState,      dataState )
+      component     : not _.isEqual( oldData.component, newData.component )
+      layout        : not _.isEqual( oldData.layout,    newData.layout )
+      instanceState : not _.isEqual( backingState,      dataState )
     }
 
     # Restore

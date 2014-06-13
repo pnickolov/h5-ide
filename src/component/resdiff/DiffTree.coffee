@@ -42,7 +42,6 @@ define [], () ->
                 value2 = bString
 
             else
-                changeType = 'unknown'
                 value1 = aString
 
             resultJSON[key] = {}
@@ -77,8 +76,9 @@ define [], () ->
                 if a isnt b
                     haveDiff = true
                     resultJSON[key] = {
-                        old: a,
-                        new: b
+                        type: changeType
+                        __old__: a,
+                        __new__: b
                     }
                 else
                     delete resultJSON[key]

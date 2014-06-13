@@ -113,7 +113,7 @@ define [
 
                 if _.isObject(value)
 
-                    if _.isUndefined(value.new) and _.isUndefined(value.old)
+                    if _.isUndefined(value.__new__) and _.isUndefined(value.__old__)
 
                         # $diffTree is <ul class="tree">
                         $diffTree = $(template.resDiffTree {}).appendTo($parent)
@@ -151,7 +151,9 @@ define [
                                 else
                                     _genTree(_value, _key, nextPath, $treeItem)
 
-                    else
+                    else # end node
+                        
+                        changeType = value.type
                         
                         data = that._processRes(path, {
                             key: key,
@@ -166,6 +168,7 @@ define [
                                 value: data.value
                             })
                             $parent.addClass('end')
+                            $parent.addClass(changeType)
 
                         else
 
@@ -230,7 +233,9 @@ define [
                     refRegex = /@\{.*\}/g
                     refMatchAry = value.match(refRegex)
                     if refMatchAry and refMatchAry.length
-                        return value.slice(2, value.length - 1)
+                        refName = value.slice(2, value.length - 1)
+                        refUID = refName.split('.')[0]
+                        return "#{refUID}.name" if refUID
 
                 return null
 
@@ -238,13 +243,13 @@ define [
 
                 # default
                 newValue = data.value
-                oldRef = _getRef(newValue.old)
-                newRef = _getRef(newValue.new)
+                oldRef = _getRef(newValue.__old__)
+                newRef = _getRef(newValue.__new__)
                 
-                newValue.old = that._getCompAttr(oldRef).oldAttr if oldRef
-                newValue.new = that._getCompAttr(newRef).oldAttr if newRef
+                newValue.__old__ = that._getCompAttr(oldRef).oldAttr if oldRef
+                newValue.__new__ = that._getCompAttr(newRef).newAttr if newRef
 
-                data.value = _genValue(newValue.old, newValue.new)
+                data.value = _genValue(newValue.__old__, newValue.__new__)
 
             else
 

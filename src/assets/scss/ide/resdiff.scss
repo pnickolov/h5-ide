@@ -88,7 +88,7 @@ $bg_body : #fff;
 			// float: left;
 			margin-top: 2px;
 
-			text-align: center;
+			// text-align: center;
 			min-width: 35px;
 
 			.old {
@@ -113,6 +113,18 @@ $bg_body : #fff;
 			padding-left: 18px;
 			position: relative;
 			@include tierline;
+
+			&.removed .meta .type {
+				background-color: #f00 !important;
+			}
+
+			&.added .meta .type {
+				background-color: #ff8400 !important;
+			}
+
+			&.changed .meta .type {
+				background-color: #008e00 !important;
+			}
 
 			&::before {
 				@include tierline;

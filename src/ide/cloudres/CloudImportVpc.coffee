@@ -525,11 +525,13 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         eniRes.AvailabilityZone = CREATE_REF( azComp )
         eniRes.SubnetId         = CREATE_REF( subnetComp )
         eniRes.VpcId            = CREATE_REF( @theVpc )
-        if aws_eni.deviceIndex isnt "0"
+        if not ( aws_eni.deviceIndex in [ "0", 0 ] )
           #eni0 no need attachmentId
           eniRes.Attachment.AttachmentId = aws_eni.attachmentId
+
+
         eniRes.Attachment.InstanceId = CREATE_REF( insComp )
-        eniRes.Attachment.DeviceIndex = aws_eni.deviceIndex
+        eniRes.Attachment.DeviceIndex = if aws_eni.deviceIndex is 0 then '0' else aws_eni.deviceIndex
 
         for ip in aws_eni.privateIpAddressesSet
           eniRes.PrivateIpAddressSet.push {"PrivateIpAddress": ip.privateIpAddress, "AutoAssign" : "false", "Primary" : ip.primary}
@@ -540,7 +542,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
 
 
         eniComp = @add( "ENI", aws_eni, eniRes, "eni" + aws_eni.deviceIndex )
-        if aws_eni.deviceIndex isnt "0"
+        if not ( aws_eni.deviceIndex in [ "0", 0 ] )
           @addLayout( eniComp, false, subnetComp )
 
         @enis[ aws_eni.id ] = eniComp

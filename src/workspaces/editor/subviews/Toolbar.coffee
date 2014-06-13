@@ -254,7 +254,7 @@ define [
             if not @defaultKpIsSet() or appNameRepeated
                 return false
 
-            self.mdoal.find(".btn.modal-confirm").attr("disabled", "disabled")
+            @modal.tpl.find(".btn.modal-confirm").attr("disabled", "disabled")
             @workspace.opsModel.run(@json, appNameDom.val()).then ( ops )->
                 self.modal.close()
                 App.openOps( ops )

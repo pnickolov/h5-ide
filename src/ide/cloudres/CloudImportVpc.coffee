@@ -91,7 +91,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
     addAz : ( azName )->
       az = @azs[ azName ]
       if az then return az
-      az = @add( "AZ", { id : azName }, @getComp azName )
+      az = @add( "AZ", { id : azName }, @getComp azName, 'AZ' )
       @addLayout( az, true, @theVpc )
       @azs[ azName ] = az
       az
@@ -128,15 +128,17 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         return topicComp
       return null
 
-    getComp: ( json, type ) ->
+    getComp: ( jsonOrKey, type ) ->
+      type = constant.RESTYPE[ type ] or type
+      key = constant.AWS_RESOURCE_KEY[ type ]
+      id = if _.isObject jsonOrKey then jsonOrKey[key] else jsonOrKey
+
+
       for uid, comp of @originalJson.component
         if comp.type isnt type then continue
+        if not comp.resource then continue
 
-        key = constant.AWS_RESOURCE_KEY[ comp.type ]
-
-        if not comp.resource then continue;
-
-        if ( comp.resource[key] is json[key] )
+        if ( comp.resource[key] is id )
           return comp
 
       {}
@@ -456,6 +458,9 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         bdm = insComp.resource.BlockDeviceMapping
         _.each aws_ins.blockDeviceMapping, (e,key)->
           volComp = me.volumes[ e.ebs.volumeId ]
+
+          if not volComp then return
+
           volRes = volComp.resource
           if aws_ins.rootDeviceName.indexOf( e.deviceName ) isnt -1
             # rootDevice

@@ -626,11 +626,10 @@ define [
     costList = []
     totalFee = 0
 
-    feeMap = MC.data.config[ @region() ]
+    priceMap = App.model.getPriceData( @region() )
 
-    if feeMap and feeMap.price
-      priceMap = feeMap.price
-      currency = feeMap.price.currency || 'USD'
+    if priceMap
+      currency = priceMap.currency || 'USD'
 
       for uid, comp of @__componentMap
         if comp.getCost
@@ -697,7 +696,35 @@ define [
       if newData.component[ uid ] then continue
       diffHelper( undefined, comp, result, newData.component, oldData.component )
 
-    result
+    dedupResult = []
+    dedupMap    = {}
+
+    for obj in result
+      if constant.RESNAME[ obj.type ]
+        obj.type = constant.RESNAME[ obj.type ]
+      # Remove duplicate
+      exist = dedupMap[ obj.id ]
+      if not exist
+        exist = dedupMap[ obj.id ] = obj
+        dedupResult.push obj
+      else if obj.change and obj.change isnt "Update"
+        exist.change = obj.change
+
+      if obj.changes
+        exist.changes = obj.changes
+        for c in obj.changes
+          c.info = c.name
+          if c.count < 0
+            c.info = c.name + " " + c.count
+          else if c.count > 0
+            c.info = c.name + " +" + c.count
+
+      if exist.change is "Delete"
+        exist.info = exist.info or "Deletion cannot be rolled back"
+      else if exist.change is "Terminate"
+        exist.info = exist.info or "Termination cannot be rolled back"
+
+    dedupResult
 
   DesignImpl.prototype.isStoppable = ()->
     # Previous version will set canvas_data.property.stoppable to false

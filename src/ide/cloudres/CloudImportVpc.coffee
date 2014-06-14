@@ -183,12 +183,13 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
       vpc.VpcId = @vpcId
       # Cache the vpc so that other can use it.
       @theVpc = vpcComp = @add("VPC", vpc, {
+        VpcId           : vpc.VpcId
         CidrBlock       : vpc.cidrBlock
         DhcpOptionsId   : vpc.dhcpOptionsId
         InstanceTenancy : vpc.instanceTenancy
 
-        # EnableDnsHostnames : false # TODO :
-        # EnableDnsSupport   : true  # TODO :
+        EnableDnsHostnames : vpc.enableDnsHostnames
+        EnableDnsSupport   : vpc.enableDnsSupport
       })
 
       @addLayout( vpcComp, true )
@@ -752,7 +753,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
 
     ()-> #LC
       me = @
-      for aws_lc in @CrPartials( "LC" ).where({category:@region}) || []
+      for aws_lc in @CrPartials( "LC" ).filter( (model) -> model.RES_TAG is me.vpcId ) || []
         aws_lc = aws_lc.attributes
         lcRes =
           "AssociatePublicIpAddress": false
@@ -798,10 +799,10 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
           data =
             "DeviceName": e.DeviceName
             "Ebs":
-              "VolumeSize": Number(e.Ebs.VolumeSize)
-              "VolumeType": e.Ebs.VolumeType
-          if e.Ebs.SnapshotId
-            data.Ebs.SnapshotId = e.Ebs.SnapshotId
+              "VolumeSize": Number(e.ebs.VolumeSize)
+              "VolumeType": e.ebs.VolumeType
+          if e.ebs.SnapshotId
+            data.Ebs.SnapshotId = e.ebs.SnapshotId
           if data.Ebs.VolumeType is "io1"
             data.Ebs.Iops = e.Ebs.Iops
           bdm.push data

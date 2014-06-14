@@ -87,8 +87,8 @@ define [
       for asg in asgs
         for key, value of asg
           fixKey = key.substring(0,1).toUpperCase() + key.substring(1)
-          delete asg[key]
           asg[fixKey] = value
+          delete asg[key]
 
         asg.Name = asg.AutoScalingGroupName
         delete asg.AutoScalingGroupName
@@ -256,10 +256,15 @@ define [
     trAwsXml : ( data )-> data.DescribeLaunchConfigurationsResponse.DescribeLaunchConfigurationsResult.LaunchConfigurations?.member
     parseFetchData : ( lcs )->
       for lc in lcs
+        for key, value of lc
+            fixKey = key.substring(0,1).toUpperCase() + key.substring(1)
+            lc[fixKey] = value
+            delete lc[key]
+
         lc.Name = lc.LaunchConfigurationName
         delete lc.LaunchConfigurationName
-        lc.BlockDeviceMappings = lc.BlockDeviceMappings?.member
-        lc.SecurityGroups      = lc.SecurityGroups?.member
+        lc.BlockDeviceMappings = lc.BlockDeviceMappings?.member or lc.BlockDeviceMappings
+        lc.SecurityGroups      = lc.SecurityGroups?.member or lc.SecurityGroups
       lcs
   }
 

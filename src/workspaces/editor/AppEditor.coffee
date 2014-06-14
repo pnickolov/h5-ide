@@ -109,6 +109,8 @@ define [
         self.view.showUpdateStatus()
         self.view.switchMode( false )
 
+        self.saveThumbnail()
+
         return
 
       , ( err )->

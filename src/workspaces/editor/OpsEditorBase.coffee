@@ -154,8 +154,11 @@ define [
 
       # If the OpsModel doesn't have thumbnail, generate one for it.
       if @opsModel.isPresisted() and not @opsModel.getThumbnail()
-        Thumbnail.generate( $("#svg_canvas") ).then ( thumbnail )=> @opsModel.saveThumbnail( thumbnail )
+        @saveThumbnail()
       return
+
+    saveThumbnail : ()->
+      Thumbnail.generate( $("#svg_canvas") ).then ( thumbnail )=> @opsModel.saveThumbnail( thumbnail )
 
     showEditor : ()->
       if @hideOtherEditor()

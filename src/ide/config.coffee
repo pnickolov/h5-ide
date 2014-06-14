@@ -229,7 +229,6 @@ require.config {
 			"MC.canvas"
 			"MC.canvas.constant"
 			'MC.validate'
-			"canvas_layout"
 			"lib/handlebarhelpers"
 			"event"
 		]
@@ -273,9 +272,9 @@ require.config {
 		]
 		"component/sgrule/SGRulePopup" : []
 		"component/exporter/Exporter"  : [ "component/exporter/Download", "component/exporter/Thumbnail", "component/exporter/JsonExporter" ]
-		"module/design/framework/DesignBundle" : [ "Design", "CanvasManager" ]
 		"CloudResources"  : []
 		"ide/Application" : [ "Workspace", "OpsModel" ]
+		"module/design/framework/DesignBundle" : [ "Design", "CanvasManager" ]
 		"validation" : []
 		"component/stateeditor/stateeditor" : []
 		"component/sharedrescomp" : [

@@ -129,6 +129,11 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sslcert/ssl
             $certChain = $('#ssl-cert-chain-input')
 
             certName = $certName.val()
+
+            if certName is 'None'
+                notification 'error', "Certificate name #{certName} is invalid"
+                return
+
             @sslCertCol.create(
                 Name: certName,
                 CertificateBody: $certPubkey.val(),

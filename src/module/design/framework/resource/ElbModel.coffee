@@ -129,7 +129,7 @@ define [ "Design",
       null
 
     removeListener : ( idx ) ->
-      if idx is 0 then return
+      # if idx is 0 then return
       listeners = @get("listeners")
       listeners.splice( idx, 1 )
       @set "listeners", listeners

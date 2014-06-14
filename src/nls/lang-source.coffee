@@ -1344,8 +1344,8 @@ module.exports =
       zh: "数据在一分钟内可用需要额外的话费。 获取价格信息，请去 "
 
     PROP_AGENT_USER_DATA_URL:
-      en: "https://github.com/VisualOps/OpsAgent/blob/develop/scripts/userdata.sh"
-      zh: "https://github.com/VisualOps/OpsAgent/blob/develop/scripts/userdata.sh"
+      en: "https://github.com/MadeiraCloud/OpsAgent/blob/develop/scripts/userdata.sh"
+      zh: "https://github.com/MadeiraCloud/OpsAgent/blob/develop/scripts/userdata.sh"
 
     PROP_INSTANCE_ENI_DETAIL:
       en: "Network Interface Details"

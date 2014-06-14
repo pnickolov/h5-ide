@@ -4067,6 +4067,10 @@ a.action-link:hover {
 	width: 40px !important;
 }
 
+#elb-property-listener-list .elb-property-listener:only-child .elb-property-listener-item-remove {
+	display: none;
+}
+
 .elb-property-listener-item-remove {
 	position : absolute;
 	right    : 0;

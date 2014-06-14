@@ -1,10 +1,10 @@
-#OEPanelLeft, #OEPanelRight {
+.OEPanelLeft, .OEPanelRight {
   position: absolute;
   height: 100%;
   z-index: 3;
   background: #313131; }
 
-#OEPanelLeft {
+.OEPanelLeft {
   width: 246px;
   background: #242424;
   left: 0;
@@ -13,29 +13,30 @@
   -ms-transition: left 0.1s ease-out;
   -o-transition: left 0.1s ease-out;
   transition: left 0.1s ease-out; }
-  #OEPanelLeft.force-hidden {
+  .OEPanelLeft.force-hidden {
     display: none; }
-  #OEPanelLeft.hidden {
+  .OEPanelLeft.hidden {
     left: -246px; }
-    #OEPanelLeft.hidden > #HideOEPanelLeft:before {
+    .OEPanelLeft.hidden > .HideOEPanelLeft:before {
       content: "\F124"; }
 
-#OEPanelRight {
+.OEPanelRight {
   right: 0;
   width: 280px;
+  z-index: 8;
   -webkit-transition: right 0.1s ease-out;
   -moz-transition: right 0.1s ease-out;
   -ms-transition: right 0.1s ease-out;
   -o-transition: right 0.1s ease-out;
   transition: right 0.1s ease-out; }
-  #OEPanelRight.hidden {
+  .OEPanelRight.hidden {
     right: -280px; }
-    #OEPanelRight.hidden #HideOEPanelRight:before {
+    .OEPanelRight.hidden .HideOEPanelRight:before {
       content: "\F125"; }
-  #OEPanelRight.state.hidden {
+  .OEPanelRight.state.hidden {
     right: -654px; }
 
-#OEMiddleWrap {
+.OEMiddleWrap {
   position: absolute;
   z-index: 2;
   top: 0;
@@ -43,13 +44,13 @@
   bottom: 0;
   right: 0; }
 
-#OEPanelTop {
+.OEPanelTop {
   height: 40px;
   width: 100%;
   min-width: 610px;
   background: #313131; }
 
-#OEPanelBottom {
+.OEPanelBottom {
   position: absolute;
   bottom: 0;
   width: 100%;
@@ -58,27 +59,28 @@
   line-height: 24px;
   color: #999;
   font-size: 12px;
+  z-index: 3;
   box-sizing: border-box;
   border-top: 1px solid #212121; }
-  #OEPanelBottom ~ #OEPanelCenter {
+  .OEPanelBottom ~ .OEPanelCenter {
     bottom: 24px; }
 
-#OEPanelCenter {
-  position: absolute;
+.OEPanelCenter {
+  position: absolute !important;
   width: 100%;
   top: 40px;
   bottom: 0; }
 
-#OEPanelRight:not(.hidden) ~ #OEMiddleWrap {
+.OEPanelRight:not(.hidden) ~ .OEMiddleWrap {
   right: 280px; }
 
-#OEPanelRight:not(.hidden).state ~ #OEMiddleWrap {
+.OEPanelRight:not(.hidden).state ~ .OEMiddleWrap {
   right: 654px; }
 
-#OEPanelLeft:not(.hidden) ~ #OEMiddleWrap {
+.OEPanelLeft:not(.hidden) ~ .OEMiddleWrap {
   left: 246px; }
 
-#OEPanelLeft.force-hidden ~ #OEMiddleWrap {
+.OEPanelLeft.force-hidden ~ .OEMiddleWrap {
   left: 0; }
 
 .sidebar-title {
@@ -149,22 +151,25 @@
   .sidebar-hider:before {
     font-size: 14px; }
 
-#HideOEPanelLeft {
+.HideOEPanelLeft {
   left: 100%;
   border-left: none;
   border-radius: 0 3px 3px 0; }
 
-#HideOEPanelRight {
+.HideOEPanelRight {
   right: 100%;
   border-right: none;
   border-radius: 3px 0 0 3px; }
 
-#AmiTypeSelect {
-  position: absolute;
+#OpsEditor .disabled-event-layout {
+  z-index: 6; }
+
+.AmiTypeSelect {
+  position: absolute !important;
   top: 0;
   right: 0;
   line-height: 20px; }
-  #AmiTypeSelect:hover .selection {
+  .AmiTypeSelect:hover .selection {
     background: #234F77; }
 
 .resource-icon {
@@ -402,7 +407,7 @@
 .btn-fav-ami.faved:hover {
   background: url("../images/ide/btn-fav-ami-faved-hover.png"); }
 
-#BrowseCommunityAmi, #ManageSnapshot {
+.BrowseCommunityAmi, .ManageSnapshot {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -410,7 +415,7 @@
   border: none;
   border-radius: 0; }
 
-#OEPanelRight .property-switcher {
+.OEPanelRight .property-switcher {
   height: 30px;
   background: #313131;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -418,30 +423,30 @@
   border-left: 1px solid #111;
   padding: 4px 0 5px;
   overflow: hidden; }
-#OEPanelRight .property-switcher .btn-toolbar {
+.OEPanelRight .property-switcher .btn-toolbar {
   width: 124px;
   padding: 0 4px;
   border-radius: 4px;
   margin-right: 5px; }
-#OEPanelRight #btn-switch-property {
+.OEPanelRight #btn-switch-property {
   background: rgba(0, 0, 0, 0.4);
   color: #FEFEFE; }
-#OEPanelRight.no-state #btn-switch-state {
+.OEPanelRight.no-state #btn-switch-state {
   display: none; }
-#OEPanelRight.no-state #btn-switch-property {
+.OEPanelRight.no-state #btn-switch-property {
   float: left;
   width: auto;
   background: none;
   text-align: left;
   padding-left: 10px;
   cursor: default; }
-#OEPanelRight.state #btn-switch-property {
+.OEPanelRight.state #btn-switch-property {
   background: #313131;
   color: #606060; }
-  #OEPanelRight.state #btn-switch-property:hover {
+  .OEPanelRight.state #btn-switch-property:hover {
     color: #9F62D1;
     background: rgba(0, 0, 0, 0.05); }
-#OEPanelRight.state #btn-switch-state {
+.OEPanelRight.state #btn-switch-state {
   background: rgba(0, 0, 0, 0.4);
   color: #FEFEFE; }
 

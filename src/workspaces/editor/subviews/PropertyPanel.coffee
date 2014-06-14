@@ -55,9 +55,9 @@ define [
   Backbone.View.extend {
 
     events :
-      "click #HideOEPanelRight"         : "toggleRightPanel"
-      "click #hide-second-panel"        : "hideSecondPanel"
-      "click .option-group-head"        : "updateRightPanelOption"
+      "click .HideOEPanelRight"  : "toggleRightPanel"
+      "click .HideSecondPanel"   : "hideSecondPanel"
+      "click .option-group-head" : "updateRightPanelOption"
 
       # Events
       "OPEN_SUBPANEL"     : trimmedJqEventHandler("showSecondPanel")
@@ -72,11 +72,12 @@ define [
       "click #btn-switch-state"    : "showStateEditor"
 
     render : ()->
-      @setElement $("#OEPanelRight").html( RightPanelTpl() )
-      $("#OEPanelRight").toggleClass("hidden", @__rightPanelHidden || false)
+      @setElement @workspace.view.$el.find(".OEPanelRight").html( RightPanelTpl() )
+      @$el.toggleClass("hidden", @__rightPanelHidden || false)
 
       if @__backup
         PropertyBaseModule.restore( @__backup )
+        @restoreAccordion( @__backup.activeModuleType, @__backup.activeModuleId )
       else
         @openPanel()
 
@@ -84,45 +85,48 @@ define [
         @showStateEditor()
       return
 
-    clearDom : ()->
-      @$el = null
+    backup : ()->
+      @$el.empty().attr("id", "")
       @__backup = PropertyBaseModule.snapshot()
       return
 
+    recover : ()->
+      @$el.attr("id", "OEPanelRight")
+      @render()
+      return
 
     toggleRightPanel : ()->
-      @__rightPanelHidden = $("#OEPanelRight").toggleClass("hidden").hasClass("hidden")
+      @__rightPanelHidden = @$el.toggleClass("hidden").hasClass("hidden")
       false
 
     showSecondPanel : ( type, id ) ->
-      $("#hide-second-panel").data("tooltip", "Back to " + $("#property-title").text())
-      $("#property-second-panel").show().animate({left:"0%"}, 200)
-      $("#property-first-panel").animate {left:"-30%"}, 200, ()->
-        $("#property-first-panel").hide()
+      @$el.find(".HideSecondPanel").data("tooltip", "Back to " + @$el.find(".property-title").text())
+      @$el.find(".property-second-panel").show().animate({left:"0%"}, 200)
+      @$el.find(".property-first-panel").animate {left:"-30%"}, 200, ()=>
+        @$el.find(".property-first-panel").hide()
 
     immShowSecondPanel : ( type , id )->
-      $("#hide-second-panel").data("tooltip", "Back to " + $("#property-title").text())
-      $("#property-second-panel").show().css({left:"0%"})
-      $("#property-first-panel").css({left:"-30%",display:"none"})
+      @$el.find(".HideSecondPanel").data("tooltip", "Back to " + @$el.find(".property-title").text())
+      @$el.find(".property-second-panel").show().css({left:"0%"})
+      @$el.find(".property-first-panel").css({left:"-30%",display:"none"})
       null
 
     immHideSecondPanel : () ->
-      $("#property-second-panel").css({
+      @$el.find(".property-second-panel").css({
         display : "none"
         left    : "100%"
       }).children(".scroll-wrap").children(".property-content").empty()
 
-      $("#property-first-panel").css {
+      @$el.find(".property-first-panel").css {
         display : "block"
         left    : "0px"
       }
       null
 
     hideSecondPanel : () ->
-      $panel = $("#property-second-panel")
-      $panel.animate {left:"100%"}, 200, ()->
-        $("#property-second-panel").hide()
-      $("#property-first-panel").show().animate {left:"0%"}, 200
+      $panel = @$el.find(".property-second-panel")
+      $panel.animate {left:"100%"}, 200, ()=> @$el.find(".property-second-panel").hide()
+      @$el.find(".property-first-panel").show().animate {left:"0%"}, 200
 
       PropertyBaseModule.onUnloadSubPanel()
       false
@@ -141,14 +145,14 @@ define [
           $target.slideDown(200)
       $toggle.toggleClass("expand")
 
-      if not $toggle.parents("#property-first-panel").length then return
+      if not $toggle.parents(".property-first-panel").length then return
 
       @__optionStates = @__optionStates || {}
 
       # added by song ######################################
       # record head state
       comp = PropertyBaseModule.activeModule().uid || "Stack"
-      status = _.map $('#property-first-panel').find('.option-group-head'), ( el )-> $(el).hasClass("expand")
+      status = _.map @$el.find('.property-first-panel').find('.option-group-head'), ( el )-> $(el).hasClass("expand")
       @__optionStates[ comp ] = status
 
       comp = @workspace.design.component( comp )
@@ -217,23 +221,28 @@ define [
       finally
 
       # Restore accordion
-      if @__optionStates
-        states = @__optionStates[ uid ]
-        if not states then states = @__optionStates[ type ]
-        if states
-          for el, idx in $('#property-first-panel').find('.option-group-head')
-            $(el).toggleClass("expand", states[idx])
-
-          for uid, states of @__optionStates
-            if not uid or design.component( uid ) or uid.indexOf("i-") is 0 or uid is "Stack"
-              continue
-            delete @__optionStates[ uid ]
+      @restoreAccordion( type , uid )
 
       # Update state switcher
       @updateStateSwitcher( type, uid )
 
-      $("#OEPanelRight").toggleClass("state", false)
+      @$el.toggleClass("state", false)
       return
+
+    restoreAccordion : ( type, uid )->
+      if not @__optionStates then return
+      states = @__optionStates[ uid ]
+      if not states then states = @__optionStates[ type ]
+      if states
+        for el, idx in @$el.find('.property-first-panel').find('.option-group-head')
+          $(el).toggleClass("expand", states[idx])
+
+        for uid, states of @__optionStates
+          if not uid or @workspace.design.component( uid ) or uid.indexOf("i-") is 0 or uid is "Stack"
+            continue
+          delete @__optionStates[ uid ]
+      return
+
 
     updateStateSwitcher : ( type, uid )->
       supports = false
@@ -247,7 +256,7 @@ define [
           if type is CONST.RESTYPE.LC
             supports = @workspace.opsModel.testState( OpsModel.State.Stopped )
 
-      $("#OEPanelRight").toggleClass( "no-state", not supports )
+      @$el.toggleClass( "no-state", not supports )
       if supports
         count = design.component( uid )
         count = count?.get("state") or 0
@@ -256,7 +265,7 @@ define [
 
     forceShow : ()->
       if @__rightPanelHidden
-        $("#HideOEPanelRight").click()
+        @$el.find(".HideOEPanelRight").click()
       return
 
     refresh : ()->
@@ -267,7 +276,7 @@ define [
     switchToProperty : ()->
       # if not @__showingState then return
       @__showingState = false
-      $("#OEPanelRight").toggleClass("state", false)
+      @$el.toggleClass("state", false)
       @refresh()
       return
 
@@ -282,7 +291,7 @@ define [
         return
 
       @__showingState = true
-      $("#OEPanelRight").toggleClass("state", true)
+      @$el.toggleClass("state", true)
 
       if design.modeIsApp()
         resId = uid

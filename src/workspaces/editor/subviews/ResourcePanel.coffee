@@ -20,18 +20,18 @@ define [
   $( window ).on "resize", ()->
     if __resizeAccdTO then clearTimeout(__resizeAccdTO)
     __resizeAccdTO = setTimeout ()->
-      $("#OEPanelLeft").trigger("RECALC")
+      $(".OEPanelLeft").trigger("RECALC")
     , 150
     return
 
   Backbone.View.extend {
 
     events :
-      "click #HideOEPanelLeft"       : "toggleLeftPanel"
-      "OPTION_CHANGE #AmiTypeSelect" : "changeAmiType"
-      "click #BrowseCommunityAmi"    : "browseCommunityAmi"
-      "click #ManageSnapshot"        : "manageSnapshot"
-      "click #RefreshLeftPanel"      : "refreshPanelDataData"
+      "click .HideOEPanelLeft"       : "toggleLeftPanel"
+      "OPTION_CHANGE .AmiTypeSelect" : "changeAmiType"
+      "click .BrowseCommunityAmi"    : "browseCommunityAmi"
+      "click .ManageSnapshot"        : "manageSnapshot"
+      "click .RefreshLeftPanel"      : "refreshPanelDataData"
       "click .fixedaccordion-head"   : "updateAccordion"
       "RECALC"                       : "recalcAccordion"
       "mousedown .resource-item"     : "startDrag"
@@ -52,9 +52,9 @@ define [
       return
 
     render : ()->
-      @setElement $("#OEPanelLeft").html LeftPanelTpl.panel({})
+      @setElement @workspace.view.$el.find(".OEPanelLeft").html LeftPanelTpl.panel({})
 
-      $("#OEPanelLeft").toggleClass("hidden", @__rightPanelHidden || false)
+      @$el.toggleClass("hidden", @__leftPanelHidden || false)
       @recalcAccordion()
 
       @updateAZ()
@@ -93,7 +93,7 @@ define [
 
         if not @inDom
           @inDom = true
-          $("#OEPanelLeft").find( '.resource-list.elb-asg' ).append @el
+          @parent.$el.find(".resource-list.elb-asg").append @el
 
         @
 
@@ -102,7 +102,7 @@ define [
       allLc = Design.modelClassForType( constant.RESTYPE.LC ).allObjects()
 
       for lc in allLc
-        new @reuseLc( model: lc ).render()
+        new @reuseLc({model:lc, parent : @}).render()
 
       @
 
@@ -124,14 +124,14 @@ define [
       if not @workspace.isAwake() then return
       region = @workspace.opsModel.get("region")
 
-      $("#OEPanelLeft").find(".resource-list.availability-zone").html LeftPanelTpl.az(CloudResources( constant.RESTYPE.AZ, region ).where({category:region}) || [])
+      @$el.find(".resource-list.availability-zone").html LeftPanelTpl.az(CloudResources( constant.RESTYPE.AZ, region ).where({category:region}) || [])
       @updateDisabledAz()
       return
 
     updateSnapshot : ()->
       if not @workspace.isAwake() then return
       region = @workspace.opsModel.get("region")
-      $("#OEPanelLeft").find(".resource-list.resoruce-snapshot").html LeftPanelTpl.snapshot(CloudResources( constant.RESTYPE.SNAP, region ).where({category:region}) || [])
+      @$el.find(".resource-list.resoruce-snapshot").html LeftPanelTpl.snapshot(CloudResources( constant.RESTYPE.SNAP, region ).where({category:region}) || [])
       return
 
     updateDisableItems : ()->
@@ -159,12 +159,8 @@ define [
       return
 
 
-    clearDom : ()->
-      @$el = null
-      return
-
     toggleLeftPanel : ()->
-      @__leftPanelHidden = $("#OEPanelLeft").toggleClass("hidden").hasClass("hidden")
+      @__leftPanelHidden = @$el.toggleClass("hidden").hasClass("hidden")
       false
 
     updateAccordion : ( event, noAnimate ) ->
@@ -202,7 +198,7 @@ define [
       false
 
     recalcAccordion : () ->
-      leftpane = $("#OEPanelLeft")
+      leftpane = @$el
       if not leftpane.length
         return
 

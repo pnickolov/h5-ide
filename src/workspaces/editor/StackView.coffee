@@ -15,7 +15,7 @@ define [
 
     bindUserEvent : ()->
       # Events
-      $("#OEPanelCenter")
+      @$el.find(".OEPanelCenter")
         .on('mousedown',             '.port',             MC.canvas.event.drawConnection.mousedown)
         .on('mousedown',             '.dragable',         MC.canvas.event.dragable.mousedown)
         .on('mousedown',             '.group-resizer',    MC.canvas.event.groupResize.mousedown)
@@ -28,17 +28,11 @@ define [
         .on('selectstart', false)
 
       $("#canvas_body").addClass("canvas_state_stack")
-
-      # $("#OEPanelLeft").on('mousedown', '.resource-item', MC.canvas.event.siderbarDrag.mousedown)
       return
 
     renderSubviews : ()->
       @resourcePanel.render()
       @statusbar.render()
-      return
-
-    clearSubviewsDom : ()->
-      @resourcePanel.clearDom()
       return
 
     removeSubviews : ()->

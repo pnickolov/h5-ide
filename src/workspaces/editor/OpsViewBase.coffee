@@ -37,8 +37,8 @@ define [
       console.assert( not @$el or @$el.attr("id") isnt "OpsEditor", "There should be no #OpsEditor when an editor view is rendered." )
 
       # 1. Generate basic dom structure.
-      if @$el then @$el.remove()
       @setElement $( @createTpl() ).appendTo("#main").show()[0]
+      @$el.attr("data-workspace", @workspace.id)
 
       # 2. Bind Events for MC.canvas.js
       @bindUserEvent()
@@ -54,23 +54,30 @@ define [
       @workspace.design.canvas.init()
       return
 
-    clearDom : ()->
-      # Remove the DOM to free memories. But we don't call setElement(), because
-      # setElement() will transfer events to the new element.
-      @$el.remove()
-      @$el = null
+    backup : ()->
+      $center = @$el.find(".OEPanelCenter")
+      @__backupSvg = $center.html()
+      $center.empty()
 
-      @propertyPanel.clearDom()
-      @toolbar.clearDom()
+      ###
+      Revoke all the IDs of every dom.
+      ###
+      @propertyPanel.backup()
 
-      @clearSubviewsDom()
+      @backupSubviews()
+      @$el.attr("id", "")
+      return
+
+    recover : ()->
+      @$el.find(".OEPanelCenter").html @__backupSvg
+      @__backupSvg = null
+      @recoverSubviews()
+      @$el.attr("id", "OpsEditor")
+
+      @propertyPanel.recover()
       return
 
     remove : ()->
-      # Hack, the toolbar/propertyPanel's $el might be null here.
-      @toolbar.$el = @toolbar.$el || $()
-      @propertyPanel.$el = @propertyPanel.$el || $()
-
       @toolbar.remove()
       @propertyPanel.remove()
 
@@ -99,10 +106,13 @@ define [
     ###
     createTpl        : ()-> CanvasTpl({})
     bindUserEvent    : ()-> return
-    # Called when the OpsEditor awakes up.
-    renderSubviews   : ()-> return
-    # Called when the OpsEditor is put to sleep
-    clearSubviewsDom : ()-> return
+    # Called when the OpsEditor initialize
+    renderSubviews  : ()-> return
+    # Called when the OpsEditor wakes up.
+    recoverSubviews : ()-> return
+    # Called when the OpsEditor sleeps
+    backupSubviews  : ()-> return
+
     # Called when the OpsEditor is closed.
     removeSubviews   : ()-> return
   }

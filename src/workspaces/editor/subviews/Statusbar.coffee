@@ -169,9 +169,8 @@ define [
     itemViews: []
 
     render : ()->
-      @$el.html template.frame()
+      @setElement @workspace.view.$el.find(".OEPanelBottom").html template.frame()
       @renderItem()
-      $( '#OEPanelBottom' ).html @el
       @
 
     renderItem: () ->

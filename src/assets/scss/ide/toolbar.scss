@@ -164,12 +164,12 @@
   }
 }
 
-#OEPanelTop .selectbox > .selection > span:before {
+.OEPanelTop .selectbox > .selection > span:before {
   margin-left  : 4px;
   margin-right : 80px;
 }
 
-#OEPanelTop .dropdown > li > span::before {
+.OEPanelTop .dropdown > li > span::before {
   margin-left  : 2px;
   margin-right : 8px;
 }

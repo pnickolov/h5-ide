@@ -70,14 +70,10 @@ define [
       for btn in btns
         tpl += OpsEditorTpl.toolbar[ btn ](stateOn: workspace.design.attributes.agent.enabled)
 
-      @setElement $("#OEPanelTop").html( tpl )
+      @setElement @workspace.view.$el.find(".OEPanelTop").html( tpl )
 
       @updateTbBtns()
       @updateZoomButtons()
-      return
-
-    clearDom : ()->
-      @$el = null
       return
 
     updateTbBtns : ()->
@@ -92,9 +88,9 @@ define [
         @$el.children(".icon-update-app").toggle( not isAppEdit )
         @$el.children(".icon-apply-app, .icon-cancel-update-app").toggle( isAppEdit )
         if isAppEdit
-          @$el.children(".icon-terminate, .icon-stop, .icon-play, .icon-refresh .icon-save-app .icon-reload").hide()
+          @$el.children(".icon-terminate, .icon-stop, .icon-play, .icon-refresh, .icon-save-app, .icon-reload").hide()
         else
-          @$el.children(".icon-terminate, .icon-refresh").show()
+          @$el.children(".icon-terminate, .icon-refresh, .icon-save-app, .icon-reload").show()
           @$el.children(".icon-stop").toggle( opsModel.get("stoppable") and opsModel.testState(OpsModel.State.Running) )
           @$el.children(".icon-play").toggle( opsModel.testState( OpsModel.State.Stopped ) )
 

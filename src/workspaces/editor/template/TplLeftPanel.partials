@@ -1,5 +1,5 @@
 <!-- {{panel}} -->
-<button id="HideOEPanelLeft" class="tooltip sidebar-hider icon-caret-left" data-tooltip='{{ i18n "RES_TIP_TOGGLE_RESOURCE_PANEL" }}'></button>
+<button class="tooltip sidebar-hider icon-caret-left HideOEPanelLeft" data-tooltip='{{ i18n "RES_TIP_TOGGLE_RESOURCE_PANEL" }}'></button>
 
 <header class="sidebar-title"> {{ i18n "RES_TIT_RESOURCES" }}
   <i class="icon-resources js-toggle-dropdown menu-manage-shard-res"></i>
@@ -21,7 +21,7 @@
 
   <section class="accordion-group">
     <header class="fixedaccordion-head">{{ i18n "RES_TIT_AMI" }}
-      <div class="selectbox resource-select dark" id="AmiTypeSelect">
+      <div class="selectbox resource-select dark AmiTypeSelect">
         <div class="selection">{{ i18n "RES_LBL_QUICK_START_AMI" }}</div>
         <ul class="dropdown">
           <li class="item selected" data-id="quickstart-ami">{{ i18n "RES_LBL_QUICK_START_AMI" }}</li>
@@ -38,7 +38,7 @@
         <ul class="favorite-ami-list resource-list hide"></ul>
       </div>
 
-      <button class="btn btn-primary" id="BrowseCommunityAmi">{{ i18n "RES_BTN_BROWSE_COMMUNITY_AMI" }}</button>
+      <button class="btn btn-primary BrowseCommunityAmi">{{ i18n "RES_BTN_BROWSE_COMMUNITY_AMI" }}</button>
     </div>
   </section>
 
@@ -47,7 +47,7 @@
     <div class="accordion-body scroll-wrap scrollbar-auto-hide">
       <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
       <ul class="resoruce-snapshot resource-list scroll-content"></ul>
-      <button class="btn btn-primary" id="ManageSnapshot">{{ i18n "RES_TIT_SNAPSHOT_MANAGE"}}</button>
+      <button class="btn btn-primary ManageSnapshot">{{ i18n "RES_TIT_SNAPSHOT_MANAGE"}}</button>
     </div>
   </section>
 

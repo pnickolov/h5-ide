@@ -9,7 +9,7 @@ define [
     bindUserEvent : ()->
       # Events
       if @workspace.isAppEditMode()
-        $("#OEPanelCenter")
+        @$el.find(".OEPanelCenter")
           .removeClass('canvas_state_app').addClass("canvas_state_appedit")
           .off(".CANVAS_EVENT")
           .on('mousedown.CANVAS_EVENT', '.instance-volume, .instanceList-item-volume, .asgList-item-volume', MC.canvas.volume.show)
@@ -24,7 +24,7 @@ define [
           .on('mousedown.CANVAS_EVENT', MC.canvas.event.ctrlMove.mousedown)
           .on('mousedown.CANVAS_EVENT', '#node-action-wrap', MC.canvas.nodeAction.popup)
       else
-        $("#OEPanelCenter")
+        @$el.find(".OEPanelCenter")
           .removeClass('canvas_state_appedit').addClass("canvas_state_app")
           .off(".CANVAS_EVENT")
           .on('mousedown.CANVAS_EVENT', '.instance-volume, .instanceList-item-volume, .asgList-item-volume', MC.canvas.volume.show)
@@ -45,15 +45,12 @@ define [
       if @workspace.isAppEditMode()
         @resourcePanel.render()
 
-      $("#OEPanelLeft").toggleClass "force-hidden", !@workspace.isAppEditMode()
+      $(".OEPanelLeft").toggleClass "force-hidden", !@workspace.isAppEditMode()
 
       @statusbar.render()
 
-      pp = @__progress
       @toggleProcessing()
-      @__progress = pp
       @updateProgress()
-      @restoreUpdateStatus()
       return
 
     toggleProcessing : ()->
@@ -78,7 +75,6 @@ define [
           console.warn "Unknown opsmodel state when showing loading in AppEditor,", opsModel
           text = "Processing your request..."
 
-      @__progress = 0
       @$el.append OpsEditorTpl.appProcessing(text)
       return
 
@@ -100,35 +96,26 @@ define [
 
     switchMode : ( isAppEditMode )->
       @toolbar.updateTbBtns()
-      $("#OEPanelLeft").toggleClass "force-hidden", !isAppEditMode
+      @$el.find(".OEPanelLeft").toggleClass "force-hidden", !isAppEditMode
       if isAppEditMode
         @resourcePanel.render()
       else
-        $("#OEPanelLeft").empty()
+        @$el.find(".OEPanelLeft").empty()
       @propertyPanel.openPanel()
       @bindUserEvent()
       return
-
 
     emptyCanvas : ()->
       $("#vpc_layer, #az_layer, #subnet_layer, #asg_layer, #line_layer, #node_layer").empty()
       return
 
     showUpdateStatus : ( error )->
-      @__appUpdateStatus = { error : error }
       @$el.find(".ops-process").remove()
 
       self = @
-      $(OpsEditorTpl.appUpdateStatus(@__appUpdateStatus))
+      $(OpsEditorTpl.appUpdateStatus({ error : error }))
         .appendTo(@$el)
         .find("#processDoneBtn")
-        .click ()->
-          self.__appUpdateStatus = null
-          self.$el.find(".ops-process").remove()
-
-    restoreUpdateStatus : ()->
-      if not @__appUpdateStatus then return
-      @showUpdateStatus( @__appUpdateStatus.error )
+        .click ()-> self.$el.find(".ops-process").remove()
       return
-
   }

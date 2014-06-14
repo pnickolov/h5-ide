@@ -76,7 +76,7 @@ var listen = function ()
 			.on('mousedown' + name_space, MC.canvas.event.ctrlMove.mousedown);
 	}
 
-	$('#tab-content-design').on('click', '#canvas-panel, #resource-panel', MC.canvas.volume.close);
+	$('#tab-content-design').on('click', '#resource-panel', MC.canvas.volume.close);
 };
 
 // Dom Ready

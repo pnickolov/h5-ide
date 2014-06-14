@@ -49,11 +49,11 @@ define [ 'constant',
     PropertyView = Backbone.View.extend {
 
         setTitle : ( title ) ->
-            $( if @_isSub then "#property-second-title" else "#property-title" ).text title
+            $("#OEPanelRight").find( if @_isSub then ".property-second-title" else ".property-title" ).text title
             return
 
         prependTitle : ( additionalTitle ) ->
-            $( if @_isSub then "#property-second-title" else "#property-title" ).prepend additionalTitle
+            $("#OEPanelRight").find( if @_isSub then ".property-second-title" else ".property-title" ).prepend additionalTitle
             return
 
         forceShow : () ->
@@ -62,11 +62,10 @@ define [ 'constant',
 
         disabledAllOperabilityArea : ( disabled ) ->
             if disabled
-                if $("#OEPanelLeft").children(".disabled-event-layout").length
+                if $("#OpsEditor").children(".disabled-event-layout").length
                     return
                 divTmpl = '<div class="disabled-event-layout"></div>'
-                $('#OEPanelLeft').append(divTmpl)
-                $('#OEMiddleWrap').append(divTmpl)
+                $('#OpsEditor').append(divTmpl)
                 $('#tabbar-wrapper').append(divTmpl)
             else
                 $('.disabled-event-layout').remove()
@@ -97,7 +96,7 @@ define [ 'constant',
         _load : () ->
             # The module is loaded. Here we re-init the view.
 
-            $panel = $("#property-first-panel").find(".property-details")
+            $panel = $("#OEPanelRight").find(".property-first-panel").find(".property-details")
 
             # Remove the old panel, so that the event is removed
             $new_panel = $("<div class='scroll-content property-content property-details'></div>").insertAfter( $panel )
@@ -125,7 +124,7 @@ define [ 'constant',
             # Set the element to Second Panel Wrapper
             # So that subclass can use it to insert there content
             # It's a bit weird, but I don't have better idea at this moment.
-            @setElement $("#property-second-panel .property-content")
+            @setElement $("#OEPanelRight").find(".property-second-panel .property-content")
 
             @render()
 

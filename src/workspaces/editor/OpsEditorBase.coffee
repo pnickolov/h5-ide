@@ -46,12 +46,9 @@ define [
       d.promise
 
     # Returns a new View
-    createView : ()->
-      new OpsEditorView({workspace:this})
-
+    createView : ()-> new OpsEditorView({workspace:this})
     # Returns a new Design object.
     initDesign : ()-> @design.finishDeserialization()
-
     # Return true if the data is ready.
     isReady : ()-> !!@__hasAdditionalData
 
@@ -137,14 +134,8 @@ define [
 
     # Override parent's method to do cleaning when the tab is removed.
     cleanup : ()->
-      @__backupSvg = null
       @stopListening()
-      if @view
-        # OpsEditorView might have an null $el with it.
-        # But Backbone.View.remove() assumes the $el is not null
-        if not @view.$el then @view.$el = $()
-
-        @view.remove()
+      @view.remove()
       return
 
     isInited : ()-> !!@__inited
@@ -155,8 +146,8 @@ define [
       @view = @createView()
       @view.opsModel  = @opsModel
       @view.workspace = @
-
-      @showEditor()
+      @hideOtherEditor()
+      @view.render()
 
       @initDesign()
 
@@ -166,8 +157,16 @@ define [
       return
 
     showEditor : ()->
-      console.assert( @view, "There's no view for the editor when it's being shown." )
+      if @hideOtherEditor()
+        @view.$el.show()
+        @view.recover()
+      else
+        # The #OpsEditor DOM is ours, we just need to show it.
+        console.log( "#OpsEditor is current workspace's, just show()-ing it." )
+        @view.$el.show()
+      return
 
+    hideOtherEditor : ()->
       # If there's a #OpsEditor DOM, need to check if it's ours. If it's not, ask another editor to hide it.
       $theDOM  = $("#OpsEditor")
       editorId = $theDOM.attr("data-workspace")
@@ -175,31 +174,10 @@ define [
       console.assert( not $theDOM.length or editorId, "There's #OpsEditor, but it doens't have [data-workspace]" )
 
       if editorId and editorId isnt @id
-        App.workspaces.get( editorId ).hideEditor()
+        App.workspaces.get( editorId ).view.backup()
+        return true
 
-      if editorId isnt @id
-        @view.render()
-        $("#OpsEditor").attr("data-workspace", @id)
-
-        # Restore svg
-        if @__backupSvg
-          $("#OEPanelCenter").html( @__backupSvg )
-          @__backupSvg = null
-
-      else
-        # The #OpsEditor DOM is ours, we just need to show it.
-        console.log( "#OpsEditor is current workspace's, just show()-ing it." )
-        @view.$el.show()
-
-      return
-
-    # This method is intends to be called by other editors, when other editor is activate.
-    hideEditor : ()->
-      console.assert( $("#OpsEditor").attr("data-workspace") is @id && $("#OpsEditor")[0] is @view.$el[0], "The #OpsEditor DOM is not this editor's", $("#OpsEditor"), @ )
-
-      @__backupSvg = $("#OEPanelCenter").html()
-      @view.clearDom()
-      return
+      editorId isnt @id
 
     isRemovable : ()->
       if not @__inited or not @isModified()

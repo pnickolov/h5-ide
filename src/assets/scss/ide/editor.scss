@@ -21,18 +21,18 @@ $BottomPanelHeight    : 24px;
 }
 
 // Sidebar and Layout
-#OEPanelLeft, #OEPanelRight {
+.OEPanelLeft, .OEPanelRight {
   position   : absolute;
   height     : 100%;
   z-index    : 3;
   background : #313131;
 }
 
-#OEPanelLeft {
+.OEPanelLeft {
   width      : $LeftPanelWidth;
   background : #242424;
   left       : 0;
-  
+
   @include slide(left);
 
   &.force-hidden {
@@ -41,21 +41,22 @@ $BottomPanelHeight    : 24px;
 
   &.hidden {
     left : -$LeftPanelWidth;
-    > #HideOEPanelLeft:before {
+    > .HideOEPanelLeft:before {
       content : "\F124";
     }
   }
 }
 
-#OEPanelRight {
-  right : 0;
-  width : $RightPanelWidth;
+.OEPanelRight {
+  right   : 0;
+  width   : $RightPanelWidth;
+  z-index : 8;
 
   @include slide(right);
 
   &.hidden {
     right: -$RightPanelWidth;
-    #HideOEPanelRight:before {
+    .HideOEPanelRight:before {
       content : "\F125";
     }
   }
@@ -65,7 +66,7 @@ $BottomPanelHeight    : 24px;
   }
 }
 
-#OEMiddleWrap {
+.OEMiddleWrap {
   position : absolute;
   z-index  : 2;
   top      : 0;
@@ -78,14 +79,14 @@ $BottomPanelHeight    : 24px;
   //         transition: left 0.1s;
 }
 
-#OEPanelTop {
+.OEPanelTop {
   height     : $TopPanelHeight;
   width      : 100%;
   min-width  : 610px;
   background : #313131;
 }
 
-#OEPanelBottom {
+.OEPanelBottom {
   position : absolute;
   bottom   : 0;
   width    : 100%;
@@ -96,27 +97,28 @@ $BottomPanelHeight    : 24px;
 
   color     : #999;
   font-size : 12px;
+  z-index   : 3;
 
   box-sizing : border-box;
   // box-shadow : inset 0 1px 0 rgba(255,255,255,.1),inset -1px 0 0 rgba(255,255,255,.1),inset 1px 0 0 rgba(255,255,255,.1);
   border-top : 1px solid #212121;
 
-  ~ #OEPanelCenter {
+  ~ .OEPanelCenter {
     bottom : $BottomPanelHeight;
   }
 }
 
-#OEPanelCenter {
-  position : absolute;
+.OEPanelCenter {
+  position : absolute !important;
   width    : 100%;
   top      : $TopPanelHeight;
   bottom   : 0;
 }
 
-#OEPanelRight:not(.hidden) ~ #OEMiddleWrap { right : $RightPanelWidth; }
-#OEPanelRight:not(.hidden).state ~ #OEMiddleWrap { right : $RightStatePanelWidth; }
-#OEPanelLeft:not(.hidden)  ~ #OEMiddleWrap { left  : $LeftPanelWidth; }
-#OEPanelLeft.force-hidden  ~ #OEMiddleWrap { left  : 0; }
+.OEPanelRight:not(.hidden) ~ .OEMiddleWrap { right : $RightPanelWidth; }
+.OEPanelRight:not(.hidden).state ~ .OEMiddleWrap { right : $RightStatePanelWidth; }
+.OEPanelLeft:not(.hidden)  ~ .OEMiddleWrap { left  : $LeftPanelWidth; }
+.OEPanelLeft.force-hidden  ~ .OEMiddleWrap { left  : 0; }
 
 .sidebar-title {
   padding-left : 10px;
@@ -204,16 +206,22 @@ $BottomPanelHeight    : 24px;
   &:before { font-size : 14px; }
 }
 
-#HideOEPanelLeft {
+.HideOEPanelLeft {
   left          : 100%;
   border-left   : none;
   border-radius : 0 3px 3px 0;
 }
 
-#HideOEPanelRight {
+.HideOEPanelRight {
   right         : 100%;
   border-right  : none;
   border-radius : 3px 0 0 3px;
 }
 
+
+#OpsEditor {
+  .disabled-event-layout {
+    z-index : 6;
+  }
+}
 @import "sidebar";

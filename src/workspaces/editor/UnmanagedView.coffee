@@ -18,7 +18,7 @@ define [
       })
 
     bindUserEvent : ()->
-      $("#OEPanelCenter")
+      @$el.find(".OEPanelCenter")
         .on('mousedown', '.instance-volume, .instanceList-item-volume, .asgList-item-volume', MC.canvas.volume.show)
         .on('mousedown', '.AWS-AutoScaling-LaunchConfiguration .instance-number-group', MC.canvas.asgList.show)
         .on('mousedown',             '.dragable',      MC.canvas.event.dragable.mousedown)

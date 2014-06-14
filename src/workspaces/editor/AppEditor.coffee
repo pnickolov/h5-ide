@@ -35,19 +35,19 @@ define [
       ]).then ()->
         # Hack, immediately apply changes when we get data if the app is changed.
         # Will move it to somewhere else if the process is upgraded.
-        if self.isRemoved() then return
+        # if self.isRemoved() then return
 
-        newJson = self.opsModel.generateJsonFromRes()
-        self.differ = new ResDiff({
-          old : self.opsModel.getJsonData()
-          new : newJson
-        })
-        result = self.differ.getChangeInfo()
-        if result.hasResChange
-          return self.opsModel.saveApp( newJson )
-        else
-          self.differ = undefined
-        return
+        # newJson = self.opsModel.generateJsonFromRes()
+        # self.differ = new ResDiff({
+        #   old : self.opsModel.getJsonData()
+        #   new : newJson
+        # })
+        # result = self.differ.getChangeInfo()
+        # if result.hasResChange
+        #   return self.opsModel.saveApp( newJson )
+        # else
+        #   self.differ = undefined
+        # return
 
     isModified : ()-> @isAppEditMode() && @design && @design.isModified()
 
@@ -102,28 +102,24 @@ define [
         self.__applyingUpdate = false
         self.__appEdit = false
 
-        self.stopListening self.opsModel, "change:progress", self.updateProgress
+        self.view.stopListening self.opsModel, "change:progress", self.view.updateProgress
 
         self.design.setMode( Design.MODE.App )
         self.view.showUpdateStatus()
-
-        if self.isAwake()
-          self.view.switchMode( false )
+        self.view.switchMode( false )
 
         return
 
       , ( err )->
         self.__applyingUpdate = false
-        self.stopListening self.opsModel, "change:progress", self.updateProgress
+        self.view.stopListening self.opsModel, "change:progress", self.view.updateProgress
 
         self.view.showUpdateStatus( err.msg )
         return
 
-      @listenTo @opsModel, "change:progress", @updateProgress
+      @view.listenTo @opsModel, "change:progress", @view.updateProgress
 
       true
-
-    updateProgress : ()-> if @isAwake() then @view.updateProgress()
 
     onOpsModelStateChanged : ()->
       if not @isInited() then return

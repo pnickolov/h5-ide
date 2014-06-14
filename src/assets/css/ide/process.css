@@ -81,7 +81,7 @@
   top: 0;
   bottom: 0;
   right: 0;
-  z-index: 3;
+  z-index: 9;
   background: rgba(0, 0, 0, 0.8);
   text-align: center; }
   #OpsEditor .ops-process:not(.has-progess) .process-info, #OpsEditor .ops-process:not(.has-progess) .progress {

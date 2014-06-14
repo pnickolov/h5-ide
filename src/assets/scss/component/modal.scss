@@ -10,12 +10,25 @@
 }
 
 .modal-box{
-    position     : absolute;
-    z-index      : 70;
-    border-radius: 3px;
-    background   : rgba(32,32,32,0.9);
-    box-shadow   : 1px 1px 5px rgba(0,0,0,0.4);
-    color        : #999999;
+    position      : absolute;
+    opacity       : 1;
+    margin-top    : 0;
+    z-index       : 70;
+    border-radius : 3px;
+    background    : rgba(32,32,32,0.9);
+    box-shadow    : 1px 1px 5px rgba(0,0,0,0.4);
+    color         : #999999;
+
+    -webkit-transition: opacity .1s, margin-top .1s;
+    -moz-transition: opacity .1s, margin-top .1s;
+    -ms-transition: opacity .1s, margin-top .1s;
+    -o-transition: opacity .1s, margin-top .1s;
+    transition: opacity .1s, margin-top .1s;
+
+    &.bounce {
+    	opacity: 0;
+    	margin-top: -100px;
+    }
 }
 
 #modal-box .input:focus {

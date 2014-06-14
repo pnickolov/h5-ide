@@ -955,14 +955,22 @@ textarea {
 	/*border     : 1px solid #242424;*/
 }
 .modal-box{
+    opacity      : 1;
     position     : absolute;
     z-index      : 70;
     border-radius: 3px;
     background   : rgba(32,32,32,0.9);
     box-shadow   : 1px 1px 5px rgba(0,0,0,0.4);
     color        : #999999;
+    -webkit-transition: opacity 0.3s;
+    -moz-transition: opacity 0.3s;
+    -ms-transition: opacity 0.3s;
+    -o-transition: opacity 0.3s;
+    transition: opacity 0.3s;
 }
-
+.modal-box.bounce{
+    opacity: 0;
+}
 #modal-box .input:focus {
   border-color : #010101;
 }

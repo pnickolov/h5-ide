@@ -84,6 +84,10 @@ define [], ()->
             @tpl.appendTo @wrap
             modalGroup.push(@)
             if modalGroup.length == 1
+                @tpl.addClass('bounce')
+                window.setTimeout =>
+                    @tpl.removeClass('bounce')
+                ,1
                 @trigger "show", @
                 @trigger 'shown', @
             @show()
@@ -100,9 +104,14 @@ define [], ()->
                 modalGroup = []
                 @trigger 'close',@
                 @trigger 'closed', @ # Last Modal doesn't support Animation. when trigger close, it's closed.
-                @tpl.remove()
+                @tpl.addClass('bounce')
                 @option.onClose?(@)
-                @wrap.remove()
+                window.setTimeout =>
+                    @tpl.remove()
+                    @wrap.remove()
+                ,@option.delay||300
+                @wrap.fadeOut(@option.delay || 300)
+
             null
         show: ()->
             @wrap.removeClass("hide")

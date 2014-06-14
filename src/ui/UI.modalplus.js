@@ -57,6 +57,12 @@
         this.tpl.appendTo(this.wrap);
         modalGroup.push(this);
         if (modalGroup.length === 1) {
+          this.tpl.addClass('bounce');
+          window.setTimeout((function(_this) {
+            return function() {
+              return _this.tpl.removeClass('bounce');
+            };
+          })(this), 1);
           this.trigger("show", this);
           this.trigger('shown', this);
         }
@@ -79,11 +85,17 @@
           modalGroup = [];
           this.trigger('close', this);
           this.trigger('closed', this);
-          this.tpl.remove();
+          this.tpl.addClass('bounce');
           if (typeof (_base = this.option).onClose === "function") {
             _base.onClose(this);
           }
-          this.wrap.remove();
+          window.setTimeout((function(_this) {
+            return function() {
+              _this.tpl.remove();
+              return _this.wrap.remove();
+            };
+          })(this), this.option.delay || 300);
+          this.wrap.fadeOut(this.option.delay || 300);
         }
         return null;
       };
@@ -355,3 +367,7 @@
   });
 
 }).call(this);
+
+/*
+//# sourceMappingURL=UI.modalplus.js.map
+*/

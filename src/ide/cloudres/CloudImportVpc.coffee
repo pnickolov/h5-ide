@@ -34,7 +34,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
       @ins_in_asg= [] # instances in asg
       @component = {}
       @layout    = {}
-      @originalJson = jQuery.extend(true, {}, originalJson); #original app json
+      @originalJson = jQuery.extend(true, {component: {}, layout: {}}, originalJson); #original app json
 
       # Use the originalJson to generate uid for a existing resource.
       @compMap = {}
@@ -48,7 +48,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
       return @
 
     add : ( type_string, res_attributes, component_resources, default_name )->
-      if not res_attributes and not default_name
+      if not res_attributes and not default_name and not component_resources.uid
         console.error "[ConverterData.add] if res_attributes is null, then must specify default_name"
         return null
 
@@ -973,6 +973,24 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         cwComp = @add( "CW", aws_cw, cwRes, aws_cw.Name )
       return
 
+    # Retain component only belong to us
+    () ->
+      retainList = [
+        'AWS.EC2.Tag'
+        constant.RESTYPE.KP
+        constant.RESTYPE.TOPIC
+        constant.RESTYPE.SUBSCRIPTION
+        constant.RESTYPE.IAM
+        constant.RESTYPE.DHCP
+
+      ]
+
+      for uid, com of @originalJson.component
+        if com.type in retainList
+          @add null, null, com
+        null
+
+      null
 
   ]
 
@@ -1000,10 +1018,13 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
       "NC"
       "SP"
       "IAM"
+      "RETAIN"
     ].map (t)-> CloudResources( constant.RESTYPE[t], region )
 
     cd = new ConverterData( region, vpcId, originalJson )
     func.call( cd ) for func in Converters
+
+
 
     # find default SG
     if DEFAULT_SG["DefaultSG"]

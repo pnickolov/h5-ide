@@ -171,12 +171,12 @@
 .resources-dropdown-wrapper li:hover {
   background-color: #000; }
 
-#AmiTypeSelect {
+.AmiTypeSelect {
   position: absolute;
   top: 0;
   right: 0;
   line-height: 20px; }
-  #AmiTypeSelect:hover .selection {
+  .AmiTypeSelect:hover .selection {
     background: #234F77; }
 
 .resource-icon {

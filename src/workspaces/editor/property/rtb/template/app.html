@@ -6,7 +6,7 @@
 
   <dl class="dl-vertical">
     <dt>{{i18n "PROP_RT_ID"}}</dt>
-    <dd>{{routeTableId}}</dd>
+    <dd>{{id}}</dd>
 
     <dt>{{i18n "PROP_RT_LBL_MAIN_RT"}}</dt>
     <dd>{{main}}</dd>
@@ -26,7 +26,7 @@
           <th></th>
         </tr>
       </thead>
-      {{#each routeSet.item}}
+      {{#each routeSet}}
       <tr>
         {{#if active}}
         <td><i class="status status-green tooltip" data-tooltip="{{i18n 'PROP_RT_TIP_ACTIVE'}}"></i></td>

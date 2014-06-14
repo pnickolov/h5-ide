@@ -171,7 +171,7 @@ define [
     trAwsXml : ( data )-> data.DescribeRouteTablesResponse.routeTableSet?.item
     parseFetchData : ( rtbs )->
       for rtb in rtbs
-        rtb.routeSet = rtb.routeSet?.item || []
+        rtb.routeSet = rtb.routeSet?.item || rtb.routes || []
         rtb.associationSet = rtb.associationSet?.item || []
         rtb.propagatingVgwSet = rtb.propagatingVgwSet?.item || []
         rtb.id = rtb.routeTableId

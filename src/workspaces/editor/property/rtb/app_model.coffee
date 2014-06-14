@@ -7,7 +7,7 @@ define [ '../base/model', 'constant', 'Design', 'CloudResources' ], ( PropertyMo
     RTBAppModel = PropertyModel.extend {
 
         processTarget : ( rtb )->
-          console.log rtb
+
           rtb.routeSet = _.map rtb.routeSet, ( item ) ->
             item.target = item.instanceId || item.networkInterfaceId || item.gatewayId
 
@@ -59,7 +59,7 @@ define [ '../base/model', 'constant', 'Design', 'CloudResources' ], ( PropertyMo
 
           has_main = false
 
-          if rtb.associationSet and rtb.associationSet
+          if rtb.associationSet and rtb.associationSet.length
 
             for asso in rtb.associationSet
 
@@ -79,7 +79,7 @@ define [ '../base/model', 'constant', 'Design', 'CloudResources' ], ( PropertyMo
           propagate = {}
 
           # Find out which route is propagated.
-          if rtb.propagatingVgwSet and rtb.propagatingVgwSet
+          if rtb.propagatingVgwSet and rtb.propagatingVgwSet.length
             for i in rtb.propagatingVgwSet
               propagate[ i.gatewayId ] = true
 

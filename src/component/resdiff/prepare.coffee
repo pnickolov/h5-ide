@@ -1,6 +1,7 @@
-define [], ->
+define [ 'constant' ], ( constant ) ->
+
     helper = ( options ) ->
-        getAttrMap: ( path ) ->
+        getNodeMap: ( path ) ->
             path = path.split('.') if _.isString(path)
 
             oldComp = options.oldAppJSON.component
@@ -30,6 +31,43 @@ define [], ->
                 oldAttr: oldCompAttr
                 newAttr: newCompAttr
             }
+
+        getNodeData: ( path ) ->
+            @getNewest @getNodeMap path
+
+        getNewest: ( attrMap ) ->
+            attrMap.newAttr or attrMap.oldAttr
+
+        replaceArrayIndex: ( path, data ) ->
+            componentMap = @getNodeMap path[0]
+            component = @getNewest componentMap
+
+            type = component.type
+            parentKey = path[ path.length - 2 ]
+
+            switch type
+                when constant.RESTYPE.INSTANCE
+                    if parentKey is 'BlockDeviceMapping'
+                        childNode = @getNodeData path
+                        data.key = childNode.DeviceName if childNode and childNode.DeviceName
+
+                when constant.RESTYPE.ENI
+                    if parentKey is 'PrivateIpAddressSet'
+                        data.key = 'PrivateIpAddress'
+                    else if parentKey is 'GroupSet'
+                        data.key = 'SecurityGroup'
+
+                when constant.RESTYPE.SG
+                    if parentKey in [ 'IpPermissions', 'IpPermissionsEgress' ]
+                        data.key = 'Rule'
+
+
+
+            data
+
+
+
+
 
 
     prepareNode = ( path, data ) ->
@@ -66,19 +104,19 @@ define [], ->
             oldRef = _getRef(newValue.__old__)
             newRef = _getRef(newValue.__new__)
 
-            newValue.__old__ = @h.getAttrMap(oldRef).oldAttr if oldRef
-            newValue.__new__ = @h.getAttrMap(newRef).newAttr if newRef
+            newValue.__old__ = @h.getNodeMap(oldRef).oldAttr if oldRef
+            newValue.__new__ = @h.getNodeMap(newRef).newAttr if newRef
 
             data.value = _genValue(newValue.__old__, newValue.__new__)
 
         else
 
-            compAttrObj = @h.getAttrMap(path)
+            compAttrObj = @h.getNodeMap(path)
             oldAttr = compAttrObj.oldAttr
             newAttr = compAttrObj.newAttr
 
             valueRef = _getRef(data.value)
-            data.value = @h.getAttrMap(valueRef).oldAttr if valueRef
+            data.value = @h.getNodeMap(valueRef).oldAttr if valueRef
 
             if path.length is 1
 
@@ -92,6 +130,8 @@ define [], ->
                     data.key = newAttr.type
 
                 data.value = _genValue(oldCompName, newCompName)
+
+            data = @h.replaceArrayIndex path, data
 
         if path.length is 2
 
@@ -108,11 +148,6 @@ define [], ->
         @
 
     Prepare.prototype.node = prepareNode
-
-    Prepare.prototype.abc = prepareNode
-
-    Prepare.prototype.bcd = () -> console.log 1
-
 
     Prepare
 

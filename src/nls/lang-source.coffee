@@ -4259,6 +4259,13 @@ VisualOps API. You cannot UNDO this action.'
       en: "Run Stack"
       zh: "运行"
 
+    UPDATE_APP_MODAL_TITLE:
+      en: "Update App"
+      zh: "更新 App"
+
+    UPDATE_APP_CONFIRM_BTN:
+      en: "Update App"
+      zh: ""
     RUN_STACK:
       en: "run stack"
       zh: "运行"

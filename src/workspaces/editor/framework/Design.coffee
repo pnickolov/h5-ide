@@ -482,9 +482,12 @@ define [
     console.assert _.isEqual( newData, __dtBackup ), "Data Modified."
 
     if result.attribute or result.component or result.layout or result.instanceState
-      result.diffResult = @diff( newData, oldData )
-      result.newData    = newData
-      return result
+        __opsModel = @__opsModel
+        return {
+            result : @diff(newData, oldData)
+            isRunning: __opsModel.testState( OpsModel.State.Running )
+            isModified: true
+        }
     else
       return false
 

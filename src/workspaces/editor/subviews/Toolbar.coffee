@@ -360,6 +360,7 @@ define [
     switchToAppEdit : ()-> @workspace.switchToEditMode(); false
     applyAppEdit    : ()->
       result = @workspace.applyAppEdit()
+      console.debug result
       if result isnt true
         # Show popup dialog
         console.debug result

@@ -85,7 +85,6 @@ define [ "constant", "../GroupModel", "./DhcpModel" ], ( constant, GroupModel, D
         dhcp = "default"
       else
         dhcp = dhcpModel.getDhcp()
-      console.debug dhcp
       component =
         name : @get("name")
         type : @type

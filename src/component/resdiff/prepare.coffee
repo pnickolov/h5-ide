@@ -46,21 +46,27 @@ define [ 'constant' ], ( constant ) ->
             parentKey = path[ path.length - 2 ]
             childNode = @getNodeData path
 
-            # Replace according to type
-            switch type
-                when constant.RESTYPE.INSTANCE
-                    if parentKey is 'BlockDeviceMapping'
-                        data.key = childNode.DeviceName if childNode and childNode.DeviceName
+            # Replace keyword
+            switch parentKey
+                when 'BlockDeviceMapping'
+                    data.key = childNode.DeviceName if childNode and childNode.DeviceName
 
-                when constant.RESTYPE.ENI
-                    if parentKey is 'PrivateIpAddressSet'
-                        data.key = 'PrivateIpAddress'
-                    else if parentKey is 'GroupSet'
-                        data.key = 'SecurityGroup'
+                when 'PrivateIpAddressSet'
+                    data.key = 'PrivateIpAddress'
 
-                when constant.RESTYPE.SG
-                    if parentKey in [ 'IpPermissions', 'IpPermissionsEgress' ]
-                        data.key = 'Rule'
+                when 'GroupSet'
+                    data.key = 'SecurityGroup'
+
+                when 'IpPermissions', 'IpPermissionsEgress', 'EntrySet'
+                    data.key = 'Rule'
+
+                when 'AssociationSet'
+                    data.key = 'Association'
+
+                when 'AttachmentSet'
+                    data.key = 'Attachment'
+
+
 
 
             # Replace first level node

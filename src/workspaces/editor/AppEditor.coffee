@@ -35,19 +35,20 @@ define [
       ]).then ()->
         # Hack, immediately apply changes when we get data if the app is changed.
         # Will move it to somewhere else if the process is upgraded.
-        # if self.isRemoved() then return
 
-        # newJson = self.opsModel.generateJsonFromRes()
-        # self.differ = new ResDiff({
-        #   old : self.opsModel.getJsonData()
-        #   new : newJson
-        # })
-        # result = self.differ.getChangeInfo()
-        # if result.hasResChange
-        #   return self.opsModel.saveApp( newJson )
-        # else
-        #   self.differ = undefined
-        # return
+        if self.isRemoved() then return
+
+        newJson = self.opsModel.generateJsonFromRes()
+        self.differ = new ResDiff({
+          old : self.opsModel.getJsonData()
+          new : newJson
+        })
+        result = self.differ.getChangeInfo()
+        if result.hasResChange
+          return self.opsModel.saveApp( newJson )
+        else
+          self.differ = undefined
+        return
 
     isModified : ()-> @isAppEditMode() && @design && @design.isModified()
 

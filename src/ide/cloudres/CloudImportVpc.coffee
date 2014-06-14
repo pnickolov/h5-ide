@@ -143,9 +143,8 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
 
       for uid, comp of @originalJson.component
         if comp.type isnt type then continue
-        if not comp.resource then continue
 
-        if ( comp.resource[key] is id )
+        if ( comp[ key ] or comp.resource[ key ] ) is id
           return comp
 
       null

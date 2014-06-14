@@ -54,7 +54,7 @@ define [
 
     initDesign : ()->
       StackEditor.prototype.initDesign.call this
-      if @differ then @differ.popup()
+      if @differ then @differ.render()
       return
 
     refreshResource : ()->

@@ -2,6 +2,10 @@
   overflow: auto;
   background-color: white;
   height: 681px; }
+  .res_diff_tree h1 {
+    color: rgba(32, 32, 32, 0.9);
+    font-size: 20px;
+    text-align: center; }
   .res_diff_tree ul {
     list-style: none; }
   .res_diff_tree .title {

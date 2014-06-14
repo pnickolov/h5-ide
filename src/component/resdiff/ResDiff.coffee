@@ -8,6 +8,8 @@ define [
 
         className: 'res_diff_tree'
 
+        tagName: 'section'
+
         initialize: (option) ->
 
             @oldAppJSON = option.old
@@ -31,10 +33,9 @@ define [
                 return
             $target.toggleClass 'closed'
 
-        popup: () ->
-
+        render: () ->
+            # popup modal
             options =
-        
                 template: @el
                 title: 'App Changes'
                 hideClose: true
@@ -52,6 +53,9 @@ define [
             @modal.on 'confirm', () ->
                 @modal.close()
             , @
+
+            #settle frame
+            @$el.html template.frame()
 
             @_genResGroup(@oldAppJSON.component, @newAppJSON.component)
 
@@ -101,7 +105,7 @@ define [
 
                 $group = $(template.resDiffGroup({
                     title: data.title
-                })).appendTo(@$el)
+                })).appendTo @$( 'article' )
 
                 @_genResTree($group.find('.content'), data.diffComps)
 
@@ -152,9 +156,9 @@ define [
                                     _genTree(_value, _key, nextPath, $treeItem)
 
                     else # end node
-                        
+
                         changeType = value.type
-                        
+
                         data = that._processRes(path, {
                             key: key,
                             value: value
@@ -245,7 +249,7 @@ define [
                 newValue = data.value
                 oldRef = _getRef(newValue.__old__)
                 newRef = _getRef(newValue.__new__)
-                
+
                 newValue.__old__ = that._getCompAttr(oldRef).oldAttr if oldRef
                 newValue.__new__ = that._getCompAttr(newRef).newAttr if newRef
 
@@ -265,7 +269,7 @@ define [
                     compUID = path[0]
                     oldCompName = (oldAttr.name if oldAttr) or ''
                     newCompName = (newAttr.name if newAttr) or ''
-                    
+
                     if oldAttr
                         data.key = oldAttr.type
                     else
@@ -285,7 +289,7 @@ define [
         getChangeInfo: () ->
 
             that = this
-            
+
             hasResChange = false
             if _.keys(that.addedComps).length or
                 _.keys(that.removedComps).length or

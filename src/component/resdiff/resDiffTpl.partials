@@ -1,3 +1,7 @@
+<!-- {{frame}} -->
+<h1>Your app has been externally changed.</h1>
+<article></article>
+
 <!-- {{resDiffGroup}} -->
 <div class="group">
 	<div class="head">{{title}}<span class="count"></span></div>
@@ -20,3 +24,5 @@
 	<span class="type">{{key}}</span>
 	<span class="name">{{value}}</span>
 </div>
+
+

@@ -14,6 +14,12 @@ $color_changed: #008e00;
 	background-color: $bg_body;
 	height: 681px;
 
+	h1 {
+		color: rgba(32,32,32,0.9);
+		font-size: 20px;
+		text-align: center;
+	}
+
 	ul {
 		list-style: none;
 	}

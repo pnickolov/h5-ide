@@ -118,7 +118,7 @@ define [
         old: oldAppJSON,
         new: newAppJSON
       })
-      resDiff.popup()
+      resDiff.render()
 
     updateAZ : ()->
       if not @workspace.isAwake() then return

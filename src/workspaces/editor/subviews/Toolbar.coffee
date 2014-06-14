@@ -14,6 +14,18 @@ define [
   "backbone"
 ], ( OpsModel, OpsEditorTpl, Thumbnail, JsonExporter, ApiRequest, lang, Modal, kpDropdown, constant, ide_event )->
 
+  # Set domain and set http
+  API_HOST       = "api.visualops.io"
+
+  ### env:debug ###
+  API_HOST = "api.mc3.io"
+  ### env:debug:end ###
+
+  ### env:dev ###
+  API_HOST = "api.mc3.io"
+  ### env:dev:end ###
+  API_URL = "https://" + API_HOST + "/v1/apps/"
+
   Backbone.View.extend {
 
     events :
@@ -37,6 +49,7 @@ define [
       "click .icon-apply-app"         : "applyAppEdit"
       "click .icon-cancel-update-app" : "cancelAppEdit"
       'click .toolbar-visual-ops-switch' : 'opsOptionChanged'
+      'click .reload-states'          : "reloadState"
 
     render : ()->
       opsModel = @workspace.opsModel
@@ -50,7 +63,7 @@ define [
         if @__editMode
           btns = ["BtnApply", "BtnZoom", "BtnPng", "BtnLinestyle", "BtnReloadRes", "BtnSwitchStates"]
         else
-          btns = ["BtnEditApp", "BtnAppOps", "BtnZoom", "BtnPng", "BtnLinestyle", "BtnReloadRes"]
+          btns = ["BtnEditApp", "BtnAppOps", "BtnZoom", "BtnPng", "BtnLinestyle", "BtnReloadRes", 'BtnReloadStates']
 
       tpl = ""
       workspace = @workspace
@@ -79,7 +92,7 @@ define [
         @$el.children(".icon-update-app").toggle( not isAppEdit )
         @$el.children(".icon-apply-app, .icon-cancel-update-app").toggle( isAppEdit )
         if isAppEdit
-          @$el.children(".icon-terminate, .icon-stop, .icon-play, .icon-refresh").hide()
+          @$el.children(".icon-terminate, .icon-stop, .icon-play, .icon-refresh .icon-save-app .icon-reload").hide()
         else
           @$el.children(".icon-terminate, .icon-refresh").show()
           @$el.children(".icon-stop").toggle( opsModel.get("stoppable") and opsModel.testState(OpsModel.State.Running) )
@@ -214,6 +227,42 @@ define [
         modal.tpl.find("a.btn-blue").text("Fail to export...")
         notification "error", "Fail to export to AWS CloudFormation Template, Error code:#{err.error}"
         return
+
+    reloadState: (event)->
+        $target = $ event.currentTarget
+        if $target.hasClass('disabled')
+            return false
+        $target.toggleClass('disabled').html($target.attr('data-disabled'))
+        app_id = Design.instance().serialize().id
+        data =
+            'encoded_user': App.user.get('usercode')
+            'token':    App.user.get('defaultToken')
+        $.ajax
+            url: API_URL + app_id
+            method: "POST"
+            data: JSON.stringify data
+            dataType: 'json'
+            statusCode:
+                200: ->
+                    notification 'info', lang.ide.RELOAD_STATE_SUCCESS
+                    ide_event.trigger ide_event.REFRESH_PROPERTY
+                401: ->
+                    notification 'error', lang.ide.RELOAD_STATE_INVALID_REQUEST
+                404: ->
+                    notification 'error', lang.ide.RELOAD_STATE_NETWORKERROR
+                429: ->
+                    notification 'error', lang.ide.RELOAD_STATE_NOT_READY
+                500: ->
+                    notification 'error', lang.ide.RELOAD_STATE_INTERNAL_SERVER_ERROR
+            error: ->
+                console.log 'Error while Reload State'
+            success: ->
+                console.debug 'Reload State Success!'
+        .always ->
+            window.setTimeout ->
+                $target.removeClass 'disabled'
+                .html $target.attr 'data-original'
+
 
     runStack: (event)->
         if $(event.currentTarget).attr('disabled')

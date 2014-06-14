@@ -90,6 +90,13 @@
     <span class="switch-handle"></span>
 </label>
 
+<!-- {{toolbar.BtnReloadStates}} -->
+{{#if stateOn}}
+<button class="icon-reload tooltip btn btn-blue reload-states" data-original="Reload States" data-disabled="Initiating…"  data-tooltip="Instantly rerun all states in this app.">
+    Reload States
+</button>
+{{/if}}
+
 <!-- {{confirm.enableState}} -->
 <div class="modal-text-wraper">
     <div class="modal-center-align-helper">

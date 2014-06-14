@@ -437,6 +437,9 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
       if @attributes.state is OpsModelState.Destroyed
         return
 
+      # Remove thumbnail
+      Thumbnail.remove( @get("id") )
+
       # Directly modify the attr to avoid sending an event, becase destroy would trigger an update event
       @attributes.state = OpsModelState.Destroyed
       @trigger 'destroy', @, @collection

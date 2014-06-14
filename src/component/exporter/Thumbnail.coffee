@@ -285,6 +285,7 @@ define ['UI.canvg', './Download'], ()->
     localStorage.getItem "tn/#{id}"
 
   removeThumbnail = ( id )->
+    if not id then return
     cache = localStorage.getItem("thumbnails") or ""
     localStorage.setItem "thumbnails", cache.replace("#{id},","")
 

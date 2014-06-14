@@ -100,9 +100,11 @@ define [ '../base/model', "Design", 'constant', 'sslcert_dropdown', "CloudResour
 
             myElbComponent = Design.instance().component( uid )
 
-            elb = CloudResources(constant.RESTYPE.ELB, Design.instance().region()).get(myElbComponent.get('appId')).toJSON()
+            elb = CloudResources(constant.RESTYPE.ELB, Design.instance().region()).get(myElbComponent.get('appId'))
 
             if not elb then return
+
+            elb = elb.attributes
 
             @set {
                 appData    : true

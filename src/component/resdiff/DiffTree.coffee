@@ -13,6 +13,46 @@ define [], () ->
 
             if (typeA is 'object' or typeA is 'array') then '' else String(a) + ' '
 
+        _diffAry = (a, b) ->
+
+            for v, i in ([0...a.length])
+                for v, j in ([0...b.length])
+                    if not _compare(a[i], b[j], '', [])
+                        tmp = b[i]
+                        b[i] = b[j]
+                        b[j] = tmp
+
+            # baseAry = a
+            # otherAry = b
+            # resultAry = []
+            # resultAry.length = b.length
+
+            # switchAry = false
+            # if a.length > b.length
+            #     baseAry = b.concat([])
+            #     otherAry = a.concat([])
+            #     resultAry.length = a.length
+            #     switchAry = true
+
+            # for v, i in baseAry
+            #     for v, j in otherAry
+            #         if not _compare(baseAry[i], otherAry[j], '', [])
+            #             resultAry[i] = otherAry[j]
+            #             otherAry.splice(j, 1)
+            #             break
+
+            # for v, k in resultAry
+            #     if resultAry[k] is undefined
+            #         resultAry[k] = otherAry.splice(0, 1)[0]
+
+            # a = baseAry
+            # b = resultAry
+
+            # if switchAry
+
+            #     a = resultAry
+            #     b = baseAry
+
         _compare = (a, b, key, resultJSON) ->
 
             haveDiff = false
@@ -48,6 +88,16 @@ define [], () ->
 
             if typeA is 'object' or typeA is 'array' or typeB is 'object' or typeB is 'array'
 
+                # process array diff
+                if typeA is 'array' and typeB is 'array'
+
+                    diffAryResult = {}
+                    
+                    if a.length < b.length
+                        _diffAry(a, b)
+                    else
+                        _diffAry(b, a)
+
                 keys = []
                 for v of a
                     keys.push(v)
@@ -56,6 +106,9 @@ define [], () ->
                 keys.sort()
 
                 isEqual = true
+
+                if typeA is 'array' and typeB is 'array'
+                    console.log(keys)
 
                 for v, i in keys
 

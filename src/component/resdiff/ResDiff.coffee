@@ -89,6 +89,8 @@ define [
 
             diffTree = new DiffTree()
             that.modifiedComps = diffTree.compare unionOldComps, unionNewComps
+            # that.modifiedComps = diffTree.compare {x: [{a: 1, b: [{d: 1}, {e: 2}], c: 3}, {a: 4, b: 5, c: 6}, {a: 7, b: 8, c: 9}]},
+            #     {x: [{a: 4, b: 5, c: 6}, {a: 1, b: [{e: 2}, {d: 1}], c: 3}, {a: 7, b: 8, c: 9}]}
 
         _genResGroup: () ->
 
@@ -183,10 +185,6 @@ define [
                             $parent.remove()
 
             _genTree.call that, diffComps, null, [], $container
-
-
-
-
 
         getChangeInfo: () ->
 

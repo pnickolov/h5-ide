@@ -223,53 +223,12 @@ define ['MC', 'i18n!nls/lang.js'], ( MC, lang ) ->
 	}
 
 	#private
-	# SERVICE_ERROR_MESSAGE = {}
-	# SERVICE_ERROR_MESSAGE[ 1 ]  = 'Service Message' + 1
-	# SERVICE_ERROR_MESSAGE[ 2 ]  = 'Service Message' + 2
-	# SERVICE_ERROR_MESSAGE[ 3 ]  = 'Service Message' + 3
-	# SERVICE_ERROR_MESSAGE[ 4 ]  = 'Service Message' + 4
-	# SERVICE_ERROR_MESSAGE[ 5 ]  = 'Service Message' + 5
-	# SERVICE_ERROR_MESSAGE[ 6 ]  = 'Service Message' + 6
-	# SERVICE_ERROR_MESSAGE[ 7 ]  = 'Service Message' + 7
-	# SERVICE_ERROR_MESSAGE[ 8 ]  = 'Service Message' + 8
-	# SERVICE_ERROR_MESSAGE[ 9 ]  = 'Service Message' + 9
-	# SERVICE_ERROR_MESSAGE[ 10 ]  = 'Service Message' + 10
-	# SERVICE_ERROR_MESSAGE[ 11 ]  = 'Service Message' + 11
-	# SERVICE_ERROR_MESSAGE[ 12 ]  = 'Service Message' + 12
-	# SERVICE_ERROR_MESSAGE[ 13 ]  = 'Service Message' + 13
-	# SERVICE_ERROR_MESSAGE[ 14 ]  = 'Service Message' + 14
-	# SERVICE_ERROR_MESSAGE[ 15 ]  = 'Service Message' + 15
-	# SERVICE_ERROR_MESSAGE[ 16 ]  = 'Service Message' + 16
-	# SERVICE_ERROR_MESSAGE[ 17 ]  = 'Service Message' + 17
-	# SERVICE_ERROR_MESSAGE[ 18 ]  = 'Service Message' + 18
-	# SERVICE_ERROR_MESSAGE[ 19 ]  = 'Service Message' + 19
-	# SERVICE_ERROR_MESSAGE[ 20 ]  = 'Service Message' + 20
-	# SERVICE_ERROR_MESSAGE[ 21 ]  = 'Service Message' + 21
-
-	#private
-	APP_STATE = {
-		APP_STATE_RUNNING   : "Running"
-		APP_STATE_STOPPED   : "Stopped"
-		APP_STATE_REBOOTING   : "Rebooting"
-		APP_STATE_CLONING   : "Cloning"
-		APP_STATE_SAVETOSTACK : "Saving"
-		APP_STATE_TERMINATING : "Terminating"
-		APP_STATE_UPDATING    : "Updating"
-		APP_STATE_SHUTTING_DOWN : "Shutting down"
-		APP_STATE_STOPPING    : "Stopping"
-		APP_STATE_STARTING    : "Starting"
-		APP_STATE_TERMINATED  : "Terminated"
-		APP_STATE_INITIALIZING  : "Initializing"
-	}
-
-	#private
-	OPS_STATE = {
+	OPS_STATE =
 		OPS_STATE_PENDING   : "Pending"
-		OPS_STATE_INPROCESS   : "InProcess"
+		OPS_STATE_INPROCESS : "InProcess"
 		OPS_STATE_DONE      : "Done"
-		OPS_STATE_ROLLBACK    : "Rollback"
+		OPS_STATE_ROLLBACK  : "Rollback"
 		OPS_STATE_FAILED    : "Failed"
-	}
 
 	OPS_CODE_NAME =
 		"Forge.Stack.Run"        : "launch"
@@ -279,90 +238,7 @@ define ['MC', 'i18n!nls/lang.js'], ( MC, lang ) ->
 		"Forge.App.State.Update" : "update"
 		"Forge.App.Terminate"    : "terminate"
 
-	AWS_RESOURCE = {
-		AZ                  :   'AWS.EC2.AvailabilityZone'
-		AMI                 :   'AWS.EC2.AMI'
-		VOLUME              :   'AWS.EC2.EBS.Volume'
-		SNAPSHOT            :   'AWS.EC2.EBS.Snapshot'
-		EIP                 :   'AWS.EC2.EIP'
-		INSTANCE            :   'AWS.EC2.Instance'
-		KP                  :   'AWS.EC2.KeyPair'
-		SG                  :   'AWS.EC2.SecurityGroup'
-
-		ELB                 :   'AWS.ELB'
-
-		ACL                 :   'AWS.VPC.NetworkAcl'
-		CGW                 :   'AWS.VPC.CustomerGateway'
-		DHCP                :   'AWS.VPC.DhcpOptions'
-		ENI                 :   'AWS.VPC.NetworkInterface'
-		IGW                 :   'AWS.VPC.InternetGateway'
-		RT                  :   'AWS.VPC.RouteTable'
-		SUBNET              :   'AWS.VPC.Subnet'
-		VPC                 :   'AWS.VPC.VPC'
-		VPN                 :   'AWS.VPC.VPNConnection'
-		VGW                 :   'AWS.VPC.VPNGateway'
-
-		ASG                 :   'AWS.AutoScaling.Group'
-		ASL_ACT             :   'AWS.AutoScaling.Activities' #none component
-		ASL_INS             :   'AWS.AutoScaling.Instance' #none component
-		ASL_LC              :   'AWS.AutoScaling.LaunchConfiguration'
-		ASL_NC              :   'AWS.AutoScaling.NotificationConfiguration'
-		ASL_SP              :   'AWS.AutoScaling.ScalingPolicy'
-		ASL_SA              :   'AWS.AutoScaling.ScheduledActions'
-		CLW                 :   'AWS.CloudWatch.CloudWatch'
-		SNS_SUB         :   'AWS.SNS.Subscription'
-		SNS_TOPIC           :   'AWS.SNS.Topic'
-	}
-
-
 	#private, recent items threshold
-	RECENT_NUM    = 5
-	RECENT_DAYS   = 30
-
-	RDP_TMPL = "\n
-screen mode id:i:2\n
-use multimon:i:0\n
-desktopwidth:i:1024\n
-desktopheight:i:768\n
-session bpp:i:32\n
-winposstr:s:0,3,0,0,1024,768\n
-compression:i:1\n
-keyboardhook:i:2\n
-audiocapturemode:i:0\n
-videoplaybackmode:i:1\n
-connection type:i:2\n
-displayconnectionbar:i:1\n
-disable wallpaper:i:1\n
-allow font smoothing:i:0\n
-allow desktop composition:i:0\n
-disable full window drag:i:1\n
-disable menu anims:i:1\n
-disable themes:i:0\n
-disable cursor setting:i:0\n
-bitmapcachepersistenable:i:1\n
-full address:s:%s\n
-audiomode:i:0\n
-redirectprinters:i:1\n
-redirectcomports:i:0\n
-redirectsmartcards:i:1\n
-redirectclipboard:i:1\n
-redirectposdevices:i:0\n
-redirectdirectx:i:1\n
-autoreconnection enabled:i:1\n
-authentication level:i:2\n
-prompt for credentials:i:0\n
-negotiate security layer:i:1\n
-remoteapplicationmode:i:0\n
-alternate shell:s:\n
-shell working directory:s:\n
-gatewayhostname:s:\n
-gatewayusagemethod:i:4\n
-gatewaycredentialssource:i:4\n
-gatewayprofileusagemethod:i:0\n
-promptcredentialonce:i:1\n
-use redirection server name:i:0\n"
-
-
 	DEMO_STACK_NAME_LIST = [ 'vpc-with-private-subnet-and-vpn', 'vpc-with-public-and-private-subnets-and-vpn', 'vpc-with-public-subnet-only', 'vpc-with-public-and-private-subnets' ]
 
 	TA =
@@ -447,13 +323,8 @@ use redirection server name:i:0\n"
 	WINDOWS                 : WINDOWS
 	#SERVICE_ERROR_MESSAGE  : SERVICE_ERROR_MESSAGE
 	MESSAGE_E               : MESSAGE_E
-	APP_STATE               : APP_STATE
 	OPS_STATE               : OPS_STATE
 	OPS_CODE_NAME           : OPS_CODE_NAME
-	RECENT_NUM              : RECENT_NUM
-	RECENT_DAYS             : RECENT_DAYS
-	AWS_RESOURCE            : AWS_RESOURCE
-	RDP_TMPL                : RDP_TMPL
 	DEMO_STACK_NAME_LIST    : DEMO_STACK_NAME_LIST
 	TA                      : TA
 	OS_TYPE_MAPPING         : OS_TYPE_MAPPING

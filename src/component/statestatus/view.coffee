@@ -52,7 +52,7 @@ define [ 'event'
 
             @renderAllItem()
 
-            $( '#status-bar-modal' )
+            $( '.status-bar-modal' )
                 .html( @el )
                 .show()
 
@@ -101,7 +101,7 @@ define [ 'event'
             @$( '.status-item' ).html template.pending()
 
         closePopup : ->
-            $( '#status-bar-modal' ).hide()
+            $( '.status-bar-modal' ).hide()
             @trigger 'CLOSE_POPUP'
 
 

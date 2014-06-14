@@ -3736,7 +3736,7 @@ summary:focus {
 	color: #fff;
 }
 
-#status-bar-modal {
+.status-bar-modal {
 	width            : 434px;
 	position         : absolute;
 	bottom           : 23px;
@@ -3748,7 +3748,7 @@ summary:focus {
 	border-radius    : 4px 4px 0 0;
 }
 
-#status-bar-modal .modal-header {
+.status-bar-modal .modal-header {
 	background    : none;
 	box-shadow    : none;
 	border-bottom : none;
@@ -3756,11 +3756,11 @@ summary:focus {
 	text-shadow   : none;
 }
 
-#status-bar-modal .modal-header h3 {
+.status-bar-modal .modal-header h3 {
 	color: #eee;
 }
 
-#status-bar-modal .modal-body {
+.status-bar-modal .modal-body {
 	padding: 0 5px 5px 5px;
 	background: none;
 	border-bottom: none;

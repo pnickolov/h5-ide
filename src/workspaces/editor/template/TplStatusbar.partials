@@ -1,6 +1,6 @@
 <!-- {{frame}} -->
 <ul class="status-bar"></ul>
-<div id="status-bar-modal" style="display: none;"></div>
+<div class="status-bar-modal" style="display: none;"></div>
 
 <!-- {{lastSaved}} -->
 Last saved: <span class="stack-save-time">-<span>

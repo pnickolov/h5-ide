@@ -9,7 +9,7 @@ define [ 'event',
 
     TrustedAdvisorView = Backbone.View.extend {
 
-        el         : '#status-bar-modal'
+        el         : '.status-bar-modal'
 
         events     :
             'click .modal-close'   : 'closedPopup'
@@ -27,7 +27,7 @@ define [ 'event',
                 @$el.find( '#modal-validation-statusbar' ).html template( @model.attributes )
                 @processStatusBarDetails()
                 #
-                $('#status-bar-modal').show()
+                $('.status-bar-modal').show()
 
             null
 
@@ -127,7 +127,7 @@ define [ 'event',
                 console.log 'closedPopup'
                 @$el.empty()
                 this.trigger 'CLOSE_POPUP'
-                $( '#status-bar-modal' ).hide()
+                $( '.status-bar-modal' ).hide()
 
     }
 

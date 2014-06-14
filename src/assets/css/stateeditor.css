@@ -1210,8 +1210,8 @@
 
 /*.statusbar-btn [class^="icon-state-"]
 , .statusbar-btn [class*=" icon-state-"]
-, #status-bar-modal [class^="icon-state-"]
-, #status-bar-modal [class*=" icon-state-"]
+, .status-bar-modal [class^="icon-state-"]
+, .status-bar-modal [class*=" icon-state-"]
  {
 	width: 9px;
 	height: 9px;
@@ -1244,11 +1244,11 @@
 	padding-bottom: 25px;
 }
 
-#status-bar-modal .modal-header h3 {
+.status-bar-modal .modal-header h3 {
 	cursor: default;
 }
 
-#status-bar-modal .state-status-update {
+.status-bar-modal .state-status-update {
 	color: #5D5D5D;
 	background-color: #FFED00;
 	text-align: center;

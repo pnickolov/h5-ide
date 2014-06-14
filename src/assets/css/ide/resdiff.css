@@ -82,7 +82,7 @@
       position: relative;
       border-left: 1px #ddd solid; }
       .res_diff_tree .tree .item.removed .meta .type {
-        background-color: #f00 !important; }
+        background-color: red !important; }
       .res_diff_tree .tree .item.added .meta .type {
         background-color: #ff8400 !important; }
       .res_diff_tree .tree .item.changed .meta .type {
@@ -108,7 +108,8 @@
         position: absolute;
         left: -5.5px;
         top: 2px;
-        background: white; }
+        background: white;
+        z-index: 1; }
       .res_diff_tree .tree .item .meta .type {
         cursor: pointer; }
       .res_diff_tree .tree .item.end .meta .type {

@@ -4,6 +4,11 @@
 
 $bg_body : #fff;
 
+$color_added: #ff8400;
+$color_removed: #f00;
+$color_changed: #008e00;
+
+
 .res_diff_tree {
 	overflow: auto;
 	background-color: $bg_body;
@@ -62,7 +67,7 @@ $bg_body : #fff;
 		font-size: 14px;
 
 		.type {
-			background-color: #ff8400;
+			background-color: $color_added;
 			border-radius: 2px;
 			padding: 3px 7px;
 			color: $bg_body;
@@ -115,15 +120,15 @@ $bg_body : #fff;
 			@include tierline;
 
 			&.removed .meta .type {
-				background-color: #f00 !important;
+				background-color: $color_removed !important;
 			}
 
 			&.added .meta .type {
-				background-color: #ff8400 !important;
+				background-color: $color_added !important;
 			}
 
 			&.changed .meta .type {
-				background-color: #008e00 !important;
+				background-color: $color_changed !important;
 			}
 
 			&::before {
@@ -150,6 +155,7 @@ $bg_body : #fff;
 				left: -5.5px;
 				top: 2px;
 				background: $bg_body;
+				z-index: 1;
 			}
 
 			.meta .type {

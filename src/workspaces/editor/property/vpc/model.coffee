@@ -88,7 +88,7 @@ define [ '../base/model', 'Design', 'constant', "CloudResources" ], ( PropertyMo
             if isDefault
                 dhcp.setDefault()
             else
-                dhcp.setNone()
+                dhcp.setAuto()
             null
 
         setDhcp : (val)->

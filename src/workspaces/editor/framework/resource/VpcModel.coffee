@@ -78,14 +78,14 @@ define [ "constant", "../GroupModel", "./DhcpModel" ], ( constant, GroupModel, D
     serialize : ()->
       console.assert( @get("tenancy") is "default" or @get("tenancy") is "dedicated", "Invalid value for Vpc.attributes.tenancy" )
 
-      dhcp = @get("dhcp")
-      if dhcp.isAuto()
-        dhcpValue = ""
-      else if dhcp.isDefault()
-        dhcpValue = "default"
+      dhcpModel = @get("dhcp")
+      if dhcpModel.isAuto()
+        dhcp = ""
+      else if dhcpModel.isDefault()
+        dhcp = "default"
       else
-        dhcpValue = dhcp.get("appId")
-
+        dhcp = dhcpModel.getDhcp()
+      console.debug dhcp
       component =
         name : @get("name")
         type : @type
@@ -139,9 +139,9 @@ define [ "constant", "../GroupModel", "./DhcpModel" ], ( constant, GroupModel, D
       # DhcpOPtionsId is "" means use default dhcp
       dhcp = data.resource.DhcpOptionsId
       if dhcp is undefined
-        vpc.get('dhcp').setNone()
+        vpc.get('dhcp').setAuto()
       else if not dhcp
-        vpc.get("dhcp").setNone()
+        vpc.get("dhcp").setAuto()
       else if dhcp is "default"
         vpc.get("dhcp").setDefault()
       else if dhcp[0] is "@"

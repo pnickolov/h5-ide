@@ -852,7 +852,7 @@ module.exports =
       zh: "放大"
 
     TOOL_TIP_SAVE_APP_TO_STACK:
-      en: "Save app as Stack"
+      en: "Save pp as Stack"
       zh: "App 保存为 Stack"
     TOOL_TIP_ZOOM_OUT:
       en: "Zoom Out"

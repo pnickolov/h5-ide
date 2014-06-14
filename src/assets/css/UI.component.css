@@ -1,6 +1,7 @@
 @import url("./component/toolbar-modal.css");
 @import url("./component/combo-dropdown.css");
 @import url("./component/drop-zone.css");
+@import url("./component/modal.css");
 
 /* Table */
 .table {
@@ -944,6 +945,7 @@ textarea {
 	background-image: linear-gradient(to top, #ff6c00, #f4b13d);
 }*/
 
+<<<<<<< HEAD
 /* Modal */
 #modal-box {
 	position     : absolute;
@@ -1131,6 +1133,8 @@ textarea {
 }
 
 
+=======
+>>>>>>> [feature/refactor-nav] clean up header style
 
 /* tablist */
 [data-tab-target] { cursor : pointer; }

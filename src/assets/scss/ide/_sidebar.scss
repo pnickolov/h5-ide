@@ -1,7 +1,44 @@
 
 // Resource Panel
+<<<<<<< HEAD
 .AmiTypeSelect {
   position    : absolute !important;
+=======
+
+.dropdown-menu.resources-dropdown-wrapper {
+  position   : absolute;
+  left       : 206px;
+  top        : 39px;
+  width      : 90%;
+  min-width  : 160px;
+  margin-top : 1px;
+  z-index    : 80;
+  box-sizing : border-box;
+  box-shadow : 1px 1px 5px rgba(0,0,0,.3);
+  border     : 1px solid #0f0f0f;
+  color      : #d0d0d0;
+}
+
+.dropdown-menu.resources-dropdown-wrapper li {
+  border-bottom    : 1px solid rgba(0, 0, 0, 0.2);
+  padding          : 8px;
+  height           : 20px;
+  line-height      : 20px;
+  font-size        : 12px;
+  position         : relative;
+  cursor           : pointer;
+  display          : block;
+  background-color : #232323;
+}
+
+.resources-dropdown-wrapper li:hover {
+  background-color: #000;
+}
+
+
+#AmiTypeSelect {
+  position    : absolute;
+>>>>>>> [feature/refactor-nav] clean up header style
   top         : 0;
   right       : 0;
   line-height : 20px;

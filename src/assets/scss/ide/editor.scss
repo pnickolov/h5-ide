@@ -73,10 +73,12 @@ $BottomPanelHeight    : 24px;
   left     : 0;
   bottom   : 0;
   right    : 0;
-  // -webkit-transition: left 0.1s;
-  //    -moz-transition: left 0.1s;
-  //      -o-transition: left 0.1s;
-  //         transition: left 0.1s;
+
+  -webkit-transition: width .1s ease-out, left .1s ease-out, right .1s ease-out;
+  -moz-transition: width .1s ease-out, left .1s ease-out, right .1s ease-out;
+  -ms-transition: width .1s ease-out, left .1s ease-out, right .1s ease-out;
+  -o-transition: width .1s ease-out, left .1s ease-out, right .1s ease-out;
+  transition: width .1s ease-out, left .1s ease-out, right .1s ease-out;
 }
 
 .OEPanelTop {
@@ -161,37 +163,6 @@ $BottomPanelHeight    : 24px;
   }
 }
 
-.dropdown-menu.resources-dropdown-wrapper {
-  position   : absolute;
-  left       : 206px;
-  top        : 39px;
-  width      : 90%;
-  min-width  : 160px;
-  margin-top : 1px;
-  z-index    : 80;
-  box-sizing : border-box;
-  box-shadow : 1px 1px 5px rgba(0,0,0,.3);
-  border     : 1px solid #0f0f0f;
-  color      : #d0d0d0;
-}
-
-.dropdown-menu.resources-dropdown-wrapper li {
-  border-bottom    : 1px solid rgba(0, 0, 0, 0.2);
-  padding          : 8px;
-  height           : 20px;
-  line-height      : 20px;
-  font-size        : 12px;
-  position         : relative;
-  cursor           : pointer;
-  display          : block;
-  background-color : #232323;
-}
-
-.resources-dropdown-wrapper li:hover {
-  background-color: #000;
-}
-
-
 .sidebar-hider {
   position   : absolute;
   top        : 50%;
@@ -200,10 +171,14 @@ $BottomPanelHeight    : 24px;
   box-shadow : 0 0 6px rgba(0, 0, 0, 0.3), inset 1px 1px 0 rgba(255,255,255,.1);
   border     : 1px solid #676767;
   color      : #fff;
-  background : #747474;
+  background : #666;
   cursor     : pointer;
 
   &:before { font-size : 14px; }
+
+  &:hover {
+    background : #777;
+  }
 }
 
 .HideOEPanelLeft {

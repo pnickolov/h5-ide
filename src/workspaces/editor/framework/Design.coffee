@@ -487,6 +487,7 @@ define [
             result : @diff(newData, oldData)
             isRunning: __opsModel.testState( OpsModel.State.Running )
             isModified: true
+            newData: newData
         }
     else
       return false

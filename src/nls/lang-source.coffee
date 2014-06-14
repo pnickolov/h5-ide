@@ -954,7 +954,7 @@ module.exports =
       zh: "暂停"
 
     TOOL_TIP_START_APP:
-      en: "Start This App's Resources."
+      en: "Start App"
       zh: "恢复应用"
 
     TOOL_POP_TIT_START_APP:

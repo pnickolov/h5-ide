@@ -36,7 +36,10 @@
   }
 
   i {
-  color: #148BE6;
+    color       : #148BE6;
+    position    : absolute;
+    margin-left : 5px;
+    display     : inline-block;
   }
 
   &.selectbox {

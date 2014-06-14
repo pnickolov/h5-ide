@@ -76,31 +76,31 @@ $color_changed: #008e00;
 		font-size: 14px;
 
 		.type {
-			background-color: $color_added;
-			border-radius: 2px;
-			padding: 3px 7px;
-			color: $bg_body;
-			position: relative;
-			z-index: 1;
-			font-size: 12px;
-			float: left;
-			margin-top: -4px;
-			text-align: center;
-			min-width: 35px;
+			background-color : $color_added;
+			border-radius    : 2px;
+			padding          : 3px 7px;
+			color            : $bg_body;
+			position         : relative;
+			z-index          : 1;
+			font-size        : 12px;
+			float            : left;
+			margin-top       : -4px;
+			text-align       : center;
+			min-width        : 35px;
 		}
 		.name {
-			font-weight: bold;
-			margin-left: 10px;
-			line-height: 11px;
-			white-space: nowrap;
-			text-overflow: ellipsis;
-			overflow: hidden;
-			display: inline-block;
-			max-width: 297px;
-			// height: 12px;
-			font-size: 12px;
-			// float: left;
-			margin-top: 2px;
+			font-weight   : bold;
+			margin-left   : 10px;
+			line-height   : 11px;
+			white-space   : nowrap;
+			text-overflow : ellipsis;
+			overflow      : hidden;
+			display       : inline-block;
+			max-width     : 297px;
+			// height     : 12px;
+			font-size     : 12px;
+			// float      : left;
+			margin-top    : 2px;
 
 			// text-align: center;
 			min-width: 35px;
@@ -186,6 +186,11 @@ $color_changed: #008e00;
 			&.closed {
 				& > .tree {
 					display: none;
+					// max-height: 0;
+
+					li.item {
+						display: none;
+					}
 				}
 			}
 

@@ -126,6 +126,8 @@
         background: #69b0ff; }
       .res_diff_tree .tree .item.closed > .tree {
         display: none; }
+        .res_diff_tree .tree .item.closed > .tree li.item {
+          display: none; }
       .res_diff_tree .tree .item:last-child {
         border-left: 1px solid transparent !important; }
   .res_diff_tree .group ul.tree {

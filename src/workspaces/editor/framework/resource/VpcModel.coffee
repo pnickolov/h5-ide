@@ -94,7 +94,7 @@ define [ "constant", "../GroupModel", "./DhcpModel" ], ( constant, GroupModel, D
           EnableDnsSupport   : @get("dnsSupport")
           InstanceTenancy    : @get("tenancy")
           EnableDnsHostnames : @get("dnsHostnames")
-          DhcpOptionsId      : dhcpValue
+          DhcpOptionsId      : dhcp
           VpcId              : @get("appId")
           CidrBlock          : @get("cidr")
 

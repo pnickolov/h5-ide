@@ -101,7 +101,7 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
 
       self = @
       if @isImported()
-        return CloudResources( "OpsResource", @getVpcId() ).init( @get("region") ).fetch ()->
+        return CloudResources( "OpsResource", @getVpcId() ).init( @get("region") ).fetch().then ()->
           json = self.generateJsonFromRes()
           self.__setJsonData json
           self

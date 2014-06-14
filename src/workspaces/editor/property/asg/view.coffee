@@ -317,7 +317,7 @@ define [ '../base/view',
         openPolicyModal: ( data ) ->
             options =
                 template        : policy_template data
-                title           : lang.ide.PROP_ASG_ADD_POLICY_TITLE_ADD
+                title           : lang.ide.PROP_ASG_ADD_POLICY_TITLE_ADD + ' ' + lang.ide.PROP_ASG_ADD_POLICY_TITLE_CONTENT
                 width           : '480px'
                 compact         : true
                 confirm         :

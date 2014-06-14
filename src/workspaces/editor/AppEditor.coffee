@@ -31,6 +31,7 @@ define [
         CloudResources( constant.RESTYPE.AZ,   region ).fetch()
         CloudResources( constant.RESTYPE.SNAP, region ).fetch()
         CloudResources( "OpsResource", @opsModel.getVpcId() ).init( @opsModel.get("region") ).fetchForce()
+        CloudResources( constant.RESTYPE.DHCP, region ).fetch()
       ]).then ()->
         # Hack, immediately apply changes when we get data if the app is changed.
         # Will move it to somewhere else if the process is upgraded.

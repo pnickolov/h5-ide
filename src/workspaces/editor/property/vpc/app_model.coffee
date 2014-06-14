@@ -10,8 +10,8 @@ define [ '../base/model', "Design", 'constant', 'CloudResources' ], ( PropertyMo
 
           myVPCComponent = Design.instance().component( vpc_uid )
 
-          vpc = CloudResources(constant.RESTYPE.VPC, Design.instance().region()).get(myVPCComponent.get('appId'))
-
+          vpc = CloudResources(constant.RESTYPE.VPC, Design.instance().region()).get(myVPCComponent.get('appId')).attributes
+          appData = CloudResources(constant.RESTYPE.DHCP, Design.instance().region())
           if not vpc then return false
 
           vpc = $.extend true, {}, vpc
@@ -31,24 +31,17 @@ define [ '../base/model', "Design", 'constant', 'CloudResources' ], ( PropertyMo
             vpc.defaultACL = vpc.defaultACL.get("appId")
 
           if vpc.dhcpOptionsId
-            if not appData[ vpc.dhcpOptionsId ]
+            if not appData.get(vpc.dhcpOptionsId)
               vpc.default_dhcp = true
 
             else
-              dhcpData = appData[myVPCComponent.toJSON().dhcp.toJSON().appId]?.dhcpConfigurationSet.item
+              dhcpData = appData.get(myVPCComponent.toJSON().dhcp.toJSON().appId).attributes
               vpc.dhcpOptionsId = myVPCComponent.toJSON().dhcp.toJSON().appId
               dhcp = null
               if dhcpData
                   dhcp = {}
-                  for i in dhcpData
-                    if i.key is 'domain-name-servers'
-                      for j, idx in i.valueSet
-                        if j is 'AmazonProvidedDNS'
-                          tmp = i.valueSet[0]
-                          i.valueSet[0]   = j
-                          i.valueSet[idx] = tmp
-                          break
-                    dhcp[ MC.camelCase( i.key ) ] = i.valueSet
+                  for i of dhcpData
+                    dhcp[ MC.camelCase(i) ] = dhcpData[i]
               vpc.dhcp = dhcp
 
           @set vpc

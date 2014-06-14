@@ -152,7 +152,7 @@ define [
     trAwsXml : ( data )-> data.DescribeInternetGatewaysResponse.internetGatewaySet?.item
     parseFetchData : ( igws )->
       for igw in igws
-        igw.attachmentSet = igw.attachmentSet?.item || []
+        igw.attachmentSet = igw.attachmentSet?.item || igw.attachments ||[]
         igw.id = igw.internetGatewayId
         #delete igw.internetGatewayId
         if igw.attachmentSet and igw.attachmentSet.length>0

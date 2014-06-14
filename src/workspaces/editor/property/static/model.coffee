@@ -20,10 +20,11 @@ define [ "../base/model", "Design", "constant", 'CloudResources' ], ( PropertyMo
           appId   = component.get("appId")
 
           data = CloudResources(constant.RESTYPE.IGW, Design.instance().region()).get(appId).toJSON()
+          console.debug data
           if data
             if isIGW
-              if data.attachmentSet and data.attachmentSet.item.length
-                item = data.attachmentSet.item[0]
+              if data.attachmentSet and data.attachmentSet.length
+                item = data.attachmentSet[0]
             else
               item = data
             #else if data.attachments and data.attachments.item.length
@@ -42,7 +43,7 @@ define [ "../base/model", "Design", "constant", 'CloudResources' ], ( PropertyMo
           else
             @set "state", "unavailable"
 
-          vpc = appData[ vpcId ]
+          vpc = CloudResources(constant.RESTYPE.VPC, Design.instance().region()).get(vpcId).attributes
           if vpc then vpcId += " (#{vpc.cidrBlock})"
 
           @set "id", id

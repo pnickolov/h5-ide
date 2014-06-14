@@ -22,37 +22,6 @@ define [], () ->
                         b[i] = b[j]
                         b[j] = tmp
 
-            # baseAry = a
-            # otherAry = b
-            # resultAry = []
-            # resultAry.length = b.length
-
-            # switchAry = false
-            # if a.length > b.length
-            #     baseAry = b.concat([])
-            #     otherAry = a.concat([])
-            #     resultAry.length = a.length
-            #     switchAry = true
-
-            # for v, i in baseAry
-            #     for v, j in otherAry
-            #         if not _compare(baseAry[i], otherAry[j], '', [])
-            #             resultAry[i] = otherAry[j]
-            #             otherAry.splice(j, 1)
-            #             break
-
-            # for v, k in resultAry
-            #     if resultAry[k] is undefined
-            #         resultAry[k] = otherAry.splice(0, 1)[0]
-
-            # a = baseAry
-            # b = resultAry
-
-            # if switchAry
-
-            #     a = resultAry
-            #     b = baseAry
-
         _compare = (a, b, key, resultJSON) ->
 
             haveDiff = false

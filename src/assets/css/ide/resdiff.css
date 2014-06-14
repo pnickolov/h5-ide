@@ -32,6 +32,8 @@
       width: 100%;
       box-sizing: border-box;
       cursor: pointer; }
+      .res_diff_tree .group .head .count {
+        margin-left: 8px; }
     .res_diff_tree .group .deleted-head {
       color: #c40000;
       border-left: 3px #c40000 solid; }

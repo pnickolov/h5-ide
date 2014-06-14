@@ -52,6 +52,9 @@ $color_changed: #008e00;
 			width: 100%;
 			box-sizing: border-box;
 			cursor: pointer;
+			.count {
+				margin-left: 8px;
+			}
 		}
 		.deleted-head {
 			color: #c40000;

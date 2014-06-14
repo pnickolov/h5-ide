@@ -4,7 +4,7 @@
 
 <!-- {{resDiffGroup}} -->
 <div class="group">
-	<div class="head">{{title}}<span class="count"></span></div>
+	<div class="head">{{title}}<span class="count">({{count}})</span></div>
 	<div class="content"></div>
 </div>
 
@@ -12,7 +12,7 @@
 <ul class="tree"></ul>
 
 <!-- {{resDiffTreeItem}} -->
-<li class="item">
+<li class="item {{#if closed}}closed{{/if}}">
 	<div class="meta">
 		<span class="type">{{key}}</span>
 		<span class="name">{{value}}</span>
@@ -24,5 +24,3 @@
 	<span class="type">{{key}}</span>
 	<span class="name">{{value}}</span>
 </div>
-
-

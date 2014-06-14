@@ -98,24 +98,32 @@ define [
 
             groupData = [{
                 title: 'Added Resource',
-                diffComps: that.addedComps
+                diffComps: that.addedComps,
+                closed: true
             }, {
                 title: 'Removed Resource',
-                diffComps: that.removedComps
+                diffComps: that.removedComps,
+                closed: true
             }, {
                 title: 'Modified Resource',
-                diffComps: that.modifiedComps
+                diffComps: that.modifiedComps,
+                closed: false
             }]
 
             for data in groupData
 
-                $group = $(template.resDiffGroup({
-                    title: data.title
-                })).appendTo @$( 'article' )
+                compCount = _.keys(data.diffComps).length
 
-                @_genResTree($group.find('.content'), data.diffComps)
+                if compCount
 
-        _genResTree: ($container, diffComps) ->
+                    $group = $(template.resDiffGroup({
+                        title: data.title
+                        count: compCount
+                    })).appendTo @$( 'article' )
+
+                    @_genResTree($group.find('.content'), data.diffComps, data.closed)
+
+        _genResTree: ($container, diffComps, closed) ->
 
             that = this
 
@@ -150,7 +158,8 @@ define [
                                     # $treeItem is <li class="item">
                                     $treeItem = $(template.resDiffTreeItem {
                                         key: data.key,
-                                        value: data.value
+                                        value: data.value,
+                                        closed: closed
                                     }).appendTo($diffTree)
 
                                     if not _.isObject(_value)
@@ -175,7 +184,8 @@ define [
                             # $parent is <li class="item">
                             $parent.html template.resDiffTreeMeta({
                                 key: data.key,
-                                value: data.value
+                                value: data.value,
+                                closed: closed
                             })
                             $parent.addClass('end')
                             $parent.addClass(changeType)

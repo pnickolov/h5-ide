@@ -69,7 +69,11 @@ define [
       tpl = ""
       workspace = @workspace
       for btn in btns
-        tpl += OpsEditorTpl.toolbar[ btn ](stateOn: workspace.design.attributes.agent.enabled)
+        tpl += OpsEditorTpl.toolbar[ btn ]
+            stateOn: workspace.design.attributes.agent.enabled
+            reloadOn: _.find Design.instance().serialize().component, (comp)->
+                if (comp.type is constant.RESTYPE.INSTANCE) and (comp.state?.length>0)
+                    return true
 
       @setElement @workspace.view.$el.find(".OEPanelTop").html( tpl )
 

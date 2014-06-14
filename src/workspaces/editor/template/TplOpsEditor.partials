@@ -91,7 +91,7 @@
 </label>
 
 <!-- {{toolbar.BtnReloadStates}} -->
-{{#if stateOn}}
+{{#if reloadOn}}
 <button class="icon-reload tooltip btn btn-blue reload-states" data-original="Reload States" data-disabled="Initiating…"  data-tooltip="Instantly rerun all states in this app.">
     Reload States
 </button>

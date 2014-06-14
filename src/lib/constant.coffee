@@ -63,6 +63,44 @@ define ['MC', 'i18n!nls/lang.js'], ( MC, lang ) ->
 		SUBSCRIPTION : 'AWS.SNS.Subscription'
 		TOPIC        : 'AWS.SNS.Topic'
 
+	RESNAME = () ->
+		resName =
+			AZ           : "Availability Zone"
+			INSTANCE     : "Instance"
+			KP           : "Key Pair"
+			SG           : "Security Group"
+			EIP          : "Elastic IP"
+			AMI          : "AMI"
+			VOL          : "Volume"
+			SNAP         : "Snapshot"
+			ELB          : "Load Balancer"
+			VPC          : "VPC"
+			SUBNET       : "Subnet"
+			IGW          : "Internet Gateway"
+			RT           : "Route Table"
+			VGW          : "VPN Gateway"
+			CGW          : "Customer Gateway"
+			ENI          : "Network Interface"
+			DHCP         : "Dhcp Options"
+			VPN          : "VPN Connection"
+			ACL          : "Network Acl"
+			IAM          : "Server Certificate"
+			ASG          : 'AutoScaling Group'
+			LC           : 'Launch Configuration'
+			NC           : 'Notification Configuration'
+			SP           : 'Scaling Policy'
+			SA           : 'Scheduled Actions'
+			CW           : 'Cloud Watch'
+			SUBSCRIPTION : 'Subscription'
+			TOPIC        : 'Topic'
+
+
+		realDict = {}
+		_.each resName, ( name, key ) ->
+			realDict[ RESTYPE[ key ] ] = name
+
+		realDict
+
 
 	#private
 	AWS_RESOURCE_SHORT_TYPE = {
@@ -421,3 +459,4 @@ use redirection server name:i:0\n"
 	OS_TYPE_MAPPING         : OS_TYPE_MAPPING
 	REGEXP                  : REGEXP
 	RESTYPE                 : RESTYPE
+	RESNAME                 : RESNAME()

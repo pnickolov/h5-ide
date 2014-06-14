@@ -2,7 +2,9 @@ define [
     'UI.modalplus'
     './component/resdiff/resDiffTpl'
     './component/resdiff/DiffTree'
-], ( modalplus, template, DiffTree ) ->
+    './component/resdiff/prepare'
+], ( modalplus, template, DiffTree, Prepare ) ->
+
 
     Backbone.View.extend
 
@@ -14,6 +16,8 @@ define [
 
             @oldAppJSON = option.old
             @newAppJSON = option.new
+
+            @prepare = new Prepare oldAppJSON: @oldAppJSON, newAppJSON: @newAppJSON
             @_genDiffInfo(@oldAppJSON.component, @newAppJSON.component)
 
         events:
@@ -127,7 +131,7 @@ define [
                             __value = if _.isObject(_value) then '' else _value
 
                             nextPath = path.concat([_key])
-                            data = that._processRes(nextPath, {
+                            data = @prepare.node(nextPath, {
                                 key: _key,
                                 value: __value
                             })
@@ -153,13 +157,13 @@ define [
                                 if _.isArray(_value) and _value.length is 0
                                     $treeItem.remove()
                                 else
-                                    _genTree(_value, _key, nextPath, $treeItem)
+                                    _genTree.call that, _value, _key, nextPath, $treeItem
 
                     else # end node
 
                         changeType = value.type
 
-                        data = that._processRes(path, {
+                        data = @prepare.node(path, {
                             key: key,
                             value: value
                         })
@@ -178,113 +182,11 @@ define [
 
                             $parent.remove()
 
-            _genTree(diffComps, null, [], $container)
+            _genTree.call that, diffComps, null, [], $container
 
-        _getCompAttr: (path) ->
 
-            path = path.split('.') if _.isString(path)
 
-            oldComp = @oldAppJSON.component
-            newComp = @newAppJSON.component
 
-            oldCompAttr = _.extend(oldComp, {})
-            newCompAttr = _.extend(newComp, {})
-
-            _.each path, (attr) ->
-
-                if oldCompAttr
-
-                    if _.isUndefined(oldCompAttr[attr])
-                        oldCompAttr = undefined
-                    else
-                        oldCompAttr = oldCompAttr[attr]
-
-                if newCompAttr
-
-                    if _.isUndefined(newCompAttr[attr])
-                        newCompAttr = undefined
-                    else
-                        newCompAttr = newCompAttr[attr]
-
-                null
-
-            return {
-                oldAttr: oldCompAttr,
-                newAttr: newCompAttr
-            }
-
-        _processRes: (path, data) ->
-
-            that = this
-
-            _genValue = (oldValue, newValue) ->
-
-                result = ''
-
-                if oldValue
-                    result = oldValue
-                    if newValue and oldValue isnt newValue
-                        result += (' -> ' + newValue)
-                else
-                    result = newValue
-
-                return result
-
-            _getRef = (value) ->
-
-                if _.isString(value) and value.indexOf('@{') is 0
-
-                    refRegex = /@\{.*\}/g
-                    refMatchAry = value.match(refRegex)
-                    if refMatchAry and refMatchAry.length
-                        refName = value.slice(2, value.length - 1)
-                        refUID = refName.split('.')[0]
-                        return "#{refUID}.name" if refUID
-
-                return null
-
-            if _.isObject(data.value) # process end node
-
-                # default
-                newValue = data.value
-                oldRef = _getRef(newValue.__old__)
-                newRef = _getRef(newValue.__new__)
-
-                newValue.__old__ = that._getCompAttr(oldRef).oldAttr if oldRef
-                newValue.__new__ = that._getCompAttr(newRef).newAttr if newRef
-
-                data.value = _genValue(newValue.__old__, newValue.__new__)
-
-            else
-
-                compAttrObj = that._getCompAttr(path)
-                oldAttr = compAttrObj.oldAttr
-                newAttr = compAttrObj.newAttr
-
-                valueRef = _getRef(data.value)
-                data.value = that._getCompAttr(valueRef).oldAttr if valueRef
-
-                if path.length is 1
-
-                    compUID = path[0]
-                    oldCompName = (oldAttr.name if oldAttr) or ''
-                    newCompName = (newAttr.name if newAttr) or ''
-
-                    if oldAttr
-                        data.key = oldAttr.type
-                    else
-                        data.key = newAttr.type
-
-                    data.value = _genValue(oldCompName, newCompName)
-
-            if path.length is 2
-
-                if path[1] in ['type', 'uid', 'name']
-                    delete data.key
-                else if path[1] is 'resource'
-                    data.skip = true
-
-            return data
 
         getChangeInfo: () ->
 

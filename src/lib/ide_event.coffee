@@ -27,9 +27,6 @@ define [ 'underscore', 'backbone' ], () ->
         #app/stack state
         UPDATE_APP_STATE       : 'UPDATE_APP_STATE'
 
-        #canvas event save stack/app by ctrl+s
-        CANVAS_SAVE            : 'CANVAS_SAVE'
-
         UPDATE_STATE_STATUS_DATA  :  'STATE_STATUS_DATA_UPDATE'
         UPDATE_STATE_STATUS_DATA_TO_EDITOR  :  'UPDATE_STATE_STATUS_DATA_TO_EDITOR'
         STATE_EDITOR_SAVE_DATA : 'STATE_EDITOR_SAVE_DATA'

@@ -8,6 +8,9 @@ define [
 
   OpsViewBase.extend {
 
+    events :
+      "SAVE" : "saveStack"
+
     initialize : ()->
       @resourcePanel = new ResourcePanel({workspace:@workspace})
       @statusbar = new Statusbar({workspace:@workspace})
@@ -38,4 +41,6 @@ define [
     removeSubviews : ()->
       @resourcePanel.remove()
       return
+
+    saveStack : ()-> @toolbar.$el.find(".icon-save").trigger "click"
   }

@@ -101,6 +101,8 @@ define [
       }
       return
 
+    saveOps : ()-> App.saveOps( @workspace.opsModel )
+
     ###
       Override these methods in subclasses.
     ###

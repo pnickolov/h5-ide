@@ -171,9 +171,7 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant", "UI.notific
       notification 'warning', lang.ide.CVS_MSG_ERR_ZOOMED_DROP_ERROR
       null
 
-    CANVAS_SAVE : ()->
-      ide_event.trigger ide_event.CANVAS_SAVE
-      null
+    CANVAS_SAVE : ()-> $("#OpsEditor").trigger "SAVE"; false
 
     CANVAS_PLACE_NOT_MATCH : ( param )->
       res_type = constant.RESTYPE

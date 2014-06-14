@@ -458,7 +458,7 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
       component   : {}
       layout      : { size : [240, 240] }
       agent :
-        enabled : false
+        enabled : true
         module  :
           repo : App.user.get("mod_repo")
           tag  : App.user.get("mod_tag")

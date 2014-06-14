@@ -44,7 +44,10 @@ define [
     @__view = new ApplicationView()
 
     # This function returns a promise
-    Q.all [ @user.fetch(), @model.fetch() ]
+    fetchModel = @model.fetch().fail ( err )->
+      notification "Cannot load application data. Please reload your browser."
+      throw err
+    Q.all [ @user.fetch(), fetchModel ]
 
   VisualOps.prototype.__createWebsocket = ()->
     @WS = new Websocket()

@@ -69,11 +69,14 @@ define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone", "con
       @attributes.stackList.add m
       m
 
+    getPriceData : ( awsRegion )-> (@__appdata[ awsRegion ] || {}).price
+
 
     ###
       Internal methods
     ###
     initialize : ()->
+      @__appdata = {}
       @__initializeNotification()
       return
 
@@ -82,6 +85,11 @@ define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone", "con
       self = this
       sp = ApiRequest("stack_list", {region_name:null}).then (res)-> self.get("stackList").set self.__parseListRes( res )
       ap = ApiRequest("app_list",   {region_name:null}).then (res)-> self.get("appList").set   self.__parseListRes( res )
+
+      # Load Application Data.
+      appdata = ApiRequest("aws_aws",{fields : ["region","price","region_instance_type","instance_type"]}).then ( res )->
+        self.__appdata[ i.region ] = i for i in res
+        return
 
       # When app/stack list is fetched, we first cleanup unused thumbnail. Then
       # Tell others that we are ready.

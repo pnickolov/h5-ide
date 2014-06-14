@@ -114,7 +114,10 @@ define [
         self.__applyingUpdate = false
         self.view.stopListening self.opsModel, "change:progress", self.view.updateProgress
 
-        self.view.showUpdateStatus( err.msg )
+        msg = err.msg
+        if err.result then msg += "<br />" + err.result
+
+        self.view.showUpdateStatus( msg )
         return
 
       @view.listenTo @opsModel, "change:progress", @view.updateProgress

@@ -93,13 +93,10 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
 
     hasJsonData : ()-> !!@__jsonData
     getJsonData : ()-> @__jsonData
-    # Returns a promise that will resolve with the JSON data of the stack/app
-    # Calling this method will trigger an "jsonDataLoaded" event
     fetchJsonData : ()->
       if @__jsonData
         d = Q.defer()
-        d.resolve @__jsonData
-        @trigger "jsonDataLoaded"
+        d.resolve @
         return d.promise
 
       self = @
@@ -148,7 +145,6 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
       if (json.version or "").split("-").length < 3 then json.version = "2013-09-13"
 
       @__jsonData = json
-      @trigger "jsonDataLoaded"
       @
 
     generateJsonFromRes : ()->
@@ -334,6 +330,11 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
       @attributes.progress = 0
 
       self = @
+      errorHandler = ( err )->
+        self.attributes.progress = 0
+        self.set { state : oldState }
+        throw err
+
       ApiRequest("app_update", {
         region_name : @get("region")
         spec        : newJson
@@ -347,8 +348,8 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
             name  : newJson.name
             state : OpsModelState.Running
           }
-      , ( err )->
-        throw err
+        , errorHandler
+      , errorHandler
 
     # Replace the data in mongo with new data. This method doesn't trigger an app update.
     saveApp : ( newJson )->
@@ -395,14 +396,12 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
           if not @__updateAppDefer
             console.warn "UpdateAppDefer is null when setStatusWithWSEvent with `update` event."
           else
+            d = @__updateAppDefer
+            @__updateAppDefer = null
             if state.completed
-              @__updateAppDefer.resolve()
-              @__updateAppDefer = null
+              d.resolve()
             else
-              ApiRequest("app_list",{app_ids:[@get("id")]}).then (res)=>
-                @setStatusWithApiResult( res[0].state )
-                @__updateAppDefer.reject McError( ApiRequest.Errors.OperationFailure, error )
-                @__updateAppDefer = null
+              d.reject McError( ApiRequest.Errors.OperationFailure, error )
         when "terminate"
           if state.completed
             toState = OpsModelState.Destroyed

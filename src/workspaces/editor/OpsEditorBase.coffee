@@ -68,7 +68,6 @@ define [
         throw new Error("Cannot find opsmodel while openning workspace.")
 
       @opsModel = opsModel
-      @listenTo @opsModel, "jsonDataLoaded", @jsonLoaded
       # OpsModel's State
       # OpsModel doesn't trigger "change:state" when a opsModel is set to "destroyed"
       @listenTo @opsModel, "destroy",      @onOpsModelStateChanged
@@ -76,7 +75,9 @@ define [
 
       # Load Datas
       self = @
-      @opsModel.fetchJsonData().fail ( err )->
+      @opsModel.fetchJsonData().then ()->
+        self.jsonLoaded()
+      , ( err )->
         if err.error is ApiRequest.Errors.MissingDataInServer
           # When we got this error, the opsmodel will destroy itself, resulting removal of the editor.
           return

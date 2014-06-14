@@ -44,11 +44,12 @@ define [ 'constant' ], ( constant ) ->
 
             type = component.type
             parentKey = path[ path.length - 2 ]
+            childNode = @getNodeData path
 
+            # Replace according to type
             switch type
                 when constant.RESTYPE.INSTANCE
                     if parentKey is 'BlockDeviceMapping'
-                        childNode = @getNodeData path
                         data.key = childNode.DeviceName if childNode and childNode.DeviceName
 
                 when constant.RESTYPE.ENI
@@ -61,6 +62,10 @@ define [ 'constant' ], ( constant ) ->
                     if parentKey in [ 'IpPermissions', 'IpPermissionsEgress' ]
                         data.key = 'Rule'
 
+
+            # Replace first level node
+            if path.length is 1
+                data.key = constant.RESNAME[ data.key ] or data.key
 
 
             data

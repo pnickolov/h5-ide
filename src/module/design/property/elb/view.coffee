@@ -181,7 +181,7 @@ define [ '../base/view',
 
             that = this
             $li = $("#elb-property-listener-list").children().eq(0).clone()
-            $li.find(".elb-property-listener-item-remove").show()
+            # $li.find(".elb-property-listener-item-remove").show()
             $selectbox = $li.find("ul")
             $portInput = $li.find('input.input')
             $portInput.val('80')
@@ -398,14 +398,20 @@ define [ '../base/view',
             $("#elb-property-listener-list").children().each ()->
                 protocol = $(this).find(".elb-property-elb-protocol .selected").text()
                 $certPanel = $(this).find(".sslcert-select")
+
+                $listenerItem = $(this)
+                sslCertDropDown = $listenerItem.data('sslCertDropDown')
+
                 if protocol is "HTTPS" or protocol is "SSL"
-                    $listenerItem = $(this)
-                    sslCertDropDown = $listenerItem.data('sslCertDropDown')
+
                     if sslCertDropDown
                         sslCertDropDown.setDefault()
                     $certPanel.show()
 
                 else
+                
+                    if sslCertDropDown
+                        sslCertDropDown.dropdown.setSelection 'None'
                     $certPanel.hide()
             null
 

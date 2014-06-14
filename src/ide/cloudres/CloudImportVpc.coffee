@@ -58,7 +58,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         return component_resources
 
       # found an original component by component_resources
-      originComp = getOriginalComp component_resources, constant.RESTYPE[ type_string ]
+      originComp = @getOriginalComp component_resources, constant.RESTYPE[ type_string ]
       if originComp
         @component[ originComp.uid ] = _.extend originComp.resource, component_resources
         return @component[ originComp.uid ]
@@ -148,7 +148,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         if ( comp.resource[key] is id )
           return comp
 
-      {}
+      null
 
     _mapProperty : ( aws_json, resource ) ->
       for k, v of aws_json

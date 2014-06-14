@@ -10,9 +10,10 @@ define [
   'kp_dropdown'
   'constant'
   'event'
+  'component/trustedadvisor/main'
   "UI.notification"
   "backbone"
-], ( OpsModel, OpsEditorTpl, Thumbnail, JsonExporter, ApiRequest, lang, Modal, kpDropdown, constant, ide_event )->
+], ( OpsModel, OpsEditorTpl, Thumbnail, JsonExporter, ApiRequest, lang, Modal, kpDropdown, constant, ide_event, TA )->
 
   # Set domain and set http
   API_HOST       = "api.visualops.io"
@@ -279,9 +280,9 @@ define [
         @modal.tpl.find("#label-total-fee").find('b').text("$#{cost.totalFee}")
 
         # load TA
-        require ['component/trustedadvisor/main'], (trustedadvisor_main)=>
-            trustedadvisor_main.loadModule('stack').then ()=>
-                @modal?.toggleConfirm false
+        TA.loadModule('stack').then ()=>
+            @modal?.toggleConfirm false
+
         appNameDom = @modal.tpl.find('#app-name')
         checkAppNameRepeat = @checkAppNameRepeat.bind @
         appNameDom.keyup ->
@@ -361,9 +362,28 @@ define [
       result = @workspace.applyAppEdit()
       if result isnt true
         # Show popup dialog
+        console.debug result
+        @updateModal = new Modal
+            title: lang.ide.UPDATE_APP_MODAL_TITLE
+            template: MC.template.updateApp result
+            disableClose: true
+            width: '450px'
+            height: "515px"
+            confirm:
+                text: if App.user.hasCredential() then lang.ide.UPDATE_APP_CONFIRM_BTN else lang.ide.UPDATE_APP_MODAL_NEED_CREDENTIAL
+                disabled: true
 
+        @updateModal.on 'confirm', =>
+            if not @defaultKpIsSet()
+                return false
+            @workspace.applyAppEdit( result, true )
+            @updateModal?.close()
+
+        @renderKpDropdown()
+        TA.loadModule('stack').then =>
+            @updateModal and @updateModal.toggleConfirm false
         # Call this method when user confirm to update
-        @workspace.applyAppEdit( result, true )
+
         return
 
     opsOptionChanged: -> #todo: Almost Done.

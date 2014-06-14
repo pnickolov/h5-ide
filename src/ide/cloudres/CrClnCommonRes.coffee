@@ -173,7 +173,7 @@ define [
       for rtb in rtbs
         rtb.routeSet = rtb.routeSet?.item || rtb.routes || []
         rtb.associationSet = rtb.associationSet?.item || []
-        rtb.propagatingVgwSet = rtb.propagatingVgwSet?.item || []
+        rtb.propagatingVgwSet = rtb.propagatingVgwSet?.item ||rtb.propagatingVgws|| []
         rtb.id = rtb.routeTableId
         delete rtb.routeTableId
       rtbs

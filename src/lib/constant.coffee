@@ -234,11 +234,12 @@ define ['MC', 'i18n!nls/lang.js'], ( MC, lang ) ->
 	}
 
 	OPS_CODE_NAME =
-		"Forge.Stack.Run"     : "launch"
-		"Forge.App.Stop"      : "stop"
-		"Forge.App.Start"     : "start"
-		"Forge.App.Update"    : "update"
-		"Forge.App.Terminate" : "terminate"
+		"Forge.Stack.Run"        : "launch"
+		"Forge.App.Stop"         : "stop"
+		"Forge.App.Start"        : "start"
+		"Forge.App.Update"       : "update"
+		"Forge.App.State.Update" : "update"
+		"Forge.App.Terminate"    : "terminate"
 
 	AWS_RESOURCE = {
 		AZ                  :   'AWS.EC2.AvailabilityZone'

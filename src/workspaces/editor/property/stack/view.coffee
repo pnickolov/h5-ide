@@ -29,7 +29,6 @@ define [ '../base/view',
                     title = "App - #{@model.get('name')}"
             else
                 title = "Stack - #{@model.get('name')}"
-            console.log @model.attributes
             @$el.html( template( @model.attributes ) )
 
             if title

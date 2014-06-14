@@ -52,9 +52,16 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         console.error "[ConverterData.add] if res_attributes is null, then must specify default_name"
         return null
 
+      # directly add component based on original component
       if component_resources and component_resources.uid
         @component[ component_resources.uid ] = component_resources
         return component_resources
+
+      # found an original component by component_resources
+      originComp = getOriginalComp component_resources, constant.RESTYPE[ type_string ]
+      if originComp
+        @component[ originComp.uid ] = _.extend originComp.resource, component_resources
+        return @component[ originComp.uid ]
 
       comp =
         uid  : ""
@@ -91,7 +98,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
     addAz : ( azName )->
       az = @azs[ azName ]
       if az then return az
-      az = @add( "AZ", { id : azName }, @getComp azName, 'AZ' )
+      az = @add( "AZ", { id : azName }, @getOriginalComp azName, 'AZ' )
       @addLayout( az, true, @theVpc )
       @azs[ azName ] = az
       az
@@ -128,7 +135,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         return topicComp
       return null
 
-    getComp: ( jsonOrKey, type ) ->
+    getOriginalComp: ( jsonOrKey, type ) ->
       type = constant.RESTYPE[ type ] or type
       key = constant.AWS_RESOURCE_KEY[ type ]
       id = if _.isObject jsonOrKey then jsonOrKey[key] else jsonOrKey
@@ -176,7 +183,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
 
       vpc.VpcId = @vpcId
       # Cache the vpc so that other can use it.
-      @theVpc = vpcComp = @add("VPC", vpc, _.extend @getComp( vpc, constant.RESTYPE.VPC ), {
+      @theVpc = vpcComp = @add("VPC", vpc, {
         CidrBlock       : vpc.cidrBlock
         DhcpOptionsId   : vpc.dhcpOptionsId
         InstanceTenancy : vpc.instanceTenancy
@@ -974,6 +981,8 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
       return
 
     # Retain component only belong to us
+    # When and only when these component are not in @component
+
     () ->
       retainList = [
         'AWS.EC2.Tag'
@@ -986,7 +995,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
       ]
 
       for uid, com of @originalJson.component
-        if com.type in retainList
+        if not @component[ uid ] and ( com.type in retainList )
           @add null, null, com
         null
 

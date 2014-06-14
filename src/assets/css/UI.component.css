@@ -1133,9 +1133,6 @@ textarea {
 }
 
 
-=======
->>>>>>> [feature/refactor-nav] clean up header style
-
 /* tablist */
 [data-tab-target] { cursor : pointer; }
 

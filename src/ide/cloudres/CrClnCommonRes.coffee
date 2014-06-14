@@ -19,6 +19,11 @@ define [
     trAwsXml : ( data )-> data.DescribeLoadBalancersResponse.DescribeLoadBalancersResult.LoadBalancerDescriptions?.member
     parseFetchData : ( elbs )->
       for elb in elbs
+        for key, value of elb
+          fixKey = key.substring(0,1).toUpperCase() + key.substring(1)
+          delete elb[key]
+          elb[fixKey] = value
+
         elb.AvailabilityZones = elb.AvailabilityZones?.member || []
         elb.Instances         = elb.Instances?.member || []
         elb.SecurityGroups    = elb.SecurityGroups?.member || []
@@ -80,13 +85,18 @@ define [
     trAwsXml : ( data )-> data.DescribeAutoScalingGroupsResponse.DescribeAutoScalingGroupsResult.AutoScalingGroups?.member
     parseFetchData : ( asgs )->
       for asg in asgs
+        for key, value of asg
+          fixKey = key.substring(0,1).toUpperCase() + key.substring(1)
+          delete asg[key]
+          asg[fixKey] = value
+
         asg.Name = asg.AutoScalingGroupName
         delete asg.AutoScalingGroupName
         asg.AvailabilityZones   = asg.AvailabilityZones?.member || []
         asg.Instances           = asg.Instances?.member || []
         asg.LoadBalancerNames   = asg.LoadBalancerNames?.member || []
         asg.TerminationPolicies = asg.TerminationPolicies?.member || []
-        asg.Subnets             = asg.VPCZoneIdentifier.split(",")
+        asg.Subnets             = (asg.VPCZoneIdentifier || asg.VpczoneIdentifier).split(",")
         delete asg.VPCZoneIdentifier
       asgs
   }
@@ -101,6 +111,11 @@ define [
     trAwsXml : ( data )-> data.DescribeAlarmsResponse.DescribeAlarmsResult.MetricAlarms?.member
     parseFetchData : ( cws )->
       for cw in cws
+        for key, value of cw
+          fixKey = key.substring(0,1).toUpperCase() + key.substring(1)
+          delete cw[key]
+          cw[fixKey] = value
+
         cw.Dimensions   = cw.Dimensions?.member || []
         cw.AlarmActions = cw.AlarmActions?.member || []
         cw.id   = cw.AlarmArn

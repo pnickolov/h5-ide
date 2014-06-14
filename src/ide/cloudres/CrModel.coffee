@@ -3,6 +3,11 @@ define ["ApiRequest", "backbone"], ( ApiRequest )->
 
   Backbone.Model.extend {
 
+    initialize : ( attr, options )->
+      if options and options.RES_TAG
+        @RES_TAG = options.RES_TAG
+      return
+
     # Returns a promise which will be resolved when the model is saved to AWS, the resolved data is the model itself
     save : ()->
       if @get("id")

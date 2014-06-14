@@ -22,12 +22,14 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
       # OpsResource doesn't return anything, Instead, it injects the data to other collection.
       delete data.vpc
 
+      extraAttr = { RES_TAG : @category }
+
       for type, d of data
         cln = CloudResources( type, @__region )
         if not cln
           console.warn "Cannot find cloud resource collection for type:", type
           continue
-        cln.parseExternalData d
+        cln.parseExternalData d, extraAttr
 
       # Nasty, but it should work.
       # Describe instances belongs to ASG.

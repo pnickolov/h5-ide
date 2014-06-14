@@ -60,7 +60,9 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
       # found an original component by component_resources
       originComp = @getOriginalComp component_resources, constant.RESTYPE[ type_string ]
       if originComp
-        @component[ originComp.uid ] = _.extend originComp.resource, component_resources
+        _.extend originComp.resource, component_resources
+        @component[ originComp.uid ] = originComp
+
         return @component[ originComp.uid ]
 
       comp =

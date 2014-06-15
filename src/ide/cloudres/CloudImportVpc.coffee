@@ -207,10 +207,10 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         sb = sb.attributes
         azComp = @addAz(sb.availabilityZone)
         sbComp = @add( "SUBNET", sb, {
-          AvailabilityZone : CREATE_REF( azComp ).replace /.r.p/, ".resource.ZoneName"
+          AvailabilityZone : CREATE_REF( azComp, "resource.ZoneName" )
           CidrBlock        : sb.cidrBlock
           SubnetId         : sb.id
-          VpcId            : CREATE_REF( @theVpc ).replace /.r.p/, ".resource.VpcId"
+          VpcId            : CREATE_REF( @theVpc, "resource.VpcId" )
         })
 
         @subnets[ sb.id ] = sbComp
@@ -226,7 +226,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
           continue
         igwRes =
           "AttachmentSet"    : [
-            "VpcId": CREATE_REF( @theVpc ).replace /.r.p/, ".resource.VpcId"
+            "VpcId": CREATE_REF( @theVpc, "resource.VpcId" )
           ]
           "InternetGatewayId": aws_igw.id
 

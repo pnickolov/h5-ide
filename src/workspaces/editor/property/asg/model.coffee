@@ -12,7 +12,7 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
       if component.type is "ExpandedAsg"
         component = component.get("originalAsg")
 
-      data = component.toJSON()
+      data = component?.toJSON()
       data.uid = uid
       @set( data )
 

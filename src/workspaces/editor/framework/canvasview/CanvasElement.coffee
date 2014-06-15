@@ -335,7 +335,7 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "CloudResourc
     if @type isnt constant.RESTYPE.LC
 
       if @type is constant.RESTYPE.INSTANCE
-        instance_data = resource_list.get(@model.get("appId")).toJSON()
+        instance_data = resource_list.get(@model.get("appId"))?.toJSON()
         state = if instance_data then instance_data.instanceState.name else "unknown"
 
       list = [{

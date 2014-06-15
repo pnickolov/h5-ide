@@ -49,7 +49,7 @@ define [ '../base/model', 'constant', 'Design', 'CloudResources' ], ( PropertyMo
 
 
 
-          rtb  = CloudResources(constant.RESTYPE.RT, Design.instance().region()).get(routeTable.get('appId')).toJSON()
+          rtb  = CloudResources(constant.RESTYPE.RT, Design.instance().region()).get(routeTable.get('appId'))?.toJSON()
 
           if not rtb
             return false

@@ -51,7 +51,7 @@ define [ '../base/view',
             @initDhcpSelection()
             data.name
         initDhcpSelection: ->
-            currentVal = @model.toJSON().dhcp.appId
+            currentVal = @model.attributes.dhcp.appId
             if currentVal is ''
                 selection = isAuto : true
             else if currentVal is "default"

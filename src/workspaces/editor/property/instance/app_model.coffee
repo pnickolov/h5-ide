@@ -21,7 +21,7 @@ define [ '../base/model',
 
         setOsTypeAndLoginCmd: ( appId ) ->
             region = Design.instance().region()
-            instance_data = CloudResources(constant.RESTYPE.INSTANCE, region).get(appId).toJSON()
+            instance_data = CloudResources(constant.RESTYPE.INSTANCE, region).get(appId)?.toJSON()
             if instance_data && instance_data.imageId
                 os_type = MC.data.dict_ami[ instance_data.imageId ].osType
 
@@ -75,7 +75,7 @@ define [ '../base/model',
 
             if app_data?.get(instance_id)?.toJSON()
 
-                instance = $.extend true, {}, app_data.get(instance_id).toJSON()
+                instance = $.extend true, {}, app_data.get(instance_id)?.toJSON()
                 instance.name = if myInstanceComponent then myInstanceComponent.get 'name' else instance_id
                 rdName = myInstanceComponent.getAmiRootDeviceName()
 
@@ -92,7 +92,7 @@ define [ '../base/model',
 
                     #RootDevice Data
                     if rootDevice
-                        volume = CloudResources(constant.RESTYPE.VOL, Design.instance().region()).get(rootDevice.ebs.volumeId).toJSON()
+                        volume = CloudResources(constant.RESTYPE.VOL, Design.instance().region()).get(rootDevice.ebs.volumeId)?.toJSON()
                         if volume
                             if volume.attachmentSet
                                 volume.name = volume.attachmentSet[0].device
@@ -150,7 +150,7 @@ define [ '../base/model',
                 data = $.extend true, {}, data
             else
                 # Use data inside appData
-                data = $.extend true, {}, appData.get( id ).toJSON()
+                data = $.extend true, {}, appData.get( id )?.toJSON()
 
             data.name = if component then component.get 'name' else id
             if data.status == "in-use"

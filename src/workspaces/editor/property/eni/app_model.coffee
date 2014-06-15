@@ -17,7 +17,7 @@ define [ '../base/model', 'Design', 'constant', "CloudResources" ], ( PropertyMo
             for e in allEni
               if e.get( 'appId' ) is uid
                 myEniComponent = e
-                myEniComponentJSON = e.toJSON()
+                myEniComponentJSON = e?.toJSON()
                 break
               else
                 for mIndex, m of e.groupMembers()
@@ -28,9 +28,9 @@ define [ '../base/model', 'Design', 'constant', "CloudResources" ], ( PropertyMo
                     break
 
           else
-            myEniComponentJSON = myEniComponent.toJSON()
+            myEniComponentJSON = myEniComponent?.toJSON()
 
-          appData = CloudResources(constant.RESTYPE.ENI,Design.instance().region()).get(eni_comp.appId).toJSON()
+          appData = CloudResources(constant.RESTYPE.ENI,Design.instance().region()).get(eni_comp.appId)?.toJSON()
 
           if @isGroupMode
             group = [ myEniComponentJSON ].concat myEniComponent.groupMembers()

@@ -773,7 +773,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js", 'CloudR
 
       resource_list = CloudResources(constant.RESTYPE.ASG, Design.instance().region())
       for asg in Design.modelClassForType( constant.RESTYPE.ASG ).allObjects()
-        data = resource_list.get(asg.get('appId')).toJSON()
+        data = resource_list.get(asg.get('appId'))?.toJSON()
         if not data or not data.Instances then continue
         data = data.Instances
         for obj in (data.member or data)

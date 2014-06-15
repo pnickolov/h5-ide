@@ -35,8 +35,8 @@ define [ '../base/model', "Design", 'constant', 'CloudResources' ], ( PropertyMo
               vpc.default_dhcp = true
 
             else
-              dhcpData = appData.get(myVPCComponent.toJSON().dhcp.toJSON().appId).attributes
-              vpc.dhcpOptionsId = myVPCComponent.toJSON().dhcp.toJSON().appId
+              dhcpData = appData.get(myVPCComponent?.toJSON().dhcp?.toJSON().appId)?.attributes
+              vpc.dhcpOptionsId = myVPCComponent?.toJSON().dhcp?.toJSON()?.appId
               dhcp = null
               if dhcpData
                   dhcp = {}

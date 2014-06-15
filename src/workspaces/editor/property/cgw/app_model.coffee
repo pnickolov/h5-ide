@@ -11,7 +11,7 @@ define [ '../base/model', 'Design', 'constant', 'CloudResources' ], ( PropertyMo
           # cgw assignment
           myCGWComponent = Design.instance().component( uid )
 
-          cgw = CloudResources(constant.RESTYPE.CGW, Design.instance.region()).get(myCGWComponent.get('appId')).toJSON()
+          cgw = CloudResources(constant.RESTYPE.CGW, Design.instance.region()).get(myCGWComponent.get('appId'))?.toJSON()
           if not cgw
             return false
 

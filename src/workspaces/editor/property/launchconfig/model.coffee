@@ -41,7 +41,7 @@ define [ '../base/model', 'keypair_model', 'constant', 'Design', "CloudResources
       @asg = lcAsso.getAsg()
       @lc = lcAsso.getLc()
 
-      data = @lc.toJSON()
+      data = @lc?.toJSON()
       data.uid = @lc.id
       data.isEditable = @isAppEdit
       data.app_view = Design.instance().modeIsAppView()
@@ -193,7 +193,7 @@ define [ '../base/model', 'keypair_model', 'constant', 'Design', "CloudResources
         true
 
     getAppLaunch : ( uid ) ->
-      lc_data = CloudResources(constant.RESTYPE.LC, Design.instance().region()).get(@lc.get('appId')).toJSON()
+      lc_data = CloudResources(constant.RESTYPE.LC, Design.instance().region()).get(@lc.get('appId'))?.toJSON()
 
       this.set "ebsOptimized", @lc.get("ebsOptimized") + ""
       this.set 'name', @lc.get 'name'

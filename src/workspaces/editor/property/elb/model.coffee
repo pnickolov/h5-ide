@@ -12,7 +12,7 @@ define [ '../base/model', "Design", 'constant', 'sslcert_dropdown', "CloudResour
 
             @getAppData( uid )
 
-            attr        = component.toJSON()
+            attr        = component?.toJSON()
             attr.uid    = uid
             attr.isVpc  = true
 
@@ -23,7 +23,7 @@ define [ '../base/model', "Design", 'constant', 'sslcert_dropdown', "CloudResour
             attr.pingPath     = pingArr[2]
 
             if attr.sslCert
-                attr.sslCert = attr.sslCert.toJSON()
+                attr.sslCert = attr.sslCert?.toJSON()
 
             # See if we need to should certificate
             for i in attr.listeners

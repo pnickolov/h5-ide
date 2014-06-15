@@ -80,7 +80,7 @@ define [
         null
 
       if Design.instance().modeIsAppEdit()
-        resource_list = CloudResources(constant.RESTYPE.LC, Design.instance().region()).toJSON()
+        resource_list = CloudResources(constant.RESTYPE.LC, Design.instance().region())?.toJSON()
         for id, rl of resource_list
           if rl.LaunchConfigurationName
             nameMap[ _.first rl.LaunchConfigurationName.split( '---' ) ] = true

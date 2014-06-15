@@ -318,7 +318,7 @@ define [
 
     getNotification : ()->
       n = @get("notification")
-      if n then n.toJSON() else {}
+      if n then n?.toJSON() else {}
 
     getNotiObject: () ->
       @get("notification")

@@ -10,7 +10,7 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 
 			component = Design.instance().component( uid )
 
-			attr = component.toJSON()
+			attr = component?.toJSON()
 			attr.uid = uid
 			attr.classic_stack  = false
 			attr.can_set_ebs    = component.isEbsOptimizedEnabled()

@@ -170,7 +170,7 @@ define [ 'MC', 'constant', 'state_model', 'CloudResources', 'backbone', 'jquery'
 			that = this
 			compData = that.get('compData')
 			imageId = compData.resource.ImageId
-			imageObj = MC.data.dict_ami[imageId]
+			imageObj = CloudResources( constant.RESTYPE.AMI, Design.instance().region() ).get(imageId)
 
 			osPlatform = null
 			osPlatformDistro = null

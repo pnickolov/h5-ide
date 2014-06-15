@@ -232,7 +232,7 @@ require.config {
 			"lib/handlebarhelpers"
 			"event"
 		]
-		"lib/aws/main" : []
+		"lib/aws/aws" : []
 		"ui/ui" : [
 			'UI.tooltip'
 			'UI.scrollbar'
@@ -293,7 +293,7 @@ require.config {
 		"workspaces/editor/subviews/PropertyPanel" : []
 
 	bundleExcludes : # This is a none requirejs option, but it's used by compiler to exclude some of the source.
-		"lib/aws/main" : ["Design"]
+		"lib/aws/aws" : ["Design"]
 		"component/sgrule/SGRulePopup" : [ "Design" ]
 		"component/stateeditor/stateeditor" : [
 			"component/stateeditor/lib/ace"
@@ -318,7 +318,7 @@ requirejs.onError = ( err )->
 		console.error "[RequireJS Error]", err, err.stack
 
 
-require ["constant", 'ide/Application', "workspaces/Dashboard", "ide/cloudres/CrBundle", "MC", 'lib/aws/main'], ( constant, Application, Dashboard, CrBundle ) ->
+require ["constant", 'ide/Application', "workspaces/Dashboard", "ide/cloudres/CrBundle", "MC", 'lib/aws/aws'], ( constant, Application, Dashboard, CrBundle ) ->
 
 	##########################################################
 	# Deprecated Global shit. Doesn't anyone dare to add more of these. They will be removed in the future.
@@ -327,9 +327,6 @@ require ["constant", 'ide/Application', "workspaces/Dashboard", "ide/cloudres/Cr
 	#global config data by region
 	MC.data.config = {}
 	MC.data.config[r] = {} for r in constant.REGION_KEYS
-
-	#global cache for all ami
-	MC.data.dict_ami = {}
 
 	#global resource data (Describe* return)
 	MC.data.resource_list = {}

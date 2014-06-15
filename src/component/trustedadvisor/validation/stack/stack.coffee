@@ -1,4 +1,4 @@
-define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'ApiRequest', 'stack_service', 'ami_service', '../result_vo' ], ( constant, $, MC, lang, ApiRequest, stackService, amiService ) ->
+define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'ApiRequest', 'stack_service', 'ami_service', "CloudResources", '../result_vo' ], ( constant, $, MC, lang, ApiRequest, stackService, amiService, CloudResources ) ->
 
 	getAZAryForDefaultVPC = (elbUID) ->
 
@@ -55,7 +55,7 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'ApiRequest', 'stack_ser
 					checkResult = false
 
 					try
-						
+
 						returnInfo = result
 						returnInfoObj = JSON.parse(returnInfo)
 
@@ -257,16 +257,12 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'ApiRequest', 'stack_ser
 						instanceAMIMap[imageId].push(compObj.uid)
 			null
 
-		awsAMIIdAry = []
-		_.each MC.data.dict_ami, (amiObj) ->
-			amiId = amiObj.imageId
-			awsAMIIdAry.push(amiId)
-			null
-
 		tipInfoAry = []
 
+		amiCollection = CloudResources( constant.RESTYPE.AMI, MC.canvas_data.region )
+
 		_.each amiAry, (amiId) ->
-			if amiId not in awsAMIIdAry
+			if not amiCollection.get( amiId )
 				# not exist in stack
 				instanceUIDAry = instanceAMIMap[amiId]
 				_.each instanceUIDAry, (instanceUID) ->

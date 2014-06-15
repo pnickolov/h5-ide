@@ -22,8 +22,9 @@ define [ '../base/model',
         setOsTypeAndLoginCmd: ( appId ) ->
             region = Design.instance().region()
             instance_data = CloudResources(constant.RESTYPE.INSTANCE, region).get(appId)?.toJSON()
-            if instance_data && instance_data.imageId
-                os_type = MC.data.dict_ami[ instance_data.imageId ].osType
+            if instance_data
+                os_type = CloudResources( constant.RESTYPE.AMI, region ).get( instance_data.imageId )
+                if os_type then os_type = os_type.osType
 
             # below code are based on os_type
             if not os_type
@@ -232,10 +233,6 @@ define [ '../base/model',
                     that.trigger 'KEYPAIR_DOWNLOAD', false, res.resolved_data
 
             null
-
-
-        getAMI : ( ami_id ) ->
-            MC.data.dict_ami[ami_id]
 
 
         getEni : () ->

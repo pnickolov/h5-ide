@@ -2,7 +2,7 @@
 #  View Mode for design/property/cgw
 #############################
 
-define [ '../base/model', 'constant', "../base/main", "CloudResources" ], ( PropertyModel, constant, PropertyModule, CloudResources ) ->
+define [ '../base/model', 'constant', "../base/main", "CloudResources", "Design" ], ( PropertyModel, constant, PropertyModule, CloudResources, Design ) ->
 
   StaticSubModel = PropertyModel.extend {
 
@@ -11,9 +11,9 @@ define [ '../base/model', 'constant', "../base/main", "CloudResources" ], ( Prop
       @set "isApp", @isApp
 
       # If this uid is ami uid
-      ami = MC.data.dict_ami[ uid ]
+      ami = CloudResources( constant.RESTYPE.AMI, Design.instance().region() ).get( uid )
       if ami
-        @set ami
+        @set ami.toJSON()
         @set "instance_type", MC.aws.ami.getInstanceType( ami ).join(", ")
         @set "ami", true
         @set "name", ami.name
@@ -27,13 +27,15 @@ define [ '../base/model', 'constant', "../base/main", "CloudResources" ], ( Prop
       # If this uid is snapshot uid
       item = CloudResources( constant.RESTYPE.SNAP, Design.instance().region() ).get( uid )
       if not item then return false
-      @set item.attibutes
+      @set item.attributes
       true
 
     canChangeAmi : ( amiId )->
       component = Design.instance().component( PropertyModule.activeModule().uid )
       oldAmi = component.getAmi() || component.get("cachedAmi")
-      newAmi = MC.data.dict_ami[ amiId ]
+      newAmi = CloudResources( constant.RESTYPE.AMI, Design.instance().region() ).get( amiId )
+      if newAmi then newAmi = newAmi.toJSON()
+
       if not oldAmi and not newAmi then return "Ami info is missing, please reopen stack and try again."
 
       if oldAmi.osType is "windows" and newAmi.osType isnt "windows"
@@ -48,18 +50,16 @@ define [ '../base/model', 'constant', "../base/main", "CloudResources" ], ( Prop
       true
 
     getAmiPngName : ( amiId ) ->
-      ami = MC.data.dict_ami[ amiId ]
+      ami = CloudResources( constant.RESTYPE.AMI, Design.instance().region() ).get( amiId )
       if not ami
         "ami-not-available"
       else
+        ami = ami.attributes
         "#{ami.osType}.#{ami.architecture}.#{ami.rootDeviceType}"
 
     getAmiName : ( amiId )->
-      ami = MC.data.dict_ami[ amiId ]
-      if not ami
-        ""
-      else
-        ami.name
+      ami = CloudResources( constant.RESTYPE.AMI, Design.instance().region() ).get( amiId )
+      if ami then ami.get("name") else ""
 
     changeAmi : ( amiId )->
       Design.instance().component( PropertyModule.activeModule().uid ).setAmi( amiId )

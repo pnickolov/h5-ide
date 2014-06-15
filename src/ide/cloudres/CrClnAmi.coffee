@@ -73,6 +73,13 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
       ms.push ami.id
     ms
 
+  getModels = ()->
+    console.assert( @__models and @ isnt window, "Invalid usage of getModels()" )
+    ms = []
+    col = CloudResources( constant.RESTYPE.AMI, @region() )
+    for id in @__models
+      ms.push col.get( id )
+    ms
 
   ### This Collection is used to fetch generic ami ###
   CrCollection.extend {
@@ -188,12 +195,7 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
       @__models = amiIds
       return
 
-    getModels : ()->
-      ms = []
-      col = CloudResources( constant.RESTYPE.AMI, @region() )
-      for id in @__models
-        ms.push col.get( id )
-      ms
+    getModels : getModels
   }
 
 
@@ -257,12 +259,7 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
       @__models = amiIds
       return
 
-    getModels : ()->
-      ms = []
-      col = CloudResources( constant.RESTYPE.AMI, @region() )
-      for id in @__models
-        ms.push col.get( id )
-      ms
+    getModels : getModels
   }
 
 
@@ -300,12 +297,7 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
       @__models = favAmiId
       return
 
-    getModels : ()->
-      ms = []
-      col = CloudResources( constant.RESTYPE.AMI, @region() )
-      for id in @__models
-        ms.push col.get( id )
-      ms
+    getModels : getModels
 
     unfav : ( id )->
       self = @

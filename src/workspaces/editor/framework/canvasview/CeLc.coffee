@@ -37,8 +37,9 @@ define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager", 'i18n!n
   ChildElementProto.iconUrl = ( instanceId )->
 
     if instanceId
-      ami = CloudResources(constant.RESTYPE.AMI, Design.instance().region()).get(instanceId)?.attributes
-      if ami then ami = MC.data.dict_ami[ ami.imageId ]
+      region = Design.instance().region()
+      ami = CloudResources( constant.RESTYPE.INSTANCE, region ).get(instanceId)
+      if ami then ami = CloudResources( constant.RESTYPE.AMI, region ).get( ami.imageId )?.attributes
 
     if not ami
       ami = @lc.getAmi() || @lc.get("cachedAmi")

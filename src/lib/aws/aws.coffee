@@ -1,31 +1,4 @@
 define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _, $, Design ) ->
-    getOSFamily = (osType, ami) ->
-        me = this
-
-        osFamily = 'linux'
-
-        if osType
-            if constant.OS_TYPE_MAPPING[osType]
-                osFamily = constant.OS_TYPE_MAPPING[osType]
-
-            if osType in constant.WINDOWS
-                osFamily = 'mswin'
-
-                try
-                    if ami
-                        sql_web_pattern = /sql.*?web.*?/
-                        sql_standerd_pattern = /sql.*?standard.*?/
-
-                        if ( 'name' of ami and ami.name.toLowerCase().match(sql_web_pattern) ) or ( 'description' of ami and ami.description.toLowerCase().match(sql_web_pattern) ) or ( 'imageLocation' of ami and ami.imageLocation.toLowerCase().match(sql_web_pattern) )
-                            osFamily = 'mswinSQLWeb'
-
-                        else if ( 'name' of ami and ami.name.toLowerCase().match(sql_standerd_pattern) ) or ( 'description' of ami and ami.description.toLowerCase().match(sql_standerd_pattern) ) or ( 'imageLocation' of ami and ami.imageLocation.toLowerCase().match(sql_standerd_pattern) )
-                            osFamily = 'mswinSQL'
-
-                catch error
-                    console.info error
-
-        osFamily
 
     getCompByResIdForState = ( resId ) ->
 
@@ -367,8 +340,11 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
         return isInAryRange
 
     #public
-    getOSFamily                 : getOSFamily
-    getCompByResIdForState      : getCompByResIdForState
-    genAttrRefList              : genAttrRefList
-    isValidInIPRange            : isValidInIPRange
-    checkPrivateIPIfHaveEIP     : checkPrivateIPIfHaveEIP
+    MC.aws = {}
+    MC.aws.aws =
+        getCompByResIdForState      : getCompByResIdForState
+        genAttrRefList              : genAttrRefList
+        isValidInIPRange            : isValidInIPRange
+        checkPrivateIPIfHaveEIP     : checkPrivateIPIfHaveEIP
+
+    return

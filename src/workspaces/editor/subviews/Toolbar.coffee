@@ -336,7 +336,7 @@ define [
                     spec: newJson
                 ).then ()->
                     notification "info", sprintf lang.ide.TOOL_MSG_INFO_HDL_SUCCESS, lang.ide.TOOLBAR_HANDLE_SAVE_STACK, newJson.name
-                    App.openOps stack
+                    App.openOps stack, true # refresh if this stack is open
                 ,(err)->
                     notification 'error', sprintf lang.ide.TOOL_MSG_ERR_SAVE_FAILED, newJson.name
 

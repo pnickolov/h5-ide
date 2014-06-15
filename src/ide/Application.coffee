@@ -115,7 +115,7 @@ define [
     @openOps( @model.createStackByJson(result) )
 
   # This is a convenient method to open an editor for the ops model.
-  VisualOps.prototype.openOps = ( opsModel )->
+  VisualOps.prototype.openOps = ( opsModel, refresh )->
     if not opsModel then return
 
     if _.isString( opsModel )
@@ -127,12 +127,20 @@ define [
 
     space = @workspaces.find( opsModel )
     if space
-      space.activate()
-      return space
+        if refresh
+            space.remove()
+            opsModel.fetchJsonData().then ->
+                editor = new OpsEditor()
+                editor.activate()
+                editor
+        else
+            space.activate()
+            space
+    else
+        editor = new OpsEditor(opsModel)
+        editor.activate()
+        editor
 
-    editor = new OpsEditor( opsModel )
-    editor.activate()
-    editor
 
   # This is a convenient method to create a stack and then open an editor for it.
   VisualOps.prototype.createOps = ( region )->

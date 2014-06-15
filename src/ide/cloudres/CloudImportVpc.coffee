@@ -827,7 +827,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
 
     ()-> #ASG
       me = @
-      for aws_asg in @CrPartials( "ASG" ).where({category:@region}) || []
+      for aws_asg in @getResourceByType "ASG"
         aws_asg = aws_asg.attributes
 
         asgRes =
@@ -943,7 +943,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
 
     ()-> #CW
       me = @
-      for aws_cw in @CrPartials( "CW" ).where({category:@region}) || []
+      for aws_cw in @getResourceByType( "CW" )
         aws_cw = aws_cw.attributes
         cwRes =
           "AlarmActions": []
@@ -970,11 +970,11 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
 
         dimension = []
         _.each aws_cw.Dimensions, (e,key)->
-          if e.Name is "AutoScalingGroupName"
-            asgComp = me.asgs[ e.Value ]
+          if e.name is "AutoScalingGroupName"
+            asgComp = me.asgs[ e.value ]
             if asgComp
               data =
-                "name" : e.Name
+                "name" : e.name
                 "value": CREATE_REF( asgComp )
               dimension.push data
         if dimension.length is 0

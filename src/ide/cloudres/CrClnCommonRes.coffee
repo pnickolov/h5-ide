@@ -129,8 +129,8 @@ define [
           delete cw[key]
           cw[fixKey] = value
 
-        cw.Dimensions   = cw.Dimensions?.member || []
-        cw.AlarmActions = cw.AlarmActions?.member || []
+        cw.Dimensions   = cw.Dimensions || []
+        cw.AlarmActions = cw.AlarmActions || []
         cw.id   = cw.AlarmArn
         cw.Name = cw.AlarmName
         delete cw.AlarmArn

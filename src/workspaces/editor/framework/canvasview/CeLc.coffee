@@ -145,7 +145,7 @@ define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager", 'i18n!n
 
     # In app mode, show number
     if not @lc.design().modeIsStack() and @asg
-      data = CloudResources(@lc.type, @lc.design.region()).get(@lc.parent().get('appId')).toJSON()
+      data = CloudResources(@asg.type, @lc.design().region()).get(@asg.get('appId')).toJSON()
       numberGroup = node.children(".instance-number-group")
       if data and data.Instances and data.Instances.member and data.Instances.member.length > 0
         CanvasManager.toggle numberGroup, true

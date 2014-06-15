@@ -10,11 +10,9 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
 
   UID        = MC.guid
   DEFAULT_SG = {}
-  NAME       = ( res_attributes )->
-    if res_attributes.tagSet
-      name = res_attributes.tagSet.name || res_attributes.tagSet.Name
-    name || res_attributes.id
-
+  AWS_ID     = ( dict, type )->
+    key = constant.AWS_RESOURCE_KEY[ type ]
+    dict[ key ] or dict.resource and dict.resource[ key ]
 
   # Class used to collect components / layouts
   class ConverterData
@@ -43,49 +41,28 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
       @layout    = {}
       @originalJson = jQuery.extend(true, {component: {}, layout: {}}, originalJson); #original app json
 
-      # Use the originalJson to generate uid for a existing resource.
-      @compMap = {}
-      if @originalJson
-        @compMap = @_genCompMap(@originalJson)
-      ###
-      if originalJson
-        for uid, comp of originalJson
-          @compMap[ comp.resource.xxx ] = uid
-      ###
-      return @
+      @
 
-    add : ( type_string, res_attributes, component_resources, default_name )->
-      if not res_attributes and not default_name and not component_resources.uid
-        console.error "[ConverterData.add] if res_attributes is null, then must specify default_name"
-        return null
+    add : ( shortType, resource, name )->
+      type = constant.RESTYPE[ shortType ]
+      # Directly add component based on original component
+      if resource and resource.uid
+        @component[ resource.uid ] = resource
+        return resource
 
-      # directly add component based on original component
-      if component_resources and component_resources.uid
-        @component[ component_resources.uid ] = component_resources
-        return component_resources
-
-      # found an original component by component_resources
-      originComp = @getOriginalComp component_resources, constant.RESTYPE[ type_string ]
+      # Found an original component by resource
+      originComp = @getOriginalComp resource, type
       if originComp
-        _.extend originComp.resource, component_resources
+        _.extend originComp.resource, resource
         @component[ originComp.uid ] = originComp
-
         return @component[ originComp.uid ]
 
+      # New or importVpc
       comp =
-        uid  : ""
-        name : ""
-        type : constant.RESTYPE[ type_string ]
-        resource : component_resources
-      #generate uid
-      if res_attributes and @compMap[ res_attributes.id ]
-        #existed resource
-        comp.uid = @compMap[ res_attributes.id ].uid
-        comp.name = @compMap[ res_attributes.id ].name
-      else
-        #new resource
-        comp.uid  = UID()
-        comp.name = if default_name then default_name else NAME( res_attributes )
+        uid  : UID()
+        name : name or AWS_ID( resource, type ) or shortType
+        type : type
+        resource : resource
 
       @component[ comp.uid ] = comp
       comp
@@ -107,7 +84,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
     addAz : ( azName )->
       az = @azs[ azName ]
       if az then return az
-      az = @add( "AZ", { id : azName }, @getOriginalComp azName, 'AZ' )
+      az = @add( "AZ", @getOriginalComp( azName, 'AZ' ) )
       @addLayout( az, true, @theVpc )
       @azs[ azName ] = az
       az
@@ -126,7 +103,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
             "Arn"                  : aws_iam.Arn
             "ServerCertificateId"  : aws_iam.id
             "ServerCertificateName": aws_iam.Name
-        iamComp = @add( "IAM", aws_iam, iamRes, aws_iam.Name )
+        iamComp = @add( "IAM", iamRes, aws_iam.Name )
         @iams[ aws_iam.Arn ] = iamComp
         return iamComp
       return null
@@ -139,7 +116,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         aws_topic = aws_topic.attributes
         topicRes =
           "TopicArn" : aws_topic.id
-        topicComp = @add( "TOPIC", aws_topic, topicRes, aws_topic.Name )
+        topicComp = @add( "TOPIC", topicRes, aws_topic.Name )
         @topics[ aws_topic.id ] = topicComp
         return topicComp
       return null
@@ -148,7 +125,6 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
       type = constant.RESTYPE[ type ] or type
       key = constant.AWS_RESOURCE_KEY[ type ]
       id = if _.isObject jsonOrKey then jsonOrKey[key] else jsonOrKey
-
 
       for uid, comp of @originalJson.component
         if comp.type isnt type then continue
@@ -191,7 +167,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
 
       vpc.VpcId = @vpcId
       # Cache the vpc so that other can use it.
-      @theVpc = vpcComp = @add("VPC", vpc, {
+      @theVpc = vpcComp = @add("VPC", {
         VpcId           : vpc.VpcId
         CidrBlock       : vpc.cidrBlock
         DhcpOptionsId   : vpc.dhcpOptionsId
@@ -209,7 +185,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
       for sb, idx in @CrPartials( "SUBNET" ).where({vpcId:@vpcId}) || []
         sb = sb.attributes
         azComp = @addAz(sb.availabilityZone)
-        sbComp = @add( "SUBNET", sb, {
+        sbComp = @add( "SUBNET", {
           AvailabilityZone : CREATE_REF( azComp, "resource.ZoneName" )
           CidrBlock        : sb.cidrBlock
           SubnetId         : sb.id
@@ -233,7 +209,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
           ]
           "InternetGatewayId": aws_igw.id
 
-        igwComp = @add( "IGW", aws_igw, igwRes, "Internet-gateway" )
+        igwComp = @add( "IGW", igwRes, "Internet-gateway" )
         @addLayout( igwComp, true, @theVpc )
         @gateways[ aws_igw.id ] = igwComp
       return
@@ -254,7 +230,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
           "VpnGatewayId": ""
 
         vgwRes.VpnGatewayId = aws_vgw.id
-        vgwComp = @add( "VGW", aws_vgw, vgwRes, "VPN-gateway" )
+        vgwComp = @add( "VGW", vgwRes, "VPN-gateway" )
         @addLayout( vgwComp, true, @theVpc )
 
         @gateways[ aws_vgw.id ] = vgwComp
@@ -275,7 +251,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         #gwRes = @_mapProperty aws_cgw, cgwRes
 
         #create cgw component, but add with vpn
-        cgwComp = @add( "CGW", aws_cgw, cgwRes, aws_cgw.id )
+        cgwComp = @add( "CGW", cgwRes, aws_cgw.id )
         delete @component[ cgwComp.uid ]
         @gateways[ aws_cgw.id ] = cgwComp
       return
@@ -311,7 +287,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
               "DestinationCidrBlock" : route.destinationCidrBlock
               #"Source" : route.source
 
-        vpnComp = @add( "VPN", aws_vpn, vpnRes, aws_vpn.id )
+        vpnComp = @add( "VPN", vpnRes, aws_vpn.id )
         #add CGW to layout
         @component[ cgwComp.uid ] = cgwComp
         @addLayout( cgwComp, false )
@@ -366,7 +342,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
                 "ToPort": if sg_rule.toPort then sg_rule.toPort else ""
               }
 
-        sgComp = @add( "SG", aws_sg, sgRes, aws_sg.groupName )
+        sgComp = @add( "SG", sgRes, aws_sg.groupName )
         if aws_sg.groupName is "default"
           DEFAULT_SG["default"] = sgComp
         else if aws_sg.groupName.indexOf("-DefaultSG-app-") isnt -1
@@ -395,7 +371,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
           "AvailabilityZone": CREATE_REF( aws_vol.availabilityZone )
 
         #create volume component, but add with instance
-        volComp = @add( "VOL", aws_vol, volRes, "vol" + aws_vol.device )
+        volComp = @add( "VOL", volRes, "vol" + aws_vol.device )
         delete @component[ volComp.uid ]
         @volumes[ aws_vol.id ] = volComp
       return
@@ -470,7 +446,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         insRes.KeyName = CREATE_REF(keyPairComp, 'resource.KeyName')
 
         #generate instance component
-        insComp = @add( "INSTANCE", aws_ins, insRes )
+        insComp = @add( "INSTANCE", insRes )
 
         #generate BlockDeviceMapping for instance
         # bdm = insComp.resource.BlockDeviceMapping
@@ -566,7 +542,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
           "GroupName": CREATE_REF(@sgs[ aws_eni.groupId ], 'resource.GroupName')
 
 
-        eniComp = @add( "ENI", aws_eni, eniRes, "eni" + aws_eni.deviceIndex )
+        eniComp = @add( "ENI", eniRes, "eni" + aws_eni.deviceIndex )
         if not ( aws_eni.deviceIndex in [ "0", 0 ] )
           @addLayout( eniComp, false, subnetComp )
 
@@ -596,7 +572,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         eipRes.NetworkInterfaceId = CREATE_REF( eni )
         eipRes.PrivateIpAddress   = CREATE_REF( eni )
 
-        eipComp = @add( "EIP", aws_eip, eipRes )
+        eipComp = @add( "EIP", eipRes )
       return
 
 
@@ -645,7 +621,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
           if gwComp
             rtbRes.PropagatingVgwSet.push CREATE_REF( 'resource.VpnGatewayId' )
 
-        rtbComp = @add( "RT", aws_rtb, rtbRes )
+        rtbComp = @add( "RT", rtbRes )
         @addLayout( rtbComp, true, @theVpc )
       return
 
@@ -684,7 +660,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
             "NetworkAclAssociationId": acl.networkAclAssociationId
             "SubnetId": CREATE_REF( subnetComp )
 
-        aclComp = @add( "ACL", aws_acl, aclRes )
+        aclComp = @add( "ACL", aclRes )
       return
 
     ()-> #ELB
@@ -766,7 +742,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
             if not (instanceId in me.ins_in_asg)
               elbRes.Instances.push CREATE_REF( @instances[ instanceId ] )
 
-        elbComp = @add( "ELB", aws_elb, elbRes, aws_elb.id )
+        elbComp = @add( "ELB", elbRes, aws_elb.id )
         @addLayout( elbComp, false, @theVpc )
         @elbs[ aws_elb.id ] = elbComp
       return
@@ -828,7 +804,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
             data.Ebs.Iops = e.Ebs.Iops
           bdm.push data
 
-        lcComp = @add( "LC", aws_lc, lcRes, aws_lc.Name )
+        lcComp = @add( "LC", lcRes, aws_lc.Name )
         @addLayout lcComp
         delete @component[ aws_lc.id ]
         @lcs[ aws_lc.Name ] = lcComp
@@ -897,22 +873,17 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
           az.push CREATE_REF( azComp )
         asgRes.AvailabilityZones = az
 
-        asgComp = @add( "ASG", aws_asg, asgRes, aws_asg.Name )
+        asgComp = @add( "ASG", asgRes, aws_asg.Name )
         @addLayout( asgComp, true, firstSubnetComp )
         @asgs[ aws_asg.Name ] = asgComp
       return
 
     ()-> #NC
-      for aws_nc in @CrPartials( "NC" ).where({category:@region}) || []
-        aws_nc = aws_nc.attributes
-        ncRes =
-          "AutoScalingGroupName": "" #"@{uid.resource.AutoScalingGroupName}"
-          "NotificationType": []
-          "TopicARN": "" #"@{uid.resource.TopicArn}"
-        ncRes = @_mapProperty aws_nc, ncRes
+      for aws_nc in @getResourceByType( "NC" )
+        ncRes = aws_nc.toJSON()
 
         #convert AutoScalingGroupName to REF
-        asgComp = @asgs[aws_nc.AutoScalingGroupName]
+        asgComp = @asgs[ncRes.AutoScalingGroupName]
         if asgComp
           ncRes.AutoScalingGroupName = CREATE_REF( asgComp )
         else
@@ -920,9 +891,9 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
 
         #convert Topic to REF
         #topicComp = @addTopic( aws_nc.TopicARN )
-        ncRes.TopicARN = CREATE_REF( aws_nc.TopicARN )
+        ncRes.TopicARN = CREATE_REF( ncRes.TopicARN )
 
-        ncComp = @add( "NC", aws_nc, ncRes, "SnsNotification")
+        ncComp = @add( "NC", ncRes, "SnsNotification")
       return
 
     ()-> #SP
@@ -948,7 +919,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
 
         spRes.PolicyARN = aws_sp.id
         spRes.PolicyName = aws_sp.Name
-        spComp = @add( "SP", aws_sp, spRes, aws_sp.Name )
+        spComp = @add( "SP", spRes, aws_sp.Name )
       return
 
     ()-> #CW
@@ -999,7 +970,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         cwRes.AlarmArn  = aws_cw.id
         cwRes.AlarmName = aws_cw.Name
 
-        cwComp = @add( "CW", aws_cw, cwRes, aws_cw.Name )
+        cwComp = @add( "CW", cwRes, aws_cw.Name )
       return
 
     # Retain component only belong to us
@@ -1018,7 +989,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
 
       for uid, com of @originalJson.component
         if not @component[ uid ] and ( com.type in retainList )
-          @add null, null, com
+          @add null, com
         null
 
       null

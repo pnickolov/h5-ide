@@ -412,7 +412,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         aws_ins = aws_ins.attributes
 
         #skip invalid instance
-        if aws_ins.instanceState.name in [ "shutting-down", "terminated " ]
+        if aws_ins.instanceState.name in [ "shutting-down", "terminated" ]
           continue
         #skip instances in asg
         if aws_ins.id in @ins_in_asg
@@ -1042,7 +1042,6 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
 
     cd = new ConverterData( region, vpcId, originalJson )
     func.call( cd ) for func in Converters
-
 
 
     # find default SG

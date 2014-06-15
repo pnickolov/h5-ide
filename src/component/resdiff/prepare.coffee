@@ -32,6 +32,23 @@ define [ 'constant' ], ( constant ) ->
                 newAttr: newCompAttr
             }
 
+
+        genValue: (oldValue, newValue) ->
+            if _.isObject( oldValue ) and oldValue.__old__ and oldValue.__new__
+                oldValue = oldValue.__old__
+                newValue = oldValue.__new__
+
+            result = ''
+
+            if oldValue
+                result = oldValue
+                if newValue and oldValue isnt newValue
+                    result += (' -> ' + newValue)
+            else
+                result = newValue
+
+            return result
+
         getNodeData: ( path ) ->
             @getNewest @getNodeMap path
 
@@ -50,12 +67,12 @@ define [ 'constant' ], ( constant ) ->
 
             type = component.type
             parentKey = path[ path.length - 2 ]
-            childNode = @getNodeData path
+            childNode = data.value
 
             # Replace keyword
             switch parentKey
                 when 'BlockDeviceMapping'
-                    data.key = childNode.DeviceName if childNode and childNode.DeviceName
+                    data.key = @genValue childNode.DeviceName
 
                 when 'GroupSet'
                     data.key = 'SecurityGroup'
@@ -84,18 +101,11 @@ define [ 'constant' ], ( constant ) ->
 
 
     prepareNode = ( path, data ) ->
-        _genValue = (oldValue, newValue) ->
 
-            result = ''
+        storedValue = data.value
 
-            if oldValue
-                result = oldValue
-                if newValue and oldValue isnt newValue
-                    result += (' -> ' + newValue)
-            else
-                result = newValue
+        data.value = if _.isObject(data.value) then '' else data.value
 
-            return result
 
         _getRef = (value) ->
 
@@ -120,7 +130,7 @@ define [ 'constant' ], ( constant ) ->
             newValue.__old__ = @h.getNodeMap(oldRef).oldAttr if oldRef
             newValue.__new__ = @h.getNodeMap(newRef).newAttr if newRef
 
-            data.value = _genValue(newValue.__old__, newValue.__new__)
+            data.value = @h.genValue(newValue.__old__, newValue.__new__)
 
         else
 
@@ -142,9 +152,12 @@ define [ 'constant' ], ( constant ) ->
                 else
                     data.key = newAttr.type
 
-                data.value = _genValue(oldCompName, newCompName)
+                data.value = @h.genValue(oldCompName, newCompName)
 
-            data = @h.replaceArrayIndex path, data
+            data = @h.replaceArrayIndex path, {
+                key: data.key,
+                value: storedValue
+            }
 
         if path.length is 2
 

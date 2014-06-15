@@ -2,7 +2,11 @@
 define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"], ( CloudResources, CrCollection, constant, ApiRequest )->
 
   # Helpers
-  CREATE_REF = ( compOrUid )-> "@{#{compOrUid.uid or compOrUid}.r.p}"
+  CREATE_REF = ( compOrUid, attr ) ->
+    if attr
+      return "@{#{compOrUid.uid or compOrUid}.#{attr}}"
+    else
+      return "@{#{compOrUid.uid or compOrUid}.r.p}"
   UID        = MC.guid
   DEFAULT_SG = {}
   NAME       = ( res_attributes )->
@@ -421,7 +425,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
 
         insRes =
           "BlockDeviceMapping": []
-          "DisableApiTermination": ""
+          "DisableApiTermination": false
           "EbsOptimized": ""
           "ImageId"  : ""
           "InstanceId": ""
@@ -445,7 +449,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
 
         insRes.Subnet = CREATE_REF( subnetComp )
         insRes.VpcId  = CREATE_REF( @theVpc )
-        insRes.Placement.AvailabilityZone = CREATE_REF( azComp )
+        insRes.Placement.AvailabilityZone = CREATE_REF( azComp, 'resource.ZoneName' )
 
         if aws_ins.monitoring and aws_ins.monitoring
           insRes.Monitoring = aws_ins.monitoring.state
@@ -458,31 +462,31 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         insComp = @add( "INSTANCE", aws_ins, insRes )
 
         #generate BlockDeviceMapping for instance
-        bdm = insComp.resource.BlockDeviceMapping
-        _.each aws_ins.blockDeviceMapping, (e,key)->
-          volComp = me.volumes[ e.ebs.volumeId ]
+        # bdm = insComp.resource.BlockDeviceMapping
+        # _.each aws_ins.blockDeviceMapping, (e,key)->
+        #   volComp = me.volumes[ e.ebs.volumeId ]
 
-          if not volComp then return
+        #   if not volComp then return
 
-          volRes = volComp.resource
-          if aws_ins.rootDeviceName.indexOf( e.deviceName ) isnt -1
-            # rootDevice
-            data =
-              "DeviceName": volRes.AttachmentSet.Device
-              "Ebs":
-                "VolumeSize": Number(volRes.Size)
-                "VolumeType": volRes.VolumeType
-            if volRes.SnapshotId
-              data.Ebs.SnapshotId = volRes.SnapshotId
-            if volRes.VolumeType is "io1"
-              data.Ebs.Iops = volRes.Iops
-            bdm.push data
-          else
-            # not rootDevice
-            bdm.push "#" + volComp.uid
-            #add volume component
-            volComp.resource.AttachmentSet.InstanceId = CREATE_REF( insComp )
-            me.component[ volComp.uid ] = volComp
+        #   volRes = volComp.resource
+        #   if aws_ins.rootDeviceName.indexOf( e.deviceName ) isnt -1
+        #     # rootDevice
+        #     data =
+        #       "DeviceName": volRes.AttachmentSet.Device
+        #       "Ebs":
+        #         "VolumeSize": Number(volRes.Size)
+        #         "VolumeType": volRes.VolumeType
+        #     if volRes.SnapshotId
+        #       data.Ebs.SnapshotId = volRes.SnapshotId
+        #     if volRes.VolumeType is "io1"
+        #       data.Ebs.Iops = volRes.Iops
+        #     bdm.push data
+        #   else
+        #     # not rootDevice
+        #     bdm.push "#" + volComp.uid
+        #     #add volume component
+        #     volComp.resource.AttachmentSet.InstanceId = CREATE_REF( insComp )
+        #     me.component[ volComp.uid ] = volComp
 
         # # default_kp # TODO :
         # if default_kp and default_kp.resource and aws_ins.keyName is default_kp.resource.KeyName

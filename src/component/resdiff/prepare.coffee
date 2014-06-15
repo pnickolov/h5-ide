@@ -34,7 +34,7 @@ define [ 'constant' ], ( constant ) ->
 
 
         genValue: (oldValue, newValue) ->
-            if _.isObject( oldValue ) and oldValue.__old__ and oldValue.__new__
+            if _.isObject( oldValue )
                 oldValue = oldValue.__old__
                 newValue = oldValue.__new__
 
@@ -62,13 +62,13 @@ define [ 'constant' ], ( constant ) ->
             str.slice 0, -3
 
         replaceArrayIndex: ( path, data ) ->
-            
+
             componentMap = @getNodeMap path[0]
             component = @getNewest componentMap
 
             type = component.type
             parentKey = path[ path.length - 2 ]
-            childNode = data.value
+            childNode = data.originValue
 
             # Replace keyword
             switch parentKey
@@ -145,10 +145,7 @@ define [ 'constant' ], ( constant ) ->
 
                 data.value = @h.genValue(oldCompName, newCompName)
 
-            data = @h.replaceArrayIndex path, {
-                key: data.key,
-                value: data.originValue
-            }
+            data = @h.replaceArrayIndex path, data
 
         if path.length is 2
 

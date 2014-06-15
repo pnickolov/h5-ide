@@ -183,13 +183,10 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
       # OpsResource doesn't return anything, Instead, it injects the data to other collection.
       savedAmis = []
       amiIds  = []
-      for ami in data
-        try
-          ami.id = ami.imageId
-          delete ami.imageId
-          savedAmis.push ami
-          amiIds.push ami.id
-        catch e
+      for id, ami of data
+        ami.id = id
+        savedAmis.push ami
+        amiIds.push id
 
       CloudResources( constant.RESTYPE.AMI, @region() ).add savedAmis
       @__models = amiIds

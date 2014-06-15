@@ -98,11 +98,6 @@ define [ 'constant' ], ( constant ) ->
 
     prepareNode = ( path, data ) ->
 
-        storedValue = data.value
-
-        data.value = if _.isObject(data.value) then '' else data.value
-
-
         _getRef = (value) ->
 
             if _.isString(value) and value.indexOf('@{') is 0
@@ -152,7 +147,7 @@ define [ 'constant' ], ( constant ) ->
 
             data = @h.replaceArrayIndex path, {
                 key: data.key,
-                value: storedValue
+                value: data.originValue
             }
 
         if path.length is 2

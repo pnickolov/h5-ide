@@ -45,7 +45,7 @@ define [
       if @workspace.isAppEditMode()
         @resourcePanel.render()
 
-      $(".OEPanelLeft").toggleClass "force-hidden", !@workspace.isAppEditMode()
+      @$el.find(".OEPanelLeft").toggleClass "force-hidden", !@workspace.isAppEditMode()
 
       @statusbar.render()
 

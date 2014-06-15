@@ -70,6 +70,8 @@ define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone", "con
       m
 
     getPriceData : ( awsRegion )-> (@__appdata[ awsRegion ] || {}).price
+    getOsFamilyConfig : ( awsRegion )-> (@__appdata[ awsRegion ] || {}).osFamilyConfig
+    getInstanceTypeConfig : ( awsRegion )-> (@__appdata[ awsRegion ] || {}).instanceTypeConfig
 
 
     ###
@@ -87,8 +89,28 @@ define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone", "con
       ap = ApiRequest("app_list",   {region_name:null}).then (res)-> self.get("appList").set   self.__parseListRes( res )
 
       # Load Application Data.
-      appdata = ApiRequest("aws_aws",{fields : ["region","price","region_instance_type","instance_type"]}).then ( res )->
-        self.__appdata[ i.region ] = i for i in res
+      appdata = ApiRequest("aws_aws",{fields : ["region","price","region_ami_instance_type","instance_type"]}).then ( res )->
+
+        for i in res
+          instanceTypeConfig = {}
+
+          self.__appdata[ i.region ] = {
+            osFamilyConfig     : i.region_ami_instance_type
+            instanceTypeConfig : instanceTypeConfig
+          }
+
+          # Format instance type info.
+          for type1, wrapper of i.instance_type
+            for type2, typeInfo of wrapper
+              if not typeInfo then continue
+              desc = [ typeInfo.name || "", "", "", "" ]
+              for d, idx in (typeInfo.description || "").split(",")
+                if idx > 2 then break
+                desc[ idx + 1 ] = d
+
+              typeInfo.formated_desc = desc
+              instanceTypeConfig[ "#{type1}.#{type2}" ] = typeInfo
+
         return
 
       # When app/stack list is fetched, we first cleanup unused thumbnail. Then

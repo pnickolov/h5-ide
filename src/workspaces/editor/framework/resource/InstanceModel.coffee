@@ -326,7 +326,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js", 'CloudR
       # Assume the new amiId is the same OS of current one.
 
       # Check If the new amiId is supports current type
-      # instance_type_list = MC.aws.ami.getInstanceType( @getAmi() )
+      # instance_type_list = MC.aws.ami.get Instance Type( @getAmi() )
       # instanceType = @get("instanceType")
       # for v in instance_type_list or []
       #   if v is instanceType
@@ -427,12 +427,9 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js", 'CloudR
       if rd and rd.DeviceName then rd.DeviceName else ""
 
     getInstanceTypeConfig : ( type )->
-      t = (type || @get("instanceType")).split(".")
-      if t.length >= 2
-        config = MC.data.config[ Design.instance().region() ]
-        if config and config.instance_type
-          return config.instance_type[ t[0] ][ t[1] ]
-
+      config = App.model.getInstanceTypeConfig( @design().region() )
+      if config
+        return config[ type || @get("instanceType") ]
       return null
 
     getMaxEniCount : ()->
@@ -448,10 +445,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js", 'CloudR
       if ami and ami.rootDeviceType is "instance-store"
         return false
 
-      k = @get("instanceType").split '.'
-      instanceType = MC.data.config[ Design.instance().region() ].instance_type
-      if instanceType then instanceType = instanceType[ k[0] ]
-      if instanceType then instanceType = instanceType[ k[1] ]
+      instanceType = @getInstanceTypeConfig()
       if instanceType and instanceType.ebs_optimized
         return instanceType.ebs_optimized is 'Yes'
 
@@ -501,28 +495,23 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js", 'CloudR
         @initInstanceType()
       null
 
-    getInstanceType : ( ami )->
-      ami = ami or @getAmi()
-      if not ami then return []
-
-
-
+    getInstanceType : ()-> Model.getInstanceType( @getAmi(), @design().region() )
 
     getInstanceTypeList : ()->
 
-      instance_type_list = MC.aws.ami.getInstanceType( @getAmi() )
-
-      if not instance_type_list
-        return []
-
       tenancy      = @isDefaultTenancy()
       instanceType = @get("instanceType")
+      region       = @design().region()
 
-      return _.map instance_type_list, ( value )->
-        main     : constant.INSTANCE_TYPE[value][0]
-        ecu      : constant.INSTANCE_TYPE[value][1]
-        core     : constant.INSTANCE_TYPE[value][2]
-        mem      : constant.INSTANCE_TYPE[value][3]
+      return _.map @getInstanceType(), ( value )->
+        configs = App.model.getInstanceTypeConfig( region )
+        if not configs then return {}
+        configs = configs[ value ].formated_desc
+
+        main     : configs[0]
+        ecu      : configs[1]
+        core     : configs[2]
+        mem      : configs[3]
         name     : value
         selected : instanceType is value
         hide     : not tenancy and value is "t1.micro"
@@ -770,6 +759,21 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js", 'CloudR
   }, {
 
     handleTypes : constant.RESTYPE.INSTANCE
+
+    getInstanceType : ( ami, region )->
+      if not ami or not region then return []
+
+      data = App.model.getOsFamilyConfig( region )
+      try
+        data = data[ ami.osFamily ] || data[ constant.OS_TYPE_MAPPING[ami.osType] ]
+        data = if ami.rootDeviceType  is "ebs" then data.ebs else data['instance store']
+        data = if ami.architecture is "x86_64" then data["64"] else data["32"]
+        data = data[ ami.virtualizationType || "paravirtual" ]
+      catch e
+        console.error "Invalid instance type list data", ami, App.model.getOsFamilyConfig( region )
+        data = []
+
+      data
 
     # parameter could be uid or aws id
     # return uid and mid( memberId )

@@ -74,18 +74,20 @@ define [ '../base/model', 'keypair_model', 'constant', 'Design', "CloudResources
 
     getInstanceType : ( uid, data ) ->
 
-      instance_type_list = MC.aws.ami.getInstanceType( @lc.getAmi() )
+      instanceType = @lc.get 'instanceType'
+      region = Design.instance().region()
 
-      if instance_type_list
-        instanceType = @lc.get 'instanceType'
+      view_instance_type = _.map @lc.getInstanceType(), ( value )->
+        configs = App.model.getInstanceTypeConfig( region )
+        if not configs then return {}
+        configs = configs[ value ].formated_desc
 
-        view_instance_type = _.map instance_type_list, ( value )->
-          main     : constant.INSTANCE_TYPE[value][0]
-          ecu      : constant.INSTANCE_TYPE[value][1]
-          core     : constant.INSTANCE_TYPE[value][2]
-          mem      : constant.INSTANCE_TYPE[value][3]
-          name     : value
-          selected : instanceType is value
+        main     : configs[0]
+        ecu      : configs[1]
+        core     : configs[2]
+        mem      : configs[3]
+        name     : value
+        selected : instanceType is value
 
       @set "instance_type", view_instance_type
       null

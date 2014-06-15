@@ -10,11 +10,14 @@ define [ '../base/model', 'constant', "../base/main", "CloudResources", "Design"
 
       @set "isApp", @isApp
 
+      InstanceModel = Design.modelClassForType( constant.RESTYPE.INSTANCE )
+
       # If this uid is ami uid
       ami = CloudResources( constant.RESTYPE.AMI, Design.instance().region() ).get( uid )
       if ami
-        @set ami.toJSON()
-        @set "instance_type", MC.aws.ami.getInstanceType( ami ).join(", ")
+        ami = ami.toJSON()
+        @set ami
+        @set "instance_type", (InstanceModel.getInstanceType( ami, Design.instance().region() ) || []).join(", ")
         @set "ami", true
         @set "name", ami.name
         return

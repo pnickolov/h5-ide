@@ -20,6 +20,8 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
   class ConverterData
     CrPartials : ( type )-> CloudResources( constant.RESTYPE[type], @region )
 
+    getResourceByType: ( type ) -> CloudResources( constant.RESTYPE[type], @region ).filter ( model ) =>  model.RES_TAG is @vpcId
+
     constructor : ( region, vpcId, originalJson )->
       # @theVpc  = null
       @region    = region
@@ -402,7 +404,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
     ()-> # Instance
       me = @
       #get all instances in asg
-      for aws_asg in @CrPartials( "ASG" ).filter( ( model ) ->  model.RES_TAG is me.vpcId ) || []
+      for aws_asg in @getResourceByType "ASG"
         aws_asg = aws_asg.attributes
 
         _.each aws_asg.Instances, (e,key)->
@@ -762,7 +764,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
 
     ()-> #LC
       me = @
-      for aws_lc in @CrPartials( "LC" ).filter( (model) -> model.RES_TAG is me.vpcId ) || []
+      for aws_lc in @getResourceByType 'LC'
         aws_lc = aws_lc.attributes
         lcRes =
           "AssociatePublicIpAddress": false

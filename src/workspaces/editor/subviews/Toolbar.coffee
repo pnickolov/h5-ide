@@ -65,17 +65,21 @@ define [
         if @__editMode
           btns = ["BtnApply", "BtnZoom", "BtnPng", "BtnLinestyle", "BtnReloadRes", "BtnSwitchStates"]
         else
-          btns = ["BtnEditApp", "BtnAppOps", "BtnZoom", "BtnPng", "BtnLinestyle", "BtnReloadRes", 'BtnReloadStates']
+          btns = ["BtnEditApp", "BtnAppOps", "BtnZoom", "BtnPng", "BtnLinestyle", "BtnReloadRes"]
 
       tpl = ""
-      workspace = @workspace
-      reloadOn = _.find Design.modelClassForType(constant.RESTYPE.INSTANCE).allObjects(), (comp)->
-          if (comp.attributes.state?.length>0)
-              return true
       for btn in btns
-        tpl += OpsEditorTpl.toolbar[ btn ]
-            stateOn: workspace.design.attributes.agent.enabled
-            reloadOn: reloadOn
+        attr = { stateOn: @workspace.design.get("agent").enabled }
+        tpl += OpsEditorTpl.toolbar[ btn ]( attr )
+
+      if @__editMode
+        ami = [].concat(
+          @workspace.design.componentsOfType( constant.RESTYPE.INSTANCE ),
+          @workspace.design.componentsOfType( constant.RESTYPE.LC )
+        )
+        tpl += OpsEditorTpl.toolbar.BtnReloadStates {
+          reloadOn : _.find ami, (comp)-> comp and (comp.attributes.state?.length>0)
+        }
 
       @setElement @workspace.view.$el.find(".OEPanelTop").html( tpl )
 

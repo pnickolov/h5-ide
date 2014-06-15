@@ -143,3 +143,33 @@
   <div class="modal-text-major">This app has been changed.</div>
   <div class="modal-text-major">Do you conﬁrm to discard the changes?</div>
 </div> </div>
+
+<!-- {{saveAppToStack}} -->
+<p class="modal-text-minor">{{ i18n 'TOOL_POP_INTRO_1' }}</p>
+<p class="modal-text-minor">{{ i18n 'TOOL_POP_INTRO_2' }}</p>
+<div class="modal-center-align-helper">
+    <div class="modal-control-group">
+        <div id="replace_stack" style="padding: 10px 0">
+            <div class="radio">
+                <input id="radio-replace-stack" type="radio" name="save-stack-type" checked>
+                <label for="radio-replace-stack"></label>
+            </div>
+            <label class="modal-text-minor" for="radio-replace-stack">{{ i18n 'TOOL_POP_REPLACE_STACK'}}</label>
+            <div style="padding: 10px 22px" class="radio-instruction">
+                {{ i18n 'TOOL_POP_REPLACE_STACK_INTRO'}} "{{input}}" {{i18n "TOOL_POP_REPLACE_STACK_INTRO_END"}}
+            </div>
+        </div>
+        <div id="save_new_stack">
+            <div class="radio">
+                <input id="radio-new-stack" type="radio" name="save-stack-type">
+                <label for="radio-new-stack"></label>
+            </div>
+            <label class="modal-text-minor" for="radio-new-stack">{{ i18n "TOOL_POP_SAVE_NEW_STACK" }}</label>
+            <div style="padding: 10px 22px" class="radio-instruction hide">
+                <p>{{ i18n "TOOL_POP_SAVE_STACK_INSTRUCTION" }}</p>
+                <input class="input" id="modal-input-value" value="{{stackName}}" type="text" style="width: 400px"/>
+                <div id="stack-name-exist" class="hide" style="color: #ec3c38">{{i18n "TOOL_POP_STACK_NAME_ERROR"}}</div>
+            </div>
+        </div>
+    </div>
+</div>

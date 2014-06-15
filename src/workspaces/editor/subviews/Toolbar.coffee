@@ -51,6 +51,7 @@ define [
       "click .icon-cancel-update-app" : "cancelAppEdit"
       'click .toolbar-visual-ops-switch' : 'opsOptionChanged'
       'click .reload-states'          : "reloadState"
+      'click .icon-save-app'          : 'appToStack'
 
     render : ()->
       opsModel = @workspace.opsModel
@@ -313,6 +314,66 @@ define [
                 error = if err.awsError then err.error + "." + err.awsError else " #{err.error} : #{err.result || err.msg}"
                 notification 'error', sprintf(lang.ide.PROP_MSG_WARN_FAILA_TO_RUN_BECAUSE,self.workspace.opsModel.get('name'),error)
 
+    appToStack: (event) ->
+        name = @workspace.design.attributes.name
+        newName = @getStackNameFromApp(name)
+        onConfirm = =>
+            isNew = appToStackModal.tpl.find("input[name='save-stack-type']:checked").attr('id') is "radio-new-stack"
+            if isNew
+                newOps = App.model.createStackByJson( @workspace.design.serializeAsStack(appToStackModal.tpl.find('#modal-input-value').val()) )
+                appToStackModal.close()
+                console.debug "newOps", newOps
+                App.openOps newOps
+                return
+            else
+
+
+        appToStackModal = new Modal
+            title:  lang.ide.TOOL_POP_TIT_APP_TO_STACK
+            template: OpsEditorTpl.saveAppToStack {input: name, stackName: newName}
+            confirm:
+                text: lang.ide.TOOL_POP_BTN_SAVE_TO_STACK
+            onConfirm: onConfirm
+        appToStackModal.tpl.find("input[name='save-stack-type']").change ->
+            appToStackModal.tpl.find(".radio-instruction").toggleClass('hide')
+
+
+    getStackNameFromApp : (app_name) ->
+
+        if not app_name
+          app_name = "untitled"
+
+        idx = 0
+        reg_name = /.*-\d+$/
+        if reg_name.test app_name
+          #xxx-n
+          prefix = app_name.substr(0,app_name.lastIndexOf("-"))
+          idx = Number(app_name.substr(app_name.lastIndexOf("-") + 1))
+          copy_name = prefix
+        else
+          if app_name.charAt(name.length-1) is "-"
+              #xxxx-
+              copy_name = app_name.substr(0,app_name.length-1)
+          else
+              copy_name = app_name
+
+        stack_reg = /.-stack+$/
+        if stack_reg.test copy_name
+          copy_name = copy_name
+        else
+          copy_name = copy_name + "-stack"
+        name_list   = []
+        stacks      = _.flatten _.values MC.data.stack_list
+
+        name_list.push i.name for i in stacks when i.name.indexOf(copy_name) == 0
+
+        idx++
+        while idx <= name_list.length
+          if $.inArray( (copy_name + "-" + idx), name_list ) == -1
+              break
+          idx++
+
+        copy_name + "-" + idx
     checkAppNameRepeat: (nameVal)->
         if App.model.appList().findWhere(name: nameVal)
             @showError('appname', lang.ide.PROP_MSG_WARN_REPEATED_APP_NAME)

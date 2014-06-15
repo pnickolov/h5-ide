@@ -93,7 +93,7 @@ define [
 
         if not @inDom
           @inDom = true
-          @parent.$el.find(".resource-list.elb-asg").append @el
+          (@parent||@).$el.find(".resource-list.elb-asg").append @el
 
         @
 

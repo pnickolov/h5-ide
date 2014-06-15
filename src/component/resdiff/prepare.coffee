@@ -87,6 +87,9 @@ define [ 'constant' ], ( constant ) ->
                 when 'Dimensions', 'AlarmActions'
                     data.key = @pluralToSingular parentKey
 
+                when 'NotificationType'
+                    #data.skip = true
+                    data = data
 
 
             # Replace first level node

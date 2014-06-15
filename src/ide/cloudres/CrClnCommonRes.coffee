@@ -323,9 +323,17 @@ define [
     modelIdAttribute : "PolicyARN"
     trAwsXml : ( data )-> data.DescribeNotificationConfigurationsResponse.DescribeNotificationConfigurationsResult.NotificationConfigurations?.member
     parseFetchData : ( ncs )->
+      newNcList = []
+
       for nc in ncs
-        nc.id = nc.TopicARN + ":" + nc.AutoScalingGroupName + ":" + nc.NotificationType
-      ncs
+        first = nc[ 0 ]
+        newNcList.push
+          AutoScalingGroupName: first.autoScalingGroupName
+          TopicARN: first.topicARN
+          NotificationType: _.pluck nc, 'notificationType'
+
+
+      newNcList
   }
 
 

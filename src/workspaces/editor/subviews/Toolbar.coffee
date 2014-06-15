@@ -376,11 +376,7 @@ define [
           copy_name = copy_name
         else
           copy_name = copy_name + "-stack"
-        name_list   = []
-        stacks      = _.flatten _.values MC.data.stack_list
-
-        name_list.push i.name for i in stacks when i.name.indexOf(copy_name) == 0
-
+        name_list = App.model.stackList().pluck("name")||[]
         idx++
         while idx <= name_list.length
           if $.inArray( (copy_name + "-" + idx), name_list ) == -1

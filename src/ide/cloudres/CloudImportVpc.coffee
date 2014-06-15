@@ -240,7 +240,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
 
 
     ()-> # VGW
-      for aws_vgw in @CrPartials( "VGW" ).where({vpcId:@vpcId}) || []
+      for aws_vgw in @getResourceByType "VGW"
         aws_vgw = aws_vgw.attributes
         if aws_vgw.state in [ "deleted","deleting" ]
           continue
@@ -248,7 +248,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
           vgwAttach = aws_vgw.attachments[0]
         vgwRes =
           "Attachments": [
-            "VpcId": CREATE_REF( @theVpc )
+            "VpcId": CREATE_REF( @theVpc, "resource.VpcId" )
           ]
           "Type": aws_vgw.type
           "VpnGatewayId": ""
@@ -262,18 +262,18 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
 
 
     ()-> #CGW
-      for aws_cgw in @CrPartials( "CGW" ).where({category:@region}) || []
+      for aws_cgw in @getResourceByType "CGW"
         aws_cgw = aws_cgw.attributes
         if aws_cgw.state in [ "deleted","deleting" ]
           continue
         cgwRes  =
-          "BgpAsn"   : ""
-          "CustomerGatewayId": ""
-          "IpAddress": ""
-          "Type"     : ""
+          "BgpAsn"   : "" #aws_cgw.bgpAsn
+          "CustomerGatewayId": aws_cgw.id
+          "IpAddress": aws_cgw.ipAddress
+          "Type"     : aws_cgw.type
 
-        cgwRes = @_mapProperty aws_cgw, cgwRes
-        cgwRes.CustomerGatewayId = aws_cgw.id
+        #gwRes = @_mapProperty aws_cgw, cgwRes
+
         #create cgw component, but add with vpn
         cgwComp = @add( "CGW", aws_cgw, cgwRes, aws_cgw.id )
         delete @component[ cgwComp.uid ]
@@ -282,7 +282,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
 
 
     ()-> #VPN
-      for aws_vpn in @CrPartials( "VPN" ).where({category:@region}) || []
+      for aws_vpn in @getResourceByType "VPN"
         aws_vpn = aws_vpn.attributes
         if aws_vpn.state in [ "deleted","deleting" ]
           continue

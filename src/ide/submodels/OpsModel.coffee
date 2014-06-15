@@ -357,9 +357,9 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
       d.resolve()
       self = @
       newJson.changed = false
-      d.promise.then ()->
-        self.__jsonData = newJson
-        self
+      # d.promise.then ()->
+      #   self.__jsonData = newJson
+      #   self
       # ApiRequest("app_save_info", {
 
       # })

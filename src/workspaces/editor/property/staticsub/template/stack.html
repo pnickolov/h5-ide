@@ -38,7 +38,7 @@
     {{#unless ami.unavailable}}
     <dl class="dl-vertical property-ami-info">
     <dt>{{ i18n "PROP_INSTANCE_AMI_ID" }}</dt>
-    <dd>{{imageId}}</dd>
+    <dd>{{id}}</dd>
     <dt>{{ i18n "PROP_INSTANCE_AMI_NAME" }}</dt>
     <dd>{{name}}</dd>
     <dt>{{ i18n "PROP_INSTANCE_AMI_DESC" }}</dt>
@@ -60,7 +60,7 @@
 {{else}}
     <dl class="dl-vertical">
     <dt>Snapshot ID</dt>
-    <dd>{{snapshotId}}</dd>
+    <dd>{{id}}</dd>
     <dt>Volume ID</dt>
     <dd>{{volumeId}}</dd>
     <dt>Description</dt>

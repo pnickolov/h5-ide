@@ -69,12 +69,13 @@ define [
 
       tpl = ""
       workspace = @workspace
+      reloadOn = _.find Design.modelClassForType(constant.RESTYPE.INSTANCE).allObjects(), (comp)->
+          if (comp.attributes.state?.length>0)
+              return true
       for btn in btns
         tpl += OpsEditorTpl.toolbar[ btn ]
             stateOn: workspace.design.attributes.agent.enabled
-            reloadOn: _.find Design.instance().serialize().component, (comp)->
-                if (comp.type is constant.RESTYPE.INSTANCE) and (comp.state?.length>0)
-                    return true
+            reloadOn: reloadOn
 
       @setElement @workspace.view.$el.find(".OEPanelTop").html( tpl )
 
@@ -235,7 +236,7 @@ define [
         if $target.hasClass('disabled')
             return false
         $target.toggleClass('disabled').html($target.attr('data-disabled'))
-        app_id = Design.instance().serialize().id
+        app_id = Design.instance().get('id')
         data =
             'encoded_user': App.user.get('usercode')
             'token':    App.user.get('defaultToken')
@@ -326,6 +327,18 @@ define [
                 App.openOps newOps
                 return
             else
+                newJson = Design.instance().serializeAsStack()
+                newJson.id = @workspace.design.attributes.stack_id
+                appToStackModal.close()
+                stack = App.model.stackList().get(@workspace.design.attributes.stack_id)
+                ApiRequest("stack_save",
+                    region: newJson.region
+                    spec: newJson
+                ).then ()->
+                    notification "info", sprintf lang.ide.TOOL_MSG_INFO_HDL_SUCCESS, lang.ide.TOOLBAR_HANDLE_SAVE_STACK, newJson.name
+                    App.openOps stack
+                ,(err)->
+                    notification 'error', sprintf lang.ide.TOOL_MSG_ERR_SAVE_FAILED, newJson.name
 
 
         appToStackModal = new Modal
@@ -390,9 +403,7 @@ define [
             keyPairDropdown = new kpDropdown()
             @modal.tpl.find("#kp-runtime-placeholder").html keyPairDropdown.render().el
             hideKpError = @hideError.bind @
-            keyPairDropdown.dropdown.on 'change', =>
-                #setKp
-                #@json
+            keyPairDropdown.dropdown.on 'change', ->
                 hideKpError('kp')
             @modal.tpl.find('.default-kp-group').show()
         null
@@ -467,13 +478,14 @@ define [
                     template: OpsEditorTpl.confirm.enableState()
                     confirm: text: "Enable VisualOps"
                     onConfirm: ->
-                        agent.enabled = true;
+                        agent.enabled = true
                         confirmModal.close()
                         $switcher.addClass 'on'
                         workspace.design.set('agent', agent)
                         ide_event.trigger ide_event.REFRESH_PROPERTY
 
                 )
+                null
             else
                 agent.enabled = true
                 @workspace.design.set("agent",agent)

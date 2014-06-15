@@ -129,10 +129,9 @@ define [
     if space
         if refresh
             space.remove()
-            opsModel.fetchJsonData().then ->
-                editor = new OpsEditor()
-                editor.activate()
-                editor
+            editor = new OpsEditor(opsModel)
+            editor.activate()
+            editor
         else
             space.activate()
             space

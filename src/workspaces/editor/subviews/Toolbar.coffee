@@ -331,10 +331,7 @@ define [
                 newJson.id = @workspace.design.attributes.stack_id
                 appToStackModal.close()
                 stack = App.model.stackList().get(@workspace.design.attributes.stack_id)
-                ApiRequest("stack_save",
-                    region: newJson.region
-                    spec: newJson
-                ).then ()->
+                stack.save(newJson).then ()->
                     notification "info", sprintf lang.ide.TOOL_MSG_INFO_HDL_SUCCESS, lang.ide.TOOLBAR_HANDLE_SAVE_STACK, newJson.name
                     App.openOps stack, true # refresh if this stack is open
                 ,(err)->

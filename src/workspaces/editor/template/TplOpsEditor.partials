@@ -40,10 +40,10 @@
 <div class="selectbox btn-toolbar toolbar-line-style seperator">
   <button class="selection tooltip" data-tooltip="{{i18n 'TOOL_TIP_LINESTYLE'}}"></button>
   <ul class="dropdown">
-    <li class='item'><span class="icon-straight">{{ i18n "TOOL_LBL_LINESTYLE_STRAIGHT" }}</span></li>
-    <li class='item'><span class="icon-elbow">{{ i18n "TOOL_LBL_LINESTYLE_ELBOW" }}</span></li>
-    <li class='item'><span class="icon-bezier-q">{{ i18n "TOOL_LBL_LINESTYLE_QUADRATIC_BELZIER" }}</span></li>
-    <li class='item'><span class="icon-bezier-qt">{{ i18n "TOOL_LBL_LINESTYLE_SMOOTH_QUADRATIC_BELZIER" }}</span></li>
+    <li class='item' data-id="0"><span class="icon-straight">{{ i18n "TOOL_LBL_LINESTYLE_STRAIGHT" }}</span></li>
+    <li class='item' data-id="1"><span class="icon-elbow">{{ i18n "TOOL_LBL_LINESTYLE_ELBOW" }}</span></li>
+    <li class='item' data-id="2"><span class="icon-bezier-q">{{ i18n "TOOL_LBL_LINESTYLE_QUADRATIC_BELZIER" }}</span></li>
+    <li class='item' data-id="3"><span class="icon-bezier-qt">{{ i18n "TOOL_LBL_LINESTYLE_SMOOTH_QUADRATIC_BELZIER" }}</span></li>
   </ul>
 </div>
 

@@ -396,8 +396,9 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
     ()-> # Instance
       me = @
       #get all instances in asg
-      for aws_asg in @CrPartials( "ASG" ).where({category:@region}) || []
+      for aws_asg in @CrPartials( "ASG" ).filter( ( model ) ->  model.RES_TAG is me.vpcId ) || []
         aws_asg = aws_asg.attributes
+
         _.each aws_asg.Instances, (e,key)->
           me.ins_in_asg.push e.InstanceId
 

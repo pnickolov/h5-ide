@@ -88,11 +88,16 @@ define ["ApiRequest", "./CrModel", "backbone"], ( ApiRequest, CrModel )->
         return null
 
       # Transform the data id if the Collection has defined it.
-      if @modelIdAttribute
-        for d in awsData
+      toAddIds = []
+      for d in awsData
+        if @modelIdAttribute
           d.id = d[ @modelIdAttribute ]
           delete d[ @modelIdAttribute ]
 
+        toAddIds.push d.id
+
+      # Remove models first, then add new one.s
+      @remove toAddIds, {silent:true}
       @add awsData, extraAttr
       return
 

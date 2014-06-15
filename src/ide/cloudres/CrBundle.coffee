@@ -4,5 +4,6 @@ define [
   "./CrClnSharedRes"
   "./CrClnCommonRes"
   "./CrClnOpsResource"
+  "./CrClnAmi"
   "./CloudImportVpc"
 ], ( CloudResources )-> CloudResources

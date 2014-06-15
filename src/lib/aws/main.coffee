@@ -2,48 +2,6 @@ define ['MC', "constant", 'lib/aws/aws'], (MC, constant, aws_handler) ->
   MC.aws = { aws: aws_handler }
 
   MC.aws.ami = {
-    getOSType : ( ami ) ->
-
-      #return osType by ami.name | ami.description | ami.imageLocation
-      if !ami
-        return 'unknown'
-
-      if ami.osType
-        return ami.osType
-
-      osTypeList = ['centos', 'redhat', 'rhel', 'ubuntu', 'debian', 'fedora', 'gentoo', 'opensuse', 'suse','amazon', 'amzn']
-
-      osType = 'linux-other'
-
-      found  = []
-
-      if  ami.platform and ami.platform == 'windows'
-
-        found.push 'windows'
-
-      else
-
-        #check ami.name
-        if ami.name
-          found = osTypeList.filter (word) -> ~ami.name.toLowerCase().indexOf word
-
-        #check ami.description
-        if found.length == 0 and 'description' of ami and ami.description
-          found = osTypeList.filter (word) -> ~ami.description.toLowerCase().indexOf word
-
-        #check ami.imageLocation
-        if found.length == 0 and 'imageLocation' of ami and ami.imageLocation
-          found = osTypeList.filter (word) -> ~ami.imageLocation.toLowerCase().indexOf word
-
-      if found.length > 0
-        osType = found[0]
-
-      switch osType
-        when 'rhel' then osType = 'redhat'
-        when 'amzn' then osType = 'amazon'
-
-      osType
-
     getInstanceType : ( ami ) ->
 
       if not ami then return []

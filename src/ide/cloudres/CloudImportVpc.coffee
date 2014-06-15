@@ -810,6 +810,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
           bdm.push data
 
         lcComp = @add( "LC", aws_lc, lcRes, aws_lc.Name )
+        @addLayout lcComp
         delete @component[ aws_lc.id ]
         @lcs[ aws_lc.Name ] = lcComp
       return

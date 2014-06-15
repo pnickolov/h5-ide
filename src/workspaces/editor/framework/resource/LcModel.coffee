@@ -286,9 +286,6 @@ define [
         userData     : data.resource.UserData
         publicIp     : data.resource.AssociatePublicIpAddress
         configName   : data.resource.LaunchConfigurationName
-
-        x : layout_data.coordinate[0]
-        y : layout_data.coordinate[1]
       }
 
       if layout_data.osType and layout_data.architecture and layout_data.rootDeviceType

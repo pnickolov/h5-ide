@@ -38,6 +38,12 @@ define [ 'constant' ], ( constant ) ->
         getNewest: ( attrMap ) ->
             attrMap.newAttr or attrMap.oldAttr
 
+        pluralToSingular: ( str ) -> # Remove 's'
+            str.slice 0, -1
+
+        setToElement: ( str ) -> # Remove 'Set'
+            str.slice 0, -3
+
         replaceArrayIndex: ( path, data ) ->
             componentMap = @getNodeMap path[0]
             component = @getNewest componentMap
@@ -51,21 +57,17 @@ define [ 'constant' ], ( constant ) ->
                 when 'BlockDeviceMapping'
                     data.key = childNode.DeviceName if childNode and childNode.DeviceName
 
-                when 'PrivateIpAddressSet'
-                    data.key = 'PrivateIpAddress'
-
                 when 'GroupSet'
                     data.key = 'SecurityGroup'
 
                 when 'IpPermissions', 'IpPermissionsEgress', 'EntrySet'
                     data.key = 'Rule'
 
-                when 'AssociationSet'
-                    data.key = 'Association'
+                when 'AssociationSet', 'AttachmentSet', 'PrivateIpAddressSet'
+                    data.key = @setToElement parentKey
 
-                when 'AttachmentSet'
-                    data.key = 'Attachment'
-
+                when 'Dimensions', 'AlarmActions'
+                    data.key = @pluralToSingular parentKey
 
 
 

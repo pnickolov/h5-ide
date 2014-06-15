@@ -320,7 +320,6 @@ define [
 
     type  : constant.RESTYPE.NC
     AwsResponseType : "DescribeNotificationConfigurationsResponse"
-    modelIdAttribute : "PolicyARN"
     trAwsXml : ( data )-> data.DescribeNotificationConfigurationsResponse.DescribeNotificationConfigurationsResult.NotificationConfigurations?.member
     parseFetchData : ( ncs )->
       newNcList = []

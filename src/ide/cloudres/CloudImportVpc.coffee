@@ -39,7 +39,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
       @ins_in_asg= [] # instances in asg
       @component = {}
       @layout    = {}
-      @originalJson = jQuery.extend(true, {component: {}, layout: {}}, originalJson); #original app json
+      @originalJson = jQuery.extend(true, {component: [], layout: []}, originalJson) #original app json
 
       @
 
@@ -125,6 +125,8 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
       type = constant.RESTYPE[ type ] or type
       key = constant.AWS_RESOURCE_KEY[ type ]
       id = if _.isObject jsonOrKey then jsonOrKey[key] else jsonOrKey
+
+      if not id then return null
 
       for uid, comp of @originalJson.component
         if comp.type isnt type then continue
@@ -905,15 +907,22 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         #convert AutoScalingGroupName to REF
         asgComp = @asgs[ncRes.AutoScalingGroupName]
         if asgComp
-          ncRes.AutoScalingGroupName = CREATE_REF( asgComp )
+          ncRes.AutoScalingGroupName = CREATE_REF( asgComp, 'resource.AutoScalingGroupName' )
         else
           continue
 
-        #convert Topic to REF
-        #topicComp = @addTopic( aws_nc.TopicARN )
-        ncRes.TopicARN = CREATE_REF( ncRes.TopicARN )
+        snsComp = _.first _.filter @originalJson.component, ( com ) ->
+          if com.type is constant.RESTYPE.TOPIC
+            return com.resource.TopicArn is ncRes.TopicARN
 
-        ncComp = @add( "NC", ncRes, "SnsNotification")
+        ncRes.TopicARN = CREATE_REF( snsComp, 'resource.TopicArn' ) if snsComp
+
+        # Manual find original NC because the match of NC is complicated
+        originalNc = _.filter @originalJson.component, ( com ) ->
+          if com.type is constant.RESTYPE.NC
+            return _.isEqual com.resource, ncRes
+
+        ncComp = @add( "NC", originalNc[0] or ncRes, "SnsNotification")
       return
 
     ()-> #SP

@@ -189,13 +189,13 @@ define [
 
           for e in event
             if type is 'update'
+              wrap$ = _.bind view.$, view
               wrapUpdate = _.bind item.update, item, wrap$
 
               if e.obj is ide_event
                 ide_event.onLongListen e.event, wrapUpdate
                 view.clearGarbage.push -> ide_event.offListen e.event, wrapUpdate
               else
-                wrap$ = _.bind view.$, view
                 view.listenTo e.obj, e.event, wrapUpdate
             else if type is 'changeVisible'
                 wrapToggle = _.bind view.toggle, view

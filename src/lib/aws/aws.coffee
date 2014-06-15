@@ -8,7 +8,6 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
 
         Design.instance().eachComponent ( component ) ->
             groupMembers = component.groupMembers and component.groupMembers()
-            resourceInList = MC.data.resource_list[ Design.instance().region() ]
             if result.parent or result.self
                 null
             if component.get( 'appId' ) is resId

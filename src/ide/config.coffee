@@ -322,15 +322,7 @@ require ["constant", 'ide/Application', "workspaces/Dashboard", "ide/cloudres/Cr
 
 	##########################################################
 	# Deprecated Global shit. Doesn't anyone dare to add more of these. They will be removed in the future.
-	MC.data = MC.data || {}
-
-	#global config data by region
-	MC.data.config = {}
-	MC.data.config[r] = {} for r in constant.REGION_KEYS
-
-	#global resource data (Describe* return)
-	MC.data.resource_list = {}
-	MC.data.resource_list[r] = {} for r in constant.REGION_KEYS
+	MC.data = {}
 
 	#state editor
 	MC.data.state = {}

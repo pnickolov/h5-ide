@@ -916,7 +916,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
       return
 
     ()-> #SP
-      for aws_sp in @CrPartials( "SP" ).where({category:@region}) || []
+      for aws_sp in @getResourceByType( "SP" )
         aws_sp = aws_sp.attributes
         spRes =
           "AdjustmentType"      : "" #"ChangeInCapacity"
@@ -932,7 +932,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         #convert AutoScalingGroupName to REF
         asgComp = @asgs[aws_sp.AutoScalingGroupName]
         if asgComp
-          spRes.AutoScalingGroupName = CREATE_REF( asgComp )
+          spRes.AutoScalingGroupName = CREATE_REF( asgComp, 'resource.AutoScalingGroupName' )
         else
           continue
 

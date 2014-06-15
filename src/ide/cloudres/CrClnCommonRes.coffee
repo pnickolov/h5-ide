@@ -293,6 +293,7 @@ define [
     trAwsXml : ( data )-> data.DescribePoliciesResponse.DescribePoliciesResult.ScalingPolicies?.member
     parseFetchData : ( sps )->
       for sp in sps
+        camelToPascal sps
         sp.Name = sp.PolicyName
         delete sp.PolicyName
       sps

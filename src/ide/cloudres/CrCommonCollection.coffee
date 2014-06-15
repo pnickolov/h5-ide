@@ -74,6 +74,8 @@ define ["ApiRequest", "./CrCollection", "./CrModel", "constant"], ( ApiRequest, 
         # We need to join the data first.
         transformed = []
         for regionId, dataXml of data
+          if not dataXml[0] then continue
+
           try
             xml = $.xml2json( $.parseXML(dataXml[0]) )
 

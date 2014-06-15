@@ -165,7 +165,7 @@ define [ "i18n!nls/lang.js", "../ComplexResModel", "constant" ], ( lang, Complex
     getDeviceName : (owner)->
 
       imageId  = owner.get( "imageId" )
-      ami_info = MC.data.dict_ami[ imageId ]
+      ami_info = owner.getAmi()
 
       if !ami_info
         notification "warning", sprintf(lang.ide.NOTIFY_MSG_WARN_AMI_NOT_EXIST_TRY_USE_OTHER, imageId), false  unless ami_info

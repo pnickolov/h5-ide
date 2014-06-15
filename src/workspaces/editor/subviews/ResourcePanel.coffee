@@ -49,6 +49,8 @@ define [
       @listenTo @workspace.design, Design.EVENT.RemoveResource, @updateDisableItems
 
       @subEventForUpdateReuse()
+
+      @__amiType = "QuickStartAmi" # QuickStartAmi | MyAmi | FavoriteAmi
       return
 
     render : ()->
@@ -59,6 +61,7 @@ define [
 
       @updateAZ()
       @updateSnapshot()
+      @updateAmi()
 
       @updateDisableItems()
 
@@ -93,7 +96,7 @@ define [
 
         if not @inDom
           @inDom = true
-          (@parent||@).$el.find(".resource-list.elb-asg").append @el
+          (@parent||@).$el.find(".resource-list-asg").append @el
 
         @
 
@@ -124,15 +127,23 @@ define [
       if not @workspace.isAwake() then return
       region = @workspace.opsModel.get("region")
 
-      @$el.find(".resource-list.availability-zone").html LeftPanelTpl.az(CloudResources( constant.RESTYPE.AZ, region ).where({category:region}) || [])
+      @$el.find(".resource-list-az").html LeftPanelTpl.az(CloudResources( constant.RESTYPE.AZ, region ).where({category:region}) || [])
       @updateDisabledAz()
       return
 
     updateSnapshot : ()->
       if not @workspace.isAwake() then return
       region = @workspace.opsModel.get("region")
-      @$el.find(".resource-list.resoruce-snapshot").html LeftPanelTpl.snapshot(CloudResources( constant.RESTYPE.SNAP, region ).where({category:region}) || [])
+      @$el.find(".resource-list-snapshot").html LeftPanelTpl.snapshot(CloudResources( constant.RESTYPE.SNAP, region ).where({category:region}) || [])
       return
+
+    changeAmiType : ( evt, attr )->
+      @__amiType = attr || "QuickStartAmi"
+      @updateAmi()
+
+    updateAmi : ()->
+      html = LeftPanelTpl.ami CloudResources( @__amiType, @workspace.opsModel.get("region") ).getModels()
+      @$el.find(".resource-list-ami").html(html)
 
     updateDisableItems : ()->
       if not @workspace.isAwake() then return
@@ -141,7 +152,7 @@ define [
       return
 
     updateDisabledAz : ()->
-      $azs = @$el.find(".availability-zone").children().removeClass("resource-disabled")
+      $azs = @$el.find(".resource-list-az").children().removeClass("resource-disabled")
       for az in @workspace.design.componentsOfType( constant.RESTYPE.AZ )
         azName = az.get("name")
         for i in $azs
@@ -209,8 +220,6 @@ define [
 
       $target = $accordion.removeClass( 'expanded' ).children( '.fixedaccordion-head' )
       this.updateAccordion( { currentTarget : $target[0] }, true )
-
-    changeAmiType : ()->
 
     browseCommunityAmi : ()->
 

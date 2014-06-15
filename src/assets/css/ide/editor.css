@@ -230,6 +230,9 @@
     cursor: default;
     opacity: .6;
     background-color: transparent; }
+  .resource-item.instance {
+    padding-top: 5px;
+    height: 132px; }
 
 .resource-icon-az {
   background-image: url('/assets/images/ide/icon/az-resource.png'); }
@@ -261,11 +264,13 @@
 .resource-icon-elb {
   background-image: url('/assets/images/ide/icon/elb-resource.png'); }
 
-.resource-icon-instance {
-  background-image: url('/assets/images/ide/icon/instance-resource.png'); }
-
 .resource-icon-ebs-snapshot {
   background-image: url('/assets/images/ide/icon/ebs-snapshot-resource-1109.png'); }
+
+.resource-icon-instance {
+  padding-top: 12px;
+  height: 48px;
+  background: url('/assets/images/ide/icon/instance-resource.png') center no-repeat; }
 
 .ebs-size {
   margin-top: -1.5em;

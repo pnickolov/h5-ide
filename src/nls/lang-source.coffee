@@ -491,8 +491,8 @@ module.exports =
       en: "Remove from Favorite"
       zh: ""
 
-    RES_TIT_ADD_TO_FAVORITE:
-      en: "Add to Favorite"
+    RES_TIT_TOGGLE_FAVORITE:
+      en: "Toggle favorite"
       zh: ""
 
     RES_TIT_VPC:

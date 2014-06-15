@@ -26,6 +26,9 @@ define [
       Q.all [
         CloudResources( constant.RESTYPE.AZ,   region ).fetch()
         CloudResources( constant.RESTYPE.SNAP, region ).fetch()
+        CloudResources( "QuickStartAmi",       region ).fetch()
+        CloudResources( "MyAmi",               region ).fetch()
+        CloudResources( "FavoriteAmi",         region ).fetch()
       ]
 
     cleanup : ()->

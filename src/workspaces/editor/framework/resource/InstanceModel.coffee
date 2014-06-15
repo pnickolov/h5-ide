@@ -34,7 +34,11 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js", 'CloudR
 
     initialize : ( attr, option )->
 
+      console.assert( attr.imageId, "Invalid attributes when creating InstanceModel", attr )
+
       option = option || {}
+
+      @setAmi( attr.imageId )
 
       # Create Eni0 if necessary
       if option.createByUser
@@ -304,7 +308,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js", 'CloudR
         cached.rootDeviceType = ami.rootDeviceType
 
       # Update RootDevice Size
-      if ami.blockDeviceMapping
+      if ami and ami.blockDeviceMapping
         rdName = ami.rootDeviceName
         rdEbs  = ami.blockDeviceMapping[ rdName ]
         if not rdEbs
@@ -332,7 +336,12 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js", 'CloudR
       @draw()
       null
 
-    getAmi : ()-> MC.data.dict_ami[@get("imageId")]
+    getAmi : ()->
+      ami = CloudResources( constant.RESTYPE.AMI, @design().region() ).get( @get("imageId") )
+      if ami
+        ami.toJSON()
+      else
+        null
 
     getBlockDeviceMapping : ()->
       #get root device of current instance
@@ -491,6 +500,13 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js", 'CloudR
       if tenancy is "dedicated" and @get("instanceType") is "t1.micro"
         @initInstanceType()
       null
+
+    getInstanceType : ( ami )->
+      ami = ami or @getAmi()
+      if not ami then return []
+
+
+
 
     getInstanceTypeList : ()->
 

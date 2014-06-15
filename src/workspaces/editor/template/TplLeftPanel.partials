@@ -16,27 +16,22 @@
 <div class="fixedaccordion accordion-default">
   <section class="accordion-group">
     <header class="fixedaccordion-head">{{ i18n "RES_TIT_AZ" }}</header>
-    <ul class="availability-zone resource-list clearfix accordion-body"></ul>
+    <ul class="resource-list-az clearfix accordion-body"></ul>
   </section>
 
   <section class="accordion-group">
-    <header class="fixedaccordion-head">{{ i18n "RES_TIT_AMI" }}
-      <div class="selectbox resource-select dark AmiTypeSelect">
-        <div class="selection">{{ i18n "RES_LBL_QUICK_START_AMI" }}</div>
-        <ul class="dropdown">
-          <li class="item selected" data-id="quickstart-ami">{{ i18n "RES_LBL_QUICK_START_AMI" }}</li>
-          <li class="item" data-id="my-ami">{{ i18n "RES_LBL_MY_AMI" }}</li>
-          <li class="item" data-id="favorite-ami">{{ i18n "RES_LBL_FAVORITE_AMI" }}</li>
-        </ul>
-      </div>
-    </header>
+    <nav class="selectbox resource-select AmiTypeSelect js-toggle-dropdown">
+      <div class="selection">{{ i18n "RES_LBL_QUICK_START_AMI" }}</div>
+      <ul class="dropdown">
+        <li class="item selected" data-id="QuickStartAmi">{{ i18n "RES_LBL_QUICK_START_AMI" }}</li>
+        <li class="item" data-id="MyAmi">{{ i18n "RES_LBL_MY_AMI" }}</li>
+        <li class="item" data-id="FavoriteAmi">{{ i18n "RES_LBL_FAVORITE_AMI" }}</li>
+      </ul>
+    </nav>
+    <header class="fixedaccordion-head">{{ i18n "RES_TIT_AMI" }}</header>
     <div class="accordion-body scroll-wrap scrollbar-auto-hide">
       <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-      <div class="item-wrap scroll-content">
-        <ul class="quickstart-ami-list resource-list"></ul>
-        <ul class="my-ami-list resource-list hide"></ul>
-        <ul class="favorite-ami-list resource-list hide"></ul>
-      </div>
+      <ul class="item-wrap scroll-content resource-list-ami"></ul>
 
       <button class="btn btn-primary BrowseCommunityAmi">{{ i18n "RES_BTN_BROWSE_COMMUNITY_AMI" }}</button>
     </div>
@@ -46,14 +41,14 @@
     <header class="fixedaccordion-head">{{ i18n "RES_TIT_VOL" }}</header>
     <div class="accordion-body scroll-wrap scrollbar-auto-hide">
       <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-      <ul class="resoruce-snapshot resource-list scroll-content"></ul>
+      <ul class="resource-list-snapshot scroll-content"></ul>
       <button class="btn btn-primary ManageSnapshot">{{ i18n "RES_TIT_SNAPSHOT_MANAGE"}}</button>
     </div>
   </section>
 
   <section class="accordion-group">
     <header class="fixedaccordion-head">{{ i18n "RES_TIT_ELB_ASG" }}</header>
-    <ul class="resource-list clearfix accordion-body elb-asg">
+    <ul class="resource-list-asg clearfix accordion-body">
       <li class="tooltip resource-item resource-icon-elb" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_ELB" }}' data-type="ELB">{{ i18n "RES_LBL_NEW_ELB" }}</li>
       <li class="tooltip resource-item resource-icon-asg" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_ASG" }}' data-type="ASG">{{ i18n "RES_LBL_NEW_ASG" }}</li>
     </ul>
@@ -63,7 +58,7 @@
     <header class="fixedaccordion-head">{{ i18n "RES_TIT_VPC" }}</header>
     <article class="accordion-body scroll-wrap scrollbar-auto-hide">
       <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-      <ul class="resource-list scroll-content">
+      <ul class="scroll-content">
         <li class="tooltip resource-item resource-icon-subnet" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_SUBNET"}}' data-type="SUBNET">{{ i18n "RES_LBL_NEW_SUBNET" }}</li>
 
         <li class="tooltip resource-item resource-icon-rt" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_RTB"}}' data-type="RT">{{ i18n "RES_LBL_NEW_RTB" }}</li>
@@ -90,15 +85,13 @@
 <li class="resource-item bubble resource-icon-ebs-snapshot" data-bubble-template="bubbleSnapshotInfo" data-bubble-data='{"snapshotId":"{{id}}", "startTime":"{{startTime}}","status":"{{status}}","size":"{{volumeSize}}"}' data-type="VOL" data-option='{"volumeSize":{{volumeSize}}, "snapshotId": "{{id}}"}'><div class="ebs-size">{{volumeSize}} GB</div>{{id}}</li>{{/with}}{{/each}}
 
 
-<!-- {{quickstart_ami_data}} -->
-{{#each quickstart_ami}}
-<li class="resource-item bubble" data-bubble-template="bubbleAMIMongoInfo" data-bubble-data='{"id":"{{imageId}}","name":"{{ name }}","description":"{{description}}","architecture":"{{architecture}}","imageLocation":"{{imageLocation}}","isPublic":"{{#if isPublic}}true{{else}}false{{/if}}","kernelId":"{{kernelId}}","rootDeviceName":"{{rootDeviceName}}","rootDeviceType":"{{rootDeviceType}}", "imageSize":"{{imageSize}}", "instance_type":"{{instance_type}}"}' data-component-type="node" data-type="AWS.EC2.Instance" data-option='{"imageId": "{{imageId}}", "cachedAmi" : { "osType": "{{osType}}", "architecture":"{{architecture}}", "rootDeviceType":"{{rootDeviceType}}" } }'>
-  <div class="resource-icon resource-icon-instance" >
-    <img src="assets/images/ide/ami/{{osType}}.{{architecture}}.{{rootDeviceType}}.png" width='39' height='27' />
-  </div>
-  <div class="resource-label instance-label">{{name}}</div>
-</li>
-{{/each}}
+<!-- {{ami}} -->
+{{#each this}}{{#with attributes}}
+<li class="resource-item instance" data-bubble-template="bubbleAMIMongoInfo" data-bubble-data='' data-type="INSTANCE" data-option='{"imageId":"{{id}}"}'>
+  {{#if ../../fav}}<button class="btn-fav-ami tooltip" data-tooltip="{{i18n 'RES_TIT_TOGGLE_FAVORITE'}}" data-id="{{id}}"></button>{{/if}}
+  <div class="resource-icon-instance"><img src="assets/images/ide/ami/{{osType}}.{{architecture}}.{{rootDeviceType}}.png" width='39' height='27' /></div>
+  {{name}}
+</li>{{/with}}{{/each}}
 
 <!-- {{my_ami_data}} -->
 {{#each my_ami }}

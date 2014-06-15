@@ -935,7 +935,6 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
           "MinAdjustmentStep": ""
           "PolicyARN" : "" #"arn:aws:autoscaling:us-east-1:994554139310:scalingPolicy:69df7c02-ed5f-42cf-870a-d649206cb169:autoScalingGroupName/asg0---app-aae6fe2f:policyName/asg0-policy-0"
           "PolicyName": "" #"asg0-policy-0"
-          "ScalingAdjustment": ""
 
         spRes = @_mapProperty aws_sp, spRes
 

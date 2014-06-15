@@ -607,7 +607,8 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         for i in aws_rtb.associationSet
           asso =
             Main : if i.main is false then false else "true"
-            RouteTableAssociationId : i.routeTableAssociationId
+            RouteTableAssociationId : "" #i.routeTableAssociationId
+            SubnetId : ""
           subnetComp = @subnets[i.subnetId]
           if i.subnetId and subnetComp
             asso.SubnetId = CREATE_REF( subnetComp, 'resource.SubnetId' )
@@ -623,10 +624,13 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
             "GatewayId"      : ""
             "InstanceId"     : if i.instanceId and insComp then CREATE_REF( insComp, 'resource.InstanceId' ) else ""
             "NetworkInterfaceId"   : if i.networkInterfaceId and eniComp then CREATE_REF( eniComp, 'resource.NetworkInterfaceId' ) else ""
-            "Origin"         : i.origin
+            "Origin"         : if i.gatewayId is "local" then i.origin else ""
           if i.gatewayId
             if i.gatewayId isnt "local" and gwComp
-              route.GatewayId = CREATE_REF( gwComp, 'resource.VpnGatewayId' )
+              if gwComp.type is "AWS.VPC.VPNGateway"
+                route.GatewayId = CREATE_REF( gwComp, 'resource.VpnGatewayId' )
+              else if gwComp.type is "AWS.VPC.InternetGateway"
+                route.GatewayId = CREATE_REF( gwComp, 'resource.InternetGatewayId' )
             else
               route.GatewayId = i.gatewayId
           rtbRes.RouteSet.push route

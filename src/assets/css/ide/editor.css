@@ -231,6 +231,7 @@
     opacity: .6;
     background-color: transparent; }
   .resource-item.instance {
+    position: relative;
     padding-top: 5px;
     height: 132px; }
 
@@ -397,27 +398,32 @@
 .resource-list > li:hover .btn-fav-ami {
   display: block; }
 
-.btn-fav-ami {
+/* toggleicon */
+.toggle-fav {
   position: absolute;
   top: -2px;
   right: 5px;
-  display: none;
   width: 16px;
   height: 16px;
   background: url("../images/ide/btn-fav-ami-unfaved-normal.png"); }
 
-.btn-fav-ami:hover {
-  top: -3px;
-  right: 3px;
-  width: 20px;
-  height: 20px;
-  background: url("../images/ide/btn-fav-ami-unfaved-hover.png"); }
-
-.btn-fav-ami.faved {
-  background: url("../images/ide/btn-fav-ami-faved-normal.png"); }
-
-.btn-fav-ami.faved:hover {
-  background: url("../images/ide/btn-fav-ami-faved-hover.png"); }
+.btn-fav-ami {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 16px;
+  height: 16px;
+  background: url('/assets/images/ide/btn-fav-ami-unfaved-normal.png'); }
+  .btn-fav-ami:hover {
+    top: 0;
+    right: 0;
+    width: 20px;
+    height: 20px;
+    background: url('/assets/images/ide/btn-fav-ami-unfaved-hover.png'); }
+  .btn-fav-ami.fav {
+    background: url('/assets/images/ide/btn-fav-ami-faved-normal.png'); }
+  .btn-fav-ami.fav:hover {
+    background: url('/assets/images/ide/btn-fav-ami-unfaved-hover.png'); }
 
 .BrowseCommunityAmi, .ManageSnapshot {
   position: absolute;

@@ -109,8 +109,9 @@
   }
 
   &.instance {
+    position    : relative;
     padding-top : 5px;
-    height : 132px;
+    height      : 132px;
   }
 }
 
@@ -296,30 +297,39 @@
   display: block;
 }
 
-.btn-fav-ami {
+/* toggleicon */
+.toggle-fav {
   position: absolute;
   top: -2px;
   right: 5px;
-  display: none;
   width: 16px;
   height: 16px;
   background: url('../images/ide/btn-fav-ami-unfaved-normal.png');
 }
 
-.btn-fav-ami:hover {
-  top        : -3px;
-  right      : 3px;
-  width      : 20px;
-  height     : 20px;
-  background : url('../images/ide/btn-fav-ami-unfaved-hover.png');
-}
+.btn-fav-ami {
+  position : absolute;
+  top      : 2px;
+  right    : 2px;
+  width    : 16px;
+  height   : 16px;
+  background : image-url('ide/btn-fav-ami-unfaved-normal.png');
 
-.btn-fav-ami.faved {
-  background: url('../images/ide/btn-fav-ami-faved-normal.png');
-}
+  &:hover {
+    top        : 0;
+    right      : 0;
+    width      : 20px;
+    height     : 20px;
+    background : image-url('ide/btn-fav-ami-unfaved-hover.png');
+  }
 
-.btn-fav-ami.faved:hover {
-  background: url('../images/ide/btn-fav-ami-faved-hover.png');
+  &.fav {
+    background: image-url('ide/btn-fav-ami-faved-normal.png');
+  }
+
+  &.fav:hover {
+    background: image-url('ide/btn-fav-ami-unfaved-hover.png');
+  }
 }
 
 .BrowseCommunityAmi, .ManageSnapshot {

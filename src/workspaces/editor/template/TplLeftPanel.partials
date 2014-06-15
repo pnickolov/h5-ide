@@ -88,34 +88,10 @@
 <!-- {{ami}} -->
 {{#each this}}{{#with attributes}}
 <li class="resource-item instance" data-bubble-template="bubbleAMIMongoInfo" data-bubble-data='' data-type="INSTANCE" data-option='{"imageId":"{{id}}"}'>
-  {{#if ../../fav}}<button class="btn-fav-ami tooltip" data-tooltip="{{i18n 'RES_TIT_TOGGLE_FAVORITE'}}" data-id="{{id}}"></button>{{/if}}
+  {{#if ../../fav}}<button class="btn-fav-ami fav tooltip" data-tooltip="{{i18n 'RES_TIT_TOGGLE_FAVORITE'}}" data-id="{{id}}"></button>{{/if}}
   <div class="resource-icon-instance"><img src="assets/images/ide/ami/{{osType}}.{{architecture}}.{{rootDeviceType}}.png" width='39' height='27' /></div>
   {{name}}
 </li>{{/with}}{{/each}}
-
-<!-- {{my_ami_data}} -->
-{{#each my_ami }}
-<li class="resource-item bubble"  data-bubble-template="bubbleAMIInfo" data-bubble-data='{"id":"{{imageId}}","name":"{{name}}","description":"{{description}}","architecture":"{{architecture}}","imageLocation":"{{imageLocation}}","imageOwnerAlias":"{{imageOwnerAlias}}","imageOwnerId":"{{imageOwnerId}}","isPublic":"{{#if isPublic}}true{{else}}false{{/if}}","kernelId":"{{kernelId}}","rootDeviceName":"{{rootDeviceName}}","rootDeviceType":"{{rootDeviceType}}"}' data-component-type="node" data-type="AWS.EC2.Instance" data-option='{"imageId": "{{imageId}}", "osType": "{{osType}}", "architecture":"{{architecture}}", "rootDeviceType":"{{rootDeviceType}}", "virtualizationType":"{{virtualizationType}}" }'>
-  <div class="resource-icon resource-icon-instance">
-    <img src="assets/images/ide/ami/{{osType}}.{{architecture}}.{{rootDeviceType}}.png" width='39' height='27' />
-  </div>
-  <div class="resource-label instance-label">{{name}}</div>
-</li>
-{{/each}}
-
-
-<!-- {{favorite_ami_data}} -->
-{{#each favorite_ami }}
-<li class="pos-r">
-  <div class="resource-item bubble {{#if delete}}deleted{{/if}}"  data-bubble-template="bubbleAMIInfo" data-bubble-data='{"id":"{{resource_info.imageId}}","name":"{{resource_info.name}}","description":"{{resource_info.description}}","architecture":"{{resource_info.architecture}}","imageLocation":"{{resource_info.imageLocation}}","imageOwnerAlias":"{{resource_info.imageOwnerAlias}}","imageOwnerId":"{{resource_info.imageOwnerId}}","isPublic":"{{#if resource_info.isPublic}}true{{else}}false{{/if}}","kernelId":"{{resource_info.kernelId}}","rootDeviceName":"{{resource_info.rootDeviceName}}","rootDeviceType":"{{resource_info.rootDeviceType}}"}' data-component-type="node" data-type="AWS.EC2.Instance" data-option='{"imageId": "{{resource_info.imageId}}", "osType": "{{resource_info.osType}}", "architecture":"{{resource_info.architecture}}", "rootDeviceType":"{{resource_info.rootDeviceType}}", "virtualizationType":"{{resource_info.virtualizationType}}" }'>
-    <div class="resource-icon resource-icon-instance">
-      <img src="assets/images/ide/ami/{{resource_info.osType}}.{{resource_info.architecture}}.{{resource_info.rootDeviceType}}.png" width='39' height='27' />
-    </div>
-    <div class="resource-label instance-label" >{{resource_info.name}}</div>
-  </div>
-  <div class="btn-fav-ami {{#if delete}}deleted{{else}}faved{{/if}} tooltip" data-tooltip="{{#unless delete}}{{i18n 'RES_TIT_ADD_TO_FAVORITE'}}{{/unless}}" data-id="{{resource_id}}" data-amiVO="{{amiVO}}"></div>
-</li>
-{{/each}}
 
 <!-- {{reuse_lc}} -->
 <div class="resource-icon resource-icon-instance" >

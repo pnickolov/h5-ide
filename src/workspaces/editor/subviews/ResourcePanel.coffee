@@ -142,7 +142,9 @@ define [
       @updateAmi()
 
     updateAmi : ()->
-      html = LeftPanelTpl.ami CloudResources( @__amiType, @workspace.opsModel.get("region") ).getModels()
+      ms = CloudResources( @__amiType, @workspace.opsModel.get("region") ).getModels()
+      ms.fav = @__amiType is "FavoriteAmi"
+      html = LeftPanelTpl.ami ms
       @$el.find(".resource-list-ami").html(html)
 
     updateDisableItems : ()->

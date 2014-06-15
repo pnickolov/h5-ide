@@ -7,6 +7,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
       return "@{#{compOrUid.uid or compOrUid}.#{attr}}"
     else
       return "@{#{compOrUid.uid or compOrUid}.r.p}"
+
   UID        = MC.guid
   DEFAULT_SG = {}
   NAME       = ( res_attributes )->
@@ -596,7 +597,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
           "PropagatingVgwSet" : []
           "RouteSet"       : []
           "RouteTableId"   : aws_rtb.id
-          "VpcId"          : CREATE_REF( @theVpc )
+          "VpcId"          : CREATE_REF( @theVpc, 'resource.VpcId' )
 
         #associationSet
         for i in aws_rtb.associationSet
@@ -605,7 +606,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
             RouteTableAssociationId : i.routeTableAssociationId
           subnetComp = @subnets[i.subnetId]
           if i.subnetId and subnetComp
-            asso.SubnetId = CREATE_REF( subnetComp )
+            asso.SubnetId = CREATE_REF( subnetComp, 'resource.SubnetId' )
           rtbRes.AssociationSet.push asso
 
         #routeSet
@@ -616,12 +617,12 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
           route =
             "DestinationCidrBlock" : i.destinationCidrBlock
             "GatewayId"      : ""
-            "InstanceId"     : if i.instanceId and insComp then CREATE_REF( insComp ) else ""
-            "NetworkInterfaceId"   : if i.networkInterfaceId and eniComp then CREATE_REF( eniComp ) else ""
+            "InstanceId"     : if i.instanceId and insComp then CREATE_REF( insComp, 'resource.InstanceId' ) else ""
+            "NetworkInterfaceId"   : if i.networkInterfaceId and eniComp then CREATE_REF( eniComp, 'resource.NetworkInterfaceId' ) else ""
             "Origin"         : i.origin
           if i.gatewayId
             if i.gatewayId isnt "local" and gwComp
-              route.GatewayId = CREATE_REF( gwComp )
+              route.GatewayId = CREATE_REF( gwComp, 'resource.VpnGatewayId' )
             else
               route.GatewayId = i.gatewayId
           rtbRes.RouteSet.push route
@@ -630,7 +631,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         for i in aws_rtb.propagatingVgwSet
           gwComp = @gateways[i.gatewayId]
           if gwComp
-            rtbRes.PropagatingVgwSet.push CREATE_REF( gwComp )
+            rtbRes.PropagatingVgwSet.push CREATE_REF( 'resource.VpnGatewayId' )
 
         rtbComp = @add( "RT", aws_rtb, rtbRes )
         @addLayout( rtbComp, true, @theVpc )

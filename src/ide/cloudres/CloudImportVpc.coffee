@@ -444,20 +444,25 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
           "ShutdownBehavior": ""
           "SubnetId": ""
           "UserData":
-            "Base64Encoded": ""
+            "Base64Encoded": false
             "Data"         : ""
           "VpcId"   : ""
 
         insRes = @_mapProperty aws_ins, insRes
 
-        insRes.Subnet = CREATE_REF( subnetComp )
-        insRes.VpcId  = CREATE_REF( @theVpc )
+        insRes.SubnetId = CREATE_REF( subnetComp, 'resource.SubnetId' )
+        insRes.VpcId  = CREATE_REF( @theVpc, 'resource.VpcId' )
         insRes.Placement.AvailabilityZone = CREATE_REF( azComp, 'resource.ZoneName' )
 
         if aws_ins.monitoring and aws_ins.monitoring
           insRes.Monitoring = aws_ins.monitoring.state
 
-        insRes.Placement.Tenancy = aws_ins.placement.tenancy
+        if aws_ins.placement.tenancy is 'default'
+          insRes.Placement.Tenancy = ''
+
+        if not aws_ins.shutdownBehavior
+          insRes.ShutdownBehavior = 'terminate'
+
         insRes.InstanceId        = aws_ins.id
         insRes.EbsOptimized      = aws_ins.ebsOptimized
 

@@ -7,6 +7,22 @@ define [
   "constant"
 ], ( CrCommonCollection, CrCollection, CrModel, ApiRequest, constant )->
 
+  camelToPascal = ( obj ) ->
+    if not _.isObject obj then return obj
+
+    for camelKey, value of obj
+      if not (obj.hasOwnProperty camelKey) then continue
+
+      if not _.isArray obj
+        pascalKey = camelKey.substring(0,1).toUpperCase() + camelKey.substring(1)
+        obj[pascalKey] = value
+        delete obj[camelKey]
+
+      camelToPascal value
+
+    obj
+
+
   ### Elb ###
   CrCommonCollection.extend {
     ### env:dev ###
@@ -85,17 +101,14 @@ define [
     trAwsXml : ( data )-> data.DescribeAutoScalingGroupsResponse.DescribeAutoScalingGroupsResult.AutoScalingGroups?.member
     parseFetchData : ( asgs )->
       for asg in asgs
-        for key, value of asg
-          fixKey = key.substring(0,1).toUpperCase() + key.substring(1)
-          asg[fixKey] = value
-          delete asg[key]
+        camelToPascal asg
 
         asg.Name = asg.AutoScalingGroupName
         delete asg.AutoScalingGroupName
-        asg.AvailabilityZones   = asg.AvailabilityZones?.member || []
-        asg.Instances           = asg.Instances?.member || []
-        asg.LoadBalancerNames   = asg.LoadBalancerNames?.member || []
-        asg.TerminationPolicies = asg.TerminationPolicies?.member || []
+        asg.AvailabilityZones   = asg.AvailabilityZones || []
+        asg.Instances           = asg.Instances || []
+        asg.LoadBalancerNames   = asg.LoadBalancerNames || []
+        asg.TerminationPolicies = asg.TerminationPolicies || []
         asg.Subnets             = (asg.VPCZoneIdentifier || asg.VpczoneIdentifier).split(",")
         delete asg.VPCZoneIdentifier
       asgs

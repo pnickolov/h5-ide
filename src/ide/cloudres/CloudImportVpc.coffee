@@ -296,7 +296,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
 
 
     ()-> # SG
-      for aws_sg in @CrPartials( "SG" ).where({vpcId:@vpcId}) || []
+      for aws_sg in @getResourceByType( "SG" )
         aws_sg = aws_sg.attributes
 
         sgRes =
@@ -309,37 +309,53 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
           "VpcId": ""
 
         sgRes = @_mapProperty aws_sg, sgRes
+
+        originSGComp = @getOriginalComp(aws_sg.groupId, 'SG')
+        if originSGComp
+          sgRes.GroupName = originSGComp.resource.GroupName
+
+        vpcComp = @getOriginalComp(aws_sg.vpcId, 'VPC')
+        if vpcComp
+          sgRes.VpcId = CREATE_REF(vpcComp.uid, 'resource.VpcId')
+        sgRes.GroupDescription = aws_sg.description
+
         #generate ipPermissions
         if aws_sg.ipPermissions
           for sg_rule in aws_sg.ipPermissions || []
             ipranges = ''
-            if sg_rule.groups.length>0 and sg_rule.groups[0].groupId
-              ipranges = sg_rule.groups[0].groupId
+            if sg_rule.userIdGroupPairs.length>0 and sg_rule.userIdGroupPairs[0].groupId
+              ipranges = sg_rule.userIdGroupPairs[0].groupId
             else if sg_rule.ipRanges and sg_rule.ipRanges.length>0
-              ipranges = sg_rule.ipRanges[0].cidrIp
+              ipranges = sg_rule.ipRanges[0]
 
             if ipranges
+              if String(sg_rule.ipProtocol) is '-1'
+                sg_rule.fromPort = '0'
+                sg_rule.toPort = '65535'
               sgRes.IpPermissions.push {
-                "FromPort": if sg_rule.fromPort then sg_rule.fromPort else "",
-                "IpProtocol": sg_rule.ipProtocol,
-                "IpRanges": ipranges,
-                "ToPort": if sg_rule.toPort then sg_rule.toPort else ""
+                "FromPort": String(if sg_rule.fromPort then sg_rule.fromPort else ""),
+                "IpProtocol": String(sg_rule.ipProtocol),
+                "IpRanges": String(ipranges),
+                "ToPort": String(if sg_rule.toPort then sg_rule.toPort else "")
               }
         #generate ipPermissionEgress
         if aws_sg.ipPermissionsEgress
           for sg_rule in aws_sg.ipPermissionsEgress || []
             ipranges = ''
-            if sg_rule.groups.length>0 and sg_rule.groups[0].groupId
-              ipranges = sg_rule.groups[0].groupId
+            if sg_rule.userIdGroupPairs.length>0 and sg_rule.userIdGroupPairs[0].groupId
+              ipranges = sg_rule.userIdGroupPairs[0].groupId
             else if sg_rule.ipRanges and sg_rule.ipRanges.length>0
-              ipranges = sg_rule.ipRanges[0].cidrIp
+              ipranges = sg_rule.ipRanges[0]
 
             if ipranges
+              if String(sg_rule.ipProtocol) is '-1'
+                sg_rule.fromPort = '0'
+                sg_rule.toPort = '65535'
               sgRes.IpPermissionsEgress.push {
-                "FromPort": if sg_rule.fromPort then sg_rule.fromPort else "",
-                "IpProtocol": sg_rule.ipProtocol,
-                "IpRanges": ipranges,
-                "ToPort": if sg_rule.toPort then sg_rule.toPort else ""
+                "FromPort": String(if sg_rule.fromPort then sg_rule.fromPort else ""),
+                "IpProtocol": String(sg_rule.ipProtocol),
+                "IpRanges": String(ipranges),
+                "ToPort": String(if sg_rule.toPort then sg_rule.toPort else "")
               }
 
         sgComp = @add( "SG", sgRes, aws_sg.groupName )
@@ -348,7 +364,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         else if aws_sg.groupName.indexOf("-DefaultSG-app-") isnt -1
           DEFAULT_SG["DefaultSG"] = sgComp
 
-        @sgs[ aws_sg.id ] = sgComp
+        @sgs[ aws_sg.groupId ] = sgComp
       return
 
     ()-> #Volume
@@ -532,10 +548,10 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
 
 
         eniRes.Attachment.InstanceId = CREATE_REF( insComp, 'resource.InstanceId' )
-        eniRes.Attachment.DeviceIndex = if aws_eni.deviceIndex is 0 then '0' else aws_eni.deviceIndex
+        eniRes.Attachment.DeviceIndex = String(if aws_eni.deviceIndex is 0 then '0' else aws_eni.deviceIndex)
 
         for ip in aws_eni.privateIpAddressesSet
-          eniRes.PrivateIpAddressSet.push {"PrivateIpAddress": ip.privateIpAddress, "AutoAssign" : "false", "Primary" : ip.primary}
+          eniRes.PrivateIpAddressSet.push {"PrivateIpAddress": ip.privateIpAddress, "AutoAssign" : true, "Primary" : ip.primary}
 
         eniRes.GroupSet.push
           "GroupId": CREATE_REF(@sgs[ aws_eni.groupId ], 'resource.GroupId')
@@ -1043,7 +1059,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
       if default_sg
         default_sg.name = "DefaultSG"
         default_sg.resource.Default   = true
-        default_sg.resource.GroupName = "DefaultSG" #do not use 'default' as GroupName
+        # default_sg.resource.GroupName = "DefaultSG" #do not use 'default' as GroupName
       else
         console.warn "can not found default sg in component"
 

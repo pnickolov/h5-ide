@@ -410,21 +410,21 @@ define [
     doFetch : ()-> ApiRequest("sg_DescribeSecurityGroups", {region_name : @region()})
     trAwsXml : ( data )-> data.DescribeSecurityGroupsResponse.securityGroupInfo?.item
     parseFetchData : ( sgs )->
-      for sg in sgs
-        sg.ipPermissions       = sg.ipPermissions?.item || []
-        _.each sg.ipPermissions, (rule,idx)->
-          _.each rule, (e,key)->
-            if key in ["groups","ipRanges"]
-              sg.ipPermissions[idx][key] = e?.item || []
+      # for sg in sgs
+        # sg.ipPermissions       = sg.ipPermissions?.item || []
+        # _.each sg.ipPermissions, (rule,idx)->
+        #   _.each rule, (e,key)->
+        #     if key in ["groups","ipRanges"]
+        #       sg.ipPermissions[idx][key] = e?.item || []
 
-        sg.ipPermissionsEgress = sg.ipPermissionsEgress?.item || []
-        _.each sg.ipPermissionsEgress, (rule,idx)->
-          _.each rule, (e,key)->
-            if key in ["groups","ipRanges"]
-              sg.ipPermissionsEgress[idx][key] = e?.item || []
+        # sg.ipPermissionsEgress = sg.ipPermissionsEgress?.item || []
+        # _.each sg.ipPermissionsEgress, (rule,idx)->
+        #   _.each rule, (e,key)->
+        #     if key in ["groups","ipRanges"]
+        #       sg.ipPermissionsEgress[idx][key] = e?.item || []
 
-        sg.id = sg.groupId
-        delete sg.groupId
+        # sg.id = sg.groupId
+        # delete sg.groupId
       sgs
   }
 

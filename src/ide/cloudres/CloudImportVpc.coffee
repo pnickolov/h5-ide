@@ -466,6 +466,9 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         insRes.InstanceId        = aws_ins.id
         insRes.EbsOptimized      = aws_ins.ebsOptimized
 
+        keyPairComp = @getOriginalComp(insRes.KeyName, 'KP')
+        insRes.KeyName = CREATE_REF(keyPairComp, 'resource.KeyName')
+
         #generate instance component
         insComp = @add( "INSTANCE", aws_ins, insRes )
 
@@ -530,7 +533,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
           "PrivateIpAddressSet" : []
           "SourceDestCheck": true
           "SubnetId"       : ""
-          "PrivateDnsName" : ""
+          # "PrivateDnsName" : ""
           "VpcId"          : ""
 
         if aws_eni.instanceOwnerId and aws_eni.instanceOwnerId in [ "amazon-elb", "amazon-rds" ]
@@ -542,23 +545,25 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         if aws_eni.association and aws_eni.association.publicIp
           eniRes.AssociatePublicIpAddress = true
 
-        eniRes.AvailabilityZone = CREATE_REF( azComp )
-        eniRes.SubnetId         = CREATE_REF( subnetComp )
-        eniRes.VpcId            = CREATE_REF( @theVpc )
+        eniRes.NetworkInterfaceId = aws_eni.id
+
+        eniRes.AvailabilityZone = CREATE_REF( azComp, 'resource.ZoneName' )
+        eniRes.SubnetId         = CREATE_REF( subnetComp, 'resource.SubnetId' )
+        eniRes.VpcId            = CREATE_REF( @theVpc, 'resource.VpcId' )
         if not ( aws_eni.deviceIndex in [ "0", 0 ] )
           #eni0 no need attachmentId
           eniRes.Attachment.AttachmentId = aws_eni.attachmentId
 
 
-        eniRes.Attachment.InstanceId = CREATE_REF( insComp )
+        eniRes.Attachment.InstanceId = CREATE_REF( insComp, 'resource.InstanceId' )
         eniRes.Attachment.DeviceIndex = if aws_eni.deviceIndex is 0 then '0' else aws_eni.deviceIndex
 
         for ip in aws_eni.privateIpAddressesSet
           eniRes.PrivateIpAddressSet.push {"PrivateIpAddress": ip.privateIpAddress, "AutoAssign" : "false", "Primary" : ip.primary}
 
         eniRes.GroupSet.push
-          "GroupId": CREATE_REF @sgs[ aws_eni.groupId ]
-          "GroupName": aws_eni.groupName
+          "GroupId": CREATE_REF(@sgs[ aws_eni.groupId ], 'resource.GroupId')
+          "GroupName": CREATE_REF(@sgs[ aws_eni.groupId ], 'resource.GroupName')
 
 
         eniComp = @add( "ENI", aws_eni, eniRes, "eni" + aws_eni.deviceIndex )

@@ -62,6 +62,7 @@ define [ 'constant' ], ( constant ) ->
             str.slice 0, -3
 
         replaceArrayIndex: ( path, data ) ->
+            
             componentMap = @getNodeMap path[0]
             component = @getNewest componentMap
 
@@ -94,11 +95,6 @@ define [ 'constant' ], ( constant ) ->
 
 
             data
-
-
-
-
-
 
     prepareNode = ( path, data ) ->
 

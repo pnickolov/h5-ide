@@ -13,7 +13,7 @@ define ['MC', 'i18n!nls/lang.js'], ( MC, lang ) ->
 	AWS_RESOURCE_KEY = {
 		"AWS.EC2.AvailabilityZone"            : "ZoneName"
 		"AWS.EC2.Instance"                : "InstanceId"
-		"AWS.EC2.KeyPair"               : "KeyFingerprint"
+		"AWS.EC2.KeyPair"               : "KeyName"
 		"AWS.EC2.SecurityGroup"             : "GroupId"
 		"AWS.EC2.EIP"                 : "PublicIp"
 		"AWS.EC2.AMI"                 : "ImageId"

@@ -143,7 +143,8 @@ define [
                             nextPath = path.concat([_key])
                             data = @prepare.node(nextPath, {
                                 key: _key,
-                                value: __value
+                                value: __value,
+                                originValue: _value
                             })
 
                             if data.key

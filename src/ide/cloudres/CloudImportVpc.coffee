@@ -291,25 +291,25 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         if not (cgwComp and vgwComp)
           continue
         vpnRes =
-          "CustomerGatewayId" : ""
+          "CustomerGatewayId" : CREATE_REF( cgwComp, "resource.CustomerGatewayId" )
           "Options"     :
-            "StaticRoutesOnly": "true"
+            "StaticRoutesOnly": aws_vpn.options.staticRoutesOnly
           "Routes": []
-          "Type"  : "ipsec.1"
-          "VpnConnectionId"   : ""
-          "VpnGatewayId": ""
-          "CustomerGatewayConfiguration": ""
+          "Type"  : aws_vpn.type
+          "VpnConnectionId"   : aws_vpn.id
+          "VpnGatewayId": CREATE_REF( vgwComp, "resource.VpnGatewayId" )
+          #"CustomerGatewayConfiguration": ""
 
-        vpnRes = @_mapProperty aws_vpn, vpnRes
-        vpnRes.VpnGatewayId      = CREATE_REF( vgwComp )
-        vpnRes.CustomerGatewayId = CREATE_REF( cgwComp )
+        #vpnRes = @_mapProperty aws_vpn, vpnRes
+        # vpnRes.VpnGatewayId      = CREATE_REF( vgwComp, "resource.VpnGatewayId" )
+        # vpnRes.CustomerGatewayId = CREATE_REF( cgwComp, "resource.CustomerGatewayId" )
         if aws_vpn.options and aws_vpn.options.staticRoutesOnly
           vpnRes.Options.StaticRoutesOnly = aws_vpn.options.staticRoutesOnly
         if aws_vpn.routes
           for route in aws_vpn.routes
             vpnRes.Routes.push
               "DestinationCidrBlock" : route.destinationCidrBlock
-              "Source" : route.source
+              #"Source" : route.source
 
         vpnComp = @add( "VPN", aws_vpn, vpnRes, aws_vpn.id )
         #add CGW to layout

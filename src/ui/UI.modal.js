@@ -86,7 +86,7 @@ var modal = window.modal = function (template, dismiss, callback, options)
 			.on('keyup', modal.keyup);
 	}
 
-	$(window).on('resize', modal.position);
+	// $(window).on('resize', modal.position);
 
 	// $('#wrapper').addClass('blur-effect');
 

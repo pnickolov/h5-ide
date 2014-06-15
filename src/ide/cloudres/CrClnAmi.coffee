@@ -89,6 +89,15 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
 
     type  : constant.RESTYPE.AMI
 
+    __selfParseData : true
+    doFetch : ()->
+      # This method is used for CloudResources to invalid the cache.
+      localStorage.setItem("invalidAmi/" + @region(), "")
+      @__invalids = {}
+      d = Q.defer()
+      d.resolve([])
+      return d.promise
+
     initInvalidateId : ()->
       invalidAmi = localStorage.getItem("invalidAmi/" + @region())
       @__invalids = {}

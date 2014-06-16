@@ -43,9 +43,13 @@ define [
 
       ResourceModel.call this, attr, option
 
-      asg.attachLc @
+      if option and option.createByUser
+        asg.attachLc @
+        asg.draw()
 
-      asg.connections( 'Lc_Asso' )[ 0 ]
+        return asg.connections( 'Lc_Asso' )[ 0 ]
+
+      @
 
 
     initialize : ( attr, option )->

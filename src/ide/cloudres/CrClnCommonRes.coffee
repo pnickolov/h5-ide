@@ -8,13 +8,14 @@ define [
 ], ( CrCommonCollection, CrCollection, CrModel, ApiRequest, constant )->
 
   camelToPascal = ( obj ) ->
+    exceptionList = [ 'member', 'item' ]
     if not _.isObject obj then return obj
 
     for camelKey, value of obj
       if not (obj.hasOwnProperty camelKey) then continue
 
       pascalKey = camelKey.substring(0,1).toUpperCase() + camelKey.substring(1)
-      if not _.isArray( obj ) and not pascalKey is camelKey
+      if not _.isArray( obj ) and pascalKey isnt camelKey and camelKey not in exceptionList
         obj[pascalKey] = value
         delete obj[camelKey]
 
@@ -359,7 +360,7 @@ define [
       #   acl.associationSet = acl.associationSet?.item || []
       #   if acl.associationSet.length > 0
       #     acl.subnetId = acl.associationSet[0].subnetId
-      
+
       acls
   }
 

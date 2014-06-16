@@ -34,10 +34,6 @@ define [
       "click .HideOEPanelLeft"       : "toggleLeftPanel"
       "OPTION_CHANGE .AmiTypeSelect" : "changeAmiType"
       "click .BrowseCommunityAmi"    : "browseCommunityAmi"
-      'click #community_ami_page_preview' : "searchCommunityAmiPrev"
-      'click #community_ami_page_next' : "searchCommunityAmiNext"
-      'keypress #community-ami-input': 'searchCommunityAmiCurrent'
-      'click #btn-search-ami'        : "searchCommunityAmiCurrent"
       "click .ManageSnapshot"        : "manageSnapshot"
       "click .RefreshLeftPanel"      : "refreshPanelDataData"
       "click .fixedaccordion-head"   : "updateAccordion"

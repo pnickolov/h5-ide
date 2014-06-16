@@ -415,7 +415,7 @@
   right: 5px;
   width: 16px;
   height: 16px;
-  background: url("../images/ide/btn-fav-ami-unfaved-normal.png"); }
+  background: url("/assets/images/ide/btn-fav-ami-unfaved-normal.png"); }
 
 .toggle-fav.faved {
   background: url("/assets/images/ide/btn-fav-ami-faved-normal.png"); }

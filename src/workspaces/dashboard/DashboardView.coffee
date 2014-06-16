@@ -51,7 +51,6 @@ define [
       'click .show-credential' : 'showCredential'
       'click #RefreshResource' : 'reloadResource'
       "click .icon-detail"     : "showResourceDetail"
-      'mouseover .dashboard-bubble': 'showBubble'
 
 
     initialize : ()->
@@ -92,15 +91,8 @@ define [
         return tplPartials.bubbleResourceSub renderData
 
     dashboardBubble : ( data )->
-
-      # handle INSTANCE TYPE todo:'Wait for API'
-      if data.type is "INSTANCE"
-        data.data = _.filter @model.getAwsResDataById(@region, constant.RESTYPE.AMI, data.id)
-        return MC.template.bubbleAMIInfo data.data
-
       # get Resource Data
-      data.data = @model.getAwsResDataById( @region, constant.RESTYPE[data.type], data.id ).toJSON()
-
+      data.data = @model.getAwsResDataById( @region, constant.RESTYPE[data.type], data.id )?.toJSON()
       data.id = data.data.id
 
       # Make Boolean to String to show in handlebarsjs
@@ -414,11 +406,11 @@ define [
             Tenancy : data.instanceTenancy
           }
         when "ASG"
+          console.debug data
           return {
-            title : data.AutoScalingGroupName
-            Name  : data.AutoScalingGroupName
-            Arn   : data.id
-            "Availability Zone" : data.AvailabilityZones.join(", ")
+            "title" : data.Name
+            "Name"  : data.Name
+            "Availability Zone" : data.AvailabilityZones.member.join(", ")
             "Create Time" : data.CreatedTime
             "Default Cooldown" : data.DefaultCooldown
             "Desired Capacity" : data.DesiredCapacity
@@ -428,7 +420,8 @@ define [
             "Health Check Type" : data.HealthCheckType
             #Instance : data.Instances
             "Launch Configuration" : data.LaunchConfigurationName
-            "Termination Policy"   : data.TerminationPolicies.join(", ")
+            "Termination Policy"   : data.TerminationPolicies.member.join(", ")
+            "Arn"   : data.id
           }
         when "ELB"
           return {

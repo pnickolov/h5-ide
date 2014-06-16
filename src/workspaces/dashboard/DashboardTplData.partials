@@ -165,7 +165,7 @@
         </td>
         <td><i class="status status-{{instanceState.name}} icon-label"></i>{{ instanceState.name }}</td>
         <td>{{simpleTime launchTime}}</td>
-        <td><span class="dashboard-bubble" data-bubble-template="dashboardBubble" data-bubble-data="{type:'INSTANCE',id:'{{imageId}}'}">{{ imageId }}</span></td>
+        <td><span class="bubble" data-bubble-template="dashboardBubble" data-bubble-data="{&quot;type&quot;:&quot;AMI&quot;,&quot;id&quot;:&quot;{{imageId}}&quot;}">{{ imageId }}</span></td>
         <td>{{placement.availabilityZone}}</td>
         <td><i title="{{i18n 'DASH_TIT_VIEW_RESOURCE_DETAIL'}}" class="icon-detail" data-id="{{id}}"></i></td>
       </tr>{{/with}}

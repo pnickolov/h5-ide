@@ -233,7 +233,7 @@ define [
       }
 
       $("#forceTerminateApp").on "click", ()->
-        modal.terminate().fail (err)->
+        model.terminate().fail (err)->
           error = if err.awsError then err.error + "." + err.awsError else err.error
           notification "Fail to terminate your app \"#{name}\". (ErrorCode: #{error})"
         return

@@ -542,12 +542,13 @@ define [ 'MC', 'constant', 'state_model', 'CloudResources', "Design", 'backbone'
 
 		getResState: (resId) ->
 
-			that = this
-			resObj = CloudResources(that.type, Design.instance().region()).get(resId).toJSON()
+			resObj = CloudResources(@get("resModel").type, Design.instance().region()).get(resId)
 			resState = 'unknown'
-			if resObj and resObj.instanceState and resObj.instanceState.name
-				resState = resObj.instanceState.name
-			that.set('resState', resState)
+			if resObj
+				resObj = resObj.attributes
+				if resObj.instanceState and resObj.instanceState.name
+					resState = resObj.instanceState.name
+			@set('resState', resState)
 			null
 
 		genStateLogData: (resId, callback) ->

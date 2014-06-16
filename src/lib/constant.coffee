@@ -312,6 +312,7 @@ define ['MC', 'i18n!nls/lang.js'], ( MC, lang ) ->
 	OS_TYPE_MAPPING         : OS_TYPE_MAPPING
 	REGEXP                  : REGEXP
 	RESTYPE                 : RESTYPE
+	STATE_REF_DICT          : STATE_REF_DICT
 	RESNAME                 : wrap RESNAME
 	WRAP                    : wrap
 

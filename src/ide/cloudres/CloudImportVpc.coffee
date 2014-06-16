@@ -469,27 +469,27 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         insComp = @add( "INSTANCE", insRes )
 
         #generate BlockDeviceMapping for instance
-        # bdm = insComp.resource.BlockDeviceMapping
-        # _.each aws_ins.blockDeviceMapping, (e,key)->
-        #   volComp = me.volumes[ e.ebs.volumeId ]
+        bdm = insComp.resource.BlockDeviceMapping
+        _.each aws_ins.blockDeviceMapping, (e,key)->
+          volComp = me.volumes[ e.ebs.volumeId ]
 
-        #   if not volComp then return
+          if not volComp then return
 
-        #   volRes = volComp.resource
-        #   if aws_ins.rootDeviceName.indexOf( e.deviceName ) isnt -1
-        #     # rootDevice
-        #     data =
-        #       "DeviceName": volRes.AttachmentSet.Device
-        #       "Ebs":
-        #         "VolumeSize": Number(volRes.Size)
-        #         "VolumeType": volRes.VolumeType
-        #     if volRes.SnapshotId
-        #       data.Ebs.SnapshotId = volRes.SnapshotId
-        #     if volRes.VolumeType is "io1"
-        #       data.Ebs.Iops = volRes.Iops
-        #     bdm.push data
+          volRes = volComp.resource
+          if aws_ins.rootDeviceName.indexOf( e.deviceName ) isnt -1
+            # rootDevice
+            data =
+              "DeviceName": volRes.AttachmentSet.Device
+              "Ebs":
+                "VolumeSize": Number(volRes.Size)
+                "VolumeType": volRes.VolumeType
+            if volRes.SnapshotId
+              data.Ebs.SnapshotId = volRes.SnapshotId
+            if volRes.VolumeType is "io1"
+              data.Ebs.Iops = volRes.Iops
+            bdm.push data
         #   else
-        #     # not rootDevice
+        #     # not rootDevice, external volume point to instance
         #     bdm.push "#" + volComp.uid
         #     #add volume component
         #     volComp.resource.AttachmentSet.InstanceId = CREATE_REF( insComp )

@@ -224,20 +224,24 @@ define [
     trAwsXml : ( data )->
       instances = []
       for i in data.DescribeInstancesResponse.reservationSet?.item || []
-        for ami in i.instancesSet?.item || []
-          instances.push ami
+        for ins in i.instancesSet?.item || []
+          instances.push ins
 
       instances
 
     parseFetchData : ( data )->
-      for ami in data
-        ami.blockDeviceMapping  = ami.blockDeviceMapping?.item || []
-        ami.networkInterfaceSet = ami.networkInterfaceSet?.item || []
-        ami.groupSet            = ami.groupSet?.item || []
-
-        ami.id = ami.instanceId
-        ami.instanceState = ami.state if ami.state
-        delete ami.instanceId
+      for ins in data
+        #compatibility processing
+        ins.instanceState = ins.state if ins.state
+        ins.blockDeviceMapping = ins.blockDeviceMappings if ins.blockDeviceMappings
+        ins.groupSet = ins.securityGroups if securityGroups
+        if ins.instanceState and ins.instanceState.name in [ "terminated", "shutting-down" ]
+          continue
+        ins.blockDeviceMapping  = ins.blockDeviceMapping?.item || []
+        ins.networkInterfaceSet = ins.networkInterfaceSet?.item || []
+        ins.groupSet            = ins.groupSet?.item || []
+        ins.id = ins.instanceId
+        delete ins.instanceId
       data
   }
 

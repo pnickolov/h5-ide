@@ -126,12 +126,12 @@ button {
 
 /* Import JSON */
 #modal-import-json-dropzone {
-	border    : 3px dashed #3A3A3A;
-	background: #141212;
-	padding   : 20px;
-	margin    : 10px 0;
-	font-size : 16px;
-	text-align: center;
+	border        : 3px dashed #3A3A3A;
+	background    : #141212;
+	padding       : 30px;
+	margin-bottom : 10px;
+	font-size     : 16px;
+	text-align    : center;
 }
 
 #modal-import-json-dropzone.dragover {

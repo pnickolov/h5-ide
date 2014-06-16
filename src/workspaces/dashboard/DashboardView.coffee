@@ -5,12 +5,13 @@ define [
   './VisualizeVpcTpl'
   "UI.modalplus"
   "constant"
+  "i18n!nls/lang.js"
   "backbone"
   "UI.scrollbar"
   "UI.tooltip"
   "UI.table"
   "UI.bubble"
-], ( template, tplPartials, VisualizeVpcTpl, Modal, constant )->
+], ( template, tplPartials, VisualizeVpcTpl, Modal, constant, lang )->
 
   Helper = {
     scrollToResource: ->
@@ -235,12 +236,17 @@ define [
       return
 
     importJson : ()->
-      modal MC.template.importJSON()
+      modal = new Modal {
+        title         : lang.ide.POP_IMPORT_JSON_TIT
+        template      : tplPartials.importJSON()
+        width         : "470"
+        disableFooter : true
+      }
 
       reader = new FileReader()
       reader.onload = ( evt )->
         error = App.importJson( reader.result )
-        if error
+        if _.isString error
           $("#import-json-error").html error
         else
           modal.close()

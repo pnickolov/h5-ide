@@ -475,3 +475,6 @@
     <dl class="dl-horizontal">{{#each data}}<dt>{{@key}}</dt><dd>{{this}}</dd>{{/each}}</dl>
 </div>
 
+<!-- {{importJSON}} -->
+<div id="modal-import-json-dropzone">{{i18n "POP_IMPORT_DROP_LBL"}}<label for="modal-import-json-file" class="select-file-link">{{i18n "POP_IMPORT_SELECT_LBL"}}</label><input type="file" id="modal-import-json-file"></div>
+<div id="import-json-error"></div>

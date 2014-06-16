@@ -213,24 +213,6 @@ TEMPLATE.modalToolbar=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", escapeExpression=this.escapeExpression;
-
-
-  buffer += "<div style=\"width:468px\">\n	<div class=\"modal-header\"> <h3>"
-    + escapeExpression(helpers.i18n.call(depth0, "POP_IMPORT_JSON_TIT", {hash:{},data:data}))
-    + "</h3><i class=\"modal-close\">&times;</i> </div>\n	<div class=\"modal-body\" style=\"min-height:0px;\">\n		<div id=\"modal-import-json-dropzone\">"
-    + escapeExpression(helpers.i18n.call(depth0, "POP_IMPORT_DROP_LBL", {hash:{},data:data}))
-    + "<label for=\"modal-import-json-file\" class=\"select-file-link\">"
-    + escapeExpression(helpers.i18n.call(depth0, "POP_IMPORT_SELECT_LBL", {hash:{},data:data}))
-    + "</label><input type=\"file\" id=\"modal-import-json-file\"></div>\n		<div id=\"import-json-error\"></div>\n	</div>\n</div>";
-  return buffer;
-  };
-TEMPLATE.importJSON=Handlebars.template(__TEMPLATE__);
-
-
-__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 

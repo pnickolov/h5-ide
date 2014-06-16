@@ -132,6 +132,10 @@ define ["ApiRequest", "./CrModel", "constant", "backbone"], ( ApiRequest, CrMode
       catch e
         return null
 
+      if not awsData or not awsData.length
+        @trigger "update"
+        return
+
       # Transform the data id if the Collection has defined it.
       toAddIds = []
       for d in awsData

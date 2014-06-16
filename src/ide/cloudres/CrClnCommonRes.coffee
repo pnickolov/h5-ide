@@ -234,7 +234,7 @@ define [
         #compatibility processing
         ins.instanceState = ins.state if ins.state
         ins.blockDeviceMapping = ins.blockDeviceMappings if ins.blockDeviceMappings
-        ins.groupSet = ins.securityGroups if securityGroups
+        ins.groupSet = ins.securityGroups if ins.securityGroups
         if ins.instanceState and ins.instanceState.name in [ "terminated", "shutting-down" ]
           continue
         ins.blockDeviceMapping  = ins.blockDeviceMapping?.item || []

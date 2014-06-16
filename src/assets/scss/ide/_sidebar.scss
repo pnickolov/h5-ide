@@ -131,6 +131,11 @@
   padding-top : 12px;
   height : 60px - 12px;
   background : image-url('ide/icon/instance-resource.png') center no-repeat;
+
+  #ResourceDragItem & {
+    padding-top : 17px;
+    height : 58px;
+  }
 }
 
 .ebs-size {

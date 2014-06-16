@@ -482,8 +482,7 @@
   position: relative;
   cursor: pointer;
   background: #323e49;
-  border-radius: 5px;
-  overflow: hidden; }
+  border-radius: 5px; }
   .region-resource-list > li:hover {
     opacity: 1; }
   .region-resource-list > li.disabled {
@@ -504,7 +503,8 @@
   padding-bottom: 65%;
   background: #55626f url('/assets/images/ide/thumbnail-stack-placehoder@2x.png') center center no-repeat;
   background-size: 100% auto;
-  overflow: hidden; }
+  overflow: hidden;
+  border-radius: 5px 5px 0 0; }
   .region-resource-list .thumbnail.app-thumbnail {
     background-image: url('/assets/images/ide/thumbnail-app-placehoder@2x.png');
     background-size: 100% auto; }

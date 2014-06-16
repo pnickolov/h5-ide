@@ -272,6 +272,9 @@
   padding-top: 12px;
   height: 48px;
   background: url('/assets/images/ide/icon/instance-resource.png') center no-repeat; }
+  #ResourceDragItem .resource-icon-instance {
+    padding-top: 17px;
+    height: 58px; }
 
 .ebs-size {
   margin-top: -1.5em;
@@ -405,7 +408,7 @@
   right: 5px;
   width: 16px;
   height: 16px;
-  background: url("/assets/images/ide/btn-fav-ami-unfaved-normal.png"); }
+  background: url("../images/ide/btn-fav-ami-unfaved-normal.png"); }
 
 .btn-fav-ami {
   position: absolute;

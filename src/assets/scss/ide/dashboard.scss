@@ -578,7 +578,6 @@
     cursor        : pointer;
     background    : #323e49;
     border-radius : 5px;
-    overflow      : hidden;
 
     &:hover { opacity: 1; }
     &.disabled {
@@ -605,6 +604,7 @@
     background      : #55626f image-url("ide/thumbnail-stack-placehoder@2x.png") center center no-repeat;
     background-size : 100% auto;
     overflow        : hidden;
+    border-radius   : 5px 5px 0 0;
 
     &.app-thumbnail {
       background-image : image-url("ide/thumbnail-app-placehoder@2x.png");

@@ -72,7 +72,6 @@ define [
       vpns
     parseExternalData: ( data ) ->
       @unifyApi data, @type
-      @parseFetchData data
   }
 
   ### EIP ###
@@ -191,21 +190,18 @@ define [
     trAwsXml : ( data )-> data.DescribeVpnGatewaysResponse.vpnGatewaySet?.item
     parseFetchData : ( vgws )->
       for vgw in vgws
-        if vgw.vpcAttachments
-          vgw.attachments = vgw.vpcAttachments || []
-        else if vgw.attachments
-          vgw.attachments = vgw.attachments?.item || []
-        else
-          continue
-
-        vgw.id = vgw.vpnGatewayId
         if vgw.attachments and vgw.attachments.length>0
           vgw.vpcId = vgw.attachments[0].vpcId
           vgw.attachmentState = vgw.attachments[0].state
       vgws
     parseExternalData: ( data ) ->
       @unifyApi data, @type
-      @parseFetchData data
+      for vgw in data
+        if vgw.attachments and vgw.attachments.length>0
+          vgw.vpcId = vgw.attachments[0].vpcId
+          vgw.attachmentState = vgw.attachments[0].state
+      data
+
   }
 
   ### IGW ###
@@ -220,15 +216,18 @@ define [
     parseFetchData : ( igws )->
       for igw in igws
         igw.attachmentSet = igw.attachmentSet?.item || igw.attachments ||[]
-        igw.id = igw.internetGatewayId
-        #delete igw.internetGatewayId
         if igw.attachmentSet and igw.attachmentSet.length>0
           igw.vpcId = igw.attachmentSet[0].vpcId
           igw.state = igw.attachmentSet[0].state
       igws
     parseExternalData: ( data ) ->
       @unifyApi data, @type
-      @parseFetchData data
+      for igw in data
+        if igw.attachmentSet and igw.attachmentSet.length>0
+          igw.vpcId = igw.attachmentSet[0].vpcId
+          igw.state = igw.attachmentSet[0].state
+      data
+
   }
 
   ### RTB ###

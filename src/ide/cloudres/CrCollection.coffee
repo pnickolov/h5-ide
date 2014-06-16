@@ -30,6 +30,14 @@ define ["ApiRequest", "./CrModel", "constant", "backbone"], ( ApiRequest, CrMode
     SG:
         description : 'groupDescription'
 
+
+    VGW:
+        vpcAttachments : "attachments"
+
+    IGW:
+        attachments : "attachmentSet"
+
+
     # All resource type will be replaced in below list
     ALL:
       associations: 'associationSet'

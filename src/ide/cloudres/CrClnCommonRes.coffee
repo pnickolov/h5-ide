@@ -41,6 +41,7 @@ define [
       elbs
     parseExternalData: ( data ) ->
       @unifyApi data, @type
+      @parseFetchData data
 
   }
 
@@ -60,6 +61,7 @@ define [
       vpns
     parseExternalData: ( data ) ->
       @unifyApi data, @type
+      @parseFetchData data
   }
 
   ### EIP ###
@@ -73,6 +75,7 @@ define [
     trAwsXml : ( data )-> data.DescribeAddressesResponse.addressesSet?.item
     parseExternalData: ( data ) ->
       @unifyApi data, @type
+      @parseFetchData data
   }
 
   ### VPC ###
@@ -86,6 +89,7 @@ define [
     trAwsXml : ( data )-> data.DescribeVpcsResponse.vpcSet?.item
     parseExternalData: ( data ) ->
       @unifyApi data, @type
+      @parseFetchData data
   }
 
   ### ASG ###
@@ -110,6 +114,7 @@ define [
       asgs
     parseExternalData: ( data ) ->
       @unifyApi data, @type
+      @parseFetchData data
   }
 
   ### CloudWatch ###
@@ -137,6 +142,7 @@ define [
       cws
     parseExternalData: ( data ) ->
       @unifyApi data, @type
+      @parseFetchData data
   }
 
   ### CGW ###
@@ -150,6 +156,7 @@ define [
     trAwsXml : ( data )-> data.DescribeCustomerGatewaysResponse.customerGatewaySet?.item
     parseExternalData: ( data ) ->
       @unifyApi data, @type
+      @parseFetchData data
   }
 
   ### VGW ###
@@ -177,6 +184,7 @@ define [
       vgws
     parseExternalData: ( data ) ->
       @unifyApi data, @type
+      @parseFetchData data
   }
 
   ### IGW ###
@@ -199,6 +207,7 @@ define [
       igws
     parseExternalData: ( data ) ->
       @unifyApi data, @type
+      @parseFetchData data
   }
 
   ### RTB ###
@@ -219,6 +228,7 @@ define [
       rtbs
     parseExternalData: ( data ) ->
       @unifyApi data, @type
+      @parseFetchData data
   }
 
   ### INSTANCE ###
@@ -252,6 +262,7 @@ define [
       data
     parseExternalData: ( data ) ->
       @unifyApi data, @type
+      @parseFetchData data
   }
 
   ### VOLUME ###
@@ -277,6 +288,7 @@ define [
       volumes
     parseExternalData: ( data ) ->
       @unifyApi data, @type
+      @parseFetchData data
   }
 
   ### LC ###
@@ -304,6 +316,7 @@ define [
 
     parseExternalData: ( data ) ->
       @unifyApi data, @type
+      @parseFetchData data
 
   }
 
@@ -324,6 +337,7 @@ define [
       sps
     parseExternalData: ( data ) ->
       @unifyApi data, @type
+      @parseFetchData data
   }
 
   ### AvailabilityZone ###
@@ -338,6 +352,7 @@ define [
     trAwsXml : ( data )-> data.DescribeAvailabilityZonesResponse.availabilityZoneInfo?.item
     parseExternalData: ( data ) ->
       @unifyApi data, @type
+      @parseFetchData data
   }
 
 
@@ -363,6 +378,7 @@ define [
       newNcList
     parseExternalData: ( data ) ->
       @unifyApi data, @type
+      @parseFetchData data
   }
 
 
@@ -387,6 +403,7 @@ define [
       acls
     parseExternalData: ( data ) ->
       @unifyApi data, @type
+      @parseFetchData data
   }
 
   ### ENI ###
@@ -418,6 +435,7 @@ define [
         enis
     parseExternalData: ( data ) ->
       @unifyApi data, @type
+      @parseFetchData data
   }
 
 
@@ -433,6 +451,7 @@ define [
     trAwsXml : ( data )-> data.DescribeSubnetsResponse.subnetSet?.item
     parseExternalData: ( data ) ->
       @unifyApi data, @type
+      @parseFetchData data
   }
 
   ### SG ###
@@ -464,5 +483,6 @@ define [
       sgs
     parseExternalData: ( data ) ->
       @unifyApi data, @type
+      @parseFetchData data
   }
 

@@ -142,8 +142,8 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js", 'CloudR
       if osType in constant.WINDOWS
         osFamily = 'mswin'
 
-        sql_web_pattern = /sql.*?web.*?/
-        sql_standerd_pattern = /sql.*?standard.*?/
+        sql_web_pattern = /sql.*?web.*?/i
+        sql_standerd_pattern = /sql.*?standard.*?/i
 
         name        = ami.name or ""
         desc        = ami.description or ""
@@ -157,18 +157,15 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js", 'CloudR
       osFamily
 
     initInstanceType : ()->
-      ami = @getAmi()
-      if ami and ami.instance_type
-        instance_type = ami.instance_type.replace(/\s/g, "").split(",")
-        for i in instance_type
-          # Do not return t1.micro, because if vpc is dedicated, the instance
-          # should be m1.small
-          if i isnt "t1.micro"
-            type = i
-            break
+      for i in @getInstanceTypeList()
+        # Do not return t1.micro, because if vpc is dedicated, the instance
+        # should be m1.small
+        if i.name isnt "t1.micro"
+          type = i.name
+          break
 
       @attributes.instanceType = type || "m1.small"
-      null
+      return
 
     getCost : ( priceMap, currency )->
       if not priceMap.instance then return null

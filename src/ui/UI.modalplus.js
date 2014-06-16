@@ -339,13 +339,13 @@
       Modal.prototype._fadeOut = function() {
         return this.tpl.animate({
           left: "-=" + $(window).width()
-        }, this.option.delay || 300);
+        }, this.option.delay || 100);
       };
 
       Modal.prototype._fadeIn = function() {
         return this.tpl.animate({
           left: "+=" + $(window).width()
-        }, this.option.delay || 300);
+        }, this.option.delay || 100);
       };
 
       Modal.prototype._slideIn = function() {

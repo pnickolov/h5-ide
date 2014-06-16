@@ -256,11 +256,11 @@ define [], ()->
         _fadeOut: ->
             @tpl.animate
                 left: "-="+ $(window).width()
-            ,@option.delay || 300
+            ,@option.delay || 100
         _fadeIn: ->
             @tpl.animate
                 left: "+="+ $(window).width()
-            ,@option.delay || 300
+            ,@option.delay || 100
         _slideIn: ->
             @tpl.animate
                 left: "-="+ $(window).width()

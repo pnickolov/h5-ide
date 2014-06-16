@@ -23,6 +23,50 @@
     margin : 0 auto;
   }
 
+  .error-info-block {
+    text-align : left;
+    max-width  : 600px;
+    margin     : 20px auto;
+
+      header {
+        font-size     : 16px;
+        color         : #eee;
+        margin-bottom : 50px;
+      }
+    }
+
+    .result-sub-title {
+      font-size  : 16px;
+      color      : #eee;
+      background : rgba(0, 0, 0, 0.2);
+      padding    : 10px;
+    }
+
+    .result-error-info {
+      padding       : 10px;
+      color         : #ccc;
+      background    : rgba(40,40,40,.5);
+      margin-bottom : 15px;
+
+      .detail {
+        color: #ec3c38;
+      }
+    }
+
+    .result-error-notice {
+      padding : 5px;
+      color   : #aaa;
+    }
+
+    .rolling-back-content {
+      display : none;
+    }
+    
+    &.rolling-back {
+      .processing { display : none; }
+      .rolling-back-content { display : block; }
+    }
+
   .fail .result-error-info {
     margin-bottom : 15px;
   }
@@ -37,6 +81,7 @@
 
   .title {
     color : #999;
+    font-style: bold;
   }
 
   .processing, .success {
@@ -154,6 +199,5 @@
     &.rolling-back {
       .processing { display : none; }
     }
-
   }
 }

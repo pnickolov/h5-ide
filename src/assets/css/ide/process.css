@@ -14,6 +14,35 @@
   .ops-process > div {
     width: 580px;
     margin: 0 auto; }
+  .ops-process .error-info-block {
+    text-align: left;
+    max-width: 600px;
+    margin: 20px auto; }
+    .ops-process .error-info-block header {
+      font-size: 16px;
+      color: #eee;
+      margin-bottom: 50px; }
+  .ops-process .result-sub-title {
+    font-size: 16px;
+    color: #eee;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 10px; }
+  .ops-process .result-error-info {
+    padding: 10px;
+    color: #ccc;
+    background: rgba(40, 40, 40, 0.5);
+    margin-bottom: 15px; }
+    .ops-process .result-error-info .detail {
+      color: #ec3c38; }
+  .ops-process .result-error-notice {
+    padding: 5px;
+    color: #aaa; }
+  .ops-process .rolling-back-content {
+    display: none; }
+  .ops-process.rolling-back .processing {
+    display: none; }
+  .ops-process.rolling-back .rolling-back-content {
+    display: block; }
   .ops-process .fail .result-error-info {
     margin-bottom: 15px; }
   .ops-process .sub-title {
@@ -23,7 +52,8 @@
     margin: 0;
     padding: 10px; }
   .ops-process .title {
-    color: #999; }
+    color: #999;
+    font-style: bold; }
   .ops-process .processing, .ops-process .success {
     -webkit-transition: all 0.2s ease-in;
     -moz-transition: all 0.2s ease-in;

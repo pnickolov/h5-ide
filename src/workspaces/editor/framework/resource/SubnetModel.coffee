@@ -53,7 +53,8 @@ define [ "constant",
     setCidr : ( cidr )->
       # No need to update eni ip, because the ip is autoassign at
       # the time we serialize()
-      @set("cidr", cidr)
+      validCIDR = Design.modelClassForType(constant.RESTYPE.SUBNET).getValidCIDR(cidr)
+      @set("cidr", validCIDR)
       @draw()
       null
 
@@ -311,6 +312,26 @@ define [ "constant",
         return true
 
       return false
+
+    getValidCIDR : (cidr) ->
+
+      subnetCidrBinStr = _getCidrBinStr(cidr)
+      subnetCidrSuffix = Number(cidr.split('/')[1])
+      suffixIPBinStr = subnetCidrBinStr.slice(subnetCidrSuffix)
+      suffixNum = parseInt(suffixIPBinStr)
+
+      if (suffixNum is 0) or (suffixIPBinStr is '')
+        return cidr
+      else
+        prefixIPBinStr = subnetCidrBinStr.slice(0, subnetCidrSuffix)
+        newIPBinStr = prefixIPBinStr + MC.rightPadString('', suffixIPBinStr.length, '0')
+
+        newIPAry = _.map [0, 8, 16, 24], (value) ->
+          return (parseInt newIPBinStr.slice(value, value + 8), 2)
+        newIPStr = newIPAry.join('.')
+        newCIDRStr = newIPStr + '/' + subnetCidrSuffix
+
+        return newCIDRStr
 
     autoAssignAllCIDR : (vpcCIDR, subnetCount) ->
 

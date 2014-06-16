@@ -56,7 +56,8 @@ define [ "constant", "../GroupModel", "./DhcpModel" ], ( constant, GroupModel, D
         for sb, idx in subnets
           sb.setCidr( subnetCidrAry[idx] )
 
-      @set("cidr", cidr)
+      validCIDR = Design.modelClassForType(constant.RESTYPE.SUBNET).getValidCIDR(cidr)
+      @set("cidr", validCIDR)
       @draw()
       true
 

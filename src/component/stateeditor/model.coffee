@@ -179,7 +179,6 @@ define [ 'MC', 'constant', 'state_model', 'CloudResources', 'backbone', 'jquery'
 
 			if imageObj
 
-				osFamily = imageObj.osFamily
 				osType = imageObj.osType
 
 				linuxDistroRange = ['centos', 'redhat',  'rhel', 'ubuntu', 'debian', 'fedora', 'gentoo', 'opensuse', 'suse', 'sles', 'amazon', 'amaz', 'linux-other']

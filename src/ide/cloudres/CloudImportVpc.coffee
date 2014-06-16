@@ -813,7 +813,8 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
 
         lcRes.LaunchConfigurationARN  = aws_lc.id
         lcRes.LaunchConfigurationName = aws_lc.Name
-        lcRes.InstanceMonitoring = aws_lc.InstanceMonitoring.Enabled
+        lcRes.InstanceMonitoring      = aws_lc.InstanceMonitoring.Enabled
+        lcRes.UserData                = ""
 
         #convert SecurityGroups to REF
         sg = []
@@ -833,10 +834,10 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
           data =
             "DeviceName": e.DeviceName
             "Ebs":
-              "VolumeSize": Number(e.ebs.VolumeSize)
-              "VolumeType": e.ebs.VolumeType
-          if e.ebs.SnapshotId
-            data.Ebs.SnapshotId = e.ebs.SnapshotId
+              "VolumeSize": Number(e.Ebs.VolumeSize)
+              "VolumeType": e.Ebs.VolumeType
+          if e.Ebs.SnapshotId
+            data.Ebs.SnapshotId = e.Ebs.SnapshotId
           if data.Ebs.VolumeType is "io1"
             data.Ebs.Iops = e.Ebs.Iops
           bdm.push data

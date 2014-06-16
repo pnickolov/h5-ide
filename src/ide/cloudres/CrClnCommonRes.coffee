@@ -314,23 +314,25 @@ define [
     AwsResponseType : "DescribeLaunchConfigurationsResponse"
     modelIdAttribute : "LaunchConfigurationARN"
     trAwsXml : ( data )-> data.DescribeLaunchConfigurationsResponse.DescribeLaunchConfigurationsResult.LaunchConfigurations?.member
-    parseFetchData : ( lcs )->
-      for lc in lcs
-        for key, value of lc
-            fixKey = key.substring(0,1).toUpperCase() + key.substring(1)
-            lc[fixKey] = value
-            delete lc[key]
-
+    parseFetchData : ( data )->
+      for lc in data
+        lc.id = lc.LaunchConfigurationARN
         lc.Name = lc.LaunchConfigurationName
-        delete lc.LaunchConfigurationName
-        lc.BlockDeviceMappings = lc.BlockDeviceMappings?.member or lc.BlockDeviceMappings
-        lc.SecurityGroups      = lc.SecurityGroups?.member or lc.SecurityGroups
-      lcs
+        #delete lc.LaunchConfigurationARN
+        #delete lc.LaunchConfigurationName
+        lc.BlockDeviceMappings = lc.BlockDeviceMappings?.member || []
+        lc.SecurityGroups      = lc.SecurityGroups?.member || []
+      data
 
     parseExternalData: ( data ) ->
       @unifyApi data, @type
-      @parseFetchData data
-
+      @camelToPascal data
+      for lc in data
+        lc.id = lc.LaunchConfigurationARN
+        lc.Name = lc.LaunchConfigurationName
+        #delete lc.LaunchConfigurationARN
+        #delete lc.LaunchConfigurationName
+      data
   }
 
   ### ScalingPolicy ###

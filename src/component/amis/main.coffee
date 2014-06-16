@@ -22,6 +22,7 @@ define [ 'jquery', 'event' ], ( $, ide_event ) ->
 
             #render
             view.render()
+            view
 
     unLoadModule = ( view, model ) ->
         console.log 'ami unLoadModule'

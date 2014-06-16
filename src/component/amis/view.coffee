@@ -3,9 +3,10 @@
 #############################
 
 define [ 'event', './template'
+         'i18n!nls/lang.js', 'UI.modalplus'
          'backbone', 'jquery', 'handlebars',
          'UI.modal', 'jqpagination'
-], ( ide_event, template, Backbone, $, Handlebars ) ->
+], ( ide_event, template, lang, Modal, Backbone, $, Handlebars ) ->
 
     AMIsView = Backbone.View.extend {
 
@@ -15,12 +16,12 @@ define [ 'event', './template'
 
         render     : () ->
             console.log 'pop-up:amis run render'
-            #
-            that = this
-            modal template( {} ), true, () ->
-                _.defer () ->
-                    that.setElement $( '#modal-browse-community-ami' ).closest '#modal-wrap'
-
+            @modal = new Modal
+              title: lang.ide.AMI_LBL_COMMUNITY_AMIS
+              width: "855px"
+              template: template()
+              disableFooter: true
+              compact: true
         showLoading: ->
             this.$( '.scroll-content' ).hide()
             this.$( '.show-loading' ).show()

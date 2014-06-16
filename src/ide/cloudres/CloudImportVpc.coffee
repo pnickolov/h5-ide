@@ -624,15 +624,19 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         for i in aws_rtb.associationSet
           asso =
             Main : if i.main is false then false else "true"
-            RouteTableAssociationId : "" #i.routeTableAssociationId
+            RouteTableAssociationId : ""
             SubnetId : ""
-          subnetComp = @subnets[i.subnetId]
-          if i.subnetId and subnetComp
-            asso.SubnetId = CREATE_REF( subnetComp, 'resource.SubnetId' )
+          if not asso.Main
+            asso.RouteTableAssociationId = i.routeTableAssociationId
+            subnetComp = @subnets[i.subnetId]
+            if i.subnetId and subnetComp
+              asso.SubnetId = CREATE_REF( subnetComp, 'resource.SubnetId' )
           rtbRes.AssociationSet.push asso
 
         #routeSet
         for i in aws_rtb.routeSet
+          if i.origin and i.origin is "EnableVgwRoutePropagation"
+            continue
           insComp = @instances[i.instanceId]
           eniComp = @enis[i.networkInterfaceId]
           gwComp  = @gateways[i.gatewayId]
@@ -656,7 +660,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         for i in aws_rtb.propagatingVgwSet
           gwComp = @gateways[i.gatewayId]
           if gwComp
-            rtbRes.PropagatingVgwSet.push CREATE_REF( 'resource.VpnGatewayId' )
+            rtbRes.PropagatingVgwSet.push CREATE_REF(gwComp, 'resource.VpnGatewayId' )
 
         rtbComp = @add( "RT", rtbRes )
         @addLayout( rtbComp, true, @theVpc )

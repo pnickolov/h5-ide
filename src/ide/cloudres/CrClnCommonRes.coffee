@@ -240,15 +240,18 @@ define [
     trAwsXml : ( data )-> data.DescribeRouteTablesResponse.routeTableSet?.item
     parseFetchData : ( rtbs )->
       for rtb in rtbs
-        rtb.routeSet = rtb.routeSet?.item || rtb.routes || []
+        rtb.routeSet = rtb.routeSet?.item || []
         rtb.associationSet = rtb.associationSet?.item || []
-        rtb.propagatingVgwSet = rtb.propagatingVgwSet?.item ||rtb.propagatingVgws|| []
+        rtb.propagatingVgwSet = rtb.propagatingVgwSet?.item []
         rtb.id = rtb.routeTableId
-        delete rtb.routeTableId
+        #delete rtb.routeTableId
       rtbs
     parseExternalData: ( data ) ->
       @unifyApi data, @type
-      #@parseFetchData data
+      for rtb in data
+        rtb.id = rtb.routeTableId
+        #delete rtb.routeTableId
+      data
   }
 
   ### INSTANCE ###

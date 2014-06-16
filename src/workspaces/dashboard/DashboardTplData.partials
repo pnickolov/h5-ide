@@ -228,8 +228,8 @@
         </td>
         <td><i class="status status-{{ status }} icon-label"></i>{{ status }}</td>
         <td>{{ simpleTime createTime }}</td>
-        <td>{{#each attachmentSet}}{{device}}{{/each}}</td>
-        <td><i class="status {{#each attachmentSet}}status-{{status}}{{/each}} icon-label"></i>{{#each attachmentSet }}{{ status }}{{/each}}</td>
+        <td>{{device}}</td>
+        <td><i class="status {{#if attachmentStatus}}status-in-use{{else}}status-available{{/if}} icon-label"></i>{{#if attachmentStatus}}attached{{else}}not-attached{{/if}}</td>
         <td><i title="{{i18n 'DASH_TIT_VIEW_RESOURCE_DETAIL'}}" class="icon-detail" data-id="{{id}}"></i></td>
     </tr>{{/with}}
     {{else}}
@@ -397,7 +397,7 @@
 <div class="scroll-wrap"> <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
 <div class="scroll-content">
     <table class="table">
-      <thead> <tr>\
+      <thead> <tr>
         <th></th>
         <th style="width: 30%"></th>
         <th style="width: 30%"></th>

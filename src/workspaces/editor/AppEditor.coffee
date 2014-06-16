@@ -63,7 +63,9 @@ define [
 
     initDesign : ()->
       StackEditor.prototype.initDesign.call this
-      if @differ then @differ.render()
+      if @differ
+        @differ.render()
+        @differ = null
       return
 
     refreshResource : ()->

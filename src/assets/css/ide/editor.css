@@ -412,6 +412,9 @@
   height: 16px;
   background: url("../images/ide/btn-fav-ami-unfaved-normal.png"); }
 
+.toggle-fav.faved {
+  background: url("/assets/images/ide/btn-fav-ami-faved-normal.png"); }
+
 .btn-fav-ami {
   position: absolute;
   top: 2px;

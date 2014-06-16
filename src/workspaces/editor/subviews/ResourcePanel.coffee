@@ -246,10 +246,30 @@ define [
 
     browseCommunityAmi : ()->
       searchCommunityAmiCurrent = @searchCommunityAmiCurrent.bind @
+      faveCommunityAmi = @faveCommunityAmi.bind @
       amiBrowser.loadModule()
+      $(document).off 'keypress',   '#community-ami-input'
+      $(document).off 'click',      '#btn-search-ami'
+      $(document).off 'click',      '.toggle-fav'
       $(document).on 'keypress',   '#community-ami-input', searchCommunityAmiCurrent
       $(document).on 'click',      '#btn-search-ami',      searchCommunityAmiCurrent
+      $(document).on 'click',      '.toggle-fav',          faveCommunityAmi
       @searchCommunityAmi()
+
+    faveCommunityAmi: (event)->
+      amiElem = $(event.target)
+      that = this
+      favAmis = CloudResources "FavoriteAmi", that.workspace.opsModel.get("region")
+      promise = null
+      if amiElem.hasClass('faved')
+        promise = favAmis.unfav(amiElem.data('id'))
+      else
+        promise = favAmis.fav(amiElem.data("id"))
+      promise?.then ->
+        notification 'info', if not amiElem.hasClass("faved") then lang.ide.RES_MSG_INFO_ADD_AMI_FAVORITE_SUCCESS else lang.ide.RES_MSG_INFO_REMVOE_FAVORITE_AMI_SUCCESS
+        amiElem.toggleClass('faved')
+      , ->
+        notification 'error', if not amiElem.hasClass("faved") then lang.ide.RES_MSG_ERR_ADD_FAVORITE_AMI_FAILED else lang.ide.RES_MSG_ERR_REMOVE_FAVORITE_AMI_FAILED
 
     searchCommunityAmi : (pageNum, perPage)->
       pageNum = pageNum || 1
@@ -285,6 +305,9 @@ define [
           ami: {name, platform, isPublic, architecture, rootDeviceType, perPageNum, returnPage}
       ).then (result)->
         renderAmis(result)
+      , (result)->
+        notification 'error', lang.ide.RES_MSG_WARN_GET_COMMUNITY_AMI_FAILED
+        renderAmis(ami:[])
 
     searchCommunityAmiPrev: ->
       page = parseInt( $("#community_ami_page_current").attr("page"), 10)

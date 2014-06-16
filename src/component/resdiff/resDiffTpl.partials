@@ -4,8 +4,8 @@
 	<div class="content_wrap scroll-content">
 		<p>Resources of this app has been externally changed. The change has been synced to app. The diagram may be re-generated to reflect the change.</p>
 		<h5>What has been changed:</h5>
+		<article></article>
 	</div>
-	<article></article>
 </div>
 
 <!-- {{resDiffGroup}} -->

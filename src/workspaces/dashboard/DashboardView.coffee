@@ -341,11 +341,11 @@ define [
         self.visModal.tpl.find(".loading-spinner").show()
         false
 
-      @visModal.tpl.on "click", ".visualize-vpc", ()->
+      @visModal.tpl.on "click", ".visualize-vpc-btn", ()->
         $tgt = $(this)
         if $tgt.hasClass(".disabled") then return false
         id = $tgt.attr("data-vpcid")
-        region = $tgt.parent().attr("data-region")
+        region = $tgt.closest("ul").attr("data-region")
         self.visModal.close()
         App.openOps App.model.createImportOps( region, id )
         false

@@ -4,9 +4,9 @@ define ["ApiRequest", "CloudResources", "constant", "backbone"], ( ApiRequest, C
 
   VisualizeVpcParams =
     'AWS.VPC.VPC'    : {
-      'filter' : {
-        'isDefault' : "false" # ignore default VPC
-      }
+      # 'filter' : {
+      #   'isDefault' : "false" # ignore default VPC
+      # }
     }
     'AWS.VPC.Subnet' : {}
     'AWS.EC2.Instance' : {
@@ -151,7 +151,6 @@ define ["ApiRequest", "CloudResources", "constant", "backbone"], ( ApiRequest, C
                 elb     : resourceMap resources["AWS|ELB"]
 
               obj.disabled = obj.eni.length > 300
-              obj.empty    = obj.subnet.length + obj.ami.length + obj.stopped.length + obj.eni.length + obj.eip.length + obj.elb.length is 0
               vpcs.push obj
             catch e
 

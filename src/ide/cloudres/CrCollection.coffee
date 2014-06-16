@@ -15,8 +15,7 @@ define ["ApiRequest", "./CrModel", "constant", "backbone"], ( ApiRequest, CrMode
         blockDeviceMappings : 'blockDeviceMapping'
 
     ELB:
-        GroupSet: 'SecurityGroups',
-
+        GroupSet : 'SecurityGroups'
 
     # All resource type will be replaced in below list
     ALL:

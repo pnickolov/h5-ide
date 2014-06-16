@@ -40,12 +40,17 @@ define [
         delete elb.VPCId
       elbs
     parseExternalData: ( data ) ->
-      @unifyApi data, @type
       @camelToPascal data
+      @unifyApi data, @type
       @convertBoolAndNumToString data
       _.each data, (dataItem) ->
         dataItem.Instances = _.map dataItem.Instances, (obj) ->
           return obj.InstanceId
+        dataItem.ListenerDescriptions = _.map dataItem.ListenerDescriptions, (obj) ->
+          obj.PolicyNames = {
+            member: obj.PolicyNames
+          }
+          return obj
       return data
       # @parseFetchData data
 

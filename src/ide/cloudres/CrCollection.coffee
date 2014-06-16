@@ -214,7 +214,8 @@ define ["ApiRequest", "./CrModel", "constant", "backbone"], ( ApiRequest, CrMode
           obj[pascalKey] = value
           delete obj[camelKey]
 
-        camelToPascal value
+
+        @camelToPascal value
 
       obj
 

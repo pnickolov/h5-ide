@@ -41,7 +41,8 @@ define [
       elbs
     parseExternalData: ( data ) ->
       @unifyApi data, @type
-      @parseFetchData data
+      @camelToPascal data
+      # @parseFetchData data
 
   }
 

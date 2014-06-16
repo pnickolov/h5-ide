@@ -477,7 +477,7 @@ define [
 
     if result.attribute or result.component or result.layout or result.instanceState
         __opsModel = @__opsModel
-        return {
+        return $.extend result, {
             result : @diff(newData, oldData)
             isRunning: __opsModel.testState( OpsModel.State.Running )
             isModified: true

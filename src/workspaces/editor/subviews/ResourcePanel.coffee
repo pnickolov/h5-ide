@@ -88,6 +88,7 @@ define [
 
       initialize: ( options ) ->
         options = {} if not options
+        @parent = options.parent
 
         @$el.attr _.extend {}, options.attr, @defaultAttr()
         @$el.data _.extend {}, options.data, @defaultData()
@@ -96,11 +97,13 @@ define [
         @listenTo @model, 'destroy', @remove
 
       render: ->
-        @$el.html LeftPanelTpl.reuse_lc @model.toJSON()
+        data = @model.toJSON()
+        data.cachedAmi = @model.getAmi() if not data.cachedAmi
+        @$el.html LeftPanelTpl.reuse_lc data
 
         if not @inDom
           @inDom = true
-          (@parent||@).$el.find(".resource-list-asg").append @el
+          ( @parent or @ ).$el.find(".resource-list-asg").append @el
 
         @
 
@@ -116,7 +119,7 @@ define [
     subEventForUpdateReuse: ->
       Design.on Design.EVENT.AddResource, ( resModel ) ->
         if resModel.type is constant.RESTYPE.LC
-          new @reuseLc( model: resModel ).render()
+          new @reuseLc( model: resModel, parent: @ ).render()
       , @
 
     refreshResourcePanel : () ->

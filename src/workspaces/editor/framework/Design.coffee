@@ -384,7 +384,9 @@ define [
   DesignImpl.prototype.set = ( key, value )-> @attributes[key] = value; return
   DesignImpl.prototype.get = ( key )->
     if key is "id"
-      @__opsModel.get("id")
+      @__opsModel.get( "id" )
+    else if key is "state"
+      @__opsModel.getStateDesc()
     else
       @attributes[key]
 
@@ -577,6 +579,8 @@ define [
     data.property = $.extend { stoppable : @isStoppable() }, PropertyDefination
 
     data.version = "2014-02-17"
+    data.state   = @__opsModel.getStateDesc()
+    data.id      = @__opsModel.get("id")
 
     currentDesignObj.use()
 

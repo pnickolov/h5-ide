@@ -5181,8 +5181,6 @@ MC.canvas.analysis = function ()
 			isInternetELBconnected,
 			isInternalELBconnected,
 
-			//layout_component_data = MC.canvas_data.
-
 			elb_type,
 			item_connection;
 

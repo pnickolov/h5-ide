@@ -155,7 +155,7 @@ define [ '../base/view', './template/app', 'i18n!nls/lang.js', 'instance_model',
             instanceId = @model.get('instanceId')
 
             that = this
-            currentRegion = MC.canvas_data.region
+            currentRegion = Design.instance().region()
             instance_model.GetConsoleOutput {sender: that}, $.cookie('usercode'), $.cookie('session_id'), currentRegion, instanceId
 
             modal MC.template.modalInstanceSysLog {

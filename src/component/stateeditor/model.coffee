@@ -2,7 +2,7 @@
 #  View Mode for component/stateeditor
 #############################
 
-define [ 'MC', 'constant', 'state_model', 'CloudResources', 'backbone', 'jquery', 'underscore' ], (MC, constant, state_model, CloudResources) ->
+define [ 'MC', 'constant', 'state_model', 'CloudResources', "Design", 'backbone', 'jquery', 'underscore' ], (MC, constant, state_model, CloudResources, Design) ->
 
 	StateEditorModel = Backbone.Model.extend {
 
@@ -29,8 +29,9 @@ define [ 'MC', 'constant', 'state_model', 'CloudResources', 'backbone', 'jquery'
 				that.set('isWindowsPlatform', false)
 
 			currentCompData = that.get('compData')
-			compLayout = MC.canvas_data.layout[currentCompData.uid]
-			if compLayout and compLayout.osType and compLayout.osType is 'windows'
+			comp = Design.instance().component( currentCompData.uid )
+			osType = (@getAmi() || @get("cachedAmi")).osType
+			if osType is 'windows'
 				that.set('isWindowsPlatform', true)
 
 			that.set('amiExist', platformInfo.amiExist)
@@ -139,9 +140,6 @@ define [ 'MC', 'constant', 'state_model', 'CloudResources', 'backbone', 'jquery'
 				that.set('currentState', 'app')
 			else if currentState is 'appedit'
 				that.set('currentState', 'appedit')
-
-			if MC.canvas_data.state is 'Stoped'
-				that.set('currentAppState', 'stoped')
 
 		sortParaList: (cmdAllParaAry, paraName) ->
 
@@ -545,8 +543,7 @@ define [ 'MC', 'constant', 'state_model', 'CloudResources', 'backbone', 'jquery'
 		getResState: (resId) ->
 
 			that = this
-			currentRegion = MC.canvas_data.region
-			resObj = CloudResources(that.type, currentRegion).get(resId).toJSON()
+			resObj = CloudResources(that.type, Design.instance().region()).get(resId).toJSON()
 			resState = 'unknown'
 			if resObj and resObj.instanceState and resObj.instanceState.name
 				resState = resObj.instanceState.name
@@ -557,7 +554,7 @@ define [ 'MC', 'constant', 'state_model', 'CloudResources', 'backbone', 'jquery'
 
 			that = this
 
-			appId = MC.canvas_data.id
+			appId = Design.instance().get("id")
 
 			if not (appId and resId)
 
@@ -667,7 +664,7 @@ define [ 'MC', 'constant', 'state_model', 'CloudResources', 'backbone', 'jquery'
 					if lsgUID is originCompUID
 
 						# find asg name's all instance
-						$.each CloudResources(constant.RESTYPE.ASG,MC.canvas_data.region).toJSON(), (idx, resObj) ->
+						$.each CloudResources(constant.RESTYPE.ASG, Design.instance().region()).toJSON(), (idx, resObj) ->
 							if resObj and resObj.AutoScalingGroupName and resObj.Instances
 								if resObj.AutoScalingGroupName is asgName
 									$.each resObj.Instances.member, (idx, instanceObj) ->

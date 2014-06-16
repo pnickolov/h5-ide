@@ -291,7 +291,6 @@ define [ 'event',
             that.currentResId = that.model.get('resId')
 
             that.currentState = that.model.get('currentState')
-            currentAppState = that.model.get('currentAppState')
 
             that.resAttrRegexStr = that.model.get('resAttrRegexStr')
 
@@ -3354,7 +3353,7 @@ define [ 'event',
 
             instanceId = that.currentResId
 
-            currentRegion = MC.canvas_data.region
+            currentRegion = Design.instance().region()
             instance_model.GetConsoleOutput {sender: that}, $.cookie('usercode'), $.cookie('session_id'), currentRegion, instanceId
 
             modal MC.template.modalInstanceSysLog {

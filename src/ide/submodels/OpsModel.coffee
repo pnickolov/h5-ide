@@ -51,6 +51,7 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
     isImported : ()-> !!@attributes.importVpcId
 
     testState : ( state )-> @attributes.state is state
+    getStateDesc : ()-> OpsModelStateDesc[ @attributes.state ]
 
     # Returns a plain object to represent this model.
     # If you want to access the JSON of the stack/app, use getJsonData() instead.

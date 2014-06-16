@@ -9,7 +9,7 @@
 {{else}}
 	{{#unless ready}}<div class="loading-spinner"></div>{{else}}
 		{{#each data}}<section>
-			<header class="region-header"><span class="region-name">{{name}}</span>{{subname}}</header>
+			<header class="region-header"><span class="region-name">{{name}}</span>{{subname}}<span class="vpc-count">3</span></header>
 
 			<ul class="region-group clearfix" data-region="{{id}}">
 				{{#each vpcs}}
@@ -25,6 +25,7 @@
 						<li class="visualize-res"><div class="vis-res-num">{{elb.length}}</div><span class="vis-res-name">load balancer</span></li>
 					{{/if}}
 					</ol>
+					<button class="btn btn-blue">Import</button>
 				</li>
 				{{/each}}
 			</ul>

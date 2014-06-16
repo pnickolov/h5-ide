@@ -324,7 +324,7 @@ watch = ()->
   null
 
 
-compileDev = ( allCoffee )->
+compileDev = ()->
   p = [
     "src/**/*.coffee"
     "src/**/*.partials"

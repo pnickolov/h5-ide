@@ -39,7 +39,6 @@ gulp.task("watch", function(){
 
 // Build different version of ide
 gulp.task("dev",     function(){ return developTask.compileDev(); });
-gulp.task("dev_all", function(){ return developTask.compileDev( true ); });
 gulp.task("debug",   function(){ return releaseTask.build( "debug" );   });
 gulp.task("release", function(){ return releaseTask.build( "release" ); });
 

@@ -335,7 +335,7 @@
     return null;
   };
 
-  compileDev = function(allCoffee) {
+  compileDev = function() {
     var compileStream, deferred, p;
     p = ["src/**/*.coffee", "src/**/*.partials", "src/**/*.html", "!src/*.html", "!src/include/*.html", "!src/test/**/*"];
     deferred = Q.defer();

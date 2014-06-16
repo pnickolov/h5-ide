@@ -167,16 +167,16 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
     ()-> # Vpc & Dhcp
       vpc = @getResourceByType( "VPC" )[ 0 ]
 
-      vpc.VpcId = @vpcId
+      #vpc.VpcId = @vpcId
       # Cache the vpc so that other can use it.
       @theVpc = vpcComp = @add("VPC", {
-        VpcId           : vpc.VpcId
-        CidrBlock       : vpc.cidrBlock
-        DhcpOptionsId   : vpc.dhcpOptionsId
-        InstanceTenancy : vpc.instanceTenancy
+        VpcId           : @vpcId
+        CidrBlock       : vpc.attributes.cidrBlock
+        DhcpOptionsId   : vpc.attributes.dhcpOptionsId
+        InstanceTenancy : vpc.attributes.instanceTenancy
 
-        EnableDnsHostnames : vpc.enableDnsHostnames
-        EnableDnsSupport   : vpc.enableDnsSupport
+        EnableDnsHostnames : vpc.attributes.enableDnsHostnames
+        EnableDnsSupport   : vpc.attributes.enableDnsSupport
       })
 
       @addLayout( vpcComp, true )

@@ -98,9 +98,9 @@ define [
     type  : constant.RESTYPE.VPC
     modelIdAttribute : "vpcId"
     trAwsXml : ( data )-> data.DescribeVpcsResponse.vpcSet?.item
-    parseExternalData: ( data ) ->
-      @unifyApi data, @type
-      @parseFetchData data
+    # parseExternalData: ( data ) ->
+    #   @unifyApi data, @type
+      #@parseFetchData data
   }
 
   ### ASG ###
@@ -300,7 +300,8 @@ define [
       volumes
     parseExternalData: ( data ) ->
       @unifyApi data, @type
-      @parseFetchData data
+      #_.each data, (dataItem) ->
+      #@parseFetchData data
   }
 
   ### LC ###
@@ -451,7 +452,7 @@ define [
         enis
     parseExternalData: ( data ) ->
       @unifyApi data, @type
-      @parseFetchData data
+      #@parseFetchData data
   }
 
 

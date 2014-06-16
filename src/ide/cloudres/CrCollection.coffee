@@ -15,7 +15,10 @@ define ["ApiRequest", "./CrModel", "constant", "backbone"], ( ApiRequest, CrMode
         blockDeviceMappings : 'blockDeviceMapping'
 
     ELB:
-        GroupSet : 'SecurityGroups'
+        GroupSet: 'SecurityGroups',
+
+    VOL:
+        attachments: 'attachmentSet'
 
     # All resource type will be replaced in below list
     ALL:

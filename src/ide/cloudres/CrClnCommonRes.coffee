@@ -346,13 +346,14 @@ define [
     AwsResponseType : "DescribeNetworkAclsResponse"
     trAwsXml : ( data )-> data.DescribeNetworkAclsResponse.networkAclSet?.item
     parseFetchData : ( acls )->
-      for acl in acls
-        acl.id = acl.networkAclId
-        delete acl.networkAclId
-        acl.entrySet = acl.entrySet?.item || []
-        acl.associationSet = acl.associationSet?.item || []
-        if acl.associationSet.length > 0
-          acl.subnetId = acl.associationSet[0].subnetId
+      # for acl in acls
+      #   acl.id = acl.networkAclId
+      #   delete acl.networkAclId
+      #   acl.entrySet = acl.entrySet?.item || []
+      #   acl.associationSet = acl.associationSet?.item || []
+      #   if acl.associationSet.length > 0
+      #     acl.subnetId = acl.associationSet[0].subnetId
+      
       acls
   }
 

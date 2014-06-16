@@ -404,7 +404,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         _.each aws_asg.Instances, (e,key)->
           me.ins_in_asg.push e.InstanceId
 
-      for aws_ins in @CrPartials( "INSTANCE" ).where({vpcId:@vpcId}) || []
+      for aws_ins in @getResourceByType("INSTANCE") || []
         aws_ins = aws_ins.attributes
 
         #skip invalid instance
@@ -503,7 +503,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
 
 
     ()-> #ENI
-      for aws_eni in @CrPartials( "ENI" ).where({vpcId:@vpcId}) || []
+      for aws_eni in @getResourceByType("ENI") || []
         aws_eni = aws_eni.attributes
         azComp = @addAz(aws_eni.availabilityZone)
         insComp = @instances[aws_eni.instanceId]
@@ -649,7 +649,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
 
 
     ()-> #ACL
-      for aws_acl in @CrPartials( "ACL" ).where({vpcId:@vpcId}) || []
+      for aws_acl in @getResourceByType("ACL") || []
         aws_acl    = aws_acl.attributes
         subnetComp = @subnets[aws_acl.subnetId]
         aclRes =
@@ -660,10 +660,10 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
           "VpcId"   : ""
         aclRes = @_mapProperty aws_acl, aclRes
 
-        aclRes.VpcId = CREATE_REF( @theVpc )
+        aclRes.VpcId = CREATE_REF( @theVpc, 'resource.VpcId' )
         aclRes.NetworkAclId = aws_acl.id
 
-        for acl in aws_acl.entrySet
+        for acl in aws_acl.entries
           aclRes.EntrySet.push
             "RuleAction": acl.ruleAction
             "Protocol"  : acl.protocol
@@ -680,7 +680,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         for acl in aws_acl.associationSet
           aclRes.AssociationSet.push
             "NetworkAclAssociationId": acl.networkAclAssociationId
-            "SubnetId": CREATE_REF( subnetComp )
+            "SubnetId": CREATE_REF( subnetComp, 'resource.SubnetId' )
 
         aclComp = @add( "ACL", aclRes )
       return

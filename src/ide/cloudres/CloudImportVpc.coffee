@@ -462,7 +462,8 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         insRes.EbsOptimized      = aws_ins.ebsOptimized
 
         keyPairComp = @getOriginalComp(insRes.KeyName, 'KP')
-        insRes.KeyName = CREATE_REF(keyPairComp, 'resource.KeyName')
+        if keyPairComp
+          insRes.KeyName = CREATE_REF(keyPairComp, 'resource.KeyName')
 
         #generate instance component
         insComp = @add( "INSTANCE", insRes )

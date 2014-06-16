@@ -130,7 +130,7 @@ define ["ApiRequest", "./CrModel", "constant", "backbone"], ( ApiRequest, CrMode
       try
         if @parseExternalData
           awsData = @parseExternalData( awsData )
-        else
+        else if @parseFetchData
           awsData = @parseFetchData( awsData )
       catch e
         return null

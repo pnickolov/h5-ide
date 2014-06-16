@@ -487,7 +487,6 @@ define [
                 result['Private Ip Address'] = data.privateIpAddresses
             return result
         when 'CW'
-            debugger
             return {
                 'Alarm Name'        : data.Name
                 'Comparison Operator': data.ComparisonOperator

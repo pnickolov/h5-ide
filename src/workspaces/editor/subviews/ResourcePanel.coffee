@@ -16,6 +16,7 @@ define [
   'i18n!nls/lang.js'
   'ApiRequest'
   "backbone"
+  'UI.radiobuttons'
 ], ( CloudResources, Design, LeftPanelTpl, constant, ResDiff, dhcpManager, snapshotManager, sslCertManager, snsManager, keypairManager, oldAppJSON, newAppJSON, amiBrowser, lang, ApiRequest )->
 
   # Update Left Panel when window size changes

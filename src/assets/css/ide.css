@@ -755,10 +755,10 @@ td.table-action a.btn {
 	line-height: 20px;
 }
 
-.property-control-group label {
+.property-control-group > label {
 	color     : #999;
 	font-size : 13px;
-	/*height    : 20px;*/
+	height    : 20px;
 	cursor    : pointer;
 	display   : inline-block;
 }

@@ -131,15 +131,7 @@ define [
     delete canvas_data.component
     delete canvas_data.layout
 
-    @attributes = $.extend true, {
-      agent : {
-        enabled : false
-        module  : {
-          repo : App.user.get("repo")
-          tag  : App.user.get("tag")
-        }
-      }
-    }, canvas_data
+    @attributes = $.extend true, {}, canvas_data
 
     # Restore these two attr
     canvas_data.component = component

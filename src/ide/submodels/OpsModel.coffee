@@ -123,6 +123,15 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
         @__destroy()
         throw new McError( ApiRequest.Errors.MissingDataInServer, "Stack/App doesn't exist." )
 
+      if not json.agent
+        json.agent = {
+          enabled : false
+          module  : {
+            repo : App.user.get("repo")
+            tag  : App.user.get("tag")
+          }
+        }
+
       ###
       Old JSON will have structure like :
       layout : {

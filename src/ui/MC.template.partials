@@ -1046,11 +1046,10 @@ Following rule(s) will be deleted from its(their) security group:</div>
 
 <!-- {{updateApp}} -->
 <div id="app-apply-update">
-	<div class="default-kp-group clearfix" style="display:none;">
-		<h3 class="modal-text-major">$DefaultKeyPair</h3>
-		<div id="kp-runtime-placeholder"></div>
-		<div class="runtime-error" style="margin-left: 0" id="runtime-error-kp"></div>
-	</div>
+    <div class="modal-control-group default-kp-group clearfix" style="display: none;">
+        <label for="kp-runtime-placeholder">$DefaultKeyPair</label><div id="kp-runtime-placeholder"></div>
+        <div class="runtime-error" id="runtime-error-kp"></div>
+    </div>
 	{{#if isRunning}}
 	<h3 class="modal-text-major">{{ i18n 'POP_CONFIRM_UPDATE_MAJOR_TEXT_RUNNING'}}</h3>
 	{{else}}

@@ -397,7 +397,7 @@
 <div class="scroll-wrap"> <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
 <div class="scroll-content">
     <table class="table">
-      <thead> <tr>
+      <thead> <tr>\
         <th></th>
         <th style="width: 30%"></th>
         <th style="width: 30%"></th>
@@ -406,8 +406,8 @@
       </tr> </thead>
       <tbody> {{#each this}}{{#with attributes}}
         <tr>
-          <td>{{AlarmName}}</td>
-          <td>{{#doubleIf Dimensions Dimensions.length}}{{Dimensions.[0].Name}}:{{Dimensions.[0].Value}}{{/doubleIf}}</td>
+          <td>{{Name}}</td>
+          <td>{{#doubleIf Dimensions Dimensions.member.length}}{{Dimensions.member.[0].Name}}:{{Dimensions.member.[0].Value}}{{/doubleIf}}</td>
           <td>{{MetricName}} {{ComparisonOperator}} {{Threshold}} for {{Period}} seconds</td>
           <td><i class="status {{#ifCond StateValue "OK"}}status-green{{else}}{{#ifCond StateValue "ALARM"}}status-yellow{{else}}status-grey{{/ifCond}}{{/ifCond}} icon-label"></i>{{StateValue}}</td>
           <td><i title="{{i18n 'DASH_TIT_VIEW_RESOURCE_DETAIL'}}" class="icon-detail" data-id="{{id}}"></i></td>

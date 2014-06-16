@@ -135,7 +135,7 @@ define [], ()->
                 @getFirst().wrap.off 'click'
                 @getFirst().wrap.on 'click', (e)=>
                     if(e.target == e.currentTarget)
-                        @getFirst().back()
+                        @getFirst()?.back()
             $(window).resize =>
                 @?.getLast()?.resize()
             $(document).keyup (e)=>

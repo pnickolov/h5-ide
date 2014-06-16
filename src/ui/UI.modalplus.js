@@ -140,8 +140,9 @@
           this.getFirst().wrap.off('click');
           this.getFirst().wrap.on('click', (function(_this) {
             return function(e) {
+              var _ref;
               if (e.target === e.currentTarget) {
-                return _this.getFirst().back();
+                return (_ref = _this.getFirst()) != null ? _ref.back() : void 0;
               }
             };
           })(this));
@@ -367,3 +368,7 @@
   });
 
 }).call(this);
+
+/*
+//# sourceMappingURL=UI.modalplus.js.map
+*/

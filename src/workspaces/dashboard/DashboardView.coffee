@@ -487,13 +487,11 @@ define [
                 result['Private Ip Address'] = data.privateIpAddresses
             return result
         when 'CW'
+            debugger
             return {
-                'Actions Enabled'   : if data.ActionsEnabled then "true" else 'false'
-                'Alarm Actions'     : data.AlarmActions.member
-                'Alarm Arn'         : data.AlarmArn
-                'Alarm Name'        : data.AlarmName
+                'Alarm Name'        : data.Name
                 'Comparison Operator': data.ComparisonOperator
-                'Dimensions'        : @formartDetail 'Dimensions', data.Dimensions, 'Dimensions', true
+                'Dimensions'        : @formartDetail 'Dimensions', data.Dimensions.member, 'Dimensions', true
                 'Evaluation Periods': data.EvaluationPeriods
                 'Insufficient Data Actions': data.InsufficientDataActions
                 'Metric Name'       : data.MetricName
@@ -506,7 +504,10 @@ define [
                 'Statistic'         : data.Statistic
                 'Threshold'         : data.Threshold
                 'Category'          : data.category
-                'title'             : 'CloudWatch - '+ data.AlarmName
+                'title'             : data.Name
+                'Actions Enabled'   : if data.ActionsEnabled then "true" else 'false'
+                'Alarm Actions'     : data.AlarmActions.member
+                'Alarm Arn'         : data.id
             }
     # some format to the data so it can show in handlebars template
     formartDetail: (type, array, key, force)->

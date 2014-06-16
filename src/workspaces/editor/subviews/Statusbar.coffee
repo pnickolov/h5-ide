@@ -208,9 +208,6 @@ define [
                 view.listenTo e.obj, e.event, wrapVisible
 
 
-          window.tmpView = view
-          window.ide_event = ide_event
-
         if _.isFunction item.visible
           item.visible view.toggle
         else

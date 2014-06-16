@@ -13,8 +13,8 @@ define [
     for camelKey, value of obj
       if not (obj.hasOwnProperty camelKey) then continue
 
-      if not _.isArray obj
-        pascalKey = camelKey.substring(0,1).toUpperCase() + camelKey.substring(1)
+      pascalKey = camelKey.substring(0,1).toUpperCase() + camelKey.substring(1)
+      if not _.isArray( obj ) and not pascalKey is camelKey
         obj[pascalKey] = value
         delete obj[camelKey]
 

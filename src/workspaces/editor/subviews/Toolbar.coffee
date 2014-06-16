@@ -274,7 +274,6 @@ define [
     runStack: (event)->
         if $(event.currentTarget).attr('disabled')
             return false
-        @json = @workspace.design.serialize()
         @modal = new Modal
             title: lang.ide.RUN_STACK_MODAL_TITLE
             template: MC.template.modalRunStack
@@ -305,12 +304,13 @@ define [
                 App.showSettings App.showSettings.TAB.Credential
                 return false
             # setUsage
-            @json.usage = $("#app-usage-selectbox").find(".dropdown .item.selected").data('value')
             appNameRepeated = @checkAppNameRepeat(appNameDom.val())
             if not @defaultKpIsSet() or appNameRepeated
                 return false
 
             @modal.tpl.find(".btn.modal-confirm").attr("disabled", "disabled")
+            @json = @workspace.design.serialize()
+            @json.usage = $("#app-usage-selectbox").find(".dropdown .item.selected").data('value')
             @workspace.opsModel.run(@json, appNameDom.val()).then ( ops )->
                 self.modal.close()
                 App.openOps( ops )

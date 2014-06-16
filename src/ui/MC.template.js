@@ -1558,7 +1558,7 @@ function program13(depth0,data) {
   return buffer;
   }
 
-  buffer += "<div id=\"app-apply-update\">\n	<div class=\"modal-control-group default-kp-group clearfix\" style=\"display:none;\">\n		<label for=\"\">$DefaultKeyPair</label>\n		<div id=\"kp-runtime-placeholder\"></div>\n		<div class=\"runtime-error\" id=\"runtime-error-kp\"></div>\n	</div>\n	";
+  buffer += "<div id=\"app-apply-update\">\n	<div class=\"default-kp-group clearfix\" style=\"display:none;\">\n		<h3 class=\"modal-text-major\">$DefaultKeyPair</h3>\n		<div id=\"kp-runtime-placeholder\"></div>\n		<div class=\"runtime-error\" style=\"margin-left: 0\" id=\"runtime-error-kp\"></div>\n	</div>\n	";
   stack1 = helpers['if'].call(depth0, (depth0 && depth0.isRunning), {hash:{},inverse:self.program(3, program3, data),fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n	";

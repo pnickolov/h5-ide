@@ -15,7 +15,7 @@ define ["ApiRequest", "./CrModel", "constant", "backbone"], ( ApiRequest, CrMode
       blockDeviceMappings : 'blockDeviceMapping'
 
     ELB:
-        GroupSet: 'SecurityGroups',
+        GroupSet: 'SecurityGroups'
 
     VOL:
         attachments: 'attachmentSet'
@@ -34,7 +34,7 @@ define ["ApiRequest", "./CrModel", "constant", "backbone"], ( ApiRequest, CrMode
 
 
   __needUnify = ( type ) ->
-    all = __needUnifyList.ALL
+    all = jQuery.extend(true, {}, __needUnifyList.ALL)
     longTypeList = constant.WRAP __needUnifyList
     _.extend all, longTypeList[ type ]
 

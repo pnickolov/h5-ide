@@ -371,28 +371,36 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
       return
 
     ()-> #Volume
-      for aws_vol in @CrPartials( "VOL" ).where({category:@region}) || []
+      for aws_vol in @getResourceByType "VOL"
         aws_vol = aws_vol.attributes
-        if not aws_vol.instanceId
+        if not aws_vol.attachments
           #not attached
           continue
 
-        #azComp = @addAz(aws_vol.availabilityZone)
+        az = @azs[ aws_vol.availabilityZone ]
+
         volRes =
           "VolumeId"     : aws_vol.id
           "Size"         : Number(aws_vol.size)
           "SnapshotId"   : if aws_vol.snapshotId then aws_vol.snapshotId else ""
           "Iops"         : if aws_vol.iops then aws_vol.iops else ""
-          "AttachmentSet":
-            "Device"      : aws_vol.device
-            "InstanceId"  : ""
           "VolumeType"      : aws_vol.volumeType
-          "AvailabilityZone": CREATE_REF( aws_vol.availabilityZone )
+          "AvailabilityZone": CREATE_REF( az, "resource.ZoneName" )
+
+        # AttachmentSet
+        if aws_vol.attachments
+          instance = @instances[ aws_vol.attachments[0].instanceId ]
+          if instance
+            volRes.AttachmentSet.Device = aws_vol.attachments[0].device
+            volRes.AttachmentSet.InstanceId = CREATE_REF( instance, "resource.InstanceId" )
 
         #create volume component, but add with instance
         volComp = @add( "VOL", volRes, "vol" + aws_vol.device )
-        delete @component[ volComp.uid ]
-        @volumes[ aws_vol.id ] = volComp
+        # add volume to layout
+        #delete @component[ volComp.uid ]
+        #@volumes[ aws_vol.id ] = volComp
+        @component[ volComp.uid ] = volComp
+
       return
 
 

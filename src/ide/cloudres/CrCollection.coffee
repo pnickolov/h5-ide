@@ -188,6 +188,7 @@ define ["ApiRequest", "./CrModel", "constant", "backbone"], ( ApiRequest, CrMode
 
 
     unifyApi: ( obj, type ) ->
+      hit = false
       if not _.isObject obj then return obj
 
       for key, value of obj
@@ -195,8 +196,9 @@ define ["ApiRequest", "./CrModel", "constant", "backbone"], ( ApiRequest, CrMode
 
         if not _.isArray( obj )
           __replaceKeyInList obj, type
+          hit = true
 
-        @unifyApi value, type
+        @unifyApi value, type if not hit
 
       obj
 

@@ -259,7 +259,7 @@ define [
       @$el.toggleClass( "no-state", not supports )
       if supports
         count = design.component( uid )
-        count = count?.get("state") or 0
+        count = count?.get("state").length or 0
         $( '#btn-switch-state' ).find("b").text "(#{count})"
       supports
 

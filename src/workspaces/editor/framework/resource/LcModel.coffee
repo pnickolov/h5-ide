@@ -1,4 +1,5 @@
 define [
+  '../ResourceModel'
   '../ComplexResModel'
   './InstanceModel'
   '../connection/LcAsso'
@@ -7,7 +8,7 @@ define [
   './VolumeModel'
   'i18n!nls/lang.js'
   'CloudResources'
-], ( ComplexResModel, InstanceModel, LcAsso, Design, constant, VolumeModel, lang, CloudResources )->
+], ( ResourceModel, ComplexResModel, InstanceModel, LcAsso, Design, constant, VolumeModel, lang, CloudResources )->
 
   emptyArray = []
 
@@ -35,10 +36,17 @@ define [
     newNameTmpl : "launch-config-"
 
     constructor : ( attr, option )->
-      if option and option.createByUser and attr.parent.getLc()
+      asg = attr.parent
+
+      if option and option.createByUser and asg.getLc()
           return
 
-      ComplexResModel.call( this, attr, option )
+      ResourceModel.call this, attr, option
+
+      asg.attachLc @
+
+      asg.connections( 'Lc_Asso' )[ 0 ]
+
 
     initialize : ( attr, option )->
 

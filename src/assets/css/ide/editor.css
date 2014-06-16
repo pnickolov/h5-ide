@@ -405,7 +405,7 @@
   right: 5px;
   width: 16px;
   height: 16px;
-  background: url("../images/ide/btn-fav-ami-unfaved-normal.png"); }
+  background: url("/assets/images/ide/btn-fav-ami-unfaved-normal.png"); }
 
 .btn-fav-ami {
   position: absolute;

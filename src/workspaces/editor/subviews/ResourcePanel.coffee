@@ -34,9 +34,10 @@ define [
       "click .HideOEPanelLeft"       : "toggleLeftPanel"
       "OPTION_CHANGE .AmiTypeSelect" : "changeAmiType"
       "click .BrowseCommunityAmi"    : "browseCommunityAmi"
-      'click #btn-search-ami'       : "searchCommunityAmi"
       'click #community_ami_page_preview' : "searchCommunityAmiPrev"
       'click #community_ami_page_next' : "searchCommunityAmiNext"
+      'keypress #community-ami-input': 'searchCommunityAmiCurrent'
+      'click #btn-search-ami'        : "searchCommunityAmiCurrent"
       "click .ManageSnapshot"        : "manageSnapshot"
       "click .RefreshLeftPanel"      : "refreshPanelDataData"
       "click .fixedaccordion-head"   : "updateAccordion"
@@ -245,8 +246,10 @@ define [
       this.updateAccordion( { currentTarget : $target[0] }, true )
 
     browseCommunityAmi : ()->
-
+      searchCommunityAmiCurrent = @searchCommunityAmiCurrent.bind @
       amiBrowser.loadModule()
+      $(document).on 'keypress',   '#community-ami-input', searchCommunityAmiCurrent
+      $(document).on 'click',      '#btn-search-ami',      searchCommunityAmiCurrent
       @searchCommunityAmi()
 
     searchCommunityAmi : (pageNum, perPage)->
@@ -282,8 +285,6 @@ define [
         filters:
           ami: {name, platform, isPublic, architecture, rootDeviceType, perPageNum, returnPage}
       ).then (result)->
-        console.debug result
-        console.debug arguments
         renderAmis(result)
 
     searchCommunityAmiPrev: ->
@@ -293,6 +294,11 @@ define [
     searchCommunityAmiNext: ->
       page = parseInt( $("#community_ami_page_current").attr("page"), 10)
       @searchCommunityAmi(page-1)
+
+    searchCommunityAmiCurrent: (event)->
+      if event.keyCode and event.keyCode isnt 13
+        return
+      @searchCommunityAmi()
 
     communityAmiRender: (data)->
       @communityShowContent()
@@ -313,7 +319,6 @@ define [
             <td class="ami-table-size">#{value.imageSize}</td></tr>
           """
           true
-        console.debug tpl
         $("#community_ami_table").html(tpl)
         currentPageNum = data.ami.curPageNum
         page = "<div>page #{currentPageNum}</div>"
@@ -321,7 +326,6 @@ define [
         totalPageNum = data.ami.totalPageNum
         $("#ami-count").empty().html("Total: #{totalNum}")
 
-        console.debug tpl, $("#community_ami_table")
         @communityPagerRender currentPageNum, totalPageNum, totalNum
 
     communityPagerRender: ( current_page, max_page, total ) ->

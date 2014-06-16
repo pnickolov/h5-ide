@@ -210,8 +210,8 @@ define [
     defaults : ()->
       x            : 0
       y            : 0
-      width        : 39
-      height       : 39
+      width        : 13
+      height       : 13
 
       cooldown : 300
       capacity : 1

@@ -165,5 +165,20 @@ define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager", 'i18n!n
 
     @doSelect( type, subId or @id, @id )
 
+  ChildElementProto.position = ( x, y )->
+
+    oldx = @model.x()
+    oldy = @model.y()
+
+    if (x is undefined or x is null) and (y is undefined or y is null)
+      return [ oldx, oldy ]
+
+    x = @model.x()
+    y = @model.y()
+
+    el = @element()
+    if el
+      MC.canvas.position( el, x, y )
+    null
 
   null

@@ -290,6 +290,9 @@ define [
         lc.BlockDeviceMappings = lc.BlockDeviceMappings?.member or lc.BlockDeviceMappings
         lc.SecurityGroups      = lc.SecurityGroups?.member or lc.SecurityGroups
       lcs
+
+    parseExternalData: ( res ) ->
+
   }
 
   ### ScalingPolicy ###

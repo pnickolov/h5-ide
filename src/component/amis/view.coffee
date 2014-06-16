@@ -22,6 +22,7 @@ define [ 'event', './template'
               template: template()
               disableFooter: true
               compact: true
+            @modal
         showLoading: ->
             this.$( '.scroll-content' ).hide()
             this.$( '.show-loading' ).show()

@@ -47,6 +47,12 @@
   .ops-process .fadein {
     opacity: 1;
     margin-top: 0; }
+  .ops-process .rolling-back-content {
+    display: none; }
+  .ops-process.rolling-back header {
+    display: none; }
+  .ops-process.rolling-back .rolling-back-content {
+    display: block; }
 
 /* Progress bar */
 .progress {
@@ -105,9 +111,5 @@
   #OpsEditor .ops-process .result-error-notice {
     padding: 5px;
     color: #aaa; }
-  #OpsEditor .ops-process .rolling-back-content {
-    display: none; }
   #OpsEditor .ops-process.rolling-back .processing {
     display: none; }
-  #OpsEditor .ops-process.rolling-back .rolling-back-content {
-    display: block; }

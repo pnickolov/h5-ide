@@ -22,6 +22,8 @@ define [
       @listenTo @model, "change:progress", @updateProgress
 
       @setElement $(OpsProgressTpl( @model.toJSON() )).appendTo("#main")
+
+      @__progress = 0
       return
 
     switchToDone : ()->
@@ -55,9 +57,16 @@ define [
       return
 
     updateProgress : ()->
-      p = @model.get("progress") + "%"
-      @$el.find(".process-info").text p
-      @$el.find(".bar").css({width:p})
+      pp = @model.get("progress")
+
+      if @__progress > pp
+        @$el.toggleClass("rolling-back", true)
+      @__progress = pp
+
+      pro = "#{pp}%"
+
+      @$el.find(".process-info").text( pro )
+      @$el.find(".bar").css { width : pro }
       return
 
     close : ()-> @trigger "close"

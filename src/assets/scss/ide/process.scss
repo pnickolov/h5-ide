@@ -68,6 +68,14 @@
     opacity: 1;
     margin-top : 0;
   }
+
+  .rolling-back-content {
+    display : none;
+  }
+  &.rolling-back {
+    header { display : none; }
+    .rolling-back-content { display : block; }
+  }
 }
 
 /* Progress bar */
@@ -143,12 +151,8 @@
       color   : #aaa;
     }
 
-    .rolling-back-content {
-      display : none;
-    }
     &.rolling-back {
       .processing { display : none; }
-      .rolling-back-content { display : block; }
     }
 
   }

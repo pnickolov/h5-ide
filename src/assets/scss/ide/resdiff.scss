@@ -8,11 +8,15 @@ $color_added: #ff8400;
 $color_removed: #f00;
 $color_changed: #008e00;
 
-
 .res_diff_tree {
+	
 	overflow: auto;
 	background-color: $bg_body;
 	height: 581px;
+
+	.scroll-wrap-res-diff {
+		height: 581px;
+	}
 
 	h1 {
 		color: rgba(32,32,32,0.9);

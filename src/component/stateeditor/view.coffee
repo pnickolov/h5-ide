@@ -3476,9 +3476,18 @@ define [ 'event',
                     $codeArea = $('#modal-state-text-expand .editable-area')
                     codeEditor = $codeArea.data('editor')
                     codeEditorValue = codeEditor.getValue()
+                    
+                    $paraItem = $(originEditor.container).parents('.parameter-item')
+                    if $paraItem and $paraItem.hasClass('optional')
+                        if codeEditorValue
+                            $paraItem.removeClass('disabled')
+                        else
+                            $paraItem.addClass('disabled')
+                    
                     originEditor.setValue(codeEditorValue)
                     originEditor.clearSelection()
                     originEditor.focus()
+                    
                     modal.close()
 
     }

@@ -43,7 +43,7 @@ define [
         i.id = i.keyName
       res
 
-    parseExternalData :( res ) ->
+    #parseExternalData :( res ) ->
       #TODO map attribute
 
   }
@@ -69,7 +69,7 @@ define [
 
       res
 
-    parseExternalData :( res ) ->
+    #parseExternalData :( res ) ->
       #TODO map attribute
 
   }, {
@@ -100,7 +100,7 @@ define [
 
       res
 
-    parseExternalData :( res ) ->
+    #parseExternalData :( res ) ->
       #TODO map attribute
 
     __clearSubscription : ( removedModel, collection, options )->
@@ -142,7 +142,7 @@ define [
 
       res
 
-    parseExternalData :( res ) ->
+    #parseExternalData :( res ) ->
       #TODO map attribute
 
   }
@@ -176,7 +176,7 @@ define [
 
       res
 
-    parseExternalData :( res ) ->
+    #parseExternalData :( res ) ->
       #TODO map attribute
 
     startPollingStatus : ()->

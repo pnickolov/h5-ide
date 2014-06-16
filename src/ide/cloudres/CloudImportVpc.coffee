@@ -818,10 +818,17 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
 
         #convert SecurityGroups to REF
         sg = []
+        originLCComp = @getOriginalComp(aws_lc.id, 'LC')
         _.each aws_lc.SecurityGroups, (e,key)->
           sgComp = me.sgs[ e ]
           if sgComp
-            sg.push CREATE_REF( sgComp )
+            sgRef = CREATE_REF( sgComp )
+            if originLCComp
+              for _key,_sg of originLCComp.resource.SecurityGroups
+                if MC.extractID(_sg) is sgComp.uid
+                  sgRef = _sg
+            sg.push sgRef
+
         if sg.length is 0
           #sg of LC is not in current VPC, means this lc is not in this VPC
           continue

@@ -167,7 +167,7 @@ define [
     trAwsXml : ( data )-> data.DescribeCustomerGatewaysResponse.customerGatewaySet?.item
     parseExternalData: ( data ) ->
       @unifyApi data, @type
-      @parseFetchData data
+      data
   }
 
   ### VGW ###

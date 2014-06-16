@@ -117,7 +117,7 @@
   .rolling-back-content {
     display : none;
   }
-  &.rolling-back {
+  &.rolling-back .processing {
     header { display : none; }
     .rolling-back-content { display : block; }
   }
@@ -198,6 +198,7 @@
 
     &.rolling-back {
       .processing { display : none; }
+      .rolling-back-content { display : block; }
     }
   }
 }

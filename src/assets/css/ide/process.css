@@ -79,9 +79,9 @@
     margin-top: 0; }
   .ops-process .rolling-back-content {
     display: none; }
-  .ops-process.rolling-back header {
+  .ops-process.rolling-back .processing header {
     display: none; }
-  .ops-process.rolling-back .rolling-back-content {
+  .ops-process.rolling-back .processing .rolling-back-content {
     display: block; }
 
 /* Progress bar */
@@ -143,3 +143,5 @@
     color: #aaa; }
   #OpsEditor .ops-process.rolling-back .processing {
     display: none; }
+  #OpsEditor .ops-process.rolling-back .rolling-back-content {
+    display: block; }

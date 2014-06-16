@@ -42,12 +42,14 @@ define [
     updateState : ()->
       switch @model.get("state")
         when OpsModel.State.Running
+          @workspace.setTitleState("Succeeded")
           if @__awake
             @switchToDone()
           else
             @done = true
 
         when OpsModel.State.Destroyed
+          @workspace.setTitleState("Failed")
           @$el.children().hide()
           @$el.find(".fail").show()
           @$el.find(".detail").text @model.get("opsActionError")
@@ -61,6 +63,7 @@ define [
 
       if @__progress > pp
         @$el.toggleClass("rolling-back", true)
+        @workspace.setTitleState("RollingBack")
       @__progress = pp
 
       pro = "#{pp}%"
@@ -92,8 +95,7 @@ define [
     isFixed     : ()-> false
     isWorkingOn : ( attribute )-> @opsModel is attribute
     tabClass    : ()-> "icon-app-pending"
-    title       : ()-> @opsModel.get("name") + " - Launching"
-
+    title       : ()-> @opsModel.get("name") + " - " + (@titleState || "Launching")
     constructor : ( opsModel )->
       if not opsModel
         @remove()
@@ -105,6 +107,7 @@ define [
 
     initialize : ()->
       @view = new OpsProgressView({model:@opsModel})
+      @view.workspace = @
 
       self = @
       @view.on "close", ()-> self.remove()
@@ -116,6 +119,10 @@ define [
         return
 
       return
+
+    setTitleState : ( state )->
+      @titleState = state
+      @updateTab()
 
     awake : ()-> @view.awake()
     sleep : ()-> @view.sleep()

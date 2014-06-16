@@ -68,7 +68,7 @@ define [
       @updateAmi()
 
       @updateDisableItems()
-
+      @registerTemplate()
       @renderReuse()
       return
 
@@ -167,6 +167,13 @@ define [
       ms.fav = @__amiType is "FavoriteAmi"
       html = LeftPanelTpl.ami ms
       @$el.find(".resource-list-ami").html(html)
+
+    registerTemplate: ->
+      region = @workspace.opsModel.get('region')
+      MC.template.bubbleAMIMongoInfo = (data)=>
+        models = CloudResources(@__amiType,region).getModels()
+        amiData = _.findWhere(models, {'id': data.id})?.toJSON()
+        MC.template.bubbleAMIInfo(amiData)
 
     updateDisableItems : ()->
       if not @workspace.isAwake() then return

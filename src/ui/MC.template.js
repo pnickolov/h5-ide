@@ -469,7 +469,7 @@ function program3(depth0,data) {
     + "</dd>\n	</dl>\n</div>";
   return buffer;
   };
-TEMPLATE.bubbleAMIMongoInfo=Handlebars.template(__TEMPLATE__);
+TEMPLATE.bubbleAMIInfo=Handlebars.template(__TEMPLATE__);
 
 
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {

@@ -87,7 +87,7 @@
 
 <!-- {{ami}} -->
 {{#each this}}{{#with attributes}}
-<li class="resource-item instance" data-bubble-template="bubbleAMIMongoInfo" data-bubble-data='' data-type="INSTANCE" data-option='{"imageId":"{{id}}"}'>
+<li class="bubble resource-item instance" data-bubble-template="bubbleAMIMongoInfo" data-bubble-data='{&quot;id&quot;:&quot;{{id}}&quot;}' data-type="INSTANCE" data-option='{"imageId":"{{id}}"}'>
   {{#if ../../fav}}<button class="btn-fav-ami fav tooltip" data-tooltip="{{i18n 'RES_TIT_TOGGLE_FAVORITE'}}" data-id="{{id}}"></button>{{/if}}
   <div class="resource-icon-instance"><img src="assets/images/ide/ami/{{osType}}.{{architecture}}.{{rootDeviceType}}.png" width='39' height='27' /></div>
   {{name}}

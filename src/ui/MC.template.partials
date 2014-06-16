@@ -244,7 +244,7 @@
 	</dl>
 </div>
 
-<!-- {{bubbleAMIMongoInfo}} -->
+<!-- {{bubbleAMIInfo}} -->
 <div class="bubble-head"></i>{{id}}</div>
 <div class="bubble-content">
 	<dl class="dl-horizontal">

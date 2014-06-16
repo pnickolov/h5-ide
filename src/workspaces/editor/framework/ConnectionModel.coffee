@@ -1,5 +1,5 @@
 
-define [ "./ResourceModel", "Design", "CanvasManager", "./canvasview/CanvasElement" ], ( ResourceModel, Design, CanvasManager, CanvasElement )->
+define [ "./ComplexResModel", "Design", "CanvasManager", "./canvasview/CanvasElement" ], ( ComplexResModel, Design, CanvasManager, CanvasElement )->
 
   ###
     -------------------------------
@@ -53,7 +53,7 @@ define [ "./ResourceModel", "Design", "CanvasManager", "./canvasview/CanvasEleme
     isConnectable( comp1, comp2 )
       description : This method is used to determine if user can create a line between two resources.
   ###
-  ConnectionModel = ResourceModel.extend {
+  ConnectionModel = ComplexResModel.extend {
 
     node_line : true
     type      : "Framework_CN"
@@ -92,7 +92,7 @@ define [ "./ResourceModel", "Design", "CanvasManager", "./canvasview/CanvasEleme
 
 
       # Call super constructor
-      ResourceModel.call(this, attr, option)
+      ComplexResModel.call(this, attr, option)
 
 
       # The line wants to destroy itslef after init
@@ -214,7 +214,7 @@ define [ "./ResourceModel", "Design", "CanvasManager", "./canvasview/CanvasEleme
       v = @__view
       if v then v.detach()
 
-      ResourceModel.prototype.remove.call this
+      ComplexResModel.prototype.remove.call this
       null
 
     serialize : ()->
@@ -268,7 +268,7 @@ define [ "./ResourceModel", "Design", "CanvasManager", "./canvasview/CanvasEleme
 
         if not protoProps.type then protoProps.type = tags[0]
 
-      child = ResourceModel.extend.call( this, protoProps, staticProps )
+      child = ComplexResModel.extend.call( this, protoProps, staticProps )
 
       for t in tags
         Design.registerModelClass t, child

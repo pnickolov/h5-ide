@@ -414,7 +414,7 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "CloudResourc
 
     ).attr({
       'id'         : option.id or @id
-      'class'      : 'dragable node ' + @type.replace(/\./g, "-")
+      'class'      : 'dragable node ' + @type.replace(/\./g, "-") + ' ' + option.class
       'data-type'  : 'node'
       'data-class' : @type
     })

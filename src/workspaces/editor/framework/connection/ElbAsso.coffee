@@ -124,6 +124,15 @@ define [ "constant", "../ConnectionModel", "i18n!nls/lang.js", "Design", "compon
           name : "launchconfig-sg"
           type : "ExpandedAsg"
       }
+      {
+        port1 :
+          name : "elb-sg-out"
+          type : constant.RESTYPE.ELB
+        port2 :
+          name : "launchconfig-sg"
+          type : "Lc_Asso"
+      }
+
     ]
 
     initialize : ( attibutes, option )->

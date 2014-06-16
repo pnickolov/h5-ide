@@ -66,6 +66,7 @@ define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager", 'i18n!n
         label   : MC.truncate @lc.get('name'), 15
         labelBg : true
         sg      : true
+        class   : 'AWS-AutoScaling-LaunchConfiguration'
       })
 
       # Insert Volume / Eip / Port

@@ -224,6 +224,7 @@ define [
     getAmiRootDevice           : InstanceModel.prototype.getAmiRootDevice
     getAmiRootDeviceName       : InstanceModel.prototype.getAmiRootDeviceName
     getAmiRootDeviceVolumeSize : InstanceModel.prototype.getAmiRootDeviceVolumeSize
+    getInstanceTypeList   : InstanceModel.prototype.getInstanceTypeList
 
     serialize : ()->
 

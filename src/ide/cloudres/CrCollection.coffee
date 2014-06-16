@@ -13,6 +13,7 @@ define ["ApiRequest", "./CrModel", "constant", "backbone"], ( ApiRequest, CrMode
       state               : 'instanceState'
       securityGroups      : 'groupSet'
       blockDeviceMappings : 'blockDeviceMapping'
+      publicDnsName       : 'dnsName'
 
     ELB:
         GroupSet: 'SecurityGroups'
@@ -25,6 +26,9 @@ define ["ApiRequest", "./CrModel", "constant", "backbone"], ( ApiRequest, CrMode
         routes: 'routeSet'
         tags: 'tagSet'
         propagatingVgws: 'propagatingVgwSet'
+
+    SG:
+        description : 'groupDescription'
 
     # All resource type will be replaced in below list
     ALL:
@@ -198,14 +202,17 @@ define ["ApiRequest", "./CrModel", "constant", "backbone"], ( ApiRequest, CrMode
 
       if first then res[0] else res
 
-    convertBoolAndNumToString: ( obj ) ->
+    convertNumTimeToString: ( obj ) ->
 
       for camelKey, value of obj
         if not (obj.hasOwnProperty camelKey) then continue
         if _.isObject(obj[camelKey]) or _.isArray(obj[camelKey])
-          @convertBoolAndNumToString value
+          @convertNumTimeToString value
         else if _.isNumber(obj[camelKey])
             obj[camelKey] = String(obj[camelKey])
+            if camelKey and camelKey.toLowerCase().indexOf('time') isnt -1 and obj[camelKey].length > 12
+              date = new Date(Number(obj[camelKey]))
+              obj[camelKey] = date.toISOString() if date
 
       obj
 

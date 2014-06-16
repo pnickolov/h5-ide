@@ -42,7 +42,7 @@ define [
     parseExternalData: ( data ) ->
       @camelToPascal data
       @unifyApi data, @type
-      @convertBoolAndNumToString data
+      @convertNumTimeToString data
       _.each data, (dataItem) ->
         dataItem.Instances = _.map dataItem.Instances, (obj) ->
           return obj.InstanceId
@@ -268,12 +268,23 @@ define [
         #delete ins.instanceId
       data
     parseExternalData: ( data ) ->
+      @convertNumTimeToString data
       @unifyApi data, @type
+
       for ins in data
+        
         if ins.instanceState and ins.instanceState.name in [ "terminated", "shutting-down" ]
           continue
         ins.id = ins.instanceId
-        #delete ins.instanceId
+
+        for eni in ins.networkInterfaceSet
+          if eni.privateIpAddresses
+            eni.privateIpAddressesSet = {item: eni.privateIpAddresses}
+            delete eni.privateIpAddresses
+          if eni.groups
+            eni.groupSet = {item: eni.groups}
+            delete eni.groups
+
       data
   }
 
@@ -441,20 +452,20 @@ define [
       # format attachment and groupSet in "ENI"
       _.each enis, (eni, index)->
           _.each eni, (e,key)->
-            if key is "attachment"
-              _.extend enis[index], e
+            # if key is "attachment"
+            #   _.extend enis[index], e
             if key is "groupSet"
-              _.extend enis[index], e.item[0]
+              enis[index].groupSet = enis[index].groupSet?.item || []
             if key is "privateIpAddressesSet"
               enis[index].privateIpAddressesSet = enis[index].privateIpAddressesSet?.item || []
 
             # Remove All Object in data resource to remove [Object, Object]
-            if _.isObject(e) and key isnt "privateIpAddressesSet"
-              delete enis[index][key]
+            # if _.isObject(e) and key isnt "privateIpAddressesSet"
+            #   delete enis[index][key]
         enis
     parseExternalData: ( data ) ->
+      @convertNumTimeToString data
       @unifyApi data, @type
-      #@parseFetchData data
   }
 
 
@@ -484,24 +495,41 @@ define [
     doFetch : ()-> ApiRequest("sg_DescribeSecurityGroups", {region_name : @region()})
     trAwsXml : ( data )-> data.DescribeSecurityGroupsResponse.securityGroupInfo?.item
     parseFetchData : ( sgs )->
-      # for sg in sgs
-        # sg.ipPermissions       = sg.ipPermissions?.item || []
-        # _.each sg.ipPermissions, (rule,idx)->
-        #   _.each rule, (e,key)->
-        #     if key in ["groups","ipRanges"]
-        #       sg.ipPermissions[idx][key] = e?.item || []
+      for sg in sgs
+        sg.ipPermissions       = sg.ipPermissions?.item || []
+        _.each sg.ipPermissions, (rule,idx)->
+          _.each rule, (e,key)->
+            if key in ["groups","ipRanges"]
+              sg.ipPermissions[idx][key] = e?.item || []
 
-        # sg.ipPermissionsEgress = sg.ipPermissionsEgress?.item || []
-        # _.each sg.ipPermissionsEgress, (rule,idx)->
-        #   _.each rule, (e,key)->
-        #     if key in ["groups","ipRanges"]
-        #       sg.ipPermissionsEgress[idx][key] = e?.item || []
+        sg.ipPermissionsEgress = sg.ipPermissionsEgress?.item || []
+        _.each sg.ipPermissionsEgress, (rule,idx)->
+          _.each rule, (e,key)->
+            if key in ["groups","ipRanges"]
+              sg.ipPermissionsEgress[idx][key] = e?.item || []
 
-        # sg.id = sg.groupId
+        sg.id = sg.groupId
         # delete sg.groupId
       sgs
     parseExternalData: ( data ) ->
       @unifyApi data, @type
-      @parseFetchData data
+      @convertNumTimeToString data
+
+      for sg in data
+        sg.ipPermissions = sg.ipPermissions || []
+        sg.ipPermissionsEgress = sg.ipPermissionsEgress || []
+        sgRuls = sg.ipPermissions.concat(sg.ipPermissionsEgress)
+        _.each sgRuls, (rule, idx) ->
+          if rule.ipRanges and rule.ipRanges.length
+            rule.ipRanges = [{
+              cidrIp: rule.ipRanges[0]
+            }]
+          rule.groups = []
+          if rule.userIdGroupPairs
+            rule.groups = rule.userIdGroupPairs
+            delete rule.userIdGroupPairs
+      data
+
+      # @parseFetchData data
   }
 

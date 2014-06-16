@@ -398,11 +398,11 @@ define [
     renderKpDropdown: ()->
         if kpDropdown.hasResourceWithDefaultKp()
             keyPairDropdown = new kpDropdown()
-            @modal.tpl.find("#kp-runtime-placeholder").html keyPairDropdown.render().el
+            (@modal||@updateModal).tpl.find("#kp-runtime-placeholder").html keyPairDropdown.render().el
             hideKpError = @hideError.bind @
             keyPairDropdown.dropdown.on 'change', ->
                 hideKpError('kp')
-            @modal.tpl.find('.default-kp-group').show()
+            (@modal||@updateModal).tpl.find('.default-kp-group').show()
         null
 
     hideDefaultKpError: (context)->

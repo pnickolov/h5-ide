@@ -161,7 +161,13 @@ define [
     trAwsXml : ( data )-> data.DescribeVpnGatewaysResponse.vpnGatewaySet?.item
     parseFetchData : ( vgws )->
       for vgw in vgws
-        vgw.attachments = vgw.attachments?.item || []
+        if vgw.vpcAttachments
+          vgw.attachments = vgw.vpcAttachments || []
+        else if vgw.attachments
+          vgw.attachments = vgw.attachments?.item || []
+        else
+          continue
+
         vgw.id = vgw.vpnGatewayId
         if vgw.attachments and vgw.attachments.length>0
           vgw.vpcId = vgw.attachments[0].vpcId

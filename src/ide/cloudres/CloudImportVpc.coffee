@@ -271,7 +271,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         vpnRes =
           "CustomerGatewayId" : CREATE_REF( cgwComp, "resource.CustomerGatewayId" )
           "Options"     :
-            "StaticRoutesOnly": aws_vpn.options.staticRoutesOnly
+            "StaticRoutesOnly": ""
           "Routes": []
           "Type"  : aws_vpn.type
           "VpnConnectionId"   : aws_vpn.id

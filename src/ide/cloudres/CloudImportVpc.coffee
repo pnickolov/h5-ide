@@ -570,7 +570,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
 
 
     ()-> #EIP
-      for aws_eip in @CrPartials( "EIP" ).where({category:@region}) || []
+      for aws_eip in @getResourceByType "EIP"
         aws_eip = aws_eip.attributes
 
         eni = @enis[ aws_eip.networkInterfaceId ]
@@ -578,18 +578,18 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
           continue
 
         eipRes =
-          "AllocationId": ""
-          "Domain": ""
-          "InstanceId": ""
-          "NetworkInterfaceId": ""
-          "PrivateIpAddress": ""
-          "PublicIp": ""
+          "AllocationId": aws_eip.id
+          "Domain": aws_eip.domain
+          "InstanceId": "" #aws_eip.instanceId
+          "NetworkInterfaceId": CREATE_REF( eni, "resource.NetworkInterfaceId" )
+          "PrivateIpAddress": CREATE_REF( eni, "resource.PrivateIpAddressSet.0.PrivateIpAddress" )
+          "PublicIp": aws_eip.publicIp
 
-        eipRes = @_mapProperty aws_eip, eipRes
-        eipRes.AllocationId = eip.id
-        eipRes.InstanceId   = ""
-        eipRes.NetworkInterfaceId = CREATE_REF( eni )
-        eipRes.PrivateIpAddress   = CREATE_REF( eni )
+        # eipRes = @_mapProperty aws_eip, eipRes
+        # eipRes.AllocationId = aws_eip.id
+        # # eipRes.InstanceId   = ""
+        # eipRes.NetworkInterfaceId = CREATE_REF( eni )
+        # eipRes.PrivateIpAddress   = CREATE_REF( eni )
 
         eipComp = @add( "EIP", eipRes )
       return

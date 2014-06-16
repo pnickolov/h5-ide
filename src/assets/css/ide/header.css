@@ -18,11 +18,11 @@
     border-bottom: none;
     cursor: default;
     margin-left: -1px;
-    -webkit-transition: all .2s;
-    -moz-transition: all .2s;
-    -ms-transition: all .2s;
-    -o-transition: all .2s;
-    transition: all .2s; }
+    -webkit-transition: background-color .2s, box-shadow .2s;
+    -moz-transition: background-color .2s, box-shadow .2s;
+    -ms-transition: background-color .2s, box-shadow .2s;
+    -o-transition: background-color .2s, box-shadow .2s;
+    transition: background-color .2s, box-shadow .2s; }
     #tabbar-wrapper > ul > li.active, #tabbar-wrapper > ul > li.active:hover {
       background-color: #202020;
       color: #fff;

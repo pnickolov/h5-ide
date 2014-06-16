@@ -735,6 +735,10 @@ module.exports =
       en: "Deleting %s will also remove all resources inside it. Are you sure you want to delete it?"
       zh: "删除 %s 会同时删除其中的所有资源， 确定要删除它吗？"
 
+    CVS_CFM_DEL_LC:
+      en: "Launch configuration %s is only used by %s. By deleting %s, %s will also be deleted."
+      zh: ""
+
     CVS_CFM_DEL_ASG:
       en: "Deleting this will delete the entire %s. Are you sure you want to delete it?"
       zh: "删除它会删除整个 %s，确定要删除它吗?"

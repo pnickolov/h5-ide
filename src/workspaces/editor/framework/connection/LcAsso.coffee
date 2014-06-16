@@ -1,5 +1,5 @@
 
-define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
+define [ "constant", "../ConnectionModel", "i18n!nls/lang.js" ], ( constant, ConnectionModel, lang )->
 
   ConnectionModel.extend
     # offset of asg
@@ -22,6 +22,19 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
       height   : 9
 
     isVisual : () -> true
+
+    isRemovable: ->
+      if @connections.length is 1
+        lcName = @getLc().get('name')
+        asgName = @getAsg().get('name')
+        return sprintf lang.ide.CVS_CFM_DEL_LC lcName, asgName, asgName, lcName
+
+    remove: () ->
+      if @connections.length is 1
+        @getLc().remove()
+
+      ConnectionModel.remove.call this
+
 
     initialize: ( attr, option ) ->
       # Draw before create SgAsso

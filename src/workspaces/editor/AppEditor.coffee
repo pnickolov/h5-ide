@@ -26,8 +26,12 @@ define [
 
     fetchAdditionalData : ()->
       self = @
-      region = @opsModel.get("region")
+
+      region      = @opsModel.get("region")
+      stateModule = @opsModel.getJsonData().agent.module
+
       Q.all([
+        App.model.fetchStateModule( stateModule.repo, stateModule.tag )
         CloudResources( constant.RESTYPE.AZ,   region ).fetch()
         CloudResources( constant.RESTYPE.SNAP, region ).fetch()
         CloudResources( constant.RESTYPE.DHCP, region ).fetch()

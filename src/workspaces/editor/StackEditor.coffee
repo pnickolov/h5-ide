@@ -19,11 +19,24 @@ define [
       new StackView({workspace:this})
 
     isReady : ()->
-      @opsModel.hasJsonData() && CloudResources( constant.RESTYPE.AZ, @opsModel.get("region") ).isReady() && CloudResources( constant.RESTYPE.SNAP, @opsModel.get("region") ).isReady()
+      if not @opsModel.hasJsonData() then return false
+
+      region      = @opsModel.get("region")
+      stateModule = @opsModel.getJsonData().agent.module
+
+      CloudResources( constant.RESTYPE.AZ, region ).isReady()   &&
+      CloudResources( constant.RESTYPE.SNAP, region ).isReady() &&
+      CloudResources( "QuickStartAmi",       region ).isReady() &&
+      CloudResources( "MyAmi",               region ).isReady() &&
+      CloudResources( "FavoriteAmi",         region ).isReady() &&
+      !!App.model.getStateModule( stateModule.repo, stateModule.tag )
 
     fetchAdditionalData : ()->
-      region = @opsModel.get("region")
+      region      = @opsModel.get("region")
+      stateModule = @opsModel.getJsonData().agent.module
+
       Q.all [
+        App.model.fetchStateModule( stateModule.repo, stateModule.tag )
         CloudResources( constant.RESTYPE.AZ,   region ).fetch()
         CloudResources( constant.RESTYPE.SNAP, region ).fetch()
         CloudResources( "QuickStartAmi",       region ).fetch()

@@ -80,6 +80,7 @@ define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone", "con
     ###
     initialize : ()->
       @__appdata = {}
+      @__stateModuleData = {}
       @__initializeNotification()
       return
 
@@ -130,7 +131,8 @@ define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone", "con
         d.resolve( data )
         return d.promise
 
-      ApiRequest({
+      self = @
+      ApiRequest("state_module", {
         mod_repo : repo
         mod_tag  : tag
       }).then ( d )->
@@ -138,7 +140,7 @@ define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone", "con
           d = JSON.parse( d )
         catch e
           throw McError( ApiRequest.Errors.InvalidRpcReturn, "Can't load state data. Please retry." )
-        @__stateModuleData[ repo + ":" + tag ] = d
+        self.__stateModuleData[ repo + ":" + tag ] = d
         d
 
     __parseListRes : ( res )->

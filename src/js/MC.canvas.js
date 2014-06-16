@@ -7,12 +7,6 @@
 # **********************************************************
 */
 
-// JSON data for current tab
-//MC.canvas_data = {};
-
-// Variable for current tab
-// MC.canvas_property = {};
-
 define(["MC", "canvon"], function(MC){
 
 MC.canvas = {

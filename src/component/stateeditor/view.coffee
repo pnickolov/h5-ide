@@ -13,6 +13,8 @@ define [ 'event',
 
 ], ( ide_event, lang, template , validate, constant, instance_model, Markdown) ->
 
+    StateClipboard = []
+
     # Register Partials
     Handlebars.registerPartial(id, tpl) for id, tpl of template
 
@@ -2891,7 +2893,7 @@ define [ 'event',
 
             if stack.length
 
-                MC.data.stateClipboard = stack
+                StateClipboard = stack
                 that.updateToolbar()
                 notification 'info', lang.ide.NOTIFY_MSG_INFO_STATE_COPY_TO_CLIPBOARD
 
@@ -2906,7 +2908,7 @@ define [ 'event',
             $('.state-list .state-item').each ->
                 stack.push(that.getStateItemByData($(this)))
 
-            MC.data.stateClipboard = stack
+            StateClipboard = stack
 
             that.updateToolbar()
 
@@ -2969,7 +2971,7 @@ define [ 'event',
             if focused_index is -1
                 focused_index = null
 
-            newStateDataAry = that.setNewStateIdForStateAry MC.data.stateClipboard
+            newStateDataAry = that.setNewStateIdForStateAry StateClipboard
             insertPos = that.addStateItemByData newStateDataAry, focused_index
             that.undoManager.register null, insertPos, 'paste', newStateDataAry
 
@@ -3305,7 +3307,7 @@ define [ 'event',
             else
                 that.$('#state-toolbar-copy, #state-toolbar-delete').hide()
                 that.$('#state-toolbar-copy-all').show()
-            if MC.data.stateClipboard.length > 0
+            if StateClipboard.length > 0
                 that.$('#state-toolbar-paste').removeClass 'disabled'
             else
                 that.$('#state-toolbar-paste').addClass 'disabled'

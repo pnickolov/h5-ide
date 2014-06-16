@@ -165,7 +165,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
   # Some converter must be behind other converters.
   Converters = [
     ()-> # Vpc & Dhcp
-      vpc = @CrPartials( "VPC" ).get( @vpcId ).attributes
+      vpc = @getResourceByType( "VPC" )[ 0 ]
 
       vpc.VpcId = @vpcId
       # Cache the vpc so that other can use it.

@@ -1,9 +1,51 @@
 
-define ["ApiRequest", "./CrModel", "backbone"], ( ApiRequest, CrModel )->
+define ["ApiRequest", "./CrModel", "constant", "backbone"], ( ApiRequest, CrModel, constant )->
 
   SubCollections = {}
   emptyArr = []
   SubColsByAwsResType = {}
+
+  # Need unify list group by resource type
+  __needUnifyList =
+
+    INSTANCE:
+        networkInterfaces: 'networkInterfaceSet'
+        state: 'instanceState'
+        securityGroups: 'groupSet'
+        blockDeviceMappings: 'blockDeviceMapping'
+
+    # All resource type will be replaced in below list
+    ALL:
+      associations: 'associationSet'
+      privateIpAddresses: 'privateIpAddressesSet'
+      groups: 'groupSet'
+
+
+  __needUnify = ( type ) ->
+    all = __needUnifyList.ALL
+    longTypeList = constant.WRAP __needUnifyList
+    _.extend all, longTypeList[ type ]
+
+  __replaceKey = ( obj, oldKey, newKey ) ->
+    obj[ newKey ] = obj[ oldKey ]
+    delete obj[oldKey]
+
+  __camelToPascal = ( obj ) ->
+    exceptionList = [ 'member', 'item' ]
+
+    for k, v of obj
+      newKey = k.substring(0,1).toUpperCase() + k.substring(1)
+      if k not in exceptionList and newKey isnt k
+        __replaceKey obj, k, newKey
+
+  __replaceKeyInList = ( obj, type ) ->
+    needReplaceList = __needUnify type
+
+    for k, v of obj
+      if k in _.keys needReplaceList
+        __replaceKey obj, k, needReplaceList[ k ]
+
+
 
   Backbone.Collection.extend {
 
@@ -83,7 +125,6 @@ define ["ApiRequest", "./CrModel", "backbone"], ( ApiRequest, CrModel )->
     # It parse data and the cached them in this collection and returns parsed models.
     __parseExternalData : ( awsData, extraAttr )->
       try
-        awsData = @unifyApi awsData
         if @parseExternalData
           awsData = @parseExternalData( awsData )
         else
@@ -105,21 +146,6 @@ define ["ApiRequest", "./CrModel", "backbone"], ( ApiRequest, CrModel )->
       @add awsData, extraAttr
       return
 
-    unifyReplace:
-      networkInterfaces: 'networkInterfaceSet'
-      associations: 'associationSet'
-      privateIpAddresses: 'privateIpAddressesSet'
-      groups: 'groupSet'
-
-    unifyApi: ( data ) ->
-      if _.isObject data
-        for k, v of data
-          if k in _.keys( @unifyReplace )
-            data[ @unifyReplace[ k ] ] = item: data[ k ]
-            v = data[ @unifyReplace[ k ] ].item
-            delete data[ k ]
-          if _.isObject v
-            @unifyApi v
 
       data
 
@@ -155,6 +181,20 @@ define ["ApiRequest", "./CrModel", "backbone"], ( ApiRequest, CrModel )->
         res = @models.slice(0)
 
       if first then res[0] else res
+
+
+    unifyApi: ( obj, type ) ->
+      if not _.isObject obj then return obj
+
+      for key, value of obj
+        if not (obj.hasOwnProperty key) then continue
+
+        if not _.isArray( obj )
+          __replaceKeyInList obj, type
+
+        @unifyApi value, type
+
+      obj
 
   }, {
 

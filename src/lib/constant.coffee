@@ -313,3 +313,5 @@ define ['MC', 'i18n!nls/lang.js'], ( MC, lang ) ->
 	REGEXP                  : REGEXP
 	RESTYPE                 : RESTYPE
 	RESNAME                 : wrap RESNAME
+	WRAP                    : wrap
+

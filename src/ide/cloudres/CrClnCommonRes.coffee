@@ -7,21 +7,9 @@ define [
   "constant"
 ], ( CrCommonCollection, CrCollection, CrModel, ApiRequest, constant )->
 
-  camelToPascal = ( obj ) ->
-    exceptionList = [ 'member', 'item' ]
-    if not _.isObject obj then return obj
 
-    for camelKey, value of obj
-      if not (obj.hasOwnProperty camelKey) then continue
 
-      pascalKey = camelKey.substring(0,1).toUpperCase() + camelKey.substring(1)
-      if not _.isArray( obj ) and pascalKey isnt camelKey and camelKey not in exceptionList
-        obj[pascalKey] = value
-        delete obj[camelKey]
 
-      camelToPascal value
-
-    obj
 
 
   ### Elb ###
@@ -51,9 +39,8 @@ define [
         elb.vpcId = elb.VPCId
         delete elb.VPCId
       elbs
-
-    parseExternalData :( res ) ->
-      #TODO map attribute
+    parseExternalData: ( data ) ->
+      @unifyApi data, @type
 
   }
 
@@ -71,10 +58,8 @@ define [
       for vpn in vpns || []
         vpn.vgwTelemetry = vpn.vgwTelemetry?.item || []
       vpns
-
-    parseExternalData :( res ) ->
-      #TODO map attribute
-
+    parseExternalData: ( data ) ->
+      @unifyApi data, @type
   }
 
   ### EIP ###
@@ -86,6 +71,8 @@ define [
     type  : constant.RESTYPE.EIP
     modelIdAttribute : "allocationId"
     trAwsXml : ( data )-> data.DescribeAddressesResponse.addressesSet?.item
+    parseExternalData: ( data ) ->
+      @unifyApi data, @type
   }
 
   ### VPC ###
@@ -97,6 +84,8 @@ define [
     type  : constant.RESTYPE.VPC
     modelIdAttribute : "vpcId"
     trAwsXml : ( data )-> data.DescribeVpcsResponse.vpcSet?.item
+    parseExternalData: ( data ) ->
+      @unifyApi data, @type
   }
 
   ### ASG ###
@@ -110,8 +99,6 @@ define [
     trAwsXml : ( data )-> data.DescribeAutoScalingGroupsResponse.DescribeAutoScalingGroupsResult.AutoScalingGroups?.member
     parseFetchData : ( asgs )->
       for asg in asgs
-        camelToPascal asg
-
         asg.Name = asg.AutoScalingGroupName
         delete asg.AutoScalingGroupName
         asg.AvailabilityZones   = asg.AvailabilityZones || []
@@ -121,10 +108,8 @@ define [
         asg.Subnets             = (asg.VPCZoneIdentifier || asg.VpczoneIdentifier).split(",")
         delete asg.VPCZoneIdentifier
       asgs
-
-    parseExternalData :( res ) ->
-      #TODO map attribute
-
+    parseExternalData: ( data ) ->
+      @unifyApi data, @type
   }
 
   ### CloudWatch ###
@@ -150,10 +135,8 @@ define [
         delete cw.AlarmName
 
       cws
-
-    parseExternalData :( res ) ->
-      #TODO map attribute
-
+    parseExternalData: ( data ) ->
+      @unifyApi data, @type
   }
 
   ### CGW ###
@@ -165,6 +148,8 @@ define [
     type  : constant.RESTYPE.CGW
     modelIdAttribute : "customerGatewayId"
     trAwsXml : ( data )-> data.DescribeCustomerGatewaysResponse.customerGatewaySet?.item
+    parseExternalData: ( data ) ->
+      @unifyApi data, @type
   }
 
   ### VGW ###
@@ -190,10 +175,8 @@ define [
           vgw.vpcId = vgw.attachments[0].vpcId
           vgw.attachmentState = vgw.attachments[0].state
       vgws
-
-    parseExternalData :( res ) ->
-      #TODO map attribute
-
+    parseExternalData: ( data ) ->
+      @unifyApi data, @type
   }
 
   ### IGW ###
@@ -214,10 +197,8 @@ define [
           igw.vpcId = igw.attachmentSet[0].vpcId
           igw.state = igw.attachmentSet[0].state
       igws
-
-    parseExternalData :( res ) ->
-      #TODO map attribute
-
+    parseExternalData: ( data ) ->
+      @unifyApi data, @type
   }
 
   ### RTB ###
@@ -236,10 +217,8 @@ define [
         rtb.id = rtb.routeTableId
         delete rtb.routeTableId
       rtbs
-
-    parseExternalData :( res ) ->
-      #TODO map attribute
-
+    parseExternalData: ( data ) ->
+      @unifyApi data, @type
   }
 
   ### INSTANCE ###
@@ -271,10 +250,8 @@ define [
         ins.id = ins.instanceId
         delete ins.instanceId
       data
-
-    parseExternalData :( res ) ->
-      #TODO map attribute
-
+    parseExternalData: ( data ) ->
+      @unifyApi data, @type
   }
 
   ### VOLUME ###
@@ -298,10 +275,8 @@ define [
           vol.attachmentStatus = attachmentStatus
         delete vol.attachmentSet
       volumes
-
-    parseExternalData :( res ) ->
-      #TODO map attribute
-
+    parseExternalData: ( data ) ->
+      @unifyApi data, @type
   }
 
   ### LC ###
@@ -327,8 +302,8 @@ define [
         lc.SecurityGroups      = lc.SecurityGroups?.member or lc.SecurityGroups
       lcs
 
-    parseExternalData :( res ) ->
-      #TODO map attribute
+    parseExternalData: ( data ) ->
+      @unifyApi data, @type
 
   }
 
@@ -344,14 +319,11 @@ define [
     trAwsXml : ( data )-> data.DescribePoliciesResponse.DescribePoliciesResult.ScalingPolicies?.member
     parseFetchData : ( sps )->
       for sp in sps
-        camelToPascal sps
         sp.Name = sp.PolicyName
         delete sp.PolicyName
       sps
-
-    parseExternalData :( res ) ->
-      #TODO map attribute
-
+    parseExternalData: ( data ) ->
+      @unifyApi data, @type
   }
 
   ### AvailabilityZone ###
@@ -364,6 +336,8 @@ define [
     AwsResponseType  : "DescribeAvailabilityZonesResponse"
     modelIdAttribute : "zoneName"
     trAwsXml : ( data )-> data.DescribeAvailabilityZonesResponse.availabilityZoneInfo?.item
+    parseExternalData: ( data ) ->
+      @unifyApi data, @type
   }
 
 
@@ -387,10 +361,8 @@ define [
           NotificationType: _.pluck nc, 'notificationType'
 
       newNcList
-
-    parseExternalData :( res ) ->
-      #TODO map attribute
-
+    parseExternalData: ( data ) ->
+      @unifyApi data, @type
   }
 
 
@@ -413,10 +385,8 @@ define [
       #     acl.subnetId = acl.associationSet[0].subnetId
 
       acls
-
-    parseExternalData :( res ) ->
-      #TODO map attribute
-
+    parseExternalData: ( data ) ->
+      @unifyApi data, @type
   }
 
   ### ENI ###
@@ -446,10 +416,8 @@ define [
             if _.isObject(e) and key isnt "privateIpAddressesSet"
               delete enis[index][key]
         enis
-
-    parseExternalData :( res ) ->
-      #TODO map attribute
-
+    parseExternalData: ( data ) ->
+      @unifyApi data, @type
   }
 
 
@@ -463,10 +431,8 @@ define [
     modelIdAttribute : "subnetId"
     doFetch : ()-> ApiRequest("subnet_DescribeSubnets", {region_name : @region()})
     trAwsXml : ( data )-> data.DescribeSubnetsResponse.subnetSet?.item
-
-    parseExternalData :( res ) ->
-      #TODO map attribute
-
+    parseExternalData: ( data ) ->
+      @unifyApi data, @type
   }
 
   ### SG ###
@@ -496,9 +462,7 @@ define [
         # sg.id = sg.groupId
         # delete sg.groupId
       sgs
-
-    parseExternalData :( res ) ->
-      #TODO map attribute
-
+    parseExternalData: ( data ) ->
+      @unifyApi data, @type
   }
 

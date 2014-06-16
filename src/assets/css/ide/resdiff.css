@@ -1,13 +1,14 @@
 .res_diff_tree {
   overflow: auto;
-  background-color: white;
-  height: 581px; }
+  height: 611px; }
   .res_diff_tree .scroll-wrap-res-diff {
-    height: 581px; }
-  .res_diff_tree h1 {
-    color: rgba(32, 32, 32, 0.9);
-    font-size: 20px;
-    text-align: center; }
+    height: 581px;
+    padding: 15px; }
+    .res_diff_tree .scroll-wrap-res-diff .scroll-content > p {
+      font-size: 16px;
+      color: #ccc; }
+  .res_diff_tree h5 {
+    margin-bottom: 10px; }
   .res_diff_tree ul {
     list-style: none; }
   .res_diff_tree .title {
@@ -29,7 +30,7 @@
       padding: 10px;
       color: #009800;
       font-size: 16px;
-      background-color: #f2f2f2;
+      background-color: #1B1B1B;
       border-left: 3px #009800 solid;
       width: 100%;
       box-sizing: border-box;

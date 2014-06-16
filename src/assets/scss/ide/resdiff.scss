@@ -11,17 +11,20 @@ $color_changed: #008e00;
 .res_diff_tree {
 	
 	overflow: auto;
-	background-color: $bg_body;
-	height: 581px;
+	height: 611px;
 
 	.scroll-wrap-res-diff {
 		height: 581px;
+		padding  : 15px;
+
+		.scroll-content > p {
+			font-size : 16px;
+			color     : #ccc;
+		}
 	}
 
-	h1 {
-		color: rgba(32,32,32,0.9);
-		font-size: 20px;
-		text-align: center;
+	h5 {
+		margin-bottom: 10px;
 	}
 
 	ul {
@@ -51,7 +54,7 @@ $color_changed: #008e00;
 			padding: 10px;
 			color: #009800;
 			font-size: 16px;
-			background-color: #f2f2f2;
+			background-color: #1B1B1B;
 			border-left: 3px #009800 solid;
 			width: 100%;
 			box-sizing: border-box;

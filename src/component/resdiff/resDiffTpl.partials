@@ -2,9 +2,10 @@
 <div class="scroll-wrap scroll-wrap-res-diff">
 	<div class="scrollbar-veritical-wrap" style="display: block;"><div class="scrollbar-veritical-thumb"></div></div>
 	<div class="content_wrap scroll-content">
-		<h1>Your app has been externally changed.</h1>
-		<article></article>
+		<p>Resources of this app has been externally changed. The change has been synced to app. The diagram may be re-generated to reflect the change.</p>
+		<h5>What has been changed:</h5>
 	</div>
+	<article></article>
 </div>
 
 <!-- {{resDiffGroup}} -->

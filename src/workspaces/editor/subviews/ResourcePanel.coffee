@@ -475,11 +475,18 @@ define [
             }
 
 
-        component_size = MC.canvas.COMPONENT_SIZE[ type ]
-        node_type      = "node"
+        component_size = MC.canvas.GROUP_DEFAULT_SIZE[ type ]
+        node_type      = "group"
+        placeOffsetX   = 0
+        placeOffsetY   = 0
         if not component_size
-          node_type = "group"
-          component_size = MC.canvas.GROUP_DEFAULT_SIZE[ type ]
+          component_size = MC.canvas.COMPONENT_SIZE[ type ]
+          node_type = "node"
+          placeOffsetX   = 8
+          placeOffsetY   = 8
+
+        if type is constant.RESTYPE.INSTANCE then placeOffsetY = 0
+        if type is constant.RESTYPE.ASG      then placeOffsetX = -8
 
         $(document).on({
           'mousemove.SidebarDrag' : @onDragMove
@@ -491,8 +498,10 @@ define [
           'drop_zone_data' : drop_zone_data
           "comp_size"      : component_size
           "node_type"      : node_type
-          'offsetX'        : evt.offsetX
-          'offsetY'        : evt.offsetY
+          'offsetX'        : evt.pageX - tgtOffset.left
+          'offsetY'        : evt.pageY - tgtOffset.top
+          "placeOffsetY"   : placeOffsetY
+          "placeOffsetX"   : placeOffsetX
           'target'         : $tgt
           "scale"          : $canvas.scale()
         })
@@ -515,8 +524,8 @@ define [
         null
         event_data.target_type
         event_data.node_type
-        (evt.pageX - event_data.offsetX + 10 - canvas_offset.left) / 10 * event_data.scale
-        (evt.pageY - event_data.offsetY + 10 - canvas_offset.top)  / 10 * event_data.scale
+        (evt.pageX - event_data.offsetX - event_data.placeOffsetX - canvas_offset.left) / 10 * event_data.scale
+        (evt.pageY - event_data.offsetY - event_data.placeOffsetY - canvas_offset.top)  / 10 * event_data.scale
         event_data.comp_size[0]
         event_data.comp_size[1]
       )
@@ -534,7 +543,7 @@ define [
         event_data.drop_zone.toggleClass("hover", hover)
 
       $("#ResourceDragItem").css {
-        top : evt.pageY - event_data.offsetY
+        top  : evt.pageY - event_data.offsetY
         left : evt.pageX - event_data.offsetX
       }
       false
@@ -562,8 +571,8 @@ define [
       node_option    = event_data.target.data('option') || {}
       component_size = event_data.comp_size
       coordinate     = {
-        x : (event.pageX - event_data.offsetX + 10 - canvas_offset.left) / 10 * event_data.scale
-        y : (event.pageY - event_data.offsetY + 10 - canvas_offset.top)  / 10 * event_data.scale
+        x : (event.pageX - event_data.offsetX - event_data.placeOffsetX - canvas_offset.left) / 10 * event_data.scale
+        y : (event.pageY - event_data.offsetY - event_data.placeOffsetY - canvas_offset.top)  / 10 * event_data.scale
       }
 
       if coordinate.x < 0 or coordinate.y < 0

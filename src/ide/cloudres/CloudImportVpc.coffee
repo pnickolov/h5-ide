@@ -36,12 +36,17 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
       @lcs       = {} # res name => comp
       @asgs      = {} # res name => comp
       @topics    = {} # res arn  => comp
+      @sps       = {} # res id  => comp
       @ins_in_asg= [] # instances in asg
       @component = {}
       @layout    = {}
       @originalJson = jQuery.extend(true, {component: [], layout: []}, originalJson) #original app json
 
-      @
+      @COMPARISONOPERATOR =
+        "GreaterThanOrEqualToThreshold" : ">="
+        "GreaterThanThreshold"          : ">"
+        "LessThanThreshold"             : "<"
+        "LessThanOrEqualToThreshold"    : "<="
 
     add : ( shortType, resource, name )->
       type = constant.RESTYPE[ shortType ]
@@ -967,6 +972,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         spRes.PolicyARN = aws_sp.id
         spRes.PolicyName = aws_sp.Name
         spComp = @add( "SP", spRes, aws_sp.Name )
+        @sps[ aws_sp.id ] = spComp
       return
 
     ()-> #CW
@@ -1003,16 +1009,38 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
             if asgComp
               data =
                 "name" : e.name
-                "value": CREATE_REF( asgComp )
+                "value": CREATE_REF( asgComp, "resource.AutoScalingGroupName" )
               dimension.push data
         if dimension.length is 0
           #CW is not for asg in current VPC
           continue
+        cwRes.Dimensions = dimension
 
-        #convert AlarmActions to REF: TODO
+        #convert AlarmActions to REF:
+        alarmActionAry = []
+        _.each aws_cw.AlarmActions, (e,key)->
+          # "arn:aws:autoscaling:ap-northeast-1:994554139310:scalingPolicy:82adbcae-0bae-4e47-8f99-351948118991:autoScalingGroupName/asg0---app-c78a2ec3:policyName/asg0-policy-0"
+          # "arn:aws:sns:ap-northeast-1:994554139310:test"
+          reg_asg = /arn:aws:autoscaling:.*:.*:scalingPolicy/g
+          reg_topic = /arn:aws:sns:.*:.*:.*/g
+          if reg_topic.test(e)
+            #TOPIC
+            topicComp = me.addTopic(e)
+            if topicComp
+              alarmActionAry.push CREATE_REF(spComp, "resource.TopicArn")
+          else if reg_asg.test(e)
+            #SP
+            spComp = me.sps[e]
+            if spComp
+              alarmActionAry.push CREATE_REF(spComp, "resource.PolicyARN")
+        cwRes.AlarmActions = alarmActionAry
 
         #OKAction: TODO
 
+        cwRes.Threshold = String(aws_cw.Threshold)
+        cwRes.EvaluationPeriods = String(aws_cw.EvaluationPeriods)
+        if aws_cw.ComparisonOperator
+          cwRes.ComparisonOperator = @COMPARISONOPERATOR[ aws_cw.ComparisonOperator ]
 
         cwRes.AlarmArn  = aws_cw.id
         cwRes.AlarmName = aws_cw.Name

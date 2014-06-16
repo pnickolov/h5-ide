@@ -369,11 +369,15 @@ define [
     parseFetchData : ( sps )->
       for sp in sps
         sp.Name = sp.PolicyName
-        delete sp.PolicyName
+        #delete sp.PolicyName
       sps
     parseExternalData: ( data ) ->
       @unifyApi data, @type
-      @parseFetchData data
+      @camelToPascal data
+      for sp in data
+        sp.Name = sp.PolicyName
+        #delete sp.PolicyName
+      data
   }
 
   ### AvailabilityZone ###
@@ -386,9 +390,6 @@ define [
     AwsResponseType  : "DescribeAvailabilityZonesResponse"
     modelIdAttribute : "zoneName"
     trAwsXml : ( data )-> data.DescribeAvailabilityZonesResponse.availabilityZoneInfo?.item
-    # parseExternalData: ( data ) ->
-    #   @unifyApi data, @type
-    #   @parseFetchData data
   }
 
 
@@ -407,14 +408,24 @@ define [
       for nc in ncs
         first = nc[ 0 ]
         newNcList.push
-          AutoScalingGroupName: first.autoScalingGroupName
-          TopicARN: first.topicARN
-          NotificationType: _.pluck nc, 'notificationType'
-
+          AutoScalingGroupName: first.AutoScalingGroupName
+          TopicARN: first.TopicARN
+          NotificationType: _.pluck nc, 'NotificationType'
       newNcList
+
     parseExternalData: ( data ) ->
       @unifyApi data, @type
-      @parseFetchData data
+      @camelToPascal data
+
+      newNcList = []
+      for nc in data
+        first = nc[ 0 ]
+        newNcList.push
+          AutoScalingGroupName: first.AutoScalingGroupName
+          TopicARN: first.TopicARN
+          NotificationType: _.pluck nc, 'NotificationType'
+      newNcList
+
   }
 
 

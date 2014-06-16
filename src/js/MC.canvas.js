@@ -179,7 +179,7 @@ MC.canvas = {
 			'height': canvas_size[1] * MC.canvas.GRID_HEIGHT / scale_ratio
 		});
 
-		$('#canvas_container, #canvas_body').css({
+		$('#canvas_body').css({
 			'width': canvas_size[0] * MC.canvas.GRID_WIDTH / scale_ratio,
 			'height': canvas_size[1] * MC.canvas.GRID_HEIGHT / scale_ratio
 		});
@@ -207,7 +207,7 @@ MC.canvas = {
 			newClass = $canvas_body.attr("class").replace(/zoomlevel_[^\s]+\s?/g, "") + "zoomlevel_" + ("" + scale_ratio).replace(".", "_");
 			$canvas_body.attr("class", newClass);
 
-			$('#canvas_container, #canvas_body').css({
+			$('#canvas_body').css({
 				'width': canvas_size[0] * MC.canvas.GRID_WIDTH / scale_ratio,
 				'height': canvas_size[1] * MC.canvas.GRID_HEIGHT / scale_ratio
 			});
@@ -247,7 +247,7 @@ MC.canvas = {
 			newClass = $.trim($canvas_body.attr("class").replace(/zoomlevel_[^\s]+\s?/g, "")) + " zoomlevel_" + ("" + scale_ratio).replace(".", "_");
 			$canvas_body.attr("class", newClass);
 
-			$('#canvas_container, #canvas_body').css({
+			$('#canvas_body').css({
 				'width': canvas_size[0] * MC.canvas.GRID_WIDTH / scale_ratio,
 				'height': canvas_size[1] * MC.canvas.GRID_HEIGHT / scale_ratio
 			});
@@ -1435,7 +1435,7 @@ MC.canvas.volume = {
 		if (!$('#volume-bubble-box')[0])
 		{
 			var target = $('#' + id),
-				canvas_container = $('#canvas_container'),
+				canvas_container = $('#canvas_body'),
 				canvas_offset = $canvas.offset(),
 				target_uid = id.replace(/_[0-9]*$/ig, ''),
 				width,
@@ -1703,7 +1703,7 @@ MC.canvas.volume = {
 			{
 				$('#' + volume_id).parent().remove();
 
-				bubble_box.css('top',  target_offset.top - $('#canvas_container').offset().top - ((bubble_box.height() - target_offset.height) / 2));
+				bubble_box.css('top',  target_offset.top - $('#canvas_body').offset().top - ((bubble_box.height() - target_offset.height) / 2));
 
 				$('#instance_volume_number').text(
 					$canvas( target_id ).volume().length
@@ -1893,7 +1893,7 @@ MC.canvas.volume = {
 				}
 			}
 
-			bubble_box.css('top',  target_offset.top - $('#canvas_container').offset().top - ((bubble_box.height() - target_offset.height) / 2));
+			bubble_box.css('top',  target_offset.top - $('#canvas_body').offset().top - ((bubble_box.height() - target_offset.height) / 2));
 		}
 		else
 		{
@@ -1932,7 +1932,7 @@ MC.canvas.asgList = {
 				target_offset = Canvon(target).offset(),
 				canvas_offset = $canvas.offset();
 
-			$('#canvas_container').append(
+			$('#canvas_body').append(
 				MC.template.asgList( $canvas( target_id ).list() )
 			);
 
@@ -1978,7 +1978,7 @@ MC.canvas.asgList = {
 		var target_offset = Canvon('#' + target_id).offset(),
 			canvas_offset = $canvas.offset();
 
-		$('#canvas_container').append(
+		$('#canvas_body').append(
 			MC.template.asgList( $canvas( target_id ).list() )
 		);
 
@@ -2016,7 +2016,7 @@ MC.canvas.instanceList = {
 				return false;
 			}
 
-			$('#canvas_container').append(
+			$('#canvas_body').append(
 				MC.template.instanceList( list )
 			);
 
@@ -2075,7 +2075,7 @@ MC.canvas.instanceList = {
 		   	canvas_offset = $canvas.offset(),
 		   	list = $canvas(target_id).list();
 
-		$('#canvas_container').append(
+		$('#canvas_body').append(
 			MC.template.instanceList(list)
 		);
 
@@ -2113,7 +2113,7 @@ MC.canvas.eniList = {
 				return false;
 			}
 
-			$('#canvas_container').append( MC.template.eniList( list ) );
+			$('#canvas_body').append( MC.template.eniList( list ) );
 
 			$('#eniList-wrap')
 				.data('target-id', target.id)
@@ -2159,7 +2159,7 @@ MC.canvas.eniList = {
 			canvas_offset = $canvas.offset(),
 			list = $canvas( target_id ).list();
 
-		$('#canvas_container').append( MC.template.eniList( list ) );
+		$('#canvas_body').append( MC.template.eniList( list ) );
 
 		$('#eniList-wrap')
 			.data('target-id', target_id)
@@ -2207,7 +2207,7 @@ MC.canvas.nodeAction = {
 				return;
 			}
 
-			$('#canvas_container').append(MC.template.nodeAction({
+			$('#canvas_body').append(MC.template.nodeAction({
 				state_num: stateNum
 			}));
 
@@ -5800,7 +5800,7 @@ MC.canvas.benchmark = function (count)
 		'height': canvas_size[1] * MC.canvas.GRID_HEIGHT / scale_ratio
 	});
 
-	$('#canvas_container, #canvas_body').css({
+	$('#canvas_body').css({
 		'width': canvas_size[0] * MC.canvas.GRID_WIDTH / scale_ratio,
 		'height': canvas_size[1] * MC.canvas.GRID_HEIGHT / scale_ratio
 	});

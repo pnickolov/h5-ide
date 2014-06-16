@@ -532,43 +532,30 @@ define [
         x : (event.pageX - event_data.offsetX + 10 - canvas_offset.left) / 10 * event_data.scale
         y : (event.pageY - event_data.offsetY + 10 - canvas_offset.top)  / 10 * event_data.scale
       }
-      if coordinate.x > 0 && coordinate.y > 0
-        if node_type is "node"
-          if target_type is constant.RESTYPE.IGW || target_type is constant.RESTYPE.VGW
-            vpc_id         = $('.AWS-VPC-VPC').attr('id')
-            vpc_item       = $canvas( vpc_id )
-            vpc_coordinate = vpc_item.position()
-            vpc_size       = vpc_item.size()
-            node_option.groupUId = vpc_id
 
-            if coordinate.y > vpc_coordinate[1] + vpc_size[1] - component_size[1]
-              coordinate.y = vpc_coordinate[1] + vpc_size[1] - component_size[1]
-            if coordinate.y < vpc_coordinate[1]
-              coordinate.y = vpc_coordinate[1]
+      if coordinate.x < 0 or coordinate.y < 0
+        $item.remove()
+        return
 
-            if target_type is constant.RESTYPE.IGW
-              coordinate.x = vpc_coordinate[0] - (component_size[1] / 2)
-            else
-              coordinate.x = vpc_coordinate[0] + vpc_size[0] - (component_size[1] / 2)
+      if node_type is "node"
+        if target_type is constant.RESTYPE.IGW || target_type is constant.RESTYPE.VGW
+          vpc_id         = $('.AWS-VPC-VPC').attr('id')
+          vpc_item       = $canvas( vpc_id )
+          vpc_coordinate = vpc_item.position()
+          vpc_size       = vpc_item.size()
+          node_option.groupUId = vpc_id
 
-            $canvas.add(target_type, node_option, coordinate)
+          if coordinate.y > vpc_coordinate[1] + vpc_size[1] - component_size[1]
+            coordinate.y = vpc_coordinate[1] + vpc_size[1] - component_size[1]
+          if coordinate.y < vpc_coordinate[1]
+            coordinate.y = vpc_coordinate[1]
+
+          if target_type is constant.RESTYPE.IGW
+            coordinate.x = vpc_coordinate[0] - (component_size[1] / 2)
           else
-            match_place = MC.canvas.isMatchPlace(
-              null
-              target_type
-              node_type
-              coordinate.x
-              coordinate.y
-              component_size[0]
-              component_size[1]
-            )
+            coordinate.x = vpc_coordinate[0] + vpc_size[0] - (component_size[1] / 2)
 
-            if match_place.is_matched
-              node_option.groupUId = match_place.target
-              new_node_id = $canvas.add(target_type, node_option, coordinate)
-              if new_node_id then MC.canvas.select(new_node_id)
-            else
-              $canvas.trigger("CANVAS_PLACE_NOT_MATCH", {'type':target_type})
+          $canvas.add(target_type, node_option, coordinate)
         else
           match_place = MC.canvas.isMatchPlace(
             null
@@ -579,33 +566,50 @@ define [
             component_size[0]
             component_size[1]
           )
-          areaChild = MC.canvas.areaChild(
-            null
-            target_type
-            coordinate.x
-            coordinate.y
-            coordinate.x + component_size[0]
-            coordinate.y + component_size[1]
-          )
+
           if match_place.is_matched
-            if areaChild.length is 0 and MC.canvas.isBlank(
-                ""
-                target_type
-                'group'
-                # Enlarge a little bit to make the drop place correctly.
-                coordinate.x - 1,
-                coordinate.y - 1,
-                component_size[0] + 2
-                component_size[1] + 2
-              )
-              node_option.groupUId = match_place.target
-              new_node_id = $canvas.add(target_type, node_option, coordinate)
-              if !($canvas.hasVPC() && target_type is constant.RESTYPE.AZ )
-                MC.canvas.select(new_node_id)
-            else
-              $canvas.trigger("CANVAS_PLACE_OVERLAP")
+            node_option.groupUId = match_place.target
+            new_node_id = $canvas.add(target_type, node_option, coordinate)
+            if new_node_id then MC.canvas.select(new_node_id)
           else
-            $canvas.trigger("CANVAS_PLACE_NOT_MATCH", {type:target_type})
+            $canvas.trigger("CANVAS_PLACE_NOT_MATCH", {'type':target_type})
+      else
+        match_place = MC.canvas.isMatchPlace(
+          null
+          target_type
+          node_type
+          coordinate.x
+          coordinate.y
+          component_size[0]
+          component_size[1]
+        )
+        areaChild = MC.canvas.areaChild(
+          null
+          target_type
+          coordinate.x
+          coordinate.y
+          coordinate.x + component_size[0]
+          coordinate.y + component_size[1]
+        )
+        if match_place.is_matched
+          if areaChild.length is 0 and MC.canvas.isBlank(
+              ""
+              target_type
+              'group'
+              # Enlarge a little bit to make the drop place correctly.
+              coordinate.x - 1,
+              coordinate.y - 1,
+              component_size[0] + 2
+              component_size[1] + 2
+            )
+            node_option.groupUId = match_place.target
+            new_node_id = $canvas.add(target_type, node_option, coordinate)
+            if !($canvas.hasVPC() && target_type is constant.RESTYPE.AZ )
+              MC.canvas.select(new_node_id)
+          else
+            $canvas.trigger("CANVAS_PLACE_OVERLAP")
+        else
+          $canvas.trigger("CANVAS_PLACE_NOT_MATCH", {type:target_type})
 
       if target_type is constant.RESTYPE.IGW or target_type is constant.RESTYPE.VGW
         $item.animate({

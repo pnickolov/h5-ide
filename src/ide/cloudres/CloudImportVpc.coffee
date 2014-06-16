@@ -245,7 +245,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         if aws_cgw.state in [ "deleted","deleting" ]
           continue
         cgwRes  =
-          "BgpAsn"   : "" #aws_cgw.bgpAsn
+          "BgpAsn"   : if 'bgpAsn' of aws_cgw then aws_cgw.bgpAsn else ""
           "CustomerGatewayId": aws_cgw.id
           "IpAddress": aws_cgw.ipAddress
           "Type"     : aws_cgw.type
@@ -271,7 +271,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         vpnRes =
           "CustomerGatewayId" : CREATE_REF( cgwComp, "resource.CustomerGatewayId" )
           "Options"     :
-            "StaticRoutesOnly": ""
+            "StaticRoutesOnly": false
           "Routes": []
           "Type"  : aws_vpn.type
           "VpnConnectionId"   : aws_vpn.id
@@ -283,6 +283,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         # vpnRes.CustomerGatewayId = CREATE_REF( cgwComp, "resource.CustomerGatewayId" )
         if aws_vpn.options and aws_vpn.options.staticRoutesOnly
           vpnRes.Options.StaticRoutesOnly = aws_vpn.options.staticRoutesOnly
+          cgwComp.resource.BgpAsn = ""
         if aws_vpn.routes
           for route in aws_vpn.routes
             vpnRes.Routes.push

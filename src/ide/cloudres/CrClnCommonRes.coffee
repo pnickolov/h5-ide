@@ -239,7 +239,7 @@ define [
       rtbs
     parseExternalData: ( data ) ->
       @unifyApi data, @type
-      @parseFetchData data
+      #@parseFetchData data
   }
 
   ### INSTANCE ###
@@ -363,9 +363,9 @@ define [
     AwsResponseType  : "DescribeAvailabilityZonesResponse"
     modelIdAttribute : "zoneName"
     trAwsXml : ( data )-> data.DescribeAvailabilityZonesResponse.availabilityZoneInfo?.item
-    parseExternalData: ( data ) ->
-      @unifyApi data, @type
-      @parseFetchData data
+    # parseExternalData: ( data ) ->
+    #   @unifyApi data, @type
+    #   @parseFetchData data
   }
 
 
@@ -466,9 +466,9 @@ define [
     modelIdAttribute : "subnetId"
     doFetch : ()-> ApiRequest("subnet_DescribeSubnets", {region_name : @region()})
     trAwsXml : ( data )-> data.DescribeSubnetsResponse.subnetSet?.item
-    parseExternalData: ( data ) ->
-      @unifyApi data, @type
-      @parseFetchData data
+    # parseExternalData: ( data ) ->
+    #   @unifyApi data, @type
+      # @parseFetchData data
   }
 
   ### SG ###

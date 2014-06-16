@@ -368,7 +368,3 @@
   });
 
 }).call(this);
-
-/*
-//# sourceMappingURL=UI.modalplus.js.map
-*/

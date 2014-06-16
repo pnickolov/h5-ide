@@ -20,6 +20,12 @@ define ["ApiRequest", "./CrModel", "constant", "backbone"], ( ApiRequest, CrMode
     VOL:
         attachments: 'attachmentSet'
 
+    RT:
+        associations: 'associationSet'
+        routes: 'routeSet'
+        tags: 'tagSet'
+        propagatingVgws: 'propagatingVgwSet'
+
     # All resource type will be replaced in below list
     ALL:
       associations: 'associationSet'

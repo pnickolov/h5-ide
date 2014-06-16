@@ -81,9 +81,13 @@ define ["ApiRequest", "./CrModel", "backbone"], ( ApiRequest, CrModel )->
 
     # This method is used by CloudResources to provide an external api to parse data coming from aws.
     # It parse data and the cached them in this collection and returns parsed models.
-    parseExternalData : ( awsData, extraAttr )->
+    __parseExternalData : ( awsData, extraAttr )->
       try
-        awsData = @parseFetchData @unifyApi awsData
+        awsData = @unifyApi awsData
+        if @parseExternalData
+          awsData = @parseExternalData( awsData )
+        else
+          awsData = @parseFetchData( awsData )
       catch e
         return null
 

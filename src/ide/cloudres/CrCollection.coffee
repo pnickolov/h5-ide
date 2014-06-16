@@ -14,6 +14,10 @@ define ["ApiRequest", "./CrModel", "constant", "backbone"], ( ApiRequest, CrMode
         securityGroups: 'groupSet'
         blockDeviceMappings: 'blockDeviceMapping'
 
+    ELB:
+        GroupSet: 'SecurityGroups',
+
+
     # All resource type will be replaced in below list
     ALL:
       associations: 'associationSet'
@@ -186,6 +190,16 @@ define ["ApiRequest", "./CrModel", "constant", "backbone"], ( ApiRequest, CrMode
 
       if first then res[0] else res
 
+    convertBoolAndNumToString: ( obj ) ->
+
+      for camelKey, value of obj
+        if not (obj.hasOwnProperty camelKey) then continue
+        if _.isObject(obj[camelKey]) or _.isArray(obj[camelKey])
+          @convertBoolAndNumToString value
+        else if _.isBoolean(obj[camelKey]) or _.isNumber(obj[camelKey])
+            obj[camelKey] = String(obj[camelKey])
+
+      obj
 
     unifyApi: ( obj, type ) ->
       hit = false
@@ -213,7 +227,6 @@ define ["ApiRequest", "./CrModel", "constant", "backbone"], ( ApiRequest, CrMode
         if not _.isArray( obj ) and pascalKey isnt camelKey and camelKey not in exceptionList
           obj[pascalKey] = value
           delete obj[camelKey]
-
 
         @camelToPascal value
 

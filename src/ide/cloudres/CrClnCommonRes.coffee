@@ -42,6 +42,11 @@ define [
     parseExternalData: ( data ) ->
       @unifyApi data, @type
       @camelToPascal data
+      @convertBoolAndNumToString data
+      _.each data, (dataItem) ->
+        dataItem.Instances = _.map dataItem.Instances, (obj) ->
+          return obj.InstanceId
+      return data
       # @parseFetchData data
 
   }

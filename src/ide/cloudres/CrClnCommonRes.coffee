@@ -51,6 +51,10 @@ define [
         elb.vpcId = elb.VPCId
         delete elb.VPCId
       elbs
+
+    parseExternalData :( res ) ->
+      #TODO map attribute
+
   }
 
   ### VPN ###
@@ -67,6 +71,10 @@ define [
       for vpn in vpns || []
         vpn.vgwTelemetry = vpn.vgwTelemetry?.item || []
       vpns
+
+    parseExternalData :( res ) ->
+      #TODO map attribute
+
   }
 
   ### EIP ###
@@ -113,6 +121,10 @@ define [
         asg.Subnets             = (asg.VPCZoneIdentifier || asg.VpczoneIdentifier).split(",")
         delete asg.VPCZoneIdentifier
       asgs
+
+    parseExternalData :( res ) ->
+      #TODO map attribute
+
   }
 
   ### CloudWatch ###
@@ -138,6 +150,10 @@ define [
         delete cw.AlarmName
 
       cws
+
+    parseExternalData :( res ) ->
+      #TODO map attribute
+
   }
 
   ### CGW ###
@@ -174,6 +190,10 @@ define [
           vgw.vpcId = vgw.attachments[0].vpcId
           vgw.attachmentState = vgw.attachments[0].state
       vgws
+
+    parseExternalData :( res ) ->
+      #TODO map attribute
+
   }
 
   ### IGW ###
@@ -194,6 +214,10 @@ define [
           igw.vpcId = igw.attachmentSet[0].vpcId
           igw.state = igw.attachmentSet[0].state
       igws
+
+    parseExternalData :( res ) ->
+      #TODO map attribute
+
   }
 
   ### RTB ###
@@ -212,6 +236,10 @@ define [
         rtb.id = rtb.routeTableId
         delete rtb.routeTableId
       rtbs
+
+    parseExternalData :( res ) ->
+      #TODO map attribute
+
   }
 
   ### INSTANCE ###
@@ -243,6 +271,10 @@ define [
         ins.id = ins.instanceId
         delete ins.instanceId
       data
+
+    parseExternalData :( res ) ->
+      #TODO map attribute
+
   }
 
   ### VOLUME ###
@@ -266,6 +298,10 @@ define [
           vol.attachmentStatus = attachmentStatus
         delete vol.attachmentSet
       volumes
+
+    parseExternalData :( res ) ->
+      #TODO map attribute
+
   }
 
   ### LC ###
@@ -291,7 +327,8 @@ define [
         lc.SecurityGroups      = lc.SecurityGroups?.member or lc.SecurityGroups
       lcs
 
-    parseExternalData: ( res ) ->
+    parseExternalData :( res ) ->
+      #TODO map attribute
 
   }
 
@@ -311,6 +348,10 @@ define [
         sp.Name = sp.PolicyName
         delete sp.PolicyName
       sps
+
+    parseExternalData :( res ) ->
+      #TODO map attribute
+
   }
 
   ### AvailabilityZone ###
@@ -345,8 +386,11 @@ define [
           TopicARN: first.topicARN
           NotificationType: _.pluck nc, 'notificationType'
 
-
       newNcList
+
+    parseExternalData :( res ) ->
+      #TODO map attribute
+
   }
 
 
@@ -369,6 +413,10 @@ define [
       #     acl.subnetId = acl.associationSet[0].subnetId
 
       acls
+
+    parseExternalData :( res ) ->
+      #TODO map attribute
+
   }
 
   ### ENI ###
@@ -398,6 +446,10 @@ define [
             if _.isObject(e) and key isnt "privateIpAddressesSet"
               delete enis[index][key]
         enis
+
+    parseExternalData :( res ) ->
+      #TODO map attribute
+
   }
 
 
@@ -411,6 +463,10 @@ define [
     modelIdAttribute : "subnetId"
     doFetch : ()-> ApiRequest("subnet_DescribeSubnets", {region_name : @region()})
     trAwsXml : ( data )-> data.DescribeSubnetsResponse.subnetSet?.item
+
+    parseExternalData :( res ) ->
+      #TODO map attribute
+
   }
 
   ### SG ###
@@ -440,5 +496,9 @@ define [
         # sg.id = sg.groupId
         # delete sg.groupId
       sgs
+
+    parseExternalData :( res ) ->
+      #TODO map attribute
+
   }
 

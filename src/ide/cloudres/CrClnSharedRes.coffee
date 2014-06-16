@@ -42,6 +42,10 @@ define [
       for i in res
         i.id = i.keyName
       res
+
+    parseExternalData :( res ) ->
+      #TODO map attribute
+
   }
 
 
@@ -64,6 +68,9 @@ define [
         delete i.ServerCertificateId
 
       res
+
+    parseExternalData :( res ) ->
+      #TODO map attribute
 
   }, {
     category : ()-> "" # SslCert is global-wise.
@@ -92,6 +99,9 @@ define [
         delete i.TopicArn
 
       res
+
+    parseExternalData :( res ) ->
+      #TODO map attribute
 
     __clearSubscription : ( removedModel, collection, options )->
       # Automatically remove all the subscription that is bound to this topic.
@@ -131,6 +141,10 @@ define [
         i.id = CrSubscriptionModel.getIdFromData( i )
 
       res
+
+    parseExternalData :( res ) ->
+      #TODO map attribute
+
   }
 
 
@@ -161,6 +175,9 @@ define [
         if i.status is "pending" then @startPollingStatus()
 
       res
+
+    parseExternalData :( res ) ->
+      #TODO map attribute
 
     startPollingStatus : ()->
       if @__polling then return

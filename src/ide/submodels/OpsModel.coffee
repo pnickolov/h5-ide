@@ -171,8 +171,8 @@ define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnai
       @__saving = true
 
       nameClash = @collection.where({name:newJson.name}) || []
-      if nameClash.length > 1 or nameClash[0] isnt @
-        d = Q.promise()
+      if nameClash.length > 1 or (nameClash[0] and nameClash[0] isnt @)
+        d = Q.defer()
         d.reject(McError( ApiRequest.Errors.StackRepeatedStack, "Stack name has already been used." ))
         return d.promise
 

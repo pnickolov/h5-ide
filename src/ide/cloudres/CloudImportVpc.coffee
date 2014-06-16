@@ -662,6 +662,8 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
       for aws_acl in @getResourceByType("ACL") || []
         aws_acl    = aws_acl.attributes
         subnetComp = @subnets[aws_acl.subnetId]
+        if not subnetComp
+          continue
         aclRes =
           "AssociationSet": []
           "Default" : false
@@ -672,6 +674,9 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
 
         aclRes.VpcId = CREATE_REF( @theVpc, 'resource.VpcId' )
         aclRes.NetworkAclId = aws_acl.id
+        if aws_acl.default
+          aclRes.Default = aws_acl.default
+          defaultName = "DefaultACL"
 
         for acl in aws_acl.entries
           aclRes.EntrySet.push
@@ -692,7 +697,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
             "NetworkAclAssociationId": acl.networkAclAssociationId
             "SubnetId": CREATE_REF( subnetComp, 'resource.SubnetId' )
 
-        aclComp = @add( "ACL", aclRes )
+        aclComp = @add( "ACL", aclRes, defaultName )
       return
 
     ()-> #ELB

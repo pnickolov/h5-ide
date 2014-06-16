@@ -254,21 +254,22 @@ define [
 
     parseFetchData : ( data )->
       for ins in data
-        #compatibility processing
-        ins.instanceState = ins.state if ins.state
-        ins.blockDeviceMapping = ins.blockDeviceMappings if ins.blockDeviceMappings
-        ins.groupSet = ins.securityGroups if ins.securityGroups
         if ins.instanceState and ins.instanceState.name in [ "terminated", "shutting-down" ]
           continue
         ins.blockDeviceMapping  = ins.blockDeviceMapping?.item || []
         ins.networkInterfaceSet = ins.networkInterfaceSet?.item || []
         ins.groupSet            = ins.groupSet?.item || []
         ins.id = ins.instanceId
-        delete ins.instanceId
+        #delete ins.instanceId
       data
     parseExternalData: ( data ) ->
       @unifyApi data, @type
-      @parseFetchData data
+      for ins in data
+        if ins.instanceState and ins.instanceState.name in [ "terminated", "shutting-down" ]
+          continue
+        ins.id = ins.instanceId
+        #delete ins.instanceId
+      data
   }
 
   ### VOLUME ###
@@ -398,18 +399,22 @@ define [
     AwsResponseType : "DescribeNetworkAclsResponse"
     trAwsXml : ( data )-> data.DescribeNetworkAclsResponse.networkAclSet?.item
     parseFetchData : ( acls )->
-      # for acl in acls
-      #   acl.id = acl.networkAclId
-      #   delete acl.networkAclId
-      #   acl.entrySet = acl.entrySet?.item || []
-      #   acl.associationSet = acl.associationSet?.item || []
-      #   if acl.associationSet.length > 0
-      #     acl.subnetId = acl.associationSet[0].subnetId
-
+      for acl in acls
+        acl.id = acl.networkAclId
+        #delete acl.networkAclId
+        acl.entrySet = acl.entrySet?.item || []
+        acl.associationSet = acl.associationSet?.item || []
+        if acl.associationSet.length > 0
+          acl.subnetId = acl.associationSet[0].subnetId
       acls
     parseExternalData: ( data ) ->
       @unifyApi data, @type
-      @parseFetchData data
+      for acl in data
+        acl.id = acl.networkAclId
+        #delete acl.networkAclId
+        if acl.associationSet.length > 0
+          acl.subnetId = acl.associationSet[0].subnetId
+      data
   }
 
   ### ENI ###

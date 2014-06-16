@@ -9,10 +9,10 @@ define ["ApiRequest", "./CrModel", "constant", "backbone"], ( ApiRequest, CrMode
   __needUnifyList =
 
     INSTANCE:
-        networkInterfaces: 'networkInterfaceSet'
-        state: 'instanceState'
-        securityGroups: 'groupSet'
-        blockDeviceMappings: 'blockDeviceMapping'
+        networkInterfaces   : 'networkInterfaceSet'
+        state               : 'instanceState'
+        securityGroups      : 'groupSet'
+        blockDeviceMappings : 'blockDeviceMapping'
 
     ELB:
         GroupSet: 'SecurityGroups',

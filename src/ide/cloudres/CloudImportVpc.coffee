@@ -326,8 +326,8 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         if aws_sg.ipPermissions
           for sg_rule in aws_sg.ipPermissions || []
             ipranges = ''
-            if sg_rule.userIdGroupPairs.length>0 and sg_rule.userIdGroupPairs[0].groupId
-              ipranges = sg_rule.userIdGroupPairs[0].groupId
+            if sg_rule.groups.length>0 and sg_rule.groups[0].groupId
+              ipranges = sg_rule.groups[0].groupId
             else if sg_rule.ipRanges and sg_rule.ipRanges.length>0
               ipranges = sg_rule.ipRanges[0]
 
@@ -345,8 +345,8 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         if aws_sg.ipPermissionsEgress
           for sg_rule in aws_sg.ipPermissionsEgress || []
             ipranges = ''
-            if sg_rule.userIdGroupPairs.length>0 and sg_rule.userIdGroupPairs[0].groupId
-              ipranges = sg_rule.userIdGroupPairs[0].groupId
+            if sg_rule.groups.length>0 and sg_rule.groups[0].groupId
+              ipranges = sg_rule.groups[0].groupId
             else if sg_rule.ipRanges and sg_rule.ipRanges.length>0
               ipranges = sg_rule.ipRanges[0]
 

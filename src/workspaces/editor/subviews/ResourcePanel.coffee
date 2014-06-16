@@ -190,7 +190,6 @@ define [
       design = @workspace.design
       $ul.children(".resource-icon-igw").toggleClass("resource-disabled", design.componentsOfType(constant.RESTYPE.IGW).length > 0)
       $ul.children(".resource-icon-vgw").toggleClass("resource-disabled", design.componentsOfType(constant.RESTYPE.VGW).length > 0)
-      $ul.children(".resource-icon-cgw").toggleClass("resource-disabled", design.componentsOfType(constant.RESTYPE.CGW).length > 0)
       return
 
 

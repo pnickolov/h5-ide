@@ -3,7 +3,7 @@ define [ "./CanvasElement", "CanvasManager", "constant", "canvon" ], ( CanvasEle
 
   ### LEGACY CODE ###
   # This is required for drawing lines.
-  window.MC.paper = Canvon($('<svg id="SvgLineHolder" xmlns="http://www.w3.org/2000/svg" version="1.2"></div>').appendTo("body").hide())
+  window.MC.paper = Canvon($('<svg id="SvgLineHolder" xmlns="http://www.w3.org/2000/svg" version="1.2"></div>'))
 
   CeLine = ()-> CanvasElement.apply( this, arguments )
   CanvasElement.extend( CeLine, "Line" )

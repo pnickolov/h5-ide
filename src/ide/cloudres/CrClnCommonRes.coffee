@@ -114,18 +114,28 @@ define [
     trAwsXml : ( data )-> data.DescribeAutoScalingGroupsResponse.DescribeAutoScalingGroupsResult.AutoScalingGroups?.member
     parseFetchData : ( asgs )->
       for asg in asgs
+        asg.id   = asg.AutoScalingGroupARN
         asg.Name = asg.AutoScalingGroupName
-        delete asg.AutoScalingGroupName
-        asg.AvailabilityZones   = asg.AvailabilityZones || []
-        asg.Instances           = asg.Instances || []
-        asg.LoadBalancerNames   = asg.LoadBalancerNames || []
-        asg.TerminationPolicies = asg.TerminationPolicies || []
+        #delete asg.AutoScalingGroupARN
+        #delete asg.AutoScalingGroupName
+        asg.AvailabilityZones   = asg.AvailabilityZones?.member || []
+        asg.Instances           = asg.Instances?.member || []
+        asg.LoadBalancerNames   = asg.LoadBalancerNames?.member || []
+        asg.TerminationPolicies = asg.TerminationPolicies?.member || []
         asg.Subnets             = (asg.VPCZoneIdentifier || asg.VpczoneIdentifier).split(",")
-        delete asg.VPCZoneIdentifier
+        #delete asg.VPCZoneIdentifier
       asgs
     parseExternalData: ( data ) ->
       @unifyApi data, @type
-      @parseFetchData data
+      @camelToPascal data
+      for asg in data
+        asg.id   = asg.AutoScalingGroupARN
+        asg.Name = asg.AutoScalingGroupName
+        #delete asg.AutoScalingGroupARN
+        #delete asg.AutoScalingGroupName
+        asg.Subnets             = (asg.VPCZoneIdentifier || asg.VpczoneIdentifier).split(",")
+        #delete asg.VPCZoneIdentifier
+      data
   }
 
   ### CloudWatch ###

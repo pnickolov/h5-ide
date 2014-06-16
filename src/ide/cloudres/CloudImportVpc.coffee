@@ -138,7 +138,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
 
     _mapProperty : ( aws_json, resource ) ->
       for k, v of aws_json
-        if typeof(v) is "string" and resource[k[0].toUpperCase() + k.slice(1)] isnt undefined
+        if typeof(v) in [ "string", "number", "boolean" ] and resource[k[0].toUpperCase() + k.slice(1)] isnt undefined
           resource[k[0].toUpperCase() + k.slice(1)] = v
       resource
 
@@ -818,16 +818,10 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
 
         #convert SecurityGroups to REF
         sg = []
-        originLCComp = @getOriginalComp(aws_lc.id, 'LC')
         _.each aws_lc.SecurityGroups, (e,key)->
           sgComp = me.sgs[ e ]
           if sgComp
-            sgRef = CREATE_REF( sgComp )
-            if originLCComp
-              for _key,_sg of originLCComp.resource.SecurityGroups
-                if MC.extractID(_sg) is sgComp.uid
-                  sgRef = _sg
-            sg.push sgRef
+            sg.push CREATE_REF( sgComp, "resource.GroupId" )
 
         if sg.length is 0
           #sg of LC is not in current VPC, means this lc is not in this VPC
@@ -875,20 +869,22 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
           "LoadBalancerNames"      : []
             #0: "@{uid.resource.LoadBalancerName}"
             #1: "@{uid.resource.LoadBalancerName}"
-          MaxSize: 0
-          MinSize: 0
-          TerminationPolicies: []
+          "MaxSize": 0
+          "MinSize": 0
+          "TerminationPolicies": []
             #0: "Default"
-          VPCZoneIdentifier: "" #"@{uid.resource.SubnetId} , @{uid.resource.SubnetId}"
+          "VPCZoneIdentifier": "" #"@{uid.resource.SubnetId} , @{uid.resource.SubnetId}"
 
         asgRes = @_mapProperty aws_asg, asgRes
+
+        originASGComp = @getOriginalComp(aws_asg.id, 'ASG')
 
         asgRes.AutoScalingGroupARN  = aws_asg.id
         asgRes.AutoScalingGroupName = aws_asg.Name
         asgRes.TerminationPolicies  = aws_asg.TerminationPolicies
 
         #convert LaunchConfigurationName to REF
-        asgRes.LaunchConfigurationName = CREATE_REF( @lcs[ aws_asg.LaunchConfigurationName ] )
+        asgRes.LaunchConfigurationName = CREATE_REF( @lcs[ aws_asg.LaunchConfigurationName ], "resource.LaunchConfigurationName" )
 
         #convert VPCZoneIdentifier to REF
         vpcZoneIdentifier = []
@@ -898,7 +894,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
           if subnetComp
             if not firstSubnetComp
               firstSubnetComp = subnetComp
-            vpcZoneIdentifier.push CREATE_REF( subnetComp )
+            vpcZoneIdentifier.push CREATE_REF( subnetComp, "resource.SubnetId" )
         if vpcZoneIdentifier.length is 0
           #asg is not in current VPC
           continue
@@ -908,14 +904,14 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         elb = []
         _.each aws_asg.LoadBalancerNames, (e,key)->
           elbComp = me.elbs[e]
-          elb.push CREATE_REF( elbComp )
+          elb.push CREATE_REF( elbComp, "resource.LoadBalancerName" )
         asgRes.LoadBalancerNames = elb
 
         #convert AZ to REF
         az = []
         _.each aws_asg.AvailabilityZones, (e,key)->
           azComp = me.addAz( e )
-          az.push CREATE_REF( azComp )
+          az.push CREATE_REF( azComp, "resource.ZoneName" )
         asgRes.AvailabilityZones = az
 
         asgComp = @add( "ASG", asgRes, aws_asg.Name )

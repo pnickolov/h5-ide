@@ -3638,7 +3638,7 @@ VisualOps API. You cannot UNDO this action.'
       zh: "导入Stack"
 
     DASH_VISUALIZE_VPC:
-      en: "Visualize existing VPC"
+      en: "Import VPC"
       zh: "可视化VPC"
 
 

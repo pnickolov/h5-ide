@@ -324,7 +324,7 @@ define [
       , 60*8*1000 + 1000
 
       @visModal = new Modal {
-        title         : "Select a VPC to be visualized:"
+        title         : "Import Existing VPC as App"
         width         : "770"
         template      : VisualizeVpcTpl( attributes )
         disableFooter : true

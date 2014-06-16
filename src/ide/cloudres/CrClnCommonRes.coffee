@@ -85,7 +85,6 @@ define [
     trAwsXml : ( data )-> data.DescribeAddressesResponse.addressesSet?.item
     parseExternalData: ( data ) ->
       @unifyApi data, @type
-      @parseFetchData data
   }
 
   ### VPC ###

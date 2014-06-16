@@ -521,7 +521,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
       for aws_eni in @getResourceByType("ENI") || []
         aws_eni = aws_eni.attributes
         azComp = @addAz(aws_eni.availabilityZone)
-        insComp = @instances[aws_eni.instanceId]
+        insComp = @instances[aws_eni.attachment.instanceId]
         if not insComp
           continue
 
@@ -545,7 +545,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
           # "PrivateDnsName" : ""
           "VpcId"          : ""
 
-        if aws_eni.instanceOwnerId and aws_eni.instanceOwnerId in [ "amazon-elb", "amazon-rds" ]
+        if aws_eni.attachment.instanceOwnerId and aws_eni.attachment.instanceOwnerId in [ "amazon-elb", "amazon-rds" ]
           continue
 
         eniRes = @_mapProperty aws_eni, eniRes
@@ -559,27 +559,26 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         eniRes.AvailabilityZone = CREATE_REF( azComp, 'resource.ZoneName' )
         eniRes.SubnetId         = CREATE_REF( subnetComp, 'resource.SubnetId' )
         eniRes.VpcId            = CREATE_REF( @theVpc, 'resource.VpcId' )
-        if not ( aws_eni.deviceIndex in [ "0", 0 ] )
+        if not ( aws_eni.attachment.deviceIndex in [ "0", 0 ] )
           #eni0 no need attachmentId
-          eniRes.Attachment.AttachmentId = aws_eni.attachmentId
-
+          eniRes.Attachment.AttachmentId = aws_eni.attachment.attachmentId
 
         eniRes.Attachment.InstanceId = CREATE_REF( insComp, 'resource.InstanceId' )
-        eniRes.Attachment.DeviceIndex = String(if aws_eni.deviceIndex is 0 then '0' else aws_eni.deviceIndex)
+        eniRes.Attachment.DeviceIndex = String(if aws_eni.attachment.deviceIndex is 0 then '0' else aws_eni.attachment.deviceIndex)
 
         for ip in aws_eni.privateIpAddressesSet
-          eniRes.PrivateIpAddressSet.push {"PrivateIpAddress": ip.privateIpAddress, "AutoAssign" : true, "Primary" : ip.primary}
+          #AutoAssign set to false in app
+          eniRes.PrivateIpAddressSet.push {"PrivateIpAddress": ip.privateIpAddress, "AutoAssign" : false, "Primary" : ip.primary}
 
         eniRes.GroupSet.push
-          "GroupId": CREATE_REF(@sgs[ aws_eni.groupId ], 'resource.GroupId')
-          "GroupName": CREATE_REF(@sgs[ aws_eni.groupId ], 'resource.GroupName')
+          "GroupId": CREATE_REF(@sgs[ aws_eni.groupSet[0].groupId ], 'resource.GroupId')
+          "GroupName": CREATE_REF(@sgs[ aws_eni.groupSet[0].groupId ], 'resource.GroupName')
 
 
-        eniComp = @add( "ENI", eniRes, "eni" + aws_eni.deviceIndex )
-        if not ( aws_eni.deviceIndex in [ "0", 0 ] )
-          @addLayout( eniComp, false, subnetComp )
-
+        eniComp = @add( "ENI", eniRes, "eni" + aws_eni.attachment.deviceIndex )
         @enis[ aws_eni.id ] = eniComp
+        if not ( aws_eni.attachment.deviceIndex in [ "0", 0 ] )
+          @addLayout( eniComp, false, subnetComp )
       return
 
 

@@ -30,8 +30,11 @@ define [
       Q.all([
         CloudResources( constant.RESTYPE.AZ,   region ).fetch()
         CloudResources( constant.RESTYPE.SNAP, region ).fetch()
-        CloudResources( "OpsResource", @opsModel.getVpcId() ).init( @opsModel.get("region") ).fetchForce()
         CloudResources( constant.RESTYPE.DHCP, region ).fetch()
+        CloudResources( "QuickStartAmi",       region ).fetch()
+        CloudResources( "MyAmi",               region ).fetch()
+        CloudResources( "FavoriteAmi",         region ).fetch()
+        CloudResources( "OpsResource", @opsModel.getVpcId() ).init( @opsModel.get("region") ).fetchForce()
       ]).then ()->
         # Hack, immediately apply changes when we get data if the app is changed.
         # Will move it to somewhere else if the process is upgraded.

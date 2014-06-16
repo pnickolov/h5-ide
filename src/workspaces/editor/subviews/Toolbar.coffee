@@ -323,6 +323,7 @@ define [
         name = @workspace.design.attributes.name
         newName = @getStackNameFromApp(name)
         onConfirm = =>
+            MC.Analytics.increase("app_to_stack")
             isNew = appToStackModal.tpl.find("input[name='save-stack-type']:checked").attr('id') is "radio-new-stack"
             if isNew
                 newOps = App.model.createStackByJson( @workspace.design.serializeAsStack(appToStackModal.tpl.find('#modal-input-value').val()) )

@@ -149,7 +149,21 @@ define [
       @updateAmi()
 
     updateAmi : ()->
-      ms = CloudResources( @__amiType, @workspace.opsModel.get("region") ).getModels()
+      ms = CloudResources( @__amiType, @workspace.opsModel.get("region") ).getModels().sort ( a, b )->
+        a = a.attributes
+        b = b.attributes
+        if a.osType is "windows" and b.osType isnt "windows" then return 1
+        if a.osType isnt "windows" and b.osType is "windows" then return -1
+        ca = a.osType
+        cb = b.osType
+        if ca is cb
+          ca = a.architecture
+          cb = b.architecture
+          if ca is cb
+            ca = a.name
+            cb = b.name
+        return if ca > cb then 1 else -1
+
       ms.fav = @__amiType is "FavoriteAmi"
       html = LeftPanelTpl.ami ms
       @$el.find(".resource-list-ami").html(html)
@@ -378,6 +392,7 @@ define [
                   (new dhcpManager()).manageDhcp()
     # Copied and enhanced from MC.canvas.js
     startDrag : ( evt )->
+      if evt.button isnt 0 then return false
       $tgt = $( evt.currentTarget )
       if $tgt.hasClass("resource-disabled") then return false
 

@@ -203,6 +203,7 @@ define [
     setAmi                : InstanceModel.prototype.setAmi
     getAmi                : InstanceModel.prototype.getAmi
     getInstanceType       : InstanceModel.prototype.getInstanceType
+    getInstanceTypeConfig : InstanceModel.prototype.getInstanceTypeConfig
     getDetailedOSFamily   : InstanceModel.prototype.getDetailedOSFamily
     setInstanceType       : InstanceModel.prototype.setInstanceType
     initInstanceType      : InstanceModel.prototype.initInstanceType

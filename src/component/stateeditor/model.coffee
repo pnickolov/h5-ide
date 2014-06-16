@@ -30,7 +30,7 @@ define [ 'MC', 'constant', 'state_model', 'CloudResources', "Design", 'backbone'
 
 			currentCompData = that.get('compData')
 			comp = Design.instance().component( currentCompData.uid )
-			osType = (@getAmi() || @get("cachedAmi")).osType
+			osType = (comp.getAmi() || comp.get("cachedAmi")).osType
 			if osType is 'windows'
 				that.set('isWindowsPlatform', true)
 

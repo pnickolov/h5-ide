@@ -120,7 +120,14 @@ $BottomPanelHeight    : 24px;
 .OEPanelRight:not(.hidden) ~ .OEMiddleWrap { right : $RightPanelWidth; }
 .OEPanelRight:not(.hidden).state ~ .OEMiddleWrap { right : $RightStatePanelWidth; }
 .OEPanelLeft:not(.hidden)  ~ .OEMiddleWrap { left  : $LeftPanelWidth; }
-.OEPanelLeft.force-hidden  ~ .OEMiddleWrap { left  : 0; }
+.OEPanelLeft.force-hidden  ~ .OEMiddleWrap {
+  left  : 0;
+  -webkit-transition: none;
+  -moz-transition: none;
+  -ms-transition: none;
+  -o-transition: none;
+  transition: none;
+}
 
 .sidebar-title {
   padding-left : 10px;

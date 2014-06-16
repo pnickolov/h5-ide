@@ -404,12 +404,13 @@ define [
 
       # Insert Shadow
       $("<div id='ResourceDragItem'></div><div id='overlayer' class='grabbing'></div>").appendTo( document.body )
+      tgtOffset = $tgt.offset()
       $item = $("#ResourceDragItem")
         .html( $tgt.html() )
         .attr("class", $tgt.attr("class") )
         .css({
-          'top'  : evt.pageY - evt.offsetY
-          'left' : evt.pageX - evt.offsetX
+          'top'  : tgtOffset.top
+          'left' : tgtOffset.left
         })
       setTimeout ()->
         $item.addClass("add-to-dom")

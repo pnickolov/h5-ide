@@ -274,7 +274,7 @@
   background: url('/assets/images/ide/icon/instance-resource.png') center no-repeat; }
   #ResourceDragItem .resource-icon-instance {
     padding-top: 17px;
-    height: 58px; }
+    height: 53px; }
 
 .ebs-size {
   margin-top: -1.5em;
@@ -376,6 +376,8 @@
     #ResourceDragItem.resource-icon-subnet.add-to-dom:before {
       width: 164px;
       height: 164px; }
+  #ResourceDragItem.instance {
+    margin-top: 0; }
 
 .resource-select.selectbox .selection {
   background: #143553;

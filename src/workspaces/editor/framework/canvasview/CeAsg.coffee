@@ -10,8 +10,16 @@ define [ "./CanvasElement", 'i18n!nls/lang.js', "constant", "Design", "CanvasMan
   CeAsgProto.PATH_ASG_TITLE = "M0 21l0 -16a5 5 0 0 1 5 -5l121 0a5 5 0 0 1 5 5l0 16z"
 
   CeAsgProto.isRemovable = ()->
-    # Asg is a group. But we don't check ASG's children.
-    @model.isRemovable()
+    asg = @model
+    lc = asg.getLc()
+
+    if lc.getUsage().length is 1
+      lcName = lc.get('name')
+      asgName = asg.get('name')
+
+      return sprintf lang.ide.CVS_CFM_DEL_ASG, lcName, asgName, asgName, lcName
+
+    true
 
   CeAsgProto.asgExpand = ( parentId, x, y )->
     design = @model.design()

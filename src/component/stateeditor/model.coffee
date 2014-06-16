@@ -16,12 +16,8 @@ define [ 'MC', 'constant', 'state_model', 'CloudResources', 'backbone', 'jquery'
 
 			that = this
 
-			agentData = Design.instance().get('agent')
-			modRepo = agentData.module.repo
-			modTag = agentData.module.tag
-
-			modVersion = modRepo + ':' + modTag
-			moduleDataObj = MC.data.state.module[modVersion]
+			stateModuel = Design.instance().get('agent').module
+			moduleDataObj = App.model.getStateModule( stateModuel.repo, stateModuel.tag )
 
 			platformInfo = that.getResPlatformInfo()
 			osPlatform = platformInfo.osPlatform

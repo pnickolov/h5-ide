@@ -72,6 +72,7 @@ define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone", "con
     getPriceData : ( awsRegion )-> (@__appdata[ awsRegion ] || {}).price
     getOsFamilyConfig : ( awsRegion )-> (@__appdata[ awsRegion ] || {}).osFamilyConfig
     getInstanceTypeConfig : ( awsRegion )-> (@__appdata[ awsRegion ] || {}).instanceTypeConfig
+    getStateModule : ( repo, tag )-> @__stateModuleData[ repo + ":" + tag ]
 
 
     ###
@@ -121,6 +122,24 @@ define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone", "con
         catch e
 
         return
+
+    fetchStateModule : ( repo, tag )->
+      data = @getStateModule( repo, tag )
+      if data
+        d = Q.defer()
+        d.resolve( data )
+        return d.promise
+
+      ApiRequest({
+        mod_repo : repo
+        mod_tag  : tag
+      }).then ( d )->
+        try
+          d = JSON.parse( d )
+        catch e
+          throw McError( ApiRequest.Errors.InvalidRpcReturn, "Can't load state data. Please retry." )
+        @__stateModuleData[ repo + ":" + tag ] = d
+        d
 
     __parseListRes : ( res )->
       r = []

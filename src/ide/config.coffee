@@ -319,18 +319,6 @@ requirejs.onError = ( err )->
 
 
 require ["constant", 'ide/Application', "workspaces/Dashboard", "ide/cloudres/CrBundle", "MC", 'lib/aws/aws'], ( constant, Application, Dashboard, CrBundle ) ->
-
-	##########################################################
-	# Deprecated Global shit. Doesn't anyone dare to add more of these. They will be removed in the future.
-	MC.data = {}
-
-	#state editor
-	MC.data.state = {}
-
-	# State clipboard
-	MC.data.stateClipboard = []
-	##########################################################
-
 	(new Application()).initialize().then ()-> new Dashboard(); return
 
 , ( err )->

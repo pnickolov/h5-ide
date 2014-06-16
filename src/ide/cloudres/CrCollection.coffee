@@ -195,7 +195,7 @@ define ["ApiRequest", "./CrModel", "constant", "backbone"], ( ApiRequest, CrMode
         if not (obj.hasOwnProperty camelKey) then continue
         if _.isObject(obj[camelKey]) or _.isArray(obj[camelKey])
           @convertBoolAndNumToString value
-        else if _.isBoolean(obj[camelKey]) or _.isNumber(obj[camelKey])
+        else if _.isNumber(obj[camelKey])
             obj[camelKey] = String(obj[camelKey])
 
       obj

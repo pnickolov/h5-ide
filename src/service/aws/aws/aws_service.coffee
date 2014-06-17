@@ -641,6 +641,17 @@ define [ 'MC', 'common_handle', 'result_vo', 'constant', 'ebs_service', 'eip_ser
 
 		vpc_uid = MC.extractID(ref_key[vpc_id])
 
+		#generate layout for lc first
+		for uid, c of app_json.component
+			if vpc_resource_layout_map[c.type]
+				layout = $.extend true, {}, vpc_resource_layout_map[c.type].layout
+				layout.uid = c.uid
+				switch c.type
+					when 'AWS.AutoScaling.LaunchConfiguration'
+						layout.originalId = c.uid
+						app_json.layout.component.node[c.uid] = layout
+
+
 		for uid, c of app_json.component
 
 
@@ -669,6 +680,12 @@ define [ 'MC', 'common_handle', 'result_vo', 'constant', 'ebs_service', 'eip_ser
 						else if not c.resource.Attachment
 
 							app_json.layout.component.node[c.uid] = layout
+
+					# when 'AWS.AutoScaling.LaunchConfiguration'
+
+					# 	layout.originalId = c.uid
+
+					# 	app_json.layout.component.node[c.uid] = layout
 
 					when "AWS.AutoScaling.Group"
 
@@ -779,11 +796,6 @@ define [ 'MC', 'common_handle', 'result_vo', 'constant', 'ebs_service', 'eip_ser
 
 						app_json.layout.component.node[c.uid] = layout
 
-					when 'AWS.AutoScaling.LaunchConfiguration'
-
-						layout.originalId = c.uid
-
-						app_json.layout.component.node[c.uid] = layout
 
 					when "AWS.EC2.AvailabilityZone"
 

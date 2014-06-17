@@ -452,11 +452,11 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
 
                         if k is 'LaunchConfigurationName'
 
-                            if reference[v + '-lc'] and k not in [except_key, 'name']
+                            if reference[v + '-lc'] and k not in [except_key, 'name'] and not obj.LaunchConfigurationARN
 
                                 obj[k] = reference[v + '-lc']
 
-                        else if k is 'AutoScalingGroupName'
+                        else if k is 'AutoScalingGroupName' and not obj.AutoScalingGroupARN
 
                             if reference[v + '-asg'] and k not in [except_key, 'name']
 

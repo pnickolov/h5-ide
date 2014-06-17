@@ -673,7 +673,8 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 				'UserData': ''
 			}
 		}
-		lc_json.resource.SecurityGroups = aws_lc.SecurityGroups.member
+		if aws_lc.SecurityGroups
+			lc_json.resource.SecurityGroups = aws_lc.SecurityGroups.member
 		if aws_lc.BlockDeviceMappings
 			lc_json.resource.BlockDeviceMapping = aws_lc.BlockDeviceMappings.member
 		lc_json.resource.InstanceMonitoring = aws_lc.InstanceMonitoring.Enabled

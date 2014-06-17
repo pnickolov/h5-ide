@@ -58,7 +58,10 @@ define ["ApiRequest", "CloudResources", "constant", "backbone"], ( ApiRequest, C
     ### Visualize ###
     visualizeTimestamp : ()-> @__visRequestTime
 
-    clearVisualizeData : ()-> @set "visualizeData", []
+    clearVisualizeData : ()->
+      @set "visualizeData", []
+      @__visRequest = null
+      return
 
     # Returns a promise that will be fullfiled after the vpc's data is fetched.
     visualizeVpc : ( force )->
@@ -91,7 +94,7 @@ define ["ApiRequest", "CloudResources", "constant", "backbone"], ( ApiRequest, C
 
       @__isVisReady = true
       @__isVisFail  = false
-      @attributes.visualizeData = []
+      @attributes.visualizeData = null
       @set "visualizeData", @parseVisData( result )
       return
 

@@ -283,7 +283,7 @@ define [
             confirm:
                 text: if App.user.hasCredential() then lang.ide.RUN_STACK_MODAL_CONFIRM_BTN else lang.ide.RUN_STACK_MODAL_NEED_CREDENTIAL
                 disabled: true
-        @renderKpDropdown()
+        @renderKpDropdown(@modal)
         cost = Design.instance().getCost()
         @modal.tpl.find('.modal-input-value').val @workspace.opsModel.get("name")
         @modal.tpl.find("#label-total-fee").find('b').text("$#{cost.totalFee}")
@@ -397,14 +397,14 @@ define [
             @hideError('appname')
             return false
 
-    renderKpDropdown: ()->
+    renderKpDropdown: (modal)->
         if kpDropdown.hasResourceWithDefaultKp()
             keyPairDropdown = new kpDropdown()
-            (@modal||@updateModal).tpl.find("#kp-runtime-placeholder").html keyPairDropdown.render().el
+            modal.tpl.find("#kp-runtime-placeholder").html keyPairDropdown.render().el
             hideKpError = @hideError.bind @
             keyPairDropdown.dropdown.on 'change', ->
                 hideKpError('kp')
-            (@modal||@updateModal).tpl.find('.default-kp-group').show()
+            modal.tpl.find('.default-kp-group').show()
         null
 
     hideDefaultKpError: (context)->
@@ -455,7 +455,7 @@ define [
             @workspace.applyAppEdit( result, true )
             @updateModal?.close()
 
-        @renderKpDropdown()
+        @renderKpDropdown(@updateModal)
         TA.loadModule('stack').then =>
             @updateModal and @updateModal.toggleConfirm false
         # Call this method when user confirm to update

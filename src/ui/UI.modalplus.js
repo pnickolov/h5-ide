@@ -126,15 +126,16 @@
         })(this));
         this.tpl.find('.btn.modal-close').click((function(_this) {
           return function(e) {
-            var _base;
+            var _base, _ref;
             if (typeof (_base = _this.option).onCancel === "function") {
               _base.onCancel(_this.tpl, e);
             }
-            return modalGroup[0].back();
+            return (_ref = modalGroup[0]) != null ? _ref.back() : void 0;
           };
         })(this));
         this.tpl.find("i.modal-close").click(function(e) {
-          return modalGroup[0].back();
+          var _ref;
+          return (_ref = modalGroup[0]) != null ? _ref.back() : void 0;
         });
         if (!this.option.disableClose) {
           this.getFirst().wrap.off('click');
@@ -368,3 +369,7 @@
   });
 
 }).call(this);
+
+/*
+//# sourceMappingURL=UI.modalplus.js.map
+*/

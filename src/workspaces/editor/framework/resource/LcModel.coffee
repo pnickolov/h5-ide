@@ -49,6 +49,12 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
     clone: ->
       dolly = new Model null, clone: true
       @addBrother dolly
+
+      for conn in @connections()
+        connClass = Design.modelClassForType( conn.type )
+        target = conn.getOtherTarget @type
+        new connClass dolly, target
+
       dolly
 
     getBigBrother: ->
@@ -69,7 +75,7 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
       brother.stopListening()
 
     getContext: ( attr ) ->
-      exception = [ '__parent', 'x', 'y' ]
+      exception = [ '__parent', '__connections', 'x', 'y' ]
       if @__bigBrother and attr not in exception and not (_.intersection _.keys(exception), attr).length
         return @__bigBrother
 
@@ -183,7 +189,7 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
       else if @__brothers.length
         # Young brother continue his big-brother's duty when the big-brother dying
         for k, v of @attributes
-          if k not in [ '__parent' ]
+          if k not in [ '__parent', '__connections' ]
             @__brothers[0].attributes[ k ] = v
 
         @__brothers[0].__bigBrother = null

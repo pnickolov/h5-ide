@@ -82,7 +82,6 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
     __selfParseData : true
 
     initialize : ()->
-      console.info "Init-ing AMI collection"
       invalidAmi = localStorage.getItem("invalidAmi/" + @region())
       @__invalids = {}
 

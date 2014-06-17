@@ -1,14 +1,11 @@
 
 define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager", 'i18n!nls/lang.js', "CloudResources" ], ( CanvasElement, CeInstance, constant, CanvasManager, lang, CloudResources )->
 
-  CeLc = ()->
-    CanvasElement.apply( this, arguments )
-    @asg = @model.getAsg()
-    @lc = @model.getLc()
-    @
+  CeLc = ()-> CanvasElement.apply( this, arguments )
 
-  CanvasElement.extend.call( CeInstance, CeLc, 'Lc_Asso')
+  CanvasElement.extend.call( CeInstance, CeLc, constant.RESTYPE.LC )
   ChildElementProto = CeLc.prototype
+
 
   ###
   # Child Element's interface.
@@ -31,18 +28,16 @@ define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager", 'i18n!n
     list = CanvasElement.prototype.list.call(this)
     for ins in list
       ins.background = @iconUrl( ins.appId )
-    list.volume = (@lc.get("volumeList") || []).length
+    list.volume = (@model.get("volumeList") || []).length
     list
 
   ChildElementProto.iconUrl = ( instanceId )->
-
     if instanceId
-      region = Design.instance().region()
-      ami = CloudResources( constant.RESTYPE.INSTANCE, region ).get(instanceId)
-      if ami then ami = CloudResources( constant.RESTYPE.AMI, region ).get( ami.imageId )?.attributes
+      ami = CloudResources(constant.RESTYPE.AMI, Design.instance().region()).get(instanceId).toJSON()
+      if ami then ami = MC.data.dict_ami[ ami.imageId ]
 
     if not ami
-      ami = @lc.getAmi() || @lc.get("cachedAmi")
+      ami = @model.getAmi() || @model.get("cachedAmi")
 
     if not ami
       "ide/ami/ami-not-available.png"
@@ -63,7 +58,7 @@ define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager", 'i18n!n
         imageY  : 9
         imageW  : 61
         imageH  : 62
-        label   : MC.truncate @lc.get('name'), 15
+        label   : MC.truncate m.get('name'), 15
         labelBg : true
         sg      : true
       })
@@ -121,21 +116,22 @@ define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager", 'i18n!n
         })
       )
 
+      # Move the node to right place
       @getLayer("node_layer").append node
 
       @initNode node, m.x(), m.y()
 
     else
-      node = @$element @lc.id
+      node = @$element m.id
 
       # Node Label
-      CanvasManager.update node.children(".node-label-name"), MC.truncate @lc.get('name'), 15
+      CanvasManager.update node.children(".node-label-name"), MC.truncate m.get('name'), 15
 
     # Update Ami Image
     CanvasManager.update node.children(".ami-image"), @iconUrl(), "href"
 
     # Volume Number
-    volumeCount = (@lc.get("volumeList") || []).length
+    volumeCount = (m.get("volumeList") || []).length
     CanvasManager.update node.children(".volume-number"), volumeCount
     if volumeCount > 0
       volumeImage = 'ide/icon/instance-volume-attached-normal.png'
@@ -145,8 +141,8 @@ define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager", 'i18n!n
 
 
     # In app mode, show number
-    if not @lc.design().modeIsStack() and @asg
-      data = CloudResources(@asg.type, @lc.design().region()).get(@asg.get('appId'))?.attributes
+    if not m.design().modeIsStack() and m.parent()
+      data = CloudResources(m.type, m.design.region()).get(m.parent().get('appId')).toJSON()
       numberGroup = node.children(".instance-number-group")
       if data and data.Instances and data.Instances.member and data.Instances.member.length > 0
         CanvasManager.toggle numberGroup, true
@@ -161,24 +157,8 @@ define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager", 'i18n!n
     if subId
       type = constant.RESTYPE.INSTANCE
     else
-      type = @lc.type
+      type = @model.type
 
     @doSelect( type, subId or @id, @id )
-
-  ChildElementProto.position = ( x, y )->
-
-    oldx = @model.x()
-    oldy = @model.y()
-
-    if (x is undefined or x is null) and (y is undefined or y is null)
-      return [ oldx, oldy ]
-
-    x = @model.x()
-    y = @model.y()
-
-    el = @element()
-    if el
-      MC.canvas.position( el, x, y )
-    null
 
   null

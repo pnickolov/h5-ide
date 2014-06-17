@@ -36,13 +36,11 @@ define [ '../base/model', 'keypair_model', 'constant', 'Design', "CloudResources
         null
 
 
-    init  : ( lcAssoId ) ->
-      lcAsso = Design.instance().component( lcAssoId )
-      @asg = lcAsso.getAsg()
-      @lc = lcAsso.getLc()
+    init  : ( uid ) ->
+      @lc = Design.instance().component( uid )
 
       data = @lc?.toJSON()
-      data.uid = @lc.id
+      data.uid = uid
       data.isEditable = @isAppEdit
       data.app_view = Design.instance().modeIsAppView()
       @set data
@@ -93,7 +91,7 @@ define [ '../base/model', 'keypair_model', 'constant', 'Design', "CloudResources
       null
 
     isMonitoringEnabled : ()->
-      for p in @asg.get("policies")
+      for p in @lc.parent().get("policies")
         if p.get("alarmData").metricName is "StatusCheckFailed"
           return false
 

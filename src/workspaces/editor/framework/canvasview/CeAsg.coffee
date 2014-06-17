@@ -96,7 +96,7 @@ define [ "./CanvasElement", 'i18n!nls/lang.js', "constant", "Design", "CanvasMan
       @__drawExpandedAsg()
 
 
-    hasLC = !!m.getLc()
+    hasLC = !!m.get("lc")
     CanvasManager.toggle( node.children(".prompt_text"), !hasLC )
     CanvasManager.toggle( node.children(".asg-resource-dragger"), !Design.instance().modeIsApp() )
     null
@@ -105,6 +105,5 @@ define [ "./CanvasElement", 'i18n!nls/lang.js', "constant", "Design", "CanvasMan
     for asg in @model.get("expandedList")
       asg.draw()
     null
-
 
   CeAsg

@@ -1,13 +1,5 @@
 
-define [
-  "../ResourceModel"
-  "../ComplexResModel"
-  "../GroupModel"
-  '../connection/LcAsso'
-  "Design"
-  "constant"
-  "i18n!nls/lang.js"
-], ( ResourceModel, ComplexResModel, GroupModel, LcAsso, Design, constant, lang )->
+define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "constant", "i18n!nls/lang.js" ], ( ResourceModel, ComplexResModel, GroupModel, Design, constant, lang )->
 
   NotificationModel = ComplexResModel.extend {
     type : constant.RESTYPE.NC
@@ -158,7 +150,7 @@ define [
       @get("originalAsg").__addExpandedAsg( this )
       null
 
-    getLc : ()-> @attributes.originalAsg.getLc()
+    getLc : ()-> @attributes.originalAsg.get("lc")
 
     # disconnect : ( cn )->
     #   if cn.type isnt "ElbAmiAsso" then return
@@ -205,7 +197,7 @@ define [
 
 
 
-  Model = ComplexResModel.extend {
+  Model = GroupModel.extend {
 
     defaults : ()->
       x            : 0
@@ -227,17 +219,6 @@ define [
 
     type : constant.RESTYPE.ASG
     newNameTmpl : "asg"
-    node_group : true
-
-    initialize : ( options, createOption ) ->
-      if options.lcId
-        lc = Design.instance().component(options.lcId)
-        lc and @attachLc lc
-
-      ComplexResModel.prototype.initialize.apply @, arguments
-
-      null
-
 
     isReparentable : ( newParent )->
       for expand in @get("expandedList")
@@ -279,34 +260,39 @@ define [
       lcPrice.formatedFee = lcPrice.fee + "/mo"
       return lcPrice
 
-    attachLc: ( lc ) ->
-      oldConn = @connections( 'Lc_Asso' )
-      for c in oldConn
-        oldLc = c.getOtherTarget @
+    addChild : ( lc )->
+
+      GroupModel.prototype.addChild.call this, lc
+
+      oldLc = @get("lc")
+      if oldLc
+        @stopListening( oldLc )
         for elb in oldLc.connectionTargets("ElbAmiAsso")
           @updateExpandedAsgAsso( elb, true )
 
-        @stopListening( oldLc )
-        c.remove()
-
+      @set "lc", lc
       @listenTo lc, "change:name change:imageId", @drawExpanedAsg
-      @listenTo lc, "destroy", @removeLc
+      @listenTo lc, "destroy", @removeChild
 
       for elb in lc.connectionTargets("ElbAmiAsso")
         @updateExpandedAsgAsso( elb )
 
-      new LcAsso lc, @
+      @draw()
+      @drawExpanedAsg false
 
       null
 
-    removeLc: ->
+    removeChild: ( lc ) ->
+      GroupModel.prototype.removeChild.call this, lc
+
+      # disconnect all asso of expanded asg
       @removeExpandedAsso()
+
+      # Remove lc from parent ASG
+      @unset "lc"
       @draw()
 
       null
-
-    getLc: -> @connectionTargets('Lc_Asso')[0]
-
 
     drawExpanedAsg: ( isCreate ) ->
       lc = @get 'lc'
@@ -318,7 +304,7 @@ define [
 
     getNotification : ()->
       n = @get("notification")
-      if n then n?.toJSON() else {}
+      if n then n.toJSON() else {}
 
     getNotiObject: () ->
       @get("notification")
@@ -498,8 +484,8 @@ define [
           if sbRef then newSubnets.push sbRef
         subnets = newSubnets
 
-      if @getLc()
-        lcId = @getLc().createRef( "LaunchConfigurationName" )
+      if @get("lc")
+        lcId = @get('lc').createRef( "LaunchConfigurationName" )
       else
         lcId = ""
 
@@ -561,7 +547,7 @@ define [
       # Associate with LC
       if data.resource.LaunchConfigurationName
         lc = resolve( MC.extractID(data.resource.LaunchConfigurationName) )
-        asg.attachLc( lc )
+        asg.addChild( lc )
 
         # Elb Association to LC
         ElbAsso = Design.modelClassForType( "ElbAmiAsso" )

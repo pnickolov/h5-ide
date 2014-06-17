@@ -1,14 +1,5 @@
-define [
-  '../ResourceModel'
-  '../ComplexResModel'
-  './InstanceModel'
-  '../connection/LcAsso'
-  'Design'
-  'constant'
-  './VolumeModel'
-  'i18n!nls/lang.js'
-  'CloudResources'
-], ( ResourceModel, ComplexResModel, InstanceModel, LcAsso, Design, constant, VolumeModel, lang, CloudResources )->
+
+define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./VolumeModel", 'i18n!nls/lang.js', 'CloudResources' ], ( ComplexResModel, InstanceModel, Design, constant, VolumeModel, lang, CloudResources )->
 
   emptyArray = []
 
@@ -36,23 +27,14 @@ define [
     newNameTmpl : "launch-config-"
 
     constructor : ( attr, option )->
-      asg = attr.parent
-
-      if option and option.createByUser and asg.getLc()
+      if option and option.createByUser and attr.parent.get("lc")
           return
 
-      ResourceModel.call this, attr, option
-
-      if option and option.createByUser
-        asg.attachLc @
-        asg.draw()
-
-        return asg.connections( 'Lc_Asso' )[ 0 ]
-
-      @
-
+      ComplexResModel.call( this, attr, option )
 
     initialize : ( attr, option )->
+      # Draw before create SgAsso
+      @draw(true)
 
       if option and option.createByUser
 
@@ -73,8 +55,6 @@ define [
 
       null
 
-    getAsgs: -> @connectionTargets('Lc_Asso')
-
     getNewName : ( base )->
       if not @newNameTmpl
         newName = if @defaults then @defaults.name
@@ -92,7 +72,7 @@ define [
         null
 
       if Design.instance().modeIsAppEdit()
-        resource_list = CloudResources(constant.RESTYPE.LC, Design.instance().region())?.toJSON()
+        resource_list = CloudResources(constant.RESTYPE.LC, Design.instance().region()).toJSON()
         for id, rl of resource_list
           if rl.LaunchConfigurationName
             nameMap[ _.first rl.LaunchConfigurationName.split( '---' ) ] = true
@@ -126,21 +106,18 @@ define [
       resource_list = CloudResources(constant.RESTYPE.LC, Design.instance().region())?.toJSON()
       if not resource_list then return []
 
-      amis = []
-      asgs = @getAsgs()
+      resource = resource_list[ @parent().get("appId") ]
 
-      for asg in asgs
-        resource = resource_list[ asg.get("appId") ]
+      if resource and resource.Instances and resource.Instances.member
+        amis = []
+        for i in resource.Instances.member
+          amis.push {
+            id    : i.InstanceId
+            appId : i.InstanceId
+            state : i.HealthStatus
+          }
 
-        if resource and resource.Instances and resource.Instances.member
-          for i in resource.Instances.member
-            amis.push {
-              id    : i.InstanceId
-              appId : i.InstanceId
-              state : i.HealthStatus
-            }
-
-      amis
+      amis || []
 
     remove : ()->
       # Remove attached volumes
@@ -151,25 +128,21 @@ define [
       null
 
     connect : ( cn )->
-      asgs = @getAsgs()
-
-      if asgs and cn.type is "SgRuleLine"
+      if @parent() and cn.type is "SgRuleLine"
         # Create duplicate sgline for each expanded asg
-        _.invoke asgs, 'updateExpandedAsgSgLine', cn.getOtherTarget(@)
+        @parent().updateExpandedAsgSgLine( cn.getOtherTarget(@) )
 
       null
 
     disconnect : ( cn )->
-      asgs = @getAsgs()
-
-      if asgs
+      if @parent()
         if cn.type is "ElbAmiAsso"
           # No need to reset Asg's healthCheckType to EC2, when disconnected from Elb
           # Because user might just want to asso another Elb right after disconnected.
-          # @getAsg().updateExpandedAsgAsso( cn.getOtherTarget(@), true )
+          # @parent().updateExpandedAsgAsso( cn.getOtherTarget(@), true )
 
         else if cn.type is "SgRuleLine"
-          _.invoke asgs, 'updateExpandedAsgSgLine', cn.getOtherTarget(@), true
+          @parent().updateExpandedAsgSgLine( cn.getOtherTarget(@), true )
       null
 
     getStateData : () ->
@@ -209,22 +182,20 @@ define [
       kp = @connectionTargets( "KeypairUsage" )[0]
       not kp and not @get( 'keyName' )
 
-    isVisual : () -> false
 
-
-    setAmi                : InstanceModel.prototype.setAmi
-    getAmi                : InstanceModel.prototype.getAmi
-    getInstanceType       : InstanceModel.prototype.getInstanceType
-    getInstanceTypeConfig : InstanceModel.prototype.getInstanceTypeConfig
-    getDetailedOSFamily   : InstanceModel.prototype.getDetailedOSFamily
-    setInstanceType       : InstanceModel.prototype.setInstanceType
-    initInstanceType      : InstanceModel.prototype.initInstanceType
-    isEbsOptimizedEnabled : InstanceModel.prototype.isEbsOptimizedEnabled
-    getBlockDeviceMapping : InstanceModel.prototype.getBlockDeviceMapping
-    getAmiRootDevice           : InstanceModel.prototype.getAmiRootDevice
-    getAmiRootDeviceName       : InstanceModel.prototype.getAmiRootDeviceName
-    getAmiRootDeviceVolumeSize : InstanceModel.prototype.getAmiRootDeviceVolumeSize
-    getInstanceTypeList   : InstanceModel.prototype.getInstanceTypeList
+    setAmi                      : InstanceModel.prototype.setAmi
+    getAmi                      : InstanceModel.prototype.getAmi
+    getDetailedOSFamily         : InstanceModel.prototype.getDetailedOSFamily
+    setInstanceType             : InstanceModel.prototype.setInstanceType
+    initInstanceType            : InstanceModel.prototype.initInstanceType
+    isEbsOptimizedEnabled       : InstanceModel.prototype.isEbsOptimizedEnabled
+    getBlockDeviceMapping       : InstanceModel.prototype.getBlockDeviceMapping
+    getAmiRootDevice            : InstanceModel.prototype.getAmiRootDevice
+    getAmiRootDeviceName        : InstanceModel.prototype.getAmiRootDeviceName
+    getAmiRootDeviceVolumeSize  : InstanceModel.prototype.getAmiRootDeviceVolumeSize
+    getInstanceType             : InstanceModel.prototype.getInstanceType
+    getInstanceTypeConfig       : InstanceModel.prototype.getInstanceTypeConfig
+    getInstanceTypeList         : InstanceModel.prototype.getInstanceTypeList
 
     serialize : ()->
 
@@ -301,6 +272,9 @@ define [
         userData     : data.resource.UserData
         publicIp     : data.resource.AssociatePublicIpAddress
         configName   : data.resource.LaunchConfigurationName
+
+        x : layout_data.coordinate[0]
+        y : layout_data.coordinate[1]
       }
 
       if layout_data.osType and layout_data.architecture and layout_data.rootDeviceType

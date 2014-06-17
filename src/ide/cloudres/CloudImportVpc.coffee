@@ -948,7 +948,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         if vpcZoneIdentifier.length is 0
           #asg is not in current VPC
           continue
-        asgRes.VPCZoneIdentifier = vpcZoneIdentifier.join( "," )
+        asgRes.VPCZoneIdentifier = vpcZoneIdentifier.join( " , " )
 
         #convert ELB to REF
         elb = []

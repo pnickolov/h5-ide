@@ -418,11 +418,11 @@
     right: 0;
     width: 20px;
     height: 20px;
-    background: url('/assets/images/ide/fav-btn-off-hover.png'); }
+    background-image: url('/assets/images/ide/fav-btn-off-hover.png'); }
   .btn-fav-ami.fav, .toggle-fav.fav {
-    background: url('/assets/images/ide/fav-btn.png'); }
+    background-image: url('/assets/images/ide/fav-btn.png'); }
   .btn-fav-ami.fav:hover, .toggle-fav.fav:hover {
-    background: url('/assets/images/ide/fav-btn-hover.png'); }
+    background-image: url('/assets/images/ide/fav-btn-hover.png'); }
 
 .btn-fav-ami {
   position: absolute;

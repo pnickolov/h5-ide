@@ -317,11 +317,11 @@
     right      : 0;
     width      : 20px;
     height     : 20px;
-    background : image-url('ide/fav-btn-off-hover.png');
+    background-image : image-url('ide/fav-btn-off-hover.png');
   }
 
-  &.fav       { background: image-url('ide/fav-btn.png'); }
-  &.fav:hover { background: image-url('ide/fav-btn-hover.png'); }
+  &.fav       { background-image: image-url('ide/fav-btn.png'); }
+  &.fav:hover { background-image: image-url('ide/fav-btn-hover.png'); }
 }
 .btn-fav-ami {
   position : absolute;

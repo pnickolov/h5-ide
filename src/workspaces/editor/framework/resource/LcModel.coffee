@@ -75,8 +75,6 @@ define [
 
     getAsgs: -> @connectionTargets('Lc_Asso')
 
-    getUsage: -> @connections 'Lc_Asso'
-
     getNewName : ( base )->
       if not @newNameTmpl
         newName = if @defaults then @defaults.name

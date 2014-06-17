@@ -23,16 +23,17 @@ define [ "constant", "../ConnectionModel", "i18n!nls/lang.js" ], ( constant, Con
 
     isVisual : () -> true
 
+    isRemovable: ->
+      if @connections.length is 1
+        lcName = @getLc().get('name')
+        asgName = @getAsg().get('name')
+        return sprintf lang.ide.CVS_CFM_DEL_LC lcName, asgName, asgName, lcName
 
     remove: () ->
-      lc = @getLc()
+      if @connections.length is 1
+        @getLc().remove()
 
-      ConnectionModel.prototype.remove.call this
-
-      if lc.getUsage().length is 0
-        lc.remove()
-
-      null
+      ConnectionModel.remove.call this
 
 
     initialize: ( attr, option ) ->

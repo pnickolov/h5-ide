@@ -182,13 +182,3 @@ define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager", 'i18n!n
     null
 
   null
-
-  ChildElementProto.isRemovable = ->
-    if @lc.getUsage().length is 1
-      lcName = @lc.get('name')
-      asgName = @asg.get('name')
-      return sprintf lang.ide.CVS_CFM_DEL_LC, lcName, asgName, asgName, lcName
-
-    true
-
-

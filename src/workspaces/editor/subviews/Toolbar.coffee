@@ -279,7 +279,7 @@ define [
             template: MC.template.modalRunStack
             disableClose: true
             width: '450px'
-            height: "515px"
+            height: "620px"
             confirm:
                 text: if App.user.hasCredential() then lang.ide.RUN_STACK_MODAL_CONFIRM_BTN else lang.ide.RUN_STACK_MODAL_NEED_CREDENTIAL
                 disabled: true
@@ -290,6 +290,7 @@ define [
 
         # load TA
         TA.loadModule('stack').then ()=>
+            @modal.resize()
             @modal?.toggleConfirm false
 
         appNameDom = @modal.tpl.find('#app-name')

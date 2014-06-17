@@ -710,7 +710,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
 
     ()-> #ELB
       me = @
-      for aws_elb in @CrPartials( "ELB" ).where({vpcId:@vpcId}) || []
+      for aws_elb in @getResourceByType("ELB") || []
         aws_elb = aws_elb.attributes
 
         elbRes =
@@ -721,9 +721,15 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
             "UnhealthyThreshold": "4"
             "Interval": "30"
           "Policies":
-            "AppCookieStickinessPolicies": []
+            "AppCookieStickinessPolicies": [{
+              CookieName: '',
+              PolicyName: ''
+            }]
             "OtherPolicies"              : []
-            "LBCookieStickinessPolicies" : []
+            "LBCookieStickinessPolicies" : [{
+              CookieExpirationPeriod: '',
+              PolicyName: ''
+            }]
           "BackendServerDescriptions": []
           "SecurityGroups": []
           "CreatedTime"   : ""
@@ -753,12 +759,12 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
 
         if aws_elb.SecurityGroups
           for sgId in aws_elb.SecurityGroups
-            elbRes.SecurityGroups.push CREATE_REF( @sgs[sgId] )
+            elbRes.SecurityGroups.push CREATE_REF( @sgs[sgId], 'resource.GroupId' )
 
-        elbRes.VpcId = CREATE_REF( @theVpc )
+        elbRes.VpcId = CREATE_REF( @theVpc, 'resource.VpcId' )
         if aws_elb.Subnets
           for subnetId in aws_elb.Subnets
-            elbRes.Subnets.push CREATE_REF( @subnets[subnetId])
+            elbRes.Subnets.push CREATE_REF( @subnets[subnetId], 'resource.SubnetId')
 
         # if aws_elb.AvailabilityZones
         #   for az in aws_elb.AvailabilityZones
@@ -785,7 +791,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
           for instanceId in aws_elb.Instances
             #skip instances in asg
             if not (instanceId in me.ins_in_asg)
-              elbRes.Instances.push CREATE_REF( @instances[ instanceId ] )
+              elbRes.Instances.push CREATE_REF( @instances[ instanceId ], 'resource.InstanceId' )
 
         elbComp = @add( "ELB", elbRes, aws_elb.id )
         @addLayout( elbComp, false, @theVpc )

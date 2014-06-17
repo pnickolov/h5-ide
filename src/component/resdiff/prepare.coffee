@@ -33,12 +33,13 @@ define [ 'constant' ], ( constant ) ->
             }
 
 
-        genValue: (oldValue, newValue) ->
-            if _.isObject( oldValue )
-                oldValue = oldValue.__old__
-                newValue = oldValue.__new__
+        genValue: (type, oldValue, newValue) ->
 
             result = ''
+
+            if type is 'changed'
+                oldValue = 'none' if not oldValue
+                newValue = 'none' if not newValue
 
             if oldValue
                 result = oldValue
@@ -73,7 +74,8 @@ define [ 'constant' ], ( constant ) ->
             # Replace keyword
             switch parentKey
                 when 'BlockDeviceMapping'
-                    data.key = @genValue childNode.DeviceName
+                    deviceObj = childNode.DeviceName
+                    data.key = @genValue deviceObj.type, deviceObj.__old__, deviceObj.__new__
 
                 when 'GroupSet'
                     data.key = 'SecurityGroup'
@@ -124,7 +126,7 @@ define [ 'constant' ], ( constant ) ->
             newValue.__old__ = @h.getNodeMap(oldRef).oldAttr if oldRef
             newValue.__new__ = @h.getNodeMap(newRef).newAttr if newRef
 
-            data.value = @h.genValue(newValue.__old__, newValue.__new__)
+            data.value = @h.genValue(newValue.type, newValue.__old__, newValue.__new__)
 
         else
 
@@ -146,7 +148,7 @@ define [ 'constant' ], ( constant ) ->
                 else
                     data.key = newAttr.type
 
-                data.value = @h.genValue(oldCompName, newCompName)
+                data.value = @h.genValue(null, oldCompName, newCompName)
 
             data = @h.replaceArrayIndex path, data
 

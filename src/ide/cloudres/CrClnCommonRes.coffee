@@ -19,7 +19,7 @@ define [
     ### env:dev:end ###
 
     type  : constant.RESTYPE.ELB
-    modelIdAttribute : "LoadBalancerName"
+    # modelIdAttribute : "LoadBalancerName"
 
     trAwsXml : ( data )-> data.DescribeLoadBalancersResponse.DescribeLoadBalancersResult.LoadBalancerDescriptions?.member
     parseFetchData : ( elbs )->

@@ -24,6 +24,9 @@ define [], () ->
 
         _compare = (a, b, key, resultJSON) ->
 
+            if not a and not b
+                return
+
             haveDiff = false
 
             typeA = typeofReal(a)

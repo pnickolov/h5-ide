@@ -5,7 +5,8 @@ define [
   "./CrModel"
   "ApiRequest"
   "constant"
-], ( CrCommonCollection, CrCollection, CrModel, ApiRequest, constant )->
+  "CloudResources"
+], ( CrCommonCollection, CrCollection, CrModel, ApiRequest, constant, CloudResources )->
 
 
 
@@ -290,6 +291,10 @@ define [
     ClassName : "CrInstanceCollection"
     ### env:dev:end ###
 
+    initialize : ()->
+      @listenTo @, "add", ( m )-> CloudResources( constant.RESTYPE.AMI, m.attributes.category ).fetchAmi( m.attributes.imageId )
+      return
+
     type  : constant.RESTYPE.INSTANCE
     trAwsXml : ( data )->
       instances = []
@@ -309,6 +314,7 @@ define [
         ins.networkInterfaceSet = ins.networkInterfaceSet?.item || []
         ins.groupSet            = ins.groupSet?.item || []
       data
+
     parseExternalData: ( data ) ->
       @convertNumTimeToString data
       @unifyApi data, @type

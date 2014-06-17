@@ -66,8 +66,8 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
 
       ami.osType   = getOSType( ami )
       ami.osFamily = getOSFamily( ami )
+      ami.blockDeviceMapping = bdm
 
-      delete ami.blockDeviceMapping
       ms.push ami.id
     ms
 
@@ -83,47 +83,73 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
 
     initialize : ()->
       invalidAmi = localStorage.getItem("invalidAmi/" + @region())
-      @__invalids = {}
+      @__markedIds = {}
 
       if invalidAmi
         for id in invalidAmi.split(",")
-          @__invalids[ id ] = true
+          @__markedIds[ id ] = true
       return
 
     doFetch : ()->
       # This method is used for CloudResources to invalid the cache.
       localStorage.setItem("invalidAmi/" + @region(), "")
-      @__invalids = {}
+      @__markedIds = {}
       d = Q.defer()
       d.resolve([])
       @trigger "update"
       return d.promise
 
-    invalidate : ( amiId )-> @__invalids[ amiId ] = true
-    isValidId  : ( amiId )-> !@__invalids[ amiId ]
+    markId     : ( amiId, invalid )-> @__markedIds[ amiId ] = invalid
+    isIdMarked : ( amiId )-> @__markedIds.hasOwnProperty( amiId )
 
     getOSFamily : ( amiId )-> getOSFamily( @get( amiId ) )
 
     saveInvalidAmiId : ()->
       amis = []
-      for amiId, value of @__invalids
-        amis.push amiId
+      for amiId, value of @__markedIds
+        if value then amis.push amiId
 
       localStorage.setItem("invalidAmi/" + @region(), amis.join(",") )
+
+    fetchAmi : ( ami )->
+      if not ami then return
+
+      console.assert not _.isArray( ami ), "CrClnAmi.fetchAmi() do not accept array param."
+
+      if @__toFetch
+        @__toFetch.push ami
+        return
+
+      @__toFetch = [ ami ]
+
+      self = @
+      setTimeout ()->
+        f = self.__toFetch
+        self.__toFetch = null
+        self.fetchAmis( f )
+      , 0
+      return
 
     fetchAmis : ( amis )->
       if not amis then return
 
       if _.isString(amis)
+        console.warn "Are you sure you want to call CrClnAmi.fetchAmis() with only one ami?"
         amis = [amis]
 
       # See if we ha
       toFetch = []
       for amiId in amis
         if @get( amiId ) then continue
-        if not @isValidId( amiId )
-          console.warn "Ami '#{amiId}' is not valid. Ignoring."
+        if @isIdMarked( amiId )
+          if @__markedIds[ amiId ]
+            console.info "Ami '#{amiId}' is invalid. Ignore fetching info."
+          else
+            console.log "Ami `#{amiId}` is duplicated. Ignore fetching info."
           continue
+
+        @markId( amiId, false )
+
         toFetch.push( amiId )
 
       if toFetch.length is 0
@@ -163,8 +189,12 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
         console.info "The requested Ami '#{invalidId}' is invalid, retrying to fetch"
 
         toFetch.splice( toFetch.indexOf(invalidId), 1 )
-        self.invalidate( invalidId )
-        self.fetchAmis( toFetch )
+        self.markId( invalidId, true )
+        __markedIds = @__markedIds
+        @__markedIds = {}
+        p = self.fetchAmis( toFetch )
+        @__markedIds = __markedIds
+        return p
   }
 
 

@@ -97,6 +97,7 @@ define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone", "con
           instanceTypeConfig = {}
 
           self.__appdata[ i.region ] = {
+            price              : i.price
             osFamilyConfig     : i.region_ami_instance_type
             instanceTypeConfig : instanceTypeConfig
           }

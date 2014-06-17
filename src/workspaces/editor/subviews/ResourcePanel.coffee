@@ -36,22 +36,24 @@ define [
       "OPTION_CHANGE .AmiTypeSelect" : "changeAmiType"
       "click .BrowseCommunityAmi"    : "browseCommunityAmi"
       "click .ManageSnapshot"        : "manageSnapshot"
-      "click .RefreshLeftPanel"      : "refreshPanelDataData"
       "click .fixedaccordion-head"   : "updateAccordion"
       "RECALC"                       : "recalcAccordion"
       "mousedown .resource-item"     : "startDrag"
-      "click .refresh-resource-panel": "refreshResourcePanel"
+      "click .refresh-resource-panel": "refreshPanelData"
       'click .resources-dropdown-wrapper li' : 'resourcesMenuClick'
 
     initialize : (options)->
       @workspace = options.workspace
+
       region = @workspace.opsModel.get("region")
+      @listenTo CloudResources( "MyAmi",               region ), "update", @updateMyAmiList
       @listenTo CloudResources( constant.RESTYPE.AZ,   region ), "update", @updateAZ
       @listenTo CloudResources( constant.RESTYPE.SNAP, region ), "update", @updateSnapshot
 
-      @listenTo @workspace.design, Design.EVENT.AzUpdated,      @updateDisableItems
-      @listenTo @workspace.design, Design.EVENT.AddResource,    @updateDisableItems
-      @listenTo @workspace.design, Design.EVENT.RemoveResource, @updateDisableItems
+      design = @workspace.design
+      @listenTo design, Design.EVENT.AzUpdated,      @updateDisableItems
+      @listenTo design, Design.EVENT.AddResource,    @updateDisableItems
+      @listenTo design, Design.EVENT.RemoveResource, @updateDisableItems
 
       @subEventForUpdateReuse()
 
@@ -123,14 +125,6 @@ define [
           new @reuseLc( model: resModel, parent: @ ).render()
       , @
 
-    refreshResourcePanel : () ->
-
-      resDiff = new ResDiff({
-        old: oldAppJSON,
-        new: newAppJSON
-      })
-      resDiff.render()
-
     updateAZ : ()->
       if not @workspace.isAwake() then return
       region = @workspace.opsModel.get("region")
@@ -199,7 +193,8 @@ define [
       $ul.children(".resource-icon-vgw").toggleClass("resource-disabled", design.componentsOfType(constant.RESTYPE.VGW).length > 0)
       return
 
-    updateFavList : ()-> if @__amiType is "FavoriteAmi" then @updateAmi()
+    updateFavList   : ()-> if @__amiType is "FavoriteAmi" then @updateAmi()
+    updateMyAmiList : ()-> if @__amiType is "MyAmi" then @updateAmi()
 
     toggleFav : ( evt )->
       $tgt = $( evt.currentTarget ).toggleClass("fav")
@@ -276,7 +271,17 @@ define [
 
     manageSnapshot : ()-> new snapshotManager().render()
 
-    refreshPanelData : ()->
+    refreshPanelData : ( evt )->
+      $tgt = $( evt.currentTarget )
+      if $tgt.hasClass("reloading") then return
+
+      $tgt.addClass("reloading")
+      region = @workspace.opsModel.get("region")
+      Q.all([
+        CloudResources( "MyAmi", region ).fetchForce()
+        CloudResources( constant.RESTYPE.SNAP, region ).fetchForce()
+      ]).done ()-> $tgt.removeClass("reloading")
+      return
 
     resourcesMenuClick : (event) ->
           $currentDom = $(event.currentTarget)

@@ -277,14 +277,16 @@ define [
     openItem    : ( event )-> App.openOps( $(event.currentTarget).attr("data-id") )
     createStack : ( event )-> App.createOps( $(event.currentTarget).attr("data-region") || @region )
 
-    markUpdated    : ()->
-      @lastUpdate = +(new Date())
-      $("#RefreshResource").removeClass("reloading").text("just now")
+    markUpdated : ()-> @lastUpdate = +(new Date()); return
 
     reloadResource : ()->
+      if $("#RefreshResource").hasClass("reloading")
+        return
+
       $("#RefreshResource").addClass("reloading").text("")
       @model.clearVisualizeData()
-      App.discardAwsCache()
+      App.discardAwsCache().done ()->
+        $("#RefreshResource").removeClass("reloading").text("just now")
       return
 
     deleteStack    : (event)-> App.deleteStack $( event.currentTarget ).closest("li").attr("data-id"); false

@@ -73,14 +73,6 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
       ms.push ami.id
     ms
 
-  getModels = ()->
-    console.assert( @__models and @ isnt window, "Invalid usage of getModels()" )
-    ms = []
-    col = CloudResources( constant.RESTYPE.AMI, @region() )
-    for id in @__models
-      ms.push col.get( id )
-    ms
-
   ### This Collection is used to fetch generic ami ###
   CrCollection.extend {
     ### env:dev ###
@@ -96,6 +88,7 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
       @__invalids = {}
       d = Q.defer()
       d.resolve([])
+      @trigger "update"
       return d.promise
 
     initInvalidateId : ()->
@@ -176,10 +169,32 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
   }
 
 
+  SpecificAmiCollection = CrCollection.extend {
+    ### env:dev ###
+    ClassName : "CrSpecificAmiCollection"
+    ### env:dev:end ###
 
+    type : "SpecificAmiCollection"
+
+    initialize : ()-> @__models = []; return
+
+    getModels : ()->
+      ms = []
+      col = CloudResources( constant.RESTYPE.AMI, @region() )
+      for id in @__models
+        ms.push col.get( id )
+      ms
+
+    fetchForce : ()->
+      @__models = []
+      CrCollection.prototype.fetchForce.call this
+
+
+
+  }
 
   ### This Collection is used to fetch quickstart ami ###
-  CrCollection.extend {
+  SpecificAmiCollection.extend {
     ### env:dev ###
     ClassName : "CrQuickstartAmiCollection"
     ### env:dev:end ###
@@ -200,22 +215,18 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
       CloudResources( constant.RESTYPE.AMI, @region() ).add savedAmis
       @__models = amiIds
       return
-
-    getModels : getModels
   }
 
 
 
 
   ### This Collection is used to fetch my ami ###
-  CrCollection.extend {
+  SpecificAmiCollection.extend {
     ### env:dev ###
     ClassName : "CrMyAmiCollection"
     ### env:dev:end ###
 
     type  : "MyAmi"
-
-    initialize : ()-> @__models = []; return
 
     doFetch : ()->
       selfParam1 =
@@ -264,15 +275,13 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
       CloudResources( constant.RESTYPE.AMI, @region() ).add savedAmis
       @__models = amiIds
       return
-
-    getModels : getModels
   }
 
 
 
 
   ### This Collection is used to fetch favorite ami ###
-  CrCollection.extend {
+  SpecificAmiCollection.extend {
     ### env:dev ###
     ClassName : "CrFavAmiCollection"
     ### env:dev:end ###
@@ -302,8 +311,6 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
       CloudResources( constant.RESTYPE.AMI, @region() ).add savedAmis
       @__models = favAmiId
       return
-
-    getModels : getModels
 
     unfav : ( id )->
       self = @

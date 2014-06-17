@@ -32,8 +32,6 @@ define ["ide/cloudres/CrCollection"], ( CrCollection )->
     c
 
   # Invalidate all the resources in every collection.
-  CloudResources.invalidate = ()->
-    collection.fetchForce() for id, collection of CachedCollections
-    return
+  CloudResources.invalidate = ()-> Q.all _.values( CachedCollections ).map ( cln )-> cln.fetchForce()
 
   CloudResources

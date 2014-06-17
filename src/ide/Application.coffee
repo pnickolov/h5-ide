@@ -100,9 +100,8 @@ define [
   VisualOps.prototype.terminateApp   = (id)-> @__view.terminateApp(id)
 
   VisualOps.prototype.discardAwsCache = ()->
-    CloudResources.invalidate()
     App.model.clearImportOps()
-    return
+    CloudResources.invalidate()
 
   # Creates a stack from the "json" and open it.
   # If it cannot import the json data, returns a string to represent the result.

@@ -160,8 +160,6 @@ define [
 
     getLc : ()-> @attributes.originalAsg.getLc()
 
-    getLcAsso : ()-> @attributes.originalAsg.getLcAsso()
-
     # disconnect : ( cn )->
     #   if cn.type isnt "ElbAmiAsso" then return
 
@@ -309,7 +307,6 @@ define [
 
     getLc: -> @connectionTargets('Lc_Asso')[0]
 
-    getLcAsso: -> @connections('Lc_Asso')[0]
 
     drawExpanedAsg: ( isCreate ) ->
       lc = @get 'lc'
@@ -507,8 +504,8 @@ define [
         lcId = ""
 
       healthCheckType = "EC2"
-      if @getLcAsso()
-        elbs = @getLcAsso().connectionTargets( "ElbAmiAsso" )
+      if @get("lc")
+        elbs = @get("lc").connectionTargets( "ElbAmiAsso" )
         if elbs.length
           healthCheckType = @get("healthCheckType")
           elbArray = _.map elbs, ( elb )-> elb.createRef( "LoadBalancerName" )

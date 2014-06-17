@@ -169,6 +169,30 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
   # The order of Converters functions are important!
   # Some converter must be behind other converters.
   Converters = [
+
+    # Retain component only belong to us
+    # When and only when these component are not in @component
+
+    () ->
+      retainList = [
+        'AWS.EC2.Tag'
+        constant.RESTYPE.KP
+        constant.RESTYPE.TOPIC
+        constant.RESTYPE.SUBSCRIPTION
+        constant.RESTYPE.IAM
+        constant.RESTYPE.DHCP
+
+      ]
+
+      for uid, com of @originalJson.component
+        if not @component[ uid ] and ( com.type in retainList )
+          compJson = @add null, com
+          if com.type is constant.RESTYPE.IAM
+            @iams[com.resource.ServerCertificateMetadata.Arn] = compJson
+        null
+
+      null
+
     ()-> # Vpc & Dhcp
       vpc = @getResourceByType( "VPC" )[ 0 ]
 
@@ -771,37 +795,38 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         #     elbRes.AvailabilityZones.push CREATE_REF( azComp )
 
         elbRes.DNSName = aws_elb.Dnsname
-        elbRes.CrossZoneLoadBalancing = aws_elb.CrossZoneLoadBalancing
+        elbRes.CrossZoneLoadBalancing = aws_elb.CrossZoneLoadBalancing.Enabled
 
         if aws_elb.ListenerDescriptions
           for listener in aws_elb.ListenerDescriptions
             sslCertRef = ''
+
+            # add ServerCertificate component
             if listener.Listener.SslcertificateId
-              sslComp = @iams[listener.Listener.SslcertificateId]
-              if sslComp
-                sslCertRef = CREATE_REF(sslComp, 'resource.ServerCertificateMetadata.Arn')
+              iamComp = @addIAM( listener.Listener.SslcertificateId )
+              if iamComp
+                sslCertRef = CREATE_REF(iamComp, 'resource.ServerCertificateMetadata.Arn')
+
             data =
-              # "PolicyNames": if listener.PolicyNames then listener.PolicyNames else ''
+              "PolicyNames": ''
               "Listener":
                 "LoadBalancerPort": listener.Listener.LoadBalancerPort
                 "InstanceProtocol": listener.Listener.InstanceProtocol
                 "Protocol"        : listener.Listener.Protocol
                 "SSLCertificateId": sslCertRef || listener.Listener.SslcertificateId
                 "InstancePort"    : listener.Listener.InstancePort
-            #add ServerCertificate component
-            # if listener.Listener.SSLCertificateId
-            #   iamComp = @addIAM( listener.Listener.SSLCertificateId )
-            #   data.Listener.SSLCertificateId = CREATE_REF( iamComp )
             elbRes.ListenerDescriptions.push data
 
         elbRes.HealthCheck = aws_elb.HealthCheck
-        elbRes.ListenerDescriptions = aws_elb.ListenerDescriptions
+        # elbRes.ListenerDescriptions = aws_elb.ListenerDescriptions
 
         if aws_elb.Instances
           for instanceId in aws_elb.Instances
             #skip instances in asg
             if not (instanceId in me.ins_in_asg)
-              elbRes.Instances.push CREATE_REF( @instances[ instanceId ], 'resource.InstanceId' )
+              elbRes.Instances.push {
+                InstanceId: CREATE_REF( @instances[ instanceId ], 'resource.InstanceId' )
+              }
 
 
         elbComp = @add( "ELB", elbRes, aws_elb.id )
@@ -1067,28 +1092,6 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
 
         cwComp = @add( "CW", cwRes, aws_cw.Name )
       return
-
-    # Retain component only belong to us
-    # When and only when these component are not in @component
-
-    () ->
-      retainList = [
-        'AWS.EC2.Tag'
-        constant.RESTYPE.KP
-        constant.RESTYPE.TOPIC
-        constant.RESTYPE.SUBSCRIPTION
-        constant.RESTYPE.IAM
-        constant.RESTYPE.DHCP
-
-      ]
-
-      for uid, com of @originalJson.component
-        if not @component[ uid ] and ( com.type in retainList )
-          @add null, com
-        null
-
-      null
-
   ]
 
 

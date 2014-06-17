@@ -32,7 +32,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
       @volumes   = {} # res id   => comp
       @sgs       = {} # res id   => comp
       @iams      = {} # res arn  => comp
-      @elbs      = {} # res id   => comp
+      @elbs      = {} # res name => comp
       @lcs       = {} # res name => comp
       @asgs      = {} # res name => comp
       @topics    = {} # res arn  => comp
@@ -812,9 +812,9 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
               }
 
 
-        elbComp = @add( "ELB", elbRes, aws_elb.id )
+        elbComp = @add( "ELB", elbRes, aws_elb.Name )
         @addLayout( elbComp, false, @theVpc )
-        @elbs[ aws_elb.id ] = elbComp
+        @elbs[ aws_elb.Name ] = elbComp
       return
 
 

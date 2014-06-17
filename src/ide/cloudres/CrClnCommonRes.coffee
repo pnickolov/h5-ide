@@ -38,7 +38,8 @@ define [
         for i, idx in elb.Instances
           elb.Instances[ idx ] = i.InstanceId
         elb.vpcId = elb.VPCId
-        elb.id = elb.DNSName
+        elb.id   = elb.DNSName
+        elb.Name = elb.LoadBalancerName
         delete elb.VPCId
       elbs
     parseExternalData: ( data ) ->
@@ -53,7 +54,8 @@ define [
             member: obj.PolicyNames
           }
           return obj
-        dataItem.id = dataItem.Dnsname
+        dataItem.id  = dataItem.Dnsname
+        dataItem.Name= dataItem.LoadBalancerName
       return data
       # @parseFetchData data
 

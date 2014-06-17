@@ -312,6 +312,7 @@ define [
             @modal.tpl.find(".btn.modal-confirm").attr("disabled", "disabled")
             @json = @workspace.design.serialize()
             @json.usage = $("#app-usage-selectbox").find(".dropdown .item.selected").data('value')
+            @json.name = appNameDom.val()
             @workspace.opsModel.run(@json, appNameDom.val()).then ( ops )->
                 self.modal.close()
                 App.openOps( ops )

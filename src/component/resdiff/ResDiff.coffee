@@ -5,7 +5,6 @@ define [
     './component/resdiff/prepare'
 ], ( modalplus, template, DiffTree, Prepare ) ->
 
-
     Backbone.View.extend
 
         className: 'res_diff_tree'
@@ -187,10 +186,29 @@ define [
 
                         if data.key
 
+                            type = value1 = type1 = ''
+
+                            if _.isObject(data.value)
+
+                                if data.value.type is 'added'
+                                    value = data.value.new
+                                    type = 'new'
+                                else if data.value.type is 'removed'
+                                    value = data.value.old
+                                    type = 'old'
+                                else if data.value.type is 'changed'
+                                    value = data.value.old
+                                    value1 = data.value.new
+                                    type = 'old'
+                                    type1 = 'new'
+
                             # $parent is <li class="item">
                             $parent.html template.resDiffTreeMeta({
                                 key: data.key,
                                 value: data.value,
+                                type: type,
+                                value1: value1,
+                                type1: type1,
                                 closed: closed
                             })
                             $parent.addClass('end')

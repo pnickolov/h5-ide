@@ -17,12 +17,16 @@ define [], () ->
 
             for v, i in ([0...a.length])
                 for v, j in ([0...b.length])
-                    if not _compare(a[i], b[j], '', [])
+                    if not _compare(a[i], b[j], '', [], [])
                         tmp = b[i]
                         b[i] = b[j]
                         b[j] = tmp
 
-        _compare = (a, b, key, resultJSON) ->
+        _compare = (a, b, key, path, resultJSON) ->
+
+            path.push(key) if key
+
+            pathStr = path.join('.')
 
             if not a and not b
                 return
@@ -87,7 +91,7 @@ define [], () ->
                     if (keys[i] is keys[i - 1])
                         continue;
 
-                    hasDiff = _compare(a and a[keys[i]], b and b[keys[i]], keys[i], resultJSON[key])
+                    hasDiff = _compare(a and a[keys[i]], b and b[keys[i]], keys[i], path, resultJSON[key])
 
                     if hasDiff
                         isEqual = false
@@ -113,7 +117,7 @@ define [], () ->
         this.compare = (json1, json2) ->
 
             resultJSON = {}
-            _compare(json1, json2, 'result', resultJSON)
+            _compare(json1, json2, 'result', [], resultJSON)
             return resultJSON.result
 
         null

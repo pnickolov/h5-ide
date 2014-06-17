@@ -486,8 +486,6 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         insRes.VpcId  = CREATE_REF( @theVpc, 'resource.VpcId' )
         insRes.Placement.AvailabilityZone = CREATE_REF( azComp, 'resource.ZoneName' )
 
-        insRes.BlockDeviceMapping = aws_ins.blockDeviceMapping
-
         if aws_ins.monitoring and aws_ins.monitoring
           insRes.Monitoring = aws_ins.monitoring.state
 
@@ -506,7 +504,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
 
         #generate BlockDeviceMapping for instance
         originComp = @getOriginalComp(insRes.InstanceId, 'INSTANCE')
-        insRes.BlockDeviceMapping = originComp.resource.BlockDeviceMapping
+        insRes.BlockDeviceMapping = originComp.resource.BlockDeviceMapping || []
         _.each aws_ins.blockDeviceMapping, (e,key)->
 
           volComp = me.volumes[ e.ebs.volumeId ]
@@ -514,7 +512,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
           volRes = volComp.resource
           if aws_ins.rootDeviceName.indexOf( e.deviceName ) is -1
             # not rootDevice, external volume point to instance
-            bdm.push "#" + volComp.uid
+            insRes.BlockDeviceMapping = _.union insRes.BlockDeviceMapping, ["#" + volComp.uid]
             #add volume component
             volComp.resource.AttachmentSet.InstanceId = CREATE_REF( insComp )
             me.component[ volComp.uid ] = volComp
@@ -584,9 +582,10 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
           #AutoAssign set to false in app
           eniRes.PrivateIpAddressSet.push {"PrivateIpAddress": ip.privateIpAddress, "AutoAssign" : true, "Primary" : ip.primary}
 
-        eniRes.GroupSet.push
-          "GroupId": CREATE_REF(@sgs[ aws_eni.groupSet[0].groupId ], 'resource.GroupId')
-          "GroupName": CREATE_REF(@sgs[ aws_eni.groupSet[0].groupId ], 'resource.GroupName')
+        for group in aws_eni.groupSet
+          eniRes.GroupSet.push
+            "GroupId": CREATE_REF(@sgs[ group.groupId ], 'resource.GroupId')
+            "GroupName": CREATE_REF(@sgs[ group.groupId ], 'resource.GroupName')
 
 
         eniComp = @add( "ENI", eniRes, "eni" + aws_eni.attachment.deviceIndex )

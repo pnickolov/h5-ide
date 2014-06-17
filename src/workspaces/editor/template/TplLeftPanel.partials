@@ -20,15 +20,16 @@
   </section>
 
   <section class="accordion-group">
-    <nav class="selectbox resource-select AmiTypeSelect js-toggle-dropdown">
-      <div class="selection">{{ i18n "RES_LBL_QUICK_START_AMI" }}</div>
-      <ul class="dropdown">
-        <li class="item selected" data-id="QuickStartAmi">{{ i18n "RES_LBL_QUICK_START_AMI" }}</li>
-        <li class="item" data-id="MyAmi">{{ i18n "RES_LBL_MY_AMI" }}</li>
-        <li class="item" data-id="FavoriteAmi">{{ i18n "RES_LBL_FAVORITE_AMI" }}</li>
-      </ul>
-    </nav>
-    <header class="fixedaccordion-head">{{ i18n "RES_TIT_AMI" }}</header>
+    <header class="fixedaccordion-head">{{ i18n "RES_TIT_AMI" }}
+      <nav class="selectbox resource-select AmiTypeSelect js-toggle-dropdown">
+        <div class="selection">{{ i18n "RES_LBL_QUICK_START_AMI" }}</div>
+        <ul class="dropdown">
+          <li class="item selected" data-id="QuickStartAmi">{{ i18n "RES_LBL_QUICK_START_AMI" }}</li>
+          <li class="item" data-id="MyAmi">{{ i18n "RES_LBL_MY_AMI" }}</li>
+          <li class="item" data-id="FavoriteAmi">{{ i18n "RES_LBL_FAVORITE_AMI" }}</li>
+        </ul>
+      </nav>
+    </header>
     <div class="accordion-body scroll-wrap scrollbar-auto-hide">
       <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
       <ul class="item-wrap scroll-content resource-list-ami"></ul>

@@ -46,17 +46,13 @@ define ['../template/TplAmiBrowser', 'i18n!nls/lang.js', 'UI.modalplus', "ApiReq
           that = this
           favAmis = CloudResources "FavoriteAmi", @region
           promise = null
-          if amiElem.hasClass('faved')
+          if amiElem.hasClass('fav')
             promise = favAmis.unfav(amiElem.data('id'))
           else
             data    = $.extend { id : amiElem.data("id") }, @communityAmiData[amiElem.data("id")]
             promise = favAmis.fav( data )
 
-          promise?.then ->
-            notification 'info', if not amiElem.hasClass("faved") then lang.ide.RES_MSG_INFO_ADD_AMI_FAVORITE_SUCCESS else lang.ide.RES_MSG_INFO_REMVOE_FAVORITE_AMI_SUCCESS
-            amiElem.toggleClass('faved')
-          , ->
-            notification 'error', if not amiElem.hasClass("faved") then lang.ide.RES_MSG_ERR_ADD_FAVORITE_AMI_FAILED else lang.ide.RES_MSG_ERR_REMOVE_FAVORITE_AMI_FAILED
+          promise.then -> amiElem.toggleClass('fav')
 
         doSearch : (pageNum, perPage)->
           pageNum = pageNum || 1

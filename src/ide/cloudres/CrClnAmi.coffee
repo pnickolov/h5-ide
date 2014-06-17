@@ -311,7 +311,7 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
       if idx is -1
         d = Q.defer()
         d.resolve()
-        return q.promise
+        return d.promise
 
       ApiRequest("favorite_remove", {
         resource_ids : [id]

@@ -31,6 +31,7 @@ define [
   Backbone.View.extend {
 
     events :
+      "click .btn-fav-ami"           : "toggleFav"
       "click .HideOEPanelLeft"       : "toggleLeftPanel"
       "OPTION_CHANGE .AmiTypeSelect" : "changeAmiType"
       "click .BrowseCommunityAmi"    : "browseCommunityAmi"
@@ -200,13 +201,14 @@ define [
 
     updateFavList : ()-> if @__amiType is "FavoriteAmi" then @updateAmi()
 
-    toggleFav : ()->
-      # Start listening fav update.
-      @stopListening CloudResources( "FavoriteAmi", @workspace.opsModel.get("region") ), "update", @updateFavList
-      # if amiElem.hasClass('faved')
-      #   promise = favAmis.unfav(amiElem.data('id'))
-      # else
-      #   promise = favAmis.fav( @communityAmiData[amiElem.data("id")] )
+    toggleFav : ( evt )->
+      $tgt = $( evt.currentTarget ).toggleClass("fav")
+      amiCln = CloudResources( "FavoriteAmi", @workspace.opsModel.get("region") )
+      if $tgt.hasClass("fav")
+        amiCln.fav( $tgt.attr("data-id") )
+      else
+        amiCln.unfav( $tgt.attr("data-id") )
+      return false
 
     toggleLeftPanel : ()->
       @__leftPanelHidden = @$el.toggleClass("hidden").hasClass("hidden")
@@ -215,6 +217,9 @@ define [
     updateAccordion : ( event, noAnimate ) ->
       $target    = $( event.currentTarget )
       $accordion = $target.closest(".accordion-group")
+
+      if event.target and not $( event.target ).hasClass("fixedaccordion-head")
+        return
 
       if $accordion.hasClass "expanded"
         return false
@@ -292,6 +297,7 @@ define [
       if evt.button isnt 0 then return false
       $tgt = $( evt.currentTarget )
       if $tgt.hasClass("resource-disabled") then return false
+      if evt.target && $( evt.target ).hasClass("btn-fav-ami") then return
 
       type = constant.RESTYPE[ $tgt.attr("data-type") ]
       console.assert( type )

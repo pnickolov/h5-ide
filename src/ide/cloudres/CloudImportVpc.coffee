@@ -116,15 +116,14 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
     addTopic : ( arn ) ->
       topicComp = @topics[ arn ]
       if topicComp then return topicComp
-
-      for aws_topic in @CrPartials( "TOPIC" ).where({id:arn}) || []
-        aws_topic = aws_topic.attributes
-        topicRes =
-          "TopicArn" : aws_topic.id
-        topicComp = @add( "TOPIC", topicRes, aws_topic.Name )
-        @topics[ aws_topic.id ] = topicComp
-        return topicComp
-      return null
+      topicRes =
+        "TopicArn" : arn
+      tmpAry = arn.split(":")
+      if tmpAry.length>0
+        topicName = tmpAry[tmpAry.length - 1]
+      topicComp = @add( "TOPIC", topicRes, topicName )
+      @topics[ arn ] = topicComp
+      return topicComp
 
     getOriginalComp: ( jsonOrKey, type ) ->
       type = constant.RESTYPE[ type ] or type
@@ -371,7 +370,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
 
         sgRes = @_mapProperty aws_sg, sgRes
 
-        originSGComp = @getOriginalComp(aws_sg.groupId, 'SG')
+        originSGComp = @getOriginalComp(aws_sg.id, 'SG')
         if originSGComp
           sgRes.GroupName = originSGComp.resource.GroupName
 
@@ -396,7 +395,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         else if aws_sg.groupName.indexOf("-DefaultSG-app-") isnt -1
           DEFAULT_SG["DefaultSG"] = sgComp
 
-        @sgs[ aws_sg.groupId ] = sgComp
+        @sgs[ aws_sg.id ] = sgComp
       return
 
     ()-> #Volume
@@ -682,9 +681,6 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
     ()-> #ACL
       for aws_acl in @getResourceByType("ACL") || []
         aws_acl    = aws_acl.attributes
-        subnetComp = @subnets[aws_acl.subnetId]
-        if not subnetComp
-          continue
         aclRes =
           "AssociationSet": []
           "Default" : false
@@ -714,6 +710,9 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
             "RuleNumber": acl.ruleNumber
 
         for acl in aws_acl.associationSet
+          subnetComp = @subnets[acl.subnetId]
+          if not subnetComp
+            continue
           aclRes.AssociationSet.push
             "NetworkAclAssociationId": acl.networkAclAssociationId
             "SubnetId": CREATE_REF( subnetComp, 'resource.SubnetId' )
@@ -1038,11 +1037,11 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
 
         dimension = []
         _.each aws_cw.Dimensions, (e,key)->
-          if e.name is "AutoScalingGroupName"
-            asgComp = me.asgs[ e.value ]
+          if e.Name is "AutoScalingGroupName"
+            asgComp = me.asgs[ e.Value ]
             if asgComp
               data =
-                "name" : e.name
+                "name" : e.Name
                 "value": CREATE_REF( asgComp, "resource.AutoScalingGroupName" )
               dimension.push data
         if dimension.length is 0
@@ -1053,15 +1052,13 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         #convert AlarmActions to REF:
         alarmActionAry = []
         _.each aws_cw.AlarmActions, (e,key)->
-          # "arn:aws:autoscaling:ap-northeast-1:994554139310:scalingPolicy:82adbcae-0bae-4e47-8f99-351948118991:autoScalingGroupName/asg0---app-c78a2ec3:policyName/asg0-policy-0"
-          # "arn:aws:sns:ap-northeast-1:994554139310:test"
           reg_asg = /arn:aws:autoscaling:.*:.*:scalingPolicy/g
           reg_topic = /arn:aws:sns:.*:.*:.*/g
           if reg_topic.test(e)
             #TOPIC
             topicComp = me.addTopic(e)
             if topicComp
-              alarmActionAry.push CREATE_REF(spComp, "resource.TopicArn")
+              alarmActionAry.push CREATE_REF(topicComp, "resource.TopicArn")
           else if reg_asg.test(e)
             #SP
             spComp = me.sps[e]

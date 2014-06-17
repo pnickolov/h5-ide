@@ -71,8 +71,7 @@ define [
       for btn in btns
         attr = { stateOn: @workspace.design.get("agent").enabled }
         tpl += OpsEditorTpl.toolbar[ btn ]( attr )
-
-      if @__editMode
+      if @workspace.opsModel.isApp()
         ami = [].concat(
           @workspace.design.componentsOfType( constant.RESTYPE.INSTANCE ),
           @workspace.design.componentsOfType( constant.RESTYPE.LC )

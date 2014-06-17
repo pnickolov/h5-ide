@@ -93,11 +93,24 @@ define [
         options = {} if not options
         @parent = options.parent
 
+        @settleElement options
+        @bindEvent @model
+
+      bindEvent: ( model ) ->
+        @listenTo model, 'change', @render
+        @listenTo model, 'destroy', ( lc ) ->
+          if lc.__brothers.length
+            @model = lc.__brothers[ 0 ]
+            @stopListening()
+            @bindEvent @model
+            @settleElement {}
+          else
+            @remove()
+
+      settleElement: ( options ) ->
         @$el.attr _.extend {}, options.attr, @defaultAttr()
         @$el.data _.extend {}, options.data, @defaultData()
 
-        @listenTo @model, 'change', @render
-        @listenTo @model, 'destroy', @remove
 
       render: ->
         data = @model.toJSON()
@@ -115,13 +128,14 @@ define [
       allLc = Design.modelClassForType( constant.RESTYPE.LC ).allObjects()
 
       for lc in allLc
-        new @reuseLc({model:lc, parent : @}).render()
+        if not lc.isClone()
+          new @reuseLc({model:lc, parent : @}).render()
 
       @
 
     subEventForUpdateReuse: ->
       Design.on Design.EVENT.AddResource, ( resModel ) ->
-        if resModel.type is constant.RESTYPE.LC
+        if resModel.type is constant.RESTYPE.LC and not resModel.isClone()
           new @reuseLc( model: resModel, parent: @ ).render()
       , @
 

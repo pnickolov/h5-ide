@@ -60,7 +60,7 @@ define [ "Design", "CanvasManager", "./ResourceModel", "constant", "./canvasview
 
       if attributes and attributes.__parent
         # Reset __parent here, so that addChild() can succeed
-        @attributes.__parent = null
+        @set '__parent', null
         attributes.__parent.addChild( this )
       null
 
@@ -226,7 +226,7 @@ define [ "Design", "CanvasManager", "./ResourceModel", "constant", "./canvasview
 
       layout
 
-    parent : ()-> @attributes.__parent || null
+    parent : ()-> @get( '__parent' ) || null
     x      : ()-> @attributes.x || 0
     y      : ()-> @attributes.y || 0
     width  : ()-> @attributes.width || 0

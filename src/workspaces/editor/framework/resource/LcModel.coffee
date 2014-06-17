@@ -4,6 +4,13 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
   emptyArray = []
 
   Model = ComplexResModel.extend {
+    # offset of asg
+    offset:
+      x: 2
+      y: 3
+
+    x: ()-> @parent()?.x() + @offset.x
+    y: ()-> @parent()?.y() + @offset.y
 
     defaults : ()->
       x        : 0
@@ -26,15 +33,65 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
     type : constant.RESTYPE.LC
     newNameTmpl : "launch-config-"
 
+    __brothers: []
+    __bigBrother: null
+    __isClone: false
+
     constructor : ( attr, option )->
       if option and option.createByUser and attr.parent.get("lc")
           return
 
+      if option and option.clone
+        @__isClone = true
+
       ComplexResModel.call( this, attr, option )
 
+    clone: ->
+      dolly = new Model null, clone: true
+      @addBrother dolly
+      dolly
+
+    getBigBrother: ->
+      @__bigBrother
+
+    isClone: -> @__isClone
+
+    addBrother: ( brother ) ->
+      @__brothers.push brother
+      brother.__bigBrother = @
+      brother.listenTo @, 'all', ->
+        if /^change/.test arguments[ 0 ]
+          brother.trigger.apply brother, arguments
+
+    removeBrother: ( brother ) ->
+      idx = @__brothers.indexOf brother
+      @__brothers.splice idx, 1 if idx > -1
+      brother.stopListening()
+
+    getContext: ( attr ) ->
+      if @__bigBrother and attr not in [ '__parent' ]
+        return @__bigBrother
+
+      @
+
+    set: ->
+      context = @getContext arguments[ 0 ]
+      ComplexResModel.prototype.set.apply context, arguments
+
+    get: ->
+      context = @getContext arguments[ 0 ]
+      ComplexResModel.prototype.get.apply context, arguments
+
+
+
+
+
     initialize : ( attr, option )->
+      @__brothers = []
+
       # Draw before create SgAsso
-      @draw(true)
+      if not option or not option.clone
+        @draw(true)
 
       if option and option.createByUser
 
@@ -61,7 +118,7 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
         return newName or ""
 
       if base is undefined
-        myKinds = Design.modelClassForType( @type ).allObjects()
+        myKinds = _.filter Design.modelClassForType( @type ).allObjects(), (m) -> m.getBigBrother() is null
         base = myKinds.length
 
       # Collect all the resources name
@@ -120,6 +177,22 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
       amis || []
 
     remove : ()->
+      if @__bigBrother
+        @__bigBrother.removeBrother @
+      else if @__brothers.length
+        # Young brother continue his big-brother's duty when the big-brother dying
+        for k, v of @attributes
+          if k not in [ '__parent' ]
+            @__brothers[0].attributes[ k ] = v
+
+        @__brothers[0].__bigBrother = null
+        @__brothers[0].__brothers = []
+
+        for brother, i in @__brothers
+          if i isnt 0
+            brother.__bigBrother = @__brothers[ 0 ]
+            @__brothers[0].__brothers.push brother
+
       # Remove attached volumes
       for v in (@get("volumeList") or emptyArray).slice(0)
         v.remove()
@@ -198,6 +271,8 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
     getInstanceTypeList        : InstanceModel.prototype.getInstanceTypeList
 
     serialize : ()->
+      if @isClone()
+        return
 
       ami = @getAmi() || @get("cachedAmi")
       layout = @generateLayout()
@@ -254,7 +329,6 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
     handleTypes : constant.RESTYPE.LC
 
     deserialize : ( data, layout_data, resolve )->
-
       #old format state support
       if not (_.isArray(data.state) and data.state.length)
         data.state = null

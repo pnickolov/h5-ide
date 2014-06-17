@@ -115,7 +115,7 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
           if attributes.parent is expanded.parent()
             return
 
-      # Call Superclass's consctructor to finish creating the ExpandAsg
+      # Call Superclass's constructor to finish creating the ExpandAsg
       ComplexResModel.call( this, attributes, options )
       null
 
@@ -150,7 +150,9 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
       @get("originalAsg").__addExpandedAsg( this )
       null
 
-    getLc : ()-> @attributes.originalAsg.get("lc")
+    getLc : ()->
+      lc = @attributes.originalAsg.get("lc")
+      lc.getBigBrother() or lc
 
     # disconnect : ( cn )->
     #   if cn.type isnt "ElbAmiAsso" then return
@@ -219,6 +221,17 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
 
     type : constant.RESTYPE.ASG
     newNameTmpl : "asg"
+
+    constructor: ( attributes, options ) ->
+      GroupModel.prototype.constructor.apply @, arguments
+
+      if attributes.lcId
+        lc = Design.instance().component attributes.lcId
+        dolly = lc.clone()
+        @addChild dolly
+        dolly.draw true
+
+      @
 
     isReparentable : ( newParent )->
       for expand in @get("expandedList")
@@ -484,8 +497,9 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
           if sbRef then newSubnets.push sbRef
         subnets = newSubnets
 
-      if @get("lc")
-        lcId = @get('lc').createRef( "LaunchConfigurationName" )
+      lc = @get("lc")
+      if lc
+        lcId = ( lc.getBigBrother() or lc ).createRef( "LaunchConfigurationName" )
       else
         lcId = ""
 
@@ -521,6 +535,14 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
 
     handleTypes : constant.RESTYPE.ASG
 
+    resolveLc   : ( uid ) ->
+      if not uid then return null
+
+      obj = Design.__instance.__componentMap[ uid ]
+      if obj and not obj.parent() then return obj
+
+      obj.clone()
+
     deserialize : ( data, layout_data, resolve )->
 
       asg = new Model({
@@ -546,7 +568,7 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
 
       # Associate with LC
       if data.resource.LaunchConfigurationName
-        lc = resolve( MC.extractID(data.resource.LaunchConfigurationName) )
+        lc = @resolveLc( MC.extractID(data.resource.LaunchConfigurationName) )
         asg.addChild( lc )
 
         # Elb Association to LC

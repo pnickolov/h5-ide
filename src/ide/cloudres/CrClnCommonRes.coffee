@@ -83,8 +83,8 @@ define [
     type  : constant.RESTYPE.EIP
     modelIdAttribute : "allocationId"
     trAwsXml : ( data )-> data.DescribeAddressesResponse.addressesSet?.item
-    parseExternalData: ( data ) ->
-      @unifyApi data, @type
+    # parseExternalData: ( data ) ->
+    #   @unifyApi data, @type
   }
 
   ### VPC ###

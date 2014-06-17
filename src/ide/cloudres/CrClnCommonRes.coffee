@@ -95,12 +95,12 @@ define [
     trAwsXml : ( data )-> data.DescribeAddressesResponse.addressesSet?.item
     parseFetchData : ( eips )->
       for eip in eips
-        eip.id = eip.publicIp
+        eip.id = eip.allocationId
       eips
     parseExternalData: ( data ) ->
       @unifyApi data, @type
       for eip in data
-        eip.id = eip.publicIp
+        eip.id = eip.allocationId
       data
 
   }
@@ -202,7 +202,7 @@ define [
     parseExternalData: ( data ) ->
       @unifyApi data, @type
       for cgw in data
-        cgw.id = customerGatewayId
+        cgw.id = cgw.customerGatewayId
       data
   }
 

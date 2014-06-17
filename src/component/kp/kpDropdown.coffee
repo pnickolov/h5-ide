@@ -53,7 +53,6 @@ define [ 'Design', 'kp_manage', 'combo_dropdown', './component/kp/kpTpl', 'backb
             @dropdown.on 'change', @setKey, @
             @dropdown.on 'filter', @filter, @
 
-
         initialize: ( options ) ->
             @resModel = if options then options.resModel else null
             @collection = CloudResources(constant.RESTYPE.KP, Design.instance().get("region"))
@@ -65,15 +64,16 @@ define [ 'Design', 'kp_manage', 'combo_dropdown', './component/kp/kpTpl', 'backb
 
             @initDropdown()
 
-        show: () ->
+
+      show: () ->
             if App.user.hasCredential()
                 def = null
-                if regions[Design.instance().get("region")]
-                    regions[Design.instance().get("region")] = true
-                    def = @collection.fetch()
-                else
+                if not regions[Design.instance().get("region")] and @collection.isReady()
                     regions[Design.instance().get("region")] = true
                     def = @collection.fetchForce()
+                else
+                    regions[Design.instance().get("region")] = true
+                    def = @collection.fetch()
                 def.then =>
                     @renderKeys()
             else

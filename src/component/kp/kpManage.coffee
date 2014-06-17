@@ -223,13 +223,7 @@ define [ 'toolbar_modal', './component/kp/kpDialogTpl', 'kp_upload', 'backbone',
             that = @
             _.each checked, ( c ) =>
                 console.log c
-                target = @collection.findWhere(keyName: c.data.name.toString())
-                if target
-                  alert("Founddddd!")
-                  target.destroy().then onDeleteFinish, onDeleteFinish
-                else
-                  alert('Not Found!')
-
+                @collection.findWhere(keyName: c.data.name.toString()).destroy().then onDeleteFinish, onDeleteFinish
         import: ( invalid ) ->
             that = @
             if not invalid

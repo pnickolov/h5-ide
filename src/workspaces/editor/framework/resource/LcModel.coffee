@@ -69,7 +69,8 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
       brother.stopListening()
 
     getContext: ( attr ) ->
-      if @__bigBrother and attr not in [ '__parent' ]
+      exception = [ '__parent', 'x', 'y' ]
+      if @__bigBrother and attr not in exception and not (_.intersection _.keys(exception), attr).length
         return @__bigBrother
 
       @

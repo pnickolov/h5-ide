@@ -276,6 +276,12 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
     addChild : ( lc )->
 
       GroupModel.prototype.addChild.call this, lc
+      lc.listenTo @, 'change:x', () ->
+        lc.getCanvasView().resetPosition()
+
+      lc.listenTo @, 'change:y', () ->
+        lc.getCanvasView().resetPosition()
+
 
       oldLc = @get("lc")
       if oldLc

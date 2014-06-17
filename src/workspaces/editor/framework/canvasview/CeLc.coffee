@@ -166,13 +166,13 @@ define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager", 'i18n!n
     nowX = @model.x()
     nowY = @model.y()
 
-    if (x is undefined or x is null) and (y is undefined or y is null)
-      return [ nowX, nowY ]
+    return [ nowX, nowY ]
+
+  ChildElementProto.resetPosition = ->
 
     el = @element()
     if el
-      MC.canvas.position( el, nowX, nowY )
-    null
+      MC.canvas.position el, @model.x(), @model.y()
 
 
 

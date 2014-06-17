@@ -92,7 +92,7 @@
     padding-left: 10px;
     font-size: 14px; }
     .res_diff_tree .tree .type {
-      background-color: #333;
+      background-color: #2c2f46;
       border-radius: 2px;
       padding: 3px 7px;
       color: #999;
@@ -109,7 +109,7 @@
       -o-transition: background-color .2s;
       transition: background-color .2s; }
       .res_diff_tree .tree .type:hover {
-        background-color: #148BE6;
+        background-color: #363a56;
         color: #eee; }
     .res_diff_tree .tree .name {
       font-weight: bold;
@@ -179,7 +179,8 @@
       .res_diff_tree .tree .item.end .meta .type {
         cursor: auto; }
         .res_diff_tree .tree .item.end .meta .type:hover {
-          background-color: #333; }
+          background-color: #2c2f46;
+          color: #999; }
       .res_diff_tree .tree .item.end::after {
         display: none; }
       .res_diff_tree .tree .item.closed::after {

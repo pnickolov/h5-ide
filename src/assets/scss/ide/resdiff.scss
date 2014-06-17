@@ -9,6 +9,8 @@ $color_removed: #9e2622;
 $color_changed: darken(#ff8330,20%);
 $color_property: #ff8330;
 
+$dark_blue: #2C2F46;
+
 .res_diff_tree {
 	overflow: auto;
 
@@ -166,7 +168,7 @@ $color_property: #ff8330;
 
 		.type {
 			// background-color : $color_property;
-			background-color    : #333;
+			background-color    : $dark_blue;
 			border-radius       : 2px;
 			padding             : 3px 7px;
 			// color            : $bg_body;
@@ -186,7 +188,7 @@ $color_property: #ff8330;
 			transition: background-color .2s;
 
 			&:hover {
-				background-color : #148BE6;
+				background-color : lighten($dark_blue,5%);
 				color            : #eee;
 			}
 		}
@@ -284,7 +286,8 @@ $color_property: #ff8330;
 				cursor: auto;
 
 				&:hover {
-					background-color: #333;
+					background-color : $dark_blue;
+					color            : #999;
 				}
 			}
 
@@ -326,10 +329,6 @@ $color_property: #ff8330;
 		& > li > ul.tree {
 			margin-left: 15px;
 			font-size: 12px;
-
-			.type {
-				// background-color: #4a90e2;
-			}
 
 			& > .item:last-child {
 				@include tierline;

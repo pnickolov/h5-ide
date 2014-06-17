@@ -11,7 +11,7 @@ define [
 
   class AppEditor extends StackEditor
 
-    title      : ()-> @opsModel.get("name") + " - app"
+    title      : ()-> (@design || @opsModel).get("name") + " - app"
     createView : ()-> new AppView({workspace:this})
     tabClass   : ()->
       switch @opsModel.get("state")
@@ -86,7 +86,11 @@ define [
       if modfied
         # Layout and component changes, need to construct a new Design.
         @view.emptyCanvas()
+
+        @stopListening @design
         @design = new Design( @opsModel )
+        @listenTo @design, "change:name", @updateTab
+
         @initDesign()
       else
         @design.setMode( Design.MODE.App )

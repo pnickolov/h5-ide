@@ -90,6 +90,7 @@ define [ "./subviews/WorkspaceView", "underscore" ], ( WorkspaceView )->
       delete @__spacesById[id]
       @__spaces.splice (@__spaces.indexOf workspace), 1
 
+      workspace.stopListening()
       workspace.cleanup()
 
       if @__awakeSpace is workspace

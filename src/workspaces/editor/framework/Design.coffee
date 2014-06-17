@@ -381,7 +381,12 @@ define [
     @__usedUidCache[ newId ] = true
     newId
 
-  DesignImpl.prototype.set = ( key, value )-> @attributes[key] = value; return
+  DesignImpl.prototype.set = ( key, value )->
+    @attributes[key] = value
+    @trigger "change:#{key}"
+    @trigger "change"
+    return
+
   DesignImpl.prototype.get = ( key )->
     if key is "id"
       @__opsModel.get( "id" )

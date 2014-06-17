@@ -6,7 +6,7 @@ define [ "./OpsEditorBase", "./UnmanagedView", "Design" ], ( OpsEditorBase, Unma
   ###
   class UnmanagedViewer extends OpsEditorBase
 
-    title    : ()-> @opsModel.get("importVpcId") + " - visualization"
+    title    : ()-> @opsModel.get("importVpcId") + " - app"
     tabClass : ()-> "icon-visualization-tabbar"
 
     ###

@@ -145,6 +145,8 @@ define [
       @__inited = true
       @design = new Design( @opsModel )
 
+      @listenTo @design, "change:name", @updateTab
+
       @view = @createView()
       @view.opsModel  = @opsModel
       @view.workspace = @

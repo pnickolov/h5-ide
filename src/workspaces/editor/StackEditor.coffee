@@ -12,7 +12,7 @@ define [
   ###
   class StackEditor extends OpsEditorBase
 
-    title       : ()-> @opsModel.get("name") + " - stack"
+    title       : ()-> (@design || @opsModel).get("name") + " - stack"
     tabClass    : ()-> "icon-stack-tabbar"
 
     createView : ()->

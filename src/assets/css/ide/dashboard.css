@@ -778,8 +778,7 @@
   #VisualizeVpcDialog .unmanaged-vpc-empty {
     padding: 160px 10px;
     text-align: center;
-    color: #aaa;
-    display: none; }
+    color: #aaa; }
   #VisualizeVpcDialog .region-header {
     padding: 10px 15px;
     background: #131313;

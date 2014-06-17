@@ -42,11 +42,7 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
 
     osType = ami.osType
 
-    if constant.OS_TYPE_MAPPING[ osType ]
-      osFamily = constant.OS_TYPE_MAPPING[ osType ]
-
-    if osType in constant.WINDOWS
-      osFamily = 'mswin'
+    if osType is "windows" or osType is "win"
 
       if SQL_WEB_PATTERN.exec(ami.name || "") or SQL_WEB_PATTERN.exec(ami.description || "") or SQL_WEB_PATTERN.exec(ami.imageLocation || "")
         return "mswinSQLWeb"
@@ -54,7 +50,9 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
       if SQL_STANDARD_PATTERN.exec(ami.name || "") or SQL_STANDARD_PATTERN.exec(ami.description || "") or SQL_STANDARD_PATTERN.exec(ami.imageLocation || "")
         return "mswinSQL"
 
-    osFamily
+      return "mswin"
+
+    constant.OS_TYPE_MAPPING[ osType ] || "linux"
 
   fixDescribeImages = ( amiArray )->
     ms = []
@@ -104,6 +102,8 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
 
     invalidate : ( amiId )-> @__invalids[ amiId ] = true
     isValidId  : ( amiId )-> !@__invalids[ amiId ]
+
+    getOSFamily : ( amiId )-> getOSFamily( @get( amiId ) )
 
     saveInvalidAmiId : ()->
       amis = []

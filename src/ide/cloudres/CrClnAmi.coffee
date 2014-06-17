@@ -82,6 +82,17 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
     type  : constant.RESTYPE.AMI
 
     __selfParseData : true
+
+    initialize : ()->
+      console.info "Init-ing AMI collection"
+      invalidAmi = localStorage.getItem("invalidAmi/" + @region())
+      @__invalids = {}
+
+      if invalidAmi
+        for id in invalidAmi.split(",")
+          @__invalids[ id ] = true
+      return
+
     doFetch : ()->
       # This method is used for CloudResources to invalid the cache.
       localStorage.setItem("invalidAmi/" + @region(), "")
@@ -90,15 +101,6 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
       d.resolve([])
       @trigger "update"
       return d.promise
-
-    initInvalidateId : ()->
-      invalidAmi = localStorage.getItem("invalidAmi/" + @region())
-      @__invalids = {}
-
-      if invalidAmi
-        for id in invalidAmi.split(",")
-          @__invalids[ id ] = true
-      return
 
     invalidate : ( amiId )-> @__invalids[ amiId ] = true
     isValidId  : ( amiId )-> !@__invalids[ amiId ]
@@ -111,8 +113,6 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
       localStorage.setItem("invalidAmi/" + @region(), amis.join(",") )
 
     fetchAmis : ( amis )->
-      if not @__invalids then @initInvalidateId()
-
       if not amis then return
 
       if _.isString(amis)

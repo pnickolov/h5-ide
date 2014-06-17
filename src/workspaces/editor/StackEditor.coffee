@@ -42,7 +42,18 @@ define [
         CloudResources( "QuickStartAmi",       region ).fetch()
         CloudResources( "MyAmi",               region ).fetch()
         CloudResources( "FavoriteAmi",         region ).fetch()
+        @fetchAmiData()
       ]
+
+    fetchAmiData : ()->
+      json = @opsModel.getJsonData()
+      toFetch = {}
+      for uid, comp of json.component
+        if comp.type is constant.RESTYPE.INSTANCE or comp.type is constant.RESTYPE.LC
+          imageId = comp.resource.ImageId
+          if imageId then toFetch[ imageId ] = true
+
+      CloudResources( constant.RESTYPE.AMI, @opsModel.get("region") ).fetchAmis( _.keys toFetch )
 
     cleanup : ()->
       # Ask parent to cleanup first, so that removing opsModel won't trigger change event.

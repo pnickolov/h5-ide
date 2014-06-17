@@ -39,6 +39,7 @@ define [
         CloudResources( "MyAmi",               region ).fetch()
         CloudResources( "FavoriteAmi",         region ).fetch()
         CloudResources( "OpsResource", @opsModel.getVpcId() ).init( @opsModel.get("region") ).fetchForce()
+        @fetchAmiData()
       ]).then ()->
         # Hack, immediately apply changes when we get data if the app is changed.
         # Will move it to somewhere else if the process is upgraded.

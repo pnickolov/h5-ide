@@ -444,7 +444,14 @@
   left: 0;
   width: 100%;
   border: none;
-  border-radius: 0; }
+  border-radius: 0;
+  z-index: 3; }
+  .BrowseCommunityAmi + .scroll-content, .ManageSnapshot + .scroll-content {
+    padding-bottom: 30px; }
+    .BrowseCommunityAmi + .scroll-content:after, .ManageSnapshot + .scroll-content:after {
+      display: block;
+      content: " ";
+      clear: both; }
 
 .OEPanelRight .property-switcher {
   height: 30px;

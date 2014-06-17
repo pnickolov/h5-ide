@@ -336,6 +336,16 @@
   width: 100%;
   border: none;
   border-radius: 0;
+  z-index : 3;
+
+  & + .scroll-content {
+    padding-bottom : 30px;
+    &:after {
+      display : block;
+      content : " ";
+      clear : both;
+    }
+  }
 }
 
 // Property Panel

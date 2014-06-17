@@ -32,9 +32,8 @@
     </header>
     <div class="accordion-body scroll-wrap scrollbar-auto-hide">
       <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-      <ul class="item-wrap scroll-content resource-list-ami"></ul>
-
       <button class="btn btn-primary BrowseCommunityAmi">{{ i18n "RES_BTN_BROWSE_COMMUNITY_AMI" }}</button>
+      <ul class="scroll-content resource-list-ami"></ul>
     </div>
   </section>
 
@@ -42,8 +41,8 @@
     <header class="fixedaccordion-head">{{ i18n "RES_TIT_VOL" }}</header>
     <div class="accordion-body scroll-wrap scrollbar-auto-hide">
       <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-      <ul class="resource-list-snapshot scroll-content"></ul>
       <button class="btn btn-primary ManageSnapshot">{{ i18n "RES_TIT_SNAPSHOT_MANAGE"}}</button>
+      <ul class="resource-list-snapshot scroll-content"></ul>
     </div>
   </section>
 

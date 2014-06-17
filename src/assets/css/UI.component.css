@@ -379,6 +379,7 @@ textarea[readonly]  {
 	border: 1px solid transparent;
 }
 
+.property-control-group .input.input-short, 
 .input.input-short {
 	width: 160px;
 }

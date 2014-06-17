@@ -253,7 +253,11 @@ define [
     browseCommunityAmi : ()->
       searchCommunityAmiCurrent = @searchCommunityAmiCurrent.bind @
       faveCommunityAmi = @faveCommunityAmi.bind @
-      amiBrowser.loadModule()
+
+      amisModal = amiBrowser.loadModule()
+      amisModal.on 'close', ->
+        console.debug 'it works'
+
       $(document).off 'keypress',   '#community-ami-input'
       $(document).off 'click',      '#btn-search-ami'
       $(document).off 'click',      '.toggle-fav'

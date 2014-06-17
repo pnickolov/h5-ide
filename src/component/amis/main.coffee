@@ -2,26 +2,22 @@
 #  pop-up for component/amis module
 ####################################
 
-define [ 'jquery', 'event' ], ( $, ide_event ) ->
+define [ 'jquery', 'event', 'component/amis/view', 'component/amis/model' ], ( $, ide_event, View, Model ) ->
 
     #private
     loadModule = () ->
 
+        view  = new View()
+        model = new Model()
+
+        #view
+        view.model    = model
         #
-        require [ './component/amis/view', './component/amis/model' ], ( View, Model ) ->
+        view.on 'CLOSE_POPUP', () ->
+            unLoadModule view, model
 
-            #
-            view  = new View()
-            model = new Model()
-
-            #view
-            view.model    = model
-            #
-            view.on 'CLOSE_POPUP', () ->
-                unLoadModule view, model
-
-            #render
-            view.render()
+        #render
+        view.render()
 
     unLoadModule = ( view, model ) ->
         console.log 'ami unLoadModule'

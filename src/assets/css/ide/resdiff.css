@@ -132,6 +132,8 @@
       .res_diff_tree .tree .name .new {
         color: #4a90e2;
         font-style: italic; }
+    .res_diff_tree .tree .name.arrow {
+      min-width: 13px; }
     .res_diff_tree .tree .to {
       color: #4a90e2; }
     .res_diff_tree .tree .id {

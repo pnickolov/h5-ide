@@ -202,10 +202,14 @@ define [
                                     type = 'old'
                                     type1 = 'new'
 
+                            else
+
+                                value = data.value
+
                             # $parent is <li class="item">
                             $parent.html template.resDiffTreeMeta({
                                 key: data.key,
-                                value: data.value,
+                                value: value,
                                 type: type,
                                 value1: value1,
                                 type1: type1,

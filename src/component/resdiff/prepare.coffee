@@ -126,7 +126,12 @@ define [ 'constant' ], ( constant ) ->
             newValue.__old__ = @h.getNodeMap(oldRef).oldAttr if oldRef
             newValue.__new__ = @h.getNodeMap(newRef).newAttr if newRef
 
-            data.value = @h.genValue(newValue.type, newValue.__old__, newValue.__new__)
+            # data.value = @h.genValue(newValue.type, newValue.__old__, newValue.__new__)
+            data.value = {
+                type: newValue.type,
+                old: newValue.__old__,
+                new: newValue.__new__
+            }
 
         else
 

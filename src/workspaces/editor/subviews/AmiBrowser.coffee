@@ -46,10 +46,11 @@ define ['../template/TplAmiBrowser', 'i18n!nls/lang.js', 'UI.modalplus', "ApiReq
           that = this
           favAmis = CloudResources "FavoriteAmi", @region
           promise = null
+          id = amiElem.closest("tr").attr("data-id")
           if amiElem.hasClass('fav')
-            promise = favAmis.unfav(amiElem.data('id'))
+            promise = favAmis.unfav id
           else
-            data    = $.extend { id : amiElem.data("id") }, @communityAmiData[amiElem.data("id")]
+            data    = $.extend { id : id }, @communityAmiData[id]
             promise = favAmis.fav( data )
 
           promise.then -> amiElem.toggleClass('fav')

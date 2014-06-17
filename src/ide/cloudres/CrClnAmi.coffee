@@ -323,7 +323,7 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
       ApiRequest("favorite_remove", {
         resource_ids : [id]
       }).then ()->
-        idx = self.__models.indexOf amiId
+        idx = self.__models.indexOf id
         self.__models.splice idx, 1
         self.trigger "update"
         self

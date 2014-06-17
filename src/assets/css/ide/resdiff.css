@@ -77,6 +77,8 @@
     .res_diff_tree .group .count {
       color: #666;
       font-size: 12px; }
+    .res_diff_tree .group .content > .tree > .item > .meta > .type {
+      background-color: #111; }
     .res_diff_tree .group.removed .content > .tree > .item > .meta > .name {
       color: #9e2622; }
     .res_diff_tree .group.added .content > .tree > .item > .meta > .name {
@@ -88,8 +90,7 @@
   .res_diff_tree .modified .head {
     color: #c95100; }
   .res_diff_tree .tree {
-    padding: 20px 10px 0px 10px;
-    padding-left: 10px;
+    padding: 10px 10px 0px 10px;
     font-size: 14px; }
     .res_diff_tree .tree .type {
       background-color: #2c2f46;
@@ -100,7 +101,7 @@
       z-index: 1;
       font-size: 12px;
       float: left;
-      margin-top: -4px;
+      margin-top: -2px;
       text-align: center;
       min-width: 35px;
       -webkit-transition: background-color .2s;
@@ -114,10 +115,11 @@
     .res_diff_tree .tree .name {
       font-weight: bold;
       margin-left: 10px;
-      line-height: 11px;
+      line-height: 14px;
+      height: 14px;
       white-space: nowrap;
       text-overflow: ellipsis;
-      overflow: hidden;
+      overflow-x: hidden;
       display: inline-block;
       max-width: 297px;
       font-size: 12px;
@@ -136,7 +138,7 @@
       margin-left: 4px;
       font-size: 12px; }
     .res_diff_tree .tree .item {
-      margin-bottom: 20px;
+      margin-bottom: 10px;
       padding-left: 18px;
       position: relative;
       border-left: 1px #444 solid; }

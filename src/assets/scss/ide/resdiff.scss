@@ -133,6 +133,10 @@ $dark_blue: #2C2F46;
 			font-size : 12px;
 		}
 
+		.content > .tree > .item > .meta > .type {
+			background-color: #111; 
+		} 
+
 		&.removed {
 			.content > .tree > .item > .meta > .name {
 				color: $color_removed;
@@ -162,9 +166,8 @@ $dark_blue: #2C2F46;
 	}
 
 	.tree {
-		padding: 20px 10px 0px 10px;
-		padding-left: 10px;
-		font-size: 14px;
+		padding   : 10px 10px 0px 10px;
+		font-size : 14px;
 
 		.type {
 			// background-color : $color_property;
@@ -177,7 +180,7 @@ $dark_blue: #2C2F46;
 			z-index             : 1;
 			font-size           : 12px;
 			float               : left;
-			margin-top          : -4px;
+			margin-top          : -2px;
 			text-align          : center;
 			min-width           : 35px;
 
@@ -196,10 +199,11 @@ $dark_blue: #2C2F46;
 		.name {
 			font-weight   : bold;
 			margin-left   : 10px;
-			line-height   : 11px;
+			line-height   : 14px;
+			height        : 14px;
 			white-space   : nowrap;
 			text-overflow : ellipsis;
-			overflow      : hidden;
+			overflow-x    : hidden;
 			display       : inline-block;
 			max-width     : 297px;
 			// height     : 12px;
@@ -228,7 +232,7 @@ $dark_blue: #2C2F46;
 			font-size: 12px;
 		}
 		.item {
-			margin-bottom: 20px;
+			margin-bottom: 10px;
 			padding-left: 18px;
 			position: relative;
 			@include tierline;

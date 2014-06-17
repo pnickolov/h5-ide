@@ -1,5 +1,7 @@
 define [ 'Design', 'kp_manage', 'combo_dropdown', './component/kp/kpTpl', 'backbone', 'jquery', 'constant',  'i18n!nls/lang.js', 'CloudResources' ], ( Design, kpManage, comboDropdown, template, Backbone, $, constant, lang, CloudResources ) ->
 
+    regions = {}
+
     Backbone.View.extend {
 
         showCredential: ->
@@ -65,7 +67,14 @@ define [ 'Design', 'kp_manage', 'combo_dropdown', './component/kp/kpTpl', 'backb
 
         show: () ->
             if App.user.hasCredential()
-                @collection.fetch().then =>
+                def = null
+                if regions[Design.instance().get("region")]
+                    regions[Design.instance().get("region")] = true
+                    def = @collection.fetch()
+                else
+                    regions[Design.instance().get("region")] = true
+                    def = @collection.fetchForce()
+                def.then =>
                     @renderKeys()
             else
                 @renderNoCredential()

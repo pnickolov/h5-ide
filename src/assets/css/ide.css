@@ -1185,14 +1185,14 @@ li:hover > .rule-remove-icon,
 	position: absolute;
 	right: 30px;
 	top: 50%;
-	margin-top: -8px;
+	margin-top: -7px;
 }
 
 .network-list > .input-ip-item > .icon-remove {
 	position   : absolute;
 	right      : 5px;
 	top        : 50%;
-	margin-top : -6px;
+	margin-top : -9px;
 	cursor     : pointer;
 }
 
@@ -1849,6 +1849,7 @@ a.action-link:hover {
 }
 
 .sg-rule-create-h, #sg-rule-create-modal {
+	background: rgb(32,32,32);
 	position : relative;
 	left : 0;
 	-webkit-transition: left .3s ease-in-out;
@@ -4060,7 +4061,7 @@ summary:focus {
 #stack-elb-property-panel .elb-connection-draining-input-group label {
 	margin-left: 10px;
 	margin-right: 10px;
-	margin-top: 11px;
+	margin-top: 7px;
 }
 
 #elb-connection-draining-input {

@@ -59,7 +59,8 @@
   box-shadow: none; }
 
 .btn-silver.modal-close:hover,
-#close-awscredential:hover {
+#close-awscredential:hover,
+.btn-silver.btn-modal-close:hover {
   color: #148BE6;
   background: none; }
 

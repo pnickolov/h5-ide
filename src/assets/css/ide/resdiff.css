@@ -3,7 +3,7 @@
   .res_diff_tree ::selection {
     background: transparent; }
   .res_diff_tree .scroll-wrap-res-diff {
-    height: 581px;
+    max-height: 581px;
     padding: 15px 15px 0 15px; }
     .res_diff_tree .scroll-wrap-res-diff .scroll-content > p {
       font-size: 16px;

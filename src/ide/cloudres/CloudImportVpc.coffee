@@ -329,12 +329,14 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
 
     ()-> # SG
 
+      sgRefMap = {}
+
       genRules = (sg_rule, new_ruls) ->
 
           ipranges = ''
           if sg_rule.groups.length>0 and sg_rule.groups[0].groupId
             sgId = sg_rule.groups[0].groupId
-            sgComp = @sgs[sgId]
+            sgComp = sgRefMap[sgId]
             if sgComp
               ipranges = CREATE_REF(sgComp, 'resource.GroupId')
           else if sg_rule.ipRanges and sg_rule.ipRanges.length>0
@@ -349,6 +351,11 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
             "IpRanges": ipranges,
             "ToPort": String(if sg_rule.toPort then sg_rule.toPort else "")
           }
+      
+      for aws_sg in @getResourceByType( "SG" )
+        groupId = aws_sg.attributes.groupId
+        sgComp = @getOriginalComp(groupId, 'SG')
+        sgRefMap[groupId] = sgComp if sgComp
 
       for aws_sg in @getResourceByType( "SG" )
         aws_sg = aws_sg.attributes
@@ -700,11 +707,11 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
             "CidrBlock" : acl.cidrBlock
             "Egress"    : acl.egress
             "IcmpTypeCode":
-              "Type": if acl.icmpTypeCode then acl.icmpTypeCode.type else ""
-              "Code": if acl.icmpTypeCode then acl.icmpTypeCode.code else ""
+              "Type": if acl.icmpTypeCode then String(acl.icmpTypeCode.type) else ""
+              "Code": if acl.icmpTypeCode then String(acl.icmpTypeCode.code) else ""
             "PortRange":
-              "To"  : if acl.portRange then acl.portRange.to else ""
-              "From": if acl.portRange then acl.portRange.from else ""
+              "To"  : if acl.portRange then String(acl.portRange.to) else ""
+              "From": if acl.portRange then String(acl.portRange.from) else ""
             "RuleNumber": acl.ruleNumber
 
         for acl in aws_acl.associationSet

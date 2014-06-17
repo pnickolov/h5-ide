@@ -328,6 +328,28 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
 
 
     ()-> # SG
+
+      genRules = (sg_rule, new_ruls) ->
+
+          ipranges = ''
+          if sg_rule.groups.length>0 and sg_rule.groups[0].groupId
+            sgId = sg_rule.groups[0].groupId
+            sgComp = @sgs[sgId]
+            if sgComp
+              ipranges = CREATE_REF(sgComp, 'resource.GroupId')
+          else if sg_rule.ipRanges and sg_rule.ipRanges.length>0
+            ipranges = sg_rule.ipRanges[0].cidrIp
+
+          if String(sg_rule.ipProtocol) is '-1'
+            sg_rule.fromPort = '0'
+            sg_rule.toPort = '65535'
+          new_ruls.push {
+            "FromPort": String(if sg_rule.fromPort then sg_rule.fromPort else ""),
+            "IpProtocol": String(sg_rule.ipProtocol),
+            "IpRanges": ipranges,
+            "ToPort": String(if sg_rule.toPort then sg_rule.toPort else "")
+          }
+
       for aws_sg in @getResourceByType( "SG" )
         aws_sg = aws_sg.attributes
 
@@ -349,46 +371,17 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         vpcComp = @getOriginalComp(aws_sg.vpcId, 'VPC')
         if vpcComp
           sgRes.VpcId = CREATE_REF(vpcComp.uid, 'resource.VpcId')
-        sgRes.GroupDescription = aws_sg.description
+        sgRes.GroupDescription = aws_sg.groupDescription
 
         #generate ipPermissions
         if aws_sg.ipPermissions
           for sg_rule in aws_sg.ipPermissions || []
-            ipranges = ''
-            if sg_rule.groups.length>0 and sg_rule.groups[0].groupId
-              ipranges = sg_rule.groups[0].groupId
-            else if sg_rule.ipRanges and sg_rule.ipRanges.length>0
-              ipranges = sg_rule.ipRanges[0]
+            genRules.call(@, sg_rule, sgRes.IpPermissions)
 
-            if ipranges
-              if String(sg_rule.ipProtocol) is '-1'
-                sg_rule.fromPort = '0'
-                sg_rule.toPort = '65535'
-              sgRes.IpPermissions.push {
-                "FromPort": String(if sg_rule.fromPort then sg_rule.fromPort else ""),
-                "IpProtocol": String(sg_rule.ipProtocol),
-                "IpRanges": String(ipranges),
-                "ToPort": String(if sg_rule.toPort then sg_rule.toPort else "")
-              }
         #generate ipPermissionEgress
         if aws_sg.ipPermissionsEgress
           for sg_rule in aws_sg.ipPermissionsEgress || []
-            ipranges = ''
-            if sg_rule.groups.length>0 and sg_rule.groups[0].groupId
-              ipranges = sg_rule.groups[0].groupId
-            else if sg_rule.ipRanges and sg_rule.ipRanges.length>0
-              ipranges = sg_rule.ipRanges[0]
-
-            if ipranges
-              if String(sg_rule.ipProtocol) is '-1'
-                sg_rule.fromPort = '0'
-                sg_rule.toPort = '65535'
-              sgRes.IpPermissionsEgress.push {
-                "FromPort": String(if sg_rule.fromPort then sg_rule.fromPort else ""),
-                "IpProtocol": String(sg_rule.ipProtocol),
-                "IpRanges": String(ipranges),
-                "ToPort": String(if sg_rule.toPort then sg_rule.toPort else "")
-              }
+            genRules.call(@, sg_rule, sgRes.IpPermissionsEgress)
 
         sgComp = @add( "SG", sgRes, aws_sg.groupName )
         if aws_sg.groupName is "default"
@@ -486,6 +479,8 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         insRes.VpcId  = CREATE_REF( @theVpc, 'resource.VpcId' )
         insRes.Placement.AvailabilityZone = CREATE_REF( azComp, 'resource.ZoneName' )
 
+        insRes.BlockDeviceMapping = aws_ins.blockDeviceMapping
+
         if aws_ins.monitoring and aws_ins.monitoring
           insRes.Monitoring = aws_ins.monitoring.state
 
@@ -502,35 +497,23 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         if keyPairComp
           insRes.KeyName = CREATE_REF(keyPairComp, 'resource.KeyName')
 
+        #generate BlockDeviceMapping for instance
+        originComp = @getOriginalComp(insRes.InstanceId, 'INSTANCE')
+        insRes.BlockDeviceMapping = originComp.resource.BlockDeviceMapping
+        _.each aws_ins.blockDeviceMapping, (e,key)->
+
+          volComp = me.volumes[ e.ebs.volumeId ]
+          if not volComp then return
+          volRes = volComp.resource
+          if aws_ins.rootDeviceName.indexOf( e.deviceName ) is -1
+            # not rootDevice, external volume point to instance
+            bdm.push "#" + volComp.uid
+            #add volume component
+            volComp.resource.AttachmentSet.InstanceId = CREATE_REF( insComp )
+            me.component[ volComp.uid ] = volComp
+
         #generate instance component
         insComp = @add( "INSTANCE", insRes )
-
-        #generate BlockDeviceMapping for instance
-        bdm = insComp.resource.BlockDeviceMapping
-        _.each aws_ins.blockDeviceMapping, (e,key)->
-          volComp = me.volumes[ e.ebs.volumeId ]
-
-          if not volComp then return
-
-          volRes = volComp.resource
-          if aws_ins.rootDeviceName.indexOf( e.deviceName ) isnt -1
-            # rootDevice
-            data =
-              "DeviceName": volRes.AttachmentSet.Device
-              "Ebs":
-                "VolumeSize": Number(volRes.Size)
-                "VolumeType": volRes.VolumeType
-            if volRes.SnapshotId
-              data.Ebs.SnapshotId = volRes.SnapshotId
-            if volRes.VolumeType is "io1"
-              data.Ebs.Iops = volRes.Iops
-            bdm.push data
-        #   else
-        #     # not rootDevice, external volume point to instance
-        #     bdm.push "#" + volComp.uid
-        #     #add volume component
-        #     volComp.resource.AttachmentSet.InstanceId = CREATE_REF( insComp )
-        #     me.component[ volComp.uid ] = volComp
 
         # # default_kp # TODO :
         # if default_kp and default_kp.resource and aws_ins.keyName is default_kp.resource.KeyName
@@ -592,7 +575,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
 
         for ip in aws_eni.privateIpAddressesSet
           #AutoAssign set to false in app
-          eniRes.PrivateIpAddressSet.push {"PrivateIpAddress": ip.privateIpAddress, "AutoAssign" : false, "Primary" : ip.primary}
+          eniRes.PrivateIpAddressSet.push {"PrivateIpAddress": ip.privateIpAddress, "AutoAssign" : true, "Primary" : ip.primary}
 
         eniRes.GroupSet.push
           "GroupId": CREATE_REF(@sgs[ aws_eni.groupSet[0].groupId ], 'resource.GroupId')
@@ -713,7 +696,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         for acl in aws_acl.entries
           aclRes.EntrySet.push
             "RuleAction": acl.ruleAction
-            "Protocol"  : acl.protocol
+            "Protocol"  : Number(acl.protocol)
             "CidrBlock" : acl.cidrBlock
             "Egress"    : acl.egress
             "IcmpTypeCode":

@@ -38,6 +38,7 @@ define [
         for i, idx in elb.Instances
           elb.Instances[ idx ] = i.InstanceId
         elb.vpcId = elb.VPCId
+        elb.id = elb.DnsName
         delete elb.VPCId
       elbs
     parseExternalData: ( data ) ->
@@ -53,6 +54,7 @@ define [
             member: obj.PolicyNames
           }
           return obj
+        dataItem.id = dataItem.DnsName
       return data
       # @parseFetchData data
 
@@ -459,6 +461,7 @@ define [
       acls
     parseExternalData: ( data ) ->
       @unifyApi data, @type
+      # @convertNumTimeToString data
       for acl in data
         acl.id = acl.networkAclId
         #delete acl.networkAclId

@@ -401,7 +401,7 @@ define [
     renderKpDropdown: (modal)->
         if kpDropdown.hasResourceWithDefaultKp()
             keyPairDropdown = new kpDropdown()
-            modal.tpl.find("#kp-runtime-placeholder").html keyPairDropdown.render().el
+            if modal then modal.tpl.find("#kp-runtime-placeholder").html keyPairDropdown.render().el else return false
             hideKpError = @hideError.bind @
             keyPairDropdown.dropdown.on 'change', ->
                 hideKpError('kp')

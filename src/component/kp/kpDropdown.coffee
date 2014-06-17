@@ -1,4 +1,4 @@
-define [ 'Design', 'kp_manage', './component/kp/kpModel', 'combo_dropdown', './component/kp/kpTpl', 'backbone', 'jquery', 'constant',  'i18n!nls/lang.js' ], ( Design, kpManage, kpModel, comboDropdown, template, Backbone, $, constant, lang ) ->
+define [ 'Design', 'kp_manage', 'combo_dropdown', './component/kp/kpTpl', 'backbone', 'jquery', 'constant',  'i18n!nls/lang.js', 'CloudResources' ], ( Design, kpManage, comboDropdown, template, Backbone, $, constant, lang, CloudResources ) ->
 
     Backbone.View.extend {
 
@@ -6,13 +6,21 @@ define [ 'Design', 'kp_manage', './component/kp/kpModel', 'combo_dropdown', './c
             App.showSettings App.showSettings.TAB.Credential
 
         filter: ( keyword ) ->
-            hitKeys = _.filter @model.get( 'keys' ), ( k ) ->
+            hitKeys = _.filter @getKey(), ( k ) ->
                 k.keyName.toLowerCase().indexOf( keyword.toLowerCase() ) isnt -1
             if keyword
                 @renderKeys hitKeys
             else
                 @renderKeys()
 
+        getKey: ->
+          that = this
+          json = @collection.toJSON()
+          if @resModel
+            _.each json, (e)->
+              if e.keyName is that.resModel.getKeyName()
+                e.selected = true
+          json
         setKey: ( name, data ) ->
             if @__mode is 'runtime'
                 KpModel = Design.modelClassForType( constant.RESTYPE.KP )
@@ -22,11 +30,11 @@ define [ 'Design', 'kp_manage', './component/kp/kpModel', 'combo_dropdown', './c
                     KpModel.setDefaultKP name, data.fingerprint
             else
                 if name is '@default'
-                    @model.setKey '', true
+                    @resModel.setKey '', true
                 else if name is '@no'
-                    @model.setKey ''
+                    @resModel.setKey ''
                 else
-                    @model.setKey name
+                    @resModel.setKey name
 
         manageKp: ( event ) ->
             @renderModal()
@@ -45,19 +53,20 @@ define [ 'Design', 'kp_manage', './component/kp/kpModel', 'combo_dropdown', './c
 
 
         initialize: ( options ) ->
-            @model = new kpModel resModel: ( if options then options.resModel else null )
-            @model.on 'change:keys', @renderKeys, @
-            @model.on 'request:error', @syncErrorHandler, @
+            @resModel = if options then options.resModel else null
+            @collection = CloudResources(constant.RESTYPE.KP, Design.instance().get("region"))
+            @collection.on 'change', @renderKeys, @
+            @collection.on 'update', @renderKeys, @
 
-            if not @model.resModel
+            if not @resModel
                 @__mode = 'runtime'
 
             @initDropdown()
 
         show: () ->
             if App.user.hasCredential()
-                if not @model.haveGot()
-                    @model.getKeys()
+                @collection.fetch().then =>
+                    @renderKeys()
             else
                 @renderNoCredential()
 
@@ -77,12 +86,12 @@ define [ 'Design', 'kp_manage', './component/kp/kpModel', 'combo_dropdown', './c
             if data and arguments.length is 1
                 data =  keys: data, hideDefaultNoKey: true
             else
-                data = keys: @model.get('keys')
+                data = keys: @getKey()
 
-            if @model.resModel
-                if @model.resModel.isNoKey()
+            if @resModel
+                if @resModel.isNoKey()
                     data.noKey = true
-                if @model.resModel.isDefaultKey()
+                if @resModel.isDefaultKey()
                     data.defaultKey = true
 
             data.isRunTime = @__mode is 'runtime'
@@ -92,21 +101,24 @@ define [ 'Design', 'kp_manage', './component/kp/kpModel', 'combo_dropdown', './c
             @
 
         renderDropdown: () ->
-            data = @model.toJSON()
-            if data.keyName is '$DefaultKeyPair'
-                data.defaultKey = true
-            else if data.keyName is 'No Key Pair'
-                data.noKey = true
+            @data =
+              keyName: if @resModel then @resModel.getKeyName() else ""
+            if @data.keyName is '$DefaultKeyPair'
+                @data.defaultKey = true
+            else if @data.keyName is 'No Key Pair'
+                @data.noKey = true
 
-            data.isRunTime = @__mode is 'runtime'
+            @data.isRunTime = @__mode is 'runtime'
 
-            selection = template.selection data
+            selection = template.selection @data
             @dropdown.setSelection selection
 
 
-        renderModal: () ->
-            new kpManage(model: @model).render()
-
+        renderModal: ()->
+            that = @
+            new kpManage(
+                model: that.data
+            )
         }, {
 
         hasResourceWithDefaultKp: ->

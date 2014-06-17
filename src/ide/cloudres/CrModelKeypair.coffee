@@ -13,6 +13,9 @@ define [ "./CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
       keyMaterial    : "" # When a keypair is created, this might contain the private key data.
       keyFingerprint : ""
 
+    idAttribute : "keyName"
+    taggable: false
+
     doCreate : ()->
       self = @
       if @get("keyData")
@@ -30,9 +33,11 @@ define [ "./CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
       promise.then ( res )->
         try
           self.set res.CreateKeyPairResponse
+          keyName = res.CreateKeyPairResponse.keyName
         catch e
           throw McError( ApiRequest.Errors.InvalidAwsReturn, "Keypair created but aws returns invalid ata." )
 
+        self.set 'keyName', keyName
         console.log "Created keypair resource", self
         self
 

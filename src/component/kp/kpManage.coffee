@@ -1,4 +1,4 @@
-define [ 'toolbar_modal', './component/kp/kpModel', './component/kp/kpDialogTpl', 'kp_upload', 'backbone', 'jquery', 'constant', 'component/exporter/JsonExporter', 'i18n!nls/lang.js', 'UI.notification' ], ( toolbar_modal, kpModel, template, upload, Backbone, $, constant, JsonExporter, lang ) ->
+define [ 'toolbar_modal', './component/kp/kpDialogTpl', 'kp_upload', 'backbone', 'jquery', 'constant', 'component/exporter/JsonExporter', "CloudResources", 'i18n!nls/lang.js', 'UI.notification' ], ( toolbar_modal, template, upload, Backbone, $, constant, JsonExporter,CloudResources, lang ) ->
 
     download = JsonExporter.download
 
@@ -82,26 +82,28 @@ define [ 'toolbar_modal', './component/kp/kpModel', './component/kp/kpDialogTpl'
         initialize: ( options ) ->
             options = {} if not options
             @model = options.model or new kpModel( resModel: options.resModel )
+            @resModel = options.resModel
+            @collection = CloudResources(constant.RESTYPE.KP, Design.instance().get("region"))
 
             if App.user.hasCredential()
-                if not @model.haveGot()
-                    @model.getKeys()
-
+                that = @
+                @collection.fetch().then ->that.render()
             @initModal()
-            @model.on 'change:keys', @renderKeys, @
+            @collection.on 'change', @renderKeys, @
+            @collection.on 'update', @renderKeys, @
 
         render: ( refresh ) ->
             @modal.render()
 
             if App.user.hasCredential()
-                if @model.haveGot()
+                @collection.fetch().then =>
                     @renderKeys()
             else
                 @modal.render 'nocredential'
             @
 
         renderKeys: () ->
-            data = @model.toJSON()
+            data = keys : @collection.toJSON()
             @modal.setContent template.keys data
 
             @
@@ -168,11 +170,12 @@ define [ 'toolbar_modal', './component/kp/kpModel', './component/kp/kpDialogTpl'
             finHandler = _.after times, ->
                 that.cancel()
                 if success.length is 1
-                    notification 'info', "#{success[0].param[4]} is deleted."
+                    console.debug success
+                    notification 'info', "#{success[0].attributes.keyName} is deleted."
                 else if success.length > 1
                     notification 'info', "Selected #{success.length} key pairs are deleted."
 
-                if not that.model.get( 'keys' ).length
+                if not that.collection.toJSON().length
                     that.M$( '#t-m-select-all' )
                         .get( 0 )
                         .checked = false
@@ -181,7 +184,8 @@ define [ 'toolbar_modal', './component/kp/kpModel', './component/kp/kpDialogTpl'
                     console.log(s)
 
             ( res ) ->
-                if not res.is_error
+                console.debug res
+                if not (res.reason|| res.msg)
                     success.push res
                 else
                     error.push res
@@ -193,18 +197,18 @@ define [ 'toolbar_modal', './component/kp/kpModel', './component/kp/kpDialogTpl'
             if not invalid
                 keyName = @M$( '#create-kp-name' ).val()
                 @switchAction 'processing'
-                @model.create( keyName )
+                @collection.create( {keyName} ).save()
                     .then (res) ->
                         console.log res
                         that.needDownload true
-                        that.genDownload "#{res.keyName}.pem", res.keyMaterial
+                        that.genDownload "#{res.attributes.keyName}.pem", res.attributes.keyMaterial
                         that.switchAction 'download'
                         that.M$( '.before-create' ).hide()
-                        that.M$( '.after-create' ).find( 'span' ).text( res.keyName ).end().show()
+                        that.M$( '.after-create' ).find( 'span' ).text( res.attributes.keyName ).end().show()
 
-                    .catch ( err ) ->
+                    ,( err ) ->
                         console.log(err)
-                        that.modal.error err.error_message
+                        that.modal.error err.resion||err.msg
                         that.switchAction()
 
         download: () ->
@@ -217,8 +221,14 @@ define [ 'toolbar_modal', './component/kp/kpModel', './component/kp/kpDialogTpl'
             onDeleteFinish = @genDeleteFinish count
             @switchAction 'processing'
             that = @
-            _.each checked, ( c ) ->
-                that.model.remove( c.data.name ).then onDeleteFinish, onDeleteFinish
+            _.each checked, ( c ) =>
+                console.log c
+                target = @collection.findWhere(keyName: c.data.name.toString())
+                if target
+                  alert("Founddddd!")
+                  target.destroy().then onDeleteFinish, onDeleteFinish
+                else
+                  alert('Not Found!')
 
         import: ( invalid ) ->
             that = @
@@ -233,7 +243,7 @@ define [ 'toolbar_modal', './component/kp/kpModel', './component/kp/kpDialogTpl'
                     return
 
 
-                @model.import( keyName, keyContent)
+                @collection.create( {keyName:keyName, keyData: keyContent}).save()
                     .then (res) ->
                         console.log res
                         notification 'info', "#{keyName} is imported."
@@ -248,7 +258,8 @@ define [ 'toolbar_modal', './component/kp/kpModel', './component/kp/kpDialogTpl'
             @modal.cancel()
 
         refresh: ->
-            @model.getKeys()
+            @collection.fetchForce().then =>
+              @renderKeys()
 
         renderSlides: ( which, checked ) ->
             tpl = template[ "slide_#{which}" ]

@@ -20,10 +20,13 @@ define [
 
     type  : constant.RESTYPE.DHCP
     model : CrDhcpModel
-    modelIdAttribute : "dhcpOptionsId"
-
+    #modelIdAttribute : "dhcpOptionsId"
     doFetch : ()-> ApiRequest("dhcp_DescribeDhcpOptions", {region_name : @region()})
     trAwsXml : (res)-> res.DescribeDhcpOptionsResponse.dhcpOptionsSet?.item
+    parseFetchData : (res)->
+      for i in res
+        i.id = i.dhcpOptionsId
+      res
   }
 
 

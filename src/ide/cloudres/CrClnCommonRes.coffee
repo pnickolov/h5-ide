@@ -68,15 +68,19 @@ define [
     ### env:dev:end ###
 
     type  : constant.RESTYPE.VPN
-    modelIdAttribute : "vpnConnectionId"
-
+    #modelIdAttribute : "vpnConnectionId"
     trAwsXml : ( data )-> data.DescribeVpnConnectionsResponse.vpnConnectionSet?.item
     parseFetchData : ( vpns )->
       for vpn in vpns || []
         vpn.vgwTelemetry = vpn.vgwTelemetry?.item || []
+        vpn.id = vpn.vpnConnectionId
       vpns
     parseExternalData: ( data ) ->
       @unifyApi data, @type
+      for vpn in data || []
+        vpn.id = vpn.vpnConnectionId
+      data
+
   }
 
   ### EIP ###
@@ -86,10 +90,18 @@ define [
     ### env:dev:end ###
 
     type  : constant.RESTYPE.EIP
-    modelIdAttribute : "allocationId"
+    #modelIdAttribute : "allocationId"
     trAwsXml : ( data )-> data.DescribeAddressesResponse.addressesSet?.item
-    # parseExternalData: ( data ) ->
-    #   @unifyApi data, @type
+    parseFetchData : ( eips )->
+      for eip in eips
+        eip.id = eip.publicIp
+      eips
+    parseExternalData: ( data ) ->
+      @unifyApi data, @type
+      for eip in data
+        eip.id = eip.publicIp
+      data
+
   }
 
   ### VPC ###
@@ -99,11 +111,17 @@ define [
     ### env:dev:end ###
 
     type  : constant.RESTYPE.VPC
-    modelIdAttribute : "vpcId"
+    #modelIdAttribute : "vpcId"
     trAwsXml : ( data )-> data.DescribeVpcsResponse.vpcSet?.item
-    # parseExternalData: ( data ) ->
-    #   @unifyApi data, @type
-      #@parseFetchData data
+    parseFetchData : ( vpcs )->
+      for vpc in vpcs
+        vpc.id = vpc.vpcId
+      vpcs
+    parseExternalData: ( data ) ->
+      @unifyApi data, @type
+      for vpc in data
+        vpc.id = vpc.vpcId
+      data
   }
 
   ### ASG ###
@@ -151,22 +169,20 @@ define [
     trAwsXml : ( data )-> data.DescribeAlarmsResponse.DescribeAlarmsResult.MetricAlarms?.member
     parseFetchData : ( cws )->
       for cw in cws
-        for key, value of cw
-          fixKey = key.substring(0,1).toUpperCase() + key.substring(1)
-          delete cw[key]
-          cw[fixKey] = value
-
-        cw.Dimensions   = cw.Dimensions || []
-        cw.AlarmActions = cw.AlarmActions || []
+        cw.Dimensions   = cw.Dimensions?.member || []
+        cw.AlarmActions = cw.AlarmActions?.member || []
         cw.id   = cw.AlarmArn
         cw.Name = cw.AlarmName
-        delete cw.AlarmArn
-        delete cw.AlarmName
-
+        #delete cw.AlarmArn
+        #delete cw.AlarmName
       cws
     parseExternalData: ( data ) ->
       @unifyApi data, @type
-      @parseFetchData data
+      @camelToPascal data
+      for cw in data
+        cw.id   = cw.AlarmArn
+        cw.Name = cw.AlarmName
+      data
   }
 
   ### CGW ###
@@ -176,10 +192,16 @@ define [
     ### env:dev:end ###
 
     type  : constant.RESTYPE.CGW
-    modelIdAttribute : "customerGatewayId"
+    #modelIdAttribute : "customerGatewayId"
     trAwsXml : ( data )-> data.DescribeCustomerGatewaysResponse.customerGatewaySet?.item
+    parseFetchData : ( cgws )->
+      for cgw in cgws
+        cgw.id = cgw.customerGatewayId
+      cgws
     parseExternalData: ( data ) ->
       @unifyApi data, @type
+      for cgw in data
+        cgw.id = customerGatewayId
       data
   }
 
@@ -190,10 +212,11 @@ define [
     ### env:dev:end ###
 
     type  : constant.RESTYPE.VGW
-    modelIdAttribute : "vpnGatewayId"
+    #modelIdAttribute : "vpnGatewayId"
     trAwsXml : ( data )-> data.DescribeVpnGatewaysResponse.vpnGatewaySet?.item
     parseFetchData : ( vgws )->
       for vgw in vgws
+        vgw.id = vgw.vpnGatewayId
         if vgw.attachments and vgw.attachments.length>0
           vgw.vpcId = vgw.attachments[0].vpcId
           vgw.attachmentState = vgw.attachments[0].state
@@ -201,6 +224,7 @@ define [
     parseExternalData: ( data ) ->
       @unifyApi data, @type
       for vgw in data
+        vgw.id = vgw.vpnGatewayId
         if vgw.attachments and vgw.attachments.length>0
           vgw.vpcId = vgw.attachments[0].vpcId
           vgw.attachmentState = vgw.attachments[0].state
@@ -215,10 +239,11 @@ define [
     ### env:dev:end ###
 
     type  : constant.RESTYPE.IGW
-    modelIdAttribute : "internetGatewayId"
+    #modelIdAttribute : "internetGatewayId"
     trAwsXml : ( data )-> data.DescribeInternetGatewaysResponse.internetGatewaySet?.item
     parseFetchData : ( igws )->
       for igw in igws
+        igw.id = igw.internetGatewayId
         igw.attachmentSet = igw.attachmentSet?.item || igw.attachments ||[]
         if igw.attachmentSet and igw.attachmentSet.length>0
           igw.vpcId = igw.attachmentSet[0].vpcId
@@ -227,6 +252,7 @@ define [
     parseExternalData: ( data ) ->
       @unifyApi data, @type
       for igw in data
+        igw.id = igw.internetGatewayId
         if igw.attachmentSet and igw.attachmentSet.length>0
           igw.vpcId = igw.attachmentSet[0].vpcId
           igw.state = igw.attachmentSet[0].state
@@ -275,24 +301,22 @@ define [
 
     parseFetchData : ( data )->
       for ins in data
+        ins.id = ins.instanceId
+        #delete ins.instanceId
         if ins.instanceState and ins.instanceState.name in [ "terminated", "shutting-down" ]
           continue
         ins.blockDeviceMapping  = ins.blockDeviceMapping?.item || []
         ins.networkInterfaceSet = ins.networkInterfaceSet?.item || []
         ins.groupSet            = ins.groupSet?.item || []
-        ins.id = ins.instanceId
-        #delete ins.instanceId
       data
     parseExternalData: ( data ) ->
       @convertNumTimeToString data
       @unifyApi data, @type
 
       for ins in data
-
+        ins.id = ins.instanceId
         if ins.instanceState and ins.instanceState.name in [ "terminated", "shutting-down" ]
           continue
-        ins.id = ins.instanceId
-
         for eni in ins.networkInterfaceSet
           if eni.privateIpAddresses
             eni.privateIpAddressesSet = {item: eni.privateIpAddresses}
@@ -346,7 +370,7 @@ define [
 
     type  : constant.RESTYPE.LC
     AwsResponseType : "DescribeLaunchConfigurationsResponse"
-    modelIdAttribute : "LaunchConfigurationARN"
+    #modelIdAttribute : "LaunchConfigurationARN"
     trAwsXml : ( data )-> data.DescribeLaunchConfigurationsResponse.DescribeLaunchConfigurationsResult.LaunchConfigurations?.member
     parseFetchData : ( data )->
       for lc in data
@@ -377,10 +401,11 @@ define [
 
     type  : constant.RESTYPE.SP
     AwsResponseType : "DescribePoliciesResponse"
-    modelIdAttribute : "PolicyARN"
+    #modelIdAttribute : "PolicyARN"
     trAwsXml : ( data )-> data.DescribePoliciesResponse.DescribePoliciesResult.ScalingPolicies?.member
     parseFetchData : ( sps )->
       for sp in sps
+        sp.id   = sp.policyARN
         sp.Name = sp.PolicyName
         #delete sp.PolicyName
       sps
@@ -388,6 +413,7 @@ define [
       @unifyApi data, @type
       @camelToPascal data
       for sp in data
+        sp.id   = sp.PolicyARN
         sp.Name = sp.PolicyName
         #delete sp.PolicyName
       data
@@ -401,8 +427,17 @@ define [
 
     type : constant.RESTYPE.AZ
     AwsResponseType  : "DescribeAvailabilityZonesResponse"
-    modelIdAttribute : "zoneName"
+    #modelIdAttribute : "zoneName"
     trAwsXml : ( data )-> data.DescribeAvailabilityZonesResponse.availabilityZoneInfo?.item
+    parseFetchData : ( azs )->
+      for az in azs
+        az.id = az.zoneName
+      azs
+    parseExternalData: ( data ) ->
+      @unifyApi data, @type
+      for az in data
+        az.id = az.zoneName
+      data
   }
 
 
@@ -420,10 +455,13 @@ define [
 
       for nc in ncs
         first = nc[ 0 ]
-        newNcList.push
+        item =
           AutoScalingGroupName: first.AutoScalingGroupName
           TopicARN: first.TopicARN
           NotificationType: _.pluck nc, 'NotificationType'
+        item.id = item.NotificationType + "-" + item.TopicARN + "-" + item.AutoScalingGroupName
+        newNcList.push item
+
       newNcList
 
     parseExternalData: ( data ) ->
@@ -433,12 +471,14 @@ define [
       newNcList = []
       for nc in data
         first = nc[ 0 ]
-        newNcList.push
+        item =
           AutoScalingGroupName: first.AutoScalingGroupName
           TopicARN: first.TopicARN
           NotificationType: _.pluck nc, 'NotificationType'
-      newNcList
+        item.id = item.NotificationType + "-" + item.TopicARN + "-" + item.AutoScalingGroupName
+        newNcList.push item
 
+      newNcList
   }
 
 
@@ -478,7 +518,7 @@ define [
     ### env:dev:end ###
 
     type  : constant.RESTYPE.ENI
-    modelIdAttribute : "networkInterfaceId"
+    #modelIdAttribute : "networkInterfaceId"
     AwsResponseType : "DescribeNetworkInterfacesResponse"
     doFetch : ()-> ApiRequest("eni_DescribeNetworkInterfaces", {region_name : @region()})
     trAwsXml : ( data )-> data.DescribeNetworkInterfacesResponse.networkInterfaceSet?.item
@@ -486,6 +526,7 @@ define [
       # Format Object in some typical data resource.
       # format attachment and groupSet in "ENI"
       _.each enis, (eni, index)->
+          eni.id = eni.networkInterfaceId
           _.each eni, (e,key)->
             # if key is "attachment"
             #   _.extend enis[index], e
@@ -501,6 +542,9 @@ define [
     parseExternalData: ( data ) ->
       @convertNumTimeToString data
       @unifyApi data, @type
+      _.each data, (eni, index)->
+          eni.id = eni.networkInterfaceId
+      data
   }
 
 
@@ -511,12 +555,19 @@ define [
     ### env:dev:end ###
 
     type  : constant.RESTYPE.SUBNET
-    modelIdAttribute : "subnetId"
+    #modelIdAttribute : "subnetId"
     doFetch : ()-> ApiRequest("subnet_DescribeSubnets", {region_name : @region()})
     trAwsXml : ( data )-> data.DescribeSubnetsResponse.subnetSet?.item
-    # parseExternalData: ( data ) ->
-    #   @unifyApi data, @type
-      # @parseFetchData data
+    parseFetchData : ( subnets )->
+      _.each subnets, (subnet, index) ->
+        subnet.id = subnet.subnetId
+      subnets
+    parseExternalData: ( data ) ->
+      @unifyApi data, @type
+      _.each data, (subnet, index) ->
+        subnet.id = subnet.subnetId
+      data
+
   }
 
   ### SG ###
@@ -551,6 +602,7 @@ define [
       @convertNumTimeToString data
 
       for sg in data
+        sg.id = sg.groupId
         sg.ipPermissions = sg.ipPermissions || []
         sg.ipPermissionsEgress = sg.ipPermissionsEgress || []
         sgRuls = sg.ipPermissions.concat(sg.ipPermissionsEgress)

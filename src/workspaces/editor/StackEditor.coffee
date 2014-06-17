@@ -29,7 +29,8 @@ define [
       CloudResources( "QuickStartAmi",       region ).isReady() &&
       CloudResources( "MyAmi",               region ).isReady() &&
       CloudResources( "FavoriteAmi",         region ).isReady() &&
-      !!App.model.getStateModule( stateModule.repo, stateModule.tag )
+      !!App.model.getStateModule( stateModule.repo, stateModule.tag ) &&
+      @hasAmiData()
 
     fetchAdditionalData : ()->
       region      = @opsModel.get("region")
@@ -44,6 +45,18 @@ define [
         CloudResources( "FavoriteAmi",         region ).fetch()
         @fetchAmiData()
       ]
+
+    hasAmiData : ()->
+      json = @opsModel.getJsonData()
+      cln  = CloudResources( constant.RESTYPE.AMI, @opsModel.get("region") )
+
+      for uid, comp of json.component
+        if comp.type is constant.RESTYPE.INSTANCE or comp.type is constant.RESTYPE.LC
+          imageId = comp.resource.ImageId
+          if imageId and not cln.get( imageId )
+            return false
+
+      true
 
     fetchAmiData : ()->
       json = @opsModel.getJsonData()

@@ -4,9 +4,10 @@
 
 $bg_body : #fff;
 
-$color_added: #ff8400;
-$color_removed: #f00;
-$color_changed: #008e00;
+$color_added: #17c249;
+$color_removed: #ec3c38;
+$color_changed: #ffa740;
+$color_property: #ff8330;
 
 .res_diff_tree {
 	
@@ -52,10 +53,10 @@ $color_changed: #008e00;
 			position: relative;
 			z-index: 2;
 			padding: 10px;
-			color: #009800;
+			color: $color_added;
 			font-size: 16px;
 			background-color: #1B1B1B;
-			border-left: 3px #009800 solid;
+			border-left: 3px $color_added solid;
 			width: 100%;
 			box-sizing: border-box;
 			cursor: pointer;
@@ -64,12 +65,12 @@ $color_changed: #008e00;
 			}
 		}
 		.deleted-head {
-			color: #c40000;
-			border-left: 3px #c40000 solid;
+			color: $color_removed;
+			border-left: 3px $color_removed solid;
 		}
 		.modified-head {
-			color: #ff7901;
-			border-left: 3px #ff7901 solid;
+			color: $color_changed;
+			border-left: 3px $color_changed solid;
 		}
 		.count {
 			color: #aaa;
@@ -83,7 +84,7 @@ $color_changed: #008e00;
 		font-size: 14px;
 
 		.type {
-			background-color : $color_added;
+			background-color : $color_property;
 			border-radius    : 2px;
 			padding          : 3px 7px;
 			color            : $bg_body;

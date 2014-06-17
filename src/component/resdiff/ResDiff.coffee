@@ -97,7 +97,7 @@ define [
             that = this
 
             groupData = [{
-                title: 'Added Resource',
+                title: 'New Resource',
                 diffComps: that.addedComps,
                 closed: true
             }, {

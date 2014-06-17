@@ -28,21 +28,21 @@
       position: relative;
       z-index: 2;
       padding: 10px;
-      color: #009800;
+      color: #17c249;
       font-size: 16px;
       background-color: #1B1B1B;
-      border-left: 3px #009800 solid;
+      border-left: 3px #17c249 solid;
       width: 100%;
       box-sizing: border-box;
       cursor: pointer; }
       .res_diff_tree .group .head .count {
         margin-left: 8px; }
     .res_diff_tree .group .deleted-head {
-      color: #c40000;
-      border-left: 3px #c40000 solid; }
+      color: #ec3c38;
+      border-left: 3px #ec3c38 solid; }
     .res_diff_tree .group .modified-head {
-      color: #ff7901;
-      border-left: 3px #ff7901 solid; }
+      color: #ffa740;
+      border-left: 3px #ffa740 solid; }
     .res_diff_tree .group .count {
       color: #aaa; }
   .res_diff_tree .tree {
@@ -50,7 +50,7 @@
     padding-left: 10px;
     font-size: 14px; }
     .res_diff_tree .tree .type {
-      background-color: #ff8400;
+      background-color: #ff8330;
       border-radius: 2px;
       padding: 3px 7px;
       color: white;
@@ -91,11 +91,11 @@
       position: relative;
       border-left: 1px #ddd solid; }
       .res_diff_tree .tree .item.removed .meta .type {
-        background-color: red !important; }
+        background-color: #ec3c38 !important; }
       .res_diff_tree .tree .item.added .meta .type {
-        background-color: #ff8400 !important; }
+        background-color: #17c249 !important; }
       .res_diff_tree .tree .item.changed .meta .type {
-        background-color: #008e00 !important; }
+        background-color: #ffa740 !important; }
       .res_diff_tree .tree .item::before {
         border-left: 1px #ddd solid;
         border-bottom: 1px #ddd solid;

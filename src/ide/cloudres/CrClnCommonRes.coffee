@@ -38,7 +38,7 @@ define [
         for i, idx in elb.Instances
           elb.Instances[ idx ] = i.InstanceId
         elb.vpcId = elb.VPCId
-        elb.id = elb.DnsName
+        elb.id = elb.DNSName
         delete elb.VPCId
       elbs
     parseExternalData: ( data ) ->
@@ -46,7 +46,6 @@ define [
       @unifyApi data, @type
       @convertNumTimeToString data
       _.each data, (dataItem) ->
-        dataItem.id = dataItem.LoadBalancerName
         dataItem.Instances = _.map dataItem.Instances, (obj) ->
           return obj.InstanceId
         dataItem.ListenerDescriptions = _.map dataItem.ListenerDescriptions, (obj) ->
@@ -54,7 +53,7 @@ define [
             member: obj.PolicyNames
           }
           return obj
-        dataItem.id = dataItem.DnsName
+        dataItem.id = dataItem.Dnsname
       return data
       # @parseFetchData data
 

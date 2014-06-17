@@ -48,7 +48,7 @@ $dark_blue: #2C2F46;
 		padding-bottom : 6px;
 		width          : 100%;
 		text-align     : left;
-		background     : rgba(0,0,0,.2);
+		background     : $bg_body;
 		// border-left    : 1px #17c249 solid;
 
 		-webkit-transiti: all .2s;
@@ -72,22 +72,22 @@ $dark_blue: #2C2F46;
 		}
 
 		.head {
-			position            : relative;
-			z-index             : 2;
-			padding             : 6px 10px 6px 25px;
-			color               : $color_added;
-			font-size           : 14px;
-			// background-color : #1B1B1B;
-			// border-left      : 3px #17c249 solid;
-			width               : 100%;
-			box-sizing          : border-box;
-			cursor              : pointer;
-			opacity             : 1;
-			-webkit-transition  : opacity .2s;
-			-moz-transition     : opacity .2s;
-			-ms-transition      : opacity .2s;
-			-o-transition       : opacity .2s;
-			transition          : opacity .2s;
+			position           : relative;
+			z-index            : 2;
+			padding            : 6px 10px 6px 25px;
+			color              : $color_added;
+			font-size          : 14px;
+			background-color   : $bg_body;
+			// border-left     : 3px #17c249 solid;
+			width              : 100%;
+			box-sizing         : border-box;
+			cursor             : pointer;
+			opacity            : 1;
+			-webkit-transition : opacity .2s;
+			-moz-transition    : opacity .2s;
+			-ms-transition     : opacity .2s;
+			-o-transition      : opacity .2s;
+			transition         : opacity .2s;
 
 			.count {
 				margin-left: 8px;

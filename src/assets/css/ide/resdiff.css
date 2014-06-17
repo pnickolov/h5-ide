@@ -23,7 +23,7 @@
     padding-bottom: 6px;
     width: 100%;
     text-align: left;
-    background: rgba(0, 0, 0, 0.2);
+    background: #1a1c1d;
     -webkit-transiti: all .2s;
     -moz-transiti: all .2s;
     -ms-transiti: all .2s;
@@ -37,6 +37,7 @@
       padding: 6px 10px 6px 25px;
       color: #17a03a;
       font-size: 14px;
+      background-color: #1a1c1d;
       width: 100%;
       box-sizing: border-box;
       cursor: pointer;

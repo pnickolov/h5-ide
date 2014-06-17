@@ -504,6 +504,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         #generate BlockDeviceMapping for instance
         originComp = @getOriginalComp(insRes.InstanceId, 'INSTANCE')
         insRes.BlockDeviceMapping = originComp.resource.BlockDeviceMapping || []
+        vol_in_instance = []
         _.each aws_ins.blockDeviceMapping, (e,key)->
 
           volComp = me.volumes[ e.ebs.volumeId ]
@@ -513,11 +514,17 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
             # not rootDevice, external volume point to instance
             insRes.BlockDeviceMapping = _.union insRes.BlockDeviceMapping, ["#" + volComp.uid]
             #add volume component
-            volComp.resource.AttachmentSet.InstanceId = CREATE_REF( insComp )
             me.component[ volComp.uid ] = volComp
+            vol_in_instance.push volComp.uid
 
         #generate instance component
         insComp = @add( "INSTANCE", insRes )
+
+        #set instanceId of volume
+        _.each vol_in_instance, (e,key)->
+          volComp = me.component[ e ]
+          if volComp
+            volComp.resource.AttachmentSet.InstanceId = CREATE_REF( insComp, "resource.InstanceId" )
 
         # # default_kp # TODO :
         # if default_kp and default_kp.resource and aws_ins.keyName is default_kp.resource.KeyName

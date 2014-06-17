@@ -423,7 +423,7 @@ define [
             return true
         kpModal = Design.modelClassForType( constant.RESTYPE.KP )
         defaultKP = kpModal.getDefaultKP()
-        if not defaultKP.get('isSet') or not @modal.tpl.find("#kp-runtime-placeholder .item.selected").size()
+        if not defaultKP.get('isSet') or not ((@modal||@updateModal) and (@modal || @updateModal).tpl.find("#kp-runtime-placeholder .item.selected").size())
             @showError('kp', lang.ide.RUN_STACK_MODAL_KP_WARNNING)
             return false
 

@@ -715,11 +715,11 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
 
         elbRes =
           "HealthCheck":
-            "Timeout": "5",
-            "Target" : "HTTP:80/index.html"
-            "HealthyThreshold"  : "9"
-            "UnhealthyThreshold": "4"
-            "Interval": "30"
+            "Timeout": "",
+            "Target" : ""
+            "HealthyThreshold"  : ""
+            "UnhealthyThreshold": ""
+            "Interval": ""
           "Policies":
             "AppCookieStickinessPolicies": [{
               CookieName: '',
@@ -730,7 +730,10 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
               CookieExpirationPeriod: '',
               PolicyName: ''
             }]
-          "BackendServerDescriptions": []
+          "BackendServerDescriptions": [{
+            InstantPort: ""
+            PoliciyNames: ""
+          }]
           "SecurityGroups": []
           "CreatedTime"   : ""
           "CanonicalHostedZoneNameID": ""
@@ -746,16 +749,12 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
           "VpcId"  : ""
           "LoadBalancerName" : ""
           "AvailabilityZones": []
-          "CrossZoneLoadBalancing": "false"
+          "CrossZoneLoadBalancing": ""
 
         elbRes = @_mapProperty aws_elb, elbRes
 
-        elbRes.CrossZoneLoadBalancing = if aws_elb.CrossZoneLoadBalancing then aws_elb.CrossZoneLoadBalancing else ""
-        elbRes.HealthCheck.Timeout    = aws_elb.HealthCheck.Timeout
-        elbRes.HealthCheck.Interval   = aws_elb.HealthCheck.Interval
-        elbRes.HealthCheck.UnhealthyThreshold = aws_elb.HealthCheck.UnhealthyThreshold
-        elbRes.HealthCheck.Target             = aws_elb.HealthCheck.Target
-        elbRes.HealthCheck.HealthyThreshold   = aws_elb.HealthCheck.HealthyThreshold
+        delete elbRes.CanonicalHostedZoneName if elbRes.CanonicalHostedZoneName
+        delete elbRes.CanonicalHostedZoneNameID if elbRes.CanonicalHostedZoneNameID
 
         if aws_elb.SecurityGroups
           for sgId in aws_elb.SecurityGroups
@@ -771,27 +770,39 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         #     azComp = @addAz(sb.availabilityZone)
         #     elbRes.AvailabilityZones.push CREATE_REF( azComp )
 
+        elbRes.DNSName = aws_elb.Dnsname
+        elbRes.CrossZoneLoadBalancing = aws_elb.CrossZoneLoadBalancing
+
         if aws_elb.ListenerDescriptions
           for listener in aws_elb.ListenerDescriptions
+            sslCertRef = ''
+            if listener.Listener.SslcertificateId
+              sslComp = @iams[listener.Listener.SslcertificateId]
+              if sslComp
+                sslCertRef = CREATE_REF(sslComp, 'resource.ServerCertificateMetadata.Arn')
             data =
-              "PolicyNames": if listener.PolicyNames then listener.PolicyNames else ''
+              # "PolicyNames": if listener.PolicyNames then listener.PolicyNames else ''
               "Listener":
                 "LoadBalancerPort": listener.Listener.LoadBalancerPort
                 "InstanceProtocol": listener.Listener.InstanceProtocol
                 "Protocol"        : listener.Listener.Protocol
-                "SSLCertificateId": if listener.Listener.SSLCertificateId then listener.Listener.SSLCertificateId else ""
+                "SSLCertificateId": sslCertRef || listener.Listener.SslcertificateId
                 "InstancePort"    : listener.Listener.InstancePort
             #add ServerCertificate component
-            if listener.Listener.SSLCertificateId
-              iamComp = @addIAM( listener.Listener.SSLCertificateId )
-              data.Listener.SSLCertificateId = CREATE_REF( iamComp )
+            # if listener.Listener.SSLCertificateId
+            #   iamComp = @addIAM( listener.Listener.SSLCertificateId )
+            #   data.Listener.SSLCertificateId = CREATE_REF( iamComp )
             elbRes.ListenerDescriptions.push data
+
+        elbRes.HealthCheck = aws_elb.HealthCheck
+        elbRes.ListenerDescriptions = aws_elb.ListenerDescriptions
 
         if aws_elb.Instances
           for instanceId in aws_elb.Instances
             #skip instances in asg
             if not (instanceId in me.ins_in_asg)
               elbRes.Instances.push CREATE_REF( @instances[ instanceId ], 'resource.InstanceId' )
+
 
         elbComp = @add( "ELB", elbRes, aws_elb.id )
         @addLayout( elbComp, false, @theVpc )

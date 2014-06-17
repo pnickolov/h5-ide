@@ -99,15 +99,18 @@ define [
             groupData = [{
                 title: 'New Resource',
                 diffComps: that.addedComps,
-                closed: true
+                closed: true,
+                type: 'added'
             }, {
                 title: 'Removed Resource',
                 diffComps: that.removedComps,
-                closed: true
+                closed: true,
+                type: 'removed'
             }, {
                 title: 'Modified Resource',
                 diffComps: that.modifiedComps,
-                closed: false
+                closed: false,
+                type: 'modified'
             }]
 
             for data in groupData
@@ -117,6 +120,7 @@ define [
                 if compCount
 
                     $group = $(template.resDiffGroup({
+                        type: data.type
                         title: data.title
                         count: compCount
                     })).appendTo @$( 'article' )

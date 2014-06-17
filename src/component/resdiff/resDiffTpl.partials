@@ -9,7 +9,7 @@
 </div>
 
 <!-- {{resDiffGroup}} -->
-<div class="group">
+<div class="group {{type}}">
 	<div class="head">{{title}}<span class="count">({{count}})</span></div>
 	<div class="content"></div>
 </div>

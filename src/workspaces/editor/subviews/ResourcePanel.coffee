@@ -342,12 +342,12 @@ define [
         if type is constant.RESTYPE.INSTANCE
           $changeAmiZone = $("#changeAmiDropZone")
           if $changeAmiZone.is(":visible")
-            drop_zone_offset = drop_zone.offset()
+            drop_zone_offset = $changeAmiZone.offset()
             drop_zone_data = {
               'x1' : drop_zone_offset.left
-              'x2' : drop_zone_offset.left + drop_zone.width()
+              'x2' : drop_zone_offset.left + $changeAmiZone.width()
               'y1' : drop_zone_offset.top
-              'y2' : drop_zone_offset.top + drop_zone.height()
+              'y2' : drop_zone_offset.top + $changeAmiZone.height()
             }
 
 
@@ -434,13 +434,18 @@ define [
       $('#canvas_body').removeClass('node-dragging')
       $(document).off('mousemove.SidebarDrag').off('mouseup.SidebarDrag')
 
-      $zone = $(document.elementFromPoint(event.pageX, event.pageY)).closest("#changeAmiDropZone")
-      if $zone.length > 0
-        $zone.removeClass("hover").trigger("drop", $(event.data.target).data('option').imageId)
-        $item.remove()
-        return false
+      event_data = event.data
 
-      event_data     = event.data
+      if event_data.drop_zone_data &&
+        event.pageX > event_data.drop_zone_data.x1 &&
+        event.pageX < event_data.drop_zone_data.x2 &&
+        event.pageY > event_data.drop_zone_data.y1 &&
+        event.pageY < event_data.drop_zone_data.y2
+          event_data.drop_zone.removeClass("hover").trigger("drop", $(event.data.target).data('option').imageId)
+          $item.remove()
+          return false
+
+
       node_type      = event_data.node_type
       target_type    = event_data.target_type
       canvas_offset  = event_data.canvas_offset

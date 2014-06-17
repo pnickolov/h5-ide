@@ -183,19 +183,19 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
       not kp and not @get( 'keyName' )
 
 
-    setAmi                      : InstanceModel.prototype.setAmi
-    getAmi                      : InstanceModel.prototype.getAmi
-    getDetailedOSFamily         : InstanceModel.prototype.getDetailedOSFamily
-    setInstanceType             : InstanceModel.prototype.setInstanceType
-    initInstanceType            : InstanceModel.prototype.initInstanceType
-    isEbsOptimizedEnabled       : InstanceModel.prototype.isEbsOptimizedEnabled
-    getBlockDeviceMapping       : InstanceModel.prototype.getBlockDeviceMapping
-    getAmiRootDevice            : InstanceModel.prototype.getAmiRootDevice
-    getAmiRootDeviceName        : InstanceModel.prototype.getAmiRootDeviceName
-    getAmiRootDeviceVolumeSize  : InstanceModel.prototype.getAmiRootDeviceVolumeSize
-    getInstanceType             : InstanceModel.prototype.getInstanceType
-    getInstanceTypeConfig       : InstanceModel.prototype.getInstanceTypeConfig
-    getInstanceTypeList         : InstanceModel.prototype.getInstanceTypeList
+    setAmi                     : InstanceModel.prototype.setAmi
+    getAmi                     : InstanceModel.prototype.getAmi
+    getOSFamily                : InstanceModel.prototype.getOSFamily
+    setInstanceType            : InstanceModel.prototype.setInstanceType
+    initInstanceType           : InstanceModel.prototype.initInstanceType
+    isEbsOptimizedEnabled      : InstanceModel.prototype.isEbsOptimizedEnabled
+    getBlockDeviceMapping      : InstanceModel.prototype.getBlockDeviceMapping
+    getAmiRootDevice           : InstanceModel.prototype.getAmiRootDevice
+    getAmiRootDeviceName       : InstanceModel.prototype.getAmiRootDeviceName
+    getAmiRootDeviceVolumeSize : InstanceModel.prototype.getAmiRootDeviceVolumeSize
+    getInstanceType            : InstanceModel.prototype.getInstanceType
+    getInstanceTypeConfig      : InstanceModel.prototype.getInstanceTypeConfig
+    getInstanceTypeList        : InstanceModel.prototype.getInstanceTypeList
 
     serialize : ()->
 

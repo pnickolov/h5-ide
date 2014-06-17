@@ -127,34 +127,14 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js", 'CloudR
       else
         return p
 
-    getDetailedOSFamily : ()->
+    getOSFamily : ()->
       ami = @getAmi() || @get("cachedAmi")
       if not ami or not ami.osType or not ami.osFamily
         console.warn "Cannot find ami infomation for instance :", this
         return "linux"
 
-      osType   = ami.osType
-      osFamily = ami.osFamily
-
-      if constant.OS_TYPE_MAPPING[osType]
-        osFamily = constant.OS_TYPE_MAPPING[osType]
-
-      if osType in constant.WINDOWS
-        osFamily = 'mswin'
-
-        sql_web_pattern = /sql.*?web.*?/i
-        sql_standerd_pattern = /sql.*?standard.*?/i
-
-        name        = ami.name or ""
-        desc        = ami.description or ""
-        imgLocation = ami.imageLocation or ""
-
-        if name.match( sql_web_pattern ) or desc.match( sql_web_pattern ) or imgLocation.match( sql_web_pattern )
-          osFamily = 'mswinSQLWeb'
-        else if name.match( sql_standerd_pattern ) or desc.match( sql_standerd_pattern ) or imgLocation.match( sql_standerd_pattern )
-          osFamily = 'mswinSQL'
-
-      osFamily
+      if ami.osFamily then return ami.osFamily
+      CloudResources( constant.RESTYPE.AMI, @design.region() ).getOSFamily( ami.id )
 
     initInstanceType : ()->
       for i in @getInstanceTypeList()
@@ -172,7 +152,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js", 'CloudR
 
       ami = @getAmi() || @get("cachedAmi")
       osType   = if ami then ami.osType else "linux-other"
-      osFamily = @getDetailedOSFamily()
+      osFamily = @getOSFamily()
 
       instanceType = @get("instanceType").split(".")
       unit = priceMap.instance.unit
@@ -770,7 +750,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js", 'CloudR
         console.error "Invalid instance type list data", ami, App.model.getOsFamilyConfig( region )
         data = []
 
-      data
+      data || []
 
     # parameter could be uid or aws id
     # return uid and mid( memberId )

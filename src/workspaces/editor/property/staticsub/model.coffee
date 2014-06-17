@@ -47,7 +47,9 @@ define [ '../base/model', 'constant', "../base/main", "CloudResources", "Design"
       if oldAmi.osType isnt "windows" and newAmi.osType is "windows"
         return "Changing AMI platform is not supported. To use a #{newAmi.osFamily} AMI, please create a new instance instead."
 
-      if (newAmi.instance_type or newAmi.instanceType or "").indexOf( component.get("instanceType") ) is -1
+      instanceType = Design.modelClassForType( constant.RESTYPE.INSTANCE ).getInstanceType( newAmi, Design.instance().region() )
+
+      if instanceType.indexOf( component.get("instanceType") ) is -1
         return "#{newAmi.name} does not support previously used instance type #{component.get("instanceType")}. Please change another AMI."
 
       true

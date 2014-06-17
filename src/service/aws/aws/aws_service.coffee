@@ -537,9 +537,9 @@ define [ 'MC', 'common_handle', 'result_vo', 'constant', 'ebs_service', 'eip_ser
 							else if resource_type is "DescribeVolumes"
 								c = vpc_resource_map[resource_type]( comp, region )
 							else if resource_type is "DescribeInstances"
-								c= vpc_resource_map[resource_type]( comp, default_kp )
+								c= vpc_resource_map[resource_type]( comp, default_kp, vpc_id )
 							else
-								c = vpc_resource_map[resource_type]( comp )
+								c = vpc_resource_map[resource_type]( comp, vpc_id )
 
 							if c
 								resKey = constant.AWS_RESOURCE_KEY[c.type]
@@ -668,6 +668,9 @@ define [ 'MC', 'common_handle', 'result_vo', 'constant', 'ebs_service', 'eip_ser
 				layout.uid = c.uid
 
 				switch c.type
+
+					when 'AWS.AutoScaling.LaunchConfiguration'
+						console.log "skip LC layout"
 
 					when 'AWS.VPC.NetworkInterface'
 

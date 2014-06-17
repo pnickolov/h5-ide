@@ -12,7 +12,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 
 		madeira_json
 
-	convertEni = ( aws_eni ) ->
+	convertEni = ( aws_eni,vpc_id ) ->
 		# {
 		# 	"uid": "",
 		# 	"type": "AWS.VPC.NetworkInterface",
@@ -67,6 +67,8 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 		# 		"NetworkInterfaceId": ""
 		# 	}
 		# }
+		if not (aws_eni.vpcId and aws_eni.vpcId is vpc_id)
+			return null
 		eni_json = {
 			"uid": MC.guid(),
 			"type": "AWS.VPC.NetworkInterface",
@@ -147,8 +149,9 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 
 		eni_json
 
-	convertInstance = ( aws_instance, default_kp ) ->
-
+	convertInstance = ( aws_instance, default_kp, vpc_id ) ->
+		if not(aws_instance.vpcId and aws_instance.vpcId is vpc_id)
+			return null
 		instance_json = {
 			"uid": MC.guid(),
 			"type": "AWS.EC2.Instance",
@@ -280,7 +283,10 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 
 		sg_json
 
-	convertELB = ( aws_elb ) ->
+	convertELB = ( aws_elb, vpc_id ) ->
+
+		if not (aws_elb.VPCId and aws_elb.VPCId is vpc_id )
+			return null
 
 		elb_json = {
 
@@ -425,8 +431,9 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 		acl_json
 
 
-	convertRTB = ( aws_rtb ) ->
-
+	convertRTB = ( aws_rtb, vpc_id ) ->
+		if not (aws_rtb.vpcId and aws_rtb.vpcId is vpc_id)
+			return null
 		rtb_json = {
 			"uid": MC.guid(),
 			"type": "AWS.VPC.RouteTable",
@@ -477,8 +484,9 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 
 		rtb_json
 
-	convertSubnet = ( aws_subnet ) ->
-
+	convertSubnet = ( aws_subnet, vpc_id) ->
+		if not (aws_subnet.vpcId and aws_subnet.vpcId is vpc_id)
+			return null
 		subnet_json = {
 			"uid": MC.guid(),
 			"type": "AWS.VPC.Subnet",
@@ -732,8 +740,9 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 
 		cgw_json
 
-	convertIGW = ( aws_igw ) ->
-
+	convertIGW = ( aws_igw, vpc_id ) ->
+		if not ( aws_igw.attachmentSet and aws_igw.attachmentSet.item and aws_igw.attachmentSet.item.length>0 and aws_igw.attachmentSet.item[0].vpcId is vpc_id )
+			return null
 		igw_json = {
 			"uid": MC.guid(),
 			"type": "AWS.VPC.InternetGateway",
@@ -759,8 +768,9 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 		igw_json
 
 
-	convertVGW = ( aws_vgw ) ->
-
+	convertVGW = ( aws_vgw, vpc_id ) ->
+		if not ( aws_vgw.attachments and aws_vgw.attachments.item and aws_vgw.attachments.item.length>0 and aws_vgw.attachments.item[0].vpcId is vpc_id )
+			return null
 		vgw_json = {
 			"uid": MC.guid(),
 			"type": "AWS.VPC.VPNGateway",

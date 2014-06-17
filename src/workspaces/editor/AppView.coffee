@@ -75,6 +75,8 @@ define [
           console.warn "Unknown opsmodel state when showing loading in AppEditor,", opsModel
           text = "Processing your request..."
 
+      @__progress = 0
+
       @$el.append OpsEditorTpl.appProcessing(text)
       return
 

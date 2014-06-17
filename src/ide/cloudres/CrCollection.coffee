@@ -104,7 +104,7 @@ define ["ApiRequest", "./CrModel", "constant", "backbone"], ( ApiRequest, CrMode
 
             if not data then data = emptyArr
           catch e
-            throw McError( ApiRequest.Errors.InvalidAwsReturn, "", data )
+            throw McError( ApiRequest.Errors.InvalidAwsReturn, "Failed to parse aws data.", [data, e] )
 
           # Transform the data id if the Collection has defined it.
           if self.modelIdAttribute

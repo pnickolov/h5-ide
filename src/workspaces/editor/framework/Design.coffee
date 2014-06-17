@@ -584,7 +584,7 @@ define [
     data.property = $.extend { stoppable : @isStoppable() }, PropertyDefination
 
     data.version = "2014-02-17"
-    data.state   = @__opsModel.getStateDesc()
+    data.state   = @__opsModel.getStateDesc() || "Enabled"
     data.id      = @__opsModel.get("id")
 
     currentDesignObj.use()

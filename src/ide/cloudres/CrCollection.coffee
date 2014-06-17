@@ -193,6 +193,18 @@ define ["ApiRequest", "./CrModel", "constant", "backbone"], ( ApiRequest, CrMode
 
     region : ()-> @category
 
+    # Override Backbone.Collection.set
+    ### env:dev ###
+    set : ( models )->
+      if not _.isArray(models)
+        models = if models then [models] else []
+      for m in models
+        if not m.id
+          console.error "Trying to add models to CrCollection without `id`", m
+
+      Backbone.Collection.prototype.set.apply this, arguments
+    ### env:dev:end ###
+
     # Override Backbone.Collection.where
     where : ( option, first )->
       if option.category and option.category is @category

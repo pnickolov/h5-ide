@@ -17,7 +17,7 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
             myElbComponent = Design.instance().component( uid )
 
 
-            elb = CloudResources(constant.RESTYPE.ELB, Degign.instance().region()).get(myElbComponent.get("appId"))?.toJSON()
+            elb = CloudResources(constant.RESTYPE.ELB, Design.instance().region()).get(myElbComponent.get("appId"))?.toJSON()
             if elb.ConnectionDraining
                 if elb.ConnectionDraining.Enabled
                     elb.ConnectionDrainingInfo = "Enabled; Timeout: #{elb.ConnectionDraining.Timeout} seconds"

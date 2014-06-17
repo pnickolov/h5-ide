@@ -400,7 +400,7 @@ td.table-action a.btn {
 }
 
 #ami-table-wrap .scroll-wrap {
-	height: 368px;
+	height: 322px;
 }
 
 #ami-table-wrap .table {
@@ -447,7 +447,7 @@ td.table-action a.btn {
 }
 
 #community-ami-page {
-	position: absolute;
+	position: relative;
 	bottom: 0;
 	height: 45px;
 	background-color: #292C2E;

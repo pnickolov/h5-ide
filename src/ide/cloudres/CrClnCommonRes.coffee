@@ -29,6 +29,7 @@ define [
           delete elb[key]
           elb[fixKey] = value
 
+        elb.id                = elb.LoadBalancerName
         elb.AvailabilityZones = elb.AvailabilityZones?.member || []
         elb.Instances         = elb.Instances?.member || []
         elb.SecurityGroups    = elb.SecurityGroups?.member || []
@@ -44,6 +45,7 @@ define [
       @unifyApi data, @type
       @convertNumTimeToString data
       _.each data, (dataItem) ->
+        dataItem.id = dataItem.LoadBalancerName
         dataItem.Instances = _.map dataItem.Instances, (obj) ->
           return obj.InstanceId
         dataItem.ListenerDescriptions = _.map dataItem.ListenerDescriptions, (obj) ->

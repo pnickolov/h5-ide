@@ -43,7 +43,7 @@ define [ "../base/model", "Design", "constant", 'CloudResources' ], ( PropertyMo
           else
             @set "state", "unavailable"
 
-          vpc = CloudResources(constant.RESTYPE.VPC, Design.instance().region()).get(vpcId).attributes
+          vpc = CloudResources(constant.RESTYPE.VPC, Design.instance().region()).get(vpcId)?.attributes
           if vpc then vpcId += " (#{vpc.cidrBlock})"
 
           @set "id", id

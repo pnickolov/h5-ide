@@ -378,7 +378,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
     ()-> #Volume
       for aws_vol in @getResourceByType "VOL"
         aws_vol = aws_vol.attributes
-        if not aws_vol.attachments
+        if not aws_vol.attachmentSet
           #not attached
           continue
 
@@ -393,17 +393,17 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
           "AvailabilityZone": CREATE_REF( az, "resource.ZoneName" )
 
         # AttachmentSet
-        if aws_vol.attachments
-          instance = @instances[ aws_vol.attachments[0].instanceId ]
+        if aws_vol.attachmentSet
+          instance = @instances[ aws_vol.attachmentSet[0].instanceId ]
           if instance
-            volRes.AttachmentSet.Device = aws_vol.attachments[0].device
+            volRes.AttachmentSet.Device = aws_vol.attachmentSet[0].device
             volRes.AttachmentSet.InstanceId = CREATE_REF( instance, "resource.InstanceId" )
 
         #create volume component, but add with instance
-        volComp = @add( "VOL", volRes, "vol" + aws_vol.device )
+        volComp = @add( "VOL", volRes, aws_vol.attachmentSet[0].device )
         # add volume to layout
-        #delete @component[ volComp.uid ]
-        #@volumes[ aws_vol.id ] = volComp
+        delete @component[ volComp.uid ]
+        @volumes[ aws_vol.id ] = volComp
         @component[ volComp.uid ] = volComp
 
       return

@@ -283,7 +283,7 @@ define [
       @unifyApi data, @type
 
       for ins in data
-        
+
         if ins.instanceState and ins.instanceState.name in [ "terminated", "shutting-down" ]
           continue
         ins.id = ins.instanceId
@@ -310,7 +310,7 @@ define [
     parseFetchData : ( volumes )->
       for vol in volumes
         vol.id = vol.volumeId
-        delete vol.volumeId
+        #delete vol.volumeId
         vol.attachmentSet = vol.attachmentSet?.item || []
         _.each vol.attachmentSet, (e,key)->
           status = vol.status
@@ -318,12 +318,19 @@ define [
           _.extend vol, e
           vol.status = status
           vol.attachmentStatus = attachmentStatus
-        delete vol.attachmentSet
+        #delete vol.attachmentSet
       volumes
     parseExternalData: ( data ) ->
       @unifyApi data, @type
-      #_.each data, (dataItem) ->
-      #@parseFetchData data
+      for vol in data
+        vol.id = vol.volumeId
+        _.each vol.attachmentSet, (e,key)->
+          status = vol.state
+          attachmentStatus = e.state
+          _.extend vol, e
+          vol.status = status
+          vol.attachmentStatus = attachmentStatus
+      data
   }
 
   ### LC ###

@@ -115,6 +115,9 @@
   color     : #aaa;
   display   : block;
   cursor    : pointer;
+  -webkit-transform-origin : 12px 12px;
+     -moz-transform-origin : 12px 12px;
+          transform-origin : 12px 12px;
 
   &:hover  { color: #148BE6; }
   &:before {
@@ -122,14 +125,14 @@
     font-size   : 12px;
     line-height : 18px;
   }
+}
 
-  &.reloading {
-    &:before { margin : 0; }
-    -webkit-animation: rotation .6s infinite linear;
-       -moz-animation: rotation .6s infinite linear;
-         -o-animation: rotation .6s infinite linear;
-            animation: rotation .6s infinite linear;
-  }
+.icon-refresh.reloading {
+  &:before { margin : 0; }
+  -webkit-animation: rotation .6s infinite linear;
+     -moz-animation: rotation .6s infinite linear;
+       -o-animation: rotation .6s infinite linear;
+          animation: rotation .6s infinite linear;
 }
 
 #global-region-wrap {
@@ -643,17 +646,17 @@
     margin-top    : 15px;
     display       : block;
     width         : 18%;
-    opacity       : .95;
     position      : relative;
     cursor        : pointer;
     background    : #323e49;
     border-radius : 5px;
 
-    &:hover { opacity: 1; }
+    &:hover { background: darken(#323e49, 5%); }
+
     &.disabled {
       cursor  : default;
       opacity : .8;
-      &:hover { opacity: .8; }
+      &:hover { background: #323e49; }
     }
 
     &:last-child { margin-bottom : 15px; }

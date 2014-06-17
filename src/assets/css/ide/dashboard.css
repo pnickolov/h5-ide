@@ -86,20 +86,24 @@
   top: 18px;
   color: #aaa;
   display: block;
-  cursor: pointer; }
+  cursor: pointer;
+  -webkit-transform-origin: 12px 12px;
+  -moz-transform-origin: 12px 12px;
+  transform-origin: 12px 12px; }
   #RefreshResource:hover {
     color: #148BE6; }
   #RefreshResource:before {
     margin-right: 4px;
     font-size: 12px;
     line-height: 18px; }
-  #RefreshResource.reloading {
-    -webkit-animation: rotation .6s infinite linear;
-    -moz-animation: rotation .6s infinite linear;
-    -o-animation: rotation .6s infinite linear;
-    animation: rotation .6s infinite linear; }
-    #RefreshResource.reloading:before {
-      margin: 0; }
+
+.icon-refresh.reloading {
+  -webkit-animation: rotation .6s infinite linear;
+  -moz-animation: rotation .6s infinite linear;
+  -o-animation: rotation .6s infinite linear;
+  animation: rotation .6s infinite linear; }
+  .icon-refresh.reloading:before {
+    margin: 0; }
 
 #global-region-wrap {
   height: 100%;
@@ -528,18 +532,17 @@
   margin-top: 15px;
   display: block;
   width: 18%;
-  opacity: .95;
   position: relative;
   cursor: pointer;
   background: #323e49;
   border-radius: 5px; }
   .region-resource-list > li:hover {
-    opacity: 1; }
+    background: #28313a; }
   .region-resource-list > li.disabled {
     cursor: default;
     opacity: .8; }
     .region-resource-list > li.disabled:hover {
-      opacity: .8; }
+      background: #323e49; }
   .region-resource-list > li:last-child {
     margin-bottom: 15px; }
 .region-resource-list .loading-spinner {

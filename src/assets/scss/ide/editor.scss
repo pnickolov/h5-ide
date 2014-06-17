@@ -149,6 +149,7 @@ $BottomPanelHeight    : 24px;
 
   i {
     width      : 40px;
+    height     : 40px;
     float      : right;
     cursor     : pointer;
     text-align : center;
@@ -168,6 +169,15 @@ $BottomPanelHeight    : 24px;
       }
     }
   }
+}
+
+.refresh-resource-panel {
+  line-height: 37px;
+  -webkit-transform-origin : 20px 20px;
+     -moz-transform-origin : 20px 20px;
+          transform-origin : 20px 20px;
+
+  &.reloading:hover { background : none; }
 }
 
 .sidebar-hider {

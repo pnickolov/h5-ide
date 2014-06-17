@@ -537,9 +537,9 @@ define [ 'MC', 'common_handle', 'result_vo', 'constant', 'ebs_service', 'eip_ser
 							else if resource_type is "DescribeVolumes"
 								c = vpc_resource_map[resource_type]( comp, region )
 							else if resource_type is "DescribeInstances"
-								c= vpc_resource_map[resource_type]( comp, default_kp )
+								c= vpc_resource_map[resource_type]( comp, default_kp, vpc_id )
 							else
-								c = vpc_resource_map[resource_type]( comp )
+								c = vpc_resource_map[resource_type]( comp, vpc_id )
 
 							if c
 								resKey = constant.AWS_RESOURCE_KEY[c.type]
@@ -641,6 +641,17 @@ define [ 'MC', 'common_handle', 'result_vo', 'constant', 'ebs_service', 'eip_ser
 
 		vpc_uid = MC.extractID(ref_key[vpc_id])
 
+		#generate layout for lc first
+		for uid, c of app_json.component
+			if vpc_resource_layout_map[c.type]
+				layout = $.extend true, {}, vpc_resource_layout_map[c.type].layout
+				layout.uid = c.uid
+				switch c.type
+					when 'AWS.AutoScaling.LaunchConfiguration'
+						layout.originalId = c.uid
+						app_json.layout.component.node[c.uid] = layout
+
+
 		for uid, c of app_json.component
 
 
@@ -658,6 +669,9 @@ define [ 'MC', 'common_handle', 'result_vo', 'constant', 'ebs_service', 'eip_ser
 
 				switch c.type
 
+					when 'AWS.AutoScaling.LaunchConfiguration'
+						console.log "skip LC layout"
+
 					when 'AWS.VPC.NetworkInterface'
 
 						layout.groupUId = MC.extractID(c.resource.SubnetId)
@@ -669,6 +683,12 @@ define [ 'MC', 'common_handle', 'result_vo', 'constant', 'ebs_service', 'eip_ser
 						else if not c.resource.Attachment
 
 							app_json.layout.component.node[c.uid] = layout
+
+					# when 'AWS.AutoScaling.LaunchConfiguration'
+
+					# 	layout.originalId = c.uid
+
+					# 	app_json.layout.component.node[c.uid] = layout
 
 					when "AWS.AutoScaling.Group"
 
@@ -779,11 +799,6 @@ define [ 'MC', 'common_handle', 'result_vo', 'constant', 'ebs_service', 'eip_ser
 
 						app_json.layout.component.node[c.uid] = layout
 
-					when 'AWS.AutoScaling.LaunchConfiguration'
-
-						layout.originalId = c.uid
-
-						app_json.layout.component.node[c.uid] = layout
 
 					when "AWS.EC2.AvailabilityZone"
 

@@ -4311,12 +4311,13 @@ MC.canvas.event.clickBlank = function (event)
 MC.canvas.event.keyEvent = function (event)
 {
 	var canvas_status = MC.canvas.getState(),
-		selected_node = $canvas.selected_node();
+		selected_node = $canvas.selected_node(),
+		ws = App.workspaces.getAwakeSpace();
 
 	if (
 		$('#modal-wrap')[0] !== undefined ||
 		($('.sub-stateeditor').css('display') === "block" && (event.which !== 46 && event.which !== 8)) ||
-		App.workspaces.getAwakeSpace().isDashboard
+		(ws && ws.isDashboard)
 	)
 	{
 		return true;

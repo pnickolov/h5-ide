@@ -307,38 +307,26 @@
 }
 
 /* toggleicon */
-.toggle-fav {
-  position: absolute;
-  top: -2px;
-  right: 5px;
-  width: 16px;
-  height: 16px;
-  background: url('../images/ide/btn-fav-ami-unfaved-normal.png');
-}
-
-.btn-fav-ami {
-  position : absolute;
-  top      : 2px;
-  right    : 2px;
-  width    : 16px;
-  height   : 16px;
-  background : image-url('ide/btn-fav-ami-unfaved-normal.png');
+.btn-fav-ami, .toggle-fav {
+  width      : 20px;
+  height     : 20px;
+  background : image-url('ide/fav-btn-off.png') center no-repeat;
 
   &:hover {
     top        : 0;
     right      : 0;
     width      : 20px;
     height     : 20px;
-    background : image-url('ide/btn-fav-ami-unfaved-hover.png');
+    background : image-url('ide/fav-btn-off-hover.png');
   }
 
-  &.fav {
-    background: image-url('ide/btn-fav-ami-faved-normal.png');
-  }
-
-  &.fav:hover {
-    background: image-url('ide/btn-fav-ami-unfaved-hover.png');
-  }
+  &.fav       { background: image-url('ide/fav-btn.png'); }
+  &.fav:hover { background: image-url('ide/fav-btn-hover.png'); }
+}
+.btn-fav-ami {
+  position : absolute;
+  top      : 0px;
+  right    : 0px;
 }
 
 .BrowseCommunityAmi, .ManageSnapshot {
@@ -434,4 +422,27 @@
     bottom   : 0;
     width    : 100%;
   }
+}
+
+
+// Ami Browser
+.icon-ami-os {
+  &:before {
+    content      : " ";
+    float        : left;
+    width        : 24px;
+    height       : 24px;
+    margin-right : 5px;
+    background   : image-url('ide/icon/icon-ami-os.png') left top no-repeat;
+  }
+
+  &.centos:before { background-position: -24px 0; }
+  &.debian:before { background-position: -48px 0; }
+  &.fedora:before      { background-position: -72px 0; }
+  &.gentoo:before      { background-position: -96px 0; }
+  &.opensuse:before    { background-position: -120px 0; }
+  &.ubuntu:before      { background-position: -144px 0; }
+  &.redhat:before      { background-position: -168px 0; }
+  &.windows:before     { background-position: -192px 0; }
+  &.linux-other:before { background-position: -216px 0; }
 }

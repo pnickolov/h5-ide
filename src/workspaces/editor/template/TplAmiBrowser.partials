@@ -1,0 +1,106 @@
+<!-- {{dialog}} -->
+<div class="content-wrap" style="position:relative;">
+  <div id="ami-search-option">
+    <div>
+      <input id="community-ami-input" class="input" type="text" placeholder="{{{i18n "AMI_LBL_ALL_SEARCH_AMI_BY_NAME_OR_ID"}}}" />
+    </div>
+
+    <div id="selectbox-ami-platform" class="selectbox">
+      <div class="selection">{{i18n "AMI_LBL_ALL_PLATFORMS"}}</div>
+      <ul class="dropdown" tabindex="-1">
+        <li class="item selected" data-id="">{{i18n "AMI_LBL_ALL_PLATFORMS"}}</li>
+        <li class="item" data-id="amazonlinux"> <span class="icon-ami-os amz-linux">Amazon Linux</span> </li>
+        <li class="item" data-id="centos"> <span class="icon-ami-os centos">Cent OS</span> </li>
+        <li class="item" data-id="debian"> <span class="icon-ami-os debian">Debian</span> </li>
+        <li class="item" data-id="fedora"> <span class="icon-ami-os fedora">Fedora</span> </li>
+        <li class="item" data-id="gentoo"> <span class="icon-ami-os gentoo">Gentoo</span> </li>
+        <li class="item" data-id="opensuse"><span class="icon-ami-os opensuse">OpenSUSE</span> </li>
+        <li class="item" data-id="ubuntu"> <span class="icon-ami-os ubuntu">Ubuntu</span> </li>
+        <li class="item" data-id="redhat"> <span class="icon-ami-os redhat">Red Hat</span> </li>
+        <li class="item" data-id="windows"><span class="icon-ami-os windows">Windows</span> </li>
+        <li class="item" data-id="otherlinux"> <span class="icon-ami-os linux-other">Other Linux</span> </li>
+      </ul>
+    </div>
+
+    <div class="ami-option-group">
+      <h5>{{i18n "AMI_LBL_VISIBILITY"}}</h5>
+      <div class="ami-option-wrap" id="filter-ami-type">
+        <button type="button" class="btn active">{{i18n "AMI_LBL_PUBLIC"}}</button>
+        <button type="button" class="btn">{{i18n "AMI_LBL_PRIVATE"}}</button>
+      </div>
+    </div>
+
+    <div class="ami-option-group">
+      <h5>{{i18n "AMI_LBL_ARCHITECTURE"}}</h5>
+      <div class="ami-option-wrap" id="filter-ami-32bit-64bit">
+        <button type="button" class="btn active">{{i18n "AMI_LBL_32_BIT"}}</button>
+        <button type="button" class="btn">{{i18n "AMI_LBL_64_BIT"}}</button>
+      </div>
+    </div>
+
+    <div class="ami-option-group">
+      <h5>{{i18n "AMI_LBL_ROOT_DEVICE_TYPE"}}</h5>
+      <div class="ami-option-wrap" id="filter-ami-EBS-Instance">
+        <button type="button" class="btn active">{{i18n "AMI_LBL_EBS"}}</button>
+        <button type="button" class="btn">{{i18n "AMI_LBL_INSTANCE_STORE"}}</button>
+      </div>
+    </div>
+
+    <div id="btn-search-ami" class="btn btn-blue" disabled>{{i18n "AMI_LBL_SEARCHING"}}</div>
+  </div>
+
+  <div id="ami-data-wrap">
+    <div id="ami-table-wrap" class="table-head-fix">
+      <table class="table-head">
+        <thead>
+        <tr>
+          <th style="width: 44px;"></th>
+          <th style="width: 104px;">{{i18n "AMI_LBL_AMI_ID"}}</th>
+          <th>{{i18n "AMI_LBL_AMI_NAME"}}</th>
+          <th style="width: 62px;padding-left:4px;text-align:left;" class="sortable">{{i18n "AMI_LBL_SIZE"}}</th>
+        </tr>
+        </thead>
+      </table>
+      <div class="scroll-wrap">
+        <div class="scrollbar-veritical-wrap" style="display: block;"><div class="scrollbar-veritical-thumb"></div></div>
+        <div class="show-loading">
+          <div class="loading-spinner"></div>
+        </div>
+        <div class="scroll-content" style="display:block;">
+          <table class="table">
+            <thead>
+            <tr>
+              <th style="width: 16px;"><div class="th-inner"></div></th>
+              <th style="width: 80px;"><div class="th-inner"></div></th>
+              <th><div class="th-inner"></div></th>
+              <th style="width: 42px;"><div class="th-inner"></div></th>
+            </tr>
+            </thead>
+            <tbody id="community_ami_table"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div id="community-ami-page">
+      <div class="page-tip" style="display: none;"></div>
+      <div class="pagination" style="display: none;">
+        <a href="#" class="previous" data-action="previous">&lsaquo;</a>
+        <input type="text" readonly="readonly" data-max-page="40" />
+        <a href="#" class="next" data-action="next">&rsaquo;</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- {{amiItem}} -->
+{{#each this}}<tr class="item" data-id="{{@key}}">
+  <td><div class="toggle-fav tooltip" data-tooltip="{{i18n 'RES_TIT_TOGGLE_FAVORITE'}}"></div></td>
+  <td>{{@key}}</td>
+  <td>
+    <span class="ami-table-name">{{name}}</span>
+    <div class="ami-meta {{osType}} icon-ami-os"> {{#ifCond isPublic "true"}}public{{else}}private{{/ifCond}} | {{architecture}} | {{rootDeviceType}}</div>
+  </td>
+  <td>{{imageSize}}</td>
+</tr>
+{{/each}}

@@ -388,10 +388,6 @@ td.table-action a.btn {
 	line-height: 23px;
 }
 
-#selectbox-ami-platform .item span {
-	margin-left: 28px;
-}
-
 .ami-meta span {
 	margin-left: 28px;
 }
@@ -401,14 +397,6 @@ td.table-action a.btn {
 	padding: 8px 10px;
 
 	line-height: 24px;
-}
-
-#selectbox-ami-platform .selection span {
-	margin-left: 28px;
-}
-
-#ami-count {
-	text-align: center;
 }
 
 #ami-table-wrap .scroll-wrap {
@@ -421,17 +409,6 @@ td.table-action a.btn {
 
 #ami-table-wrap .table tr td {
 	vertical-align: middle;
-}
-
-#ami-table-wrap .ami-table-fav,
-#ami-table-wrap .ami-table-id,
-#ami-table-wrap .ami-table-arch,
-#ami-table-wrap .ami-table-size {
-	text-align: center;
-}
-
-#ami-table-wrap .ami-table-id {
-	padding: 6px 8px;
 }
 
 #ami-table-wrap .ami-table-name {
@@ -467,51 +444,6 @@ td.table-action a.btn {
 	font-size: 12px;
 	color: #999;
 	line-height: 24px;
-}
-
-.icon-ami-os {
-	position: absolute;
-	display: inline-block;
-	width: 24px;
-	height: 23px;
-	background-repeat: no-repeat;
-	background-image: url('../images/ide/icon/icon-ami-os.png');
-}
-
-.icon-centos {
-	background-position: -24px;
-}
-
-.icon-debian {
-	background-position: -48px;
-}
-
-.icon-fedora {
-	background-position: -72px;
-}
-
-.icon-gentoo {
-	background-position: -96px;
-}
-
-.icon-opensuse {
-	background-position: -120px;
-}
-
-.icon-ubuntu {
-	background-position: -144px;
-}
-
-.icon-redhat {
-	background-position: -168px;
-}
-
-.icon-windows {
-	background-position: -192px;
-}
-
-.icon-linux-other {
-	background-position: -216px;
 }
 
 #community-ami-page {

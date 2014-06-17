@@ -313,19 +313,31 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
         d.resolve()
         return q.promise
 
-      ApiRequest("favorite_add", {
+      ApiRequest("favorite_remove", {
         resource_ids : [id]
       }).then ()->
-        self.__models.push amiId
+        idx = self.__models.indexOf amiId
+        self.__models.splice idx, 1
         self.trigger "update"
         self
 
-    fav : ( amiId )->
+    fav : ( ami )->
+      if _.isString( ami )
+        imageId = ami
+        ami = ""
+      else
+        ami = $.extend {}, ami
+        imageId = ami.id
+
       self = @
       ApiRequest("favorite_add", {
-        resource : { id: amiId, provider: 'AWS', 'resource': 'AMI', service: 'EC2' }
+        resource : { id: imageId, provider: 'AWS', 'resource': 'AMI', service: 'EC2' }
       }).then ()->
-        self.__models.push amiId
+        self.__models.push imageId
+
+        if ami
+          CloudResources( constant.RESTYPE.AMI, self.region() ).add ami, {add: true, merge: true, remove: false}
+
         self.trigger "update"
         self
   }

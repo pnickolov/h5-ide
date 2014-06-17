@@ -12,12 +12,12 @@ define [
   'kp_manage'
   'jsona'
   'jsonb'
-  'component/amis/main'
+  './AmiBrowser'
   'i18n!nls/lang.js'
   'ApiRequest'
   "backbone"
   'UI.radiobuttons'
-], ( CloudResources, Design, LeftPanelTpl, constant, ResDiff, dhcpManager, snapshotManager, sslCertManager, snsManager, keypairManager, oldAppJSON, newAppJSON, amiBrowser, lang, ApiRequest )->
+], ( CloudResources, Design, LeftPanelTpl, constant, ResDiff, dhcpManager, snapshotManager, sslCertManager, snsManager, keypairManager, oldAppJSON, newAppJSON, AmiBrowser, lang, ApiRequest )->
 
   # Update Left Panel when window size changes
   __resizeAccdTO = null
@@ -198,6 +198,15 @@ define [
       $ul.children(".resource-icon-vgw").toggleClass("resource-disabled", design.componentsOfType(constant.RESTYPE.VGW).length > 0)
       return
 
+    updateFavList : ()-> if @__amiType is "FavoriteAmi" then @updateAmi()
+
+    toggleFav : ()->
+      # Start listening fav update.
+      @stopListening CloudResources( "FavoriteAmi", @workspace.opsModel.get("region") ), "update", @updateFavList
+      # if amiElem.hasClass('faved')
+      #   promise = favAmis.unfav(amiElem.data('id'))
+      # else
+      #   promise = favAmis.fav( @communityAmiData[amiElem.data("id")] )
 
     toggleLeftPanel : ()->
       @__leftPanelHidden = @$el.toggleClass("hidden").hasClass("hidden")
@@ -251,162 +260,14 @@ define [
       this.updateAccordion( { currentTarget : $target[0] }, true )
 
     browseCommunityAmi : ()->
-      searchCommunityAmiCurrent = @searchCommunityAmiCurrent.bind @
-      faveCommunityAmi = @faveCommunityAmi.bind @
+      region = @workspace.opsModel.get("region")
+      # Start listening fav update.
+      @listenTo CloudResources( "FavoriteAmi", region ), "update", @updateFavList
 
-      amisModal = amiBrowser.loadModule()
-      amisModal.on 'close', ->
-        console.debug 'it works'
-
-      $(document).off 'keypress',   '#community-ami-input'
-      $(document).off 'click',      '#btn-search-ami'
-      $(document).off 'click',      '.toggle-fav'
-      $(document).on 'keypress',   '#community-ami-input', searchCommunityAmiCurrent
-      $(document).on 'click',      '#btn-search-ami',      searchCommunityAmiCurrent
-      $(document).on 'click',      '.toggle-fav',          faveCommunityAmi
-      @searchCommunityAmi()
-
-    faveCommunityAmi: (event)->
-      amiElem = $(event.target)
-      that = this
-      favAmis = CloudResources "FavoriteAmi", that.workspace.opsModel.get("region")
-      promise = null
-      if amiElem.hasClass('faved')
-        promise = favAmis.unfav(amiElem.data('id'))
-      else
-        promise = favAmis.fav(amiElem.data("id"))
-      promise?.then ->
-        notification 'info', if not amiElem.hasClass("faved") then lang.ide.RES_MSG_INFO_ADD_AMI_FAVORITE_SUCCESS else lang.ide.RES_MSG_INFO_REMVOE_FAVORITE_AMI_SUCCESS
-        amiElem.toggleClass('faved')
-      , ->
-        notification 'error', if not amiElem.hasClass("faved") then lang.ide.RES_MSG_ERR_ADD_FAVORITE_AMI_FAILED else lang.ide.RES_MSG_ERR_REMOVE_FAVORITE_AMI_FAILED
-
-    searchCommunityAmi : (pageNum, perPage)->
-      pageNum = pageNum || 1
-      @renderAmiLoading()
-      name = $("#community-ami-input").val()
-      platform = $('#selectbox-ami-platform').find('.selected').data('id')
-      isPublic = 'true'
-      architecture = '32-bit'
-      rootDeviceType = "EBS"
-      if $('#filter-ami-type').find('.active').length is 1
-        visibility      = radiobuttons.data($('#filter-ami-type'))
-        isPublic = if visibility is 'Private' then 'false' else 'true'
-      else if $('#filter-ami-type').find('.active').length is 2
-        isPublic = null
-
-      if $('#filter-ami-32bit-64bit').find('.active').length is 1
-        architecture = radiobuttons.data($('#filter-ami-32bit-64bit'))
-      else if $('#filter-ami-32bit-64bit').find('.active').length is 2
-        architecture = null
-
-      if $('#filter-ami-EBS-Instance').find('.active').length is 1
-        rootDeviceType = radiobuttons.data($('#filter-ami-EBS-Instance'))
-      else if $('#filter-ami-EBS-Instance').find('.active').length is 2
-        rootDeviceType = null
-      region  = @workspace.opsModel.get("region")
-      perPageNum = parseInt(perPage||50, 10)
-      returnPage = parseInt(pageNum, 10)
-      renderAmis = (data)=>
-        @communityAmiRender(data)
-      ApiRequest("aws_public",
-        region_name: region
-        filters:
-          ami: {name, platform, isPublic, architecture, rootDeviceType, perPageNum, returnPage}
-      ).then (result)->
-        renderAmis(result)
-      , (result)->
-        notification 'error', lang.ide.RES_MSG_WARN_GET_COMMUNITY_AMI_FAILED
-        renderAmis(ami:[])
-
-    searchCommunityAmiPrev: ->
-      page = parseInt( $("#community_ami_page_current").attr("page"), 10)
-      @searchCommunityAmi(page+1)
-
-    searchCommunityAmiNext: ->
-      page = parseInt( $("#community_ami_page_current").attr("page"), 10)
-      @searchCommunityAmi(page-1)
-
-    searchCommunityAmiCurrent: (event)->
-      if event.keyCode and event.keyCode isnt 13
-        return
-      @searchCommunityAmi()
-
-    communityAmiRender: (data)->
-      @communityShowContent()
-      totalNum = 0
-      if data.ami
-        tpl = ""
-        _.each data.ami.result, ( value, key ) ->
-          value.favorite = false if value.delete
-          fav_class = if value.favorite then 'faved' else ''
-          tooltip = if value.favorite then lang.ide.RES_TIT_REMOVE_FROM_FAVORITE else lang.ide.RES_TIT_ADD_TO_FAVORITE
-          bit         = if value.architecture == 'i386' then '32' else '64'
-          visibility  = if value.isPublic then 'public' else 'private'
-          tpl += """
-            <tr class="item" data-id="#{key} #{value.name}" data-publicprivate="public" data-platform="#{value.osType}" data-ebs="#{value.rootDeviceType}" data-bit="#{bit}"</tr>
-            <td class="ami-table-fav"><div class="toggle-fav tooltip #{fav_class}" data-tooltip="#{tooltip}" data-id="#{key}"></div></td>
-            <td class="ami-table-id">#{key}</td>
-            <td class="ami-table-info"><span class="ami-table-name">#{value.name}</span><div class="ami-meta"><i class="icon-#{value.osType} icon-ami-os"></i><span>#{visibility} | #{value.architecture} | #{value.rootDeviceType}</span></div></td>
-            <td class="ami-table-size">#{value.imageSize}</td></tr>
-          """
-          true
-        $("#community_ami_table").html(tpl)
-        currentPageNum = data.ami.curPageNum
-        page = "<div>page #{currentPageNum}</div>"
-        totalNum = data.ami.totalNum
-        totalPageNum = data.ami.totalPageNum
-        $("#ami-count").empty().html("Total: #{totalNum}")
-
-        @communityPagerRender currentPageNum, totalPageNum, totalNum
-
-    communityPagerRender: ( current_page, max_page, total ) ->
-      resourceView = @
-      pageSize = if total > 50 then 50 else total
-
-      itemBegin = ( current_page - 1 ) * 50 + 1
-      itemEnd = itemBegin + pageSize - 1
-      itemEnd = total if itemEnd > total
-
-      $( '.page-tip' ).text sprintf lang.ide.AMI_LBL_PAGEINFO, itemBegin, itemEnd, total
-
-      pagination = $ '.pagination'
-
-      if max_page is 0
-        pagination.hide()
-      else
-        pagination.show()
-
-      if pagination.data 'jqPagination'
-        pagination.jqPagination 'destroy'
-        # init page num
-        pagination.find( 'input' ).data('current-page', current_page)
-
-      pagination.jqPagination({
-        current_page: current_page,
-        max_page: max_page,
-        page_string: "{current_page} / {max_page}"
-        paged: ((current_page, max_page) ->
-          (page) ->
-            if page isnt current_page and max_page >= page > 0
-              resourceView.searchCommunityAmi page
-        )(current_page, max_page)
-
-      })
-
-
-    communityShowContent: () ->
-      $( ".show-loading" ).hide()
-      $( "#ami-table-wrap .scroll-content" ).show()
-      $( "#btn-search-ami" ).text( lang.ide.AMI_LBL_SEARCH ).removeAttr( "disabled" )
-      $( "#community-ami-page>div" ).show()
-
-    renderAmiLoading: () ->
-      $( "#ami-table-wrap .scroll-content" ).hide()
-      $( ".show-loading" ).show()
-      $( "#btn-search-ami" ).text( lang.ide.AMI_LBL_SEARCHING ).attr( "disabled", "" )
-      $( "#community-ami-page>div" ).hide()
-      $("#ami-count").empty().html("Total: 0")
+      amiBrowser = new AmiBrowser({ region : region })
+      amiBrowser.onClose = ()=>
+        @stopListening CloudResources( "FavoriteAmi", region ), "update", @updateFavList
+      return false
 
     manageSnapshot : ()-> new snapshotManager().render()
 

@@ -976,7 +976,11 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
 
     ()-> #NC
       for aws_nc in @getResourceByType( "NC" )
-        ncRes = aws_nc.toJSON()
+        aws_nc = aws_nc.attributes
+        ncRes =
+          "AutoScalingGroupName": aws_nc.AutoScalingGroupName
+          "NotificationType": aws_nc.NotificationType
+          "TopicARN": aws_nc.TopicARN
 
         #convert AutoScalingGroupName to REF
         asgComp = @asgs[ncRes.AutoScalingGroupName]

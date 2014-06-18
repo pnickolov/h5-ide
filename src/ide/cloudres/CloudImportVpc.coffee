@@ -536,6 +536,13 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
 
         diffTree = new DiffTree()
         diffResult = diffTree.compare @originAppJSON.component[insComp.uid], insComp
+        
+        # if diffrent with same comp(servergroup), update to single instance
+        if diffResult
+          insComp.serverGroupName = insComp.name
+          insComp.number = 1
+          insComp.index = 0
+          insComp.serverGroupUid = insComp.uid
 
         # # default_kp # TODO :
         # if default_kp and default_kp.resource and aws_ins.keyName is default_kp.resource.KeyName

@@ -24,11 +24,6 @@ define [
             'click .item .type': '_toggleTab'
             'click .head': '_toggleItem'
 
-        _filterMap: {
-            'resource.PrivateIpAddressSet.n.AutoAssign': true,
-            'resource.AssociatePublicIpAddress': true
-        }
-
         _toggleItem: ( e ) ->
 
             $target = $( e.currentTarget ).closest '.group'
@@ -93,9 +88,7 @@ define [
                     that.addedComps[uid] = newComps[uid]
                 null
 
-            diffTree = new DiffTree({
-                filterMap: that._filterMap
-            })
+            diffTree = new DiffTree({})
 
             that.modifiedComps = diffTree.compare unionOldComps, unionNewComps
             that.modifiedComps = {} if not that.modifiedComps

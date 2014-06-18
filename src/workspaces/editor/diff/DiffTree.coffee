@@ -3,7 +3,12 @@ define [], () ->
     DiffTree = (option) ->
 
         option = {} if not option
-        option.filterMap = {} if not option.filterMap
+        # option.filterMap = {} if not option.filterMap
+
+        option.filterMap = {
+            'resource.PrivateIpAddressSet.n.AutoAssign': true,
+            'resource.AssociatePublicIpAddress': true
+        }
 
         isArray = (value) ->
             return value and typeof value is 'object' and value.constructor is Array

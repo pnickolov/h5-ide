@@ -58,7 +58,7 @@
   position: absolute;
   right: 0;
   top: 0;
-  width: 328px;
+  max-width: 328px;
   background: #232226; }
 
 #header .dropdown, #support {

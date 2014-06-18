@@ -50,7 +50,7 @@ define [ '../base/model', 'constant', "Design", "CloudResources" ], ( PropertyMo
 
       if @isAppEdit
 
-        subnet = CloudResources(constant.RESTYPE.ACL, Design.instance().region()).get(subnet_component.get('appId'))
+        subnet = CloudResources(constant.RESTYPE.SUBNET, Design.instance().region()).get(subnet_component.get('appId'))
 
         subnet = _.clone subnet
         #subnet.name = subnet_component.get 'name'

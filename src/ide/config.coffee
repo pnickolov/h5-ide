@@ -243,7 +243,7 @@ require.config {
 			'jquerysort'
 			"UI.modalplus"
 		]
-		"ApiRequest" : []
+		"api/api" : ["ApiRequest"]
 		"service/service" : [
 			'base_model'
 			'state_model'
@@ -259,11 +259,10 @@ require.config {
 			'customergateway_service'
 		]
 
-		"component/exporter/Exporter"  : [ "ThumbnailUtil", "JsonExporter" ]
-
-		"component/sgrule/SGRulePopup" : []
-		"validation" : [ "component/trustedadvisor/main" ]
-		"state_status" : []
+		"component/Exporter"                : [ "ThumbnailUtil", "JsonExporter" ]
+		"component/Validation"              : [ "validation", "component/trustedadvisor/main" ]
+		"component/StateStatus"             : ["state_status"]
+		"component/sgrule/SGRulePopup"      : []
 		"component/stateeditor/stateeditor" : []
 
 		"component/sharedrescomp" : [
@@ -293,7 +292,7 @@ require.config {
 		"component/sgrule/SGRulePopup" : [ "Design" ]
 		"component/stateeditor/stateeditor" : ["Design"]
 		"component/sharedrescomp"  : [ "Design" ]
-		"validation" : ["Design"]
+		"component/Validation" : ["Design"]
 
 		"workspaces/editor/PropertyPanel" : [ "Design" ]
 		"workspaces/editor/framework/DesignBundle" : [ "Design", "CanvasManager" ]

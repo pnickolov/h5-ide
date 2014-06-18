@@ -29,5 +29,5 @@
 <div class="meta">
 	<span class="type">{{key}}</span>
 	<span class="name {{#if type}}{{type}}{{/if}}">{{value}}</span>
-	{{#if value1}}<span class="name arrow"> -></span><span class="name {{type1}}">{{value1}}</span>{{/if}}
+	{{#if value1}}<span class="to"> -></span><span class="{{type1}}">{{value1}}</span>{{/if}}
 </div>

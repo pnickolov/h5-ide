@@ -99,17 +99,17 @@ define [
             that = this
 
             groupData = [{
-                title: 'New Resource',
+                title: 'New',
                 diffComps: that.addedComps,
                 closed: true,
                 type: 'added'
             }, {
-                title: 'Removed Resource',
+                title: 'Removed',
                 diffComps: that.removedComps,
                 closed: true,
                 type: 'removed'
             }, {
-                title: 'Modified Resource',
+                title: 'Modified',
                 diffComps: that.modifiedComps,
                 closed: false,
                 type: 'modified'

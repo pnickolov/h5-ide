@@ -34,7 +34,7 @@
     .res_diff_tree .group .head {
       position: relative;
       z-index: 2;
-      padding: 6px 10px 6px 25px;
+      padding: 10px 10px 6px 25px;
       color: #17a03a;
       font-size: 14px;
       background-color: #1a1c1d;
@@ -48,7 +48,9 @@
       -o-transition: opacity .2s;
       transition: opacity .2s; }
       .res_diff_tree .group .head .count {
-        margin-left: 8px; }
+        margin-left: 8px;
+        color: #666;
+        font-size: 12px; }
       .res_diff_tree .group .head:before {
         display: block;
         content: " ";
@@ -74,10 +76,7 @@
         position: absolute;
         left: 10px;
         top: 50%;
-        margin-top: -4px; }
-    .res_diff_tree .group .count {
-      color: #666;
-      font-size: 12px; }
+        margin-top: -3px; }
     .res_diff_tree .group .content > .tree > .item > .meta > .type {
       background-color: #111; }
     .res_diff_tree .group.removed .content > .tree > .item > .meta > .name {
@@ -126,20 +125,14 @@
       font-size: 12px;
       margin-top: 2px;
       min-width: 35px; }
-      .res_diff_tree .tree .name .old {
-        color: #4a90e2;
-        font-style: italic; }
-      .res_diff_tree .tree .name .new {
-        color: #4a90e2;
-        font-style: italic; }
-    .res_diff_tree .tree .name.arrow {
-      min-width: 13px; }
+    .res_diff_tree .tree .old {
+      font-style: italic;
+      text-decoration: line-through; }
     .res_diff_tree .tree .to {
-      color: #4a90e2; }
-    .res_diff_tree .tree .id {
-      color: #888;
-      margin-left: 4px;
-      font-size: 12px; }
+      color: #666; }
+    .res_diff_tree .tree .new {
+      color: #c95100;
+      font-style: italic; }
     .res_diff_tree .tree .item {
       margin-bottom: 10px;
       padding-left: 18px;

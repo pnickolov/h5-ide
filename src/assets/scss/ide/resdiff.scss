@@ -74,7 +74,7 @@ $dark_blue: #2C2F46;
 		.head {
 			position           : relative;
 			z-index            : 2;
-			padding            : 6px 10px 6px 25px;
+			padding            : 10px 10px 6px 25px;
 			color              : $color_added;
 			font-size          : 14px;
 			background-color   : $bg_body;
@@ -90,7 +90,9 @@ $dark_blue: #2C2F46;
 			transition         : opacity .2s;
 
 			.count {
-				margin-left: 8px;
+				margin-left : 8px;
+				color       : #666;
+				font-size   : 12px;
 			}
 
 			&:before {
@@ -124,13 +126,8 @@ $dark_blue: #2C2F46;
 				position         : absolute;
 				left             : 10px;
 				top              : 50%;
-				margin-top       : -4px;
+				margin-top       : -3px;
 			}
-		}
-
-		.count {
-			color     : #666;
-			font-size : 12px;
 		}
 
 		.content > .tree > .item > .meta > .type {
@@ -213,27 +210,20 @@ $dark_blue: #2C2F46;
 
 			// text-align: center;
 			min-width: 35px;
-
-			.old {
-				color: #4a90e2;
-				font-style: italic;
-			}
-			.new {
-				color: #4a90e2;
-				font-style: italic;
-			}
 		}
-		.name.arrow {
-			min-width: 13px;
+
+		.old {
+			font-style: italic;
+			text-decoration: line-through;
 		}
 		.to {
-			color: #4a90e2;
+			color: #666;
 		}
-		.id {
-			color: #888;
-			margin-left: 4px;
-			font-size: 12px;
+		.new {
+			color: $color_changed;
+			font-style: italic;
 		}
+
 		.item {
 			margin-bottom: 10px;
 			padding-left: 18px;

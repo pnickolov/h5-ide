@@ -97,9 +97,6 @@ define [], () ->
 
                 isEqual = true
 
-                if typeA is 'array' and typeB is 'array'
-                    console.log(keys)
-
                 for v, i in keys
 
                     if (keys[i] is keys[i - 1])

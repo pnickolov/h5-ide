@@ -57,9 +57,9 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
 
             elb.listenerDisplay = []
 
-            if elb.ListenerDescriptions.member
+            if elb.ListenerDescriptions
 
-              $.each elb.ListenerDescriptions.member, (i, listener) ->
+              $.each elb.ListenerDescriptions, (i, listener) ->
 
                 elb.listenerDisplay.push listener
 

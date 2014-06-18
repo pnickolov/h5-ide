@@ -1,5 +1,5 @@
 
-define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"], ( CloudResources, CrCollection, constant, ApiRequest )->
+define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest", "workspaces/editor/diff/DiffTree"], ( CloudResources, CrCollection, constant, ApiRequest, DiffTree )->
 
   # Helpers
   CREATE_REF = ( compOrUid, attr ) ->
@@ -40,7 +40,8 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
       @ins_in_asg= [] # instances in asg
       @component = {}
       @layout    = {}
-      @originalJson = jQuery.extend(true, {component: [], layout: []}, originalJson) #original app json
+      @originalJson = jQuery.extend(true, {component: [], layout: []}, originalJson) #extend original app json
+      @originAppJSON = originalJson #origin app json
 
       @COMPARISONOPERATOR =
         "GreaterThanOrEqualToThreshold" : ">="
@@ -489,6 +490,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
         insRes.SubnetId = CREATE_REF( subnetComp, 'resource.SubnetId' )
         insRes.VpcId  = CREATE_REF( @theVpc, 'resource.VpcId' )
         insRes.Placement.AvailabilityZone = CREATE_REF( azComp, 'resource.ZoneName' )
+        insRes.Placement.Tenancy = aws_ins.placement.tenancy
 
         if aws_ins.monitoring and aws_ins.monitoring
           insRes.Monitoring = aws_ins.monitoring.state
@@ -523,14 +525,17 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
             me.component[ volComp.uid ] = volComp
             vol_in_instance.push volComp.uid
 
-        #generate instance component
-        insComp = @add( "INSTANCE", insRes )
-
         #set instanceId of volume
         _.each vol_in_instance, (e,key)->
           volComp = me.component[ e ]
           if volComp
             volComp.resource.AttachmentSet.InstanceId = CREATE_REF( insComp, "resource.InstanceId" )
+
+        #generate instance component
+        insComp = @add( "INSTANCE", insRes )
+
+        diffTree = new DiffTree()
+        diffResult = diffTree.compare @originAppJSON.component[insComp.uid], insComp
 
         # # default_kp # TODO :
         # if default_kp and default_kp.resource and aws_ins.keyName is default_kp.resource.KeyName

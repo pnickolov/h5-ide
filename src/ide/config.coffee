@@ -164,6 +164,7 @@ require.config {
 		#############################################
 		# component                 # Merge in deploy
 		#############################################
+<<<<<<< HEAD
 		'validation'       : 'component/trustedadvisor/validation'
 		'kp_dropdown'      : 'component/kp/kpDropdown'
 		'kp_manage'        : 'component/kp/kpManage'
@@ -182,6 +183,30 @@ require.config {
 
 	### env:dev:end ###
 	shim :
+=======
+		'validation'         : 'component/trustedadvisor/validation'
+
+		#statusbar state
+		'state_status'       : 'component/statestatus/main'
+		'kp_dropdown'        : 'component/kp/kpDropdown'
+		'kp_manage'          : 'component/kp/kpManage'
+		'kp_upload'          : 'component/kp/kpUpload'
+		'sns_dropdown'       : 'component/sns/snsDropdown'
+		'sns_manage'		 : 'component/sns/snsManage'
+		'combo_dropdown'     : 'component/common/comboDropdown'
+		'toolbar_modal'      : 'component/common/toolbarModal'
+		'dhcp'               : 'component/dhcp/dhcp'
+		'snapshotManager'    : 'component/snapshot/snapshot'
+		'sslcert_manage'     : 'component/sslcert/sslCertManage'
+		'sslcert_dropdown'   : 'component/sslcert/sslCertDropdown'
+
+	shim               :
+
+		#############################################
+		# vender
+		#############################################
+
+>>>>>>> fix some bug
 		'canvon'       :
 			deps       : [ 'jquery' ]
 			exports    : 'Canvon'

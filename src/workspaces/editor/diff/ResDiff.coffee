@@ -25,7 +25,8 @@ define [
             'click .head': '_toggleItem'
 
         _filterMap: {
-            'resource.PrivateIpAddressSet.n.AutoAssign': true
+            'resource.PrivateIpAddressSet.n.AutoAssign': true,
+            'resource.AssociatePublicIpAddress': true
         }
 
         _toggleItem: ( e ) ->
@@ -65,6 +66,8 @@ define [
             @$el.html template.frame()
 
             @_genResGroup(@oldAppJSON.component, @newAppJSON.component)
+
+            @modal.resize()
 
         _genDiffInfo: (oldComps, newComps) ->
 
@@ -107,17 +110,20 @@ define [
                 title: 'New Resource',
                 diffComps: that.addedComps,
                 closed: true,
-                type: 'added'
+                type: 'added',
+                needDiff: false
             }, {
                 title: 'Removed Resource',
                 diffComps: that.removedComps,
                 closed: true,
-                type: 'removed'
+                type: 'removed',
+                needDiff: false
             }, {
                 title: 'Modified Resource',
                 diffComps: that.modifiedComps,
                 closed: false,
                 type: 'modified'
+                needDiff: true
             }]
 
             for data in groupData
@@ -132,9 +138,9 @@ define [
                         count: compCount
                     })).appendTo @$( 'article' )
 
-                    @_genResTree($group.find('.content'), data.diffComps, data.closed)
+                    @_genResTree($group.find('.content'), data.diffComps, data.closed, data.needDiff)
 
-        _genResTree: ($container, diffComps, closed) ->
+        _genResTree: ($container, diffComps, closed, needDiff) ->
 
             that = this
 

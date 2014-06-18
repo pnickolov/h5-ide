@@ -28,7 +28,6 @@ define [ 'constant' ], ( constant ) ->
                     else
                         newCompAttr = newCompAttr[attr]
 
-
             retVal =  {
                 oldAttr: oldCompAttr
                 newAttr: newCompAttr
@@ -38,6 +37,9 @@ define [ 'constant' ], ( constant ) ->
         genValue: (type, oldValue, newValue) ->
 
             result = ''
+
+            oldValue = String(oldValue)
+            newValue = String(newValue)
 
             if type is 'changed'
                 oldValue = 'none' if not oldValue

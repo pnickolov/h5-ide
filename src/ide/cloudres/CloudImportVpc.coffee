@@ -522,8 +522,8 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
             insRes.KeyName = CREATE_REF( keyPairComp, "resource.KeyName" )
 
         vol_in_instance = []
-        _.each aws_ins.blockDeviceMapping, (e,key)->
 
+        _.each aws_ins.blockDeviceMapping || [], (e,key)->
           volComp = me.volumes[ e.ebs.volumeId ]
           if not volComp then return
           volRes = volComp.resource
@@ -893,9 +893,9 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
 
         lcRes.SecurityGroups = sg
 
-        #generate BlockDeviceMappings
+        #generate BlockDeviceMapping
         bdm = lcRes.BlockDeviceMapping
-        _.each aws_lc.BlockDeviceMappings, (e,key)->
+        _.each aws_lc.BlockDeviceMapping || [], (e,key)->
           data =
             "DeviceName": e.DeviceName
             "Ebs":

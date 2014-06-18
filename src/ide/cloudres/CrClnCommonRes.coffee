@@ -271,6 +271,15 @@ define [
     trAwsXml : ( data )-> data.DescribeRouteTablesResponse.routeTableSet?.item
     parseFetchData : ( rtbs )->
       for rtb in rtbs
+        ##move local to first
+        found = -1
+        for rt,idx in rtb.routeSet
+          if rt.gatewayId is 'local'
+            found = idx
+        if found > 0
+          #move local to first
+          local_rt = rtb.routeSet.splice( found,1 )
+          rtb.routeSet.splice( 0, 0, local_rt[0] )
         rtb.routeSet = rtb.routeSet?.item || []
         rtb.associationSet = rtb.associationSet?.item || []
         rtb.propagatingVgwSet = rtb.propagatingVgwSet?.item []
@@ -280,6 +289,16 @@ define [
     parseExternalData: ( data ) ->
       @unifyApi data, @type
       for rtb in data
+        ##move local to first
+        found = -1
+        for rt,idx in rtb.routeSet
+          if rt.gatewayId is 'local'
+            found = idx
+        if found > 0
+          #move local to first
+          local_rt = rtb.routeSet.splice( found,1 )
+          rtb.routeSet.splice( 0, 0, local_rt[0] )
+
         rtb.id = rtb.routeTableId
         #delete rtb.routeTableId
       data
@@ -313,6 +332,11 @@ define [
         ins.blockDeviceMapping  = ins.blockDeviceMapping?.item || []
         ins.networkInterfaceSet = ins.networkInterfaceSet?.item || []
         ins.groupSet            = ins.groupSet?.item || []
+
+        ##sort blockDeviceMapping by deviceName
+        if ins.blockDeviceMapping and ins.blockDeviceMapping.length > 1
+          ins.blockDeviceMapping = ins.blockDeviceMapping.sort(MC.createCompareFn("deviceName"))
+
       data
 
     parseExternalData: ( data ) ->
@@ -330,6 +354,10 @@ define [
           if eni.groups
             eni.groupSet = {item: eni.groups}
             delete eni.groups
+
+        ##sort blockDeviceMapping by deviceName
+        if ins.blockDeviceMapping and ins.blockDeviceMapping.length > 1
+          ins.blockDeviceMapping = ins.blockDeviceMapping.sort(MC.createCompareFn("deviceName"))
 
       data
   }
@@ -380,18 +408,25 @@ define [
     trAwsXml : ( data )-> data.DescribeLaunchConfigurationsResponse.DescribeLaunchConfigurationsResult.LaunchConfigurations?.member
     parseFetchData : ( data )->
       for lc in data
+        lc.BlockDeviceMapping = lc.BlockDeviceMappings?.member || []
+        lc.SecurityGroups      = lc.SecurityGroups?.member || []
+        ##sort blockDeviceMapping by DeviceName
+        if lc.BlockDeviceMapping and lc.BlockDeviceMapping.length > 1
+          lc.BlockDeviceMapping = lc.BlockDeviceMapping.sort(MC.createCompareFn("DeviceName"))
+
         lc.id = lc.LaunchConfigurationARN
         lc.Name = lc.LaunchConfigurationName
         #delete lc.LaunchConfigurationARN
         #delete lc.LaunchConfigurationName
-        lc.BlockDeviceMappings = lc.BlockDeviceMappings?.member || []
-        lc.SecurityGroups      = lc.SecurityGroups?.member || []
       data
 
     parseExternalData: ( data ) ->
       @unifyApi data, @type
       @camelToPascal data
       for lc in data
+        ##sort blockDeviceMapping by DeviceName
+        if lc.BlockDeviceMapping and lc.BlockDeviceMapping.length > 1
+          lc.BlockDeviceMapping = lc.BlockDeviceMapping.sort(MC.createCompareFn("DeviceName"))
         lc.id = lc.LaunchConfigurationARN
         lc.Name = lc.LaunchConfigurationName
         #delete lc.LaunchConfigurationARN

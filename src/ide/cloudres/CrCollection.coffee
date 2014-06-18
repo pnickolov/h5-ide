@@ -15,9 +15,6 @@ define ["ApiRequest", "./CrModel", "constant", "backbone"], ( ApiRequest, CrMode
       blockDeviceMappings : 'blockDeviceMapping'
       publicDnsName       : 'dnsName'
 
-    ELB:
-        GroupSet: 'SecurityGroups'
-
     VOL:
         attachments: 'attachmentSet'
 
@@ -37,6 +34,8 @@ define ["ApiRequest", "./CrModel", "constant", "backbone"], ( ApiRequest, CrMode
     IGW:
         attachments : "attachmentSet"
 
+    LC:
+        blockDeviceMappings : "BlockDeviceMapping"
 
     # All resource type will be replaced in below list
     ALL:

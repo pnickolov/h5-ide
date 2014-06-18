@@ -534,16 +534,6 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
           if volComp
             volComp.resource.AttachmentSet.InstanceId = CREATE_REF( insComp, "resource.InstanceId" )
 
-        diffTree = new DiffTree()
-        diffResult = diffTree.compare @originAppJSON.component[insComp.uid], insComp
-        
-        # if diffrent with same comp(servergroup), update to single instance
-        if diffResult
-          insComp.serverGroupName = insComp.name
-          insComp.number = 1
-          insComp.index = 0
-          insComp.serverGroupUid = insComp.uid
-
         # # default_kp # TODO :
         # if default_kp and default_kp.resource and aws_ins.keyName is default_kp.resource.KeyName
         #   insComp.resource.KeyName = "@{" + default_kp.uid + ".resource.KeyName}"
@@ -1149,6 +1139,41 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
     cd = new ConverterData( region, vpcId, originalJson )
     func.call( cd ) for func in Converters
 
+    # process for server group
+    changedServerGroupUidMap = {}
+    diffTree = new DiffTree()
+    originComps = @originAppJSON.component
+    
+    # find all related component ref for server group
+    _.each cd.instances, (insComp) ->
+      if originComps[insComp.uid]
+        if insComp.number and insComp.number > 1
+          diffResult = diffTree.compare originComps[insComp.uid], insComp
+          if diffResult
+            changedServerGroupUidMap[insComp.serverGroupUid] = true
+      null
+
+    _.each cd.enis, (insComp) ->
+      if originComps[insComp.uid]
+        if insComp.number and insComp.number > 1
+          if diffResult
+            diffResult = diffTree.compare originComps[insComp.uid], insComp
+            changedServerGroupUidMap[insComp.serverGroupUid] = true
+            attachedInsRef = insComp.resource.Attachment.InstanceId
+            if attachedInsRef
+              instanceUid = MC.extractID(attachedInsRef)
+              insComp = originComps[instanceUid]
+              changedServerGroupUidMap[insComp.serverGroupUid] = true
+      null
+
+    # update servergroup to single instance
+    _.each cd.instances, (insComp) ->
+      if insComp.serverGroupUid and changedServerGroupUidMap[insComp.serverGroupUid]
+        insComp.serverGroupName = insComp.name
+        insComp.number = 1
+        insComp.index = 0
+        insComp.serverGroupUid = insComp.uid
+      null
 
     # find default SG
     if DEFAULT_SG["DefaultSG"]

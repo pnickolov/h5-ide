@@ -10,7 +10,7 @@ define [ '../base/model', "Design", 'constant', 'CloudResources' ], ( PropertyMo
 
           myVPCComponent = Design.instance().component( vpc_uid )
 
-          vpc = CloudResources(constant.RESTYPE.VPC, Design.instance().region()).get(myVPCComponent.get('appId')).attributes
+          vpc = CloudResources(constant.RESTYPE.VPC, Design.instance().region()).get(myVPCComponent.get('appId'))?.attributes
           appData = CloudResources(constant.RESTYPE.DHCP, Design.instance().region())
           if not vpc then return false
 

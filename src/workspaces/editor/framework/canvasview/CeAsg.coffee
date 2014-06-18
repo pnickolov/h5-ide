@@ -1,5 +1,5 @@
 
-define [ "./CanvasElement", 'i18n!nls/lang.js', "constant", "Design", "CanvasManager" ], ( CanvasElement, lang, constant, Design, CanvasManager )->
+define [ "event", "./CanvasElement", "i18n!nls/lang.js", "constant", "Design", "CanvasManager" ], ( ide_event, CanvasElement, lang, constant, Design, CanvasManager )->
 
 
   CeAsg = ()-> CanvasElement.apply( this, arguments )
@@ -10,8 +10,50 @@ define [ "./CanvasElement", 'i18n!nls/lang.js', "constant", "Design", "CanvasMan
   CeAsgProto.PATH_ASG_TITLE = "M0 21l0 -16a5 5 0 0 1 5 -5l121 0a5 5 0 0 1 5 5l0 16z"
 
   CeAsgProto.isRemovable = ()->
-    # Asg is a group. But we don't check ASG's children.
-    @model.isRemovable()
+    asg = @model
+    lc = asg.get 'lc'
+
+    if not lc or lc.__brothers.length > 0 or lc.isClone()
+      true
+    else
+      asgName = asg.get 'name'
+      lcName = lc.get 'name'
+      sprintf lang.ide.CVS_CFM_DEL_ASG, lcName, asgName, asgName, lcName
+
+  CanvasElement.prototype.remove = ()->
+    if @model.isRemoved() then return
+
+    res = @isRemovable()
+    comp = @model
+    comp_name = comp.get("name")
+
+    if _.isString( res )
+      # Confirmation
+      template = MC.template.canvasOpConfirm {
+        title   : sprintf lang.ide.CVS_CFM_DEL, comp_name
+        content : res
+      }
+      modal template, true
+
+      $("#canvas-op-confirm").one "click", ()->
+        if not comp.isRemoved()
+          comp.remove()
+          $canvas.selected_node().length = 0
+          ide_event.trigger ide_event.OPEN_PROPERTY
+        null
+
+    else if res.error
+      # Error
+      notification "error", res.error
+
+    else if res is true
+      # Do remove
+      comp.remove()
+      $canvas.selected_node().length = 0
+      ide_event.trigger ide_event.OPEN_PROPERTY
+      return true
+
+    return false
 
   CeAsgProto.asgExpand = ( parentId, x, y )->
     design = @model.design()

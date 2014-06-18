@@ -238,6 +238,7 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
 
         @__brothers[0].__bigBrother = null
         @__brothers[0].__brothers = []
+        @__brothers[0].__isClone = false
 
         for brother, i in @__brothers
           if i isnt 0

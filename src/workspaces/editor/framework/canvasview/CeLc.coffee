@@ -175,6 +175,13 @@ define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager", 'i18n!n
       MC.canvas.position el, @model.x(), @model.y()
 
 
+  ChildElementProto.isRemovable = ()->
+    lc = @model
+
+    return true if lc.__brothers.length > 0 or lc.isClone()
+
+    sprintf lang.ide.CVS_CFM_DEL_LC, lc.get( 'name' )
+
 
   null
 

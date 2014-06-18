@@ -10,6 +10,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
 
   UID        = MC.guid
   DEFAULT_SG = {}
+  DEFAULT_KP = null
   AWS_ID     = ( dict, type )->
     key = constant.AWS_RESOURCE_KEY[ type ]
     dict[ key ] or dict.resource and dict.resource[ key ]
@@ -181,6 +182,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
     () ->
       retainList = [
         'AWS.EC2.Tag'
+        'AWS.AutoScaling.Tag'
         constant.RESTYPE.KP
         constant.RESTYPE.TOPIC
         constant.RESTYPE.SUBSCRIPTION
@@ -194,6 +196,9 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
           compJson = @add null, com
           if com.type is constant.RESTYPE.IAM
             @iams[com.resource.ServerCertificateMetadata.Arn] = compJson
+          else if com.type is constant.RESTYPE.KP
+            if com.name is "DefaultKP"
+              DEFAULT_KP = com
         null
 
       null
@@ -504,14 +509,18 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
         insRes.InstanceId        = aws_ins.id
         insRes.EbsOptimized      = aws_ins.ebsOptimized
 
-        keyPairComp = @getOriginalComp(insRes.KeyName, 'KP')
-        if keyPairComp
-          insRes.KeyName = CREATE_REF(keyPairComp, 'resource.KeyName')
+        #generate KeyName for instance
+        keyPairComp = @getOriginalComp(aws_ins.keyName, 'KP')
+        if not keyPairComp
+          insRes.KeyName = aws_ins.keyName if aws_ins.keyName
+        else
+          originComp = @getOriginalComp(aws_ins.id, 'INSTANCE')
+          if originComp
+            insRes.BlockDeviceMapping = originComp.resource.BlockDeviceMapping || []
+            insRes.KeyName = originComp.resource.KeyName
+          else
+            insRes.KeyName = CREATE_REF( keyPairComp, "resource.KeyName" )
 
-        #generate BlockDeviceMapping for instance
-        originComp = @getOriginalComp(insRes.InstanceId, 'INSTANCE')
-        if originComp
-          insRes.BlockDeviceMapping = originComp.resource.BlockDeviceMapping || []
         vol_in_instance = []
         _.each aws_ins.blockDeviceMapping, (e,key)->
 
@@ -533,10 +542,6 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
           volComp = me.component[ e ]
           if volComp
             volComp.resource.AttachmentSet.InstanceId = CREATE_REF( insComp, "resource.InstanceId" )
-
-        # # default_kp # TODO :
-        # if default_kp and default_kp.resource and aws_ins.keyName is default_kp.resource.KeyName
-        #   insComp.resource.KeyName = "@{" + default_kp.uid + ".resource.KeyName}"
 
         @addLayout( insComp, false, subnetComp )
         @instances[ aws_ins.id ] = insComp
@@ -901,6 +906,17 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
           if data.Ebs.VolumeType is "io1"
             data.Ebs.Iops = e.Ebs.Iops
           bdm.push data
+
+        #generate KeyName for lc
+        keyPairComp = @getOriginalComp(aws_lc.KeyName, 'KP')
+        if not keyPairComp
+          lcRes.KeyName = aws_lc.KeyName if aws_lc.KeyName
+        else
+          originComp = @getOriginalComp(aws_lc.id, 'LC')
+          if originComp
+            lcRes.KeyName = originComp.resource.KeyName
+          else
+            lcRes.KeyName = CREATE_REF( keyPairComp, "resource.KeyName" )
 
         lcComp = @add( "LC", lcRes, aws_lc.Name )
         @addLayout lcComp

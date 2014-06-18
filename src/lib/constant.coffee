@@ -37,7 +37,7 @@ define ['MC', 'i18n!nls/lang.js'], ( MC, lang ) ->
 		"AWS.AutoScaling.ScheduledActions"			: "ScheduledActionARN"
 		"AWS.CloudWatch.CloudWatch"					: "AlarmArn"
 		"AWS.SNS.Subscription"						: ""
-		"AWS.SNS.Topic"								: ""
+		"AWS.SNS.Topic"								: "TopicArn"
 	}
 
 	# A short version

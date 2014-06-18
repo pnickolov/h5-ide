@@ -54,8 +54,10 @@ define [
           new : newJson
         })
         result = self.differ.getChangeInfo()
+        self.differ = undefined
+        return self.opsModel.saveApp( newJson )
+
         if result.hasResChange
-          return self.opsModel.saveApp( newJson )
         else
           self.differ = undefined
         return
@@ -65,14 +67,22 @@ define [
     isAppEditMode : ()-> !!@__appEdit
 
     initDesign : ()->
-      if @opsModel.isImported()
+      if @opsModel.isImported() or (@differ && @differ.needUpdateLayout)
         MC.canvas.analysis()
 
+      @design.finishDeserialization()
+      return
+
+    initEditor : ()->
+      # Try show differ dialog
       if @differ
         @differ.render()
         @differ = null
 
-      @design.finishDeserialization()
+      # Try show import dialog
+      if @opsModel.isImported()
+        @updateTab()
+        @view.confirmImport()
       return
 
     refreshResource : ()->
@@ -150,7 +160,7 @@ define [
     onOpsModelStateChanged : ()->
       if not @isInited() then return
 
-      if @opsmodel.testState( OpsModel.State.Saving ) then return
+      if @opsModel.testState( OpsModel.State.Saving ) then return
 
       @updateTab()
       @view.toggleProcessing()

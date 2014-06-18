@@ -3,7 +3,8 @@ define [
   "./StackView"
   "OpsModel"
   "./template/TplOpsEditor"
-], ( StackView, OpsModel, OpsEditorTpl )->
+  "UI.modalplus"
+], ( StackView, OpsModel, OpsEditorTpl, Modal )->
 
   StackView.extend {
     bindUserEvent : ()->
@@ -39,6 +40,29 @@ define [
           .on('mousedown.CANVAS_EVENT', MC.canvas.event.ctrlMove.mousedown)
           .on('mousedown.CANVAS_EVENT', '#node-action-wrap', MC.canvas.nodeAction.popup)
           .on('mouseenter.CANVAS_EVENT mouseleave.CANVAS_EVENT', '.node', MC.canvas.event.nodeHover)
+      return
+
+    confirmImport : ()->
+      self = @
+
+      modal = new Modal({
+        title        : "App Imported"
+        template     : OpsEditorTpl.modal.confirmImport({ name : @workspace.opsModel.get("name") })
+        confirm      : { text : "Done" }
+        cancel       : { hide : true }
+        disableClose : true
+        hideClose    : true
+        onConfirm    : ()->
+          modal.tpl.find(".modal-confirm").attr("disabled", "disabled")
+          json = self.workspace.design.serialize()
+          json.name = $("#ImportSaveAppName").val()
+          self.workspace.opsModel.saveApp(json).then ()->
+            modal.close()
+          , ( err )->
+            notification "error", err.msg
+            modal.tpl.find(".modal-confirm").removeAttr("disabled")
+            return
+      })
       return
 
     renderSubviews : ()->

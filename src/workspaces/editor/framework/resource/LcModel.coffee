@@ -49,6 +49,7 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
       @addBrother dolly
 
       for conn in @connections()
+        if conn.type is 'ElbAmiAsso' then continue
         connClass = Design.modelClassForType( conn.type )
         target = conn.getOtherTarget @type
         new connClass dolly, target
@@ -56,6 +57,8 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
       dolly
 
     syncBorthersConn: ( conn, add ) ->
+      if conn.type is 'ElbAmiAsso' then return
+
       syncTarget = []
 
       if @isClone()

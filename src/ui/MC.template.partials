@@ -267,7 +267,7 @@
 		<dt>Image Size</dt>
 		<dd>{{imageSize}}</dd>
 		<dt>Support Instance Type</dt>
-		<dd>{{instance_type}}</dd>
+		<dd>{{instanceType}}</dd>
 	</dl>
 </div>
 

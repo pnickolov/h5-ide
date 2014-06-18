@@ -465,7 +465,7 @@ function program3(depth0,data) {
     + "</dd>\n		<dt>Image Size</dt>\n		<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.imageSize)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</dd>\n		<dt>Support Instance Type</dt>\n		<dd>"
-    + escapeExpression(((stack1 = (depth0 && depth0.instance_type)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + escapeExpression(((stack1 = (depth0 && depth0.instanceType)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</dd>\n	</dl>\n</div>";
   return buffer;
   };

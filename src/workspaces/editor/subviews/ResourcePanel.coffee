@@ -180,8 +180,22 @@ define [
         models = CloudResources(@__amiType,region).getModels()
         amiData = _.findWhere(models, {'id': data.id})?.toJSON()
         amiData.imageSize = amiData.imageSize || amiData.blockDeviceMapping[amiData.rootDeviceName].volumeSize
+        amiData.instanceType = @addInstanceType(amiData).join(", ")
         MC.template.bubbleAMIInfo(amiData)
 
+    addInstanceType: (ami)->
+      region = @workspace.opsModel.get('region')
+      if not ami or not region then return []
+      data = App.model.getOsFamilyConfig( region )
+      try
+        data = data[ ami.osFamily ] || data[ constant.OS_TYPE_MAPPING[ami.osType] ]
+        data = if ami.rootDeviceType  is "ebs" then data.ebs else data['instance store']
+        data = if ami.architecture is "x86_64" then data["64"] else data["32"]
+        data = data[ ami.virtualizationType || "paravirtual" ]
+      catch e
+        console.error "Invalid instance type list data", ami, App.model.getOsFamilyConfig( region )
+        data = []
+      data || []
     updateDisableItems : ()->
       if not @workspace.isAwake() then return
       @updateDisabledAz()

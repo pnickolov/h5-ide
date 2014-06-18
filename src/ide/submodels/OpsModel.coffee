@@ -388,7 +388,12 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       self = @
 
       # Send Request
-      ApiRequest("app_save_info", {spec:newJson}).fail ( error )-> self.__saveAppDefer.reject( error )
+      ApiRequest("app_save_info", {spec:newJson}).then (res)->
+        if not self.id
+          self.requestId = res[0]
+        return
+      , ( error )->
+        self.__saveAppDefer.reject( error )
 
       # The real promise
       @__saveAppDefer.promise.then ()->

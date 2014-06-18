@@ -45,7 +45,7 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
         if not cln
           console.warn "Cannot find cloud resource collection for type:", type
           continue
-        cln.__parseExternalData d, extraAttr
+        cln.__parseExternalData d, extraAttr, @__region
 
       # Nasty, but it should work.
       # Describe instances belongs to ASG.

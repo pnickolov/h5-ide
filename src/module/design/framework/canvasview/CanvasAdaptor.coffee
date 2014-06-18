@@ -39,8 +39,14 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
 
     if Design.__instance.shouldDraw()
       # Update SgLine
-      _.each Design.modelClassForType("SgRuleLine").allObjects(), ( cn )->
-        cn.draw()
+      if ls is 4
+        #hide sg line
+        Canvon("#line_layer").addClass("hide-sg")
+      else
+        #show sg line
+        Canvon("#line_layer").removeClass("hide-sg")
+        _.each Design.modelClassForType("SgRuleLine").allObjects(), ( cn )->
+          cn.draw()
     null
 
   $canvas.node = ()->

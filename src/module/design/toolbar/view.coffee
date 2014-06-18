@@ -40,6 +40,7 @@ define [ 'MC', 'event',
             'click #toolbar-elbow'          : 'clickLineStyleElbow'
             'click #toolbar-bezier-q'       : 'clickLineStyleBezierQ'
             'click #toolbar-bezier-qt'      : 'clickLineStyleBezierQT'
+            'click #toolbar-hide-sg'        : 'clickLineStyleHide'
 
             'click #toolbar-run'            : 'clickRunIcon'
             'click .icon-save'              : 'clickSaveIcon'
@@ -786,6 +787,10 @@ define [ 'MC', 'event',
 
         clickLineStyleBezierQT  : (event) ->
             $canvas.lineStyle( 3 )
+            null
+
+        clickLineStyleHide      : (event) ->
+            $canvas.lineStyle( 4 )
             null
 
         clickRefreshApp         : (event) ->

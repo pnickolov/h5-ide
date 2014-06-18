@@ -145,9 +145,10 @@
 </div> </div>
 
 <!-- {{modal.confirmImport}} -->
-<p>Well done. Your VPC {{name}} has been successfully imported as VisualOps app.</p>
-<p>Give this app an appropriate name. Or rename it later by editing app.</p>
-<p>App Name <input id="ImportSaveAppName" class="input" value="{{name}}" type="string" autofocus> </p>
+<p class="modal-text-major">Well done! Your VPC {{name}} has been successfully imported as VisualOps app.</p>
+<p class="modal-text-major">Give this app an appropriate name.</p>
+<div class="modal-control-group">
+<label for="ImportSaveAppName">App Name</label> <input id="ImportSaveAppName" class="input" value="{{name}}" type="string" autofocus> </div>
 <p>Now you can easily manage the resources and lifecycle of the app within VisualOps.</p>
 
 <!-- {{saveAppToStack}} -->

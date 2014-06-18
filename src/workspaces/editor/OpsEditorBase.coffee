@@ -83,7 +83,7 @@ define [
           # When we got this error, the opsmodel will destroy itself, resulting removal of the editor.
           return
 
-        notification "error", "Fail to load data, please retry."
+        notification "error", "Failed to load data, please retry."
         self.remove()
 
       return Workspace.apply @, arguments
@@ -99,7 +99,7 @@ define [
         self.__hasAdditionalData = true
         self.switchToReady()
       , ()->
-        notification "error", "Fail to load aws data, please retry."
+        notification "error", "Failed to load aws data, please retry."
         self.remove()
 
       return

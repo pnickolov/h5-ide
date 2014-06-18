@@ -102,7 +102,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
 
       self = @
       if @isImported()
-        return CloudResources( "OpsResource", @getVpcId() ).init( @get("region") ).fetch().then ()->
+        return CloudResources( "OpsResource", @getVpcId() ).init( @get("region") ).fetchForceDedup().then ()->
           json = self.generateJsonFromRes()
           self.__setJsonData json
           self

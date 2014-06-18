@@ -46,6 +46,8 @@ define [
 
         if self.isRemoved() then return
 
+        if self.opsModel.isImported() then return
+
         newJson = self.opsModel.generateJsonFromRes()
         self.differ = new ResDiff({
           old : self.opsModel.getJsonData()
@@ -63,10 +65,14 @@ define [
     isAppEditMode : ()-> !!@__appEdit
 
     initDesign : ()->
-      StackEditor.prototype.initDesign.call this
+      if @opsModel.isImported()
+        MC.canvas.analysis()
+
       if @differ
         @differ.render()
         @differ = null
+
+      @design.finishDeserialization()
       return
 
     refreshResource : ()->

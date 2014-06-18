@@ -10,19 +10,15 @@
 
 define [
   "./editor/ProgressViewer"
-  "./editor/UnmanagedViewer"
   "./editor/StackEditor"
   "./editor/AppEditor"
   './editor/framework/DesignBundle'
-], ( ProgressViewer, UnmanagedViewer, StackEditor, AppEditor )->
+], ( ProgressViewer, StackEditor, AppEditor )->
 
   # OpsEditor defination
   OpsEditor = ( opsModel )->
     if not opsModel
       throw new Error("Cannot find opsmodel while openning workspace.")
-
-    if opsModel.isImported()
-      return new UnmanagedViewer opsModel
 
     if opsModel.isProcessing()
       return new ProgressViewer opsModel

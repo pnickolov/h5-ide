@@ -89,7 +89,6 @@ define [
   # Controller
   class OpsProgress extends Workspace
 
-    isFixed     : ()-> false
     isWorkingOn : ( attribute )-> @opsModel is attribute
     tabClass    : ()-> "icon-app-pending"
     title       : ()-> @opsModel.get("name") + " - app"

@@ -11,6 +11,22 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
 
     init : ( region )-> @__region = region; @
 
+    # Fetches
+    fetchForceDedup : ()->
+      @__forceDedup = false
+      p = @fetchForce()
+      @__forceDedup = true
+      p
+
+    fetchForce : ()->
+      if @__forceDedup
+        @__forceDedup = false
+        d = Q.defer()
+        d.resolve()
+        d.promise
+
+      CrCollection.prototype.fetchForce.call this
+
     doFetch : ()->
       console.assert( @__region, "CrOpsCollection's region is not set before fetching data. Need to call init() first" )
       ApiRequest("resource_vpc_resource", {

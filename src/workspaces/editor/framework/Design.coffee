@@ -767,53 +767,6 @@ define [
       null
     return result
 
-  DesignImpl.prototype.clearResourceInCache = ()->
-    # module/design/model would like to clear all the data in the data.resource_list
-    resource_list = CloudResources(@type, @region())
-    if not resource_list then return
-
-    @eachComponent ( comp )->
-      appId = comp.get("appId")
-
-      if appId and appId.indexOf(":autoScalingGroup:")>0 and resource_list.get(appId)
-        #appId is asg, need delete instance in asg
-        member = resource_list.get(appId).toJSON().Instances
-        if member.member then member = member.member
-        for val,key in member
-          if _.isString( val )
-            resource_list.remove resource_list.get(val)
-          else
-            resource_list.remove resource_list.get(val.InstanceId)
-
-      resource_list.remove resource_list.get(appId)
-      #delete elb attributes (disable these code because it's already embed in ELB)
-      # if comp.type is constant.RESTYPE.ELB
-      #   elb_name = comp.get("name") + "---" + Design.instance().get("id")
-      #   if resource_list[ elb_name ]
-      #     delete resource_list[ elb_name ]
-
-
-    #clear Subscriptions in current app
-    subList = CloudResources( constant.RESTYPE.SUBSCRIPTION, @region() )
-    idx     = 0
-    _.each subList.toJSON(), (e,index)=>
-      if subList.at(index).toJSON().TopicArn.indexOf( @get("id") ) > 0
-        subList.remove subList.at(index)
-      else
-        idx++
-
-    #clear NotificationConfigurations in current app
-    lcList = CloudResources( constant.RESTYPE.NC , @region() )
-    idx    = 0
-    _.each lcList.toJSON(), (e,index)=>
-      if lcList.at(index).toJSON().TopicARN.indexOf( @get("id") ) > 0
-          lcList.remove lcList.at(index)
-      else
-          idx++
-
-    console.debug "data.resource_list has been cleared", resource_list
-    null
-
   _.extend DesignImpl.prototype, Backbone.Events
   DesignImpl.prototype.on = ( event )->
     # Do nothing for AwsResourceUpdated if it's in stack mode.

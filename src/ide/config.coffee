@@ -165,11 +165,6 @@ require.config {
 		#############################################
 		'validation'         : 'component/trustedadvisor/validation'
 
-		# tmp will delete in 2 days
-		'jsona'				 : 'component/resdiff/a'
-		'jsonb'				 : 'component/resdiff/b'
-
-
 		#statusbar state
 		'state_status'       : 'component/statestatus/main'
 		'kp_dropdown'        : 'component/kp/kpDropdown'
@@ -232,7 +227,6 @@ require.config {
 			"lib/handlebarhelpers"
 			"event"
 		]
-		"lib/aws/aws" : []
 		"ui/ui" : [
 			'UI.tooltip'
 			'UI.scrollbar'
@@ -293,7 +287,6 @@ require.config {
 		"workspaces/editor/subviews/PropertyPanel" : []
 
 	bundleExcludes : # This is a none requirejs option, but it's used by compiler to exclude some of the source.
-		"lib/aws/aws" : ["Design"]
 		"component/sgrule/SGRulePopup" : [ "Design" ]
 		"component/stateeditor/stateeditor" : [
 			"component/stateeditor/lib/ace"
@@ -318,7 +311,7 @@ requirejs.onError = ( err )->
 		console.error "[RequireJS Error]", err, err.stack
 
 
-require ["constant", 'ide/Application', "workspaces/Dashboard", "ide/cloudres/CrBundle", "MC", 'lib/aws/aws'], ( constant, Application, Dashboard, CrBundle ) ->
+require ["constant", 'ide/Application', "workspaces/Dashboard", "ide/cloudres/CrBundle", "MC", 'lib/aws'], ( constant, Application, Dashboard, CrBundle ) ->
 	(new Application()).initialize().then ()-> new Dashboard(); return
 
 , ( err )->

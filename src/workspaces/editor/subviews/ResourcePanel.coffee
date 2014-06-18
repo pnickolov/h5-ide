@@ -4,20 +4,17 @@ define [
   "Design"
   "../template/TplLeftPanel"
   "constant"
-  "ResDiff"
   'dhcp'
   'snapshotManager'
   'sslcert_manage'
   'sns_manage'
   'kp_manage'
-  'jsona'
-  'jsonb'
   './AmiBrowser'
   'i18n!nls/lang.js'
   'ApiRequest'
   "backbone"
   'UI.radiobuttons'
-], ( CloudResources, Design, LeftPanelTpl, constant, ResDiff, dhcpManager, snapshotManager, sslCertManager, snsManager, keypairManager, oldAppJSON, newAppJSON, AmiBrowser, lang, ApiRequest )->
+], ( CloudResources, Design, LeftPanelTpl, constant, dhcpManager, snapshotManager, sslCertManager, snsManager, keypairManager, AmiBrowser, lang, ApiRequest )->
 
   # Update Left Panel when window size changes
   __resizeAccdTO = null

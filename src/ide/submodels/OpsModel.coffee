@@ -408,12 +408,20 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
           if not @__updateAppDefer
             console.warn "UpdateAppDefer is null when setStatusWithWSEvent with `update` event."
           else
-            d = @__updateAppDefer
-            @__updateAppDefer = null
-            if state.completed
-              d.resolve()
-            else
+            if not state.completed
+              d = @__updateAppDefer
+              @__updateAppDefer = null
               d.reject McError( ApiRequest.Errors.OperationFailure, error )
+            else
+              # Grab new json from server after app update succeeded.
+              @__jsonData = null
+              self = @
+              @fetchJsonData().then ()->
+                d = self.__updateAppDefer
+                self.__updateAppDefer = null
+                d.resolve()
+          return
+
         when "terminate"
           if state.completed
             toState = OpsModelState.Destroyed

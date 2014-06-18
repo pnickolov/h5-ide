@@ -26,7 +26,7 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
         if asg_data
             @set 'hasData', true
             @set 'awsResName', asg_data.AutoScalingGroupName
-            @set 'arn', asg_data.AutoScalingGroupARN
+            @set 'arn', asg_data.id
             @set 'createTime', asg_data.CreatedTime
 
             if asg_data.TerminationPolicies and asg_data.TerminationPolicies.member

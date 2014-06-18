@@ -412,7 +412,7 @@ define [
           return {
             "title" : data.Name
             "Name"  : data.Name
-            "Availability Zone" : data.AvailabilityZones.member.join(", ")
+            "Availability Zone" : data.AvailabilityZones.join(", ")
             "Create Time" : data.CreatedTime
             "Default Cooldown" : data.DefaultCooldown
             "Desired Capacity" : data.DesiredCapacity
@@ -422,7 +422,7 @@ define [
             "Health Check Type" : data.HealthCheckType
             #Instance : data.Instances
             "Launch Configuration" : data.LaunchConfigurationName
-            "Termination Policy"   : data.TerminationPolicies.member.join(", ")
+            "Termination Policy"   : data.TerminationPolicies.join(", ")
             "Arn"   : data.id
           }
         when "ELB"

@@ -441,6 +441,7 @@ define [ '../base/view',
                 data.term_policy_brief = data.terminationPolicies.join(" > ")
                 data.can_add_policy = data.policies.length < 25
 
+            console.debug data
             @$el.html template data
 
             @processNotiTopic null, true

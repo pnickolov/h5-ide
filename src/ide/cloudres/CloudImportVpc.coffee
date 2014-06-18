@@ -503,7 +503,8 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
 
         #generate BlockDeviceMapping for instance
         originComp = @getOriginalComp(insRes.InstanceId, 'INSTANCE')
-        insRes.BlockDeviceMapping = originComp.resource.BlockDeviceMapping || []
+        if originComp
+          insRes.BlockDeviceMapping = originComp.resource.BlockDeviceMapping || []
         vol_in_instance = []
         _.each aws_ins.blockDeviceMapping, (e,key)->
 
@@ -898,7 +899,11 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
     ()-> #ASG
       me = @
       for aws_asg in @getResourceByType "ASG"
+        
         aws_asg = aws_asg.attributes
+
+        if not @lcs[aws_asg.LaunchConfigurationName]
+          continue
 
         asgRes =
           "AutoScalingGroupARN" : ""

@@ -110,7 +110,7 @@ define [
         @view = null
 
       if @isAwake() and not @__inited
-        @initEditor()
+        @__initEditor()
 
       return
 
@@ -128,7 +128,7 @@ define [
 
       # The Editor is not inited. Do it now.
       if not @__inited
-        @initEditor()
+        @__initEditor()
       else
         @design.use()
         @showEditor()
@@ -141,7 +141,7 @@ define [
       return
 
     isInited : ()-> !!@__inited
-    initEditor : ()->
+    __initEditor : ()->
       @__inited = true
       @design = new Design( @opsModel )
 
@@ -155,10 +155,14 @@ define [
 
       @initDesign()
 
+      @initEditor()
+
       # If the OpsModel doesn't have thumbnail, generate one for it.
       if @opsModel.isPresisted() and not @opsModel.getThumbnail()
         @saveThumbnail()
       return
+
+    initEditor : ()->
 
     saveThumbnail : ()->
       Thumbnail.generate( $("#svg_canvas") ).then ( thumbnail )=> @opsModel.saveThumbnail( thumbnail )

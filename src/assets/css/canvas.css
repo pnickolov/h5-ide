@@ -332,6 +332,10 @@
 	stroke-dasharray: 10,5;
 }
 
+.hide-sg .line-sg {
+	display: none;
+}
+
 .line-sg.view-hover,
 .line-sg.view-keephover {
 	stroke-width: 3px;

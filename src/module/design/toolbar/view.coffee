@@ -40,6 +40,7 @@ define [ 'MC', 'event',
             'click #toolbar-elbow'          : 'clickLineStyleElbow'
             'click #toolbar-bezier-q'       : 'clickLineStyleBezierQ'
             'click #toolbar-bezier-qt'      : 'clickLineStyleBezierQT'
+            'click #toolbar-hide-sg'        : 'clickLineStyleHide'
 
             'click #toolbar-run'            : 'clickRunIcon'
             'click .icon-save'              : 'clickSaveIcon'
@@ -86,6 +87,7 @@ define [ 'MC', 'event',
                 is_style1: null
                 is_style2: null
                 is_style3: null
+                is_style4: null
 
             #restore line style
             switch $canvas.lineStyle()
@@ -105,6 +107,11 @@ define [ 'MC', 'event',
                 when 3
                     lines.is_style3 = true
                     lines.icon = 'icon-bezier-qt'
+
+                when 4
+                    lines.is_style4 = true
+                    lines.icon = 'icon-hide-sg'
+
 
             this.model.attributes.lines = lines
 
@@ -786,6 +793,10 @@ define [ 'MC', 'event',
 
         clickLineStyleBezierQT  : (event) ->
             $canvas.lineStyle( 3 )
+            null
+
+        clickLineStyleHide      : (event) ->
+            $canvas.lineStyle( 4 )
             null
 
         clickRefreshApp         : (event) ->

@@ -80,7 +80,8 @@
 .icon-save-app,
 .icon-support,
 .icon-reload,
-.icon-resources {
+.icon-resources,
+.icon-hide-sg {
 	&:before{
 		font : 16px/1em "MCIcon";
 		font-weight : normal;
@@ -159,6 +160,7 @@
 .icon-support:before {content:"\F155";}
 .icon-reload:before {content:"\F156";}
 .icon-resources:before {content:"\F157";}
+.icon-hide-sg:before {content:"\F160";}
 
 // .icon-outbound:before {content:"out";}
 // .icon-inbound:before {content:"in";}

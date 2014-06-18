@@ -525,14 +525,14 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
             me.component[ volComp.uid ] = volComp
             vol_in_instance.push volComp.uid
 
+        #generate instance component
+        insComp = @add( "INSTANCE", insRes )
+
         #set instanceId of volume
         _.each vol_in_instance, (e,key)->
           volComp = me.component[ e ]
           if volComp
             volComp.resource.AttachmentSet.InstanceId = CREATE_REF( insComp, "resource.InstanceId" )
-
-        #generate instance component
-        insComp = @add( "INSTANCE", insRes )
 
         diffTree = new DiffTree()
         diffResult = diffTree.compare @originAppJSON.component[insComp.uid], insComp

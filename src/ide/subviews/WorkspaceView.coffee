@@ -4,10 +4,6 @@
 
 define [ "backbone", "jquerysort" ], () ->
 
-    noPropagate = ( event )->
-      event.stopPropagation()
-      return
-
     Backbone.View.extend {
 
       el : $("#tabbar-wrapper")[0]
@@ -15,14 +11,13 @@ define [ "backbone", "jquerysort" ], () ->
       events :
         "click li"              : "onClick"
         "click .icon-close"     : "onClose"
-        "mousedown .icon-close" : noPropagate
 
       initialize : ( options )->
         self = this
 
         @$el.find("#ws-tabs").dragsort {
           horizontal : true
-          dragSelectorExclude : ".fixed"
+          dragSelectorExclude : ".fixed, .icon-close"
           dragEnd : ()->
             self.updateTabOrder()
             return

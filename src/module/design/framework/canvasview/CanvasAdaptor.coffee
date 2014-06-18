@@ -30,10 +30,11 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
       return null
 
   $canvas.lineStyle = (ls)->
-    # 0:straight  1:elbow line(fold)  2:bezier q,  3:bezier qt
+    # 0:straight  1:elbow line(fold)  2:bezier q,  3:bezier qt 4:hide
 
     if ls is undefined
-      return isNaN( parseInt( localStorage.getItem("canvas/lineStyle"),10 ) ) || 2
+      stored_style = localStorage.getItem("canvas/lineStyle")
+      return if stored_style is null then 2 else parseInt(stored_style,10)
 
     localStorage.setItem("canvas/lineStyle", ls)
 

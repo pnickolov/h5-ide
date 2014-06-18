@@ -333,9 +333,11 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
 
   }, {
 
-    handleTypes : constant.RESTYPE.LC
+    handleTypes: constant.RESTYPE.LC
 
-    deserialize : ( data, layout_data, resolve )->
+    resolveFirst: true
+
+    preDeserialize: ( data, layout_data ) ->
       #old format state support
       if not (_.isArray(data.state) and data.state.length)
         data.state = null
@@ -365,7 +367,12 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
           rootDeviceType : layout_data.rootDeviceType
         }
 
-      model = new Model( attr )
+      new Model( attr )
+
+      null
+
+    deserialize : ( data, layout_data, resolve )->
+      model = resolve data.uid
 
       rd = model.getAmiRootDevice()
 

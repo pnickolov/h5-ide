@@ -116,6 +116,9 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
       else
         ComplexResModel.prototype.get.apply context, arguments
 
+    toJSON: ->
+      ComplexResModel.prototype.toJSON.apply @__bigBrother or @
+
 
 
 

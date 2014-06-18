@@ -193,12 +193,12 @@ define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone", "con
           return
 
       # Mark the item as read if the current tab is the item's tab.
-      if App.WS.isReady() and App.workspaces
+      item.readed = App.WS.isReady()
+
+      if App.workspaces
         space = App.workspaces.getAwakeSpace()
         ops = @appList().get( item.targetId ) or @stackList().get( item.targetId )
         item.readed = space.isWorkingOn( ops )
-      else
-        item.readed = false
 
       # Prepend the item to the list.
       info_list.splice idx, 1

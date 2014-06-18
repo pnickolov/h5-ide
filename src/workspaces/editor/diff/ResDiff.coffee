@@ -235,9 +235,9 @@ define [
             that = this
 
             hasResChange = false
-            if _.keys(that.addedComps).length or
-                _.keys(that.removedComps).length or
-                _.keys(that.modifiedComps).length
+            if _.size(that.addedComps) or
+                _.size(that.removedComps) or
+                _.size(that.modifiedComps)
                     hasResChange = true
 
             needUpdateLayout = _.some that.addedComps, ( comp ) ->

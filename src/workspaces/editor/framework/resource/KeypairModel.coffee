@@ -8,10 +8,16 @@ define [ "constant", "../ComplexResModel", "../ConnectionModel"  ], ( constant, 
 
     serialize : ( components )->
       kp = @getTarget( constant.RESTYPE.KP )
+
       if kp
         otherTarget = @getOtherTarget( kp )
+        otherTargetComp = components[ otherTarget.id ]
+
+        if not otherTargetComp then return
+
         ref = kp.createRef( "KeyName" )
-        components[ otherTarget.id ].resource.KeyName = ref
+
+        otherTargetComp.resource.KeyName = ref
 
         groupMembers = if otherTarget.groupMembers then otherTarget.groupMembers() else []
 

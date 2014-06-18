@@ -230,6 +230,8 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
         dolly = lc.clone()
         @addChild dolly
         dolly.draw true
+        for conn in dolly.connections()
+          conn.draw() if conn.isVisual() or conn.type is 'SgAsso'
 
       @
 
@@ -548,6 +550,8 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
       if obj and not obj.parent() then return obj
 
       obj.clone()
+
+
 
     deserialize : ( data, layout_data, resolve )->
 

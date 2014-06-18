@@ -226,11 +226,11 @@ define [ "Design", "CanvasManager", "./ResourceModel", "constant", "./canvasview
 
       layout
 
-    parent : ()-> @get( '__parent' ) || null
-    x      : ()-> @attributes.x || 0
-    y      : ()-> @attributes.y || 0
-    width  : ()-> @attributes.width || 0
-    height : ()-> @attributes.height || 0
+    parent : ()-> @get( '__parent' ) or null
+    x      : ()-> @get( 'x' ) or 0
+    y      : ()-> @get( 'y' ) or 0
+    width  : ()-> @get( 'width' ) or 0
+    height : ()-> @get( 'height' ) or 0
 
   }, {
     extend : ( protoProps, staticProps )->

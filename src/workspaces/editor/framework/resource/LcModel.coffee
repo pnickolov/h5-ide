@@ -9,9 +9,6 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
       x: 2
       y: 3
 
-    x: ()-> @parent()?.x() + @offset.x
-    y: ()-> @parent()?.y() + @offset.y
-
     defaults : ()->
       x        : 0
       y        : 0
@@ -45,6 +42,7 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
         @__isClone = true
 
       ComplexResModel.call( this, attr, option )
+
 
     clone: ->
       dolly = new Model null, clone: true
@@ -104,13 +102,19 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
 
       @
 
-    set: ->
-      context = @getContext arguments[ 0 ]
+    set: ( attr ) ->
+      context = @getContext attr
       ComplexResModel.prototype.set.apply context, arguments
 
-    get: ->
-      context = @getContext arguments[ 0 ]
-      ComplexResModel.prototype.get.apply context, arguments
+    get: ( attr ) ->
+      context = @getContext attr
+
+      if attr is 'x'
+        @parent()?.x() + @offset.x
+      else if attr is 'y'
+        @parent()?.y() + @offset.y
+      else
+        ComplexResModel.prototype.get.apply context, arguments
 
 
 

@@ -411,7 +411,7 @@ define [
     trAwsXml : ( data )-> data.DescribePoliciesResponse.DescribePoliciesResult.ScalingPolicies?.member
     parseFetchData : ( sps )->
       for sp in sps
-        sp.id   = sp.policyARN
+        sp.id   = sp.PolicyARN
         sp.Name = sp.PolicyName
         #delete sp.PolicyName
       sps

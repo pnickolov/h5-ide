@@ -33,7 +33,7 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
     # 0:straight  1:elbow line(fold)  2:bezier q,  3:bezier qt
 
     if ls is undefined
-      return parseInt(localStorage.getItem("canvas/lineStyle"),10) || 2
+      return isNaN( parseInt( localStorage.getItem("canvas/lineStyle"),10 ) ) || 2
 
     localStorage.setItem("canvas/lineStyle", ls)
 

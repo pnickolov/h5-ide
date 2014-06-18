@@ -119,6 +119,20 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
     toJSON: ->
       ComplexResModel.prototype.toJSON.apply @__bigBrother or @
 
+    setName : ( name )->
+      if @get("name") is name
+        return
+
+      @set "name", name
+
+      context = @getBigBrother() or @
+
+      context.draw()
+      _.invoke context.__brothers, 'draw'
+
+
+      null
+
 
 
 

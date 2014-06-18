@@ -55,9 +55,9 @@ define ['UI.canvg', 'component/exporter/Download'], ()->
 
 
     # Insert the document so that we can calculate the style.
-    $wrap = $("#export-png-wrap")
+    $wrap = $("#ExportPngWrap")
     if not $wrap.length
-      $wrap = $("<div id='export-png-wrap'></div>").appendTo("body").hide()
+      $wrap = $("<div id='ExportPngWrap'></div>").appendTo("body").hide()
 
     $wrap.attr "class", $svg_canvas_element.parents("#canvas_body").attr("class")
 

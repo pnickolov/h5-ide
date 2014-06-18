@@ -218,6 +218,9 @@
 .elb-asg .resource-item {
   height: 5em; }
 
+.resource-list-asg .resource-item {
+  height: 5em; }
+
 .resource-item {
   width: 70px;
   padding-top: 60px;

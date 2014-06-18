@@ -174,10 +174,6 @@ define ["ApiRequest", "./CrModel", "constant", "backbone"], ( ApiRequest, CrMode
       @add awsData, extraAttr
       return
 
-
-      data
-
-
     # Override this method to parse the result of the fetch.
     parseFetchData : ( res )-> res
 

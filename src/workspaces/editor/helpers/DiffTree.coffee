@@ -1,6 +1,10 @@
 define [], () ->
 
-    DiffTree = () ->
+    DiffTree = (option) ->
+
+        this.filterMap = {
+            'resource.PrivateIpAddressSet.n.AutoAssign': true
+        }
 
         isArray = (value) ->
             return value and typeof value is 'object' and value.constructor is Array
@@ -17,16 +21,27 @@ define [], () ->
 
             for v, i in ([0...a.length])
                 for v, j in ([0...b.length])
-                    if not _compare(a[i], b[j], '', [], [])
+                    if not _compare.call(this, a[i], b[j], '', null, [])
                         tmp = b[i]
                         b[i] = b[j]
                         b[j] = tmp
 
         _compare = (a, b, key, path, resultJSON) ->
 
-            path.push(key) if key
+            if path
+                
+                path = path.concat([key]) if key
+                if path.length > 2
+                    attrPathAry = path.slice(2)
 
-            pathStr = path.join('.')
+                    attrPathAry = _.map attrPathAry, (path) ->
+                        num = Number(path)
+                        return 'n' if num >= 0
+                        return path
+
+                    attrPath = attrPathAry.join('.')
+                    if this.filterMap[attrPath]
+                        return
 
             if not a and not b
                 return
@@ -70,9 +85,9 @@ define [], () ->
                     diffAryResult = {}
                     
                     if a.length < b.length
-                        _diffAry(a, b)
+                        _diffAry.call(this, a, b)
                     else
-                        _diffAry(b, a)
+                        _diffAry.call(this, b, a)
 
                 keys = []
                 for v of a
@@ -91,7 +106,7 @@ define [], () ->
                     if (keys[i] is keys[i - 1])
                         continue;
 
-                    hasDiff = _compare(a and a[keys[i]], b and b[keys[i]], keys[i], path, resultJSON[key])
+                    hasDiff = _compare.call(this, a and a[keys[i]], b and b[keys[i]], keys[i], path, resultJSON[key])
 
                     if hasDiff
                         isEqual = false
@@ -101,6 +116,8 @@ define [], () ->
                     delete resultJSON[key]
 
             else
+
+                path.length = 0 if path
 
                 if a isnt b
                     haveDiff = true
@@ -117,7 +134,7 @@ define [], () ->
         this.compare = (json1, json2) ->
 
             resultJSON = {}
-            _compare(json1, json2, 'result', [], resultJSON)
+            _compare.call(this, json1, json2, 'result', [], resultJSON)
             return resultJSON.result
 
         null

@@ -95,7 +95,7 @@
 
 <!-- {{amiItem}} -->
 {{#each this}}<tr class="item" data-id="{{@key}}">
-  <td><div class="toggle-fav tooltip" data-tooltip="{{i18n 'RES_TIT_TOGGLE_FAVORITE'}}"></div></td>
+  <td><div class="toggle-fav {{#if faved}}fav{{/if}} tooltip" data-tooltip="{{i18n 'RES_TIT_TOGGLE_FAVORITE'}}"></div></td>
   <td>{{@key}}</td>
   <td>
     <span class="ami-table-name">{{name}}</span>

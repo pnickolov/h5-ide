@@ -88,6 +88,7 @@ define ['../template/TplAmiBrowser', 'i18n!nls/lang.js', 'UI.modalplus', "ApiReq
             filters:
               ami: {name, platform, isPublic, architecture, rootDeviceType, perPageNum, returnPage}
           ).then (result)->
+            result = self.addFavStar(result)
             self.communityAmiData = result.ami?.result || {}
             self.communityAmiRender(result)
           , (result)->
@@ -105,6 +106,16 @@ define ['../template/TplAmiBrowser', 'i18n!nls/lang.js', 'UI.modalplus', "ApiReq
         search: (event)->
           if event.keyCode and event.keyCode isnt 13 then return
           @doSearch()
+
+        addFavStar: (result)->
+          favAmis = CloudResources("FavoriteAmi",@region).getModels() || []
+          dumpObj = _.clone result.ami.result
+          favIds = _.pluck (_.pluck favAmis, "attributes"), "id"
+          _.each dumpObj, (e,k)->
+            if k in favIds
+              e.faved = true
+          result.ami.result = dumpObj
+          result
 
         communityAmiRender: (data)->
           @communityShowContent()

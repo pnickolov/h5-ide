@@ -57,6 +57,29 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
 
       dolly
 
+    syncBorthersConn: ( conn, add ) ->
+      syncTarget = []
+
+      if @isClone()
+        syncTarget.push @getBigBrother()
+        syncTarget = syncTarget.concat _.without @getBigBrother().__brothers, @
+      else
+        syncTarget = syncTarget.concat @__brothers
+
+
+      connClass = Design.modelClassForType( conn.type )
+      otherTarget = conn.getOtherTarget @type
+
+      for target in syncTarget
+        if add
+          new connClass target, otherTarget
+        else
+          targetConn = target.connections conn.type
+          for c in targetConn
+            if c.getOtherTarget @type is otherTarget
+              c.remove()
+
+
     getBigBrother: ->
       @__bigBrother
 
@@ -212,6 +235,9 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
         # Create duplicate sgline for each expanded asg
         @parent().updateExpandedAsgSgLine( cn.getOtherTarget(@) )
 
+      @syncBorthersConn cn, true
+
+
       null
 
     disconnect : ( cn )->
@@ -223,6 +249,9 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
 
         else if cn.type is "SgRuleLine"
           @parent().updateExpandedAsgSgLine( cn.getOtherTarget(@), true )
+
+      @syncBorthersConn cn
+
       null
 
     getStateData : () ->

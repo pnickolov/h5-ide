@@ -8,7 +8,7 @@
 {{/each}}
 
 <!-- {{recent}} -->
-<section class="hide">
+<section {{#if isStack}}class="hide"{{/if}}>
 {{#if apps.length}}
   <h4>{{i18n "DASH_LBL_RECENT_LAUNCHED_STACK"}}</h4>
   <ul>{{#each apps}}<li class="recent-list-item" data-id="{{id}}">
@@ -20,7 +20,7 @@
   <span class="empty-text">No recently launched app in 30 days</span>
 {{/if}}
 </section>
-<section>
+<section {{#unless isStack}}class="hide"{{/unless}}>
 {{#if stacks.length}}
   <h4>{{i18n "DASH_LBL_RECENT_EDITED_STACK"}}</h4>
   <ul>{{#each stacks}}<li class="recent-list-item" data-id="{{id}}">

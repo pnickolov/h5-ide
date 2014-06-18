@@ -137,7 +137,9 @@ define [
       $tabs.eq(0).children("span").text apps.length
       $tabs.eq(1).children("span").text stacks.length
 
-      $( '#global-region-recent-list' ).html tplPartials.recent { stacks:stacks, apps:apps }
+      isStack = $tabs.filter(".on").hasClass("stack")
+
+      $( '#global-region-recent-list' ).html tplPartials.recent { stacks:stacks, apps:apps, isStack:isStack }
 
       @updateRegionAppStack()
       return

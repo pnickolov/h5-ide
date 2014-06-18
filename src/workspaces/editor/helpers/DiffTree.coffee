@@ -2,9 +2,8 @@ define [], () ->
 
     DiffTree = (option) ->
 
-        this.filterMap = {
-            'resource.PrivateIpAddressSet.n.AutoAssign': true
-        }
+        option = {} if not option
+        option.filterMap = {} if not option.filterMap
 
         isArray = (value) ->
             return value and typeof value is 'object' and value.constructor is Array
@@ -40,7 +39,7 @@ define [], () ->
                         return path
 
                     attrPath = attrPathAry.join('.')
-                    if this.filterMap[attrPath]
+                    if option.filterMap[attrPath]
                         return
 
             if not a and not b

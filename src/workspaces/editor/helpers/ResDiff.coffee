@@ -24,6 +24,10 @@ define [
             'click .item .type': '_toggleTab'
             'click .head': '_toggleItem'
 
+        _filterMap: {
+            'resource.PrivateIpAddressSet.n.AutoAssign': true
+        }
+
         _toggleItem: ( e ) ->
 
             $target = $( e.currentTarget ).closest '.group'
@@ -62,8 +66,6 @@ define [
 
             @_genResGroup(@oldAppJSON.component, @newAppJSON.component)
 
-            @modal.resize()
-
         _genDiffInfo: (oldComps, newComps) ->
 
             that = this
@@ -88,7 +90,10 @@ define [
                     that.addedComps[uid] = newComps[uid]
                 null
 
-            diffTree = new DiffTree()
+            diffTree = new DiffTree({
+                filterMap: that._filterMap
+            })
+
             that.modifiedComps = diffTree.compare unionOldComps, unionNewComps
             that.modifiedComps = {} if not that.modifiedComps
             # that.modifiedComps = diffTree.compare {x: [{a: 1, b: [{d: 1}, {e: 2}], c: 3}, {a: 4, b: 5, c: 6}, {a: 7, b: 8, c: 9}]},
@@ -99,17 +104,17 @@ define [
             that = this
 
             groupData = [{
-                title: 'New',
+                title: 'New Resource',
                 diffComps: that.addedComps,
                 closed: true,
                 type: 'added'
             }, {
-                title: 'Removed',
+                title: 'Removed Resource',
                 diffComps: that.removedComps,
                 closed: true,
                 type: 'removed'
             }, {
-                title: 'Modified',
+                title: 'Modified Resource',
                 diffComps: that.modifiedComps,
                 closed: false,
                 type: 'modified'

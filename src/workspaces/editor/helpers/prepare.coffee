@@ -1,7 +1,9 @@
 define [ 'constant' ], ( constant ) ->
 
     helper = ( options ) ->
+
         getNodeMap: ( path ) ->
+
             path = path.split('.') if _.isString(path)
 
             oldComp = options.oldAppJSON.component
@@ -75,7 +77,8 @@ define [ 'constant' ], ( constant ) ->
             switch parentKey
                 when 'BlockDeviceMapping'
                     deviceObj = childNode.DeviceName
-                    data.key = @genValue deviceObj.type, deviceObj.__old__, deviceObj.__new__
+                    if deviceObj
+                        data.key = @genValue deviceObj.type, deviceObj.__old__, deviceObj.__new__
 
                 when 'GroupSet'
                     data.key = 'SecurityGroup'
@@ -93,11 +96,9 @@ define [ 'constant' ], ( constant ) ->
                     #data.skip = true
                     data = data
 
-
             # Replace first level node
             if path.length is 1
                 data.key = constant.RESNAME[ data.key ] or data.key
-
 
             data
 

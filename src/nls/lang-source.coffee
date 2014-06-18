@@ -1154,6 +1154,10 @@ module.exports =
       en: "Smooth quadratic Belzier curve"
       zh: "光滑的二次贝塞尔曲线"
 
+    TOOL_LBL_LINESTYLE_HIDE_SG:
+      en: "Hide SecurityGroup line"
+      zh: "隐藏SecurityGroup线"
+
     TOOL_EXPERIMENT:
       en: "Experimental Feature!"
       zh: ""

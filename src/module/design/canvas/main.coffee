@@ -46,6 +46,9 @@ define [ 'event', 'i18n!nls/lang.js', 'constant' ], ( ide_event, lang, constant 
                     # set analysis
                     MC.canvas.analysis()
 
+                    # hide sg by default
+                    localStorage.setItem("canvas/lineStyle", 4);
+
                     # init Design
                     dd.finishDeserialization()
 

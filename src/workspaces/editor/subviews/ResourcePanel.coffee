@@ -182,7 +182,7 @@ define [
       MC.template.bubbleAMIMongoInfo = (data)=>
         models = CloudResources(@__amiType,region).getModels()
         amiData = _.findWhere(models, {'id': data.id})?.toJSON()
-        console.debug amiData
+        amiData.imageSize = amiData.imageSize || amiData.blockDeviceMapping[amiData.rootDeviceName].volumeSize
         MC.template.bubbleAMIInfo(amiData)
 
     updateDisableItems : ()->

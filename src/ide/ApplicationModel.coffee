@@ -8,7 +8,7 @@
 
 ###
 
-define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone", "constant", "component/exporter/Thumbnail" ], ( OpsCollection, OpsModel, ApiRequest, Backbone, constant, ThumbUtil )->
+define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone", "constant", "ThumbnailUtil" ], ( OpsCollection, OpsModel, ApiRequest, Backbone, constant, ThumbUtil )->
 
   Backbone.Model.extend {
 

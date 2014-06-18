@@ -23,7 +23,7 @@
 
   module.exports = function() {
     console.log("Tracing dependency of each module.");
-    console.log("Don't forget to run `gulp dev_all` before tracing.");
+    console.log("Don't forget to run `gulp` before tracing.");
     return copyJs().then(function() {
       var d;
       d = Q.defer();

@@ -1,5 +1,5 @@
 
-define ['UI.canvg', './Download'], ()->
+define ['UI.canvg', 'component/exporter/Download'], ()->
 
   GridBackground = undefined
   ThumbGridBackground = undefined

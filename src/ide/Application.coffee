@@ -17,11 +17,10 @@ define [
   "./subviews/SettingsDialog"
   "CloudResources"
   "./WorkspaceManager"
-  "workspaces/OpsEditor"
-  "component/exporter/JsonExporter"
+  "JsonExporter"
   "constant",
   "underscore"
-], ( ApiRequest, Websocket, ApplicationView, ApplicationModel, User, SettingsDialog, CloudResources, WorkspaceManager, OpsEditor, JsonExporter, constant )->
+], ( ApiRequest, Websocket, ApplicationView, ApplicationModel, User, SettingsDialog, CloudResources, WorkspaceManager, JsonExporter, constant )->
 
   VisualOps = ()->
     if window.App

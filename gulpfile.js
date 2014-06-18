@@ -55,7 +55,6 @@ gulp.task("help", function(){
   console.log( "\n * gulp          - Compile IDE and start a server @127.0.0.1:3000. Aka `gulp dev;gulp watch`" );
   console.log( "\n * gulp watch    - Start a server @127.0.0.1:3000." );
   console.log( "\n * gulp dev      - Compile IDE, excluding src/model and src/service" );
-  console.log( "\n * gulp dev_all  - Compile IDE, including src/model and src/service" );
 
   console.log( "\n\n ===== For Delpoyment =====")
   console.log( "\n * gulp debug    - Compile IDE in release mode, and push to remote develop" );

@@ -7,7 +7,7 @@ define [
   "Workspace"
   "./OpsViewBase"
   "./template/TplOpsEditor"
-  "component/exporter/Thumbnail"
+  "ThumbnailUtil"
   "OpsModel"
   "Design"
   "ApiRequest"

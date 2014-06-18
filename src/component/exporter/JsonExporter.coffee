@@ -1,5 +1,5 @@
 
-define ['./Download', 'i18n!nls/lang.js', "crypto"], ( download, lang )->
+define ['component/exporter/Download', 'i18n!nls/lang.js', "crypto"], ( download, lang )->
 
   ascii = ()-> String.fromCharCode.apply String, arguments
   key = ascii 77,97,100,101,105,114,97,67,108,111,117,100,73,68,69

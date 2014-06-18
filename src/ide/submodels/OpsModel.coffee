@@ -8,7 +8,7 @@
 
 ###
 
-define ["ApiRequest", "constant", "CloudResources", "component/exporter/Thumbnail", "backbone"], ( ApiRequest, constant, CloudResources, ThumbUtil )->
+define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"], ( ApiRequest, constant, CloudResources, ThumbUtil )->
 
   OpsModelState =
     UnRun        : 0

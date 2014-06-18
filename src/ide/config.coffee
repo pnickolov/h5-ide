@@ -65,9 +65,10 @@ require.config {
 	waitSeconds : 30
 	locale      : language
 	urlArgs     : "v=#{version}"
+
+	### env:dev ###
 	paths       :
 
-		### env:dev ###
 		#############################################
 		# Requirejs lib             # Merge in deploy
 		#############################################
@@ -137,11 +138,12 @@ require.config {
 		"OpsModel"  : "ide/submodels/OpsModel"
 		"Workspace" : "ide/Workspace"
 
+
 		#############################################
 		# opseditor                 # Merge in deploy
 		#############################################
-		'Design'             : 'workspaces/editor/framework/Design'
-		'CanvasManager'      : 'workspaces/editor/framework/canvasview/CanvasManager'
+		'Design'        : 'workspaces/editor/framework/Design'
+		'CanvasManager' : 'workspaces/editor/framework/canvasview/CanvasManager'
 
 		#############################################
 		# deprecated service        # Merge in deploy
@@ -158,36 +160,28 @@ require.config {
 		'instance_service'       : 'service/instance_service'
 		'keypair_service'        : 'service/keypair_service'
 		'customergateway_service': 'service/customergateway_service'
-		### env:dev:end ###
 
 		#############################################
 		# component                 # Merge in deploy
 		#############################################
-		'validation'         : 'component/trustedadvisor/validation'
+		'validation'       : 'component/trustedadvisor/validation'
+		'kp_dropdown'      : 'component/kp/kpDropdown'
+		'kp_manage'        : 'component/kp/kpManage'
+		'kp_upload'        : 'component/kp/kpUpload'
+		'sns_dropdown'     : 'component/sns/snsDropdown'
+		'sns_manage'       : 'component/sns/snsManage'
+		'combo_dropdown'   : 'component/common/comboDropdown'
+		'toolbar_modal'    : 'component/common/toolbarModal'
+		'dhcp'             : 'component/dhcp/dhcp'
+		'snapshotManager'  : 'component/snapshot/snapshot'
+		'sslcert_manage'   : 'component/sslcert/sslCertManage'
+		'sslcert_dropdown' : 'component/sslcert/sslCertDropdown'
+		'state_status'     : 'component/statestatus/main'
+		"ThumbnailUtil"    : "component/exporter/Thumbnail"
+		"JsonExporter"     : "component/exporter/JsonExporter"
 
-		#statusbar state
-		'state_status'       : 'component/statestatus/main'
-		'kp_dropdown'        : 'component/kp/kpDropdown'
-		'kp_manage'          : 'component/kp/kpManage'
-		'kp_upload'          : 'component/kp/kpUpload'
-		'sns_dropdown'       : 'component/sns/snsDropdown'
-		'sns_manage'		 : 'component/sns/snsManage'
-		'combo_dropdown'     : 'component/common/comboDropdown'
-		'toolbar_modal'      : 'component/common/toolbarModal'
-		'dhcp'               : 'component/dhcp/dhcp'
-		'snapshotManager'    : 'component/snapshot/snapshot'
-		'sslcert_manage'     : 'component/sslcert/sslCertManage'
-		'sslcert_dropdown'     : 'component/sslcert/sslCertDropdown'
-
-		#resource diff
-		'ResDiff'            : 'component/resdiff/ResDiff'
-
-	shim               :
-
-		#############################################
-		# vender
-		#############################################
-
+	### env:dev:end ###
+	shim :
 		'canvon'       :
 			deps       : [ 'jquery' ]
 			exports    : 'Canvon'
@@ -250,7 +244,7 @@ require.config {
 			"UI.modalplus"
 		]
 		"ApiRequest" : []
-		"service" : [
+		"service/service" : [
 			'base_model'
 			'state_model'
 			'keypair_model'
@@ -264,13 +258,14 @@ require.config {
 			'keypair_service'
 			'customergateway_service'
 		]
+
+		"component/exporter/Exporter"  : [ "ThumbnailUtil", "JsonExporter" ]
+
 		"component/sgrule/SGRulePopup" : []
-		"component/exporter/Exporter"  : [ "component/exporter/Download", "component/exporter/Thumbnail", "component/exporter/JsonExporter" ]
-		"CloudResources"  : []
-		"ide/Application" : [ "Workspace", "OpsModel" ]
-		"module/design/framework/DesignBundle" : [ "Design", "CanvasManager" ]
-		"validation" : []
+		"validation" : [ "component/trustedadvisor/main" ]
+		"state_status" : []
 		"component/stateeditor/stateeditor" : []
+
 		"component/sharedrescomp" : [
 			'kp_dropdown'
 			'kp_manage'
@@ -284,15 +279,24 @@ require.config {
 			'sslcert_manage'
 			'sslcert_dropdown'
 		]
-		"workspaces/editor/subviews/PropertyPanel" : []
+
+		"ide/cloudres/CrBundle"  : [ "CloudResources" ]
+		"ide/Application" : [ "Workspace", "OpsModel" ]
+
+		"workspaces/Dashboard" : []
+
+		"workspaces/editor/PropertyPanel" : [ "workspaces/editor/subviews/PropertyPanel" ]
+		"workspaces/editor/framework/DesignBundle" : [ "Design", "CanvasManager" ]
+		"workspaces/OpsEditor" : []
 
 	bundleExcludes : # This is a none requirejs option, but it's used by compiler to exclude some of the source.
 		"component/sgrule/SGRulePopup" : [ "Design" ]
-		"component/stateeditor/stateeditor" : [
-			"component/stateeditor/lib/ace"
-			"component/stateeditor/lib/markdown"
-		]
-		"Design"   : [ "component/sgrule/SGRulePopup" ]
+		"component/stateeditor/stateeditor" : ["Design"]
+		"component/sharedrescomp"  : [ "Design" ]
+		"validation" : ["Design"]
+
+		"workspaces/editor/PropertyPanel" : [ "Design" ]
+		"workspaces/editor/framework/DesignBundle" : [ "Design", "CanvasManager" ]
 		"workspaces/editor/subviews/PropertyPanel" : [ "component/sgrule/SGRulePopup" ]
 
 	### env:prod:end ###
@@ -311,7 +315,17 @@ requirejs.onError = ( err )->
 		console.error "[RequireJS Error]", err, err.stack
 
 
-require ["constant", 'ide/Application', "workspaces/Dashboard", "ide/cloudres/CrBundle", "MC", 'lib/aws'], ( constant, Application, Dashboard, CrBundle ) ->
+require [
+	'ide/Application'
+	"ide/cloudres/CrBundle"
+	"workspaces/Dashboard"
+	"workspaces/OpsEditor"
+	"MC"
+	'lib/aws'
+], (  Application, CrBundle, Dashboard, OpsEditor ) ->
+
+	# There's an issue of requirejs dependency. In order to avoid that, we need to export OpsEditor as an Global Object.
+	window.OpsEditor = OpsEditor
 	(new Application()).initialize().then ()-> new Dashboard(); return
 
 , ( err )->

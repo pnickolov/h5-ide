@@ -2,8 +2,8 @@
 define [
   "OpsModel"
   "../template/TplOpsEditor"
-  "component/exporter/Thumbnail"
-  "component/exporter/JsonExporter"
+  "ThumbnailUtil"
+  "JsonExporter"
   "ApiRequest"
   "i18n!nls/lang.js"
   "UI.modalplus"

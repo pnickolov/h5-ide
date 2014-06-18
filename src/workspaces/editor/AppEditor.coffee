@@ -2,7 +2,7 @@
 define [
   "./StackEditor"
   "./AppView"
-  "./helpers/ResDiff"
+  "./diff/ResDiff"
   "OpsModel"
   "Design"
   "CloudResources"

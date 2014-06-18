@@ -33,7 +33,7 @@ define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager", 'i18n!n
 
   ChildElementProto.iconUrl = ( instanceId )->
     if instanceId
-      ami = CloudResources(constant.RESTYPE.AMI, Design.instance().region()).get(instanceId).toJSON()
+      ami = CloudResources(constant.RESTYPE.AMI, Design.instance().region()).get(instanceId)?.toJSON()
       if ami then ami = MC.data.dict_ami[ ami.imageId ]
 
     if not ami
@@ -142,7 +142,7 @@ define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager", 'i18n!n
 
     # In app mode, show number
     if not m.design().modeIsStack() and m.parent()
-      data = CloudResources(constant.RESTYPE.ASG, m.design().region()).get(m.parent().get('appId')).toJSON()
+      data = CloudResources(constant.RESTYPE.ASG, m.design().region()).get(m.parent().get('appId'))?.toJSON()
       numberGroup = node.children(".instance-number-group")
       if data and data.Instances and data.Instances.member and data.Instances.member.length > 0
         CanvasManager.toggle numberGroup, true

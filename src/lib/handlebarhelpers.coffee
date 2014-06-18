@@ -44,6 +44,8 @@ define ["handlebars", "i18n!nls/lang.js"], ( Handlebars, lang )->
   Handlebars.registerHelper 'timeStr', ( v1 ) ->
       d = new Date( v1 )
 
+      if not isNaN(parseFloat(v1)) and isFinite(v1) and v1 > 0
+        return d.toLocaleDateString() + " "+ d.toTimeString()
       if isNaN( Date.parse( v1 ) ) or not d.toLocaleDateString or not d.toTimeString
           if v1
               return new Handlebars.SafeString v1

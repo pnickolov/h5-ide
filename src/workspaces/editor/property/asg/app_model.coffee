@@ -32,7 +32,7 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
             if asg_data.TerminationPolicies and asg_data.TerminationPolicies.member
                 @set 'term_policy_brief', asg_data.TerminationPolicies.member.join(" > ")
 
-            @handleInstance asg_comp, resource_list?.toJSON(), asg_data
+            @handleInstance asg_comp, CloudResources(constant.RESTYPE.INSTANCE, Design.instance().region())?.toJSON(), asg_data
 
         if not @isAppEdit
             if not asg_data
@@ -42,8 +42,8 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
             @set 'healCheckType', asg_data.HealthCheckType
             @set 'healthCheckGracePeriod', asg_data.HealthCheckGracePeriod
 
-            @handlePolicy asg_comp, resource_list?.toJSON(), asg_data
-            @handleNotify asg_comp, resource_list?.toJSON(), asg_data
+            @handlePolicy asg_comp, CloudResources(constant.RESTYPE.SP , Design.instance().region())?.toJSON(), asg_data
+            @handleNotify asg_comp, CloudResources(constant.RESTYPE.NC, Design.instance().region())?.toJSON(), asg_data
 
 
         else
@@ -85,6 +85,7 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
         instance_groups = []
         instances_map   = {}
 
+        console.debug asg_comp, resource_list, asg_data
         if asg_data.Instances and asg_data.Instances.member
             instance_count = asg_data.Instances.member.length
 

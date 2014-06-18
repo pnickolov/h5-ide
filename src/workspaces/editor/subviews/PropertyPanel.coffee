@@ -249,7 +249,10 @@ define [
       design   = @workspace.design
 
       if type is "component_server_group" or type is CONST.RESTYPE.LC or type is CONST.RESTYPE.INSTANCE
-        supports = true
+        if Design.instance().attributes.agent.enabled
+          supports = true
+        else
+          supports = false
         if design.modeIsApp()
           if type is "component_server_group"
             supports = false

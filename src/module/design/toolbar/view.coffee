@@ -87,6 +87,7 @@ define [ 'MC', 'event',
                 is_style1: null
                 is_style2: null
                 is_style3: null
+                is_style4: null
 
             #restore line style
             switch $canvas.lineStyle()
@@ -106,6 +107,11 @@ define [ 'MC', 'event',
                 when 3
                     lines.is_style3 = true
                     lines.icon = 'icon-bezier-qt'
+
+                when 4
+                    lines.is_style4 = true
+                    lines.icon = 'icon-hide-sg'
+
 
             this.model.attributes.lines = lines
 

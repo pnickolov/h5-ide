@@ -34,6 +34,8 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
 
     if ls is undefined
       stored_style = localStorage.getItem("canvas/lineStyle")
+      if Design.instance() and Design.instance().mode() isnt "appview" and stored_style is "4"
+        stored_style = 2
       return if stored_style is null then 2 else parseInt(stored_style,10)
 
     localStorage.setItem("canvas/lineStyle", ls)

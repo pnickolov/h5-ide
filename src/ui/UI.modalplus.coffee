@@ -191,7 +191,7 @@ define [], ()->
             windowHeight = $(window).height()
             width = @option.width?.toLowerCase().replace('px','') || @tpl.width()
             height= @option.height?.toLowerCase().replace('px','') || @tpl.height()
-            top = (windowHeight - height) / 2
+            top = (windowHeight - height) * 0.4
             left = (windowWidth - width) / 2
             if slideIn
                 left = windowWidth + left

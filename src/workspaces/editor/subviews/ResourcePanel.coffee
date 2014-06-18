@@ -182,6 +182,7 @@ define [
       MC.template.bubbleAMIMongoInfo = (data)=>
         models = CloudResources(@__amiType,region).getModels()
         amiData = _.findWhere(models, {'id': data.id})?.toJSON()
+        console.debug amiData
         MC.template.bubbleAMIInfo(amiData)
 
     updateDisableItems : ()->

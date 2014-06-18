@@ -62,6 +62,8 @@ define [
 
             @_genResGroup(@oldAppJSON.component, @newAppJSON.component)
 
+            @modal.resize()
+
         _genDiffInfo: (oldComps, newComps) ->
 
             that = this

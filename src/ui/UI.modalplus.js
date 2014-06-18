@@ -238,7 +238,7 @@
         windowHeight = $(window).height();
         width = ((_ref = this.option.width) != null ? _ref.toLowerCase().replace('px', '') : void 0) || this.tpl.width();
         height = ((_ref1 = this.option.height) != null ? _ref1.toLowerCase().replace('px', '') : void 0) || this.tpl.height();
-        top = (windowHeight - height) / 2;
+        top = (windowHeight - height) * 0.4;
         left = (windowWidth - width) / 2;
         if (slideIn) {
           left = windowWidth + left;

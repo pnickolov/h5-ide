@@ -8,7 +8,7 @@
 <!-- {{appProcessing}} -->
 <div class="ops-process">
   <header class="processing">{{this}}<span class="process-info">0%</span></header>
-  <header class="processing rolling-back-content">Rolling back.</header>
+  <header class="processing rolling-back-content">Rolling back...</header>
   <section class="loading-spinner"></section>
   <div class="progress"> <div class="bar" style="width:0%;"></div> </div>
 </div>

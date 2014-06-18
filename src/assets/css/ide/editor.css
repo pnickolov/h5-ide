@@ -86,7 +86,12 @@
   left: 246px; }
 
 .OEPanelLeft.force-hidden ~ .OEMiddleWrap {
-  left: 0; }
+  left: 0;
+  -webkit-transition: right .2s;
+  -moz-transition: right .2s;
+  -ms-transition: right .2s;
+  -o-transition: right .2s;
+  transition: right .2s; }
 
 .sidebar-title {
   padding-left: 10px;

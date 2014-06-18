@@ -140,7 +140,7 @@ define [ "event", "./CanvasElement", "i18n!nls/lang.js", "constant", "Design", "
 
     hasLC = !!m.get("lc")
     CanvasManager.toggle( node.children(".prompt_text"), !hasLC )
-    CanvasManager.toggle( node.children(".asg-resource-dragger"), !Design.instance().modeIsApp() )
+    CanvasManager.toggle( node.children(".asg-resource-dragger") )
     null
 
   CeAsgProto.__drawExpandedAsg = ->

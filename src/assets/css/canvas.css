@@ -617,6 +617,10 @@
 	cursor: grab;
 }
 
+.canvas_state_app .asg-resource-dragger {
+	display : none;
+}
+
 /*when no LaunchConfiguration in asg*/
 .prompt_text {
 	fill: #16B4F9;

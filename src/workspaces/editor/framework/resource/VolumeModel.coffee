@@ -142,7 +142,7 @@ define [ "i18n!nls/lang.js", "../ComplexResModel", "constant" ], ( lang, Complex
 
       oldOwner = @attributes.owner
       if oldOwner
-        vl = oldOwner.attributes.volumeList
+        vl = oldOwner.get 'volumeList'
         vl.splice( vl.indexOf(this), 1 )
         oldOwner.draw()
 
@@ -154,10 +154,11 @@ define [ "i18n!nls/lang.js", "../ComplexResModel", "constant" ], ( lang, Complex
         if !@attributes.name
           return false
 
-      if owner.attributes.volumeList
-        owner.attributes.volumeList.push( this )
+      volumeList = owner.get 'volumeList'
+      if volumeList
+        volumeList.push( this )
       else
-        owner.attributes.volumeList = [ this ]
+        owner.set 'volumeList', [ this ]
 
       owner.draw()
       true

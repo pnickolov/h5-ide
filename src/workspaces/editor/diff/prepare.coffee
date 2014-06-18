@@ -162,7 +162,7 @@ define [ 'constant' ], ( constant ) ->
 
         if path.length is 2
 
-            if path[1] in ['type', 'uid', 'name']
+            if path[1] in ['type', 'uid', 'name', 'index', 'number', 'serverGroupUid']
                 delete data.key
             else if path[1] is 'resource'
                 data.skip = true

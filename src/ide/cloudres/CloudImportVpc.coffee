@@ -1142,7 +1142,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
     # process for server group
     changedServerGroupUidMap = {}
     diffTree = new DiffTree()
-    originComps = @originAppJSON.component
+    originComps = cd.originAppJSON.component
     
     # find all related component ref for server group
     _.each cd.instances, (insComp) ->

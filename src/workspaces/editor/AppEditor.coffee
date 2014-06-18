@@ -54,10 +54,8 @@ define [
           new : newJson
         })
         result = self.differ.getChangeInfo()
-        self.differ = undefined
-        return self.opsModel.saveApp( newJson )
-
         if result.hasResChange
+          return self.opsModel.saveApp( newJson )
         else
           self.differ = undefined
         return

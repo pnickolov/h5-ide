@@ -329,7 +329,6 @@ define [
             if isNew
                 newOps = App.model.createStackByJson( @workspace.design.serializeAsStack(appToStackModal.tpl.find('#modal-input-value').val()) )
                 appToStackModal.close()
-                console.debug "newOps", newOps
                 App.openOps newOps
                 return
             else
@@ -337,9 +336,11 @@ define [
                 newJson.id = @workspace.design.attributes.stack_id
                 appToStackModal.close()
                 stack = App.model.stackList().get(@workspace.design.attributes.stack_id)
+                newJson.name = stack.attributes.name
                 stack.save(newJson).then ()->
                     notification "info", sprintf lang.ide.TOOL_MSG_INFO_HDL_SUCCESS, lang.ide.TOOLBAR_HANDLE_SAVE_STACK, newJson.name
-                    App.openOps stack, true # refresh if this stack is open
+                    # refresh if this stack is open
+                    App.openOps stack, true
                 ,(err)->
                     notification 'error', sprintf lang.ide.TOOL_MSG_ERR_SAVE_FAILED, newJson.name
 

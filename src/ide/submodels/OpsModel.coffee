@@ -157,6 +157,9 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       if (json.version or "").split("-").length < 3 then json.version = "2013-09-13"
 
       @__jsonData = json
+
+      if @attributes.name isnt json.name
+        @set "name", json.name
       @
 
     generateJsonFromRes : ()->
@@ -357,20 +360,23 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         fast_update : fastUpdate
       }).fail ( error )-> self.__updateAppDefer.reject( error )
 
-      # The real promise
-      @__updateAppDefer.promise.then ()->
-        self.__jsonData = newJson
-        self.set {
-          name  : newJson.name
-          state : OpsModelState.Running
-        }
-        self.__updateAppDefer = null
-        return
-      , ( error )->
+      errorHandler = ( error )->
         self.__updateAppDefer = null
         self.attributes.progress = 0
         self.set { state : oldState }
         throw error
+
+      # The real promise
+      @__updateAppDefer.promise.then ()->
+        self.__jsonData = null
+        self.fetchJsonData().then ()->
+          self.__updateAppDefer = null
+          self.set {
+            name  : newJson.name
+            state : OpsModelState.Running
+          }
+        , ()-> errorHandler
+      , ()-> errorHandler
 
     # Replace the data in mongo with new data. This method doesn't trigger an app update.
     saveApp : ( newJson )->

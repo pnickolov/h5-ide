@@ -295,7 +295,7 @@ require.config {
 		"component/Validation" : ["Design"]
 
 		"workspaces/editor/PropertyPanel" : [ "Design" ]
-		"workspaces/editor/framework/DesignBundle" : [ "Design", "CanvasManager" ]
+		"workspaces/editor/framework/DesignBundle" : []
 		"workspaces/editor/subviews/PropertyPanel" : [ "component/sgrule/SGRulePopup" ]
 
 	### env:prod:end ###

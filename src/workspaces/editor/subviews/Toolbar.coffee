@@ -57,20 +57,16 @@ define [
       opsModel = @workspace.opsModel
 
       # Toolbar
-      if opsModel.isImported()
-        btns = ["BtnActionPng", "BtnZoom", "BtnLinestyle"]
-      else if opsModel.isStack()
+      if opsModel.isStack()
         btns = ["BtnRunStack", "BtnStackOps", "BtnZoom", "BtnExport", "BtnLinestyle", "BtnSwitchStates"]
       else
-        if @__editMode
-          btns = ["BtnApply", "BtnZoom", "BtnPng", "BtnLinestyle", "BtnReloadRes", "BtnSwitchStates"]
-        else
-          btns = ["BtnEditApp", "BtnAppOps", "BtnZoom", "BtnPng", "BtnLinestyle", "BtnReloadRes"]
+        btns = ["BtnEditApp", "BtnAppOps", "BtnZoom", "BtnPng", "BtnLinestyle", "BtnSwitchStates"]
 
       tpl = ""
       for btn in btns
         attr = { stateOn: @workspace.design.get("agent").enabled }
         tpl += OpsEditorTpl.toolbar[ btn ]( attr )
+
       if @workspace.opsModel.isApp()
         ami = [].concat(
           @workspace.design.componentsOfType( constant.RESTYPE.INSTANCE ),
@@ -99,10 +95,12 @@ define [
         @$el.children(".icon-apply-app, .icon-cancel-update-app").toggle( isAppEdit )
         if isAppEdit
           @$el.children(".icon-terminate, .icon-stop, .icon-play, .icon-refresh, .icon-save-app, .icon-reload").hide()
+          @$el.children(".toolbar-visual-ops-switch").show()
         else
           @$el.children(".icon-terminate, .icon-refresh, .icon-save-app, .icon-reload").show()
           @$el.children(".icon-stop").toggle( opsModel.get("stoppable") and opsModel.testState(OpsModel.State.Running) )
           @$el.children(".icon-play").toggle( opsModel.testState( OpsModel.State.Stopped ) )
+          @$el.children(".toolbar-visual-ops-switch").hide()
 
       if @__saving
         @$el.children(".icon-save").attr("disabled", "disabled")

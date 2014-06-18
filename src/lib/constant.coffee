@@ -220,6 +220,7 @@ define ['MC', 'i18n!nls/lang.js'], ( MC, lang ) ->
 		"Forge.App.Update"       : "update"
 		"Forge.App.State.Update" : "update"
 		"Forge.App.Terminate"    : "terminate"
+		"Forge.App.Save"         : "save"
 
 	#private, recent items threshold
 	DEMO_STACK_NAME_LIST = [ 'vpc-with-private-subnet-and-vpn', 'vpc-with-public-and-private-subnets-and-vpn', 'vpc-with-public-subnet-only', 'vpc-with-public-and-private-subnets' ]

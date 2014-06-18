@@ -14,7 +14,7 @@ define(['ApiRequestDefs'], function( ApiRequestDefs ){
 		'app_list'                : { url:'/app/',	method:'list',	params:['username', 'session_id', 'region_name', 'app_ids']   },
 		'app_resource'            : { url:'/app/',	method:'resource',	params:['username', 'session_id', 'region_name', 'app_id']   },
 		'app_get_info'            : { url:'/app/',	method:'get_info',	params:['username', 'session_id', 'vpc_ids']   },
-		'app_save_info'           : { url:'/app/',	method:'save_info',	params:['username', 'session_id', 'spec', 'resource']   },
+		'app_save_info'           : { url:'/app/',	method:'save_info',	params:['username', 'session_id', 'spec']   },
 		'favorite_add'            : { url:'/favorite/',	method:'add',	params:['username', 'session_id', 'region_name', 'resource']   },
 		'favorite_remove'         : { url:'/favorite/',	method:'remove',	params:['username', 'session_id', 'region_name', 'resource_ids']   },
 		'favorite_info'           : { url:'/favorite/',	method:'info',	params:['username', 'session_id', 'region_name', 'provider', 'service', 'resource']   },

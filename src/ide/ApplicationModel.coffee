@@ -35,7 +35,6 @@ define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone", "con
       m = @attributes.appList.findWhere({importVpcId:vpcId})
       if m then return m
       m = new OpsModel({
-        name        : vpcId
         importVpcId : vpcId
         region      : region
         state       : OpsModel.State.Running

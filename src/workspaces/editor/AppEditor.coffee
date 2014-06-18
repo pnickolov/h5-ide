@@ -150,6 +150,8 @@ define [
     onOpsModelStateChanged : ()->
       if not @isInited() then return
 
+      if @opsmodel.testState( OpsModel.State.Saving ) then return
+
       @updateTab()
       @view.toggleProcessing()
 

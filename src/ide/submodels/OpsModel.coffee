@@ -20,8 +20,9 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
     Stopping     : 6
     Terminating  : 7
     Destroyed    : 8 # When OpsModel changes to this State, it doesn't trigger "change:state" event, instead, it triggers "destroy" event and its collection will trigger "update" event.
+    Saving       : 9
 
-  OpsModelStateDesc = ["", "Running", "Stopped", "Starting", "Starting", "Updating", "Stopping", "Terminating", ""]
+  OpsModelStateDesc = ["", "Running", "Stopped", "Starting", "Starting", "Updating", "Stopping", "Terminating", "", "Saving"]
 
   OpsModel = Backbone.Model.extend {
 
@@ -173,14 +174,15 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
 
       json.component = res.component
       json.layout    = res.layout
-      json.name      = res.theVpc.name
+      json.name      = @get("name") || res.theVpc.name
 
       json
 
     # Save the stack in server, returns a promise
     save : ( newJson, thumbnail )->
-      if @isApp() and @__saving then return @__returnErrorPromise()
-      @__saving = true
+      if @isApp() or @testState( OpsModelState.Saving ) then return @__returnErrorPromise()
+
+      @set "state", OpsModelState.Saving
 
       nameClash = @collection.where({name:newJson.name}) || []
       if nameClash.length > 1 or (nameClash[0] and nameClash[0] isnt @)
@@ -200,6 +202,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
           name       : newJson.name
           updateTime : +(new Date())
           stoppable  : newJson.property.stoppable
+          state      : OpsModelState.UnRun
         }
 
         if not self.get("id")
@@ -210,7 +213,6 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
 
         self.set attr
         self.__jsonData = newJson
-        self.__saving   = false
         self.trigger "jsonDataSaved", self
 
         # The stack is a newly created stack. We would like to trigger "update" in the collection
@@ -219,7 +221,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
 
         return self
       , ( err )->
-        self.__saving = false
+        self.set "state", OpsModelState.UnRun
         throw err
 
     # Delete the stack in server, returns a promise
@@ -337,44 +339,72 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
     # Update the app, returns a promise
     update : ( newJson, fastUpdate )->
       if not @isApp() then return @__returnErrorPromise()
+      if @__saveAppDefer then return @__saveAppDefer
+
       oldState = @get("state")
       @set("state", OpsModelState.Updating)
       @attributes.progress = 0
 
-      self = @
-      errorHandler = ( err )->
-        self.attributes.progress = 0
-        self.set { state : oldState }
-        throw err
+      @__updateAppDefer = Q.defer()
 
+      self = @
+
+      # Send Request
       ApiRequest("app_update", {
         region_name : @get("region")
         spec        : newJson
         app_id      : @get("id")
         fast_update : fastUpdate
-      }).then ()->
-        self.__updateAppDefer = d = Q.defer()
-        d.promise.then ()->
-          self.__jsonData = newJson
-          self.set {
-            name  : newJson.name
-            state : OpsModelState.Running
-          }
-        , errorHandler
-      , errorHandler
+      }).fail ( error )-> self.__updateAppDefer.reject( error )
+
+      # The real promise
+      @__updateAppDefer.promise.then ()->
+        self.__jsonData = newJson
+        self.set {
+          name  : newJson.name
+          state : OpsModelState.Running
+        }
+        self.__updateAppDefer = null
+        return
+      , ( error )->
+        self.__updateAppDefer = null
+        self.attributes.progress = 0
+        self.set { state : oldState }
+        throw error
 
     # Replace the data in mongo with new data. This method doesn't trigger an app update.
     saveApp : ( newJson )->
-      d = Q.defer()
-      d.resolve()
-      self = @
-      newJson.changed = false
-      # d.promise.then ()->
-      #   self.__jsonData = newJson
-      #   self
-      # ApiRequest("app_save_info", {
+      if not @isApp() then return @__returnErrorPromise()
+      if @__saveAppDefer then return @__saveAppDefer
 
-      # })
+      newJson.changed = false
+
+      oldState = @get("state")
+      @set("state", OpsModelState.Saving)
+      @attributes.progress = 0
+
+      @__saveAppDefer = Q.defer()
+
+      self = @
+
+      # Send Request
+      ApiRequest("app_save_info", {spec:newJson}).fail ( error )-> self.__saveAppDefer.reject( error )
+
+      # The real promise
+      @__saveAppDefer.promise.then ()->
+        self.__jsonData = newJson
+        self.set {
+          name  : newJson.name
+          state : oldState
+        }
+        self.__saveAppDefer = null
+        return
+      , ( error )->
+        self.__saveAppDefer = null
+        self.attributes.progress = 0
+        self.set { state : oldState }
+        throw error
+
 
     setStatusProgress : ( steps, totalSteps )->
       progress = parseInt( steps * 100.0 / totalSteps )
@@ -386,7 +416,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
 
     isProcessing : ()->
       state = @attributes.state
-      state is OpsModelState.Initializing || state is OpsModelState.Stopping || state is OpsModelState.Updating || state is OpsModelState.Terminating || state is OpsModelState.Starting
+      state is OpsModelState.Initializing || state is OpsModelState.Stopping || state is OpsModelState.Updating || state is OpsModelState.Terminating || state is OpsModelState.Starting || state is OpsModelState.Saving
 
     setStatusWithApiResult : ( state )-> @set "state", OpsModelState[ state ]
 
@@ -421,6 +451,15 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
                 self.__updateAppDefer = null
                 d.resolve()
           return
+
+        when "save" # This is saving app.
+          d = @__saveAppDefer
+          @__saveAppDefer = null
+
+          if state.completed
+            d.resolve()
+          else
+            d.reject McError( ApiRequest.Errors.OperationFailure, error )
 
         when "terminate"
           if state.completed

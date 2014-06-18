@@ -97,7 +97,7 @@ define [ '../base/model', "Design", "constant", 'CloudResources' ], ( PropertyMo
 
         getAppData : ( vpnAppId )->
             # get vpn
-            vpn = CloudResources(constant.RESTYPE.VPN, Desing.instance().region()).get(vpnAppId)
+            vpn = CloudResources(constant.RESTYPE.VPN, Design.instance().region()).get(vpnAppId)
 
             vpn = _.clone vpn
             #temp

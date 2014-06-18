@@ -179,7 +179,7 @@ define [
       MC.template.bubbleAMIMongoInfo = (data)=>
         models = CloudResources(@__amiType,region).getModels()
         amiData = _.findWhere(models, {'id': data.id})?.toJSON()
-        amiData.imageSize = amiData.imageSize || amiData.blockDeviceMapping[amiData.rootDeviceName].volumeSize
+        amiData.imageSize = amiData.imageSize || amiData.blockDeviceMapping[amiData.rootDeviceName]?.volumeSize
         amiData.instanceType = @addInstanceType(amiData).join(", ")
         MC.template.bubbleAMIInfo(amiData)
 

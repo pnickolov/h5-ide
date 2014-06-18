@@ -45,8 +45,8 @@ define [ '../base/model', 'Design', 'constant', "CloudResources" ], ( PropertyMo
 
           for index, eni_comp of group
 
-            if appData
-              eni = $.extend true, {}, appData
+            if appData.get(eni_comp.appId)?.toJSON()
+              eni = $.extend true, {}, appData.get(eni_comp.appId).toJSON()
             else
               eni = { privateIpAddressesSet : { item : [] } }
 

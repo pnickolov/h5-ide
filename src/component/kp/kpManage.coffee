@@ -81,7 +81,7 @@ define [ 'toolbar_modal', './component/kp/kpDialogTpl', 'kp_upload', 'backbone',
 
         initialize: ( options ) ->
             options = {} if not options
-            @model = options.model or new kpModel( resModel: options.resModel )
+            @model = options.model
             @resModel = options.resModel
             @collection = CloudResources(constant.RESTYPE.KP, Design.instance().get("region"))
 

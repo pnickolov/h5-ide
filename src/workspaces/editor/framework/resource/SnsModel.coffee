@@ -59,7 +59,7 @@ define [ "../ResourceModel", "../ComplexResModel", "constant", "../ConnectionMod
       @allObjects()[0]
 
     get: ( appId, name ) ->
-      topic = _.findWhere @allObjects(), appId: appId
+      topic = _.first _.filter @allObjects(), ( m ) -> m.get('appId') is appId
       topic or new TopicModel appId: appId, name: name
 
 

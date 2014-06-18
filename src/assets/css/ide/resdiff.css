@@ -114,7 +114,7 @@
         color: #eee; }
     .res_diff_tree .tree .name {
       font-weight: bold;
-      margin-left: 10px;
+      margin-left: 6px;
       line-height: 14px;
       height: 14px;
       white-space: nowrap;
@@ -124,15 +124,19 @@
       max-width: 297px;
       font-size: 12px;
       margin-top: 2px;
-      min-width: 35px; }
+      min-width: 35px;
+      padding: 0 4px; }
     .res_diff_tree .tree .old {
-      font-style: italic;
-      text-decoration: line-through; }
+      text-decoration: line-through;
+      color: #666 !important; }
     .res_diff_tree .tree .to {
-      color: #666; }
+      color: #666;
+      min-width: initial; }
     .res_diff_tree .tree .new {
+      display: inline-block;
       color: #c95100;
-      font-style: italic; }
+      font-style: italic;
+      margin-left: 2px; }
     .res_diff_tree .tree .item {
       margin-bottom: 10px;
       padding-left: 18px;

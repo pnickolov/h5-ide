@@ -195,7 +195,7 @@ $dark_blue: #2C2F46;
 
 		.name {
 			font-weight   : bold;
-			margin-left   : 10px;
+			margin-left   : 6px;
 			line-height   : 14px;
 			height        : 14px;
 			white-space   : nowrap;
@@ -203,25 +203,27 @@ $dark_blue: #2C2F46;
 			overflow-x    : hidden;
 			display       : inline-block;
 			max-width     : 297px;
-			// height     : 12px;
 			font-size     : 12px;
-			// float      : left;
 			margin-top    : 2px;
-
-			// text-align: center;
-			min-width: 35px;
+			min-width     : 35px;
+			padding       : 0 4px;
 		}
 
 		.old {
-			font-style: italic;
+			// font-style: italic;
 			text-decoration: line-through;
+			color: #666 !important;
 		}
 		.to {
-			color: #666;
+			// display : inline-block;
+			color      : #666;
+			min-width  : initial;
 		}
 		.new {
-			color: $color_changed;
-			font-style: italic;
+			display     : inline-block;
+			color       : $color_changed;
+			font-style  : italic;
+			margin-left : 2px;
 		}
 
 		.item {

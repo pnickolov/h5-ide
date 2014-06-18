@@ -83,13 +83,14 @@
 /* Progress bar */
 .progress {
   border-radius: 9px;
-  background: #F7F7F7;
+  background: #2e2e2e;
   overflow: hidden;
   width: 350px;
   height: 18px;
-  border: 1px solid #333;
+  border: 1px solid #000;
   margin: 10px auto; }
   .progress .bar {
+    border-radius: 9px;
     height: 100%;
     background-image: -webkit-gradient(linear, 0 0, 100% 100%, color-stop(0.25, #ad77d7), color-stop(0.25, #9e62d4), color-stop(0.5, #9e62d4), color-stop(0.5, #ad77d7), color-stop(0.75, #ad77d7), color-stop(0.75, #9e62d4), to(#9e62d4));
     background-image: -webkit-linear-gradient(135deg, #ad77d7 25%, #9e62d4 25%, #9e62d4 50%, #ad77d7 50%, #ad77d7 75%, #9e62d4 75%, #9e62d4);

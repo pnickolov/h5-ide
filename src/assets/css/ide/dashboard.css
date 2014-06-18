@@ -231,9 +231,7 @@
 #global-region-status-widget {
   position: absolute;
   right: 0;
-  top: 20px;
-  border: 1px solid #333;
-  border-radius: 3px;
+  top: 0;
   width: 390px;
   min-height: 425px;
   background: #fff;

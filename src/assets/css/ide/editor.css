@@ -86,12 +86,7 @@
   left: 246px; }
 
 .OEPanelLeft.force-hidden ~ .OEMiddleWrap {
-  left: 0;
-  -webkit-transition: none;
-  -moz-transition: none;
-  -ms-transition: none;
-  -o-transition: none;
-  transition: none; }
+  left: 0; }
 
 .sidebar-title {
   padding-left: 10px;

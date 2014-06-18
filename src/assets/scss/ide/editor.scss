@@ -122,11 +122,6 @@ $BottomPanelHeight    : 24px;
 .OEPanelLeft:not(.hidden)  ~ .OEMiddleWrap { left  : $LeftPanelWidth; }
 .OEPanelLeft.force-hidden  ~ .OEMiddleWrap {
   left  : 0;
-  -webkit-transition: none;
-  -moz-transition: none;
-  -ms-transition: none;
-  -o-transition: none;
-  transition: none;
 }
 
 .sidebar-title {

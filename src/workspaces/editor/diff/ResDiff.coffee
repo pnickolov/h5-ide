@@ -240,7 +240,10 @@ define [
                 _.keys(that.modifiedComps).length
                     hasResChange = true
 
+            needUpdateLayout = _.some that.addedComps, ( comp ) ->
+                that.newAppJSON.layout[ comp.uid ]
+
             return {
                 hasResChange: hasResChange,
-                needUpdateLayout: true
+                needUpdateLayout: needUpdateLayout
             }

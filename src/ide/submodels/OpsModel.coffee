@@ -105,6 +105,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         return CloudResources( "OpsResource", @getVpcId() ).init( @get("region") ).fetchForceDedup().then ()->
           json = self.generateJsonFromRes()
           self.__setJsonData json
+          self.attributes.name = json.name
           self
 
       else if @isStack()
@@ -172,6 +173,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
 
       json.component = res.component
       json.layout    = res.layout
+      json.name      = res.theVpc.name
 
       json
 

@@ -181,7 +181,7 @@ define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone", "con
 
       info_list = @attributes.notification
 
-      # check whether same operation
+      # find existing request
       for i, idx in info_list
         if i.id is item.id
           same_req = i
@@ -191,14 +191,13 @@ define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone", "con
       if same_req and _.isEqual( same_req.state, item.state )
           return
 
-      # Currently, the item is mark as readed if the WS is not ready.
-      item.readed = not App.WS.isReady()
-
       # Mark the item as read if the current tab is the item's tab.
-      if not item.readed and App.workspaces
+      if App.WS.isReady() and App.workspaces
         space = App.workspaces.getAwakeSpace()
         ops = @appList().get( item.targetId ) or @stackList().get( item.targetId )
         item.readed = space.isWorkingOn( ops )
+      else
+        item.readed = false
 
       # Prepend the item to the list.
       info_list.splice idx, 1
@@ -234,7 +233,7 @@ define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone", "con
         when constant.OPS_STATE.OPS_STATE_INPROCESS
           request.time  = req.time_begin
           request.step  = 0
-          if req.dag
+          if req.dag and req.dag.step
             request.totalSteps = req.dag.step.length
             for i in req.dag.step
               if i[1] is "done" then ++request.step

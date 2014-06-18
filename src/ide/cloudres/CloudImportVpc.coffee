@@ -775,8 +775,14 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest"]
           "LoadBalancerName" : ""
           "AvailabilityZones": []
           "CrossZoneLoadBalancing": ""
+          "ConnectionDraining":
+            "Enabled" : false
+            "Timeout" : null
 
         elbRes = @_mapProperty aws_elb, elbRes
+
+        elbRes.ConnectionDraining.Enabled = aws_elb.ConnectionDraining.Enabled
+        elbRes.ConnectionDraining.Timeout = Number(aws_elb.ConnectionDraining.Timeout) if aws_elb.ConnectionDraining.Enabled
 
         delete elbRes.CanonicalHostedZoneName if elbRes.CanonicalHostedZoneName
         delete elbRes.CanonicalHostedZoneNameID if elbRes.CanonicalHostedZoneNameID

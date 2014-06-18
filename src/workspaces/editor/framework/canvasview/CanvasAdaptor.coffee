@@ -39,7 +39,7 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant", "UI.notific
 
   $canvas.lineStyle = ()->
     ls = parseInt( localStorage.getItem("canvas/lineStyle") )
-    if isNaN( ls ) then 2 else 0
+    if isNaN( ls ) then 2 else ls
 
   $canvas.node = ()->
     nodes = []

@@ -73,7 +73,6 @@ define [ 'toolbar_modal', './component/kp/kpDialogTpl', 'kp_upload', 'backbone',
             @modal.on 'close', () ->
                 @remove()
             , @
-
             @modal.on 'slidedown', @renderSlides, @
             @modal.on 'action', @doAction, @
             @modal.on 'refresh', @refresh, @
@@ -84,28 +83,20 @@ define [ 'toolbar_modal', './component/kp/kpDialogTpl', 'kp_upload', 'backbone',
             @model = options.model
             @resModel = options.resModel
             @collection = CloudResources(constant.RESTYPE.KP, Design.instance().get("region"))
-
+            @initModal()
             if App.user.hasCredential()
                 that = @
-                @collection.fetch().then ->that.render()
-            @initModal()
-            @collection.on 'change', @renderKeys, @
-            @collection.on 'update', @renderKeys, @
-
-        render: ( refresh ) ->
-            @modal.render()
-
-            if App.user.hasCredential()
-                @collection.fetch().then =>
-                    @renderKeys()
+                @modal.render()
+                @collection.fetch().then ->
+                  that.renderKeys()
             else
-                @modal.render 'nocredential'
-            @
+              @modal.render 'nocredential'
+
+            @collection.on 'change', @renderKeys, @
 
         renderKeys: () ->
             data = keys : @collection.toJSON()
             @modal.setContent template.keys data
-
             @
 
         __events:
@@ -222,7 +213,6 @@ define [ 'toolbar_modal', './component/kp/kpDialogTpl', 'kp_upload', 'backbone',
             @switchAction 'processing'
             that = @
             _.each checked, ( c ) =>
-                console.log c
                 @collection.findWhere(keyName: c.data.name.toString()).destroy().then onDeleteFinish, onDeleteFinish
         import: ( invalid ) ->
             that = @

@@ -150,9 +150,9 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
       @get("originalAsg").__addExpandedAsg( this )
       null
 
-    getLc : ()->
+    getLc : ( origin )->
       lc = @attributes.originalAsg.get("lc")
-      lc.getBigBrother() or lc
+      not origin and lc.getBigBrother() or lc
 
     # disconnect : ( cn )->
     #   if cn.type isnt "ElbAmiAsso" then return

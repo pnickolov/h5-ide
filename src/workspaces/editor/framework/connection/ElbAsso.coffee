@@ -184,9 +184,10 @@ define [ "constant", "../ConnectionModel", "i18n!nls/lang.js", "Design", "compon
         elb    = @getTarget( constant.RESTYPE.ELB )
         reason = { reason : this }
 
-        for asg in lc.parent()
-          for eAsg in asg.get("expandedList")
-            (new ElbAmiAsso( elb, eAsg )).remove( reason )
+        asg = lc.parent()
+
+        for eAsg in asg.get("expandedList")
+          (new ElbAmiAsso( elb, eAsg )).remove( reason )
 
       ConnectionModel.prototype.remove.apply this, arguments
       null

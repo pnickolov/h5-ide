@@ -241,9 +241,10 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
             brother.__bigBrother = @__brothers[ 0 ]
             @__brothers[0].__brothers.push brother
 
-      # Remove attached volumes
-      for v in (@get("volumeList") or emptyArray).slice(0)
-        v.remove()
+      # Remove attached volumes when this lc is last lc
+      else
+        for v in (@get("volumeList") or emptyArray).slice(0)
+          v.remove()
 
       ComplexResModel.prototype.remove.call this
       null

@@ -152,6 +152,9 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         newLayout.size = json.layout.size
         json.layout    = newLayout
 
+      if json.layout and not json.layout.size
+        json.layout.size = [240, 240]
+
       # Normalize stack version in case some old stack is not using date as the version
       # The version will be updated after serialize
       if (json.version or "").split("-").length < 3 then json.version = "2013-09-13"

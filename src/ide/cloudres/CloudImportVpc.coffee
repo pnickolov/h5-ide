@@ -360,7 +360,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
 
       sgRefMap = {}
 
-      genRules = (sg_rule, new_ruls) ->
+      genRules = (sg_rule, new_ruls, selfSGId) ->
 
           ipranges = ''
           if sg_rule.groups.length>0 and sg_rule.groups[0].groupId
@@ -368,6 +368,10 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
             sgComp = sgRefMap[sgId]
             if sgComp
               ipranges = CREATE_REF(sgComp, 'resource.GroupId')
+            else
+              if selfSGId
+                originSGComp = @getOriginalComp(selfSGId, 'SG')
+                ipranges = CREATE_REF(originSGComp, 'resource.GroupId')
           else if sg_rule.ipRanges and sg_rule.ipRanges.length>0
             ipranges = sg_rule.ipRanges[0].cidrIp
 
@@ -400,8 +404,10 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
 
         sgRes = @_mapProperty aws_sg, sgRes
 
+        selfSGId = ''
         originSGComp = @getOriginalComp(aws_sg.id, 'SG')
         if originSGComp
+          selfSGId = aws_sg.id
           sgRes.GroupName = originSGComp.resource.GroupName
 
         vpcComp = @getOriginalComp(aws_sg.vpcId, 'VPC')
@@ -412,12 +418,12 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
         #generate ipPermissions
         if aws_sg.ipPermissions
           for sg_rule in aws_sg.ipPermissions || []
-            genRules.call(@, sg_rule, sgRes.IpPermissions)
+            genRules.call(@, sg_rule, sgRes.IpPermissions, selfSGId)
 
         #generate ipPermissionEgress
         if aws_sg.ipPermissionsEgress
           for sg_rule in aws_sg.ipPermissionsEgress || []
-            genRules.call(@, sg_rule, sgRes.IpPermissionsEgress)
+            genRules.call(@, sg_rule, sgRes.IpPermissionsEgress, selfSGId)
 
         sgComp = @add( "SG", sgRes, aws_sg.groupName )
         if aws_sg.groupName is "default"
@@ -440,6 +446,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
         volRes =
           "VolumeId"     : aws_vol.id
           "Size"         : Number(aws_vol.size)
+          "VolumeSize"   : Number(aws_vol.size)
           "SnapshotId"   : if aws_vol.snapshotId then aws_vol.snapshotId else ""
           "Iops"         : if aws_vol.iops then aws_vol.iops else ""
           "VolumeType"      : aws_vol.volumeType

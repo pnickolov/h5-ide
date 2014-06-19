@@ -81,6 +81,7 @@ define [ 'constant' ], ( constant ) ->
 
                 when 'BlockDeviceMapping'
                     deviceObj = childNode.DeviceName
+                    data.key = 'Device'
                     if deviceObj
                         data.key = @genValue deviceObj.type, deviceObj.__old__, deviceObj.__new__
 

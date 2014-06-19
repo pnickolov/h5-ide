@@ -89,6 +89,24 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
       @layout[ l.uid ] = l
       return
 
+    addExpandedAsg : ( originalAsg, parentComp )->
+      #ExpandedAsg is not Group
+      for key,node of @originalJson.layout
+        if node.type is "ExpandedAsg" and node.originalId is originalAsg.uid and node.groupUId is parentComp.uid
+          l = @originalJson.layout[ node.uid ]
+          break
+
+      if not l
+        l =
+          uid : UID()
+          coordinate : [0,0]
+          originalId : originalAsg.uid
+          type       : "ExpandedAsg"
+          groupUId   : parentComp.uid
+
+      @layout[ l.uid ] = l
+      return
+
     addAz : ( azName )->
       az = @azs[ azName ]
       if az then return az
@@ -1010,6 +1028,13 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
 
         asgComp = @add( "ASG", asgRes, aws_asg.Name )
         @addLayout( asgComp, true, firstSubnetComp )
+
+        #add ExpandAsg layout
+        _.each aws_asg.Subnets, (e,key)->
+          subnetComp = me.subnets[e]
+          if subnetComp.uid != firstSubnetComp.uid
+            me.addExpandedAsg asgComp,subnetComp
+
         @asgs[ aws_asg.Name ] = asgComp
       return
 

@@ -730,6 +730,8 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
 
         #routeSet
         for i in aws_rtb.routeSet
+          if i.state isnt "active"
+            continue
           if i.origin and i.origin is "EnableVgwRoutePropagation"
             continue
           insComp = @instances[i.instanceId]

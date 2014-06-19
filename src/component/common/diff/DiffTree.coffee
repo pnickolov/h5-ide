@@ -10,9 +10,11 @@ define [], () ->
             'resource.AssociatePublicIpAddress': true,
             'resource.KeyName': true,
             'resource.AssociationSet.n.RouteTableAssociationId'
+            'resource.BlockDeviceMapping'
         }
 
         isArray = (value) ->
+            
             return value and typeof value is 'object' and value.constructor is Array
 
         typeofReal = (value) ->

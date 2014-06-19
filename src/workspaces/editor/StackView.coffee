@@ -38,6 +38,10 @@ define [
       @statusbar.render()
       return
 
+    recoverSubviews : ()->
+      @resourcePanel.recalcAccordion()
+      return
+
     removeSubviews : ()->
       @resourcePanel.remove()
       @statusbar.remove()

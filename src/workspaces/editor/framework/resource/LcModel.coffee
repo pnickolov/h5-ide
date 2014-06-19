@@ -212,9 +212,9 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
 
       resource = resource_list[ @parent().get("appId") ]
 
-      if resource and resource.Instances and resource.Instances.member
+      if resource and resource.Instances and resource.Instances.length
         amis = []
-        for i in resource.Instances.member
+        for i in resource.Instances
           amis.push {
             id    : i.InstanceId
             appId : i.InstanceId

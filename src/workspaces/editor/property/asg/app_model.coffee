@@ -29,8 +29,8 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
             @set 'arn', asg_data.id
             @set 'createTime', asg_data.CreatedTime
 
-            if asg_data.TerminationPolicies and asg_data.TerminationPolicies.member
-                @set 'term_policy_brief', asg_data.TerminationPolicies.member.join(" > ")
+            if asg_data.TerminationPolicies and asg_data.TerminationPolicies
+                @set 'term_policy_brief', asg_data.TerminationPolicies.join(" > ")
 
             @handleInstance asg_comp, CloudResources(constant.RESTYPE.LC, Design.instance().region())?.toJSON(), asg_data
 

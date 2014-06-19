@@ -146,8 +146,18 @@ define [
         @showEditor()
       return
 
+    sleep : ()->
+      # HACK, Close the volume bubble here!!!!!
+      # Should be removed.
+      MC.canvas.volume.close()
+      Workspace.prototype.sleep.call this
+
     # Override parent's method to do cleaning when the tab is removed.
     cleanup : ()->
+      # HACK, Close the volume bubble here!!!!!
+      # Should be removed.
+      MC.canvas.volume.close()
+
       @stopListening()
       @view.remove()
       return

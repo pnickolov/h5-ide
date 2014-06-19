@@ -257,6 +257,11 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
     # Runs a stack into app, returns a promise that will fullfiled with a new OpsModel.
     run : ( toRunJson, appName )->
       region = @get("region")
+
+      # Ensure the json has correct id.
+      toRunJson.id = ""
+      toRunJson.stack_id = @get("id") || ""
+
       ApiRequest("stack_run_v2",{
         region_name : region
         stack       : toRunJson
@@ -400,6 +405,15 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       if newJson.state isnt @getStateDesc()
         console.warn "The new app json's state isnt the same as the app", @, newJson
         newJson.state = @getStateDesc()
+
+      # Ensure we have correct id in the json.
+      console.assert ((newJson.id || "").indexOf("stack-") is -1), "The newJson has wrong appid, in saveApp()"
+      if newJson.id
+        if newJson.id isnt @get("id")
+          console.warn "The newJson has different id, in saveApp()"
+        newJson.id = @get("id")
+      else
+        newJson.id = ""
 
       oldState = @get("state")
       @set("state", OpsModelState.Saving)

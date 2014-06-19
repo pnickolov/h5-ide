@@ -81,6 +81,7 @@ define [
       if not @$el then return
 
       @toolbar.updateTbBtns()
+      @statusbar.update()
       @$el.children(".ops-process").remove()
 
       opsModel = @workspace.opsModel
@@ -122,6 +123,8 @@ define [
 
     switchMode : ( isAppEditMode )->
       @toolbar.updateTbBtns()
+      @statusbar.update()
+
       @$el.find(".OEPanelLeft").toggleClass "force-hidden", !isAppEditMode
       if isAppEditMode
         @resourcePanel.render()

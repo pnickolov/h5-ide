@@ -52,7 +52,7 @@ define [
     {
       name: 'ta'
       className: 'status-bar-btn'
-      visible: ( toggle) ->
+      visible: ( toggle ) ->
         mode = workspace.design.mode()
         # hide
         if mode in [ 'app', 'appview' ]
@@ -62,6 +62,8 @@ define [
 
         toggle?(isVisible)
         isVisible
+
+      changeVisible: true
 
       click: ( event ) ->
         btnDom = $(event.currentTarget)
@@ -79,9 +81,11 @@ define [
     {
       name: 'state'
       className: 'status-bar-btn'
-      visible: ( toggle ) ->
+      visible: ( toggle, needUpdate ) ->
         mode = workspace.design.mode()
-        appStoped = workspace.opsModel.testState( OpsModel.State.Stopped )
+        appStoped = _.every [ OpsModel.State.Updating, OpsModel.State.Running, OpsModel.State.Saving ], ( state ) ->
+          not workspace.opsModel.testState( state )
+
         isVisible = false
 
         if mode in ['app', 'appedit']
@@ -93,8 +97,9 @@ define [
         isVisible
 
       events:
-        changeVisible: [ { obj: ide_event, event: ide_event.UPDATE_APP_STATE} ]
         update: [ { obj: ide_event, event: ide_event.UPDATE_STATE_STATUS_DATA} ]
+
+      changeVisible: true
 
 
       update: ( $ ) ->
@@ -142,13 +147,14 @@ define [
     tagName: 'li'
     initialize: () ->
       _.bindAll @, 'render', 'toggle'
+      @clearGarbage = []
+      @needUpdate = []
+
     render: ->
       @$el.html @template @data
       @
     toggle: (showOrHide) ->
       @$el.toggle showOrHide
-
-    clearGarbage: []
 
     remove: () ->
       @$el.remove()
@@ -157,25 +163,29 @@ define [
         garbage()
       @
 
+    update: () ->
+      for needUpdate in @needUpdate
+        needUpdate()
+      @
+
+
 
 
   Backbone.View.extend
 
     initialize : (options)->
-      #@listenTo @opsModel, 'jsonDataSaved', @updateDisableItems
       workspace = @workspace = options.workspace
+      @itemViews = []
       null
 
-    itemViews: []
+    ready: false
 
     render : ()->
       @setElement @workspace.view.$el.find(".OEPanelBottom").html template.frame()
       @renderItem()
       @
 
-    renderItem: () ->
-      that = @
-
+    bindItem: ->
       for item, index in _.clone(items).reverse()
         view = new itemView()
         view.delegateEvents click: item.click
@@ -184,13 +194,15 @@ define [
 
         view.$el.addClass item.className
 
+        wrap$ = _.bind view.$, view
+        wrapToggle = _.bind view.toggle, view
+
         for type, event of item.events
           event = event() if _.isFunction event
           continue if not _.isArray(event)
 
           for e in event
             if type is 'update'
-              wrap$ = _.bind view.$, view
               wrapUpdate = _.bind item.update, item, wrap$
 
               if e.obj is ide_event
@@ -198,32 +210,42 @@ define [
                 view.clearGarbage.push -> ide_event.offListen e.event, wrapUpdate
               else
                 view.listenTo e.obj, e.event, wrapUpdate
-            else if type is 'changeVisible'
-                wrapToggle = _.bind view.toggle, view
-                wrapVisible = _.bind item.visible, item, wrapToggle
 
-              if e.obj is ide_event
-                ide_event.onLongListen e.event, wrapVisible
-                view.clearGarbage.push -> ide_event.offListen e.event, wrapVisible
-              else
-                view.listenTo e.obj, e.event, wrapVisible
+
+        if item.changeVisible
+          wrapVisible = _.bind item.visible, item, wrapToggle
+          view.needUpdate.push wrapVisible
+          if item.update
+            wrapUpdate = _.bind item.update, item, wrap$
+            view.needUpdate.push wrapUpdate
+        else
+          # do visible things directly if item don't have changeVisible
+          if _.isFunction item.visible
+            item.visible view.toggle
+          else
+            view.toggle item.visible
 
         view.clearGarbage.push _.bind item.remove, item if item.remove
 
-
-
-        if _.isFunction item.visible
-          item.visible view.toggle
-        else
-          view.toggle item.visible
-
         @itemViews.push view
 
-        null
+      null
 
+    renderItem: () ->
+      that = @
 
+      if not @ready
+        @bindItem()
+        @ready = true
+
+      for view in @itemViews
         @$('ul').append view.render().el
-        @
+
+      @
+
+    update: ->
+      for view in @itemViews
+        view.update()
 
     remove: () ->
       @$el.remove()

@@ -122,7 +122,7 @@ define [
 
 
     renderReuse: ->
-      allLc = Design.modelClassForType( constant.RESTYPE.LC ).allObjects()
+      allLc = @workspace.design.componentsOfType( constant.RESTYPE.LC )
 
       for lc in allLc
         if not lc.isClone() and not lc.get( 'appId' )
@@ -131,7 +131,7 @@ define [
       @
 
     subEventForUpdateReuse: ->
-      Design.on Design.EVENT.AddResource, ( resModel ) ->
+      @listenTo @workspace.design, Design.EVENT.AddResource, ( resModel ) ->
         if resModel.type is constant.RESTYPE.LC and not resModel.isClone() and not resModel.get( 'appId' )
           new @reuseLc( model: resModel, parent: @ ).render()
       , @

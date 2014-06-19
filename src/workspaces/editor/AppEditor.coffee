@@ -69,7 +69,7 @@ define [
     isAppEditMode : ()-> !!@__appEdit
 
     initDesign : ()->
-      if @opsModel.isImported() or (@differ && @differ.needUpdateLayout)
+      if @opsModel.isImported() or (@differ && @differ.getChangeInfo().needUpdateLayout)
         MC.canvas.analysis()
 
       @design.finishDeserialization()

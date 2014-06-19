@@ -62,7 +62,7 @@ define [
         ### env:dev ###
       , ( err )->
         console.error err
-        ### env:dev ###
+        ### env:dev:end ###
 
     isModified : ()-> @isAppEditMode() && @design && @design.isModified()
 

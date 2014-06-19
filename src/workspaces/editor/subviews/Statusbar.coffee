@@ -24,7 +24,7 @@ define [
       events:
         update: -> [ { obj: workspace.opsModel, event: 'jsonDataSaved'} ]
 
-      update: ( $ ) ->
+      update: ( $, workspace ) ->
         # 1.set current time
         save_time = jQuery.now() / 1000
 
@@ -52,7 +52,7 @@ define [
     {
       name: 'ta'
       className: 'status-bar-btn'
-      visible: ( toggle ) ->
+      visible: ( toggle, workspace ) ->
         mode = workspace.design.mode()
         # hide
         if mode in [ 'app', 'appview' ]
@@ -81,7 +81,7 @@ define [
     {
       name: 'state'
       className: 'status-bar-btn'
-      visible: ( toggle, needUpdate ) ->
+      visible: ( toggle, workspace ) ->
         mode = workspace.design.mode()
         appStoped = _.every [ OpsModel.State.Updating, OpsModel.State.Running, OpsModel.State.Saving ], ( state ) ->
           not workspace.opsModel.testState( state )
@@ -102,13 +102,13 @@ define [
       changeVisible: true
 
 
-      update: ( $ ) ->
-        data = @renderData()
+      update: ( $, workspace ) ->
+        data = @renderData true
         $( '.state-success b' ).text data.successCount
         $( '.state-failed b' ).text data.failCount
 
-      renderData: () ->
-        if not @visible() then return {}
+      renderData: ( visible ) ->
+        if not visible then return {}
 
         stateList = App.WS.collection.status.find().fetch()
         succeed = failed = 0
@@ -190,12 +190,14 @@ define [
         view = new itemView()
         view.delegateEvents click: item.click
         view.template = template[ item.name ]
-        view.data = item.renderData?() or {}
 
         view.$el.addClass item.className
 
         wrap$ = _.bind view.$, view
         wrapToggle = _.bind view.toggle, view
+
+        wrapVisible = _.bind item.visible, item, wrapToggle, @workspace if _.isFunction item.visible
+        wrapUpdate = _.bind item.update, item, wrap$, @workspace if _.isFunction item.update
 
         for type, event of item.events
           event = event() if _.isFunction event
@@ -203,8 +205,6 @@ define [
 
           for e in event
             if type is 'update'
-              wrapUpdate = _.bind item.update, item, wrap$
-
               if e.obj is ide_event
                 ide_event.onLongListen e.event, wrapUpdate
                 view.clearGarbage.push -> ide_event.offListen e.event, wrapUpdate
@@ -213,17 +213,16 @@ define [
 
 
         if item.changeVisible
-          wrapVisible = _.bind item.visible, item, wrapToggle
-          view.needUpdate.push wrapVisible
-          if item.update
-            wrapUpdate = _.bind item.update, item, wrap$
-            view.needUpdate.push wrapUpdate
+          view.needUpdate.push wrapVisible if item.visible
+          view.needUpdate.push wrapUpdate if item.update
+
+        if _.isFunction item.visible
+          isVisible = item.visible view.toggle, @workspace
         else
-          # do visible things directly if item don't have changeVisible
-          if _.isFunction item.visible
-            item.visible view.toggle
-          else
-            view.toggle item.visible
+          view.toggle item.visible
+          isVisible = item.visible
+
+        view.data = item.renderData?( isVisible ) or {}
 
         view.clearGarbage.push _.bind item.remove, item if item.remove
 

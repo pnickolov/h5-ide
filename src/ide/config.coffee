@@ -180,6 +180,8 @@ require.config {
 		'state_status'     : 'component/statestatus/main'
 		"ThumbnailUtil"    : "component/exporter/Thumbnail"
 		"JsonExporter"     : "component/exporter/JsonExporter"
+		"ResDiff"          : "component/common/diff/ResDiff"
+		"DiffTree"          : "component/common/diff/DiffTree"
 
 	### env:dev:end ###
 	shim :
@@ -278,6 +280,8 @@ require.config {
 			'snapshotManager'
 			'sslcert_manage'
 			'sslcert_dropdown'
+			'ResDiff'
+			'DiffTree'
 		]
 
 		"ide/cloudres/CrBundle"  : [ "CloudResources" ]

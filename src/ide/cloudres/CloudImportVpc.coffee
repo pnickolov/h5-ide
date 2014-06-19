@@ -1,5 +1,5 @@
 
-define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest", "workspaces/editor/diff/DiffTree"], ( CloudResources, CrCollection, constant, ApiRequest, DiffTree )->
+define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest", "DiffTree"], ( CloudResources, CrCollection, constant, ApiRequest, DiffTree )->
 
   # Helpers
   CREATE_REF = ( compOrUid, attr ) ->

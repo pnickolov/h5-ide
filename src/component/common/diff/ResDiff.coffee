@@ -1,8 +1,8 @@
 define [
     'UI.modalplus'
-    './resDiffTpl'
-    './DiffTree'
-    './prepare'
+    './component/common/diff/resDiffTpl'
+    'DiffTree'
+    './component/common/diff/prepare'
 ], ( modalplus, template, DiffTree, Prepare ) ->
 
     Backbone.View.extend

@@ -3831,9 +3831,10 @@ summary:focus {
 }
 
 #changeAmiDropZone .resource-label {
-	margin-top: 34px;
-	width: 120px;
-	margin-left: -30px;
+	margin-top  : 18px;
+	width       : 120px;
+	margin-left : -30px;
+	font-size   : 12px;
 }
 
 #cancelChangeAmi {

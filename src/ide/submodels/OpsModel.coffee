@@ -378,6 +378,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         self.__jsonData = null
         self.fetchJsonData().then ()->
           self.__updateAppDefer = null
+          self.importVpcId = undefined # Mark as not imported once we've finish saving.
           self.set {
             name  : newJson.name
             state : OpsModelState.Running

@@ -40,6 +40,7 @@ define [
 
     removeSubviews : ()->
       @resourcePanel.remove()
+      @statusbar.remove()
       return
 
     saveStack : ()-> @toolbar.$el.find(".icon-save").trigger "click"

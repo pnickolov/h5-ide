@@ -45,6 +45,8 @@ define [
         null
       click: ( event ) ->
         null
+
+      remove: -> clearInterval @timer
     }
 
     {
@@ -174,7 +176,7 @@ define [
     renderItem: () ->
       that = @
 
-      for item, index in items.reverse()
+      for item, index in _.clone(items).reverse()
         view = new itemView()
         view.delegateEvents click: item.click
         view.template = template[ item.name ]
@@ -206,6 +208,9 @@ define [
               else
                 view.listenTo e.obj, e.event, wrapVisible
 
+        view.clearGarbage.push _.bind item.remove, item if item.remove
+
+
 
         if _.isFunction item.visible
           item.visible view.toggle
@@ -220,11 +225,11 @@ define [
         @$('ul').append view.render().el
         @
 
-      remove: () ->
-        @$el.remove()
-        @stopListening()
-        for view in @itemViews
-          view.remove()
-        @
+    remove: () ->
+      @$el.remove()
+      @stopListening()
+      for view in @itemViews
+        view.remove()
+      @
 
 

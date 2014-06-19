@@ -11,13 +11,25 @@ define [
   "OpsModel"
   "Design"
   "ApiRequest"
-], ( Workspace, OpsEditorView, OpsEditorTpl, Thumbnail, OpsModel, Design, ApiRequest )->
+  "UI.modalplus"
+], ( Workspace, OpsEditorView, OpsEditorTpl, Thumbnail, OpsModel, Design, ApiRequest, Modal )->
 
   # A view that used to show loading state of editor
   LoadingView = Backbone.View.extend {
     isLoadingView : true
     initialize : ( options )-> @setElement $(OpsEditorTpl.loading()).appendTo("#main").show()[0]
     setText : ( text )-> @$el.find(".processing").text( text )
+    showVpcNotExist : ( name, onConfirm )->
+      self = @
+      modal = new Modal {
+        title    : "Confirm to remove the app #{name}?"
+        template : OpsEditorTpl.modal.confirmRemoveApp()
+        confirm  : { text : "Confirm", color : "red" }
+        disableClose : true
+        onConfirm    : ()->
+          onConfirm()
+          modal.close()
+      }
   }
 
   ###

@@ -59,6 +59,12 @@ define [
           # Hack!!!!
           self.opsModel.__setJsonData( newJson )
         return
+      , ( err )->
+        if err.error is 286 # VPC not exist
+          self.view.showVpcNotExist self.opsModel.get("name"), ()-> self.opsModel.terminate( true )
+          self.remove()
+          return
+        throw err
 
     isModified : ()-> @isAppEditMode() && @design && @design.isModified()
 

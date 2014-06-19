@@ -151,6 +151,9 @@
 <label for="ImportSaveAppName">App Name</label> <input id="ImportSaveAppName" class="input" value="{{name}}" type="string" autofocus> </div>
 <p>Now you can easily manage the resources and lifecycle of the app within VisualOps.</p>
 
+<!-- {{modal.confirmRemoveApp}} -->
+<p class="modal-text-major">Your app's vpc seems to be deleted. Do you want to remove the app?</p>
+
 <!-- {{saveAppToStack}} -->
 <p class="modal-text-minor">{{ i18n 'TOOL_POP_INTRO_1' }}</p>
 <p class="modal-text-minor">{{ i18n 'TOOL_POP_INTRO_2' }}</p>

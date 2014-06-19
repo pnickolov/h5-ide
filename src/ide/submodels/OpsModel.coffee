@@ -382,8 +382,8 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
             name  : newJson.name
             state : OpsModelState.Running
           }
-        , ()-> errorHandler
-      , ()-> errorHandler
+        , errorHandler
+      , errorHandler
 
     # Replace the data in mongo with new data. This method doesn't trigger an app update.
     saveApp : ( newJson )->

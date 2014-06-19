@@ -145,9 +145,9 @@ define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager", 'i18n!n
     if not m.design().modeIsStack() and asg and asg.get('appId')
       data = CloudResources(constant.RESTYPE.ASG, m.design().region()).get(asg.get('appId')).toJSON()
       numberGroup = node.children(".instance-number-group")
-      if data and data.Instances and data.Instances.member and data.Instances.member.length > 0
+      if data and data.Instances and data.Instances.length
         CanvasManager.toggle numberGroup, true
-        CanvasManager.update numberGroup.children("text"), data.Instances.member.length
+        CanvasManager.update numberGroup.children("text"), data.Instances.length
       else
         CanvasManager.toggle numberGroup, false
     null

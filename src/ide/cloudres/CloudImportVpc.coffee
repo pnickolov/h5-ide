@@ -509,30 +509,36 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
         insRes.InstanceId        = aws_ins.id
         insRes.EbsOptimized      = aws_ins.ebsOptimized
 
+        originComp = @getOriginalComp(aws_ins.id, 'INSTANCE')
+
         #generate KeyName for instance
         keyPairComp = @getOriginalComp(aws_ins.keyName, 'KP')
         if not keyPairComp
           insRes.KeyName = aws_ins.keyName if aws_ins.keyName
         else
-          originComp = @getOriginalComp(aws_ins.id, 'INSTANCE')
           if originComp
-            insRes.BlockDeviceMapping = originComp.resource.BlockDeviceMapping || []
             insRes.KeyName = originComp.resource.KeyName
           else
             insRes.KeyName = CREATE_REF( keyPairComp, "resource.KeyName" )
 
         vol_in_instance = []
 
-        _.each aws_ins.blockDeviceMapping || [], (e,key)->
-          volComp = me.volumes[ e.ebs.volumeId ]
-          if not volComp then return
-          volRes = volComp.resource
-          if aws_ins.rootDeviceName.indexOf( e.deviceName ) is -1
-            # not rootDevice, external volume point to instance
-            insRes.BlockDeviceMapping = _.union insRes.BlockDeviceMapping, ["#" + volComp.uid]
-            #add volume component
-            me.component[ volComp.uid ] = volComp
-            vol_in_instance.push volComp.uid
+        if originComp
+          # add root device
+          insRes.BlockDeviceMapping = originComp.resource.BlockDeviceMapping || []
+
+          # add not root device
+          _.each aws_ins.blockDeviceMapping || [], (e,key)->
+            if aws_ins.rootDeviceName.indexOf( e.deviceName ) is -1
+              # not rootDevice, external volume point to instance
+              volComp = me.volumes[ e.ebs.volumeId ]
+              if volComp
+                insRes.BlockDeviceMapping = _.union insRes.BlockDeviceMapping, ["#" + volComp.uid]
+                #add volume component
+                me.component[ volComp.uid ] = volComp
+                vol_in_instance.push volComp.uid
+        else
+          insRes.BlockDeviceMapping = aws_ins.blockDeviceMapping
 
         #generate instance component
         insComp = @add( "INSTANCE", insRes )
@@ -1156,40 +1162,42 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
     func.call( cd ) for func in Converters
 
     # process for server group
-    changedServerGroupUidMap = {}
-    diffTree = new DiffTree()
-    originComps = cd.originAppJSON.component
-    
-    # find all related component ref for server group
-    _.each cd.instances, (insComp) ->
-      if originComps[insComp.uid]
-        if insComp.number and insComp.number > 1
-          diffResult = diffTree.compare originComps[insComp.uid], insComp
-          if diffResult
-            changedServerGroupUidMap[insComp.serverGroupUid] = true
-      null
 
-    _.each cd.enis, (insComp) ->
-      if originComps[insComp.uid]
-        if insComp.number and insComp.number > 1
-          if diffResult
+    if cd.originAppJSON
+      changedServerGroupUidMap = {}
+      diffTree = new DiffTree()
+      originComps = cd.originAppJSON.component
+      
+      # find all related component ref for server group
+      _.each cd.instances, (insComp) ->
+        if originComps[insComp.uid]
+          if insComp.number and insComp.number > 1
             diffResult = diffTree.compare originComps[insComp.uid], insComp
-            changedServerGroupUidMap[insComp.serverGroupUid] = true
-            attachedInsRef = insComp.resource.Attachment.InstanceId
-            if attachedInsRef
-              instanceUid = MC.extractID(attachedInsRef)
-              insComp = originComps[instanceUid]
+            if diffResult
               changedServerGroupUidMap[insComp.serverGroupUid] = true
-      null
+        null
 
-    # update servergroup to single instance
-    _.each cd.instances, (insComp) ->
-      if insComp.serverGroupUid and changedServerGroupUidMap[insComp.serverGroupUid]
-        insComp.serverGroupName = insComp.name
-        insComp.number = 1
-        insComp.index = 0
-        insComp.serverGroupUid = insComp.uid
-      null
+      _.each cd.enis, (insComp) ->
+        if originComps[insComp.uid]
+          if insComp.number and insComp.number > 1
+            if diffResult
+              diffResult = diffTree.compare originComps[insComp.uid], insComp
+              changedServerGroupUidMap[insComp.serverGroupUid] = true
+              attachedInsRef = insComp.resource.Attachment.InstanceId
+              if attachedInsRef
+                instanceUid = MC.extractID(attachedInsRef)
+                insComp = originComps[instanceUid]
+                changedServerGroupUidMap[insComp.serverGroupUid] = true
+        null
+
+      # update servergroup to single instance
+      _.each cd.instances, (insComp) ->
+        if insComp.serverGroupUid and changedServerGroupUidMap[insComp.serverGroupUid]
+          insComp.serverGroupName = insComp.name
+          insComp.number = 1
+          insComp.index = 0
+          insComp.serverGroupUid = insComp.uid
+        null
 
     # find default SG
     if DEFAULT_SG["DefaultSG"]

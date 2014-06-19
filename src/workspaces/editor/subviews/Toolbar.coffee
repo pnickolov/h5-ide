@@ -321,6 +321,7 @@ define [
     appToStack: (event) ->
         name = @workspace.design.attributes.name
         newName = @getStackNameFromApp(name)
+        stack = App.model.stackList().get(@workspace.design.attributes.stack_id)
         onConfirm = =>
             MC.Analytics.increase("app_to_stack")
             isNew = appToStackModal.tpl.find("input[name='save-stack-type']:checked").attr('id') is "radio-new-stack"
@@ -333,8 +334,7 @@ define [
                 newJson = Design.instance().serializeAsStack()
                 newJson.id = @workspace.design.attributes.stack_id
                 appToStackModal.close()
-                stack = App.model.stackList().get(@workspace.design.attributes.stack_id)
-                newJson.name = stack.attributes.name
+                newJson.name = stack.get("name")
                 stack.save(newJson).then ()->
                     notification "info", sprintf lang.ide.TOOL_MSG_INFO_HDL_SUCCESS, lang.ide.TOOLBAR_HANDLE_SAVE_STACK, newJson.name
                     # refresh if this stack is open
@@ -342,10 +342,10 @@ define [
                 ,(err)->
                     notification 'error', sprintf lang.ide.TOOL_MSG_ERR_SAVE_FAILED, newJson.name
 
-
+        originStackExist = !!stack
         appToStackModal = new Modal
             title:  lang.ide.TOOL_POP_TIT_APP_TO_STACK
-            template: OpsEditorTpl.saveAppToStack {input: name, stackName: newName}
+            template: OpsEditorTpl.saveAppToStack {input: name, stackName: newName, orignStackExist: originStackExist}
             confirm:
                 text: lang.ide.TOOL_POP_BTN_SAVE_TO_STACK
             onConfirm: onConfirm

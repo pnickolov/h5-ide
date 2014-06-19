@@ -43,9 +43,12 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
 
       ComplexResModel.call( this, attr, option )
 
+    privacyAttrs: [ '__parent', '__connections', 'x', 'y' ]
 
     clone: ->
+      isRun = !!@get 'appId'
       dolly = new Model null, clone: true
+
       @addBrother dolly
 
       for conn in @connections()
@@ -99,8 +102,7 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
       brother.stopListening()
 
     getContext: ( attr ) ->
-      exception = [ '__parent', '__connections', 'x', 'y' ]
-      if @__bigBrother and attr not in exception and not (_.intersection _.keys(exception), attr).length
+      if @__bigBrother and attr not in @privacyAttrs and not (_.intersection _.keys(@privacyAttrs), attr).length
         return @__bigBrother
 
       @
@@ -450,6 +452,7 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
         KP.assignTo( model )
       else
         model.set 'keyName', data.resource.KeyName
+
 
       null
   }

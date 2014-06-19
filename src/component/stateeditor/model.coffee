@@ -679,7 +679,7 @@ define [ 'MC', 'constant', 'state_model', 'CloudResources', "Design", 'backbone'
 						$.each CloudResources(constant.RESTYPE.ASG, Design.instance().region()).toJSON(), (idx, resObj) ->
 							if resObj and resObj.AutoScalingGroupName and resObj.Instances
 								if resObj.AutoScalingGroupName is asgName
-									$.each resObj.Instances.member, (idx, instanceObj) ->
+									$.each resObj.Instances, (idx, instanceObj) ->
 										instanceId = instanceObj.InstanceId
 										dataAry.push({
 											res_id: instanceId,

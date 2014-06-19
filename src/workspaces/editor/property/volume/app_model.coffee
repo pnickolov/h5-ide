@@ -16,9 +16,10 @@ define [ '../base/model', 'Design', 'CloudResources', 'constant' ], ( PropertyMo
             appId = uid
 
           volume = CloudResources(constant.RESTYPE.VOL, Design.instance().region()).get(appId)
+          volume = volume.attributes
           if volume
             if volume.attachmentSet
-              volume.name = volume.attachmentSet.item[0].device
+              volume.name = volume.attachmentSet[0].device
           else
             return false
 

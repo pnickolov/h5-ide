@@ -526,6 +526,9 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
         if originComp
           # add root device
           insRes.BlockDeviceMapping = originComp.resource.BlockDeviceMapping || []
+          insRes.BlockDeviceMapping = _.filter insRes.BlockDeviceMapping, (bdm) ->
+            return false if _.isString(bdm)
+            return true
 
           # add not root device
           _.each aws_ins.blockDeviceMapping || [], (e,key)->
@@ -1161,7 +1164,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
     cd = new ConverterData( region, vpcId, originalJson )
     func.call( cd ) for func in Converters
 
-    # process for server group
+    # process for server group when visualize vpc
 
     if cd.originAppJSON
       changedServerGroupUidMap = {}

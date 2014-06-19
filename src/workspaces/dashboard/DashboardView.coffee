@@ -470,7 +470,7 @@ define [
             "AMI Launch Index"   : data.amiLaunchIndex
             "Instance Type"      : data.instanceType
             "Block Device Type"  : data.rootDeviceType
-            "Block Devices"      : @formartDetail "BlockDevice", data.blockDeviceMapping, "deviceName"
+            "Block Devices"      : if data.blockDeviceMapping then @formartDetail "BlockDevice", data.blockDeviceMapping, "deviceName" else null
             "Network Interface"  : @formartDetail "ENI", data.networkInterfaceSet, "networkInterfaceId"
           }
         when 'EIP'
@@ -494,7 +494,7 @@ define [
             return {
                 'Alarm Name'        : data.Name
                 'Comparison Operator': data.ComparisonOperator
-                'Dimensions'        : @formartDetail 'Dimensions', data.Dimensions.member, 'Dimensions', true
+                'Dimensions'        : @formartDetail 'Dimensions', data.Dimensions, 'Dimensions', true
                 'Evaluation Periods': data.EvaluationPeriods
                 'Insufficient Data Actions': data.InsufficientDataActions
                 'Metric Name'       : data.MetricName

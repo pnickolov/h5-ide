@@ -464,7 +464,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
         # add volume to layout
         delete @component[ volComp.uid ]
         @volumes[ aws_vol.id ] = volComp
-        @component[ volComp.uid ] = volComp
+        # @component[ volComp.uid ] = volComp
 
       return
 

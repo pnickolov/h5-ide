@@ -11,6 +11,7 @@ define [], () ->
             'resource.KeyName': true,
             'resource.AssociationSet.n.RouteTableAssociationId'
             'resource.BlockDeviceMapping'
+            'resource.VolumeSize'
         }
 
         isArray = (value) ->

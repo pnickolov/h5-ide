@@ -34,4 +34,20 @@ define ["ide/cloudres/CrCollection"], ( CrCollection )->
   # Invalidate all the resources in every collection.
   CloudResources.invalidate = ()-> Q.all _.values( CachedCollections ).map ( cln )-> cln.fetchForce()
 
+  # Clear all the resources which attribute matches `detect`
+  CloudResources.clearWhere = ( detect, category )->
+    if _.isFunction detect
+      find = "filter"
+    else
+      find = "where"
+
+    for id, cln of CachedCollections
+
+      Collection = CrCollection.getClassByType( cln.type )
+      realCate   = Collection.category( category )
+
+      if cln.category is realCate
+        cln.remove( cln[find](detect) )
+    return
+
   CloudResources

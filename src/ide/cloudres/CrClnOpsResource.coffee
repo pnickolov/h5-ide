@@ -28,6 +28,10 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
       CrCollection.prototype.fetchForce.call this
 
     doFetch : ()->
+      # Before we do the fetch, we would want to clear everything in the CloudResources cache.
+      self = @
+      CloudResources.clearWhere ((m)-> m.RES_TAG is self.category), @__region
+
       console.assert( @__region, "CrOpsCollection's region is not set before fetching data. Need to call init() first" )
       ApiRequest("resource_vpc_resource", {
         region_name : @__region

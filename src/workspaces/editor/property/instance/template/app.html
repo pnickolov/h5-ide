@@ -103,11 +103,11 @@
       </dl>
       <dl class="dl-vertical">
         <dt>{{i18n "PROP_VOLUME_ATTACHMENT_STATE"}}</dt>
-        <dd>{{emptyStr rootDevice.attachmentSet.item.0.status}}</dd>
+        <dd>{{emptyStr rootDevice.attachmentSet.0.status}}</dd>
         <dt>{{i18n "PROP_VOLUME_INSTANCE_ID"}}</dt>
-        <dd>{{emptyStr rootDevice.attachmentSet.item.0.instanceId}}</dd>
+        <dd>{{emptyStr rootDevice.attachmentSet.0.instanceId}}</dd>
         <dt>{{i18n "PROP_VOLUME_ATTACHMENT_TIME"}}</dt>
-        <dd>{{timeStr rootDevice.attachmentSet.item.0.attachTime}}</dd>
+        <dd>{{timeStr rootDevice.attachmentSet.0.attachTime}}</dd>
       </dl>
     </article>
   </div>
@@ -179,7 +179,7 @@
         <th>{{i18n "PROP_INSTANCE_ENI_IP_ADDRESS"}}</th>
         <th>{{i18n "PROP_INSTANCE_PUBLIC_IP"}}</th>
       </tr>
-      {{#each eni.privateIpAddressesSet.item}}
+      {{#each eni.privateIpAddressesSet}}
       <tr>
         <td>{{privateIpAddress}}{{#if primary}}<span>(Primary)</span>{{/if}}</td>
         <td>{{#if association.publicIp}}{{association.publicIp}}{{else}}-{{/if}}</td>

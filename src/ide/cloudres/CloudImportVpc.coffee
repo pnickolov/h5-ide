@@ -589,12 +589,12 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
         aws_eni = aws_eni.attributes
         azComp = @addAz(aws_eni.availabilityZone)
 
-        if aws_eni.attachment
-          insComp = @instances[aws_eni.attachment.instanceId]
-          if not insComp
-            continue
-        else
-          continue
+        # if aws_eni.attachment
+        #   insComp = @instances[aws_eni.attachment.instanceId]
+        #   if not insComp
+        #     continue
+        # else
+        #   continue
 
         subnetComp = @subnets[aws_eni.subnetId]
         if not subnetComp
@@ -616,7 +616,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
           # "PrivateDnsName" : ""
           "VpcId"          : ""
 
-        if aws_eni.attachment.instanceOwnerId and aws_eni.attachment.instanceOwnerId in [ "amazon-elb", "amazon-rds" ]
+        if aws_eni.attachment and aws_eni.attachment.instanceOwnerId and aws_eni.attachment.instanceOwnerId in [ "amazon-elb", "amazon-rds" ]
           continue
 
         eniRes = @_mapProperty aws_eni, eniRes
@@ -630,12 +630,17 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
         eniRes.AvailabilityZone = CREATE_REF( azComp, 'resource.ZoneName' )
         eniRes.SubnetId         = CREATE_REF( subnetComp, 'resource.SubnetId' )
         eniRes.VpcId            = CREATE_REF( @theVpc, 'resource.VpcId' )
-        if not ( aws_eni.attachment.deviceIndex in [ "0", 0 ] )
-          #eni0 no need attachmentId
-          eniRes.Attachment.AttachmentId = aws_eni.attachment.attachmentId
 
-        eniRes.Attachment.InstanceId = CREATE_REF( insComp, 'resource.InstanceId' )
-        eniRes.Attachment.DeviceIndex = String(if aws_eni.attachment.deviceIndex is 0 then '0' else aws_eni.attachment.deviceIndex)
+        #attached ENI
+        if aws_eni.attachment
+          if not ( aws_eni.attachment.deviceIndex in [ "0", 0 ] )
+            #eni0 no need attachmentId
+            eniRes.Attachment.AttachmentId = aws_eni.attachment.attachmentId
+
+          insComp = @instances[aws_eni.attachment.instanceId]
+          if insComp
+            eniRes.Attachment.InstanceId = CREATE_REF( insComp, 'resource.InstanceId' )
+            eniRes.Attachment.DeviceIndex = String(if aws_eni.attachment.deviceIndex is 0 then '0' else aws_eni.attachment.deviceIndex)
 
         for ip in aws_eni.privateIpAddressesSet
           #AutoAssign set to false in app
@@ -646,10 +651,10 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
             "GroupId": CREATE_REF(@sgs[ group.groupId ], 'resource.GroupId')
             "GroupName": CREATE_REF(@sgs[ group.groupId ], 'resource.GroupName')
 
-
-        eniComp = @add( "ENI", eniRes, "eni" + aws_eni.attachment.deviceIndex )
+        eniComp = @add( "ENI", eniRes )
         @enis[ aws_eni.id ] = eniComp
-        if not ( aws_eni.attachment.deviceIndex in [ "0", 0 ] )
+        #add external or unattached ENI to layout
+        if not aws_eni.attachment or not ( aws_eni.attachment.deviceIndex in [ "0", 0 ] )
           @addLayout( eniComp, false, subnetComp )
       return
 

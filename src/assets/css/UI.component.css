@@ -888,7 +888,6 @@ textarea {
 .status-xgw-pending,
 .status-xgw-deleting,
 .status-xgw-deleted,
-.status-xgw-attaching,
 .status-xgw-detaching,
 .status-xgw-detached {
 	background-color: #ec3c38;
@@ -917,7 +916,8 @@ textarea {
 .status-shutting-down,
 .status-Stopping,
 .status-stopping,
-.status-deleting {
+.status-deleting,
+.status-xgw-attaching {
 	background-color: #ffa740;
 	background-image: -webkit-linear-gradient(bottom, #ff8330, #ffa740);
 	background-image: -moz-linear-gradient(bottom, #ff8330, #ffa740);

@@ -15,6 +15,7 @@ define [
 
             @oldAppJSON = option.old
             @newAppJSON = option.new
+            @callback = option.callback if option.callback
 
             @prepare = new Prepare oldAppJSON: @oldAppJSON, newAppJSON: @newAppJSON
             @_genDiffInfo(@oldAppJSON.component, @newAppJSON.component)
@@ -37,6 +38,8 @@ define [
             $target.toggleClass 'closed'
 
         render: () ->
+
+            that = this
             # popup modal
             options =
                 template: @el
@@ -54,7 +57,14 @@ define [
 
             @modal = new modalplus options
             @modal.on 'confirm', () ->
-                @modal.close()
+                if that.callback
+                    promise = that.callback()
+                    promise.then () ->
+                        that.modal.close()
+                    , (error) ->
+                        notification 'error', error
+                else
+                    that.modal.close()
             , @
 
             #settle frame

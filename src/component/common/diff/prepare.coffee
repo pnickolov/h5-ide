@@ -13,6 +13,7 @@ define [ 'constant' ], ( constant ) ->
             newCompAttr = _.extend(newComp, {})
 
             _.each path, (attr) ->
+                
                 if oldCompAttr
 
                     if _.isUndefined(oldCompAttr[attr])

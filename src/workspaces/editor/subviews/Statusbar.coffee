@@ -24,7 +24,6 @@ define [
       events:
         update: -> [ { obj: workspace.opsModel, event: 'jsonDataSaved'} ]
 
-
       update: ( $ ) ->
         # 1.set current time
         save_time = jQuery.now() / 1000
@@ -41,7 +40,7 @@ define [
         @timer = setInterval ()->
           $item    = $('.stack-save-time')
           $item.text MC.intervalDate $item.attr 'data-save-time'
-        , 500
+        , 1000
         #
         null
       click: ( event ) ->
@@ -90,8 +89,6 @@ define [
 
         toggle?(isVisible)
         isVisible
-
-
 
       events:
         changeVisible: [ { obj: ide_event, event: ide_event.UPDATE_APP_STATE} ]
@@ -165,6 +162,7 @@ define [
     initialize : (options)->
       #@listenTo @opsModel, 'jsonDataSaved', @updateDisableItems
       workspace = @workspace = options.workspace
+      null
 
     itemViews: []
 
@@ -185,7 +183,8 @@ define [
         view.$el.addClass item.className
 
         for type, event of item.events
-          if not _.isArray(event) then continue
+          event = event() if _.isFunction event
+          continue if not _.isArray(event)
 
           for e in event
             if type is 'update'

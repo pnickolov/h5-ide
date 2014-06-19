@@ -271,18 +271,29 @@ define [
     trAwsXml : ( data )-> data.DescribeRouteTablesResponse.routeTableSet?.item
     parseFetchData : ( rtbs )->
       for rtb in rtbs
+
+        rtb.routeSet = rtb.routeSet?.item || []
+        rtb.associationSet = rtb.associationSet?.item || []
+        rtb.propagatingVgwSet = rtb.propagatingVgwSet?.item []
+
         ##move local to first
         found = -1
         for rt,idx in rtb.routeSet
           if rt.gatewayId is 'local'
             found = idx
         if found > 0
-          #move local to first
           local_rt = rtb.routeSet.splice( found,1 )
           rtb.routeSet.splice( 0, 0, local_rt[0] )
-        rtb.routeSet = rtb.routeSet?.item || []
-        rtb.associationSet = rtb.associationSet?.item || []
-        rtb.propagatingVgwSet = rtb.propagatingVgwSet?.item []
+
+        ##move main to first
+        found = -1
+        for assoc,idx in rtb.associationSet
+          if assoc.main and found is -1
+            found = idx
+        if found > 0
+          main_rt = rtb.associationSet.splice( found,1 )
+          rtb.routeSet.splice( 0, 0, main_rt[0] )
+
         rtb.id = rtb.routeTableId
         #delete rtb.routeTableId
       rtbs
@@ -292,12 +303,20 @@ define [
         ##move local to first
         found = -1
         for rt,idx in rtb.routeSet
-          if rt.gatewayId is 'local'
+          if rt.gatewayId is 'local' and found is -1
             found = idx
         if found > 0
-          #move local to first
           local_rt = rtb.routeSet.splice( found,1 )
           rtb.routeSet.splice( 0, 0, local_rt[0] )
+
+        ##move main to first
+        found = -1
+        for assoc,idx in rtb.associationSet
+          if assoc.main and found is -1
+            found = idx
+        if found > 0
+          main_rt = rtb.associationSet.splice( found,1 )
+          rtb.routeSet.splice( 0, 0, main_rt[0] )
 
         rtb.id = rtb.routeTableId
         #delete rtb.routeTableId

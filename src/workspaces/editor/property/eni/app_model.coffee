@@ -50,7 +50,7 @@ define [ '../base/model', 'Design', 'constant', "CloudResources" ], ( PropertyMo
             else
               eni = { privateIpAddressesSet : { item : [] } }
 
-            for i in eni.privateIpAddressesSet.item
+            for i in eni.privateIpAddressesSet
               i.primary = i.primary is true
 
             eni.id              = eni_comp.appId

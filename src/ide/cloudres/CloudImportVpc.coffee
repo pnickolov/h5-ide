@@ -621,7 +621,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
           "AssociatePublicIpAddress" : false
           "Attachment":
               "AttachmentId" : ""
-              "DeviceIndex"  : ""
+              "DeviceIndex"  : "1"
               "InstanceId"   : ""
           "AvailabilityZone": ""
           "Description": ""

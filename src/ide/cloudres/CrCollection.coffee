@@ -162,14 +162,18 @@ define ["ApiRequest", "./CrModel", "constant", "backbone"], ( ApiRequest, CrMode
       toAddIds = []
       for d in awsData
         d.category = category
-        if d.tags
-          d.tagSet = d.tags
+        if d.tags or d.Tags
+          d.tagSet = d.tags or d.Tags
           delete d.tags
+          delete d.Tags
 
         if _.isArray d.tagSet
           ts = {}
           for i in d.tagSet
-            ts[ i.key ] = i.value
+            if i.key
+              ts[ i.key ] = i.value
+            else if i.Key
+              ts[ i.Key ] = i.Value
           d.tagSet = ts
 
         if @modelIdAttribute

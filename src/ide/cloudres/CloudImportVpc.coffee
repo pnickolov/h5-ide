@@ -15,6 +15,11 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
   AWS_ID     = ( dict, type )->
     key = constant.AWS_RESOURCE_KEY[ type ]
     dict[ key ] or dict.resource and dict.resource[ key ]
+  TAG_NAME   = ( res ) ->
+    name = null
+    if res.tagSet
+      name = res.tagSet.name or res.tagSet.Name
+    name
 
   # Class used to collect components / layouts
   class ConverterData
@@ -237,7 +242,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
 
         EnableDnsHostnames : vpc.attributes.enableDnsHostnames
         EnableDnsSupport   : vpc.attributes.enableDnsSupport
-      })
+      }, TAG_NAME(vpc.attributes))
 
       @addLayout( vpcComp, true )
       return
@@ -252,7 +257,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
           CidrBlock        : sb.cidrBlock
           SubnetId         : sb.id
           VpcId            : CREATE_REF( @theVpc, "resource.VpcId" )
-        })
+        }, TAG_NAME(sb))
 
         @subnets[ sb.id ] = sbComp
 
@@ -313,7 +318,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
         #gwRes = @_mapProperty aws_cgw, cgwRes
 
         #create cgw component, but add with vpn
-        cgwComp = @add( "CGW", cgwRes, aws_cgw.id )
+        cgwComp = @add( "CGW", cgwRes, TAG_NAME(aws_cgw) )
         delete @component[ cgwComp.uid ]
         @gateways[ aws_cgw.id ] = cgwComp
       return
@@ -352,7 +357,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
               "DestinationCidrBlock" : route.destinationCidrBlock
               #"Source" : route.source
 
-        vpnComp = @add( "VPN", vpnRes, aws_vpn.id )
+        vpnComp = @add( "VPN", vpnRes, TAG_NAME(aws_vpn) )
         #add CGW to layout
         @component[ cgwComp.uid ] = cgwComp
         @addLayout( cgwComp, false )
@@ -429,7 +434,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
           for sg_rule in aws_sg.ipPermissionsEgress || []
             genRules.call(@, sg_rule, sgRes.IpPermissionsEgress, selfSGId)
 
-        sgComp = @add( "SG", sgRes, aws_sg.groupName )
+        sgComp = @add( "SG", sgRes, TAG_NAME(aws_sg) || aws_sg.groupName )
         if aws_sg.groupName is "default"
           DEFAULT_SG["default"] = sgComp
         else if aws_sg.groupName.indexOf("-DefaultSG-app-") isnt -1
@@ -589,7 +594,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
             })
 
         #generate instance component
-        insComp = @add( "INSTANCE", insRes )
+        insComp = @add( "INSTANCE", insRes, TAG_NAME(aws_ins) )
 
         #set instanceId of volume
         _.each vol_in_instance, (e,key)->
@@ -670,7 +675,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
             "GroupId": CREATE_REF(@sgs[ group.groupId ], 'resource.GroupId')
             "GroupName": CREATE_REF(@sgs[ group.groupId ], 'resource.GroupName')
 
-        eniComp = @add( "ENI", eniRes )
+        eniComp = @add( "ENI", eniRes, TAG_NAME(aws_eni) )
         @enis[ aws_eni.id ] = eniComp
         #add external or unattached ENI to layout
         if not aws_eni.attachment or not ( aws_eni.attachment.deviceIndex in [ "0", 0 ] )
@@ -759,7 +764,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
           if gwComp
             rtbRes.PropagatingVgwSet.push CREATE_REF(gwComp, 'resource.VpnGatewayId' )
 
-        rtbComp = @add( "RT", rtbRes )
+        rtbComp = @add( "RT", rtbRes, TAG_NAME(aws_rtb) )
         @addLayout( rtbComp, true, @theVpc )
       return
 

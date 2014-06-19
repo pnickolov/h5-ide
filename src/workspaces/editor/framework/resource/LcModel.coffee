@@ -195,6 +195,7 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
       newName
 
     isRemovable : () ->
+
       if @design().modeIsAppEdit() and @get("appId")
         return error : lang.ide.CVS_MSG_ERR_DEL_LC
 
@@ -203,7 +204,9 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
         ($('#state-editor-model').is(':visible') and $('#state-editor-model .state-list .state-item').length >= 1)
           return MC.template.NodeStateRemoveConfirmation(name: @get("name"))
 
-      true
+      return true if @__brothers.length > 0 or @isClone()
+      sprintf lang.ide.CVS_CFM_DEL_LC, @get( 'name' )
+
 
     isDefaultTenancy : ()-> true
 

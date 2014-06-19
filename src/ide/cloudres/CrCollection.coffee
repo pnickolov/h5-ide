@@ -21,7 +21,6 @@ define ["ApiRequest", "./CrModel", "constant", "backbone"], ( ApiRequest, CrMode
     RT:
         associations: 'associationSet'
         routes: 'routeSet'
-        tags: 'tagSet'
         propagatingVgws: 'propagatingVgwSet'
 
     SG:
@@ -163,6 +162,16 @@ define ["ApiRequest", "./CrModel", "constant", "backbone"], ( ApiRequest, CrMode
       toAddIds = []
       for d in awsData
         d.category = category
+        if d.tags
+          d.tagSet = d.tags
+          delete d.tags
+
+        if _.isArray d.tagSet
+          ts = {}
+          for i in d.tagSet
+            ts[ i.key ] = i.value
+          d.tagSet = ts
+
         if @modelIdAttribute
           d.id = d[ @modelIdAttribute ]
           delete d[ @modelIdAttribute ]

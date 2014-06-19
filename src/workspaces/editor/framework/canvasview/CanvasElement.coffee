@@ -543,7 +543,7 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "CloudResourc
       else if m.get("appId").indexOf("vgw-") is 0
         #vgw            state: pending | available | deleting | deleted
         #    attachment.state: attaching | attached | detaching | detached
-        if not ( data.get("state") is "available" and data.get("attachmentState") is "attached" and data.get("vpcId") is m.parent().get("appId") )
+        if not ( data.get("state") is "available" and data.get("attachmentState") in ["attaching","attached"] and data.get("vpcId") is m.parent().get("appId") )
           CanvasManager.addClass el, "deleted"
 
       else if m.get("appId").indexOf("cgw-") is 0

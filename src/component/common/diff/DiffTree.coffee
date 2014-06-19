@@ -7,8 +7,9 @@ define [], () ->
 
         option.filterMap = {
             'resource.PrivateIpAddressSet.n.AutoAssign': true,
-            'resource.AssociatePublicIpAddress': true
-            'resource.KeyName': true
+            'resource.AssociatePublicIpAddress': true,
+            'resource.KeyName': true,
+            'resource.AssociationSet.n.RouteTableAssociationId'
         }
 
         isArray = (value) ->

@@ -878,9 +878,10 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
           for instanceId in aws_elb.Instances
             #skip instances in asg
             if not (instanceId in me.ins_in_asg)
-              elbRes.Instances.push {
-                InstanceId: CREATE_REF( @instances[ instanceId ], 'resource.InstanceId' )
-              }
+              if @instances[ instanceId ]
+                elbRes.Instances.push {
+                  InstanceId: CREATE_REF( @instances[ instanceId ], 'resource.InstanceId' )
+                }
 
 
         elbComp = @add( "ELB", elbRes, aws_elb.Name )

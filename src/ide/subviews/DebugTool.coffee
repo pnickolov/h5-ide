@@ -1,5 +1,5 @@
 
-define [ "ApiRequest", "ApiRequestDefs", "vender/select2/select2" ], ( ApiRequest, ApiRequestDefs )->
+define [ "ApiRequest", "ApiRequestDefs", "vender/select2/select2", "UI.modal" ], ( ApiRequest, ApiRequestDefs )->
 
   tmpl = """
 <div id="DebugTool" class="debugToolBg"><ul>

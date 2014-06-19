@@ -1,27 +1,7 @@
-<!-- {{tab.item}} -->
-<li id="tab-bar-{{tab_id}}" data-tab-type="{{tab_type}}">
-	<a href="#tab-content-{{tab_id}}" title="{{tab_name}}" data-tab-id="{{tab_id}}" class="truncate tab-bar-truncate">
-		<i class="icon-tabbar-label"></i>
-		{{tab_name}}
-	</a>
-	<a href="javascript:void(0)" class="close-restriction icon-close" title="{{i18n 'TOOL_TIT_CLOSE_TAB'}}"></a>
-</li>
-
-<!-- {{tab.dashboard}} -->
-<li id="tab-bar-{{target_id}}">
-	<a href="#tab-content-{{target_id}}" data-toggle="tab" class="truncate tab-bar-truncate" title="{{target_id}}">
-		<i class="icon-dashboard-tabbar icon-tabbar-label"></i>
-		{{target_id}}
-	</a>
-	<a href="javascript:void(0)" class="icon-close close-tab" title="{{i18n 'TOOL_TIT_CLOSE_TAB'}}"></a>
-</li>
-
 <!-- {{notification.item}} -->
 <div class="notification_item {{type}}_item">
 	<span>{{template}}</span>
-	{{#if should_stay}}
-		<i class="notification_close">&times;</i>
-	{{/if}}
+	{{#if should_stay}}<i class="notification_close">&times;</i>{{/if}}
 </div>
 
 
@@ -131,62 +111,6 @@
 	</div>
 </div>
 
-<!-- {{exportCloudFormation}} -->
-<div id="modal-export-cf" style="width:468px">
-	<div class="modal-header"> <h3>{{i18n "TOOL_POP_EXPORT_CF"}}</h3><i class="modal-close">&times;</i> </div>
-	<div class="modal-body">
-		<div class="modal-text-wraper"> <div class="modal-center-align-helper">
-			<div class="modal-text-major"></div>
-			<div class="modal-text-minor">{{i18n "TOOL_POP_EXPORT_CF_INFO"}}</div>
-		</div> </div>
-	</div>
-	<div class="modal-footer">
-		<a id="tpl-download" class="btn btn-blue modal-close disabled" target="_blank">{{i18n "TOOL_POP_BTN_EXPORT_CF"}}</a>
-		<button class="btn modal-close btn-silver">{{i18n "TOOL_POP_BTN_CANCEL"}}</button>
-	</div>
-</div>
-
-<!-- {{exportJSON}} -->
-<div style="width:468px">
-	<div class="modal-header"> <h3>{{i18n "TOOL_EXPORT_AS_JSON"}}</h3><i class="modal-close">&times;</i> </div>
-	<div class="modal-body">
-		<div class="modal-text-wraper"> <div class="modal-center-align-helper">
-			<div class="modal-text-major"></div>
-			<div class="modal-text-minor">{{i18n "TOOL_POP_BODY_EXPORT_AS_JSON"}}</div>
-		</div> </div>
-	</div>
-	<div class="modal-footer">
-		<a class="btn btn-blue modal-close" href="{{data}}" target="_blank" download="{{name}}">{{i18n "TOOL_POP_BTN_DOWNLOAD"}}</a>
-		<button id="tpl-cancel" class="btn modal-close btn-silver">{{i18n "TOOL_POP_BTN_CANCEL"}}</button>
-	</div>
-</div>
-
-<!-- {{importJSON}} -->
-<div style="width:468px">
-	<div class="modal-header"> <h3>{{i18n "POP_IMPORT_JSON_TIT"}}</h3><i class="modal-close">&times;</i> </div>
-	<div class="modal-body" style="min-height:0px;">
-		<div id="modal-import-json-dropzone">{{i18n "POP_IMPORT_DROP_LBL"}}<label for="modal-import-json-file" class="select-file-link">{{i18n "POP_IMPORT_SELECT_LBL"}}</label><input type="file" id="modal-import-json-file"></div>
-		<div id="import-json-error"></div>
-	</div>
-</div>
-
-<!-- {{exportPNG}} -->
-<div style="width:420px">
-	<div class="modal-header">
-		<h3>{{title}}</h3>
-		<i class="modal-close">&times;</i>
-	</div>
-
-	<div class="modal-body">
-		<div class="loading-spinner"></div>
-	</div>
-
-	<div class="modal-footer">
-		<a id="btn-confirm" class="btn btn-{{color}}" >{{confirm}}</a>
-		<button class="btn modal-close btn-silver">{{i18n "TOOL_POP_BTN_CANCEL"}}</button>
-	</div>
-</div>
-
 <!-- {{modalResourceInstanceDetail}} -->
 <div class="modal-resource-instance-detail" style="width:420px">
 	<div class="modal-header">
@@ -240,54 +164,6 @@
 	</div>
 </div>
 
-<!-- {{modalRegionResourceDetail}} -->
-{{#if detail_table}}
-<div class="modal-resource-detail" style="width:800px">
-{{else}}
-<div class="modal-resource-detail" style="width:420px">
-{{/if}}
-	<div class="modal-header">
-		<h3>{{title}}</h3>
-		<i class="modal-close">&times;</i>
-	</div>
-	<div class="modal-body">
-		<dl class="dl-horizontal">
-		{{#each sub_info}}
-			{{{this}}}
-		{{/each}}
-		</dl>
-		{{#if detail_table}}
-		<br />
-		<br />
-		<table class="table table-light">
-			<thead>
-				<tr>
-					{{#each detail_table.th_set}}
-					<th style="width:160px">{{this}}</th>
-					{{/each}}
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-				{{#each detail_table.tr1_set}}
-					<td>{{this}}</td>
-				{{/each}}
-				</tr>
-
-				<tr>
-				{{#each detail_table.tr2_set}}
-					<td>{{this}}</td>
-				{{/each}}
-				</tr>
-			</tbody>
-		</table>
-		{{/if}}
-	</div>
-	<div class="modal-footer">
-		<button class="btn modal-close btn-silver">{{i18n "POP_BTN_CLOSE"}}</button>
-	</div>
-</div>
-
 <!-- {{bubbleTest}} -->
 <div class="bubble-head">{{title}}</div>
 <div class="bubble-content">
@@ -313,19 +189,6 @@
 	{{description}}
 </div>
 
-<!-- {{bubbleAppInfo}} -->
-<div class="bubble-head"><i class="icon-{{status}} icon-label"></i>{{title}}</div>
-<div class="bubble-content">
-	<dl class="dl-horizontal">
-		<dt>Start Time:</dt>
-		<dd>{{start-time}}</dd>
-		<dt>Stop Time:</dt>
-		<dd>{{end-time}}</dd>
-		<!--dt>Estimated Cost:</dt>
-		<dd>{{cost}}</dd-->
-	</dl>
-</div>
-
 <!-- {{bubbleInstanceInfo}} -->
 <div class="bubble-head"><i class="status-{{status}} icon-label"></i>{{title}}-({{id}})</div>
 <div class="bubble-content">
@@ -337,16 +200,6 @@
 		<dt>Instance Type:</dt>
 		<dd>{{instance-type}}</dd>
 	</dl>
-</div>
-
-<!-- {{bubbleRegionResourceInfo}} -->
-<div class="bubble-head"><i class="status-{{status}} icon-label"></i>{{title}}</div>
-<div class="bubble-content">
-<dl class="dl-horizontal">
-	{{#each sub_info}}
-		{{{this}}}
-	{{/each}}
-</dl>
 </div>
 
 <!-- {{bubbleSnapshotInfo}} -->
@@ -391,7 +244,7 @@
 	</dl>
 </div>
 
-<!-- {{bubbleAMIMongoInfo}} -->
+<!-- {{bubbleAMIInfo}} -->
 <div class="bubble-head"></i>{{id}}</div>
 <div class="bubble-content">
 	<dl class="dl-horizontal">
@@ -414,7 +267,7 @@
 		<dt>Image Size</dt>
 		<dd>{{imageSize}}</dd>
 		<dt>Support Instance Type</dt>
-		<dd>{{instance_type}}</dd>
+		<dd>{{instanceType}}</dd>
 	</dl>
 </div>
 
@@ -1046,18 +899,6 @@ Following rule(s) will be deleted from its(their) security group:</div>
 	</ul>
 </div>
 
-<!-- {{instanceListItem}} -->
-<li>
-	<a href="#" class="instanceList-item" id="{{id}}_{{@index}}" data-id="{{appId}}">
-		<i class="instanceList-item-status tooltip status status-{{status}}"></i>
-		<span class="instanceList-item-icon" style="background-image:url('./assets/images/ide/ami/{{../background}}.png')"></span>
-		<div class="instanceList-item-volume" data-target-id="{{id}}_{{@index}}">
-			<span class="instanceList-item-number">{{volume}}</span>
-		</div>
-		<span class="instanceList-item-label">{{name}}</span>
-	</a>
-</li>
-
 <!-- {{eniList}} -->
 <div id="eniList-wrap">
 	<div id="eniList-header">
@@ -1075,14 +916,6 @@ Following rule(s) will be deleted from its(their) security group:</div>
 		{{/each}}
 	</ul>
 </div>
-
-<!-- {{eniListItem}} -->
-<li>
-	<a href="#" class="eniList-item" id="{{id}}_{{@index}}" data-id="{{id}}">
-		<i class="eniList-item-eip-status{{#if ../eip}} on{{/if}}"></i>
-		<span class="eniList-item-label">{{name}}</span>
-	</a>
-</li>
 
 <!-- {{setupCIDRConfirm}} -->
 <div style="width:420px">
@@ -1134,36 +967,6 @@ Following rule(s) will be deleted from its(their) security group:</div>
 	</div>
 	<div class="modal-footer">
 		<button id="rename-confirm" class="btn btn-blue">Save</button>
-	</div>
-</div>
-
-<!-- {{closeTabRestriction}} -->
-<div style="width:420px">
-	<div class="modal-header"><h3 class="truncate" style="width: 380px;">Confirm to close {{ tab_name }}</h3><i class="modal-close">&times;</i> </div>
-	<div class="modal-body">
-		<div class="modal-text-wraper"> <div class="modal-center-align-helper">
-			<div class="modal-text-major">{{ tab_name }} has unsaved changes.</div>
-			<div class="modal-text-major">Do you confirm to close it?</div>
-		</div> </div>
-	</div>
-	<div class="modal-footer">
-		<button id="close-tab-confirm" class="btn btn-red" data-tab-id="{{ tab_id }}">Close Tab</button>
-		<button class="btn modal-close btn-silver">Cancel</button>
-	</div>
-</div>
-
-<!-- {{cancelAppEdit2App}} -->
-<div style="width:420px">
-	<div class="modal-header"><h3 class="truncate" style="width: 380px;">Changes not applied</h3><i class="modal-close">&times;</i> </div>
-	<div class="modal-body">
-		<div class="modal-text-wraper"> <div class="modal-center-align-helper">
-			<div class="modal-text-major">This app has been changed.</div>
-			<div class="modal-text-major">Do you conﬁrm to discard the changes?</div>
-		</div> </div>
-	</div>
-	<div class="modal-footer">
-		<button id="return-app-confirm" class="btn btn-red">Discard</button>
-		<button class="btn modal-close btn-silver">Cancel</button>
 	</div>
 </div>
 
@@ -1243,11 +1046,10 @@ Following rule(s) will be deleted from its(their) security group:</div>
 
 <!-- {{updateApp}} -->
 <div id="app-apply-update">
-	<div class="modal-control-group default-kp-group clearfix" style="display:none;">
-		<label for="">$DefaultKeyPair</label>
-		<div id="kp-runtime-placeholder"></div>
-		<div class="runtime-error" id="runtime-error-kp"></div>
-	</div>
+    <div class="modal-control-group default-kp-group clearfix" style="display: none;">
+        <label for="kp-runtime-placeholder">$DefaultKeyPair</label><div id="kp-runtime-placeholder"></div>
+        <div class="runtime-error" id="runtime-error-kp"></div>
+    </div>
 	{{#if isRunning}}
 	<h3 class="modal-text-major">{{ i18n 'POP_CONFIRM_UPDATE_MAJOR_TEXT_RUNNING'}}</h3>
 	{{else}}
@@ -1294,69 +1096,6 @@ Following rule(s) will be deleted from its(their) security group:</div>
 		</div>
 	</div>
 
-</div>
-
-<!-- {{openTabFail}} -->
-<div class="overlay-content-wrap">
-	<div class="overlay-text">Oops! There has been some issue loading the tab.</div>
-	<button class="btn btn-blue" id="btn-fail-reload">Reload</button>
-</div>
-
-<!-- {{appStarting}} -->
-<div class="overlay-content-wrap">
-	<div class="overlay-text">Starting app...</div>
-	<div class="loading-spinner"></div>
-</div>
-
-<!-- {{appStopping}} -->
-<div class="overlay-content-wrap">
-	<div class="overlay-text">Stopping app...</div>
-	<div class="loading-spinner"></div>
-</div>
-
-<!-- {{appTerminating}} -->
-<div class="overlay-content-wrap">
-	<div class="overlay-text">Terminating app...</div>
-	<div class="loading-spinner"></div>
-</div>
-
-<!-- {{appUpdating}} -->
-<div class="overlay-content-wrap">
-	<div class="overlay-text">Updating app...</div>
-	<div class="loading-spinner"></div>
-	{{# if is_show }}
-	<div class="progress">
-		<div class="bar" id="progress_bar" style="width: {{ rate }}%;"></div>
-	</div>
-	<p class="process-info">
-		<span><b class="num" id="progress_num">{{ dones }}</b> of</span>
-		<span><b class="total" id="progress_total">{{ steps }}</b> tasks</span>
-	</p>
-	{{/if}}
-</div>
-
-<!-- {{appUpdatedSuccess}} -->
-<div class="overlay-content-wrap">
-	<div class="overlay-text">App has updated successfully.</div>
-	<button class="btn btn-blue" id="btn-updated-success">Done</button>
-</div>
-
-<!-- {{appChangedfail}} -->
-<div class="overlay-content-wrap app-change-fail">
-	<div class="overlay-text">Oops! The app failed to {{ state }}.</div>
-	{{#if is_show}}
-	<div class="error-info-block">
-		<div class="result-sub-title">{{ i18n "PROC_RLT_FAILED_SUB_TITLE" }}</div>
-		<div class="result-error-info">
-			<p class="title">{{ i18n "PROC_ERR_INFO" }}</p>
-			<p class="detail">{{{ detail }}}</p>
-		</div>
-		{{#if update_detail}}
-		<div class="result-error-notice">The state of your app has been rolled back, except for the already deleted resources.</div>
-		{{/if}}
-	</div>
-	{{/if}}
-	<button class="btn btn-silver" id="btn-changedfail">Done</button>
 </div>
 
 <!-- {{nodeAction}} -->
@@ -1618,12 +1357,6 @@ Are you sure you want to delete {{name}}?</div>
 	</ul>
 </div>
 
-<!-- {{disconnectedMsg}} -->
-<section class="disconnected-msg">
-	<div>Connection lost. Attempting to reconnect…</div>
-	<div>Changes made now may not be saved.</div>
-</section>
-
 <!-- {{covertNl2br}} -->
 {{nl2br content}}
 
@@ -1648,32 +1381,30 @@ Are you sure you want to delete {{name}}?</div>
 </div>
 
 <!-- {{headerNotifyItem}} -->
-<li class="notification-item {{#unless is_readed}}unread{{/unless}}">
+<li class="notification-item{{#unless readed}} unread{{/unless}}">
   <div class="notification-message">
-    {{#if error}}
+    {{#if state.failed}}
       <i class="icon-error"></i>
-      <div class="content"><span class="resource-name-label">{{name}}</span> failed to {{operation}} in {{region_label}}.</div>
+      <div class="content"><span class="resource-name-label">{{targetName}}</span> failed to {{operation}} in {{region}}.</div>
     {{/if}}
-    {{#if is_request}}
+    {{#if state.pending}}
       <i class="icon-pending"></i>
-      <div class="content">Sending request to {{operation}} <span class="resource-name-label">{{name}}</span> in {{region_label}}.</div>
+      <div class="content">Sending request to {{operation}} <span class="resource-name-label">{{targetName}}</span> in {{region}}.</div>
     {{/if}}
-    {{#if is_process}}
+    {{#if state.processing}}
       <i class="icon-pending"></i>
-      <div class="content">Processing request to {{operation}} <span class="resource-name-label">{{name}}</span> in {{region_label}}.</div>
+      <div class="content">Processing request to {{operation}} <span class="resource-name-label">{{targetName}}</span> in {{region}}.</div>
     {{/if}}
-    {{#if is_complete}}
+    {{#if state.completed}}
       <i class="icon-success"></i>
-      <div class="content"><span class="resource-name-label">{{name}} </span>{{operation}} successfully in {{region_label}}.</div>
+      <div class="content"><span class="resource-name-label">{{targetName}} </span>{{operation}} successfully in {{region}}.</div>
     {{/if}}
   </div>
 
-  {{#if error}}
-  <div class="notification-details">{{error}}</div>
-  {{/if}}
+  {{#if error}}<div class="notification-details">{{error}}</div>{{/if}}
 
   <div class="notification-duration left">{{duration}}</div>
-  <div class="timestamp">{{time_str}}</div>
+  <div class="timestamp">{{time}}</div>
 </li>
 
 <!-- {{accessTokenTable}} -->
@@ -1708,8 +1439,8 @@ Are you sure you want to delete {{name}}?</div>
             </div>
         {{#if hasFooter}}
         <div class="modal-footer">
-            <button class="btn modal-confirm btn-{{confirm.color}}" {{#if confirm.disabled}} disabled {{/if}}>{{confirm.text}}</button>
-            {{#unless hideClose}}<button class="btn modal-close btn-silver">{{cancel}}</button>{{/unless}}
+            {{#unless confirm.hide}}<button class="btn modal-confirm btn-{{confirm.color}}" {{#if confirm.disabled}} disabled {{/if}}>{{confirm.text}}</button>{{/unless}}
+            {{#unless hideClose}}{{#unless cancel.hide}}<button class="btn modal-close btn-silver">{{cancel.text}}</button>{{/unless}}{{/unless}}
         </div>
         {{/if}}
     </div>

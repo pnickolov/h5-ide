@@ -53,7 +53,7 @@ base64Encode = (string)->
 base64Decode = (string)->
     decodeURIComponent escape window.atob string
 
-checkAllCookie = -> $.cookie('usercode') and $.cookie('session_id')
+checkAllCookie = -> !!($.cookie('usercode') and $.cookie('session_id'))
 
 # language detect
 langType = ->
@@ -465,7 +465,7 @@ setCredit = (result)->
         expires : 30
         path    : '/'
 
-    $.cookie "usercode", result.username, COOKIE_OPTION
+    $.cookie "usercode",   result.username,   COOKIE_OPTION
     $.cookie "session_id", result.session_id, COOKIE_OPTION
 
     # Set a cookie for WWW

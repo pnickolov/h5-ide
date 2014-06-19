@@ -8,35 +8,167 @@
 
 ###
 
-define [ "backbone", "./Websocket", "event", "constant" ], ( Backbone, Websocket, ide_event, constant )->
+define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone", "constant", "ThumbnailUtil" ], ( OpsCollection, OpsModel, ApiRequest, Backbone, constant, ThumbUtil )->
 
   Backbone.Model.extend {
 
     defaults : ()->
-      notification : []
       __websocketReady : false
+      notification     : [] # An array holding the notification data
+      stackList        : new OpsCollection()
+      appList          : new OpsCollection()
 
+    markNotificationRead : ()->
+      for i in @attributes.notification
+        i.readed = true
+      return
+
+    # Convenient method to get the stackList and appList
+    stackList : ()-> @attributes.stackList
+    appList   : ()-> @attributes.appList
+
+    getOpsModelById : ( opsId )-> @attributes.appList.get(opsId) || @attributes.stackList.get(opsId)
+
+    clearImportOps : ()-> @attributes.appList.remove @attributes.appList.find ( m )-> m.isImported()
+
+    createImportOps : ( region, vpcId )->
+      m = @attributes.appList.findWhere({importVpcId:vpcId})
+      if m then return m
+      m = new OpsModel({
+        name        : ""
+        importVpcId : vpcId
+        region      : region
+        state       : OpsModel.State.Running
+      })
+      @attributes.appList.add m
+      m
+
+    # This method creates a new stack in IDE, and returns that model.
+    # The stack is not automatically stored in server.
+    # You need to call save() after that.
+    createStack : ( region )->
+      console.assert( constant.REGION_KEYS.indexOf(region) >= 0, "Region is not recongnised when creating stack:", region )
+      m = new OpsModel({
+        name   : @attributes.stackList.getNewName()
+        region : region
+      }, {
+        initJsonData : true
+      })
+      @attributes.stackList.add m
+      m
+
+    createStackByJson : ( json )->
+      if not @attributes.stackList.isNameAvailable( json.name )
+        json.name = @attributes.stackList.getNewName()
+
+      m = new OpsModel({
+        name   : json.name
+        region : json.region
+      }, {
+        jsonData : json
+      })
+      @attributes.stackList.add m
+      m
+
+    getPriceData : ( awsRegion )-> (@__appdata[ awsRegion ] || {}).price
+    getOsFamilyConfig : ( awsRegion )-> (@__appdata[ awsRegion ] || {}).osFamilyConfig
+    getInstanceTypeConfig : ( awsRegion )-> (@__appdata[ awsRegion ] || {}).instanceTypeConfig
+    getStateModule : ( repo, tag )-> @__stateModuleData[ repo + ":" + tag ]
+
+
+    ###
+      Internal methods
+    ###
     initialize : ()->
+      @__appdata = {}
+      @__stateModuleData = {}
       @__initializeNotification()
       return
 
+    # Fetches user's stacks and apps from the server, returns a promise
+    fetch : ()->
+      self = this
+      sp = ApiRequest("stack_list", {region_name:null}).then (res)-> self.get("stackList").set self.__parseListRes( res )
+      ap = ApiRequest("app_list",   {region_name:null}).then (res)-> self.get("appList").set   self.__parseListRes( res )
+
+      # Load Application Data.
+      appdata = ApiRequest("aws_aws",{fields : ["region","price","region_ami_instance_type","instance_type"]}).then ( res )->
+
+        for i in res
+          instanceTypeConfig = {}
+
+          self.__appdata[ i.region ] = {
+            price              : i.price
+            osFamilyConfig     : i.region_ami_instance_type
+            instanceTypeConfig : instanceTypeConfig
+          }
+
+          # Format instance type info.
+          for type1, wrapper of i.instance_type
+            for type2, typeInfo of wrapper
+              if not typeInfo then continue
+              desc = [ typeInfo.name || "", "", "", "" ]
+              for d, idx in (typeInfo.description || "").split(",")
+                if idx > 2 then break
+                desc[ idx + 1 ] = d
+
+              typeInfo.formated_desc = desc
+              instanceTypeConfig[ "#{type1}.#{type2}" ] = typeInfo
+
+        return
+
+      # When app/stack list is fetched, we first cleanup unused thumbnail. Then
+      # Tell others that we are ready.
+      Q.all([ sp, ap ]).then ()->
+        try
+          ThumbUtil.cleanup self.appList().pluck("id").concat( self.stackList().pluck("id") )
+        catch e
+
+        return
+
+    fetchStateModule : ( repo, tag )->
+      data = @getStateModule( repo, tag )
+      if data
+        d = Q.defer()
+        d.resolve( data )
+        return d.promise
+
+      self = @
+      ApiRequest("state_module", {
+        mod_repo : repo
+        mod_tag  : tag
+      }).then ( d )->
+        try
+          d = JSON.parse( d )
+        catch e
+          throw McError( ApiRequest.Errors.InvalidRpcReturn, "Can't load state data. Please retry." )
+        self.__stateModuleData[ repo + ":" + tag ] = d
+        d
+
+    __parseListRes : ( res )->
+      r = []
+
+      for ops in res
+        r.push {
+          id         : ops.id
+          updateTime : ops.time_update
+          region     : ops.region
+          usage      : ops.usage
+          name       : ops.name
+          state      : OpsModel.State[ ops.state ] || OpsModel.State.UnRun
+          stoppable  : not (ops.property and ops.property.stoppable is false)
+        }
+      r
+
     # In the previous version, Websocket emits changes of request things (AKA, the notification). Websocket actually holds a copy of the request things. And the request things is process by module/design/toolbar ( ridiculous, but whatever ). There's no place to actually store the notification ( Well, it's stored in module/header, But I think the notification is a data source of the Application ). So now, we store the notification here.
     __initializeNotification : ()->
-      # LEGACY Code. When switching between tabs, we automatically mark notification of that tab as read.
-      # Temporary removed right now. Because I think this kind of trigger is too buggy.
-      ###
-      ide_event.onLongListen ide_event.SWITCH_DASHBOARD, () -> return
-      ide_event.onLongListen ide_event.SWITCH_TAB, () -> return
-      ide_event.onListen ide_event.OPEN_DESIGN, () -> return
-      ###
-
       # It seems like the toolbar doesn't even process the request_item, in which we can just directly listen to WS that the request item event.
       self = this
-      ide_event.onLongListen ide_event.UPDATE_REQUEST_ITEM, (idx) -> self.__processSingleNotification idx
+      App.WS.on "requestChange", (idx, dag)-> self.__processSingleNotification idx, dag
 
-    __triggerChange : _.debounce ()->
+    __triggerNotification : _.debounce ()->
       @trigger "change:notification"
-    , 300
+    , 400
 
     __processSingleNotification : ( idx )->
 
@@ -46,54 +178,81 @@ define [ "backbone", "./Websocket", "event", "constant" ], ( Backbone, Websocket
       item = @__parseRequestInfo req
       if not item then return
 
+      @__handleRequestChange( item )
+
       info_list = @attributes.notification
 
-      # check whether same operation
+      # find existing request
       for i, idx in info_list
         if i.id is item.id
           same_req = i
           break
 
-      # not update when the same state
-      if same_req and same_req.is_request is item.is_request and same_req.is_process is item.is_process and same_req.is_complete is item.is_complete
+      # Don't update the list if the request's state is not changed.
+      if same_req and _.isEqual( same_req.state, item.state )
           return
 
-      # TODO : Mark the item as read if the current tab is the item's tab.
-      # Currently, the item is mark as readed if the WS is not ready.
-      item.is_readed = not App.WS.isReady()
+      # Mark the item as read if the current tab is the item's tab.
+      item.readed = not App.WS.isReady()
+
+      if not item.readed and App.workspaces
+        space = App.workspaces.getAwakeSpace()
+        ops = @appList().get( item.targetId ) or @stackList().get( item.targetId )
+        item.readed = space.isWorkingOn( ops )
 
       # Prepend the item to the list.
       info_list.splice idx, 1
       info_list.splice 0, 0, item
 
+      # Limit the notificaiton queue
+      if info_list.length > 30
+        info_list.length = 30
+
       # Notify the others that notification has changed.
-      @__triggerChange()
+      @__triggerNotification()
       null
 
-    __parseRequestInfo : (req) ->
+    __parseRequestInfo : (req)->
       if not req.brief then return
 
-      lst = req.brief.split ' '
-      item =
-        is_readed     : true
-        is_request    : req.state is constant.OPS_STATE.OPS_STATE_PENDING
-        is_process    : req.state is constant.OPS_STATE.OPS_STATE_INPROCESS
-        is_complete   : req.state is constant.OPS_STATE.OPS_STATE_DONE
-        operation     : lst[0].toLowerCase()
-        name          : lst[lst.length-1]
-        region_label  : constant.REGION_SHORT_LABEL[req.region]
-        time          : req.time_end
+      dag = req.dag
 
-      item = $.extend {}, req, item
+      request =
+        id         : req.id
+        region     : constant.REGION_SHORT_LABEL[ req.region ]
+        time       : req.time_end
+        operation  : constant.OPS_CODE_NAME[ req.code ]
+        targetId   : if dag and dag.spec then dag.spec.id else req.rid
+        targetName : req.brief.split(" ")[2] || ""
+        state      : { processing : true }
+        readed     : true
 
-      if req.state is constant.OPS_STATE.OPS_STATE_FAILED
-        item.error = req.data
-      else if req.state is constant.OPS_STATE.OPS_STATE_INPROCESS
-        item.time = req.time_begin
+      switch req.state
+        when constant.OPS_STATE.OPS_STATE_FAILED
+          request.error = req.data
+          request.state = { failed : true }
+        when constant.OPS_STATE.OPS_STATE_INPROCESS
+          request.time  = req.time_begin
+          request.step  = 0
+          if req.dag and req.dag.step
+            request.totalSteps = req.dag.step.length
+            for i in req.dag.step
+              if i[1] is "done" then ++request.step
+          else
+            request.totalSteps = 1
 
-      # Only format time when the request is not pending
-      if req.state isnt constant.OPS_STATE.OPS_STATE_PENDING
-        item.time_str = MC.dateFormat( new Date( item.time * 1000 ) , "hh:mm yyyy-MM-dd")
+        when constant.OPS_STATE.OPS_STATE_DONE
+          request.state = {
+            completed  : true
+            terminated : req.code is 'Forge.App.Terminate'
+          }
+        when constant.OPS_STATE.OPS_STATE_PENDING
+          # Only format time when the request is not pending
+          request.state = { pending : true }
+          request.time  = ""
+
+      if request.time
+        request.time = MC.dateFormat( new Date( request.time * 1000 ) , "hh:mm yyyy-MM-dd")
 
         if req.state isnt constant.OPS_STATE.OPS_STATE_INPROCESS
 
@@ -102,21 +261,32 @@ define [ "backbone", "./Websocket", "event", "constant" ], ( Backbone, Websocket
           if not isNaN( time_begin ) and not isNaN( time_end ) and time_end >= time_begin
             duration = time_end - time_begin
             if duration < 60
-              item.duration = "Took #{duration} sec."
+              request.duration = "Took #{duration} sec."
             else
-              item.duration = "Took #{Math.round(duration/60)} min."
+              request.duration = "Took #{Math.round(duration/60)} min."
 
-      # rid
-      if item.rid.search('stack') == 0 # run stack
-        item.name = lst[2]
+      request
 
-      item.is_terminated = item.is_complete and item.operation is 'terminate'
+    __handleRequestChange : ( request )->
+      # This method is used to update the state of an app OpsModel
 
-      item
+      if not App.WS.isReady() then return # only updates when WS has finished pushing the initial data.
 
-    markNotificationRead : ()->
-      for i in @attributes.notification
-        i.is_readed = true
-      return
+      if request.state.pending then return
 
+      theApp = @appList().get( request.targetId )
+      if not theApp
+        # If the app is newly created from an stack. It might not have an appId yet,
+        # But it should have a requestId.
+        theApp = @appList().findWhere({requestId:request.id})
+        if theApp and request.targetId
+          theApp.set "id", request.targetId
+
+      if not theApp then return
+      if not request.state.processing and not theApp.isProcessing() then return
+
+      if request.state.processing
+        theApp.setStatusProgress( request.step, request.totalSteps )
+      else
+        theApp.setStatusWithWSEvent( request.operation, request.state, request.error )
   }

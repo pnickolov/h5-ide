@@ -1,0 +1,38 @@
+<div class="scroll-wrap scrollbar-auto-hide" style="height:500px;">
+	<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+	<div id="VisualizeVpcDialog" class="scroll-content">
+{{#if fail}}
+<div class="unmanaged-vpc-empty">Oops, loading VPC failed.
+	<button class="btn btn-blue" id="VisualizeReload">Retry</button>
+</div>
+<div class="loading-spinner hide"></div>
+{{else}}
+	{{#unless ready}}<div class="loading-spinner"></div>{{else}}
+		{{#each data}}{{#if vpcs.length}}<section>
+			<header class="region-header"><span class="region-name">{{name}}</span>{{subname}}<span class="vpc-count">{{vpcs.length}}</span></header>
+
+			<ul class="region-group clearfix" data-region="{{id}}">
+				{{#each vpcs}}
+				<li class="visualize-vpc {{#if disabled}} disabled tooltip{{/if}}"
+					{{#if disabled}} data-tooltip="{{i18n 'IDE_TIP_VISUALIZE_MORE_THAN_100_ENI'}}"{{/if}}>
+					<h5>{{id}}</h5>
+					<ol class="tac">
+						<li class="visualize-res"><div class="vis-res-num">{{subnet.length}}</div><span class="vis-res-name">subnet</span></li>
+						<li class="visualize-res"><div class="vis-res-num">{{ami.length}}</div><span class="vis-res-name">running instance</span></li>
+						<li class="visualize-res"><div class="vis-res-num">{{stopped.length}}</div><span class="vis-res-name">stopped instance</span></li>
+						<li class="visualize-res"><div class="vis-res-num">{{eni.length}}</div><span class="vis-res-name">network interface</span></li>
+						<li class="visualize-res"><div class="vis-res-num">{{eip.length}}</div><span class="vis-res-name">elastic ip</span></li>
+						<li class="visualize-res"><div class="vis-res-num">{{elb.length}}</div><span class="vis-res-name">load balancer</span></li>
+					</ol>
+					<button class="btn btn-blue visualize-vpc-btn" data-vpcid="{{id}}">Import</button>
+				</li>
+				{{/each}}
+			</ul>
+		</section>{{/if}}
+		{{else}}<div class="unmanaged-vpc-empty">There is no VPC to import.</div>{{/each}}
+	{{/unless}}
+
+{{/if}}
+
+	</div>
+</div>

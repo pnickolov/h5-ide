@@ -460,7 +460,7 @@ module.exports =
       zh: "无法加载部分IDE内容，请重试"
 
     IDE_TIP_VISUALIZE_MORE_THAN_100_ENI:
-      en: "Currently we do not support to visualize system has more than 100 network interfaces. Contact us by the Feedback button for details."
+      en: "Currently we do not support to visualize system has more than 300 network interfaces. Contact us by the Feedback button for details."
       zh: ""
 
     RES_TIT_RESOURCES:
@@ -513,6 +513,10 @@ module.exports =
 
     RES_TIT_ADD_TO_FAVORITE:
       en: "Add to Favorite"
+      zh: ""
+
+    RES_TIT_TOGGLE_FAVORITE:
+      en: "Toggle favorite"
       zh: ""
 
     RES_TIT_VPC:
@@ -668,7 +672,7 @@ module.exports =
       zh: "实例必须拖放到子网或Auto Scaling组。"
 
     CVS_MSG_WARN_NOTMATCH_ASG:
-      en: "Asg must be dragged to a subnet."
+      en: "Auto Scaling Group must be dropped in a subnet."
       zh: "Auto Scaling组必须拖放到子网。"
 
     CVS_MSG_WARN_NOTMATCH_ENI:
@@ -751,9 +755,13 @@ module.exports =
       en: "Deleting %s will also remove all resources inside it. Are you sure you want to delete it?"
       zh: "删除 %s 会同时删除其中的所有资源， 确定要删除它吗？"
 
+    CVS_CFM_DEL_LC:
+      en: "Are you sure to delete launch configuration %s?"
+      zh: ""
+
     CVS_CFM_DEL_ASG:
-      en: "Deleting this will delete the entire %s. Are you sure you want to delete it?"
-      zh: "删除它会删除整个 %s，确定要删除它吗?"
+      en: "Launch configuration %s is only used by %s. By deleting %s, %s will also be deleted.<br/>Are you sure to delete asg0?"
+      zh: ""
 
     CVS_CFM_ADD_IGW:
       en: "An Internet Gateway is Required"
@@ -812,8 +820,8 @@ module.exports =
       zh: "删除模版"
 
     TOOL_POP_BODY_DELETE_STACK:
-      en: "Do you confirm to delete stack"
-      zh: "确认删除模版吗?"
+      en: "Do you confirm to delete stack '%s'?"
+      zh: "确认删除模版'%s'吗?"
 
     TOOL_POP_BTN_DELETE_STACK:
       en: "Delete"
@@ -828,8 +836,8 @@ module.exports =
       zh: "导出为亚马逊云编排模板"
 
     TOOL_POP_EXPORT_CF_INFO:
-      en: "This stack has been converted to AWS CloudFormation Template format. Download the template file and upload it in AWS console to create CloudFormation Stack."
-      zh: "这个模块已经被转换成为亚马逊云编排模板格式。请下载这个云编排模板文件并把它上传到亚马逊管理控制台来创建云编排模块。"
+      en: "Download the template file when it's ready, then you can upload it in AWS console to create CloudFormation Stack."
+      zh: "请在数据转换后下载这个云编排模板文件，并把它上传到亚马逊管理控制台来创建云编排模块。"
 
     TOOL_POP_BTN_EXPORT_CF:
       en: "Download Template File"
@@ -872,7 +880,7 @@ module.exports =
       zh: "放大"
 
     TOOL_TIP_SAVE_APP_TO_STACK:
-      en: "Save app as Stack"
+      en: "Save pp as Stack"
       zh: "App 保存为 Stack"
     TOOL_TIP_ZOOM_OUT:
       en: "Zoom Out"
@@ -974,7 +982,7 @@ module.exports =
       zh: "暂停"
 
     TOOL_TIP_START_APP:
-      en: "Start This App's Resources."
+      en: "Start App"
       zh: "恢复应用"
 
     TOOL_POP_TIT_START_APP:
@@ -1048,6 +1056,18 @@ module.exports =
     TOOL_MSG_ERR_SAVE_FAILED:
       en: "Save stack %s failed, please check and save it again."
       zh: "保存模块 %s 失败，请您检查并重新保存。"
+
+    TOOL_MSG_ERR_SAVE_SUCCESS:
+      en: "Save stack %s successfully."
+      zh: "保存 %s 成功。"
+
+    TOOL_MSG_ERR_DEL_STACK_SUCCESS:
+      en: "Delete stack %s successfully."
+      zh: "删除 %s 成功。"
+
+    TOOL_MSG_ERR_DEL_STACK_FAILED:
+      en: "Delete stack %s failed."
+      zh: "删除 %s 失败。"
 
     TOOLBAR_HANDLE_SAVE_STACK:
       en: "Save stack"
@@ -2360,6 +2380,10 @@ module.exports =
       en: "This app name is already in use."
       zh: "这个应用名称已被占用This app name is already in use."
 
+    PROP_MSG_WARN_FAILA_TO_RUN_BECAUSE:
+      en: "Failed to run your stack %s because of %s"
+      zh: ""
+
     PROP_MSG_WARN_INVALID_APP_NAME:
       en: "App name is invalid."
       zh: "无效的应用名称。"
@@ -3114,7 +3138,7 @@ module.exports =
       zh: "抱歉，设计模块正在加载，请稍后重试。"
 
     PROC_TITLE:
-      en: "Starting your app..."
+      en: "Gearing up your awesomeness..."
       zh: "启动您的应用..."
 
     PROC_RLT_DONE_TITLE:
@@ -3532,6 +3556,14 @@ VisualOps API. You cannot UNDO this action.'
       en: "Welcome to VisualOps"
       zh: "欢迎使用 VisualOps"
 
+    WELCOME_PROVIDE_CRED_TIT:
+      en: "Please provide new AWS credentials"
+      zh: "Please provide new AWS credentials"
+
+    WELCOME_PROVIDE_CRED_DESC:
+      en: "We cannot validate your AWS credentials, please provide new ones."
+      zh: "We cannot validate your AWS credentials, please provide new ones."
+
     WELCOME_TIT:
       en: "Welcome to VisualOps, "
       zh: "Welcome to VisualOps, "
@@ -3634,7 +3666,7 @@ VisualOps API. You cannot UNDO this action.'
       zh: "导入Stack"
 
     DASH_VISUALIZE_VPC:
-      en: "Visualize existing VPC"
+      en: "Import VPC"
       zh: "可视化VPC"
 
 
@@ -4158,6 +4190,10 @@ VisualOps API. You cannot UNDO this action.'
       en: "Showing %s-%s items of %s results"
       zh: "当前显示 %s-%s 条，共有 %s 条"
 
+    IDE_COM_CREATE_NEW_STACK:
+      en: "Create new stack"
+      zh: "创建模板"
+
     "IDE_LBL_REGION_NAME_us-east-1":
       en: "US East"
       zh: "美国东部"
@@ -4239,6 +4275,29 @@ VisualOps API. You cannot UNDO this action.'
       en: "PEM Encoded"
       zh: ""
 
+    RUN_STACK_MODAL_TITLE:
+      en: "Run Stack"
+      zh: "运行"
+
+    RUN_STACK_MODAL_NEED_CREDENTIAL:
+      en: "Set Up Credential First"
+      zh: "请先设置 AWS 凭证"
+
+    RUN_STACK_MODAL_KP_WARNNING:
+      en: "Specify a key pair as $DefaultKeyPair for this app."
+      zh: ""
+
+    RUN_STACK_MODAL_CONFIRM_BTN:
+      en: "Run Stack"
+      zh: "运行"
+
+    UPDATE_APP_MODAL_TITLE:
+      en: "Update App"
+      zh: "更新 App"
+
+    UPDATE_APP_CONFIRM_BTN:
+      en: "Update App"
+      zh: ""
     RUN_STACK:
       en: "run stack"
       zh: "运行"
@@ -4316,7 +4375,7 @@ VisualOps API. You cannot UNDO this action.'
   ##### Modal Confirm Stop/Terminate App
 
     POP_CONFIRM_STOP_ASG:
-      en: "Auto scaling group in this app will be deleted when it is stopped."
+      en: "Any auto scaling group will be deleted when application is stopped."
       zh: ""
 
     POP_CONFIRM_PROD_APP_WARNING_MSG:

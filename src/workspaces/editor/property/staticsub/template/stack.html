@@ -1,0 +1,77 @@
+<article class="property-app">
+{{#if ami}}
+
+{{#if isApp}}
+    {{#if ami.unavailable}}
+    <div class="property-control-group property-ami-info">
+        <p>{{ i18n "PROP_AMI_APP_NOT_AVAILABLE" }}</p>
+    </div>
+    {{/if}}
+{{else}}
+    {{#if ami.unavailable}}
+    <div class="property-control-group property-ami-info">
+        {{ i18n "PROP_AMI_STACK_NOT_AVAILABLE"}}
+    </div>
+    {{/if}}
+    <div class="property-control-group property-ami-info">
+        <div class="property-control-group tac">
+            <button id="changeAmi" class="btn btn-blue"><i class="icon-edit icon-label"></i>Change AMI</button>
+        </div>
+    </div>
+    <div class="property-control-group hide" id="changeAmiPanel">
+        <p>Drag image from Resource Panel and drop below to change AMI.</p>
+        <div id="changeAmiDropZone">
+            <p>Drop AMI Here</p>
+            <div class="resource-icon resource-icon-instance">
+                <img src="assets/images/ide/ami/amazon.i386.ebs.png" width="39" height="27">
+                <div class="resource-label"></div>
+            </div>
+        </div>
+        <div class="hide" id="confirmChangeAmiWrap">
+            <p id="changeAmiWarning"></p>
+            <button id="confirmChangeAmi" class="btn btn-blue">Confirm Change AMI</button>
+        </div>
+        <button id="cancelChangeAmi" class="btn-link">Cancel</button>
+    </div>
+{{/if}}
+
+    {{#unless ami.unavailable}}
+    <dl class="dl-vertical property-ami-info">
+    <dt>{{ i18n "PROP_INSTANCE_AMI_ID" }}</dt>
+    <dd>{{id}}</dd>
+    <dt>{{ i18n "PROP_INSTANCE_AMI_NAME" }}</dt>
+    <dd>{{name}}</dd>
+    <dt>{{ i18n "PROP_INSTANCE_AMI_DESC" }}</dt>
+    <dd>{{emptyStr description}}</dd>
+    <dt>{{ i18n "PROP_INSTANCE_ROOT_DEVICE_TYPE" }}</dt>
+    <dd>{{emptyStr rootDeviceType}}</dd>
+    <dt>{{ i18n "PROP_INSTANCE_AMI_ARCHITECH" }}</dt>
+    <dd>{{architecture}}</dd>
+    <dt>{{ i18n "PROP_INSTANCE_AMI_VIRTUALIZATION" }}</dt>
+    <dd>{{emptyStr virtualizationType}}</dd>
+    <dt>{{ i18n "PROP_INSTANCE_AMI_KERNEL_ID" }}</dt>
+    <dd>{{emptyStr kernelId}}</dd>
+    <dt>{{ i18n "PROP_INSTANCE_AMI_OS_TYPE" }}</dt>
+    <dd>{{emptyStr osType}}</dd>
+    <dt>{{ i18n "PROP_INSTANCE_AMI_SUPPORT_INSTANCE_TYPE" }}</dt>
+    <dd>{{emptyStr instance_type}}</dd>
+    </dl>
+    {{/unless}}
+{{else}}
+    <dl class="dl-vertical">
+    <dt>Snapshot ID</dt>
+    <dd>{{id}}</dd>
+    <dt>Volume ID</dt>
+    <dd>{{volumeId}}</dd>
+    <dt>Description</dt>
+    <dd>{{emptyStr description}}</dd>
+    <dt>Capacity</dt>
+    <dd>{{emptyStr volumeSize}}GB</dd>
+    <dt>Owner</dt>
+    <dd>{{emptyStr ownerId}}</dd>
+    <dt>Started</dt>
+    <dd>{{emptyStr startTime}}</dd>
+    </dl>
+{{/if}}
+
+</article>

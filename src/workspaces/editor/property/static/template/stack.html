@@ -1,0 +1,32 @@
+{{#if readOnly}}
+  <article class="property-app">
+  <dl class="dl-vertical">
+    <dt>{{#if isIGW}}Internet Gateway{{else}}VPN Gateway{{/if}} ID</dt>
+    <dd>{{emptyStr appId}}</dd>
+    {{#if isIGW}}
+      <dt>State</dt>
+      <dd><i class="status status-xgw-{{state}}"></i>{{state}}</dd>
+    {{else}}
+      <dt>State</dt>
+      <dd><i class="status status-xgw-{{state}}"></i>{{state}}</dd>
+      <dt>Attachment State</dt>
+      <dd><i class="status status-xgw-{{attachment_state}}"></i>{{attachment_state}}</dd>
+    {{/if}}
+    {{#if type}}
+    <dt>type</dt>
+    <dd>{{type}}</dd>
+    {{/if}}
+    <dt>VPC</dt>
+    <dd>{{emptyStr vpcId}}</dd>
+  </dl>
+{{else}}
+  <article>
+  <div  class="property-control-group">
+  {{#if isIGW}}
+    {{ i18n "PROP_IGW_TXT_DESCRIPTION" }}
+  {{else}}
+    {{ i18n "PROP_VGW_TXT_DESCRIPTION" }}
+  {{/if}}
+  </div>
+{{/if}}
+</article>

@@ -14,6 +14,7 @@ define [ "jquery" ], ()->
     export_vis_png : true
     cloudformation : true
     use_visualops  : true
+    app_to_stack   : true
 
 
   IntercomAnalytics = {

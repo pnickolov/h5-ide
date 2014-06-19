@@ -2,7 +2,7 @@
 #  View(UI logic) for dialog
 #############################
 
-define [ "./HeaderTpl", "./SettingsDialog", 'backbone' ], ( tmpl, SettingsDialog ) ->
+define [ "./HeaderTpl", "./SettingsDialog", 'backbone', "UI.selectbox" ], ( tmpl, SettingsDialog ) ->
 
     HeaderView = Backbone.View.extend {
 
@@ -16,7 +16,7 @@ define [ "./HeaderTpl", "./SettingsDialog", 'backbone' ], ( tmpl, SettingsDialog
             @listenTo App.user,  "change", @update
             @listenTo App.model, "change:notification", @updateNotification
 
-            @setElement $(tmpl( App.user.toJSON() )).prependTo("#header-wrapper")
+            @setElement $(tmpl( App.user.toJSON() )).prependTo("#wrapper")
             return
 
         logout : () -> App.logout()
@@ -30,7 +30,7 @@ define [ "./HeaderTpl", "./SettingsDialog", 'backbone' ], ( tmpl, SettingsDialog
         setAlertCount : ( count ) -> $('#NotificationCounter').text( count || "" )
 
         updateNotification : ()->
-            console.info "Notification Updated"
+            console.log "Notification Updated, Websocket isReady:", App.WS.isReady()
 
             notification = App.model.get "notification"
 
@@ -38,7 +38,7 @@ define [ "./HeaderTpl", "./SettingsDialog", 'backbone' ], ( tmpl, SettingsDialog
             unread_num = 0
             for i in notification
                 html += MC.template.headerNotifyItem i
-                if not i.is_readed
+                if not i.readed
                     unread_num++
 
             @setAlertCount( unread_num )

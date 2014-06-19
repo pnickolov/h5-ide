@@ -335,16 +335,12 @@
     return null;
   };
 
-  compileDev = function(allCoffee) {
-    var compileStream, deferred;
-    path = ["src/**/*.coffee", "src/**/*.partials", "src/**/*.html", "!src/*.html", "!src/include/*.html", "!src/test/madeira_console/**/*", "!src/test/service/**/*", "!src/test/websocket/**/*", "!src/test/uitest/**/*", "!src/test/*.html"];
-    if (!allCoffee && fs.existsSync("./src/service/result_vo.js")) {
-      path.push("!src/service/**/*");
-      path.push("!src/model/**/*");
-    }
+  compileDev = function() {
+    var compileStream, deferred, p;
+    p = ["src/**/*.coffee", "src/**/*.partials", "src/**/*.html", "!src/*.html", "!src/include/*.html", "!src/test/**/*"];
     deferred = Q.defer();
     StreamFuncs.createStreamObject();
-    compileStream = gulp.src(path, {
+    compileStream = gulp.src(p, {
       cwdbase: true
     }).pipe(es.through(function(f) {
       StreamFuncs.workStream.emit("data", f);

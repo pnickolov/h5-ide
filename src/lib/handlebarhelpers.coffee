@@ -44,6 +44,8 @@ define ["handlebars", "i18n!nls/lang.js"], ( Handlebars, lang )->
   Handlebars.registerHelper 'timeStr', ( v1 ) ->
       d = new Date( v1 )
 
+      if not isNaN(parseFloat(v1)) and isFinite(v1) and v1 > 0
+        return d.toLocaleDateString() + " "+ d.toTimeString()
       if isNaN( Date.parse( v1 ) ) or not d.toLocaleDateString or not d.toTimeString
           if v1
               return new Handlebars.SafeString v1
@@ -59,4 +61,33 @@ define ["handlebars", "i18n!nls/lang.js"], ( Handlebars, lang )->
           return v1
       else
           return '' + (v1 + 1)
+
+  Handlebars.registerHelper "getInvalidKey", ( v1, v2 ) -> return v1[v2]
+
+  Handlebars.registerHelper "doubleIf", ( v1, v2, options ) ->
+    return options.fn this if v1 and v2
+    return options.inverse this
+
+  Handlebars.registerHelper "or", ( v1, v2 ) -> v1 || v2
+
+  # Handlebars.registerHelper "eachObj", ( obj, fn )->
+  #   buffer = ""
+  #   data = { key : "", value : "" }
+
+  #   for key, value of obj
+  #     if obj.hasOwnProperty key
+  #       data.key   = key
+  #       data.value = value
+  #       buffer += fn(data)
+  #   buffer
+
+  Handlebars.registerHelper "simpleTime", ( time ) -> MC.dateFormat(new Date(time), "yyyy-MM-dd hh:mm:ss")
+
+  Handlebars.registerHelper "lastChar", ( string )->
+    ch = string.charAt( string.length - 1 )
+    if (ch >= "A" && ch <= "Z") or (ch >= "a" && ch <= "z" )
+      ch
+    else
+      ""
+
   null

@@ -12,8 +12,7 @@ npm install
 ### Gulp Commands
 * `gulp` - Build CoffeeScripts in dev mode, and then runs a static file server and live reload server. This is the same as running `gulp dev;gulp watch`
 * `gulp watch` - Compile files when they're modified, and starts a local server @localhost:3000.
-* `gulp dev` - Build CoffeeScripts and SCSS in dev mode, excluding `src/service` and `src/model`
-* `gulp dev_all` - Build CoffeeScripts and SCSS in dev mode, including `src/service` and `src/model`
+* `gulp dev` - Build CoffeeScripts and SCSS in dev mode.
 
 * `gulp release` - (Git version >= 1.9.0) Build the project in release mode(Concat & Minify). And push to h5-ide-build/master
 * `gulp public`  - (Git version >= 1.9.0) The same as `gulp release`, except that it doesn't include https redirect.

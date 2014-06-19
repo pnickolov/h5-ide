@@ -34,14 +34,14 @@ define [ 'event', 'MC', 'Design', 'underscore' ], ( ide_event, MC, Design ) ->
 
 		if delete_obj
 			MC.ta.list = _.without( MC.ta.list, delete_obj )
-			ide_event.trigger ide_event.UPDATE_STATUS_BAR, 'delete', delete_obj.level if delete_obj.level
+			ide_event.trigger ide_event.UPDATE_TA_MODAL, 'delete', delete_obj.level if delete_obj.level
 
 		null
 
 	_add = ( result ) ->
 		MC.ta.list.push result
 
-		ide_event.trigger ide_event.UPDATE_STATUS_BAR, 'add', result.level
+		ide_event.trigger ide_event.UPDATE_TA_MODAL, 'add', result.level
 
 	_replace = ( result ) ->
 		MC.ta.list = _.map MC.ta.list, ( item ) ->

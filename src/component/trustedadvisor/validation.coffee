@@ -2,7 +2,7 @@
 #  validation
 #############################
 
-define [ 'constant', 'event', 'component/trustedadvisor/config', 'component/trustedadvisor/validation/main', 'component/trustedadvisor/validation/result_vo', 'jquery', 'underscore' ], ( constant, ide_event, config, validation_main, resultVO ) ->
+define [ 'constant', 'event', 'component/trustedadvisor/config', 'component/trustedadvisor/validation/main', 'component/trustedadvisor/validation/result_vo', 'jquery', 'underscore', "MC" ], ( constant, ide_event, config, validation_main, resultVO ) ->
 
     ########## Functional Method ##########
 
@@ -165,10 +165,13 @@ define [ 'constant', 'event', 'component/trustedadvisor/config', 'component/trus
         resultVO.result()
 
 
-    #public
-    validComp   : validComp
-    validAll    : validAll
-    validRun    : validRun
-    stateEditor : validation_main.stateEditor
+    V =
+        validComp   : validComp
+        validAll    : validAll
+        validRun    : validRun
+        stateEditor : validation_main.stateEditor
+        list        : []
+        state_list  : {}
 
-
+    MC.ta = V
+    V

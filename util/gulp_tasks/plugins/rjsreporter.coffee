@@ -7,7 +7,6 @@ IgnoreCheckPath =
   "ui/MC.template.js" : true
 
 PathTransform =
-  "service/" : "model/"
   "js/" : "lib/"
 
 ExcludeRjsPluginRegex = /^[^/!]+!/

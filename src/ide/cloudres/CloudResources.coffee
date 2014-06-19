@@ -11,13 +11,15 @@ define ["ide/cloudres/CrCollection"], ( CrCollection )->
 
   onCollectionDestroy = (id)-> delete CachedCollections[ id ]
 
-  CloudResources = ( resourceType, category, platform = "AWS" )->
+  CloudResources = ( resourceType, category )->
 
-    classId    = CrCollection.classId( resourceType, platform )
-    Collection = CrCollection.getClassById( classId )
-    category   = Collection.category( category )
+    Collection = CrCollection.getClassByType( resourceType )
 
-    cid = classId + "_" + category
+    if not Collection then return null
+
+    category = Collection.category( category )
+
+    cid = resourceType + "_" + category
 
     c = CachedCollections[ cid ]
     if not c
@@ -30,8 +32,6 @@ define ["ide/cloudres/CrCollection"], ( CrCollection )->
     c
 
   # Invalidate all the resources in every collection.
-  CloudResources.invalidate = ()->
-    collection.fetchForce() for id, collection of CachedCollections
-    return
+  CloudResources.invalidate = ()-> Q.all _.values( CachedCollections ).map ( cln )-> cln.fetchForce()
 
   CloudResources

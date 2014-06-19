@@ -1,0 +1,48 @@
+<article class="property-app">
+
+  {{#if association}}
+  <div class="property-control-group">{{i18n "PROP_RT_ASSOCIATION"}} {{association.subnet}} {{i18n "PROP_RT_ASSOCIATION_TO"}} {{association.rtb}}</div>
+  {{else}}
+
+  <dl class="dl-vertical">
+    <dt>{{i18n "PROP_RT_ID"}}</dt>
+    <dd>{{id}}</dd>
+
+    <dt>{{i18n "PROP_RT_LBL_MAIN_RT"}}</dt>
+    <dd>{{main}}</dd>
+
+    <dt>{{i18n "PROP_RT_VPC_ID"}}</dt>
+    <dd>{{vpcId}}</dd>
+  </dl>
+
+  <div class="option-group-head expand">{{i18n "PROP_RT_LBL_ROUTE"}}</div>
+  <div class="option-group">
+    <table class="table table-small">
+      <thead>
+        <tr>
+          <th></th>
+          <th>{{i18n "PROP_RT_DESTINATION"}}</th>
+          <th>{{i18n "PROP_RT_TARGET"}}</th>
+          <th></th>
+        </tr>
+      </thead>
+      {{#each routeSet}}
+      <tr>
+        {{#if active}}
+        <td><i class="status status-green tooltip" data-tooltip="{{i18n 'PROP_RT_TIP_ACTIVE'}}"></i></td>
+        {{else}}
+        <td><i class="status status-red tooltip" data-tooltip="{{i18n 'PROP_RT_TIP_BLACKHOLE'}}"></i></td>
+        {{/if}}
+        <td>{{destinationCidrBlock}}</td>
+        <td>{{target}}</td>
+        {{#if propagate}}
+        <td><i class="icon-info tooltip" data-tooltip="{{i18n 'PROP_RT_TIP_PROPAGATED'}}"></i></td>
+        {{else}}
+        <td></td>
+        {{/if}}
+      </tr>
+      {{/each}}
+    </table>
+  </div>
+  {{/if}}
+</article>

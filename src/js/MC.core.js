@@ -84,6 +84,11 @@ var MC = {
    		}).toUpperCase();
 	},
 
+	genResRef: function(uid, attrName)
+	{
+		return "@{" + uid + "." + attrName + "}"
+	},
+
 	/**
 	 * Determine the string is JSON or not
 	 * @param  {string}  string the string will be determined
@@ -452,6 +457,32 @@ var MC = {
 		return false;
 
 
+	},
+
+	createCompareFn : function(propertyName)
+	{
+		/**
+		example:
+		var data = [{ name: "seacha.com", age: 36 }, { name: "jiang", age: 45 }, { name: "google", age: 32 }, { name: "javascript", age: 19}];
+		data.sort(createCompareFn("age"));
+		**/
+		return function(object1, object2)
+		{
+			var value1 = object1[propertyName];
+			var value2 = object2[propertyName];
+			if (value1 < value2)
+			{
+				return -1;
+			}
+			else if (value1 > value2)
+			{
+				return 1;
+			}
+			else
+			{
+				return 0;
+			}
+		}
 	}
 
 };

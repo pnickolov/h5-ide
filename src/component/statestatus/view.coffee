@@ -25,7 +25,7 @@ define [ 'event'
             'click .state-status-item-detail': 'openStateEditor'
 
         openStateEditor: ->
-            ide_event.trigger ide_event.OPEN_PROPERTY, null, @model.get( 'uid' ), false, 'state'
+            ide_event.trigger ide_event.SHOW_STATE_EDITOR, @model.get( 'uid' )
             null
 
     StateStatusView = Backbone.View.extend
@@ -52,7 +52,7 @@ define [ 'event'
 
             @renderAllItem()
 
-            $( '#status-bar-modal' )
+            $( '.status-bar-modal' )
                 .html( @el )
                 .show()
 
@@ -101,7 +101,7 @@ define [ 'event'
             @$( '.status-item' ).html template.pending()
 
         closePopup : ->
-            $( '#status-bar-modal' ).hide()
+            $( '.status-bar-modal' ).hide()
             @trigger 'CLOSE_POPUP'
 
 

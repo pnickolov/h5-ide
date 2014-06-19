@@ -26,7 +26,10 @@
 .combo-dd a {
   color: #34A3F8; }
 .combo-dd i {
-  color: #148BE6; }
+  color: #148BE6;
+  position: absolute;
+  margin-left: 5px;
+  display: inline-block; }
 .combo-dd.selectbox {
   position: relative; }
   .combo-dd.selectbox .dropdown {

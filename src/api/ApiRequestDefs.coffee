@@ -30,33 +30,24 @@ define [], ()->
   usercode
   session_id
   ###
-
-  ApiRequestDefs = {}
-
-  ApiRequestDefs.Defs =
-    login      : { url:"/session/", method:"login",      params:["username", "password"]   }
-    logout     : { url:"/session/", method:"logout",     params:["username", "session_id"] }
-    updateCred : { url:"/account/", method:"set_credential", params:["username","session_id","access_key","secret_key","account_id","force"] }
-    validateCred : { url:"/account/", method:"validate_credential", params:["username","session_id","access_key","secret_key"] }
-    updateAccount : { url:"/account/", method:"update_account", params:["username", "session_id", "params"] }
-    saveStack  : { url:"/stack/",   method:"save",       params:["username", "session_id", "region_name", 'data'] }
-    createStack: { url:"/stack/",   method:"create",     params:["username", "session_id", "region_name", "data"] }
-
-  ###
-  Parsers are promise's success hanlder.
-  Thus, if the parser cannot parse a result, it should throw an error !!!
-  An example would be like : `throw McError( 300, "Cannot parse the result" )`
-  ###
-  ApiRequestDefs.Parsers = {}
+  ApiRequestDefs = {
+    Defs    : {}
+    ###
+    Parsers are promise's success hanlder.
+    Thus, if the parser cannot parse a result, it should throw an error !!!
+    An example would be like : `throw McError( 300, "Cannot parse the result" )`
+    ###
+    Parsers : {}
+  }
 
 
   ApiRequestDefs.AutoFill = ( paramter_name )->
     switch paramter_name
       # The generated API uses the username as the username
       when "username"
-        return $.cookie('usercode')
+        return App.user.get("usercode")
       when "session_id"
-        return $.cookie('session_id')
+        return App.user.get("session")
       when "region_name"
         console.warn "Autofilling region_name:'us-east-1' for ApiRequest, this is for some api who requires region_name while it doesn't care about its value. %o", MC.prettyStackTrace(1)
         return "us-east-1"

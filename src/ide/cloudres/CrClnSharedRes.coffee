@@ -20,17 +20,12 @@ define [
 
     type  : constant.RESTYPE.DHCP
     model : CrDhcpModel
-
+    #modelIdAttribute : "dhcpOptionsId"
     doFetch : ()-> ApiRequest("dhcp_DescribeDhcpOptions", {region_name : @region()})
+    trAwsXml : (res)-> res.DescribeDhcpOptionsResponse.dhcpOptionsSet?.item
     parseFetchData : (res)->
-      res = res.DescribeDhcpOptionsResponse.dhcpOptionsSet
-      if res is null then return []
-      res = res.item
-
       for i in res
         i.id = i.dhcpOptionsId
-        delete i.dhcpOptionsId
-
       res
   }
 
@@ -45,15 +40,15 @@ define [
     model : CrKeypairModel
 
     doFetch : ()-> ApiRequest("kp_DescribeKeyPairs", {region_name : @region()})
+    trAwsXml : (res)-> res.DescribeKeyPairsResponse.keySet?.item
     parseFetchData : (res)->
-      res = res.DescribeKeyPairsResponse.keySet
-      if res is null then return []
-      res = res.item
-
       for i in res
         i.id = i.keyName
-
       res
+
+    #parseExternalData :( res ) ->
+      #TODO map attribute
+
   }
 
 
@@ -67,11 +62,8 @@ define [
     model : CrSslcertModel
 
     doFetch : ()-> ApiRequest("iam_ListServerCertificates")
+    trAwsXml : (res)-> res.ListServerCertificatesResponse.ListServerCertificatesResult.ServerCertificateMetadataList?.member
     parseFetchData : (res)->
-      res = res.ListServerCertificatesResponse.ListServerCertificatesResult.ServerCertificateMetadataList
-      if res is null then return []
-      res = res.member
-
       for i in res
         i.id   = i.ServerCertificateId
         i.Name = i.ServerCertificateName
@@ -79,6 +71,9 @@ define [
         delete i.ServerCertificateId
 
       res
+
+    #parseExternalData :( res ) ->
+      #TODO map attribute
 
   }, {
     category : ()-> "" # SslCert is global-wise.
@@ -99,18 +94,17 @@ define [
       CrCollection.apply this, arguments
 
     doFetch : ()-> ApiRequest("sns_ListTopics", {region_name : @region()})
+    trAwsXml : (res)-> res.ListTopicsResponse.ListTopicsResult.Topics?.member
     parseFetchData : (res)->
-
-      res = res.ListTopicsResponse.ListTopicsResult.Topics
-      if res is null then return []
-      res = res.member
-
       for i in res
         i.id   = i.TopicArn
         i.Name = i.TopicArn.split(":").pop()
         delete i.TopicArn
 
       res
+
+    #parseExternalData :( res ) ->
+      #TODO map attribute
 
     __clearSubscription : ( removedModel, collection, options )->
       # Automatically remove all the subscription that is bound to this topic.
@@ -144,15 +138,16 @@ define [
     model : CrSubscriptionModel
 
     doFetch : ()-> ApiRequest("sns_ListSubscriptions", {region_name : @region()})
+    trAwsXml : (res)-> res.ListSubscriptionsResponse.ListSubscriptionsResult.Subscriptions?.member
     parseFetchData : (res)->
-      res = res.ListSubscriptionsResponse.ListSubscriptionsResult.Subscriptions
-      if res is null then return []
-      res = res.member
-
       for i in res
-        i.id = CrSubscriptionModel.uniqueId()
+        i.id = CrSubscriptionModel.getIdFromData( i )
 
       res
+
+    #parseExternalData :( res ) ->
+      #TODO map attribute
+
   }
 
 
@@ -170,11 +165,8 @@ define [
       return
 
     doFetch : ()-> ApiRequest("ebs_DescribeSnapshots", {region_name:@region(), owners:["self"]})
+    trAwsXml : (res)-> res.DescribeSnapshotsResponse.snapshotSet?.item
     parseFetchData : (res)->
-      res = res.DescribeSnapshotsResponse.snapshotSet
-      if res is null then return []
-      res = res.item
-
       for i in res
         i.id = i.snapshotId
         if i.tagSet
@@ -186,6 +178,9 @@ define [
         if i.status is "pending" then @startPollingStatus()
 
       res
+
+    #parseExternalData :( res ) ->
+      #TODO map attribute
 
     startPollingStatus : ()->
       if @__polling then return

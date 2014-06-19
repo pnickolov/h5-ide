@@ -10,7 +10,6 @@
   };
 
   PathTransform = {
-    "service/": "model/",
     "js/": "lib/"
   };
 

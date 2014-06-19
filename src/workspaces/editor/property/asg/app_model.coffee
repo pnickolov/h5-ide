@@ -32,7 +32,7 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
             if asg_data.TerminationPolicies and asg_data.TerminationPolicies.member
                 @set 'term_policy_brief', asg_data.TerminationPolicies.member.join(" > ")
 
-            @handleInstance asg_comp, CloudResources(constant.RESTYPE.INSTANCE, Design.instance().region())?.toJSON(), asg_data
+            @handleInstance asg_comp, CloudResources(constant.RESTYPE.LC, Design.instance().region())?.toJSON(), asg_data
 
         if not @isAppEdit
             if not asg_data
@@ -85,11 +85,10 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
         instance_groups = []
         instances_map   = {}
 
-        console.debug asg_comp, resource_list, asg_data
-        if asg_data.Instances and asg_data.Instances.member
-            instance_count = asg_data.Instances.member.length
+        if asg_data.Instances and asg_data.Instances
+            instance_count = asg_data.Instances.length
 
-            for instance, idx in asg_data.Instances.member
+            for instance, idx in asg_data.Instances
                 ami =
                     status : if instance.HealthStatus is 'Healthy' then 'green' else 'red'
                     healthy: instance.HealthStatus

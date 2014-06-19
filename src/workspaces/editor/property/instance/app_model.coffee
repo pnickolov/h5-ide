@@ -47,7 +47,7 @@ define [ '../base/model',
                     else
                         login_user = 'root'
 
-            cmd_line = sprintf 'ssh -i %s.pem %s@%s', instance_data.keyName, login_user, instance_data.ipAddress or instance_data.privateIpAddress
+            cmd_line = sprintf 'ssh -i %s.pem %s@%s', instance_data.keyName, login_user, instance_data.publicIpAddress or instance_data.privateIpAddress
             @set 'loginCmd', cmd_line
 
 

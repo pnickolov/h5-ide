@@ -180,6 +180,8 @@ define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone", "con
 
       @__handleRequestChange( item )
 
+      if item.operation is "save" then return
+
       info_list = @attributes.notification
 
       # find existing request

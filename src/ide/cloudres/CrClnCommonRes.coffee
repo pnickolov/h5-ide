@@ -292,7 +292,7 @@ define [
             found = idx
         if found > 0
           main_rt = rtb.associationSet.splice( found,1 )
-          rtb.routeSet.splice( 0, 0, main_rt[0] )
+          rtb.associationSet.splice( 0, 0, main_rt[0] )
 
         rtb.id = rtb.routeTableId
         #delete rtb.routeTableId
@@ -316,7 +316,7 @@ define [
             found = idx
         if found > 0
           main_rt = rtb.associationSet.splice( found,1 )
-          rtb.routeSet.splice( 0, 0, main_rt[0] )
+          rtb.associationSet.splice( 0, 0, main_rt[0] )
 
         rtb.id = rtb.routeTableId
         #delete rtb.routeTableId

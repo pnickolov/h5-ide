@@ -29,9 +29,9 @@ define [ "Design" ], (Design)->
                 when 'AWS.EC2.SecurityGroup'
                     compo.resource.GroupId = ""
                     compo.resource.GroupName = compo.name
-                when 'AWS.EC2.KeyPair'
-                    compo.resource.KeyFingerprint = ""
-                    compo.resource.KeyName = compo.name
+#                when 'AWS.EC2.KeyPair'
+#                    compo.resource.KeyFingerprint = ""
+#                    compo.resource.KeyName = compo.name
                 when 'AWS.VPC.InternetGateway'
                     compo.resource.InternetGatewayId = ""
                 when 'AWS.VPC.NetworkAcl'
@@ -45,10 +45,10 @@ define [ "Design" ], (Design)->
                     compo.resource.VpnConnectionId = ""
                 when 'AWS.VPC.CustomerGateway'
                     compo.resource.CustomerGatewayId = ""
-                when "AWS.EC2.EBS.Volume"
-                    compo.resource.VolumeId = ""
-                when "AWS.VPC.DhcpOptions"
-                    compo.resource.DhcpOptionsId = ""
+#                when "AWS.EC2.EBS.Volume"
+#                    compo.resource.VolumeId = ""
+#                when "AWS.VPC.DhcpOptions"
+#                    compo.resource.DhcpOptionsId = ""
                 when 'AWS.EC2.Tag'
                     delete components[comp]
                 when 'AWS.AutoScaling.Tag'
@@ -56,10 +56,10 @@ define [ "Design" ], (Design)->
                 when 'AWS.ELB'
                     compo.resource.DNSName = ""
                     compo.resource.LoadBalancerName = compo.name
-                when 'AWS.IAM.ServerCertificate'
-                    compo.resource.ServerCertificateMetadata.Arn = ""
-                    compo.resource.ServerCertificateMetadata.ServerCertificateId = ""
-                    compo.resource.ServerCertificateMetadata.ServerCertificateName = compo.name
+#                when 'AWS.IAM.ServerCertificate'
+#                    compo.resource.ServerCertificateMetadata.Arn = ""
+#                    compo.resource.ServerCertificateMetadata.ServerCertificateId = ""
+#                    compo.resource.ServerCertificateMetadata.ServerCertificateName = compo.name
                 when 'AWS.AutoScaling.LaunchConfiguration'
                     compo.resource.LaunchConfigurationARN = ""
                     compo.resource.LaunchConfigurationName = compo.name
@@ -70,13 +70,13 @@ define [ "Design" ], (Design)->
                     console.log "Do Nothing Here"
                 when 'AWS.SNS.Subscription'
                     console.log "Do Nothing Here"
-                when "AWS.SNS.Topic"
-                    compo.resource.TopicArn = ""
+#                when "AWS.SNS.Topic"
+#                    compo.resource.TopicArn = ""
                 when 'AWS.AutoScaling.ScalingPolicy'
                     compo.resource.PolicyARN = ""
-                when 'AWS.CloudWatch.CloudWatch'
-                    compo.resource.AlarmArn = ""
-                    compo.resource.AlarmName = compo.name
+#                when 'AWS.CloudWatch.CloudWatch'
+#                    compo.resource.AlarmArn = ""
+#                    compo.resource.AlarmName = compo.name
                 else
 
     null

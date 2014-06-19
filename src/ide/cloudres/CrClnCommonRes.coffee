@@ -524,7 +524,7 @@ define [
           AutoScalingGroupName: first.AutoScalingGroupName
           TopicARN: first.TopicARN
           NotificationType: _.pluck nc, 'NotificationType'
-        item.id = item.NotificationType + "-" + item.TopicARN + "-" + item.AutoScalingGroupName
+        item.id = item.AutoScalingGroupName + "-" + item.TopicARN
         newNcList.push item
 
       newNcList
@@ -540,7 +540,7 @@ define [
           AutoScalingGroupName: first.AutoScalingGroupName
           TopicARN: first.TopicARN
           NotificationType: _.pluck nc, 'NotificationType'
-        item.id = item.NotificationType + "-" + item.TopicARN + "-" + item.AutoScalingGroupName
+        item.id = item.AutoScalingGroupName + "-" + item.TopicARN
         newNcList.push item
 
       newNcList

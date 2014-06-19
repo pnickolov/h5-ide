@@ -152,18 +152,20 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
       return topicComp
 
     getOriginalComp: ( jsonOrKey, type ) ->
-      type = constant.RESTYPE[ type ] or type
-      key = constant.AWS_RESOURCE_KEY[ type ]
-      id = if _.isObject jsonOrKey then jsonOrKey[key] else jsonOrKey
-
-      if not id then return null
-
-      for uid, comp of @originalJson.component
-        if comp.type isnt type then continue
-
-        if ( comp[ key ] or comp.resource[ key ] ) is id
-          return comp
-
+      if type is constant.RESTYPE[ "NC" ]
+        for uid, comp of @originalJson.component
+          if comp.type isnt type then continue
+          if comp.resource.AutoScalingGroupName is jsonOrKey.AutoScalingGroupName and comp.resource.TopicARN is jsonOrKey.TopicARN
+            return comp
+      else
+        type = constant.RESTYPE[ type ] or type
+        key = constant.AWS_RESOURCE_KEY[ type ]
+        id = if _.isObject jsonOrKey then jsonOrKey[key] else jsonOrKey
+        if not id then return null
+        for uid, comp of @originalJson.component
+          if comp.type isnt type then continue
+          if ( comp[ key ] or comp.resource[ key ] ) is id
+            return comp
       null
 
     _mapProperty : ( aws_json, resource ) ->
@@ -1089,12 +1091,14 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
 
         ncRes.TopicARN = CREATE_REF( snsComp, 'resource.TopicArn' ) if snsComp
 
-        # Manual find original NC because the match of NC is complicated
-        originalNc = _.filter @originalJson.component, ( com ) ->
-          if com.type is constant.RESTYPE.NC
-            return _.isEqual com.resource, ncRes
+        # # Manual find original NC because the match of NC is complicated
+        # originalNc = _.filter @originalJson.component, ( com ) ->
+        #   if com.type is constant.RESTYPE.NC
+        #     old_key = com.resource.AutoScalingGroupName + "-" + com.resource.TopicARN
+        #     new_key = ncRes.AutoScalingGroupName + "-" + ncRes.TopicARN
+        #     return _.isEqual old_key, new_key
 
-        ncComp = @add( "NC", originalNc[0] or ncRes, "SnsNotification")
+        ncComp = @add( "NC", ncRes, "SnsNotification")
       return
 
     ()-> #SP

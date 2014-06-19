@@ -157,7 +157,8 @@
 <p>Now you can easily manage the resources and lifecycle of the app within VisualOps.</p>
 
 <!-- {{modal.confirmRemoveApp}} -->
-<p class="modal-text-major">Your app's vpc seems to be deleted. Do you want to remove the app?</p>
+<p class="modal-text-major">VPC of this app has been deleted outside VisualOps.</p>
+<p class="modal-text-major">Do you want to remove the app?</p>
 
 <!-- {{saveAppToStack}} -->
 <p class="modal-text-minor">{{ i18n 'TOOL_POP_INTRO_1' }}</p>

@@ -24,7 +24,7 @@ define [
       modal = new Modal {
         title    : "Confirm to remove the app #{name}?"
         template : OpsEditorTpl.modal.confirmRemoveApp()
-        confirm  : { text : "Confirm", color : "red" }
+        confirm  : { text : "Confirm to Remove", color : "red" }
         disableClose : true
         onConfirm    : ()->
           onConfirm()

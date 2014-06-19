@@ -67,6 +67,8 @@ define [
     initDesign : ()->
       if @opsModel.isImported() or (@differ && @differ.getChangeInfo().needUpdateLayout)
         MC.canvas.analysis()
+        # Clear the thumbnail of the opsmodel, then it will be re-generated.
+        @opsModel.saveThumbnail()
 
       @design.finishDeserialization()
       return

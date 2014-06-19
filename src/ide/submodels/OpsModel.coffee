@@ -91,6 +91,8 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       if thumb
         ThumbUtil.save( @get("id"), thumb )
         @trigger "change"
+      else
+        ThumbUtil.save( @get("id"), "" )
       return
 
     hasJsonData : ()-> !!@__jsonData

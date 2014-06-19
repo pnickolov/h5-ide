@@ -57,11 +57,15 @@ define [
 
             @modal = new modalplus options
             @modal.on 'confirm', () ->
+                $confirmBtn = that.modal.tpl.find('.modal-confirm')
                 if that.callback
+                    $confirmBtn.addClass('disabled')
                     promise = that.callback()
                     promise.then () ->
+                        # $confirmBtn.removeClass('disabled')
                         that.modal.close()
                     , (error) ->
+                        $confirmBtn.removeClass('disabled')
                         notification 'error', error
                 else
                     that.modal.close()

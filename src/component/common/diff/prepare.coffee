@@ -13,7 +13,6 @@ define [ 'constant' ], ( constant ) ->
             newCompAttr = _.extend(newComp, {})
 
             _.each path, (attr) ->
-
                 if oldCompAttr
 
                     if _.isUndefined(oldCompAttr[attr])
@@ -28,10 +27,11 @@ define [ 'constant' ], ( constant ) ->
                     else
                         newCompAttr = newCompAttr[attr]
 
-            retVal =  {
-                oldAttr: oldCompAttr
-                newAttr: newCompAttr
-            }
+                null
+
+
+            oldAttr: oldCompAttr
+            newAttr: newCompAttr
 
 
         genValue: (type, oldValue, newValue) ->

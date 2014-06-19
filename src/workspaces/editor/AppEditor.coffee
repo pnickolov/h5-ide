@@ -59,6 +59,10 @@ define [
         else
           self.differ = undefined
         return
+        ### env:dev ###
+      , ( err )->
+        console.error err
+        ### env:dev ###
 
     isModified : ()-> @isAppEditMode() && @design && @design.isModified()
 

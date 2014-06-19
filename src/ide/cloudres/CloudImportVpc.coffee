@@ -110,7 +110,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
     addAz : ( azName )->
       az = @azs[ azName ]
       if az then return az
-      azRes = @getOriginalComp( azName, 'AZ' ) 
+      azRes = @getOriginalComp( azName, 'AZ' )
       if not azRes
         azRes =
           "RegionName": @region
@@ -384,7 +384,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
             "IpRanges": ipranges,
             "ToPort": String(if sg_rule.toPort then sg_rule.toPort else "")
           }
-      
+
       for aws_sg in @getResourceByType( "SG" )
         groupId = aws_sg.attributes.groupId
         sgComp = @getOriginalComp(groupId, 'SG')
@@ -567,7 +567,22 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
                 me.component[ volComp.uid ] = volComp
                 vol_in_instance.push volComp.uid
         else
-          insRes.BlockDeviceMapping = aws_ins.blockDeviceMapping
+          insRes.BlockDeviceMapping = []
+          volumes = @volumes
+          _.each aws_ins.blockDeviceMapping, (bdm) ->
+            volume = volumes[bdm.ebs.volumeId]
+            volumeSize = ''
+            volumeSize = volume.resource.Size if volume
+            insRes.BlockDeviceMapping.push({
+              DeviceName: bdm.deviceName,
+              Ebs: {
+                AttachTime: bdm.ebs.attachTime,
+                DeleteOnTermination: bdm.ebs.deleteOnTermination,
+                Status: bdm.ebs.status,
+                VolumeId: bdm.ebs.volumeId,
+                VolumeSize: volumeSize
+              }
+            })
 
         #generate instance component
         insComp = @add( "INSTANCE", insRes )
@@ -974,7 +989,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
     ()-> #ASG
       me = @
       for aws_asg in @getResourceByType "ASG"
-        
+
         aws_asg = aws_asg.attributes
 
         if not @lcs[aws_asg.LaunchConfigurationName]
@@ -1218,7 +1233,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
       changedServerGroupUidMap = {}
       diffTree = new DiffTree()
       originComps = cd.originAppJSON.component
-      
+
       # find all related component ref for server group
       _.each cd.instances, (insComp) ->
         if originComps[insComp.uid]

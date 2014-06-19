@@ -122,6 +122,10 @@ define [
       return
 
     switchMode : ( isAppEditMode )->
+      # HACK, Close the volume bubble here!!!!!
+      # Should be removed.
+      MC.canvas.volume.close()
+
       @toolbar.updateTbBtns()
       @statusbar.update()
 

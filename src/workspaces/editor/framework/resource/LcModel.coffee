@@ -207,11 +207,10 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
 
     # Use by CanvasElement(change members to groupMembers)
     groupMembers : ()->
-      resource_list = CloudResources(constant.RESTYPE.LC, Design.instance().region())?.toJSON()
+      resource_list = CloudResources(constant.RESTYPE.ASG, Design.instance().region())
       if not resource_list then return []
 
-      resource = resource_list[ @parent().get("appId") ]
-
+      resource = resource_list.get(@parent().get("appId"))?.toJSON()
       if resource and resource.Instances and resource.Instances.length
         amis = []
         for i in resource.Instances

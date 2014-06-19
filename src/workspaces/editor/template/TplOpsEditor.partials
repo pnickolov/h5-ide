@@ -15,6 +15,10 @@
 
 <!-- {{appUpdateStatus}} -->
 <div class="ops-process">
+{{#if loading}}
+  <header class="processing">Reloading data...</header>
+  <section class="loading-spinner"></section>
+{{else}}
   <header class="processing">{{#unless error}}App has updated successfully.{{else}}The app failed to update.{{/unless}}</header>
   {{#if error}}
   <div class="error-info-block">
@@ -27,6 +31,7 @@
   </div>
   {{/if}}
   <button class="btn btn-silver" id="processDoneBtn">Done</button>
+{{/if}}
 </div>
 
 <!-- {{toolbar.BtnActionPng}} -->

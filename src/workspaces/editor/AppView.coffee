@@ -138,11 +138,11 @@ define [
       $("#vpc_layer, #az_layer, #subnet_layer, #asg_layer, #line_layer, #node_layer").empty()
       return
 
-    showUpdateStatus : ( error )->
+    showUpdateStatus : ( error, loading )->
       @$el.find(".ops-process").remove()
 
       self = @
-      $(OpsEditorTpl.appUpdateStatus({ error : error }))
+      $(OpsEditorTpl.appUpdateStatus({ error : error, loading : loading }))
         .appendTo(@$el)
         .find("#processDoneBtn")
         .click ()-> self.$el.find(".ops-process").remove()

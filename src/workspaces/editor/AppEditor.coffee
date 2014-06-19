@@ -107,19 +107,23 @@ define [
 
       @__appEdit = false
       if modfied
-        # Layout and component changes, need to construct a new Design.
-        @view.emptyCanvas()
-
-        @stopListening @design
-        @design = new Design( @opsModel )
-        @listenTo @design, "change:name", @updateTab
-
-        @initDesign()
+        @recreateDesign()
       else
         @design.setMode( Design.MODE.App )
 
       @view.switchMode( false )
       true
+
+    recreateDesign : ()->
+      # Layout and component changes, need to construct a new Design.
+      @view.emptyCanvas()
+
+      @stopListening @design
+      @design = new Design( @opsModel )
+      @listenTo @design, "change:name", @updateTab
+
+      @initDesign()
+      return
 
     applyAppEdit : ( modfiedData, force )->
       modfied = modfiedData or @design.isModified( undefined, true )
@@ -134,20 +138,14 @@ define [
 
       self = @
       @__applyingUpdate = true
+      fastUpdate = !modfied.component
 
-      @opsModel.update( modfied.newData, !modfied.component ).then ()->
-        self.__applyingUpdate = false
-        self.__appEdit = false
-
-        self.view.stopListening self.opsModel, "change:progress", self.view.updateProgress
-
-        self.design.setMode( Design.MODE.App )
-        self.view.showUpdateStatus()
-        self.view.switchMode( false )
-
-        self.saveThumbnail()
-
-        return
+      @opsModel.update( modfied.newData, fastUpdate ).then ()->
+        if fastUpdate
+          self.onAppEditDone()
+        else
+          self.view.showUpdateStatus( "", true )
+          CloudResources( "OpsResource", self.opsModel.getVpcId() ).init( self.opsModel.get("region") ).fetchForce().then ()-> self.onAppEditDone()
 
       , ( err )->
         self.__applyingUpdate = false
@@ -162,6 +160,21 @@ define [
       @view.listenTo @opsModel, "change:progress", @view.updateProgress
 
       true
+
+    onAppEditDone : ()->
+      @__appEdit = @__applyingUpdate = false
+
+      @view.stopListening @opsModel, "change:progress", @view.updateProgress
+      @recreateDesign()
+
+      @design.setMode( Design.MODE.App )
+      @view.showUpdateStatus()
+      @view.switchMode( false )
+
+      @saveThumbnail()
+
+      @view.showUpdateStatus()
+      return
 
     onOpsModelStateChanged : ()->
       if not @isInited() then return

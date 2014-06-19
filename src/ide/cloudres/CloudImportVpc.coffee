@@ -551,6 +551,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
         _.each vol_in_instance, (e,key)->
           volComp = me.component[ e ]
           if volComp
+            volComp.resource.AttachmentSet = {} if not volComp.resource.AttachmentSet
             volComp.resource.AttachmentSet.InstanceId = CREATE_REF( insComp, "resource.InstanceId" )
 
         @addLayout( insComp, false, subnetComp )

@@ -5084,6 +5084,9 @@ VisualOps API. You cannot UNDO this action.'
     TA_MSG_WARNING_CGW_IP_RANGE_ERROR:
       en:"Customer Gateway <span class='validation-tag tag-cgw'>%s</span>'s IP(%s) invalid."
       zh:""
+    TA_MSG_ERROR_CGW_MUST_ATTACH_VPN:
+      en:"Customer Gateway %s must be attached to a VPN Gateway via VPN connection."
+      zh:""
 
     # VPN
     TA_MSG_ERROR_VPN_NO_IP_FOR_STATIC_CGW:

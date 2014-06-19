@@ -77,6 +77,7 @@ define [ 'constant' ], ( constant ) ->
 
             # Replace keyword
             switch parentKey
+
                 when 'BlockDeviceMapping'
                     deviceObj = childNode.DeviceName
                     if deviceObj

@@ -173,15 +173,11 @@ define [ 'MC', 'constant', 'state_model', 'CloudResources', "Design", 'backbone'
 
 			layoutOSType = ''
 			cachedAmi = Design.instance().component(compData.uid).get('cachedAmi')
-			if cachedAmi
-				layoutOSType = cachedAmi.osType
+			layoutOSType = cachedAmi.osType if cachedAmi
 
-				osType = imageObj.get('osType')
+			if imageObj
 
-				if not imageObj
-					imageObj = {}
-
-				osType = imageObj.osType or layoutOSType
+				osType = imageObj.get('osType') or layoutOSType
 
 				linuxDistroRange = ['centos', 'redhat',  'rhel', 'ubuntu', 'debian', 'fedora', 'gentoo', 'opensuse', 'suse', 'sles', 'amazon', 'amaz']
 

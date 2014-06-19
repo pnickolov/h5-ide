@@ -8,6 +8,7 @@ define [], () ->
         option.filterMap = {
             'resource.PrivateIpAddressSet.n.AutoAssign': true,
             'resource.AssociatePublicIpAddress': true
+            'resource.KeyName': true
         }
 
         isArray = (value) ->

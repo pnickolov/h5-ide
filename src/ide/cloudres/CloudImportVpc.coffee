@@ -3,6 +3,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
 
   # Helpers
   CREATE_REF = ( compOrUid, attr ) ->
+    return '' if not compOrUid
     if attr
       return "@{#{compOrUid.uid or compOrUid}.#{attr}}"
     else
@@ -513,13 +514,13 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
 
         #generate KeyName for instance
         keyPairComp = @getOriginalComp(aws_ins.keyName, 'KP')
-        if not keyPairComp
-          insRes.KeyName = aws_ins.keyName if aws_ins.keyName
+        if keyPairComp
+          insRes.KeyName = CREATE_REF( keyPairComp, "resource.KeyName" )
         else
-          if originComp
-            insRes.KeyName = originComp.resource.KeyName
+          if aws_ins.keyName
+            insRes.KeyName = aws_ins.keyName
           else
-            insRes.KeyName = CREATE_REF( keyPairComp, "resource.KeyName" )
+            insRes.KeyName = CREATE_REF( DEFAULT_KP, "resource.KeyName" )
 
         vol_in_instance = []
 
@@ -561,8 +562,12 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
       for aws_eni in @getResourceByType("ENI") || []
         aws_eni = aws_eni.attributes
         azComp = @addAz(aws_eni.availabilityZone)
-        insComp = @instances[aws_eni.attachment.instanceId]
-        if not insComp
+
+        if aws_eni.attachment
+          insComp = @instances[aws_eni.attachment.instanceId]
+          if not insComp
+            continue
+        else
           continue
 
         subnetComp = @subnets[aws_eni.subnetId]

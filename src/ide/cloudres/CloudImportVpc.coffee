@@ -344,6 +344,8 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
           cgwComp.resource.BgpAsn = ""
         if aws_vpn.routes
           for route in aws_vpn.routes
+            if route.state in [ "deleting", "deleted" ]
+              continue
             vpnRes.Routes.push
               "DestinationCidrBlock" : route.destinationCidrBlock
               #"Source" : route.source

@@ -134,12 +134,12 @@ define [
       if apps.length > 5   then apps.length = 5
 
       $tabs = $("#global-region-status-widget").find(".global-region-status-tab")
-      $tabs.eq(0).children("span").text apps.length
-      $tabs.eq(1).children("span").text stacks.length
+      $tabs.eq(0).children("span").text App.model.appList().length
+      $tabs.eq(1).children("span").text App.model.stackList().length
 
       isStack = $tabs.filter(".on").hasClass("stack")
 
-      $( '#global-region-recent-list' ).html tplPartials.recent { stacks:stacks, apps:apps, isStack:isStack }
+      $( '#global-region-recent-list' ).html tplPartials.recent { stacks, apps, isStack }
 
       @updateRegionAppStack()
       return

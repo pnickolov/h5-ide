@@ -11,7 +11,7 @@ define [
 
   class AppEditor extends StackEditor
 
-    title      : ()-> (@design || @opsModel).get("name") + " - app"
+    title      : ()-> ((@design || @opsModel).get("name") || @opsModel.get("importVpcId")) + " - app"
     createView : ()-> new AppView({workspace:this})
     tabClass   : ()->
       switch @opsModel.get("state")

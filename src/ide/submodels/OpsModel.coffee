@@ -195,6 +195,10 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
 
       api = if @get("id") then "stack_save" else "stack_create"
 
+      if newJson.state isnt "Enabled"
+        console.warn "The json's state isnt `Enabled` when saving the stack", @, newJson
+        newJson.state = "Enabled"
+
       self = @
       ApiRequest(api, {
         region_name : @get("region")
@@ -384,6 +388,10 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       if @__saveAppDefer then return @__saveAppDefer
 
       newJson.changed = false
+
+      if newJson.state isnt @getStateDesc()
+        console.warn "The new app json's state isnt the same as the app", @, newJson
+        newJson.state = @getStateDesc()
 
       oldState = @get("state")
       @set("state", OpsModelState.Saving)

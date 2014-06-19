@@ -20,12 +20,13 @@ define [ '../base/model',
             'id' : null
 
         setOsTypeAndLoginCmd: ( appId ) ->
+
             region = Design.instance().region()
             instance_data = CloudResources(constant.RESTYPE.INSTANCE, region).get(appId)?.toJSON()
             if instance_data
-                os_type = CloudResources( constant.RESTYPE.AMI, region ).get( instance_data.imageId )
-                if os_type then os_type = os_type.osType
+                os_type = CloudResources( constant.RESTYPE.AMI, region ).get( instance_data.imageId )?.toJSON()
 
+                if os_type then os_type = os_type.osType
             # below code are based on os_type
             if not os_type
                 return
@@ -75,7 +76,6 @@ define [ '../base/model',
             app_data = CloudResources(constant.RESTYPE.INSTANCE, Design.instance().region())
 
             if app_data?.get(instance_id)?.toJSON()
-
                 instance = $.extend true, {}, app_data.get(instance_id)?.toJSON()
                 instance.name = if myInstanceComponent then myInstanceComponent.get 'name' else instance_id
                 rdName = myInstanceComponent.getAmiRootDeviceName()

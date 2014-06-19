@@ -71,8 +71,10 @@ define [
     initDesign : ()->
       if @opsModel.isImported() or (@differ && @differ.getChangeInfo().needUpdateLayout)
         MC.canvas.analysis()
-        # Hack, the layout is modified, need to save one more time.
-        @opsModel.saveApp( @design.serialize() )
+
+        if not @opsModel.isImported()
+          # Hack, the layout is modified, need to save one more time. But we don't save for import app.
+          @opsModel.saveApp( @design.serialize() )
 
       @design.finishDeserialization()
       return

@@ -349,7 +349,9 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
     # Update the app, returns a promise
     update : ( newJson, fastUpdate )->
       if not @isApp() then return @__returnErrorPromise()
-      if @__saveAppDefer then return @__saveAppDefer
+      if @__updateAppDefer
+        console.error "The app is already updating!"
+        return @__updateAppDefer.promise
 
       oldState = @get("state")
       @set("state", OpsModelState.Updating)
@@ -389,7 +391,9 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
     # Replace the data in mongo with new data. This method doesn't trigger an app update.
     saveApp : ( newJson )->
       if not @isApp() then return @__returnErrorPromise()
-      if @__saveAppDefer then return @__saveAppDefer
+      if @__saveAppDefer
+        console.error "The app is already saving!"
+        return @__saveAppDefer.promise
 
       newJson.changed = false
 
@@ -408,7 +412,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       # Send Request
       ApiRequest("app_save_info", {spec:newJson}).then (res)->
         if not self.id
-          self.requestId = res[0]
+          self.attributes.requestId = res[0]
         return
       , ( error )->
         self.__saveAppDefer.reject( error )
@@ -416,6 +420,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       # The real promise
       @__saveAppDefer.promise.then ()->
         self.__jsonData = newJson
+        self.attributes.requestId = undefined
         self.set {
           name  : newJson.name
           state : oldState
@@ -424,6 +429,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         return
       , ( error )->
         self.__saveAppDefer = null
+        self.attributes.requestId = undefined
         self.attributes.progress = 0
         self.set { state : oldState }
         throw error

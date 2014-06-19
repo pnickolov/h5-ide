@@ -52,17 +52,13 @@ define [
         self.differ = new ResDiff({
           old : self.opsModel.getJsonData()
           new : newJson
+          callback : ()-> self.opsModel.saveApp( self.design.serialize() )
         })
         result = self.differ.getChangeInfo()
         if result.hasResChange
-          return self.opsModel.saveApp( newJson )
-        else
-          self.differ = undefined
+          # Hack!!!!
+          self.opsModel.__setJsonData( newJson )
         return
-        ### env:dev ###
-      , ( err )->
-        console.error err
-        ### env:dev:end ###
 
     isModified : ()-> @isAppEditMode() && @design && @design.isModified()
 
@@ -72,16 +68,12 @@ define [
       if @opsModel.isImported() or (@differ && @differ.getChangeInfo().needUpdateLayout)
         MC.canvas.analysis()
 
-        if not @opsModel.isImported()
-          # Hack, the layout is modified, need to save one more time. But we don't save for import app.
-          @opsModel.saveApp( @design.serialize() )
-
       @design.finishDeserialization()
       return
 
     initEditor : ()->
       # Try show differ dialog
-      if @differ
+      if @differ and @differ.getChangeInfo().hasResChange
         @differ.render()
         @differ = null
 

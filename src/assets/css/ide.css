@@ -181,22 +181,6 @@ button {
 	color: #D0D0D0;
 }
 
-.resources-dropdown-wrapper li {
-	border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-	padding: 8px;
-	font-size: 12px;
-	position: relative;
-	cursor: pointer;
-	display: block;
-}
-
-.resources-dropdown-wrapper li:hover {
-	background-color: rgba(255, 255, 255, 0.1);
-	opacity: 0.8;
-	cursor: pointer;
-	width: 103px;
-}
-
 #map-region-spot-list li:hover .map-tooltip,
 #map-region-spot-list li.hover .map-tooltip {
 	opacity: 1;
@@ -652,7 +636,7 @@ td.table-action a.btn {
 }
 
 .property-control-group .selectbox.selectbox-mega .main {
-	/*width: 230px;*/
+	width: 230px;
 	font-size: 14px;
 	color: #F8F8F8;
 }

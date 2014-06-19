@@ -144,6 +144,11 @@ define [
         asg.Instances           = asg.Instances?.member || []
         asg.LoadBalancerNames   = asg.LoadBalancerNames?.member || []
         asg.TerminationPolicies = asg.TerminationPolicies?.member || []
+        asg.DefaultCooldown        = Number(asg.DefaultCooldown)
+        asg.DesiredCapacity        = Number(asg.DesiredCapacity)
+        asg.HealthCheckGracePeriod = Number(asg.HealthCheckGracePeriod)
+        asg.MaxSize                = Number(asg.MaxSize)
+        asg.MinSize                = Number(asg.MinSize)
         asg.Subnets             = (asg.VPCZoneIdentifier || asg.VpczoneIdentifier).split(",")
         #delete asg.VPCZoneIdentifier
       asgs

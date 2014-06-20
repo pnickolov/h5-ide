@@ -1208,11 +1208,12 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
           continue
         cwRes.Dimensions = dimension
 
+        reg_asg = /arn:aws:autoscaling:.*:.*:scalingPolicy/g
+        reg_topic = /arn:aws:sns:.*:.*:.*/g
+
         #convert AlarmActions to REF:
         alarmActionAry = []
         _.each aws_cw.AlarmActions, (e,key)->
-          reg_asg = /arn:aws:autoscaling:.*:.*:scalingPolicy/g
-          reg_topic = /arn:aws:sns:.*:.*:.*/g
           if reg_topic.test(e)
             #TOPIC
             topicComp = me.addTopic(e)
@@ -1225,7 +1226,14 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
               alarmActionAry.push CREATE_REF(spComp, "resource.PolicyARN")
         cwRes.AlarmActions = alarmActionAry
 
-        #OKAction: TODO
+        #convert OKAction to REF:
+        okActionAry = []
+        _.each aws_cw.Okactions, (e,key)->
+          if reg_asg.test(e)
+            spComp = me.sps[e]
+            if spComp
+              okActionAry.push CREATE_REF(spComp, "resource.PolicyARN")
+        cwRes.OKAction = okActionAry
 
         cwRes.Threshold = String(aws_cw.Threshold)
         cwRes.EvaluationPeriods = String(aws_cw.EvaluationPeriods)

@@ -125,6 +125,14 @@ define [], () ->
 
                 path.length = 0 if path
 
+                # ignore number type diff
+
+                if typeofReal(a) is 'number'
+                    a = String(a)
+                
+                if typeofReal(b) is 'number'
+                    b = String(b)
+
                 if a isnt b
                     haveDiff = true
                     resultJSON[key] = {

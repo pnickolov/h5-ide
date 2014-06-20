@@ -44,12 +44,12 @@ define [
             options =
                 template: @el
                 title: 'App Changes'
+                disableClose: true
                 confirm:
                     text: 'OK, got it'
                 width: '608px'
                 compact: true
                 preventClose: true
-                disableClose: true
 
             @modal = new modalplus options
             @modal.on 'confirm', () ->

@@ -68,7 +68,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       o
 
     # Return true if the stack is saved in the server.
-    isPresisted : ()-> !!@get("id")
+    isPersisted : ()-> !!@get("id")
     # Return true if the stack/app should be show to the user.
     isExisting : ()->
       state = @get("state")

@@ -188,7 +188,7 @@ define [
     initEditor : ()->
 
     saveThumbnail : ()->
-      if @opsModel.isPresisted()
+      if @opsModel.isPersisted()
         Thumbnail.generate( $("#svg_canvas") ).then ( thumbnail )=> @opsModel.saveThumbnail( thumbnail )
 
     showEditor : ()->

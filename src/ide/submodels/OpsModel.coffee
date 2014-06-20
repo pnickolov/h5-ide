@@ -618,9 +618,9 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
               IpRanges: "0.0.0.0/0",
               ToPort: "65535"
             }],
-            Default             : "true",
-            GroupName           : "DefaultSG",
-            GroupDescription    : 'Default Security Group'
+            Default          : "true",
+            GroupName        : "DefaultSG",
+            GroupDescription : 'default VPC security group'
         ACL :
           type : "AWS.VPC.NetworkAcl"
           name : "DefaultACL"

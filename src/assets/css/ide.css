@@ -586,13 +586,15 @@ td.table-action a.btn {
 	line-height: 20px;
 }
 
-.property-control-group > label {
+.property-control-group > label,
+.property-control-group label.left {
 	color     : #999;
 	font-size : 13px;
 	height    : 20px;
 	cursor    : pointer;
 	display   : inline-block;
 }
+
 
 .property-control-group .input {
 	width: 230px;

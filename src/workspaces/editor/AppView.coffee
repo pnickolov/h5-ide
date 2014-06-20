@@ -59,7 +59,6 @@ define [
           $ipt.parsley 'custom', ( val ) ->
             if not MC.validate 'awsName',  val
               return lang.ide.PARSLEY_SHOULD_BE_A_VALID_STACK_NAME
-            debugger
 
             apps = App.model.appList().where({name:val})
             if apps.length is 1 and apps[0] is self.workspace.opsModel or apps.length is 0
@@ -73,6 +72,7 @@ define [
           modal.tpl.find(".modal-confirm").attr("disabled", "disabled")
           json = self.workspace.design.serialize()
           json.name = $ipt.val()
+          self.workspace.opsModel.set("name", json.name)
           self.workspace.opsModel.saveApp(json).then ()->
             modal.close()
           , ( err )->

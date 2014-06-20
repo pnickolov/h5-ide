@@ -131,7 +131,7 @@
               _base.onCancel(_this.tpl, e);
             }
             _this.trigger('cancel', _this);
-            if (!(_this.option.preventClose || _this.option.disableClose)) {
+            if (!_this.option.preventClose) {
               return (_ref = modalGroup[0]) != null ? _ref.back() : void 0;
             }
           };

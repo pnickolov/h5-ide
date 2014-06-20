@@ -129,7 +129,7 @@ define [], ()->
             @tpl.find('.btn.modal-close').click (e)=>
                 @option.onCancel?(@tpl,e)
                 @.trigger 'cancel', @
-                if not (@option.preventClose or @option.disableClose) then modalGroup[0]?.back()
+                if not @option.preventClose then modalGroup[0]?.back()
             @tpl.find("i.modal-close").click (e)->
                 modalGroup[0]?.back()
             if(!@option.disableClose)

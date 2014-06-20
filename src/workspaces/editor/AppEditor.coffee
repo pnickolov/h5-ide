@@ -48,6 +48,8 @@ define [
 
         if self.opsModel.isImported() then return
 
+        if not self.opsModel.testState( OpsModel.State.Running ) then return
+
         oldJson = self.opsModel.getJsonData()
         newJson = self.opsModel.generateJsonFromRes()
 

@@ -92,9 +92,11 @@ define [ 'toolbar_modal', './component/kp/kpDialogTpl', 'kp_upload', 'backbone',
             else
               @modal.render 'nocredential'
 
-            @collection.on 'change', @renderKeys, @
+            @collection.on 'update', @renderKeys, @
 
         renderKeys: () ->
+            if not @collection.isReady()
+              return false
             data = keys : @collection.toJSON()
             @modal.setContent template.keys data
             @

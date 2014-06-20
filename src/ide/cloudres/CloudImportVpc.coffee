@@ -18,7 +18,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
   TAG_NAME   = ( res ) ->
     name = null
     if res.tagSet
-      name = res.tagSet.name or res.tagSet.Name
+      name = res.tagSet.name or res.tagSet.Name or res.tagSet["aws:cloudformation:logical-id"]
     name
 
   # Class used to collect components / layouts

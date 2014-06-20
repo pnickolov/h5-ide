@@ -367,32 +367,47 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
 
     ()-> # SG
 
+      that = this
+
       sgRefMap = {}
 
-      genRules = (sg_rule, new_ruls, selfSGId) ->
+      genRules = (sg_rule, new_ruls) ->
 
-          ipranges = ''
-          if sg_rule.groups.length>0 and sg_rule.groups[0].groupId
-            sgId = sg_rule.groups[0].groupId
-            sgComp = sgRefMap[sgId]
-            if sgComp
-              ipranges = CREATE_REF(sgComp, 'resource.GroupId')
-            else
-              if selfSGId
-                originSGComp = @getOriginalComp(selfSGId, 'SG')
-                ipranges = CREATE_REF(originSGComp, 'resource.GroupId')
-          else if sg_rule.ipRanges and sg_rule.ipRanges.length>0
-            ipranges = sg_rule.ipRanges[0].cidrIp
+          that = this
 
           if String(sg_rule.ipProtocol) is '-1'
             sg_rule.fromPort = '0'
             sg_rule.toPort = '65535'
-          new_ruls.push {
-            "FromPort": String(if sg_rule.fromPort then sg_rule.fromPort else ""),
-            "IpProtocol": String(sg_rule.ipProtocol),
-            "IpRanges": ipranges,
-            "ToPort": String(if sg_rule.toPort then sg_rule.toPort else "")
-          }
+
+          if sg_rule.groups and sg_rule.groups.length > 0
+
+            _.each sg_rule.groups, (group) ->
+              if group.groupId
+                iprange = ''
+                sgId = group.groupId
+                sgComp = sgRefMap[sgId]
+                if sgComp
+                  iprange = CREATE_REF(sgComp, 'resource.GroupId')
+                else
+                  iprange = group.groupId
+
+                new_ruls.push {
+                  "FromPort": String(if sg_rule.fromPort then sg_rule.fromPort else ""),
+                  "IpProtocol": String(sg_rule.ipProtocol),
+                  "IpRanges": iprange,
+                  "ToPort": String(if sg_rule.toPort then sg_rule.toPort else "")
+                }
+
+          else if sg_rule.ipRanges and sg_rule.ipRanges.length > 0
+
+            ipranges = sg_rule.ipRanges
+            _.each ipranges, (iprange) ->
+              new_ruls.push {
+                "FromPort": String(if sg_rule.fromPort then sg_rule.fromPort else ""),
+                "IpProtocol": String(sg_rule.ipProtocol),
+                "IpRanges": iprange.cidrIp,
+                "ToPort": String(if sg_rule.toPort then sg_rule.toPort else "")
+              }
 
       for aws_sg in @getResourceByType( "SG" )
         groupId = aws_sg.attributes.groupId
@@ -413,10 +428,8 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
 
         sgRes = @_mapProperty aws_sg, sgRes
 
-        selfSGId = ''
         originSGComp = @getOriginalComp(aws_sg.id, 'SG')
         if originSGComp
-          selfSGId = aws_sg.id
           sgRes.GroupName = originSGComp.resource.GroupName
 
         vpcComp = @getOriginalComp(aws_sg.vpcId, 'VPC')
@@ -427,12 +440,12 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
         #generate ipPermissions
         if aws_sg.ipPermissions
           for sg_rule in aws_sg.ipPermissions || []
-            genRules.call(@, sg_rule, sgRes.IpPermissions, selfSGId)
+            genRules.call(@, sg_rule, sgRes.IpPermissions)
 
         #generate ipPermissionEgress
         if aws_sg.ipPermissionsEgress
           for sg_rule in aws_sg.ipPermissionsEgress || []
-            genRules.call(@, sg_rule, sgRes.IpPermissionsEgress, selfSGId)
+            genRules.call(@, sg_rule, sgRes.IpPermissionsEgress)
 
         sgComp = @add( "SG", sgRes, TAG_NAME(aws_sg) || aws_sg.groupName )
         if aws_sg.groupName is "default"
@@ -441,6 +454,20 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
           DEFAULT_SG["DefaultSG"] = sgComp
 
         @sgs[ aws_sg.id ] = sgComp
+
+      _.each that.sgs, (sgComp) ->
+        _.each sgComp.resource.IpPermissions, (rule) ->
+          if rule.IpRanges and rule.IpRanges.indexOf('sg-') is 0
+            refComp = that.sgs[rule.IpRanges]
+            if refComp
+              ref = CREATE_REF(refComp, 'resource.GroupId')
+              rule.IpRanges = ref
+        _.each sgComp.resource.IpPermissionsEgress, (rule) ->
+          if rule.IpRanges and rule.IpRanges.indexOf('sg-') is 0
+            refComp = that.sgs[rule.IpRanges]
+            if refComp
+              ref = CREATE_REF(refComp, 'resource.GroupId')
+              rule.IpRanges = ref
       return
 
     ()-> #Volume

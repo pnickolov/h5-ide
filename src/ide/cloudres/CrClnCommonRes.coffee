@@ -408,6 +408,7 @@ define [
         #delete vol.attachmentSet
       volumes
     parseExternalData: ( data ) ->
+      @convertNumTimeToString data
       @unifyApi data, @type
       for vol in data
         vol.id = vol.volumeId
@@ -673,9 +674,10 @@ define [
         sgRuls = sg.ipPermissions.concat(sg.ipPermissionsEgress)
         _.each sgRuls, (rule, idx) ->
           if rule.ipRanges and rule.ipRanges.length
-            rule.ipRanges = [{
-              cidrIp: rule.ipRanges[0]
-            }]
+            rule.ipRanges = _.map rule.ipRanges, (cidr) ->
+              return {
+                cidrIp: cidr
+              }
           rule.groups = []
           if rule.userIdGroupPairs
             rule.groups = rule.userIdGroupPairs

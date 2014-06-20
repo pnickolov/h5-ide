@@ -44,14 +44,8 @@ define [
             options =
                 template: @el
                 title: 'App Changes'
-                hideClose: true
-                disableClose: true
-                disableCancel: true
-                cancel:
-                    hide: true
                 confirm:
                     text: 'OK, got it'
-
                 width: '608px'
                 compact: true
 
@@ -60,15 +54,23 @@ define [
                 $confirmBtn = that.modal.tpl.find('.modal-confirm')
                 if that.callback
                     $confirmBtn.addClass('disabled')
-                    promise = that.callback()
+                    $confirmBtn.text('Saving...')
+                    promise = that.callback(true)
                     promise.then () ->
                         # $confirmBtn.removeClass('disabled')
                         that.modal.close()
                     , (error) ->
+                        $confirmBtn.text('OK, got it')
                         $confirmBtn.removeClass('disabled')
                         notification 'error', error
                 else
                     that.modal.close()
+            , @
+            @modal.on 'cancel', () ->
+                alert(1)
+                # if that.callback
+                #     that.callback(false)
+                that.modal.close()
             , @
 
             #settle frame

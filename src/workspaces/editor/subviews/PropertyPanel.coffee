@@ -297,13 +297,11 @@ define [
       @$el.toggleClass("state", true)
 
       if design.modeIsApp()
-        resId = uid
         uid   = Design.modelClassForType(CONST.RESTYPE.INSTANCE).getEffectiveId(uid).uid
-
 
       allCompData = design.serialize().component
       compData    = allCompData[uid]
-      stateeditor.loadModule(allCompData, uid, resId)
+      stateeditor.loadModule(allCompData, uid)
 
       @forceShow()
       return

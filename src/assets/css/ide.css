@@ -2327,15 +2327,7 @@ a.action-link:hover {
 	background: url('../images/ide/icon/icon-app-stopped.png') center center no-repeat;
 }
 
-.icon-app-pending,
-.icon-app-starting,
-.icon-app-stopping,
-.icon-app-terminating,
-.icon-app-Starting,
-.icon-app-Stopping,
-.icon-app-updating,
-.icon-app-Updating,
-.icon-app-Terminating  {
+.icon-app-pending {
 	background: url('../images/ide/icon/icon-app-pending.png') center center no-repeat;
 }
 

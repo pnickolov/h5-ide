@@ -97,6 +97,11 @@ define [
         @remove()
         throw new Error("Cannot find opsmodel while openning workspace.")
 
+      if not opsModel.testState( OpsModel.State.Initializing )
+        @remove()
+        console.warn "The OpsModel is not an starting app."
+        return
+
       @opsModel = opsModel
 
       return Workspace.apply @, arguments

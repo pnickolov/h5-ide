@@ -17,7 +17,11 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
             myElbComponent = Design.instance().component( uid )
 
 
-            elb = CloudResources(constant.RESTYPE.ELB, Design.instance().region()).get(myElbComponent.get("appId"))?.toJSON()
+            elb = CloudResources(constant.RESTYPE.ELB, Design.instance().region()).get(myElbComponent.get("appId"))
+            if not elb then return false
+
+            elb = elb.toJSON()
+
             if elb.ConnectionDraining
                 if elb.ConnectionDraining.Enabled
                     elb.ConnectionDrainingInfo = "Enabled; Timeout: #{elb.ConnectionDraining.Timeout} seconds"
@@ -26,10 +30,7 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
             else
                 elb.ConnectionDrainingInfo = 'Disabled'
 
-            if not elb
-                return false
 
-            elb = $.extend true, {}, elb
             elb.name = myElbComponent.get 'name'
 
 
@@ -71,65 +72,6 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
 
             elb.isClassic  = false
             elb.defaultVPC = false
-
-            # elb.distribution = []
-
-            # subnetMap = {}
-
-            # allSubnet = Design.modelClassForType( constant.RESTYPE.SUBNET ).allObjects()
-
-            # for subnet in allSubnet
-            #     subnetMap[ subnet.id ] = subnet.get 'name'
-
-
-            # $.each elb.AvailabilityZones.member, (i, zone_name) ->
-            #   tmp = {}
-            #   tmp.zone = zone_name
-            #   tmp.health_instance = 0
-            #   tmp.total_instance = 0
-
-            #   if not elb.isClassic
-
-            #     if elb.Subnets.member and elb.Subnets.member.constructor == Array
-
-            #         $.each elb.Subnets.member, (j, subnet_id) ->
-            #             subnet = MC.data.resource_list[Design.instance().region()][subnet_id]
-            #             if subnet and subnet.availabilityZone is zone_name
-            #                 tmp.subnet = subnetMap[ subnet_id ]
-            #                 return false
-
-            #     else if elb.Subnets.member
-
-            #         tmp.subnet = elb.Subnets.member
-
-            #   else
-            #     tmp.subnet = null
-
-            #   $.each MC.data.config[Design.instance().region()].zone.item, (i, zone) ->
-
-            #     if zone.zoneName == zone_name and zone.zoneState == 'available'
-
-            #         tmp.health = true
-
-            #     null
-
-            #   elb.distribution.push tmp
-
-            # elb.instance_state = elb.instance_state || []
-
-            # $.each elb.instance_state, ( i, instance ) ->
-
-            #     zone = MC.data.resource_list[Design.instance().region()][instance.InstanceId].placement.availabilityZone
-
-            #     $.each elb.distribution, ( j, az_detail ) ->
-
-            #         if az_detail.zone == zone and instance.State == 'InService'
-
-            #             az_detail.health_instance += 1
-
-            #         az_detail.total_instance += 1
-
-            #         return false
 
             elb.distribution = []
             elbDistrMap = {}

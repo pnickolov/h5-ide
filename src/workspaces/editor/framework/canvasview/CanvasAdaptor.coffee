@@ -33,7 +33,7 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant", "UI.notific
   $canvas.updateLineStyle = (ls)->
     if Design.__instance.shouldDraw()
       # Update SgLine
-      if ls is 4
+      if ls is "4"
         #hide sg line
         Canvon("#line_layer").addClass("hide-sg")
       else

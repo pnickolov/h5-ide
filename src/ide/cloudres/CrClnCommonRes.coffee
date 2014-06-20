@@ -144,7 +144,7 @@ define [
         asg.Instances           = asg.Instances?.member || []
         asg.LoadBalancerNames   = asg.LoadBalancerNames?.member || []
         asg.TerminationPolicies = asg.TerminationPolicies?.member || []
-        asg.Subnets             = (asg.VPCZoneIdentifier || asg.VpczoneIdentifier).split(",")
+        asg.Subnets             = (asg.VPCZoneIdentifier || asg.VpczoneIdentifier || "").split(",")
         #delete asg.VPCZoneIdentifier
       asgs
     parseExternalData: ( data ) ->

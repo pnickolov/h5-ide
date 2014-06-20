@@ -48,6 +48,8 @@ define [
                     text: 'OK, got it'
                 width: '608px'
                 compact: true
+                preventClose: true
+                disableClose: true
 
             @modal = new modalplus options
             @modal.on 'confirm', () ->
@@ -67,9 +69,8 @@ define [
                     that.modal.close()
             , @
             @modal.on 'cancel', () ->
-                alert(1)
-                # if that.callback
-                #     that.callback(false)
+                if that.callback
+                    that.callback(false)
                 that.modal.close()
             , @
 

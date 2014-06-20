@@ -519,8 +519,8 @@ define [
     parseFetchData : ( ncs )->
       newNcList = []
 
+      first = ncs[0]
       for nc in ncs
-        first = nc[ 0 ]
         item =
           AutoScalingGroupName: first.AutoScalingGroupName
           TopicARN: first.TopicARN

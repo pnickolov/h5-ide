@@ -72,8 +72,8 @@ define [
           modal.tpl.find(".modal-confirm").attr("disabled", "disabled")
           json = self.workspace.design.serialize()
           json.name = $ipt.val()
-          self.workspace.opsModel.set("name", json.name)
           self.workspace.opsModel.saveApp(json).then ()->
+            self.workspace.design.set "name", json.name
             modal.close()
           , ( err )->
             notification "error", err.msg

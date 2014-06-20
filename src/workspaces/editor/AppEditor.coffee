@@ -56,7 +56,6 @@ define [
               self.opsModel.saveApp( self.design.serialize() )
             else
               self.remove()
-            return
         })
 
       , ( err )->

@@ -169,10 +169,10 @@ define [ 'constant', 'MC', '../result_vo', 'Design', '../../helper' ], ( CONST, 
         lcOld = __getComp uid
         result = []
 
-        asg = lc.getAsg()
+        asg = lc.parent()
         expandedAsgs = asg.get 'expandedList'
 
-        subnet = lc.getAsg().parent()
+        subnet = lc.parent().parent()
         subnetName = subnet.get 'name'
         subnetId = subnet.id
 

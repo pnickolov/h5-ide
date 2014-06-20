@@ -48,17 +48,17 @@ define [
 
         if self.opsModel.isImported() then return
 
-        newJson = self.opsModel.generateJsonFromRes()
         self.differ = new ResDiff({
           old : self.opsModel.getJsonData()
-          new : newJson
-          callback : ()-> self.opsModel.saveApp( self.design.serialize() )
+          new : self.opsModel.generateJsonFromRes()
+          callback : ( confirm )->
+            if confirm
+              self.opsModel.saveApp( self.design.serialize() )
+            else
+              self.remove()
+            return
         })
-        result = self.differ.getChangeInfo()
-        if result.hasResChange
-          # Hack!!!!
-          self.opsModel.__setJsonData( newJson )
-        return
+
       , ( err )->
         if err.error is 286 # VPC not exist
           self.view.showVpcNotExist self.opsModel.get("name"), ()-> self.opsModel.terminate( true )

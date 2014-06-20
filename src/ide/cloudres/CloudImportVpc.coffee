@@ -1121,18 +1121,18 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
         else
           continue
 
-        snsComp = _.first _.filter @originalJson.component, ( com ) ->
+        #found original Topic component
+        topicComp = _.first _.filter @originalJson.component, ( com ) ->
           if com.type is constant.RESTYPE.TOPIC
             return com.resource.TopicArn is ncRes.TopicARN
-
-        ncRes.TopicARN = CREATE_REF( snsComp, 'resource.TopicArn' ) if snsComp
-
-        # # Manual find original NC because the match of NC is complicated
-        # originalNc = _.filter @originalJson.component, ( com ) ->
-        #   if com.type is constant.RESTYPE.NC
-        #     old_key = com.resource.AutoScalingGroupName + "-" + com.resource.TopicARN
-        #     new_key = ncRes.AutoScalingGroupName + "-" + ncRes.TopicARN
-        #     return _.isEqual old_key, new_key
+        if topicComp
+          #ref existed topic
+          ncRes.TopicARN = CREATE_REF( topicComp, 'resource.TopicArn' )
+        else
+          #add new Topic
+          topicComp = @addTopic( ncRes.TopicARN )
+          if topicComp
+            ncRes.TopicARN = CREATE_REF( topicComp, 'resource.TopicArn' )
 
         ncComp = @add( "NC", ncRes, "SnsNotification")
       return

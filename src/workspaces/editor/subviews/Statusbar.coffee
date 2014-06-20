@@ -103,11 +103,11 @@ define [
 
 
       update: ( $, workspace ) ->
-        data = @renderData true
+        data = @renderData true, workspace
         $( '.state-success b' ).text data.successCount
         $( '.state-failed b' ).text data.failCount
 
-      renderData: ( visible ) ->
+      renderData: ( visible, @workspace ) ->
         if not visible then return {}
 
         stateList = App.WS.collection.status.find().fetch()
@@ -222,7 +222,7 @@ define [
           view.toggle item.visible
           isVisible = item.visible
 
-        view.data = item.renderData?( isVisible ) or {}
+        view.data = item.renderData?( isVisible, @workspace ) or {}
 
         view.clearGarbage.push _.bind item.remove, item if item.remove
 

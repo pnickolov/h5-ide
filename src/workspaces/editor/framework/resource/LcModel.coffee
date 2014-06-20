@@ -283,7 +283,7 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
     setKey                      : InstanceModel.prototype.setKey
     getKeyName                  : InstanceModel.prototype.getKeyName
     isDefaultKey                : InstanceModel.prototype.isDefaultKey
-    isNoKey                     : InstanceModel.prototype.setAmi
+    isNoKey                     : InstanceModel.prototype.isNoKey
     setAmi                      : InstanceModel.prototype.setAmi
     getAmi                      : InstanceModel.prototype.getAmi
     getOSFamily                 : InstanceModel.prototype.getOSFamily

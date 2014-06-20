@@ -811,7 +811,9 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
         aclRes.NetworkAclId = aws_acl.id
         if aws_acl.default
           aclRes.Default = aws_acl.default
-          defaultName = "DefaultACL"
+          aclName = "DefaultACL"
+        else
+          aclName = TAG_NAME(aws_acl)
 
         for acl in aws_acl.entries
           aclRes.EntrySet.push
@@ -835,7 +837,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
             "NetworkAclAssociationId": acl.networkAclAssociationId
             "SubnetId": CREATE_REF( subnetComp, 'resource.SubnetId' )
 
-        aclComp = @add( "ACL", aclRes, defaultName )
+        aclComp = @add( "ACL", aclRes, aclName )
       return
 
     ()-> #ELB
@@ -1092,7 +1094,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
           az.push CREATE_REF( azComp, "resource.ZoneName" )
         asgRes.AvailabilityZones = az
 
-        asgComp = @add( "ASG", asgRes, aws_asg.Name )
+        asgComp = @add( "ASG", asgRes, TAG_NAME(aws_asg) or aws_asg.Name )
         @addLayout( asgComp, true, firstSubnetComp )
 
         #add ExpandAsg layout

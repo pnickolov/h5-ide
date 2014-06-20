@@ -64,7 +64,7 @@ define [
                     , (error) ->
                         $confirmBtn.text('OK, got it')
                         $confirmBtn.removeClass('disabled')
-                        notification 'error', error
+                        notification 'error', error.msg
                 else
                     that.modal.close()
             , @

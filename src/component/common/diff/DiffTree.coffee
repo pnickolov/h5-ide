@@ -10,6 +10,7 @@ define [], () ->
             'resource.AssociatePublicIpAddress': true,
             'resource.KeyName': true,
             'resource.AssociationSet.n.RouteTableAssociationId'
+            'resource.AssociationSet.n.NetworkAclAssociationId'
             'resource.BlockDeviceMapping'
             'resource.VolumeSize'
         }

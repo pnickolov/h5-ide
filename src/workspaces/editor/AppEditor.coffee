@@ -52,8 +52,8 @@ define [
         newJson = self.opsModel.generateJsonFromRes()
 
         self.differ = new ResDiff({
-          old : newJson
-          new : oldJson
+          old : oldJson
+          new : newJson
           callback : ( confirm )->
             if confirm
               self.opsModel.saveApp( self.design.serialize() )

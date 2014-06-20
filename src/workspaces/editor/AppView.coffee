@@ -4,7 +4,8 @@ define [
   "OpsModel"
   "./template/TplOpsEditor"
   "UI.modalplus"
-], ( StackView, OpsModel, OpsEditorTpl, Modal )->
+  "i18n!nls/lang.js"
+], ( StackView, OpsModel, OpsEditorTpl, Modal, lang )->
 
   StackView.extend {
     bindUserEvent : ()->
@@ -53,9 +54,25 @@ define [
         disableClose : true
         hideClose    : true
         onConfirm    : ()->
+
+          $ipt = modal.tpl.find("#ImportSaveAppName")
+          $ipt.parsley 'custom', ( val ) ->
+            if not MC.validate 'awsName',  val
+              return lang.ide.PARSLEY_SHOULD_BE_A_VALID_STACK_NAME
+            debugger
+
+            apps = App.model.appList().where({name:val})
+            if apps.length is 1 and apps[0] is self.workspace.opsModel or apps.length is 0
+              return
+
+            sprintf lang.ide.PARSLEY_TYPE_NAME_CONFLICT, 'App', val
+
+          if not $ipt.parsley 'validate'
+            return
+
           modal.tpl.find(".modal-confirm").attr("disabled", "disabled")
           json = self.workspace.design.serialize()
-          json.name = $("#ImportSaveAppName").val()
+          json.name = $ipt.val()
           self.workspace.opsModel.saveApp(json).then ()->
             modal.close()
           , ( err )->

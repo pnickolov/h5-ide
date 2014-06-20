@@ -865,7 +865,7 @@
     #DashboardDemo .show-credential:hover {
       text-decoration: underline; }
 
-#dashboard-data-wrap.demo #GlobalView, #dashboard-data-wrap.demo #regionResourceNav, #dashboard-data-wrap.demo #RegionResourceData, #dashboard-data-wrap.demo #DashboardDemo {
+#dashboard-data-wrap.demo #GlobalView, #dashboard-data-wrap.demo #regionResourceNav, #dashboard-data-wrap.demo #RegionResourceData, #dashboard-data-wrap.demo #RegionViewWrap {
   display: none !important; }
 #dashboard-data-wrap.demo #DashboardDemo {
   display: block; }

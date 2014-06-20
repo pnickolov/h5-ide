@@ -125,6 +125,11 @@ define [ 'Design', 'kp_manage', 'combo_dropdown', './component/kp/kpTpl', 'backb
             new kpManage(
                 model: that.data
             )
+
+        remove: ->
+            @dropdown.remove()
+            Backbone.View.prototype.remove.apply @, arguments
+
         }, {
 
         hasResourceWithDefaultKp: ->

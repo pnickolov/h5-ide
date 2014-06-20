@@ -120,6 +120,10 @@ define [ 'constant', 'CloudResources','sns_manage', 'combo_dropdown', './compone
         filter: ( keyword ) ->
             @processCol( true, keyword )
 
+        remove: ->
+            @dropdown.remove()
+            Backbone.View.prototype.remove.apply @, arguments
+
 
 
 

@@ -48,15 +48,23 @@ define [
 
         if self.opsModel.isImported() then return
 
+        oldJson = self.opsModel.getJsonData()
+        newJson = self.opsModel.generateJsonFromRes()
+
         self.differ = new ResDiff({
-          old : self.opsModel.getJsonData()
-          new : self.opsModel.generateJsonFromRes()
+          old : newJson
+          new : oldJson
           callback : ( confirm )->
             if confirm
               self.opsModel.saveApp( self.design.serialize() )
             else
+              self.opsModel.__setJsonData( oldJson )
               self.remove()
         })
+
+        if self.differ.getChangeInfo().hasResChange
+          self.opsModel.__setJsonData( newJson )
+        return
 
       , ( err )->
         if err.error is 286 # VPC not exist

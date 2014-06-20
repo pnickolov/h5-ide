@@ -56,9 +56,8 @@ define [ 'Design', 'kp_manage', 'combo_dropdown', './component/kp/kpTpl', 'backb
         initialize: ( options ) ->
             @resModel = if options then options.resModel else null
             @collection = CloudResources(constant.RESTYPE.KP, Design.instance().get("region"))
-            @collection.on 'change', @renderKeys, @
-            @collection.on 'update', @renderKeys, @
-
+            @listenTo @collection, 'update', @renderKeys
+            @listenTo @collection, 'change', @renderKeys
             if not @resModel
                 @__mode = 'runtime'
 

@@ -149,7 +149,13 @@ define [ 'constant' ], ( constant ) ->
             newAttr = compAttrObj.newAttr
 
             valueRef = _getRef(data.value)
-            data.value = @h.getNodeMap(valueRef).oldAttr if valueRef
+            
+            if valueRef
+
+                attrObj = @h.getNodeMap(valueRef)
+                oldValue = attrObj.oldAttr
+                newValue = attrObj.newAttr
+                data.value = oldValue or newValue
 
             if path.length is 1
 

@@ -128,7 +128,8 @@ define [], ()->
                 @.trigger 'confirm', @
             @tpl.find('.btn.modal-close').click (e)=>
                 @option.onCancel?(@tpl,e)
-                modalGroup[0]?.back()
+                @.trigger 'cancel', @
+                if not (@option.preventClose or @option.disableClose) then modalGroup[0]?.back()
             @tpl.find("i.modal-close").click (e)->
                 modalGroup[0]?.back()
             if(!@option.disableClose)

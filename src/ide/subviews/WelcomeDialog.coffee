@@ -33,6 +33,8 @@ define [ "./WelcomeTpl", "UI.modalplus", 'i18n!nls/lang.js', "backbone" ], ( Wel
           disableFooter : true
           compact       : true
           hideClose     : true
+          cancel        :
+              hide : true
         }
         @modal.tpl.find(".context-wrap").attr("id", "WelcomeDialog")
         @setElement @modal.tpl

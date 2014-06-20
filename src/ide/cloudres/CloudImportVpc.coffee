@@ -772,8 +772,8 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
           route =
             "DestinationCidrBlock" : i.destinationCidrBlock
             "GatewayId"      : ""
-            "InstanceId"     : if i.instanceId and insComp then CREATE_REF( insComp, 'resource.InstanceId' ) else ""
-            "NetworkInterfaceId"   : if i.networkInterfaceId and eniComp then CREATE_REF( eniComp, 'resource.NetworkInterfaceId' ) else ""
+            "InstanceId"     : ""
+            "NetworkInterfaceId" : if i.networkInterfaceId and eniComp then CREATE_REF( eniComp, 'resource.NetworkInterfaceId' ) else ""
             "Origin"         : if i.gatewayId is "local" then i.origin else ""
           if i.gatewayId
             if i.gatewayId isnt "local" and gwComp

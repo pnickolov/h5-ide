@@ -695,7 +695,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
 
         for ip in aws_eni.privateIpAddressesSet
           #AutoAssign set to false in app
-          eniRes.PrivateIpAddressSet.push {"PrivateIpAddress": ip.privateIpAddress, "AutoAssign" : true, "Primary" : ip.primary}
+          eniRes.PrivateIpAddressSet.push {"PrivateIpAddress": ip.privateIpAddress, "AutoAssign" : false, "Primary" : ip.primary}
 
         for group in aws_eni.groupSet
           eniRes.GroupSet.push

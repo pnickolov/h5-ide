@@ -3,11 +3,7 @@
 define ["ApiRequest", "CloudResources", "constant", "backbone"], ( ApiRequest, CloudResources, constant )->
 
   VisualizeVpcParams =
-    'AWS.VPC.VPC'    : {
-      # 'filter' : {
-      #   'isDefault' : "false" # ignore default VPC
-      # }
-    }
+    'AWS.VPC.VPC'    : {}
     'AWS.VPC.Subnet' : {}
     'AWS.EC2.Instance' : {
       'filter' : {
@@ -16,18 +12,6 @@ define ["ApiRequest", "CloudResources", "constant", "backbone"], ( ApiRequest, C
     }
     'AWS.VPC.NetworkInterface' : {}
     'AWS.ELB'                  : {}
-    # 'AWS.VPC.RouteTable'     : {}
-    # 'AWS.VPC.VPNConnection'  : {
-    #   'filter'               : {
-    #     'state'              : [ 'pending', 'available' ] # filter deleting and deleted vpn
-    #   }
-    # }
-    # 'AWS.VPC.VPNGateway' : {
-    #   'filter' : {
-    #     'state' : [ 'pending', 'available' ] # filter deleting and deleted vgw
-    #   }
-    # }
-    # 'AWS.AutoScaling.Group'    : {}
 
 
   ###
@@ -137,15 +121,14 @@ define ["ApiRequest", "CloudResources", "constant", "backbone"], ( ApiRequest, C
           for vpc, resources of vpcMap
             try
               # Ingore app that is created by us.
+              tags = {}
               if resources.Tag and resources.Tag.item and resources.Tag.item.length
-                tags = []
                 for t in resources.Tag.item
-                  if t then tags.push t.key
-                if tags.indexOf("Created by")>=0 and tags.indexOf("app-id")>=0
-                  continue
+                  tags[ t.key ] = t.value
 
               obj =
                 id      : vpc
+                name    : tags["Name"] || tags["name"]
                 subnet  : resourceMap resources["AWS|VPC|Subnet"]
                 ami     : instanceMap resources["AWS|EC2|Instance"]
                 stopped : instanceMap resources["AWS|EC2|Instance"], true

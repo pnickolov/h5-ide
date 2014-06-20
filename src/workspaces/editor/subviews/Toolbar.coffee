@@ -406,6 +406,8 @@ define [
             modal.tpl.find('.default-kp-group').show()
             @modal.on 'close', ->
               keyPairDropdown.remove()
+            @updateModal.on 'close', ->
+              keyPairDropdown.remove()
         null
 
     hideDefaultKpError: (context)->

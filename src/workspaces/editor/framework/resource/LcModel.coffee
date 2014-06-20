@@ -277,57 +277,25 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
 
       null
 
-    getStateData : () ->
-      @get("state")
-
-    setStateData : (stateAryData) ->
-      @set("state", stateAryData)
-
-    setKey: ( keyName, defaultKey ) ->
-      KpModel = Design.modelClassForType( constant.RESTYPE.KP )
-      defaultKp = KpModel.getDefaultKP()
-
-      if defaultKey
-        if defaultKp
-          defaultKp.assignTo( this )
-        else
-          console.error "No DefaultKP found when initialize InstanceModel"
-      else
-        kp = @connectionTargets( "KeypairUsage" )[0]
-        kp and kp.dissociate @
-        @set 'keyName', keyName
-
-
-    getKeyName: ->
-      kp = @connectionTargets( "KeypairUsage" )[0]
-
-      if kp
-        if kp.isDefault() then '$DefaultKeyPair' else kp.get('name')
-      else
-         @get( 'keyName' ) or 'No Key Pair'
-
-    isDefaultKey: ->
-      kp = @connectionTargets( "KeypairUsage" )[0]
-      kp and kp.isDefault()
-
-    isNoKey: ->
-      kp = @connectionTargets( "KeypairUsage" )[0]
-      not kp and not @get( 'keyName' )
-
-
-    setAmi                     : InstanceModel.prototype.setAmi
-    getAmi                     : InstanceModel.prototype.getAmi
-    getOSFamily                : InstanceModel.prototype.getOSFamily
-    setInstanceType            : InstanceModel.prototype.setInstanceType
-    initInstanceType           : InstanceModel.prototype.initInstanceType
-    isEbsOptimizedEnabled      : InstanceModel.prototype.isEbsOptimizedEnabled
-    getBlockDeviceMapping      : InstanceModel.prototype.getBlockDeviceMapping
-    getAmiRootDevice           : InstanceModel.prototype.getAmiRootDevice
-    getAmiRootDeviceName       : InstanceModel.prototype.getAmiRootDeviceName
-    getAmiRootDeviceVolumeSize : InstanceModel.prototype.getAmiRootDeviceVolumeSize
-    getInstanceType            : InstanceModel.prototype.getInstanceType
-    getInstanceTypeConfig      : InstanceModel.prototype.getInstanceTypeConfig
-    getInstanceTypeList        : InstanceModel.prototype.getInstanceTypeList
+    getStateData                : InstanceModel.prototype.getStateData
+    setStateData                : InstanceModel.prototype.setStateData
+    setKey                      : InstanceModel.prototype.setKey
+    getKeyName                  : InstanceModel.prototype.getKeyName
+    isDefaultKey                : InstanceModel.prototype.isDefaultKey
+    isNoKey                     : InstanceModel.prototype.setAmi
+    setAmi                      : InstanceModel.prototype.setAmi
+    getAmi                      : InstanceModel.prototype.getAmi
+    getOSFamily                 : InstanceModel.prototype.getOSFamily
+    setInstanceType             : InstanceModel.prototype.setInstanceType
+    initInstanceType            : InstanceModel.prototype.initInstanceType
+    isEbsOptimizedEnabled       : InstanceModel.prototype.isEbsOptimizedEnabled
+    getBlockDeviceMapping       : InstanceModel.prototype.getBlockDeviceMapping
+    getAmiRootDevice            : InstanceModel.prototype.getAmiRootDevice
+    getAmiRootDeviceName        : InstanceModel.prototype.getAmiRootDeviceName
+    getAmiRootDeviceVolumeSize  : InstanceModel.prototype.getAmiRootDeviceVolumeSize
+    getInstanceType             : InstanceModel.prototype.getInstanceType
+    getInstanceTypeConfig       : InstanceModel.prototype.getInstanceTypeConfig
+    getInstanceTypeList         : InstanceModel.prototype.getInstanceTypeList
 
     serialize : ()->
       if @isClone()

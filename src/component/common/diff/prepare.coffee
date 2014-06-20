@@ -112,7 +112,7 @@ define [ 'constant' ], ( constant ) ->
 
     prepareNode = ( path, data ) ->
 
-        _getRef = (value) ->
+        _getRef = (value, needName) ->
 
             if _.isString(value) and value.indexOf('@{') is 0
 
@@ -121,7 +121,10 @@ define [ 'constant' ], ( constant ) ->
                 if refMatchAry and refMatchAry.length
                     refName = value.slice(2, value.length - 1)
                     refUID = refName.split('.')[0]
-                    return "#{refUID}.name" if refUID
+                    if needName
+                        return "#{refUID}.name" if refUID
+                    else
+                        return refName
 
             return null
 
@@ -129,8 +132,15 @@ define [ 'constant' ], ( constant ) ->
 
             # default
             newValue = data.value
-            oldRef = _getRef(newValue.__old__)
-            newRef = _getRef(newValue.__new__)
+
+            # show id when key name is a res id ref
+            needName = true
+            if data.key
+                if data.key.substr(data.key.lastIndexOf('Id')) is 'Id'
+                    needName = false
+
+            oldRef = _getRef(newValue.__old__, needName)
+            newRef = _getRef(newValue.__new__, needName)
 
             newValue.__old__ = @h.getNodeMap(oldRef).oldAttr if oldRef
             newValue.__new__ = @h.getNodeMap(newRef).newAttr if newRef
@@ -174,10 +184,7 @@ define [ 'constant' ], ( constant ) ->
 
         if path.length is 2
 
-            if path[1] in ['type', 'uid', 'name', 'index', 'number', 'serverGroupUid']
-                delete data.key
-            else if path[1] is 'resource'
-                data.skip = true
+            data.skip = true if path[1] is 'resource'
 
         return data
 

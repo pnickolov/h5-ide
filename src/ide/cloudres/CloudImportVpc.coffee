@@ -823,6 +823,14 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
           aclName = TAG_NAME(aws_acl)
 
         for acl in aws_acl.entries
+
+          egress = acl.egress
+          if _.isString(egress)
+            if egress is 'true'
+              egress = true
+            else
+              egress = false
+
           aclRes.EntrySet.push
             "RuleAction": acl.ruleAction
             "Protocol"  : Number(acl.protocol)
@@ -1303,8 +1311,8 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
       _.each cd.enis, (insComp) ->
         if originComps[insComp.uid]
           if insComp.number and insComp.number > 1
+            diffResult = diffTree.compare originComps[insComp.uid], insComp
             if diffResult
-              diffResult = diffTree.compare originComps[insComp.uid], insComp
               changedServerGroupUidMap[insComp.serverGroupUid] = true
               attachedInsRef = insComp.resource.Attachment.InstanceId
               if attachedInsRef

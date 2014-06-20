@@ -6,13 +6,21 @@ define [], () ->
         # option.filterMap = {} if not option.filterMap
 
         option.filterMap = {
+            'type': true
+            'uid': true
+            'name': true
+            'index': true
+            'number': true
+            'serverGroupUid': true
+            'serverGroupName': true
+            'state': true
             'resource.PrivateIpAddressSet.n.AutoAssign': true,
             'resource.AssociatePublicIpAddress': true,
             'resource.KeyName': true,
-            'resource.AssociationSet.n.RouteTableAssociationId'
-            'resource.AssociationSet.n.NetworkAclAssociationId'
-            'resource.BlockDeviceMapping'
-            'resource.VolumeSize'
+            'resource.AssociationSet.n.RouteTableAssociationId': true
+            'resource.AssociationSet.n.NetworkAclAssociationId': true
+            'resource.BlockDeviceMapping': true
+            'resource.VolumeSize': true
         }
 
         isArray = (value) ->
@@ -132,6 +140,12 @@ define [], () ->
                     a = String(a)
                 
                 if typeofReal(b) is 'number'
+                    b = String(b)
+
+                if typeofReal(a) is 'boolean'
+                    a = String(a)
+
+                if typeofReal(b) is 'boolean'
                     b = String(b)
 
                 if a isnt b

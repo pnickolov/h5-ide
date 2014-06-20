@@ -102,9 +102,15 @@ define [
     tabClass    : ()-> "icon-app-pending"
     title       : ()-> @opsModel.get("name") + " - app"
     constructor : ( opsModel )->
+
       if not opsModel
         @remove()
         throw new Error("Cannot find opsmodel while openning workspace.")
+
+      if opsModel.testState( OpsModel.State.Saving ) or opsModel.testState( OpsModel.State.Terminating )
+        console.warn "Avoiding opening a saving/terminating OpsModel."
+        @remove()
+        return
 
       @opsModel = opsModel
       return Workspace.apply @, arguments

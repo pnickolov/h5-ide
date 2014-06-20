@@ -124,8 +124,8 @@ define [
       console.warn "The OpsModel is not found when opening."
       return
 
-    if opsModel.testState( OpsModel.State.Saving ) or opsModel.testState( OpsModel.State.Destroyed ) or opsModel.testState( OpsModel.State.Terminating )
-      console.warn "Avoiding opening a processing OpsModel."
+    if opsModel.testState( OpsModel.State.Destroyed )
+      console.error "The OpsModel is destroyed", opsModel
       return
 
     editor = @workspaces.find( opsModel )

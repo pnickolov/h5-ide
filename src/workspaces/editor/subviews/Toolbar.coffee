@@ -404,9 +404,9 @@ define [
             keyPairDropdown.dropdown.on 'change', ->
                 hideKpError('kp')
             modal.tpl.find('.default-kp-group').show()
-            @modal.on 'close', ->
+            if @modal then @modal.on 'close', ->
               keyPairDropdown.remove()
-            @updateModal.on 'close', ->
+            if @updateModal then @updateModal.on 'close', ->
               keyPairDropdown.remove()
         null
 

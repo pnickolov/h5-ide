@@ -116,6 +116,21 @@
     header { display : none; }
     .rolling-back-content { display : block; }
   }
+
+  &:not(.has-progess) {
+    .process-info, .progress { display : none; }
+  }
+  &.has-progess {
+    ::selection {
+      background : transparent;
+    }
+    .loading-spinner { display : none; }
+  }
+
+  &.rolling-back {
+    .processing { display : none; }
+    .rolling-back-content { display : block; }
+  }
 }
 
 /* Progress bar */
@@ -161,20 +176,5 @@
     z-index    : 9;
     background : rgba(0,0,0,.8);
     text-align : center;
-
-    &:not(.has-progess) {
-      .process-info, .progress { display : none; }
-    }
-    &.has-progess {
-      ::selection {
-        background : transparent;
-      }
-      .loading-spinner { display : none; }
-    }
-
-    &.rolling-back {
-      .processing { display : none; }
-      .rolling-back-content { display : block; }
-    }
   }
 }

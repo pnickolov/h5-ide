@@ -90,16 +90,13 @@
 <ul id="region-resource-app-wrap" class="region-resource-list clearfix" {{#if stack}} style="display: none;"{{/if}}>
 
 {{#each apps}}
-{{#if progressing}}
-<li class="disabled" data-appid="{{id}}">
+<li data-id="{{id}}">{{#if progressing}}
     <div class="thumbnail app-thumbnail"></div>
     <div class="region-resource-progess{{#unless progress}} hide{{/unless}}" style="width:{{progress}}%;"></div>
     <div class="region-resource-info truncate">
         <div class="loading-spinner loading-spinner-small"></div>{{name}} - {{stateDesc}}...
     </div>
-</li>
 {{else}}
-<li data-id="{{id}}">
   {{#if usage}}<i class="icon-app-type-{{usage}}"></i>{{/if}}
   <div class="thumbnail app-thumbnail"> <img src="{{thumbnail}}" {{#unless thumbnail}}class="hide"{{/unless}}/> </div>
   <div class="region-resource-info">
@@ -109,8 +106,7 @@
     {{/if}}
     <span class="{{#ifCond stateDesc 'Running'}}running{{else}}stopped{{/ifCond}} truncate">{{name}}</span>
   </div>
-</li>
-{{/if}}
+{{/if}}</li>
 {{else}}
     <div class="blank-widget"><div>{{i18n "DASH_LBL_NO_APP"}}</div></div>
 {{/each}}

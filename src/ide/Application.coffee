@@ -124,7 +124,7 @@ define [
       console.warn "The OpsModel is not found when opening."
       return
 
-    if opsModel.isProcessing() and not opsModel.testState( OpsModel.State.Initializing )
+    if opsModel.testState( OpsModel.State.Saving ) or opsModel.testState( OpsModel.State.Destroyed ) or opsModel.testState( OpsModel.State.Terminating )
       console.warn "Avoiding opening a processing OpsModel."
       return
 

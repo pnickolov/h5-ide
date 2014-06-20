@@ -1,8 +1,9 @@
-<div class='ops-process'>
-  <section class="processing">
-  	<header>{{ i18n "PROC_TITLE" }}<span class="process-info">{{progress}}%</span></header>
+<div class='ops-process {{#if progress}}has-progess{{/if}}'>
+  <section class="processing-wrap">
+    <header class="processing">{{#if title}}{{title}}{{else}}{{ i18n "PROC_TITLE" }}{{/if}}<span class="process-info">{{progress}}%</span></header>
     <header class="processing rolling-back-content">Rolling back...</header>
-  	<div class="progress"> <div class="bar" style="width:{{progress}}%;"></div> </div>
+    <section class="loading-spinner"></section>
+    <section class="progress"> <div class="bar" style="width:{{progress}}%;"></div> </section>
   </section>
 
   <section class="success hide">

@@ -34,7 +34,7 @@ define [ '../base/model', 'Design', 'constant', "CloudResources" ], ( PropertyMo
 
                 myVPCComponent = Design.instance().component( uid )
 
-                vpc = CloudResources(constant.RESTYPE.VPC, Design.instance().region()).get(myVPCComponent.get('appId'))
+                vpc = CloudResources(constant.RESTYPE.VPC, Design.instance().region()).get(myVPCComponent.get('appId'))?.toJSON()
 
                 vpc = _.clone vpc
 

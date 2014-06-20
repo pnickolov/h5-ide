@@ -1041,16 +1041,16 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
           "AvailabilityZones"   : []
             # 0: "@{uid.resource.ZoneName}"
             # 1: "@{uid.resource.ZoneName}"
-          "DefaultCooldown"        : 0
-          "DesiredCapacity"        : 0
-          "HealthCheckGracePeriod" : 0
+          "DefaultCooldown"        : "0"
+          "DesiredCapacity"        : "0"
+          "HealthCheckGracePeriod" : "0"
           "HealthCheckType"        : ""
           "LaunchConfigurationName": "" #"@{uid.resource.LaunchConfigurationName}"
           "LoadBalancerNames"      : []
             #0: "@{uid.resource.LoadBalancerName}"
             #1: "@{uid.resource.LoadBalancerName}"
-          "MaxSize": 0
-          "MinSize": 0
+          "MaxSize": "0"
+          "MinSize": "0"
           "TerminationPolicies": []
             #0: "Default"
           "VPCZoneIdentifier": "" #"@{uid.resource.SubnetId} , @{uid.resource.SubnetId}"

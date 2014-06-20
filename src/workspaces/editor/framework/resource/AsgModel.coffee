@@ -207,12 +207,12 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
       width        : 13
       height       : 13
 
-      cooldown : 300
-      capacity : 1
-      minSize  : 1
-      maxSize  : 2
+      cooldown : "300"
+      capacity : "1"
+      minSize  : "1"
+      maxSize  : "2"
 
-      healthCheckGracePeriod : 300
+      healthCheckGracePeriod : "300"
       healthCheckType        : "EC2"
 
       terminationPolicies : [ "Default" ]

@@ -112,10 +112,7 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
         @set 'instance_groups', instance_groups
         @set 'instance_count',  instance_count
 
-    handleNotify: ( asg_comp, resource_list, asg_data ) ->
-        # Get notifications
-        notifications = resource_list.NotificationConfigurations
-
+    handleNotify: ( asg_comp, notifications, asg_data ) ->
         sendNotify = false
         nc_array = [false, false, false, false, false]
         nc_map   =
@@ -125,11 +122,10 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
             "autoscaling:EC2_INSTANCE_TERMINATE_ERROR" : 3
             "autoscaling:TEST_NOTIFICATION" : 4
 
-        if notifications
-            for notification in notifications
-                if notification.AutoScalingGroupName is asg_data.AutoScalingGroupName
-                    nc_array[ nc_map[ notification.NotificationType ] ] = true
-                    sendNotify = true
+        for notification in notifications or []
+            if notification.AutoScalingGroupName is asg_data.AutoScalingGroupName
+                nc_array[ nc_map[ notification.NotificationType ] ] = true
+                sendNotify = true
 
         @set 'notifies',   nc_array
         @set 'sendNotify', sendNotify

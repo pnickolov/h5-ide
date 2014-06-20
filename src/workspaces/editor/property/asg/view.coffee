@@ -64,9 +64,11 @@ define [ '../base/view',
 
         render     : () ->
             selectTopicName = @model.getNotificationTopicName()
+
             @snsNotiDropdown = new snsDropdown selection: selectTopicName
             @snsNotiDropdown.on 'change', @model.setNotificationTopic, @model
 
+            @addSubView @snsNotiDropdown
 
             data = @model.toJSON()
 
@@ -104,6 +106,8 @@ define [ '../base/view',
         processPolicyTopic: ( display, policyObject, needInit ) ->
             selection = if policyObject then policyObject.getTopicName() else null
             dropdown = new snsDropdown selection: selection
+            @addSubView dropdown
+
             if display
                 $( '.policy-sns-placeholder' ).html dropdown.render(needInit).el
                 $( '.sns-policy-field' ).show()

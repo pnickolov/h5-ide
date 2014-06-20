@@ -97,7 +97,9 @@ define [ '../base/view',
             @$el.html template @model.attributes
             instanceModel = Design.instance().component( @model.get 'uid' )
 
-            @$('#kp-placeholder').html new kp(resModel: instanceModel).render().el
+            kpDropdown = new kp(resModel: instanceModel)
+            @$('#kp-placeholder').html kpDropdown.render().el
+            @addSubView kpDropdown
 
             @refreshIPList()
 

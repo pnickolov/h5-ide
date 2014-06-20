@@ -576,8 +576,8 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       agent :
         enabled : true
         module  :
-          repo : App.user.get("mod_repo")
-          tag  : App.user.get("mod_tag")
+          repo : App.user.get("repo")
+          tag  : App.user.get("tag")
       property :
         policy : { ha : "" }
         lease  : { action: "", length: null, due: null }

@@ -226,6 +226,7 @@ define [
       }).then ( data )->
         btn = modal.tpl.find("a.btn-blue").text(lang.ide.TOOL_POP_BTN_EXPORT_CF).removeClass("disabled")
         JsonExporter.genericExport btn, data, "#{name}.json"
+        btn.click ()-> modal.close()
         return
       , ( err )->
         modal.tpl.find("a.btn-blue").text("Fail to export...")

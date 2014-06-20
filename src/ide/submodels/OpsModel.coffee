@@ -485,22 +485,27 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         when "update"
           if not @__updateAppDefer
             console.warn "UpdateAppDefer is null when setStatusWithWSEvent with `update` event."
+            return
+
+          if not state.completed
+            d = @__updateAppDefer
+            @__updateAppDefer = null
+            d.reject McError( ApiRequest.Errors.OperationFailure, error )
           else
-            if not state.completed
-              d = @__updateAppDefer
-              @__updateAppDefer = null
-              d.reject McError( ApiRequest.Errors.OperationFailure, error )
-            else
-              # Grab new json from server after app update succeeded.
-              @__jsonData = null
-              self = @
-              @fetchJsonData().then ()->
-                d = self.__updateAppDefer
-                self.__updateAppDefer = null
-                d.resolve()
+            # Grab new json from server after app update succeeded.
+            @__jsonData = null
+            self = @
+            @fetchJsonData().then ()->
+              d = self.__updateAppDefer
+              self.__updateAppDefer = null
+              d.resolve()
           return
 
         when "save" # This is saving app.
+          if not @__saveAppDefer
+            console.warn "SaveAppDefer is null when setStatusWithWSEvent with `save` event."
+            return
+
           d = @__saveAppDefer
           @__saveAppDefer = null
 
@@ -508,6 +513,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
             d.resolve()
           else
             d.reject McError( ApiRequest.Errors.OperationFailure, error )
+          return
 
         when "terminate"
           if state.completed

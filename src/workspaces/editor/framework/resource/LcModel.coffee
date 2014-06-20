@@ -61,6 +61,7 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
 
     syncBorthersConn: ( conn, add ) ->
       if conn.type is 'ElbAmiAsso' then return
+      if conn.type is 'SgRuleLine' then return
 
       syncTarget = []
 

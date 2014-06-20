@@ -452,6 +452,7 @@ define [
         @updateModal.on 'confirm', =>
             if not @defaultKpIsSet()
                 return false
+            result = @workspace.applyAppEdit()
             @workspace.applyAppEdit( result, true )
             @updateModal?.close()
 

@@ -227,6 +227,13 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
               DEFAULT_KP = com
         null
 
+      if not DEFAULT_KP
+        #create DefaultKP
+        kpRes =
+          "KeyFingerprint" : ""
+          "KeyName" : "DefaultKP"
+        @add( "KP", kpRes, "DefaultKP" )
+
       null
 
     ()-> # Vpc & Dhcp

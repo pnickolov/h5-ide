@@ -60,7 +60,7 @@ define [
       if opsModel.isStack()
         btns = ["BtnRunStack", "BtnStackOps", "BtnZoom", "BtnExport", "BtnLinestyle", "BtnSwitchStates"]
       else
-        btns = ["BtnEditApp", "BtnAppOps", "BtnZoom", "BtnPng", "BtnLinestyle", "BtnSwitchStates"]
+        btns = ["BtnEditApp", "BtnAppOps", "BtnZoom", "BtnPng", "BtnLinestyle"]
 
       tpl = ""
       for btn in btns
@@ -94,12 +94,10 @@ define [
         @$el.children(".icon-apply-app, .icon-cancel-update-app").toggle( isAppEdit )
         if isAppEdit
           @$el.children(".icon-terminate, .icon-stop, .icon-play, .icon-refresh, .icon-save-app, .icon-reload").hide()
-          @$el.children(".toolbar-visual-ops-switch").show()
         else
           @$el.children(".icon-terminate, .icon-refresh, .icon-save-app, .icon-reload").show()
           @$el.children(".icon-stop").toggle( opsModel.get("stoppable") and opsModel.testState(OpsModel.State.Running) )
           @$el.children(".icon-play").toggle( opsModel.testState( OpsModel.State.Stopped ) )
-          @$el.children(".toolbar-visual-ops-switch").hide()
 
       if @__saving
         @$el.children(".icon-save").attr("disabled", "disabled")

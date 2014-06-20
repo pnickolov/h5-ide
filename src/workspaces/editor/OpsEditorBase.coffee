@@ -30,6 +30,7 @@ define [
           onConfirm()
           modal.close()
       }
+      return
   }
 
   ###

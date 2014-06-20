@@ -27,6 +27,7 @@ define ["ApiRequest", "CloudResources", "constant", "backbone"], ( ApiRequest, C
       @listenTo App.WS, "visualizeUpdate", @onVisualizeUpdated
 
       @listenTo CloudResources( constant.RESTYPE.INSTANCE ), "update", @onGlobalResChanged
+      @listenTo CloudResources( constant.RESTYPE.ENI ), "update", @onGlobalResChanged
       @listenTo CloudResources( constant.RESTYPE.EIP ), "update", @onGlobalResChanged
       @listenTo CloudResources( constant.RESTYPE.VOL ), "update", @onGlobalResChanged
       @listenTo CloudResources( constant.RESTYPE.ELB ), "update", @onGlobalResChanged

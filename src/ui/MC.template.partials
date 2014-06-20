@@ -842,7 +842,7 @@ Following rule(s) will be deleted from its(their) security group:</div>
 </article>
 
 <!-- {{instanceVolume}} -->
-<div class="bubble-head">Attached Volume <span id="instance_volume_number">({{this.length}})</span></div>
+<div class="bubble-head">Attached Volume <span id="instance_volume_number">{{this.length}}</span></div>
 <div id="instance_volume_wrap" class="scroll-wrap">
 	<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
 	<ul id="instance_volume_list" class="clearfix bubble-content scroll-content">

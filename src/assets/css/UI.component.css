@@ -1251,6 +1251,14 @@ textarea {
 	color     : #999;
 }
 
+.bubble-head #instance_volume_number:before {
+	content: "(";
+}
+
+.bubble-head #instance_volume_number:after {
+	content: ")";
+}
+
 .bubble-head.alert {
 	color: #F74A48;
 	border: none;

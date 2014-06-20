@@ -68,7 +68,6 @@ define [
       @updateAmi()
 
       @updateDisableItems()
-      @registerTemplate()
       @renderReuse()
       return
 
@@ -171,17 +170,13 @@ define [
         return if ca > cb then 1 else -1
 
       ms.fav = @__amiType is "FavoriteAmi"
+      ms = _.map ms, (ami, index)=>
+        ami.attributes.imageSize = ami?.attributes.imageSize || ami.attributes.blockDeviceMapping[ami.attributes.rootDeviceName]?.volumeSize
+        ami.attributes.instanceType = @addInstanceType(ami.attributes).join(",")
+        ami.attributes.json = JSON.stringify ami.toJSON()
+        ami
       html = LeftPanelTpl.ami ms
       @$el.find(".resource-list-ami").html(html)
-
-    registerTemplate: ->
-      region = @workspace.opsModel.get('region')
-      MC.template.bubbleAMIMongoInfo = (data)=>
-        models = CloudResources(@__amiType,region).getModels()
-        amiData = _.findWhere(models, {'id': data.id})?.toJSON()
-        amiData.imageSize = amiData?.imageSize || amiData.blockDeviceMapping[amiData.rootDeviceName]?.volumeSize
-        amiData.instanceType = @addInstanceType(amiData).join(", ")
-        MC.template.bubbleAMIInfo(amiData)
 
     addInstanceType: (ami)->
       region = @workspace.opsModel.get('region')

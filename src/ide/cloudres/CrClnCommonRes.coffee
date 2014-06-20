@@ -518,15 +518,21 @@ define [
     trAwsXml : ( data )-> data.DescribeNotificationConfigurationsResponse.DescribeNotificationConfigurationsResult.NotificationConfigurations?.member
     parseFetchData : ( ncs )->
       newNcList = []
+      ncMap = {}
 
-      first = ncs[0]
       for nc in ncs
-        item =
-          AutoScalingGroupName: first.AutoScalingGroupName
-          TopicARN: first.TopicARN
-          NotificationType: _.pluck nc, 'NotificationType'
-        item.id = item.AutoScalingGroupName + "-" + item.TopicARN
-        newNcList.push item
+        id = item.AutoScalingGroupName + "-" + item.TopicARN
+        item = ncMap[ id ] || ( ncMap[id] = {} )
+        if not item
+          item = ncMap[ id ] = {
+            id                   : id
+            AutoScalingGroupName : nc.AutoScalingGroupName
+            TopicARN             : nc.TopicARN
+            NotificationType     : [ nc.NotificationType ]
+          }
+          newNcList.push item
+        else
+          item.NotificationType.push nc.NotificationType
 
       newNcList
 

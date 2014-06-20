@@ -159,7 +159,8 @@ define [
       MC.canvas.volume.close()
 
       @stopListening()
-      @view.remove()
+      if @view
+        @view.remove()
       return
 
     isInited : ()-> !!@__inited

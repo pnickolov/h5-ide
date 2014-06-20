@@ -279,7 +279,7 @@ define [
 
         rtb.routeSet = rtb.routeSet?.item || []
         rtb.associationSet = rtb.associationSet?.item || []
-        rtb.propagatingVgwSet = rtb.propagatingVgwSet?.item []
+        rtb.propagatingVgwSet = rtb.propagatingVgwSet?.item || []
 
         ##move local to first
         found = -1

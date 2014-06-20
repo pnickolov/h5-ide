@@ -13,7 +13,7 @@ define [ 'constant' ], ( constant ) ->
             newCompAttr = _.extend(newComp, {})
 
             _.each path, (attr) ->
-                
+
                 if oldCompAttr
 
                     if _.isUndefined(oldCompAttr[attr])
@@ -83,7 +83,10 @@ define [ 'constant' ], ( constant ) ->
                     deviceObj = childNode.DeviceName
                     data.key = 'Device'
                     if deviceObj
-                        data.key = @genValue deviceObj.type, deviceObj.__old__, deviceObj.__new__
+                        if _.isObject deviceObj
+                            data.key = @genValue deviceObj.type, deviceObj.__old__, deviceObj.__new__
+                        else
+                            data.key = deviceObj
 
                 when 'GroupSet'
                     data.key = 'SecurityGroup'

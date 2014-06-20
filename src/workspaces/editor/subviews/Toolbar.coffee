@@ -72,9 +72,8 @@ define [
           @workspace.design.componentsOfType( constant.RESTYPE.INSTANCE ),
           @workspace.design.componentsOfType( constant.RESTYPE.LC )
         )
-        tpl += OpsEditorTpl.toolbar.BtnReloadStates {
-          reloadOn : _.find ami, (comp)-> comp and (comp.attributes.state?.length>0)
-        }
+        if _.find( ami, (comp)-> comp and (comp.attributes.state?.length>0) )
+          tpl += OpsEditorTpl.toolbar.BtnReloadStates()
 
       @setElement @workspace.view.$el.find(".OEPanelTop").html( tpl )
 

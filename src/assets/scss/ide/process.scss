@@ -166,6 +166,9 @@
       .process-info, .progress { display : none; }
     }
     &.has-progess {
+      ::selection {
+        background : transparent;
+      }
       .loading-spinner { display : none; }
     }
 

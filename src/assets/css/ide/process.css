@@ -119,6 +119,8 @@
   text-align: center; }
   #OpsEditor .ops-process:not(.has-progess) .process-info, #OpsEditor .ops-process:not(.has-progess) .progress {
     display: none; }
+  #OpsEditor .ops-process.has-progess ::selection {
+    background: transparent; }
   #OpsEditor .ops-process.has-progess .loading-spinner {
     display: none; }
   #OpsEditor .ops-process.rolling-back .processing {

@@ -155,7 +155,7 @@ define [], ()->
                     diffY = originalLayout.top - e.clientY
                     null
                 $(document).mousemove (e)=>
-                    if(dragable)
+                    if(dragable and @getLast())
                         @getLast().tpl.css
                             top: e.clientY + diffY
                             left: e.clientX + diffX

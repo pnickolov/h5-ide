@@ -59,6 +59,7 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
     for ami in amiArray
       ami.id = ami.imageId
       delete ami.imageId
+      delete ami.json
 
       bdm = {}
       for item in ami.blockDeviceMapping?.item || []

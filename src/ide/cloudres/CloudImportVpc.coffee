@@ -1319,6 +1319,13 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
           instanceComp = originComps[instanceUID]
           if instanceComp
             return instanceComp.serverGroupUid
+        else
+          serverGroupUid = comp.serverGroupUid
+          if serverGroupUid isnt comp.uid
+            eniComp = originComps[serverGroupUid]
+            if eniComp
+              return getRelatedInstanceGroupUID(eniComp)
+
       if resType is constant.RESTYPE.VOL
         instanceRef = comp.resource.AttachmentSet.InstanceId
         if instanceRef

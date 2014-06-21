@@ -23,6 +23,7 @@ define [], () ->
             'resource.VolumeSize': true
             'resource.GroupDescription': true
             'resource.ListenerDescriptions.n.Listener.SSLCertificateId' : true
+            'resource.Attachment.AttachmentId': true
         }
 
         isArray = (value) ->

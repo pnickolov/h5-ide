@@ -295,10 +295,18 @@ define [
             needUpdateLayout = _.some that.addedComps, ( comp ) ->
                 that.newAppJSON.layout[ comp.uid ]
 
-            # if have elb and attached server group change, update layout
             newComps = that.newAppJSON.component
             oldComps = that.oldAppJSON.component
 
+            # if have any change about server group, update layout
+            _.each that.modifiedComps, (comp, uid) ->
+                originComp = oldComps[uid]
+                if originComp and originComp.type in [constant.RESTYPE.ENI, constant.RESTYPE.EIP, constant.RESTYPE.INSTANCE, constant.RESTYPE.VOL]
+                    if originComp and originComp.number > 1
+                        needUpdateLayout = true
+                null
+
+            # if have elb and attached server group change, update layout
             _.each that.modifiedComps, (comp, uid) ->
                 if oldComps[uid] and oldComps[uid].type is constant.RESTYPE.ELB
                     if comp and comp.resource and comp.resource.Instances
@@ -324,7 +332,7 @@ define [
                         needUpdateLayout = true
                 null
 
-            # if have any change about server group, update layout
+            # if have any add/remove about server group, update layout
             _.each that.removedComps, (comp) ->
                 if comp.type in [constant.RESTYPE.ENI, constant.RESTYPE.EIP, constant.RESTYPE.INSTANCE, constant.RESTYPE.VOL]
                     serverGroupUid = that.getRelatedInstanceGroupUID(oldComps, comp)

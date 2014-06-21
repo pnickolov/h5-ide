@@ -3237,6 +3237,10 @@ module.exports =
       en : "This operation is not supported yet."
       zh : ""
 
+    NOTIFY_MSG_WARN_ASG_CAN_ONLY_CONNECT_TO_ELB_ON_LAUNCH:
+      en : "Auto Scaling Group can only register with Load Balancer on launch."
+      zh : ""
+
     NOTIFY_MSG_WARN_AMI_NOT_EXIST_TRY_USE_OTHER:
       en : "The AMI(%s) is not exist now, try to use another AMI."
       zh : ""

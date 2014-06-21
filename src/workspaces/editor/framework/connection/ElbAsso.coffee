@@ -126,6 +126,21 @@ define [ "constant", "../ConnectionModel", "i18n!nls/lang.js", "Design", "compon
       }
     ]
 
+    constructor: ( p1Comp, p2Comp, attr, option ) ->
+
+      # # #
+      # Quick hack for disable elb connect to a running asg
+      #
+
+      if (p1Comp.type is constant.RESTYPE.LC and p1Comp.get('appId')) or (p2Comp.type is constant.RESTYPE.LC and p2Comp.get('appId'))
+        notification "error", lang.ide.NOTIFY_MSG_WARN_ASG_CAN_ONLY_CONNECT_TO_ELB_ON_LAUNCH
+        return
+      #
+      # #
+      # # #
+
+      ConnectionModel.prototype.constructor.apply @, arguments
+
     initialize : ( attibutes, option )->
       # If the line is created by user, show a popup to let user to add sg
       if option and option.createByUser

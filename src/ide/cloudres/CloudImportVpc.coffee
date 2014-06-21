@@ -615,7 +615,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
           if aws_ins.keyName
             insRes.KeyName = aws_ins.keyName
           else
-            insRes.KeyName = CREATE_REF( DEFAULT_KP, "resource.KeyName" )
+            insRes.KeyName = CREATE_REF( @DEFAULT_KP, "resource.KeyName" )
 
         vol_in_instance = []
 
@@ -1143,7 +1143,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
         _.each aws_asg.Subnets, (e,key)->
           subnetComp = me.subnets[e]
           if (not addOriginal) and ( (origSubnetLayout and origSubnetLayout.groupUId is subnetComp.uid) or (not origSubnetLayout) )
-            #add original ASG layout 
+            #add original ASG layout
             me.addLayout asgComp, true, subnetComp
             addOriginal = true
           else
@@ -1258,7 +1258,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
         reg_sp    = /arn:aws:autoscaling:.*:scalingPolicy:/g
         reg_topic = /arn:aws:sns:.*:.*/g
 
-      
+
         #get valid alarmAction
         validAlarmAction = []
         hasSP = false

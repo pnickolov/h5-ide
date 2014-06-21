@@ -548,13 +548,10 @@ define [ 'MC', 'constant', 'state_model', 'CloudResources', "Design", 'backbone'
 			return resultUID
 
 		getResState: (resId) ->
-
-			resObj = CloudResources(@get("resModel").type, Design.instance().region()).get(resId)
+			resObj = CloudResources(@get("resModel").type, Design.instance().region()).get(resId)?.attributes
 			resState = 'unknown'
-			if resObj
-				resObj = resObj.attributes
-				if resObj.instanceState and resObj.instanceState.name
-					resState = resObj.instanceState.name
+			if resObj and resObj.instanceState and resObj.instanceState.name
+		    resState = resObj.instanceState.name
 			@set('resState', resState)
 			null
 

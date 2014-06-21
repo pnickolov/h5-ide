@@ -68,7 +68,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       o
 
     # Return true if the stack is saved in the server.
-    isPresisted : ()-> !!@get("id")
+    isPersisted : ()-> !!@get("id")
     # Return true if the stack/app should be show to the user.
     isExisting : ()->
       state = @get("state")
@@ -91,6 +91,8 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       if thumb
         ThumbUtil.save( @get("id"), thumb )
         @trigger "change"
+      else
+        ThumbUtil.save( @get("id"), "" )
       return
 
     hasJsonData : ()-> !!@__jsonData
@@ -152,6 +154,9 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         newLayout.size = json.layout.size
         json.layout    = newLayout
 
+      if json.layout and not json.layout.size
+        json.layout.size = [240, 240]
+
       # Normalize stack version in case some old stack is not using date as the version
       # The version will be updated after serialize
       if (json.version or "").split("-").length < 3 then json.version = "2013-09-13"
@@ -195,6 +200,10 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
 
       api = if @get("id") then "stack_save" else "stack_create"
 
+      if newJson.state isnt "Enabled"
+        console.warn "The json's state isnt `Enabled` when saving the stack", @, newJson
+        newJson.state = "Enabled"
+
       self = @
       ApiRequest(api, {
         region_name : @get("region")
@@ -229,7 +238,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
 
     # Delete the stack in server, returns a promise
     remove : ()->
-      if @isApp() then return @__returnErrorPromise()
+      if @isPersisted() and @isApp() then return @__returnErrorPromise()
 
       @__destroy()
 
@@ -250,6 +259,11 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
     # Runs a stack into app, returns a promise that will fullfiled with a new OpsModel.
     run : ( toRunJson, appName )->
       region = @get("region")
+
+      # Ensure the json has correct id.
+      toRunJson.id = ""
+      toRunJson.stack_id = @get("id") || ""
+
       ApiRequest("stack_run_v2",{
         region_name : region
         stack       : toRunJson
@@ -329,7 +343,10 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         app_id      : @get("id")
         app_name    : @get("name")
         flag        : force
-      }).fail ( err )->
+      }).then ()->
+        if force then self.__destroy()
+        return
+      , ( err )->
         if err.error < 0
           throw err
 
@@ -342,7 +359,9 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
     # Update the app, returns a promise
     update : ( newJson, fastUpdate )->
       if not @isApp() then return @__returnErrorPromise()
-      if @__saveAppDefer then return @__saveAppDefer
+      if @__updateAppDefer
+        console.error "The app is already updating!"
+        return @__updateAppDefer.promise
 
       oldState = @get("state")
       @set("state", OpsModelState.Updating)
@@ -371,19 +390,35 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         self.__jsonData = null
         self.fetchJsonData().then ()->
           self.__updateAppDefer = null
+          self.importVpcId = undefined # Mark as not imported once we've finish saving.
           self.set {
             name  : newJson.name
             state : OpsModelState.Running
           }
-        , ()-> errorHandler
-      , ()-> errorHandler
+        , errorHandler
+      , errorHandler
 
     # Replace the data in mongo with new data. This method doesn't trigger an app update.
     saveApp : ( newJson )->
       if not @isApp() then return @__returnErrorPromise()
-      if @__saveAppDefer then return @__saveAppDefer
+      if @__saveAppDefer
+        console.error "The app is already saving!"
+        return @__saveAppDefer.promise
 
       newJson.changed = false
+
+      if newJson.state isnt @getStateDesc()
+        console.warn "The new app json's state isnt the same as the app", @, newJson
+        newJson.state = @getStateDesc()
+
+      # Ensure we have correct id in the json.
+      console.assert ((newJson.id || "").indexOf("stack-") is -1), "The newJson has wrong appid, in saveApp()"
+      if newJson.id
+        if newJson.id isnt @get("id")
+          console.warn "The newJson has different id, in saveApp()"
+        newJson.id = @get("id")
+      else
+        newJson.id = ""
 
       oldState = @get("state")
       @set("state", OpsModelState.Saving)
@@ -396,7 +431,8 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       # Send Request
       ApiRequest("app_save_info", {spec:newJson}).then (res)->
         if not self.id
-          self.requestId = res[0]
+          self.attributes.requestId = res[0]
+        self.attributes.importVpcId = undefined
         return
       , ( error )->
         self.__saveAppDefer.reject( error )
@@ -404,6 +440,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       # The real promise
       @__saveAppDefer.promise.then ()->
         self.__jsonData = newJson
+        self.attributes.requestId = undefined
         self.set {
           name  : newJson.name
           state : oldState
@@ -412,6 +449,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         return
       , ( error )->
         self.__saveAppDefer = null
+        self.attributes.requestId = undefined
         self.attributes.progress = 0
         self.set { state : oldState }
         throw error
@@ -448,22 +486,27 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         when "update"
           if not @__updateAppDefer
             console.warn "UpdateAppDefer is null when setStatusWithWSEvent with `update` event."
+            return
+
+          if not state.completed
+            d = @__updateAppDefer
+            @__updateAppDefer = null
+            d.reject McError( ApiRequest.Errors.OperationFailure, error )
           else
-            if not state.completed
-              d = @__updateAppDefer
-              @__updateAppDefer = null
-              d.reject McError( ApiRequest.Errors.OperationFailure, error )
-            else
-              # Grab new json from server after app update succeeded.
-              @__jsonData = null
-              self = @
-              @fetchJsonData().then ()->
-                d = self.__updateAppDefer
-                self.__updateAppDefer = null
-                d.resolve()
+            # Grab new json from server after app update succeeded.
+            @__jsonData = null
+            self = @
+            @fetchJsonData().then ()->
+              d = self.__updateAppDefer
+              self.__updateAppDefer = null
+              d.resolve()
           return
 
         when "save" # This is saving app.
+          if not @__saveAppDefer
+            console.warn "SaveAppDefer is null when setStatusWithWSEvent with `save` event."
+            return
+
           d = @__saveAppDefer
           @__saveAppDefer = null
 
@@ -471,6 +514,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
             d.resolve()
           else
             d.reject McError( ApiRequest.Errors.OperationFailure, error )
+          return
 
         when "terminate"
           if state.completed
@@ -533,8 +577,8 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       agent :
         enabled : true
         module  :
-          repo : App.user.get("mod_repo")
-          tag  : App.user.get("mod_tag")
+          repo : App.user.get("repo")
+          tag  : App.user.get("tag")
       property :
         policy : { ha : "" }
         lease  : { action: "", length: null, due: null }
@@ -575,9 +619,9 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
               IpRanges: "0.0.0.0/0",
               ToPort: "65535"
             }],
-            Default             : "true",
-            GroupName           : "DefaultSG",
-            GroupDescription    : 'Default Security Group'
+            Default          : "true",
+            GroupName        : "DefaultSG",
+            GroupDescription : 'default VPC security group'
         ACL :
           type : "AWS.VPC.NetworkAcl"
           name : "DefaultACL"

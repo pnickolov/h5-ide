@@ -82,7 +82,10 @@ define [ '../base/view', './template/stack', 'event', 'constant', 'i18n!nls/lang
             @$el.html template @model.attributes
 
             instanceModel = Design.instance().component( @model.get 'uid' )
-            @$('#kp-placeholder').html new kp(resModel: instanceModel).render().el
+            kpDropdown = new kp(resModel: instanceModel)
+
+            @addSubView kpDropdown
+            @$('#kp-placeholder').html kpDropdown.render().el
 
             me = this
             # parsley bind

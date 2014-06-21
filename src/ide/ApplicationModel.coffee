@@ -180,6 +180,8 @@ define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone", "con
 
       @__handleRequestChange( item )
 
+      if item.operation is "save" then return
+
       info_list = @attributes.notification
 
       # find existing request
@@ -242,6 +244,9 @@ define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone", "con
             request.totalSteps = 1
 
         when constant.OPS_STATE.OPS_STATE_DONE
+          if request.operation is "save"
+            request.targetId = req.data
+
           request.state = {
             completed  : true
             terminated : req.code is 'Forge.App.Terminate'

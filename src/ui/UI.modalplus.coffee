@@ -128,7 +128,8 @@ define [], ()->
                 @.trigger 'confirm', @
             @tpl.find('.btn.modal-close').click (e)=>
                 @option.onCancel?(@tpl,e)
-                modalGroup[0]?.back()
+                @.trigger 'cancel', @
+                if not @option.preventClose then modalGroup[0]?.back()
             @tpl.find("i.modal-close").click (e)->
                 modalGroup[0]?.back()
             if(!@option.disableClose)
@@ -154,7 +155,7 @@ define [], ()->
                     diffY = originalLayout.top - e.clientY
                     null
                 $(document).mousemove (e)=>
-                    if(dragable)
+                    if(dragable and @getLast())
                         @getLast().tpl.css
                             top: e.clientY + diffY
                             left: e.clientX + diffX

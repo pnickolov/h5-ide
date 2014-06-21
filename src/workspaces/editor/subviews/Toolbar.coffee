@@ -60,7 +60,7 @@ define [
       if opsModel.isStack()
         btns = ["BtnRunStack", "BtnStackOps", "BtnZoom", "BtnExport", "BtnLinestyle", "BtnSwitchStates"]
       else
-        btns = ["BtnEditApp", "BtnAppOps", "BtnZoom", "BtnPng", "BtnLinestyle", "BtnSwitchStates"]
+        btns = ["BtnEditApp", "BtnAppOps", "BtnZoom", "BtnPng", "BtnLinestyle"]
 
       tpl = ""
       for btn in btns
@@ -72,9 +72,8 @@ define [
           @workspace.design.componentsOfType( constant.RESTYPE.INSTANCE ),
           @workspace.design.componentsOfType( constant.RESTYPE.LC )
         )
-        tpl += OpsEditorTpl.toolbar.BtnReloadStates {
-          reloadOn : _.find ami, (comp)-> comp and (comp.attributes.state?.length>0)
-        }
+        if _.find( ami, (comp)-> comp and (comp.attributes.state?.length>0) )
+          tpl += OpsEditorTpl.toolbar.BtnReloadStates()
 
       @setElement @workspace.view.$el.find(".OEPanelTop").html( tpl )
 
@@ -95,12 +94,10 @@ define [
         @$el.children(".icon-apply-app, .icon-cancel-update-app").toggle( isAppEdit )
         if isAppEdit
           @$el.children(".icon-terminate, .icon-stop, .icon-play, .icon-refresh, .icon-save-app, .icon-reload").hide()
-          @$el.children(".toolbar-visual-ops-switch").show()
         else
           @$el.children(".icon-terminate, .icon-refresh, .icon-save-app, .icon-reload").show()
           @$el.children(".icon-stop").toggle( opsModel.get("stoppable") and opsModel.testState(OpsModel.State.Running) )
           @$el.children(".icon-play").toggle( opsModel.testState( OpsModel.State.Stopped ) )
-          @$el.children(".toolbar-visual-ops-switch").hide()
 
       if @__saving
         @$el.children(".icon-save").attr("disabled", "disabled")
@@ -110,9 +107,7 @@ define [
       @updateZoomButtons()
       return
 
-    setTbLineStyle : ( ls, attr )->
-      localStorage.setItem("canvas/lineStyle", attr[0] )
-      $canvas.updateLineStyle( attr[0] )
+    setTbLineStyle : ( ls, attr )-> $canvas.setLineStyle( attr[0] )
 
     saveStack : ( evt )->
       $( evt.currentTarget ).attr("disabled", "disabled")
@@ -226,6 +221,7 @@ define [
       }).then ( data )->
         btn = modal.tpl.find("a.btn-blue").text(lang.ide.TOOL_POP_BTN_EXPORT_CF).removeClass("disabled")
         JsonExporter.genericExport btn, data, "#{name}.json"
+        btn.click ()-> modal.close()
         return
       , ( err )->
         modal.tpl.find("a.btn-blue").text("Fail to export...")
@@ -321,9 +317,10 @@ define [
     appToStack: (event) ->
         name = @workspace.design.attributes.name
         newName = @getStackNameFromApp(name)
+        stack = App.model.stackList().get(@workspace.design.attributes.stack_id)
         onConfirm = =>
             MC.Analytics.increase("app_to_stack")
-            isNew = appToStackModal.tpl.find("input[name='save-stack-type']:checked").attr('id') is "radio-new-stack"
+            isNew = not (appToStackModal.tpl.find("input[name='save-stack-type']:checked").attr('id') is "replace_stack")
             if isNew
                 newOps = App.model.createStackByJson( @workspace.design.serializeAsStack(appToStackModal.tpl.find('#modal-input-value').val()) )
                 appToStackModal.close()
@@ -333,8 +330,7 @@ define [
                 newJson = Design.instance().serializeAsStack()
                 newJson.id = @workspace.design.attributes.stack_id
                 appToStackModal.close()
-                stack = App.model.stackList().get(@workspace.design.attributes.stack_id)
-                newJson.name = stack.attributes.name
+                newJson.name = stack.get("name")
                 stack.save(newJson).then ()->
                     notification "info", sprintf lang.ide.TOOL_MSG_INFO_HDL_SUCCESS, lang.ide.TOOLBAR_HANDLE_SAVE_STACK, newJson.name
                     # refresh if this stack is open
@@ -342,10 +338,10 @@ define [
                 ,(err)->
                     notification 'error', sprintf lang.ide.TOOL_MSG_ERR_SAVE_FAILED, newJson.name
 
-
+        originStackExist = !!stack
         appToStackModal = new Modal
             title:  lang.ide.TOOL_POP_TIT_APP_TO_STACK
-            template: OpsEditorTpl.saveAppToStack {input: name, stackName: newName}
+            template: OpsEditorTpl.saveAppToStack {input: name, stackName: newName, orignStackExist: originStackExist}
             confirm:
                 text: lang.ide.TOOL_POP_BTN_SAVE_TO_STACK
             onConfirm: onConfirm
@@ -404,6 +400,10 @@ define [
             keyPairDropdown.dropdown.on 'change', ->
                 hideKpError('kp')
             modal.tpl.find('.default-kp-group').show()
+            if @modal then @modal.on 'close', ->
+              keyPairDropdown.remove()
+            if @updateModal then @updateModal.on 'close', ->
+              keyPairDropdown.remove()
         null
 
     hideDefaultKpError: (context)->
@@ -451,6 +451,7 @@ define [
         @updateModal.on 'confirm', =>
             if not @defaultKpIsSet()
                 return false
+            result = @workspace.applyAppEdit()
             @workspace.applyAppEdit( result, true )
             @updateModal?.close()
 

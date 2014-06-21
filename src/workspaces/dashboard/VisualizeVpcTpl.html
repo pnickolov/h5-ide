@@ -15,7 +15,7 @@
 				{{#each vpcs}}
 				<li class="visualize-vpc {{#if disabled}} disabled tooltip{{/if}}"
 					{{#if disabled}} data-tooltip="{{i18n 'IDE_TIP_VISUALIZE_MORE_THAN_100_ENI'}}"{{/if}}>
-					<h5>{{id}}</h5>
+					<h5>{{#if name}}{{name}} <span>({{id}})</span>{{else}}{{id}}{{/if}}</h5>
 					<ol class="tac">
 						<li class="visualize-res"><div class="vis-res-num">{{subnet.length}}</div><span class="vis-res-name">subnet</span></li>
 						<li class="visualize-res"><div class="vis-res-num">{{ami.length}}</div><span class="vis-res-name">running instance</span></li>

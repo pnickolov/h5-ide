@@ -55,7 +55,7 @@
         <th>{{i18n "PROP_INSTANCE_ENI_IP_ADDRESS"}}</th>
         <th>{{i18n "PROP_INSTANCE_PUBLIC_IP"}}</th>
       </tr>
-      {{#each privateIpAddressesSet.item}}
+      {{#each privateIpAddressesSet}}
       <tr>
         <td>{{privateIpAddress}}{{#if primary}}<span>(Primary)</span>{{/if}}</td>
         <td>{{#if association.publicIp}}{{association.publicIp}}{{else}}-{{/if}}</td>

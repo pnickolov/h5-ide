@@ -48,9 +48,9 @@ define [ '../base/model', 'Design', 'constant', "CloudResources" ], ( PropertyMo
             if appData.get(eni_comp.appId)?.toJSON()
               eni = $.extend true, {}, appData.get(eni_comp.appId).toJSON()
             else
-              eni = { privateIpAddressesSet : { item : [] } }
+              eni = { privateIpAddressesSet : [] }
 
-            for i in eni.privateIpAddressesSet.item
+            for i in eni.privateIpAddressesSet
               i.primary = i.primary is true
 
             eni.id              = eni_comp.appId

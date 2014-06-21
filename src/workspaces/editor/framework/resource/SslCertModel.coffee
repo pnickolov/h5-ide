@@ -38,7 +38,7 @@ define [ "constant", "../ComplexResModel", "../ConnectionModel"  ], ( constant, 
         null
 
       if used
-      
+
         return { component : {
           uid : @id
           type : "AWS.IAM.ServerCertificate"
@@ -60,6 +60,8 @@ define [ "constant", "../ComplexResModel", "../ConnectionModel"  ], ( constant, 
         this.set(key, value)
       null
   },{
+    diffJson : ()-> # Disable diff for this Model
+
     handleTypes : constant.RESTYPE.IAM
     deserialize : ( data )->
       new SslCertModel({

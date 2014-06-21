@@ -64,9 +64,11 @@ define [ '../base/view',
 
         render     : () ->
             selectTopicName = @model.getNotificationTopicName()
+
             @snsNotiDropdown = new snsDropdown selection: selectTopicName
             @snsNotiDropdown.on 'change', @model.setNotificationTopic, @model
 
+            @addSubView @snsNotiDropdown
 
             data = @model.toJSON()
 
@@ -104,6 +106,8 @@ define [ '../base/view',
         processPolicyTopic: ( display, policyObject, needInit ) ->
             selection = if policyObject then policyObject.getTopicName() else null
             dropdown = new snsDropdown selection: selection
+            @addSubView dropdown
+
             if display
                 $( '.policy-sns-placeholder' ).html dropdown.render(needInit).el
                 $( '.sns-policy-field' ).show()
@@ -428,8 +432,8 @@ define [ '../base/view',
 
                 if val < 0
                     val = 0
-                else if val > 1440
-                    val = 1440
+                else if val > 86400
+                    val = 86400
 
                 $this.val( val )
 
@@ -477,7 +481,7 @@ define [ '../base/view',
             data =
                 uid              : $("#property-asg-policy").data("uid")
                 name             : $("#asg-policy-name").val()
-                cooldown         : $("#asg-policy-cooldown").val() * 60
+                cooldown         : $("#asg-policy-cooldown").val()
                 minAdjustStep    : ""
                 adjustment       : $("#asg-policy-adjust").val()
                 adjustmentType   : $("#asg-policy-adjust-type .selected").data("id")

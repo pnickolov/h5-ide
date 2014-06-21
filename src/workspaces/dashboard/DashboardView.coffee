@@ -45,6 +45,7 @@ define [
       'click #region-switch-list li'    : 'switchRegion'
       'click #region-resource-tab li'   : 'switchAppStack'
       'click .resource-tab'             : 'switchResource'
+      "click .global-resource-li"       : "gotoRegionResource"
 
       'click #ImportStack'     : 'importJson'
       'click #VisualizeVPC'    : 'visualizeVPC'
@@ -92,21 +93,23 @@ define [
 
     dashboardBubble : ( data )->
       # get Resource Data
-      data.data = @model.getAwsResDataById( @region, constant.RESTYPE[data.type], data.id )?.toJSON()
-      data.id = data.data.id
+      d = {
+        id   : data.id
+        data : @model.getAwsResDataById( @region, constant.RESTYPE[data.type], data.id )?.toJSON()
+      }
 
       # Make Boolean to String to show in handlebarsjs
-      _.each data.data, (e,key)->
+      _.each d.data, (e,key)->
           if _.isBoolean e
-              data.data[key] = e.toString()
+              d.data[key] = e.toString()
           if e == ""
-              data.data[key] = "None"
+              d.data[key] = "None"
           if (_.isArray e) and e.length is 0
-              data.data[key] = ['None']
+              d.data[key] = ['None']
           if (_.isObject e) and (not _.isArray e)
-              delete data.data[key]
+              delete d.data[key]
 
-      return tplPartials.bubbleResourceInfo  data
+      return tplPartials.bubbleResourceInfo  d
 
     ###
       rendering
@@ -134,12 +137,12 @@ define [
       if apps.length > 5   then apps.length = 5
 
       $tabs = $("#global-region-status-widget").find(".global-region-status-tab")
-      $tabs.eq(0).children("span").text apps.length
-      $tabs.eq(1).children("span").text stacks.length
+      $tabs.eq(0).children("span").text App.model.appList().length
+      $tabs.eq(1).children("span").text App.model.stackList().length
 
       isStack = $tabs.filter(".on").hasClass("stack")
 
-      $( '#global-region-recent-list' ).html tplPartials.recent { stacks:stacks, apps:apps, isStack:isStack }
+      $( '#global-region-recent-list' ).html tplPartials.recent { stacks, apps, isStack }
 
       @updateRegionAppStack()
       return
@@ -178,9 +181,16 @@ define [
     ###
       View logics
     ###
+    gotoRegionResource : ( evt )->
+      @gotoRegionFromMap( evt )
+      type = $(evt.currentTarget).parent().parent().attr("data-type")
+      $("#RegionResourceNav").children("[data-type='#{type}']").click()
+      return false
+
     gotoRegionFromMap : ( evt )->
       $tgt = $( evt.currentTarget )
-      region = $( evt.currentTarget ).closest("li").attr("id")
+      $li  = $( evt.currentTarget ).closest("li")
+      region = $li.attr("id") || $li.attr("data-region")
 
       $( "#region-switch-list li[data-region=#{region}]" ).click()
       Helper.scrollToResource()
@@ -470,8 +480,8 @@ define [
             "AMI Launch Index"   : data.amiLaunchIndex
             "Instance Type"      : data.instanceType
             "Block Device Type"  : data.rootDeviceType
-            "Block Devices"      : @formartDetail "BlockDevice", data.blockDeviceMapping, "deviceName"
-            "Network Interface"  : @formartDetail "ENI", data.networkInterfaceSet, "networkInterfaceId"
+            "Block Devices"      : if data.blockDeviceMapping then @formartDetail "BlockDevice", data.blockDeviceMapping, "deviceName" else null
+            "Network Interface"  : if data.networkInterfaceSet then @formartDetail "ENI", data.networkInterfaceSet, "networkInterfaceId" else null
           }
         when 'EIP'
             result = {
@@ -494,7 +504,7 @@ define [
             return {
                 'Alarm Name'        : data.Name
                 'Comparison Operator': data.ComparisonOperator
-                'Dimensions'        : @formartDetail 'Dimensions', data.Dimensions.member, 'Dimensions', true
+                'Dimensions'        : @formartDetail 'Dimensions', data.Dimensions, 'Dimensions', true
                 'Evaluation Periods': data.EvaluationPeriods
                 'Insufficient Data Actions': data.InsufficientDataActions
                 'Metric Name'       : data.MetricName
@@ -515,7 +525,7 @@ define [
     # some format to the data so it can show in handlebars template
     formartDetail: (type, array, key, force)->
         #resolve 'BlockDevice' AttachmentSet HealthCheck and so on.
-        if (['BlockDevice', "AttachmentSet","HealthCheck", "ListenerDescriptions",'Dimensions'].indexOf type) > -1
+        if (['BlockDevice', "AttachmentSet","HealthCheck", "ListenerDescriptions",'Dimensions','ENI'].indexOf type) > -1
             _.map array, (blockDevice, index)->
                 # combine ebs attribute
                 _.map blockDevice, (e, key)->

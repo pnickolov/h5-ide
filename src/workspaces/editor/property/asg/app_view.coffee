@@ -326,8 +326,8 @@ define [ '../base/view',
 
                 if val < 0
                     val = 0
-                else if val > 1440
-                    val = 1440
+                else if val > 86400
+                    val = 86400
 
                 $this.val( val )
 
@@ -377,7 +377,7 @@ define [ '../base/view',
             data =
                 uid              : $("#property-asg-policy").data("uid")
                 name             : $("#asg-policy-name").val()
-                cooldown         : $("#asg-policy-cooldown").val() * 60
+                cooldown         : $("#asg-policy-cooldown").val()
                 minAdjustStep    : ""
                 adjustment       : $("#asg-policy-adjust").val()
                 adjustmentType   : $("#asg-policy-adjust-type .selected").data("id")

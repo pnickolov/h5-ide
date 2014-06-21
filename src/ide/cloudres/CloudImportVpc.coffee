@@ -3,17 +3,21 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
 
   # Helpers
   CREATE_REF = ( compOrUid, attr ) ->
+    return '' if not compOrUid
     if attr
       return "@{#{compOrUid.uid or compOrUid}.#{attr}}"
     else
       return "@{#{compOrUid.uid or compOrUid}.r.p}"
 
   UID        = MC.guid
-  DEFAULT_SG = {}
-  DEFAULT_KP = null
   AWS_ID     = ( dict, type )->
     key = constant.AWS_RESOURCE_KEY[ type ]
     dict[ key ] or dict.resource and dict.resource[ key ]
+  TAG_NAME   = ( res ) ->
+    name = null
+    if res.tagSet
+      name = res.tagSet.name or res.tagSet.Name or res.tagSet["aws:cloudformation:logical-id"]
+    name
 
   # Class used to collect components / layouts
   class ConverterData
@@ -43,6 +47,8 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
       @layout    = {}
       @originalJson = jQuery.extend(true, {component: [], layout: []}, originalJson) #extend original app json
       @originAppJSON = originalJson #origin app json
+
+      @DEFAULT_KP = null
 
       @COMPARISONOPERATOR =
         "GreaterThanOrEqualToThreshold" : ">="
@@ -88,10 +94,28 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
       @layout[ l.uid ] = l
       return
 
+    addExpandedAsg : ( originalAsg, parentComp )->
+      #ExpandedAsg is not Group
+      for key,node of @originalJson.layout
+        if node.type is "ExpandedAsg" and node.originalId is originalAsg.uid and node.groupUId is parentComp.uid
+          l = @originalJson.layout[ node.uid ]
+          break
+
+      if not l
+        l =
+          uid : UID()
+          coordinate : [0,0]
+          originalId : originalAsg.uid
+          type       : "ExpandedAsg"
+          groupUId   : parentComp.uid
+
+      @layout[ l.uid ] = l
+      return
+
     addAz : ( azName )->
       az = @azs[ azName ]
       if az then return az
-      azRes = @getOriginalComp( azName, 'AZ' ) 
+      azRes = @getOriginalComp( azName, 'AZ' )
       if not azRes
         azRes =
           "RegionName": @region
@@ -105,20 +129,29 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
       iamComp = @iams[ arn ]
       if iamComp then return iamComp
 
-      for aws_iam in @CrPartials( "IAM" ).where({Arn:arn}) || []
-        aws_iam = aws_iam.attributes
-        iamRes =
-          "CertificateBody" : ""
-          "CertificateChain": ""
-          "PrivateKey"      : ""
-          "ServerCertificateMetadata":
-            "Arn"                  : aws_iam.Arn
-            "ServerCertificateId"  : aws_iam.id
-            "ServerCertificateName": aws_iam.Name
-        iamComp = @add( "IAM", iamRes, aws_iam.Name )
-        @iams[ aws_iam.Arn ] = iamComp
-        return iamComp
-      return null
+      reg_iam=/arn:aws:iam::.*:server-certificate\/cf-test/g
+      if not arn.match(reg_iam)
+        console.error "[addIam] not a valid iam arn"
+        return null
+
+      tmpAry = arn.split(":")
+      name = tmpAry[tmpAry.length-1].replace("server-certificate/","")
+
+      iamRes =
+        "CertificateBody" : ""
+        "CertificateChain": ""
+        "PrivateKey"      : ""
+        "ServerCertificateMetadata":
+          "Arn"                  : arn
+          "ServerCertificateId"  : ""
+          "ServerCertificateName": name
+
+      iamComp = @add( "IAM", iamRes, name )
+      @iams[ arn ] = iamComp
+      return iamComp
+
+      # for aws_iam in @CrPartials( "IAM" ).where({Arn:arn}) || []
+      #   aws_iam = aws_iam.attributes
 
     addTopic : ( arn ) ->
       topicComp = @topics[ arn ]
@@ -133,18 +166,20 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
       return topicComp
 
     getOriginalComp: ( jsonOrKey, type ) ->
-      type = constant.RESTYPE[ type ] or type
-      key = constant.AWS_RESOURCE_KEY[ type ]
-      id = if _.isObject jsonOrKey then jsonOrKey[key] else jsonOrKey
-
-      if not id then return null
-
-      for uid, comp of @originalJson.component
-        if comp.type isnt type then continue
-
-        if ( comp[ key ] or comp.resource[ key ] ) is id
-          return comp
-
+      if type is constant.RESTYPE[ "NC" ]
+        for uid, comp of @originalJson.component
+          if comp.type isnt type then continue
+          if comp.resource.AutoScalingGroupName is jsonOrKey.AutoScalingGroupName and comp.resource.TopicARN is jsonOrKey.TopicARN
+            return comp
+      else
+        type = constant.RESTYPE[ type ] or type
+        key = constant.AWS_RESOURCE_KEY[ type ]
+        id = if _.isObject jsonOrKey then jsonOrKey[key] else jsonOrKey
+        if not id then return null
+        for uid, comp of @originalJson.component
+          if comp.type isnt type then continue
+          if ( comp[ key ] or comp.resource[ key ] ) is id
+            return comp
       null
 
     _mapProperty : ( aws_json, resource ) ->
@@ -198,8 +233,16 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
             @iams[com.resource.ServerCertificateMetadata.Arn] = compJson
           else if com.type is constant.RESTYPE.KP
             if com.name is "DefaultKP"
-              DEFAULT_KP = com
+              @DEFAULT_KP = jQuery.extend(true, {}, com)
+              @component[com.uid] = @DEFAULT_KP
         null
+
+      if not @DEFAULT_KP
+        #create DefaultKP
+        kpRes =
+          "KeyFingerprint" : ""
+          "KeyName" : "DefaultKP"
+        @add( "KP", kpRes, "DefaultKP" )
 
       null
 
@@ -216,7 +259,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
 
         EnableDnsHostnames : vpc.attributes.enableDnsHostnames
         EnableDnsSupport   : vpc.attributes.enableDnsSupport
-      })
+      }, TAG_NAME(vpc.attributes))
 
       @addLayout( vpcComp, true )
       return
@@ -231,7 +274,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
           CidrBlock        : sb.cidrBlock
           SubnetId         : sb.id
           VpcId            : CREATE_REF( @theVpc, "resource.VpcId" )
-        })
+        }, TAG_NAME(sb))
 
         @subnets[ sb.id ] = sbComp
 
@@ -292,7 +335,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
         #gwRes = @_mapProperty aws_cgw, cgwRes
 
         #create cgw component, but add with vpn
-        cgwComp = @add( "CGW", cgwRes, aws_cgw.id )
+        cgwComp = @add( "CGW", cgwRes, TAG_NAME(aws_cgw) )
         delete @component[ cgwComp.uid ]
         @gateways[ aws_cgw.id ] = cgwComp
       return
@@ -325,11 +368,13 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
           cgwComp.resource.BgpAsn = ""
         if aws_vpn.routes
           for route in aws_vpn.routes
+            if route.state in [ "deleting", "deleted" ]
+              continue
             vpnRes.Routes.push
               "DestinationCidrBlock" : route.destinationCidrBlock
               #"Source" : route.source
 
-        vpnComp = @add( "VPN", vpnRes, aws_vpn.id )
+        vpnComp = @add( "VPN", vpnRes, TAG_NAME(aws_vpn) )
         #add CGW to layout
         @component[ cgwComp.uid ] = cgwComp
         @addLayout( cgwComp, false )
@@ -339,33 +384,55 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
 
     ()-> # SG
 
+      that = this
+
       sgRefMap = {}
 
       genRules = (sg_rule, new_ruls) ->
 
-          ipranges = ''
-          if sg_rule.groups.length>0 and sg_rule.groups[0].groupId
-            sgId = sg_rule.groups[0].groupId
-            sgComp = sgRefMap[sgId]
-            if sgComp
-              ipranges = CREATE_REF(sgComp, 'resource.GroupId')
-          else if sg_rule.ipRanges and sg_rule.ipRanges.length>0
-            ipranges = sg_rule.ipRanges[0].cidrIp
+          that = this
 
           if String(sg_rule.ipProtocol) is '-1'
             sg_rule.fromPort = '0'
             sg_rule.toPort = '65535'
-          new_ruls.push {
-            "FromPort": String(if sg_rule.fromPort then sg_rule.fromPort else ""),
-            "IpProtocol": String(sg_rule.ipProtocol),
-            "IpRanges": ipranges,
-            "ToPort": String(if sg_rule.toPort then sg_rule.toPort else "")
-          }
-      
+
+          if sg_rule.groups and sg_rule.groups.length > 0
+
+            _.each sg_rule.groups, (group) ->
+              if group.groupId
+                iprange = ''
+                sgId = group.groupId
+                sgComp = sgRefMap[sgId]
+                if sgComp
+                  iprange = CREATE_REF(sgComp, 'resource.GroupId')
+                else
+                  iprange = group.groupId
+
+                new_ruls.push {
+                  "FromPort": String(if sg_rule.fromPort then sg_rule.fromPort else ""),
+                  "IpProtocol": String(sg_rule.ipProtocol),
+                  "IpRanges": iprange,
+                  "ToPort": String(if sg_rule.toPort then sg_rule.toPort else "")
+                }
+
+          else if sg_rule.ipRanges and sg_rule.ipRanges.length > 0
+
+            ipranges = sg_rule.ipRanges
+            _.each ipranges, (iprange) ->
+              new_ruls.push {
+                "FromPort": String(if sg_rule.fromPort then sg_rule.fromPort else ""),
+                "IpProtocol": String(sg_rule.ipProtocol),
+                "IpRanges": iprange.cidrIp,
+                "ToPort": String(if sg_rule.toPort then sg_rule.toPort else "")
+              }
+
       for aws_sg in @getResourceByType( "SG" )
         groupId = aws_sg.attributes.groupId
         sgComp = @getOriginalComp(groupId, 'SG')
         sgRefMap[groupId] = sgComp if sgComp
+
+      vpcDefaultSg = null
+      visualopsDefaultSg = null
 
       for aws_sg in @getResourceByType( "SG" )
         aws_sg = aws_sg.attributes
@@ -400,13 +467,41 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
           for sg_rule in aws_sg.ipPermissionsEgress || []
             genRules.call(@, sg_rule, sgRes.IpPermissionsEgress)
 
-        sgComp = @add( "SG", sgRes, aws_sg.groupName )
+        sgComp = @add( "SG", sgRes, TAG_NAME(aws_sg) || aws_sg.groupName )
         if aws_sg.groupName is "default"
-          DEFAULT_SG["default"] = sgComp
+          vpcDefaultSg = aws_sg
         else if aws_sg.groupName.indexOf("-DefaultSG-app-") isnt -1
-          DEFAULT_SG["DefaultSG"] = sgComp
+          visualopsDefaultSg = aws_sg
 
         @sgs[ aws_sg.id ] = sgComp
+
+      if visualopsDefaultSg and vpcDefaultSg
+        defaultSgComp = @sgs[ vpcDefaultSg.id ]
+        delete @sgs[ vpcDefaultSg.id ]
+        delete @component[ defaultSgComp.uid ]
+        vpcDefaultSg = null
+
+      defaultSg = visualopsDefaultSg || vpcDefaultSg
+      if defaultSg
+        defaultSg = @sgs[ defaultSg.id ]
+
+      if defaultSg
+        defaultSg.name = "DefaultSG"
+        defaultSg.resource.Default = true
+
+      _.each that.sgs, (sgComp) ->
+        _.each sgComp.resource.IpPermissions, (rule) ->
+          if rule.IpRanges and rule.IpRanges.indexOf('sg-') is 0
+            refComp = that.sgs[rule.IpRanges]
+            if refComp
+              ref = CREATE_REF(refComp, 'resource.GroupId')
+              rule.IpRanges = ref
+        _.each sgComp.resource.IpPermissionsEgress, (rule) ->
+          if rule.IpRanges and rule.IpRanges.indexOf('sg-') is 0
+            refComp = that.sgs[rule.IpRanges]
+            if refComp
+              ref = CREATE_REF(refComp, 'resource.GroupId')
+              rule.IpRanges = ref
       return
 
     ()-> #Volume
@@ -421,6 +516,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
         volRes =
           "VolumeId"     : aws_vol.id
           "Size"         : Number(aws_vol.size)
+          "VolumeSize"   : Number(aws_vol.size)
           "SnapshotId"   : if aws_vol.snapshotId then aws_vol.snapshotId else ""
           "Iops"         : if aws_vol.iops then aws_vol.iops else ""
           "VolumeType"      : aws_vol.volumeType
@@ -438,7 +534,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
         # add volume to layout
         delete @component[ volComp.uid ]
         @volumes[ aws_vol.id ] = volComp
-        @component[ volComp.uid ] = volComp
+        # @component[ volComp.uid ] = volComp
 
       return
 
@@ -509,38 +605,63 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
         insRes.InstanceId        = aws_ins.id
         insRes.EbsOptimized      = aws_ins.ebsOptimized
 
+        originComp = @getOriginalComp(aws_ins.id, 'INSTANCE')
+
         #generate KeyName for instance
         keyPairComp = @getOriginalComp(aws_ins.keyName, 'KP')
-        if not keyPairComp
-          insRes.KeyName = aws_ins.keyName if aws_ins.keyName
+        if keyPairComp
+          insRes.KeyName = CREATE_REF( keyPairComp, "resource.KeyName" )
         else
-          originComp = @getOriginalComp(aws_ins.id, 'INSTANCE')
-          if originComp
-            insRes.BlockDeviceMapping = originComp.resource.BlockDeviceMapping || []
-            insRes.KeyName = originComp.resource.KeyName
+          if aws_ins.keyName
+            insRes.KeyName = aws_ins.keyName
           else
-            insRes.KeyName = CREATE_REF( keyPairComp, "resource.KeyName" )
+            insRes.KeyName = CREATE_REF( DEFAULT_KP, "resource.KeyName" )
 
         vol_in_instance = []
 
-        _.each aws_ins.blockDeviceMapping || [], (e,key)->
-          volComp = me.volumes[ e.ebs.volumeId ]
-          if not volComp then return
-          volRes = volComp.resource
-          if aws_ins.rootDeviceName.indexOf( e.deviceName ) is -1
-            # not rootDevice, external volume point to instance
-            insRes.BlockDeviceMapping = _.union insRes.BlockDeviceMapping, ["#" + volComp.uid]
-            #add volume component
-            me.component[ volComp.uid ] = volComp
-            vol_in_instance.push volComp.uid
+        if originComp
+          # add root device
+          insRes.BlockDeviceMapping = originComp.resource.BlockDeviceMapping || []
+          insRes.BlockDeviceMapping = _.filter insRes.BlockDeviceMapping, (bdm) ->
+            return false if _.isString(bdm)
+            return true
+
+          # add not root device
+          _.each aws_ins.blockDeviceMapping || [], (e,key)->
+            if aws_ins.rootDeviceName.indexOf( e.deviceName ) is -1
+              # not rootDevice, external volume point to instance
+              volComp = me.volumes[ e.ebs.volumeId ]
+              if volComp
+                insRes.BlockDeviceMapping = _.union insRes.BlockDeviceMapping, ["#" + volComp.uid]
+                #add volume component
+                me.component[ volComp.uid ] = volComp
+                vol_in_instance.push volComp.uid
+        else
+          insRes.BlockDeviceMapping = []
+          volumes = @volumes
+          _.each aws_ins.blockDeviceMapping, (bdm) ->
+            volume = volumes[bdm.ebs.volumeId]
+            volumeSize = ''
+            volumeSize = volume.resource.Size if volume
+            insRes.BlockDeviceMapping.push({
+              DeviceName: bdm.deviceName,
+              Ebs: {
+                AttachTime: bdm.ebs.attachTime,
+                DeleteOnTermination: bdm.ebs.deleteOnTermination,
+                Status: bdm.ebs.status,
+                VolumeId: bdm.ebs.volumeId,
+                VolumeSize: volumeSize
+              }
+            })
 
         #generate instance component
-        insComp = @add( "INSTANCE", insRes )
+        insComp = @add( "INSTANCE", insRes, TAG_NAME(aws_ins) )
 
         #set instanceId of volume
         _.each vol_in_instance, (e,key)->
           volComp = me.component[ e ]
           if volComp
+            volComp.resource.AttachmentSet = {} if not volComp.resource.AttachmentSet
             volComp.resource.AttachmentSet.InstanceId = CREATE_REF( insComp, "resource.InstanceId" )
 
         @addLayout( insComp, false, subnetComp )
@@ -552,9 +673,13 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
       for aws_eni in @getResourceByType("ENI") || []
         aws_eni = aws_eni.attributes
         azComp = @addAz(aws_eni.availabilityZone)
-        insComp = @instances[aws_eni.attachment.instanceId]
-        if not insComp
-          continue
+
+        # if aws_eni.attachment
+        #   insComp = @instances[aws_eni.attachment.instanceId]
+        #   if not insComp
+        #     continue
+        # else
+        #   continue
 
         subnetComp = @subnets[aws_eni.subnetId]
         if not subnetComp
@@ -564,7 +689,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
           "AssociatePublicIpAddress" : false
           "Attachment":
               "AttachmentId" : ""
-              "DeviceIndex"  : ""
+              "DeviceIndex"  : "1"
               "InstanceId"   : ""
           "AvailabilityZone": ""
           "Description": ""
@@ -576,7 +701,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
           # "PrivateDnsName" : ""
           "VpcId"          : ""
 
-        if aws_eni.attachment.instanceOwnerId and aws_eni.attachment.instanceOwnerId in [ "amazon-elb", "amazon-rds" ]
+        if aws_eni.attachment and aws_eni.attachment.instanceOwnerId and aws_eni.attachment.instanceOwnerId in [ "amazon-elb", "amazon-rds" ]
           continue
 
         eniRes = @_mapProperty aws_eni, eniRes
@@ -590,26 +715,31 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
         eniRes.AvailabilityZone = CREATE_REF( azComp, 'resource.ZoneName' )
         eniRes.SubnetId         = CREATE_REF( subnetComp, 'resource.SubnetId' )
         eniRes.VpcId            = CREATE_REF( @theVpc, 'resource.VpcId' )
-        if not ( aws_eni.attachment.deviceIndex in [ "0", 0 ] )
-          #eni0 no need attachmentId
-          eniRes.Attachment.AttachmentId = aws_eni.attachment.attachmentId
 
-        eniRes.Attachment.InstanceId = CREATE_REF( insComp, 'resource.InstanceId' )
-        eniRes.Attachment.DeviceIndex = String(if aws_eni.attachment.deviceIndex is 0 then '0' else aws_eni.attachment.deviceIndex)
+        #attached ENI
+        if aws_eni.attachment
+          if not ( aws_eni.attachment.deviceIndex in [ "0", 0 ] )
+            #eni0 no need attachmentId
+            eniRes.Attachment.AttachmentId = aws_eni.attachment.attachmentId
+
+          insComp = @instances[aws_eni.attachment.instanceId]
+          if insComp
+            eniRes.Attachment.InstanceId = CREATE_REF( insComp, 'resource.InstanceId' )
+            eniRes.Attachment.DeviceIndex = String(if aws_eni.attachment.deviceIndex is 0 then '0' else aws_eni.attachment.deviceIndex)
 
         for ip in aws_eni.privateIpAddressesSet
           #AutoAssign set to false in app
-          eniRes.PrivateIpAddressSet.push {"PrivateIpAddress": ip.privateIpAddress, "AutoAssign" : true, "Primary" : ip.primary}
+          eniRes.PrivateIpAddressSet.push {"PrivateIpAddress": ip.privateIpAddress, "AutoAssign" : false, "Primary" : ip.primary}
 
         for group in aws_eni.groupSet
           eniRes.GroupSet.push
             "GroupId": CREATE_REF(@sgs[ group.groupId ], 'resource.GroupId')
             "GroupName": CREATE_REF(@sgs[ group.groupId ], 'resource.GroupName')
 
-
-        eniComp = @add( "ENI", eniRes, "eni" + aws_eni.attachment.deviceIndex )
+        eniComp = @add( "ENI", eniRes, TAG_NAME(aws_eni) )
         @enis[ aws_eni.id ] = eniComp
-        if not ( aws_eni.attachment.deviceIndex in [ "0", 0 ] )
+        #add external or unattached ENI to layout
+        if not aws_eni.attachment or not ( aws_eni.attachment.deviceIndex in [ "0", 0 ] )
           @addLayout( eniComp, false, subnetComp )
       return
 
@@ -665,7 +795,10 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
           rtbRes.AssociationSet.push asso
 
         #routeSet
+        xgw_in_route = {}
         for i in aws_rtb.routeSet
+          if i.state isnt "active"
+            continue
           if i.origin and i.origin is "EnableVgwRoutePropagation"
             continue
           insComp = @instances[i.instanceId]
@@ -674,10 +807,11 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
           route =
             "DestinationCidrBlock" : i.destinationCidrBlock
             "GatewayId"      : ""
-            "InstanceId"     : if i.instanceId and insComp then CREATE_REF( insComp, 'resource.InstanceId' ) else ""
-            "NetworkInterfaceId"   : if i.networkInterfaceId and eniComp then CREATE_REF( eniComp, 'resource.NetworkInterfaceId' ) else ""
+            "InstanceId"     : ""
+            "NetworkInterfaceId" : if i.networkInterfaceId and eniComp then CREATE_REF( eniComp, 'resource.NetworkInterfaceId' ) else ""
             "Origin"         : if i.gatewayId is "local" then i.origin else ""
           if i.gatewayId
+            xgw_in_route[route.GatewayId] = true
             if i.gatewayId isnt "local" and gwComp
               if gwComp.type is "AWS.VPC.VPNGateway"
                 route.GatewayId = CREATE_REF( gwComp, 'resource.VpnGatewayId' )
@@ -690,10 +824,10 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
         #propagatingVgwSet
         for i in aws_rtb.propagatingVgwSet
           gwComp = @gateways[i.gatewayId]
-          if gwComp
+          if gwComp and xgw_in_route[i.gatewayId]
             rtbRes.PropagatingVgwSet.push CREATE_REF(gwComp, 'resource.VpnGatewayId' )
 
-        rtbComp = @add( "RT", rtbRes )
+        rtbComp = @add( "RT", rtbRes, TAG_NAME(aws_rtb) )
         @addLayout( rtbComp, true, @theVpc )
       return
 
@@ -713,9 +847,19 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
         aclRes.NetworkAclId = aws_acl.id
         if aws_acl.default
           aclRes.Default = aws_acl.default
-          defaultName = "DefaultACL"
+          aclName = "DefaultACL"
+        else
+          aclName = TAG_NAME(aws_acl)
 
         for acl in aws_acl.entries
+
+          egress = acl.egress
+          if _.isString(egress)
+            if egress is 'true'
+              egress = true
+            else
+              egress = false
+
           aclRes.EntrySet.push
             "RuleAction": acl.ruleAction
             "Protocol"  : Number(acl.protocol)
@@ -737,7 +881,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
             "NetworkAclAssociationId": acl.networkAclAssociationId
             "SubnetId": CREATE_REF( subnetComp, 'resource.SubnetId' )
 
-        aclComp = @add( "ACL", aclRes, defaultName )
+        aclComp = @add( "ACL", aclRes, aclName )
       return
 
     ()-> #ELB
@@ -838,9 +982,10 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
           for instanceId in aws_elb.Instances
             #skip instances in asg
             if not (instanceId in me.ins_in_asg)
-              elbRes.Instances.push {
-                InstanceId: CREATE_REF( @instances[ instanceId ], 'resource.InstanceId' )
-              }
+              if @instances[ instanceId ]
+                elbRes.Instances.push {
+                  InstanceId: CREATE_REF( @instances[ instanceId ], 'resource.InstanceId' )
+                }
 
 
         elbComp = @add( "ELB", elbRes, aws_elb.Name )
@@ -928,7 +1073,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
     ()-> #ASG
       me = @
       for aws_asg in @getResourceByType "ASG"
-        
+
         aws_asg = aws_asg.attributes
 
         if not @lcs[aws_asg.LaunchConfigurationName]
@@ -940,16 +1085,16 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
           "AvailabilityZones"   : []
             # 0: "@{uid.resource.ZoneName}"
             # 1: "@{uid.resource.ZoneName}"
-          "DefaultCooldown"        : 0
-          "DesiredCapacity"        : 0
-          "HealthCheckGracePeriod" : 0
+          "DefaultCooldown"        : "0"
+          "DesiredCapacity"        : "0"
+          "HealthCheckGracePeriod" : "0"
           "HealthCheckType"        : ""
           "LaunchConfigurationName": "" #"@{uid.resource.LaunchConfigurationName}"
           "LoadBalancerNames"      : []
             #0: "@{uid.resource.LoadBalancerName}"
             #1: "@{uid.resource.LoadBalancerName}"
-          "MaxSize": 0
-          "MinSize": 0
+          "MaxSize": "0"
+          "MinSize": "0"
           "TerminationPolicies": []
             #0: "Default"
           "VPCZoneIdentifier": "" #"@{uid.resource.SubnetId} , @{uid.resource.SubnetId}"
@@ -967,12 +1112,9 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
 
         #convert VPCZoneIdentifier to REF
         vpcZoneIdentifier = []
-        firstSubnetComp = ""
         _.each aws_asg.Subnets, (e,key)->
           subnetComp = me.subnets[e]
           if subnetComp
-            if not firstSubnetComp
-              firstSubnetComp = subnetComp
             vpcZoneIdentifier.push CREATE_REF( subnetComp, "resource.SubnetId" )
         if vpcZoneIdentifier.length is 0
           #asg is not in current VPC
@@ -993,8 +1135,21 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
           az.push CREATE_REF( azComp, "resource.ZoneName" )
         asgRes.AvailabilityZones = az
 
-        asgComp = @add( "ASG", asgRes, aws_asg.Name )
-        @addLayout( asgComp, true, firstSubnetComp )
+        asgComp = @add( "ASG", asgRes, TAG_NAME(aws_asg) or aws_asg.Name )
+
+        origSubnetComp = ""
+        origSubnetLayout = @originalJson.layout[asgComp.uid]
+        addOriginal = false
+        _.each aws_asg.Subnets, (e,key)->
+          subnetComp = me.subnets[e]
+          if (not addOriginal) and ( (origSubnetLayout and origSubnetLayout.groupUId is subnetComp.uid) or (not origSubnetLayout) )
+            #add original ASG layout 
+            me.addLayout asgComp, true, subnetComp
+            addOriginal = true
+          else
+            #add ExpandAsg layout
+            me.addExpandedAsg asgComp,subnetComp
+
         @asgs[ aws_asg.Name ] = asgComp
       return
 
@@ -1013,18 +1168,20 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
         else
           continue
 
-        snsComp = _.first _.filter @originalJson.component, ( com ) ->
+        #found original Topic component
+        topicComp = _.first _.filter @originalJson.component, ( com ) ->
           if com.type is constant.RESTYPE.TOPIC
             return com.resource.TopicArn is ncRes.TopicARN
+        if topicComp
+          #ref existed topic
+          ncRes.TopicARN = CREATE_REF( topicComp, 'resource.TopicArn' )
+        else
+          #add new Topic
+          topicComp = @addTopic( ncRes.TopicARN )
+          if topicComp
+            ncRes.TopicARN = CREATE_REF( topicComp, 'resource.TopicArn' )
 
-        ncRes.TopicARN = CREATE_REF( snsComp, 'resource.TopicArn' ) if snsComp
-
-        # Manual find original NC because the match of NC is complicated
-        originalNc = _.filter @originalJson.component, ( com ) ->
-          if com.type is constant.RESTYPE.NC
-            return _.isEqual com.resource, ncRes
-
-        ncComp = @add( "NC", originalNc[0] or ncRes, "SnsNotification")
+        ncComp = @add( "NC", ncRes, "SnsNotification")
       return
 
     ()-> #SP
@@ -1037,11 +1194,15 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
           "MinAdjustmentStep": ""
           "PolicyARN" : "" #"arn:aws:autoscaling:us-east-1:994554139310:scalingPolicy:69df7c02-ed5f-42cf-870a-d649206cb169:autoScalingGroupName/asg0---app-aae6fe2f:policyName/asg0-policy-0"
           "PolicyName": "" #"asg0-policy-0"
+          "ScalingAdjustment" : ""
 
         spRes = @_mapProperty aws_sp, spRes
 
         #convert AutoScalingGroupName to REF
         asgComp = @asgs[aws_sp.AutoScalingGroupName]
+
+        spRes.ScalingAdjustment = String(spRes.ScalingAdjustment) if spRes.ScalingAdjustment
+
         if asgComp
           spRes.AutoScalingGroupName = CREATE_REF( asgComp, 'resource.AutoScalingGroupName' )
         else
@@ -1094,24 +1255,54 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
           continue
         cwRes.Dimensions = dimension
 
+        reg_sp    = /arn:aws:autoscaling:.*:scalingPolicy:/g
+        reg_topic = /arn:aws:sns:.*:.*/g
+
+      
+        #get valid alarmAction
+        validAlarmAction = []
+        hasSP = false
+        _.each aws_cw.AlarmActions, (e,key)->
+          if e.match(reg_topic)
+            #TOPIC
+            topicComp = me.addTopic(e)
+            if topicComp
+              validAlarmAction.push e
+          else if e.match(reg_sp)
+            #SP
+            spComp = me.sps[e]
+            if spComp
+              hasSP = true
+              validAlarmAction.push e
+
+        if not hasSP
+          #must has SP when convert CW, currently one CW has One SP
+          continue
+
         #convert AlarmActions to REF:
         alarmActionAry = []
-        _.each aws_cw.AlarmActions, (e,key)->
-          reg_asg = /arn:aws:autoscaling:.*:.*:scalingPolicy/g
-          reg_topic = /arn:aws:sns:.*:.*:.*/g
-          if reg_topic.test(e)
+        _.each validAlarmAction, (e,key)->
+          if e.match(reg_topic)
             #TOPIC
             topicComp = me.addTopic(e)
             if topicComp
               alarmActionAry.push CREATE_REF(topicComp, "resource.TopicArn")
-          else if reg_asg.test(e)
+          else if e.match(reg_sp)
             #SP
             spComp = me.sps[e]
             if spComp
               alarmActionAry.push CREATE_REF(spComp, "resource.PolicyARN")
+
         cwRes.AlarmActions = alarmActionAry
 
-        #OKAction: TODO
+        #convert OKAction to REF:
+        okActionAry = []
+        _.each aws_cw.Okactions, (e,key)->
+          if e.match(reg_sp)
+            spComp = me.sps[e]
+            if spComp
+              okActionAry.push CREATE_REF(spComp, "resource.PolicyARN")
+        cwRes.OKAction = okActionAry
 
         cwRes.Threshold = String(aws_cw.Threshold)
         cwRes.EvaluationPeriods = String(aws_cw.EvaluationPeriods)
@@ -1128,6 +1319,128 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
 
   # getNC       : ()->
   # getSP       : ()->
+
+  processServerGroup = (cd) ->
+
+    diffTree = new DiffTree()
+    originComps = cd.originAppJSON.component
+    newComps = cd.component
+
+    getRelatedInstanceGroupUID = (comp) ->
+      resType = comp.type
+      if resType is constant.RESTYPE.INSTANCE
+        return comp.serverGroupUid
+      if resType is constant.RESTYPE.ENI
+        instanceRef = comp.resource.Attachment.InstanceId
+        if instanceRef
+          instanceUID = MC.extractID(instanceRef)
+          instanceComp = originComps[instanceUID]
+          if instanceComp
+            return instanceComp.serverGroupUid
+        else
+          serverGroupUid = comp.serverGroupUid
+          if serverGroupUid isnt comp.uid
+            eniComp = originComps[serverGroupUid]
+            if eniComp
+              return getRelatedInstanceGroupUID(eniComp)
+
+      if resType is constant.RESTYPE.VOL
+        instanceRef = comp.resource.AttachmentSet.InstanceId
+        if instanceRef
+          instanceUID = MC.extractID(instanceRef)
+          instanceComp = originComps[instanceUID]
+          if instanceComp
+            return instanceComp.serverGroupUid
+      if resType is constant.RESTYPE.EIP
+        eniRef = comp.resource.NetworkInterfaceId
+        if eniRef
+          eniUID = MC.extractID(eniRef)
+          eniComp = originComps[eniUID]
+          if eniComp
+            return getRelatedInstanceGroupUID(eniComp)
+      return ''
+
+    # find all server group related res
+    originServerGroupComps = {}
+    _.each originComps, (comp) ->
+      if comp.number and comp.number > 1
+        originServerGroupComps[comp.uid] = comp
+
+    newServerGroupComps = {}
+    _.each newComps, (comp) ->
+      if originServerGroupComps[comp.uid]
+        newServerGroupComps[comp.uid] = comp
+      null
+
+    # diff if have any change for server group
+    diffRet = diffTree.compare originServerGroupComps, newServerGroupComps
+
+    # break up all related server group res
+    if diffRet
+      _.each diffRet, (comp, uid) ->
+        newCompObj = newServerGroupComps[uid]
+        if newCompObj
+          serverGroupUID = getRelatedInstanceGroupUID(newCompObj)
+          if serverGroupUID
+            _.each newServerGroupComps, (newComp) ->
+              if getRelatedInstanceGroupUID(newComp) is serverGroupUID
+                newComp.serverGroupName = newComp.name if newComp.serverGroupName
+                newComp.number = 1 if newComp.number
+                newComp.index = 0 if newComp.index
+                newComp.serverGroupUid = newComp.uid if newComp.serverGroupUid
+
+    # process elb connected instance server group
+    _.each cd.elbs, (insComp) ->
+      instanceAry = _.map insComp.resource.Instances, (refObj) ->
+        return MC.extractID(refObj.InstanceId)
+      originComp = originComps[insComp.uid]
+      if originComp
+        originInstanceAry = _.map originComp.resource.Instances, (refObj) ->
+          return MC.extractID(refObj.InstanceId)
+        diffElbInstance = diffTree.compare instanceAry, originInstanceAry
+        if diffElbInstance
+          diffInstanceAry = []
+          _.each diffElbInstance, (comp) ->
+            diffInstanceAry.push(comp.__old__) if comp.__old__
+            diffInstanceAry.push(comp.__new__) if comp.__new__
+            null
+          _.each diffInstanceAry, (instanceUID) ->
+            serverGroupInstanceComp = newServerGroupComps[instanceUID]
+            if serverGroupInstanceComp
+              serverGroupUID = serverGroupInstanceComp.serverGroupUid
+              _.each newServerGroupComps, (comp, uid) ->
+                _serverGroupUID = getRelatedInstanceGroupUID(comp)
+                if _serverGroupUID is serverGroupUID
+                  comp.serverGroupName = comp.name if comp.serverGroupName
+                  comp.number = 1 if comp.number
+                  comp.index = 0 if comp.index
+                  comp.serverGroupUid = comp.uid if comp.serverGroupUid
+
+    # process added/removed related res for instance server group
+    newAddRemoveComps = {}
+    oldAddRemoveComps = {}
+    _.each newComps, (insComp) ->
+      if insComp.type in [constant.RESTYPE.ENI, constant.RESTYPE.EIP, constant.RESTYPE.INSTANCE, constant.RESTYPE.VOL]
+        newAddRemoveComps[insComp.uid] = insComp if not originComps[insComp.uid]
+    _.each originComps, (insComp) ->
+      if insComp.type in [constant.RESTYPE.ENI, constant.RESTYPE.EIP, constant.RESTYPE.INSTANCE, constant.RESTYPE.VOL]
+        oldAddRemoveComps[insComp.uid] = insComp if not newComps[insComp.uid]
+      null
+
+    addRemoveDiffRet = diffTree.compare newAddRemoveComps, oldAddRemoveComps
+
+    diffInstanceAry = []
+    if addRemoveDiffRet
+      _.each addRemoveDiffRet, (comp, uid) ->
+        serverGroupInstanceComp = newComps[uid] or originComps[uid]
+        serverGroupUID = getRelatedInstanceGroupUID(serverGroupInstanceComp)
+        _.each newComps, (comp, uid) ->
+          _serverGroupUID = getRelatedInstanceGroupUID(comp)
+          if _serverGroupUID is serverGroupUID
+            comp.serverGroupName = comp.name if comp.serverGroupName
+            comp.number = 1 if comp.number
+            comp.index = 0 if comp.index
+            comp.serverGroupUid = comp.uid if comp.serverGroupUid
 
   convertResToJson = ( region, vpcId, originalJson )->
     console.log [
@@ -1155,61 +1468,14 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
     cd = new ConverterData( region, vpcId, originalJson )
     func.call( cd ) for func in Converters
 
-    # process for server group
-    changedServerGroupUidMap = {}
-    diffTree = new DiffTree()
-    originComps = cd.originAppJSON.component
-    
-    # find all related component ref for server group
-    _.each cd.instances, (insComp) ->
-      if originComps[insComp.uid]
-        if insComp.number and insComp.number > 1
-          diffResult = diffTree.compare originComps[insComp.uid], insComp
-          if diffResult
-            changedServerGroupUidMap[insComp.serverGroupUid] = true
-      null
+    # process for server group when visualize vpc
 
-    _.each cd.enis, (insComp) ->
-      if originComps[insComp.uid]
-        if insComp.number and insComp.number > 1
-          if diffResult
-            diffResult = diffTree.compare originComps[insComp.uid], insComp
-            changedServerGroupUidMap[insComp.serverGroupUid] = true
-            attachedInsRef = insComp.resource.Attachment.InstanceId
-            if attachedInsRef
-              instanceUid = MC.extractID(attachedInsRef)
-              insComp = originComps[instanceUid]
-              changedServerGroupUidMap[insComp.serverGroupUid] = true
-      null
+    if cd.originAppJSON
 
-    # update servergroup to single instance
-    _.each cd.instances, (insComp) ->
-      if insComp.serverGroupUid and changedServerGroupUidMap[insComp.serverGroupUid]
-        insComp.serverGroupName = insComp.name
-        insComp.number = 1
-        insComp.index = 0
-        insComp.serverGroupUid = insComp.uid
-      null
-
-    # find default SG
-    if DEFAULT_SG["DefaultSG"]
-      #old app
-      default_sg = cd.component[ DEFAULT_SG["DefaultSG"].uid ]
-      if default_sg
-        default_sg.name = "DefaultSG"
-        default_sg.resource.Default = true
-      #delete "default" SG component
-      if DEFAULT_SG["default"] and cd.component[ DEFAULT_SG["default"].uid ]
-        delete cd.component[ DEFAULT_SG["default"].uid ]
-    else if DEFAULT_SG["default"]
-      #new app
-      default_sg = cd.component[ DEFAULT_SG["default"].uid ]
-      if default_sg
-        default_sg.name = "DefaultSG"
-        default_sg.resource.Default   = true
-        # default_sg.resource.GroupName = "DefaultSG" #do not use 'default' as GroupName
-      else
-        console.warn "can not found default sg in component"
+      try
+        processServerGroup(cd)
+      catch err
+        console.info('Server Group process exception when convert app json')
 
     cd
 

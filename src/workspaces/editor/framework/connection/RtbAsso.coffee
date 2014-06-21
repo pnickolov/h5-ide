@@ -60,7 +60,7 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
           RtbModel = Design.modelClassForType( constant.RESTYPE.RT )
           newRtb   = RtbModel.getMainRouteTable()
 
-          # If the user disconnect the subent <=> mainRtb,
+          # If the user disconnect the subnet <=> mainRtb,
           # we must pass in { detectDuplicate : false } to disable ConnectionManager
           # to find duplicate connection, because at this time, the disconnecting
           # connection is not considered "Removed".

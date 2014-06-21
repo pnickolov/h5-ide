@@ -11,13 +11,26 @@ define [
   "OpsModel"
   "Design"
   "ApiRequest"
-], ( Workspace, OpsEditorView, OpsEditorTpl, Thumbnail, OpsModel, Design, ApiRequest )->
+  "UI.modalplus"
+], ( Workspace, OpsEditorView, OpsEditorTpl, Thumbnail, OpsModel, Design, ApiRequest, Modal )->
 
   # A view that used to show loading state of editor
   LoadingView = Backbone.View.extend {
     isLoadingView : true
     initialize : ( options )-> @setElement $(OpsEditorTpl.loading()).appendTo("#main").show()[0]
     setText : ( text )-> @$el.find(".processing").text( text )
+    showVpcNotExist : ( name, onConfirm )->
+      self = @
+      modal = new Modal {
+        title    : "Confirm to remove the app #{name}?"
+        template : OpsEditorTpl.modal.confirmRemoveApp()
+        confirm  : { text : "Confirm to Remove", color : "red" }
+        disableClose : true
+        onConfirm    : ()->
+          onConfirm()
+          modal.close()
+      }
+      return
   }
 
   ###
@@ -134,10 +147,25 @@ define [
         @showEditor()
       return
 
+    sleep : ()->
+      # HACK, Close the volume bubble here!!!!!
+      # Should be removed.
+      MC.canvas.volume.close()
+      Workspace.prototype.sleep.call this
+
     # Override parent's method to do cleaning when the tab is removed.
     cleanup : ()->
+      # HACK, Close the volume bubble here!!!!!
+      # Should be removed.
+      MC.canvas.volume.close()
+
       @stopListening()
-      @view.remove()
+      if @view
+        @view.remove()
+
+      if @design
+        @design.unuse()
+        @design = null
       return
 
     isInited : ()-> !!@__inited
@@ -158,14 +186,15 @@ define [
       @initEditor()
 
       # If the OpsModel doesn't have thumbnail, generate one for it.
-      if @opsModel.isPresisted() and not @opsModel.getThumbnail()
+      if not @opsModel.getThumbnail()
         @saveThumbnail()
       return
 
     initEditor : ()->
 
     saveThumbnail : ()->
-      Thumbnail.generate( $("#svg_canvas") ).then ( thumbnail )=> @opsModel.saveThumbnail( thumbnail )
+      if @opsModel.isPersisted()
+        Thumbnail.generate( $("#svg_canvas") ).then ( thumbnail )=> @opsModel.saveThumbnail( thumbnail )
 
     showEditor : ()->
       if @hideOtherEditor()

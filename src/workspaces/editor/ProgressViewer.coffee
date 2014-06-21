@@ -21,7 +21,14 @@ define [
       @listenTo @model, "change:state",    @updateState
       @listenTo @model, "change:progress", @updateProgress
 
-      @setElement $(OpsProgressTpl( @model.toJSON() )).appendTo("#main")
+      data = {
+        progress : @model.get("progress")
+      }
+
+      if not @model.testState( OpsModel.State.Initializing )
+        data.title = @model.getStateDesc() + " your app..."
+
+      @setElement $(OpsProgressTpl( data )).appendTo("#main")
 
       @__progress = 0
       return
@@ -30,7 +37,7 @@ define [
       @$el.find(".success").show()
       self = @
       setTimeout ()->
-        self.$el.find(".processing").addClass("fadeout")
+        self.$el.find(".processing-wrap").addClass("fadeout")
         self.$el.find(".success").addClass("fadein")
         return
       , 10
@@ -41,7 +48,7 @@ define [
 
     updateState : ()->
       switch @model.get("state")
-        when OpsModel.State.Running
+        when OpsModel.State.Running, OpsModel.State.Stopped
           if @__awake
             @switchToDone()
           else
@@ -58,6 +65,8 @@ define [
 
     updateProgress : ()->
       pp = @model.get("progress")
+
+      @$el.toggleClass("has-progess", true)
 
       if @__progress > pp
         @$el.toggleClass("rolling-back", true)
@@ -93,12 +102,17 @@ define [
     tabClass    : ()-> "icon-app-pending"
     title       : ()-> @opsModel.get("name") + " - app"
     constructor : ( opsModel )->
+
       if not opsModel
         @remove()
         throw new Error("Cannot find opsmodel while openning workspace.")
 
-      @opsModel = opsModel
+      if opsModel.testState( OpsModel.State.Saving ) or opsModel.testState( OpsModel.State.Terminating )
+        console.warn "Avoiding opening a saving/terminating OpsModel."
+        @remove()
+        return
 
+      @opsModel = opsModel
       return Workspace.apply @, arguments
 
     initialize : ()->

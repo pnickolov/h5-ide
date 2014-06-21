@@ -102,6 +102,9 @@ define [ "../ComplexResModel", "../ConnectionModel", "constant" ], ( ComplexResM
       rule.protocol = parseInt( rule.protocol, 10 )
       rule.number   = parseInt( rule.number, 10 )
 
+      # Set CIDR to Valid e.g. (10.0.0.1/16 -> 10.0.0.0/16)
+      rule.cidr = MC.getValidCIDR(rule.cidr)
+
       currentRules = @get("rules")
 
       for r in currentRules

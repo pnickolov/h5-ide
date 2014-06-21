@@ -21,9 +21,31 @@ define [
   $( window ).on "resize", ()->
     if __resizeAccdTO then clearTimeout(__resizeAccdTO)
     __resizeAccdTO = setTimeout ()->
-      $(".OEPanelLeft").trigger("RECALC")
+      $("#OpsEditor").filter(":visible").children(".OEPanelLeft").trigger("RECALC")
     , 150
     return
+
+
+  MC.template.resPanelAmiInfo = ( data )->
+    if not data.region or not data.imageId then return
+
+    ami = CloudResources( constant.RESTYPE.AMI, data.region ).get( data.imageId )
+    if not ami then return
+
+    ami = ami.toJSON()
+    ami.imageSize = ami.imageSize || ami.blockDeviceMapping[ami.rootDeviceName]?.volumeSize
+
+    try
+      config = App.model.getOsFamilyConfig( data.region )
+      config = config[ ami.osFamily ] || config[ constant.OS_TYPE_MAPPING[ami.osType] ]
+      config = if ami.rootDeviceType  is "ebs" then config.ebs else config['instance store']
+      config = if ami.architecture is "x86_64" then config["64"] else config["32"]
+      config = config[ ami.virtualizationType || "paravirtual" ]
+      ami.instanceType = config.join(", ")
+    catch e
+
+    return MC.template.bubbleAMIInfo( ami )
+
 
   Backbone.View.extend {
 
@@ -41,6 +63,7 @@ define [
 
     initialize : (options)->
       @workspace = options.workspace
+      @subViews = []
 
       region = @workspace.opsModel.get("region")
       @listenTo CloudResources( "MyAmi",               region ), "update", @updateMyAmiList
@@ -68,7 +91,6 @@ define [
       @updateAmi()
 
       @updateDisableItems()
-      @registerTemplate()
       @renderReuse()
       return
 
@@ -122,18 +144,18 @@ define [
 
 
     renderReuse: ->
-      allLc = Design.modelClassForType( constant.RESTYPE.LC ).allObjects()
+      allLc = @workspace.design.componentsOfType( constant.RESTYPE.LC )
 
       for lc in allLc
-        if not lc.isClone()
-          new @reuseLc({model:lc, parent : @}).render()
+        if not lc.isClone() and not lc.get( 'appId' )
+          @subViews.push new @reuseLc({model:lc, parent : @}).render()
 
       @
 
     subEventForUpdateReuse: ->
-      Design.on Design.EVENT.AddResource, ( resModel ) ->
-        if resModel.type is constant.RESTYPE.LC and not resModel.isClone()
-          new @reuseLc( model: resModel, parent: @ ).render()
+      @listenTo @workspace.design, Design.EVENT.AddResource, ( resModel ) ->
+        if resModel.type is constant.RESTYPE.LC and not resModel.isClone() and not resModel.get( 'appId' )
+          @subViews.push new @reuseLc( model: resModel, parent: @ ).render()
       , @
 
     updateAZ : ()->
@@ -170,32 +192,12 @@ define [
             cb = b.name
         return if ca > cb then 1 else -1
 
-      ms.fav = @__amiType is "FavoriteAmi"
+      ms.fav    = @__amiType is "FavoriteAmi"
+      ms.region = @workspace.opsModel.get("region")
+
       html = LeftPanelTpl.ami ms
       @$el.find(".resource-list-ami").html(html)
 
-    registerTemplate: ->
-      region = @workspace.opsModel.get('region')
-      MC.template.bubbleAMIMongoInfo = (data)=>
-        models = CloudResources(@__amiType,region).getModels()
-        amiData = _.findWhere(models, {'id': data.id})?.toJSON()
-        amiData.imageSize = amiData.imageSize || amiData.blockDeviceMapping[amiData.rootDeviceName]?.volumeSize
-        amiData.instanceType = @addInstanceType(amiData).join(", ")
-        MC.template.bubbleAMIInfo(amiData)
-
-    addInstanceType: (ami)->
-      region = @workspace.opsModel.get('region')
-      if not ami or not region then return []
-      data = App.model.getOsFamilyConfig( region )
-      try
-        data = data[ ami.osFamily ] || data[ constant.OS_TYPE_MAPPING[ami.osType] ]
-        data = if ami.rootDeviceType  is "ebs" then data.ebs else data['instance store']
-        data = if ami.architecture is "x86_64" then data["64"] else data["32"]
-        data = data[ ami.virtualizationType || "paravirtual" ]
-      catch e
-        console.error "Invalid instance type list data", ami, App.model.getOsFamilyConfig( region )
-        data = []
-      data || []
     updateDisableItems : ()->
       if not @workspace.isAwake() then return
       @updateDisabledAz()
@@ -570,5 +572,11 @@ define [
         $item.remove()
 
       false
+
+    remove: ->
+      _.invoke @subViews, 'remove'
+      @subViews = null
+      Backbone.View.prototype.remove.call this
+      return
 
   }

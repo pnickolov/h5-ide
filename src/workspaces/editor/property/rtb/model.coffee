@@ -129,7 +129,7 @@ define [ '../base/model', "Design", 'constant', "CloudResources" ], ( PropertyMo
 
     setRoutes : ( routeId, routes ) ->
       _.each routes, (routeCidr, idx) ->
-        validCIDR = Design.modelClassForType(constant.RESTYPE.SUBNET).getValidCIDR(routeCidr)
+        validCIDR = MC.getValidCIDR(routeCidr)
         routes[idx] = validCIDR
       Design.instance().component( routeId ).set( "routes", routes )
       null

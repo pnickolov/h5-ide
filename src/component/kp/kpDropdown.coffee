@@ -23,6 +23,7 @@ define [ 'Design', 'kp_manage', 'combo_dropdown', './component/kp/kpTpl', 'backb
               if e.keyName is that.resModel.getKeyName()
                 e.selected = true
           json
+
         setKey: ( name, data ) ->
             if @__mode is 'runtime'
                 KpModel = Design.modelClassForType( constant.RESTYPE.KP )
@@ -56,16 +57,14 @@ define [ 'Design', 'kp_manage', 'combo_dropdown', './component/kp/kpTpl', 'backb
         initialize: ( options ) ->
             @resModel = if options then options.resModel else null
             @collection = CloudResources(constant.RESTYPE.KP, Design.instance().get("region"))
-            @collection.on 'change', @renderKeys, @
-            @collection.on 'update', @renderKeys, @
-
+            @listenTo @collection, 'update', @renderKeys
+            @listenTo @collection, 'change', @renderKeys
             if not @resModel
                 @__mode = 'runtime'
 
             @initDropdown()
 
-
-      show: () ->
+        show: () ->
             if App.user.hasCredential()
                 def = null
                 if not regions[Design.instance().get("region")] and @collection.isReady()
@@ -83,7 +82,6 @@ define [ 'Design', 'kp_manage', 'combo_dropdown', './component/kp/kpTpl', 'backb
             @renderDropdown()
             @el = @dropdown.el
             @
-
 
         renderNoCredential: () ->
             @dropdown.render('nocredential').toggleControls false
@@ -122,12 +120,16 @@ define [ 'Design', 'kp_manage', 'combo_dropdown', './component/kp/kpTpl', 'backb
             selection = template.selection @data
             @dropdown.setSelection selection
 
-
         renderModal: ()->
             that = @
             new kpManage(
                 model: that.data
             )
+
+        remove: ->
+            @dropdown.remove()
+            Backbone.View.prototype.remove.apply @, arguments
+
         }, {
 
         hasResourceWithDefaultKp: ->

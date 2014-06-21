@@ -986,17 +986,16 @@ function displayUnhandledReasons() {
         typeof window !== "undefined" &&
         window.console
     ) {
-        console.warn("[Q] Unhandled rejection reasons (should be empty):",
-                     unhandledReasons);
+        console.error("Unhandled rejection reasons:", unhandledReasons.slice(0));
     }
 
-    unhandledReasonsDisplayed = true;
+    // unhandledReasonsDisplayed = true;
 }
 
 function logUnhandledReasons() {
     for (var i = 0; i < unhandledReasons.length; i++) {
         var reason = unhandledReasons[i];
-        console.warn("Unhandled rejection reason:", reason);
+        console.error("Unhandled rejection reason:", reason.slice(0));
     }
 }
 
@@ -1024,9 +1023,9 @@ function trackRejection(promise, reason) {
 
     unhandledRejections.push(promise);
     if (reason && typeof reason.stack !== "undefined") {
-        unhandledReasons.push(reason.stack);
+        unhandledReasons.push(reason);
     } else {
-        unhandledReasons.push("(no stack) " + reason);
+        unhandledReasons.push(reason);
     }
     displayUnhandledReasons();
 }

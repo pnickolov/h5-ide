@@ -4,7 +4,8 @@ define [
   "OpsModel"
   "./template/TplOpsEditor"
   "UI.modalplus"
-], ( StackView, OpsModel, OpsEditorTpl, Modal )->
+  "i18n!nls/lang.js"
+], ( StackView, OpsModel, OpsEditorTpl, Modal, lang )->
 
   StackView.extend {
     bindUserEvent : ()->
@@ -13,7 +14,7 @@ define [
         @$el.find(".OEPanelCenter")
           .removeClass('canvas_state_app').addClass("canvas_state_appedit")
           .off(".CANVAS_EVENT")
-          .on('mousedown.CANVAS_EVENT', '.instance-volume, .instanceList-item-volume, .asgList-item-volume', MC.canvas.volume.show)
+          .on('mousedown.CANVAS_EVENT', '.instance-volume, .instanceList-item-volume', MC.canvas.volume.show)
           .on('mousedown.CANVAS_EVENT', '.port', MC.canvas.event.appDrawConnection)
           .on('mousedown.CANVAS_EVENT', '.dragable', MC.canvas.event.dragable.mousedown)
           .on('mousedown.CANVAS_EVENT', '.group-resizer', MC.canvas.event.groupResize.mousedown)
@@ -28,7 +29,7 @@ define [
         @$el.find(".OEPanelCenter")
           .removeClass('canvas_state_appedit').addClass("canvas_state_app")
           .off(".CANVAS_EVENT")
-          .on('mousedown.CANVAS_EVENT', '.instance-volume, .instanceList-item-volume, .asgList-item-volume', MC.canvas.volume.show)
+          .on('mousedown.CANVAS_EVENT', '.instance-volume, .instanceList-item-volume', MC.canvas.volume.show)
           .on('click.CANVAS_EVENT', '.line', MC.canvas.event.selectLine)
           .on('mousedown.CANVAS_EVENT', MC.canvas.event.clearSelected)
           .on('mousedown.CANVAS_EVENT', '#svg_canvas', MC.canvas.event.clickBlank)
@@ -49,14 +50,29 @@ define [
         title        : "App Imported"
         template     : OpsEditorTpl.modal.confirmImport({ name : @workspace.opsModel.get("name") })
         confirm      : { text : "Done" }
-        cancel       : { hide : true }
         disableClose : true
         hideClose    : true
+        onCancel     : ()-> self.workspace.remove(); return
         onConfirm    : ()->
+          $ipt = modal.tpl.find("#ImportSaveAppName")
+          $ipt.parsley 'custom', ( val ) ->
+            if not MC.validate 'awsName',  val
+              return lang.ide.PARSLEY_SHOULD_BE_A_VALID_STACK_NAME
+
+            apps = App.model.appList().where({name:val})
+            if apps.length is 1 and apps[0] is self.workspace.opsModel or apps.length is 0
+              return
+
+            sprintf lang.ide.PARSLEY_TYPE_NAME_CONFLICT, 'App', val
+
+          if not $ipt.parsley 'validate'
+            return
+
           modal.tpl.find(".modal-confirm").attr("disabled", "disabled")
           json = self.workspace.design.serialize()
-          json.name = $("#ImportSaveAppName").val()
+          json.name = $ipt.val()
           self.workspace.opsModel.saveApp(json).then ()->
+            self.workspace.design.set "name", json.name
             modal.close()
           , ( err )->
             notification "error", err.msg
@@ -81,6 +97,7 @@ define [
       if not @$el then return
 
       @toolbar.updateTbBtns()
+      @statusbar.update()
       @$el.children(".ops-process").remove()
 
       opsModel = @workspace.opsModel
@@ -121,7 +138,13 @@ define [
       return
 
     switchMode : ( isAppEditMode )->
+      # HACK, Close the volume bubble here!!!!!
+      # Should be removed.
+      MC.canvas.volume.close()
+
       @toolbar.updateTbBtns()
+      @statusbar.update()
+
       @$el.find(".OEPanelLeft").toggleClass "force-hidden", !isAppEditMode
       if isAppEditMode
         @resourcePanel.render()
@@ -135,11 +158,11 @@ define [
       $("#vpc_layer, #az_layer, #subnet_layer, #asg_layer, #line_layer, #node_layer").empty()
       return
 
-    showUpdateStatus : ( error )->
+    showUpdateStatus : ( error, loading )->
       @$el.find(".ops-process").remove()
 
       self = @
-      $(OpsEditorTpl.appUpdateStatus({ error : error }))
+      $(OpsEditorTpl.appUpdateStatus({ error : error, loading : loading }))
         .appendTo(@$el)
         .find("#processDoneBtn")
         .click ()-> self.$el.find(".ops-process").remove()

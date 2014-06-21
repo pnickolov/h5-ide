@@ -17,10 +17,11 @@ define [
   "./subviews/SettingsDialog"
   "CloudResources"
   "./WorkspaceManager"
+  "OpsModel"
   "JsonExporter"
   "constant",
   "underscore"
-], ( ApiRequest, Websocket, ApplicationView, ApplicationModel, User, SettingsDialog, CloudResources, WorkspaceManager, JsonExporter, constant )->
+], ( ApiRequest, Websocket, ApplicationView, ApplicationModel, User, SettingsDialog, CloudResources, WorkspaceManager, OpsModel, JsonExporter, constant )->
 
   VisualOps = ()->
     if window.App
@@ -123,21 +124,20 @@ define [
       console.warn "The OpsModel is not found when opening."
       return
 
-    space = @workspaces.find( opsModel )
-    if space
-        if refresh
-            space.remove()
-            editor = new OpsEditor(opsModel)
-            editor.activate()
-            editor
-        else
-            space.activate()
-            space
-    else
-        editor = new OpsEditor(opsModel)
-        editor.activate()
-        editor
+    if opsModel.testState( OpsModel.State.Destroyed )
+      console.error "The OpsModel is destroyed", opsModel
+      return
 
+    editor = @workspaces.find( opsModel )
+    if editor and refresh
+      editor.remove()
+      editor = null
+
+    if not editor
+      editor = new OpsEditor(opsModel)
+
+    editor.activate()
+    editor
 
   # This is a convenient method to create a stack and then open an editor for it.
   VisualOps.prototype.createOps = ( region )->

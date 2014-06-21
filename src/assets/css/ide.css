@@ -181,22 +181,6 @@ button {
 	color: #D0D0D0;
 }
 
-.resources-dropdown-wrapper li {
-	border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-	padding: 8px;
-	font-size: 12px;
-	position: relative;
-	cursor: pointer;
-	display: block;
-}
-
-.resources-dropdown-wrapper li:hover {
-	background-color: rgba(255, 255, 255, 0.1);
-	opacity: 0.8;
-	cursor: pointer;
-	width: 103px;
-}
-
 #map-region-spot-list li:hover .map-tooltip,
 #map-region-spot-list li.hover .map-tooltip {
 	opacity: 1;
@@ -602,13 +586,15 @@ td.table-action a.btn {
 	line-height: 20px;
 }
 
-.property-control-group > label {
+.property-control-group > label,
+.property-control-group label.left {
 	color     : #999;
 	font-size : 13px;
 	height    : 20px;
 	cursor    : pointer;
 	display   : inline-block;
 }
+
 
 .property-control-group .input {
 	width: 230px;
@@ -652,7 +638,7 @@ td.table-action a.btn {
 }
 
 .property-control-group .selectbox.selectbox-mega .main {
-	/*width: 230px;*/
+	width: 230px;
 	font-size: 14px;
 	color: #F8F8F8;
 }
@@ -2343,15 +2329,7 @@ a.action-link:hover {
 	background: url('../images/ide/icon/icon-app-stopped.png') center center no-repeat;
 }
 
-.icon-app-pending,
-.icon-app-starting,
-.icon-app-stopping,
-.icon-app-terminating,
-.icon-app-Starting,
-.icon-app-Stopping,
-.icon-app-updating,
-.icon-app-Updating,
-.icon-app-Terminating  {
+.icon-app-pending {
 	background: url('../images/ide/icon/icon-app-pending.png') center center no-repeat;
 }
 
@@ -3847,9 +3825,10 @@ summary:focus {
 }
 
 #changeAmiDropZone .resource-label {
-	margin-top: 34px;
-	width: 120px;
-	margin-left: -30px;
+	margin-top  : 18px;
+	width       : 120px;
+	margin-left : -30px;
+	font-size   : 12px;
 }
 
 #cancelChangeAmi {

@@ -408,6 +408,7 @@ define [
 
   DesignImpl.prototype.shouldDraw = ()-> @__shoulddraw
   DesignImpl.prototype.use = ()-> Design.__instance = @; @
+  DesignImpl.prototype.unuse = ()-> if Design.__instance is @ then Design.__instance = null; return
 
   DesignImpl.prototype.component = ( uid )-> @__componentMap[ uid ]
 
@@ -481,13 +482,12 @@ define [
     console.assert _.isEqual( newData, __dtBackup ), "Data Modified."
 
     if result.attribute or result.component or result.layout or result.instanceState
-        __opsModel = @__opsModel
-        return $.extend result, {
-            result : @diff(newData, oldData)
-            isRunning: __opsModel.testState( OpsModel.State.Running )
-            isModified: true
-            newData: newData
-        }
+      return $.extend result, {
+        result : @diff(newData, oldData)
+        isRunning: @__opsModel.testState( OpsModel.State.Running )
+        isModified: true
+        newData: newData
+      }
     else
       return false
 
@@ -683,7 +683,7 @@ define [
       changeObj.change = "Create"
     # Only compare resources.
     else if not _.isEqual newComp.resource, oldComp.resource
-      changeObj.change = "Modify"
+      changeObj.change = "Update"
 
     if changeObj.change
       result.push changeObj

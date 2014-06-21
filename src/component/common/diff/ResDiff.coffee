@@ -1,9 +1,10 @@
 define [
     'UI.modalplus'
-    './component/common/diff/resDiffTpl'
     'DiffTree'
+    './component/common/diff/resDiffTpl'
     './component/common/diff/prepare'
-], ( modalplus, template, DiffTree, Prepare ) ->
+    'constant'
+], ( modalplus, DiffTree, template, Prepare, constant ) ->
 
     Backbone.View.extend
 
@@ -15,6 +16,7 @@ define [
 
             @oldAppJSON = option.old
             @newAppJSON = option.new
+            @callback = option.callback if option.callback
 
             @prepare = new Prepare oldAppJSON: @oldAppJSON, newAppJSON: @newAppJSON
             @_genDiffInfo(@oldAppJSON.component, @newAppJSON.component)
@@ -37,24 +39,43 @@ define [
             $target.toggleClass 'closed'
 
         render: () ->
+
+            that = this
+
             # popup modal
+            okText = 'OK, got it'
             options =
                 template: @el
                 title: 'App Changes'
-                hideClose: true
                 disableClose: true
-                disableCancel: true
-                cancel:
-                    hide: true
+                hideClose: true
                 confirm:
-                    text: 'OK, got it'
-
+                    text: okText
                 width: '608px'
                 compact: true
+                preventClose: true
 
             @modal = new modalplus options
             @modal.on 'confirm', () ->
-                @modal.close()
+                $confirmBtn = that.modal.tpl.find('.modal-confirm')
+                if that.callback
+                    $confirmBtn.addClass('disabled')
+                    $confirmBtn.text('Saving...')
+                    promise = that.callback(true)
+                    promise.then () ->
+                        # $confirmBtn.removeClass('disabled')
+                        that.modal.close()
+                    , (error) ->
+                        $confirmBtn.text(okText)
+                        $confirmBtn.removeClass('disabled')
+                        notification 'error', error.msg
+                else
+                    that.modal.close()
+            , @
+            @modal.on 'cancel', () ->
+                if that.callback
+                    that.callback(false)
+                that.modal.close()
             , @
 
             #settle frame
@@ -230,6 +251,37 @@ define [
 
             _genTree.call that, diffComps, null, [], $container
 
+        getRelatedInstanceGroupUID: (originComps, comp) ->
+
+            that = this
+
+            resType = comp.type
+            if resType is constant.RESTYPE.INSTANCE
+                return comp.serverGroupUid
+            if resType is constant.RESTYPE.ENI
+                instanceRef = comp.resource.Attachment.InstanceId
+            if instanceRef
+                instanceUID = MC.extractID(instanceRef)
+                instanceComp = originComps[instanceUID]
+                if instanceComp
+                    return instanceComp.serverGroupUid
+            if resType is constant.RESTYPE.VOL
+                instanceRef = comp.resource.AttachmentSet.InstanceId
+            if instanceRef
+                instanceUID = MC.extractID(instanceRef)
+                instanceComp = originComps[instanceUID]
+                if instanceComp
+                    return instanceComp.serverGroupUid
+            if resType is constant.RESTYPE.EIP
+                eniRef = comp.resource.NetworkInterfaceId
+            if eniRef
+                eniUID = MC.extractID(eniRef)
+                eniComp = originComps[eniUID]
+                if eniComp
+                    return that.getRelatedInstanceGroupUID(originComps, eniComp)
+
+            return ''
+
         getChangeInfo: () ->
 
             that = this
@@ -242,6 +294,52 @@ define [
 
             needUpdateLayout = _.some that.addedComps, ( comp ) ->
                 that.newAppJSON.layout[ comp.uid ]
+
+            newComps = that.newAppJSON.component
+            oldComps = that.oldAppJSON.component
+
+            # if have any change about server group, update layout
+            _.each that.modifiedComps, (comp, uid) ->
+                originComp = oldComps[uid]
+                if originComp and originComp.type in [constant.RESTYPE.ENI, constant.RESTYPE.EIP, constant.RESTYPE.INSTANCE, constant.RESTYPE.VOL]
+                    if originComp and originComp.number > 1
+                        needUpdateLayout = true
+                null
+
+            # if have elb and attached server group change, update layout
+            _.each that.modifiedComps, (comp, uid) ->
+                if oldComps[uid] and oldComps[uid].type is constant.RESTYPE.ELB
+                    if comp and comp.resource and comp.resource.Instances
+                        instanceAry = []
+                        _.map comp.resource.Instances, (refObj) ->
+                            _refObj = refObj.InstanceId
+                            if _refObj
+                                instanceAry.push(_refObj.__old__) if _refObj.__old__
+                                instanceAry.push(_refObj.__new__) if _refObj.__new__
+                        _.each instanceAry, (uidRef) ->
+                            uid = MC.extractID(uidRef)
+                            if oldComps[uid] and oldComps[uid].number > 1
+                                needUpdateLayout = true
+                            null
+                null
+
+            # if have asg AvailabilityZones or VPCZoneIdentifier change, update layout
+            _.each that.modifiedComps, (comp, uid) ->
+                if newComps[uid] and newComps[uid].type is constant.RESTYPE.ASG
+                    if comp and comp.resource and comp.resource.AvailabilityZones
+                        needUpdateLayout = true
+                    if comp and comp.resource and comp.resource.VPCZoneIdentifier
+                        needUpdateLayout = true
+                null
+
+            # if have any add/remove about server group, update layout
+            _.each that.removedComps, (comp) ->
+                if comp.type in [constant.RESTYPE.ENI, constant.RESTYPE.EIP, constant.RESTYPE.INSTANCE, constant.RESTYPE.VOL]
+                    serverGroupUid = that.getRelatedInstanceGroupUID(oldComps, comp)
+                    originComp = oldComps[serverGroupUid]
+                    if originComp and originComp.number > 1
+                        needUpdateLayout = true
+                null
 
             return {
                 hasResChange: hasResChange,

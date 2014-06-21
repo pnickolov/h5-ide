@@ -880,7 +880,7 @@ module.exports =
       zh: "放大"
 
     TOOL_TIP_SAVE_APP_TO_STACK:
-      en: "Save pp as Stack"
+      en: "Save App as Stack"
       zh: "App 保存为 Stack"
     TOOL_TIP_ZOOM_OUT:
       en: "Zoom Out"
@@ -3237,6 +3237,10 @@ module.exports =
       en : "This operation is not supported yet."
       zh : ""
 
+    NOTIFY_MSG_WARN_ASG_CAN_ONLY_CONNECT_TO_ELB_ON_LAUNCH:
+      en : "Auto Scaling Group can only register with Load Balancer on launch."
+      zh : ""
+
     NOTIFY_MSG_WARN_AMI_NOT_EXIST_TRY_USE_OTHER:
       en : "The AMI(%s) is not exist now, try to use another AMI."
       zh : ""
@@ -5083,6 +5087,9 @@ VisualOps API. You cannot UNDO this action.'
       zh:""
     TA_MSG_WARNING_CGW_IP_RANGE_ERROR:
       en:"Customer Gateway <span class='validation-tag tag-cgw'>%s</span>'s IP(%s) invalid."
+      zh:""
+    TA_MSG_ERROR_CGW_MUST_ATTACH_VPN:
+      en:"Customer Gateway %s must be attached to a VPN Gateway via VPN connection."
       zh:""
 
     # VPN

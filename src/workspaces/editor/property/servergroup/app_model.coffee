@@ -73,7 +73,8 @@ define [ '../base/model',
 			uid = @get( 'uid' )
 
 			comp          = Design.instance().component( uid )
-			appData       = CloudResources(constant.RESTYPE.AMI, Design.instance().region()).get(comp.get('appId'))?.toJSON()
+			resource_list = CloudResources(constant.RESTYPE.INSTANCE, Design.instance().region())
+			appData       = CloudResources(constant.RESTYPE.INSTANCE, Design.instance().region()).get(comp.get('appId'))?.toJSON()
 			name          = comp.get("name")
 
 			group = [{
@@ -96,7 +97,7 @@ define [ '../base/model',
 				group.push {
 					name   : name + "-" + (index+1)
 					appId  : member.appId
-					status : if resource_list[ member.appId ] then resource_list[ member.appId ].instanceState.name else "Unknown"
+					status : if resource_list.get( member.appId ) then resource_list.get( member.appId ).attributes.instanceState.name else "Unknown"
 					isNew  : not member.appId
 					isOld  : member.appId and ( index + 1 >= count )
 				}

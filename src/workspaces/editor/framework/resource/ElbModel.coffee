@@ -293,11 +293,11 @@ define [ "Design",
           Scheme : if @get("internal") then "internal" else "internet-facing"
           ListenerDescriptions : listeners
           HealthCheck :
-            Interval               : @get("healthCheckInterval")
+            Interval               : String(@get("healthCheckInterval"))
             Target                 : hcTarget
-            Timeout                : @get("healthCheckTimeout")
-            HealthyThreshold       : @get("healthyThreshold")
-            UnhealthyThreshold     : @get("unHealthyThreshold")
+            Timeout                : String(@get("healthCheckTimeout"))
+            HealthyThreshold       : String(@get("healthyThreshold"))
+            UnhealthyThreshold     : String(@get("unHealthyThreshold"))
           DNSName : @get("dnsName") or ""
           Policies: {
               LBCookieStickinessPolicies : [{ PolicyName : "", CookieExpirationPeriod : "" }]
@@ -331,11 +331,11 @@ define [ "Design",
         dnsName   : data.resource.DNSName
         elbName   : data.resource.LoadBalancerName
 
-        healthyThreshold    : data.resource.HealthCheck.HealthyThreshold
-        unHealthyThreshold  : data.resource.HealthCheck.UnhealthyThreshold
+        healthyThreshold    : String(data.resource.HealthCheck.HealthyThreshold)
+        unHealthyThreshold  : String(data.resource.HealthCheck.UnhealthyThreshold)
         healthCheckTarget   : data.resource.HealthCheck.Target
-        healthCheckInterval : data.resource.HealthCheck.Interval
-        healthCheckTimeout  : data.resource.HealthCheck.Timeout
+        healthCheckInterval : String(data.resource.HealthCheck.Interval)
+        healthCheckTimeout  : String(data.resource.HealthCheck.Timeout)
 
         x : layout_data.coordinate[0]
         y : layout_data.coordinate[1]

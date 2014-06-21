@@ -140,6 +140,15 @@
     padding-top : 17px;
     height : 53px;
   }
+
+  #ResourceDragItem.resource-icon-asg & {
+    top             : 50%;
+    background-size : 100%;
+    left            : 50%;
+    margin-left     : -30px;
+    margin-top      : -30px;
+    opacity         : .6;
+  }
 }
 
 .ebs-size {

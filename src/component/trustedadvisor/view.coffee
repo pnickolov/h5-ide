@@ -52,8 +52,8 @@ define [ 'event',
             warning = @model.get 'warning_list'
             notice = @model.get 'notice_list'
 
-            $tabs = $ '#modal-box .tab li'
-            $nutshell = $ '#modal-box .nutshell'
+            $tabs = $ '.modal-box .tab li'
+            $nutshell = $ '.modal-box .nutshell'
             $details = $nutshell.prev 'details'
             $summary = $details.find 'summary'
 

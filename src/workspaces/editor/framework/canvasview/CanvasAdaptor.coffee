@@ -30,23 +30,16 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant", "UI.notific
     else
       return null
 
-  $canvas.updateLineStyle = (ls)->
-    if Design.__instance.shouldDraw()
-      # Update SgLine
-      if ls is 4
-        #hide sg line
-        Canvon("#line_layer").addClass("hide-sg")
-      else
-        #show sg line
-        Canvon("#line_layer").removeClass("hide-sg")
-        _.each Design.modelClassForType("SgRuleLine").allObjects(), ( cn )->
-          cn.draw()
-    null
+  $canvas.setLineStyle = (ls)->
+    localStorage.setItem("canvas/lineStyle", ls)
+    Design.instance().canvas.setLineStyle( ls )
 
   $canvas.lineStyle = ()->
-    ls = parseInt( localStorage.getItem("canvas/lineStyle") )
-    if Design.instance().modeIsApp() and ls is 4 then return 2
-    if isNaN( ls ) then 2 else ls
+    ls = Design.instance()?.canvas.ls
+    if ls is undefined
+      ls = parseInt( localStorage.getItem("canvas/lineStyle") )
+      if isNaN( ls ) then ls = 2
+    ls
 
   $canvas.node = ()->
     nodes = []
@@ -225,6 +218,7 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant", "UI.notific
 
     $('#svg_canvas').attr( attr )
     $('#canvas_body').css( attr )
+    @setLineStyle( localStorage.getItem("canvas/lineStyle") )
     return
 
   Canvas.prototype.scale = ( ratio )->
@@ -242,6 +236,18 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant", "UI.notific
     if w is undefined then return this.sizeAry
     this.sizeAry[0] = w
     this.sizeAry[1] = h
+    null
+
+  Canvas.prototype.setLineStyle = ( ls )->
+    this.ls = parseInt( ls ) || 0
+
+    if this.ls is 4
+      Canvon("#line_layer").addClass("hide-sg")
+    else
+      Canvon("#line_layer").removeClass("hide-sg")
+
+    if Design.__instance.shouldDraw() and this.ls isnt 4
+      _.each Design.modelClassForType("SgRuleLine").allObjects(), ( cn )-> cn.draw()
     null
 
   Canvas.setDesign = ( design )->

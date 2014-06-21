@@ -143,11 +143,11 @@ define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager", 'i18n!n
     # In app mode, show number
     asg = m.parent()
     if not m.design().modeIsStack() and asg and asg.get('appId')
-      data = CloudResources(constant.RESTYPE.ASG, m.design().region()).get(asg.get('appId')).toJSON()
+      data = CloudResources(constant.RESTYPE.ASG, m.design().region()).get(asg.get('appId'))?.toJSON()
       numberGroup = node.children(".instance-number-group")
-      if data and data.Instances and data.Instances.member and data.Instances.member.length > 0
+      if data and data.Instances and data.Instances.length
         CanvasManager.toggle numberGroup, true
-        CanvasManager.update numberGroup.children("text"), data.Instances.member.length
+        CanvasManager.update numberGroup.children("text"), data.Instances.length
       else
         CanvasManager.toggle numberGroup, false
     null
@@ -176,12 +176,6 @@ define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager", 'i18n!n
       MC.canvas.position el, @model.x(), @model.y()
 
 
-  ChildElementProto.isRemovable = ()->
-    lc = @model
-
-    return true if lc.__brothers.length > 0 or lc.isClone()
-
-    sprintf lang.ide.CVS_CFM_DEL_LC, lc.get( 'name' )
 
 
   null

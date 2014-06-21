@@ -121,7 +121,7 @@ define [
       $("#confirmRmStack").on "click", ()->
         opsModel = App.model.stackList().get( id )
         p = opsModel.remove()
-        if opsModel.isPresisted()
+        if opsModel.isPersisted()
           p.then ()->
             notification "info", sprintf(lang.ide.TOOL_MSG_ERR_DEL_STACK_SUCCESS, name)
           , ()->

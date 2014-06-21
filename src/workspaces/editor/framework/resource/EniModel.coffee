@@ -157,9 +157,7 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
       @draw()
       null
 
-    hasPrimaryEip : ()->
-      if not @attachedInstance() then return false
-      @get("ips")[0].hasEip
+    hasPrimaryEip : ()-> @get("ips")[0].hasEip
 
     hasEip : ()->
       @get("ips").some ( ip )-> ip.hasEip
@@ -308,13 +306,13 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
       if ips.length >= maxIp
         return sprintf( lang.ide.PROP_MSG_WARN_ENI_IP_EXTEND, instance.get("instanceType"), maxIp )
 
-      subent = if @__embedInstance then @__embedInstance.parent() else @parent()
+      subnet = if @__embedInstance then @__embedInstance.parent() else @parent()
 
       result = true
       # Add an fake item to see if there's an error in subnet
       ips.push( { ip : "fake" } )
 
-      if not subent.isCidrEnoughForIps()
+      if not subnet.isCidrEnoughForIps()
         result = "Ip count limit has reached in #{subnet.get('name')}"
 
       # Remove the fake item
@@ -513,17 +511,22 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
       # And Eni's IP is assign in serializeVistor/SubnetVisitor
 
       # Here, we only serialize layout
-      res = null
+      res = []
       if not @__embedInstance
         layout = @generateLayout()
 
-        if res is null then res = {}
-        res.layout = layout
+        res[0] = {layout:layout}
 
       if not @attachedInstance()
-        if res is null then res = {}
         eniIndex = if @__embedInstance then 0 else 1
-        res.component = @generateJSON( 0, { number : 1 }, eniIndex )[0]
+        comps = @generateJSON( 0, { number : 1 }, eniIndex )
+
+        # Add Eni
+        if not res[0] then res[0] = {}
+        res[0].component = comps[0]
+
+        # Add Eip
+        if comps[1] then res.push {component:comps[1]}
 
       res
 
@@ -733,7 +736,7 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
       # deserialize Eni
       # See if it's embeded eni
       attachment = data.resource.Attachment
-      embed      = attachment and attachment.DeviceIndex is "0"
+      embed      = attachment and ( attachment.DeviceIndex is "0" or attachment.DeviceIndex is 0 )
       instance   = if attachment and attachment.InstanceId then resolve( MC.extractID( attachment.InstanceId) ) else null
 
       # Create

@@ -116,12 +116,27 @@
     header { display : none; }
     .rolling-back-content { display : block; }
   }
+
+  &:not(.has-progess) {
+    .process-info, .progress { display : none; }
+  }
+  &.has-progess {
+    ::selection {
+      background : transparent;
+    }
+    .loading-spinner { display : none; }
+  }
+
+  &.rolling-back {
+    .processing { display : none; }
+    .rolling-back-content { display : block; }
+  }
 }
 
 /* Progress bar */
 .progress {
   border-radius : 9px;
-  background    : #2e2e2e;
+  background    : #1d1d1d;
   overflow      : hidden;
   width         : 350px;
   height        : 18px;
@@ -161,17 +176,5 @@
     z-index    : 9;
     background : rgba(0,0,0,.8);
     text-align : center;
-
-    &:not(.has-progess) {
-      .process-info, .progress { display : none; }
-    }
-    &.has-progess {
-      .loading-spinner { display : none; }
-    }
-
-    &.rolling-back {
-      .processing { display : none; }
-      .rolling-back-content { display : block; }
-    }
   }
 }

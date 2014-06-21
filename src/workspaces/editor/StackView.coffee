@@ -38,8 +38,15 @@ define [
       @statusbar.render()
       return
 
-    removeSubviews : ()->
+    recoverSubviews : ()->
+      @resourcePanel.recalcAccordion()
+      return
+
+    remove : ()->
       @resourcePanel.remove()
+      @statusbar.remove()
+
+      OpsViewBase.prototype.remove.call this
       return
 
     saveStack : ()-> @toolbar.$el.find(".icon-save").trigger "click"

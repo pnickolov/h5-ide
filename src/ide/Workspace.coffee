@@ -75,8 +75,11 @@ define ["backbone"], ()->
     # This method will be called when the workspace is remove. One should override this method
     # to do necessary cleanup.
     cleanup : ()->
-      console.assert( @view, "Cannot find @view when workspace is about to remove:", @ )
-      @view.remove()
+      if @view
+        @view.remove()
+      else
+        console.warn( "Cannot find @view when workspace is about to remove:", @ )
+      return
 
     # Override this method to check if the tab is closable. Return false to prevent closing.
     isRemovable : ()-> true

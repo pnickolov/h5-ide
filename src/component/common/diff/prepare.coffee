@@ -28,11 +28,10 @@ define [ 'constant' ], ( constant ) ->
                     else
                         newCompAttr = newCompAttr[attr]
 
-            retVal =  {
-                oldAttr: oldCompAttr
-                newAttr: newCompAttr
-            }
+                null
 
+            oldAttr: oldCompAttr
+            newAttr: newCompAttr
 
         genValue: (type, oldValue, newValue) ->
 
@@ -77,10 +76,15 @@ define [ 'constant' ], ( constant ) ->
 
             # Replace keyword
             switch parentKey
+
                 when 'BlockDeviceMapping'
                     deviceObj = childNode.DeviceName
+                    data.key = 'Device'
                     if deviceObj
-                        data.key = @genValue deviceObj.type, deviceObj.__old__, deviceObj.__new__
+                        if _.isObject deviceObj
+                            data.key = @genValue deviceObj.type, deviceObj.__old__, deviceObj.__new__
+                        else
+                            data.key = deviceObj
 
                 when 'GroupSet'
                     data.key = 'SecurityGroup'
@@ -98,6 +102,9 @@ define [ 'constant' ], ( constant ) ->
                     #data.skip = true
                     data = data
 
+                when 'Instances'
+                    data.key = 'Instance'
+
             # Replace first level node
             if path.length is 1
                 data.key = constant.RESNAME[ data.key ] or data.key
@@ -106,7 +113,7 @@ define [ 'constant' ], ( constant ) ->
 
     prepareNode = ( path, data ) ->
 
-        _getRef = (value) ->
+        _getRef = (value, needName) ->
 
             if _.isString(value) and value.indexOf('@{') is 0
 
@@ -115,7 +122,10 @@ define [ 'constant' ], ( constant ) ->
                 if refMatchAry and refMatchAry.length
                     refName = value.slice(2, value.length - 1)
                     refUID = refName.split('.')[0]
-                    return "#{refUID}.name" if refUID
+                    if needName
+                        return "#{refUID}.name" if refUID
+                    else
+                        return refName
 
             return null
 
@@ -123,8 +133,15 @@ define [ 'constant' ], ( constant ) ->
 
             # default
             newValue = data.value
-            oldRef = _getRef(newValue.__old__)
-            newRef = _getRef(newValue.__new__)
+
+            # show id when key name is a res id ref
+            needName = true
+            if data.key
+                if data.key.substr(data.key.lastIndexOf('Id')) is 'Id'
+                    needName = false
+
+            oldRef = _getRef(newValue.__old__, needName)
+            newRef = _getRef(newValue.__new__, needName)
 
             newValue.__old__ = @h.getNodeMap(oldRef).oldAttr if oldRef
             newValue.__new__ = @h.getNodeMap(newRef).newAttr if newRef
@@ -143,7 +160,13 @@ define [ 'constant' ], ( constant ) ->
             newAttr = compAttrObj.newAttr
 
             valueRef = _getRef(data.value)
-            data.value = @h.getNodeMap(valueRef).oldAttr if valueRef
+            
+            if valueRef
+
+                attrObj = @h.getNodeMap(valueRef)
+                oldValue = attrObj.oldAttr
+                newValue = attrObj.newAttr
+                data.value = oldValue or newValue
 
             if path.length is 1
 
@@ -162,10 +185,7 @@ define [ 'constant' ], ( constant ) ->
 
         if path.length is 2
 
-            if path[1] in ['type', 'uid', 'name', 'index', 'number', 'serverGroupUid']
-                delete data.key
-            else if path[1] is 'resource'
-                data.skip = true
+            data.skip = true if path[1] is 'resource'
 
         return data
 
@@ -177,6 +197,3 @@ define [ 'constant' ], ( constant ) ->
     Prepare.prototype.node = prepareNode
 
     Prepare
-
-
-

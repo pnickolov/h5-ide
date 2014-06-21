@@ -24,10 +24,7 @@
 {{#each this}}<li data-region="{{region}}">
 	<h3 class="nav-group-title">{{regionName}} ({{data.length}})</h3>
 	<ul class="nav-item-list app-list">
-	{{#each data}}{{#if progressing}}
-  <li class="truncate nav-truncate icon-app-pending" title="{{name}} [{{stateDesc}}]">{{else}}
-  <li data-id="{{id}}" class="truncate nav-truncate icon-app-{{ tolower stateDesc }}" title="{{name}} [{{stateDesc}}]">{{/if}}{{name}}{{#if usage}}<i class="icon-app-type-{{usage}}"></i>{{/if}}</li>
-  {{/each}}
+	{{#each data}}<li data-id="{{id}}" class="truncate nav-truncate icon-app-{{#if progressing}}pending{{else}}{{ tolower stateDesc }}{{/if}}" title="{{name}} [{{stateDesc}}]">{{name}}{{#if usage}}<i class="icon-app-type-{{usage}}"></i>{{/if}}</li>{{/each}}
 	</ul>
 </li>{{else}}
 <div class="nav-empty">{{ i18n "DASH_LBL_NO_APP" }}</div>

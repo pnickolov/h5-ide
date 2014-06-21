@@ -1004,9 +1004,15 @@
 
      h5 {
       font-size     : 16px;
-      color         : #99A;
+      color         : #ccf;
       margin-bottom : 5px;
       padding       : 15px;
+
+      span {
+        font-size   : 12px;
+        margin-left : 5px;
+        color       : #aaa;
+      }
     }
 
     &.disabled {
@@ -1081,6 +1087,6 @@
   }
 }
 #dashboard-data-wrap.demo {
-  #GlobalView, #regionResourceNav, #RegionResourceData, #DashboardDemo { display : none !important; }
+  #GlobalView, #regionResourceNav, #RegionResourceData, #RegionViewWrap { display : none !important; }
   #DashboardDemo { display : block; }
 }

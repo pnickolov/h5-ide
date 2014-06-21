@@ -92,9 +92,11 @@ define [ 'toolbar_modal', './component/kp/kpDialogTpl', 'kp_upload', 'backbone',
             else
               @modal.render 'nocredential'
 
-            @collection.on 'change', @renderKeys, @
+            @collection.on 'update', @renderKeys, @
 
         renderKeys: () ->
+            if not @collection.isReady()
+              return false
             data = keys : @collection.toJSON()
             @modal.setContent template.keys data
             @
@@ -199,7 +201,7 @@ define [ 'toolbar_modal', './component/kp/kpDialogTpl', 'kp_upload', 'backbone',
 
                     ,( err ) ->
                         console.log(err)
-                        that.modal.error err.resion||err.msg
+                        that.modal.error err.reason||err.msg
                         that.switchAction()
 
         download: () ->
@@ -232,10 +234,9 @@ define [ 'toolbar_modal', './component/kp/kpDialogTpl', 'kp_upload', 'backbone',
                         console.log res
                         notification 'info', "#{keyName} is imported."
                         that.cancel()
-
-                    .catch ( err ) ->
+                    ,( err ) ->
                         console.log(err)
-                        that.modal.error err.error_message
+                        that.modal.error err.error_message || err.reason ||err.msg
                         that.switchAction 'ready'
 
         cancel: ->

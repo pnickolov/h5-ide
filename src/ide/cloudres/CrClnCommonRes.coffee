@@ -144,7 +144,7 @@ define [
         asg.Instances           = asg.Instances?.member || []
         asg.LoadBalancerNames   = asg.LoadBalancerNames?.member || []
         asg.TerminationPolicies = asg.TerminationPolicies?.member || []
-        asg.Subnets             = (asg.VPCZoneIdentifier || asg.VpczoneIdentifier).split(",")
+        asg.Subnets             = (asg.VPCZoneIdentifier || asg.VpczoneIdentifier || "").split(",")
         #delete asg.VPCZoneIdentifier
       asgs
     parseExternalData: ( data ) ->
@@ -155,6 +155,11 @@ define [
         asg.Name = asg.AutoScalingGroupName
         #delete asg.AutoScalingGroupARN
         #delete asg.AutoScalingGroupName
+        asg.DefaultCooldown        = String(asg.DefaultCooldown)
+        asg.DesiredCapacity        = String(asg.DesiredCapacity)
+        asg.HealthCheckGracePeriod = String(asg.HealthCheckGracePeriod)
+        asg.MaxSize                = String(asg.MaxSize)
+        asg.MinSize                = String(asg.MinSize)
         asg.Subnets             = (asg.VPCZoneIdentifier || asg.VpczoneIdentifier).split(",")
         #delete asg.VPCZoneIdentifier
       data
@@ -271,18 +276,29 @@ define [
     trAwsXml : ( data )-> data.DescribeRouteTablesResponse.routeTableSet?.item
     parseFetchData : ( rtbs )->
       for rtb in rtbs
+
+        rtb.routeSet = rtb.routeSet?.item || []
+        rtb.associationSet = rtb.associationSet?.item || []
+        rtb.propagatingVgwSet = rtb.propagatingVgwSet?.item || []
+
         ##move local to first
         found = -1
         for rt,idx in rtb.routeSet
           if rt.gatewayId is 'local'
             found = idx
         if found > 0
-          #move local to first
           local_rt = rtb.routeSet.splice( found,1 )
           rtb.routeSet.splice( 0, 0, local_rt[0] )
-        rtb.routeSet = rtb.routeSet?.item || []
-        rtb.associationSet = rtb.associationSet?.item || []
-        rtb.propagatingVgwSet = rtb.propagatingVgwSet?.item []
+
+        ##move main to first
+        found = -1
+        for assoc,idx in rtb.associationSet
+          if assoc.main and found is -1
+            found = idx
+        if found > 0
+          main_rt = rtb.associationSet.splice( found,1 )
+          rtb.associationSet.splice( 0, 0, main_rt[0] )
+
         rtb.id = rtb.routeTableId
         #delete rtb.routeTableId
       rtbs
@@ -292,12 +308,20 @@ define [
         ##move local to first
         found = -1
         for rt,idx in rtb.routeSet
-          if rt.gatewayId is 'local'
+          if rt.gatewayId is 'local' and found is -1
             found = idx
         if found > 0
-          #move local to first
           local_rt = rtb.routeSet.splice( found,1 )
           rtb.routeSet.splice( 0, 0, local_rt[0] )
+
+        ##move main to first
+        found = -1
+        for assoc,idx in rtb.associationSet
+          if assoc.main and found is -1
+            found = idx
+        if found > 0
+          main_rt = rtb.associationSet.splice( found,1 )
+          rtb.associationSet.splice( 0, 0, main_rt[0] )
 
         rtb.id = rtb.routeTableId
         #delete rtb.routeTableId
@@ -384,6 +408,7 @@ define [
         #delete vol.attachmentSet
       volumes
     parseExternalData: ( data ) ->
+      @convertNumTimeToString data
       @unifyApi data, @type
       for vol in data
         vol.id = vol.volumeId
@@ -493,15 +518,21 @@ define [
     trAwsXml : ( data )-> data.DescribeNotificationConfigurationsResponse.DescribeNotificationConfigurationsResult.NotificationConfigurations?.member
     parseFetchData : ( ncs )->
       newNcList = []
+      ncMap = {}
 
       for nc in ncs
-        first = nc[ 0 ]
-        item =
-          AutoScalingGroupName: first.AutoScalingGroupName
-          TopicARN: first.TopicARN
-          NotificationType: _.pluck nc, 'NotificationType'
-        item.id = item.NotificationType + "-" + item.TopicARN + "-" + item.AutoScalingGroupName
-        newNcList.push item
+        item = ncMap[ id ] || ( ncMap[id] = {} )
+        id = item.AutoScalingGroupName + "-" + item.TopicARN
+        if not item
+          item = ncMap[ id ] = {
+            id                   : id
+            AutoScalingGroupName : nc.AutoScalingGroupName
+            TopicARN             : nc.TopicARN
+            NotificationType     : [ nc.NotificationType ]
+          }
+          newNcList.push item
+        else
+          item.NotificationType.push nc.NotificationType
 
       newNcList
 
@@ -516,7 +547,7 @@ define [
           AutoScalingGroupName: first.AutoScalingGroupName
           TopicARN: first.TopicARN
           NotificationType: _.pluck nc, 'NotificationType'
-        item.id = item.NotificationType + "-" + item.TopicARN + "-" + item.AutoScalingGroupName
+        item.id = item.AutoScalingGroupName + "-" + item.TopicARN
         newNcList.push item
 
       newNcList
@@ -649,9 +680,10 @@ define [
         sgRuls = sg.ipPermissions.concat(sg.ipPermissionsEgress)
         _.each sgRuls, (rule, idx) ->
           if rule.ipRanges and rule.ipRanges.length
-            rule.ipRanges = [{
-              cidrIp: rule.ipRanges[0]
-            }]
+            rule.ipRanges = _.map rule.ipRanges, (cidr) ->
+              return {
+                cidrIp: cidr
+              }
           rule.groups = []
           if rule.userIdGroupPairs
             rule.groups = rule.userIdGroupPairs

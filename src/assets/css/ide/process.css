@@ -79,11 +79,21 @@
     display: none; }
   .ops-process.rolling-back .processing .rolling-back-content {
     display: block; }
+  .ops-process:not(.has-progess) .process-info, .ops-process:not(.has-progess) .progress {
+    display: none; }
+  .ops-process.has-progess ::selection {
+    background: transparent; }
+  .ops-process.has-progess .loading-spinner {
+    display: none; }
+  .ops-process.rolling-back .processing {
+    display: none; }
+  .ops-process.rolling-back .rolling-back-content {
+    display: block; }
 
 /* Progress bar */
 .progress {
   border-radius: 9px;
-  background: #2e2e2e;
+  background: #1d1d1d;
   overflow: hidden;
   width: 350px;
   height: 18px;
@@ -117,11 +127,3 @@
   z-index: 9;
   background: rgba(0, 0, 0, 0.8);
   text-align: center; }
-  #OpsEditor .ops-process:not(.has-progess) .process-info, #OpsEditor .ops-process:not(.has-progess) .progress {
-    display: none; }
-  #OpsEditor .ops-process.has-progess .loading-spinner {
-    display: none; }
-  #OpsEditor .ops-process.rolling-back .processing {
-    display: none; }
-  #OpsEditor .ops-process.rolling-back .rolling-back-content {
-    display: block; }

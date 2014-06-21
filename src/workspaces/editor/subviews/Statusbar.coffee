@@ -22,36 +22,29 @@ define [
       className: 'info'
       visible: true
       events:
-        update: -> [ { obj: workspace.opsModel, event: 'jsonDataSaved'} ]
+        update: -> [ { obj: null, event: 'jsonDataSaved'} ]
 
-
-      update: ( $ ) ->
-        # 1.set current time
+      update: ( $, workspace ) ->
         save_time = jQuery.now() / 1000
 
-        # 2.clear interval
-        clearInterval @timer
-
-        # 3.set textTime
-        $item    = $('.stack-save-time')
-        $item.text MC.intervalDate save_time
-        $item.attr 'data-save-time', save_time
-
-        # 4.loop
         @timer = setInterval ()->
           $item    = $('.stack-save-time')
-          $item.text MC.intervalDate $item.attr 'data-save-time'
-        , 500
-        #
+          new_interval_time = MC.intervalDate save_time
+          $item.text new_interval_time if $item.text() isnt new_interval_time
+        , 1000
+
         null
+
       click: ( event ) ->
         null
+
+      remove: -> clearInterval @timer
     }
 
     {
       name: 'ta'
       className: 'status-bar-btn'
-      visible: ( toggle) ->
+      visible: ( toggle, workspace ) ->
         mode = workspace.design.mode()
         # hide
         if mode in [ 'app', 'appview' ]
@@ -62,6 +55,8 @@ define [
         toggle?(isVisible)
         isVisible
 
+      changeVisible: true
+
       click: ( event ) ->
         btnDom = $(event.currentTarget)
         currentText = 'Validate'
@@ -70,7 +65,8 @@ define [
         setTimeout () ->
             MC.ta.validAll()
             btnDom.text(currentText)
-            require [ 'component/trustedadvisor/main' ], ( trustedadvisor_main ) -> trustedadvisor_main.loadModule 'statusbar', null
+            require [ 'component/trustedadvisor/main' ],
+              ( trustedadvisor_main ) -> trustedadvisor_main.loadModule 'statusbar', null
         , 50
 
     }
@@ -78,9 +74,14 @@ define [
     {
       name: 'state'
       className: 'status-bar-btn'
-      visible: ( toggle ) ->
+      visible: ( toggle, workspace ) ->
         mode = workspace.design.mode()
-        appStoped = workspace.opsModel.testState( OpsModel.State.Stopped )
+        appStoped = _.every [ OpsModel.State.Updating
+                              OpsModel.State.Running
+                              OpsModel.State.Saving ], ( state ) ->
+
+          not workspace.opsModel.testState( state )
+
         isVisible = false
 
         if mode in ['app', 'appedit']
@@ -91,20 +92,19 @@ define [
         toggle?(isVisible)
         isVisible
 
-
-
       events:
-        changeVisible: [ { obj: ide_event, event: ide_event.UPDATE_APP_STATE} ]
         update: [ { obj: ide_event, event: ide_event.UPDATE_STATE_STATUS_DATA} ]
 
+      changeVisible: true
 
-      update: ( $ ) ->
-        data = @renderData()
+
+      update: ( $, workspace ) ->
+        data = @renderData true, workspace
         $( '.state-success b' ).text data.successCount
         $( '.state-failed b' ).text data.failCount
 
-      renderData: () ->
-        if not @visible() then return {}
+      renderData: ( visible, @workspace ) ->
+        if not visible then return {}
 
         stateList = App.WS.collection.status.find().fetch()
         succeed = failed = 0
@@ -137,95 +137,127 @@ define [
 # Function Inside  #
 # Don't care #
 
-  workspace = null
-
   itemView =  Backbone.View.extend
     tagName: 'li'
     initialize: () ->
       _.bindAll @, 'render', 'toggle'
+      # Store event will be offListen and remove method of item
+      # When the statusBar will be removed
+      @clearGarbage = []
+
+      # if an item has changeVisible it's `update` method will push to needUpdate
+      # and it will triggered by update method
+      @needUpdate = []
+
     render: ->
       @$el.html @template @data
       @
     toggle: (showOrHide) ->
       @$el.toggle showOrHide
 
-    clearGarbage: []
-
     remove: () ->
       @$el.remove()
       @stopListening()
       for garbage in @clearGarbage
-        garbage()
+        if _.isArray garbage
+          garbage[1].apply garbage[0], garbage.slice(2)
+        else
+          garbage()
+
+      # Disallocate
+      @clearGarbage = []
+      @needUpdate = []
       @
+
+    update: () ->
+      for needUpdate in @needUpdate
+        needUpdate()
+      @
+
 
 
 
   Backbone.View.extend
 
     initialize : (options)->
-      #@listenTo @opsModel, 'jsonDataSaved', @updateDisableItems
       workspace = @workspace = options.workspace
+      @itemViews = []
+      null
 
-    itemViews: []
+    ready: false
 
     render : ()->
       @setElement @workspace.view.$el.find(".OEPanelBottom").html template.frame()
       @renderItem()
       @
 
-    renderItem: () ->
-      that = @
-
-      for item, index in items.reverse()
+    bindItem: ->
+      for item, index in jQuery.extend( true, [], items ).reverse()
         view = new itemView()
         view.delegateEvents click: item.click
         view.template = template[ item.name ]
-        view.data = item.renderData?() or {}
 
         view.$el.addClass item.className
 
+        wrap$ = _.bind view.$, view
+        wrapToggle = _.bind view.toggle, view
+
+        wrapVisible = _.bind item.visible, item, wrapToggle, @workspace if _.isFunction item.visible
+        wrapUpdate = _.bind item.update, item, wrap$, @workspace if _.isFunction item.update
+
         for type, event of item.events
-          if not _.isArray(event) then continue
+          event = event() if _.isFunction event
+          continue if not _.isArray(event)
 
           for e in event
             if type is 'update'
-              wrap$ = _.bind view.$, view
-              wrapUpdate = _.bind item.update, item, wrap$
-
               if e.obj is ide_event
                 ide_event.onLongListen e.event, wrapUpdate
-                view.clearGarbage.push -> ide_event.offListen e.event, wrapUpdate
+                view.clearGarbage.push [ ide_event, ide_event.offListen, e.event, wrapUpdate ]
               else
-                view.listenTo e.obj, e.event, wrapUpdate
-            else if type is 'changeVisible'
-                wrapToggle = _.bind view.toggle, view
-                wrapVisible = _.bind item.visible, item, wrapToggle
+                view.listenTo e.obj or @workspace.opsModel, e.event, wrapUpdate
 
-              if e.obj is ide_event
-                ide_event.onLongListen e.event, wrapVisible
-                view.clearGarbage.push -> ide_event.offListen e.event, wrapVisible
-              else
-                view.listenTo e.obj, e.event, wrapVisible
-
+        if item.changeVisible
+          view.needUpdate.push wrapVisible if item.visible
+          view.needUpdate.push wrapUpdate if item.update
 
         if _.isFunction item.visible
-          item.visible view.toggle
+          isVisible = item.visible view.toggle, @workspace
         else
           view.toggle item.visible
+          isVisible = item.visible
+
+        view.data = item.renderData?( isVisible, @workspace ) or {}
+
+        view.clearGarbage.push _.bind item.remove, item if item.remove
 
         @itemViews.push view
 
-        null
+      null
 
+    renderItem: () ->
+      that = @
 
+      if not @ready
+        @bindItem()
+        @ready = true
+
+      for view in @itemViews
         @$('ul').append view.render().el
-        @
 
-      remove: () ->
-        @$el.remove()
-        @stopListening()
-        for view in @itemViews
-          view.remove()
-        @
+      @
+
+    update: ->
+      for view in @itemViews
+        view.update()
+
+    remove: () ->
+      @$el.remove()
+      @stopListening()
+
+      for view in @itemViews
+        view.remove()
+
+      @
 
 

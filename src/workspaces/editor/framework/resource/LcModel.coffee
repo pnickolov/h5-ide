@@ -43,9 +43,12 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
 
       ComplexResModel.call( this, attr, option )
 
+    privacyAttrs: [ '__parent', '__connections', 'x', 'y' ]
 
     clone: ->
+      isRun = !!@get 'appId'
       dolly = new Model null, clone: true
+
       @addBrother dolly
 
       for conn in @connections()
@@ -58,6 +61,7 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
 
     syncBorthersConn: ( conn, add ) ->
       if conn.type is 'ElbAmiAsso' then return
+      if conn.type is 'SgRuleLine' then return
 
       syncTarget = []
 
@@ -99,8 +103,7 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
       brother.stopListening()
 
     getContext: ( attr ) ->
-      exception = [ '__parent', '__connections', 'x', 'y' ]
-      if @__bigBrother and attr not in exception and not (_.intersection _.keys(exception), attr).length
+      if @__bigBrother and attr not in @privacyAttrs and not (_.intersection _.keys(@privacyAttrs), attr).length
         return @__bigBrother
 
       @
@@ -193,6 +196,7 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
       newName
 
     isRemovable : () ->
+
       if @design().modeIsAppEdit() and @get("appId")
         return error : lang.ide.CVS_MSG_ERR_DEL_LC
 
@@ -201,20 +205,21 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
         ($('#state-editor-model').is(':visible') and $('#state-editor-model .state-list .state-item').length >= 1)
           return MC.template.NodeStateRemoveConfirmation(name: @get("name"))
 
-      true
+      return true if @__brothers.length > 0 or @isClone()
+      sprintf lang.ide.CVS_CFM_DEL_LC, @get( 'name' )
+
 
     isDefaultTenancy : ()-> true
 
     # Use by CanvasElement(change members to groupMembers)
     groupMembers : ()->
-      resource_list = CloudResources(constant.RESTYPE.LC, Design.instance().region())?.toJSON()
+      resource_list = CloudResources(constant.RESTYPE.ASG, Design.instance().region())
       if not resource_list then return []
 
-      resource = resource_list[ @parent().get("appId") ]
-
-      if resource and resource.Instances and resource.Instances.member
+      resource = resource_list.get(@parent().get("appId"))?.toJSON()
+      if resource and resource.Instances and resource.Instances.length
         amis = []
-        for i in resource.Instances.member
+        for i in resource.Instances
           amis.push {
             id    : i.InstanceId
             appId : i.InstanceId
@@ -273,57 +278,25 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
 
       null
 
-    getStateData : () ->
-      @get("state")
-
-    setStateData : (stateAryData) ->
-      @set("state", stateAryData)
-
-    setKey: ( keyName, defaultKey ) ->
-      KpModel = Design.modelClassForType( constant.RESTYPE.KP )
-      defaultKp = KpModel.getDefaultKP()
-
-      if defaultKey
-        if defaultKp
-          defaultKp.assignTo( this )
-        else
-          console.error "No DefaultKP found when initialize InstanceModel"
-      else
-        kp = @connectionTargets( "KeypairUsage" )[0]
-        kp and kp.dissociate @
-        @set 'keyName', keyName
-
-
-    getKeyName: ->
-      kp = @connectionTargets( "KeypairUsage" )[0]
-
-      if kp
-        if kp.isDefault() then '$DefaultKeyPair' else kp.get('name')
-      else
-         @get( 'keyName' ) or 'No Key Pair'
-
-    isDefaultKey: ->
-      kp = @connectionTargets( "KeypairUsage" )[0]
-      kp and kp.isDefault()
-
-    isNoKey: ->
-      kp = @connectionTargets( "KeypairUsage" )[0]
-      not kp and not @get( 'keyName' )
-
-
-    setAmi                     : InstanceModel.prototype.setAmi
-    getAmi                     : InstanceModel.prototype.getAmi
-    getOSFamily                : InstanceModel.prototype.getOSFamily
-    setInstanceType            : InstanceModel.prototype.setInstanceType
-    initInstanceType           : InstanceModel.prototype.initInstanceType
-    isEbsOptimizedEnabled      : InstanceModel.prototype.isEbsOptimizedEnabled
-    getBlockDeviceMapping      : InstanceModel.prototype.getBlockDeviceMapping
-    getAmiRootDevice           : InstanceModel.prototype.getAmiRootDevice
-    getAmiRootDeviceName       : InstanceModel.prototype.getAmiRootDeviceName
-    getAmiRootDeviceVolumeSize : InstanceModel.prototype.getAmiRootDeviceVolumeSize
-    getInstanceType            : InstanceModel.prototype.getInstanceType
-    getInstanceTypeConfig      : InstanceModel.prototype.getInstanceTypeConfig
-    getInstanceTypeList        : InstanceModel.prototype.getInstanceTypeList
+    getStateData                : InstanceModel.prototype.getStateData
+    setStateData                : InstanceModel.prototype.setStateData
+    setKey                      : InstanceModel.prototype.setKey
+    getKeyName                  : InstanceModel.prototype.getKeyName
+    isDefaultKey                : InstanceModel.prototype.isDefaultKey
+    isNoKey                     : InstanceModel.prototype.isNoKey
+    setAmi                      : InstanceModel.prototype.setAmi
+    getAmi                      : InstanceModel.prototype.getAmi
+    getOSFamily                 : InstanceModel.prototype.getOSFamily
+    setInstanceType             : InstanceModel.prototype.setInstanceType
+    initInstanceType            : InstanceModel.prototype.initInstanceType
+    isEbsOptimizedEnabled       : InstanceModel.prototype.isEbsOptimizedEnabled
+    getBlockDeviceMapping       : InstanceModel.prototype.getBlockDeviceMapping
+    getAmiRootDevice            : InstanceModel.prototype.getAmiRootDevice
+    getAmiRootDeviceName        : InstanceModel.prototype.getAmiRootDeviceName
+    getAmiRootDeviceVolumeSize  : InstanceModel.prototype.getAmiRootDeviceVolumeSize
+    getInstanceType             : InstanceModel.prototype.getInstanceType
+    getInstanceTypeConfig       : InstanceModel.prototype.getInstanceTypeConfig
+    getInstanceTypeList         : InstanceModel.prototype.getInstanceTypeList
 
     serialize : ()->
       if @isClone()
@@ -451,6 +424,7 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
         KP.assignTo( model )
       else
         model.set 'keyName', data.resource.KeyName
+
 
       null
   }

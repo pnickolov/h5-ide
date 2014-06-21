@@ -73,12 +73,12 @@ define [
       OpsEditorBase.prototype.cleanup.call this
 
       # If the OpsModel doesn't exist in server, we would destroy it when the editor is closed.
-      if not @opsModel.isPresisted()
+      if not @opsModel.isPersisted()
         @opsModel.remove()
       return
 
     isModified : ()->
-      if not @opsModel.isPresisted() then return true
+      if not @opsModel.isPersisted() then return true
       @design && @design.isModified()
 
   StackEditor

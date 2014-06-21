@@ -81,8 +81,6 @@ define [
       @toolbar.remove()
       @propertyPanel.remove()
 
-      @removeSubviews()
-
       Backbone.View.prototype.remove.call this
       return
 
@@ -114,7 +112,4 @@ define [
     recoverSubviews : ()-> return
     # Called when the OpsEditor sleeps
     backupSubviews  : ()-> return
-
-    # Called when the OpsEditor is closed.
-    removeSubviews   : ()-> return
   }

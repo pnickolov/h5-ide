@@ -207,12 +207,12 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
       width        : 13
       height       : 13
 
-      cooldown : 300
-      capacity : 1
-      minSize  : 1
-      maxSize  : 2
+      cooldown : "300"
+      capacity : "1"
+      minSize  : "1"
+      maxSize  : "2"
 
-      healthCheckGracePeriod : 300
+      healthCheckGracePeriod : "300"
       healthCheckType        : "EC2"
 
       terminationPolicies : [ "Default" ]
@@ -562,12 +562,12 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
 
         parent : resolve( MC.extractID( layout_data.groupUId ) )
 
-        cooldown               : data.resource.DefaultCooldown
-        capacity               : data.resource.DesiredCapacity
-        minSize                : data.resource.MinSize
-        maxSize                : data.resource.MaxSize
+        cooldown               : String(data.resource.DefaultCooldown)
+        capacity               : String(data.resource.DesiredCapacity)
+        minSize                : String(data.resource.MinSize)
+        maxSize                : String(data.resource.MaxSize)
         healthCheckType        : data.resource.HealthCheckType
-        healthCheckGracePeriod : data.resource.HealthCheckGracePeriod
+        healthCheckGracePeriod : String(data.resource.HealthCheckGracePeriod)
         terminationPolicies    : data.resource.TerminationPolicies
         groupName              : data.resource.AutoScalingGroupName
 

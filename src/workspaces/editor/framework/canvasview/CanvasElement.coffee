@@ -343,7 +343,7 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "CloudResourc
         name    : name
         appId   : @model.get("appId")
         state   : state || ""
-        deleted : if resource_list[ @model.get("appId") ] then "" else " deleted"
+        deleted : if resource_list.get(@model.get("appId")) then "" else " deleted"
       }]
 
       list.id   = id
@@ -352,12 +352,12 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "CloudResourc
       list = []
       list.id   = @model.parent().id
       list.name = @model.parent().get("name")
-
     for member, idx in @model.groupMembers()
 
       state = ""
       if @type is constant.RESTYPE.INSTANCE or @type is constant.RESTYPE.LC
-        instance_data = resource_list[ member.appId ]
+        resource_list = CloudResources(constant.RESTYPE.INSTANCE, @model.design().region())
+        instance_data = resource_list.get(member.appId)?.toJSON()
         state = if instance_data then instance_data.instanceState.name  else "unknown"
 
       list.push {
@@ -365,7 +365,7 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "CloudResourc
         name    : name
         appId   : member.appId
         state   : state
-        deleted : if not @model.design().modeIsStack() and not resource_list[ @model.get("appId") ] then " deleted" else ""
+        deleted : if not @model.design().modeIsStack() and not resource_list.get(@model.get("appId")) then " deleted" else ""
       }
 
     list
@@ -543,7 +543,7 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "CloudResourc
       else if m.get("appId").indexOf("vgw-") is 0
         #vgw            state: pending | available | deleting | deleted
         #    attachment.state: attaching | attached | detaching | detached
-        if not ( data.get("state") is "available" and data.get("attachmentState") is "attached" and data.get("vpcId") is m.parent().get("appId") )
+        if not ( data.get("state") is "available" and data.get("attachmentState") in ["attaching","attached"] and data.get("vpcId") is m.parent().get("appId") )
           CanvasManager.addClass el, "deleted"
 
       else if m.get("appId").indexOf("cgw-") is 0

@@ -173,15 +173,11 @@ define [ 'MC', 'constant', 'state_model', 'CloudResources', "Design", 'backbone'
 
 			layoutOSType = ''
 			cachedAmi = Design.instance().component(compData.uid).get('cachedAmi')
-			if cachedAmi
-				layoutOSType = cachedAmi.osType
+			layoutOSType = cachedAmi.osType if cachedAmi
 
-				osType = imageObj.get('osType')
+			if imageObj
 
-				if not imageObj
-					imageObj = {}
-
-				osType = imageObj.osType or layoutOSType
+				osType = imageObj.get('osType') or layoutOSType
 
 				linuxDistroRange = ['centos', 'redhat',  'rhel', 'ubuntu', 'debian', 'fedora', 'gentoo', 'opensuse', 'suse', 'sles', 'amazon', 'amaz']
 
@@ -553,12 +549,11 @@ define [ 'MC', 'constant', 'state_model', 'CloudResources', "Design", 'backbone'
 
 		getResState: (resId) ->
 
-			resObj = CloudResources(@get("resModel").type, Design.instance().region()).get(resId)
+			# CloudResources(@get("resModel").type, Design.instance().region()).get(resId)?.attributes
+			resModel = CloudResources('AWS.EC2.Instance').get(resId)
 			resState = 'unknown'
-			if resObj
-				resObj = resObj.attributes
-				if resObj.instanceState and resObj.instanceState.name
-					resState = resObj.instanceState.name
+			if resModel
+				resState = resModel.get('instanceState')?.name
 			@set('resState', resState)
 			null
 
@@ -679,7 +674,7 @@ define [ 'MC', 'constant', 'state_model', 'CloudResources', "Design", 'backbone'
 						$.each CloudResources(constant.RESTYPE.ASG, Design.instance().region()).toJSON(), (idx, resObj) ->
 							if resObj and resObj.AutoScalingGroupName and resObj.Instances
 								if resObj.AutoScalingGroupName is asgName
-									$.each resObj.Instances.member, (idx, instanceObj) ->
+									$.each resObj.Instances, (idx, instanceObj) ->
 										instanceId = instanceObj.InstanceId
 										dataAry.push({
 											res_id: instanceId,

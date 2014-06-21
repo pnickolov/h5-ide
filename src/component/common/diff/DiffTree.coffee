@@ -6,11 +6,28 @@ define [], () ->
         # option.filterMap = {} if not option.filterMap
 
         option.filterMap = {
+            'type': true
+            'uid': true
+            'name': true
+            'index': true
+            'number': true
+            'serverGroupUid': true
+            'serverGroupName': true
+            'state': true
             'resource.PrivateIpAddressSet.n.AutoAssign': true,
-            'resource.AssociatePublicIpAddress': true
+            'resource.AssociatePublicIpAddress': true,
+            'resource.KeyName': true,
+            'resource.AssociationSet.n.RouteTableAssociationId': true
+            'resource.AssociationSet.n.NetworkAclAssociationId': true
+            'resource.BlockDeviceMapping': true
+            'resource.VolumeSize': true
+            'resource.GroupDescription': true
+            'resource.ListenerDescriptions.n.Listener.SSLCertificateId' : true
+            'resource.Attachment.AttachmentId': true
         }
 
         isArray = (value) ->
+            
             return value and typeof value is 'object' and value.constructor is Array
 
         typeofReal = (value) ->
@@ -32,12 +49,25 @@ define [], () ->
 
         _compare = (a, b, key, path, resultJSON) ->
 
+            # hack for ASG key VPCZoneIdentifier
+            if key is 'VPCZoneIdentifier'
+
+                aAry = a.split(',')
+                bAry = b.split(',')
+                aAry = _.map aAry, (ref) ->
+                    return $.trim(ref)
+                bAry = _.map bAry, (ref) ->
+                    return $.trim(ref)
+
+                a = aAry
+                b = bAry
+
             if path
                 
                 path = path.concat([key]) if key
                 if path.length > 2
-                    attrPathAry = path.slice(2)
 
+                    attrPathAry = path.slice(2)
                     attrPathAry = _.map attrPathAry, (path) ->
                         num = Number(path)
                         return 'n' if num >= 0
@@ -119,6 +149,20 @@ define [], () ->
             else
 
                 path.length = 0 if path
+
+                # ignore number type diff
+
+                if typeofReal(a) is 'number'
+                    a = String(a)
+                
+                if typeofReal(b) is 'number'
+                    b = String(b)
+
+                if typeofReal(a) is 'boolean'
+                    a = String(a)
+
+                if typeofReal(b) is 'boolean'
+                    b = String(b)
 
                 if a isnt b
                     haveDiff = true

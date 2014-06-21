@@ -61,7 +61,7 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
     isDefault : ()-> @attributes.name is "DefaultSG"
     isVisual  : ()-> false
 
-    createIpTarget : ( ipAddress )-> new SgTargetModel( ipAddress )
+    createIpTarget : ( ipAddress )-> new SgTargetModel( MC.getValidCIDR ipAddress )
 
     getNewName : ()->
       myKinds = Design.modelClassForType( @type ).allObjects()
@@ -300,7 +300,7 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
         appId     : data.resource.GroupId
         groupName : data.resource.GroupName
 
-        description : if data.name is "DefaultSG" then "default VPC security group" else data.resource.GroupDescription
+        description : data.resource.GroupDescription
       }, { isDeserialize : true} )
 
       rules = []

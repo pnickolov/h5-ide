@@ -11,7 +11,7 @@ define [
 
   class AppEditor extends StackEditor
 
-    title      : ()-> (@design || @opsModel).get("name") + " - app"
+    title      : ()-> ((@design || @opsModel).get("name") || @opsModel.get("importVpcId")) + " - app"
     createView : ()-> new AppView({workspace:this})
     tabClass   : ()->
       switch @opsModel.get("state")
@@ -48,32 +48,49 @@ define [
 
         if self.opsModel.isImported() then return
 
+        if not self.opsModel.testState( OpsModel.State.Running ) then return
+
+        oldJson = self.opsModel.getJsonData()
         newJson = self.opsModel.generateJsonFromRes()
+
         self.differ = new ResDiff({
-          old : self.opsModel.getJsonData()
+          old : oldJson
           new : newJson
+          callback : ( confirm )->
+            if confirm
+              self.opsModel.saveApp( self.design.serialize() )
+            else
+              self.opsModel.__setJsonData( oldJson )
+              self.remove()
         })
-        result = self.differ.getChangeInfo()
-        if result.hasResChange
-          # return self.opsModel.saveApp( newJson )
-        else
-          self.differ = undefined
+
+        if self.differ.getChangeInfo().hasResChange
+          self.opsModel.__setJsonData( newJson )
         return
+
+      , ( err )->
+        if err.error is 286 # VPC not exist
+          self.view.showVpcNotExist self.opsModel.get("name"), ()-> self.opsModel.terminate( true )
+          self.remove()
+          return
+        throw err
 
     isModified : ()-> @isAppEditMode() && @design && @design.isModified()
 
     isAppEditMode : ()-> !!@__appEdit
 
     initDesign : ()->
-      if @opsModel.isImported() or (@differ && @differ.needUpdateLayout)
+      if @opsModel.isImported() or (@differ && @differ.getChangeInfo().needUpdateLayout)
         MC.canvas.analysis()
+        # Clear the thumbnail of the opsmodel, then it will be re-generated.
+        @opsModel.saveThumbnail()
 
       @design.finishDeserialization()
       return
 
     initEditor : ()->
       # Try show differ dialog
-      if @differ
+      if @differ and @differ.getChangeInfo().hasResChange
         @differ.render()
         @differ = null
 
@@ -99,19 +116,23 @@ define [
 
       @__appEdit = false
       if modfied
-        # Layout and component changes, need to construct a new Design.
-        @view.emptyCanvas()
-
-        @stopListening @design
-        @design = new Design( @opsModel )
-        @listenTo @design, "change:name", @updateTab
-
-        @initDesign()
+        @recreateDesign()
       else
         @design.setMode( Design.MODE.App )
 
       @view.switchMode( false )
       true
+
+    recreateDesign : ()->
+      # Layout and component changes, need to construct a new Design.
+      @view.emptyCanvas()
+
+      @stopListening @design
+      @design = new Design( @opsModel )
+      @listenTo @design, "change:name", @updateTab
+
+      @initDesign()
+      return
 
     applyAppEdit : ( modfiedData, force )->
       modfied = modfiedData or @design.isModified( undefined, true )
@@ -126,20 +147,14 @@ define [
 
       self = @
       @__applyingUpdate = true
+      fastUpdate = !modfied.component
 
-      @opsModel.update( modfied.newData, !modfied.component ).then ()->
-        self.__applyingUpdate = false
-        self.__appEdit = false
-
-        self.view.stopListening self.opsModel, "change:progress", self.view.updateProgress
-
-        self.design.setMode( Design.MODE.App )
-        self.view.showUpdateStatus()
-        self.view.switchMode( false )
-
-        self.saveThumbnail()
-
-        return
+      @opsModel.update( modfied.newData, fastUpdate ).then ()->
+        if fastUpdate
+          self.onAppEditDone()
+        else
+          self.view.showUpdateStatus( "", true )
+          CloudResources( "OpsResource", self.opsModel.getVpcId() ).init( self.opsModel.get("region") ).fetchForce().then ()-> self.onAppEditDone()
 
       , ( err )->
         self.__applyingUpdate = false
@@ -154,6 +169,21 @@ define [
       @view.listenTo @opsModel, "change:progress", @view.updateProgress
 
       true
+
+    onAppEditDone : ()->
+      @__appEdit = @__applyingUpdate = false
+
+      @view.stopListening @opsModel, "change:progress", @view.updateProgress
+      @recreateDesign()
+
+      @design.setMode( Design.MODE.App )
+      @view.showUpdateStatus()
+      @view.switchMode( false )
+
+      @saveThumbnail()
+
+      @view.showUpdateStatus()
+      return
 
     onOpsModelStateChanged : ()->
       if not @isInited() then return

@@ -20,8 +20,8 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
 
         @set data
 
-        resource_list = CloudResources(constant.RESTYPE.ASG, Design.instance().region())
-        asg_data = resource_list.get(asg_comp.get('appId'))?.toJSON()
+        region = Design.instance().region()
+        asg_data = CloudResources(constant.RESTYPE.ASG, region).get(asg_comp.get('appId'))?.toJSON()
 
         if asg_data
             @set 'hasData', true
@@ -29,10 +29,10 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
             @set 'arn', asg_data.id
             @set 'createTime', asg_data.CreatedTime
 
-            if asg_data.TerminationPolicies and asg_data.TerminationPolicies.member
-                @set 'term_policy_brief', asg_data.TerminationPolicies.member.join(" > ")
+            if asg_data.TerminationPolicies and asg_data.TerminationPolicies
+                @set 'term_policy_brief', asg_data.TerminationPolicies.join(" > ")
 
-            @handleInstance asg_comp, CloudResources(constant.RESTYPE.INSTANCE, Design.instance().region())?.toJSON(), asg_data
+            @handleInstance asg_comp, asg_data
 
         if not @isAppEdit
             if not asg_data
@@ -42,8 +42,8 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
             @set 'healCheckType', asg_data.HealthCheckType
             @set 'healthCheckGracePeriod', asg_data.HealthCheckGracePeriod
 
-            @handlePolicy asg_comp, CloudResources(constant.RESTYPE.SP , Design.instance().region())?.toJSON(), asg_data
-            @handleNotify asg_comp, CloudResources(constant.RESTYPE.NC, Design.instance().region())?.toJSON(), asg_data
+            @handlePolicy asg_comp, asg_data
+            @handleNotify asg_comp, asg_data
 
 
         else
@@ -70,7 +70,6 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
             # Policies
             @set "policies", _.map data.policies, ( p )->
                 data = $.extend true, {}, p.attributes
-                data.cooldown = Math.round( data.cooldown / 60 )
                 data.alarmData.period = Math.round( data.alarmData.period / 60 )
                 data
 
@@ -79,17 +78,16 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
 
         null
 
-    handleInstance: ( asg_comp, resource_list, asg_data ) ->
+    handleInstance: ( asg_comp, asg_data ) ->
         # Get generated instances
         instance_count  = 0
         instance_groups = []
         instances_map   = {}
 
-        console.debug asg_comp, resource_list, asg_data
-        if asg_data.Instances and asg_data.Instances.member
-            instance_count = asg_data.Instances.member.length
+        if asg_data.Instances and asg_data.Instances
+            instance_count = asg_data.Instances.length
 
-            for instance, idx in asg_data.Instances.member
+            for instance, idx in asg_data.Instances
                 ami =
                     status : if instance.HealthStatus is 'Healthy' then 'green' else 'red'
                     healthy: instance.HealthStatus
@@ -113,9 +111,10 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
         @set 'instance_groups', instance_groups
         @set 'instance_count',  instance_count
 
-    handleNotify: ( asg_comp, resource_list, asg_data ) ->
+    handleNotify: ( asg_comp, asg_data ) ->
         # Get notifications
-        notifications = resource_list.NotificationConfigurations
+        region       = Design.instance().region()
+        notification = CloudResources(constant.RESTYPE.NC, region).findWhere({AutoScalingGroupName:asg_data.AutoScalingGroupName})
 
         sendNotify = false
         nc_array = [false, false, false, false, false]
@@ -126,23 +125,25 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
             "autoscaling:EC2_INSTANCE_TERMINATE_ERROR" : 3
             "autoscaling:TEST_NOTIFICATION" : 4
 
-        if notifications
-            for notification in notifications
-                if notification.AutoScalingGroupName is asg_data.AutoScalingGroupName
-                    nc_array[ nc_map[ notification.NotificationType ] ] = true
-                    sendNotify = true
+        if notification
+          for t in notification.get("NotificationType")
+            nc_array[ nc_map[ t ] ] = true
+            sendNotify = true
 
         @set 'notifies',   nc_array
         @set 'sendNotify', sendNotify
 
-    handlePolicy: ( asg_comp, resource_list, asg_data ) ->
+    handlePolicy: ( asg_comp, asg_data ) ->
         # Get policy
         policies = []
         cloudWatchPolicyMap = {}
 
+        region = Design.instance().region()
+        spCln  = CloudResources(constant.RESTYPE.SP, region)
+        cwCln  = CloudResources(constant.RESTYPE.CW, region)
+
         for sp in asg_comp.get("policies")
-            comp_uid = sp.id
-            policy_data = resource_list[ sp.get 'appId' ]
+            policy_data = spCln.get( sp.get 'appId' )?.toJSON()
             if not policy_data
                 continue
 
@@ -154,17 +155,15 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
                 name       : policy_data.PolicyName
                 arn        : sp.get 'appId'
 
-            #cloudWatchPolicyMap[ "#{comp.get 'name'}-alarm" ] = policy
-
-            alarm_data  = resource_list[ sp.get("alarmData").appId ]
+            alarm_data  = cwCln.get( sp.get("alarmData").appId )?.toJSON()
             if alarm_data
                 actions_arr = [ alarm_data.InsufficientDataActions, alarm_data.OKActions, alarm_data.AlarmActions ]
                 trigger_arr = [ 'INSUFFICIANT_DATA', 'OK', 'ALARM' ]
 
                 for actions, idx in actions_arr
-                    if not actions
-                        continue
-                    for action in actions.member
+                    if not actions then continue
+
+                    for action in actions
                         if action isnt policy.arn
                             continue
 
@@ -267,7 +266,6 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
 
     getPolicy : ( uid )->
       data = $.extend true, {}, Design.instance().component( uid ).attributes
-      data.cooldown = Math.round( data.cooldown / 60 )
       data.alarmData.period = Math.round( data.alarmData.period / 60 )
       data
 

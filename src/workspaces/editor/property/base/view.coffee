@@ -46,7 +46,29 @@ define [ 'constant',
 
     ###
 
+    trash = []
+    subViews = []
+
     PropertyView = Backbone.View.extend {
+
+
+        __addToTrash: ( garbage ) -> trash.push garbage if garbage not in trash
+
+        __clearTrash: ->
+            for t in trash
+                if _.isObject( t ) and t.remove
+                    t.__removeSubView()
+            trash = []
+            @
+
+        __removeSubView: ->
+            for subView in subViews
+                if _.isObject(subView) and _.isFunction(subView.remove) then subView.remove()
+
+            subViews = []
+
+        addSubView: ( view ) -> subViews.push view  if view not in subViews
+
 
         setTitle : ( title ) ->
             $("#OEPanelRight").find( if @_isSub then ".property-second-title" else ".property-title" ).text title
@@ -94,6 +116,8 @@ define [ 'constant',
             $input.parsley 'validate'
 
         _load : () ->
+            @__clearTrash()
+            @__addToTrash @
             # The module is loaded. Here we re-init the view.
 
             $panel = $("#OEPanelRight").find(".property-first-panel").find(".property-details")

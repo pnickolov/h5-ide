@@ -10,11 +10,15 @@
   <header class="processing">{{this}}<span class="process-info">0%</span></header>
   <header class="processing rolling-back-content">Rolling back...</header>
   <section class="loading-spinner"></section>
-  <div class="progress"> <div class="bar" style="width:0%;"></div> </div>
+  <section class="progress"> <div class="bar" style="width:0%;"></div> </section>
 </div>
 
 <!-- {{appUpdateStatus}} -->
 <div class="ops-process">
+{{#if loading}}
+  <header class="processing">Reloading data...</header>
+  <section class="loading-spinner"></section>
+{{else}}
   <header class="processing">{{#unless error}}App has updated successfully.{{else}}The app failed to update.{{/unless}}</header>
   {{#if error}}
   <div class="error-info-block">
@@ -27,6 +31,7 @@
   </div>
   {{/if}}
   <button class="btn btn-silver" id="processDoneBtn">Done</button>
+{{/if}}
 </div>
 
 <!-- {{toolbar.BtnActionPng}} -->
@@ -44,6 +49,7 @@
     <li class='item' data-id="1"><span class="icon-elbow">{{ i18n "TOOL_LBL_LINESTYLE_ELBOW" }}</span></li>
     <li class='item' data-id="2"><span class="icon-bezier-q">{{ i18n "TOOL_LBL_LINESTYLE_QUADRATIC_BELZIER" }}</span></li>
     <li class='item' data-id="3"><span class="icon-bezier-qt">{{ i18n "TOOL_LBL_LINESTYLE_SMOOTH_QUADRATIC_BELZIER" }}</span></li>
+    <li class='item' data-id="4"><span class="icon-hide-sg">{{ i18n "TOOL_LBL_LINESTYLE_HIDE_SG" }}</span></li>
   </ul>
 </div>
 
@@ -91,11 +97,7 @@
 </label>
 
 <!-- {{toolbar.BtnReloadStates}} -->
-{{#if reloadOn}}
-<button class="icon-reload tooltip btn btn-blue reload-states" data-original="Reload States" data-disabled="Initiating…"  data-tooltip="Instantly rerun all states in this app.">
-    Reload States
-</button>
-{{/if}}
+<button class="icon-reload tooltip btn btn-blue reload-states" data-original="Reload States" data-disabled="Initiating…"  data-tooltip="Instantly rerun all states in this app.">Reload States</button>
 
 <!-- {{confirm.enableState}} -->
 <div class="modal-text-wraper">
@@ -151,11 +153,16 @@
 <label for="ImportSaveAppName">App Name</label> <input id="ImportSaveAppName" class="input" value="{{name}}" type="string" autofocus> </div>
 <p>Now you can easily manage the resources and lifecycle of the app within VisualOps.</p>
 
+<!-- {{modal.confirmRemoveApp}} -->
+<p class="modal-text-major">VPC of this app has been deleted outside VisualOps.</p>
+<p class="modal-text-major">Do you want to remove the app?</p>
+
 <!-- {{saveAppToStack}} -->
 <p class="modal-text-minor">{{ i18n 'TOOL_POP_INTRO_1' }}</p>
 <p class="modal-text-minor">{{ i18n 'TOOL_POP_INTRO_2' }}</p>
 <div class="modal-center-align-helper">
     <div class="modal-control-group">
+        {{#if originStackExist}}
         <div id="replace_stack" style="padding: 10px 0">
             <div class="radio">
                 <input id="radio-replace-stack" type="radio" name="save-stack-type" checked>
@@ -178,5 +185,15 @@
                 <div id="stack-name-exist" class="hide" style="color: #ec3c38">{{i18n "TOOL_POP_STACK_NAME_ERROR"}}</div>
             </div>
         </div>
+        {{else}}
+        <div id="name_new_stack">
+            <input id="radio-new-stack" type="hidden" name="save-stack-type" checked>
+            <div style="padding: 10px 22px" class="radio-instruction">
+                <p>{{ i18n "TOOL_POP_SAVE_STACK_INSTRUCTION" }}</p>
+                <input class="input" id="modal-input-value" value="{{stackName}}" type="text" style="width: 400px"/>
+                <div id="stack-name-exist" class="hide" style="color: #ec3c38">{{i18n "TOOL_POP_STACK_NAME_ERROR"}}</div>
+            </div>
+        </div>
+        {{/if}}
     </div>
 </div>

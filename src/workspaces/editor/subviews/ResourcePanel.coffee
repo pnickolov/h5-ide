@@ -21,7 +21,7 @@ define [
   $( window ).on "resize", ()->
     if __resizeAccdTO then clearTimeout(__resizeAccdTO)
     __resizeAccdTO = setTimeout ()->
-      $("#OpsEditor").children(".OEPanelLeft").trigger("RECALC")
+      $("#OpsEditor").filter(":visible").children(".OEPanelLeft").trigger("RECALC")
     , 150
     return
 

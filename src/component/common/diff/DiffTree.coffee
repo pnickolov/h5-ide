@@ -22,6 +22,7 @@ define [], () ->
             'resource.BlockDeviceMapping': true
             'resource.VolumeSize': true
             'resource.GroupDescription': true
+            'resource.ListenerDescriptions.n.Listener.SSLCertificateId' : true
         }
 
         isArray = (value) ->

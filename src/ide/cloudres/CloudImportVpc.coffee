@@ -129,20 +129,29 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
       iamComp = @iams[ arn ]
       if iamComp then return iamComp
 
-      for aws_iam in @CrPartials( "IAM" ).where({Arn:arn}) || []
-        aws_iam = aws_iam.attributes
-        iamRes =
-          "CertificateBody" : ""
-          "CertificateChain": ""
-          "PrivateKey"      : ""
-          "ServerCertificateMetadata":
-            "Arn"                  : aws_iam.Arn
-            "ServerCertificateId"  : aws_iam.id
-            "ServerCertificateName": aws_iam.Name
-        iamComp = @add( "IAM", iamRes, aws_iam.Name )
-        @iams[ aws_iam.Arn ] = iamComp
-        return iamComp
-      return null
+      reg_iam=/arn:aws:iam::.*:server-certificate\/cf-test/g
+      if not arn.match(reg_iam)
+        console.error "[addIam] not a valid iam arn"
+        return null
+
+      tmpAry = arn.split(":")
+      name = tmpAry[tmpAry.length-1].replace("server-certificate/","")
+
+      iamRes =
+        "CertificateBody" : ""
+        "CertificateChain": ""
+        "PrivateKey"      : ""
+        "ServerCertificateMetadata":
+          "Arn"                  : arn
+          "ServerCertificateId"  : ""
+          "ServerCertificateName": name
+
+      iamComp = @add( "IAM", iamRes, name )
+      @iams[ arn ] = iamComp
+      return iamComp
+
+      # for aws_iam in @CrPartials( "IAM" ).where({Arn:arn}) || []
+      #   aws_iam = aws_iam.attributes
 
     addTopic : ( arn ) ->
       topicComp = @topics[ arn ]

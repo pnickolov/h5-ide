@@ -520,6 +520,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
           if state.completed
             toState = OpsModelState.Destroyed
           else
+            toState = OpsModelState.Stopped
             @attributes.terminateFail = false
             @set "terminateFail", true
         when "start"

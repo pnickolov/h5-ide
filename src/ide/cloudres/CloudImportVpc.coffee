@@ -811,7 +811,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
             "NetworkInterfaceId" : if i.networkInterfaceId and eniComp then CREATE_REF( eniComp, 'resource.NetworkInterfaceId' ) else ""
             "Origin"         : if i.gatewayId is "local" then i.origin else ""
           if i.gatewayId
-            xgw_in_route[route.GatewayId] = true
+            xgw_in_route[i.gatewayId] = true
             if i.gatewayId isnt "local" and gwComp
               if gwComp.type is "AWS.VPC.VPNGateway"
                 route.GatewayId = CREATE_REF( gwComp, 'resource.VpnGatewayId' )

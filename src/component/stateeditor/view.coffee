@@ -234,7 +234,7 @@ define [ 'event',
             if that.currentState is 'stack'
                 $logPanelToggle.hide()
 
-            else if that.currentState in ['app', 'appedit']
+            else if that.currentState in ['app']
                 currentAppState = Design.instance().get('state')
 
                 if currentAppState is 'Stopped'

@@ -1225,28 +1225,50 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
           continue
         cwRes.Dimensions = dimension
 
-        reg_asg = /arn:aws:autoscaling:.*:.*:scalingPolicy/g
-        reg_topic = /arn:aws:sns:.*:.*:.*/g
+        reg_sp    = /arn:aws:autoscaling:.*:scalingPolicy:/g
+        reg_topic = /arn:aws:sns:.*:.*/g
+
+      
+        #get valid alarmAction
+        validAlarmAction = []
+        hasSP = false
+        _.each aws_cw.AlarmActions, (e,key)->
+          if e.match(reg_topic)
+            #TOPIC
+            topicComp = me.addTopic(e)
+            if topicComp
+              validAlarmAction.push e
+          else if e.match(reg_sp)
+            #SP
+            spComp = me.sps[e]
+            if spComp
+              hasSP = true
+              validAlarmAction.push e
+
+        if not hasSP
+          #must has SP when convert CW, currently one CW has One SP
+          continue
 
         #convert AlarmActions to REF:
         alarmActionAry = []
-        _.each aws_cw.AlarmActions, (e,key)->
-          if reg_topic.test(e)
+        _.each validAlarmAction, (e,key)->
+          if e.match(reg_topic)
             #TOPIC
             topicComp = me.addTopic(e)
             if topicComp
               alarmActionAry.push CREATE_REF(topicComp, "resource.TopicArn")
-          else if reg_asg.test(e)
+          else if e.match(reg_sp)
             #SP
             spComp = me.sps[e]
             if spComp
               alarmActionAry.push CREATE_REF(spComp, "resource.PolicyARN")
+
         cwRes.AlarmActions = alarmActionAry
 
         #convert OKAction to REF:
         okActionAry = []
         _.each aws_cw.Okactions, (e,key)->
-          if reg_asg.test(e)
+          if e.match(reg_sp)
             spComp = me.sps[e]
             if spComp
               okActionAry.push CREATE_REF(spComp, "resource.PolicyARN")

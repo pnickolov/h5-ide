@@ -163,8 +163,9 @@ define [
       if @view
         @view.remove()
 
-      @design.unuse()
-      @design = null
+      if @design
+        @design.unuse()
+        @design = null
       return
 
     isInited : ()-> !!@__inited

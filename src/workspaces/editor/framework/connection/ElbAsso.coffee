@@ -132,7 +132,9 @@ define [ "constant", "../ConnectionModel", "i18n!nls/lang.js", "Design", "compon
       # Quick hack for disable elb connect to a running asg
       #
 
-      if (p1Comp.type is constant.RESTYPE.LC and p1Comp.get('appId')) or (p2Comp.type is constant.RESTYPE.LC and p2Comp.get('appId'))
+      if p1Comp.design().modeIsAppEdit() and
+          ((p1Comp.type is constant.RESTYPE.LC and p1Comp.get('appId')) or (p2Comp.type is constant.RESTYPE.LC and p2Comp.get('appId')))
+
         notification "error", lang.ide.NOTIFY_MSG_WARN_ASG_CAN_ONLY_CONNECT_TO_ELB_ON_LAUNCH
         return
       #

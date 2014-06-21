@@ -700,15 +700,14 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
 
         #attached ENI
         if aws_eni.attachment
-          aws_eni.attachment.deviceIndex = "" + aws_eni.attachment.deviceIndex
-          if aws_eni.attachment.deviceIndex isnt "0"
+          if not ( aws_eni.attachment.deviceIndex in [ "0", 0 ] )
             #eni0 no need attachmentId
             eniRes.Attachment.AttachmentId = aws_eni.attachment.attachmentId
 
           insComp = @instances[aws_eni.attachment.instanceId]
           if insComp
             eniRes.Attachment.InstanceId = CREATE_REF( insComp, 'resource.InstanceId' )
-            eniRes.Attachment.DeviceIndex = aws_eni.attachment.deviceIndex
+            eniRes.Attachment.DeviceIndex = String(if aws_eni.attachment.deviceIndex is 0 then '0' else aws_eni.attachment.deviceIndex)
 
         for ip in aws_eni.privateIpAddressesSet
           #AutoAssign set to false in app
@@ -722,7 +721,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
         eniComp = @add( "ENI", eniRes, TAG_NAME(aws_eni) )
         @enis[ aws_eni.id ] = eniComp
         #add external or unattached ENI to layout
-        if not aws_eni.attachment or aws_eni.attachment.deviceIndex isnt "0"
+        if not aws_eni.attachment or not ( aws_eni.attachment.deviceIndex in [ "0", 0 ] )
           @addLayout( eniComp, false, subnetComp )
       return
 
@@ -1126,7 +1125,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
         _.each aws_asg.Subnets, (e,key)->
           subnetComp = me.subnets[e]
           if (not addOriginal) and ( (origSubnetLayout and origSubnetLayout.groupUId is subnetComp.uid) or (not origSubnetLayout) )
-            #add original ASG layout
+            #add original ASG layout 
             me.addLayout asgComp, true, subnetComp
             addOriginal = true
           else
@@ -1241,7 +1240,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
         reg_sp    = /arn:aws:autoscaling:.*:scalingPolicy:/g
         reg_topic = /arn:aws:sns:.*:.*/g
 
-
+      
         #get valid alarmAction
         validAlarmAction = []
         hasSP = false

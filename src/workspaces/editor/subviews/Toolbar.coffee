@@ -107,9 +107,7 @@ define [
       @updateZoomButtons()
       return
 
-    setTbLineStyle : ( ls, attr )->
-      localStorage.setItem("canvas/lineStyle", attr[0] )
-      $canvas.updateLineStyle( attr[0] )
+    setTbLineStyle : ( ls, attr )-> $canvas.setLineStyle( attr[0] )
 
     saveStack : ( evt )->
       $( evt.currentTarget ).attr("disabled", "disabled")

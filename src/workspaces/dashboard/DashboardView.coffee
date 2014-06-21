@@ -45,6 +45,7 @@ define [
       'click #region-switch-list li'    : 'switchRegion'
       'click #region-resource-tab li'   : 'switchAppStack'
       'click .resource-tab'             : 'switchResource'
+      "click .global-resource-li"       : "gotoRegionResource"
 
       'click #ImportStack'     : 'importJson'
       'click #VisualizeVPC'    : 'visualizeVPC'
@@ -180,9 +181,16 @@ define [
     ###
       View logics
     ###
+    gotoRegionResource : ( evt )->
+      @gotoRegionFromMap( evt )
+      type = $(evt.currentTarget).parent().parent().attr("data-type")
+      $("#RegionResourceNav").children("[data-type='#{type}']").click()
+      return false
+
     gotoRegionFromMap : ( evt )->
       $tgt = $( evt.currentTarget )
-      region = $( evt.currentTarget ).closest("li").attr("id")
+      $li  = $( evt.currentTarget ).closest("li")
+      region = $li.attr("id") || $li.attr("data-region")
 
       $( "#region-switch-list li[data-region=#{region}]" ).click()
       Helper.scrollToResource()

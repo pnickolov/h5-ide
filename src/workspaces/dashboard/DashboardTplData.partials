@@ -37,35 +37,35 @@
 {{#if loading}}
 <div class="dashboard-loading"><div class="loading-spinner"></div></div>
 {{else}}
-<li class="instances">
+<li class="instances" data-type="INSTANCE">
   <hgroup><span class="resource-count">{{instances.totalCount}}</span><h5>{{i18n "DASH_LBL_RUNNING_INSTANCE"}}</h5></hgroup>
   <ul>{{#each instances}}<li data-region="{{region}}" class="global-resource-li">
     <span class="count">{{data.length}}</span>
     <h4>{{regionName}}</h4><h5>{{regionArea}}</h5>
   </li>{{/each}}</ul>
 </li>
-<li class="eips">
+<li class="eips" data-type="EIP">
   <hgroup><span class="resource-count">{{eips.totalCount}}</span><h5>{{i18n "DASH_LBL_ELASTIC_IP"}}</h5></hgroup>
   <ul>{{#each eips}}<li data-region="{{region}}" class="global-resource-li">
     <span class="count">{{data.length}}</span>
     <h4>{{regionName}}</h4><h5>{{regionArea}}</h5>
   </li>{{/each}}</ul>
 </li>
-<li class="volumes">
+<li class="volumes" data-type="VOL">
   <hgroup><span class="resource-count">{{volumes.totalCount}}</span><h5>{{i18n "DASH_LBL_VOLUME"}}</h5></hgroup>
   <ul>{{#each volumes}}<li data-region="{{region}}" class="global-resource-li">
     <span class="count">{{data.length}}</span>
     <h4>{{regionName}}</h4><h5>{{regionArea}}</h5>
   </li>{{/each}}</ul>
 </li>
-<li class="elbs">
+<li class="elbs" data-type="ELB">
   <hgroup><span class="resource-count">{{elbs.totalCount}}</span><h5>{{i18n "DASH_LBL_LOAD_BALANCER"}}</h5></hgroup>
   <ul>{{#each elbs}}<li data-region="{{region}}" class="global-resource-li">
     <span class="count">{{data.length}}</span>
     <h4>{{regionName}}</h4><h5>{{regionArea}}</h5>
   </li>{{/each}}</ul>
 </li>
-<li class="vpns">
+<li class="vpns" data-type="VPN">
   <hgroup><span class="resource-count">{{vpns.totalCount}}</span><h5>{{i18n "DASH_LBL_VPN"}}</h5></hgroup>
   <ul>{{#each vpns}}<li data-region="{{region}}" class="global-resource-li">
     <span class="count">{{data.length}}</span>

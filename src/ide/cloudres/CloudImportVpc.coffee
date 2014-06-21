@@ -768,6 +768,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
           rtbRes.AssociationSet.push asso
 
         #routeSet
+        xgw_in_route = {}
         for i in aws_rtb.routeSet
           if i.state isnt "active"
             continue
@@ -783,6 +784,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
             "NetworkInterfaceId" : if i.networkInterfaceId and eniComp then CREATE_REF( eniComp, 'resource.NetworkInterfaceId' ) else ""
             "Origin"         : if i.gatewayId is "local" then i.origin else ""
           if i.gatewayId
+            xgw_in_route[route.GatewayId] = true
             if i.gatewayId isnt "local" and gwComp
               if gwComp.type is "AWS.VPC.VPNGateway"
                 route.GatewayId = CREATE_REF( gwComp, 'resource.VpnGatewayId' )
@@ -795,7 +797,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
         #propagatingVgwSet
         for i in aws_rtb.propagatingVgwSet
           gwComp = @gateways[i.gatewayId]
-          if gwComp
+          if gwComp and xgw_in_route[i.gatewayId]
             rtbRes.PropagatingVgwSet.push CREATE_REF(gwComp, 'resource.VpnGatewayId' )
 
         rtbComp = @add( "RT", rtbRes, TAG_NAME(aws_rtb) )

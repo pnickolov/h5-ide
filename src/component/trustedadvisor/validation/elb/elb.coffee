@@ -32,7 +32,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js', '../../helper', 'CloudResources'],
 
 		# asg attached number
 		attachedASGNum = 0
-		elbNameRef = MC.aws.aws.genResRef(elbUID, 'resource.LoadBalancerName')
+		elbNameRef = MC.genResRef(elbUID, 'resource.LoadBalancerName')
 		_.each MC.canvas_data.component, (compObj) ->
 			compType = compObj.type
 			if compType is constant.RESTYPE.ASG
@@ -104,7 +104,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js', '../../helper', 'CloudResources'],
 
 	# 	# get attached asg array
 	# 	attachedASGAry = []
-	# 	elbNameRef = MC.aws.aws.genResRef(elbUID, 'resource.LoadBalancerName')
+	# 	elbNameRef = MC.genResRef(elbUID, 'resource.LoadBalancerName')
 	# 	_.each MC.canvas_data.component, (compObj) ->
 	# 		compType = compObj.type
 	# 		if compType is constant.RESTYPE.ASG
@@ -436,7 +436,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js', '../../helper', 'CloudResources'],
 							sslCertComp = MC.canvas_data.component[listenerCertUID]
 
 							if sslCertComp
-							
+
 								sslCertName = sslCertComp.name
 								iterator(elbName, sslCertName)
 
@@ -457,7 +457,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js', '../../helper', 'CloudResources'],
 					window.sslCertCol = CloudResources constant.RESTYPE.IAM
 
 				window.sslCertCol.fetchForce().then (result) ->
-					
+
 					sslCertAry = window.sslCertCol.toJSON()
 					_.each sslCertAry, (sslCertData) ->
 						allExistCertAry.push sslCertData.Name

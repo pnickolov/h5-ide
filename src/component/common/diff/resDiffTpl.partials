@@ -1,0 +1,33 @@
+<!-- {{frame}} -->
+<div class="scroll-wrap scroll-wrap-res-diff">
+	<div class="scrollbar-veritical-wrap" style="display: block;"><div class="scrollbar-veritical-thumb"></div></div>
+	<div class="content_wrap scroll-content">
+		<p>Resources of this app has been externally changed. The change has been synced to app. The diagram may be re-generated to reflect the change.</p>
+		<h5>What has been changed:</h5>
+		<article></article>
+	</div>
+</div>
+
+<!-- {{resDiffGroup}} -->
+<div class="group {{type}}">
+	<div class="head">{{title}}<span class="count">({{count}})</span></div>
+	<div class="content"></div>
+</div>
+
+<!-- {{resDiffTree}} -->
+<ul class="tree"></ul>
+
+<!-- {{resDiffTreeItem}} -->
+<li class="item {{#if closed}}closed{{/if}}">
+	<div class="meta">
+		<span class="type">{{key}}</span>
+		<span class="name">{{value}}</span>
+	</div>
+</li>
+
+<!-- {{resDiffTreeMeta}} -->
+<div class="meta">
+	<span class="type">{{key}}</span>
+	<span class="name {{#if type}}{{type}}{{/if}}">{{value}}</span>
+	{{#if value1}}<span class="name to"> -></span><span class="name {{type1}}">{{value1}}</span>{{/if}}
+</div>

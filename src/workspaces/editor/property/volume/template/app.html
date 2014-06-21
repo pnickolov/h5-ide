@@ -1,0 +1,35 @@
+<article class="property-app">
+  <dl class="dl-vertical">
+    <dt>{{i18n "PROP_VOLUME_ID"}}</dt>
+    <dd>{{emptyStr volumeId}}</dd>
+    <dt>{{i18n "PROP_VOLUME_DEVICE_NAME"}}</dt>
+    <dd>{{emptyStr name}}</dd>
+    <dt>{{i18n "PROP_VOLUME_STATE"}}</dt>
+    <dd><i class="status status-{{status}}"></i>{{status}}</dd>
+    <dt>{{i18n "PROP_VOLUME_CREATE_TIME"}}</dt>
+    <dd>{{timeStr createTime}}</dd>
+  </dl>
+  <dl class="dl-vertical">
+    <dt>{{i18n "PROP_VOLUME_TYPE"}}</dt>
+    <dd>{{emptyStr volumeType}}</dd>
+    {{#if snapshotId}}
+    <dt>{{i18n "PROP_VOLUME_SNAPSHOT_ID"}}</dt>
+    <dd>{{snapshotId}}</dd>
+    {{/if}}
+    <dt>{{i18n "PROP_VOLUME_SIZE"}}</dt>
+    <dd>{{emptyStr size}} GB</dd>
+    {{#if iops}}
+    <dt>IOPS</dt>
+    <dd>{{iops}}</dd>
+    {{/if}}
+  </dl>
+  <dl class="dl-vertical">
+    <dt>{{i18n "PROP_VOLUME_ATTACHMENT_STATE"}}</dt>
+    <dd>{{emptyStr attachmentSet.0.state}}</dd>
+    <dt>{{i18n "PROP_VOLUME_INSTANCE_ID"}}</dt>
+    <dd>{{emptyStr attachmentSet.0.instanceId}}</dd>
+    <dt>{{i18n "PROP_VOLUME_ATTACHMENT_TIME"}}</dt>
+    <dd>{{timeStr attachmentSet.0.attachTime}}</dd>
+  </dl>
+</article>
+

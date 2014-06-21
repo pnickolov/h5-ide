@@ -107,25 +107,37 @@ define [ "Meteor", "backbone", "event", "MC" ], ( Meteor, Backbone, ide_event )-
   # We can place all the watching code here, and re-pipe it to via ide_event,
   # and we can also place the watching code in the other place.
   Websocket.prototype.pipeChanges = ()->
+    self = this
+
     # request list
     @collection.request.find().fetch()
     @collection.request.find().observeChanges {
       added : (idx, dag) ->
-        ide_event.trigger ide_event.UPDATE_REQUEST_ITEM, idx, dag
+        self.trigger "requestChange", idx, dag
       changed : (idx, dag) ->
-        ide_event.trigger ide_event.UPDATE_REQUEST_ITEM, idx, dag
+        self.trigger "requestChange", idx, dag
     }
 
     # import list
     @collection.imports.find().fetch()
     @collection.imports.find().observe {
       added : (idx, dag) ->
-        ide_event.trigger ide_event.UPDATE_IMPORT_ITEM, idx
-
+        self.trigger "visualizeUpdate", idx
       changed : (idx, dag) ->
-        ide_event.trigger ide_event.UPDATE_IMPORT_ITEM, idx
+        self.trigger "visualizeUpdate", idx
     }
 
+    # state status
+    @collection.status.find().fetch()
+    @collection.status.find().observe {
+      added : (idx, statusData) ->
+        ide_event.trigger ide_event.UPDATE_STATE_STATUS_DATA, 'add', idx, statusData
+        ide_event.trigger ide_event.UPDATE_STATE_STATUS_DATA_TO_EDITOR, if idx then [idx.res_id] else []
+
+      changed: ( newDocument, oldDocument ) ->
+        ide_event.trigger ide_event.UPDATE_STATE_STATUS_DATA, 'change', newDocument, oldDocument
+        ide_event.trigger ide_event.UPDATE_STATE_STATUS_DATA_TO_EDITOR, if newDocument then [newDocument.res_id] else []
+    }
 
   _.extend Websocket.prototype, Backbone.Events
 

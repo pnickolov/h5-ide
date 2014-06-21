@@ -58,9 +58,6 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], ( cons
 
                         # test
                         #state.res_id = 'i-a271b0bc'
-
-
-
                         data =
                             id      : @__genId state.res_id, status.id
                             appId   : state.app_id
@@ -68,7 +65,6 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], ( cons
                             stateId : idx + 1
                             time    : status.time
                             result  : status.result
-
 
                         _.extend data, @__extendComponent data.resId
                         # component was deleted.

@@ -2,14 +2,14 @@
 #  View(UI logic) for dialog
 #############################
 
-define [ "./WelcomeTpl", 'i18n!nls/lang.js', "backbone" ], ( WelcomeTpl, lang ) ->
+define [ "./WelcomeTpl", "UI.modalplus", 'i18n!nls/lang.js', "backbone" ], ( WelcomeTpl, Modal, lang ) ->
 
     WelcomeDialog = Backbone.View.extend {
 
       events :
         "click #WelcomeSkip"     : "skip"
         "click #WelcomeBack"     : "back"
-        "click #WelcomeDone"     : "done"
+        "click #WelcomeDone"     : "skipDone"
         "click #WelcomeClose"    : "close"
         "click #CredSetupSubmit" : "submitCred"
 
@@ -19,8 +19,25 @@ define [ "./WelcomeTpl", 'i18n!nls/lang.js', "backbone" ], ( WelcomeTpl, lang ) 
         attributes =
           username : App.user.get("username")
 
-        modal WelcomeTpl attributes
-        @setElement $("#modal-box")
+        if options and options.askForCredential
+          title = lang.ide.WELCOME_PROVIDE_CRED_TIT
+          attributes.noWelcome = true
+        else
+          title = lang.ide.WELCOME_DIALOG_TIT
+
+        @modal = new Modal {
+          title         : title
+          template      : WelcomeTpl( attributes )
+          width         : "600"
+          disableClose  : true
+          disableFooter : true
+          compact       : true
+          hideClose     : true
+          cancel        :
+              hide : true
+        }
+        @modal.tpl.find(".context-wrap").attr("id", "WelcomeDialog")
+        @setElement @modal.tpl
         return
 
       skip : ()->
@@ -30,6 +47,21 @@ define [ "./WelcomeTpl", 'i18n!nls/lang.js', "backbone" ], ( WelcomeTpl, lang ) 
       back : ()->
         $("#WelcomeSettings").show()
         $("#WelcomeSkipWarning").hide()
+
+      skipDone : ()->
+        if not App.user.hasCredential()
+          @done()
+          return
+
+        $("#CredSetupAccount").val("")
+        $("#CredSetupAccessKey").val("")
+        $("#CredSetupSecretKey").val("")
+
+        $("#WelcomeSkipWarning").hide()
+        $("#WelcomeCredUpdate").show()
+
+        @setCred()
+        return
 
       done : ()->
         $("#WelcomeSettings, #WelcomeSkipWarning, #WelcomeCredUpdate").hide()
@@ -42,7 +74,7 @@ define [ "./WelcomeTpl", 'i18n!nls/lang.js', "backbone" ], ( WelcomeTpl, lang ) 
           $("#WelcomeDoneTit").hide()
 
       close : ()->
-        modal.close()
+        @modal.close()
         App.openSampleStack(true)
 
       updateSubmitBtn : ()->
@@ -78,6 +110,12 @@ define [ "./WelcomeTpl", 'i18n!nls/lang.js', "backbone" ], ( WelcomeTpl, lang ) 
         account    = $("#CredSetupAccount").val()
         accesskey  = $("#CredSetupAccessKey").val()
         privatekey = $("#CredSetupSecretKey").val()
+
+        # A quickfix to avoid the limiation of the api.
+        # Avoid user setting the account to demo_account
+        if account is "demo_account"
+          account = "user_demo_account"
+          $("#CredSetupAccount").val(account)
 
         self = this
         App.user.changeCredential( account, accesskey, privatekey, true ).then ()->

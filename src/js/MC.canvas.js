@@ -7,39 +7,13 @@
 # **********************************************************
 */
 
-// JSON data for current tab
-//MC.canvas_data = {};
-
-// Variable for current tab
-// MC.canvas_property = {};
-
 define(["MC", "canvon"], function(MC){
 
 MC.canvas = {
 	getState: function ()
 	{
-		//return Tabbar.current;
-		//return MC.canvas_data.stack_id !== undefined ? 'app' : 'stack';
-		var state = '',
-			current = Tabbar.current;
-
-		if (
-			current === 'new' ||
-			current === 'stack'
-		)
-		{
-			state = 'stack';
-		}
-		else if (
-			current === 'app' ||
-			current === 'appedit' ||
-			current === 'appview'
-		)
-		{
-			state = current;
-		}
-
-		return state;
+		// Quick hack to make this shit work.
+		return Design.instance() ? Design.instance().mode() : "dashboard";
 	},
 
 	display: function (id, key, is_visible)
@@ -147,8 +121,7 @@ MC.canvas = {
 		if (type === 'expand')
 		{
 			canvas_size[ key ] += 60;
-
-			$('#svg_resizer_' + target + '_shrink').show();
+			$("#canvas_body").children(".svg_resizer.icon-resize-" + (key ? "up" : "left")).show();
 		}
 
 		if (type === 'shrink')
@@ -180,7 +153,7 @@ MC.canvas = {
 			{
 				canvas_size[ key ] = 20 + target_value;
 
-				$('#svg_resizer_' + target + '_shrink').hide();
+				$("#canvas_body").children(".svg_resizer.icon-resize-" + (key ? "up" : "left")).hide();
 			}
 			else
 			{
@@ -188,7 +161,7 @@ MC.canvas = {
 
 				if (canvas_size[ key ] === 20 + target_value)
 				{
-					$('#svg_resizer_' + target + '_shrink').hide();
+					$("#canvas_body").children(".svg_resizer.icon-resize-" + (key ? "up" : "left")).hide();
 				}
 			}
 		}
@@ -200,7 +173,7 @@ MC.canvas = {
 			'height': canvas_size[1] * MC.canvas.GRID_HEIGHT / scale_ratio
 		});
 
-		$('#canvas_container, #canvas_body').css({
+		$('#canvas_body').css({
 			'width': canvas_size[0] * MC.canvas.GRID_WIDTH / scale_ratio,
 			'height': canvas_size[1] * MC.canvas.GRID_HEIGHT / scale_ratio
 		});
@@ -228,7 +201,7 @@ MC.canvas = {
 			newClass = $canvas_body.attr("class").replace(/zoomlevel_[^\s]+\s?/g, "") + "zoomlevel_" + ("" + scale_ratio).replace(".", "_");
 			$canvas_body.attr("class", newClass);
 
-			$('#canvas_container, #canvas_body').css({
+			$('#canvas_body').css({
 				'width': canvas_size[0] * MC.canvas.GRID_WIDTH / scale_ratio,
 				'height': canvas_size[1] * MC.canvas.GRID_HEIGHT / scale_ratio
 			});
@@ -268,7 +241,7 @@ MC.canvas = {
 			newClass = $.trim($canvas_body.attr("class").replace(/zoomlevel_[^\s]+\s?/g, "")) + " zoomlevel_" + ("" + scale_ratio).replace(".", "_");
 			$canvas_body.attr("class", newClass);
 
-			$('#canvas_container, #canvas_body').css({
+			$('#canvas_body').css({
 				'width': canvas_size[0] * MC.canvas.GRID_WIDTH / scale_ratio,
 				'height': canvas_size[1] * MC.canvas.GRID_HEIGHT / scale_ratio
 			});
@@ -1450,31 +1423,13 @@ MC.canvas = {
 	}
 };
 
-MC.canvas.layout = {
-	init: function ()
-	{
-		MC.paper = Canvon('#svg_canvas');
-
-		var canvas_size = $canvas.size(),
-			attr = {
-				'width' : canvas_size[0] * MC.canvas.GRID_WIDTH,
-				'height': canvas_size[1] * MC.canvas.GRID_HEIGHT
-			};
-
-		$('#svg_canvas').attr( attr );
-		$('#canvas_container').css( attr );
-
-		return true;
-	}
-};
-
 MC.canvas.volume = {
 	bubble: function (id, node_id, volume_type)
 	{
 		if (!$('#volume-bubble-box')[0])
 		{
 			var target = $('#' + id),
-				canvas_container = $('#canvas_container'),
+				canvas_container = $('#canvas_body'),
 				canvas_offset = $canvas.offset(),
 				target_uid = id.replace(/_[0-9]*$/ig, ''),
 				width,
@@ -1742,7 +1697,7 @@ MC.canvas.volume = {
 			{
 				$('#' + volume_id).parent().remove();
 
-				bubble_box.css('top',  target_offset.top - $('#canvas_container').offset().top - ((bubble_box.height() - target_offset.height) / 2));
+				bubble_box.css('top',  target_offset.top - $('#canvas_body').offset().top - ((bubble_box.height() - target_offset.height) / 2));
 
 				$('#instance_volume_number').text(
 					$canvas( target_id ).volume().length
@@ -1932,7 +1887,7 @@ MC.canvas.volume = {
 				}
 			}
 
-			bubble_box.css('top',  target_offset.top - $('#canvas_container').offset().top - ((bubble_box.height() - target_offset.height) / 2));
+			bubble_box.css('top',  target_offset.top - $('#canvas_body').offset().top - ((bubble_box.height() - target_offset.height) / 2));
 		}
 		else
 		{
@@ -1971,7 +1926,7 @@ MC.canvas.asgList = {
 				target_offset = Canvon(target).offset(),
 				canvas_offset = $canvas.offset();
 
-			$('#canvas_container').append(
+			$('#canvas_body').append(
 				MC.template.asgList( $canvas( target_id ).list() )
 			);
 
@@ -2017,7 +1972,7 @@ MC.canvas.asgList = {
 		var target_offset = Canvon('#' + target_id).offset(),
 			canvas_offset = $canvas.offset();
 
-		$('#canvas_container').append(
+		$('#canvas_body').append(
 			MC.template.asgList( $canvas( target_id ).list() )
 		);
 
@@ -2055,7 +2010,7 @@ MC.canvas.instanceList = {
 				return false;
 			}
 
-			$('#canvas_container').append(
+			$('#canvas_body').append(
 				MC.template.instanceList( list )
 			);
 
@@ -2114,7 +2069,7 @@ MC.canvas.instanceList = {
 		   	canvas_offset = $canvas.offset(),
 		   	list = $canvas(target_id).list();
 
-		$('#canvas_container').append(
+		$('#canvas_body').append(
 			MC.template.instanceList(list)
 		);
 
@@ -2152,7 +2107,7 @@ MC.canvas.eniList = {
 				return false;
 			}
 
-			$('#canvas_container').append( MC.template.eniList( list ) );
+			$('#canvas_body').append( MC.template.eniList( list ) );
 
 			$('#eniList-wrap')
 				.data('target-id', target.id)
@@ -2198,7 +2153,7 @@ MC.canvas.eniList = {
 			canvas_offset = $canvas.offset(),
 			list = $canvas( target_id ).list();
 
-		$('#canvas_container').append( MC.template.eniList( list ) );
+		$('#canvas_body').append( MC.template.eniList( list ) );
 
 		$('#eniList-wrap')
 			.data('target-id', target_id)
@@ -2246,7 +2201,7 @@ MC.canvas.nodeAction = {
 				return;
 			}
 
-			$('#canvas_container').append(MC.template.nodeAction({
+			$('#canvas_body').append(MC.template.nodeAction({
 				state_num: stateNum
 			}));
 
@@ -3264,7 +3219,7 @@ MC.canvas.event.siderbarDrag = {
 				target_group_type,
 				size;
 
-			if (target.data('enable') === false)
+			if ( target.hasClass("resource-disabled") )
 			{
 				return false;
 			}
@@ -4356,12 +4311,13 @@ MC.canvas.event.clickBlank = function (event)
 MC.canvas.event.keyEvent = function (event)
 {
 	var canvas_status = MC.canvas.getState(),
-		selected_node = $canvas.selected_node();
+		selected_node = $canvas.selected_node(),
+		ws = App.workspaces.getAwakeSpace();
 
 	if (
 		$('#modal-wrap')[0] !== undefined ||
 		($('.sub-stateeditor').css('display') === "block" && (event.which !== 46 && event.which !== 8)) ||
-		Tabbar.current === 'dashboard'
+		(ws && ws.isDashboard)
 	)
 	{
 		return true;
@@ -5226,8 +5182,6 @@ MC.canvas.analysis = function ()
 			isInternetELBconnected,
 			isInternalELBconnected,
 
-			//layout_component_data = MC.canvas_data.
-
 			elb_type,
 			item_connection;
 
@@ -5839,7 +5793,7 @@ MC.canvas.benchmark = function (count)
 		'height': canvas_size[1] * MC.canvas.GRID_HEIGHT / scale_ratio
 	});
 
-	$('#canvas_container, #canvas_body').css({
+	$('#canvas_body').css({
 		'width': canvas_size[0] * MC.canvas.GRID_WIDTH / scale_ratio,
 		'height': canvas_size[1] * MC.canvas.GRID_HEIGHT / scale_ratio
 	});

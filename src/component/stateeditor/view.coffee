@@ -13,6 +13,8 @@ define [ 'event',
 
 ], ( ide_event, lang, template , validate, constant, instance_model, Markdown) ->
 
+    StateClipboard = []
+
     # Register Partials
     Handlebars.registerPartial(id, tpl) for id, tpl of template
 
@@ -232,7 +234,7 @@ define [ 'event',
             if that.currentState is 'stack'
                 $logPanelToggle.hide()
 
-            else if that.currentState in ['app', 'appedit']
+            else if that.currentState in ['app']
                 currentAppState = Design.instance().get('state')
 
                 if currentAppState is 'Stopped'
@@ -245,7 +247,7 @@ define [ 'event',
                 else
 
                     setTimeout(() ->
-                        # $('#property-panel').addClass('state-wide')
+                        # $('#OEPanelRight').addClass('state-wide')
                         that.onLogToggleClick()
                     , 0)
 
@@ -260,7 +262,7 @@ define [ 'event',
 
             that.updateToolbar()
 
-            # if $( '#property-panel' ).hasClass('state-wide')
+            # if $( '#OEPanelRight' ).hasClass('state-wide')
             #     that.onDescToggleClick()
             @
 
@@ -289,7 +291,6 @@ define [ 'event',
             that.currentResId = that.model.get('resId')
 
             that.currentState = that.model.get('currentState')
-            currentAppState = that.model.get('currentAppState')
 
             that.resAttrRegexStr = that.model.get('resAttrRegexStr')
 
@@ -1629,7 +1630,7 @@ define [ 'event',
             $descPanelToggle = that.$editorModal.find('.state-desc-toggle')
             $logPanelToggle = that.$editorModal.find('.state-log-toggle')
 
-            expandPanel = $('#property-panel').hasClass('state-wide')
+            expandPanel = $('#OEPanelRight').hasClass('state-wide')
             if expandPanel and $descPanel.hasClass('show')
 
                 $stateEditor.addClass('full')
@@ -1638,7 +1639,7 @@ define [ 'event',
                 $logPanel.removeClass('show')
                 $descPanel.removeClass('show')
                 $descPanelToggle.removeClass('active')
-                $('#property-panel').removeClass 'state-wide'
+                $('#OEPanelRight').removeClass 'state-wide'
 
             else
 
@@ -1648,7 +1649,7 @@ define [ 'event',
                 $logPanel.removeClass('show')
                 $descPanel.addClass('show')
                 $descPanelToggle.addClass('active')
-                $('#property-panel').addClass 'state-wide'
+                $('#OEPanelRight').addClass 'state-wide'
 
             $logPanelToggle.removeClass('active')
 
@@ -1668,7 +1669,7 @@ define [ 'event',
             $descPanelToggle = that.$editorModal.find('.state-desc-toggle')
             $logPanelToggle = that.$editorModal.find('.state-log-toggle')
 
-            expandPanel = $('#property-panel').hasClass('state-wide')
+            expandPanel = $('#OEPanelRight').hasClass('state-wide')
             if expandPanel and $logPanel.hasClass('show')
 
                 $stateEditor.addClass('full')
@@ -1677,7 +1678,7 @@ define [ 'event',
                 $descPanel.removeClass('show')
                 $logPanel.removeClass('show')
                 $logPanelToggle.removeClass('active')
-                $('#property-panel').removeClass 'state-wide'
+                $('#OEPanelRight').removeClass 'state-wide'
 
             else
 
@@ -1687,7 +1688,7 @@ define [ 'event',
                 $descPanel.removeClass('show')
                 $logPanel.addClass('show')
                 $logPanelToggle.addClass('active')
-                $('#property-panel').addClass 'state-wide'
+                $('#OEPanelRight').addClass 'state-wide'
 
             $descPanelToggle.removeClass('active')
 
@@ -1740,7 +1741,7 @@ define [ 'event',
             $parentEditorModel = $currentElem.parents('#state-editor-model')
             if $stateEditorModel.length and (not $parentEditorModel.length)
                 # if $stateEditorModel.is(':visible')
-                $propertyPanel = $('#property-panel')
+                $propertyPanel = $('#OEPanelRight')
                 if $stateEditorModel.length and not $propertyPanel.hasClass('no-state')
                     that.onStateSaveClick()
                 else
@@ -1810,7 +1811,7 @@ define [ 'event',
 
                     else if option.extName is 'py'
                         editSession.setMode('ace/mode/python')
-                    
+
                     editor.setTheme('ace/theme/tomorrow_night')
 
                     enableTab = true
@@ -2891,7 +2892,7 @@ define [ 'event',
 
             if stack.length
 
-                MC.data.stateClipboard = stack
+                StateClipboard = stack
                 that.updateToolbar()
                 notification 'info', lang.ide.NOTIFY_MSG_INFO_STATE_COPY_TO_CLIPBOARD
 
@@ -2906,7 +2907,7 @@ define [ 'event',
             $('.state-list .state-item').each ->
                 stack.push(that.getStateItemByData($(this)))
 
-            MC.data.stateClipboard = stack
+            StateClipboard = stack
 
             that.updateToolbar()
 
@@ -2969,7 +2970,7 @@ define [ 'event',
             if focused_index is -1
                 focused_index = null
 
-            newStateDataAry = that.setNewStateIdForStateAry MC.data.stateClipboard
+            newStateDataAry = that.setNewStateIdForStateAry StateClipboard
             insertPos = that.addStateItemByData newStateDataAry, focused_index
             that.undoManager.register null, insertPos, 'paste', newStateDataAry
 
@@ -3305,7 +3306,7 @@ define [ 'event',
             else
                 that.$('#state-toolbar-copy, #state-toolbar-delete').hide()
                 that.$('#state-toolbar-copy-all').show()
-            if MC.data.stateClipboard.length > 0
+            if StateClipboard.length > 0
                 that.$('#state-toolbar-paste').removeClass 'disabled'
             else
                 that.$('#state-toolbar-paste').addClass 'disabled'
@@ -3352,7 +3353,7 @@ define [ 'event',
 
             instanceId = that.currentResId
 
-            currentRegion = MC.canvas_data.region
+            currentRegion = Design.instance().region()
             instance_model.GetConsoleOutput {sender: that}, $.cookie('usercode'), $.cookie('session_id'), currentRegion, instanceId
 
             modal MC.template.modalInstanceSysLog {
@@ -3406,9 +3407,9 @@ define [ 'event',
             $focusElem = $(event.target)
             $paraValue = $focusElem.parents('.parameter-container').find('.parameter-value')
             paraEditor = $paraValue.data('editor')
-            
+
             if paraEditor
-                
+
                 $paraItem = $paraValue.parents('.parameter-item')
 
                 if $paraItem.hasClass('text')
@@ -3462,7 +3463,7 @@ define [ 'event',
         saveStateTextEditorContent: () ->
 
             that = this
-            
+
             if that.readOnlyMode
 
                 modal.close()

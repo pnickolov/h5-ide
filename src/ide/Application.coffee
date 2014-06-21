@@ -8,7 +8,20 @@
   to provide other functionality
 ###
 
-define [ "ApiRequest", "component/exporter/JsonExporter", "./Websocket", "./ApplicationView", "./ApplicationModel", "./User", "./subviews/SettingsDialog", "CloudResources", "common_handle" ,"event", "vpc_model", "constant" ], ( ApiRequest, JsonExporter, Websocket, ApplicationView, ApplicationModel, User, SettingsDialog, CloudResources, common_handle, ide_event, vpc_model, constant )->
+define [
+  "ApiRequest"
+  "./Websocket"
+  "./ApplicationView"
+  "./ApplicationModel"
+  "./User"
+  "./subviews/SettingsDialog"
+  "CloudResources"
+  "./WorkspaceManager"
+  "OpsModel"
+  "JsonExporter"
+  "constant",
+  "underscore"
+], ( ApiRequest, Websocket, ApplicationView, ApplicationModel, User, SettingsDialog, CloudResources, WorkspaceManager, OpsModel, JsonExporter, constant )->
 
   VisualOps = ()->
     if window.App
@@ -24,12 +37,17 @@ define [ "ApiRequest", "component/exporter/JsonExporter", "./Websocket", "./Appl
     @__createUser()
     @__createWebsocket()
 
+    @workspaces = new WorkspaceManager()
+
     # view / model depends on User and Websocket
     @model  = new ApplicationModel()
     @__view = new ApplicationView()
 
     # This function returns a promise
-    @user.fetch()
+    fetchModel = @model.fetch().fail ( err )->
+      notification "Cannot load application data. Please reload your browser."
+      throw err
+    Q.all [ @user.fetch(), fetchModel ]
 
   VisualOps.prototype.__createWebsocket = ()->
     @WS = new Websocket()
@@ -38,7 +56,7 @@ define [ "ApiRequest", "component/exporter/JsonExporter", "./Websocket", "./Appl
 
     @WS.on "StatusChanged", ( isConnected )=>
       console.info "Websocket Status changed, isConnected:", isConnected
-      @__view.toggleWSStatus( isConnected )
+      if @__view then @__view.toggleWSStatus( isConnected )
 
     return
 
@@ -47,100 +65,86 @@ define [ "ApiRequest", "component/exporter/JsonExporter", "./Websocket", "./Appl
     @user = new User()
 
     @user.on "SessionUpdated", ()=>
-      # Legacy Code
-      ide_event.trigger ide_event.UPDATE_APP_LIST
-      ide_event.trigger ide_event.UPDATE_DASHBOARD
+      # In the previous version of IDE, we update the applist and dashboard when the
+      # session is updated. But I don't think it's necessary.
 
       # The Websockets subscription will be lost if we have an invalid session.
       @WS.subscribe()
 
-    @user.on "change:credential", ()=>
-      @__onCredentialChanged()
-      CloudResources.invalidate()
+    @user.on "change:credential", ()=> @discardAwsCache()
     return
 
-
-  # LEGACY code
-  # Well, first of all. The "DescribeAccountAttributes" is no longer needed because we only support vpc now. And it seems like all we have to do is to call `vpc_model.DescribeAccountAttributes`
-  # Second. Forget it, just a piece of shit.
-  VisualOps.prototype.__onCredentialChanged = ()->
-    # check credential
-    vpc_model.DescribeAccountAttributes { sender : vpc_model }, App.user.get( 'usercode' ), App.user.get( 'session' ), '',  ["supported-platforms", "default-vpc"]
-
-    vpc_model.once 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN', (result) ->
-      console.log 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN'
-
-      if result.is_error then return
-
-      # update account attributes
-      regionAttrSet = result.resolved_data
-      _.map constant.REGION_KEYS, ( value ) ->
-        if regionAttrSet[ value ] and regionAttrSet[ value ].accountAttributeSet
-
-          #resolve support-platform
-          support_platform = regionAttrSet[ value ].accountAttributeSet.item[0].attributeValueSet.item
-          if support_platform and $.type(support_platform) == "array"
-            if support_platform.length == 2
-              MC.data.account_attribute[ value ].support_platform = support_platform[0].attributeValue + ',' + support_platform[1].attributeValue
-            else if support_platform.length == 1
-              MC.data.account_attribute[ value ].support_platform = support_platform[0].attributeValue
-
-          #resolve default-vpc
-          default_vpc = regionAttrSet[ value ].accountAttributeSet.item[1].attributeValueSet.item
-          if  default_vpc and $.type(default_vpc) == "array" and default_vpc.length == 1
-            MC.data.account_attribute[ value ].default_vpc = default_vpc[0].attributeValue
-          null
-
-
   # This method will prompt a dialog to let user to re-acquire the session
-  VisualOps.prototype.acquireSession = ()->
-    # LEGACY code
-    # Seems like in the old days, someone wants to swtich to dashboard.
-    ide_event.trigger ide_event.SWITCH_MAIN
-    @__view.showSessionDialog()
+  VisualOps.prototype.acquireSession = ()-> @__view.showSessionDialog()
 
   VisualOps.prototype.logout = ()->
     App.user.logout()
     window.location.href = "/login/"
     return
 
+  # Return true if the ide can quit now.
+  VisualOps.prototype.canQuit = ()-> !@workspaces.hasUnsaveSpaces()
+
+
   VisualOps.prototype.showSettings = ( tab )-> new SettingsDialog({ defaultTab:tab })
   VisualOps.prototype.showSettings.TAB = SettingsDialog.TAB
 
+  # Show a popup to ask the user to enter a credential
+  VisualOps.prototype.askForAwsCredential = ()-> @__view.askForAwsCredential()
+
+  # These functions are for consistent behavoir of managing stacks/apps
+  VisualOps.prototype.deleteStack    = (id, name)-> @__view.deleteStack(id, name)
+  VisualOps.prototype.duplicateStack = (id)-> @__view.duplicateStack(id)
+  VisualOps.prototype.startApp       = (id)-> @__view.startApp(id)
+  VisualOps.prototype.stopApp        = (id)-> @__view.stopApp(id)
+  VisualOps.prototype.terminateApp   = (id)-> @__view.terminateApp(id)
+
+  VisualOps.prototype.discardAwsCache = ()->
+    App.model.clearImportOps()
+    CloudResources.invalidate()
+
+  # Creates a stack from the "json" and open it.
+  # If it cannot import the json data, returns a string to represent the result.
+  # otherwise it returns the workspace that works on the model
   VisualOps.prototype.importJson = ( json )->
+    result = JsonExporter.importJson json
 
-      result = JsonExporter.importJson json
+    if _.isString result then return result
 
-      if _.isString result
-          return result
+    @openOps( @model.createStackByJson(result) )
 
-      # The result is a valid json
-      console.log "Imported JSON: ", result, result.region
+  # This is a convenient method to open an editor for the ops model.
+  VisualOps.prototype.openOps = ( opsModel, refresh )->
+    if not opsModel then return
 
-      # check repeat stack name
-      MC.common.other.checkRepeatStackName()
+    if _.isString( opsModel )
+      opsModel = @model.getOpsModelById( opsModel )
 
-      # set username
-      result.username = $.cookie 'usercode'
+    if not opsModel
+      console.warn "The OpsModel is not found when opening."
+      return
 
-      # set name
-      result.name     = MC.aws.aws.getDuplicateName(result.name)
+    if opsModel.testState( OpsModel.State.Destroyed )
+      console.error "The OpsModel is destroyed", opsModel
+      return
 
-      # set id
-      result.id       = 'import-' + MC.data.untitled + '-' + result.region
+    editor = @workspaces.find( opsModel )
+    if editor and refresh
+      editor.remove()
+      editor = null
 
-      # create new result
-      new_result      = {}
-      new_result.resolved_data = []
-      new_result.resolved_data.push result
+    if not editor
+      editor = new OpsEditor(opsModel)
 
-      # formate json
-      console.log "Formate JSON: ", new_result
+    editor.activate()
+    editor
 
-      # push IMPORT_STACK
-      ide_event.trigger ide_event.OPEN_DESIGN_TAB, 'IMPORT_STACK', new_result
-
-      null
+  # This is a convenient method to create a stack and then open an editor for it.
+  VisualOps.prototype.createOps = ( region )->
+    if not region then return
+    editor = new OpsEditor( @model.createStack(region) )
+    editor.activate()
+    editor
 
   VisualOps.prototype.openSampleStack = (fromWelcome) ->
 

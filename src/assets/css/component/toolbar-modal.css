@@ -25,6 +25,7 @@
       display: inline-block;
       padding: 8px;
       line-height: 18px;
+      height: 34px;
       position: relative; }
       .modal-toolbar .toolbar button:before {
         margin-right: 5px;
@@ -43,6 +44,8 @@
           border-bottom: 2px solid #0D49CA;
           width: 100%;
           z-index: 80; }
+      .modal-toolbar .toolbar button.icon-edit {
+        font-size: 14px !important; }
     .modal-toolbar .toolbar .btn-group button {
       cursor: pointer;
       color: #999;
@@ -170,8 +173,11 @@
     color: #F3F3F3;
     background: #292C2E; }
   .modal-toolbar .table-head-fix .table-head thead tr th:first-child,
-  .modal-toolbar .table-head-fix .table thead tr th:first-child {
+  .modal-toolbar .table-head-fix .table tbody tr td:first-child {
     width: 20px; }
+    .modal-toolbar .table-head-fix .table-head thead tr th:first-child .checkbox,
+    .modal-toolbar .table-head-fix .table tbody tr td:first-child .checkbox {
+      margin-left: 5px; }
 
 #modal-kp-manage .table-head-fix .table-head thead tr th:nth-child(2),
 #modal-kp-manage .table-head-fix .table thead tr th:nth-child(2) {

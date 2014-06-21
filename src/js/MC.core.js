@@ -57,6 +57,46 @@ var MC = {
 
 	Analytics : Analytics,
 
+	getCidrBinStr: function ( ipCidr )
+	{
+		var cutAry, ipAddr, ipAddrAry, ipAddrBinAry, prefix, suffix;
+
+		cutAry = ipCidr.split('/');
+		ipAddr = cutAry[0];
+		suffix = Number(cutAry[1]);
+		prefix = 32 - suffix;
+		ipAddrAry = ipAddr.split('.');
+		ipAddrBinAry = ipAddrAry.map(function(value) {
+			return MC.leftPadString(parseInt(value).toString(2), 8, "0");
+		});
+
+		return ipAddrBinAry.join('');
+	},
+
+	getValidCIDR: function ( cidr )
+	{
+		var newCIDRStr, newIPAry, newIPBinStr, newIPStr,
+			prefixIPBinStr, subnetCidrBinStr, subnetCidrSuffix,
+			suffixIPBinStr, suffixNum;
+
+		subnetCidrBinStr = MC.getCidrBinStr(cidr);
+		subnetCidrSuffix = Number(cidr.split('/')[1]);
+		suffixIPBinStr = subnetCidrBinStr.slice(subnetCidrSuffix);
+		suffixNum = parseInt(suffixIPBinStr);
+		if ((suffixNum === 0) || (suffixIPBinStr === '')) {
+			return cidr;
+		} else {
+			prefixIPBinStr = subnetCidrBinStr.slice(0, subnetCidrSuffix);
+			newIPBinStr = prefixIPBinStr + MC.rightPadString('', suffixIPBinStr.length, '0');
+			newIPAry = _.map([0, 8, 16, 24], function(value) {
+				return parseInt(newIPBinStr.slice(value, value + 8), 2);
+			});
+			newIPStr = newIPAry.join('.');
+			newCIDRStr = newIPStr + '/' + subnetCidrSuffix;
+			return newCIDRStr;
+		}
+	},
+
 	prettyStackTrace : function ( popLevel )
 	{
 		function StackTrace (){}
@@ -82,6 +122,11 @@ var MC = {
 				v = c == 'x' ? r : (r&0x3 | 0x8);
 			return v.toString(16);
    		}).toUpperCase();
+	},
+
+	genResRef: function(uid, attrName)
+	{
+		return "@{" + uid + "." + attrName + "}"
 	},
 
 	/**
@@ -452,6 +497,32 @@ var MC = {
 		return false;
 
 
+	},
+
+	createCompareFn : function(propertyName)
+	{
+		/**
+		example:
+		var data = [{ name: "seacha.com", age: 36 }, { name: "jiang", age: 45 }, { name: "google", age: 32 }, { name: "javascript", age: 19}];
+		data.sort(createCompareFn("age"));
+		**/
+		return function(object1, object2)
+		{
+			var value1 = object1[propertyName];
+			var value2 = object2[propertyName];
+			if (value1 < value2)
+			{
+				return -1;
+			}
+			else if (value1 > value2)
+			{
+				return 1;
+			}
+			else
+			{
+				return 0;
+			}
+		}
 	}
 
 };

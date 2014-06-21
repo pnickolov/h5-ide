@@ -22,8 +22,8 @@
 #      disableFooter: if this Modal has footer.                         [default: false]
 #      disableDrag: if the modal is dragAble                               [default: false]
 #      hideClose: if the close button on the right corner is hidden.    [default: false]
-#      cancel: cancel button of Modal                                   [default: "Cancel"]
-#      confirm: confirm button of Modal footer.                         [default: {text: :"Submit", color: "blue", disabled: false}] (color-support: "blue, red, silver")
+#      cancel: cancel button of Modal                                   [default: "Cancel"/ {text: 'Cancel', hide: false} Both String and Object are accepted]
+#      confirm: confirm button of Modal footer.                         [default: {text: :"Submit", color: "blue", disabled: false, hide: false}] (color-support: "blue, red, silver")
 #      onClose: function to exec then the modal close.                  [Function]
 #      onConfirm: function to exec then the confirm button is clicked   [Function]
 #      onCancel: function to exec when the cancel button is clicked     [Function]
@@ -70,7 +70,8 @@ define [], ()->
                     text    : @option.confirm?.text || "Submit"
                     color   : @option.confirm?.color || "blue"
                     disabled: @option.confirm?.disabled
-                cancel      : @option.cancel || "Cancel"
+                    hide    : @option.confirm?.hide
+                cancel      : if _.isString @option.cancel then {text: @option.cancel|| "Cancel"} else if _.isObject @option.cancel then @option.cancel else {text: "Cancel"}
                 hasFooter   : !@option.disableFooter
                 hasScroll   : !!@option.maxHeight
                 compact     : @option.compact
@@ -83,6 +84,10 @@ define [], ()->
             @tpl.appendTo @wrap
             modalGroup.push(@)
             if modalGroup.length == 1
+                @tpl.addClass('bounce')
+                window.setTimeout =>
+                    @tpl.removeClass('bounce')
+                ,1
                 @trigger "show", @
                 @trigger 'shown', @
             @show()
@@ -99,9 +104,14 @@ define [], ()->
                 modalGroup = []
                 @trigger 'close',@
                 @trigger 'closed', @ # Last Modal doesn't support Animation. when trigger close, it's closed.
-                @tpl.remove()
+                @tpl.addClass('bounce')
                 @option.onClose?(@)
-                @wrap.remove()
+                window.setTimeout =>
+                    @tpl.remove()
+                    @wrap.remove()
+                ,@option.delay||300
+                @wrap.fadeOut(@option.delay || 300)
+
             null
         show: ()->
             @wrap.removeClass("hide")
@@ -118,14 +128,15 @@ define [], ()->
                 @.trigger 'confirm', @
             @tpl.find('.btn.modal-close').click (e)=>
                 @option.onCancel?(@tpl,e)
-                modalGroup[0].back()
+                @.trigger 'cancel', @
+                if not @option.preventClose then modalGroup[0]?.back()
             @tpl.find("i.modal-close").click (e)->
-                modalGroup[0].back()
+                modalGroup[0]?.back()
             if(!@option.disableClose)
                 @getFirst().wrap.off 'click'
                 @getFirst().wrap.on 'click', (e)=>
                     if(e.target == e.currentTarget)
-                        @getFirst().back()
+                        @getFirst()?.back()
             $(window).resize =>
                 @?.getLast()?.resize()
             $(document).keyup (e)=>
@@ -144,7 +155,7 @@ define [], ()->
                     diffY = originalLayout.top - e.clientY
                     null
                 $(document).mousemove (e)=>
-                    if(dragable)
+                    if(dragable and @getLast())
                         @getLast().tpl.css
                             top: e.clientY + diffY
                             left: e.clientX + diffX
@@ -181,7 +192,7 @@ define [], ()->
             windowHeight = $(window).height()
             width = @option.width?.toLowerCase().replace('px','') || @tpl.width()
             height= @option.height?.toLowerCase().replace('px','') || @tpl.height()
-            top = (windowHeight - height) / 2
+            top = (windowHeight - height) * 0.4
             left = (windowWidth - width) / 2
             if slideIn
                 left = windowWidth + left
@@ -246,11 +257,11 @@ define [], ()->
         _fadeOut: ->
             @tpl.animate
                 left: "-="+ $(window).width()
-            ,@option.delay || 300
+            ,@option.delay || 100
         _fadeIn: ->
             @tpl.animate
                 left: "+="+ $(window).width()
-            ,@option.delay || 300
+            ,@option.delay || 100
         _slideIn: ->
             @tpl.animate
                 left: "-="+ $(window).width()

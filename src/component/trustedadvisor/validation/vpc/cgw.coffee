@@ -1,4 +1,6 @@
-define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'customergateway_service' , '../result_vo' ], ( constant, $, MC, lang, cgwService ) ->
+define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'customergateway_service', '../../helper', '../result_vo' ], ( constant, $, MC, lang, cgwService, Helper ) ->
+
+	i18n = Helper.i18n.short()
 
 	isCGWHaveIPConflict = (callback) ->
 
@@ -92,5 +94,18 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'customergateway_service
 
 		return null
 
+	isAttachVGW = ( uid ) ->
+		cgw = Design.instance().component uid
+		hasAttachVgw = cgw.connections(constant.RESTYPE.VPN).length
+
+		if hasAttachVgw then return null
+
+		Helper.message.error uid, i18n.TA_MSG_ERROR_CGW_MUST_ATTACH_VPN, cgw.get 'name'
+
+
+
 	isCGWHaveIPConflict : isCGWHaveIPConflict
-	isValidCGWIP : isValidCGWIP
+	isValidCGWIP 		: isValidCGWIP
+	isAttachVGW 		: isAttachVGW
+
+

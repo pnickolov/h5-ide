@@ -1,0 +1,130 @@
+<article>
+
+	<div class="option-group-head expand">{{i18n "PROP_LC_TITLE"}}</div>
+	<div class="option-group">
+		<section class="property-control-group" data-bind="true">
+			<label class="left" for="property-instance-name" >{{i18n "PROP_LC_NAME"}}</label>
+			<span class="required-input right">{{i18n "PROP_INSTANCE_REQUIRE"}}</span>
+			<input class="input launch-configuration-name"  type="text" value="{{name}}" name="property-instance-name" id="property-instance-name" maxlength="240" data-required-rollback="true" data-ignore="true"/>
+		</section>
+		<section class="property-control-group">
+			<label>{{i18n "PROP_INSTANCE_AMI"}}</label>
+			<div id="property-ami" class="property-block-wrap clearfix" data-uid="{{imageId}}">
+				<img class="property-ami-icon left" src="./assets/images/ide/ami/{{instance_ami.icon}}" / >
+				<div class="property-ami-label" {{#if instance_ami.unavailable}}style="color:red;"{{/if}}>{{instance_ami.name}}</div>
+			</div>
+		</section>
+		{{#if instance_type.length}}
+		<section class="property-control-group">
+			<label class="left">{{i18n "PROP_INSTANCE_TYPE"}}</label>
+			<div class="selectbox selectbox-mega" id="instance-type-select">
+				<div class="selection"></div>
+				<ul class="dropdown">
+					{{#each instance_type}}
+					<li class="{{#if selected}}selected {{/if}}tooltip item" data-tooltip="{{main}}" data-id="{{name}}">
+						<div class="main  truncate">{{main}}</div>
+						<div class="sub"><span>{{ecu}}</span> <span>{{core}}</span> <span>{{mem}}</span></div>
+					</li>
+					{{/each}}
+				</ul>
+			</div>
+		</section>
+		{{/if}}
+		<section class="property-control-group {{#unless can_set_ebs}}hide{{/unless}}">
+			<div class="checkbox">
+				{{#if ebsOptimized}}
+				<input id="property-instance-ebs-optimized" type="checkbox" value="None" checked="true" name="ebs-optimized" />
+				{{else}}
+				<input id="property-instance-ebs-optimized" type="checkbox" value="None" name="ebs-optimized" />
+				{{/if}}
+				<label for="property-instance-ebs-optimized"></label>
+			</div>
+			<label for="property-instance-ebs-optimized">EBS Optimized</label>
+		</section>
+		<section class="property-control-group">
+			<label class="left">{{i18n "PROP_INSTANCE_KEY_PAIR"}}</label>
+			<i class="icon-info tooltip default-kp-info" data-tooltip="{{i18n 'POP_INSTANCE_KEYPAIR_INFO_TIP'}}"></i>
+            <div id="kp-placeholder"></div>
+		</section>
+		{{#if displayAssociatePublicIp}}
+			<section class="property-control-group">
+				<div class="checkbox">
+					<input id="property-instance-public-ip" type="checkbox" {{#if publicIp}}checked="checked"{{/if}} value="None" name="property-instance-public-ip" />
+					<label for="property-instance-public-ip"></label>
+				</div>
+				<label for="property-instance-public-ip">{{ i18n "PROP_INSTANCE_ENI_AUTO_PUBLIC_IP" }}</label>
+			</section>
+		{{/if}}
+	</div>
+
+	<div class="option-group-head">{{ i18n "PROP_INSTANCE_ADVANCED_DETAIL" }}</div>
+	<div class="option-group">
+		<section class="property-control-group">
+			<div class="checkbox">
+				<input id="property-instance-enable-cloudwatch" type="checkbox" {{#if monitorEnabled}}{{#if monitoring}}checked="true"{{/if}}{{else}}disabled="disabled"{{/if}} value="None" name="property-instance-enable-cloudwatch" />
+				<label for="property-instance-enable-cloudwatch"></label>
+			</div>
+			<label for="property-instance-enable-cloudwatch">{{i18n "PROP_INSTANCE_CW_ENABLED"}}</label>
+
+			<p class="{{#unless monitoring}}hide{{/unless}} property-info" id="property-cloudwatch-warn">{{i18n "PROP_INSTANCE_CW_WARN"}}<a target="_blank" href="http://aws.amazon.com/cloudwatch">Amazon Cloud Watch product page</a></p>
+		</section>
+		<section class="property-control-group">
+			{{#if stackAgentEnable}}
+			<div class="property-info"> User Data is disabled to allow installing OpsAgent for VisualOps. <a href="{{ i18n "PROP_AGENT_USER_DATA_URL" }}" target="_blank">View content</a>.
+			</div>
+			{{else}}
+				<label for="property-instance-user-data">{{i18n "PROP_INSTANCE_USER_DATA"}}</label>
+				<textarea id="property-instance-user-data">{{userData}}</textarea>
+			{{/if}}
+		</section>
+	</div>
+
+	{{#if rootDevice}}
+	<div class="option-group-head">Root Device</div>
+	<div class="option-group">
+    <section class="property-control-group">
+      <label>{{ i18n "PROP_VOLUME_DEVICE_NAME" }}</label>
+      <div>{{rootDevice.name}}</div>
+    </section>
+    <section class="property-control-group">
+      <label>{{ i18n "PROP_VOLUME_SIZE" }}</label>
+      <div class="ranged-number-input">
+          <label for="volume-size-ranged"></label>
+          <input id="volume-size-ranged" type="text" class="input" value="{{rootDevice.size}}" name="volume-size-ranged" data-ignore="true" maxlength="4" data-required="true" data-required="true" data-type="number"/>
+      <label for="volume-size-ranged" >GB</label>
+      </div>
+    </section>
+
+    <section class="property-control-group">
+      <label>{{ i18n "PROP_VOLUME_TYPE" }}</label>
+      <div id="volume-type-radios">
+      <div>
+      	<div class="radio">
+          <input id="radio-standard" type="radio" name="volume-type" {{#unless rootDevice.iops}}checked="checked"{{/unless}}/>
+          <label for="radio-standard"></label>
+        </div>
+        <label for="radio-standard">{{ i18n "PROP_VOLUME_TYPE_STANDARD" }}</label>
+      </div>
+      <div {{#if rootDevice.iopsDisabled}}class="tooltip"{{/if}} data-tooltip="{{ i18n 'PROP_VOLUME_MSG_WARN'}}">
+        <div class="radio">
+          <input id="radio-iops" type="radio" name="volume-type" {{#if rootDevice.iops}}checked="checked"{{/if}} {{#if rootDevice.iopsDisabled}}disabled{{/if}}/>
+          <label for="radio-iops"></label>
+        </div>
+        <label for="radio-iops">{{ i18n "PROP_VOLUME_TYPE_IOPS" }}</label>
+      </div>
+      </div>
+    </section>
+
+    <section class="property-control-group" id="iops-group" {{#unless rootDevice.iops}}style="display:none"{{/unless}}>
+        <label>IOPS</label>
+        <div class="ranged-number-input">
+          <label for="iops-ranged"></label>
+          <input id="iops-ranged" type="text" class="input" min="100" max="2000" value="{{rootDevice.iops}}">
+        </div>
+    </section>
+	</div>
+  {{/if}}
+
+	<div class="option-group-head">{{i18n "PROP_INSTANCE_SG_DETAIL"}}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
+  <div class="option-group sg-group"></div>
+</article>

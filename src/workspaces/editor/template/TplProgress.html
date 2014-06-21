@@ -1,0 +1,23 @@
+<div class='ops-process {{#if progress}}has-progess{{/if}}'>
+  <section class="processing-wrap">
+    <header class="processing">{{#if title}}{{title}}{{else}}{{ i18n "PROC_TITLE" }}{{/if}}<span class="process-info">{{progress}}%</span></header>
+    <header class="processing rolling-back-content">Rolling back...</header>
+    <section class="loading-spinner"></section>
+    <section class="progress"> <div class="bar" style="width:{{progress}}%;"></div> </section>
+  </section>
+
+  <section class="success hide">
+    <p class="title">{{ i18n "PROC_RLT_DONE_TITLE" }}</p>
+    <p class="sub-title">{{ i18n "PROC_RLT_DONE_SUB_TITLE" }}</p>
+  </section>
+
+  <section class="fail hide error-info-block">
+    <header>{{ i18n "PROC_FAILED_TITLE" }}</header>
+    <p class="sub-title">{{ i18n "PROC_RLT_FAILED_SUB_TITLE" }}</p>
+    <div class="result-error-info">
+      <p class="title">{{ i18n "PROC_ERR_INFO" }}</p>
+      <p class="detail"></p>
+    </div>
+    <button class="btn btn-silver btn-close-process right">{{ i18n "PROC_CLOSE_TAB" }}</button>
+  </section>
+</div>

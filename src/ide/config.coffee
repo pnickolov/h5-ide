@@ -65,9 +65,10 @@ require.config {
 	waitSeconds : 30
 	locale      : language
 	urlArgs     : "v=#{version}"
+
+	### env:dev ###
 	paths       :
 
-		### env:dev ###
 		#############################################
 		# Requirejs lib             # Merge in deploy
 		#############################################
@@ -78,44 +79,29 @@ require.config {
 		#############################################
 		'jquery'             : 'vender/jquery/jquery'
 		'canvon'             : 'vender/canvon/canvon'
-
 		'underscore'         : 'vender/underscore/underscore'
 		'backbone'           : 'vender/backbone/backbone'
 		'handlebars'         : 'vender/handlebars/handlebars.rt'
-
 		'sprintf'            : 'vender/sprintf/sprintf'
 		'Meteor'             : 'vender/meteor/meteor'
 		'crypto'             : 'vender/crypto-js/cryptobundle'
 		'q'                  : 'vender/q/q'
-		'select2'			 : 'vender/select2/select2.min'
 
 		#############################################
 		# MC                        # Merge in deploy
 		#############################################
 		'MC'                 : 'js/MC.core'
 		'MC.validate'        : 'js/MC.validate'
-
-		'canvas_layout'      : 'js/canvas_layout'
 		'MC.canvas'          : 'js/MC.canvas'
-
 		'MC.canvas.constant' : 'js/MC.canvas.constant'
 		'constant'           : 'lib/constant'
-
 		'event'              : 'lib/ide_event'
-
-		#############################################
-		# lib                       # Merge in deploy
-		#############################################
-		'aws_handle'         : 'lib/aws/main'
-		'forge_handle'       : 'lib/forge/main'
-		'common_handle'      : 'lib/common/main'
 
 		#############################################
 		# ui/                       # Merge in deploy
 		#############################################
 		'UI.tooltip'         : 'ui/UI.tooltip'
 		'UI.scrollbar'       : 'ui/UI.scrollbar'
-		'UI.tabbar'          : 'ui/UI.tabbar'
 		'UI.bubble'          : 'ui/UI.bubble'
 		'UI.modal'           : 'ui/UI.modal'
 		'UI.table'           : 'ui/UI.table'
@@ -140,155 +126,65 @@ require.config {
 		#############################################
 		"CloudResources"     : "ide/cloudres/CloudResources"
 
-
-		#############################################
-		# design model              # Merge in deploy
-		#############################################
-		'Design'             : 'module/design/framework/Design'
-		'CanvasManager'      : 'module/design/framework/canvasview/CanvasManager'
-
-		#############################################
-		# model                     # Merge in deploy
-		#############################################
-		'base_model'             : 'model/base_model'
-
-		'account_model'          : 'model/account_model'
-		'favorite_model'         : 'model/favorite_model'
-		'app_model'              : 'model/app_model'
-		'stack_model'            : 'model/stack_model'
-		'state_model'            : 'model/state_model'
-		'ec2_model'              : 'model/aws/ec2/ec2_model'
-		'vpc_model'              : 'model/aws/vpc/vpc_model'
-		'aws_model'              : 'model/aws/aws_model'
-		'ami_model'              : 'model/aws/ec2/ami_model'
-		'ebs_model'              : 'model/aws/ec2/ebs_model'
-		'elb_model'              : 'model/aws/elb/elb_model'
-		'dhcp_model'             : 'model/aws/vpc/dhcp_model'
-		'customergateway_model'  : 'model/aws/vpc/customergateway_model'
-		'vpngateway_model'       : 'model/aws/vpc/vpngateway_model'
-		'keypair_model'          : 'model/aws/ec2/keypair_model'
-		'autoscaling_model'      : 'model/aws/autoscaling/autoscaling_model'
-		'cloudwatch_model'       : 'model/aws/cloudwatch/cloudwatch_model'
-		'sns_model'              : 'model/aws/sns/sns_model'
-		'subnet_model'           : 'model/aws/vpc/subnet_model'
-		'instance_model'         : 'model/aws/ec2/instance_model'
-
-		#result_vo
-		'result_vo'              : 'service/result_vo'
-
-		#############################################
-		# service                   # Merge in deploy
-		#############################################
-
-		#forge
-		'favorite_service'       : 'service/favorite/favorite_service'
-		'account_service'        : 'service/account/account_service'
-		'app_service'            : 'service/app/app_service'
-		'stack_service'          : 'service/stack/stack_service'
-		'aws_service'            : 'service/aws/aws/aws_service'
-		'state_service'          : 'service/state/state_service'
-
-		#aws
-		'ami_service'            : 'service/aws/ec2/ami/ami_service'
-		'ebs_service'            : 'service/aws/ec2/ebs/ebs_service'
-		'ec2_service'            : 'service/aws/ec2/ec2/ec2_service'
-		'eip_service'            : 'service/aws/ec2/eip/eip_service'
-		'instance_service'       : 'service/aws/ec2/instance/instance_service'
-		'keypair_service'        : 'service/aws/ec2/keypair/keypair_service'
-		'placementgroup_service' : 'service/aws/ec2/placementgroup/placementgroup_service'
-		'securitygroup_service'  : 'service/aws/ec2/securitygroup/securitygroup_service'
-		'acl_service'            : 'service/aws/vpc/acl/acl_service'
-		'customergateway_service': 'service/aws/vpc/customergateway/customergateway_service'
-		'dhcp_service'           : 'service/aws/vpc/dhcp/dhcp_service'
-		'eni_service'            : 'service/aws/vpc/eni/eni_service'
-		'internetgateway_service': 'service/aws/vpc/internetgateway/internetgateway_service'
-		'routetable_service'     : 'service/aws/vpc/routetable/routetable_service'
-		'subnet_service'         : 'service/aws/vpc/subnet/subnet_service'
-		'vpc_service'            : 'service/aws/vpc/vpc/vpc_service'
-		'vpngateway_service'     : 'service/aws/vpc/vpngateway/vpngateway_service'
-		'vpn_service'            : 'service/aws/vpc/vpn/vpn_service'
-		'elb_service'            : 'service/aws/elb/elb/elb_service'
-		'iam_service'            : 'service/aws/iam/iam/iam_service'
-
-		#
-		'autoscaling_service'    : 'service/aws/autoscaling/autoscaling/autoscaling_service'
-		'cloudwatch_service'     : 'service/aws/cloudwatch/cloudwatch/cloudwatch_service'
-		'sns_service'            : 'service/aws/sns/sns/sns_service'
-
-		### env:dev:end ###
-
-		#############################################
-		# component                 # Merge in deploy
-		#############################################
-		'validation'         : 'component/trustedadvisor/validation'
-
-
 		#############################################
 		# api                       # Merge in deploy
 		#############################################
 		'ApiRequest'     : 'api/ApiRequest'
 		'ApiRequestDefs' : 'api/ApiRequestDefs'
 
+		#############################################
+		# ide                       # Merge in deploy
+		#############################################
+		"OpsModel"  : "ide/submodels/OpsModel"
+		"Workspace" : "ide/Workspace"
+
 
 		#############################################
-		# module
+		# opseditor                 # Merge in deploy
 		#############################################
-		'base_main'          : 'module/base/base_main'
-
-		'navigation'         : 'module/navigation/main'
-		'navigation_view'    : 'module/navigation/view'
-		'navigation_model'   : 'module/navigation/model'
-
-		'tabbar'             : 'module/tabbar/main'
-		'tabbar_view'        : 'module/tabbar/view'
-		'tabbar_model'       : 'module/tabbar/model'
-
-		'dashboard'          : 'module/dashboard/main'
-		'dashboard_view'     : 'module/dashboard/overview/view'
-		'dashboard_model'    : 'module/dashboard/overview/model'
-
-		'process'            : 'module/process/main'
-		'process_view'       : 'module/process/view'
-		'process_model'      : 'module/process/model'
-
-		'design_module'      : 'module/design/main'
-		'design_view'        : 'module/design/view'
-		'design_model'       : 'module/design/model'
-
-		#sub module with design
-		'resource'           : 'module/design/resource/main'
-		'property'           : 'module/design/property/property'
-		'canvas'             : 'module/design/canvas/main'
-		'toolbar'            : 'module/design/toolbar/main'
-
-		#statusbar state
-		'state_status'       : 'component/statestatus/main'
-		'kp_dropdown'        : 'component/kp/kpDropdown'
-		'kp_manage'          : 'component/kp/kpManage'
-		'kp_upload'          : 'component/kp/kpUpload'
-		'sns_dropdown'       : 'component/sns/snsDropdown'
-		'sns_manage'		 : 'component/sns/snsManage'
-		'combo_dropdown'     : 'component/common/comboDropdown'
-		'toolbar_modal'      : 'component/common/toolbarModal'
-		'dhcp'               : 'component/dhcp/dhcp'
-		'snapshotManager'    : 'component/snapshot/snapshot'
-		'sslcert_manage'     : 'component/sslcert/sslCertManage'
-		'sslcert_dropdown'     : 'component/sslcert/sslCertDropdown'
+		'Design'        : 'workspaces/editor/framework/Design'
+		'CanvasManager' : 'workspaces/editor/framework/canvasview/CanvasManager'
 
 		#############################################
-		# component
+		# deprecated service        # Merge in deploy
+		#############################################
+		'base_model'             : 'service/base_model'
+		'state_model'            : 'service/state_model'
+		'keypair_model'          : 'service/keypair_model'
+		'instance_model'         : 'service/instance_model'
+		'result_vo'              : 'service/result_vo'
+		'stack_service'          : 'service/stack_service'
+		'state_service'          : 'service/state_service'
+		'ami_service'            : 'service/ami_service'
+		'ebs_service'            : 'service/ebs_service'
+		'instance_service'       : 'service/instance_service'
+		'keypair_service'        : 'service/keypair_service'
+		'customergateway_service': 'service/customergateway_service'
+
+		#############################################
+		# component                 # Merge in deploy
 		#############################################
 
-		'unmanagedvpc'       : 'component/unmanagedvpc/main'
-		'unmanagedvpc_view'  : 'component/unmanagedvpc/view'
-		'unmanagedvpc_model' : 'component/unmanagedvpc/model'
+		'validation'       : 'component/trustedadvisor/validation'
+		'kp_dropdown'      : 'component/kp/kpDropdown'
+		'kp_manage'        : 'component/kp/kpManage'
+		'kp_upload'        : 'component/kp/kpUpload'
+		'sns_dropdown'     : 'component/sns/snsDropdown'
+		'sns_manage'       : 'component/sns/snsManage'
+		'combo_dropdown'   : 'component/common/comboDropdown'
+		'toolbar_modal'    : 'component/common/toolbarModal'
+		'dhcp'             : 'component/dhcp/dhcp'
+		'snapshotManager'  : 'component/snapshot/snapshot'
+		'sslcert_manage'   : 'component/sslcert/sslCertManage'
+		'sslcert_dropdown' : 'component/sslcert/sslCertDropdown'
+		'state_status'     : 'component/statestatus/main'
+		"ThumbnailUtil"    : "component/exporter/Thumbnail"
+		"JsonExporter"     : "component/exporter/JsonExporter"
+		"ResDiff"          : "component/common/diff/ResDiff"
+		"DiffTree"          : "component/common/diff/DiffTree"
 
-	shim               :
-
-		#############################################
-		# vender
-		#############################################
-
+	### env:dev:end ###
+	shim :
 		'canvon'       :
 			deps       : [ 'jquery' ]
 			exports    : 'Canvon'
@@ -302,26 +198,6 @@ require.config {
 		'Meteor'       :
 			deps       : ['underscore']
 			exports    : 'Meteor'
-
-		#############################################
-		# modules
-		#############################################
-
-		'navigation'   :
-			deps       : [ 'navigation_view', 'navigation_model', 'MC' ]
-
-		'tabbar'       :
-			deps       : [ 'tabbar_view', 'tabbar_model', 'MC' ]
-
-		'dashboard'    :
-			deps       : [ 'dashboard_view', 'dashboard_model', 'MC' ]
-
-		'process'      :
-			deps       : [ 'process_view', 'process_model', 'MC' ]
-
-		'select2'	   :
-			deps 	   : [ 'jquery' ]
-			exports    : "$"
 
 	### env:prod ###
 	# The rule of bundles is that, if an ID defined above is ever included in a bundle
@@ -345,19 +221,12 @@ require.config {
 			"MC.canvas"
 			"MC.canvas.constant"
 			'MC.validate'
-			"canvas_layout"
 			"lib/handlebarhelpers"
 			"event"
-		]
-		"lib/deprecated" : [
-			'aws_handle'
-			'forge_handle'
-			'common_handle'
 		]
 		"ui/ui" : [
 			'UI.tooltip'
 			'UI.scrollbar'
-			'UI.tabbar'
 			'UI.bubble'
 			'UI.modal'
 			'UI.table'
@@ -377,67 +246,28 @@ require.config {
 			'jquerysort'
 			"UI.modalplus"
 		]
-		"ApiRequest" : []
-		"model/model" : [
+		"api/api" : ["ApiRequest"]
+		"service/service" : [
 			'base_model'
-			'account_model'
-			'favorite_model'
-			'app_model'
-			'stack_model'
 			'state_model'
-			'ec2_model'
-			'vpc_model'
-			'aws_model'
-			'ami_model'
-			'ebs_model'
-			'elb_model'
-			'dhcp_model'
-			'customergateway_model'
-			'vpngateway_model'
 			'keypair_model'
-			'autoscaling_model'
-			'cloudwatch_model'
-			'sns_model'
-			'subnet_model'
 			'instance_model'
 			'result_vo'
-			'favorite_service'
-			'account_service'
-			'app_service'
 			'stack_service'
-			'aws_service'
 			'state_service'
 			'ami_service'
 			'ebs_service'
-			'ec2_service'
-			'eip_service'
 			'instance_service'
 			'keypair_service'
-			'placementgroup_service'
-			'securitygroup_service'
-			'acl_service'
 			'customergateway_service'
-			'dhcp_service'
-			'eni_service'
-			'internetgateway_service'
-			'routetable_service'
-			'subnet_service'
-			'vpc_service'
-			'vpngateway_service'
-			'vpn_service'
-			'elb_service'
-			'iam_service'
-			'autoscaling_service'
-			'cloudwatch_service'
-			'sns_service'
 		]
-		"component/sgrule/SGRulePopup" : []
-		"component/exporter/Exporter"  : [ "component/exporter/Download", "component/exporter/Thumbnail", "component/exporter/JsonExporter" ]
-		"ide/cloudres/CrBundle"  : ["CloudResources"]
-		"ide/Application" : []
-		"module/design/framework/DesignBundle" : [ "Design", "CanvasManager" ]
-		"validation" : []
+
+		"component/Exporter"                : [ "ThumbnailUtil", "JsonExporter" ]
+		"component/Validation"              : [ "validation", "component/trustedadvisor/main" ]
+		"component/StateStatus"             : ["state_status"]
+		"component/sgrule/SGRulePopup"      : []
 		"component/stateeditor/stateeditor" : []
+
 		"component/sharedrescomp" : [
 			'kp_dropdown'
 			'kp_manage'
@@ -450,18 +280,28 @@ require.config {
 			'snapshotManager'
 			'sslcert_manage'
 			'sslcert_dropdown'
+			'ResDiff'
+			'DiffTree'
 		]
-		"property" : []
+
+		"ide/cloudres/CrBundle"  : [ "CloudResources" ]
+		"ide/Application" : [ "Workspace", "OpsModel" ]
+
+		"workspaces/Dashboard" : []
+
+		"workspaces/editor/PropertyPanel" : [ "workspaces/editor/subviews/PropertyPanel" ]
+		"workspaces/editor/framework/DesignBundle" : [ "Design", "CanvasManager" ]
+		"workspaces/OpsEditor" : []
 
 	bundleExcludes : # This is a none requirejs option, but it's used by compiler to exclude some of the source.
-		"lib/deprecated" : ["Design"]
 		"component/sgrule/SGRulePopup" : [ "Design" ]
-		"component/stateeditor/stateeditor" : [
-			"component/stateeditor/lib/ace"
-			"component/stateeditor/lib/markdown"
-		]
-		"module/design/framework/DesignBundle" : [ "component/sgrule/SGRulePopup" ]
-		"property" : [ "component/sgrule/SGRulePopup" ]
+		"component/stateeditor/stateeditor" : ["Design"]
+		"component/sharedrescomp"  : [ "Design" ]
+		"component/Validation" : ["Design"]
+
+		"workspaces/editor/PropertyPanel" : [ "Design" ]
+		"workspaces/editor/framework/DesignBundle" : []
+		"workspaces/editor/subviews/PropertyPanel" : [ "component/sgrule/SGRulePopup" ]
 
 	### env:prod:end ###
 }
@@ -479,10 +319,19 @@ requirejs.onError = ( err )->
 		console.error "[RequireJS Error]", err, err.stack
 
 
-require ['ide/Application', 'ide/deprecated/ide', "ide/cloudres/CrBundle"], ( Application, ide ) ->
-	(new Application()).initialize().then ()->
-		ide.initialize()
-	return
+require [
+	'ide/Application'
+	"ide/cloudres/CrBundle"
+	"workspaces/Dashboard"
+	"workspaces/OpsEditor"
+	"MC"
+	'lib/aws'
+], (  Application, CrBundle, Dashboard, OpsEditor ) ->
+
+	# There's an issue of requirejs dependency. In order to avoid that, we need to export OpsEditor as an Global Object.
+	window.OpsEditor = OpsEditor
+	(new Application()).initialize().then ()-> new Dashboard(); return
+
 , ( err )->
 	err = err || { requireType : "timeout" }
 	if err.requireType is "timeout"

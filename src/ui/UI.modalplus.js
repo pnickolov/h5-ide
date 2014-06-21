@@ -7,7 +7,7 @@
     var Modal;
     Modal = (function() {
       function Modal(option) {
-        var body, isFirst, _ref, _ref1, _ref2;
+        var body, isFirst, _ref, _ref1, _ref2, _ref3;
         this.option = option;
         _.extend(this, Backbone.Events);
         isFirst = false;
@@ -28,9 +28,14 @@
           confirm: {
             text: ((_ref = this.option.confirm) != null ? _ref.text : void 0) || "Submit",
             color: ((_ref1 = this.option.confirm) != null ? _ref1.color : void 0) || "blue",
-            disabled: (_ref2 = this.option.confirm) != null ? _ref2.disabled : void 0
+            disabled: (_ref2 = this.option.confirm) != null ? _ref2.disabled : void 0,
+            hide: (_ref3 = this.option.confirm) != null ? _ref3.hide : void 0
           },
-          cancel: this.option.cancel || "Cancel",
+          cancel: _.isString(this.option.cancel) ? {
+            text: this.option.cancel || "Cancel"
+          } : _.isObject(this.option.cancel) ? this.option.cancel : {
+            text: "Cancel"
+          },
           hasFooter: !this.option.disableFooter,
           hasScroll: !!this.option.maxHeight,
           compact: this.option.compact
@@ -52,6 +57,12 @@
         this.tpl.appendTo(this.wrap);
         modalGroup.push(this);
         if (modalGroup.length === 1) {
+          this.tpl.addClass('bounce');
+          window.setTimeout((function(_this) {
+            return function() {
+              return _this.tpl.removeClass('bounce');
+            };
+          })(this), 1);
           this.trigger("show", this);
           this.trigger('shown', this);
         }
@@ -74,11 +85,17 @@
           modalGroup = [];
           this.trigger('close', this);
           this.trigger('closed', this);
-          this.tpl.remove();
+          this.tpl.addClass('bounce');
           if (typeof (_base = this.option).onClose === "function") {
             _base.onClose(this);
           }
-          this.wrap.remove();
+          window.setTimeout((function(_this) {
+            return function() {
+              _this.tpl.remove();
+              return _this.wrap.remove();
+            };
+          })(this), this.option.delay || 300);
+          this.wrap.fadeOut(this.option.delay || 300);
         }
         return null;
       };
@@ -109,22 +126,27 @@
         })(this));
         this.tpl.find('.btn.modal-close').click((function(_this) {
           return function(e) {
-            var _base;
+            var _base, _ref;
             if (typeof (_base = _this.option).onCancel === "function") {
               _base.onCancel(_this.tpl, e);
             }
-            return modalGroup[0].back();
+            _this.trigger('cancel', _this);
+            if (!_this.option.preventClose) {
+              return (_ref = modalGroup[0]) != null ? _ref.back() : void 0;
+            }
           };
         })(this));
         this.tpl.find("i.modal-close").click(function(e) {
-          return modalGroup[0].back();
+          var _ref;
+          return (_ref = modalGroup[0]) != null ? _ref.back() : void 0;
         });
         if (!this.option.disableClose) {
           this.getFirst().wrap.off('click');
           this.getFirst().wrap.on('click', (function(_this) {
             return function(e) {
+              var _ref;
               if (e.target === e.currentTarget) {
-                return _this.getFirst().back();
+                return (_ref = _this.getFirst()) != null ? _ref.back() : void 0;
               }
             };
           })(this));
@@ -162,7 +184,7 @@
           })(this));
           $(document).mousemove((function(_this) {
             return function(e) {
-              if (dragable) {
+              if (dragable && _this.getLast()) {
                 _this.getLast().tpl.css({
                   top: e.clientY + diffY,
                   left: e.clientX + diffX
@@ -219,7 +241,7 @@
         windowHeight = $(window).height();
         width = ((_ref = this.option.width) != null ? _ref.toLowerCase().replace('px', '') : void 0) || this.tpl.width();
         height = ((_ref1 = this.option.height) != null ? _ref1.toLowerCase().replace('px', '') : void 0) || this.tpl.height();
-        top = (windowHeight - height) / 2;
+        top = (windowHeight - height) * 0.4;
         left = (windowWidth - width) / 2;
         if (slideIn) {
           left = windowWidth + left;
@@ -322,13 +344,13 @@
       Modal.prototype._fadeOut = function() {
         return this.tpl.animate({
           left: "-=" + $(window).width()
-        }, this.option.delay || 300);
+        }, this.option.delay || 100);
       };
 
       Modal.prototype._fadeIn = function() {
         return this.tpl.animate({
           left: "+=" + $(window).width()
-        }, this.option.delay || 300);
+        }, this.option.delay || 100);
       };
 
       Modal.prototype._slideIn = function() {

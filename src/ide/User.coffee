@@ -7,7 +7,7 @@
 ----------------------------
 ###
 
-define [ "ApiRequest", "event" , "backbone" ], ( ApiRequest, ide_event )->
+define [ "ApiRequest", "backbone" ], ( ApiRequest )->
 
   UserState =
     NotFirstTime : 2
@@ -51,7 +51,7 @@ define [ "ApiRequest", "event" , "backbone" ], ( ApiRequest, ide_event )->
 
       # Set user to already used IDE, so that next time we don't show welcome
       if @isFirstVisit()
-        ApiRequest("updateAccount", { params : {
+        ApiRequest("account_update_account", { attributes : {
           state : @get("state")|UserState.NotFirstTime
         } })
 
@@ -78,17 +78,25 @@ define [ "ApiRequest", "event" , "backbone" ], ( ApiRequest, ide_event )->
       }
       return
 
-    # Fetch additional user infomation from an api.
     fetch : ()->
-      ApiRequest("login", {
+      self = @
+
+      ApiRequest("session_login", {
         username : @get("username")
         password : @get("session")
-      }).then ( result )=>
+      }).then ( result )->
 
-        @userInfoAccuired( result )
+        self.userInfoAccuired( result )
         ### env:prod ###
-        @bootIntercom()
+        self.bootIntercom()
         ### env:prod:end ###
+
+        if self.hasCredential()
+          # Just pick a fast aws api to validate if the user's credential is valid before launching IDE.
+          # Even if this method fails, ApiRequest will hanlde it for us. We would still launch IDE.
+          return ApiRequest("ec2_DescribeRegions").fail ()-> return
+
+        return
 
       , ( err )->
 
@@ -97,8 +105,17 @@ define [ "ApiRequest", "event" , "backbone" ], ( ApiRequest, ide_event )->
         # But we should we do?
 
         if err.error < 0
-          # Network Error, Try reloading
-          window.location.reload()
+          if err.error is ApiRequest.Errors.Network500
+            # Server down
+            # Actually this logic should be done in Application, not in User
+            # But we don't have a unified api to get the user's global data,
+            # thus the Application do no fetching.
+            # So we can only handle this situation here.
+            # TODO : Maybe we should move this to ApiRequest's global handling.
+            window.location = "/500"
+          else
+            # Network Error, Try reloading
+            window.location.reload()
         else
           # If there's service error. I think we need to logout, because I guess it's because the session is not right.
           App.logout()
@@ -107,7 +124,7 @@ define [ "ApiRequest", "event" , "backbone" ], ( ApiRequest, ide_event )->
 
     # Send a request to acquire a new session
     acquireSession : ( password )->
-      ApiRequest("login", {
+      ApiRequest("session_login", {
         username : @get("username")
         password : password
       }).then ( result )=>
@@ -132,24 +149,27 @@ define [ "ApiRequest", "event" , "backbone" ], ( ApiRequest, ide_event )->
       return
 
     changePassword : ( oldPwd, newPwd )->
-      ApiRequest "updateAccount", { params : {
+      ApiRequest "account_update_account", { attributes : {
         password     : oldPwd
         new_password : newPwd
       }}
 
     validateCredential : ( accessKey, secretKey )->
-      ApiRequest("validateCred", {
+      ApiRequest("account_validate_credential", {
         access_key : accessKey
         secret_key : secretKey
       })
+      d = Q.defer()
+      d.resolve()
+      d.promise
 
     changeCredential : ( account = "", accessKey = "", secretKey = "", force = false )->
       self = this
-      ApiRequest("updateCred", {
-        access_key : accessKey
-        secret_key : secretKey
-        account_id : account
-        force : force
+      ApiRequest("account_set_credential", {
+        access_key   : accessKey
+        secret_key   : secretKey
+        account_id   : account
+        force_update : force
       }).then ()->
         attr =
           account      : account
@@ -164,9 +184,6 @@ define [ "ApiRequest", "event" , "backbone" ], ( ApiRequest, ide_event )->
         self.set attr
 
         self.trigger "change:credential"
-
-        # LEGACY code, trigger an ide event when credential is updated.
-        ide_event.trigger ide_event.UPDATE_AWS_CREDENTIAL
         return
 
     createToken : ()->

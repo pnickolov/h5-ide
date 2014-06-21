@@ -42,14 +42,15 @@ define [ "./CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
         endpoint    : @get("Endpoint")
       }).then ( res )->
         try
-          arn = res.SubscribeResponse.SubscribeResult.SubscriptionArn
+          res = res.SubscribeResponse.SubscribeResult
+          arn = res.SubscriptionArn
         catch e
           throw McError( ApiRequest.Errors.InvalidAwsReturn, "Subscription created but aws returns invalid ata." )
 
         if arn is "pending confirmation" then arn = "PendingConfirmation"
 
         self.set {
-          id : CrSubscriptionModel.uniqueId()
+          id : CrSubscriptionModel.getIdFromData( res )
           SubscriptionArn : arn
         }
         console.log "Created subscription resource", self
@@ -66,9 +67,8 @@ define [ "./CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
       defer = Q.defer()
       defer.resolve McError( ApiRequest.Errors.InvalidMethodCall, "Cannot unsubscribe pending subscription.", self )
       return defer.promise
-
   }, {
-    uniqueId : ()-> _.uniqueId("CrSnsSub_")
+    getIdFromData : ( res )-> "#{res.TopicArn}:#{res.Protocol}:#{res.Endpoint}".replace("arn:aws:sns:","")
   }
 
   CrSubscriptionModel

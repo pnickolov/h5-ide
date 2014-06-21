@@ -1,52 +1,24 @@
 <!DOCTYPE HTML>
-<html>
-<head>
+<html><head>
 	<title>VisualOps - Ensure your app always runs as you designed</title>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<meta charset="UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 	<meta name="description" content="VisualOps - Visual Cloud Computing IDE"/>
-	<link rel="shortcut icon" href="./assets/images/ide/favicon.ico" type="image/x-icon" />
+	<link rel="shortcut icon" href="./assets/images/ide/favicon.ico" type="image/x-icon"/>
 
 	<link rel="stylesheet" href="./assets/css/icon-font.css"/>
-	<link rel="stylesheet" href="./assets/css/ide.css"/>
 	<link rel="stylesheet" href="./assets/css/UI.component.css"/>
+	<link rel="stylesheet" href="./assets/css/ide.css"/>
 	<link rel="stylesheet" href="./assets/css/canvas.css"/>
 	<link rel="stylesheet" href="./assets/css/stateeditor.css"/>
-
 	<!-- {{include/analytics.html}} -->
 </head>
 <body id="body">
-	<!-- Loading bar -->
-	<div id="loading-bar-wrapper">
-		<div class="loading-wrapper">
-			<div class="gear-loading"></div>
-		</div>
-	</div>
-
-	<!-- Waiting bar -->
-	<div id="waiting-bar-wrapper"></div>
-
-	<div id="wrapper">
-
-		<div id="header-wrapper" class="clearfix">
-			<div id="tabbar-wrapper">
-				<div id="tab-bar">loading...</div>
-			</div>
-		</div>
-
-		<div id="main">
-			<div id="tab-content-dashboard" class="main-content active">loading...</div>
-			<div id="tab-content-design" class="main-content">loading...</div>
-			<div id="tab-content-process" class="main-content">loading...</div>
-		</div>
-
-		<aside id="navigation"></aside>
-
-		<button id="off-canvas-menu" class="icon-menu"></button>
-		<div id="off-canvas-overlay"></div>
-	</div>
-
+	<div id="GlobalLoading"></div>
+	<section id="wrapper">
+		<div id="tabbar-wrapper"><ul id="ws-fixed-tabs"></ul><ul id="ws-tabs"></ul></div>
+		<div id="main"></div>
+	</section>
 	<!-- {{include/intercom.html}} -->
 	<script type="text/javascript" src='./vender/requirejs/require.js' data-main='./ide/config.js?#{version}'></script>
-</body>
-</html>
+</body></html>

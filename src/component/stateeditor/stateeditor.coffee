@@ -34,8 +34,8 @@ define [ 'event', './view', './model', './lib/ace', 'UI.modal', 'jquerysort' ], 
         ide_event.onLongListen ide_event.STATE_EDITOR_SAVE_DATA, (event) ->
             view.onMouseDownSaveFromOther(event)
         if not force
-            $( '#property-panel' ).addClass 'state'
-        $( '#property-panel .sub-stateeditor' ).html view.render().el
+            $( '#OEPanelRight' ).addClass 'state'
+        $( '#OEPanelRight .sub-stateeditor' ).html view.render().el
 
     unLoadModule = ( view, model ) ->
         console.log 'state editor unLoadModule'

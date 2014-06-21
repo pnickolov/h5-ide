@@ -1,0 +1,94 @@
+<div>
+
+<header id="global-region-header">
+	<button id="RefreshResource" class="icon-refresh">just now</button>
+
+	<button class="btn btn-primary icon-new-stack js-toggle-dropdown">{{i18n "DASH_CREATE_NEW_STACK"}}<i class="icon-caret-down"></i></button>
+
+	<ul id="global-region-create-stack-list" class="dropdown-menu">
+	{{#each this}}<li data-region="{{id}}">{{name}} - {{shortName}}</li>{{/each}}</ul>
+
+	<button id="ImportStack" class="btn btn-primary icon-import" data-analytics-plus="import_json">{{i18n "DASH_IMPORT_JSON"}}</button>
+
+	<button id="VisualizeVPC" class="btn btn-blue icon-visualize" data-analytics-plus="visualize_vpc">{{i18n "DASH_VISUALIZE_VPC"}}
+	</button>
+</header>
+
+
+<div id="global-region-wrap" class="scroll-wrap">
+<div class="scrollbar-veritical-wrap" style="display: block;"><div class="scrollbar-veritical-thumb"></div></div>
+
+<div class="scroll-content">
+	<!-- Global Map -->
+	<div id="global-region-map-wrap"> <div id="global-region-map-content" class="clearfix">
+		<ul id="global-region-spot" class="pos-r"></ul>
+		<div id="global-region-status-widget">
+			<header class="clearfix">
+			  <div class="global-region-status-tab">
+			    <span>0</span><h5>{{i18n "DASH_LBL_APP"}}</h5>
+			  </div>
+			  <div class="global-region-status-tab on stack">
+		      <span>0</span><h5>{{i18n "DASH_LBL_STACK"}}</h5>
+			  </div>
+			</header>
+			<section id="global-region-recent-list"></section>
+		</div>
+	</div> </div>
+	<!-- Global Map -->
+
+<section id="dashboard-data-wrap">
+
+	<nav class="pos-r">
+		<button id="region-switch" class="btn-blue btn js-toggle-dropdown">
+			<i class="icon-caret-down right"></i><span>{{i18n "DASH_BTN_GLOBAL"}}</span>
+		</button>
+
+		<ul id="region-switch-list" class="dropdown-menu">
+			<li data-region="global">{{i18n "DASH_BTN_GLOBAL"}}</li>
+			{{#each this}}<li data-region="{{id}}">{{shortName}}</li>{{/each}}
+		</ul>
+	</nav>
+
+	<!-- Global view --><ul id="GlobalView" class="clearfix" style="display:none;"></ul><!-- Global view -->
+
+	<!-- Region view --><section id="RegionView" style="display:none;">
+		<div id="region-app-stack-wrap">
+			<div class="dashboard-loading"><div class="loading-spinner"></div></div>
+		</div>
+		<div id="RegionViewWrap">
+		<nav class="clearfix" id="RegionResourceNav">
+		  <div class="resource-tab instances on" data-type="INSTANCE">
+		    <span class="resource-count">{{i18n "DASH_LBL_INSTANCE"}}</span><span class="count-bubble"></span></div>
+		  <div class="resource-tab eips" data-type="EIP">
+		    <span class="resource-count">{{i18n "DASH_LBL_ELASTIC_IP"}}</span><span class="count-bubble"></span></div>
+		  <div class="resource-tab volumes" data-type="VOL">
+		    <span class="resource-count">{{i18n "DASH_LBL_VOLUME"}}</span><span class="count-bubble"></span></div>
+		  <div class="resource-tab vpcs" data-type="VPC">
+		    <span class="resource-count">{{i18n "DASH_LBL_VPC"}}</span><span class="count-bubble"></span></div>
+		  <div class="resource-tab vpns" data-type="VPN">
+		    <span class="resource-count">{{i18n "DASH_LBL_VPN"}}</span><span class="count-bubble"></span></div>
+		  <div class="resource-tab elbs" data-type="ELB">
+		    <span class="resource-count">{{i18n "DASH_LBL_LOAD_BALANCER"}}</span><span class="count-bubble"></span></div>
+		  <div class="resource-tab asgs" data-type="ASG">
+		   <span class="resource-count">{{i18n "DASH_LBL_AUTO_SCALING_GROUP"}}</span><span class="count-bubble"></span></div>
+		  <div class="resource-tab cloudwatches" data-type="CW">
+		    <span class="resource-count">{{i18n "DASH_LBL_CLOUDWATCH_ALARM"}}</span><span class="count-bubble"></span></div>
+		  <div class="resource-tab snss" data-type="SUBSCRIPTION">
+		    <span class="resource-count">{{i18n "DASH_LBL_SNS_SUBSCRIPTION"}}</span><span class="count-bubble"></span></div>
+		</nav>
+		<div id="RegionResourceData" class="table-head-fix"></div>
+		</div>
+	</section><!-- Region view -->
+
+	<div id="DashboardDemo">
+	  <div class="enter-credential">
+	    This is only sample data of global resource sumary.</br>
+	    <a class="show-credential">Provide your AWS Credential</a> to see real data
+	  </div>
+	  <img src="./assets/images/ide/global-demo.png"/>
+	</div>
+</section>
+
+</div></div></div>
+
+</div>

@@ -56,11 +56,14 @@ define [ 'constant', 'CloudResources','sslcert_manage', 'combo_dropdown', './com
                 if data and data[0] and @uid
                     if @dropdown.getSelection() is 'None'
 
-                        listenerAry = Design.instance().component(@uid).get('listeners')
-                        currentListenerObj = listenerAry[@listenerNum]
-                        if currentListenerObj and currentListenerObj.protocol in ['HTTPS', 'SSL']
-                            compModel = Design.instance().component(@uid)
-                            if compModel
+                        compModel = Design.instance().component(@uid)
+
+                        if compModel
+
+                            listenerAry = compModel.get('listeners')
+                            currentListenerObj = listenerAry[@listenerNum]
+                            if currentListenerObj and currentListenerObj.protocol in ['HTTPS', 'SSL']
+
                                 compModel.setSSLCert(@listenerNum, data[0].id)
                                 @dropdown.trigger 'change', data[0].id
                                 @dropdown.setSelection data[0].Name

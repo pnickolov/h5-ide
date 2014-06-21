@@ -18,7 +18,7 @@ copyJs = ()->
 module.exports = ()->
 
   console.log "Tracing dependency of each module."
-  console.log "Don't forget to run `gulp dev_all` before tracing."
+  console.log "Don't forget to run `gulp` before tracing."
 
   copyJs().then ()->
 

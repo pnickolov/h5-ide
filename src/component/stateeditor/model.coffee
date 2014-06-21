@@ -2,7 +2,7 @@
 #  View Mode for component/stateeditor
 #############################
 
-define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], (MC, constant, state_model) ->
+define [ 'MC', 'constant', 'state_model', 'CloudResources', "Design", 'backbone', 'jquery', 'underscore' ], (MC, constant, state_model, CloudResources, Design) ->
 
 	StateEditorModel = Backbone.Model.extend {
 
@@ -16,12 +16,8 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 
 			that = this
 
-			agentData = Design.instance().get('agent')
-			modRepo = agentData.module.repo
-			modTag = agentData.module.tag
-
-			modVersion = modRepo + ':' + modTag
-			moduleDataObj = MC.data.state.module[modVersion]
+			stateModuel = Design.instance().get('agent').module
+			moduleDataObj = App.model.getStateModule( stateModuel.repo, stateModuel.tag )
 
 			platformInfo = that.getResPlatformInfo()
 			osPlatform = platformInfo.osPlatform
@@ -33,8 +29,9 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 				that.set('isWindowsPlatform', false)
 
 			currentCompData = that.get('compData')
-			cachedAmi = Design.instance().component(currentCompData.uid).get('cachedAmi')
-			if cachedAmi and cachedAmi.osType and cachedAmi.osType is 'windows'
+			comp = Design.instance().component( currentCompData.uid )
+			osType = (comp.getAmi() || comp.get("cachedAmi")).osType
+			if osType is 'windows'
 				that.set('isWindowsPlatform', true)
 
 			that.set('amiExist', platformInfo.amiExist)
@@ -144,9 +141,6 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 			else if currentState is 'appedit'
 				that.set('currentState', 'appedit')
 
-			if MC.canvas_data.state is 'Stoped'
-				that.set('currentAppState', 'stoped')
-
 		sortParaList: (cmdAllParaAry, paraName) ->
 
 			newCMDAllParaAry = cmdAllParaAry.sort (paraObj1, paraObj2) ->
@@ -170,7 +164,7 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 			that = this
 			compData = that.get('compData')
 			imageId = compData.resource.ImageId
-			imageObj = MC.data.dict_ami[imageId]
+			imageObj = CloudResources( constant.RESTYPE.AMI, Design.instance().region() ).get(imageId)
 
 			osPlatform = null
 			osPlatformDistro = null
@@ -179,15 +173,11 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 
 			layoutOSType = ''
 			cachedAmi = Design.instance().component(compData.uid).get('cachedAmi')
-			if cachedAmi
-				layoutOSType = cachedAmi.osType
+			layoutOSType = cachedAmi.osType if cachedAmi
 
-			if (imageObj and imageObj.osType) or layoutOSType
+			if imageObj
 
-				if not imageObj
-					imageObj = {}
-
-				osType = imageObj.osType or layoutOSType
+				osType = imageObj.get('osType') or layoutOSType
 
 				linuxDistroRange = ['centos', 'redhat',  'rhel', 'ubuntu', 'debian', 'fedora', 'gentoo', 'opensuse', 'suse', 'sles', 'amazon', 'amaz']
 
@@ -559,20 +549,19 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 
 		getResState: (resId) ->
 
-			that = this
-			currentRegion = MC.canvas_data.region
-			resObj = MC.data.resource_list[currentRegion][resId]
+			# CloudResources(@get("resModel").type, Design.instance().region()).get(resId)?.attributes
+			resModel = CloudResources('AWS.EC2.Instance').get(resId)
 			resState = 'unknown'
-			if resObj and resObj.instanceState and resObj.instanceState.name
-				resState = resObj.instanceState.name
-			that.set('resState', resState)
+			if resModel
+				resState = resModel.get('instanceState')?.name
+			@set('resState', resState)
 			null
 
 		genStateLogData: (resId, callback) ->
 
 			that = this
 
-			appId = MC.canvas_data.id
+			appId = Design.instance().get("id")
 
 			if not (appId and resId)
 
@@ -682,10 +671,10 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], 
 					if lsgUID is originCompUID
 
 						# find asg name's all instance
-						$.each MC.data.resource_list[MC.canvas_data.region], (idx, resObj) ->
+						$.each CloudResources(constant.RESTYPE.ASG, Design.instance().region()).toJSON(), (idx, resObj) ->
 							if resObj and resObj.AutoScalingGroupName and resObj.Instances
 								if resObj.AutoScalingGroupName is asgName
-									$.each resObj.Instances.member, (idx, instanceObj) ->
+									$.each resObj.Instances, (idx, instanceObj) ->
 										instanceId = instanceObj.InstanceId
 										dataAry.push({
 											res_id: instanceId,

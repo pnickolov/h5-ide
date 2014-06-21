@@ -1,0 +1,180 @@
+@import "compass";
+
+.ops-process {
+  width       : 100%;
+  padding-top : 10%;
+  height      : 90%;
+  background  : #0a0a0a;
+  position    : relative;
+
+  header {
+    text-align    : center;
+    font-size     : 16px;
+    color         : #eee;
+    margin-bottom : 30px;
+  }
+
+  .process-info {
+    margin-left : 10px;
+  }
+
+  > div {
+    width  : 580px;
+    margin : 0 auto;
+  }
+
+    .error-info-block {
+      text-align : left;
+      max-width  : 600px;
+      margin     : 20px auto;
+
+      header {
+        font-size     : 16px;
+        color         : #eee;
+        margin-bottom : 50px;
+      }
+    }
+
+    .result-sub-title {
+      font-size  : 16px;
+      color      : #eee;
+      background : rgba(0, 0, 0, 0.2);
+      padding    : 10px;
+    }
+
+    .result-error-info {
+      padding       : 10px;
+      color         : #ccc;
+      background    : rgba(40,40,40,.5);
+      margin-bottom : 15px;
+
+      .detail {
+        color: #ec3c38;
+      }
+    }
+
+    .result-error-notice {
+      padding : 5px;
+      color   : #aaa;
+    }
+
+    .rolling-back-content {
+      display : none;
+    }
+
+  .fail .result-error-info {
+    margin-bottom : 15px;
+  }
+
+  .sub-title {
+    font-size  : 14px;
+    color      : #999;
+    text-align : center;
+    margin     : 0;
+    padding    : 10px;
+  }
+
+  .title {
+    color : #999;
+    font-style: bold;
+  }
+
+  .processing, .success {
+    @include transition( all .2s ease-in );
+  }
+
+  .fadeout {
+    opacity : 0;
+    margin-top : -20px;
+  }
+
+  .success {
+    opacity     : 0;
+    margin-top  : 20px;
+    position    : absolute;
+    top         : 0;
+    left        : 0;
+    width       : 100%;
+    padding-top : 10%;
+
+    .title {
+      font-size  : 18px;
+      color      : #676767;
+      text-align : center;
+    }
+  }
+
+  .fadein {
+    opacity: 1;
+    margin-top : 0;
+  }
+
+  .rolling-back-content {
+    display : none;
+  }
+  &.rolling-back .processing {
+    header { display : none; }
+    .rolling-back-content { display : block; }
+  }
+
+  &:not(.has-progess) {
+    .process-info, .progress { display : none; }
+  }
+  &.has-progess {
+    ::selection {
+      background : transparent;
+    }
+    .loading-spinner { display : none; }
+  }
+
+  &.rolling-back {
+    .processing { display : none; }
+    .rolling-back-content { display : block; }
+  }
+}
+
+/* Progress bar */
+.progress {
+  border-radius : 9px;
+  background    : #1d1d1d;
+  overflow      : hidden;
+  width         : 350px;
+  height        : 18px;
+  border        : 1px solid #000;
+  margin        : 10px auto;
+
+  .bar {
+
+    border-radius : 9px;
+    height   : 100%;
+
+    $stripeColor1 : #ad77d7;
+    $stripeColor2 : #9e62d4;
+
+    background-image: -webkit-gradient(linear, 0 0, 100% 100%, color-stop(0.25, $stripeColor1), color-stop(0.25, $stripeColor2), color-stop(0.5, $stripeColor2), color-stop(0.5, $stripeColor1), color-stop(0.75, $stripeColor1), color-stop(0.75, $stripeColor2), to($stripeColor2));
+    background-image: -webkit-linear-gradient(135deg, $stripeColor1 25%, $stripeColor2 25%, $stripeColor2 50%, $stripeColor1 50%, $stripeColor1 75%, $stripeColor2 75%, $stripeColor2);
+    background-image: -moz-linear-gradient(135deg, $stripeColor1 25%, transparent 25%, transparent 50%, $stripeColor1 50%, $stripeColor1 75%, transparent 75%, transparent);
+    background-image: linear-gradient(135deg, $stripeColor1 25%, $stripeColor2 25%, $stripeColor2 50%, $stripeColor1 50%, $stripeColor1 75%, $stripeColor2 75%, $stripeColor2);
+
+    @include background-size( 40px 40px );
+    @include transition( width .3s );
+
+    -webkit-animation: progress-bar 2s linear infinite;
+       -moz-animation: progress-bar 2s linear infinite;
+            animation: progress-bar 2s linear infinite;
+  }
+}
+
+
+#OpsEditor {
+  .ops-process {
+    position   : absolute;
+    left       : 0;
+    top        : 0;
+    bottom     : 0;
+    right      : 0;
+    z-index    : 9;
+    background : rgba(0,0,0,.8);
+    text-align : center;
+  }
+}

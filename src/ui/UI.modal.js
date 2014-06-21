@@ -86,7 +86,7 @@ var modal = window.modal = function (template, dismiss, callback, options)
 			.on('keyup', modal.keyup);
 	}
 
-	$(window).on('resize', modal.position);
+	// $(window).on('resize', modal.position);
 
 	// $('#wrapper').addClass('blur-effect');
 
@@ -133,10 +133,10 @@ modal.open = function (event)
 
 modal.keyup = function (event)
 {
-	if (event.which === 27)
-	{
-		modal.close();
-	}
+	// if (event.which === 27)
+	// {
+	// 	modal.close();
+	// }
 
 	// else if ( event.which == 13 ) {
 	// 	var btns = $("#modal-wrap").find(".modal-footer").find(".btn").filter(":not(.btn-silver,.modal-close)")

@@ -11,9 +11,10 @@ define [ 'constant', 'CloudResources','sns_manage', 'combo_dropdown', './compone
             region = Design.instance().region()
             @subCol = CloudResources constant.RESTYPE.SUBSCRIPTION, region
             @topicCol = CloudResources constant.RESTYPE.TOPIC, region
-            @topicCol.on 'update', @processCol, @
-            @topicCol.on 'change', @processCol, @
-            @subCol.on 'update', @processCol, @
+
+            @listenTo @topicCol, 'update', @processCol
+            @listenTo @topicCol, 'change', @processCol
+            @listenTo @subCol, 'update', @processCol
 
         initDropdown: ->
             options =
@@ -115,6 +116,10 @@ define [ 'constant', 'CloudResources','sns_manage', 'combo_dropdown', './compone
 
         filter: ( keyword ) ->
             @processCol( true, keyword )
+
+        remove: ->
+            @dropdown.remove()
+            Backbone.View.prototype.remove.apply @, arguments
 
 
 

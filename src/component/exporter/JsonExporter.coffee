@@ -1,5 +1,5 @@
 
-define ['./Download', 'i18n!nls/lang.js', "crypto"], ( download, lang )->
+define ['component/exporter/Download', 'i18n!nls/lang.js', "crypto"], ( download, lang )->
 
   ascii = ()-> String.fromCharCode.apply String, arguments
   key = ascii 77,97,100,101,105,114,97,67,108,111,117,100,73,68,69
@@ -11,8 +11,6 @@ define ['./Download', 'i18n!nls/lang.js', "crypto"], ( download, lang )->
 
     json.signature = CryptoJS.HmacMD5(JSON.stringify( json ), key).toString()
 
-    # I don't want to mess up with the grunt.
-    # If we use gulp to build the source, the export json will be pretty-print in dev mode.
     space = 4
     ### env:prod ###
     space = undefined
@@ -43,14 +41,10 @@ define ['./Download', 'i18n!nls/lang.js', "crypto"], ( download, lang )->
 
     signature = j.signature
     delete j.signature
-    ### env:dev ###
-    return j
-    ### env:dev:end ###
-    ### env:debug ###
-    return j
-    ### env:debug:end ###
+    ### env:prod ###
     if CryptoJS.HmacMD5( JSON.stringify( j ) , key ).toString() isnt signature
       return lang.ide.POP_IMPORT_MODIFIED_ERROR
+    ### env:prod:end ###
 
     return j
 

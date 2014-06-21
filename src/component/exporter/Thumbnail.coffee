@@ -1,5 +1,5 @@
 
-define ['UI.canvg', './Download'], ()->
+define ['UI.canvg', 'component/exporter/Download'], ()->
 
   GridBackground = undefined
   ThumbGridBackground = undefined
@@ -22,12 +22,12 @@ define ['UI.canvg', './Download'], ()->
     if cWidth  > 1500 then cWidth = 1500
     if cHeight > 1000 then cWidth = 1000
 
-    ratio1 = 218 / cWidth
-    ratio2 = 144 / cHeight
+    ratio1 = 228 / cWidth
+    ratio2 = 150 / cHeight
     ratio  = if ratio1 <= ratio2 then ratio2 else ratio1
 
-    ctx.canvas.width  = 218
-    ctx.canvas.height = 144
+    ctx.canvas.width  = 228
+    ctx.canvas.height = 150
     ctx.fillStyle = ctx.createPattern(ThumbGridBackground, "repeat")
     ctx.fillRect 0, 0, cWidth, cHeight
     ctx.scale ratio, ratio
@@ -55,35 +55,22 @@ define ['UI.canvg', './Download'], ()->
 
 
     # Insert the document so that we can calculate the style.
-    $wrap = $("#export-png-wrap")
+    $wrap = $("#ExportPngWrap")
     if not $wrap.length
-      $wrap = $("<div id='export-png-wrap'></div>").appendTo("body").hide()
+      $wrap = $("<div id='ExportPngWrap'></div>").appendTo("body").hide()
 
-    $wrap.attr "class", $("#canvas_container").attr("class")
+    $wrap.attr "class", $svg_canvas_element.parents("#canvas_body").attr("class")
 
-    if _.isString $svg_canvas_element
-      clone = $wrap.html( $svg_canvas_element ).children()[0]
-      # cloneNode won't clone the xmlns:xlink attribute
-      clone.setAttribute "xmlns:xlink", "http://www.w3.org/1999/xlink"
-      clone.removeAttribute "id"
+    clone = $svg_canvas_element[0].cloneNode(true)
+    size  = $svg_canvas_element[0].getBBox()
 
-      if data.size
-        size = data.size
-      else
-        $wrap.show()
-        size = clone.getBBox()
-        $wrap.hide()
-    else
-      clone = $svg_canvas_element[0].cloneNode(true)
-      size  = $svg_canvas_element[0].getBBox()
+    # cloneNode won't clone the xmlns:xlink attribute
+    clone.setAttribute "xmlns:xlink", "http://www.w3.org/1999/xlink"
+    clone.removeAttribute "id"
 
-      # cloneNode won't clone the xmlns:xlink attribute
-      clone.setAttribute "xmlns:xlink", "http://www.w3.org/1999/xlink"
-      clone.removeAttribute "id"
+    $wrap.append(clone)
 
-      $wrap.append(clone)
-
-    line = clone.getElementById("svg_padding_line")
+    firstDom = clone.getElementById("group_layer")
 
     # Inline styles
     removeArray = [ clone ] # Detach the clone from document.
@@ -108,9 +95,11 @@ define ['UI.canvg', './Download'], ()->
       for ch in ($svg_canvas_element[0].children or $svg_canvas_element[0].childNodes)
         if (not ch.tagName) or (ch.tagName.toLowerCase() isnt "g") then continue
         bbox = ch.getBBox()
+        if not (bbox.x + bbox.y + bbox.width + bbox.height)
+          continue
         if bbox.x < origin.x then origin.x = bbox.x
         if bbox.y < origin.y then origin.y = bbox.y
-      origin.x -= 5
+      origin.x -= 30
       origin.y -= 30
 
       replaceEl = document.createElementNS("http://www.w3.org/2000/svg", "g")
@@ -119,10 +108,7 @@ define ['UI.canvg', './Download'], ()->
       # We use canvg's translate instead of calling context.translate()
       # because context.translate seems a little bit slow.
       replaceEl.setAttribute "transform", "translate(#{-origin.x} #{54-origin.y})"
-      clone.insertBefore replaceEl, line
-
-    # Remove a line that is useless
-    clone.removeChild line
+      clone.insertBefore replaceEl, firstDom
 
     # Generate svg text, and remove data attributes
     svg = (new XMLSerializer()).serializeToString(clone).replace(/data-[^=<>]+="[^"]*?"/g, "")
@@ -143,8 +129,8 @@ define ['UI.canvg', './Download'], ()->
     # Calc the size for the canvas
     # In IE, getBBox returns SvgRect which is not allowed to modified.
     size =
-      width  : size.width  + 50 - origin.x
-      height : size.height + 30 - origin.y
+      width  : size.width  + 30*2
+      height : size.height + 30*2
 
 
     # Calc the perfect size
@@ -272,18 +258,34 @@ define ['UI.canvg', './Download'], ()->
     localStorage.setItem "tn/#{data.id}", data.image
     null
 
-  saveThumbnail = ( id, $svg_element, size )->
+  createThumbnail = ( $svg_element, size )->
+    defer = Q.defer()
     exportPNG $svg_element, {
-      id       : id
       size     : size
-      onFinish : saveThumbnailFinish
+      onFinish : ( data )-> defer.resolve( data.image || "" )
     }
+
+    defer.promise
+
+  saveThumbnail = ( id, $svg_element, size )->
+    if typeof $svg_element is "string"
+      saveThumbnailFinish {
+        id    : id
+        image : $svg_element
+      }
+    else
+      exportPNG $svg_element, {
+        id       : id
+        size     : size
+        onFinish : saveThumbnailFinish
+      }
     null
 
   getThumbnail = ( id )->
     localStorage.getItem "tn/#{id}"
 
   removeThumbnail = ( id )->
+    if not id then return
     cache = localStorage.getItem("thumbnails") or ""
     localStorage.setItem "thumbnails", cache.replace("#{id},","")
 
@@ -318,6 +320,9 @@ define ['UI.canvg', './Download'], ()->
 
   {
     exportPNG : exportPNG
+
+    # Returns a promise when the thumbnail is created.
+    generate  : createThumbnail
 
     save      : saveThumbnail
     fetch     : getThumbnail

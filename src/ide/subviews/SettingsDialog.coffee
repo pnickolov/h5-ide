@@ -40,7 +40,7 @@ define [ "./SettingsDialogTpl", 'i18n!nls/lang.js', "ApiRequest", "backbone" ], 
           awsSecretKey : App.user.get("awsSecretKey")
 
           credRemoveTitle : sprintf lang.ide.SETTINGS_CRED_REMOVE_TIT, App.user.get("username")
-          credNeeded : !!(_.reduce _.map(MC.data.app_list, (el)-> el.length), ((m,n)->m+n), 0)
+          credNeeded : !!App.model.appList().length
 
         modal SettingsTpl attributes
         @setElement $("#modal-box")
@@ -205,6 +205,12 @@ define [ "./SettingsDialogTpl", 'i18n!nls/lang.js', "ApiRequest", "backbone" ], 
         account    = $("#CredSetupAccount").val()
         accesskey  = $("#CredSetupAccessKey").val()
         privatekey = $("#CredSetupSecretKey").val()
+
+        # A quickfix to avoid the limiation of the api.
+        # Avoid user setting the account to demo_account
+        if account is "demo_account"
+          account = "user_demo_account"
+          $("#CredSetupAccount").val(account)
 
         self = this
         App.user.changeCredential( account, accesskey, privatekey, false ).then ()->

@@ -63,11 +63,12 @@ $dark-blue: #001324;
 		line-height:   $toolbar-line-height;
 
 		button {
-			float:       left;
-			display:     inline-block;
-			padding:     8px;
-			line-height: $toolbar-line-height - 16px;
-			position:    relative;
+			float       : left;
+			display     : inline-block;
+			padding     : 8px;
+			line-height : $toolbar-line-height - 16px;
+			height      : $toolbar-line-height;
+			position    : relative;
 
 			&:before {
 				margin-right : 5px;
@@ -102,6 +103,10 @@ $dark-blue: #001324;
 					// margin-left: -4px;
 					z-index:     80;
 				}
+			}
+
+			&.icon-edit {
+				font-size: 14px !important;
 			}
 		}
 
@@ -275,8 +280,13 @@ $dark-blue: #001324;
 		}
 
 		.table-head thead tr th:first-child,
-		.table thead tr th:first-child {
-			width: 20px;
+		.table tbody tr td:first-child {
+			width   : 20px;
+			// padding : 5px 8px 5px 13px;
+			.checkbox {
+				margin-left: 5px;
+			}
+
 		}
 
 	}

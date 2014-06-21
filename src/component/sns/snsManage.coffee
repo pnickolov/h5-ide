@@ -413,9 +413,6 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
             else
                 @renderNoCredential()
 
-        manage: ->
-
-        set: ->
 
         filter: ( keyword ) ->
             @processCol( true, keyword )

@@ -736,7 +736,7 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
       # deserialize Eni
       # See if it's embeded eni
       attachment = data.resource.Attachment
-      embed      = attachment and attachment.DeviceIndex is "0"
+      embed      = attachment and ( attachment.DeviceIndex is "0" or attachment.DeviceIndex is 0 )
       instance   = if attachment and attachment.InstanceId then resolve( MC.extractID( attachment.InstanceId) ) else null
 
       # Create

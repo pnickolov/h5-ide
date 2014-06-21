@@ -10,8 +10,6 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
       return "@{#{compOrUid.uid or compOrUid}.r.p}"
 
   UID        = MC.guid
-  DEFAULT_SG = {}
-  DEFAULT_KP = null
   AWS_ID     = ( dict, type )->
     key = constant.AWS_RESOURCE_KEY[ type ]
     dict[ key ] or dict.resource and dict.resource[ key ]
@@ -49,6 +47,8 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
       @layout    = {}
       @originalJson = jQuery.extend(true, {component: [], layout: []}, originalJson) #extend original app json
       @originAppJSON = originalJson #origin app json
+
+      @DEFAULT_KP = null
 
       @COMPARISONOPERATOR =
         "GreaterThanOrEqualToThreshold" : ">="
@@ -233,10 +233,11 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
             @iams[com.resource.ServerCertificateMetadata.Arn] = compJson
           else if com.type is constant.RESTYPE.KP
             if com.name is "DefaultKP"
-              DEFAULT_KP = com
+              @DEFAULT_KP = jQuery.extend(true, {}, com)
+              @component[com.uid] = @DEFAULT_KP
         null
 
-      if not DEFAULT_KP
+      if not @DEFAULT_KP
         #create DefaultKP
         kpRes =
           "KeyFingerprint" : ""
@@ -430,6 +431,9 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
         sgComp = @getOriginalComp(groupId, 'SG')
         sgRefMap[groupId] = sgComp if sgComp
 
+      vpcDefaultSg = null
+      visualopsDefaultSg = null
+
       for aws_sg in @getResourceByType( "SG" )
         aws_sg = aws_sg.attributes
 
@@ -465,11 +469,25 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
 
         sgComp = @add( "SG", sgRes, TAG_NAME(aws_sg) || aws_sg.groupName )
         if aws_sg.groupName is "default"
-          DEFAULT_SG["default"] = sgComp
+          vpcDefaultSg = aws_sg
         else if aws_sg.groupName.indexOf("-DefaultSG-app-") isnt -1
-          DEFAULT_SG["DefaultSG"] = sgComp
+          visualopsDefaultSg = aws_sg
 
         @sgs[ aws_sg.id ] = sgComp
+
+      if visualopsDefaultSg and vpcDefaultSg
+        defaultSgComp = @sgs[ vpcDefaultSg.id ]
+        delete @sgs[ vpcDefaultSg.id ]
+        delete @component[ defaultSgComp.uid ]
+        vpcDefaultSg = null
+
+      defaultSg = visualopsDefaultSg || vpcDefaultSg
+      if defaultSg
+        defaultSg = @sgs[ defaultSg.id ]
+
+      if defaultSg
+        defaultSg.name = "DefaultSG"
+        defaultSg.resource.Default = true
 
       _.each that.sgs, (sgComp) ->
         _.each sgComp.resource.IpPermissions, (rule) ->
@@ -1458,26 +1476,6 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
         processServerGroup(cd)
       catch err
         console.info('Server Group process exception when convert app json')
-
-    # find default SG
-    if DEFAULT_SG["DefaultSG"]
-      #old app
-      default_sg = cd.component[ DEFAULT_SG["DefaultSG"].uid ]
-      if default_sg
-        default_sg.name = "DefaultSG"
-        default_sg.resource.Default = true
-      #delete "default" SG component
-      if DEFAULT_SG["default"] and cd.component[ DEFAULT_SG["default"].uid ]
-        delete cd.component[ DEFAULT_SG["default"].uid ]
-    else if DEFAULT_SG["default"]
-      #new app
-      default_sg = cd.component[ DEFAULT_SG["default"].uid ]
-      if default_sg
-        default_sg.name = "DefaultSG"
-        default_sg.resource.Default   = true
-        # default_sg.resource.GroupName = "DefaultSG" #do not use 'default' as GroupName
-      else
-        console.warn "can not found default sg in component"
 
     cd
 

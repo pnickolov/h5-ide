@@ -150,6 +150,10 @@ define [ 'constant', 'MC', 'Design', '../../helper' ], ( constant, MC, Design, H
 
 	isNatCheckedSourceDest = ( uid ) ->
 		instance = Design.instance().component uid
+
+		# InstanceGroup member which isn't main has no resourceModel
+		if not instance then return null
+
 		connectedRt = instance.connectionTargets 'RTB_Route'
 		if connectedRt and connectedRt.length
 			enis = instance.connectionTargets('EniAttachment')

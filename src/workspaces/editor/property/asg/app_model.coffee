@@ -70,7 +70,6 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
             # Policies
             @set "policies", _.map data.policies, ( p )->
                 data = $.extend true, {}, p.attributes
-                data.cooldown = Math.round( data.cooldown / 60 )
                 data.alarmData.period = Math.round( data.alarmData.period / 60 )
                 data
 
@@ -267,7 +266,6 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
 
     getPolicy : ( uid )->
       data = $.extend true, {}, Design.instance().component( uid ).attributes
-      data.cooldown = Math.round( data.cooldown / 60 )
       data.alarmData.period = Math.round( data.alarmData.period / 60 )
       data
 

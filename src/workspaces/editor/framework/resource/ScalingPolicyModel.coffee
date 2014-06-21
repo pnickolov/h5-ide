@@ -97,7 +97,7 @@ define [ "../ResourceModel", "../ComplexResModel", "constant" ], ( ResourceModel
           ScalingAdjustment    : @get("adjustment")
           PolicyName           : @get("name")
           PolicyARN            : @get("appId")
-          Cooldown             : Math.round( @get("cooldown") / 60 ) * 60
+          Cooldown             : @get("cooldown")
           AutoScalingGroupName : @__asg.createRef( "AutoScalingGroupName" )
           AdjustmentType       : @get("adjustmentType")
           # Correct old wrong json

@@ -151,7 +151,12 @@ define [
     tagName: 'li'
     initialize: () ->
       _.bindAll @, 'render', 'toggle'
+      # Store event will be offListen and remove method of item
+      # When the statusBar will be removed
       @clearGarbage = []
+
+      # if an item has changeVisible it's `update` method will push to needUpdate
+      # and it will triggered by update method
       @needUpdate = []
 
     render: ->
@@ -168,6 +173,10 @@ define [
           garbage[1].apply garbage[0], garbage.slice(2)
         else
           garbage()
+
+      # Disallocate
+      @clearGarbage = []
+      @needUpdate = []
       @
 
     update: () ->
@@ -217,7 +226,6 @@ define [
                 view.clearGarbage.push [ ide_event, ide_event.offListen, e.event, wrapUpdate ]
               else
                 view.listenTo e.obj, e.event, wrapUpdate
-
 
         if item.changeVisible
           view.needUpdate.push wrapVisible if item.visible

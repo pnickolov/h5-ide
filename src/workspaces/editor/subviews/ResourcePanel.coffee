@@ -41,6 +41,7 @@ define [
 
     initialize : (options)->
       @workspace = options.workspace
+      @subViews = []
 
       region = @workspace.opsModel.get("region")
       @listenTo CloudResources( "MyAmi",               region ), "update", @updateMyAmiList
@@ -125,14 +126,14 @@ define [
 
       for lc in allLc
         if not lc.isClone() and not lc.get( 'appId' )
-          new @reuseLc({model:lc, parent : @}).render()
+          @subViews.push new @reuseLc({model:lc, parent : @}).render()
 
       @
 
     subEventForUpdateReuse: ->
       @listenTo @workspace.design, Design.EVENT.AddResource, ( resModel ) ->
         if resModel.type is constant.RESTYPE.LC and not resModel.isClone() and not resModel.get( 'appId' )
-          new @reuseLc( model: resModel, parent: @ ).render()
+          @subViews.push new @reuseLc( model: resModel, parent: @ ).render()
       , @
 
     updateAZ : ()->
@@ -565,5 +566,11 @@ define [
         $item.remove()
 
       false
+
+    remove: ->
+      _.invoke @subViews, 'remove'
+      @subViews = null
+      Backbone.View.prototype.remove.call this
+      return
 
   }

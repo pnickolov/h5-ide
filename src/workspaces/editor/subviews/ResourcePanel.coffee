@@ -27,10 +27,6 @@ define [
 
 
   MC.template.resPanelAmiInfo = ( data )->
-    try
-      data = JSON.parse( data )
-    catch e
-
     if not data.region or not data.imageId then return
 
     ami = CloudResources( constant.RESTYPE.AMI, data.region ).get( data.imageId )

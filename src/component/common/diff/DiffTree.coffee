@@ -47,12 +47,25 @@ define [], () ->
 
         _compare = (a, b, key, path, resultJSON) ->
 
+            # hack for ASG key VPCZoneIdentifier
+            if key is 'VPCZoneIdentifier'
+
+                aAry = a.split(',')
+                bAry = b.split(',')
+                aAry = _.map aAry, (ref) ->
+                    return $.trim(ref)
+                bAry = _.map bAry, (ref) ->
+                    return $.trim(ref)
+
+                a = aAry
+                b = bAry
+
             if path
                 
                 path = path.concat([key]) if key
                 if path.length > 2
-                    attrPathAry = path.slice(2)
 
+                    attrPathAry = path.slice(2)
                     attrPathAry = _.map attrPathAry, (path) ->
                         num = Number(path)
                         return 'n' if num >= 0

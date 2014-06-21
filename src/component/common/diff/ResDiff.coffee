@@ -281,6 +281,19 @@ define [
                             null
                 null
 
+            # if have eni change about server group, update layout
+            # oldComps = that.oldAppJSON.component
+            # _.each that.modifiedComps, (comp, uid) ->
+            #     if oldComps[uid] and oldComps[uid].type is constant.RESTYPE['ENI']
+            #         if comp and comp.resource and comp.resource.Attachment and comp.resource.Attachment.InstanceId
+            #             uidRefObj = comp.resource.Attachment.InstanceId
+            #             uidRef = uidRefObj.__old__ or uidRefObj.__new__
+            #             uid = MC.extractID(uidRef)
+            #             if oldComps[uid] and oldComps[uid].number > 1
+            #                 needUpdateLayout = true
+            #             null
+            #     null
+
             return {
                 hasResChange: hasResChange,
                 needUpdateLayout: needUpdateLayout

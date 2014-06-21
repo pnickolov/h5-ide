@@ -6,18 +6,6 @@ define [ "constant",
          "i18n!nls/lang.js"
 ], ( constant, Design, GroupModel, RtbAsso, lang )->
 
-  _getCidrBinStr = (ipCidr) ->
-    cutAry = ipCidr.split('/')
-    ipAddr = cutAry[0]
-    suffix = Number cutAry[1]
-    prefix = 32 - suffix
-
-    ipAddrAry = ipAddr.split '.'
-    ipAddrBinAry = ipAddrAry.map (value) -> MC.leftPadString( parseInt(value).toString(2), 8, "0" )
-    return ipAddrBinAry.join('')
-
-
-
   Model = GroupModel.extend {
 
     type    : constant.RESTYPE.SUBNET
@@ -53,7 +41,7 @@ define [ "constant",
     setCidr : ( cidr )->
       # No need to update eni ip, because the ip is autoassign at
       # the time we serialize()
-      validCIDR = Design.modelClassForType(constant.RESTYPE.SUBNET).getValidCIDR(cidr)
+      validCIDR = MC.getValidCIDR(cidr)
       @set("cidr", validCIDR)
       @draw()
       null
@@ -243,11 +231,11 @@ define [ "constant",
       subnetIPAry = subnetCIDR.split('/')
       subnetSuffix = Number(subnetIPAry[1])
       subnetAddrAry = subnetIPAry[0].split('.')
-      subnetIPBinStr = _getCidrBinStr subnetIPAry[0]
+      subnetIPBinStr = MC.getCidrBinStr subnetIPAry[0]
 
       subnetIPBinStrDiv = subnetIPBinStr.slice(0, subnetSuffix)
 
-      ipAddrBinStr = _getCidrBinStr ipAddr
+      ipAddrBinStr = MC.getCidrBinStr ipAddr
 
       ipAddrBinStrDiv = ipAddrBinStr.slice(0, subnetSuffix)
       ipAddrBinStrDivAnti = ipAddrBinStr.slice(subnetSuffix)
@@ -277,8 +265,8 @@ define [ "constant",
       subnetIPBinStrDiv is ipAddrBinStrDiv
 
     isCidrConflict : (ipCidr1, ipCidr2) ->
-      ipCidr1BinStr = _getCidrBinStr(ipCidr1)
-      ipCidr2BinStr = _getCidrBinStr(ipCidr2)
+      ipCidr1BinStr = MC.getCidrBinStr(ipCidr1)
+      ipCidr2BinStr = MC.getCidrBinStr(ipCidr2)
 
       ipCidr1Suffix = Number(ipCidr1.split('/')[1])
       ipCidr2Suffix = Number(ipCidr2.split('/')[1])
@@ -303,7 +291,7 @@ define [ "constant",
 
     isValidSubnetCIDR : (subnetCIDR) ->
 
-      subnetCidrBinStr = _getCidrBinStr(subnetCIDR)
+      subnetCidrBinStr = MC.getCidrBinStr(subnetCIDR)
       subnetCidrSuffix = Number(subnetCIDR.split('/')[1])
       suffixIPBinStr = subnetCidrBinStr.slice(subnetCidrSuffix)
       suffixNum = parseInt(suffixIPBinStr)
@@ -313,32 +301,13 @@ define [ "constant",
 
       return false
 
-    getValidCIDR : (cidr) ->
-
-      subnetCidrBinStr = _getCidrBinStr(cidr)
-      subnetCidrSuffix = Number(cidr.split('/')[1])
-      suffixIPBinStr = subnetCidrBinStr.slice(subnetCidrSuffix)
-      suffixNum = parseInt(suffixIPBinStr)
-
-      if (suffixNum is 0) or (suffixIPBinStr is '')
-        return cidr
-      else
-        prefixIPBinStr = subnetCidrBinStr.slice(0, subnetCidrSuffix)
-        newIPBinStr = prefixIPBinStr + MC.rightPadString('', suffixIPBinStr.length, '0')
-
-        newIPAry = _.map [0, 8, 16, 24], (value) ->
-          return (parseInt newIPBinStr.slice(value, value + 8), 2)
-        newIPStr = newIPAry.join('.')
-        newCIDRStr = newIPStr + '/' + subnetCidrSuffix
-
-        return newCIDRStr
 
     autoAssignAllCIDR : (vpcCIDR, subnetCount) ->
 
       needBinNum = Math.ceil((Math.log(subnetCount))/(Math.log(2)))
 
       vpcIPSuffix = Number(vpcCIDR.split('/')[1])
-      vpcIPBinStr = _getCidrBinStr(vpcCIDR)
+      vpcIPBinStr = MC.getCidrBinStr(vpcCIDR)
       vpcIPBinLeftStr = vpcIPBinStr.slice(0, vpcIPSuffix)
 
       newSubnetSuffix = vpcIPSuffix + needBinNum

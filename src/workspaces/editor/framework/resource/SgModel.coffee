@@ -61,7 +61,7 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
     isDefault : ()-> @attributes.name is "DefaultSG"
     isVisual  : ()-> false
 
-    createIpTarget : ( ipAddress )-> new SgTargetModel( ipAddress )
+    createIpTarget : ( ipAddress )-> new SgTargetModel( MC.getValidCIDR ipAddress )
 
     getNewName : ()->
       myKinds = Design.modelClassForType( @type ).allObjects()

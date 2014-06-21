@@ -7,9 +7,6 @@ define [ 'constant', 'CloudResources','sns_manage', 'combo_dropdown', './compone
 
         tagName: 'section'
 
-        remove: ->
-            Backbone.View.prototype.remove.call @
-
         initCol: ->
             region = Design.instance().region()
             @subCol = CloudResources constant.RESTYPE.SUBSCRIPTION, region

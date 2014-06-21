@@ -432,6 +432,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       ApiRequest("app_save_info", {spec:newJson}).then (res)->
         if not self.id
           self.attributes.requestId = res[0]
+        self.attributes.importVpcId = undefined
         return
       , ( error )->
         self.__saveAppDefer.reject( error )

@@ -74,9 +74,9 @@ define [ "Design" ], (Design)->
 #                    compo.resource.TopicArn = ""
                 when 'AWS.AutoScaling.ScalingPolicy'
                     compo.resource.PolicyARN = ""
-#                when 'AWS.CloudWatch.CloudWatch'
-#                    compo.resource.AlarmArn = ""
-#                    compo.resource.AlarmName = compo.name
+                when 'AWS.CloudWatch.CloudWatch'
+                    compo.resource.AlarmArn = ""
+                    compo.resource.AlarmName = compo.name
                 else
 
     null

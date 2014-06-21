@@ -73,7 +73,8 @@ define [
         setTimeout () ->
             MC.ta.validAll()
             btnDom.text(currentText)
-            require [ 'component/trustedadvisor/main' ], ( trustedadvisor_main ) -> trustedadvisor_main.loadModule 'statusbar', null
+            require [ 'component/trustedadvisor/main' ],
+              ( trustedadvisor_main ) -> trustedadvisor_main.loadModule 'statusbar', null
         , 50
 
     }
@@ -83,7 +84,10 @@ define [
       className: 'status-bar-btn'
       visible: ( toggle, workspace ) ->
         mode = workspace.design.mode()
-        appStoped = _.every [ OpsModel.State.Updating, OpsModel.State.Running, OpsModel.State.Saving ], ( state ) ->
+        appStoped = _.every [ OpsModel.State.Updating
+                              OpsModel.State.Running
+                              OpsModel.State.Saving ], ( state ) ->
+
           not workspace.opsModel.testState( state )
 
         isVisible = false
@@ -160,7 +164,10 @@ define [
       @$el.remove()
       @stopListening()
       for garbage in @clearGarbage
-        garbage()
+        if _.isArray garbage
+          garbage[1].apply garbage[0], garbage.slice(2)
+        else
+          garbage()
       @
 
     update: () ->
@@ -207,7 +214,7 @@ define [
             if type is 'update'
               if e.obj is ide_event
                 ide_event.onLongListen e.event, wrapUpdate
-                view.clearGarbage.push -> ide_event.offListen e.event, wrapUpdate
+                view.clearGarbage.push [ ide_event, ide_event.offListen, e.event, wrapUpdate ]
               else
                 view.listenTo e.obj, e.event, wrapUpdate
 

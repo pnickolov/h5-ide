@@ -157,9 +157,7 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
       @draw()
       null
 
-    hasPrimaryEip : ()->
-      if not @attachedInstance() then return false
-      @get("ips")[0].hasEip
+    hasPrimaryEip : ()-> @get("ips")[0].hasEip
 
     hasEip : ()->
       @get("ips").some ( ip )-> ip.hasEip
@@ -513,17 +511,22 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
       # And Eni's IP is assign in serializeVistor/SubnetVisitor
 
       # Here, we only serialize layout
-      res = null
+      res = []
       if not @__embedInstance
         layout = @generateLayout()
 
-        if res is null then res = {}
-        res.layout = layout
+        res[0] = {layout:layout}
 
       if not @attachedInstance()
-        if res is null then res = {}
         eniIndex = if @__embedInstance then 0 else 1
-        res.component = @generateJSON( 0, { number : 1 }, eniIndex )[0]
+        comps = @generateJSON( 0, { number : 1 }, eniIndex )
+
+        # Add Eni
+        if not res[0] then res[0] = {}
+        res[0].component = comps[0]
+
+        # Add Eip
+        if comps[1] then res.push {component:comps[1]}
 
       res
 

@@ -22,27 +22,19 @@ define [
       className: 'info'
       visible: true
       events:
-        update: -> [ { obj: workspace.opsModel, event: 'jsonDataSaved'} ]
+        update: -> [ { obj: null, event: 'jsonDataSaved'} ]
 
       update: ( $, workspace ) ->
-        # 1.set current time
         save_time = jQuery.now() / 1000
 
-        # 2.clear interval
-        clearInterval @timer
-
-        # 3.set textTime
-        $item    = $('.stack-save-time')
-        $item.text MC.intervalDate save_time
-        $item.attr 'data-save-time', save_time
-
-        # 4.loop
         @timer = setInterval ()->
           $item    = $('.stack-save-time')
-          $item.text MC.intervalDate $item.attr 'data-save-time'
+          new_interval_time = MC.intervalDate save_time
+          $item.text new_interval_time if $item.text() isnt new_interval_time
         , 1000
-        #
+
         null
+
       click: ( event ) ->
         null
 
@@ -145,8 +137,6 @@ define [
 # Function Inside  #
 # Don't care #
 
-  workspace = null
-
   itemView =  Backbone.View.extend
     tagName: 'li'
     initialize: () ->
@@ -202,7 +192,7 @@ define [
       @
 
     bindItem: ->
-      for item, index in _.clone(items).reverse()
+      for item, index in jQuery.extend( true, [], items ).reverse()
         view = new itemView()
         view.delegateEvents click: item.click
         view.template = template[ item.name ]
@@ -225,7 +215,7 @@ define [
                 ide_event.onLongListen e.event, wrapUpdate
                 view.clearGarbage.push [ ide_event, ide_event.offListen, e.event, wrapUpdate ]
               else
-                view.listenTo e.obj, e.event, wrapUpdate
+                view.listenTo e.obj or @workspace.opsModel, e.event, wrapUpdate
 
         if item.changeVisible
           view.needUpdate.push wrapVisible if item.visible
@@ -264,8 +254,10 @@ define [
     remove: () ->
       @$el.remove()
       @stopListening()
+
       for view in @itemViews
         view.remove()
+
       @
 
 

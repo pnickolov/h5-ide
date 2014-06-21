@@ -92,21 +92,23 @@ define [
 
     dashboardBubble : ( data )->
       # get Resource Data
-      data.data = @model.getAwsResDataById( @region, constant.RESTYPE[data.type], data.id )?.toJSON()
-      data.id = data.data.id
+      d = {
+        id   : data.id
+        data : @model.getAwsResDataById( @region, constant.RESTYPE[data.type], data.id )?.toJSON()
+      }
 
       # Make Boolean to String to show in handlebarsjs
-      _.each data.data, (e,key)->
+      _.each d.data, (e,key)->
           if _.isBoolean e
-              data.data[key] = e.toString()
+              d.data[key] = e.toString()
           if e == ""
-              data.data[key] = "None"
+              d.data[key] = "None"
           if (_.isArray e) and e.length is 0
-              data.data[key] = ['None']
+              d.data[key] = ['None']
           if (_.isObject e) and (not _.isArray e)
-              delete data.data[key]
+              delete d.data[key]
 
-      return tplPartials.bubbleResourceInfo  data
+      return tplPartials.bubbleResourceInfo  d
 
     ###
       rendering

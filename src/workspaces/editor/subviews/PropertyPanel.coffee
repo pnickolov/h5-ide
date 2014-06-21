@@ -7,6 +7,7 @@ define [
   "Design"
   "OpsModel"
   "event"
+  'CloudResources'
   "backbone"
 
   '../property/stack/main'
@@ -31,7 +32,7 @@ define [
   '../property/launchconfig/main'
   '../property/asg/main'
 
-], ( RightPanelTpl, PropertyBaseModule, stateeditor, CONST, Design, OpsModel, ide_event )->
+], ( RightPanelTpl, PropertyBaseModule, stateeditor, CONST, Design, OpsModel, ide_event, CloudResources )->
 
   ide_event.onLongListen ide_event.REFRESH_PROPERTY, ()->
     $("#OEPanelRight").trigger "REFRESH"; return
@@ -261,7 +262,7 @@ define [
 
       @$el.toggleClass( "no-state", not supports )
       if supports
-        count = design.component( uid )
+        count = design.component( uid ) or design.component(PropertyBaseModule.activeModule().model.attributes.uid)
         count = count?.get("state")?.length or 0
         $( '#btn-switch-state' ).find("b").text "(#{count})"
       supports
@@ -286,7 +287,8 @@ define [
     showStateEditor : ( jqueryEvent, uid )->
       if not uid then uid = PropertyBaseModule.activeModule().uid
       design = @workspace.design
-      comp   = design.component( uid )
+      comp   = design.component( uid ) or CloudResources(CONST.RESTYPE.INSTANCE, Design.instance().get('region')).findWhere(id: uid).attributes
+      if not comp.type then comp.type = CONST.RESTYPE.INSTANCE
       if not comp then return
 
       if not @updateStateSwitcher( comp.type, uid )

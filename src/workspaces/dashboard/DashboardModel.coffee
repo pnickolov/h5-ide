@@ -27,7 +27,6 @@ define ["ApiRequest", "CloudResources", "constant", "backbone"], ( ApiRequest, C
       @listenTo App.WS, "visualizeUpdate", @onVisualizeUpdated
 
       @listenTo CloudResources( constant.RESTYPE.INSTANCE ), "update", @onGlobalResChanged
-      @listenTo CloudResources( constant.RESTYPE.ENI ), "update", @onGlobalResChanged
       @listenTo CloudResources( constant.RESTYPE.EIP ), "update", @onGlobalResChanged
       @listenTo CloudResources( constant.RESTYPE.VOL ), "update", @onGlobalResChanged
       @listenTo CloudResources( constant.RESTYPE.ELB ), "update", @onGlobalResChanged
@@ -190,7 +189,7 @@ define ["ApiRequest", "CloudResources", "constant", "backbone"], ( ApiRequest, C
         when constant.RESTYPE.VPC
           return CloudResources( type ).isReady() && CloudResources( constant.RESTYPE.DHCP, region ).isReady()
         when constant.RESTYPE.INSTANCE
-          return CloudResources( type ).isReady() && CloudResources( constant.RESTYPE.ENI , region ).isReady()
+          return CloudResources( type ).isReady()
         when constant.RESTYPE.VPN
           return CloudResources( type ).isReady() && CloudResources( constant.RESTYPE.VGW , region ).isReady() && CloudResources( constant.RESTYPE.CGW , region).isReady()
         else

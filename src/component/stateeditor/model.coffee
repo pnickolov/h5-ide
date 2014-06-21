@@ -548,10 +548,12 @@ define [ 'MC', 'constant', 'state_model', 'CloudResources', "Design", 'backbone'
 			return resultUID
 
 		getResState: (resId) ->
-			resObj = CloudResources(@get("resModel").type, Design.instance().region()).get(resId)?.attributes
+
+			# CloudResources(@get("resModel").type, Design.instance().region()).get(resId)?.attributes
+			resModel = CloudResources('AWS.EC2.Instance').get(resId)
 			resState = 'unknown'
-			if resObj and resObj.instanceState and resObj.instanceState.name
-		    resState = resObj.instanceState.name
+			if resModel
+				resState = resModel.get('instanceState')?.name
 			@set('resState', resState)
 			null
 

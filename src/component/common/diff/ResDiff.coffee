@@ -266,7 +266,7 @@ define [
             # if have elb and attached server group change, update layout
             oldComps = that.oldAppJSON.component
             _.each that.modifiedComps, (comp, uid) ->
-                if oldComps[uid] and oldComps[uid].type is constant.RESTYPE['ELB']
+                if oldComps[uid] and oldComps[uid].type is constant.RESTYPE.ELB
                     if comp and comp.resource and comp.resource.Instances
                         instanceAry = []
                         _.map comp.resource.Instances, (refObj) ->
@@ -279,6 +279,16 @@ define [
                             if oldComps[uid] and oldComps[uid].number > 1
                                 needUpdateLayout = true
                             null
+                null
+
+            # if have asg AvailabilityZones or VPCZoneIdentifier change, update layout
+            newComps = that.newAppJSON.component
+            _.each that.modifiedComps, (comp, uid) ->
+                if newComps[uid] and newComps[uid].type is constant.RESTYPE.ASG
+                    if comp and comp.resource and comp.resource.AvailabilityZones
+                        needUpdateLayout = true
+                    if comp and comp.resource and comp.resource.VPCZoneIdentifier
+                        needUpdateLayout = true
                 null
 
             # if have eni change about server group, update layout

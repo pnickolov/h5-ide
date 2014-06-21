@@ -1290,6 +1290,114 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
   # getNC       : ()->
   # getSP       : ()->
 
+  processServerGroup = (cd) ->
+
+    diffTree = new DiffTree()
+    originComps = cd.originAppJSON.component
+    newComps = cd.component
+
+    getRelatedInstanceGroupUID = (comp) ->
+      resType = comp.type
+      if resType is constant.RESTYPE.INSTANCE
+        return comp.serverGroupUid
+      if resType is constant.RESTYPE.ENI
+        instanceRef = comp.resource.Attachment.InstanceId
+        if instanceRef
+          instanceUID = MC.extractID(instanceRef)
+          instanceComp = originComps[instanceUID]
+          if instanceComp
+            return instanceComp.serverGroupUid
+      if resType is constant.RESTYPE.VOL
+        instanceRef = comp.resource.AttachmentSet.InstanceId
+        if instanceRef
+          instanceUID = MC.extractID(instanceRef)
+          instanceComp = originComps[instanceUID]
+          if instanceComp
+            return instanceComp.serverGroupUid
+      return ''
+
+    # find all server group related res
+    originServerGroupComps = {}
+    _.each originComps, (comp) ->
+      if comp.number and comp.number > 1
+        originServerGroupComps[comp.uid] = comp
+
+    newServerGroupComps = {}
+    _.each newComps, (comp) ->
+      if originServerGroupComps[comp.uid]
+        newServerGroupComps[comp.uid] = comp
+      null
+
+    # diff if have any change for server group
+    diffRet = diffTree.compare originServerGroupComps, newServerGroupComps
+
+    # break up all related server group res
+    if diffRet
+      _.each diffRet, (comp, uid) ->
+        newCompObj = newServerGroupComps[uid]
+        if newCompObj
+          serverGroupUID = getRelatedInstanceGroupUID(newCompObj)
+          if serverGroupUID
+            _.each newServerGroupComps, (newComp) ->
+              if getRelatedInstanceGroupUID(newComp) is serverGroupUID
+                newComp.serverGroupName = newComp.name if newComp.serverGroupName
+                newComp.number = 1 if newComp.number
+                newComp.index = 0 if newComp.index
+                newComp.serverGroupUid = newComp.uid if newComp.serverGroupUid
+
+    # process elb connected instance server group
+    _.each cd.elbs, (insComp) ->
+      instanceAry = _.map insComp.resource.Instances, (refObj) ->
+        return MC.extractID(refObj.InstanceId)
+      originComp = originComps[insComp.uid]
+      if originComp
+        originInstanceAry = _.map originComp.resource.Instances, (refObj) ->
+          return MC.extractID(refObj.InstanceId)
+        diffElbInstance = diffTree.compare instanceAry, originInstanceAry
+        if diffElbInstance
+          diffInstanceAry = []
+          _.each diffElbInstance, (comp) ->
+            diffInstanceAry.push(comp.__old__) if comp.__old__
+            diffInstanceAry.push(comp.__new__) if comp.__new__
+            null
+          _.each diffInstanceAry, (instanceUID) ->
+            serverGroupInstanceComp = newServerGroupComps[instanceUID]
+            if serverGroupInstanceComp
+              serverGroupUID = serverGroupInstanceComp.serverGroupUid
+              _.each newServerGroupComps, (comp, uid) ->
+                _serverGroupUID = getRelatedInstanceGroupUID(comp)
+                if _serverGroupUID is serverGroupUID
+                  comp.serverGroupName = comp.name if comp.serverGroupName
+                  comp.number = 1 if comp.number
+                  comp.index = 0 if comp.index
+                  comp.serverGroupUid = comp.uid if comp.serverGroupUid
+
+    # process eni connected instance server group
+    newAddRemoveComps = {}
+    oldAddRemoveComps = {} # only include eni and eip
+    _.each newComps, (insComp) ->
+      if insComp.type in [constant.RESTYPE.ENI, constant.RESTYPE.EIP]
+        newAddRemoveComps[insComp.uid] = insComp if not originComps[insComp.uid]
+    _.each originComps, (insComp) ->
+      if insComp.type in [constant.RESTYPE.ENI, constant.RESTYPE.EIP]
+        oldAddRemoveComps[insComp.uid] = insComp if not newComps[insComp.uid]
+      null
+
+    addRemoveDiffRet = diffTree.compare newAddRemoveComps, oldAddRemoveComps
+
+    diffInstanceAry = []
+    if addRemoveDiffRet
+      _.each addRemoveDiffRet, (comp, uid) ->
+        serverGroupInstanceComp = newComps[uid] or originComps[uid]
+        serverGroupUID = getRelatedInstanceGroupUID(serverGroupInstanceComp)
+        _.each newComps, (comp, uid) ->
+          _serverGroupUID = getRelatedInstanceGroupUID(comp)
+          if _serverGroupUID is serverGroupUID
+            comp.serverGroupName = comp.name if comp.serverGroupName
+            comp.number = 1 if comp.number
+            comp.index = 0 if comp.index
+            comp.serverGroupUid = comp.uid if comp.serverGroupUid
+
   convertResToJson = ( region, vpcId, originalJson )->
     console.log [
       "VOL"
@@ -1320,83 +1428,10 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
 
     if cd.originAppJSON
 
-      diffTree = new DiffTree()
-      originComps = cd.originAppJSON.component
-
-      getRelatedInstanceGroupUID = (comp) ->
-        resType = comp.type
-        if resType is constant.RESTYPE.INSTANCE
-          return comp.serverGroupUid
-        if resType is constant.RESTYPE.ENI
-          instanceRef = comp.resource.Attachment.InstanceId
-          if instanceRef
-            instanceUID = MC.extractID(instanceRef)
-            instanceComp = originComps[instanceUID]
-            if instanceComp
-              return instanceComp.serverGroupUid
-        if resType is constant.RESTYPE.VOL
-          instanceRef = comp.resource.AttachmentSet.InstanceId
-          if instanceRef
-            instanceUID = MC.extractID(instanceRef)
-            instanceComp = originComps[instanceUID]
-            if instanceComp
-              return instanceComp.serverGroupUid
-        return ''
-
-      # find all server group related res
-      originServerGroupComps = {}
-      _.each originComps, (comp) ->
-        if comp.number and comp.number > 1
-          originServerGroupComps[comp.uid] = comp
-
-      newServerGroupComps = {}
-      _.each cd.component, (comp) ->
-        if originServerGroupComps[comp.uid]
-          newServerGroupComps[comp.uid] = comp
-        null
-
-      # diff if have any change for server group
-      diffRet = diffTree.compare originServerGroupComps, newServerGroupComps
-
-      # break up all related server group res
-      if diffRet
-        _.each diffRet, (comp, uid) ->
-          newCompObj = newServerGroupComps[uid]
-          if newCompObj
-            serverGroupUID = getRelatedInstanceGroupUID(newCompObj)
-            if serverGroupUID
-              _.each newServerGroupComps, (newComp) ->
-                if getRelatedInstanceGroupUID(newComp) is serverGroupUID
-                  newComp.serverGroupName = newComp.name if newComp.serverGroupName
-                  newComp.number = 1 if newComp.number
-                  newComp.index = 0 if newComp.index
-                  newComp.serverGroupUid = newComp.uid if newComp.serverGroupUid
-
-      # process elb connected instance server group
-      _.each cd.elbs, (insComp) ->
-        instanceAry = _.map insComp.resource.Instances, (refObj) ->
-          return MC.extractID(refObj.InstanceId)
-        originComp = originComps[insComp.uid]
-        if originComp
-          originInstanceAry = _.map originComp.resource.Instances, (refObj) ->
-            return MC.extractID(refObj.InstanceId)
-          diffElbInstance = diffTree.compare instanceAry, originInstanceAry
-          if diffElbInstance
-            diffInstanceAry = []
-            _.each diffElbInstance, (comp) ->
-              diffInstanceAry.push(comp.__old__) if comp.__old__
-              diffInstanceAry.push(comp.__new__) if comp.__new__
-              null
-            _.each diffInstanceAry, (instanceUID) ->
-              serverGroupInstanceComp = newServerGroupComps[instanceUID]
-              serverGroupUID = serverGroupInstanceComp.serverGroupUid
-              _.each newServerGroupComps, (comp, uid) ->
-                _serverGroupUID = getRelatedInstanceGroupUID(comp)
-                if _serverGroupUID is serverGroupUID
-                  comp.serverGroupName = comp.name if comp.serverGroupName
-                  comp.number = 1 if comp.number
-                  comp.index = 0 if comp.index
-                  comp.serverGroupUid = comp.uid if comp.serverGroupUid
+      try
+        processServerGroup(cd)
+      catch err
+        console.info('Server Group process exception when convert app json')
 
     # find default SG
     if DEFAULT_SG["DefaultSG"]

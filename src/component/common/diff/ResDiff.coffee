@@ -1,9 +1,10 @@
 define [
     'UI.modalplus'
-    './component/common/diff/resDiffTpl'
     'DiffTree'
+    './component/common/diff/resDiffTpl'
     './component/common/diff/prepare'
-], ( modalplus, template, DiffTree, Prepare ) ->
+    'constant'
+], ( modalplus, DiffTree, template, Prepare, constant ) ->
 
     Backbone.View.extend
 
@@ -261,6 +262,24 @@ define [
 
             needUpdateLayout = _.some that.addedComps, ( comp ) ->
                 that.newAppJSON.layout[ comp.uid ]
+
+            # if have elb and attached server group change, update layout
+            oldComps = that.oldAppJSON.component
+            _.each that.modifiedComps, (comp, uid) ->
+                if oldComps[uid] and oldComps[uid].type is constant.RESTYPE['ELB']
+                    if comp and comp.resource and comp.resource.Instances
+                        instanceAry = []
+                        _.map comp.resource.Instances, (refObj) ->
+                            _refObj = refObj.InstanceId
+                            if _refObj
+                                instanceAry.push(_refObj.__old__) if _refObj.__old__
+                                instanceAry.push(_refObj.__new__) if _refObj.__new__
+                        _.each instanceAry, (uidRef) ->
+                            uid = MC.extractID(uidRef)
+                            if oldComps[uid] and oldComps[uid].number > 1
+                                needUpdateLayout = true
+                            null
+                null
 
             return {
                 hasResChange: hasResChange,

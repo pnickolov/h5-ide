@@ -21,6 +21,7 @@ define [], () ->
             'resource.AssociationSet.n.NetworkAclAssociationId': true
             'resource.BlockDeviceMapping': true
             'resource.VolumeSize': true
+            'resource.GroupDescription': true
         }
 
         isArray = (value) ->

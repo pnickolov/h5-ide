@@ -25,6 +25,32 @@ define [
     , 150
     return
 
+
+  MC.template.resPanelAmiInfo = ( data )->
+    try
+      data = JSON.parse( data )
+    catch e
+
+    if not data.region or not data.imageId then return
+
+    ami = CloudResources( constant.RESTYPE.AMI, data.region ).get( data.imageId )
+    if not ami then return
+
+    ami = ami.toJSON()
+    ami.imageSize = ami.imageSize || ami.blockDeviceMapping[ami.rootDeviceName]?.volumeSize
+
+    try
+      config = App.model.getOsFamilyConfig( data.region )
+      config = config[ ami.osFamily ] || config[ constant.OS_TYPE_MAPPING[ami.osType] ]
+      config = if ami.rootDeviceType  is "ebs" then config.ebs else config['instance store']
+      config = if ami.architecture is "x86_64" then config["64"] else config["32"]
+      config = config[ ami.virtualizationType || "paravirtual" ]
+      ami.instanceType = config.join(", ")
+    catch e
+
+    return MC.template.bubbleAMIInfo( ami )
+
+
   Backbone.View.extend {
 
     events :
@@ -170,28 +196,12 @@ define [
             cb = b.name
         return if ca > cb then 1 else -1
 
-      ms.fav = @__amiType is "FavoriteAmi"
-      ms = _.map ms, (ami, index)=>
-        ami.attributes.imageSize = ami?.attributes.imageSize || ami.attributes.blockDeviceMapping[ami.attributes.rootDeviceName]?.volumeSize
-        ami.attributes.instanceType = @addInstanceType(ami.attributes).join(",")
-        ami.attributes.json = JSON.stringify ami.toJSON()
-        ami
+      ms.fav    = @__amiType is "FavoriteAmi"
+      ms.region = @workspace.opsModel.get("region")
+
       html = LeftPanelTpl.ami ms
       @$el.find(".resource-list-ami").html(html)
 
-    addInstanceType: (ami)->
-      region = @workspace.opsModel.get('region')
-      if not ami or not region then return []
-      data = App.model.getOsFamilyConfig( region )
-      try
-        data = data[ ami.osFamily ] || data[ constant.OS_TYPE_MAPPING[ami.osType] ]
-        data = if ami.rootDeviceType  is "ebs" then data.ebs else data['instance store']
-        data = if ami.architecture is "x86_64" then data["64"] else data["32"]
-        data = data[ ami.virtualizationType || "paravirtual" ]
-      catch e
-        console.error "Invalid instance type list data", ami, App.model.getOsFamilyConfig( region )
-        data = []
-      data || []
     updateDisableItems : ()->
       if not @workspace.isAwake() then return
       @updateDisabledAz()

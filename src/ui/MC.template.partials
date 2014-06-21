@@ -221,53 +221,23 @@
 <div class="bubble-head">{{id}}</div>
 <div class="bubble-content">
 	<dl class="dl-horizontal">
-		<dt>{{i18n "DASH_BUB_NAME"}}</dt>
-		<dd>{{name}}</dd>
-		<dt>{{i18n "DASH_BUB_DESCRIPTION"}}</dt>
-		<dd>{{description}}</dd>
-		<dt>{{i18n "DASH_BUB_ARCHITECTURE"}}</dt>
-		<dd>{{architecture}}</dd>
-		<dt>{{i18n "DASH_BUB_IMAGELOCATION"}}</dt>
-		<dd>{{imageLocation}}</dd>
-        <dt>{{i18n 'DASH_BUB_IMAGEOWNERALIAS'}}</dt>
-        <dd>{{#if imageOwnerAlias}}{{imageOwnerAlias}}{{else}}No Alias{{/if}}</dd>
-        <dt>{{i18n "DASH_BUB_IMAGEOWNERID"}}</dt>
-        <dd>{{imageOwnerId}}</dd>
-        <dt>{{i18n "DASH_BUB_ISPUBLIC"}}</dt>
-		<dd>{{isPublic}}</dd>
-		<dt>{{i18n "DASH_BUB_KERNELID"}}</dt>
-		<dd>{{kernelId}}</dd>
-		<dt>{{i18n "DASH_BUB_ROOTDEVICENAME"}}</dt>
-		<dd>{{rootDeviceName}}</dd>
-		<dt>{{i18n "DASH_BUB_ROOTDEVICETYPE"}}</dt>
-		<dd>{{rootDeviceType}}</dd>
-	</dl>
-</div>
+		<dt>{{i18n "DASH_BUB_NAME"}}</dt>            <dd>{{name}}</dd>
+		<dt>{{i18n "DASH_BUB_DESCRIPTION"}}</dt>     <dd>{{description}}</dd>
+		<dt>{{i18n "DASH_BUB_ARCHITECTURE"}}</dt>    <dd>{{architecture}}</dd>
+		<dt>{{i18n "DASH_BUB_IMAGELOCATION"}}</dt>   <dd>{{imageLocation}}</dd>
 
-<!-- {{bubbleAMIInfo}} -->
-<div class="bubble-head"></i>{{id}}</div>
-<div class="bubble-content">
-	<dl class="dl-horizontal">
-		<dt>Name</dt>
-		<dd>{{name}}</dd>
-		<dt>Description</dt>
-		<dd>{{description}}</dd>
-		<dt>Architecture</dt>
-		<dd>{{architecture}}</dd>
-		<dt>Image Location</dt>
-		<dd>{{imageLocation}}</dd>
-		<dt>Public</dt>
-		<dd>{{#if isPublic}}true{{else}}false{{/if}}</dd>
-		<dt>KernelId</dt>
-		<dd>{{kernelId}}</dd>
-		<dt>Root Device Name</dt>
-		<dd>{{rootDeviceName}}</dd>
-		<dt>Root Device Type</dt>
-		<dd>{{rootDeviceType}}</dd>
-		<dt>Image Size</dt>
-		<dd>{{imageSize}}</dd>
-		<dt>Support Instance Type</dt>
-		<dd>{{instanceType}}</dd>
+    {{#if imageOwnerAlias}}
+    <dt>{{i18n 'DASH_BUB_IMAGEOWNERALIAS'}}</dt> <dd>{{imageOwnerAlias}}</dd>
+    {{else}}
+    <dt>{{i18n "DASH_BUB_IMAGEOWNERID"}}</dt> <dd>{{imageOwnerId}}</dd>
+    {{/if}}
+
+    <dt>{{i18n "DASH_BUB_ISPUBLIC"}}</dt>       <dd>{{isPublic}}</dd>
+		<dt>{{i18n "DASH_BUB_KERNELID"}}</dt>       <dd>{{kernelId}}</dd>
+		<dt>{{i18n "DASH_BUB_ROOTDEVICENAME"}}</dt> <dd>{{rootDeviceName}}</dd>
+		<dt>{{i18n "DASH_BUB_ROOTDEVICETYPE"}}</dt> <dd>{{rootDeviceType}}</dd>
+    <dt>Image Size</dt>    <dd>{{imageSize}}</dd>
+    <dt>Instance Type</dt> <dd>{{instanceType}}</dd>
 	</dl>
 </div>
 

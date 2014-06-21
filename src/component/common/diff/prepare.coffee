@@ -30,10 +30,8 @@ define [ 'constant' ], ( constant ) ->
 
                 null
 
-
             oldAttr: oldCompAttr
             newAttr: newCompAttr
-
 
         genValue: (type, oldValue, newValue) ->
 
@@ -103,6 +101,9 @@ define [ 'constant' ], ( constant ) ->
                 when 'NotificationType'
                     #data.skip = true
                     data = data
+
+                when 'Instances'
+                    data.key = 'Instance'
 
             # Replace first level node
             if path.length is 1
@@ -196,6 +197,3 @@ define [ 'constant' ], ( constant ) ->
     Prepare.prototype.node = prepareNode
 
     Prepare
-
-
-

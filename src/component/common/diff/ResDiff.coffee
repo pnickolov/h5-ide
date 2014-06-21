@@ -40,13 +40,15 @@ define [
         render: () ->
 
             that = this
+
             # popup modal
+            okText = 'OK, got it'
             options =
                 template: @el
                 title: 'App Changes'
                 disableClose: true
                 confirm:
-                    text: 'OK, got it'
+                    text: okText
                 width: '608px'
                 compact: true
                 preventClose: true
@@ -62,7 +64,7 @@ define [
                         # $confirmBtn.removeClass('disabled')
                         that.modal.close()
                     , (error) ->
-                        $confirmBtn.text('OK, got it')
+                        $confirmBtn.text(okText)
                         $confirmBtn.removeClass('disabled')
                         notification 'error', error.msg
                 else

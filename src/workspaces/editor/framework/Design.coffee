@@ -408,6 +408,7 @@ define [
 
   DesignImpl.prototype.shouldDraw = ()-> @__shoulddraw
   DesignImpl.prototype.use = ()-> Design.__instance = @; @
+  DesignImpl.prototype.unuse = ()-> if Design.__instance is @ then Design.__instance = null; return
 
   DesignImpl.prototype.component = ( uid )-> @__componentMap[ uid ]
 

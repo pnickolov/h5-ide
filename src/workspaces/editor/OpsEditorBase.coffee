@@ -162,6 +162,9 @@ define [
       @stopListening()
       if @view
         @view.remove()
+
+      @design.unuse()
+      @design = null
       return
 
     isInited : ()-> !!@__inited

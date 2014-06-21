@@ -473,7 +473,7 @@ define [
             "Instance Type"      : data.instanceType
             "Block Device Type"  : data.rootDeviceType
             "Block Devices"      : if data.blockDeviceMapping then @formartDetail "BlockDevice", data.blockDeviceMapping, "deviceName" else null
-            "Network Interface"  : @formartDetail "ENI", data.networkInterfaceSet, "networkInterfaceId"
+            "Network Interface"  : if data.networkInterfaceSet then @formartDetail "ENI", data.networkInterfaceSet, "networkInterfaceId" else null
           }
         when 'EIP'
             result = {
@@ -517,7 +517,7 @@ define [
     # some format to the data so it can show in handlebars template
     formartDetail: (type, array, key, force)->
         #resolve 'BlockDevice' AttachmentSet HealthCheck and so on.
-        if (['BlockDevice', "AttachmentSet","HealthCheck", "ListenerDescriptions",'Dimensions'].indexOf type) > -1
+        if (['BlockDevice', "AttachmentSet","HealthCheck", "ListenerDescriptions",'Dimensions','ENI'].indexOf type) > -1
             _.map array, (blockDevice, index)->
                 # combine ebs attribute
                 _.map blockDevice, (e, key)->

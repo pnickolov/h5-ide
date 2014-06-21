@@ -122,9 +122,12 @@ define ["ApiRequest", "CloudResources", "constant", "backbone"], ( ApiRequest, C
             try
               # Ingore app that is created by us.
               tags = {}
-              if resources.Tag and resources.Tag.item and resources.Tag.item.length
-                for t in resources.Tag.item
-                  tags[ t.key ] = t.value
+              if resources.Tag and resources.Tag.item
+                if resources.Tag.item.length
+                  for t in resources.Tag.item
+                    tags[ t.key ] = t.value
+                else
+                  tags[ resources.Tag.item.key ] = resources.Tag.item.value
 
               obj =
                 id      : vpc

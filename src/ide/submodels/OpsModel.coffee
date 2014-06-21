@@ -238,14 +238,14 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
 
     # Delete the stack in server, returns a promise
     remove : ()->
-      if @isApp() then return @__returnErrorPromise()
-
       @__destroy()
 
       if not @get("id")
         d = Q.defer()
         d.resolve()
         return d.promise
+
+      if @isApp() then return @__returnErrorPromise()
 
       self = @
       ApiRequest("stack_remove",{

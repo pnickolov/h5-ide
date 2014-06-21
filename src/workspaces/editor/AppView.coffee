@@ -50,11 +50,10 @@ define [
         title        : "App Imported"
         template     : OpsEditorTpl.modal.confirmImport({ name : @workspace.opsModel.get("name") })
         confirm      : { text : "Done" }
-        cancel       : { hide : true }
         disableClose : true
         hideClose    : true
+        onCancel     : ()-> self.workspace.remove(); return
         onConfirm    : ()->
-
           $ipt = modal.tpl.find("#ImportSaveAppName")
           $ipt.parsley 'custom', ( val ) ->
             if not MC.validate 'awsName',  val

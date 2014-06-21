@@ -81,8 +81,6 @@ define [
       @toolbar.remove()
       @propertyPanel.remove()
 
-      @removeSubviews()
-
       Backbone.View.prototype.remove.call this
       return
 
